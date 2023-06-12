@@ -15,6 +15,7 @@ target_link_libraries(${PROJECT_NAME}
     ${DROGON}
 )
 
+aux_source_directory(src SRC)
 aux_source_directory(controllers CTL_SRC)
 # aux_source_directory(filters FILTER_SRC)
 # aux_source_directory(plugins PLUGIN_SRC)
@@ -38,6 +39,7 @@ target_include_directories(${PROJECT_NAME}
 target_sources(${PROJECT_NAME}
     PRIVATE
     ${SRC_DIR}
+    ${SRC}
     ${CTL_SRC}
     # ${FILTER_SRC}
     # ${PLUGIN_SRC}
