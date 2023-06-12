@@ -1,0 +1,18 @@
+cmake_minimum_required(VERSION 3.5)
+project(webcface CXX)
+
+find_package(Drogon CONFIG)
+if(${Drogon_FOUND})
+    set(DROGON Drogon::Drogon)
+else()
+    set(BUILD_CTL off CACHE INTERNAL "" FORCE)
+    set(BUILD_EXAMPLES off CACHE INTERNAL "" FORCE)
+    set(BUILD_ORM off CACHE INTERNAL "" FORCE)
+    set(BUILD_SHARED_LIBS on CACHE INTERNAL "" FORCE)
+    set(BUILD_BROTLI off CACHE INTERNAL "" FORCE)
+    set(BUILD_YAML_CONFIG off CACHE INTERNAL "" FORCE)
+    add_subdirectory(external/drogon)
+    set(DROGON drogon)
+endif()
+
+add_subdirectory(server_cpp)
