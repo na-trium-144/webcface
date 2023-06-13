@@ -2,13 +2,19 @@
 #include <drogon/HttpAppFramework.h>
 #include <future>
 #include <optional>
+#include <string>
+#include "entry.h"
+#include "../../server_cpp/message/message.h"
+// todo: これインストールしたら動かないのでmessage.hの場所を考え直す必要がある
 
 namespace WebCFace {
 
-void init() {
+void init(const std::string& name, const std::string& host, int port) {
+    entry.setName(name);
+
     using namespace drogon;
     static auto conn =
-        WebSocketClient::newWebSocketClient("localhost", 80, false);
+        WebSocketClient::newWebSocketClient(host, port, false);
     static auto req = HttpRequest::newHttpRequest();
     req->setPath("/");
 
@@ -25,6 +31,7 @@ void init() {
             std::cout << "connected\n";
         } else {
             std::cout << "error\n";
+            // todo: エラー時どうするか
         }
     });
 

@@ -1,5 +1,5 @@
 #include "client.h"
-#include "message.h"
+#include "../message/message.h"
 namespace WebCFace::Server {
 void Client::onRecv(const std::string &message) {
     using namespace WebCFace::Message;
