@@ -17,6 +17,7 @@ target_link_libraries(${PROJECT_NAME}
 )
 
 aux_source_directory(src SRC)
+aux_source_directory(message MESSAGE_SRC)
 aux_source_directory(controllers CTL_SRC)
 # aux_source_directory(filters FILTER_SRC)
 # aux_source_directory(plugins PLUGIN_SRC)
@@ -41,6 +42,7 @@ target_sources(${PROJECT_NAME}
     PRIVATE
     ${SRC_DIR}
     ${SRC}
+    ${MESSAGE_SRC}
     ${CTL_SRC}
     # ${FILTER_SRC}
     # ${PLUGIN_SRC}

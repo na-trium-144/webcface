@@ -25,4 +25,7 @@ if(NOT ${msgpack_FOUND})
 endif()
 set(MSGPACK msgpack-cxx)
 
+enable_testing() # todo: オプションで変えられるようにする
+
 add_subdirectory(server_cpp)
+add_subdirectory(client_cpp)
