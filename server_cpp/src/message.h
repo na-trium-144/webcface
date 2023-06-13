@@ -1,14 +1,16 @@
 #pragma once
 #include <msgpack.hpp>
 #include <string>
-
-namespace WebCFace {
-namespace Message {
+#include <utility>
+#include <any>
+namespace WebCFace::Message {
 enum class MessageKind {
     name = 0,
 };
 
 using Name = std::string;
 
-} // namespace Message
-} // namespace WebCFace
+std::pair<MessageKind, std::any> unpack(const std::string &message);
+std::string pack(MessageKind kind, std::any obj);
+
+} // namespace WebCFace::Message
