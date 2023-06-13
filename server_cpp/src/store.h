@@ -7,12 +7,11 @@
 namespace WebCFace::Server {
 inline class Store {
   private:
-    std::unordered_map<drogon::WebSocketConnectionPtr, std::shared_ptr<Client>>
-        clients;
+    std::unordered_map<Client::wsConnPtr, std::shared_ptr<Client>> clients;
 
   public:
     Store() : clients() {}
-    void newClient(drogon::WebSocketConnectionPtr con);
-
+    void newClient(const Client::wsConnPtr &con);
+    std::shared_ptr<Client> getClient(const Client::wsConnPtr &con);
 } store;
 } // namespace WebCFace::Server

@@ -7,6 +7,10 @@ void MainWebsock::handleNewMessage(const WebSocketConnectionPtr &wsConnPtr,
                                    std::string &&message,
                                    const WebSocketMessageType &type) {
     // write your application logic here
+    auto cli = store.getClient(wsConnPtr);
+    if(cli){
+        cli->onRecv(message);
+    }
 }
 
 void MainWebsock::handleNewConnection(const HttpRequestPtr &req,

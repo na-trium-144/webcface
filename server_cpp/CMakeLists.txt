@@ -13,6 +13,7 @@ target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_20)
 target_link_libraries(${PROJECT_NAME}
     PRIVATE
     ${DROGON}
+    ${MSGPACK}
 )
 
 aux_source_directory(src SRC)

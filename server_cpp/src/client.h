@@ -1,15 +1,22 @@
 #pragma once
 #include <drogon/WebSocketController.h>
+#include <string>
 
 namespace WebCFace::Server {
 class Client {
+  public:
+    using wsConnPtr = drogon::WebSocketConnectionPtr;
+
   private:
-    const drogon::WebSocketConnectionPtr con;
+    const wsConnPtr con;
 
   public:
     Client() = delete;
     Client(const Client &) = delete;
     Client &operator=(const Client &) = delete;
-    explicit Client(drogon::WebSocketConnectionPtr con) : con(con) {}
+    explicit Client(const wsConnPtr &con) : con(con) {}
+
+    void onRecv(const std::string &msg);
+    std::string name;
 };
 } // namespace WebCFace::Server
