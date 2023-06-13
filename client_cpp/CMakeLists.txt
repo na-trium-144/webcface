@@ -21,8 +21,11 @@ target_link_libraries(${PROJECT_NAME}
 
 
 target_include_directories(${PROJECT_NAME}
-    PRIVATE 
+    PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
+
+add_executable(test_client main.cc)
+target_link_libraries(test_client PRIVATE ${PROJECT_NAME})
 
 # add_subdirectory(test)

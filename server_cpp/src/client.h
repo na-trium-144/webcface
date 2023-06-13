@@ -1,6 +1,7 @@
 #pragma once
 #include <drogon/WebSocketController.h>
 #include <string>
+#include "../message/message.h"
 
 namespace WebCFace::Server {
 class Client {
@@ -17,6 +18,6 @@ class Client {
     explicit Client(const wsConnPtr &con) : con(con) {}
 
     void onRecv(const std::string &msg);
-    std::string name;
+    WebCFace::Message::Name name{""};
 };
 } // namespace WebCFace::Server

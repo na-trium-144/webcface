@@ -1,5 +1,6 @@
-#include "entry.h"
+#pragma once
 
 namespace WebCFace{
+
 
 }

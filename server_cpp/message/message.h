@@ -8,9 +8,26 @@ enum class MessageKind {
     name = 0,
 };
 
-using Name = std::string;
+template <MessageKind k>
+struct MessageBase {
+    MessageKind kind = k;
+};
+struct Name : public MessageBase<MessageKind::name> {
+    std::string name;
+    Name(){}
+    Name(const std::string& name): name(name){}
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("n", name));
+};
 
 std::pair<MessageKind, std::any> unpack(const std::string &message);
-std::string pack(MessageKind kind, std::any obj);
+
+template <typename T>
+std::string pack(T obj) {
+    msgpack::type::tuple<int, T> src(static_cast<int>(obj.kind), obj);
+    std::stringstream buffer;
+    msgpack::pack(buffer, src);
+    buffer.seekg(0);
+    return buffer.str();
+}
 
 } // namespace WebCFace::Message
