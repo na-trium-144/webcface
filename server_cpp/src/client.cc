@@ -12,6 +12,9 @@ void Client::onRecv(const std::string &message) {
         name = std::any_cast<Name>(obj);
         std::cout << "connected from " << name.name << std::endl;
         break;
+    case MessageKind::value:
+        std::cout << "value " << std::any_cast<Value>(obj).data << std::endl;
+        break;
     }
 }
 } // namespace WebCFace::Server

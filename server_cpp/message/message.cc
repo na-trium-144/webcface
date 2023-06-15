@@ -17,6 +17,9 @@ std::pair<MessageKind, std::any> unpack(const std::string &message) {
     case MessageKind::name:
         obj_u = obj.via.array.ptr[1].as<Message::Name>();
         break;
+    case MessageKind::value:
+        obj_u = obj.via.array.ptr[1].as<Message::Value>();
+        break;
     }
     return std::make_pair(kind, obj_u);
 }
