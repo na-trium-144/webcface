@@ -41,10 +41,10 @@ void Client::send() {
     if (connected) {
         auto c = ws->getConnection();
 
+        auto value_send = value_store->transfer_data();
         for (const auto &v : value_send) {
             c->send(Message::pack(Message::Value{{}, v.first, v.second}));
         }
-        value_send.clear();
     }
 }
 
