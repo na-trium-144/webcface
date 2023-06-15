@@ -5,11 +5,9 @@
 #include <memory>
 
 namespace WebCFace::Server {
-inline class Store {
-  private:
+inline struct Store {
     std::unordered_map<Client::wsConnPtr, std::shared_ptr<Client>> clients;
-
-  public:
+    std::unordered_map<std::string, std::shared_ptr<Client>> clients_by_name;
     Store() : clients() {}
     void newClient(const Client::wsConnPtr &con);
     std::shared_ptr<Client> getClient(const Client::wsConnPtr &con);

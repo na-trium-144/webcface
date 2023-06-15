@@ -18,8 +18,10 @@ Client::Client(const std::string &name, const std::string &host, int port) {
     req->setPath("/");
 
     ws->setMessageHandler(
-        [](const std::string &message, const WebSocketClientPtr &ws,
-           const WebSocketMessageType &type) { std::cout << "recv msg\n"; });
+        [this](const std::string &message, const WebSocketClientPtr &ws,
+           const WebSocketMessageType &type) { 
+            onRecv(message);
+            });
     ws->setConnectionClosedHandler(
         [](const WebSocketClientPtr &ws) { std::cout << "closed\n"; });
 
@@ -50,6 +52,17 @@ void Client::send() {
         for (const auto &v : value_subsc) {
             c->send(Message::pack(Message::Subscribe<Message::Value>{{}, v.first, v.second}));
         }
+    }
+}
+void Client::onRecv(const std::string& message){
+        using namespace WebCFace::Message;
+    auto [kind, obj] = unpack(message);
+    switch (kind) {
+    case kind_recv(MessageKind::value): {
+        auto r = std::any_cast<Recv<WebCFace::Message::Value>>(obj);
+        value_store->set_recv(r.from, r.name, r.data);
+        break;
+    }
     }
 }
 

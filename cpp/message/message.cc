@@ -15,11 +15,18 @@ std::pair<MessageKind, std::any> unpack(const std::string &message) {
     std::any obj_u;
     switch (kind) {
     case MessageKind::name:
-        obj_u = obj.via.array.ptr[1].as<Message::Name>();
+        obj_u = obj.via.array.ptr[1].as<Name>();
         break;
     case MessageKind::value:
-        obj_u = obj.via.array.ptr[1].as<Message::Value>();
+        obj_u = obj.via.array.ptr[1].as<Value>();
         break;
+    case kind_recv(MessageKind::value):
+        obj_u = obj.via.array.ptr[1].as<Recv<Value>>();
+        break;
+    case kind_subscribe(MessageKind::value):
+        obj_u = obj.via.array.ptr[1].as<Subscribe<Value>>();
+        break;
+
     }
     return std::make_pair(kind, obj_u);
 }

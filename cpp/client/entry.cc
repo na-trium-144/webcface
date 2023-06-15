@@ -1,34 +1,35 @@
 #include "entry.h"
 #include <webcface/webcface.h>
+#include <iostream>
 
 namespace WebCFace {
 template <typename T>
 void SyncDataStore<T>::set_send(const std::string &name, const T &data) {
     std::lock_guard lock(mtx);
     data_send[name] = data;
+    data_recv[""][name] = data; // 送信後に自分の値を参照する用
+}
+template <typename T>
+void SyncDataStore<T>::set_recv(const std::string &from,
+                                const std::string &name, const T &data) {
+    std::lock_guard lock(mtx);
+    data_recv[from][name] = data;
 }
 
 template <typename T>
 std::optional<T> SyncDataStore<T>::try_get_recv(const std::string &from,
                                                 const std::string &name) {
     std::lock_guard lock(mtx);
-    if (from == "") {
-        auto it = data_send.find(name);
-        if (it != data_send.end()) {
+    auto p = std::make_pair(from, name);
+    if (from != "" && subsc.count(p) == 0) {
+        subsc.insert(p);
+        subsc_next.insert(p);
+    }
+    auto s_it = data_recv.find(from);
+    if (s_it != data_recv.end()) {
+        auto it = s_it->second.find(name);
+        if (it != s_it->second.end()) {
             return it->second;
-        }
-    } else {
-        auto p = std::make_pair(from, name);
-        if (subsc.count(p) == 0) {
-            subsc.insert(p);
-            subsc_next.insert(p);
-        }
-        auto s_it = data_recv.find(from);
-        if (s_it != data_recv.end()) {
-            auto it = s_it->second.find(name);
-            if (it != s_it->second.end()) {
-                return it->second;
-            }
         }
     }
     return std::nullopt;

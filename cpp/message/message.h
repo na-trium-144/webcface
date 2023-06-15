@@ -14,6 +14,9 @@ enum class MessageKind {
 inline constexpr MessageKind kind_subscribe(MessageKind k){
     return static_cast<MessageKind>(static_cast<int>(k) + static_cast<int>(MessageKind::subscribe));
 }
+inline constexpr MessageKind kind_recv(MessageKind k){
+    return static_cast<MessageKind>(static_cast<int>(k) + static_cast<int>(MessageKind::recv));
+}
 
 template <MessageKind k>
 struct MessageBase {
@@ -26,7 +29,14 @@ struct Name : public MessageBase<MessageKind::name> {
 struct Value : public MessageBase<MessageKind::value> {
     std::string name;
     double data;
+    using DataType = double;
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("n", name), MSGPACK_NVP("d", data));
+};
+template <typename T>
+struct Recv: public MessageBase<kind_recv(T::kind)>{
+    std::string from, name;
+    typename T::DataType data;
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", from), MSGPACK_NVP("n", name), MSGPACK_NVP("d", data));
 };
 template <typename T>
 struct Subscribe: public MessageBase<kind_subscribe(T::kind)>{

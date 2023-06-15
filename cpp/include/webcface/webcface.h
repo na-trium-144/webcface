@@ -24,6 +24,8 @@ class SyncDataStore {
 
   public:
     void set_send(const std::string &name, const T &data);
+    void set_recv(const std::string &from, const std::string &name,
+                  const T &data);
     std::optional<T> try_get_recv(const std::string &from,
                                   const std::string &name);
     std::unordered_map<std::string, T> transfer_send();
@@ -56,6 +58,8 @@ class Client {
     bool connected = false;
 
     std::shared_ptr<SyncDataStore<Value::DataType>> value_store;
+
+    void onRecv(const std::string &message);
 
   public:
     Client() = delete;
