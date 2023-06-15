@@ -5,8 +5,7 @@
 #include <optional>
 #include <string>
 #include <webcface/webcface.h>
-#include "../../server_cpp/message/message.h"
-// todo: message.hの場所を考え直す必要があるか?
+#include "../message/message.h"
 
 namespace WebCFace {
 
