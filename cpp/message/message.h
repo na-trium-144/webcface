@@ -5,13 +5,19 @@
 #include <any>
 namespace WebCFace::Message {
 enum class MessageKind {
-    name = 0,
-    value = 1,
+    value = 0,
+    recv = 50, // 50〜
+    subscribe = 100, // 100〜
+    // 150〜: other
+    name = 150,
 };
+inline constexpr MessageKind kind_subscribe(MessageKind k){
+    return static_cast<MessageKind>(static_cast<int>(k) + static_cast<int>(MessageKind::subscribe));
+}
 
 template <MessageKind k>
 struct MessageBase {
-    MessageKind kind() const { return k; }
+    static constexpr MessageKind kind = k;
 };
 struct Name : public MessageBase<MessageKind::name> {
     std::string name;
@@ -22,12 +28,18 @@ struct Value : public MessageBase<MessageKind::value> {
     double data;
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("n", name), MSGPACK_NVP("d", data));
 };
+template <typename T>
+struct Subscribe: public MessageBase<kind_subscribe(T::kind)>{
+    std::string from, name;
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", from), MSGPACK_NVP("n", name));
+};
+
 
 std::pair<MessageKind, std::any> unpack(const std::string &message);
 
 template <typename T>
 std::string pack(T obj) {
-    msgpack::type::tuple<int, T> src(static_cast<int>(obj.kind()), obj);
+    msgpack::type::tuple<int, T> src(static_cast<int>(T::kind), obj);
     std::stringstream buffer;
     msgpack::pack(buffer, src);
     buffer.seekg(0);

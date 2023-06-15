@@ -10,6 +10,7 @@
 namespace WebCFace {
 
 Client::Client(const std::string &name, const std::string &host, int port) {
+    value_store = std::make_shared<SyncDataStore<Value::DataType>>();
 
     using namespace drogon;
     ws = WebSocketClient::newWebSocketClient(host, port, false);
@@ -41,9 +42,13 @@ void Client::send() {
     if (connected) {
         auto c = ws->getConnection();
 
-        auto value_send = value_store->transfer_data();
+        auto value_send = value_store->transfer_send();
         for (const auto &v : value_send) {
             c->send(Message::pack(Message::Value{{}, v.first, v.second}));
+        }
+        auto value_subsc = value_store->transfer_subsc();
+        for (const auto &v : value_subsc) {
+            c->send(Message::pack(Message::Subscribe<Message::Value>{{}, v.first, v.second}));
         }
     }
 }

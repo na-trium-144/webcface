@@ -3,11 +3,15 @@
 #include <memory>
 #include <optional>
 #include <unordered_map>
+#include <set>
 
 namespace drogon {
 class WebSocketClient;
 }
+
 namespace WebCFace {
+
+class Client;
 
 template <typename T>
 class SyncDataStore {
@@ -16,11 +20,14 @@ class SyncDataStore {
     std::unordered_map<std::string, T> data_send;
     std::unordered_map<std::string, std::unordered_map<std::string, T>>
         data_recv;
+    std::set<std::pair<std::string, std::string>> subsc, subsc_next;
 
   public:
-    void set(const std::string &name, const T &data);
-    std::optional<T> try_get(const std::string &from, const std::string &name);
-    std::unordered_map<std::string, T> transfer_data();
+    void set_send(const std::string &name, const T &data);
+    std::optional<T> try_get_recv(const std::string &from,
+                                  const std::string &name);
+    std::unordered_map<std::string, T> transfer_send();
+    std::set<std::pair<std::string, std::string>> transfer_subsc();
 };
 
 template <typename T>
@@ -49,8 +56,6 @@ class Client {
     bool connected = false;
 
     std::shared_ptr<SyncDataStore<Value::DataType>> value_store;
-
-    void subscribe(const std::string &from, const std::string &name);
 
   public:
     Client() = delete;

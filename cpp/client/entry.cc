@@ -3,14 +3,14 @@
 
 namespace WebCFace {
 template <typename T>
-void SyncDataStore<T>::set(const std::string &name, const T &data) {
+void SyncDataStore<T>::set_send(const std::string &name, const T &data) {
     std::lock_guard lock(mtx);
     data_send[name] = data;
 }
 
 template <typename T>
-std::optional<T> SyncDataStore<T>::try_get(const std::string &from,
-                                           const std::string &name) {
+std::optional<T> SyncDataStore<T>::try_get_recv(const std::string &from,
+                                                const std::string &name) {
     std::lock_guard lock(mtx);
     if (from == "") {
         auto it = data_send.find(name);
@@ -18,7 +18,11 @@ std::optional<T> SyncDataStore<T>::try_get(const std::string &from,
             return it->second;
         }
     } else {
-        // cli->subscribe(from, name);
+        auto p = std::make_pair(from, name);
+        if (subsc.count(p) == 0) {
+            subsc.insert(p);
+            subsc_next.insert(p);
+        }
         auto s_it = data_recv.find(from);
         if (s_it != data_recv.end()) {
             auto it = s_it->second.find(name);
@@ -30,20 +34,26 @@ std::optional<T> SyncDataStore<T>::try_get(const std::string &from,
     return std::nullopt;
 }
 template <typename T>
-std::unordered_map<std::string, T> SyncDataStore<T>::transfer_data() {
+std::unordered_map<std::string, T> SyncDataStore<T>::transfer_send() {
     std::lock_guard lock(mtx);
     return std::move(data_send);
+}
+template <typename T>
+std::set<std::pair<std::string, std::string>>
+SyncDataStore<T>::transfer_subsc() {
+    std::lock_guard lock(mtx);
+    return std::move(subsc_next);
 }
 
 template <typename T>
 SyncData<T> &SyncData<T>::set(const T &data) {
-    store->set(name, data);
+    store->set_send(name, data);
     return *this;
 }
 
 template <typename T>
 std::optional<T> SyncData<T>::try_get() const {
-    return store->try_get(from, name);
+    return store->try_get_recv(from, name);
 }
 template <typename T>
 T SyncData<T>::get() const {
