@@ -18,6 +18,6 @@ class Client {
     explicit Client(const wsConnPtr &con) : con(con) {}
 
     void onRecv(const std::string &msg);
-    WebCFace::Message::Name name{""};
+    std::string name;
 };
 } // namespace WebCFace::Server

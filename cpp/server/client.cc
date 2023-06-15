@@ -9,8 +9,8 @@ void Client::onRecv(const std::string &message) {
     auto [kind, obj] = unpack(message);
     switch (kind) {
     case MessageKind::name:
-        name = std::any_cast<Name>(obj);
-        std::cout << "connected from " << name.name << std::endl;
+        name = std::any_cast<Name>(obj).name;
+        std::cout << "connected from " << name << std::endl;
         break;
     case MessageKind::value:
         std::cout << "value " << std::any_cast<Value>(obj).data << std::endl;

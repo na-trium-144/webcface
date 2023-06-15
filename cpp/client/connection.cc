@@ -22,30 +22,29 @@ Client::Client(const std::string &name, const std::string &host, int port) {
     ws->setConnectionClosedHandler(
         [](const WebSocketClientPtr &ws) { std::cout << "closed\n"; });
 
-    ws->connectToServer(req, [name, this](ReqResult r, const HttpResponsePtr &resp,
-                                    const WebSocketClientPtr &ws) {
-        auto c = ws->getConnection();
-        if (r == ReqResult::Ok) {
-            connected = true;
-            std::cout << "connected\n";
-            c->send(Message::pack(Message::Name{name}));
-        } else {
-            std::cout << "error\n";
-            // todo: エラー時どうするか
-        }
-    });
+    ws->connectToServer(req,
+                        [name, this](ReqResult r, const HttpResponsePtr &resp,
+                                     const WebSocketClientPtr &ws) {
+                            auto c = ws->getConnection();
+                            if (r == ReqResult::Ok) {
+                                connected = true;
+                                std::cout << "connected\n";
+                                c->send(Message::pack(Message::Name{{}, name}));
+                            } else {
+                                std::cout << "error\n";
+                                // todo: エラー時どうするか
+                            }
+                        });
 }
 
-void Client::send(){
-    if(connected){
+void Client::send() {
+    if (connected) {
         auto c = ws->getConnection();
 
-        for(const auto& v: value_send){
-            c->send(Message::pack(Message::Value{v.first, v.second}));
+        for (const auto &v : value_send) {
+            c->send(Message::pack(Message::Value{{}, v.first, v.second}));
         }
         value_send.clear();
-
-
     }
 }
 
