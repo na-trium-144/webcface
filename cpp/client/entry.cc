@@ -1,6 +1,7 @@
 #include "entry.h"
 #include <webcface/webcface.h>
 #include <iostream>
+#include <cassert>
 
 namespace WebCFace {
 template <typename T>
@@ -48,6 +49,7 @@ SyncDataStore<T>::transfer_subsc() {
 
 template <typename T>
 SyncData<T> &SyncData<T>::set(const T &data) {
+    assert(from == "");
     store->set_send(name, data);
     return *this;
 }

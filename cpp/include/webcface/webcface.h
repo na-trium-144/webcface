@@ -4,6 +4,7 @@
 #include <optional>
 #include <unordered_map>
 #include <set>
+#include <mutex>
 
 namespace drogon {
 class WebSocketClient;
@@ -48,9 +49,70 @@ class SyncData {
     T get() const;
     operator T() const { return get(); }
     std::optional<T> try_get() const;
+
+    // 演算が可能な型に対しては実装できる
+    template <typename U>
+    auto &operator+=(const U &rhs) {
+        return this->set(this->get() + rhs);
+    }
+    template <typename U>
+    auto &operator-=(const U &rhs) {
+        return this->set(this->get() - rhs);
+    }
+    template <typename U>
+    auto &operator*=(const U &rhs) {
+        return this->set(this->get() * rhs);
+    }
+    template <typename U>
+    auto &operator/=(const U &rhs) {
+        return this->set(this->get() / rhs);
+    }
+    template <typename U>
+    auto &operator%=(const U &rhs) {
+        return this->set(this->get() % rhs);
+    }
+    template <typename U>
+    auto &operator<<=(const U &rhs) {
+        return this->set(this->get() << rhs);
+    }
+    template <typename U>
+    auto &operator>>=(const U &rhs) {
+        return this->set(this->get() >> rhs);
+    }
+    template <typename U>
+    auto &operator&=(const U &rhs) {
+        return this->set(this->get() & rhs);
+    }
+    template <typename U>
+    auto &operator|=(const U &rhs) {
+        return this->set(this->get() | rhs);
+    }
+    template <typename U>
+    auto &operator^=(const U &rhs) {
+        return this->set(this->get() ^ rhs);
+    }
 };
 
 using Value = SyncData<double>;
+inline auto& operator++(Value& s){ // ++s
+  auto v = s.get();
+  s.set(v + 1);
+  return s;
+}
+inline auto operator++(Value&& ss){
+  auto s = ss;
+  return ++s;
+}
+inline auto operator++(Value& s, int){ // s++
+  auto v = s.get();
+  s.set(v + 1);
+  return v;
+}
+inline auto operator++(Value&& ss, int){
+  auto s = ss;
+  return s++;
+}
+
 
 class Client {
   private:
@@ -71,7 +133,7 @@ class Client {
     void send();
 
     Value value(const std::string &name) { return value("", name); }
-    Value value(const std::string &from, const std::string &name) {
+    const Value value(const std::string &from, const std::string &name) {
         return Value{value_store, from, name};
     }
 };
