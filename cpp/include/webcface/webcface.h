@@ -94,23 +94,41 @@ class SyncData {
 };
 
 using Value = SyncData<double>;
-inline auto& operator++(Value& s){ // ++s
-  auto v = s.get();
-  s.set(v + 1);
-  return s;
+inline auto &operator++(Value &s) { // ++s
+    auto v = s.get();
+    s.set(v + 1);
+    return s;
 }
-inline auto operator++(Value&& ss){
-  auto s = ss;
-  return ++s;
+inline auto operator++(Value &&ss) {
+    auto s = ss;
+    return ++s;
 }
-inline auto operator++(Value& s, int){ // s++
-  auto v = s.get();
-  s.set(v + 1);
-  return v;
+inline auto operator++(Value &s, int) { // s++
+    auto v = s.get();
+    s.set(v + 1);
+    return v;
 }
-inline auto operator++(Value&& ss, int){
-  auto s = ss;
-  return s++;
+inline auto operator++(Value &&ss, int) {
+    auto s = ss;
+    return s++;
+}
+inline auto &operator--(Value &s) { // --s
+    auto v = s.get();
+    s.set(v - 1);
+    return s;
+}
+inline auto operator--(Value &&ss) {
+    auto s = ss;
+    return --s;
+}
+inline auto operator--(Value &s, int) { // s--
+    auto v = s.get();
+    s.set(v - 1);
+    return v;
+}
+inline auto operator--(Value &&ss, int) {
+    auto s = ss;
+    return s--;
 }
 
 
