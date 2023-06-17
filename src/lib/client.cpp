@@ -39,9 +39,17 @@ void Client::send_layout(const std::string& json) const
 {
     _send("layout", json);
 }
+void Client::send_layer(const std::string& json) const
+{
+    _send("layer", json);
+}
 void Client::send_log(const std::string& json) const
 {
     _send("log", json);
+}
+void Client::send_dialog(const std::string& json) const
+{
+    _send("dialog", json);
 }
 void Client::send_error(int func_id, const std::string& error) const
 {

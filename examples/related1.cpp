@@ -16,10 +16,17 @@ int main()
     {
         using namespace WebCFace::Layout;
         using namespace WebCFace::Literals;
+        Drawing test_drawing(100, 100);
+        auto layer1 = test_drawing.createLayer("aaa");
+        layer1.drawRect(0, 0, 100, 100, "cyan").onClick("shell1"_callback);
+        test_drawing.addLayer("related2:bbb");
+        test_drawing.addLayer("pien");
         // clang-format off
+
         WebCFace::addPageLayout("test", {{
             {{ Button("shell1", "shell1"_callback), Button("related2:shell1", "related2:shell1"_callback)}},
             {{ "value1 = ", "value1"_value, "related2:value2 = ", "related2:value2"_value}},
+            test_drawing,
         }});
         // clang-format on
     }

@@ -9,6 +9,7 @@ import {
   ImageDataT,
   CustomPageLayoutSettingT,
   CustomPageComponentT,
+  DrawingLayerT,
   RelatedServerSettingT,
   AnyValue,
   SocketContextI,
@@ -34,53 +35,56 @@ const GamePadCheck = (props: {
   const prevValue = useRef({ connected: false, buttons: {}, axes: {} });
   const { gamepadConnectIndex, ws, buttonMap, axisMap } = props;
   useEffect(() => {
-    if (gamepadConnectIndex != null) {
-      const sendData = { connected: true, buttons: {}, axes: {} };
-      let changed = false;
-      if (prevValue.current.connected === false) {
-        changed = true;
-        prevValue.current.connected = true;
-      }
-      for (let bi = 0; bi < buttonMap.current.length; bi++) {
-        const b = gamepads[gamepadConnectIndex].buttons[buttonMap.current[bi]];
-        const bp = b && b.pressed;
-        if (prevValue.current.buttons[bi] !== bp) {
-          prevValue.current.buttons[bi] = bp;
-          sendData.buttons[bi] = bp;
+    try {
+      if (gamepadConnectIndex != null) {
+        const sendData = { connected: true, buttons: {}, axes: {} };
+        let changed = false;
+        if (prevValue.current.connected === false) {
           changed = true;
+          prevValue.current.connected = true;
+        }
+        for (let bi = 0; bi < buttonMap.current.length; bi++) {
+          const b =
+            gamepads[gamepadConnectIndex].buttons[buttonMap.current[bi]];
+          const bp = b && b.pressed;
+          if (prevValue.current.buttons[bi] !== bp) {
+            prevValue.current.buttons[bi] = bp;
+            sendData.buttons[bi] = bp;
+            changed = true;
+          }
+        }
+        for (let ai = 0; ai < axisMap.current.length; ai++) {
+          const a = gamepads[gamepadConnectIndex].axes[axisMap.current[ai].id];
+          let aa = a ? a : 0;
+          if (axisMap.current[ai].inverse) {
+            aa *= -1;
+          }
+          if (prevValue.current.axes[ai] !== aa) {
+            prevValue.current.axes[ai] = aa;
+            sendData.axes[ai] = aa;
+            changed = true;
+          }
+        }
+        if (changed) {
+          ws.current.send(
+            JSON.stringify({
+              msgname: "gamepad",
+              msg: sendData,
+            })
+          );
+        }
+      } else {
+        if (prevValue.current.connected === true) {
+          prevValue.current.connected = false;
+          ws.current.send(
+            JSON.stringify({
+              msgname: "gamepad",
+              msg: { connected: false },
+            })
+          );
         }
       }
-      for (let ai = 0; ai < axisMap.current.length; ai++) {
-        const a = gamepads[gamepadConnectIndex].axes[axisMap.current[ai].id];
-        let aa = a ? a : 0;
-        if (axisMap.current[ai].inverse) {
-          aa *= -1;
-        }
-        if (prevValue.current.axes[ai] !== aa) {
-          prevValue.current.axes[ai] = aa;
-          sendData.axes[ai] = aa;
-          changed = true;
-        }
-      }
-      if (changed) {
-        ws.current.send(
-          JSON.stringify({
-            msgname: "gamepad",
-            msg: sendData,
-          })
-        );
-      }
-    } else {
-      if (prevValue.current.connected === true) {
-        prevValue.current.connected = false;
-        ws.current.send(
-          JSON.stringify({
-            msgname: "gamepad",
-            msg: { connected: false },
-          })
-        );
-      }
-    }
+    } catch {}
   }, [gamepadConnectIndex, gamepads, ws, buttonMap, axisMap]);
   return <></>;
 };
@@ -128,8 +132,10 @@ const SocketImpl = (props: { index: number }) => {
   const imageData = useRef<ImageDataT[]>([]);
   const errorMessage = useRef<ErrorInfoT[]>([]);
   const customPageLayout = useRef<CustomPageLayoutSettingT[]>([]);
+  const drawingLayer = useRef<DrawingLayerT[]>([]);
   const recvLength = useRef<number>(0);
   const startTime = useRef<Date>(new Date());
+  const alert = useRef<string>("");
   const [gamepadConnectIndex, setGamepadConnectIndex] = useState<number | null>(
     null
   );
@@ -252,6 +258,7 @@ const SocketImpl = (props: { index: number }) => {
             getTerminalLog: () => terminalLog.current,
             getErrorMessage: () => errorMessage.current,
             getCustomPageLayout: () => customPageLayout.current,
+            getDrawingLayer: () => drawingLayer.current,
             getDataAmount: () =>
               (recvLength.current /
                 (new Date().getTime() - startTime.current.getTime())) *
@@ -266,6 +273,10 @@ const SocketImpl = (props: { index: number }) => {
             },
             gamepadButtonMap: gamepadButtonMap,
             gamepadAxisMap: gamepadAxisMap,
+            getAlert: () => alert.current,
+            clearAlert: () => {
+              alert.current = "";
+            },
           }));
           terminalLog.current = [];
           const fetchHostname = async () => {
@@ -435,9 +446,26 @@ const SocketImpl = (props: { index: number }) => {
           }
           break;
         }
+        case "layer": {
+          for (const l of data) {
+            let idx = drawingLayer.current.findIndex(
+              (el) => el.name === l.name
+            );
+            if (idx === -1) {
+              drawingLayer.current.push(l);
+            } else {
+              drawingLayer.current[idx] = l;
+            }
+          }
+          break;
+        }
         case "error": {
           // setErrorMessage(data);
           errorMessage.current[data.callback_id].message = data.message.trim();
+          break;
+        }
+        case "dialog": {
+          alert.current = data;
           break;
         }
         default: {
@@ -472,6 +500,7 @@ const socketContextDefaultValue: SocketContextI = {
   toRobotSetting: [],
   fromRobotSetting: [],
   getCustomPageLayout: () => [],
+  getDrawingLayer: () => [],
   imageSetting: [],
   relatedServerSetting: [],
   gamepadButtonSetting: [],
@@ -482,6 +511,8 @@ const socketContextDefaultValue: SocketContextI = {
   getImageData: () => [],
   getErrorMessage: () => "",
   getDataAmount: () => 0,
+  getAlert: () => "",
+  clearAlert: () => {},
 };
 
 export const SocketProvider = (props: any) => {

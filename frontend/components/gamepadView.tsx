@@ -28,13 +28,20 @@ export const GamepadView = (props: { gi: number }) => {
     try {
       const lsItem = JSON.parse(window.localStorage.getItem(lsKey)) || {};
       if (lsItem[gamepads[gi].id]) {
-        setConnectedServer(
-          socket.raw.findIndex(
-            (s) => s.serverName === lsItem[gamepads[gi].id].server
-          )
+        const si = socket.raw.findIndex(
+          (s) => s.serverName === lsItem[gamepads[gi].id].server
         );
-        setButtonMap(lsItem[gamepads[gi].id].b);
-        setAxisMap(lsItem[gamepads[gi].id].a);
+        const buttonMap = lsItem[gamepads[gi].id].b;
+        const axisMap = lsItem[gamepads[gi].id].a;
+        setButtonMap(buttonMap);
+        setAxisMap(axisMap);
+        for (let i = 0; i < buttonMap.length; i++) {
+          socket.getByIndex(si).gamepadButtonMap.current[i] = buttonMap[i];
+        }
+        for (let i = 0; i < axisMap.length; i++) {
+          socket.getByIndex(si).gamepadAxisMap.current[i] = axisMap[i];
+        }
+        setConnectedServer(si);
       }
     } catch {}
   }, [gi]);

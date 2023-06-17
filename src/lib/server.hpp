@@ -18,6 +18,7 @@ std::string settingJson();
 std::string fromRobotJson(bool changed_only);
 std::string logJson(bool changed_only);
 std::string layoutJson(bool changed_only);
+std::string layerJson(bool changed_only);
 
 std::vector<std::string> getAllRegisteredFunctions();
 bool isFuncRegistered(const std::string& func_name);

@@ -74,6 +74,7 @@ void MainWebsock::handleNewConnection(
     cli->send_fromRobot(fromRobotJson(false));
     cli->send_log(logJson(false));
     cli->send_layout(layoutJson(false));
+    cli->send_layer(layerJson(false));
 }
 
 void MainWebsock::handleConnectionClosed(const WebSocketConnectionPtr& wsConnPtr)

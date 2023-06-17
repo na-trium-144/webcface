@@ -149,7 +149,7 @@ export default function Sidebar(props: Props) {
           (prev, s, si) =>
             prev.concat(
               s.getCustomPageLayout().map((l, li) => ({
-                name: l.name,
+                name: `${s.serverName}:${l.name}`,
                 sid: si,
                 id: li,
               }))
@@ -162,7 +162,7 @@ export default function Sidebar(props: Props) {
           (prev, s, si) =>
             prev.concat(
               s.getImageData().map((l, li) => ({
-                name: l.name,
+                name: `${s.serverName}:${l.name}`,
                 sid: si,
                 id: li,
               }))

@@ -28,6 +28,7 @@ while True:
     p.add("aaaaa")
     p.add(True)
     p.new_line()
+    p.add(webcface.Alert("alert")).add(webcface.Alert("info", "info"))
     p.add("i = ").add(webcface.RegisterValue("i", ret=int, value=i)).new_line()
     p.add(
         webcface.Button(
@@ -35,7 +36,7 @@ while True:
         )
     ).new_line()
     d = webcface.Drawing(300, 300)
-    dl = d.create_layer()
+    dl = d.create_layer("a") # ver0.9から名前が必要(なんでもよい)
     dl.draw_rect(0, 0, 300, 300, "beige")
     dl.draw_circle(140, 140, 130, "aqua")
     dl.draw_circle(140, 140, 60, "white")

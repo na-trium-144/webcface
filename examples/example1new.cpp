@@ -39,6 +39,7 @@ int main()
         = [](int value, bool flag, std::string name) {
               std::cout << "シェル5 " << value << "," << flag << "," << name << std::endl;
           };
+    "dialog"_callback = [] { WebCFace::dialog("test"); };
 
 
     "fakesensor1"_value = 1;
@@ -85,12 +86,13 @@ int main()
               << p.endl;
             p << "tの値は"
               << "fakesensor2"_value << t << Button(t, "hoge"_callback) << p.endl;
+            p << Alert(t) << Alert(t, "info") << p.endl;
             for (int i = 0; i < 5; i++) {
                 p << Button("func2 " + std::to_string(i), "func2"_callback << i);
             }
             p << p.endl;
             Drawing aaa(100, 100);
-            auto layer = aaa.createLayer();
+            auto layer = aaa.createLayer("aaa");
             layer.drawRect(10, 10, 90, 90, "red");
             for (int x = 20; x < 100; x += 20) {
                 layer.drawCircle(x, 50, 5, "blue");

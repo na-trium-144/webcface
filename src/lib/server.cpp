@@ -34,8 +34,8 @@ std::unordered_map<std::string, ToRobotInfo> to_robot_var, to_robot_func;
 std::unordered_map<std::string, FromRobotInfo> from_robot;
 std::unordered_map<std::string, ImageInfo> images;
 std::unordered_map<std::string, Json::Value> custom_page_layout;
+std::unordered_map<std::string, Json::Value> drawing_layer;
 std::vector<std::string> button_name, axis_name;
-
 //! drogon起動中はdrogonが動いているスレッド、停止中はstd::nullopt
 std::optional<std::thread> drogon_main_thread;
 
@@ -360,7 +360,7 @@ std::string fromRobotJson(bool changed_only)
     return ss.str();
 }
 
-std::map<std::string, Json::Value> layout_old_values;
+std::unordered_map<std::string, Json::Value> layout_old_values;
 std::string layoutJson(bool changed_only)
 {
     Json::Value root(Json::arrayValue);
@@ -381,6 +381,28 @@ std::string layoutJson(bool changed_only)
             info["length"] = f.second.size();
             root.append(info);
             layout_old_values[f.first] = f.second;
+        }
+    }
+    std::stringstream ss;
+    ss << root;
+    return ss.str();
+}
+
+std::unordered_map<std::string, Json::Value> layer_old_values;
+std::string layerJson(bool changed_only)
+{
+    Json::Value root(Json::arrayValue);
+    {
+        std::lock_guard lock(internal_mutex);
+
+        for (const auto& f : drawing_layer) {
+            if (!changed_only || layer_old_values[f.first] != f.second) {
+                Json::Value info;
+                info["name"] = f.first;
+                info["layer"] = f.second;
+                root.append(info);
+            }
+            layer_old_values[f.first] = f.second;
         }
     }
     std::stringstream ss;
@@ -468,9 +490,11 @@ void sendData()
     if (now_millisec - last_millisec >= 100) {
         const auto image_json = imageJson(true);
         const auto layout_json = layoutJson(true);
+        const auto layer_json = layerJson(true);
         for (const auto& cli : clients) {
             cli.second->send_image(image_json);
             cli.second->send_layout(layout_json);
+            cli.second->send_layer(layer_json);
         }
         last_millisec = now_millisec;
     }
@@ -478,6 +502,16 @@ void sendData()
         for (const auto& cli : clients) {
             cli.second->send_log(log);
         }
+    }
+}
+
+void dialog(const std::string& alert_name)
+{
+    Json::Value a = alert_name;
+    std::stringstream ss;
+    ss << a;
+    for (const auto& cli : clients) {
+        cli.second->send_dialog(ss.str());
     }
 }
 }  // namespace Server

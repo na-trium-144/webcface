@@ -50,6 +50,15 @@ struct Component {
     Json::Value json;
 };
 
+struct Alert : Component {
+    explicit Alert(const Component& c, const std::string& severity = "error") : Component()
+    {
+        json["type"] = "Alert";
+        json["severity"] = severity;
+        json["text"] = c.json;
+    }
+};
+
 //! Componentを横に並べる
 /*! Vectorは省略して、単に二重波括弧で囲えばVectorになります
  * \sa Component のコンストラクタ
@@ -126,9 +135,8 @@ struct DrawingComponent {
     DrawingComponent& onClick(const RegisterCallback& callback);
 };
 struct DrawingLayer {
-    Drawing* parent;
-    int id;
-    DrawingLayer(Drawing* parent, int id) : parent(parent), id(id) {}
+    std::string name;
+    explicit DrawingLayer(const std::string& name) : name(name) {}
     DrawingComponent drawLine(const Displayable& x, const Displayable& y, const Displayable& x2,
         const Displayable& y2, const Displayable& color)
     {
@@ -164,7 +172,24 @@ struct DrawingLayer {
         dc["color"] = color.json;
         return DrawingComponent(this, addToParent(dc));
     }
-    int addToParent(const Json::Value& dc);
+    DrawingComponent drawText(const Displayable& x, const Displayable& y,
+        const Displayable& font_size, const Displayable& text, const Displayable& color)
+    {
+        Json::Value dc{Json::objectValue};
+        dc["type"] = "Text";
+        dc["x"] = x.json;
+        dc["y"] = y.json;
+        dc["font_size"] = font_size.json;
+        dc["text"] = text.json;
+        dc["color"] = color.json;
+        return DrawingComponent(this, addToParent(dc));
+    }
+    int addToParent(const Json::Value& dc)
+    {
+        std::lock_guard lock(internal_mutex);
+        drawing_layer[name].append(dc);
+        return static_cast<int>(drawing_layer[name].size()) - 1;
+    }
 };
 struct Drawing : Component {
     Drawing(const Displayable& width, const Displayable& height) : Component()
@@ -172,33 +197,37 @@ struct Drawing : Component {
         json["type"] = "Drawing";
         json["width"] = width.json;
         json["height"] = height.json;
-        json["children"] = Json::arrayValue;
+        json["layers"] = Json::arrayValue;
     }
-    DrawingLayer createLayer()
+    void addLayer(const std::string& name) { json["layers"].append(name); }
+    DrawingLayer createLayer(const std::string& name)
     {
-        json["children"].append(Json::arrayValue);
-        return DrawingLayer(this, static_cast<int>(json["children"].size()) - 1);
+        std::lock_guard lock(internal_mutex);
+        bool is_new = (drawing_layer.find(name) == drawing_layer.end());
+        drawing_layer[name] = Json::arrayValue;
+        // if (is_new) {
+        //     setting_changed = true;
+        // }
+        addLayer(name);
+        return DrawingLayer(name);
     }
 };
-inline int DrawingLayer::addToParent(const Json::Value& dc)
-{
-    parent->json["children"][id].append(dc);
-    return static_cast<int>(parent->json["children"][id].size()) - 1;
-}
+
 inline DrawingComponent& DrawingComponent::onClick(const RegisterCallback& callback)
 {
-    parent->parent->json["children"][parent->id][id]["on_click"] = callback.json();
+    std::lock_guard lock(internal_mutex);
+    drawing_layer[parent->name][id]["on_click"] = callback.json();
     return *this;
 }
 
 inline void addPageLayoutJson(const std::string& name, const Json::Value& layout)
 {
-    std::lock_guard lock(internal_mutex);    
+    std::lock_guard lock(internal_mutex);
     bool is_new = (custom_page_layout.find(name) == custom_page_layout.end());
     custom_page_layout[name] = layout;
-    if (is_new) {
-        setting_changed = true;
-    }
+    // if (is_new) {
+    //     setting_changed = true;
+    // }
 }
 inline void addPageLayoutJson(const std::string& name, const std::string& layout)
 {
@@ -225,17 +254,18 @@ struct PageLayout {
     explicit PageLayout(const std::string& name) : name(name)
     {
         {
-        std::lock_guard lock(internal_mutex);
-        if (custom_page_layout.find(name) == custom_page_layout.end()) {
-            setting_changed = true;
+            std::lock_guard lock(internal_mutex);
+            // if (custom_page_layout.find(name) == custom_page_layout.end()) {
+            //     setting_changed = true;
+            // }
         }
-    }
         clear();
     }
-    void clear() {
+    void clear()
+    {
         std::lock_guard lock(internal_mutex);
-     custom_page_layout[name] = Json::arrayValue; 
- }
+        custom_page_layout[name] = Json::arrayValue;
+    }
     PageLayout& add(const Component& c)
     {
         std::lock_guard lock(internal_mutex);
@@ -246,7 +276,7 @@ struct PageLayout {
     PageLayout& newLine()
     {
         std::lock_guard lock(internal_mutex);
-        
+
         Json::Value endl{Json::objectValue};
         endl["type"] = "br";
         custom_page_layout[name].append(endl);
@@ -266,5 +296,10 @@ struct PageLayout {
         return *this;
     }
 };
+
 }  // namespace Layout
+inline void dialog(const Layout::PageLayout& page)
+{
+    dialog(page.name);
+}
 }  // namespace WebCFace

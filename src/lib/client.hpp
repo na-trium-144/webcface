@@ -41,6 +41,8 @@ public:
     void send_log(const std::string& json) const;
     void send_image(const std::string& json) const;
     void send_layout(const std::string& json) const;
+    void send_layer(const std::string& json) const;
+    void send_dialog(const std::string& json) const;
     void send_error(int func_id, const std::string& error) const;
     void updateGamepad(Json::Value msg);
     GamepadState gamepad_state;

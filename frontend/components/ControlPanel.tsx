@@ -1,11 +1,21 @@
-import { Box, Grid, Button, Stack, Typography, Tooltip } from "@mui/material";
+import {
+  Box,
+  Grid,
+  Button,
+  Stack,
+  Typography,
+  Tooltip,
+  Alert,
+} from "@mui/material";
 import { Stage, Layer, Rect, Text, Circle, Line } from "react-konva";
 import {
   CustomPageComponentT,
   CustomPageValueT,
   CustomPageCallbackT,
+  DrawingLayerT,
   MultiSocketContextI,
   FromRobotDataT,
+  parseName,
 } from "../lib/global";
 import { useSocket } from "../components/socketContext";
 import { useState, useEffect, useRef } from "react";
@@ -15,12 +25,6 @@ type Props = {
   sid: number;
 };
 
-const parseName = (name: string) => {
-  // 他サーバーにある関数や変数の名前をパース
-  const serverName = name.slice(0, name.indexOf(":"));
-  const funcName = name.slice(name.indexOf(":") + 1);
-  return [serverName, funcName];
-};
 const anyToString = (value: AnyValue) => {
   if (typeof value === "string") {
     return value;
@@ -113,13 +117,19 @@ const CustomPageComponent = (props: Props) => {
           color={props.layout.color}
         />
       );
+    case "Alert":
+      return (
+        <Alert severity={props.layout.severity}>
+          <CustomPageComponent layout={props.layout.text} sid={props.sid} />
+        </Alert>
+      );
     case "Drawing":
       return (
         <Drawing
           sid={props.sid}
           width={props.layout.width}
           height={props.layout.height}
-          children={props.layout.children}
+          layers={props.layout.layers}
         />
       );
     case "br":
@@ -131,7 +141,7 @@ const Drawing = (props: {
   sid: number;
   width: CustomPageValueT;
   height: CustomPageValueT;
-  children: CustomPageComponentT[][];
+  layers: string[];
 }) => {
   const socket = useSocket();
   const layoutWidth = getValue(props.width, socket, props.sid);
@@ -140,18 +150,56 @@ const Drawing = (props: {
   const [zoom, setZoom] = useState<number>(1);
   const canvasDiv = useRef<HTMLCanvasElement>(null);
   const [updateFlag, setUpdateFlag] = useState<boolean>(false);
+  const [children, setChildren] = useState<
+    { sid: number; layout: CustomPageComponentT[] }[]
+  >([]);
+  const [notFound, setNotFound] = useState<string[]>([]);
   useEffect(() => {
     const i = setTimeout(() => {
       if (width !== canvasDiv.current.clientWidth) {
         setWidth(canvasDiv.current.clientWidth);
         setZoom(canvasDiv.current.clientWidth / layoutWidth);
       }
+      const children = [];
+      const notFound = [];
+      for (const ln of props.layers) {
+        if (ln.includes(":")) {
+          const [serverName, funcName] = parseName(ln);
+          const layer = socket
+            .get(serverName)
+            .getDrawingLayer()
+            .find((m) => m.name === funcName);
+          if (layer == undefined) {
+            notFound.push(ln);
+          } else {
+            children.push({
+              sid: socket.raw.findIndex((s) => s.serverName === serverName),
+              layout: layer.layer,
+            });
+          }
+        } else {
+          const layer = socket
+            .getByIndex(props.sid)
+            .getDrawingLayer()
+            .find((m) => m.name === ln);
+          if (layer == undefined) {
+            notFound.push(ln);
+          } else {
+            children.push({
+              sid: props.sid,
+              layout: layer.layer,
+            });
+          }
+        }
+      }
+      setChildren(children);
+      setNotFound(notFound);
       setUpdateFlag(!updateFlag);
     }, 100);
     return () => {
       clearTimeout(i);
     };
-  }, [updateFlag, width, setWidth, layoutWidth]);
+  }, [updateFlag, width, setWidth, layoutWidth, props.layers]);
   return (
     <div
       style={{
@@ -161,19 +209,22 @@ const Drawing = (props: {
       ref={canvasDiv}
     >
       <Stage width={width} height={layoutHeight * zoom}>
-        {props.children.map((l, li) => (
+        {children.map((l, li) => (
           <Layer key={li}>
-            {l.map((c, ci) => (
+            {l.layout.map((c, ci) => (
               <DrawingComponent
                 key={ci}
                 component={c}
-                sid={props.sid}
+                sid={l.sid}
                 zoom={zoom}
               />
             ))}
           </Layer>
         ))}
       </Stage>
+      {notFound.map((n, ni) => (
+        <div>'{n}' not found</div>
+      ))}
     </div>
   );
 };
@@ -201,7 +252,7 @@ const DrawingComponent = (props: {
           y={y}
           points={[0, 0, x2 - x, y2 - y]}
           stroke={color}
-          onClick={onClick}
+          onPointerClick={onClick}
         />
       );
     }
@@ -218,7 +269,7 @@ const DrawingComponent = (props: {
           width={x2 - x}
           height={y2 - y}
           fill={color}
-          onClick={onClick}
+          onPointerClick={onClick}
         />
       );
     }
@@ -227,7 +278,25 @@ const DrawingComponent = (props: {
       const y = getValue(props.component.y, socket, props.sid) * props.zoom;
       const r = getValue(props.component.r, socket, props.sid) * props.zoom;
       const color = getValue(props.component.color, socket, props.sid);
-      return <Circle x={x} y={y} radius={r} fill={color} onClick={onClick} />;
+      return <Circle x={x} y={y} radius={r} fill={color} onPointerClick={onClick} />;
+    }
+    case "Text": {
+      const x = getValue(props.component.x, socket, props.sid) * props.zoom;
+      const y = getValue(props.component.y, socket, props.sid) * props.zoom;
+      const text = getValue(props.component.text, socket, props.sid);
+      const font_size =
+        getValue(props.component.font_size, socket, props.sid) * props.zoom;
+      const color = getValue(props.component.color, socket, props.sid);
+      return (
+        <Text
+          x={x}
+          y={y}
+          fontSize={font_size}
+          color={color}
+          text={text}
+          onPointerClick={onClick}
+        />
+      );
     }
   }
 };

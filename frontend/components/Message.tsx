@@ -35,7 +35,7 @@ export default function CustomizedSnackbars() {
           } else {
             setSeverity("error");
           }
-          setMsg(`[${errors[ei].func}(${errors[ei].args.map((a) => JSON.stringify(a)).join(", ")})] ${errors[ei].message}`);
+          setMsg(`[${s.serverName}:${errors[ei].func}(${errors[ei].args.map((a) => JSON.stringify(a)).join(", ")})] ${errors[ei].message}`);
           setOpen(true);
           errors[ei].message = "";
           return;

@@ -46,8 +46,11 @@ extern std::unordered_map<std::string, ToRobotInfo> to_robot_var, to_robot_func;
 extern std::unordered_map<std::string, FromRobotInfo> from_robot;
 extern std::unordered_map<std::string, ImageInfo> images;
 extern std::unordered_map<std::string, Json::Value> custom_page_layout;
+extern std::unordered_map<std::string, Json::Value> drawing_layer;
 extern std::vector<std::string> button_name, axis_name;
 extern bool setting_changed;
+
+void dialog(const std::string& alert_name);
 
 std::int64_t getTime();
 }  // namespace Server

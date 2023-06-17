@@ -33,14 +33,14 @@ int main()
             p << "フィールド↓" << p.endl;
 
             Drawing field(1000, 1000);
-            auto field_l = field.createLayer();
+            auto field_l = field.createLayer("field");
             field_l.drawRect(0, 0, 500, 1000, "red");
             field_l.drawRect(500, 0, 1000, 1000, "blue");
             field_l.drawRect(333, 333, 667, 667, "orange").onClick("aca"_callback = [] {
                 std::cout << "aca" << std::endl;
             });
 
-            auto robot_l = field.createLayer();
+            auto robot_l = field.createLayer("robot");
             // robot_l.drawCircle(x, y, 30, "yellow");
             // 直接変数の値を入れることもできるが、
             // ↓のように _value を経由すると値だけ送るので通信量が減る(こともある)

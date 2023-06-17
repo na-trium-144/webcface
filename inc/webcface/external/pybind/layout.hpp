@@ -14,6 +14,13 @@ struct PyComponent : Component {
     PyComponent() : Component() {}
     explicit PyComponent(const py::object& value) : Component(convertPyComponent(value)) {}
 };
+struct PyAlert : Alert {
+    explicit PyAlert(const py::object& c, const std::string& severity)
+        : Alert(convertPyComponent(c), severity)
+    {
+    }
+};
+
 //! Componentを横に並べる
 /*! Vectorは省略して、単に角括弧で囲ってリストにすればVectorになります
  */
@@ -74,7 +81,7 @@ struct PyDrawingComponent : public DrawingComponent {
     }
 };
 struct PyDrawingLayer : DrawingLayer {
-    PyDrawingLayer(Drawing* parent, int id) : DrawingLayer(parent, id) {}
+    explicit PyDrawingLayer(const std::string& name) : DrawingLayer(name) {}
     PyDrawingComponent drawLine(const py::object& x, const py::object& y, const py::object& x2,
         const py::object& y2, const py::object& color)
     {
@@ -96,6 +103,13 @@ struct PyDrawingLayer : DrawingLayer {
             PyDisplayable(x), PyDisplayable(y), PyDisplayable(r), PyDisplayable(color));
         return PyDrawingComponent(dc.parent, dc.id);
     }
+    PyDrawingComponent drawText(const py::object& x, const py::object& y,
+        const py::object& font_size, const py::object& text, const py::object& color)
+    {
+        const auto& dc = DrawingLayer::drawText(PyDisplayable(x), PyDisplayable(y),
+            PyDisplayable(font_size), PyDisplayable(text), PyDisplayable(color));
+        return PyDrawingComponent(dc.parent, dc.id);
+    }
 };
 
 struct PyDrawing : Drawing {
@@ -103,16 +117,18 @@ struct PyDrawing : Drawing {
         : Drawing(PyDisplayable(width), PyDisplayable(height))
     {
     }
-    PyDrawingLayer pyCreateLayer()
+    PyDrawingLayer pyCreateLayer(const std::string& name)
     {
-        const auto& dl = createLayer();
-        return PyDrawingLayer(dl.parent, dl.id);
+        createLayer(name);
+        return PyDrawingLayer(name);
     }
 };
 Component convertPyComponent(const py::object& value)
 {
     if (py::isinstance<PyComponent>(value)) {
         return value.cast<PyComponent>();
+    } else if (py::isinstance<PyAlert>(value)) {
+        return value.cast<PyAlert>();
     } else if (py::isinstance<PyVector>(value)) {
         return value.cast<PyVector>();
     } else if (py::isinstance<PyStack>(value)) {
@@ -168,10 +184,18 @@ struct PyPageLayout : PageLayout {
 };
 
 }  // namespace Layout
+
+void dialog(const Layout::PyPageLayout& page)
+{
+    Server::dialog(page.name);
+}
+
 inline void defLayout(pybind11::module& m)
 {
     using namespace pybind11::literals;
     py::class_<PyComponent>(m, "Component").def(py::init<const py::object&>());
+    py::class_<PyAlert>(m, "Alert")
+        .def(py::init<const py::object&, const std::string&>(), "c"_a, "severity"_a = "error");
     py::class_<PyVector>(m, "Vector").def(py::init<const py::object&>());
     py::class_<PyStack>(m, "Stack").def(py::init<const py::object&>());
     py::class_<PyButton>(m, "Button")
@@ -193,10 +217,15 @@ inline void defLayout(pybind11::module& m)
         .def("draw_circle",
             py::overload_cast<const py::object&, const py::object&, const py::object&,
                 const py::object&>(&PyDrawingLayer::drawCircle),
-            "x"_a, "y"_a, "r"_a, "color"_a);
+            "x"_a, "y"_a, "r"_a, "color"_a)
+        .def("draw_text",
+            py::overload_cast<const py::object&, const py::object&, const py::object&,
+                const py::object&, const py::object&>(&PyDrawingLayer::drawText),
+            "x"_a, "y"_a, "font_size"_a, "text"_a, "color"_a);
     py::class_<PyDrawing>(m, "Drawing")
         .def(py::init<const py::object&, const py::object&>(), "width"_a, "height"_a)
-        .def("create_layer", &PyDrawing::pyCreateLayer);
+        .def("add_layer", &Drawing::addLayer, "name"_a)
+        .def("create_layer", &PyDrawing::pyCreateLayer, "name"_a);
     py::class_<PyPageLayout>(m, "PageLayout")
         .def(py::init<const std::string&>(), "name"_a)
         .def("clear", &PageLayout::clear)
@@ -206,5 +235,6 @@ inline void defLayout(pybind11::module& m)
     m.def("add_page_layout",
         pybind11::overload_cast<const std::string&, const py::object&>(&addPageLayout),
         "add Page Layout", "name"_a, "layout"_a);
+    m.def("dialog", pybind11::overload_cast<const Layout::PyPageLayout&>(&dialog));
 }
 }  // namespace WebCFace::pybind

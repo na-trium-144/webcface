@@ -10,6 +10,7 @@ import Header from "../components/header";
 import Sidebar from "../components/sidebar";
 import { SocketProvider } from "../components/socketContext";
 import Snackbar from "../components/Message";
+import Alert from "../components/alert";
 import {
   SidebarStateProvider,
   SidebarStateContext,
@@ -68,10 +69,10 @@ export default function MyApp({ Component, pageProps }: AppProps) {
                       <Grid
                         item
                         xs={12}
-                        sm={4}
+                        sm={4.5}
                         md={3}
-                        lg={2}
-                        xl={1}
+                        lg={2.5}
+                        xl={2}
                         sx={{
                           display: sidebarState.sidebar ? "block" : "none",
                         }}
@@ -88,6 +89,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
             </SidebarStateContext.Consumer>
             <Snackbar />
           </SidebarStateProvider>
+          <Alert />
         </SocketProvider>
       </GamepadsProvider_>
     </ThemeProvider>

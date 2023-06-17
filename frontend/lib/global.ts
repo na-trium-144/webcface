@@ -54,6 +54,7 @@ export type CustomPageComponentT = {
   display_name?: CustomPageValueT;
   callback?: CustomPageCallbackT;
   color?: CustomPageValueT;
+  layers?: string[];
 };
 export type CustomPageLayoutSettingT = {
   name: string;
@@ -66,6 +67,10 @@ export type CustomPageValueT = {
 export type CustomPageCallbackT = {
   callback_name: string;
   args?: CustomPageValueT[];
+};
+export type DrawingLayerT = {
+  name: string;
+  layer: CustomPageComponentT[];
 };
 export type RelatedServerSettingT = {
   addr: string;
@@ -98,8 +103,9 @@ export interface SocketContextI {
   gamepadAxisSetting: string[];
   gamepadButtonMap: number[];
   gamepadAxisMap: number[];
-  
+
   getCustomPageLayout: () => CustomPageLayoutSettingT[];
+  getDrawingLayer: () => DrawingLayerT[];
 
   // fromRobot
   // Contextに値を直接入れると、値が更新されるたびに再レンダリングが発生してしまう
@@ -120,6 +126,9 @@ export interface SocketContextI {
   //gamepad
   gamepadConnectIndex: number | null;
   setGamepadConnectIndex: (index: number | null) => void;
+
+  getAlert: () => string;
+  clearAlert: () => void;
 }
 
 export interface MultiSocketContextI {
@@ -131,3 +140,10 @@ export interface MultiSocketContextI {
   add: () => void;
   // getNames: () => string[];
 }
+
+export const parseName = (name: string) => {
+  // 他サーバーにある関数や変数の名前をパース
+  const serverName = name.slice(0, name.indexOf(":"));
+  const funcName = name.slice(name.indexOf(":") + 1);
+  return [serverName, funcName];
+};
