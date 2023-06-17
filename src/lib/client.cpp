@@ -5,8 +5,7 @@
 
 namespace WebCFace
 {
-Client::Client(drogon::WebSocketConnectionPtr ptr)
-    : con(ptr), error_buffer(this), err(&error_buffer)
+Client::Client(drogon::WebSocketConnectionPtr ptr) : con(ptr)
 {
     std::cout << "[WebCface] new connection!" << std::endl;
 }
@@ -44,17 +43,43 @@ void Client::send_log(const std::string& json) const
 {
     _send("log", json);
 }
-void Client::send_error(const std::string& error) const
+void Client::send_error(int func_id, const std::string& error) const
 {
     // ダブルクオーテーションで囲うだけでなくエスケープもしないといけないので、json化
     std::stringstream ss;
-    Json::Value e_json = error;
+    Json::Value e_json = Json::objectValue;
+    e_json["message"] = error;
+    e_json["callback_id"] = func_id;
     ss << e_json;
     _send("error", ss.str());
-    std::cerr << "[WebCFace] " << error;
-    if (!(error.size() >= 1 && error.back() == '\n')) {
-        std::cerr << '\n';
+    /*    std::cerr << "[WebCFace] " << error;
+        if (!(error.size() >= 1 && error.back() == '\n')) {
+            std::cerr << '\n';
+        }
+        std::cerr << std::flush;*/
+}
+void Client::updateGamepad(Json::Value msg)
+{
+    std::lock_guard lock(internal_mutex);
+    gamepad_state.connected = msg["connected"].as<bool>();
+    if (msg["connected"]) {
+        for (const auto& button : msg["buttons"].getMemberNames()) {
+            int bi = std::stoi(button);
+            while (gamepad_state.buttons.size() <= bi) {
+                gamepad_state.buttons.push_back(false);
+            }
+            gamepad_state.buttons[bi] = msg["buttons"][button].as<bool>();
+        }
+        for (const auto& axis : msg["axes"].getMemberNames()) {
+            int ai = std::stoi(axis);
+            while (gamepad_state.axes.size() <= ai) {
+                gamepad_state.axes.push_back(0);
+            }
+            gamepad_state.axes[ai] = msg["axes"][axis].as<double>();
+        }
+    } else {
+        gamepad_state.axes.clear();
+        gamepad_state.buttons.clear();
     }
-    std::cerr << std::flush;
 }
 }  // namespace WebCFace

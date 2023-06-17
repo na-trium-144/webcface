@@ -39,10 +39,14 @@ void addFunctionToRobot_impl(
 
     auto pr_callback = getCallbackJsonToFunction(arg_names, callback);
     std::vector<ValueType> types = {ValueType::of<Args>()...};
-    bool is_new = (to_robot_func.find(name) == to_robot_func.end());
-    to_robot_func[name] = ToRobotInfo{pr_callback, std::move(arg_names), types};
-    if (is_new) {
-        setting_changed = true;
+    {
+        std::lock_guard lock(internal_mutex);
+
+        bool is_new = (to_robot_func.find(name) == to_robot_func.end());
+        to_robot_func[name] = ToRobotInfo{pr_callback, std::move(arg_names), types};
+        if (is_new) {
+            setting_changed = true;
+        }
     }
 }
 
@@ -53,10 +57,14 @@ inline void addFunctionToRobot_withJsonMap(std::string name,
     std::vector<std::string> arg_names, std::vector<ValueType> arg_types)
 {
     auto pr_callback = getCallbackJsonToFunction_withJsonMap(arg_names, callback);
-    bool is_new = (to_robot_func.find(name) == to_robot_func.end());
-    to_robot_func[name] = ToRobotInfo{pr_callback, std::move(arg_names), std::move(arg_types)};
-    if (is_new) {
-        setting_changed = true;
+    {
+        std::lock_guard lock(internal_mutex);
+
+        bool is_new = (to_robot_func.find(name) == to_robot_func.end());
+        to_robot_func[name] = ToRobotInfo{pr_callback, std::move(arg_names), std::move(arg_types)};
+        if (is_new) {
+            setting_changed = true;
+        }
     }
 }
 
@@ -91,10 +99,14 @@ void addSharedVarToRobot(const std::string& name, std::vector<std::string> names
 
     auto pr_callback = getCallbackJsonToVar(names, var...);
     std::vector<ValueType> types = {ValueType::of<T>()...};
-    bool is_new = (to_robot_var.find(name) == to_robot_var.end());
-    to_robot_var[name] = ToRobotInfo{pr_callback, names, types};
-    if (is_new) {
-        setting_changed = true;
+    {
+        std::lock_guard lock(internal_mutex);
+
+        bool is_new = (to_robot_var.find(name) == to_robot_var.end());
+        to_robot_var[name] = ToRobotInfo{pr_callback, names, types};
+        if (is_new) {
+            setting_changed = true;
+        }
     }
 }
 //! フロントエンドから値を変更する変数の登録(単数)
@@ -114,10 +126,14 @@ void addFunctionFromRobot_impl(const std::string& name, std::function<T()> callb
 {
     auto pr_callback = getCallbackFunctionReturnToJson(callback);
     const auto type = ValueType::of<T>();
-    bool is_new = (from_robot.find(name) == from_robot.end());
-    from_robot[name] = FromRobotInfo{pr_callback, {name}, {type}};
-    if (is_new) {
-        setting_changed = true;
+    {
+        std::lock_guard lock(internal_mutex);
+
+        bool is_new = (from_robot.find(name) == from_robot.end());
+        from_robot[name] = FromRobotInfo{pr_callback, {name}, {type}};
+        if (is_new) {
+            setting_changed = true;
+        }
     }
 }
 //! pybindからの登録で使用
@@ -125,6 +141,8 @@ void addFunctionFromRobot_impl(const std::string& name, std::function<T()> callb
 inline void addFunctionFromRobot_withJson(
     const std::string& name, std::function<Json::Value()> callback, ValueType return_type)
 {
+    std::lock_guard lock(internal_mutex);
+
     bool is_new = (from_robot.find(name) == from_robot.end());
     from_robot[name] = FromRobotInfo{callback, {name}, {return_type}};
     if (is_new) {
@@ -151,10 +169,14 @@ void addSharedVarFromRobot(const std::string& name, std::vector<std::string> var
     fillNameVector(var_names, var_num);
     auto pr_callback = getCallbackVarToJson(var_names, var...);
     std::vector<ValueType> types = {ValueType::of<T>()...};
-    bool is_new = (from_robot.find(name) == from_robot.end());
-    from_robot[name] = FromRobotInfo{pr_callback, var_names, types};
-    if (is_new) {
-        setting_changed = true;
+    {
+        std::lock_guard lock(internal_mutex);
+
+        bool is_new = (from_robot.find(name) == from_robot.end());
+        from_robot[name] = FromRobotInfo{pr_callback, var_names, types};
+        if (is_new) {
+            setting_changed = true;
+        }
     }
 }
 template <typename T>
@@ -162,10 +184,14 @@ void addSharedVarFromRobot(const std::string& name, const T& var)
 {
     auto pr_callback = getCallbackVarToJson({name}, var);
     std::vector<ValueType> types = {ValueType::of<T>()};
-    bool is_new = (from_robot.find(name) == from_robot.end());
-    from_robot[name] = FromRobotInfo{pr_callback, {name}, types};
-    if (is_new) {
-        setting_changed = true;
+    {
+
+        std::lock_guard lock(internal_mutex);
+        bool is_new = (from_robot.find(name) == from_robot.end());
+        from_robot[name] = FromRobotInfo{pr_callback, {name}, types};
+        if (is_new) {
+            setting_changed = true;
+        }
     }
 }
 template <typename... T>
@@ -176,33 +202,46 @@ void addValueFromRobot(const std::string& name, std::vector<std::string> var_nam
     auto pr_callback = getCallbackValueToJson(var_names, var...);
     std::vector<ValueType> types = {ValueType::of<T>()...};
 
-    bool is_new = (from_robot.find(name) == from_robot.end());
-    from_robot[name] = FromRobotInfo{pr_callback, var_names, types};
-    if (is_new) {
-        setting_changed = true;
+    {
+        std::lock_guard lock(internal_mutex);
+
+        bool is_new = (from_robot.find(name) == from_robot.end());
+        from_robot[name] = FromRobotInfo{pr_callback, var_names, types};
+        if (is_new) {
+            setting_changed = true;
+        }
     }
 }
 template <typename T>
 void addValueFromRobot(const std::string& name, const T& var)
 {
     auto pr_callback = getCallbackValueToJson({name}, var);
-    bool is_new = (from_robot.find(name) == from_robot.end());
     std::vector<ValueType> types = {ValueType::of<T>()};
 
-    from_robot[name] = FromRobotInfo{pr_callback, {name}, types};
-    if (is_new) {
-        setting_changed = true;
+
+    {
+        std::lock_guard lock(internal_mutex);
+
+        bool is_new = (from_robot.find(name) == from_robot.end());
+        from_robot[name] = FromRobotInfo{pr_callback, {name}, types};
+        if (is_new) {
+            setting_changed = true;
+        }
     }
 }
 inline void addValueFromRobot_withJson(
     const std::string& name, const Json::Value& var, ValueType value_type)
 {
     auto pr_callback = std::function([=]() { return var; });
-    bool is_new = (from_robot.find(name) == from_robot.end());
+    {
+        std::lock_guard lock(internal_mutex);
 
-    from_robot[name] = FromRobotInfo{pr_callback, {name}, {value_type}};
-    if (is_new) {
-        setting_changed = true;
+        bool is_new = (from_robot.find(name) == from_robot.end());
+
+        from_robot[name] = FromRobotInfo{pr_callback, {name}, {value_type}};
+        if (is_new) {
+            setting_changed = true;
+        }
     }
 }
 
@@ -210,6 +249,8 @@ inline void addValueFromRobot_withJson(
 // 画像のurl またはbase64エンコードした画像
 inline void addImage(const std::string& name, const std::string& src)
 {
+    std::lock_guard lock(internal_mutex);
+
     bool is_new = (images.find(name) == images.end());
     images[name] = ImageInfo{serialize(src), true};
     if (is_new) {

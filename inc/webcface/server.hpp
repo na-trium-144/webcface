@@ -13,6 +13,7 @@ namespace WebCFace
 inline namespace Server
 {
 extern std::mutex callback_mutex;
+extern std::mutex internal_mutex;
 void startServer(int port = 80, const std::string& static_dir = WEBCFACE_STATIC_DIR);
 void quitServer();
 void updateSetting();

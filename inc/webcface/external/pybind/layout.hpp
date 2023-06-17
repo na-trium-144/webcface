@@ -65,10 +65,10 @@ struct PyButton : Button {
 };
 struct PyDrawing;
 struct PyDrawingLayer;
-struct PyDrawingComponent: public DrawingComponent{
-    PyDrawingComponent(DrawingLayer* parent, int id): DrawingComponent(parent, id) {
-    }
-    PyDrawingComponent& onClick(const py::object& callback){
+struct PyDrawingComponent : public DrawingComponent {
+    PyDrawingComponent(DrawingLayer* parent, int id) : DrawingComponent(parent, id) {}
+    PyDrawingComponent& onClick(const py::object& callback)
+    {
         this->DrawingComponent::onClick(PyRegisterCallback(callback));
         return *this;
     }
@@ -78,15 +78,15 @@ struct PyDrawingLayer : DrawingLayer {
     PyDrawingComponent drawLine(const py::object& x, const py::object& y, const py::object& x2,
         const py::object& y2, const py::object& color)
     {
-        const auto& dc = DrawingLayer::drawLine(PyDisplayable(x), PyDisplayable(y), PyDisplayable(x2),
-            PyDisplayable(y2), PyDisplayable(color));
+        const auto& dc = DrawingLayer::drawLine(PyDisplayable(x), PyDisplayable(y),
+            PyDisplayable(x2), PyDisplayable(y2), PyDisplayable(color));
         return PyDrawingComponent(dc.parent, dc.id);
     }
     PyDrawingComponent drawRect(const py::object& x, const py::object& y, const py::object& x2,
         const py::object& y2, const py::object& color)
     {
-        const auto& dc = DrawingLayer::drawRect(PyDisplayable(x), PyDisplayable(y), PyDisplayable(x2),
-            PyDisplayable(y2), PyDisplayable(color));
+        const auto& dc = DrawingLayer::drawRect(PyDisplayable(x), PyDisplayable(y),
+            PyDisplayable(x2), PyDisplayable(y2), PyDisplayable(color));
         return PyDrawingComponent(dc.parent, dc.id);
     }
     PyDrawingComponent drawCircle(
@@ -145,10 +145,15 @@ inline void addPageLayout(const std::string& name, const py::object& layout)
 struct PyPageLayout : PageLayout {
     explicit PyPageLayout(const std::string& name) : PageLayout(name)
     {
-        if (custom_page_layout.find(name) == custom_page_layout.end()) {
-            setting_changed = true;
-            clear();
+        {
+
+            std::lock_guard lock(internal_mutex);
+
+            if (custom_page_layout.find(name) == custom_page_layout.end()) {
+                setting_changed = true;
+            }
         }
+        clear();
     }
     PyPageLayout& add(const py::object& c)
     {

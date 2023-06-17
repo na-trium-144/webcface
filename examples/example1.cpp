@@ -25,6 +25,11 @@ int main()
     WebCFace::addFunctionToRobot("shell1", []() { std::cout << "シェル1" << std::endl; });
     WebCFace::addFunctionToRobot("func1", func1);
     WebCFace::addFunctionToRobot("func2", func2);
+    WebCFace::addFunctionToRobot("long_function", [](){
+        std::cout << "long_function start" << std::endl;
+        std::this_thread::sleep_for(std::chrono::seconds(10));
+        std::cout << "end" << std::endl;
+    });
     WebCFace::addSharedVarToRobot("t", t);
 
     // 引数を設定するときは、第３引数に引数の変数名を初期化子リストの形式で書く

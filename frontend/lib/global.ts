@@ -71,6 +71,10 @@ export type RelatedServerSettingT = {
   addr: string;
   port: number;
 };
+export type ErrorInfoT = {
+  func: string;
+  message: string;
+};
 
 export interface SocketContextI {
   isConnected: boolean;
@@ -106,8 +110,11 @@ export interface SocketContextI {
   getImageData: () => ImageDataT[];
 
   //error
-  getErrorMessage: () => string;
-  clearErrorMessage: () => void;
+  getErrorMessage: () => ErrorInfoT[];
+
+  //gamepad
+  gamepadConnectIndex: number | null;
+  setGamepadConnectIndex: (index: number | null) => void;
 }
 
 export interface MultiSocketContextI {

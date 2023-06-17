@@ -6,3 +6,4 @@
 #include <webcface/registration.hpp>
 #include <webcface/layout.hpp>
 #include <webcface/generated.hpp>
+#include <webcface/gamepad.hpp>

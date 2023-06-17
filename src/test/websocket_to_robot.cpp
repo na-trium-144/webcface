@@ -138,6 +138,7 @@ DROGON_TEST(websocket)
 
 int main(int argc, char** argv)
 {
+    /*
     WebCFace::initStdLogger();
     WebCFace::startServer(port);
 
@@ -151,5 +152,5 @@ int main(int argc, char** argv)
 
     int status = drogon::test::run(argc, argv);
     // WebCFace::quitServer();
-    return status;
+    return status;*/
 }

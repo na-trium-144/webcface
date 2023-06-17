@@ -11,10 +11,9 @@ namespace WebCFace
 {
 inline namespace Server
 {
-void callToRobot(
-    const std::string& name, const std::string& args_json, const std::shared_ptr<Client>& cli);
-void changeVarToRobot(
-    const std::string& name, const std::string& args_json, const std::shared_ptr<Client>& cli);
+void callToRobot(const std::string& name, const std::string& args_json, std::ostream* err);
+/*void changeVarToRobot(
+    const std::string& name, const std::string& args_json, const std::shared_ptr<Client>& cli);*/
 std::string settingJson();
 std::string fromRobotJson(bool changed_only);
 std::string logJson(bool changed_only);
@@ -29,6 +28,7 @@ inline int server_port = 0;
 inline std::string server_name = "";
 inline std::string getServerName()
 {
+    std::lock_guard lock(internal_mutex);
     if (server_name != "") {
         return server_name;
     } else {

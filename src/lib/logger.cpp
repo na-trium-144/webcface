@@ -1,5 +1,7 @@
 #include "logger.hpp"
+#include <webcface/server.hpp>
 #include <cstddef>
+#include <thread>
 namespace WebCFace
 {
 inline namespace Logger
@@ -15,7 +17,11 @@ void appendLogLine(int level, std::string text)
 
 void StdLogger::appendLogLine(int level, std::string text)
 {
-    log_buffer.push_back({getTime(), level, text});
+    std::thread t([=] {
+        std::lock_guard lock(internal_mutex);
+        log_buffer.push_back({getTime(), level, text});
+    });
+    t.detach();
 }
 
 int teebuf::overflow(int c)

@@ -132,6 +132,7 @@ int main(int argc, char** argv)
     WebCFace::initStdLogger();
     WebCFace::startServer(port);
 
+    std::cout << "aaaaaaaaaaaaa" << std::endl;
     WebCFace::addSharedVarFromRobot("status1", var1);
     WebCFace::addSharedVarFromRobot("status2", {}, var1, var2, var3, var4);
     WebCFace::addFunctionFromRobot("status3", []() { return var1; });

@@ -12,8 +12,10 @@ import Collapse from "@mui/material/Collapse";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import RouterOutLinedIcon from "@mui/icons-material/RouterOutlined";
 import DashboardOutlinedIcon from "@mui/icons-material/DashboardOutlined";
-import WysiwygIcon from '@mui/icons-material/Wysiwyg';
-
+import WysiwygIcon from "@mui/icons-material/Wysiwyg";
+import LinkIcon from "@mui/icons-material/Link";
+import LinkOffIcon from "@mui/icons-material/LinkOff";
+import { GamepadsContext } from "react-gamepads";
 import NextLink from "next/link";
 import {
   Box,
@@ -22,15 +24,15 @@ import {
   ListItem,
   ListItemText,
   Divider,
+  Paper,
+  Grid,
 } from "@mui/material";
 import { useRouter } from "next/router";
 import { useSocket } from "../components/socketContext";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useSidebarState } from "../components/sidebarContext";
 
-type Props = {
-  visible: boolean;
-};
+type Props = {};
 
 const SidebarButton = (props: {
   selected?: boolean;
@@ -39,7 +41,6 @@ const SidebarButton = (props: {
   onClick: () => void;
   name: string;
   icon: any;
-  visible: boolean;
   pl?: number;
 }) => {
   return (
@@ -47,22 +48,26 @@ const SidebarButton = (props: {
       dense
       selected={!!props.selected}
       onClick={props.onClick}
-      sx={{ pl: props.pl + 2 || 2 }}
+      sx={{ pl: props.pl != undefined ? props.pl + 2 : 2 }}
     >
       {props.icon != undefined && (
         <ListItemIcon sx={{ minWidth: "40px" }}>{props.icon}</ListItemIcon>
       )}
-      {props.visible && <ListItemText primary={props.name} />}
-      {props.visible &&
-        props.showOpenIcon &&
-        (props.open ? <ExpandLess /> : <ExpandMore />)}
+      <ListItemText
+        primary={props.name}
+        sx={{
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+          whiteSpace: "nowrap",
+        }}
+      />
+      {props.showOpenIcon && (props.open ? <ExpandLess /> : <ExpandMore />)}
     </ListItemButton>
   );
 };
 const SidebarButtonCollapse = (props: {
   name: string;
   icon: any;
-  visible: boolean;
   contents: {
     name: string;
     icon: any;
@@ -77,18 +82,16 @@ const SidebarButtonCollapse = (props: {
         onClick={() => setOpen(!open)}
         name={props.name}
         icon={props.icon}
-        visible={props.visible}
         open={open}
         showOpenIcon={true}
       />
-      <Collapse in={open && props.visible}>
+      <Collapse in={open}>
         {props.contents.map((c, si) => (
           <SidebarButton
             selected={c.selected}
             onClick={c.onClick}
             name={c.name}
             icon={c.icon}
-            visible={props.visible}
             pl={2}
             key={si}
           />
@@ -100,11 +103,15 @@ const SidebarButtonCollapse = (props: {
 
 // export function Sidebar(props) {
 export default function Sidebar(props: Props) {
+  const { gamepads } = useContext(GamepadsContext);
   const { pathname } = useRouter();
   const { sidebarState, setSidebarState } = useSidebarState();
   const socket = useSocket();
   useEffect(() => {
-    if (sidebarState.shell.length < socket.raw.length) {
+    if (
+      sidebarState.shell.length < socket.raw.length ||
+      sidebarState.gamepad.length < Object.entries(gamepads).length
+    ) {
       setSidebarState((sidebarState) => {
         while (sidebarState.shell.length < socket.raw.length) {
           sidebarState.shell.push(false);
@@ -112,10 +119,13 @@ export default function Sidebar(props: Props) {
         while (sidebarState.terminalLog.length < socket.raw.length) {
           sidebarState.terminalLog.push(false);
         }
+        while (sidebarState.gamepad.length < Object.entries(gamepads).length) {
+          sidebarState.gamepad.push(false);
+        }
         return { ...sidebarState };
       });
     }
-  }, [socket, sidebarState, setSidebarState]);
+  }, [socket, sidebarState, setSidebarState, gamepads]);
 
   const [updateFlag, setUpdateFlag] = useState<boolean>(false);
   const [layouts, setLayouts] = useState<
@@ -154,7 +164,6 @@ export default function Sidebar(props: Props) {
           <SidebarButtonCollapse
             name="カスタムページ"
             icon={<WysiwygIcon />}
-            visible={props.visible}
             contents={layouts.map((l) => ({
               name: l.name,
               icon: <WysiwygIcon />,
@@ -177,7 +186,6 @@ export default function Sidebar(props: Props) {
             }
             name="グラフ表示"
             icon={<AutoGraphIcon />}
-            visible={props.visible}
           />
           <SidebarButton
             selected={sidebarState.cameraSelect}
@@ -189,12 +197,10 @@ export default function Sidebar(props: Props) {
             }
             name="カメラ画像"
             icon={<PhotoCameraIcon />}
-            visible={props.visible}
           />
           <SidebarButtonCollapse
             name="ログ出力"
             icon={<TerminalIcon />}
-            visible={props.visible}
             contents={socket.raw.map((s, si) => ({
               selected: sidebarState.terminalLog[si],
               onClick: () =>
@@ -209,7 +215,6 @@ export default function Sidebar(props: Props) {
           <SidebarButtonCollapse
             name="シェル関数"
             icon={<KeyboardIcon />}
-            visible={props.visible}
             contents={[
               {
                 selected: sidebarState.shellFav,
@@ -234,10 +239,28 @@ export default function Sidebar(props: Props) {
               }))
             )}
           />
+          <SidebarButtonCollapse
+            name="ゲームパッド"
+            icon={<VideogameAssetIcon />}
+            contents={Object.entries(gamepads).map(([gi, g]) => ({
+              selected: sidebarState.gamepad[gi],
+              onClick: () =>
+                setSidebarState((sidebarState) => {
+                  sidebarState.gamepad[gi] = !sidebarState.gamepad[gi];
+                  return { ...sidebarState };
+                }),
+              name: g.id,
+              icon: socket.raw.find((s) => s.gamepadConnectIndex === gi) ? (
+                <LinkIcon />
+              ) : (
+                <LinkOffIcon />
+              ),
+            }))}
+          />
         </>
       )}
       <Divider sx={{ my: 1 }} />
-      <SidebarRouter visible={props.visible} />
+      <SidebarRouter />
     </Box>
   );
 }
@@ -304,7 +327,6 @@ const default_items: MenuItem[] = [
 ];
 
 type Props = {
-  visible: boolean;
 };
 export function SidebarRouter(props: Props) {
   const { pathname, query } = useRouter();
@@ -346,11 +368,10 @@ export function SidebarRouter(props: Props) {
         onClick={() => setOpen(!open)}
         name="Router"
         icon={undefined}
-        visible={props.visible}
         open={open}
         showOpenIcon={true}
       />
-      <Collapse in={open && props.visible}>
+      <Collapse in={open}>
         {items.map((item, i) => {
           return (
             <NextLink
@@ -374,7 +395,7 @@ export function SidebarRouter(props: Props) {
                 <ListItemIcon sx={{ minWidth: "40px" }}>
                   {item.icon}
                 </ListItemIcon>
-                <ListItemText primary={props.visible ? item.text : " "} />
+                <ListItemText primary={item.text} />
               </ListItemButton>
             </NextLink>
           );

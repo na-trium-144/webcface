@@ -13,12 +13,70 @@ import {
   AnyValue,
   SocketContextI,
   MultiSocketContextI,
+  ErrorInfoT,
 } from "../lib/global";
+import { GamepadsContext } from "react-gamepads";
 
 const SocketContext = createContext<MultiSocketContextI>();
 
 export const useSocket = () => {
   return useContext(SocketContext);
+};
+
+const GamePadCheck = (props: { ws: any; gamepadConnectIndex: number }) => {
+  // ゲームパッド状態の送信
+  const { gamepads } = useContext(GamepadsContext);
+  const prevValue = useRef({ connected: false, buttons: {}, axes: {} });
+  const { gamepadConnectIndex, ws } = props;
+  useEffect(() => {
+    if (gamepadConnectIndex != null) {
+      const sendData = { connected: true, buttons: {}, axes: {} };
+      let changed = false;
+      if (prevValue.current.connected === false) {
+        changed = true;
+        prevValue.current.connected = true;
+      }
+      for (
+        let bi = 0;
+        bi < gamepads[gamepadConnectIndex].buttons.length;
+        bi++
+      ) {
+        const b = gamepads[gamepadConnectIndex].buttons[bi];
+        if (prevValue.current.buttons[bi] !== b.pressed) {
+          prevValue.current.buttons[bi] = b.pressed;
+          sendData.buttons[bi] = b.pressed;
+          changed = true;
+        }
+      }
+      for (let ai = 0; ai < gamepads[gamepadConnectIndex].axes.length; ai++) {
+        const a = gamepads[gamepadConnectIndex].axes[ai];
+        if (prevValue.current.axes[ai] !== a) {
+          prevValue.current.axes[ai] = a;
+          sendData.axes[ai] = a;
+          changed = true;
+        }
+      }
+      if (changed) {
+        ws.current.send(
+          JSON.stringify({
+            msgname: "gamepad",
+            msg: sendData,
+          })
+        );
+      }
+    } else {
+      if (prevValue.current.connected === true) {
+        prevValue.current.connected = false;
+        ws.current.send(
+          JSON.stringify({
+            msgname: "gamepad",
+            msg: { connected: false },
+          })
+        );
+      }
+    }
+  }, [gamepadConnectIndex, gamepads, ws]);
+  return <></>;
 };
 
 // 接続しているサーバーの情報はSocketProvider内のsocketContextValuesにすべて入っている
@@ -58,13 +116,17 @@ const SocketImpl = (props: { index: number }) => {
     socketGet.current = socket.get;
   }, [index, socket]);
 
+  const callback_id = useRef<number>(0); // callbackの呼び出しごとに振るid (サーバーごと)
   const terminalLog = useRef<TerminalLogT[]>([]);
   const fromRobotData = useRef<FromRobotDataT[]>([]);
   const imageData = useRef<ImageDataT[]>([]);
-  const errorMessage = useRef<string>("");
+  const errorMessage = useRef<ErrorInfoT[]>([]);
   const customPageLayout = useRef<CustomPageLayoutSettingT[]>([]);
   const recvLength = useRef<number>(0);
   const startTime = useRef<Date>(new Date());
+  const [gamepadConnectIndex, setGamepadConnectIndex] = useState<number | null>(
+    null
+  );
 
   // socketContextValueとsocketContextValues[index]を更新する
   const setSocketContextValue =
@@ -97,6 +159,7 @@ const SocketImpl = (props: { index: number }) => {
 
   // reconnectFlagが変化したとき再接続(すでに接続されてたら何もしない)
   const ws = useRef(null);
+
   useEffect(() => {
     const reconnect = () => {
       if (socketContextValue.current.isConnected) {
@@ -130,12 +193,19 @@ const SocketImpl = (props: { index: number }) => {
               args[argNames[i]] = argsList[i];
             }
           }
+          const callback_id_now = callback_id.current;
+          callback_id.current++;
           const data = {
             name,
             args,
+            callback_id: callback_id_now,
           };
+          while (errorMessage.current.length <= callback_id_now) {
+            errorMessage.current.push({ func: name, message: "Connecting" });
+          }
           console.log("call function = ", data);
           emit("function", data);
+          return callback_id_now;
         };
 
         const setToRobot = (name: string, value: any) => {
@@ -169,14 +239,19 @@ const SocketImpl = (props: { index: number }) => {
             getImageData: () => imageData.current,
             getTerminalLog: () => terminalLog.current,
             getErrorMessage: () => errorMessage.current,
-            clearErrorMessage: () => {
-              errorMessage.current = "";
-            },
             getCustomPageLayout: () => customPageLayout.current,
             getDataAmount: () =>
               (recvLength.current /
                 (new Date().getTime() - startTime.current.getTime())) *
               1000,
+            gamepadConnectIndex: gamepadConnectIndex,
+            setGamepadConnectIndex: (gi: number) => {
+              setGamepadConnectIndex(gi);
+              setSocketContextValue.current((oldValue) => ({
+                ...oldValue,
+                gamepadConnectIndex: gi,
+              }));
+            },
           }));
           terminalLog.current = [];
           const fetchHostname = async () => {
@@ -327,11 +402,13 @@ const SocketImpl = (props: { index: number }) => {
               (el) => el.name === l.name
             );
             if (idx === -1) {
-              customPageLayout.current.push({name: l.name, layout:[]});
+              customPageLayout.current.push({ name: l.name, layout: [] });
               idx = customPageLayout.current.length - 1;
             }
-            for(const [ci, c] of Object.entries(l.layout)){
-              while(customPageLayout.current[idx].layout.length <= parseInt(ci)){
+            for (const [ci, c] of Object.entries(l.layout)) {
+              while (
+                customPageLayout.current[idx].layout.length <= parseInt(ci)
+              ) {
                 customPageLayout.current[idx].layout.push(null);
               }
               customPageLayout.current[idx].layout[parseInt(ci)] = c;
@@ -341,7 +418,7 @@ const SocketImpl = (props: { index: number }) => {
         }
         case "error": {
           // setErrorMessage(data);
-          errorMessage.current = data;
+          errorMessage.current[data.callback_id].message = data.message.trim();
           break;
         }
         default: {
@@ -352,7 +429,11 @@ const SocketImpl = (props: { index: number }) => {
 
     reconnect();
   }, [reconnectFlag, index]);
-  return <></>;
+  return (
+    <>
+      <GamePadCheck ws={ws} gamepadConnectIndex={gamepadConnectIndex} />
+    </>
+  );
 };
 
 const socketContextDefaultValue: SocketContextI = {
@@ -374,7 +455,6 @@ const socketContextDefaultValue: SocketContextI = {
   getTerminalLog: () => [],
   getImageData: () => [],
   getErrorMessage: () => "",
-  clearErrorMessage: () => {},
   getDataAmount: () => 0,
 };
 

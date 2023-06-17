@@ -9,7 +9,12 @@ import Grid from "@mui/material/Grid";
 import Header from "../components/header";
 import Sidebar from "../components/sidebar";
 import { SocketProvider } from "../components/socketContext";
-import { SidebarStateProvider } from "../components/sidebarContext";
+import Snackbar from "../components/Message";
+import {
+  SidebarStateProvider,
+  SidebarStateContext,
+} from "../components/sidebarContext";
+import { GamepadsProvider, GamepadsContext } from "react-gamepads";
 
 const theme = createTheme({
   palette: {
@@ -17,35 +22,74 @@ const theme = createTheme({
   },
 });
 
+const GamepadsProvider_ = (props) => {
+  if (typeof window === "undefined") {
+    return (
+      <GamepadsContext.Provider value={{ gamepads: {} }}>
+        {props.children}
+      </GamepadsContext.Provider>
+    );
+  } else {
+    return <GamepadsProvider>{props.children}</GamepadsProvider>;
+  }
+};
 export default function MyApp({ Component, pageProps }: AppProps) {
-  const [textVisible, setTextVisible] = useState(true);
-  const textInvert = () => {
-    setTextVisible(!textVisible);
-  };
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <SocketProvider>
-        <SidebarStateProvider>
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <Header textInvert={textInvert} />
-            </Grid>
-            <Grid
-              item
-              xs={textVisible ? 5 : 2.5}
-              sm={textVisible ? 3 : 2}
-              md={textVisible ? 2.5 : 1.5}
-              lg={textVisible ? 2 : 1}
-            >
-              <Sidebar visible={textVisible} />
-            </Grid>
-            <Grid item xs sx={{ mx: 0.5 }}>
-              <Component {...pageProps} />
-            </Grid>
-          </Grid>
-        </SidebarStateProvider>
-      </SocketProvider>
+      <GamepadsProvider_>
+        <SocketProvider>
+          <SidebarStateProvider>
+            <SidebarStateContext.Consumer>
+              {({ sidebarState, setSidebarState }) => (
+                <div
+                  style={{
+                    position: "absolute",
+                    top: 0,
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    display: "flex",
+                    flexDirection: "column",
+                  }}
+                >
+                  <div style={{ width: "100%", flexGrow: 0, flexShrink: 0 }}>
+                    <Header
+                      textInvert={() =>
+                        setSidebarState((sidebarState) => ({
+                          ...sidebarState,
+                          sidebar: !sidebarState.sidebar,
+                        }))
+                      }
+                    />
+                  </div>
+                  <div style={{ width: "100%", flexGrow: 1, flexShrink: 1 }}>
+                    <Grid container sx={{ height: "100%" }}>
+                      <Grid
+                        item
+                        xs={12}
+                        sm={4}
+                        md={3}
+                        lg={2}
+                        xl={1}
+                        sx={{
+                          display: sidebarState.sidebar ? "block" : "none",
+                        }}
+                      >
+                        <Sidebar />
+                      </Grid>
+                      <Grid item xs sx={{ mx: 0.5, height: "100%" }}>
+                        <Component {...pageProps} />
+                      </Grid>
+                    </Grid>
+                  </div>
+                </div>
+              )}
+            </SidebarStateContext.Consumer>
+            <Snackbar />
+          </SidebarStateProvider>
+        </SocketProvider>
+      </GamepadsProvider_>
     </ThemeProvider>
   );
 }

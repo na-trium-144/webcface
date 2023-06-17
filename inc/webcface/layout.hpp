@@ -193,6 +193,7 @@ inline DrawingComponent& DrawingComponent::onClick(const RegisterCallback& callb
 
 inline void addPageLayoutJson(const std::string& name, const Json::Value& layout)
 {
+    std::lock_guard lock(internal_mutex);    
     bool is_new = (custom_page_layout.find(name) == custom_page_layout.end());
     custom_page_layout[name] = layout;
     if (is_new) {
@@ -223,19 +224,29 @@ struct PageLayout {
     std::string name;
     explicit PageLayout(const std::string& name) : name(name)
     {
+        {
+        std::lock_guard lock(internal_mutex);
         if (custom_page_layout.find(name) == custom_page_layout.end()) {
             setting_changed = true;
         }
+    }
         clear();
     }
-    void clear() { custom_page_layout[name] = Json::arrayValue; }
+    void clear() {
+        std::lock_guard lock(internal_mutex);
+     custom_page_layout[name] = Json::arrayValue; 
+ }
     PageLayout& add(const Component& c)
     {
+        std::lock_guard lock(internal_mutex);
+
         custom_page_layout[name].append(c.json);
         return *this;
     }
     PageLayout& newLine()
     {
+        std::lock_guard lock(internal_mutex);
+        
         Json::Value endl{Json::objectValue};
         endl["type"] = "br";
         custom_page_layout[name].append(endl);
