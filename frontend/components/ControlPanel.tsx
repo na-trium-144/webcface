@@ -147,6 +147,7 @@ const Drawing = (props: {
   const layoutWidth = getValue(props.width, socket, props.sid);
   const layoutHeight = getValue(props.height, socket, props.sid);
   const [width, setWidth] = useState<number>(layoutWidth);
+  const [height, setHeight] = useState<number>(layoutHeight);
   const [zoom, setZoom] = useState<number>(1);
   const canvasDiv = useRef<HTMLCanvasElement>(null);
   const [updateFlag, setUpdateFlag] = useState<boolean>(false);
@@ -156,9 +157,18 @@ const Drawing = (props: {
   const [notFound, setNotFound] = useState<string[]>([]);
   useEffect(() => {
     const i = setTimeout(() => {
-      if (width !== canvasDiv.current.clientWidth) {
+      if (
+        width !== canvasDiv.current.clientWidth ||
+        height !== canvasDiv.current.clientHeight
+      ) {
         setWidth(canvasDiv.current.clientWidth);
-        setZoom(canvasDiv.current.clientWidth / layoutWidth);
+        setHeight(canvasDiv.current.clientHeight);
+        setZoom(
+          Math.min(
+            canvasDiv.current.clientWidth / layoutWidth,
+            canvasDiv.current.clientHeight / layoutHeight
+          )
+        );
       }
       const children = [];
       const notFound = [];
@@ -199,11 +209,21 @@ const Drawing = (props: {
     return () => {
       clearTimeout(i);
     };
-  }, [updateFlag, width, setWidth, layoutWidth, props.layers]);
+  }, [
+    updateFlag,
+    width,
+    setWidth,
+    height,
+    setHeight,
+    layoutWidth,
+    layoutHeight,
+    props.layers,
+  ]);
   return (
     <div
       style={{
         width: "100%",
+        height: "100%",
         overflow: "hidden",
       }}
       ref={canvasDiv}
@@ -278,7 +298,9 @@ const DrawingComponent = (props: {
       const y = getValue(props.component.y, socket, props.sid) * props.zoom;
       const r = getValue(props.component.r, socket, props.sid) * props.zoom;
       const color = getValue(props.component.color, socket, props.sid);
-      return <Circle x={x} y={y} radius={r} fill={color} onPointerClick={onClick} />;
+      return (
+        <Circle x={x} y={y} radius={r} fill={color} onPointerClick={onClick} />
+      );
     }
     case "Text": {
       const x = getValue(props.component.x, socket, props.sid) * props.zoom;
@@ -292,7 +314,7 @@ const DrawingComponent = (props: {
           x={x}
           y={y}
           fontSize={font_size}
-          color={color}
+          fill={color}
           text={text}
           onPointerClick={onClick}
         />

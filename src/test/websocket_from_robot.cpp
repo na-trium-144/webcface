@@ -42,6 +42,7 @@ DROGON_TEST(websocket)
         Json::Reader reader;
         reader.parse(msg, parsed);
         printf("msg: %s\n", msg.c_str());
+        fflush(stdout);
         if (parsed["msgname"] == "setting") {
             // 判定するのめんどい
         }

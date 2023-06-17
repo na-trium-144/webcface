@@ -51,6 +51,14 @@ void Client::send_dialog(const std::string& json) const
 {
     _send("dialog", json);
 }
+void Client::send_audio(const std::string& json) const
+{
+    _send("audio", json);
+}
+void Client::send_ping() const
+{
+    _send("ping", "null");
+}
 void Client::send_error(int func_id, const std::string& error) const
 {
     // ダブルクオーテーションで囲うだけでなくエスケープもしないといけないので、json化
@@ -68,7 +76,8 @@ void Client::send_error(int func_id, const std::string& error) const
 }
 void Client::updateGamepad(Json::Value msg)
 {
-    std::lock_guard lock(internal_mutex);
+    // std::lock_guard lock(internal_mutex);
+    // MainWebsock側でlockされている
     if (msg["connected"]) {
         while (gamepad_state.buttons.size() < button_name.size()) {
             gamepad_state.buttons.push_back(false);

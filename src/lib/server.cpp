@@ -11,6 +11,7 @@
 #include <optional>
 #include <chrono>
 // #include <webcface/registration.hpp>
+#include <drogon/utils/Utilities.h>
 
 namespace WebCFace
 {
@@ -321,10 +322,13 @@ std::string settingJson()
  */
 void updateSetting()
 {
-    if (clients.size() >= 1) {
-        const auto setting_json = settingJson();
-        for (const auto& cli : clients) {
-            cli.second->send_settings(setting_json);
+    const auto setting_json = settingJson();
+    {
+        std::lock_guard lock(internal_mutex);
+        if (clients.size() >= 1) {
+            for (const auto& cli : clients) {
+                cli.second->send_settings(setting_json);
+            }
         }
     }
 }
@@ -334,14 +338,16 @@ std::map<std::string, Json::Value> from_robot_old_values;
 //! fromRobotの値をjsonに変換する
 /*! \param changed_only trueのとき、前回の呼び出しから変更されていない値はスキップ
  */
-std::string fromRobotJson(bool changed_only)
+std::optional<std::string> fromRobotJson(bool changed_only)
 {
     Json::Value root(Json::objectValue);
+    bool has_value = false;
     {
         std::lock_guard lock(internal_mutex);
         for (const auto& f : from_robot) {
             const auto callback_json = f.second.callback();
             if (!changed_only || from_robot_old_values[f.first] != callback_json) {
+                has_value = true;
                 from_robot_old_values[f.first] = callback_json;
                 for (std::size_t ai = 0; ai < f.second.names.size(); ai++) {
                     if (f.second.names.size() == 1 && f.first == f.second.names[ai]) {
@@ -357,13 +363,19 @@ std::string fromRobotJson(bool changed_only)
     root["timestamp"] = static_cast<Json::Value::Int64>(getTime());
     std::stringstream ss;
     ss << root;
-    return ss.str();
+    if (has_value) {
+        return ss.str();
+    } else {
+        return std::nullopt;
+    }
 }
 
 std::unordered_map<std::string, Json::Value> layout_old_values;
-std::string layoutJson(bool changed_only)
+std::unordered_map<std::string, int> layout_old_length;
+std::optional<std::string> layoutJson(bool changed_only)
 {
     Json::Value root(Json::arrayValue);
+    bool has_value = false;
     {
         std::lock_guard lock(internal_mutex);
 
@@ -376,7 +388,12 @@ std::string layoutJson(bool changed_only)
                     || layout_old_values[f.first][static_cast<int>(ci)]
                            != f.second[static_cast<int>(ci)]) {
                     info["layout"][std::to_string(ci)] = f.second[static_cast<int>(ci)];
+                    has_value = true;
                 }
+            }
+            if (layout_old_length[f.first] != f.second.size()) {
+                layout_old_length[f.first] = f.second.size();
+                has_value = true;
             }
             info["length"] = f.second.size();
             root.append(info);
@@ -385,13 +402,18 @@ std::string layoutJson(bool changed_only)
     }
     std::stringstream ss;
     ss << root;
-    return ss.str();
+    if (has_value) {
+        return ss.str();
+    } else {
+        return std::nullopt;
+    }
 }
 
 std::unordered_map<std::string, Json::Value> layer_old_values;
-std::string layerJson(bool changed_only)
+std::optional<std::string> layerJson(bool changed_only)
 {
     Json::Value root(Json::arrayValue);
+    bool has_value = false;
     {
         std::lock_guard lock(internal_mutex);
 
@@ -401,21 +423,27 @@ std::string layerJson(bool changed_only)
                 info["name"] = f.first;
                 info["layer"] = f.second;
                 root.append(info);
+                has_value = true;
             }
             layer_old_values[f.first] = f.second;
         }
     }
     std::stringstream ss;
     ss << root;
-    return ss.str();
+    if (has_value) {
+        return ss.str();
+    } else {
+        return std::nullopt;
+    }
 }
 
 //! 画像の情報をjsonに変換する
 /*! \param changed_only trueのとき、前回の呼び出しから変更されていない値はスキップ
  */
-std::string imageJson(bool changed_only)
+std::optional<std::string> imageJson(bool changed_only)
 {
     Json::Value root(Json::objectValue);
+    bool has_value = false;
     {
         std::lock_guard lock(internal_mutex);
 
@@ -423,20 +451,26 @@ std::string imageJson(bool changed_only)
             if (f.second.has_changed) {
                 root[f.first] = f.second.src;
                 f.second.has_changed = false;
+                has_value = true;
             } else if (!changed_only) {
                 root[f.first] = f.second.src;
+                has_value = true;
             }
         }
     }
     std::stringstream ss;
     ss << root;
-    return ss.str();
+    if (has_value) {
+        return ss.str();
+    } else {
+        return std::nullopt;
+    }
 }
 
 //! logをjsonに変換する
 /*! \param changed_only trueのとき、前回の呼び出し以前のログはスキップ
  */
-std::string logJson(bool changed_only)
+std::optional<std::string> logJson(bool changed_only)
 {
     StdLogger::iterator begin, end;
     // ダブルクオーテーションで囲うだけでなくエスケープもしないといけないので、json化
@@ -448,7 +482,7 @@ std::string logJson(bool changed_only)
             begin = std_logger.next();
             end = std_logger.end();
             if (begin == end) {
-                return "";
+                return std::nullopt;
             }
         } else {
             begin = std_logger.begin();
@@ -467,6 +501,10 @@ std::string logJson(bool changed_only)
     return ss.str();
 }
 
+int clientCount()
+{
+    return clients.size();
+}
 //! 値の変更を取得し、全クライアントに送信する
 void sendData()
 {
@@ -475,33 +513,56 @@ void sendData()
         std::chrono::system_clock::now().time_since_epoch())
                             .count();
 
-    if (clients.size() == 0) {
-        return;
-    }
-    if (setting_changed) {
-        updateSetting();
-        setting_changed = false;
+    {
+        std::lock_guard lock(internal_mutex);
+        for (auto it = clients.begin(); it != clients.end();) {
+            if (it->second->ping_last_recv != std::nullopt
+                && std::chrono::system_clock::now() - *(it->second->ping_last_recv)
+                       >= std::chrono::milliseconds(10000)) {
+                std::cerr << "[WebCFace] Client Ping Timeout" << std::endl;
+                it = clients.erase(it);
+            } else {
+                it++;
+            }
+        }
+        if (clients.size() == 0) {
+            return;
+        }
     }
     const auto from_robot_json = fromRobotJson(true);
-    const auto log = logJson(true);
-    for (const auto& cli : clients) {
-        cli.second->send_fromRobot(from_robot_json);
+    if (from_robot_json) {
+        std::lock_guard lock(internal_mutex);
+        for (const auto& cli : clients) {
+            cli.second->send_fromRobot(*from_robot_json);
+        }
     }
     if (now_millisec - last_millisec >= 100) {
+        if (setting_changed) {
+            updateSetting();
+            setting_changed = false;
+        }
+        const auto log = logJson(true);
         const auto image_json = imageJson(true);
         const auto layout_json = layoutJson(true);
         const auto layer_json = layerJson(true);
-        for (const auto& cli : clients) {
-            cli.second->send_image(image_json);
-            cli.second->send_layout(layout_json);
-            cli.second->send_layer(layer_json);
+        {
+            std::lock_guard lock(internal_mutex);
+            for (const auto& cli : clients) {
+                if (image_json) {
+                    cli.second->send_image(*image_json);
+                }
+                if (layout_json) {
+                    cli.second->send_layout(*layout_json);
+                }
+                if (layer_json) {
+                    cli.second->send_layer(*layer_json);
+                }
+                if (log) {
+                    cli.second->send_log(*log);
+                }
+            }
         }
         last_millisec = now_millisec;
-    }
-    if (log != "") {
-        for (const auto& cli : clients) {
-            cli.second->send_log(log);
-        }
     }
 }
 
@@ -512,6 +573,32 @@ void dialog(const std::string& alert_name)
     ss << a;
     for (const auto& cli : clients) {
         cli.second->send_dialog(ss.str());
+    }
+}
+void playAudio(const std::string& filename)
+{
+    // ファイル名からバイナリファイルで読み込む
+    std::ifstream ifs(filename, std::ios::binary);
+
+    // 読込サイズを調べる。
+    ifs.seekg(0, std::ios::end);
+    long long int size = ifs.tellg();
+    ifs.seekg(0);
+
+    // 読み込んだデータをchar型に出力する
+    char* data = new char[size];
+    ifs.read(data, size);
+
+    std::string mime = "audio/x-wav";
+    std::string encoded = "data:" + mime + ";base64,"
+                          + drogon::utils::base64Encode(reinterpret_cast<unsigned char*>(data), size);
+    delete data;
+
+    Json::Value a = encoded;
+    std::stringstream ss;
+    ss << a;
+    for (const auto& cli : clients) {
+        cli.second->send_audio(ss.str());
     }
 }
 }  // namespace Server

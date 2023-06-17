@@ -98,6 +98,8 @@ int main()
                 layer.drawCircle(x, 50, 5, "blue");
             }
             p << aaa << p.endl;  // 全部書き終わってからページに入れること
+            // std::cout << t << std::endl;
+            WebCFace::appendLogLine(0, std::to_string(t));
             WebCFace::sendData();
         }
         std::this_thread::sleep_for(std::chrono::milliseconds(50));

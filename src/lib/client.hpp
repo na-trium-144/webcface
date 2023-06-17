@@ -5,6 +5,9 @@
 #include <cstring>
 #include <webcface/gamepad.hpp>
 #include <memory>
+#include <chrono>
+#include <optional>
+
 namespace WebCFace
 {
 class Client
@@ -13,7 +16,10 @@ private:
     drogon::WebSocketConnectionPtr con;  // TODO: const
     void _send(const std::string& msg_name, const std::string& msg) const;
 
+
 public:
+    std::optional<std::chrono::system_clock::time_point> ping_last_recv;
+
     class ErrorBuffer : public std::streambuf
     {
         std::shared_ptr<Client> cli;
@@ -43,9 +49,15 @@ public:
     void send_layout(const std::string& json) const;
     void send_layer(const std::string& json) const;
     void send_dialog(const std::string& json) const;
+    void send_audio(const std::string& json) const;
+    void send_ping() const;
     void send_error(int func_id, const std::string& error) const;
     void updateGamepad(Json::Value msg);
     GamepadState gamepad_state;
+
+    void recv_ping(){
+        ping_last_recv = std::chrono::system_clock::now();
+    }
 
     Client() = delete;
     Client(const Client& other) = delete;

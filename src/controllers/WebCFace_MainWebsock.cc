@@ -13,9 +13,11 @@ void MainWebsock::handleNewMessage(
     if (message.size() <= 3)
         return;
 
-    auto cli = clients[wsConnPtr];
-    if (cli) {
+    std::lock_guard lock(internal_mutex);
+    auto cli_it = clients.find(wsConnPtr);
+    if (cli_it != clients.end()) {
         try {
+            auto cli = cli_it->second;
 
             std::stringstream msg_ss(message);
             Json::Value v;
@@ -55,8 +57,12 @@ void MainWebsock::handleNewMessage(
                                 changeVarToRobot(var_name, args_json.str(), cli);*/
             } else if (msgname == "gamepad") {
                 cli->updateGamepad(msg);
+            } else if (msgname == "ping") {
+                cli->recv_ping();
+                cli->send_ping();
             } else {
-                /*cli->err*/ std::cerr << "Undefined message name : " << msgname << " : " << msg << std::endl;
+                /*cli->err*/ std::cerr << "Undefined message name : " << msgname << " : " << msg
+                                       << std::endl;
             }
         } catch (const std::exception& e) {
             /*cli->err*/ std::cerr << e.what() << std::endl;
@@ -67,17 +73,39 @@ void MainWebsock::handleNewMessage(
 void MainWebsock::handleNewConnection(
     const HttpRequestPtr&, const WebSocketConnectionPtr& wsConnPtr)
 {
-    auto cli = std::make_shared<Client>(wsConnPtr);
-    auto cli_p = std::make_pair(WebSocketConnectionPtr(wsConnPtr), cli);
-    clients.insert(cli_p);
-    cli->send_settings(settingJson());
-    cli->send_fromRobot(fromRobotJson(false));
-    cli->send_log(logJson(false));
-    cli->send_layout(layoutJson(false));
-    cli->send_layer(layerJson(false));
+    std::shared_ptr<Client> cli;
+    {
+
+        std::lock_guard lock(internal_mutex);
+        cli = std::make_shared<Client>(wsConnPtr);
+        auto cli_p = std::make_pair(WebSocketConnectionPtr(wsConnPtr), cli);
+        clients.insert(cli_p);
+    }
+    auto s = settingJson();
+    auto f = fromRobotJson(false);
+    auto log = logJson(false);
+    auto lay = layoutJson(false);
+    auto lr = layerJson(false);
+    {
+        std::lock_guard lock(internal_mutex);
+        cli->send_settings(s);
+        if (f) {
+            cli->send_fromRobot(*f);
+        }
+        if (log) {
+            cli->send_log(*log);
+        }
+        if (lay) {
+            cli->send_layout(*lay);
+        }
+        if (lr) {
+            cli->send_layer(*lr);
+        }
+    }
 }
 
 void MainWebsock::handleConnectionClosed(const WebSocketConnectionPtr& wsConnPtr)
 {
+    std::lock_guard lock(internal_mutex);
     clients.erase(wsConnPtr);
 }

@@ -6,7 +6,7 @@ c++のヘッダーは`<webcface/server.hpp>`
 
 ## Start
 
-プログラムの初期化処理として`WebCFace::startServer();` (python → `webcface.start_server()`)以下を1回実行します
+プログラムの初期化処理として`WebCFace::startServer();` (python → `webcface.start_server()`)を1回実行します
 
 プログラムを実行すると
 ```
@@ -17,7 +17,7 @@ c++のヘッダーは`<webcface/server.hpp>`
 
 ## Mutex (C++のみ)
 
-(任意)プログラムのメインループ内で WebCFace::callback_mutex をロックしてください
+(任意)プログラムのメインループ内で WebCFace::callback_mutex をロックすると、その間ブラウザから指示したシェル関数が実行されなくなります
 
 例
 ```cpp

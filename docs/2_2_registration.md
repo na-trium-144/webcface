@@ -16,6 +16,9 @@ c++のヘッダーは`<webcface/registration.hpp>`
 
 例
 ```cpp
+WebCFace::RegisterCallback("関数名") = func; //引数なし
+WebCFace::RegisterCallback("関数名").arg("引数名1", "引数名2") = func; //引数あり
+
 using namespace WebCFace::Literals; // _callback を使うのに必要
 "関数名"_callback = func; //引数なし
 "関数名"_callback.arg("引数名1", "引数名2") = func; //引数あり

@@ -5,7 +5,7 @@
 #include <string>
 #include <cstddef>
 #include <webcface/server.hpp>  // getTime()
-#include <vector>
+#include <deque>
 #include <utility>
 
 namespace WebCFace
@@ -25,22 +25,19 @@ struct LogLine {
 class teebuf : public std::streambuf
 {
 public:
-    std::streambuf* sb1;
+    teebuf();
+    std::streambuf* sb1 = nullptr;
     std::string tmp_s;
 
     void set(std::streambuf* sb1) { this->sb1 = sb1; }
 
 private:
-    // This tee buffer has no buffer. So every character "overflows"
-    // and can be put directly into the teed buffers.
-    virtual int overflow(int c);
+    char buf[1024];
+
+    // virtual int overflow(int c);
 
     // Sync both teed buffers.
-    virtual int sync()
-    {
-        int const r1 = sb1->pubsync();
-        return r1;
-    }
+    virtual int sync();
 };
 
 
@@ -68,7 +65,7 @@ public:
 private:
     teebuf buf1, buf2;
     bool init;
-    std::vector<LogLine> log_buffer;
+    std::deque<LogLine> log_buffer;
     std::size_t log_pos;
 
 public:

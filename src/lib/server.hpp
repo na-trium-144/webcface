@@ -15,10 +15,10 @@ void callToRobot(const std::string& name, const std::string& args_json, std::ost
 /*void changeVarToRobot(
     const std::string& name, const std::string& args_json, const std::shared_ptr<Client>& cli);*/
 std::string settingJson();
-std::string fromRobotJson(bool changed_only);
-std::string logJson(bool changed_only);
-std::string layoutJson(bool changed_only);
-std::string layerJson(bool changed_only);
+std::optional<std::string> fromRobotJson(bool changed_only);
+std::optional<std::string> logJson(bool changed_only);
+std::optional<std::string> layoutJson(bool changed_only);
+std::optional<std::string> layerJson(bool changed_only);
 
 std::vector<std::string> getAllRegisteredFunctions();
 bool isFuncRegistered(const std::string& func_name);

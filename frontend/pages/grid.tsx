@@ -371,16 +371,16 @@ export default function GridMode() {
             .filter((el) => el.isSelected)
             .map((el) => (
               <div
-                key={`graph-${s.serverName}:${el.name}`}
+                key={`graph-${ss.name}:${el.name}`}
                 data-grid={{
                   w: 2,
                   h: 3,
-                  ...dataGrid(`graph-${s.serverName}:${el.name}`),
+                  ...dataGrid(`graph-${ss.name}:${el.name}`),
                 }}
-                style={z[`graph-${s.serverName}:${el.name}`]}
+                style={z[`graph-${ss.name}:${el.name}`]}
               >
                 <GridPaper
-                  onClick={updateZ(`graph-${s.serverName}:${el.name}`)}
+                  onClick={updateZ(`graph-${ss.name}:${el.name}`)}
                   title={`${ss.name}:${el.name}`}
                   onClose={() =>
                     setSeriesMulti((seriesMulti) => {

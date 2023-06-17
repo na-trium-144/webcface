@@ -16,14 +16,15 @@ sudo pip install -I .
 ```
 
 ## Drogon
-* Drogonがシステムにインストールされている場合はそれを使用する
-    * インストール方法は https://github.com/drogonframework/drogon/wiki/ENG-02-Installation を参照
-    * ただしcmake時に`-DBUILD_SHARED_LIBS=on`にする必要があります
-* インストールされていない場合、submoduleに入っているdrogonをコンパイル
-    * インストール時と同じ依存ライブラリ(以下)が必要になります
+* Drogonのインストールは任意です
+* インストールされていない場合、submoduleに入っているdrogonをコンパイルして使います
+    * ただしインストール時と同じ依存ライブラリ(以下)が必要になります
 ```bash
 sudo apt install libjsoncpp-dev uuid-dev openssl libssl-dev zlib1g-dev
 ```
+* インストールされている場合はそれを使用します
+    * インストール方法は https://github.com/drogonframework/drogon/wiki/ENG-02-Installation を参照
+    * ただしcmake時に`-DBUILD_SHARED_LIBS=on`にする必要があります
 
 ## WebCFace
 

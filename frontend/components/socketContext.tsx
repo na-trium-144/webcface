@@ -102,7 +102,7 @@ const SocketImpl = (props: { index: number }) => {
   useEffect(() => {
     const i = setTimeout(
       () => setReconnectFlag((reconnectFlag) => !reconnectFlag),
-      5000
+      1000
     );
     return () => clearTimeout(i);
   }, [reconnectFlag, setReconnectFlag]);
@@ -141,6 +141,56 @@ const SocketImpl = (props: { index: number }) => {
   );
   const gamepadButtonMap = useRef<number[]>([]);
   const gamepadAxisMap = useRef<{ id: number; inverse: boolean }[]>([]);
+  const connectionErrorMessage = (name = "", args = []) => {
+    const callback_id_now = callback_id.current;
+    callback_id.current++;
+    while (errorMessage.current.length <= callback_id_now) {
+      errorMessage.current.push({
+        func: name,
+        args: args,
+        message: "Connection Error",
+      });
+    }
+  };
+  const pingLastRecv = useRef<number | null>(null);
+  useEffect(() => {
+    const i = setInterval(() => {
+      if (
+        socketContextValue.current.isConnected &&
+        parseInt(socketContextValue.current.version.split(".")[1]) >= 10
+      ) {
+        try {
+          console.log("send ping");
+          ws.current.send(JSON.stringify({ msgname: "ping" }));
+        } catch {}
+        if (
+          pingLastRecv.current != null &&
+          new Date().getTime() - pingLastRecv.current > 10000
+        ) {
+          console.error("ping timeout");
+          try {
+            ws.current.close();
+          } catch {}
+          setSocketContextValue.current((oldValue) => ({
+            ...oldValue,
+            isConnected: false,
+            runCallback: (
+              name: string,
+              args: AnyValue[] | object | undefined
+            ) => {
+              connectionErrorMessage(name);
+            },
+            setToRobot: () => {
+              console.error("setToRobot failed since socket disconnected");
+            },
+          }));
+          ws.current = null;
+          pingLastRecv.current = null;
+        }
+      }
+    }, 300);
+    return () => clearInterval(i);
+  }, [socketContextValue]);
 
   // socketContextValueとsocketContextValues[index]を更新する
   const setSocketContextValue =
@@ -173,6 +223,8 @@ const SocketImpl = (props: { index: number }) => {
 
   // reconnectFlagが変化したとき再接続(すでに接続されてたら何もしない)
   const ws = useRef(null);
+  const audioData = useRef<string>("");
+  const audioObj = useRef<any>(null);
 
   useEffect(() => {
     const reconnect = () => {
@@ -188,7 +240,9 @@ const SocketImpl = (props: { index: number }) => {
       try {
         ws.current = new WebSocket("ws://" + socketUrl);
         const emit = (msgname: string, msg: any) => {
-          ws.current.send(JSON.stringify({ msgname, msg }));
+          if (ws.current != null) {
+            ws.current.send(JSON.stringify({ msgname, msg }));
+          }
         };
 
         const runCallback = (
@@ -299,14 +353,18 @@ const SocketImpl = (props: { index: number }) => {
           setSocketContextValue.current((oldValue) => ({
             ...oldValue,
             isConnected: false,
-            runCallback: () => {
-              console.error("runCallback failed since socket disconnected");
+            runCallback: (
+              name: string,
+              args: AnyValue[] | object | undefined
+            ) => {
+              connectionErrorMessage(name);
             },
             setToRobot: () => {
               console.error("setToRobot failed since socket disconnected");
             },
           }));
           ws.current = null;
+          pingLastRecv.current = null;
         };
         ws.current.onmessage = (event: any) => {
           // try {
@@ -319,12 +377,12 @@ const SocketImpl = (props: { index: number }) => {
           // }
         };
         ws.current.onerror = (error: string) => {
-          console.error(error.message);
+          // console.error(error.message);
         };
 
         return;
       } catch {
-        console.error(`failed to connect ${socketUrl}`);
+        // console.error(`failed to connect ${socketUrl}`);
         if (ws.current && ws.current.close) {
           ws.current.close();
         }
@@ -334,6 +392,7 @@ const SocketImpl = (props: { index: number }) => {
     };
 
     const onMessage = (msgname: string, data: any) => {
+      console.log(`${msgname} ${JSON.stringify(data).length}`);
       switch (msgname) {
         case "setting": {
           setSocketContextValue.current((oldValue) => ({
@@ -468,8 +527,19 @@ const SocketImpl = (props: { index: number }) => {
           alert.current = data;
           break;
         }
+        case "audio": {
+          audioData.current = data;
+          audioObj.current = new Audio(audioData.current);
+          audioObj.current.play();
+          break;
+        }
+        case "ping": {
+          // console.log("ping");
+          pingLastRecv.current = new Date().getTime();
+          break;
+        }
         default: {
-          console.error("Invalid messsage received! => ", msgname, data);
+          // console.error("Invalid messsage received! => ", msgname, data);
         }
       }
     };

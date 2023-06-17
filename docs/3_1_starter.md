@@ -1,4 +1,4 @@
-# 8. webcface-starter
+# starter
 
 webcface-starterは設定ファイルにしたがってシェル関数としてコマンドの実行、停止ができるシンプルなWebCFaceバックエンドです。
 
@@ -10,7 +10,7 @@ webcface-starter /path/to/webcface-starter.toml
 ```
 で起動できます。
 
-## 8-1. 設定ファイル
+## 設定ファイル
 tomlファイルで設定します。ファイル名は任意です。
 ```toml
 [init]

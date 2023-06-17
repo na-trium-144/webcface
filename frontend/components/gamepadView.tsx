@@ -291,6 +291,10 @@ export const GamepadView = (props: { gi: number }) => {
                 ? axisMap[i].id.toString() +
                   (axisMap[i].inverse ? "(反転)" : "")
                 : "割当なし"}
+              <br />
+              {(
+                gamepads[gi].axes[axisMap[i].id] * (axisMap[i].inverse ? -1 : 1)
+              ).toFixed(3)}
             </Button>
           </span>
         ))}

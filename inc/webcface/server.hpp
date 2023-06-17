@@ -51,6 +51,9 @@ extern std::vector<std::string> button_name, axis_name;
 extern bool setting_changed;
 
 void dialog(const std::string& alert_name);
+void playAudio(const std::string& filename);
+
+int clientCount();
 
 std::int64_t getTime();
 }  // namespace Server

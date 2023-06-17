@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.17)
 project(webcface
-    VERSION 0.9.6
+    VERSION 0.10.12
     LANGUAGES CXX
 )
 
