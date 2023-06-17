@@ -1,0 +1,46 @@
+.App {
+  font-family:Arial, Helvetica, sans-serif;
+  text-align: left;
+  margin:0px;
+}
+
+#header {
+  height :10vh;
+  font-size: 5vh;
+  color: aliceblue;
+  background-color: darkcyan;
+  margin:0px;
+}
+
+#body {
+  display: flex;
+  flex-direction: row;
+  margin:0px;
+}
+
+#sidebar {
+  width: 40vh;
+  height: 85vh;
+  background-color: darkgray;
+  margin:0px;
+}
+#controller{
+  display:flex;
+  flex-direction: row;
+  margin:0px;
+}
+#main_display {
+  background-color: rgb(158, 67, 67);
+  margin:0vh;
+}
+
+#canvas{
+  background-color: white;
+  margin: 0vh;
+}
+
+#control_panel{
+  background-color: rgb(158, 67, 67);
+  width:0px;
+  height:0px;
+}

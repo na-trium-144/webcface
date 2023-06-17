@@ -1,2 +1,7 @@
-# webcface
-Web-based RPC &amp; UI Library (wip)
+# WebCFace
+
+WebブラウザーからC++,Pythonのプログラムを操作するインターフェイスを作成するためのライブラリです。
+
+
+masterにマージするたびにバージョン番号を上げます。`version_set.sh 0.2`とかでバージョンを設定できます(もっといいやり方あるのかな)
+

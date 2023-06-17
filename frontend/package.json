@@ -1,0 +1,59 @@
+{
+  "name": "webcface",
+  "version": "0.6.3",
+  "private": true,
+  "homepage": "/",
+  "dependencies": {
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.5",
+    "@mui/icons-material": "^5.11.0",
+    "@mui/material": "^5.11.2",
+    "@rich-data/viewer": "^2.15.6",
+    "canvas": "^2.11.2",
+    "deepmerge": "^4.2.2",
+    "konva": "^8.4.3",
+    "next": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "react-grid-layout": "^1.3.4",
+    "react-konva": "^18.2.5",
+    "webgl-plot": "^0.7.0"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "test": "craco test",
+    "lint": "next lint",
+    "export": "next export"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@types/node": "18.11.17",
+    "@typescript-eslint/eslint-plugin": "^5.48.0",
+    "@typescript-eslint/parser": "^5.48.1",
+    "@welldone-software/why-did-you-render": "^7.0.1",
+    "eslint": "^8.31.0",
+    "eslint-config-next": "^13.1.1",
+    "eslint-config-prettier": "^8.6.0",
+    "eslint-config-standard-with-typescript": "^26.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-n": "^15.6.0",
+    "eslint-plugin-next": "^0.0.0",
+    "eslint-plugin-promise": "^6.1.1",
+    "eslint-plugin-react": "^7.31.11",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "typescript": "^4.9.4"
+  }
+}

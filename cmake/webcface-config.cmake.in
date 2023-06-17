@@ -1,0 +1,10 @@
+@PACKAGE_INIT@
+
+add_compile_definitions(WEBCFACE_STATIC_DIR="@PACKAGE_INSTALL_DATA_DIR@/frontend/out")
+set(WEBCFACE_GENERATOR_COMMAND @PACKAGE_INSTALL_DATA_DIR@/generator/main.py)
+include(${CMAKE_CURRENT_LIST_DIR}/generate.cmake)
+
+include(CMakeFindDependencyMacro)
+find_dependency(Drogon)
+find_dependency(jsoncpp)
+include(${CMAKE_CURRENT_LIST_DIR}/webcface-targets.cmake)

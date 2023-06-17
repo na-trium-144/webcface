@@ -1,0 +1,21 @@
+BasedOnStyle: LLVM
+
+ColumnLimit: 100
+IndentWidth: 4
+UseTab: Never
+MaxEmptyLinesToKeep: 2
+SortIncludes: false
+
+BreakBeforeBinaryOperators: true
+BreakBeforeBraces: Linux
+AlignAfterOpenBracket: false
+SpaceBeforeParens: ControlStatements
+AlwaysBreakTemplateDeclarations: true
+AlignEscapedNewlinesLeft: true
+PointerAlignment: Left
+AccessModifierOffset: -4
+AllowShortFunctionsOnASingleLine: InlineOnly
+
+SpacesBeforeTrailingComments: 2
+CommentPragmas: '[!\*]'
+

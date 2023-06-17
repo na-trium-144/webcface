@@ -1,0 +1,135 @@
+#!/usr/bin/env python3
+import webcface
+import sys
+import subprocess
+import time
+import toml
+import traceback
+import argparse
+import threading
+import psutil
+
+
+class Starter:
+    def __init__(self, config_file):
+        self.proc = {}
+        self.config_file = config_file
+        self.thread = {}
+
+    def serve(self):
+        # webcface.init_std_logger()
+        webcface.init_sys_logger()
+        #try:
+        config = toml.load(self.config_file)
+        #except:
+        #    traceback.print_exc()
+        #    config = {}
+
+        port = 80
+        server_name = "starter"
+        if "init" in config:
+            if "port" in config["init"]:
+                port = config["init"]["port"]
+            if "name" in config["init"]:
+                server_name = config["init"]["name"]
+        webcface.start_server(port)
+        webcface.set_server_name(server_name)
+
+        if "server" in config:
+            for s in config["server"]:
+                if "addr" in s:
+                    webcface.add_related_server(s["addr"], s["port"])
+                else:
+                    webcface.add_related_server(s["port"])
+
+        layout = []
+        if "command" in config:
+            for c in config["command"]:
+                if "workdir" not in c:
+                    c["workdir"] = "."
+                webcface.add_function_to_robot(
+                    f"{c['name']}.start", lambda c=c: self.start(c), [], []
+                )
+                webcface.add_function_to_robot(
+                    f"{c['name']}.terminate", lambda c=c: self.terminate(c), [
+                    ], []
+                )
+                webcface.add_function_to_robot(
+                    f"{c['name']}.kill", lambda c=c: self.kill(c), [], []
+                )
+                webcface.add_function_from_robot(
+                    f"{c['name']}.exists", lambda c=c:self.is_running(c), bool
+                )
+                layout.append([
+                    c['name'],
+                    webcface.Button(
+                        (lambda c=c:"start" if not self.is_running(c) else "terminate"),
+                        (lambda c=c:self.start(c) if not self.is_running(c) else self.terminate(c)),
+                        mui_color=(lambda c=c: "primary" if not self.is_running(c) else "error"),
+                    ),
+                ])
+                self.proc[c["name"]] = None
+        webcface.add_page_layout(server_name, layout)
+
+        try:
+            while True:
+                time.sleep(0.1)
+                webcface.send_data()
+        except:
+            traceback.print_exc()
+            for c in config["command"]:
+                self.terminate(c)
+
+    def is_running(self, c):
+        return self.proc[c["name"]] is not None and psutil.pid_exists(self.proc[c["name"]].pid)
+
+    def start(self, c):
+        if not self.is_running(c):
+            print(f"starting {c['name']}: {c['exec']}")
+            self.proc[c["name"]] = subprocess.Popen(
+                c["exec"],
+                shell=True,
+                cwd=c["workdir"],
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
+                text=True,
+                encoding="utf-8",
+                errors="replace",
+            )
+            self.thread[c["name"]] = threading.Thread(
+                target=lambda c=c: self.read_stdout(c)
+            )
+            self.thread[c["name"]].start()
+        else:
+            print(f"{c['name']} is already running")
+
+    def read_stdout(self, c):
+        p = self.proc[c["name"]]
+        while True:
+            out = p.stdout.readline()
+            if out == "" and p.poll() is not None:
+                break
+            sys.stdout.write(out)
+
+    def terminate(self, c):
+        if self.is_running(c):
+            for p in psutil.Process(self.proc[c["name"]].pid).children(recursive=True):
+                p.terminate()
+            self.proc[c["name"]].terminate()
+
+    def kill(self, c):
+        if self.is_running(c):
+            for p in psutil.Process(self.proc[c["name"]].pid).children(recursive=True):
+                p.kill()
+            self.proc[c["name"]].kill()
+
+
+def main():
+    parser = argparse.ArgumentParser(prog="webcface-starter")
+    parser.add_argument("filename", help="config toml file")
+    args = parser.parse_args()
+    Starter(args.filename).serve()
+
+
+if __name__ == "__main__":
+    main()

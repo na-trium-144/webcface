@@ -1,0 +1,26 @@
+[[command]]
+name = "cmake"
+workdir = "/home/luna/robotech/webcface/build"
+exec = "cmake .."
+
+[[command]]
+name = "make"
+workdir = "/home/luna/robotech/webcface/build"
+exec = "make -j7"
+
+[[command]]
+name = "related1&2"
+workdir = "/home/luna/robotech/webcface/build"
+exec = "./related1 & ./related2 & wait"
+
+[init]
+# port = 80
+# name = "starter"
+
+[[server]]
+# addr = "172.17.0.2" starterと同じ場合は省略可
+port = 3001
+
+[[server]]
+port = 3002
+

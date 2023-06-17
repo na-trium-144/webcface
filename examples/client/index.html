@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>WebCFace</title>
+    <style media="screen">
+      span, button, input {
+        font-size: large;
+      }
+    </style>
+  </head>
+  <body>
+    <h1 id="header">WebCFace</h1>
+    <h3>Functions to Robot (msgname = "function")</h3>
+    <div id="call">
+
+    </div>
+    <h3>SharedVar to Robot (msgname = "to_robot")</h3>
+    <div id="to_robot">
+
+    </div>
+    <h3>Function and SharedVar from Robot (msgname = "from_robot")</h3>
+    <div id="from_robot">
+
+    </div>
+    <h3>Error Message (msgname = "error")</h3>
+    <div id="error">
+    </div>
+    <h3>std::cout and std::cerr (msgname = "log")</h3>
+    <pre style="height: 300px; overflow: scroll;" id="stream"></pre>
+    <h3>WebCFace Setting (msgname = "setting")</h3>
+    <pre style="height: 300px; overflow: scroll;" id="setting"></pre>
+    <script src="/host.js"></script>
+    <script src="/ws.js"></script>
+  </body>
+</html>
