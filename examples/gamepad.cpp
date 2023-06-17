@@ -9,6 +9,8 @@
 int main()
 {
     WebCFace::startServer(3001);
+    WebCFace::setButtonName({"○", "×", "△", "□", "ほげ", "ふが"});
+    WebCFace::setAxisName({"Lよこ", "Lたて", "Rよこ", "Rたて"});
 
     while (true) {
         auto gamepad = WebCFace::getGamepad();

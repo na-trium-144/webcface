@@ -2,6 +2,7 @@ import { TextField, MenuItem, InputLabel, FormControl } from "@mui/material";
 import Select from "@mui/material/Select";
 import { Ref } from "react";
 import { AnyValue, ArgInfo } from "../../../lib/global";
+import { useEffect } from "react";
 
 type Props<T> = {
   name: string;
@@ -9,6 +10,7 @@ type Props<T> = {
   onChange;
   onSubmit;
   inputRef: Ref<any>;
+  valueOk: boolean;
 };
 
 export function IntArg(props: Props<number>) {
@@ -19,6 +21,7 @@ export function IntArg(props: Props<number>) {
       label={props.name}
       variant="outlined"
       type="number"
+      error={!props.valueOk}
       value={props.value}
       onChange={(e) => {
         props.onChange(e.target.value);
@@ -39,7 +42,8 @@ export function BoolArg(props: Props<boolean>) {
         labelId="boolean-selector-label"
         id="boolean-selector"
         inputRef={props.inputRef}
-        value={props.value ? "True" : "False"}
+        value={props.value === true ? "True" : props.value === false ? "False" : " "}
+        error={!props.valueOk}
         label={props.name}
         onChange={(e) => {
           props.onChange(e.target.value === "True");
@@ -72,7 +76,8 @@ export function AnyArg(props: Props<any>) {
       label={props.name}
       variant="outlined"
       type=""
-      value={props.value === null ? "" : props.value} // TODO: JSON.stringify()いらない？
+      error={!props.valueOk}
+      value={props.value == null || props.value == undefined ? "" : props.value}
       onChange={(e) => {
         props.onChange(e.target.value);
       }}

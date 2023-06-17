@@ -96,6 +96,7 @@ struct PyRegisterCallback : RegisterCallback {
      * \sa arg(), callback()
      */
     explicit PyRegisterCallback(const std::string& name = "", const py::object& arg = py::none(),
+        const py::object& default_value = py::none(),
         const py::object callback = py::none())
     {
         if (name == "") {
@@ -109,6 +110,13 @@ struct PyRegisterCallback : RegisterCallback {
             this->arg(arg.cast<py::dict>());
         } else if (!py::isinstance<py::none>(arg)) {
             std::cerr << "RegisterCallback: invalid arg type" << std::endl;
+        }
+        if (py::isinstance<py::list>(default_value)) {
+            this->default_value(default_value.cast<py::list>());
+        } else if (py::isinstance<py::dict>(default_value)) {
+            this->default_value(default_value.cast<py::dict>());
+        } else if (!py::isinstance<py::none>(default_value)) {
+            std::cerr << "RegisterCallback: invalid default_value type" << std::endl;
         }
         if (!py::isinstance<py::none>(callback)) {
             this->callback(callback);
@@ -133,6 +141,7 @@ struct PyRegisterCallback : RegisterCallback {
 
     std::vector<std::string> arg_names;
     std::vector<py::object> arg_types;
+    std::vector<py::object> default_values;
     //! 引数名を設定 or 引数の値を設定 (メソッドチェーン)
     /*! callback() 設定より前に arg() が呼び出された場合、引数名を設定する意味になります\n
      * callback() より後に arg() が呼び出された場合、引数の値を設定する意味になります\n
@@ -185,6 +194,22 @@ struct PyRegisterCallback : RegisterCallback {
         }
         return *this;
     }
+
+    PyRegisterCallback& default_value(const py::list& args)
+    {
+        for (std::size_t i = 0; i < py::len(args); i++) {
+            this->default_values.push_back(args[i]);
+        }
+        return *this;
+    }
+    PyRegisterCallback& default_value(const py::dict& args)
+    {
+        for (std::size_t i = 0; i < this->arg_names.size(); i++) {
+            this->default_values.push_back(args[py::str(arg_names[i])]);
+        }
+        return *this;
+    }
+
     //! 関数を登録する(メソッドチェーン)
     //! \sa WebCFace::Registration::RegisterCallback::callback()
     //! \param callback 関数 戻り値はもたない
@@ -195,7 +220,7 @@ struct PyRegisterCallback : RegisterCallback {
             arg_names.push_back(a.as<std::string>());
         }
         args.clear();
-        addFunctionToRobotPy(callback_name, callback, arg_names, arg_types);
+        addFunctionToRobotPy(callback_name, callback, arg_names, arg_types, default_values);
         return *this;
     }
 };

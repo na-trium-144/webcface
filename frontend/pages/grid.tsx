@@ -7,8 +7,10 @@ import { TerminalLogTable } from "../components/TerminalLog";
 import { useSidebarState } from "../components/sidebarContext";
 import { useSocket } from "../components/socketContext";
 import { CustomPage } from "./custom";
+import { CameraImage } from "./camera";
 import { useFunctionFavs, FunctionFavs } from "../lib/useFunctionFavs";
 import { GamepadsContext } from "react-gamepads";
+import { GamepadView } from "../components/gamepadView";
 
 import Paper from "@mui/material/Paper";
 import Divider from "@mui/material/Divider";
@@ -18,13 +20,6 @@ import Typography from "@mui/material/Typography";
 import CancelIcon from "@mui/icons-material/Cancel";
 import IconButton from "@mui/material/IconButton";
 import Grid from "@mui/material/Grid";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Button from "@mui/material/Button";
-import ButtonGroup from "@mui/material/ButtonGroup";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
-import Slider from "@mui/material/Slider";
 
 import {
   FromRobotSettingT,
@@ -38,6 +33,7 @@ const GridPaper = (props: {
   title: string;
   onClose: () => void;
   children: any;
+  onClick: () => void;
 }) => {
   const sx = { width: "100%", height: "100%" };
   const sx2 = {};
@@ -52,6 +48,7 @@ const GridPaper = (props: {
     <Paper
       elevation={3}
       sx={{ ...sx, display: "flex", flexDirection: "column" }}
+      onClick={props.onClick}
     >
       <Grid
         container
@@ -111,34 +108,96 @@ export default function GridMode() {
   const [width, setWidth] = useState<number>(0);
   const [cols, setCols] = useState<number>(1);
   const parentDiv = useRef();
+  const [lsLayouts, setLsLayouts] = useState<any[]>([]);
+  const [lsInit, setLsInit] = useState<boolean>(false);
   useEffect(() => {
     const i = setInterval(() => {
-      if (width !== parentDiv.current.clientWidth) {
-        const newWidth = parentDiv.current.clientWidth;
-        const newCols = Math.ceil(newWidth / 120);
-        setWidth(newWidth);
-        setCols(newCols);
-        // layoutを直接書き換える(理由はonLayoutChangeを参照)
-        for (const l of layouts.current) {
-          if (l.w > newCols) {
-            l.x = 0;
-            l.w = newCols;
-          } else if (l.x + l.w > newCols) {
-            l.x = newCols - l.w;
+      if (lsInit) {
+        let lsLayoutsCurrent = lsLayouts;
+        let lsChanged = false;
+        for (const ln of layouts.current) {
+          const li = prevLayouts.current.findIndex((l) => l.i === ln.i);
+          const lsi = lsLayouts.findIndex((ls) => ls.i === ln.i);
+          if (li === -1 && lsi >= 0) {
+            // 新規ウィンドウ→newLayoutsを直接書き換えてlsから復元
+            ln.x = lsLayouts[lsi].x;
+            ln.y = lsLayouts[lsi].y;
+            ln.w = lsLayouts[lsi].w;
+            ln.h = lsLayouts[lsi].h;
+          }
+          if (
+            li === -1 ||
+            prevLayouts.current[li].x !== ln.x ||
+            prevLayouts.current[li].y !== ln.y ||
+            prevLayouts.current[li].w !== ln.w ||
+            prevLayouts.current[li].h !== ln.h
+          ) {
+            //手動で変更されたときのみlsを更新する
+            if (lsi >= 0) {
+              lsLayoutsCurrent[lsi] = ln;
+            } else {
+              lsLayoutsCurrent.push(ln);
+            }
+            lsChanged = true;
+          }
+          if (li === -1) {
+            //新しいウィンドウを一番前にする
+            updateZ(ln.i)();
+          }
+        }
+        for (const l of prevLayouts.current) {
+          const lni = layouts.current.findIndex((ln) => ln.i === l.i);
+          const lsi = lsLayoutsCurrent.findIndex((ls) => ls.i === l.i);
+          if (lni === -1) {
+            // 消えたウィンドウはlsから消す
+            lsLayoutsCurrent = lsLayoutsCurrent
+              .slice(0, lsi)
+              .concat(lsLayoutsCurrent.slice(lsi + 1));
+            lsChanged = true;
+          }
+        }
+        if (lsChanged) {
+          saveLsLayouts(lsLayoutsCurrent.map((l) => ({ ...l })));
+        }
+        prevLayouts.current = layouts.current.map((l) => ({ ...l }));
+        if (width !== parentDiv.current.clientWidth) {
+          const newWidth = parentDiv.current.clientWidth;
+          const newCols = Math.ceil(newWidth / 120);
+          setWidth(newWidth);
+          setCols(newCols);
+          // layoutを直接書き換える(理由はonLayoutChangeを参照)
+
+          for (const ln of layouts.current) {
+            const li = prevLayouts.current.findIndex((l) => l.i === ln.i);
+            const lsi = lsLayouts.findIndex((ls) => ls.i === ln.i);
+            // lsのサイズを復元 (手動でいじらない限りlsは変わらないので)
+            if (lsi >= 0) {
+              ln.x = lsLayouts[lsi].x;
+              ln.y = lsLayouts[lsi].y;
+              ln.w = lsLayouts[lsi].w;
+              ln.h = lsLayouts[lsi].h;
+            }
+            if (ln.x + ln.w > newCols) {
+              if (ln.w > newCols) {
+                ln.x = 0;
+                ln.w = newCols;
+              } else {
+                ln.x = newCols - ln.w;
+              }
+            }
+            prevLayouts.current[li] = { ...ln };
           }
         }
       }
     }, 100);
     return () => clearInterval(i);
-  }, [width, parentDiv, setWidth]);
+  }, [width, parentDiv, setWidth, lsLayouts, lsInit]);
 
   const [seriesMulti, setSeriesMulti] = useState<FromRobotSettingServerT[]>([]);
   const { sidebarState, setSidebarState } = useSidebarState();
   const favs = useFunctionFavs();
 
   const lsKey = "RC23WebCon-Grid";
-  const [lsLayouts, setLsLayouts] = useState<any[]>([]);
-  const [lsInit, setLsInit] = useState<boolean>(false);
   const loadLsLayouts = () => {
     try {
       return JSON.parse(window.localStorage.getItem(lsKey)) || [];
@@ -156,7 +215,6 @@ export default function GridMode() {
     } catch {}
     setLsLayouts(layouts);
   };
-  const [layoutChanged, setLayoutChanged] = useState<boolean>(false);
   const onLayoutChange = (newLayouts: any[]) => {
     // newLayoutsにはGridLayoutから渡されるLayoutオブジェクトが入っているが、
     // これの中身を直接書き換えるとなぜかレイアウトが変わる
@@ -169,41 +227,7 @@ export default function GridMode() {
     //  https://github.com/react-grid-layout/react-grid-layout/issues/1625
 
     layouts.current = newLayouts; // newLayoutsの参照を渡す
-    setLayoutChanged(true);
   };
-  useEffect(() => {
-    if (layoutChanged && lsInit) {
-      for (const ln of layouts.current) {
-        const li = prevLayouts.current.findIndex((l) => l.i === ln.i);
-        const lsi = lsLayouts.findIndex((ls) => ls.i === ln.i);
-        if (li === -1 && lsi >= 0) {
-          // newLayoutsを直接書き換える
-          ln.x = lsLayouts[lsi].x;
-          ln.y = lsLayouts[lsi].y;
-          ln.w = lsLayouts[lsi].w;
-          ln.h = lsLayouts[lsi].h;
-        }
-        if (lsi >= 0) {
-          lsLayouts[lsi] = ln;
-        } else {
-          lsLayouts.push(ln);
-        }
-      }
-      let lsLayoutsCurrent = lsLayouts;
-      for (const l of prevLayouts.current) {
-        const lni = layouts.current.findIndex((ln) => ln.i === l.i);
-        const lsi = lsLayoutsCurrent.findIndex((ls) => ls.i === l.i);
-        if (lni === -1) {
-          lsLayoutsCurrent = lsLayoutsCurrent
-            .slice(0, lsi)
-            .concat(lsLayoutsCurrent.slice(lsi + 1));
-        }
-      }
-      saveLsLayouts(lsLayoutsCurrent.map((l) => ({ ...l })));
-      prevLayouts.current = layouts.current.map((l) => ({ ...l }));
-      setLayoutChanged(false);
-    }
-  }, [lsLayouts, lsInit, layoutChanged]);
 
   const dataGrid = (key: string) => {
     const l = lsLayouts.find((ls) => ls.i === key);
@@ -213,6 +237,14 @@ export default function GridMode() {
       return { x: 0, y: 0 }; //wとhのデフォルト値は別で設定
     }
   };
+
+  const [z, setZ] = useState<object>({});
+  const maxZ = useRef<number>(0);
+  const updateZ = (name: string) => () =>
+    setZ((z) => {
+      z[name] = { zIndex: ++maxZ.current };
+      return { ...z };
+    });
   return (
     <div style={{ height: "100%", overflow: "hidden" }} ref={parentDiv}>
       <GridLayout
@@ -230,8 +262,10 @@ export default function GridMode() {
           <div
             key="shellFav"
             data-grid={{ w: cols, h: 3, ...dataGrid("shellFav") }}
+            style={z["shellFav"]}
           >
             <GridPaper
+              onClick={updateZ(`shellFav`)}
               scroll={true}
               title="シェル関数(登録済み)"
               onClose={() =>
@@ -256,10 +290,16 @@ export default function GridMode() {
           (s, si) =>
             sidebarState.shell[si] && (
               <div
-                key={`shell${si}`}
-                data-grid={{ w: cols, h: 3, ...dataGrid(`shell${si}`) }}
+                key={`shell-${s.serverName}`}
+                data-grid={{
+                  w: cols,
+                  h: 3,
+                  ...dataGrid(`shell-${s.serverName}`),
+                }}
+                style={z[`shell-${s.serverName}`]}
               >
                 <GridPaper
+                  onClick={updateZ(`shell-${s.serverName}`)}
                   scroll={true}
                   title={`${s.serverName}:シェル関数`}
                   onClose={() =>
@@ -278,10 +318,16 @@ export default function GridMode() {
           (s, si) =>
             sidebarState.terminalLog[si] && (
               <div
-                key={`terminallog${si}`}
-                data-grid={{ w: cols, h: 3, ...dataGrid(`terminallog${si}`) }}
+                key={`terminallog-${s.serverName}`}
+                data-grid={{
+                  w: cols,
+                  h: 3,
+                  ...dataGrid(`terminallog-${s.serverName}`),
+                }}
+                style={z[`terminallog-${s.serverName}`]}
               >
                 <GridPaper
+                  onClick={updateZ(`terminallog-${s.serverName}`)}
                   scroll={true}
                   title={`${s.serverName}:ログ出力`}
                   onClose={() =>
@@ -300,8 +346,10 @@ export default function GridMode() {
           <div
             key="graphselect"
             data-grid={{ w: 2, h: 5, ...dataGrid("graphselect") }}
+            style={z[`graphselect`]}
           >
             <GridPaper
+              onClick={updateZ(`graphselect`)}
               scroll={true}
               title="グラフ表示"
               onClose={() =>
@@ -323,10 +371,16 @@ export default function GridMode() {
             .filter((el) => el.isSelected)
             .map((el) => (
               <div
-                key={`graph${si}:${el.name}`}
-                data-grid={{ w: 2, h: 3, ...dataGrid(`graph${si}:${el.name}`) }}
+                key={`graph-${s.serverName}:${el.name}`}
+                data-grid={{
+                  w: 2,
+                  h: 3,
+                  ...dataGrid(`graph-${s.serverName}:${el.name}`),
+                }}
+                style={z[`graph-${s.serverName}:${el.name}`]}
               >
                 <GridPaper
+                  onClick={updateZ(`graph-${s.serverName}:${el.name}`)}
                   title={`${ss.name}:${el.name}`}
                   onClose={() =>
                     setSeriesMulti((seriesMulti) => {
@@ -342,128 +396,104 @@ export default function GridMode() {
         )}
         {socket.raw.reduce(
           (prev, s, si) =>
-            s.getCustomPageLayout().map((l, li) =>
-              prev.concat([
-                sidebarState.custom[`${si}:${li}`] && (
-                  <div
-                    key={`custom${si}:${li}`}
-                    data-grid={{
-                      w: 4,
-                      h: 5,
-                      ...dataGrid(`custom${si}:${li}`),
-                    }}
-                  >
-                    <GridPaper
-                      scroll={true}
-                      title={`${s.serverName}:${l.name}`}
-                      onClose={() =>
-                        setSidebarState((sidebarState) => {
-                          sidebarState.custom[`${si}:${li}`] = false;
-                          return { ...sidebarState };
-                        })
-                      }
+            prev.concat(
+              s.getCustomPageLayout().map(
+                (l, li) =>
+                  sidebarState.custom[`${si}:${li}`] && (
+                    <div
+                      key={`custom-${s.serverName}:${l.name}`}
+                      data-grid={{
+                        w: 4,
+                        h: 5,
+                        ...dataGrid(`custom-${s.serverName}:${l.name}`),
+                      }}
+                      style={z[`custom-${s.serverName}:${l.name}`]}
                     >
-                      <CustomPage sid={si} id={li} />
-                    </GridPaper>
-                  </div>
-                ),
-              ])
+                      <GridPaper
+                        onClick={updateZ(`custom-${s.serverName}:${l.name}`)}
+                        scroll={true}
+                        title={`${s.serverName}:${l.name}`}
+                        onClose={() =>
+                          setSidebarState((sidebarState) => {
+                            sidebarState.custom[`${si}:${li}`] = false;
+                            return { ...sidebarState };
+                          })
+                        }
+                      >
+                        <CustomPage sid={si} id={li} />
+                      </GridPaper>
+                    </div>
+                  )
+              )
             ),
           []
         )}
-        {Object.entries(gamepads).map(
-          ([gi, g]) =>
-            sidebarState.gamepad[gi] && (
-              <div
-                key={gi}
-                data-grid={{ w: Math.min(6, cols), h: 3, ...dataGrid(gi) }}
-              >
-                <GridPaper
-                  scroll={true}
-                  title={g.id}
-                  onClose={() =>
-                    setSidebarState((sidebarState) => {
-                      sidebarState.gamepad[gi] = false;
-                      return { ...sidebarState };
-                    })
-                  }
+        {socket.raw.reduce(
+          (prev, s, si) =>
+            prev.concat(
+              s.getImageData().map(
+                (im, ii) =>
+                  sidebarState.image[`${si}:${ii}`] && (
+                    <div
+                      key={`image-${s.serverName}:${im.name}`}
+                      data-grid={{
+                        w: 4,
+                        h: 5,
+                        ...dataGrid(`image-${s.serverName}:${im.name}`),
+                      }}
+                      style={z[`image-${s.serverName}:${im.name}`]}
+                    >
+                      <GridPaper
+                        onClick={updateZ(`image-${s.serverName}:${im.name}`)}
+                        scroll={true}
+                        title={`${s.serverName}:${im.name}`}
+                        onClose={() =>
+                          setSidebarState((sidebarState) => {
+                            sidebarState.image[`${si}:${ii}`] = false;
+                            return { ...sidebarState };
+                          })
+                        }
+                      >
+                        <CameraImage sid={si} iid={ii} />
+                      </GridPaper>
+                    </div>
+                  )
+              )
+            ),
+          []
+        )}
+        {Object.entries(gamepads).reduce(
+          (prev, [gi, g]) =>
+            prev.concat(
+              sidebarState.gamepad[gi] && (
+                <div
+                  key={`gamepad-${g.id}`}
+                  data-grid={{
+                    w: Math.min(6, cols),
+                    h: 3,
+                    ...dataGrid(`gamepad-${g.id}`),
+                  }}
+                  style={z[`gamepad-${g.id}`]}
                 >
-                  <GamepadView gi={gi} />
-                </GridPaper>
-              </div>
-            )
+                  <GridPaper
+                    onClick={updateZ(`gamepad-${g.id}`)}
+                    scroll={true}
+                    title={g.id}
+                    onClose={() =>
+                      setSidebarState((sidebarState) => {
+                        sidebarState.gamepad[gi] = false;
+                        return { ...sidebarState };
+                      })
+                    }
+                  >
+                    <GamepadView gi={gi} />
+                  </GridPaper>
+                </div>
+              )
+            ),
+          []
         )}
       </GridLayout>
     </div>
   );
 }
-
-const GamepadView = (props: { gi: number }) => {
-  const socket = useSocket();
-  const { gamepads } = useContext(GamepadsContext);
-  const { gi } = props;
-  const connectedServer = socket.raw.findIndex(
-    (s) => s.gamepadConnectIndex === gi
-  );
-  const setConnectedServer = (si: number | null) => {
-    if (connectedServer != null && connectedServer >= 0) {
-      socket.getByIndex(connectedServer).setGamepadConnectIndex(null);
-    }
-    if (si >= 0) {
-      socket.getByIndex(si).setGamepadConnectIndex(gi);
-    }
-  };
-  return (
-    <>
-      <Grid container alignItems="center">
-        <Grid item>バックエンドに接続:</Grid>
-        <Grid item xs>
-          <FormControl fullWidth>
-            <InputLabel id={`GamepadViweSelect${gi}`}>接続先</InputLabel>
-            <Select
-              labelId={`GamepadViweSelect${gi}`}
-              value={connectedServer}
-              label="接続先"
-              onChange={(e) => {
-                setConnectedServer(e.target.value);
-              }}
-              size="small"
-            >
-              <MenuItem value={-1}>なし</MenuItem>
-              {socket.raw.map((s, si) => (
-                <MenuItem value={si} key={si}>
-                  {s.serverName}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </Grid>
-      </Grid>
-      <div>
-        buttons
-        <ButtonGroup variant="contained" size="small">
-          {gamepads[gi].buttons.map((b, bi) => (
-            <Button disabled={!b.pressed} key={bi}>
-              {bi}
-            </Button>
-          ))}
-        </ButtonGroup>
-      </div>
-      <div>
-        axes
-        {gamepads[gi].axes.map((b, bi) => (
-          <Grid container>
-            <Grid item>{bi}:</Grid>
-            <Grid item xs>
-              <Slider
-                size="small"
-                value={b * 50 + 50}
-                valueLabelDisplay="none"
-              />
-            </Grid>
-          </Grid>
-        ))}
-      </div>
-    </>
-  );
-};

@@ -61,8 +61,13 @@ void Client::send_error(int func_id, const std::string& error) const
 void Client::updateGamepad(Json::Value msg)
 {
     std::lock_guard lock(internal_mutex);
-    gamepad_state.connected = msg["connected"].as<bool>();
     if (msg["connected"]) {
+        while (gamepad_state.buttons.size() < button_name.size()) {
+            gamepad_state.buttons.push_back(false);
+        }
+        while (gamepad_state.axes.size() < axis_name.size()) {
+            gamepad_state.axes.push_back(0);
+        }
         for (const auto& button : msg["buttons"].getMemberNames()) {
             int bi = std::stoi(button);
             while (gamepad_state.buttons.size() <= bi) {
@@ -81,5 +86,6 @@ void Client::updateGamepad(Json::Value msg)
         gamepad_state.axes.clear();
         gamepad_state.buttons.clear();
     }
+    gamepad_state.connected = msg["connected"].as<bool>();
 }
 }  // namespace WebCFace

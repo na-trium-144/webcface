@@ -3,6 +3,7 @@
 #include <webcface/external/pybind/registration.hpp>
 #include <webcface/external/pybind/logger.hpp>
 #include <webcface/external/pybind/layout.hpp>
+#include <webcface/external/pybind/image.hpp>
 #include <pybind11/pybind11.h>
 namespace WebCFace
 {
@@ -12,5 +13,6 @@ inline void pybindModuleDef(pybind11::module& m)
     pybind::defRegistration(m);
     pybind::defLogger(m);
     pybind::defLayout(m);
+    pybind::defImage(m);
 }
 }  // namespace WebCFace

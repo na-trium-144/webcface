@@ -9,14 +9,6 @@ import { useFunctionFavs, FunctionFavs } from "../lib/useFunctionFavs";
 import { AnyValue, FunctionSettingT, MultiSocketContextI } from "../lib/global";
 import ServerSelectTab from "../components/serverSelectTab";
 
-const looseJsonParse = (obj: AnyValue) => {
-  try {
-    return Function('"use strict";return (' + obj + ")")() as AnyValue;
-  } catch {
-    return obj;
-  }
-};
-
 const call =
   (
     socket: MultiSocketContextI,
@@ -27,7 +19,7 @@ const call =
     console.log("Run Function!!  ", fp.name, new_args);
     const newargs_send = {};
     for (let i = 0; i < new_args.length; i++) {
-      newargs_send[fp.args[i].name] = looseJsonParse(new_args[i]);
+      newargs_send[fp.args[i].name] = new_args[i];
     }
     socket.getByIndex(serverIndex).runCallback(fp.name, newargs_send);
   };
@@ -47,7 +39,7 @@ export const ShellPageFav = (props: {
               .filter((fp) => isFav(`${s.serverName}:${fp.name}`))
               .map((fp, idx) => (
                 <ShellFunctionColumn
-                  key={`${si}:${idx}`}
+                  key={`${s.serverName}:${fp.name}`}
                   name={`${s.serverName}:${fp.name}`}
                   args={fp.args}
                   onSubmit={call(socket, si, fp)}

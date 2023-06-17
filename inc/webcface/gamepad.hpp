@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <string>
 namespace WebCFace
 {
 struct GamepadState {
@@ -8,5 +9,8 @@ struct GamepadState {
     std::vector<double> axes;
 };
 const GamepadState getGamepad();
+
+void setButtonName(const std::vector<std::string>& name);
+void setAxisName(const std::vector<std::string>& name);
 
 }  // namespace WebCFace

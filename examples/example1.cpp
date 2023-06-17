@@ -40,10 +40,11 @@ int main()
     WebCFace::addFunctionToRobot("shell4",
         [](std::string a) { std::cout << "シェル4 " << a << std::endl; }, {"stringの引数"});
     WebCFace::addFunctionToRobot("shell5",
-        [](int value, bool flag, std::string name) {
+        [](double value, bool flag, std::string name) {
             std::cout << "シェル5 " << value << "," << flag << "," << name << std::endl;
         },
-        {"value(double)", "flag(bool)", "name(string)"});
+        {"value(double)", "flag(bool)", "name(string)"},
+        {3, false, "あああああ"});
 
 
     /* WebCFace::addFunctionFromRobot("fakesensor1", []() { return 1; }); */

@@ -3,6 +3,16 @@ import time
 
 webcface.start_server()
 
+webcface.RegisterCallback(
+    "test1",
+    arg={"あ": str},
+    default_value=["abcde"],
+    callback=lambda x: print(f"test1 {x}"),
+)
+webcface.RegisterCallback("test2").arg({"あ": str}).default_value(["abcde"]).callback(
+    lambda x: print(f"test2 {x}")
+)
+
 
 def hello():
     print("hello")
@@ -19,7 +29,11 @@ while True:
     p.add(True)
     p.new_line()
     p.add("i = ").add(webcface.RegisterValue("i", ret=int, value=i)).new_line()
-    p.add(webcface.Button("hello", webcface.RegisterCallback("hello", arg={}, callback=hello))).new_line()
+    p.add(
+        webcface.Button(
+            "hello", webcface.RegisterCallback("hello", arg={}, callback=hello)
+        )
+    ).new_line()
     d = webcface.Drawing(300, 300)
     dl = d.create_layer()
     dl.draw_rect(0, 0, 300, 300, "beige")

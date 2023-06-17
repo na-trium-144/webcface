@@ -26,13 +26,18 @@ void keep_object(const std::string& name, const py::object& obj)
 }
 
 inline void addFunctionToRobotPy(std::string name, py::object callback,
-    std::vector<std::string> arg_names, std::vector<py::object> arg_types_py)
+    std::vector<std::string> arg_names, std::vector<py::object> arg_types_py,
+    const std::vector<py::object>& default_values_py)
 {
     keep_object(name, callback);
 
     std::vector<ValueType> arg_types;
     for (int i = 0; i < arg_names.size(); i++) {
         arg_types.push_back(getValueTypePy(arg_types_py[i]));
+    }
+    std::vector<Json::Value> default_values;
+    for (int i = 0; i < default_values_py.size(); i++) {
+        default_values.push_back(convertFromPy(arg_types[i], default_values_py[i]));
     }
     addFunctionToRobot_withJsonMap(
         name,
@@ -44,7 +49,7 @@ inline void addFunctionToRobotPy(std::string name, py::object callback,
             }
             callback(*args);
         },
-        arg_names, arg_types);
+        arg_names, arg_types, default_values);
 }
 inline void addFunctionFromRobotPy(std::string name, py::object callback, py::object return_type_py)
 {

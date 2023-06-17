@@ -34,6 +34,7 @@ std::unordered_map<std::string, ToRobotInfo> to_robot_var, to_robot_func;
 std::unordered_map<std::string, FromRobotInfo> from_robot;
 std::unordered_map<std::string, ImageInfo> images;
 std::unordered_map<std::string, Json::Value> custom_page_layout;
+std::vector<std::string> button_name, axis_name;
 
 //! drogon起動中はdrogonが動いているスレッド、停止中はstd::nullopt
 std::optional<std::thread> drogon_main_thread;
@@ -240,7 +241,8 @@ std::string settingJson()
 {
     Json::Value root(Json::objectValue);
     Json::Value js_ftor(Json::arrayValue), js_svtor(Json::arrayValue), js_svfr(Json::arrayValue),
-        js_i(Json::arrayValue), js_cp(Json::arrayValue), js_rs(Json::arrayValue);
+        js_i(Json::arrayValue), js_cp(Json::arrayValue), js_rs(Json::arrayValue),
+        js_gb(Json::arrayValue), js_ga(Json::arrayValue);
     {
         std::lock_guard lock(internal_mutex);
         for (const auto& f : to_robot_func) {
@@ -251,6 +253,9 @@ std::string settingJson()
                 Json::Value ainfo(Json::objectValue);
                 ainfo["name"] = f.second.names[ai];
                 ainfo["type"] = f.second.types[ai].getRepr();
+                if (ai < f.second.default_values.size()) {
+                    ainfo["default"] = f.second.default_values[ai];
+                }
                 info["args"].append(ainfo);
             }
             js_ftor.append(info);
@@ -290,6 +295,12 @@ std::string settingJson()
             info["port"] = rs.port;
             js_rs.append(info);
         }
+        for (const auto& name : button_name) {
+            js_gb.append(name);
+        }
+        for (const auto& name : axis_name) {
+            js_ga.append(name);
+        }
     }
     root["server_name"] = getServerName();
     root["version"] = WEBCFACE_VERSION;
@@ -298,6 +309,8 @@ std::string settingJson()
     root["from_robot"] = js_svfr;
     root["images"] = js_i;
     root["related_servers"] = js_rs;
+    root["gamepad_button"] = js_gb;
+    root["gamepad_axis"] = js_ga;
     std::stringstream ss;
     ss << root;
     return ss.str();
@@ -448,15 +461,15 @@ void sendData()
         setting_changed = false;
     }
     const auto from_robot_json = fromRobotJson(true);
-    const auto image_json = imageJson(true);
     const auto log = logJson(true);
     for (const auto& cli : clients) {
         cli.second->send_fromRobot(from_robot_json);
-        cli.second->send_image(image_json);
     }
     if (now_millisec - last_millisec >= 100) {
+        const auto image_json = imageJson(true);
         const auto layout_json = layoutJson(true);
         for (const auto& cli : clients) {
+            cli.second->send_image(image_json);
             cli.second->send_layout(layout_json);
         }
         last_millisec = now_millisec;

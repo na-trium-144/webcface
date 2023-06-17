@@ -2,7 +2,7 @@ import { useContext, createContext, useEffect, useState, useRef } from "react";
 interface SidebarStateI {
   sidebar: boolean;
   admin: boolean;
-  cameraSelect: boolean;
+  image: object;
   terminalLog: boolean[];
   shellFav: boolean;
   shell: boolean[];
@@ -21,7 +21,7 @@ export const useSidebarState = () => {
 const initialSidebarState = {
   sidebar: true,
   admin: false,
-  cameraSelect: false,
+  image: {},
   terminalLog: [],
   shell: [],
   shellFav: false,
@@ -55,6 +55,7 @@ export const SidebarStateProvider = (props) => {
     setLsInit(true);
   }, []);
   useEffect(() => {
+      console.log(sidebarState)
     if (lsInit) {
       saveLsSidebarState(sidebarState);
     }

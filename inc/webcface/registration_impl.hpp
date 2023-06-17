@@ -31,7 +31,7 @@ inline std::string getNewFunctionName()
 
 template <typename... Args>
 void addFunctionToRobot_impl(
-    std::string name, std::function<void(Args...)> callback, std::vector<std::string> arg_names)
+    std::string name, std::function<void(Args...)> callback, std::vector<std::string> arg_names, const std::vector<Json::Value>& default_values)
 {
     // auto arg_names2 = arg_names; どうせコピーするなら最初から引数をコピーで取ればよい
     constexpr std::size_t args_num = sizeof...(Args);
@@ -43,7 +43,7 @@ void addFunctionToRobot_impl(
         std::lock_guard lock(internal_mutex);
 
         bool is_new = (to_robot_func.find(name) == to_robot_func.end());
-        to_robot_func[name] = ToRobotInfo{pr_callback, std::move(arg_names), types};
+        to_robot_func[name] = ToRobotInfo{pr_callback, std::move(arg_names), types, default_values};
         if (is_new) {
             setting_changed = true;
         }
@@ -54,14 +54,14 @@ void addFunctionToRobot_impl(
 
 inline void addFunctionToRobot_withJsonMap(std::string name,
     std::function<void(std::map<std::string, Json::Value>)> callback,
-    std::vector<std::string> arg_names, std::vector<ValueType> arg_types)
+    std::vector<std::string> arg_names, std::vector<ValueType> arg_types, const std::vector<Json::Value>& default_values)
 {
     auto pr_callback = getCallbackJsonToFunction_withJsonMap(arg_names, callback);
     {
         std::lock_guard lock(internal_mutex);
 
         bool is_new = (to_robot_func.find(name) == to_robot_func.end());
-        to_robot_func[name] = ToRobotInfo{pr_callback, std::move(arg_names), std::move(arg_types)};
+        to_robot_func[name] = ToRobotInfo{pr_callback, std::move(arg_names), std::move(arg_types), default_values};
         if (is_new) {
             setting_changed = true;
         }
@@ -79,9 +79,9 @@ inline void addFunctionToRobot_withJsonMap(std::string name,
  */
 template <typename T>
 void addFunctionToRobot(
-    const std::string& name, T callback, const std::vector<std::string>& arg_names = {})
+    const std::string& name, T callback, const std::vector<std::string>& arg_names = {}, const std::vector<Json::Value>& default_values = {})
 {
-    addFunctionToRobot_impl(name, std::function(callback), arg_names);
+    addFunctionToRobot_impl(name, std::function(callback), arg_names, default_values);
 }
 
 //! フロントエンドから値を変更する変数の登録(複数)

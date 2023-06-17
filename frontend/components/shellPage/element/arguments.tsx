@@ -8,6 +8,7 @@ type Props = {
   values: AnyValue[];
   setValues: (values: AnyValue[]) => void;
   onSubmit: (values: AnyValue[]) => void;
+  valueOk: boolean[];
 };
 
 /**
@@ -43,7 +44,6 @@ export default function Arguments(props: Props) {
         const input = (() => {
           switch (type) {
             case "int":
-            case "double":
               return (
                 <IntArg
                   name={name}
@@ -51,6 +51,7 @@ export default function Arguments(props: Props) {
                   onChange={onChange}
                   onSubmit={onSubmit}
                   inputRef={inputRefs.current[i]}
+                  valueOk={props.valueOk[i]}
                 />
               );
             case "bool":
@@ -61,9 +62,20 @@ export default function Arguments(props: Props) {
                   onChange={onChange}
                   onSubmit={onSubmit}
                   inputRef={inputRefs.current[i]}
+                  valueOk={props.valueOk[i]}
                 />
               );
-
+            case "double":
+              return (
+                <AnyArg
+                  name={name}
+                  value={value}
+                  onChange={onChange}
+                  onSubmit={onSubmit}
+                  inputRef={inputRefs.current[i]}
+                  valueOk={props.valueOk[i]}
+                />
+              );
             default:
               return (
                 <AnyArg
@@ -72,6 +84,7 @@ export default function Arguments(props: Props) {
                   onChange={onChange}
                   onSubmit={onSubmit}
                   inputRef={inputRefs.current[i]}
+                  valueOk={props.valueOk[i]}
                 />
               );
           }

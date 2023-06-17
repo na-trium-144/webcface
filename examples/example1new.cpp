@@ -35,6 +35,7 @@ int main()
     "shell4"_callback.arg("stringの引数")
         = [](std::string a) { std::cout << "シェル4 " << a << std::endl; };
     "shell5"_callback.arg("value(double)", "flag(bool)", "name(string)")
+        .default_value(4, true, "いいいいい")
         = [](int value, bool flag, std::string name) {
               std::cout << "シェル5 " << value << "," << flag << "," << name << std::endl;
           };

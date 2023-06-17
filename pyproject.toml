@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "webcface"
-version = "0.7.6"
+version = "0.8.8"
 description = "WebCFace Python Wrapper"
 authors = ["Your Name <you@example.com>"]
 readme = "README.md"

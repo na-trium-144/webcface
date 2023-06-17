@@ -23,11 +23,16 @@ export const useSocket = () => {
   return useContext(SocketContext);
 };
 
-const GamePadCheck = (props: { ws: any; gamepadConnectIndex: number }) => {
+const GamePadCheck = (props: {
+  ws: any;
+  gamepadConnectIndex: number;
+  buttonMap: { current: number[] };
+  axisMap: { current: { id: number; inverse: boolean }[] };
+}) => {
   // ゲームパッド状態の送信
   const { gamepads } = useContext(GamepadsContext);
   const prevValue = useRef({ connected: false, buttons: {}, axes: {} });
-  const { gamepadConnectIndex, ws } = props;
+  const { gamepadConnectIndex, ws, buttonMap, axisMap } = props;
   useEffect(() => {
     if (gamepadConnectIndex != null) {
       const sendData = { connected: true, buttons: {}, axes: {} };
@@ -36,23 +41,24 @@ const GamePadCheck = (props: { ws: any; gamepadConnectIndex: number }) => {
         changed = true;
         prevValue.current.connected = true;
       }
-      for (
-        let bi = 0;
-        bi < gamepads[gamepadConnectIndex].buttons.length;
-        bi++
-      ) {
-        const b = gamepads[gamepadConnectIndex].buttons[bi];
-        if (prevValue.current.buttons[bi] !== b.pressed) {
-          prevValue.current.buttons[bi] = b.pressed;
-          sendData.buttons[bi] = b.pressed;
+      for (let bi = 0; bi < buttonMap.current.length; bi++) {
+        const b = gamepads[gamepadConnectIndex].buttons[buttonMap.current[bi]];
+        const bp = b && b.pressed;
+        if (prevValue.current.buttons[bi] !== bp) {
+          prevValue.current.buttons[bi] = bp;
+          sendData.buttons[bi] = bp;
           changed = true;
         }
       }
-      for (let ai = 0; ai < gamepads[gamepadConnectIndex].axes.length; ai++) {
-        const a = gamepads[gamepadConnectIndex].axes[ai];
-        if (prevValue.current.axes[ai] !== a) {
-          prevValue.current.axes[ai] = a;
-          sendData.axes[ai] = a;
+      for (let ai = 0; ai < axisMap.current.length; ai++) {
+        const a = gamepads[gamepadConnectIndex].axes[axisMap.current[ai].id];
+        let aa = a ? a : 0;
+        if (axisMap.current[ai].inverse) {
+          aa *= -1;
+        }
+        if (prevValue.current.axes[ai] !== aa) {
+          prevValue.current.axes[ai] = aa;
+          sendData.axes[ai] = aa;
           changed = true;
         }
       }
@@ -75,7 +81,7 @@ const GamePadCheck = (props: { ws: any; gamepadConnectIndex: number }) => {
         );
       }
     }
-  }, [gamepadConnectIndex, gamepads, ws]);
+  }, [gamepadConnectIndex, gamepads, ws, buttonMap, axisMap]);
   return <></>;
 };
 
@@ -127,6 +133,8 @@ const SocketImpl = (props: { index: number }) => {
   const [gamepadConnectIndex, setGamepadConnectIndex] = useState<number | null>(
     null
   );
+  const gamepadButtonMap = useRef<number[]>([]);
+  const gamepadAxisMap = useRef<{ id: number; inverse: boolean }[]>([]);
 
   // socketContextValueとsocketContextValues[index]を更新する
   const setSocketContextValue =
@@ -181,12 +189,12 @@ const SocketImpl = (props: { index: number }) => {
           name: string,
           args: AnyValue[] | object | undefined
         ) => {
+          const argNames = socketContextValue.current.functionSetting
+            .find((f) => f.name === name)
+            .args.map((a) => a.name);
           if (args == undefined) {
             args = {};
           } else if (Array.isArray(args)) {
-            const argNames = socketContextValue.current.functionSetting
-              .find((f) => f.name === name)
-              .args.map((a) => a.name);
             const argsList = args;
             args = {};
             for (let i = 0; i < argsList.length; i++) {
@@ -201,7 +209,11 @@ const SocketImpl = (props: { index: number }) => {
             callback_id: callback_id_now,
           };
           while (errorMessage.current.length <= callback_id_now) {
-            errorMessage.current.push({ func: name, message: "Connecting" });
+            errorMessage.current.push({
+              func: name,
+              args: argNames.map((n) => args[n]),
+              message: "Connecting",
+            });
           }
           console.log("call function = ", data);
           emit("function", data);
@@ -252,6 +264,8 @@ const SocketImpl = (props: { index: number }) => {
                 gamepadConnectIndex: gi,
               }));
             },
+            gamepadButtonMap: gamepadButtonMap,
+            gamepadAxisMap: gamepadAxisMap,
           }));
           terminalLog.current = [];
           const fetchHostname = async () => {
@@ -325,6 +339,8 @@ const SocketImpl = (props: { index: number }) => {
             imageSetting: data.images.sort((a, b) =>
               a.name > b.name ? 1 : -1
             ),
+            gamepadButtonSetting: data.gamepad_button,
+            gamepadAxisSetting: data.gamepad_axis,
             relatedServerSetting: data.related_servers,
             serverName: data.server_name,
             version: data.version,
@@ -413,6 +429,9 @@ const SocketImpl = (props: { index: number }) => {
               }
               customPageLayout.current[idx].layout[parseInt(ci)] = c;
             }
+            customPageLayout.current[idx].layout = customPageLayout.current[
+              idx
+            ].layout.slice(0, l.length);
           }
           break;
         }
@@ -431,7 +450,12 @@ const SocketImpl = (props: { index: number }) => {
   }, [reconnectFlag, index]);
   return (
     <>
-      <GamePadCheck ws={ws} gamepadConnectIndex={gamepadConnectIndex} />
+      <GamePadCheck
+        ws={ws}
+        gamepadConnectIndex={gamepadConnectIndex}
+        buttonMap={gamepadButtonMap}
+        axisMap={gamepadAxisMap}
+      />
     </>
   );
 };
@@ -450,6 +474,8 @@ const socketContextDefaultValue: SocketContextI = {
   getCustomPageLayout: () => [],
   imageSetting: [],
   relatedServerSetting: [],
+  gamepadButtonSetting: [],
+  gamepadAxisSetting: [],
   getFromRobotData: () => [],
   clearFromRobotValue: () => {},
   getTerminalLog: () => [],

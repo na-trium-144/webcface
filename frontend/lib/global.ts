@@ -73,6 +73,7 @@ export type RelatedServerSettingT = {
 };
 export type ErrorInfoT = {
   func: string;
+  args: AnyValue[];
   message: string;
 };
 
@@ -93,7 +94,11 @@ export interface SocketContextI {
   // customPageLayoutSetting: CustomPageLayoutSettingT[];
   imageSetting: ImageSettingT[];
   relatedServerSetting: RelatedServerSettingT[];
-
+  gamepadButtonSetting: string[];
+  gamepadAxisSetting: string[];
+  gamepadButtonMap: number[];
+  gamepadAxisMap: number[];
+  
   getCustomPageLayout: () => CustomPageLayoutSettingT[];
 
   // fromRobot

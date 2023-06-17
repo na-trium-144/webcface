@@ -141,6 +141,8 @@ struct Displayable {
 struct RegisterCallback {
     std::string callback_name;
     std::vector<Displayable> args;  // 引数名または引数の値
+    std::vector<Json::Value> default_values;
+
     RegisterCallback() : callback_name(getNewFunctionName()) {}
     //! 関数名を指定
     /*! \sa WebCFace::Literals::operator""_callback()
@@ -167,7 +169,7 @@ struct RegisterCallback {
             arg_names.push_back(a.as<std::string>());
         }
         args.clear();
-        addFunctionToRobot(callback_name, callback, arg_names);
+        addFunctionToRobot(callback_name, callback, arg_names, default_values);
         return *this;
     }
 
@@ -200,6 +202,14 @@ struct RegisterCallback {
     {
         this->args.push_back(arg);
         return this->arg(others...);
+    }
+
+    RegisterCallback& default_value() { return *this; }
+    template <typename Arg, typename... T>
+    RegisterCallback& default_value(const Arg& arg, const T&... others)
+    {
+        this->default_values.push_back(serialize(arg));
+        return this->default_value(others...);
     }
     //! 引数名を設定 or 引数の値を設定 (<<演算子)
     //! \sa arg()

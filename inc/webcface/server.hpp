@@ -33,6 +33,7 @@ struct RobotInfoBase {
     std::function<CallbackT> callback;
     std::vector<std::string> names;
     std::vector<ValueType> types;
+    std::vector<Json::Value> default_values;
 };
 struct ImageInfo {
     Json::Value src;
@@ -45,6 +46,7 @@ extern std::unordered_map<std::string, ToRobotInfo> to_robot_var, to_robot_func;
 extern std::unordered_map<std::string, FromRobotInfo> from_robot;
 extern std::unordered_map<std::string, ImageInfo> images;
 extern std::unordered_map<std::string, Json::Value> custom_page_layout;
+extern std::vector<std::string> button_name, axis_name;
 extern bool setting_changed;
 
 std::int64_t getTime();

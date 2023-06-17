@@ -135,6 +135,13 @@ export default function Sidebar(props: Props) {
       id: number;
     }[]
   >([]);
+  const [images, setImages] = useState<
+    {
+      name: string;
+      sid: number;
+      id: number;
+    }[]
+  >([]);
   useEffect(() => {
     const i = setTimeout(() => {
       setLayouts(
@@ -142,6 +149,19 @@ export default function Sidebar(props: Props) {
           (prev, s, si) =>
             prev.concat(
               s.getCustomPageLayout().map((l, li) => ({
+                name: l.name,
+                sid: si,
+                id: li,
+              }))
+            ),
+          []
+        )
+      );
+      setImages(
+        socket.raw.reduce(
+          (prev, s, si) =>
+            prev.concat(
+              s.getImageData().map((l, li) => ({
                 name: l.name,
                 sid: si,
                 id: li,
@@ -176,6 +196,21 @@ export default function Sidebar(props: Props) {
                 }),
             }))}
           />
+          <SidebarButtonCollapse
+            name="カメラ画像"
+            icon={<PhotoCameraIcon />}
+            contents={images.map((l) => ({
+              name: l.name,
+              icon: <PhotoCameraIcon />,
+              selected: !!sidebarState.image[`${l.sid}:${l.id}`],
+              onClick: () =>
+                setSidebarState((sidebarState) => {
+                  sidebarState.image[`${l.sid}:${l.id}`] =
+                    !sidebarState.image[`${l.sid}:${l.id}`];
+                  return { ...sidebarState };
+                }),
+            }))}
+          />
           <SidebarButton
             selected={sidebarState.logSelect}
             onClick={() =>
@@ -186,17 +221,6 @@ export default function Sidebar(props: Props) {
             }
             name="グラフ表示"
             icon={<AutoGraphIcon />}
-          />
-          <SidebarButton
-            selected={sidebarState.cameraSelect}
-            onClick={() =>
-              setSidebarState((sidebarState) => ({
-                ...sidebarState,
-                cameraSelect: !sidebarState.cameraSelect,
-              }))
-            }
-            name="カメラ画像"
-            icon={<PhotoCameraIcon />}
           />
           <SidebarButtonCollapse
             name="ログ出力"
@@ -326,8 +350,7 @@ const default_items: MenuItem[] = [
   },
 ];
 
-type Props = {
-};
+type Props = {};
 export function SidebarRouter(props: Props) {
   const { pathname, query } = useRouter();
   const socket = useSocket();

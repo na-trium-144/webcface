@@ -21,9 +21,33 @@ type Props = {
 export default function ShellFunctionColumn(props: Props) {
   const [values, setValues] = useState<AnyValue[]>([]);
   useEffect(() => {
-    setValues(props.args.map((a) => a.default));
+    setValues((values) =>
+      props.args.map((a, i) => (i < values.length ? values[i] : a.default))
+    );
   }, [props.args]);
   const [mouse, setMouse] = useState<boolean>(false);
+  const valueOk = props.args.map((a, ai) => {
+    switch (a.type) {
+      case "bool":
+        return typeof values[ai] === "boolean";
+      case "int":
+      case "float":
+        return typeof values[ai] === "number" || !isNaN(Number(values[ai]));
+      default:
+        return true;
+    }
+  });
+  const convertValue = () => props.args.map((a, ai) => {
+    switch(a.type){
+     case "bool":
+        return Boolean(values[ai]);
+      case "int":
+      case "float":
+        return Number(values[ai]);
+      default:
+        return values[ai]; 
+    }
+  })
   return (
     <Box sx={{ background: mouse ? "lightyellow" : "inherit" }}>
       <Grid
@@ -51,15 +75,20 @@ export default function ShellFunctionColumn(props: Props) {
             args={props.args}
             values={values}
             setValues={setValues}
+            valueOk={valueOk}
             onSubmit={() => {
-              props.onSubmit(values);
+              if (!valueOk.includes(false)) {
+                props.onSubmit(convertValue());
+              }
             }}
           />
         </Grid>
         <Grid item>
           <StartButton
             onClick={() => {
-              props.onSubmit(values);
+              if (!valueOk.includes(false)) {
+                props.onSubmit(convertValue());
+              }
             }}
           />
         </Grid>
