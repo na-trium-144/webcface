@@ -3,6 +3,8 @@
 #include <memory>
 #include <optional>
 #include <cstdint>
+#include <functional>
+#include <type_traits>
 
 namespace WebCFace {
 
@@ -12,6 +14,8 @@ template <typename T>
 class SyncData {
   private:
     std::shared_ptr<SyncDataStore<T>> store;
+
+  protected:
     std::string from, name;
 
   public:
@@ -106,6 +110,45 @@ class Text : public SyncData<std::string> {
     auto &operator=(const std::string &data) {
         this->set(data);
         return *this;
+    }
+};
+
+class Func : public SyncData<std::function<AnyArg(std::vector<AnyArg>)>> {
+    template <typename... Args, typename Ret>
+    void set_impl(std::function<Ret(Args...)> func) {
+        this->SyncData<DataType>::set([func](std::vector<AnyArg> args_vec) {
+            std::tuple<Args...> args_tuple;
+            argToTuple(args_vec, args_tuple);
+            if constexpr (std::is_void_v<Ret>) {
+                std::apply(func, args_tuple);
+                return AnyArg{};
+            } else {
+                Ret ret = std::apply(func, args_tuple);
+                return static_cast<AnyArg>(ret);
+            }
+        });
+    }
+
+  public:
+    Func(std::shared_ptr<SyncDataStore<DataType>> store,
+         const std::string &from, const std::string &name)
+        : SyncData<DataType>(store, from, name) {}
+    template <typename T>
+    void set(const T &func) {
+        this->set_impl(std::function(func));
+    }
+    template <typename T>
+    auto &operator=(const T &func) {
+        this->set(func);
+        return *this;
+    }
+
+    template <typename... Args>
+    AnyArg run(Args... args) {
+        std::tuple<Args...> args_tuple = {args...};
+        std::vector<AnyArg> args_vec(sizeof...(args));
+        tupleToArg(args_vec, args_tuple);
+        return this->get().operator()(args_vec);
     }
 };
 

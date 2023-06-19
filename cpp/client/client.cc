@@ -9,9 +9,6 @@
 namespace WebCFace {
 
 Client::Client(const std::string &name, const std::string &host, int port) {
-    value_store = std::make_shared<SyncDataStore<Value::DataType>>();
-    text_store = std::make_shared<SyncDataStore<Text::DataType>>();
-
     using namespace drogon;
     ws = WebSocketClient::newWebSocketClient(host, port, false);
     auto req = HttpRequest::newHttpRequest();

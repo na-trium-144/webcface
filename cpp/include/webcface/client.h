@@ -13,8 +13,12 @@ class Client {
     std::shared_ptr<drogon::WebSocketClient> ws;
     bool connected = false;
 
-    std::shared_ptr<SyncDataStore<Value::DataType>> value_store;
-    std::shared_ptr<SyncDataStore<Text::DataType>> text_store;
+    std::shared_ptr<SyncDataStore<Value::DataType>> value_store =
+        std::make_shared<SyncDataStore<Value::DataType>>();
+    std::shared_ptr<SyncDataStore<Text::DataType>> text_store =
+        std::make_shared<SyncDataStore<Text::DataType>>();
+    std::shared_ptr<SyncDataStore<Func::DataType>> func_store =
+        std::make_shared<SyncDataStore<Func::DataType>>();
 
     void onRecv(const std::string &message);
 
@@ -34,6 +38,10 @@ class Client {
     Text text(const std::string &name) { return text("", name); }
     const Text text(const std::string &from, const std::string &name) {
         return Text{text_store, from, name};
+    }
+    Func func(const std::string &name) { return func("", name); }
+    const Func func(const std::string &from, const std::string &name) {
+        return Func{func_store, from, name};
     }
 };
 

@@ -73,5 +73,6 @@ T SyncData<T>::get() const {
 
 instantiate(Value);
 instantiate(Text);
+instantiate(Func);
 
 } // namespace WebCFace
