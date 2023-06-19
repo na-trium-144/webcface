@@ -14,6 +14,39 @@ void ClientData::onRecv(const std::string &message) {
         std::cout << this->name << ": connected" << std::endl;
         store.clients_by_name.emplace(name, store.getClient(con));
         break;
+    case MessageKind::call: {
+        auto v = std::any_cast<Call>(obj);
+        v.caller = this->name;
+        std::cout << this->name << ": call [" << v.caller_id << "] "
+                  << v.receiver << ":" << v.name << " (args = ";
+        for (const auto &a : v.args) {
+            std::cout << a << ", ";
+        }
+        std::cout << ")" << std::endl;
+        // そのままターゲットのクライアントに送る
+        auto c_it = store.clients_by_name.find(v.receiver);
+        if (c_it != store.clients_by_name.end()) {
+            c_it->second->con->send(pack(v));
+        } else {
+            // 関数存在しないときの処理
+        }
+        break;
+    }
+    case MessageKind::call_response: {
+        auto v = std::any_cast<CallResponse>(obj);
+        std::cout << this->name << ": call response [" << v.caller_id << "] '"
+                  << v.response;
+        if (v.is_error) {
+            std::cout << "' (error)";
+        }
+        std::cout << std::endl;
+        // そのままcallerに送る
+        auto c_it = store.clients_by_name.find(v.caller);
+        if (c_it != store.clients_by_name.end()) {
+            c_it->second->con->send(pack(v));
+        }
+        break;
+    }
     case MessageKind::value: {
         auto v = std::any_cast<Value>(obj);
         std::cout << this->name << ": value " << v.name << " = " << v.data
@@ -65,8 +98,8 @@ void ClientData::onRecv(const std::string &message) {
                 this->con->send(
                     pack(Recv<Value>{{}, s.from, s.name, it->second.back()}));
                 std::cout << "update value " << s.from << ":" << s.name
-                          << " (= " << it->second.back() << " ) -> " << this->name
-                          << std::endl;
+                          << " (= " << it->second.back() << " ) -> "
+                          << this->name << std::endl;
             }
         }
         break;
@@ -84,8 +117,8 @@ void ClientData::onRecv(const std::string &message) {
                 this->con->send(
                     pack(Recv<Text>{{}, s.from, s.name, it->second.back()}));
                 std::cout << "update text " << s.from << ":" << s.name
-                          << " (= " << it->second.back() << " ) -> " << this->name
-                          << std::endl;
+                          << " (= " << it->second.back() << " ) -> "
+                          << this->name << std::endl;
             }
         }
         break;

@@ -21,8 +21,8 @@ class AnyArg {
     explicit AnyArg(const std::string &value) : value(value) {}
     explicit AnyArg(double value) : value(std::to_string(value)) {}
 
-    operator const std::string &() { return value; }
-    operator double() {
+    operator const std::string &() const { return value; }
+    operator double() const {
         try {
             return std::stod(value);
         } catch (...) {
@@ -32,12 +32,12 @@ class AnyArg {
 
     template <typename T>
         requires std::convertible_to<double, T>
-    operator T() {
+    operator T() const {
         return static_cast<T>(operator double());
     }
     template <typename T>
         requires std::convertible_to<std::string, T>
-    operator T() {
+    operator T() const {
         return static_cast<T>(operator const std::string &());
     }
 };

@@ -66,22 +66,14 @@ T SyncData<T>::get() const {
     }
 }
 
-void FuncStore::set(const std::string &name, FuncType data) {
-    std::lock_guard lock(mtx);
-    funcs[name] = data;
-}
-FuncStore::FuncType FuncStore::get(const std::string &name) {
-    std::lock_guard lock(mtx);
-    return funcs[name];
-}
-
 // インスタンス化
-#define instantiate(T)                                                         \
+#define INSTANTIATE(T)                                                         \
     template class SyncData<T::DataType>;                                      \
     template class SyncDataStore<T::DataType>;
 
-instantiate(Value);
-instantiate(Text);
-instantiate(Func);
+INSTANTIATE(Value);
+INSTANTIATE(Text);
+INSTANTIATE(Func);
+
 
 } // namespace WebCFace

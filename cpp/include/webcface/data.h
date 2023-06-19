@@ -6,7 +6,6 @@
 #include <functional>
 #include <type_traits>
 #include "data_store.h"
-#include "func.h"
 #include "any_arg.h"
 
 namespace WebCFace {
@@ -31,6 +30,23 @@ class SyncData {
     T get() const;
     operator T() const { return this->get(); }
 };
+
+template <typename T>
+auto &operator>>(std::basic_istream<char> &is, SyncData<T> &data) {
+    T v;
+    is >> v;
+    data.set(v);
+    return is;
+}
+template <typename T>
+auto &operator>>(std::basic_istream<char> &is, SyncData<T> &&data) {
+    SyncData<T> d = data;
+    return is >> d;
+}
+template <typename T>
+auto &operator<<(std::basic_ostream<char> &os, const SyncData<T> &data) {
+    return os << data.get();
+}
 
 class Value : public SyncData<double> {
   public:
@@ -116,47 +132,5 @@ class Text : public SyncData<std::string> {
     }
 };
 
-class Func : public SyncData<FuncInfo> {
-    std::shared_ptr<FuncStore> func_impl_store;
-    template <typename... Args, typename Ret>
-    void set_impl(std::function<Ret(Args...)> func) {
-        this->SyncData<DataType>::set(FuncInfo{func});
-        func_impl_store->set(name, [func](std::vector<AnyArg> args_vec) {
-            std::tuple<Args...> args_tuple;
-            argToTuple(args_vec, args_tuple);
-            if constexpr (std::is_void_v<Ret>) {
-                std::apply(func, args_tuple);
-                return AnyArg{};
-            } else {
-                Ret ret = std::apply(func, args_tuple);
-                return static_cast<AnyArg>(ret);
-            }
-        });
-    }
-
-  public:
-    Func(std::shared_ptr<SyncDataStore<DataType>> store,
-         std::shared_ptr<FuncStore> func_impl_store,
-         const std::string &from, const std::string &name)
-        : SyncData<DataType>(store, from, name), func_impl_store(func_impl_store) {}
-
-    template <typename T>
-    void set(const T &func) {
-        this->set_impl(std::function(func));
-    }
-    template <typename T>
-    auto &operator=(const T &func) {
-        this->set(func);
-        return *this;
-    }
-
-    template <typename... Args>
-    AnyArg run(Args... args) {
-        std::tuple<Args...> args_tuple = {args...};
-        std::vector<AnyArg> args_vec(sizeof...(args));
-        tupleToArg(args_vec, args_tuple);
-        return func_impl_store->get(name).operator()(args_vec);
-    }
-};
 
 } // namespace WebCFace

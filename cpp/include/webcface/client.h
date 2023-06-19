@@ -25,6 +25,8 @@ class Client {
     void onRecv(const std::string &message);
 
   public:
+    friend Func;
+
     Client() = delete;
     Client(const Client &) = delete;
     const Client &operator=(const Client &) = delete;
@@ -43,7 +45,7 @@ class Client {
     }
     Func func(const std::string &name) { return func("", name); }
     const Func func(const std::string &from, const std::string &name) {
-        return Func{func_store, func_impl_store, from, name};
+        return Func{func_store, func_impl_store, this, from, name};
     }
 };
 

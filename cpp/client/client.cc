@@ -16,9 +16,7 @@ Client::Client(const std::string &name, const std::string &host, int port) {
 
     ws->setMessageHandler(
         [this](const std::string &message, const WebSocketClientPtr &ws,
-           const WebSocketMessageType &type) { 
-            onRecv(message);
-            });
+               const WebSocketMessageType &type) { onRecv(message); });
     ws->setConnectionClosedHandler(
         [](const WebSocketClientPtr &ws) { std::cout << "closed\n"; });
 
@@ -47,7 +45,8 @@ void Client::send() {
         }
         auto value_subsc = value_store->transfer_subsc();
         for (const auto &v : value_subsc) {
-            c->send(Message::pack(Message::Subscribe<Message::Value>{{}, v.first, v.second}));
+            c->send(Message::pack(
+                Message::Subscribe<Message::Value>{{}, v.first, v.second}));
         }
         auto text_send = text_store->transfer_send();
         for (const auto &v : text_send) {
@@ -55,12 +54,13 @@ void Client::send() {
         }
         auto text_subsc = text_store->transfer_subsc();
         for (const auto &v : text_subsc) {
-            c->send(Message::pack(Message::Subscribe<Message::Text>{{}, v.first, v.second}));
+            c->send(Message::pack(
+                Message::Subscribe<Message::Text>{{}, v.first, v.second}));
         }
     }
 }
-void Client::onRecv(const std::string& message){
-        using namespace WebCFace::Message;
+void Client::onRecv(const std::string &message) {
+    using namespace WebCFace::Message;
     auto [kind, obj] = unpack(message);
     switch (kind) {
     case kind_recv(MessageKind::value): {
@@ -71,6 +71,33 @@ void Client::onRecv(const std::string& message){
     case kind_recv(MessageKind::text): {
         auto r = std::any_cast<Recv<WebCFace::Message::Text>>(obj);
         text_store->set_recv(r.from, r.name, r.data);
+        break;
+    }
+    case MessageKind::call: {
+        auto r = std::any_cast<Call>(obj);
+        auto res = this->func(r.name).run_impl(r.args).get();
+        std::string response;
+        if (res.is_error) {
+            response = res.error_msg;
+        } else {
+            response = static_cast<std::string>(res.result);
+        }
+        // todo: これセグフォしない?
+        ws->getConnection()->send(pack(CallResponse{
+            {}, r.caller_id, r.caller, res.found, res.is_error, response}));
+        break;
+    }
+    case MessageKind::call_response: {
+        auto r = std::any_cast<CallResponse>(obj);
+        auto res = func_impl_store->getResult(r.caller_id);
+        res.found = r.found;
+        res.is_error = r.is_error;
+        if (r.is_error) {
+            res.error_msg = r.response;
+        } else {
+            res.result = static_cast<AnyArg>(r.response);
+        }
+        res.setReady();
         break;
     }
     }
