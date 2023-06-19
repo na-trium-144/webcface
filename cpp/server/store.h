@@ -1,15 +1,15 @@
 #pragma once
-#include "client.h"
+#include "s_client_data.h"
 #include <drogon/WebSocketController.h>
 #include <unordered_map>
 #include <memory>
 
 namespace WebCFace::Server {
 inline struct Store {
-    std::unordered_map<Client::wsConnPtr, std::shared_ptr<Client>> clients;
-    std::unordered_map<std::string, std::shared_ptr<Client>> clients_by_name;
+    std::unordered_map<ClientData::wsConnPtr, std::shared_ptr<ClientData>> clients;
+    std::unordered_map<std::string, std::shared_ptr<ClientData>> clients_by_name;
     Store() : clients() {}
-    void newClient(const Client::wsConnPtr &con);
-    std::shared_ptr<Client> getClient(const Client::wsConnPtr &con);
+    void newClient(const ClientData::wsConnPtr &con);
+    std::shared_ptr<ClientData> getClient(const ClientData::wsConnPtr &con);
 } store;
 } // namespace WebCFace::Server

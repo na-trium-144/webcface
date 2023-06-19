@@ -1,4 +1,3 @@
-#include "connection.h"
 #include <drogon/WebSocketClient.h>
 #include <drogon/HttpAppFramework.h>
 #include <future>

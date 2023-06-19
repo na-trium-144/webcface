@@ -7,7 +7,7 @@
 #include "../message/message.h"
 
 namespace WebCFace::Server {
-class Client {
+class ClientData {
   public:
     using wsConnPtr = drogon::WebSocketConnectionPtr;
 
@@ -20,10 +20,10 @@ class Client {
     std::set<std::pair<std::string, std::string>> text_subsc;
 
   public:
-    Client() = delete;
-    Client(const Client &) = delete;
-    Client &operator=(const Client &) = delete;
-    explicit Client(const wsConnPtr &con) : con(con) {}
+    ClientData() = delete;
+    ClientData(const ClientData &) = delete;
+    ClientData &operator=(const ClientData &) = delete;
+    explicit ClientData(const wsConnPtr &con) : con(con) {}
 
     void onRecv(const std::string &msg);
     std::string name;

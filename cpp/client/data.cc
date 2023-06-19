@@ -1,4 +1,3 @@
-#include "entry.h"
 #include <webcface/webcface.h>
 #include <iostream>
 #include <cassert>

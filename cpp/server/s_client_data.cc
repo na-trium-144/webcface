@@ -1,11 +1,11 @@
-#include "client.h"
+#include "s_client_data.h"
 #include "store.h"
 #include "../message/message.h"
 
 #include <iostream>
 
 namespace WebCFace::Server {
-void Client::onRecv(const std::string &message) {
+void ClientData::onRecv(const std::string &message) {
     using namespace WebCFace::Message;
     auto [kind, obj] = unpack(message);
     switch (kind) {
