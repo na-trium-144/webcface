@@ -4,8 +4,15 @@
 #include <tuple>
 #include <concepts>
 #include <stdexcept>
-
+#include <cstdint>
 namespace WebCFace {
+enum class AbstArgType {
+    none_,
+    string_,
+    bool_,
+    int_,
+    float_,
+};
 class AnyArg {
     std::string value;
 
@@ -13,6 +20,7 @@ class AnyArg {
     AnyArg() : value("") {}
     explicit AnyArg(const std::string &value) : value(value) {}
     explicit AnyArg(double value) : value(std::to_string(value)) {}
+
     operator const std::string &() { return value; }
     operator double() {
         try {
@@ -21,6 +29,7 @@ class AnyArg {
             return 0;
         }
     }
+
     template <typename T>
         requires std::convertible_to<double, T>
     operator T() {

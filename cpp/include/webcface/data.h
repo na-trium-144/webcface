@@ -5,6 +5,9 @@
 #include <cstdint>
 #include <functional>
 #include <type_traits>
+#include "data_store.h"
+#include "func.h"
+#include "any_arg.h"
 
 namespace WebCFace {
 
@@ -113,10 +116,11 @@ class Text : public SyncData<std::string> {
     }
 };
 
-class Func : public SyncData<std::function<AnyArg(std::vector<AnyArg>)>> {
+class Func : public SyncData<FuncInfo> {
     template <typename... Args, typename Ret>
     void set_impl(std::function<Ret(Args...)> func) {
-        this->SyncData<DataType>::set([func](std::vector<AnyArg> args_vec) {
+        this->SyncData<DataType>::set(FuncInfo{func});
+        auto f = [func](std::vector<AnyArg> args_vec) {
             std::tuple<Args...> args_tuple;
             argToTuple(args_vec, args_tuple);
             if constexpr (std::is_void_v<Ret>) {
@@ -126,10 +130,11 @@ class Func : public SyncData<std::function<AnyArg(std::vector<AnyArg>)>> {
                 Ret ret = std::apply(func, args_tuple);
                 return static_cast<AnyArg>(ret);
             }
-        });
+        };
     }
 
   public:
+    using FuncType = std::function<AnyArg(std::vector<AnyArg>)>;
     Func(std::shared_ptr<SyncDataStore<DataType>> store,
          const std::string &from, const std::string &name)
         : SyncData<DataType>(store, from, name) {}
