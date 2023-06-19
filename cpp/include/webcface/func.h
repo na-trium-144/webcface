@@ -2,11 +2,15 @@
 #include <vector>
 #include <type_traits>
 #include <functional>
+#include <mutex>
+#include <unordered_map>
+#include <string>
 #include "any_arg.h"
+
 namespace WebCFace {
 template <typename T>
 static AbstArgType abstTypeOf() {
-    if constexpr (std::is_void<T>) {
+    if constexpr (std::is_void_v<T>) {
         return AbstArgType::none_;
     } else if constexpr (std::is_same_v<bool, T>) {
         return AbstArgType::bool_;
@@ -21,6 +25,7 @@ static AbstArgType abstTypeOf() {
 struct FuncInfo {
     AbstArgType return_type;
     std::vector<AbstArgType> args_type;
+    FuncInfo() : return_type(AbstArgType::none_), args_type() {}
     template <typename... Args, typename Ret>
     explicit FuncInfo(std::function<Ret(Args...)>)
         : return_type(abstTypeOf<Ret>()), args_type({abstTypeOf<Args>()...}) {}
@@ -36,9 +41,7 @@ class FuncStore {
 
   public:
     void set(const std::string &name, FuncType data);
-    FuncType get(const std::string &from, const std::string &name);
-    std::unordered_map<std::string, T> transfer_send();
-    std::set<std::pair<std::string, std::string>> transfer_subsc();
+    FuncType get(const std::string &name);
 };
 
 } // namespace WebCFace

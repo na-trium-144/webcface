@@ -117,10 +117,11 @@ class Text : public SyncData<std::string> {
 };
 
 class Func : public SyncData<FuncInfo> {
+    std::shared_ptr<FuncStore> func_impl_store;
     template <typename... Args, typename Ret>
     void set_impl(std::function<Ret(Args...)> func) {
         this->SyncData<DataType>::set(FuncInfo{func});
-        auto f = [func](std::vector<AnyArg> args_vec) {
+        func_impl_store->set(name, [func](std::vector<AnyArg> args_vec) {
             std::tuple<Args...> args_tuple;
             argToTuple(args_vec, args_tuple);
             if constexpr (std::is_void_v<Ret>) {
@@ -130,14 +131,15 @@ class Func : public SyncData<FuncInfo> {
                 Ret ret = std::apply(func, args_tuple);
                 return static_cast<AnyArg>(ret);
             }
-        };
+        });
     }
 
   public:
-    using FuncType = std::function<AnyArg(std::vector<AnyArg>)>;
     Func(std::shared_ptr<SyncDataStore<DataType>> store,
+         std::shared_ptr<FuncStore> func_impl_store,
          const std::string &from, const std::string &name)
-        : SyncData<DataType>(store, from, name) {}
+        : SyncData<DataType>(store, from, name), func_impl_store(func_impl_store) {}
+
     template <typename T>
     void set(const T &func) {
         this->set_impl(std::function(func));
@@ -153,7 +155,7 @@ class Func : public SyncData<FuncInfo> {
         std::tuple<Args...> args_tuple = {args...};
         std::vector<AnyArg> args_vec(sizeof...(args));
         tupleToArg(args_vec, args_tuple);
-        return this->get().operator()(args_vec);
+        return func_impl_store->get(name).operator()(args_vec);
     }
 };
 

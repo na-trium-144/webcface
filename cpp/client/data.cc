@@ -66,6 +66,15 @@ T SyncData<T>::get() const {
     }
 }
 
+void FuncStore::set(const std::string &name, FuncType data) {
+    std::lock_guard lock(mtx);
+    funcs[name] = data;
+}
+FuncStore::FuncType FuncStore::get(const std::string &name) {
+    std::lock_guard lock(mtx);
+    return funcs[name];
+}
+
 // インスタンス化
 #define instantiate(T)                                                         \
     template class SyncData<T::DataType>;                                      \

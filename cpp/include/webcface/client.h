@@ -20,6 +20,8 @@ class Client {
     std::shared_ptr<SyncDataStore<Func::DataType>> func_store =
         std::make_shared<SyncDataStore<Func::DataType>>();
 
+    std::shared_ptr<FuncStore> func_impl_store = std::make_shared<FuncStore>();
+
     void onRecv(const std::string &message);
 
   public:
@@ -41,7 +43,7 @@ class Client {
     }
     Func func(const std::string &name) { return func("", name); }
     const Func func(const std::string &from, const std::string &name) {
-        return Func{func_store, from, name};
+        return Func{func_store, func_impl_store, from, name};
     }
 };
 
