@@ -2,6 +2,7 @@
 #include <string>
 #include <memory>
 #include <optional>
+#include <cstdint>
 
 namespace WebCFace {
 
@@ -18,94 +19,94 @@ class SyncData {
     SyncData(std::shared_ptr<SyncDataStore<T>> store, const std::string &from,
              const std::string &name)
         : store(store), from(from), name(name) {}
-    SyncData<T> &set(const T &data);
-    SyncData<T> &operator=(const T &data) { return set(data); }
-    T get() const;
-    operator T() const { return get(); }
+    void set(const T &data);
     std::optional<T> try_get() const;
+    T get() const;
+    operator T() const { return this->get(); }
+};
 
-    // 演算が可能な型に対しては実装できる
-    template <typename U>
-    auto &operator+=(const U &rhs) {
-        return this->set(this->get() + rhs);
+class Value : public SyncData<double> {
+  public:
+    Value(std::shared_ptr<SyncDataStore<DataType>> store,
+          const std::string &from, const std::string &name)
+        : SyncData<DataType>(store, from, name) {}
+    auto &operator=(double data) {
+        this->set(data);
+        return *this;
     }
-    template <typename U>
-    auto &operator-=(const U &rhs) {
-        return this->set(this->get() - rhs);
+
+
+    auto &operator+=(double rhs) {
+        this->set(this->get() + rhs);
+        return *this;
     }
-    template <typename U>
-    auto &operator*=(const U &rhs) {
-        return this->set(this->get() * rhs);
+    auto &operator-=(double rhs) {
+        this->set(this->get() - rhs);
+        return *this;
     }
-    template <typename U>
-    auto &operator/=(const U &rhs) {
-        return this->set(this->get() / rhs);
+    auto &operator*=(double rhs) {
+        this->set(this->get() * rhs);
+        return *this;
     }
-    template <typename U>
-    auto &operator%=(const U &rhs) {
-        return this->set(this->get() % rhs);
+    auto &operator/=(double rhs) {
+        this->set(this->get() / rhs);
+        return *this;
     }
-    template <typename U>
-    auto &operator<<=(const U &rhs) {
-        return this->set(this->get() << rhs);
+    auto &operator%=(std::int32_t rhs) {
+        this->set(static_cast<std::int32_t>(this->get()) % rhs);
+        return *this;
     }
-    template <typename U>
-    auto &operator>>=(const U &rhs) {
-        return this->set(this->get() >> rhs);
+    // int64_tも使えるようにすべきか?
+    // javascriptで扱える整数は2^53まで
+    auto &operator<<=(std::int32_t rhs) {
+        this->set(static_cast<std::int32_t>(this->get()) << rhs);
+        return *this;
     }
-    template <typename U>
-    auto &operator&=(const U &rhs) {
-        return this->set(this->get() & rhs);
+    auto &operator>>=(std::int32_t rhs) {
+        this->set(static_cast<std::int32_t>(this->get()) >> rhs);
+        return *this;
     }
-    template <typename U>
-    auto &operator|=(const U &rhs) {
-        return this->set(this->get() | rhs);
+    auto &operator&=(std::int32_t rhs) {
+        this->set(static_cast<std::int32_t>(this->get()) & rhs);
+        return *this;
     }
-    template <typename U>
-    auto &operator^=(const U &rhs) {
-        return this->set(this->get() ^ rhs);
+    auto &operator|=(std::int32_t rhs) {
+        this->set(static_cast<std::int32_t>(this->get()) | rhs);
+        return *this;
+    }
+    auto &operator^=(std::int32_t rhs) {
+        this->set(static_cast<std::int32_t>(this->get()) ^ rhs);
+        return *this;
+    }
+    auto &operator++() { // ++s
+        this->set(this->get() + 1);
+        return *this;
+    }
+    auto operator++(int) { // s++
+        auto v = this->get();
+        this->set(v + 1);
+        return v;
+    }
+    auto &operator--() { // --s
+        this->set(this->get() - 1);
+        return *this;
+    }
+    auto operator--(int) { // s--
+        auto v = this->get();
+        this->set(v - 1);
+        return v;
     }
 };
 
-using Value = SyncData<double>;
-using Text = SyncData<std::string>;
-
-
-inline auto &operator++(Value &s) { // ++s
-    auto v = s.get();
-    s.set(v + 1);
-    return s;
-}
-inline auto operator++(Value &&ss) {
-    auto s = ss;
-    return ++s;
-}
-inline auto operator++(Value &s, int) { // s++
-    auto v = s.get();
-    s.set(v + 1);
-    return v;
-}
-inline auto operator++(Value &&ss, int) {
-    auto s = ss;
-    return s++;
-}
-inline auto &operator--(Value &s) { // --s
-    auto v = s.get();
-    s.set(v - 1);
-    return s;
-}
-inline auto operator--(Value &&ss) {
-    auto s = ss;
-    return --s;
-}
-inline auto operator--(Value &s, int) { // s--
-    auto v = s.get();
-    s.set(v - 1);
-    return v;
-}
-inline auto operator--(Value &&ss, int) {
-    auto s = ss;
-    return s--;
-}
+class Text : public SyncData<std::string> {
+  public:
+    Text(std::shared_ptr<SyncDataStore<DataType>> store,
+         const std::string &from, const std::string &name)
+        : SyncData<DataType>(store, from, name) {}
+    auto &operator=(const std::string &data) {
+        this->set(data);
+        return *this;
+    }
+};
 
 } // namespace WebCFace

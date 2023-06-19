@@ -47,10 +47,9 @@ SyncDataStore<T>::transfer_subsc() {
 }
 
 template <typename T>
-SyncData<T> &SyncData<T>::set(const T &data) {
+void SyncData<T>::set(const T &data) {
     assert(from == "");
     store->set_send(name, data);
-    return *this;
 }
 
 template <typename T>
