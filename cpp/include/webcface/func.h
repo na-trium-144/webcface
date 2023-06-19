@@ -4,6 +4,7 @@
 #include <functional>
 #include <mutex>
 #include <unordered_map>
+#include <ostream>
 #include <string>
 #include <future>
 #include <concepts>

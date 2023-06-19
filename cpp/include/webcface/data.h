@@ -1,5 +1,7 @@
 #pragma once
 #include <string>
+#include <istream>
+#include <ostream>
 #include <memory>
 #include <optional>
 #include <cstdint>
