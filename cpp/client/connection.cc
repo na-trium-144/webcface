@@ -11,6 +11,7 @@ namespace WebCFace {
 
 Client::Client(const std::string &name, const std::string &host, int port) {
     value_store = std::make_shared<SyncDataStore<Value::DataType>>();
+    text_store = std::make_shared<SyncDataStore<Text::DataType>>();
 
     using namespace drogon;
     ws = WebSocketClient::newWebSocketClient(host, port, false);
@@ -52,6 +53,14 @@ void Client::send() {
         for (const auto &v : value_subsc) {
             c->send(Message::pack(Message::Subscribe<Message::Value>{{}, v.first, v.second}));
         }
+        auto text_send = text_store->transfer_send();
+        for (const auto &v : text_send) {
+            c->send(Message::pack(Message::Text{{}, v.first, v.second}));
+        }
+        auto text_subsc = text_store->transfer_subsc();
+        for (const auto &v : text_subsc) {
+            c->send(Message::pack(Message::Subscribe<Message::Text>{{}, v.first, v.second}));
+        }
     }
 }
 void Client::onRecv(const std::string& message){
@@ -61,6 +70,11 @@ void Client::onRecv(const std::string& message){
     case kind_recv(MessageKind::value): {
         auto r = std::any_cast<Recv<WebCFace::Message::Value>>(obj);
         value_store->set_recv(r.from, r.name, r.data);
+        break;
+    }
+    case kind_recv(MessageKind::text): {
+        auto r = std::any_cast<Recv<WebCFace::Message::Text>>(obj);
+        text_store->set_recv(r.from, r.name, r.data);
         break;
     }
     }

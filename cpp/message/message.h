@@ -6,6 +6,7 @@
 namespace WebCFace::Message {
 enum class MessageKind {
     value = 0,
+    text = 1,
     recv = 50, // 50〜
     subscribe = 100, // 100〜
     // 150〜: other
@@ -28,8 +29,14 @@ struct Name : public MessageBase<MessageKind::name> {
 };
 struct Value : public MessageBase<MessageKind::value> {
     std::string name;
-    double data;
     using DataType = double;
+    DataType data;
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("n", name), MSGPACK_NVP("d", data));
+};
+struct Text : public MessageBase<MessageKind::text> {
+    std::string name;
+    using DataType = std::string;
+    DataType data;
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("n", name), MSGPACK_NVP("d", data));
 };
 template <typename T>

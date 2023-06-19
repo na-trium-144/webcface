@@ -64,7 +64,7 @@ T SyncData<T>::get() const {
     if (v) {
         return *v;
     } else {
-        return 0;
+        return T{};
     }
 }
 
@@ -74,5 +74,6 @@ T SyncData<T>::get() const {
     template class SyncDataStore<T::DataType>;
 
 instantiate(Value);
+instantiate(Text);
 
 } // namespace WebCFace

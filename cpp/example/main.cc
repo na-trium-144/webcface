@@ -11,7 +11,12 @@ int main() {
         c.value("test") = c.value("test") + 1;
         c.value("test") += 1;
         --c.value("test");
+        c.text("str") = "hello";
+        // todo: キャストしなくて良いようにする
+        std::cout << "send str = " << static_cast<std::string>(c.text("str")) << std::endl;
         std::cout << "send test = " << c.value("test") << std::endl;
+        std::cout << "recv str = " << static_cast<std::string>(c.text("example_main", "str"))
+                  << std::endl;
         std::cout << "recv test = " << c.value("example_main", "test")
                   << std::endl;
         c.send();

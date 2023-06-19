@@ -16,6 +16,8 @@ class Client {
 
     std::unordered_map<std::string, std::vector<double>> value_history;
     std::set<std::pair<std::string, std::string>> value_subsc;
+    std::unordered_map<std::string, std::vector<std::string>> text_history;
+    std::set<std::pair<std::string, std::string>> text_subsc;
 
   public:
     Client() = delete;
