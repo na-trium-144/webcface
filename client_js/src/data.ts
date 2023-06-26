@@ -19,14 +19,14 @@ export class Value {
     this.from = from;
     this.name = name;
   }
-  try_get(){
+  try_get() {
     return dataGet(this) as number | null;
   }
-  get(){
+  get() {
     const v = this.try_get();
-    if(v == null){
+    if (v == null) {
       return 0;
-    }else{
+    } else {
       return v;
     }
   }
@@ -53,14 +53,14 @@ export class Text {
     this.from = from;
     this.name = name;
   }
-  try_get() : string | null {
+  try_get(): string | null {
     return dataGet(this) as string | null;
   }
-  get(){
+  get() {
     const v = this.try_get();
-    if(v == null){
+    if (v == null) {
       return "";
-    }else{
+    } else {
       return v;
     }
   }

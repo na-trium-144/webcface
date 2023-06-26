@@ -1,41 +1,53 @@
 import * as types from "./messageType";
 import { pack, unpack } from "./message";
-import * as types from "./messageType";
 
 export class FuncResult {
+  callerId: number;
   from: string;
   name: string;
-  found: boolean;
-  is_error = false;
-  error_msg: string;
-  ready: boolean;
-  result: string;
-  caller_id: number;
-  wait(resolve: (r) => void) {
-    if (ready) {
+  found = false;
+  isError = false;
+  errorMsg = "";
+  ready = false;
+  result = "";
+  constructor(from: string, name: string, callerId: number) {
+    this.from = from;
+    this.name = name;
+    this.callerId = callerId;
+  }
+  promise(): Promise<FuncResult> {
+    return new Promise((resolve) => this.wait(resolve));
+  }
+  wait(resolve: (r: any) => void) {
+    if (this.ready) {
       resolve(this);
     } else {
       setTimeout(() => this.wait(resolve));
     }
   }
 }
+
 export interface FuncStore {
   name: string;
   func: (...args: string[]) => any;
 }
+
 export class Func {
   funcs: FuncStore[];
+  results: FuncResult[];
   send: (m: ArrayBuffer) => void;
   from: string;
   name: string;
   constructor(
     send: (m: ArrayBuffer) => void,
     funcs: FuncStore[],
+    results: FuncResult[],
     from: string,
     name: string
   ) {
     this.send = send;
     this.funcs = funcs;
+    this.results = results;
     this.from = from;
     this.name = name;
   }
@@ -48,40 +60,40 @@ export class Func {
       this.funcs.push({ name: this.name, func: func });
     }
   }
+  addResult() {
+    const r = new FuncResult(this.from, this.name, this.results.length);
+    this.results.push(r);
+    return r;
+  }
   run(...args: string[]) {
-    if (from === "") {
-      const r = new FuncResult();
-      r.from = "";
-      r.name = this.name;
-      const s = this.funcs.find((s) => s.n === this.name);
+    if (this.from === "") {
+      const r = this.addResult();
+      const s = this.funcs.find((s) => s.name === this.name);
       if (s) {
         r.found = true;
         try {
           r.result = String(s.func(...args));
-        } catch (e: Error) {
-          r.error_msg = e.toString();
-          r.is_error = true;
+        } catch (e: any) {
+          r.errorMsg = (e as Error).toString();
+          r.isError = true;
         }
       } else {
         r.found = false;
       }
       r.ready = true;
-      return new Promise((resolve) => resolve(r));
+      return r.promise();
     } else {
-      const r = new FuncResult();
-      r.from = this.from;
-      r.name = this.name;
-      r.caller_id = 0;
+      const r = this.addResult();
       this.send(
         pack(types.kind.call, {
-          i: r.caller_id,
+          i: r.callerId,
           c: "",
-          f: this.from,
+          r: this.from,
           n: this.name,
           a: args,
-        })
+        } as types.Call)
       );
-      return new Promise((resolve) => r.wait(resolve));
+      return r.promise();
     }
   }
 }

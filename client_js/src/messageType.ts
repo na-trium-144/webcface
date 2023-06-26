@@ -1,7 +1,7 @@
 export const kind = {
   name: 150,
   call: 151,
-  call_response: 152,
+  callResponse: 152,
   value: 0,
   text: 1,
   recv: 50,
@@ -33,8 +33,8 @@ export interface Call {
 export interface CallResponse {
   i: number;
   c: string;
-  f: bool;
-  e: bool;
+  f: boolean;
+  e: boolean;
   r: string;
 }
 

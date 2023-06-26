@@ -1,7 +1,7 @@
 import { pack, unpack } from "./message";
 import * as types from "./messageType";
 import { Value, Text } from "./data";
-import { Func } from "./func";
+import { Func, FuncResult, FuncStore } from "./func";
 import { w3cwebsocket } from "websocket";
 
 export class Client {
@@ -13,6 +13,8 @@ export class Client {
   textSend: types.Data[] = [];
   textSubsc: types.Subscribe[] = [];
   textRecv: types.Recv[] = [];
+  funcStore: FuncStore[] = [];
+  funcResult: FuncResult[] = [];
   constructor(name: string, host = "", port = 80) {
     const ws = new w3cwebsocket(`ws://${host}:${port}`);
     this.ws = ws;
@@ -46,6 +48,19 @@ export class Client {
           } else {
             this.textRecv.push(dataR);
           }
+          break;
+        }
+        case types.kind.callResponse: {
+          const dataR = data as types.CallResponse;
+          const r = this.funcResult[dataR.i];
+          r.found = dataR.f;
+          r.isError = dataR.e;
+          if (r.isError) {
+            r.errorMsg = dataR.r;
+          } else {
+            r.result = dataR.r;
+          }
+          r.ready = true;
           break;
         }
       }
@@ -91,22 +106,16 @@ export class Client {
     if (name == undefined) {
       [from, name] = ["", from];
     }
-    return new Text(
-      this.textSend,
-      this.textSubsc,
-      this.textRecv,
-      from,
-      name
-    );
+    return new Text(this.textSend, this.textSubsc, this.textRecv, from, name);
   }
   func(from: string, name?: string) {
     if (name == undefined) {
       [from, name] = ["", from];
     }
     return new Func(
-      this.valueSend,
-      this.valueSubsc,
-      this.valueRecv,
+      (m: ArrayBuffer) => this.ws != null && this.ws.send(m),
+      this.funcStore,
+      this.funcResult,
       from,
       name
     );
