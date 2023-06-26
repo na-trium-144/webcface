@@ -50,6 +50,29 @@ export class Client {
           }
           break;
         }
+        case types.kind.call: {
+          const dataR = data as types.Call;
+          const r: types.CallResponse = {
+            i: dataR.i,
+            c: dataR.c,
+            f: false,
+            e: false,
+            r: "",
+          };
+          const s = this.funcStore.find((s) => s.name === dataR.n);
+          if (s) {
+            r.f = true;
+            try {
+              r.r = String(s.func(...dataR.a));
+            } catch (e: any) {
+              r.r = (e as Error).toString();
+              r.e = true;
+            }
+          } else {
+            r.f = false;
+          }
+          this.ws != null && this.ws.send(pack(types.kind.callResponse, r));
+        }
         case types.kind.callResponse: {
           const dataR = data as types.CallResponse;
           const r = this.funcResult[dataR.i];

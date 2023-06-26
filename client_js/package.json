@@ -7,8 +7,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
-    "prepare": "npm run build",
-    "example": "node ./dist/example/example.js"
+    "prepare": "npm run build"
   },
   "author": "",
   "license": "ISC",
