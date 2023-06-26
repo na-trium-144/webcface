@@ -19,8 +19,16 @@ export class Value {
     this.from = from;
     this.name = name;
   }
-  get() :number | null{
+  try_get(){
     return dataGet(this) as number | null;
+  }
+  get(){
+    const v = this.try_get();
+    if(v == null){
+      return 0;
+    }else{
+      return v;
+    }
   }
   set(data: number) {
     dataSet(this, data);
@@ -45,9 +53,16 @@ export class Text {
     this.from = from;
     this.name = name;
   }
-
-  get() :string|null{
+  try_get() : string | null {
     return dataGet(this) as string | null;
+  }
+  get(){
+    const v = this.try_get();
+    if(v == null){
+      return "";
+    }else{
+      return v;
+    }
   }
   set(data: string) {
     dataSet(this, data);

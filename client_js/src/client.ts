@@ -1,6 +1,7 @@
 import { pack, unpack } from "./message";
 import * as types from "./messageType";
-import { Value } from "./data";
+import { Value, Text } from "./data";
+import { Func } from "./func";
 import { w3cwebsocket } from "websocket";
 
 export class Client {
@@ -86,10 +87,28 @@ export class Client {
       name
     );
   }
-  text() {
-    console.log("hoge");
+  text(from: string, name?: string) {
+    if (name == undefined) {
+      [from, name] = ["", from];
+    }
+    return new Text(
+      this.textSend,
+      this.textSubsc,
+      this.textRecv,
+      from,
+      name
+    );
   }
-  func() {
-    console.log("hoge");
+  func(from: string, name?: string) {
+    if (name == undefined) {
+      [from, name] = ["", from];
+    }
+    return new Func(
+      this.valueSend,
+      this.valueSubsc,
+      this.valueRecv,
+      from,
+      name
+    );
   }
 }

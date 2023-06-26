@@ -50,7 +50,7 @@ struct CallResponse : public MessageBase<MessageKind::call_response> {
     bool found;
     bool is_error;
     std::string response;
-    MSGPACK_DEFINE_MAP(MSGPACK_NVP("c", caller), MSGPACK_NVP("i", caller_id),
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", caller_id), MSGPACK_NVP("c", caller),
                        MSGPACK_NVP("f", found), MSGPACK_NVP("e", is_error),
                        MSGPACK_NVP("r", response));
 };
