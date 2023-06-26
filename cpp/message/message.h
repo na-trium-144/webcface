@@ -8,6 +8,7 @@ namespace WebCFace::Message {
 // 新しいメッセージの定義は
 // kind追記→struct作成→message.ccに追記→s_client_data.ccに追記→client.ccに追記
 enum class MessageKind {
+    unknown = -1,
     value = 0,
     text = 1,
     recv = 50,       // 50〜

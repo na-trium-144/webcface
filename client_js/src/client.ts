@@ -21,6 +21,7 @@ export class Client {
       ws.send(pack(types.kind.name, { n: name }));
     };
     ws.onmessage = (event) => {
+      console.log(event.data);
       const [kind, data] = unpack(event.data as ArrayBuffer);
       switch (kind) {
         case types.kind.recv + types.kind.value:
@@ -37,6 +38,7 @@ export class Client {
     };
     ws.onclose = () => {
       this.connected = false;
+      console.error("closed");
     };
   }
   send() {
