@@ -1,9 +1,10 @@
 import { pack, unpack } from "./message";
 import * as types from "./messageType";
 import { Value } from "./data";
+import { w3cwebsocket } from "websocket";
 
 export class Client {
-  ws: null | WebSocket = null;
+  ws: null | w3cwebsocket = null;
   connected = false;
   valueSend: types.Data[] = [];
   valueSubsc: types.Subscribe[] = [];
@@ -12,7 +13,7 @@ export class Client {
   textSubsc: types.Subscribe[] = [];
   textRecv: types.Recv[] = [];
   constructor(name: string, host = "", port = 80) {
-    const ws = new WebSocket(`ws://${host}:${port}`);
+    const ws = new w3cwebsocket(`ws://${host}:${port}`);
     this.ws = ws;
     ws.binaryType = "arraybuffer";
     ws.onopen = () => {
@@ -31,7 +32,8 @@ export class Client {
       }
     };
     ws.onerror = (error) => {
-      console.error(error);
+      console.error("Connection Error");
+      // console.error(error);
     };
     ws.onclose = () => {
       this.connected = false;
