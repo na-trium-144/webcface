@@ -20,19 +20,20 @@ Client::Client(const std::string &name, const std::string &host, int port) {
     ws->setConnectionClosedHandler(
         [](const WebSocketClientPtr &ws) { std::cout << "closed\n"; });
 
-    ws->connectToServer(req,
-                        [name, this](ReqResult r, const HttpResponsePtr &resp,
-                                     const WebSocketClientPtr &ws) {
-                            auto c = ws->getConnection();
-                            if (r == ReqResult::Ok) {
-                                connected = true;
-                                std::cout << "connected\n";
-                                c->send(Message::pack(Message::Name{{}, name}));
-                            } else {
-                                std::cout << "error\n";
-                                // todo: エラー時どうするか
-                            }
-                        });
+    ws->connectToServer(req, [name, this](ReqResult r,
+                                          const HttpResponsePtr &resp,
+                                          const WebSocketClientPtr &ws) {
+        auto c = ws->getConnection();
+        if (r == ReqResult::Ok) {
+            connected = true;
+            std::cout << "connected\n";
+            auto m = Message::pack(Message::Name{{}, name});
+            c->send(&m[0], m.size(), drogon::WebSocketMessageType::Binary);
+        } else {
+            std::cout << "error\n";
+            // todo: エラー時どうするか
+        }
+    });
 }
 
 void Client::send() {
@@ -41,21 +42,25 @@ void Client::send() {
 
         auto value_send = value_store->transfer_send();
         for (const auto &v : value_send) {
-            c->send(Message::pack(Message::Value{{}, v.first, v.second}));
+            auto m = Message::pack(Message::Value{{}, v.first, v.second});
+            c->send(&m[0], m.size(), drogon::WebSocketMessageType::Binary);
         }
         auto value_subsc = value_store->transfer_subsc();
         for (const auto &v : value_subsc) {
-            c->send(Message::pack(
-                Message::Subscribe<Message::Value>{{}, v.first, v.second}));
+            auto m = Message::pack(
+                Message::Subscribe<Message::Value>{{}, v.first, v.second});
+            c->send(&m[0], m.size(), drogon::WebSocketMessageType::Binary);
         }
         auto text_send = text_store->transfer_send();
         for (const auto &v : text_send) {
-            c->send(Message::pack(Message::Text{{}, v.first, v.second}));
+            auto m = Message::pack(Message::Text{{}, v.first, v.second});
+            c->send(&m[0], m.size(), drogon::WebSocketMessageType::Binary);
         }
         auto text_subsc = text_store->transfer_subsc();
         for (const auto &v : text_subsc) {
-            c->send(Message::pack(
-                Message::Subscribe<Message::Text>{{}, v.first, v.second}));
+            auto m = Message::pack(
+                Message::Subscribe<Message::Text>{{}, v.first, v.second});
+            c->send(&m[0], m.size(), drogon::WebSocketMessageType::Binary);
         }
     }
 }
@@ -82,9 +87,11 @@ void Client::onRecv(const std::string &message) {
         } else {
             response = static_cast<std::string>(res.result);
         }
+        auto m = pack(CallResponse{
+            {}, r.caller_id, r.caller, res.found, res.is_error, response});
         // todo: これセグフォしない?
-        ws->getConnection()->send(pack(CallResponse{
-            {}, r.caller_id, r.caller, res.found, res.is_error, response}));
+        ws->getConnection()->send(&m[0], m.size(),
+                                  drogon::WebSocketMessageType::Binary);
         break;
     }
     case MessageKind::call_response: {

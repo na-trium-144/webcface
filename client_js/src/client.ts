@@ -21,15 +21,32 @@ export class Client {
       ws.send(pack(types.kind.name, { n: name }));
     };
     ws.onmessage = (event) => {
-      console.log(event.data);
       const [kind, data] = unpack(event.data as ArrayBuffer);
       switch (kind) {
-        case types.kind.recv + types.kind.value:
-          this.valueRecv.push(data as types.Recv);
+        case types.kind.recv + types.kind.value: {
+          const dataR = data as types.Recv;
+          const i = this.valueRecv.findIndex(
+            (s) => s.f == dataR.f && s.n == dataR.n
+          );
+          if (i >= 0) {
+            this.valueRecv[i] = dataR;
+          } else {
+            this.valueRecv.push(dataR);
+          }
           break;
-        case types.kind.recv + types.kind.text:
-          this.textRecv.push(data as types.Recv);
+        }
+        case types.kind.recv + types.kind.text: {
+          const dataR = data as types.Recv;
+          const i = this.textRecv.findIndex(
+            (s) => s.f == dataR.f && s.n == dataR.n
+          );
+          if (i >= 0) {
+            this.textRecv[i] = dataR;
+          } else {
+            this.textRecv.push(dataR);
+          }
           break;
+        }
       }
     };
     ws.onerror = (error) => {

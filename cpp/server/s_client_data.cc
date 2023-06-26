@@ -26,7 +26,9 @@ void ClientData::onRecv(const std::string &message) {
         // そのままターゲットのクライアントに送る
         auto c_it = store.clients_by_name.find(v.receiver);
         if (c_it != store.clients_by_name.end()) {
-            c_it->second->con->send(pack(v));
+            auto m = pack(v);
+            c_it->second->con->send(&m[0], m.size(),
+                                    drogon::WebSocketMessageType::Binary);
         } else {
             // 関数存在しないときの処理
         }
@@ -43,7 +45,9 @@ void ClientData::onRecv(const std::string &message) {
         // そのままcallerに送る
         auto c_it = store.clients_by_name.find(v.caller);
         if (c_it != store.clients_by_name.end()) {
-            c_it->second->con->send(pack(v));
+            auto m = pack(v);
+            c_it->second->con->send(&m[0], m.size(),
+                                    drogon::WebSocketMessageType::Binary);
         }
         break;
     }
@@ -56,8 +60,9 @@ void ClientData::onRecv(const std::string &message) {
         for (const auto &c : store.clients) {
             for (const auto &s : c.second->value_subsc) {
                 if (s.first == this->name && s.second == v.name) {
-                    c.second->con->send(
-                        pack(Recv<Value>{{}, this->name, v.name, v.data}));
+                    auto m = pack(Recv<Value>{{}, this->name, v.name, v.data});
+                    c.second->con->send(&m[0], m.size(),
+                                        drogon::WebSocketMessageType::Binary);
                     std::cout << "update value " << this->name << ":" << v.name
                               << " (= " << v.data << " ) -> " << c.second->name
                               << std::endl;
@@ -75,8 +80,9 @@ void ClientData::onRecv(const std::string &message) {
         for (const auto &c : store.clients) {
             for (const auto &s : c.second->text_subsc) {
                 if (s.first == this->name && s.second == v.name) {
-                    c.second->con->send(
-                        pack(Recv<Text>{{}, this->name, v.name, v.data}));
+                    auto m = pack(Recv<Text>{{}, this->name, v.name, v.data});
+                    c.second->con->send(&m[0], m.size(),
+                                        drogon::WebSocketMessageType::Binary);
                     std::cout << "update text " << this->name << ":" << v.name
                               << " (= " << v.data << " ) -> " << c.second->name
                               << std::endl;
@@ -95,8 +101,10 @@ void ClientData::onRecv(const std::string &message) {
         if (c_it != store.clients_by_name.end()) {
             auto it = c_it->second->value_history.find(s.name);
             if (it != c_it->second->value_history.end()) {
-                this->con->send(
-                    pack(Recv<Value>{{}, s.from, s.name, it->second.back()}));
+                auto m =
+                    pack(Recv<Value>{{}, s.from, s.name, it->second.back()});
+                this->con->send(&m[0], m.size(),
+                                drogon::WebSocketMessageType::Binary);
                 std::cout << "update value " << s.from << ":" << s.name
                           << " (= " << it->second.back() << " ) -> "
                           << this->name << std::endl;
@@ -114,8 +122,10 @@ void ClientData::onRecv(const std::string &message) {
         if (c_it != store.clients_by_name.end()) {
             auto it = c_it->second->text_history.find(s.name);
             if (it != c_it->second->text_history.end()) {
-                this->con->send(
-                    pack(Recv<Text>{{}, s.from, s.name, it->second.back()}));
+                auto m =
+                    pack(Recv<Text>{{}, s.from, s.name, it->second.back()});
+                this->con->send(&m[0], m.size(),
+                                drogon::WebSocketMessageType::Binary);
                 std::cout << "update text " << s.from << ":" << s.name
                           << " (= " << it->second.back() << " ) -> "
                           << this->name << std::endl;

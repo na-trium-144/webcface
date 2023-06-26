@@ -48,7 +48,7 @@ std::pair<MessageKind, std::any> unpack(const std::string &message) {
     } catch (const msgpack::type_error &) {
         std::cerr << "unpack error: " << std::hex;
         for (int i = 0; i < message.size(); i++) {
-            std::cerr << std::setw(3) << i;
+            std::cerr << std::setw(3) << message[i];
         }
         std::cerr << std::dec << std::endl;
         return std::make_pair(MessageKind::unknown, 0);
