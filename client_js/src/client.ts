@@ -15,13 +15,35 @@ export class Client {
   textRecv: types.Recv[] = [];
   funcStore: FuncStore[] = [];
   funcResult: FuncResult[] = [];
+  name: string;
+  host: string;
+  port: number;
   constructor(name: string, host = "", port = 80) {
-    const ws = new w3cwebsocket(`ws://${host}:${port}`);
+    this.name = name;
+    this.host = host;
+    this.port = port;
+    this.reconnect();
+  }
+  reconnect() {
+    let connection_done = false;
+    const ws = new w3cwebsocket(`ws://${this.host}:${this.port}`);
     this.ws = ws;
+    setTimeout(() => {
+      if (!connection_done) {
+        console.error("timeout!");
+        ws.onopen = () => null;
+        ws.onmessage = () => null;
+        ws.onclose = () => null;
+        ws.onerror = () => null;
+        this.ws = null;
+        this.reconnect();
+      }
+    }, 1000);
     ws.binaryType = "arraybuffer";
     ws.onopen = () => {
+      connection_done = true;
       this.connected = true;
-      ws.send(pack(types.kind.name, { n: name }));
+      ws.send(pack(types.kind.name, { n: this.name }));
     };
     ws.onmessage = (event) => {
       const [kind, data] = unpack(event.data as ArrayBuffer);
@@ -89,12 +111,15 @@ export class Client {
       }
     };
     ws.onerror = (error) => {
+      connection_done = true;
       console.error("Connection Error");
       // console.error(error);
     };
     ws.onclose = () => {
+      connection_done = true;
       this.connected = false;
       console.error("closed");
+      setTimeout(() => this.reconnect(), 1000);
     };
   }
   send() {
@@ -136,7 +161,7 @@ export class Client {
       [from, name] = ["", from];
     }
     return new Func(
-      (m: ArrayBuffer) => this.ws != null && this.ws.send(m),
+      (m: ArrayBuffer) => this.connected && this.ws != null && this.ws.send(m),
       this.funcStore,
       this.funcResult,
       from,
