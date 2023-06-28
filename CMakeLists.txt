@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.5)
 project(webcface CXX)
 
+add_compile_options(-g)
+
 # c++20 for concepts
 set(CMAKE_CXX_STANDARD 20)
 

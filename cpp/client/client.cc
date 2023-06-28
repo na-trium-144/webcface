@@ -3,23 +3,27 @@
 #include <future>
 #include <optional>
 #include <string>
-#include <chrono>
-#include <thread>
 #include <future>
+#include <chrono>
 #include <webcface/webcface.h>
 #include "../message/message.h"
 
 namespace WebCFace {
 
-Client::Client(const std::string &name, const std::string &host, int port) : name(name), host(host), port(port){
-    using namespace drogon;
+Client::Client(const std::string &name, const std::string &host, int port)
+    : name(name), host(host), port(port) {
     reconnect();
 }
+
 bool Client::connected() const {
-    return ws->getConnection() && ws->getConnection()->connected();
+    return ws && ws->getConnection() && ws->getConnection()->connected();
 }
 void Client::reconnect() {
+    if (ws && ws->getConnection()) {
+        ws->getConnection()->shutdown();
+    }
     if (!closing) {
+        std::cout << "reconnect" << std::endl;
         using namespace drogon;
         ws = WebSocketClient::newWebSocketClient(host, port, false);
         ws->setMessageHandler(
@@ -31,30 +35,36 @@ void Client::reconnect() {
         });
         auto req = HttpRequest::newHttpRequest();
         req->setPath("/");
-        auto p = std::make_shared<std::promise<void>>();
-        connection_finished = p->get_future();
-        ws->connectToServer(
-            req, [this, p](ReqResult r, const HttpResponsePtr &resp,
-                           const WebSocketClientPtr &ws) mutable {
-                auto c = ws->getConnection();
-                if (r == ReqResult::Ok) {
-                    std::cout << "connected\n";
-                    send(Message::pack(Message::Name{{}, name}));
-                } else {
-                    std::cout << "error\n";
-                    // todo: エラー時どうするか
-                    std::this_thread::sleep_for(std::chrono::seconds(1));
-                    reconnect();
-                }
-                p->set_value();
-            });
+        auto p_cli = std::make_shared<std::promise<void>>();
+        connection_finished = p_cli->get_future();
+        auto p_local = std::make_shared<std::promise<void>>();
+        ws->connectToServer(req, [this, p_cli, p_local](
+                                     ReqResult r, const HttpResponsePtr &resp,
+                                     const WebSocketClientPtr &ws) mutable {
+            if (r == ReqResult::Ok) {
+                std::cout << "connected\n";
+                send(Message::pack(Message::Name{{}, name}));
+            } else {
+                std::cout << "error\n";
+                app().getLoop()->runAfter(1, [this] { reconnect(); });
+            }
+            p_cli->set_value();
+            p_local->set_value();
+        });
+        app().getLoop()->runAfter(1, [this, p_local] {
+            if (p_local->get_future().wait_for(std::chrono::seconds(0)) !=
+                std::future_status::ready) {
+                std::cout << "timeout!" << std::endl;
+                reconnect();
+            }
+        });
     }
 }
 Client::~Client() {
     close();
     // reconnectが終了していなければ待機する
     if (connection_finished.valid()) {
-        connection_finished.get();
+        connection_finished.wait();
     }
 }
 void Client::close() {
@@ -142,10 +152,11 @@ static struct MainLoop {
         std::promise<void> p1;
         std::future<void> f1 = p1.get_future();
 
+        app().disableSigtermHandling();
+        app().getLoop()->queueInLoop([&p1]() { p1.set_value(); });
         // Start the main loop on another thread
         thr = std::make_optional<std::thread>([&]() {
             // Queues the promise to be fulfilled after starting the loop
-            app().getLoop()->queueInLoop([&p1]() { p1.set_value(); });
             app().run();
         });
 
