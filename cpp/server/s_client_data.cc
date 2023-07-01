@@ -9,16 +9,18 @@ void ClientData::onClose() {
     // 作ったものの何もすることがなかった
 }
 void ClientData::send(const std::vector<char> &m) const {
-    if(connected()){
+    if (connected()) {
         con->send(&m[0], m.size(), drogon::WebSocketMessageType::Binary);
     }
 }
-bool ClientData::connected() const{
-    return con && con->connected();
-}
+bool ClientData::connected() const { return con && con->connected(); }
 void ClientData::onRecv(const std::string &message) {
     using namespace WebCFace::Message;
     auto [kind, obj] = unpack(message);
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wswitch"
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wswitch"
     switch (kind) {
     case MessageKind::name:
         name = std::any_cast<Name>(obj).name;
@@ -41,7 +43,8 @@ void ClientData::onRecv(const std::string &message) {
             c_it->second->send(pack(v));
         } else {
             // 関数存在しないときの処理
-            this->send(pack(CallResponse{{}, v.caller_id, v.caller, false, true, ""}));
+            this->send(
+                pack(CallResponse{{}, v.caller_id, v.caller, false, true, ""}));
         }
         break;
     }
@@ -136,6 +139,17 @@ void ClientData::onRecv(const std::string &message) {
         }
         break;
     }
+    case kind_recv(MessageKind::value):
+    case kind_recv(MessageKind::text):
+        std::cerr << "Invalid Message Kind " << static_cast<int>(kind)
+                  << std::endl;
+        break;
+    default:
+        std::cerr << "Unknown Message Kind " << static_cast<int>(kind)
+                  << std::endl;
+        break;
     }
+#pragma GCC diagnostic pop
+#pragma clang diagnostic pop
 }
 } // namespace WebCFace::Server

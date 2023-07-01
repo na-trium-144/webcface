@@ -32,12 +32,12 @@ class Client {
     std::shared_ptr<FuncStore> func_impl_store = std::make_shared<FuncStore>();
 
     void onRecv(const std::string &message);
-    void send(const std::vector<char>& m);
+    void send(const std::vector<char> &m);
 
   public:
     friend Func;
 
-    Client() = delete;
+    Client() : Client("") {}
     Client(const Client &) = delete;
     const Client &operator=(const Client &) = delete;
     explicit Client(const std::string &name,

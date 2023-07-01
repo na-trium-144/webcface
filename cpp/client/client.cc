@@ -12,6 +12,38 @@ namespace WebCFace {
 
 Client::Client(const std::string &name, const std::string &host, int port)
     : name(name), host(host), port(port) {
+
+    // 最初のクライアント接続時にdrogonループを起動
+    // もしClientがテンプレートクラスになったら使えない
+    static struct MainLoop {
+        std::optional<std::thread> thr;
+        MainLoop() {
+            using namespace drogon;
+            std::cout << "mainloop start" << std::endl;
+            std::promise<void> p1;
+            std::future<void> f1 = p1.get_future();
+
+            app().disableSigtermHandling();
+            app().getLoop()->queueInLoop([&p1]() { p1.set_value(); });
+            // Start the main loop on another thread
+            thr = std::make_optional<std::thread>([&]() {
+                // Queues the promise to be fulfilled after starting the loop
+                app().run();
+            });
+
+            // The future is only satisfied after the event loop started
+            f1.get();
+            std::cout << "thread started" << std::endl;
+        }
+        ~MainLoop() {
+            using namespace drogon;
+            app().getLoop()->queueInLoop([]() { app().quit(); });
+            std::cout << "mainloop quit" << std::endl;
+            thr->join();
+            std::cout << "thread finished" << std::endl;
+        }
+    } q;
+
     reconnect();
 }
 
@@ -104,6 +136,10 @@ void Client::send() {
 void Client::onRecv(const std::string &message) {
     using namespace WebCFace::Message;
     auto [kind, obj] = unpack(message);
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wswitch"
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wswitch"
     switch (kind) {
     case kind_recv(MessageKind::value): {
         auto r = std::any_cast<Recv<WebCFace::Message::Value>>(obj);
@@ -141,35 +177,18 @@ void Client::onRecv(const std::string &message) {
         res.setReady();
         break;
     }
+    case MessageKind::name:
+    case MessageKind::value:
+    case MessageKind::text:
+        std::cerr << "Invalid Message Kind " << static_cast<int>(kind)
+                  << std::endl;
+        break;
+    default:
+        std::cerr << "Unknown Message Kind " << static_cast<int>(kind)
+                  << std::endl;
+        break;
     }
+#pragma GCC diagnostic pop
+#pragma clang diagnostic pop
 }
-
-static struct MainLoop {
-    std::optional<std::thread> thr;
-    MainLoop() {
-        using namespace drogon;
-        std::cout << "mainloop start" << std::endl;
-        std::promise<void> p1;
-        std::future<void> f1 = p1.get_future();
-
-        app().disableSigtermHandling();
-        app().getLoop()->queueInLoop([&p1]() { p1.set_value(); });
-        // Start the main loop on another thread
-        thr = std::make_optional<std::thread>([&]() {
-            // Queues the promise to be fulfilled after starting the loop
-            app().run();
-        });
-
-        // The future is only satisfied after the event loop started
-        f1.get();
-        std::cout << "thread started" << std::endl;
-    }
-    ~MainLoop() {
-        using namespace drogon;
-        app().getLoop()->queueInLoop([]() { app().quit(); });
-        std::cout << "mainloop quit" << std::endl;
-        thr->join();
-        std::cout << "thread finished" << std::endl;
-    }
-} q;
 } // namespace WebCFace

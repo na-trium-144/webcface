@@ -15,6 +15,10 @@ std::pair<MessageKind, std::any> unpack(const std::string &message) {
 
         auto kind = static_cast<MessageKind>(obj.via.array.ptr[0].as<int>());
         std::any obj_u;
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wswitch"
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wswitch"
         switch (kind) {
         case MessageKind::name:
             obj_u = obj.via.array.ptr[1].as<Name>();
@@ -43,7 +47,11 @@ std::pair<MessageKind, std::any> unpack(const std::string &message) {
         case kind_subscribe(MessageKind::text):
             obj_u = obj.via.array.ptr[1].as<Subscribe<Text>>();
             break;
+        default:
+            break;
         }
+#pragma GCC diagnostic pop
+#pragma clang diagnostic pop
         return std::make_pair(kind, obj_u);
     } catch (const msgpack::type_error &) {
         std::cerr << "unpack error: " << std::hex;
