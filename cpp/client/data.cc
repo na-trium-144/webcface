@@ -68,12 +68,12 @@ T SyncData<T>::get() const {
 
 // インスタンス化
 #define INSTANTIATE(T)                                                         \
-    template class SyncData<T::DataType>;                                      \
-    template class SyncDataStore<T::DataType>;
+    template class SyncData<T>;                                      \
+    template class SyncDataStore<T>;
 
-INSTANTIATE(Value);
-INSTANTIATE(Text);
-INSTANTIATE(Func);
-
+INSTANTIATE(Value::DataType);
+INSTANTIATE(Text::DataType);
+INSTANTIATE(Func::DataType);
+INSTANTIATE(Entry);
 
 } // namespace WebCFace

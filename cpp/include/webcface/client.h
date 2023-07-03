@@ -10,6 +10,12 @@ class WebSocketClient;
 
 namespace WebCFace {
 
+// SyncDataStore<Entry> はnameを""にして運用
+struct Entry {
+    std::vector<std::string> value;
+    std::vector<std::string> text;
+};
+
 class Client {
   private:
     std::shared_ptr<drogon::WebSocketClient> ws;
@@ -22,6 +28,8 @@ class Client {
     std::string host;
     int port;
 
+    std::shared_ptr<SyncDataStore<Entry>> entry_store =
+        std::make_shared<SyncDataStore<Entry>>();
     std::shared_ptr<SyncDataStore<Value::DataType>> value_store =
         std::make_shared<SyncDataStore<Value::DataType>>();
     std::shared_ptr<SyncDataStore<Text::DataType>> text_store =
@@ -46,6 +54,9 @@ class Client {
     ~Client();
 
     void send();
+
+    std::vector<std::string> getValueEntry(const std::string&from);
+    std::vector<std::string> getTextEntry(const std::string&from);
 
     Value value(const std::string &name) { return value("", name); }
     const Value value(const std::string &from, const std::string &name) {

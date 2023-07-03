@@ -18,6 +18,7 @@ enum class MessageKind {
     name = 150,
     call = 151,
     call_response = 152,
+    entry = 153,
 };
 inline constexpr MessageKind kind_subscribe(MessageKind k) {
     return static_cast<MessageKind>(static_cast<int>(k) +
@@ -35,6 +36,19 @@ struct MessageBase {
 struct Name : public MessageBase<MessageKind::name> {
     std::string name;
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("n", name));
+};
+struct Entry : public MessageBase<MessageKind::entry> {
+    std::string name;
+    struct EValue {
+        std::string name;
+        MSGPACK_DEFINE_MAP(MSGPACK_NVP("n", name));
+    };
+    // ほんとはsetにするべきだけどめんどくさいにゃー
+    std::vector<EValue> value;
+    using EText = EValue;
+    std::vector<EText> text;
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", name), MSGPACK_NVP("v", value),
+                       MSGPACK_NVP("t", text));
 };
 struct Call : public MessageBase<MessageKind::call> {
     int caller_id;
