@@ -13,6 +13,7 @@ class ClientData {
 
   private:
     const wsConnPtr con;
+    bool connected() const;
 
     std::unordered_map<std::string, std::vector<double>> value_history;
     std::set<std::pair<std::string, std::string>> value_subsc;
@@ -26,6 +27,8 @@ class ClientData {
     explicit ClientData(const wsConnPtr &con) : con(con) {}
 
     void onRecv(const std::string &msg);
+    void onClose();
+    void send(const std::vector<char> &m) const;
     std::string name;
 };
 } // namespace WebCFace::Server

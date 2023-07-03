@@ -4,10 +4,12 @@
 #include <utility>
 #include <vector>
 #include <any>
+
 namespace WebCFace::Message {
 // 新しいメッセージの定義は
 // kind追記→struct作成→message.ccに追記→s_client_data.ccに追記→client.ccに追記
 enum class MessageKind {
+    unknown = -1,
     value = 0,
     text = 1,
     recv = 50,       // 50〜
@@ -48,7 +50,7 @@ struct CallResponse : public MessageBase<MessageKind::call_response> {
     bool found;
     bool is_error;
     std::string response;
-    MSGPACK_DEFINE_MAP(MSGPACK_NVP("c", caller), MSGPACK_NVP("i", caller_id),
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", caller_id), MSGPACK_NVP("c", caller),
                        MSGPACK_NVP("f", found), MSGPACK_NVP("e", is_error),
                        MSGPACK_NVP("r", response));
 };
@@ -80,12 +82,13 @@ struct Subscribe : public MessageBase<kind_subscribe(T::kind)> {
 std::pair<MessageKind, std::any> unpack(const std::string &message);
 
 template <typename T>
-std::string pack(T obj) {
+std::vector<char> pack(T obj) {
     msgpack::type::tuple<int, T> src(static_cast<int>(T::kind), obj);
     std::stringstream buffer;
     msgpack::pack(buffer, src);
     buffer.seekg(0);
-    return buffer.str();
+    std::string bs = buffer.str();
+    return std::vector<char>(bs.begin(), bs.end());
 }
 
 } // namespace WebCFace::Message

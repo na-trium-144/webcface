@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.5)
 project(webcface CXX)
 
+add_compile_options(-g)
+
 # c++20 for concepts
 set(CMAKE_CXX_STANDARD 20)
 
@@ -30,6 +32,7 @@ set(MSGPACK msgpack-cxx)
 
 enable_testing() # todo: オプションで変えられるようにする
 
+aux_source_directory(cpp SVR_MAIN_SRC)
 aux_source_directory(cpp/server SVR_SRC)
 aux_source_directory(cpp/client CLI_SRC)
 aux_source_directory(cpp/example EXAMPLE_SRC)
@@ -47,7 +50,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 set(SERVER ${PROJECT_NAME}_server)
-add_executable(${SERVER} ${SVR_SRC} ${MSG_SRC} ${CTL_SRC})
+add_executable(${SERVER} ${SVR_MAIN_SRC} ${SVR_SRC} ${MSG_SRC} ${CTL_SRC})
 
 target_compile_features(${SERVER} PUBLIC cxx_std_17)
 target_link_libraries(${SERVER}
@@ -97,8 +100,12 @@ endforeach()
 
 foreach(SRC IN LISTS TEST_SRC)
     get_filename_component(TARGET ${SRC} NAME_WE)
-    add_executable(test_${TARGET} ${SRC})
-    target_link_libraries(test_${TARGET} PRIVATE webcface ${DROGON})
-    ParseAndAddDrogonTests(test_${TARGET})
+    add_executable(${TARGET} ${SRC} ${SVR_SRC} ${MSG_SRC} ${CTL_SRC} ${CLI_SRC})
+    target_link_libraries(${TARGET} PRIVATE ${DROGON} ${MSGPACK})
+    target_include_directories(${TARGET}
+        PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR}/cpp/include
+    )
+    ParseAndAddDrogonTests(${TARGET})
 endforeach()
 

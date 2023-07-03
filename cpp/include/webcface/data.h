@@ -60,7 +60,6 @@ class Value : public SyncData<double> {
         return *this;
     }
 
-
     auto &operator+=(double rhs) {
         this->set(this->get() + rhs);
         return *this;
@@ -121,6 +120,8 @@ class Value : public SyncData<double> {
         this->set(v - 1);
         return v;
     }
+
+    // 比較演算子の定義は不要
 };
 
 class Text : public SyncData<std::string> {
@@ -132,6 +133,9 @@ class Text : public SyncData<std::string> {
         this->set(data);
         return *this;
     }
+
+    bool operator==(const std::string &rhs) const { return this->get() == rhs; }
+    bool operator!=(const std::string &rhs) const { return this->get() != rhs; }
 };
 
 

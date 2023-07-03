@@ -1,6 +1,8 @@
 #pragma once
 #include <memory>
 #include <string>
+#include <future>
+#include <vector>
 
 namespace drogon {
 class WebSocketClient;
@@ -11,7 +13,14 @@ namespace WebCFace {
 class Client {
   private:
     std::shared_ptr<drogon::WebSocketClient> ws;
-    bool connected = false;
+    bool connected() const;
+    bool closing = false;
+    std::future<void> connection_finished;
+    void reconnect();
+
+    std::string name;
+    std::string host;
+    int port;
 
     std::shared_ptr<SyncDataStore<Value::DataType>> value_store =
         std::make_shared<SyncDataStore<Value::DataType>>();
@@ -23,15 +32,18 @@ class Client {
     std::shared_ptr<FuncStore> func_impl_store = std::make_shared<FuncStore>();
 
     void onRecv(const std::string &message);
+    void send(const std::vector<char> &m);
 
   public:
     friend Func;
 
-    Client() = delete;
+    Client() : Client("") {}
     Client(const Client &) = delete;
     const Client &operator=(const Client &) = delete;
     explicit Client(const std::string &name,
                     const std::string &host = "127.0.0.1", int port = 80);
+    void close();
+    ~Client();
 
     void send();
 

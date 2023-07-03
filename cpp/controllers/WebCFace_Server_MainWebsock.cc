@@ -22,4 +22,5 @@ void MainWebsock::handleNewConnection(const HttpRequestPtr &req,
 void MainWebsock::handleConnectionClosed(
     const WebSocketConnectionPtr &wsConnPtr) {
     // write your application logic here
+    store.removeClient(wsConnPtr);
 }

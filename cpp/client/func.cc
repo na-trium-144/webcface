@@ -71,7 +71,7 @@ Func::run_impl(const std::vector<std::string> &args_vec) const {
         auto &r = func_impl_store->addResult("", pr);
         r.from = this->from;
         r.name = this->name;
-        this->cli->ws->getConnection()->send(Message::pack(
+        this->cli->send(Message::pack(
             Message::Call{{}, r.caller_id, "", r.from, r.name, args_vec}));
         return pr->get_future();
         // resultはclient.cc内でセットされる。
