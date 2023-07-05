@@ -27,6 +27,7 @@ class ClientData {
     ClientData &operator=(const ClientData &) = delete;
     explicit ClientData(const wsConnPtr &con) : con(con) {}
 
+    void onConnect();
     void onRecv(const std::string &msg);
     void onClose();
     void send(const std::vector<char> &m) const;

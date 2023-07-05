@@ -21,6 +21,7 @@ class SyncDataStore {
                   const T &data);
     std::optional<T> try_get_recv(const std::string &from,
                                   const std::string &name);
+    std::vector<std::string> get_recv_key();
     std::unordered_map<std::string, T> transfer_send();
     std::set<std::pair<std::string, std::string>> transfer_subsc();
 };

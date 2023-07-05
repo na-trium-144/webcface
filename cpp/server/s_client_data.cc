@@ -15,6 +15,11 @@ void ClientData::send(const std::vector<char> &m) const {
     }
 }
 bool ClientData::connected() const { return con && con->connected(); }
+void ClientData::onConnect() {
+    for (const auto &c : store.clients) {
+        this->send(pack(c.second->entry));
+    }
+}
 void ClientData::onRecv(const std::string &message) {
     bool entry_update = false;
     using namespace WebCFace::Message;
@@ -52,8 +57,8 @@ void ClientData::onRecv(const std::string &message) {
     }
     case MessageKind::call_response: {
         auto v = std::any_cast<CallResponse>(obj);
-        std::cout << this->entry.name << ": call response [" << v.caller_id << "] '"
-                  << v.response;
+        std::cout << this->entry.name << ": call response [" << v.caller_id
+                  << "] '" << v.response;
         if (v.is_error) {
             std::cout << "' (error)";
         }
@@ -81,11 +86,11 @@ void ClientData::onRecv(const std::string &message) {
         for (const auto &c : store.clients) {
             for (const auto &s : c.second->value_subsc) {
                 if (s.first == this->entry.name && s.second == v.name) {
-                    c.second->send(
-                        pack(Recv<Value>{{}, this->entry.name, v.name, v.data}));
-                    std::cout << "update value " << this->entry.name << ":" << v.name
-                              << " (= " << v.data << " ) -> " << c.second->entry.name
-                              << std::endl;
+                    c.second->send(pack(
+                        Recv<Value>{{}, this->entry.name, v.name, v.data}));
+                    std::cout << "update value " << this->entry.name << ":"
+                              << v.name << " (= " << v.data << " ) -> "
+                              << c.second->entry.name << std::endl;
                 }
             }
         }
@@ -109,9 +114,9 @@ void ClientData::onRecv(const std::string &message) {
                 if (s.first == this->entry.name && s.second == v.name) {
                     c.second->send(
                         pack(Recv<Text>{{}, this->entry.name, v.name, v.data}));
-                    std::cout << "update text " << this->entry.name << ":" << v.name
-                              << " (= " << v.data << " ) -> " << c.second->entry.name
-                              << std::endl;
+                    std::cout << "update text " << this->entry.name << ":"
+                              << v.name << " (= " << v.data << " ) -> "
+                              << c.second->entry.name << std::endl;
                 }
             }
         }

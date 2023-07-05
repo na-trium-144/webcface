@@ -55,8 +55,17 @@ class Client {
 
     void send();
 
-    std::vector<std::string> getValueEntry(const std::string&from);
-    std::vector<std::string> getTextEntry(const std::string&from);
+    std::vector<std::string> getClientList() {
+        return entry_store->get_recv_key();
+    }
+    Entry getEntry(const std::string &from) {
+        auto e = entry_store->try_get_recv(from, "");
+        if (e) {
+            return *e;
+        } else {
+            return Entry{};
+        }
+    }
 
     Value value(const std::string &name) { return value("", name); }
     const Value value(const std::string &from, const std::string &name) {

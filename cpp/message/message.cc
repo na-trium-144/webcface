@@ -29,6 +29,9 @@ std::pair<MessageKind, std::any> unpack(const std::string &message) {
         case MessageKind::call_response:
             obj_u = obj.via.array.ptr[1].as<CallResponse>();
             break;
+        case MessageKind::entry:
+            obj_u = obj.via.array.ptr[1].as<Entry>();
+            break;
         case MessageKind::value:
             obj_u = obj.via.array.ptr[1].as<Value>();
             break;

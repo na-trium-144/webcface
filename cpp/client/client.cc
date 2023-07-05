@@ -181,10 +181,10 @@ void Client::onRecv(const std::string &message) {
         auto r = std::any_cast<Message::Entry>(obj);
         std::vector<std::string> values(r.value.size());
         std::vector<std::string> texts(r.text.size());
-        for(std::size_t i = 0; i < r.value.size(); i++){
+        for (std::size_t i = 0; i < r.value.size(); i++) {
             values[i] = r.value[i].name;
         }
-        for(std::size_t i = 0; i < r.value.size(); i++){
+        for (std::size_t i = 0; i < r.value.size(); i++) {
             texts[i] = r.text[i].name;
         }
         entry_store->set_recv(r.name, "", {values, texts});

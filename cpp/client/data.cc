@@ -17,6 +17,15 @@ void SyncDataStore<T>::set_recv(const std::string &from,
 }
 
 template <typename T>
+std::vector<std::string> SyncDataStore<T>::get_recv_key() {
+    std::lock_guard lock(mtx);
+    std::vector<std::string> k(data_recv.size());
+    for (const auto &r : data_recv) {
+        k.push_back(r.first);
+    }
+    return k;
+}
+template <typename T>
 std::optional<T> SyncDataStore<T>::try_get_recv(const std::string &from,
                                                 const std::string &name) {
     std::lock_guard lock(mtx);
@@ -68,7 +77,7 @@ T SyncData<T>::get() const {
 
 // インスタンス化
 #define INSTANTIATE(T)                                                         \
-    template class SyncData<T>;                                      \
+    template class SyncData<T>;                                                \
     template class SyncDataStore<T>;
 
 INSTANTIATE(Value::DataType);
