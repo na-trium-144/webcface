@@ -74,10 +74,10 @@ void Client::reconnect() {
                                      ReqResult r, const HttpResponsePtr &resp,
                                      const WebSocketClientPtr &ws) mutable {
             if (r == ReqResult::Ok) {
-                std::cout << "connected\n";
+                std::cout << "connected " << std::endl;
                 send(Message::pack(Message::Name{{}, name}));
             } else {
-                std::cout << "error\n";
+                std::cout << "error " << r << std::endl;
                 app().getLoop()->runAfter(1, [this] { reconnect(); });
             }
             p_cli->set_value();

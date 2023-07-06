@@ -4,9 +4,19 @@
 #include <webcface/webcface.h>
 #include <chrono>
 #include <thread>
+#include <future>
+#include "../server/store.h"
 
-DROGON_TEST(ClientTest)
-{
+DROGON_TEST(ConnectionTest) {
+    WebCFace::Client cli1("test1");
+    std::this_thread::sleep_for(std::chrono::milliseconds(200));
+    CHECK(cli1.connected());
+
+    cli1.close();
+    std::this_thread::sleep_for(std::chrono::milliseconds(200));
+    CHECK(!cli1.connected());
+}
+DROGON_TEST(ValueTest) {
     WebCFace::Client cli1("test1"), cli2("test2");
     const int v = 1;
     const std::string t = "aaa";
@@ -36,10 +46,10 @@ DROGON_TEST(ClientTest)
     CHECK(cli2.text("test1", "t") == t);
 }
 
-int main(int argc, char** argv) 
-{
+int main(int argc, char **argv) {
     using namespace drogon;
-    
+    WebCFace::Server::controllerKeeper();
+
     app().addListener("0.0.0.0", 80);
 
     std::promise<void> p1;

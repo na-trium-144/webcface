@@ -1,6 +1,6 @@
 #include "WebCFace_Server_MainWebsock.h"
 #include "../server/store.h"
-
+#include <iostream>
 using namespace WebCFace::Server;
 
 void MainWebsock::handleNewMessage(const WebSocketConnectionPtr &wsConnPtr,
@@ -8,7 +8,7 @@ void MainWebsock::handleNewMessage(const WebSocketConnectionPtr &wsConnPtr,
                                    const WebSocketMessageType &type) {
     // write your application logic here
     auto cli = store.getClient(wsConnPtr);
-    if(cli){
+    if (cli) {
         cli->onRecv(message);
     }
 }
@@ -16,6 +16,7 @@ void MainWebsock::handleNewMessage(const WebSocketConnectionPtr &wsConnPtr,
 void MainWebsock::handleNewConnection(const HttpRequestPtr &req,
                                       const WebSocketConnectionPtr &wsConnPtr) {
     // write your application logic here
+    std::cout << "New connection" << std::endl;
     store.newClient(wsConnPtr);
 }
 

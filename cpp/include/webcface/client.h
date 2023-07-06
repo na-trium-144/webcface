@@ -19,7 +19,6 @@ struct Entry {
 class Client {
   private:
     std::shared_ptr<drogon::WebSocketClient> ws;
-    bool connected() const;
     bool closing = false;
     std::future<void> connection_finished;
     void reconnect();
@@ -50,6 +49,7 @@ class Client {
     const Client &operator=(const Client &) = delete;
     explicit Client(const std::string &name,
                     const std::string &host = "127.0.0.1", int port = 80);
+    bool connected() const;
     void close();
     ~Client();
 
