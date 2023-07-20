@@ -11,8 +11,8 @@ c.func("func2").set((a: string, b: string, c: string, d: string) => {
 setInterval(() => {
   c.value("test").set(c.value("test").get() + 1);
   c.text("str").set("hello");
-  console.log(`str = ${c.text("example_main", "str").get()}`);
-  console.log(`test = ${c.value("example_main", "test").get()}`);
+  console.log(`str = ${c.subject("example_main").text("str").get()}`);
+  console.log(`test = ${c.subject("example_main").value("test").get()}`);
   void c.func("func1").run();
   void c
     .func("func2")
