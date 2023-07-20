@@ -19,11 +19,13 @@ class SyncData {
   private:
     std::shared_ptr<SyncDataStore<T>> store;
 
-  protected:
+    // protected:
+  public:
     std::string from, name;
 
   public:
     using DataType = T;
+    SyncData() {}
     SyncData(std::shared_ptr<SyncDataStore<T>> store, const std::string &from,
              const std::string &name)
         : store(store), from(from), name(name) {}
@@ -52,6 +54,7 @@ auto &operator<<(std::basic_ostream<char> &os, const SyncData<T> &data) {
 
 class Value : public SyncData<double> {
   public:
+    Value() {}
     Value(std::shared_ptr<SyncDataStore<DataType>> store,
           const std::string &from, const std::string &name)
         : SyncData<DataType>(store, from, name) {}
@@ -126,6 +129,7 @@ class Value : public SyncData<double> {
 
 class Text : public SyncData<std::string> {
   public:
+    Text() {}
     Text(std::shared_ptr<SyncDataStore<DataType>> store,
          const std::string &from, const std::string &name)
         : SyncData<DataType>(store, from, name) {}

@@ -36,15 +36,6 @@ DROGON_TEST(ValueTest) {
     CHECK(cli1.subject("test1").text("t").try_get() == std::nullopt);
     CHECK(cli1.subject("test1").text("t") == "");
     CHECK(cli2.subject("test1").text("t").try_get() == std::nullopt);
-    Entry getEntry(const std::string &from) {
-        auto e = entry_store->try_get_recv(from, "");
-        if (e) {
-            return *e;
-        } else {
-            return Entry{};
-        }
-    }
-
     CHECK(cli2.subject("test1").text("t") == "");
     cli1.send();
     cli2.send();

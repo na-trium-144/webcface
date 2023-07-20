@@ -4,35 +4,50 @@
 
 namespace WebCFace {
 template <typename T>
-void SyncDataStore<T>::set_send(const std::string &name, const T &data) {
+void SyncDataStore<T>::setSend(const std::string &name, const T &data) {
     std::lock_guard lock(mtx);
     data_send[name] = data;
     data_recv[""][name] = data; // 送信後に自分の値を参照する用
 }
 template <typename T>
-void SyncDataStore<T>::set_recv(const std::string &from,
-                                const std::string &name, const T &data) {
+void SyncDataStore<T>::setRecv(const std::string &from, const std::string &name,
+                               const T &data) {
     std::lock_guard lock(mtx);
     data_recv[from][name] = data;
 }
 
 template <typename T>
-std::vector<std::string> SyncDataStore<T>::get_recv_key() {
+std::vector<std::string> SyncDataStore<T>::getEntries() {
     std::lock_guard lock(mtx);
-    std::vector<std::string> k(data_recv.size());
-    for (const auto &r : data_recv) {
+    std::vector<std::string> k;
+    for (const auto &r : entry) {
         k.push_back(r.first);
     }
     return k;
 }
 template <typename T>
-std::optional<T> SyncDataStore<T>::try_get_recv(const std::string &from,
-                                                const std::string &name) {
+std::vector<std::string> SyncDataStore<T>::getEntry(const std::string &name) {
     std::lock_guard lock(mtx);
-    auto p = std::make_pair(from, name);
-    if (from != "" && subsc.count(p) == 0) {
-        subsc.insert(p);
-        subsc_next.insert(p);
+    auto e = entry.find(name);
+    if (e != entry.end()) {
+        return e->second;
+    } else {
+        return std::vector<std::string>{};
+    }
+}
+template <typename T>
+void SyncDataStore<T>::setEntry(const std::string &from,
+                                const std::vector<std::string> &e) {
+    std::lock_guard lock(mtx);
+    entry[from] = e;
+}
+template <typename T>
+std::optional<T> SyncDataStore<T>::getRecv(const std::string &from,
+                                           const std::string &name) {
+    std::lock_guard lock(mtx);
+    if (from != "" && (!req.count(from) || !req.at(from).count(name))) {
+        req[from][name] = true;
+        req_send[from][name] = true;
     }
     auto s_it = data_recv.find(from);
     if (s_it != data_recv.end()) {
@@ -44,26 +59,38 @@ std::optional<T> SyncDataStore<T>::try_get_recv(const std::string &from,
     return std::nullopt;
 }
 template <typename T>
-std::unordered_map<std::string, T> SyncDataStore<T>::transfer_send() {
+void SyncDataStore<T>::unsetRecv(const std::string &from,
+                                 const std::string &name) {
+    std::lock_guard lock(mtx);
+    if (from != "" && (req.count(from) && req.at(from).count(name))) {
+        req.at(from).erase(name);
+        req_send[from][name] = false;
+    }
+    if (data_recv.count(from) && data_recv.at(from).count(name)) {
+        data_recv.at(from).erase(name);
+    }
+}
+template <typename T>
+std::unordered_map<std::string, T> SyncDataStore<T>::transferSend() {
     std::lock_guard lock(mtx);
     return std::move(data_send);
 }
 template <typename T>
-std::set<std::pair<std::string, std::string>>
-SyncDataStore<T>::transfer_subsc() {
+std::unordered_map<std::string, std::unordered_map<std::string, bool>>
+SyncDataStore<T>::transferReq() {
     std::lock_guard lock(mtx);
-    return std::move(subsc_next);
+    return std::move(req_send);
 }
 
 template <typename T>
 void SyncData<T>::set(const T &data) {
     assert(from == "");
-    store->set_send(name, data);
+    store->setSend(name, data);
 }
 
 template <typename T>
 std::optional<T> SyncData<T>::try_get() const {
-    return store->try_get_recv(from, name);
+    return store->getRecv(from, name);
 }
 template <typename T>
 T SyncData<T>::get() const {
@@ -83,6 +110,5 @@ T SyncData<T>::get() const {
 INSTANTIATE(Value::DataType);
 INSTANTIATE(Text::DataType);
 INSTANTIATE(Func::DataType);
-INSTANTIATE(Entry);
 
 } // namespace WebCFace

@@ -11,17 +11,12 @@ class WebSocketClient;
 namespace WebCFace {
 
 // SyncDataStore<Entry> はnameを""にして運用
-struct Entry {
-    std::vector<std::string> value;
-    std::vector<std::string> text;
-};
 
 class Client;
 struct SubjectClient {
   private:
     Client *cli;
     std::string subject;
-    std::shared_ptr<SyncDataStore<Entry>> entry_store;
     std::shared_ptr<SyncDataStore<Value::DataType>> value_store;
     std::shared_ptr<SyncDataStore<Text::DataType>> text_store;
     std::shared_ptr<SyncDataStore<Func::DataType>> func_store;
@@ -32,6 +27,7 @@ struct SubjectClient {
     SubjectClient(Client *cli, const std::string &subject);
 
     std::string name() const { return subject; }
+
     const Value value(const std::string &name) const {
         return Value{value_store, subject, name};
     }
@@ -41,14 +37,29 @@ struct SubjectClient {
     const Func func(const std::string &name) const {
         return Func{func_store, func_impl_store, cli, subject, name};
     }
-
-    Entry entry() const {
-        auto e = entry_store->try_get_recv(subject, "");
-        if (e) {
-            return *e;
-        } else {
-            return Entry{};
+    std::vector<Value> values() const {
+        auto keys = value_store->getEntry(subject);
+        std::vector<Value> ret(keys.size());
+        for (std::size_t i = 0; i < keys.size(); i++) {
+            ret[i] = value(keys[i]);
         }
+        return ret;
+    }
+    std::vector<Text> texts() const {
+        auto keys = text_store->getEntry(subject);
+        std::vector<Text> ret(keys.size());
+        for (std::size_t i = 0; i < keys.size(); i++) {
+            ret[i] = text(keys[i]);
+        }
+        return ret;
+    }
+    std::vector<Func> funcs() const {
+        auto keys = func_store->getEntry(subject);
+        std::vector<Func> ret(keys.size());
+        for (std::size_t i = 0; i < keys.size(); i++) {
+            ret[i] = func(keys[i]);
+        }
+        return ret;
     }
 };
 
@@ -63,8 +74,6 @@ class Client {
     std::string host;
     int port;
 
-    std::shared_ptr<SyncDataStore<Entry>> entry_store =
-        std::make_shared<SyncDataStore<Entry>>();
     std::shared_ptr<SyncDataStore<Value::DataType>> value_store =
         std::make_shared<SyncDataStore<Value::DataType>>();
     std::shared_ptr<SyncDataStore<Text::DataType>> text_store =
@@ -94,7 +103,7 @@ class Client {
 
     // ネーミングセンスがおわっている
     std::vector<SubjectClient> subjects() {
-        auto keys = entry_store->get_recv_key();
+        auto keys = value_store->getEntries();
         std::vector<SubjectClient> ret(keys.size());
         for (std::size_t i = 0; i < keys.size(); i++) {
             ret[i] = subject(keys[i]);
