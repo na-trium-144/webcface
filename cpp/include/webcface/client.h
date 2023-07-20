@@ -16,6 +16,42 @@ struct Entry {
     std::vector<std::string> text;
 };
 
+class Client;
+struct SubjectClient {
+  private:
+    Client *cli;
+    std::string subject;
+    std::shared_ptr<SyncDataStore<Entry>> entry_store;
+    std::shared_ptr<SyncDataStore<Value::DataType>> value_store;
+    std::shared_ptr<SyncDataStore<Text::DataType>> text_store;
+    std::shared_ptr<SyncDataStore<Func::DataType>> func_store;
+    std::shared_ptr<FuncStore> func_impl_store;
+
+  public:
+    SubjectClient() = default;
+    SubjectClient(Client *cli, const std::string &subject);
+
+    std::string name() const { return subject; }
+    const Value value(const std::string &name) const {
+        return Value{value_store, subject, name};
+    }
+    const Text text(const std::string &name) const {
+        return Text{text_store, subject, name};
+    }
+    const Func func(const std::string &name) const {
+        return Func{func_store, func_impl_store, cli, subject, name};
+    }
+
+    Entry entry() const {
+        auto e = entry_store->try_get_recv(subject, "");
+        if (e) {
+            return *e;
+        } else {
+            return Entry{};
+        }
+    }
+};
+
 class Client {
   private:
     std::shared_ptr<drogon::WebSocketClient> ws;
@@ -43,6 +79,7 @@ class Client {
 
   public:
     friend Func;
+    friend SubjectClient;
 
     Client() : Client("") {}
     Client(const Client &) = delete;
@@ -55,30 +92,22 @@ class Client {
 
     void send();
 
-    std::vector<std::string> getClientList() {
-        return entry_store->get_recv_key();
-    }
-    Entry getEntry(const std::string &from) {
-        auto e = entry_store->try_get_recv(from, "");
-        if (e) {
-            return *e;
-        } else {
-            return Entry{};
+    // ネーミングセンスがおわっている
+    std::vector<SubjectClient> subjects() {
+        auto keys = entry_store->get_recv_key();
+        std::vector<SubjectClient> ret(keys.size());
+        for (std::size_t i = 0; i < keys.size(); i++) {
+            ret[i] = subject(keys[i]);
         }
+        return ret;
+    }
+    SubjectClient subject(const std::string &name) {
+        return SubjectClient(this, name);
     }
 
-    Value value(const std::string &name) { return value("", name); }
-    const Value value(const std::string &from, const std::string &name) {
-        return Value{value_store, from, name};
-    }
-    Text text(const std::string &name) { return text("", name); }
-    const Text text(const std::string &from, const std::string &name) {
-        return Text{text_store, from, name};
-    }
-    Func func(const std::string &name) { return func("", name); }
-    const Func func(const std::string &from, const std::string &name) {
-        return Func{func_store, func_impl_store, this, from, name};
-    }
+    Value value(const std::string &name) { return subject("").value(name); }
+    Text text(const std::string &name) { return subject("").text(name); }
+    Func func(const std::string &name) { return subject("").func(name); }
 };
 
 } // namespace WebCFace

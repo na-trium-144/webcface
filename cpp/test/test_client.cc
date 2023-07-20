@@ -29,21 +29,30 @@ DROGON_TEST(ValueTest) {
     CHECK(cli1.value("v") == v);
     CHECK(cli1.text("t") == t);
     // 1回目は無
-    CHECK(cli1.value("test1", "v").try_get() == std::nullopt);
-    CHECK(cli1.value("test1", "v") == 0);
-    CHECK(cli2.value("test1", "v").try_get() == std::nullopt);
-    CHECK(cli2.value("test1", "v") == 0);
-    CHECK(cli1.text("test1", "t").try_get() == std::nullopt);
-    CHECK(cli1.text("test1", "t") == "");
-    CHECK(cli2.text("test1", "t").try_get() == std::nullopt);
-    CHECK(cli2.text("test1", "t") == "");
+    CHECK(cli1.subject("test1").value("v").try_get() == std::nullopt);
+    CHECK(cli1.subject("test1").value("v") == 0);
+    CHECK(cli2.subject("test1").value("v").try_get() == std::nullopt);
+    CHECK(cli2.subject("test1").value("v") == 0);
+    CHECK(cli1.subject("test1").text("t").try_get() == std::nullopt);
+    CHECK(cli1.subject("test1").text("t") == "");
+    CHECK(cli2.subject("test1").text("t").try_get() == std::nullopt);
+    Entry getEntry(const std::string &from) {
+        auto e = entry_store->try_get_recv(from, "");
+        if (e) {
+            return *e;
+        } else {
+            return Entry{};
+        }
+    }
+
+    CHECK(cli2.subject("test1").text("t") == "");
     cli1.send();
     cli2.send();
     std::this_thread::sleep_for(std::chrono::milliseconds(200));
-    CHECK(cli1.value("test1", "v") == v);
-    CHECK(cli2.value("test1", "v") == v);
-    CHECK(cli1.text("test1", "t") == t);
-    CHECK(cli2.text("test1", "t") == t);
+    CHECK(cli1.subject("test1").value("v") == v);
+    CHECK(cli2.subject("test1").value("v") == v);
+    CHECK(cli1.subject("test1").text("t") == t);
+    CHECK(cli2.subject("test1").text("t") == t);
 }
 
 int main(int argc, char **argv) {

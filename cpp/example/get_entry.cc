@@ -7,9 +7,9 @@ int main() {
     while (true) {
         std::this_thread::yield();
         std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-        for (const auto &oc : c.getClientList()) {
-            std::cout << oc << std::endl;
-            auto e = c.getEntry(oc);
+        for (const auto &s : c.subjects()) {
+            std::cout << s.name() << std::endl;
+            auto e = s.entry();
             for (const auto &v : e.value) {
                 std::cout << "  value " << v << std::endl;
             }

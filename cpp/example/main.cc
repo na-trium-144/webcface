@@ -26,9 +26,9 @@ int main() {
         // todo: キャストしなくて良いようにする
         std::cout << "send str = " << c.text("str") << std::endl;
         std::cout << "send test = " << c.value("test") << std::endl;
-        std::cout << "recv str = " << c.text("example_main", "str")
+        std::cout << "recv str = " << c.subject("example_main").text("str")
                   << std::endl;
-        std::cout << "recv test = " << c.value("example_main", "test")
+        std::cout << "recv test = " << c.subject("example_main").value("test")
                   << std::endl;
 
         // c.func("aaaaaaa").run(); bad_function_call
