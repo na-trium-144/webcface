@@ -1,7 +1,21 @@
 #include "message.h"
 #include <iostream>
 namespace WebCFace::Message {
+void printMsg(const std::string &message) {
+    std::cerr << std::hex;
+    for (int i = 0; i < message.size(); i++) {
+        std::cerr << std::setw(3) << static_cast<int>(message[i] & 0xff);
+    }
+    std::cerr << std::dec << std::endl;
+    for (int i = 0; i < message.size(); i++) {
+        std::cerr << message[i];
+    }
+    std::cerr << std::endl;
+}
 std::pair<MessageKind, std::any> unpack(const std::string &message) {
+    if (message.size() == 0) {
+        return std::make_pair(MessageKind::unknown, 0);
+    }
     try {
         // Default construct msgpack::object_handle
         msgpack::object_handle result;
@@ -55,13 +69,12 @@ std::pair<MessageKind, std::any> unpack(const std::string &message) {
         }
 #pragma GCC diagnostic pop
 #pragma clang diagnostic pop
+
+        // printMsg(message);
         return std::make_pair(kind, obj_u);
-    } catch (const msgpack::type_error &) {
-        std::cerr << "unpack error: " << std::hex;
-        for (int i = 0; i < message.size(); i++) {
-            std::cerr << std::setw(3) << message[i];
-        }
-        std::cerr << std::dec << std::endl;
+    } catch (const std::exception &e) {
+        std::cerr << "unpack error: " << e.what() << std::endl;
+        printMsg(message);
         return std::make_pair(MessageKind::unknown, 0);
     }
 }
