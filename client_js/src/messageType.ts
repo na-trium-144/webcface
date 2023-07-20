@@ -2,6 +2,7 @@ export const kind = {
   name: 150,
   call: 151,
   callResponse: 152,
+  entry: 153,
   value: 0,
   text: 1,
   recv: 50,
@@ -37,5 +38,10 @@ export interface CallResponse {
   e: boolean;
   r: string;
 }
+export interface Entry {
+  f: string;
+  v: { n: string }[];
+  t: { n: string }[];
+}
 
-export type Any = Name | Data | Recv | Subscribe | Call | CallResponse;
+export type Any = Name | Data | Recv | Subscribe | Call | CallResponse | Entry;

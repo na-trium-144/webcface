@@ -87,9 +87,12 @@ function dataGet(
       store.reqSend.set(from, new Map([[name, true]]));
     }
   }
-  const s = store.dataRecv.get(name);
+  const s = store.dataRecv.get(from);
   if (s) {
-    return s;
+    const m = s.get(name);
+    if (m) {
+      return m;
+    }
   }
   return null;
 }

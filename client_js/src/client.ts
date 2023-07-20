@@ -30,6 +30,16 @@ class SubjectClient {
       name
     );
   }
+  values() {
+    return (this.cli.valueStore.entry.get(this.subject) || []).map((n) =>
+      this.value(n)
+    );
+  }
+  texts() {
+    return (this.cli.textStore.entry.get(this.subject) || []).map((n) =>
+      this.text(n)
+    );
+  }
 }
 
 export class Client {
@@ -132,6 +142,17 @@ export class Client {
           r.ready = true;
           break;
         }
+        case types.kind.entry: {
+          const dataR = data as types.Entry;
+          this.valueStore.entry.set(
+            dataR.f,
+            dataR.v.map((e) => e.n)
+          );
+          this.textStore.entry.set(
+            dataR.f,
+            dataR.t.map((e) => e.n)
+          );
+        }
       }
     };
     ws.onerror = (error) => {
@@ -177,6 +198,10 @@ export class Client {
   }
   subject(name: string) {
     return new SubjectClient(this, name);
+  }
+  subjects() {
+    console.log(this.valueStore.entry);
+    return [...this.valueStore.entry.keys()].map((n) => this.subject(n));
   }
   value(name: string) {
     return new Value(this.valueStore, "", name);
