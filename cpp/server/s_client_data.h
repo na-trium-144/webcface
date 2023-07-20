@@ -15,6 +15,7 @@ class ClientData {
     const wsConnPtr con;
     bool connected() const;
 
+    Message::Entry entry;
     std::unordered_map<std::string, std::vector<double>> value_history;
     std::set<std::pair<std::string, std::string>> value_subsc;
     std::unordered_map<std::string, std::vector<std::string>> text_history;
@@ -26,9 +27,9 @@ class ClientData {
     ClientData &operator=(const ClientData &) = delete;
     explicit ClientData(const wsConnPtr &con) : con(con) {}
 
+    void onConnect();
     void onRecv(const std::string &msg);
     void onClose();
     void send(const std::vector<char> &m) const;
-    std::string name;
 };
 } // namespace WebCFace::Server

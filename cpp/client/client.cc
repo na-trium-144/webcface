@@ -74,10 +74,10 @@ void Client::reconnect() {
                                      ReqResult r, const HttpResponsePtr &resp,
                                      const WebSocketClientPtr &ws) mutable {
             if (r == ReqResult::Ok) {
-                std::cout << "connected\n";
+                std::cout << "connected " << std::endl;
                 send(Message::pack(Message::Name{{}, name}));
             } else {
-                std::cout << "error\n";
+                std::cout << "error " << r << std::endl;
                 app().getLoop()->runAfter(1, [this] { reconnect(); });
             }
             p_cli->set_value();
@@ -113,23 +113,27 @@ void Client::send(const std::vector<char> &m) {
 }
 void Client::send() {
     if (connected()) {
-        auto value_send = value_store->transfer_send();
+        auto value_send = value_store->transferSend();
         for (const auto &v : value_send) {
             send(Message::pack(Message::Value{{}, v.first, v.second}));
         }
-        auto value_subsc = value_store->transfer_subsc();
+        auto value_subsc = value_store->transferReq();
         for (const auto &v : value_subsc) {
-            send(Message::pack(
-                Message::Subscribe<Message::Value>{{}, v.first, v.second}));
+            for (const auto &v2 : v.second) {
+                send(Message::pack(
+                    Message::Subscribe<Message::Value>{{}, v.first, v2.first}));
+            }
         }
-        auto text_send = text_store->transfer_send();
+        auto text_send = text_store->transferSend();
         for (const auto &v : text_send) {
             send(Message::pack(Message::Text{{}, v.first, v.second}));
         }
-        auto text_subsc = text_store->transfer_subsc();
+        auto text_subsc = text_store->transferReq();
         for (const auto &v : text_subsc) {
-            send(Message::pack(
-                Message::Subscribe<Message::Text>{{}, v.first, v.second}));
+            for (const auto &v2 : v.second) {
+                send(Message::pack(
+                    Message::Subscribe<Message::Text>{{}, v.first, v2.first}));
+            }
         }
     }
 }
@@ -143,12 +147,12 @@ void Client::onRecv(const std::string &message) {
     switch (kind) {
     case kind_recv(MessageKind::value): {
         auto r = std::any_cast<Recv<WebCFace::Message::Value>>(obj);
-        value_store->set_recv(r.from, r.name, r.data);
+        value_store->setRecv(r.from, r.name, r.data);
         break;
     }
     case kind_recv(MessageKind::text): {
         auto r = std::any_cast<Recv<WebCFace::Message::Text>>(obj);
-        text_store->set_recv(r.from, r.name, r.data);
+        text_store->setRecv(r.from, r.name, r.data);
         break;
     }
     case MessageKind::call: {
@@ -175,6 +179,20 @@ void Client::onRecv(const std::string &message) {
             res.result = static_cast<AnyArg>(r.response);
         }
         res.setReady();
+        break;
+    }
+    case MessageKind::entry: {
+        auto r = std::any_cast<Message::Entry>(obj);
+        std::vector<std::string> values(r.value.size());
+        std::vector<std::string> texts(r.text.size());
+        for (std::size_t i = 0; i < r.value.size(); i++) {
+            values[i] = r.value[i].name;
+        }
+        for (std::size_t i = 0; i < r.text.size(); i++) {
+            texts[i] = r.text[i].name;
+        }
+        value_store->setEntry(r.name, values);
+        text_store->setEntry(r.name, texts);
         break;
     }
     case MessageKind::name:

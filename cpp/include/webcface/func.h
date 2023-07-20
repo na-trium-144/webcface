@@ -116,6 +116,7 @@ class Func : public SyncData<FuncInfo> {
   public:
     friend Client;
 
+    Func() {}
     Func(std::shared_ptr<SyncDataStore<DataType>> store,
          std::shared_ptr<FuncStore> func_impl_store, Client *cli,
          const std::string &from, const std::string &name)

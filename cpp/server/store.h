@@ -7,11 +7,15 @@
 namespace WebCFace::Server {
 // serverは1スレッドなのでmutexについて考える必要はない
 inline struct Store {
-    std::unordered_map<ClientData::wsConnPtr, std::shared_ptr<ClientData>> clients;
-    std::unordered_map<std::string, std::shared_ptr<ClientData>> clients_by_name;
+    std::unordered_map<ClientData::wsConnPtr, std::shared_ptr<ClientData>>
+        clients;
+    std::unordered_map<std::string, std::shared_ptr<ClientData>>
+        clients_by_name;
     Store() : clients() {}
     void newClient(const ClientData::wsConnPtr &con);
     void removeClient(const ClientData::wsConnPtr &con);
     std::shared_ptr<ClientData> getClient(const ClientData::wsConnPtr &con);
 } store;
+
+void controllerKeeper();
 } // namespace WebCFace::Server

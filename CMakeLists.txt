@@ -49,44 +49,21 @@ aux_source_directory(cpp/controllers CTL_SRC)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-set(SERVER ${PROJECT_NAME}_server)
-add_executable(${SERVER} ${SVR_MAIN_SRC} ${SVR_SRC} ${MSG_SRC} ${CTL_SRC})
+add_library(${PROJECT_NAME}_message STATIC ${MSG_SRC})
+target_compile_options(${PROJECT_NAME}_message PRIVATE -fPIC)
+target_compile_features(${PROJECT_NAME}_message PUBLIC cxx_std_17)
+target_link_libraries(${PROJECT_NAME}_message PUBLIC ${MSGPACK})
 
-target_compile_features(${SERVER} PUBLIC cxx_std_17)
-target_link_libraries(${SERVER}
-    PRIVATE
-    ${DROGON}
-    ${MSGPACK}
-)
+add_library(${PROJECT_NAME}_server_impl STATIC ${SVR_SRC} ${CTL_SRC})
+target_link_libraries(${PROJECT_NAME}_server_impl PUBLIC ${PROJECT_NAME}_message ${DROGON})
 
-# drogon_create_views(${PROJECT_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/views
-#                     ${CMAKE_CURRENT_BINARY_DIR})
-# use the following line to create views with namespaces.
-# drogon_create_views(${PROJECT_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/views
-#                     ${CMAKE_CURRENT_BINARY_DIR} TRUE)
-# use the following line to create views with namespace CHANGE_ME prefixed
-# and path namespaces.
-# drogon_create_views(${PROJECT_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/views
-#                     ${CMAKE_CURRENT_BINARY_DIR} TRUE CHANGE_ME)
+add_executable(${PROJECT_NAME}_server ${SVR_MAIN_SRC})
+target_link_libraries(${PROJECT_NAME}_server PRIVATE ${PROJECT_NAME}_server_impl)
 
-# ##############################################################################
-# uncomment the following line for dynamically loading views 
-# set_property(TARGET ${PROJECT_NAME} PROPERTY ENABLE_EXPORTS ON)
-
-# ##############################################################################
-
-# client
-
-add_library(${PROJECT_NAME} SHARED ${CLI_SRC} ${MSG_SRC})
+add_library(${PROJECT_NAME} SHARED ${CLI_SRC})
 target_compile_options(${PROJECT_NAME} PRIVATE -fPIC)
-
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_20)
-target_link_libraries(${PROJECT_NAME}
-    PRIVATE
-    ${DROGON}
-    ${MSGPACK}
-)
-
+target_link_libraries(${PROJECT_NAME} PRIVATE ${PROJECT_NAME}_message ${DROGON})
 target_include_directories(${PROJECT_NAME}
     PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/cpp/include
@@ -100,12 +77,8 @@ endforeach()
 
 foreach(SRC IN LISTS TEST_SRC)
     get_filename_component(TARGET ${SRC} NAME_WE)
-    add_executable(${TARGET} ${SRC} ${SVR_SRC} ${MSG_SRC} ${CTL_SRC} ${CLI_SRC})
-    target_link_libraries(${TARGET} PRIVATE ${DROGON} ${MSGPACK})
-    target_include_directories(${TARGET}
-        PUBLIC
-        ${CMAKE_CURRENT_SOURCE_DIR}/cpp/include
-    )
+    add_executable(${TARGET} ${SRC})
+    target_link_libraries(${TARGET} PRIVATE ${PROJECT_NAME} ${PROJECT_NAME}_server_impl)
     ParseAndAddDrogonTests(${TARGET})
 endforeach()
 

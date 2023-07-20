@@ -1,5 +1,5 @@
-import * as types from "./messageType";
-import { pack, unpack } from "./message";
+import * as types from "./messageType.js";
+import { pack, unpack } from "./message.js";
 
 export class FuncResult {
   callerId: number;

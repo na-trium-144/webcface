@@ -4,9 +4,19 @@
 #include <webcface/webcface.h>
 #include <chrono>
 #include <thread>
+#include <future>
+#include "../server/store.h"
 
-DROGON_TEST(ClientTest)
-{
+DROGON_TEST(ConnectionTest) {
+    WebCFace::Client cli1("test1");
+    std::this_thread::sleep_for(std::chrono::milliseconds(200));
+    CHECK(cli1.connected());
+
+    cli1.close();
+    std::this_thread::sleep_for(std::chrono::milliseconds(200));
+    CHECK(!cli1.connected());
+}
+DROGON_TEST(ValueTest) {
     WebCFace::Client cli1("test1"), cli2("test2");
     const int v = 1;
     const std::string t = "aaa";
@@ -19,27 +29,27 @@ DROGON_TEST(ClientTest)
     CHECK(cli1.value("v") == v);
     CHECK(cli1.text("t") == t);
     // 1回目は無
-    CHECK(cli1.value("test1", "v").try_get() == std::nullopt);
-    CHECK(cli1.value("test1", "v") == 0);
-    CHECK(cli2.value("test1", "v").try_get() == std::nullopt);
-    CHECK(cli2.value("test1", "v") == 0);
-    CHECK(cli1.text("test1", "t").try_get() == std::nullopt);
-    CHECK(cli1.text("test1", "t") == "");
-    CHECK(cli2.text("test1", "t").try_get() == std::nullopt);
-    CHECK(cli2.text("test1", "t") == "");
+    CHECK(cli1.subject("test1").value("v").try_get() == std::nullopt);
+    CHECK(cli1.subject("test1").value("v") == 0);
+    CHECK(cli2.subject("test1").value("v").try_get() == std::nullopt);
+    CHECK(cli2.subject("test1").value("v") == 0);
+    CHECK(cli1.subject("test1").text("t").try_get() == std::nullopt);
+    CHECK(cli1.subject("test1").text("t") == "");
+    CHECK(cli2.subject("test1").text("t").try_get() == std::nullopt);
+    CHECK(cli2.subject("test1").text("t") == "");
     cli1.send();
     cli2.send();
     std::this_thread::sleep_for(std::chrono::milliseconds(200));
-    CHECK(cli1.value("test1", "v") == v);
-    CHECK(cli2.value("test1", "v") == v);
-    CHECK(cli1.text("test1", "t") == t);
-    CHECK(cli2.text("test1", "t") == t);
+    CHECK(cli1.subject("test1").value("v") == v);
+    CHECK(cli2.subject("test1").value("v") == v);
+    CHECK(cli1.subject("test1").text("t") == t);
+    CHECK(cli2.subject("test1").text("t") == t);
 }
 
-int main(int argc, char** argv) 
-{
+int main(int argc, char **argv) {
     using namespace drogon;
-    
+    WebCFace::Server::controllerKeeper();
+
     app().addListener("0.0.0.0", 80);
 
     std::promise<void> p1;

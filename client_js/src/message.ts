@@ -1,5 +1,5 @@
 import msgpack from "@ygoe/msgpack";
-import * as types from "./messageType";
+import * as types from "./messageType.js";
 
 export function unpack(msg: ArrayBuffer) {
   const m = msgpack.deserialize(msg) as [number, types.Any];

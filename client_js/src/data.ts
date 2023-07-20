@@ -1,29 +1,34 @@
-import * as types from "./messageType";
+import * as types from "./messageType.js";
+
+export interface DataStore<T> {
+  dataSend: Map<string, T>;
+  dataRecv: Map<string, Map<string, T>>;
+  entry: Map<string, string[]>;
+  req: Map<string, Map<string, boolean>>;
+  reqSend: Map<string, Map<string, boolean>>;
+}
+export const emptyStore = () => ({
+  dataSend: new Map(),
+  dataRecv: new Map(),
+  entry: new Map(),
+  req: new Map(),
+  reqSend: new Map(),
+});
 
 export class Value {
-  send: types.Data[];
-  subsc: types.Subscribe[];
-  recv: types.Recv[];
+  store: DataStore<number | string>;
   from: string;
   name: string;
-  constructor(
-    send: types.Data[],
-    subsc: types.Subscribe[],
-    recv: types.Recv[],
-    from: string,
-    name: string
-  ) {
-    this.send = send;
-    this.recv = recv;
-    this.subsc = subsc;
+  constructor(store: DataStore<number | string>, from: string, name: string) {
+    this.store = store;
     this.from = from;
     this.name = name;
   }
-  try_get() {
-    return dataGet(this) as number | null;
+  tryGet() {
+    return dataGet(this.store, this.from, this.name) as number | null;
   }
   get() {
-    const v = this.try_get();
+    const v = this.tryGet();
     if (v == null) {
       return 0;
     } else {
@@ -31,33 +36,23 @@ export class Value {
     }
   }
   set(data: number) {
-    dataSet(this, data);
+    dataSet(this.store, this.from, this.name, data);
   }
 }
 export class Text {
-  send: types.Data[];
-  subsc: types.Subscribe[];
-  recv: types.Recv[];
+  store: DataStore<number | string>;
   from: string;
   name: string;
-  constructor(
-    send: types.Data[],
-    subsc: types.Subscribe[],
-    recv: types.Recv[],
-    from: string,
-    name: string
-  ) {
-    this.send = send;
-    this.recv = recv;
-    this.subsc = subsc;
+  constructor(store: DataStore<number | string>, from: string, name: string) {
+    this.store = store;
     this.from = from;
     this.name = name;
   }
-  try_get(): string | null {
-    return dataGet(this) as string | null;
+  tryGet() {
+    return dataGet(this.store, this.from, this.name) as string | null;
   }
   get() {
-    const v = this.try_get();
+    const v = this.tryGet();
     if (v == null) {
       return "";
     } else {
@@ -65,31 +60,58 @@ export class Text {
     }
   }
   set(data: string) {
-    dataSet(this, data);
+    dataSet(this.store, this.from, this.name, data);
   }
 }
-function dataGet(dataStore: Value | Text) {
-  if (dataStore.from == "") {
-    const s = dataStore.send.find((s) => s.n === dataStore.name);
+function dataGet(
+  store: DataStore<number | string>,
+  from: string,
+  name: string
+) {
+  if (from === "") {
+    const s = store.dataSend.get(name);
     if (s) {
-      return s.d;
+      return s;
     }
-  } else {
-    dataStore.subsc.push({ f: dataStore.from, n: dataStore.name });
   }
-  const s = dataStore.recv.find(
-    (s) => s.f == dataStore.from && s.n == dataStore.name
-  );
+
+  let hasValue = false;
+  let value: number | string | null = null;
+  const s = store.dataRecv.get(from);
   if (s) {
-    return s.d;
+    const m = s.get(name);
+    if (m) {
+      value = m;
+      hasValue = true;
+    }
   }
-  return null;
+  if (from !== "" && !hasValue) {
+    const m = store.req.get(from);
+    if (m) {
+      m.set(name, true);
+    } else {
+      store.req.set(from, new Map([[name, true]]));
+    }
+    const ms = store.reqSend.get(from);
+    if (ms) {
+      ms.set(name, true);
+    } else {
+      store.reqSend.set(from, new Map([[name, true]]));
+    }
+  }
+  return value;
 }
-function dataSet(dataStore: Value | Text, data: number | string) {
-  const s = dataStore.send.find((s) => s.n === dataStore.name);
-  if (s) {
-    s.d = data;
+function dataSet(
+  store: DataStore<number | string>,
+  from: string,
+  name: string,
+  data: number | string
+) {
+  store.dataSend.set(name, data);
+  const m = store.dataRecv.get("");
+  if (m) {
+    m.set(name, data);
   } else {
-    dataStore.send.push({ n: dataStore.name, d: data });
+    store.dataRecv.set("", new Map([[name, data]]));
   }
 }

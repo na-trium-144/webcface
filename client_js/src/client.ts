@@ -1,18 +1,52 @@
-import { pack, unpack } from "./message";
-import * as types from "./messageType";
-import { Value, Text } from "./data";
-import { Func, FuncResult, FuncStore } from "./func";
+import { pack, unpack } from "./message.js";
+import * as types from "./messageType.js";
+import { DataStore, emptyStore, Value, Text } from "./data.js";
+import { Func, FuncResult, FuncStore } from "./func.js";
 import { w3cwebsocket } from "websocket";
+
+class SubjectClient {
+  cli: Client;
+  subject: string;
+  constructor(cli: Client, subject: string) {
+    this.cli = cli;
+    this.subject = subject;
+  }
+  name() {
+    return this.subject;
+  }
+  value(name: string) {
+    return new Value(this.cli.valueStore, this.subject, name);
+  }
+  text(name: string) {
+    return new Text(this.cli.textStore, this.subject, name);
+  }
+  func(name: string) {
+    return new Func(
+      (m: ArrayBuffer) =>
+        this.cli.connected && this.cli.ws != null && this.cli.ws.send(m),
+      this.cli.funcStore,
+      this.cli.funcResult,
+      this.subject,
+      name
+    );
+  }
+  values() {
+    return (this.cli.valueStore.entry.get(this.subject) || []).map((n) =>
+      this.value(n)
+    );
+  }
+  texts() {
+    return (this.cli.textStore.entry.get(this.subject) || []).map((n) =>
+      this.text(n)
+    );
+  }
+}
 
 export class Client {
   ws: null | w3cwebsocket = null;
   connected = false;
-  valueSend: types.Data[] = [];
-  valueSubsc: types.Subscribe[] = [];
-  valueRecv: types.Recv[] = [];
-  textSend: types.Data[] = [];
-  textSubsc: types.Subscribe[] = [];
-  textRecv: types.Recv[] = [];
+  valueStore: DataStore<number | string> = emptyStore();
+  textStore: DataStore<number | string> = emptyStore();
   funcStore: FuncStore[] = [];
   funcResult: FuncResult[] = [];
   name: string;
@@ -50,25 +84,24 @@ export class Client {
       switch (kind) {
         case types.kind.recv + types.kind.value: {
           const dataR = data as types.Recv;
-          const i = this.valueRecv.findIndex(
-            (s) => s.f == dataR.f && s.n == dataR.n
-          );
-          if (i >= 0) {
-            this.valueRecv[i] = dataR;
+          const m = this.valueStore.dataRecv.get(dataR.f);
+          if (m) {
+            m.set(dataR.n, dataR.d);
           } else {
-            this.valueRecv.push(dataR);
+            this.valueStore.dataRecv.set(
+              dataR.f,
+              new Map([[dataR.n, dataR.d]])
+            );
           }
           break;
         }
         case types.kind.recv + types.kind.text: {
           const dataR = data as types.Recv;
-          const i = this.textRecv.findIndex(
-            (s) => s.f == dataR.f && s.n == dataR.n
-          );
-          if (i >= 0) {
-            this.textRecv[i] = dataR;
+          const m = this.textStore.dataRecv.get(dataR.f);
+          if (m) {
+            m.set(dataR.n, dataR.d);
           } else {
-            this.textRecv.push(dataR);
+            this.textStore.dataRecv.set(dataR.f, new Map([[dataR.n, dataR.d]]));
           }
           break;
         }
@@ -94,6 +127,7 @@ export class Client {
             r.f = false;
           }
           this.ws != null && this.ws.send(pack(types.kind.callResponse, r));
+          break;
         }
         case types.kind.callResponse: {
           const dataR = data as types.CallResponse;
@@ -107,6 +141,17 @@ export class Client {
           }
           r.ready = true;
           break;
+        }
+        case types.kind.entry: {
+          const dataR = data as types.Entry;
+          this.valueStore.entry.set(
+            dataR.f,
+            dataR.v.map((e) => e.n)
+          );
+          this.textStore.entry.set(
+            dataR.f,
+            dataR.t.map((e) => e.n)
+          );
         }
       }
     };
@@ -124,47 +169,51 @@ export class Client {
   }
   send() {
     if (this.connected && this.ws != null) {
-      for (const v of this.valueSend) {
-        this.ws.send(pack(types.kind.value, v));
+      for (const [k, v] of this.valueStore.dataSend.entries()) {
+        this.ws.send(pack(types.kind.value, { n: k, d: v }));
       }
-      for (const v of this.valueSubsc) {
-        this.ws.send(pack(types.kind.subscribe + types.kind.value, v));
+      this.valueStore.dataSend.clear();
+      for (const [k, v] of this.valueStore.reqSend.entries()) {
+        for (const [k2, v2] of v.entries()) {
+          this.ws.send(
+            pack(types.kind.subscribe + types.kind.value, { f: k, n: k2 })
+          );
+        }
       }
-      for (const v of this.textSend) {
-        this.ws.send(pack(types.kind.text, v));
+      this.valueStore.reqSend.clear();
+
+      for (const [k, v] of this.textStore.dataSend.entries()) {
+        this.ws.send(pack(types.kind.value, { n: k, d: v }));
       }
-      for (const v of this.textSubsc) {
-        this.ws.send(pack(types.kind.subscribe + types.kind.text, v));
+      this.textStore.dataSend.clear();
+      for (const [k, v] of this.textStore.reqSend.entries()) {
+        for (const [k2, v2] of v.entries()) {
+          this.ws.send(
+            pack(types.kind.subscribe + types.kind.text, { f: k, n: k2 })
+          );
+        }
       }
+      this.textStore.reqSend.clear();
     }
   }
-  value(from: string, name?: string) {
-    if (name == undefined) {
-      [from, name] = ["", from];
-    }
-    return new Value(
-      this.valueSend,
-      this.valueSubsc,
-      this.valueRecv,
-      from,
-      name
-    );
+  subject(name: string) {
+    return new SubjectClient(this, name);
   }
-  text(from: string, name?: string) {
-    if (name == undefined) {
-      [from, name] = ["", from];
-    }
-    return new Text(this.textSend, this.textSubsc, this.textRecv, from, name);
+  subjects() {
+    return [...this.valueStore.entry.keys()].map((n) => this.subject(n));
   }
-  func(from: string, name?: string) {
-    if (name == undefined) {
-      [from, name] = ["", from];
-    }
+  value(name: string) {
+    return new Value(this.valueStore, "", name);
+  }
+  text(name: string) {
+    return new Text(this.textStore, "", name);
+  }
+  func(name: string) {
     return new Func(
       (m: ArrayBuffer) => this.connected && this.ws != null && this.ws.send(m),
       this.funcStore,
       this.funcResult,
-      from,
+      "",
       name
     );
   }
