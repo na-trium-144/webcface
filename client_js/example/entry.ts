@@ -1,4 +1,4 @@
-import { Client } from "../src/index";
+import { Client } from "../src/index.js";
 
 const c = new Client("example_get_entry", "127.0.0.1", 80);
 

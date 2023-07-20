@@ -1,7 +1,7 @@
-import { pack, unpack } from "./message";
-import * as types from "./messageType";
-import { DataStore, emptyStore, Value, Text } from "./data";
-import { Func, FuncResult, FuncStore } from "./func";
+import { pack, unpack } from "./message.js";
+import * as types from "./messageType.js";
+import { DataStore, emptyStore, Value, Text } from "./data.js";
+import { Func, FuncResult, FuncStore } from "./func.js";
 import { w3cwebsocket } from "websocket";
 
 class SubjectClient {
@@ -189,7 +189,7 @@ export class Client {
       for (const [k, v] of this.textStore.reqSend.entries()) {
         for (const [k2, v2] of v.entries()) {
           this.ws.send(
-            pack(types.kind.subscribe + types.kind.value, { f: k, n: k2 })
+            pack(types.kind.subscribe + types.kind.text, { f: k, n: k2 })
           );
         }
       }
@@ -200,7 +200,6 @@ export class Client {
     return new SubjectClient(this, name);
   }
   subjects() {
-    console.log(this.valueStore.entry);
     return [...this.valueStore.entry.keys()].map((n) => this.subject(n));
   }
   value(name: string) {

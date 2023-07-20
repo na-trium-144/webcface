@@ -1,4 +1,4 @@
-import * as types from "./messageType";
+import * as types from "./messageType.js";
 
 export interface DataStore<T> {
   dataSend: Map<string, T>;
@@ -68,33 +68,38 @@ function dataGet(
   from: string,
   name: string
 ) {
-  if (from == "") {
+  if (from === "") {
     const s = store.dataSend.get(name);
     if (s) {
       return s;
     }
-  } else {
-    let m = store.req.get(from);
+  }
+
+  let hasValue = false;
+  let value: number | string | null = null;
+  const s = store.dataRecv.get(from);
+  if (s) {
+    const m = s.get(name);
+    if (m) {
+      value = m;
+      hasValue = true;
+    }
+  }
+  if (from !== "" && !hasValue) {
+    const m = store.req.get(from);
     if (m) {
       m.set(name, true);
     } else {
       store.req.set(from, new Map([[name, true]]));
     }
-    m = store.reqSend.get(from);
-    if (m) {
-      m.set(name, true);
+    const ms = store.reqSend.get(from);
+    if (ms) {
+      ms.set(name, true);
     } else {
       store.reqSend.set(from, new Map([[name, true]]));
     }
   }
-  const s = store.dataRecv.get(from);
-  if (s) {
-    const m = s.get(name);
-    if (m) {
-      return m;
-    }
-  }
-  return null;
+  return value;
 }
 function dataSet(
   store: DataStore<number | string>,
