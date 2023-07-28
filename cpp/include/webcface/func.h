@@ -108,8 +108,6 @@ class Func : public SyncData<FuncInfo> {
             }
         });
     }
-    std::future<FuncResult>
-    run_impl(const std::vector<std::string> &args_vec) const;
     std::future<FuncResult> run_impl(const std::vector<AnyArg> &args_vec) const;
     Client *cli;
 
@@ -136,10 +134,7 @@ class Func : public SyncData<FuncInfo> {
 
     template <typename... Args>
     std::future<FuncResult> run(Args... args) const {
-        std::tuple<Args...> args_tuple = {args...};
-        std::vector<AnyArg> args_vec(sizeof...(args));
-        tupleToArg(args_vec, args_tuple);
-        return run_impl(args_vec);
+        return run_impl({AnyArg(args)...});
     }
 };
 

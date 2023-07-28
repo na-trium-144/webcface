@@ -31,7 +31,6 @@ FuncResult &FuncStore::getResult(int caller_id) {
 
 std::future<FuncResult>
 Func::run_impl(const std::vector<AnyArg> &args_vec) const {
-    // 内部の呼び出しはAnyArgで、外部の呼び出しはstd::stringである めんどくさ
     if (from == "") {
         auto pr = std::make_shared<std::promise<FuncResult>>();
         auto &r = func_impl_store->addResult("", pr);
@@ -62,14 +61,5 @@ Func::run_impl(const std::vector<AnyArg> &args_vec) const {
         // resultはclient.cc内でセットされる。
     }
 }
-std::future<FuncResult>
-Func::run_impl(const std::vector<std::string> &args_vec) const {
-    std::vector<AnyArg> args(args_vec.size());
-    for (std::size_t i = 0; i < args_vec.size(); i++) {
-        args[i] = static_cast<AnyArg>(args_vec[i]);
-    }
-    return run_impl(args);
-}
-
 
 } // namespace WebCFace
