@@ -1,6 +1,7 @@
 import * as types from "./messageType.js";
 import { pack, unpack } from "./message.js";
 
+type Arg = string | number | boolean | void;
 export class FuncResult {
   callerId: number;
   from: string;
@@ -9,7 +10,7 @@ export class FuncResult {
   isError = false;
   errorMsg = "";
   ready = false;
-  result = "";
+  result: Arg = "";
   constructor(from: string, name: string, callerId: number) {
     this.from = from;
     this.name = name;
@@ -29,7 +30,7 @@ export class FuncResult {
 
 export interface FuncStore {
   name: string;
-  func: (...args: string[]) => any;
+  func: (...args: Arg[]) => Arg;
 }
 
 export class Func {
@@ -51,8 +52,7 @@ export class Func {
     this.from = from;
     this.name = name;
   }
-  set(func: (...args: string[]) => any) {
-    // todo:引数の扱い
+  set(func: (...args: Arg[]) => Arg) {
     const s = this.funcs.find((s) => s.name === this.name);
     if (s) {
       s.func = func;
@@ -65,14 +65,14 @@ export class Func {
     this.results.push(r);
     return r;
   }
-  run(...args: string[]) {
+  run(...args: Arg[]) {
     if (this.from === "") {
       const r = this.addResult();
       const s = this.funcs.find((s) => s.name === this.name);
       if (s) {
         r.found = true;
         try {
-          r.result = String(s.func(...args));
+          r.result = s.func(...args);
         } catch (e: any) {
           r.errorMsg = (e as Error).toString();
           r.isError = true;

@@ -2,7 +2,8 @@ import { pack, unpack } from "./message.js";
 import * as types from "./messageType.js";
 import { DataStore, emptyStore, Value, Text } from "./data.js";
 import { Func, FuncResult, FuncStore } from "./func.js";
-import { w3cwebsocket } from "websocket";
+import websocket from "websocket";
+const w3cwebsocket = websocket.w3cwebsocket;
 
 class SubjectClient {
   cli: Client;
@@ -43,7 +44,7 @@ class SubjectClient {
 }
 
 export class Client {
-  ws: null | w3cwebsocket = null;
+  ws: null | websocket.w3cwebsocket = null;
   connected = false;
   valueStore: DataStore<number | string> = emptyStore();
   textStore: DataStore<number | string> = emptyStore();
@@ -183,7 +184,7 @@ export class Client {
       this.valueStore.reqSend.clear();
 
       for (const [k, v] of this.textStore.dataSend.entries()) {
-        this.ws.send(pack(types.kind.value, { n: k, d: v }));
+        this.ws.send(pack(types.kind.text, { n: k, d: v }));
       }
       this.textStore.dataSend.clear();
       for (const [k, v] of this.textStore.reqSend.entries()) {
