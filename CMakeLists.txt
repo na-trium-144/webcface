@@ -42,6 +42,7 @@ aux_source_directory(cpp/controllers CTL_SRC)
 # aux_source_directory(cpp/filters FILTER_SRC)
 # aux_source_directory(cpp/plugins PLUGIN_SRC)
 # aux_source_directory(cpp/models MODEL_SRC)
+set(INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/cpp/include)
 
 ###############################################################################
 # server
@@ -51,8 +52,9 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 add_library(${PROJECT_NAME}_message STATIC ${MSG_SRC})
 target_compile_options(${PROJECT_NAME}_message PRIVATE -fPIC)
-target_compile_features(${PROJECT_NAME}_message PUBLIC cxx_std_17)
+target_compile_features(${PROJECT_NAME}_message PUBLIC cxx_std_20)
 target_link_libraries(${PROJECT_NAME}_message PUBLIC ${MSGPACK})
+target_include_directories(${PROJECT_NAME}_message PUBLIC ${INCLUDE_DIR})
 
 add_library(${PROJECT_NAME}_server_impl STATIC ${SVR_SRC} ${CTL_SRC})
 target_link_libraries(${PROJECT_NAME}_server_impl PUBLIC ${PROJECT_NAME}_message ${DROGON})
@@ -64,10 +66,7 @@ add_library(${PROJECT_NAME} SHARED ${CLI_SRC})
 target_compile_options(${PROJECT_NAME} PRIVATE -fPIC)
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_20)
 target_link_libraries(${PROJECT_NAME} PRIVATE ${PROJECT_NAME}_message ${DROGON})
-target_include_directories(${PROJECT_NAME}
-    PUBLIC
-    ${CMAKE_CURRENT_SOURCE_DIR}/cpp/include
-)
+target_include_directories(${PROJECT_NAME} PUBLIC ${INCLUDE_DIR})
 
 foreach(SRC IN LISTS EXAMPLE_SRC)
     get_filename_component(TARGET ${SRC} NAME_WE)

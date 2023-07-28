@@ -4,6 +4,7 @@
 #include <utility>
 #include <vector>
 #include <any>
+#include "arg_adaptor.h"
 
 namespace WebCFace::Message {
 // 新しいメッセージの定義は
@@ -53,7 +54,7 @@ struct Entry : public MessageBase<MessageKind::entry> {
 struct Call : public MessageBase<MessageKind::call> {
     int caller_id;
     std::string caller, receiver, name;
-    std::vector<std::string> args;
+    std::vector<WebCFace::AnyArg> args;
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", caller_id), MSGPACK_NVP("c", caller),
                        MSGPACK_NVP("r", receiver), MSGPACK_NVP("n", name),
                        MSGPACK_NVP("a", args));

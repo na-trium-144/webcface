@@ -51,22 +51,6 @@ Func::run_impl(const std::vector<AnyArg> &args_vec) const {
         r.setReady();
         return pr->get_future();
     } else {
-        std::vector<std::string> args(args_vec.size());
-        for (std::size_t i = 0; i < args_vec.size(); i++) {
-            args[i] = static_cast<std::string>(args_vec[i]);
-        }
-        return run_impl(args);
-    }
-}
-std::future<FuncResult>
-Func::run_impl(const std::vector<std::string> &args_vec) const {
-    if (from == "") {
-        std::vector<AnyArg> args(args_vec.size());
-        for (std::size_t i = 0; i < args_vec.size(); i++) {
-            args[i] = static_cast<AnyArg>(args_vec[i]);
-        }
-        return run_impl(args);
-    } else {
         auto pr = std::make_shared<std::promise<FuncResult>>();
         auto &r = func_impl_store->addResult("", pr);
         r.from = this->from;
@@ -77,6 +61,14 @@ Func::run_impl(const std::vector<std::string> &args_vec) const {
         return pr->get_future();
         // resultはclient.cc内でセットされる。
     }
+}
+std::future<FuncResult>
+Func::run_impl(const std::vector<std::string> &args_vec) const {
+    std::vector<AnyArg> args(args_vec.size());
+    for (std::size_t i = 0; i < args_vec.size(); i++) {
+        args[i] = static_cast<AnyArg>(args_vec[i]);
+    }
+    return run_impl(args);
 }
 
 
