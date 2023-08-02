@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
-
 import { Client } from "webcface";
+import './index.css';
 
 function App() {
   const cli = useRef<Client | null>(null);
