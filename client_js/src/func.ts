@@ -1,5 +1,6 @@
 import * as types from "./messageType.js";
 import { pack, unpack } from "./message.js";
+import { DataStore, dataSet, dataGet } from "./data.js";
 
 type Arg = string | number | boolean | void;
 export class FuncResult {
@@ -28,20 +29,21 @@ export class FuncResult {
   }
 }
 
-export interface FuncStore {
-  name: string;
-  func: (...args: Arg[]) => Arg;
+export interface FuncInfoInternal {
+  returnType: number;
+  argsType: number[];
+  funcImpl: ((...args: Arg[]) => Arg) | null;
 }
 
 export class Func {
-  funcs: FuncStore[];
+  funcs: DataStore<FuncInfoInternal>;
   results: FuncResult[];
   send: (m: ArrayBuffer) => void;
   from: string;
   name: string;
   constructor(
     send: (m: ArrayBuffer) => void,
-    funcs: FuncStore[],
+    funcs: DataStore<FuncInfoInternal>,
     results: FuncResult[],
     from: string,
     name: string
@@ -52,27 +54,43 @@ export class Func {
     this.from = from;
     this.name = name;
   }
-  set(func: (...args: Arg[]) => Arg) {
-    const s = this.funcs.find((s) => s.name === this.name);
-    if (s) {
-      s.func = func;
-    } else {
-      this.funcs.push({ name: this.name, func: func });
-    }
+  set(data: any /* (...args: Arg[]) => Arg */) {
+    dataSet(this.funcs, this.from, this.name, {
+      // todo
+      returnType: 0,
+      argsType: [],
+      funcImpl: data as (...args: Arg[]) => Arg,
+    });
   }
   addResult() {
     const r = new FuncResult(this.from, this.name, this.results.length);
     this.results.push(r);
     return r;
   }
+  returnType() {
+    const funcInfo = dataGet(this.funcs, this.from, this.name);
+    if (funcInfo != null) {
+      return funcInfo.returnType;
+    }
+    return types.argType.none_;
+  }
+  argsType() {
+    const funcInfo = dataGet(this.funcs, this.from, this.name);
+    if (funcInfo != null) {
+      return funcInfo.argsType;
+    }
+    return [];
+  }
   run(...args: Arg[]) {
     if (this.from === "") {
+      const funcInfo = dataGet(this.funcs, this.from, this.name);
       const r = this.addResult();
-      const s = this.funcs.find((s) => s.name === this.name);
-      if (s) {
+      if (funcInfo != null) {
         r.found = true;
         try {
-          r.result = s.func(...args);
+          if (funcInfo.funcImpl != null) {
+            r.result = funcInfo.funcImpl(...args);
+          }
         } catch (e: any) {
           r.errorMsg = (e as Error).toString();
           r.isError = true;

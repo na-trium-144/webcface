@@ -11,6 +11,11 @@ setInterval(() => {
     for (const v of s.texts()) {
       console.log(`  text  ${v.name}`);
     }
+    for (const v of s.funcs()) {
+      console.log(
+        `  func  ${v.name} arg: ${v.argsType()} ret: ${v.returnType()}`
+      );
+    }
   }
 
   c.send();

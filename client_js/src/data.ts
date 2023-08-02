@@ -63,11 +63,7 @@ export class Text {
     dataSet(this.store, this.from, this.name, data);
   }
 }
-function dataGet(
-  store: DataStore<number | string>,
-  from: string,
-  name: string
-) {
+export function dataGet<T>(store: DataStore<T>, from: string, name: string) {
   if (from === "") {
     const s = store.dataSend.get(name);
     if (s) {
@@ -76,7 +72,7 @@ function dataGet(
   }
 
   let hasValue = false;
-  let value: number | string | null = null;
+  let value: T | null = null;
   const s = store.dataRecv.get(from);
   if (s) {
     const m = s.get(name);
@@ -101,11 +97,11 @@ function dataGet(
   }
   return value;
 }
-function dataSet(
-  store: DataStore<number | string>,
+export function dataSet<T>(
+  store: DataStore<T>,
   from: string,
   name: string,
-  data: number | string
+  data: T
 ) {
   store.dataSend.set(name, data);
   const m = store.dataRecv.get("");
