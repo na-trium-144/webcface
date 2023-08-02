@@ -80,7 +80,7 @@ function App() {
       <div className="flex flex-col rounded-md border border-neutral-200 shadow-md p-1 w-auto h-40">
         <h6 className="flex-none mx-auto font-semibold">Funcs</h6>
         <div className="flex-auto overflow-y-auto">
-          <ul className="list-disc list-outside">
+          <ul className="list-none">
             {funcs.map((v) => (
               <li key={`${v.from}::${v.name}`} className="">
                 <span className="">
