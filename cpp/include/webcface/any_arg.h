@@ -15,6 +15,23 @@ enum class AbstArgType {
     int_,
     float_,
 };
+inline std::ostream &operator<<(std::ostream &os, AbstArgType a) {
+    switch (a) {
+    case AbstArgType::none_:
+        return os << "none";
+    case AbstArgType::string_:
+        return os << "string";
+    case AbstArgType::bool_:
+        return os << "bool";
+    case AbstArgType::int_:
+        return os << "int";
+    case AbstArgType::float_:
+        return os << "float";
+    default:
+        return os << "unknown";
+    }
+}
+
 class AnyArg {
     std::string value;
     AbstArgType type;
@@ -88,12 +105,11 @@ class AnyArg {
 };
 
 inline std::ostream &operator<<(std::ostream &os, const AnyArg &a) {
-    return os << static_cast<std::string>(a)
-              << "(type=" << static_cast<int>(a.argType()) << ")";
+    return os << static_cast<std::string>(a) << "(type=" << a.argType() << ")";
 }
 
 template <int n = 0, typename T>
-void argToTuple(std::vector<AnyArg> &args, T &tuple) {
+void argToTuple(const std::vector<AnyArg> &args, T &tuple) {
     constexpr int tuple_size = std::tuple_size<T>::value;
     if constexpr (n < tuple_size) {
         using Type = typename std::tuple_element<n, T>::type;

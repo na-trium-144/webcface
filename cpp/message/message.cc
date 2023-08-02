@@ -31,44 +31,38 @@ std::pair<MessageKind, std::any> unpack(const std::string &message) {
         std::any obj_u;
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wswitch"
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wswitch"
         switch (kind) {
-        case MessageKind::name:
-            obj_u = obj.via.array.ptr[1].as<Name>();
-            break;
-        case MessageKind::call:
-            obj_u = obj.via.array.ptr[1].as<Call>();
-            break;
-        case MessageKind::call_response:
-            obj_u = obj.via.array.ptr[1].as<CallResponse>();
-            break;
-        case MessageKind::entry:
-            obj_u = obj.via.array.ptr[1].as<Entry>();
-            break;
-        case MessageKind::value:
-            obj_u = obj.via.array.ptr[1].as<Value>();
-            break;
-        case MessageKind::text:
-            obj_u = obj.via.array.ptr[1].as<Text>();
-            break;
-        case kind_recv(MessageKind::value):
-            obj_u = obj.via.array.ptr[1].as<Recv<Value>>();
-            break;
-        case kind_recv(MessageKind::text):
-            obj_u = obj.via.array.ptr[1].as<Recv<Text>>();
-            break;
-        case kind_subscribe(MessageKind::value):
-            obj_u = obj.via.array.ptr[1].as<Subscribe<Value>>();
-            break;
-        case kind_subscribe(MessageKind::text):
-            obj_u = obj.via.array.ptr[1].as<Subscribe<Text>>();
-            break;
+
+#define MSG_PARSE(kind, type)                                                  \
+    case MessageKind::kind:                                                    \
+        obj_u = obj.via.array.ptr[1].as<type>();                               \
+        break;
+
+#define MSG_PARSE_DATA(kind, type)                                             \
+    MSG_PARSE(kind, type)                                                      \
+    case kind_recv(MessageKind::kind):                                         \
+        static_assert(MessageKind::kind < MessageKind::recv &&                 \
+                      MessageKind::kind < MessageKind::subscribe);             \
+        obj_u = obj.via.array.ptr[1].as<Recv<type>>();                         \
+        break;                                                                 \
+    case kind_subscribe(MessageKind::kind):                                    \
+        obj_u = obj.via.array.ptr[1].as<Subscribe<type>>();                    \
+        break;
+
+            MSG_PARSE(name, Name)
+            MSG_PARSE(call, Call)
+            MSG_PARSE(call_response, CallResponse)
+            MSG_PARSE(entry, Entry)
+            MSG_PARSE_DATA(value, Value)
+            MSG_PARSE_DATA(text, Text)
+            MSG_PARSE(func_info, FuncInfo)
+
+#undef MSG_PARSE_DATA
+#undef MSG_PARSE
         default:
             break;
         }
 #pragma GCC diagnostic pop
-#pragma clang diagnostic pop
 
         // printMsg(message);
         return std::make_pair(kind, obj_u);

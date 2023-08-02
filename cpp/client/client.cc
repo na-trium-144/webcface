@@ -135,28 +135,34 @@ void Client::send() {
                     Message::Subscribe<Message::Text>{{}, v.first, v2.first}));
             }
         }
+        auto func_send = func_store->transferSend();
+        for (const auto &v : func_send) {
+            send(Message::pack(Message::FuncInfo{v.first, v.second}));
+        }
     }
 }
 void Client::onRecv(const std::string &message) {
-    using namespace WebCFace::Message;
-    auto [kind, obj] = unpack(message);
+    using MessageKind = WebCFace::Message::MessageKind;
+    auto [kind, obj] = WebCFace::Message::unpack(message);
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wswitch"
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wswitch"
     switch (kind) {
     case kind_recv(MessageKind::value): {
-        auto r = std::any_cast<Recv<WebCFace::Message::Value>>(obj);
+        auto r =
+            std::any_cast<WebCFace::Message::Recv<WebCFace::Message::Value>>(
+                obj);
         value_store->setRecv(r.from, r.name, r.data);
         break;
     }
     case kind_recv(MessageKind::text): {
-        auto r = std::any_cast<Recv<WebCFace::Message::Text>>(obj);
+        auto r =
+            std::any_cast<WebCFace::Message::Recv<WebCFace::Message::Text>>(
+                obj);
         text_store->setRecv(r.from, r.name, r.data);
         break;
     }
     case MessageKind::call: {
-        auto r = std::any_cast<Call>(obj);
+        auto r = std::any_cast<WebCFace::Message::Call>(obj);
         auto res = this->func(r.name).run_impl(r.args).get();
         std::string response;
         if (res.is_error) {
@@ -164,12 +170,12 @@ void Client::onRecv(const std::string &message) {
         } else {
             response = static_cast<std::string>(res.result);
         }
-        send(pack(CallResponse{
+        send(WebCFace::Message::pack(WebCFace::Message::CallResponse{
             {}, r.caller_id, r.caller, res.found, res.is_error, response}));
         break;
     }
     case MessageKind::call_response: {
-        auto r = std::any_cast<CallResponse>(obj);
+        auto r = std::any_cast<WebCFace::Message::CallResponse>(obj);
         auto res = func_impl_store->getResult(r.caller_id);
         res.found = r.found;
         res.is_error = r.is_error;
@@ -182,22 +188,37 @@ void Client::onRecv(const std::string &message) {
         break;
     }
     case MessageKind::entry: {
-        auto r = std::any_cast<Message::Entry>(obj);
+        auto r = std::any_cast<WebCFace::Message::Entry>(obj);
         std::vector<std::string> values(r.value.size());
         std::vector<std::string> texts(r.text.size());
+        std::vector<std::string> funcs(r.func_info.size());
         for (std::size_t i = 0; i < r.value.size(); i++) {
             values[i] = r.value[i].name;
         }
         for (std::size_t i = 0; i < r.text.size(); i++) {
             texts[i] = r.text[i].name;
         }
+        for (std::size_t i = 0; i < r.func_info.size(); i++) {
+            funcs[i] = r.func_info[i].name;
+            FuncInfo info;
+            info.return_type =
+                static_cast<AbstArgType>(r.func_info[i].return_type);
+            info.args_type.resize(r.func_info[i].args_type.size());
+            for (std::size_t j = 0; j < r.func_info[i].args_type.size(); j++) {
+                info.args_type[j] =
+                    static_cast<AbstArgType>(r.func_info[i].args_type[j]);
+            }
+            func_store->setRecv(r.name, r.func_info[i].name, info);
+        }
         value_store->setEntry(r.name, values);
         text_store->setEntry(r.name, texts);
+        func_store->setEntry(r.name, funcs);
         break;
     }
     case MessageKind::name:
     case MessageKind::value:
     case MessageKind::text:
+    case MessageKind::func_info:
         std::cerr << "Invalid Message Kind " << static_cast<int>(kind)
                   << std::endl;
         break;
@@ -207,6 +228,5 @@ void Client::onRecv(const std::string &message) {
         break;
     }
 #pragma GCC diagnostic pop
-#pragma clang diagnostic pop
 }
 } // namespace WebCFace

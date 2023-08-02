@@ -16,7 +16,7 @@ class Client;
 
 template <typename T>
 class SyncData {
-  private:
+  protected:
     std::shared_ptr<SyncDataStore<T>> store;
 
     // protected:
