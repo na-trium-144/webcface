@@ -5,7 +5,7 @@ import { Func, FuncResult, FuncInfoInternal } from "./func.js";
 import websocket from "websocket";
 const w3cwebsocket = websocket.w3cwebsocket;
 
-class SubjectClient {
+export class SubjectClient {
   cli: Client;
   subject: string;
   constructor(cli: Client, subject: string) {
