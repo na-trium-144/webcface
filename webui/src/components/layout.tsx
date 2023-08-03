@@ -7,6 +7,8 @@ import { Responsive, WidthProvider, Layout, Layouts } from "react-grid-layout";
 const ResponsiveGridLayout = WidthProvider(Responsive);
 import { getFromLS, saveToLS } from "../libs/ls";
 import { Card, CardItem } from "./card";
+import { TextCard } from "./textCard";
+import { FuncCard } from "./funcCard";
 
 interface Props {
   value: CardItem<Value>[];
@@ -37,12 +39,12 @@ export function LayoutMain(props: Props) {
     }, {});
   };
   const isLayoutSame = (l1: Layout, l2: Layout) => {
-    if(l1.x !== l2.x) return false;
-    if(l1.y !== l2.y) return false;
-    if(l1.w !== l2.w) return false;
-    if(l1.h !== l2.h) return false;
+    if (l1.x !== l2.x) return false;
+    if (l1.y !== l2.y) return false;
+    if (l1.w !== l2.w) return false;
+    if (l1.h !== l2.h) return false;
     return true;
-  }
+  };
 
   useEffect(() => {
     const ls = getFromLS("layout") || [];
@@ -66,7 +68,7 @@ export function LayoutMain(props: Props) {
         const pli = prevLayout.current.findIndex((pl) => pl.i === nl.i);
         const lli = lsLayout.findIndex((ll) => ll.i === nl.i);
         if (pli >= 0) {
-          if(!isLayoutSame(prevLayout.current[pli], nl)){
+          if (!isLayoutSame(prevLayout.current[pli], nl)) {
             prevLayout.current[pli] = { ...nl };
             changed = true;
           }
@@ -117,51 +119,12 @@ export function LayoutMain(props: Props) {
         ))}
         {props.text.map((c) => (
           <div key={c.key} data-grid={dataGrid(c)}>
-            <Card title="Text Status">
-              <ul className="list-none">
-                {c.childProps.map((v) => (
-                  <li key={v.name}>
-                    {v.from}::{v.name} = {v.get()}
-                  </li>
-                ))}
-              </ul>
-            </Card>
+            <TextCard text={c.childProps} />
           </div>
         ))}
         {props.func.map((c) => (
           <div key={c.key} data-grid={dataGrid(c)}>
-            <Card title="Functions">
-              <ul className="list-none">
-                {c.childProps.map((v) => (
-                  <li key={`${v.from}::${v.name}`} className="">
-                    <span className="">
-                      {v.from}::{v.name}
-                    </span>
-                    <span className="pl-1">(</span>
-                    {v.argsType().map((a, i) => (
-                      <>
-                        {i > 0 && <span className="pl-1 pr-1">,</span>}
-                        <input
-                          className="border-0 border-b outline-0 focus:border-b-2 border-neutral-200 hover:border-neutral-500 focus:border-black px-1"
-                          key={i}
-                          size="10"
-                        />
-                      </>
-                    ))}
-                    <span className="pr-2">)</span>
-                    <button
-                      className="rounded-full border border-green-300 shadow-md bg-green-100 px-2 my-1"
-                      onClick={() =>
-                        // todo: 引数
-                        void v.run()
-                      }
-                    >
-                      Run
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </Card>
+          <FuncCard func={c.childProps} />
           </div>
         ))}
       </ResponsiveGridLayout>
