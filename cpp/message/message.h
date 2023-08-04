@@ -14,22 +14,27 @@ enum class MessageKind {
     unknown = -1,
     value = 0,
     text = 1,
-    recv = 50,       // 50〜
+    // recv = 50,       // 50〜
     subscribe = 100, // 100〜
+    entry = 50,      // 50〜
     // 150〜: other
     name = 150,
     call = 151,
     call_response = 152,
-    entry = 153,
+    // entry = 153,
     func_info = 154,
 };
 inline constexpr MessageKind kind_subscribe(MessageKind k) {
     return static_cast<MessageKind>(static_cast<int>(k) +
                                     static_cast<int>(MessageKind::subscribe));
 }
-inline constexpr MessageKind kind_recv(MessageKind k) {
+// inline constexpr MessageKind kind_recv(MessageKind k) {
+//     return static_cast<MessageKind>(static_cast<int>(k) +
+//                                     static_cast<int>(MessageKind::recv));
+// }
+inline constexpr MessageKind kind_entry(MessageKind k) {
     return static_cast<MessageKind>(static_cast<int>(k) +
-                                    static_cast<int>(MessageKind::recv));
+                                    static_cast<int>(MessageKind::entry));
 }
 
 //! 型からkindを取得するためだけのベースクラス
@@ -43,6 +48,7 @@ struct Name : public MessageBase<MessageKind::name> {
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("n", name));
 };
 //! client(caller)->server->client(receiver) 関数呼び出し
+//! client->server時はcallerは無視
 struct Call : public MessageBase<MessageKind::call> {
     int caller_id;
     std::string caller, receiver, name;
@@ -63,45 +69,41 @@ struct CallResponse : public MessageBase<MessageKind::call_response> {
                        MSGPACK_NVP("f", found), MSGPACK_NVP("e", is_error),
                        MSGPACK_NVP("r", response));
 };
-//! client->server Valueを更新
+//! client(member)->server->client Valueを更新
+//! client->server時はmemberは無視
 struct Value : public MessageBase<MessageKind::value> {
-    std::string name;
-    using DataType = double;
-    DataType data;
-    MSGPACK_DEFINE_MAP(MSGPACK_NVP("n", name), MSGPACK_NVP("d", data));
+    std::string member, name;
+    double data;
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("m", member), MSGPACK_NVP("n", name),
+                       MSGPACK_NVP("d", data));
 };
-//! client->server Textを更新
+//! client(member)->server->client Textを更新
+//! client->server時はmemberは無視
 struct Text : public MessageBase<MessageKind::text> {
-    std::string name;
-    using DataType = std::string;
-    DataType data;
-    MSGPACK_DEFINE_MAP(MSGPACK_NVP("n", name), MSGPACK_NVP("d", data));
+    std::string member, name;
+    std::string data;
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("m", member), MSGPACK_NVP("n", name),
+                       MSGPACK_NVP("d", data));
 };
-//! client->server func登録
+//! client(member)->server->client func登録
+//! client->server時はmemberは無視
 struct FuncInfo : public MessageBase<MessageKind::func_info> {
-    std::string name;
+    std::string member, name;
     int return_type;
     std::vector<int> args_type;
     FuncInfo() = default;
-    explicit FuncInfo(const std::string &name, const WebCFace::FuncInfo &info)
-        : MessageBase<MessageKind::func_info>(), name(name),
+    explicit FuncInfo(const std::string &member, const std::string &name,
+                      const WebCFace::FuncInfo &info)
+        : MessageBase<MessageKind::func_info>(), member(member), name(name),
           return_type(static_cast<int>(info.return_type)) {
         args_type.resize(info.args_type.size());
         for (std::size_t i = 0; i < info.args_type.size(); i++) {
             args_type[i] = static_cast<int>(info.args_type[i]);
         }
     }
-    MSGPACK_DEFINE_MAP(MSGPACK_NVP("n", name), MSGPACK_NVP("r", return_type),
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("m", member), MSGPACK_NVP("n", name),
+                       MSGPACK_NVP("r", return_type),
                        MSGPACK_NVP("a", args_type));
-};
-//! server(from)->client 値を更新
-//! todo: value, textと共通化できない?
-template <typename T>
-struct Recv : public MessageBase<kind_recv(T::kind)> {
-    std::string from, name;
-    typename T::DataType data;
-    MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", from), MSGPACK_NVP("n", name),
-                       MSGPACK_NVP("d", data));
 };
 //! client->server 以降Recvを送るようリクエスト
 //! todo: 解除できるようにする
@@ -111,19 +113,11 @@ struct Subscribe : public MessageBase<kind_subscribe(T::kind)> {
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", from), MSGPACK_NVP("n", name));
 };
 //! server->client 新しいvalueなどの報告
-struct Entry : public MessageBase<MessageKind::entry> {
-    std::string name;
-    struct EValue {
-        std::string name;
-        MSGPACK_DEFINE_MAP(MSGPACK_NVP("n", name));
-    };
-    // ほんとはsetにするべきだけどめんどくさいにゃー
-    std::vector<EValue> value;
-    using EText = EValue;
-    std::vector<EText> text;
-    std::vector<FuncInfo> func_info;
-    MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", name), MSGPACK_NVP("v", value),
-                       MSGPACK_NVP("t", text), MSGPACK_NVP("u", func_info));
+//! Funcの場合はこれではなくFuncInfoを使用
+template <typename T>
+struct Entry : public MessageBase<kind_entry(T::kind)> {
+    std::string member, name;
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("m", member), MSGPACK_NVP("n", name));
 };
 
 //! msgpackのメッセージをパースしstd::anyで返す

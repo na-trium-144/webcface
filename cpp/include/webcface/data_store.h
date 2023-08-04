@@ -51,8 +51,8 @@ class SyncDataStore {
     //! data_recvからデータを削除, req,req_sendをfalseにする
     void unsetRecv(const std::string &from, const std::string &name);
 
-    //! 受信したentryをセット
-    void setEntry(const std::string &from, const std::vector<std::string> &e);
+    //! 受信したentryを追加
+    void setEntry(const std::string &from, const std::string &e);
     //! entryを取得
     std::vector<std::string> getEntry(const std::string &from);
     //! member名のりすとを取得(entryから)

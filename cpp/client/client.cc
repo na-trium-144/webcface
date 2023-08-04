@@ -116,7 +116,7 @@ void Client::send() {
     if (connected()) {
         auto value_send = value_store.transferSend();
         for (const auto &v : value_send) {
-            send(Message::pack(Message::Value{{}, v.first, v.second}));
+            send(Message::pack(Message::Value{{}, "", v.first, v.second}));
         }
         auto value_subsc = value_store.transferReq();
         for (const auto &v : value_subsc) {
@@ -127,7 +127,7 @@ void Client::send() {
         }
         auto text_send = text_store.transferSend();
         for (const auto &v : text_send) {
-            send(Message::pack(Message::Text{{}, v.first, v.second}));
+            send(Message::pack(Message::Text{{}, "", v.first, v.second}));
         }
         auto text_subsc = text_store.transferReq();
         for (const auto &v : text_subsc) {
@@ -138,7 +138,7 @@ void Client::send() {
         }
         auto func_send = func_store.transferSend();
         for (const auto &v : func_send) {
-            send(Message::pack(Message::FuncInfo{v.first, v.second}));
+            send(Message::pack(Message::FuncInfo{"", v.first, v.second}));
         }
     }
 }
@@ -148,20 +148,16 @@ void Client::onRecv(const std::string &message) {
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wswitch"
     switch (kind) {
-    case kind_recv(MessageKind::value): {
-        auto r =
-            std::any_cast<WebCFace::Message::Recv<WebCFace::Message::Value>>(
-                obj);
-        value_store.setRecv(r.from, r.name, r.data);
-        value_change_event.dispatch(member(r.from).value(r.name));
+    case MessageKind::value: {
+        auto r = std::any_cast<WebCFace::Message::Value>(obj);
+        value_store.setRecv(r.member, r.name, r.data);
+        value_change_event.dispatch(member(r.member).value(r.name));
         break;
     }
-    case kind_recv(MessageKind::text): {
-        auto r =
-            std::any_cast<WebCFace::Message::Recv<WebCFace::Message::Text>>(
-                obj);
-        text_store.setRecv(r.from, r.name, r.data);
-        text_change_event.dispatch(member(r.from).text(r.name));
+    case MessageKind::text: {
+        auto r = std::any_cast<WebCFace::Message::Text>(obj);
+        text_store.setRecv(r.member, r.name, r.data);
+        text_change_event.dispatch(member(r.member).text(r.name));
         break;
     }
     case MessageKind::call: {
@@ -201,37 +197,33 @@ void Client::onRecv(const std::string &message) {
         }
         break;
     }
-    case MessageKind::entry: {
-        auto r = std::any_cast<WebCFace::Message::Entry>(obj);
-        std::vector<std::string> values(r.value.size());
-        std::vector<std::string> texts(r.text.size());
-        std::vector<std::string> funcs(r.func_info.size());
-        for (std::size_t i = 0; i < r.value.size(); i++) {
-            values[i] = r.value[i].name;
+    case kind_entry(MessageKind::value): {
+        auto r =
+            std::any_cast<WebCFace::Message::Entry<WebCFace::Message::Value>>(
+                obj);
+        value_store.setEntry(r.member, r.name);
+        break;
+    }
+    case kind_entry(MessageKind::text): {
+        auto r =
+            std::any_cast<WebCFace::Message::Entry<WebCFace::Message::Text>>(
+                obj);
+        text_store.setEntry(r.member, r.name);
+        break;
+    }
+    case MessageKind::func_info: {
+        auto r = std::any_cast<WebCFace::Message::FuncInfo>(obj);
+        func_store.setEntry(r.member, r.name);
+        FuncInfo info;
+        info.return_type = static_cast<ValType>(r.return_type);
+        info.args_type.resize(r.args_type.size());
+        for (std::size_t j = 0; j < r.args_type.size(); j++) {
+            info.args_type[j] = static_cast<ValType>(r.args_type[j]);
         }
-        for (std::size_t i = 0; i < r.text.size(); i++) {
-            texts[i] = r.text[i].name;
-        }
-        for (std::size_t i = 0; i < r.func_info.size(); i++) {
-            funcs[i] = r.func_info[i].name;
-            FuncInfo info;
-            info.return_type = static_cast<ValType>(r.func_info[i].return_type);
-            info.args_type.resize(r.func_info[i].args_type.size());
-            for (std::size_t j = 0; j < r.func_info[i].args_type.size(); j++) {
-                info.args_type[j] =
-                    static_cast<ValType>(r.func_info[i].args_type[j]);
-            }
-            func_store.setRecv(r.name, r.func_info[i].name, info);
-        }
-        value_store.setEntry(r.name, values);
-        text_store.setEntry(r.name, texts);
-        func_store.setEntry(r.name, funcs);
+        func_store.setRecv(r.member, r.name, info);
         break;
     }
     case MessageKind::name:
-    case MessageKind::value:
-    case MessageKind::text:
-    case MessageKind::func_info:
         std::cerr << "Invalid Message Kind " << static_cast<int>(kind)
                   << std::endl;
         break;

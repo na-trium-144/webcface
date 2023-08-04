@@ -39,15 +39,17 @@ class Client {
     std::string name_;
 
     //! 特定のValueが変更された時のイベント
-    eventpp::EventDispatcher<SyncDataKey<Value::DataType>, void(const Value&)> value_change_event;
+    eventpp::EventDispatcher<SyncDataKey<Value::DataType>, void(const Value &)>
+        value_change_event;
     //! 特定のTextが変更された時のイベント
-    eventpp::EventDispatcher<SyncDataKey<Text::DataType>, void(const Text&)> text_change_event;
+    eventpp::EventDispatcher<SyncDataKey<Text::DataType>, void(const Text &)>
+        text_change_event;
     //! Valueが追加された時のイベント
-    eventpp::CallbackList<void(const Value&)> value_entry_event;
+    eventpp::CallbackList<void(const Value &)> value_entry_event;
     //! Textが追加された時のイベント
-    eventpp::CallbackList<void(const Text&)> text_entry_event;
+    eventpp::CallbackList<void(const Text &)> text_entry_event;
     //! Funcが追加された時のイベント
-    eventpp::CallbackList<void(const Func&)> func_entry_event;
+    eventpp::CallbackList<void(const Func &)> func_entry_event;
 
     //! 受信時の処理
     void onRecv(const std::string &message);
@@ -101,7 +103,6 @@ class Client {
         }
         return ret;
     }
-
 };
 
 } // namespace WebCFace

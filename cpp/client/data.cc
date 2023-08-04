@@ -36,10 +36,9 @@ std::vector<std::string> SyncDataStore<T>::getEntry(const std::string &name) {
     }
 }
 template <typename T>
-void SyncDataStore<T>::setEntry(const std::string &from,
-                                const std::vector<std::string> &e) {
+void SyncDataStore<T>::setEntry(const std::string &from, const std::string &e) {
     std::lock_guard lock(mtx);
-    entry[from] = e;
+    entry[from].push_back(e);
 }
 template <typename T>
 std::optional<T> SyncDataStore<T>::getRecv(const std::string &from,
