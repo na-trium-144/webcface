@@ -4,4 +4,5 @@
 #include "data.h"
 #include "data_event.h"
 #include "func.h"
+#include "member.h"
 #include "client.h"

@@ -8,11 +8,10 @@
 namespace WebCFace {
 
 //! SyncDataをMapなどのキーにするために、memberとnameを比較するためのクラス
+//! Value, TextをSyncDataKeyに変換しEventのキーとする
 template <typename T>
 struct SyncDataKey {
     std::string member, name;
-    SyncDataKey(const std::string &member, const std::string &name)
-        : member(member), name(name) {}
     SyncDataKey(const SyncData<T> &data)
         : member(data.member().name()), name(data.name()) {}
     bool operator==(const SyncDataKey &rhs) const {
@@ -23,6 +22,10 @@ struct SyncDataKey {
         return member < rhs.member || (member == rhs.member && name < rhs.name);
     }
 };
+
+//! SyncDataにeventppを追加したクラス
+//! Value とTextに使う Funcには不要
+//! T=DataType, V=Value or Text
 template <typename T, typename V>
 class SyncDataWithEvent : public SyncData<T> {
   public:
@@ -32,6 +35,8 @@ class SyncDataWithEvent : public SyncData<T> {
     using EventCallback = EventDispatcher::Callback;
 
   private:
+    //! client.value_change_eventまたはclient.text_change_eventのどちらかを指す
+    //! コンストラクタで設定
     EventDispatcher *dispatcher = nullptr;
 
   public:
