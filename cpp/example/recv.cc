@@ -7,13 +7,13 @@ int main() {
     while (true) {
         std::this_thread::yield();
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
-        std::cout << "recv test = " << c.subject("example_main").value("test")
+        std::cout << "recv test = " << c.member("example_main").value("test")
                   << std::endl;
         // c.value("example_main", "test") += 2;
         // -> error: candidate function template not viable: ... method is not
         // marked const
         std::cout << "func2(9, 7.1, false, \"\") = "
-                  << c.subject("example_main")
+                  << c.member("example_main")
                          .func("func2")
                          .run(9, 7.1, false, "")
                          .get()

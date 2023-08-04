@@ -2,36 +2,46 @@
 #include <string>
 #include <istream>
 #include <ostream>
-#include <memory>
 #include <optional>
 #include <cstdint>
-#include <functional>
-#include <type_traits>
 #include "data_store.h"
-#include "any_arg.h"
+#include "val.h"
 
 namespace WebCFace {
 
 class Client;
+class Member;
 
+//! データの参照先を表すクラス。
+/*! SyncDataとSyncDataStoreの関数定義はヘッダーに書いてないが、
+ * ソース(client/data.cc)に書いて、特定の型についてインスタンス化する
+ */
 template <typename T>
 class SyncData {
   protected:
-    std::shared_ptr<SyncDataStore<T>> store;
+    Client *cli;
+    //! cliが持っているstoreを表すがTによって参照先が違う
+    SyncDataStore<T> *store;
 
-    // protected:
-  public:
-    std::string from, name;
+    std::string member_, name_;
 
   public:
     using DataType = T;
     SyncData() {}
-    SyncData(std::shared_ptr<SyncDataStore<T>> store, const std::string &from,
-             const std::string &name)
-        : store(store), from(from), name(name) {}
-    void set(const T &data);
+    SyncData(Client *cli, const std::string &member, const std::string &name);
+    //! 参照先のMemberを返す
+    Member member() const;
+    //! 参照先のデータ名を返す
+    std::string name() const { return name_; }
+
+    //! 値をセットする
+    SyncData &set(const T &data);
+    //! 値を取得する
     std::optional<T> try_get() const;
+    //! 値を取得する
+    //! todo: 引数
     T get() const;
+    //! 値を取得する
     operator T() const { return this->get(); }
 };
 
@@ -52,12 +62,13 @@ auto &operator<<(std::basic_ostream<char> &os, const SyncData<T> &data) {
     return os << data.get();
 }
 
+//! 実数値を扱う
 class Value : public SyncData<double> {
   public:
     Value() {}
-    Value(std::shared_ptr<SyncDataStore<DataType>> store,
-          const std::string &from, const std::string &name)
-        : SyncData<DataType>(store, from, name) {}
+    Value(Client *cli, const std::string &member, const std::string &name)
+        : SyncData<DataType>(cli, member, name) {}
+    //! 値をセットする
     auto &operator=(double data) {
         this->set(data);
         return *this;
@@ -127,12 +138,13 @@ class Value : public SyncData<double> {
     // 比較演算子の定義は不要
 };
 
+// 文字列を扱う
 class Text : public SyncData<std::string> {
   public:
     Text() {}
-    Text(std::shared_ptr<SyncDataStore<DataType>> store,
-         const std::string &from, const std::string &name)
-        : SyncData<DataType>(store, from, name) {}
+    Text(Client *cli, const std::string &member, const std::string &name)
+        : SyncData<DataType>(cli, member, name) {}
+    //! 値をセットする
     auto &operator=(const std::string &data) {
         this->set(data);
         return *this;

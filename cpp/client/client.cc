@@ -11,7 +11,7 @@
 namespace WebCFace {
 
 Client::Client(const std::string &name, const std::string &host, int port)
-    : name(name), host(host), port(port) {
+    : self_(this, ""), name_(name), host(host), port(port) {
 
     // 最初のクライアント接続時にdrogonループを起動
     // もしClientがテンプレートクラスになったら使えない
@@ -75,7 +75,7 @@ void Client::reconnect() {
                                      const WebSocketClientPtr &ws) mutable {
             if (r == ReqResult::Ok) {
                 std::cout << "connected " << std::endl;
-                send(Message::pack(Message::Name{{}, name}));
+                send(Message::pack(Message::Name{{}, name_}));
             } else {
                 std::cout << "error " << r << std::endl;
                 app().getLoop()->runAfter(1, [this] { reconnect(); });
@@ -113,29 +113,29 @@ void Client::send(const std::vector<char> &m) {
 }
 void Client::send() {
     if (connected()) {
-        auto value_send = value_store->transferSend();
+        auto value_send = value_store.transferSend();
         for (const auto &v : value_send) {
             send(Message::pack(Message::Value{{}, v.first, v.second}));
         }
-        auto value_subsc = value_store->transferReq();
+        auto value_subsc = value_store.transferReq();
         for (const auto &v : value_subsc) {
             for (const auto &v2 : v.second) {
                 send(Message::pack(
                     Message::Subscribe<Message::Value>{{}, v.first, v2.first}));
             }
         }
-        auto text_send = text_store->transferSend();
+        auto text_send = text_store.transferSend();
         for (const auto &v : text_send) {
             send(Message::pack(Message::Text{{}, v.first, v.second}));
         }
-        auto text_subsc = text_store->transferReq();
+        auto text_subsc = text_store.transferReq();
         for (const auto &v : text_subsc) {
             for (const auto &v2 : v.second) {
                 send(Message::pack(
                     Message::Subscribe<Message::Text>{{}, v.first, v2.first}));
             }
         }
-        auto func_send = func_store->transferSend();
+        auto func_send = func_store.transferSend();
         for (const auto &v : func_send) {
             send(Message::pack(Message::FuncInfo{v.first, v.second}));
         }
@@ -151,19 +151,20 @@ void Client::onRecv(const std::string &message) {
         auto r =
             std::any_cast<WebCFace::Message::Recv<WebCFace::Message::Value>>(
                 obj);
-        value_store->setRecv(r.from, r.name, r.data);
+        value_store.setRecv(r.from, r.name, r.data);
         break;
     }
     case kind_recv(MessageKind::text): {
         auto r =
             std::any_cast<WebCFace::Message::Recv<WebCFace::Message::Text>>(
                 obj);
-        text_store->setRecv(r.from, r.name, r.data);
+        text_store.setRecv(r.from, r.name, r.data);
         break;
     }
     case MessageKind::call: {
         auto r = std::any_cast<WebCFace::Message::Call>(obj);
-        auto res = this->func(r.name).run_impl(r.args).get();
+        // todo: async
+        auto res = self().func(r.name).run_impl(r.args).get();
         std::string response;
         if (res.is_error) {
             response = res.error_msg;
@@ -176,13 +177,13 @@ void Client::onRecv(const std::string &message) {
     }
     case MessageKind::call_response: {
         auto r = std::any_cast<WebCFace::Message::CallResponse>(obj);
-        auto res = func_impl_store->getResult(r.caller_id);
+        auto res = func_result_store.getResult(r.caller_id);
         res.found = r.found;
         res.is_error = r.is_error;
         if (r.is_error) {
             res.error_msg = r.response;
         } else {
-            res.result = static_cast<AnyArg>(r.response);
+            res.result = static_cast<ValAdaptor>(r.response);
         }
         res.setReady();
         break;
@@ -201,18 +202,17 @@ void Client::onRecv(const std::string &message) {
         for (std::size_t i = 0; i < r.func_info.size(); i++) {
             funcs[i] = r.func_info[i].name;
             FuncInfo info;
-            info.return_type =
-                static_cast<AbstArgType>(r.func_info[i].return_type);
+            info.return_type = static_cast<ValType>(r.func_info[i].return_type);
             info.args_type.resize(r.func_info[i].args_type.size());
             for (std::size_t j = 0; j < r.func_info[i].args_type.size(); j++) {
                 info.args_type[j] =
-                    static_cast<AbstArgType>(r.func_info[i].args_type[j]);
+                    static_cast<ValType>(r.func_info[i].args_type[j]);
             }
-            func_store->setRecv(r.name, r.func_info[i].name, info);
+            func_store.setRecv(r.name, r.func_info[i].name, info);
         }
-        value_store->setEntry(r.name, values);
-        text_store->setEntry(r.name, texts);
-        func_store->setEntry(r.name, funcs);
+        value_store.setEntry(r.name, values);
+        text_store.setEntry(r.name, texts);
+        func_store.setEntry(r.name, funcs);
         break;
     }
     case MessageKind::name:

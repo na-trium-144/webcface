@@ -8,54 +8,74 @@
 #include <ostream>
 
 namespace WebCFace {
-enum class AbstArgType {
-    none_,
-    string_,
-    bool_,
-    int_,
-    float_,
+
+//! 引数や戻り値の型を表すenum
+enum class ValType {
+    none_ = 0,
+    string_ = 1,
+    bool_ = 2,
+    int_ = 3,
+    float_ = 4,
 };
-inline std::ostream &operator<<(std::ostream &os, AbstArgType a) {
+//! TのValTypeを得る
+template <typename T>
+ValType valTypeOf() {
+    if constexpr (std::is_void_v<T>) {
+        return ValType::none_;
+    } else if constexpr (std::is_same_v<bool, T>) {
+        return ValType::bool_;
+    } else if constexpr (std::is_integral_v<T>) {
+        return ValType::int_;
+    } else if constexpr (std::is_floating_point_v<T>) {
+        return ValType::float_;
+    } else {
+        return ValType::string_;
+    }
+}
+//! 型名を出力する
+inline std::ostream &operator<<(std::ostream &os, ValType a) {
     switch (a) {
-    case AbstArgType::none_:
+    case ValType::none_:
         return os << "none";
-    case AbstArgType::string_:
+    case ValType::string_:
         return os << "string";
-    case AbstArgType::bool_:
+    case ValType::bool_:
         return os << "bool";
-    case AbstArgType::int_:
+    case ValType::int_:
         return os << "int";
-    case AbstArgType::float_:
+    case ValType::float_:
         return os << "float";
     default:
         return os << "unknown";
     }
 }
 
-class AnyArg {
+//! 数値、文字列などの値を相互変換するクラス
+//! Funcの引数、戻り値などに使う
+class ValAdaptor {
     std::string value;
-    AbstArgType type;
+    ValType type;
 
   public:
-    AnyArg() : value(""), type(AbstArgType::none_) {}
+    ValAdaptor() : value(""), type(ValType::none_) {}
 
     // cast from run()
-    explicit AnyArg(const std::string &value)
-        : value(value), type(AbstArgType::string_) {}
-    explicit AnyArg(const char *value)
-        : value(value), type(AbstArgType::string_) {}
-    explicit AnyArg(bool value)
-        : value(std::to_string(value)), type(AbstArgType::bool_) {}
+    explicit ValAdaptor(const std::string &value)
+        : value(value), type(ValType::string_) {}
+    explicit ValAdaptor(const char *value)
+        : value(value), type(ValType::string_) {}
+    explicit ValAdaptor(bool value)
+        : value(std::to_string(value)), type(ValType::bool_) {}
     template <typename T>
         requires std::integral<T>
-    explicit AnyArg(T value)
-        : value(std::to_string(value)), type(AbstArgType::int_) {}
+    explicit ValAdaptor(T value)
+        : value(std::to_string(value)), type(ValType::int_) {}
     template <typename T>
         requires std::floating_point<T>
-    explicit AnyArg(T value)
-        : value(std::to_string(value)), type(AbstArgType::float_) {}
+    explicit ValAdaptor(T value)
+        : value(std::to_string(value)), type(ValType::float_) {}
 
-    AbstArgType argType() const { return type; }
+    ValType argType() const { return type; }
 
     // cast to function
     operator const std::string &() const { return value; }
@@ -78,38 +98,39 @@ class AnyArg {
     }
 
     // cast from msgpack
-    AnyArg &operator=(bool v) {
+    ValAdaptor &operator=(bool v) {
         value = std::to_string(v);
-        type = AbstArgType::bool_;
+        type = ValType::bool_;
         return *this;
     }
     template <typename T>
         requires std::integral<T>
-    AnyArg &operator=(T v) {
+    ValAdaptor &operator=(T v) {
         value = std::to_string(v);
-        type = AbstArgType::int_;
+        type = ValType::int_;
         return *this;
     }
     template <typename T>
         requires std::floating_point<T>
-    AnyArg &operator=(T v) {
+    ValAdaptor &operator=(T v) {
         value = std::to_string(v);
-        type = AbstArgType::float_;
+        type = ValType::float_;
         return *this;
     }
-    AnyArg &operator=(const std::string &v) {
+    ValAdaptor &operator=(const std::string &v) {
         value = v;
-        type = AbstArgType::string_;
+        type = ValType::string_;
         return *this;
     }
 };
 
-inline std::ostream &operator<<(std::ostream &os, const AnyArg &a) {
+inline std::ostream &operator<<(std::ostream &os, const ValAdaptor &a) {
     return os << static_cast<std::string>(a) << "(type=" << a.argType() << ")";
 }
 
+//! ValAdaptorのリストから任意の型のタプルに変換する
 template <int n = 0, typename T>
-void argToTuple(const std::vector<AnyArg> &args, T &tuple) {
+void argToTuple(const std::vector<ValAdaptor> &args, T &tuple) {
     constexpr int tuple_size = std::tuple_size<T>::value;
     if constexpr (n < tuple_size) {
         using Type = typename std::tuple_element<n, T>::type;

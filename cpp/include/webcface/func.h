@@ -8,71 +8,79 @@
 #include <string>
 #include <future>
 #include <concepts>
-#include "any_arg.h"
+#include "val.h"
 #include "data.h"
 
 namespace WebCFace {
-template <typename T>
-AbstArgType abstTypeOf() {
-    if constexpr (std::is_void_v<T>) {
-        return AbstArgType::none_;
-    } else if constexpr (std::is_same_v<bool, T>) {
-        return AbstArgType::bool_;
-    } else if constexpr (std::is_integral_v<T>) {
-        return AbstArgType::int_;
-    } else if constexpr (std::is_floating_point_v<T>) {
-        return AbstArgType::float_;
-    } else {
-        return AbstArgType::string_;
-    }
-}
-// 関数1つの情報を表す。関数の実体も持つ
-struct FuncInfo {
-    AbstArgType return_type;
-    std::vector<AbstArgType> args_type;
-    std::function<AnyArg(const std::vector<AnyArg> &)> func_impl;
 
-    FuncInfo() : return_type(AbstArgType::none_), args_type(), func_impl() {}
+using FuncType = std::function<ValAdaptor(const std::vector<ValAdaptor> &)>;
+
+//! 関数1つの情報を表す。関数の実体も持つ
+struct FuncInfo {
+    ValType return_type;
+    std::vector<ValType> args_type;
+    FuncType func_impl;
+
+    FuncInfo() : return_type(ValType::none_), args_type(), func_impl() {}
+    //! 任意の関数を受け取り、引数と戻り値をキャストして実行する関数を保存
     template <typename... Args, typename Ret>
     explicit FuncInfo(std::function<Ret(Args...)> func)
-        : return_type(abstTypeOf<Ret>()), args_type({abstTypeOf<Args>()...}),
-          func_impl([func](const std::vector<AnyArg> &args_vec) {
+        : return_type(valTypeOf<Ret>()), args_type({valTypeOf<Args>()...}),
+          func_impl([func](const std::vector<ValAdaptor> &args_vec) {
               std::tuple<Args...> args_tuple;
               argToTuple(args_vec, args_tuple);
               if constexpr (std::is_void_v<Ret>) {
                   std::apply(func, args_tuple);
-                  return AnyArg{};
+                  return ValAdaptor{};
               } else {
                   Ret ret = std::apply(func, args_tuple);
-                  return static_cast<AnyArg>(ret);
+                  return static_cast<ValAdaptor>(ret);
               }
           }) {}
 };
 
 class Func;
+
+//! 関数の実行結果を表す。
+/*! 実行開始時に生成、
+ * 実行が完了したら結果をセットしpromiseに自身をセット、
+ * futureからこれが返ってくる
+ */
 class FuncResult {
     int caller_id;
     std::string caller;
     std::shared_ptr<std::promise<FuncResult>> pr;
+    std::string member_, name_;
 
   public:
     friend Func;
 
     FuncResult(int caller_id, const std::string &caller,
-               std::shared_ptr<std::promise<FuncResult>> pr)
-        : caller_id(caller_id), caller(caller), pr(pr) {}
-    AnyArg result{};
+               std::shared_ptr<std::promise<FuncResult>> pr,
+               const std::string &member, const std::string &name)
+        : caller_id(caller_id), caller(caller), pr(pr), member_(member),
+          name_(name) {}
+    //! 関数の戻り値
+    ValAdaptor result{};
+    //! 関数が存在しなかった場合false
     bool found = false;
+    //! 関数が例外を投げた場合true
     bool is_error = false;
+    //! 例外の内容
     std::string error_msg = "";
-    std::string from, name;
+    //! 関数の名前
+    auto name() const { return name_; }
+    //! 関数本体のあるmember
+    // Member member() const { return ???; }
 
+    //! 戻り値を任意の型で返す
     template <typename T>
-        requires std::convertible_to<AnyArg, T>
+        requires std::convertible_to<ValAdaptor, T>
     operator T() const {
         return static_cast<T>(result);
     }
 
+    //! 値をセットしたら呼ぶ
     void setReady() { pr->set_value(*this); }
 };
 inline auto &operator<<(std::basic_ostream<char> &os, const FuncResult &data) {
@@ -86,61 +94,53 @@ inline auto &operator<<(std::basic_ostream<char> &os, const FuncResult &data) {
     }
 }
 
-// 実行した関数の記録、結果を保持
-class FuncStore {
-  public:
-    using FuncType = std::function<AnyArg(std::vector<AnyArg>)>;
-
+//! FuncResultのリストを保持する。
+/*! 関数の実行結果が返ってきた時参照する
+ * また、実行するたびに連番を振る必要があるcallback_idの管理にも使う
+ */
+class FuncResultStore {
   private:
     std::mutex mtx;
     std::vector<FuncResult> results;
 
   public:
-    void setFunc(const std::string &name, FuncType data);
-    FuncType getFunc(const std::string &name);
-    bool hasFunc(const std::string &name);
+    //! 新しいFuncResultを生成する。
     FuncResult &addResult(const std::string &caller,
-                          std::shared_ptr<std::promise<FuncResult>> pr);
+                          std::shared_ptr<std::promise<FuncResult>> pr,
+                          const std::string &member, const std::string &name);
     FuncResult &getResult(int caller_id);
 };
 
 // 関数1つを表すクラス
 class Func : public SyncData<FuncInfo> {
-    std::shared_ptr<FuncStore> func_impl_store;
-    template <typename... Args, typename Ret>
-    void set_impl(std::function<Ret(Args...)> func) {
-        this->SyncData<DataType>::set(FuncInfo{func});
-    }
-    std::future<FuncResult> run_impl(const std::vector<AnyArg> &args_vec) const;
-    Client *cli;
 
   public:
-    friend Client;
-
     Func() {}
-    Func(std::shared_ptr<SyncDataStore<DataType>> store,
-         std::shared_ptr<FuncStore> func_impl_store, Client *cli,
-         const std::string &from, const std::string &name)
-        : SyncData<DataType>(store, from, name),
-          func_impl_store(func_impl_store), cli(cli) {}
+    Func(Client *cli, const std::string &member, const std::string &name)
+        : SyncData<DataType>(cli, member, name) {}
 
+    //! 関数からFuncInfoを構築しセットする
+    /*! Tは任意の関数
+     */
     template <typename T>
-    void set(const T &func) {
-        this->set_impl(std::function(func));
+    auto &set(const T &func) {
+        this->SyncData<DataType>::set(FuncInfo(std::function(func)));
+        return *this;
     }
     template <typename T>
     auto &operator=(const T &func) {
-        this->set(func);
-        return *this;
+        return this->set(func);
     }
 
     template <typename... Args>
     std::future<FuncResult> run(Args... args) const {
-        return run_impl({AnyArg(args)...});
+        return run_impl({ValAdaptor(args)...});
     }
+    std::future<FuncResult>
+    run_impl(const std::vector<ValAdaptor> &args_vec) const;
 
-    AbstArgType returnType() const;
-    std::vector<AbstArgType> argsType() const;
+    ValType returnType();
+    std::vector<ValType> argsType();
 };
 
 

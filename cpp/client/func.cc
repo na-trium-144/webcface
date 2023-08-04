@@ -5,26 +5,26 @@
 
 namespace WebCFace {
 
-FuncResult &FuncStore::addResult(const std::string &caller,
-                                 std::shared_ptr<std::promise<FuncResult>> pr) {
+FuncResult &
+FuncResultStore::addResult(const std::string &caller,
+                           std::shared_ptr<std::promise<FuncResult>> pr,
+                           const std::string &member, const std::string &name) {
     std::lock_guard lock(mtx);
     int caller_id = results.size();
-    results.push_back(FuncResult{caller_id, caller, pr});
+    results.push_back(FuncResult{caller_id, caller, pr, member, name});
     return results.back();
 }
-FuncResult &FuncStore::getResult(int caller_id) {
+FuncResult &FuncResultStore::getResult(int caller_id) {
     std::lock_guard lock(mtx);
     return results.at(caller_id);
 }
 
 std::future<FuncResult>
-Func::run_impl(const std::vector<AnyArg> &args_vec) const {
-    if (from == "") {
-        auto pr = std::make_shared<std::promise<FuncResult>>();
-        auto &r = func_impl_store->addResult("", pr);
-        r.from = "";
-        r.name = name;
-        auto func_info = store->getRecv("", name);
+Func::run_impl(const std::vector<ValAdaptor> &args_vec) const {
+    auto pr = std::make_shared<std::promise<FuncResult>>();
+    auto &r = cli->func_result_store.addResult("", pr, member_, name_);
+    if (member_ == "") {
+        auto func_info = store->getRecv("", name_);
         if (func_info) {
             r.found = true;
             try {
@@ -37,33 +37,28 @@ Func::run_impl(const std::vector<AnyArg> &args_vec) const {
             r.found = false;
         }
         r.setReady();
-        return pr->get_future();
     } else {
-        auto pr = std::make_shared<std::promise<FuncResult>>();
-        auto &r = func_impl_store->addResult("", pr);
-        r.from = this->from;
-        r.name = this->name;
         // cliがセグフォする可能性
         this->cli->send(Message::pack(
-            Message::Call{{}, r.caller_id, "", r.from, r.name, args_vec}));
-        return pr->get_future();
+            Message::Call{{}, r.caller_id, "", member_, name_, args_vec}));
         // resultはclient.cc内でセットされる。
     }
+    return pr->get_future();
 }
 
-AbstArgType Func::returnType() const {
-    auto func_info = store->getRecv(from, name);
+ValType Func::returnType() {
+    auto func_info = store->getRecv(member_, name_);
     if (func_info) {
         return func_info->return_type;
     }
-    return AbstArgType::none_;
+    return ValType::none_;
 }
-std::vector<AbstArgType> Func::argsType() const {
-    auto func_info = store->getRecv(from, name);
+std::vector<ValType> Func::argsType() {
+    auto func_info = store->getRecv(member_, name_);
     if (func_info) {
         return func_info->args_type;
     }
-    return std::vector<AbstArgType>{};
+    return std::vector<ValType>{};
 }
 
 

@@ -1,6 +1,6 @@
 #include <webcface/webcface.h>
-#include <iostream>
 #include <cassert>
+#include <type_traits>
 
 namespace WebCFace {
 template <typename T>
@@ -17,7 +17,7 @@ void SyncDataStore<T>::setRecv(const std::string &from, const std::string &name,
 }
 
 template <typename T>
-std::vector<std::string> SyncDataStore<T>::getEntries() {
+std::vector<std::string> SyncDataStore<T>::getMembers() {
     std::lock_guard lock(mtx);
     std::vector<std::string> k;
     for (const auto &r : entry) {
@@ -83,14 +83,35 @@ SyncDataStore<T>::transferReq() {
 }
 
 template <typename T>
-void SyncData<T>::set(const T &data) {
-    assert(from == "");
-    store->setSend(name, data);
+SyncData<T>::SyncData(Client *cli, const std::string &member,
+                      const std::string &name)
+    : cli(cli), member_(member), name_(name) {
+    if constexpr (std::is_same_v<T, Value::DataType>) {
+        store = &cli->value_store;
+    } else if constexpr (std::is_same_v<T, Text::DataType>) {
+        store = &cli->text_store;
+    } else if constexpr (std::is_same_v<T, Func::DataType>) {
+        store = &cli->func_store;
+    } else {
+        store = nullptr;
+    }
+}
+
+template <typename T>
+Member SyncData<T>::member() const {
+    return cli->member(member_);
+}
+
+template <typename T>
+SyncData<T> &SyncData<T>::set(const T &data) {
+    assert(member_ == "" && "Cannot set data to member other than self");
+    store->setSend(name_, data);
+    return *this;
 }
 
 template <typename T>
 std::optional<T> SyncData<T>::try_get() const {
-    return store->getRecv(from, name);
+    return store->getRecv(member_, name_);
 }
 template <typename T>
 T SyncData<T>::get() const {

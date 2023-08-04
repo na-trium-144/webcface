@@ -43,7 +43,7 @@ struct Name : public MessageBase<MessageKind::name> {
 struct Call : public MessageBase<MessageKind::call> {
     int caller_id;
     std::string caller, receiver, name;
-    std::vector<WebCFace::AnyArg> args;
+    std::vector<WebCFace::ValAdaptor> args;
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", caller_id), MSGPACK_NVP("c", caller),
                        MSGPACK_NVP("r", receiver), MSGPACK_NVP("n", name),
                        MSGPACK_NVP("a", args));
