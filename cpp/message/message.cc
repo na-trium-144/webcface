@@ -40,10 +40,10 @@ std::pair<MessageKind, std::any> unpack(const std::string &message) {
 
 #define MSG_PARSE_DATA(kind, type)                                             \
     MSG_PARSE(kind, type)                                                      \
-    case kind_recv(MessageKind::kind):                                         \
-        static_assert(MessageKind::kind < MessageKind::recv &&                 \
+    case kind_entry(MessageKind::kind):                                        \
+        static_assert(MessageKind::kind < MessageKind::entry &&                \
                       MessageKind::kind < MessageKind::subscribe);             \
-        obj_u = obj.via.array.ptr[1].as<Recv<type>>();                         \
+        obj_u = obj.via.array.ptr[1].as<Entry<type>>();                        \
         break;                                                                 \
     case kind_subscribe(MessageKind::kind):                                    \
         obj_u = obj.via.array.ptr[1].as<Subscribe<type>>();                    \
@@ -52,7 +52,6 @@ std::pair<MessageKind, std::any> unpack(const std::string &message) {
             MSG_PARSE(name, Name)
             MSG_PARSE(call, Call)
             MSG_PARSE(call_response, CallResponse)
-            MSG_PARSE(entry, Entry)
             MSG_PARSE_DATA(value, Value)
             MSG_PARSE_DATA(text, Text)
             MSG_PARSE(func_info, FuncInfo)

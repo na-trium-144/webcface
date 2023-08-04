@@ -1,5 +1,5 @@
 #pragma once
-#include <webcface/any_arg.h>
+#include <webcface/val.h>
 #include <msgpack.hpp>
 #include <string>
 #include <cstdint>
@@ -9,9 +9,9 @@ MSGPACK_API_VERSION_NAMESPACE(MSGPACK_DEFAULT_API_NS) {
     namespace adaptor {
 
     template <>
-    struct convert<WebCFace::AnyArg> {
+    struct convert<WebCFace::ValAdaptor> {
         msgpack::object const &operator()(msgpack::object const &o,
-                                          WebCFace::AnyArg &v) const {
+                                          WebCFace::ValAdaptor &v) const {
             switch (o.type) {
             case msgpack::type::FLOAT32:
             case msgpack::type::FLOAT64:
@@ -39,21 +39,21 @@ MSGPACK_API_VERSION_NAMESPACE(MSGPACK_DEFAULT_API_NS) {
         }
     };
     template <>
-    struct pack<WebCFace::AnyArg> {
+    struct pack<WebCFace::ValAdaptor> {
         template <typename Stream>
         msgpack::packer<Stream> &operator()(msgpack::packer<Stream> &o,
-                                            const WebCFace::AnyArg &v) {
+                                            const WebCFace::ValAdaptor &v) {
             switch (v.argType()) {
-            case WebCFace::AbstArgType::bool_:
+            case WebCFace::ValType::bool_:
                 o.pack(static_cast<bool>(v));
                 break;
-            case WebCFace::AbstArgType::int_:
+            case WebCFace::ValType::int_:
                 o.pack(static_cast<std::int64_t>(v));
                 break;
-            case WebCFace::AbstArgType::float_:
+            case WebCFace::ValType::float_:
                 o.pack(static_cast<double>(v));
                 break;
-            case WebCFace::AbstArgType::string_:
+            case WebCFace::ValType::string_:
             default:
                 o.pack(static_cast<std::string>(v));
                 break;

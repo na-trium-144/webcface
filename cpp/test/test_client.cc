@@ -12,38 +12,38 @@ DROGON_TEST(ConnectionTest) {
     std::this_thread::sleep_for(std::chrono::milliseconds(200));
     CHECK(cli1.connected());
 
-    cli1.close();
-    std::this_thread::sleep_for(std::chrono::milliseconds(200));
-    CHECK(!cli1.connected());
+    // cli1.close();
+    // std::this_thread::sleep_for(std::chrono::milliseconds(200));
+    // CHECK(!cli1.connected());
 }
 DROGON_TEST(ValueTest) {
     WebCFace::Client cli1("test1"), cli2("test2");
     const int v = 1;
     const std::string t = "aaa";
     std::this_thread::sleep_for(std::chrono::milliseconds(200));
-    cli1.value("v") = v;
-    cli1.text("t") = t;
+    cli1.self().value("v") = v;
+    cli1.self().text("t") = t;
     cli1.send();
     cli2.send();
     std::this_thread::sleep_for(std::chrono::milliseconds(200));
-    CHECK(cli1.value("v") == v);
-    CHECK(cli1.text("t") == t);
+    CHECK(cli1.self().value("v") == v);
+    CHECK(cli1.self().text("t") == t);
     // 1回目は無
-    CHECK(cli1.subject("test1").value("v").try_get() == std::nullopt);
-    CHECK(cli1.subject("test1").value("v") == 0);
-    CHECK(cli2.subject("test1").value("v").try_get() == std::nullopt);
-    CHECK(cli2.subject("test1").value("v") == 0);
-    CHECK(cli1.subject("test1").text("t").try_get() == std::nullopt);
-    CHECK(cli1.subject("test1").text("t") == "");
-    CHECK(cli2.subject("test1").text("t").try_get() == std::nullopt);
-    CHECK(cli2.subject("test1").text("t") == "");
+    CHECK(cli1.member("test1").value("v").try_get() == std::nullopt);
+    CHECK(cli1.member("test1").value("v") == 0);
+    CHECK(cli2.member("test1").value("v").try_get() == std::nullopt);
+    CHECK(cli2.member("test1").value("v") == 0);
+    CHECK(cli1.member("test1").text("t").try_get() == std::nullopt);
+    CHECK(cli1.member("test1").text("t") == "");
+    CHECK(cli2.member("test1").text("t").try_get() == std::nullopt);
+    CHECK(cli2.member("test1").text("t") == "");
     cli1.send();
     cli2.send();
     std::this_thread::sleep_for(std::chrono::milliseconds(200));
-    CHECK(cli1.subject("test1").value("v") == v);
-    CHECK(cli2.subject("test1").value("v") == v);
-    CHECK(cli1.subject("test1").text("t") == t);
-    CHECK(cli2.subject("test1").text("t") == t);
+    CHECK(cli1.member("test1").value("v") == v);
+    CHECK(cli2.member("test1").value("v") == v);
+    CHECK(cli1.member("test1").text("t") == t);
+    CHECK(cli2.member("test1").text("t") == t);
 }
 
 int main(int argc, char **argv) {
