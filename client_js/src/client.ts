@@ -1,10 +1,11 @@
 import { pack, unpack } from "./message.js";
 import * as types from "./messageType.js";
 import { DataStore, emptyStore, Value, Text } from "./data.js";
-import { Func, FuncResult, FuncStore } from "./func.js";
-import { w3cwebsocket } from "websocket";
+import { Func, FuncResult, FuncInfoInternal } from "./func.js";
+import websocket from "websocket";
+const w3cwebsocket = websocket.w3cwebsocket;
 
-class SubjectClient {
+export class SubjectClient {
   cli: Client;
   subject: string;
   constructor(cli: Client, subject: string) {
@@ -40,14 +41,19 @@ class SubjectClient {
       this.text(n)
     );
   }
+  funcs() {
+    return (this.cli.funcStore.entry.get(this.subject) || []).map((n) =>
+      this.func(n)
+    );
+  }
 }
 
 export class Client {
-  ws: null | w3cwebsocket = null;
+  ws: null | websocket.w3cwebsocket = null;
   connected = false;
   valueStore: DataStore<number | string> = emptyStore();
   textStore: DataStore<number | string> = emptyStore();
-  funcStore: FuncStore[] = [];
+  funcStore: DataStore<FuncInfoInternal> = emptyStore();
   funcResult: FuncResult[] = [];
   name: string;
   host: string;
@@ -114,14 +120,21 @@ export class Client {
             e: false,
             r: "",
           };
-          const s = this.funcStore.find((s) => s.name === dataR.n);
+          const s = this.funcStore.dataRecv.get("");
           if (s) {
-            r.f = true;
-            try {
-              r.r = String(s.func(...dataR.a));
-            } catch (e: any) {
-              r.r = (e as Error).toString();
-              r.e = true;
+            const m = s.get(dataR.n);
+            if (m) {
+              r.f = true;
+              try {
+                if (m.funcImpl != null) {
+                  r.r = m.funcImpl(...dataR.a);
+                }
+              } catch (e: any) {
+                r.r = (e as Error).toString();
+                r.e = true;
+              }
+            } else {
+              r.f = false;
             }
           } else {
             r.f = false;
@@ -135,7 +148,7 @@ export class Client {
           r.found = dataR.f;
           r.isError = dataR.e;
           if (r.isError) {
-            r.errorMsg = dataR.r;
+            r.errorMsg = String(dataR.r);
           } else {
             r.result = dataR.r;
           }
@@ -152,6 +165,24 @@ export class Client {
             dataR.f,
             dataR.t.map((e) => e.n)
           );
+          this.funcStore.entry.set(
+            dataR.f,
+            dataR.u.map((e) => e.n)
+          );
+          let s = this.funcStore.dataRecv.get(dataR.f);
+          if (!s) {
+            this.funcStore.dataRecv.set(dataR.f, new Map([]));
+            s = this.funcStore.dataRecv.get(dataR.f);
+          }
+          if (s) {
+            for (const funcInfo of dataR.u) {
+              s.set(funcInfo.n, {
+                returnType: funcInfo.r,
+                argsType: funcInfo.a,
+                funcImpl: null,
+              });
+            }
+          }
         }
       }
     };
@@ -183,7 +214,7 @@ export class Client {
       this.valueStore.reqSend.clear();
 
       for (const [k, v] of this.textStore.dataSend.entries()) {
-        this.ws.send(pack(types.kind.value, { n: k, d: v }));
+        this.ws.send(pack(types.kind.text, { n: k, d: v }));
       }
       this.textStore.dataSend.clear();
       for (const [k, v] of this.textStore.reqSend.entries()) {

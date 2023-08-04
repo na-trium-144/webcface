@@ -8,7 +8,7 @@ setInterval(() => {
   void c
     .subject("example_main")
     .func("func2")
-    .run("9", "7", "0", "")
+    .run(9, 7.1, false, "aaa")
     .then((v) => {
       console.log(`func2 = ${v.result}`); // vだけで値取れるようにしない?
     }); // .catchできるようにしない?

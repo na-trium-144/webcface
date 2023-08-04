@@ -5,7 +5,7 @@ c.value("test").set(0);
 c.func("func1").set(() => console.log("hello, world!"));
 c.func("func2").set((a: string, b: string, c: string, d: string) => {
   console.log(`hello world 2 ${a} ${b} ${c} ${d}`);
-  return (parseInt(a) + parseFloat(b)).toString();
+  return parseInt(a) + parseFloat(b);
 });
 
 setInterval(() => {

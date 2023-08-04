@@ -15,6 +15,17 @@ int main() {
             for (const auto &t : s.texts()) {
                 std::cout << "  text " << t.name << std::endl;
             }
+            for (const auto &f : s.funcs()) {
+                std::cout << "  func " << f.name << " arg: ";
+                auto args = f.argsType();
+                for (std::size_t i = 0; i < args.size(); i++) {
+                    if (i > 0) {
+                        std::cout << ", ";
+                    }
+                    std::cout << args[i];
+                }
+                std::cout << " ret = " << f.returnType() << std::endl;
+            }
         }
         std::cout << std::endl;
         c.send();

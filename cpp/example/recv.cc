@@ -12,10 +12,10 @@ int main() {
         // c.value("example_main", "test") += 2;
         // -> error: candidate function template not viable: ... method is not
         // marked const
-        std::cout << "func2(9, 7, false, \"\") = "
+        std::cout << "func2(9, 7.1, false, \"\") = "
                   << c.subject("example_main")
                          .func("func2")
-                         .run(9, 7, false, "")
+                         .run(9, 7.1, false, "")
                          .get()
                   << std::endl;
         c.send();
