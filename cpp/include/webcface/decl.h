@@ -1,4 +1,5 @@
 #pragma once
+// クラスが相互依存しすぎているのでクラス名の宣言だけ全部ここでする
 
 namespace drogon {
 class WebSocketClient;
@@ -8,6 +9,8 @@ class Member;
 class Client;
 template <typename T>
 class SyncData;
+template <typename T>
+class SyncDataKey;
 class Value;
 class Text;
 template <typename T>

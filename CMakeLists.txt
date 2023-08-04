@@ -30,6 +30,12 @@ if(NOT ${msgpack_FOUND})
 endif()
 set(MSGPACK msgpack-cxx)
 
+find_package(eventpp)
+if(NOT ${eventpp_FOUND})
+    add_subdirectory(external/eventpp)
+endif()
+set(EVENTPP eventpp::eventpp)
+
 enable_testing() # todo: オプションで変えられるようにする
 
 aux_source_directory(cpp SVR_MAIN_SRC)
@@ -66,6 +72,7 @@ add_library(${PROJECT_NAME} SHARED ${CLI_SRC})
 target_compile_options(${PROJECT_NAME} PRIVATE -fPIC)
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_20)
 target_link_libraries(${PROJECT_NAME} PRIVATE ${PROJECT_NAME}_message ${DROGON})
+target_link_libraries(${PROJECT_NAME} PUBLIC ${EVENTPP})
 target_include_directories(${PROJECT_NAME} PUBLIC ${INCLUDE_DIR})
 
 foreach(SRC IN LISTS EXAMPLE_SRC)

@@ -3,9 +3,7 @@
 #include <istream>
 #include <ostream>
 #include <optional>
-#include <cstdint>
 #include "data_store.h"
-#include "val.h"
 #include "decl.h"
 
 namespace WebCFace {
@@ -33,7 +31,7 @@ class SyncData {
     std::string name() const { return name_; }
 
     //! 値をセットする
-    SyncData &set(const T &data);
+    virtual void set(const T &data);
     //! 値を取得する
     std::optional<T> try_get() const;
     //! 値を取得する
@@ -59,98 +57,5 @@ template <typename T>
 auto &operator<<(std::basic_ostream<char> &os, const SyncData<T> &data) {
     return os << data.get();
 }
-
-//! 実数値を扱う
-class Value : public SyncData<double> {
-  public:
-    Value() {}
-    Value(Client *cli, const std::string &member, const std::string &name)
-        : SyncData<DataType>(cli, member, name) {}
-    //! 値をセットする
-    auto &operator=(double data) {
-        this->set(data);
-        return *this;
-    }
-
-    auto &operator+=(double rhs) {
-        this->set(this->get() + rhs);
-        return *this;
-    }
-    auto &operator-=(double rhs) {
-        this->set(this->get() - rhs);
-        return *this;
-    }
-    auto &operator*=(double rhs) {
-        this->set(this->get() * rhs);
-        return *this;
-    }
-    auto &operator/=(double rhs) {
-        this->set(this->get() / rhs);
-        return *this;
-    }
-    auto &operator%=(std::int32_t rhs) {
-        this->set(static_cast<std::int32_t>(this->get()) % rhs);
-        return *this;
-    }
-    // int64_tも使えるようにすべきか?
-    // javascriptで扱える整数は2^53まで
-    auto &operator<<=(std::int32_t rhs) {
-        this->set(static_cast<std::int32_t>(this->get()) << rhs);
-        return *this;
-    }
-    auto &operator>>=(std::int32_t rhs) {
-        this->set(static_cast<std::int32_t>(this->get()) >> rhs);
-        return *this;
-    }
-    auto &operator&=(std::int32_t rhs) {
-        this->set(static_cast<std::int32_t>(this->get()) & rhs);
-        return *this;
-    }
-    auto &operator|=(std::int32_t rhs) {
-        this->set(static_cast<std::int32_t>(this->get()) | rhs);
-        return *this;
-    }
-    auto &operator^=(std::int32_t rhs) {
-        this->set(static_cast<std::int32_t>(this->get()) ^ rhs);
-        return *this;
-    }
-    auto &operator++() { // ++s
-        this->set(this->get() + 1);
-        return *this;
-    }
-    auto operator++(int) { // s++
-        auto v = this->get();
-        this->set(v + 1);
-        return v;
-    }
-    auto &operator--() { // --s
-        this->set(this->get() - 1);
-        return *this;
-    }
-    auto operator--(int) { // s--
-        auto v = this->get();
-        this->set(v - 1);
-        return v;
-    }
-
-    // 比較演算子の定義は不要
-};
-
-// 文字列を扱う
-class Text : public SyncData<std::string> {
-  public:
-    Text() {}
-    Text(Client *cli, const std::string &member, const std::string &name)
-        : SyncData<DataType>(cli, member, name) {}
-    //! 値をセットする
-    auto &operator=(const std::string &data) {
-        this->set(data);
-        return *this;
-    }
-
-    bool operator==(const std::string &rhs) const { return this->get() == rhs; }
-    bool operator!=(const std::string &rhs) const { return this->get() != rhs; }
-};
-
 
 } // namespace WebCFace

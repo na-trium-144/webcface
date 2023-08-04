@@ -2,9 +2,11 @@
 #include <string>
 #include <future>
 #include <vector>
+#include <eventpp/eventdispatcher.h>
 #include "decl.h"
 #include "data.h"
 #include "func.h"
+#include "data_event.h"
 
 namespace WebCFace {
 
@@ -66,6 +68,12 @@ class Client {
     Member self_;
     std::string name_;
 
+    eventpp::EventDispatcher<SyncDataKey<Value::DataType>, void(const Value&)> value_change_event;
+    eventpp::CallbackList<void(const Value&)> value_entry_event;
+    eventpp::EventDispatcher<SyncDataKey<Text::DataType>, void(const Text&)> text_change_event;
+    eventpp::CallbackList<void(const Text&)> text_entry_event;
+    eventpp::CallbackList<void(const Func&)> func_entry_event;
+
     //! 受信時の処理
     void onRecv(const std::string &message);
     //! データを送信する
@@ -76,6 +84,8 @@ class Client {
   public:
     template <typename T>
     friend class SyncData;
+    template <typename T, typename V>
+    friend class SyncDataWithEvent;
     friend Func;
     friend Member;
 
@@ -116,6 +126,7 @@ class Client {
         }
         return ret;
     }
+
 };
 
 } // namespace WebCFace

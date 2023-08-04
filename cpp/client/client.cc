@@ -153,6 +153,7 @@ void Client::onRecv(const std::string &message) {
             std::any_cast<WebCFace::Message::Recv<WebCFace::Message::Value>>(
                 obj);
         value_store.setRecv(r.from, r.name, r.data);
+        value_change_event.dispatch(member(r.from).value(r.name));
         break;
     }
     case kind_recv(MessageKind::text): {
@@ -160,6 +161,7 @@ void Client::onRecv(const std::string &message) {
             std::any_cast<WebCFace::Message::Recv<WebCFace::Message::Text>>(
                 obj);
         text_store.setRecv(r.from, r.name, r.data);
+        text_change_event.dispatch(member(r.from).text(r.name));
         break;
     }
     case MessageKind::call: {
