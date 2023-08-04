@@ -169,11 +169,11 @@ void Client::onRecv(const std::string &message) {
             bool started = async_res.started.get();
             bool is_error = false;
             std::string response;
-            if (async_res.error.get() != "") {
-                is_error = true;
-                response = async_res.error.get();
-            } else {
+            try {
                 response = static_cast<std::string>(async_res.result.get());
+            } catch (const std::exception &e) {
+                is_error = true;
+                response = e.what();
             }
             send(WebCFace::Message::pack(WebCFace::Message::CallResponse{
                 {}, r.caller_id, r.caller, started, is_error, response}));
@@ -184,9 +184,19 @@ void Client::onRecv(const std::string &message) {
         auto r = std::any_cast<WebCFace::Message::CallResponse>(obj);
         auto &res = func_result_store.getResult(r.caller_id);
         res.started_->set_value(r.found);
-        res.error_->set_value(r.is_error ? r.response : "");
-        // todo: 戻り値の型?
-        res.result_->set_value(ValAdaptor{r.is_error ? "" : r.response});
+        try {
+            if (!r.found) {
+                throw FuncNotFound(res.member_, res.name_);
+            } else if (r.is_error) {
+                throw std::runtime_error(r.response);
+            } else {
+                // todo: 戻り値の型?
+                res.result_->set_value(
+                    ValAdaptor{r.is_error ? "" : r.response});
+            }
+        } catch (...) {
+            res.result_->set_exception(std::current_exception());
+        }
         break;
     }
     case MessageKind::entry: {

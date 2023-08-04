@@ -11,15 +11,15 @@ auto &operator<<(std::basic_ostream<char> &os, const AsyncFuncResult &data) {
         os << "<Connecting>";
     } else if (data.started.get() == false) {
         os << "<Not Found>";
-    } else if (data.error.wait_for(std::chrono::seconds(0)) !=
-                   std::future_status::ready ||
-               data.result.wait_for(std::chrono::seconds(0)) !=
-                   std::future_status::ready) {
+    } else if (data.result.wait_for(std::chrono::seconds(0)) !=
+               std::future_status::ready) {
         os << "<Running>";
-    } else if (data.error.get() != "") {
-        os << "<Error> " << data.error.get();
     } else {
-        os << data.result.get();
+        try {
+            os << data.result.get();
+        } catch (const std::exception &e) {
+            os << "<Error> " << e.what();
+        }
     }
     return os;
 }
@@ -47,15 +47,9 @@ ValAdaptor Func::run(const std::vector<ValAdaptor> &args_vec) const {
             throw FuncNotFound(member_, name_);
         }
     } else {
-        // todo: ここを参照にする(auto &async_res にする)とセグフォする なぜ
-        auto async_res = this->runAsync(args_vec);
-        if (async_res.started.get() == false) {
-            throw FuncNotFound(member_, name_);
-        }
-        if (async_res.error.get() != "") {
-            throw std::runtime_error(async_res.error.get());
-        }
+        auto &async_res = this->runAsync(args_vec);
         return async_res.result.get();
+        // 例外が発生した場合はthrowされる
     }
 }
 AsyncFuncResult &Func::runAsync(const std::vector<ValAdaptor> &args_vec) const {
@@ -65,24 +59,13 @@ AsyncFuncResult &Func::runAsync(const std::vector<ValAdaptor> &args_vec) const {
             try {
                 auto ret = cli->self().func(name_).run(args_vec);
                 r.started_->set_value(true);
-                r.error_->set_value("");
                 r.result_->set_value(ret);
             } catch (const FuncNotFound &e) {
                 r.started_->set_value(false);
-                r.error_->set_value(e.what());
-                r.result_->set_value(ValAdaptor{});
-            } catch (const std::exception &e) {
-                r.started_->set_value(true);
-                r.error_->set_value(e.what());
-                r.result_->set_value(ValAdaptor{});
-            } catch (const std::string &e) {
-                r.started_->set_value(true);
-                r.error_->set_value(e);
-                r.result_->set_value(ValAdaptor{});
+                r.result_->set_exception(std::current_exception());
             } catch (...) {
                 r.started_->set_value(true);
-                r.error_->set_value("unknown exception");
-                r.result_->set_value(ValAdaptor{});
+                r.result_->set_exception(std::current_exception());
             }
         }).detach();
     } else {

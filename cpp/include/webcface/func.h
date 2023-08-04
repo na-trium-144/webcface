@@ -53,8 +53,11 @@ struct FuncInfo {
           }) {}
 };
 
-//! 非同期で実行した関数の実行結果を表す。
-//! 結果はshared_futureのget()で得られる。
+/*! 非同期で実行した関数の実行結果を表す。
+ *  結果はshared_futureのget()で得られる。
+ *
+ * リモートから呼び出しメッセージが送られてきた時非同期で実行して結果を送り返すのにもこれを利用する
+ */
 class AsyncFuncResult {
     //! 通し番号
     //! コンストラクタで設定する。実際はFuncResultStoreのvectorのindex
@@ -66,29 +69,26 @@ class AsyncFuncResult {
     std::string member_, name_;
 
     std::shared_ptr<std::promise<bool>> started_;
-    std::shared_ptr<std::promise<std::string>> error_;
     std::shared_ptr<std::promise<ValAdaptor>> result_;
 
   public:
     friend Func;
     friend Client;
 
-    //! 呼び出しメッセージが到達し実行が開始されたらtrue,
-    //! 呼び出しに失敗したらfalseが返る
+    //! リモートに呼び出しメッセージが到達したときに値が入る
+    //! 実行開始したらtrue, 呼び出しに失敗したらfalseが返る
     std::shared_future<bool> started;
-    //! 例外の内容 or 例外が発生しなかった場合空文字列
-    std::shared_future<std::string> error;
     //! 関数の戻り値
+    //! 例外が発生した場合futureの共有状態に例外が入る
+    //! (→ get() で例外がthrowされる)
     std::shared_future<ValAdaptor> result;
 
     AsyncFuncResult(int caller_id, Client *cli, const std::string &caller,
                     const std::string &member, const std::string &name)
         : caller_id(caller_id), cli(cli), caller(caller), member_(member),
           name_(name), started_(std::make_shared<std::promise<bool>>()),
-          error_(std::make_shared<std::promise<std::string>>()),
           result_(std::make_shared<std::promise<ValAdaptor>>()),
-          started(started_->get_future()), error(error_->get_future()),
-          result(result_->get_future()) {}
+          started(started_->get_future()), result(result_->get_future()) {}
 
     //! 関数の名前
     auto name() const { return name_; }

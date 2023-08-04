@@ -29,10 +29,11 @@ int main() {
                   << std::endl;
 
         // c.self().func("aaaaaaa").run(); // self().func("aaaaaa") is not set
+        // c.member("aaaaaa").func("a").run(); // member("aaaaaa").func("a") is not set
         c.self().func("func1").run();
         // c.self().func("func2").run(3, true, "hoge"); // invalid_argument
-        // c.member("example_main").func("func2").run(3, true, "hoge"); //
-        // invalid_argument
+        // c.member("example_main").func("func2").run(3, true, "hoge");
+        // runtime_error
         auto f = c.member("example_main")
                      .func("func2")
                      .runAsync(3, 5.5, true, "hoge");
