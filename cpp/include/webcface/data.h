@@ -6,11 +6,9 @@
 #include <cstdint>
 #include "data_store.h"
 #include "val.h"
+#include "decl.h"
 
 namespace WebCFace {
-
-class Client;
-class Member;
 
 //! データの参照先を表すクラス。
 /*! SyncDataとSyncDataStoreの関数定義はヘッダーに書いてないが、

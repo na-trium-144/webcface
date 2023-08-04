@@ -3,15 +3,21 @@
 #include <type_traits>
 #include <functional>
 #include <mutex>
-#include <unordered_map>
 #include <ostream>
 #include <string>
 #include <future>
-#include <concepts>
+#include <memory>
+#include <stdexcept>
 #include "val.h"
 #include "data.h"
+#include "decl.h"
 
 namespace WebCFace {
+
+struct FuncNotFound : public std::runtime_error {
+    explicit FuncNotFound(const std::string &func_name)
+        : std::runtime_error("Func(\"" + func_name + "\") is not set") {}
+};
 
 using FuncType = std::function<ValAdaptor(const std::vector<ValAdaptor> &)>;
 
@@ -39,76 +45,68 @@ struct FuncInfo {
           }) {}
 };
 
-class Func;
-
-//! 関数の実行結果を表す。
-/*! 実行開始時に生成、
- * 実行が完了したら結果をセットしpromiseに自身をセット、
- * futureからこれが返ってくる
- */
-class FuncResult {
+//! 非同期で実行した関数の実行結果を表す。
+//! 結果はshared_futureのget()で得られる。
+class AsyncFuncResult {
+    //! 通し番号
+    //! コンストラクタで設定する。実際はFuncResultStoreのvectorのindex
     int caller_id;
+    Client *cli;
+    //! 呼び出し側member 通常は自身
     std::string caller;
-    std::shared_ptr<std::promise<FuncResult>> pr;
+    //! 呼び出し対象のmemberとFunc名
     std::string member_, name_;
+
+    std::shared_ptr<std::promise<bool>> started_;
+    std::shared_ptr<std::promise<std::string>> error_;
+    std::shared_ptr<std::promise<ValAdaptor>> result_;
 
   public:
     friend Func;
+    friend Client;
 
-    FuncResult(int caller_id, const std::string &caller,
-               std::shared_ptr<std::promise<FuncResult>> pr,
-               const std::string &member, const std::string &name)
-        : caller_id(caller_id), caller(caller), pr(pr), member_(member),
-          name_(name) {}
+    //! 呼び出しメッセージが到達し実行が開始されたらtrue,
+    //! 呼び出しに失敗したらfalseが返る
+    std::shared_future<bool> started;
+    //! 例外の内容 or 例外が発生しなかった場合空文字列
+    std::shared_future<std::string> error;
     //! 関数の戻り値
-    ValAdaptor result{};
-    //! 関数が存在しなかった場合false
-    bool found = false;
-    //! 関数が例外を投げた場合true
-    bool is_error = false;
-    //! 例外の内容
-    std::string error_msg = "";
+    std::shared_future<ValAdaptor> result;
+
+    AsyncFuncResult(int caller_id, Client *cli, const std::string &caller,
+                    const std::string &member, const std::string &name)
+        : caller_id(caller_id), cli(cli), caller(caller), member_(member),
+          name_(name), started_(std::make_shared<std::promise<bool>>()),
+          error_(std::make_shared<std::promise<std::string>>()),
+          result_(std::make_shared<std::promise<ValAdaptor>>()),
+          started(started_->get_future()), error(error_->get_future()),
+          result(result_->get_future()) {}
+
     //! 関数の名前
     auto name() const { return name_; }
     //! 関数本体のあるmember
-    // Member member() const { return ???; }
-
-    //! 戻り値を任意の型で返す
-    template <typename T>
-        requires std::convertible_to<ValAdaptor, T>
-    operator T() const {
-        return static_cast<T>(result);
-    }
-
-    //! 値をセットしたら呼ぶ
-    void setReady() { pr->set_value(*this); }
+    Member member() const;
 };
-inline auto &operator<<(std::basic_ostream<char> &os, const FuncResult &data) {
-    if (!data.found) {
-        return os << "<func not found>";
-    }
-    if (data.is_error) {
-        return os << "<error: " << data.error_msg << ">";
-    } else {
-        return os << static_cast<std::string>(data.result);
-    }
-}
+auto &operator<<(std::basic_ostream<char> &os, const AsyncFuncResult &data);
 
-//! FuncResultのリストを保持する。
+//! AsyncFuncResultのリストを保持する。
 /*! 関数の実行結果が返ってきた時参照する
  * また、実行するたびに連番を振る必要があるcallback_idの管理にも使う
  */
 class FuncResultStore {
   private:
+    Client *cli;
     std::mutex mtx;
-    std::vector<FuncResult> results;
+    std::vector<AsyncFuncResult> results;
 
   public:
-    //! 新しいFuncResultを生成する。
-    FuncResult &addResult(const std::string &caller,
-                          std::shared_ptr<std::promise<FuncResult>> pr,
-                          const std::string &member, const std::string &name);
-    FuncResult &getResult(int caller_id);
+    explicit FuncResultStore(Client *cli) : cli(cli) {}
+
+    //! 新しいAsyncFuncResultを生成する。
+    AsyncFuncResult &addResult(const std::string &caller,
+                               const std::string &member,
+                               const std::string &name);
+    AsyncFuncResult &getResult(int caller_id);
 };
 
 // 関数1つを表すクラス
@@ -132,12 +130,37 @@ class Func : public SyncData<FuncInfo> {
         return this->set(func);
     }
 
+    //! 関数を実行する (同期)
+    /*! selfの関数の場合、このスレッドで直接実行する
+     * 例外が発生した場合そのままthrow, 関数が存在しない場合 FuncNotFound
+     * をthrowする
+     *
+     * リモートの場合、関数呼び出しを送信し結果が返ってくるまで待機
+     * 例外が発生した場合 runtime_error, 関数が存在しない場合 FuncNotFound
+     * をthrowする
+     */
     template <typename... Args>
-    std::future<FuncResult> run(Args... args) const {
-        return run_impl({ValAdaptor(args)...});
+    ValAdaptor run(Args... args) const {
+        return run({ValAdaptor(args)...});
     }
-    std::future<FuncResult>
-    run_impl(const std::vector<ValAdaptor> &args_vec) const;
+    ValAdaptor run(const std::vector<ValAdaptor> &args_vec) const;
+    //! run()と同じ
+    template <typename... Args>
+    ValAdaptor operator()(Args... args) const {
+        return run(args...);
+    }
+
+    //! 関数を実行する (非同期)
+    /*! 非同期で実行する
+     * 戻り値やエラー、例外はAsyncFuncResultから取得する
+     *
+     * AsyncFuncResultはClient内部で保持されているのでClientが破棄されるまで参照は切れない
+     */
+    template <typename... Args>
+    AsyncFuncResult &runAsync(Args... args) const {
+        return runAsync({ValAdaptor(args)...});
+    }
+    AsyncFuncResult &runAsync(const std::vector<ValAdaptor> &args_vec) const;
 
     ValType returnType();
     std::vector<ValType> argsType();

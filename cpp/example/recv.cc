@@ -16,7 +16,6 @@ int main() {
                   << c.member("example_main")
                          .func("func2")
                          .run(9, 7.1, false, "")
-                         .get()
                   << std::endl;
         c.send();
     }

@@ -11,7 +11,8 @@
 namespace WebCFace {
 
 Client::Client(const std::string &name, const std::string &host, int port)
-    : self_(this, ""), name_(name), host(host), port(port) {
+    : func_result_store(this), self_(this, ""), name_(name), host(host),
+      port(port) {
 
     // 最初のクライアント接続時にdrogonループを起動
     // もしClientがテンプレートクラスになったら使えない
@@ -163,29 +164,29 @@ void Client::onRecv(const std::string &message) {
     }
     case MessageKind::call: {
         auto r = std::any_cast<WebCFace::Message::Call>(obj);
-        // todo: async
-        auto res = self().func(r.name).run_impl(r.args).get();
-        std::string response;
-        if (res.is_error) {
-            response = res.error_msg;
-        } else {
-            response = static_cast<std::string>(res.result);
-        }
-        send(WebCFace::Message::pack(WebCFace::Message::CallResponse{
-            {}, r.caller_id, r.caller, res.found, res.is_error, response}));
+        auto &async_res = self().func(r.name).runAsync(r.args);
+        std::thread([this, &async_res, r] {
+            bool started = async_res.started.get();
+            bool is_error = false;
+            std::string response;
+            if (async_res.error.get() != "") {
+                is_error = true;
+                response = async_res.error.get();
+            } else {
+                response = static_cast<std::string>(async_res.result.get());
+            }
+            send(WebCFace::Message::pack(WebCFace::Message::CallResponse{
+                {}, r.caller_id, r.caller, started, is_error, response}));
+        }).detach();
         break;
     }
     case MessageKind::call_response: {
         auto r = std::any_cast<WebCFace::Message::CallResponse>(obj);
-        auto res = func_result_store.getResult(r.caller_id);
-        res.found = r.found;
-        res.is_error = r.is_error;
-        if (r.is_error) {
-            res.error_msg = r.response;
-        } else {
-            res.result = static_cast<ValAdaptor>(r.response);
-        }
-        res.setReady();
+        auto &res = func_result_store.getResult(r.caller_id);
+        res.started_->set_value(r.found);
+        res.error_->set_value(r.is_error ? r.response : "");
+        // todo: 戻り値の型?
+        res.result_->set_value(ValAdaptor{r.is_error ? "" : r.response});
         break;
     }
     case MessageKind::entry: {

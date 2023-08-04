@@ -2,14 +2,11 @@
 #include <string>
 #include <future>
 #include <vector>
-
-namespace drogon {
-class WebSocketClient;
-}
+#include "decl.h"
+#include "data.h"
+#include "func.h"
 
 namespace WebCFace {
-
-class Client;
 
 //! 他のクライアントを参照することを表すクラス
 /*! 参照元のClientが破棄されているとセグフォします

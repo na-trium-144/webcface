@@ -31,9 +31,9 @@ int main() {
         // c.func("aaaaaaa").run(); bad_function_call
         c.self().func("func1").run(1);
         // c.func("func2").run(3, true, "hoge"); invalid_argument
-        auto f = c.self().func("func2").run(3, 5.5, true, "hoge");
+        auto f = c.member("example_main").func("func2").runAsync(3, 5.5, true, "hoge");
         // ValAdaptor -> int, double, bool, string etc...
-        std::cout << "return = " << static_cast<int>(f.get()) << std::endl;
+        std::cout << "return = " << static_cast<int>(f.result.get()) << std::endl;
 
         c.send();
     }

@@ -1,49 +1,89 @@
-#include <drogon/WebSocketClient.h>
-#include <drogon/HttpAppFramework.h>
 #include <webcface/webcface.h>
+#include <thread>
+#include <chrono>
 #include "../message/message.h"
 
 namespace WebCFace {
+auto &operator<<(std::basic_ostream<char> &os, const AsyncFuncResult &data) {
+    os << "Func(\"" << data.name() << "\"): ";
+    if (data.started.wait_for(std::chrono::seconds(0)) !=
+        std::future_status::ready) {
+        os << "<Connecting>";
+    } else if (data.started.get() == false) {
+        os << "<Not Found>";
+    } else if (data.error.wait_for(std::chrono::seconds(0)) !=
+                   std::future_status::ready ||
+               data.result.wait_for(std::chrono::seconds(0)) !=
+                   std::future_status::ready) {
+        os << "<Running>";
+    } else if (data.error.get() != "") {
+        os << "<Error> " << data.error.get();
+    } else {
+        os << data.result.get();
+    }
+    return os;
+}
+Member AsyncFuncResult::member() const { return cli->member(member_); }
 
-FuncResult &
-FuncResultStore::addResult(const std::string &caller,
-                           std::shared_ptr<std::promise<FuncResult>> pr,
-                           const std::string &member, const std::string &name) {
+AsyncFuncResult &FuncResultStore::addResult(const std::string &caller,
+                                            const std::string &member,
+                                            const std::string &name) {
     std::lock_guard lock(mtx);
     int caller_id = results.size();
-    results.push_back(FuncResult{caller_id, caller, pr, member, name});
+    results.push_back(AsyncFuncResult{caller_id, cli, caller, member, name});
     return results.back();
 }
-FuncResult &FuncResultStore::getResult(int caller_id) {
+AsyncFuncResult &FuncResultStore::getResult(int caller_id) {
     std::lock_guard lock(mtx);
     return results.at(caller_id);
 }
 
-std::future<FuncResult>
-Func::run_impl(const std::vector<ValAdaptor> &args_vec) const {
-    auto pr = std::make_shared<std::promise<FuncResult>>();
-    auto &r = cli->func_result_store.addResult("", pr, member_, name_);
+ValAdaptor Func::run(const std::vector<ValAdaptor> &args_vec) const {
     if (member_ == "") {
         auto func_info = store->getRecv("", name_);
         if (func_info) {
-            r.found = true;
-            try {
-                r.result = func_info->func_impl(args_vec);
-            } catch (const std::exception &e) {
-                r.error_msg = e.what();
-                r.is_error = true;
-            }
+            return func_info->func_impl(args_vec);
         } else {
-            r.found = false;
+            throw FuncNotFound(name_);
         }
-        r.setReady();
+    } else {
+        return this->runAsync(args_vec).result.get();
+    }
+}
+AsyncFuncResult &Func::runAsync(const std::vector<ValAdaptor> &args_vec) const {
+    auto &r = cli->func_result_store.addResult("", member_, name_);
+    if (member_ == "") {
+        std::thread([this, args_vec, &r] {
+            try {
+                r.started_->set_value(true);
+                auto ret = this->run(args_vec);
+                r.error_->set_value("");
+                r.result_->set_value(ret);
+            } catch (const FuncNotFound &e) {
+                r.started_->set_value(false);
+                r.error_->set_value(e.what());
+                r.result_->set_value(ValAdaptor{});
+            } catch (const std::exception &e) {
+                r.started_->set_value(true);
+                r.error_->set_value(e.what());
+                r.result_->set_value(ValAdaptor{});
+            } catch (const std::string &e) {
+                r.started_->set_value(true);
+                r.error_->set_value(e);
+                r.result_->set_value(ValAdaptor{});
+            } catch (...) {
+                r.started_->set_value(true);
+                r.error_->set_value("unknown exception");
+                r.result_->set_value(ValAdaptor{});
+            }
+        }).detach();
     } else {
         // cliがセグフォする可能性
         this->cli->send(Message::pack(
             Message::Call{{}, r.caller_id, "", member_, name_, args_vec}));
         // resultはclient.cc内でセットされる。
     }
-    return pr->get_future();
+    return r;
 }
 
 ValType Func::returnType() {
