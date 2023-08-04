@@ -3,6 +3,7 @@
 #include <memory>
 #include <future>
 #include <vector>
+#include <eventpp/callbacklist.h>
 #include <eventpp/eventdispatcher.h>
 #include "decl.h"
 #include "data_store.h"
@@ -39,17 +40,20 @@ class Client {
     std::string name_;
 
     //! 特定のValueが変更された時のイベント
-    eventpp::EventDispatcher<SyncDataKey<Value::DataType>, void(const Value &)>
+    eventpp::EventDispatcher<SyncDataKey<Value::DataType>, void(Value)>
         value_change_event;
     //! 特定のTextが変更された時のイベント
-    eventpp::EventDispatcher<SyncDataKey<Text::DataType>, void(const Text &)>
+    eventpp::EventDispatcher<SyncDataKey<Text::DataType>, void(Text)>
         text_change_event;
+
+    //! Memberが追加された時のイベント
+    eventpp::CallbackList<void(Member)> member_entry_event;
     //! Valueが追加された時のイベント
-    eventpp::CallbackList<void(const Value &)> value_entry_event;
+    eventpp::CallbackList<void(Value)> value_entry_event;
     //! Textが追加された時のイベント
-    eventpp::CallbackList<void(const Text &)> text_entry_event;
+    eventpp::CallbackList<void(Text)> text_entry_event;
     //! Funcが追加された時のイベント
-    eventpp::CallbackList<void(const Func &)> func_entry_event;
+    eventpp::CallbackList<void(Func)> func_entry_event;
 
     //! 受信時の処理
     void onRecv(const std::string &message);
@@ -65,6 +69,8 @@ class Client {
     friend class SyncDataWithEvent;
     friend Func;
     friend Member;
+    template <typename V>
+    friend class MemberEvent;
 
     Client() : Client("") {}
     Client(const Client &) = delete;
@@ -102,6 +108,10 @@ class Client {
             ret[i] = member(keys[i]);
         }
         return ret;
+    }
+    //! Memberが追加された時のイベントリスト
+    MemberEvent<Member> membersChange() {
+        return MemberEvent<Member>{&member_entry_event};
     }
 };
 

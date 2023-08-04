@@ -36,6 +36,12 @@ std::vector<std::string> SyncDataStore<T>::getEntry(const std::string &name) {
     }
 }
 template <typename T>
+void SyncDataStore<T>::setEntry(const std::string &from) {
+    std::lock_guard lock(mtx);
+    entry.emplace(
+        std::make_pair(from, std::vector<std::string>{}));
+}
+template <typename T>
 void SyncDataStore<T>::setEntry(const std::string &from, const std::string &e) {
     std::lock_guard lock(mtx);
     entry[from].push_back(e);

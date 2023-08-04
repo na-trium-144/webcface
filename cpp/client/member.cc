@@ -28,4 +28,15 @@ std::vector<Func> Member::funcs() const {
     }
     return ret;
 }
+
+MemberEvent<Value> Member::valuesChange() {
+    return MemberEvent<Value>{&cli->value_entry_event};
+}
+MemberEvent<Text> Member::textsChange() {
+    return MemberEvent<Text>{&cli->text_entry_event};
+}
+MemberEvent<Func> Member::funcsChange() {
+    return MemberEvent<Func>{&cli->func_entry_event};
+}
+
 } // namespace WebCFace

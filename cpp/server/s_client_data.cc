@@ -18,18 +18,23 @@ bool ClientData::connected() const { return con && con->connected(); }
 void ClientData::onConnect() {
     //! 全クライアントのentryを送る
     for (const auto &c : store.clients) {
-        for (const auto &p : c.second->value) {
+        if (c.second->name != this->name) {
             this->send(WebCFace::Message::pack(
-                WebCFace::Message::Entry<WebCFace::Message::Value>{
-                    {}, c.second->name, p.first}));
-        }
-        for (const auto &p : c.second->text) {
-            this->send(WebCFace::Message::pack(
-                WebCFace::Message::Entry<WebCFace::Message::Text>{
-                    {}, c.second->name, p.first}));
-        }
-        for (const auto &p : c.second->func) {
-            this->send(WebCFace::Message::pack(p.second));
+                WebCFace::Message::Name{{}, c.second->name}));
+
+            for (const auto &p : c.second->value) {
+                this->send(WebCFace::Message::pack(
+                    WebCFace::Message::Entry<WebCFace::Message::Value>{
+                        {}, c.second->name, p.first}));
+            }
+            for (const auto &p : c.second->text) {
+                this->send(WebCFace::Message::pack(
+                    WebCFace::Message::Entry<WebCFace::Message::Text>{
+                        {}, c.second->name, p.first}));
+            }
+            for (const auto &p : c.second->func) {
+                this->send(WebCFace::Message::pack(p.second));
+            }
         }
     }
 }

@@ -42,7 +42,7 @@ template <MessageKind k>
 struct MessageBase {
     static constexpr MessageKind kind = k;
 };
-//! client->server 自身の名前を送る
+//! client->server->client 自身の名前を送る
 struct Name : public MessageBase<MessageKind::name> {
     std::string name;
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("n", name));

@@ -151,13 +151,13 @@ void Client::onRecv(const std::string &message) {
     case MessageKind::value: {
         auto r = std::any_cast<WebCFace::Message::Value>(obj);
         value_store.setRecv(r.member, r.name, r.data);
-        value_change_event.dispatch(member(r.member).value(r.name));
+        value_change_event.dispatch(Value{this, r.member, r.name});
         break;
     }
     case MessageKind::text: {
         auto r = std::any_cast<WebCFace::Message::Text>(obj);
         text_store.setRecv(r.member, r.name, r.data);
-        text_change_event.dispatch(member(r.member).text(r.name));
+        text_change_event.dispatch(Text{this, r.member, r.name});
         break;
     }
     case MessageKind::call: {
@@ -197,11 +197,20 @@ void Client::onRecv(const std::string &message) {
         }
         break;
     }
+    case MessageKind::name: {
+        auto r = std::any_cast<WebCFace::Message::Name>(obj);
+        value_store.setEntry(r.name);
+        text_store.setEntry(r.name);
+        func_store.setEntry(r.name);
+        member_entry_event(member(r.name));
+        break;
+    }
     case kind_entry(MessageKind::value): {
         auto r =
             std::any_cast<WebCFace::Message::Entry<WebCFace::Message::Value>>(
                 obj);
         value_store.setEntry(r.member, r.name);
+        value_entry_event(Value{this, r.member, r.name});
         break;
     }
     case kind_entry(MessageKind::text): {
@@ -209,6 +218,7 @@ void Client::onRecv(const std::string &message) {
             std::any_cast<WebCFace::Message::Entry<WebCFace::Message::Text>>(
                 obj);
         text_store.setEntry(r.member, r.name);
+        text_entry_event(Text{this, r.member, r.name});
         break;
     }
     case MessageKind::func_info: {
@@ -221,12 +231,13 @@ void Client::onRecv(const std::string &message) {
             info.args_type[j] = static_cast<ValType>(r.args_type[j]);
         }
         func_store.setRecv(r.member, r.name, info);
+        func_entry_event(Func{this, r.member, r.name});
         break;
     }
-    case MessageKind::name:
-        std::cerr << "Invalid Message Kind " << static_cast<int>(kind)
-                  << std::endl;
-        break;
+    // case :
+    //     std::cerr << "Invalid Message Kind " << static_cast<int>(kind)
+    //               << std::endl;
+    //     break;
     default:
         std::cerr << "Unknown Message Kind " << static_cast<int>(kind)
                   << std::endl;

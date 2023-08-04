@@ -30,7 +30,7 @@ template <typename T, typename V>
 class SyncDataWithEvent : public SyncData<T> {
   public:
     using EventDispatcher =
-        eventpp::EventDispatcher<SyncDataKey<T>, void(const V &)>;
+        eventpp::EventDispatcher<SyncDataKey<T>, void(V)>;
     using EventHandle = EventDispatcher::Handle;
     using EventCallback = EventDispatcher::Callback;
 
@@ -56,11 +56,11 @@ class SyncDataWithEvent : public SyncData<T> {
         return dispatcher->prependListener(*this, callback);
     }
     EventHandle insertListener(const EventCallback &callback,
-                               const EventHandle before) const {
+                               const EventHandle &before) const {
         this->try_get();
         return dispatcher->insertListener(*this, callback, before);
     }
-    bool removeListener(const EventHandle handle) const {
+    bool removeListener(const EventHandle &handle) const {
         return dispatcher->removeListener(*this, handle);
     }
     bool hasAnyListener() const { return dispatcher->hasAnyListener(*this); }
