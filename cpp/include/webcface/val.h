@@ -134,11 +134,6 @@ void argToTuple(const std::vector<ValAdaptor> &args, T &tuple) {
     constexpr int tuple_size = std::tuple_size<T>::value;
     if constexpr (n < tuple_size) {
         using Type = typename std::tuple_element<n, T>::type;
-        if (args.size() <= n) {
-            throw std::invalid_argument(
-                "requires " + std::to_string(tuple_size) + " arguments, got " +
-                std::to_string(args.size()));
-        }
         std::get<n>(tuple) = static_cast<Type>(args.at(n));
         argToTuple<n + 1>(args, tuple);
     }

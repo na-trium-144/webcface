@@ -44,19 +44,27 @@ ValAdaptor Func::run(const std::vector<ValAdaptor> &args_vec) const {
         if (func_info) {
             return func_info->func_impl(args_vec);
         } else {
-            throw FuncNotFound(name_);
+            throw FuncNotFound(member_, name_);
         }
     } else {
-        return this->runAsync(args_vec).result.get();
+        // todo: ここを参照にする(auto &async_res にする)とセグフォする なぜ
+        auto async_res = this->runAsync(args_vec);
+        if (async_res.started.get() == false) {
+            throw FuncNotFound(member_, name_);
+        }
+        if (async_res.error.get() != "") {
+            throw std::runtime_error(async_res.error.get());
+        }
+        return async_res.result.get();
     }
 }
 AsyncFuncResult &Func::runAsync(const std::vector<ValAdaptor> &args_vec) const {
     auto &r = cli->func_result_store.addResult("", member_, name_);
     if (member_ == "") {
-        std::thread([this, args_vec, &r] {
+        std::thread([cli = this->cli, name_ = this->name_, args_vec, &r] {
             try {
+                auto ret = cli->self().func(name_).run(args_vec);
                 r.started_->set_value(true);
-                auto ret = this->run(args_vec);
                 r.error_->set_value("");
                 r.result_->set_value(ret);
             } catch (const FuncNotFound &e) {

@@ -15,8 +15,11 @@
 namespace WebCFace {
 
 struct FuncNotFound : public std::runtime_error {
-    explicit FuncNotFound(const std::string &func_name)
-        : std::runtime_error("Func(\"" + func_name + "\") is not set") {}
+    explicit FuncNotFound(const std::string &member,
+                          const std::string &func_name)
+        : std::runtime_error(
+              (member == "" ? "self()" : "member(\"" + member + "\")") +
+              ".func(\"" + func_name + "\") is not set") {}
 };
 
 using FuncType = std::function<ValAdaptor(const std::vector<ValAdaptor> &)>;
@@ -34,6 +37,11 @@ struct FuncInfo {
         : return_type(valTypeOf<Ret>()), args_type({valTypeOf<Args>()...}),
           func_impl([func](const std::vector<ValAdaptor> &args_vec) {
               std::tuple<Args...> args_tuple;
+              if (args_vec.size() != sizeof...(Args)) {
+                  throw std::invalid_argument(
+                      "requires " + std::to_string(sizeof...(Args)) +
+                      " arguments, got " + std::to_string(args_vec.size()));
+              }
               argToTuple(args_vec, args_tuple);
               if constexpr (std::is_void_v<Ret>) {
                   std::apply(func, args_tuple);
