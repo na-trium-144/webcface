@@ -20,7 +20,8 @@ enum class MessageKind {
     // 150〜: other
     name = 150,
     call = 151,
-    call_response = 152,
+    call_response = 155,
+    call_result = 152,
     // entry = 153,
     func_info = 154,
 };
@@ -57,17 +58,22 @@ struct Call : public MessageBase<MessageKind::call> {
                        MSGPACK_NVP("r", receiver), MSGPACK_NVP("n", name),
                        MSGPACK_NVP("a", args));
 };
-//! client(receiver)->server->client(caller) 関数の戻り値
-//! todo: 実行開始の報告を別にする
+//! client(receiver)->server->client(caller) 関数の実行を開始したかどうか
 struct CallResponse : public MessageBase<MessageKind::call_response> {
     int caller_id;
     std::string caller;
-    bool found;
-    bool is_error;
-    std::string response;
+    bool started;
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", caller_id), MSGPACK_NVP("c", caller),
-                       MSGPACK_NVP("f", found), MSGPACK_NVP("e", is_error),
-                       MSGPACK_NVP("r", response));
+                       MSGPACK_NVP("s", started));
+};
+//! client(receiver)->server->client(caller) 関数の戻り値
+struct CallResult : public MessageBase<MessageKind::call_result> {
+    int caller_id;
+    std::string caller;
+    bool is_error;
+    std::string result;
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", caller_id), MSGPACK_NVP("c", caller),
+                       MSGPACK_NVP("e", is_error), MSGPACK_NVP("r", result));
 };
 //! client(member)->server->client Valueを更新
 //! client->server時はmemberは無視

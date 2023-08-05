@@ -66,16 +66,27 @@ void ClientData::onRecv(const std::string &message) {
         } else {
             // 関数存在しないときの処理
             this->send(WebCFace::Message::pack(WebCFace::Message::CallResponse{
-                {}, v.caller_id, v.caller, false, true, ""}));
+                {}, v.caller_id, v.caller, false}));
         }
         break;
     }
     case MessageKind::call_response: {
         auto v = std::any_cast<WebCFace::Message::CallResponse>(obj);
-        std::cout << this->name << ": call response [" << v.caller_id << "] '"
-                  << v.response;
+        std::cout << this->name << ": call response [" << v.caller_id << "] "
+                  << v.started << std::endl;
+        // そのままcallerに送る
+        auto c_it = store.clients_by_name.find(v.caller);
+        if (c_it != store.clients_by_name.end()) {
+            c_it->second->send(WebCFace::Message::pack(v));
+        }
+        break;
+    }
+    case MessageKind::call_result: {
+        auto v = std::any_cast<WebCFace::Message::CallResult>(obj);
+        std::cout << this->name << ": call result [" << v.caller_id << "] '"
+                  << v.result << "'";
         if (v.is_error) {
-            std::cout << "' (error)";
+            std::cout << "(error)";
         }
         std::cout << std::endl;
         // そのままcallerに送る

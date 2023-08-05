@@ -5,6 +5,7 @@
 #include <string>
 #include <future>
 #include <chrono>
+#include <iostream>
 #include <webcface/webcface.h>
 #include "../message/message.h"
 
@@ -165,35 +166,48 @@ void Client::onRecv(const std::string &message) {
         auto &async_res = self().func(r.name).runAsync(r.args);
         std::thread([this, &async_res, r] {
             bool started = async_res.started.get();
-            bool is_error = false;
-            std::string response;
-            try {
-                response = static_cast<std::string>(async_res.result.get());
-            } catch (const std::exception &e) {
-                is_error = true;
-                response = e.what();
-            }
             send(WebCFace::Message::pack(WebCFace::Message::CallResponse{
-                {}, r.caller_id, r.caller, started, is_error, response}));
+                {}, r.caller_id, r.caller, started}));
+            if (started) {
+                bool is_error = false;
+                std::string result;
+                try {
+                    result = async_res.result.get();
+                } catch (const std::exception &e) {
+                    is_error = true;
+                    result = e.what();
+                }
+                send(WebCFace::Message::pack(WebCFace::Message::CallResult{
+                    {}, r.caller_id, r.caller, is_error, result}));
+            }
         }).detach();
         break;
     }
     case MessageKind::call_response: {
         auto r = std::any_cast<WebCFace::Message::CallResponse>(obj);
         auto &res = func_result_store.getResult(r.caller_id);
-        res.started_->set_value(r.found);
-        try {
-            if (!r.found) {
+        res.started_->set_value(r.started);
+        if (!r.started) {
+            try {
                 throw FuncNotFound(res.member_, res.name_);
-            } else if (r.is_error) {
-                throw std::runtime_error(r.response);
-            } else {
-                // todo: 戻り値の型?
-                res.result_->set_value(
-                    ValAdaptor{r.is_error ? "" : r.response});
+            } catch (...) {
+                res.result_->set_exception(std::current_exception());
             }
-        } catch (...) {
-            res.result_->set_exception(std::current_exception());
+        }
+        break;
+    }
+    case MessageKind::call_result: {
+        auto r = std::any_cast<WebCFace::Message::CallResult>(obj);
+        auto &res = func_result_store.getResult(r.caller_id);
+        if (r.is_error) {
+            try {
+                throw std::runtime_error(r.result);
+            } catch (...) {
+                res.result_->set_exception(std::current_exception());
+            }
+        } else {
+            // todo: 戻り値の型?
+            res.result_->set_value(ValAdaptor{r.is_error ? "" : r.result});
         }
         break;
     }
