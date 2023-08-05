@@ -48,6 +48,6 @@ int main() {
             }
         }
         std::cout << std::endl;*/
-        c.send();
+        c.sync();
     }
 }

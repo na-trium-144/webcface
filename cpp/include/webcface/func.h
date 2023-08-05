@@ -7,11 +7,11 @@ namespace WebCFace {
 
 //! 関数1つを表すクラス
 class Func : public SyncData<FuncInfo> {
-public:
+  public:
     Func() = default;
     Func(const std::weak_ptr<ClientData> &data, const std::string &member,
-          const std::string &name)
-        : SyncData<FuncInfo>(data, member, name){}
+         const std::string &name)
+        : SyncData<FuncInfo>(data, member, name) {}
     Func(const EventKey &key) : Func(key.data, key.member, key.name) {}
 
     //! 関数からFuncInfoを構築しセットする
@@ -78,7 +78,7 @@ public:
      * setArgsで渡された引数の情報(名前など)とFuncがすでに持っている引数の情報(型など)がマージされる
      *
      * 関数のセットの後に呼ばなければならない (例えば
-     * Func(...).set(...).setArgs({...}) ) 関数をしたあと cli.send()
+     * Func(...).set(...).setArgs({...}) ) 関数をしたあと cli.sync()
      * をする前に呼ばなければならない
      * 実際にセットした関数の引数の数とargsの要素数は一致していなければならない
      */

@@ -15,46 +15,61 @@ void ClientData::send(const std::vector<char> &m) const {
     }
 }
 bool ClientData::connected() const { return con && con->connected(); }
-void ClientData::onConnect() {
-    //! 全クライアントのentryを送る
-    for (const auto &c : store.clients) {
-        if (c.second->name != this->name) {
-            this->send(WebCFace::Message::pack(
-                WebCFace::Message::Name{{}, c.second->name}));
+void ClientData::onConnect() {}
 
-            for (const auto &p : c.second->value) {
-                this->send(WebCFace::Message::pack(
-                    WebCFace::Message::Entry<WebCFace::Message::Value>{
-                        {}, c.second->name, p.first}));
-            }
-            for (const auto &p : c.second->text) {
-                this->send(WebCFace::Message::pack(
-                    WebCFace::Message::Entry<WebCFace::Message::Text>{
-                        {}, c.second->name, p.first}));
-            }
-            for (const auto &p : c.second->func) {
-                this->send(WebCFace::Message::pack(p.second));
-            }
-        }
-    }
-}
 void ClientData::onRecv(const std::string &message) {
     using MessageKind = WebCFace::Message::MessageKind;
     auto [kind, obj] = WebCFace::Message::unpack(message);
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wswitch"
     switch (kind) {
-    case MessageKind::name:
-        this->name = std::any_cast<WebCFace::Message::Name>(obj).name;
-        std::cout << this->name << ": connected" << std::endl;
-        store.clients_by_name.erase(this->name);
-        store.clients_by_name.emplace(this->name, store.getClient(con));
+    case MessageKind::sync_init: {
+        auto v = std::any_cast<WebCFace::Message::SyncInit>(obj);
+        this->name = v.member;
+        this->sync_init = true;
+        if (v.member == "") {
+            std::cout << "anonymous client connected" << std::endl;
+        } else {
+            std::cout << this->name << ": connected" << std::endl;
+            store.clients_by_name.erase(this->name);
+            store.clients_by_name.emplace(this->name, store.getClient(con));
+            // 全クライアントに新しいMemberを通知
+            for (const auto &c : store.clients) {
+                if (c.second->sync_init && c.second->name != this->name &&
+                    this->name != "") {
+                    c.second->send(WebCFace::Message::pack(v));
+                }
+            }
+        }
+        // 逆に新しいMemberに他の全Memberのentryを通知
+        for (const auto &c : store.clients) {
+            if (c.second->sync_init && c.second->name != this->name &&
+                c.second->name != "") {
+                this->send(WebCFace::Message::pack(
+                    WebCFace::Message::SyncInit{{}, c.second->name}));
+
+                for (const auto &p : c.second->value) {
+                    this->send(WebCFace::Message::pack(
+                        WebCFace::Message::Entry<WebCFace::Message::Value>{
+                            {}, c.second->name, p.first}));
+                }
+                for (const auto &p : c.second->text) {
+                    this->send(WebCFace::Message::pack(
+                        WebCFace::Message::Entry<WebCFace::Message::Text>{
+                            {}, c.second->name, p.first}));
+                }
+                for (const auto &p : c.second->func) {
+                    this->send(WebCFace::Message::pack(p.second));
+                }
+            }
+        }
         break;
+    }
     case MessageKind::call: {
         auto v = std::any_cast<WebCFace::Message::Call>(obj);
         v.caller = this->name;
-        std::cout << this->name << ": call [" << v.caller_id << "] "
-                  << v.member << ":" << v.name << " (args = ";
+        std::cout << this->name << ": call [" << v.caller_id << "] " << v.member
+                  << ":" << v.name << " (args = ";
         for (const auto &a : v.args) {
             std::cout << a << ", ";
         }
@@ -103,7 +118,7 @@ void ClientData::onRecv(const std::string &message) {
                   << ", send back to ";
         if (!this->value.count(v.name)) {
             for (const auto &c : store.clients) {
-                if (c.second->name != this->name) {
+                if (c.second->sync_init && c.second->name != this->name) {
                     c.second->send(WebCFace::Message::pack(
                         WebCFace::Message::Entry<WebCFace::Message::Value>{
                             {}, v.member, v.name}));
@@ -113,10 +128,12 @@ void ClientData::onRecv(const std::string &message) {
         this->value[v.name] = v.data;
         // このvalueをsubscribeしてるところに送り返す
         for (const auto &c : store.clients) {
-            for (const auto &s : c.second->value_subsc) {
-                if (s.first == this->name && s.second == v.name) {
-                    c.second->send(WebCFace::Message::pack(v));
-                    std::cout << c.second->name << ", ";
+            if (c.second->sync_init) {
+                for (const auto &s : c.second->value_subsc) {
+                    if (s.first == this->name && s.second == v.name) {
+                        c.second->send(WebCFace::Message::pack(v));
+                        std::cout << c.second->name << ", ";
+                    }
                 }
             }
         }
@@ -130,7 +147,7 @@ void ClientData::onRecv(const std::string &message) {
                   << ", send back to ";
         if (!this->text.count(v.name)) {
             for (const auto &c : store.clients) {
-                if (c.second->name != this->name) {
+                if (c.second->sync_init && c.second->name != this->name) {
                     c.second->send(WebCFace::Message::pack(
                         WebCFace::Message::Entry<WebCFace::Message::Text>{
                             {}, v.member, v.name}));
@@ -140,10 +157,12 @@ void ClientData::onRecv(const std::string &message) {
         this->text[v.name] = v.data;
         // このvalueをsubscribeしてるところに送り返す
         for (const auto &c : store.clients) {
-            for (const auto &s : c.second->text_subsc) {
-                if (s.first == this->name && s.second == v.name) {
-                    c.second->send(WebCFace::Message::pack(v));
-                    std::cout << c.second->name << ", ";
+            if (c.second->sync_init) {
+                for (const auto &s : c.second->text_subsc) {
+                    if (s.first == this->name && s.second == v.name) {
+                        c.second->send(WebCFace::Message::pack(v));
+                        std::cout << c.second->name << ", ";
+                    }
                 }
             }
         }
@@ -164,7 +183,7 @@ void ClientData::onRecv(const std::string &message) {
                   << std::endl;
         if (!this->func.count(v.name)) {
             for (const auto &c : store.clients) {
-                if (c.second->name != this->name) {
+                if (c.second->sync_init && c.second->name != this->name) {
                     c.second->send(WebCFace::Message::pack(v));
                 }
             }

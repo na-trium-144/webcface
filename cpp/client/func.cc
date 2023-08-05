@@ -66,7 +66,7 @@ AsyncFuncResult &Func::runAsync(const std::vector<ValAdaptor> &args_vec) const {
             }
         }).detach();
     } else {
-        // リモートの場合cli.send()を待たずに呼び出しメッセージを送る
+        // リモートの場合cli.sync()を待たずに呼び出しメッセージを送る
         data_s->func_call_queue.push(
             {r.caller_id, "", member_, name_, args_vec});
         // resultはcli.onRecv内でセットされる。

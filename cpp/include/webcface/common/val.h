@@ -61,20 +61,17 @@ class ValAdaptor {
     ValAdaptor() : value(""), type(ValType::none_) {}
 
     // cast from run()
-    explicit ValAdaptor(const std::string &value)
+    ValAdaptor(const std::string &value)
         : value(value), type(ValType::string_) {}
-    explicit ValAdaptor(const char *value)
-        : value(value), type(ValType::string_) {}
-    explicit ValAdaptor(bool value)
+    ValAdaptor(const char *value) : value(value), type(ValType::string_) {}
+    ValAdaptor(bool value)
         : value(std::to_string(value)), type(ValType::bool_) {}
     template <typename T>
         requires std::integral<T>
-    explicit ValAdaptor(T value)
-        : value(std::to_string(value)), type(ValType::int_) {}
+    ValAdaptor(T value) : value(std::to_string(value)), type(ValType::int_) {}
     template <typename T>
         requires std::floating_point<T>
-    explicit ValAdaptor(T value)
-        : value(std::to_string(value)), type(ValType::float_) {}
+    ValAdaptor(T value) : value(std::to_string(value)), type(ValType::float_) {}
 
     ValType argType() const { return type; }
 
@@ -135,7 +132,7 @@ void argToTuple(const std::vector<ValAdaptor> &args, T &tuple) {
     constexpr int tuple_size = std::tuple_size<T>::value;
     if constexpr (n < tuple_size) {
         using Type = typename std::tuple_element<n, T>::type;
-        std::get<n>(tuple) = static_cast<Type>(args.at(n));
+        std::get<n>(tuple) = static_cast<Type>(args[n]);
         argToTuple<n + 1>(args, tuple);
     }
 }

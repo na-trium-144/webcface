@@ -38,11 +38,18 @@ class Member {
     //! このmemberが公開しているfuncのリストを返す。
     std::vector<Func> funcs() const;
 
-    //! valueが追加された時のイベントリスト
+    //! valueが追加された時のイベントを設定
+    /*! このクライアントが接続する前から存在したメンバーについては
+     * 初回の sync() 後に一度に送られるので、
+     * eventの設定は初回のsync()より前に行うと良い
+     * \sa Client::membersChange()
+     */
     EventTarget<Value> valuesChange() const;
     //! textが追加された時のイベントリスト
+    //! \sa valuesChange()
     EventTarget<Text> textsChange() const;
     //! funcが追加された時のイベントリスト
+    //! \sa valuesChange()
     EventTarget<Func> funcsChange() const;
 };
 

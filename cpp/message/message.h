@@ -20,7 +20,7 @@ enum class MessageKind {
     subscribe = 100, // 100〜
     entry = 50,      // 50〜
     // 150〜: other
-    name = 150,
+    sync_init = 150,
     call = 151,
     call_response = 155,
     call_result = 152,
@@ -48,9 +48,9 @@ struct MessageBase {
     static constexpr MessageKind kind = k;
 };
 //! client->server->client 自身の名前を送る
-struct Name : public MessageBase<MessageKind::name> {
-    std::string name;
-    MSGPACK_DEFINE_MAP(MSGPACK_NVP("n", name));
+struct SyncInit : public MessageBase<MessageKind::sync_init> {
+    std::string member;
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("m", member));
 };
 //! client(caller)->server->client(receiver) 関数呼び出し
 //! client->server時はcallerは無視

@@ -45,6 +45,6 @@ int main() {
         std::cout << "return = " << static_cast<double>(f.result.get())
                   << std::endl;
 
-        c.send();
+        c.sync();
     }
 }

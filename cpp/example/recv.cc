@@ -21,6 +21,6 @@ int main() {
                          .func("func2")
                          .run(9, 7.1, false, "")
                   << std::endl;
-        c.send();
+        c.sync();
     }
 }

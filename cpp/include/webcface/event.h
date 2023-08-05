@@ -20,6 +20,7 @@ class EventTarget {
     std::function<void()> on_append = nullptr;
 
   protected:
+    //! イベントを発生させる。
     void triggerEvent() {
         if (auto data_s = data.lock()) {
             data_s->event_queue.enqueue(key);
@@ -34,6 +35,7 @@ class EventTarget {
                          std::function<void()> on_append = nullptr)
         : data(data), key(data, type, member, name), on_append(on_append) {}
 
+    //! イベントのコールバックをリストの最後に追加する。
     EventHandle appendListener(const EventCallback &callback) const {
         if (auto data_s = data.lock()) {
             if (on_append) {
@@ -43,6 +45,7 @@ class EventTarget {
         }
         return EventHandle{};
     }
+    //! イベントのコールバックをリストの最初に追加する。
     EventHandle prependListener(const EventCallback &callback) const {
         if (auto data_s = data.lock()) {
             if (on_append) {
@@ -52,6 +55,7 @@ class EventTarget {
         }
         return EventHandle{};
     }
+    //! イベントのコールバックを間に挿入する。
     EventHandle insertListener(const EventCallback &callback,
                                const EventHandle &before) const {
         if (auto data_s = data.lock()) {
@@ -62,18 +66,21 @@ class EventTarget {
         }
         return EventHandle{};
     }
+    //! コールバックを削除する。
     bool removeListener(const EventHandle &handle) const {
         if (auto data_s = data.lock()) {
             return data_s->event_queue.removeListener(key, handle);
         }
         return false;
     }
+    //! コールバックが登録されているかを調べる。
     bool hasAnyListener() const {
         if (auto data_s = data.lock()) {
             return data_s->event_queue.hasAnyListener(key);
         }
         return false;
     }
+    //! handleがこのイベントのものかを調べる。
     bool ownsHandle(const EventHandle &handle) const {
         if (auto data_s = data.lock()) {
             return data_s->event_queue.ownsHandle(key, handle);

@@ -7,7 +7,7 @@
 #include <atomic>
 
 
-namespace drogon{
+namespace drogon {
 class WebSocketClient;
 }
 
@@ -31,9 +31,11 @@ class Client {
     //! サーバーのポート
     int port;
 
-    
+
     Member self_;
     std::string name_;
+    //! 初回のsync()で名前を送信するがそれが完了したかどうか
+    bool sync_init = false;
 
     //! イベントを処理するスレッド
     std::thread event_thread;
@@ -63,10 +65,11 @@ class Client {
 
     //! データをまとめて送信する。
     /*! value,textにセットしたデータをすべて送る。
-     * 他クライアントのvalue,textを参照する場合、そのリクエストを送るのもsend()で行う。
+     * 他クライアントのvalue,textを参照する場合、そのリクエストを送るのもsync()で行う。
+     * また他memberの情報を取得できるのは初回のsync()の後のみ。
      * clientを使用する時は必ずsendを適当なタイミングで繰り返し呼ぶこと。
      */
-    void send();
+    void sync();
 
     //! 自分自身を表すMember
     const Member &self() const { return self_; }
@@ -86,7 +89,11 @@ class Client {
         }
         return ret;
     }
-    //! Memberが追加された時のイベントリスト
+    //! Memberが追加された時のイベントを設定
+    /*! このクライアントが接続する前から存在したメンバーについては
+     * 初回の sync() 後に一度に送られるので、
+     * eventの設定は初回のsync()より前に行うと良い
+     */
     EventTarget<Member> membersChange() {
         return EventTarget<Member>{data, EventType::member_entry};
     }

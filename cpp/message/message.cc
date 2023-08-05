@@ -49,7 +49,7 @@ std::pair<MessageKind, std::any> unpack(const std::string &message) {
         obj_u = obj.via.array.ptr[1].as<Subscribe<type>>();                    \
         break;
 
-            MSG_PARSE(name, Name)
+            MSG_PARSE(sync_init, SyncInit)
             MSG_PARSE(call, Call)
             MSG_PARSE(call_response, CallResponse)
             MSG_PARSE(call_result, CallResult)

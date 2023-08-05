@@ -10,7 +10,7 @@
 namespace WebCFace {
 //! WebCFace::Commonはserverとclientで共通のheader-onlyなクラス
 inline namespace Common {
-    
+
 using FuncType = std::function<ValAdaptor(const std::vector<ValAdaptor> &)>;
 
 //! 引数の情報を表す。
@@ -139,7 +139,8 @@ struct FuncInfo {
     explicit FuncInfo(std::function<Ret(Args...)> func)
         : return_type(valTypeOf<Ret>()), args({Arg{valTypeOf<Args>()}...}),
           func_impl([func](const std::vector<ValAdaptor> &args_vec) {
-              std::tuple<Args...> args_tuple;
+              std::tuple<std::remove_const_t<std::remove_reference_t<Args>>...>
+                  args_tuple;
               if (args_vec.size() != sizeof...(Args)) {
                   throw std::invalid_argument(
                       "requires " + std::to_string(sizeof...(Args)) +

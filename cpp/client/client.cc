@@ -91,7 +91,6 @@ void Client::reconnect() {
                                      const WebSocketClientPtr &ws) mutable {
             if (r == ReqResult::Ok) {
                 std::cout << "connected " << std::endl;
-                send(Message::pack(Message::Name{{}, name_}));
             } else {
                 std::cout << "error " << r << std::endl;
                 app().getLoop()->runAfter(1, [this] { reconnect(); });
@@ -129,8 +128,13 @@ void Client::send(const std::vector<char> &m) {
                                   drogon::WebSocketMessageType::Binary);
     }
 }
-void Client::send() {
+void Client::sync() {
     if (connected()) {
+        if (!sync_init) {
+            send(Message::pack(Message::SyncInit{{}, name_}));
+            sync_init = true;
+        }
+
         auto value_send = data->value_store.transferSend();
         for (const auto &v : value_send) {
             send(Message::pack(Message::Value{{}, "", v.first, v.second}));
@@ -229,13 +233,13 @@ void Client::onRecv(const std::string &message) {
         }
         break;
     }
-    case MessageKind::name: {
-        auto r = std::any_cast<WebCFace::Message::Name>(obj);
-        data->value_store.setEntry(r.name);
-        data->text_store.setEntry(r.name);
-        data->func_store.setEntry(r.name);
+    case MessageKind::sync_init: {
+        auto r = std::any_cast<WebCFace::Message::SyncInit>(obj);
+        data->value_store.setEntry(r.member);
+        data->text_store.setEntry(r.member);
+        data->func_store.setEntry(r.member);
         data->event_queue.enqueue(
-            EventKey{data, EventType::member_entry, r.name});
+            EventKey{data, EventType::member_entry, r.member});
         break;
     }
     case kind_entry(MessageKind::value): {
