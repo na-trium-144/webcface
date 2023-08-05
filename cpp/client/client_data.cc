@@ -90,4 +90,19 @@ template class ClientData::SyncDataStore<double>;
 template class ClientData::SyncDataStore<std::string>;
 template class ClientData::SyncDataStore<FuncInfo>;
 
+
+AsyncFuncResult &ClientData::FuncResultStore::addResult(
+    const std::weak_ptr<ClientData> &data, const std::string &caller,
+    const std::string &member, const std::string &name) {
+    std::lock_guard lock(mtx);
+    int caller_id = results.size();
+    results.push_back(AsyncFuncResult{data, caller_id, caller, member, name});
+    return results.back();
+}
+AsyncFuncResult &ClientData::FuncResultStore::getResult(int caller_id) {
+    std::lock_guard lock(mtx);
+    return results.at(caller_id);
+}
+
+
 } // namespace WebCFace

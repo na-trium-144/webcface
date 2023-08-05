@@ -86,7 +86,8 @@ struct ClientData {
 
       public:
         //! 新しいcaller_idを振って新しいAsyncFuncResultを生成しそれを返す
-        AsyncFuncResult &addResult(const std::string &caller,
+        AsyncFuncResult &addResult(const std::weak_ptr<ClientData> &data,
+                                   const std::string &caller,
                                    const std::string &member,
                                    const std::string &name);
         //! caller_idに対応するresultを返す

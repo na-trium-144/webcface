@@ -24,28 +24,37 @@ EventTarget<Func> Member::funcsChange() const {
 }
 
 std::vector<Value> Member::values() const {
-    auto keys = data->value_store.getEntry(this->name());
-    std::vector<Value> ret(keys.size());
-    for (std::size_t i = 0; i < keys.size(); i++) {
-        ret[i] = value(keys[i]);
+    if (auto data_s = data.lock()) {
+        auto keys = data_s->value_store.getEntry(this->name());
+        std::vector<Value> ret(keys.size());
+        for (std::size_t i = 0; i < keys.size(); i++) {
+            ret[i] = value(keys[i]);
+        }
+        return ret;
     }
-    return ret;
+    return std::vector<Value>{};
 }
 std::vector<Text> Member::texts() const {
-    auto keys = data->text_store.getEntry(this->name());
-    std::vector<Text> ret(keys.size());
-    for (std::size_t i = 0; i < keys.size(); i++) {
-        ret[i] = text(keys[i]);
+    if (auto data_s = data.lock()) {
+        auto keys = data_s->text_store.getEntry(this->name());
+        std::vector<Text> ret(keys.size());
+        for (std::size_t i = 0; i < keys.size(); i++) {
+            ret[i] = text(keys[i]);
+        }
+        return ret;
     }
-    return ret;
+    return std::vector<Text>{};
 }
 std::vector<Func> Member::funcs() const {
-    auto keys = data->func_store.getEntry(this->name());
-    std::vector<Func> ret(keys.size());
-    for (std::size_t i = 0; i < keys.size(); i++) {
-        ret[i] = func(keys[i]);
+    if (auto data_s = data.lock()) {
+        auto keys = data_s->func_store.getEntry(this->name());
+        std::vector<Func> ret(keys.size());
+        for (std::size_t i = 0; i < keys.size(); i++) {
+            ret[i] = func(keys[i]);
+        }
+        return ret;
     }
-    return ret;
+    return std::vector<Func>{};
 }
 
 } // namespace WebCFace

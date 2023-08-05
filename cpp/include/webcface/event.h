@@ -15,58 +15,70 @@ class EventTarget {
     using EventCallback = std::function<void(V)>;
 
   private:
-    std::shared_ptr<ClientData> data;
+    std::weak_ptr<ClientData> data;
     EventKey key;
     std::function<void()> on_append = nullptr;
 
   protected:
-    void triggerEvent() { data->event_queue.enqueue(key, data); }
-    //! callbackの引数にClientDataを追加する
-    //! listenerはClientDataに保存されるので循環参照を防ぐため含まない
-    //! callbackの中身がClientData含んだらどうする?
-    auto wrapCallback(const EventCallback &callback) {
-        return [callback](const EventKey &key,
-                          const std::shared_ptr<ClientData> &data) {
-            callback(V{key, data});
-        };
+    void triggerEvent() {
+        if (auto data_s = data.lock()) {
+            data_s->event_queue.enqueue(key);
+        }
     }
 
   public:
     EventTarget() = default;
-    explicit EventTarget(const std::shared_ptr<ClientData> &data,
-                         EventType type, const std::string &member = "",
+    explicit EventTarget(const std::weak_ptr<ClientData> &data, EventType type,
+                         const std::string &member = "",
                          const std::string &name = "",
                          std::function<void()> on_append = nullptr)
-        : data(data), key(type, member, name), on_append(on_append) {}
+        : data(data), key(data, type, member, name), on_append(on_append) {}
 
     EventHandle appendListener(const EventCallback &callback) const {
-        if (on_append) {
-            on_append();
+        if (auto data_s = data.lock()) {
+            if (on_append) {
+                on_append();
+            }
+            return data_s->event_queue.appendListener(key, callback);
         }
-        return data->event_queue.appendListener(key, wrapCallback(callback));
+        return EventHandle{};
     }
     EventHandle prependListener(const EventCallback &callback) const {
-        if (on_append) {
-            on_append();
+        if (auto data_s = data.lock()) {
+            if (on_append) {
+                on_append();
+            }
+            return data_s->event_queue.prependListener(key, callback);
         }
-        return data->event_queue.prependListener(key, wrapCallback(callback));
+        return EventHandle{};
     }
     EventHandle insertListener(const EventCallback &callback,
                                const EventHandle &before) const {
-        if (on_append) {
-            on_append();
+        if (auto data_s = data.lock()) {
+            if (on_append) {
+                on_append();
+            }
+            return data_s->event_queue.insertListener(key, callback, before);
         }
-        return data->event_queue.insertListener(key, wrapCallback(callback),
-                                                before);
+        return EventHandle{};
     }
     bool removeListener(const EventHandle &handle) const {
-        return data->event_queue.removeListener(key, handle);
+        if (auto data_s = data.lock()) {
+            return data_s->event_queue.removeListener(key, handle);
+        }
+        return false;
     }
     bool hasAnyListener() const {
-        return data->event_queue.hasAnyListener(key);
+        if (auto data_s = data.lock()) {
+            return data_s->event_queue.hasAnyListener(key);
+        }
+        return false;
     }
     bool ownsHandle(const EventHandle &handle) const {
-        return data->event_queue.ownsHandle(key, handle);
+        if (auto data_s = data.lock()) {
+            return data_s->event_queue.ownsHandle(key, handle);
+        }
+        return false;
     }
 };
 } // namespace WebCFace

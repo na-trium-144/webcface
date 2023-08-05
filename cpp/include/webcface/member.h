@@ -13,14 +13,14 @@ class ClientData;
 
 //! 他のクライアントを参照することを表すクラス
 class Member {
-    std::shared_ptr<ClientData> data;
+    std::weak_ptr<ClientData> data;
     std::string name_;
 
   public:
     Member() = default;
-    Member(const std::shared_ptr<ClientData> &data, const std::string &name);
-    Member(const EventKey &key, const std::shared_ptr<ClientData> &data)
-        : Member(data, key.member) {}
+    Member(const std::weak_ptr<ClientData> &data, const std::string &name)
+        : data(data), name_(name) {}
+    Member(const EventKey &key) : Member(key.data, key.member) {}
 
     std::string name() const { return name_; }
 

@@ -9,10 +9,10 @@ namespace WebCFace {
 class Func : public SyncData<FuncInfo> {
 public:
     Func() = default;
-    Func(const std::shared_ptr<ClientData> &data, const std::string &member,
+    Func(const std::weak_ptr<ClientData> &data, const std::string &member,
           const std::string &name)
         : SyncData<FuncInfo>(data, member, name){}
-    Func(const EventKey &key, const std::shared_ptr<ClientData> &data) : Func(data, key.member, key.name) {}
+    Func(const EventKey &key) : Func(key.data, key.member, key.name) {}
 
     //! 関数からFuncInfoを構築しセットする
     /*! Tは任意の関数
@@ -22,7 +22,7 @@ public:
     template <typename T>
     auto &set(const T &func) {
         assert(member_ == "" && "Cannot set data to member other than self");
-        data->func_store.setSend(name_, FuncInfo{std::function{func}});
+        dataLock()->func_store.setSend(name_, FuncInfo{std::function{func}});
         return *this;
     }
     //! 関数からFuncInfoを構築しセットする
@@ -33,7 +33,7 @@ public:
 
     //! 値を取得する
     std::optional<FuncInfo> tryGet() const override {
-        return data->func_store.getRecv(member_, name_);
+        return dataLock()->func_store.getRecv(member_, name_);
     }
 
     //! 関数を実行する (同期)

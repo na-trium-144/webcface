@@ -169,14 +169,14 @@ void Client::onRecv(const std::string &message) {
         auto r = std::any_cast<WebCFace::Message::Value>(obj);
         data->value_store.setRecv(r.member, r.name, r.data);
         data->event_queue.enqueue(
-            EventKey{EventType::value_change, r.member, r.name}, data);
+            EventKey{data, EventType::value_change, r.member, r.name});
         break;
     }
     case MessageKind::text: {
         auto r = std::any_cast<WebCFace::Message::Text>(obj);
         data->text_store.setRecv(r.member, r.name, r.data);
         data->event_queue.enqueue(
-            EventKey{EventType::text_change, r.member, r.name}, data);
+            EventKey{data, EventType::text_change, r.member, r.name});
         break;
     }
     case MessageKind::call: {
@@ -234,7 +234,8 @@ void Client::onRecv(const std::string &message) {
         data->value_store.setEntry(r.name);
         data->text_store.setEntry(r.name);
         data->func_store.setEntry(r.name);
-        data->event_queue.enqueue(EventKey{EventType::member_entry, r.name}, data);
+        data->event_queue.enqueue(
+            EventKey{data, EventType::member_entry, r.name});
         break;
     }
     case kind_entry(MessageKind::value): {
@@ -243,7 +244,7 @@ void Client::onRecv(const std::string &message) {
                 obj);
         data->value_store.setEntry(r.member, r.name);
         data->event_queue.enqueue(
-            EventKey{EventType::value_entry, r.member, r.name}, data);
+            EventKey{data, EventType::value_entry, r.member, r.name});
         break;
     }
     case kind_entry(MessageKind::text): {
@@ -252,7 +253,7 @@ void Client::onRecv(const std::string &message) {
                 obj);
         data->text_store.setEntry(r.member, r.name);
         data->event_queue.enqueue(
-            EventKey{EventType::text_entry, r.member, r.name}, data);
+            EventKey{data, EventType::text_entry, r.member, r.name});
         break;
     }
     case MessageKind::func_info: {
@@ -260,7 +261,7 @@ void Client::onRecv(const std::string &message) {
         data->func_store.setEntry(r.member, r.name);
         data->func_store.setRecv(r.member, r.name, static_cast<FuncInfo>(r));
         data->event_queue.enqueue(
-            EventKey{EventType::func_entry, r.member, r.name}, data);
+            EventKey{data, EventType::func_entry, r.member, r.name});
         break;
     }
     // case :

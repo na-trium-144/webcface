@@ -44,7 +44,7 @@ class AsyncFuncResult {
     friend class Func;
     friend class Client;
 
-    AsyncFuncResult(const std::shared_ptr<ClientData> &data, int caller_id,
+    AsyncFuncResult(const std::weak_ptr<ClientData> &data, int caller_id,
                     const std::string &caller, const std::string &member,
                     const std::string &name)
         : caller_id(caller_id), data(data), caller(caller), member_(member),
@@ -64,7 +64,7 @@ class AsyncFuncResult {
     //! 関数の名前
     auto name() const { return name_; }
     //! 関数本体のあるmember
-    Member member() const { return Member{data.lock(), member_}; }
+    Member member() const { return Member{data, member_}; }
 };
 auto &operator<<(std::basic_ostream<char> &os, const AsyncFuncResult &data);
 

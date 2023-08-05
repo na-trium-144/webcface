@@ -4,6 +4,9 @@
 #include <eventpp/eventqueue.h>
 
 namespace WebCFace {
+
+class ClientData;
+
 enum class EventType {
     none,
     member_entry,
@@ -16,13 +19,14 @@ enum class EventType {
 //! Eventの種類を表すキー、かつコールバックに返す引数
 //! Eventの各種情報と相互キャストできるようにすること。
 struct EventKey {
+    std::weak_ptr<ClientData> data;
     EventType type = EventType::none;
     std::string member = "", name = "";
 
     EventKey() = default;
-    EventKey(EventType type, const std::string &member = "",
-             const std::string &name = "")
-        : type(type), member(member), name(name) {}
+    EventKey(const std::weak_ptr<ClientData> &data, EventType type,
+             const std::string &member = "", const std::string &name = "")
+        : data(data), type(type), member(member), name(name) {}
 
     bool operator==(const EventKey &rhs) const {
         if (type != rhs.type) {
@@ -70,14 +74,6 @@ struct EventKey {
     }
 };
 
-class ClientData;
-struct EventPolicies {
-    static EventKey getEvent(const EventKey &key, const std::shared_ptr<ClientData> &) {
-        return key;
-    }
-};
-using EventQueue = eventpp::EventQueue<
-    EventKey, void(const EventKey &, const std::shared_ptr<ClientData> &),
-    EventPolicies>;
+using EventQueue = eventpp::EventQueue<EventKey, void(const EventKey &)>;
 
 } // namespace WebCFace
