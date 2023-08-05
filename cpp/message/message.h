@@ -7,6 +7,8 @@
 #include <webcface/common/func.h>
 #include "val_adaptor.h"
 
+MSGPACK_ADD_ENUM(WebCFace::Common::ValType);
+
 namespace WebCFace::Message {
 // 新しいメッセージの定義は
 // kind追記→struct作成→message.ccに追記→s_client_data.ccに追記→client.ccに追記
@@ -39,7 +41,6 @@ inline constexpr MessageKind kind_entry(MessageKind k) {
 }
 
 namespace Common = WebCFace::Common;
-MSGPACK_ADD_ENUM(Common::ValType);
 
 //! 型からkindを取得するためだけのベースクラス
 template <MessageKind k>
@@ -100,6 +101,7 @@ struct FuncInfo : public MessageBase<MessageKind::func_info> {
     std::string member, name;
     Common::ValType return_type;
     struct Arg : public Common::Arg {
+        Arg() = default;
         Arg(const Common::Arg &a) : Common::Arg(a) {}
         MSGPACK_DEFINE_MAP(MSGPACK_NVP("n", name_), MSGPACK_NVP("t", type_),
                            MSGPACK_NVP("i", init_), MSGPACK_NVP("m", min_),

@@ -12,11 +12,11 @@
 namespace WebCFace {
 
 Client::Client(const std::string &name, const std::string &host, int port)
-    : data(std::make_shared<ClientData>()), self_(this, ""), name_(name),
+    : data(std::make_shared<ClientData>()), self_(data, ""), name_(name),
       host(host), port(port), event_thread([this] {
           while (!closing.load()) {
-              event_queue.waitFor(std::chrono::milliseconds(10));
-              event_queue.process();
+              data->event_queue.waitFor(std::chrono::milliseconds(10));
+              data->event_queue.process();
           }
       }),
       func_call_thread([this] {
@@ -24,7 +24,7 @@ Client::Client(const std::string &name, const std::string &host, int port)
               auto call =
                   data->func_call_queue.pop(std::chrono::milliseconds(10));
               if (call) {
-                  this->send(Message::pack(Message::Call{call}));
+                  this->send(Message::pack(Message::Call{*call}));
               }
           }
       }) {
@@ -131,29 +131,29 @@ void Client::send(const std::vector<char> &m) {
 }
 void Client::send() {
     if (connected()) {
-        auto value_send = value_store.transferSend();
+        auto value_send = data->value_store.transferSend();
         for (const auto &v : value_send) {
             send(Message::pack(Message::Value{{}, "", v.first, v.second}));
         }
-        auto value_subsc = value_store.transferReq();
+        auto value_subsc = data->value_store.transferReq();
         for (const auto &v : value_subsc) {
             for (const auto &v2 : v.second) {
                 send(Message::pack(
                     Message::Subscribe<Message::Value>{{}, v.first, v2.first}));
             }
         }
-        auto text_send = text_store.transferSend();
+        auto text_send = data->text_store.transferSend();
         for (const auto &v : text_send) {
             send(Message::pack(Message::Text{{}, "", v.first, v.second}));
         }
-        auto text_subsc = text_store.transferReq();
+        auto text_subsc = data->text_store.transferReq();
         for (const auto &v : text_subsc) {
             for (const auto &v2 : v.second) {
                 send(Message::pack(
                     Message::Subscribe<Message::Text>{{}, v.first, v2.first}));
             }
         }
-        auto func_send = func_store.transferSend();
+        auto func_send = data->func_store.transferSend();
         for (const auto &v : func_send) {
             send(Message::pack(Message::FuncInfo{"", v.first, v.second}));
         }
@@ -167,16 +167,16 @@ void Client::onRecv(const std::string &message) {
     switch (kind) {
     case MessageKind::value: {
         auto r = std::any_cast<WebCFace::Message::Value>(obj);
-        value_store.setRecv(r.member, r.name, r.data);
-        event_queue.enqueue(
-            EventKey{EventType::value_change, this, r.member, r.name});
+        data->value_store.setRecv(r.member, r.name, r.data);
+        data->event_queue.enqueue(
+            EventKey{EventType::value_change, r.member, r.name}, data);
         break;
     }
     case MessageKind::text: {
         auto r = std::any_cast<WebCFace::Message::Text>(obj);
-        text_store.setRecv(r.member, r.name, r.data);
-        event_queue.enqueue(
-            EventKey{EventType::text_change, this, r.member, r.name});
+        data->text_store.setRecv(r.member, r.name, r.data);
+        data->event_queue.enqueue(
+            EventKey{EventType::text_change, r.member, r.name}, data);
         break;
     }
     case MessageKind::call: {
@@ -203,7 +203,7 @@ void Client::onRecv(const std::string &message) {
     }
     case MessageKind::call_response: {
         auto r = std::any_cast<WebCFace::Message::CallResponse>(obj);
-        auto &res = func_result_store.getResult(r.caller_id);
+        auto &res = data->func_result_store.getResult(r.caller_id);
         res.started_->set_value(r.started);
         if (!r.started) {
             try {
@@ -216,7 +216,7 @@ void Client::onRecv(const std::string &message) {
     }
     case MessageKind::call_result: {
         auto r = std::any_cast<WebCFace::Message::CallResult>(obj);
-        auto &res = func_result_store.getResult(r.caller_id);
+        auto &res = data->func_result_store.getResult(r.caller_id);
         if (r.is_error) {
             try {
                 throw std::runtime_error(r.result);
@@ -231,36 +231,36 @@ void Client::onRecv(const std::string &message) {
     }
     case MessageKind::name: {
         auto r = std::any_cast<WebCFace::Message::Name>(obj);
-        value_store.setEntry(r.name);
-        text_store.setEntry(r.name);
-        func_store.setEntry(r.name);
-        event_queue.enqueue(EventKey{EventType::member_entry, this, r.name});
+        data->value_store.setEntry(r.name);
+        data->text_store.setEntry(r.name);
+        data->func_store.setEntry(r.name);
+        data->event_queue.enqueue(EventKey{EventType::member_entry, r.name}, data);
         break;
     }
     case kind_entry(MessageKind::value): {
         auto r =
             std::any_cast<WebCFace::Message::Entry<WebCFace::Message::Value>>(
                 obj);
-        value_store.setEntry(r.member, r.name);
-        event_queue.enqueue(
-            EventKey{EventType::value_entry, this, r.member, r.name});
+        data->value_store.setEntry(r.member, r.name);
+        data->event_queue.enqueue(
+            EventKey{EventType::value_entry, r.member, r.name}, data);
         break;
     }
     case kind_entry(MessageKind::text): {
         auto r =
             std::any_cast<WebCFace::Message::Entry<WebCFace::Message::Text>>(
                 obj);
-        text_store.setEntry(r.member, r.name);
-        event_queue.enqueue(
-            EventKey{EventType::text_entry, this, r.member, r.name});
+        data->text_store.setEntry(r.member, r.name);
+        data->event_queue.enqueue(
+            EventKey{EventType::text_entry, r.member, r.name}, data);
         break;
     }
     case MessageKind::func_info: {
         auto r = std::any_cast<WebCFace::Message::FuncInfo>(obj);
-        func_store.setEntry(r.member, r.name);
-        func_store.setRecv(r.member, r.name, static_cast<FuncInfo>(r));
-        event_queue.enqueue(
-            EventKey{EventType::func_entry, this, r.member, r.name});
+        data->func_store.setEntry(r.member, r.name);
+        data->func_store.setRecv(r.member, r.name, static_cast<FuncInfo>(r));
+        data->event_queue.enqueue(
+            EventKey{EventType::func_entry, r.member, r.name}, data);
         break;
     }
     // case :

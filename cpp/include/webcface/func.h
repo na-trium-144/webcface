@@ -2,12 +2,6 @@
 #include <vector>
 #include <functional>
 #include <string>
-#include "val.h"
-#include "data.h"
-#include "func_info.h"
-#include "func_result.h"
-#include "event.h"
-#include "decl.h"
 
 namespace WebCFace {
 
@@ -18,7 +12,7 @@ public:
     Func(const std::shared_ptr<ClientData> &data, const std::string &member,
           const std::string &name)
         : SyncData<FuncInfo>(data, member, name){}
-    Func(const EventKey &key) : Func(key.data, key.member, key.name) {}
+    Func(const EventKey &key, const std::shared_ptr<ClientData> &data) : Func(data, key.member, key.name) {}
 
     //! 関数からFuncInfoを構築しセットする
     /*! Tは任意の関数

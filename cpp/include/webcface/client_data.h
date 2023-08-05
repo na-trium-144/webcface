@@ -8,8 +8,6 @@
 #include <chrono>
 #include <optional>
 #include <string>
-#include "common/func.h"
-#include "func_result.h"
 
 namespace WebCFace {
 struct ClientData {
@@ -112,9 +110,10 @@ struct ClientData {
         template <typename Dur>
         std::optional<T> pop(const Dur &d) {
             std::unique_lock lock(mtx);
-            if (cond.wait_for(d, [this] { return !que.empty(); }) ==
-                std::cv_status::no_timeout) {
-                return que.pop();
+            if (cond.wait_for(lock, d, [this] { return !que.empty(); })) {
+                auto c = que.front();
+                que.pop();
+                return c;
             }
             return std::nullopt;
         }
@@ -127,8 +126,7 @@ struct ClientData {
     FuncResultStore func_result_store;
 
     //! 各種イベントを管理するキュー
-    // こいつ内部にdata持ってない?
-    eventpp::EventQueue<EventKey, void(const EventKey &)> event_queue;
+    EventQueue event_queue;
 
     Queue<FuncCall> func_call_queue;
 };

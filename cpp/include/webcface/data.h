@@ -3,16 +3,10 @@
 #include <istream>
 #include <ostream>
 #include <optional>
-#include "data_store.h"
-#include "event.h"
-#include "decl.h"
 
 namespace WebCFace {
 
 //! データの参照先を表すクラス。
-/*! SyncDataとSyncDataStoreの関数定義はヘッダーに書いてないが、
- * ソース(client/data.cc)に書いて、特定の型についてインスタンス化する
- */
 template <typename T>
 class SyncData {
   protected:
@@ -34,7 +28,7 @@ class SyncData {
     //! 値を取得する
     //! todo: 引数
     T get() const {
-        auto v = try_get();
+        auto v = tryGet();
         if (v) {
             return *v;
         } else {
@@ -69,24 +63,25 @@ class Value : public SyncData<double>, public EventTarget<Value> {
     Value(const std::shared_ptr<ClientData> &data, const std::string &member,
           const std::string &name)
         : SyncData<double>(data, member, name),
-          EventTarget<Value>(data, member, name, [this] { this->try_get(); });
-    Value(const EventKey &key) : Value(key.data, key.member, key.name) {}
+          EventTarget<Value>(data, EventType::value_change, member, name, [this] { this->tryGet(); }){}
+    Value(const EventKey &key, const std::shared_ptr<ClientData> &data)
+        : Value(data, key.member, key.name) {}
 
     //! 値をセットし、EventTargetを発動するためoverload
-    auto &set(double data) {
+    auto &set(double v) {
         assert(member_ == "" && "Cannot set data to member other than self");
-        data->value_store.setSend(name_, data);
+        this->SyncData<double>::data->value_store.setSend(name_, v);
         this->triggerEvent();
         return *this;
     }
     //! 値を取得する
     std::optional<double> tryGet() const override {
-        return data->value_store.getRecv(member_, name_);
+        return this->SyncData<double>::data->value_store.getRecv(member_, name_);
     }
 
     //! 値をセットする
-    auto &operator=(double data) {
-        this->set(data);
+    auto &operator=(double v) {
+        this->set(v);
         return *this;
     }
 
@@ -159,25 +154,26 @@ class Text : public SyncData<std::string>, public EventTarget<Text> {
   public:
     Text() = default;
     Text(const std::shared_ptr<ClientData> &data, const std::string &member,
-          const std::string &name)
-        : SyncData<double>(data, member, name),
-          EventTarget<Value>(data, member, name, [this] { this->try_get(); });
-    Text(const EventKey &key) : Text(key.data, key.member, key.name) {}
+         const std::string &name)
+        : SyncData<std::string>(data, member, name),
+          EventTarget<Text>(data, EventType::text_change, member, name, [this] { this->tryGet(); }){}
+    Text(const EventKey &key, const std::shared_ptr<ClientData> &data)
+        : Text(data, key.member, key.name) {}
 
     //! 値をセットし、EventTargetを発動するためoverload
-    auto &set(const std::string &data) {
+    auto &set(const std::string &v) {
         assert(member_ == "" && "Cannot set data to member other than self");
-        data->text_store.setSend(name_, data);
+        this->SyncData<std::string>::data->text_store.setSend(name_, v);
         this->triggerEvent();
         return *this;
     }
     //! 値を取得する
     std::optional<std::string> tryGet() const override {
-        return data->text_store.getRecv(member_, name_);
+        return this->SyncData<std::string>::data->text_store.getRecv(member_, name_);
     }
     //! 値をセットする
-    auto &operator=(const std::string &data) {
-        this->set(data);
+    auto &operator=(const std::string &v) {
+        this->set(v);
         return *this;
     }
 

@@ -54,13 +54,13 @@ void ClientData::onRecv(const std::string &message) {
         auto v = std::any_cast<WebCFace::Message::Call>(obj);
         v.caller = this->name;
         std::cout << this->name << ": call [" << v.caller_id << "] "
-                  << v.receiver << ":" << v.name << " (args = ";
+                  << v.member << ":" << v.name << " (args = ";
         for (const auto &a : v.args) {
             std::cout << a << ", ";
         }
         std::cout << ")" << std::endl;
         // そのままターゲットのクライアントに送る
-        auto c_it = store.clients_by_name.find(v.receiver);
+        auto c_it = store.clients_by_name.find(v.member);
         if (c_it != store.clients_by_name.end()) {
             c_it->second->send(WebCFace::Message::pack(v));
         } else {

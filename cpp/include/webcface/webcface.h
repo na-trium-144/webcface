@@ -1,11 +1,12 @@
 #pragma once
 #include "common/val.h"
 #include "common/func.h"
-#include "event.h"
-#include "data_store.h"
+#include "event_key.h"
 #include "member.h"
-#include "data.h"
 #include "func_result.h"
-#include "func_info.h"
+#include "client_data.h"
+// ClientDataに対して具体的になにかする場合はこれの下
+#include "event.h"
+#include "data.h"
 #include "func.h"
 #include "client.h"

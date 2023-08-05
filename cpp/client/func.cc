@@ -24,9 +24,7 @@ auto &operator<<(std::basic_ostream<char> &os, const AsyncFuncResult &data) {
     }
     return os;
 }
-Member AsyncFuncResult::member() const { return cli->member(member_); }
-
-AsyncFuncResult &FuncResultStore::addResult(const std::string &caller,
+AsyncFuncResult &ClientData::FuncResultStore::addResult(const std::string &caller,
                                             const std::string &member,
                                             const std::string &name) {
     std::lock_guard lock(mtx);
@@ -34,7 +32,7 @@ AsyncFuncResult &FuncResultStore::addResult(const std::string &caller,
     results.push_back(AsyncFuncResult{caller_id, cli, caller, member, name});
     return results.back();
 }
-AsyncFuncResult &FuncResultStore::getResult(int caller_id) {
+AsyncFuncResult &ClientData::FuncResultStore::getResult(int caller_id) {
     std::lock_guard lock(mtx);
     return results.at(caller_id);
 }

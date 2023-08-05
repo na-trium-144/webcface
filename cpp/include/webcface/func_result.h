@@ -6,10 +6,10 @@
 #include <future>
 #include <memory>
 #include <stdexcept>
-#include "val.h"
-#include "decl.h"
 
 namespace WebCFace {
+
+class ClientData;
 
 //! Funcの実行ができなかった場合発生する例外
 //! (ValueやTextで参照先が見つからなかった場合はこれではなく単にnulloptが返る)
@@ -30,7 +30,8 @@ class AsyncFuncResult {
     //! 通し番号
     //! コンストラクタで設定する。実際はFuncResultStoreのvectorのindex
     int caller_id;
-    Client *cli;
+    //! FuncResultはClientDataに保存されるので、循環参照を避けるためweak_ptrにする
+    std::weak_ptr<ClientData> data;
     //! 呼び出し側member 通常は自身
     std::string caller;
     //! 呼び出し対象のmemberとFunc名
@@ -39,16 +40,17 @@ class AsyncFuncResult {
     std::shared_ptr<std::promise<bool>> started_;
     std::shared_ptr<std::promise<ValAdaptor>> result_;
 
-    AsyncFuncResult(int caller_id, Client *cli, const std::string &caller,
-                    const std::string &member, const std::string &name)
-        : caller_id(caller_id), cli(cli), caller(caller), member_(member),
+  public:
+    friend class Func;
+    friend class Client;
+
+    AsyncFuncResult(const std::shared_ptr<ClientData> &data, int caller_id,
+                    const std::string &caller, const std::string &member,
+                    const std::string &name)
+        : caller_id(caller_id), data(data), caller(caller), member_(member),
           name_(name), started_(std::make_shared<std::promise<bool>>()),
           result_(std::make_shared<std::promise<ValAdaptor>>()),
           started(started_->get_future()), result(result_->get_future()) {}
-  public:
-    friend Func;
-    friend Client;
-    friend FuncResultStore;
 
     //! リモートに呼び出しメッセージが到達したときに値が入る
     //! 実行開始したらtrue, 呼び出しに失敗したらfalseが返る
@@ -62,8 +64,8 @@ class AsyncFuncResult {
     //! 関数の名前
     auto name() const { return name_; }
     //! 関数本体のあるmember
-    Member member() const;
+    Member member() const { return Member{data.lock(), member_}; }
 };
 auto &operator<<(std::basic_ostream<char> &os, const AsyncFuncResult &data);
 
-}
+} // namespace WebCFace

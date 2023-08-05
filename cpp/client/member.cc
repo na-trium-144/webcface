@@ -2,23 +2,29 @@
 #include <string>
 
 namespace WebCFace {
-Member::Member(const std::shared_ptr<ClientData> &data, const std::string &name) : data(data), name_(name) {}
+
+Value Member::value(const std::string &name) const {
+    return Value{data, this->name(), name};
+}
+Text Member::text(const std::string &name) const {
+    return Text{data, this->name(), name};
+}
+Func Member::func(const std::string &name) const {
+    return Func{data, this->name(), name};
+}
 
 EventTarget<Value> Member::valuesChange() const {
-    return EventTarget<Value>{EventType::value_entry, cli, &cli->event_queue,
-                              name_};
+    return EventTarget<Value>{data, EventType::value_entry, name_};
 }
 EventTarget<Text> Member::textsChange() const {
-    return EventTarget<Text>{EventType::text_entry, cli, &cli->event_queue,
-                             name_};
+    return EventTarget<Text>{data, EventType::text_entry, name_};
 }
 EventTarget<Func> Member::funcsChange() const {
-    return EventTarget<Func>{EventType::func_entry, cli, &cli->event_queue,
-                             name_};
+    return EventTarget<Func>{data, EventType::func_entry, name_};
 }
 
 std::vector<Value> Member::values() const {
-    auto keys = cli->value_store.getEntry(this->name());
+    auto keys = data->value_store.getEntry(this->name());
     std::vector<Value> ret(keys.size());
     for (std::size_t i = 0; i < keys.size(); i++) {
         ret[i] = value(keys[i]);
@@ -26,7 +32,7 @@ std::vector<Value> Member::values() const {
     return ret;
 }
 std::vector<Text> Member::texts() const {
-    auto keys = cli->text_store.getEntry(this->name());
+    auto keys = data->text_store.getEntry(this->name());
     std::vector<Text> ret(keys.size());
     for (std::size_t i = 0; i < keys.size(); i++) {
         ret[i] = text(keys[i]);
@@ -34,7 +40,7 @@ std::vector<Text> Member::texts() const {
     return ret;
 }
 std::vector<Func> Member::funcs() const {
-    auto keys = cli->func_store.getEntry(this->name());
+    auto keys = data->func_store.getEntry(this->name());
     std::vector<Func> ret(keys.size());
     for (std::size_t i = 0; i < keys.size(); i++) {
         ret[i] = func(keys[i]);

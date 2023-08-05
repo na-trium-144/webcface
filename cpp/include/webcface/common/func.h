@@ -24,6 +24,7 @@ class Arg {
     std::optional<double> min_ = std::nullopt, max_ = std::nullopt;
     std::vector<ValAdaptor> option_;
 
+  public:
     //! 引数のargが持っている情報でthisを上書きする。
     void mergeConfig(const Arg &rhs) {
         if (rhs.name_ != "") {
@@ -46,11 +47,6 @@ class Arg {
         }
     }
     explicit Arg(ValType type) : type_(type) {}
-
-  public:
-    friend FuncInfo;
-    friend Func;
-    friend Client;
 
     Arg() = default;
     //! 引数名を設定する。
@@ -165,6 +161,7 @@ struct FuncCall {
     int caller_id;
     std::string caller, member, name;
     std::vector<WebCFace::ValAdaptor> args;
-}
+};
+
 } // namespace Common
 } // namespace WebCFace

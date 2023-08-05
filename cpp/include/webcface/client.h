@@ -5,14 +5,13 @@
 #include <vector>
 #include <thread>
 #include <atomic>
-#include <eventpp/eventqueue.h>
-#include "data.h"
-#include "func_result.h"
-#include "func.h"
-#include "member.h"
+
+
+namespace drogon{
+class WebSocketClient;
+}
 
 namespace WebCFace {
-
 //! サーバーに接続するクライアント。
 class Client {
   private:
@@ -50,17 +49,6 @@ class Client {
     void close();
 
   public:
-    template <typename T>
-    friend class SyncData;
-    template <typename T, typename V>
-    friend class SyncDataWithEvent;
-    friend Value;
-    friend Text;
-    friend Func;
-    friend Member;
-    template <typename V>
-    friend class MemberEvent;
-
     Client() : Client("") {}
     Client(const Client &) = delete;
     const Client &operator=(const Client &) = delete;
@@ -88,10 +76,10 @@ class Client {
     std::string name() const { return name_; }
 
     //! 他のmemberにアクセスする。
-    Member member(const std::string &name) { return Member(data, name); }
+    Member member(const std::string &name) { return Member{data, name}; }
     //! サーバーに接続されている他のmemberのリストを得る。
     std::vector<Member> members() {
-        auto keys = value_store.getMembers();
+        auto keys = data->value_store.getMembers();
         std::vector<Member> ret(keys.size());
         for (std::size_t i = 0; i < keys.size(); i++) {
             ret[i] = member(keys[i]);
@@ -100,8 +88,7 @@ class Client {
     }
     //! Memberが追加された時のイベントリスト
     EventTarget<Member> membersChange() {
-        return EventTarget<Member>{EventType::member_entry, this,
-                                   &this->event_queue};
+        return EventTarget<Member>{data, EventType::member_entry};
     }
 };
 

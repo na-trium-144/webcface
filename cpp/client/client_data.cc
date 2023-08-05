@@ -86,8 +86,8 @@ ClientData::SyncDataStore<T>::transferReq() {
     return std::move(req_send);
 }
 
-template class SyncDataStore<double>;
-template class SyncDataStore<std::string>;
-template class SyncDataStore<FuncInfo>;
+template class ClientData::SyncDataStore<double>;
+template class ClientData::SyncDataStore<std::string>;
+template class ClientData::SyncDataStore<FuncInfo>;
 
 } // namespace WebCFace
