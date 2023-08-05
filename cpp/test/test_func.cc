@@ -32,4 +32,8 @@ DROGON_TEST(FuncTest) {
               m1.func("b").runAsync(1, 2.5, true, "aaaaa").result.get()) == 32);
     CHECK(static_cast<double>(
               m2.func("b").runAsync(1, 2.5, true, "aaaaa").result.get()) == 32);
+
+    CHECK(m1.func("c").runAsync().started.get() == false);
+    CHECK(m2.func("c").runAsync().started.get() == false);
+    CHECK(cli2.member("hoge").func("c").runAsync().started.get() == false);
 }
