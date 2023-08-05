@@ -15,7 +15,10 @@ int main() {
     WebCFace::Client c("example_main");
     c.self().value("test") = 0;
     c.self().func("func1") = hello;
-    c.self().func("func2") = hello2;
+    using Arg = WebCFace::Arg;
+    c.self().func("func2").set(hello2).setArgs(
+        {Arg("a").min(0).max(10), Arg("b"), Arg("c"),
+         Arg("d").option({"hoge", "fuga", "piyo"})});
     while (true) {
         std::this_thread::yield();
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
@@ -29,7 +32,8 @@ int main() {
                   << std::endl;
 
         // c.self().func("aaaaaaa").run(); // self().func("aaaaaa") is not set
-        // c.member("aaaaaa").func("a").run(); // member("aaaaaa").func("a") is not set
+        // c.member("aaaaaa").func("a").run(); // member("aaaaaa").func("a") is
+        // not set
         c.self().func("func1").run();
         // c.self().func("func2").run(3, true, "hoge"); // invalid_argument
         // c.member("example_main").func("func2").run(3, true, "hoge");

@@ -3,6 +3,8 @@
 #include "data_store.h"
 #include "data.h"
 #include "data_event.h"
+#include "func_result.h"
+#include "func_info.h"
 #include "func.h"
 #include "member.h"
 #include "client.h"

@@ -154,13 +154,14 @@ void ClientData::onRecv(const std::string &message) {
         auto v = std::any_cast<WebCFace::Message::FuncInfo>(obj);
         v.member = this->name;
         std::cout << this->name << ": func_info " << v.name << " arg: ";
-        for (std::size_t i = 0; i < v.args_type.size(); i++) {
+        for (std::size_t i = 0; i < v.args.size(); i++) {
             if (i > 0) {
                 std::cout << ", ";
             }
-            std::cout << v.args_type[i];
+            std::cout << static_cast<WebCFace::Arg>(v.args[i]);
         }
-        std::cout << " ret = " << v.return_type << std::endl;
+        std::cout << " ret: " << static_cast<ValType>(v.return_type)
+                  << std::endl;
         if (!this->func.count(v.name)) {
             for (const auto &c : store.clients) {
                 if (c.second->name != this->name) {

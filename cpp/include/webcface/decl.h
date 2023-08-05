@@ -24,9 +24,11 @@ template <typename T>
 class SyncDataStore;
 
 class FuncNotFound;
-class FuncInfo;
 class AsyncFuncResult;
 class FuncResultStore;
+
+class Arg;
+class FuncInfo;
 class Func;
 
 class ValAdaptor;

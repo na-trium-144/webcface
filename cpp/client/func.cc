@@ -4,6 +4,7 @@
 #include "../message/message.h"
 
 namespace WebCFace {
+
 auto &operator<<(std::basic_ostream<char> &os, const AsyncFuncResult &data) {
     os << "Func(\"" << data.name() << "\"): ";
     if (data.started.wait_for(std::chrono::seconds(0)) !=
@@ -40,6 +41,7 @@ AsyncFuncResult &FuncResultStore::getResult(int caller_id) {
 
 ValAdaptor Func::run(const std::vector<ValAdaptor> &args_vec) const {
     if (member_ == "") {
+        // selfの場合このスレッドでそのまま関数を実行する
         auto func_info = store->getRecv("", name_);
         if (func_info) {
             return func_info->func_impl(args_vec);
@@ -47,6 +49,7 @@ ValAdaptor Func::run(const std::vector<ValAdaptor> &args_vec) const {
             throw FuncNotFound(member_, name_);
         }
     } else {
+        // リモートの場合runAsyncし結果が返るまで待機
         auto &async_res = this->runAsync(args_vec);
         return async_res.result.get();
         // 例外が発生した場合はthrowされる
@@ -55,6 +58,7 @@ ValAdaptor Func::run(const std::vector<ValAdaptor> &args_vec) const {
 AsyncFuncResult &Func::runAsync(const std::vector<ValAdaptor> &args_vec) const {
     auto &r = cli->func_result_store.addResult("", member_, name_);
     if (member_ == "") {
+        // selfの場合、新しいAsyncFuncResultに別スレッドで実行した結果を入れる
         std::thread([cli = this->cli, name_ = this->name_, args_vec, &r] {
             try {
                 auto ret = cli->self().func(name_).run(args_vec);
@@ -69,10 +73,10 @@ AsyncFuncResult &Func::runAsync(const std::vector<ValAdaptor> &args_vec) const {
             }
         }).detach();
     } else {
-        // cliがセグフォする可能性
+        // リモートの場合cli.send()を待たずに呼び出しメッセージを送る
         this->cli->send(Message::pack(
             Message::Call{{}, r.caller_id, "", member_, name_, args_vec}));
-        // resultはclient.cc内でセットされる。
+        // resultはcli.onRecv内でセットされる。
     }
     return r;
 }
@@ -84,12 +88,24 @@ ValType Func::returnType() {
     }
     return ValType::none_;
 }
-std::vector<ValType> Func::argsType() {
+std::vector<Arg> Func::args() {
     auto func_info = store->getRecv(member_, name_);
     if (func_info) {
-        return func_info->args_type;
+        return func_info->args;
     }
-    return std::vector<ValType>{};
+    return std::vector<Arg>{};
+}
+Func &Func::setArgs(const std::vector<Arg> &args) {
+    assert(member_ == "" && "Cannot set data to member other than self");
+    auto func_info = store->getRecv(member_, name_);
+    assert(func_info != std::nullopt && "Func not set");
+    assert(func_info->args.size() == args.size() &&
+           "Number of args does not match");
+    for (std::size_t i = 0; i < args.size(); i++) {
+        func_info->args[i].mergeConfig(args[i]);
+    }
+    store->setSend(name_, *func_info);
+    return *this;
 }
 
 

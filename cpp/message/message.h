@@ -4,7 +4,7 @@
 #include <utility>
 #include <vector>
 #include <any>
-#include <webcface/func.h>
+#include <webcface/func_info.h>
 #include "arg_adaptor.h"
 
 namespace WebCFace::Message {
@@ -96,20 +96,47 @@ struct Text : public MessageBase<MessageKind::text> {
 struct FuncInfo : public MessageBase<MessageKind::func_info> {
     std::string member, name;
     int return_type;
-    std::vector<int> args_type;
+    struct Arg {
+        std::string name;
+        int type;
+        std::optional<WebCFace::ValAdaptor> init;
+        std::optional<double> min, max;
+        std::vector<WebCFace::ValAdaptor> option;
+        Arg() = default;
+        Arg(const WebCFace::Arg &a)
+            : name(a.name()), type(static_cast<int>(a.type())), init(a.init()),
+              min(a.min()), max(a.max()), option(a.option()) {}
+        operator WebCFace::Arg() const {
+            return WebCFace::Arg{name, static_cast<WebCFace::ValType>(type),
+                                 init, min,
+                                 max,  option};
+        }
+        MSGPACK_DEFINE_MAP(MSGPACK_NVP("n", name), MSGPACK_NVP("t", type),
+                           MSGPACK_NVP("i", init), MSGPACK_NVP("m", min),
+                           MSGPACK_NVP("x", max), MSGPACK_NVP("o", option));
+    };
+    std::vector<Arg> args;
     FuncInfo() = default;
     explicit FuncInfo(const std::string &member, const std::string &name,
                       const WebCFace::FuncInfo &info)
         : MessageBase<MessageKind::func_info>(), member(member), name(name),
           return_type(static_cast<int>(info.return_type)) {
-        args_type.resize(info.args_type.size());
-        for (std::size_t i = 0; i < info.args_type.size(); i++) {
-            args_type[i] = static_cast<int>(info.args_type[i]);
+        args.resize(info.args.size());
+        for (std::size_t i = 0; i < info.args.size(); i++) {
+            args[i] = info.args[i];
         }
     }
+    operator WebCFace::FuncInfo() const {
+        WebCFace::FuncInfo info;
+        info.return_type = static_cast<ValType>(return_type);
+        info.args.resize(args.size());
+        for (std::size_t j = 0; j < args.size(); j++) {
+            info.args[j] = args[j];
+        }
+        return info;
+    }
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("m", member), MSGPACK_NVP("n", name),
-                       MSGPACK_NVP("r", return_type),
-                       MSGPACK_NVP("a", args_type));
+                       MSGPACK_NVP("r", return_type), MSGPACK_NVP("a", args));
 };
 //! client->server 以降Recvを送るようリクエスト
 //! todo: 解除できるようにする

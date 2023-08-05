@@ -13,15 +13,15 @@ int main() {
             std::cout << "text " << v.name() << std::endl;
         });
         m.funcsChange().appendListener([](WebCFace::Func f) {
-            std::cout << "  func " << f.name() << " arg: ";
-            auto args = f.argsType();
+            std::cout << "func " << f.name() << " arg: ";
+            auto args = f.args();
             for (std::size_t i = 0; i < args.size(); i++) {
                 if (i > 0) {
                     std::cout << ", ";
                 }
                 std::cout << args[i];
             }
-            std::cout << " ret = " << f.returnType() << std::endl;
+            std::cout << " ret: " << f.returnType() << std::endl;
         });
     });
     while (true) {

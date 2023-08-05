@@ -8,6 +8,7 @@
 #include "decl.h"
 #include "data_store.h"
 #include "data.h"
+#include "func_result.h"
 #include "func.h"
 #include "data_event.h"
 #include "member.h"

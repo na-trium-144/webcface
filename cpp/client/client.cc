@@ -238,13 +238,7 @@ void Client::onRecv(const std::string &message) {
     case MessageKind::func_info: {
         auto r = std::any_cast<WebCFace::Message::FuncInfo>(obj);
         func_store.setEntry(r.member, r.name);
-        FuncInfo info;
-        info.return_type = static_cast<ValType>(r.return_type);
-        info.args_type.resize(r.args_type.size());
-        for (std::size_t j = 0; j < r.args_type.size(); j++) {
-            info.args_type[j] = static_cast<ValType>(r.args_type[j]);
-        }
-        func_store.setRecv(r.member, r.name, info);
+        func_store.setRecv(r.member, r.name, static_cast<FuncInfo>(r));
         func_entry_event(Func{this, r.member, r.name});
         break;
     }
