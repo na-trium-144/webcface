@@ -84,6 +84,9 @@ class ValAdaptor {
             return 0;
         }
     }
+    operator bool() const{
+        return value == std::to_string(true);
+    }
     template <typename T>
         requires std::convertible_to<double, T>
     operator T() const {
