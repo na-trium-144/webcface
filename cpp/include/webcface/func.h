@@ -5,6 +5,7 @@
 #include "val.h"
 #include "data.h"
 #include "func_info.h"
+#include "func_result.h"
 #include "event.h"
 #include "decl.h"
 
@@ -12,12 +13,12 @@ namespace WebCFace {
 
 //! 関数1つを表すクラス
 class Func : public SyncData<FuncInfo> {
-
-  public:
+public:
     Func() = default;
-    Func(Client *cli, const std::string &member, const std::string &name)
-        : SyncData<DataType>(cli, member, name) {}
-    Func(const EventKey &key) : Func(key.cli, key.member, key.name) {}
+    Func(const std::shared_ptr<ClientData> &data, const std::string &member,
+          const std::string &name)
+        : SyncData<FuncInfo>(data, member, name){}
+    Func(const EventKey &key) : Func(key.data, key.member, key.name) {}
 
     //! 関数からFuncInfoを構築しセットする
     /*! Tは任意の関数
@@ -25,14 +26,20 @@ class Func : public SyncData<FuncInfo> {
      * 引数や戻り値の情報などは更新されない
      */
     template <typename T>
-    Func &set(const T &func) {
-        this->SyncData<DataType>::set(FuncInfo(std::function(func)));
+    auto &set(const T &func) {
+        assert(member_ == "" && "Cannot set data to member other than self");
+        data->func_store.setSend(name_, FuncInfo{std::function{func}});
         return *this;
     }
     //! 関数からFuncInfoを構築しセットする
     template <typename T>
     Func &operator=(const T &func) {
         return this->set(func);
+    }
+
+    //! 値を取得する
+    std::optional<FuncInfo> tryGet() const override {
+        return data->func_store.getRecv(member_, name_);
     }
 
     //! 関数を実行する (同期)

@@ -6,8 +6,6 @@
 #include <thread>
 #include <atomic>
 #include <eventpp/eventqueue.h>
-#include "decl.h"
-#include "data_store.h"
 #include "data.h"
 #include "func_result.h"
 #include "func.h"
@@ -18,6 +16,8 @@ namespace WebCFace {
 //! サーバーに接続するクライアント。
 class Client {
   private:
+    std::shared_ptr<ClientData> data;
+
     std::shared_ptr<drogon::WebSocketClient> ws;
     //! close()が呼ばれたらtrue
     std::atomic<bool> closing = false;
@@ -32,18 +32,15 @@ class Client {
     //! サーバーのポート
     int port;
 
-    SyncDataStore<Value::DataType> value_store;
-    SyncDataStore<Text::DataType> text_store;
-    SyncDataStore<Func::DataType> func_store;
-    FuncResultStore func_result_store;
-
+    
     Member self_;
     std::string name_;
 
-    //! 各種イベントを管理するキュー
-    eventpp::EventQueue<EventKey, void(const EventKey &)> event_queue;
     //! イベントを処理するスレッド
     std::thread event_thread;
+
+    //! func_call_queueを処理するスレッド
+    std::thread func_call_thread;
 
     //! 受信時の処理
     void onRecv(const std::string &message);
@@ -91,7 +88,7 @@ class Client {
     std::string name() const { return name_; }
 
     //! 他のmemberにアクセスする。
-    Member member(const std::string &name) { return Member(this, name); }
+    Member member(const std::string &name) { return Member(data, name); }
     //! サーバーに接続されている他のmemberのリストを得る。
     std::vector<Member> members() {
         auto keys = value_store.getMembers();

@@ -12,11 +12,20 @@
 namespace WebCFace {
 
 Client::Client(const std::string &name, const std::string &host, int port)
-    : func_result_store(this), self_(this, ""), name_(name), host(host),
-      port(port), event_thread([this] {
+    : data(std::make_shared<ClientData>()), self_(this, ""), name_(name),
+      host(host), port(port), event_thread([this] {
           while (!closing.load()) {
-            event_queue.waitFor(std::chrono::milliseconds(10));
-            event_queue.process();
+              event_queue.waitFor(std::chrono::milliseconds(10));
+              event_queue.process();
+          }
+      }),
+      func_call_thread([this] {
+          while (!closing.load()) {
+              auto call =
+                  data->func_call_queue.pop(std::chrono::milliseconds(10));
+              if (call) {
+                  this->send(Message::pack(Message::Call{call}));
+              }
           }
       }) {
 
@@ -106,6 +115,7 @@ Client::~Client() {
         connection_finished.wait();
     }
     event_thread.join();
+    func_call_thread.join();
 }
 void Client::close() {
     closing.store(true);

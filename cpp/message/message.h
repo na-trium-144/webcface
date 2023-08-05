@@ -4,8 +4,8 @@
 #include <utility>
 #include <vector>
 #include <any>
-#include <webcface/func_info.h>
-#include "arg_adaptor.h"
+#include <webcface/common/func.h>
+#include "val_adaptor.h"
 
 namespace WebCFace::Message {
 // 新しいメッセージの定義は
@@ -38,6 +38,9 @@ inline constexpr MessageKind kind_entry(MessageKind k) {
                                     static_cast<int>(MessageKind::entry));
 }
 
+namespace Common = WebCFace::Common;
+MSGPACK_ADD_ENUM(Common::ValType);
+
 //! 型からkindを取得するためだけのベースクラス
 template <MessageKind k>
 struct MessageBase {
@@ -50,12 +53,12 @@ struct Name : public MessageBase<MessageKind::name> {
 };
 //! client(caller)->server->client(receiver) 関数呼び出し
 //! client->server時はcallerは無視
-struct Call : public MessageBase<MessageKind::call> {
-    int caller_id;
-    std::string caller, receiver, name;
-    std::vector<WebCFace::ValAdaptor> args;
+struct Call : public MessageBase<MessageKind::call>, public Common::FuncCall {
+    Call() = default;
+    Call(const Common::FuncCall &c)
+        : MessageBase<MessageKind::call>(), Common::FuncCall(c) {}
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", caller_id), MSGPACK_NVP("c", caller),
-                       MSGPACK_NVP("r", receiver), MSGPACK_NVP("n", name),
+                       MSGPACK_NVP("r", member), MSGPACK_NVP("n", name),
                        MSGPACK_NVP("a", args));
 };
 //! client(receiver)->server->client(caller) 関数の実行を開始したかどうか
@@ -95,40 +98,27 @@ struct Text : public MessageBase<MessageKind::text> {
 //! client->server時はmemberは無視
 struct FuncInfo : public MessageBase<MessageKind::func_info> {
     std::string member, name;
-    int return_type;
-    struct Arg {
-        std::string name;
-        int type;
-        std::optional<WebCFace::ValAdaptor> init;
-        std::optional<double> min, max;
-        std::vector<WebCFace::ValAdaptor> option;
-        Arg() = default;
-        Arg(const WebCFace::Arg &a)
-            : name(a.name()), type(static_cast<int>(a.type())), init(a.init()),
-              min(a.min()), max(a.max()), option(a.option()) {}
-        operator WebCFace::Arg() const {
-            return WebCFace::Arg{name, static_cast<WebCFace::ValType>(type),
-                                 init, min,
-                                 max,  option};
-        }
-        MSGPACK_DEFINE_MAP(MSGPACK_NVP("n", name), MSGPACK_NVP("t", type),
-                           MSGPACK_NVP("i", init), MSGPACK_NVP("m", min),
-                           MSGPACK_NVP("x", max), MSGPACK_NVP("o", option));
+    Common::ValType return_type;
+    struct Arg : public Common::Arg {
+        Arg(const Common::Arg &a) : Common::Arg(a) {}
+        MSGPACK_DEFINE_MAP(MSGPACK_NVP("n", name_), MSGPACK_NVP("t", type_),
+                           MSGPACK_NVP("i", init_), MSGPACK_NVP("m", min_),
+                           MSGPACK_NVP("x", max_), MSGPACK_NVP("o", option_));
     };
     std::vector<Arg> args;
     FuncInfo() = default;
     explicit FuncInfo(const std::string &member, const std::string &name,
-                      const WebCFace::FuncInfo &info)
+                      const Common::FuncInfo &info)
         : MessageBase<MessageKind::func_info>(), member(member), name(name),
-          return_type(static_cast<int>(info.return_type)) {
+          return_type(info.return_type) {
         args.resize(info.args.size());
         for (std::size_t i = 0; i < info.args.size(); i++) {
             args[i] = info.args[i];
         }
     }
-    operator WebCFace::FuncInfo() const {
-        WebCFace::FuncInfo info;
-        info.return_type = static_cast<ValType>(return_type);
+    operator Common::FuncInfo() const {
+        Common::FuncInfo info;
+        info.return_type = return_type;
         info.args.resize(args.size());
         for (std::size_t j = 0; j < args.size(); j++) {
             info.args[j] = args[j];

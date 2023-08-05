@@ -2,7 +2,7 @@
 #include <string>
 
 namespace WebCFace {
-Member::Member(Client *cli, const std::string &name) : cli(cli), name_(name) {}
+Member::Member(const std::shared_ptr<ClientData> &data, const std::string &name) : data(data), name_(name) {}
 
 EventTarget<Value> Member::valuesChange() const {
     return EventTarget<Value>{EventType::value_entry, cli, &cli->event_queue,

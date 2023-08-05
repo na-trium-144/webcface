@@ -8,7 +8,8 @@
 #include <ostream>
 
 namespace WebCFace {
-
+//! WebCFace::Commonはserverとclientで共通のheader-onlyなクラス
+inline namespace Common {
 //! 引数や戻り値の型を表すenum
 enum class ValType {
     none_ = 0,
@@ -138,4 +139,5 @@ void argToTuple(const std::vector<ValAdaptor> &args, T &tuple) {
         argToTuple<n + 1>(args, tuple);
     }
 }
+} // namespace Common
 } // namespace WebCFace

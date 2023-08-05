@@ -16,33 +16,36 @@ namespace WebCFace {
 template <typename T>
 class SyncData {
   protected:
-    Client *cli;
-    //! cliが持っているstoreを表すがTによって参照先が違う
-    SyncDataStore<T> *store;
-
+    std::shared_ptr<ClientData> data;
     std::string member_, name_;
 
   public:
-    using DataType = T;
-    SyncData() {}
-    SyncData(Client *cli, const std::string &member, const std::string &name);
+    SyncData(const std::shared_ptr<ClientData> &data, const std::string &member,
+             const std::string &name)
+        : data(data), member_(member), name_(name) {}
+
     //! 参照先のMemberを返す
-    Member member() const;
+    Member member() const { return Member{data, member_}; }
     //! 参照先のデータ名を返す
     std::string name() const { return name_; }
 
-    //! 値をセットする
-    void set(const T &data);
     //! 値を取得する
-    std::optional<T> try_get() const;
+    virtual std::optional<T> tryGet() const = 0;
     //! 値を取得する
     //! todo: 引数
-    T get() const;
+    T get() const {
+        auto v = try_get();
+        if (v) {
+            return *v;
+        } else {
+            return T{};
+        };
+    }
     //! 値を取得する
-    operator T() const { return this->get(); }
+    operator T() const { return get(); }
 };
 
-template <typename T>
+/*template <typename T>
 auto &operator>>(std::basic_istream<char> &is, SyncData<T> &data) {
     T v;
     is >> v;
@@ -53,26 +56,34 @@ template <typename T>
 auto &operator>>(std::basic_istream<char> &is, SyncData<T> &&data) {
     SyncData<T> d = data;
     return is >> d;
-}
+}*/
 template <typename T>
 auto &operator<<(std::basic_ostream<char> &os, const SyncData<T> &data) {
     return os << data.get();
 }
 
-
 //! 実数値を扱う
 class Value : public SyncData<double>, public EventTarget<Value> {
   public:
     Value() = default;
-    Value(Client *cli, const std::string &member, const std::string &name);
-    Value(const EventKey &key) : Value(key.cli, key.member, key.name) {}
+    Value(const std::shared_ptr<ClientData> &data, const std::string &member,
+          const std::string &name)
+        : SyncData<double>(data, member, name),
+          EventTarget<Value>(data, member, name, [this] { this->try_get(); });
+    Value(const EventKey &key) : Value(key.data, key.member, key.name) {}
 
     //! 値をセットし、EventTargetを発動するためoverload
     auto &set(double data) {
-        this->SyncData<double>::set(data);
+        assert(member_ == "" && "Cannot set data to member other than self");
+        data->value_store.setSend(name_, data);
         this->triggerEvent();
         return *this;
     }
+    //! 値を取得する
+    std::optional<double> tryGet() const override {
+        return data->value_store.getRecv(member_, name_);
+    }
+
     //! 値をセットする
     auto &operator=(double data) {
         this->set(data);
@@ -147,14 +158,22 @@ class Value : public SyncData<double>, public EventTarget<Value> {
 class Text : public SyncData<std::string>, public EventTarget<Text> {
   public:
     Text() = default;
-    Text(Client *cli, const std::string &member, const std::string &name);
-    Text(const EventKey &key) : Text(key.cli, key.member, key.name) {}
+    Text(const std::shared_ptr<ClientData> &data, const std::string &member,
+          const std::string &name)
+        : SyncData<double>(data, member, name),
+          EventTarget<Value>(data, member, name, [this] { this->try_get(); });
+    Text(const EventKey &key) : Text(key.data, key.member, key.name) {}
 
     //! 値をセットし、EventTargetを発動するためoverload
     auto &set(const std::string &data) {
-        this->SyncData<std::string>::set(data);
+        assert(member_ == "" && "Cannot set data to member other than self");
+        data->text_store.setSend(name_, data);
         this->triggerEvent();
         return *this;
+    }
+    //! 値を取得する
+    std::optional<std::string> tryGet() const override {
+        return data->text_store.getRecv(member_, name_);
     }
     //! 値をセットする
     auto &operator=(const std::string &data) {

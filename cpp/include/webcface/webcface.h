@@ -1,10 +1,11 @@
 #pragma once
-#include "val.h"
+#include "common/val.h"
+#include "common/func.h"
 #include "event.h"
 #include "data_store.h"
+#include "member.h"
 #include "data.h"
 #include "func_result.h"
 #include "func_info.h"
 #include "func.h"
-#include "member.h"
 #include "client.h"

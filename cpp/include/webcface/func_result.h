@@ -66,25 +66,4 @@ class AsyncFuncResult {
 };
 auto &operator<<(std::basic_ostream<char> &os, const AsyncFuncResult &data);
 
-//! AsyncFuncResultのリストを保持する。
-/*! 関数の実行結果が返ってきた時参照する
- * また、実行するたびに連番を振る必要があるcallback_idの管理にも使う
- */
-class FuncResultStore {
-  private:
-    Client *cli;
-    std::mutex mtx;
-    std::vector<AsyncFuncResult> results;
-
-  public:
-    explicit FuncResultStore(Client *cli) : cli(cli) {}
-
-    //! 新しいcaller_idを振って新しいAsyncFuncResultを生成しそれを返す
-    AsyncFuncResult &addResult(const std::string &caller,
-                               const std::string &member,
-                               const std::string &name);
-    //! caller_idに対応するresultを返す
-    AsyncFuncResult &getResult(int caller_id);
-};
-
 }

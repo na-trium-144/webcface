@@ -19,13 +19,12 @@ enum class EventType {
 //! Eventの各種情報と相互キャストできるようにすること。
 struct EventKey {
     EventType type = EventType::none;
-    Client *cli = nullptr;
     std::string member = "", name = "";
 
     EventKey() = default;
-    EventKey(EventType type, Client *cli, const std::string &member = "",
+    EventKey(EventType type, const std::string &member = "",
              const std::string &name = "")
-        : type(type), cli(cli), member(member), name(name) {}
+        : type(type), member(member), name(name) {}
 
     bool operator==(const EventKey &rhs) const {
         if (type != rhs.type) {
@@ -86,16 +85,16 @@ class EventTarget {
     using EventCallback = std::function<void(V)>;
 
   private:
-    EventQueue *queue = nullptr;
+    std::shared_ptr<ClientData> data;
     EventKey key;
     std::function<void()> on_append = nullptr;
 
   protected:
-    void triggerEvent() { queue->enqueue(key); }
+    void triggerEvent() { data->event_queue.enqueue(key); }
 
   public:
     EventTarget() = default;
-    explicit EventTarget(EventType type, Client *cli, EventQueue *queue,
+    explicit EventTarget(const std::shared_ptr<ClientData> &data, EventType type,
                          const std::string &member = "",
                          const std::string &name = "",
                          std::function<void()> on_append = nullptr)
@@ -105,27 +104,27 @@ class EventTarget {
         if (on_append) {
             on_append();
         }
-        return queue->appendListener(key, callback);
+        return data->event_queue.appendListener(key, callback);
     }
     EventHandle prependListener(const EventCallback &callback) const {
         if (on_append) {
             on_append();
         }
-        return queue->prependListener(key, callback);
+        return data->event_queue.prependListener(key, callback);
     }
     EventHandle insertListener(const EventCallback &callback,
                                const EventHandle &before) const {
         if (on_append) {
             on_append();
         }
-        return queue->insertListener(key, callback, before);
+        return data->event_queue.insertListener(key, callback, before);
     }
     bool removeListener(const EventHandle &handle) const {
-        return queue->removeListener(key, handle);
+        return data->event_queue.removeListener(key, handle);
     }
-    bool hasAnyListener() const { return queue->hasAnyListener(key); }
+    bool hasAnyListener() const { return data->event_queue.hasAnyListener(key); }
     bool ownsHandle(const EventHandle &handle) const {
-        return queue->ownsHandle(key, handle);
+        return data->event_queue.ownsHandle(key, handle);
     }
 };
 } // namespace WebCFace

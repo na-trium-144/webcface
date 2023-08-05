@@ -42,7 +42,7 @@ AsyncFuncResult &FuncResultStore::getResult(int caller_id) {
 ValAdaptor Func::run(const std::vector<ValAdaptor> &args_vec) const {
     if (member_ == "") {
         // selfの場合このスレッドでそのまま関数を実行する
-        auto func_info = store->getRecv("", name_);
+        auto func_info = data->func_store.getRecv("", name_);
         if (func_info) {
             return func_info->func_impl(args_vec);
         } else {
@@ -74,22 +74,21 @@ AsyncFuncResult &Func::runAsync(const std::vector<ValAdaptor> &args_vec) const {
         }).detach();
     } else {
         // リモートの場合cli.send()を待たずに呼び出しメッセージを送る
-        this->cli->send(Message::pack(
-            Message::Call{{}, r.caller_id, "", member_, name_, args_vec}));
+        data->func_call_queue.push({r.caller_id, "", member_, name_, args_vec});
         // resultはcli.onRecv内でセットされる。
     }
     return r;
 }
 
 ValType Func::returnType() {
-    auto func_info = store->getRecv(member_, name_);
+    auto func_info = data->func_store.getRecv(member_, name_);
     if (func_info) {
         return func_info->return_type;
     }
     return ValType::none_;
 }
 std::vector<Arg> Func::args() {
-    auto func_info = store->getRecv(member_, name_);
+    auto func_info = data->func_store.getRecv(member_, name_);
     if (func_info) {
         return func_info->args;
     }
@@ -97,14 +96,14 @@ std::vector<Arg> Func::args() {
 }
 Func &Func::setArgs(const std::vector<Arg> &args) {
     assert(member_ == "" && "Cannot set data to member other than self");
-    auto func_info = store->getRecv(member_, name_);
+    auto func_info = data->func_store.getRecv(member_, name_);
     assert(func_info != std::nullopt && "Func not set");
     assert(func_info->args.size() == args.size() &&
            "Number of args does not match");
     for (std::size_t i = 0; i < args.size(); i++) {
         func_info->args[i].mergeConfig(args[i]);
     }
-    store->setSend(name_, *func_info);
+    data->func_store.setSend(name_, *func_info);
     return *this;
 }
 

@@ -6,17 +6,18 @@
 #include <string>
 #include <ostream>
 #include "val.h"
-#include "decl.h"
-// func_info.hとval.hはwebcface-serverからも参照する
 
 namespace WebCFace {
-
+//! WebCFace::Commonはserverとclientで共通のheader-onlyなクラス
+inline namespace Common {
+    
 using FuncType = std::function<ValAdaptor(const std::vector<ValAdaptor> &)>;
 
 //! 引数の情報を表す。
 //! func.setArg({ Arg(引数名).init(初期値).min(最小値).max(最大値), ... });
 //! のように使う
 class Arg {
+  protected:
     std::string name_ = "";
     ValType type_ = ValType::none_;
     std::optional<ValAdaptor> init_ = std::nullopt;
@@ -159,4 +160,11 @@ struct FuncInfo {
           }) {}
 };
 
+//! 関数を呼び出すのに必要なデータ。client_data->client->server->clientと送られる
+struct FuncCall {
+    int caller_id;
+    std::string caller, member, name;
+    std::vector<WebCFace::ValAdaptor> args;
+}
+} // namespace Common
 } // namespace WebCFace

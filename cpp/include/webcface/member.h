@@ -11,27 +11,27 @@ namespace WebCFace {
 /*! 参照元のClientが破棄されているとセグフォします
  */
 class Member {
-    Client *cli = nullptr;
+    std::shared_ptr<ClientData> data;
     std::string name_;
 
   public:
     Member() = default;
-    Member(Client *cli, const std::string &name);
-    Member(const EventKey &key) : Member(key.cli, key.member) {}
+    Member(const std::shared_ptr<ClientData> &data, const std::string &name);
+    Member(const EventKey &key) : Member(key.data, key.member) {}
 
     std::string name() const { return name_; }
 
     //! このmemberの指定した名前のvalueを参照する。
     Value value(const std::string &name) const {
-        return Value{cli, this->name(), name};
+        return Value{data, this->name(), name};
     }
     //! このmemberの指定した名前のtextを参照する。
     Text text(const std::string &name) const {
-        return Text{cli, this->name(), name};
+        return Text{data, this->name(), name};
     }
     //! このmemberの指定した名前のfuncを参照する。
     Func func(const std::string &name) const {
-        return Func{cli, this->name(), name};
+        return Func{data, this->name(), name};
     }
     //! このmemberが公開しているvalueのリストを返す。
     std::vector<Value> values() const;
