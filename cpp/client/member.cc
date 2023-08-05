@@ -4,6 +4,19 @@
 namespace WebCFace {
 Member::Member(Client *cli, const std::string &name) : cli(cli), name_(name) {}
 
+EventTarget<Value> Member::valuesChange() const {
+    return EventTarget<Value>{EventType::value_entry, cli, &cli->event_queue,
+                              name_};
+}
+EventTarget<Text> Member::textsChange() const {
+    return EventTarget<Text>{EventType::text_entry, cli, &cli->event_queue,
+                             name_};
+}
+EventTarget<Func> Member::funcsChange() const {
+    return EventTarget<Func>{EventType::func_entry, cli, &cli->event_queue,
+                             name_};
+}
+
 std::vector<Value> Member::values() const {
     auto keys = cli->value_store.getEntry(this->name());
     std::vector<Value> ret(keys.size());
@@ -27,16 +40,6 @@ std::vector<Func> Member::funcs() const {
         ret[i] = func(keys[i]);
     }
     return ret;
-}
-
-MemberEvent<Value> Member::valuesChange() {
-    return MemberEvent<Value>{&cli->value_entry_event};
-}
-MemberEvent<Text> Member::textsChange() {
-    return MemberEvent<Text>{&cli->text_entry_event};
-}
-MemberEvent<Func> Member::funcsChange() {
-    return MemberEvent<Func>{&cli->func_entry_event};
 }
 
 } // namespace WebCFace

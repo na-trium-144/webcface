@@ -5,18 +5,18 @@ namespace drogon {
 class WebSocketClient;
 }
 namespace WebCFace {
-class Member;
+class ValAdaptor;
+
+class EventKey;
 template <typename V>
-class MemberEvent;
+class EventTarget;
+
+class Member;
 
 class Client;
 
 template <typename T>
 class SyncData;
-template <typename T, typename V>
-class SyncDataWithEvent;
-template <typename T>
-class SyncDataKey;
 class Value;
 class Text;
 
@@ -30,7 +30,5 @@ class FuncResultStore;
 class Arg;
 class FuncInfo;
 class Func;
-
-class ValAdaptor;
 
 } // namespace WebCFace

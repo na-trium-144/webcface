@@ -97,20 +97,7 @@ SyncData<T>::SyncData(Client *cli, const std::string &member,
     } else if constexpr (std::is_same_v<T, Func::DataType>) {
         store = &cli->func_store;
     } else {
-        store = nullptr;
-    }
-}
-template <typename T, typename V>
-SyncDataWithEvent<T, V>::SyncDataWithEvent(Client *cli,
-                                           const std::string &member,
-                                           const std::string &name)
-    : SyncData<T>(cli, member, name) {
-    if constexpr (std::is_same_v<T, Value::DataType>) {
-        dispatcher = &cli->value_change_event;
-    } else if constexpr (std::is_same_v<T, Text::DataType>) {
-        dispatcher = &cli->text_change_event;
-    } else {
-        dispatcher = nullptr;
+        assert(!"unsupported data type");
     }
 }
 
@@ -124,13 +111,6 @@ void SyncData<T>::set(const T &data) {
     assert(member_ == "" && "Cannot set data to member other than self");
     store->setSend(name_, data);
 }
-
-template <typename T, typename V>
-void SyncDataWithEvent<T, V>::set(const T &data) {
-    this->SyncData<T>::set(data);
-    dispatcher->dispatch(V{this->cli, this->member_, this->name_});
-}
-
 
 template <typename T>
 std::optional<T> SyncData<T>::try_get() const {
@@ -146,11 +126,20 @@ T SyncData<T>::get() const {
     }
 }
 
+Value::Value(Client *cli, const std::string &member, const std::string &name)
+    : SyncData<double>(cli, member, name),
+      EventTarget<Value>(EventType::value_change, cli, &cli->event_queue, member,
+                         name, [this] { this->try_get(); }) {}
+
+Text::Text(Client *cli, const std::string &member, const std::string &name)
+    : SyncData<std::string>(cli, member, name),
+      EventTarget<Text>(EventType::text_change, cli, &cli->event_queue, member,
+                         name, [this] { this->try_get(); }) {}
+
+
 template class SyncData<Value::DataType>;
-template class SyncDataWithEvent<Value::DataType, Value>;
 template class SyncDataStore<Value::DataType>;
 template class SyncData<Text::DataType>;
-template class SyncDataWithEvent<Text::DataType, Text>;
 template class SyncDataStore<Text::DataType>;
 template class SyncData<Func::DataType>;
 template class SyncDataStore<Func::DataType>;

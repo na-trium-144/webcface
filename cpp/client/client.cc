@@ -13,7 +13,12 @@ namespace WebCFace {
 
 Client::Client(const std::string &name, const std::string &host, int port)
     : func_result_store(this), self_(this, ""), name_(name), host(host),
-      port(port) {
+      port(port), event_thread([this] {
+          while (!closing.load()) {
+            event_queue.waitFor(std::chrono::milliseconds(10));
+            event_queue.process();
+          }
+      }) {
 
     // 最初のクライアント接続時にdrogonループを起動
     // もしClientがテンプレートクラスになったら使えない
@@ -56,7 +61,7 @@ void Client::reconnect() {
     if (ws && ws->getConnection()) {
         ws->getConnection()->shutdown();
     }
-    if (!closing) {
+    if (!closing.load()) {
         std::cout << "reconnect" << std::endl;
         using namespace drogon;
         ws = WebSocketClient::newWebSocketClient(host, port, false);
@@ -100,9 +105,10 @@ Client::~Client() {
     if (connection_finished.valid()) {
         connection_finished.wait();
     }
+    event_thread.join();
 }
 void Client::close() {
-    closing = true;
+    closing.store(true);
     if (ws->getConnection()) {
         ws->getConnection()->shutdown();
     }
@@ -152,13 +158,15 @@ void Client::onRecv(const std::string &message) {
     case MessageKind::value: {
         auto r = std::any_cast<WebCFace::Message::Value>(obj);
         value_store.setRecv(r.member, r.name, r.data);
-        value_change_event.dispatch(Value{this, r.member, r.name});
+        event_queue.enqueue(
+            EventKey{EventType::value_change, this, r.member, r.name});
         break;
     }
     case MessageKind::text: {
         auto r = std::any_cast<WebCFace::Message::Text>(obj);
         text_store.setRecv(r.member, r.name, r.data);
-        text_change_event.dispatch(Text{this, r.member, r.name});
+        event_queue.enqueue(
+            EventKey{EventType::text_change, this, r.member, r.name});
         break;
     }
     case MessageKind::call: {
@@ -216,7 +224,7 @@ void Client::onRecv(const std::string &message) {
         value_store.setEntry(r.name);
         text_store.setEntry(r.name);
         func_store.setEntry(r.name);
-        member_entry_event(member(r.name));
+        event_queue.enqueue(EventKey{EventType::member_entry, this, r.name});
         break;
     }
     case kind_entry(MessageKind::value): {
@@ -224,7 +232,8 @@ void Client::onRecv(const std::string &message) {
             std::any_cast<WebCFace::Message::Entry<WebCFace::Message::Value>>(
                 obj);
         value_store.setEntry(r.member, r.name);
-        value_entry_event(Value{this, r.member, r.name});
+        event_queue.enqueue(
+            EventKey{EventType::value_entry, this, r.member, r.name});
         break;
     }
     case kind_entry(MessageKind::text): {
@@ -232,20 +241,24 @@ void Client::onRecv(const std::string &message) {
             std::any_cast<WebCFace::Message::Entry<WebCFace::Message::Text>>(
                 obj);
         text_store.setEntry(r.member, r.name);
-        text_entry_event(Text{this, r.member, r.name});
+        event_queue.enqueue(
+            EventKey{EventType::text_entry, this, r.member, r.name});
         break;
     }
     case MessageKind::func_info: {
         auto r = std::any_cast<WebCFace::Message::FuncInfo>(obj);
         func_store.setEntry(r.member, r.name);
         func_store.setRecv(r.member, r.name, static_cast<FuncInfo>(r));
-        func_entry_event(Func{this, r.member, r.name});
+        event_queue.enqueue(
+            EventKey{EventType::func_entry, this, r.member, r.name});
         break;
     }
     // case :
     //     std::cerr << "Invalid Message Kind " << static_cast<int>(kind)
     //               << std::endl;
     //     break;
+    case MessageKind::unknown:
+        break;
     default:
         std::cerr << "Unknown Message Kind " << static_cast<int>(kind)
                   << std::endl;

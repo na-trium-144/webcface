@@ -5,6 +5,7 @@
 #include "val.h"
 #include "data.h"
 #include "func_info.h"
+#include "event.h"
 #include "decl.h"
 
 namespace WebCFace {
@@ -13,9 +14,10 @@ namespace WebCFace {
 class Func : public SyncData<FuncInfo> {
 
   public:
-    Func() {}
+    Func() = default;
     Func(Client *cli, const std::string &member, const std::string &name)
         : SyncData<DataType>(cli, member, name) {}
+    Func(const EventKey &key) : Func(key.cli, key.member, key.name) {}
 
     //! 関数からFuncInfoを構築しセットする
     /*! Tは任意の関数

@@ -3,14 +3,14 @@
 #include <memory>
 #include <future>
 #include <vector>
-#include <eventpp/callbacklist.h>
-#include <eventpp/eventdispatcher.h>
+#include <thread>
+#include <atomic>
+#include <eventpp/eventqueue.h>
 #include "decl.h"
 #include "data_store.h"
 #include "data.h"
 #include "func_result.h"
 #include "func.h"
-#include "data_event.h"
 #include "member.h"
 
 namespace WebCFace {
@@ -20,7 +20,7 @@ class Client {
   private:
     std::shared_ptr<drogon::WebSocketClient> ws;
     //! close()が呼ばれたらtrue
-    bool closing = false;
+    std::atomic<bool> closing = false;
     //! 接続が完了したかどうかを取得する
     std::future<void> connection_finished;
     //! 再接続
@@ -40,21 +40,10 @@ class Client {
     Member self_;
     std::string name_;
 
-    //! 特定のValueが変更された時のイベント
-    eventpp::EventDispatcher<SyncDataKey<Value::DataType>, void(Value)>
-        value_change_event;
-    //! 特定のTextが変更された時のイベント
-    eventpp::EventDispatcher<SyncDataKey<Text::DataType>, void(Text)>
-        text_change_event;
-
-    //! Memberが追加された時のイベント
-    eventpp::CallbackList<void(Member)> member_entry_event;
-    //! Valueが追加された時のイベント
-    eventpp::CallbackList<void(Value)> value_entry_event;
-    //! Textが追加された時のイベント
-    eventpp::CallbackList<void(Text)> text_entry_event;
-    //! Funcが追加された時のイベント
-    eventpp::CallbackList<void(Func)> func_entry_event;
+    //! 各種イベントを管理するキュー
+    eventpp::EventQueue<EventKey, void(const EventKey &)> event_queue;
+    //! イベントを処理するスレッド
+    std::thread event_thread;
 
     //! 受信時の処理
     void onRecv(const std::string &message);
@@ -68,6 +57,8 @@ class Client {
     friend class SyncData;
     template <typename T, typename V>
     friend class SyncDataWithEvent;
+    friend Value;
+    friend Text;
     friend Func;
     friend Member;
     template <typename V>
@@ -111,8 +102,9 @@ class Client {
         return ret;
     }
     //! Memberが追加された時のイベントリスト
-    MemberEvent<Member> membersChange() {
-        return MemberEvent<Member>{&member_entry_event};
+    EventTarget<Member> membersChange() {
+        return EventTarget<Member>{EventType::member_entry, this,
+                                   &this->event_queue};
     }
 };
 
