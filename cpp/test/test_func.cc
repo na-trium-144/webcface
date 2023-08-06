@@ -16,7 +16,7 @@ DROGON_TEST(FuncTest) {
     cli1.sync();
     cli2.sync();
     int called = 0;
-    auto m1 = cli1.self();
+    WebCFace::Member m1 = cli1;
     auto m2 = cli2.member("test1");
     auto f1a = m1.func("a") = [&called] { ++called; };
     auto f2a = m2.func("a");

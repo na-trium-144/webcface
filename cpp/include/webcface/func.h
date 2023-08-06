@@ -1,7 +1,9 @@
 #pragma once
 #include <vector>
-#include <functional>
-#include <string>
+#include "data.h"
+#include "common/func.h"
+#include "common/val.h"
+#include "func_result.h"
 
 namespace WebCFace {
 
@@ -23,14 +25,18 @@ FuncWrapperType runCondScopeGuard() {
 } // namespace FuncWrapper
 
 //! 関数1つを表すクラス
-class Func : public SyncData<FuncInfo> {
+class Func : public SyncFieldBase<FuncInfo> {
   public:
     Func() = default;
-    Func(const std::weak_ptr<ClientData> &data, const std::string &member,
-         const std::string &name)
-        : SyncData<FuncInfo>(data, member, name) {}
-    Func(const EventKey &key) : Func(key.data, key.member, key.name) {}
+    Func(const FieldBase &base) : SyncFieldBase<FuncInfo>(base) {}
+    Func(const FieldBase &base, const std::string &field)
+        : Func(FieldBase{base, field}) {}
 
+    auto &set(const FuncInfo &v) {
+        setCheck();
+        dataLock()->func_store.setSend(*this, v);
+        return *this;
+    }
     //! 関数からFuncInfoを構築しセットする
     /*! Tは任意の関数
      * 一度セットしたFuncに別の関数をセットすると、それ以降実行される関数は新しい関数になるが、
@@ -38,11 +44,8 @@ class Func : public SyncData<FuncInfo> {
      */
     template <typename T>
     auto &set(const T &func) {
-        assert(member_ == "" && "Cannot set data to member other than self");
-        auto data_s = dataLock();
-        data_s->func_store.setSend(
-            name_, FuncInfo{std::function{func}, data_s->default_func_wrapper});
-        return *this;
+        return this->set(
+            FuncInfo{std::function{func}, dataLock()->default_func_wrapper});
     }
     //! 関数からFuncInfoを構築しセットする
     template <typename T>
@@ -52,7 +55,7 @@ class Func : public SyncData<FuncInfo> {
 
     //! 値を取得する
     std::optional<FuncInfo> tryGet() const override {
-        return dataLock()->func_store.getRecv(member_, name_);
+        return dataLock()->func_store.getRecv(*this);
     }
 
     //! 関数を実行する (同期)
@@ -88,10 +91,10 @@ class Func : public SyncData<FuncInfo> {
     AsyncFuncResult &runAsync(const std::vector<ValAdaptor> &args_vec) const;
 
     //! 戻り値の型を返す
-    ValType returnType();
+    ValType returnType() const;
     //! 引数の情報を返す
     //! 変更するにはsetArgsを使う(このvectorの中身を書き換えても反映されない)
-    std::vector<Arg> args();
+    std::vector<Arg> args() const;
     //! 引数の情報を更新する
     /*!
      * setArgsで渡された引数の情報(名前など)とFuncがすでに持っている引数の情報(型など)がマージされる
@@ -117,7 +120,7 @@ class Func : public SyncData<FuncInfo> {
     /*! FuncWrapperを runCondOnSync() にする
      */
     Func &setRunCondOnSync() {
-        return setRunCond(FuncWrapper::runCondOnSync(data));
+        return setRunCond(FuncWrapper::runCondOnSync(data_w));
     }
     /*! FuncWrapperを runCondScopeGuard() にする
      */

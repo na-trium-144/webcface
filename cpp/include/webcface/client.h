@@ -5,7 +5,10 @@
 #include <vector>
 #include <thread>
 #include <atomic>
-
+#include "client_data.h"
+#include "member.h"
+#include "event_target.h"
+#include "func.h"
 
 namespace drogon {
 class WebSocketClient;
@@ -13,7 +16,7 @@ class WebSocketClient;
 
 namespace WebCFace {
 //! サーバーに接続するクライアント。
-class Client {
+class Client : public Member {
   private:
     std::shared_ptr<ClientData> data;
 
@@ -30,16 +33,11 @@ class Client {
     std::string host;
     //! サーバーのポート
     int port;
-
-
-    Member self_;
-    std::string name_;
     //! 初回のsync()で名前を送信するがそれが完了したかどうか
     bool sync_init = false;
 
     //! イベントを処理するスレッド
     std::thread event_thread;
-
     //! message_queueを処理するスレッド
     std::thread message_thread;
 
@@ -71,13 +69,6 @@ class Client {
      */
     void sync();
 
-    //! 自分自身を表すMember
-    const Member &self() const { return self_; }
-    //! 自分自身の名前
-    /*! self().name() は "" になるので注意
-     */
-    std::string name() const { return name_; }
-
     //! 他のmemberにアクセスする。
     Member member(const std::string &name) { return Member{data, name}; }
     //! サーバーに接続されている他のmemberのリストを得る。
@@ -95,7 +86,7 @@ class Client {
      * eventの設定は初回のsync()より前に行うと良い
      */
     EventTarget<Member> membersChange() {
-        return EventTarget<Member>{data, EventType::member_entry};
+        return EventTarget<Member>{EventType::member_entry, data};
     }
 
     /*!

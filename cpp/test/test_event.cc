@@ -7,12 +7,12 @@
 DROGON_TEST(EventTest) {
     WebCFace::Client cli1("test1"), cli2("test2");
     wait();
-    cli1.self().value("v") = 1;
-    cli1.self().text("t") = "aaa";
-    cli1.self().func("f") = [](int a, double b, bool c, const std::string &d) {
+    cli1.value("v") = 1;
+    cli1.text("t") = "aaa";
+    cli1.func("f") = [](int a, double b, bool c, const std::string &d) {
         return 100;
     };
-    cli1.self().func("f").setArgs({
+    cli1.func("f").setArgs({
         WebCFace::Arg("a"),
         WebCFace::Arg("b").min(-100).max(100),
         WebCFace::Arg("c").init(false),

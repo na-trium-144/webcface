@@ -1,19 +1,18 @@
+#include <webcface/client.h>
 #include <drogon/WebSocketClient.h>
 #include <drogon/HttpAppFramework.h>
 #include <future>
 #include <optional>
 #include <string>
-#include <future>
 #include <chrono>
 #include <iostream>
-#include <webcface/webcface.h>
 #include "../message/message.h"
 
 namespace WebCFace {
 
 Client::Client(const std::string &name, const std::string &host, int port)
-    : data(std::make_shared<ClientData>()), self_(data, ""), name_(name),
-      host(host), port(port), event_thread([this] {
+    : Member(), data(std::make_shared<ClientData>(name)), host(host),
+      port(port), event_thread([this] {
           while (!closing.load()) {
               data->event_queue.waitFor(std::chrono::milliseconds(10));
               data->event_queue.process();
@@ -27,6 +26,9 @@ Client::Client(const std::string &name, const std::string &host, int port)
               }
           }
       }) {
+
+    this->Member::data_w = this->data;
+    this->Member::member_ = name;
 
     // 最初のクライアント接続時にdrogonループを起動
     // もしClientがテンプレートクラスになったら使えない
@@ -130,7 +132,7 @@ void Client::send(const std::vector<char> &m) {
 void Client::sync() {
     if (connected()) {
         if (!sync_init) {
-            send(Message::pack(Message::SyncInit{{}, name_}));
+            send(Message::pack(Message::SyncInit{{}, member_}));
             sync_init = true;
         }
 
@@ -174,15 +176,15 @@ void Client::onRecv(const std::string &message) {
     case MessageKind::value: {
         auto r = std::any_cast<WebCFace::Message::Value>(obj);
         data->value_store.setRecv(r.member, r.name, r.data);
-        data->event_queue.enqueue(
-            EventKey{data, EventType::value_change, r.member, r.name});
+        data->event_queue.enqueue(EventKey{EventType::value_change,
+                                           FieldBase{data, r.member, r.name}});
         break;
     }
     case MessageKind::text: {
         auto r = std::any_cast<WebCFace::Message::Text>(obj);
         data->text_store.setRecv(r.member, r.name, r.data);
-        data->event_queue.enqueue(
-            EventKey{data, EventType::text_change, r.member, r.name});
+        data->event_queue.enqueue(EventKey{EventType::text_change,
+                                           FieldBase{data, r.member, r.name}});
         break;
     }
     case MessageKind::call: {
@@ -224,7 +226,7 @@ void Client::onRecv(const std::string &message) {
         res.started_->set_value(r.started);
         if (!r.started) {
             try {
-                throw FuncNotFound(res.member_, res.name_);
+                throw FuncNotFound(res);
             } catch (...) {
                 res.result_->set_exception(std::current_exception());
             }
@@ -252,7 +254,7 @@ void Client::onRecv(const std::string &message) {
         data->text_store.setEntry(r.member);
         data->func_store.setEntry(r.member);
         data->event_queue.enqueue(
-            EventKey{data, EventType::member_entry, r.member});
+            EventKey{EventType::member_entry, FieldBase{data, r.member}});
         break;
     }
     case kind_entry(MessageKind::value): {
@@ -260,8 +262,8 @@ void Client::onRecv(const std::string &message) {
             std::any_cast<WebCFace::Message::Entry<WebCFace::Message::Value>>(
                 obj);
         data->value_store.setEntry(r.member, r.name);
-        data->event_queue.enqueue(
-            EventKey{data, EventType::value_entry, r.member, r.name});
+        data->event_queue.enqueue(EventKey{EventType::value_entry,
+                                           FieldBase{data, r.member, r.name}});
         break;
     }
     case kind_entry(MessageKind::text): {
@@ -270,7 +272,7 @@ void Client::onRecv(const std::string &message) {
                 obj);
         data->text_store.setEntry(r.member, r.name);
         data->event_queue.enqueue(
-            EventKey{data, EventType::text_entry, r.member, r.name});
+            EventKey{EventType::text_entry, FieldBase{data, r.member, r.name}});
         break;
     }
     case MessageKind::func_info: {
@@ -278,7 +280,7 @@ void Client::onRecv(const std::string &message) {
         data->func_store.setEntry(r.member, r.name);
         data->func_store.setRecv(r.member, r.name, static_cast<FuncInfo>(r));
         data->event_queue.enqueue(
-            EventKey{data, EventType::func_entry, r.member, r.name});
+            EventKey{EventType::func_entry, FieldBase{data, r.member, r.name}});
         break;
     }
     // case :

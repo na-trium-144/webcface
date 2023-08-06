@@ -1,11 +1,8 @@
 #pragma once
-#include <string>
 #include <cassert>
-#include <eventpp/eventqueue.h>
+#include "field_base.h"
 
 namespace WebCFace {
-
-class ClientData;
 
 enum class EventType {
     none,
@@ -16,17 +13,20 @@ enum class EventType {
     value_change,
     text_change,
 };
-//! Eventの種類を表すキー、かつコールバックに返す引数
-//! Eventの各種情報と相互キャストできるようにすること。
-struct EventKey {
-    std::weak_ptr<ClientData> data;
+
+//! Eventの種類を表すキー、かつEventのコールバックに返す引数
+struct EventKey : FieldBase {
     EventType type = EventType::none;
-    std::string member = "", name = "";
 
     EventKey() = default;
-    EventKey(const std::weak_ptr<ClientData> &data, EventType type,
-             const std::string &member = "", const std::string &name = "")
-        : data(data), type(type), member(member), name(name) {}
+    //! type=member_entryの場合
+    //! memberは設定しない
+    EventKey(EventType type, const std::weak_ptr<ClientData> &data_w)
+        : FieldBase(data_w, ""), type(type) {
+        assert(type == EventType::member_entry);
+    }
+    EventKey(EventType type, const FieldBase &base)
+        : FieldBase(base), type(type) {}
 
     bool operator==(const EventKey &rhs) const {
         if (type != rhs.type) {
@@ -40,11 +40,11 @@ struct EventKey {
         case EventType::text_entry:
         case EventType::func_entry:
             // memberはキー、nameは内容
-            return member == rhs.member;
+            return member_ == rhs.member_;
         case EventType::value_change:
         case EventType::text_change:
             // member, nameがキー
-            return member == rhs.member && name == rhs.name;
+            return member_ == rhs.member_ && field_ == rhs.field_;
         default:
             assert(!"unknown event");
         }
@@ -62,18 +62,16 @@ struct EventKey {
         case EventType::text_entry:
         case EventType::func_entry:
             // memberはキー、nameは内容
-            return member < rhs.member;
+            return member_ < rhs.member_;
         case EventType::value_change:
         case EventType::text_change:
             // member, nameがキー
-            return member < rhs.member ||
-                   (member == rhs.member && name < rhs.name);
+            return member_ < rhs.member_ ||
+                   (member_ == rhs.member_ && field_ < rhs.field_);
         default:
             assert(!"unknown event");
         }
     }
 };
-
-using EventQueue = eventpp::EventQueue<EventKey, void(const EventKey &)>;
 
 } // namespace WebCFace

@@ -9,14 +9,14 @@ DROGON_TEST(ValueTest) {
     const int v = 1;
     const std::string t = "aaa";
     wait();
-    cli1.self().value("v") = v;
-    cli1.self().text("t") = t;
+    cli1.value("v") = v;
+    cli1.text("t") = t;
     bool cli1_ev = false;
     cli1.sync();
     cli2.sync();
     wait();
-    CHECK(cli1.self().value("v") == v);
-    CHECK(cli1.self().text("t") == t);
+    CHECK(cli1.value("v") == v);
+    CHECK(cli1.text("t") == t);
     // 1回目は無
     CHECK(cli1.member("test1").value("v").tryGet() == std::nullopt);
     CHECK(cli1.member("test1").value("v") == 0);

@@ -1,4 +1,4 @@
-#include <webcface/webcface.h>
+#include <webcface/func.h>
 #include <thread>
 #include <chrono>
 #include "../message/message.h"
@@ -26,13 +26,14 @@ auto &operator<<(std::basic_ostream<char> &os, const AsyncFuncResult &r) {
 }
 
 ValAdaptor Func::run(const std::vector<ValAdaptor> &args_vec) const {
-    if (member_ == "") {
+    auto data = dataLock();
+    if (data->isSelf(*this)) {
         // selfの場合このスレッドでそのまま関数を実行する
-        auto func_info = dataLock()->func_store.getRecv("", name_);
+        auto func_info = data->func_store.getRecv(*this);
         if (func_info) {
             return func_info->run(args_vec);
         } else {
-            throw FuncNotFound(member_, name_);
+            throw FuncNotFound(*this);
         }
     } else {
         // リモートの場合runAsyncし結果が返るまで待機
@@ -42,13 +43,12 @@ ValAdaptor Func::run(const std::vector<ValAdaptor> &args_vec) const {
     }
 }
 AsyncFuncResult &Func::runAsync(const std::vector<ValAdaptor> &args_vec) const {
-    auto data_s = dataLock();
-    auto &r = data_s->func_result_store.addResult(data, "", member_, name_);
+    auto data = dataLock();
+    auto &r = data->func_result_store.addResult("", *this);
     if (member_ == "") {
         // selfの場合、新しいAsyncFuncResultに別スレッドで実行した結果を入れる
-        std::thread([data_s, member_ = this->member_, name_ = this->name_,
-                     args_vec, r] {
-            auto func_info = data_s->func_store.getRecv("", name_);
+        std::thread([data, base = *this, args_vec, r] {
+            auto func_info = data->func_store.getRecv(base);
             if (func_info) {
                 r.started_->set_value(true);
                 try {
@@ -60,7 +60,7 @@ AsyncFuncResult &Func::runAsync(const std::vector<ValAdaptor> &args_vec) const {
             } else {
                 r.started_->set_value(false);
                 try {
-                    throw FuncNotFound(member_, name_);
+                    throw FuncNotFound(base);
                 } catch (...) {
                     r.result_->set_exception(std::current_exception());
                 }
@@ -68,22 +68,22 @@ AsyncFuncResult &Func::runAsync(const std::vector<ValAdaptor> &args_vec) const {
         }).detach();
     } else {
         // リモートの場合cli.sync()を待たずに呼び出しメッセージを送る
-        data_s->message_queue.push(Message::pack(Message::Call{
-            FuncCall{r.caller_id, "", member_, name_, args_vec}}));
+        data->message_queue.push(Message::pack(Message::Call{
+            FuncCall{r.caller_id, "", member_, field_, args_vec}}));
         // resultはcli.onRecv内でセットされる。
     }
     return r;
 }
 
-ValType Func::returnType() {
-    auto func_info = dataLock()->func_store.getRecv(member_, name_);
+ValType Func::returnType() const {
+    auto func_info = dataLock()->func_store.getRecv(*this);
     if (func_info) {
         return func_info->return_type;
     }
     return ValType::none_;
 }
-std::vector<Arg> Func::args() {
-    auto func_info = dataLock()->func_store.getRecv(member_, name_);
+std::vector<Arg> Func::args() const {
+    auto func_info = dataLock()->func_store.getRecv(*this);
     if (func_info) {
         return func_info->args;
     }
@@ -91,25 +91,24 @@ std::vector<Arg> Func::args() {
 }
 Func &Func::setArgs(const std::vector<Arg> &args) {
     assert(member_ == "" && "Cannot set data to member other than self");
-    auto data_s = dataLock();
-    auto func_info = data_s->func_store.getRecv(member_, name_);
+    auto data = dataLock();
+    auto func_info = data->func_store.getRecv(*this);
     assert(func_info != std::nullopt && "Func not set");
     assert(func_info->args.size() == args.size() &&
            "Number of args does not match");
     for (std::size_t i = 0; i < args.size(); i++) {
         func_info->args[i].mergeConfig(args[i]);
     }
-    data_s->func_store.setSend(name_, *func_info);
+    set(*func_info);
     return *this;
 }
 
 Func &Func::setRunCond(FuncWrapperType wrapper) {
-    assert(member_ == "" && "Cannot set data to member other than self");
-    auto data_s = dataLock();
-    auto func_info = data_s->func_store.getRecv(member_, name_);
+    auto data = dataLock();
+    auto func_info = data->func_store.getRecv(*this);
     assert(func_info != std::nullopt && "Func not set");
     func_info->func_wrapper = wrapper;
-    data_s->func_store.setSend(name_, *func_info);
+    set(*func_info);
     return *this;
 }
 

@@ -13,13 +13,13 @@ double hello2(int a, double b, bool c, std::string d) {
 }
 int main() {
     WebCFace::Client c("example_simple");
-    c.self().value("test") = 0;
-    c.self().func("hello") = hello;
-    c.self().func("hello2") = hello2;
+    c.value("test") = 0;
+    c.func("hello") = hello;
+    c.func("hello2") = hello2;
     while (true) {
         std::this_thread::yield();
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
-        c.self().value("test") += 1;
+        c.value("test") += 1;
         c.sync();
     }
 }

@@ -1,41 +1,39 @@
 #pragma once
-#include <string>
 #include <istream>
 #include <ostream>
 #include <optional>
-#include <stdexcept>
+#include <cassert>
+#include "field_base.h"
+#include "client_data.h"
+#include "event_target.h"
 
 namespace WebCFace {
 
-//! データの参照先を表すクラス。
+//! フィールドを参照するインタフェースを持つクラス
 template <typename T>
-class SyncData {
+class SyncFieldBase : protected FieldBase {
+  public:
+    SyncFieldBase() = default;
+    SyncFieldBase(const FieldBase &base) : FieldBase(base) {}
+
+    //! Memberを返す
+    Member member() const { return *this; }
+    //! field名を返す
+    std::string name() const { return field_; }
+
+
   protected:
-    std::weak_ptr<ClientData> data;
-    std::string member_, name_;
-    //! weak_ptrをlockして返す
-    auto dataLock() const {
-        if (auto data_s = this->SyncData<T>::data.lock()) {
-            return data_s;
-        }
-        throw std::runtime_error("Cannot access client data");
+    void setCheck() const {
+        assert(dataLock()->isSelf(*this) &&
+               "Cannot set data to member other than self");
     }
 
   public:
-    SyncData() = default;
-    SyncData(const std::weak_ptr<ClientData> &data, const std::string &member,
-             const std::string &name)
-        : data(data), member_(member), name_(name) {}
-
-    //! 参照先のMemberを返す
-    Member member() const { return Member{data, member_}; }
-    //! 参照先のデータ名を返す
-    std::string name() const { return name_; }
-
-    //! 値を取得する
+    //! 値を取得できるかチェックする
+    //! 取得できなければリクエストする
     virtual std::optional<T> tryGet() const = 0;
     //! 値を取得する
-    //! todo: 引数
+    //! todo: 引数でタイムアウトとか設定できるようにする
     T get() const {
         auto v = tryGet();
         if (v) {
@@ -48,50 +46,36 @@ class SyncData {
     operator T() const { return get(); }
 };
 
-/*template <typename T>
-auto &operator>>(std::basic_istream<char> &is, SyncData<T> &data) {
-    T v;
-    is >> v;
-    data.set(v);
-    return is;
-}
-template <typename T>
-auto &operator>>(std::basic_istream<char> &is, SyncData<T> &&data) {
-    SyncData<T> d = data;
-    return is >> d;
-}*/
-template <typename T>
-auto &operator<<(std::basic_ostream<char> &os, const SyncData<T> &data) {
-    return os << data.get();
-}
-
 //! 実数値を扱う
-class Value : public SyncData<double>, public EventTarget<Value> {
+class Value : public SyncFieldBase<double>, public EventTarget<Value> {
+    using SyncFieldBase<double>::FieldBase::dataLock;
+
   public:
     Value() = default;
-    Value(const std::weak_ptr<ClientData> &data, const std::string &member,
-          const std::string &name)
-        : SyncData<double>(data, member, name),
-          EventTarget<Value>(data, EventType::value_change, member, name,
+    Value(const FieldBase &base)
+        : SyncFieldBase<double>(base),
+          EventTarget<Value>(EventType::value_change, base,
                              [this] { this->tryGet(); }) {}
-    Value(const EventKey &key) : Value(key.data, key.member, key.name) {}
+    Value(const FieldBase &base, const std::string &field)
+        : Value(FieldBase{base, field}) {}
 
-    //! 値をセットし、EventTargetを発動するためoverload
+    //! 値をセットし、EventTargetを発動する
     auto &set(double v) {
-        assert(member_ == "" && "Cannot set data to member other than self");
-        dataLock()->value_store.setSend(name_, v);
+        setCheck();
+        dataLock()->value_store.setSend(*this, v);
         this->triggerEvent();
         return *this;
-    }
-    //! 値を取得する
-    std::optional<double> tryGet() const override {
-        return dataLock()->value_store.getRecv(member_, name_);
     }
 
     //! 値をセットする
     auto &operator=(double v) {
         this->set(v);
         return *this;
+    }
+
+    //! 値を取得する
+    std::optional<double> tryGet() const override {
+        return dataLock()->value_store.getRecv(*this);
     }
 
     auto &operator+=(double rhs) {
@@ -159,37 +143,45 @@ class Value : public SyncData<double>, public EventTarget<Value> {
 };
 
 // 文字列を扱う
-class Text : public SyncData<std::string>, public EventTarget<Text> {
+class Text : public SyncFieldBase<std::string>, public EventTarget<Text> {
+    using SyncFieldBase<std::string>::FieldBase::dataLock;
+
   public:
     Text() = default;
-    Text(const std::weak_ptr<ClientData> &data, const std::string &member,
-         const std::string &name)
-        : SyncData<std::string>(data, member, name),
-          EventTarget<Text>(data, EventType::text_change, member, name,
+    Text(const FieldBase &base)
+        : SyncFieldBase<std::string>(base),
+          EventTarget<Text>(EventType::value_change, base,
                             [this] { this->tryGet(); }) {}
-    Text(const EventKey &key)
-        : Text(key.data, key.member, key.name) {}
+    Text(const FieldBase &base, const std::string &field)
+        : Text(FieldBase{base, field}) {}
 
-    //! 値をセットし、EventTargetを発動するためoverload
+    //! 値をセットし、EventTargetを発動する
     auto &set(const std::string &v) {
-        assert(member_ == "" && "Cannot set data to member other than self");
-        dataLock()->text_store.setSend(name_, v);
-        this->triggerEvent();
+        setCheck();
+        dataLock()->text_store.setSend(*this, v);
+        triggerEvent();
         return *this;
     }
-    //! 値を取得する
-    std::optional<std::string> tryGet() const override {
-        return dataLock()->text_store.getRecv(member_, name_);
-    }
+
     //! 値をセットする
     auto &operator=(const std::string &v) {
         this->set(v);
         return *this;
     }
 
+    //! 値を取得する
+    std::optional<std::string> tryGet() const override {
+        return dataLock()->text_store.getRecv(*this);
+    }
+
     bool operator==(const std::string &rhs) const { return this->get() == rhs; }
     bool operator!=(const std::string &rhs) const { return this->get() != rhs; }
 };
 
-
+inline auto &operator<<(std::basic_ostream<char> &os, const Value &data) {
+    return os << data.get();
+}
+inline auto &operator<<(std::basic_ostream<char> &os, const Text &data) {
+    return os << data.get();
+}
 } // namespace WebCFace

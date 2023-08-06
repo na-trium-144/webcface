@@ -8,6 +8,11 @@
 #include <chrono>
 #include <optional>
 #include <string>
+#include <eventpp/eventqueue.h>
+#include "func_result.h"
+#include "common/func.h"
+#include "event_key.h"
+#include "field_base.h"
 
 namespace WebCFace {
 struct ClientData {
@@ -26,7 +31,6 @@ struct ClientData {
         std::unordered_map<std::string, T> data_send;
         //! 送信済みデータ&受信済みデータ
         /*! data_recv[member名][データ名] = 値
-         * 送信済みデータを member名="" として表す
          */
         std::unordered_map<std::string, std::unordered_map<std::string, T>>
             data_recv;
@@ -47,24 +51,48 @@ struct ClientData {
         std::unordered_map<std::string, std::unordered_map<std::string, bool>>
             req_send;
 
+        std::string self_member_name;
+        bool isSelf(const std::string &member) {
+            return member == self_member_name;
+        }
+
       public:
-        //! 送信するデータをdata_sendとdata_recv[""]にデータをセット
+        SyncDataStore(const std::string &name) : self_member_name(name) {}
+
+        //! 送信するデータをdata_sendとdata_recv[self_member_name]にセット
         void setSend(const std::string &name, const T &data);
+        void setSend(const FieldBase &base, const T &data) {
+            setSend(base.field_, data);
+        }
         //! 受信したデータをdata_recvにセット
         void setRecv(const std::string &from, const std::string &name,
                      const T &data);
+        void setRecv(const FieldBase &base, const T &data) {
+            setRecv(base.member_, base.field_, data);
+        }
         //! data_recvからデータを返す or なければreq,req_sendをtrueにセット
         std::optional<T> getRecv(const std::string &from,
                                  const std::string &name);
+        std::optional<T> getRecv(const FieldBase &base) {
+            return getRecv(base.member_, base.field_);
+        }
         //! data_recvからデータを削除, req,req_sendをfalseにする
         void unsetRecv(const std::string &from, const std::string &name);
+        void unsetRecv(const FieldBase &base) {
+            unsetRecv(base.member_, base.field_);
+        }
 
         //! entryにmember名のみ追加
+        //! ambiguousなので引数にFieldBaseは使わない (そもそも必要ない)
         void setEntry(const std::string &from);
         //! 受信したentryを追加
         void setEntry(const std::string &from, const std::string &e);
+
         //! entryを取得
         std::vector<std::string> getEntry(const std::string &from);
+        std::vector<std::string> getEntry(const FieldBase &base) {
+            return getEntry(base.member_);
+        }
         //! member名のりすとを取得(entryから)
         std::vector<std::string> getMembers();
 
@@ -86,10 +114,8 @@ struct ClientData {
 
       public:
         //! 新しいcaller_idを振って新しいAsyncFuncResultを生成しそれを返す
-        AsyncFuncResult &addResult(const std::weak_ptr<ClientData> &data,
-                                   const std::string &caller,
-                                   const std::string &member,
-                                   const std::string &name);
+        AsyncFuncResult &addResult(const std::string &caller,
+                                   const FieldBase &base);
         //! caller_idに対応するresultを返す
         AsyncFuncResult &getResult(int caller_id);
     };
@@ -141,12 +167,23 @@ struct ClientData {
         void done() { return_cond.notify_all(); }
     };
 
+    explicit ClientData(const std::string &name)
+        : self_member_name(name), value_store(name), text_store(name),
+          func_store(name) {}
+
+    //! Client自身の名前
+    std::string self_member_name;
+    bool isSelf(const FieldBase &base) {
+        return base.member_ == self_member_name;
+    }
+
     SyncDataStore<double> value_store;
     SyncDataStore<std::string> text_store;
     SyncDataStore<FuncInfo> func_store;
 
     FuncResultStore func_result_store;
 
+    using EventQueue = eventpp::EventQueue<EventKey, void(const EventKey &)>;
     //! 各種イベントを管理するキュー
     EventQueue event_queue;
 

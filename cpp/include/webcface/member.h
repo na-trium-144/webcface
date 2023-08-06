@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-#include <eventpp/callbacklist.h>
+#include "field_base.h"
 
 namespace WebCFace {
 
@@ -12,24 +12,22 @@ class Func;
 class ClientData;
 
 //! 他のクライアントを参照することを表すクラス
-class Member {
-    std::weak_ptr<ClientData> data;
-    std::string name_;
-
+class Member : protected FieldBase {
   public:
     Member() = default;
-    Member(const std::weak_ptr<ClientData> &data, const std::string &name)
-        : data(data), name_(name) {}
-    Member(const EventKey &key) : Member(key.data, key.member) {}
+    Member(const std::weak_ptr<ClientData> &data_w, const std::string &member)
+        : FieldBase(data_w, member) {}
+    Member(const FieldBase &base) : FieldBase(base) {}
 
-    std::string name() const { return name_; }
+    //! Member名
+    std::string name() const { return member_; }
 
     //! このmemberの指定した名前のvalueを参照する。
-    Value value(const std::string &name) const;
+    Value value(const std::string &field) const;
     //! このmemberの指定した名前のtextを参照する。
-    Text text(const std::string &name) const;
+    Text text(const std::string &field) const;
     //! このmemberの指定した名前のfuncを参照する。
-    Func func(const std::string &name) const;
+    Func func(const std::string &field) const;
 
     //! このmemberが公開しているvalueのリストを返す。
     std::vector<Value> values() const;

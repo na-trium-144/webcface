@@ -1,17 +1,17 @@
-#include <webcface/webcface.h>
-#include <cassert>
-#include <type_traits>
+#include <webcface/client_data.h>
 
 namespace WebCFace {
 template <typename T>
-void ClientData::SyncDataStore<T>::setSend(const std::string &name, const T &data) {
+void ClientData::SyncDataStore<T>::setSend(const std::string &name,
+                                           const T &data) {
     std::lock_guard lock(mtx);
     data_send[name] = data;
-    data_recv[""][name] = data; // 送信後に自分の値を参照する用
+    data_recv[self_member_name][name] = data; // 送信後に自分の値を参照する用
 }
 template <typename T>
-void ClientData::SyncDataStore<T>::setRecv(const std::string &from, const std::string &name,
-                               const T &data) {
+void ClientData::SyncDataStore<T>::setRecv(const std::string &from,
+                                           const std::string &name,
+                                           const T &data) {
     std::lock_guard lock(mtx);
     data_recv[from][name] = data;
 }
@@ -26,7 +26,8 @@ std::vector<std::string> ClientData::SyncDataStore<T>::getMembers() {
     return k;
 }
 template <typename T>
-std::vector<std::string> ClientData::SyncDataStore<T>::getEntry(const std::string &name) {
+std::vector<std::string>
+ClientData::SyncDataStore<T>::getEntry(const std::string &name) {
     std::lock_guard lock(mtx);
     auto e = entry.find(name);
     if (e != entry.end()) {
@@ -41,15 +42,17 @@ void ClientData::SyncDataStore<T>::setEntry(const std::string &from) {
     entry.emplace(std::make_pair(from, std::vector<std::string>{}));
 }
 template <typename T>
-void ClientData::SyncDataStore<T>::setEntry(const std::string &from, const std::string &e) {
+void ClientData::SyncDataStore<T>::setEntry(const std::string &from,
+                                            const std::string &e) {
     std::lock_guard lock(mtx);
     entry[from].push_back(e);
 }
 template <typename T>
-std::optional<T> ClientData::SyncDataStore<T>::getRecv(const std::string &from,
-                                           const std::string &name) {
+std::optional<T>
+ClientData::SyncDataStore<T>::getRecv(const std::string &from,
+                                      const std::string &name) {
     std::lock_guard lock(mtx);
-    if (from != "" && (!req.count(from) || !req.at(from).count(name))) {
+    if (!isSelf(from) && (!req.count(from) || !req.at(from).count(name))) {
         req[from][name] = true;
         req_send[from][name] = true;
     }
@@ -64,9 +67,9 @@ std::optional<T> ClientData::SyncDataStore<T>::getRecv(const std::string &from,
 }
 template <typename T>
 void ClientData::SyncDataStore<T>::unsetRecv(const std::string &from,
-                                 const std::string &name) {
+                                             const std::string &name) {
     std::lock_guard lock(mtx);
-    if (from != "" && (req.count(from) && req.at(from).count(name))) {
+    if (!isSelf(from) && (req.count(from) && req.at(from).count(name))) {
         req.at(from).erase(name);
         req_send[from][name] = false;
     }
@@ -75,7 +78,8 @@ void ClientData::SyncDataStore<T>::unsetRecv(const std::string &from,
     }
 }
 template <typename T>
-std::unordered_map<std::string, T> ClientData::SyncDataStore<T>::transferSend() {
+std::unordered_map<std::string, T>
+ClientData::SyncDataStore<T>::transferSend() {
     std::lock_guard lock(mtx);
     return std::move(data_send);
 }
@@ -91,12 +95,12 @@ template class ClientData::SyncDataStore<std::string>;
 template class ClientData::SyncDataStore<FuncInfo>;
 
 
-AsyncFuncResult &ClientData::FuncResultStore::addResult(
-    const std::weak_ptr<ClientData> &data, const std::string &caller,
-    const std::string &member, const std::string &name) {
+AsyncFuncResult &
+ClientData::FuncResultStore::addResult(const std::string &caller,
+                                       const FieldBase &base) {
     std::lock_guard lock(mtx);
     int caller_id = results.size();
-    results.push_back(AsyncFuncResult{data, caller_id, caller, member, name});
+    results.push_back(AsyncFuncResult{caller_id, caller, base});
     return results.back();
 }
 AsyncFuncResult &ClientData::FuncResultStore::getResult(int caller_id) {
