@@ -18,12 +18,8 @@ DROGON_TEST(ValueTest) {
     CHECK(cli1.value("v") == v);
     CHECK(cli1.text("t") == t);
     // 1回目は無
-    CHECK(cli1.member("test1").value("v").tryGet() == std::nullopt);
-    CHECK(cli1.member("test1").value("v") == 0);
     CHECK(cli2.member("test1").value("v").tryGet() == std::nullopt);
     CHECK(cli2.member("test1").value("v") == 0);
-    CHECK(cli1.member("test1").text("t").tryGet() == std::nullopt);
-    CHECK(cli1.member("test1").text("t") == "");
     CHECK(cli2.member("test1").text("t").tryGet() == std::nullopt);
     CHECK(cli2.member("test1").text("t") == "");
 

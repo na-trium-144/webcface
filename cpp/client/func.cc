@@ -45,7 +45,7 @@ ValAdaptor Func::run(const std::vector<ValAdaptor> &args_vec) const {
 AsyncFuncResult &Func::runAsync(const std::vector<ValAdaptor> &args_vec) const {
     auto data = dataLock();
     auto &r = data->func_result_store.addResult("", *this);
-    if (member_ == "") {
+    if (data->isSelf(*this)) {
         // selfの場合、新しいAsyncFuncResultに別スレッドで実行した結果を入れる
         std::thread([data, base = *this, args_vec, r] {
             auto func_info = data->func_store.getRecv(base);
@@ -90,7 +90,6 @@ std::vector<Arg> Func::args() const {
     return std::vector<Arg>{};
 }
 Func &Func::setArgs(const std::vector<Arg> &args) {
-    assert(member_ == "" && "Cannot set data to member other than self");
     auto data = dataLock();
     auto func_info = data->func_store.getRecv(*this);
     assert(func_info != std::nullopt && "Func not set");

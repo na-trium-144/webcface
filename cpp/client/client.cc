@@ -190,7 +190,7 @@ void Client::onRecv(const std::string &message) {
     case MessageKind::call: {
         auto r = std::any_cast<WebCFace::Message::Call>(obj);
         std::thread([data = this->data, r] {
-            auto func_info = data->func_store.getRecv("", r.name);
+            auto func_info = data->func_store.getRecv(data->self_member_name, r.name);
             if (func_info) {
                 data->message_queue.push(
                     WebCFace::Message::pack(WebCFace::Message::CallResponse{
@@ -244,7 +244,7 @@ void Client::onRecv(const std::string &message) {
             }
         } else {
             // todo: 戻り値の型?
-            res.result_->set_value(ValAdaptor{r.is_error ? "" : r.result});
+            res.result_->set_value(ValAdaptor{r.result});
         }
         break;
     }

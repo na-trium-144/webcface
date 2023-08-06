@@ -150,7 +150,7 @@ class Text : public SyncFieldBase<std::string>, public EventTarget<Text> {
     Text() = default;
     Text(const FieldBase &base)
         : SyncFieldBase<std::string>(base),
-          EventTarget<Text>(EventType::value_change, base,
+          EventTarget<Text>(EventType::text_change, base,
                             [this] { this->tryGet(); }) {}
     Text(const FieldBase &base, const std::string &field)
         : Text(FieldBase{base, field}) {}
