@@ -12,6 +12,8 @@ namespace WebCFace {
 inline namespace Common {
 
 using FuncType = std::function<ValAdaptor(const std::vector<ValAdaptor> &)>;
+using FuncWrapperType =
+    std::function<ValAdaptor(FuncType, const std::vector<ValAdaptor> &)>;
 
 //! 引数の情報を表す。
 //! func.setArg({ Arg(引数名).init(初期値).min(最小値).max(最大値), ... });
@@ -132,11 +134,20 @@ struct FuncInfo {
     ValType return_type;
     std::vector<Arg> args;
     FuncType func_impl;
+    FuncWrapperType func_wrapper;
+    auto run(const std::vector<ValAdaptor> &args) {
+        if (func_wrapper) {
+            return func_wrapper(func_impl, args);
+        } else {
+            return func_impl(args);
+        }
+    }
 
-    FuncInfo() : return_type(ValType::none_), args(), func_impl() {}
+    FuncInfo()
+        : return_type(ValType::none_), args(), func_impl(), func_wrapper() {}
     //! 任意の関数を受け取り、引数と戻り値をキャストして実行する関数を保存
     template <typename... Args, typename Ret>
-    explicit FuncInfo(std::function<Ret(Args...)> func)
+    explicit FuncInfo(std::function<Ret(Args...)> func, FuncWrapperType wrapper)
         : return_type(valTypeOf<Ret>()), args({Arg{valTypeOf<Args>()}...}),
           func_impl([func](const std::vector<ValAdaptor> &args_vec) {
               std::tuple<std::remove_const_t<std::remove_reference_t<Args>>...>
@@ -154,7 +165,8 @@ struct FuncInfo {
                   Ret ret = std::apply(func, args_tuple);
                   return static_cast<ValAdaptor>(ret);
               }
-          }) {}
+          }),
+          func_wrapper(wrapper) {}
 };
 
 //! 関数を呼び出すのに必要なデータ。client_data->client->server->clientと送られる

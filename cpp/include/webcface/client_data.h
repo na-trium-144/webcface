@@ -94,6 +94,7 @@ struct ClientData {
         AsyncFuncResult &getResult(int caller_id);
     };
 
+    //! 排他制御をしたただのキュー
     template <typename T>
     class Queue {
         std::mutex mtx;
@@ -108,8 +109,8 @@ struct ClientData {
             }
             cond.notify_one();
         }
-        template <typename Dur>
-        std::optional<T> pop(const Dur &d) {
+        template <typename Dur = std::chrono::milliseconds>
+        std::optional<T> pop(const Dur &d = std::chrono::milliseconds(0)) {
             std::unique_lock lock(mtx);
             if (cond.wait_for(lock, d, [this] { return !que.empty(); })) {
                 auto c = que.front();
@@ -118,6 +119,26 @@ struct ClientData {
             }
             return std::nullopt;
         }
+    };
+
+    //! clientがsync()されたタイミングで実行中の関数を起こす
+    //! さらにその関数が完了するまで待機する
+    struct FuncOnSync {
+        std::mutex call_mtx, return_mtx;
+        std::condition_variable call_cond, return_cond;
+        //! sync()側が関数を起こし完了まで待機
+        void sync() {
+            std::unique_lock return_lock(return_mtx);
+            call_cond.notify_all();
+            return_cond.wait(return_lock);
+        }
+        //! 関数側がsync()まで待機
+        void wait() {
+            std::unique_lock call_lock(call_mtx);
+            call_cond.wait(call_lock);
+        }
+        //! 関数側が完了を通知
+        void done() { return_cond.notify_all(); }
     };
 
     SyncDataStore<double> value_store;
@@ -129,6 +150,12 @@ struct ClientData {
     //! 各種イベントを管理するキュー
     EventQueue event_queue;
 
-    Queue<FuncCall> func_call_queue;
+    //! sync()を待たずに即時送って欲しいメッセージを入れるキュー
+    Queue<std::vector<char>> message_queue;
+
+    //! sync()のタイミングで実行を同期する関数のcondition_variable
+    Queue<std::shared_ptr<FuncOnSync>> func_sync_queue;
+
+    FuncWrapperType default_func_wrapper;
 };
 } // namespace WebCFace

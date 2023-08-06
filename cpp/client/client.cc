@@ -19,12 +19,11 @@ Client::Client(const std::string &name, const std::string &host, int port)
               data->event_queue.process();
           }
       }),
-      func_call_thread([this] {
+      message_thread([this] {
           while (!closing.load()) {
-              auto call =
-                  data->func_call_queue.pop(std::chrono::milliseconds(10));
-              if (call) {
-                  this->send(Message::pack(Message::Call{*call}));
+              auto msg = data->message_queue.pop(std::chrono::milliseconds(10));
+              if (msg) {
+                  this->send(*msg);
               }
           }
       }) {
@@ -114,7 +113,7 @@ Client::~Client() {
         connection_finished.wait();
     }
     event_thread.join();
-    func_call_thread.join();
+    message_thread.join();
 }
 void Client::close() {
     closing.store(true);
@@ -162,6 +161,9 @@ void Client::sync() {
             send(Message::pack(Message::FuncInfo{"", v.first, v.second}));
         }
     }
+    while (auto func_sync = data->func_sync_queue.pop()) {
+        (*func_sync)->sync();
+    }
 }
 void Client::onRecv(const std::string &message) {
     using MessageKind = WebCFace::Message::MessageKind;
@@ -185,22 +187,33 @@ void Client::onRecv(const std::string &message) {
     }
     case MessageKind::call: {
         auto r = std::any_cast<WebCFace::Message::Call>(obj);
-        auto &async_res = self().func(r.name).runAsync(r.args);
-        std::thread([this, &async_res, r] {
-            bool started = async_res.started.get();
-            send(WebCFace::Message::pack(WebCFace::Message::CallResponse{
-                {}, r.caller_id, r.caller, started}));
-            if (started) {
+        std::thread([data = this->data, r] {
+            auto func_info = data->func_store.getRecv("", r.name);
+            if (func_info) {
+                data->message_queue.push(
+                    WebCFace::Message::pack(WebCFace::Message::CallResponse{
+                        {}, r.caller_id, r.caller, true}));
+                ValAdaptor result;
                 bool is_error = false;
-                std::string result;
                 try {
-                    result = async_res.result.get();
+                    result = func_info->run(r.args);
                 } catch (const std::exception &e) {
                     is_error = true;
                     result = e.what();
+                } catch (const std::string &e) {
+                    is_error = true;
+                    result = e;
+                } catch (...) {
+                    is_error = true;
+                    result = "unknown exception";
                 }
-                send(WebCFace::Message::pack(WebCFace::Message::CallResult{
-                    {}, r.caller_id, r.caller, is_error, result}));
+                data->message_queue.push(
+                    WebCFace::Message::pack(WebCFace::Message::CallResult{
+                        {}, r.caller_id, r.caller, is_error, result}));
+            } else {
+                data->message_queue.push(
+                    WebCFace::Message::pack(WebCFace::Message::CallResponse{
+                        {}, r.caller_id, r.caller, false}));
             }
         }).detach();
         break;

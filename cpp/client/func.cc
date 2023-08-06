@@ -30,7 +30,7 @@ ValAdaptor Func::run(const std::vector<ValAdaptor> &args_vec) const {
         // selfの場合このスレッドでそのまま関数を実行する
         auto func_info = dataLock()->func_store.getRecv("", name_);
         if (func_info) {
-            return func_info->func_impl(args_vec);
+            return func_info->run(args_vec);
         } else {
             throw FuncNotFound(member_, name_);
         }
@@ -46,12 +46,13 @@ AsyncFuncResult &Func::runAsync(const std::vector<ValAdaptor> &args_vec) const {
     auto &r = data_s->func_result_store.addResult(data, "", member_, name_);
     if (member_ == "") {
         // selfの場合、新しいAsyncFuncResultに別スレッドで実行した結果を入れる
-        std::thread([data_s, member_ = this->member_, name_ = this->name_, args_vec, r] {
+        std::thread([data_s, member_ = this->member_, name_ = this->name_,
+                     args_vec, r] {
             auto func_info = data_s->func_store.getRecv("", name_);
             if (func_info) {
                 r.started_->set_value(true);
                 try {
-                    auto ret = func_info->func_impl(args_vec);
+                    auto ret = func_info->run(args_vec);
                     r.result_->set_value(ret);
                 } catch (...) {
                     r.result_->set_exception(std::current_exception());
@@ -67,8 +68,8 @@ AsyncFuncResult &Func::runAsync(const std::vector<ValAdaptor> &args_vec) const {
         }).detach();
     } else {
         // リモートの場合cli.sync()を待たずに呼び出しメッセージを送る
-        data_s->func_call_queue.push(
-            {r.caller_id, "", member_, name_, args_vec});
+        data_s->message_queue.push(Message::pack(Message::Call{
+            FuncCall{r.caller_id, "", member_, name_, args_vec}}));
         // resultはcli.onRecv内でセットされる。
     }
     return r;
@@ -90,16 +91,51 @@ std::vector<Arg> Func::args() {
 }
 Func &Func::setArgs(const std::vector<Arg> &args) {
     assert(member_ == "" && "Cannot set data to member other than self");
-    auto func_info = dataLock()->func_store.getRecv(member_, name_);
+    auto data_s = dataLock();
+    auto func_info = data_s->func_store.getRecv(member_, name_);
     assert(func_info != std::nullopt && "Func not set");
     assert(func_info->args.size() == args.size() &&
            "Number of args does not match");
     for (std::size_t i = 0; i < args.size(); i++) {
         func_info->args[i].mergeConfig(args[i]);
     }
-    dataLock()->func_store.setSend(name_, *func_info);
+    data_s->func_store.setSend(name_, *func_info);
     return *this;
 }
 
+Func &Func::setRunCond(FuncWrapperType wrapper) {
+    assert(member_ == "" && "Cannot set data to member other than self");
+    auto data_s = dataLock();
+    auto func_info = data_s->func_store.getRecv(member_, name_);
+    assert(func_info != std::nullopt && "Func not set");
+    func_info->func_wrapper = wrapper;
+    data_s->func_store.setSend(name_, *func_info);
+    return *this;
+}
+
+FuncWrapperType
+FuncWrapper::runCondOnSync(const std::weak_ptr<ClientData> &data) {
+    return [data](FuncType callback, const std::vector<ValAdaptor> &args) {
+        auto data_s = data.lock();
+        if (data_s) {
+            auto sync = std::make_shared<ClientData::FuncOnSync>();
+            data_s->func_sync_queue.push(sync);
+            struct ScopeGuard {
+                std::shared_ptr<ClientData::FuncOnSync> sync;
+                explicit ScopeGuard(
+                    const std::shared_ptr<ClientData::FuncOnSync> &sync)
+                    : sync(sync) {
+                    sync->wait();
+                }
+                ~ScopeGuard() { sync->done(); }
+            };
+            {
+                ScopeGuard scope_guard{sync};
+                return callback(args);
+            }
+        }
+        return ValAdaptor{};
+    };
+}
 
 } // namespace WebCFace

@@ -40,8 +40,8 @@ class Client {
     //! イベントを処理するスレッド
     std::thread event_thread;
 
-    //! func_call_queueを処理するスレッド
-    std::thread func_call_thread;
+    //! message_queueを処理するスレッド
+    std::thread message_thread;
 
     //! 受信時の処理
     void onRecv(const std::string &message);
@@ -96,6 +96,29 @@ class Client {
      */
     EventTarget<Member> membersChange() {
         return EventTarget<Member>{data, EventType::member_entry};
+    }
+
+    /*!
+     * これ以降セットするFuncのデフォルトのFuncWrapperをセットする。(初期状態はnullptr)
+     * Funcの実行時にFuncWrapperを通すことで条件を満たすまでブロックしたりする。
+     * FuncWrapperがnullptrなら何もせずsetした関数を実行する
+     */
+    void setDefaultRunCond(FuncWrapperType wrapper) {
+        data->default_func_wrapper = wrapper;
+    }
+    /*! デフォルトのFuncWrapperを nullptr にする
+     */
+    void setDefaultRunCondNone() { setDefaultRunCond(nullptr); }
+    /*! デフォルトのFuncWrapperを runCondOnSync() にする
+     */
+    void setDefaultRunCondOnSync() {
+        setDefaultRunCond(FuncWrapper::runCondOnSync(data));
+    }
+    /*! デフォルトのFuncWrapperを runCondScopeGuard() にする
+     */
+    template <typename ScopeGuard>
+    void setDefaultRunCondScopeGuard() {
+        setDefaultRunCond(FuncWrapper::runCondScopeGuard<ScopeGuard>());
     }
 };
 

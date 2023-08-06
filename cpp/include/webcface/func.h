@@ -5,6 +5,23 @@
 
 namespace WebCFace {
 
+namespace FuncWrapper {
+
+//! Client::sync() まで待機し、実行完了までsync()をブロックするFuncWrapper
+FuncWrapperType runCondOnSync(const std::weak_ptr<ClientData> &data);
+//! ScopeGuardをロックするFuncWrapper
+template <typename ScopeGuard>
+FuncWrapperType runCondScopeGuard() {
+    static auto wrapper = [](FuncType callback,
+                             const std::vector<ValAdaptor> &args) {
+        ScopeGuard scope_guard;
+        return callback(args);
+    };
+    return wrapper;
+}
+
+} // namespace FuncWrapper
+
 //! 関数1つを表すクラス
 class Func : public SyncData<FuncInfo> {
   public:
@@ -22,7 +39,9 @@ class Func : public SyncData<FuncInfo> {
     template <typename T>
     auto &set(const T &func) {
         assert(member_ == "" && "Cannot set data to member other than self");
-        dataLock()->func_store.setSend(name_, FuncInfo{std::function{func}});
+        auto data_s = dataLock();
+        data_s->func_store.setSend(
+            name_, FuncInfo{std::function{func}, data_s->default_func_wrapper});
         return *this;
     }
     //! 関数からFuncInfoを構築しセットする
@@ -83,6 +102,29 @@ class Func : public SyncData<FuncInfo> {
      * 実際にセットした関数の引数の数とargsの要素数は一致していなければならない
      */
     Func &setArgs(const std::vector<Arg> &args);
+
+    /*! FuncWrapperをセットする。
+     * Funcの実行時にFuncWrapperを通すことで条件を満たすまでブロックしたりする。
+     * FuncWrapperがnullptrなら何もせずsetした関数を実行する
+     * セットしない場合 Client::setDefaultRunCond() のものが使われる
+     *
+     * 関数のセットの後に呼ばなければならない
+     */
+    Func &setRunCond(FuncWrapperType wrapper);
+    /*! FuncWrapperを nullptr にする
+     */
+    Func &setRunCondNone() { return setRunCond(nullptr); }
+    /*! FuncWrapperを runCondOnSync() にする
+     */
+    Func &setRunCondOnSync() {
+        return setRunCond(FuncWrapper::runCondOnSync(data));
+    }
+    /*! FuncWrapperを runCondScopeGuard() にする
+     */
+    template <typename ScopeGuard>
+    Func &setRunCondScopeGuard() {
+        return setRunCond(FuncWrapper::runCondScopeGuard<ScopeGuard>());
+    }
 };
 
 
