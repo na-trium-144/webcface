@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <vector>
 #include "field_base.h"
 
 namespace WebCFace {
