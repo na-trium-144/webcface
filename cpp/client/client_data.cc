@@ -52,7 +52,8 @@ std::optional<T>
 ClientData::SyncDataStore<T>::getRecv(const std::string &from,
                                       const std::string &name) {
     std::lock_guard lock(mtx);
-    if (!isSelf(from) && (!req.count(from) || !req.at(from).count(name))) {
+    if (!isSelf(from) && (!req.count(from) || !req.at(from).count(name) ||
+                          req[from][name] == false)) {
         req[from][name] = true;
         req_send[from][name] = true;
     }
@@ -69,8 +70,9 @@ template <typename T>
 void ClientData::SyncDataStore<T>::unsetRecv(const std::string &from,
                                              const std::string &name) {
     std::lock_guard lock(mtx);
-    if (!isSelf(from) && (req.count(from) && req.at(from).count(name))) {
-        req.at(from).erase(name);
+    if (!isSelf(from) && (req.count(from) && req.at(from).count(name) &&
+                          req[from][name] == true)) {
+        req[from].erase(name);
         req_send[from][name] = false;
     }
     if (data_recv.count(from) && data_recv.at(from).count(name)) {

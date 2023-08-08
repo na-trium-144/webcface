@@ -1,31 +1,31 @@
 import * as types from "./messageType.js";
+import { ClientData } from "./clientData.js";
+import { Member } from "./member.js";
 
-export interface DataStore<T> {
-  dataSend: Map<string, T>;
-  dataRecv: Map<string, Map<string, T>>;
-  entry: Map<string, string[]>;
-  req: Map<string, Map<string, boolean>>;
-  reqSend: Map<string, Map<string, boolean>>;
+export class FieldBase {
+  data: ClientData;
+  member_: string;
+  field_: string;
+  constructor(data: ClientData, member: string, field = "") {
+    this.data = data;
+    this.member_ = member;
+    this.field_ = field;
+  }
 }
-export const emptyStore = () => ({
-  dataSend: new Map(),
-  dataRecv: new Map(),
-  entry: new Map(),
-  req: new Map(),
-  reqSend: new Map(),
-});
 
-export class Value {
-  store: DataStore<number | string>;
-  from: string;
-  name: string;
-  constructor(store: DataStore<number | string>, from: string, name: string) {
-    this.store = store;
-    this.from = from;
-    this.name = name;
+
+export class Value extends FieldBase {
+  constructor(base: FieldBase, field = "") {
+    super(base.data, base.member_, field || base.field_);
+  }
+  get member() {
+    return new Member(this);
+  }
+  get name() {
+    return this.field_;
   }
   tryGet() {
-    return dataGet(this.store, this.from, this.name) as number | null;
+    return this.data.valueStore.getRecv(this.member_, this.field_);
   }
   get() {
     const v = this.tryGet();
@@ -36,20 +36,25 @@ export class Value {
     }
   }
   set(data: number) {
-    dataSet(this.store, this.from, this.name, data);
+    if (this.data.valueStore.isSelf(this.member_)) {
+      this.data.valueStore.setSend(this.member_, this.field_, data);
+    } else {
+      throw new Error("Cannot set data to member other than self");
+    }
   }
 }
-export class Text {
-  store: DataStore<number | string>;
-  from: string;
-  name: string;
-  constructor(store: DataStore<number | string>, from: string, name: string) {
-    this.store = store;
-    this.from = from;
-    this.name = name;
+export class Text extends FieldBase {
+  constructor(base: FieldBase, field = "") {
+    super(base.data, base.member_, field || base.field_);
+  }
+  get member() {
+    return new Member(this);
+  }
+  get name() {
+    return this.field_;
   }
   tryGet() {
-    return dataGet(this.store, this.from, this.name) as string | null;
+    return this.data.textStore.getRecv(this.member_, this.field_);
   }
   get() {
     const v = this.tryGet();
@@ -59,55 +64,11 @@ export class Text {
       return v;
     }
   }
-  set(data: string) {
-    dataSet(this.store, this.from, this.name, data);
-  }
-}
-export function dataGet<T>(store: DataStore<T>, from: string, name: string) {
-  if (from === "") {
-    const s = store.dataSend.get(name);
-    if (s) {
-      return s;
-    }
-  }
-
-  let hasValue = false;
-  let value: T | null = null;
-  const s = store.dataRecv.get(from);
-  if (s) {
-    const m = s.get(name);
-    if (m) {
-      value = m;
-      hasValue = true;
-    }
-  }
-  if (from !== "" && !hasValue) {
-    const m = store.req.get(from);
-    if (m) {
-      m.set(name, true);
+  set(data: number) {
+    if (this.data.textStore.isSelf(this.member_)) {
+      this.data.textStore.setSend(this.member_, this.field_, data);
     } else {
-      store.req.set(from, new Map([[name, true]]));
+      throw new Error("Cannot set data to member other than self");
     }
-    const ms = store.reqSend.get(from);
-    if (ms) {
-      ms.set(name, true);
-    } else {
-      store.reqSend.set(from, new Map([[name, true]]));
-    }
-  }
-  return value;
-}
-export function dataSet<T>(
-  store: DataStore<T>,
-  from: string,
-  name: string,
-  data: T
-) {
-  store.dataSend.set(name, data);
-  const m = store.dataRecv.get("");
-  if (m) {
-    m.set(name, data);
-  } else {
-    store.dataRecv.set("", new Map([[name, data]]));
   }
 }

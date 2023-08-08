@@ -1,117 +1,72 @@
+import { FieldBase } from "./data.js";
+import { Val, AsyncFuncResult } from "./funcResult.js";
+import { Member } from "./member.js";
 import * as types from "./messageType.js";
-import { pack, unpack } from "./message.js";
-import { DataStore, dataSet, dataGet } from "./data.js";
 
-type Arg = string | number | boolean | void;
-export class FuncResult {
-  callerId: number;
-  from: string;
-  name: string;
-  found = false;
-  isError = false;
-  errorMsg = "";
-  ready = false;
-  result: Arg = "";
-  constructor(from: string, name: string, callerId: number) {
-    this.from = from;
-    this.name = name;
-    this.callerId = callerId;
-  }
-  promise(): Promise<FuncResult> {
-    return new Promise((resolve) => this.wait(resolve));
-  }
-  wait(resolve: (r: any) => void) {
-    if (this.ready) {
-      resolve(this);
-    } else {
-      setTimeout(() => this.wait(resolve));
-    }
-  }
-}
-
-export interface FuncInfoInternal {
+export class FuncInfo {
   returnType: number;
   argsType: number[];
-  funcImpl: ((...args: Arg[]) => Arg) | null;
+  funcImpl: ((...args: Val[]) => Val) | null;
 }
 
-export class Func {
-  funcs: DataStore<FuncInfoInternal>;
-  results: FuncResult[];
-  send: (m: ArrayBuffer) => void;
-  from: string;
-  name: string;
-  constructor(
-    send: (m: ArrayBuffer) => void,
-    funcs: DataStore<FuncInfoInternal>,
-    results: FuncResult[],
-    from: string,
-    name: string
-  ) {
-    this.send = send;
-    this.funcs = funcs;
-    this.results = results;
-    this.from = from;
-    this.name = name;
+export class Func extends FieldBase {
+  constructor(base: FieldBase, field = "") {
+    super(base.data, base.member_, field || base.field_);
   }
-  set(data: any /* (...args: Arg[]) => Arg */) {
-    dataSet(this.funcs, this.from, this.name, {
+  get member() {
+    return new Member(this);
+  }
+  get name() {
+    return this.field_;
+  }
+  set(func: any /* (...args: Val[]) => Val */) {
+    const data = {
       // todo
       returnType: 0,
       argsType: [],
-      funcImpl: data as (...args: Arg[]) => Arg,
-    });
-  }
-  addResult() {
-    const r = new FuncResult(this.from, this.name, this.results.length);
-    this.results.push(r);
-    return r;
+      funcImpl: data as (...args: Val[]) => Val,
+    };
+    if (this.data.funcStore.isSelf(this.member_)) {
+      this.data.funcStore.setSend(this.member_, this.field_, data);
+    } else {
+      throw new Error("Cannot set data to member other than self");
+    }
   }
   returnType() {
-    const funcInfo = dataGet(this.funcs, this.from, this.name);
+    const funcInfo = this.data.funcStore.getRecv(this.member_, this.field_);
     if (funcInfo != null) {
       return funcInfo.returnType;
     }
     return types.argType.none_;
   }
   argsType() {
-    const funcInfo = dataGet(this.funcs, this.from, this.name);
+    const funcInfo = this.data.funcStore.getRecv(this.member_, this.field_);
     if (funcInfo != null) {
       return funcInfo.argsType;
     }
     return [];
   }
-  run(...args: Arg[]) {
-    if (this.from === "") {
-      const funcInfo = dataGet(this.funcs, this.from, this.name);
-      const r = this.addResult();
+  run(...args: Val[]) {
+    const r = this.data.funcResultStore.addResult("", this);
+    if (this.data.funcStore.isSelf(this.member_)) {
+      const funcInfo = this.data.funcStore.getRecv(this.member_, this.field_);
       if (funcInfo != null) {
-        r.found = true;
+        r.resolveStarted(true);
         try {
           if (funcInfo.funcImpl != null) {
-            r.result = funcInfo.funcImpl(...args);
+            // todo: funcImplがpromise返す場合
+            r.resolveResult(funcInfo.funcImpl(...args));
           }
         } catch (e: any) {
-          r.errorMsg = (e as Error).toString();
-          r.isError = true;
+          r.rejectResult(e);
         }
       } else {
-        r.found = false;
+        r.resolveStarted(false);
       }
-      r.ready = true;
-      return r.promise();
+      return r;
     } else {
-      const r = this.addResult();
-      this.send(
-        pack(types.kind.call, {
-          i: r.callerId,
-          c: "",
-          r: this.from,
-          n: this.name,
-          a: args,
-        } as types.Call)
-      );
-      return r.promise();
+      // todo
+      return r;
     }
   }
 }

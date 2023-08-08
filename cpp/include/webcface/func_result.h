@@ -14,10 +14,8 @@ namespace WebCFace {
 //! (ValueやTextで参照先が見つからなかった場合はこれではなく単にnulloptが返る)
 struct FuncNotFound : public std::runtime_error {
     explicit FuncNotFound(const FieldBase &base)
-        : std::runtime_error((base.member_ == ""
-                                  ? "self()"
-                                  : "member(\"" + base.member_ + "\")") +
-                             ".func(\"" + base.field_ + "\") is not set") {}
+        : std::runtime_error("member(\"" + base.member_ + "\")" + ".func(\"" +
+                             base.field_ + "\") is not set") {}
 };
 
 /*! 非同期で実行した関数の実行結果を表す。
