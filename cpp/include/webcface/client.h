@@ -53,9 +53,9 @@ class Client : public Member {
     Client(const Client &) = delete;
     const Client &operator=(const Client &) = delete;
     //! 自分自身のmemberとしての名前を指定しサーバーに接続する
-    //! サーバーのホストとポートを省略した場合localhost:80になる
+    //! サーバーのホストとポートを省略した場合localhost:7530になる
     explicit Client(const std::string &name,
-                    const std::string &host = "127.0.0.1", int port = 80);
+                    const std::string &host = "127.0.0.1", int port = 7530);
     //! サーバーに接続できているときtrueを返す。
     bool connected() const;
     //! デストラクタで接続を切る。

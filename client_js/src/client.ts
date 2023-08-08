@@ -58,7 +58,7 @@ export class Client {
   name: string;
   host: string;
   port: number;
-  constructor(name: string, host = "", port = 80) {
+  constructor(name: string, host = "", port = 7530) {
     this.name = name;
     this.host = host;
     this.port = port;
