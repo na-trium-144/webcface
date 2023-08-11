@@ -1,4 +1,5 @@
 import { FieldBase, Value, Text } from "./data.js";
+import { Func } from "./func.js";
 
 export class Member extends FieldBase {
   constructor(base: FieldBase, member = "") {

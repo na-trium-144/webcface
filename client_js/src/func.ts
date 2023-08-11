@@ -3,12 +3,15 @@ import { Val, AsyncFuncResult } from "./funcResult.js";
 import { Member } from "./member.js";
 import * as types from "./messageType.js";
 
-export class FuncInfo {
+export interface FuncInfo {
   returnType: number;
-  argsType: number[];
+  args: Arg[];
   funcImpl: ((...args: Val[]) => Val) | null;
 }
 
+export class Arg {
+  // todo
+}
 export class Func extends FieldBase {
   constructor(base: FieldBase, field = "") {
     super(base.data, base.member_, field || base.field_);

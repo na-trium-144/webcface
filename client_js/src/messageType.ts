@@ -1,14 +1,16 @@
 export const kind = {
-  name: 150,
-  call: 151,
-  callResponse: 152,
-  entry: 153,
-  funcInfo: 154,
   value: 0,
   text: 1,
-  recv: 50,
   subscribe: 100,
+  entry: 50,
+  syncInit: 150,
+  call: 151,
+  callResponse: 155,
+  callResult: 152,
+  // entry: 153,
+  funcInfo: 154,
 };
+
 export const argType = {
   none_: 0,
   string_: 1,
@@ -16,21 +18,8 @@ export const argType = {
   int_: 3,
   float_: 4,
 };
-export interface Name {
-  n: string;
-}
-export interface Data {
-  n: string;
-  d: string | number;
-}
-export interface Recv {
-  f: string;
-  n: string;
-  d: string | number;
-}
-export interface Subscribe {
-  f: string;
-  n: string;
+export interface SyncInit {
+  m: string;
 }
 export interface Call {
   i: number;
@@ -42,28 +31,48 @@ export interface Call {
 export interface CallResponse {
   i: number;
   c: string;
-  f: boolean;
-  e: boolean;
-  r: string | number | boolean | void;
+  s: boolean;
 }
-export interface Entry {
-  f: string;
-  v: { n: string }[];
-  t: { n: string }[];
-  u: FuncInfo[];
+export interface CallResult {
+  i: number;
+  c: string;
+  e: boolean;
+  r: string | number | boolean;
+}
+export interface Data {
+  m: string;
+  n: string;
+  d: string | number;
+}
+export interface Arg {
+  n: string;
+  t: number;
+  i: number | string | null;
+  m: number | null;
+  x: number | null;
+  o: number[] | string[];
 }
 export interface FuncInfo {
+  m: string;
   n: string;
   r: number;
-  a: number[];
+  a: Arg[];
+}
+export interface Req {
+  f: string;
+  n: string;
+}
+export interface Entry {
+  m: string;
+  n: string;
 }
 
 export type Any =
-  | Name
-  | Data
-  | Recv
-  | Subscribe
+  | SyncInit
   | Call
   | CallResponse
-  | Entry
-  | FuncInfo;
+  | CallResult
+  | Data
+  | FuncInfo
+  | Req
+  | Entry;
