@@ -64,7 +64,7 @@ export class Text extends FieldBase {
       return v;
     }
   }
-  set(data: number) {
+  set(data: string) {
     if (this.data.textStore.isSelf(this.member_)) {
       this.data.textStore.setSend(this.member_, this.field_, data);
     } else {

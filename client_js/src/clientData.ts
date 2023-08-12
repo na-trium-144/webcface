@@ -12,6 +12,7 @@ export class ClientData {
     this.valueStore = new SyncDataStore<number>(name);
     this.textStore = new SyncDataStore<string>(name);
     this.funcStore = new SyncDataStore<FuncInfo>(name);
+    this.funcResultStore = new FuncResultStore();
   }
 }
 
@@ -31,7 +32,7 @@ class SyncDataStore<T> {
     this.reqSend = new Map();
   }
   isSelf(member: string) {
-    return selfMemberName === member;
+    return this.selfMemberName === member;
   }
   //! 送信するデータをdata_sendとdata_recv[self_member_name]にセット
   setSend(field: string, data: T) {

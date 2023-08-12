@@ -15,8 +15,10 @@ export const argType = {
   none_: 0,
   string_: 1,
   boolean_: 2,
+  bool_: 2,
   int_: 3,
   float_: 4,
+  number_: 4,
 };
 export interface SyncInit {
   m: string;
@@ -39,15 +41,15 @@ export interface CallResult {
   e: boolean;
   r: string | number | boolean;
 }
-export interface Data {
+export interface Data<T> {
   m: string;
   n: string;
-  d: string | number;
+  d: T;
 }
 export interface Arg {
   n: string;
   t: number;
-  i: number | string | null;
+  i: number | string | boolean | null;
   m: number | null;
   x: number | null;
   o: number[] | string[];
@@ -72,7 +74,8 @@ export type Any =
   | Call
   | CallResponse
   | CallResult
-  | Data
+  | Data<number>
+  | Data<string>
   | FuncInfo
   | Req
   | Entry;

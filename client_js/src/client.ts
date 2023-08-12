@@ -1,20 +1,21 @@
 import { pack, unpack } from "./message.js";
 import * as types from "./messageType.js";
 import { ClientData } from "./clientData.js";
-import { DataStore, emptyStore, Value, Text } from "./data.js";
-import { Func, FuncResult, FuncInfoInternal } from "./func.js";
+import { Member } from "./member.js";
+import { FieldBase, Value, Text } from "./data.js";
+import { Func, runFunc } from "./func.js";
+import { Val, AsyncFuncResult } from "./funcResult.js";
 import websocket from "websocket";
 const w3cwebsocket = websocket.w3cwebsocket;
 
-export class Client {
-  data: ClientData;
+export class Client extends Member {
   ws: null | websocket.w3cwebsocket = null;
   connected = false;
   host: string;
   port: number;
   syncInit = false;
   constructor(name: string, host = "127.0.0.1", port = 7530) {
-    this.data = new ClientData(name);
+    super(new FieldBase(new ClientData(name), name), name);
     this.host = host;
     this.port = port;
     this.reconnect();
@@ -47,12 +48,12 @@ export class Client {
       const [kind, data] = unpack(event.data as ArrayBuffer);
       switch (kind) {
         case types.kind.value: {
-          const dataR = data as types.Data;
+          const dataR = data as types.Data<number>;
           this.data.valueStore.setRecv(dataR.m, dataR.n, dataR.d);
           break;
         }
         case types.kind.text: {
-          const dataR = data as types.Data;
+          const dataR = data as types.Data<string>;
           this.data.textStore.setRecv(dataR.m, dataR.n, dataR.d);
           break;
         }
@@ -72,12 +73,12 @@ export class Client {
                 });
                 try {
                   if (m.funcImpl != null) {
-                    const res = m.funcImpl(...dataR.a);
+                    const res = runFunc(m, dataR.a);
                     this.send(types.kind.callResult, {
                       i: dataR.i,
                       c: dataR.c,
                       e: false,
-                      r: res,
+                      r: res == undefined ? "" : res,
                     });
                   }
                 } catch (e: any) {
@@ -115,7 +116,7 @@ export class Client {
           const dataR = data as types.CallResult;
           const r = this.data.funcResultStore.getResult(dataR.i);
           if (dataR.e) {
-            r.rejectResult(new Error(dataR.r));
+            r.rejectResult(new Error(String(dataR.r)));
           } else {
             r.resolveResult(dataR.r);
           }
@@ -143,13 +144,29 @@ export class Client {
           this.data.funcStore.setEntry(dataR.m, dataR.n);
           this.data.funcStore.setRecv(dataR.m, dataR.n, {
             returnType: dataR.r,
-            args: , // todo
+            args: dataR.a.map((a) => ({
+              name: a.n,
+              type: a.t,
+              init: a.i,
+              min: a.m,
+              max: a.x,
+              option: a.o,
+            })),
+            call: (r: AsyncFuncResult, args: Val[]) => {
+              this.send(types.kind.call, {
+                i: r.callerId,
+                c: r.caller,
+                r: dataR.m,
+                n: dataR.n,
+                a: args,
+              });
+            },
           });
           break;
         }
       }
     };
-    ws.onerror = (error) => {
+    ws.onerror = (error: any) => {
       connection_done = true;
       console.error("Connection Error");
       // console.error(error);
@@ -187,29 +204,26 @@ export class Client {
       }
 
       for (const [k, v] of this.data.funcStore.transferSend().entries()) {
-        this.send(types.kind.funcInfo, { m: "", n: k, d: v });
+        this.send(types.kind.funcInfo, {
+          m: "",
+          n: k,
+          r: v.returnType,
+          a: v.args.map((a) => ({
+            n: a.name || "",
+            t: a.type != undefined ? a.type : types.argType.none_,
+            i: a.init != undefined ? a.init : null,
+            m: a.min != undefined ? a.min : null,
+            x: a.max != undefined ? a.max : null,
+            o: a.option != undefined ? a.option : [],
+          })),
+        });
       }
     }
   }
-  subject(name: string) {
-    return new SubjectClient(this, name);
+  member(member: string) {
+    return new Member(this, member);
   }
-  subjects() {
-    return [...this.valueStore.entry.keys()].map((n) => this.subject(n));
-  }
-  value(name: string) {
-    return new Value(this.valueStore, "", name);
-  }
-  text(name: string) {
-    return new Text(this.textStore, "", name);
-  }
-  func(name: string) {
-    return new Func(
-      (m: ArrayBuffer) => this.connected && this.ws != null && this.ws.send(m),
-      this.funcStore,
-      this.funcResult,
-      "",
-      name
-    );
+  members() {
+    return [...this.data.valueStore.getMembers()].map((n) => this.member(n));
   }
 }
