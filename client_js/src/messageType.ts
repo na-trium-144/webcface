@@ -1,3 +1,5 @@
+import {Val} from "./funcResult.js";
+
 export const kind = {
   value: 0,
   text: 1,
@@ -28,7 +30,7 @@ export interface Call {
   c: string;
   r: string;
   n: string;
-  a: (string | number | boolean)[];
+  a: Val[];
 }
 export interface CallResponse {
   i: number;
@@ -39,7 +41,7 @@ export interface CallResult {
   i: number;
   c: string;
   e: boolean;
-  r: string | number | boolean;
+  r: Val;
 }
 export interface Data<T> {
   m: string;
@@ -49,7 +51,7 @@ export interface Data<T> {
 export interface Arg {
   n: string;
   t: number;
-  i: number | string | boolean | null;
+  i: Val | null;
   m: number | null;
   x: number | null;
   o: number[] | string[];

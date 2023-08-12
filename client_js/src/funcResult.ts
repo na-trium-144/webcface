@@ -1,4 +1,4 @@
-import { FieldBase } from "./data.ts";
+import { FieldBase } from "./data.js";
 
 export class FuncNotFoundError extends Error {
   constructor(base: FieldBase) {
@@ -7,17 +7,17 @@ export class FuncNotFoundError extends Error {
   }
 }
 
-export type Val = string | number | boolean | void;
+export type Val = string | number | boolean;
 export class AsyncFuncResult extends FieldBase {
   callerId: number;
   caller: string;
   // 関数が開始したらtrue, 存在しなければfalse
   // falseの場合rejectResultも自動で呼ばれる
-  resolveStarted: (r: boolean) => void;
+  resolveStarted: (r: boolean) => void = () => undefined;
   // 結果をセットする
-  resolveResult: (r: Val) => void;
+  resolveResult: (r: Val | Promise<Val>) => void = () => undefined;
   // 例外をセットする
-  rejectResult: (e: any) => void;
+  rejectResult: (e: any) => void = () => undefined;
   started: Promise<boolean>;
   result: Promise<Val>;
   constructor(callerId: number, caller: string, base: FieldBase) {

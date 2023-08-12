@@ -6,7 +6,7 @@ import * as types from "./messageType.js";
 export interface FuncInfo {
   returnType: number;
   args: Arg[];
-  funcImpl?: (...args: Val[]) => Val | Promise<Val>;
+  funcImpl?: (...args: Val[]) => Val | Promise<Val> | void;
   call?: (r: AsyncFuncResult, args: Val[]) => void;
 }
 export function runFunc(fi: FuncInfo, args: Val[]) {
@@ -29,11 +29,10 @@ export function runFunc(fi: FuncInfo, args: Val[]) {
           return a;
       }
     });
-    let res: Val | Promise<Val> = fi.funcImpl(...newArgs);
-    if (res instanceof Promise) {
-      res = await res;
+    if(fi.funcImpl != undefined){
+      return fi.funcImpl(...newArgs);
     }
-    return res;
+    return undefined;
   } else {
     throw new Error(
       `require ${fi.args.length} arguments, but got ${args.length}`
@@ -44,7 +43,7 @@ export function runFunc(fi: FuncInfo, args: Val[]) {
 export interface Arg {
   name?: string;
   type?: number;
-  init?: string | number | boolean | null;
+  init?: Val | null;
   min?: number | null;
   max?: number | null;
   option?: string[] | number[];
@@ -61,18 +60,17 @@ export class Func extends FieldBase {
     return this.field_;
   }
   set(
-    func: (...args: any[]) => Val | Promise<Val>,
+    func: (...args: any[]) => Val | Promise<Val> | void,
     returnType: number = types.argType.none_,
-    args: Args[] = []
+    args: Arg[] = []
   ) {
-    const data = {
-      // todo
+    const data : FuncInfo = {
       returnType: returnType,
       args: args,
-      funcImpl: data as (...args: Val[]) => Val,
+      funcImpl: func,
     };
     if (this.data.funcStore.isSelf(this.member_)) {
-      this.data.funcStore.setSend(this.member_, this.field_, data);
+      this.data.funcStore.setSend(this.field_, data);
     } else {
       throw new Error("Cannot set data to member other than self");
     }
@@ -98,7 +96,11 @@ export class Func extends FieldBase {
       try {
         if (funcInfo.funcImpl != undefined) {
           // funcImplがpromise返す場合もそのままresolveにぶちこめばよいはず
-          r.resolveResult(runFunc(funcInfo, args));
+          let res: Val | Promise<Val> | void = runFunc(funcInfo, args);
+          if (res == undefined){
+            res = "";
+          }
+          r.resolveResult(res);
         } else if (funcInfo.call != undefined) {
           funcInfo.call(r, args);
         }

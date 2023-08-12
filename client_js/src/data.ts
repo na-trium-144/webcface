@@ -37,7 +37,7 @@ export class Value extends FieldBase {
   }
   set(data: number) {
     if (this.data.valueStore.isSelf(this.member_)) {
-      this.data.valueStore.setSend(this.member_, this.field_, data);
+      this.data.valueStore.setSend(this.field_, data);
     } else {
       throw new Error("Cannot set data to member other than self");
     }
@@ -66,7 +66,7 @@ export class Text extends FieldBase {
   }
   set(data: string) {
     if (this.data.textStore.isSelf(this.member_)) {
-      this.data.textStore.setSend(this.member_, this.field_, data);
+      this.data.textStore.setSend(this.field_, data);
     } else {
       throw new Error("Cannot set data to member other than self");
     }

@@ -1,4 +1,6 @@
-export { Client, SubjectClient } from "./client.js";
+export { Client } from "./client.js";
+export { Member } from "./member.js";
 export { Value, Text } from "./data.js";
-export { Func, FuncResult } from "./func.js";
+export { Arg, Func } from "./func.js";
+export { Val, AsyncFuncResult } from "./funcResult.js";
 export { argType } from "./messageType.js";

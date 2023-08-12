@@ -1,5 +1,6 @@
 import { AsyncFuncResult } from "./funcResult.js";
 import { FuncInfo } from "./func.js";
+import { FieldBase } from "./data.js";
 
 export class ClientData {
   selfMemberName: string;
@@ -45,50 +46,66 @@ class SyncDataStore<T> {
     if (m) {
       m.set(field, data);
     } else {
-      this.dataRecv.set(member, [[field, data]]);
+      this.dataRecv.set(member, new Map([[field, data]]));
     }
   }
   //! data_recvからデータを返す or なければreq,req_sendをtrueにセット
   getRecv(member: string, field: string) {
-    if (
-      !this.isSelf(member) &&
-      (!this.req.has(member) ||
-        !this.req.get(member).has(field) ||
-        this.req.get(member).get(field) === false)
-    ) {
+    let reqOk = false;
+    if (!this.isSelf(member)) {
+      const m = this.req.get(member);
+      if (m) {
+        const f = m.get(field);
+        if (f === true) {
+          reqOk = true;
+        }
+      }
+    }
+    if (!reqOk) {
       const m = this.req.get(member);
       if (m) {
         m.set(field, true);
       } else {
-        this.req.set(member, [[field, true]]);
+        this.req.set(member, new Map([[field, true]]));
       }
       const m2 = this.reqSend.get(member);
       if (m2) {
         m2.set(field, true);
       } else {
-        this.reqSend.set(member, [[field, true]]);
+        this.reqSend.set(member, new Map([[field, true]]));
       }
     }
-    if (this.dataRecv.has(member) && this.dataRecv.get(member).has(field)) {
-      return this.dataRecv.get(member).get(field) as T;
-    } else {
-      return null;
+    const m = this.dataRecv.get(member);
+    if (m) {
+      const m2 = m.get(field);
+      if (m2 != undefined) {
+        return m2;
+      }
     }
+    return null;
   }
   //! data_recvからデータを削除, req,req_sendをfalseにする
   unsetRecv(member: string, field: string) {
-    if (
-      !this.isSelf(member) &&
-      this.req.has(member) &&
-      this.req.get(member).has(field) &&
-      this.req.get(member).get(field) === true
-    ) {
-      this.req.get(member).set(field, false);
+    let reqOk = false;
+    if (!this.isSelf(member)) {
+      const m = this.req.get(member);
+      if (m) {
+        const f = m.get(field);
+        if (f === true) {
+          reqOk = true;
+        }
+      }
+    }
+    if (reqOk) {
+      const m = this.req.get(member);
+      if (m) {
+        m.set(field, false);
+      }
       const m2 = this.reqSend.get(member);
       if (m2) {
         m2.set(field, false);
       } else {
-        this.reqSend.set(member, [[field, false]]);
+        this.reqSend.set(member, new Map([[field, false]]));
       }
     }
   }

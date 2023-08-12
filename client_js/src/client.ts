@@ -63,45 +63,52 @@ export class Client extends Member {
             const s = this.data.funcStore.dataRecv.get(
               this.data.selfMemberName
             );
-            if (s) {
-              const m = s.get(dataR.n);
-              if (m) {
-                this.send(types.kind.callResponse, {
-                  i: dataR.i,
-                  c: dataR.c,
-                  s: true,
-                });
-                try {
-                  if (m.funcImpl != null) {
-                    const res = runFunc(m, dataR.a);
-                    this.send(types.kind.callResult, {
-                      i: dataR.i,
-                      c: dataR.c,
-                      e: false,
-                      r: res == undefined ? "" : res,
-                    });
-                  }
-                } catch (e: any) {
-                  this.send(types.kind.callResult, {
-                    i: dataR.i,
-                    c: dataR.c,
-                    e: true,
-                    r: (e as Error).toString(),
-                  });
-                }
-              } else {
-                this.send(types.kind.callResponse, {
-                  i: dataR.i,
-                  c: dataR.c,
-                  s: false,
-                });
-              }
-            } else {
+            const sendResult = (res: Val | void) => {
+              this.send(types.kind.callResult, {
+                i: dataR.i,
+                c: dataR.c,
+                e: false,
+                r: res == undefined ? "" : res,
+              });
+            };
+            const sendError = (e: any) => {
+              this.send(types.kind.callResult, {
+                i: dataR.i,
+                c: dataR.c,
+                e: true,
+                r: (e as Error).toString(),
+              });
+            };
+            const sendResponse = (s: boolean) => {
               this.send(types.kind.callResponse, {
                 i: dataR.i,
                 c: dataR.c,
-                s: false,
+                s: s,
               });
+            };
+            if (s) {
+              const m = s.get(dataR.n);
+              if (m) {
+                sendResponse(true);
+                try {
+                  if (m.funcImpl != undefined) {
+                    const res = runFunc(m, dataR.a);
+                    if (res instanceof Promise) {
+                      res
+                        .then((res: Val | void) => sendResult(res))
+                        .catch((e: any) => sendError(e));
+                    } else {
+                      sendResult(res);
+                    }
+                  }
+                } catch (e: any) {
+                  sendError(e);
+                }
+              } else {
+                sendResponse(false);
+              }
+            } else {
+              sendResponse(false);
             }
           });
           break;
