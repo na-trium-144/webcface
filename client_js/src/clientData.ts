@@ -51,17 +51,7 @@ class SyncDataStore<T> {
   }
   //! data_recvからデータを返す or なければreq,req_sendをtrueにセット
   getRecv(member: string, field: string) {
-    let reqOk = false;
-    if (!this.isSelf(member)) {
-      const m = this.req.get(member);
-      if (m) {
-        const f = m.get(field);
-        if (f === true) {
-          reqOk = true;
-        }
-      }
-    }
-    if (!reqOk) {
+    if (!this.isSelf(member) && this.req.get(member)?.get(field) !== true) {
       const m = this.req.get(member);
       if (m) {
         m.set(field, true);
@@ -75,32 +65,16 @@ class SyncDataStore<T> {
         this.reqSend.set(member, new Map([[field, true]]));
       }
     }
-    const m = this.dataRecv.get(member);
-    if (m) {
-      const m2 = m.get(field);
-      if (m2 != undefined) {
-        return m2;
-      }
+    const m = this.dataRecv.get(member)?.get(field);
+    if (m != undefined) {
+      return m;
     }
     return null;
   }
   //! data_recvからデータを削除, req,req_sendをfalseにする
   unsetRecv(member: string, field: string) {
-    let reqOk = false;
-    if (!this.isSelf(member)) {
-      const m = this.req.get(member);
-      if (m) {
-        const f = m.get(field);
-        if (f === true) {
-          reqOk = true;
-        }
-      }
-    }
-    if (reqOk) {
-      const m = this.req.get(member);
-      if (m) {
-        m.set(field, false);
-      }
+    if (!this.isSelf(member) && this.req.get(member)?.get(field) === true) {
+      this.req.get(member)?.set(field, false);
       const m2 = this.reqSend.get(member);
       if (m2) {
         m2.set(field, false);
@@ -108,6 +82,7 @@ class SyncDataStore<T> {
         this.reqSend.set(member, new Map([[field, false]]));
       }
     }
+    this.dataRecv.get(member)?.delete(field);
   }
   //! member名のりすとを取得(entryから)
   getMembers() {
