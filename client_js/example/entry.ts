@@ -1,22 +1,25 @@
-import { Client } from "../src/index.js";
+import { Client, Member, Value, Text, Func } from "../src/index.js";
 
 const c = new Client("example_get_entry");
+c.membersChange.on((m: Member) => {
+  console.log(`member ${m.name}`);
+  m.valuesChange.on((v: Value) => {
+    console.log(`value ${v.name}`);
+  });
+  m.textsChange.on((v: Text) => {
+    console.log(`text ${v.name}`);
+  });
+  m.funcsChange.on((v: Func) => {
+    console.log(
+      `func  ${v.name} arg: {${v.args
+        .map(
+          (a) =>
+            `<${a.name} type=${a.type},init=${a.init},min=${a.min},max=${a.max},option=${a.option}>`
+        )
+        .join(", ")}} ret: ${v.returnType}`
+    );
+  });
+});
 
-setInterval(() => {
-  for (const s of c.members()) {
-    console.log(s.name);
-    for (const v of s.values()) {
-      console.log(`  value ${v.name}`);
-    }
-    for (const v of s.texts()) {
-      console.log(`  text  ${v.name}`);
-    }
-    for (const v of s.funcs()) {
-      console.log(
-        `  func  ${v.name} arg: ${v.args.map((a) => `<${a.name} type=${a.type},init=${a.init},min=${a.min},max=${a.max},option=${a.option}>`).join(", ")} ret: ${v.returnType}`
-      );
-    }
-  }
-
-  c.sync();
-}, 250);
+// todo: 接続できるまで待機する関数を実装?
+setInterval(() => c.sync(), 10)

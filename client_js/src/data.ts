@@ -1,4 +1,9 @@
-import { FieldBase, AsyncFuncResult } from "./clientData.js";
+import {
+  FieldBase,
+  AsyncFuncResult,
+  FieldBaseWithEvent,
+  eventType,
+} from "./clientData.js";
 import { Val, FuncInfo, Arg } from "./funcInfo.js";
 import { argType } from "./message.js";
 
@@ -29,11 +34,33 @@ export class Member extends FieldBase {
   funcs() {
     return this.data.funcStore.getEntry(this.member_).map((n) => this.func(n));
   }
+  get valuesChange() {
+    return new FieldBaseWithEvent<Value>(
+      eventType.valueEntry(this),
+      this.data,
+      this.member_
+    );
+  }
+  get textsChange() {
+    return new FieldBaseWithEvent<Text>(
+      eventType.textEntry(this),
+      this.data,
+      this.member_
+    );
+  }
+  get funcsChange() {
+    return new FieldBaseWithEvent<Func>(
+      eventType.funcEntry(this),
+      this.data,
+      this.member_
+    );
+  }
 }
 
-export class Value extends FieldBase {
+export class Value extends FieldBaseWithEvent<Value> {
   constructor(base: FieldBase, field = "") {
-    super(base.data, base.member_, field || base.field_);
+    super("", base.data, base.member_, field || base.field_);
+    this.eventType_ = eventType.valueChange(this);
   }
   get member() {
     return new Member(this);
@@ -60,9 +87,10 @@ export class Value extends FieldBase {
     }
   }
 }
-export class Text extends FieldBase {
+export class Text extends FieldBaseWithEvent<Text> {
   constructor(base: FieldBase, field = "") {
-    super(base.data, base.member_, field || base.field_);
+    super("", base.data, base.member_, field || base.field_);
+    this.eventType_ = eventType.textChange(this);
   }
   get member() {
     return new Member(this);

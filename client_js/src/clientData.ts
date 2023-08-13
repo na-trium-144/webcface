@@ -1,4 +1,5 @@
 import { Val, FuncInfo } from "./funcInfo.js";
+import { EventEmitter } from "eventemitter3";
 
 export class FieldBase {
   data: ClientData;
@@ -11,6 +12,43 @@ export class FieldBase {
   }
 }
 
+export const eventType = {
+  memberEntry: () => "memberEntry",
+  valueEntry: (b: FieldBase) => JSON.stringify(["valueEntry", b.member_]),
+  textEntry: (b: FieldBase) => JSON.stringify(["textEntry", b.member_]),
+  funcEntry: (b: FieldBase) => JSON.stringify(["funcEntry", b.member_]),
+  valueChange: (b: FieldBase) =>
+    JSON.stringify(["valueChange", b.member_, b.field_]),
+  textChange: (b: FieldBase) =>
+    JSON.stringify(["textChange", b.member_, b.field_]),
+};
+type EventListener<TargetType> = (target: TargetType) => void;
+export class FieldBaseWithEvent<TargetType> extends FieldBase {
+  eventType_: string;
+  constructor(eventType: string, data: ClientData, member: string, field = "") {
+    super(data, member, field);
+    this.eventType_ = eventType;
+  }
+  addListener(listener: EventListener<TargetType>) {
+    this.data.eventEmitter.addListener(this.eventType_, listener);
+  }
+  on(listener: EventListener<TargetType>) {
+    this.addListener(listener);
+  }
+  once(listener: EventListener<TargetType>) {
+    this.data.eventEmitter.once(this.eventType_, listener);
+  }
+  removeListener(listener: EventListener<TargetType>) {
+    this.data.eventEmitter.removeListener(this.eventType_, listener);
+  }
+  off(listener: EventListener<TargetType>) {
+    this.removeListener(listener);
+  }
+  removeAllListeners() {
+    this.data.eventEmitter.removeAllListeners(this.eventType_);
+  }
+}
+
 export class ClientData {
   selfMemberName: string;
   valueStore: SyncDataStore<number>;
@@ -18,13 +56,18 @@ export class ClientData {
   funcStore: SyncDataStore<FuncInfo>;
   funcResultStore: FuncResultStore;
   callFunc: (r: AsyncFuncResult, b: FieldBase, args: Val[]) => void;
-  constructor(name: string, callFunc: (r: AsyncFuncResult, b: FieldBase, args: Val[]) => void) {
+  eventEmitter: EventEmitter;
+  constructor(
+    name: string,
+    callFunc: (r: AsyncFuncResult, b: FieldBase, args: Val[]) => void
+  ) {
     this.selfMemberName = name;
     this.valueStore = new SyncDataStore<number>(name);
     this.textStore = new SyncDataStore<string>(name);
     this.funcStore = new SyncDataStore<FuncInfo>(name);
     this.funcResultStore = new FuncResultStore();
     this.callFunc = callFunc;
+    this.eventEmitter = new EventEmitter();
   }
 }
 
@@ -143,7 +186,6 @@ export class FuncNotFoundError extends Error {
     this.name = "FuncNotFoundError";
   }
 }
-
 
 export class AsyncFuncResult extends FieldBase {
   callerId: number;

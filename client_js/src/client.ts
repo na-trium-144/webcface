@@ -1,6 +1,12 @@
 import { pack, unpack } from "./message.js";
 import * as types from "./message.js";
-import { FieldBase, ClientData, AsyncFuncResult } from "./clientData.js";
+import {
+  FieldBase,
+  ClientData,
+  AsyncFuncResult,
+  FieldBaseWithEvent,
+  eventType,
+} from "./clientData.js";
 import { Member, runFunc } from "./data.js";
 import { Val } from "./funcInfo.js";
 import websocket from "websocket";
@@ -65,11 +71,15 @@ export class Client extends Member {
         case types.kind.value: {
           const dataR = data as types.Data<number>;
           this.data.valueStore.setRecv(dataR.m, dataR.n, dataR.d);
+          const target = this.member(dataR.m).value(dataR.n);
+          this.data.eventEmitter.emit(eventType.valueChange(target), target);
           break;
         }
         case types.kind.text: {
           const dataR = data as types.Data<string>;
           this.data.textStore.setRecv(dataR.m, dataR.n, dataR.d);
+          const target = this.member(dataR.m).text(dataR.n);
+          this.data.eventEmitter.emit(eventType.textChange(target), target);
           break;
         }
         case types.kind.call: {
@@ -147,16 +157,22 @@ export class Client extends Member {
           this.data.valueStore.addMember(dataR.m);
           this.data.textStore.addMember(dataR.m);
           this.data.funcStore.addMember(dataR.m);
+          const target = this.member(dataR.m);
+          this.data.eventEmitter.emit(eventType.memberEntry(), target);
           break;
         }
         case types.kind.entry + types.kind.value: {
           const dataR = data as types.Entry;
           this.data.valueStore.setEntry(dataR.m, dataR.n);
+          const target = this.member(dataR.m).value(dataR.n);
+          this.data.eventEmitter.emit(eventType.valueEntry(target), target);
           break;
         }
         case types.kind.entry + types.kind.text: {
           const dataR = data as types.Entry;
           this.data.textStore.setEntry(dataR.m, dataR.n);
+          const target = this.member(dataR.m).text(dataR.n);
+          this.data.eventEmitter.emit(eventType.textEntry(target), target);
           break;
         }
         case types.kind.funcInfo: {
@@ -173,6 +189,8 @@ export class Client extends Member {
               option: a.o,
             })),
           });
+          const target = this.member(dataR.m).func(dataR.n);
+          this.data.eventEmitter.emit(eventType.funcEntry(target), target);
           break;
         }
       }
@@ -236,5 +254,13 @@ export class Client extends Member {
   }
   members() {
     return [...this.data.valueStore.getMembers()].map((n) => this.member(n));
+  }
+  get membersChange() {
+    return new FieldBaseWithEvent<Member>(
+      eventType.memberEntry(),
+      this.data,
+      "",
+      ""
+    );
   }
 }
