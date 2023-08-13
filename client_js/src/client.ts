@@ -1,10 +1,8 @@
 import { pack, unpack } from "./message.js";
-import * as types from "./messageType.js";
-import { ClientData } from "./clientData.js";
-import { Member } from "./member.js";
-import { FieldBase, Value, Text } from "./data.js";
-import { Func, runFunc } from "./func.js";
-import { Val, AsyncFuncResult } from "./funcResult.js";
+import * as types from "./message.js";
+import { FieldBase, ClientData, AsyncFuncResult } from "./clientData.js";
+import { Member, runFunc } from "./data.js";
+import { Val } from "./funcInfo.js";
 import websocket from "websocket";
 const w3cwebsocket = websocket.w3cwebsocket;
 
@@ -15,15 +13,32 @@ export class Client extends Member {
   port: number;
   syncInit = false;
   constructor(name: string, host = "127.0.0.1", port = 7530) {
-    super(new FieldBase(new ClientData(name), name), name);
+    super(
+      new FieldBase(
+        new ClientData(name, (r: AsyncFuncResult, b: FieldBase, args: Val[]) =>
+          this.callFunc(r, b, args)
+        ),
+        name
+      ),
+      name
+    );
     this.host = host;
     this.port = port;
     this.reconnect();
   }
-  send(kind: number, obj: types.Any) {
+  send(kind: number, obj: types.AnyMessage) {
     if (this.ws != null) {
       this.ws.send(pack(kind, obj));
     }
+  }
+  callFunc(r: AsyncFuncResult, b: FieldBase, args: Val[]) {
+    this.send(types.kind.call, {
+      i: r.callerId,
+      c: r.caller,
+      r: b.member_,
+      n: b.field_,
+      a: args,
+    });
   }
   reconnect() {
     let connection_done = false;
@@ -91,15 +106,13 @@ export class Client extends Member {
               if (m) {
                 sendResponse(true);
                 try {
-                  if (m.funcImpl != undefined) {
-                    const res = runFunc(m, dataR.a);
-                    if (res instanceof Promise) {
-                      res
-                        .then((res: Val | void) => sendResult(res))
-                        .catch((e: any) => sendError(e));
-                    } else {
-                      sendResult(res);
-                    }
+                  const res = runFunc(m, dataR.a);
+                  if (res instanceof Promise) {
+                    res
+                      .then((res: Val | void) => sendResult(res))
+                      .catch((e: any) => sendError(e));
+                  } else {
+                    sendResult(res);
                   }
                 } catch (e: any) {
                   sendError(e);
@@ -159,15 +172,6 @@ export class Client extends Member {
               max: a.x,
               option: a.o,
             })),
-            call: (r: AsyncFuncResult, args: Val[]) => {
-              this.send(types.kind.call, {
-                i: r.callerId,
-                c: r.caller,
-                r: dataR.m,
-                n: dataR.n,
-                a: args,
-              });
-            },
           });
           break;
         }

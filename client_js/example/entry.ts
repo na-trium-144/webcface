@@ -1,6 +1,6 @@
 import { Client } from "../src/index.js";
 
-const c = new Client("example_get_entry", "127.0.0.1", 80);
+const c = new Client("example_get_entry");
 
 setInterval(() => {
   for (const s of c.members()) {
@@ -13,7 +13,7 @@ setInterval(() => {
     }
     for (const v of s.funcs()) {
       console.log(
-        `  func  ${v.name} arg: ${v.args.map((a) => `<${a.name} type=${a.type},init=${a.init},min=${a.min},max=${a.max},option=${a.option}`).join(", ")} ret: ${v.returnType}`
+        `  func  ${v.name} arg: ${v.args.map((a) => `<${a.name} type=${a.type},init=${a.init},min=${a.min},max=${a.max},option=${a.option}>`).join(", ")} ret: ${v.returnType}`
       );
     }
   }

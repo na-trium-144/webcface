@@ -190,7 +190,8 @@ void Client::onRecv(const std::string &message) {
     case MessageKind::call: {
         auto r = std::any_cast<WebCFace::Message::Call>(obj);
         std::thread([data = this->data, r] {
-            auto func_info = data->func_store.getRecv(data->self_member_name, r.name);
+            auto func_info =
+                data->func_store.getRecv(data->self_member_name, r.name);
             if (func_info) {
                 data->message_queue.push(
                     WebCFace::Message::pack(WebCFace::Message::CallResponse{
@@ -238,7 +239,7 @@ void Client::onRecv(const std::string &message) {
         auto &res = data->func_result_store.getResult(r.caller_id);
         if (r.is_error) {
             try {
-                throw std::runtime_error(r.result);
+                throw std::runtime_error(static_cast<std::string>(r.result));
             } catch (...) {
                 res.result_->set_exception(std::current_exception());
             }

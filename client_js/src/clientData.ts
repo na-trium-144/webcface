@@ -1,6 +1,15 @@
-import { AsyncFuncResult } from "./funcResult.js";
-import { FuncInfo } from "./func.js";
-import { FieldBase } from "./data.js";
+import { Val, FuncInfo } from "./funcInfo.js";
+
+export class FieldBase {
+  data: ClientData;
+  member_: string;
+  field_: string;
+  constructor(data: ClientData, member: string, field = "") {
+    this.data = data;
+    this.member_ = member;
+    this.field_ = field;
+  }
+}
 
 export class ClientData {
   selfMemberName: string;
@@ -8,12 +17,14 @@ export class ClientData {
   textStore: SyncDataStore<string>;
   funcStore: SyncDataStore<FuncInfo>;
   funcResultStore: FuncResultStore;
-  constructor(name: string) {
+  callFunc: (r: AsyncFuncResult, b: FieldBase, args: Val[]) => void;
+  constructor(name: string, callFunc: (r: AsyncFuncResult, b: FieldBase, args: Val[]) => void) {
     this.selfMemberName = name;
     this.valueStore = new SyncDataStore<number>(name);
     this.textStore = new SyncDataStore<string>(name);
     this.funcStore = new SyncDataStore<FuncInfo>(name);
     this.funcResultStore = new FuncResultStore();
+    this.callFunc = callFunc;
   }
 }
 
@@ -123,5 +134,44 @@ class FuncResultStore {
   }
   getResult(callerId: number) {
     return this.results[callerId];
+  }
+}
+
+export class FuncNotFoundError extends Error {
+  constructor(base: FieldBase) {
+    super(`member("${base.member_}").func("${base.field_}") is not set`);
+    this.name = "FuncNotFoundError";
+  }
+}
+
+
+export class AsyncFuncResult extends FieldBase {
+  callerId: number;
+  caller: string;
+  // 関数が開始したらtrue, 存在しなければfalse
+  // falseの場合rejectResultも自動で呼ばれる
+  resolveStarted: (r: boolean) => void = () => undefined;
+  // 結果をセットする
+  resolveResult: (r: Val | Promise<Val>) => void = () => undefined;
+  // 例外をセットする
+  rejectResult: (e: any) => void = () => undefined;
+  started: Promise<boolean>;
+  result: Promise<Val>;
+  constructor(callerId: number, caller: string, base: FieldBase) {
+    super(base.data, base.member_, base.field_);
+    this.callerId = callerId;
+    this.caller = caller;
+    this.started = new Promise((res) => {
+      this.resolveStarted = (r: boolean) => {
+        res(r);
+        if (!r) {
+          this.rejectResult(new FuncNotFoundError(this));
+        }
+      };
+    });
+    this.result = new Promise((res, rej) => {
+      this.resolveResult = res;
+      this.rejectResult = rej;
+    });
   }
 }
