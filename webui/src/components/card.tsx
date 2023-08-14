@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { ReactNode } from "react";
 export interface CardItem<T> {
   key: string;
   minH: number;
@@ -8,7 +8,7 @@ export interface CardItem<T> {
 }
 interface Props {
   title: string;
-  children: FC;
+  children: ReactNode;
 }
 export function Card(props: Props) {
   return (

@@ -4,7 +4,7 @@ function getLS() {
   let ls = {};
   if (global != undefined && global.localStorage) {
     try {
-      ls = (JSON.parse(global.localStorage.getItem(lsKey)) as object) || {};
+      ls = JSON.parse(global.localStorage.getItem(lsKey) || "{}") as object;
     } catch (e) {
       /*Ignore*/
     }

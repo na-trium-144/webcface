@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Client, Value, Text, Func } from "webcface";
+import { Value, Text, Func } from "webcface";
 import "../index.css";
 import "react-grid-layout/css/styles.css";
 import "react-resizable/css/styles.css";

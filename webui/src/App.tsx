@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Client, Value, Text, Func } from "webcface";
 import "./index.css";
-import { Card, CardItem } from "./components/card";
+import { CardItem } from "./components/card";
 import { LayoutMain } from "./components/layout";
 
 function App() {
@@ -11,47 +11,64 @@ function App() {
   const [funcCards, setFuncCards] = useState<CardItem<Func[]>[]>([]);
 
   useEffect(() => {
-    cli.current = new Client("a", "127.0.0.1", 80);
+    cli.current = new Client("a");
+    cli.current.membersChange.on((m) => {
+      m.valuesChange.on((v) => {
+        const key = `${v.member.name}:value:${v.name}`;
+        setValueCards((valueCards) =>
+          valueCards.concat([
+            {
+              key: key,
+              minH: 2,
+              initH: 2,
+              initW: 2,
+              childProps: v,
+            },
+          ])
+        );
+        v.on((v) => {
+          setValueCards((valueCards) =>
+            valueCards.map((c) => (c.key === key ? { ...c, childProps: v } : c))
+          );
+        });
+      });
+      m.textsChange.once((v) => {
+        setTextCards((textCards) =>
+          textCards.concat([
+            {
+              key: `${m.name}:text`,
+              minH: 1,
+              initH: 2,
+              initW: 4,
+              childProps: v.member.texts(),
+            },
+          ])
+        );
+      });
+      m.textsChange.on((v) => {
+        v.on(() => {
+          setTextCards((textCards) => textCards.slice());
+        });
+      });
+      m.funcsChange.once((v) => {
+        setFuncCards((funcCards) =>
+          funcCards.concat([
+            {
+              key: `${m.name}:func`,
+              minH: 2,
+              initH: 2,
+              initW: 6,
+              childProps: v.member.funcs(),
+            },
+          ])
+        );
+      });
+    });
     const i = setInterval(() => {
-      const values: CardItem<Value>[] = [];
-      const texts: CardItem<Text[]>[] = [];
-      const funcs: CardItem<Func[]>[] = [];
-      for (const s of cli.current.subjects()) {
-        for (const v of s.values()) {
-          values.push({
-            key: `${s.name()}:value:${v.name}`,
-            minH: 2,
-            initH: 2,
-            initW: 2,
-            childProps: v,
-          });
-        }
-        if (s.texts().length > 0) {
-          texts.push({
-            key: `${s.name()}:text`,
-            minH: 1,
-            initH: 2,
-            initW: 4,
-            childProps: s.texts(),
-          });
-        }
-        if (s.funcs().length > 0) {
-          funcs.push({
-            key: `${s.name()}:func`,
-            minH: 2,
-            initH: 2,
-            initW: 6,
-            childProps: s.funcs(),
-          });
-        }
-      }
-      setValueCards(values);
-      setTextCards(texts);
-      setFuncCards(funcs);
-      cli.current.send();
+      cli.current?.sync();
     }, 100);
     return () => clearInterval(i);
-  }, [setFuncCards, setTextCards, setValueCards]);
+  }, []);
 
   return (
     <div className="p-1 h-screen">

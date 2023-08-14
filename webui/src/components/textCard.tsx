@@ -9,7 +9,7 @@ export function TextCard(props: Props) {
       <ul className="list-none">
         {props.text.map((v) => (
           <li key={v.name}>
-            {v.from}::{v.name} = {v.get()}
+            {v.member.name}::{v.name} = {v.get()}
           </li>
         ))}
       </ul>

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Card } from "./card";
-import { Func, argType } from "webcface";
+import { Func, Arg, argType } from "webcface";
 
 interface Props {
   func: Func[];
@@ -10,7 +10,7 @@ export function FuncCard(props: Props) {
     <Card title="Functions">
       <ul className="list-none">
         {props.func.map((v) => (
-          <li key={`${v.from}::${v.name}`} className="">
+          <li key={`${v.member.name}::${v.name}`} className="">
             <FuncLine func={v} />
           </li>
         ))}
@@ -20,7 +20,7 @@ export function FuncCard(props: Props) {
 }
 
 interface ArgProps {
-  type: number;
+  argConfig: Arg;
   arg: string | number | boolean;
   setArg: (arg: string | number | boolean) => void;
   isError: boolean;
@@ -38,13 +38,13 @@ function ArgInput(props: ArgProps) {
     );
   }, [props.isError]);
 
-  switch (props.type) {
+  switch (props.argConfig.type) {
     case argType.int_:
       return (
         <input
           type="number"
           className={inputClass + " w-20"}
-          value={props.arg}
+          value={props.arg as number || 0}
           onChange={(e) => props.setArg(e.target.value)}
         />
       );
@@ -52,7 +52,7 @@ function ArgInput(props: ArgProps) {
       return (
         <button
           type="button"
-          checked={props.arg}
+          checked={!!props.arg}
           onClick={() => props.setArg(!props.arg)}
           className={
             inputClass +
@@ -68,8 +68,8 @@ function ArgInput(props: ArgProps) {
         <input
           type="text"
           className={inputClass}
-          size="6"
-          value={String(props.arg)}
+          size={6}
+          value={String(props.arg) || ""}
           onChange={(e) => {
             if (isNaN(Number(e.target.value))) {
               props.setIsError(true);
@@ -88,8 +88,8 @@ function ArgInput(props: ArgProps) {
           <input
             type="text"
             className={inputClass}
-            size="6"
-            value={props.arg}
+            size={6}
+            value={String(props.arg) || ""}
             onChange={(e) => props.setArg(e.target.value)}
           />
           <span className="pr-1">"</span>
@@ -101,13 +101,13 @@ function FuncLine(props: { func: Func }) {
   const [args, setArgs] = useState<(string | number | boolean)[]>([]);
   const [errors, setErrors] = useState<boolean[]>([]);
   useEffect(() => {
-    if (args.length < props.func.argsType().length) {
+    if (args.length < props.func.args.length) {
       setArgs(
-        props.func.argsType().map((at, i) => {
+        props.func.args.map((ac, i) => {
           if (i < args.length) {
             return args[i];
           } else {
-            switch (at) {
+            switch (ac.type) {
               case argType.int_:
               case argType.float_:
                 return 0;
@@ -120,7 +120,7 @@ function FuncLine(props: { func: Func }) {
         })
       );
       setErrors(
-        props.func.argsType().map((at, i) => {
+        props.func.args.map((ac, i) => {
           if (i < args.length) {
             return errors[i];
           } else {
@@ -133,14 +133,14 @@ function FuncLine(props: { func: Func }) {
   return (
     <>
       <span className="">
-        {props.func.from}::{props.func.name}
+        {props.func.member.name}::{props.func.name}
       </span>
       <span className="pl-1">(</span>
-      {props.func.argsType().map((at, i) => (
+      {props.func.args.map((ac, i) => (
         <span key={i}>
           {i > 0 && <span className="pl-1 pr-1">,</span>}
           <ArgInput
-            type={at}
+            argConfig={ac}
             arg={args[i]}
             setArg={(arg) =>
               setArgs(args.map((ca, ci) => (i === ci ? arg : ca)))
@@ -149,7 +149,7 @@ function FuncLine(props: { func: Func }) {
             setIsError={(isError) =>
               setErrors(errors.map((ce, ci) => (i === ci ? isError : ce)))
             }
-            id={`${props.func.from}-func-${props.func.name}-arg-${i}`}
+            id={`${props.func.member.name}-func-${props.func.name}-arg-${i}`}
           />
         </span>
       ))}
