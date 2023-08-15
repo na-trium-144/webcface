@@ -208,13 +208,13 @@ export class Client extends Member {
     };
     ws.onerror = (error: any) => {
       connection_done = true;
-      console.error("Connection Error");
+      // console.error("Connection Error");
       // console.error(error);
     };
     ws.onclose = () => {
       connection_done = true;
       this.connected = false;
-      console.error("closed");
+      // console.error("closed");
       setTimeout(() => this.reconnect(), 1000);
     };
   }
