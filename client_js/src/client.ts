@@ -18,6 +18,8 @@ export class Client extends Member {
   host: string;
   port: number;
   syncInit = false;
+  closing = false;
+  reconnectTimer: ReturnType<typeof setTimeout> | null = null;
   constructor(name: string, host = "127.0.0.1", port = 7530) {
     super(
       new FieldBase(
@@ -33,9 +35,7 @@ export class Client extends Member {
     this.reconnect();
   }
   send(kind: number, obj: types.AnyMessage) {
-    if (this.ws != null) {
-      this.ws.send(pack(kind, obj));
-    }
+    this.ws?.send(pack(kind, obj));
   }
   callFunc(r: AsyncFuncResult, b: FieldBase, args: Val[]) {
     this.send(types.kind.call, {
@@ -46,11 +46,22 @@ export class Client extends Member {
       a: args,
     });
   }
+  close() {
+    this.closing = true;
+    if (this.reconnectTimer != null) {
+      clearTimeout(this.reconnectTimer);
+    }
+    this.ws?.close();
+    this.ws = null;
+  }
   reconnect() {
+    if (this.closing) {
+      return;
+    }
     let connection_done = false;
     const ws = new w3cwebsocket(`ws://${this.host}:${this.port}`);
     this.ws = ws;
-    setTimeout(() => {
+    this.reconnectTimer = setTimeout(() => {
       if (!connection_done) {
         ws.onopen = () => null;
         ws.onmessage = () => null;
