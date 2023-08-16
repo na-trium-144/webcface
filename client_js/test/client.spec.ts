@@ -80,5 +80,26 @@ describe("Client tests", function () {
         },
       ]);
     });
+    it("can send value request and receive value", function (done) {
+      assert.isNull(m1.value("a").tryGet());
+      cli1.sync();
+      setTimeout(() => {
+        assert.strictEqual(m1.value("a").get(), 1);
+        done();
+      }, 100);
+    });
+    it("can send text request and receive text", function (done) {
+      assert.isNull(m1.text("a").tryGet());
+      cli1.sync();
+      setTimeout(() => {
+        assert.strictEqual(m1.text("a").get(), "aaa");
+        done();
+      }, 100);
+    });
+    it("can send func call and receive response and result", async function () {
+      const r = m1.func("a").runAsync(1, "");
+      assert.isOk(await r.started);
+      await r.result;
+    });
   });
 });
