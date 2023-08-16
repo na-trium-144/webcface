@@ -8,9 +8,9 @@ setInterval(() => {
   void c
     .member("example_main")
     .func("func2")
-    .run(9, 7.1, false, "aaa")
+    .runAsync(9, 7.1, false, "aaa")
     .result.then((v) => {
       console.log(`func2 = ${v as number}`); // vだけで値取れるようにしない?
-    }).catch(() => {}); // .catchできるようにしない?
+    }).catch(() => undefined); // .catchできるようにしない?
   c.sync();
 }, 250);

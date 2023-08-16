@@ -73,7 +73,7 @@ export class Value extends FieldBaseWithEvent<Value> {
   }
   get() {
     const v = this.tryGet();
-    if (v == null) {
+    if (v === null) {
       return 0;
     } else {
       return v;
@@ -103,7 +103,7 @@ export class Text extends FieldBaseWithEvent<Text> {
   }
   get() {
     const v = this.tryGet();
-    if (v == null) {
+    if (v === null) {
       return "";
     } else {
       return v;
@@ -197,7 +197,7 @@ export class Func extends FieldBase {
         if (funcInfo.funcImpl != undefined) {
           // funcImplがpromise返す場合もそのままresolveにぶちこめばよいはず
           let res: Val | Promise<Val> | void = runFunc(funcInfo, args);
-          if (res == undefined) {
+          if (res === undefined) {
             res = "";
           }
           r.resolveResult(res);
@@ -216,11 +216,6 @@ export class Func extends FieldBase {
     setTimeout(() => {
       this.runImpl(r, args);
     });
-    return r;
-  }
-  run(...args: Val[]) {
-    const r = this.data.funcResultStore.addResult("", this);
-    this.runImpl(r, args);
     return r;
   }
 }

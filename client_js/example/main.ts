@@ -24,10 +24,10 @@ setInterval(() => {
   c.text("str").set("hello");
   console.log(`str = ${c.member("example_main").text("str").get()}`);
   console.log(`test = ${c.member("example_main").value("test").get()}`);
-  void c.func("func1").run();
+  void c.func("func1").runAsync();
   void c
     .func("func2")
-    .run(3, 5.5, 1, "hoge")
+    .runAsync(3, 5.5, 1, "hoge")
     .result.then((v) => console.log(`return = ${v as number}`));
   c.sync();
 }, 250);

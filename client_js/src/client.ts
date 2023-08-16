@@ -104,7 +104,7 @@ export class Client extends Member {
                 i: dataR.i,
                 c: dataR.c,
                 e: false,
-                r: res == undefined ? "" : res,
+                r: res === undefined ? "" : res,
               });
             };
             const sendError = (e: any) => {
