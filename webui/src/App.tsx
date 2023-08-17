@@ -2,12 +2,10 @@ import { useState, useEffect, useRef } from "react";
 import { Client, Member, Value, Text, Func } from "webcface";
 import "./index.css";
 import { CardItem } from "./components/card";
-import {
-  LayoutMain,
-  MemberValues,
-  MemberFuncs,
-  MemberTexts,
-} from "./components/layout";
+import { LayoutMain } from "./components/layout";
+import { Header } from "./components/header";
+import { SideMenu } from "./components/sideMenu";
+import { MemberValues, MemberTexts, MemberFuncs } from "../libs/stateTypes";
 
 export default function App() {
   const cli = useRef<Client | null>(null);
@@ -50,9 +48,17 @@ export default function App() {
     };
   }, []);
 
+  const [menuOpen, setMenuOpen] = useState<boolean>(false);
+
   return (
-    <div className="p-1 h-screen">
-      <LayoutMain memberValues={values} memberTexts={texts} memberFuncs={funcs} />
+    <div className="h-screen bg-neutral-100">
+      <Header menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
+      <SideMenu menuOpen={menuOpen} members={values.map((v) => v.name)} memberValues={values} />
+      <LayoutMain
+        memberValues={values}
+        memberTexts={texts}
+        memberFuncs={funcs}
+      />
     </div>
   );
 }

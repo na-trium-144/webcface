@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Card } from "./card";
 import { Func, Arg, argType } from "webcface";
 
@@ -30,6 +30,16 @@ interface ArgProps {
 }
 function ArgInput(props: ArgProps) {
   const inputClass = "border-0 outline-0 px-1 peer ";
+  const checkError = useRef<(() => void) | null>(null);
+  useEffect(() => {
+    if (
+      checkError.current != null &&
+      !props.isError &&
+      checkError.current(String(props.arg))
+    ) {
+      props.setIsError(true);
+    }
+  }, [props.arg]);
 
   if (props.argConfig.option.length > 0) {
     return (
@@ -77,13 +87,10 @@ function ArgInput(props: ArgProps) {
           </button>
         );
       case argType.float_: {
-        const checkError = (v: string) =>
+        checkError.current = (v: string) =>
           isNaN(Number(v)) ||
           (props.argConfig.min != null && props.argConfig.min > Number(v)) ||
           (props.argConfig.max != null && props.argConfig.max < Number(v));
-        if (!props.isError && checkError(String(props.arg))) {
-          props.setIsError(true);
-        }
         return (
           <input
             type="text"
@@ -91,19 +98,16 @@ function ArgInput(props: ArgProps) {
             size={6}
             value={String(props.arg)}
             onChange={(e) => {
-              props.setIsError(checkError(e.target.value));
+              props.setIsError(checkError.current(e.target.value));
               props.setArg(e.target.value);
             }}
           />
         );
       }
       default: {
-        const checkError = (v: string) =>
+        checkError.current = (v: string) =>
           (props.argConfig.min != null && props.argConfig.min > v.length) ||
           (props.argConfig.max != null && props.argConfig.max < v.length);
-        if (!props.isError && checkError(String(props.arg))) {
-          props.setIsError(true);
-        }
         return (
           <input
             type="text"
@@ -111,7 +115,7 @@ function ArgInput(props: ArgProps) {
             size={6}
             value={String(props.arg)}
             onChange={(e) => {
-              props.setIsError(checkError(e.target.value));
+              props.setIsError(checkError.current(e.target.value));
               props.setArg(e.target.value);
             }}
           />

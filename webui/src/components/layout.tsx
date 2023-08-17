@@ -10,19 +10,8 @@ import { Card, CardItem } from "./card";
 import { ValueCard } from "./valueCard";
 import { TextCard } from "./textCard";
 import { FuncCard } from "./funcCard";
+import { MemberValues, MemberTexts, MemberFuncs } from "../libs/stateTypes";
 
-export interface MemberValues {
-  name: string;
-  values: Value[];
-}
-export interface MemberTexts {
-  name: string;
-  texts: Text[];
-}
-export interface MemberFuncs {
-  name: string;
-  funcs: Func[];
-}
 interface Props {
   memberValues: MemberValues[];
   memberTexts: MemberTexts[];
@@ -103,45 +92,43 @@ export function LayoutMain(props: Props) {
   }, [layoutsLoadDone, lsLayout, setLsLayout, setLayouts]);
 
   return (
-    <div className="p-1 h-screen">
-      <ResponsiveGridLayout
-        className="layout h-full overflow-hidden"
-        layouts={layouts}
-        breakpoints={breakpoints}
-        cols={cols}
-        rowHeight={100}
-        onLayoutChange={onLayoutChange}
-        allowOverlap
-        compactType={null}
-        autoSize={false}
-      >
-        {props.memberValues
-          .reduce((prev, m) => prev.concat(m.values), [] as Value[])
-          .map((v) => (
-            <div
-              key={`${v.member.name}:value:${v.name}`}
-              data-grid={{ x: 0, y: 0, w: 2, h: 2, minW: 2, minH: 2 }}
-            >
-              <ValueCard value={v} />
-            </div>
-          ))}
-        {props.memberTexts.map((m) => (
+    <ResponsiveGridLayout
+      className="layout p-2 h-full overflow-hidden"
+      layouts={layouts}
+      breakpoints={breakpoints}
+      cols={cols}
+      rowHeight={100}
+      onLayoutChange={onLayoutChange}
+      allowOverlap
+      compactType={null}
+      autoSize={false}
+    >
+      {props.memberValues
+        .reduce((prev, m) => prev.concat(m.values), [] as Value[])
+        .map((v) => (
           <div
-            key={`${m.name}:text`}
-            data-grid={{ x: 0, y: 0, w: 4, h: 2, minW: 2, minH: 1 }}
+            key={`${v.member.name}:value:${v.name}`}
+            data-grid={{ x: 0, y: 0, w: 2, h: 2, minW: 2, minH: 2 }}
           >
-            <TextCard name={m.name} text={m.texts} />
+            <ValueCard value={v} />
           </div>
         ))}
-        {props.memberFuncs.map((m) => (
-          <div
-            key={`${m.name}:func`}
-            data-grid={{ x: 0, y: 0, w: 6, h: 2, minW: 2, minH: 2 }}
-          >
-            <FuncCard name={m.name} func={m.funcs} />
-          </div>
-        ))}
-      </ResponsiveGridLayout>
-    </div>
+      {props.memberTexts.map((m) => (
+        <div
+          key={`${m.name}:text`}
+          data-grid={{ x: 0, y: 0, w: 4, h: 2, minW: 2, minH: 1 }}
+        >
+          <TextCard name={m.name} text={m.texts} />
+        </div>
+      ))}
+      {props.memberFuncs.map((m) => (
+        <div
+          key={`${m.name}:func`}
+          data-grid={{ x: 0, y: 0, w: 6, h: 2, minW: 2, minH: 2 }}
+        >
+          <FuncCard name={m.name} func={m.funcs} />
+        </div>
+      ))}
+    </ResponsiveGridLayout>
   );
 }
