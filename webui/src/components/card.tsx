@@ -1,11 +1,4 @@
 import { ReactNode } from "react";
-export interface CardItem<T> {
-  key: string;
-  minH: number;
-  initW: number;
-  initH: number;
-  childProps: T;
-}
 interface Props {
   title: string;
   children: ReactNode;

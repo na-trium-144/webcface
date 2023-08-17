@@ -1,80 +1,58 @@
 import { useState, useEffect, useRef } from "react";
-import { Client, Value, Text, Func } from "webcface";
+import { Client, Member, Value, Text, Func } from "webcface";
 import "./index.css";
 import { CardItem } from "./components/card";
-import { LayoutMain } from "./components/layout";
+import {
+  LayoutMain,
+  MemberValues,
+  MemberFuncs,
+  MemberTexts,
+} from "./components/layout";
 
-function App() {
+export default function App() {
   const cli = useRef<Client | null>(null);
-  const [valueCards, setValueCards] = useState<CardItem<Value>[]>([]);
-  const [textCards, setTextCards] = useState<CardItem<Text[]>[]>([]);
-  const [funcCards, setFuncCards] = useState<CardItem<Func[]>[]>([]);
+  const [values, setValues] = useState<MemberValues[]>([]);
+  const [texts, setTexts] = useState<MemberTexts[]>([]);
+  const [funcs, setFuncs] = useState<MemberFuncs[]>([]);
 
   useEffect(() => {
     cli.current = new Client("a");
-    cli.current.membersChange.on((m) => {
-      m.valuesChange.on((v) => {
-        const key = `${v.member.name}:value:${v.name}`;
-        setValueCards((valueCards) =>
-          valueCards.concat([
-            {
-              key: key,
-              minH: 2,
-              initH: 2,
-              initW: 2,
-              childProps: v,
-            },
-          ])
-        );
-        v.on((v) => {
-          setValueCards((valueCards) =>
-            valueCards.map((c) => (c.key === key ? { ...c, childProps: v } : c))
-          );
-        });
-      });
-      m.textsChange.once((v) => {
-        setTextCards((textCards) =>
-          textCards.concat([
-            {
-              key: `${m.name}:text`,
-              minH: 1,
-              initH: 2,
-              initW: 4,
-              childProps: v.member.texts(),
-            },
-          ])
-        );
-      });
-      m.textsChange.on((v) => {
-        v.on(() => {
-          setTextCards((textCards) => textCards.slice());
-        });
-      });
-      m.funcsChange.once((v) => {
-        setFuncCards((funcCards) =>
-          funcCards.concat([
-            {
-              key: `${m.name}:func`,
-              minH: 2,
-              initH: 2,
-              initW: 6,
-              childProps: v.member.funcs(),
-            },
-          ])
-        );
-      });
-    });
+    const onMembersChange = (m: Member) => {
+      setValues((values) => values.concat([{ name: m.name, values: [] }]));
+      setTexts((values) => values.concat([{ name: m.name, texts: [] }]));
+      setFuncs((values) => values.concat([{ name: m.name, funcs: [] }]));
+      m.valuesChange.on(() =>
+        setValues((values) => {
+          values.find((e) => e.name === m.name).values = m.values();
+          return values.slice();
+        })
+      );
+      m.textsChange.on(() =>
+        setTexts((texts) => {
+          texts.find((e) => e.name === m.name).texts = m.texts();
+          return texts.slice();
+        })
+      );
+      m.funcsChange.on(() =>
+        setFuncs((funcs) => {
+          funcs.find((e) => e.name === m.name).funcs = m.funcs();
+          return funcs.slice();
+        })
+      );
+    };
+    cli.current.membersChange.on(onMembersChange);
     const i = setInterval(() => {
       cli.current?.sync();
     }, 100);
-    return () => clearInterval(i);
+    return () => {
+      clearInterval(i);
+      cli.current.membersChange.off(onMembersChange);
+    };
   }, []);
 
   return (
     <div className="p-1 h-screen">
-      <LayoutMain value={valueCards} text={textCards} func={funcCards} />
+      <LayoutMain memberValues={values} memberTexts={texts} memberFuncs={funcs} />
     </div>
   );
 }
-
-export default App;

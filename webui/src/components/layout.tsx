@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Value, Text, Func } from "webcface";
+import { Client, Value, Text, Func } from "webcface";
 import "../index.css";
 import "react-grid-layout/css/styles.css";
 import "react-resizable/css/styles.css";
@@ -7,13 +7,26 @@ import { Responsive, WidthProvider, Layout, Layouts } from "react-grid-layout";
 const ResponsiveGridLayout = WidthProvider(Responsive);
 import { getFromLS, saveToLS } from "../libs/ls";
 import { Card, CardItem } from "./card";
+import { ValueCard } from "./valueCard";
 import { TextCard } from "./textCard";
 import { FuncCard } from "./funcCard";
 
+export interface MemberValues {
+  name: string;
+  values: Value[];
+}
+export interface MemberTexts {
+  name: string;
+  texts: Text[];
+}
+export interface MemberFuncs {
+  name: string;
+  funcs: Func[];
+}
 interface Props {
-  value: CardItem<Value>[];
-  text: CardItem<Text[]>[];
-  func: CardItem<Func[]>[];
+  memberValues: MemberValues[];
+  memberTexts: MemberTexts[];
+  memberFuncs: MemberFuncs[];
 }
 
 export function LayoutMain(props: Props) {
@@ -89,16 +102,6 @@ export function LayoutMain(props: Props) {
     return () => clearInterval(i);
   }, [layoutsLoadDone, lsLayout, setLsLayout, setLayouts]);
 
-  const dataGrid = (c: CardItem<any>) => {
-    return {
-      w: c.initW,
-      h: c.initH,
-      x: 0,
-      y: 0,
-      minW: 2,
-      minH: c.minH,
-    };
-  };
   return (
     <div className="p-1 h-screen">
       <ResponsiveGridLayout
@@ -112,19 +115,30 @@ export function LayoutMain(props: Props) {
         compactType={null}
         autoSize={false}
       >
-        {props.value.map((c) => (
-          <div key={c.key} data-grid={dataGrid(c)}>
-            <Card title={c.childProps.name}>{c.childProps.get()}</Card>
+        {props.memberValues
+          .reduce((prev, m) => prev.concat(m.values), [] as Value[])
+          .map((v) => (
+            <div
+              key={`${v.member.name}:value:${v.name}`}
+              data-grid={{ x: 0, y: 0, w: 2, h: 2, minW: 2, minH: 2 }}
+            >
+              <ValueCard value={v} />
+            </div>
+          ))}
+        {props.memberTexts.map((m) => (
+          <div
+            key={`${m.name}:text`}
+            data-grid={{ x: 0, y: 0, w: 4, h: 2, minW: 2, minH: 1 }}
+          >
+            <TextCard name={m.name} text={m.texts} />
           </div>
         ))}
-        {props.text.map((c) => (
-          <div key={c.key} data-grid={dataGrid(c)}>
-            <TextCard text={c.childProps} />
-          </div>
-        ))}
-        {props.func.map((c) => (
-          <div key={c.key} data-grid={dataGrid(c)}>
-          <FuncCard func={c.childProps} />
+        {props.memberFuncs.map((m) => (
+          <div
+            key={`${m.name}:func`}
+            data-grid={{ x: 0, y: 0, w: 6, h: 2, minW: 2, minH: 2 }}
+          >
+            <FuncCard name={m.name} func={m.funcs} />
           </div>
         ))}
       </ResponsiveGridLayout>
