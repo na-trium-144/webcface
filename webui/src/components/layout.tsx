@@ -16,6 +16,7 @@ import * as cardKey from "../libs/cardKey";
 interface Props {
   isOpened: (key: string) => boolean;
   openedOrder: (key: string) => number;
+  moveOrder: (key: string) => void;
   memberValues: MemberValues[];
   memberTexts: MemberTexts[];
   memberFuncs: MemberFuncs[];
@@ -96,7 +97,7 @@ export function LayoutMain(props: Props) {
 
   return (
     <ResponsiveGridLayout
-      className="layout p-2 h-full overflow-hidden"
+      className="layout"
       layouts={layouts}
       breakpoints={breakpoints}
       cols={cols}
@@ -104,50 +105,60 @@ export function LayoutMain(props: Props) {
       onLayoutChange={onLayoutChange}
       allowOverlap
       compactType={null}
-      autoSize={false}
+      draggableHandle=".MyCardHandle"
     >
       {props.memberValues
         .reduce((prev, m) => prev.concat(m.values), [] as Value[])
-        .map(
-          (v) =>
-            props.isOpened(cardKey.value(v.member.name, v.name)) && (
+        .map((v) => {
+          const key = cardKey.value(v.member.name, v.name);
+          if (key) {
+            return (
               <div
-                key={cardKey.value(v.member.name, v.name)}
+                key={key}
                 data-grid={{ x: 0, y: 0, w: 2, h: 2, minW: 2, minH: 2 }}
                 style={{
-                  zIndex: props.openedOrder(
-                    cardKey.value(v.member.name, v.name)
-                  ),
+                  zIndex: 10 + props.openedOrder(key),
                 }}
+                onPointerDown={() => props.moveOrder(key)}
               >
                 <ValueCard value={v} />
               </div>
-            )
-        )}
-      {props.memberTexts.map(
-        (m) =>
-          props.isOpened(cardKey.text(m.name)) && (
+            );
+          }
+          return null;
+        })}
+      {props.memberTexts.map((m) => {
+        const key = cardKey.text(m.name);
+        if (props.isOpened(key)) {
+          return (
             <div
-              key={cardKey.text(m.name)}
+              key={key}
               data-grid={{ x: 0, y: 0, w: 4, h: 2, minW: 2, minH: 1 }}
-              style={{ zIndex: props.openedOrder(cardKey.text(m.name)) }}
+              style={{ zIndex: 10 + props.openedOrder(key) }}
+              onPointerDown={() => props.moveOrder(key)}
             >
               <TextCard name={m.name} text={m.texts} />
             </div>
-          )
-      )}
-      {props.memberFuncs.map(
-        (m) =>
-          props.isOpened(cardKey.func(m.name)) && (
+          );
+        }
+        return null;
+      })}
+      {props.memberFuncs.map((m) => {
+        const key = cardKey.func(m.name);
+        if (props.isOpened(key)) {
+          return (
             <div
-              key={cardKey.func(m.name)}
+              key={key}
               data-grid={{ x: 0, y: 0, w: 6, h: 2, minW: 2, minH: 2 }}
-              style={{ zIndex: props.openedOrder(cardKey.func(m.name)) }}
+              style={{ zIndex: 10 + props.openedOrder(key) }}
+              onPointerDown={() => props.moveOrder(key)}
             >
               <FuncCard name={m.name} func={m.funcs} />
             </div>
-          )
-      )}
+          );
+        }
+        return null;
+      })}
     </ResponsiveGridLayout>
   );
 }

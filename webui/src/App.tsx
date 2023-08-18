@@ -16,6 +16,10 @@ export default function App() {
   useEffect(() => {
     cli.current = new Client("a");
     const onMembersChange = (m: Member) => {
+      if (members.find((m2) => m2.name === m.name)) {
+        // 本来はこの条件要らないようにするはず
+        return;
+      }
       setMembers((members) => members.concat([m]));
       setValues((values) => values.concat([{ name: m.name, values: [] }]));
       setTexts((values) => values.concat([{ name: m.name, texts: [] }]));
@@ -53,31 +57,49 @@ export default function App() {
   const [openedCards, setOpenedCards] = useState<string[]>([]);
   const isOpened = (key: string) => openedCards.includes(key);
   const openedOrder = (key: string) => openedCards.indexOf(key) || 0;
-  const toggleOpened = (key: string) => () => {
+  const toggleOpened = (key: string) => {
     if (openedCards.includes(key)) {
       setOpenedCards(openedCards.filter((n) => n !== key));
     } else {
       setOpenedCards(openedCards.concat([key]));
     }
   };
+  const moveOrder = (key: string) => {
+    setOpenedCards(openedCards.filter((n) => n !== key).concat([key]));
+  };
 
   return (
-    <div className="h-screen bg-neutral-100">
-      <Header menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
-      <SideMenu
-        menuOpen={menuOpen}
-        members={members}
-        memberValues={values}
-        isOpened={isOpened}
-        toggleOpened={toggleOpened}
-      />
-      <LayoutMain
-        isOpened={isOpened}
-        openedOrder={openedOrder}
-        memberValues={values}
-        memberTexts={texts}
-        memberFuncs={funcs}
-      />
+    <div className="min-h-screen h-max bg-neutral-100">
+      <nav className="bg-green-300 w-full h-12 px-2 drop-shadow-lg">
+        <Header menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
+      </nav>
+      <nav
+        className={
+          "absolute top-10 right-2 w-72 h-max max-h-[75%] p-2 " +
+          "rounded-lg shadow-lg overflow-x-hidden overflow-y-auto bg-white " +
+          "transition duration-100 origin-top-right " +
+          (menuOpen
+            ? "ease-out opacity-100 scale-100 z-[1000] "
+            : "ease-in opacity-0 scale-90 -z-10 ")
+        }
+      >
+        <SideMenu
+          members={members}
+          memberValues={values}
+          isOpened={isOpened}
+          toggleOpened={toggleOpened}
+        />
+      </nav>
+      <main className="p-2">
+        <LayoutMain
+          isOpened={isOpened}
+          openedOrder={openedOrder}
+          moveOrder={moveOrder}
+          memberValues={values}
+          memberTexts={texts}
+          memberFuncs={funcs}
+        />
+      </main>
     </div>
   );
 }

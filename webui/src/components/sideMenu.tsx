@@ -4,7 +4,6 @@ import { MemberValues, MemberTexts, MemberFuncs } from "../libs/stateTypes";
 import * as cardKey from "../libs/cardKey";
 
 interface Props {
-  menuOpen: boolean;
   members: Member[];
   memberValues: MemberValues[];
   isOpened: (key: string) => boolean;
@@ -12,14 +11,7 @@ interface Props {
 }
 export function SideMenu(props: Props) {
   return (
-    <nav
-      className={
-        "fixed top-12 left-0 w-48 h-full p-2 z-10 " +
-        "overflow-y-auto overflow-x-hidden bg-white drop-shadow-lg " +
-        "transition ease-in-out duration-300 " +
-        (props.menuOpen ? "translate-x-0 " : "-translate-x-full ")
-      }
-    >
+    <>
       {props.members.map((m, mi) => (
         <SideMenuMember
           key={mi}
@@ -31,7 +23,7 @@ export function SideMenu(props: Props) {
           toggleOpened={props.toggleOpened}
         />
       ))}
-    </nav>
+    </>
   );
 }
 
@@ -57,7 +49,9 @@ function SideMenuMember(props: MemberProps) {
             <SideMenuButton2
               name={v.name}
               active={props.isOpened(cardKey.value(props.member.name, v.name))}
-              onClick={props.toggleOpened(cardKey.value(props.member.name, v.name))}
+              onClick={() =>
+                props.toggleOpened(cardKey.value(props.member.name, v.name))
+              }
             />
           </li>
         ))}
@@ -65,14 +59,14 @@ function SideMenuMember(props: MemberProps) {
           <SideMenuButton2
             name={"Text Variables"}
             active={props.isOpened(cardKey.text(props.member.name))}
-            onClick={props.toggleOpened(cardKey.text(props.member.name))}
+            onClick={() => props.toggleOpened(cardKey.text(props.member.name))}
           />
         </li>
         <li>
           <SideMenuButton2
             name={"Functions"}
             active={props.isOpened(cardKey.func(props.member.name))}
-            onClick={props.toggleOpened(cardKey.func(props.member.name))}
+            onClick={() => props.toggleOpened(cardKey.func(props.member.name))}
           />
         </li>
       </ul>
