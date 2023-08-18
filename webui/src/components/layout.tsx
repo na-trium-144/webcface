@@ -11,8 +11,11 @@ import { ValueCard } from "./valueCard";
 import { TextCard } from "./textCard";
 import { FuncCard } from "./funcCard";
 import { MemberValues, MemberTexts, MemberFuncs } from "../libs/stateTypes";
+import * as cardKey from "../libs/cardKey";
 
 interface Props {
+  isOpened: (key: string) => boolean;
+  openedOrder: (key: string) => number;
   memberValues: MemberValues[];
   memberTexts: MemberTexts[];
   memberFuncs: MemberFuncs[];
@@ -105,30 +108,46 @@ export function LayoutMain(props: Props) {
     >
       {props.memberValues
         .reduce((prev, m) => prev.concat(m.values), [] as Value[])
-        .map((v) => (
-          <div
-            key={`${v.member.name}:value:${v.name}`}
-            data-grid={{ x: 0, y: 0, w: 2, h: 2, minW: 2, minH: 2 }}
-          >
-            <ValueCard value={v} />
-          </div>
-        ))}
-      {props.memberTexts.map((m) => (
-        <div
-          key={`${m.name}:text`}
-          data-grid={{ x: 0, y: 0, w: 4, h: 2, minW: 2, minH: 1 }}
-        >
-          <TextCard name={m.name} text={m.texts} />
-        </div>
-      ))}
-      {props.memberFuncs.map((m) => (
-        <div
-          key={`${m.name}:func`}
-          data-grid={{ x: 0, y: 0, w: 6, h: 2, minW: 2, minH: 2 }}
-        >
-          <FuncCard name={m.name} func={m.funcs} />
-        </div>
-      ))}
+        .map(
+          (v) =>
+            props.isOpened(cardKey.value(v.member.name, v.name)) && (
+              <div
+                key={cardKey.value(v.member.name, v.name)}
+                data-grid={{ x: 0, y: 0, w: 2, h: 2, minW: 2, minH: 2 }}
+                style={{
+                  zIndex: props.openedOrder(
+                    cardKey.value(v.member.name, v.name)
+                  ),
+                }}
+              >
+                <ValueCard value={v} />
+              </div>
+            )
+        )}
+      {props.memberTexts.map(
+        (m) =>
+          props.isOpened(cardKey.text(m.name)) && (
+            <div
+              key={cardKey.text(m.name)}
+              data-grid={{ x: 0, y: 0, w: 4, h: 2, minW: 2, minH: 1 }}
+              style={{ zIndex: props.openedOrder(cardKey.text(m.name)) }}
+            >
+              <TextCard name={m.name} text={m.texts} />
+            </div>
+          )
+      )}
+      {props.memberFuncs.map(
+        (m) =>
+          props.isOpened(cardKey.func(m.name)) && (
+            <div
+              key={cardKey.func(m.name)}
+              data-grid={{ x: 0, y: 0, w: 6, h: 2, minW: 2, minH: 2 }}
+              style={{ zIndex: props.openedOrder(cardKey.func(m.name)) }}
+            >
+              <FuncCard name={m.name} func={m.funcs} />
+            </div>
+          )
+      )}
     </ResponsiveGridLayout>
   );
 }
