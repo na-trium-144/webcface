@@ -111,7 +111,7 @@ export function LayoutMain(props: Props) {
         .reduce((prev, m) => prev.concat(m.values), [] as Value[])
         .map((v) => {
           const key = cardKey.value(v.member.name, v.name);
-          if (key) {
+          if (props.isOpened(key)) {
             return (
               <div
                 key={key}

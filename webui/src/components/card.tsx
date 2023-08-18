@@ -20,7 +20,7 @@ export function Card(props: Props) {
       >
         <h3 className="text-center font-semibold ">{props.title}</h3>
       </div>
-      <div className="flex-auto p-1 ">{props.children}</div>
+      <div className="flex-1 p-1 min-h-0 ">{props.children}</div>
     </div>
   );
 }
