@@ -136,11 +136,7 @@ export function ValueCard(props: Props) {
         const y = ((val - displayMinY) / (displayMaxY - displayMinY)) *
             canvasMain.current.height;
         setCursorY(y);
-      } else {
-        setCursorValue(null);
       }
-    } else {
-      setCursorValue(null);
     }
   }, [cursorX, displayPos, displayMinY, displayMaxY]);
 
@@ -167,7 +163,7 @@ export function ValueCard(props: Props) {
                   const targetRect = e.currentTarget.getBoundingClientRect();
                   setCursorX(e.clientX - targetRect.left);
                 }}
-                onPointerLeave={() => false && setCursorX(null)}
+                onPointerLeave={() => setCursorX(null)}
                 ref={canvasMain}
               />
             <GraphValue
