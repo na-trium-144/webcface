@@ -8,7 +8,7 @@ export function Card(props: Props) {
     <div
       className={
         "flex flex-col rounded-md border border-neutral-200 " +
-        "bg-white w-full h-full shadow-md overflow-hidden"
+        "bg-white w-full h-full shadow-md"
       }
     >
       <div

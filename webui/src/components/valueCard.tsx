@@ -133,8 +133,9 @@ export function ValueCard(props: Props) {
       if (cursorPos >= 0) {
         const val = data.current[Math.round(cursorPos)];
         setCursorValue(val);
-        const y = ((val - displayMinY) / (displayMaxY - displayMinY)) *
-            canvasMain.current.height;
+        const y =
+          ((val - displayMinY) / (displayMaxY - displayMinY)) *
+          canvasMain.current.height;
         setCursorY(y);
       }
     }
@@ -144,16 +145,16 @@ export function ValueCard(props: Props) {
     <Card title={`${props.value.member.name}:${props.value.name}`}>
       <div className="flex flex-col h-full">
         <div className="flex-1 w-full min-h-0 flex flex-row text-xs">
-          <div className="flex-none h-full pb-4 pr-1 flex flex-col justify-between items-end">
-            <span>{displayMaxY}</span>
-            <span className="text-transparent pl-0.5">
+          <div className="flex-none h-full pb-4 pr-1 relative">
+            <div className="text-transparent">
               {/* 0を桁数分並べたものを入れることで幅を固定する */}
               {"0".repeat(displayMaxY.toString().length)}
-            </span>
-            <span className="text-transparent pl-0.5">
+            </div>
+            <div className="text-transparent">
               {"0".repeat(displayMinY.toString().length)}
-            </span>
-            <span>{displayMinY}</span>
+            </div>
+            <span className="absolute top-0 right-1">{displayMaxY}</span>
+            <span className="absolute bottom-4 right-1">{displayMinY}</span>
           </div>
           <div className="flex-1 h-full min-w-0 pt-2 pb-6 relative">
             <div className="w-full h-full relative" ref={canvasDiv}>
@@ -166,23 +167,23 @@ export function ValueCard(props: Props) {
                 onPointerLeave={() => setCursorX(null)}
                 ref={canvasMain}
               />
-            <GraphValue
-              x={cursorX}
-              y={cursorY}
-              value={cursorValue}
-              time={
-                cursorX != null
-                  ? addMilliseconds(
-                      startTime,
-                      (maxPos === 0
-                        ? data.current.length
-                        : displayPos + numPoints) -
-                        numPoints +
-                        cursorX
-                    )
-                  : null
-              }
-            />
+              <GraphValue
+                x={cursorX}
+                y={cursorY}
+                value={cursorValue}
+                time={
+                  cursorX != null
+                    ? addMilliseconds(
+                        startTime,
+                        (maxPos === 0
+                          ? data.current.length
+                          : displayPos + numPoints) -
+                          numPoints +
+                          cursorX
+                      )
+                    : null
+                }
+              />
             </div>
             <span className="absolute left-0 bottom-1">
               {format(addMilliseconds(startTime, displayPos), "H:mm:ss")}
@@ -267,7 +268,7 @@ function GraphValue(props: GraphValueProps) {
       <div
         className={
           "absolute -translate-x-2/4 mb-1 text-center opacity-90 " +
-          "inline-block " +
+          "inline-block pointer-events-none " +
           "bg-green-900 p-1 text-white text-xs rounded min-w-max "
         }
         style={{ left: props.x, bottom: props.y }}
