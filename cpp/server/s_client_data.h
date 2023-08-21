@@ -3,7 +3,6 @@
 #include <string>
 #include <unordered_map>
 #include <set>
-#include <vector>
 #include "../message/message.h"
 
 namespace WebCFace::Server {
@@ -15,10 +14,16 @@ class ClientData {
     const wsConnPtr con;
     bool connected() const;
 
-    Message::Entry entry;
-    std::unordered_map<std::string, std::vector<double>> value_history;
+    //! 初回のsync()が終わったか
+    //! falseならentryの通知などはしない
+    bool sync_init = false;
+    std::string name;
+    //! 最新の値
+    std::unordered_map<std::string, double> value;
+    std::unordered_map<std::string, std::string> text;
+    std::unordered_map<std::string, Message::FuncInfo> func;
+    //! リクエストしているmember,nameのペア
     std::set<std::pair<std::string, std::string>> value_subsc;
-    std::unordered_map<std::string, std::vector<std::string>> text_history;
     std::set<std::pair<std::string, std::string>> text_subsc;
 
   public:

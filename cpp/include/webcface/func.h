@@ -1,146 +1,133 @@
 #pragma once
 #include <vector>
-#include <type_traits>
-#include <functional>
-#include <mutex>
-#include <unordered_map>
-#include <ostream>
-#include <string>
-#include <future>
-#include <concepts>
-#include "any_arg.h"
 #include "data.h"
+#include "common/func.h"
+#include "common/val.h"
+#include "func_result.h"
 
 namespace WebCFace {
-template <typename T>
-AbstArgType abstTypeOf() {
-    if constexpr (std::is_void_v<T>) {
-        return AbstArgType::none_;
-    } else if constexpr (std::is_same_v<bool, T>) {
-        return AbstArgType::bool_;
-    } else if constexpr (std::is_integral_v<T>) {
-        return AbstArgType::int_;
-    } else if constexpr (std::is_floating_point_v<T>) {
-        return AbstArgType::float_;
-    } else {
-        return AbstArgType::string_;
-    }
-}
-// 関数1つの情報を表す。関数の実体も持つ
-struct FuncInfo {
-    AbstArgType return_type;
-    std::vector<AbstArgType> args_type;
-    std::function<AnyArg(const std::vector<AnyArg> &)> func_impl;
 
-    FuncInfo() : return_type(AbstArgType::none_), args_type(), func_impl() {}
-    template <typename... Args, typename Ret>
-    explicit FuncInfo(std::function<Ret(Args...)> func)
-        : return_type(abstTypeOf<Ret>()), args_type({abstTypeOf<Args>()...}),
-          func_impl([func](const std::vector<AnyArg> &args_vec) {
-              std::tuple<Args...> args_tuple;
-              argToTuple(args_vec, args_tuple);
-              if constexpr (std::is_void_v<Ret>) {
-                  std::apply(func, args_tuple);
-                  return AnyArg{};
-              } else {
-                  Ret ret = std::apply(func, args_tuple);
-                  return static_cast<AnyArg>(ret);
-              }
-          }) {}
-};
+namespace FuncWrapper {
 
-class Func;
-class FuncResult {
-    int caller_id;
-    std::string caller;
-    std::shared_ptr<std::promise<FuncResult>> pr;
-
-  public:
-    friend Func;
-
-    FuncResult(int caller_id, const std::string &caller,
-               std::shared_ptr<std::promise<FuncResult>> pr)
-        : caller_id(caller_id), caller(caller), pr(pr) {}
-    AnyArg result{};
-    bool found = false;
-    bool is_error = false;
-    std::string error_msg = "";
-    std::string from, name;
-
-    template <typename T>
-        requires std::convertible_to<AnyArg, T>
-    operator T() const {
-        return static_cast<T>(result);
-    }
-
-    void setReady() { pr->set_value(*this); }
-};
-inline auto &operator<<(std::basic_ostream<char> &os, const FuncResult &data) {
-    if (!data.found) {
-        return os << "<func not found>";
-    }
-    if (data.is_error) {
-        return os << "<error: " << data.error_msg << ">";
-    } else {
-        return os << static_cast<std::string>(data.result);
-    }
+//! Client::sync() まで待機し、実行完了までsync()をブロックするFuncWrapper
+FuncWrapperType runCondOnSync(const std::weak_ptr<ClientData> &data);
+//! ScopeGuardをロックするFuncWrapper
+template <typename ScopeGuard>
+FuncWrapperType runCondScopeGuard() {
+    static auto wrapper = [](FuncType callback,
+                             const std::vector<ValAdaptor> &args) {
+        ScopeGuard scope_guard;
+        return callback(args);
+    };
+    return wrapper;
 }
 
-// 実行した関数の記録、結果を保持
-class FuncStore {
+} // namespace FuncWrapper
+
+//! 関数1つを表すクラス
+class Func : public SyncFieldBase<FuncInfo> {
   public:
-    using FuncType = std::function<AnyArg(std::vector<AnyArg>)>;
+    Func() = default;
+    Func(const FieldBase &base) : SyncFieldBase<FuncInfo>(base) {}
+    Func(const FieldBase &base, const std::string &field)
+        : Func(FieldBase{base, field}) {}
 
-  private:
-    std::mutex mtx;
-    std::vector<FuncResult> results;
-
-  public:
-    void setFunc(const std::string &name, FuncType data);
-    FuncType getFunc(const std::string &name);
-    bool hasFunc(const std::string &name);
-    FuncResult &addResult(const std::string &caller,
-                          std::shared_ptr<std::promise<FuncResult>> pr);
-    FuncResult &getResult(int caller_id);
-};
-
-// 関数1つを表すクラス
-class Func : public SyncData<FuncInfo> {
-    std::shared_ptr<FuncStore> func_impl_store;
-    template <typename... Args, typename Ret>
-    void set_impl(std::function<Ret(Args...)> func) {
-        this->SyncData<DataType>::set(FuncInfo{func});
-    }
-    std::future<FuncResult> run_impl(const std::vector<AnyArg> &args_vec) const;
-    Client *cli;
-
-  public:
-    friend Client;
-
-    Func() {}
-    Func(std::shared_ptr<SyncDataStore<DataType>> store,
-         std::shared_ptr<FuncStore> func_impl_store, Client *cli,
-         const std::string &from, const std::string &name)
-        : SyncData<DataType>(store, from, name),
-          func_impl_store(func_impl_store), cli(cli) {}
-
-    template <typename T>
-    void set(const T &func) {
-        this->set_impl(std::function(func));
-    }
-    template <typename T>
-    auto &operator=(const T &func) {
-        this->set(func);
+    auto &set(const FuncInfo &v) {
+        setCheck();
+        dataLock()->func_store.setSend(*this, v);
         return *this;
     }
-
-    template <typename... Args>
-    std::future<FuncResult> run(Args... args) const {
-        return run_impl({AnyArg(args)...});
+    //! 関数からFuncInfoを構築しセットする
+    /*! Tは任意の関数
+     * 一度セットしたFuncに別の関数をセットすると、それ以降実行される関数は新しい関数になるが、
+     * 引数や戻り値の情報などは更新されない
+     */
+    template <typename T>
+    auto &set(const T &func) {
+        return this->set(
+            FuncInfo{std::function{func}, dataLock()->default_func_wrapper});
+    }
+    //! 関数からFuncInfoを構築しセットする
+    template <typename T>
+    Func &operator=(const T &func) {
+        return this->set(func);
     }
 
-    AbstArgType returnType() const;
-    std::vector<AbstArgType> argsType() const;
+    //! 値を取得する
+    std::optional<FuncInfo> tryGet() const override {
+        return dataLock()->func_store.getRecv(*this);
+    }
+
+    //! 関数を実行する (同期)
+    /*! selfの関数の場合、このスレッドで直接実行する
+     * 例外が発生した場合そのままthrow, 関数が存在しない場合 FuncNotFound
+     * をthrowする
+     *
+     * リモートの場合、関数呼び出しを送信し結果が返ってくるまで待機
+     * 例外が発生した場合 runtime_error, 関数が存在しない場合 FuncNotFound
+     * をthrowする
+     */
+    template <typename... Args>
+    ValAdaptor run(Args... args) const {
+        return run({ValAdaptor(args)...});
+    }
+    ValAdaptor run(const std::vector<ValAdaptor> &args_vec) const;
+    //! run()と同じ
+    template <typename... Args>
+    ValAdaptor operator()(Args... args) const {
+        return run(args...);
+    }
+
+    //! 関数を実行する (非同期)
+    /*! 非同期で実行する
+     * 戻り値やエラー、例外はAsyncFuncResultから取得する
+     *
+     * AsyncFuncResultはClient内部で保持されているのでClientが破棄されるまで参照は切れない
+     */
+    template <typename... Args>
+    AsyncFuncResult &runAsync(Args... args) const {
+        return runAsync({ValAdaptor(args)...});
+    }
+    AsyncFuncResult &runAsync(const std::vector<ValAdaptor> &args_vec) const;
+
+    //! 戻り値の型を返す
+    ValType returnType() const;
+    //! 引数の情報を返す
+    //! 変更するにはsetArgsを使う(このvectorの中身を書き換えても反映されない)
+    std::vector<Arg> args() const;
+    //! 引数の情報を更新する
+    /*!
+     * setArgsで渡された引数の情報(名前など)とFuncがすでに持っている引数の情報(型など)がマージされる
+     *
+     * 関数のセットの後に呼ばなければならない (例えば
+     * Func(...).set(...).setArgs({...}) ) 関数をしたあと cli.sync()
+     * をする前に呼ばなければならない
+     * 実際にセットした関数の引数の数とargsの要素数は一致していなければならない
+     */
+    Func &setArgs(const std::vector<Arg> &args);
+
+    /*! FuncWrapperをセットする。
+     * Funcの実行時にFuncWrapperを通すことで条件を満たすまでブロックしたりする。
+     * FuncWrapperがnullptrなら何もせずsetした関数を実行する
+     * セットしない場合 Client::setDefaultRunCond() のものが使われる
+     *
+     * 関数のセットの後に呼ばなければならない
+     */
+    Func &setRunCond(FuncWrapperType wrapper);
+    /*! FuncWrapperを nullptr にする
+     */
+    Func &setRunCondNone() { return setRunCond(nullptr); }
+    /*! FuncWrapperを runCondOnSync() にする
+     */
+    Func &setRunCondOnSync() {
+        return setRunCond(FuncWrapper::runCondOnSync(data_w));
+    }
+    /*! FuncWrapperを runCondScopeGuard() にする
+     */
+    template <typename ScopeGuard>
+    Func &setRunCondScopeGuard() {
+        return setRunCond(FuncWrapper::runCondScopeGuard<ScopeGuard>());
+    }
 };
 
 

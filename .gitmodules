@@ -4,3 +4,9 @@
 [submodule "external/msgpack-c"]
 	path = external/msgpack-c
 	url = https://github.com/msgpack/msgpack-c.git
+[submodule "external/eventpp"]
+	path = external/eventpp
+	url = https://github.com/wqking/eventpp
+[submodule "external/webgl-plot"]
+	path = external/webgl-plot
+	url = https://github.com/na-trium-144/webgl-plot.git

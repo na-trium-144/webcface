@@ -1,63 +1,105 @@
 import { useState, useEffect, useRef } from "react";
-import { Client, Value, Text, Func } from "webcface";
+import { Client, Member, Value, Text, Func } from "webcface";
 import "./index.css";
-import { Card, CardItem } from "./components/card";
 import { LayoutMain } from "./components/layout";
+import { Header } from "./components/header";
+import { SideMenu } from "./components/sideMenu";
+import { MemberValues, MemberTexts, MemberFuncs } from "./libs/stateTypes";
 
-function App() {
+export default function App() {
   const cli = useRef<Client | null>(null);
-  const [valueCards, setValueCards] = useState<CardItem<Value>[]>([]);
-  const [textCards, setTextCards] = useState<CardItem<Text[]>[]>([]);
-  const [funcCards, setFuncCards] = useState<CardItem<Func[]>[]>([]);
+  const [members, setMembers] = useState<Member[]>([]);
+  const [values, setValues] = useState<MemberValues[]>([]);
+  const [texts, setTexts] = useState<MemberTexts[]>([]);
+  const [funcs, setFuncs] = useState<MemberFuncs[]>([]);
 
   useEffect(() => {
-    cli.current = new Client("a", "127.0.0.1", 80);
-    const i = setInterval(() => {
-      const values: CardItem<Value>[] = [];
-      const texts: CardItem<Text[]>[] = [];
-      const funcs: CardItem<Func[]>[] = [];
-      for (const s of cli.current.subjects()) {
-        for (const v of s.values()) {
-          values.push({
-            key: `${s.name()}:value:${v.name}`,
-            minH: 2,
-            initH: 2,
-            initW: 2,
-            childProps: v,
-          });
-        }
-        if (s.texts().length > 0) {
-          texts.push({
-            key: `${s.name()}:text`,
-            minH: 1,
-            initH: 2,
-            initW: 4,
-            childProps: s.texts(),
-          });
-        }
-        if (s.funcs().length > 0) {
-          funcs.push({
-            key: `${s.name()}:func`,
-            minH: 2,
-            initH: 2,
-            initW: 6,
-            childProps: s.funcs(),
-          });
-        }
+    cli.current = new Client("a");
+    const onMembersChange = (m: Member) => {
+      if (members.find((m2) => m2.name === m.name)) {
+        // 本来はこの条件要らないようにするはず
+        return;
       }
-      setValueCards(values);
-      setTextCards(texts);
-      setFuncCards(funcs);
-      cli.current.send();
+      setMembers((members) => members.concat([m]));
+      setValues((values) => values.concat([{ name: m.name, values: [] }]));
+      setTexts((values) => values.concat([{ name: m.name, texts: [] }]));
+      setFuncs((values) => values.concat([{ name: m.name, funcs: [] }]));
+      m.valuesChange.on(() =>
+        setValues((values) => {
+          values.find((e) => e.name === m.name).values = m.values();
+          return values.slice();
+        })
+      );
+      m.textsChange.on(() =>
+        setTexts((texts) => {
+          texts.find((e) => e.name === m.name).texts = m.texts();
+          return texts.slice();
+        })
+      );
+      m.funcsChange.on(() =>
+        setFuncs((funcs) => {
+          funcs.find((e) => e.name === m.name).funcs = m.funcs();
+          return funcs.slice();
+        })
+      );
+    };
+    cli.current.membersChange.on(onMembersChange);
+    const i = setInterval(() => {
+      cli.current?.sync();
     }, 100);
-    return () => clearInterval(i);
-  }, [setFuncCards, setTextCards, setValueCards]);
+    return () => {
+      clearInterval(i);
+      cli.current.membersChange.off(onMembersChange);
+    };
+  }, []);
+
+  const [menuOpen, setMenuOpen] = useState<boolean>(false);
+  const [openedCards, setOpenedCards] = useState<string[]>([]);
+  const isOpened = (key: string) => openedCards.includes(key);
+  const openedOrder = (key: string) => openedCards.indexOf(key) || 0;
+  const toggleOpened = (key: string) => {
+    if (openedCards.includes(key)) {
+      setOpenedCards(openedCards.filter((n) => n !== key));
+    } else {
+      setOpenedCards(openedCards.concat([key]));
+    }
+  };
+  const moveOrder = (key: string) => {
+    setOpenedCards(openedCards.filter((n) => n !== key).concat([key]));
+  };
 
   return (
-    <div className="p-1 h-screen">
-      <LayoutMain value={valueCards} text={textCards} func={funcCards} />
+    <div className="min-h-screen h-max bg-neutral-100">
+      <nav className="bg-green-300 w-full h-12 px-2 drop-shadow-lg">
+        <Header menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
+      </nav>
+      <nav
+        className={
+          "absolute top-10 right-2 w-72 h-max max-h-[75%] p-2 " +
+          "rounded-lg shadow-lg overflow-x-hidden overflow-y-auto bg-white " +
+          "transition duration-100 origin-top-right " +
+          (menuOpen
+            ? "ease-out opacity-100 scale-100 z-[1000] "
+            : "ease-in opacity-0 scale-90 -z-10 ")
+        }
+      >
+        <SideMenu
+          members={members}
+          memberValues={values}
+          isOpened={isOpened}
+          toggleOpened={toggleOpened}
+        />
+      </nav>
+      <main className="p-2">
+        <LayoutMain
+          isOpened={isOpened}
+          openedOrder={openedOrder}
+          moveOrder={moveOrder}
+          memberValues={values}
+          memberTexts={texts}
+          memberFuncs={funcs}
+        />
+      </main>
     </div>
   );
 }
-
-export default App;

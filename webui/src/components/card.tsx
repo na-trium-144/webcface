@@ -1,20 +1,26 @@
-import { FC } from "react";
-export interface CardItem<T> {
-  key: string;
-  minH: number;
-  initW: number;
-  initH: number;
-  childProps: T;
-}
+import { ReactNode } from "react";
 interface Props {
   title: string;
-  children: FC;
+  children: ReactNode;
 }
 export function Card(props: Props) {
   return (
-    <div className="flex flex-col rounded-md border border-neutral-200 shadow-md p-1 bg-white w-full h-full">
-      <h6 className="flex-none mx-auto font-semibold">{props.title}</h6>
-      <div className="flex-auto">{props.children}</div>
+    <div
+      className={
+        "flex flex-col rounded-md border border-neutral-200 " +
+        "bg-white w-full h-full shadow-md"
+      }
+    >
+      <div
+        className={
+          "flex-none py-1 " +
+          "cursor-grab active:cursor-grabbing MyCardHandle " +
+          "hover:shadow rounded-t-md "
+        }
+      >
+        <h3 className="text-center font-semibold ">{props.title}</h3>
+      </div>
+      <div className="flex-1 p-1 min-h-0 ">{props.children}</div>
     </div>
   );
 }

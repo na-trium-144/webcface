@@ -1,113 +1,221 @@
-import * as types from "./messageType.js";
+import {
+  FieldBase,
+  AsyncFuncResult,
+  FieldBaseWithEvent,
+  eventType,
+} from "./clientData.js";
+import { Val, FuncInfo, Arg } from "./funcInfo.js";
+import { argType } from "./message.js";
 
-export interface DataStore<T> {
-  dataSend: Map<string, T>;
-  dataRecv: Map<string, Map<string, T>>;
-  entry: Map<string, string[]>;
-  req: Map<string, Map<string, boolean>>;
-  reqSend: Map<string, Map<string, boolean>>;
+export class Member extends FieldBase {
+  constructor(base: FieldBase, member = "") {
+    super(base.data, member || base.member_, "");
+  }
+  get name() {
+    return this.member_;
+  }
+  value(name: string) {
+    return new Value(this, name);
+  }
+  text(name: string) {
+    return new Text(this, name);
+  }
+  func(name: string) {
+    return new Func(this, name);
+  }
+  values() {
+    return this.data.valueStore
+      .getEntry(this.member_)
+      .map((n) => this.value(n));
+  }
+  texts() {
+    return this.data.textStore.getEntry(this.member_).map((n) => this.text(n));
+  }
+  funcs() {
+    return this.data.funcStore.getEntry(this.member_).map((n) => this.func(n));
+  }
+  get valuesChange() {
+    return new FieldBaseWithEvent<Value>(
+      eventType.valueEntry(this),
+      this.data,
+      this.member_
+    );
+  }
+  get textsChange() {
+    return new FieldBaseWithEvent<Text>(
+      eventType.textEntry(this),
+      this.data,
+      this.member_
+    );
+  }
+  get funcsChange() {
+    return new FieldBaseWithEvent<Func>(
+      eventType.funcEntry(this),
+      this.data,
+      this.member_
+    );
+  }
 }
-export const emptyStore = () => ({
-  dataSend: new Map(),
-  dataRecv: new Map(),
-  entry: new Map(),
-  req: new Map(),
-  reqSend: new Map(),
-});
 
-export class Value {
-  store: DataStore<number | string>;
-  from: string;
-  name: string;
-  constructor(store: DataStore<number | string>, from: string, name: string) {
-    this.store = store;
-    this.from = from;
-    this.name = name;
+export class Value extends FieldBaseWithEvent<Value> {
+  constructor(base: FieldBase, field = "") {
+    super("", base.data, base.member_, field || base.field_);
+    this.eventType_ = eventType.valueChange(this);
+  }
+  get member() {
+    return new Member(this);
+  }
+  get name() {
+    return this.field_;
   }
   tryGet() {
-    return dataGet(this.store, this.from, this.name) as number | null;
+    return this.data.valueStore.getRecv(this.member_, this.field_);
   }
   get() {
     const v = this.tryGet();
-    if (v == null) {
+    if (v === null) {
       return 0;
     } else {
       return v;
     }
   }
   set(data: number) {
-    dataSet(this.store, this.from, this.name, data);
+    if (this.data.valueStore.isSelf(this.member_)) {
+      this.data.valueStore.setSend(this.field_, data);
+    } else {
+      throw new Error("Cannot set data to member other than self");
+    }
   }
 }
-export class Text {
-  store: DataStore<number | string>;
-  from: string;
-  name: string;
-  constructor(store: DataStore<number | string>, from: string, name: string) {
-    this.store = store;
-    this.from = from;
-    this.name = name;
+export class Text extends FieldBaseWithEvent<Text> {
+  constructor(base: FieldBase, field = "") {
+    super("", base.data, base.member_, field || base.field_);
+    this.eventType_ = eventType.textChange(this);
+  }
+  get member() {
+    return new Member(this);
+  }
+  get name() {
+    return this.field_;
   }
   tryGet() {
-    return dataGet(this.store, this.from, this.name) as string | null;
+    return this.data.textStore.getRecv(this.member_, this.field_);
   }
   get() {
     const v = this.tryGet();
-    if (v == null) {
+    if (v === null) {
       return "";
     } else {
       return v;
     }
   }
   set(data: string) {
-    dataSet(this.store, this.from, this.name, data);
-  }
-}
-export function dataGet<T>(store: DataStore<T>, from: string, name: string) {
-  if (from === "") {
-    const s = store.dataSend.get(name);
-    if (s) {
-      return s;
+    if (this.data.textStore.isSelf(this.member_)) {
+      this.data.textStore.setSend(this.field_, data);
+    } else {
+      throw new Error("Cannot set data to member other than self");
     }
   }
+}
 
-  let hasValue = false;
-  let value: T | null = null;
-  const s = store.dataRecv.get(from);
-  if (s) {
-    const m = s.get(name);
-    if (m) {
-      value = m;
-      hasValue = true;
+export function runFunc(fi: FuncInfo, args: Val[]) {
+  if (fi.args.length === args.length) {
+    const newArgs: Val[] = args.map((a, i) => {
+      switch (fi.args[i].type) {
+        case argType.string_:
+          return String(a);
+        case argType.boolean_:
+          if (typeof a === "string") {
+            return a !== "";
+          } else {
+            return !!a;
+          }
+        case argType.int_:
+          return parseInt(String(a));
+        case argType.float_:
+          return parseFloat(String(a));
+        default:
+          return a;
+      }
+    });
+    if (fi.funcImpl != undefined) {
+      return fi.funcImpl(...newArgs);
     }
-  }
-  if (from !== "" && !hasValue) {
-    const m = store.req.get(from);
-    if (m) {
-      m.set(name, true);
-    } else {
-      store.req.set(from, new Map([[name, true]]));
-    }
-    const ms = store.reqSend.get(from);
-    if (ms) {
-      ms.set(name, true);
-    } else {
-      store.reqSend.set(from, new Map([[name, true]]));
-    }
-  }
-  return value;
-}
-export function dataSet<T>(
-  store: DataStore<T>,
-  from: string,
-  name: string,
-  data: T
-) {
-  store.dataSend.set(name, data);
-  const m = store.dataRecv.get("");
-  if (m) {
-    m.set(name, data);
+    return undefined;
   } else {
-    store.dataRecv.set("", new Map([[name, data]]));
+    throw new Error(
+      `require ${fi.args.length} arguments, but got ${args.length}`
+    );
+  }
+}
+
+export class Func extends FieldBase {
+  constructor(base: FieldBase, field = "") {
+    super(base.data, base.member_, field || base.field_);
+  }
+  get member() {
+    return new Member(this);
+  }
+  get name() {
+    return this.field_;
+  }
+  set(
+    func: (...args: any[]) => Val | Promise<Val> | void,
+    returnType: number = argType.none_,
+    args: Arg[] = []
+  ) {
+    const data: FuncInfo = {
+      returnType: returnType,
+      args: args,
+      funcImpl: func,
+    };
+    if (this.data.funcStore.isSelf(this.member_)) {
+      this.data.funcStore.setSend(this.field_, data);
+    } else {
+      throw new Error("Cannot set data to member other than self");
+    }
+  }
+  get returnType() {
+    const funcInfo = this.data.funcStore.getRecv(this.member_, this.field_);
+    if (funcInfo != null) {
+      return funcInfo.returnType;
+    }
+    return argType.none_;
+  }
+  get args() {
+    const funcInfo = this.data.funcStore.getRecv(this.member_, this.field_);
+    if (funcInfo != null) {
+      return funcInfo.args;
+    }
+    return [];
+  }
+  runImpl(r: AsyncFuncResult, args: Val[]) {
+    const funcInfo = this.data.funcStore.getRecv(this.member_, this.field_);
+    if (funcInfo != null) {
+      r.resolveStarted(true);
+      try {
+        if (funcInfo.funcImpl != undefined) {
+          // funcImplがpromise返す場合もそのままresolveにぶちこめばよいはず
+          let res: Val | Promise<Val> | void = runFunc(funcInfo, args);
+          if (res === undefined) {
+            res = "";
+          }
+          r.resolveResult(res);
+        } else {
+          this.data.callFunc(r, this, args);
+        }
+      } catch (e: any) {
+        r.rejectResult(e);
+      }
+    } else {
+      r.resolveStarted(false);
+    }
+  }
+  runAsync(...args: Val[]) {
+    const r = this.data.funcResultStore.addResult("", this);
+    setTimeout(() => {
+      this.runImpl(r, args);
+    });
+    return r;
   }
 }

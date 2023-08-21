@@ -7,13 +7,19 @@ import { Responsive, WidthProvider, Layout, Layouts } from "react-grid-layout";
 const ResponsiveGridLayout = WidthProvider(Responsive);
 import { getFromLS, saveToLS } from "../libs/ls";
 import { Card, CardItem } from "./card";
+import { ValueCard } from "./valueCard";
 import { TextCard } from "./textCard";
 import { FuncCard } from "./funcCard";
+import { MemberValues, MemberTexts, MemberFuncs } from "../libs/stateTypes";
+import * as cardKey from "../libs/cardKey";
 
 interface Props {
-  value: CardItem<Value>[];
-  text: CardItem<Text[]>[];
-  func: CardItem<Func[]>[];
+  isOpened: (key: string) => boolean;
+  openedOrder: (key: string) => number;
+  moveOrder: (key: string) => void;
+  memberValues: MemberValues[];
+  memberTexts: MemberTexts[];
+  memberFuncs: MemberFuncs[];
 }
 
 export function LayoutMain(props: Props) {
@@ -89,45 +95,70 @@ export function LayoutMain(props: Props) {
     return () => clearInterval(i);
   }, [layoutsLoadDone, lsLayout, setLsLayout, setLayouts]);
 
-  const dataGrid = (c: CardItem<any>) => {
-    return {
-      w: c.initW,
-      h: c.initH,
-      x: 0,
-      y: 0,
-      minW: 2,
-      minH: c.minH,
-    };
-  };
   return (
-    <div className="p-1 h-screen">
-      <ResponsiveGridLayout
-        className="layout h-full overflow-hidden"
-        layouts={layouts}
-        breakpoints={breakpoints}
-        cols={cols}
-        rowHeight={100}
-        onLayoutChange={onLayoutChange}
-        allowOverlap
-        compactType={null}
-        autoSize={false}
-      >
-        {props.value.map((c) => (
-          <div key={c.key} data-grid={dataGrid(c)}>
-            <Card title={c.childProps.name}>{c.childProps.get()}</Card>
-          </div>
-        ))}
-        {props.text.map((c) => (
-          <div key={c.key} data-grid={dataGrid(c)}>
-            <TextCard text={c.childProps} />
-          </div>
-        ))}
-        {props.func.map((c) => (
-          <div key={c.key} data-grid={dataGrid(c)}>
-          <FuncCard func={c.childProps} />
-          </div>
-        ))}
-      </ResponsiveGridLayout>
-    </div>
+    <ResponsiveGridLayout
+      className="layout"
+      layouts={layouts}
+      breakpoints={breakpoints}
+      cols={cols}
+      rowHeight={100}
+      onLayoutChange={onLayoutChange}
+      allowOverlap
+      compactType={null}
+      draggableHandle=".MyCardHandle"
+    >
+      {props.memberValues
+        .reduce((prev, m) => prev.concat(m.values), [] as Value[])
+        .map((v) => {
+          const key = cardKey.value(v.member.name, v.name);
+          if (props.isOpened(key)) {
+            return (
+              <div
+                key={key}
+                data-grid={{ x: 0, y: 0, w: 2, h: 2, minW: 2, minH: 2 }}
+                style={{
+                  zIndex: 10 + props.openedOrder(key),
+                }}
+                onPointerDown={() => props.moveOrder(key)}
+              >
+                <ValueCard value={v} />
+              </div>
+            );
+          }
+          return null;
+        })}
+      {props.memberTexts.map((m) => {
+        const key = cardKey.text(m.name);
+        if (props.isOpened(key)) {
+          return (
+            <div
+              key={key}
+              data-grid={{ x: 0, y: 0, w: 4, h: 2, minW: 2, minH: 1 }}
+              style={{ zIndex: 10 + props.openedOrder(key) }}
+              onPointerDown={() => props.moveOrder(key)}
+            >
+              <TextCard name={m.name} text={m.texts} />
+            </div>
+          );
+        }
+        return null;
+      })}
+      {props.memberFuncs.map((m) => {
+        const key = cardKey.func(m.name);
+        if (props.isOpened(key)) {
+          return (
+            <div
+              key={key}
+              data-grid={{ x: 0, y: 0, w: 6, h: 2, minW: 2, minH: 2 }}
+              style={{ zIndex: 10 + props.openedOrder(key) }}
+              onPointerDown={() => props.moveOrder(key)}
+            >
+              <FuncCard name={m.name} func={m.funcs} />
+            </div>
+          );
+        }
+        return null;
+      })}
+    </ResponsiveGridLayout>
   );
 }

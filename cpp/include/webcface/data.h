@@ -1,66 +1,81 @@
 #pragma once
-#include <string>
 #include <istream>
 #include <ostream>
-#include <memory>
 #include <optional>
-#include <cstdint>
-#include <functional>
-#include <type_traits>
-#include "data_store.h"
-#include "any_arg.h"
+#include <cassert>
+#include "field_base.h"
+#include "client_data.h"
+#include "event_target.h"
 
 namespace WebCFace {
 
-class Client;
-
+//! フィールドを参照するインタフェースを持つクラス
 template <typename T>
-class SyncData {
+class SyncFieldBase : protected FieldBase {
+  public:
+    SyncFieldBase() = default;
+    SyncFieldBase(const FieldBase &base) : FieldBase(base) {}
+
+    //! Memberを返す
+    Member member() const { return *this; }
+    //! field名を返す
+    std::string name() const { return field_; }
+
+
   protected:
-    std::shared_ptr<SyncDataStore<T>> store;
+    void setCheck() const {
+        assert(dataLock()->isSelf(*this) &&
+               "Cannot set data to member other than self");
+    }
 
-    // protected:
   public:
-    std::string from, name;
-
-  public:
-    using DataType = T;
-    SyncData() {}
-    SyncData(std::shared_ptr<SyncDataStore<T>> store, const std::string &from,
-             const std::string &name)
-        : store(store), from(from), name(name) {}
-    void set(const T &data);
-    std::optional<T> try_get() const;
-    T get() const;
-    operator T() const { return this->get(); }
+    //! 値を取得できるかチェックする
+    //! 取得できなければリクエストする
+    virtual std::optional<T> tryGet() const = 0;
+    //! 値を取得する
+    //! todo: 引数でタイムアウトとか設定できるようにする
+    T get() const {
+        auto v = tryGet();
+        if (v) {
+            return *v;
+        } else {
+            return T{};
+        };
+    }
+    //! 値を取得する
+    operator T() const { return get(); }
 };
 
-template <typename T>
-auto &operator>>(std::basic_istream<char> &is, SyncData<T> &data) {
-    T v;
-    is >> v;
-    data.set(v);
-    return is;
-}
-template <typename T>
-auto &operator>>(std::basic_istream<char> &is, SyncData<T> &&data) {
-    SyncData<T> d = data;
-    return is >> d;
-}
-template <typename T>
-auto &operator<<(std::basic_ostream<char> &os, const SyncData<T> &data) {
-    return os << data.get();
-}
+//! 実数値を扱う
+class Value : public SyncFieldBase<double>, public EventTarget<Value> {
+    using SyncFieldBase<double>::FieldBase::dataLock;
 
-class Value : public SyncData<double> {
   public:
-    Value() {}
-    Value(std::shared_ptr<SyncDataStore<DataType>> store,
-          const std::string &from, const std::string &name)
-        : SyncData<DataType>(store, from, name) {}
-    auto &operator=(double data) {
-        this->set(data);
+    Value() = default;
+    Value(const FieldBase &base)
+        : SyncFieldBase<double>(base),
+          EventTarget<Value>(EventType::value_change, base,
+                             [this] { this->tryGet(); }) {}
+    Value(const FieldBase &base, const std::string &field)
+        : Value(FieldBase{base, field}) {}
+
+    //! 値をセットし、EventTargetを発動する
+    auto &set(double v) {
+        setCheck();
+        dataLock()->value_store.setSend(*this, v);
+        this->triggerEvent();
         return *this;
+    }
+
+    //! 値をセットする
+    auto &operator=(double v) {
+        this->set(v);
+        return *this;
+    }
+
+    //! 値を取得する
+    std::optional<double> tryGet() const override {
+        return dataLock()->value_store.getRecv(*this);
     }
 
     auto &operator+=(double rhs) {
@@ -127,20 +142,46 @@ class Value : public SyncData<double> {
     // 比較演算子の定義は不要
 };
 
-class Text : public SyncData<std::string> {
+// 文字列を扱う
+class Text : public SyncFieldBase<std::string>, public EventTarget<Text> {
+    using SyncFieldBase<std::string>::FieldBase::dataLock;
+
   public:
-    Text() {}
-    Text(std::shared_ptr<SyncDataStore<DataType>> store,
-         const std::string &from, const std::string &name)
-        : SyncData<DataType>(store, from, name) {}
-    auto &operator=(const std::string &data) {
-        this->set(data);
+    Text() = default;
+    Text(const FieldBase &base)
+        : SyncFieldBase<std::string>(base),
+          EventTarget<Text>(EventType::text_change, base,
+                            [this] { this->tryGet(); }) {}
+    Text(const FieldBase &base, const std::string &field)
+        : Text(FieldBase{base, field}) {}
+
+    //! 値をセットし、EventTargetを発動する
+    auto &set(const std::string &v) {
+        setCheck();
+        dataLock()->text_store.setSend(*this, v);
+        triggerEvent();
         return *this;
+    }
+
+    //! 値をセットする
+    auto &operator=(const std::string &v) {
+        this->set(v);
+        return *this;
+    }
+
+    //! 値を取得する
+    std::optional<std::string> tryGet() const override {
+        return dataLock()->text_store.getRecv(*this);
     }
 
     bool operator==(const std::string &rhs) const { return this->get() == rhs; }
     bool operator!=(const std::string &rhs) const { return this->get() != rhs; }
 };
 
-
+inline auto &operator<<(std::basic_ostream<char> &os, const Value &data) {
+    return os << data.get();
+}
+inline auto &operator<<(std::basic_ostream<char> &os, const Text &data) {
+    return os << data.get();
+}
 } // namespace WebCFace

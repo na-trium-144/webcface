@@ -5,7 +5,8 @@ int main() {
     WebCFace::Server::controllerKeeper();
 
     // Set HTTP listener address and port
-    drogon::app().addListener("0.0.0.0", 80);
+    // todo: 引数で変えられるようにする
+    drogon::app().addListener("0.0.0.0", 7530);
     // Load config file
     // drogon::app().loadConfigFile("../config.json");
     // Run HTTP framework,the method will block in the internal event loop
