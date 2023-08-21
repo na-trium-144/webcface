@@ -8,6 +8,7 @@
 #include "member.h"
 #include "event_key.h"
 #include "func_result.h"
+#include "logger.h"
 
 #include "client_data.h"
 

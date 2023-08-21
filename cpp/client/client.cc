@@ -6,6 +6,9 @@
 #include <string>
 #include <chrono>
 #include <iostream>
+#include <cstdio>
+// todo: windows
+#include <unistd.h>
 #include "../message/message.h"
 
 namespace WebCFace {
@@ -23,6 +26,45 @@ Client::Client(const std::string &name, const std::string &host, int port)
               auto msg = data->message_queue.pop(std::chrono::milliseconds(10));
               if (msg) {
                   this->send(*msg);
+              }
+          }
+      }),
+      log_display_thread([this] {
+          while (!closing.load()) {
+              auto msg =
+                  data->log_display_queue.pop(std::chrono::milliseconds(10));
+              if (msg) {
+                  std::string level_str = "", prefix = "";
+                  switch (msg->level) {
+                  case 0:
+                      level_str = "[Debug]";
+                      break;
+                  case 1:
+                      prefix = "\033[32m";
+                      level_str = "[Info]";
+                      break;
+                  case 2:
+                      prefix = "\033[33m";
+                      level_str = "[Warn]";
+                      break;
+                  case 3:
+                      prefix = "\033[31m";
+                      level_str = "[Error]";
+                      break;
+                  case 4:
+                      prefix = "\033[31m";
+                      level_str = "[Critical]";
+                      break;
+                  default:
+                      if (msg->level > 0) {
+                          prefix = "\033[31m";
+                      }
+                      level_str = "[" + std::to_string(msg->level) + "]";
+                      break;
+                  }
+                  fprintf(stderr, "%s%-7s %s\033[0m\n", prefix.c_str(),
+                          level_str.c_str(), msg->message.c_str());
+                  fflush(stderr);
               }
           }
       }) {
@@ -162,6 +204,10 @@ void Client::sync() {
         for (const auto &v : func_send) {
             send(Message::pack(Message::FuncInfo{"", v.first, v.second}));
         }
+
+        // while (auto log = data->log_send_queue.pop()) {
+        //     send(Message::pack(Message::Log{{}, log->level, log->message}));
+        // }
     }
     while (auto func_sync = data->func_sync_queue.pop()) {
         (*func_sync)->sync();

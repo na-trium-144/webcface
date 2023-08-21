@@ -13,6 +13,7 @@
 #include "common/func.h"
 #include "event_key.h"
 #include "field_base.h"
+#include "logger.h"
 
 namespace WebCFace {
 struct ClientData {
@@ -189,9 +190,10 @@ struct ClientData {
 
     //! sync()を待たずに即時送って欲しいメッセージを入れるキュー
     Queue<std::vector<char>> message_queue;
-
     //! sync()のタイミングで実行を同期する関数のcondition_variable
     Queue<std::shared_ptr<FuncOnSync>> func_sync_queue;
+    //! logのキュー
+    Queue<LogLine> log_send_queue, log_display_queue;
 
     FuncWrapperType default_func_wrapper;
 };

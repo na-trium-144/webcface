@@ -9,6 +9,7 @@
 #include "member.h"
 #include "event_target.h"
 #include "func.h"
+#include "logger.h"
 
 namespace drogon {
 class WebSocketClient;
@@ -40,6 +41,11 @@ class Client : public Member {
     std::thread event_thread;
     //! message_queueを処理するスレッド
     std::thread message_thread;
+    //! logをstdoutに流すスレッド
+    std::thread log_display_thread;
+
+    std::unordered_map<int, LoggerBuf> logger_buf_instance;
+    std::unordered_map<int, std::ostream> logger_stream_instance;
 
     //! 受信時の処理
     void onRecv(const std::string &message);
@@ -111,6 +117,30 @@ class Client : public Member {
     void setDefaultRunCondScopeGuard() {
         setDefaultRunCond(FuncWrapper::runCondScopeGuard<ScopeGuard>());
     }
+
+    LoggerBuf *loggerBuf(int level) {
+        if (!logger_buf_instance.count(level)) {
+            logger_buf_instance.try_emplace(level, data, level);
+        }
+        return &logger_buf_instance.at(level);
+    }
+    std::ostream &logger(int level) {
+        if (!logger_stream_instance.count(level)) {
+            logger_stream_instance.emplace(level, loggerBuf(level));
+        }
+        return logger_stream_instance.at(level);
+    }
+
+    LoggerBuf *loggerBufDebug() { return loggerBuf(0); }
+    LoggerBuf *loggerBufInfo() { return loggerBuf(1); }
+    LoggerBuf *loggerBufWarning() { return loggerBuf(2); }
+    LoggerBuf *loggerBufError() { return loggerBuf(3); }
+    LoggerBuf *loggerBufCritical() { return loggerBuf(4); }
+    std::ostream &loggerDebug() { return logger(0); }
+    std::ostream &loggerInfo() { return logger(1); }
+    std::ostream &loggerWarning() { return logger(2); }
+    std::ostream &loggerError() { return logger(3); }
+    std::ostream &loggerCritical() { return logger(4); }
 };
 
 } // namespace WebCFace
