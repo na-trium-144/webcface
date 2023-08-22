@@ -45,4 +45,7 @@ class LoggerSink : public spdlog::sinks::base_sink<std::mutex>,
 inline auto stderr_sink =
     std::make_shared<spdlog::sinks::stderr_color_sink_mt>();
 
+//! webcfaceのログ出力レベルを設定できます
+inline spdlog::level::level_enum logger_internal_level = spdlog::level::info;
+
 } // namespace WebCFace

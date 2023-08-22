@@ -5,10 +5,7 @@
 #include <optional>
 #include <string>
 #include <chrono>
-#include <iostream>
 #include <cstdio>
-// todo: windows
-#include <unistd.h>
 #include "../message/message.h"
 
 namespace WebCFace {
@@ -45,10 +42,31 @@ Client::Client(const std::string &name, const std::string &host, int port)
                 data->logger_internal->trace("mainloop start");
             }
 
-            auto log_output_func = [data_w](const char *msg,
-                                            const uint64_t len) {
+            auto log_output_func = [data_w](const char *msg, uint64_t len) {
                 if (auto data = data_w.lock()) {
-                    data->logger_internal->warn("from drogon: " + std::string(msg, len));
+                    // 末尾の改行を除く
+                    if (len > 0 && msg[len - 1] == '\n') {
+                        --len;
+                    }
+                    std::string log(msg, len);
+                    std::stringstream ss(log);
+                    std::string level;
+                    ss >> level >> level >> level >> level >> level;
+                    log = "from drogon: " + log;
+                    if (level == "TRACE") {
+                        data->logger_internal->trace(log);
+                    } else if (level == "DEBUG") {
+                        data->logger_internal->debug(log);
+                    } else if (level == "INFO") {
+                        data->logger_internal->info(log);
+                    } else if (level == "ERROR") {
+                        data->logger_internal->error(log);
+                    } else if (level == "FATAL") {
+                        data->logger_internal->critical(log);
+                    } else {
+                        // default
+                        data->logger_internal->warn(log);
+                    }
                 }
             };
             auto log_flush_func = [] {};
