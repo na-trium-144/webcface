@@ -48,6 +48,7 @@ struct EventKey : FieldBase {
         default:
             assert(!"unknown event");
         }
+        return false;
     }
     bool operator!=(const EventKey &rhs) const { return !(*this == rhs); }
     bool operator<(const EventKey &rhs) const {
@@ -71,6 +72,7 @@ struct EventKey : FieldBase {
         default:
             assert(!"unknown event");
         }
+        return false;
     }
 };
 

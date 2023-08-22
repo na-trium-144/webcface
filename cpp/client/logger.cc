@@ -1,10 +1,10 @@
 #include <webcface/logger.h>
 #include <webcface/client_data.h>
-#include <webcface/client.h>
+#include <spdlog/pattern_formatter.h>
 
 namespace WebCFace {
-LoggerBuf::LoggerBuf(const std::shared_ptr<ClientData> &data, int level)
-    : std::streambuf(), data(data), level(level) {
+LoggerBuf::LoggerBuf(const std::weak_ptr<ClientData> &data_w)
+    : std::streambuf(), data_w(data_w) {
     this->setp(buf, buf + sizeof(buf));
 }
 int LoggerBuf::overflow(int c) {
@@ -21,12 +21,22 @@ int LoggerBuf::sync() {
             break;
         }
         std::string message = overflow_buf.substr(0, n);
-        data->log_send_queue.push({level, message});
-        data->log_display_queue.push({level, message});
+        data_w.lock()->logger->info(message);
         overflow_buf = overflow_buf.substr(n + 1);
     }
     this->setp(buf, buf + sizeof(buf));
     return 0;
+}
+
+LoggerSink::LoggerSink()
+    : spdlog::sinks::base_sink<std::mutex>(
+          std::make_unique<spdlog::pattern_formatter>("%v")) {}
+
+void LoggerSink::sink_it_(const spdlog::details::log_msg &msg) {
+    spdlog::memory_buf_t formatted;
+    this->formatter_->format(msg, formatted);
+    std::string log_text = fmt::to_string(formatted);
+    this->push({msg.level, log_text});
 }
 
 } // namespace WebCFace

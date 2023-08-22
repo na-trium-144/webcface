@@ -41,11 +41,9 @@ class Client : public Member {
     std::thread event_thread;
     //! message_queueを処理するスレッド
     std::thread message_thread;
-    //! logをstdoutに流すスレッド
-    std::thread log_display_thread;
 
-    std::unordered_map<int, LoggerBuf> logger_buf_instance;
-    std::unordered_map<int, std::ostream> logger_stream_instance;
+    LoggerBuf logger_buf;
+    std::ostream logger_os;
 
     //! 受信時の処理
     void onRecv(const std::string &message);
@@ -118,29 +116,22 @@ class Client : public Member {
         setDefaultRunCond(FuncWrapper::runCondScopeGuard<ScopeGuard>());
     }
 
-    LoggerBuf *loggerBuf(int level) {
-        if (!logger_buf_instance.count(level)) {
-            logger_buf_instance.try_emplace(level, data, level);
-        }
-        return &logger_buf_instance.at(level);
+    //! サーバーに送信するspdlogのsink
+    std::shared_ptr<LoggerSink> logger_sink() { return data->logger_sink; }
+    //! stderr_color_sink_mtのインスタンス(全clientで共通)
+    //! loggerとlogger_internalからstderrに流すのを止めたい時などはこれのset_levelなどを使う
+    std::shared_ptr<spdlog::sinks::stderr_color_sink_mt> stderr_sink() {
+        return ClientData::stderr_sink;
     }
-    std::ostream &logger(int level) {
-        if (!logger_stream_instance.count(level)) {
-            logger_stream_instance.emplace(level, loggerBuf(level));
-        }
-        return logger_stream_instance.at(level);
-    }
+    //! サーバーとstderrに流すspdlog::logger
+    std::shared_ptr<spdlog::logger> logger() { return data->logger; }
 
-    LoggerBuf *loggerBufDebug() { return loggerBuf(0); }
-    LoggerBuf *loggerBufInfo() { return loggerBuf(1); }
-    LoggerBuf *loggerBufWarning() { return loggerBuf(2); }
-    LoggerBuf *loggerBufError() { return loggerBuf(3); }
-    LoggerBuf *loggerBufCritical() { return loggerBuf(4); }
-    std::ostream &loggerDebug() { return logger(0); }
-    std::ostream &loggerInfo() { return logger(1); }
-    std::ostream &loggerWarning() { return logger(2); }
-    std::ostream &loggerError() { return logger(3); }
-    std::ostream &loggerCritical() { return logger(4); }
+    //! このクライアントのloggerに出力するstreambuf
+    //! levelは常にinfoになる (変えられるようにする?)
+    //! std::flushのタイミングとは無関係に、1つの改行ごとに1つのログになる
+    LoggerBuf *logger_streambuf() { return &logger_buf; }
+    //! logger_streambufに出力するostream
+    std::ostream &logger_ostream() { return logger_os; }
 };
 
 } // namespace WebCFace

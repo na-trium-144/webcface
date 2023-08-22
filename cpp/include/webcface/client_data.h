@@ -1,16 +1,17 @@
 #pragma once
-#include <queue>
 #include <vector>
 #include <unordered_map>
 #include <set>
 #include <mutex>
 #include <condition_variable>
-#include <chrono>
 #include <optional>
 #include <string>
 #include <eventpp/eventqueue.h>
+#include <spdlog/logger.h>
+#include <spdlog/sinks/stdout_color_sinks.h>
 #include "func_result.h"
 #include "common/func.h"
+#include "common/queue.h"
 #include "event_key.h"
 #include "field_base.h"
 #include "logger.h"
@@ -121,33 +122,6 @@ struct ClientData {
         AsyncFuncResult &getResult(int caller_id);
     };
 
-    //! 排他制御をしたただのキュー
-    template <typename T>
-    class Queue {
-        std::mutex mtx;
-        std::condition_variable cond;
-        std::queue<T> que;
-
-      public:
-        void push(const T &f) {
-            {
-                std::lock_guard lock(mtx);
-                que.push(f);
-            }
-            cond.notify_one();
-        }
-        template <typename Dur = std::chrono::milliseconds>
-        std::optional<T> pop(const Dur &d = std::chrono::milliseconds(0)) {
-            std::unique_lock lock(mtx);
-            if (cond.wait_for(lock, d, [this] { return !que.empty(); })) {
-                auto c = que.front();
-                que.pop();
-                return c;
-            }
-            return std::nullopt;
-        }
-    };
-
     //! clientがsync()されたタイミングで実行中の関数を起こす
     //! さらにその関数が完了するまで待機する
     struct FuncOnSync {
@@ -170,7 +144,13 @@ struct ClientData {
 
     explicit ClientData(const std::string &name)
         : self_member_name(name), value_store(name), text_store(name),
-          func_store(name) {}
+          func_store(name), logger_sink(std::make_shared<LoggerSink>()) {
+        std::vector<spdlog::sink_ptr> sinks = {logger_sink, stderr_sink};
+        logger =
+            std::make_shared<spdlog::logger>(name, sinks.begin(), sinks.end());
+        logger_internal = std::make_shared<spdlog::logger>(
+            "webcface_internal(" + name + ")", sinks.begin(), sinks.end());
+    }
 
     //! Client自身の名前
     std::string self_member_name;
@@ -192,9 +172,15 @@ struct ClientData {
     Queue<std::vector<char>> message_queue;
     //! sync()のタイミングで実行を同期する関数のcondition_variable
     Queue<std::shared_ptr<FuncOnSync>> func_sync_queue;
-    //! logのキュー
-    Queue<LogLine> log_send_queue, log_display_queue;
 
     FuncWrapperType default_func_wrapper;
+
+    //! logのキュー
+    std::shared_ptr<LoggerSink> logger_sink;
+    //! stderrに出力するsink
+    //! 全clientで共通にする
+    inline static auto stderr_sink =
+        std::make_shared<spdlog::sinks::stderr_color_sink_mt>();
+    std::shared_ptr<spdlog::logger> logger, logger_internal;
 };
 } // namespace WebCFace
