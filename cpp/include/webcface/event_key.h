@@ -12,6 +12,7 @@ enum class EventType {
     func_entry,
     value_change,
     text_change,
+    log_change,
 };
 
 //! Eventの種類を表すキー、かつEventのコールバックに返す引数

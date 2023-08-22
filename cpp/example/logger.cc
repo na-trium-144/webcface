@@ -16,8 +16,14 @@ int main() {
     std::cout.rdbuf(c.logger_streambuf());
     std::cout << "this is cout" << std::endl;
     std::cout.rdbuf(buf);
-    c.sync();
-    while(true){
+
+    while (true) {
         std::this_thread::yield();
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        c.sync();
+        std::cout << c.logs().get().size() << std::endl;
+        for (const auto &l : c.logs().get()) {
+            std::cout << "saved log: " << l.message << std::endl;
+        }
     }
 }

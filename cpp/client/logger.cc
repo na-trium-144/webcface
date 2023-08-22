@@ -36,6 +36,9 @@ void LoggerSink::sink_it_(const spdlog::details::log_msg &msg) {
     spdlog::memory_buf_t formatted;
     this->formatter_->format(msg, formatted);
     std::string log_text = fmt::to_string(formatted);
+    if (log_text.size() > 0 && log_text.back() == '\n') {
+        log_text.pop_back();
+    }
     this->push({msg.level, msg.time, log_text});
 }
 

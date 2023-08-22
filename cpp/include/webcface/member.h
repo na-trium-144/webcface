@@ -10,6 +10,7 @@ class EventTarget;
 class Value;
 class Text;
 class Func;
+class Logs;
 class ClientData;
 
 //! 他のクライアントを参照することを表すクラス
@@ -29,6 +30,8 @@ class Member : protected FieldBase {
     Text text(const std::string &field) const;
     //! このmemberの指定した名前のfuncを参照する。
     Func func(const std::string &field) const;
+    //! このmemberのログを参照する。
+    Logs logs() const;
 
     //! このmemberが公開しているvalueのリストを返す。
     std::vector<Value> values() const;
@@ -50,6 +53,7 @@ class Member : protected FieldBase {
     //! funcが追加された時のイベントリスト
     //! \sa valuesChange()
     EventTarget<Func> funcsChange() const;
+
 };
 
 } // namespace WebCFace

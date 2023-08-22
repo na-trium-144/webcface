@@ -47,7 +47,7 @@ struct ClientData {
             req;
         //! 次のsend時に送信するデータ受信リクエスト
         /*! req[member名][データ名] = true ならばリクエストをする
-         * falseならリクエストを解除する
+         * falseならリクエストを解除する(未実装)
          */
         std::unordered_map<std::string, std::unordered_map<std::string, bool>>
             req_send;
@@ -58,7 +58,8 @@ struct ClientData {
         }
 
       public:
-        SyncDataStore(const std::string &name) : self_member_name(name) {}
+        explicit SyncDataStore(const std::string &name)
+            : self_member_name(name) {}
 
         //! 送信するデータをdata_sendとdata_recv[self_member_name]にセット
         void setSend(const std::string &name, const T &data);
@@ -104,6 +105,25 @@ struct ClientData {
         transferReq();
     };
 
+    class LogStore {
+        std::mutex mtx;
+        std::unordered_map<std::string, std::vector<LogLine>> data_recv;
+        std::unordered_map<std::string, bool> req;
+        std::unordered_map<std::string, bool> req_send;
+        std::string self_member_name;
+        bool isSelf(const std::string &member) {
+            return member == self_member_name;
+        }
+
+      public:
+        explicit LogStore(const std::string &name) : self_member_name(name) {}
+
+        void addRecv(const std::string &member, const LogLine &log);
+        std::optional<std::vector<LogLine>> getRecv(const std::string &member);
+        //! req_sendを返し、req_sendをクリア
+        std::unordered_map<std::string, bool> transferReq();
+    };
+
     //! AsyncFuncResultのリストを保持する。
     /*! 関数の実行結果が返ってきた時参照する
      * また、実行するたびに連番を振る必要があるcallback_idの管理にも使う
@@ -143,7 +163,8 @@ struct ClientData {
 
     explicit ClientData(const std::string &name)
         : self_member_name(name), value_store(name), text_store(name),
-          func_store(name), logger_sink(std::make_shared<LoggerSink>()) {
+          func_store(name), log_store(name),
+          logger_sink(std::make_shared<LoggerSink>()) {
         std::vector<spdlog::sink_ptr> sinks = {logger_sink, stderr_sink};
         logger =
             std::make_shared<spdlog::logger>(name, sinks.begin(), sinks.end());
@@ -161,7 +182,7 @@ struct ClientData {
     SyncDataStore<double> value_store;
     SyncDataStore<std::string> text_store;
     SyncDataStore<FuncInfo> func_store;
-
+    LogStore log_store;
     FuncResultStore func_result_store;
 
     using EventQueue = eventpp::EventQueue<EventKey, void(const EventKey &)>;

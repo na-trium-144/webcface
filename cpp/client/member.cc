@@ -11,6 +11,7 @@ Value Member::value(const std::string &field) const {
 }
 Text Member::text(const std::string &field) const { return Text{*this, field}; }
 Func Member::func(const std::string &field) const { return Func{*this, field}; }
+Logs Member::logs() const { return Logs{*this}; }
 
 EventTarget<Value> Member::valuesChange() const {
     return EventTarget<Value>{EventType::value_entry, *this};

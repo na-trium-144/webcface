@@ -204,9 +204,15 @@ void Client::sync() {
             send(Message::pack(Message::FuncInfo{"", v.first, v.second}));
         }
 
+        auto log_subsc = data->log_store.transferReq();
+        for (const auto &v : log_subsc) {
+            send(Message::pack(Message::LogReq{{}, v.first}));
+        }
         std::vector<Message::Log::LogLine> log_send;
         while (auto log = data->logger_sink->pop()) {
             log_send.push_back(*log);
+            // todo: connected状態でないとlog_storeにログが記録されない
+            data->log_store.addRecv(this->name(), *log);
         }
         if (!log_send.empty()) {
             send(Message::pack(Message::Log{{}, "", log_send}));
@@ -234,6 +240,15 @@ void Client::onRecv(const std::string &message) {
         data->text_store.setRecv(r.member, r.name, r.data);
         data->event_queue.enqueue(EventKey{EventType::text_change,
                                            FieldBase{data, r.member, r.name}});
+        break;
+    }
+    case MessageKind::log: {
+        auto r = std::any_cast<WebCFace::Message::Log>(obj);
+        for (const auto &lm : r.log) {
+            data->log_store.addRecv(r.member, lm);
+        }
+        data->event_queue.enqueue(
+            EventKey{EventType::log_change, FieldBase{data, r.member}});
         break;
     }
     case MessageKind::call: {
