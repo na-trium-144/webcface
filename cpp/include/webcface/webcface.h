@@ -4,6 +4,8 @@
 #include "common/val.h"
 #include "common/func.h"
 #include "common/queue.h"
+#include "common/log.h"
+
 #include "field_base.h"
 
 #include "member.h"

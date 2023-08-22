@@ -1,9 +1,9 @@
 #include "s_client_data.h"
 #include "store.h"
 #include "../message/message.h"
-
 #include <algorithm>
 #include <iostream>
+#include <iterator>
 
 namespace WebCFace::Server {
 void ClientData::onClose() {
@@ -169,6 +169,26 @@ void ClientData::onRecv(const std::string &message) {
         std::cout << std::endl;
         break;
     }
+    case MessageKind::log: {
+        auto v = std::any_cast<WebCFace::Message::Log>(obj);
+        v.member = this->name;
+        std::cout << this->name << ": log " << v.log.size() << " lines"
+                  << ", send back to ";
+        std::copy(v.log.begin(), v.log.end(), std::back_inserter(this->log));
+        // このlogをsubscribeしてるところに送り返す
+        for (const auto &c : store.clients) {
+            if (c.second->sync_init) {
+                for (const auto &s : c.second->log_subsc) {
+                    if (s == this->name) {
+                        c.second->send(WebCFace::Message::pack(v));
+                        std::cout << c.second->name << ", ";
+                    }
+                }
+            }
+        }
+        std::cout << std::endl;
+        break;
+    }
     case MessageKind::func_info: {
         auto v = std::any_cast<WebCFace::Message::FuncInfo>(obj);
         v.member = this->name;
@@ -222,6 +242,18 @@ void ClientData::onRecv(const std::string &message) {
                 this->send(WebCFace::Message::pack(
                     WebCFace::Message::Text{{}, s.from, s.name, it->second}));
             }
+        }
+        break;
+    }
+    case MessageKind::log_req: {
+        auto s = std::any_cast<WebCFace::Message::LogReq>(obj);
+        std::cout << this->name << ": subscribe log " << s.member << std::endl;
+        log_subsc.insert(s.member);
+        // 指定した値を返す
+        auto c_it = store.clients_by_name.find(s.member);
+        if (c_it != store.clients_by_name.end()) {
+            this->send(WebCFace::Message::pack(
+                WebCFace::Message::Log{{}, s.member, c_it->second->log}));
         }
         break;
     }

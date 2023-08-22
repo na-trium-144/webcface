@@ -167,9 +167,13 @@ void Client::sync() {
             send(Message::pack(Message::FuncInfo{"", v.first, v.second}));
         }
 
-        // while (auto log = data->log_send_queue.pop()) {
-        //     send(Message::pack(Message::Log{{}, log->level, log->message}));
-        // }
+        std::vector<Message::Log::LogLine> log_send;
+        while (auto log = data->logger_sink->pop()) {
+            log_send.push_back(*log);
+        }
+        if (!log_send.empty()) {
+            send(Message::pack(Message::Log{{}, "", log_send}));
+        }
     }
     while (auto func_sync = data->func_sync_queue.pop()) {
         (*func_sync)->sync();

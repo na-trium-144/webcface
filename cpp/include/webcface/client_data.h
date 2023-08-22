@@ -8,7 +8,6 @@
 #include <string>
 #include <eventpp/eventqueue.h>
 #include <spdlog/logger.h>
-#include <spdlog/sinks/stdout_color_sinks.h>
 #include "func_result.h"
 #include "common/func.h"
 #include "common/queue.h"
@@ -177,10 +176,7 @@ struct ClientData {
 
     //! logのキュー
     std::shared_ptr<LoggerSink> logger_sink;
-    //! stderrに出力するsink
-    //! 全clientで共通にする
-    inline static auto stderr_sink =
-        std::make_shared<spdlog::sinks::stderr_color_sink_mt>();
+
     std::shared_ptr<spdlog::logger> logger, logger_internal;
 };
 } // namespace WebCFace

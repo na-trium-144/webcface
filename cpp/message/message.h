@@ -4,7 +4,9 @@
 #include <utility>
 #include <vector>
 #include <any>
+#include <cstdint>
 #include <webcface/common/func.h>
+#include <webcface/common/log.h>
 #include "val_adaptor.h"
 
 MSGPACK_ADD_ENUM(WebCFace::Common::ValType);
@@ -26,6 +28,8 @@ enum class MessageKind {
     call_result = 152,
     // entry = 153,
     func_info = 154,
+    log = 156,
+    log_req = 157,
 };
 inline constexpr MessageKind kind_subscribe(MessageKind k) {
     return static_cast<MessageKind>(static_cast<int>(k) +
@@ -94,6 +98,39 @@ struct Text : public MessageBase<MessageKind::text> {
     std::string data;
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("m", member), MSGPACK_NVP("n", name),
                        MSGPACK_NVP("d", data));
+};
+//! client(member)->server->client logを追加
+//! client->server時はmemberは無視
+struct Log : public MessageBase<MessageKind::log> {
+    std::string member;
+    struct LogLine {
+        int level;
+        //! 1970/1/1からの経過ミリ秒
+        std::uint64_t time;
+        std::string message;
+        LogLine() = default;
+        LogLine(const Common::LogLine &l)
+            : level(l.level),
+              time(std::chrono::duration_cast<std::chrono::milliseconds>(
+                       l.time.time_since_epoch())
+                       .count()),
+              message(l.message) {}
+        operator Common::LogLine() const {
+            return {level,
+                    std::chrono::system_clock::time_point(
+                        std::chrono::milliseconds(time)),
+                    message};
+        }
+        MSGPACK_DEFINE_MAP(MSGPACK_NVP("v", level), MSGPACK_NVP("t", time),
+                           MSGPACK_NVP("m", message));
+    };
+    std::vector<LogLine> log;
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("m", member), MSGPACK_NVP("l", log));
+};
+//! Logのリクエストはメンバ名のみ
+struct LogReq : public MessageBase<MessageKind::log_req> {
+    std::string member;
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("m", member));
 };
 //! client(member)->server->client func登録
 //! client->server時はmemberは無視

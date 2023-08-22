@@ -6,6 +6,7 @@
 #include <optional>
 
 namespace WebCFace {
+inline namespace Common {
 //! 排他制御をしたただのキュー
 template <typename T>
 class Queue {
@@ -32,4 +33,5 @@ class Queue {
         return std::nullopt;
     }
 };
+} // namespace Common
 } // namespace WebCFace

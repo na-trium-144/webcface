@@ -118,12 +118,7 @@ class Client : public Member {
 
     //! サーバーに送信するspdlogのsink
     std::shared_ptr<LoggerSink> logger_sink() { return data->logger_sink; }
-    //! stderr_color_sink_mtのインスタンス(全clientで共通)
-    //! loggerとlogger_internalからstderrに流すのを止めたい時などはこれのset_levelなどを使う
-    std::shared_ptr<spdlog::sinks::stderr_color_sink_mt> stderr_sink() {
-        return ClientData::stderr_sink;
-    }
-    //! サーバーとstderrに流すspdlog::logger
+    //! サーバーとstderr_sinkに流すspdlog::logger
     std::shared_ptr<spdlog::logger> logger() { return data->logger; }
 
     //! このクライアントのloggerに出力するstreambuf

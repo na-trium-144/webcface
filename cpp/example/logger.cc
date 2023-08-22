@@ -15,6 +15,7 @@ int main() {
     std::cout.rdbuf(c.logger_streambuf());
     std::cout << "this is cout" << std::endl;
     std::cout.rdbuf(buf);
+    c.sync();
     while(true){
         std::this_thread::yield();
     }

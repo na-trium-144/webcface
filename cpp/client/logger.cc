@@ -36,7 +36,7 @@ void LoggerSink::sink_it_(const spdlog::details::log_msg &msg) {
     spdlog::memory_buf_t formatted;
     this->formatter_->format(msg, formatted);
     std::string log_text = fmt::to_string(formatted);
-    this->push({msg.level, log_text});
+    this->push({msg.level, msg.time, log_text});
 }
 
 } // namespace WebCFace
