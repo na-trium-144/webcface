@@ -26,6 +26,7 @@
   "dependencies": {
     "@ygoe/msgpack": "^1.0.3",
     "eventemitter3": "^5.0.1",
-    "websocket": "^1.0.34"
+    "websocket": "^1.0.34",
+    "winston": "^3.10.0"
   }
 }

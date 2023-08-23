@@ -1,5 +1,7 @@
 import { Val, FuncInfo } from "./funcInfo.js";
 import { EventEmitter } from "eventemitter3";
+import { LogLine, LogQueueTransport } from "./logger.js";
+import * as winston from "winston";
 
 export class FieldBase {
   data: ClientData;
@@ -27,7 +29,13 @@ type EventListener<TargetType> = (target: TargetType) => void;
 export class FieldBaseWithEvent<TargetType> extends FieldBase {
   eventType_: string;
   onAppend: () => void;
-  constructor(eventType: string, data: ClientData, member: string, field = "", onAppend: () => void = () => undefined) {
+  constructor(
+    eventType: string,
+    data: ClientData,
+    member: string,
+    field = "",
+    onAppend: () => void = () => undefined
+  ) {
     super(data, member, field);
     this.eventType_ = eventType;
     this.onAppend = onAppend;
@@ -63,6 +71,9 @@ export class ClientData {
   funcResultStore: FuncResultStore;
   callFunc: (r: AsyncFuncResult, b: FieldBase, args: Val[]) => void;
   eventEmitter: EventEmitter;
+  loggerInternal: winston.Logger;
+  loggerTransport: LogQueueTransport;
+  logger: winston.Logger;
   constructor(
     name: string,
     callFunc: (r: AsyncFuncResult, b: FieldBase, args: Val[]) => void
@@ -75,6 +86,17 @@ export class ClientData {
     this.funcResultStore = new FuncResultStore();
     this.callFunc = callFunc;
     this.eventEmitter = new EventEmitter();
+    this.loggerInternal = winston.createLogger({
+      // todo: simpleではわかりにくい
+      // todo: levelなど変更可能にする
+      format: winston.format.simple(),
+      transports: [new winston.transports.Console()],
+    });
+    this.loggerTransport = new LogQueueTransport({});
+    this.logger = winston.createLogger({
+      format: winston.format.simple(),
+      transports: [new winston.transports.Console(), this.loggerTransport],
+    });
   }
 }
 
@@ -175,11 +197,6 @@ class SyncDataStore<T> {
   }
 }
 
-export interface LogLine{
-  level: number;
-  time: Date;
-  message: string;
-}
 class LogStore {
   dataRecv: Map<string, LogLine[]>;
   req: Map<string, boolean>;

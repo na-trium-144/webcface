@@ -58,11 +58,16 @@ export class Client extends Member {
     if (this.closing) {
       return;
     }
+    this.data.loggerInternal.log(
+      "debug",
+      `reconnecting to ws://${this.host}:${this.port}`
+    );
     let connection_done = false;
     const ws = new w3cwebsocket(`ws://${this.host}:${this.port}`);
     this.ws = ws;
     this.reconnectTimer = setTimeout(() => {
       if (!connection_done) {
+        this.data.loggerInternal.log("warn", "connection timeout");
         ws.onopen = () => null;
         ws.onmessage = () => null;
         ws.onclose = () => null;
@@ -219,16 +224,15 @@ export class Client extends Member {
         }
       }
     };
-    ws.onerror = (error: any) => {
+    ws.onerror = () => {
       connection_done = true;
-      // console.error("Connection Error");
-      // console.error(error);
+      this.data.loggerInternal.log("warn", "connection error");
       ws.close();
     };
     ws.onclose = () => {
       connection_done = true;
       this.connected = false;
-      // console.error("closed");
+      this.data.loggerInternal.log("warn", "closed");
       this.reconnectTimer = setTimeout(() => this.reconnect(), 1000);
     };
   }
@@ -273,9 +277,14 @@ export class Client extends Member {
         });
       }
 
-      // for (const [k, v] of this.data.logStore.transferSend().entries()) {
-      //   this.send(types.kind.text, { m: "", n: k, d: v });
-      // }
+      const logSend: types.LogLine[] = [];
+      for (const l of this.data.loggerTransport.logQueue) {
+        logSend.push({ v: l.level, t: l.time.getTime(), m: l.message });
+      }
+      if (logSend.length > 0) {
+        this.data.loggerTransport.logQueue = [];
+        this.send(types.kind.log, { m: "", l: logSend });
+      }
       for (const [k, v] of this.data.logStore.transferReq().entries()) {
         this.send(types.kind.logReq, { m: k });
       }
@@ -294,5 +303,11 @@ export class Client extends Member {
       "",
       ""
     );
+  }
+  get logger() {
+    return this.data.logger;
+  }
+  get loggerTransport() {
+    return this.data.loggerTransport;
   }
 }
