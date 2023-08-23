@@ -93,6 +93,19 @@ export class Client extends Member {
           this.data.eventEmitter.emit(eventType.textChange(target), target);
           break;
         }
+        case types.kind.log: {
+          const dataR = data as types.Log;
+          for (const ll of dataR.l) {
+            this.data.logStore.addRecv(dataR.m, {
+              level: ll.v,
+              time: new Date(ll.t),
+              message: ll.m,
+            });
+          }
+          const target = this.member(dataR.m);
+          this.data.eventEmitter.emit(eventType.logChange(target), target);
+          break;
+        }
         case types.kind.call: {
           setTimeout(() => {
             const dataR = data as types.Call;
@@ -231,7 +244,7 @@ export class Client extends Member {
       }
       for (const [k, v] of this.data.valueStore.transferReq().entries()) {
         for (const [k2, v2] of v.entries()) {
-          this.send(types.kind.subscribe + types.kind.value, { f: k, n: k2 });
+          this.send(types.kind.req + types.kind.value, { f: k, n: k2 });
         }
       }
 
@@ -240,7 +253,7 @@ export class Client extends Member {
       }
       for (const [k, v] of this.data.textStore.transferReq().entries()) {
         for (const [k2, v2] of v.entries()) {
-          this.send(types.kind.subscribe + types.kind.text, { f: k, n: k2 });
+          this.send(types.kind.req + types.kind.text, { f: k, n: k2 });
         }
       }
 
@@ -258,6 +271,13 @@ export class Client extends Member {
             o: a.option != undefined ? a.option : [],
           })),
         });
+      }
+
+      // for (const [k, v] of this.data.logStore.transferSend().entries()) {
+      //   this.send(types.kind.text, { m: "", n: k, d: v });
+      // }
+      for (const [k, v] of this.data.logStore.transferReq().entries()) {
+        this.send(types.kind.logReq, { m: k });
       }
     }
   }

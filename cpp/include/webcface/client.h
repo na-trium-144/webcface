@@ -120,7 +120,7 @@ class Client : public Member {
     std::shared_ptr<LoggerSink> logger_sink() { return data->logger_sink; }
     //! サーバーとstderr_sinkに流すspdlog::logger
     std::shared_ptr<spdlog::logger> logger() { return data->logger; }
-
+    
     //! このクライアントのloggerに出力するstreambuf
     //! levelは常にinfoになる (変えられるようにする?)
     //! std::flushのタイミングとは無関係に、1つの改行ごとに1つのログになる

@@ -146,11 +146,11 @@ export function ValueCard(props: Props) {
       <div className="flex flex-col h-full">
         <div className="flex-1 w-full min-h-0 flex flex-row text-xs">
           <div className="flex-none h-full pb-4 pr-1 relative">
-            <div className="text-transparent">
+            <div className="text-transparent select-none">
               {/* 0を桁数分並べたものを入れることで幅を固定する */}
               {"0".repeat(displayMaxY.toString().length)}
             </div>
-            <div className="text-transparent">
+            <div className="text-transparent select-none">
               {"0".repeat(displayMinY.toString().length)}
             </div>
             <span className="absolute top-0 right-1">{displayMaxY}</span>

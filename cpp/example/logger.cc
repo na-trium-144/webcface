@@ -10,6 +10,7 @@ int main() {
     c.logger()->debug("this is debug");
     c.logger()->info("this is info");
     c.logger()->error("this is error");
+    c.logger()->critical("this is critical");
     c.logger()->error("Some error message with arg: {}", 1);
     c.logger_ostream() << "this is ostream" << std::endl;
     auto *buf = std::cout.rdbuf();

@@ -40,6 +40,7 @@ struct EventKey : FieldBase {
         case EventType::value_entry:
         case EventType::text_entry:
         case EventType::func_entry:
+        case EventType::log_change:
             // memberはキー、nameは内容
             return member_ == rhs.member_;
         case EventType::value_change:
@@ -63,6 +64,7 @@ struct EventKey : FieldBase {
         case EventType::value_entry:
         case EventType::text_entry:
         case EventType::func_entry:
+        case EventType::log_change:
             // memberはキー、nameは内容
             return member_ < rhs.member_;
         case EventType::value_change:

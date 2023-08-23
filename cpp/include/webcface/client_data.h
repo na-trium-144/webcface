@@ -169,7 +169,7 @@ struct ClientData {
         logger =
             std::make_shared<spdlog::logger>(name, sinks.begin(), sinks.end());
         logger_internal = std::make_shared<spdlog::logger>(
-            "webcface_internal(" + name + ")", sinks.begin(), sinks.end());
+            "webcface_internal(" + name + ")", stderr_sink);
         logger_internal->set_level(logger_internal_level);
     }
 
