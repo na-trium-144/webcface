@@ -1,4 +1,3 @@
-import TransportStream from "winston-transport";
 
 export interface LogLine {
   level: number;
@@ -6,7 +5,34 @@ export interface LogLine {
   message: string;
 }
 
-function levelWinstonToSys(level: string) {
+export interface log4jsLevels {
+  ALL: log4jsLevel;
+  MARK: log4jsLevel;
+  TRACE: log4jsLevel;
+  DEBUG: log4jsLevel;
+  INFO: log4jsLevel;
+  WARN: log4jsLevel;
+  ERROR: log4jsLevel;
+  FATAL: log4jsLevel;
+  OFF: log4jsLevel;
+  levels: log4jsLevel[];
+  getLevel(log4jsLevel: log4jsLevel | string, defaultLevel?: log4jsLevel): log4jsLevel;
+  addLevels(customLevels: object): void;
+}
+
+export interface log4jsLevel {
+  colour: string;
+  level: number;
+  levelStr: string;
+}
+export interface log4jsLoggingEvent {
+  categoryName: string; // name of category
+  level: log4jsLevel; // level of message
+  data: any[]; // objects to log
+  startTime: Date;
+}
+
+function levelLog4ToSys(level: string) {
   switch (level) {
     case "emerg":
       return 0;
@@ -30,22 +56,5 @@ function levelWinstonToSys(level: string) {
       return 8;
     default:
       return 5;
-  }
-}
-export class LogQueueTransport extends TransportStream {
-  logQueue: LogLine[];
-  constructor(opts: TransportStream.TransportStreamOptions) {
-    super(opts);
-    this.logQueue = [];
-  }
-  log(info: { level: string; message: string }, callback: () => void) {
-    const levelNum = levelWinstonToSys(info.level);
-    this.logQueue.push({
-      level: levelNum,
-      message: info.message,
-      time: new Date(),
-    });
-    // Perform the writing to the remote service
-    callback();
   }
 }

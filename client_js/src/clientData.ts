@@ -1,7 +1,6 @@
 import { Val, FuncInfo } from "./funcInfo.js";
 import { EventEmitter } from "eventemitter3";
-import { LogLine, LogQueueTransport } from "./logger.js";
-import * as winston from "winston";
+import { LogLine } from "./logger.js";
 
 export class FieldBase {
   data: ClientData;
@@ -71,9 +70,7 @@ export class ClientData {
   funcResultStore: FuncResultStore;
   callFunc: (r: AsyncFuncResult, b: FieldBase, args: Val[]) => void;
   eventEmitter: EventEmitter;
-  loggerInternal: winston.Logger;
-  loggerTransport: LogQueueTransport;
-  logger: winston.Logger;
+  logQueue: LogLine[];
   constructor(
     name: string,
     callFunc: (r: AsyncFuncResult, b: FieldBase, args: Val[]) => void
@@ -86,17 +83,7 @@ export class ClientData {
     this.funcResultStore = new FuncResultStore();
     this.callFunc = callFunc;
     this.eventEmitter = new EventEmitter();
-    this.loggerInternal = winston.createLogger({
-      // todo: simpleではわかりにくい
-      // todo: levelなど変更可能にする
-      format: winston.format.simple(),
-      transports: [new winston.transports.Console()],
-    });
-    this.loggerTransport = new LogQueueTransport({});
-    this.logger = winston.createLogger({
-      format: winston.format.simple(),
-      transports: [new winston.transports.Console(), this.loggerTransport],
-    });
+    this.logQueue = [];
   }
 }
 

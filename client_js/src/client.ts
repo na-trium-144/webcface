@@ -9,8 +9,11 @@ import {
 } from "./clientData.js";
 import { Member, runFunc } from "./data.js";
 import { Val } from "./funcInfo.js";
+import { log4jsLoggingEvent, log4jsLevels } from "./logger.js";
 import websocket from "websocket";
 const w3cwebsocket = websocket.w3cwebsocket;
+import util from "util";
+import { getLogger, Logger } from "@log4js-node/log4js-api";
 
 export class Client extends Member {
   ws: null | websocket.w3cwebsocket = null;
@@ -20,6 +23,25 @@ export class Client extends Member {
   syncInit = false;
   closing = false;
   reconnectTimer: ReturnType<typeof setTimeout> | null = null;
+  get loggerInternal() {
+    const logger = getLogger("webcface");
+    if (logger.level != null) {
+      return logger;
+    } else {
+      // log4jsが使えないときのフォールバック
+      return {
+        debug(...args: any[]) {
+          console?.log(...args);
+        },
+        warn(...args: any[]) {
+          console?.warn(...args);
+        },
+        error(...args: any[]) {
+          console?.error(...args);
+        },
+      };
+    }
+  }
   constructor(name: string, host = "127.0.0.1", port = 7530) {
     super(
       new FieldBase(
@@ -58,16 +80,13 @@ export class Client extends Member {
     if (this.closing) {
       return;
     }
-    this.data.loggerInternal.log(
-      "debug",
-      `reconnecting to ws://${this.host}:${this.port}`
-    );
+    this.loggerInternal.debug(`reconnecting to ws://${this.host}:${this.port}`);
     let connection_done = false;
     const ws = new w3cwebsocket(`ws://${this.host}:${this.port}`);
     this.ws = ws;
     this.reconnectTimer = setTimeout(() => {
       if (!connection_done) {
-        this.data.loggerInternal.log("warn", "connection timeout");
+        this.loggerInternal.warn("connection timeout");
         ws.onopen = () => null;
         ws.onmessage = () => null;
         ws.onclose = () => null;
@@ -226,13 +245,13 @@ export class Client extends Member {
     };
     ws.onerror = () => {
       connection_done = true;
-      this.data.loggerInternal.log("warn", "connection error");
+      this.loggerInternal.warn("connection error");
       ws.close();
     };
     ws.onclose = () => {
       connection_done = true;
       this.connected = false;
-      this.data.loggerInternal.log("warn", "closed");
+      this.loggerInternal.warn("closed");
       this.reconnectTimer = setTimeout(() => this.reconnect(), 1000);
     };
   }
@@ -278,11 +297,11 @@ export class Client extends Member {
       }
 
       const logSend: types.LogLine[] = [];
-      for (const l of this.data.loggerTransport.logQueue) {
+      for (const l of this.data.logQueue) {
         logSend.push({ v: l.level, t: l.time.getTime(), m: l.message });
       }
       if (logSend.length > 0) {
-        this.data.loggerTransport.logQueue = [];
+        this.data.logQueue = [];
         this.send(types.kind.log, { m: "", l: logSend });
       }
       for (const [k, v] of this.data.logStore.transferReq().entries()) {
@@ -304,10 +323,23 @@ export class Client extends Member {
       ""
     );
   }
-  get logger() {
-    return this.data.logger;
-  }
-  get loggerTransport() {
-    return this.data.loggerTransport;
+  get logAppender() {
+    return {
+      configure:
+        (
+          config?: object,
+          layouts?: any,
+          findAppender?: any,
+          levels?: log4jsLevels
+        ) =>
+        (logEvent: log4jsLoggingEvent) => {
+          const ll = {
+            level: logEvent.level.level / 10000,
+            time: new Date(logEvent.startTime),
+            message: util.format(...logEvent.data),
+          };
+          this.data.logQueue.push(ll);
+        },
+    };
   }
 }
