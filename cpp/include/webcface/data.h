@@ -178,6 +178,23 @@ class Text : public SyncFieldBase<std::string>, public EventTarget<Text> {
     bool operator!=(const std::string &rhs) const { return this->get() != rhs; }
 };
 
+class Logs : public SyncFieldBase<std::vector<LogLine>>,
+             public EventTarget<Logs> {
+    using SyncFieldBase<std::vector<LogLine>>::FieldBase::dataLock;
+
+  public:
+    Logs() = default;
+    Logs(const FieldBase &base)
+        : SyncFieldBase<std::vector<LogLine>>(base),
+          EventTarget<Logs>(EventType::log_change, base,
+                                   [this] { this->tryGet(); }) {}
+
+    //! 値を取得する
+    std::optional<std::vector<LogLine>> tryGet() const override {
+        return dataLock()->log_store.getRecv(member_);
+    }
+};
+
 inline auto &operator<<(std::basic_ostream<char> &os, const Value &data) {
     return os << data.get();
 }

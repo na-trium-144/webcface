@@ -25,6 +25,9 @@ class ClientData {
     //! リクエストしているmember,nameのペア
     std::set<std::pair<std::string, std::string>> value_subsc;
     std::set<std::pair<std::string, std::string>> text_subsc;
+    std::set<std::string> log_subsc;
+    //! ログ全履歴
+    std::vector<Message::Log::LogLine> log;
 
   public:
     ClientData() = delete;

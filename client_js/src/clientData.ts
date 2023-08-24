@@ -1,5 +1,6 @@
 import { Val, FuncInfo } from "./funcInfo.js";
 import { EventEmitter } from "eventemitter3";
+import { LogLine } from "./logger.js";
 
 export class FieldBase {
   data: ClientData;
@@ -21,22 +22,33 @@ export const eventType = {
     JSON.stringify(["valueChange", b.member_, b.field_]),
   textChange: (b: FieldBase) =>
     JSON.stringify(["textChange", b.member_, b.field_]),
+  logChange: (b: FieldBase) => JSON.stringify(["logChange", b.member_]),
 };
 type EventListener<TargetType> = (target: TargetType) => void;
 export class FieldBaseWithEvent<TargetType> extends FieldBase {
   eventType_: string;
-  constructor(eventType: string, data: ClientData, member: string, field = "") {
+  onAppend: () => void;
+  constructor(
+    eventType: string,
+    data: ClientData,
+    member: string,
+    field = "",
+    onAppend: () => void = () => undefined
+  ) {
     super(data, member, field);
     this.eventType_ = eventType;
+    this.onAppend = onAppend;
   }
   addListener(listener: EventListener<TargetType>) {
     this.data.eventEmitter.addListener(this.eventType_, listener);
+    this.onAppend();
   }
   on(listener: EventListener<TargetType>) {
     this.addListener(listener);
   }
   once(listener: EventListener<TargetType>) {
     this.data.eventEmitter.once(this.eventType_, listener);
+    this.onAppend();
   }
   removeListener(listener: EventListener<TargetType>) {
     this.data.eventEmitter.removeListener(this.eventType_, listener);
@@ -54,9 +66,11 @@ export class ClientData {
   valueStore: SyncDataStore<number>;
   textStore: SyncDataStore<string>;
   funcStore: SyncDataStore<FuncInfo>;
+  logStore: LogStore;
   funcResultStore: FuncResultStore;
   callFunc: (r: AsyncFuncResult, b: FieldBase, args: Val[]) => void;
   eventEmitter: EventEmitter;
+  logQueue: LogLine[];
   constructor(
     name: string,
     callFunc: (r: AsyncFuncResult, b: FieldBase, args: Val[]) => void
@@ -65,9 +79,11 @@ export class ClientData {
     this.valueStore = new SyncDataStore<number>(name);
     this.textStore = new SyncDataStore<string>(name);
     this.funcStore = new SyncDataStore<FuncInfo>(name);
+    this.logStore = new LogStore(name);
     this.funcResultStore = new FuncResultStore();
     this.callFunc = callFunc;
     this.eventEmitter = new EventEmitter();
+    this.logQueue = [];
   }
 }
 
@@ -168,6 +184,45 @@ class SyncDataStore<T> {
   }
 }
 
+class LogStore {
+  dataRecv: Map<string, LogLine[]>;
+  req: Map<string, boolean>;
+  reqSend: Map<string, boolean>;
+  selfMemberName: string;
+  constructor(name: string) {
+    this.selfMemberName = name;
+    this.dataRecv = new Map();
+    this.req = new Map();
+    this.reqSend = new Map();
+  }
+  isSelf(member: string) {
+    return this.selfMemberName === member;
+  }
+  addRecv(member: string, log: LogLine) {
+    const m = this.dataRecv.get(member);
+    if (m) {
+      m.push(log);
+    } else {
+      this.dataRecv.set(member, [log]);
+    }
+  }
+  getRecv(member: string) {
+    if (!this.isSelf(member) && this.req.get(member) !== true) {
+      this.req.set(member, true);
+      this.reqSend.set(member, true);
+    }
+    const m = this.dataRecv.get(member);
+    if (m != undefined) {
+      return m;
+    }
+    return null;
+  }
+  transferReq() {
+    const r = this.reqSend;
+    this.reqSend = new Map();
+    return r;
+  }
+}
 class FuncResultStore {
   results: AsyncFuncResult[] = [];
   addResult(caller: string, base: FieldBase) {

@@ -1,18 +1,19 @@
 #pragma once
-#include <queue>
 #include <vector>
 #include <unordered_map>
 #include <set>
 #include <mutex>
 #include <condition_variable>
-#include <chrono>
 #include <optional>
 #include <string>
 #include <eventpp/eventqueue.h>
+#include <spdlog/logger.h>
 #include "func_result.h"
 #include "common/func.h"
+#include "common/queue.h"
 #include "event_key.h"
 #include "field_base.h"
+#include "logger.h"
 
 namespace WebCFace {
 struct ClientData {
@@ -46,7 +47,7 @@ struct ClientData {
             req;
         //! 次のsend時に送信するデータ受信リクエスト
         /*! req[member名][データ名] = true ならばリクエストをする
-         * falseならリクエストを解除する
+         * falseならリクエストを解除する(未実装)
          */
         std::unordered_map<std::string, std::unordered_map<std::string, bool>>
             req_send;
@@ -57,7 +58,8 @@ struct ClientData {
         }
 
       public:
-        SyncDataStore(const std::string &name) : self_member_name(name) {}
+        explicit SyncDataStore(const std::string &name)
+            : self_member_name(name) {}
 
         //! 送信するデータをdata_sendとdata_recv[self_member_name]にセット
         void setSend(const std::string &name, const T &data);
@@ -103,6 +105,25 @@ struct ClientData {
         transferReq();
     };
 
+    class LogStore {
+        std::mutex mtx;
+        std::unordered_map<std::string, std::vector<LogLine>> data_recv;
+        std::unordered_map<std::string, bool> req;
+        std::unordered_map<std::string, bool> req_send;
+        std::string self_member_name;
+        bool isSelf(const std::string &member) {
+            return member == self_member_name;
+        }
+
+      public:
+        explicit LogStore(const std::string &name) : self_member_name(name) {}
+
+        void addRecv(const std::string &member, const LogLine &log);
+        std::optional<std::vector<LogLine>> getRecv(const std::string &member);
+        //! req_sendを返し、req_sendをクリア
+        std::unordered_map<std::string, bool> transferReq();
+    };
+
     //! AsyncFuncResultのリストを保持する。
     /*! 関数の実行結果が返ってきた時参照する
      * また、実行するたびに連番を振る必要があるcallback_idの管理にも使う
@@ -118,33 +139,6 @@ struct ClientData {
                                    const FieldBase &base);
         //! caller_idに対応するresultを返す
         AsyncFuncResult &getResult(int caller_id);
-    };
-
-    //! 排他制御をしたただのキュー
-    template <typename T>
-    class Queue {
-        std::mutex mtx;
-        std::condition_variable cond;
-        std::queue<T> que;
-
-      public:
-        void push(const T &f) {
-            {
-                std::lock_guard lock(mtx);
-                que.push(f);
-            }
-            cond.notify_one();
-        }
-        template <typename Dur = std::chrono::milliseconds>
-        std::optional<T> pop(const Dur &d = std::chrono::milliseconds(0)) {
-            std::unique_lock lock(mtx);
-            if (cond.wait_for(lock, d, [this] { return !que.empty(); })) {
-                auto c = que.front();
-                que.pop();
-                return c;
-            }
-            return std::nullopt;
-        }
     };
 
     //! clientがsync()されたタイミングで実行中の関数を起こす
@@ -169,7 +163,15 @@ struct ClientData {
 
     explicit ClientData(const std::string &name)
         : self_member_name(name), value_store(name), text_store(name),
-          func_store(name) {}
+          func_store(name), log_store(name),
+          logger_sink(std::make_shared<LoggerSink>()) {
+        std::vector<spdlog::sink_ptr> sinks = {logger_sink, stderr_sink};
+        logger =
+            std::make_shared<spdlog::logger>(name, sinks.begin(), sinks.end());
+        logger_internal = std::make_shared<spdlog::logger>(
+            "webcface_internal(" + name + ")", stderr_sink);
+        logger_internal->set_level(logger_internal_level);
+    }
 
     //! Client自身の名前
     std::string self_member_name;
@@ -180,7 +182,7 @@ struct ClientData {
     SyncDataStore<double> value_store;
     SyncDataStore<std::string> text_store;
     SyncDataStore<FuncInfo> func_store;
-
+    LogStore log_store;
     FuncResultStore func_result_store;
 
     using EventQueue = eventpp::EventQueue<EventKey, void(const EventKey &)>;
@@ -189,10 +191,14 @@ struct ClientData {
 
     //! sync()を待たずに即時送って欲しいメッセージを入れるキュー
     Queue<std::vector<char>> message_queue;
-
     //! sync()のタイミングで実行を同期する関数のcondition_variable
     Queue<std::shared_ptr<FuncOnSync>> func_sync_queue;
 
     FuncWrapperType default_func_wrapper;
+
+    //! logのキュー
+    std::shared_ptr<LoggerSink> logger_sink;
+
+    std::shared_ptr<spdlog::logger> logger, logger_internal;
 };
 } // namespace WebCFace

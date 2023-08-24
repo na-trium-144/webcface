@@ -16,6 +16,12 @@ void ClientData::SyncDataStore<T>::setRecv(const std::string &from,
     data_recv[from][name] = data;
 }
 
+void ClientData::LogStore::addRecv(const std::string &member,
+                                   const LogLine &log) {
+    std::lock_guard lock(mtx);
+    data_recv[member].push_back(log);
+}
+
 template <typename T>
 std::vector<std::string> ClientData::SyncDataStore<T>::getMembers() {
     std::lock_guard lock(mtx);
@@ -47,6 +53,7 @@ void ClientData::SyncDataStore<T>::setEntry(const std::string &from,
     std::lock_guard lock(mtx);
     entry[from].push_back(e);
 }
+
 template <typename T>
 std::optional<T>
 ClientData::SyncDataStore<T>::getRecv(const std::string &from,
@@ -63,6 +70,19 @@ ClientData::SyncDataStore<T>::getRecv(const std::string &from,
         if (it != s_it->second.end()) {
             return it->second;
         }
+    }
+    return std::nullopt;
+}
+std::optional<std::vector<LogLine>>
+ClientData::LogStore::getRecv(const std::string &member) {
+    std::lock_guard lock(mtx);
+    if (!isSelf(member) && (!req.count(member) || req[member] == false)) {
+        req[member] = true;
+        req_send[member] = true;
+    }
+    auto s_it = data_recv.find(member);
+    if (s_it != data_recv.end()) {
+        return s_it->second;
     }
     return std::nullopt;
 }
@@ -88,6 +108,10 @@ ClientData::SyncDataStore<T>::transferSend() {
 template <typename T>
 std::unordered_map<std::string, std::unordered_map<std::string, bool>>
 ClientData::SyncDataStore<T>::transferReq() {
+    std::lock_guard lock(mtx);
+    return std::move(req_send);
+}
+std::unordered_map<std::string, bool> ClientData::LogStore::transferReq() {
     std::lock_guard lock(mtx);
     return std::move(req_send);
 }

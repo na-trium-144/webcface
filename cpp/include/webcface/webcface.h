@@ -3,11 +3,15 @@
 
 #include "common/val.h"
 #include "common/func.h"
+#include "common/queue.h"
+#include "common/log.h"
+
 #include "field_base.h"
 
 #include "member.h"
 #include "event_key.h"
 #include "func_result.h"
+#include "logger.h"
 
 #include "client_data.h"
 

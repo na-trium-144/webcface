@@ -64,6 +64,13 @@ function SideMenuMember(props: MemberProps) {
         </li>
         <li>
           <SideMenuButton2
+            name={"Logs"}
+            active={props.isOpened(cardKey.log(props.member.name))}
+            onClick={() => props.toggleOpened(cardKey.log(props.member.name))}
+          />
+        </li>
+        <li>
+          <SideMenuButton2
             name={"Functions"}
             active={props.isOpened(cardKey.func(props.member.name))}
             onClick={() => props.toggleOpened(cardKey.func(props.member.name))}

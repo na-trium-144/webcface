@@ -1,4 +1,4 @@
-import { Client, Value, Text, Func } from "webcface";
+import { Client, Value, Text, Func, LogLine } from "webcface";
 
 export interface MemberValues {
   name: string;
@@ -11,4 +11,8 @@ export interface MemberTexts {
 export interface MemberFuncs {
   name: string;
   funcs: Func[];
+}
+export interface MemberLogs{
+  name: string;
+  logs: LogLine[];
 }

@@ -1,29 +1,43 @@
 import { useState, useEffect, useRef } from "react";
-import { Client, Member, Value, Text, Func } from "webcface";
+import { Client, Member } from "webcface";
 import "./index.css";
 import { LayoutMain } from "./components/layout";
 import { Header } from "./components/header";
 import { SideMenu } from "./components/sideMenu";
-import { MemberValues, MemberTexts, MemberFuncs } from "./libs/stateTypes";
+import {
+  MemberValues,
+  MemberTexts,
+  MemberFuncs,
+  MemberLogs,
+} from "./libs/stateTypes";
 
 export default function App() {
-  const cli = useRef<Client | null>(null);
+  const [client, setClient] = useState<Client>(new Client("a"));
   const [members, setMembers] = useState<Member[]>([]);
   const [values, setValues] = useState<MemberValues[]>([]);
   const [texts, setTexts] = useState<MemberTexts[]>([]);
   const [funcs, setFuncs] = useState<MemberFuncs[]>([]);
-
+  const [logs, setLogs] = useState<MemberLogs[]>([]);
   useEffect(() => {
-    cli.current = new Client("a");
+    const i = setInterval(() => {
+      client.sync();
+    }, 100);
+    return () => clearInterval(i);
+  }, [client]);
+  useEffect(() => {
     const onMembersChange = (m: Member) => {
       if (members.find((m2) => m2.name === m.name)) {
         // 本来はこの条件要らないようにするはず
         return;
       }
       setMembers((members) => members.concat([m]));
-      setValues((values) => values.concat([{ name: m.name, values: [] }]));
-      setTexts((values) => values.concat([{ name: m.name, texts: [] }]));
-      setFuncs((values) => values.concat([{ name: m.name, funcs: [] }]));
+      // 本来は初期値入れなくてもイベントが初期値に対して反応するようにしたい
+      setValues((values) =>
+        values.concat([{ name: m.name, values: m.values() }])
+      );
+      setTexts((values) => values.concat([{ name: m.name, texts: m.texts() }]));
+      setFuncs((values) => values.concat([{ name: m.name, funcs: m.funcs() }]));
+      setLogs((logs) => logs.concat([{ name: m.name, logs: m.logs().get() }]));
       m.valuesChange.on(() =>
         setValues((values) => {
           values.find((e) => e.name === m.name).values = m.values();
@@ -42,16 +56,18 @@ export default function App() {
           return funcs.slice();
         })
       );
+      m.logs().on(() =>
+        setLogs((logs) => {
+          logs.find((e) => e.name === m.name).logs = m.logs().get();
+          return logs.slice();
+        })
+      );
     };
-    cli.current.membersChange.on(onMembersChange);
-    const i = setInterval(() => {
-      cli.current?.sync();
-    }, 100);
+    client.membersChange.on(onMembersChange);
     return () => {
-      clearInterval(i);
-      cli.current.membersChange.off(onMembersChange);
+      client.membersChange.off(onMembersChange);
     };
-  }, []);
+  }, [client, members]);
 
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
   const [openedCards, setOpenedCards] = useState<string[]>([]);
@@ -95,6 +111,7 @@ export default function App() {
           isOpened={isOpened}
           openedOrder={openedOrder}
           moveOrder={moveOrder}
+          memberLogs={logs}
           memberValues={values}
           memberTexts={texts}
           memberFuncs={funcs}

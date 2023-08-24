@@ -10,7 +10,13 @@ import { Card, CardItem } from "./card";
 import { ValueCard } from "./valueCard";
 import { TextCard } from "./textCard";
 import { FuncCard } from "./funcCard";
-import { MemberValues, MemberTexts, MemberFuncs } from "../libs/stateTypes";
+import { LogCard } from "./logCard";
+import {
+  MemberValues,
+  MemberTexts,
+  MemberFuncs,
+  MemberLogs,
+} from "../libs/stateTypes";
 import * as cardKey from "../libs/cardKey";
 
 interface Props {
@@ -20,6 +26,7 @@ interface Props {
   memberValues: MemberValues[];
   memberTexts: MemberTexts[];
   memberFuncs: MemberFuncs[];
+  memberLogs: MemberLogs[];
 }
 
 export function LayoutMain(props: Props) {
@@ -154,6 +161,22 @@ export function LayoutMain(props: Props) {
               onPointerDown={() => props.moveOrder(key)}
             >
               <FuncCard name={m.name} func={m.funcs} />
+            </div>
+          );
+        }
+        return null;
+      })}
+      {props.memberLogs.map((m) => {
+        const key = cardKey.log(m.name);
+        if (props.isOpened(key)) {
+          return (
+            <div
+              key={key}
+              data-grid={{ x: 0, y: 0, w: 6, h: 2, minW: 2, minH: 2 }}
+              style={{ zIndex: 10 + props.openedOrder(key) }}
+              onPointerDown={() => props.moveOrder(key)}
+            >
+              <LogCard name={m.name} logs={m.logs} />
             </div>
           );
         }

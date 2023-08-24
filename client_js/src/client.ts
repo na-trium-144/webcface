@@ -9,8 +9,15 @@ import {
 } from "./clientData.js";
 import { Member, runFunc } from "./data.js";
 import { Val } from "./funcInfo.js";
+import {
+  log4jsLoggingEvent,
+  log4jsLevels,
+  log4jsLevelConvert,
+} from "./logger.js";
 import websocket from "websocket";
 const w3cwebsocket = websocket.w3cwebsocket;
+import util from "util";
+import { getLogger } from "@log4js-node/log4js-api";
 
 export class Client extends Member {
   ws: null | websocket.w3cwebsocket = null;
@@ -20,6 +27,25 @@ export class Client extends Member {
   syncInit = false;
   closing = false;
   reconnectTimer: ReturnType<typeof setTimeout> | null = null;
+  get loggerInternal() {
+    const logger = getLogger("webcface");
+    if (logger.level != null) {
+      return logger;
+    } else {
+      // log4jsが使えないときのフォールバック
+      return {
+        debug(...args: any[]) {
+          console?.log(...args);
+        },
+        warn(...args: any[]) {
+          console?.warn(...args);
+        },
+        error(...args: any[]) {
+          console?.error(...args);
+        },
+      };
+    }
+  }
   constructor(name: string, host = "127.0.0.1", port = 7530) {
     super(
       new FieldBase(
@@ -58,11 +84,13 @@ export class Client extends Member {
     if (this.closing) {
       return;
     }
+    this.loggerInternal.debug(`reconnecting to ws://${this.host}:${this.port}`);
     let connection_done = false;
     const ws = new w3cwebsocket(`ws://${this.host}:${this.port}`);
     this.ws = ws;
     this.reconnectTimer = setTimeout(() => {
       if (!connection_done) {
+        this.loggerInternal.warn("connection timeout");
         ws.onopen = () => null;
         ws.onmessage = () => null;
         ws.onclose = () => null;
@@ -91,6 +119,19 @@ export class Client extends Member {
           this.data.textStore.setRecv(dataR.m, dataR.n, dataR.d);
           const target = this.member(dataR.m).text(dataR.n);
           this.data.eventEmitter.emit(eventType.textChange(target), target);
+          break;
+        }
+        case types.kind.log: {
+          const dataR = data as types.Log;
+          for (const ll of dataR.l) {
+            this.data.logStore.addRecv(dataR.m, {
+              level: ll.v,
+              time: new Date(ll.t),
+              message: ll.m,
+            });
+          }
+          const target = this.member(dataR.m);
+          this.data.eventEmitter.emit(eventType.logChange(target), target);
           break;
         }
         case types.kind.call: {
@@ -206,16 +247,15 @@ export class Client extends Member {
         }
       }
     };
-    ws.onerror = (error: any) => {
+    ws.onerror = () => {
       connection_done = true;
-      // console.error("Connection Error");
-      // console.error(error);
+      this.loggerInternal.warn("connection error");
       ws.close();
     };
     ws.onclose = () => {
       connection_done = true;
       this.connected = false;
-      // console.error("closed");
+      this.loggerInternal.warn("closed");
       this.reconnectTimer = setTimeout(() => this.reconnect(), 1000);
     };
   }
@@ -231,7 +271,7 @@ export class Client extends Member {
       }
       for (const [k, v] of this.data.valueStore.transferReq().entries()) {
         for (const [k2, v2] of v.entries()) {
-          this.send(types.kind.subscribe + types.kind.value, { f: k, n: k2 });
+          this.send(types.kind.req + types.kind.value, { f: k, n: k2 });
         }
       }
 
@@ -240,7 +280,7 @@ export class Client extends Member {
       }
       for (const [k, v] of this.data.textStore.transferReq().entries()) {
         for (const [k2, v2] of v.entries()) {
-          this.send(types.kind.subscribe + types.kind.text, { f: k, n: k2 });
+          this.send(types.kind.req + types.kind.text, { f: k, n: k2 });
         }
       }
 
@@ -259,6 +299,18 @@ export class Client extends Member {
           })),
         });
       }
+
+      const logSend: types.LogLine[] = [];
+      for (const l of this.data.logQueue) {
+        logSend.push({ v: l.level, t: l.time.getTime(), m: l.message });
+      }
+      if (logSend.length > 0) {
+        this.data.logQueue = [];
+        this.send(types.kind.log, { m: "", l: logSend });
+      }
+      for (const [k, v] of this.data.logStore.transferReq().entries()) {
+        this.send(types.kind.logReq, { m: k });
+      }
     }
   }
   member(member: string) {
@@ -274,5 +326,24 @@ export class Client extends Member {
       "",
       ""
     );
+  }
+  get logAppender() {
+    return {
+      configure:
+        (
+          config: object,
+          layouts: any,
+          findAppender: any,
+          levels?: log4jsLevels
+        ) =>
+        (logEvent: log4jsLoggingEvent) => {
+          const ll = {
+            level: levels != undefined ? log4jsLevelConvert(logEvent.level, levels) : 2,
+            time: new Date(logEvent.startTime),
+            message: util.format(...logEvent.data),
+          };
+          this.data.logQueue.push(ll);
+        },
+    };
   }
 }

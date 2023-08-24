@@ -53,6 +53,8 @@ std::pair<MessageKind, std::any> unpack(const std::string &message) {
             MSG_PARSE(call_result, CallResult)
             MSG_PARSE_DATA(value, Value)
             MSG_PARSE_DATA(text, Text)
+            MSG_PARSE(log, Log)
+            MSG_PARSE(log_req, LogReq)
             MSG_PARSE(func_info, FuncInfo)
 
 #undef MSG_PARSE_DATA

@@ -12,6 +12,7 @@ enum class EventType {
     func_entry,
     value_change,
     text_change,
+    log_change,
 };
 
 //! Eventの種類を表すキー、かつEventのコールバックに返す引数
@@ -39,6 +40,7 @@ struct EventKey : FieldBase {
         case EventType::value_entry:
         case EventType::text_entry:
         case EventType::func_entry:
+        case EventType::log_change:
             // memberはキー、nameは内容
             return member_ == rhs.member_;
         case EventType::value_change:
@@ -48,6 +50,7 @@ struct EventKey : FieldBase {
         default:
             assert(!"unknown event");
         }
+        return false;
     }
     bool operator!=(const EventKey &rhs) const { return !(*this == rhs); }
     bool operator<(const EventKey &rhs) const {
@@ -61,6 +64,7 @@ struct EventKey : FieldBase {
         case EventType::value_entry:
         case EventType::text_entry:
         case EventType::func_entry:
+        case EventType::log_change:
             // memberはキー、nameは内容
             return member_ < rhs.member_;
         case EventType::value_change:
@@ -71,6 +75,7 @@ struct EventKey : FieldBase {
         default:
             assert(!"unknown event");
         }
+        return false;
     }
 };
 

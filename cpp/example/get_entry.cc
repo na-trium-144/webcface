@@ -23,6 +23,13 @@ int main() {
             }
             std::cout << " ret: " << f.returnType() << std::endl;
         });
+        m.logs().appendListener([](WebCFace::Logs l) {
+            static int li = 0;
+            for (; li < l.get().size(); li++) {
+                std::cout << "log [" << l.get()[li].level << "] "
+                          << l.get()[li].message << std::endl;
+            }
+        });
     });
     while (true) {
         std::this_thread::yield();

@@ -12,7 +12,7 @@ export function pack(kind: number, data: AnyMessage) {
 export const kind = {
   value: 0,
   text: 1,
-  subscribe: 100,
+  req: 100,
   entry: 50,
   syncInit: 150,
   call: 151,
@@ -20,6 +20,8 @@ export const kind = {
   callResult: 152,
   // entry: 153,
   funcInfo: 154,
+  log: 156,
+  logReq: 157,
 };
 
 export const argType = {
@@ -79,6 +81,18 @@ export interface Entry {
   m: string;
   n: string;
 }
+export interface LogLine {
+  v: number;
+  t: number;
+  m: string;
+}
+export interface Log {
+  m: string;
+  l: LogLine[];
+}
+export interface LogReq {
+  m: string;
+}
 
 export type AnyMessage =
   | SyncInit
@@ -89,4 +103,6 @@ export type AnyMessage =
   | Data<string>
   | FuncInfo
   | Req
-  | Entry;
+  | Entry
+  | Log
+  | LogReq;

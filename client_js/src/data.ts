@@ -23,6 +23,9 @@ export class Member extends FieldBase {
   func(name: string) {
     return new Func(this, name);
   }
+  logs() {
+    return new Logs(this);
+  }
   values() {
     return this.data.valueStore
       .getEntry(this.member_)
@@ -59,7 +62,9 @@ export class Member extends FieldBase {
 
 export class Value extends FieldBaseWithEvent<Value> {
   constructor(base: FieldBase, field = "") {
-    super("", base.data, base.member_, field || base.field_);
+    super("", base.data, base.member_, field || base.field_, () =>
+      this.tryGet()
+    );
     this.eventType_ = eventType.valueChange(this);
   }
   get member() {
@@ -89,7 +94,9 @@ export class Value extends FieldBaseWithEvent<Value> {
 }
 export class Text extends FieldBaseWithEvent<Text> {
   constructor(base: FieldBase, field = "") {
-    super("", base.data, base.member_, field || base.field_);
+    super("", base.data, base.member_, field || base.field_, () =>
+      this.tryGet()
+    );
     this.eventType_ = eventType.textChange(this);
   }
   get member() {
@@ -117,7 +124,29 @@ export class Text extends FieldBaseWithEvent<Text> {
     }
   }
 }
-
+export class Logs extends FieldBaseWithEvent<Logs> {
+  constructor(base: FieldBase) {
+    super("", base.data, base.member_, "", () => this.tryGet());
+    this.eventType_ = eventType.logChange(this);
+  }
+  get member() {
+    return new Member(this);
+  }
+  get name() {
+    return this.field_;
+  }
+  tryGet() {
+    return this.data.logStore.getRecv(this.member_);
+  }
+  get() {
+    const v = this.tryGet();
+    if (v === null) {
+      return [];
+    } else {
+      return v;
+    }
+  }
+}
 export function runFunc(fi: FuncInfo, args: Val[]) {
   if (fi.args.length === args.length) {
     const newArgs: Val[] = args.map((a, i) => {

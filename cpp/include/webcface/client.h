@@ -9,6 +9,7 @@
 #include "member.h"
 #include "event_target.h"
 #include "func.h"
+#include "logger.h"
 
 namespace drogon {
 class WebSocketClient;
@@ -40,6 +41,9 @@ class Client : public Member {
     std::thread event_thread;
     //! message_queueを処理するスレッド
     std::thread message_thread;
+
+    LoggerBuf logger_buf;
+    std::ostream logger_os;
 
     //! 受信時の処理
     void onRecv(const std::string &message);
@@ -111,6 +115,18 @@ class Client : public Member {
     void setDefaultRunCondScopeGuard() {
         setDefaultRunCond(FuncWrapper::runCondScopeGuard<ScopeGuard>());
     }
+
+    //! サーバーに送信するspdlogのsink
+    std::shared_ptr<LoggerSink> logger_sink() { return data->logger_sink; }
+    //! サーバーとstderr_sinkに流すspdlog::logger
+    std::shared_ptr<spdlog::logger> logger() { return data->logger; }
+    
+    //! このクライアントのloggerに出力するstreambuf
+    //! levelは常にinfoになる (変えられるようにする?)
+    //! std::flushのタイミングとは無関係に、1つの改行ごとに1つのログになる
+    LoggerBuf *logger_streambuf() { return &logger_buf; }
+    //! logger_streambufに出力するostream
+    std::ostream &logger_ostream() { return logger_os; }
 };
 
 } // namespace WebCFace
