@@ -9,11 +9,15 @@ import {
 } from "./clientData.js";
 import { Member, runFunc } from "./data.js";
 import { Val } from "./funcInfo.js";
-import { log4jsLoggingEvent, log4jsLevels } from "./logger.js";
+import {
+  log4jsLoggingEvent,
+  log4jsLevels,
+  log4jsLevelConvert,
+} from "./logger.js";
 import websocket from "websocket";
 const w3cwebsocket = websocket.w3cwebsocket;
 import util from "util";
-import { getLogger, Logger } from "@log4js-node/log4js-api";
+import { getLogger } from "@log4js-node/log4js-api";
 
 export class Client extends Member {
   ws: null | websocket.w3cwebsocket = null;
@@ -327,14 +331,14 @@ export class Client extends Member {
     return {
       configure:
         (
-          config?: object,
-          layouts?: any,
-          findAppender?: any,
+          config: object,
+          layouts: any,
+          findAppender: any,
           levels?: log4jsLevels
         ) =>
         (logEvent: log4jsLoggingEvent) => {
           const ll = {
-            level: logEvent.level.level / 10000,
+            level: levels != undefined ? log4jsLevelConvert(logEvent.level, levels) : 2,
             time: new Date(logEvent.startTime),
             message: util.format(...logEvent.data),
           };
