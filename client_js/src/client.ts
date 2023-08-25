@@ -14,6 +14,7 @@ import {
   log4jsLevels,
   log4jsLevelConvert,
 } from "./logger.js";
+import{ViewComponentsDiff, ViewComponent, getViewDiff, mergeViewDiff} from "./view.js";
 import websocket from "websocket";
 const w3cwebsocket = websocket.w3cwebsocket;
 import util from "util";
@@ -109,18 +110,29 @@ export class Client extends Member {
       switch (kind) {
         case types.kind.value: {
           const dataR = data as types.Data<number>;
-          this.data.valueStore.setRecv(dataR.m, dataR.n, dataR.d);
-          const target = this.member(dataR.m).value(dataR.n);
+          this.data.valueStore.setRecv(dataR.m, dataR.f, dataR.d);
+          const target = this.member(dataR.m).value(dataR.f);
           this.data.eventEmitter.emit(eventType.valueChange(target), target);
           break;
         }
         case types.kind.text: {
           const dataR = data as types.Data<string>;
-          this.data.textStore.setRecv(dataR.m, dataR.n, dataR.d);
-          const target = this.member(dataR.m).text(dataR.n);
+          this.data.textStore.setRecv(dataR.m, dataR.f, dataR.d);
+          const target = this.member(dataR.m).text(dataR.f);
           this.data.eventEmitter.emit(eventType.textChange(target), target);
           break;
         }
+      case types.kind.view:{
+        const dataR = data as types.View;
+        const current = this.data.viewStore.getRecv(dataR.m, dataR.f);
+        const diff: ViewComponentsDiff = {};
+        for(const k of Object.keys(dataR.d)){
+          diff[k] = new ViewComponent(dataR.d[k] as types.ViewComponent);
+        }
+        mergeViewDiff(diff, dataR.l, current);
+        this.data.viewStore.setRecv(dataR.m, dataR.f, current);
+        break;
+      }
         case types.kind.log: {
           const dataR = data as types.Log;
           for (const ll of dataR.l) {
@@ -164,7 +176,7 @@ export class Client extends Member {
               });
             };
             if (s) {
-              const m = s.get(dataR.n);
+              const m = s.get(dataR.f);
               if (m) {
                 sendResponse(true);
                 try {
@@ -215,22 +227,29 @@ export class Client extends Member {
         }
         case types.kind.entry + types.kind.value: {
           const dataR = data as types.Entry;
-          this.data.valueStore.setEntry(dataR.m, dataR.n);
-          const target = this.member(dataR.m).value(dataR.n);
+          this.data.valueStore.setEntry(dataR.m, dataR.f);
+          const target = this.member(dataR.m).value(dataR.f);
           this.data.eventEmitter.emit(eventType.valueEntry(target), target);
           break;
         }
         case types.kind.entry + types.kind.text: {
           const dataR = data as types.Entry;
-          this.data.textStore.setEntry(dataR.m, dataR.n);
-          const target = this.member(dataR.m).text(dataR.n);
+          this.data.textStore.setEntry(dataR.m, dataR.f);
+          const target = this.member(dataR.m).text(dataR.f);
           this.data.eventEmitter.emit(eventType.textEntry(target), target);
+          break;
+        }
+      case types.kind.entry + types.kind.view: {
+          const dataR = data as types.Entry;
+          this.data.viewStore.setEntry(dataR.m, dataR.f);
+          const target = this.member(dataR.m).view(dataR.f);
+          this.data.eventEmitter.emit(eventType.viewEntry(target), target);
           break;
         }
         case types.kind.funcInfo: {
           const dataR = data as types.FuncInfo;
-          this.data.funcStore.setEntry(dataR.m, dataR.n);
-          this.data.funcStore.setRecv(dataR.m, dataR.n, {
+          this.data.funcStore.setEntry(dataR.m, dataR.f);
+          this.data.funcStore.setRecv(dataR.m, dataR.f, {
             returnType: dataR.r,
             args: dataR.a.map((a) => ({
               name: a.n,
@@ -241,7 +260,7 @@ export class Client extends Member {
               option: a.o,
             })),
           });
-          const target = this.member(dataR.m).func(dataR.n);
+          const target = this.member(dataR.m).func(dataR.f);
           this.data.eventEmitter.emit(eventType.funcEntry(target), target);
           break;
         }
@@ -267,27 +286,36 @@ export class Client extends Member {
       }
 
       for (const [k, v] of this.data.valueStore.transferSend().entries()) {
-        this.send(types.kind.value, { m: "", n: k, d: v });
+        this.send(types.kind.value, { m: "", f: k, d: v });
       }
       for (const [k, v] of this.data.valueStore.transferReq().entries()) {
         for (const [k2, v2] of v.entries()) {
-          this.send(types.kind.req + types.kind.value, { f: k, n: k2 });
+          this.send(types.kind.req + types.kind.value, { m: k, f: k2 });
         }
       }
 
       for (const [k, v] of this.data.textStore.transferSend().entries()) {
-        this.send(types.kind.text, { m: "", n: k, d: v });
+        this.send(types.kind.text, { m: "", f: k, d: v });
       }
       for (const [k, v] of this.data.textStore.transferReq().entries()) {
         for (const [k2, v2] of v.entries()) {
-          this.send(types.kind.req + types.kind.text, { f: k, n: k2 });
+          this.send(types.kind.req + types.kind.text, { m: k, f: k2 });
+        }
+      }
+      for (const [k, v] of this.data.viewStore.transferSend().entries()) {
+        const diff = getViewDiff(v, )
+        this.send(types.kind.view, { m: "", f: k, d: v });
+      }
+      for (const [k, v] of this.data.viewStore.transferReq().entries()) {
+        for (const [k2, v2] of v.entries()) {
+          this.send(types.kind.req + types.kind.view, { m: k, f: k2 });
         }
       }
 
       for (const [k, v] of this.data.funcStore.transferSend().entries()) {
         this.send(types.kind.funcInfo, {
           m: "",
-          n: k,
+          f: k,
           r: v.returnType,
           a: v.args.map((a) => ({
             n: a.name || "",

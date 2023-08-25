@@ -1,7 +1,7 @@
 import { Val, FuncInfo } from "./funcInfo.js";
 import { EventEmitter } from "eventemitter3";
 import { LogLine } from "./logger.js";
-
+import {ViewComponent} from "./view.js";
 export class FieldBase {
   data: ClientData;
   member_: string;
@@ -18,10 +18,13 @@ export const eventType = {
   valueEntry: (b: FieldBase) => JSON.stringify(["valueEntry", b.member_]),
   textEntry: (b: FieldBase) => JSON.stringify(["textEntry", b.member_]),
   funcEntry: (b: FieldBase) => JSON.stringify(["funcEntry", b.member_]),
+  viewEntry: (b: FieldBase) => JSON.stringify(["viewEntry", b.member_]),
   valueChange: (b: FieldBase) =>
     JSON.stringify(["valueChange", b.member_, b.field_]),
   textChange: (b: FieldBase) =>
     JSON.stringify(["textChange", b.member_, b.field_]),
+  viewChange: (b: FieldBase) =>
+    JSON.stringify(["viewChange", b.member_, b.field_]),
   logChange: (b: FieldBase) => JSON.stringify(["logChange", b.member_]),
 };
 type EventListener<TargetType> = (target: TargetType) => void;
@@ -66,6 +69,7 @@ export class ClientData {
   valueStore: SyncDataStore<number>;
   textStore: SyncDataStore<string>;
   funcStore: SyncDataStore<FuncInfo>;
+  viewStore: SyncDataStore<ViewComponent[]>;
   logStore: LogStore;
   funcResultStore: FuncResultStore;
   callFunc: (r: AsyncFuncResult, b: FieldBase, args: Val[]) => void;
@@ -79,6 +83,7 @@ export class ClientData {
     this.valueStore = new SyncDataStore<number>(name);
     this.textStore = new SyncDataStore<string>(name);
     this.funcStore = new SyncDataStore<FuncInfo>(name);
+    this.viewStore = new SyncDataStore<ViewComponent[]>(name);
     this.logStore = new LogStore(name);
     this.funcResultStore = new FuncResultStore();
     this.callFunc = callFunc;

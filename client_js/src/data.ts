@@ -6,6 +6,7 @@ import {
 } from "./clientData.js";
 import { Val, FuncInfo, Arg } from "./funcInfo.js";
 import { argType } from "./message.js";
+import { ViewComponent } from "./view.js";
 
 export class Member extends FieldBase {
   constructor(base: FieldBase, member = "") {
@@ -119,6 +120,39 @@ export class Text extends FieldBaseWithEvent<Text> {
   set(data: string) {
     if (this.data.textStore.isSelf(this.member_)) {
       this.data.textStore.setSend(this.field_, data);
+    } else {
+      throw new Error("Cannot set data to member other than self");
+    }
+  }
+}
+
+export class View extends FieldBaseWithEvent<View> {
+  constructor(base: FieldBase, field = "") {
+    super("", base.data, base.member_, field || base.field_, () =>
+      this.tryGet()
+    );
+    this.eventType_ = eventType.viewChange(this);
+  }
+  get member() {
+    return new Member(this);
+  }
+  get name() {
+    return this.field_;
+  }
+  tryGet() {
+    return this.data.viewStore.getRecv(this.member_, this.field_);
+  }
+  get() {
+    const v = this.tryGet();
+    if (v === null) {
+      return [];
+    } else {
+      return v;
+    }
+  }
+  set(data: ViewComponent[]) {
+    if (this.data.viewStore.isSelf(this.member_)) {
+      this.data.viewStore.setSend(this.field_, data);
     } else {
       throw new Error("Cannot set data to member other than self");
     }
