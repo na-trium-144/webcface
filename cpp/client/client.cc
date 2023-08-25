@@ -213,7 +213,7 @@ void Client::sync() {
             }
             if (!v_diff.empty()) {
                 send(Message::pack(
-                    Message::View{"", v.first, v_diff, v.second.size()}));
+                    Message::View{"", v.first, v_diff, static_cast<int>(v.second.size())}));
             }
         }
         auto view_subsc = data->view_store.transferReq();

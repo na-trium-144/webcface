@@ -172,6 +172,7 @@ class Text : public SyncFieldBase<std::string>, public EventTarget<Text> {
     bool operator!=(const std::string &rhs) const { return this->get() != rhs; }
 };
 
+//! todo: triggerEvent
 class Logs : public SyncFieldBase<std::vector<LogLine>>,
              public EventTarget<Logs> {
     using SyncFieldBase<std::vector<LogLine>>::FieldBase::dataLock;
