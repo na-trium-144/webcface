@@ -2,7 +2,6 @@
 #include <istream>
 #include <ostream>
 #include <optional>
-#include <cassert>
 #include "field_base.h"
 #include "client_data.h"
 #include "event_target.h"
@@ -20,13 +19,6 @@ class SyncFieldBase : protected FieldBase {
     Member member() const { return *this; }
     //! field名を返す
     std::string name() const { return field_; }
-
-
-  protected:
-    void setCheck() const {
-        assert(dataLock()->isSelf(*this) &&
-               "Cannot set data to member other than self");
-    }
 
   public:
     //! 値を取得できるかチェックする
@@ -49,13 +41,14 @@ class SyncFieldBase : protected FieldBase {
 //! 実数値を扱う
 class Value : public SyncFieldBase<double>, public EventTarget<Value> {
     using SyncFieldBase<double>::FieldBase::dataLock;
+    using SyncFieldBase<double>::FieldBase::setCheck;
 
   public:
     Value() = default;
     Value(const FieldBase &base)
-        : SyncFieldBase<double>(base),
-          EventTarget<Value>(EventType::value_change, base,
-                             [this] { this->tryGet(); }) {}
+        : SyncFieldBase<double>(base), EventTarget<Value>(
+                                           EventType::value_change, base,
+                                           [this] { this->tryGet(); }) {}
     Value(const FieldBase &base, const std::string &field)
         : Value(FieldBase{base, field}) {}
 
@@ -145,13 +138,14 @@ class Value : public SyncFieldBase<double>, public EventTarget<Value> {
 // 文字列を扱う
 class Text : public SyncFieldBase<std::string>, public EventTarget<Text> {
     using SyncFieldBase<std::string>::FieldBase::dataLock;
+    using SyncFieldBase<std::string>::FieldBase::setCheck;
 
   public:
     Text() = default;
     Text(const FieldBase &base)
-        : SyncFieldBase<std::string>(base),
-          EventTarget<Text>(EventType::text_change, base,
-                            [this] { this->tryGet(); }) {}
+        : SyncFieldBase<std::string>(base), EventTarget<Text>(
+                                                EventType::text_change, base,
+                                                [this] { this->tryGet(); }) {}
     Text(const FieldBase &base, const std::string &field)
         : Text(FieldBase{base, field}) {}
 
@@ -187,7 +181,7 @@ class Logs : public SyncFieldBase<std::vector<LogLine>>,
     Logs(const FieldBase &base)
         : SyncFieldBase<std::vector<LogLine>>(base),
           EventTarget<Logs>(EventType::log_change, base,
-                                   [this] { this->tryGet(); }) {}
+                            [this] { this->tryGet(); }) {}
 
     //! 値を取得する
     std::optional<std::vector<LogLine>> tryGet() const override {

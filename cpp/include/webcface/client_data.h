@@ -11,6 +11,7 @@
 #include "func_result.h"
 #include "common/func.h"
 #include "common/queue.h"
+#include "common/view.h"
 #include "event_key.h"
 #include "field_base.h"
 #include "logger.h"
@@ -30,6 +31,7 @@ struct ClientData {
         std::mutex mtx;
         //! 次のsend時に送信するデータ。
         std::unordered_map<std::string, T> data_send;
+        std::unordered_map<std::string, T> data_send_prev;
         //! 送信済みデータ&受信済みデータ
         /*! data_recv[member名][データ名] = 値
          */
@@ -53,7 +55,7 @@ struct ClientData {
             req_send;
 
         std::string self_member_name;
-        bool isSelf(const std::string &member) {
+        bool isSelf(const std::string &member) const {
             return member == self_member_name;
         }
 
@@ -100,6 +102,7 @@ struct ClientData {
 
         //! data_sendを返し、data_sendをクリア
         std::unordered_map<std::string, T> transferSend();
+        std::unordered_map<std::string, T> getSendPrev();
         //! req_sendを返し、req_sendをクリア
         std::unordered_map<std::string, std::unordered_map<std::string, bool>>
         transferReq();
@@ -111,7 +114,7 @@ struct ClientData {
         std::unordered_map<std::string, bool> req;
         std::unordered_map<std::string, bool> req_send;
         std::string self_member_name;
-        bool isSelf(const std::string &member) {
+        bool isSelf(const std::string &member) const {
             return member == self_member_name;
         }
 
@@ -163,7 +166,7 @@ struct ClientData {
 
     explicit ClientData(const std::string &name)
         : self_member_name(name), value_store(name), text_store(name),
-          func_store(name), log_store(name),
+          func_store(name), view_store(name), log_store(name),
           logger_sink(std::make_shared<LoggerSink>()) {
         std::vector<spdlog::sink_ptr> sinks = {logger_sink, stderr_sink};
         logger =
@@ -175,13 +178,14 @@ struct ClientData {
 
     //! Client自身の名前
     std::string self_member_name;
-    bool isSelf(const FieldBase &base) {
+    bool isSelf(const FieldBase &base) const {
         return base.member_ == self_member_name;
     }
 
     SyncDataStore<double> value_store;
     SyncDataStore<std::string> text_store;
     SyncDataStore<FuncInfo> func_store;
+    SyncDataStore<std::vector<ViewComponent>> view_store;
     LogStore log_store;
     FuncResultStore func_result_store;
 

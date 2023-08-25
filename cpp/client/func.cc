@@ -17,7 +17,7 @@ auto &operator<<(std::basic_ostream<char> &os, const AsyncFuncResult &r) {
         os << "<Running>";
     } else {
         try {
-            os << r.result.get();
+            os << static_cast<std::string>(r.result.get());
         } catch (const std::exception &e) {
             os << "<Error> " << e.what();
         }

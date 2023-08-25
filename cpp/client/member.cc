@@ -1,6 +1,7 @@
 #include <webcface/member.h>
 #include <webcface/data.h>
 #include <webcface/func.h>
+#include <webcface/view.h>
 #include <webcface/event_target.h>
 #include <webcface/client_data.h>
 
@@ -11,6 +12,7 @@ Value Member::value(const std::string &field) const {
 }
 Text Member::text(const std::string &field) const { return Text{*this, field}; }
 Func Member::func(const std::string &field) const { return Func{*this, field}; }
+View Member::view(const std::string &field) const { return View{*this, field}; }
 Logs Member::logs() const { return Logs{*this}; }
 
 EventTarget<Value> Member::valuesChange() const {
@@ -21,6 +23,9 @@ EventTarget<Text> Member::textsChange() const {
 }
 EventTarget<Func> Member::funcsChange() const {
     return EventTarget<Func>{EventType::func_entry, *this};
+}
+EventTarget<View> Member::viewsChange() const {
+    return EventTarget<View>{EventType::view_entry, *this};
 }
 
 std::vector<Value> Member::values() const {
@@ -44,6 +49,14 @@ std::vector<Func> Member::funcs() const {
     std::vector<Func> ret(keys.size());
     for (std::size_t i = 0; i < keys.size(); i++) {
         ret[i] = func(keys[i]);
+    }
+    return ret;
+}
+std::vector<View> Member::views() const {
+    auto keys = dataLock()->view_store.getEntry(*this);
+    std::vector<View> ret(keys.size());
+    for (std::size_t i = 0; i < keys.size(); i++) {
+        ret[i] = view(keys[i]);
     }
     return ret;
 }

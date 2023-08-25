@@ -5,6 +5,7 @@
 #include "common/func.h"
 #include "common/queue.h"
 #include "common/log.h"
+#include "common/view.h"
 
 #include "field_base.h"
 
@@ -19,4 +20,6 @@
 #include "event_target.h"
 #include "data.h"
 #include "func.h"
+#include "view.h"
+
 #include "client.h"

@@ -40,11 +40,11 @@ std::pair<MessageKind, std::any> unpack(const std::string &message) {
     MSG_PARSE(kind, type)                                                      \
     case kind_entry(MessageKind::kind):                                        \
         static_assert(MessageKind::kind < MessageKind::entry &&                \
-                      MessageKind::kind < MessageKind::subscribe);             \
+                      MessageKind::kind < MessageKind::req);                   \
         obj_u = obj.via.array.ptr[1].as<Entry<type>>();                        \
         break;                                                                 \
-    case kind_subscribe(MessageKind::kind):                                    \
-        obj_u = obj.via.array.ptr[1].as<Subscribe<type>>();                    \
+    case kind_req(MessageKind::kind):                                          \
+        obj_u = obj.via.array.ptr[1].as<Req<type>>();                          \
         break;
 
             MSG_PARSE(sync_init, SyncInit)
@@ -53,6 +53,7 @@ std::pair<MessageKind, std::any> unpack(const std::string &message) {
             MSG_PARSE(call_result, CallResult)
             MSG_PARSE_DATA(value, Value)
             MSG_PARSE_DATA(text, Text)
+            MSG_PARSE_DATA(view, View)
             MSG_PARSE(log, Log)
             MSG_PARSE(log_req, LogReq)
             MSG_PARSE(func_info, FuncInfo)

@@ -103,7 +103,14 @@ template <typename T>
 std::unordered_map<std::string, T>
 ClientData::SyncDataStore<T>::transferSend() {
     std::lock_guard lock(mtx);
+    data_send_prev = data_send;
     return std::move(data_send);
+}
+template <typename T>
+std::unordered_map<std::string, T>
+ClientData::SyncDataStore<T>::getSendPrev() {
+    std::lock_guard lock(mtx);
+    return data_send_prev;
 }
 template <typename T>
 std::unordered_map<std::string, std::unordered_map<std::string, bool>>
@@ -119,6 +126,7 @@ std::unordered_map<std::string, bool> ClientData::LogStore::transferReq() {
 template class ClientData::SyncDataStore<double>;
 template class ClientData::SyncDataStore<std::string>;
 template class ClientData::SyncDataStore<FuncInfo>;
+template class ClientData::SyncDataStore<std::vector<ViewComponent>>;
 
 
 AsyncFuncResult &

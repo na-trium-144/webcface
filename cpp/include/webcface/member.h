@@ -11,6 +11,7 @@ class Value;
 class Text;
 class Func;
 class Logs;
+class View;
 class ClientData;
 
 //! 他のクライアントを参照することを表すクラス
@@ -30,6 +31,7 @@ class Member : protected FieldBase {
     Text text(const std::string &field) const;
     //! このmemberの指定した名前のfuncを参照する。
     Func func(const std::string &field) const;
+    View view(const std::string &field) const;
     //! このmemberのログを参照する。
     Logs logs() const;
 
@@ -39,6 +41,7 @@ class Member : protected FieldBase {
     std::vector<Text> texts() const;
     //! このmemberが公開しているfuncのリストを返す。
     std::vector<Func> funcs() const;
+    std::vector<View> views() const;
 
     //! valueが追加された時のイベントを設定
     /*! このクライアントが接続する前から存在したメンバーについては
@@ -53,6 +56,8 @@ class Member : protected FieldBase {
     //! funcが追加された時のイベントリスト
     //! \sa valuesChange()
     EventTarget<Func> funcsChange() const;
+
+    EventTarget<View> viewsChange() const;
 
 };
 

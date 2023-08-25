@@ -13,6 +13,8 @@ enum class EventType {
     value_change,
     text_change,
     log_change,
+    view_entry,
+    view_change,
 };
 
 //! Eventの種類を表すキー、かつEventのコールバックに返す引数
@@ -40,11 +42,13 @@ struct EventKey : FieldBase {
         case EventType::value_entry:
         case EventType::text_entry:
         case EventType::func_entry:
+        case EventType::view_entry:
         case EventType::log_change:
             // memberはキー、nameは内容
             return member_ == rhs.member_;
         case EventType::value_change:
         case EventType::text_change:
+        case EventType::view_change:
             // member, nameがキー
             return member_ == rhs.member_ && field_ == rhs.field_;
         default:
@@ -64,11 +68,13 @@ struct EventKey : FieldBase {
         case EventType::value_entry:
         case EventType::text_entry:
         case EventType::func_entry:
+        case EventType::view_entry:
         case EventType::log_change:
             // memberはキー、nameは内容
             return member_ < rhs.member_;
         case EventType::value_change:
         case EventType::text_change:
+        case EventType::view_change:
             // member, nameがキー
             return member_ < rhs.member_ ||
                    (member_ == rhs.member_ && field_ < rhs.field_);

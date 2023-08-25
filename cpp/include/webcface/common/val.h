@@ -125,9 +125,9 @@ class ValAdaptor {
     }
 };
 
-inline std::ostream &operator<<(std::ostream &os, const ValAdaptor &a) {
-    return os << static_cast<std::string>(a) << "(type=" << a.argType() << ")";
-}
+// inline std::ostream &operator<<(std::ostream &os, const ValAdaptor &a) {
+//     return os << static_cast<std::string>(a) << "(type=" << a.argType() << ")";
+// }
 
 //! ValAdaptorのリストから任意の型のタプルに変換する
 template <int n = 0, typename T>
