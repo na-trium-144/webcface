@@ -136,6 +136,8 @@ export class Client extends Member {
           }
           mergeViewDiff(diff, dataR.l, current);
           this.data.viewStore.setRecv(dataR.m, dataR.f, current);
+          const target = this.member(dataR.m).view(dataR.f);
+          this.data.eventEmitter.emit(eventType.viewChange(target), target);
           break;
         }
         case types.kind.log: {

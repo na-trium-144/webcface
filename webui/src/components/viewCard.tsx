@@ -1,6 +1,6 @@
 import { Card } from "./card";
 import { useForceUpdate } from "../libs/forceUpdate";
-import { Member, View, ViewComponent, viewComponentsType } from "webcface";
+import { Member, View, ViewComponent, viewComponentTypes } from "webcface";
 import { useState, useEffect } from "react";
 
 interface Props {
@@ -14,14 +14,23 @@ export function ViewCard(props: Props) {
   }, [props.view, update]);
   return (
     <Card title={`${props.view.member.name}:${props.view.name}`}>
-      
+      <div className="w-full h-full overflow-y-auto overflow-x-auto">
+        {props.view.get().map((vc, i) => (
+          <ViewComponentRender key={i} vc={vc} />
+        ))}
+      </div>
     </Card>
   );
 }
 
-interface VCProps{
+interface VCProps {
   vc: ViewComponent;
 }
-function ViewComponentRender(props: VCProps){
-
+function ViewComponentRender(props: VCProps) {
+  switch (props.vc.type) {
+    case viewComponentTypes.text:
+      return <span>{props.vc.text}</span>;
+    case viewComponentTypes.newLine:
+      return <br />;
+  }
 }
