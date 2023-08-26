@@ -189,7 +189,10 @@ void ClientData::onRecv(const std::string &message) {
                 }
             }
         }
-        mergeViewDiff(v.data_diff, v.length, this->view[v.field]);
+        this->view[v.field].resize(v.length);
+        for (const auto &d : v.data_diff) {
+            this->view[v.field][d.first] = d.second;
+        }
         // このvalueをsubscribeしてるところに送り返す
         for (const auto &c : store.clients) {
             if (c.second->sync_init) {
@@ -292,7 +295,10 @@ void ClientData::onRecv(const std::string &message) {
         if (c_it != store.clients_by_name.end()) {
             auto it = c_it->second->view.find(s.field);
             if (it != c_it->second->view.end()) {
-                auto diff = getViewDiff(it->second, {});
+                std::unordered_map<int, WebCFace::Message::View::ViewComponent> diff;
+                for (std::size_t i = 0; i < it->second.size(); i++) {
+                    diff[i] = it->second[i];
+                }
                 this->send(WebCFace::Message::pack(WebCFace::Message::View{
                     s.member, s.field, diff,
                     static_cast<int>(it->second.size())}));

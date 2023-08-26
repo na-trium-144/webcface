@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <optional>
 #include "field_base.h"
 
 namespace WebCFace {
@@ -9,50 +10,52 @@ enum class ViewComponentType {
     new_line = 1,
     button = 2,
 };
-class ViewComponent {
-  protected:
+enum class ViewColor {
+    inherit = 0,
+    black = 1,
+    white = 2,
+    // slate = 3,
+    gray = 4,
+    // zinc = 5,
+    // neutral = 6,
+    // stone = 7,
+    red = 8,
+    orange = 9,
+    // amber = 10,
+    yellow = 11,
+    // lime = 12,
+    green = 13,
+    // emerald = 14,
+    teal = 15,
+    cyan = 16,
+    // sky = 17,
+    blue = 18,
+    indigo = 19,
+    // violet = 20,
+    purple = 21,
+    // fuchsia = 22,
+    pink = 23,
+    // rose = 24,
+};
+struct ViewComponentBase {
     ViewComponentType type_;
     std::string text_;
-    FieldBase on_click_func_;
+    std::optional<FieldBase> on_click_func_;
+    ViewColor text_color_ = ViewColor::inherit;
+    ViewColor bg_color_ = ViewColor::inherit;
 
-  public:
-    ViewComponent() = default;
-    explicit ViewComponent(ViewComponentType type) : type_(type) {}
-    ViewComponent(const std::string &text)
-        : type_(ViewComponentType::text), text_(text) {}
-    bool operator==(const ViewComponent &rhs) const {
-        return type_ == rhs.type_ && text_ == rhs.text_;
+    bool operator==(const ViewComponentBase &rhs) const {
+        return type_ == rhs.type_ && text_ == rhs.text_ &&
+               ((on_click_func_ == std::nullopt &&
+                 rhs.on_click_func_ == std::nullopt) ||
+                (on_click_func_.member_ == rhs.on_click_func_.member_ &&
+                 on_click_func_.field_ == rhs.on_click_func_.field_)) &&
+               text_color_ == rhs.text_color_ && bg_color_ == rhs.bg_color_;
     }
-    bool operator!=(const ViewComponent &rhs) const { return !(*this == rhs); }
-
-    ViewComponentType type() const { return type_; }
-    std::string text() const { return text_; }
+    bool operator!=(const ViewComponentBase &rhs) const {
+        return !(*this == rhs);
+    }
 };
 
-inline namespace ViewComponents {
-inline ViewComponent newLine() {
-    return ViewComponent(ViewComponentType::new_line);
-}
-} // namespace ViewComponents
-
-inline std::unordered_map<int, ViewComponent>
-getViewDiff(const std::vector<ViewComponent> &current,
-            const std::vector<ViewComponent> &prev) {
-    std::unordered_map<int, ViewComponent> diff;
-    for (std::size_t i = 0; i < current.size(); i++) {
-        if (prev.size() <= i || prev[i] != current[i]) {
-            diff[i] = current[i];
-        }
-    }
-    return diff;
-}
-template <typename T>
-void mergeViewDiff(const std::unordered_map<int, T> &diff, int size,
-                   std::vector<ViewComponent> &prev) {
-    prev.resize(size);
-    for (const auto &v : diff) {
-        prev[v.first] = static_cast<ViewComponent>(v.second);
-    }
-}
 } // namespace Common
 } // namespace WebCFace

@@ -4,8 +4,39 @@
 #include <ostream>
 #include "common/view.h"
 #include "data.h"
+#include "client_data.h";
 
 namespace WebCFace {
+
+class ViewComponent : protected ViewComponentBase {
+    std::weak_ptr<ClientData> data_w;
+
+  public:
+    ViewComponent() = default;
+    ViewComponent(const ViewComponentBase &vc,
+                  const std::weak_ptr<ClientData> &data_w)
+        : ViewComponentBase(vc), data_w(data_w) {}
+    explicit ViewComponent(ViewComponentType type) { this->type_ = type; }
+    ViewComponent(const std::string &text) {
+        this->type_ = ViewComponentType::text;
+        this->text_ = text;
+    }
+
+    ViewComponentType type() const { return type_; }
+    std::string text() const { return text_; }
+    void text(const std::string &text) { text_ = text; }
+    Func onClick() const {
+        return Func{data_w, on_click_func_.member_, on_click_func_.field_};
+    }
+    void onClick(const Func &func) { on_click_func_ = func; }
+    ViewColor textColor() const { return view_color_; }
+    // todo
+
+
+    inline static ViewComponent newLine() {
+        return ViewComponent(ViewComponentType::new_line);
+    }
+};
 
 class ViewBuf : public std::stringbuf {
   public:

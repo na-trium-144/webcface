@@ -203,13 +203,17 @@ void Client::sync() {
         auto view_send = data->view_store.transferSend();
         for (const auto &v : view_send) {
             auto v_prev = view_send_prev.find(v.first);
-            std::unordered_map<int, ViewComponent> v_diff;
+            std::unordered_map<int, ViewComponentBase> v_diff;
             if (v_prev == view_send_prev.end()) {
                 for (std::size_t i = 0; i < v.second.size(); i++) {
                     v_diff[i] = v.second[i];
                 }
             } else {
-                v_diff = getViewDiff(v.second, v_prev->second);
+                for (std::size_t i = 0; i < v.second.size(); i++) {
+                    if (v_prev.size() <= i || v_prev[i] != v.second[i]) {
+                        v_diff[i] = v.second[i];
+                    }
+                }
             }
             if (!v_diff.empty()) {
                 send(Message::pack(Message::View{
@@ -272,7 +276,10 @@ void Client::onRecv(const std::string &message) {
         if (v_prev == std::nullopt) {
             v_prev = {};
         }
-        mergeViewDiff(r.data_diff, r.length, *v_prev);
+        v_prev->resize(r.length);
+        for (const auto &d : r.data_diff) {
+            v_prev->at(d.first) = ViewComponent(d.second, data);
+        }
         data->view_store.setRecv(r.member, r.field, *v_prev);
         data->event_queue.enqueue(
             EventKey{EventType::view_change, Field{data, r.member, r.field}});

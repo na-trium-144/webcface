@@ -22,7 +22,7 @@ class ClientData {
     std::unordered_map<std::string, double> value;
     std::unordered_map<std::string, std::string> text;
     std::unordered_map<std::string, Message::FuncInfo> func;
-    std::unordered_map<std::string, std::vector<ViewComponent>> view;
+    std::unordered_map<std::string, std::vector<ViewComponentBase>> view;
     //! リクエストしているmember,nameのペア
     std::set<std::pair<std::string, std::string>> value_subsc;
     std::set<std::pair<std::string, std::string>> text_subsc;

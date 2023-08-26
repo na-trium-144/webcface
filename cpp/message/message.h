@@ -98,21 +98,26 @@ struct Text : public MessageBase<MessageKind::text> {
 };
 struct View : public MessageBase<MessageKind::view> {
     std::string member, field;
-    struct ViewComponent : public Common::ViewComponent {
+    struct ViewComponent : public Common::ViewComponentBase {
         ViewComponent() = default;
-        ViewComponent(const Common::ViewComponent &vc)
-            : Common::ViewComponent(vc) {}
+        ViewComponent(const Common::ViewComponentBase &vc)
+            : Common::ViewComponentBase(vc) {}
         MSGPACK_DEFINE_MAP(MSGPACK_NVP("t", type_), MSGPACK_NVP("x", text_));
     };
     std::unordered_map<int, ViewComponent> data_diff;
     int length;
     View() = default;
-    View(const std::string &member, const std::string &field, const std::unordered_map<int, Common::ViewComponent> &data_diff, int length)
-    : member(member), field(field), length(length){
-        for(const auto &vc: data_diff){
+    View(const std::string &member, const std::string &field,
+         const std::unordered_map<int, Common::ViewComponentBase> &data_diff,
+         int length)
+        : member(member), field(field), length(length) {
+        for (const auto &vc : data_diff) {
             this->data_diff[vc.first] = vc.second;
         }
     }
+    View(const std::string &member, const std::string &field,
+         const std::unordered_map<int, ViewComponent> &data_diff, int length)
+        : member(member), field(field), data_diff(data_diff), length(length) {}
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("m", member), MSGPACK_NVP("f", field),
                        MSGPACK_NVP("d", data_diff), MSGPACK_NVP("l", length));
 };
