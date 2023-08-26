@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 #include <vector>
-#include "field_base.h"
+#include "field.h"
 
 namespace WebCFace {
 
@@ -10,17 +10,17 @@ class EventTarget;
 class Value;
 class Text;
 class Func;
-class Logs;
+class Log;
 class View;
 class ClientData;
 
 //! 他のクライアントを参照することを表すクラス
-class Member : protected FieldBase {
+class Member : protected Field {
   public:
     Member() = default;
     Member(const std::weak_ptr<ClientData> &data_w, const std::string &member)
-        : FieldBase(data_w, member) {}
-    Member(const FieldBase &base) : FieldBase(base) {}
+        : Field(data_w, member) {}
+    Member(const Field &base) : Field(base) {}
 
     //! Member名
     std::string name() const { return member_; }
@@ -33,7 +33,7 @@ class Member : protected FieldBase {
     Func func(const std::string &field) const;
     View view(const std::string &field) const;
     //! このmemberのログを参照する。
-    Logs logs() const;
+    Log log() const;
 
     //! このmemberが公開しているvalueのリストを返す。
     std::vector<Value> values() const;
@@ -49,15 +49,15 @@ class Member : protected FieldBase {
      * eventの設定は初回のsync()より前に行うと良い
      * \sa Client::membersChange()
      */
-    EventTarget<Value> valuesChange() const;
+    EventTarget<Value> valueEntry() const;
     //! textが追加された時のイベントリスト
     //! \sa valuesChange()
-    EventTarget<Text> textsChange() const;
+    EventTarget<Text> textEntry() const;
     //! funcが追加された時のイベントリスト
     //! \sa valuesChange()
-    EventTarget<Func> funcsChange() const;
+    EventTarget<Func> funcEntry() const;
 
-    EventTarget<View> viewsChange() const;
+    EventTarget<View> viewEntry() const;
 
 };
 

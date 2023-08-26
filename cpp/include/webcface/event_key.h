@@ -1,6 +1,6 @@
 #pragma once
 #include <cassert>
-#include "field_base.h"
+#include "field.h"
 
 namespace WebCFace {
 
@@ -18,18 +18,18 @@ enum class EventType {
 };
 
 //! Eventの種類を表すキー、かつEventのコールバックに返す引数
-struct EventKey : FieldBase {
+//! コールバック呼び出し時に各種fieldにキャストされる
+struct EventKey : Field {
     EventType type = EventType::none;
 
     EventKey() = default;
     //! type=member_entryの場合
     //! memberは設定しない
     EventKey(EventType type, const std::weak_ptr<ClientData> &data_w)
-        : FieldBase(data_w, ""), type(type) {
+        : Field(data_w, ""), type(type) {
         assert(type == EventType::member_entry);
     }
-    EventKey(EventType type, const FieldBase &base)
-        : FieldBase(base), type(type) {}
+    EventKey(EventType type, const Field &base) : Field(base), type(type) {}
 
     bool operator==(const EventKey &rhs) const {
         if (type != rhs.type) {

@@ -7,11 +7,10 @@
 
 namespace WebCFace {
 
-class ViewBuf : public FieldBase, public std::stringbuf {
+class ViewBuf : public std::stringbuf {
   public:
     std::vector<ViewComponent> components;
     int sync() override {
-        setCheck();
         std::string s = this->str();
         while (true) {
             auto p = s.find('\n');
@@ -32,48 +31,38 @@ class ViewBuf : public FieldBase, public std::stringbuf {
         return 0;
     }
 
-    ViewBuf() : FieldBase(), std::stringbuf(std::ios_base::out) {}
-    explicit ViewBuf(const FieldBase &base)
-        : FieldBase(base), std::stringbuf(std::ios_base::out) {}
+    ViewBuf() : std::stringbuf(std::ios_base::out) {}
     ViewBuf &operator=(const ViewBuf &rhs) {
-        this->FieldBase::operator=(rhs);
         this->components = rhs.components;
         return *this;
     }
 };
 
-class View : public SyncFieldBase<std::vector<ViewComponent>>,
-             public EventTarget<View>,
-             public std::ostream {
-    using SyncFieldBase<std::vector<ViewComponent>>::FieldBase::dataLock;
-    using SyncFieldBase<std::vector<ViewComponent>>::FieldBase::setCheck;
+class View : protected Field, public EventTarget<View>, public std::ostream {
     ViewBuf sb;
 
   public:
-    View()
-        : SyncFieldBase<std::vector<ViewComponent>>(),
-          EventTarget<View>(), std::ostream() {}
-    View(const FieldBase &base)
-        : SyncFieldBase<std::vector<ViewComponent>>(base),
-          EventTarget<View>(EventType::view_change, base,
-                            [this] { this->tryGet(); }),
-          sb(base), std::ostream(&sb) {
+    View() : Field(), EventTarget<View>(), sb(), std::ostream(&sb) {}
+    View(const Field &base)
+        : Field(base), EventTarget<View>(EventType::view_change, base,
+                                         [this] { this->tryGet(); }),
+          sb(), std::ostream(&sb) {
         init();
     }
-    View(const FieldBase &base, const std::string &field)
-        : View(FieldBase{base, field}) {}
-    View(const View &rhs)
-        : View(
-              static_cast<SyncFieldBase<std::vector<ViewComponent>>::FieldBase>(
-                  rhs)) {}
+    View(const Field &base, const std::string &field)
+        : View(Field{base, field}) {}
+    View(const View &rhs) : View() { *this = rhs; }
     View &operator=(const View &rhs) {
-        this->SyncFieldBase<std::vector<ViewComponent>>::operator=(rhs);
+        this->Field::operator=(rhs);
         this->EventTarget<View>::operator=(rhs);
         this->sb = rhs.sb;
         return *this;
     }
 
     ~View() { end(); }
+
+    using Field::member;
+    using Field::name;
 
   private:
     //! 値をセットし、EventTargetを発動する
@@ -86,8 +75,11 @@ class View : public SyncFieldBase<std::vector<ViewComponent>>,
 
   public:
     //! 値を取得する
-    std::optional<std::vector<ViewComponent>> tryGet() const override {
+    std::optional<std::vector<ViewComponent>> tryGet() const {
         return dataLock()->view_store.getRecv(*this);
+    }
+    std::vector<ViewComponent> get() const {
+        return tryGet().value_or(std::vector<ViewComponent>{});
     }
 
     View &init() {

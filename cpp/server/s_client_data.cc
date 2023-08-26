@@ -281,6 +281,25 @@ void ClientData::onRecv(const std::string &message) {
         }
         break;
     }
+    case kind_req(MessageKind::view): {
+        auto s =
+            std::any_cast<WebCFace::Message::Req<WebCFace::Message::View>>(obj);
+        std::cout << this->name << ": subscribe view " << s.member << ":"
+                  << s.field << std::endl;
+        view_subsc.insert(std::make_pair(s.member, s.field));
+        // 指定した値を返す
+        auto c_it = store.clients_by_name.find(s.member);
+        if (c_it != store.clients_by_name.end()) {
+            auto it = c_it->second->view.find(s.field);
+            if (it != c_it->second->view.end()) {
+                auto diff = getViewDiff(it->second, {});
+                this->send(WebCFace::Message::pack(WebCFace::Message::View{
+                    s.member, s.field, diff,
+                    static_cast<int>(it->second.size())}));
+            }
+        }
+        break;
+    }
     case MessageKind::log_req: {
         auto s = std::any_cast<WebCFace::Message::LogReq>(obj);
         std::cout << this->name << ": subscribe log " << s.member << std::endl;

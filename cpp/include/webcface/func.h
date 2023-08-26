@@ -25,18 +25,24 @@ FuncWrapperType runCondScopeGuard() {
 } // namespace FuncWrapper
 
 //! 関数1つを表すクラス
-class Func : public SyncFieldBase<FuncInfo> {
+class Func : protected Field {
   public:
     Func() = default;
-    Func(const FieldBase &base) : SyncFieldBase<FuncInfo>(base) {}
-    Func(const FieldBase &base, const std::string &field)
-        : Func(FieldBase{base, field}) {}
+    Func(const Field &base) : Field(base) {}
+    Func(const Field &base, const std::string &field)
+        : Func(Field{base, field}) {}
 
+    using Field::member;
+    using Field::name;
+
+  private:
     auto &set(const FuncInfo &v) {
         setCheck();
         dataLock()->func_store.setSend(*this, v);
         return *this;
     }
+
+  public:
     //! 関数からFuncInfoを構築しセットする
     /*! Tは任意の関数
      * 一度セットしたFuncに別の関数をセットすると、それ以降実行される関数は新しい関数になるが、
@@ -54,9 +60,10 @@ class Func : public SyncFieldBase<FuncInfo> {
     }
 
     //! 値を取得する
-    std::optional<FuncInfo> tryGet() const override {
+    std::optional<FuncInfo> tryGet() const {
         return dataLock()->func_store.getRecv(*this);
     }
+    FuncInfo get() const { return tryGet().value_or(FuncInfo{}); }
 
     //! 関数を実行する (同期)
     /*! selfの関数の場合、このスレッドで直接実行する

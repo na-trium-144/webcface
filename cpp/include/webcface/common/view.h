@@ -1,16 +1,19 @@
 #pragma once
 #include <string>
+#include "field_base.h"
 
 namespace WebCFace {
 inline namespace Common {
 enum class ViewComponentType {
     text = 0,
     new_line = 1,
+    button = 2,
 };
 class ViewComponent {
   protected:
     ViewComponentType type_;
     std::string text_;
+    FieldBase on_click_func_;
 
   public:
     ViewComponent() = default;

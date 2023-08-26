@@ -13,7 +13,7 @@
 #include "common/queue.h"
 #include "common/view.h"
 #include "event_key.h"
-#include "field_base.h"
+#include "field.h"
 #include "logger.h"
 
 namespace WebCFace {
@@ -139,7 +139,7 @@ struct ClientData {
       public:
         //! 新しいcaller_idを振って新しいAsyncFuncResultを生成しそれを返す
         AsyncFuncResult &addResult(const std::string &caller,
-                                   const FieldBase &base);
+                                   const Field &base);
         //! caller_idに対応するresultを返す
         AsyncFuncResult &getResult(int caller_id);
     };

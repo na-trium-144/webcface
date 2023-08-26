@@ -131,7 +131,7 @@ template class ClientData::SyncDataStore<std::vector<ViewComponent>>;
 
 AsyncFuncResult &
 ClientData::FuncResultStore::addResult(const std::string &caller,
-                                       const FieldBase &base) {
+                                       const Field &base) {
     std::lock_guard lock(mtx);
     int caller_id = results.size();
     results.push_back(AsyncFuncResult{caller_id, caller, base});

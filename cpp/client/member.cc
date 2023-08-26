@@ -13,18 +13,18 @@ Value Member::value(const std::string &field) const {
 Text Member::text(const std::string &field) const { return Text{*this, field}; }
 Func Member::func(const std::string &field) const { return Func{*this, field}; }
 View Member::view(const std::string &field) const { return View{*this, field}; }
-Logs Member::logs() const { return Logs{*this}; }
+Log Member::log() const { return Log{*this}; }
 
-EventTarget<Value> Member::valuesChange() const {
+EventTarget<Value> Member::valueEntry() const {
     return EventTarget<Value>{EventType::value_entry, *this};
 }
-EventTarget<Text> Member::textsChange() const {
+EventTarget<Text> Member::textEntry() const {
     return EventTarget<Text>{EventType::text_entry, *this};
 }
-EventTarget<Func> Member::funcsChange() const {
+EventTarget<Func> Member::funcEntry() const {
     return EventTarget<Func>{EventType::func_entry, *this};
 }
-EventTarget<View> Member::viewsChange() const {
+EventTarget<View> Member::viewEntry() const {
     return EventTarget<View>{EventType::view_entry, *this};
 }
 
