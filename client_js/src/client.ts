@@ -14,7 +14,12 @@ import {
   log4jsLevels,
   log4jsLevelConvert,
 } from "./logger.js";
-import{ViewComponentsDiff, ViewComponent, getViewDiff, mergeViewDiff} from "./view.js";
+import {
+  ViewComponentsDiff,
+  ViewComponent,
+  getViewDiff,
+  mergeViewDiff,
+} from "./view.js";
 import websocket from "websocket";
 const w3cwebsocket = websocket.w3cwebsocket;
 import util from "util";
@@ -69,7 +74,7 @@ export class Client extends Member {
       i: r.callerId,
       c: r.caller,
       r: b.member_,
-      n: b.field_,
+      f: b.field_,
       a: args,
     });
   }
@@ -122,17 +127,17 @@ export class Client extends Member {
           this.data.eventEmitter.emit(eventType.textChange(target), target);
           break;
         }
-      case types.kind.view:{
-        const dataR = data as types.View;
-        const current = this.data.viewStore.getRecv(dataR.m, dataR.f);
-        const diff: ViewComponentsDiff = {};
-        for(const k of Object.keys(dataR.d)){
-          diff[k] = new ViewComponent(dataR.d[k] as types.ViewComponent);
+        case types.kind.view: {
+          const dataR = data as types.View;
+          const current = this.data.viewStore.getRecv(dataR.m, dataR.f) || [];
+          const diff: ViewComponentsDiff = {};
+          for (const k of Object.keys(dataR.d)) {
+            diff[k] = new ViewComponent(dataR.d[k]);
+          }
+          mergeViewDiff(diff, dataR.l, current);
+          this.data.viewStore.setRecv(dataR.m, dataR.f, current);
+          break;
         }
-        mergeViewDiff(diff, dataR.l, current);
-        this.data.viewStore.setRecv(dataR.m, dataR.f, current);
-        break;
-      }
         case types.kind.log: {
           const dataR = data as types.Log;
           for (const ll of dataR.l) {
@@ -239,7 +244,7 @@ export class Client extends Member {
           this.data.eventEmitter.emit(eventType.textEntry(target), target);
           break;
         }
-      case types.kind.entry + types.kind.view: {
+        case types.kind.entry + types.kind.view: {
           const dataR = data as types.Entry;
           this.data.viewStore.setEntry(dataR.m, dataR.f);
           const target = this.member(dataR.m).view(dataR.f);
@@ -302,9 +307,15 @@ export class Client extends Member {
           this.send(types.kind.req + types.kind.text, { m: k, f: k2 });
         }
       }
+      const viewPrev = this.data.viewStore.getSendPrev();
       for (const [k, v] of this.data.viewStore.transferSend().entries()) {
-        const diff = getViewDiff(v, )
-        this.send(types.kind.view, { m: "", f: k, d: v });
+        const vPrev = viewPrev.get(k) || [];
+        const diff = getViewDiff(v, vPrev);
+        const diffSend: types.ViewComponentsDiff = {};
+        for (const k2 of Object.keys(diff)) {
+          diffSend[k2] = diff[k2].toMessage();
+        }
+        this.send(types.kind.view, { m: "", f: k, d: diffSend });
       }
       for (const [k, v] of this.data.viewStore.transferReq().entries()) {
         for (const [k2, v2] of v.entries()) {
@@ -366,7 +377,10 @@ export class Client extends Member {
         ) =>
         (logEvent: log4jsLoggingEvent) => {
           const ll = {
-            level: levels != undefined ? log4jsLevelConvert(logEvent.level, levels) : 2,
+            level:
+              levels != undefined
+                ? log4jsLevelConvert(logEvent.level, levels)
+                : 2,
             time: new Date(logEvent.startTime),
             message: util.format(...logEvent.data),
           };

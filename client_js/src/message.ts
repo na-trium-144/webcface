@@ -60,6 +60,7 @@ export interface Data<T> {
   f: string;
   d: T;
 }
+export type ViewComponentsDiff = {[key in string]: ViewComponent};
 export interface ViewComponent {
   t: number;
   x: string;
@@ -67,7 +68,7 @@ export interface ViewComponent {
 export interface View {
   m: string;
   f: string;
-  d: { [key in number]: ViewComponent };
+  d: ViewComponentsDiff;
   l: number;
 }
 export interface Arg {

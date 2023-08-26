@@ -1,4 +1,4 @@
-import * as types from "./message.ts";
+import * as types from "./message.js";
 export const viewComponentTypes = {
   text: 0,
   newLine: 1,
@@ -6,7 +6,7 @@ export const viewComponentTypes = {
 export const viewComponents = {
   newLine: () => new ViewComponent(viewComponentTypes.newLine),
 };
-export type ViewComponentsDiff = {[key in number]: ViewComponent};
+export type ViewComponentsDiff = { [key in string]: ViewComponent };
 export class ViewComponent {
   type_ = 0;
   text_ = "";
@@ -21,8 +21,13 @@ export class ViewComponent {
       this.text_ = arg.x;
     }
   }
-  equalTo(vc: ViewComponent | undefined){
-    return vc != undefined && this.type_ === vc.type_ && this.text_ === vc.text_;
+  toMessage(): types.ViewComponent {
+    return { t: this.type, x: this.text };
+  }
+  equalTo(vc: ViewComponent | undefined) {
+    return (
+      vc != undefined && this.type_ === vc.type_ && this.text_ === vc.text_
+    );
   }
   get type() {
     return this.type_;
@@ -32,26 +37,30 @@ export class ViewComponent {
   }
 }
 
-export function getViewDiff(current: ViewComponent[], prev: ViewComponent[]){
+export function getViewDiff(current: ViewComponent[], prev: ViewComponent[]) {
   const diff: ViewComponentsDiff = {};
-  for(let i = 0; i < current.length; i++){
-    if(!current[i].equalTo(prev[i])){
+  for (let i = 0; i < current.length; i++) {
+    if (!current[i].equalTo(prev[i])) {
       diff[i] = current[i];
     }
   }
   return diff;
 }
-export function mergeViewDiff(diff: ViewComponentsDiff, size: number, prev: ViewComponent[]){
-  for (let i = 0; i < size; i++){
-    if(diff[i] != undefined){
-      if(prev.length <= i){
+export function mergeViewDiff(
+  diff: ViewComponentsDiff,
+  size: number,
+  prev: ViewComponent[]
+) {
+  for (let i = 0; i < size; i++) {
+    if (diff[i] != undefined) {
+      if (prev.length <= i) {
         prev.push(diff[i]);
-      }else{
+      } else {
         prev[i] = diff[i];
       }
     }
   }
-  while(prev.length > size){
+  while (prev.length > size) {
     prev.pop();
   }
 }

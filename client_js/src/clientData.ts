@@ -1,7 +1,7 @@
 import { Val, FuncInfo } from "./funcInfo.js";
 import { EventEmitter } from "eventemitter3";
 import { LogLine } from "./logger.js";
-import {ViewComponent} from "./view.js";
+import { ViewComponent } from "./view.js";
 export class FieldBase {
   data: ClientData;
   member_: string;
@@ -94,6 +94,7 @@ export class ClientData {
 
 class SyncDataStore<T> {
   dataSend: Map<string, T>;
+  dataSendPrev: Map<string, T>;
   dataRecv: Map<string, Map<string, T>>;
   entry: Map<string, string[]>;
   req: Map<string, Map<string, boolean>>;
@@ -102,6 +103,7 @@ class SyncDataStore<T> {
   constructor(name: string) {
     this.selfMemberName = name;
     this.dataSend = new Map();
+    this.dataSendPrev = new Map();
     this.dataRecv = new Map();
     this.entry = new Map();
     this.req = new Map();
@@ -178,8 +180,12 @@ class SyncDataStore<T> {
   //! data_sendを返し、data_sendをクリア
   transferSend() {
     const s = this.dataSend;
+    this.dataSendPrev = s;
     this.dataSend = new Map();
     return s;
+  }
+  getSendPrev() {
+    return this.dataSendPrev;
   }
   //! req_sendを返し、req_sendをクリア
   transferReq() {

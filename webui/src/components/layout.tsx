@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Client, Value, Text, Func } from "webcface";
+import { Client, Member, Value, View, Text, Func } from "webcface";
 import "../index.css";
 import "react-grid-layout/css/styles.css";
 import "react-resizable/css/styles.css";
@@ -11,6 +11,8 @@ import { ValueCard } from "./valueCard";
 import { TextCard } from "./textCard";
 import { FuncCard } from "./funcCard";
 import { LogCard } from "./logCard";
+import { ViewCard } from "./viewCard";
+import { useForceUpdate} from "../libs/forceUpdate";
 import {
   MemberValues,
   MemberTexts,
@@ -20,16 +22,26 @@ import {
 import * as cardKey from "../libs/cardKey";
 
 interface Props {
+  client: {current: Client};
   isOpened: (key: string) => boolean;
   openedOrder: (key: string) => number;
   moveOrder: (key: string) => void;
-  memberValues: MemberValues[];
-  memberTexts: MemberTexts[];
-  memberFuncs: MemberFuncs[];
-  memberLogs: MemberLogs[];
 }
 
 export function LayoutMain(props: Props) {
+  const update = useForceUpdate();
+  useEffect(() => {
+    const onMembersChange = (m: Member) => {
+      update();
+      m.valuesChange.on(update);
+      m.viewsChange.on(update);
+    };
+    props.client.current.membersChange.on(onMembersChange);
+    return () => {
+      props.client.current.membersChange.off(onMembersChange);
+    };
+  }, [props.client, update]);
+
   const [layouts, setLayouts] = useState<Layouts>({});
   const [lsLayout, setLsLayout] = useState<Layout[]>([]);
   const currentLayout = useRef<Layout[]>([]);
@@ -114,8 +126,8 @@ export function LayoutMain(props: Props) {
       compactType={null}
       draggableHandle=".MyCardHandle"
     >
-      {props.memberValues
-        .reduce((prev, m) => prev.concat(m.values), [] as Value[])
+      {props.client.current.members()
+        .reduce((prev, m) => prev.concat(m.values()), [] as Value[])
         .map((v) => {
           const key = cardKey.value(v.member.name, v.name);
           if (props.isOpened(key)) {
@@ -134,7 +146,27 @@ export function LayoutMain(props: Props) {
           }
           return null;
         })}
-      {props.memberTexts.map((m) => {
+        {props.client.current.members()
+        .reduce((prev, m) => prev.concat(m.views()), [] as View[])
+        .map((v) => {
+          const key = cardKey.view(v.member.name, v.name);
+          if (props.isOpened(key)) {
+            return (
+              <div
+                key={key}
+                data-grid={{ x: 0, y: 0, w: 2, h: 2, minW: 2, minH: 1 }}
+                style={{
+                  zIndex: 10 + props.openedOrder(key),
+                }}
+                onPointerDown={() => props.moveOrder(key)}
+              >
+                <ViewCard view={v} />
+              </div>
+            );
+          }
+          return null;
+        })}
+      {props.client.current.members().map((m) => {
         const key = cardKey.text(m.name);
         if (props.isOpened(key)) {
           return (
@@ -144,13 +176,13 @@ export function LayoutMain(props: Props) {
               style={{ zIndex: 10 + props.openedOrder(key) }}
               onPointerDown={() => props.moveOrder(key)}
             >
-              <TextCard name={m.name} text={m.texts} />
+              <TextCard member={m} />
             </div>
           );
         }
         return null;
       })}
-      {props.memberFuncs.map((m) => {
+      {props.client.current.members().map((m) => {
         const key = cardKey.func(m.name);
         if (props.isOpened(key)) {
           return (
@@ -160,13 +192,13 @@ export function LayoutMain(props: Props) {
               style={{ zIndex: 10 + props.openedOrder(key) }}
               onPointerDown={() => props.moveOrder(key)}
             >
-              <FuncCard name={m.name} func={m.funcs} />
+              <FuncCard member={m} />
             </div>
           );
         }
         return null;
       })}
-      {props.memberLogs.map((m) => {
+      {props.client.current.members().map((m) => {
         const key = cardKey.log(m.name);
         if (props.isOpened(key)) {
           return (
@@ -176,7 +208,7 @@ export function LayoutMain(props: Props) {
               style={{ zIndex: 10 + props.openedOrder(key) }}
               onPointerDown={() => props.moveOrder(key)}
             >
-              <LogCard name={m.name} logs={m.logs} />
+              <LogCard member={m} />
             </div>
           );
         }

@@ -212,8 +212,8 @@ void Client::sync() {
                 v_diff = getViewDiff(v.second, v_prev->second);
             }
             if (!v_diff.empty()) {
-                send(Message::pack(
-                    Message::View{"", v.first, v_diff, static_cast<int>(v.second.size())}));
+                send(Message::pack(Message::View{
+                    "", v.first, v_diff, static_cast<int>(v.second.size())}));
             }
         }
         auto view_subsc = data->view_store.transferReq();
@@ -373,6 +373,15 @@ void Client::onRecv(const std::string &message) {
                 obj);
         data->text_store.setEntry(r.member, r.field);
         data->event_queue.enqueue(EventKey{EventType::text_entry,
+                                           FieldBase{data, r.member, r.field}});
+        break;
+    }
+    case kind_entry(MessageKind::view): {
+        auto r =
+            std::any_cast<WebCFace::Message::Entry<WebCFace::Message::View>>(
+                obj);
+        data->view_store.setEntry(r.member, r.field);
+        data->event_queue.enqueue(EventKey{EventType::view_entry,
                                            FieldBase{data, r.member, r.field}});
         break;
     }

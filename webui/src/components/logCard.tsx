@@ -1,11 +1,10 @@
 import { Card } from "./card";
-import { LogLine } from "webcface";
+import { Member, Logs, LogLine } from "webcface";
 import { useState, useEffect } from "react";
 import { format } from "date-fns";
 
 interface Props {
-  name: string;
-  logs: LogLine[];
+  member: Member;
 }
 const levelNames = ["Trace", "Debug", "Info", "Warn", "Error", "Critical"];
 const levelColors = [
@@ -20,10 +19,16 @@ export function LogCard(props: Props) {
   const [logsCurrent, setLogsCurrent] = useState<LogLine[]>([]);
   const [minLevel, setMinLevel] = useState<number>(2);
   useEffect(() => {
-    setLogsCurrent(props.logs.filter((l) => l.level >= minLevel));
-  }, [props, minLevel]);
+    const update = () => setLogsCurrent(props.member.logs().get().filter((l) => l.level >= minLevel));
+    update();
+    props.member.logs().on(update);
+    return () => {
+      props.member.logs().off(update);
+    };
+  }, [props.member, minLevel]);
+
   return (
-    <Card title={`${props.name} Logs`}>
+    <Card title={`${props.member.name} Logs`}>
       <div className="flex flex-col w-full h-full">
         <div className="flex-none pl-2 pb-1">
           レベル
@@ -38,7 +43,7 @@ export function LogCard(props: Props) {
               setMinLevel(e.target.value);
             }}
           />
-          以上のログを表示: 全<span className="px-1">{props.logs.length}</span>
+          以上のログを表示: 全<span className="px-1">{props.member.logs.length}</span>
           行中
           <span className="px-1">{logsCurrent.length}</span>行
         </div>

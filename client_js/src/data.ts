@@ -21,6 +21,9 @@ export class Member extends FieldBase {
   text(name: string) {
     return new Text(this, name);
   }
+  view(name: string) {
+    return new View(this, name);
+  }
   func(name: string) {
     return new Func(this, name);
   }
@@ -34,6 +37,9 @@ export class Member extends FieldBase {
   }
   texts() {
     return this.data.textStore.getEntry(this.member_).map((n) => this.text(n));
+  }
+  views() {
+    return this.data.viewStore.getEntry(this.member_).map((n) => this.view(n));
   }
   funcs() {
     return this.data.funcStore.getEntry(this.member_).map((n) => this.func(n));
@@ -55,6 +61,13 @@ export class Member extends FieldBase {
   get funcsChange() {
     return new FieldBaseWithEvent<Func>(
       eventType.funcEntry(this),
+      this.data,
+      this.member_
+    );
+  }
+  get viewsChange() {
+    return new FieldBaseWithEvent<View>(
+      eventType.viewEntry(this),
       this.data,
       this.member_
     );
