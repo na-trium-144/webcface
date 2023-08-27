@@ -8,13 +8,11 @@ class ClientData;
 class Member;
 
 //! ClientDataの参照とメンバ名とデータ名を持つクラス
-class Field : protected FieldBase {
-protected:
+struct Field : protected FieldBase {
     //! ClientDataの参照
     //! ClientData内に保持するクラスもあるので循環参照を避けるためweak_ptr
     std::weak_ptr<ClientData> data_w;
 
-public:
     Field() = default;
     Field(const std::weak_ptr<ClientData> &data_w, const std::string &member,
           const std::string &field = "")

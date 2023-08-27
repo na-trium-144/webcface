@@ -126,7 +126,7 @@ std::unordered_map<std::string, bool> ClientData::LogStore::transferReq() {
 template class ClientData::SyncDataStore<double>;
 template class ClientData::SyncDataStore<std::string>;
 template class ClientData::SyncDataStore<FuncInfo>;
-template class ClientData::SyncDataStore<std::vector<ViewComponent>>;
+template class ClientData::SyncDataStore<std::vector<ViewComponentBase>>;
 
 
 AsyncFuncResult &

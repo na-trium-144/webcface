@@ -185,7 +185,7 @@ struct ClientData {
     SyncDataStore<double> value_store;
     SyncDataStore<std::string> text_store;
     SyncDataStore<FuncInfo> func_store;
-    SyncDataStore<std::vector<ViewComponent>> view_store;
+    SyncDataStore<std::vector<ViewComponentBase>> view_store;
     LogStore log_store;
     FuncResultStore func_result_store;
 

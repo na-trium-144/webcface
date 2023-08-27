@@ -12,6 +12,7 @@
 
 MSGPACK_ADD_ENUM(WebCFace::Common::ValType);
 MSGPACK_ADD_ENUM(WebCFace::Common::ViewComponentType);
+MSGPACK_ADD_ENUM(WebCFace::Common::ViewColor);
 
 namespace WebCFace::Message {
 // 新しいメッセージの定義は
@@ -98,11 +99,37 @@ struct Text : public MessageBase<MessageKind::text> {
 };
 struct View : public MessageBase<MessageKind::view> {
     std::string member, field;
-    struct ViewComponent : public Common::ViewComponentBase {
+    struct ViewComponent {
+        Common::ViewComponentType type;
+        std::string text;
+        std::optional<std::string> on_click_member, on_click_field;
+        Common::ViewColor text_color, bg_color;
         ViewComponent() = default;
         ViewComponent(const Common::ViewComponentBase &vc)
-            : Common::ViewComponentBase(vc) {}
-        MSGPACK_DEFINE_MAP(MSGPACK_NVP("t", type_), MSGPACK_NVP("x", text_));
+            : type(vc.type_), text(vc.text_), text_color(vc.text_color_),
+              bg_color(vc.bg_color_) {
+            if (vc.on_click_func_ != std::nullopt) {
+                on_click_member = vc.on_click_func_->member_;
+                on_click_field = vc.on_click_func_->field_;
+            }
+        }
+        operator Common::ViewComponentBase() const {
+            Common::ViewComponentBase vc;
+            vc.type_ = type;
+            vc.text_ = text;
+            if (on_click_member != std::nullopt) {
+                vc.on_click_func_ =
+                    Common::FieldBase{*on_click_member, *on_click_field};
+            }
+            vc.text_color_ = text_color;
+            vc.bg_color_ = bg_color;
+            return vc;
+        }
+        MSGPACK_DEFINE_MAP(MSGPACK_NVP("t", type), MSGPACK_NVP("x", text),
+                           MSGPACK_NVP("L", on_click_member),
+                           MSGPACK_NVP("l", on_click_field),
+                           MSGPACK_NVP("c", text_color),
+                           MSGPACK_NVP("b", bg_color));
     };
     std::unordered_map<int, ViewComponent> data_diff;
     int length;

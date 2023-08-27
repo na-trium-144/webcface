@@ -210,7 +210,7 @@ void Client::sync() {
                 }
             } else {
                 for (std::size_t i = 0; i < v.second.size(); i++) {
-                    if (v_prev.size() <= i || v_prev[i] != v.second[i]) {
+                    if (v_prev->second.size() <= i || v_prev->second[i] != v.second[i]) {
                         v_diff[i] = v.second[i];
                     }
                 }
@@ -278,7 +278,7 @@ void Client::onRecv(const std::string &message) {
         }
         v_prev->resize(r.length);
         for (const auto &d : r.data_diff) {
-            v_prev->at(d.first) = ViewComponent(d.second, data);
+            v_prev->at(d.first) = d.second;
         }
         data->view_store.setRecv(r.member, r.field, *v_prev);
         data->event_queue.enqueue(

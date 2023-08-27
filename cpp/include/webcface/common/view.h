@@ -48,8 +48,8 @@ struct ViewComponentBase {
         return type_ == rhs.type_ && text_ == rhs.text_ &&
                ((on_click_func_ == std::nullopt &&
                  rhs.on_click_func_ == std::nullopt) ||
-                (on_click_func_.member_ == rhs.on_click_func_.member_ &&
-                 on_click_func_.field_ == rhs.on_click_func_.field_)) &&
+                (on_click_func_->member_ == rhs.on_click_func_->member_ &&
+                 on_click_func_->field_ == rhs.on_click_func_->field_)) &&
                text_color_ == rhs.text_color_ && bg_color_ == rhs.bg_color_;
     }
     bool operator!=(const ViewComponentBase &rhs) const {

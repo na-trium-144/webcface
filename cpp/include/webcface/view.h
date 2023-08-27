@@ -2,9 +2,10 @@
 #include <vector>
 #include <sstream>
 #include <ostream>
+#include <cassert>
 #include "common/view.h"
 #include "data.h"
-#include "client_data.h";
+#include "client_data.h"
 
 namespace WebCFace {
 
@@ -16,31 +17,53 @@ class ViewComponent : protected ViewComponentBase {
     ViewComponent(const ViewComponentBase &vc,
                   const std::weak_ptr<ClientData> &data_w)
         : ViewComponentBase(vc), data_w(data_w) {}
-    explicit ViewComponent(ViewComponentType type) { this->type_ = type; }
-    ViewComponent(const std::string &text) {
-        this->type_ = ViewComponentType::text;
-        this->text_ = text;
-    }
+    explicit ViewComponent(ViewComponentType type) : type_(type) {}
 
     ViewComponentType type() const { return type_; }
     std::string text() const { return text_; }
-    void text(const std::string &text) { text_ = text; }
-    Func onClick() const {
-        return Func{data_w, on_click_func_.member_, on_click_func_.field_};
+    ViewComponent &text(const std::string &text) {
+        text_ = text;
+        return *this;
     }
-    void onClick(const Func &func) { on_click_func_ = func; }
-    ViewColor textColor() const { return view_color_; }
-    // todo
-
-
-    inline static ViewComponent newLine() {
-        return ViewComponent(ViewComponentType::new_line);
+    std::optional<Func> onClick() const {
+        if (on_click_func_ != std::nullopt) {
+            assert(data_w != std::nullptr && "ClientData not set");
+            return Func{data_w, on_click_func_->member_, on_click_func_->field_};
+        } else {
+            return std::nullopt;
+        }
+    }
+    ViewComponent &onClick(const Func &func) {
+        data_w = static_cast<Field>(func).data_w;
+        on_click_func_ = func;
+        return *this;
+    }
+    ViewColor textColor() const { return text_color_; }
+    ViewComponent &textColor(ViewColor c) {
+        text_color_ = c;
+        return *this;
+    }
+    ViewColor bgColor() const { return bg_color_; }
+    ViewComponent &bgColor(ViewColor c) {
+        bg_color_ = c;
+        return *this;
     }
 };
+inline namespace ViewComponents {
+inline ViewComponent text(const std::string &text) {
+    return ViewComponent(ViewComponentType::text).text(text);
+}
+inline ViewComponent newLine() {
+    return ViewComponent(ViewComponentType::new_line);
+}
+inline ViewComponent button(const std::string &text, const Func &func) {
+    return ViewComponent(ViewComponentType::button).text(text).onClick(func);
+}
+} // namespace ViewComponents
 
 class ViewBuf : public std::stringbuf {
   public:
-    std::vector<ViewComponent> components;
+    std::vector<ViewComponentBase> components;
     int sync() override {
         std::string s = this->str();
         while (true) {
@@ -50,13 +73,13 @@ class ViewBuf : public std::stringbuf {
             }
             std::string c1 = s.substr(0, p);
             if (!c1.empty()) {
-                components.push_back(c1);
+                components.push_back(ViewComponents::text(c1));
             }
             components.push_back(ViewComponents::newLine());
             s = s.substr(p + 1);
         }
         if (!s.empty()) {
-            components.push_back(s);
+            components.push_back(ViewComponents::text(s));
         }
         this->str("");
         return 0;
@@ -99,7 +122,11 @@ class View : protected Field, public EventTarget<View>, public std::ostream {
     //! 値をセットし、EventTargetを発動する
     auto &set(const std::vector<ViewComponent> &v) {
         setCheck();
-        dataLock()->view_store.setSend(*this, v);
+        std::vector<ViewComponentBase> vb(v.size());
+        for (std::size_t i = 0; i < v.size(); i++) {
+            vb[i] = v[i];
+        }
+        dataLock()->view_store.setSend(*this, vb);
         triggerEvent();
         return *this;
     }
@@ -107,7 +134,16 @@ class View : protected Field, public EventTarget<View>, public std::ostream {
   public:
     //! 値を取得する
     std::optional<std::vector<ViewComponent>> tryGet() const {
-        return dataLock()->view_store.getRecv(*this);
+        auto vb = dataLock()->view_store.getRecv(*this);
+        if (vb) {
+            std::optional<std::vector<ViewComponent>> v(vb.size());
+            for (std::size_t i = 0; i < vb.size(); i++) {
+                v->at(i) = vb[i];
+            }
+            return v;
+        } else {
+            return std::nullopt;
+        }
     }
     std::vector<ViewComponent> get() const {
         return tryGet().value_or(std::vector<ViewComponent>{});
@@ -128,7 +164,7 @@ class View : protected Field, public EventTarget<View>, public std::ostream {
         return *this;
     }
 
-    View &operator<<(const ViewComponent &vc) {
+    View &operator<<(const ViewComponentBase &vc) {
         setCheck();
         sb.components.push_back(vc);
         return *this;
