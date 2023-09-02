@@ -4,7 +4,7 @@
 #include "common/func.h"
 #include "common/val.h"
 #include "func_result.h"
-
+#include <iostream>
 namespace WebCFace {
 
 namespace FuncWrapper {
@@ -30,7 +30,7 @@ class AnonymousFunc;
 class Func : protected Field {
   public:
     friend AnonymousFunc;
-    
+
     Func() = default;
     Func(const Field &base) : Field(base) {}
     Func(const Field &base, const std::string &field)
@@ -179,6 +179,9 @@ class AnonymousFunc : public Func {
             this->hidden(true);
         };
     }
+
+    AnonymousFunc(const AnonymousFunc &) = delete;
+    AnonymousFunc &operator=(const AnonymousFunc &) = delete;
 
     void lockTo(Func &target) {
         if (!base_init) {

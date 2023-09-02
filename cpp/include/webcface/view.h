@@ -3,6 +3,7 @@
 #include <sstream>
 #include <ostream>
 #include <cassert>
+#include <memory>
 #include "common/view.h"
 #include "data.h"
 #include "client_data.h"
@@ -12,7 +13,7 @@ namespace WebCFace {
 class ViewComponent : public ViewComponentBase {
     std::weak_ptr<ClientData> data_w;
 
-    std::optional<AnonymousFunc> on_click_func_tmp;
+    std::shared_ptr<AnonymousFunc> on_click_func_tmp;
 
   public:
     ViewComponent() = default;
@@ -23,7 +24,7 @@ class ViewComponent : public ViewComponentBase {
 
     ViewComponent &lockTmp(const std::weak_ptr<ClientData> &data_w,
                            const std::string &field_id) {
-        if (on_click_func_tmp != std::nullopt) {
+        if (on_click_func_tmp != nullptr) {
             auto data = data_w.lock();
             Func on_click{Field{data_w, data->self_member_name}, field_id};
             on_click_func_tmp->lockTo(on_click);
@@ -55,7 +56,7 @@ class ViewComponent : public ViewComponentBase {
     }
     template <typename T>
     ViewComponent &onClick(const T &func) {
-        on_click_func_tmp = func;
+        on_click_func_tmp = std::make_shared<AnonymousFunc>(func);
         return *this;
     }
     ViewColor textColor() const { return text_color_; }
@@ -191,7 +192,7 @@ class View : protected Field, public EventTarget<View>, public std::ostream {
     }
     template <typename T>
     View &operator<<(const T &rhs) {
-        static_cast<std::ostream &>(*this) << rhs;
+        static_cast<std::ostream &>(*this) << rhs << std::flush;
         return *this;
     }
     View &operator<<(std::ostream &(*os_manip)(std::ostream &)) {
