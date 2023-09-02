@@ -4,7 +4,7 @@
 #include "common/func.h"
 #include "common/val.h"
 #include "func_result.h"
-#include <iostream>
+
 namespace WebCFace {
 
 namespace FuncWrapper {
