@@ -28,6 +28,7 @@ class ViewComponent : public ViewComponentBase {
             auto data = data_w.lock();
             Func on_click{Field{data_w, data->self_member_name}, field_id};
             on_click_func_tmp->lockTo(on_click);
+            on_click.hidden(true);
             onClick(on_click);
         }
         return *this;
