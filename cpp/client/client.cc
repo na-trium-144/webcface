@@ -177,6 +177,7 @@ void Client::sync() {
             sync_init = true;
         }
 
+        // todo: hiddenの反映
         auto value_send = data->value_store.transferSend();
         for (const auto &v : value_send) {
             send(Message::pack(Message::Value{{}, "", v.first, v.second}));
@@ -210,7 +211,8 @@ void Client::sync() {
                 }
             } else {
                 for (std::size_t i = 0; i < v.second.size(); i++) {
-                    if (v_prev->second.size() <= i || v_prev->second[i] != v.second[i]) {
+                    if (v_prev->second.size() <= i ||
+                        v_prev->second[i] != v.second[i]) {
                         v_diff[i] = v.second[i];
                     }
                 }
@@ -229,7 +231,9 @@ void Client::sync() {
         }
         auto func_send = data->func_store.transferSend();
         for (const auto &v : func_send) {
-            send(Message::pack(Message::FuncInfo{"", v.first, v.second}));
+            if (!data->func_store.isHidden(v.first)) {
+                send(Message::pack(Message::FuncInfo{"", v.first, v.second}));
+            }
         }
 
         auto log_subsc = data->log_store.transferReq();

@@ -12,9 +12,9 @@ int main() {
         {
             auto v = c.view("a");
             v << "hello world" << std::endl;
-            v << "hello world" << std::endl;
-            v << i << std::endl;
-            v << WebCFace::newLine();
+            v << i << WebCFace::newLine();
+            v << WebCFace::button("a",
+                                  [] { std::cout << "hello" << std::endl; });
         }
         i++;
         c.sync();

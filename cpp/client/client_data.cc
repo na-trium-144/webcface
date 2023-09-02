@@ -9,6 +9,19 @@ void ClientData::SyncDataStore<T>::setSend(const std::string &name,
     data_recv[self_member_name][name] = data; // 送信後に自分の値を参照する用
 }
 template <typename T>
+void ClientData::SyncDataStore<T>::setHidden(const std::string &name,
+                                             bool is_hidden) {
+    std::lock_guard lock(mtx);
+    data_send_hidden[name] = is_hidden;
+}
+template <typename T>
+bool ClientData::SyncDataStore<T>::isHidden(const std::string &name) {
+    std::lock_guard lock(mtx);
+    auto h = data_send_hidden.find(name);
+    return h != data_send_hidden.end() && h->second == true;
+}
+
+template <typename T>
 void ClientData::SyncDataStore<T>::setRecv(const std::string &from,
                                            const std::string &name,
                                            const T &data) {
@@ -107,8 +120,7 @@ ClientData::SyncDataStore<T>::transferSend() {
     return std::move(data_send);
 }
 template <typename T>
-std::unordered_map<std::string, T>
-ClientData::SyncDataStore<T>::getSendPrev() {
+std::unordered_map<std::string, T> ClientData::SyncDataStore<T>::getSendPrev() {
     std::lock_guard lock(mtx);
     return data_send_prev;
 }

@@ -24,9 +24,13 @@ FuncWrapperType runCondScopeGuard() {
 
 } // namespace FuncWrapper
 
+class AnonymousFunc;
+
 //! 関数1つを表すクラス
 class Func : protected Field {
   public:
+    friend AnonymousFunc;
+    
     Func() = default;
     Func(const Field &base) : Field(base) {}
     Func(const Field &base, const std::string &field)
@@ -55,7 +59,7 @@ class Func : protected Field {
     }
     //! 関数からFuncInfoを構築しセットする
     template <typename T>
-    Func &operator=(const T &func) {
+    auto &operator=(const T &func) {
         return this->set(func);
     }
 
@@ -64,6 +68,19 @@ class Func : protected Field {
         return dataLock()->func_store.getRecv(*this);
     }
     FuncInfo get() const { return tryGet().value_or(FuncInfo{}); }
+
+    //! 関数を関数リストで非表示にする
+    //! (他clientのentryに表示されなくする)
+    auto &hidden(bool hidden) {
+        setCheck();
+        dataLock()->func_store.setHidden(*this, hidden);
+        return *this;
+    }
+    //! 関数の設定を解除
+    auto &free() {
+        dataLock()->func_store.unsetRecv(*this);
+        return *this;
+    }
 
     //! 関数を実行する (同期)
     /*! selfの関数の場合、このスレッドで直接実行する
@@ -138,4 +155,40 @@ class Func : protected Field {
 };
 
 
+class AnonymousFunc : public Func {
+    static std::string fieldNameTmp() {
+        static int id = 0;
+        return ".tmp" + std::to_string(id++);
+    }
+
+    std::function<void()> func_setter = nullptr;
+    bool base_init = false;
+
+  public:
+    AnonymousFunc() = default;
+    template <typename T>
+    AnonymousFunc(const Field &base, const T &func)
+        : Func(base, fieldNameTmp()), base_init(true) {
+        this->set(func);
+        this->hidden(true);
+    }
+    template <typename T>
+    AnonymousFunc(const T &func) {
+        func_setter = [this, func]() {
+            this->set(func);
+            this->hidden(true);
+        };
+    }
+
+    void lockTo(Func &target) {
+        if (!base_init) {
+            this->data_w = target.data_w;
+            this->member_ = target.member_;
+            this->field_ = fieldNameTmp();
+            func_setter();
+        }
+        target.set(this->get());
+        this->free();
+    }
+};
 } // namespace WebCFace

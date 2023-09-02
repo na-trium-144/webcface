@@ -32,6 +32,9 @@ struct ClientData {
         //! 次のsend時に送信するデータ。
         std::unordered_map<std::string, T> data_send;
         std::unordered_map<std::string, T> data_send_prev;
+        //! trueのデータは送信しない
+        std::unordered_map<std::string, bool> data_send_hidden;
+
         //! 送信済みデータ&受信済みデータ
         /*! data_recv[member名][データ名] = 値
          */
@@ -68,6 +71,13 @@ struct ClientData {
         void setSend(const FieldBase &base, const T &data) {
             setSend(base.field_, data);
         }
+        void setHidden(const std::string &name, bool is_hidden);
+        void setHidden(const FieldBase &base, bool is_hidden) {
+            setHidden(base.field_, is_hidden);
+        }
+        bool isHidden(const std::string &name);
+        bool isHidden(const FieldBase &base) { return isHidden(base.field_); }
+
         //! 受信したデータをdata_recvにセット
         void setRecv(const std::string &from, const std::string &name,
                      const T &data);

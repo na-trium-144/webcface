@@ -41,6 +41,19 @@ class Value : protected Field, public EventTarget<Value> {
     double get() const { return tryGet().value_or(0); }
     operator double() const { return get(); }
 
+    //! このvalueを非表示にする
+    //! (他clientのentryに表示されなくする)
+    auto &hidden(bool hidden) {
+        setCheck();
+        dataLock()->value_store.setHidden(*this, hidden);
+        return *this;
+    }
+    //! 関数の設定を解除
+    auto &free() {
+        dataLock()->value_store.unsetRecv(*this);
+        return *this;
+    }
+
     auto &operator+=(double rhs) {
         this->set(this->get() + rhs);
         return *this;
@@ -137,6 +150,19 @@ class Text : protected Field, public EventTarget<Text> {
     }
     std::string get() const { return tryGet().value_or(""); }
     operator std::string() const { return get(); }
+
+    //! このtext非表示にする
+    //! (他clientのentryに表示されなくする)
+    auto &hidden(bool hidden) {
+        setCheck();
+        dataLock()->text_store.setHidden(*this, hidden);
+        return *this;
+    }
+    //! 関数の設定を解除
+    auto &free() {
+        dataLock()->text_store.unsetRecv(*this);
+        return *this;
+    }
 
     bool operator==(const std::string &rhs) const { return this->get() == rhs; }
     bool operator!=(const std::string &rhs) const { return this->get() != rhs; }

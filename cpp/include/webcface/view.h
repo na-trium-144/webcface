@@ -9,15 +9,28 @@
 
 namespace WebCFace {
 
-class ViewComponent : protected ViewComponentBase {
+class ViewComponent : public ViewComponentBase {
     std::weak_ptr<ClientData> data_w;
+
+    std::optional<AnonymousFunc> on_click_func_tmp;
 
   public:
     ViewComponent() = default;
     ViewComponent(const ViewComponentBase &vc,
                   const std::weak_ptr<ClientData> &data_w)
         : ViewComponentBase(vc), data_w(data_w) {}
-    explicit ViewComponent(ViewComponentType type) : type_(type) {}
+    explicit ViewComponent(ViewComponentType type) { type_ = type; }
+
+    ViewComponent &lockTmp(const std::weak_ptr<ClientData> &data_w,
+                           const std::string &field_id) {
+        if (on_click_func_tmp != std::nullopt) {
+            auto data = data_w.lock();
+            Func on_click{Field{data_w, data->self_member_name}, field_id};
+            on_click_func_tmp->lockTo(on_click);
+            onClick(on_click);
+        }
+        return *this;
+    }
 
     ViewComponentType type() const { return type_; }
     std::string text() const { return text_; }
@@ -28,14 +41,21 @@ class ViewComponent : protected ViewComponentBase {
     std::optional<Func> onClick() const {
         if (on_click_func_ != std::nullopt) {
             assert(data_w != std::nullptr && "ClientData not set");
-            return Func{data_w, on_click_func_->member_, on_click_func_->field_};
+            return Field{data_w, on_click_func_->member_,
+                         on_click_func_->field_};
         } else {
             return std::nullopt;
         }
     }
     ViewComponent &onClick(const Func &func) {
-        data_w = static_cast<Field>(func).data_w;
-        on_click_func_ = func;
+        // data_w = static_cast<Field>(func).data_w;
+        // on_click_func_ = static_cast<FieldBase>(func);
+        on_click_func_ = FieldBase{func.member().name(), func.name()};
+        return *this;
+    }
+    template <typename T>
+    ViewComponent &onClick(const T &func) {
+        on_click_func_tmp = func;
         return *this;
     }
     ViewColor textColor() const { return text_color_; }
@@ -56,14 +76,15 @@ inline ViewComponent text(const std::string &text) {
 inline ViewComponent newLine() {
     return ViewComponent(ViewComponentType::new_line);
 }
-inline ViewComponent button(const std::string &text, const Func &func) {
+template <typename T>
+ViewComponent button(const std::string &text, const T &func) {
     return ViewComponent(ViewComponentType::button).text(text).onClick(func);
 }
 } // namespace ViewComponents
 
 class ViewBuf : public std::stringbuf {
   public:
-    std::vector<ViewComponentBase> components;
+    std::vector<ViewComponent> components;
     int sync() override {
         std::string s = this->str();
         while (true) {
@@ -113,19 +134,20 @@ class View : protected Field, public EventTarget<View>, public std::ostream {
         return *this;
     }
 
-    ~View() { end(); }
+    ~View() { sync(); }
 
     using Field::member;
     using Field::name;
 
   private:
     //! 値をセットし、EventTargetを発動する
-    auto &set(const std::vector<ViewComponent> &v) {
-        setCheck();
+    auto &set(std::vector<ViewComponent> &v) {
         std::vector<ViewComponentBase> vb(v.size());
         for (std::size_t i = 0; i < v.size(); i++) {
-            vb[i] = v[i];
+            vb[i] = v[i].lockTmp(this->data_w,
+                                 this->name() + "_" + std::to_string(i));
         }
+        setCheck();
         dataLock()->view_store.setSend(*this, vb);
         triggerEvent();
         return *this;
@@ -136,9 +158,9 @@ class View : protected Field, public EventTarget<View>, public std::ostream {
     std::optional<std::vector<ViewComponent>> tryGet() const {
         auto vb = dataLock()->view_store.getRecv(*this);
         if (vb) {
-            std::optional<std::vector<ViewComponent>> v(vb.size());
-            for (std::size_t i = 0; i < vb.size(); i++) {
-                v->at(i) = vb[i];
+            std::optional<std::vector<ViewComponent>> v(vb->size());
+            for (std::size_t i = 0; i < vb->size(); i++) {
+                v->at(i) = ViewComponent{vb->at(i), this->data_w};
             }
             return v;
         } else {
@@ -147,6 +169,19 @@ class View : protected Field, public EventTarget<View>, public std::ostream {
     }
     std::vector<ViewComponent> get() const {
         return tryGet().value_or(std::vector<ViewComponent>{});
+    }
+
+    //! このviewを非表示にする
+    //! (他clientのentryに表示されなくする)
+    auto &hidden(bool hidden) {
+        setCheck();
+        dataLock()->view_store.setHidden(*this, hidden);
+        return *this;
+    }
+    //! 関数の設定を解除
+    auto &free() {
+        dataLock()->view_store.unsetRecv(*this);
+        return *this;
     }
 
     View &init() {
@@ -166,6 +201,11 @@ class View : protected Field, public EventTarget<View>, public std::ostream {
 
     View &operator<<(const ViewComponentBase &vc) {
         setCheck();
+        sb.components.push_back(ViewComponent{vc, this->data_w});
+        return *this;
+    }
+    View &operator<<(const ViewComponent &vc) {
+        setCheck();
         sb.components.push_back(vc);
         return *this;
     }
@@ -174,6 +214,6 @@ class View : protected Field, public EventTarget<View>, public std::ostream {
         *this << rhs;
         return *this;
     }
-    View &end() { return set(sb.components); }
+    View &sync() { return set(sb.components); }
 };
 } // namespace WebCFace
