@@ -1,10 +1,11 @@
 import { pack, unpack } from "./message.js";
 import * as types from "./message.js";
 import {
+  Field,
   FieldBase,
   ClientData,
   AsyncFuncResult,
-  FieldBaseWithEvent,
+  FieldWithEvent,
   eventType,
 } from "./clientData.js";
 import { Member, runFunc } from "./data.js";
@@ -14,12 +15,7 @@ import {
   log4jsLevels,
   log4jsLevelConvert,
 } from "./logger.js";
-import {
-  ViewComponentsDiff,
-  ViewComponent,
-  getViewDiff,
-  mergeViewDiff,
-} from "./view.js";
+import { getViewDiff, mergeViewDiff } from "./view.js";
 import websocket from "websocket";
 const w3cwebsocket = websocket.w3cwebsocket;
 import util from "util";
@@ -54,7 +50,7 @@ export class Client extends Member {
   }
   constructor(name: string, host = "127.0.0.1", port = 7530) {
     super(
-      new FieldBase(
+      new Field(
         new ClientData(name, (r: AsyncFuncResult, b: FieldBase, args: Val[]) =>
           this.callFunc(r, b, args)
         ),
@@ -130,9 +126,9 @@ export class Client extends Member {
         case types.kind.view: {
           const dataR = data as types.View;
           const current = this.data.viewStore.getRecv(dataR.m, dataR.f) || [];
-          const diff: ViewComponentsDiff = {};
+          const diff: types.ViewComponentsDiff = {};
           for (const k of Object.keys(dataR.d)) {
-            diff[k] = new ViewComponent(dataR.d[k]);
+            diff[k] = dataR.d[k];
           }
           mergeViewDiff(diff, dataR.l, current);
           this.data.viewStore.setRecv(dataR.m, dataR.f, current);
@@ -315,7 +311,7 @@ export class Client extends Member {
         const diff = getViewDiff(v, vPrev);
         const diffSend: types.ViewComponentsDiff = {};
         for (const k2 of Object.keys(diff)) {
-          diffSend[k2] = diff[k2].toMessage();
+          diffSend[k2] = diff[k2];
         }
         this.send(types.kind.view, { m: "", f: k, d: diffSend });
       }
@@ -361,7 +357,7 @@ export class Client extends Member {
     return [...this.data.valueStore.getMembers()].map((n) => this.member(n));
   }
   get membersChange() {
-    return new FieldBaseWithEvent<Member>(
+    return new FieldWithEvent<Member>(
       eventType.memberEntry(),
       this.data,
       "",

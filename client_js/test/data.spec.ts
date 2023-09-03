@@ -1,11 +1,11 @@
 import { assert } from "chai";
 import { Client } from "../src/client.js";
-import { FieldBase } from "../src/clientData.js";
+import { Field } from "../src/clientData.js";
 import { Member, Value, Text, Func } from "../src/data.js";
 import { argType } from "../src/message.js";
 
 describe("Data tests", function () {
-  const FieldBaseEqual = (f1: FieldBase, f2: FieldBase) => {
+  const FieldBaseEqual = (f1: Field, f2: Field) => {
     assert.strictEqual(f1.data, f2.data);
     assert.strictEqual(f1.member_, f2.member_);
     assert.strictEqual(f1.field_, f2.field_);
@@ -28,17 +28,17 @@ describe("Data tests", function () {
     });
     it("#value returns correct Value object", function () {
       const v = cli1.value("a");
-      FieldBaseEqual(v, new FieldBase(cli1.data, cli1.name, "a"));
+      FieldBaseEqual(v, new Field(cli1.data, cli1.name, "a"));
       assert.instanceOf(v, Value);
     });
     it("#text returns correct Text object", function () {
       const v = cli1.text("a");
-      FieldBaseEqual(v, new FieldBase(cli1.data, cli1.name, "a"));
+      FieldBaseEqual(v, new Field(cli1.data, cli1.name, "a"));
       assert.instanceOf(v, Text);
     });
     it("#func returns correct Func object", function () {
       const v = cli1.func("a");
-      FieldBaseEqual(v, new FieldBase(cli1.data, cli1.name, "a"));
+      FieldBaseEqual(v, new Field(cli1.data, cli1.name, "a"));
       assert.instanceOf(v, Func);
     });
     it("#values returns array of Value objects", function () {

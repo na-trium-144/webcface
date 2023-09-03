@@ -1,15 +1,18 @@
 import {
   FieldBase,
+  Field,
   AsyncFuncResult,
-  FieldBaseWithEvent,
+  FieldWithEvent,
   eventType,
+  ClientData,
 } from "./clientData.js";
 import { Val, FuncInfo, Arg } from "./funcInfo.js";
 import { argType } from "./message.js";
-import { ViewComponent } from "./view.js";
+import * as types from "./message.js";
+import { viewComponentTypes, viewColor } from "./view.js";
 
-export class Member extends FieldBase {
-  constructor(base: FieldBase, member = "") {
+export class Member extends Field {
+  constructor(base: Field, member = "") {
     super(base.data, member || base.member_, "");
   }
   get name() {
@@ -45,28 +48,28 @@ export class Member extends FieldBase {
     return this.data.funcStore.getEntry(this.member_).map((n) => this.func(n));
   }
   get valuesChange() {
-    return new FieldBaseWithEvent<Value>(
+    return new FieldWithEvent<Value>(
       eventType.valueEntry(this),
       this.data,
       this.member_
     );
   }
   get textsChange() {
-    return new FieldBaseWithEvent<Text>(
+    return new FieldWithEvent<Text>(
       eventType.textEntry(this),
       this.data,
       this.member_
     );
   }
   get funcsChange() {
-    return new FieldBaseWithEvent<Func>(
+    return new FieldWithEvent<Func>(
       eventType.funcEntry(this),
       this.data,
       this.member_
     );
   }
   get viewsChange() {
-    return new FieldBaseWithEvent<View>(
+    return new FieldWithEvent<View>(
       eventType.viewEntry(this),
       this.data,
       this.member_
@@ -74,8 +77,8 @@ export class Member extends FieldBase {
   }
 }
 
-export class Value extends FieldBaseWithEvent<Value> {
-  constructor(base: FieldBase, field = "") {
+export class Value extends FieldWithEvent<Value> {
+  constructor(base: Field, field = "") {
     super("", base.data, base.member_, field || base.field_, () =>
       this.tryGet()
     );
@@ -106,8 +109,8 @@ export class Value extends FieldBaseWithEvent<Value> {
     }
   }
 }
-export class Text extends FieldBaseWithEvent<Text> {
-  constructor(base: FieldBase, field = "") {
+export class Text extends FieldWithEvent<Text> {
+  constructor(base: Field, field = "") {
     super("", base.data, base.member_, field || base.field_, () =>
       this.tryGet()
     );
@@ -139,8 +142,8 @@ export class Text extends FieldBaseWithEvent<Text> {
   }
 }
 
-export class View extends FieldBaseWithEvent<View> {
-  constructor(base: FieldBase, field = "") {
+export class View extends FieldWithEvent<View> {
+  constructor(base: Field, field = "") {
     super("", base.data, base.member_, field || base.field_, () =>
       this.tryGet()
     );
@@ -160,19 +163,22 @@ export class View extends FieldBaseWithEvent<View> {
     if (v === null) {
       return [];
     } else {
-      return v;
+      return v.map((v) => new ViewComponent(v, this.data));
     }
   }
   set(data: ViewComponent[]) {
     if (this.data.viewStore.isSelf(this.member_)) {
-      this.data.viewStore.setSend(this.field_, data);
+      this.data.viewStore.setSend(
+        this.field_,
+        data.map((v) => v.toMessage())
+      );
     } else {
       throw new Error("Cannot set data to member other than self");
     }
   }
 }
-export class Logs extends FieldBaseWithEvent<Logs> {
-  constructor(base: FieldBase) {
+export class Logs extends FieldWithEvent<Logs> {
+  constructor(base: Field) {
     super("", base.data, base.member_, "", () => this.tryGet());
     this.eventType_ = eventType.logChange(this);
   }
@@ -225,8 +231,8 @@ export function runFunc(fi: FuncInfo, args: Val[]) {
   }
 }
 
-export class Func extends FieldBase {
-  constructor(base: FieldBase, field = "") {
+export class Func extends Field {
+  constructor(base: Field, field = "") {
     super(base.data, base.member_, field || base.field_);
   }
   get member() {
@@ -293,5 +299,88 @@ export class Func extends FieldBase {
       this.runImpl(r, args);
     });
     return r;
+  }
+}
+
+export const viewComponents = {
+  newLine: () => new ViewComponent(viewComponentTypes.newLine),
+};
+export class ViewComponent {
+  type_ = 0;
+  text_ = "";
+  on_click_: FieldBase | null = null;
+  text_color_ = 0;
+  bg_color_ = 0;
+  data: ClientData | null = null;
+  constructor(
+    arg: number | string | types.ViewComponent,
+    data: ClientData | null = null
+  ) {
+    if (typeof arg === "number") {
+      this.type_ = arg;
+    } else if (typeof arg === "string") {
+      this.type_ = viewComponentTypes.text;
+      this.text_ = "";
+    } else {
+      this.type_ = arg.t;
+      this.text_ = arg.x;
+      this.on_click_ =
+        arg.L != null && arg.l != null ? new FieldBase(arg.L, arg.l) : null;
+      this.text_color_ = arg.c;
+      this.bg_color_ = arg.b;
+    }
+    this.data = data;
+  }
+  toMessage(): types.ViewComponent {
+    return {
+      t: this.type,
+      x: this.text,
+      L: this.on_click_ == null ? null : this.on_click_.member_,
+      l: this.on_click_ == null ? null : this.on_click_.field_,
+      c: this.text_color_,
+      b: this.bg_color_,
+    };
+  }
+  get type() {
+    return this.type_;
+  }
+  get text() {
+    return this.text_;
+  }
+  set text(t: string) {
+    this.text_ = t;
+  }
+  get onClick(): Func | null {
+    if (this.on_click_ != null) {
+      if (this.data != null) {
+        return new Func(
+          new Field(this.data, this.on_click_.member_, this.on_click_.field_)
+        );
+      } else {
+        throw new Error("cannot get onClick: ClientData not set");
+      }
+    } else {
+      return null;
+    }
+  }
+  set onClick(func: Func) {
+    // if(func instanceof AnonymousFunc){
+    // }else if (func instanceof Func) {
+    this.on_click_ = func;
+    // }else{
+    //   this.onClick(new AnonymousFunc(func));
+    // }
+  }
+  get textColor() {
+    return this.text_color_;
+  }
+  set textColor(c: number) {
+    this.text_color_ = c;
+  }
+  get bgColor() {
+    return this.bg_color_;
+  }
+  set bgColor(c: number) {
+    this.bg_color_ = c;
   }
 }

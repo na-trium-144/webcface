@@ -1,46 +1,42 @@
-import * as types from "./message.js";
+import { ViewComponent, ViewComponentsDiff } from "./message.js";
+import isEqual from "lodash.isequal";
+
 export const viewComponentTypes = {
   text: 0,
   newLine: 1,
 };
-export const viewComponents = {
-  newLine: () => new ViewComponent(viewComponentTypes.newLine),
+export const viewColor = {
+  inherit: 0,
+  black: 1,
+  white: 2,
+  // slate : 3,
+  gray: 4,
+  // zinc : 5,
+  // neutral : 6,
+  // stone : 7,
+  red: 8,
+  orange: 9,
+  // amber : 10,
+  yellow: 11,
+  // lime : 12,
+  green: 13,
+  // emerald : 14,
+  teal: 15,
+  cyan: 16,
+  // sky : 17,
+  blue: 18,
+  indigo: 19,
+  // violet : 20,
+  purple: 21,
+  // fuchsia : 22,
+  pink: 23,
+  // rose : 24,
 };
-export type ViewComponentsDiff = { [key in string]: ViewComponent };
-export class ViewComponent {
-  type_ = 0;
-  text_ = "";
-  constructor(arg: number | string | types.ViewComponent) {
-    if (typeof arg === "number") {
-      this.type_ = arg;
-    } else if (typeof arg === "string") {
-      this.type_ = viewComponentTypes.text;
-      this.text_ = "";
-    } else {
-      this.type_ = arg.t;
-      this.text_ = arg.x;
-    }
-  }
-  toMessage(): types.ViewComponent {
-    return { t: this.type, x: this.text };
-  }
-  equalTo(vc: ViewComponent | undefined) {
-    return (
-      vc != undefined && this.type_ === vc.type_ && this.text_ === vc.text_
-    );
-  }
-  get type() {
-    return this.type_;
-  }
-  get text() {
-    return this.text_;
-  }
-}
 
 export function getViewDiff(current: ViewComponent[], prev: ViewComponent[]) {
   const diff: ViewComponentsDiff = {};
   for (let i = 0; i < current.length; i++) {
-    if (!current[i].equalTo(prev[i])) {
+    if (!isEqual(current[i], prev[i])) {
       diff[i] = current[i];
     }
   }

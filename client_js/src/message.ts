@@ -64,6 +64,10 @@ export type ViewComponentsDiff = {[key in string]: ViewComponent};
 export interface ViewComponent {
   t: number;
   x: string;
+  L: string | null;
+  l: string | null;
+  c: number;
+  b: number;
 }
 export interface View {
   m: string;

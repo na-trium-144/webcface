@@ -1,15 +1,21 @@
 import { Val, FuncInfo } from "./funcInfo.js";
 import { EventEmitter } from "eventemitter3";
 import { LogLine } from "./logger.js";
-import { ViewComponent } from "./view.js";
+import { ViewComponent } from "./message.js";
+
 export class FieldBase {
-  data: ClientData;
   member_: string;
   field_: string;
-  constructor(data: ClientData, member: string, field = "") {
-    this.data = data;
+  constructor(member: string, field = "") {
     this.member_ = member;
     this.field_ = field;
+  }
+}
+export class Field extends FieldBase {
+  data: ClientData;
+  constructor(data: ClientData, member: string, field = "") {
+    super(member, field);
+    this.data = data;
   }
 }
 
@@ -28,7 +34,7 @@ export const eventType = {
   logChange: (b: FieldBase) => JSON.stringify(["logChange", b.member_]),
 };
 type EventListener<TargetType> = (target: TargetType) => void;
-export class FieldBaseWithEvent<TargetType> extends FieldBase {
+export class FieldWithEvent<TargetType> extends Field {
   eventType_: string;
   onAppend: () => void;
   constructor(
@@ -266,7 +272,7 @@ export class AsyncFuncResult extends FieldBase {
   started: Promise<boolean>;
   result: Promise<Val>;
   constructor(callerId: number, caller: string, base: FieldBase) {
-    super(base.data, base.member_, base.field_);
+    super(base.member_, base.field_);
     this.callerId = callerId;
     this.caller = caller;
     this.started = new Promise((res) => {
