@@ -273,24 +273,24 @@ export class Func extends Field {
   }
   runImpl(r: AsyncFuncResult, args: Val[]) {
     const funcInfo = this.data.funcStore.getRecv(this.member_, this.field_);
-    if (funcInfo != null) {
-      r.resolveStarted(true);
-      try {
-        if (funcInfo.funcImpl != undefined) {
+    if (this.data.isSelf(this.member_)) {
+      if (funcInfo != null && funcInfo.funcImpl != undefined) {
+        r.resolveStarted(true);
+        try {
           // funcImplがpromise返す場合もそのままresolveにぶちこめばよいはず
           let res: Val | Promise<Val> | void = runFunc(funcInfo, args);
           if (res === undefined) {
             res = "";
           }
           r.resolveResult(res);
-        } else {
-          this.data.callFunc(r, this, args);
+        } catch (e: any) {
+          r.rejectResult(e);
         }
-      } catch (e: any) {
-        r.rejectResult(e);
+      } else {
+        r.resolveStarted(false);
       }
     } else {
-      r.resolveStarted(false);
+      this.data.callFunc(r, this, args);
     }
   }
   runAsync(...args: Val[]) {
@@ -304,6 +304,13 @@ export class Func extends Field {
 
 export const viewComponents = {
   newLine: () => new ViewComponent(viewComponentTypes.newLine),
+  text: (t: string) => new ViewComponent(t),
+  button: (t: string, f: Func) => {
+    const v = new ViewComponent(viewComponentTypes.button);
+    v.text = t;
+    v.onClick = f;
+    return v;
+  },
 };
 export class ViewComponent {
   type_ = 0;
@@ -363,6 +370,7 @@ export class ViewComponent {
       return null;
     }
   }
+  // todo: 関数を直接渡す、anonymousfunc実装
   set onClick(func: Func) {
     // if(func instanceof AnonymousFunc){
     // }else if (func instanceof Func) {

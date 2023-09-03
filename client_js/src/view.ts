@@ -4,6 +4,7 @@ import isEqual from "lodash.isequal";
 export const viewComponentTypes = {
   text: 0,
   newLine: 1,
+  button: 2,
 };
 export const viewColor = {
   inherit: 0,

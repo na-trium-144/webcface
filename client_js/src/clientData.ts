@@ -96,6 +96,9 @@ export class ClientData {
     this.eventEmitter = new EventEmitter();
     this.logQueue = [];
   }
+  isSelf(member: string) {
+    return this.selfMemberName === member;
+  }
 }
 
 class SyncDataStore<T> {

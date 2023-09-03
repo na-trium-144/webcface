@@ -12,7 +12,7 @@ import { TextCard } from "./textCard";
 import { FuncCard } from "./funcCard";
 import { LogCard } from "./logCard";
 import { ViewCard } from "./viewCard";
-import { useForceUpdate} from "../libs/forceUpdate";
+import { useForceUpdate } from "../libs/forceUpdate";
 import {
   MemberValues,
   MemberTexts,
@@ -22,7 +22,7 @@ import {
 import * as cardKey from "../libs/cardKey";
 
 interface Props {
-  client: {current: Client};
+  client: { current: Client | null };
   isOpened: (key: string) => boolean;
   openedOrder: (key: string) => number;
   moveOrder: (key: string) => void;
@@ -36,9 +36,9 @@ export function LayoutMain(props: Props) {
       m.valuesChange.on(update);
       m.viewsChange.on(update);
     };
-    props.client.current.membersChange.on(onMembersChange);
+    props.client.current?.membersChange.on(onMembersChange);
     return () => {
-      props.client.current.membersChange.off(onMembersChange);
+      props.client.current?.membersChange.off(onMembersChange);
     };
   }, [props.client, update]);
 
@@ -126,7 +126,8 @@ export function LayoutMain(props: Props) {
       compactType={null}
       draggableHandle=".MyCardHandle"
     >
-      {props.client.current.members()
+      {props.client.current
+        ?.members()
         .reduce((prev, m) => prev.concat(m.values()), [] as Value[])
         .map((v) => {
           const key = cardKey.value(v.member.name, v.name);
@@ -146,7 +147,8 @@ export function LayoutMain(props: Props) {
           }
           return null;
         })}
-        {props.client.current.members()
+      {props.client.current
+        ?.members()
         .reduce((prev, m) => prev.concat(m.views()), [] as View[])
         .map((v) => {
           const key = cardKey.view(v.member.name, v.name);
@@ -166,7 +168,7 @@ export function LayoutMain(props: Props) {
           }
           return null;
         })}
-      {props.client.current.members().map((m) => {
+      {props.client.current?.members().map((m) => {
         const key = cardKey.text(m.name);
         if (props.isOpened(key)) {
           return (
@@ -182,7 +184,7 @@ export function LayoutMain(props: Props) {
         }
         return null;
       })}
-      {props.client.current.members().map((m) => {
+      {props.client.current?.members().map((m) => {
         const key = cardKey.func(m.name);
         if (props.isOpened(key)) {
           return (
@@ -198,7 +200,7 @@ export function LayoutMain(props: Props) {
         }
         return null;
       })}
-      {props.client.current.members().map((m) => {
+      {props.client.current?.members().map((m) => {
         const key = cardKey.log(m.name);
         if (props.isOpened(key)) {
           return (

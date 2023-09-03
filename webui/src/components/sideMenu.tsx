@@ -5,7 +5,7 @@ import * as cardKey from "../libs/cardKey";
 import { useForceUpdate } from "../libs/forceUpdate";
 
 interface Props {
-  client: {current: Client};
+  client: { current: Client | null };
   isOpened: (key: string) => boolean;
   toggleOpened: (key: string) => void;
 }
@@ -17,14 +17,14 @@ export function SideMenu(props: Props) {
       m.valuesChange.on(update);
       m.viewsChange.on(update);
     };
-    props.client.current.membersChange.on(onMembersChange);
+    props.client.current?.membersChange.on(onMembersChange);
     return () => {
-      props.client.current.membersChange.off(onMembersChange);
+      props.client.current?.membersChange.off(onMembersChange);
     };
   }, [props.client, update]);
   return (
     <>
-      {props.client.current.members().map((m, mi) => (
+      {props.client.current?.members().map((m, mi) => (
         <SideMenuMember
           key={mi}
           member={m}

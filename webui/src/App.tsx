@@ -12,10 +12,13 @@ import {
 } from "./libs/stateTypes";
 
 export default function App() {
-  const client = useRef<Client>(new Client("a"));
+  const client = useRef<Client | null>(null);
+  useEffect(() => {
+    client.current = new Client("a");
+  }, []);
   useEffect(() => {
     const i = setInterval(() => {
-      client.current.sync();
+      client.current?.sync();
     }, 100);
     return () => clearInterval(i);
   }, [client]);
@@ -58,7 +61,7 @@ export default function App() {
       </nav>
       <main className="p-2">
         <LayoutMain
-        client={client}
+          client={client}
           isOpened={isOpened}
           openedOrder={openedOrder}
           moveOrder={moveOrder}
