@@ -4,7 +4,7 @@
 #include <future>
 #include <memory>
 #include <stdexcept>
-#include "field_base.h"
+#include "field.h"
 #include "common/val.h"
 #include "member.h"
 
@@ -23,7 +23,7 @@ struct FuncNotFound : public std::runtime_error {
  *
  * リモートから呼び出しメッセージが送られてきた時非同期で実行して結果を送り返すのにもこれを利用する
  */
-class AsyncFuncResult : FieldBase {
+class AsyncFuncResult : Field {
     //! 通し番号
     //! コンストラクタで設定する。実際はFuncResultStoreのvectorのindex
     int caller_id;
@@ -39,8 +39,8 @@ class AsyncFuncResult : FieldBase {
     friend class Client;
 
     AsyncFuncResult(int caller_id, const std::string &caller,
-                    const FieldBase &base)
-        : FieldBase(base), caller_id(caller_id), caller(caller),
+                    const Field &base)
+        : Field(base), caller_id(caller_id), caller(caller),
           started_(std::make_shared<std::promise<bool>>()),
           result_(std::make_shared<std::promise<ValAdaptor>>()),
           started(started_->get_future()), result(result_->get_future()) {}

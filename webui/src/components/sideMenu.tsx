@@ -1,24 +1,35 @@
 import { useState, useEffect } from "react";
-import { Client, Member, Value, Text, Func } from "webcface";
+import { Client, Member, Value, View, Text, Func } from "webcface";
 import { MemberValues, MemberTexts, MemberFuncs } from "../libs/stateTypes";
 import * as cardKey from "../libs/cardKey";
+import { useForceUpdate } from "../libs/forceUpdate";
 
 interface Props {
-  members: Member[];
-  memberValues: MemberValues[];
+  client: { current: Client | null };
   isOpened: (key: string) => boolean;
   toggleOpened: (key: string) => void;
 }
 export function SideMenu(props: Props) {
+  const update = useForceUpdate();
+  useEffect(() => {
+    const onMembersChange = (m: Member) => {
+      update();
+      m.valuesChange.on(update);
+      m.viewsChange.on(update);
+    };
+    props.client.current?.membersChange.on(onMembersChange);
+    return () => {
+      props.client.current?.membersChange.off(onMembersChange);
+    };
+  }, [props.client, update]);
   return (
     <>
-      {props.members.map((m, mi) => (
+      {props.client.current?.members().map((m, mi) => (
         <SideMenuMember
           key={mi}
           member={m}
-          values={
-            props.memberValues.find((v) => v.name === m.name)?.values || []
-          }
+          values={m.values()}
+          views={m.views()}
           isOpened={props.isOpened}
           toggleOpened={props.toggleOpened}
         />
@@ -30,6 +41,7 @@ export function SideMenu(props: Props) {
 interface MemberProps {
   member: Member;
   values: Value[];
+  views: View[];
   isOpened: (key: string) => boolean;
   toggleOpened: (key: string) => void;
 }
@@ -51,6 +63,17 @@ function SideMenuMember(props: MemberProps) {
               active={props.isOpened(cardKey.value(props.member.name, v.name))}
               onClick={() =>
                 props.toggleOpened(cardKey.value(props.member.name, v.name))
+              }
+            />
+          </li>
+        ))}
+        {props.views.map((v, vi) => (
+          <li key={vi}>
+            <SideMenuButton2
+              name={v.name}
+              active={props.isOpened(cardKey.view(props.member.name, v.name))}
+              onClick={() =>
+                props.toggleOpened(cardKey.view(props.member.name, v.name))
               }
             />
           </li>

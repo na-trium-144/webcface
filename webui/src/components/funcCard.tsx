@@ -1,16 +1,24 @@
 import { useState, useEffect, useRef } from "react";
 import { Card } from "./card";
-import { Func, Arg, argType } from "webcface";
+import { useForceUpdate } from "../libs/forceUpdate";
+import { Member, Func, Arg, argType } from "webcface";
+import { useFuncResult } from "./funcResult";
 
 interface Props {
-  name: string;
-  func: Func[];
+  member: Member;
 }
 export function FuncCard(props: Props) {
+  const update = useForceUpdate();
+  useEffect(() => {
+    props.member.funcsChange.on(update);
+    return () => {
+      props.member.funcsChange.off(update);
+    };
+  }, [props.member, update]);
   return (
-    <Card title={`${props.name} Functions`}>
+    <Card title={`${props.member.name} Functions`}>
       <ul className="list-none">
-        {props.func.map((v) => (
+        {props.member.funcs().map((v) => (
           <li key={v.name}>
             <FuncLine func={v} />
           </li>
@@ -124,9 +132,11 @@ function ArgInput(props: ArgProps) {
     }
   }
 }
+
 function FuncLine(props: { func: Func }) {
   const [args, setArgs] = useState<(string | number | boolean)[]>([]);
   const [errors, setErrors] = useState<boolean[]>([]);
+  const { addResult } = useFuncResult();
   useEffect(() => {
     if (args.length < props.func.args.length) {
       setArgs(
@@ -217,11 +227,7 @@ function FuncLine(props: { func: Func }) {
               active:shadow-none active:bg-green-300 ")
         }
         disabled={errors.includes(true)}
-        onClick={() => {
-          // todo: 引数
-          console.log(args);
-          props.func.runAsync(...args);
-        }}
+        onClick={() => addResult(props.func.runAsync(...args))}
       >
         Run
       </button>

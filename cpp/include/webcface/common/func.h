@@ -121,7 +121,7 @@ inline auto &operator<<(std::basic_ostream<char> &os, const Arg &arg) {
             if (j > 0) {
                 os << ", ";
             }
-            os << arg.option()[j];
+            os << static_cast<std::string>(arg.option()[j]);
         }
         os << "}";
     }
@@ -172,7 +172,7 @@ struct FuncInfo {
 //! 関数を呼び出すのに必要なデータ。client_data->client->server->clientと送られる
 struct FuncCall {
     int caller_id;
-    std::string caller, member, name;
+    std::string caller, member, field;
     std::vector<WebCFace::ValAdaptor> args;
 };
 

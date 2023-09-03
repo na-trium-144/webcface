@@ -22,8 +22,8 @@ int main() {
         std::this_thread::yield();
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
         c.sync();
-        std::cout << c.logs().get().size() << std::endl;
-        for (const auto &l : c.logs().get()) {
+        std::cout << c.log().get().size() << std::endl;
+        for (const auto &l : c.log().get()) {
             std::cout << "saved log: " << l.message << std::endl;
         }
     }

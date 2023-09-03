@@ -1,23 +1,19 @@
-import { pack, unpack } from "./message.js";
-import * as types from "./message.js";
-import {
-  FieldBase,
-  ClientData,
-  AsyncFuncResult,
-  FieldBaseWithEvent,
-  eventType,
-} from "./clientData.js";
-import { Member, runFunc } from "./data.js";
-import { Val } from "./funcInfo.js";
+import * as Message from "./message.js";
+import { ClientData } from "./clientData.js";
+import { Member } from "./member.js";
+import { AsyncFuncResult, runFunc, Val } from "./func.js";
 import {
   log4jsLoggingEvent,
   log4jsLevels,
   log4jsLevelConvert,
 } from "./logger.js";
+import { getViewDiff, mergeViewDiff } from "./view.js";
 import websocket from "websocket";
 const w3cwebsocket = websocket.w3cwebsocket;
 import util from "util";
 import { getLogger } from "@log4js-node/log4js-api";
+import { Field, FieldBase } from "./field.js";
+import { FieldWithEvent, eventType } from "./event.js";
 
 export class Client extends Member {
   ws: null | websocket.w3cwebsocket = null;
@@ -48,7 +44,7 @@ export class Client extends Member {
   }
   constructor(name: string, host = "127.0.0.1", port = 7530) {
     super(
-      new FieldBase(
+      new Field(
         new ClientData(name, (r: AsyncFuncResult, b: FieldBase, args: Val[]) =>
           this.callFunc(r, b, args)
         ),
@@ -60,15 +56,15 @@ export class Client extends Member {
     this.port = port;
     this.reconnect();
   }
-  send(kind: number, obj: types.AnyMessage) {
-    this.ws?.send(pack(kind, obj));
+  send(kind: number, obj: Message.AnyMessage) {
+    this.ws?.send(Message.pack(kind, obj));
   }
   callFunc(r: AsyncFuncResult, b: FieldBase, args: Val[]) {
-    this.send(types.kind.call, {
+    this.send(Message.kind.call, {
       i: r.callerId,
       c: r.caller,
       r: b.member_,
-      n: b.field_,
+      f: b.field_,
       a: args,
     });
   }
@@ -105,24 +101,37 @@ export class Client extends Member {
       this.connected = true;
     };
     ws.onmessage = (event) => {
-      const [kind, data] = unpack(event.data as ArrayBuffer);
+      const [kind, data] = Message.unpack(event.data as ArrayBuffer);
       switch (kind) {
-        case types.kind.value: {
-          const dataR = data as types.Data<number>;
-          this.data.valueStore.setRecv(dataR.m, dataR.n, dataR.d);
-          const target = this.member(dataR.m).value(dataR.n);
+        case Message.kind.value: {
+          const dataR = data as Message.Data<number>;
+          this.data.valueStore.setRecv(dataR.m, dataR.f, dataR.d);
+          const target = this.member(dataR.m).value(dataR.f);
           this.data.eventEmitter.emit(eventType.valueChange(target), target);
           break;
         }
-        case types.kind.text: {
-          const dataR = data as types.Data<string>;
-          this.data.textStore.setRecv(dataR.m, dataR.n, dataR.d);
-          const target = this.member(dataR.m).text(dataR.n);
+        case Message.kind.text: {
+          const dataR = data as Message.Data<string>;
+          this.data.textStore.setRecv(dataR.m, dataR.f, dataR.d);
+          const target = this.member(dataR.m).text(dataR.f);
           this.data.eventEmitter.emit(eventType.textChange(target), target);
           break;
         }
-        case types.kind.log: {
-          const dataR = data as types.Log;
+        case Message.kind.view: {
+          const dataR = data as Message.View;
+          const current = this.data.viewStore.getRecv(dataR.m, dataR.f) || [];
+          const diff: Message.ViewComponentsDiff = {};
+          for (const k of Object.keys(dataR.d)) {
+            diff[k] = dataR.d[k];
+          }
+          mergeViewDiff(diff, dataR.l, current);
+          this.data.viewStore.setRecv(dataR.m, dataR.f, current);
+          const target = this.member(dataR.m).view(dataR.f);
+          this.data.eventEmitter.emit(eventType.viewChange(target), target);
+          break;
+        }
+        case Message.kind.log: {
+          const dataR = data as Message.Log;
           for (const ll of dataR.l) {
             this.data.logStore.addRecv(dataR.m, {
               level: ll.v,
@@ -134,14 +143,14 @@ export class Client extends Member {
           this.data.eventEmitter.emit(eventType.logChange(target), target);
           break;
         }
-        case types.kind.call: {
+        case Message.kind.call: {
           setTimeout(() => {
-            const dataR = data as types.Call;
+            const dataR = data as Message.Call;
             const s = this.data.funcStore.dataRecv.get(
               this.data.selfMemberName
             );
             const sendResult = (res: Val | void) => {
-              this.send(types.kind.callResult, {
+              this.send(Message.kind.callResult, {
                 i: dataR.i,
                 c: dataR.c,
                 e: false,
@@ -149,7 +158,7 @@ export class Client extends Member {
               });
             };
             const sendError = (e: any) => {
-              this.send(types.kind.callResult, {
+              this.send(Message.kind.callResult, {
                 i: dataR.i,
                 c: dataR.c,
                 e: true,
@@ -157,14 +166,14 @@ export class Client extends Member {
               });
             };
             const sendResponse = (s: boolean) => {
-              this.send(types.kind.callResponse, {
+              this.send(Message.kind.callResponse, {
                 i: dataR.i,
                 c: dataR.c,
                 s: s,
               });
             };
             if (s) {
-              const m = s.get(dataR.n);
+              const m = s.get(dataR.f);
               if (m) {
                 sendResponse(true);
                 try {
@@ -188,14 +197,14 @@ export class Client extends Member {
           });
           break;
         }
-        case types.kind.callResponse: {
-          const dataR = data as types.CallResponse;
+        case Message.kind.callResponse: {
+          const dataR = data as Message.CallResponse;
           const r = this.data.funcResultStore.getResult(dataR.i);
           r.resolveStarted(dataR.s);
           break;
         }
-        case types.kind.callResult: {
-          const dataR = data as types.CallResult;
+        case Message.kind.callResult: {
+          const dataR = data as Message.CallResult;
           const r = this.data.funcResultStore.getResult(dataR.i);
           if (dataR.e) {
             r.rejectResult(new Error(String(dataR.r)));
@@ -204,8 +213,8 @@ export class Client extends Member {
           }
           break;
         }
-        case types.kind.syncInit: {
-          const dataR = data as types.SyncInit;
+        case Message.kind.syncInit: {
+          const dataR = data as Message.SyncInit;
           this.data.valueStore.addMember(dataR.m);
           this.data.textStore.addMember(dataR.m);
           this.data.funcStore.addMember(dataR.m);
@@ -213,24 +222,31 @@ export class Client extends Member {
           this.data.eventEmitter.emit(eventType.memberEntry(), target);
           break;
         }
-        case types.kind.entry + types.kind.value: {
-          const dataR = data as types.Entry;
-          this.data.valueStore.setEntry(dataR.m, dataR.n);
-          const target = this.member(dataR.m).value(dataR.n);
+        case Message.kind.entry + Message.kind.value: {
+          const dataR = data as Message.Entry;
+          this.data.valueStore.setEntry(dataR.m, dataR.f);
+          const target = this.member(dataR.m).value(dataR.f);
           this.data.eventEmitter.emit(eventType.valueEntry(target), target);
           break;
         }
-        case types.kind.entry + types.kind.text: {
-          const dataR = data as types.Entry;
-          this.data.textStore.setEntry(dataR.m, dataR.n);
-          const target = this.member(dataR.m).text(dataR.n);
+        case Message.kind.entry + Message.kind.text: {
+          const dataR = data as Message.Entry;
+          this.data.textStore.setEntry(dataR.m, dataR.f);
+          const target = this.member(dataR.m).text(dataR.f);
           this.data.eventEmitter.emit(eventType.textEntry(target), target);
           break;
         }
-        case types.kind.funcInfo: {
-          const dataR = data as types.FuncInfo;
-          this.data.funcStore.setEntry(dataR.m, dataR.n);
-          this.data.funcStore.setRecv(dataR.m, dataR.n, {
+        case Message.kind.entry + Message.kind.view: {
+          const dataR = data as Message.Entry;
+          this.data.viewStore.setEntry(dataR.m, dataR.f);
+          const target = this.member(dataR.m).view(dataR.f);
+          this.data.eventEmitter.emit(eventType.viewEntry(target), target);
+          break;
+        }
+        case Message.kind.funcInfo: {
+          const dataR = data as Message.FuncInfo;
+          this.data.funcStore.setEntry(dataR.m, dataR.f);
+          this.data.funcStore.setRecv(dataR.m, dataR.f, {
             returnType: dataR.r,
             args: dataR.a.map((a) => ({
               name: a.n,
@@ -241,7 +257,7 @@ export class Client extends Member {
               option: a.o,
             })),
           });
-          const target = this.member(dataR.m).func(dataR.n);
+          const target = this.member(dataR.m).func(dataR.f);
           this.data.eventEmitter.emit(eventType.funcEntry(target), target);
           break;
         }
@@ -262,36 +278,51 @@ export class Client extends Member {
   sync() {
     if (this.connected && this.ws != null) {
       if (!this.syncInit) {
-        this.send(types.kind.syncInit, { m: this.data.selfMemberName });
+        this.send(Message.kind.syncInit, { m: this.data.selfMemberName });
         this.syncInit = true;
       }
 
       for (const [k, v] of this.data.valueStore.transferSend().entries()) {
-        this.send(types.kind.value, { m: "", n: k, d: v });
+        this.send(Message.kind.value, { m: "", f: k, d: v });
       }
       for (const [k, v] of this.data.valueStore.transferReq().entries()) {
         for (const [k2, v2] of v.entries()) {
-          this.send(types.kind.req + types.kind.value, { f: k, n: k2 });
+          this.send(Message.kind.req + Message.kind.value, { m: k, f: k2 });
         }
       }
 
       for (const [k, v] of this.data.textStore.transferSend().entries()) {
-        this.send(types.kind.text, { m: "", n: k, d: v });
+        this.send(Message.kind.text, { m: "", f: k, d: v });
       }
       for (const [k, v] of this.data.textStore.transferReq().entries()) {
         for (const [k2, v2] of v.entries()) {
-          this.send(types.kind.req + types.kind.text, { f: k, n: k2 });
+          this.send(Message.kind.req + Message.kind.text, { m: k, f: k2 });
+        }
+      }
+      const viewPrev = this.data.viewStore.getSendPrev();
+      for (const [k, v] of this.data.viewStore.transferSend().entries()) {
+        const vPrev = viewPrev.get(k) || [];
+        const diff = getViewDiff(v, vPrev);
+        const diffSend: Message.ViewComponentsDiff = {};
+        for (const k2 of Object.keys(diff)) {
+          diffSend[k2] = diff[k2];
+        }
+        this.send(Message.kind.view, { m: "", f: k, d: diffSend });
+      }
+      for (const [k, v] of this.data.viewStore.transferReq().entries()) {
+        for (const [k2, v2] of v.entries()) {
+          this.send(Message.kind.req + Message.kind.view, { m: k, f: k2 });
         }
       }
 
       for (const [k, v] of this.data.funcStore.transferSend().entries()) {
-        this.send(types.kind.funcInfo, {
+        this.send(Message.kind.funcInfo, {
           m: "",
-          n: k,
+          f: k,
           r: v.returnType,
           a: v.args.map((a) => ({
             n: a.name || "",
-            t: a.type != undefined ? a.type : types.argType.none_,
+            t: a.type != undefined ? a.type : Message.argType.none_,
             i: a.init != undefined ? a.init : null,
             m: a.min != undefined ? a.min : null,
             x: a.max != undefined ? a.max : null,
@@ -300,16 +331,16 @@ export class Client extends Member {
         });
       }
 
-      const logSend: types.LogLine[] = [];
+      const logSend: Message.LogLine[] = [];
       for (const l of this.data.logQueue) {
         logSend.push({ v: l.level, t: l.time.getTime(), m: l.message });
       }
       if (logSend.length > 0) {
         this.data.logQueue = [];
-        this.send(types.kind.log, { m: "", l: logSend });
+        this.send(Message.kind.log, { m: "", l: logSend });
       }
       for (const [k, v] of this.data.logStore.transferReq().entries()) {
-        this.send(types.kind.logReq, { m: k });
+        this.send(Message.kind.logReq, { m: k });
       }
     }
   }
@@ -320,7 +351,7 @@ export class Client extends Member {
     return [...this.data.valueStore.getMembers()].map((n) => this.member(n));
   }
   get membersChange() {
-    return new FieldBaseWithEvent<Member>(
+    return new FieldWithEvent<Member>(
       eventType.memberEntry(),
       this.data,
       "",
@@ -338,7 +369,10 @@ export class Client extends Member {
         ) =>
         (logEvent: log4jsLoggingEvent) => {
           const ll = {
-            level: levels != undefined ? log4jsLevelConvert(logEvent.level, levels) : 2,
+            level:
+              levels != undefined
+                ? log4jsLevelConvert(logEvent.level, levels)
+                : 2,
             time: new Date(logEvent.startTime),
             message: util.format(...logEvent.data),
           };

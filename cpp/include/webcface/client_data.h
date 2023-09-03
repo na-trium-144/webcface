@@ -11,8 +11,9 @@
 #include "func_result.h"
 #include "common/func.h"
 #include "common/queue.h"
+#include "common/view.h"
 #include "event_key.h"
-#include "field_base.h"
+#include "field.h"
 #include "logger.h"
 
 namespace WebCFace {
@@ -30,6 +31,10 @@ struct ClientData {
         std::mutex mtx;
         //! 次のsend時に送信するデータ。
         std::unordered_map<std::string, T> data_send;
+        std::unordered_map<std::string, T> data_send_prev;
+        //! trueのデータは送信しない
+        std::unordered_map<std::string, bool> data_send_hidden;
+
         //! 送信済みデータ&受信済みデータ
         /*! data_recv[member名][データ名] = 値
          */
@@ -53,7 +58,7 @@ struct ClientData {
             req_send;
 
         std::string self_member_name;
-        bool isSelf(const std::string &member) {
+        bool isSelf(const std::string &member) const {
             return member == self_member_name;
         }
 
@@ -66,6 +71,13 @@ struct ClientData {
         void setSend(const FieldBase &base, const T &data) {
             setSend(base.field_, data);
         }
+        void setHidden(const std::string &name, bool is_hidden);
+        void setHidden(const FieldBase &base, bool is_hidden) {
+            setHidden(base.field_, is_hidden);
+        }
+        bool isHidden(const std::string &name);
+        bool isHidden(const FieldBase &base) { return isHidden(base.field_); }
+
         //! 受信したデータをdata_recvにセット
         void setRecv(const std::string &from, const std::string &name,
                      const T &data);
@@ -100,6 +112,7 @@ struct ClientData {
 
         //! data_sendを返し、data_sendをクリア
         std::unordered_map<std::string, T> transferSend();
+        std::unordered_map<std::string, T> getSendPrev();
         //! req_sendを返し、req_sendをクリア
         std::unordered_map<std::string, std::unordered_map<std::string, bool>>
         transferReq();
@@ -111,7 +124,7 @@ struct ClientData {
         std::unordered_map<std::string, bool> req;
         std::unordered_map<std::string, bool> req_send;
         std::string self_member_name;
-        bool isSelf(const std::string &member) {
+        bool isSelf(const std::string &member) const {
             return member == self_member_name;
         }
 
@@ -136,7 +149,7 @@ struct ClientData {
       public:
         //! 新しいcaller_idを振って新しいAsyncFuncResultを生成しそれを返す
         AsyncFuncResult &addResult(const std::string &caller,
-                                   const FieldBase &base);
+                                   const Field &base);
         //! caller_idに対応するresultを返す
         AsyncFuncResult &getResult(int caller_id);
     };
@@ -163,7 +176,7 @@ struct ClientData {
 
     explicit ClientData(const std::string &name)
         : self_member_name(name), value_store(name), text_store(name),
-          func_store(name), log_store(name),
+          func_store(name), view_store(name), log_store(name),
           logger_sink(std::make_shared<LoggerSink>()) {
         std::vector<spdlog::sink_ptr> sinks = {logger_sink, stderr_sink};
         logger =
@@ -175,13 +188,14 @@ struct ClientData {
 
     //! Client自身の名前
     std::string self_member_name;
-    bool isSelf(const FieldBase &base) {
+    bool isSelf(const FieldBase &base) const {
         return base.member_ == self_member_name;
     }
 
     SyncDataStore<double> value_store;
     SyncDataStore<std::string> text_store;
     SyncDataStore<FuncInfo> func_store;
+    SyncDataStore<std::vector<ViewComponentBase>> view_store;
     LogStore log_store;
     FuncResultStore func_result_store;
 

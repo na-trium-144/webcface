@@ -1,6 +1,6 @@
 #pragma once
 #include <cassert>
-#include "field_base.h"
+#include "field.h"
 
 namespace WebCFace {
 
@@ -13,21 +13,23 @@ enum class EventType {
     value_change,
     text_change,
     log_change,
+    view_entry,
+    view_change,
 };
 
 //! Eventの種類を表すキー、かつEventのコールバックに返す引数
-struct EventKey : FieldBase {
+//! コールバック呼び出し時に各種fieldにキャストされる
+struct EventKey : Field {
     EventType type = EventType::none;
 
     EventKey() = default;
     //! type=member_entryの場合
     //! memberは設定しない
     EventKey(EventType type, const std::weak_ptr<ClientData> &data_w)
-        : FieldBase(data_w, ""), type(type) {
+        : Field(data_w, ""), type(type) {
         assert(type == EventType::member_entry);
     }
-    EventKey(EventType type, const FieldBase &base)
-        : FieldBase(base), type(type) {}
+    EventKey(EventType type, const Field &base) : Field(base), type(type) {}
 
     bool operator==(const EventKey &rhs) const {
         if (type != rhs.type) {
@@ -40,11 +42,13 @@ struct EventKey : FieldBase {
         case EventType::value_entry:
         case EventType::text_entry:
         case EventType::func_entry:
+        case EventType::view_entry:
         case EventType::log_change:
             // memberはキー、nameは内容
             return member_ == rhs.member_;
         case EventType::value_change:
         case EventType::text_change:
+        case EventType::view_change:
             // member, nameがキー
             return member_ == rhs.member_ && field_ == rhs.field_;
         default:
@@ -64,11 +68,13 @@ struct EventKey : FieldBase {
         case EventType::value_entry:
         case EventType::text_entry:
         case EventType::func_entry:
+        case EventType::view_entry:
         case EventType::log_change:
             // memberはキー、nameは内容
             return member_ < rhs.member_;
         case EventType::value_change:
         case EventType::text_change:
+        case EventType::view_change:
             // member, nameがキー
             return member_ < rhs.member_ ||
                    (member_ == rhs.member_ && field_ < rhs.field_);

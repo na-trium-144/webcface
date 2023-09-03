@@ -24,19 +24,29 @@ FuncWrapperType runCondScopeGuard() {
 
 } // namespace FuncWrapper
 
-//! 関数1つを表すクラス
-class Func : public SyncFieldBase<FuncInfo> {
-  public:
-    Func() = default;
-    Func(const FieldBase &base) : SyncFieldBase<FuncInfo>(base) {}
-    Func(const FieldBase &base, const std::string &field)
-        : Func(FieldBase{base, field}) {}
+class AnonymousFunc;
 
+//! 関数1つを表すクラス
+class Func : protected Field {
+  public:
+    friend AnonymousFunc;
+
+    Func() = default;
+    Func(const Field &base) : Field(base) {}
+    Func(const Field &base, const std::string &field)
+        : Func(Field{base, field}) {}
+
+    using Field::member;
+    using Field::name;
+
+  private:
     auto &set(const FuncInfo &v) {
         setCheck();
         dataLock()->func_store.setSend(*this, v);
         return *this;
     }
+
+  public:
     //! 関数からFuncInfoを構築しセットする
     /*! Tは任意の関数
      * 一度セットしたFuncに別の関数をセットすると、それ以降実行される関数は新しい関数になるが、
@@ -49,13 +59,27 @@ class Func : public SyncFieldBase<FuncInfo> {
     }
     //! 関数からFuncInfoを構築しセットする
     template <typename T>
-    Func &operator=(const T &func) {
+    auto &operator=(const T &func) {
         return this->set(func);
     }
 
     //! 値を取得する
-    std::optional<FuncInfo> tryGet() const override {
+    std::optional<FuncInfo> tryGet() const {
         return dataLock()->func_store.getRecv(*this);
+    }
+    FuncInfo get() const { return tryGet().value_or(FuncInfo{}); }
+
+    //! 関数を関数リストで非表示にする
+    //! (他clientのentryに表示されなくする)
+    auto &hidden(bool hidden) {
+        setCheck();
+        dataLock()->func_store.setHidden(*this, hidden);
+        return *this;
+    }
+    //! 関数の設定を解除
+    auto &free() {
+        dataLock()->func_store.unsetRecv(*this);
+        return *this;
     }
 
     //! 関数を実行する (同期)
@@ -131,4 +155,43 @@ class Func : public SyncFieldBase<FuncInfo> {
 };
 
 
+class AnonymousFunc : public Func {
+    static std::string fieldNameTmp() {
+        static int id = 0;
+        return ".tmp" + std::to_string(id++);
+    }
+
+    std::function<void()> func_setter = nullptr;
+    bool base_init = false;
+
+  public:
+    AnonymousFunc() = default;
+    template <typename T>
+    AnonymousFunc(const Field &base, const T &func)
+        : Func(base, fieldNameTmp()), base_init(true) {
+        this->set(func);
+        this->hidden(true);
+    }
+    template <typename T>
+    AnonymousFunc(const T &func) {
+        func_setter = [this, func]() {
+            this->set(func);
+            this->hidden(true);
+        };
+    }
+
+    AnonymousFunc(const AnonymousFunc &) = delete;
+    AnonymousFunc &operator=(const AnonymousFunc &) = delete;
+
+    void lockTo(Func &target) {
+        if (!base_init) {
+            this->data_w = target.data_w;
+            this->member_ = target.member_;
+            this->field_ = fieldNameTmp();
+            func_setter();
+        }
+        target.set(this->get());
+        this->free();
+    }
+};
 } // namespace WebCFace

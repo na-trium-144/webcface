@@ -1,5 +1,5 @@
 import msgpack from "@ygoe/msgpack";
-import { Val } from "./funcInfo.js";
+import { Val } from "./func.js";
 
 export function unpack(msg: ArrayBuffer) {
   const m = msgpack.deserialize(msg) as [number, AnyMessage];
@@ -12,13 +12,13 @@ export function pack(kind: number, data: AnyMessage) {
 export const kind = {
   value: 0,
   text: 1,
-  req: 100,
+  view: 3,
   entry: 50,
+  req: 100,
   syncInit: 150,
   call: 151,
   callResponse: 155,
   callResult: 152,
-  // entry: 153,
   funcInfo: 154,
   log: 156,
   logReq: 157,
@@ -33,6 +33,7 @@ export const argType = {
   float_: 4,
   number_: 4,
 };
+
 export interface SyncInit {
   m: string;
 }
@@ -40,7 +41,7 @@ export interface Call {
   i: number;
   c: string;
   r: string;
-  n: string;
+  f: string;
   a: Val[];
 }
 export interface CallResponse {
@@ -56,8 +57,23 @@ export interface CallResult {
 }
 export interface Data<T> {
   m: string;
-  n: string;
+  f: string;
   d: T;
+}
+export type ViewComponentsDiff = {[key in string]: ViewComponent};
+export interface ViewComponent {
+  t: number;
+  x: string;
+  L: string | null;
+  l: string | null;
+  c: number;
+  b: number;
+}
+export interface View {
+  m: string;
+  f: string;
+  d: ViewComponentsDiff;
+  l: number;
 }
 export interface Arg {
   n: string;
@@ -69,17 +85,17 @@ export interface Arg {
 }
 export interface FuncInfo {
   m: string;
-  n: string;
+  f: string;
   r: number;
   a: Arg[];
 }
 export interface Req {
+  m: string;
   f: string;
-  n: string;
 }
 export interface Entry {
   m: string;
-  n: string;
+  f: string;
 }
 export interface LogLine {
   v: number;
@@ -101,6 +117,7 @@ export type AnyMessage =
   | CallResult
   | Data<number>
   | Data<string>
+  | View
   | FuncInfo
   | Req
   | Entry

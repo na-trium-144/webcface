@@ -2,62 +2,24 @@
 #include <istream>
 #include <ostream>
 #include <optional>
-#include <cassert>
-#include "field_base.h"
+#include "field.h"
 #include "client_data.h"
 #include "event_target.h"
 
 namespace WebCFace {
 
-//! フィールドを参照するインタフェースを持つクラス
-template <typename T>
-class SyncFieldBase : protected FieldBase {
-  public:
-    SyncFieldBase() = default;
-    SyncFieldBase(const FieldBase &base) : FieldBase(base) {}
-
-    //! Memberを返す
-    Member member() const { return *this; }
-    //! field名を返す
-    std::string name() const { return field_; }
-
-
-  protected:
-    void setCheck() const {
-        assert(dataLock()->isSelf(*this) &&
-               "Cannot set data to member other than self");
-    }
-
-  public:
-    //! 値を取得できるかチェックする
-    //! 取得できなければリクエストする
-    virtual std::optional<T> tryGet() const = 0;
-    //! 値を取得する
-    //! todo: 引数でタイムアウトとか設定できるようにする
-    T get() const {
-        auto v = tryGet();
-        if (v) {
-            return *v;
-        } else {
-            return T{};
-        };
-    }
-    //! 値を取得する
-    operator T() const { return get(); }
-};
-
 //! 実数値を扱う
-class Value : public SyncFieldBase<double>, public EventTarget<Value> {
-    using SyncFieldBase<double>::FieldBase::dataLock;
-
+class Value : protected Field, public EventTarget<Value> {
   public:
     Value() = default;
-    Value(const FieldBase &base)
-        : SyncFieldBase<double>(base),
-          EventTarget<Value>(EventType::value_change, base,
-                             [this] { this->tryGet(); }) {}
-    Value(const FieldBase &base, const std::string &field)
-        : Value(FieldBase{base, field}) {}
+    Value(const Field &base)
+        : Field(base), EventTarget<Value>(EventType::value_change, base,
+                                          [this] { this->tryGet(); }) {}
+    Value(const Field &base, const std::string &field)
+        : Value(Field{base, field}) {}
+
+    using Field::member;
+    using Field::name;
 
     //! 値をセットし、EventTargetを発動する
     auto &set(double v) {
@@ -66,7 +28,6 @@ class Value : public SyncFieldBase<double>, public EventTarget<Value> {
         this->triggerEvent();
         return *this;
     }
-
     //! 値をセットする
     auto &operator=(double v) {
         this->set(v);
@@ -74,8 +35,23 @@ class Value : public SyncFieldBase<double>, public EventTarget<Value> {
     }
 
     //! 値を取得する
-    std::optional<double> tryGet() const override {
+    std::optional<double> tryGet() const {
         return dataLock()->value_store.getRecv(*this);
+    }
+    double get() const { return tryGet().value_or(0); }
+    operator double() const { return get(); }
+
+    //! このvalueを非表示にする
+    //! (他clientのentryに表示されなくする)
+    auto &hidden(bool hidden) {
+        setCheck();
+        dataLock()->value_store.setHidden(*this, hidden);
+        return *this;
+    }
+    //! 関数の設定を解除
+    auto &free() {
+        dataLock()->value_store.unsetRecv(*this);
+        return *this;
     }
 
     auto &operator+=(double rhs) {
@@ -143,17 +119,17 @@ class Value : public SyncFieldBase<double>, public EventTarget<Value> {
 };
 
 // 文字列を扱う
-class Text : public SyncFieldBase<std::string>, public EventTarget<Text> {
-    using SyncFieldBase<std::string>::FieldBase::dataLock;
-
+class Text : protected Field, public EventTarget<Text> {
   public:
     Text() = default;
-    Text(const FieldBase &base)
-        : SyncFieldBase<std::string>(base),
-          EventTarget<Text>(EventType::text_change, base,
-                            [this] { this->tryGet(); }) {}
-    Text(const FieldBase &base, const std::string &field)
-        : Text(FieldBase{base, field}) {}
+    Text(const Field &base)
+        : Field(base), EventTarget<Text>(EventType::text_change, base,
+                                         [this] { this->tryGet(); }) {}
+    Text(const Field &base, const std::string &field)
+        : Text(Field{base, field}) {}
+
+    using Field::member;
+    using Field::name;
 
     //! 値をセットし、EventTargetを発動する
     auto &set(const std::string &v) {
@@ -162,7 +138,6 @@ class Text : public SyncFieldBase<std::string>, public EventTarget<Text> {
         triggerEvent();
         return *this;
     }
-
     //! 値をセットする
     auto &operator=(const std::string &v) {
         this->set(v);
@@ -170,35 +145,54 @@ class Text : public SyncFieldBase<std::string>, public EventTarget<Text> {
     }
 
     //! 値を取得する
-    std::optional<std::string> tryGet() const override {
+    std::optional<std::string> tryGet() const {
         return dataLock()->text_store.getRecv(*this);
+    }
+    std::string get() const { return tryGet().value_or(""); }
+    operator std::string() const { return get(); }
+
+    //! このtext非表示にする
+    //! (他clientのentryに表示されなくする)
+    auto &hidden(bool hidden) {
+        setCheck();
+        dataLock()->text_store.setHidden(*this, hidden);
+        return *this;
+    }
+    //! 関数の設定を解除
+    auto &free() {
+        dataLock()->text_store.unsetRecv(*this);
+        return *this;
     }
 
     bool operator==(const std::string &rhs) const { return this->get() == rhs; }
     bool operator!=(const std::string &rhs) const { return this->get() != rhs; }
 };
 
-class Logs : public SyncFieldBase<std::vector<LogLine>>,
-             public EventTarget<Logs> {
-    using SyncFieldBase<std::vector<LogLine>>::FieldBase::dataLock;
-
+//! log
+//! name使わないんだけど
+//! todo: triggerEvent
+class Log : protected Field, public EventTarget<Log> {
   public:
-    Logs() = default;
-    Logs(const FieldBase &base)
-        : SyncFieldBase<std::vector<LogLine>>(base),
-          EventTarget<Logs>(EventType::log_change, base,
-                                   [this] { this->tryGet(); }) {}
+    Log() = default;
+    Log(const Field &base)
+        : Field(base), EventTarget<Log>(EventType::log_change, base,
+                                        [this] { this->tryGet(); }) {}
+
+    using Field::member;
 
     //! 値を取得する
-    std::optional<std::vector<LogLine>> tryGet() const override {
+    std::optional<std::vector<LogLine>> tryGet() const {
         return dataLock()->log_store.getRecv(member_);
+    }
+    std::vector<LogLine> get() const {
+        return tryGet().value_or(std::vector<LogLine>{});
     }
 };
 
-inline auto &operator<<(std::basic_ostream<char> &os, const Value &data) {
+inline auto &operator<<(std::ostream &os, const Value &data) {
     return os << data.get();
 }
-inline auto &operator<<(std::basic_ostream<char> &os, const Text &data) {
+inline auto &operator<<(std::ostream &os, const Text &data) {
     return os << data.get();
 }
 } // namespace WebCFace

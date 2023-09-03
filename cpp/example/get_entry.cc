@@ -4,15 +4,15 @@
 #include <iostream>
 int main() {
     WebCFace::Client c("example_get_entry");
-    c.membersChange().appendListener([](WebCFace::Member m) {
+    c.memberEntry().appendListener([](WebCFace::Member m) {
         std::cout << "member " << m.name() << std::endl;
-        m.valuesChange().appendListener([](WebCFace::Value v) {
+        m.valueEntry().appendListener([](WebCFace::Value v) {
             std::cout << "value " << v.name() << std::endl;
         });
-        m.textsChange().appendListener([](WebCFace::Text v) {
+        m.textEntry().appendListener([](WebCFace::Text v) {
             std::cout << "text " << v.name() << std::endl;
         });
-        m.funcsChange().appendListener([](WebCFace::Func f) {
+        m.funcEntry().appendListener([](WebCFace::Func f) {
             std::cout << "func " << f.name() << " arg: ";
             auto args = f.args();
             for (std::size_t i = 0; i < args.size(); i++) {
@@ -23,7 +23,7 @@ int main() {
             }
             std::cout << " ret: " << f.returnType() << std::endl;
         });
-        m.logs().appendListener([](WebCFace::Logs l) {
+        m.log().appendListener([](WebCFace::Log l) {
             static int li = 0;
             for (; li < l.get().size(); li++) {
                 std::cout << "log [" << l.get()[li].level << "] "

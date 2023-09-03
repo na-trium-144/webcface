@@ -89,7 +89,7 @@ class Client : public Member {
      * 初回の sync() 後に一度に送られるので、
      * eventの設定は初回のsync()より前に行うと良い
      */
-    EventTarget<Member> membersChange() {
+    EventTarget<Member> memberEntry() {
         return EventTarget<Member>{EventType::member_entry, data};
     }
 

@@ -9,6 +9,19 @@ void ClientData::SyncDataStore<T>::setSend(const std::string &name,
     data_recv[self_member_name][name] = data; // 送信後に自分の値を参照する用
 }
 template <typename T>
+void ClientData::SyncDataStore<T>::setHidden(const std::string &name,
+                                             bool is_hidden) {
+    std::lock_guard lock(mtx);
+    data_send_hidden[name] = is_hidden;
+}
+template <typename T>
+bool ClientData::SyncDataStore<T>::isHidden(const std::string &name) {
+    std::lock_guard lock(mtx);
+    auto h = data_send_hidden.find(name);
+    return h != data_send_hidden.end() && h->second == true;
+}
+
+template <typename T>
 void ClientData::SyncDataStore<T>::setRecv(const std::string &from,
                                            const std::string &name,
                                            const T &data) {
@@ -103,7 +116,13 @@ template <typename T>
 std::unordered_map<std::string, T>
 ClientData::SyncDataStore<T>::transferSend() {
     std::lock_guard lock(mtx);
+    data_send_prev = data_send;
     return std::move(data_send);
+}
+template <typename T>
+std::unordered_map<std::string, T> ClientData::SyncDataStore<T>::getSendPrev() {
+    std::lock_guard lock(mtx);
+    return data_send_prev;
 }
 template <typename T>
 std::unordered_map<std::string, std::unordered_map<std::string, bool>>
@@ -119,11 +138,12 @@ std::unordered_map<std::string, bool> ClientData::LogStore::transferReq() {
 template class ClientData::SyncDataStore<double>;
 template class ClientData::SyncDataStore<std::string>;
 template class ClientData::SyncDataStore<FuncInfo>;
+template class ClientData::SyncDataStore<std::vector<ViewComponentBase>>;
 
 
 AsyncFuncResult &
 ClientData::FuncResultStore::addResult(const std::string &caller,
-                                       const FieldBase &base) {
+                                       const Field &base) {
     std::lock_guard lock(mtx);
     int caller_id = results.size();
     results.push_back(AsyncFuncResult{caller_id, caller, base});

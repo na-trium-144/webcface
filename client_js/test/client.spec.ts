@@ -1,6 +1,6 @@
 import { assert } from "chai";
 import { Client } from "../src/client.js";
-import { Member } from "../src/data.js";
+import { Member } from "../src/member.js";
 import { argType } from "../src/message.js";
 
 describe("Client tests", function () {

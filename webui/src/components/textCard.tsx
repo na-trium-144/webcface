@@ -1,33 +1,29 @@
 import { Card } from "./card";
-import { Text } from "webcface";
+import { useForceUpdate } from "../libs/forceUpdate";
+import { Member, Text } from "webcface";
 import { useState, useEffect } from "react";
 
 interface Props {
-  name: string;
-  text: Text[];
+  member: Member;
 }
 export function TextCard(props: Props) {
-  const [textCurrent, setTextCurrent] = useState<string[]>([]);
+  const update = useForceUpdate();
   useEffect(() => {
-    const onTextChange = () => {
-      setTextCurrent(props.text.map((t) => t.get()));
+    const onTextEntry = (t: Text) => {
+      t.on(update);
+      update();
     };
-    onTextChange();
-    for (const t of props.text) {
-      t.on(onTextChange);
-    }
+    props.member.textsChange.on(onTextEntry);
     return () => {
-      for (const t of props.text) {
-        t.off(onTextChange);
-      }
+      props.member.textsChange.off(onTextEntry);
     };
-  }, [props.text]);
+  }, [props.member, update]);
   return (
-    <Card title={`${props.name} Text Variables`}>
+    <Card title={`${props.member.name} Text Variables`}>
       <ul className="list-none">
-        {props.text.map((t, i) => (
+        {props.member.texts().map((t) => (
           <li key={t.name}>
-            {t.name} = {textCurrent[i]}
+            {t.name} = {t.get()}
           </li>
         ))}
       </ul>

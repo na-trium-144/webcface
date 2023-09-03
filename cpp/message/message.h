@@ -7,9 +7,12 @@
 #include <cstdint>
 #include <webcface/common/func.h>
 #include <webcface/common/log.h>
+#include <webcface/common/view.h>
 #include "val_adaptor.h"
 
 MSGPACK_ADD_ENUM(WebCFace::Common::ValType);
+MSGPACK_ADD_ENUM(WebCFace::Common::ViewComponentType);
+MSGPACK_ADD_ENUM(WebCFace::Common::ViewColor);
 
 namespace WebCFace::Message {
 // 新しいメッセージの定義は
@@ -18,27 +21,22 @@ enum class MessageKind {
     unknown = -1,
     value = 0,
     text = 1,
-    // recv = 50,       // 50〜
-    subscribe = 100, // 100〜
-    entry = 50,      // 50〜
+    view = 3,
+    entry = 50, // 50〜
+    req = 100,  // 100〜
     // 150〜: other
     sync_init = 150,
     call = 151,
     call_response = 155,
     call_result = 152,
-    // entry = 153,
     func_info = 154,
     log = 156,
     log_req = 157,
 };
-inline constexpr MessageKind kind_subscribe(MessageKind k) {
+inline constexpr MessageKind kind_req(MessageKind k) {
     return static_cast<MessageKind>(static_cast<int>(k) +
-                                    static_cast<int>(MessageKind::subscribe));
+                                    static_cast<int>(MessageKind::req));
 }
-// inline constexpr MessageKind kind_recv(MessageKind k) {
-//     return static_cast<MessageKind>(static_cast<int>(k) +
-//                                     static_cast<int>(MessageKind::recv));
-// }
 inline constexpr MessageKind kind_entry(MessageKind k) {
     return static_cast<MessageKind>(static_cast<int>(k) +
                                     static_cast<int>(MessageKind::entry));
@@ -63,7 +61,7 @@ struct Call : public MessageBase<MessageKind::call>, public Common::FuncCall {
     Call(const Common::FuncCall &c)
         : MessageBase<MessageKind::call>(), Common::FuncCall(c) {}
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", caller_id), MSGPACK_NVP("c", caller),
-                       MSGPACK_NVP("r", member), MSGPACK_NVP("n", name),
+                       MSGPACK_NVP("r", member), MSGPACK_NVP("f", field),
                        MSGPACK_NVP("a", args));
 };
 //! client(receiver)->server->client(caller) 関数の実行を開始したかどうか
@@ -86,18 +84,69 @@ struct CallResult : public MessageBase<MessageKind::call_result> {
 //! client(member)->server->client Valueを更新
 //! client->server時はmemberは無視
 struct Value : public MessageBase<MessageKind::value> {
-    std::string member, name;
+    std::string member, field;
     double data;
-    MSGPACK_DEFINE_MAP(MSGPACK_NVP("m", member), MSGPACK_NVP("n", name),
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("m", member), MSGPACK_NVP("f", field),
                        MSGPACK_NVP("d", data));
 };
 //! client(member)->server->client Textを更新
 //! client->server時はmemberは無視
 struct Text : public MessageBase<MessageKind::text> {
-    std::string member, name;
+    std::string member, field;
     std::string data;
-    MSGPACK_DEFINE_MAP(MSGPACK_NVP("m", member), MSGPACK_NVP("n", name),
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("m", member), MSGPACK_NVP("f", field),
                        MSGPACK_NVP("d", data));
+};
+struct View : public MessageBase<MessageKind::view> {
+    std::string member, field;
+    struct ViewComponent {
+        Common::ViewComponentType type;
+        std::string text;
+        std::optional<std::string> on_click_member, on_click_field;
+        Common::ViewColor text_color, bg_color;
+        ViewComponent() = default;
+        ViewComponent(const Common::ViewComponentBase &vc)
+            : type(vc.type_), text(vc.text_), text_color(vc.text_color_),
+              bg_color(vc.bg_color_) {
+            if (vc.on_click_func_ != std::nullopt) {
+                on_click_member = vc.on_click_func_->member_;
+                on_click_field = vc.on_click_func_->field_;
+            }
+        }
+        operator Common::ViewComponentBase() const {
+            Common::ViewComponentBase vc;
+            vc.type_ = type;
+            vc.text_ = text;
+            if (on_click_member != std::nullopt) {
+                vc.on_click_func_ =
+                    Common::FieldBase{*on_click_member, *on_click_field};
+            }
+            vc.text_color_ = text_color;
+            vc.bg_color_ = bg_color;
+            return vc;
+        }
+        MSGPACK_DEFINE_MAP(MSGPACK_NVP("t", type), MSGPACK_NVP("x", text),
+                           MSGPACK_NVP("L", on_click_member),
+                           MSGPACK_NVP("l", on_click_field),
+                           MSGPACK_NVP("c", text_color),
+                           MSGPACK_NVP("b", bg_color));
+    };
+    std::unordered_map<int, ViewComponent> data_diff;
+    int length;
+    View() = default;
+    View(const std::string &member, const std::string &field,
+         const std::unordered_map<int, Common::ViewComponentBase> &data_diff,
+         int length)
+        : member(member), field(field), length(length) {
+        for (const auto &vc : data_diff) {
+            this->data_diff[vc.first] = vc.second;
+        }
+    }
+    View(const std::string &member, const std::string &field,
+         const std::unordered_map<int, ViewComponent> &data_diff, int length)
+        : member(member), field(field), data_diff(data_diff), length(length) {}
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("m", member), MSGPACK_NVP("f", field),
+                       MSGPACK_NVP("d", data_diff), MSGPACK_NVP("l", length));
 };
 //! client(member)->server->client logを追加
 //! client->server時はmemberは無視
@@ -135,7 +184,7 @@ struct LogReq : public MessageBase<MessageKind::log_req> {
 //! client(member)->server->client func登録
 //! client->server時はmemberは無視
 struct FuncInfo : public MessageBase<MessageKind::func_info> {
-    std::string member, name;
+    std::string member, field;
     Common::ValType return_type;
     struct Arg : public Common::Arg {
         Arg() = default;
@@ -146,9 +195,9 @@ struct FuncInfo : public MessageBase<MessageKind::func_info> {
     };
     std::vector<Arg> args;
     FuncInfo() = default;
-    explicit FuncInfo(const std::string &member, const std::string &name,
+    explicit FuncInfo(const std::string &member, const std::string &field,
                       const Common::FuncInfo &info)
-        : MessageBase<MessageKind::func_info>(), member(member), name(name),
+        : MessageBase<MessageKind::func_info>(), member(member), field(field),
           return_type(info.return_type) {
         args.resize(info.args.size());
         for (std::size_t i = 0; i < info.args.size(); i++) {
@@ -164,22 +213,22 @@ struct FuncInfo : public MessageBase<MessageKind::func_info> {
         }
         return info;
     }
-    MSGPACK_DEFINE_MAP(MSGPACK_NVP("m", member), MSGPACK_NVP("n", name),
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("m", member), MSGPACK_NVP("f", field),
                        MSGPACK_NVP("r", return_type), MSGPACK_NVP("a", args));
 };
 //! client->server 以降Recvを送るようリクエスト
 //! todo: 解除できるようにする
 template <typename T>
-struct Subscribe : public MessageBase<kind_subscribe(T::kind)> {
-    std::string from, name;
-    MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", from), MSGPACK_NVP("n", name));
+struct Req : public MessageBase<kind_req(T::kind)> {
+    std::string member, field;
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("m", member), MSGPACK_NVP("f", field));
 };
 //! server->client 新しいvalueなどの報告
 //! Funcの場合はこれではなくFuncInfoを使用
 template <typename T>
 struct Entry : public MessageBase<kind_entry(T::kind)> {
-    std::string member, name;
-    MSGPACK_DEFINE_MAP(MSGPACK_NVP("m", member), MSGPACK_NVP("n", name));
+    std::string member, field;
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("m", member), MSGPACK_NVP("f", field));
 };
 
 //! msgpackのメッセージをパースしstd::anyで返す

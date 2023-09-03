@@ -19,26 +19,26 @@ DROGON_TEST(EventTest) {
         WebCFace::Arg("d").option({"hoge", "fuga", "piyo"}),
     });
     int callback_called = 0;
-    cli2.membersChange().appendListener([TEST_CTX, &callback_called](auto m) {
-        std::cout << "membersChange" << std::endl;
+    cli2.memberEntry().appendListener([TEST_CTX, &callback_called](auto m) {
+        std::cout << "memberEntry" << std::endl;
         CHECK(m.name() == "test1");
         callback_called++;
     });
-    cli2.member("test1").valuesChange().appendListener(
+    cli2.member("test1").valueEntry().appendListener(
         [TEST_CTX, &callback_called](auto v) {
-            std::cout << "valuesChange" << std::endl;
+            std::cout << "valueEntry" << std::endl;
             CHECK(v.name() == "v");
             callback_called++;
         });
-    cli2.member("test1").textsChange().appendListener(
+    cli2.member("test1").textEntry().appendListener(
         [TEST_CTX, &callback_called](auto t) {
-            std::cout << "textsChange" << std::endl;
+            std::cout << "textEntry" << std::endl;
             CHECK(t.name() == "t");
             callback_called++;
         });
-    cli2.member("test1").funcsChange().appendListener(
+    cli2.member("test1").funcEntry().appendListener(
         [TEST_CTX, &callback_called](auto f) {
-            std::cout << "funcsChange" << std::endl;
+            std::cout << "funcEntry" << std::endl;
             CHECK(f.name() == "f");
             CHECK(f.args()[0].name() == "a");
             CHECK(f.args()[0].type() == WebCFace::ValType::int_);

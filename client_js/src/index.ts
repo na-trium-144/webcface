@@ -1,6 +1,16 @@
 export { Client } from "./client.js";
+// export { } from "./clientData.js";
+export { Value, Text, Log } from "./data.js";
+export { Member } from "./member.js";
+export {
+  View,
+  viewComponents,
+  ViewComponent,
+  viewComponentTypes,
+  viewColor,
+} from "./view.js";
 export { LogLine } from "./logger.js";
-export { AsyncFuncResult, FuncNotFoundError } from "./clientData.js";
-export { Member, Value, Text, Func, Logs } from "./data.js";
-export { Arg, Val } from "./funcInfo.js";
 export { argType } from "./message.js";
+export { Arg, Func, AsyncFuncResult, FuncNotFoundError } from "./func.js";
+// export {} from "./event.ts";
+// export {} from "./field.js";
