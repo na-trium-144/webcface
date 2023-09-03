@@ -1,7 +1,9 @@
 import { assert } from "chai";
 import { Client } from "../src/client.js";
-import { Field } from "../src/clientData.js";
-import { Member, Value, Text, Func } from "../src/data.js";
+import { Field } from "../src/field.js";
+import { Member } from "../src/member.js";
+import { Value, Text } from "../src/data.js";
+import { Func } from "../src/func.js";
 import { argType } from "../src/message.js";
 
 describe("Data tests", function () {

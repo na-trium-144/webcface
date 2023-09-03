@@ -1,5 +1,5 @@
 import msgpack from "@ygoe/msgpack";
-import { Val } from "./funcInfo.js";
+import { Val } from "./func.js";
 
 export function unpack(msg: ArrayBuffer) {
   const m = msgpack.deserialize(msg) as [number, AnyMessage];

@@ -1,81 +1,15 @@
-import { Val, FuncInfo } from "./funcInfo.js";
+import { Val, FuncInfo, AsyncFuncResult } from "./func.js";
 import { EventEmitter } from "eventemitter3";
 import { LogLine } from "./logger.js";
-import { ViewComponent } from "./message.js";
-
-export class FieldBase {
-  member_: string;
-  field_: string;
-  constructor(member: string, field = "") {
-    this.member_ = member;
-    this.field_ = field;
-  }
-}
-export class Field extends FieldBase {
-  data: ClientData;
-  constructor(data: ClientData, member: string, field = "") {
-    super(member, field);
-    this.data = data;
-  }
-}
-
-export const eventType = {
-  memberEntry: () => "memberEntry",
-  valueEntry: (b: FieldBase) => JSON.stringify(["valueEntry", b.member_]),
-  textEntry: (b: FieldBase) => JSON.stringify(["textEntry", b.member_]),
-  funcEntry: (b: FieldBase) => JSON.stringify(["funcEntry", b.member_]),
-  viewEntry: (b: FieldBase) => JSON.stringify(["viewEntry", b.member_]),
-  valueChange: (b: FieldBase) =>
-    JSON.stringify(["valueChange", b.member_, b.field_]),
-  textChange: (b: FieldBase) =>
-    JSON.stringify(["textChange", b.member_, b.field_]),
-  viewChange: (b: FieldBase) =>
-    JSON.stringify(["viewChange", b.member_, b.field_]),
-  logChange: (b: FieldBase) => JSON.stringify(["logChange", b.member_]),
-};
-type EventListener<TargetType> = (target: TargetType) => void;
-export class FieldWithEvent<TargetType> extends Field {
-  eventType_: string;
-  onAppend: () => void;
-  constructor(
-    eventType: string,
-    data: ClientData,
-    member: string,
-    field = "",
-    onAppend: () => void = () => undefined
-  ) {
-    super(data, member, field);
-    this.eventType_ = eventType;
-    this.onAppend = onAppend;
-  }
-  addListener(listener: EventListener<TargetType>) {
-    this.data.eventEmitter.addListener(this.eventType_, listener);
-    this.onAppend();
-  }
-  on(listener: EventListener<TargetType>) {
-    this.addListener(listener);
-  }
-  once(listener: EventListener<TargetType>) {
-    this.data.eventEmitter.once(this.eventType_, listener);
-    this.onAppend();
-  }
-  removeListener(listener: EventListener<TargetType>) {
-    this.data.eventEmitter.removeListener(this.eventType_, listener);
-  }
-  off(listener: EventListener<TargetType>) {
-    this.removeListener(listener);
-  }
-  removeAllListeners() {
-    this.data.eventEmitter.removeAllListeners(this.eventType_);
-  }
-}
+import * as Message from "./message.js";
+import { FieldBase } from "./field.js";
 
 export class ClientData {
   selfMemberName: string;
   valueStore: SyncDataStore<number>;
   textStore: SyncDataStore<string>;
   funcStore: SyncDataStore<FuncInfo>;
-  viewStore: SyncDataStore<ViewComponent[]>;
+  viewStore: SyncDataStore<Message.ViewComponent[]>;
   logStore: LogStore;
   funcResultStore: FuncResultStore;
   callFunc: (r: AsyncFuncResult, b: FieldBase, args: Val[]) => void;
@@ -89,7 +23,7 @@ export class ClientData {
     this.valueStore = new SyncDataStore<number>(name);
     this.textStore = new SyncDataStore<string>(name);
     this.funcStore = new SyncDataStore<FuncInfo>(name);
-    this.viewStore = new SyncDataStore<ViewComponent[]>(name);
+    this.viewStore = new SyncDataStore<Message.ViewComponent[]>(name);
     this.logStore = new LogStore(name);
     this.funcResultStore = new FuncResultStore();
     this.callFunc = callFunc;
@@ -252,43 +186,5 @@ class FuncResultStore {
   }
   getResult(callerId: number) {
     return this.results[callerId];
-  }
-}
-
-export class FuncNotFoundError extends Error {
-  constructor(base: FieldBase) {
-    super(`member("${base.member_}").func("${base.field_}") is not set`);
-    this.name = "FuncNotFoundError";
-  }
-}
-
-export class AsyncFuncResult extends FieldBase {
-  callerId: number;
-  caller: string;
-  // 関数が開始したらtrue, 存在しなければfalse
-  // falseの場合rejectResultも自動で呼ばれる
-  resolveStarted: (r: boolean) => void = () => undefined;
-  // 結果をセットする
-  resolveResult: (r: Val | Promise<Val>) => void = () => undefined;
-  // 例外をセットする
-  rejectResult: (e: any) => void = () => undefined;
-  started: Promise<boolean>;
-  result: Promise<Val>;
-  constructor(callerId: number, caller: string, base: FieldBase) {
-    super(base.member_, base.field_);
-    this.callerId = callerId;
-    this.caller = caller;
-    this.started = new Promise((res) => {
-      this.resolveStarted = (r: boolean) => {
-        res(r);
-        if (!r) {
-          this.rejectResult(new FuncNotFoundError(this));
-        }
-      };
-    });
-    this.result = new Promise((res, rej) => {
-      this.resolveResult = res;
-      this.rejectResult = rej;
-    });
   }
 }
