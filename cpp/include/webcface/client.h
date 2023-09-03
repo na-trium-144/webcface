@@ -11,17 +11,12 @@
 #include "func.h"
 #include "logger.h"
 
-namespace drogon {
-class WebSocketClient;
-}
-
 namespace WebCFace {
 //! サーバーに接続するクライアント。
 class Client : public Member {
   private:
     std::shared_ptr<ClientData> data;
 
-    std::shared_ptr<drogon::WebSocketClient> ws;
     //! close()が呼ばれたらtrue
     std::atomic<bool> closing = false;
     //! 接続が完了したかどうかを取得する
@@ -39,7 +34,7 @@ class Client : public Member {
 
     //! イベントを処理するスレッド
     std::thread event_thread;
-    //! message_queueを処理するスレッド
+    //! websocket通信するスレッド
     std::thread message_thread;
 
     LoggerBuf logger_buf;

@@ -1,5 +1,4 @@
 #pragma once
-#include <drogon/WebSocketController.h>
 #include <string>
 #include <unordered_map>
 #include <set>
@@ -8,7 +7,7 @@
 namespace WebCFace::Server {
 class ClientData {
   public:
-    using wsConnPtr = drogon::WebSocketConnectionPtr;
+    using wsConnPtr = std::shared_ptr<void>;
 
   private:
     const wsConnPtr con;

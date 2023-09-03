@@ -1,6 +1,7 @@
 #include "s_client_data.h"
 #include "store.h"
 #include "../message/message.h"
+#include <cinatra.hpp>
 #include <algorithm>
 #include <iostream>
 #include <iterator>
@@ -11,10 +12,15 @@ void ClientData::onClose() {
 }
 void ClientData::send(const std::vector<char> &m) const {
     if (connected()) {
-        con->send(&m[0], m.size(), drogon::WebSocketMessageType::Binary);
+        std::static_pointer_cast<cinatra::connection<cinatra::NonSSL>>(con)
+            ->send_ws_binary(std::string(&m[0], m.size()));
     }
 }
-bool ClientData::connected() const { return con && con->connected(); }
+bool ClientData::connected() const {
+    return con &&
+           !std::static_pointer_cast<cinatra::connection<cinatra::NonSSL>>(con)
+                ->has_close();
+}
 void ClientData::onConnect() {}
 
 void ClientData::onRecv(const std::string &message) {
@@ -295,7 +301,8 @@ void ClientData::onRecv(const std::string &message) {
         if (c_it != store.clients_by_name.end()) {
             auto it = c_it->second->view.find(s.field);
             if (it != c_it->second->view.end()) {
-                std::unordered_map<int, WebCFace::Message::View::ViewComponent> diff;
+                std::unordered_map<int, WebCFace::Message::View::ViewComponent>
+                    diff;
                 for (std::size_t i = 0; i < it->second.size(); i++) {
                     diff[i] = it->second[i];
                 }

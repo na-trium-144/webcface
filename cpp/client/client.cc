@@ -1,6 +1,5 @@
 #include <webcface/client.h>
-#include <drogon/WebSocketClient.h>
-#include <drogon/HttpAppFramework.h>
+#include <cinatra.hpp>
 #include <future>
 #include <optional>
 #include <string>
@@ -12,17 +11,31 @@ namespace WebCFace {
 
 Client::Client(const std::string &name, const std::string &host, int port)
     : Member(), data(std::make_shared<ClientData>(name)), host(host),
-      port(port), event_thread([this] {
+      port(port),
+       event_thread([this] {
           while (!closing.load()) {
               data->event_queue.waitFor(std::chrono::milliseconds(10));
               data->event_queue.process();
           }
       }),
       message_thread([this] {
+        using namespace cinatra;
+        coro_http_client client;
+        async_simple::coro::syncAwait(
+          client.async_ws_connect("ws://localhost:7530"));
+        client.on_ws_msg([&](resp_data data) {
+            if (data.net_err) {
+              std::cout << "ws_msg net error " << data.net_err.message() << "\n";
+              return;
+            }
+            this->onRecv(std::string(data.resp_body));
+        });
+
           while (!closing.load()) {
               auto msg = data->message_queue.pop(std::chrono::milliseconds(10));
               if (msg) {
-                  this->send(*msg);
+                  // this->send(*msg);
+                  async_simple::coro::syncAwait(client.async_send_ws(std::string(&(*msg)[0], msg->size())));
               }
           }
       }),
@@ -31,123 +44,15 @@ Client::Client(const std::string &name, const std::string &host, int port)
     this->Member::data_w = this->data;
     this->Member::member_ = name;
 
-    // 最初のクライアント接続時にdrogonループを起動
-    // もしClientがテンプレートクラスになったら使えない
-    static struct MainLoop {
-        std::optional<std::thread> thr;
-        std::weak_ptr<ClientData> data_w;
-        MainLoop(const std::weak_ptr<ClientData> &data_w) : data_w(data_w) {
-            using namespace drogon;
-            if (auto data = data_w.lock()) {
-                data->logger_internal->trace("mainloop start");
-            }
-
-            auto log_output_func = [data_w](const char *msg, uint64_t len) {
-                if (auto data = data_w.lock()) {
-                    // 末尾の改行を除く
-                    if (len > 0 && msg[len - 1] == '\n') {
-                        --len;
-                    }
-                    std::string log(msg, len);
-                    std::stringstream ss(log);
-                    std::string level;
-                    ss >> level >> level >> level >> level >> level;
-                    log = "from drogon: " + log;
-                    if (level == "TRACE") {
-                        data->logger_internal->trace(log);
-                    } else if (level == "DEBUG") {
-                        data->logger_internal->debug(log);
-                    } else if (level == "INFO") {
-                        data->logger_internal->info(log);
-                    } else if (level == "ERROR") {
-                        data->logger_internal->error(log);
-                    } else if (level == "FATAL") {
-                        data->logger_internal->critical(log);
-                    } else {
-                        // default
-                        data->logger_internal->warn(log);
-                    }
-                }
-            };
-            auto log_flush_func = [] {};
-            trantor::Logger::setOutputFunction(log_output_func, log_flush_func);
-
-            std::promise<void> p1;
-            std::future<void> f1 = p1.get_future();
-
-            app().disableSigtermHandling();
-            app().getLoop()->queueInLoop([&p1]() { p1.set_value(); });
-            // Start the main loop on another thread
-            thr = std::make_optional<std::thread>([&]() {
-                // Queues the promise to be fulfilled after starting the loop
-                app().run();
-            });
-
-            // The future is only satisfied after the event loop started
-            f1.get();
-            if (auto data = data_w.lock()) {
-                data->logger_internal->trace("thread started");
-            }
-        }
-        ~MainLoop() {
-            using namespace drogon;
-            app().getLoop()->queueInLoop([]() { app().quit(); });
-            if (auto data = data_w.lock()) {
-                data->logger_internal->trace("mainloop quit");
-            }
-            thr->join();
-            if (auto data = data_w.lock()) {
-                data->logger_internal->trace("thread finished");
-            }
-        }
-    } q{this->data};
-
-    reconnect();
+    // reconnect();
 }
 
 bool Client::connected() const {
-    return ws && ws->getConnection() && ws->getConnection()->connected();
+    // return ws && ws->getConnection() && ws->getConnection()->connected();
+    return true;
 }
 void Client::reconnect() {
-    if (ws && ws->getConnection()) {
-        ws->getConnection()->shutdown();
-    }
-    if (!closing.load()) {
-        data->logger_internal->trace("reconnect");
-        using namespace drogon;
-        ws = WebSocketClient::newWebSocketClient(host, port, false);
-        ws->setMessageHandler(
-            [this](const std::string &message, const WebSocketClientPtr &ws,
-                   const WebSocketMessageType &type) { onRecv(message); });
-        ws->setConnectionClosedHandler([this](const WebSocketClientPtr &ws) {
-            data->logger_internal->debug("closed");
-            reconnect();
-        });
-        auto req = HttpRequest::newHttpRequest();
-        req->setPath("/");
-        auto p_cli = std::make_shared<std::promise<void>>();
-        connection_finished = p_cli->get_future();
-        auto p_local = std::make_shared<std::promise<void>>();
-        ws->connectToServer(req, [this, p_cli, p_local](
-                                     ReqResult r, const HttpResponsePtr &resp,
-                                     const WebSocketClientPtr &ws) mutable {
-            if (r == ReqResult::Ok) {
-                data->logger_internal->info("connected");
-            } else {
-                data->logger_internal->warn("connection error {}", r);
-                app().getLoop()->runAfter(1, [this] { reconnect(); });
-            }
-            p_cli->set_value();
-            p_local->set_value();
-        });
-        app().getLoop()->runAfter(1, [this, p_local] {
-            if (p_local->get_future().wait_for(std::chrono::seconds(0)) !=
-                std::future_status::ready) {
-                data->logger_internal->warn("connection timeout");
-                reconnect();
-            }
-        });
-    }
+    
 }
 Client::~Client() {
     close();
@@ -160,15 +65,16 @@ Client::~Client() {
 }
 void Client::close() {
     closing.store(true);
-    if (ws->getConnection()) {
-        ws->getConnection()->shutdown();
-    }
+    // if (ws->getConnection()) {
+    //     ws->getConnection()->shutdown();
+    // }
 }
 void Client::send(const std::vector<char> &m) {
-    if (connected()) {
-        ws->getConnection()->send(&m[0], m.size(),
-                                  drogon::WebSocketMessageType::Binary);
-    }
+    // if (connected()) {
+    //     ws->getConnection()->send(&m[0], m.size(),
+    //                               drogon::WebSocketMessageType::Binary);
+    // }
+    data->message_queue.push(m);
 }
 void Client::sync() {
     if (connected()) {
