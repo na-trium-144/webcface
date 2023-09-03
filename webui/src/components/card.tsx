@@ -1,7 +1,7 @@
-import { ReactNode } from "react";
+import { ReactElement } from "react";
 interface Props {
   title: string;
-  children: ReactNode;
+  children: ReactElement;
 }
 export function Card(props: Props) {
   return (

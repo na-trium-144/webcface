@@ -19,11 +19,11 @@ export function LogCard(props: Props) {
   const [logsCurrent, setLogsCurrent] = useState<LogLine[]>([]);
   const [minLevel, setMinLevel] = useState<number>(2);
   useEffect(() => {
-    const update = () => setLogsCurrent(props.member.logs().get().filter((l) => l.level >= minLevel));
+    const update = () => setLogsCurrent(props.member.log().get().filter((l) => l.level >= minLevel));
     update();
-    props.member.logs().on(update);
+    props.member.log().on(update);
     return () => {
-      props.member.logs().off(update);
+      props.member.log().off(update);
     };
   }, [props.member, minLevel]);
 
@@ -43,7 +43,7 @@ export function LogCard(props: Props) {
               setMinLevel(e.target.value);
             }}
           />
-          以上のログを表示: 全<span className="px-1">{props.member.logs.length}</span>
+          以上のログを表示: 全<span className="px-1">{props.member.log().get().length}</span>
           行中
           <span className="px-1">{logsCurrent.length}</span>行
         </div>

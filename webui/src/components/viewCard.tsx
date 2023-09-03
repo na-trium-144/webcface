@@ -8,6 +8,7 @@ import {
   viewComponentTypes,
 } from "webcface";
 import { useState, useEffect } from "react";
+import { useFuncResult } from "./funcResult";
 
 interface Props {
   view: View;
@@ -72,6 +73,7 @@ const colorClass = (c: number, level = 3, inherit = "-inherit ") => {
   }
 };
 function ViewComponentRender(props: VCProps) {
+  const { addResult } = useFuncResult();
   switch (props.vc.type) {
     case viewComponentTypes.text:
       return <span>{props.vc.text}</span>;
@@ -93,7 +95,12 @@ function ViewComponentRender(props: VCProps) {
             "text-" +
             colorClass(props.vc.textColor, 5)
           }
-          onClick={() => props.vc.onClick?.runAsync()}
+          onClick={() => {
+            const r = props.vc.onClick?.runAsync();
+            if (r != null) {
+              addResult(r);
+            }
+          }}
         >
           {props.vc.text}
         </button>

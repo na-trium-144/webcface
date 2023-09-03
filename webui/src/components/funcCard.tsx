@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { Card } from "./card";
 import { useForceUpdate } from "../libs/forceUpdate";
 import { Member, Func, Arg, argType } from "webcface";
+import { useFuncResult } from "./funcResult";
 
 interface Props {
   member: Member;
@@ -131,9 +132,11 @@ function ArgInput(props: ArgProps) {
     }
   }
 }
+
 function FuncLine(props: { func: Func }) {
   const [args, setArgs] = useState<(string | number | boolean)[]>([]);
   const [errors, setErrors] = useState<boolean[]>([]);
+  const { addResult } = useFuncResult();
   useEffect(() => {
     if (args.length < props.func.args.length) {
       setArgs(
@@ -224,11 +227,7 @@ function FuncLine(props: { func: Func }) {
               active:shadow-none active:bg-green-300 ")
         }
         disabled={errors.includes(true)}
-        onClick={() => {
-          // todo: 引数
-          console.log(args);
-          props.func.runAsync(...args);
-        }}
+        onClick={() => addResult(props.func.runAsync(...args))}
       >
         Run
       </button>

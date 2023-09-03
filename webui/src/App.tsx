@@ -1,15 +1,11 @@
 import { useState, useEffect, useRef } from "react";
-import { Client, Member } from "webcface";
+import { Client } from "webcface";
 import "./index.css";
 import { LayoutMain } from "./components/layout";
 import { Header } from "./components/header";
 import { SideMenu } from "./components/sideMenu";
-import {
-  MemberValues,
-  MemberTexts,
-  MemberFuncs,
-  MemberLogs,
-} from "./libs/stateTypes";
+import { FuncResultProvider } from "./components/funcResult";
+import { FuncResultList } from "./components/funcResultList";
 
 export default function App() {
   const client = useRef<Client | null>(null);
@@ -38,35 +34,46 @@ export default function App() {
     setOpenedCards(openedCards.filter((n) => n !== key).concat([key]));
   };
 
+  console.log("app update")
   return (
     <div className="min-h-screen h-max bg-neutral-100">
-      <nav className="bg-green-300 w-full h-12 px-2 drop-shadow-lg">
-        <Header menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
-      </nav>
-      <nav
-        className={
-          "absolute top-10 right-2 w-72 h-max max-h-[75%] p-2 " +
-          "rounded-lg shadow-lg overflow-x-hidden overflow-y-auto bg-white " +
-          "transition duration-100 origin-top-right " +
-          (menuOpen
-            ? "ease-out opacity-100 scale-100 z-[1000] "
-            : "ease-in opacity-0 scale-90 -z-10 ")
-        }
-      >
-        <SideMenu
-          client={client}
-          isOpened={isOpened}
-          toggleOpened={toggleOpened}
-        />
-      </nav>
-      <main className="p-2">
-        <LayoutMain
-          client={client}
-          isOpened={isOpened}
-          openedOrder={openedOrder}
-          moveOrder={moveOrder}
-        />
-      </main>
+      <FuncResultProvider>
+        <nav className="bg-green-300 w-full h-12 px-2 drop-shadow-lg">
+          <Header menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
+        </nav>
+        <nav
+          className={
+            "absolute top-10 right-2 w-72 h-max max-h-[75%] p-2 " +
+            "rounded-lg shadow-lg overflow-x-hidden overflow-y-auto bg-white " +
+            "transition duration-100 origin-top-right " +
+            (menuOpen
+              ? "ease-out opacity-100 scale-100 z-[1000] "
+              : "ease-in opacity-0 scale-90 -z-10 ")
+          }
+        >
+          <SideMenu
+            client={client}
+            isOpened={isOpened}
+            toggleOpened={toggleOpened}
+          />
+        </nav>
+        <main className="p-2">
+          <LayoutMain
+            client={client}
+            isOpened={isOpened}
+            openedOrder={openedOrder}
+            moveOrder={moveOrder}
+          />
+        </main>
+        <div
+          className={
+            "absolute right-2 bottom-2 w-72 max-h-1/2 p-2 " +
+            "rounded-lg shadow-lg overflow-x-hidden overflow-y-auto bg-white "
+          }
+        >
+          <FuncResultList />
+        </div>
+      </FuncResultProvider>
     </div>
   );
 }
