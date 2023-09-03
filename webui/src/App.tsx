@@ -34,9 +34,9 @@ export default function App() {
     setOpenedCards(openedCards.filter((n) => n !== key).concat([key]));
   };
 
-  console.log("app update")
+  console.log("app update");
   return (
-    <div className="min-h-screen h-max bg-neutral-100">
+    <div className="absolute w-full min-h-screen h-max bg-neutral-100 -z-50">
       <FuncResultProvider>
         <nav className="bg-green-300 w-full h-12 px-2 drop-shadow-lg">
           <Header menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
@@ -65,14 +65,7 @@ export default function App() {
             moveOrder={moveOrder}
           />
         </main>
-        <div
-          className={
-            "absolute right-2 bottom-2 w-72 max-h-1/2 p-2 " +
-            "rounded-lg shadow-lg overflow-x-hidden overflow-y-auto bg-white "
-          }
-        >
           <FuncResultList />
-        </div>
       </FuncResultProvider>
     </div>
   );

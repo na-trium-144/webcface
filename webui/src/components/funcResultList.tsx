@@ -80,8 +80,19 @@ export function FuncResultList() {
 
   console.log(results);
   console.log(resultsDisplay);
+  const listShow = resultsDisplay.filter((d) => d.show).length > 0;
+
   return (
-    <>
+    <div
+      className={
+        "fixed right-2 bottom-2 w-72 max-h-[25%] p-2 " +
+        "rounded-lg shadow-lg overflow-x-hidden overflow-y-auto bg-white " +
+        "transition duration-100 origin-bottom-right " +
+        (listShow
+          ? "ease-out opacity-100 scale-100 z-[999] "
+          : "ease-in opacity-0 scale-90 -z-10 ")
+      }
+    >
       <ul>
         {resultsDisplay.map(
           (d, i) =>
@@ -111,6 +122,6 @@ export function FuncResultList() {
             )
         )}
       </ul>
-    </>
+    </div>
   );
 }
