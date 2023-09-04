@@ -17,38 +17,30 @@ MSGPACK_ADD_ENUM(WebCFace::Common::ViewColor);
 namespace WebCFace::Message {
 // 新しいメッセージの定義は
 // kind追記→struct作成→message.ccに追記→s_client_data.ccに追記→client.ccに追記
-enum class MessageKind {
+namespace MessageKind {
+enum MessageKindEnum {
     unknown = -1,
     value = 0,
     text = 1,
     view = 3,
-    entry = 50, // 50〜
-    req = 100,  // 100〜
-    // 150〜: other
-    sync_init = 150,
-    call = 151,
-    call_response = 155,
-    call_result = 152,
-    func_info = 154,
-    log = 156,
-    log_req = 157,
-    sync = 158,
+    entry = 25,
+    req = 50,
+    res = 75,
+    sync_init = 100,
+    call = 101,
+    call_response = 102,
+    call_result = 103,
+    func_info = 104,
+    log = 105,
+    log_req = 106,
+    sync = 107,
 };
-inline constexpr MessageKind kind_req(MessageKind k) {
-    return static_cast<MessageKind>(static_cast<int>(k) +
-                                    static_cast<int>(MessageKind::req));
 }
-inline constexpr MessageKind kind_entry(MessageKind k) {
-    return static_cast<MessageKind>(static_cast<int>(k) +
-                                    static_cast<int>(MessageKind::entry));
-}
-
-namespace Common = WebCFace::Common;
 
 //! 型からkindを取得するためだけのベースクラス
-template <MessageKind k>
+template <int k>
 struct MessageBase {
-    static constexpr MessageKind kind = k;
+    static constexpr int kind = k;
 };
 //! client->server->client 自身の名前を送る
 struct SyncInit : public MessageBase<MessageKind::sync_init> {
@@ -57,6 +49,7 @@ struct SyncInit : public MessageBase<MessageKind::sync_init> {
 };
 //! client->server->client syncの時刻
 //! 各sync()ごとに1回、他のメッセージより先に現在時刻を送る
+//! client->server時はmemberは無視
 struct Sync : public MessageBase<MessageKind::sync> {
     std::string member;
     std::uint64_t time;
@@ -99,23 +92,19 @@ struct CallResult : public MessageBase<MessageKind::call_result> {
                        MSGPACK_NVP("e", is_error), MSGPACK_NVP("r", result));
 };
 //! client(member)->server->client Valueを更新
-//! client->server時はmemberは無視
 struct Value : public MessageBase<MessageKind::value> {
-    std::string member, field;
+    std::string field;
     double data;
-    MSGPACK_DEFINE_MAP(MSGPACK_NVP("m", member), MSGPACK_NVP("f", field),
-                       MSGPACK_NVP("d", data));
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", field), MSGPACK_NVP("d", data));
 };
 //! client(member)->server->client Textを更新
-//! client->server時はmemberは無視
 struct Text : public MessageBase<MessageKind::text> {
-    std::string member, field;
+    std::string field;
     std::string data;
-    MSGPACK_DEFINE_MAP(MSGPACK_NVP("m", member), MSGPACK_NVP("f", field),
-                       MSGPACK_NVP("d", data));
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", field), MSGPACK_NVP("d", data));
 };
 struct View : public MessageBase<MessageKind::view> {
-    std::string member, field;
+    std::string field;
     struct ViewComponent {
         Common::ViewComponentType type;
         std::string text;
@@ -151,24 +140,23 @@ struct View : public MessageBase<MessageKind::view> {
     std::unordered_map<int, ViewComponent> data_diff;
     int length;
     View() = default;
-    View(const std::string &member, const std::string &field,
+    View(const std::string &field,
          const std::unordered_map<int, Common::ViewComponentBase> &data_diff,
          int length)
-        : member(member), field(field), length(length) {
+        : field(field), length(length) {
         for (const auto &vc : data_diff) {
             this->data_diff[vc.first] = vc.second;
         }
     }
-    View(const std::string &member, const std::string &field,
+    View(const std::string &field,
          const std::unordered_map<int, ViewComponent> &data_diff, int length)
-        : member(member), field(field), data_diff(data_diff), length(length) {}
-    MSGPACK_DEFINE_MAP(MSGPACK_NVP("m", member), MSGPACK_NVP("f", field),
-                       MSGPACK_NVP("d", data_diff), MSGPACK_NVP("l", length));
+        : field(field), data_diff(data_diff), length(length) {}
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", field), MSGPACK_NVP("d", data_diff),
+                       MSGPACK_NVP("l", length));
 };
 //! client(member)->server->client logを追加
 //! client->server時はmemberは無視
 struct Log : public MessageBase<MessageKind::log> {
-    std::string member;
     struct LogLine {
         int level;
         //! 1970/1/1からの経過ミリ秒
@@ -191,7 +179,7 @@ struct Log : public MessageBase<MessageKind::log> {
                            MSGPACK_NVP("m", message));
     };
     std::vector<LogLine> log;
-    MSGPACK_DEFINE_MAP(MSGPACK_NVP("m", member), MSGPACK_NVP("l", log));
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("l", log));
 };
 //! Logのリクエストはメンバ名のみ
 struct LogReq : public MessageBase<MessageKind::log_req> {
@@ -201,7 +189,7 @@ struct LogReq : public MessageBase<MessageKind::log_req> {
 //! client(member)->server->client func登録
 //! client->server時はmemberは無視
 struct FuncInfo : public MessageBase<MessageKind::func_info> {
-    std::string member, field;
+    std::string field;
     Common::ValType return_type;
     struct Arg : public Common::Arg {
         Arg() = default;
@@ -212,9 +200,8 @@ struct FuncInfo : public MessageBase<MessageKind::func_info> {
     };
     std::vector<Arg> args;
     FuncInfo() = default;
-    explicit FuncInfo(const std::string &member, const std::string &field,
-                      const Common::FuncInfo &info)
-        : MessageBase<MessageKind::func_info>(), member(member), field(field),
+    explicit FuncInfo(const std::string &field, const Common::FuncInfo &info)
+        : MessageBase<MessageKind::func_info>(), field(field),
           return_type(info.return_type) {
         args.resize(info.args.size());
         for (std::size_t i = 0; i < info.args.size(); i++) {
@@ -230,27 +217,52 @@ struct FuncInfo : public MessageBase<MessageKind::func_info> {
         }
         return info;
     }
-    MSGPACK_DEFINE_MAP(MSGPACK_NVP("m", member), MSGPACK_NVP("f", field),
-                       MSGPACK_NVP("r", return_type), MSGPACK_NVP("a", args));
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", field), MSGPACK_NVP("r", return_type),
+                       MSGPACK_NVP("a", args));
 };
 //! client->server 以降Recvを送るようリクエスト
 //! todo: 解除できるようにする
 template <typename T>
-struct Req : public MessageBase<kind_req(T::kind)> {
+struct Req : public MessageBase<T::kind + MessageKind::req> {
     std::string member, field;
-    MSGPACK_DEFINE_MAP(MSGPACK_NVP("m", member), MSGPACK_NVP("f", field));
+    //! 1以上
+    unsigned int req_id;
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", req_id), MSGPACK_NVP("m", member),
+                       MSGPACK_NVP("f", field));
 };
 //! server->client 新しいvalueなどの報告
 //! Funcの場合はこれではなくFuncInfoを使用
 template <typename T>
-struct Entry : public MessageBase<kind_entry(T::kind)> {
-    std::string member, field;
-    MSGPACK_DEFINE_MAP(MSGPACK_NVP("m", member), MSGPACK_NVP("f", field));
+struct Entry : public MessageBase<T::kind + MessageKind::entry> {
+    std::string field;
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", field));
+};
+template <typename T>
+struct Res {};
+//! server->client  Value,Textなどのfieldをreqidに変えただけのもの
+template <>
+struct Res<Value> : public MessageBase<MessageKind::value + MessageKind::res> {
+    unsigned int req_id;
+    double data;
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", req_id), MSGPACK_NVP("d", data));
+};
+template <>
+struct Res<Text> : public MessageBase<MessageKind::text + MessageKind::res> {
+    unsigned int req_id;
+    std::string data;
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", req_id), MSGPACK_NVP("d", data));
+};
+template <>
+struct Res<View> : public MessageBase<MessageKind::view + MessageKind::res> {
+    unsigned int req_id;
+    std::unordered_map<int, View::ViewComponent> data_diff;
+    int length;
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", req_id), MSGPACK_NVP("d", data_diff),
+                       MSGPACK_NVP("l", length));
 };
 
 //! msgpackのメッセージをパースしstd::anyで返す
-std::vector<std::pair<MessageKind, std::any>>
-unpack(const std::string &message);
+std::vector<std::pair<int, std::any>> unpack(const std::string &message);
 
 //! メッセージ1つを要素数2の配列としてシリアル化
 template <typename T>

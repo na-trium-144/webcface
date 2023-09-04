@@ -44,16 +44,19 @@ struct ClientData {
          */
         std::unordered_map<std::string, std::vector<std::string>> entry;
         //! データ受信リクエスト
-        /*! req[member名][データ名] = true ならばリクエスト済み
-         * falseまたは未定義ならリクエストしてない
+        /*! req[member名][データ名] が0以上ならばリクエスト済み
+         * 0または未定義ならリクエストしてない
          */
-        std::unordered_map<std::string, std::unordered_map<std::string, bool>>
+        std::unordered_map<std::string,
+                           std::unordered_map<std::string, unsigned int>>
             req;
         //! 次のsend時に送信するデータ受信リクエスト
-        /*! req[member名][データ名] = true ならばリクエストをする
-         * falseならリクエストを解除する(未実装)
+        /*! req[member名][データ名]
+         * が1以上ならばそれをreq_idとしてリクエストをする
+         * 0ならリクエストを解除する(未実装)
          */
-        std::unordered_map<std::string, std::unordered_map<std::string, bool>>
+        std::unordered_map<std::string,
+                           std::unordered_map<std::string, unsigned int>>
             req_send;
 
         std::string self_member_name;
@@ -109,11 +112,15 @@ struct ClientData {
         //! member名のりすとを取得(entryから)
         std::vector<std::string> getMembers();
 
+        // req_idに対応するフィールド名を返す
+        std::string getReq(const std::string &member, unsigned int req_id);
+
         //! data_sendを返し、data_sendをクリア
         std::unordered_map<std::string, T> transferSend(bool is_first);
         std::unordered_map<std::string, T> getSendPrev(bool is_first);
         //! req_sendを返し、req_sendをクリア
-        std::unordered_map<std::string, std::unordered_map<std::string, bool>>
+        std::unordered_map<std::string,
+                           std::unordered_map<std::string, unsigned int>>
         transferReq(bool is_first);
     };
 
@@ -133,7 +140,7 @@ struct ClientData {
             : self_member_name(name) {}
 
         void setRecv(const std::string &member, const T &data);
-        
+
         //! Tがvectorのとき要素を追加する
         template <typename U>
             requires std::same_as<T, std::vector<U>>
@@ -184,8 +191,7 @@ struct ClientData {
     explicit ClientData(const std::string &name)
         : self_member_name(name), value_store(name), text_store(name),
           func_store(name), view_store(name), log_store(name),
-          sync_time_store(name),
-          logger_sink(std::make_shared<LoggerSink>()) {
+          sync_time_store(name), logger_sink(std::make_shared<LoggerSink>()) {
         std::vector<spdlog::sink_ptr> sinks = {logger_sink, stderr_sink};
         logger =
             std::make_shared<spdlog::logger>(name, sinks.begin(), sinks.end());

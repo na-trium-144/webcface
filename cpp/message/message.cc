@@ -12,10 +12,9 @@ void printMsg(const std::string &message) {
     // }
     // std::cerr << std::endl;
 }
-std::vector<std::pair<MessageKind, std::any>>
-unpack(const std::string &message) {
+std::vector<std::pair<int, std::any>> unpack(const std::string &message) {
     if (message.size() == 0) {
-        return std::vector<std::pair<MessageKind, std::any>>{};
+        return std::vector<std::pair<int, std::any>>{};
     }
     try {
         msgpack::object_handle result;
@@ -26,14 +25,10 @@ unpack(const std::string &message) {
         if (obj.type != msgpack::type::ARRAY || obj.via.array.size % 2 != 0) {
             throw msgpack::type_error();
         }
-        std::vector<std::pair<MessageKind, std::any>> ret(obj.via.array.size /
-                                                          2);
+        std::vector<std::pair<int, std::any>> ret(obj.via.array.size / 2);
         for (std::size_t i = 0; i < obj.via.array.size; i += 2) {
-            auto kind =
-                static_cast<MessageKind>(obj.via.array.ptr[i].as<int>());
+            auto kind = obj.via.array.ptr[i].as<int>();
             std::any obj_u;
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wswitch"
             switch (kind) {
 
 #define MSG_PARSE(kind, type)                                                  \
@@ -43,13 +38,17 @@ unpack(const std::string &message) {
 
 #define MSG_PARSE_DATA(kind, type)                                             \
     MSG_PARSE(kind, type)                                                      \
-    case kind_entry(MessageKind::kind):                                        \
+    case MessageKind::entry + MessageKind::kind:                               \
         static_assert(MessageKind::kind < MessageKind::entry &&                \
-                      MessageKind::kind < MessageKind::req);                   \
+                      MessageKind::kind < MessageKind::req &&                  \
+                      MessageKind::kind < MessageKind::res);                   \
         obj_u = obj.via.array.ptr[i + 1].as<Entry<type>>();                    \
         break;                                                                 \
-    case kind_req(MessageKind::kind):                                          \
+    case MessageKind::req + MessageKind::kind:                                 \
         obj_u = obj.via.array.ptr[i + 1].as<Req<type>>();                      \
+        break;                                                                 \
+    case MessageKind::res + MessageKind::kind:                                 \
+        obj_u = obj.via.array.ptr[i + 1].as<Res<type>>();                      \
         break;
 
                 MSG_PARSE(sync_init, SyncInit)
@@ -69,7 +68,6 @@ unpack(const std::string &message) {
             default:
                 break;
             }
-#pragma GCC diagnostic pop
 
             // printMsg(message);
             ret[i / 2] = std::make_pair(kind, obj_u);
@@ -78,7 +76,7 @@ unpack(const std::string &message) {
     } catch (const std::exception &e) {
         std::cerr << "unpack error: " << e.what() << std::endl;
         printMsg(message);
-        return std::vector<std::pair<MessageKind, std::any>>{};
+        return std::vector<std::pair<int, std::any>>{};
     }
 }
 

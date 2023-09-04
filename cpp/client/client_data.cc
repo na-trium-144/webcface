@@ -80,10 +80,15 @@ std::optional<T>
 ClientData::SyncDataStore2<T>::getRecv(const std::string &from,
                                        const std::string &name) {
     std::lock_guard lock(mtx);
-    if (!isSelf(from) && (!req.count(from) || !req.at(from).count(name) ||
-                          req[from][name] == false)) {
-        req[from][name] = true;
-        req_send[from][name] = true;
+    if (!isSelf(from) && req[from][name] <= 0) {
+        unsigned int max_req = 0;
+        for (const auto &r : req[from]) {
+            if (r.second > max_req) {
+                max_req = r.second;
+            }
+        }
+        req[from][name] = max_req + 1;
+        req_send[from][name] = max_req + 1;
     }
     auto s_it = data_recv.find(from);
     if (s_it != data_recv.end()) {
@@ -98,7 +103,7 @@ template <typename T>
 std::optional<T>
 ClientData::SyncDataStore1<T>::getRecv(const std::string &member) {
     std::lock_guard lock(mtx);
-    if (!isSelf(member) && (!req.count(member) || req[member] == false)) {
+    if (!isSelf(member) && req[member] == false) {
         req[member] = true;
         req_send[member] = true;
     }
@@ -112,15 +117,26 @@ template <typename T>
 void ClientData::SyncDataStore2<T>::unsetRecv(const std::string &from,
                                               const std::string &name) {
     std::lock_guard lock(mtx);
-    if (!isSelf(from) && (req.count(from) && req.at(from).count(name) &&
-                          req[from][name] == true)) {
+    if (!isSelf(from) && req[from][name] > 0) {
         req[from].erase(name);
-        req_send[from][name] = false;
+        req_send[from][name] = 0;
     }
     if (data_recv.count(from) && data_recv.at(from).count(name)) {
         data_recv.at(from).erase(name);
     }
 }
+template <typename T>
+std::string ClientData::SyncDataStore2<T>::getReq(const std::string &member,
+                                                  unsigned int req_id) {
+    std::lock_guard lock(mtx);
+    for (const auto &r : req[member]) {
+        if (r.second == req_id) {
+            return r.first;
+        }
+    }
+    return "";
+}
+
 template <typename T>
 std::unordered_map<std::string, T>
 ClientData::SyncDataStore2<T>::transferSend(bool is_first) {
@@ -144,7 +160,7 @@ ClientData::SyncDataStore2<T>::getSendPrev(bool is_first) {
     }
 }
 template <typename T>
-std::unordered_map<std::string, std::unordered_map<std::string, bool>>
+std::unordered_map<std::string, std::unordered_map<std::string, unsigned int>>
 ClientData::SyncDataStore2<T>::transferReq(bool is_first) {
     std::lock_guard lock(mtx);
     if (is_first) {
@@ -174,7 +190,8 @@ template class ClientData::SyncDataStore1<std::vector<LogLine>>;
 template void
 ClientData::SyncDataStore1<std::vector<LogLine>>::addRecv(const std::string &,
                                                           const LogLine &);
-template class ClientData::SyncDataStore1<std::chrono::system_clock::time_point>;
+template class ClientData::SyncDataStore1<
+    std::chrono::system_clock::time_point>;
 
 AsyncFuncResult &
 ClientData::FuncResultStore::addResult(const std::string &caller,
