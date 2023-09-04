@@ -57,16 +57,10 @@ void Client::messageThreadMain() {
 }
 
 bool Client::connected() const {
-    // return ws && ws->getConnection() && ws->getConnection()->connected();
     return connected_.load();
 }
-void Client::reconnect() {}
 
 void Client::send(const std::vector<char> &m) {
-    // if (connected()) {
-    //     ws->getConnection()->send(&m[0], m.size(),
-    //                               drogon::WebSocketMessageType::Binary);
-    // }
     data->message_queue.push(m);
 }
 

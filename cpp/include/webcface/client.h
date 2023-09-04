@@ -18,11 +18,6 @@ class Client : public Member {
     //! close()が呼ばれたらtrue
     std::atomic<bool> closing = false;
     std::atomic<bool> connected_ = false;
-    //! 接続が完了したかどうかを取得する
-    std::future<void> connection_finished;
-    //! 再接続
-    //! 切れたら再帰的に呼ばれる(正確には別スレッドで呼び出されるので再帰ではない)
-    void reconnect();
 
     //! サーバーのホスト
     std::string host;

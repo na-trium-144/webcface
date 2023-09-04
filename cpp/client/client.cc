@@ -19,24 +19,15 @@ Client::Client(const std::string &name, const std::string &host, int port)
 
     this->Member::data_w = this->data;
     this->Member::member_ = name;
-
-    // reconnect();
 }
 
 Client::~Client() {
     close();
-    // reconnectが終了していなければ待機する
-    if (connection_finished.valid()) {
-        connection_finished.wait();
-    }
     event_thread.join();
     message_thread.join();
 }
 void Client::close() {
     closing.store(true);
-    // if (ws->getConnection()) {
-    //     ws->getConnection()->shutdown();
-    // }
 }
 
 void Client::sync() {
