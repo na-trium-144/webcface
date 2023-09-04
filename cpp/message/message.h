@@ -32,6 +32,7 @@ enum class MessageKind {
     func_info = 154,
     log = 156,
     log_req = 157,
+    sync = 158,
 };
 inline constexpr MessageKind kind_req(MessageKind k) {
     return static_cast<MessageKind>(static_cast<int>(k) +
@@ -54,6 +55,22 @@ struct SyncInit : public MessageBase<MessageKind::sync_init> {
     std::string member;
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("m", member));
 };
+//! client->server->client syncの時刻
+//! 各sync()ごとに1回、他のメッセージより先に現在時刻を送る
+struct Sync : public MessageBase<MessageKind::sync> {
+    std::string member;
+    std::uint64_t time;
+    Sync()
+        : time(std::chrono::duration_cast<std::chrono::milliseconds>(
+                   std::chrono::system_clock::now().time_since_epoch())
+                   .count()) {}
+    std::chrono::system_clock::time_point getTime() const {
+        return std::chrono::system_clock::time_point(
+            std::chrono::milliseconds(time));
+    }
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("m", member), MSGPACK_NVP("t", time));
+};
+
 //! client(caller)->server->client(receiver) 関数呼び出し
 //! client->server時はcallerは無視
 struct Call : public MessageBase<MessageKind::call>, public Common::FuncCall {
@@ -252,7 +269,7 @@ void pack(std::stringstream &buffer, int &len, const T &obj) {
     len += 2;
 }
 
-inline std::string packDone(std::stringstream &buffer, int len){
+inline std::string packDone(std::stringstream &buffer, int len) {
     std::stringstream buffer2;
     msgpack::packer packer(buffer2);
     packer.pack_array(len);

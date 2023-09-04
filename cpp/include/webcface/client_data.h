@@ -6,6 +6,7 @@
 #include <condition_variable>
 #include <optional>
 #include <string>
+#include <concepts>
 #include <eventpp/eventqueue.h>
 #include <spdlog/logger.h>
 #include "func_result.h"
@@ -20,14 +21,12 @@ namespace WebCFace {
 struct ClientData {
 
     //! 送受信するデータを保持するクラス
-    /*! Clientが各データの種類に応じたSyncDataStoreを用意、
-     * MemberとSyncDataがshared_pointerとして保持
-     *
+    /*! memberごとにフィールドを持つデータに使う。
+     * member, fieldの2次元mapとなる
      * T=FuncInfoの時、entryとreqは使用しない(常にすべての関数の情報が送られてくる)
      */
     template <typename T>
-    class SyncDataStore {
-      private:
+    class SyncDataStore2 {
         std::mutex mtx;
         //! 次のsend時に送信するデータ。
         std::unordered_map<std::string, T> data_send;
@@ -63,7 +62,7 @@ struct ClientData {
         }
 
       public:
-        explicit SyncDataStore(const std::string &name)
+        explicit SyncDataStore2(const std::string &name)
             : self_member_name(name) {}
 
         //! 送信するデータをdata_sendとdata_recv[self_member_name]にセット
@@ -118,9 +117,10 @@ struct ClientData {
         transferReq(bool is_first);
     };
 
-    class LogStore {
+    template <typename T>
+    class SyncDataStore1 {
         std::mutex mtx;
-        std::unordered_map<std::string, std::vector<LogLine>> data_recv;
+        std::unordered_map<std::string, T> data_recv;
         std::unordered_map<std::string, bool> req;
         std::unordered_map<std::string, bool> req_send;
         std::string self_member_name;
@@ -129,10 +129,17 @@ struct ClientData {
         }
 
       public:
-        explicit LogStore(const std::string &name) : self_member_name(name) {}
+        explicit SyncDataStore1(const std::string &name)
+            : self_member_name(name) {}
 
-        void addRecv(const std::string &member, const LogLine &log);
-        std::optional<std::vector<LogLine>> getRecv(const std::string &member);
+        void setRecv(const std::string &member, const T &data);
+        
+        //! Tがvectorのとき要素を追加する
+        template <typename U>
+            requires std::same_as<T, std::vector<U>>
+        void addRecv(const std::string &member, const U &data);
+
+        std::optional<T> getRecv(const std::string &member);
         //! req_sendを返し、req_sendをクリア
         std::unordered_map<std::string, bool> transferReq(bool is_first);
     };
@@ -177,6 +184,7 @@ struct ClientData {
     explicit ClientData(const std::string &name)
         : self_member_name(name), value_store(name), text_store(name),
           func_store(name), view_store(name), log_store(name),
+          sync_time_store(name),
           logger_sink(std::make_shared<LoggerSink>()) {
         std::vector<spdlog::sink_ptr> sinks = {logger_sink, stderr_sink};
         logger =
@@ -192,11 +200,12 @@ struct ClientData {
         return base.member_ == self_member_name;
     }
 
-    SyncDataStore<double> value_store;
-    SyncDataStore<std::string> text_store;
-    SyncDataStore<FuncInfo> func_store;
-    SyncDataStore<std::vector<ViewComponentBase>> view_store;
-    LogStore log_store;
+    SyncDataStore2<double> value_store;
+    SyncDataStore2<std::string> text_store;
+    SyncDataStore2<FuncInfo> func_store;
+    SyncDataStore2<std::vector<ViewComponentBase>> view_store;
+    SyncDataStore1<std::vector<LogLine>> log_store;
+    SyncDataStore1<std::chrono::system_clock::time_point> sync_time_store;
     FuncResultStore func_result_store;
 
     using EventQueue = eventpp::EventQueue<EventKey, void(const EventKey &)>;

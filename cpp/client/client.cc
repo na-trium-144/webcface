@@ -32,6 +32,7 @@ void Client::sync() {
     if (connected()) {
         std::stringstream buffer;
         int len = 0;
+        Message::pack(buffer, len, Message::Sync{});
 
         bool is_first = false;
         if (!sync_init.load()) {
@@ -42,22 +43,26 @@ void Client::sync() {
 
         // todo: hiddenの反映
         for (const auto &v : data->value_store.transferSend(is_first)) {
-            Message::pack(buffer, len, Message::Value{{}, "", v.first, v.second});
+            Message::pack(buffer, len,
+                          Message::Value{{}, "", v.first, v.second});
         }
         for (const auto &v : data->value_store.transferReq(is_first)) {
             for (const auto &v2 : v.second) {
-                Message::pack(buffer, len, Message::Req<Message::Value>{
-                                          {}, v.first, v2.first});
+                Message::pack(
+                    buffer, len,
+                    Message::Req<Message::Value>{{}, v.first, v2.first});
             }
         }
         for (const auto &v : data->text_store.transferSend(is_first)) {
 
-            Message::pack(buffer, len, Message::Text{{}, "", v.first, v.second});
+            Message::pack(buffer, len,
+                          Message::Text{{}, "", v.first, v.second});
         }
         for (const auto &v : data->text_store.transferReq(is_first)) {
             for (const auto &v2 : v.second) {
                 Message::pack(
-                    buffer, len, Message::Req<Message::Text>{{}, v.first, v2.first});
+                    buffer, len,
+                    Message::Req<Message::Text>{{}, v.first, v2.first});
             }
         }
         auto view_send_prev = data->view_store.getSendPrev(is_first);
@@ -78,7 +83,7 @@ void Client::sync() {
                 }
             }
             if (!v_diff.empty()) {
-                Message::pack(buffer, len, 
+                Message::pack(buffer, len,
                               Message::View{"", v.first, v_diff,
                                             static_cast<int>(v.second.size())});
             }
@@ -86,12 +91,14 @@ void Client::sync() {
         for (const auto &v : data->view_store.transferReq(is_first)) {
             for (const auto &v2 : v.second) {
                 Message::pack(
-                    buffer, len, Message::Req<Message::View>{{}, v.first, v2.first});
+                    buffer, len,
+                    Message::Req<Message::View>{{}, v.first, v2.first});
             }
         }
         for (const auto &v : data->func_store.transferSend(is_first)) {
             if (!data->func_store.isHidden(v.first)) {
-                Message::pack(buffer, len, Message::FuncInfo{"", v.first, v.second});
+                Message::pack(buffer, len,
+                              Message::FuncInfo{"", v.first, v.second});
             }
         }
 
@@ -131,6 +138,10 @@ void Client::onRecv(const std::string &message) {
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wswitch"
         switch (kind) {
+        case MessageKind::sync: {
+            auto r = std::any_cast<WebCFace::Message::Sync>(obj);
+            data->sync_time_store.setRecv(r.member, r.getTime());
+        }
         case MessageKind::value: {
             auto r = std::any_cast<WebCFace::Message::Value>(obj);
             data->value_store.setRecv(r.member, r.field, r.data);
@@ -163,7 +174,7 @@ void Client::onRecv(const std::string &message) {
         case MessageKind::log: {
             auto r = std::any_cast<WebCFace::Message::Log>(obj);
             for (const auto &lm : r.log) {
-                data->log_store.addRecv(r.member, lm);
+                data->log_store.addRecv(r.member, static_cast<LogLine>(lm));
             }
             data->event_queue.enqueue(
                 EventKey{EventType::log_change, Field{data, r.member}});

@@ -62,6 +62,7 @@ unpack(const std::string &message) {
                 MSG_PARSE(log, Log)
                 MSG_PARSE(log_req, LogReq)
                 MSG_PARSE(func_info, FuncInfo)
+                MSG_PARSE(sync, Sync)
 
 #undef MSG_PARSE_DATA
 #undef MSG_PARSE
