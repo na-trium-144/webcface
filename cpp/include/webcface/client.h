@@ -26,15 +26,14 @@ class Client : public Member {
     //! websocket通信するスレッド
     std::thread message_thread;
     void messageThreadMain();
-    //! データを送信する
-    void send(const std::vector<char> &m);
     //! 接続を切り、今後再接続しない
     void close();
 
     std::shared_ptr<ClientData> data;
 
-    //! 初回のsync()で名前を送信するがそれが完了したかどうか
-    bool sync_init = false;
+    //! 初回のsync()で全データを送信するがそれが完了したかどうか
+    //! 再接続したらfalseに戻す
+    std::atomic<bool> sync_init = false;
 
     LoggerBuf logger_buf;
     std::ostream logger_os;

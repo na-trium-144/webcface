@@ -39,6 +39,6 @@ class ClientData {
     void onConnect();
     void onRecv(const std::string &msg);
     void onClose();
-    void send(const std::vector<char> &m) const;
+    void send(const std::string &m) const;
 };
 } // namespace WebCFace::Server

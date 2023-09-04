@@ -26,42 +26,41 @@ Client::~Client() {
     event_thread.join();
     message_thread.join();
 }
-void Client::close() {
-    closing.store(true);
-}
+void Client::close() { closing.store(true); }
 
 void Client::sync() {
     if (connected()) {
-        if (!sync_init) {
-            send(Message::pack(Message::SyncInit{{}, member_}));
-            sync_init = true;
+        bool is_first = false;
+        if (!sync_init.load()) {
+            data->message_queue.push(
+                Message::pack(Message::SyncInit{{}, member_}));
+            is_first = true;
+            sync_init.store(true);
         }
 
         // todo: hiddenの反映
-        auto value_send = data->value_store.transferSend();
-        for (const auto &v : value_send) {
-            send(Message::pack(Message::Value{{}, "", v.first, v.second}));
+        for (const auto &v : data->value_store.transferSend(is_first)) {
+            data->message_queue.push(
+                Message::pack(Message::Value{{}, "", v.first, v.second}));
         }
-        auto value_subsc = data->value_store.transferReq();
-        for (const auto &v : value_subsc) {
+        for (const auto &v : data->value_store.transferReq(is_first)) {
             for (const auto &v2 : v.second) {
-                send(Message::pack(
+                data->message_queue.push(Message::pack(
                     Message::Req<Message::Value>{{}, v.first, v2.first}));
             }
         }
-        auto text_send = data->text_store.transferSend();
-        for (const auto &v : text_send) {
-            send(Message::pack(Message::Text{{}, "", v.first, v.second}));
+        for (const auto &v : data->text_store.transferSend(is_first)) {
+            data->message_queue.push(
+                Message::pack(Message::Text{{}, "", v.first, v.second}));
         }
-        auto text_subsc = data->text_store.transferReq();
-        for (const auto &v : text_subsc) {
+        for (const auto &v : data->text_store.transferReq(is_first)) {
             for (const auto &v2 : v.second) {
-                send(Message::pack(
+                data->message_queue.push(Message::pack(
                     Message::Req<Message::Text>{{}, v.first, v2.first}));
             }
         }
-        auto view_send_prev = data->view_store.getSendPrev();
-        auto view_send = data->view_store.transferSend();
+        auto view_send_prev = data->view_store.getSendPrev(is_first);
+        auto view_send = data->view_store.transferSend(is_first);
         for (const auto &v : view_send) {
             auto v_prev = view_send_prev.find(v.first);
             std::unordered_map<int, ViewComponentBase> v_diff;
@@ -78,36 +77,45 @@ void Client::sync() {
                 }
             }
             if (!v_diff.empty()) {
-                send(Message::pack(Message::View{
+                data->message_queue.push(Message::pack(Message::View{
                     "", v.first, v_diff, static_cast<int>(v.second.size())}));
             }
         }
-        auto view_subsc = data->view_store.transferReq();
-        for (const auto &v : view_subsc) {
+        for (const auto &v : data->view_store.transferReq(is_first)) {
             for (const auto &v2 : v.second) {
-                send(Message::pack(
+                data->message_queue.push(Message::pack(
                     Message::Req<Message::View>{{}, v.first, v2.first}));
             }
         }
-        auto func_send = data->func_store.transferSend();
-        for (const auto &v : func_send) {
+        for (const auto &v : data->func_store.transferSend(is_first)) {
             if (!data->func_store.isHidden(v.first)) {
-                send(Message::pack(Message::FuncInfo{"", v.first, v.second}));
+                data->message_queue.push(
+                    Message::pack(Message::FuncInfo{"", v.first, v.second}));
             }
         }
 
-        auto log_subsc = data->log_store.transferReq();
-        for (const auto &v : log_subsc) {
-            send(Message::pack(Message::LogReq{{}, v.first}));
+        for (const auto &v : data->log_store.transferReq(is_first)) {
+            data->message_queue.push(
+                Message::pack(Message::LogReq{{}, v.first}));
         }
+
         std::vector<Message::Log::LogLine> log_send;
         while (auto log = data->logger_sink->pop()) {
             log_send.push_back(*log);
             // todo: connected状態でないとlog_storeにログが記録されない
             data->log_store.addRecv(this->name(), *log);
         }
+        if (is_first) {
+            auto log_send_m = data->log_store.getRecv(member_).value_or(
+                std::vector<LogLine>{});
+            log_send.resize(log_send_m.size());
+            for (std::size_t i = 0; i < log_send_m.size(); i++) {
+                log_send[i] = log_send_m[i];
+            }
+        }
         if (!log_send.empty()) {
-            send(Message::pack(Message::Log{{}, "", log_send}));
+            data->message_queue.push(
+                Message::pack(Message::Log{{}, "", log_send}));
         }
     }
     while (auto func_sync = data->func_sync_queue.pop()) {

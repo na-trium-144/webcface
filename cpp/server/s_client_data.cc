@@ -10,10 +10,10 @@ namespace WebCFace::Server {
 void ClientData::onClose() {
     // 作ったものの何もすることがなかった
 }
-void ClientData::send(const std::vector<char> &m) const {
+void ClientData::send(const std::string &m) const {
     if (connected()) {
         std::static_pointer_cast<cinatra::connection<cinatra::NonSSL>>(con)
-            ->send_ws_binary(std::string(&m[0], m.size()));
+            ->send_ws_binary(m);
     }
 }
 bool ClientData::connected() const {

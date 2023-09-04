@@ -15,6 +15,7 @@ void Client::messageThreadMain() {
         this->data->logger_internal->trace("finished connecting, status={}",
                                            ok);
         if (ok) {
+            this->sync_init.store(false);
             this->connected_.store(true);
             this->data->logger_internal->debug("connected");
             client.on_ws_msg([&](resp_data data) {
@@ -38,10 +39,8 @@ void Client::messageThreadMain() {
                 if (msg) {
                     // this->send(*msg);
                     this->data->logger_internal->trace("sending message");
-                    auto data =
-                        async_simple::coro::syncAwait(client.async_send_ws(
-                            std::string(&(*msg)[0], msg->size()), true,
-                            opcode::binary));
+                    auto data = async_simple::coro::syncAwait(
+                        client.async_send_ws(*msg, true, opcode::binary));
                     if (data.net_err) {
                         this->data->logger_internal->debug(
                             "send error {}", data.net_err.message());
@@ -56,13 +55,6 @@ void Client::messageThreadMain() {
     }
 }
 
-bool Client::connected() const {
-    return connected_.load();
-}
-
-void Client::send(const std::vector<char> &m) {
-    data->message_queue.push(m);
-}
-
+bool Client::connected() const { return connected_.load(); }
 
 } // namespace WebCFace
