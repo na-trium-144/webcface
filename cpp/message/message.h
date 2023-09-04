@@ -232,16 +232,32 @@ struct Entry : public MessageBase<kind_entry(T::kind)> {
 };
 
 //! msgpackのメッセージをパースしstd::anyで返す
-std::pair<MessageKind, std::any> unpack(const std::string &message);
+std::vector<std::pair<MessageKind, std::any>>
+unpack(const std::string &message);
 
-//! メッセージをシリアル化
+//! メッセージ1つを要素数2の配列としてシリアル化
 template <typename T>
-std::string pack(T obj) {
+std::string packSingle(const T &obj) {
     msgpack::type::tuple<int, T> src(static_cast<int>(T::kind), obj);
     std::stringstream buffer;
     msgpack::pack(buffer, src);
-    buffer.seekg(0);
     return buffer.str();
+}
+
+//! メッセージをシリアル化しbufferに追加
+template <typename T>
+void pack(std::stringstream &buffer, int &len, const T &obj) {
+    msgpack::pack(buffer, static_cast<int>(T::kind));
+    msgpack::pack(buffer, obj);
+    len += 2;
+}
+
+inline std::string packDone(std::stringstream &buffer, int len){
+    std::stringstream buffer2;
+    msgpack::packer packer(buffer2);
+    packer.pack_array(len);
+    buffer2 << buffer.rdbuf();
+    return buffer2.str();
 }
 
 } // namespace WebCFace::Message
