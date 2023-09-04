@@ -1,10 +1,7 @@
 #include <webcface/client.h>
-#include <cinatra.hpp>
-#include <future>
-#include <optional>
 #include <string>
 #include <chrono>
-#include <cstdio>
+#include <iostream>
 #include "../message/message.h"
 
 namespace WebCFace {
@@ -17,30 +14,7 @@ Client::Client(const std::string &name, const std::string &host, int port)
               data->event_queue.process();
           }
       }),
-      message_thread([this] {
-          using namespace cinatra;
-          coro_http_client client;
-          async_simple::coro::syncAwait(
-              client.async_ws_connect("ws://localhost:7530"));
-          client.on_ws_msg([&](resp_data data) {
-              if (data.net_err) {
-                  std::cout << "ws_msg net error " << data.net_err.message()
-                            << "\n";
-                  return;
-              }
-              this->onRecv(std::string(data.resp_body));
-          });
-
-          while (!closing.load()) {
-              auto msg = data->message_queue.pop(std::chrono::milliseconds(10));
-              if (msg) {
-                  // this->send(*msg);
-                  async_simple::coro::syncAwait(
-                      client.async_send_ws(std::string(&(*msg)[0], msg->size()),
-                                           true, opcode::binary));
-              }
-          }
-      }),
+      message_thread([this] { this->messageThreadMain(); }),
       logger_buf(this->data), logger_os(&this->logger_buf) {
 
     this->Member::data_w = this->data;
@@ -49,11 +23,6 @@ Client::Client(const std::string &name, const std::string &host, int port)
     // reconnect();
 }
 
-bool Client::connected() const {
-    // return ws && ws->getConnection() && ws->getConnection()->connected();
-    return true;
-}
-void Client::reconnect() {}
 Client::~Client() {
     close();
     // reconnectが終了していなければ待機する
@@ -69,13 +38,7 @@ void Client::close() {
     //     ws->getConnection()->shutdown();
     // }
 }
-void Client::send(const std::vector<char> &m) {
-    // if (connected()) {
-    //     ws->getConnection()->send(&m[0], m.size(),
-    //                               drogon::WebSocketMessageType::Binary);
-    // }
-    data->message_queue.push(m);
-}
+
 void Client::sync() {
     if (connected()) {
         if (!sync_init) {

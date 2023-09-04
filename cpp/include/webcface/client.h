@@ -15,10 +15,9 @@ namespace WebCFace {
 //! サーバーに接続するクライアント。
 class Client : public Member {
   private:
-    std::shared_ptr<ClientData> data;
-
     //! close()が呼ばれたらtrue
     std::atomic<bool> closing = false;
+    std::atomic<bool> connected_ = false;
     //! 接続が完了したかどうかを取得する
     std::future<void> connection_finished;
     //! 再接続
@@ -29,23 +28,27 @@ class Client : public Member {
     std::string host;
     //! サーバーのポート
     int port;
-    //! 初回のsync()で名前を送信するがそれが完了したかどうか
-    bool sync_init = false;
-
-    //! イベントを処理するスレッド
-    std::thread event_thread;
     //! websocket通信するスレッド
     std::thread message_thread;
-
-    LoggerBuf logger_buf;
-    std::ostream logger_os;
-
-    //! 受信時の処理
-    void onRecv(const std::string &message);
+    void messageThreadMain();
     //! データを送信する
     void send(const std::vector<char> &m);
     //! 接続を切り、今後再接続しない
     void close();
+
+    std::shared_ptr<ClientData> data;
+
+    //! 初回のsync()で名前を送信するがそれが完了したかどうか
+    bool sync_init = false;
+
+    LoggerBuf logger_buf;
+    std::ostream logger_os;
+
+    //! イベントを処理するスレッド
+    std::thread event_thread;
+
+    //! 受信時の処理
+    void onRecv(const std::string &message);
 
   public:
     Client() : Client("") {}
