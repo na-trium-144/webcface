@@ -3,7 +3,7 @@
 #include <chrono>
 #include <iostream>
 int main() {
-    WebCFace::logger_internal_level = spdlog::level::trace;
+    WebCFace::logger_internal_level = spdlog::level::debug;
     WebCFace::Client c("example_logger");
     c.logger()->set_level(spdlog::level::trace);
     c.logger()->trace("this is trace");

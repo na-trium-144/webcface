@@ -19,7 +19,8 @@ void Client::messageThreadMain() {
             this->data->logger_internal->debug("connected");
             client.on_ws_msg([&](resp_data data) {
                 if (data.net_err) {
-                    this->data->logger_internal->error("ws_msg net error {}",
+                    // どういう条件で起こるのかわかってない
+                    this->data->logger_internal->error("recv error {}",
                                                        data.net_err.message());
                     return;
                 }
@@ -37,9 +38,15 @@ void Client::messageThreadMain() {
                 if (msg) {
                     // this->send(*msg);
                     this->data->logger_internal->trace("sending message");
-                    async_simple::coro::syncAwait(client.async_send_ws(
-                        std::string(&(*msg)[0], msg->size()), true,
-                        opcode::binary));
+                    auto data =
+                        async_simple::coro::syncAwait(client.async_send_ws(
+                            std::string(&(*msg)[0], msg->size()), true,
+                            opcode::binary));
+                    if (data.net_err) {
+                        this->data->logger_internal->debug(
+                            "send error {}", data.net_err.message());
+                        this->connected_.store(false);
+                    }
                 }
             }
 
