@@ -1,11 +1,7 @@
 #include <webcface/client.h>
-#include <drogon/WebSocketClient.h>
-#include <drogon/HttpAppFramework.h>
-#include <future>
-#include <optional>
 #include <string>
 #include <chrono>
-#include <cstdio>
+#include <iostream>
 #include "../message/message.h"
 
 namespace WebCFace {
@@ -18,190 +14,53 @@ Client::Client(const std::string &name, const std::string &host, int port)
               data->event_queue.process();
           }
       }),
-      message_thread([this] {
-          while (!closing.load()) {
-              auto msg = data->message_queue.pop(std::chrono::milliseconds(10));
-              if (msg) {
-                  this->send(*msg);
-              }
-          }
-      }),
+      message_thread([this] { this->messageThreadMain(); }),
       logger_buf(this->data), logger_os(&this->logger_buf) {
 
     this->Member::data_w = this->data;
     this->Member::member_ = name;
-
-    // 最初のクライアント接続時にdrogonループを起動
-    // もしClientがテンプレートクラスになったら使えない
-    static struct MainLoop {
-        std::optional<std::thread> thr;
-        std::weak_ptr<ClientData> data_w;
-        MainLoop(const std::weak_ptr<ClientData> &data_w) : data_w(data_w) {
-            using namespace drogon;
-            if (auto data = data_w.lock()) {
-                data->logger_internal->trace("mainloop start");
-            }
-
-            auto log_output_func = [data_w](const char *msg, uint64_t len) {
-                if (auto data = data_w.lock()) {
-                    // 末尾の改行を除く
-                    if (len > 0 && msg[len - 1] == '\n') {
-                        --len;
-                    }
-                    std::string log(msg, len);
-                    std::stringstream ss(log);
-                    std::string level;
-                    ss >> level >> level >> level >> level >> level;
-                    log = "from drogon: " + log;
-                    if (level == "TRACE") {
-                        data->logger_internal->trace(log);
-                    } else if (level == "DEBUG") {
-                        data->logger_internal->debug(log);
-                    } else if (level == "INFO") {
-                        data->logger_internal->info(log);
-                    } else if (level == "ERROR") {
-                        data->logger_internal->error(log);
-                    } else if (level == "FATAL") {
-                        data->logger_internal->critical(log);
-                    } else {
-                        // default
-                        data->logger_internal->warn(log);
-                    }
-                }
-            };
-            auto log_flush_func = [] {};
-            trantor::Logger::setOutputFunction(log_output_func, log_flush_func);
-
-            std::promise<void> p1;
-            std::future<void> f1 = p1.get_future();
-
-            app().disableSigtermHandling();
-            app().getLoop()->queueInLoop([&p1]() { p1.set_value(); });
-            // Start the main loop on another thread
-            thr = std::make_optional<std::thread>([&]() {
-                // Queues the promise to be fulfilled after starting the loop
-                app().run();
-            });
-
-            // The future is only satisfied after the event loop started
-            f1.get();
-            if (auto data = data_w.lock()) {
-                data->logger_internal->trace("thread started");
-            }
-        }
-        ~MainLoop() {
-            using namespace drogon;
-            app().getLoop()->queueInLoop([]() { app().quit(); });
-            if (auto data = data_w.lock()) {
-                data->logger_internal->trace("mainloop quit");
-            }
-            thr->join();
-            if (auto data = data_w.lock()) {
-                data->logger_internal->trace("thread finished");
-            }
-        }
-    } q{this->data};
-
-    reconnect();
 }
 
-bool Client::connected() const {
-    return ws && ws->getConnection() && ws->getConnection()->connected();
-}
-void Client::reconnect() {
-    if (ws && ws->getConnection()) {
-        ws->getConnection()->shutdown();
-    }
-    if (!closing.load()) {
-        data->logger_internal->trace("reconnect");
-        using namespace drogon;
-        ws = WebSocketClient::newWebSocketClient(host, port, false);
-        ws->setMessageHandler(
-            [this](const std::string &message, const WebSocketClientPtr &ws,
-                   const WebSocketMessageType &type) { onRecv(message); });
-        ws->setConnectionClosedHandler([this](const WebSocketClientPtr &ws) {
-            data->logger_internal->debug("closed");
-            reconnect();
-        });
-        auto req = HttpRequest::newHttpRequest();
-        req->setPath("/");
-        auto p_cli = std::make_shared<std::promise<void>>();
-        connection_finished = p_cli->get_future();
-        auto p_local = std::make_shared<std::promise<void>>();
-        ws->connectToServer(req, [this, p_cli, p_local](
-                                     ReqResult r, const HttpResponsePtr &resp,
-                                     const WebSocketClientPtr &ws) mutable {
-            if (r == ReqResult::Ok) {
-                data->logger_internal->info("connected");
-            } else {
-                data->logger_internal->warn("connection error {}", r);
-                app().getLoop()->runAfter(1, [this] { reconnect(); });
-            }
-            p_cli->set_value();
-            p_local->set_value();
-        });
-        app().getLoop()->runAfter(1, [this, p_local] {
-            if (p_local->get_future().wait_for(std::chrono::seconds(0)) !=
-                std::future_status::ready) {
-                data->logger_internal->warn("connection timeout");
-                reconnect();
-            }
-        });
-    }
-}
 Client::~Client() {
     close();
-    // reconnectが終了していなければ待機する
-    if (connection_finished.valid()) {
-        connection_finished.wait();
-    }
     event_thread.join();
     message_thread.join();
 }
-void Client::close() {
-    closing.store(true);
-    if (ws->getConnection()) {
-        ws->getConnection()->shutdown();
-    }
-}
-void Client::send(const std::vector<char> &m) {
-    if (connected()) {
-        ws->getConnection()->send(&m[0], m.size(),
-                                  drogon::WebSocketMessageType::Binary);
-    }
-}
+void Client::close() { closing.store(true); }
+
 void Client::sync() {
     if (connected()) {
-        if (!sync_init) {
-            send(Message::pack(Message::SyncInit{{}, member_}));
-            sync_init = true;
+        bool is_first = false;
+        if (!sync_init.load()) {
+            data->message_queue.push(
+                Message::pack(Message::SyncInit{{}, member_}));
+            is_first = true;
+            sync_init.store(true);
         }
 
         // todo: hiddenの反映
-        auto value_send = data->value_store.transferSend();
-        for (const auto &v : value_send) {
-            send(Message::pack(Message::Value{{}, "", v.first, v.second}));
+        for (const auto &v : data->value_store.transferSend(is_first)) {
+            data->message_queue.push(
+                Message::pack(Message::Value{{}, "", v.first, v.second}));
         }
-        auto value_subsc = data->value_store.transferReq();
-        for (const auto &v : value_subsc) {
+        for (const auto &v : data->value_store.transferReq(is_first)) {
             for (const auto &v2 : v.second) {
-                send(Message::pack(
+                data->message_queue.push(Message::pack(
                     Message::Req<Message::Value>{{}, v.first, v2.first}));
             }
         }
-        auto text_send = data->text_store.transferSend();
-        for (const auto &v : text_send) {
-            send(Message::pack(Message::Text{{}, "", v.first, v.second}));
+        for (const auto &v : data->text_store.transferSend(is_first)) {
+            data->message_queue.push(
+                Message::pack(Message::Text{{}, "", v.first, v.second}));
         }
-        auto text_subsc = data->text_store.transferReq();
-        for (const auto &v : text_subsc) {
+        for (const auto &v : data->text_store.transferReq(is_first)) {
             for (const auto &v2 : v.second) {
-                send(Message::pack(
+                data->message_queue.push(Message::pack(
                     Message::Req<Message::Text>{{}, v.first, v2.first}));
             }
         }
-        auto view_send_prev = data->view_store.getSendPrev();
-        auto view_send = data->view_store.transferSend();
+        auto view_send_prev = data->view_store.getSendPrev(is_first);
+        auto view_send = data->view_store.transferSend(is_first);
         for (const auto &v : view_send) {
             auto v_prev = view_send_prev.find(v.first);
             std::unordered_map<int, ViewComponentBase> v_diff;
@@ -218,36 +77,45 @@ void Client::sync() {
                 }
             }
             if (!v_diff.empty()) {
-                send(Message::pack(Message::View{
+                data->message_queue.push(Message::pack(Message::View{
                     "", v.first, v_diff, static_cast<int>(v.second.size())}));
             }
         }
-        auto view_subsc = data->view_store.transferReq();
-        for (const auto &v : view_subsc) {
+        for (const auto &v : data->view_store.transferReq(is_first)) {
             for (const auto &v2 : v.second) {
-                send(Message::pack(
+                data->message_queue.push(Message::pack(
                     Message::Req<Message::View>{{}, v.first, v2.first}));
             }
         }
-        auto func_send = data->func_store.transferSend();
-        for (const auto &v : func_send) {
+        for (const auto &v : data->func_store.transferSend(is_first)) {
             if (!data->func_store.isHidden(v.first)) {
-                send(Message::pack(Message::FuncInfo{"", v.first, v.second}));
+                data->message_queue.push(
+                    Message::pack(Message::FuncInfo{"", v.first, v.second}));
             }
         }
 
-        auto log_subsc = data->log_store.transferReq();
-        for (const auto &v : log_subsc) {
-            send(Message::pack(Message::LogReq{{}, v.first}));
+        for (const auto &v : data->log_store.transferReq(is_first)) {
+            data->message_queue.push(
+                Message::pack(Message::LogReq{{}, v.first}));
         }
+
         std::vector<Message::Log::LogLine> log_send;
         while (auto log = data->logger_sink->pop()) {
             log_send.push_back(*log);
             // todo: connected状態でないとlog_storeにログが記録されない
             data->log_store.addRecv(this->name(), *log);
         }
+        if (is_first) {
+            auto log_send_m = data->log_store.getRecv(member_).value_or(
+                std::vector<LogLine>{});
+            log_send.resize(log_send_m.size());
+            for (std::size_t i = 0; i < log_send_m.size(); i++) {
+                log_send[i] = log_send_m[i];
+            }
+        }
         if (!log_send.empty()) {
-            send(Message::pack(Message::Log{{}, "", log_send}));
+            data->message_queue.push(
+                Message::pack(Message::Log{{}, "", log_send}));
         }
     }
     while (auto func_sync = data->func_sync_queue.pop()) {

@@ -3,7 +3,7 @@
 #include <chrono>
 #include <iostream>
 int main() {
-    WebCFace::logger_internal_level = spdlog::level::trace;
+    WebCFace::logger_internal_level = spdlog::level::debug;
     WebCFace::Client c("example_logger");
     c.logger()->set_level(spdlog::level::trace);
     c.logger()->trace("this is trace");
@@ -22,9 +22,9 @@ int main() {
         std::this_thread::yield();
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
         c.sync();
-        std::cout << c.log().get().size() << std::endl;
-        for (const auto &l : c.log().get()) {
-            std::cout << "saved log: " << l.message << std::endl;
-        }
+        // std::cout << c.log().get().size() << std::endl;
+        // for (const auto &l : c.log().get()) {
+        //     std::cout << "saved log: " << l.message << std::endl;
+        // }
     }
 }

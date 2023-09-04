@@ -236,13 +236,12 @@ std::pair<MessageKind, std::any> unpack(const std::string &message);
 
 //! メッセージをシリアル化
 template <typename T>
-std::vector<char> pack(T obj) {
+std::string pack(T obj) {
     msgpack::type::tuple<int, T> src(static_cast<int>(T::kind), obj);
     std::stringstream buffer;
     msgpack::pack(buffer, src);
     buffer.seekg(0);
-    std::string bs = buffer.str();
-    return std::vector<char>(bs.begin(), bs.end());
+    return buffer.str();
 }
 
 } // namespace WebCFace::Message

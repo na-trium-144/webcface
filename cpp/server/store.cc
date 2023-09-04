@@ -1,13 +1,7 @@
 #include "store.h"
-#include "../controllers/WebCFace_Server_MainWebsock.h"
+#include <iostream>
 
 namespace WebCFace::Server {
-void controllerKeeper() {
-    // static libraryでControllerが消滅しないようにするため、
-    // Controllerを使用するだけの関数をつくる
-    MainWebsock m;
-}
-
 void Store::newClient(const ClientData::wsConnPtr &con) {
     auto cli = std::make_shared<ClientData>(con);
     clients.emplace(con, cli);

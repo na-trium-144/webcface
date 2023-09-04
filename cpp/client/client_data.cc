@@ -114,25 +114,46 @@ void ClientData::SyncDataStore<T>::unsetRecv(const std::string &from,
 }
 template <typename T>
 std::unordered_map<std::string, T>
-ClientData::SyncDataStore<T>::transferSend() {
+ClientData::SyncDataStore<T>::transferSend(bool is_first) {
     std::lock_guard lock(mtx);
-    data_send_prev = data_send;
-    return std::move(data_send);
+    if (is_first) {
+        data_send.clear();
+        return data_send_prev = data_recv[self_member_name];
+    } else {
+        data_send_prev = data_send;
+        return std::move(data_send);
+    }
 }
 template <typename T>
-std::unordered_map<std::string, T> ClientData::SyncDataStore<T>::getSendPrev() {
+std::unordered_map<std::string, T>
+ClientData::SyncDataStore<T>::getSendPrev(bool is_first) {
     std::lock_guard lock(mtx);
-    return data_send_prev;
+    if (is_first) {
+        return std::unordered_map<std::string, T>{};
+    } else {
+        return data_send_prev;
+    }
 }
 template <typename T>
 std::unordered_map<std::string, std::unordered_map<std::string, bool>>
-ClientData::SyncDataStore<T>::transferReq() {
+ClientData::SyncDataStore<T>::transferReq(bool is_first) {
     std::lock_guard lock(mtx);
-    return std::move(req_send);
+    if (is_first) {
+        req_send.clear();
+        return req;
+    } else {
+        return std::move(req_send);
+    }
 }
-std::unordered_map<std::string, bool> ClientData::LogStore::transferReq() {
+std::unordered_map<std::string, bool>
+ClientData::LogStore::transferReq(bool is_first) {
     std::lock_guard lock(mtx);
-    return std::move(req_send);
+    if (is_first) {
+        req_send.clear();
+        return req;
+    } else {
+        return std::move(req_send);
+    }
 }
 
 template class ClientData::SyncDataStore<double>;

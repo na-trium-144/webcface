@@ -111,11 +111,11 @@ struct ClientData {
         std::vector<std::string> getMembers();
 
         //! data_sendを返し、data_sendをクリア
-        std::unordered_map<std::string, T> transferSend();
-        std::unordered_map<std::string, T> getSendPrev();
+        std::unordered_map<std::string, T> transferSend(bool is_first);
+        std::unordered_map<std::string, T> getSendPrev(bool is_first);
         //! req_sendを返し、req_sendをクリア
         std::unordered_map<std::string, std::unordered_map<std::string, bool>>
-        transferReq();
+        transferReq(bool is_first);
     };
 
     class LogStore {
@@ -134,7 +134,7 @@ struct ClientData {
         void addRecv(const std::string &member, const LogLine &log);
         std::optional<std::vector<LogLine>> getRecv(const std::string &member);
         //! req_sendを返し、req_sendをクリア
-        std::unordered_map<std::string, bool> transferReq();
+        std::unordered_map<std::string, bool> transferReq(bool is_first);
     };
 
     //! AsyncFuncResultのリストを保持する。
@@ -204,7 +204,7 @@ struct ClientData {
     EventQueue event_queue;
 
     //! sync()を待たずに即時送って欲しいメッセージを入れるキュー
-    Queue<std::vector<char>> message_queue;
+    Queue<std::string> message_queue;
     //! sync()のタイミングで実行を同期する関数のcondition_variable
     Queue<std::shared_ptr<FuncOnSync>> func_sync_queue;
 

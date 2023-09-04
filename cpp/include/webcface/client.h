@@ -11,46 +11,38 @@
 #include "func.h"
 #include "logger.h"
 
-namespace drogon {
-class WebSocketClient;
-}
-
 namespace WebCFace {
 //! サーバーに接続するクライアント。
 class Client : public Member {
   private:
-    std::shared_ptr<ClientData> data;
-
-    std::shared_ptr<drogon::WebSocketClient> ws;
     //! close()が呼ばれたらtrue
     std::atomic<bool> closing = false;
-    //! 接続が完了したかどうかを取得する
-    std::future<void> connection_finished;
-    //! 再接続
-    //! 切れたら再帰的に呼ばれる(正確には別スレッドで呼び出されるので再帰ではない)
-    void reconnect();
+    std::atomic<bool> connected_ = false;
 
     //! サーバーのホスト
     std::string host;
     //! サーバーのポート
     int port;
-    //! 初回のsync()で名前を送信するがそれが完了したかどうか
-    bool sync_init = false;
-
-    //! イベントを処理するスレッド
-    std::thread event_thread;
-    //! message_queueを処理するスレッド
+    //! websocket通信するスレッド
     std::thread message_thread;
+    void messageThreadMain();
+    //! 接続を切り、今後再接続しない
+    void close();
+
+    std::shared_ptr<ClientData> data;
+
+    //! 初回のsync()で全データを送信するがそれが完了したかどうか
+    //! 再接続したらfalseに戻す
+    std::atomic<bool> sync_init = false;
 
     LoggerBuf logger_buf;
     std::ostream logger_os;
 
+    //! イベントを処理するスレッド
+    std::thread event_thread;
+
     //! 受信時の処理
     void onRecv(const std::string &message);
-    //! データを送信する
-    void send(const std::vector<char> &m);
-    //! 接続を切り、今後再接続しない
-    void close();
 
   public:
     Client() : Client("") {}

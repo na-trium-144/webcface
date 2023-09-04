@@ -1,6 +1,5 @@
 #pragma once
 #include "s_client_data.h"
-#include <drogon/WebSocketController.h>
 #include <unordered_map>
 #include <memory>
 
@@ -17,5 +16,4 @@ inline struct Store {
     std::shared_ptr<ClientData> getClient(const ClientData::wsConnPtr &con);
 } store;
 
-void controllerKeeper();
 } // namespace WebCFace::Server
