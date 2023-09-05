@@ -129,7 +129,7 @@ void Client::sync() {
 }
 void Client::onRecv(const std::string &message) {
     namespace MessageKind = WebCFace::Message::MessageKind;
-    auto messages = WebCFace::Message::unpack(message);
+    auto messages = WebCFace::Message::unpack(message, data->logger_internal);
     for (const auto &m : messages) {
         const auto &[kind, obj] = m;
         switch (kind) {

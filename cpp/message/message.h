@@ -5,6 +5,7 @@
 #include <vector>
 #include <any>
 #include <cstdint>
+#include <spdlog/logger.h>
 #include <webcface/common/func.h>
 #include <webcface/common/log.h>
 #include <webcface/common/view.h>
@@ -288,7 +289,9 @@ struct Res<View> : public MessageBase<MessageKind::view + MessageKind::res> {
 };
 
 //! msgpackのメッセージをパースしstd::anyで返す
-std::vector<std::pair<int, std::any>> unpack(const std::string &message);
+std::vector<std::pair<int, std::any>>
+unpack(const std::string &message,
+       const std::shared_ptr<spdlog::logger> &logger);
 
 //! メッセージ1つを要素数2の配列としてシリアル化
 template <typename T>

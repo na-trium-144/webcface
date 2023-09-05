@@ -3,12 +3,12 @@
 #include "../message/message.h"
 #include <cinatra.hpp>
 #include <algorithm>
-#include <iostream>
 #include <iterator>
 
 namespace WebCFace::Server {
 void ClientData::onClose() {
     // 作ったものの何もすることがなかった
+    logger->info("connection closed");
 }
 void ClientData::send() {
     if (connected() && send_len > 0) {
@@ -23,7 +23,7 @@ bool ClientData::connected() const {
            !std::static_pointer_cast<cinatra::connection<cinatra::NonSSL>>(con)
                 ->has_close();
 }
-void ClientData::onConnect() {}
+void ClientData::onConnect() { logger->info("connected"); }
 
 bool ClientData::hasReq(const std::string &member) {
     return std::any_of(this->value_req[member].begin(),
@@ -39,29 +39,36 @@ bool ClientData::hasReq(const std::string &member) {
 
 void ClientData::onRecv(const std::string &message) {
     namespace MessageKind = WebCFace::Message::MessageKind;
-    auto messages = WebCFace::Message::unpack(message);
+    auto messages = WebCFace::Message::unpack(message, this->logger);
     for (const auto &m : messages) {
         const auto &[kind, obj] = m;
         switch (kind) {
         case MessageKind::sync_init: {
             auto v = std::any_cast<WebCFace::Message::SyncInit>(obj);
             this->name = v.member_name;
+            auto member_id_before = this->member_id;
             auto prev_cli_it = std::find_if(
                 store.clients_by_id.begin(), store.clients_by_id.end(),
                 [&](const auto &it) { return it.second->name == this->name; });
             if (prev_cli_it != store.clients_by_id.end()) {
                 this->member_id = v.member_id = prev_cli_it->first;
             } else {
-                static unsigned int new_member_id = 0;
-                this->member_id = v.member_id = ++new_member_id;
+                // コンストラクタですでに一意のidが振られているはず
+                v.member_id = this->member_id;
             }
             this->sync_init = true;
             store.clients_by_id.erase(this->member_id);
             store.clients_by_id.emplace(this->member_id, store.getClient(con));
             if (this->name == "") {
-                std::cout << "anonymous client connected" << std::endl;
+                logger->debug("sync_init (no name)");
             } else {
-                std::cout << this->name << ": connected" << std::endl;
+                this->logger = std::make_shared<spdlog::logger>(
+                    std::to_string(this->member_id) + "_" + this->name,
+                    this->sink);
+                this->logger->set_level(this->logger_level);
+                this->logger->debug(
+                    "sync_init name={}, member_id={} (before {})", this->name,
+                    this->member_id, member_id_before);
                 // 全クライアントに新しいMemberを通知
                 store.forEach([&](auto &cd) {
                     if (cd.member_id != this->member_id) {
@@ -111,12 +118,9 @@ void ClientData::onRecv(const std::string &message) {
         case MessageKind::call: {
             auto v = std::any_cast<WebCFace::Message::Call>(obj);
             v.caller_member_id = this->member_id;
-            std::cout << this->name << ": call [" << v.caller_id << "] "
-                      << v.target_member_id << ":" << v.field << " (args = ";
-            for (const auto &a : v.args) {
-                std::cout << static_cast<std::string>(a) << ", ";
-            }
-            std::cout << ")" << std::endl;
+            logger->debug(
+                "call caller_id={}, target_id={}, field={}, with {} args",
+                v.caller_id, v.target_member_id, v.field, v.args.size());
             // そのままターゲットのクライアントに送る
             store.findAndDo(
                 v.target_member_id, [&](auto &cd) { cd.pack(v); },
@@ -124,33 +128,30 @@ void ClientData::onRecv(const std::string &message) {
                     // 関数存在しないときの処理
                     this->pack(WebCFace::Message::CallResponse{
                         {}, v.caller_id, v.caller_member_id, false});
+                    logger->debug("call target not found");
                 });
             break;
         }
         case MessageKind::call_response: {
             auto v = std::any_cast<WebCFace::Message::CallResponse>(obj);
-            std::cout << this->name << ": call response [" << v.caller_id
-                      << "] " << v.started << std::endl;
+            logger->debug("call_response to (member_id {}, caller_id {}), {}",
+                          v.caller_member_id, v.caller_id, v.started);
             // そのままcallerに送る
             store.findAndDo(v.caller_member_id, [&](auto &cd) { cd.pack(v); });
             break;
         }
         case MessageKind::call_result: {
             auto v = std::any_cast<WebCFace::Message::CallResult>(obj);
-            std::cout << this->name << ": call result [" << v.caller_id << "] '"
-                      << static_cast<std::string>(v.result) << "'";
-            if (v.is_error) {
-                std::cout << "(error)";
-            }
-            std::cout << std::endl;
+            logger->debug("call_result to (member_id {}, caller_id {}), {}",
+                          v.caller_member_id, v.caller_id,
+                          static_cast<std::string>(v.result));
             // そのままcallerに送る
             store.findAndDo(v.caller_member_id, [&](auto &cd) { cd.pack(v); });
             break;
         }
         case MessageKind::value: {
             auto v = std::any_cast<WebCFace::Message::Value>(obj);
-            std::cout << this->name << ": value " << v.field << " = " << v.data
-                      << ", send back to ";
+            logger->debug("value {} = {}", v.field, v.data);
             if (!this->value.count(v.field)) {
                 store.forEach([&](auto &cd) {
                     if (cd.name != this->name) {
@@ -167,16 +168,13 @@ void ClientData::onRecv(const std::string &message) {
                 if (req_id > 0) {
                     cd.pack(WebCFace::Message::Res<WebCFace::Message::Value>(
                         req_id, v.data));
-                    std::cout << cd.name << "(" << req_id << "), ";
                 }
             });
-            std::cout << std::endl;
             break;
         }
         case MessageKind::text: {
             auto v = std::any_cast<WebCFace::Message::Text>(obj);
-            std::cout << this->name << ": text " << v.field << " = " << v.data
-                      << ", send back to ";
+            logger->debug("text {} = {}", v.field, v.data);
             if (!this->text.count(v.field)) {
                 store.forEach([&](auto &cd) {
                     if (cd.name != this->name) {
@@ -193,17 +191,14 @@ void ClientData::onRecv(const std::string &message) {
                 if (req_id > 0) {
                     cd.pack(WebCFace::Message::Res<WebCFace::Message::Text>(
                         req_id, v.data));
-                    std::cout << cd.name << "(" << req_id << "), ";
                 }
             });
-            std::cout << std::endl;
             break;
         }
         case MessageKind::view: {
             auto v = std::any_cast<WebCFace::Message::View>(obj);
-            std::cout << this->name << ": view " << v.field
-                      << " diff = " << v.data_diff.size()
-                      << ", length = " << v.length << ", send back to ";
+            logger->debug("view {} diff={}, length={}", v.field,
+                          v.data_diff.size(), v.length);
             if (!this->view.count(v.field)) {
                 store.forEach([&](auto &cd) {
                     if (cd.name != this->name) {
@@ -223,41 +218,28 @@ void ClientData::onRecv(const std::string &message) {
                 if (req_id > 0) {
                     cd.pack(WebCFace::Message::Res<WebCFace::Message::View>(
                         req_id, v.data_diff, v.length));
-                    std::cout << cd.name << "(" << req_id << "), ";
                 }
             });
-            std::cout << std::endl;
             break;
         }
         case MessageKind::log: {
             auto v = std::any_cast<WebCFace::Message::Log>(obj);
             v.member_id = this->member_id;
-            std::cout << this->name << ": log " << v.log.size() << " lines"
-                      << ", send back to ";
+            logger->debug("log {} lines", v.log.size());
             std::copy(v.log.begin(), v.log.end(),
                       std::back_inserter(this->log));
             // このlogをsubscribeしてるところに送り返す
             store.forEach([&](auto &cd) {
                 if (cd.log_req.count(this->name)) {
                     cd.pack(v);
-                    std::cout << cd.name << ", ";
                 }
             });
-            std::cout << std::endl;
             break;
         }
         case MessageKind::func_info: {
             auto v = std::any_cast<WebCFace::Message::FuncInfo>(obj);
             v.member_id = this->member_id;
-            std::cout << this->name << ": func_info " << v.field << " arg: ";
-            for (std::size_t i = 0; i < v.args.size(); i++) {
-                if (i > 0) {
-                    std::cout << ", ";
-                }
-                std::cout << static_cast<WebCFace::Arg>(v.args[i]);
-            }
-            std::cout << " ret: " << static_cast<ValType>(v.return_type)
-                      << std::endl;
+            logger->debug("func_info {}", v.field);
             if (!this->func.count(v.field)) {
                 store.forEach([&](auto &cd) {
                     if (cd.member_id != this->member_id) {
@@ -272,8 +254,8 @@ void ClientData::onRecv(const std::string &message) {
             auto s =
                 std::any_cast<WebCFace::Message::Req<WebCFace::Message::Value>>(
                     obj);
-            std::cout << this->name << ": request value " << s.member << ":"
-                      << s.field << " (" << s.req_id << ")" << std::endl;
+            logger->debug("request value ({}): {} from {}", s.req_id, s.field,
+                          s.member);
             // 指定した値を返す
             store.findAndDo(s.member, [&](auto &cd) {
                 auto it = cd.value.find(s.field);
@@ -293,8 +275,8 @@ void ClientData::onRecv(const std::string &message) {
             auto s =
                 std::any_cast<WebCFace::Message::Req<WebCFace::Message::Text>>(
                     obj);
-            std::cout << this->name << ": request text " << s.member << ":"
-                      << s.field << std::endl;
+            logger->debug("request text ({}): {} from {}", s.req_id, s.field,
+                          s.member);
             // 指定した値を返す
             store.findAndDo(s.member, [&](auto &cd) {
                 auto it = cd.text.find(s.field);
@@ -314,8 +296,8 @@ void ClientData::onRecv(const std::string &message) {
             auto s =
                 std::any_cast<WebCFace::Message::Req<WebCFace::Message::View>>(
                     obj);
-            std::cout << this->name << ": request view " << s.member << ":"
-                      << s.field << std::endl;
+            logger->debug("request view ({}): {} from {}", s.req_id, s.field,
+                          s.member);
             // 指定した値を返す
             store.findAndDo(s.member, [&](auto &cd) {
                 auto it = cd.view.find(s.field);
@@ -339,6 +321,7 @@ void ClientData::onRecv(const std::string &message) {
         }
         case MessageKind::log_req: {
             auto s = std::any_cast<WebCFace::Message::LogReq>(obj);
+            logger->debug("request log from {}", s.member);
             std::cout << this->name << ": request log " << s.member
                       << std::endl;
             log_req.insert(s.member);
@@ -354,12 +337,10 @@ void ClientData::onRecv(const std::string &message) {
         case MessageKind::res + MessageKind::text:
         case MessageKind::entry + MessageKind::view:
         case MessageKind::res + MessageKind::view:
-            std::cerr << "Invalid Message Kind " << static_cast<int>(kind)
-                      << std::endl;
+            logger->warn("Invalid Message Kind {}", kind);
             break;
         default:
-            std::cerr << "Unknown Message Kind " << static_cast<int>(kind)
-                      << std::endl;
+            logger->warn("Unknown Message Kind {}", kind);
             break;
         }
     }

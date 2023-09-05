@@ -6,21 +6,22 @@
 #include <memory>
 
 namespace WebCFace::Server {
-void serverRun(int port) {
+void serverRun(int port, const spdlog::sink_ptr &sink,
+               spdlog::level::level_enum level) {
     using namespace cinatra;
 
     http_server server(1);
     server.listen("0.0.0.0", std::to_string(port));
 
     // web socket
-    server.set_http_handler<GET, POST>("/", [](request &req, response &res) {
+    server.set_http_handler<GET, POST>("/", [sink, level](request &req,
+                                                          response &res) {
         assert(req.get_content_type() == content_type::websocket);
 
-        req.on(ws_open, [](request &req) {
-            std::cout << "New connection" << std::endl;
+        req.on(ws_open, [sink, level](request &req) {
             auto connPtr =
                 std::static_pointer_cast<void>(req.get_conn<cinatra::NonSSL>());
-            store.newClient(connPtr);
+            store.newClient(connPtr, sink, level);
         });
 
         req.on(ws_message, [](request &req) {
@@ -39,7 +40,12 @@ void serverRun(int port) {
         });
 
         req.on(ws_error, [](request &req) {
-            // write your application logic here
+            auto connPtr =
+                std::static_pointer_cast<void>(req.get_conn<cinatra::NonSSL>());
+            store.removeClient(connPtr);
+        });
+
+        req.on(ws_close, [](request &req) {
             auto connPtr =
                 std::static_pointer_cast<void>(req.get_conn<cinatra::NonSSL>());
             store.removeClient(connPtr);

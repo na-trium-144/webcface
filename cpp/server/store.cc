@@ -1,22 +1,21 @@
 #include "store.h"
-#include <iostream>
 #include <algorithm>
 
 namespace WebCFace::Server {
-void Store::newClient(const ClientData::wsConnPtr &con) {
-    auto cli = std::make_shared<ClientData>(con);
+void Store::newClient(const ClientData::wsConnPtr &con,
+                      const spdlog::sink_ptr &sink,
+                      spdlog::level::level_enum level) {
+    auto cli = std::make_shared<ClientData>(con, sink, level);
     clients.emplace(con, cli);
     cli->onConnect();
-    std::cout << "new client" << std::endl;
 }
 void Store::removeClient(const ClientData::wsConnPtr &con) {
     auto it = clients.find(con);
     if (it != clients.end()) {
         it->second->onClose();
         clients.erase(con);
-        // clients_by_nameは残す
+        // clients_by_idは残す
     }
-    std::cout << "Disconnected" << std::endl;
 }
 std::shared_ptr<ClientData> Store::getClient(const ClientData::wsConnPtr &con) {
     auto it = clients.find(con);

@@ -1,18 +1,20 @@
 #include "message.h"
-#include <iostream>
+#include <sstream>
+
 namespace WebCFace::Message {
-void printMsg(const std::string &message) {
-    std::cerr << std::hex;
+void printMsg(const std::shared_ptr<spdlog::logger> &logger, const std::string &message) {
+    std::stringstream ss;
+    ss << "message: " << std::hex;
     for (int i = 0; i < message.size(); i++) {
-        std::cerr << std::setw(3) << static_cast<int>(message[i] & 0xff);
+        ss << std::setw(3) << static_cast<int>(message[i] & 0xff);
     }
-    std::cerr << std::dec << std::endl;
+    logger->debug(ss.str());
     // for (int i = 0; i < message.size(); i++) {
     //     std::cerr << message[i];
     // }
     // std::cerr << std::endl;
 }
-std::vector<std::pair<int, std::any>> unpack(const std::string &message) {
+std::vector<std::pair<int, std::any>> unpack(const std::string &message, const std::shared_ptr<spdlog::logger> &logger) {
     if (message.size() == 0) {
         return std::vector<std::pair<int, std::any>>{};
     }
@@ -74,8 +76,8 @@ std::vector<std::pair<int, std::any>> unpack(const std::string &message) {
         }
         return ret;
     } catch (const std::exception &e) {
-        std::cerr << "unpack error: " << e.what() << std::endl;
-        printMsg(message);
+        logger->error("unpack error: {}", e.what());
+        printMsg(logger, message);
         return std::vector<std::pair<int, std::any>>{};
     }
 }
