@@ -26,7 +26,7 @@ struct FuncNotFound : public std::runtime_error {
 class AsyncFuncResult : Field {
     //! 通し番号
     //! コンストラクタで設定する。実際はFuncResultStoreのvectorのindex
-    int caller_id;
+    unsigned int caller_id;
     //! 呼び出し側member 通常は自身
     std::string caller;
 
@@ -38,7 +38,7 @@ class AsyncFuncResult : Field {
     friend class Func;
     friend class Client;
 
-    AsyncFuncResult(int caller_id, const std::string &caller,
+    AsyncFuncResult(unsigned int caller_id, const std::string &caller,
                     const Field &base)
         : Field(base), caller_id(caller_id), caller(caller),
           started_(std::make_shared<std::promise<bool>>()),

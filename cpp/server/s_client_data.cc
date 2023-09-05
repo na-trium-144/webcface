@@ -45,40 +45,50 @@ void ClientData::onRecv(const std::string &message) {
         switch (kind) {
         case MessageKind::sync_init: {
             auto v = std::any_cast<WebCFace::Message::SyncInit>(obj);
-            this->name = v.member;
+            this->name = v.member_name;
+            auto prev_cli_it = std::find_if(
+                store.clients_by_id.begin(), store.clients_by_id.end(),
+                [&](const auto &it) { return it.second->name == this->name; });
+            if (prev_cli_it != store.clients_by_id.end()) {
+                this->member_id = v.member_id = prev_cli_it->first;
+            } else {
+                static unsigned int new_member_id = 0;
+                this->member_id = v.member_id = ++new_member_id;
+            }
             this->sync_init = true;
-            if (v.member == "") {
+            store.clients_by_id.erase(this->member_id);
+            store.clients_by_id.emplace(this->member_id, store.getClient(con));
+            if (this->name == "") {
                 std::cout << "anonymous client connected" << std::endl;
             } else {
                 std::cout << this->name << ": connected" << std::endl;
-                store.clients_by_name.erase(this->name);
-                store.clients_by_name.emplace(this->name, store.getClient(con));
                 // 全クライアントに新しいMemberを通知
                 store.forEach([&](auto &cd) {
-                    if (cd.name != this->name) {
+                    if (cd.member_id != this->member_id) {
                         cd.pack(v);
                     }
                 });
             }
             // 逆に新しいMemberに他の全Memberのentryを通知
             store.forEachWithName([&](auto &cd) {
-                if (cd.name != this->name) {
-                    this->pack(WebCFace::Message::SyncInit{{}, cd.name});
+                if (cd.member_id != this->member_id) {
+                    this->pack(
+                        WebCFace::Message::SyncInit{{}, cd.name, cd.member_id});
 
                     for (const auto &f : cd.value) {
                         this->pack(
                             WebCFace::Message::Entry<WebCFace::Message::Value>{
-                                {}, cd.name, f.first});
+                                {}, cd.member_id, f.first});
                     }
                     for (const auto &f : cd.text) {
                         this->pack(
                             WebCFace::Message::Entry<WebCFace::Message::Text>{
-                                {}, cd.name, f.first});
+                                {}, cd.member_id, f.first});
                     }
                     for (const auto &f : cd.view) {
                         this->pack(
                             WebCFace::Message::Entry<WebCFace::Message::View>{
-                                {}, cd.name, f.first});
+                                {}, cd.member_id, f.first});
                     }
                     for (const auto &f : cd.func) {
                         this->pack(f.second);
@@ -89,7 +99,7 @@ void ClientData::onRecv(const std::string &message) {
         }
         case MessageKind::sync: {
             auto v = std::any_cast<WebCFace::Message::Sync>(obj);
-            v.member = this->name;
+            v.member_id = this->member_id;
             // 1つ以上リクエストしているクライアントにはsyncの情報を流す
             store.forEach([&](auto &cd) {
                 if (cd.hasReq(this->name)) {
@@ -100,20 +110,20 @@ void ClientData::onRecv(const std::string &message) {
         }
         case MessageKind::call: {
             auto v = std::any_cast<WebCFace::Message::Call>(obj);
-            v.caller = this->name;
+            v.caller_member_id = this->member_id;
             std::cout << this->name << ": call [" << v.caller_id << "] "
-                      << v.member << ":" << v.field << " (args = ";
+                      << v.target_member_id << ":" << v.field << " (args = ";
             for (const auto &a : v.args) {
                 std::cout << static_cast<std::string>(a) << ", ";
             }
             std::cout << ")" << std::endl;
             // そのままターゲットのクライアントに送る
             store.findAndDo(
-                v.member, [&](auto &cd) { cd.pack(v); },
+                v.target_member_id, [&](auto &cd) { cd.pack(v); },
                 [&]() {
                     // 関数存在しないときの処理
                     this->pack(WebCFace::Message::CallResponse{
-                        {}, v.caller_id, v.caller, false});
+                        {}, v.caller_id, v.caller_member_id, false});
                 });
             break;
         }
@@ -122,7 +132,7 @@ void ClientData::onRecv(const std::string &message) {
             std::cout << this->name << ": call response [" << v.caller_id
                       << "] " << v.started << std::endl;
             // そのままcallerに送る
-            store.findAndDo(v.caller, [&](auto &cd) { cd.pack(v); });
+            store.findAndDo(v.caller_member_id, [&](auto &cd) { cd.pack(v); });
             break;
         }
         case MessageKind::call_result: {
@@ -134,7 +144,7 @@ void ClientData::onRecv(const std::string &message) {
             }
             std::cout << std::endl;
             // そのままcallerに送る
-            store.findAndDo(v.caller, [&](auto &cd) { cd.pack(v); });
+            store.findAndDo(v.caller_member_id, [&](auto &cd) { cd.pack(v); });
             break;
         }
         case MessageKind::value: {
@@ -146,7 +156,7 @@ void ClientData::onRecv(const std::string &message) {
                     if (cd.name != this->name) {
                         cd.pack(
                             WebCFace::Message::Entry<WebCFace::Message::Value>{
-                                {}, this->name, v.field});
+                                {}, this->member_id, v.field});
                     }
                 });
             }
@@ -172,7 +182,7 @@ void ClientData::onRecv(const std::string &message) {
                     if (cd.name != this->name) {
                         cd.pack(
                             WebCFace::Message::Entry<WebCFace::Message::Text>{
-                                {}, this->name, v.field});
+                                {}, this->member_id, v.field});
                     }
                 });
             }
@@ -199,7 +209,7 @@ void ClientData::onRecv(const std::string &message) {
                     if (cd.name != this->name) {
                         cd.pack(
                             WebCFace::Message::Entry<WebCFace::Message::View>{
-                                {}, this->name, v.field});
+                                {}, this->member_id, v.field});
                     }
                 });
             }
@@ -221,7 +231,7 @@ void ClientData::onRecv(const std::string &message) {
         }
         case MessageKind::log: {
             auto v = std::any_cast<WebCFace::Message::Log>(obj);
-            v.member = this->name;
+            v.member_id = this->member_id;
             std::cout << this->name << ": log " << v.log.size() << " lines"
                       << ", send back to ";
             std::copy(v.log.begin(), v.log.end(),
@@ -238,7 +248,7 @@ void ClientData::onRecv(const std::string &message) {
         }
         case MessageKind::func_info: {
             auto v = std::any_cast<WebCFace::Message::FuncInfo>(obj);
-            v.member = this->name;
+            v.member_id = this->member_id;
             std::cout << this->name << ": func_info " << v.field << " arg: ";
             for (std::size_t i = 0; i < v.args.size(); i++) {
                 if (i > 0) {
@@ -250,7 +260,7 @@ void ClientData::onRecv(const std::string &message) {
                       << std::endl;
             if (!this->func.count(v.field)) {
                 store.forEach([&](auto &cd) {
-                    if (cd.name != this->name) {
+                    if (cd.member_id != this->member_id) {
                         cd.pack(v);
                     }
                 });
@@ -269,7 +279,7 @@ void ClientData::onRecv(const std::string &message) {
                 auto it = cd.value.find(s.field);
                 if (it != cd.value.end()) {
                     if (!this->hasReq(s.member)) {
-                        this->pack(WebCFace::Message::Sync{s.member,
+                        this->pack(WebCFace::Message::Sync{cd.member_id,
                                                            cd.last_sync_time});
                     }
                     this->pack(WebCFace::Message::Res<WebCFace::Message::Value>{
@@ -290,7 +300,7 @@ void ClientData::onRecv(const std::string &message) {
                 auto it = cd.text.find(s.field);
                 if (it != cd.text.end()) {
                     if (!this->hasReq(s.member)) {
-                        this->pack(WebCFace::Message::Sync{s.member,
+                        this->pack(WebCFace::Message::Sync{cd.member_id,
                                                            cd.last_sync_time});
                     }
                     this->pack(WebCFace::Message::Res<WebCFace::Message::Text>{
@@ -311,7 +321,7 @@ void ClientData::onRecv(const std::string &message) {
                 auto it = cd.view.find(s.field);
                 if (it != cd.view.end()) {
                     if (!this->hasReq(s.member)) {
-                        this->pack(WebCFace::Message::Sync{s.member,
+                        this->pack(WebCFace::Message::Sync{cd.member_id,
                                                            cd.last_sync_time});
                     }
                     std::unordered_map<int,
@@ -321,7 +331,7 @@ void ClientData::onRecv(const std::string &message) {
                         diff[i] = it->second[i];
                     }
                     this->pack(WebCFace::Message::Res<WebCFace::Message::View>{
-                        s.req_id, diff, static_cast<int>(it->second.size())});
+                        s.req_id, diff, it->second.size()});
                 }
             });
             view_req[s.member][s.field] = s.req_id;
@@ -334,7 +344,7 @@ void ClientData::onRecv(const std::string &message) {
             log_req.insert(s.member);
             // 指定した値を返す
             store.findAndDo(s.member, [&](auto &cd) {
-                this->pack(WebCFace::Message::Log{{}, s.member, cd.log});
+                this->pack(WebCFace::Message::Log{{}, cd.member_id, cd.log});
             });
             break;
         }

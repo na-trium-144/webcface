@@ -214,6 +214,10 @@ struct ClientData {
     SyncDataStore1<std::chrono::system_clock::time_point> sync_time_store;
     FuncResultStore func_result_store;
 
+    std::unordered_map<std::string, unsigned int> member_ids;
+    std::string getMemberNameFromId(unsigned int id) const;
+    unsigned int getMemberIdFromName(const std::string &name) const;
+
     using EventQueue = eventpp::EventQueue<EventKey, void(const EventKey &)>;
     //! 各種イベントを管理するキュー
     EventQueue event_queue;

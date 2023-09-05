@@ -9,8 +9,7 @@ namespace WebCFace::Server {
 inline struct Store {
     std::unordered_map<ClientData::wsConnPtr, std::shared_ptr<ClientData>>
         clients;
-    std::unordered_map<std::string, std::shared_ptr<ClientData>>
-        clients_by_name;
+    std::unordered_map<unsigned int, std::shared_ptr<ClientData>> clients_by_id;
     Store() : clients() {}
     void newClient(const ClientData::wsConnPtr &con);
     void removeClient(const ClientData::wsConnPtr &con);
@@ -19,10 +18,13 @@ inline struct Store {
     void clientSendAll();
 
     // 指定したnameのclientがあればfuncを、そうでなければfunc_elseを実行
-    void
-    findAndDo(const std::string &name,
-              const std::function<void(ClientData &)> &func,
-              const std::function<void()> &func_else = nullptr);
+    void findAndDo(const std::string &name,
+                   const std::function<void(ClientData &)> &func,
+                   const std::function<void()> &func_else = nullptr);
+    // 指定したidのclientがあればfuncを、そうでなければfunc_elseを実行
+    void findAndDo(unsigned int id,
+                   const std::function<void(ClientData &)> &func,
+                   const std::function<void()> &func_else = nullptr);
     //! sync_initが完了している各ClientDataに対して処理をする
     void forEach(const std::function<void(ClientData &)> &func);
     //! sync_initが完了し名前のある各ClientDataに対して処理をする

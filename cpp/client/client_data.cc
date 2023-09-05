@@ -201,7 +201,7 @@ AsyncFuncResult &
 ClientData::FuncResultStore::addResult(const std::string &caller,
                                        const Field &base) {
     std::lock_guard lock(mtx);
-    int caller_id = results.size();
+    unsigned int caller_id = results.size();
     results.push_back(AsyncFuncResult{caller_id, caller, base});
     return results.back();
 }
@@ -210,5 +210,19 @@ AsyncFuncResult &ClientData::FuncResultStore::getResult(int caller_id) {
     return results.at(caller_id);
 }
 
-
+std::string ClientData::getMemberNameFromId(unsigned int id) const {
+    for (const auto &it : member_ids) {
+        if (it.second == id) {
+            return it.first;
+        }
+    }
+    return "";
+}
+unsigned int ClientData::getMemberIdFromName(const std::string &name) const {
+    auto it = member_ids.find(name);
+    if (it != member_ids.end()) {
+        return it->second;
+    }
+    return 0;
+}
 } // namespace WebCFace

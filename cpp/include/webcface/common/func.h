@@ -171,8 +171,10 @@ struct FuncInfo {
 
 //! 関数を呼び出すのに必要なデータ。client_data->client->server->clientと送られる
 struct FuncCall {
-    int caller_id;
-    std::string caller, member, field;
+    unsigned int caller_id;
+    unsigned int caller_member_id;
+    unsigned int target_member_id;
+    std::string field;
     std::vector<WebCFace::ValAdaptor> args;
 };
 
