@@ -119,7 +119,7 @@ void Client::sync() {
             }
         }
         if (!log_send.empty()) {
-            Message::pack(buffer, len, Message::Log{{}, log_send});
+            Message::pack(buffer, len, Message::Log{{}, "", log_send});
         }
 
         data->message_queue.push(Message::packDone(buffer, len));
@@ -262,7 +262,7 @@ void Client::onRecv(const std::string &message) {
         case MessageKind::entry + MessageKind::value: {
             auto r = std::any_cast<
                 WebCFace::Message::Entry<WebCFace::Message::Value>>(obj);
-            data->value_store.setEntry(sync_member, r.field);
+            data->value_store.setEntry(r.member, r.field);
             data->event_queue.enqueue(EventKey{EventType::value_entry,
                                                Field{data, r.member, r.field}});
             break;

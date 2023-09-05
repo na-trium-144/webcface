@@ -14,9 +14,6 @@ class ClientData {
     const wsConnPtr con;
     bool connected() const;
 
-    //! 初回のsync()が終わったか
-    //! falseならentryの通知などはしない
-    bool sync_init = false;
     std::string name;
     //! 最新の値
     std::unordered_map<std::string, double> value;
@@ -34,6 +31,10 @@ class ClientData {
     std::vector<Message::Log::LogLine> log;
 
   public:
+    //! 初回のsync()が終わったか
+    //! falseならentryの通知などはしない
+    bool sync_init = false;
+    
     ClientData() = delete;
     ClientData(const ClientData &) = delete;
     ClientData &operator=(const ClientData &) = delete;

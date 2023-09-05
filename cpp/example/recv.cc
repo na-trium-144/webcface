@@ -3,6 +3,7 @@
 #include <iostream>
 #include <chrono>
 int main() {
+    WebCFace::logger_internal_level = spdlog::level::trace;
     WebCFace::Client c("example_recv");
     c.member("example_main")
         .value("test")
@@ -18,11 +19,12 @@ int main() {
         // c.value("example_main", "test") += 2;
         // -> error: candidate function template not viable: ... method is not
         // marked const
-        std::cout << "func2(9, 7.1, false, \"\") = "
-                  << static_cast<std::string>(c.member("example_main")
-                                                  .func("func2")
-                                                  .run(9, 7.1, false, ""))
-                  << std::endl;
+        std::thread([&] {
+            auto result =
+                c.member("example_main").func("func2").run(9, 7.1, false, "");
+            std::cout << "func2(9, 7.1, false, \"\") = "
+                      << static_cast<std::string>(result) << std::endl;
+        }).detach();
         c.sync();
     }
 }

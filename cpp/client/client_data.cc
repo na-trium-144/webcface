@@ -85,7 +85,7 @@ ClientData::SyncDataStore2<T>::getRecv(const std::string &from,
         for (const auto &r : req) {
             for (const auto &r2 : r.second) {
                 if (r2.second > max_req) {
-                    max_req = r.second;
+                    max_req = r2.second;
                 }
             }
         }
@@ -132,7 +132,7 @@ std::pair<std::string, std::string>
 ClientData::SyncDataStore2<T>::getReq(unsigned int req_id) {
     std::lock_guard lock(mtx);
     for (const auto &r : req) {
-        for (const auto &r2 : r->second) {
+        for (const auto &r2 : r.second) {
             if (r2.second == req_id) {
                 return std::make_pair(r.first, r2.first);
             }

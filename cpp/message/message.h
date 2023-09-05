@@ -53,10 +53,13 @@ struct SyncInit : public MessageBase<MessageKind::sync_init> {
 struct Sync : public MessageBase<MessageKind::sync> {
     std::string member;
     std::uint64_t time;
-    Sync()
-        : time(std::chrono::duration_cast<std::chrono::milliseconds>(
-                   std::chrono::system_clock::now().time_since_epoch())
+    Sync(const std::string &member,
+         const std::chrono::system_clock::time_point &time)
+        : member(member),
+          time(std::chrono::duration_cast<std::chrono::milliseconds>(
+                   time.time_since_epoch())
                    .count()) {}
+    Sync() : Sync("", std::chrono::system_clock::now()) {}
     std::chrono::system_clock::time_point getTime() const {
         return std::chrono::system_clock::time_point(
             std::chrono::milliseconds(time));
@@ -190,7 +193,7 @@ struct LogReq : public MessageBase<MessageKind::log_req> {
 //! client(member)->server->client func登録
 //! client->server時はmemberは無視
 struct FuncInfo : public MessageBase<MessageKind::func_info> {
-    std::string field;
+    std::string member, field;
     Common::ValType return_type;
     struct Arg : public Common::Arg {
         Arg() = default;
@@ -218,8 +221,8 @@ struct FuncInfo : public MessageBase<MessageKind::func_info> {
         }
         return info;
     }
-    MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", field), MSGPACK_NVP("r", return_type),
-                       MSGPACK_NVP("a", args));
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("m", member), MSGPACK_NVP("f", field),
+                       MSGPACK_NVP("r", return_type), MSGPACK_NVP("a", args));
 };
 //! client->server 以降Recvを送るようリクエスト
 //! todo: 解除できるようにする
@@ -245,12 +248,16 @@ template <>
 struct Res<Value> : public MessageBase<MessageKind::value + MessageKind::res> {
     unsigned int req_id;
     double data;
+    Res() = default;
+    Res(unsigned int req_id, double data) : req_id(req_id), data(data) {}
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", req_id), MSGPACK_NVP("d", data));
 };
 template <>
 struct Res<Text> : public MessageBase<MessageKind::text + MessageKind::res> {
     unsigned int req_id;
     std::string data;
+    Res() = default;
+    Res(unsigned int req_id, const std::string &data) : req_id(req_id), data(data) {}
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", req_id), MSGPACK_NVP("d", data));
 };
 template <>
@@ -258,6 +265,11 @@ struct Res<View> : public MessageBase<MessageKind::view + MessageKind::res> {
     unsigned int req_id;
     std::unordered_map<int, View::ViewComponent> data_diff;
     int length;
+    Res() = default;
+    Res(unsigned int req_id,
+        const std::unordered_map<int, View::ViewComponent> &data_diff,
+        int length)
+        : req_id(req_id), data_diff(data_diff), length(length) {}
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", req_id), MSGPACK_NVP("d", data_diff),
                        MSGPACK_NVP("l", length));
 };

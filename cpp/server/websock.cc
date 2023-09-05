@@ -9,7 +9,7 @@ namespace WebCFace::Server {
 void serverRun(int port) {
     using namespace cinatra;
 
-    http_server server(std::thread::hardware_concurrency());
+    http_server server(1);
     server.listen("0.0.0.0", std::to_string(port));
 
     // web socket

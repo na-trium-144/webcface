@@ -26,9 +26,36 @@ std::shared_ptr<ClientData> Store::getClient(const ClientData::wsConnPtr &con) {
     }
 }
 
-void Store::clientSendAll(){
-    for(const auto &cli: clients){
-        cli->second->send();
+void Store::clientSendAll() {
+    for (const auto &cli : clients) {
+        cli.second->send();
+    }
+}
+
+void Store::findAndDo(const std::string &name,
+                      const std::function<void(ClientData &)> &func,
+                      const std::function<void()> &func_else) {
+    auto cd = clients_by_name.find(name);
+    if (cd != clients_by_name.end()) {
+        func(*cd->second);
+    } else {
+        if (func_else != nullptr) {
+            func_else();
+        }
+    }
+}
+void Store::forEach(const std::function<void(ClientData &)> &func) {
+    for (const auto cd : clients) {
+        if (cd.second->sync_init) {
+            func(*cd.second);
+        }
+    }
+}
+void Store::forEachWithName(const std::function<void(ClientData &)> &func) {
+    for (const auto cd : clients_by_name) {
+        if (cd.second->sync_init) {
+            func(*cd.second);
+        }
     }
 }
 } // namespace WebCFace::Server
