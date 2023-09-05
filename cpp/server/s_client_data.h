@@ -1,7 +1,8 @@
 #pragma once
 #include <string>
-#include <unordered_map>
 #include <set>
+#include <unordered_map>
+#include <chrono>
 #include "../message/message.h"
 
 namespace WebCFace::Server {
@@ -22,11 +23,13 @@ class ClientData {
     std::unordered_map<std::string, std::string> text;
     std::unordered_map<std::string, Message::FuncInfo> func;
     std::unordered_map<std::string, std::vector<ViewComponentBase>> view;
+    std::chrono::system_clock::time_point last_sync_time;
     //! リクエストしているmember,nameのペア
-    std::set<std::pair<std::string, std::string>> value_subsc;
-    std::set<std::pair<std::string, std::string>> text_subsc;
-    std::set<std::pair<std::string, std::string>> view_subsc;
-    std::set<std::string> log_subsc;
+    std::unordered_map<std::string, std::unordered_map<std::string, unsigned int>> value_req;
+    std::unordered_map<std::string, std::unordered_map<std::string, unsigned int>> text_req;
+    std::unordered_map<std::string, std::unordered_map<std::string, unsigned int>> view_req;
+    std::set<std::string> log_req;
+    bool hasReq(const std::string &member);
     //! ログ全履歴
     std::vector<Message::Log::LogLine> log;
 
@@ -39,6 +42,13 @@ class ClientData {
     void onConnect();
     void onRecv(const std::string &msg);
     void onClose();
-    void send(const std::string &m) const;
+
+    std::stringstream send_buffer;
+    int send_len;
+    void send();
+    template <typename T>
+    void pack(const T &data) {
+        Message::pack(send_buffer, send_len, data);
+    }
 };
 } // namespace WebCFace::Server

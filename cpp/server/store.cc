@@ -26,4 +26,9 @@ std::shared_ptr<ClientData> Store::getClient(const ClientData::wsConnPtr &con) {
     }
 }
 
+void Store::clientSendAll(){
+    for(const auto &cli: clients){
+        cli->second->send();
+    }
+}
 } // namespace WebCFace::Server

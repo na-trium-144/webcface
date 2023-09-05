@@ -14,6 +14,9 @@ inline struct Store {
     void newClient(const ClientData::wsConnPtr &con);
     void removeClient(const ClientData::wsConnPtr &con);
     std::shared_ptr<ClientData> getClient(const ClientData::wsConnPtr &con);
+
+    void clientSendInit();
+    void clientSendAll();
 } store;
 
 } // namespace WebCFace::Server

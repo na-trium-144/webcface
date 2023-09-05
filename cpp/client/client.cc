@@ -43,26 +43,24 @@ void Client::sync() {
 
         // todo: hiddenの反映
         for (const auto &v : data->value_store.transferSend(is_first)) {
-            Message::pack(buffer, len,
-                          Message::Value{{}, v.first, v.second});
+            Message::pack(buffer, len, Message::Value{{}, v.first, v.second});
         }
         for (const auto &v : data->value_store.transferReq(is_first)) {
             for (const auto &v2 : v.second) {
-                Message::pack(
-                    buffer, len,
-                    Message::Req<Message::Value>{{}, v.first, v2.first, v2.second});
+                Message::pack(buffer, len,
+                              Message::Req<Message::Value>{
+                                  {}, v.first, v2.first, v2.second});
             }
         }
         for (const auto &v : data->text_store.transferSend(is_first)) {
 
-            Message::pack(buffer, len,
-                          Message::Text{{}, v.first, v.second});
+            Message::pack(buffer, len, Message::Text{{}, v.first, v.second});
         }
         for (const auto &v : data->text_store.transferReq(is_first)) {
             for (const auto &v2 : v.second) {
-                Message::pack(
-                    buffer, len,
-                    Message::Req<Message::Text>{{}, v.first, v2.first, v2.second});
+                Message::pack(buffer, len,
+                              Message::Req<Message::Text>{
+                                  {}, v.first, v2.first, v2.second});
             }
         }
         auto view_send_prev = data->view_store.getSendPrev(is_first);
@@ -90,9 +88,9 @@ void Client::sync() {
         }
         for (const auto &v : data->view_store.transferReq(is_first)) {
             for (const auto &v2 : v.second) {
-                Message::pack(
-                    buffer, len,
-                    Message::Req<Message::View>{{}, v.first, v2.first, v2.second});
+                Message::pack(buffer, len,
+                              Message::Req<Message::View>{
+                                  {}, v.first, v2.first, v2.second});
             }
         }
         for (const auto &v : data->func_store.transferSend(is_first)) {
@@ -133,35 +131,39 @@ void Client::sync() {
 void Client::onRecv(const std::string &message) {
     namespace MessageKind = WebCFace::Message::MessageKind;
     auto messages = WebCFace::Message::unpack(message);
-    std::string sync_member;
     for (const auto &m : messages) {
         const auto &[kind, obj] = m;
         switch (kind) {
         case MessageKind::sync: {
             auto r = std::any_cast<WebCFace::Message::Sync>(obj);
-            sync_member = r.member;
-            data->sync_time_store.setRecv(sync_member, r.getTime());
+            data->sync_time_store.setRecv(r.member, r.getTime());
         }
         case MessageKind::value + MessageKind::res: {
-            auto r = std::any_cast<WebCFace::Message::Res<WebCFace::Message::Value>>(obj);
-            std::string field = data->value_store.getReq(sync_member, r.req_id);
-            data->value_store.setRecv(sync_member, field, r.data);
-            data->event_queue.enqueue(EventKey{EventType::value_change,
-                                               Field{data, sync_member, field}});
+            auto r =
+                std::any_cast<WebCFace::Message::Res<WebCFace::Message::Value>>(
+                    obj);
+            auto [member, field] = data->value_store.getReq(r.req_id);
+            data->value_store.setRecv(member, field, r.data);
+            data->event_queue.enqueue(
+                EventKey{EventType::value_change, Field{data, member, field}});
             break;
         }
         case MessageKind::text + MessageKind::res: {
-            auto r = std::any_cast<WebCFace::Message::Res<WebCFace::Message::Text>>(obj);
-            std::string field = data->text_store.getReq(sync_member, r.req_id);
-            data->text_store.setRecv(sync_member, field, r.data);
-            data->event_queue.enqueue(EventKey{EventType::text_change,
-                                               Field{data, sync_member, field}});
+            auto r =
+                std::any_cast<WebCFace::Message::Res<WebCFace::Message::Text>>(
+                    obj);
+            auto [member, field] = data->text_store.getReq(r.req_id);
+            data->text_store.setRecv(member, field, r.data);
+            data->event_queue.enqueue(
+                EventKey{EventType::text_change, Field{data, member, field}});
             break;
         }
         case MessageKind::view + MessageKind::res: {
-            auto r = std::any_cast<WebCFace::Message::Res<WebCFace::Message::View>>(obj);
-            std::string field = data->view_store.getReq(sync_member, r.req_id);
-            auto v_prev = data->view_store.getRecv(sync_member, field);
+            auto r =
+                std::any_cast<WebCFace::Message::Res<WebCFace::Message::View>>(
+                    obj);
+            auto [member, field] = data->view_store.getReq(r.req_id);
+            auto v_prev = data->view_store.getRecv(member, field);
             if (v_prev == std::nullopt) {
                 v_prev = {};
             }
@@ -169,18 +171,18 @@ void Client::onRecv(const std::string &message) {
             for (const auto &d : r.data_diff) {
                 v_prev->at(d.first) = d.second;
             }
-            data->view_store.setRecv(sync_member, field, *v_prev);
-            data->event_queue.enqueue(EventKey{EventType::view_change,
-                                               Field{data, sync_member, field}});
+            data->view_store.setRecv(member, field, *v_prev);
+            data->event_queue.enqueue(
+                EventKey{EventType::view_change, Field{data, member, field}});
             break;
         }
         case MessageKind::log: {
             auto r = std::any_cast<WebCFace::Message::Log>(obj);
             for (const auto &lm : r.log) {
-                data->log_store.addRecv(sync_member, static_cast<LogLine>(lm));
+                data->log_store.addRecv(r.member, static_cast<LogLine>(lm));
             }
             data->event_queue.enqueue(
-                EventKey{EventType::log_change, Field{data, sync_member}});
+                EventKey{EventType::log_change, Field{data, r.member}});
             break;
         }
         case MessageKind::call: {
@@ -262,32 +264,32 @@ void Client::onRecv(const std::string &message) {
                 WebCFace::Message::Entry<WebCFace::Message::Value>>(obj);
             data->value_store.setEntry(sync_member, r.field);
             data->event_queue.enqueue(EventKey{EventType::value_entry,
-                                               Field{data, sync_member, r.field}});
+                                               Field{data, r.member, r.field}});
             break;
         }
         case MessageKind::entry + MessageKind::text: {
             auto r = std::any_cast<
                 WebCFace::Message::Entry<WebCFace::Message::Text>>(obj);
-            data->text_store.setEntry(sync_member, r.field);
+            data->text_store.setEntry(r.member, r.field);
             data->event_queue.enqueue(EventKey{EventType::text_entry,
-                                               Field{data, sync_member, r.field}});
+                                               Field{data, r.member, r.field}});
             break;
         }
         case MessageKind::entry + MessageKind::view: {
             auto r = std::any_cast<
                 WebCFace::Message::Entry<WebCFace::Message::View>>(obj);
-            data->view_store.setEntry(sync_member, r.field);
+            data->view_store.setEntry(r.member, r.field);
             data->event_queue.enqueue(EventKey{EventType::view_entry,
-                                               Field{data, sync_member, r.field}});
+                                               Field{data, r.member, r.field}});
             break;
         }
         case MessageKind::func_info: {
             auto r = std::any_cast<WebCFace::Message::FuncInfo>(obj);
-            data->func_store.setEntry(sync_member, r.field);
-            data->func_store.setRecv(sync_member, r.field,
+            data->func_store.setEntry(r.member, r.field);
+            data->func_store.setRecv(r.member, r.field,
                                      static_cast<FuncInfo>(r));
             data->event_queue.enqueue(EventKey{EventType::func_entry,
-                                               Field{data, sync_member, r.field}});
+                                               Field{data, r.member, r.field}});
             break;
         }
         case MessageKind::value:

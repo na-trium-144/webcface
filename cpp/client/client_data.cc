@@ -82,9 +82,11 @@ ClientData::SyncDataStore2<T>::getRecv(const std::string &from,
     std::lock_guard lock(mtx);
     if (!isSelf(from) && req[from][name] <= 0) {
         unsigned int max_req = 0;
-        for (const auto &r : req[from]) {
-            if (r.second > max_req) {
-                max_req = r.second;
+        for (const auto &r : req) {
+            for (const auto &r2 : r.second) {
+                if (r2.second > max_req) {
+                    max_req = r.second;
+                }
             }
         }
         req[from][name] = max_req + 1;
@@ -126,15 +128,17 @@ void ClientData::SyncDataStore2<T>::unsetRecv(const std::string &from,
     }
 }
 template <typename T>
-std::string ClientData::SyncDataStore2<T>::getReq(const std::string &member,
-                                                  unsigned int req_id) {
+std::pair<std::string, std::string>
+ClientData::SyncDataStore2<T>::getReq(unsigned int req_id) {
     std::lock_guard lock(mtx);
-    for (const auto &r : req[member]) {
-        if (r.second == req_id) {
-            return r.first;
+    for (const auto &r : req) {
+        for (const auto &r2 : r->second) {
+            if (r2.second == req_id) {
+                return std::make_pair(r.first, r2.first);
+            }
         }
     }
-    return "";
+    return std::make_pair("", "");
 }
 
 template <typename T>

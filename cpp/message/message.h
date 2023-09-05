@@ -157,6 +157,7 @@ struct View : public MessageBase<MessageKind::view> {
 //! client(member)->server->client logを追加
 //! client->server時はmemberは無視
 struct Log : public MessageBase<MessageKind::log> {
+    std::string member;
     struct LogLine {
         int level;
         //! 1970/1/1からの経過ミリ秒
@@ -179,7 +180,7 @@ struct Log : public MessageBase<MessageKind::log> {
                            MSGPACK_NVP("m", message));
     };
     std::vector<LogLine> log;
-    MSGPACK_DEFINE_MAP(MSGPACK_NVP("l", log));
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("m", member), MSGPACK_NVP("l", log));
 };
 //! Logのリクエストはメンバ名のみ
 struct LogReq : public MessageBase<MessageKind::log_req> {
@@ -234,8 +235,8 @@ struct Req : public MessageBase<T::kind + MessageKind::req> {
 //! Funcの場合はこれではなくFuncInfoを使用
 template <typename T>
 struct Entry : public MessageBase<T::kind + MessageKind::entry> {
-    std::string field;
-    MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", field));
+    std::string member, field;
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("m", member), MSGPACK_NVP("f", field));
 };
 template <typename T>
 struct Res {};

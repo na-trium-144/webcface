@@ -112,8 +112,8 @@ struct ClientData {
         //! member名のりすとを取得(entryから)
         std::vector<std::string> getMembers();
 
-        // req_idに対応するフィールド名を返す
-        std::string getReq(const std::string &member, unsigned int req_id);
+        // req_idに対応するmember名とフィールド名を返す
+        std::pair<std::string, std::string> getReq(unsigned int req_id);
 
         //! data_sendを返し、data_sendをクリア
         std::unordered_map<std::string, T> transferSend(bool is_first);
