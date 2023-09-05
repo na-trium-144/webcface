@@ -20,10 +20,14 @@ int main() {
         // -> error: candidate function template not viable: ... method is not
         // marked const
         std::thread([&] {
-            auto result =
-                c.member("example_main").func("func2").run(9, 7.1, false, "");
-            std::cout << "func2(9, 7.1, false, \"\") = "
-                      << static_cast<std::string>(result) << std::endl;
+            try {
+                auto result = c.member("example_main")
+                                  .func("func2")
+                                  .run(9, 7.1, false, "");
+                std::cout << "func2(9, 7.1, false, \"\") = "
+                          << static_cast<std::string>(result) << std::endl;
+            } catch (...) {
+            }
         }).detach();
         c.sync();
     }

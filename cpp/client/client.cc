@@ -1,7 +1,6 @@
 #include <webcface/client.h>
 #include <string>
 #include <chrono>
-#include <iostream>
 #include "../message/message.h"
 
 namespace WebCFace {
@@ -137,6 +136,7 @@ void Client::onRecv(const std::string &message) {
         case MessageKind::sync: {
             auto r = std::any_cast<WebCFace::Message::Sync>(obj);
             data->sync_time_store.setRecv(r.member, r.getTime());
+            break;
         }
         case MessageKind::value + MessageKind::res: {
             auto r =
@@ -295,14 +295,12 @@ void Client::onRecv(const std::string &message) {
         case MessageKind::value:
         case MessageKind::text:
         case MessageKind::view:
-            std::cerr << "Invalid Message Kind " << static_cast<int>(kind)
-                      << std::endl;
+            this->data->logger_internal->warn("Invalid Message Kind {}", kind);
             break;
         case MessageKind::unknown:
             break;
         default:
-            std::cerr << "Unknown Message Kind " << static_cast<int>(kind)
-                      << std::endl;
+            this->data->logger_internal->warn("Unknown Message Kind {}", kind);
             break;
         }
     }
