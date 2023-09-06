@@ -15,17 +15,29 @@ Func Member::func(const std::string &field) const { return Func{*this, field}; }
 View Member::view(const std::string &field) const { return View{*this, field}; }
 Log Member::log() const { return Log{*this}; }
 
-EventTarget<Value> Member::valueEntry() const {
-    return EventTarget<Value>{EventType::value_entry, *this};
+EventTarget<Value, eventpp::EventDispatcher<std::string, void(Field)>>
+Member::onValueEntry() const {
+    return EventTarget<Value,
+                       eventpp::EventDispatcher<std::string, void(Field)>>{
+        &dataLock()->value_entry_event, member_};
 }
-EventTarget<Text> Member::textEntry() const {
-    return EventTarget<Text>{EventType::text_entry, *this};
+EventTarget<Text, eventpp::EventDispatcher<std::string, void(Field)>>
+Member::onTextEntry() const {
+    return EventTarget<Text,
+                       eventpp::EventDispatcher<std::string, void(Field)>>{
+        &dataLock()->text_entry_event, member_};
 }
-EventTarget<Func> Member::funcEntry() const {
-    return EventTarget<Func>{EventType::func_entry, *this};
+EventTarget<Func, eventpp::EventDispatcher<std::string, void(Field)>>
+Member::onFuncEntry() const {
+    return EventTarget<Func,
+                       eventpp::EventDispatcher<std::string, void(Field)>>{
+        &dataLock()->func_entry_event, member_};
 }
-EventTarget<View> Member::viewEntry() const {
-    return EventTarget<View>{EventType::view_entry, *this};
+EventTarget<View, eventpp::EventDispatcher<std::string, void(Field)>>
+Member::onViewEntry() const {
+    return EventTarget<View,
+                       eventpp::EventDispatcher<std::string, void(Field)>>{
+        &dataLock()->view_entry_event, member_};
 }
 
 std::vector<Value> Member::values() const {

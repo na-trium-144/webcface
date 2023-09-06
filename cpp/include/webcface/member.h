@@ -1,11 +1,12 @@
 #pragma once
 #include <string>
 #include <vector>
+#include <eventpp/eventdispatcher.h>
 #include "field.h"
 
 namespace WebCFace {
 
-template <typename V>
+template <typename V, typename Dispatcher>
 class EventTarget;
 class Value;
 class Text;
@@ -49,15 +50,17 @@ class Member : protected Field {
      * eventの設定は初回のsync()より前に行うと良い
      * \sa Client::membersChange()
      */
-    EventTarget<Value> valueEntry() const;
+    EventTarget<Value, eventpp::EventDispatcher<std::string, void(Field)>> onValueEntry() const;
     //! textが追加された時のイベントリスト
     //! \sa valuesChange()
-    EventTarget<Text> textEntry() const;
+    EventTarget<Text, eventpp::EventDispatcher<std::string, void(Field)>> onTextEntry() const;
     //! funcが追加された時のイベントリスト
     //! \sa valuesChange()
-    EventTarget<Func> funcEntry() const;
+    EventTarget<Func, eventpp::EventDispatcher<std::string, void(Field)>> onFuncEntry() const;
 
-    EventTarget<View> viewEntry() const;
+    EventTarget<View, eventpp::EventDispatcher<std::string, void(Field)>> onViewEntry() const;
+    EventTarget<Member, eventpp::EventDispatcher<std::string, void(Field)>> onSync() const;
+
 
 };
 

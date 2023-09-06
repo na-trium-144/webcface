@@ -1,4 +1,7 @@
 #include <webcface/client.h>
+#include <webcface/data.h>
+#include <webcface/view.h>
+#include <webcface/func.h>
 #include <string>
 #include <chrono>
 #include "../message/message.h"
@@ -7,12 +10,7 @@ namespace WebCFace {
 
 Client::Client(const std::string &name, const std::string &host, int port)
     : Member(), data(std::make_shared<ClientData>(name)), host(host),
-      port(port), event_thread([this] {
-          while (!closing.load()) {
-              data->event_queue.waitFor(std::chrono::milliseconds(10));
-              data->event_queue.process();
-          }
-      }),
+      port(port),
       message_thread([this] { this->messageThreadMain(); }),
       logger_buf(this->data), logger_os(&this->logger_buf) {
 
@@ -22,7 +20,6 @@ Client::Client(const std::string &name, const std::string &host, int port)
 
 Client::~Client() {
     close();
-    event_thread.join();
     message_thread.join();
 }
 void Client::close() { closing.store(true); }
@@ -137,6 +134,7 @@ void Client::onRecv(const std::string &message) {
             auto r = std::any_cast<WebCFace::Message::Sync>(obj);
             auto member = data->getMemberNameFromId(r.member_id);
             data->sync_time_store.setRecv(member, r.getTime());
+            data->sync_event.dispatch(member, Field{data, member});
             break;
         }
         case MessageKind::value + MessageKind::res: {
@@ -145,8 +143,7 @@ void Client::onRecv(const std::string &message) {
                     obj);
             auto [member, field] = data->value_store.getReq(r.req_id);
             data->value_store.setRecv(member, field, r.data);
-            data->event_queue.enqueue(
-                EventKey{EventType::value_change, Field{data, member, field}});
+            data->value_change_event.dispatch(FieldBase{member, field}, Value{Field{data, member, field}});
             break;
         }
         case MessageKind::text + MessageKind::res: {
@@ -155,8 +152,7 @@ void Client::onRecv(const std::string &message) {
                     obj);
             auto [member, field] = data->text_store.getReq(r.req_id);
             data->text_store.setRecv(member, field, r.data);
-            data->event_queue.enqueue(
-                EventKey{EventType::text_change, Field{data, member, field}});
+            data->text_change_event.dispatch(FieldBase{member, field},Text{Field{data, member, field}});
             break;
         }
         case MessageKind::view + MessageKind::res: {
@@ -173,8 +169,7 @@ void Client::onRecv(const std::string &message) {
                 v_prev->at(d.first) = d.second;
             }
             data->view_store.setRecv(member, field, *v_prev);
-            data->event_queue.enqueue(
-                EventKey{EventType::view_change, Field{data, member, field}});
+            data->view_change_event.dispatch(FieldBase{member, field}, View{Field{data, member, field}});
             break;
         }
         case MessageKind::log: {
@@ -182,9 +177,8 @@ void Client::onRecv(const std::string &message) {
             auto member = data->getMemberNameFromId(r.member_id);
             for (const auto &lm : r.log) {
                 data->log_store.addRecv(member, static_cast<LogLine>(lm));
+                data->log_append_event.dispatch(member, static_cast<LogLine>(lm));
             }
-            data->event_queue.enqueue(
-                EventKey{EventType::log_change, Field{data, member}});
             break;
         }
         case MessageKind::call: {
@@ -258,8 +252,7 @@ void Client::onRecv(const std::string &message) {
             data->text_store.setEntry(r.member_name);
             data->func_store.setEntry(r.member_name);
             data->member_ids[r.member_name] = r.member_id;
-            data->event_queue.enqueue(
-                EventKey{EventType::member_entry, Field{data, r.member_name}});
+            data->member_entry_event.dispatch(0, Field{data, r.member_name});
             break;
         }
         case MessageKind::entry + MessageKind::value: {
@@ -267,8 +260,7 @@ void Client::onRecv(const std::string &message) {
                 WebCFace::Message::Entry<WebCFace::Message::Value>>(obj);
             auto member = data->getMemberNameFromId(r.member_id);
             data->value_store.setEntry(member, r.field);
-            data->event_queue.enqueue(EventKey{EventType::value_entry,
-                                               Field{data, member, r.field}});
+            data->value_entry_event.dispatch(member, Field{data, member, r.field});
             break;
         }
         case MessageKind::entry + MessageKind::text: {
@@ -276,8 +268,7 @@ void Client::onRecv(const std::string &message) {
                 WebCFace::Message::Entry<WebCFace::Message::Text>>(obj);
             auto member = data->getMemberNameFromId(r.member_id);
             data->text_store.setEntry(member, r.field);
-            data->event_queue.enqueue(EventKey{EventType::text_entry,
-                                               Field{data, member, r.field}});
+            data->text_entry_event.dispatch(member, Field{data, member, r.field});
             break;
         }
         case MessageKind::entry + MessageKind::view: {
@@ -285,8 +276,7 @@ void Client::onRecv(const std::string &message) {
                 WebCFace::Message::Entry<WebCFace::Message::View>>(obj);
             auto member = data->getMemberNameFromId(r.member_id);
             data->view_store.setEntry(member, r.field);
-            data->event_queue.enqueue(EventKey{EventType::view_entry,
-                                               Field{data, member, r.field}});
+            data->view_entry_event.dispatch(member, Field{data, member, r.field});
             break;
         }
         case MessageKind::func_info: {
@@ -295,8 +285,7 @@ void Client::onRecv(const std::string &message) {
             data->func_store.setEntry(member, r.field);
             data->func_store.setRecv(member, r.field,
                                      static_cast<FuncInfo>(r));
-            data->event_queue.enqueue(EventKey{EventType::func_entry,
-                                               Field{data, member, r.field}});
+            data->func_entry_event.dispatch(member, Field{data, member, r.field});
             break;
         }
         case MessageKind::value:

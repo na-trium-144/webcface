@@ -7,17 +7,21 @@
 #include <optional>
 #include <string>
 #include <concepts>
-#include <eventpp/eventqueue.h>
+#include <eventpp/eventdispatcher.h>
 #include <spdlog/logger.h>
 #include "func_result.h"
 #include "common/func.h"
 #include "common/queue.h"
 #include "common/view.h"
-#include "event_key.h"
 #include "field.h"
 #include "logger.h"
 
 namespace WebCFace {
+
+class Value;
+class Text;
+class View;
+
 struct ClientData {
 
     //! 送受信するデータを保持するクラス
@@ -218,9 +222,16 @@ struct ClientData {
     std::string getMemberNameFromId(unsigned int id) const;
     unsigned int getMemberIdFromName(const std::string &name) const;
 
-    using EventQueue = eventpp::EventQueue<EventKey, void(const EventKey &)>;
-    //! 各種イベントを管理するキュー
-    EventQueue event_queue;
+    // 値を引数に持つイベント
+    eventpp::EventDispatcher<FieldBaseComparable, void(Value)>
+        value_change_event;
+    eventpp::EventDispatcher<FieldBaseComparable, void(Text)> text_change_event;
+    eventpp::EventDispatcher<FieldBaseComparable, void(View)> view_change_event;
+    eventpp::EventDispatcher<std::string, void(LogLine)> log_append_event;
+    // 値は要らないイベント
+    eventpp::EventDispatcher<int, void(Field)> member_entry_event;
+    eventpp::EventDispatcher<std::string, void(Field)> sync_event,
+        value_entry_event, text_entry_event, func_entry_event, view_entry_event;
 
     //! sync()を待たずに即時送って欲しいメッセージを入れるキュー
     Queue<std::string> message_queue;
