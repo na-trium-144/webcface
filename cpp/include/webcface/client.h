@@ -38,9 +38,6 @@ class Client : public Member {
     LoggerBuf logger_buf;
     std::ostream logger_os;
 
-    //! イベントを処理するスレッド
-    std::thread event_thread;
-
     //! 受信時の処理
     void onRecv(const std::string &message);
 
@@ -81,8 +78,9 @@ class Client : public Member {
      * 初回の sync() 後に一度に送られるので、
      * eventの設定は初回のsync()より前に行うと良い
      */
-    EventTarget<Member> memberEntry() {
-        return EventTarget<Member>{EventType::member_entry, data};
+    auto onMemberEntry() {
+        return EventTarget<Member, decltype(ClientData::member_entry_event)>{
+            &data->member_entry_event, 0};
     }
 
     /*!
@@ -112,7 +110,7 @@ class Client : public Member {
     std::shared_ptr<LoggerSink> logger_sink() { return data->logger_sink; }
     //! サーバーとstderr_sinkに流すspdlog::logger
     std::shared_ptr<spdlog::logger> logger() { return data->logger; }
-    
+
     //! このクライアントのloggerに出力するstreambuf
     //! levelは常にinfoになる (変えられるようにする?)
     //! std::flushのタイミングとは無関係に、1つの改行ごとに1つのログになる

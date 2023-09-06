@@ -6,12 +6,14 @@ import { FieldBase } from "./field.js";
 
 export class ClientData {
   selfMemberName: string;
-  valueStore: SyncDataStore<number>;
-  textStore: SyncDataStore<string>;
-  funcStore: SyncDataStore<FuncInfo>;
-  viewStore: SyncDataStore<Message.ViewComponent[]>;
-  logStore: LogStore;
+  valueStore: SyncDataStore2<number>;
+  textStore: SyncDataStore2<string>;
+  funcStore: SyncDataStore2<FuncInfo>;
+  viewStore: SyncDataStore2<Message.ViewComponent[]>;
+  logStore: SyncDataStore1<LogLine[]>;
+  syncTimeStore: SyncDataStore1<Date>;
   funcResultStore: FuncResultStore;
+  memberIds: Map<string, number>;
   callFunc: (r: AsyncFuncResult, b: FieldBase, args: Val[]) => void;
   eventEmitter: EventEmitter;
   logQueue: LogLine[];
@@ -20,12 +22,14 @@ export class ClientData {
     callFunc: (r: AsyncFuncResult, b: FieldBase, args: Val[]) => void
   ) {
     this.selfMemberName = name;
-    this.valueStore = new SyncDataStore<number>(name);
-    this.textStore = new SyncDataStore<string>(name);
-    this.funcStore = new SyncDataStore<FuncInfo>(name);
-    this.viewStore = new SyncDataStore<Message.ViewComponent[]>(name);
-    this.logStore = new LogStore(name);
+    this.valueStore = new SyncDataStore2<number>(name);
+    this.textStore = new SyncDataStore2<string>(name);
+    this.funcStore = new SyncDataStore2<FuncInfo>(name);
+    this.viewStore = new SyncDataStore2<Message.ViewComponent[]>(name);
+    this.logStore = new SyncDataStore1<LogLine[]>(name);
+    this.syncTimeStore = new SyncDataStore1<Date>(name);
     this.funcResultStore = new FuncResultStore();
+    this.memberIds = new Map<string, number>();
     this.callFunc = callFunc;
     this.eventEmitter = new EventEmitter();
     this.logQueue = [];
@@ -33,15 +37,26 @@ export class ClientData {
   isSelf(member: string) {
     return this.selfMemberName === member;
   }
+  getMemberNameFromId(id: number) {
+    for (const [n, i] of this.memberIds.entries()) {
+      if (i === id) {
+        return n;
+      }
+    }
+    return "";
+  }
+  getMemberIdFromName(name: string) {
+    return this.memberIds.get(name) || 0;
+  }
 }
 
-class SyncDataStore<T> {
+class SyncDataStore2<T> {
   dataSend: Map<string, T>;
   dataSendPrev: Map<string, T>;
   dataRecv: Map<string, Map<string, T>>;
   entry: Map<string, string[]>;
-  req: Map<string, Map<string, boolean>>;
-  reqSend: Map<string, Map<string, boolean>>;
+  req: Map<string, Map<string, number>>;
+  reqSend: Map<string, Map<string, number>>;
   selfMemberName: string;
   constructor(name: string) {
     this.selfMemberName = name;
@@ -69,20 +84,32 @@ class SyncDataStore<T> {
       this.dataRecv.set(member, new Map([[field, data]]));
     }
   }
+  getMaxReq() {
+    let maxReq = 0;
+    for (const [rm, r] of this.req.entries()) {
+      for (const [rf, ri] of r.entries()) {
+        if (ri > maxReq) {
+          maxReq = ri;
+        }
+      }
+    }
+    return maxReq;
+  }
   //! data_recvからデータを返す or なければreq,req_sendをtrueにセット
   getRecv(member: string, field: string) {
-    if (!this.isSelf(member) && this.req.get(member)?.get(field) !== true) {
+    if (!this.isSelf(member) && !this.req.get(member)?.get(field)) {
       const m = this.req.get(member);
+      const newReq = this.getMaxReq() + 1;
       if (m) {
-        m.set(field, true);
+        m.set(field, newReq);
       } else {
-        this.req.set(member, new Map([[field, true]]));
+        this.req.set(member, new Map([[field, newReq]]));
       }
       const m2 = this.reqSend.get(member);
       if (m2) {
-        m2.set(field, true);
+        m2.set(field, newReq);
       } else {
-        this.reqSend.set(member, new Map([[field, true]]));
+        this.reqSend.set(member, new Map([[field, newReq]]));
       }
     }
     const m = this.dataRecv.get(member)?.get(field);
@@ -93,13 +120,13 @@ class SyncDataStore<T> {
   }
   //! data_recvからデータを削除, req,req_sendをfalseにする
   unsetRecv(member: string, field: string) {
-    if (!this.isSelf(member) && this.req.get(member)?.get(field) === true) {
-      this.req.get(member)?.set(field, false);
+    if (!this.isSelf(member) && !!this.req.get(member)?.get(field)) {
+      this.req.get(member)?.set(field, 0);
       const m2 = this.reqSend.get(member);
       if (m2) {
-        m2.set(field, false);
+        m2.set(field, 0);
       } else {
-        this.reqSend.set(member, new Map([[field, false]]));
+        this.reqSend.set(member, new Map([[field, 0]]));
       }
     }
     this.dataRecv.get(member)?.delete(field);
@@ -121,25 +148,50 @@ class SyncDataStore<T> {
     this.entry.set(member, (this.getEntry(member) || []).concat([e]));
   }
   //! data_sendを返し、data_sendをクリア
-  transferSend() {
-    const s = this.dataSend;
-    this.dataSendPrev = s;
-    this.dataSend = new Map();
-    return s;
+  transferSend(isFirst: boolean) {
+    if (isFirst) {
+      this.dataSend = new Map();
+      return (this.dataSendPrev =
+        this.dataRecv.get(this.selfMemberName) || new Map<string, T>());
+    } else {
+      const s = this.dataSend;
+      this.dataSendPrev = s;
+      this.dataSend = new Map();
+      return s;
+    }
   }
-  getSendPrev() {
-    return this.dataSendPrev;
+  getSendPrev(isFirst: boolean) {
+    if (isFirst) {
+      return new Map<string, T>();
+    } else {
+      return this.dataSendPrev;
+    }
   }
   //! req_sendを返し、req_sendをクリア
-  transferReq() {
-    const r = this.reqSend;
-    this.reqSend = new Map();
-    return r;
+  transferReq(isFirst: boolean) {
+    if (isFirst) {
+      this.reqSend = new Map();
+      return this.req;
+    } else {
+      const r = this.reqSend;
+      this.reqSend = new Map();
+      return r;
+    }
+  }
+  getReq(i: number) {
+    for (const [rm, r] of this.req.entries()) {
+      for (const [rf, ri] of r.entries()) {
+        if (ri == i) {
+          return [rm, rf];
+        }
+      }
+    }
+    return ["", ""];
   }
 }
 
-class LogStore {
-  dataRecv: Map<string, LogLine[]>;
+class SyncDataStore1<T> {
+  dataRecv: Map<string, T>;
   req: Map<string, boolean>;
   reqSend: Map<string, boolean>;
   selfMemberName: string;
@@ -152,13 +204,8 @@ class LogStore {
   isSelf(member: string) {
     return this.selfMemberName === member;
   }
-  addRecv(member: string, log: LogLine) {
-    const m = this.dataRecv.get(member);
-    if (m) {
-      m.push(log);
-    } else {
-      this.dataRecv.set(member, [log]);
-    }
+  setRecv(member: string, data: T) {
+    this.dataRecv.set(member, data);
   }
   getRecv(member: string) {
     if (!this.isSelf(member) && this.req.get(member) !== true) {
@@ -171,10 +218,15 @@ class LogStore {
     }
     return null;
   }
-  transferReq() {
-    const r = this.reqSend;
-    this.reqSend = new Map();
-    return r;
+  transferReq(isFirst: boolean) {
+    if (isFirst) {
+      this.reqSend = new Map();
+      return this.req;
+    } else {
+      const r = this.reqSend;
+      this.reqSend = new Map();
+      return r;
+    }
   }
 }
 class FuncResultStore {

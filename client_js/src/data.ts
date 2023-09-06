@@ -1,13 +1,16 @@
 import { Member } from "./member.js";
 import { FieldWithEvent, eventType } from "./event.js";
 import { Field } from "./field.js";
+import { LogLine } from "./logger.js";
 
 export class Value extends FieldWithEvent<Value> {
+  value_: number | null;
+  time_: Date | null;
   constructor(base: Field, field = "") {
-    super("", base.data, base.member_, field || base.field_, () =>
-      this.tryGet()
-    );
+    super("", base.data, base.member_, field || base.field_);
     this.eventType_ = eventType.valueChange(this);
+    this.value_ = this.data.valueStore.getRecv(this.member_, this.field_);
+    this.time_ = this.data.syncTimeStore.getRecv(this.member_);
   }
   get member() {
     return new Member(this);
@@ -16,7 +19,7 @@ export class Value extends FieldWithEvent<Value> {
     return this.field_;
   }
   tryGet() {
-    return this.data.valueStore.getRecv(this.member_, this.field_);
+    return this.value_;
   }
   get() {
     const v = this.tryGet();
@@ -33,13 +36,18 @@ export class Value extends FieldWithEvent<Value> {
       throw new Error("Cannot set data to member other than self");
     }
   }
+  time() {
+    return this.time_ || new Date(0);
+  }
 }
 export class Text extends FieldWithEvent<Text> {
+  value_: string | null;
+  time_: Date | null;
   constructor(base: Field, field = "") {
-    super("", base.data, base.member_, field || base.field_, () =>
-      this.tryGet()
-    );
+    super("", base.data, base.member_, field || base.field_);
     this.eventType_ = eventType.textChange(this);
+    this.value_ = this.data.textStore.getRecv(this.member_, this.field_);
+    this.time_ = this.data.syncTimeStore.getRecv(this.member_);
   }
   get member() {
     return new Member(this);
@@ -48,7 +56,7 @@ export class Text extends FieldWithEvent<Text> {
     return this.field_;
   }
   tryGet() {
-    return this.data.textStore.getRecv(this.member_, this.field_);
+    return this.value_;
   }
   get() {
     const v = this.tryGet();
@@ -65,13 +73,17 @@ export class Text extends FieldWithEvent<Text> {
       throw new Error("Cannot set data to member other than self");
     }
   }
+  time() {
+    return this.time_ || new Date(0);
+  }
 }
 
-
-export class Log extends FieldWithEvent<Log> {
+export class Log extends FieldWithEvent<LogLine> {
+  value_: LogLine[] | null;
   constructor(base: Field) {
-    super("", base.data, base.member_, "", () => this.tryGet());
-    this.eventType_ = eventType.logChange(this);
+    super("", base.data, base.member_, "");
+    this.eventType_ = eventType.logAppend(this);
+    this.value_ = this.data.logStore.getRecv(this.member_);
   }
   get member() {
     return new Member(this);
@@ -80,7 +92,7 @@ export class Log extends FieldWithEvent<Log> {
     return this.field_;
   }
   tryGet() {
-    return this.data.logStore.getRecv(this.member_);
+    return this.value_;
   }
   get() {
     const v = this.tryGet();

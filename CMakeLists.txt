@@ -70,11 +70,11 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 add_library(${PROJECT_NAME}_message STATIC ${MSG_SRC})
 target_compile_options(${PROJECT_NAME}_message PRIVATE -fPIC)
 target_compile_features(${PROJECT_NAME}_message PUBLIC cxx_std_20)
-target_link_libraries(${PROJECT_NAME}_message PUBLIC ${MSGPACK})
+target_link_libraries(${PROJECT_NAME}_message PUBLIC ${MSGPACK} ${SPDLOG})
 target_include_directories(${PROJECT_NAME}_message PUBLIC ${INCLUDE_DIR})
 
 add_library(${PROJECT_NAME}_server_impl STATIC ${SVR_SRC} ${CTL_SRC})
-target_link_libraries(${PROJECT_NAME}_server_impl PUBLIC ${PROJECT_NAME}_message cinatra)
+target_link_libraries(${PROJECT_NAME}_server_impl PUBLIC ${PROJECT_NAME}_message cinatra ${SPDLOG})
 
 add_executable(${PROJECT_NAME}_server ${SVR_MAIN_SRC})
 target_link_libraries(${PROJECT_NAME}_server PRIVATE ${PROJECT_NAME}_server_impl)

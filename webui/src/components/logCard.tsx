@@ -1,5 +1,5 @@
 import { Card } from "./card";
-import { Member, Logs, LogLine } from "webcface";
+import { Member, Log, LogLine } from "webcface";
 import { useState, useEffect } from "react";
 import { format } from "date-fns";
 

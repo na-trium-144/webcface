@@ -2,6 +2,7 @@
 #include <istream>
 #include <ostream>
 #include <optional>
+#include <chrono>
 #include "field.h"
 #include "client_data.h"
 #include "event_target.h"
@@ -9,12 +10,24 @@
 namespace WebCFace {
 
 //! 実数値を扱う
-class Value : protected Field, public EventTarget<Value> {
+class Value
+    : protected Field,
+      public EventTarget<Value, decltype(ClientData::value_change_event)> {
+    std::optional<double> value_;
+    std::optional<std::chrono::system_clock::time_point> time_;
+
+    // void onAppend() const override {  }
+
   public:
     Value() = default;
     Value(const Field &base)
-        : Field(base), EventTarget<Value>(EventType::value_change, base,
-                                          [this] { this->tryGet(); }) {}
+        : Field(base),
+          EventTarget<Value, decltype(ClientData::value_change_event)>(
+              &this->dataLock()->value_change_event, *this) {
+        auto data = dataLock();
+        value_ = data->value_store.getRecv(*this);
+        time_ = data->sync_time_store.getRecv(this->member_);
+    }
     Value(const Field &base, const std::string &field)
         : Value(Field{base, field}) {}
 
@@ -25,21 +38,15 @@ class Value : protected Field, public EventTarget<Value> {
     auto &set(double v) {
         setCheck();
         dataLock()->value_store.setSend(*this, v);
-        this->triggerEvent();
+        value_ = v;
+        this->triggerEvent(*this);
         return *this;
     }
-    //! 値をセットする
+    //! 値をセットし、EventTargetを発動する
     auto &operator=(double v) {
         this->set(v);
         return *this;
     }
-
-    //! 値を取得する
-    std::optional<double> tryGet() const {
-        return dataLock()->value_store.getRecv(*this);
-    }
-    double get() const { return tryGet().value_or(0); }
-    operator double() const { return get(); }
 
     //! このvalueを非表示にする
     //! (他clientのentryに表示されなくする)
@@ -48,9 +55,19 @@ class Value : protected Field, public EventTarget<Value> {
         dataLock()->value_store.setHidden(*this, hidden);
         return *this;
     }
-    //! 関数の設定を解除
+
+    //! 値を返す
+    std::optional<double> tryGet() const { return value_; }
+    double get() const { return tryGet().value_or(0); }
+    operator double() const { return get(); }
+    auto time() const {
+        return time_.value_or(std::chrono::system_clock::time_point());
+    }
+
+    //! 値やリクエスト状態をクリア
     auto &free() {
         dataLock()->value_store.unsetRecv(*this);
+        value_ = std::nullopt;
         return *this;
     }
 
@@ -119,12 +136,23 @@ class Value : protected Field, public EventTarget<Value> {
 };
 
 // 文字列を扱う
-class Text : protected Field, public EventTarget<Text> {
+class Text : protected Field,
+             public EventTarget<Text, decltype(ClientData::text_change_event)> {
+    std::optional<std::string> value_;
+    std::optional<std::chrono::system_clock::time_point> time_;
+
+    // void onAppend() const override { }
+
   public:
     Text() = default;
     Text(const Field &base)
-        : Field(base), EventTarget<Text>(EventType::text_change, base,
-                                         [this] { this->tryGet(); }) {}
+        : Field(base),
+          EventTarget<Text, decltype(ClientData::text_change_event)>(
+              &this->dataLock()->text_change_event, *this) {
+        auto data = dataLock();
+        value_ = data->text_store.getRecv(*this);
+        time_ = data->sync_time_store.getRecv(this->member_);
+    }
     Text(const Field &base, const std::string &field)
         : Text(Field{base, field}) {}
 
@@ -135,7 +163,8 @@ class Text : protected Field, public EventTarget<Text> {
     auto &set(const std::string &v) {
         setCheck();
         dataLock()->text_store.setSend(*this, v);
-        triggerEvent();
+        value_ = v;
+        triggerEvent(*this);
         return *this;
     }
     //! 値をセットする
@@ -145,11 +174,12 @@ class Text : protected Field, public EventTarget<Text> {
     }
 
     //! 値を取得する
-    std::optional<std::string> tryGet() const {
-        return dataLock()->text_store.getRecv(*this);
-    }
+    std::optional<std::string> tryGet() const { return value_; }
     std::string get() const { return tryGet().value_or(""); }
     operator std::string() const { return get(); }
+    auto time() const {
+        return time_.value_or(std::chrono::system_clock::time_point());
+    }
 
     //! このtext非表示にする
     //! (他clientのentryに表示されなくする)
@@ -171,19 +201,26 @@ class Text : protected Field, public EventTarget<Text> {
 //! log
 //! name使わないんだけど
 //! todo: triggerEvent
-class Log : protected Field, public EventTarget<Log> {
+class Log
+    : protected Field,
+      public EventTarget<LogLine, decltype(ClientData::log_append_event)> {
+    std::optional<std::vector<LogLine>> value_;
+
+    // void onAppend() const override { }
+
   public:
     Log() = default;
     Log(const Field &base)
-        : Field(base), EventTarget<Log>(EventType::log_change, base,
-                                        [this] { this->tryGet(); }) {}
+        : Field(base),
+          EventTarget<LogLine, decltype(ClientData::log_append_event)>(
+              &this->dataLock()->log_append_event, this->member_) {
+        value_ = this->dataLock()->log_store.getRecv(member_);
+    }
 
     using Field::member;
 
     //! 値を取得する
-    std::optional<std::vector<LogLine>> tryGet() const {
-        return dataLock()->log_store.getRecv(member_);
-    }
+    std::optional<std::vector<LogLine>> tryGet() const { return value_; }
     std::vector<LogLine> get() const {
         return tryGet().value_or(std::vector<LogLine>{});
     }

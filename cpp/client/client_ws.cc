@@ -9,6 +9,23 @@ void Client::messageThreadMain() {
     while (!this->closing.load()) {
         coro_http_client client;
         this->connected_.store(false);
+
+        client.on_ws_msg([&](resp_data data) {
+            if (data.net_err) {
+                // どういう条件で起こるのかわかってない
+                this->data->logger_internal->error("recv error {}",
+                                                   data.net_err.message());
+                return;
+            }
+            this->data->logger_internal->trace("message received");
+            this->onRecv(std::string(data.resp_body));
+            this->data->logger_internal->trace("message recv done");
+        });
+        client.on_ws_close([&](auto &&) {
+            this->data->logger_internal->debug("connection closed");
+            this->connected_.store(false);
+        });
+
         this->data->logger_internal->trace("start connecting");
         bool ok = async_simple::coro::syncAwait(client.async_ws_connect(
             "ws://" + host + ":" + std::to_string(port)));
@@ -18,20 +35,6 @@ void Client::messageThreadMain() {
             this->sync_init.store(false);
             this->connected_.store(true);
             this->data->logger_internal->debug("connected");
-            client.on_ws_msg([&](resp_data data) {
-                if (data.net_err) {
-                    // どういう条件で起こるのかわかってない
-                    this->data->logger_internal->error("recv error {}",
-                                                       data.net_err.message());
-                    return;
-                }
-                this->data->logger_internal->trace("message received");
-                this->onRecv(std::string(data.resp_body));
-            });
-            client.on_ws_close([&](auto &&) {
-                this->data->logger_internal->debug("connection closed");
-                this->connected_.store(false);
-            });
 
             while (!this->closing.load() && this->connected_.load()) {
                 auto msg = this->data->message_queue.pop(

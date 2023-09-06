@@ -13,9 +13,9 @@ export function TextCard(props: Props) {
       t.on(update);
       update();
     };
-    props.member.textsChange.on(onTextEntry);
+    props.member.onTextEntry.on(onTextEntry);
     return () => {
-      props.member.textsChange.off(onTextEntry);
+      props.member.onTextEntry.off(onTextEntry);
     };
   }, [props.member, update]);
   return (

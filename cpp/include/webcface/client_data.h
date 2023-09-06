@@ -6,28 +6,31 @@
 #include <condition_variable>
 #include <optional>
 #include <string>
-#include <eventpp/eventqueue.h>
+#include <concepts>
+#include <eventpp/eventdispatcher.h>
 #include <spdlog/logger.h>
 #include "func_result.h"
 #include "common/func.h"
 #include "common/queue.h"
 #include "common/view.h"
-#include "event_key.h"
 #include "field.h"
 #include "logger.h"
 
 namespace WebCFace {
+
+class Value;
+class Text;
+class View;
+
 struct ClientData {
 
     //! 送受信するデータを保持するクラス
-    /*! Clientが各データの種類に応じたSyncDataStoreを用意、
-     * MemberとSyncDataがshared_pointerとして保持
-     *
+    /*! memberごとにフィールドを持つデータに使う。
+     * member, fieldの2次元mapとなる
      * T=FuncInfoの時、entryとreqは使用しない(常にすべての関数の情報が送られてくる)
      */
     template <typename T>
-    class SyncDataStore {
-      private:
+    class SyncDataStore2 {
         std::mutex mtx;
         //! 次のsend時に送信するデータ。
         std::unordered_map<std::string, T> data_send;
@@ -45,16 +48,19 @@ struct ClientData {
          */
         std::unordered_map<std::string, std::vector<std::string>> entry;
         //! データ受信リクエスト
-        /*! req[member名][データ名] = true ならばリクエスト済み
-         * falseまたは未定義ならリクエストしてない
+        /*! req[member名][データ名] が0以上ならばリクエスト済み
+         * 0または未定義ならリクエストしてない
          */
-        std::unordered_map<std::string, std::unordered_map<std::string, bool>>
+        std::unordered_map<std::string,
+                           std::unordered_map<std::string, unsigned int>>
             req;
         //! 次のsend時に送信するデータ受信リクエスト
-        /*! req[member名][データ名] = true ならばリクエストをする
-         * falseならリクエストを解除する(未実装)
+        /*! req[member名][データ名]
+         * が1以上ならばそれをreq_idとしてリクエストをする
+         * 0ならリクエストを解除する(未実装)
          */
-        std::unordered_map<std::string, std::unordered_map<std::string, bool>>
+        std::unordered_map<std::string,
+                           std::unordered_map<std::string, unsigned int>>
             req_send;
 
         std::string self_member_name;
@@ -63,7 +69,7 @@ struct ClientData {
         }
 
       public:
-        explicit SyncDataStore(const std::string &name)
+        explicit SyncDataStore2(const std::string &name)
             : self_member_name(name) {}
 
         //! 送信するデータをdata_sendとdata_recv[self_member_name]にセット
@@ -110,17 +116,22 @@ struct ClientData {
         //! member名のりすとを取得(entryから)
         std::vector<std::string> getMembers();
 
+        // req_idに対応するmember名とフィールド名を返す
+        std::pair<std::string, std::string> getReq(unsigned int req_id);
+
         //! data_sendを返し、data_sendをクリア
         std::unordered_map<std::string, T> transferSend(bool is_first);
         std::unordered_map<std::string, T> getSendPrev(bool is_first);
         //! req_sendを返し、req_sendをクリア
-        std::unordered_map<std::string, std::unordered_map<std::string, bool>>
+        std::unordered_map<std::string,
+                           std::unordered_map<std::string, unsigned int>>
         transferReq(bool is_first);
     };
 
-    class LogStore {
+    template <typename T>
+    class SyncDataStore1 {
         std::mutex mtx;
-        std::unordered_map<std::string, std::vector<LogLine>> data_recv;
+        std::unordered_map<std::string, T> data_recv;
         std::unordered_map<std::string, bool> req;
         std::unordered_map<std::string, bool> req_send;
         std::string self_member_name;
@@ -129,10 +140,17 @@ struct ClientData {
         }
 
       public:
-        explicit LogStore(const std::string &name) : self_member_name(name) {}
+        explicit SyncDataStore1(const std::string &name)
+            : self_member_name(name) {}
 
-        void addRecv(const std::string &member, const LogLine &log);
-        std::optional<std::vector<LogLine>> getRecv(const std::string &member);
+        void setRecv(const std::string &member, const T &data);
+
+        //! Tがvectorのとき要素を追加する
+        template <typename U>
+            requires std::same_as<T, std::vector<U>>
+        void addRecv(const std::string &member, const U &data);
+
+        std::optional<T> getRecv(const std::string &member);
         //! req_sendを返し、req_sendをクリア
         std::unordered_map<std::string, bool> transferReq(bool is_first);
     };
@@ -177,7 +195,7 @@ struct ClientData {
     explicit ClientData(const std::string &name)
         : self_member_name(name), value_store(name), text_store(name),
           func_store(name), view_store(name), log_store(name),
-          logger_sink(std::make_shared<LoggerSink>()) {
+          sync_time_store(name), logger_sink(std::make_shared<LoggerSink>()) {
         std::vector<spdlog::sink_ptr> sinks = {logger_sink, stderr_sink};
         logger =
             std::make_shared<spdlog::logger>(name, sinks.begin(), sinks.end());
@@ -192,16 +210,28 @@ struct ClientData {
         return base.member_ == self_member_name;
     }
 
-    SyncDataStore<double> value_store;
-    SyncDataStore<std::string> text_store;
-    SyncDataStore<FuncInfo> func_store;
-    SyncDataStore<std::vector<ViewComponentBase>> view_store;
-    LogStore log_store;
+    SyncDataStore2<double> value_store;
+    SyncDataStore2<std::string> text_store;
+    SyncDataStore2<FuncInfo> func_store;
+    SyncDataStore2<std::vector<ViewComponentBase>> view_store;
+    SyncDataStore1<std::vector<LogLine>> log_store;
+    SyncDataStore1<std::chrono::system_clock::time_point> sync_time_store;
     FuncResultStore func_result_store;
 
-    using EventQueue = eventpp::EventQueue<EventKey, void(const EventKey &)>;
-    //! 各種イベントを管理するキュー
-    EventQueue event_queue;
+    std::unordered_map<std::string, unsigned int> member_ids;
+    std::string getMemberNameFromId(unsigned int id) const;
+    unsigned int getMemberIdFromName(const std::string &name) const;
+
+    // 値を引数に持つイベント
+    eventpp::EventDispatcher<FieldBaseComparable, void(Value)>
+        value_change_event;
+    eventpp::EventDispatcher<FieldBaseComparable, void(Text)> text_change_event;
+    eventpp::EventDispatcher<FieldBaseComparable, void(View)> view_change_event;
+    eventpp::EventDispatcher<std::string, void(LogLine)> log_append_event;
+    // 値は要らないイベント
+    eventpp::EventDispatcher<int, void(Field)> member_entry_event;
+    eventpp::EventDispatcher<std::string, void(Field)> sync_event,
+        value_entry_event, text_entry_event, func_entry_event, view_entry_event;
 
     //! sync()を待たずに即時送って欲しいメッセージを入れるキュー
     Queue<std::string> message_queue;
