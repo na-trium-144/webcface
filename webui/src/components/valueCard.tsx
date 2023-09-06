@@ -25,10 +25,10 @@ export function ValueCard(props: Props) {
   const [startTime, setStartTime] = useState<Date>(new Date());
 
   useEffect(() => {
-    const onValueChange = () => {
-      const val = props.value.tryGet();
+    const onValueChange = (v: Value) => {
+      const val = v.tryGet();
       if (val != null) {
-        const now = new Date();
+        const now = v.time();
         const timeDiff = now.getTime() - lastUpdate.current.getTime();
         lastUpdate.current = now;
         if (data.current.length === 0) {
@@ -39,7 +39,7 @@ export function ValueCard(props: Props) {
         }
       }
     };
-    onValueChange();
+    onValueChange(props.value);
     props.value.on(onValueChange);
     return () => props.value.off(onValueChange);
   }, [props.value]);

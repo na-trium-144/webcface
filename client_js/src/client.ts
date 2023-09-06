@@ -124,17 +124,17 @@ export class Client extends Member {
             this.data.eventEmitter.emit(eventType.valueChange(target), target);
             break;
           }
-          case Message.kind.text: {
+          case Message.kind.textRes: {
             const dataR = data as Message.TextRes;
-            const [member, field] = this.data.valueStore.getReq(dataR.i);
+            const [member, field] = this.data.textStore.getReq(dataR.i);
             this.data.textStore.setRecv(member, field, dataR.d);
             const target = this.member(member).text(field);
             this.data.eventEmitter.emit(eventType.textChange(target), target);
             break;
           }
-          case Message.kind.view: {
+          case Message.kind.viewRes: {
             const dataR = data as Message.ViewRes;
-            const [member, field] = this.data.valueStore.getReq(dataR.i);
+            const [member, field] = this.data.viewStore.getReq(dataR.i);
             const current = this.data.viewStore.getRecv(member, field) || [];
             const diff: Message.ViewComponentsDiff = {};
             for (const k of Object.keys(dataR.d)) {

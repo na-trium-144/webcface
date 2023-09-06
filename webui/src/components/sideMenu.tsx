@@ -14,12 +14,12 @@ export function SideMenu(props: Props) {
   useEffect(() => {
     const onMembersChange = (m: Member) => {
       update();
-      m.valuesChange.on(update);
-      m.viewsChange.on(update);
+      m.onValueEntry.on(update);
+      m.onViewEntry.on(update);
     };
-    props.client.current?.membersChange.on(onMembersChange);
+    props.client.current?.onMemberEntry.on(onMembersChange);
     return () => {
-      props.client.current?.membersChange.off(onMembersChange);
+      props.client.current?.onMemberEntry.off(onMembersChange);
     };
   }, [props.client, update]);
   return (

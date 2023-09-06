@@ -10,9 +10,9 @@ interface Props {
 export function FuncCard(props: Props) {
   const update = useForceUpdate();
   useEffect(() => {
-    props.member.funcsChange.on(update);
+    props.member.onFuncEntry.on(update);
     return () => {
-      props.member.funcsChange.off(update);
+      props.member.onFuncEntry.off(update);
     };
   }, [props.member, update]);
   return (
