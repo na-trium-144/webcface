@@ -121,8 +121,9 @@ class View : protected Field,
              public std::ostream {
     ViewBuf sb;
     std::vector<ViewComponent> components_recv;
+    std::optional<std::chrono::system_clock::time_point> time_;
 
-    void onAppend() const override { setCheck(); }
+    // void onAppend() const override { }
 
   public:
     View()
@@ -134,14 +135,15 @@ class View : protected Field,
               &this->dataLock()->view_change_event, *this),
           sb(), std::ostream(&sb) {
         init();
-
-        auto vb = dataLock()->view_store.getRecv(*this);
+        auto data = dataLock();
+        auto vb = data->view_store.getRecv(*this);
         if (vb) {
             components_recv.resize(vb->size());
             for (std::size_t i = 0; i < vb->size(); i++) {
                 components_recv[i] = ViewComponent{vb->at(i), this->data_w};
             }
         }
+        time_ = data->sync_time_store.getRecv(this->member_);
     }
     View(const Field &base, const std::string &field)
         : View(Field{base, field}) {}
@@ -182,6 +184,9 @@ class View : protected Field,
     }
     std::vector<ViewComponent> get() const {
         return tryGet().value_or(std::vector<ViewComponent>{});
+    }
+    auto time() const {
+        return time_.value_or(std::chrono::system_clock::time_point());
     }
 
     //! このviewを非表示にする

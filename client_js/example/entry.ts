@@ -1,15 +1,15 @@
 import { Client, Member, Value, Text, Func } from "../src/index.js";
 
 const c = new Client("example_get_entry");
-c.membersChange.on((m: Member) => {
+c.onMemberEntry.on((m: Member) => {
   console.log(`member ${m.name}`);
-  m.valuesChange.on((v: Value) => {
+  m.onValueEntry.on((v: Value) => {
     console.log(`value ${v.name}`);
   });
-  m.textsChange.on((v: Text) => {
+  m.onTextEntry.on((v: Text) => {
     console.log(`text ${v.name}`);
   });
-  m.funcsChange.on((v: Func) => {
+  m.onFuncEntry.on((v: Func) => {
     console.log(
       `func  ${v.name} arg: {${v.args
         .map(

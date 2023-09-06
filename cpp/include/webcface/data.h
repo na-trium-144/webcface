@@ -16,7 +16,7 @@ class Value
     std::optional<double> value_;
     std::optional<std::chrono::system_clock::time_point> time_;
 
-    void onAppend() const override { setCheck(); }
+    // void onAppend() const override {  }
 
   public:
     Value() = default;
@@ -60,6 +60,9 @@ class Value
     std::optional<double> tryGet() const { return value_; }
     double get() const { return tryGet().value_or(0); }
     operator double() const { return get(); }
+    auto time() const {
+        return time_.value_or(std::chrono::system_clock::time_point());
+    }
 
     //! 値やリクエスト状態をクリア
     auto &free() {
@@ -138,7 +141,7 @@ class Text : protected Field,
     std::optional<std::string> value_;
     std::optional<std::chrono::system_clock::time_point> time_;
 
-    void onAppend() const override { setCheck(); }
+    // void onAppend() const override { }
 
   public:
     Text() = default;
@@ -174,6 +177,9 @@ class Text : protected Field,
     std::optional<std::string> tryGet() const { return value_; }
     std::string get() const { return tryGet().value_or(""); }
     operator std::string() const { return get(); }
+    auto time() const {
+        return time_.value_or(std::chrono::system_clock::time_point());
+    }
 
     //! このtext非表示にする
     //! (他clientのentryに表示されなくする)
@@ -200,7 +206,7 @@ class Log
       public EventTarget<LogLine, decltype(ClientData::log_append_event)> {
     std::optional<std::vector<LogLine>> value_;
 
-    void onAppend() const override { setCheck(); }
+    // void onAppend() const override { }
 
   public:
     Log() = default;

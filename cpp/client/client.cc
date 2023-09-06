@@ -28,7 +28,6 @@ void Client::sync() {
     if (connected()) {
         std::stringstream buffer;
         int len = 0;
-        Message::pack(buffer, len, Message::Sync{});
 
         bool is_first = false;
         if (!sync_init.load()) {
@@ -37,6 +36,8 @@ void Client::sync() {
             sync_init.store(true);
         }
 
+        Message::pack(buffer, len, Message::Sync{});
+        
         // todo: hiddenの反映
         for (const auto &v : data->value_store.transferSend(is_first)) {
             Message::pack(buffer, len, Message::Value{{}, v.first, v.second});

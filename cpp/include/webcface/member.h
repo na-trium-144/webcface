@@ -50,18 +50,21 @@ class Member : protected Field {
      * eventの設定は初回のsync()より前に行うと良い
      * \sa Client::membersChange()
      */
-    EventTarget<Value, eventpp::EventDispatcher<std::string, void(Field)>> onValueEntry() const;
+    EventTarget<Value, eventpp::EventDispatcher<std::string, void(Field)>>
+    onValueEntry() const;
     //! textが追加された時のイベントリスト
     //! \sa valuesChange()
-    EventTarget<Text, eventpp::EventDispatcher<std::string, void(Field)>> onTextEntry() const;
+    EventTarget<Text, eventpp::EventDispatcher<std::string, void(Field)>>
+    onTextEntry() const;
     //! funcが追加された時のイベントリスト
     //! \sa valuesChange()
-    EventTarget<Func, eventpp::EventDispatcher<std::string, void(Field)>> onFuncEntry() const;
+    EventTarget<Func, eventpp::EventDispatcher<std::string, void(Field)>>
+    onFuncEntry() const;
 
-    EventTarget<View, eventpp::EventDispatcher<std::string, void(Field)>> onViewEntry() const;
-    EventTarget<Member, eventpp::EventDispatcher<std::string, void(Field)>> onSync() const;
-
-
+    EventTarget<View, eventpp::EventDispatcher<std::string, void(Field)>>
+    onViewEntry() const;
+    EventTarget<Member, eventpp::EventDispatcher<std::string, void(Field)>>
+    onSync() const;
 };
 
 } // namespace WebCFace

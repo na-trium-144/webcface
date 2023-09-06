@@ -39,6 +39,12 @@ Member::onViewEntry() const {
                        eventpp::EventDispatcher<std::string, void(Field)>>{
         &dataLock()->view_entry_event, member_};
 }
+EventTarget<Member, eventpp::EventDispatcher<std::string, void(Field)>>
+Member::onSync() const {
+    return EventTarget<Member,
+                       eventpp::EventDispatcher<std::string, void(Field)>>{
+        &dataLock()->sync_event, member_};
+}
 
 std::vector<Value> Member::values() const {
     auto keys = dataLock()->value_store.getEntry(*this);

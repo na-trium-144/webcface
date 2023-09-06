@@ -162,11 +162,16 @@ export class ViewComponent {
 }
 
 export class View extends FieldWithEvent<View> {
+  componentsRecv_: ViewComponent[] | null;
+  time_: Date | null;
   constructor(base: Field, field = "") {
-    super("", base.data, base.member_, field || base.field_, () =>
-      this.tryGet()
-    );
+    super("", base.data, base.member_, field || base.field_);
     this.eventType_ = eventType.viewChange(this);
+    this.componentsRecv_ =
+      this.data.viewStore
+        .getRecv(this.member_, this.field_)
+        ?.map((v) => new ViewComponent(v, this.data)) || null;
+    this.time_ = this.data.syncTimeStore.getRecv(this.member_);
   }
   get member() {
     return new Member(this);
@@ -175,15 +180,18 @@ export class View extends FieldWithEvent<View> {
     return this.field_;
   }
   tryGet() {
-    return this.data.viewStore.getRecv(this.member_, this.field_);
+    return this.componentsRecv_;
   }
   get() {
     const v = this.tryGet();
     if (v === null) {
       return [];
     } else {
-      return v.map((v) => new ViewComponent(v, this.data));
+      return v;
     }
+  }
+  time() {
+    return this.time_ || new Date(0);
   }
   set(data: ViewComponent[]) {
     if (this.data.viewStore.isSelf(this.member_)) {

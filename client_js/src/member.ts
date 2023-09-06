@@ -40,30 +40,37 @@ export class Member extends Field {
   funcs() {
     return this.data.funcStore.getEntry(this.member_).map((n) => this.func(n));
   }
-  get valuesChange() {
+  get onValueEntry() {
     return new FieldWithEvent<Value>(
       eventType.valueEntry(this),
       this.data,
       this.member_
     );
   }
-  get textsChange() {
+  get onTextEntry() {
     return new FieldWithEvent<Text>(
       eventType.textEntry(this),
       this.data,
       this.member_
     );
   }
-  get funcsChange() {
+  get onFuncEntry() {
     return new FieldWithEvent<Func>(
       eventType.funcEntry(this),
       this.data,
       this.member_
     );
   }
-  get viewsChange() {
+  get onViewEntry() {
     return new FieldWithEvent<View>(
       eventType.viewEntry(this),
+      this.data,
+      this.member_
+    );
+  }
+  get onSync() {
+    return new FieldWithEvent<Member>(
+      eventType.sync(this),
       this.data,
       this.member_
     );
