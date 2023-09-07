@@ -22,7 +22,7 @@ class EventTarget {
     void triggerEvent(const VBase &arg) const { dispatcher->dispatch(key, arg); }
 
     //! listenerを追加する際に行わなければならない処理があればoverrideする
-    // virtual void onAppend() const {}
+    virtual void onAppend() const {}
 
   public:
     EventTarget() = default;
@@ -31,18 +31,18 @@ class EventTarget {
 
     //! イベントのコールバックをリストの最後に追加する。
     EventHandle appendListener(const EventCallback &callback) const {
-        // onAppend();
+        onAppend();
         return dispatcher->appendListener(key, callback);
     }
     //! イベントのコールバックをリストの最初に追加する。
     EventHandle prependListener(const EventCallback &callback) const {
-        // onAppend();
+        onAppend();
         return dispatcher->prependListener(key, callback);
     }
     //! イベントのコールバックを間に挿入する。
     EventHandle insertListener(const EventCallback &callback,
                                const EventHandle &before) const {
-        // onAppend();
+        onAppend();
         return dispatcher->insertListener(key, callback, before);
     }
     //! コールバックを削除する。

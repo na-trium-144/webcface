@@ -1,6 +1,7 @@
 #include <webcface/func.h>
 #include <thread>
 #include <chrono>
+#include <stdexcept>
 #include "../message/message.h"
 
 namespace WebCFace {
@@ -69,7 +70,8 @@ AsyncFuncResult &Func::runAsync(const std::vector<ValAdaptor> &args_vec) const {
     } else {
         // リモートの場合cli.sync()を待たずに呼び出しメッセージを送る
         data->message_queue.push(Message::packSingle(Message::Call{
-            FuncCall{r.caller_id, 0, data->getMemberIdFromName(member_), field_, args_vec}}));
+            FuncCall{r.caller_id, 0, data->getMemberIdFromName(member_), field_,
+                     args_vec}}));
         // resultはcli.onRecv内でセットされる。
     }
     return r;
@@ -92,9 +94,15 @@ std::vector<Arg> Func::args() const {
 Func &Func::setArgs(const std::vector<Arg> &args) {
     auto data = dataLock();
     auto func_info = data->func_store.getRecv(*this);
-    assert(func_info != std::nullopt && "Func not set");
-    assert(func_info->args.size() == args.size() &&
-           "Number of args does not match");
+    if (func_info == std::nullopt) {
+        throw std::invalid_argument("setArgs failed: Func not set");
+    }
+    if (func_info->args.size() != args.size()) {
+        throw std::invalid_argument(
+            "setArgs failed: Number of args does not match, size: " +
+            std::to_string(args.size()) +
+            " actual: " + std::to_string(func_info->args.size()));
+    }
     for (std::size_t i = 0; i < args.size(); i++) {
         func_info->args[i].mergeConfig(args[i]);
     }

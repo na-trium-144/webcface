@@ -12,7 +12,7 @@ namespace WebCFace {
 //! 実数値を扱う
 class Value : protected Field, public EventTarget<Value> {
 
-    // void onAppend() const override {  }
+    void onAppend() const override { tryGet(); }
 
   public:
     Value() = default;
@@ -131,7 +131,7 @@ class Value : protected Field, public EventTarget<Value> {
 // 文字列を扱う
 class Text : protected Field, public EventTarget<Text> {
 
-    // void onAppend() const override { }
+    void onAppend() const override { tryGet(); }
 
   public:
     Text() = default;
@@ -191,7 +191,7 @@ class Text : protected Field, public EventTarget<Text> {
 //! todo: triggerEvent
 class Log : protected Field, public EventTarget<Log, std::string> {
 
-    // void onAppend() const override { }
+    void onAppend() const override { tryGet(); }
 
   public:
     Log() = default;

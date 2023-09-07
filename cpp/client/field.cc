@@ -2,7 +2,6 @@
 #include <webcface/member.h>
 #include <webcface/client_data.h>
 #include <stdexcept>
-#include <cassert>
 
 namespace WebCFace {
 Member Field::member() const { return *this; }
@@ -15,7 +14,9 @@ std::shared_ptr<ClientData> Field::dataLock() const {
 }
 
 void Field::setCheck() const {
-    assert(dataLock()->isSelf(*this) &&
-           "Cannot set data to member other than self");
+    if (!dataLock()->isSelf(*this)) {
+        throw std::invalid_argument(
+            "Cannot set data to member other than self");
+    }
 }
 } // namespace WebCFace

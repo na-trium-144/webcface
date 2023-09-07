@@ -17,6 +17,7 @@ enum class ValType {
     bool_ = 2,
     int_ = 3,
     float_ = 4,
+    double_ = 4,
 };
 //! TのValTypeを得る
 template <typename T>

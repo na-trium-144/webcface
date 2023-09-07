@@ -63,12 +63,6 @@ class Func : protected Field {
         return this->set(func);
     }
 
-    //! 値を取得する
-    std::optional<FuncInfo> tryGet() const {
-        return dataLock()->func_store.getRecv(*this);
-    }
-    FuncInfo get() const { return tryGet().value_or(FuncInfo{}); }
-
     //! 関数を関数リストで非表示にする
     //! (他clientのentryに表示されなくする)
     auto &hidden(bool hidden) {
@@ -119,6 +113,8 @@ class Func : protected Field {
     //! 引数の情報を返す
     //! 変更するにはsetArgsを使う(このvectorの中身を書き換えても反映されない)
     std::vector<Arg> args() const;
+    Arg args(std::size_t i) const { return args().at(i); }
+
     //! 引数の情報を更新する
     /*!
      * setArgsで渡された引数の情報(名前など)とFuncがすでに持っている引数の情報(型など)がマージされる
@@ -190,7 +186,7 @@ class AnonymousFunc : public Func {
             this->field_ = fieldNameTmp();
             func_setter();
         }
-        target.set(this->get());
+        target.set(dataLock()->func_store.getRecv(*this).value());
         this->free();
     }
 };
