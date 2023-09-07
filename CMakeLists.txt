@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.9)
 project(webcface CXX)
 
 add_compile_options(-g)
@@ -46,8 +46,8 @@ if(${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU")
     target_compile_options(cinatra INTERFACE -fcoroutines -fno-tree-slp-vectorize)
 endif()
 
+add_subdirectory(external/googletest)
 
-enable_testing() # todo: オプションで変えられるようにする
 
 aux_source_directory(cpp SVR_MAIN_SRC)
 aux_source_directory(cpp/server SVR_SRC)
@@ -56,9 +56,6 @@ aux_source_directory(cpp/example EXAMPLE_SRC)
 aux_source_directory(cpp/test TEST_SRC)
 aux_source_directory(cpp/message MSG_SRC)
 aux_source_directory(cpp/controllers CTL_SRC)
-# aux_source_directory(cpp/filters FILTER_SRC)
-# aux_source_directory(cpp/plugins PLUGIN_SRC)
-# aux_source_directory(cpp/models MODEL_SRC)
 set(INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/cpp/include)
 
 ###############################################################################
@@ -92,7 +89,11 @@ foreach(SRC IN LISTS EXAMPLE_SRC)
     target_link_libraries(example_${TARGET} PRIVATE ${PROJECT_NAME})
 endforeach()
 
-# add_executable(${PROJECT_NAME}_test ${TEST_SRC})
-# target_link_libraries(${PROJECT_NAME}_test PRIVATE ${PROJECT_NAME} ${PROJECT_NAME}_server_impl)
-# ParseAndAddDrogonTests(${PROJECT_NAME}_test)
 
+enable_testing() # todo: オプションで変えられるようにする
+
+add_executable(${PROJECT_NAME}_test ${TEST_SRC})
+target_link_libraries(${PROJECT_NAME}_test PRIVATE ${PROJECT_NAME} GTest::gtest_main)
+
+include(GoogleTest)
+gtest_discover_tests(${PROJECT_NAME}_test)

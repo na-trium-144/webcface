@@ -64,13 +64,14 @@ struct ClientData {
             req_send;
 
         std::string self_member_name;
-        bool isSelf(const std::string &member) const {
-            return member == self_member_name;
-        }
 
       public:
         explicit SyncDataStore2(const std::string &name)
             : self_member_name(name) {}
+
+        bool isSelf(const std::string &member) const {
+            return member == self_member_name;
+        }
 
         //! 送信するデータをdata_sendとdata_recv[self_member_name]にセット
         void setSend(const std::string &name, const T &data);
@@ -135,13 +136,14 @@ struct ClientData {
         std::unordered_map<std::string, bool> req;
         std::unordered_map<std::string, bool> req_send;
         std::string self_member_name;
-        bool isSelf(const std::string &member) const {
-            return member == self_member_name;
-        }
 
       public:
         explicit SyncDataStore1(const std::string &name)
             : self_member_name(name) {}
+
+        bool isSelf(const std::string &member) const {
+            return member == self_member_name;
+        }
 
         void setRecv(const std::string &member, const T &data);
 
@@ -160,7 +162,6 @@ struct ClientData {
      * また、実行するたびに連番を振る必要があるcallback_idの管理にも使う
      */
     class FuncResultStore {
-      private:
         std::mutex mtx;
         std::vector<AsyncFuncResult> results;
 
@@ -174,9 +175,11 @@ struct ClientData {
 
     //! clientがsync()されたタイミングで実行中の関数を起こす
     //! さらにその関数が完了するまで待機する
-    struct FuncOnSync {
+    class FuncOnSync {
         std::mutex call_mtx, return_mtx;
         std::condition_variable call_cond, return_cond;
+
+      public:
         //! sync()側が関数を起こし完了まで待機
         void sync() {
             std::unique_lock return_lock(return_mtx);

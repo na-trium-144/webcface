@@ -13,3 +13,6 @@
 [submodule "external/cinatra"]
 	path = external/cinatra
 	url = https://github.com/qicosmos/cinatra.git
+[submodule "external/googletest"]
+	path = external/googletest
+	url = https://github.com/google/googletest.git
