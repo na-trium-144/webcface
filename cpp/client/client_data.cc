@@ -190,6 +190,7 @@ template class ClientData::SyncDataStore2<double>;
 template class ClientData::SyncDataStore2<std::string>;
 template class ClientData::SyncDataStore2<FuncInfo>;
 template class ClientData::SyncDataStore2<std::vector<ViewComponentBase>>;
+template class ClientData::SyncDataStore1<std::string>; //test用...
 template class ClientData::SyncDataStore1<std::vector<LogLine>>;
 template void
 ClientData::SyncDataStore1<std::vector<LogLine>>::addRecv(const std::string &,
