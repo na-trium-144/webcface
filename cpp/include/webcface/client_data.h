@@ -223,11 +223,9 @@ struct ClientData {
     unsigned int getMemberIdFromName(const std::string &name) const;
 
     // 値を引数に持つイベント
-    eventpp::EventDispatcher<FieldBaseComparable, void(Value)>
-        value_change_event;
-    eventpp::EventDispatcher<FieldBaseComparable, void(Text)> text_change_event;
-    eventpp::EventDispatcher<FieldBaseComparable, void(View)> view_change_event;
-    eventpp::EventDispatcher<std::string, void(LogLine)> log_append_event;
+    eventpp::EventDispatcher<FieldBaseComparable, void(Field)>
+        value_change_event, text_change_event, view_change_event;
+    eventpp::EventDispatcher<std::string, void(Field)> log_append_event;
     // 値は要らないイベント
     eventpp::EventDispatcher<int, void(Field)> member_entry_event;
     eventpp::EventDispatcher<std::string, void(Field)> sync_event,

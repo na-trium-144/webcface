@@ -79,8 +79,7 @@ class Client : public Member {
      * eventの設定は初回のsync()より前に行うと良い
      */
     auto onMemberEntry() {
-        return EventTarget<Member, decltype(ClientData::member_entry_event)>{
-            &data->member_entry_event, 0};
+        return EventTarget<Member, int>{&data->member_entry_event, 0};
     }
 
     /*!

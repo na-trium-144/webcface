@@ -23,8 +23,12 @@ int main() {
             }
             std::cout << " ret: " << f.returnType() << std::endl;
         });
-        m.log().appendListener([](WebCFace::LogLine l) {
-            std::cout << "log [" << l.level << "] " << l.message << std::endl;
+        m.log().appendListener([](WebCFace::Log l) {
+            for (const auto &ll : l.get()) {
+                std::cout << "log [" << ll.level << "] " << ll.message
+                          << std::endl;
+            }
+            // l.clear();
         });
     });
     while (true) {
