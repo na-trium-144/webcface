@@ -42,6 +42,17 @@ TEST_F(DataTest, valueSet) {
     EXPECT_EQ(callback_called, 1);
     EXPECT_THROW(value("a", "b").set(123), std::invalid_argument);
 }
+TEST_F(DataTest, valueSetDict) {
+    data_->value_change_event.appendListener(FieldBase{self_name, "d"},
+                                             callback());
+    value(self_name, "d")
+        .set({{"a", 1}, {"b", 2}, {"c", {{"a", 1}, {"b", 2}}}});
+    EXPECT_EQ(callback_called, 0);
+    EXPECT_EQ(data_->value_store.getRecv(self_name, "d.a"), 1);
+    EXPECT_EQ(data_->value_store.getRecv(self_name, "d.b"), 2);
+    EXPECT_EQ(data_->value_store.getRecv(self_name, "d.c.a"), 1);
+    EXPECT_EQ(data_->value_store.getRecv(self_name, "d.c.b"), 2);
+}
 TEST_F(DataTest, textSet) {
     data_->text_change_event.appendListener(FieldBase{self_name, "b"},
                                             callback());
@@ -63,6 +74,14 @@ TEST_F(DataTest, valueGet) {
     value("a", "d").appendListener(callback<Value>());
     EXPECT_EQ(data_->value_store.transferReq(true).at("a").at("d"), 3);
 }
+// TEST_F(DataTest, valueGetDict){
+//     data->value_store.setRecv("a", "d.a", 1);
+//     data->value_store.setRecv("a", "d.b", 2);
+//     data->value_store.setRecv("a", "d.c.a", 1);
+//     data->value_store.setRecv("a", "d.c.b", 2);
+//     auto
+//     EXPECT_EQ()
+// }
 TEST_F(DataTest, textGet) {
     data_->text_store.setRecv("a", "b", "hoge");
     EXPECT_EQ(text("a", "b").tryGet().value(), "hoge");

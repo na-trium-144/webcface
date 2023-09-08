@@ -16,6 +16,7 @@ int main() {
 
     WebCFace::Client c("example_main");
     c.value("test") = 0;
+    c.value("dict") = {{"x", 1}, {"y", 2}, {"nest", {{"a", 3}, {"b", 4}}}};
     c.func("func1") = hello;
     using Arg = WebCFace::Arg;
     c.func("func2").set(hello2).setArgs(

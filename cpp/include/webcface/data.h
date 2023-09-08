@@ -3,6 +3,7 @@
 #include <ostream>
 #include <optional>
 #include <chrono>
+#include "common/dict.h"
 #include "field.h"
 #include "client_data.h"
 #include "event_target.h"
@@ -25,14 +26,33 @@ class Value : protected Field, public EventTarget<Value> {
     using Field::member;
     using Field::name;
 
+    auto child(const std::string &field) {
+        return Value{*this, this->field_ + "." + field};
+    }
+
+    using Dict = Common::Dict<double>;
+    Value &set(const Dict &v) {
+        if(v.value.has_value()){
+            set(*v.value);
+        }else{
+        for (const auto &it : v.children) {
+            child(it.first).set(*it.second);
+        }
+    }
+        return *this;
+    }
     //! 値をセットし、EventTargetを発動する
-    auto &set(double v) {
+    Value &set(double v) {
         setCheck();
         dataLock()->value_store.setSend(*this, v);
         this->triggerEvent(*this);
         return *this;
     }
-    //! 値をセットし、EventTargetを発動する
+
+    auto &operator=(const Dict &v) {
+        this->set(v);
+        return *this;
+    }
     auto &operator=(double v) {
         this->set(v);
         return *this;
