@@ -66,6 +66,7 @@ struct ClientData {
 
         std::string self_member_name;
 
+        void addReq(const std::string &member, const std::string &field);
       public:
         explicit SyncDataStore2(const std::string &name)
             : self_member_name(name) {}
@@ -98,8 +99,10 @@ struct ClientData {
         std::optional<T> getRecv(const FieldBase &base) {
             return getRecv(base.member_, base.field_);
         }
-        //! data_recvから指定したfield以下のデータを返す &
-        //! req,req_sendをtrueにセット
+        //! data_recvから指定したfield以下のデータを返す
+        //! 指定したfieldのreq,req_sendをtrueにセット
+        //! さらに、指定したフィールド以下にデータが存在すれば
+        //! そのフィールド(sub_field)も同様にreqをセット
         std::optional<Dict<T>> getRecvRecurse(const std::string &member,
                                               const std::string &field);
         std::optional<Dict<T>> getRecvRecurse(const FieldBase &base) {
@@ -126,7 +129,7 @@ struct ClientData {
         std::vector<std::string> getMembers();
 
         // req_idに対応するmember名とフィールド名を返す
-        std::pair<std::string, std::string> getReq(unsigned int req_id);
+        std::pair<std::string, std::string> getReq(unsigned int req_id, const std::string &sub_field);
 
         //! data_sendを返し、data_sendをクリア
         std::unordered_map<std::string, T> transferSend(bool is_first);

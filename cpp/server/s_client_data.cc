@@ -37,6 +37,20 @@ bool ClientData::hasReq(const std::string &member) {
                        [](const auto &it) { return it.second > 0; });
 }
 
+std::pair<unsigned int, std::string> findReqField(
+    std::unordered_map<std::string,
+                       std::unordered_map<std::string, unsigned int>> &req,
+    const std::string &member, const std::string &field) {
+    for (const auto &req_it : req[member]) {
+        if (req_it.first == field) {
+            return std::make_pair(req_it.second, "");
+        } else if (req_it.first.starts_with(field + ".")) {
+            return std::make_pair(req_it.second,
+                                  req_it.first.substr(field.size() + 1));
+        }
+    }
+    return std::make_pair<unsigned int, std::string>(0, "");
+}
 void ClientData::onRecv(const std::string &message) {
     namespace MessageKind = WebCFace::Message::MessageKind;
     auto messages = WebCFace::Message::unpack(message, this->logger);
@@ -164,10 +178,11 @@ void ClientData::onRecv(const std::string &message) {
             this->value[v.field] = v.data;
             // このvalueをsubscribeしてるところに送り返す
             store.forEach([&](auto &cd) {
-                int req_id = cd.value_req[this->name][v.field];
+                auto [req_id, sub_field] =
+                    findReqField(cd.value_req, this->name, v.field);
                 if (req_id > 0) {
                     cd.pack(WebCFace::Message::Res<WebCFace::Message::Value>(
-                        req_id, v.data));
+                        req_id, sub_field, v.data));
                 }
             });
             break;
@@ -187,10 +202,11 @@ void ClientData::onRecv(const std::string &message) {
             this->text[v.field] = v.data;
             // このvalueをsubscribeしてるところに送り返す
             store.forEach([&](auto &cd) {
-                int req_id = cd.text_req[this->name][v.field];
+                auto [req_id, sub_field] =
+                    findReqField(cd.text_req, this->name, v.field);
                 if (req_id > 0) {
                     cd.pack(WebCFace::Message::Res<WebCFace::Message::Text>(
-                        req_id, v.data));
+                        req_id, sub_field, v.data));
                 }
             });
             break;
@@ -214,10 +230,11 @@ void ClientData::onRecv(const std::string &message) {
             }
             // このvalueをsubscribeしてるところに送り返す
             store.forEach([&](auto &cd) {
-                int req_id = cd.view_req[this->name][v.field];
+                auto [req_id, sub_field] =
+                    findReqField(cd.value_req, this->name, v.field);
                 if (req_id > 0) {
                     cd.pack(WebCFace::Message::Res<WebCFace::Message::View>(
-                        req_id, v.data_diff, v.length));
+                        req_id, sub_field, v.data_diff, v.length));
                 }
             });
             break;
@@ -258,14 +275,21 @@ void ClientData::onRecv(const std::string &message) {
                           s.member);
             // 指定した値を返す
             store.findAndDo(s.member, [&](auto &cd) {
-                auto it = cd.value.find(s.field);
-                if (it != cd.value.end()) {
-                    if (!this->hasReq(s.member)) {
-                        this->pack(WebCFace::Message::Sync{cd.member_id,
-                                                           cd.last_sync_time});
+                if (!this->hasReq(s.member)) {
+                    this->pack(WebCFace::Message::Sync{cd.member_id,
+                                                       cd.last_sync_time});
+                }
+                for (const auto &it : cd.value) {
+                    if (it.first == s.field) {
+                        this->pack(
+                            WebCFace::Message::Res<WebCFace::Message::Value>{
+                                s.req_id, "", it.second});
+                    } else if (it.first.starts_with(s.field + ".")) {
+                        this->pack(
+                            WebCFace::Message::Res<WebCFace::Message::Value>{
+                                s.req_id, it.first.substr(s.field.size() + 1),
+                                it.second});
                     }
-                    this->pack(WebCFace::Message::Res<WebCFace::Message::Value>{
-                        s.req_id, it->second});
                 }
             });
             value_req[s.member][s.field] = s.req_id;
@@ -279,14 +303,21 @@ void ClientData::onRecv(const std::string &message) {
                           s.member);
             // 指定した値を返す
             store.findAndDo(s.member, [&](auto &cd) {
-                auto it = cd.text.find(s.field);
-                if (it != cd.text.end()) {
-                    if (!this->hasReq(s.member)) {
-                        this->pack(WebCFace::Message::Sync{cd.member_id,
-                                                           cd.last_sync_time});
+                if (!this->hasReq(s.member)) {
+                    this->pack(WebCFace::Message::Sync{cd.member_id,
+                                                       cd.last_sync_time});
+                }
+                for (const auto &it : cd.text) {
+                    if (it.first == s.field) {
+                        this->pack(
+                            WebCFace::Message::Res<WebCFace::Message::Text>{
+                                s.req_id, "", it.second});
+                    } else if (it.first.starts_with(s.field + ".")) {
+                        this->pack(
+                            WebCFace::Message::Res<WebCFace::Message::Text>{
+                                s.req_id, it.first.substr(s.field.size() + 1),
+                                it.second});
                     }
-                    this->pack(WebCFace::Message::Res<WebCFace::Message::Text>{
-                        s.req_id, it->second});
                 }
             });
             text_req[s.member][s.field] = s.req_id;
@@ -300,20 +331,31 @@ void ClientData::onRecv(const std::string &message) {
                           s.member);
             // 指定した値を返す
             store.findAndDo(s.member, [&](auto &cd) {
-                auto it = cd.view.find(s.field);
-                if (it != cd.view.end()) {
-                    if (!this->hasReq(s.member)) {
-                        this->pack(WebCFace::Message::Sync{cd.member_id,
-                                                           cd.last_sync_time});
+                if (!this->hasReq(s.member)) {
+                    this->pack(WebCFace::Message::Sync{cd.member_id,
+                                                       cd.last_sync_time});
+                }
+                for (const auto &it : cd.view) {
+                    if (it.first == s.field ||
+                        it.first.starts_with(s.field + ".")) {
+                        std::unordered_map<
+                            int, WebCFace::Message::View::ViewComponent>
+                            diff;
+                        for (std::size_t i = 0; i < it.second.size(); i++) {
+                            diff[i] = it.second[i];
+                        }
+                        if (it.first == s.field) {
+                            this->pack(
+                                WebCFace::Message::Res<WebCFace::Message::View>{
+                                    s.req_id, "", diff, it.second.size()});
+                        } else {
+                            this->pack(
+                                WebCFace::Message::Res<WebCFace::Message::View>{
+                                    s.req_id,
+                                    it.first.substr(s.field.size() + 1), diff,
+                                    it.second.size()});
+                        }
                     }
-                    std::unordered_map<int,
-                                       WebCFace::Message::View::ViewComponent>
-                        diff;
-                    for (std::size_t i = 0; i < it->second.size(); i++) {
-                        diff[i] = it->second[i];
-                    }
-                    this->pack(WebCFace::Message::Res<WebCFace::Message::View>{
-                        s.req_id, diff, it->second.size()});
                 }
             });
             view_req[s.member][s.field] = s.req_id;

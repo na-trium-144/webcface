@@ -36,14 +36,14 @@ TEST_F(SyncDataStore2Test, setRecv) {
 TEST_F(SyncDataStore2Test, getRecv) {
     auto recv_empty = s2.getRecv(self_name, "b");
     EXPECT_EQ(recv_empty, std::nullopt);
-    EXPECT_EQ(s2.getReq(1).first, "");
-    EXPECT_EQ(s2.getReq(1).second, "");
+    EXPECT_EQ(s2.getReq(1, "").first, "");
+    EXPECT_EQ(s2.getReq(1, "").second, "");
     EXPECT_EQ(s2.transferReq(false).size(), 0);
 
     recv_empty = s2.getRecv("a", "b");
     EXPECT_EQ(recv_empty, std::nullopt);
-    EXPECT_EQ(s2.getReq(1).first, "a");
-    EXPECT_EQ(s2.getReq(1).second, "b");
+    EXPECT_EQ(s2.getReq(1, "").first, "a");
+    EXPECT_EQ(s2.getReq(1, "").second, "b");
     auto req = s2.transferReq(false);
     EXPECT_EQ(req.size(), 1);
     EXPECT_EQ(req.at("a").at("b"), 1);
@@ -51,13 +51,38 @@ TEST_F(SyncDataStore2Test, getRecv) {
     EXPECT_EQ(s2.transferReq(false).size(), 0);
     EXPECT_EQ(s2.transferReq(true).size(), 1);
 }
+TEST_F(SyncDataStore2Test, getRecvRecurse) {
+    auto recv_empty = s2.getRecvRecurse(self_name, "b");
+    EXPECT_EQ(recv_empty, std::nullopt);
+    EXPECT_EQ(s2.getReq(1, "").first, "");
+    EXPECT_EQ(s2.getReq(1, "").second, "");
+    EXPECT_EQ(s2.transferReq(false).size(), 0);
+
+    recv_empty = s2.getRecvRecurse("a", "b");
+    EXPECT_EQ(recv_empty, std::nullopt);
+    EXPECT_EQ(s2.getReq(1, "").first, "a");
+    EXPECT_EQ(s2.getReq(1, "").second, "b");
+    auto req = s2.transferReq(false);
+    EXPECT_EQ(req.size(), 1);
+    EXPECT_EQ(req.at("a").at("b"), 1);
+
+    s2.setRecv("a", "b.a", "a");
+    s2.setRecv("a", "b.b", "b");
+    recv_empty = s2.getRecvRecurse("a", "b");
+    EXPECT_EQ(recv_empty.value()["a"].get(), "a");
+    EXPECT_EQ(recv_empty.value()["b"].get(), "b");
+    EXPECT_EQ(s2.getReq(1, "a").second, "b.a");
+    // unordered_mapなので順番は不明
+    EXPECT_TRUE(s2.getReq(2, "").second.starts_with("b."));
+    EXPECT_TRUE(s2.getReq(3, "").second.starts_with("b."));
+}
 TEST_F(SyncDataStore2Test, unsetRecv) {
     s2.setRecv("a", "b", "c");
     s2.getRecv("d", "e");
     s2.unsetRecv("a", "b");
     s2.unsetRecv("d", "e");
-    EXPECT_EQ(s2.getReq(1).first, "");
-    EXPECT_EQ(s2.getReq(1).second, "");
+    EXPECT_EQ(s2.getReq(1, "").first, "");
+    EXPECT_EQ(s2.getReq(1, "").second, "");
     EXPECT_EQ(s2.getRecv("a", "b"), std::nullopt);
 }
 TEST_F(SyncDataStore2Test, setEntry) {

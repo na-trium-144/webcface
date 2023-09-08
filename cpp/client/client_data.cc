@@ -76,11 +76,9 @@ void ClientData::SyncDataStore2<T>::setEntry(const std::string &from,
 }
 
 template <typename T>
-std::optional<T>
-ClientData::SyncDataStore2<T>::getRecv(const std::string &from,
-                                       const std::string &name) {
-    std::lock_guard lock(mtx);
-    if (!isSelf(from) && req[from][name] <= 0) {
+void ClientData::SyncDataStore2<T>::addReq(const std::string &member,
+                                           const std::string &field) {
+    if (!isSelf(member) && req[member][field] <= 0) {
         unsigned int max_req = 0;
         for (const auto &r : req) {
             for (const auto &r2 : r.second) {
@@ -89,9 +87,17 @@ ClientData::SyncDataStore2<T>::getRecv(const std::string &from,
                 }
             }
         }
-        req[from][name] = max_req + 1;
-        req_send[from][name] = max_req + 1;
+        req[member][field] = max_req + 1;
+        req_send[member][field] = max_req + 1;
     }
+}
+
+template <typename T>
+std::optional<T>
+ClientData::SyncDataStore2<T>::getRecv(const std::string &from,
+                                       const std::string &name) {
+    std::lock_guard lock(mtx);
+    addReq(from, name);
     auto s_it = data_recv.find(from);
     if (s_it != data_recv.end()) {
         auto it = s_it->second.find(name);
@@ -106,18 +112,7 @@ std::optional<Dict<T>>
 ClientData::SyncDataStore2<T>::getRecvRecurse(const std::string &member,
                                               const std::string &field) {
     std::lock_guard lock(mtx);
-    if (!isSelf(member) && req[member][field] <= 0) {
-        unsigned int max_req = 0;
-        for (const auto &r : req) {
-            for (const auto &r2 : r.second) {
-                if (r2.second > max_req) {
-                    max_req = r2.second;
-                }
-            }
-        }
-        req[member][field] = max_req + 1;
-        req_send[member][field] = max_req + 1;
-    }
+    addReq(member, field);
     auto s_it = data_recv.find(member);
     if (s_it != data_recv.end()) {
         Dict<T> d;
@@ -125,6 +120,7 @@ ClientData::SyncDataStore2<T>::getRecvRecurse(const std::string &member,
         for (const auto &it : s_it->second) {
             if (it.first.starts_with(field + ".")) {
                 d[it.first.substr(field.size() + 1)] = it.second;
+                addReq(member, it.first);
                 found = true;
             }
         }
@@ -162,12 +158,17 @@ void ClientData::SyncDataStore2<T>::unsetRecv(const std::string &from,
 }
 template <typename T>
 std::pair<std::string, std::string>
-ClientData::SyncDataStore2<T>::getReq(unsigned int req_id) {
+ClientData::SyncDataStore2<T>::getReq(unsigned int req_id,
+                                      const std::string &sub_field) {
     std::lock_guard lock(mtx);
     for (const auto &r : req) {
         for (const auto &r2 : r.second) {
             if (r2.second == req_id) {
-                return std::make_pair(r.first, r2.first);
+                if (!sub_field.empty() && sub_field[0] != '.') {
+                    return std::make_pair(r.first, r2.first + "." + sub_field);
+                } else {
+                    return std::make_pair(r.first, r2.first + sub_field);
+                }
             }
         }
     }

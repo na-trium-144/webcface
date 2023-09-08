@@ -142,7 +142,7 @@ void Client::onRecv(const std::string &message) {
             auto r =
                 std::any_cast<WebCFace::Message::Res<WebCFace::Message::Value>>(
                     obj);
-            auto [member, field] = data->value_store.getReq(r.req_id);
+            auto [member, field] = data->value_store.getReq(r.req_id, r.sub_field);
             data->value_store.setRecv(member, field, r.data);
             data->value_change_event.dispatch(Field{data, member, field});
             break;
@@ -151,7 +151,7 @@ void Client::onRecv(const std::string &message) {
             auto r =
                 std::any_cast<WebCFace::Message::Res<WebCFace::Message::Text>>(
                     obj);
-            auto [member, field] = data->text_store.getReq(r.req_id);
+            auto [member, field] = data->text_store.getReq(r.req_id, r.sub_field);
             data->text_store.setRecv(member, field, r.data);
             data->text_change_event.dispatch(Field{data, member, field});
             break;
@@ -160,7 +160,7 @@ void Client::onRecv(const std::string &message) {
             auto r =
                 std::any_cast<WebCFace::Message::Res<WebCFace::Message::View>>(
                     obj);
-            auto [member, field] = data->view_store.getReq(r.req_id);
+            auto [member, field] = data->view_store.getReq(r.req_id, r.sub_field);
             auto v_prev = data->view_store.getRecv(member, field);
             if (v_prev == std::nullopt) {
                 v_prev = {};

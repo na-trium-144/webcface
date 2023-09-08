@@ -257,35 +257,45 @@ struct Entry : public MessageBase<T::kind + MessageKind::entry> {
 template <typename T>
 struct Res {};
 //! server->client  Value,Textなどのfieldをreqidに変えただけのもの
+//! requestしたフィールドの子フィールドの場合sub_fieldにフィールド名を入れて返す
+//! →その場合clientが再度requestを送るはず
 template <>
 struct Res<Value> : public MessageBase<MessageKind::value + MessageKind::res> {
     unsigned int req_id;
+    std::string sub_field;
     double data;
     Res() = default;
-    Res(unsigned int req_id, double data) : req_id(req_id), data(data) {}
-    MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", req_id), MSGPACK_NVP("d", data));
+    Res(unsigned int req_id, const std::string &sub_field, double data)
+        : req_id(req_id), sub_field(sub_field), data(data) {}
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", req_id), MSGPACK_NVP("f", sub_field),
+                       MSGPACK_NVP("d", data));
 };
 template <>
 struct Res<Text> : public MessageBase<MessageKind::text + MessageKind::res> {
     unsigned int req_id;
+    std::string sub_field;
     std::string data;
     Res() = default;
-    Res(unsigned int req_id, const std::string &data)
-        : req_id(req_id), data(data) {}
-    MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", req_id), MSGPACK_NVP("d", data));
+    Res(unsigned int req_id, const std::string &sub_field,
+        const std::string &data)
+        : req_id(req_id), sub_field(sub_field), data(data) {}
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", req_id), MSGPACK_NVP("f", sub_field),
+                       MSGPACK_NVP("d", data));
 };
 template <>
 struct Res<View> : public MessageBase<MessageKind::view + MessageKind::res> {
     unsigned int req_id;
+    std::string sub_field;
     std::unordered_map<int, View::ViewComponent> data_diff;
     std::size_t length;
     Res() = default;
-    Res(unsigned int req_id,
+    Res(unsigned int req_id, const std::string &sub_field,
         const std::unordered_map<int, View::ViewComponent> &data_diff,
         std::size_t length)
-        : req_id(req_id), data_diff(data_diff), length(length) {}
-    MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", req_id), MSGPACK_NVP("d", data_diff),
-                       MSGPACK_NVP("l", length));
+        : req_id(req_id), sub_field(sub_field), data_diff(data_diff),
+          length(length) {}
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", req_id), MSGPACK_NVP("f", sub_field),
+                       MSGPACK_NVP("d", data_diff), MSGPACK_NVP("l", length));
 };
 
 //! msgpackのメッセージをパースしstd::anyで返す
