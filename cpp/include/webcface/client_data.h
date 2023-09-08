@@ -13,6 +13,7 @@
 #include "common/func.h"
 #include "common/queue.h"
 #include "common/view.h"
+#include "common/dict.h"
 #include "field.h"
 #include "logger.h"
 
@@ -91,11 +92,18 @@ struct ClientData {
         void setRecv(const FieldBase &base, const T &data) {
             setRecv(base.member_, base.field_, data);
         }
-        //! data_recvからデータを返す or なければreq,req_sendをtrueにセット
+        //! data_recvからデータを返す & req,req_sendをtrueにセット
         std::optional<T> getRecv(const std::string &from,
                                  const std::string &name);
         std::optional<T> getRecv(const FieldBase &base) {
             return getRecv(base.member_, base.field_);
+        }
+        //! data_recvから指定したfield以下のデータを返す &
+        //! req,req_sendをtrueにセット
+        std::optional<Dict<T>> getRecvRecurse(const std::string &member,
+                                              const std::string &field);
+        std::optional<Dict<T>> getRecvRecurse(const FieldBase &base) {
+            return getRecvRecurse(base.member_, base.field_);
         }
         //! data_recvからデータを削除, req,req_sendをfalseにする
         void unsetRecv(const std::string &from, const std::string &name);

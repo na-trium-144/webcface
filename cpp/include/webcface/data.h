@@ -32,13 +32,13 @@ class Value : protected Field, public EventTarget<Value> {
 
     using Dict = Common::Dict<double>;
     Value &set(const Dict &v) {
-        if(v.value.has_value()){
+        if (v.value.has_value()) {
             set(*v.value);
-        }else{
-        for (const auto &it : v.children) {
-            child(it.first).set(*it.second);
+        } else {
+            for (const auto &it : v.children) {
+                child(it.first).set(*it.second);
+            }
         }
-    }
         return *this;
     }
     //! 値をセットし、EventTargetを発動する
@@ -70,8 +70,13 @@ class Value : protected Field, public EventTarget<Value> {
     std::optional<double> tryGet() const {
         return dataLock()->value_store.getRecv(*this);
     }
+    std::optional<Dict> tryGetRecurse() const {
+        return dataLock()->value_store.getRecvRecurse(*this);
+    }
     double get() const { return tryGet().value_or(0); }
+    Dict getRecurse() const { return tryGetRecurse().value_or(Dict{}); }
     operator double() const { return get(); }
+    operator Dict() const { return getRecurse(); }
     auto time() const {
         return dataLock()
             ->sync_time_store.getRecv(this->member_)

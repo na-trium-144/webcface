@@ -102,6 +102,39 @@ ClientData::SyncDataStore2<T>::getRecv(const std::string &from,
     return std::nullopt;
 }
 template <typename T>
+std::optional<Dict<T>>
+ClientData::SyncDataStore2<T>::getRecvRecurse(const std::string &member,
+                                              const std::string &field) {
+    std::lock_guard lock(mtx);
+    if (!isSelf(member) && req[member][field] <= 0) {
+        unsigned int max_req = 0;
+        for (const auto &r : req) {
+            for (const auto &r2 : r.second) {
+                if (r2.second > max_req) {
+                    max_req = r2.second;
+                }
+            }
+        }
+        req[member][field] = max_req + 1;
+        req_send[member][field] = max_req + 1;
+    }
+    auto s_it = data_recv.find(member);
+    if (s_it != data_recv.end()) {
+        Dict<T> d;
+        bool found = false;
+        for (const auto &it : s_it->second) {
+            if (it.first.starts_with(field + ".")) {
+                d[it.first.substr(field.size() + 1)] = it.second;
+                found = true;
+            }
+        }
+        if (found) {
+            return d;
+        }
+    }
+    return std::nullopt;
+}
+template <typename T>
 std::optional<T>
 ClientData::SyncDataStore1<T>::getRecv(const std::string &member) {
     std::lock_guard lock(mtx);
@@ -190,7 +223,7 @@ template class ClientData::SyncDataStore2<double>;
 template class ClientData::SyncDataStore2<std::string>;
 template class ClientData::SyncDataStore2<FuncInfo>;
 template class ClientData::SyncDataStore2<std::vector<ViewComponentBase>>;
-template class ClientData::SyncDataStore1<std::string>; //test用...
+template class ClientData::SyncDataStore1<std::string>; // test用...
 template class ClientData::SyncDataStore1<std::vector<LogLine>>;
 template void
 ClientData::SyncDataStore1<std::vector<LogLine>>::addRecv(const std::string &,

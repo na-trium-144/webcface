@@ -29,14 +29,34 @@ struct Dict {
     std::unordered_map<std::string, std::shared_ptr<Dict<T>>> children;
     Dict() = default;
     Dict(const T &value) : value(value) {}
-    Dict(std::initializer_list<DictElement<T>> li){
-        for(const auto &el: li){
+    Dict(std::initializer_list<DictElement<T>> li) {
+        for (const auto &el : li) {
             children.emplace(el.key, el.child);
         }
     }
 
+    Dict &operator[](const std::string &key) {
+        auto p = key.find('.');
+        if (p != std::string::npos) {
+            auto key1 = key.substr(0, p), key2 = key.substr(p + 1);
+            if (!children.count(key1)) {
+                children.emplace(key1, std::make_shared<Dict>());
+            }
+            return (*children[key1])[key2];
+        } else {
+            if (!children.count(key)) {
+                children.emplace(key, std::make_shared<Dict>());
+            }
+            return *children[key];
+        }
+    }
     Dict &operator[](const std::string &key) const {
-        return children.at(key);
+        auto p = key.find('.');
+        if (p != std::string::npos) {
+            return (*children.at(key.substr(0, p)))[key.substr(p + 1)];
+        } else {
+            return *children.at(key);
+        }
     }
     T get() const { return value.value(); }
     operator T() const { return value.value(); }

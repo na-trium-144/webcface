@@ -74,14 +74,22 @@ TEST_F(DataTest, valueGet) {
     value("a", "d").appendListener(callback<Value>());
     EXPECT_EQ(data_->value_store.transferReq(true).at("a").at("d"), 3);
 }
-// TEST_F(DataTest, valueGetDict){
-//     data->value_store.setRecv("a", "d.a", 1);
-//     data->value_store.setRecv("a", "d.b", 2);
-//     data->value_store.setRecv("a", "d.c.a", 1);
-//     data->value_store.setRecv("a", "d.c.b", 2);
-//     auto
-//     EXPECT_EQ()
-// }
+TEST_F(DataTest, valueGetDict) {
+    data_->value_store.setRecv("a", "d.a", 1);
+    data_->value_store.setRecv("a", "d.b", 2);
+    data_->value_store.setRecv("a", "d.c.a", 1);
+    data_->value_store.setRecv("a", "d.c.b", 2);
+    EXPECT_NE(value("a", "d").tryGetRecurse(), std::nullopt);
+    EXPECT_EQ(value("a", "d").tryGet(), std::nullopt);
+    EXPECT_EQ(value("a", "d.a").tryGetRecurse(), std::nullopt);
+    EXPECT_EQ(value("a", "a").tryGetRecurse(), std::nullopt);
+    auto d = value("a", "d").getRecurse();
+    EXPECT_EQ(d["a"].get(), 1);
+    EXPECT_EQ(d["b"].get(), 2);
+    EXPECT_EQ(d["c"]["a"].get(), 1);
+    EXPECT_EQ(d["c"]["b"].get(), 2);
+    EXPECT_EQ(d["c.a"].get(), 1);
+}
 TEST_F(DataTest, textGet) {
     data_->text_store.setRecv("a", "b", "hoge");
     EXPECT_EQ(text("a", "b").tryGet().value(), "hoge");
