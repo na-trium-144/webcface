@@ -24,7 +24,7 @@ struct ClientData {
     std::string name;
     unsigned int member_id;
     //! 最新の値
-    std::unordered_map<std::string, double> value;
+    std::unordered_map<std::string, std::vector<double>> value;
     std::unordered_map<std::string, std::string> text;
     std::unordered_map<std::string, Message::FuncInfo> func;
     std::unordered_map<std::string, std::vector<ViewComponentBase>> view;

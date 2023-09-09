@@ -220,7 +220,7 @@ ClientData::SyncDataStore1<T>::transferReq(bool is_first) {
     }
 }
 
-template class ClientData::SyncDataStore2<double>;
+template class ClientData::SyncDataStore2<VectorOpt<double>>;
 template class ClientData::SyncDataStore2<std::string>;
 template class ClientData::SyncDataStore2<FuncInfo>;
 template class ClientData::SyncDataStore2<std::vector<ViewComponentBase>>;

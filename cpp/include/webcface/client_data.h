@@ -14,6 +14,7 @@
 #include "common/queue.h"
 #include "common/view.h"
 #include "common/dict.h"
+#include "common/vector.h"
 #include "field.h"
 #include "logger.h"
 
@@ -224,7 +225,7 @@ struct ClientData {
         return base.member_ == self_member_name;
     }
 
-    SyncDataStore2<double> value_store;
+    SyncDataStore2<VectorOpt<double>> value_store;
     SyncDataStore2<std::string> text_store;
     SyncDataStore2<FuncInfo> func_store;
     SyncDataStore2<std::vector<ViewComponentBase>> view_store;

@@ -106,7 +106,7 @@ struct CallResult : public MessageBase<MessageKind::call_result> {
 //! client(member)->server->client Valueを更新
 struct Value : public MessageBase<MessageKind::value> {
     std::string field;
-    double data;
+    std::vector<double> data;
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", field), MSGPACK_NVP("d", data));
 };
 //! client(member)->server->client Textを更新
@@ -263,9 +263,9 @@ template <>
 struct Res<Value> : public MessageBase<MessageKind::value + MessageKind::res> {
     unsigned int req_id;
     std::string sub_field;
-    double data;
+    std::vector<double> data;
     Res() = default;
-    Res(unsigned int req_id, const std::string &sub_field, double data)
+    Res(unsigned int req_id, const std::string &sub_field, const std::vector<double> &data)
         : req_id(req_id), sub_field(sub_field), data(data) {}
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", req_id), MSGPACK_NVP("f", sub_field),
                        MSGPACK_NVP("d", data));

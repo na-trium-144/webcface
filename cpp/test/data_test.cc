@@ -42,16 +42,43 @@ TEST_F(DataTest, valueSet) {
     EXPECT_EQ(callback_called, 1);
     EXPECT_THROW(value("a", "b").set(123), std::invalid_argument);
 }
+TEST_F(DataTest, valueSetVec) {
+    data_->value_change_event.appendListener(FieldBase{self_name, "d"},
+                                             callback());
+    value(self_name, "d").set({1, 2, 3, 4, 5});
+    EXPECT_EQ(callback_called, 1);
+    EXPECT_EQ(data_->value_store.getRecv(self_name, "d"), 1);
+    EXPECT_EQ(static_cast<std::vector<double>>(
+                  data_->value_store.getRecv(self_name, "d").value())
+                  .size(),
+              5);
+    EXPECT_EQ(static_cast<std::vector<double>>(
+                  data_->value_store.getRecv(self_name, "d").value())
+                  .at(0),
+              1);
+    EXPECT_EQ(static_cast<std::vector<double>>(
+                  data_->value_store.getRecv(self_name, "d").value())
+                  .at(4),
+              5);
+}
 TEST_F(DataTest, valueSetDict) {
     data_->value_change_event.appendListener(FieldBase{self_name, "d"},
                                              callback());
     value(self_name, "d")
-        .set({{"a", 1}, {"b", 2}, {"c", {{"a", 1}, {"b", 2}}}});
+        .set({{"a", 1},
+              {"b", 2},
+              {"c", {{"a", 1}, {"b", 2}}},
+              {"v", {1, 2, 3, 4, 5}}});
     EXPECT_EQ(callback_called, 0);
     EXPECT_EQ(data_->value_store.getRecv(self_name, "d.a"), 1);
     EXPECT_EQ(data_->value_store.getRecv(self_name, "d.b"), 2);
     EXPECT_EQ(data_->value_store.getRecv(self_name, "d.c.a"), 1);
     EXPECT_EQ(data_->value_store.getRecv(self_name, "d.c.b"), 2);
+    EXPECT_EQ(data_->value_store.getRecv(self_name, "d.v"), 1);
+    EXPECT_EQ(static_cast<std::vector<double>>(
+                  data_->value_store.getRecv(self_name, "d.v").value())
+                  .size(),
+              5);
 }
 TEST_F(DataTest, textSet) {
     data_->text_change_event.appendListener(FieldBase{self_name, "b"},
@@ -79,6 +106,7 @@ TEST_F(DataTest, valueGetDict) {
     data_->value_store.setRecv("a", "d.b", 2);
     data_->value_store.setRecv("a", "d.c.a", 1);
     data_->value_store.setRecv("a", "d.c.b", 2);
+    data_->value_store.setRecv("a", "d.v", {1, 2, 3, 4, 5});
     EXPECT_NE(value("a", "d").tryGetRecurse(), std::nullopt);
     EXPECT_EQ(value("a", "d").tryGet(), std::nullopt);
     EXPECT_EQ(value("a", "d.a").tryGetRecurse(), std::nullopt);
@@ -89,6 +117,10 @@ TEST_F(DataTest, valueGetDict) {
     EXPECT_EQ(d["c"]["a"].get(), 1);
     EXPECT_EQ(d["c"]["b"].get(), 2);
     EXPECT_EQ(d["c.a"].get(), 1);
+    EXPECT_EQ(d["v"].get(), 1);
+    EXPECT_EQ(d["v"].getVec().size(), 5);
+    EXPECT_EQ(d["v"].getVec().at(0), 1);
+    EXPECT_EQ(d["v"].getVec().at(4), 5);
 }
 TEST_F(DataTest, textGet) {
     data_->text_store.setRecv("a", "b", "hoge");

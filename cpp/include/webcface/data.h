@@ -30,7 +30,7 @@ class Value : protected Field, public EventTarget<Value> {
         return Value{*this, this->field_ + "." + field};
     }
 
-    using Dict = Common::Dict<double>;
+    using Dict = Common::Dict<Common::VectorOpt<double>>;
     Value &set(const Dict &v) {
         if (v.value.has_value()) {
             set(*v.value);
@@ -42,7 +42,7 @@ class Value : protected Field, public EventTarget<Value> {
         return *this;
     }
     //! 値をセットし、EventTargetを発動する
-    Value &set(double v) {
+    Value &set(const VectorOpt<double> &v) {
         setCheck();
         dataLock()->value_store.setSend(*this, v);
         this->triggerEvent(*this);
@@ -53,7 +53,7 @@ class Value : protected Field, public EventTarget<Value> {
         this->set(v);
         return *this;
     }
-    auto &operator=(double v) {
+    auto &operator=(const VectorOpt<double> &v) {
         this->set(v);
         return *this;
     }
@@ -70,12 +70,17 @@ class Value : protected Field, public EventTarget<Value> {
     std::optional<double> tryGet() const {
         return dataLock()->value_store.getRecv(*this);
     }
+    std::optional<std::vector<double>> tryGetVec() const {
+        return dataLock()->value_store.getRecv(*this);
+    }
     std::optional<Dict> tryGetRecurse() const {
         return dataLock()->value_store.getRecvRecurse(*this);
     }
     double get() const { return tryGet().value_or(0); }
+    std::vector<double> getVec() const { return tryGetVec().value_or(std::vector<double>{}); }
     Dict getRecurse() const { return tryGetRecurse().value_or(Dict{}); }
     operator double() const { return get(); }
+    operator std::vector<double>() const { return getVec(); }
     operator Dict() const { return getRecurse(); }
     auto time() const {
         return dataLock()

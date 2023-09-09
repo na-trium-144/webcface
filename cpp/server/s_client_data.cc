@@ -197,7 +197,12 @@ void ClientData::onRecv(const std::string &message) {
         }
         case MessageKind::value: {
             auto v = std::any_cast<WebCFace::Message::Value>(obj);
-            logger->debug("value {} = {}", v.field, v.data);
+            if (v.data.size() == 1) {
+                logger->debug("value {} = {}", v.field, v.data[0]);
+            } else {
+                logger->debug("value {} = (array length = {})", v.field,
+                              v.data.size());
+            }
             if (!this->value.count(v.field)) {
                 store.forEach([&](auto &cd) {
                     if (cd.name != this->name) {
@@ -217,8 +222,8 @@ void ClientData::onRecv(const std::string &message) {
                 if (req_id > 0) {
                     cd.pack(WebCFace::Message::Res<WebCFace::Message::Value>(
                         req_id, sub_field, v.data));
-                    cd.logger->trace("send value_res {}, req_id={} + '{}'",
-                                     v.data, req_id, sub_field);
+                    cd.logger->trace("send value_res req_id={} + '{}'", req_id,
+                                     sub_field);
                 }
             });
             break;
@@ -339,8 +344,8 @@ void ClientData::onRecv(const std::string &message) {
                         this->pack(
                             WebCFace::Message::Res<WebCFace::Message::Value>{
                                 s.req_id, sub_field, it.second});
-                        logger->trace("send value_res {}, req_id={} + '{}'",
-                                      it.second, s.req_id, sub_field);
+                        logger->trace("send value_res req_id={} + '{}'",
+                                      s.req_id, sub_field);
                     }
                 }
             });

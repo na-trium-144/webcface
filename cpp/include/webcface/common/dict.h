@@ -4,6 +4,7 @@
 #include <initializer_list>
 #include <memory>
 #include <vector>
+#include "vector.h"
 
 namespace WebCFace {
 inline namespace Common {
@@ -58,8 +59,27 @@ struct Dict {
             return *children.at(key);
         }
     }
+
     T get() const { return value.value(); }
     operator T() const { return value.value(); }
+
+    template <typename U>
+    using IsVectorOpt = typename std::enable_if<
+        std::is_same_v<U, VectorOpt<typename U::value_type>>>::type;
+
+    template <typename U = T, typename = IsVectorOpt<U>>
+    operator typename U::value_type() const {
+        return value.value();
+    }
+
+    template <typename U = T, typename = IsVectorOpt<U>>
+    std::vector<typename U::value_type> getVec() const {
+        return value.value();
+    }
+    template <typename U = T, typename = IsVectorOpt<U>>
+    operator std::vector<typename U::value_type>() const {
+        return value.value();
+    }
 };
 
 template <typename T>
