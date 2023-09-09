@@ -42,7 +42,7 @@ class ViewComponent : public ViewComponentBase {
     }
     std::optional<Func> onClick() const {
         if (on_click_func_ != std::nullopt) {
-            assert(data_w != std::nullptr && "ClientData not set");
+            assert(data_w.lock() != nullptr && "ClientData not set");
             return Field{data_w, on_click_func_->member_,
                          on_click_func_->field_};
         } else {

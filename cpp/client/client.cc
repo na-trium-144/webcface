@@ -144,7 +144,7 @@ void Client::onRecv(const std::string &message) {
                     obj);
             auto [member, field] = data->value_store.getReq(r.req_id, r.sub_field);
             data->value_store.setRecv(member, field, r.data);
-            data->value_change_event.dispatch(Field{data, member, field});
+            data->value_change_event.dispatch(FieldBase{member, field}, Field{data, member, field});
             break;
         }
         case MessageKind::text + MessageKind::res: {
@@ -153,7 +153,7 @@ void Client::onRecv(const std::string &message) {
                     obj);
             auto [member, field] = data->text_store.getReq(r.req_id, r.sub_field);
             data->text_store.setRecv(member, field, r.data);
-            data->text_change_event.dispatch(Field{data, member, field});
+            data->text_change_event.dispatch(FieldBase{member, field}, Field{data, member, field});
             break;
         }
         case MessageKind::view + MessageKind::res: {
@@ -170,7 +170,7 @@ void Client::onRecv(const std::string &message) {
                 v_prev->at(d.first) = d.second;
             }
             data->view_store.setRecv(member, field, *v_prev);
-            data->view_change_event.dispatch(Field{data, member, field});
+            data->view_change_event.dispatch(FieldBase{member, field}, Field{data, member, field});
             break;
         }
         case MessageKind::log: {
