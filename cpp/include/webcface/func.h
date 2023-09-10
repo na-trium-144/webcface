@@ -40,11 +40,12 @@ class Func : protected Field {
     using Field::name;
 
   private:
-    auto &set(const FuncInfo &v) {
+    auto &set(const std::shared_ptr<FuncInfo> &v) {
         setCheck();
         dataLock()->func_store.setSend(*this, v);
         return *this;
     }
+    auto &set(const FuncInfo &v) { return set(std::make_shared<FuncInfo>(v)); }
 
   public:
     //! 関数からFuncInfoを構築しセットする

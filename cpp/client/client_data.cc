@@ -34,14 +34,6 @@ void ClientData::SyncDataStore1<T>::setRecv(const std::string &member,
     std::lock_guard lock(mtx);
     data_recv[member] = data;
 }
-template <typename T>
-template <typename U>
-    requires std::same_as<T, std::vector<U>>
-void ClientData::SyncDataStore1<T>::addRecv(const std::string &member,
-                                            const U &data) {
-    std::lock_guard lock(mtx);
-    data_recv[member].push_back(data);
-}
 
 template <typename T>
 std::vector<std::string> ClientData::SyncDataStore2<T>::getMembers() {
@@ -231,7 +223,7 @@ template class ClientData::SyncDataStore2<
 template class ClientData::SyncDataStore1<
     std::shared_ptr<std::vector<LogLine>>>;
 template class ClientData::SyncDataStore1<
-    std::shared_ptr<std::chrono::system_clock::time_point>>;
+    std::chrono::system_clock::time_point>;
 
 AsyncFuncResult &
 ClientData::FuncResultStore::addResult(const std::string &caller,

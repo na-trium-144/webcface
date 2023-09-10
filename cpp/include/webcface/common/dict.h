@@ -5,13 +5,54 @@
 #include <optional>
 #include <memory>
 #include <vector>
+#include <type_traits>
 #include "vector.h"
 
 namespace WebCFace {
 inline namespace Common {
 
 template <typename T>
-struct Dict;
+struct DictTraits {
+    using ValueType = T;
+    static ValueType parse(const T &val) { return val; }
+    static T wrap(const ValueType &val) { return val; }
+    using VecType = void;
+};
+template <typename T>
+struct DictTraits<std::shared_ptr<T>> {
+    using ValueType = DictTraits<T>::ValueType;
+    static ValueType parse(const std::shared_ptr<T> &val) {
+        return DictTraits<T>::parse(*val);
+    }
+    using VecType = DictTraits<T>::VecType;
+    template <typename U = T>
+    static VecType parseVec(const std::shared_ptr<U> &val) {
+        return DictTraits<U>::parseVec(*val);
+    }
+
+    static std::shared_ptr<T> wrap(const ValueType &val) {
+        return std::make_shared<T>(DictTraits<T>::wrap(val));
+    }
+    template <typename V = VecType, typename = typename std::enable_if<
+                                        !std::is_same_v<V, void>>::type>
+    static std::shared_ptr<T> wrapVec(const V &val) {
+        return std::make_shared<T>(DictTraits<T>::wrapVec(val));
+    }
+};
+template <typename T>
+struct DictTraits<VectorOpt<T>> {
+    using ValueType = typename DictTraits<T>::ValueType;
+    static ValueType parse(const VectorOpt<T> &val) {
+        return DictTraits<T>::parse(val);
+    }
+    using VecType = std::vector<T>;
+    static VecType parseVec(const VectorOpt<T> &val) { return val; }
+
+    static VectorOpt<T> wrap(const ValueType &val) {
+        return DictTraits<T>::wrap(val);
+    }
+    static VectorOpt<T> wrapVec(const VecType &val) { return val; }
+};
 
 //! keyとvalueの1ペア
 template <typename T>
@@ -21,61 +62,20 @@ struct DictElement {
     std::initializer_list<DictElement> children;
 
     DictElement() = default;
-    DictElement(const std::string &key, const T &value)
-        : key(key), value(value) {}
+    DictElement(const std::string &key,
+                const typename DictTraits<T>::ValueType &value)
+        : key(key), value(DictTraits<T>::wrap(value)) {}
+    template <typename U = T>
+    DictElement(const std::string &key,
+                const typename DictTraits<U>::VecType &value)
+        : key(key), value(DictTraits<U>::wrapVec(value)) {}
+    // template <typename U = T>
+    // DictElement(const std::string &key,
+    //             std::initializer_list<typename
+    //             DictTraits<U>::VecType<U>::value_type> value)
+    //     : key(key), value(DictTraits<U>::wrapVec(value)) {}
     DictElement(const std::string &key, std::initializer_list<DictElement> li)
         : key(key), children(li) {}
-};
-
-template <typename T>
-struct DictTraits {
-    template <typename T1, typename T2>
-    static T get(const T1 &children, const T2 &search_base_key) {
-        return children->at(search_base_key);
-    }
-    template <typename T1, typename T2>
-    static void set(const T1 &children, const T2 &search_base_key,
-                    const T &val) {
-        children->operator[](search_base_key) = val;
-    }
-    using ValueType = T;
-};
-template <typename T>
-struct DictTraits<std::shared_ptr<T>> {
-    template <typename T1, typename T2>
-    static T get(const T1 &children, const T2 &search_base_key) {
-        return *DictTraits<T>::get(children, search_base_key);
-    }
-    template <typename T1, typename T2>
-    static void set(const T1 &children, const T2 &search_base_key,
-                    const T &val) {
-        DictTraits<T>::set(children, search_base_key, std::make_shared<T>(val));
-    }
-    using ValueType = T;
-};
-template <typename T>
-struct DictTraits<VectorOpt<T>> {
-    template <typename T1, typename T2>
-    static T get(const T1 &children, const T2 &search_base_key) {
-        return DictTraits<T>::get(children, search_base_key).value_first;
-    }
-    template <typename T1, typename T2>
-    static std::vector<T> getVec(const T1 &children,
-                                 const T2 &search_base_key) {
-        return DictTraits<T>::get(children, search_base_key).vec;
-    }
-    template <typename T1, typename T2>
-    static void set(const T1 &children, const T2 &search_base_key,
-                    const T &val) {
-        DictTraits<T>::set(children, search_base_key, VectorOpt<T>{val});
-    }
-    template <typename T1, typename T2>
-    static void setVec(const T1 &children, const T2 &search_base_key,
-                       const std::vector<T> &val) {
-        DictTraits<T>::set(children, search_base_key, VectorOpt<T>{val});
-    }
-    using ValueType = T;
-    using VecType = std::vector<T>;
 };
 
 template <typename T>
@@ -109,55 +109,69 @@ class Dict {
     Dict(std::initializer_list<DictElement<T>> li) : Dict() { emplace(li); }
 
     Dict operator[](const std::string &key) const {
-        return Dict{children, search_base_key + "." + key};
+        std::string new_key = key;
+        if (!search_base_key.empty()) {
+            new_key = search_base_key + "." + key;
+        }
+        return Dict{children, new_key};
     }
     auto getChildren() const {
         std::unordered_map<std::string, Dict> ds;
+        std::string search_base_key_dot = "";
+        if (!search_base_key.empty()) {
+            search_base_key_dot = search_base_key + ".";
+        }
         for (const auto &it : *children) {
-            if (it.first.starts_with(search_base_key + ".")) {
-                auto p2 = it.first.find('.', search_base_key.size() + 1);
+            if (it.first.starts_with(search_base_key_dot)) {
+                auto p2 = it.first.find('.', search_base_key_dot.size());
                 if (p2 == std::string::npos) {
                     p2 = it.first.size();
                 }
                 std::string next_key =
-                    it.first.substr(search_base_key.size() + 1,
-                                    p2 - (search_base_key.size() + 1));
+                    it.first.substr(search_base_key_dot.size(),
+                                    p2 - (search_base_key_dot.size()));
                 ds.emplace(next_key, Dict{children, it.first.substr(0, p2)});
             }
         }
         return ds;
     }
 
-    bool hasValue() const { return children.count(search_base_key); }
-
-    auto get() const { return DictTraits<T>::get(children, search_base_key); }
+    bool hasValue() const { return children->count(search_base_key); }
+    T getRaw() const { return children->at(search_base_key); }
+    
+    auto get() const {
+        return DictTraits<T>::parse(children->at(search_base_key));
+    }
     operator typename DictTraits<T>::ValueType() const { return get(); }
 
     template <typename U = T>
     auto getVec() const {
-        return DictTraits<T>::getVec(children, search_base_key);
+        return DictTraits<U>::parseVec(children->at(search_base_key));
     }
     template <typename U = T>
     operator typename DictTraits<U>::VecType() const {
         return getVec();
     }
 
-    Dict &set(const typename DictTraits<T>::ValueType &val) {
-        DictTraits<T>::set(children, search_base_key, val);
+    Dict &set(const T &val) {
+        (*children)[search_base_key] = val;
         return *this;
     }
-    Dict &operator=(const typename DictTraits<T>::ValueType &val) {
-        set(val);
+    template <typename U = T,
+              typename = typename std::enable_if<
+                  !std::is_same_v<typename DictTraits<U>::ValueType, T>>::type>
+    Dict &set(const typename DictTraits<U>::ValueType &val) {
+        (*children)[search_base_key] = DictTraits<U>::wrap(val);
         return *this;
     }
     template <typename U = T>
     Dict &setVec(const typename DictTraits<U>::VecType &val) {
-        DictTraits<U>::setVec(children, search_base_key, val);
+        (*children)[search_base_key] = DictTraits<U>::wrapVec(val);
         return *this;
     }
-    template <typename U = T>
-    Dict &operator=(const typename DictTraits<U>::VecType &val) {
-        setVec(val);
+    template <typename U>
+    Dict &operator=(const U &val) {
+        set(val);
         return *this;
     }
 };

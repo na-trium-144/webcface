@@ -34,7 +34,7 @@ class Value : protected Field, public EventTarget<Value> {
     using Dict = Common::Dict<std::shared_ptr<Common::VectorOpt<double>>>;
     Value &set(const Dict &v) {
         if (v.hasValue()) {
-            set(v.get());
+            set(v.getRaw());
         } else {
             for (const auto &it : v.getChildren()) {
                 child(it.first).set(it.second);
@@ -42,11 +42,15 @@ class Value : protected Field, public EventTarget<Value> {
         }
         return *this;
     }
-    //! 値をセットし、EventTargetを発動する
-    Value &set(const VectorOpt<double> &v) {
+    Value &set(const std::shared_ptr<VectorOpt<double>> &v) {
         setCheck();
         dataLock()->value_store.setSend(*this, v);
         this->triggerEvent(*this);
+        return *this;
+    }
+    //! 値をセットし、EventTargetを発動する
+    Value &set(const VectorOpt<double> &v) {
+        set(std::make_shared<VectorOpt<double>>(v));
         return *this;
     }
 
@@ -69,16 +73,28 @@ class Value : protected Field, public EventTarget<Value> {
 
     //! 値を返す
     std::optional<double> tryGet() const {
-        return dataLock()->value_store.getRecv(*this);
+        auto v = dataLock()->value_store.getRecv(*this);
+        if (v) {
+            return **v;
+        } else {
+            return std::nullopt;
+        }
     }
     std::optional<std::vector<double>> tryGetVec() const {
-        return dataLock()->value_store.getRecv(*this);
+        auto v = dataLock()->value_store.getRecv(*this);
+        if (v) {
+            return **v;
+        } else {
+            return std::nullopt;
+        }
     }
     std::optional<Dict> tryGetRecurse() const {
         return dataLock()->value_store.getRecvRecurse(*this);
     }
     double get() const { return tryGet().value_or(0); }
-    std::vector<double> getVec() const { return tryGetVec().value_or(std::vector<double>{}); }
+    std::vector<double> getVec() const {
+        return tryGetVec().value_or(std::vector<double>{});
+    }
     Dict getRecurse() const { return tryGetRecurse().value_or(Dict{}); }
     operator double() const { return get(); }
     operator std::vector<double>() const { return getVec(); }
@@ -178,7 +194,7 @@ class Text : protected Field, public EventTarget<Text> {
     //! 値をセットし、EventTargetを発動する
     auto &set(const std::string &v) {
         setCheck();
-        dataLock()->text_store.setSend(*this, v);
+        dataLock()->text_store.setSend(*this, std::make_shared<std::string>(v));
         triggerEvent(*this);
         return *this;
     }
@@ -190,7 +206,12 @@ class Text : protected Field, public EventTarget<Text> {
 
     //! 値を取得する
     std::optional<std::string> tryGet() const {
-        return dataLock()->text_store.getRecv(*this);
+        auto v = dataLock()->text_store.getRecv(*this);
+        if (v) {
+            return **v;
+        } else {
+            return std::nullopt;
+        }
     }
     std::string get() const { return tryGet().value_or(""); }
     operator std::string() const { return get(); }
@@ -235,7 +256,12 @@ class Log : protected Field, public EventTarget<Log, std::string> {
 
     //! 値を取得する
     std::optional<std::vector<LogLine>> tryGet() const {
-        return dataLock()->log_store.getRecv(member_);
+        auto v = dataLock()->log_store.getRecv(member_);
+        if (v) {
+            return **v;
+        } else {
+            return std::nullopt;
+        }
     }
     std::vector<LogLine> get() const {
         return tryGet().value_or(std::vector<LogLine>{});

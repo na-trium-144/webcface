@@ -32,7 +32,7 @@ ValAdaptor Func::run(const std::vector<ValAdaptor> &args_vec) const {
         // selfの場合このスレッドでそのまま関数を実行する
         auto func_info = data->func_store.getRecv(*this);
         if (func_info) {
-            return func_info->run(args_vec);
+            return (*func_info)->run(args_vec);
         } else {
             throw FuncNotFound(*this);
         }
@@ -53,7 +53,7 @@ AsyncFuncResult &Func::runAsync(const std::vector<ValAdaptor> &args_vec) const {
             if (func_info) {
                 r.started_->set_value(true);
                 try {
-                    auto ret = func_info->run(args_vec);
+                    auto ret = (*func_info)->run(args_vec);
                     r.result_->set_value(ret);
                 } catch (...) {
                     r.result_->set_exception(std::current_exception());
@@ -80,14 +80,14 @@ AsyncFuncResult &Func::runAsync(const std::vector<ValAdaptor> &args_vec) const {
 ValType Func::returnType() const {
     auto func_info = dataLock()->func_store.getRecv(*this);
     if (func_info) {
-        return func_info->return_type;
+        return (*func_info)->return_type;
     }
     return ValType::none_;
 }
 std::vector<Arg> Func::args() const {
     auto func_info = dataLock()->func_store.getRecv(*this);
     if (func_info) {
-        return func_info->args;
+        return (*func_info)->args;
     }
     return std::vector<Arg>{};
 }
@@ -97,25 +97,25 @@ Func &Func::setArgs(const std::vector<Arg> &args) {
     if (func_info == std::nullopt) {
         throw std::invalid_argument("setArgs failed: Func not set");
     }
-    if (func_info->args.size() != args.size()) {
+    if ((*func_info)->args.size() != args.size()) {
         throw std::invalid_argument(
             "setArgs failed: Number of args does not match, size: " +
             std::to_string(args.size()) +
-            " actual: " + std::to_string(func_info->args.size()));
+            " actual: " + std::to_string((*func_info)->args.size()));
     }
     for (std::size_t i = 0; i < args.size(); i++) {
-        func_info->args[i].mergeConfig(args[i]);
+        (*func_info)->args[i].mergeConfig(args[i]);
     }
-    set(*func_info);
     return *this;
 }
 
 Func &Func::setRunCond(FuncWrapperType wrapper) {
     auto data = dataLock();
     auto func_info = data->func_store.getRecv(*this);
-    assert(func_info != std::nullopt && "Func not set");
-    func_info->func_wrapper = wrapper;
-    set(*func_info);
+    if (func_info == std::nullopt) {
+        throw std::invalid_argument("setRunCond failed: Func not set");
+    }
+    (*func_info)->func_wrapper = wrapper;
     return *this;
 }
 

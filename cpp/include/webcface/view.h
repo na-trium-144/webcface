@@ -153,7 +153,8 @@ class View : protected Field, public EventTarget<View>, public std::ostream {
                                  this->name() + "_" + std::to_string(i));
         }
         setCheck();
-        dataLock()->view_store.setSend(*this, vb);
+        dataLock()->view_store.setSend(
+            *this, std::make_shared<std::vector<ViewComponentBase>>(vb));
         triggerEvent(*this);
         return *this;
     }
@@ -163,9 +164,9 @@ class View : protected Field, public EventTarget<View>, public std::ostream {
     std::optional<std::vector<ViewComponent>> tryGet() const {
         auto vb = dataLock()->view_store.getRecv(*this);
         if (vb) {
-            std::vector<ViewComponent> v(vb->size());
-            for (std::size_t i = 0; i < vb->size(); i++) {
-                v[i] = ViewComponent{vb->at(i), this->data_w};
+            std::vector<ViewComponent> v((*vb)->size());
+            for (std::size_t i = 0; i < (*vb)->size(); i++) {
+                v[i] = ViewComponent{(*vb)->at(i), this->data_w};
             }
             return v;
         } else {

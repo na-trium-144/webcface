@@ -23,11 +23,11 @@ TEST_F(FuncTest, field) {
 TEST_F(FuncTest, funcSet) {
     auto f = func(self_name, "a");
     f.set([]() {});
-    EXPECT_EQ(data_->func_store.getRecv(self_name, "a")->return_type,
+    EXPECT_EQ((*data_->func_store.getRecv(self_name, "a"))->return_type,
               ValType::none_);
     EXPECT_EQ(f.returnType(), ValType::none_);
     EXPECT_EQ(func(self_name, "a").returnType(), ValType::none_);
-    EXPECT_EQ(data_->func_store.getRecv(self_name, "a")->args.size(), 0);
+    EXPECT_EQ((*data_->func_store.getRecv(self_name, "a"))->args.size(), 0);
     EXPECT_EQ(f.args().size(), 0);
     EXPECT_EQ(func(self_name, "a").args().size(), 0);
 

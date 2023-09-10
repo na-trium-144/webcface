@@ -106,13 +106,13 @@ struct CallResult : public MessageBase<MessageKind::call_result> {
 //! client(member)->server->client Valueを更新
 struct Value : public MessageBase<MessageKind::value> {
     std::string field;
-    std::vector<double> data;
+    std::shared_ptr<std::vector<double>> data;
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", field), MSGPACK_NVP("d", data));
 };
 //! client(member)->server->client Textを更新
 struct Text : public MessageBase<MessageKind::text> {
     std::string field;
-    std::string data;
+    std::shared_ptr<std::string> data;
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", field), MSGPACK_NVP("d", data));
 };
 struct View : public MessageBase<MessageKind::view> {
@@ -149,19 +149,23 @@ struct View : public MessageBase<MessageKind::view> {
                            MSGPACK_NVP("c", text_color),
                            MSGPACK_NVP("b", bg_color));
     };
-    std::unordered_map<int, ViewComponent> data_diff;
+    std::shared_ptr<std::unordered_map<int, ViewComponent>> data_diff;
     std::size_t length;
     View() = default;
     View(const std::string &field,
-         const std::unordered_map<int, Common::ViewComponentBase> &data_diff,
+         const std::shared_ptr<
+             std::unordered_map<int, Common::ViewComponentBase>> &data_diff,
          std::size_t length)
-        : field(field), length(length) {
-        for (const auto &vc : data_diff) {
-            this->data_diff[vc.first] = vc.second;
+        : field(field),
+          data_diff(std::make_shared<std::unordered_map<int, ViewComponent>>()),
+          length(length) {
+        for (const auto &vc : *data_diff) {
+            this->data_diff->emplace(vc.first, vc.second);
         }
     }
     View(const std::string &field,
-         const std::unordered_map<int, ViewComponent> &data_diff,
+         const std::shared_ptr<std::unordered_map<int, ViewComponent>>
+             &data_diff,
          std::size_t length)
         : field(field), data_diff(data_diff), length(length) {}
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", field), MSGPACK_NVP("d", data_diff),
@@ -192,7 +196,7 @@ struct Log : public MessageBase<MessageKind::log> {
         MSGPACK_DEFINE_MAP(MSGPACK_NVP("v", level), MSGPACK_NVP("t", time),
                            MSGPACK_NVP("m", message));
     };
-    std::vector<LogLine> log;
+    std::shared_ptr<std::vector<LogLine>> log;
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("m", member_id), MSGPACK_NVP("l", log));
 };
 //! Logのリクエストはメンバ名のみ
@@ -213,22 +217,22 @@ struct FuncInfo : public MessageBase<MessageKind::func_info> {
                            MSGPACK_NVP("i", init_), MSGPACK_NVP("m", min_),
                            MSGPACK_NVP("x", max_), MSGPACK_NVP("o", option_));
     };
-    std::vector<Arg> args;
+    std::shared_ptr<std::vector<Arg>> args;
     FuncInfo() = default;
     explicit FuncInfo(const std::string &field, const Common::FuncInfo &info)
         : MessageBase<MessageKind::func_info>(), field(field),
+          args(std::make_shared<std::vector<Arg>>(info.args.size())),
           return_type(info.return_type) {
-        args.resize(info.args.size());
         for (std::size_t i = 0; i < info.args.size(); i++) {
-            args[i] = info.args[i];
+            (*args)[i] = info.args[i];
         }
     }
     operator Common::FuncInfo() const {
         Common::FuncInfo info;
         info.return_type = return_type;
-        info.args.resize(args.size());
-        for (std::size_t j = 0; j < args.size(); j++) {
-            info.args[j] = args[j];
+        info.args.resize(args->size());
+        for (std::size_t j = 0; j < args->size(); j++) {
+            info.args[j] = (*args)[j];
         }
         return info;
     }
@@ -263,9 +267,10 @@ template <>
 struct Res<Value> : public MessageBase<MessageKind::value + MessageKind::res> {
     unsigned int req_id;
     std::string sub_field;
-    std::vector<double> data;
+    std::shared_ptr<std::vector<double>> data;
     Res() = default;
-    Res(unsigned int req_id, const std::string &sub_field, const std::vector<double> &data)
+    Res(unsigned int req_id, const std::string &sub_field,
+        const std::shared_ptr<std::vector<double>> &data)
         : req_id(req_id), sub_field(sub_field), data(data) {}
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", req_id), MSGPACK_NVP("f", sub_field),
                        MSGPACK_NVP("d", data));
@@ -274,10 +279,10 @@ template <>
 struct Res<Text> : public MessageBase<MessageKind::text + MessageKind::res> {
     unsigned int req_id;
     std::string sub_field;
-    std::string data;
+    std::shared_ptr<std::string> data;
     Res() = default;
     Res(unsigned int req_id, const std::string &sub_field,
-        const std::string &data)
+        const std::shared_ptr<std::string> &data)
         : req_id(req_id), sub_field(sub_field), data(data) {}
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", req_id), MSGPACK_NVP("f", sub_field),
                        MSGPACK_NVP("d", data));
@@ -286,11 +291,12 @@ template <>
 struct Res<View> : public MessageBase<MessageKind::view + MessageKind::res> {
     unsigned int req_id;
     std::string sub_field;
-    std::unordered_map<int, View::ViewComponent> data_diff;
+    std::shared_ptr<std::unordered_map<int, View::ViewComponent>> data_diff;
     std::size_t length;
     Res() = default;
     Res(unsigned int req_id, const std::string &sub_field,
-        const std::unordered_map<int, View::ViewComponent> &data_diff,
+        const std::shared_ptr<std::unordered_map<int, View::ViewComponent>>
+            &data_diff,
         std::size_t length)
         : req_id(req_id), sub_field(sub_field), data_diff(data_diff),
           length(length) {}
