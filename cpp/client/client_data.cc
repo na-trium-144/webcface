@@ -220,17 +220,18 @@ ClientData::SyncDataStore1<T>::transferReq(bool is_first) {
     }
 }
 
-template class ClientData::SyncDataStore2<VectorOpt<double>>;
-template class ClientData::SyncDataStore2<std::string>;
-template class ClientData::SyncDataStore2<FuncInfo>;
-template class ClientData::SyncDataStore2<std::vector<ViewComponentBase>>;
-template class ClientData::SyncDataStore1<std::string>; // test用...
-template class ClientData::SyncDataStore1<std::vector<LogLine>>;
-template void
-ClientData::SyncDataStore1<std::vector<LogLine>>::addRecv(const std::string &,
-                                                          const LogLine &);
+template class ClientData::SyncDataStore2<std::string>; // test用
+template class ClientData::SyncDataStore1<std::string>; // test用
+
+template class ClientData::SyncDataStore2<std::shared_ptr<VectorOpt<double>>>;
+template class ClientData::SyncDataStore2<std::shared_ptr<std::string>>;
+template class ClientData::SyncDataStore2<std::shared_ptr<FuncInfo>>;
+template class ClientData::SyncDataStore2<
+    std::shared_ptr<std::vector<ViewComponentBase>>>;
 template class ClientData::SyncDataStore1<
-    std::chrono::system_clock::time_point>;
+    std::shared_ptr<std::vector<LogLine>>>;
+template class ClientData::SyncDataStore1<
+    std::shared_ptr<std::chrono::system_clock::time_point>>;
 
 AsyncFuncResult &
 ClientData::FuncResultStore::addResult(const std::string &caller,

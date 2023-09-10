@@ -2,6 +2,7 @@
 #include <string>
 #include <unordered_map>
 #include <initializer_list>
+#include <optional>
 #include <memory>
 #include <vector>
 #include "vector.h"
@@ -12,84 +13,154 @@ inline namespace Common {
 template <typename T>
 struct Dict;
 
-//! keyとvalue(TまたはDict<T>)の1ペア
+//! keyとvalueの1ペア
 template <typename T>
 struct DictElement {
     std::string key;
-    std::shared_ptr<Dict<T>> child;
+    std::optional<T> value;
+    std::initializer_list<DictElement> children;
 
     DictElement() = default;
-    DictElement(const std::string &key, const T &value);
-    DictElement(const std::string &key, std::initializer_list<DictElement> li);
+    DictElement(const std::string &key, const T &value)
+        : key(key), value(value) {}
+    DictElement(const std::string &key, std::initializer_list<DictElement> li)
+        : key(key), children(li) {}
 };
 
-// DictElementのリスト or 値そのもの
 template <typename T>
-struct Dict {
-    std::optional<T> value;
-    std::unordered_map<std::string, std::shared_ptr<Dict<T>>> children;
-    Dict() = default;
-    Dict(const T &value) : value(value) {}
-    Dict(std::initializer_list<DictElement<T>> li) {
+struct DictTraits {
+    template <typename T1, typename T2>
+    static T get(const T1 &children, const T2 &search_base_key) {
+        return children->at(search_base_key);
+    }
+    template <typename T1, typename T2>
+    static void set(const T1 &children, const T2 &search_base_key,
+                    const T &val) {
+        children->operator[](search_base_key) = val;
+    }
+    using ValueType = T;
+};
+template <typename T>
+struct DictTraits<std::shared_ptr<T>> {
+    template <typename T1, typename T2>
+    static T get(const T1 &children, const T2 &search_base_key) {
+        return *DictTraits<T>::get(children, search_base_key);
+    }
+    template <typename T1, typename T2>
+    static void set(const T1 &children, const T2 &search_base_key,
+                    const T &val) {
+        DictTraits<T>::set(children, search_base_key, std::make_shared<T>(val));
+    }
+    using ValueType = T;
+};
+template <typename T>
+struct DictTraits<VectorOpt<T>> {
+    template <typename T1, typename T2>
+    static T get(const T1 &children, const T2 &search_base_key) {
+        return DictTraits<T>::get(children, search_base_key).value_first;
+    }
+    template <typename T1, typename T2>
+    static std::vector<T> getVec(const T1 &children,
+                                 const T2 &search_base_key) {
+        return DictTraits<T>::get(children, search_base_key).vec;
+    }
+    template <typename T1, typename T2>
+    static void set(const T1 &children, const T2 &search_base_key,
+                    const T &val) {
+        DictTraits<T>::set(children, search_base_key, VectorOpt<T>{val});
+    }
+    template <typename T1, typename T2>
+    static void setVec(const T1 &children, const T2 &search_base_key,
+                       const std::vector<T> &val) {
+        DictTraits<T>::set(children, search_base_key, VectorOpt<T>{val});
+    }
+    using ValueType = T;
+    using VecType = std::vector<T>;
+};
+
+template <typename T>
+class Dict {
+    // Tがshared_ptrの場合とか、値に破壊的変更をしてはいけない
+    std::shared_ptr<std::unordered_map<std::string, T>> children;
+    // operator[]などのアクセスのときにつけるprefix (末尾ピリオドを含まない)
+    std::string search_base_key;
+
+    void emplace(std::initializer_list<DictElement<T>> li,
+                 const std::string &em_base_key = "") {
         for (const auto &el : li) {
-            children.emplace(el.key, el.child);
-        }
-    }
-
-    Dict &operator[](const std::string &key) {
-        auto p = key.find('.');
-        if (p != std::string::npos) {
-            auto key1 = key.substr(0, p), key2 = key.substr(p + 1);
-            if (!children.count(key1)) {
-                children.emplace(key1, std::make_shared<Dict>());
+            std::string key = el.key;
+            if (!em_base_key.empty()) {
+                key = em_base_key + "." + el.key;
             }
-            return (*children[key1])[key2];
-        } else {
-            if (!children.count(key)) {
-                children.emplace(key, std::make_shared<Dict>());
+            if (el.value) {
+                children->emplace(key, *el.value);
+            } else {
+                emplace(el.children, key);
             }
-            return *children[key];
-        }
-    }
-    Dict &operator[](const std::string &key) const {
-        auto p = key.find('.');
-        if (p != std::string::npos) {
-            return (*children.at(key.substr(0, p)))[key.substr(p + 1)];
-        } else {
-            return *children.at(key);
         }
     }
 
-    T get() const { return value.value(); }
-    operator T() const { return value.value(); }
+  public:
+    Dict() : children(std::make_shared<std::unordered_map<std::string, T>>()) {}
+    Dict(const std::shared_ptr<std::unordered_map<std::string, T>> &children,
+         const std::string &search_base_key)
+        : children(children), search_base_key(search_base_key) {}
+    //! initializer_listから値をセットする場合のコンストラクタ
+    Dict(std::initializer_list<DictElement<T>> li) : Dict() { emplace(li); }
 
-    template <typename U>
-    using IsVectorOpt = typename std::enable_if<
-        std::is_same_v<U, VectorOpt<typename U::value_type>>>::type;
-
-    template <typename U = T, typename = IsVectorOpt<U>>
-    operator typename U::value_type() const {
-        return value.value();
+    Dict operator[](const std::string &key) const {
+        return Dict{children, search_base_key + "." + key};
+    }
+    auto getChildren() const {
+        std::unordered_map<std::string, Dict> ds;
+        for (const auto &it : *children) {
+            if (it.first.starts_with(search_base_key + ".")) {
+                auto p2 = it.first.find('.', search_base_key.size() + 1);
+                if (p2 == std::string::npos) {
+                    p2 = it.first.size();
+                }
+                std::string next_key =
+                    it.first.substr(search_base_key.size() + 1,
+                                    p2 - (search_base_key.size() + 1));
+                ds.emplace(next_key, Dict{children, it.first.substr(0, p2)});
+            }
+        }
+        return ds;
     }
 
-    template <typename U = T, typename = IsVectorOpt<U>>
-    std::vector<typename U::value_type> getVec() const {
-        return value.value();
+    bool hasValue() const { return children.count(search_base_key); }
+
+    auto get() const { return DictTraits<T>::get(children, search_base_key); }
+    operator typename DictTraits<T>::ValueType() const { return get(); }
+
+    template <typename U = T>
+    auto getVec() const {
+        return DictTraits<T>::getVec(children, search_base_key);
     }
-    template <typename U = T, typename = IsVectorOpt<U>>
-    operator std::vector<typename U::value_type>() const {
-        return value.value();
+    template <typename U = T>
+    operator typename DictTraits<U>::VecType() const {
+        return getVec();
+    }
+
+    Dict &set(const typename DictTraits<T>::ValueType &val) {
+        DictTraits<T>::set(children, search_base_key, val);
+        return *this;
+    }
+    Dict &operator=(const typename DictTraits<T>::ValueType &val) {
+        set(val);
+        return *this;
+    }
+    template <typename U = T>
+    Dict &setVec(const typename DictTraits<U>::VecType &val) {
+        DictTraits<U>::setVec(children, search_base_key, val);
+        return *this;
+    }
+    template <typename U = T>
+    Dict &operator=(const typename DictTraits<U>::VecType &val) {
+        setVec(val);
+        return *this;
     }
 };
-
-template <typename T>
-DictElement<T>::DictElement(const std::string &key, const T &value)
-    : key(key), child(std::make_shared<Dict<T>>(value)) {}
-
-template <typename T>
-DictElement<T>::DictElement(const std::string &key,
-                            std::initializer_list<DictElement> li)
-    : key(key), child(std::make_shared<Dict<T>>(li)) {}
 
 } // namespace Common
 } // namespace WebCFace

@@ -3,6 +3,7 @@
 #include <ostream>
 #include <optional>
 #include <chrono>
+#include <memory>
 #include "common/dict.h"
 #include "field.h"
 #include "client_data.h"
@@ -30,13 +31,13 @@ class Value : protected Field, public EventTarget<Value> {
         return Value{*this, this->field_ + "." + field};
     }
 
-    using Dict = Common::Dict<Common::VectorOpt<double>>;
+    using Dict = Common::Dict<std::shared_ptr<Common::VectorOpt<double>>>;
     Value &set(const Dict &v) {
-        if (v.value.has_value()) {
-            set(*v.value);
+        if (v.hasValue()) {
+            set(v.get());
         } else {
-            for (const auto &it : v.children) {
-                child(it.first).set(*it.second);
+            for (const auto &it : v.getChildren()) {
+                child(it.first).set(it.second);
             }
         }
         return *this;

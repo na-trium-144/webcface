@@ -3,10 +3,10 @@
 #include <unordered_map>
 #include <set>
 #include <mutex>
+#include <memory>
 #include <condition_variable>
 #include <optional>
 #include <string>
-#include <concepts>
 #include <eventpp/eventdispatcher.h>
 #include <spdlog/logger.h>
 #include "func_result.h"
@@ -68,6 +68,7 @@ struct ClientData {
         std::string self_member_name;
 
         void addReq(const std::string &member, const std::string &field);
+
       public:
         explicit SyncDataStore2(const std::string &name)
             : self_member_name(name) {}
@@ -130,7 +131,8 @@ struct ClientData {
         std::vector<std::string> getMembers();
 
         // req_idに対応するmember名とフィールド名を返す
-        std::pair<std::string, std::string> getReq(unsigned int req_id, const std::string &sub_field);
+        std::pair<std::string, std::string>
+        getReq(unsigned int req_id, const std::string &sub_field);
 
         //! data_sendを返し、data_sendをクリア
         std::unordered_map<std::string, T> transferSend(bool is_first);
@@ -158,11 +160,6 @@ struct ClientData {
         }
 
         void setRecv(const std::string &member, const T &data);
-
-        //! Tがvectorのとき要素を追加する
-        template <typename U>
-            requires std::same_as<T, std::vector<U>>
-        void addRecv(const std::string &member, const U &data);
 
         std::optional<T> getRecv(const std::string &member);
         //! req_sendを返し、req_sendをクリア
@@ -225,11 +222,11 @@ struct ClientData {
         return base.member_ == self_member_name;
     }
 
-    SyncDataStore2<VectorOpt<double>> value_store;
-    SyncDataStore2<std::string> text_store;
-    SyncDataStore2<FuncInfo> func_store;
-    SyncDataStore2<std::vector<ViewComponentBase>> view_store;
-    SyncDataStore1<std::vector<LogLine>> log_store;
+    SyncDataStore2<std::shared_ptr<VectorOpt<double>>> value_store;
+    SyncDataStore2<std::shared_ptr<std::string>> text_store;
+    SyncDataStore2<std::shared_ptr<FuncInfo>> func_store;
+    SyncDataStore2<std::shared_ptr<std::vector<ViewComponentBase>>> view_store;
+    SyncDataStore1<std::shared_ptr<std::vector<LogLine>>> log_store;
     SyncDataStore1<std::chrono::system_clock::time_point> sync_time_store;
     FuncResultStore func_result_store;
 
