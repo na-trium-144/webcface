@@ -24,9 +24,9 @@ struct ClientData {
     std::string name;
     unsigned int member_id;
     //! 最新の値
-    std::unordered_map<std::string, std::vector<double>> value;
-    std::unordered_map<std::string, std::string> text;
-    std::unordered_map<std::string, Message::FuncInfo> func;
+    std::unordered_map<std::string, std::shared_ptr<std::vector<double>>> value;
+    std::unordered_map<std::string, std::shared_ptr<std::string>> text;
+    std::unordered_map<std::string, std::shared_ptr<Message::FuncInfo>> func;
     std::unordered_map<std::string, std::vector<ViewComponentBase>> view;
     std::chrono::system_clock::time_point last_sync_time;
     //! リクエストしているmember,nameのペア
@@ -36,14 +36,15 @@ struct ClientData {
     std::set<std::string> log_req;
     bool hasReq(const std::string &member);
     //! ログ全履歴
-    std::vector<Message::Log::LogLine> log;
+    std::shared_ptr<std::vector<Message::Log::LogLine>> log;
 
     ClientData() = delete;
     ClientData(const ClientData &) = delete;
     ClientData &operator=(const ClientData &) = delete;
     explicit ClientData(const wsConnPtr &con, const spdlog::sink_ptr &sink,
                         spdlog::level::level_enum level)
-        : con(con), sink(sink), logger_level(level) {
+        : con(con), sink(sink), logger_level(level),
+          log(std::make_shared<std::vector<Message::Log::LogLine>>()) {
         static unsigned int new_member_id = 0;
         this->member_id = ++new_member_id;
         logger = std::make_shared<spdlog::logger>(

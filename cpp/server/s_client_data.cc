@@ -122,9 +122,9 @@ void ClientData::onRecv(const std::string &message) {
                                       f.first, cd.member_id);
                     }
                     for (const auto &f : cd.func) {
-                        this->pack(f.second);
+                        this->pack(*f.second);
                         logger->trace("send func_info {} of member {}",
-                                      f.second.field, cd.member_id);
+                                      f.second->field, cd.member_id);
                     }
                 }
             });
@@ -197,11 +197,11 @@ void ClientData::onRecv(const std::string &message) {
         }
         case MessageKind::value: {
             auto v = std::any_cast<WebCFace::Message::Value>(obj);
-            if (v.data.size() == 1) {
-                logger->debug("value {} = {}", v.field, v.data[0]);
+            if (v.data->size() == 1) {
+                logger->debug("value {} = {}", v.field, (*v.data)[0]);
             } else {
                 logger->debug("value {} = (array length = {})", v.field,
-                              v.data.size());
+                              v.data->size());
             }
             if (!this->value.count(v.field)) {
                 store.forEach([&](auto &cd) {
@@ -230,7 +230,7 @@ void ClientData::onRecv(const std::string &message) {
         }
         case MessageKind::text: {
             auto v = std::any_cast<WebCFace::Message::Text>(obj);
-            logger->debug("text {} = {}", v.field, v.data);
+            logger->debug("text {} = {}", v.field, *v.data);
             if (!this->text.count(v.field)) {
                 store.forEach([&](auto &cd) {
                     if (cd.name != this->name) {
@@ -251,7 +251,7 @@ void ClientData::onRecv(const std::string &message) {
                     cd.pack(WebCFace::Message::Res<WebCFace::Message::Text>(
                         req_id, sub_field, v.data));
                     cd.logger->trace("send text_res {}, req_id={} + '{}'",
-                                     v.data, req_id, sub_field);
+                                     *v.data, req_id, sub_field);
                 }
             });
             break;
@@ -259,7 +259,7 @@ void ClientData::onRecv(const std::string &message) {
         case MessageKind::view: {
             auto v = std::any_cast<WebCFace::Message::View>(obj);
             logger->debug("view {} diff={}, length={}", v.field,
-                          v.data_diff.size(), v.length);
+                          v.data_diff->size(), v.length);
             if (!this->view.count(v.field)) {
                 store.forEach([&](auto &cd) {
                     if (cd.name != this->name) {
@@ -272,7 +272,7 @@ void ClientData::onRecv(const std::string &message) {
                 });
             }
             this->view[v.field].resize(v.length);
-            for (const auto &d : v.data_diff) {
+            for (const auto &d : *v.data_diff) {
                 this->view[v.field][d.first] = d.second;
             }
             // このvalueをsubscribeしてるところに送り返す
@@ -291,14 +291,14 @@ void ClientData::onRecv(const std::string &message) {
         case MessageKind::log: {
             auto v = std::any_cast<WebCFace::Message::Log>(obj);
             v.member_id = this->member_id;
-            logger->debug("log {} lines", v.log.size());
-            std::copy(v.log.begin(), v.log.end(),
-                      std::back_inserter(this->log));
+            logger->debug("log {} lines", v.log->size());
+            std::copy(v.log->begin(), v.log->end(),
+                      std::back_inserter(*this->log));
             // このlogをsubscribeしてるところに送り返す
             store.forEach([&](auto &cd) {
                 if (cd.log_req.count(this->name)) {
                     cd.pack(v);
-                    cd.logger->trace("send log {} lines", v.log.size());
+                    cd.logger->trace("send log {} lines", v.log->size());
                 }
             });
             break;
@@ -316,7 +316,7 @@ void ClientData::onRecv(const std::string &message) {
                     }
                 });
             }
-            this->func[v.field] = v;
+            this->func[v.field] = std::make_shared<Message::FuncInfo>(v);
             break;
         }
         case MessageKind::req + MessageKind::value: {
@@ -378,7 +378,7 @@ void ClientData::onRecv(const std::string &message) {
                             WebCFace::Message::Res<WebCFace::Message::Text>{
                                 s.req_id, sub_field, it.second});
                         logger->trace("send text_res {}, req_id={} + '{}'",
-                                      it.second, s.req_id, sub_field);
+                                      *it.second, s.req_id, sub_field);
                     }
                 }
             });
@@ -401,11 +401,10 @@ void ClientData::onRecv(const std::string &message) {
                 for (const auto &it : cd.view) {
                     if (it.first == s.field ||
                         it.first.starts_with(s.field + ".")) {
-                        std::unordered_map<
-                            int, WebCFace::Message::View::ViewComponent>
-                            diff;
+                        auto diff = std::make_shared<std::unordered_map<
+                            int, WebCFace::Message::View::ViewComponent>>();
                         for (std::size_t i = 0; i < it.second.size(); i++) {
-                            diff[i] = it.second[i];
+                            diff->emplace(i, it.second[i]);
                         }
                         std::string sub_field;
                         if (it.first == s.field) {
@@ -433,7 +432,7 @@ void ClientData::onRecv(const std::string &message) {
             // 指定した値を返す
             store.findAndDo(s.member, [&](auto &cd) {
                 this->pack(WebCFace::Message::Log{{}, cd.member_id, cd.log});
-                logger->trace("send log {} lines", cd.log.size());
+                logger->trace("send log {} lines", cd.log->size());
             });
             break;
         }
