@@ -99,12 +99,14 @@ TEST_F(FuncTest, funcRun) {
 TEST_F(FuncTest, funcRunCond) {
     // setRunCondの動作確認
     int called = 0;
-    auto f = func(self_name, "a").set([&] { ++called; });
-    f.setRunCond([&](auto f, auto a) {
+    auto add2 = [&](auto f, auto a) {
         f(a);
         called |= 2;
         return ValAdaptor{};
-    });
+    };
+    // default
+    data_->default_func_wrapper = add2;
+    auto f = func(self_name, "a").set([&] { ++called; });
     f.run();
     EXPECT_EQ(called, 3);
 
@@ -112,6 +114,10 @@ TEST_F(FuncTest, funcRunCond) {
     called = 0;
     f.setRunCondNone().run();
     EXPECT_EQ(called, 1);
+
+    called = 0;
+    f.setRunCond(add2).run();
+    EXPECT_EQ(called, 3);
 
     called = 0;
     static int counter_c = 0, counter_d = 0;

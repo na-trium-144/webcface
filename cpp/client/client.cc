@@ -107,18 +107,18 @@ void Client::sync() {
 
         auto log_s = data->log_store.getRecv(member_);
         if (!log_s) {
-            log_s = std::make_shared<std::vector<LogLine>>();
+            log_s = std::make_shared<std::vector<std::shared_ptr<LogLine>>>();
             data->log_store.setRecv(member_, *log_s);
         }
         auto log_send = std::make_shared<std::vector<Message::Log::LogLine>>();
         if (is_first) {
             log_send->resize((*log_s)->size());
             for (std::size_t i = 0; i < (*log_s)->size(); i++) {
-                (*log_send)[i] = (**log_s)[i];
+                (*log_send)[i] = *(**log_s)[i];
             }
         }
         while (auto log = data->logger_sink->pop()) {
-            log_send->push_back(*log);
+            log_send->push_back(**log);
             // todo: connected状態でないとlog_storeにログが記録されない
             (*log_s)->push_back(*log);
         }
@@ -194,11 +194,12 @@ void Client::onRecv(const std::string &message) {
             auto member = data->getMemberNameFromId(r.member_id);
             auto log_s = data->log_store.getRecv(member);
             if (!log_s) {
-                log_s = std::make_shared<std::vector<LogLine>>();
+                log_s =
+                    std::make_shared<std::vector<std::shared_ptr<LogLine>>>();
                 data->log_store.setRecv(member, *log_s);
             }
             for (const auto &lm : *r.log) {
-                (*log_s)->push_back(lm);
+                (*log_s)->push_back(std::make_shared<LogLine>(lm));
             }
             data->log_append_event.dispatch(member, Field{data, member});
             break;

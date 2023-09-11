@@ -191,15 +191,37 @@ class Text : protected Field, public EventTarget<Text> {
     using Field::member;
     using Field::name;
 
-    //! 値をセットし、EventTargetを発動する
-    auto &set(const std::string &v) {
-        setCheck();
-        dataLock()->text_store.setSend(*this, std::make_shared<std::string>(v));
-        triggerEvent(*this);
+    auto child(const std::string &field) {
+        return Text{*this, this->field_ + "." + field};
+    }
+
+    using Dict = Common::Dict<std::shared_ptr<std::string>>;
+    Text &set(const Dict &v) {
+        if (v.hasValue()) {
+            set(v.getRaw());
+        } else {
+            for (const auto &it : v.getChildren()) {
+                child(it.first).set(it.second);
+            }
+        }
         return *this;
+    }
+    Text &set(const std::shared_ptr<std::string> &v) {
+        setCheck();
+        dataLock()->text_store.setSend(*this, v);
+        this->triggerEvent(*this);
+        return *this;
+    }
+    //! 値をセットし、EventTargetを発動する
+    Text &set(const std::string &v) {
+        return set(std::make_shared<std::string>(v));
     }
     //! 値をセットする
     auto &operator=(const std::string &v) {
+        this->set(v);
+        return *this;
+    } //! 値をセットする
+    auto &operator=(const Dict &v) {
         this->set(v);
         return *this;
     }
@@ -213,8 +235,13 @@ class Text : protected Field, public EventTarget<Text> {
             return std::nullopt;
         }
     }
+    std::optional<Dict> tryGetRecurse() const {
+        return dataLock()->text_store.getRecvRecurse(*this);
+    }
     std::string get() const { return tryGet().value_or(""); }
+    Dict getRecurse() const { return tryGetRecurse().value_or(Dict{}); }
     operator std::string() const { return get(); }
+    operator Dict() const { return getRecurse(); }
     auto time() const {
         return dataLock()
             ->sync_time_store.getRecv(this->member_)
@@ -258,7 +285,11 @@ class Log : protected Field, public EventTarget<Log, std::string> {
     std::optional<std::vector<LogLine>> tryGet() const {
         auto v = dataLock()->log_store.getRecv(member_);
         if (v) {
-            return **v;
+            std::vector<LogLine> lv((*v)->size());
+            for (std::size_t i = 0; i < (*v)->size(); i++) {
+                lv[i] = *(**v)[i];
+            }
+            return lv;
         } else {
             return std::nullopt;
         }

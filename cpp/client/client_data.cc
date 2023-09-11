@@ -221,7 +221,7 @@ template class ClientData::SyncDataStore2<std::shared_ptr<FuncInfo>>;
 template class ClientData::SyncDataStore2<
     std::shared_ptr<std::vector<ViewComponentBase>>>;
 template class ClientData::SyncDataStore1<
-    std::shared_ptr<std::vector<LogLine>>>;
+    std::shared_ptr<std::vector<std::shared_ptr<LogLine>>>>;
 template class ClientData::SyncDataStore1<
     std::chrono::system_clock::time_point>;
 
