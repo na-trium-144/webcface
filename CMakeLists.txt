@@ -67,20 +67,35 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 add_library(${PROJECT_NAME}_message STATIC ${MSG_SRC})
 target_compile_options(${PROJECT_NAME}_message PRIVATE -fPIC)
 target_compile_features(${PROJECT_NAME}_message PUBLIC cxx_std_20)
-target_link_libraries(${PROJECT_NAME}_message PUBLIC ${MSGPACK} ${SPDLOG})
+target_link_libraries(${PROJECT_NAME}_message PUBLIC
+    ${MSGPACK}
+    ${SPDLOG}
+)
 target_include_directories(${PROJECT_NAME}_message PUBLIC ${INCLUDE_DIR})
 
 add_library(${PROJECT_NAME}_server_impl STATIC ${SVR_SRC} ${CTL_SRC})
-target_link_libraries(${PROJECT_NAME}_server_impl PUBLIC ${PROJECT_NAME}_message cinatra ${SPDLOG})
+target_link_libraries(${PROJECT_NAME}_server_impl PUBLIC
+    ${PROJECT_NAME}_message
+    cinatra
+    ${SPDLOG}
+)
 
 add_executable(${PROJECT_NAME}_server ${SVR_MAIN_SRC})
-target_link_libraries(${PROJECT_NAME}_server PRIVATE ${PROJECT_NAME}_server_impl)
+target_link_libraries(${PROJECT_NAME}_server PRIVATE
+    ${PROJECT_NAME}_server_impl
+)
 
 add_library(${PROJECT_NAME} SHARED ${CLI_SRC})
 target_compile_options(${PROJECT_NAME} PRIVATE -fPIC)
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_20)
-target_link_libraries(${PROJECT_NAME} PRIVATE ${PROJECT_NAME}_message cinatra)
-target_link_libraries(${PROJECT_NAME} PUBLIC ${EVENTPP} ${SPDLOG})
+target_link_libraries(${PROJECT_NAME} PRIVATE
+    ${PROJECT_NAME}_message
+    cinatra
+)
+target_link_libraries(${PROJECT_NAME} PUBLIC
+    ${EVENTPP}
+    ${SPDLOG}
+)
 target_include_directories(${PROJECT_NAME} PUBLIC ${INCLUDE_DIR})
 
 foreach(SRC IN LISTS EXAMPLE_SRC)
@@ -93,7 +108,11 @@ endforeach()
 enable_testing() # todo: オプションで変えられるようにする
 
 add_executable(${PROJECT_NAME}_test ${TEST_SRC})
-target_link_libraries(${PROJECT_NAME}_test PRIVATE ${PROJECT_NAME} GTest::gtest_main)
+target_link_libraries(${PROJECT_NAME}_test PRIVATE
+    ${PROJECT_NAME}
+    ${PROJECT_NAME}_message
+    GTest::gtest_main
+)
 
 include(GoogleTest)
 gtest_discover_tests(${PROJECT_NAME}_test)

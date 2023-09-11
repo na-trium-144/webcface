@@ -2,13 +2,14 @@
 #include <webcface/client_data.h>
 #include <webcface/func.h>
 #include <stdexcept>
+#include <thread>
+#include <chrono>
+#include "../message/message.h"
 
 using namespace WebCFace;
 class FuncTest : public ::testing::Test {
   protected:
-    void SetUp() override {
-        data_ = std::make_shared<ClientData>(self_name);
-    }
+    void SetUp() override { data_ = std::make_shared<ClientData>(self_name); }
     std::string self_name = "test";
     std::shared_ptr<ClientData> data_;
     Func func(const std::string &member, const std::string &field) {
@@ -21,6 +22,7 @@ TEST_F(FuncTest, field) {
     EXPECT_EQ(func("a", "b").name(), "b");
 }
 TEST_F(FuncTest, funcSet) {
+    // 関数セットしreturnTypeとargsのチェック
     auto f = func(self_name, "a");
     f.set([]() {});
     EXPECT_EQ((*data_->func_store.getRecv(self_name, "a"))->return_type,
@@ -31,6 +33,7 @@ TEST_F(FuncTest, funcSet) {
     EXPECT_EQ(f.args().size(), 0);
     EXPECT_EQ(func(self_name, "a").args().size(), 0);
 
+    // 引数と戻り値をもつ関数
     f = func(self_name, "b");
     f.set([](int, double, bool, std::string) { return 0; });
     EXPECT_EQ(f.returnType(), ValType::int_);
@@ -40,6 +43,7 @@ TEST_F(FuncTest, funcSet) {
     EXPECT_EQ(f.args(2).type(), ValType::bool_);
     EXPECT_EQ(f.args(3).type(), ValType::string_);
 
+    // 関数のパラメーター設定
     f.setArgs({Arg("0").init(1).min(0).max(2), Arg("1"), Arg("2"),
                Arg("3").option({"a", "b", "c"})});
     EXPECT_EQ(f.args(0).name(), "0");
@@ -53,20 +57,24 @@ TEST_F(FuncTest, funcSet) {
     EXPECT_EQ(f.args(1).max(), std::nullopt);
     EXPECT_EQ(f.args(3).option().size(), 3);
 
+    // 未設定の関数呼び出しでエラー
     EXPECT_THROW(f.setArgs({}), std::invalid_argument);
     EXPECT_THROW(func(self_name, "c").setArgs({}), std::invalid_argument);
     EXPECT_THROW(func("a", "b").set([]() {}), std::invalid_argument);
 }
-TEST_F(FuncTest, funcRun){
+TEST_F(FuncTest, funcRun) {
+    // 引数と戻り値
     int called = 0;
-    auto ret = func(self_name, "a").set([&](int a, double b, std::string c, bool d){
-        EXPECT_EQ(a, 123);
-        EXPECT_EQ(b, 123.45);
-        EXPECT_EQ(c, "a");
-        EXPECT_TRUE(d);
-        ++called;
-        return 123.45;
-    }).run(123, 123.45, "a", true);
+    auto ret = func(self_name, "a")
+                   .set([&](int a, double b, std::string c, bool d) {
+                       EXPECT_EQ(a, 123);
+                       EXPECT_EQ(b, 123.45);
+                       EXPECT_EQ(c, "a");
+                       EXPECT_TRUE(d);
+                       ++called;
+                       return 123.45;
+                   })
+                   .run(123, 123.45, "a", true);
     EXPECT_EQ(called, 1);
     EXPECT_EQ(static_cast<double>(ret), 123.45);
     called = 0;
@@ -78,13 +86,54 @@ TEST_F(FuncTest, funcRun){
     EXPECT_EQ(called, 1);
     called = 0;
 
+    // 引数の間違い
     EXPECT_THROW(func(self_name, "a").run(), std::invalid_argument);
-    EXPECT_THROW(func(self_name, "a").runAsync().result.get(), std::invalid_argument);
+    EXPECT_THROW(func(self_name, "a").runAsync().result.get(),
+                 std::invalid_argument);
     EXPECT_TRUE(func(self_name, "a").runAsync().started.get());
+    // 未設定関数の呼び出し
     EXPECT_THROW(func(self_name, "b").run(), FuncNotFound);
     EXPECT_THROW(func(self_name, "b").runAsync().result.get(), FuncNotFound);
     EXPECT_FALSE(func(self_name, "b").runAsync().started.get());
-
-    // todo: remote run
 }
-// todo: runCond
+TEST_F(FuncTest, funcRunCond) {
+    // setRunCondの動作確認
+    int called = 0;
+    auto f = func(self_name, "a").set([&] { ++called; });
+    f.setRunCond([&](auto f, auto a) {
+        f(a);
+        called |= 2;
+        return ValAdaptor{};
+    });
+    f.run();
+    EXPECT_EQ(called, 3);
+
+    // 各種wrapper
+    called = 0;
+    f.setRunCondNone().run();
+    EXPECT_EQ(called, 1);
+
+    called = 0;
+    static int counter_c = 0, counter_d = 0;
+    struct A {
+        A() { ++counter_c; }
+        ~A() { ++counter_d; }
+    };
+    f.setRunCondScopeGuard<A>().run();
+    EXPECT_EQ(counter_c, 1);
+    EXPECT_EQ(counter_d, 1);
+    EXPECT_EQ(called, 1);
+
+    called = 0;
+    f.setRunCondOnSync().runAsync();
+    std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    EXPECT_EQ(called, 0);
+    (*data_->func_sync_queue.pop())->sync();
+    EXPECT_EQ(called, 1);
+}
+TEST_F(FuncTest, funcRunRemote) {
+    func("a", "b").runAsync(1.23, true, "abc");
+    EXPECT_EQ(*data_->message_queue.pop(),
+              Message::packSingle(
+                  Message::Call{FuncCall{0, 0, 0, "b", {1.23, true, "abc"}}}));
+}
