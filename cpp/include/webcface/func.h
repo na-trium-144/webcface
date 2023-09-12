@@ -114,7 +114,7 @@ class Func : protected Field {
     //! 引数の情報を返す
     //! 変更するにはsetArgsを使う(このvectorの中身を書き換えても反映されない)
     std::vector<Arg> args() const;
-    Arg args(std::size_t i) const { return args().at(i); }
+    const Arg args(std::size_t i) const { return args().at(i); }
 
     //! 引数の情報を更新する
     /*!
@@ -158,7 +158,7 @@ class AnonymousFunc : public Func {
         return ".tmp" + std::to_string(id++);
     }
 
-    std::function<void()> func_setter = nullptr;
+    std::function<void(AnonymousFunc&)> func_setter = nullptr;
     bool base_init = false;
 
   public:
@@ -171,21 +171,18 @@ class AnonymousFunc : public Func {
     }
     template <typename T>
     AnonymousFunc(const T &func) {
-        func_setter = [this, func]() {
-            this->set(func);
-            this->hidden(true);
+        func_setter = [func](AnonymousFunc &a) {
+            a.set(func);
+            a.hidden(true);
         };
     }
-
-    AnonymousFunc(const AnonymousFunc &) = delete;
-    AnonymousFunc &operator=(const AnonymousFunc &) = delete;
 
     void lockTo(Func &target) {
         if (!base_init) {
             this->data_w = target.data_w;
             this->member_ = target.member_;
             this->field_ = fieldNameTmp();
-            func_setter();
+            func_setter(*this);
         }
         target.set(dataLock()->func_store.getRecv(*this).value());
         this->free();

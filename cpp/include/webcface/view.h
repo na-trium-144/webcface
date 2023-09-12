@@ -7,6 +7,7 @@
 #include "common/view.h"
 #include "data.h"
 #include "client_data.h"
+#include "func.h"
 
 namespace WebCFace {
 
@@ -118,33 +119,8 @@ class ViewBuf : public std::stringbuf {
 
 class View : protected Field, public EventTarget<View>, public std::ostream {
     ViewBuf sb;
+    void onAppend() const override { tryGet(); }
 
-    // void onAppend() const override { }
-
-  public:
-    View() : Field(), EventTarget<View>(), sb(), std::ostream(&sb) {}
-    View(const Field &base)
-        : Field(base), EventTarget<View>(&this->dataLock()->view_change_event,
-                                         *this),
-          sb(), std::ostream(&sb) {
-        init();
-    }
-    View(const Field &base, const std::string &field)
-        : View(Field{base, field}) {}
-    View(const View &rhs) : View() { *this = rhs; }
-    View &operator=(const View &rhs) {
-        this->Field::operator=(rhs);
-        this->EventTarget<View>::operator=(rhs);
-        this->sb = rhs.sb;
-        return *this;
-    }
-
-    ~View() { sync(); }
-
-    using Field::member;
-    using Field::name;
-
-  private:
     //! 値をセットし、EventTargetを発動する
     auto &set(std::vector<ViewComponent> &v) {
         std::vector<ViewComponentBase> vb(v.size());
@@ -160,13 +136,45 @@ class View : protected Field, public EventTarget<View>, public std::ostream {
     }
 
   public:
+    View() : Field(), EventTarget<View>(), sb(), std::ostream(&sb) {}
+    View(const Field &base)
+        : Field(base), EventTarget<View>(&this->dataLock()->view_change_event,
+                                         *this),
+          sb(), std::ostream(&sb) {
+
+        if (dataLock()->isSelf(member_)) {
+            init();
+        }
+    }
+    View(const Field &base, const std::string &field)
+        : View(Field{base, field}) {}
+    View(const View &rhs) : View() { *this = rhs; }
+    View &operator=(const View &rhs) {
+        this->Field::operator=(rhs);
+        this->EventTarget<View>::operator=(rhs);
+        this->sb = rhs.sb;
+        return *this;
+    }
+
+    ~View() {
+        if (dataLock()->isSelf(member_)) {
+            sync();
+        }
+    }
+
+    using Field::member;
+    using Field::name;
+
+    auto child(const std::string &field) {
+        return View{*this, this->field_ + "." + field};
+    }
     //! 値を取得する
     std::optional<std::vector<ViewComponent>> tryGet() const {
         auto vb = dataLock()->view_store.getRecv(*this);
         if (vb) {
             std::vector<ViewComponent> v((*vb)->size());
             for (std::size_t i = 0; i < (*vb)->size(); i++) {
-                v[i] = ViewComponent{(*vb)->at(i), this->data_w};
+                v[i] = ViewComponent{(**vb)[i], this->data_w};
             }
             return v;
         } else {
@@ -196,9 +204,7 @@ class View : protected Field, public EventTarget<View>, public std::ostream {
     }
 
     View &init() {
-        if (dataLock()->isSelf(member_)) {
-            sb.components.clear();
-        }
+        sb.components.clear();
         return *this;
     }
     template <typename T>

@@ -16,6 +16,13 @@ class Value : protected Field, public EventTarget<Value> {
 
     void onAppend() const override { tryGet(); }
 
+    Value &set(const std::shared_ptr<VectorOpt<double>> &v) {
+        setCheck();
+        dataLock()->value_store.setSend(*this, v);
+        this->triggerEvent(*this);
+        return *this;
+    }
+
   public:
     Value() = default;
     Value(const Field &base)
@@ -40,12 +47,6 @@ class Value : protected Field, public EventTarget<Value> {
                 child(it.first).set(it.second);
             }
         }
-        return *this;
-    }
-    Value &set(const std::shared_ptr<VectorOpt<double>> &v) {
-        setCheck();
-        dataLock()->value_store.setSend(*this, v);
-        this->triggerEvent(*this);
         return *this;
     }
     //! 値をセットし、EventTargetを発動する
@@ -179,6 +180,12 @@ class Value : protected Field, public EventTarget<Value> {
 class Text : protected Field, public EventTarget<Text> {
 
     void onAppend() const override { tryGet(); }
+    Text &set(const std::shared_ptr<std::string> &v) {
+        setCheck();
+        dataLock()->text_store.setSend(*this, v);
+        this->triggerEvent(*this);
+        return *this;
+    }
 
   public:
     Text() = default;
@@ -204,12 +211,6 @@ class Text : protected Field, public EventTarget<Text> {
                 child(it.first).set(it.second);
             }
         }
-        return *this;
-    }
-    Text &set(const std::shared_ptr<std::string> &v) {
-        setCheck();
-        dataLock()->text_store.setSend(*this, v);
-        this->triggerEvent(*this);
         return *this;
     }
     //! 値をセットし、EventTargetを発動する

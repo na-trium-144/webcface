@@ -15,6 +15,14 @@ class FuncTest : public ::testing::Test {
     Func func(const std::string &member, const std::string &field) {
         return Func{Field{data_, member, field}};
     }
+    template <typename T>
+    AnonymousFunc afunc1(const T &func) {
+        return AnonymousFunc{Field{data_, self_name, ""}, func};
+    }
+    template <typename T>
+    AnonymousFunc afunc2(const T &func) {
+        return AnonymousFunc{func};
+    }
 };
 
 TEST_F(FuncTest, field) {
@@ -142,4 +150,25 @@ TEST_F(FuncTest, funcRunRemote) {
     EXPECT_EQ(*data_->message_queue.pop(),
               Message::packSingle(
                   Message::Call{FuncCall{0, 0, 0, "b", {1.23, true, "abc"}}}));
+}
+
+TEST_F(FuncTest, afuncSet1) {
+    auto a = afunc1([](int a) {});
+    a.setArgs({Arg("a").init(0).min(-1).max(1)});
+    auto f = func(self_name, "a");
+    a.lockTo(f);
+    EXPECT_EQ(f.args(0).name(), "a");
+    EXPECT_EQ(static_cast<int>(*f.args(0).init()), 0);
+    EXPECT_EQ(static_cast<int>(*f.args(0).min()), -1);
+    EXPECT_EQ(static_cast<int>(*f.args(0).max()), 1);
+}
+TEST_F(FuncTest, afuncSet2) {
+    auto a = afunc2([](int a) {});
+    // a.setArgs({Arg("a").init(0).min(-1).max(1)});
+    auto f = func(self_name, "a");
+    a.lockTo(f);
+    // EXPECT_EQ(f.args(0).name(), "a");
+    // EXPECT_EQ(static_cast<int>(*f.args(0).init()), 0);
+    // EXPECT_EQ(static_cast<int>(*f.args(0).min()), -1);
+    // EXPECT_EQ(static_cast<int>(*f.args(0).max()), 1);
 }

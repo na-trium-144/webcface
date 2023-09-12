@@ -211,6 +211,7 @@ struct ClientData {
         std::vector<spdlog::sink_ptr> sinks = {logger_sink, stderr_sink};
         logger =
             std::make_shared<spdlog::logger>(name, sinks.begin(), sinks.end());
+        logger->set_level(spdlog::level::trace);
         logger_internal = std::make_shared<spdlog::logger>(
             "webcface_internal(" + name + ")", stderr_sink);
         logger_internal->set_level(logger_internal_level);

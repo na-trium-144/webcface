@@ -30,8 +30,10 @@ class DataTest : public ::testing::Test {
 TEST_F(DataTest, field) {
     EXPECT_EQ(value("a", "b").member().name(), "a");
     EXPECT_EQ(value("a", "b").name(), "b");
+    EXPECT_EQ(value("a", "b").child("c").name(), "b.c");
     EXPECT_EQ(text("a", "b").member().name(), "a");
     EXPECT_EQ(text("a", "b").name(), "b");
+    EXPECT_EQ(text("a", "b").child("c").name(), "b.c");
     EXPECT_EQ(log("a").member().name(), "a");
 }
 TEST_F(DataTest, valueSet) {
