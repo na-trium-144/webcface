@@ -10,6 +10,7 @@
 #include "event_target.h"
 #include "func.h"
 #include "logger.h"
+#include "common/def.h"
 
 namespace WebCFace {
 //! サーバーに接続するクライアント。
@@ -48,7 +49,9 @@ class Client : public Member {
     //! 自分自身のmemberとしての名前を指定しサーバーに接続する
     //! サーバーのホストとポートを省略した場合localhost:7530になる
     explicit Client(const std::string &name,
-                    const std::string &host = "127.0.0.1", int port = 7530);
+                    const std::string &host = "127.0.0.1",
+                    int port = WEBCFACE_DEFAULT_PORT,
+                    std::shared_ptr<ClientData> data = nullptr);
     //! サーバーに接続できているときtrueを返す。
     bool connected() const;
     //! デストラクタで接続を切る。

@@ -10,19 +10,21 @@ void Client::messageThreadMain() {
         coro_http_client client;
         this->connected_.store(false);
 
-        client.on_ws_msg([&](resp_data data) {
+        // thisセグフォの可能性を減らすためコピーしておく(どういうとき起きるのかわかってない)
+        auto logger_internal = this->data->logger_internal;
+        client.on_ws_msg([this, logger_internal](resp_data data) {
             if (data.net_err) {
                 // どういう条件で起こるのかわかってない
-                this->data->logger_internal->error("recv error {}",
+                logger_internal->error("recv error {}",
                                                    data.net_err.message());
                 return;
             }
-            this->data->logger_internal->trace("message received");
+            logger_internal->trace("message received");
             this->onRecv(std::string(data.resp_body));
-            this->data->logger_internal->trace("message recv done");
+            logger_internal->trace("message recv done");
         });
-        client.on_ws_close([&](auto &&) {
-            this->data->logger_internal->debug("connection closed");
+        client.on_ws_close([this, logger_internal](auto &&) {
+            logger_internal->debug("connection closed");
             this->connected_.store(false);
         });
 

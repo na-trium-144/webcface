@@ -83,6 +83,7 @@ set(TEST_SRC
     ${CPP_DIR}/test/view_test.cc
     ${CPP_DIR}/test/member_test.cc
     ${CPP_DIR}/test/logger_test.cc
+    ${CPP_DIR}/test/client_test.cc
 )
 set(MSG_SRC
     ${CPP_DIR}/message/message.cc
@@ -143,6 +144,7 @@ add_executable(${PROJECT_NAME}_test ${TEST_SRC})
 target_link_libraries(${PROJECT_NAME}_test PRIVATE
     ${PROJECT_NAME}
     ${PROJECT_NAME}_message
+    cinatra
     GTest::gtest_main
 )
 

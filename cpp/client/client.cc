@@ -8,9 +8,11 @@
 
 namespace WebCFace {
 
-Client::Client(const std::string &name, const std::string &host, int port)
-    : Member(), data(std::make_shared<ClientData>(name)), host(host),
-      port(port), message_thread([this] { this->messageThreadMain(); }),
+Client::Client(const std::string &name, const std::string &host, int port,
+               std::shared_ptr<ClientData> data)
+    : Member(), data(data ? data : std::make_shared<ClientData>(name)),
+      host(host), port(port),
+      message_thread([this] { this->messageThreadMain(); }),
       logger_buf(this->data), logger_os(&this->logger_buf) {
 
     this->Member::data_w = this->data;
