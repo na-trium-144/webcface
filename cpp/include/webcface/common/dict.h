@@ -20,11 +20,11 @@ struct DictTraits {
 };
 template <typename T>
 struct DictTraits<std::shared_ptr<T>> {
-    using ValueType = DictTraits<T>::ValueType;
+    using ValueType = typename DictTraits<T>::ValueType;
     static ValueType parse(const std::shared_ptr<T> &val) {
         return DictTraits<T>::parse(*val);
     }
-    using VecType = DictTraits<T>::VecType;
+    using VecType = typename DictTraits<T>::VecType;
     template <typename U = T>
     static VecType parseVec(const std::shared_ptr<U> &val) {
         return DictTraits<U>::parseVec(*val);
@@ -115,6 +115,8 @@ class Dict {
         }
         return Dict{children, new_key};
     }
+    Dict operator[](const char *key) const { return (*this)[std::string(key)]; }
+    
     auto getChildren() const {
         std::unordered_map<std::string, Dict> ds;
         std::string search_base_key_dot = "";
@@ -138,7 +140,7 @@ class Dict {
 
     bool hasValue() const { return children->count(search_base_key); }
     T getRaw() const { return children->at(search_base_key); }
-    
+
     auto get() const {
         return DictTraits<T>::parse(children->at(search_base_key));
     }
