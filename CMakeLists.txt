@@ -51,15 +51,43 @@ target_include_directories(tclap INTERFACE ${CMAKE_CURRENT_LIST_DIR}/external/tc
 
 add_subdirectory(external/googletest)
 
-
-aux_source_directory(cpp SVR_MAIN_SRC)
-aux_source_directory(cpp/server SVR_SRC)
-aux_source_directory(cpp/client CLI_SRC)
-aux_source_directory(cpp/example EXAMPLE_SRC)
-aux_source_directory(cpp/test TEST_SRC)
-aux_source_directory(cpp/message MSG_SRC)
-aux_source_directory(cpp/controllers CTL_SRC)
-set(INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/cpp/include)
+set(CPP_DIR ${CMAKE_CURRENT_SOURCE_DIR}/cpp)
+set(SVR_MAIN_SRC ${CPP_DIR}/server_main.cc)
+set(SVR_SRC
+    ${CPP_DIR}/server/s_client_data.cc
+    ${CPP_DIR}/server/store.cc
+    ${CPP_DIR}/server/websock.cc
+)
+set(CLI_SRC
+    ${CPP_DIR}/client/client.cc
+    ${CPP_DIR}/client/client_data.cc
+    ${CPP_DIR}/client/client_ws.cc
+    ${CPP_DIR}/client/field.cc
+    ${CPP_DIR}/client/func.cc
+    ${CPP_DIR}/client/logger.cc
+    ${CPP_DIR}/client/member.cc
+)
+set(EXAMPLE_SRC
+    ${CPP_DIR}/example/main.cc
+    ${CPP_DIR}/example/recv.cc
+    ${CPP_DIR}/example/nothing.cc
+    ${CPP_DIR}/example/simple.cc
+    ${CPP_DIR}/example/view.cc
+    ${CPP_DIR}/example/get_entry.cc
+    ${CPP_DIR}/example/logger.cc
+)
+set(TEST_SRC
+    ${CPP_DIR}/test/client_data_test.cc
+    ${CPP_DIR}/test/data_test.cc
+    ${CPP_DIR}/test/func_test.cc
+    ${CPP_DIR}/test/view_test.cc
+    ${CPP_DIR}/test/member_test.cc
+    ${CPP_DIR}/test/logger_test.cc
+)
+set(MSG_SRC
+    ${CPP_DIR}/message/message.cc
+)
+set(INCLUDE_DIR ${CPP_DIR}/include)
 
 ###############################################################################
 # server
@@ -76,7 +104,7 @@ target_link_libraries(${PROJECT_NAME}_message PUBLIC
 )
 target_include_directories(${PROJECT_NAME}_message PUBLIC ${INCLUDE_DIR})
 
-add_library(${PROJECT_NAME}_server_impl STATIC ${SVR_SRC} ${CTL_SRC})
+add_library(${PROJECT_NAME}_server_impl STATIC ${SVR_SRC})
 target_link_libraries(${PROJECT_NAME}_server_impl PUBLIC
     ${PROJECT_NAME}_message
     cinatra
