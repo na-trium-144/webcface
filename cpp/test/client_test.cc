@@ -55,7 +55,10 @@ void testServerRun() {
     server.run();
 }
 
-void wait() { std::this_thread::sleep_for(std::chrono::milliseconds(10)); }
+void wait(int ms = 10) {
+    std::this_thread::sleep_for(std::chrono::milliseconds(ms));
+}
+
 class ClientTest : public ::testing::Test {
   protected:
     void SetUp() override {
@@ -76,9 +79,7 @@ class ClientTest : public ::testing::Test {
         wait();
         std::cout << "SetUp end" << std::endl;
     }
-    void TearDown() override {
-        std::cout << "TearDown" << std::endl;
-    }
+    void TearDown() override { std::cout << "TearDown" << std::endl; }
     std::string self_name = "test";
     std::shared_ptr<ClientData> data_;
     std::shared_ptr<Client> wcli_;
@@ -91,6 +92,11 @@ class ClientTest : public ::testing::Test {
 
 TEST_F(ClientTest, connection) { EXPECT_NE(connPtr, nullptr); }
 TEST_F(ClientTest, name) { EXPECT_EQ(wcli_->name(), self_name); }
+TEST_F(ClientTest, memoryLeak) {
+    wcli_.reset();
+    wait(300);
+    EXPECT_EQ(data_.use_count(), 1);
+}
 TEST_F(ClientTest, sync) {
     wcli_->sync();
     wait();
