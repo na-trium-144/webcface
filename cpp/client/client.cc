@@ -12,7 +12,14 @@ Client::Client(const std::string &name, const std::string &host, int port,
                std::shared_ptr<ClientData> data)
     : Member(), data(data ? data : std::make_shared<ClientData>(name)),
       host(host), port(port),
-      message_thread([this] { this->messageThreadMain(); }),
+      message_thread(messageThreadMain, data, host, port), recv_thread([this, data] {
+          while (!data->closing.load()) {
+              auto msg = data->recv_queue.pop(std::chrono::milliseconds(10));
+              if (msg) {
+                  this->onRecv(*msg);
+              }
+          }
+      }),
       logger_buf(this->data), logger_os(&this->logger_buf) {
 
     this->Member::data_w = this->data;
@@ -22,8 +29,10 @@ Client::Client(const std::string &name, const std::string &host, int port,
 Client::~Client() {
     close();
     message_thread.join();
+    recv_thread.join();
 }
-void Client::close() { closing.store(true); }
+void Client::close() { data->closing.store(true); }
+bool Client::connected() const { return data->connected_.load(); }
 
 void Client::sync() {
     if (connected()) {
@@ -31,10 +40,10 @@ void Client::sync() {
         int len = 0;
 
         bool is_first = false;
-        if (!sync_init.load()) {
+        if (!data->sync_init.load()) {
             Message::pack(buffer, len, Message::SyncInit{{}, member_, 0});
             is_first = true;
-            sync_init.store(true);
+            data->sync_init.store(true);
         }
 
         Message::pack(buffer, len, Message::Sync{});

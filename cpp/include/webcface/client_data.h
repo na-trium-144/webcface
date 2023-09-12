@@ -7,6 +7,7 @@
 #include <condition_variable>
 #include <optional>
 #include <string>
+#include <atomic>
 #include <eventpp/eventdispatcher.h>
 #include <spdlog/logger.h>
 #include "func_result.h"
@@ -247,6 +248,8 @@ struct ClientData {
 
     //! sync()を待たずに即時送って欲しいメッセージを入れるキュー
     Queue<std::string> message_queue;
+    //! wsが受信したメッセージを入れるキュー
+    Queue<std::string> recv_queue;
     //! sync()のタイミングで実行を同期する関数のcondition_variable
     Queue<std::shared_ptr<FuncOnSync>> func_sync_queue;
 
@@ -256,5 +259,12 @@ struct ClientData {
     std::shared_ptr<LoggerSink> logger_sink;
 
     std::shared_ptr<spdlog::logger> logger, logger_internal;
+
+    //! close()が呼ばれたらtrue
+    std::atomic<bool> closing = false;
+    std::atomic<bool> connected_ = false;
+    //! 初回のsync()で全データを送信するがそれが完了したかどうか
+    //! 再接続したらfalseに戻す
+    std::atomic<bool> sync_init = false;
 };
 } // namespace WebCFace

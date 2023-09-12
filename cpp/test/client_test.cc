@@ -1,40 +1,33 @@
 #include <gtest/gtest.h>
 #include <webcface/client_data.h>
 #include <webcface/client.h>
+#include <webcface/logger.h>
 #include "../message/message.h"
 #include <spdlog/logger.h>
 #include <cinatra.hpp>
 #include <stdexcept>
 #include <chrono>
 #include <thread>
-#include <deque>
+#include <vector>
 
 using namespace WebCFace;
 
 std::shared_ptr<cinatra::connection<cinatra::NonSSL>> connPtr;
-std::deque<std::pair<int, std::any>> test_server_recv;
+std::vector<std::pair<int, std::any>> test_server_recv;
 
 // clientから受信したメッセージがT型であればf1, そうでなければf2を実行する
 template <typename T, typename F1, typename F2>
 void testServerRecv(const F1 &on_ok, const F2 &on_ng) {
-    while (!test_server_recv.empty()) {
-        auto m = test_server_recv.front();
-        test_server_recv.pop_front();
-        if (m.first != -1) {
-            if (m.first == T::kind) {
-                try {
-                    on_ok(std::any_cast<T>(m.second));
-                } catch (std::bad_cast) {
-                    on_ng(T::kind, m.first);
-                }
-            } else {
-                on_ng(T::kind, m.first);
-            }
+    for (const auto &m : test_server_recv) {
+        if (m.first == T::kind) {
+            on_ok(std::any_cast<T>(m.second));
             return;
         }
     }
-    on_ng(T::kind, 0);
+    on_ng();
 }
+void testServerRecvClear() { test_server_recv.clear(); }
+
 // clientにメッセージを送信する
 template <typename T>
 void testServerSend(const T &msg) {
@@ -62,21 +55,29 @@ void testServerRun() {
     server.run();
 }
 
+void wait() { std::this_thread::sleep_for(std::chrono::milliseconds(10)); }
 class ClientTest : public ::testing::Test {
   protected:
     void SetUp() override {
+        std::cout << "SetUp begin" << std::endl;
+        WebCFace::logger_internal_level = spdlog::level::trace;
         static bool is_first = true;
         static std::thread test_server_thread{testServerRun};
         if (is_first) {
             test_server_thread.detach();
-            std::this_thread::sleep_for(std::chrono::milliseconds(10));
+            wait();
             is_first = false;
         }
         data_ = std::make_shared<ClientData>(self_name);
         wcli_ = std::make_shared<Client>(self_name, "127.0.0.1", 17530, data_);
         callback_called = 0;
+        testServerRecvClear();
         // 接続を待機する (todo: 接続完了まで待機する関数があると良い)
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        wait();
+        std::cout << "SetUp end" << std::endl;
+    }
+    void TearDown() override {
+        std::cout << "TearDown" << std::endl;
     }
     std::string self_name = "test";
     std::shared_ptr<ClientData> data_;
@@ -92,13 +93,52 @@ TEST_F(ClientTest, connection) { EXPECT_NE(connPtr, nullptr); }
 TEST_F(ClientTest, name) { EXPECT_EQ(wcli_->name(), self_name); }
 TEST_F(ClientTest, sync) {
     wcli_->sync();
-    std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    wait();
     using namespace WebCFace::Message;
-    auto on_fail = [&](auto ex, auto ac) {
-        ADD_FAILURE() << "expected kind: " << ex << ", actual: " << ac;
-    };
     testServerRecv<SyncInit>(
         [&](const auto &obj) { EXPECT_EQ(obj.member_name, self_name); },
-        on_fail);
-    testServerRecv<Sync>([&](const auto &) {}, on_fail);
+        [&] { ADD_FAILURE() << "SyncInit recv error"; });
+    testServerRecv<Sync>([&](const auto &) {},
+                         [&] { ADD_FAILURE() << "Sync recv error"; });
+}
+TEST_F(ClientTest, valueSend) {
+    data_->value_store.setSend("a", std::make_shared<VectorOpt<double>>(5));
+    wcli_->sync();
+    wait();
+    testServerRecv<Message::Value>(
+        [&](const auto &obj) {
+            EXPECT_EQ(obj.field, "a");
+            EXPECT_EQ(obj.data->size(), 1);
+            EXPECT_EQ(obj.data->at(0), 5);
+        },
+        [&] { ADD_FAILURE() << "Value recv error"; });
+}
+TEST_F(ClientTest, valueReq) {
+    data_->value_store.getRecv("a", "b");
+    wcli_->sync();
+    wait();
+    testServerRecv<Message::Req<Message::Value>>(
+        [&](const auto &obj) {
+            EXPECT_EQ(obj.member, "a");
+            EXPECT_EQ(obj.field, "b");
+            EXPECT_EQ(obj.req_id, 1);
+        },
+        [&] { ADD_FAILURE() << "Value Req recv error"; });
+    testServerSend(Message::Res<Message::Value>{
+        1, "",
+        std::make_shared<std::vector<double>>(std::vector<double>{1, 2, 3})});
+    testServerSend(Message::Res<Message::Value>{
+        1, "c",
+        std::make_shared<std::vector<double>>(std::vector<double>{1, 2, 3})});
+    wait();
+    EXPECT_TRUE(data_->value_store.getRecv("a", "b").has_value());
+    EXPECT_EQ(static_cast<std::vector<double>>(
+                  *data_->value_store.getRecv("a", "b").value())
+                  .size(),
+              3);
+    EXPECT_TRUE(data_->value_store.getRecv("a", "b.c").has_value());
+    EXPECT_EQ(static_cast<std::vector<double>>(
+                  *data_->value_store.getRecv("a", "b.c").value())
+                  .size(),
+              3);
 }
