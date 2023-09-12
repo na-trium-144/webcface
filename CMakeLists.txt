@@ -46,6 +46,9 @@ if(${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU")
     target_compile_options(cinatra INTERFACE -fcoroutines -fno-tree-slp-vectorize)
 endif()
 
+add_library(tclap INTERFACE)
+target_include_directories(tclap INTERFACE ${CMAKE_CURRENT_LIST_DIR}/external/tclap/include)
+
 add_subdirectory(external/googletest)
 
 
@@ -83,6 +86,7 @@ target_link_libraries(${PROJECT_NAME}_server_impl PUBLIC
 add_executable(${PROJECT_NAME}_server ${SVR_MAIN_SRC})
 target_link_libraries(${PROJECT_NAME}_server PRIVATE
     ${PROJECT_NAME}_server_impl
+    tclap
 )
 
 add_library(${PROJECT_NAME} SHARED ${CLI_SRC})
