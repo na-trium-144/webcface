@@ -36,6 +36,13 @@ TEST_F(ViewTest, field) {
     EXPECT_EQ(view("a", "b").name(), "b");
     EXPECT_EQ(view("a", "b").child("c").name(), "b.c");
 }
+TEST_F(ViewTest, eventTarget) {
+    view("a", "b").appendListener(callback<View>());
+    data_->view_change_event.dispatch(FieldBase{"a", "b"},
+                                      Field{data_, "a", "b"});
+    EXPECT_EQ(callback_called, 1);
+    callback_called = 0;
+}
 TEST_F(ViewTest, viewSet) {
     data_->view_change_event.appendListener(FieldBase{self_name, "b"},
                                             callback());

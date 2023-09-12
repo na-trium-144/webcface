@@ -36,6 +36,22 @@ TEST_F(DataTest, field) {
     EXPECT_EQ(text("a", "b").child("c").name(), "b.c");
     EXPECT_EQ(log("a").member().name(), "a");
 }
+TEST_F(DataTest, eventTarget) {
+    value("a", "b").appendListener(callback<Value>());
+    data_->value_change_event.dispatch(FieldBase{"a", "b"},
+                                       Field{data_, "a", "b"});
+    EXPECT_EQ(callback_called, 1);
+    callback_called = 0;
+    text("a", "b").appendListener(callback<Text>());
+    data_->text_change_event.dispatch(FieldBase{"a", "b"},
+                                      Field{data_, "a", "b"});
+    EXPECT_EQ(callback_called, 1);
+    callback_called = 0;
+    log("a").appendListener(callback<Log>());
+    data_->log_append_event.dispatch("a", Field{data_, "a"});
+    EXPECT_EQ(callback_called, 1);
+    callback_called = 0;
+}
 TEST_F(DataTest, valueSet) {
     data_->value_change_event.appendListener(FieldBase{self_name, "b"},
                                              callback());
