@@ -1,10 +1,21 @@
 cmake_minimum_required(VERSION 3.9)
 project(webcface CXX)
 
-add_compile_options(-g)
-
 # c++20 for concepts
 set(CMAKE_CXX_STANDARD 20)
+
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE "Release")
+endif()
+
+if(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
+    if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+        add_compile_options(-fprofile-arcs -ftest-coverage)
+        add_link_options(-lgcov --coverage)
+    else()
+        add_compile_options(-fprofile-instr-generate -fcoverage-mapping)
+    endif()
+endif()
 
 
 find_package(msgpack CONFIG QUIET)
