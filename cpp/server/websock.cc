@@ -37,6 +37,9 @@ void serverRun(int port, const spdlog::sink_ptr &sink,
             if (cli) {
                 cli->onRecv(str);
             }
+
+            // なんか送り返さないと受信できなくなるっぽい? 謎
+            req.get_conn<cinatra::NonSSL>()->send_ws_binary("");
         });
 
         req.on(ws_error, [](request &req) {

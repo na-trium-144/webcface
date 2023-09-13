@@ -85,6 +85,7 @@ set(TEST_SRC
     ${CPP_DIR}/test/member_test.cc
     ${CPP_DIR}/test/logger_test.cc
     ${CPP_DIR}/test/client_test.cc
+    ${CPP_DIR}/test/dummy_server.cc
 )
 set(MSG_SRC
     ${CPP_DIR}/message/message.cc

@@ -44,8 +44,10 @@ class Client : public Member {
     //! サーバーのホストとポートを省略した場合localhost:7530になる
     explicit Client(const std::string &name,
                     const std::string &host = "127.0.0.1",
-                    int port = WEBCFACE_DEFAULT_PORT,
-                    std::shared_ptr<ClientData> data = nullptr);
+                    int port = WEBCFACE_DEFAULT_PORT)
+        : Client(name, host, port, std::make_shared<ClientData>(name)) {}
+    explicit Client(const std::string &name, const std::string &host, int port,
+                    std::shared_ptr<ClientData> data);
     //! サーバーに接続できているときtrueを返す。
     bool connected() const;
     //! デストラクタで接続を切る。

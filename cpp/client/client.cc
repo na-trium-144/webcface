@@ -10,9 +10,9 @@ namespace WebCFace {
 
 Client::Client(const std::string &name, const std::string &host, int port,
                std::shared_ptr<ClientData> data)
-    : Member(), data(data ? data : std::make_shared<ClientData>(name)),
-      host(host), port(port),
-      message_thread(messageThreadMain, data, host, port), recv_thread([this, data] {
+    : Member(), data(data), host(host), port(port),
+      message_thread(messageThreadMain, data, host, port),
+      recv_thread([this, data] {
           while (!data->closing.load()) {
               auto msg = data->recv_queue.pop(std::chrono::milliseconds(10));
               if (msg) {
