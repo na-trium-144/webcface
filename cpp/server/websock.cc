@@ -6,16 +6,20 @@
 #include <memory>
 
 namespace WebCFace::Server {
+
+static std::shared_ptr<cinatra::http_server> server;
+
+void serverStop() { server->stop(); }
 void serverRun(int port, const spdlog::sink_ptr &sink,
                spdlog::level::level_enum level) {
     using namespace cinatra;
 
-    http_server server(1);
-    server.listen("0.0.0.0", std::to_string(port));
+    server = std::make_shared<http_server>(1);
+    server->listen("0.0.0.0", std::to_string(port));
 
     // web socket
-    server.set_http_handler<GET, POST>("/", [sink, level](request &req,
-                                                          response &res) {
+    server->set_http_handler<GET, POST>("/", [sink, level](request &req,
+                                                           response &res) {
         assert(req.get_content_type() == content_type::websocket);
 
         req.on(ws_open, [sink, level](request &req) {
@@ -55,6 +59,6 @@ void serverRun(int port, const spdlog::sink_ptr &sink,
         });
     });
 
-    server.run();
+    server->run();
 }
 } // namespace WebCFace::Server

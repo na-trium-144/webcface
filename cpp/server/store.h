@@ -14,6 +14,12 @@ inline struct Store {
 
     Store() : clients(), clients_by_id() {}
 
+    //! テスト用
+    void clear(){
+        clients.clear();
+        clients_by_id.clear();
+    }
+
     void newClient(const ClientData::wsConnPtr &con,
                    const spdlog::sink_ptr &sink,
                    spdlog::level::level_enum level);

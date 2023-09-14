@@ -12,7 +12,7 @@
 
 using namespace WebCFace;
 
-void wait(int ms = 10) {
+static void wait(int ms = 10) {
     std::this_thread::sleep_for(std::chrono::milliseconds(ms));
 }
 
