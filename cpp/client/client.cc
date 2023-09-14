@@ -230,7 +230,7 @@ void Client::onRecv(const std::string &message) {
                         result = (*func_info)->run(r.args);
                     } catch (const std::exception &e) {
                         is_error = true;
-                        result = e.what();
+                        result = std::string(e.what());
                     } catch (const std::string &e) {
                         is_error = true;
                         result = e;
@@ -238,7 +238,6 @@ void Client::onRecv(const std::string &message) {
                         is_error = true;
                         result = "unknown exception";
                     }
-
                     data->message_queue.push(WebCFace::Message::packSingle(
                         WebCFace::Message::CallResult{{},
                                                       r.caller_id,
@@ -246,7 +245,6 @@ void Client::onRecv(const std::string &message) {
                                                       is_error,
                                                       result}));
                 } else {
-
                     data->message_queue.push(WebCFace::Message::packSingle(
                         WebCFace::Message::CallResponse{
                             {}, r.caller_id, r.caller_member_id, false}));
@@ -257,29 +255,41 @@ void Client::onRecv(const std::string &message) {
         case MessageKind::call_response: {
             auto r = std::any_cast<WebCFace::Message::CallResponse>(obj);
             auto &res = data->func_result_store.getResult(r.caller_id);
-            res.started_->set_value(r.started);
-            if (!r.started) {
-                try {
-                    throw FuncNotFound(res);
-                } catch (...) {
-                    res.result_->set_exception(std::current_exception());
+            try {
+                res.started_->set_value(r.started);
+                if (!r.started) {
+                    try {
+                        throw FuncNotFound(res);
+                    } catch (...) {
+                        res.result_->set_exception(std::current_exception());
+                    }
                 }
+            } catch (const std::future_error &e) {
+                this->data->logger_internal->error(
+                    "error receiving call response id={}: {}", r.caller_id,
+                    e.what());
             }
             break;
         }
         case MessageKind::call_result: {
             auto r = std::any_cast<WebCFace::Message::CallResult>(obj);
             auto &res = data->func_result_store.getResult(r.caller_id);
-            if (r.is_error) {
-                try {
-                    throw std::runtime_error(
-                        static_cast<std::string>(r.result));
-                } catch (...) {
-                    res.result_->set_exception(std::current_exception());
+            try {
+                if (r.is_error) {
+                    try {
+                        throw std::runtime_error(
+                            static_cast<std::string>(r.result));
+                    } catch (...) {
+                        res.result_->set_exception(std::current_exception());
+                    }
+                } else {
+                    // todo: 戻り値の型?
+                    res.result_->set_value(ValAdaptor{r.result});
                 }
-            } else {
-                // todo: 戻り値の型?
-                res.result_->set_value(ValAdaptor{r.result});
+            } catch (const std::future_error &e) {
+                this->data->logger_internal->error(
+                    "error receiving call result id={}: {}", r.caller_id,
+                    e.what());
             }
             break;
         }

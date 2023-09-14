@@ -30,11 +30,12 @@ void Client::messageThreadMain(std::shared_ptr<ClientData> data,
                     }
                     connected_this->store(false);
                     client_keep->reset();
-                }
-                if (data) {
-                    data->logger_internal->trace("message received");
-                    data->recv_queue.push(std::string(rdata.resp_body));
-                    data->logger_internal->trace("message recv done");
+                } else {
+                    if (data) {
+                        data->logger_internal->trace("message received");
+                        data->recv_queue.push(std::string(rdata.resp_body));
+                        data->logger_internal->trace("message recv done");
+                    }
                 }
             });
         client->on_ws_close([data_w, connected_this, client_keep](auto &&) {

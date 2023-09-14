@@ -13,7 +13,9 @@ DummyServer::~DummyServer() {
 DummyServer::DummyServer()
     : t([this] {
           using namespace cinatra;
-          auto dummy_logger = spdlog::stdout_color_mt("dummy_server");
+          static int sn = 0;
+          auto dummy_logger =
+              spdlog::stdout_color_mt("dummy_server_" + std::to_string(sn++));
           dummy_logger->set_level(spdlog::level::trace);
 
           auto server = std::make_shared<http_server>(1);

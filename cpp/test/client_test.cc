@@ -70,7 +70,7 @@ TEST_F(ClientTest, sync) {
     dummy_s->recv<Sync>([&](const auto &) {},
                         [&] { ADD_FAILURE() << "Sync recv error"; });
 }
-TEST_F(ClientTest, entry){
+TEST_F(ClientTest, entry) {
     wcli_->onMemberEntry().appendListener(callback<Member>());
     dummy_s->send(Message::SyncInit{{}, "a", 10});
     wait();
@@ -104,7 +104,7 @@ TEST_F(ClientTest, entry){
     callback_called = 0;
     EXPECT_EQ(m.views().size(), 1);
     EXPECT_EQ(m.views()[0].name(), "d");
-    
+
     m.onSync().appendListener(callback<Member>());
     dummy_s->send(Message::Sync{10, std::chrono::system_clock::now()});
     wait();
@@ -358,4 +358,174 @@ TEST_F(ClientTest, logReq) {
     wait();
     EXPECT_TRUE(data_->log_store.getRecv("a").has_value());
     EXPECT_EQ(data_->log_store.getRecv("a").value()->size(), 3);
+}
+TEST_F(ClientTest, funcInfo) {
+    auto f =
+        wcli_->func("a").set([](int) { return 1; }).setArgs({Arg("a").init(3)});
+    wcli_->sync();
+    wait();
+    dummy_s->recv<Message::FuncInfo>(
+        [&](const auto &obj) {
+            EXPECT_EQ(obj.field, "a");
+            EXPECT_EQ(obj.return_type, ValType::int_);
+            EXPECT_EQ(obj.args->size(), 1);
+            EXPECT_EQ(obj.args->at(0).name(), "a");
+        },
+        [&] { ADD_FAILURE() << "FuncInfo recv error"; });
+}
+TEST_F(ClientTest, funcCall) {
+    // call
+    dummy_s->send(Message::SyncInit{{}, "a", 10});
+    wait();
+    auto r = wcli_->member("a").func("b").runAsync(1, true, "a");
+    wait();
+    dummy_s->recv<Message::Call>(
+        [&](const auto &obj) {
+            EXPECT_EQ(obj.caller_id, 0);
+            EXPECT_EQ(obj.target_member_id, 10);
+            EXPECT_EQ(obj.field, "b");
+            EXPECT_EQ(obj.args.size(), 3);
+            EXPECT_EQ(static_cast<int>(obj.args[0]), 1);
+            EXPECT_EQ(obj.args[0].argType(), ValType::int_);
+            EXPECT_EQ(static_cast<bool>(obj.args[1]), true);
+            EXPECT_EQ(obj.args[1].argType(), ValType::bool_);
+            EXPECT_EQ(static_cast<std::string>(obj.args[2]), "a");
+            EXPECT_EQ(obj.args[2].argType(), ValType::string_);
+        },
+        [&] { ADD_FAILURE() << "FuncInfo recv error"; });
+
+    // started=false
+    dummy_s->send(Message::CallResponse{{}, 0, 0, false});
+    wait();
+    EXPECT_FALSE(r.started.get());
+    EXPECT_THROW(r.result.get(), FuncNotFound);
+    dummy_s->recvClear();
+
+    // 2nd call id=1
+    r = wcli_->member("a").func("b").runAsync(1, true, "a");
+    wait();
+    dummy_s->recv<Message::Call>(
+        [&](const auto &obj) {
+            EXPECT_EQ(obj.caller_id, 1);
+            EXPECT_EQ(obj.target_member_id, 10);
+            EXPECT_EQ(obj.field, "b");
+        },
+        [&] { ADD_FAILURE() << "FuncInfo recv error"; });
+
+    // started=true
+    dummy_s->send(Message::CallResponse{{}, 1, 0, true});
+    wait();
+    EXPECT_TRUE(r.started.get());
+    // return error
+    dummy_s->send(Message::CallResult{{}, 1, 0, true, "a"});
+    wait();
+    EXPECT_THROW(r.result.get(), std::runtime_error);
+    try {
+        r.result.get();
+    } catch (const std::runtime_error &e) {
+        EXPECT_EQ(std::string(e.what()), "a");
+    }
+    dummy_s->recvClear();
+
+    // 3rd call id=2
+    r = wcli_->member("a").func("b").runAsync(1, true, "a");
+    wait();
+    dummy_s->recv<Message::Call>(
+        [&](const auto &obj) {
+            EXPECT_EQ(obj.caller_id, 2);
+            EXPECT_EQ(obj.target_member_id, 10);
+            EXPECT_EQ(obj.field, "b");
+        },
+        [&] { ADD_FAILURE() << "FuncInfo recv error"; });
+
+    // started=true
+    dummy_s->send(Message::CallResponse{{}, 2, 0, true});
+    wait();
+    // return
+    dummy_s->send(Message::CallResult{{}, 2, 0, false, "b"});
+    wait();
+    EXPECT_EQ(static_cast<std::string>(r.result.get()), "b");
+}
+TEST_F(ClientTest, funcResponse) {
+    wcli_->func("a").set([](int a) {
+        if (a == 0) {
+            throw std::invalid_argument("a==0");
+        } else {
+            return a;
+        }
+    });
+    // not found
+    dummy_s->send(Message::Call{FuncCall{7, 100, 0, "n", {}}});
+    wait();
+    dummy_s->recv<Message::CallResponse>(
+        [&](const auto &obj) {
+            EXPECT_EQ(obj.caller_id, 7);
+            EXPECT_EQ(obj.caller_member_id, 100);
+            EXPECT_EQ(obj.started, false);
+        },
+        [&] { ADD_FAILURE() << "CallResponse recv error"; });
+    dummy_s->recvClear();
+
+    // arg error
+    dummy_s->send(Message::Call{FuncCall{8, 100, 0, "a", {1, "zzz"}}});
+    wait();
+    dummy_s->recv<Message::CallResponse>(
+        [&](const auto &obj) {
+            EXPECT_EQ(obj.caller_id, 8);
+            EXPECT_EQ(obj.caller_member_id, 100);
+            EXPECT_EQ(obj.started, true);
+        },
+        [&] { ADD_FAILURE() << "CallResponse recv error"; });
+    dummy_s->recv<Message::CallResult>(
+        [&](const auto &obj) {
+            EXPECT_EQ(obj.caller_id, 8);
+            EXPECT_EQ(obj.caller_member_id, 100);
+            EXPECT_EQ(obj.is_error, true);
+            EXPECT_EQ(static_cast<std::string>(obj.result),
+                      "requires 1 arguments, got 2");
+        },
+        [&] { ADD_FAILURE() << "CallResult recv error"; });
+    dummy_s->recvClear();
+
+    // throw
+    dummy_s->send(Message::Call{FuncCall{9, 100, 0, "a", {0}}});
+    wait();
+    dummy_s->recv<Message::CallResponse>(
+        [&](const auto &obj) {
+            EXPECT_EQ(obj.caller_id, 9);
+            EXPECT_EQ(obj.caller_member_id, 100);
+            EXPECT_EQ(obj.started, true);
+        },
+        [&] { ADD_FAILURE() << "CallResponse recv error"; });
+    dummy_s->recv<Message::CallResult>(
+        [&](const auto &obj) {
+            EXPECT_EQ(obj.caller_id, 9);
+            EXPECT_EQ(obj.caller_member_id, 100);
+            EXPECT_EQ(obj.is_error, true);
+            // 関数の中でthrowされた内容
+            EXPECT_EQ(static_cast<std::string>(obj.result), "a==0");
+        },
+        [&] { ADD_FAILURE() << "CallResult recv error"; });
+    dummy_s->recvClear();
+
+    // success
+    dummy_s->send(Message::Call{FuncCall{19, 100, 0, "a", {123}}});
+    wait();
+    dummy_s->recv<Message::CallResponse>(
+        [&](const auto &obj) {
+            EXPECT_EQ(obj.caller_id, 19);
+            EXPECT_EQ(obj.caller_member_id, 100);
+            EXPECT_EQ(obj.started, true);
+        },
+        [&] { ADD_FAILURE() << "CallResponse recv error"; });
+    dummy_s->recv<Message::CallResult>(
+        [&](const auto &obj) {
+            EXPECT_EQ(obj.caller_id, 19);
+            EXPECT_EQ(obj.caller_member_id, 100);
+            EXPECT_EQ(obj.is_error, false);
+            // 関数の中でthrowされた内容
+            EXPECT_EQ(static_cast<int>(obj.result), 123);
+        },
+        [&] { ADD_FAILURE() << "CallResult recv error"; });
+    dummy_s->recvClear();
 }
