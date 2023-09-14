@@ -38,6 +38,8 @@ struct ClientData {
     //! ログ全履歴
     std::shared_ptr<std::vector<Message::Log::LogLine>> log;
 
+    inline static unsigned int last_member_id = 0;
+
     ClientData() = delete;
     ClientData(const ClientData &) = delete;
     ClientData &operator=(const ClientData &) = delete;
@@ -45,8 +47,7 @@ struct ClientData {
                         spdlog::level::level_enum level)
         : con(con), sink(sink), logger_level(level),
           log(std::make_shared<std::vector<Message::Log::LogLine>>()) {
-        static unsigned int new_member_id = 0;
-        this->member_id = ++new_member_id;
+        this->member_id = ++last_member_id;
         logger = std::make_shared<spdlog::logger>(
             std::to_string(member_id) + "_(unknown client)", this->sink);
         logger->set_level(this->logger_level);

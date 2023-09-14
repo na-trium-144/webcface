@@ -1,7 +1,13 @@
 #include "store.h"
+#include "s_client_data.h"
 #include <algorithm>
 
 namespace WebCFace::Server {
+void Store::clear() {
+    clients.clear();
+    clients_by_id.clear();
+    ClientData::last_member_id = 0;
+}
 void Store::newClient(const ClientData::wsConnPtr &con,
                       const spdlog::sink_ptr &sink,
                       spdlog::level::level_enum level) {

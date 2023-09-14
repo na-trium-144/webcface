@@ -50,7 +50,7 @@ TEST_F(ClientTest, connection) {
 TEST_F(ClientTest, name) { EXPECT_EQ(wcli_->name(), self_name); }
 TEST_F(ClientTest, memoryLeak) {
     wcli_.reset();
-    wait(300);
+    wait();
     EXPECT_EQ(data_.use_count(), 1);
 }
 TEST_F(ClientTest, sync) {
