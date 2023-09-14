@@ -105,6 +105,16 @@ TEST_F(ClientTest, entry) {
     EXPECT_EQ(m.views().size(), 1);
     EXPECT_EQ(m.views()[0].name(), "d");
 
+    m.onFuncEntry().appendListener(callback<Func>());
+    dummy_s->send(Message::FuncInfo{
+        10, "a", ValType::int_,
+        std::make_shared<std::vector<Message::FuncInfo::Arg>>(1)});
+    wait();
+    EXPECT_EQ(callback_called, 1);
+    callback_called = 0;
+    EXPECT_EQ(m.funcs().size(), 1);
+    EXPECT_EQ(m.funcs()[0].name(), "a");
+
     m.onSync().appendListener(callback<Member>());
     dummy_s->send(Message::Sync{10, std::chrono::system_clock::now()});
     wait();

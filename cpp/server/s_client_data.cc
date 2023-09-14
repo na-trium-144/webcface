@@ -278,7 +278,7 @@ void ClientData::onRecv(const std::string &message) {
             // このvalueをsubscribeしてるところに送り返す
             store.forEach([&](auto &cd) {
                 auto [req_id, sub_field] =
-                    findReqField(cd.value_req, this->name, v.field);
+                    findReqField(cd.view_req, this->name, v.field);
                 if (req_id > 0) {
                     cd.pack(WebCFace::Message::Res<WebCFace::Message::View>(
                         req_id, sub_field, v.data_diff, v.length));

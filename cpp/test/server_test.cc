@@ -4,6 +4,7 @@
 #include "../server/s_client_data.h"
 #include "../message/message.h"
 #include <spdlog/sinks/stdout_color_sinks.h>
+#include <webcface/view.h>
 #include <thread>
 #include <iostream>
 #include "dummy_server.h"
@@ -69,8 +70,9 @@ TEST_F(ServerTest, entry) {
         std::make_shared<
             std::unordered_map<int, Message::View::ViewComponent>>(),
         0});
-    dummy_c1->send(
-        Message::FuncInfo{"a", FuncInfo{std::function<void()>(), nullptr}});
+    dummy_c1->send(Message::FuncInfo{
+        0, "a", ValType::none_,
+        std::make_shared<std::vector<Message::FuncInfo::Arg>>()});
     wait();
     // c2が接続したタイミングでのc1のentryが全部返る
     dummy_c2->send(Message::SyncInit{{}, "", 0});
@@ -139,8 +141,9 @@ TEST_F(ServerTest, entry) {
             EXPECT_EQ(obj.field, "b");
         },
         [&] { ADD_FAILURE() << "View Entry recv failed"; });
-    dummy_c1->send(
-        Message::FuncInfo{"b", FuncInfo{std::function<void()>(), nullptr}});
+    dummy_c1->send(Message::FuncInfo{
+        0, "b", ValType::none_,
+        std::make_shared<std::vector<Message::FuncInfo::Arg>>()});
     wait();
     dummy_c2->recv<Message::FuncInfo>(
         [&](const auto &obj) {
@@ -192,4 +195,176 @@ TEST_F(ServerTest, value) {
             EXPECT_EQ(obj.data->at(0), 6);
         },
         [&] { ADD_FAILURE() << "Value Res recv failed"; });
+}
+TEST_F(ServerTest, text) {
+    dummy_c1->send(Message::SyncInit{{}, "c1", 0});
+    dummy_c1->send(Message::Sync{});
+    dummy_c1->send(
+        Message::Text{{}, "a", std::make_shared<std::string>("zzz")});
+    wait();
+    dummy_c2->send(Message::SyncInit{{}, "", 0});
+    dummy_c2->send(Message::Req<Message::Text>{{}, "c1", "a", 1});
+    wait();
+    // req時の値
+    dummy_c2->recv<Message::Sync>([&](auto) {},
+                                  [&] { ADD_FAILURE() << "Sync recv failed"; });
+    dummy_c2->recv<Message::Res<Message::Text>>(
+        [&](const auto &obj) {
+            EXPECT_EQ(obj.req_id, 1);
+            EXPECT_EQ(obj.sub_field, "");
+            EXPECT_EQ(*obj.data, "zzz");
+        },
+        [&] { ADD_FAILURE() << "Text Res recv failed"; });
+    dummy_c2->recvClear();
+
+    // 変化後の値
+    dummy_c1->send(Message::Sync{});
+    dummy_c1->send(
+        Message::Text{{}, "a", std::make_shared<std::string>("zzzzz")});
+    wait();
+    dummy_c2->recv<Message::Sync>([&](auto) {},
+                                  [&] { ADD_FAILURE() << "Sync recv failed"; });
+    dummy_c2->recv<Message::Res<Message::Text>>(
+        [&](const auto &obj) {
+            EXPECT_EQ(obj.req_id, 1);
+            EXPECT_EQ(obj.sub_field, "");
+            EXPECT_EQ(*obj.data, "zzzzz");
+        },
+        [&] { ADD_FAILURE() << "Text Res recv failed"; });
+}
+TEST_F(ServerTest, view) {
+    dummy_c1->send(Message::SyncInit{{}, "c1", 0});
+    dummy_c1->send(Message::Sync{});
+    dummy_c1->send(Message::View{
+        "a",
+        std::make_shared<std::unordered_map<int, Message::View::ViewComponent>>(
+            std::unordered_map<int, Message::View::ViewComponent>{
+                {0, ViewComponents::text("a")},
+                {1, ViewComponents::newLine()},
+                {2, ViewComponents::button(
+                        "f",
+                        Func{Field{std::weak_ptr<ClientData>(), "p", "q"}})}}),
+        3});
+    wait();
+    dummy_c2->send(Message::SyncInit{{}, "", 0});
+    dummy_c2->send(Message::Req<Message::View>{{}, "c1", "a", 1});
+    wait();
+    // req時の値
+    dummy_c2->recv<Message::Sync>([&](auto) {},
+                                  [&] { ADD_FAILURE() << "Sync recv failed"; });
+    dummy_c2->recv<Message::Res<Message::View>>(
+        [&](const auto &obj) {
+            EXPECT_EQ(obj.req_id, 1);
+            EXPECT_EQ(obj.sub_field, "");
+            EXPECT_EQ(obj.data_diff->size(), 3);
+            EXPECT_EQ(obj.data_diff->at(0).type, ViewComponentType::text);
+            EXPECT_EQ(obj.length, 3);
+        },
+        [&] { ADD_FAILURE() << "View Res recv failed"; });
+    dummy_c2->recvClear();
+
+    // 変化後の値
+    dummy_c1->send(Message::Sync{});
+    dummy_c1->send(Message::View{
+        "a",
+        std::make_shared<std::unordered_map<int, Message::View::ViewComponent>>(
+            std::unordered_map<int, Message::View::ViewComponent>{
+                {0, ViewComponents::text("b")},
+            }),
+        3});
+    wait();
+    dummy_c2->recv<Message::Sync>([&](auto) {},
+                                  [&] { ADD_FAILURE() << "Sync recv failed"; });
+    dummy_c2->recv<Message::Res<Message::View>>(
+        [&](const auto &obj) {
+            EXPECT_EQ(obj.req_id, 1);
+            EXPECT_EQ(obj.sub_field, "");
+            EXPECT_EQ(obj.data_diff->size(), 1);
+            EXPECT_EQ(obj.data_diff->at(0).type, ViewComponentType::text);
+            EXPECT_EQ(obj.length, 3);
+        },
+        [&] { ADD_FAILURE() << "View Res recv failed"; });
+}
+TEST_F(ServerTest, log) {
+    dummy_c1->send(Message::SyncInit{{}, "c1", 0});
+    dummy_c1->send(
+        Message::Log{{},
+                     0,
+                     std::make_shared<std::vector<Message::Log::LogLine>>(
+                         std::vector<Message::Log::LogLine>{
+                             LogLine{0, std::chrono::system_clock::now(), "0"},
+                             LogLine{1, std::chrono::system_clock::now(), "1"},
+                         })});
+    wait();
+    dummy_c2->send(Message::SyncInit{{}, "", 0});
+    dummy_c2->send(Message::LogReq{{}, "c1"});
+    wait();
+    // req時の値
+    dummy_c2->recv<Message::Log>(
+        [&](const auto &obj) {
+            EXPECT_EQ(obj.member_id, 1);
+            EXPECT_EQ(obj.log->size(), 2);
+            EXPECT_EQ(obj.log->at(0).level, 0);
+            EXPECT_EQ(obj.log->at(0).message, "0");
+        },
+        [&] { ADD_FAILURE() << "Log recv failed"; });
+    dummy_c2->recvClear();
+
+    // 変化後の値
+    dummy_c1->send(
+        Message::Log{{},
+                     0,
+                     std::make_shared<std::vector<Message::Log::LogLine>>(
+                         std::vector<Message::Log::LogLine>{
+                             LogLine{2, std::chrono::system_clock::now(), "2"},
+                         })});
+    wait();
+    dummy_c2->recv<Message::Log>(
+        [&](const auto &obj) {
+            EXPECT_EQ(obj.member_id, 1);
+            EXPECT_EQ(obj.log->size(), 1);
+            EXPECT_EQ(obj.log->at(0).level, 2);
+            EXPECT_EQ(obj.log->at(0).message, "2");
+        },
+        [&] { ADD_FAILURE() << "Log recv failed"; });
+}
+TEST_F(ServerTest, call) {
+    dummy_c1->send(Message::SyncInit{{}, "c1", 0});
+    dummy_c2->send(Message::SyncInit{{}, "c2", 0});
+    wait();
+    // c2がc1にcallを送る (caller_id=1)
+    dummy_c2->send(Message::Call{FuncCall{1, 0, 1, "a", {0, 0, 0}}});
+    wait();
+    dummy_c1->recv<Message::Call>(
+        [&](const auto &obj) {
+            EXPECT_EQ(obj.caller_id, 1);
+            EXPECT_EQ(obj.caller_member_id, 2);
+            EXPECT_EQ(obj.target_member_id, 1);
+            EXPECT_EQ(obj.field, "a");
+            EXPECT_EQ(obj.args.size(), 3);
+        },
+        [&] { ADD_FAILURE() << "Call recv failed"; });
+    dummy_c2->recvClear();
+
+    dummy_c1->send(Message::CallResponse{{}, 1, 2, true});
+    wait();
+    dummy_c2->recv<Message::CallResponse>(
+        [&](const auto &obj) {
+            EXPECT_EQ(obj.caller_id, 1);
+            EXPECT_EQ(obj.caller_member_id, 2);
+            EXPECT_EQ(obj.started, true);
+        },
+        [&] { ADD_FAILURE() << "Call Response recv failed"; });
+    dummy_c2->recvClear();
+
+    dummy_c1->send(Message::CallResult{{}, 1, 2, false, "aaa"});
+    wait();
+    dummy_c2->recv<Message::CallResult>(
+        [&](const auto &obj) {
+            EXPECT_EQ(obj.caller_id, 1);
+            EXPECT_EQ(obj.caller_member_id, 2);
+            EXPECT_EQ(obj.is_error, false);
+            EXPECT_EQ(static_cast<std::string>(obj.result), "aaa");
+        },
+        [&] { ADD_FAILURE() << "Call Result recv failed"; });
 }

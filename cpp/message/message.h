@@ -219,6 +219,11 @@ struct FuncInfo : public MessageBase<MessageKind::func_info> {
     };
     std::shared_ptr<std::vector<Arg>> args;
     FuncInfo() = default;
+    FuncInfo(unsigned int member_id, const std::string &field,
+             Common::ValType return_type,
+             std::shared_ptr<std::vector<Arg>> args)
+        : member_id(member_id), field(field), return_type(return_type),
+          args(args) {}
     explicit FuncInfo(const std::string &field, const Common::FuncInfo &info)
         : MessageBase<MessageKind::func_info>(), field(field),
           args(std::make_shared<std::vector<Arg>>(info.args.size())),
