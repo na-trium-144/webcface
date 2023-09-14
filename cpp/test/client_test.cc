@@ -206,14 +206,50 @@ TEST_F(ClientTest, viewReq) {
             EXPECT_EQ(obj.req_id, 1);
         },
         [&] { ADD_FAILURE() << "View Req recv error"; });
-    // dummy_s->send(
-    //     Message::Res<Message::View>{1, "",
-    //     std::make_shared<std::string>("z")});
-    // dummy_s->send(Message::Res<Message::Text>{
-    //     1, "c", std::make_shared<std::string>("z")});
-    // wait();
-    // EXPECT_TRUE(data_->text_store.getRecv("a", "b").has_value());
-    // EXPECT_EQ(*data_->text_store.getRecv("a", "b").value(), "z");
-    // EXPECT_TRUE(data_->text_store.getRecv("a", "b.c").has_value());
-    // EXPECT_EQ(*data_->text_store.getRecv("a", "b.c").value(), "z");
+
+    auto v =
+        std::make_shared<std::unordered_map<int, Message::View::ViewComponent>>(
+            std::unordered_map<int, Message::View::ViewComponent>{
+                {0, ViewComponents::text("a")
+                        .textColor(ViewColor::yellow)
+                        .bgColor(ViewColor::green)},
+                {1, ViewComponents::newLine()},
+                {2, ViewComponents::button("a", Func{Field{data_, "x", "y"}})},
+            });
+    dummy_s->send(Message::Res<Message::View>{1, "", v, 3});
+    dummy_s->send(Message::Res<Message::View>{1, "c", v, 3});
+    wait();
+    EXPECT_TRUE(data_->view_store.getRecv("a", "b").has_value());
+    EXPECT_EQ(data_->view_store.getRecv("a", "b").value()->size(), 3);
+    EXPECT_EQ(data_->view_store.getRecv("a", "b").value()->at(0).type_,
+              ViewComponentType::text);
+    EXPECT_EQ(data_->view_store.getRecv("a", "b").value()->at(0).text_, "a");
+    EXPECT_EQ(data_->view_store.getRecv("a", "b").value()->at(0).text_color_,
+              ViewColor::yellow);
+    EXPECT_EQ(data_->view_store.getRecv("a", "b").value()->at(0).bg_color_,
+              ViewColor::green);
+    EXPECT_EQ(data_->view_store.getRecv("a", "b").value()->at(1).type_,
+              ViewComponentType::new_line);
+    EXPECT_TRUE(data_->view_store.getRecv("a", "b.c").has_value());
+
+    // 差分だけ送る
+    auto v2 =
+        std::make_shared<std::unordered_map<int, Message::View::ViewComponent>>(
+            std::unordered_map<int, Message::View::ViewComponent>{
+                {0, ViewComponents::text("b")
+                        .textColor(ViewColor::red)
+                        .bgColor(ViewColor::green)},
+            });
+    dummy_s->send(Message::Res<Message::View>{1, "", v2, 3});
+    wait();
+    EXPECT_EQ(data_->view_store.getRecv("a", "b").value()->size(), 3);
+    EXPECT_EQ(data_->view_store.getRecv("a", "b").value()->at(0).type_,
+              ViewComponentType::text);
+    EXPECT_EQ(data_->view_store.getRecv("a", "b").value()->at(0).text_, "b");
+    EXPECT_EQ(data_->view_store.getRecv("a", "b").value()->at(0).text_color_,
+              ViewColor::red);
+    EXPECT_EQ(data_->view_store.getRecv("a", "b").value()->at(0).bg_color_,
+              ViewColor::green);
+    EXPECT_EQ(data_->view_store.getRecv("a", "b").value()->at(1).type_,
+              ViewComponentType::new_line);
 }
