@@ -370,19 +370,21 @@ export class Client extends Member {
       for (const [k, v] of this.data.funcStore
         .transferSend(isFirst)
         .entries()) {
-        msg.push({
-          kind: Message.kind.funcInfo,
-          f: k,
-          r: v.returnType,
-          a: v.args.map((a) => ({
-            n: a.name || "",
-            t: a.type != undefined ? a.type : Message.argType.none_,
-            i: a.init != undefined ? a.init : null,
-            m: a.min != undefined ? a.min : null,
-            x: a.max != undefined ? a.max : null,
-            o: a.option != undefined ? a.option : [],
-          })),
-        });
+        if (!this.data.funcStore.isHidden(k)) {
+          msg.push({
+            kind: Message.kind.funcInfo,
+            f: k,
+            r: v.returnType,
+            a: v.args.map((a) => ({
+              n: a.name || "",
+              t: a.type != undefined ? a.type : Message.argType.none_,
+              i: a.init != undefined ? a.init : null,
+              m: a.min != undefined ? a.min : null,
+              x: a.max != undefined ? a.max : null,
+              o: a.option != undefined ? a.option : [],
+            })),
+          });
+        }
       }
 
       const logSend: Message.LogLine[] = [];

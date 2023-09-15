@@ -1,6 +1,6 @@
 import * as Message from "./message.js";
 import isEqual from "lodash.isequal";
-import { Func } from "./func.js";
+import { Func, AnonymousFunc, FuncCallback } from "./func.js";
 import { Member } from "./member.js";
 import { ClientData } from "./clientData.js";
 import { FieldWithEvent, eventType } from "./event.js";
@@ -84,6 +84,7 @@ export class ViewComponent {
   type_ = 0;
   text_ = "";
   on_click_: FieldBase | null = null;
+  on_click_tmp_: AnonymousFunc | null = null;
   text_color_ = 0;
   bg_color_ = 0;
   data: ClientData | null = null;
@@ -105,6 +106,15 @@ export class ViewComponent {
       this.bg_color_ = arg.b;
     }
     this.data = data;
+  }
+  lockTmp(data: ClientData, field: string) {
+    if (this.on_click_tmp_) {
+      const f = new Func(new Field(data, field));
+      this.on_click_tmp_.lockTo(f);
+      f.hidden = true;
+      this.on_click_ = f;
+    }
+    return this;
   }
   toMessage(): Message.ViewComponent {
     return {
@@ -139,13 +149,14 @@ export class ViewComponent {
     }
   }
   // todo: 関数を直接渡す、anonymousfunc実装
-  set onClick(func: Func) {
-    // if(func instanceof AnonymousFunc){
-    // }else if (func instanceof Func) {
-    this.on_click_ = func;
-    // }else{
-    //   this.onClick(new AnonymousFunc(func));
-    // }
+  set onClick(func: Func | AnonymousFunc | FuncCallback) {
+    if (func instanceof AnonymousFunc) {
+      this.on_click_tmp_ = func;
+    } else if (func instanceof Func) {
+      this.on_click_ = func;
+    } else {
+      this.onClick = new AnonymousFunc(null, func, Message.argType.none_, []);
+    }
   }
   get textColor() {
     return this.text_color_;
@@ -193,7 +204,9 @@ export class View extends FieldWithEvent<View> {
     if (this.data.viewStore.isSelf(this.member_)) {
       this.data.viewStore.setSend(
         this.field_,
-        data.map((v) => v.toMessage())
+        data.map((v, i) =>
+          v.lockTmp(this.data, `${this.field_}_${i}`).toMessage()
+        )
       );
     } else {
       throw new Error("Cannot set data to member other than self");

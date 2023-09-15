@@ -89,6 +89,7 @@ export function runFunc(fi: FuncInfo, args: Val[]) {
   }
 }
 
+export type FuncCallback = (...args: any[]) => Val | Promise<Val> | void;
 export class Func extends Field {
   constructor(base: Field, field = "") {
     super(base.data, base.member_, field || base.field_);
@@ -99,21 +100,23 @@ export class Func extends Field {
   get name() {
     return this.field_;
   }
-  set(
-    func: (...args: any[]) => Val | Promise<Val> | void,
-    returnType: number = argType.none_,
-    args: Arg[] = []
-  ) {
-    const data: FuncInfo = {
-      returnType: returnType,
-      args: args,
-      funcImpl: func,
-    };
+  setInfo(data: FuncInfo) {
     if (this.data.funcStore.isSelf(this.member_)) {
       this.data.funcStore.setSend(this.field_, data);
     } else {
       throw new Error("Cannot set data to member other than self");
     }
+  }
+  set(
+    func: FuncCallback,
+    returnType: number = argType.none_,
+    args: Arg[] = []
+  ) {
+    this.setInfo({
+      returnType: returnType,
+      args: args,
+      funcImpl: func,
+    });
   }
   get returnType() {
     const funcInfo = this.data.funcStore.getRecv(this.member_, this.field_);
@@ -128,6 +131,12 @@ export class Func extends Field {
       return funcInfo.args;
     }
     return [];
+  }
+  set hidden(h: boolean) {
+    this.data.funcStore.setHidden(this.field_, h);
+  }
+  free() {
+    this.data.funcStore.unsetRecv(this.member_, this.field_);
   }
   runImpl(r: AsyncFuncResult, args: Val[]) {
     const funcInfo = this.data.funcStore.getRecv(this.member_, this.field_);
@@ -157,5 +166,51 @@ export class Func extends Field {
       this.runImpl(r, args);
     });
     return r;
+  }
+}
+export class AnonymousFunc {
+  static fieldId = 0;
+  static fieldNameTmp() {
+    return `.tmp${++this.fieldId}`;
+  }
+
+  base_: Func | null;
+  func_: FuncCallback;
+  returnType_: number;
+  args_: Arg[];
+  constructor(
+    base: Field | null,
+    func: FuncCallback,
+    returnType: number,
+    args: Arg[]
+  ) {
+    this.func_ = func;
+    this.returnType_ = returnType;
+    this.args_ = args;
+    if (base == null) {
+      this.base_ = null;
+    } else {
+      this.base_ = new Func(base, AnonymousFunc.fieldNameTmp());
+      this.base_.set(func, returnType, args);
+      this.base_.hidden = true;
+    }
+  }
+  lockTo(target: Func) {
+    if (this.base_ == null) {
+      this.base_ = new Func(target, AnonymousFunc.fieldNameTmp());
+      this.base_.set(this.func_, this.returnType_, this.args_);
+      this.base_.hidden = true;
+    }
+    const fi = this.base_.data.funcStore.getRecv(
+      this.base_.member_,
+      this.base_.field_
+    );
+    if (fi) {
+      target.setInfo(fi);
+      this.base_.free();
+    } else {
+      // コンストラクタかlockToのどちらかで必ずsetされているはずなのであり得ないが
+      throw new Error("Error in AnosymousFunc.lockTo()");
+    }
   }
 }

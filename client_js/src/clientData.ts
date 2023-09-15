@@ -53,6 +53,7 @@ export class ClientData {
 class SyncDataStore2<T> {
   dataSend: Map<string, T>;
   dataSendPrev: Map<string, T>;
+  dataSendHidden: Map<string, boolean>;
   dataRecv: Map<string, Map<string, T>>;
   entry: Map<string, string[]>;
   req: Map<string, Map<string, number>>;
@@ -62,6 +63,7 @@ class SyncDataStore2<T> {
     this.selfMemberName = name;
     this.dataSend = new Map();
     this.dataSendPrev = new Map();
+    this.dataSendHidden = new Map();
     this.dataRecv = new Map();
     this.entry = new Map();
     this.req = new Map();
@@ -74,6 +76,12 @@ class SyncDataStore2<T> {
   setSend(field: string, data: T) {
     this.dataSend.set(field, data);
     this.setRecv(this.selfMemberName, field, data);
+  }
+  setHidden(field: string, isHidden: boolean) {
+    this.dataSendHidden.set(field, isHidden);
+  }
+  isHidden(field: string) {
+    return this.dataSendHidden.get(field) == true;
   }
   //! 受信したデータをdata_recvにセット
   setRecv(member: string, field: string, data: T) {
