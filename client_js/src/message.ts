@@ -56,7 +56,7 @@ export const argType = {
 export interface Value {
   kind: 0;
   f: string;
-  d: number;
+  d: number[];
 }
 export interface Text {
   kind: 1;
@@ -94,7 +94,7 @@ export interface Req {
 export interface ValueRes {
   kind: 75;
   i: number;
-  d: number;
+  d: number[];
 }
 export interface TextRes {
   kind: 76;

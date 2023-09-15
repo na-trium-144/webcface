@@ -6,7 +6,7 @@ import { FieldBase } from "./field.js";
 
 export class ClientData {
   selfMemberName: string;
-  valueStore: SyncDataStore2<number>;
+  valueStore: SyncDataStore2<number[]>;
   textStore: SyncDataStore2<string>;
   funcStore: SyncDataStore2<FuncInfo>;
   viewStore: SyncDataStore2<Message.ViewComponent[]>;
@@ -22,7 +22,7 @@ export class ClientData {
     callFunc: (r: AsyncFuncResult, b: FieldBase, args: Val[]) => void
   ) {
     this.selfMemberName = name;
-    this.valueStore = new SyncDataStore2<number>(name);
+    this.valueStore = new SyncDataStore2<number[]>(name);
     this.textStore = new SyncDataStore2<string>(name);
     this.funcStore = new SyncDataStore2<FuncInfo>(name);
     this.viewStore = new SyncDataStore2<Message.ViewComponent[]>(name);

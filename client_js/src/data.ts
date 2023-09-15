@@ -4,13 +4,9 @@ import { Field } from "./field.js";
 import { LogLine } from "./logger.js";
 
 export class Value extends FieldWithEvent<Value> {
-  value_: number | null;
-  time_: Date | null;
   constructor(base: Field, field = "") {
     super("", base.data, base.member_, field || base.field_);
     this.eventType_ = eventType.valueChange(this);
-    this.value_ = this.data.valueStore.getRecv(this.member_, this.field_);
-    this.time_ = this.data.syncTimeStore.getRecv(this.member_);
   }
   get member() {
     return new Member(this);
@@ -18,36 +14,62 @@ export class Value extends FieldWithEvent<Value> {
   get name() {
     return this.field_;
   }
+  child(field: string): Value {
+    return new Value(this, this.field_ + "." + field);
+  }
+  // todo
+  // tryGetRecurse(){
+  //   return this.data.valueStore.getRecvRecurse(this.member_, this.field_);
+  // }
+  tryGetVec() {
+    return this.data.valueStore.getRecv(this.member_, this.field_);
+  }
   tryGet() {
-    return this.value_;
+    const v = this.tryGetVec();
+    return v != null && v.length >= 1 ? v[0] : null;
+  }
+  getVec() {
+    const v = this.tryGetVec();
+    if (v == null) {
+      return [];
+    } else {
+      return v;
+    }
   }
   get() {
     const v = this.tryGet();
-    if (v === null) {
+    if (v == null) {
       return 0;
     } else {
       return v;
     }
   }
-  set(data: number) {
+  set(data: number | number[] | object) {
     if (this.data.valueStore.isSelf(this.member_)) {
-      this.data.valueStore.setSend(this.field_, data);
+      if (typeof data === "number") {
+        this.data.valueStore.setSend(this.field_, [data]);
+      } else if (
+        Array.isArray(data) &&
+        data.find((v) => typeof v !== "number") == null
+      ) {
+        this.data.valueStore.setSend(this.field_, data);
+      } else if (typeof data === "object" && data != null) {
+        for (const [k, v] of Object.entries(data)) {
+          this.child(k).set(v as number | number[] | object);
+        }
+      }
     } else {
       throw new Error("Cannot set data to member other than self");
     }
   }
   time() {
-    return this.time_ || new Date(0);
+    return this.data.syncTimeStore.getRecv(this.member_) || new Date(0);
   }
 }
 export class Text extends FieldWithEvent<Text> {
-  value_: string | null;
-  time_: Date | null;
   constructor(base: Field, field = "") {
     super("", base.data, base.member_, field || base.field_);
     this.eventType_ = eventType.textChange(this);
-    this.value_ = this.data.textStore.getRecv(this.member_, this.field_);
-    this.time_ = this.data.syncTimeStore.getRecv(this.member_);
   }
   get member() {
     return new Member(this);
@@ -55,8 +77,11 @@ export class Text extends FieldWithEvent<Text> {
   get name() {
     return this.field_;
   }
+  child(field: string): Text {
+    return new Text(this, this.field_ + "." + field);
+  }
   tryGet() {
-    return this.value_;
+    return this.data.textStore.getRecv(this.member_, this.field_);
   }
   get() {
     const v = this.tryGet();
@@ -66,24 +91,28 @@ export class Text extends FieldWithEvent<Text> {
       return v;
     }
   }
-  set(data: string) {
+  set(data: string | object) {
     if (this.data.textStore.isSelf(this.member_)) {
-      this.data.textStore.setSend(this.field_, data);
+      if (typeof data === "object" && data != null) {
+        for (const [k, v] of Object.entries(data)) {
+          this.child(k).set(v as string | object);
+        }
+      } else {
+        this.data.textStore.setSend(this.field_, String(data));
+      }
     } else {
       throw new Error("Cannot set data to member other than self");
     }
   }
   time() {
-    return this.time_ || new Date(0);
+    return this.data.syncTimeStore.getRecv(this.member_) || new Date(0);
   }
 }
 
 export class Log extends FieldWithEvent<LogLine> {
-  value_: LogLine[] | null;
   constructor(base: Field) {
     super("", base.data, base.member_, "");
     this.eventType_ = eventType.logAppend(this);
-    this.value_ = this.data.logStore.getRecv(this.member_);
   }
   get member() {
     return new Member(this);
@@ -92,7 +121,7 @@ export class Log extends FieldWithEvent<LogLine> {
     return this.field_;
   }
   tryGet() {
-    return this.value_;
+    return this.data.logStore.getRecv(this.member_);
   }
   get() {
     const v = this.tryGet();
