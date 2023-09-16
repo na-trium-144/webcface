@@ -2,7 +2,7 @@ import { Val, FuncInfo, AsyncFuncResult } from "./func.js";
 import { EventEmitter } from "eventemitter3";
 import { LogLine } from "./logger.js";
 import * as Message from "./message.js";
-import { FieldBase } from "./field.js";
+import { FieldBase, Field } from "./field.js";
 
 export class ClientData {
   selfMemberName: string;
@@ -198,7 +198,7 @@ export class SyncDataStore2<T> {
   }
 }
 
-class SyncDataStore1<T> {
+export class SyncDataStore1<T> {
   dataRecv: Map<string, T>;
   req: Map<string, boolean>;
   reqSend: Map<string, boolean>;
@@ -237,9 +237,10 @@ class SyncDataStore1<T> {
     }
   }
 }
-class FuncResultStore {
+
+export class FuncResultStore {
   results: AsyncFuncResult[] = [];
-  addResult(caller: string, base: FieldBase) {
+  addResult(caller: string, base: Field) {
     const callerId = this.results.length;
     this.results.push(new AsyncFuncResult(callerId, caller, base));
     return this.results[callerId];

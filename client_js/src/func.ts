@@ -27,7 +27,7 @@ export class FuncNotFoundError extends Error {
   }
 }
 
-export class AsyncFuncResult extends FieldBase {
+export class AsyncFuncResult extends Field {
   callerId: number;
   caller: string;
   // 関数が開始したらtrue, 存在しなければfalse
@@ -39,8 +39,8 @@ export class AsyncFuncResult extends FieldBase {
   rejectResult: (e: any) => void = () => undefined;
   started: Promise<boolean>;
   result: Promise<Val>;
-  constructor(callerId: number, caller: string, base: FieldBase) {
-    super(base.member_, base.field_);
+  constructor(callerId: number, caller: string, base: Field) {
+    super(base.data, base.member_, base.field_);
     this.callerId = callerId;
     this.caller = caller;
     this.started = new Promise((res) => {
@@ -55,6 +55,12 @@ export class AsyncFuncResult extends FieldBase {
       this.resolveResult = res;
       this.rejectResult = rej;
     });
+  }
+  get member() {
+    return new Member(this);
+  }
+  get name() {
+    return this.field_;
   }
 }
 

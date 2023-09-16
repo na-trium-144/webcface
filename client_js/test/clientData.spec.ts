@@ -1,9 +1,19 @@
 import { assert } from "chai";
-import { ClientData, SyncDataStore2 } from "../src/clientData.js";
+import {
+  ClientData,
+  SyncDataStore2,
+  SyncDataStore1,
+  FuncResultStore,
+} from "../src/clientData.js";
+import { Field } from "../src/field.js";
 
 describe("ClientData Tests", function () {
   const selfName = "test";
-  describe("SyncDataStore2", function () {
+  let data: ClientData;
+  beforeEach(function () {
+    data = new ClientData(selfName, () => undefined);
+  });
+  describe("SyncDataStore2 Tests", function () {
     let s2: SyncDataStore2<string>;
     beforeEach(function () {
       s2 = new SyncDataStore2<string>(selfName);
@@ -203,6 +213,122 @@ describe("ClientData Tests", function () {
       it("returns empty member and field when req_id not found", function () {
         assert.sameOrderedMembers(s2.getReq(999), ["", ""]);
       });
+    });
+  });
+  describe("SyncDataStore1 Tests", function () {
+    let s1: SyncDataStore1<string>;
+    beforeEach(function () {
+      s1 = new SyncDataStore1<string>(selfName);
+    });
+    describe("#isSelf()", function () {
+      it("returns true when self name is passed", function () {
+        assert.isTrue(s1.isSelf(selfName));
+      });
+      it("returns false when different name is passed", function () {
+        assert.isFalse(s1.isSelf("hoge"));
+      });
+      it("returns false when empty string is passed", function () {
+        assert.isFalse(s1.isSelf(""));
+      });
+    });
+    describe("#setRecv()", function () {
+      it("sets value to #dataRecv", function () {
+        s1.setRecv("a", "b");
+        assert.strictEqual(s1.dataRecv.get("a"), "b");
+      });
+    });
+    describe("#getRecv()", function () {
+      it("returns value in #dataRecv", function () {
+        s1.dataRecv.set("a", "b");
+        assert.strictEqual(s1.getRecv("a"), "b");
+      });
+      it("sets new request to #req and #reqSend", function () {
+        s1.getRecv("a");
+        assert.strictEqual(s1.req.get("a"), true);
+        assert.strictEqual(s1.reqSend.get("a"), true);
+      });
+      it("does not set #req and #reqSend if member is self name", function () {
+        s1.getRecv(selfName);
+        assert.isEmpty(s1.req);
+        assert.isEmpty(s1.reqSend);
+      });
+    });
+    describe("#transferReq", function () {
+      beforeEach(function () {
+        s1.reqSend.set("a", true);
+        s1.req.set("a", true);
+        s1.req.set("b", true);
+      });
+      it("returns #reqSend when isFirst = false", function () {
+        const s = s1.transferReq(false);
+        assert.strictEqual(s.get("a"), true);
+        assert.isFalse(s.has("b"));
+      });
+      it("returns nothing on second call with isFirst = false", function () {
+        s1.transferReq(false);
+        const s = s1.transferReq(false);
+        assert.isEmpty(s);
+      });
+      it("returns #req when isFirst = true", function () {
+        const s = s1.transferReq(true);
+        assert.strictEqual(s.get("a"), true);
+        assert.strictEqual(s.get("b"), true);
+      });
+    });
+  });
+  describe("FuncResultStore Tests", function () {
+    let fs: FuncResultStore;
+    beforeEach(function () {
+      fs = new FuncResultStore();
+    });
+    describe("#addResult()", function () {
+      it("returns result object", function () {
+        const r = fs.addResult("a", new Field(data, "b", "c"));
+        assert.strictEqual(r.caller, "a");
+        assert.strictEqual(r.member.name, "b");
+        assert.strictEqual(r.name, "c");
+        assert.strictEqual(r.callerId, 0);
+      });
+    });
+    describe("#getResult()", function () {
+      it("returns result object", function () {
+        fs.addResult("a", new Field(data, "b", "c"));
+        const r = fs.getResult(0);
+        assert.strictEqual(r.caller, "a");
+        assert.strictEqual(r.member.name, "b");
+        assert.strictEqual(r.name, "c");
+        assert.strictEqual(r.callerId, 0);
+      });
+    });
+  });
+  describe("#isSelf()", function () {
+    it("returns true when self name is passed", function () {
+      assert.isTrue(data.isSelf(selfName));
+    });
+    it("returns false when different name is passed", function () {
+      assert.isFalse(data.isSelf("hoge"));
+    });
+    it("returns false when empty string is passed", function () {
+      assert.isFalse(data.isSelf(""));
+    });
+  });
+  describe("#getMemberNameFromId()", function () {
+    it("returns member name with given member id", function () {
+      data.memberIds.set("a", 10);
+      assert.strictEqual(data.getMemberNameFromId(10), "a");
+    });
+    it("returns empty string when member id not found", function () {
+      assert.strictEqual(data.getMemberNameFromId(999), "");
+    });
+  });
+  describe("#getMemberIdFromName()", function () {
+    it("returns member id with given name", function () {
+      data.memberIds.set("a", 10);
+      assert.strictEqual(data.getMemberIdFromName("a"), 10);
+    });
+    it("returns 0 when member name not found", function () {
+      assert.strictEqual(data.getMemberIdFromName("b"), 0);
+      assert.strictEqual(data.getMemberIdFromName(""), 0);
     });
   });
 });
