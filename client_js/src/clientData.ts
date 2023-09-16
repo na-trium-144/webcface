@@ -141,7 +141,7 @@ export class SyncDataStore2<T> {
   }
   //! member名のりすとを取得(entryから)
   getMembers() {
-    return this.entry.keys();
+    return Array.from(this.entry.keys());
   }
   //! entryを取得
   getEntry(member: string) {
