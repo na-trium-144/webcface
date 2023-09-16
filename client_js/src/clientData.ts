@@ -50,7 +50,7 @@ export class ClientData {
   }
 }
 
-class SyncDataStore2<T> {
+export class SyncDataStore2<T> {
   dataSend: Map<string, T>;
   dataSendPrev: Map<string, T>;
   dataSendHidden: Map<string, boolean>;
