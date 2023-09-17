@@ -10,7 +10,7 @@ export const viewComponentTypes = {
   text: 0,
   newLine: 1,
   button: 2,
-};
+} as const;
 export const viewColor = {
   inherit: 0,
   black: 1,
@@ -37,7 +37,7 @@ export const viewColor = {
   // fuchsia : 22,
   pink: 23,
   // rose : 24,
-};
+} as const;
 
 export function getViewDiff(
   current: Message.ViewComponent[],
@@ -71,15 +71,26 @@ export function mergeViewDiff(
 }
 
 export const viewComponents = {
-  newLine: () => new ViewComponent(viewComponentTypes.newLine),
-  text: (t: string) => new ViewComponent(t),
-  button: (t: string, f: Func) => {
-    const v = new ViewComponent(viewComponentTypes.button);
+  newLine: (options?: ViewComponentOption) =>
+    new ViewComponent(viewComponentTypes.newLine, null, options),
+  text: (t: string, options?: ViewComponentOption) =>
+    new ViewComponent(t, null, options),
+  button: (
+    t: string,
+    f: Func | AnonymousFunc | FuncCallback,
+    options?: ViewComponentOption
+  ) => {
+    const v = new ViewComponent(viewComponentTypes.button, null, options);
     v.text = t;
     v.onClick = f;
     return v;
   },
-};
+} as const;
+
+interface ViewComponentOption {
+  textColor?: number;
+  bgColor?: number;
+}
 export class ViewComponent {
   type_ = 0;
   text_ = "";
@@ -90,13 +101,14 @@ export class ViewComponent {
   data: ClientData | null = null;
   constructor(
     arg: number | string | Message.ViewComponent,
-    data: ClientData | null = null
+    data: ClientData | null = null,
+    options?: ViewComponentOption
   ) {
     if (typeof arg === "number") {
       this.type_ = arg;
     } else if (typeof arg === "string") {
       this.type_ = viewComponentTypes.text;
-      this.text_ = "";
+      this.text_ = arg;
     } else {
       this.type_ = arg.t;
       this.text_ = arg.x;
@@ -106,10 +118,16 @@ export class ViewComponent {
       this.bg_color_ = arg.b;
     }
     this.data = data;
+    if (options?.textColor != undefined) {
+      this.textColor = options.textColor;
+    }
+    if (options?.bgColor != undefined) {
+      this.bgColor = options.bgColor;
+    }
   }
   lockTmp(data: ClientData, field: string) {
     if (this.on_click_tmp_) {
-      const f = new Func(new Field(data, field));
+      const f = new Func(new Field(data, data.selfMemberName, field));
       this.on_click_tmp_.lockTo(f);
       f.hidden = true;
       this.on_click_ = f;
@@ -200,14 +218,33 @@ export class View extends FieldWithEvent<View> {
   time() {
     return this.data.syncTimeStore.getRecv(this.member_) || new Date(0);
   }
-  set(data: ViewComponent[]) {
+  set(data: (ViewComponent | string | number | boolean)[]) {
     if (this.data.viewStore.isSelf(this.member_)) {
+      const data2: ViewComponent[] = [];
+      for (let c of data) {
+        if (c instanceof ViewComponent) {
+          data2.push(c);
+        } else if (typeof c === "string") {
+          while (c.includes("\n")) {
+            const s = c.slice(0, c.indexOf("\n"));
+            data2.push(viewComponents.text(s));
+            data2.push(viewComponents.newLine());
+            c = c.slice(c.indexOf("\n") + 1);
+          }
+          if (c !== "") {
+            data2.push(viewComponents.text(c));
+          }
+        } else {
+          data2.push(viewComponents.text(String(c)));
+        }
+      }
       this.data.viewStore.setSend(
         this.field_,
-        data.map((v, i) =>
-          v.lockTmp(this.data, `${this.field_}_${i}`).toMessage()
+        data2.map((c, i) =>
+          c.lockTmp(this.data, `${this.field_}_${i}`).toMessage()
         )
       );
+      this.triggerEvent(this);
     } else {
       throw new Error("Cannot set data to member other than self");
     }

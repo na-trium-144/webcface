@@ -53,6 +53,7 @@ TEST_F(ViewTest, viewSet) {
       << newLine();
     v << button("f", func(self_name, "f"));
     v << button("a", afunc1([]() {}));
+    v << button("a2", [](){});
     v.sync();
     EXPECT_EQ(callback_called, 1);
     auto &view_data = **data_->view_store.getRecv(self_name, "b");
@@ -77,6 +78,11 @@ TEST_F(ViewTest, viewSet) {
     EXPECT_EQ(view_data[6].text_, "a");
     EXPECT_EQ(view_data[6].on_click_func_->member_, self_name);
     EXPECT_FALSE(view_data[6].on_click_func_->field_.empty());
+
+    EXPECT_EQ(view_data[7].type_, ViewComponentType::button);
+    EXPECT_EQ(view_data[7].text_, "a2");
+    EXPECT_EQ(view_data[7].on_click_func_->member_, self_name);
+    EXPECT_FALSE(view_data[7].on_click_func_->field_.empty());
 
     v.init();
     v.sync();

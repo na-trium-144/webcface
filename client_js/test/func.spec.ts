@@ -1,5 +1,12 @@
 import { assert } from "chai";
-import { Func, FuncNotFoundError, AsyncFuncResult, Val } from "../src/func.js";
+import {
+  Func,
+  AnonymousFunc,
+  FuncCallback,
+  FuncNotFoundError,
+  AsyncFuncResult,
+  Val,
+} from "../src/func.js";
 import { ClientData } from "../src/clientData.js";
 import { Field, FieldBase } from "../src/field.js";
 import { Member } from "../src/member.js";
@@ -212,5 +219,45 @@ describe("Func Tests", function () {
       func("a", "a").free();
       assert.notExists(data.funcStore.dataRecv.get("a")?.get("a"));
     });
+  });
+});
+
+describe("AnonymousFunc Tests", function () {
+  const selfName = "test";
+  let data: ClientData;
+  const func = (member: string, field: string) =>
+    new Func(new Field(data, member, field));
+  const afunc1 = (func: FuncCallback) =>
+    new AnonymousFunc(new Field(data, selfName, ""), func, valType.none_, []);
+  const afunc2 = (func: FuncCallback) =>
+    new AnonymousFunc(null, func, valType.none_, []);
+  beforeEach(function () {
+    data = new ClientData(selfName, () => undefined);
+  });
+  it("constructed with data", async function () {
+    let called = 0;
+    const af = afunc1(() => ++called);
+    const f = func(selfName, "a");
+    af.lockTo(f);
+    assert.isTrue(data.funcStore.dataRecv.get(selfName)?.has("a"));
+    assert.strictEqual(
+      Array.from(data.funcStore.dataRecv.get(selfName)?.keys() || []).length,
+      1
+    );
+    await f.runAsync().result;
+    assert.strictEqual(called, 1);
+  });
+  it("constructed without data", async function () {
+    let called = 0;
+    const af = afunc2(() => ++called);
+    const f = func(selfName, "a");
+    af.lockTo(f);
+    assert.isTrue(data.funcStore.dataRecv.get(selfName)?.has("a"));
+    assert.strictEqual(
+      Array.from(data.funcStore.dataRecv.get(selfName)?.keys() || []).length,
+      1
+    );
+    await f.runAsync().result;
+    assert.strictEqual(called, 1);
   });
 });
