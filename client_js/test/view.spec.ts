@@ -34,6 +34,49 @@ describe("View Tests", function () {
       assert.strictEqual(view("a", "b").name, "b");
     });
   });
+  describe("#tryGet()", function () {
+    it("returns null by default", function () {
+      assert.isNull(view("a", "b").tryGet());
+    });
+    it("returns value if data.viewStore.dataRecv is set", function () {
+      data.viewStore.dataRecv.set(
+        "a",
+        new Map([["b", [viewComponents.text("a").toMessage()]]])
+      );
+      assert.isNotEmpty(view("a", "b").tryGet() || []);
+      assert.isArray(view("a", "b").tryGet());
+    });
+    it("sets request when member is not self name", function () {
+      view("a", "b").tryGet();
+      assert.strictEqual(data.viewStore.req.get("a")?.get("b"), 1);
+    });
+    it("does not set request when member is self name", function () {
+      view(selfName, "b").tryGet();
+      assert.isEmpty(data.viewStore.req);
+    });
+  });
+  describe("#get()", function () {
+    it("returns empty array by default", function () {
+      assert.isEmpty(view("a", "b").get());
+      assert.isArray(view("a", "b").get());
+    });
+    it("returns value if data.viewStore.dataRecv is set", function () {
+      data.viewStore.dataRecv.set(
+        "a",
+        new Map([["b", [viewComponents.text("a").toMessage()]]])
+      );
+      assert.isNotEmpty(view("a", "b").get());
+      assert.isArray(view("a", "b").get());
+    });
+    it("sets request when member is not self name", function () {
+      view("a", "b").get();
+      assert.strictEqual(data.viewStore.req.get("a")?.get("b"), 1);
+    });
+    it("does not set request when member is self name", function () {
+      view(selfName, "b").get();
+      assert.isEmpty(data.viewStore.req);
+    });
+  });
   describe("#set", function () {
     it("set components as Message.ViewComponent object", function () {
       view(selfName, "a").set([
@@ -93,6 +136,12 @@ describe("View Tests", function () {
     });
     it("throws error when member is not self", function () {
       assert.throws(() => view("a", "b").set([]), Error);
+    });
+  });
+  describe("#time()", function () {
+    it("returns time set in data.syncTimeStore", function () {
+      data.syncTimeStore.setRecv("a", new Date(10000));
+      assert.strictEqual(view("a", "b").time().getTime(), 10000);
     });
   });
 });

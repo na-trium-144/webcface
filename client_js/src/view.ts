@@ -202,10 +202,11 @@ export class View extends FieldWithEvent<View> {
     return this.field_;
   }
   tryGet() {
-    return;
-    this.data.viewStore
-      .getRecv(this.member_, this.field_)
-      ?.map((v) => new ViewComponent(v, this.data)) || null;
+    return (
+      this.data.viewStore
+        .getRecv(this.member_, this.field_)
+        ?.map((v) => new ViewComponent(v, this.data)) || null
+    );
   }
   get() {
     const v = this.tryGet();
