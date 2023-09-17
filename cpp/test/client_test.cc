@@ -396,11 +396,11 @@ TEST_F(ClientTest, funcCall) {
             EXPECT_EQ(obj.field, "b");
             EXPECT_EQ(obj.args.size(), 3);
             EXPECT_EQ(static_cast<int>(obj.args[0]), 1);
-            EXPECT_EQ(obj.args[0].argType(), ValType::int_);
+            EXPECT_EQ(obj.args[0].valType(), ValType::int_);
             EXPECT_EQ(static_cast<bool>(obj.args[1]), true);
-            EXPECT_EQ(obj.args[1].argType(), ValType::bool_);
+            EXPECT_EQ(obj.args[1].valType(), ValType::bool_);
             EXPECT_EQ(static_cast<std::string>(obj.args[2]), "a");
-            EXPECT_EQ(obj.args[2].argType(), ValType::string_);
+            EXPECT_EQ(obj.args[2].valType(), ValType::string_);
         },
         [&] { ADD_FAILURE() << "FuncInfo recv error"; });
 

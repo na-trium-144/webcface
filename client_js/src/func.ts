@@ -1,5 +1,5 @@
 import { Member } from "./member.js";
-import { argType } from "./message.js";
+import { valType } from "./message.js";
 import { Field, FieldBase } from "./field.js";
 
 export type Val = string | number | boolean;
@@ -7,7 +7,7 @@ export type Val = string | number | boolean;
 export interface FuncInfo {
   returnType: number;
   args: Arg[];
-  funcImpl?: (...args: Val[]) => Val | Promise<Val> | void;
+  funcImpl?: FuncCallback;
   // call
 }
 
@@ -68,17 +68,17 @@ export function runFunc(fi: FuncInfo, args: Val[]) {
   if (fi.args.length === args.length) {
     const newArgs: Val[] = args.map((a, i) => {
       switch (fi.args[i].type) {
-        case argType.string_:
+        case valType.string_:
           return String(a);
-        case argType.boolean_:
+        case valType.boolean_:
           if (typeof a === "string") {
             return a !== "";
           } else {
             return !!a;
           }
-        case argType.int_:
+        case valType.int_:
           return parseInt(String(a));
-        case argType.float_:
+        case valType.float_:
           return parseFloat(String(a));
         default:
           return a;
@@ -115,7 +115,7 @@ export class Func extends Field {
   }
   set(
     func: FuncCallback,
-    returnType: number = argType.none_,
+    returnType: number = valType.none_,
     args: Arg[] = []
   ) {
     this.setInfo({
@@ -129,17 +129,21 @@ export class Func extends Field {
     if (funcInfo != null) {
       return funcInfo.returnType;
     }
-    return argType.none_;
+    return valType.none_;
   }
   get args() {
     const funcInfo = this.data.funcStore.getRecv(this.member_, this.field_);
     if (funcInfo != null) {
-      return funcInfo.args;
+      return funcInfo.args.map((a) => ({ ...a }));
     }
     return [];
   }
   set hidden(h: boolean) {
-    this.data.funcStore.setHidden(this.field_, h);
+    if (this.data.funcStore.isSelf(this.member_)) {
+      this.data.funcStore.setHidden(this.field_, h);
+    } else {
+      throw new Error("Cannot set data to member other than self");
+    }
   }
   free() {
     this.data.funcStore.unsetRecv(this.member_, this.field_);

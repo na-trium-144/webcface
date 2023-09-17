@@ -155,7 +155,7 @@ export class ViewComponent {
     } else if (func instanceof Func) {
       this.on_click_ = func;
     } else {
-      this.onClick = new AnonymousFunc(null, func, Message.argType.none_, []);
+      this.onClick = new AnonymousFunc(null, func, Message.valType.none_, []);
     }
   }
   get textColor() {

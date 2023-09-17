@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Card } from "./card";
 import { useForceUpdate } from "../libs/forceUpdate";
-import { Member, Func, Arg, argType } from "webcface";
+import { Member, Func, Arg, valType } from "webcface";
 import { useFuncResult } from "./funcResult";
 
 interface Props {
@@ -65,7 +65,7 @@ function ArgInput(props: ArgProps) {
     );
   } else {
     switch (props.argConfig.type) {
-      case argType.int_:
+      case valType.int_:
         return (
           <input
             type="number"
@@ -79,7 +79,7 @@ function ArgInput(props: ArgProps) {
             }}
           />
         );
-      case argType.boolean_:
+      case valType.boolean_:
         return (
           <button
             type="button"
@@ -94,7 +94,7 @@ function ArgInput(props: ArgProps) {
             {props.arg ? "true" : "false"}
           </button>
         );
-      case argType.float_: {
+      case valType.float_: {
         checkError.current = (v: string) =>
           isNaN(Number(v)) ||
           (props.argConfig.min != null && props.argConfig.min > Number(v)) ||
@@ -147,10 +147,10 @@ function FuncLine(props: { func: Func }) {
             return ac.init;
           } else {
             switch (ac.type) {
-              case argType.int_:
-              case argType.float_:
+              case valType.int_:
+              case valType.float_:
                 return 0;
-              case argType.boolean_:
+              case valType.boolean_:
                 return false;
               default:
                 return "";
@@ -180,7 +180,7 @@ function FuncLine(props: { func: Func }) {
             <span key={`sep-${i}`} className="pl-1 pr-1 first:hidden">
               ,
             </span>
-            {ac.type === argType.string_ && <span>"</span>}
+            {ac.type === valType.string_ && <span>"</span>}
             <div key={i} className="inline-block relative pt-3">
               <ArgInput
                 argConfig={ac}
@@ -213,7 +213,7 @@ function FuncLine(props: { func: Func }) {
               </span>
               <ArgDescription argConfig={ac} />
             </div>
-            {ac.type === argType.string_ && <span>"</span>}
+            {ac.type === valType.string_ && <span>"</span>}
           </>
         ))}
       </span>
@@ -236,15 +236,15 @@ function FuncLine(props: { func: Func }) {
 }
 
 function ArgDescription(props: { argConfig: Arg }) {
-  const argTypeText = () => {
+  const valTypeText = () => {
     switch (props.argConfig.type) {
-      case argType.int_:
+      case valType.int_:
         return "整数型";
-      case argType.float_:
+      case valType.float_:
         return "実数型";
-      case argType.boolean_:
+      case valType.boolean_:
         return "真偽値型";
-      case argType.string_:
+      case valType.string_:
         return "文字列型";
       default:
         return "";
@@ -265,17 +265,17 @@ function ArgDescription(props: { argConfig: Arg }) {
         }
       />
       <div>
-        {argTypeText()}
+        {valTypeText()}
         {props.argConfig.option.length > 0 && " (選択式)"}
       </div>
       <div>
         {props.argConfig.min != null &&
-          (props.argConfig.type === argTypeText.string_
+          (props.argConfig.type === valTypeText.string_
             ? `最小長さ ${props.argConfig.min}`
             : `最小値 ${props.argConfig.min}`)}
         {props.argConfig.min != null && props.argConfig.max != null && ", "}
         {props.argConfig.max != null &&
-          (props.argConfig.type === argTypeText.string_
+          (props.argConfig.type === valTypeText.string_
             ? `最大長さ ${props.argConfig.max}`
             : `最大値 ${props.argConfig.max}`)}
       </div>

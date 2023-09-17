@@ -43,7 +43,7 @@ export const kind = {
   sync: 107,
 } as const;
 
-export const argType = {
+export const valType = {
   none_: 0,
   string_: 1,
   boolean_: 2,
@@ -51,7 +51,7 @@ export const argType = {
   int_: 3,
   float_: 4,
   number_: 4,
-};
+} as const;
 
 export interface Value {
   kind: 0;

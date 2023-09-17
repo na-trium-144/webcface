@@ -48,11 +48,13 @@ export class Value extends FieldWithEvent<Value> {
     if (this.data.valueStore.isSelf(this.member_)) {
       if (typeof data === "number") {
         this.data.valueStore.setSend(this.field_, [data]);
+        this.triggerEvent(this);
       } else if (
         Array.isArray(data) &&
         data.find((v) => typeof v !== "number") == null
       ) {
         this.data.valueStore.setSend(this.field_, data);
+        this.triggerEvent(this);
       } else if (typeof data === "object" && data != null) {
         for (const [k, v] of Object.entries(data)) {
           this.child(k).set(v as number | number[] | object);
@@ -99,6 +101,7 @@ export class Text extends FieldWithEvent<Text> {
         }
       } else {
         this.data.textStore.setSend(this.field_, String(data));
+        this.triggerEvent(this);
       }
     } else {
       throw new Error("Cannot set data to member other than self");
@@ -116,9 +119,6 @@ export class Log extends FieldWithEvent<LogLine> {
   }
   get member() {
     return new Member(this);
-  }
-  get name() {
-    return this.field_;
   }
   tryGet() {
     return this.data.logStore.getRecv(this.member_);

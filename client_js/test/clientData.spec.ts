@@ -84,7 +84,7 @@ describe("ClientData Tests", function () {
       it("removes value from #dataRecv", function () {
         s2.dataRecv.set("a", new Map([["b", "c"]]));
         s2.unsetRecv("a", "b");
-        assert.isFalse(s2.dataRecv.get("a")?.has("b"));
+        assert.notExists(s2.dataRecv.get("a")?.get("b"));
       });
       it("sets 0 to #req and #reqSend if already set", function () {
         s2.dataRecv.set("a", new Map([["b", "c"]]));

@@ -377,7 +377,7 @@ export class Client extends Member {
             r: v.returnType,
             a: v.args.map((a) => ({
               n: a.name || "",
-              t: a.type != undefined ? a.type : Message.argType.none_,
+              t: a.type != undefined ? a.type : Message.valType.none_,
               i: a.init != undefined ? a.init : null,
               m: a.min != undefined ? a.min : null,
               x: a.max != undefined ? a.max : null,

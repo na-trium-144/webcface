@@ -1,21 +1,21 @@
-import { Client, argType } from "../src/index.js";
+import { Client, valType } from "../src/index.js";
 
 const c = new Client("example_main");
 c.value("test").set(0);
 const f1 = c
   .func("func1")
-  .set(() => console.log("hello, world!"), argType.none_, []);
+  .set(() => console.log("hello, world!"), valType.none_, []);
 c.func("func2").set(
   (a: number, b: number, c: boolean, d: string) => {
     console.log(`hello world 2 ${a} ${b} ${c ? "true" : "false"} ${d}`);
     return a + b;
   },
-  argType.float_,
+  valType.float_,
   [
-    { name: "a", type: argType.int_, init: 3 },
-    { name: "b", type: argType.float_, min: 2, max: 8 },
-    { name: "c", type: argType.boolean_, init: false },
-    { name: "d", type: argType.string_, option: ["hoge", "fuga"] },
+    { name: "a", type: valType.int_, init: 3 },
+    { name: "b", type: valType.float_, min: 2, max: 8 },
+    { name: "c", type: valType.boolean_, init: false },
+    { name: "d", type: valType.string_, option: ["hoge", "fuga"] },
   ]
 );
 

@@ -43,7 +43,7 @@ MSGPACK_API_VERSION_NAMESPACE(MSGPACK_DEFAULT_API_NS) {
         template <typename Stream>
         msgpack::packer<Stream> &operator()(msgpack::packer<Stream> &o,
                                             const WebCFace::ValAdaptor &v) {
-            switch (v.argType()) {
+            switch (v.valType()) {
             case WebCFace::ValType::bool_:
                 o.pack(static_cast<bool>(v));
                 break;

@@ -1,6 +1,6 @@
 import { assert } from "chai";
 import { ClientData } from "../src/clientData.js";
-import { Value, Text } from "../src/data.js";
+import { Value, Text, Log } from "../src/data.js";
 import { Field } from "../src/field.js";
 import { Member } from "../src/member.js";
 
@@ -127,6 +127,16 @@ describe("Value Tests", function () {
         [8, 9, 10]
       );
     });
+    it("triggers change event", function () {
+      let called = 0;
+      value(selfName, "b").addListener((v) => {
+        ++called;
+        assert.strictEqual(v.member.name, selfName);
+        assert.strictEqual(v.name, "b");
+      });
+      value(selfName, "b").set(1);
+      assert.strictEqual(called, 1);
+    });
     it("throws error when member is not self", function () {
       assert.throws(() => value("a", "b").set(1), Error);
     });
@@ -203,8 +213,7 @@ describe("Text Tests", function () {
   describe("#set()", function () {
     it("sets value when string is passed", function () {
       text(selfName, "b").set("aaa");
-      assert.strictEqual(
-        data.textStore.dataSend.get("b"), "aaa");
+      assert.strictEqual(data.textStore.dataSend.get("b"), "aaa");
     });
     it("sets value recursively when object is passed", function () {
       text(selfName, "b").set({
@@ -214,6 +223,16 @@ describe("Text Tests", function () {
       assert.strictEqual(data.textStore.dataSend.get("b.a"), "a");
       assert.strictEqual(data.textStore.dataSend.get("b.b.c"), "bc");
     });
+    it("triggers change event", function () {
+      let called = 0;
+      text(selfName, "b").addListener((t) => {
+        ++called;
+        assert.strictEqual(t.member.name, selfName);
+        assert.strictEqual(t.name, "b");
+      });
+      text(selfName, "b").set("aaa");
+      assert.strictEqual(called, 1);
+    });
     it("throws error when member is not self", function () {
       assert.throws(() => text("a", "b").set("a"), Error);
     });
@@ -222,6 +241,41 @@ describe("Text Tests", function () {
     it("returns time set in data.syncTimeStore", function () {
       data.syncTimeStore.setRecv("a", new Date(10000));
       assert.strictEqual(text("a", "b").time().getTime(), 10000);
+    });
+  });
+});
+describe("Log Tests", function () {
+  const selfName = "test";
+  let data: ClientData;
+  const log = (member: string) => new Log(new Field(data, member, ""));
+  beforeEach(function () {
+    data = new ClientData(selfName, () => undefined);
+  });
+  describe("#member", function () {
+    it("returns Member object with its member name", function () {
+      assert.instanceOf(log("a").member, Member);
+      assert.strictEqual(log("a").member.name, "a");
+    });
+  });
+  describe("#tryGet()", function () {
+    it("returns null by default", function () {
+      assert.isNull(log("a").tryGet());
+    });
+    it("returns value if data.logStore.dataRecv is set", function () {
+      data.logStore.dataRecv.set("a", [
+        { level: 1, time: new Date(), message: "a" },
+      ]);
+      assert.strictEqual(log("a").tryGet()?.length, 1);
+      assert.strictEqual((log("a").tryGet() || [])[0]?.level, 1);
+      assert.strictEqual((log("a").tryGet() || [])[0]?.message, "a");
+    });
+    it("sets request when member is not self name", function () {
+      log("a").tryGet();
+      assert.strictEqual(data.logStore.req.get("a"), true);
+    });
+    it("does not set request when member is self name", function () {
+      log(selfName).tryGet();
+      assert.isEmpty(data.logStore.req);
     });
   });
 });
