@@ -30,6 +30,11 @@ class Member : protected Field {
     Text text(const std::string &field) const;
     //! このmemberの指定した名前のfuncを参照する。
     Func func(const std::string &field) const;
+    //! AnonymousFuncオブジェクトを作成しfuncをsetする
+    // template <typename T>
+    // AnonymousFunc func(const T &func) const{
+    // todo: ここでfunc.hにアクセスする必要があるためヘッダーの読み込み順を変えないといけない
+    // }
     View view(const std::string &field) const;
     //! このmemberのログを参照する。
     Log log() const;

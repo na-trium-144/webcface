@@ -265,7 +265,7 @@ describe("Log Tests", function () {
       data.logStore.dataRecv.set("a", [
         { level: 1, time: new Date(), message: "a" },
       ]);
-      assert.strictEqual(log("a").tryGet()?.length, 1);
+      assert.lengthOf(log("a").tryGet() || [], 1);
       assert.strictEqual((log("a").tryGet() || [])[0]?.level, 1);
       assert.strictEqual((log("a").tryGet() || [])[0]?.message, "a");
     });

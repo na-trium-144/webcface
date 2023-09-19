@@ -227,8 +227,8 @@ describe("AnonymousFunc Tests", function () {
   let data: ClientData;
   const func = (member: string, field: string) =>
     new Func(new Field(data, member, field));
-  const afunc1 = (func: FuncCallback) =>
-    new AnonymousFunc(new Field(data, selfName, ""), func, valType.none_, []);
+  const afunc1 = (func: FuncCallback, name = selfName) =>
+    new AnonymousFunc(new Field(data, name, ""), func, valType.none_, []);
   const afunc2 = (func: FuncCallback) =>
     new AnonymousFunc(null, func, valType.none_, []);
   beforeEach(function () {
@@ -240,12 +240,12 @@ describe("AnonymousFunc Tests", function () {
     const f = func(selfName, "a");
     af.lockTo(f);
     assert.isTrue(data.funcStore.dataRecv.get(selfName)?.has("a"));
-    assert.strictEqual(
-      Array.from(data.funcStore.dataRecv.get(selfName)?.keys() || []).length,
-      1
-    );
+    assert.lengthOf(data.funcStore.dataRecv.get(selfName) || [], 1);
     await f.runAsync().result;
     assert.strictEqual(called, 1);
+  });
+  it("throws error when constructed with field which is not self", function () {
+    assert.throws(() => afunc1(() => undefined, "a"), Error);
   });
   it("constructed without data", async function () {
     let called = 0;
@@ -253,10 +253,7 @@ describe("AnonymousFunc Tests", function () {
     const f = func(selfName, "a");
     af.lockTo(f);
     assert.isTrue(data.funcStore.dataRecv.get(selfName)?.has("a"));
-    assert.strictEqual(
-      Array.from(data.funcStore.dataRecv.get(selfName)?.keys() || []).length,
-      1
-    );
+    assert.lengthOf(data.funcStore.dataRecv.get(selfName) || new Map(), 1);
     await f.runAsync().result;
     assert.strictEqual(called, 1);
   });
