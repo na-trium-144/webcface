@@ -67,6 +67,11 @@ TEST_F(ClientTest, sync) {
     dummy_s->recvClear();
     wcli_->sync();
     wait();
+    dummy_s->recv<SyncInit>(
+        [&](const auto &) {
+            ADD_FAILURE() << "should not send SyncInit twice";
+        },
+        [&] {});
     dummy_s->recv<Sync>([&](const auto &) {},
                         [&] { ADD_FAILURE() << "Sync recv error"; });
 }

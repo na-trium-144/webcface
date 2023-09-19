@@ -13,7 +13,7 @@ export function pack(data: AnyMessage[]) {
   const sendData: any[] = [];
   for (let i = 0; i < data.length; i++) {
     sendData.push(data[i].kind);
-    const e: { kind?: number } = data[i];
+    const e: { kind?: number } = { ...data[i] };
     delete e.kind;
     sendData.push(e);
   }
