@@ -6,7 +6,7 @@ import { ClientData } from "../src/clientData.js";
 import { Value, Text, Log } from "../src/data.js";
 import { Func, AnonymousFunc } from "../src/func.js";
 import { valType } from "../src/message.js";
-import { View } from "../src/view.js";
+import { View, viewComponents } from "../src/view.js";
 import { Field, FieldBase } from "../src/field.js";
 import { Member } from "../src/member.js";
 import { eventType } from "../src/event.js";
@@ -212,6 +212,72 @@ describe("Client Tests", function () {
         setTimeout(() => {
           assert.strictEqual(called, 1);
           done();
+        }, 10);
+      });
+    });
+    describe("sending data", function () {
+      it("value", function (done) {
+        data.valueStore.setSend("a", [5]);
+        wcli.sync();
+        setTimeout(() => {
+          const m = wssRecv.find(
+            (m) => m.kind === Message.kind.value
+          ) as Message.Value;
+          assert.strictEqual(m?.f, "a");
+          assert.sameMembers(m?.d || [], [5]);
+          done();
+        }, 10);
+      });
+      it("text", function (done) {
+        data.textStore.setSend("a", "b");
+        wcli.sync();
+        setTimeout(() => {
+          const m = wssRecv.find(
+            (m) => m.kind === Message.kind.text
+          ) as Message.Text;
+          assert.strictEqual(m?.f, "a");
+          assert.strictEqual(m?.d, "b");
+          done();
+        }, 10);
+      });
+      it("view", function (done) {
+        data.viewStore.setSend("a", [
+          viewComponents.text("a").toMessage(),
+          viewComponents.newLine().toMessage(),
+        ]);
+        wcli.sync();
+        setTimeout(() => {
+          const m = wssRecv.find(
+            (m) => m.kind === Message.kind.view
+          ) as Message.View;
+          assert.strictEqual(m?.f, "a");
+          assert.lengthOf(Object.keys(m?.d || {}), 2);
+          assert.strictEqual(m?.l, 2);
+          done();
+        }, 10);
+      });
+      it("view diff only on second time", function (done) {
+        data.viewStore.setSend("a", [
+          viewComponents.text("a").toMessage(),
+          viewComponents.newLine().toMessage(),
+        ]);
+        wcli.sync();
+        setTimeout(() => {
+          wssRecv = [];
+          data.viewStore.setSend("a", [
+            viewComponents.text("b").toMessage(),
+            viewComponents.newLine().toMessage(),
+          ]);
+          wcli.sync();
+          setTimeout(() => {
+            const m = wssRecv.find(
+              (m) => m.kind === Message.kind.view
+            ) as Message.View;
+            assert.strictEqual(m?.f, "a");
+            assert.lengthOf(Object.keys(m?.d || {}), 1); // diff = 1
+            assert.strictEqual(m?.l, 2);
+            done();
+          }, 10);
         }, 10);
       });
     });

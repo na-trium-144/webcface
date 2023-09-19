@@ -355,11 +355,7 @@ export class Client extends Member {
         .entries()) {
         const vPrev = viewPrev.get(k) || [];
         const diff = getViewDiff(v, vPrev);
-        const diffSend: Message.ViewComponentsDiff = {};
-        for (const k2 of Object.keys(diff)) {
-          diffSend[k2] = diff[k2];
-        }
-        msg.push({ kind: Message.kind.view, f: k, d: diffSend });
+        msg.push({ kind: Message.kind.view, f: k, d: diff, l: v.length });
       }
       for (const [k, v] of this.data.viewStore.transferReq(isFirst).entries()) {
         for (const [k2, v2] of v.entries()) {

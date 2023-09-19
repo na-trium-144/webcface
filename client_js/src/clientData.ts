@@ -159,8 +159,13 @@ export class SyncDataStore2<T> {
   transferSend(isFirst: boolean) {
     if (isFirst) {
       this.dataSend = new Map();
-      return (this.dataSendPrev =
-        this.dataRecv.get(this.selfMemberName) || new Map<string, T>());
+      // dataSendPrevはdataRecvが書き換えられても影響しないようコピーする
+      this.dataSendPrev = new Map();
+      const dataCurrent = this.dataRecv.get(this.selfMemberName) || new Map<string, T>();
+      for(const [k, v] of dataCurrent.entries()){
+        this.dataSendPrev.set(k, v);
+      }
+      return dataCurrent;
     } else {
       const s = this.dataSend;
       this.dataSendPrev = s;
