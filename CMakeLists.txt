@@ -64,7 +64,7 @@ target_include_directories(tclap INTERFACE ${CMAKE_CURRENT_LIST_DIR}/external/tc
 
 add_subdirectory(external/googletest)
 
-set(CPP_DIR ${CMAKE_CURRENT_SOURCE_DIR}/cpp)
+set(CPP_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 set(SVR_MAIN_SRC ${CPP_DIR}/server_main.cc)
 set(SVR_SRC
     ${CPP_DIR}/server/s_client_data.cc
