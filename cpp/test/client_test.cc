@@ -142,6 +142,7 @@ TEST_F(ClientTest, valueReq) {
     data_->value_store.getRecv("a", "b");
     wcli_->sync();
     wait();
+    wcli_->member("a").value("b").appendListener(callback<Value>());
     dummy_s->recv<Message::Req<Message::Value>>(
         [&](const auto &obj) {
             EXPECT_EQ(obj.member, "a");
@@ -156,6 +157,7 @@ TEST_F(ClientTest, valueReq) {
         1, "c",
         std::make_shared<std::vector<double>>(std::vector<double>{1, 2, 3})});
     wait();
+    EXPECT_EQ(callback_called, 1);
     EXPECT_TRUE(data_->value_store.getRecv("a", "b").has_value());
     EXPECT_EQ(static_cast<std::vector<double>>(
                   *data_->value_store.getRecv("a", "b").value())
@@ -182,6 +184,7 @@ TEST_F(ClientTest, textReq) {
     data_->text_store.getRecv("a", "b");
     wcli_->sync();
     wait();
+    wcli_->member("a").text("b").appendListener(callback<Text>());
     dummy_s->recv<Message::Req<Message::Text>>(
         [&](const auto &obj) {
             EXPECT_EQ(obj.member, "a");
@@ -194,6 +197,7 @@ TEST_F(ClientTest, textReq) {
     dummy_s->send(Message::Res<Message::Text>{
         1, "c", std::make_shared<std::string>("z")});
     wait();
+    EXPECT_EQ(callback_called, 1);
     EXPECT_TRUE(data_->text_store.getRecv("a", "b").has_value());
     EXPECT_EQ(*data_->text_store.getRecv("a", "b").value(), "z");
     EXPECT_TRUE(data_->text_store.getRecv("a", "b.c").has_value());
@@ -256,6 +260,7 @@ TEST_F(ClientTest, viewReq) {
     data_->view_store.getRecv("a", "b");
     wcli_->sync();
     wait();
+    wcli_->member("a").view("b").appendListener(callback<View>());
     dummy_s->recv<Message::Req<Message::View>>(
         [&](const auto &obj) {
             EXPECT_EQ(obj.member, "a");
@@ -276,6 +281,7 @@ TEST_F(ClientTest, viewReq) {
     dummy_s->send(Message::Res<Message::View>{1, "", v, 3});
     dummy_s->send(Message::Res<Message::View>{1, "c", v, 3});
     wait();
+    EXPECT_EQ(callback_called, 1);
     EXPECT_TRUE(data_->view_store.getRecv("a", "b").has_value());
     EXPECT_EQ(data_->view_store.getRecv("a", "b").value()->size(), 3);
     EXPECT_EQ(data_->view_store.getRecv("a", "b").value()->at(0).type_,
@@ -299,6 +305,7 @@ TEST_F(ClientTest, viewReq) {
             });
     dummy_s->send(Message::Res<Message::View>{1, "", v2, 3});
     wait();
+    EXPECT_EQ(callback_called, 2);
     EXPECT_EQ(data_->view_store.getRecv("a", "b").value()->size(), 3);
     EXPECT_EQ(data_->view_store.getRecv("a", "b").value()->at(0).type_,
               ViewComponentType::text);
@@ -344,6 +351,7 @@ TEST_F(ClientTest, logReq) {
     data_->log_store.getRecv("a");
     wcli_->sync();
     wait();
+    wcli_->member("a").log().appendListener(callback<Log>());
     dummy_s->recv<Message::LogReq>(
         [&](const auto &obj) { EXPECT_EQ(obj.member, "a"); },
         [&] { ADD_FAILURE() << "Log Req recv error"; });
@@ -358,6 +366,7 @@ TEST_F(ClientTest, logReq) {
                              LogLine{1, std::chrono::system_clock::now(), "b"},
                          })});
     wait();
+    EXPECT_EQ(callback_called, 1);
     EXPECT_TRUE(data_->log_store.getRecv("a").has_value());
     EXPECT_EQ(data_->log_store.getRecv("a").value()->size(), 2);
     EXPECT_EQ(data_->log_store.getRecv("a").value()->at(0)->level, 0);
@@ -371,6 +380,7 @@ TEST_F(ClientTest, logReq) {
                              LogLine{2, std::chrono::system_clock::now(), "c"},
                          })});
     wait();
+    EXPECT_EQ(callback_called, 2);
     EXPECT_TRUE(data_->log_store.getRecv("a").has_value());
     EXPECT_EQ(data_->log_store.getRecv("a").value()->size(), 3);
 }

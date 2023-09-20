@@ -112,7 +112,7 @@ export class Text extends FieldWithEvent<Text> {
   }
 }
 
-export class Log extends FieldWithEvent<LogLine> {
+export class Log extends FieldWithEvent<Log> {
   constructor(base: Field) {
     super("", base.data, base.member_, "");
     this.eventType_ = eventType.logAppend(this);

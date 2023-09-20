@@ -388,9 +388,15 @@ describe("Client Tests", function () {
           assert.strictEqual(m?.f, "b");
           assert.strictEqual(m?.i, 1);
 
+          let called = 0;
+          wcli
+            .member("a")
+            .value("b")
+            .on(() => ++called);
           wssSend({ kind: Message.kind.valueRes, i: 1, f: "", d: [1, 2, 3] });
           wssSend({ kind: Message.kind.valueRes, i: 1, f: "c", d: [1, 2, 3] });
           setTimeout(() => {
+            assert.strictEqual(called, 1);
             assert.isArray(data.valueStore.dataRecv.get("a")?.get("b"));
             assert.lengthOf(
               data.valueStore.dataRecv.get("a")?.get("b") || [],
@@ -416,9 +422,15 @@ describe("Client Tests", function () {
           assert.strictEqual(m?.f, "b");
           assert.strictEqual(m?.i, 1);
 
+          let called = 0;
+          wcli
+            .member("a")
+            .text("b")
+            .on(() => ++called);
           wssSend({ kind: Message.kind.textRes, i: 1, f: "", d: "z" });
           wssSend({ kind: Message.kind.textRes, i: 1, f: "c", d: "z" });
           setTimeout(() => {
+            assert.strictEqual(called, 1);
             assert.strictEqual(data.textStore.dataRecv.get("a")?.get("b"), "z");
             assert.strictEqual(
               data.textStore.dataRecv.get("a")?.get("b.c"),
@@ -439,6 +451,11 @@ describe("Client Tests", function () {
           assert.strictEqual(m?.f, "b");
           assert.strictEqual(m?.i, 1);
 
+          let called = 0;
+          wcli
+            .member("a")
+            .view("b")
+            .on(() => ++called);
           const v = {
             0: viewComponents.text("a").toMessage(),
             1: viewComponents.newLine().toMessage(),
@@ -446,6 +463,7 @@ describe("Client Tests", function () {
           wssSend({ kind: Message.kind.viewRes, i: 1, f: "", d: v, l: 2 });
           wssSend({ kind: Message.kind.viewRes, i: 1, f: "c", d: v, l: 2 });
           setTimeout(() => {
+            assert.strictEqual(called, 1);
             assert.isArray(data.viewStore.dataRecv.get("a")?.get("b"));
             assert.lengthOf(
               data.viewStore.dataRecv.get("a")?.get("b") || [],
@@ -504,6 +522,11 @@ describe("Client Tests", function () {
           ) as Message.LogReq;
           assert.strictEqual(m?.M, "a");
 
+          let called = 0;
+          wcli
+            .member("a")
+            .log()
+            .on(() => ++called);
           wssSend({ kind: Message.kind.syncInit, M: "a", m: 10 });
           wssSend({
             kind: Message.kind.log,
@@ -522,6 +545,7 @@ describe("Client Tests", function () {
             ],
           });
           setTimeout(() => {
+            assert.strictEqual(called, 1);
             assert.isArray(data.logStore.dataRecv.get("a"));
             assert.lengthOf(data.logStore.dataRecv.get("a") || [], 2);
             assert.strictEqual(data.logStore.dataRecv.get("a")?.[0]?.level, 1);
@@ -533,7 +557,28 @@ describe("Client Tests", function () {
               data.logStore.dataRecv.get("a")?.[0]?.message,
               "a"
             );
-            done();
+
+            // 追加
+            wssSend({
+              kind: Message.kind.log,
+              m: 10,
+              l: [
+                {
+                  v: 3,
+                  t: 1000,
+                  m: "a",
+                },
+              ],
+            });
+            setTimeout(() => {
+              assert.strictEqual(called, 2);
+              assert.lengthOf(data.logStore.dataRecv.get("a") || [], 3);
+              assert.strictEqual(
+                data.logStore.dataRecv.get("a")?.[2]?.level,
+                3
+              );
+              done();
+            }, 10);
           }, 10);
         }, 10);
       });

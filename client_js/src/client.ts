@@ -159,7 +159,7 @@ export class Client extends Member {
             const dataR = data as Message.Log;
             const member = this.data.getMemberNameFromId(dataR.m);
             const log = this.data.logStore.getRecv(member) || [];
-            const target = this.member(member);
+            const target = this.member(member).log();
             for (const ll of dataR.l) {
               const ll2: LogLine = {
                 level: ll.v,
@@ -167,9 +167,9 @@ export class Client extends Member {
                 message: ll.m,
               };
               log.push(ll2);
-              this.data.eventEmitter.emit(eventType.logAppend(target), ll2);
             }
             this.data.logStore.setRecv(member, log);
+            this.data.eventEmitter.emit(eventType.logAppend(target), target);
             break;
           }
           case Message.kind.call: {
