@@ -4,9 +4,6 @@
 [submodule "external/eventpp"]
 	path = external/eventpp
 	url = https://github.com/wqking/eventpp
-[submodule "external/webgl-plot"]
-	path = external/webgl-plot
-	url = https://github.com/na-trium-144/webgl-plot.git
 [submodule "external/spdlog"]
 	path = external/spdlog
 	url = https://github.com/gabime/spdlog.git
@@ -19,3 +16,6 @@
 [submodule "external/tclap"]
 	path = external/tclap
 	url = https://git.code.sf.net/p/tclap/code
+[submodule "webui"]
+	path = webui
+	url = https://github.com/na-trium-144/webcface-webui.git

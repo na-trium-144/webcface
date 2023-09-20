@@ -1,8 +1,0 @@
-/node_modules
-/src
-/example
-/test
-/dist/example
-/dist/test
-tsconfig.json
-.eslintrc.cjs
