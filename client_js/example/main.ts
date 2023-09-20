@@ -1,4 +1,5 @@
-import { Client, valType } from "../src/index.js";
+import { Client, valType, viewComponents } from "../src/index.js";
+import log4js from "log4js";
 
 const c = new Client("example_main");
 c.value("test").set(0);
@@ -19,15 +20,41 @@ c.func("func2").set(
   ]
 );
 
+log4js.configure({
+  appenders: {
+    out: { type: "stdout" },
+    wcf: { type: c.logAppender },
+  },
+  categories: {
+    default: { appenders: ["out", "wcf"], level: "debug" },
+    webcface: { appenders: ["out"], level: "debug" },
+  },
+});
+const logger = log4js.getLogger();
+logger.info("this is info");
+logger.warn("this is warn");
+logger.error("this is error");
+
+let i = 0;
+
 setInterval(() => {
   c.value("test").set(c.value("test").get() + 1);
   c.text("str").set("hello");
-  console.log(`str = ${c.member("example_main").text("str").get()}`);
-  console.log(`test = ${c.member("example_main").value("test").get()}`);
-  void c.func("func1").runAsync();
-  void c
-    .func("func2")
-    .runAsync(3, 5.5, 1, "hoge")
-    .result.then((v) => console.log(`return = ${v as number}`));
+
+  c.view("a").set([
+    "hello, world\n",
+    i,
+    viewComponents.newLine(),
+    viewComponents.button("a", () => logger.info("hello")),
+  ]);
+  ++i;
+
+  // console.log(`str = ${c.member("example_main").text("str").get()}`);
+  // console.log(`test = ${c.member("example_main").value("test").get()}`);
+  // void c.func("func1").runAsync();
+  // void c
+  //   .func("func2")
+  //   .runAsync(3, 5.5, 1, "hoge")
+  //   .result.then((v) => console.log(`return = ${v as number}`));
   c.sync();
 }, 250);

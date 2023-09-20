@@ -2,6 +2,9 @@ import msgpack from "@ygoe/msgpack";
 import { Val } from "./func.js";
 
 export function unpack(msg: ArrayBuffer) {
+  if (msg.byteLength === 0) {
+    return [];
+  }
   const m = msgpack.deserialize(msg) as any[];
   const ret: AnyMessage[] = [];
   for (let i = 0; i < m.length; i += 2) {

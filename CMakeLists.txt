@@ -83,11 +83,6 @@ set(CLI_SRC
 set(EXAMPLE_SRC
     ${CPP_DIR}/example/main.cc
     ${CPP_DIR}/example/recv.cc
-    ${CPP_DIR}/example/nothing.cc
-    ${CPP_DIR}/example/simple.cc
-    ${CPP_DIR}/example/view.cc
-    ${CPP_DIR}/example/get_entry.cc
-    ${CPP_DIR}/example/logger.cc
 )
 set(TEST_SRC
     ${CPP_DIR}/test/client_data_test.cc
