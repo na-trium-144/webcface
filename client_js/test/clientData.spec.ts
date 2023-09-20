@@ -207,11 +207,12 @@ describe("ClientData Tests", function () {
           ])
         );
       });
-      it("returns member and field of given req_id", function () {
-        assert.sameOrderedMembers(s2.getReq(1), ["a", "b"]);
+      it("returns member and field of given req_id and subField", function () {
+        assert.sameOrderedMembers(s2.getReq(1, ""), ["a", "b"]);
+        assert.sameOrderedMembers(s2.getReq(1, "c"), ["a", "b.c"]);
       });
       it("returns empty member and field when req_id not found", function () {
-        assert.sameOrderedMembers(s2.getReq(999), ["", ""]);
+        assert.sameOrderedMembers(s2.getReq(999, ""), ["", ""]);
       });
     });
   });

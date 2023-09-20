@@ -94,16 +94,19 @@ export interface Req {
 export interface ValueRes {
   kind: 75;
   i: number;
+  f: string;
   d: number[];
 }
 export interface TextRes {
   kind: 76;
   i: number;
+  f: string;
   d: string;
 }
 export interface ViewRes {
   kind: 78;
   i: number;
+  f: string;
   d: ViewComponentsDiff;
   l: number;
 }

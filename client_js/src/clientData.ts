@@ -161,8 +161,9 @@ export class SyncDataStore2<T> {
       this.dataSend = new Map();
       // dataSendPrevはdataRecvが書き換えられても影響しないようコピーする
       this.dataSendPrev = new Map();
-      const dataCurrent = this.dataRecv.get(this.selfMemberName) || new Map<string, T>();
-      for(const [k, v] of dataCurrent.entries()){
+      const dataCurrent =
+        this.dataRecv.get(this.selfMemberName) || new Map<string, T>();
+      for (const [k, v] of dataCurrent.entries()) {
         this.dataSendPrev.set(k, v);
       }
       return dataCurrent;
@@ -191,11 +192,11 @@ export class SyncDataStore2<T> {
       return r;
     }
   }
-  getReq(i: number) {
+  getReq(i: number, subField: string) {
     for (const [rm, r] of this.req.entries()) {
       for (const [rf, ri] of r.entries()) {
         if (ri == i) {
-          return [rm, rf];
+          return [rm, subField !== "" ? rf + "." + subField : rf];
         }
       }
     }

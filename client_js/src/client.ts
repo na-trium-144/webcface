@@ -118,7 +118,10 @@ export class Client extends Member {
           }
           case Message.kind.valueRes: {
             const dataR = data as Message.ValueRes;
-            const [member, field] = this.data.valueStore.getReq(dataR.i);
+            const [member, field] = this.data.valueStore.getReq(
+              dataR.i,
+              dataR.f
+            );
             this.data.valueStore.setRecv(member, field, dataR.d);
             const target = this.member(member).value(field);
             this.data.eventEmitter.emit(eventType.valueChange(target), target);
@@ -126,7 +129,10 @@ export class Client extends Member {
           }
           case Message.kind.textRes: {
             const dataR = data as Message.TextRes;
-            const [member, field] = this.data.textStore.getReq(dataR.i);
+            const [member, field] = this.data.textStore.getReq(
+              dataR.i,
+              dataR.f
+            );
             this.data.textStore.setRecv(member, field, dataR.d);
             const target = this.member(member).text(field);
             this.data.eventEmitter.emit(eventType.textChange(target), target);
@@ -134,7 +140,10 @@ export class Client extends Member {
           }
           case Message.kind.viewRes: {
             const dataR = data as Message.ViewRes;
-            const [member, field] = this.data.viewStore.getReq(dataR.i);
+            const [member, field] = this.data.viewStore.getReq(
+              dataR.i,
+              dataR.f
+            );
             const current = this.data.viewStore.getRecv(member, field) || [];
             const diff: Message.ViewComponentsDiff = {};
             for (const k of Object.keys(dataR.d)) {
@@ -396,8 +405,13 @@ export class Client extends Member {
       }
 
       const logSend: Message.LogLine[] = [];
+      if (this.data.logStore.getRecv(this.name) == null) {
+        this.data.logStore.setRecv(this.name, []);
+      }
+      const logRecv = this.data.logStore.getRecv(this.name) as LogLine[];
       for (const l of this.data.logQueue) {
         logSend.push({ v: l.level, t: l.time.getTime(), m: l.message });
+        logRecv.push(l);
       }
       if (logSend.length > 0) {
         this.data.logQueue = [];

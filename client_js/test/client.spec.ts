@@ -15,6 +15,7 @@ import { View, viewComponents } from "../src/view.js";
 import { Field, FieldBase } from "../src/field.js";
 import { Member } from "../src/member.js";
 import { eventType } from "../src/event.js";
+import log4js from "log4js";
 
 describe("Client Tests", function () {
   const selfName = "test";
@@ -81,6 +82,32 @@ describe("Client Tests", function () {
       let called = 0;
       wcli.onMemberEntry.on(() => ++called);
       data.eventEmitter.emit(eventType.memberEntry());
+    });
+  });
+  describe("#logAppender", function () {
+    it("push log to data.logQueue", function () {
+      log4js.configure({
+        appenders: {
+          wcf: { type: wcli.logAppender },
+        },
+        categories: {
+          default: { appenders: ["wcf"], level: "trace" },
+        },
+      });
+      const logger = log4js.getLogger();
+      logger.trace("a");
+      logger.debug("b");
+      logger.info("c");
+      logger.warn("d");
+      logger.error("e");
+      logger.fatal("f");
+      assert.lengthOf(data.logQueue, 6);
+      assert.include(data.logQueue[0], { level: 0, message: "a" });
+      assert.include(data.logQueue[1], { level: 1, message: "b" });
+      assert.include(data.logQueue[2], { level: 2, message: "c" });
+      assert.include(data.logQueue[3], { level: 3, message: "d" });
+      assert.include(data.logQueue[4], { level: 4, message: "e" });
+      assert.include(data.logQueue[5], { level: 5, message: "f" });
     });
   });
   describe("messages", function () {
@@ -317,6 +344,197 @@ describe("Client Tests", function () {
           assert.strictEqual(m?.r, valType.number_);
           assert.lengthOf(m?.a || [], 1);
           done();
+        }, 10);
+      });
+      it("log", function (done) {
+        data.logQueue.push({ level: 0, time: new Date(), message: "a" });
+        data.logQueue.push({ level: 1, time: new Date(), message: "b" });
+        wcli.sync();
+        assert.exists(data.logStore.dataRecv.get(selfName));
+        assert.lengthOf(data.logStore.dataRecv.get(selfName) || [], 2);
+        setTimeout(() => {
+          const m = wssRecv.find(
+            (m) => m.kind === Message.kind.log
+          ) as Message.Log;
+          assert.lengthOf(m?.l || [], 2);
+          assert.include(m?.l?.[0], { v: 0, m: "a" });
+          assert.include(m?.l?.[1], { v: 1, m: "b" });
+          wssRecv = [];
+
+          // 追加分を送る
+          data.logQueue.push({ level: 2, time: new Date(), message: "c" });
+          wcli.sync();
+          assert.lengthOf(data.logStore.dataRecv.get(selfName) || [], 3);
+          setTimeout(() => {
+            const m = wssRecv.find(
+              (m) => m.kind === Message.kind.log
+            ) as Message.Log;
+            assert.lengthOf(m?.l || [], 1);
+            assert.include(m?.l?.[0], { v: 2, m: "c" });
+            done();
+          }, 10);
+        }, 10);
+      });
+    });
+    describe("data request", function () {
+      it("value", function (done) {
+        data.valueStore.getRecv("a", "b");
+        wcli.sync();
+        setTimeout(() => {
+          const m = wssRecv.find(
+            (m) => m.kind === Message.kind.valueReq
+          ) as Message.Req;
+          assert.strictEqual(m?.M, "a");
+          assert.strictEqual(m?.f, "b");
+          assert.strictEqual(m?.i, 1);
+
+          wssSend({ kind: Message.kind.valueRes, i: 1, f: "", d: [1, 2, 3] });
+          wssSend({ kind: Message.kind.valueRes, i: 1, f: "c", d: [1, 2, 3] });
+          setTimeout(() => {
+            assert.isArray(data.valueStore.dataRecv.get("a")?.get("b"));
+            assert.lengthOf(
+              data.valueStore.dataRecv.get("a")?.get("b") || [],
+              3
+            );
+            assert.isArray(data.valueStore.dataRecv.get("a")?.get("b.c"));
+            assert.lengthOf(
+              data.valueStore.dataRecv.get("a")?.get("b.c") || [],
+              3
+            );
+            done();
+          }, 10);
+        }, 10);
+      });
+      it("text", function (done) {
+        data.textStore.getRecv("a", "b");
+        wcli.sync();
+        setTimeout(() => {
+          const m = wssRecv.find(
+            (m) => m.kind === Message.kind.textReq
+          ) as Message.Req;
+          assert.strictEqual(m?.M, "a");
+          assert.strictEqual(m?.f, "b");
+          assert.strictEqual(m?.i, 1);
+
+          wssSend({ kind: Message.kind.textRes, i: 1, f: "", d: "z" });
+          wssSend({ kind: Message.kind.textRes, i: 1, f: "c", d: "z" });
+          setTimeout(() => {
+            assert.strictEqual(data.textStore.dataRecv.get("a")?.get("b"), "z");
+            assert.strictEqual(
+              data.textStore.dataRecv.get("a")?.get("b.c"),
+              "z"
+            );
+            done();
+          }, 10);
+        }, 10);
+      });
+      it("view", function (done) {
+        data.viewStore.getRecv("a", "b");
+        wcli.sync();
+        setTimeout(() => {
+          const m = wssRecv.find(
+            (m) => m.kind === Message.kind.viewReq
+          ) as Message.Req;
+          assert.strictEqual(m?.M, "a");
+          assert.strictEqual(m?.f, "b");
+          assert.strictEqual(m?.i, 1);
+
+          const v = {
+            0: viewComponents.text("a").toMessage(),
+            1: viewComponents.newLine().toMessage(),
+          };
+          wssSend({ kind: Message.kind.viewRes, i: 1, f: "", d: v, l: 2 });
+          wssSend({ kind: Message.kind.viewRes, i: 1, f: "c", d: v, l: 2 });
+          setTimeout(() => {
+            assert.isArray(data.viewStore.dataRecv.get("a")?.get("b"));
+            assert.lengthOf(
+              data.viewStore.dataRecv.get("a")?.get("b") || [],
+              2
+            );
+            assert.strictEqual(
+              data.viewStore.dataRecv.get("a")?.get("b")?.[0]?.x,
+              "a"
+            );
+            assert.isArray(data.viewStore.dataRecv.get("a")?.get("b.c"));
+            assert.lengthOf(
+              data.viewStore.dataRecv.get("a")?.get("b.c") || [],
+              2
+            );
+            assert.strictEqual(
+              data.viewStore.dataRecv.get("a")?.get("b.c")?.[0]?.x,
+              "a"
+            );
+
+            // 2回目: diffを送る
+            const v2 = {
+              0: viewComponents.text("b").toMessage(),
+            };
+            wssSend({ kind: Message.kind.viewRes, i: 1, f: "", d: v2, l: 2 });
+            wssSend({ kind: Message.kind.viewRes, i: 1, f: "c", d: v2, l: 2 });
+            setTimeout(() => {
+              assert.isArray(data.viewStore.dataRecv.get("a")?.get("b"));
+              assert.lengthOf(
+                data.viewStore.dataRecv.get("a")?.get("b") || [],
+                2
+              );
+              assert.strictEqual(
+                data.viewStore.dataRecv.get("a")?.get("b")?.[0]?.x,
+                "b"
+              );
+              assert.isArray(data.viewStore.dataRecv.get("a")?.get("b.c"));
+              assert.lengthOf(
+                data.viewStore.dataRecv.get("a")?.get("b.c") || [],
+                2
+              );
+              assert.strictEqual(
+                data.viewStore.dataRecv.get("a")?.get("b.c")?.[0]?.x,
+                "b"
+              );
+              done();
+            }, 10);
+          }, 10);
+        }, 10);
+      });
+      it("log", function (done) {
+        data.logStore.getRecv("a");
+        wcli.sync();
+        setTimeout(() => {
+          const m = wssRecv.find(
+            (m) => m.kind === Message.kind.logReq
+          ) as Message.LogReq;
+          assert.strictEqual(m?.M, "a");
+
+          wssSend({ kind: Message.kind.syncInit, M: "a", m: 10 });
+          wssSend({
+            kind: Message.kind.log,
+            m: 10,
+            l: [
+              {
+                v: 1,
+                t: 1000,
+                m: "a",
+              },
+              {
+                v: 2,
+                t: 1000,
+                m: "b",
+              },
+            ],
+          });
+          setTimeout(() => {
+            assert.isArray(data.logStore.dataRecv.get("a"));
+            assert.lengthOf(data.logStore.dataRecv.get("a") || [], 2);
+            assert.strictEqual(data.logStore.dataRecv.get("a")?.[0]?.level, 1);
+            assert.strictEqual(
+              data.logStore.dataRecv.get("a")?.[0]?.time?.getTime(),
+              1000
+            );
+            assert.strictEqual(
+              data.logStore.dataRecv.get("a")?.[0]?.message,
+              "a"
+            );
+            done();
+          }, 10);
         }, 10);
       });
     });
