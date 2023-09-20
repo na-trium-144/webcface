@@ -2,6 +2,9 @@ import msgpack from "@ygoe/msgpack";
 import { Val } from "./func.js";
 
 export function unpack(msg: ArrayBuffer) {
+  if (msg.byteLength === 0) {
+    return [];
+  }
   const m = msgpack.deserialize(msg) as any[];
   const ret: AnyMessage[] = [];
   for (let i = 0; i < m.length; i += 2) {
@@ -13,7 +16,7 @@ export function pack(data: AnyMessage[]) {
   const sendData: any[] = [];
   for (let i = 0; i < data.length; i++) {
     sendData.push(data[i].kind);
-    const e: { kind?: number } = data[i];
+    const e: { kind?: number } = { ...data[i] };
     delete e.kind;
     sendData.push(e);
   }
@@ -43,7 +46,7 @@ export const kind = {
   sync: 107,
 } as const;
 
-export const argType = {
+export const valType = {
   none_: 0,
   string_: 1,
   boolean_: 2,
@@ -51,12 +54,12 @@ export const argType = {
   int_: 3,
   float_: 4,
   number_: 4,
-};
+} as const;
 
 export interface Value {
   kind: 0;
   f: string;
-  d: number;
+  d: number[];
 }
 export interface Text {
   kind: 1;
@@ -94,16 +97,19 @@ export interface Req {
 export interface ValueRes {
   kind: 75;
   i: number;
-  d: number;
+  f: string;
+  d: number[];
 }
 export interface TextRes {
   kind: 76;
   i: number;
+  f: string;
   d: string;
 }
 export interface ViewRes {
   kind: 78;
   i: number;
+  f: string;
   d: ViewComponentsDiff;
   l: number;
 }

@@ -1,5 +1,5 @@
 import { Value, Text, Log } from "./data.js";
-import { Func } from "./func.js";
+import { Func, FuncCallback, AnonymousFunc, Arg } from "./func.js";
 import { View } from "./view.js";
 import { Field } from "./field.js";
 import { FieldWithEvent, eventType } from "./event.js";
@@ -20,8 +20,14 @@ export class Member extends Field {
   view(name: string) {
     return new View(this, name);
   }
-  func(name: string) {
-    return new Func(this, name);
+  func(name: string): Func;
+  func(callback: FuncCallback, returnType: number, args: Arg[]): AnonymousFunc;
+  func(...args: [string] | [FuncCallback, number, Arg[]]) {
+    if (typeof args[0] === "string") {
+      return new Func(this, args[0]);
+    } else {
+      return new AnonymousFunc(this, args[0], args[1] || 0, args[2] || []);
+    }
   }
   log() {
     return new Log(this);

@@ -28,7 +28,7 @@ class LoggerBuf : public std::streambuf {
 };
 
 class LoggerSink : public spdlog::sinks::base_sink<std::mutex>,
-                   public Queue<LogLine> {
+                   public Queue<std::shared_ptr<LogLine>> {
   protected:
     void sink_it_(const spdlog::details::log_msg &msg) override;
     void flush_() override {}

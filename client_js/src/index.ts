@@ -10,7 +10,7 @@ export {
   viewColor,
 } from "./view.js";
 export { LogLine } from "./logger.js";
-export { argType } from "./message.js";
+export { valType } from "./message.js";
 export { Arg, Func, AsyncFuncResult, FuncNotFoundError } from "./func.js";
 // export {} from "./event.ts";
 // export {} from "./field.js";

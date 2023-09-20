@@ -1,6 +1,6 @@
 import * as Message from "./message.js";
 import isEqual from "lodash.isequal";
-import { Func } from "./func.js";
+import { Func, AnonymousFunc, FuncCallback } from "./func.js";
 import { Member } from "./member.js";
 import { ClientData } from "./clientData.js";
 import { FieldWithEvent, eventType } from "./event.js";
@@ -10,7 +10,7 @@ export const viewComponentTypes = {
   text: 0,
   newLine: 1,
   button: 2,
-};
+} as const;
 export const viewColor = {
   inherit: 0,
   black: 1,
@@ -37,7 +37,7 @@ export const viewColor = {
   // fuchsia : 22,
   pink: 23,
   // rose : 24,
-};
+} as const;
 
 export function getViewDiff(
   current: Message.ViewComponent[],
@@ -71,31 +71,44 @@ export function mergeViewDiff(
 }
 
 export const viewComponents = {
-  newLine: () => new ViewComponent(viewComponentTypes.newLine),
-  text: (t: string) => new ViewComponent(t),
-  button: (t: string, f: Func) => {
-    const v = new ViewComponent(viewComponentTypes.button);
+  newLine: (options?: ViewComponentOption) =>
+    new ViewComponent(viewComponentTypes.newLine, null, options),
+  text: (t: string, options?: ViewComponentOption) =>
+    new ViewComponent(t, null, options),
+  button: (
+    t: string,
+    f: Func | AnonymousFunc | FuncCallback,
+    options?: ViewComponentOption
+  ) => {
+    const v = new ViewComponent(viewComponentTypes.button, null, options);
     v.text = t;
     v.onClick = f;
     return v;
   },
-};
+} as const;
+
+interface ViewComponentOption {
+  textColor?: number;
+  bgColor?: number;
+}
 export class ViewComponent {
   type_ = 0;
   text_ = "";
   on_click_: FieldBase | null = null;
+  on_click_tmp_: AnonymousFunc | null = null;
   text_color_ = 0;
   bg_color_ = 0;
   data: ClientData | null = null;
   constructor(
     arg: number | string | Message.ViewComponent,
-    data: ClientData | null = null
+    data: ClientData | null = null,
+    options?: ViewComponentOption
   ) {
     if (typeof arg === "number") {
       this.type_ = arg;
     } else if (typeof arg === "string") {
       this.type_ = viewComponentTypes.text;
-      this.text_ = "";
+      this.text_ = arg;
     } else {
       this.type_ = arg.t;
       this.text_ = arg.x;
@@ -105,6 +118,21 @@ export class ViewComponent {
       this.bg_color_ = arg.b;
     }
     this.data = data;
+    if (options?.textColor != undefined) {
+      this.textColor = options.textColor;
+    }
+    if (options?.bgColor != undefined) {
+      this.bgColor = options.bgColor;
+    }
+  }
+  lockTmp(data: ClientData, field: string) {
+    if (this.on_click_tmp_) {
+      const f = new Func(new Field(data, data.selfMemberName, field));
+      this.on_click_tmp_.lockTo(f);
+      f.hidden = true;
+      this.on_click_ = f;
+    }
+    return this;
   }
   toMessage(): Message.ViewComponent {
     return {
@@ -139,13 +167,14 @@ export class ViewComponent {
     }
   }
   // todo: 関数を直接渡す、anonymousfunc実装
-  set onClick(func: Func) {
-    // if(func instanceof AnonymousFunc){
-    // }else if (func instanceof Func) {
-    this.on_click_ = func;
-    // }else{
-    //   this.onClick(new AnonymousFunc(func));
-    // }
+  set onClick(func: Func | AnonymousFunc | FuncCallback) {
+    if (func instanceof AnonymousFunc) {
+      this.on_click_tmp_ = func;
+    } else if (func instanceof Func) {
+      this.on_click_ = func;
+    } else {
+      this.onClick = new AnonymousFunc(null, func, Message.valType.none_, []);
+    }
   }
   get textColor() {
     return this.text_color_;
@@ -162,16 +191,9 @@ export class ViewComponent {
 }
 
 export class View extends FieldWithEvent<View> {
-  componentsRecv_: ViewComponent[] | null;
-  time_: Date | null;
   constructor(base: Field, field = "") {
     super("", base.data, base.member_, field || base.field_);
     this.eventType_ = eventType.viewChange(this);
-    this.componentsRecv_ =
-      this.data.viewStore
-        .getRecv(this.member_, this.field_)
-        ?.map((v) => new ViewComponent(v, this.data)) || null;
-    this.time_ = this.data.syncTimeStore.getRecv(this.member_);
   }
   get member() {
     return new Member(this);
@@ -180,7 +202,11 @@ export class View extends FieldWithEvent<View> {
     return this.field_;
   }
   tryGet() {
-    return this.componentsRecv_;
+    return (
+      this.data.viewStore
+        .getRecv(this.member_, this.field_)
+        ?.map((v) => new ViewComponent(v, this.data)) || null
+    );
   }
   get() {
     const v = this.tryGet();
@@ -191,14 +217,35 @@ export class View extends FieldWithEvent<View> {
     }
   }
   time() {
-    return this.time_ || new Date(0);
+    return this.data.syncTimeStore.getRecv(this.member_) || new Date(0);
   }
-  set(data: ViewComponent[]) {
+  set(data: (ViewComponent | string | number | boolean)[]) {
     if (this.data.viewStore.isSelf(this.member_)) {
+      const data2: ViewComponent[] = [];
+      for (let c of data) {
+        if (c instanceof ViewComponent) {
+          data2.push(c);
+        } else if (typeof c === "string") {
+          while (c.includes("\n")) {
+            const s = c.slice(0, c.indexOf("\n"));
+            data2.push(viewComponents.text(s));
+            data2.push(viewComponents.newLine());
+            c = c.slice(c.indexOf("\n") + 1);
+          }
+          if (c !== "") {
+            data2.push(viewComponents.text(c));
+          }
+        } else {
+          data2.push(viewComponents.text(String(c)));
+        }
+      }
       this.data.viewStore.setSend(
         this.field_,
-        data.map((v) => v.toMessage())
+        data2.map((c, i) =>
+          c.lockTmp(this.data, `${this.field_}_${i}`).toMessage()
+        )
       );
+      this.triggerEvent(this);
     } else {
       throw new Error("Cannot set data to member other than self");
     }

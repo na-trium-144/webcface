@@ -3,16 +3,19 @@
 #include <unordered_map>
 #include <set>
 #include <mutex>
+#include <memory>
 #include <condition_variable>
 #include <optional>
 #include <string>
-#include <concepts>
+#include <atomic>
 #include <eventpp/eventdispatcher.h>
 #include <spdlog/logger.h>
 #include "func_result.h"
 #include "common/func.h"
 #include "common/queue.h"
 #include "common/view.h"
+#include "common/dict.h"
+#include "common/vector.h"
 #include "field.h"
 #include "logger.h"
 
@@ -64,13 +67,16 @@ struct ClientData {
             req_send;
 
         std::string self_member_name;
-        bool isSelf(const std::string &member) const {
-            return member == self_member_name;
-        }
+
+        void addReq(const std::string &member, const std::string &field);
 
       public:
         explicit SyncDataStore2(const std::string &name)
             : self_member_name(name) {}
+
+        bool isSelf(const std::string &member) const {
+            return member == self_member_name;
+        }
 
         //! 送信するデータをdata_sendとdata_recv[self_member_name]にセット
         void setSend(const std::string &name, const T &data);
@@ -90,11 +96,20 @@ struct ClientData {
         void setRecv(const FieldBase &base, const T &data) {
             setRecv(base.member_, base.field_, data);
         }
-        //! data_recvからデータを返す or なければreq,req_sendをtrueにセット
+        //! data_recvからデータを返す & req,req_sendをtrueにセット
         std::optional<T> getRecv(const std::string &from,
                                  const std::string &name);
         std::optional<T> getRecv(const FieldBase &base) {
             return getRecv(base.member_, base.field_);
+        }
+        //! data_recvから指定したfield以下のデータを返す
+        //! 指定したfieldのreq,req_sendをtrueにセット
+        //! さらに、指定したフィールド以下にデータが存在すれば
+        //! そのフィールド(sub_field)も同様にreqをセット
+        std::optional<Dict<T>> getRecvRecurse(const std::string &member,
+                                              const std::string &field);
+        std::optional<Dict<T>> getRecvRecurse(const FieldBase &base) {
+            return getRecvRecurse(base.member_, base.field_);
         }
         //! data_recvからデータを削除, req,req_sendをfalseにする
         void unsetRecv(const std::string &from, const std::string &name);
@@ -117,7 +132,8 @@ struct ClientData {
         std::vector<std::string> getMembers();
 
         // req_idに対応するmember名とフィールド名を返す
-        std::pair<std::string, std::string> getReq(unsigned int req_id);
+        std::pair<std::string, std::string>
+        getReq(unsigned int req_id, const std::string &sub_field);
 
         //! data_sendを返し、data_sendをクリア
         std::unordered_map<std::string, T> transferSend(bool is_first);
@@ -135,20 +151,16 @@ struct ClientData {
         std::unordered_map<std::string, bool> req;
         std::unordered_map<std::string, bool> req_send;
         std::string self_member_name;
-        bool isSelf(const std::string &member) const {
-            return member == self_member_name;
-        }
 
       public:
         explicit SyncDataStore1(const std::string &name)
             : self_member_name(name) {}
 
-        void setRecv(const std::string &member, const T &data);
+        bool isSelf(const std::string &member) const {
+            return member == self_member_name;
+        }
 
-        //! Tがvectorのとき要素を追加する
-        template <typename U>
-            requires std::same_as<T, std::vector<U>>
-        void addRecv(const std::string &member, const U &data);
+        void setRecv(const std::string &member, const T &data);
 
         std::optional<T> getRecv(const std::string &member);
         //! req_sendを返し、req_sendをクリア
@@ -160,7 +172,6 @@ struct ClientData {
      * また、実行するたびに連番を振る必要があるcallback_idの管理にも使う
      */
     class FuncResultStore {
-      private:
         std::mutex mtx;
         std::vector<AsyncFuncResult> results;
 
@@ -169,14 +180,17 @@ struct ClientData {
         AsyncFuncResult &addResult(const std::string &caller,
                                    const Field &base);
         //! caller_idに対応するresultを返す
+        //! 存在しない場合out_of_rangeを投げる
         AsyncFuncResult &getResult(int caller_id);
     };
 
     //! clientがsync()されたタイミングで実行中の関数を起こす
     //! さらにその関数が完了するまで待機する
-    struct FuncOnSync {
+    class FuncOnSync {
         std::mutex call_mtx, return_mtx;
         std::condition_variable call_cond, return_cond;
+
+      public:
         //! sync()側が関数を起こし完了まで待機
         void sync() {
             std::unique_lock return_lock(return_mtx);
@@ -199,6 +213,7 @@ struct ClientData {
         std::vector<spdlog::sink_ptr> sinks = {logger_sink, stderr_sink};
         logger =
             std::make_shared<spdlog::logger>(name, sinks.begin(), sinks.end());
+        logger->set_level(spdlog::level::trace);
         logger_internal = std::make_shared<spdlog::logger>(
             "webcface_internal(" + name + ")", stderr_sink);
         logger_internal->set_level(logger_internal_level);
@@ -210,11 +225,12 @@ struct ClientData {
         return base.member_ == self_member_name;
     }
 
-    SyncDataStore2<double> value_store;
-    SyncDataStore2<std::string> text_store;
-    SyncDataStore2<FuncInfo> func_store;
-    SyncDataStore2<std::vector<ViewComponentBase>> view_store;
-    SyncDataStore1<std::vector<LogLine>> log_store;
+    SyncDataStore2<std::shared_ptr<VectorOpt<double>>> value_store;
+    SyncDataStore2<std::shared_ptr<std::string>> text_store;
+    SyncDataStore2<std::shared_ptr<FuncInfo>> func_store;
+    SyncDataStore2<std::shared_ptr<std::vector<ViewComponentBase>>> view_store;
+    SyncDataStore1<std::shared_ptr<std::vector<std::shared_ptr<LogLine>>>>
+        log_store;
     SyncDataStore1<std::chrono::system_clock::time_point> sync_time_store;
     FuncResultStore func_result_store;
 
@@ -223,11 +239,9 @@ struct ClientData {
     unsigned int getMemberIdFromName(const std::string &name) const;
 
     // 値を引数に持つイベント
-    eventpp::EventDispatcher<FieldBaseComparable, void(Value)>
-        value_change_event;
-    eventpp::EventDispatcher<FieldBaseComparable, void(Text)> text_change_event;
-    eventpp::EventDispatcher<FieldBaseComparable, void(View)> view_change_event;
-    eventpp::EventDispatcher<std::string, void(LogLine)> log_append_event;
+    eventpp::EventDispatcher<FieldBaseComparable, void(Field)>
+        value_change_event, text_change_event, view_change_event;
+    eventpp::EventDispatcher<std::string, void(Field)> log_append_event;
     // 値は要らないイベント
     eventpp::EventDispatcher<int, void(Field)> member_entry_event;
     eventpp::EventDispatcher<std::string, void(Field)> sync_event,
@@ -235,6 +249,8 @@ struct ClientData {
 
     //! sync()を待たずに即時送って欲しいメッセージを入れるキュー
     Queue<std::string> message_queue;
+    //! wsが受信したメッセージを入れるキュー
+    Queue<std::string> recv_queue;
     //! sync()のタイミングで実行を同期する関数のcondition_variable
     Queue<std::shared_ptr<FuncOnSync>> func_sync_queue;
 
@@ -244,5 +260,12 @@ struct ClientData {
     std::shared_ptr<LoggerSink> logger_sink;
 
     std::shared_ptr<spdlog::logger> logger, logger_internal;
+
+    //! close()が呼ばれたらtrue
+    std::atomic<bool> closing = false;
+    std::atomic<bool> connected_ = false;
+    //! 初回のsync()で全データを送信するがそれが完了したかどうか
+    //! 再接続したらfalseに戻す
+    std::atomic<bool> sync_init = false;
 };
 } // namespace WebCFace

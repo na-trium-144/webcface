@@ -30,12 +30,16 @@ export function ValueCard(props: Props) {
       if (val != null) {
         const now = v.time();
         const timeDiff = now.getTime() - lastUpdate.current.getTime();
-        lastUpdate.current = now;
-        if (data.current.length === 0) {
-          setStartTime(now);
-        }
-        for (let t = 0; t < timeDiff; t++) {
-          data.current.push(val);
+        if (timeDiff < 0) {
+          console.error(`invalid timeDiff ${timeDiff}`);
+        } else {
+          lastUpdate.current = now;
+          if (data.current.length === 0) {
+            setStartTime(now);
+          }
+          for (let t = 0; t < timeDiff; t++) {
+            data.current.push(val);
+          }
         }
       }
     };

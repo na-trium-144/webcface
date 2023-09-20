@@ -7,6 +7,7 @@
 #include "common/view.h"
 #include "data.h"
 #include "client_data.h"
+#include "func.h"
 
 namespace WebCFace {
 
@@ -42,7 +43,7 @@ class ViewComponent : public ViewComponentBase {
     }
     std::optional<Func> onClick() const {
         if (on_click_func_ != std::nullopt) {
-            assert(data_w != std::nullptr && "ClientData not set");
+            assert(data_w.lock() != nullptr && "ClientData not set");
             return Field{data_w, on_click_func_->member_,
                          on_click_func_->field_};
         } else {
@@ -116,53 +117,10 @@ class ViewBuf : public std::stringbuf {
     }
 };
 
-class View : protected Field,
-             public EventTarget<View, decltype(ClientData::view_change_event)>,
-             public std::ostream {
+class View : protected Field, public EventTarget<View>, public std::ostream {
     ViewBuf sb;
-    std::vector<ViewComponent> components_recv;
-    std::optional<std::chrono::system_clock::time_point> time_;
+    void onAppend() const override { tryGet(); }
 
-    // void onAppend() const override { }
-
-  public:
-    View()
-        : Field(), EventTarget<View, decltype(ClientData::view_change_event)>(),
-          sb(), std::ostream(&sb) {}
-    View(const Field &base)
-        : Field(base),
-          EventTarget<View, decltype(ClientData::view_change_event)>(
-              &this->dataLock()->view_change_event, *this),
-          sb(), std::ostream(&sb) {
-        init();
-        auto data = dataLock();
-        auto vb = data->view_store.getRecv(*this);
-        if (vb) {
-            components_recv.resize(vb->size());
-            for (std::size_t i = 0; i < vb->size(); i++) {
-                components_recv[i] = ViewComponent{vb->at(i), this->data_w};
-            }
-        }
-        time_ = data->sync_time_store.getRecv(this->member_);
-    }
-    View(const Field &base, const std::string &field)
-        : View(Field{base, field}) {}
-    View(const View &rhs) : View() { *this = rhs; }
-    View &operator=(const View &rhs) {
-        this->Field::operator=(rhs);
-        this->EventTarget<
-            View, decltype(ClientData::view_change_event)>::operator=(rhs);
-        this->sb = rhs.sb;
-        this->components_recv = rhs.components_recv;
-        return *this;
-    }
-
-    ~View() { sync(); }
-
-    using Field::member;
-    using Field::name;
-
-  private:
     //! 値をセットし、EventTargetを発動する
     auto &set(std::vector<ViewComponent> &v) {
         std::vector<ViewComponentBase> vb(v.size());
@@ -171,22 +129,65 @@ class View : protected Field,
                                  this->name() + "_" + std::to_string(i));
         }
         setCheck();
-        dataLock()->view_store.setSend(*this, vb);
-        components_recv = v;
+        dataLock()->view_store.setSend(
+            *this, std::make_shared<std::vector<ViewComponentBase>>(vb));
         triggerEvent(*this);
         return *this;
     }
 
   public:
+    View() : Field(), EventTarget<View>(), sb(), std::ostream(&sb) {}
+    View(const Field &base)
+        : Field(base), EventTarget<View>(&this->dataLock()->view_change_event,
+                                         *this),
+          sb(), std::ostream(&sb) {
+
+        if (dataLock()->isSelf(member_)) {
+            init();
+        }
+    }
+    View(const Field &base, const std::string &field)
+        : View(Field{base, field}) {}
+    View(const View &rhs) : View() { *this = rhs; }
+    View &operator=(const View &rhs) {
+        this->Field::operator=(rhs);
+        this->EventTarget<View>::operator=(rhs);
+        this->sb = rhs.sb;
+        return *this;
+    }
+
+    ~View() {
+        if (dataLock()->isSelf(member_)) {
+            sync();
+        }
+    }
+
+    using Field::member;
+    using Field::name;
+
+    auto child(const std::string &field) {
+        return View{*this, this->field_ + "." + field};
+    }
     //! 値を取得する
     std::optional<std::vector<ViewComponent>> tryGet() const {
-        return components_recv;
+        auto vb = dataLock()->view_store.getRecv(*this);
+        if (vb) {
+            std::vector<ViewComponent> v((*vb)->size());
+            for (std::size_t i = 0; i < (*vb)->size(); i++) {
+                v[i] = ViewComponent{(**vb)[i], this->data_w};
+            }
+            return v;
+        } else {
+            return std::nullopt;
+        }
     }
     std::vector<ViewComponent> get() const {
         return tryGet().value_or(std::vector<ViewComponent>{});
     }
     auto time() const {
-        return time_.value_or(std::chrono::system_clock::time_point());
+        return dataLock()
+            ->sync_time_store.getRecv(this->member_)
+            .value_or(std::chrono::system_clock::time_point());
     }
 
     //! このviewを非表示にする
@@ -203,9 +204,7 @@ class View : protected Field,
     }
 
     View &init() {
-        if (dataLock()->isSelf(member_)) {
-            sb.components.clear();
-        }
+        sb.components.clear();
         return *this;
     }
     template <typename T>

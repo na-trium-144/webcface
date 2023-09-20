@@ -17,6 +17,7 @@ enum class ValType {
     bool_ = 2,
     int_ = 3,
     float_ = 4,
+    double_ = 4,
 };
 //! TのValTypeを得る
 template <typename T>
@@ -73,7 +74,7 @@ class ValAdaptor {
         requires std::floating_point<T>
     ValAdaptor(T value) : value(std::to_string(value)), type(ValType::float_) {}
 
-    ValType argType() const { return type; }
+    ValType valType() const { return type; }
 
     // cast to function
     operator const std::string &() const { return value; }
@@ -126,7 +127,7 @@ class ValAdaptor {
 };
 
 // inline std::ostream &operator<<(std::ostream &os, const ValAdaptor &a) {
-//     return os << static_cast<std::string>(a) << "(type=" << a.argType() << ")";
+//     return os << static_cast<std::string>(a) << "(type=" << a.valType() << ")";
 // }
 
 //! ValAdaptorのリストから任意の型のタプルに変換する

@@ -1,0 +1,6 @@
+{
+  "all": true,
+  "src": ["./src"],
+  "exclude": ["**/test/**"],
+  "reporter": ["text", "text-summary"]
+}

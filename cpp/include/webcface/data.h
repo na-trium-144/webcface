@@ -3,6 +3,8 @@
 #include <ostream>
 #include <optional>
 #include <chrono>
+#include <memory>
+#include "common/dict.h"
 #include "field.h"
 #include "client_data.h"
 #include "event_target.h"
@@ -10,40 +12,54 @@
 namespace WebCFace {
 
 //! 実数値を扱う
-class Value
-    : protected Field,
-      public EventTarget<Value, decltype(ClientData::value_change_event)> {
-    std::optional<double> value_;
-    std::optional<std::chrono::system_clock::time_point> time_;
+class Value : protected Field, public EventTarget<Value> {
 
-    // void onAppend() const override {  }
+    void onAppend() const override { tryGet(); }
+
+    Value &set(const std::shared_ptr<VectorOpt<double>> &v) {
+        setCheck();
+        dataLock()->value_store.setSend(*this, v);
+        this->triggerEvent(*this);
+        return *this;
+    }
 
   public:
     Value() = default;
     Value(const Field &base)
-        : Field(base),
-          EventTarget<Value, decltype(ClientData::value_change_event)>(
-              &this->dataLock()->value_change_event, *this) {
-        auto data = dataLock();
-        value_ = data->value_store.getRecv(*this);
-        time_ = data->sync_time_store.getRecv(this->member_);
-    }
+        : Field(base), EventTarget<Value>(&this->dataLock()->value_change_event,
+                                          *this) {}
     Value(const Field &base, const std::string &field)
         : Value(Field{base, field}) {}
 
     using Field::member;
     using Field::name;
 
-    //! 値をセットし、EventTargetを発動する
-    auto &set(double v) {
-        setCheck();
-        dataLock()->value_store.setSend(*this, v);
-        value_ = v;
-        this->triggerEvent(*this);
+    auto child(const std::string &field) {
+        return Value{*this, this->field_ + "." + field};
+    }
+
+    using Dict = Common::Dict<std::shared_ptr<Common::VectorOpt<double>>>;
+    Value &set(const Dict &v) {
+        if (v.hasValue()) {
+            set(v.getRaw());
+        } else {
+            for (const auto &it : v.getChildren()) {
+                child(it.first).set(it.second);
+            }
+        }
         return *this;
     }
     //! 値をセットし、EventTargetを発動する
-    auto &operator=(double v) {
+    Value &set(const VectorOpt<double> &v) {
+        set(std::make_shared<VectorOpt<double>>(v));
+        return *this;
+    }
+
+    auto &operator=(const Dict &v) {
+        this->set(v);
+        return *this;
+    }
+    auto &operator=(const VectorOpt<double> &v) {
         this->set(v);
         return *this;
     }
@@ -57,17 +73,42 @@ class Value
     }
 
     //! 値を返す
-    std::optional<double> tryGet() const { return value_; }
+    std::optional<double> tryGet() const {
+        auto v = dataLock()->value_store.getRecv(*this);
+        if (v) {
+            return **v;
+        } else {
+            return std::nullopt;
+        }
+    }
+    std::optional<std::vector<double>> tryGetVec() const {
+        auto v = dataLock()->value_store.getRecv(*this);
+        if (v) {
+            return **v;
+        } else {
+            return std::nullopt;
+        }
+    }
+    std::optional<Dict> tryGetRecurse() const {
+        return dataLock()->value_store.getRecvRecurse(*this);
+    }
     double get() const { return tryGet().value_or(0); }
+    std::vector<double> getVec() const {
+        return tryGetVec().value_or(std::vector<double>{});
+    }
+    Dict getRecurse() const { return tryGetRecurse().value_or(Dict{}); }
     operator double() const { return get(); }
+    operator std::vector<double>() const { return getVec(); }
+    operator Dict() const { return getRecurse(); }
     auto time() const {
-        return time_.value_or(std::chrono::system_clock::time_point());
+        return dataLock()
+            ->sync_time_store.getRecv(this->member_)
+            .value_or(std::chrono::system_clock::time_point());
     }
 
     //! 値やリクエスト状態をクリア
     auto &free() {
         dataLock()->value_store.unsetRecv(*this);
-        value_ = std::nullopt;
         return *this;
     }
 
@@ -136,49 +177,76 @@ class Value
 };
 
 // 文字列を扱う
-class Text : protected Field,
-             public EventTarget<Text, decltype(ClientData::text_change_event)> {
-    std::optional<std::string> value_;
-    std::optional<std::chrono::system_clock::time_point> time_;
+class Text : protected Field, public EventTarget<Text> {
 
-    // void onAppend() const override { }
+    void onAppend() const override { tryGet(); }
+    Text &set(const std::shared_ptr<std::string> &v) {
+        setCheck();
+        dataLock()->text_store.setSend(*this, v);
+        this->triggerEvent(*this);
+        return *this;
+    }
 
   public:
     Text() = default;
     Text(const Field &base)
-        : Field(base),
-          EventTarget<Text, decltype(ClientData::text_change_event)>(
-              &this->dataLock()->text_change_event, *this) {
-        auto data = dataLock();
-        value_ = data->text_store.getRecv(*this);
-        time_ = data->sync_time_store.getRecv(this->member_);
-    }
+        : Field(base), EventTarget<Text>(&this->dataLock()->text_change_event,
+                                         *this) {}
     Text(const Field &base, const std::string &field)
         : Text(Field{base, field}) {}
 
     using Field::member;
     using Field::name;
 
-    //! 値をセットし、EventTargetを発動する
-    auto &set(const std::string &v) {
-        setCheck();
-        dataLock()->text_store.setSend(*this, v);
-        value_ = v;
-        triggerEvent(*this);
+    auto child(const std::string &field) {
+        return Text{*this, this->field_ + "." + field};
+    }
+
+    using Dict = Common::Dict<std::shared_ptr<std::string>>;
+    Text &set(const Dict &v) {
+        if (v.hasValue()) {
+            set(v.getRaw());
+        } else {
+            for (const auto &it : v.getChildren()) {
+                child(it.first).set(it.second);
+            }
+        }
         return *this;
+    }
+    //! 値をセットし、EventTargetを発動する
+    Text &set(const std::string &v) {
+        return set(std::make_shared<std::string>(v));
     }
     //! 値をセットする
     auto &operator=(const std::string &v) {
         this->set(v);
         return *this;
+    } //! 値をセットする
+    auto &operator=(const Dict &v) {
+        this->set(v);
+        return *this;
     }
 
     //! 値を取得する
-    std::optional<std::string> tryGet() const { return value_; }
+    std::optional<std::string> tryGet() const {
+        auto v = dataLock()->text_store.getRecv(*this);
+        if (v) {
+            return **v;
+        } else {
+            return std::nullopt;
+        }
+    }
+    std::optional<Dict> tryGetRecurse() const {
+        return dataLock()->text_store.getRecvRecurse(*this);
+    }
     std::string get() const { return tryGet().value_or(""); }
+    Dict getRecurse() const { return tryGetRecurse().value_or(Dict{}); }
     operator std::string() const { return get(); }
+    operator Dict() const { return getRecurse(); }
     auto time() const {
-        return time_.value_or(std::chrono::system_clock::time_point());
+        return dataLock()
+            ->sync_time_store.getRecv(this->member_)
+            .value_or(std::chrono::system_clock::time_point());
     }
 
     //! このtext非表示にする
@@ -201,26 +269,32 @@ class Text : protected Field,
 //! log
 //! name使わないんだけど
 //! todo: triggerEvent
-class Log
-    : protected Field,
-      public EventTarget<LogLine, decltype(ClientData::log_append_event)> {
-    std::optional<std::vector<LogLine>> value_;
+class Log : protected Field, public EventTarget<Log, std::string> {
 
-    // void onAppend() const override { }
+    void onAppend() const override { tryGet(); }
 
   public:
     Log() = default;
     Log(const Field &base)
-        : Field(base),
-          EventTarget<LogLine, decltype(ClientData::log_append_event)>(
-              &this->dataLock()->log_append_event, this->member_) {
-        value_ = this->dataLock()->log_store.getRecv(member_);
+        : Field(base), EventTarget<Log, std::string>(
+                           &this->dataLock()->log_append_event, this->member_) {
     }
 
     using Field::member;
 
     //! 値を取得する
-    std::optional<std::vector<LogLine>> tryGet() const { return value_; }
+    std::optional<std::vector<LogLine>> tryGet() const {
+        auto v = dataLock()->log_store.getRecv(member_);
+        if (v) {
+            std::vector<LogLine> lv((*v)->size());
+            for (std::size_t i = 0; i < (*v)->size(); i++) {
+                lv[i] = *(**v)[i];
+            }
+            return lv;
+        } else {
+            return std::nullopt;
+        }
+    }
     std::vector<LogLine> get() const {
         return tryGet().value_or(std::vector<LogLine>{});
     }

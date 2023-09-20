@@ -4,36 +4,31 @@
 #include <future>
 #include <vector>
 #include <thread>
-#include <atomic>
 #include "client_data.h"
 #include "member.h"
 #include "event_target.h"
 #include "func.h"
 #include "logger.h"
+#include "common/def.h"
 
 namespace WebCFace {
 //! サーバーに接続するクライアント。
 class Client : public Member {
   private:
-    //! close()が呼ばれたらtrue
-    std::atomic<bool> closing = false;
-    std::atomic<bool> connected_ = false;
-
     //! サーバーのホスト
     std::string host;
     //! サーバーのポート
     int port;
     //! websocket通信するスレッド
     std::thread message_thread;
-    void messageThreadMain();
+    //! recv_queueを処理するスレッド
+    std::thread recv_thread;
+    static void messageThreadMain(std::shared_ptr<ClientData> data,
+                                  std::string host, int port);
     //! 接続を切り、今後再接続しない
     void close();
 
     std::shared_ptr<ClientData> data;
-
-    //! 初回のsync()で全データを送信するがそれが完了したかどうか
-    //! 再接続したらfalseに戻す
-    std::atomic<bool> sync_init = false;
 
     LoggerBuf logger_buf;
     std::ostream logger_os;
@@ -48,7 +43,11 @@ class Client : public Member {
     //! 自分自身のmemberとしての名前を指定しサーバーに接続する
     //! サーバーのホストとポートを省略した場合localhost:7530になる
     explicit Client(const std::string &name,
-                    const std::string &host = "127.0.0.1", int port = 7530);
+                    const std::string &host = "127.0.0.1",
+                    int port = WEBCFACE_DEFAULT_PORT)
+        : Client(name, host, port, std::make_shared<ClientData>(name)) {}
+    explicit Client(const std::string &name, const std::string &host, int port,
+                    std::shared_ptr<ClientData> data);
     //! サーバーに接続できているときtrueを返す。
     bool connected() const;
     //! デストラクタで接続を切る。
@@ -79,8 +78,7 @@ class Client : public Member {
      * eventの設定は初回のsync()より前に行うと良い
      */
     auto onMemberEntry() {
-        return EventTarget<Member, decltype(ClientData::member_entry_event)>{
-            &data->member_entry_event, 0};
+        return EventTarget<Member, int>{&data->member_entry_event, 0};
     }
 
     /*!

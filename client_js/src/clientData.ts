@@ -2,11 +2,11 @@ import { Val, FuncInfo, AsyncFuncResult } from "./func.js";
 import { EventEmitter } from "eventemitter3";
 import { LogLine } from "./logger.js";
 import * as Message from "./message.js";
-import { FieldBase } from "./field.js";
+import { FieldBase, Field } from "./field.js";
 
 export class ClientData {
   selfMemberName: string;
-  valueStore: SyncDataStore2<number>;
+  valueStore: SyncDataStore2<number[]>;
   textStore: SyncDataStore2<string>;
   funcStore: SyncDataStore2<FuncInfo>;
   viewStore: SyncDataStore2<Message.ViewComponent[]>;
@@ -22,7 +22,7 @@ export class ClientData {
     callFunc: (r: AsyncFuncResult, b: FieldBase, args: Val[]) => void
   ) {
     this.selfMemberName = name;
-    this.valueStore = new SyncDataStore2<number>(name);
+    this.valueStore = new SyncDataStore2<number[]>(name);
     this.textStore = new SyncDataStore2<string>(name);
     this.funcStore = new SyncDataStore2<FuncInfo>(name);
     this.viewStore = new SyncDataStore2<Message.ViewComponent[]>(name);
@@ -50,9 +50,10 @@ export class ClientData {
   }
 }
 
-class SyncDataStore2<T> {
+export class SyncDataStore2<T> {
   dataSend: Map<string, T>;
   dataSendPrev: Map<string, T>;
+  dataSendHidden: Map<string, boolean>;
   dataRecv: Map<string, Map<string, T>>;
   entry: Map<string, string[]>;
   req: Map<string, Map<string, number>>;
@@ -62,6 +63,7 @@ class SyncDataStore2<T> {
     this.selfMemberName = name;
     this.dataSend = new Map();
     this.dataSendPrev = new Map();
+    this.dataSendHidden = new Map();
     this.dataRecv = new Map();
     this.entry = new Map();
     this.req = new Map();
@@ -74,6 +76,12 @@ class SyncDataStore2<T> {
   setSend(field: string, data: T) {
     this.dataSend.set(field, data);
     this.setRecv(this.selfMemberName, field, data);
+  }
+  setHidden(field: string, isHidden: boolean) {
+    this.dataSendHidden.set(field, isHidden);
+  }
+  isHidden(field: string) {
+    return this.dataSendHidden.get(field) == true;
   }
   //! 受信したデータをdata_recvにセット
   setRecv(member: string, field: string, data: T) {
@@ -133,7 +141,7 @@ class SyncDataStore2<T> {
   }
   //! member名のりすとを取得(entryから)
   getMembers() {
-    return this.entry.keys();
+    return Array.from(this.entry.keys());
   }
   //! entryを取得
   getEntry(member: string) {
@@ -151,8 +159,14 @@ class SyncDataStore2<T> {
   transferSend(isFirst: boolean) {
     if (isFirst) {
       this.dataSend = new Map();
-      return (this.dataSendPrev =
-        this.dataRecv.get(this.selfMemberName) || new Map<string, T>());
+      // dataSendPrevはdataRecvが書き換えられても影響しないようコピーする
+      this.dataSendPrev = new Map();
+      const dataCurrent =
+        this.dataRecv.get(this.selfMemberName) || new Map<string, T>();
+      for (const [k, v] of dataCurrent.entries()) {
+        this.dataSendPrev.set(k, v);
+      }
+      return dataCurrent;
     } else {
       const s = this.dataSend;
       this.dataSendPrev = s;
@@ -178,11 +192,11 @@ class SyncDataStore2<T> {
       return r;
     }
   }
-  getReq(i: number) {
+  getReq(i: number, subField: string) {
     for (const [rm, r] of this.req.entries()) {
       for (const [rf, ri] of r.entries()) {
         if (ri == i) {
-          return [rm, rf];
+          return [rm, subField !== "" ? rf + "." + subField : rf];
         }
       }
     }
@@ -190,7 +204,7 @@ class SyncDataStore2<T> {
   }
 }
 
-class SyncDataStore1<T> {
+export class SyncDataStore1<T> {
   dataRecv: Map<string, T>;
   req: Map<string, boolean>;
   reqSend: Map<string, boolean>;
@@ -229,9 +243,10 @@ class SyncDataStore1<T> {
     }
   }
 }
-class FuncResultStore {
+
+export class FuncResultStore {
   results: AsyncFuncResult[] = [];
-  addResult(caller: string, base: FieldBase) {
+  addResult(caller: string, base: Field) {
     const callerId = this.results.length;
     this.results.push(new AsyncFuncResult(callerId, caller, base));
     return this.results[callerId];

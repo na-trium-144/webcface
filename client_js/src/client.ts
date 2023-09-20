@@ -118,7 +118,10 @@ export class Client extends Member {
           }
           case Message.kind.valueRes: {
             const dataR = data as Message.ValueRes;
-            const [member, field] = this.data.valueStore.getReq(dataR.i);
+            const [member, field] = this.data.valueStore.getReq(
+              dataR.i,
+              dataR.f
+            );
             this.data.valueStore.setRecv(member, field, dataR.d);
             const target = this.member(member).value(field);
             this.data.eventEmitter.emit(eventType.valueChange(target), target);
@@ -126,7 +129,10 @@ export class Client extends Member {
           }
           case Message.kind.textRes: {
             const dataR = data as Message.TextRes;
-            const [member, field] = this.data.textStore.getReq(dataR.i);
+            const [member, field] = this.data.textStore.getReq(
+              dataR.i,
+              dataR.f
+            );
             this.data.textStore.setRecv(member, field, dataR.d);
             const target = this.member(member).text(field);
             this.data.eventEmitter.emit(eventType.textChange(target), target);
@@ -134,7 +140,10 @@ export class Client extends Member {
           }
           case Message.kind.viewRes: {
             const dataR = data as Message.ViewRes;
-            const [member, field] = this.data.viewStore.getReq(dataR.i);
+            const [member, field] = this.data.viewStore.getReq(
+              dataR.i,
+              dataR.f
+            );
             const current = this.data.viewStore.getRecv(member, field) || [];
             const diff: Message.ViewComponentsDiff = {};
             for (const k of Object.keys(dataR.d)) {
@@ -150,7 +159,7 @@ export class Client extends Member {
             const dataR = data as Message.Log;
             const member = this.data.getMemberNameFromId(dataR.m);
             const log = this.data.logStore.getRecv(member) || [];
-            const target = this.member(member);
+            const target = this.member(member).log();
             for (const ll of dataR.l) {
               const ll2: LogLine = {
                 level: ll.v,
@@ -158,9 +167,9 @@ export class Client extends Member {
                 message: ll.m,
               };
               log.push(ll2);
-              this.data.eventEmitter.emit(eventType.logAppend(target), ll2);
             }
             this.data.logStore.setRecv(member, log);
+            this.data.eventEmitter.emit(eventType.logAppend(target), target);
             break;
           }
           case Message.kind.call: {
@@ -229,16 +238,28 @@ export class Client extends Member {
           case Message.kind.callResponse: {
             const dataR = data as Message.CallResponse;
             const r = this.data.funcResultStore.getResult(dataR.i);
-            r.resolveStarted(dataR.s);
+            if (r != undefined) {
+              r.resolveStarted(dataR.s);
+            } else {
+              this.loggerInternal.error(
+                `error receiving call result id=${dataR.i}`
+              );
+            }
             break;
           }
           case Message.kind.callResult: {
             const dataR = data as Message.CallResult;
             const r = this.data.funcResultStore.getResult(dataR.i);
-            if (dataR.e) {
-              r.rejectResult(new Error(String(dataR.r)));
+            if (r != undefined) {
+              if (dataR.e) {
+                r.rejectResult(new Error(String(dataR.r)));
+              } else {
+                r.resolveResult(dataR.r);
+              }
             } else {
-              r.resolveResult(dataR.r);
+              this.loggerInternal.error(
+                `error receiving call result id=${dataR.i}`
+              );
             }
             break;
           }
@@ -355,11 +376,7 @@ export class Client extends Member {
         .entries()) {
         const vPrev = viewPrev.get(k) || [];
         const diff = getViewDiff(v, vPrev);
-        const diffSend: Message.ViewComponentsDiff = {};
-        for (const k2 of Object.keys(diff)) {
-          diffSend[k2] = diff[k2];
-        }
-        msg.push({ kind: Message.kind.view, f: k, d: diffSend });
+        msg.push({ kind: Message.kind.view, f: k, d: diff, l: v.length });
       }
       for (const [k, v] of this.data.viewStore.transferReq(isFirst).entries()) {
         for (const [k2, v2] of v.entries()) {
@@ -370,24 +387,31 @@ export class Client extends Member {
       for (const [k, v] of this.data.funcStore
         .transferSend(isFirst)
         .entries()) {
-        msg.push({
-          kind: Message.kind.funcInfo,
-          f: k,
-          r: v.returnType,
-          a: v.args.map((a) => ({
-            n: a.name || "",
-            t: a.type != undefined ? a.type : Message.argType.none_,
-            i: a.init != undefined ? a.init : null,
-            m: a.min != undefined ? a.min : null,
-            x: a.max != undefined ? a.max : null,
-            o: a.option != undefined ? a.option : [],
-          })),
-        });
+        if (!this.data.funcStore.isHidden(k)) {
+          msg.push({
+            kind: Message.kind.funcInfo,
+            f: k,
+            r: v.returnType,
+            a: v.args.map((a) => ({
+              n: a.name || "",
+              t: a.type != undefined ? a.type : Message.valType.none_,
+              i: a.init != undefined ? a.init : null,
+              m: a.min != undefined ? a.min : null,
+              x: a.max != undefined ? a.max : null,
+              o: a.option != undefined ? a.option : [],
+            })),
+          });
+        }
       }
 
       const logSend: Message.LogLine[] = [];
+      if (this.data.logStore.getRecv(this.name) == null) {
+        this.data.logStore.setRecv(this.name, []);
+      }
+      const logRecv = this.data.logStore.getRecv(this.name) as LogLine[];
       for (const l of this.data.logQueue) {
         logSend.push({ v: l.level, t: l.time.getTime(), m: l.message });
+        logRecv.push(l);
       }
       if (logSend.length > 0) {
         this.data.logQueue = [];

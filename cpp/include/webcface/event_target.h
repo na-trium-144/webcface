@@ -1,48 +1,48 @@
 #pragma once
 #include <functional>
-#include "client_data.h"
-
+#include <eventpp/eventdispatcher.h>
+#include "field.h"
 namespace WebCFace {
 
 //! eventpp::EventQueueのラッパー
 /*! イベントはコンストラクタで固定、callbackを渡すだけで登録できるようにする
  * V = コールバックの引数の型
  */
-template <typename V, typename Dispatcher>
+template <typename V, typename Key = FieldBaseComparable, typename VBase = Field>
 class EventTarget {
+    using Dispatcher = eventpp::EventDispatcher<Key, void(VBase)>;
     using EventCallback = std::function<void(V)>;
     using EventHandle = typename Dispatcher::Handle;
-    using EventKey = typename Dispatcher::Event;
 
     Dispatcher *dispatcher;
-    EventKey key;
+    Key key;
 
   protected:
     //! イベントを発生させる。
-    void triggerEvent(const V &arg) const { dispatcher->dispatch(key, arg); }
+    void triggerEvent(const VBase &arg) const { dispatcher->dispatch(key, arg); }
 
     //! listenerを追加する際に行わなければならない処理があればoverrideする
-    // virtual void onAppend() const {}
+    virtual void onAppend() const {}
 
   public:
     EventTarget() = default;
-    EventTarget(Dispatcher *dispatcher, const EventKey &key)
+    EventTarget(Dispatcher *dispatcher, const Key &key)
         : dispatcher(dispatcher), key(key) {}
 
     //! イベントのコールバックをリストの最後に追加する。
     EventHandle appendListener(const EventCallback &callback) const {
-        // onAppend();
+        onAppend();
         return dispatcher->appendListener(key, callback);
     }
     //! イベントのコールバックをリストの最初に追加する。
     EventHandle prependListener(const EventCallback &callback) const {
-        // onAppend();
+        onAppend();
         return dispatcher->prependListener(key, callback);
     }
     //! イベントのコールバックを間に挿入する。
     EventHandle insertListener(const EventCallback &callback,
                                const EventHandle &before) const {
-        // onAppend();
+        onAppend();
         return dispatcher->insertListener(key, callback, before);
     }
     //! コールバックを削除する。

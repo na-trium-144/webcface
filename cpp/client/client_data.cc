@@ -34,14 +34,6 @@ void ClientData::SyncDataStore1<T>::setRecv(const std::string &member,
     std::lock_guard lock(mtx);
     data_recv[member] = data;
 }
-template <typename T>
-template <typename U>
-    requires std::same_as<T, std::vector<U>>
-void ClientData::SyncDataStore1<T>::addRecv(const std::string &member,
-                                            const U &data) {
-    std::lock_guard lock(mtx);
-    data_recv[member].push_back(data);
-}
 
 template <typename T>
 std::vector<std::string> ClientData::SyncDataStore2<T>::getMembers() {
@@ -76,11 +68,9 @@ void ClientData::SyncDataStore2<T>::setEntry(const std::string &from,
 }
 
 template <typename T>
-std::optional<T>
-ClientData::SyncDataStore2<T>::getRecv(const std::string &from,
-                                       const std::string &name) {
-    std::lock_guard lock(mtx);
-    if (!isSelf(from) && req[from][name] <= 0) {
+void ClientData::SyncDataStore2<T>::addReq(const std::string &member,
+                                           const std::string &field) {
+    if (!isSelf(member) && req[member][field] <= 0) {
         unsigned int max_req = 0;
         for (const auto &r : req) {
             for (const auto &r2 : r.second) {
@@ -89,14 +79,45 @@ ClientData::SyncDataStore2<T>::getRecv(const std::string &from,
                 }
             }
         }
-        req[from][name] = max_req + 1;
-        req_send[from][name] = max_req + 1;
+        req[member][field] = max_req + 1;
+        req_send[member][field] = max_req + 1;
     }
+}
+
+template <typename T>
+std::optional<T>
+ClientData::SyncDataStore2<T>::getRecv(const std::string &from,
+                                       const std::string &name) {
+    std::lock_guard lock(mtx);
+    addReq(from, name);
     auto s_it = data_recv.find(from);
     if (s_it != data_recv.end()) {
         auto it = s_it->second.find(name);
         if (it != s_it->second.end()) {
             return it->second;
+        }
+    }
+    return std::nullopt;
+}
+template <typename T>
+std::optional<Dict<T>>
+ClientData::SyncDataStore2<T>::getRecvRecurse(const std::string &member,
+                                              const std::string &field) {
+    std::lock_guard lock(mtx);
+    addReq(member, field);
+    auto s_it = data_recv.find(member);
+    if (s_it != data_recv.end()) {
+        Dict<T> d;
+        bool found = false;
+        for (const auto &it : s_it->second) {
+            if (it.first.starts_with(field + ".")) {
+                d[it.first.substr(field.size() + 1)] = it.second;
+                addReq(member, it.first);
+                found = true;
+            }
+        }
+        if (found) {
+            return d;
         }
     }
     return std::nullopt;
@@ -129,12 +150,17 @@ void ClientData::SyncDataStore2<T>::unsetRecv(const std::string &from,
 }
 template <typename T>
 std::pair<std::string, std::string>
-ClientData::SyncDataStore2<T>::getReq(unsigned int req_id) {
+ClientData::SyncDataStore2<T>::getReq(unsigned int req_id,
+                                      const std::string &sub_field) {
     std::lock_guard lock(mtx);
     for (const auto &r : req) {
         for (const auto &r2 : r.second) {
             if (r2.second == req_id) {
-                return std::make_pair(r.first, r2.first);
+                if (!sub_field.empty() && sub_field[0] != '.') {
+                    return std::make_pair(r.first, r2.first + "." + sub_field);
+                } else {
+                    return std::make_pair(r.first, r2.first + sub_field);
+                }
             }
         }
     }
@@ -186,14 +212,16 @@ ClientData::SyncDataStore1<T>::transferReq(bool is_first) {
     }
 }
 
-template class ClientData::SyncDataStore2<double>;
-template class ClientData::SyncDataStore2<std::string>;
-template class ClientData::SyncDataStore2<FuncInfo>;
-template class ClientData::SyncDataStore2<std::vector<ViewComponentBase>>;
-template class ClientData::SyncDataStore1<std::vector<LogLine>>;
-template void
-ClientData::SyncDataStore1<std::vector<LogLine>>::addRecv(const std::string &,
-                                                          const LogLine &);
+template class ClientData::SyncDataStore2<std::string>; // test用
+template class ClientData::SyncDataStore1<std::string>; // test用
+
+template class ClientData::SyncDataStore2<std::shared_ptr<VectorOpt<double>>>;
+template class ClientData::SyncDataStore2<std::shared_ptr<std::string>>;
+template class ClientData::SyncDataStore2<std::shared_ptr<FuncInfo>>;
+template class ClientData::SyncDataStore2<
+    std::shared_ptr<std::vector<ViewComponentBase>>>;
+template class ClientData::SyncDataStore1<
+    std::shared_ptr<std::vector<std::shared_ptr<LogLine>>>>;
 template class ClientData::SyncDataStore1<
     std::chrono::system_clock::time_point>;
 

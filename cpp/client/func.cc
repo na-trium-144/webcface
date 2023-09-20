@@ -1,6 +1,7 @@
 #include <webcface/func.h>
 #include <thread>
 #include <chrono>
+#include <stdexcept>
 #include "../message/message.h"
 
 namespace WebCFace {
@@ -31,7 +32,7 @@ ValAdaptor Func::run(const std::vector<ValAdaptor> &args_vec) const {
         // selfの場合このスレッドでそのまま関数を実行する
         auto func_info = data->func_store.getRecv(*this);
         if (func_info) {
-            return func_info->run(args_vec);
+            return (*func_info)->run(args_vec);
         } else {
             throw FuncNotFound(*this);
         }
@@ -52,7 +53,7 @@ AsyncFuncResult &Func::runAsync(const std::vector<ValAdaptor> &args_vec) const {
             if (func_info) {
                 r.started_->set_value(true);
                 try {
-                    auto ret = func_info->run(args_vec);
+                    auto ret = (*func_info)->run(args_vec);
                     r.result_->set_value(ret);
                 } catch (...) {
                     r.result_->set_exception(std::current_exception());
@@ -69,7 +70,8 @@ AsyncFuncResult &Func::runAsync(const std::vector<ValAdaptor> &args_vec) const {
     } else {
         // リモートの場合cli.sync()を待たずに呼び出しメッセージを送る
         data->message_queue.push(Message::packSingle(Message::Call{
-            FuncCall{r.caller_id, 0, data->getMemberIdFromName(member_), field_, args_vec}}));
+            FuncCall{r.caller_id, 0, data->getMemberIdFromName(member_), field_,
+                     args_vec}}));
         // resultはcli.onRecv内でセットされる。
     }
     return r;
@@ -78,36 +80,42 @@ AsyncFuncResult &Func::runAsync(const std::vector<ValAdaptor> &args_vec) const {
 ValType Func::returnType() const {
     auto func_info = dataLock()->func_store.getRecv(*this);
     if (func_info) {
-        return func_info->return_type;
+        return (*func_info)->return_type;
     }
     return ValType::none_;
 }
 std::vector<Arg> Func::args() const {
     auto func_info = dataLock()->func_store.getRecv(*this);
     if (func_info) {
-        return func_info->args;
+        return (*func_info)->args;
     }
     return std::vector<Arg>{};
 }
 Func &Func::setArgs(const std::vector<Arg> &args) {
     auto data = dataLock();
     auto func_info = data->func_store.getRecv(*this);
-    assert(func_info != std::nullopt && "Func not set");
-    assert(func_info->args.size() == args.size() &&
-           "Number of args does not match");
-    for (std::size_t i = 0; i < args.size(); i++) {
-        func_info->args[i].mergeConfig(args[i]);
+    if (func_info == std::nullopt) {
+        throw std::invalid_argument("setArgs failed: Func not set");
     }
-    set(*func_info);
+    if ((*func_info)->args.size() != args.size()) {
+        throw std::invalid_argument(
+            "setArgs failed: Number of args does not match, size: " +
+            std::to_string(args.size()) +
+            " actual: " + std::to_string((*func_info)->args.size()));
+    }
+    for (std::size_t i = 0; i < args.size(); i++) {
+        (*func_info)->args[i].mergeConfig(args[i]);
+    }
     return *this;
 }
 
 Func &Func::setRunCond(FuncWrapperType wrapper) {
     auto data = dataLock();
     auto func_info = data->func_store.getRecv(*this);
-    assert(func_info != std::nullopt && "Func not set");
-    func_info->func_wrapper = wrapper;
-    set(*func_info);
+    if (func_info == std::nullopt) {
+        throw std::invalid_argument("setRunCond failed: Func not set");
+    }
+    (*func_info)->func_wrapper = wrapper;
     return *this;
 }
 

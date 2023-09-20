@@ -40,11 +40,12 @@ class Func : protected Field {
     using Field::name;
 
   private:
-    auto &set(const FuncInfo &v) {
+    auto &set(const std::shared_ptr<FuncInfo> &v) {
         setCheck();
         dataLock()->func_store.setSend(*this, v);
         return *this;
     }
+    auto &set(const FuncInfo &v) { return set(std::make_shared<FuncInfo>(v)); }
 
   public:
     //! 関数からFuncInfoを構築しセットする
@@ -62,12 +63,6 @@ class Func : protected Field {
     auto &operator=(const T &func) {
         return this->set(func);
     }
-
-    //! 値を取得する
-    std::optional<FuncInfo> tryGet() const {
-        return dataLock()->func_store.getRecv(*this);
-    }
-    FuncInfo get() const { return tryGet().value_or(FuncInfo{}); }
 
     //! 関数を関数リストで非表示にする
     //! (他clientのentryに表示されなくする)
@@ -119,6 +114,8 @@ class Func : protected Field {
     //! 引数の情報を返す
     //! 変更するにはsetArgsを使う(このvectorの中身を書き換えても反映されない)
     std::vector<Arg> args() const;
+    const Arg args(std::size_t i) const { return args().at(i); }
+
     //! 引数の情報を更新する
     /*!
      * setArgsで渡された引数の情報(名前など)とFuncがすでに持っている引数の情報(型など)がマージされる
@@ -161,7 +158,7 @@ class AnonymousFunc : public Func {
         return ".tmp" + std::to_string(id++);
     }
 
-    std::function<void()> func_setter = nullptr;
+    std::function<void(AnonymousFunc&)> func_setter = nullptr;
     bool base_init = false;
 
   public:
@@ -174,23 +171,20 @@ class AnonymousFunc : public Func {
     }
     template <typename T>
     AnonymousFunc(const T &func) {
-        func_setter = [this, func]() {
-            this->set(func);
-            this->hidden(true);
+        func_setter = [func](AnonymousFunc &a) {
+            a.set(func);
+            a.hidden(true);
         };
     }
-
-    AnonymousFunc(const AnonymousFunc &) = delete;
-    AnonymousFunc &operator=(const AnonymousFunc &) = delete;
 
     void lockTo(Func &target) {
         if (!base_init) {
             this->data_w = target.data_w;
             this->member_ = target.member_;
             this->field_ = fieldNameTmp();
-            func_setter();
+            func_setter(*this);
         }
-        target.set(this->get());
+        target.set(dataLock()->func_store.getRecv(*this).value());
         this->free();
     }
 };
