@@ -229,16 +229,28 @@ export class Client extends Member {
           case Message.kind.callResponse: {
             const dataR = data as Message.CallResponse;
             const r = this.data.funcResultStore.getResult(dataR.i);
-            r.resolveStarted(dataR.s);
+            if (r != undefined) {
+              r.resolveStarted(dataR.s);
+            } else {
+              this.loggerInternal.error(
+                `error receiving call result id=${dataR.i}`
+              );
+            }
             break;
           }
           case Message.kind.callResult: {
             const dataR = data as Message.CallResult;
             const r = this.data.funcResultStore.getResult(dataR.i);
-            if (dataR.e) {
-              r.rejectResult(new Error(String(dataR.r)));
+            if (r != undefined) {
+              if (dataR.e) {
+                r.rejectResult(new Error(String(dataR.r)));
+              } else {
+                r.resolveResult(dataR.r);
+              }
             } else {
-              r.resolveResult(dataR.r);
+              this.loggerInternal.error(
+                `error receiving call result id=${dataR.i}`
+              );
             }
             break;
           }

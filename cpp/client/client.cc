@@ -254,8 +254,8 @@ void Client::onRecv(const std::string &message) {
         }
         case MessageKind::call_response: {
             auto r = std::any_cast<WebCFace::Message::CallResponse>(obj);
-            auto &res = data->func_result_store.getResult(r.caller_id);
             try {
+                auto &res = data->func_result_store.getResult(r.caller_id);
                 res.started_->set_value(r.started);
                 if (!r.started) {
                     try {
@@ -268,13 +268,17 @@ void Client::onRecv(const std::string &message) {
                 this->data->logger_internal->error(
                     "error receiving call response id={}: {}", r.caller_id,
                     e.what());
+            } catch (const std::out_of_range &e) {
+                this->data->logger_internal->error(
+                    "error receiving call response id={}: {}", r.caller_id,
+                    e.what());
             }
             break;
         }
         case MessageKind::call_result: {
             auto r = std::any_cast<WebCFace::Message::CallResult>(obj);
-            auto &res = data->func_result_store.getResult(r.caller_id);
             try {
+                auto &res = data->func_result_store.getResult(r.caller_id);
                 if (r.is_error) {
                     try {
                         throw std::runtime_error(
@@ -289,6 +293,10 @@ void Client::onRecv(const std::string &message) {
             } catch (const std::future_error &e) {
                 this->data->logger_internal->error(
                     "error receiving call result id={}: {}", r.caller_id,
+                    e.what());
+            } catch (const std::out_of_range &e) {
+                this->data->logger_internal->error(
+                    "error receiving call response id={}: {}", r.caller_id,
                     e.what());
             }
             break;

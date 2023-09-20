@@ -180,6 +180,7 @@ struct ClientData {
         AsyncFuncResult &addResult(const std::string &caller,
                                    const Field &base);
         //! caller_idに対応するresultを返す
+        //! 存在しない場合out_of_rangeを投げる
         AsyncFuncResult &getResult(int caller_id);
     };
 
