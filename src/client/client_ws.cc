@@ -2,50 +2,50 @@
 #include <cinatra.hpp>
 #include <string>
 #include <chrono>
+#include <thread>
 namespace WebCFace {
 
 void Client::messageThreadMain(std::shared_ptr<ClientData> data,
                                std::string host, int port) {
     using namespace cinatra;
-    while (!data->closing.load()) {
-        auto client = std::make_shared<coro_http_client>();
+    auto client = std::make_shared<coro_http_client>();
+    // on_ws_closeが完了する前にclientが消えているとセグフォするので、
+    // client_keep内にclientのshared_ptrをキープしておく
+    auto client_keep =
+        std::make_shared<std::shared_ptr<coro_http_client>>(client);
+    std::weak_ptr<ClientData> data_w = data;
+    auto connected_this = std::make_shared<std::atomic<bool>>(true);
 
-        // on_ws_closeが完了する前にclientが消えているとセグフォするので、
-        // client_keep内にclientのshared_ptrをキープしておき
-        // closeが完了したらその参照を消すことでやっとclientが消えるようにする
-        auto client_keep =
-            std::make_shared<std::shared_ptr<coro_http_client>>(client);
-
-        data->connected_.store(false);
-        std::weak_ptr<ClientData> data_w = data;
-        auto connected_this = std::make_shared<std::atomic<bool>>(true);
-
-        client->on_ws_msg(
-            [data_w, connected_this, client_keep](resp_data rdata) {
-                auto data = data_w.lock();
-                if (rdata.net_err) {
-                    if (data) {
-                        data->logger_internal->error("recv error {}",
-                                                     rdata.net_err.message());
-                    }
-                    connected_this->store(false);
-                    client_keep->reset();
-                } else {
-                    if (data) {
-                        data->logger_internal->trace("message received");
-                        data->recv_queue.push(std::string(rdata.resp_body));
-                        data->logger_internal->trace("message recv done");
-                    }
-                }
-            });
-        client->on_ws_close([data_w, connected_this, client_keep](auto &&) {
-            auto data = data_w.lock();
+    client->on_ws_msg([data_w, connected_this, client_keep](resp_data rdata) {
+        auto data = data_w.lock();
+        if (rdata.net_err) {
             if (data) {
-                data->logger_internal->debug("connection closed");
+                data->logger_internal->error("recv error {}",
+                                             rdata.net_err.message());
             }
             connected_this->store(false);
-            client_keep->reset();
-        });
+            // client_keep->reset();
+        } else {
+            if (data) {
+                data->logger_internal->trace("message received");
+                data->recv_queue.push(std::string(rdata.resp_body));
+                data->logger_internal->trace("message recv done");
+            }
+        }
+    });
+    client->on_ws_close([data_w, connected_this, client_keep](auto &&) {
+        auto data = data_w.lock();
+        if (data) {
+            data->logger_internal->debug("connection closed");
+        }
+        connected_this->store(false);
+        // client_keep->reset();
+    });
+
+    while (!data->closing.load()) {
+
+        connected_this->store(true);
+        data->connected_.store(false);
 
         data->logger_internal->trace("start connecting");
         bool ok = async_simple::coro::syncAwait(client->async_ws_connect(
@@ -76,6 +76,8 @@ void Client::messageThreadMain(std::shared_ptr<ClientData> data,
             async_simple::coro::syncAwait(client->async_send_ws_close());
             data->logger_internal->trace("closing");
         }
+
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
 }
 
