@@ -149,6 +149,12 @@ void Client::onRecv(const std::string &message) {
     for (const auto &m : messages) {
         const auto &[kind, obj] = m;
         switch (kind) {
+        case MessageKind::svr_version: {
+            auto r = std::any_cast<WebCFace::Message::SvrVersion>(obj);
+            data->svr_name = r.svr_name;
+            data->svr_version = r.ver;
+            break;
+        }
         case MessageKind::sync: {
             auto r = std::any_cast<WebCFace::Message::Sync>(obj);
             auto member = data->getMemberNameFromId(r.member_id);

@@ -75,6 +75,12 @@ TEST_F(ClientTest, sync) {
     dummy_s->recv<Sync>([&](const auto &) {},
                         [&] { ADD_FAILURE() << "Sync recv error"; });
 }
+TEST_F(ClientTest, serverVersion) {
+    dummy_s->send(Message::SvrVersion{{}, "a", "1"});
+    wait();
+    EXPECT_EQ(wcli_->serverName(), "a");
+    EXPECT_EQ(wcli_->serverVersion(), "1");
+}
 TEST_F(ClientTest, entry) {
     wcli_->onMemberEntry().appendListener(callback<Member>());
     dummy_s->send(Message::SyncInit{{}, "a", 10});

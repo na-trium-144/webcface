@@ -3,6 +3,7 @@
 #include "../server/store.h"
 #include "../server/s_client_data.h"
 #include "../message/message.h"
+#include <webcface/common/def.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
 #include <webcface/view.h>
 #include <thread>
@@ -53,12 +54,45 @@ TEST_F(ServerTest, sync) {
             EXPECT_EQ(obj.member_id, 2);
         },
         [&] { ADD_FAILURE() << "SyncInit recv failed"; });
+    dummy_c1->recv<Message::SvrVersion>(
+        [&](const auto &obj) {
+            EXPECT_EQ(obj.svr_name, WEBCFACE_SERVER_NAME);
+            EXPECT_EQ(obj.ver, WEBCFACE_VERSION);
+        },
+        [&] { ADD_FAILURE() << "SvrVersion recv failed"; });
     EXPECT_EQ(Server::store.clients_by_id.at(1)->name, "");
     EXPECT_EQ(Server::store.clients_by_id.at(2)->name, "c2");
     dummy_c1->recvClear();
 
     // dummy_c2->send(Message::Sync{});
     // wait();
+}
+TEST_F(ServerTest, ping) {
+    dummy_c1->send(Message::SyncInit{{}, "", 0});
+    wait();
+    Server::server_stop_cond.notify_one(); // これで無理やりpingさせる
+    auto s_c1 = Server::store.clients_by_id.at(1);
+    wait(10);
+    dummy_c1->recv<Message::Ping>([&] {},
+                                  [&] { ADD_FAILURE() << "Ping recv failed"; });
+    dummy_c1->send(Message::Ping{});
+    wait();
+    EXPECT_TRUE(s_c1->last_ping_duration.has_value());
+    EXPECT_GE(s_c1->last_ping_duration->count(), 10);
+    EXPECT_LE(s_c1->last_ping_duration->count(), 12);
+
+    dummy_c1->send(Message::PingStatusReq{});
+    dummy_c1->recvClear();
+    wait();
+    Server::server_stop_cond.notify_one(); // これで無理やりpingさせる
+    wait();
+    dummy_c1->recv<Message::PingStatus>(
+        [&](auto &obj) {
+            EXPECT_TRUE(obj.status->count(1));
+            EXPECT_GE(obj.status->at(1), 10);
+            EXPECT_LE(obj.status->at(1), 12);
+        },
+        [&] { ADD_FAILURE() << "Ping Status recv failed"; });
 }
 TEST_F(ServerTest, entry) {
     dummy_c1->send(Message::SyncInit{{}, "c1", 0});

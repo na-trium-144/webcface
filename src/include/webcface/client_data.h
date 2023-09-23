@@ -267,5 +267,8 @@ struct ClientData {
     //! 初回のsync()で全データを送信するがそれが完了したかどうか
     //! 再接続したらfalseに戻す
     std::atomic<bool> sync_init = false;
+
+    //! serverの情報
+    std::string svr_name, svr_version;
 };
 } // namespace WebCFace

@@ -1,6 +1,7 @@
 #include "s_client_data.h"
 #include "store.h"
 #include "../message/message.h"
+#include "../include/webcface/common/def.h"
 #include <cinatra.hpp>
 #include <algorithm>
 #include <iterator>
@@ -12,11 +13,16 @@ void ClientData::onClose() {
 }
 void ClientData::send() {
     if (connected() && send_len > 0) {
-        std::static_pointer_cast<cinatra::connection<cinatra::NonSSL>>(con)
-            ->send_ws_binary(Message::packDone(send_buffer, send_len));
+        send(Message::packDone(send_buffer, send_len));
     }
     send_buffer.str("");
     send_len = 0;
+}
+void ClientData::send(const std::string &msg) {
+    if (connected()) {
+        std::static_pointer_cast<cinatra::connection<cinatra::NonSSL>>(con)
+            ->send_ws_binary(msg);
+    }
 }
 bool ClientData::connected() const {
     return con &&
@@ -51,12 +57,28 @@ std::pair<unsigned int, std::string> findReqField(
     }
     return std::make_pair<unsigned int, std::string>(0, "");
 }
+
+void ClientData::sendPing() {
+    last_send_ping = std::chrono::system_clock::now();
+    last_ping_duration = std::nullopt;
+    send(Message::packSingle(Message::Ping{}));
+}
 void ClientData::onRecv(const std::string &message) {
     namespace MessageKind = WebCFace::Message::MessageKind;
     auto messages = WebCFace::Message::unpack(message, this->logger);
     for (const auto &m : messages) {
         const auto &[kind, obj] = m;
         switch (kind) {
+        case MessageKind::ping: {
+            this->last_ping_duration =
+                std::chrono::duration_cast<std::chrono::milliseconds>(
+                    std::chrono::system_clock::now() - this->last_send_ping);
+            break;
+        }
+        case MessageKind::ping_status_req: {
+            this->ping_status_req = true;
+            break;
+        }
         case MessageKind::sync_init: {
             auto v = std::any_cast<WebCFace::Message::SyncInit>(obj);
             this->name = v.member_name;
@@ -92,6 +114,8 @@ void ClientData::onRecv(const std::string &message) {
                     }
                 });
             }
+            this->pack(WebCFace::Message::SvrVersion{
+                {}, WEBCFACE_SERVER_NAME, WEBCFACE_VERSION});
             // 逆に新しいMemberに他の全Memberのentryを通知
             store.forEachWithName([&](auto &cd) {
                 if (cd.member_id != this->member_id) {
@@ -442,6 +466,8 @@ void ClientData::onRecv(const std::string &message) {
         case MessageKind::res + MessageKind::text:
         case MessageKind::entry + MessageKind::view:
         case MessageKind::res + MessageKind::view:
+        case MessageKind::svr_version:
+        case MessageKind::ping_status:
             logger->warn("Invalid Message Kind {}", kind);
             break;
         default:

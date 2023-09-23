@@ -64,7 +64,10 @@ struct MessageBase {
 struct SyncInit : public MessageBase<MessageKind::sync_init> {
     std::string member_name; //!< member名
     unsigned int member_id;  //!< member id (1以上)
-    std::string lib_name; //!< clientライブラリの種類 このライブラリでは"cpp"
+    //! clientライブラリの名前(id) このライブラリでは"cpp"
+    /*! 新しくライブラリ作ることがあったら変えて識別できるようにすると良いかも
+     */
+    std::string lib_name;
     std::string lib_ver; //!< clientライブラリのバージョン
     std::string addr;    //!< clientのipアドレス
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("M", member_name),
@@ -76,7 +79,8 @@ struct SyncInit : public MessageBase<MessageKind::sync_init> {
 /*! serverはSyncInit受信後にこれを返す
  */
 struct SvrVersion : public MessageBase<MessageKind::svr_version> {
-    std::string ver; //!< serverのバージョン
+    std::string svr_name; //!< serverの名前 このライブラリでは"webcface"
+    std::string ver;      //!< serverのバージョン
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("v", ver));
 };
 //! ping(server->client->server)
@@ -87,18 +91,20 @@ struct SvrVersion : public MessageBase<MessageKind::svr_version> {
  * clientは即座に送り返さなければならない
  */
 struct Ping : public MessageBase<MessageKind::ping> {
+    Ping() = default;
     MSGPACK_DEFINE_MAP();
 };
 //! 各クライアントのping状況 (server->client)
 struct PingStatus : public MessageBase<MessageKind::ping_status> {
     //! member_id: ping応答時間(ms) のmap
-    std::unordered_map<unsigned int, int> status;
+    std::shared_ptr<std::unordered_map<unsigned int, int>> status;
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("s", status));
 };
 //! ping状況のリクエスト (client->server)
 /*! これを送ると以降serverが一定間隔でPingStatusを送り返す
  */
 struct PingStatusReq : public MessageBase<MessageKind::ping_status_req> {
+    PingStatusReq() = default;
     MSGPACK_DEFINE_MAP();
 };
 //! syncの時刻(client->server->client)
