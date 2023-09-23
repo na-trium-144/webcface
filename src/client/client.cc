@@ -2,6 +2,7 @@
 #include <webcface/data.h>
 #include <webcface/view.h>
 #include <webcface/func.h>
+#include <webcface/common/def.h>
 #include <string>
 #include <chrono>
 #include "../message/message.h"
@@ -41,7 +42,9 @@ void Client::sync() {
 
         bool is_first = false;
         if (!data->sync_init.load()) {
-            Message::pack(buffer, len, Message::SyncInit{{}, member_, 0});
+            Message::pack(
+                buffer, len,
+                Message::SyncInit{{}, member_, 0, "cpp", WEBCFACE_VERSION, ""});
             is_first = true;
             data->sync_init.store(true);
         }
@@ -137,6 +140,10 @@ void Client::sync() {
             Message::pack(buffer, len, Message::Log{{}, 0, log_send});
         }
 
+        if (data->ping_status_req && is_first) {
+            Message::pack(buffer, len, Message::PingStatusReq{});
+        }
+
         data->message_queue.push(Message::packDone(buffer, len));
     }
     while (auto func_sync = data->func_sync_queue.pop()) {
@@ -153,6 +160,20 @@ void Client::onRecv(const std::string &message) {
             auto r = std::any_cast<WebCFace::Message::SvrVersion>(obj);
             data->svr_name = r.svr_name;
             data->svr_version = r.ver;
+            break;
+        }
+        case MessageKind::ping: {
+            data->message_queue.push(
+                WebCFace::Message::packSingle(WebCFace::Message::Ping{}));
+            break;
+        }
+        case MessageKind::ping_status: {
+            auto r = std::any_cast<WebCFace::Message::PingStatus>(obj);
+            data->ping_status = status;
+            for (const auto &member : members()) {
+                data->ping_event.dispatch(member.name(),
+                                          Field{data, member.name()});
+            }
             break;
         }
         case MessageKind::sync: {
@@ -313,6 +334,9 @@ void Client::onRecv(const std::string &message) {
             data->text_store.setEntry(r.member_name);
             data->func_store.setEntry(r.member_name);
             data->member_ids[r.member_name] = r.member_id;
+            data->member_lib_name[r.member_id] = r.lib_name;
+            data->member_lib_ver[r.member_id] = r.lib_ver;
+            data->member_addr[r.member_id] = r.addr;
             data->member_entry_event.dispatch(0, Field{data, r.member_name});
             break;
         }
@@ -356,6 +380,11 @@ void Client::onRecv(const std::string &message) {
         case MessageKind::value:
         case MessageKind::text:
         case MessageKind::view:
+        case MessageKind::value + MessageKind::req:
+        case MessageKind::text + MessageKind::req:
+        case MessageKind::view + MessageKind::req:
+        case MessageKind::ping_status_req:
+        case MessageKind::log_req:
             this->data->logger_internal->warn("Invalid Message Kind {}", kind);
             break;
         case MessageKind::unknown:

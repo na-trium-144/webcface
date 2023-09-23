@@ -24,6 +24,7 @@ struct ClientData {
 
     std::string name;
     unsigned int member_id;
+    Message::SyncInit init_data;
     //! 最新の値
     std::unordered_map<std::string, std::shared_ptr<std::vector<double>>> value;
     std::unordered_map<std::string, std::shared_ptr<std::string>> text;

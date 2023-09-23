@@ -44,9 +44,9 @@ class ServerTest : public ::testing::Test {
 
 TEST_F(ServerTest, connection) { EXPECT_EQ(Server::store.clients.size(), 2); }
 TEST_F(ServerTest, sync) {
-    dummy_c1->send(Message::SyncInit{{}, "", 0});
+    dummy_c1->send(Message::SyncInit{{}, "", 0, "", "", ""});
     wait();
-    dummy_c2->send(Message::SyncInit{{}, "c2", 0});
+    dummy_c2->send(Message::SyncInit{{}, "c2", 0, "", "", ""});
     wait();
     dummy_c1->recv<Message::SyncInit>(
         [&](const auto &obj) {
@@ -68,7 +68,7 @@ TEST_F(ServerTest, sync) {
     // wait();
 }
 TEST_F(ServerTest, ping) {
-    dummy_c1->send(Message::SyncInit{{}, "", 0});
+    dummy_c1->send(Message::SyncInit{{}, "", 0, "", "", ""});
     wait();
     Server::server_stop_cond.notify_one(); // これで無理やりpingさせる
     auto s_c1 = Server::store.clients_by_id.at(1);
@@ -95,7 +95,7 @@ TEST_F(ServerTest, ping) {
         [&] { ADD_FAILURE() << "Ping Status recv failed"; });
 }
 TEST_F(ServerTest, entry) {
-    dummy_c1->send(Message::SyncInit{{}, "c1", 0});
+    dummy_c1->send(Message::SyncInit{{}, "c1", 0, "", "", ""});
     dummy_c1->send(
         Message::Value{{}, "a", std::make_shared<std::vector<double>>(1)});
     dummy_c1->send(Message::Text{{}, "a", std::make_shared<std::string>("")});
@@ -109,7 +109,7 @@ TEST_F(ServerTest, entry) {
         std::make_shared<std::vector<Message::FuncInfo::Arg>>()});
     wait();
     // c2が接続したタイミングでのc1のentryが全部返る
-    dummy_c2->send(Message::SyncInit{{}, "", 0});
+    dummy_c2->send(Message::SyncInit{{}, "", 0, "", "", ""});
     wait();
     dummy_c2->recv<Message::SyncInit>(
         [&](const auto &obj) {
@@ -189,14 +189,14 @@ TEST_F(ServerTest, entry) {
         [&] { ADD_FAILURE() << "Func Info recv failed"; });
 }
 TEST_F(ServerTest, value) {
-    dummy_c1->send(Message::SyncInit{{}, "c1", 0});
+    dummy_c1->send(Message::SyncInit{{}, "c1", 0, "", "", ""});
     dummy_c1->send(Message::Sync{});
     dummy_c1->send(Message::Value{
         {},
         "a",
         std::make_shared<std::vector<double>>(std::vector<double>{3, 4, 5})});
     wait();
-    dummy_c2->send(Message::SyncInit{{}, "", 0});
+    dummy_c2->send(Message::SyncInit{{}, "", 0, "", "", ""});
     dummy_c2->send(Message::Req<Message::Value>{{}, "c1", "a", 1});
     wait();
     // req時の値
@@ -231,12 +231,12 @@ TEST_F(ServerTest, value) {
         [&] { ADD_FAILURE() << "Value Res recv failed"; });
 }
 TEST_F(ServerTest, text) {
-    dummy_c1->send(Message::SyncInit{{}, "c1", 0});
+    dummy_c1->send(Message::SyncInit{{}, "c1", 0, "", "", ""});
     dummy_c1->send(Message::Sync{});
     dummy_c1->send(
         Message::Text{{}, "a", std::make_shared<std::string>("zzz")});
     wait();
-    dummy_c2->send(Message::SyncInit{{}, "", 0});
+    dummy_c2->send(Message::SyncInit{{}, "", 0, "", "", ""});
     dummy_c2->send(Message::Req<Message::Text>{{}, "c1", "a", 1});
     wait();
     // req時の値
@@ -267,7 +267,7 @@ TEST_F(ServerTest, text) {
         [&] { ADD_FAILURE() << "Text Res recv failed"; });
 }
 TEST_F(ServerTest, view) {
-    dummy_c1->send(Message::SyncInit{{}, "c1", 0});
+    dummy_c1->send(Message::SyncInit{{}, "c1", 0, "", "", ""});
     dummy_c1->send(Message::Sync{});
     dummy_c1->send(Message::View{
         "a",
@@ -280,7 +280,7 @@ TEST_F(ServerTest, view) {
                         Func{Field{std::weak_ptr<ClientData>(), "p", "q"}})}}),
         3});
     wait();
-    dummy_c2->send(Message::SyncInit{{}, "", 0});
+    dummy_c2->send(Message::SyncInit{{}, "", 0, "", "", ""});
     dummy_c2->send(Message::Req<Message::View>{{}, "c1", "a", 1});
     wait();
     // req時の値
@@ -320,7 +320,7 @@ TEST_F(ServerTest, view) {
         [&] { ADD_FAILURE() << "View Res recv failed"; });
 }
 TEST_F(ServerTest, log) {
-    dummy_c1->send(Message::SyncInit{{}, "c1", 0});
+    dummy_c1->send(Message::SyncInit{{}, "c1", 0, "", "", ""});
     dummy_c1->send(
         Message::Log{{},
                      0,
@@ -330,7 +330,7 @@ TEST_F(ServerTest, log) {
                              LogLine{1, std::chrono::system_clock::now(), "1"},
                          })});
     wait();
-    dummy_c2->send(Message::SyncInit{{}, "", 0});
+    dummy_c2->send(Message::SyncInit{{}, "", 0, "", "", ""});
     dummy_c2->send(Message::LogReq{{}, "c1"});
     wait();
     // req時の値
@@ -363,8 +363,8 @@ TEST_F(ServerTest, log) {
         [&] { ADD_FAILURE() << "Log recv failed"; });
 }
 TEST_F(ServerTest, call) {
-    dummy_c1->send(Message::SyncInit{{}, "c1", 0});
-    dummy_c2->send(Message::SyncInit{{}, "c2", 0});
+    dummy_c1->send(Message::SyncInit{{}, "c1", 0, "", "", ""});
+    dummy_c2->send(Message::SyncInit{{}, "c2", 0, "", "", ""});
     wait();
     // c2がc1にcallを送る (caller_id=1)
     dummy_c2->send(Message::Call{FuncCall{1, 0, 1, "a", {0, 0, 0}}});

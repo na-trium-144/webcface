@@ -92,6 +92,11 @@ void ClientData::onRecv(const std::string &message) {
                 // コンストラクタですでに一意のidが振られているはず
                 v.member_id = this->member_id;
             }
+            v.addr =
+                std::static_pointer_cast<cinatra::connection<cinatra::NonSSL>>(
+                    con)
+                    ->remote_address();
+            this->init_data = v;
             this->sync_init = true;
             store.clients_by_id.erase(this->member_id);
             store.clients_by_id.emplace(this->member_id, store.getClient(con));
@@ -119,8 +124,7 @@ void ClientData::onRecv(const std::string &message) {
             // 逆に新しいMemberに他の全Memberのentryを通知
             store.forEachWithName([&](auto &cd) {
                 if (cd.member_id != this->member_id) {
-                    this->pack(
-                        WebCFace::Message::SyncInit{{}, cd.name, cd.member_id});
+                    this->pack(cd.init_data);
                     logger->trace("send sync_init {} ({})", cd.name,
                                   cd.member_id);
 
