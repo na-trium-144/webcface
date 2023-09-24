@@ -87,8 +87,9 @@ std::optional<int> Member::pingStatus() const {
         data->message_queue.push(Message::packSingle(Message::PingStatusReq{}));
         data->ping_status_req = true;
     }
-    if (data->ping_status.count(data->getMemberIdFromName(member_))) {
-        return data->ping_status.at(data->getMemberIdFromName(member_))
+    if (data->ping_status != nullptr &&
+        data->ping_status->count(data->getMemberIdFromName(member_))) {
+        return data->ping_status->at(data->getMemberIdFromName(member_));
     } else {
         return std::nullopt;
     }
@@ -96,6 +97,6 @@ std::optional<int> Member::pingStatus() const {
 EventTarget<Member, std::string> Member::onPing() const {
     // ほんとはonAppendに追加したかったけど面倒なのでここでpingStatus呼び出してリクエストをtrueにしちゃう
     pingStatus();
-    return EventTarget<Member, std::string>{&data->ping_event, member_};
+    return EventTarget<Member, std::string>{&dataLock()->ping_event, member_};
 }
 } // namespace WebCFace

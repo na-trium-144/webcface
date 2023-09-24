@@ -89,8 +89,8 @@ TEST_F(ClientTest, serverVersion) {
 TEST_F(ClientTest, ping) {
     dummy_s->send(Message::Ping{});
     wait();
-    dummy_s->recv<Ping>([&](const auto &) {},
-                        [&] { ADD_FAILURE() << "Ping recv error"; });
+    dummy_s->recv<Message::Ping>([&](const auto &) {},
+                                 [&] { ADD_FAILURE() << "Ping recv error"; });
 
     wcli_->member("a").onPing().appendListener(callback<Member>());
     dummy_s->send(Message::SyncInit{{}, "a", 10, "", "", ""});
@@ -99,11 +99,11 @@ TEST_F(ClientTest, ping) {
         std::make_shared<std::unordered_map<unsigned int, int>>(
             std::unordered_map<unsigned int, int>{{10, 15}})});
     wait();
-    dummy_s->recv<PingStatusReq>(
+    dummy_s->recv<Message::PingStatusReq>(
         [&](const auto &) {},
         [&] { ADD_FAILURE() << "Ping Status Req recv error"; });
     EXPECT_EQ(callback_called, 1);
-    EXPECT_EQ(wcli->member("a").pingStatus().value(), 15);
+    EXPECT_EQ(wcli_->member("a").pingStatus().value(), 15);
 }
 TEST_F(ClientTest, entry) {
     wcli_->onMemberEntry().appendListener(callback<Member>());

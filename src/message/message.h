@@ -81,7 +81,7 @@ struct SyncInit : public MessageBase<MessageKind::sync_init> {
 struct SvrVersion : public MessageBase<MessageKind::svr_version> {
     std::string svr_name; //!< serverの名前 このライブラリでは"webcface"
     std::string ver;      //!< serverのバージョン
-    MSGPACK_DEFINE_MAP(MSGPACK_NVP("v", ver));
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("n", svr_name), MSGPACK_NVP("v", ver));
 };
 //! ping(server->client->server)
 /*! serverが一定間隔でこれをclientに送る
@@ -92,7 +92,6 @@ struct SvrVersion : public MessageBase<MessageKind::svr_version> {
  */
 struct Ping : public MessageBase<MessageKind::ping> {
     Ping() = default;
-    MSGPACK_DEFINE_MAP();
 };
 //! 各クライアントのping状況 (server->client)
 struct PingStatus : public MessageBase<MessageKind::ping_status> {
@@ -105,7 +104,6 @@ struct PingStatus : public MessageBase<MessageKind::ping_status> {
  */
 struct PingStatusReq : public MessageBase<MessageKind::ping_status_req> {
     PingStatusReq() = default;
-    MSGPACK_DEFINE_MAP();
 };
 //! syncの時刻(client->server->client)
 /*! clientは各sync()ごとに1回、他のメッセージより先に現在時刻を送る
@@ -186,22 +184,17 @@ struct CallResult : public MessageBase<MessageKind::call_result> {
 //! client(member)->server->client Valueを更新
 struct Value : public MessageBase<MessageKind::value> {
     std::string field;
-    bool hidden;
     std::shared_ptr<std::vector<double>> data;
-    MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", field), MSGPACK_NVP("h", hidden),
-                       MSGPACK_NVP("d", data));
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", field), MSGPACK_NVP("d", data));
 };
 //! client(member)->server->client Textを更新
 struct Text : public MessageBase<MessageKind::text> {
     std::string field;
-    bool hidden;
     std::shared_ptr<std::string> data;
-    MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", field), MSGPACK_NVP("h", hidden),
-                       MSGPACK_NVP("d", data));
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", field), MSGPACK_NVP("d", data));
 };
 struct View : public MessageBase<MessageKind::view> {
     std::string field;
-    bool hidden;
     struct ViewComponent {
         Common::ViewComponentType type;
         std::string text;
@@ -237,24 +230,24 @@ struct View : public MessageBase<MessageKind::view> {
     std::shared_ptr<std::unordered_map<int, ViewComponent>> data_diff;
     std::size_t length;
     View() = default;
-    View(const std::string &field, bool hidden,
+    View(const std::string &field,
          const std::shared_ptr<
              std::unordered_map<int, Common::ViewComponentBase>> &data_diff,
          std::size_t length)
-        : field(field), hidden(hidden),
+        : field(field),
           data_diff(std::make_shared<std::unordered_map<int, ViewComponent>>()),
           length(length) {
         for (const auto &vc : *data_diff) {
             this->data_diff->emplace(vc.first, vc.second);
         }
     }
-    View(const std::string &field, bool hidden,
+    View(const std::string &field,
          const std::shared_ptr<std::unordered_map<int, ViewComponent>>
              &data_diff,
          std::size_t length)
         : field(field), data_diff(data_diff), length(length) {}
-    MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", field), MSGPACK_NVP("h", hidden),
-                       MSGPACK_NVP("d", data_diff), MSGPACK_NVP("l", length));
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", field), MSGPACK_NVP("d", data_diff),
+                       MSGPACK_NVP("l", length));
 };
 //! client(member)->server->client logを追加
 //! client->server時はmemberは無視
@@ -425,3 +418,37 @@ inline std::string packDone(std::stringstream &buffer, int len) {
 }
 
 } // namespace WebCFace::Message
+
+namespace msgpack {
+MSGPACK_API_VERSION_NAMESPACE(MSGPACK_DEFAULT_API_NS) {
+    namespace adaptor {
+    template <typename T>
+    struct EmptyConvert {
+        msgpack::object const &operator()(msgpack::object const &o, T &) const {
+            return o;
+        }
+    };
+    template <typename T>
+    struct EmptyPack {
+        template <typename Stream>
+        msgpack::packer<Stream> &operator()(msgpack::packer<Stream> &o,
+                                            const T &) {
+            o.pack_map(0);
+            return o;
+        }
+    };
+    template <>
+    struct convert<WebCFace::Message::Ping>
+        : public EmptyConvert<WebCFace::Message::Ping> {};
+    template <>
+    struct convert<WebCFace::Message::PingStatusReq>
+        : public EmptyConvert<WebCFace::Message::PingStatusReq> {};
+    template <>
+    struct pack<WebCFace::Message::Ping>
+        : public EmptyPack<WebCFace::Message::Ping> {};
+    template <>
+    struct pack<WebCFace::Message::PingStatusReq>
+        : public EmptyPack<WebCFace::Message::PingStatusReq> {};
+    } // namespace adaptor
+}
+} // namespace msgpack

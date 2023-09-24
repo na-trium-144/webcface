@@ -60,7 +60,7 @@ struct ClientData {
     void onClose();
 
     void sendPing();
-    static const std::chrono::milliseconds ping_interval(5000);
+    static constexpr std::chrono::milliseconds ping_interval{5000};
     std::chrono::system_clock::time_point last_send_ping;
     std::optional<std::chrono::milliseconds> last_ping_duration;
     bool ping_status_req = false;

@@ -169,7 +169,7 @@ void Client::onRecv(const std::string &message) {
         }
         case MessageKind::ping_status: {
             auto r = std::any_cast<WebCFace::Message::PingStatus>(obj);
-            data->ping_status = status;
+            data->ping_status = r.status;
             for (const auto &member : members()) {
                 data->ping_event.dispatch(member.name(),
                                           Field{data, member.name()});

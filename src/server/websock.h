@@ -6,7 +6,7 @@
 namespace WebCFace {
 namespace Server {
 inline bool server_stop;
-inline std::condition_variable server_stop_cond;
+inline std::condition_variable server_ping_wait;
 inline std::mutex server_mtx;
 void serverStop();
 void serverRun(int port, const spdlog::sink_ptr &sink,

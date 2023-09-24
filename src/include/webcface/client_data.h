@@ -272,7 +272,7 @@ struct ClientData {
     //! serverの情報
     std::string svr_name, svr_version;
 
-    std::shared_ptr<std::unordered_map<unsigned int, int>> ping_status;
+    std::shared_ptr<std::unordered_map<unsigned int, int>> ping_status = nullptr;
     bool ping_status_req = false;
 };
 } // namespace WebCFace

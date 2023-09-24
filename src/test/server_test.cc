@@ -70,10 +70,10 @@ TEST_F(ServerTest, sync) {
 TEST_F(ServerTest, ping) {
     dummy_c1->send(Message::SyncInit{{}, "", 0, "", "", ""});
     wait();
-    Server::server_stop_cond.notify_one(); // これで無理やりpingさせる
+    Server::server_ping_wait.notify_one(); // これで無理やりpingさせる
     auto s_c1 = Server::store.clients_by_id.at(1);
     wait(10);
-    dummy_c1->recv<Message::Ping>([&] {},
+    dummy_c1->recv<Message::Ping>([&](const auto &) {},
                                   [&] { ADD_FAILURE() << "Ping recv failed"; });
     dummy_c1->send(Message::Ping{});
     wait();
@@ -84,10 +84,10 @@ TEST_F(ServerTest, ping) {
     dummy_c1->send(Message::PingStatusReq{});
     dummy_c1->recvClear();
     wait();
-    Server::server_stop_cond.notify_one(); // これで無理やりpingさせる
+    Server::server_ping_wait.notify_one(); // これで無理やりpingさせる
     wait();
     dummy_c1->recv<Message::PingStatus>(
-        [&](auto &obj) {
+        [&](const auto &obj) {
             EXPECT_TRUE(obj.status->count(1));
             EXPECT_GE(obj.status->at(1), 10);
             EXPECT_LE(obj.status->at(1), 12);

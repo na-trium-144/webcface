@@ -5,16 +5,18 @@
 #include <cinatra.hpp>
 #include <memory>
 #include <thread>
-
+#include <iostream>
 namespace WebCFace::Server {
 std::shared_ptr<cinatra::http_server> server;
 std::shared_ptr<std::thread> ping_thread;
 
 void pingThreadMain() {
-    while (true) {
-        std::unique_lock lock(server_mtx);
-        server_stop_cond.wait_for(lock, ClientData::ping_interval,
-                                  [] { return server_stop });
+    std::cout << "ping thread" << std::endl;
+    std::unique_lock lock(server_mtx);
+    while (!server_stop) {
+        // ping_interval経過するかserver_stop_condで起こされるまで待機
+        server_ping_wait.wait_for(lock, ClientData::ping_interval);
+
         if (server_stop) {
             return;
         }
@@ -27,7 +29,8 @@ void pingThreadMain() {
             }
         });
         auto msg = Message::packSingle(Message::PingStatus{{}, ping_status});
-        store.forEach([](auto &cd) {
+        store.forEach([&](auto &cd) {
+            cd.logger->trace("ping");
             cd.sendPing();
             if (cd.ping_status_req) {
                 cd.send(msg);
@@ -40,9 +43,9 @@ void serverStop() {
         std::lock_guard lock(server_mtx);
         server_stop = true;
     }
-    server_stop_cond.notify_one();
+    server_ping_wait.notify_one();
     server->stop();
-    ping_thread.join();
+    ping_thread->join();
 }
 void serverRun(int port, const spdlog::sink_ptr &sink,
                spdlog::level::level_enum level) {
