@@ -70,15 +70,30 @@ std::vector<View> Member::views() const {
 
 std::string Member::libName() const {
     auto data = dataLock();
-    return data->member_lib_name.at(data->getMemberIdFromName(member_));
+    auto m_id = data->getMemberIdFromName(member_);
+    if (data->member_lib_name.count(m_id)) {
+        return data->member_lib_name.at(m_id);
+    } else {
+        return "";
+    }
 }
 std::string Member::libVersion() const {
     auto data = dataLock();
-    return data->member_lib_ver.at(data->getMemberIdFromName(member_));
+    auto m_id = data->getMemberIdFromName(member_);
+    if (data->member_lib_ver.count(m_id)) {
+        return data->member_lib_ver.at(m_id);
+    } else {
+        return "";
+    }
 }
 std::string Member::remoteAddr() const {
     auto data = dataLock();
-    return data->member_addr.at(data->getMemberIdFromName(member_));
+    auto m_id = data->getMemberIdFromName(member_);
+    if (data->member_addr.count(m_id)) {
+        return data->member_addr.at(m_id);
+    } else {
+        return "";
+    }
 }
 
 std::optional<int> Member::pingStatus() const {
