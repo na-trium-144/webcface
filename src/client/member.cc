@@ -4,7 +4,7 @@
 #include <webcface/view.h>
 #include <webcface/event_target.h>
 #include <webcface/client_data.h>
-
+#include "../message/message.h"
 namespace WebCFace {
 
 Value Member::value(const std::string &field) const {
@@ -68,4 +68,50 @@ std::vector<View> Member::views() const {
     return ret;
 }
 
+std::string Member::libName() const {
+    auto data = dataLock();
+    auto m_id = data->getMemberIdFromName(member_);
+    if (data->member_lib_name.count(m_id)) {
+        return data->member_lib_name.at(m_id);
+    } else {
+        return "";
+    }
+}
+std::string Member::libVersion() const {
+    auto data = dataLock();
+    auto m_id = data->getMemberIdFromName(member_);
+    if (data->member_lib_ver.count(m_id)) {
+        return data->member_lib_ver.at(m_id);
+    } else {
+        return "";
+    }
+}
+std::string Member::remoteAddr() const {
+    auto data = dataLock();
+    auto m_id = data->getMemberIdFromName(member_);
+    if (data->member_addr.count(m_id)) {
+        return data->member_addr.at(m_id);
+    } else {
+        return "";
+    }
+}
+
+std::optional<int> Member::pingStatus() const {
+    auto data = dataLock();
+    if (!data->ping_status_req) {
+        data->message_queue.push(Message::packSingle(Message::PingStatusReq{}));
+        data->ping_status_req = true;
+    }
+    if (data->ping_status != nullptr &&
+        data->ping_status->count(data->getMemberIdFromName(member_))) {
+        return data->ping_status->at(data->getMemberIdFromName(member_));
+    } else {
+        return std::nullopt;
+    }
+}
+EventTarget<Member, std::string> Member::onPing() const {
+    // ほんとはonAppendに追加したかったけど面倒なのでここでpingStatus呼び出してリクエストをtrueにしちゃう
+    pingStatus();
+    return EventTarget<Member, std::string>{&dataLock()->ping_event, member_};
+}
 } // namespace WebCFace

@@ -1,18 +1,57 @@
 #include "websock.h"
-#include "../server/store.h"
+#include "store.h"
+#include "s_client_data.h"
+#include "../message/message.h"
 #include <cinatra.hpp>
-#include <string>
-#include <iostream>
 #include <memory>
-
+#include <thread>
+#include <iostream>
 namespace WebCFace::Server {
+std::shared_ptr<cinatra::http_server> server;
+std::shared_ptr<std::thread> ping_thread;
 
-static std::shared_ptr<cinatra::http_server> server;
+void pingThreadMain() {
+    std::cout << "ping thread" << std::endl;
+    std::unique_lock lock(server_mtx);
+    while (!server_stop) {
+        // ping_interval経過するかserver_stop_condで起こされるまで待機
+        server_ping_wait.wait_for(lock, ClientData::ping_interval);
 
-void serverStop() { server->stop(); }
+        if (server_stop) {
+            return;
+        }
+        auto ping_status =
+            std::make_shared<std::unordered_map<unsigned int, int>>();
+        store.forEach([&](auto &cd) {
+            if (cd.last_ping_duration) {
+                ping_status->emplace(cd.member_id,
+                                     cd.last_ping_duration->count());
+            }
+        });
+        auto msg = Message::packSingle(Message::PingStatus{{}, ping_status});
+        store.forEach([&](auto &cd) {
+            cd.logger->trace("ping");
+            cd.sendPing();
+            if (cd.ping_status_req) {
+                cd.send(msg);
+            }
+        });
+    }
+}
+void serverStop() {
+    {
+        std::lock_guard lock(server_mtx);
+        server_stop = true;
+    }
+    server_ping_wait.notify_one();
+    server->stop();
+    ping_thread->join();
+}
 void serverRun(int port, const spdlog::sink_ptr &sink,
                spdlog::level::level_enum level) {
     using namespace cinatra;
+    server_stop = false;
+    ping_thread = std::make_shared<std::thread>(pingThreadMain);
 
     server = std::make_shared<http_server>(1);
     server->listen("0.0.0.0", std::to_string(port));
@@ -23,12 +62,14 @@ void serverRun(int port, const spdlog::sink_ptr &sink,
         assert(req.get_content_type() == content_type::websocket);
 
         req.on(ws_open, [sink, level](request &req) {
+            std::lock_guard lock(server_mtx);
             auto connPtr =
                 std::static_pointer_cast<void>(req.get_conn<cinatra::NonSSL>());
             store.newClient(connPtr, sink, level);
         });
 
         req.on(ws_message, [](request &req) {
+            std::lock_guard lock(server_mtx);
             auto part_data = req.get_part_data();
             // echo
             std::string str = std::string(part_data.data(), part_data.length());
@@ -47,12 +88,14 @@ void serverRun(int port, const spdlog::sink_ptr &sink,
         });
 
         req.on(ws_error, [](request &req) {
+            std::lock_guard lock(server_mtx);
             auto connPtr =
                 std::static_pointer_cast<void>(req.get_conn<cinatra::NonSSL>());
             store.removeClient(connPtr);
         });
 
         req.on(ws_close, [](request &req) {
+            std::lock_guard lock(server_mtx);
             auto connPtr =
                 std::static_pointer_cast<void>(req.get_conn<cinatra::NonSSL>());
             store.removeClient(connPtr);

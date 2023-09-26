@@ -2,7 +2,8 @@
 #include <sstream>
 
 namespace WebCFace::Message {
-void printMsg(const std::shared_ptr<spdlog::logger> &logger, const std::string &message) {
+void printMsg(const std::shared_ptr<spdlog::logger> &logger,
+              const std::string &message) {
     std::stringstream ss;
     ss << "message: " << std::hex;
     for (int i = 0; i < message.size(); i++) {
@@ -14,7 +15,9 @@ void printMsg(const std::shared_ptr<spdlog::logger> &logger, const std::string &
     // }
     // std::cerr << std::endl;
 }
-std::vector<std::pair<int, std::any>> unpack(const std::string &message, const std::shared_ptr<spdlog::logger> &logger) {
+std::vector<std::pair<int, std::any>>
+unpack(const std::string &message,
+       const std::shared_ptr<spdlog::logger> &logger) {
     if (message.size() == 0) {
         return std::vector<std::pair<int, std::any>>{};
     }
@@ -64,6 +67,10 @@ std::vector<std::pair<int, std::any>> unpack(const std::string &message, const s
                 MSG_PARSE(log_req, LogReq)
                 MSG_PARSE(func_info, FuncInfo)
                 MSG_PARSE(sync, Sync)
+                MSG_PARSE(svr_version, SvrVersion)
+                MSG_PARSE(ping, Ping)
+                MSG_PARSE(ping_status, PingStatus)
+                MSG_PARSE(ping_status_req, PingStatusReq)
 
 #undef MSG_PARSE_DATA
 #undef MSG_PARSE

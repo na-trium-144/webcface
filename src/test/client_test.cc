@@ -4,6 +4,7 @@
 #include <webcface/logger.h>
 #include <webcface/view.h>
 #include <webcface/func.h>
+#include <webcface/common/def.h>
 #include "../message/message.h"
 #include <chrono>
 #include <thread>
@@ -58,7 +59,11 @@ TEST_F(ClientTest, sync) {
     wait();
     using namespace WebCFace::Message;
     dummy_s->recv<SyncInit>(
-        [&](const auto &obj) { EXPECT_EQ(obj.member_name, self_name); },
+        [&](const auto &obj) {
+            EXPECT_EQ(obj.member_name, self_name);
+            EXPECT_EQ(obj.lib_name, "cpp");
+            EXPECT_EQ(obj.lib_ver, WEBCFACE_VERSION);
+        },
         [&] { ADD_FAILURE() << "SyncInit recv error"; });
     dummy_s->recv<Sync>([&](const auto &) {},
                         [&] { ADD_FAILURE() << "Sync recv error"; });
@@ -75,9 +80,34 @@ TEST_F(ClientTest, sync) {
     dummy_s->recv<Sync>([&](const auto &) {},
                         [&] { ADD_FAILURE() << "Sync recv error"; });
 }
+TEST_F(ClientTest, serverVersion) {
+    dummy_s->send(Message::SvrVersion{{}, "a", "1"});
+    wait();
+    EXPECT_EQ(wcli_->serverName(), "a");
+    EXPECT_EQ(wcli_->serverVersion(), "1");
+}
+TEST_F(ClientTest, ping) {
+    dummy_s->send(Message::Ping{});
+    wait();
+    dummy_s->recv<Message::Ping>([&](const auto &) {},
+                                 [&] { ADD_FAILURE() << "Ping recv error"; });
+
+    wcli_->member("a").onPing().appendListener(callback<Member>());
+    dummy_s->send(Message::SyncInit{{}, "a", 10, "", "", ""});
+    dummy_s->send(Message::PingStatus{
+        {},
+        std::make_shared<std::unordered_map<unsigned int, int>>(
+            std::unordered_map<unsigned int, int>{{10, 15}})});
+    wait();
+    dummy_s->recv<Message::PingStatusReq>(
+        [&](const auto &) {},
+        [&] { ADD_FAILURE() << "Ping Status Req recv error"; });
+    EXPECT_EQ(callback_called, 1);
+    EXPECT_EQ(wcli_->member("a").pingStatus().value(), 15);
+}
 TEST_F(ClientTest, entry) {
     wcli_->onMemberEntry().appendListener(callback<Member>());
-    dummy_s->send(Message::SyncInit{{}, "a", 10});
+    dummy_s->send(Message::SyncInit{{}, "a", 10, "b", "1", "12345"});
     wait();
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
@@ -86,6 +116,10 @@ TEST_F(ClientTest, entry) {
     EXPECT_EQ(data_->member_ids["a"], 10);
 
     auto m = wcli_->member("a");
+    EXPECT_EQ(m.libName(), "b");
+    EXPECT_EQ(m.libVersion(), "1");
+    EXPECT_EQ(m.remoteAddr(), "12345");
+
     m.onValueEntry().appendListener(callback<Value>());
     dummy_s->send(Message::Entry<Message::Value>{{}, 10, "b"});
     wait();
@@ -356,7 +390,7 @@ TEST_F(ClientTest, logReq) {
         [&](const auto &obj) { EXPECT_EQ(obj.member, "a"); },
         [&] { ADD_FAILURE() << "Log Req recv error"; });
 
-    dummy_s->send(Message::SyncInit{{}, "a", 10});
+    dummy_s->send(Message::SyncInit{{}, "a", 10, "", "", ""});
     dummy_s->send(
         Message::Log{{},
                      10,
@@ -400,7 +434,7 @@ TEST_F(ClientTest, funcInfo) {
 }
 TEST_F(ClientTest, funcCall) {
     // call
-    dummy_s->send(Message::SyncInit{{}, "a", 10});
+    dummy_s->send(Message::SyncInit{{}, "a", 10, "", "", ""});
     wait();
     auto r = wcli_->member("a").func("b").runAsync(1, true, "a");
     wait();

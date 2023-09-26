@@ -3,6 +3,7 @@
 #include <set>
 #include <unordered_map>
 #include <chrono>
+#include <optional>
 #include "../message/message.h"
 #include <spdlog/common.h>
 #include <spdlog/logger.h>
@@ -23,6 +24,7 @@ struct ClientData {
 
     std::string name;
     unsigned int member_id;
+    Message::SyncInit init_data;
     //! 最新の値
     std::unordered_map<std::string, std::shared_ptr<std::vector<double>>> value;
     std::unordered_map<std::string, std::shared_ptr<std::string>> text;
@@ -57,9 +59,17 @@ struct ClientData {
     void onRecv(const std::string &msg);
     void onClose();
 
+    void sendPing();
+    static constexpr std::chrono::milliseconds ping_interval{5000};
+    std::chrono::system_clock::time_point last_send_ping;
+    std::optional<std::chrono::milliseconds> last_ping_duration;
+    bool ping_status_req = false;
+
     std::stringstream send_buffer;
     int send_len = 0;
     void send();
+    void send(const std::string &msg);
+
     template <typename T>
     void pack(const T &data) {
         Message::pack(send_buffer, send_len, data);

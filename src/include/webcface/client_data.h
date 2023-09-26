@@ -235,6 +235,7 @@ struct ClientData {
     FuncResultStore func_result_store;
 
     std::unordered_map<std::string, unsigned int> member_ids;
+    std::unordered_map<unsigned int, std::string> member_lib_name, member_lib_ver, member_addr;
     std::string getMemberNameFromId(unsigned int id) const;
     unsigned int getMemberIdFromName(const std::string &name) const;
 
@@ -245,7 +246,7 @@ struct ClientData {
     // 値は要らないイベント
     eventpp::EventDispatcher<int, void(Field)> member_entry_event;
     eventpp::EventDispatcher<std::string, void(Field)> sync_event,
-        value_entry_event, text_entry_event, func_entry_event, view_entry_event;
+        value_entry_event, text_entry_event, func_entry_event, view_entry_event, ping_event;
 
     //! sync()を待たずに即時送って欲しいメッセージを入れるキュー
     Queue<std::string> message_queue;
@@ -267,5 +268,11 @@ struct ClientData {
     //! 初回のsync()で全データを送信するがそれが完了したかどうか
     //! 再接続したらfalseに戻す
     std::atomic<bool> sync_init = false;
+
+    //! serverの情報
+    std::string svr_name, svr_version;
+
+    std::shared_ptr<std::unordered_map<unsigned int, int>> ping_status = nullptr;
+    bool ping_status_req = false;
 };
 } // namespace WebCFace

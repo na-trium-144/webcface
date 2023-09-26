@@ -115,6 +115,11 @@ class Client : public Member {
     LoggerBuf *logger_streambuf() { return &logger_buf; }
     //! logger_streambufに出力するostream
     std::ostream &logger_ostream() { return logger_os; }
+
+    //! WebCFaceサーバーのバージョン情報
+    std::string serverVersion() const { return data->svr_version; }
+    //! WebCFaceサーバーの識別情報
+    std::string serverName() const { return data->svr_name; }
 };
 
 } // namespace WebCFace

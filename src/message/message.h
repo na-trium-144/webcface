@@ -24,17 +24,21 @@ enum MessageKindEnum {
     value = 0,
     text = 1,
     view = 3,
-    entry = 25,
-    req = 50,
-    res = 75,
-    sync_init = 100,
-    call = 101,
-    call_response = 102,
-    call_result = 103,
-    func_info = 104,
-    log = 105,
-    log_req = 106,
-    sync = 107,
+    entry = 20,
+    req = 40,
+    res = 60,
+    sync_init = 80,
+    call = 81,
+    call_response = 82,
+    call_result = 83,
+    func_info = 84,
+    log = 85,
+    log_req = 86,
+    sync = 87,
+    svr_version = 88,
+    ping = 89,
+    ping_status = 90,
+    ping_status_req = 91,
 };
 }
 
@@ -43,20 +47,75 @@ template <int k>
 struct MessageBase {
     static constexpr int kind = k;
 };
-//! client->server->client 自身の名前を送る
-//! server->clientに送るときにmember_idを振る
-//! member_idは1以上
+//! client初期化(client->server->client)
+/*! clientは接続後最初に1回、
+ * member_name,lib_name,lib_verを送る
+ *
+ * member_nameが空文字列でない場合、同時に接続している他のクライアントと被ってはいけない
+ * 過去に同名で接続したクライアントがある場合同じmember_idが振られる
+ *
+ * member_nameが空文字列の場合、他のクライアントとの被りは問題ないが、
+ * 他のクライアントにはこのクライアントの存在が通知されず、
+ * valueなどのデータを送ることはできない
+ *
+ * serverはmember_idを振り、
+ * member_nameが空でなかった場合は他の全クライアントにmember_idとaddrを載せて通知する
+ */
 struct SyncInit : public MessageBase<MessageKind::sync_init> {
-    std::string member_name;
-    unsigned int member_id;
+    std::string member_name; //!< member名
+    unsigned int member_id;  //!< member id (1以上)
+    //! clientライブラリの名前(id) このライブラリでは"cpp"
+    /*! 新しくライブラリ作ることがあったら変えて識別できるようにすると良いかも
+     */
+    std::string lib_name;
+    std::string lib_ver; //!< clientライブラリのバージョン
+    std::string addr;    //!< clientのipアドレス
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("M", member_name),
-                       MSGPACK_NVP("m", member_id));
+                       MSGPACK_NVP("m", member_id), MSGPACK_NVP("l", lib_name),
+                       MSGPACK_NVP("v", lib_ver), MSGPACK_NVP("a", addr));
 };
-//! client->server->client syncの時刻
-//! 各sync()ごとに1回、他のメッセージより先に現在時刻を送る
-//! client->server時はmemberは無視
+
+//! serverのバージョン情報(server->client)
+/*! serverはSyncInit受信後にこれを返す
+ */
+struct SvrVersion : public MessageBase<MessageKind::svr_version> {
+    std::string svr_name; //!< serverの名前 このライブラリでは"webcface"
+    std::string ver;      //!< serverのバージョン
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("n", svr_name), MSGPACK_NVP("v", ver));
+};
+//! ping(server->client->server)
+/*! serverが一定間隔でこれをclientに送る
+ *
+ * 内容は空のmap
+ *
+ * clientは即座に送り返さなければならない
+ */
+struct Ping : public MessageBase<MessageKind::ping> {
+    Ping() = default;
+};
+//! 各クライアントのping状況 (server->client)
+struct PingStatus : public MessageBase<MessageKind::ping_status> {
+    //! member_id: ping応答時間(ms) のmap
+    std::shared_ptr<std::unordered_map<unsigned int, int>> status;
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("s", status));
+};
+//! ping状況のリクエスト (client->server)
+/*! これを送ると以降serverが一定間隔でPingStatusを送り返す
+ */
+struct PingStatusReq : public MessageBase<MessageKind::ping_status_req> {
+    PingStatusReq() = default;
+};
+//! syncの時刻(client->server->client)
+/*! clientは各sync()ごとに1回、他のメッセージより先に現在時刻を送る
+ *
+ * serverはそのclientのデータを1つ以上requestしているクライアントに対して
+ * member_idを載せて送る
+ */
 struct Sync : public MessageBase<MessageKind::sync> {
-    unsigned int member_id;
+    unsigned int member_id; //!< member id
+    //! unix時刻
+    /*! 1970/1/1 0:00(utc) からの経過ミリ秒数で表し、閏秒はカウントしない
+     */
     std::uint64_t time;
     Sync(unsigned int member_id,
          const std::chrono::system_clock::time_point &time)
@@ -72,9 +131,11 @@ struct Sync : public MessageBase<MessageKind::sync> {
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("m", member_id), MSGPACK_NVP("t", time));
 };
 
-//! client(caller)->server->client(receiver) 関数呼び出し
-//! caller側クライアントがcaller_idを振る
-//! serverがcaller_member_idをつけてreceiverに送る
+//! 関数呼び出し (client(caller)->server->client(receiver))
+/*! caller側clientが一意のcaller_idを振る(0以上の整数)
+ *
+ * serverはcaller_member_idをつけてreceiverに送る
+ */
 struct Call : public MessageBase<MessageKind::call>, public Common::FuncCall {
     Call() = default;
     Call(const Common::FuncCall &c)
@@ -84,16 +145,33 @@ struct Call : public MessageBase<MessageKind::call>, public Common::FuncCall {
                        MSGPACK_NVP("r", target_member_id),
                        MSGPACK_NVP("f", field), MSGPACK_NVP("a", args));
 };
-//! client(receiver)->server->client(caller) 関数の実行を開始したかどうか
+//! 関数呼び出しの応答1 (client(receiver)->server->client(caller))
+/*! clientはcalled_id,caller_member_idと、関数の実行を開始したかどうかを返す
+ *
+ * 関数の実行に時間がかかる場合も実行完了を待たずにstartedをtrueにして送る
+ *
+ * 対象の関数が存在しない場合、startedをfalseにして送る
+ *
+ * serverはそれをそのままcallerに送る
+ */
 struct CallResponse : public MessageBase<MessageKind::call_response> {
     unsigned int caller_id;
     unsigned int caller_member_id;
-    bool started;
+    bool started; //!< 関数の実行を開始したかどうか
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", caller_id),
                        MSGPACK_NVP("c", caller_member_id),
                        MSGPACK_NVP("s", started));
 };
-//! client(receiver)->server->client(caller) 関数の戻り値
+//! 関数呼び出しの応答2 (client(receiver)->server->client(caller))
+/*! clientはcalled_id,caller_member_idと、関数の実行結果を返す
+ *
+ * resultに結果を文字列または数値または真偽値で返す
+ * 結果が無い場合は "" を返す
+ *
+ * 例外が発生した場合はis_errorをtrueにしresultに例外の内容を文字列で入れて返す
+ *
+ * serverはそれをそのままcallerに送る
+ */
 struct CallResult : public MessageBase<MessageKind::call_result> {
     unsigned int caller_id;
     unsigned int caller_member_id;
@@ -340,3 +418,37 @@ inline std::string packDone(std::stringstream &buffer, int len) {
 }
 
 } // namespace WebCFace::Message
+
+namespace msgpack {
+MSGPACK_API_VERSION_NAMESPACE(MSGPACK_DEFAULT_API_NS) {
+    namespace adaptor {
+    template <typename T>
+    struct EmptyConvert {
+        msgpack::object const &operator()(msgpack::object const &o, T &) const {
+            return o;
+        }
+    };
+    template <typename T>
+    struct EmptyPack {
+        template <typename Stream>
+        msgpack::packer<Stream> &operator()(msgpack::packer<Stream> &o,
+                                            const T &) {
+            o.pack_map(0);
+            return o;
+        }
+    };
+    template <>
+    struct convert<WebCFace::Message::Ping>
+        : public EmptyConvert<WebCFace::Message::Ping> {};
+    template <>
+    struct convert<WebCFace::Message::PingStatusReq>
+        : public EmptyConvert<WebCFace::Message::PingStatusReq> {};
+    template <>
+    struct pack<WebCFace::Message::Ping>
+        : public EmptyPack<WebCFace::Message::Ping> {};
+    template <>
+    struct pack<WebCFace::Message::PingStatusReq>
+        : public EmptyPack<WebCFace::Message::PingStatusReq> {};
+    } // namespace adaptor
+}
+} // namespace msgpack

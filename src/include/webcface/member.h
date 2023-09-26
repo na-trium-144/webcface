@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <vector>
+#include <optional>
 #include "field.h"
 #include "event_target.h"
 
@@ -33,7 +34,8 @@ class Member : protected Field {
     //! AnonymousFuncオブジェクトを作成しfuncをsetする
     // template <typename T>
     // AnonymousFunc func(const T &func) const{
-    // todo: ここでfunc.hにアクセスする必要があるためヘッダーの読み込み順を変えないといけない
+    // todo:
+    // ここでfunc.hにアクセスする必要があるためヘッダーの読み込み順を変えないといけない
     // }
     View view(const std::string &field) const;
     //! このmemberのログを参照する。
@@ -63,6 +65,13 @@ class Member : protected Field {
 
     EventTarget<View, std::string> onViewEntry() const;
     EventTarget<Member, std::string> onSync() const;
+
+    std::string libName() const;
+    std::string libVersion() const;
+    std::string remoteAddr() const;
+
+    std::optional<int> pingStatus() const;
+    EventTarget<Member, std::string> onPing() const;
 };
 
 } // namespace WebCFace
