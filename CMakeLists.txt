@@ -76,6 +76,7 @@ set(SVR_SRC
     ${CPP_DIR}/server/s_client_data.cc
     ${CPP_DIR}/server/store.cc
     ${CPP_DIR}/server/websock.cc
+    ${CPP_DIR}/server/dir.cc
 )
 set(CLI_SRC
     ${CPP_DIR}/client/client.cc

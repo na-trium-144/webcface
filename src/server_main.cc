@@ -5,8 +5,7 @@
 
 int main(int argc, char **argv) {
     try {
-        // todo: read version from CMakeLists.txt
-        TCLAP::CmdLine cmd("WebCFace Server", ' ', "1.0.0");
+        TCLAP::CmdLine cmd("WebCFace Server", ' ', WEBCFACE_VERSION);
         TCLAP::ValueArg<int> portArg(
             "p", "port",
             "Server port (default: " + std::to_string(WEBCFACE_DEFAULT_PORT) +
