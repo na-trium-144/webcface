@@ -47,7 +47,7 @@ jobs:
       run: |
         gcovr -s -e src/example/ -e src/test/ -e external/
         COVERAGE=$(gcovr -e src/example/ -e src/test/ -e external/ | grep TOTAL | awk '{print $4}')
-        echo "##[set-output name=lines;]${COVERAGE}%"
+        echo "##[set-output name=lines;]${COVERAGE}"
 
     - uses: actions/checkout@v3
       with:
