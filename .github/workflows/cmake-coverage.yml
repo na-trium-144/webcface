@@ -38,6 +38,9 @@ jobs:
       # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
       run: ctest -C ${{env.BUILD_TYPE}} --output-on-failure
 
+    - name: Install gcovr
+      run: sudo apt-get update && sudo apt-get install -y gcovr
+    
     # https://stackoverflow.com/questions/59203704/how-to-create-a-badge-with-test-coverage-jacoco-on-github-actions
     - name: Get coverage
       id: coverage
