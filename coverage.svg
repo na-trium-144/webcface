@@ -1,0 +1,20 @@
+<svg width="135.6" height="20" viewBox="0 0 1356 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Test coverage: 90%%">
+  <title>Test coverage: 90%%</title>
+  <linearGradient id="a" x2="0" y2="100%">
+    <stop offset="0" stop-opacity=".1" stop-color="#EEE"/>
+    <stop offset="1" stop-opacity=".1"/>
+  </linearGradient>
+  <mask id="m"><rect width="1356" height="200" rx="30" fill="#FFF"/></mask>
+  <g mask="url(#m)">
+    <rect width="876" height="200" fill="#555"/>
+    <rect width="480" height="200" fill="#08C" x="876"/>
+    <rect width="1356" height="200" fill="url(#a)"/>
+  </g>
+  <g aria-hidden="true" fill="#fff" text-anchor="start" font-family="Verdana,DejaVu Sans,sans-serif" font-size="110">
+    <text x="60" y="148" textLength="776" fill="#000" opacity="0.25">Test coverage</text>
+    <text x="50" y="138" textLength="776">Test coverage</text>
+    <text x="931" y="148" textLength="380" fill="#000" opacity="0.25">90%%</text>
+    <text x="921" y="138" textLength="380">90%%</text>
+  </g>
+  
+</svg>
