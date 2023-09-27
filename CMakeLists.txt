@@ -265,7 +265,21 @@ if(${WEBCFACE_INSTALL})
         DESTINATION lib/cmake/${PROJECT_NAME}
     )
 
-    set(CPACK_PACKAGE_CONTACT "na-trium-144")
-    set(CPACK_DEBIAN_PACKAGE_DEPENDS "libc6, libstdc++6")
+    # https://decovar.dev/blog/2021/09/23/cmake-cpack-package-deb-apt/
+    set(CPACK_VERBATIM_VARIABLES yes)
+    set(CPACK_DEBIAN_FILE_NAME DEB-DEFAULT)
+    set(CPACK_PACKAGE_CONTACT "nakak_u21@yahoo.co.jp")
+    set(CPACK_DEBIAN_PACKAGE_MAINTAINER "na-trium-144 <${CPACK_PACKAGE_CONTACT}>")
+    set(CPACK_DEBIAN_PACKAGE_SHLIBDEPS yes)
+    set(CPACK_STRIP_FILES yes)
+    set(CPACK_INSTALL_DEFAULT_DIRECTORY_PERMISSIONS
+        OWNER_READ OWNER_WRITE OWNER_EXECUTE
+        GROUP_READ GROUP_EXECUTE
+        WORLD_READ WORLD_EXECUTE
+    )
+    # https://gitlab.kitware.com/cmake/cmake/-/issues/21834
+    set(CPACK_DEBIAN_PACKAGE_CONTROL_EXTRA "${CMAKE_CURRENT_LIST_DIR}/triggers")
+    set(CPACK_DEBIAN_PACKAGE_CONTROL_STRICT_PERMISSION TRUE)
+
     include(CPack)
 endif()
