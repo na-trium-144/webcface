@@ -40,6 +40,8 @@ struct ClientData {
     //! ログ全履歴
     std::shared_ptr<std::vector<Message::Log::LogLine>> log;
 
+    std::string getRemoteAddr() const;
+
     inline static unsigned int last_member_id = 0;
 
     ClientData() = delete;

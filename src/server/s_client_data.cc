@@ -58,6 +58,13 @@ std::pair<unsigned int, std::string> findReqField(
     return std::make_pair<unsigned int, std::string>(0, "");
 }
 
+std::string ClientData::getRemoteAddr() const {
+    std::string a =
+        std::static_pointer_cast<cinatra::connection<cinatra::NonSSL>>(con)
+            ->remote_address();
+    return a.substr(0, a.find(':'));
+}
+
 void ClientData::sendPing() {
     last_send_ping = std::chrono::system_clock::now();
     last_ping_duration = std::nullopt;
@@ -92,10 +99,7 @@ void ClientData::onRecv(const std::string &message) {
                 // コンストラクタですでに一意のidが振られているはず
                 v.member_id = this->member_id;
             }
-            v.addr =
-                std::static_pointer_cast<cinatra::connection<cinatra::NonSSL>>(
-                    con)
-                    ->remote_address();
+            v.addr = this->getRemoteAddr();
             this->init_data = v;
             this->sync_init = true;
             store.clients_by_id.erase(this->member_id);
