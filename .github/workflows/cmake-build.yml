@@ -83,7 +83,7 @@ jobs:
           # Produce a binary artifact and place it in the mounted volume
           run: |
             cd /workspace
-            git config --global --add safe.directory /workspace
+            git config --global --add safe.directory '*'
             git submodule update --init --recursive
             cmake -B build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
             cmake --build build --config ${{env.BUILD_TYPE}}
