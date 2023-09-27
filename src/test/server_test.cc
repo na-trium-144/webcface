@@ -46,12 +46,15 @@ TEST_F(ServerTest, connection) { EXPECT_EQ(Server::store.clients.size(), 2); }
 TEST_F(ServerTest, sync) {
     dummy_c1->send(Message::SyncInit{{}, "", 0, "", "", ""});
     wait();
-    dummy_c2->send(Message::SyncInit{{}, "c2", 0, "", "", ""});
+    dummy_c2->send(Message::SyncInit{{}, "c2", 0, "a", "1", ""});
     wait();
     dummy_c1->recv<Message::SyncInit>(
         [&](const auto &obj) {
             EXPECT_EQ(obj.member_name, "c2");
             EXPECT_EQ(obj.member_id, 2);
+            EXPECT_EQ(obj.lib_name, "a");
+            EXPECT_EQ(obj.lib_ver, "1");
+            EXPECT_EQ(obj.addr, "127.0.0.1");
         },
         [&] { ADD_FAILURE() << "SyncInit recv failed"; });
     dummy_c1->recv<Message::SvrVersion>(
