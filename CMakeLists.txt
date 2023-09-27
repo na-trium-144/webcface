@@ -283,6 +283,10 @@ if(${WEBCFACE_INSTALL})
     set(CPACK_PACKAGE_CONTACT "nakak_u21@yahoo.co.jp")
     set(CPACK_DEBIAN_PACKAGE_MAINTAINER "na-trium-144 <${CPACK_PACKAGE_CONTACT}>")
     set(CPACK_DEBIAN_PACKAGE_SHLIBDEPS yes)
+    if(NOT ${spdlog_FOUND})
+        # submoduleのspdlogを使った場合システムのspdlogとはconflictする
+        set(CPACK_DEBIAN_PACKAGE_CONFLICTS "libspdlog-dev")
+    endif()
     set(CPACK_STRIP_FILES yes)
     set(CPACK_INSTALL_DEFAULT_DIRECTORY_PERMISSIONS
         OWNER_READ OWNER_WRITE OWNER_EXECUTE
