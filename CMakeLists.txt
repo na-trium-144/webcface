@@ -1,5 +1,10 @@
 cmake_minimum_required(VERSION 3.9)
-project(webcface LANGUAGES CXX VERSION 1.0.0)
+project(webcface
+    LANGUAGES CXX
+    VERSION 1.0.0
+    HOMEPAGE_URL "https://github.com/na-trium-144/webcface"
+    DESCRIPTION "Web-based RPC & UI Library"
+)
 set(WEBCFACE_SOVERSION 1)
 
 if(${CMAKE_CURRENT_SOURCE_DIR} STREQUAL ${CMAKE_SOURCE_DIR})
@@ -259,4 +264,8 @@ if(${WEBCFACE_INSTALL})
         # コピー先
         DESTINATION lib/cmake/${PROJECT_NAME}
     )
+
+    set(CPACK_PACKAGE_CONTACT "na-trium-144")
+    set(CPACK_DEBIAN_PACKAGE_DEPENDS "libc6, libstdc++6")
+    include(CPack)
 endif()
