@@ -1,5 +1,5 @@
 #include "../server/websock.h"
-#include "../include/webcface/common/def.h"
+#include <webcface/common/def.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
 #include <tclap/CmdLine.h>
 
@@ -7,9 +7,7 @@ int main(int argc, char **argv) {
     try {
         TCLAP::CmdLine cmd("WebCFace Server", ' ', WEBCFACE_VERSION);
         TCLAP::ValueArg<int> portArg(
-            "p", "port",
-            "Server port (default: " + std::to_string(WEBCFACE_DEFAULT_PORT) +
-                ")",
+            "p", "port", "Server port (default: " WEBCFACE_DEFAULT_PORT_S ")",
             false, WEBCFACE_DEFAULT_PORT, "number");
         cmd.add(portArg);
 
