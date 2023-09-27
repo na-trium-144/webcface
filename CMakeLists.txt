@@ -1,8 +1,25 @@
 cmake_minimum_required(VERSION 3.9)
-project(webcface CXX)
+project(webcface LANGUAGES CXX VERSION 1.0.0)
+set(WEBCFACE_SOVERSION 1)
+
+if(${CMAKE_CURRENT_SOURCE_DIR} STREQUAL ${CMAKE_SOURCE_DIR})
+    set(IS_MAIN on)
+else()
+    set(IS_MAIN off)
+endif()
+
+option(WEBCFACE_EXAMPLE "build example" OFF)
+option(WEBCFACE_TEST "build test" OFF)
+option(WEBCFACE_INSTALL "generate install target" ${IS_MAIN})
+
+message(STATUS "webcface_example = ${WEBCFACE_EXAMPLE}")
+message(STATUS "webcface_test = ${WEBCFACE_TEST}")
+message(STATUS "webcface_install = ${WEBCFACE_INSTALL}")
 
 # c++20 for concepts
-set(CMAKE_CXX_STANDARD 20)
+# set(CMAKE_CXX_STANDARD 20)
+# set(CMAKE_CXX_STANDARD_REQUIRED ON)
+# set(CMAKE_CXX_EXTENSIONS OFF)
 
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Release")
@@ -21,33 +38,46 @@ endif()
 
 find_package(msgpack-cxx QUIET)
 if(${msgpack-cxx_FOUND})
-    message("msgpack-cxx found")
+    message(STATUS "msgpack-cxx found")
 else()
-    message("msgpack-cxx not found")
-    set(MSGPACK_BUILD_DOCS off CACHE INTERNAL "" FORCE)
-    set(MSGPACK_BUILD_TESTS off CACHE INTERNAL "" FORCE)
-    set(MSGPACK_BUILD_EXAMPLES off CACHE INTERNAL "" FORCE)
-    set(MSGPACK_USE_BOOST off CACHE INTERNAL "" FORCE)
-    add_subdirectory(external/msgpack-c)
+    message(STATUS "msgpack-cxx not found")
+    # set(MSGPACK_BUILD_DOCS off CACHE INTERNAL "" FORCE)
+    # set(MSGPACK_BUILD_TESTS off CACHE INTERNAL "" FORCE)
+    # set(MSGPACK_BUILD_EXAMPLES off CACHE INTERNAL "" FORCE)
+    # set(MSGPACK_USE_BOOST off CACHE INTERNAL "" FORCE)
+    # add_subdirectory(external/msgpack-c)
+    # このようにmsgpackのcmakeを使うと、msgpackをインストールしてしまう
+
+    add_library(msgpack-cxx INTERFACE)
+    target_compile_definitions(msgpack-cxx INTERFACE
+        MSGPACK_NO_BOOST
+        MSGPACK_DEFAULT_API_VERSION=3
+    )
+    target_include_directories(msgpack-cxx INTERFACE
+        ${CMAKE_CURRENT_SOURCE_DIR}/external/msgpack-c/include
+    )
 endif()
 set(MSGPACK msgpack-cxx)
 
 find_package(eventpp QUIET)
 if(${eventpp_FOUND})
-    message("eventpp found")
+    message(STATUS "eventpp found")
 else()
-    message("eventpp not found")
+    message(STATUS "eventpp not found")
+    set(EVENTPP_INSTALL ${WEBCFACE_INSTALL} CACHE INTERNAL "" FORCE)
     add_subdirectory(external/eventpp)
 endif()
 set(EVENTPP eventpp::eventpp)
 
 find_package(spdlog QUIET)
 if(${spdlog_FOUND})
-    message("spdlog found")
+    message(STATUS "spdlog found")
     set(SPDLOG spdlog::spdlog $<$<BOOL:${MINGW}>:ws2_32>)
 else()
-    message("spdlog not found")
+    message(STATUS "spdlog not found")
+    set(SPDLOG_BUILD_SHARED on CACHE INTERNAL "" FORCE)
     set(SPDLOG_BUILD_PIC on CACHE INTERNAL "" FORCE)
+    set(SPDLOG_INSTALL ${WEBCFACE_INSTALL} CACHE INTERNAL "" FORCE)
     add_subdirectory(external/spdlog)
     set(SPDLOG spdlog $<$<BOOL:${MINGW}>:ws2_32>)
 endif()
@@ -62,13 +92,17 @@ endif()
 add_library(tclap INTERFACE)
 target_include_directories(tclap INTERFACE ${CMAKE_CURRENT_LIST_DIR}/external/tclap/include)
 
-find_package(GTest QUIET)
-if(${GTest_FOUND})
-    message("GTest found")
-else()
-    message("GTest not found")
-    add_subdirectory(external/googletest)
+if(${WEBCFACE_TEST})
+    find_package(GTest QUIET)
+    if(${GTest_FOUND})
+        message(STATUS "GTest found")
+    else()
+        message(STATUS "GTest not found")
+        add_subdirectory(external/googletest)
+    endif()
 endif()
+
+###############################################################################
 
 set(CPP_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 set(SVR_MAIN_SRC ${CPP_DIR}/server_main.cc)
@@ -105,33 +139,32 @@ set(TEST_SRC
 set(MSG_SRC
     ${CPP_DIR}/message/message.cc
 )
-set(INCLUDE_DIR ${CPP_DIR}/include)
+set(INCLUDE_DIR
+    $<BUILD_INTERFACE:${CPP_DIR}/include>
+    $<INSTALL_INTERFACE:include>
+)
 
 ###############################################################################
-# server
 
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
-
-add_library(${PROJECT_NAME}_message STATIC ${MSG_SRC})
-target_compile_options(${PROJECT_NAME}_message PRIVATE -fPIC)
-target_compile_features(${PROJECT_NAME}_message PUBLIC cxx_std_20)
-target_link_libraries(${PROJECT_NAME}_message PUBLIC
+add_library(${PROJECT_NAME}-message STATIC ${MSG_SRC})
+target_compile_options(${PROJECT_NAME}-message PRIVATE -fPIC)
+target_compile_features(${PROJECT_NAME}-message PUBLIC cxx_std_20)
+target_link_libraries(${PROJECT_NAME}-message PUBLIC
     ${MSGPACK}
     ${SPDLOG}
 )
-target_include_directories(${PROJECT_NAME}_message PUBLIC ${INCLUDE_DIR})
+target_include_directories(${PROJECT_NAME}-message PUBLIC ${INCLUDE_DIR})
 
-add_library(${PROJECT_NAME}_server_impl STATIC ${SVR_SRC})
-target_link_libraries(${PROJECT_NAME}_server_impl PUBLIC
-    ${PROJECT_NAME}_message
+add_library(${PROJECT_NAME}-server-impl STATIC ${SVR_SRC})
+target_link_libraries(${PROJECT_NAME}-server-impl PUBLIC
+    ${PROJECT_NAME}-message
     cinatra
     ${SPDLOG}
 )
 
-add_executable(${PROJECT_NAME}_server ${SVR_MAIN_SRC})
-target_link_libraries(${PROJECT_NAME}_server PRIVATE
-    ${PROJECT_NAME}_server_impl
+add_executable(${PROJECT_NAME}-server ${SVR_MAIN_SRC})
+target_link_libraries(${PROJECT_NAME}-server PRIVATE
+    ${PROJECT_NAME}-server-impl
     tclap
 )
 
@@ -139,7 +172,7 @@ add_library(${PROJECT_NAME} SHARED ${CLI_SRC})
 target_compile_options(${PROJECT_NAME} PRIVATE -fPIC)
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_20)
 target_link_libraries(${PROJECT_NAME} PRIVATE
-    ${PROJECT_NAME}_message
+    ${PROJECT_NAME}-message
     cinatra
 )
 target_link_libraries(${PROJECT_NAME} PUBLIC
@@ -147,24 +180,83 @@ target_link_libraries(${PROJECT_NAME} PUBLIC
     ${SPDLOG}
 )
 target_include_directories(${PROJECT_NAME} PUBLIC ${INCLUDE_DIR})
-
-foreach(SRC IN LISTS EXAMPLE_SRC)
-    get_filename_component(TARGET ${SRC} NAME_WE)
-    add_executable(example_${TARGET} ${SRC})
-    target_link_libraries(example_${TARGET} PRIVATE ${PROJECT_NAME})
-endforeach()
-
-
-enable_testing() # todo: オプションで変えられるようにする
-
-add_executable(${PROJECT_NAME}_test ${TEST_SRC})
-target_link_libraries(${PROJECT_NAME}_test PRIVATE
-    ${PROJECT_NAME}
-    ${PROJECT_NAME}_message
-    ${PROJECT_NAME}_server_impl
-    cinatra
-    GTest::gtest_main
+set_target_properties(${PROJECT_NAME} PROPERTIES
+    INSTALL_RPATH "$ORIGIN/;"
+    INSTALL_RPATH_USE_LINK_PATH TRUE
+    VERSION ${PROJECT_VERSION}
+    SOVERSION ${WEBCFACE_SOVERSION}
 )
 
-include(GoogleTest)
-gtest_discover_tests(${PROJECT_NAME}_test)
+add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
+
+
+if(${WEBCFACE_EXAMPLE})
+    foreach(SRC IN LISTS EXAMPLE_SRC)
+        get_filename_component(TARGET ${SRC} NAME_WE)
+        add_executable(example_${TARGET} ${SRC})
+        target_link_libraries(example_${TARGET} PRIVATE ${PROJECT_NAME})
+    endforeach()
+endif()
+
+if(${WEBCFACE_TEST})
+    enable_testing()
+    add_executable(${PROJECT_NAME}-test ${TEST_SRC})
+    target_link_libraries(${PROJECT_NAME}-test PRIVATE
+        ${PROJECT_NAME}
+        ${PROJECT_NAME}-message
+        ${PROJECT_NAME}-server-impl
+        cinatra
+        GTest::gtest_main
+    )
+    include(GoogleTest)
+    gtest_discover_tests(${PROJECT_NAME}-test)
+endif()
+
+
+###############################################################################
+# https://qiita.com/modapone/items/8f97425b6167cffc815c
+if(${WEBCFACE_INSTALL})
+    include(CMakePackageConfigHelpers)
+
+    install(TARGETS ${PROJECT_NAME}-server
+        RUNTIME DESTINATION bin
+    )
+    install(TARGETS ${PROJECT_NAME}
+        EXPORT ${PROJECT_NAME}-targets
+        LIBRARY DESTINATION lib
+    )
+    # インストールするconfigの指定、前項で生成したもの
+    install(EXPORT ${PROJECT_NAME}-targets
+        FILE ${PROJECT_NAME}-targets.cmake
+        # 名前空間の指定
+        NAMESPACE ${PROJECT_NAME}::
+        # インストール先
+        DESTINATION lib/cmake/${PROJECT_NAME}
+    )
+    # コピー元、末尾の`/`は要注意
+    install(DIRECTORY ${CPP_DIR}/include/
+        DESTINATION include
+    )
+    configure_package_config_file(
+        ${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}-config.cmake.in
+        ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config.cmake
+        INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
+    )
+
+    # Package Version Fileの生成
+    write_basic_package_version_file(
+        # 生成するファイルの名前
+        ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config-version.cmake
+        # 互換性の判定方法の指定
+        COMPATIBILITY SameMajorVersion
+    )
+
+    # Package Version Fileのインストール
+    # コピー元
+    install(FILES
+        ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config.cmake
+        ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config-version.cmake
+        # コピー先
+        DESTINATION lib/cmake/${PROJECT_NAME}
+    )
+endif()
