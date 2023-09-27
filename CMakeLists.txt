@@ -1,11 +1,23 @@
 cmake_minimum_required(VERSION 3.9)
+
+# src/include/webcface/common/def.h からバージョンを取得
+file(READ ${CMAKE_CURRENT_SOURCE_DIR}/src/include/webcface/common/def.h contents)
+string(REGEX MATCH "#define WEBCFACE_VERSION_MAJOR *([0-9a-zA-Z_]*)" NULL_OUT ${contents})
+set(VERSION_MAJOR ${CMAKE_MATCH_1})
+string(REGEX MATCH "#define WEBCFACE_VERSION_MINOR *([0-9a-zA-Z_]*)" NULL_OUT ${contents})
+set(VERSION_MINOR ${CMAKE_MATCH_1})
+string(REGEX MATCH "#define WEBCFACE_VERSION_REVISION *([0-9a-zA-Z_]*)" NULL_OUT ${contents})
+set(VERSION_REVISION ${CMAKE_MATCH_1})
+set(VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_REVISION})
+
 project(webcface
     LANGUAGES CXX
-    VERSION 1.0.0
+    VERSION ${VERSION}
     HOMEPAGE_URL "https://github.com/na-trium-144/webcface"
     DESCRIPTION "Web-based RPC & UI Library"
 )
 set(WEBCFACE_SOVERSION 1)
+message(STATUS "webcface ${PROJECT_VERSION}")
 
 if(${CMAKE_CURRENT_SOURCE_DIR} STREQUAL ${CMAKE_SOURCE_DIR})
     set(IS_MAIN on)
@@ -148,6 +160,7 @@ set(INCLUDE_DIR
     $<BUILD_INTERFACE:${CPP_DIR}/include>
     $<INSTALL_INTERFACE:include>
 )
+include_directories(${INCLUDE_DIR})
 
 ###############################################################################
 
@@ -158,7 +171,6 @@ target_link_libraries(${PROJECT_NAME}-message PUBLIC
     ${MSGPACK}
     ${SPDLOG}
 )
-target_include_directories(${PROJECT_NAME}-message PUBLIC ${INCLUDE_DIR})
 
 add_library(${PROJECT_NAME}-server-impl STATIC ${SVR_SRC})
 target_link_libraries(${PROJECT_NAME}-server-impl PUBLIC

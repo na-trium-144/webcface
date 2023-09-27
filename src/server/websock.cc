@@ -2,7 +2,7 @@
 #include "store.h"
 #include "s_client_data.h"
 #include "dir.h"
-#include "../include/webcface/common/def.h"
+#include <webcface/common/def.h>
 #include "../message/message.h"
 #include <cinatra.hpp>
 #include <memory>
