@@ -78,7 +78,7 @@ jobs:
           # no secrets are present in the container state or logs.
           install: |
             apt-get update -q -y
-            apt-get install -q -y git build-essential cmake
+            apt-get install -q -y git build-essential cmake file
 
           # Produce a binary artifact and place it in the mounted volume
           run: |
