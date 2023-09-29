@@ -33,11 +33,6 @@ message(STATUS "webcface_example = ${WEBCFACE_EXAMPLE}")
 message(STATUS "webcface_test = ${WEBCFACE_TEST}")
 message(STATUS "webcface_install = ${WEBCFACE_INSTALL}")
 
-# c++20 for concepts
-# set(CMAKE_CXX_STANDARD 20)
-# set(CMAKE_CXX_STANDARD_REQUIRED ON)
-# set(CMAKE_CXX_EXTENSIONS OFF)
-
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Release")
 endif()
@@ -52,6 +47,9 @@ if(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
     endif()
 endif()
 
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    add_compile_options(-Wno-psabi)
+endif()
 
 find_package(msgpack-cxx QUIET)
 if(${msgpack-cxx_FOUND})
@@ -105,6 +103,7 @@ target_compile_options(cinatra INTERFACE -pthread)
 if(${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU")
     target_compile_options(cinatra INTERFACE -fcoroutines -fno-tree-slp-vectorize)
 endif()
+set(CINATRA cinatra $<$<BOOL:${MINGW}>:ws2_32 wsock32>)
 
 add_library(tclap INTERFACE)
 target_include_directories(tclap INTERFACE ${CMAKE_CURRENT_LIST_DIR}/external/tclap/include)
@@ -175,7 +174,7 @@ target_link_libraries(${PROJECT_NAME}-message PUBLIC
 add_library(${PROJECT_NAME}-server-impl STATIC ${SVR_SRC})
 target_link_libraries(${PROJECT_NAME}-server-impl PUBLIC
     ${PROJECT_NAME}-message
-    cinatra
+    ${CINATRA}
     ${SPDLOG}
 )
 
@@ -190,7 +189,7 @@ target_compile_options(${PROJECT_NAME} PRIVATE -fPIC)
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_20)
 target_link_libraries(${PROJECT_NAME} PRIVATE
     ${PROJECT_NAME}-message
-    cinatra
+    ${CINATRA}
 )
 target_link_libraries(${PROJECT_NAME} PUBLIC
     ${EVENTPP}
@@ -222,7 +221,7 @@ if(${WEBCFACE_TEST})
         ${PROJECT_NAME}
         ${PROJECT_NAME}-message
         ${PROJECT_NAME}-server-impl
-        cinatra
+        ${CINATRA}
         GTest::gtest_main
     )
     include(GoogleTest)
