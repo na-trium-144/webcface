@@ -1,10 +1,12 @@
-# message
+# Message
+
+送受信されるメッセージの仕様について
 
 MessagePackで送受信されます。
-両方向の通信ともに基本は長さ2の配列で表現されます。
+両方向の通信ともにn個のデータを長さ2nの配列で表現します。
 
 ```js
-[ kind, data ]
+[ kind1, data1, kind2, data2, ... ]
 ```
 
 see also message.h
