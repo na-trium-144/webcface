@@ -94,7 +94,7 @@ else()
     set(SPDLOG_BUILD_PIC on CACHE INTERNAL "" FORCE)
     set(SPDLOG_INSTALL ${WEBCFACE_INSTALL} CACHE INTERNAL "" FORCE)
     add_subdirectory(external/spdlog)
-    set(SPDLOG spdlog $<$<BOOL:${MINGW}>:ws2_32>)
+    set(SPDLOG spdlog)
 endif()
 
 add_library(cinatra INTERFACE)
@@ -103,7 +103,7 @@ target_compile_options(cinatra INTERFACE -pthread)
 if(${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU")
     target_compile_options(cinatra INTERFACE -fcoroutines -fno-tree-slp-vectorize)
 endif()
-set(CINATRA cinatra $<$<BOOL:${MINGW}>:ws2_32 wsock32>)
+set(CINATRA cinatra)
 
 add_library(tclap INTERFACE)
 target_include_directories(tclap INTERFACE ${CMAKE_CURRENT_LIST_DIR}/external/tclap/include)
@@ -117,6 +117,12 @@ if(${WEBCFACE_TEST})
         add_subdirectory(external/googletest)
     endif()
 endif()
+
+if(MINGW)
+    set(SPDLOG ${SPDLOG} ws2_32)
+    set(CINATRA ${CINATRA} ws2_32 wsock32)
+endif()
+
 
 ###############################################################################
 
