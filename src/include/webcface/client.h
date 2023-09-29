@@ -37,7 +37,6 @@ class Client : public Member {
     void onRecv(const std::string &message);
 
   public:
-
     //! 自分自身の名前を指定しせずサーバーに接続する
     /*! サーバーのホストとポートはlocalhost:7530になる
      */
@@ -82,12 +81,13 @@ class Client : public Member {
      * 初回の sync() 後に一度に送られるので、
      * eventの設定は初回のsync()より前に行うと良い
      */
-    auto onMemberEntry() {
+    EventTarget<Member, int> onMemberEntry() {
         return EventTarget<Member, int>{&data->member_entry_event, 0};
     }
 
-    //!これ以降セットするFuncのデフォルトのFuncWrapperをセットする。(初期状態はnullptr)
-    /*! Funcの実行時にFuncWrapperを通すことで条件を満たすまでブロックしたりする。
+    //! これ以降セットするFuncのデフォルトのFuncWrapperをセットする。(初期状態はnullptr)
+    /*!
+     * Funcの実行時にFuncWrapperを通すことで条件を満たすまでブロックしたりする。
      * FuncWrapperがnullptrなら何もせずsetした関数を実行する
      */
     void setDefaultRunCond(FuncWrapperType wrapper) {

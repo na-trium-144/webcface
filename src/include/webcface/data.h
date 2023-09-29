@@ -34,11 +34,13 @@ class Value : protected Field, public EventTarget<Value> {
     using Field::member;
     using Field::name;
 
-    auto child(const std::string &field) {
+    //! 子フィールドを返す
+    Value child(const std::string &field) {
         return Value{*this, this->field_ + "." + field};
     }
 
     using Dict = Common::Dict<std::shared_ptr<Common::VectorOpt<double>>>;
+    //! Dictオブジェクトをセットし、EventTargetを発動する
     Value &set(const Dict &v) {
         if (v.hasValue()) {
             set(v.getRaw());
@@ -66,11 +68,11 @@ class Value : protected Field, public EventTarget<Value> {
 
     //! このvalueを非表示にする
     //! (他clientのentryに表示されなくする)
-    auto &hidden(bool hidden) {
-        setCheck();
-        dataLock()->value_store.setHidden(*this, hidden);
-        return *this;
-    }
+    // auto &hidden(bool hidden) {
+    //     setCheck();
+    //     dataLock()->value_store.setHidden(*this, hidden);
+    //     return *this;
+    // }
 
     //! 値を返す
     std::optional<double> tryGet() const {
@@ -81,6 +83,7 @@ class Value : protected Field, public EventTarget<Value> {
             return std::nullopt;
         }
     }
+    //! 値をvectorで返す
     std::optional<std::vector<double>> tryGetVec() const {
         auto v = dataLock()->value_store.getRecv(*this);
         if (v) {
@@ -89,6 +92,7 @@ class Value : protected Field, public EventTarget<Value> {
             return std::nullopt;
         }
     }
+    //! 値をDictで返す
     std::optional<Dict> tryGetRecurse() const {
         return dataLock()->value_store.getRecvRecurse(*this);
     }

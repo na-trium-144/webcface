@@ -50,6 +50,7 @@ class Member : protected Field {
     std::vector<Text> texts() const;
     //! このmemberが公開しているfuncのリストを返す。
     std::vector<Func> funcs() const;
+    //! このmemberが公開しているviewのリストを返す。
     std::vector<View> views() const;
 
     //! valueが追加された時のイベント
