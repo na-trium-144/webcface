@@ -37,11 +37,16 @@ class Client : public Member {
     void onRecv(const std::string &message);
 
   public:
+
+    //! 自分自身の名前を指定しせずサーバーに接続する
+    /*! サーバーのホストとポートはlocalhost:7530になる
+     */
     Client() : Client("") {}
     Client(const Client &) = delete;
     const Client &operator=(const Client &) = delete;
     //! 自分自身のmemberとしての名前を指定しサーバーに接続する
-    //! サーバーのホストとポートを省略した場合localhost:7530になる
+    /*! サーバーのホストとポートを省略した場合localhost:7530になる
+     */
     explicit Client(const std::string &name,
                     const std::string &host = "127.0.0.1",
                     int port = WEBCFACE_DEFAULT_PORT)
@@ -81,24 +86,20 @@ class Client : public Member {
         return EventTarget<Member, int>{&data->member_entry_event, 0};
     }
 
-    /*!
-     * これ以降セットするFuncのデフォルトのFuncWrapperをセットする。(初期状態はnullptr)
-     * Funcの実行時にFuncWrapperを通すことで条件を満たすまでブロックしたりする。
+    //!これ以降セットするFuncのデフォルトのFuncWrapperをセットする。(初期状態はnullptr)
+    /*! Funcの実行時にFuncWrapperを通すことで条件を満たすまでブロックしたりする。
      * FuncWrapperがnullptrなら何もせずsetした関数を実行する
      */
     void setDefaultRunCond(FuncWrapperType wrapper) {
         data->default_func_wrapper = wrapper;
     }
-    /*! デフォルトのFuncWrapperを nullptr にする
-     */
+    //! デフォルトのFuncWrapperを nullptr にする
     void setDefaultRunCondNone() { setDefaultRunCond(nullptr); }
-    /*! デフォルトのFuncWrapperを runCondOnSync() にする
-     */
+    //! デフォルトのFuncWrapperを runCondOnSync() にする
     void setDefaultRunCondOnSync() {
         setDefaultRunCond(FuncWrapper::runCondOnSync(data));
     }
-    /*! デフォルトのFuncWrapperを runCondScopeGuard() にする
-     */
+    //! デフォルトのFuncWrapperを runCondScopeGuard() にする
     template <typename ScopeGuard>
     void setDefaultRunCondScopeGuard() {
         setDefaultRunCond(FuncWrapper::runCondScopeGuard<ScopeGuard>());
@@ -110,8 +111,9 @@ class Client : public Member {
     std::shared_ptr<spdlog::logger> logger() { return data->logger; }
 
     //! このクライアントのloggerに出力するstreambuf
-    //! levelは常にinfoになる (変えられるようにする?)
-    //! std::flushのタイミングとは無関係に、1つの改行ごとに1つのログになる
+    /*! levelは常にinfoになる
+     * std::flushのタイミングとは無関係に、1つの改行ごとに1つのログになる
+     */
     LoggerBuf *logger_streambuf() { return &logger_buf; }
     //! logger_streambufに出力するostream
     std::ostream &logger_ostream() { return logger_os; }
