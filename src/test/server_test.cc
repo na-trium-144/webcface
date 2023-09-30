@@ -38,6 +38,7 @@ class ServerTest : public ::testing::Test {
         server_thread->join();
     }
     std::shared_ptr<std::thread> server_thread;
+    std::shared_ptr<ClientData> data_ = std::make_shared<ClientData>("a");
     std::shared_ptr<DummyClient> dummy_c1, dummy_c2;
     int callback_called;
 };
@@ -276,11 +277,11 @@ TEST_F(ServerTest, view) {
         "a",
         std::make_shared<std::unordered_map<int, Message::View::ViewComponent>>(
             std::unordered_map<int, Message::View::ViewComponent>{
-                {0, ViewComponents::text("a")},
-                {1, ViewComponents::newLine()},
+                {0, ViewComponents::text("a").lockTmp(data_, "")},
+                {1, ViewComponents::newLine().lockTmp(data_, "")},
                 {2, ViewComponents::button(
-                        "f",
-                        Func{Field{std::weak_ptr<ClientData>(), "p", "q"}})}}),
+                        "f", Func{Field{std::weak_ptr<ClientData>(), "p", "q"}})
+                        .lockTmp(data_, "")}}),
         3});
     wait();
     dummy_c2->send(Message::SyncInit{{}, "", 0, "", "", ""});
@@ -306,7 +307,7 @@ TEST_F(ServerTest, view) {
         "a",
         std::make_shared<std::unordered_map<int, Message::View::ViewComponent>>(
             std::unordered_map<int, Message::View::ViewComponent>{
-                {0, ViewComponents::text("b")},
+                {0, ViewComponents::text("b").lockTmp(data_, "")},
             }),
         3});
     wait();

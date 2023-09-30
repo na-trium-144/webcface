@@ -53,7 +53,7 @@ TEST_F(ViewTest, viewSet) {
       << newLine();
     v << button("f", func(self_name, "f"));
     v << button("a", afunc1([]() {}));
-    v << button("a2", [](){});
+    v << button("a2", []() {});
     v.sync();
     EXPECT_EQ(callback_called, 1);
     auto &view_data = **data_->view_store.getRecv(self_name, "b");
@@ -98,7 +98,7 @@ TEST_F(ViewTest, viewSet) {
 }
 TEST_F(ViewTest, viewGet) {
     auto vd = std::make_shared<std::vector<ViewComponentBase>>(
-        std::vector<ViewComponentBase>{text("a")});
+        std::vector<ViewComponentBase>{text("a").lockTmp(data_, "")});
     data_->view_store.setRecv("a", "b", vd);
     EXPECT_EQ(view("a", "b").tryGet().value().size(), 1);
     EXPECT_EQ(view("a", "b").get().size(), 1);
