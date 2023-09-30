@@ -6,7 +6,7 @@ API Reference → WebCFace::Value
 
 Member::value() でValueクラスのオブジェクトが得られます
 ```cpp
-WebCFace::Value value_a = wcli.member("a").value("hoge");
+WebCFace::Value value_hoge = wcli.member("a").value("hoge");
 ```
 これは`a`というクライアントの`hoge`という名前のデータを表します
 
@@ -88,10 +88,16 @@ Value::get(), Value::getVec(), Value::getRecurse() はstd::nulloptの代わり�
 
 ## 受信イベント
 
+Value::appendListener() などで受信したデータが変化したときにコールバックを呼び出すことができます
 ```cpp
-
+wcli.member("a").value("hoge").appendListener([](Value v){ /* ... */ });
 ```
 
+データが変化したどうかに関わらず sync() されたときにコールバックを呼び出したい場合は Member::onSync() が使えます
+```cpp
+wcli.member("a").onSync().appendListener([](Member m){ /* ... */ });
+```
 
-Value::time() でその値が送信されたとき(sync()されたとき)の時刻が得られます。
+また、 Value::time() でその値が送信されたとき(sync()されたとき)の時刻が得られます。
+
 
