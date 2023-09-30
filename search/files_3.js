@@ -1,6 +1,8 @@
 var searchData=
 [
-  ['afterdoc_2eh_0',['afterdoc.h',['../afterdoc_8h.html',1,'']]],
-  ['author_2ecpp_1',['author.cpp',['../author_8cpp.html',1,'']]],
-  ['autolink_2ecpp_2',['autolink.cpp',['../autolink_8cpp.html',1,'']]]
+  ['client_2ecc_0',['client.cc',['../client_8cc.html',1,'']]],
+  ['client_2eh_1',['client.h',['../client_8h.html',1,'']]],
+  ['client_5fdata_2ecc_2',['client_data.cc',['../client__data_8cc.html',1,'']]],
+  ['client_5fdata_2eh_3',['client_data.h',['../client__data_8h.html',1,'']]],
+  ['client_5fws_2ecc_4',['client_ws.cc',['../client__ws_8cc.html',1,'']]]
 ];

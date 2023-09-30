@@ -1,7 +1,15 @@
 var searchData=
 [
-  ['init_0',['init',['../classWebCFace_1_1Common_1_1Arg.html#a076c33092dbf6ac4100b6afeed496c86',1,'WebCFace::Common::Arg::init() const'],['../classWebCFace_1_1Common_1_1Arg.html#ae8358686e91450f72ae51670bb7633b3',1,'WebCFace::Common::Arg::init(const ValAdaptor &amp;init)'],['../classWebCFace_1_1View.html#a9043f944ae6a1067977b27969424652e',1,'WebCFace::View::init()']]],
-  ['insertlistener_1',['insertListener',['../classWebCFace_1_1EventTarget.html#a4d617bc61894de5c8367efc530a08ec3',1,'WebCFace::EventTarget']]],
-  ['ishidden_2',['ishidden',['../classWebCFace_1_1ClientData_1_1SyncDataStore2.html#a0a58a3e42139f0d891693f6d2717c6ad',1,'WebCFace::ClientData::SyncDataStore2::isHidden(const std::string &amp;name)'],['../classWebCFace_1_1ClientData_1_1SyncDataStore2.html#acb605403602312957eb55661d1bdecf7',1,'WebCFace::ClientData::SyncDataStore2::isHidden(const FieldBase &amp;base)']]],
-  ['isself_3',['isself',['../classWebCFace_1_1ClientData_1_1SyncDataStore2.html#a2393c5ae11ed2d3426ca73cf643d75b2',1,'WebCFace::ClientData::SyncDataStore2::isSelf()'],['../classWebCFace_1_1ClientData_1_1SyncDataStore1.html#aea11e10ef48be83d2f6955ed29c37dc2',1,'WebCFace::ClientData::SyncDataStore1::isSelf()'],['../structWebCFace_1_1ClientData.html#a7bfe4317d367b60a138a7b3dcf42ac35',1,'WebCFace::ClientData::isSelf()']]]
+  ['libname_0',['libName',['../classWebCFace_1_1Member.html#a3f19e9bfd748992442b30033f85bdef2',1,'WebCFace::Member']]],
+  ['libversion_1',['libVersion',['../classWebCFace_1_1Member.html#affbd7c9ccb118df5746637f8ea60c7c0',1,'WebCFace::Member']]],
+  ['locktmp_2',['lockTmp',['../classWebCFace_1_1ViewComponent.html#a98e36af780412eb3aa41c58f8f1e65a5',1,'WebCFace::ViewComponent']]],
+  ['lockto_3',['lockTo',['../classWebCFace_1_1AnonymousFunc.html#a47da2376a36cb4b51a8bbacb268d9209',1,'WebCFace::AnonymousFunc']]],
+  ['log_4',['log',['../classWebCFace_1_1Log.html#a55c9dc451bd7ba0f0f44d1100ed3badc',1,'WebCFace::Log::Log()=default'],['../classWebCFace_1_1Log.html#aa6ad8a6a6e831745e902109f7f29108a',1,'WebCFace::Log::Log(const Field &amp;base)'],['../classWebCFace_1_1Member.html#a5c98cf1da3d84aed2d55302068268afb',1,'WebCFace::Member::log()']]],
+  ['logger_5',['logger',['../classWebCFace_1_1Client.html#ab1aa8b8becb17b47ec04f1fb05ba1945',1,'WebCFace::Client']]],
+  ['logger_5fostream_6',['logger_ostream',['../classWebCFace_1_1Client.html#abd1997a28a89cf56e6aeebc07b19be63',1,'WebCFace::Client']]],
+  ['logger_5fsink_7',['logger_sink',['../classWebCFace_1_1Client.html#a63377cf93ea2ada443a7e1f64425b693',1,'WebCFace::Client']]],
+  ['logger_5fstreambuf_8',['logger_streambuf',['../classWebCFace_1_1Client.html#a5c1ff49f57a1a3eabc86c6bd0e7864e5',1,'WebCFace::Client']]],
+  ['loggerbuf_9',['loggerbuf',['../classWebCFace_1_1LoggerBuf.html#a816b20fde59bfc1da57ec7f39f950020',1,'WebCFace::LoggerBuf::LoggerBuf(const std::weak_ptr&lt; ClientData &gt; &amp;data_w)'],['../classWebCFace_1_1LoggerBuf.html#adff2c0c4c8afc65faa8aae9d764d88d6',1,'WebCFace::LoggerBuf::LoggerBuf(const LoggerBuf &amp;)=delete']]],
+  ['loggersink_10',['LoggerSink',['../classWebCFace_1_1LoggerSink.html#aee7f0382be55cbd507e2743ec61dcff4',1,'WebCFace::LoggerSink']]],
+  ['logline_11',['logline',['../structWebCFace_1_1Common_1_1LogLine.html#a7a65783d943aad5c2c791f60366f2446',1,'WebCFace::Common::LogLine::LogLine()=default'],['../structWebCFace_1_1Common_1_1LogLine.html#a290352241a46e81ed0d2adc046fee6b5',1,'WebCFace::Common::LogLine::LogLine(int level, std::chrono::system_clock::time_point time, const std::string &amp;message)'],['../structWebCFace_1_1Message_1_1Log_1_1LogLine.html#a8a3e092737d3cecbbca9a4e394a53290',1,'WebCFace::Message::Log::LogLine::LogLine()=default'],['../structWebCFace_1_1Message_1_1Log_1_1LogLine.html#a02cb941db461e036181cf9731bb674e2',1,'WebCFace::Message::Log::LogLine::LogLine(const Common::LogLine &amp;l)']]]
 ];

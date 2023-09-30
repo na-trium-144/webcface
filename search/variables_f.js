@@ -1,9 +1,14 @@
 var searchData=
 [
-  ['ping_5fevent_0',['ping_event',['../structWebCFace_1_1ClientData.html#a398ead80e3e49d68da8b508deff3e2b6',1,'WebCFace::ClientData']]],
-  ['ping_5finterval_1',['ping_interval',['../structWebCFace_1_1Server_1_1ClientData.html#a2282af43dbce001d2ddb56bd8b2e5c41',1,'WebCFace::Server::ClientData']]],
-  ['ping_5fstatus_2',['ping_status',['../structWebCFace_1_1ClientData.html#a8de73ca13bac127b6a42317f9be4ec3b',1,'WebCFace::ClientData']]],
-  ['ping_5fstatus_5freq_3',['ping_status_req',['../structWebCFace_1_1ClientData.html#ae9e7ec7b57307cf6c15c9b49381f368f',1,'WebCFace::ClientData::ping_status_req'],['../structWebCFace_1_1Server_1_1ClientData.html#a3514551428a7b99e7a3fb55625c0e53b',1,'WebCFace::Server::ClientData::ping_status_req']]],
-  ['ping_5fthread_4',['ping_thread',['../namespaceWebCFace_1_1Server.html#a9ce4cf567647a170ee6d78b8dc215d7f',1,'WebCFace::Server']]],
-  ['publicvar_5',['publicvar',['../classJavadoc__Test.html#a44a516fbc3a4865e2dcae34649c9df6a',1,'Javadoc_Test::publicVar'],['../classQTstyle__Test.html#aabf7b2e9ed83ea44aca4d213baae06d3',1,'QTstyle_Test::publicVar']]]
+  ['value_0',['value',['../structWebCFace_1_1Common_1_1DictElement.html#a254efb67db777faeb20c1c167f31e1cc',1,'WebCFace::Common::DictElement::value'],['../structWebCFace_1_1Server_1_1ClientData.html#ad7bf81c312901b1051a3eedc8e14eb1f',1,'WebCFace::Server::ClientData::value']]],
+  ['value_5fchange_5fevent_1',['value_change_event',['../structWebCFace_1_1ClientData.html#a82ff8f19d92dd9fc082f1e18dd92f908',1,'WebCFace::ClientData']]],
+  ['value_5fentry_5fevent_2',['value_entry_event',['../structWebCFace_1_1ClientData.html#aab05ca513b937e96e60399176f6048d3',1,'WebCFace::ClientData']]],
+  ['value_5freq_3',['value_req',['../structWebCFace_1_1Server_1_1ClientData.html#ab01908b7604a3d417e1050edc3e089b0',1,'WebCFace::Server::ClientData']]],
+  ['value_5fstore_4',['value_store',['../structWebCFace_1_1ClientData.html#aee339dce5aceda697f386e3e503ae801',1,'WebCFace::ClientData']]],
+  ['ver_5',['ver',['../structWebCFace_1_1Message_1_1SvrVersion.html#a61296ba5d65fce87132119d83d001211',1,'WebCFace::Message::SvrVersion']]],
+  ['view_6',['view',['../structWebCFace_1_1Server_1_1ClientData.html#ab1e423f17f426469d24dbdb6b2383d04',1,'WebCFace::Server::ClientData']]],
+  ['view_5fchange_5fevent_7',['view_change_event',['../structWebCFace_1_1ClientData.html#afc110962eb632c7fd68258cbbfef00f0',1,'WebCFace::ClientData']]],
+  ['view_5fentry_5fevent_8',['view_entry_event',['../structWebCFace_1_1ClientData.html#a757e47aad88510eb306128b0b16739f2',1,'WebCFace::ClientData']]],
+  ['view_5freq_9',['view_req',['../structWebCFace_1_1Server_1_1ClientData.html#aea727ffc9f72ffe6a9ec9a5eaed5c210',1,'WebCFace::Server::ClientData']]],
+  ['view_5fstore_10',['view_store',['../structWebCFace_1_1ClientData.html#aa12948d6afb7df5d60cfa80ed055e54a',1,'WebCFace::ClientData']]]
 ];

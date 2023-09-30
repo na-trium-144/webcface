@@ -106,7 +106,7 @@ $(document).ready(function(){initNavTree('message_8h_source.html',''); initResiz
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &lt;any&gt;</span></div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &lt;cstdint&gt;</span></div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;spdlog/logger.h&gt;</span></div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &lt;<a class="code" href="src_2include_2webcface_2common_2func_8h.html">webcface/common/func.h</a>&gt;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &lt;<a class="code" href="common_2func_8h.html">webcface/common/func.h</a>&gt;</span></div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &lt;<a class="code" href="log_8h.html">webcface/common/log.h</a>&gt;</span></div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &lt;<a class="code" href="common_2view_8h.html">webcface/common/view.h</a>&gt;</span></div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &quot;<a class="code" href="val__adaptor_8h.html">val_adaptor.h</a>&quot;</span></div>
@@ -573,6 +573,7 @@ $(document).ready(function(){initNavTree('message_8h_source.html',''); initResiz
 <div class="ttc" id="aclassWebCFace_1_1Common_1_1Arg_html_adbe5e927d78edcb646d83cd06aed4633"><div class="ttname"><a href="classWebCFace_1_1Common_1_1Arg.html#adbe5e927d78edcb646d83cd06aed4633">WebCFace::Common::Arg::min_</a></div><div class="ttdeci">std::optional&lt; double &gt; min_</div><div class="ttdef"><b>Definition</b> func.h:26</div></div>
 <div class="ttc" id="aclassWebCFace_1_1Common_1_1Arg_html_aedbbe0ecb080ebd6a6dcceab659ab434"><div class="ttname"><a href="classWebCFace_1_1Common_1_1Arg.html#aedbbe0ecb080ebd6a6dcceab659ab434">WebCFace::Common::Arg::option_</a></div><div class="ttdeci">std::vector&lt; ValAdaptor &gt; option_</div><div class="ttdef"><b>Definition</b> func.h:27</div></div>
 <div class="ttc" id="aclassWebCFace_1_1Common_1_1ValAdaptor_html"><div class="ttname"><a href="classWebCFace_1_1Common_1_1ValAdaptor.html">WebCFace::Common::ValAdaptor</a></div><div class="ttdef"><b>Definition</b> val.h:57</div></div>
+<div class="ttc" id="acommon_2func_8h_html"><div class="ttname"><a href="common_2func_8h.html">func.h</a></div></div>
 <div class="ttc" id="acommon_2view_8h_html"><div class="ttname"><a href="common_2view_8h.html">view.h</a></div></div>
 <div class="ttc" id="alog_8h_html"><div class="ttname"><a href="log_8h.html">log.h</a></div></div>
 <div class="ttc" id="amessage_8h_html_afc83f2bd0a8e2ba197e31a325bba8011"><div class="ttname"><a href="message_8h.html#afc83f2bd0a8e2ba197e31a325bba8011">MSGPACK_ADD_ENUM</a></div><div class="ttdeci">MSGPACK_ADD_ENUM(WebCFace::Common::ValType)</div></div>
@@ -605,7 +606,6 @@ $(document).ready(function(){initNavTree('message_8h_source.html',''); initResiz
 <div class="ttc" id="anamespaceWebCFace_1_1Message_html_aa24c358704bf2a6737b632ddee8886e0"><div class="ttname"><a href="namespaceWebCFace_1_1Message.html#aa24c358704bf2a6737b632ddee8886e0">WebCFace::Message::packSingle</a></div><div class="ttdeci">std::string packSingle(const T &amp;obj)</div><div class="ttdoc">メッセージ1つを要素数2の配列としてシリアル化</div><div class="ttdef"><b>Definition</b> message.h:397</div></div>
 <div class="ttc" id="anamespaceWebCFace_1_1Message_html_ab28afa4299af7d6d988e3be9dbbf1c4e"><div class="ttname"><a href="namespaceWebCFace_1_1Message.html#ab28afa4299af7d6d988e3be9dbbf1c4e">WebCFace::Message::unpack</a></div><div class="ttdeci">std::vector&lt; std::pair&lt; int, std::any &gt; &gt; unpack(const std::string &amp;message, const std::shared_ptr&lt; spdlog::logger &gt; &amp;logger)</div><div class="ttdoc">msgpackのメッセージをパースしstd::anyで返す</div><div class="ttdef"><b>Definition</b> message.cc:19</div></div>
 <div class="ttc" id="anamespaceWebCFace_html"><div class="ttname"><a href="namespaceWebCFace.html">WebCFace</a></div><div class="ttdef"><b>Definition</b> client.cc:10</div></div>
-<div class="ttc" id="asrc_2include_2webcface_2common_2func_8h_html"><div class="ttname"><a href="src_2include_2webcface_2common_2func_8h.html">func.h</a></div></div>
 <div class="ttc" id="astructWebCFace_1_1Common_1_1FieldBase_html"><div class="ttname"><a href="structWebCFace_1_1Common_1_1FieldBase.html">WebCFace::Common::FieldBase</a></div><div class="ttdoc">メンバ名とデータ名を持つクラス</div><div class="ttdef"><b>Definition</b> field_base.h:7</div></div>
 <div class="ttc" id="astructWebCFace_1_1Common_1_1FuncCall_html"><div class="ttname"><a href="structWebCFace_1_1Common_1_1FuncCall.html">WebCFace::Common::FuncCall</a></div><div class="ttdoc">関数を呼び出すのに必要なデータ。client_data-&gt;client-&gt;server-&gt;clientと送られる</div><div class="ttdef"><b>Definition</b> func.h:173</div></div>
 <div class="ttc" id="astructWebCFace_1_1Common_1_1FuncCall_html_a14ed0f11d673987d6d6f6f1096b7afed"><div class="ttname"><a href="structWebCFace_1_1Common_1_1FuncCall.html#a14ed0f11d673987d6d6f6f1096b7afed">WebCFace::Common::FuncCall::target_member_id</a></div><div class="ttdeci">unsigned int target_member_id</div><div class="ttdef"><b>Definition</b> func.h:176</div></div>
@@ -753,8 +753,8 @@ $(document).ready(function(){initNavTree('message_8h_source.html',''); initResiz
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_58cb90d4233bd1a6c25eebc9317d3977.html">message</a></li><li class="navelem"><a class="el" href="message_8h.html">message.h</a></li>
-    <li class="footer">Generated on Sat Sep 30 2023 08:46:39 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="navelem"><a class="el" href="dir_d06cd19e7b0a7bd71ca3f88af4ac0d59.html">message</a></li><li class="navelem"><a class="el" href="message_8h.html">message.h</a></li>
+    <li class="footer">Generated on Sat Sep 30 2023 09:04:06 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

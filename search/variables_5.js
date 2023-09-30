@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['enumptr_0',['enumptr',['../classJavadoc__Test.html#abcb36df9d8af3e69290c239ba483d6df',1,'Javadoc_Test::enumPtr'],['../classQTstyle__Test.html#a973a4566c9a036f4eca508ba5fe80dcb',1,'QTstyle_Test::enumPtr']]],
-  ['enumvar_1',['enumvar',['../classJavadoc__Test.html#afcc11e097968fb44080b82b75032e40b',1,'Javadoc_Test::enumVar'],['../classQTstyle__Test.html#a241fb54f66dc0b3b03eece3a1a1bf18b',1,'QTstyle_Test::enumVar']]],
-  ['errno_2',['errno',['../structcmd_8h.html#ad65a8842cc674e3ddf69355898c0ecbf',1,'structcmd.h']]]
+  ['init_5f_0',['init_',['../classWebCFace_1_1Common_1_1Arg.html#a6e801cc9c18f2a333b3c176fdaab74b4',1,'WebCFace::Common::Arg']]],
+  ['init_5fdata_1',['init_data',['../structWebCFace_1_1Server_1_1ClientData.html#ae5f99300dccca79cbcb5458b17a97c9a',1,'WebCFace::Server::ClientData']]],
+  ['is_5ferror_2',['is_error',['../structWebCFace_1_1Message_1_1CallResult.html#a3ad7e0106ba321432f3d374968c4042f',1,'WebCFace::Message::CallResult']]]
 ];

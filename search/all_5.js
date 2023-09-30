@@ -1,25 +1,11 @@
 var searchData=
 [
-  ['a_0',['a',['../classA.html',1,'A'],['../memgrp_8cpp.html#a955f504eccf76b4eb2489c0adab03121',1,'A:&#160;memgrp.cpp']]],
-  ['a_20section_20in_20group_205_1',['This is a section in group 5',['../group__group5.html',1,'']]],
-  ['abs_2',['abs',['../autolink_8cpp.html#a996f7be338ccb40d1a2a5abc1ad61759',1,'ABS:&#160;autolink.cpp'],['../define_8h.html#a996f7be338ccb40d1a2a5abc1ad61759',1,'ABS:&#160;define.h']]],
-  ['add_3',['add',['../classWebCFace_1_1View.html#a689df7103a9ef975ae6cb651398e99de',1,'WebCFace::View::add()'],['../restypedef_8cpp.html#a102acaaa258e937adf910898c6133545',1,'add():&#160;restypedef.cpp']]],
-  ['addr_4',['addr',['../structWebCFace_1_1Message_1_1SyncInit.html#a7d99ae07fd11fa738b16b4f4a3da029d',1,'WebCFace::Message::SyncInit']]],
-  ['addresult_5',['addResult',['../classWebCFace_1_1ClientData_1_1FuncResultStore.html#a3ecd7ea17dc716c7c7bb99a3323a4742',1,'WebCFace::ClientData::FuncResultStore']]],
-  ['afterdoc_2eh_6',['afterdoc.h',['../afterdoc_8h.html',1,'']]],
-  ['afterdoc_5ftest_7',['Afterdoc_Test',['../classAfterdoc__Test.html',1,'']]],
-  ['amd64_20arm64_20armhf_8',['Debian, Ubuntu (amd64, arm64, armhf)',['../index.html#autotoc_md33',1,'']]],
-  ['anonymousfunc_9',['anonymousfunc',['../classWebCFace_1_1Func.html#a57972020b24e73be77dd0799556e0a80',1,'WebCFace::Func::AnonymousFunc'],['../classWebCFace_1_1AnonymousFunc.html#a0fb194eb88dd92d244a215a78521acd4',1,'WebCFace::AnonymousFunc::AnonymousFunc(const T &amp;func)'],['../classWebCFace_1_1AnonymousFunc.html#a589ad8c86a7bd0d7c13cb9e66ce92cf9',1,'WebCFace::AnonymousFunc::AnonymousFunc(const Field &amp;base, const T &amp;func)'],['../classWebCFace_1_1AnonymousFunc.html#a2d65487238c8671be8e035e8a576b1e5',1,'WebCFace::AnonymousFunc::AnonymousFunc()=default'],['../classWebCFace_1_1AnonymousFunc.html',1,'WebCFace::AnonymousFunc']]],
-  ['another_20section_20in_20group_205_10',['This is another section in group 5',['../group__group5.html',1,'']]],
-  ['anotherenum_11',['AnotherEnum',['../classEnum__Test.html#a633286511e19b996e97699d7dd2cd2a0',1,'Enum_Test']]],
-  ['appendlistener_12',['appendListener',['../classWebCFace_1_1EventTarget.html#a78d8e549bac631385a1ffc47931b450b',1,'WebCFace::EventTarget']]],
-  ['arg_13',['arg',['../classWebCFace_1_1Common_1_1Arg.html#a2e1919f3ba9ffc146d3f65a668db8b5e',1,'WebCFace::Common::Arg::Arg()'],['../structWebCFace_1_1Message_1_1FuncInfo_1_1Arg.html#aa745bb0fa9d13e98317dffa018a6cc72',1,'WebCFace::Message::FuncInfo::Arg::Arg(const Common::Arg &amp;a)'],['../structWebCFace_1_1Message_1_1FuncInfo_1_1Arg.html#a8448860cf28c0bc9535a6705a3657f90',1,'WebCFace::Message::FuncInfo::Arg::Arg()=default'],['../classWebCFace_1_1Common_1_1Arg.html#a84e81a261fdec829ba265ba26d35b7c3',1,'WebCFace::Common::Arg::Arg()=default'],['../classWebCFace_1_1Common_1_1Arg.html#a31ace479cabfdb1996f64a0371000e57',1,'WebCFace::Common::Arg::Arg(ValType type)'],['../classWebCFace_1_1Common_1_1Arg.html#af6e3892ab36af303477c87c237cceda8',1,'WebCFace::Common::Arg::Arg(const std::string &amp;name, ValType type, const std::optional&lt; ValAdaptor &gt; &amp;init, std::optional&lt; double &gt; min, std::optional&lt; double &gt; max, const std::vector&lt; ValAdaptor &gt; &amp;option)'],['../classWebCFace_1_1Common_1_1Arg.html',1,'WebCFace::Arg'],['../classWebCFace_1_1Common_1_1Arg.html',1,'WebCFace::Common::Arg'],['../structWebCFace_1_1Message_1_1FuncInfo_1_1Arg.html',1,'WebCFace::Message::FuncInfo::Arg']]],
-  ['args_14',['args',['../structWebCFace_1_1Common_1_1FuncInfo.html#a0789855ca11da55a68f57e9dbb675b42',1,'WebCFace::Common::FuncInfo::args'],['../structWebCFace_1_1Common_1_1FuncCall.html#ab141bb3e4277a684b6b3e1034e08300b',1,'WebCFace::Common::FuncCall::args'],['../structWebCFace_1_1Message_1_1FuncInfo.html#acb3c71455466bb97266ed9c2a029b005',1,'WebCFace::Message::FuncInfo::args'],['../classWebCFace_1_1Func.html#a8883d0bb7b82fde4fcd537510e0ba848',1,'WebCFace::Func::args() const'],['../classWebCFace_1_1Func.html#acc94ba50391992e56f878c180ca213bc',1,'WebCFace::Func::args(std::size_t i) const']]],
-  ['argtotuple_15',['argtotuple',['../namespaceWebCFace_1_1Common.html#ab6782d669425d37f11069466bc4451b5',1,'WebCFace::Common::argToTuple()'],['../namespaceWebCFace_1_1Common.html#ab6782d669425d37f11069466bc4451b5',1,'WebCFace::argToTuple()']]],
-  ['arm64_20armhf_16',['Debian, Ubuntu (amd64, arm64, armhf)',['../index.html#autotoc_md33',1,'']]],
-  ['armhf_17',['Debian, Ubuntu (amd64, arm64, armhf)',['../index.html#autotoc_md33',1,'']]],
-  ['asyncfuncresult_18',['asyncfuncresult',['../classWebCFace_1_1AsyncFuncResult.html',1,'WebCFace::AsyncFuncResult'],['../classWebCFace_1_1AsyncFuncResult.html#a36a42a52b7836cd2d2b9bd697801ed76',1,'WebCFace::AsyncFuncResult::AsyncFuncResult()']]],
-  ['author_2ecpp_19',['author.cpp',['../author_8cpp.html',1,'']]],
-  ['autolink_2ecpp_20',['autolink.cpp',['../autolink_8cpp.html',1,'']]],
-  ['autolink_5ftest_21',['autolink_test',['../classAutolink__Test.html',1,'Autolink_Test'],['../classAutolink__Test.html#a278d631f9943428c05b17d78f14488e2',1,'Autolink_Test::Autolink_Test()']]]
+  ['bg_5fcolor_0',['bg_color',['../structWebCFace_1_1Message_1_1View_1_1ViewComponent.html#ae0cfc81d81e05c68f2fe6f75f04817e7',1,'WebCFace::Message::View::ViewComponent']]],
+  ['bg_5fcolor_5f_1',['bg_color_',['../structWebCFace_1_1Common_1_1ViewComponentBase.html#a1e7f42411a753c4ebbece96f789333ac',1,'WebCFace::Common::ViewComponentBase']]],
+  ['bgcolor_2',['bgcolor',['../classWebCFace_1_1ViewComponent.html#ad45ba7817a743c142c14a15632d049d3',1,'WebCFace::ViewComponent::bgColor() const'],['../classWebCFace_1_1ViewComponent.html#a524df8face2b24d6e16fbea67d24639e',1,'WebCFace::ViewComponent::bgColor(ViewColor c)']]],
+  ['black_3',['black',['../namespaceWebCFace_1_1Common.html#a63790627e463c24ab28ef12e4d636e03a1ffd9e753c8054cc61456ac7fac1ac89',1,'WebCFace::Common']]],
+  ['blue_4',['blue',['../namespaceWebCFace_1_1Common.html#a63790627e463c24ab28ef12e4d636e03a48d6215903dff56238e52e8891380c8f',1,'WebCFace::Common']]],
+  ['bool_5f_5',['bool_',['../namespaceWebCFace_1_1Common.html#a84c90795c2b28b86fd85c2ba4f60bf05a467afb5838aa377d55cce81f84c5512b',1,'WebCFace::Common']]],
+  ['build_20from_20source_6',['Build from source',['../index.html#autotoc_md35',1,'']]],
+  ['button_7',['button',['../namespaceWebCFace_1_1ViewComponents.html#a540dab34b5d9459c5758841cc3ddcf2c',1,'WebCFace::button()'],['../namespaceWebCFace_1_1ViewComponents.html#a540dab34b5d9459c5758841cc3ddcf2c',1,'WebCFace::ViewComponents::button()'],['../namespaceWebCFace_1_1Common.html#ada4e2b5130ca16d3be0a0bc148dacfdaace50a09343724eb82df11390e2c1de18',1,'WebCFace::Common::button'],['../md_13__view.html#autotoc_md17',1,'button']]]
 ];

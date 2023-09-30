@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['dict_0',['dict',['../classWebCFace_1_1Value.html#a944f8fd9b7079b44d537f864a21c6df1',1,'WebCFace::Value::Dict'],['../classWebCFace_1_1Text.html#ab2af785469b650a9a3e79c54f4ae425f',1,'WebCFace::Text::Dict']]]
+  ['valuetype_0',['valuetype',['../structWebCFace_1_1Common_1_1DictTraits.html#af8b45bbc56cbde2f0d252b1bd7cf5c7f',1,'WebCFace::Common::DictTraits::ValueType'],['../structWebCFace_1_1Common_1_1DictTraits_3_01std_1_1shared__ptr_3_01T_01_4_01_4.html#a18c245c80fabe13aafc103f2fce427b5',1,'WebCFace::Common::DictTraits&lt; std::shared_ptr&lt; T &gt; &gt;::ValueType'],['../structWebCFace_1_1Common_1_1DictTraits_3_01VectorOpt_3_01T_01_4_01_4.html#ac4955777d4c6281a6654768888eea447',1,'WebCFace::Common::DictTraits&lt; VectorOpt&lt; T &gt; &gt;::ValueType']]],
+  ['vectype_1',['vectype',['../structWebCFace_1_1Common_1_1DictTraits.html#a125b55848ce59020a32a56857f531e52',1,'WebCFace::Common::DictTraits::VecType'],['../structWebCFace_1_1Common_1_1DictTraits_3_01std_1_1shared__ptr_3_01T_01_4_01_4.html#ad9850831e0d8be56046830655efaaf44',1,'WebCFace::Common::DictTraits&lt; std::shared_ptr&lt; T &gt; &gt;::VecType'],['../structWebCFace_1_1Common_1_1DictTraits_3_01VectorOpt_3_01T_01_4_01_4.html#a4c5dc4be8ba3fc0e13270fe6a2c0ae2a',1,'WebCFace::Common::DictTraits&lt; VectorOpt&lt; T &gt; &gt;::VecType']]]
 ];

@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['car_0',['Car',['../manual_8c.html#a00b00bef7a37e8519a62cb3671105c4b',1,'manual.c']]],
-  ['coord_1',['Coord',['../restypedef_8cpp.html#a013489fb99c6a5b012db8ec66544a507',1,'restypedef.cpp']]]
+  ['functype_0',['functype',['../namespaceWebCFace_1_1Common.html#abcba965e358b93ed9f60163b1747d1cb',1,'WebCFace::FuncType'],['../namespaceWebCFace_1_1Common.html#abcba965e358b93ed9f60163b1747d1cb',1,'WebCFace::Common::FuncType']]],
+  ['funcwrappertype_1',['funcwrappertype',['../namespaceWebCFace_1_1Common.html#a04c311f01fd557fa0da64bc2b597256d',1,'WebCFace::FuncWrapperType'],['../namespaceWebCFace_1_1Common.html#a04c311f01fd557fa0da64bc2b597256d',1,'WebCFace::Common::FuncWrapperType']]]
 ];

@@ -1,16 +1,8 @@
 var searchData=
 [
-  ['c_0',['C',['../classC.html',1,'']]],
-  ['c1_1',['C1',['../classC1.html',1,'']]],
-  ['c2_2',['C2',['../classC2.html',1,'']]],
-  ['c3_3',['C3',['../classC3.html',1,'']]],
-  ['c4_4',['C4',['../classC4.html',1,'']]],
-  ['c5_5',['C5',['../classC5.html',1,'']]],
-  ['call_6',['Call',['../structWebCFace_1_1Message_1_1Call.html',1,'WebCFace::Message']]],
-  ['callresponse_7',['CallResponse',['../structWebCFace_1_1Message_1_1CallResponse.html',1,'WebCFace::Message']]],
-  ['callresult_8',['CallResult',['../structWebCFace_1_1Message_1_1CallResult.html',1,'WebCFace::Message']]],
-  ['car_9',['Car',['../structCar.html',1,'']]],
-  ['client_10',['Client',['../classWebCFace_1_1Client.html',1,'WebCFace']]],
-  ['clientdata_11',['clientdata',['../structWebCFace_1_1ClientData.html',1,'WebCFace::ClientData'],['../structWebCFace_1_1Server_1_1ClientData.html',1,'WebCFace::Server::ClientData']]],
-  ['coordstruct_12',['CoordStruct',['../structCoordStruct.html',1,'']]]
+  ['dict_0',['dict',['../classWebCFace_1_1Common_1_1Dict.html',1,'WebCFace::Common::Dict&lt; T &gt;'],['../classWebCFace_1_1Common_1_1Dict.html',1,'WebCFace::Dict&lt; T &gt;']]],
+  ['dictelement_1',['dictelement',['../structWebCFace_1_1Common_1_1DictElement.html',1,'WebCFace::Common::DictElement&lt; T &gt;'],['../structWebCFace_1_1Common_1_1DictElement.html',1,'WebCFace::DictElement&lt; T &gt;']]],
+  ['dicttraits_2',['dicttraits',['../structWebCFace_1_1Common_1_1DictTraits.html',1,'WebCFace::Common::DictTraits&lt; T &gt;'],['../structWebCFace_1_1Common_1_1DictTraits.html',1,'WebCFace::DictTraits&lt; T &gt;']]],
+  ['dicttraits_3c_20std_3a_3ashared_5fptr_3c_20t_20_3e_20_3e_3',['dicttraits&lt; std::shared_ptr&lt; t &gt; &gt;',['../structWebCFace_1_1Common_1_1DictTraits_3_01std_1_1shared__ptr_3_01T_01_4_01_4.html',1,'WebCFace::Common::DictTraits&lt; std::shared_ptr&lt; T &gt; &gt;'],['../structWebCFace_1_1Common_1_1DictTraits_3_01std_1_1shared__ptr_3_01T_01_4_01_4.html',1,'WebCFace::DictTraits&lt; std::shared_ptr&lt; T &gt; &gt;']]],
+  ['dicttraits_3c_20vectoropt_3c_20t_20_3e_20_3e_4',['dicttraits&lt; vectoropt&lt; t &gt; &gt;',['../structWebCFace_1_1Common_1_1DictTraits_3_01VectorOpt_3_01T_01_4_01_4.html',1,'WebCFace::Common::DictTraits&lt; VectorOpt&lt; T &gt; &gt;'],['../structWebCFace_1_1Common_1_1DictTraits_3_01VectorOpt_3_01T_01_4_01_4.html',1,'WebCFace::DictTraits&lt; VectorOpt&lt; T &gt; &gt;']]]
 ];

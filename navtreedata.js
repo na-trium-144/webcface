@@ -72,9 +72,6 @@ var NAVTREE =
         [ "call_response (kind = 152)", "md_99__message.html#autotoc_md29", null ]
       ] ]
     ] ],
-    [ "pag_example", "pag_example.html", null ],
-    [ "Bug List", "bug.html", null ],
-    [ "Topics", "topics.html", "topics" ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
       [ "Namespace Members", "namespacemembers.html", [
@@ -95,8 +92,6 @@ var NAVTREE =
         [ "Functions", "functions_func.html", "functions_func" ],
         [ "Variables", "functions_vars.html", null ],
         [ "Typedefs", "functions_type.html", null ],
-        [ "Enumerations", "functions_enum.html", null ],
-        [ "Enumerator", "functions_eval.html", null ],
         [ "Related Symbols", "functions_rela.html", null ]
       ] ]
     ] ],
@@ -105,29 +100,23 @@ var NAVTREE =
       [ "File Members", "globals.html", [
         [ "All", "globals.html", null ],
         [ "Functions", "globals_func.html", null ],
-        [ "Variables", "globals_vars.html", null ],
-        [ "Typedefs", "globals_type.html", null ],
-        [ "Enumerations", "globals_enum.html", null ],
-        [ "Enumerator", "globals_eval.html", null ],
         [ "Macros", "globals_defs.html", null ]
       ] ]
-    ] ],
-    [ "Examples", "examples.html", "examples" ]
+    ] ]
   ] ]
 ];
 
 var NAVTREEINDEX =
 [
-"afterdoc_8h.html",
-"classWebCFace_1_1Client.html#ad2087d8ff800dc22b1a4712d55f608c5",
-"classWebCFace_1_1Common_1_1Dict.html#ad6d17c61cc02288c93cc9358dfdbe58a",
-"classWebCFace_1_1Member.html#a3b8ddf5008907ca75df37ce21f201891",
-"classWebCFace_1_1View.html#ab0eb9ec9e3dbc2a565fd2582e5c92d4b",
-"functions_m.html",
-"namespaceWebCFace_1_1Server.html#a8b3562015cae1ccf53d48274bfac436a",
-"structWebCFace_1_1Common_1_1FieldBase.html#adb9f607141cc4317369c4d97f44f8995",
-"structWebCFace_1_1Message_1_1FuncInfo.html#a5e0c444403ca6f3a1359b9d93923e22d",
-"structWebCFace_1_1Server_1_1ClientData.html"
+"annotated.html",
+"classWebCFace_1_1Common_1_1Arg.html",
+"classWebCFace_1_1EventTarget.html#a6147a5ee8391ffa9442cda3e1e4d812d",
+"classWebCFace_1_1Text.html#aec65d949b87c28313bac54ec6baf96cd",
+"common_2view_8h.html#a63790627e463c24ab28ef12e4d636e03ad508fe45cecaf653904a0e774084bb5c",
+"namespaceWebCFace_1_1Common.html#aaf4e9dd872fa7df87d6d43bc57dd1c21",
+"structWebCFace_1_1Common_1_1FieldBase.html#ad89c80b43512f43401fd5435a0fc56b6",
+"structWebCFace_1_1Message_1_1Entry.html#aeb630f20bae290d8b803699ae2c3ac7e",
+"structWebCFace_1_1Message_1_1View_1_1ViewComponent.html#ababc49422d98ce2d65db3a4829ab51cc"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
