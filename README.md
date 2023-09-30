@@ -77,4 +77,4 @@ target_link_libraries(target PRIVATE webcface::webcface)
 WebCFace::Client wcli("name of this client program");
 ```
 
-Clientの使い方は [ここにリンクを貼る] を参照
+Clientの使い方は[こちら](https://na-trium-144.github.io/webcface/)を参照
