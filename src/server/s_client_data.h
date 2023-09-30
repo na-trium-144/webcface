@@ -29,7 +29,7 @@ struct ClientData {
     std::unordered_map<std::string, std::shared_ptr<std::vector<double>>> value;
     std::unordered_map<std::string, std::shared_ptr<std::string>> text;
     std::unordered_map<std::string, std::shared_ptr<Message::FuncInfo>> func;
-    std::unordered_map<std::string, std::vector<ViewComponentBase>> view;
+    std::unordered_map<std::string, std::vector<Common::ViewComponentBase>> view;
     std::chrono::system_clock::time_point last_sync_time;
     //! リクエストしているmember,nameのペア
     std::unordered_map<std::string,

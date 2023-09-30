@@ -12,20 +12,20 @@
 namespace WebCFace {
 
 //! Viewに表示する要素です
-class ViewComponent : public ViewComponentBase {
+class ViewComponent : protected Common::ViewComponentBase {
     std::weak_ptr<ClientData> data_w;
 
     std::shared_ptr<AnonymousFunc> on_click_func_tmp;
 
   public:
     ViewComponent() = default;
-    ViewComponent(const ViewComponentBase &vc,
+    ViewComponent(const Common::ViewComponentBase &vc,
                   const std::weak_ptr<ClientData> &data_w)
-        : ViewComponentBase(vc), data_w(data_w) {}
+        : Common::ViewComponentBase(vc), data_w(data_w) {}
     explicit ViewComponent(ViewComponentType type) { type_ = type; }
 
     //! AnonymousFuncをFuncオブジェクトにlockします
-    ViewComponent &lockTmp(const std::weak_ptr<ClientData> &data_w,
+    ViewComponentBase &lockTmp(const std::weak_ptr<ClientData> &data_w,
                            const std::string &field_id) {
         if (on_click_func_tmp != nullptr) {
             auto data = data_w.lock();
@@ -240,7 +240,7 @@ class View : protected Field, public EventTarget<View>, public std::ostream {
         return *this;
     }
     //! コンポーネントを追加
-    View &operator<<(const ViewComponentBase &vc) {
+    View &operator<<(const Common::ViewComponentBase &vc) {
         setCheck();
         sb.components.push_back(ViewComponent{vc, this->data_w});
         return *this;
