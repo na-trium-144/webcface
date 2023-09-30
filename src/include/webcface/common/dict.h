@@ -11,6 +11,8 @@
 namespace WebCFace {
 inline namespace Common {
 
+//! 内部データ(T)とユーザーが取得したいデータ(ValueType)を相互変換するTrait
+//! (T=ValueTypeの場合そのまま返す)
 template <typename T>
 struct DictTraits {
     using ValueType = T;
@@ -18,6 +20,7 @@ struct DictTraits {
     static T wrap(const ValueType &val) { return val; }
     using VecType = void;
 };
+//! 内部データ(std::shared_ptr<T>)とユーザーが取得したいデータ(ValueType)を相互変換するTrait
 template <typename T>
 struct DictTraits<std::shared_ptr<T>> {
     using ValueType = typename DictTraits<T>::ValueType;
@@ -39,6 +42,7 @@ struct DictTraits<std::shared_ptr<T>> {
         return std::make_shared<T>(DictTraits<T>::wrapVec(val));
     }
 };
+//! 内部データ(VectorOpt<T>)とユーザーが取得したいデータ(ValueType)を相互変換するTrait
 template <typename T>
 struct DictTraits<VectorOpt<T>> {
     using ValueType = typename DictTraits<T>::ValueType;
@@ -62,27 +66,29 @@ struct DictElement {
     std::initializer_list<DictElement> children;
 
     DictElement() = default;
+    //! {key, value} から変換するコンストラクタ
     DictElement(const std::string &key,
                 const typename DictTraits<T>::ValueType &value)
         : key(key), value(DictTraits<T>::wrap(value)) {}
+    //! {key, {value, value, ...}} から変換するコンストラクタ (DictTraits<T>
+    //! が配列を受け付けるときのみ)
     template <typename U = T>
     DictElement(const std::string &key,
                 const typename DictTraits<U>::VecType &value)
         : key(key), value(DictTraits<U>::wrapVec(value)) {}
-    // template <typename U = T>
-    // DictElement(const std::string &key,
-    //             std::initializer_list<typename
-    //             DictTraits<U>::VecType<U>::value_type> value)
-    //     : key(key), value(DictTraits<U>::wrapVec(value)) {}
+    //! ネストしたinitializer_list
     DictElement(const std::string &key, std::initializer_list<DictElement> li)
         : key(key), children(li) {}
 };
 
+//! 値の型をTに制限した、連想配列もどき
+/*! T型の値1つ または 複数の子要素(名前とDictのペア)を持つ
+ */
 template <typename T>
 class Dict {
-    // Tがshared_ptrの場合とか、値に破壊的変更をしてはいけない
+    // Tがshared_ptrの場合があるので、値に破壊的変更をしてはいけない
     std::shared_ptr<std::unordered_map<std::string, T>> children;
-    // operator[]などのアクセスのときにつけるprefix (末尾ピリオドを含まない)
+    //! operator[]などのアクセスのときにつけるprefix (末尾ピリオドを含まない)
     std::string search_base_key;
 
     void emplace(std::initializer_list<DictElement<T>> li,
@@ -102,12 +108,14 @@ class Dict {
 
   public:
     Dict() : children(std::make_shared<std::unordered_map<std::string, T>>()) {}
+    //! クライアントの内部データからDictを生成する場合のコンストラクタ
     Dict(const std::shared_ptr<std::unordered_map<std::string, T>> &children,
          const std::string &search_base_key)
         : children(children), search_base_key(search_base_key) {}
     //! initializer_listから値をセットする場合のコンストラクタ
     Dict(std::initializer_list<DictElement<T>> li) : Dict() { emplace(li); }
 
+    //! 要素にアクセスする
     Dict operator[](const std::string &key) const {
         std::string new_key = key;
         if (!search_base_key.empty()) {
@@ -115,9 +123,11 @@ class Dict {
         }
         return Dict{children, new_key};
     }
+    //! 要素にアクセスする
     Dict operator[](const char *key) const { return (*this)[std::string(key)]; }
-    
-    auto getChildren() const {
+
+    //! 要素のリストを返す
+    std::unordered_map<std::string, Dict> getChildren() const {
         std::unordered_map<std::string, Dict> ds;
         std::string search_base_key_dot = "";
         if (!search_base_key.empty()) {
@@ -138,27 +148,35 @@ class Dict {
         return ds;
     }
 
+    //! この要素が値を持っているかどうかを返す
     bool hasValue() const { return children->count(search_base_key); }
+    //! 内部のデータ型のまま値を返す
     T getRaw() const { return children->at(search_base_key); }
 
-    auto get() const {
+    //! 値を返す
+    typename DictTraits<T>::ValueType get() const {
         return DictTraits<T>::parse(children->at(search_base_key));
     }
+    //! 値型にキャストすることで値を返す
     operator typename DictTraits<T>::ValueType() const { return get(); }
 
+    //! 値を配列で返す
     template <typename U = T>
-    auto getVec() const {
+    typename DictTraits<U>::VecType getVec() const {
         return DictTraits<U>::parseVec(children->at(search_base_key));
     }
+    //! 値を配列にキャストすることで返す
     template <typename U = T>
     operator typename DictTraits<U>::VecType() const {
         return getVec();
     }
 
+    //! 値(内部データ型)を代入する
     Dict &set(const T &val) {
         (*children)[search_base_key] = val;
         return *this;
     }
+    //! 値を代入する
     template <typename U = T,
               typename = typename std::enable_if<
                   !std::is_same_v<typename DictTraits<U>::ValueType, T>>::type>
@@ -166,6 +184,7 @@ class Dict {
         (*children)[search_base_key] = DictTraits<U>::wrap(val);
         return *this;
     }
+    //! 値(配列)を代入する
     template <typename U = T>
     Dict &setVec(const typename DictTraits<U>::VecType &val) {
         (*children)[search_base_key] = DictTraits<U>::wrapVec(val);

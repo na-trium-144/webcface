@@ -1,0 +1,24 @@
+name: Doxygen
+on:
+  push:
+    branches: [ "main" ]
+  # pull_request:
+  #   branches: [ "main" ]
+jobs:
+  doxygen:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: ssciwr/doxygen-install@v1
+      with:
+        version: "1.9.8"
+    - name: Delete doxygen download
+      run: rm -r doxygen-*
+    - name: Generate Documentation
+      run: |
+        mkdir -p build/doxygen
+        doxygen
+    - uses: JamesIves/github-pages-deploy-action@v4
+      with:
+        folder: build/doxygen/html
+

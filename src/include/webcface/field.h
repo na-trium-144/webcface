@@ -8,7 +8,7 @@ class ClientData;
 class Member;
 
 //! ClientDataの参照とメンバ名とデータ名を持つクラス
-struct Field : public FieldBase {
+struct Field : public Common::FieldBase {
     //! ClientDataの参照
     //! ClientData内に保持するクラスもあるので循環参照を避けるためweak_ptr
     std::weak_ptr<ClientData> data_w;
@@ -16,7 +16,7 @@ struct Field : public FieldBase {
     Field() = default;
     Field(const std::weak_ptr<ClientData> &data_w, const std::string &member,
           const std::string &field = "")
-        : FieldBase(member, field), data_w(data_w) {}
+        : Common::FieldBase(member, field), data_w(data_w) {}
     Field(const Field &base, const std::string &field)
         : Field(base.data_w, base.member_, field) {}
 

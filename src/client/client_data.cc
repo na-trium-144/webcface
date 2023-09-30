@@ -219,7 +219,7 @@ template class ClientData::SyncDataStore2<std::shared_ptr<VectorOpt<double>>>;
 template class ClientData::SyncDataStore2<std::shared_ptr<std::string>>;
 template class ClientData::SyncDataStore2<std::shared_ptr<FuncInfo>>;
 template class ClientData::SyncDataStore2<
-    std::shared_ptr<std::vector<ViewComponentBase>>>;
+    std::shared_ptr<std::vector<Common::ViewComponentBase>>>;
 template class ClientData::SyncDataStore1<
     std::shared_ptr<std::vector<std::shared_ptr<LogLine>>>>;
 template class ClientData::SyncDataStore1<

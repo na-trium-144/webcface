@@ -243,9 +243,11 @@ TEST_F(ClientTest, viewSend) {
                  std::vector<ViewComponentBase>{
                      ViewComponents::text("a")
                          .textColor(ViewColor::yellow)
-                         .bgColor(ViewColor::green),
-                     ViewComponents::newLine(),
-                     ViewComponents::button("a", Func{Field{data_, "x", "y"}}),
+                         .bgColor(ViewColor::green)
+                         .lockTmp(data_, ""),
+                     ViewComponents::newLine().lockTmp(data_, ""),
+                     ViewComponents::button("a", Func{Field{data_, "x", "y"}})
+                         .lockTmp(data_, ""),
                  }));
     wcli_->sync();
     wait();
@@ -272,9 +274,11 @@ TEST_F(ClientTest, viewSend) {
                  std::vector<ViewComponentBase>{
                      ViewComponents::text("b")
                          .textColor(ViewColor::red)
-                         .bgColor(ViewColor::green),
-                     ViewComponents::newLine(),
-                     ViewComponents::button("a", Func{Field{data_, "x", "y"}}),
+                         .bgColor(ViewColor::green)
+                         .lockTmp(data_, ""),
+                     ViewComponents::newLine().lockTmp(data_, ""),
+                     ViewComponents::button("a", Func{Field{data_, "x", "y"}})
+                         .lockTmp(data_, ""),
                  }));
     wcli_->sync();
     wait();
@@ -308,9 +312,11 @@ TEST_F(ClientTest, viewReq) {
             std::unordered_map<int, Message::View::ViewComponent>{
                 {0, ViewComponents::text("a")
                         .textColor(ViewColor::yellow)
-                        .bgColor(ViewColor::green)},
-                {1, ViewComponents::newLine()},
-                {2, ViewComponents::button("a", Func{Field{data_, "x", "y"}})},
+                        .bgColor(ViewColor::green)
+                        .lockTmp(data_, "")},
+                {1, ViewComponents::newLine().lockTmp(data_, "")},
+                {2, ViewComponents::button("a", Func{Field{data_, "x", "y"}})
+                        .lockTmp(data_, "")},
             });
     dummy_s->send(Message::Res<Message::View>{1, "", v, 3});
     dummy_s->send(Message::Res<Message::View>{1, "c", v, 3});
@@ -335,7 +341,8 @@ TEST_F(ClientTest, viewReq) {
             std::unordered_map<int, Message::View::ViewComponent>{
                 {0, ViewComponents::text("b")
                         .textColor(ViewColor::red)
-                        .bgColor(ViewColor::green)},
+                        .bgColor(ViewColor::green)
+                        .lockTmp(data_, "")},
             });
     dummy_s->send(Message::Res<Message::View>{1, "", v2, 3});
     wait();

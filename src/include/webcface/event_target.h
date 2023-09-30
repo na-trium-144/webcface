@@ -4,8 +4,8 @@
 #include "field.h"
 namespace WebCFace {
 
-//! eventpp::EventQueueのラッパー
-/*! イベントはコンストラクタで固定、callbackを渡すだけで登録できるようにする
+//! イベントを表し、コールバックの追加や削除ができるクラス、eventpp::EventQueueのラッパー
+/*! 
  * V = コールバックの引数の型
  */
 template <typename V, typename Key = FieldBaseComparable, typename VBase = Field>
