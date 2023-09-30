@@ -11,7 +11,8 @@
 namespace WebCFace {
 inline namespace Common {
 
-//! 内部データ(T)とユーザーが取得したいデータ(ValueType)を相互変換するTrait (T=ValueTypeの場合そのまま返す)
+//! 内部データ(T)とユーザーが取得したいデータ(ValueType)を相互変換するTrait
+//! (T=ValueTypeの場合そのまま返す)
 template <typename T>
 struct DictTraits {
     using ValueType = T;
@@ -69,7 +70,8 @@ struct DictElement {
     DictElement(const std::string &key,
                 const typename DictTraits<T>::ValueType &value)
         : key(key), value(DictTraits<T>::wrap(value)) {}
-    //! {key, {value, value, ...}} から変換するコンストラクタ (DictTraits<T> が配列を受け付けるときのみ)
+    //! {key, {value, value, ...}} から変換するコンストラクタ (DictTraits<T>
+    //! が配列を受け付けるときのみ)
     template <typename U = T>
     DictElement(const std::string &key,
                 const typename DictTraits<U>::VecType &value)
@@ -123,7 +125,7 @@ class Dict {
     }
     //! 要素にアクセスする
     Dict operator[](const char *key) const { return (*this)[std::string(key)]; }
-    
+
     //! 要素のリストを返す
     std::unordered_map<std::string, Dict> getChildren() const {
         std::unordered_map<std::string, Dict> ds;
@@ -152,7 +154,7 @@ class Dict {
     T getRaw() const { return children->at(search_base_key); }
 
     //! 値を返す
-    DictTraits<T>::ValueType get() const {
+    typename DictTraits<T>::ValueType get() const {
         return DictTraits<T>::parse(children->at(search_base_key));
     }
     //! 値型にキャストすることで値を返す
@@ -160,7 +162,7 @@ class Dict {
 
     //! 値を配列で返す
     template <typename U = T>
-    DictTraits<U>::VecType getVec() const {
+    typename DictTraits<U>::VecType getVec() const {
         return DictTraits<U>::parseVec(children->at(search_base_key));
     }
     //! 値を配列にキャストすることで返す
