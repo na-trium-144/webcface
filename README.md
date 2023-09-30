@@ -17,27 +17,27 @@ Web-based RPC &amp; UI Library
 [WebCFaceのReleases](https://github.com/na-trium-144/webcface/releases) と [webuiのReleases](https://github.com/na-trium-144/webcface-webui/releases) からそれぞれ最新のdebパッケージをダウンロードしてインストールできます。
 
 例 (amd64の場合)
-```bash
+```sh
 curl -LO https://github.com/na-trium-144/webcface/releases/download/v1.0.0/webcface_1.0.0_amd64.deb
 curl -LO https://github.com/na-trium-144/webcface-webui/releases/download/v1.0.1/webcface-webui_1.0.1_all.deb
 sudo apt install ./webcface*.deb
 ```
 
 ### Homebrew (MacOS, Linux)
-```bash
+```sh
 brew tap na-trium-144/webcface
 brew install webcface webcface-webui
 ```
 
 ### Build from source
 このリポジトリをcloneして
-```bash
+```sh
 git submodule update --init --recursive
 cmake -Bbuild
 cmake --build build
 sudo cmake --build build -t install # installする場合
 ```
-```bash
+```sh
 cd webui
 npm ci
 npm run build
@@ -56,7 +56,7 @@ sudo cp -r dist /usr/local/share/webcface/dist  # または /path/to/prefix/shar
 ### Server
 WebCFaceを使用するときはserverを常時立ち上げておく必要があります
 
-```bash
+```sh
 webcface-server
 ```
 でサーバーを起動します
@@ -71,7 +71,7 @@ find_package(webcface)
 target_link_libraries(target PRIVATE webcface::webcface)
 ```
 
-```c++
+```cpp
 #include <webcface/webcface.h>
 
 WebCFace::Client wcli("name of this client program");
