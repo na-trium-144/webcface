@@ -12,6 +12,8 @@ jobs:
     - uses: ssciwr/doxygen-install@v1
       with:
         version: "1.9.8"
+    - name: Delete doxygen download
+      run: rm -r doxygen-*
     - name: Generate Documentation
       run: |
         mkdir -p build/doxygen
