@@ -1,0 +1,21 @@
+/* DoxygenAwesomeのデフォルト値のHueをそれぞれ140に変えたもの */
+html {
+    --primary-color: #17c451;
+    --primary-dark-color: #33804d;
+    --primary-light-color: #70e998;
+    --page-background-color: #ffffff;
+    --page-foreground-color: #2f4153;
+    --page-secondary-foreground-color: #6f8e79;
+    --fragment-background: #f8faf9;
+    --fragment-foreground: #37474f;
+}
+html.dark-mode {
+    --primary-color: #19d257;
+    --primary-dark-color: #5ce289;
+    --primary-light-color: #47ac69;
+    --page-background-color: #1c1f1d;
+    --page-foreground-color: #d2ded6;
+    --page-secondary-foreground-color: #85998c;
+    --fragment-background: #28342c;
+    --fragment-foreground: #dbebe0;
+}
