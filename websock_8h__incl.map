@@ -1,0 +1,9 @@
+<map id="server/websock.h" name="server/websock.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="132,5,268,31"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,79,144,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="181,33,108,74,106,69,179,28"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="168,79,232,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="203,31,203,65,197,65,197,31"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="257,79,399,104"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="222,28,296,69,294,74,219,33"/>
+</map>

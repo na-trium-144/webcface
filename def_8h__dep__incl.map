@@ -1,0 +1,18 @@
+<map id="include/webcface/common/def.h" name="include/webcface/common/def.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="315,5,511,45"/>
+<area shape="rect" id="Node000002" href="$client_8cc.html" title=" " alt="" coords="5,167,121,192"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="302,43,187,65,139,79,106,95,91,112,80,131,68,167,63,165,75,129,87,108,103,91,137,74,186,60,301,38"/>
+<area shape="rect" id="Node000003" href="$client_8h.html" title=" " alt="" coords="117,93,303,119"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="352,53,241,96,239,91,351,48"/>
+<area shape="rect" id="Node000006" href="$s__client__data_8cc.html" title=" " alt="" coords="327,93,498,119"/>
+<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="415,59,415,93,410,93,410,59"/>
+<area shape="rect" id="Node000007" href="$websock_8cc.html" title=" " alt="" coords="523,93,665,119"/>
+<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="470,48,568,91,566,96,468,53"/>
+<area shape="rect" id="Node000008" href="$server__main_8cc.html" title=" " alt="" coords="689,93,811,119"/>
+<area shape="poly" id="edge8_Node000001_Node000008" title=" " alt="" coords="507,46,701,91,700,96,506,51"/>
+<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="176,127,88,169,86,164,173,122"/>
+<area shape="rect" id="Node000004" href="$client__ws_8cc.html" title=" " alt="" coords="146,167,287,192"/>
+<area shape="poly" id="edge4_Node000003_Node000004" title=" " alt="" coords="215,132,218,166,213,167,210,133"/>
+<area shape="rect" id="Node000005" href="$webcface_8h.html" title=" " alt="" coords="311,167,525,192"/>
+<area shape="poly" id="edge5_Node000003_Node000005" title=" " alt="" coords="257,121,385,164,383,169,256,126"/>
+</map>

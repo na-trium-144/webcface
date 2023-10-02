@@ -1,0 +1,23 @@
+<map id="WebCFace::Field" name="WebCFace::Field">
+<area shape="rect" id="Node000001" title="ClientDataの参照とメンバ名とデータ名を持つクラス" alt="" coords="280,153,407,179"/>
+<area shape="rect" id="Node000003" href="$classWebCFace_1_1AsyncFuncResult.html" title=" " alt="" coords="455,5,661,31"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="358,140,397,90,423,63,453,41,482,28,484,33,456,46,427,67,401,93,362,143"/>
+<area shape="rect" id="Node000004" href="$classWebCFace_1_1Func.html" title="関数1つを表すクラス" alt="" coords="495,55,621,80"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="369,143,408,115,454,90,494,77,495,82,456,95,411,120,372,147"/>
+<area shape="rect" id="Node000006" href="$classWebCFace_1_1Log.html" title=" " alt="" coords="499,104,617,129"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="412,148,501,127,502,132,413,153"/>
+<area shape="rect" id="Node000007" href="$classWebCFace_1_1Member.html" title="他のクライアントを参照することを表すクラス" alt="" coords="483,153,633,179"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="421,163,482,163,482,169,421,169"/>
+<area shape="rect" id="Node000009" href="$classWebCFace_1_1Text.html" title="文字列の送受信データを表すクラス" alt="" coords="497,203,619,228"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="413,179,502,200,501,205,412,184"/>
+<area shape="rect" id="Node000010" href="$classWebCFace_1_1Value.html" title="実数値またはその配列の送受信データを表すクラス" alt="" coords="492,252,624,277"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="372,185,410,213,456,238,493,251,491,256,454,243,407,217,369,190"/>
+<area shape="rect" id="Node000011" href="$classWebCFace_1_1View.html" title="Viewの送受信データを表すクラス" alt="" coords="494,301,622,327"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="362,189,400,240,426,266,456,288,495,303,493,308,453,292,423,270,396,243,357,192"/>
+<area shape="rect" id="Node000002" href="$structWebCFace_1_1Common_1_1FieldBase.html" title="メンバ名とデータ名を持つクラス" alt="" coords="5,153,232,179"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="246,163,280,163,280,169,246,169"/>
+<area shape="rect" id="Node000005" href="$classWebCFace_1_1AnonymousFunc.html" title=" " alt="" coords="709,55,912,80"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="635,65,709,65,709,70,635,70"/>
+<area shape="rect" id="Node000008" href="$classWebCFace_1_1Client.html" title="サーバーに接続するクライアント。" alt="" coords="743,153,878,179"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="647,163,743,163,743,169,647,169"/>
+</map>

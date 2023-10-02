@@ -1,0 +1,5 @@
+<map id="WebCFace::Common::FuncCall" name="WebCFace::Common::FuncCall">
+<area shape="rect" id="Node000001" title="関数を呼び出すのに必要なデータ。client_data&#45;&gt;client&#45;&gt;server&#45;&gt;clientと送られる" alt="" coords="5,5,224,31"/>
+<area shape="rect" id="Node000002" href="$structWebCFace_1_1Message_1_1Call.html" title="関数呼び出し (client(caller)&#45;&gt;server&#45;&gt;client(receiver))" alt="" coords="21,79,208,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="117,44,117,79,112,79,112,44"/>
+</map>

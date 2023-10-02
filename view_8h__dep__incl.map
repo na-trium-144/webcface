@@ -1,0 +1,9 @@
+<map id="include/webcface/view.h" name="include/webcface/view.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="122,5,303,31"/>
+<area shape="rect" id="Node000002" href="$client_8cc.html" title=" " alt="" coords="5,79,121,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="178,39,89,81,87,76,175,34"/>
+<area shape="rect" id="Node000003" href="$member_8cc.html" title=" " alt="" coords="145,79,280,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="215,44,215,79,210,79,210,44"/>
+<area shape="rect" id="Node000004" href="$webcface_8h.html" title=" " alt="" coords="305,79,518,104"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="258,33,380,76,378,81,257,38"/>
+</map>

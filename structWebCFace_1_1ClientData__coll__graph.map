@@ -1,0 +1,25 @@
+<map id="WebCFace::ClientData" name="WebCFace::ClientData">
+<area shape="rect" id="Node000001" title=" " alt="" coords="936,302,1101,327"/>
+<area shape="rect" id="Node000002" href="$classWebCFace_1_1ClientData_1_1SyncDataStore2.html" title=" " alt="" coords="529,5,727,75"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="741,65,830,101,874,126,914,155,949,192,977,233,1014,300,1009,303,973,236,944,196,910,159,871,130,828,106,739,70"/>
+<area shape="rect" id="Node000003" href="$classWebCFace_1_1ClientData_1_1SyncDataStore2.html" title="送受信するデータを保持するクラス" alt="" coords="5,151,177,191"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="130,141,163,121,200,104,285,79,372,61,455,49,528,42,529,48,456,55,373,66,286,84,202,109,166,126,133,145"/>
+<area shape="rect" id="Node000004" href="$classWebCFace_1_1ClientData_1_1SyncDataStore2.html" title=" " alt="" coords="523,99,733,154"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="191,160,523,133,523,138,192,165"/>
+<area shape="rect" id="Node000005" href="$classWebCFace_1_1ClientData_1_1SyncDataStore2.html" title=" " alt="" coords="538,179,718,248"/>
+<area shape="poly" id="edge6_Node000005_Node000003" title=" " alt="" coords="192,188,202,189,381,204,538,210,538,215,381,210,201,195,191,193"/>
+<area shape="rect" id="Node000006" href="$classWebCFace_1_1ClientData_1_1SyncDataStore2.html" title=" " alt="" coords="485,273,771,357"/>
+<area shape="poly" id="edge8_Node000006_Node000003" title=" " alt="" coords="122,199,158,231,202,258,272,282,345,298,418,308,485,313,485,319,417,314,344,304,271,287,200,262,155,235,118,203"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="747,155,772,164,845,196,913,236,1003,300,1000,304,911,241,842,201,770,169,745,160"/>
+<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="732,237,969,299,968,304,731,243"/>
+<area shape="poly" id="edge7_Node000001_Node000006" title=" " alt="" coords="785,312,936,312,936,317,785,317"/>
+<area shape="rect" id="Node000007" href="$classWebCFace_1_1ClientData_1_1SyncDataStore1.html" title=" " alt="" coords="521,381,735,465"/>
+<area shape="poly" id="edge9_Node000001_Node000007" title=" " alt="" coords="748,387,971,325,972,330,749,392"/>
+<area shape="rect" id="Node000008" href="$classWebCFace_1_1ClientData_1_1SyncDataStore1.html" title=" " alt="" coords="5,452,177,492"/>
+<area shape="poly" id="edge10_Node000007_Node000008" title=" " alt="" coords="191,460,520,430,521,435,192,466"/>
+<area shape="rect" id="Node000009" href="$classWebCFace_1_1ClientData_1_1SyncDataStore1.html" title=" " alt="" coords="543,489,713,559"/>
+<area shape="poly" id="edge12_Node000009_Node000008" title=" " alt="" coords="186,492,202,495,292,506,384,513,542,520,542,526,383,518,292,511,201,500,185,497"/>
+<area shape="poly" id="edge11_Node000001_Node000009" title=" " alt="" coords="725,491,770,474,842,438,910,394,1001,325,1004,330,914,398,845,442,772,478,727,496"/>
+<area shape="rect" id="Node000010" href="$classWebCFace_1_1ClientData_1_1FuncResultStore.html" title="AsyncFuncResultのリストを保持する。" alt="" coords="545,583,711,623"/>
+<area shape="poly" id="edge13_Node000001_Node000010" title=" " alt="" coords="723,583,770,568,846,535,876,514,910,483,945,443,973,398,1010,326,1014,329,978,401,949,446,914,487,879,519,849,539,772,573,725,588"/>
+</map>

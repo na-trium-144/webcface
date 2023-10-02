@@ -1,0 +1,13 @@
+<map id="WebCFace::View" name="WebCFace::View">
+<area shape="rect" id="Node000001" title="Viewの送受信データを表すクラス" alt="" coords="267,197,395,223"/>
+<area shape="rect" id="Node000002" href="$structWebCFace_1_1Field.html" title="ClientDataの参照とメンバ名とデータ名を持つクラス" alt="" coords="69,115,195,141"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="174,143,303,195,301,200,172,148"/>
+<area shape="rect" id="Node000003" href="$structWebCFace_1_1Common_1_1FieldBase.html" title="メンバ名とデータ名を持つクラス" alt="" coords="5,13,232,38"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="125,51,133,115,128,116,119,52"/>
+<area shape="rect" id="Node000004" href="$classWebCFace_1_1EventTarget.html" title=" " alt="" coords="244,108,417,148"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="333,162,333,197,328,197,328,162"/>
+<area shape="rect" id="Node000005" href="$classWebCFace_1_1EventTarget.html" title="イベントを表し、コールバックの追加や削除ができるクラス、eventpp::EventQueueのラッパー" alt="" coords="256,5,429,45"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="341,59,336,108,330,108,336,58"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="441,115,545,141"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="459,149,355,200,353,195,457,144"/>
+</map>

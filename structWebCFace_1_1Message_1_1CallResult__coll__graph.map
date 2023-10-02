@@ -1,0 +1,9 @@
+<map id="WebCFace::Message::CallResult" name="WebCFace::Message::CallResult">
+<area shape="rect" id="Node000001" title="関数呼び出しの応答2 (client(receiver)&#45;&gt;server&#45;&gt;client(caller))" alt="" coords="677,61,840,101"/>
+<area shape="rect" id="Node000002" href="$structWebCFace_1_1Message_1_1MessageBase.html" title=" " alt="" coords="363,7,578,62"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="592,52,678,66,677,71,591,57"/>
+<area shape="rect" id="Node000003" href="$structWebCFace_1_1Message_1_1MessageBase.html" title="型からkindを取得するためだけのベースクラス" alt="" coords="5,15,168,55"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="182,32,363,32,363,37,182,37"/>
+<area shape="rect" id="Node000004" href="$classWebCFace_1_1Common_1_1ValAdaptor.html" title=" " alt="" coords="353,86,588,111"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="601,88,677,84,677,89,602,93"/>
+</map>

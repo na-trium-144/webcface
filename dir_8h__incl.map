@@ -1,0 +1,7 @@
+<map id="server/dir.h" name="server/dir.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="45,5,139,31"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,79,64,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="85,33,55,70,51,66,80,29"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="89,79,210,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="104,29,133,66,129,70,99,33"/>
+</map>
