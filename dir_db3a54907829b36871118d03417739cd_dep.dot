@@ -1,0 +1,13 @@
+digraph "client"
+{
+ // LATEX_PDF_SIZE
+  bgcolor="transparent";
+  edge [fontname=Helvetica,fontsize=10,labelfontname=Helvetica,labelfontsize=10];
+  node [fontname=Helvetica,fontsize=10,shape=box,height=0.2,width=0.4];
+  compound=true
+  dir_db3a54907829b36871118d03417739cd [label="client", fillcolor="#daffe6", color="grey25", style="filled,bold", URL="dir_db3a54907829b36871118d03417739cd.html",tooltip=""];
+  dir_d06cd19e7b0a7bd71ca3f88af4ac0d59 [label="message", fillcolor="#daffe6", color="grey25", style="filled", URL="dir_d06cd19e7b0a7bd71ca3f88af4ac0d59.html",tooltip=""];
+  dir_d44c64559bbebec7f509842c48db8b23 [label="include", fillcolor="#daffe6", color="red", style="filled", URL="dir_d44c64559bbebec7f509842c48db8b23.html",tooltip=""];
+  dir_db3a54907829b36871118d03417739cd->dir_d06cd19e7b0a7bd71ca3f88af4ac0d59 [headlabel="3", labeldistance=1.5 headhref="dir_000000_000003.html" href="dir_000000_000003.html" color="steelblue1" fontcolor="steelblue1"];
+  dir_db3a54907829b36871118d03417739cd->dir_d44c64559bbebec7f509842c48db8b23 [headlabel="19", labeldistance=1.5 headhref="dir_000000_000002.html" href="dir_000000_000002.html" color="steelblue1" fontcolor="steelblue1"];
+}

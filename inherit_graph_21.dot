@@ -1,0 +1,9 @@
+digraph "Graphical Class Hierarchy"
+{
+ // LATEX_PDF_SIZE
+  bgcolor="transparent";
+  edge [fontname=Helvetica,fontsize=10,labelfontname=Helvetica,labelfontsize=10];
+  node [fontname=Helvetica,fontsize=10,shape=box,height=0.2,width=0.4];
+  rankdir="LR";
+  Node0 [id="Node000000",label="WebCFace::Common::DictTraits\l\< VectorOpt\< T \> \>",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$structWebCFace_1_1Common_1_1DictTraits_3_01VectorOpt_3_01T_01_4_01_4.html",tooltip="内部データ(VectorOpt<T>)とユーザーが取得したいデータ(ValueType)を相互変換するTrait"];
+}
