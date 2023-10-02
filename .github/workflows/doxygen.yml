@@ -9,6 +9,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
+    - name: submodule update doxygen-awesome-css
+      run: git submodule update --init external/doxygen-awesome-css
     - uses: ssciwr/doxygen-install@v1
       with:
         version: "1.9.8"
