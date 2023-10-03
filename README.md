@@ -86,14 +86,17 @@ wcli.logger()->warn("this is warn");
 ## Installation
 
 ### Debian, Ubuntu (amd64, arm64, armhf)
-[WebCFaceのReleases](https://github.com/na-trium-144/webcface/releases) と [webuiのReleases](https://github.com/na-trium-144/webcface-webui/releases) からそれぞれ最新のdebパッケージをダウンロードしてインストールできます。
+[WebCFaceのReleases](https://github.com/na-trium-144/webcface/releases) と [webuiのReleases](https://github.com/na-trium-144/webcface-webui/releases) 、(オプショナルで: [toolsのReleases](https://github.com/na-trium-144/webcface-tools/releases)) からそれぞれ最新のdebパッケージをダウンロードしてインストールできます。
 
 例 (amd64の場合)
 ```sh
 curl -LO https://github.com/na-trium-144/webcface/releases/download/v1.0.1/webcface_1.0.1_amd64.deb
-curl -LO https://github.com/na-trium-144/webcface-webui/releases/download/v1.0.1/webcface-webui_1.0.1_all.deb
+curl -LO https://github.com/na-trium-144/webcface-webui/releases/download/v1.0.2/webcface-webui_1.0.2_all.deb
+curl -LO https://github.com/na-trium-144/webcface-tools/releases/download/v1.0.0/webcface-tools_1.0.0_amd64.deb
 sudo apt install ./webcface*.deb
 ```
+
+(webcface-toolsの内容と使い方についてはwebcface-toolsのReadmeを参照してください)
 
 ### Homebrew (MacOS, Linux)
 ```sh
