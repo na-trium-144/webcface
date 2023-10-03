@@ -113,22 +113,22 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 <div class="textblock"><p><a class="anchor" id="md__2home_2runner_2work_2webcface_2webcface_2README"></a> <a href="https://github.com/na-trium-144/webcface/actions/workflows/cmake-coverage.yml"><img src="https://raw.githubusercontent.com/na-trium-144/webcface/badge/coverage.svg" alt="coverage" style="pointer-events: none;" class="inline"/></a> <a href="https://github.com/na-trium-144/webcface/releases"><img src="https://img.shields.io/github/v/release/na-trium-144/webcface" alt="release" class="inline"/></a></p>
 <p>Web-based RPC &amp; UI Library</p>
 <p>ここに説明を書く</p>
-<h1><a class="anchor" id="autotoc_md37"></a>
+<h1><a class="anchor" id="autotoc_md60"></a>
 Example</h1>
 <p>例を示す</p>
-<h1><a class="anchor" id="autotoc_md38"></a>
+<h1><a class="anchor" id="autotoc_md61"></a>
 Installation</h1>
-<h2><a class="anchor" id="autotoc_md39"></a>
+<h2><a class="anchor" id="autotoc_md62"></a>
 Debian, Ubuntu (amd64, arm64, armhf)</h2>
 <p><a href="https://github.com/na-trium-144/webcface/releases">WebCFaceのReleases</a> と <a href="https://github.com/na-trium-144/webcface-webui/releases">webuiのReleases</a> からそれぞれ最新のdebパッケージをダウンロードしてインストールできます。</p>
 <p>例 (amd64の場合) </p><div class="fragment"><div class="line">curl -LO https://github.com/na-trium-144/webcface/releases/download/v1.0.0/webcface_1.0.0_amd64.deb</div>
 <div class="line">curl -LO https://github.com/na-trium-144/webcface-webui/releases/download/v1.0.1/webcface-webui_1.0.1_all.deb</div>
 <div class="line">sudo apt install ./webcface*.deb</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md40"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md63"></a>
 Homebrew (MacOS, Linux)</h2>
 <div class="fragment"><div class="line">brew tap na-trium-144/webcface</div>
 <div class="line">brew install webcface webcface-webui</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md41"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md64"></a>
 Build from source</h2>
 <p>このリポジトリをcloneして </p><div class="fragment"><div class="line">git submodule update --init --recursive</div>
 <div class="line">cmake -Bbuild</div>
@@ -151,9 +151,9 @@ Build from source</h2>
 </li>
 <li><code>-DWEBCFACE_EXAMPLE=on</code>でexampleを、<code>-DWEBCFACE_TEST=on</code>でtestをビルドします。</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md42"></a>
+<h1><a class="anchor" id="autotoc_md65"></a>
 Usage</h1>
-<h2><a class="anchor" id="autotoc_md43"></a>
+<h2><a class="anchor" id="autotoc_md66"></a>
 Server</h2>
 <p>WebCFaceを使用するときはserverを常時立ち上げておく必要があります</p>
 <div class="fragment"><div class="line">webcface-server</div>
@@ -161,7 +161,7 @@ Server</h2>
 <li>ソースからビルドした場合は <code>build/webcface-server</code></li>
 </ul>
 <p>起動時に表示されるurl (<a href="http://pcのipアドレス:7530/">http://pcのipアドレス:7530/</a>) をブラウザから開くとデータにアクセスすることができます</p>
-<h2><a class="anchor" id="autotoc_md44"></a>
+<h2><a class="anchor" id="autotoc_md67"></a>
 Client (C++)</h2>
 <div class="fragment"><div class="line">find_package(webcface)</div>
 <div class="line">target_link_libraries(target PRIVATE webcface::webcface)</div>
@@ -177,7 +177,7 @@ Client (C++)</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Oct 3 2023 10:44:42 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Tue Oct 3 2023 11:36:55 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

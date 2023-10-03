@@ -1,14 +1,12 @@
 var searchData=
 [
-  ['base_5finit_0',['base_init',['../classWebCFace_1_1AnonymousFunc.html#ae76af49a75f2e8e46aea1d4d1d7e9e5a',1,'WebCFace::AnonymousFunc']]],
-  ['bg_5fcolor_1',['bg_color',['../structWebCFace_1_1Message_1_1View_1_1ViewComponent.html#ada64e6dee7615eb103374de9ecb31e0f',1,'WebCFace::Message::View::ViewComponent']]],
-  ['bg_5fcolor_5f_2',['bg_color_',['../structWebCFace_1_1Common_1_1ViewComponentBase.html#a8415e8f779a0379933ef77327b47038e',1,'WebCFace::Common::ViewComponentBase']]],
-  ['bgcolor_3',['bgcolor',['../classWebCFace_1_1ViewComponent.html#a0c7bbfd827dad423e8b35018263fc981',1,'WebCFace::ViewComponent::bgColor() const'],['../classWebCFace_1_1ViewComponent.html#ab2788276db7dbcb6255996160caaafce',1,'WebCFace::ViewComponent::bgColor(ViewColor c)']]],
-  ['black_4',['black',['../namespaceWebCFace_1_1Common.html#a5dcc1f15d6a60ca34207565aeb74124aa1ffd9e753c8054cc61456ac7fac1ac89',1,'WebCFace::Common']]],
-  ['blue_5',['blue',['../namespaceWebCFace_1_1Common.html#a5dcc1f15d6a60ca34207565aeb74124aa48d6215903dff56238e52e8891380c8f',1,'WebCFace::Common']]],
-  ['bool_5f_6',['bool_',['../namespaceWebCFace_1_1Common.html#acd1dd9e2d5f885ad3f73197cfa6b0185a467afb5838aa377d55cce81f84c5512b',1,'WebCFace::Common']]],
-  ['buf_7',['buf',['../classWebCFace_1_1LoggerBuf.html#ae885e81bac54b36d833ae6858a7931d4',1,'WebCFace::LoggerBuf']]],
-  ['buf_5fsize_8',['buf_size',['../classWebCFace_1_1LoggerBuf.html#a894e0272f9809764d91193370a07c8ee',1,'WebCFace::LoggerBuf']]],
-  ['build_20from_20source_9',['Build from source',['../index.html#autotoc_md41',1,'']]],
-  ['button_10',['button',['../namespaceWebCFace_1_1ViewComponents.html#a818c39acf0a23a489c00b0b3327881db',1,'WebCFace::button()'],['../namespaceWebCFace_1_1ViewComponents.html#a818c39acf0a23a489c00b0b3327881db',1,'WebCFace::ViewComponents::button()'],['../namespaceWebCFace_1_1Common.html#a11040d82967b60182816ddc035d07c28ace50a09343724eb82df11390e2c1de18',1,'WebCFace::Common::button'],['../md_13__view.html#autotoc_md17',1,'button']]]
+  ['80_0',['sync init (WebCFace::Message::SyncInit, kind = 80)',['../md_90__message.html#autotoc_md33',1,'']]],
+  ['81_1',['call (WebCFace::Message::Call, kind = 81)',['../md_90__message.html#autotoc_md40',1,'']]],
+  ['82_2',['call response (WebCFace::Message::CallResponse, kind = 82)',['../md_90__message.html#autotoc_md41',1,'']]],
+  ['83_3',['call result (WebCFace::Message::CallResult, kind = 83)',['../md_90__message.html#autotoc_md42',1,'']]],
+  ['84_4',['func info (WebCFace::Message::FuncInfo, kind = 84)',['../md_90__message.html#autotoc_md39',1,'']]],
+  ['86_5',['log (WebCFace::Message::Log, kind = 86)',['../md_90__message.html#autotoc_md57',1,'']]],
+  ['87_6',['87',['../md_90__message.html#autotoc_md58',1,'log req (WebCFace::Message::LogReq, kind = 87)'],['../md_90__message.html#autotoc_md38',1,'sync (WebCFace::Message::Sync, kind = 87)']]],
+  ['88_7',['svr version (WebCFace::Message::SvrVersion, kind = 88)',['../md_90__message.html#autotoc_md34',1,'']]],
+  ['89_8',['ping (WebCFace::Message::Ping, kind = 89)',['../md_90__message.html#autotoc_md35',1,'']]]
 ];

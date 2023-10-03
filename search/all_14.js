@@ -1,6 +1,9 @@
 var searchData=
 [
-  ['que_0',['que',['../classWebCFace_1_1Common_1_1Queue.html#a1e43ac89755d96304c2ab27a561bdcea',1,'WebCFace::Common::Queue']]],
-  ['queue_1',['queue',['../classWebCFace_1_1Common_1_1Queue.html',1,'Queue&lt; T &gt;'],['../classWebCFace_1_1Common_1_1Queue.html',1,'Queue&lt; T &gt;']]],
-  ['queue_2eh_2',['queue.h',['../queue_8h.html',1,'']]]
+  ['name_0',['name',['../structWebCFace_1_1Server_1_1ClientData.html#a9b45b3e13bd9167aab02e17e08916231',1,'WebCFace::Server::ClientData::name'],['../classWebCFace_1_1Common_1_1Arg.html#a1d89c28bd42ba9a52da008bb69367171',1,'WebCFace::Common::Arg::name()'],['../structWebCFace_1_1Field.html#a1d89c28bd42ba9a52da008bb69367171',1,'WebCFace::Field::name()'],['../classWebCFace_1_1AsyncFuncResult.html#a1d89c28bd42ba9a52da008bb69367171',1,'WebCFace::AsyncFuncResult::name()'],['../classWebCFace_1_1Member.html#a1d89c28bd42ba9a52da008bb69367171',1,'WebCFace::Member::name()'],['../classWebCFace_1_1Value.html#a1d89c28bd42ba9a52da008bb69367171',1,'WebCFace::Value::name()'],['../classWebCFace_1_1Text.html#a1d89c28bd42ba9a52da008bb69367171',1,'WebCFace::Text::name()'],['../classWebCFace_1_1Func.html#a1d89c28bd42ba9a52da008bb69367171',1,'WebCFace::Func::name()'],['../classWebCFace_1_1View.html#a1d89c28bd42ba9a52da008bb69367171',1,'WebCFace::View::name()']]],
+  ['name_5f_1',['name_',['../classWebCFace_1_1Common_1_1Arg.html#a4d739cc5d335052eb9f5b2ca559b81d1',1,'WebCFace::Common::Arg']]],
+  ['new_5fline_2',['new_line',['../namespaceWebCFace_1_1Common.html#a11040d82967b60182816ddc035d07c28a620cf4c6d9756f9ce211c523f16c42a9',1,'WebCFace::Common']]],
+  ['newclient_3',['newClient',['../structWebCFace_1_1Server_1_1Store.html#a84bf45e1c111ecfbf928251ff2568567',1,'WebCFace::Server::Store']]],
+  ['newline_4',['newline',['../namespaceWebCFace_1_1ViewComponents.html#ab72da582724c98c1e879cadbacc78663',1,'WebCFace::newLine()'],['../namespaceWebCFace_1_1ViewComponents.html#ab72da582724c98c1e879cadbacc78663',1,'WebCFace::ViewComponents::newLine()'],['../md_13__view.html#autotoc_md16',1,'newLine']]],
+  ['none_5f_5',['none_',['../namespaceWebCFace_1_1Common.html#acd1dd9e2d5f885ad3f73197cfa6b0185a1e5a9491a4d910a08d95f675ca7226be',1,'WebCFace::Common']]]
 ];

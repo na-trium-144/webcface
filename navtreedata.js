@@ -25,15 +25,15 @@
 var NAVTREE =
 [
   [ "WebCFace", "index.html", [
-    [ "Example", "index.html#autotoc_md37", null ],
-    [ "Installation", "index.html#autotoc_md38", [
-      [ "Debian, Ubuntu (amd64, arm64, armhf)", "index.html#autotoc_md39", null ],
-      [ "Homebrew (MacOS, Linux)", "index.html#autotoc_md40", null ],
-      [ "Build from source", "index.html#autotoc_md41", null ]
+    [ "Example", "index.html#autotoc_md60", null ],
+    [ "Installation", "index.html#autotoc_md61", [
+      [ "Debian, Ubuntu (amd64, arm64, armhf)", "index.html#autotoc_md62", null ],
+      [ "Homebrew (MacOS, Linux)", "index.html#autotoc_md63", null ],
+      [ "Build from source", "index.html#autotoc_md64", null ]
     ] ],
-    [ "Usage", "index.html#autotoc_md42", [
-      [ "Server", "index.html#autotoc_md43", null ],
-      [ "Client (C++)", "index.html#autotoc_md44", null ]
+    [ "Usage", "index.html#autotoc_md65", [
+      [ "Server", "index.html#autotoc_md66", null ],
+      [ "Client (C++)", "index.html#autotoc_md67", null ]
     ] ],
     [ "Client", "md_01__client.html", [
       [ "sync", "md_01__client.html#autotoc_md1", null ],
@@ -69,15 +69,39 @@ var NAVTREE =
       [ "関数の実行", "md_30__func.html#autotoc_md25", null ],
       [ "AnonymousFunc", "md_30__func.html#autotoc_md26", null ]
     ] ],
-    [ "Message", "md_99__message.html", [
-      [ "data", "md_99__message.html#autotoc_md28", [
-        [ "name (kind = 150)", "md_99__message.html#autotoc_md29", null ],
-        [ "value (kind = 0)", "md_99__message.html#autotoc_md30", null ],
-        [ "text (kind = 1)", "md_99__message.html#autotoc_md31", null ],
-        [ "recv (kind = 50 + n)", "md_99__message.html#autotoc_md32", null ],
-        [ "subscribe (kind = 100 + n)", "md_99__message.html#autotoc_md33", null ],
-        [ "call (kind = 151)", "md_99__message.html#autotoc_md34", null ],
-        [ "call_response (kind = 152)", "md_99__message.html#autotoc_md35", null ]
+    [ "Log", "md_40__log.html", [
+      [ "ログを出力する", "md_40__log.html#autotoc_md28", null ],
+      [ "ログを取得する", "md_40__log.html#autotoc_md29", null ],
+      [ "受信イベント", "md_40__log.html#autotoc_md30", null ]
+    ] ],
+    [ "Message", "md_90__message.html", [
+      [ "data", "md_90__message.html#autotoc_md32", [
+        [ "SyncInit, kind = 80)", "md_90__message.html#autotoc_md33", null ],
+        [ "SvrVersion, kind = 88)", "md_90__message.html#autotoc_md34", null ],
+        [ "Ping, kind = 89)", "md_90__message.html#autotoc_md35", null ],
+        [ "PingStatus, kind = 90)", "md_90__message.html#autotoc_md36", null ],
+        [ "PingStatusReq, kind = 91)", "md_90__message.html#autotoc_md37", null ],
+        [ "Sync, kind = 87)", "md_90__message.html#autotoc_md38", null ],
+        [ "FuncInfo, kind = 84)", "md_90__message.html#autotoc_md39", null ],
+        [ "Call, kind = 81)", "md_90__message.html#autotoc_md40", null ],
+        [ "CallResponse, kind = 82)", "md_90__message.html#autotoc_md41", null ],
+        [ "CallResult, kind = 83)", "md_90__message.html#autotoc_md42", null ],
+        [ "Value, kind = 0)", "md_90__message.html#autotoc_md43", null ],
+        [ "Value, kind = 0)", "md_90__message.html#autotoc_md44", null ],
+        [ "Entry<Value>, kind = 20)", "md_90__message.html#autotoc_md45", null ],
+        [ "Req<Value>, kind = 40)", "md_90__message.html#autotoc_md46", null ],
+        [ "Res<Value>, kind = 60)", "md_90__message.html#autotoc_md47", null ],
+        [ "Value, kind = 0)", "md_90__message.html#autotoc_md48", null ],
+        [ "Text, kind = 1)", "md_90__message.html#autotoc_md49", null ],
+        [ "Entry<Text>, kind = 21)", "md_90__message.html#autotoc_md50", null ],
+        [ "Req<Text>, kind = 41)", "md_90__message.html#autotoc_md51", null ],
+        [ "Res<Text>, kind = 61)", "md_90__message.html#autotoc_md52", null ],
+        [ "View, kind = 3)", "md_90__message.html#autotoc_md53", null ],
+        [ "Entry<View>, kind = 23)", "md_90__message.html#autotoc_md54", null ],
+        [ "Req<View>, kind = 43)", "md_90__message.html#autotoc_md55", null ],
+        [ "Res<View>, kind = 63)", "md_90__message.html#autotoc_md56", null ],
+        [ "Log, kind = 86)", "md_90__message.html#autotoc_md57", null ],
+        [ "LogReq, kind = 87)", "md_90__message.html#autotoc_md58", null ]
       ] ]
     ] ],
     [ "Namespaces", "namespaces.html", [
@@ -122,10 +146,10 @@ var NAVTREEINDEX =
 "classWebCFace_1_1Log.html#ad1be7d51af13514338ccba90975d4b7f",
 "classWebCFace_1_1Value.html#aa656df3c1ad08bc32e4b91718345f7f7",
 "field_8h.html",
-"namespaceWebCFace_1_1Message.html#a0368ef47eb403e45018a73ef46c90c62",
-"structWebCFace_1_1Common_1_1DictTraits_3_01std_1_1shared__ptr_3_01T_01_4_01_4.html#aa09f93e96cf8d18c7032d51343b2045e",
-"structWebCFace_1_1Message_1_1CallResponse.html#a0be1debb3575e0247093e3219322a868",
-"structWebCFace_1_1Message_1_1SyncInit.html#a3928426d40e05861b624661a53aa445b"
+"namespaceWebCFace_1_1Common.html#a5dcc1f15d6a60ca34207565aeb74124aa9f27410725ab8cc8854a2769c7a516b8",
+"structWebCFace_1_1Common_1_1DictTraits_3_01VectorOpt_3_01T_01_4_01_4.html#abbe746fc1535d3cd565042e3bd51f157",
+"structWebCFace_1_1Message_1_1Call.html",
+"structWebCFace_1_1Message_1_1SvrVersion.html#ae962bcb5814e318a6704b4e8c9ad7cbc"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['受信イベント_0',['受信イベント',['../md_10__value.html#autotoc_md7',1,'受信イベント'],['../md_11__test.html#autotoc_md11',1,'受信イベント'],['../md_13__view.html#autotoc_md20',1,'受信イベント']]],
-  ['受信_1',['受信',['../md_10__value.html#autotoc_md6',1,'受信'],['../md_11__test.html#autotoc_md10',1,'受信'],['../md_13__view.html#autotoc_md19',1,'受信']]]
+  ['_7eclient_0',['~Client',['../classWebCFace_1_1Client.html#a37731a8f5dd5caca4cc2ddb8b556cd6c',1,'WebCFace::Client']]],
+  ['_7eview_1',['~View',['../classWebCFace_1_1View.html#aca0fee82e5ee0d139ca4b895a4facdb2',1,'WebCFace::View']]]
 ];

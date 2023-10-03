@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>WebCFace: Message</title>
+<title>WebCFace: Log</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -81,7 +81,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(document).ready(function(){initNavTree('md_99__message.html',''); initResizable(); });
+$(document).ready(function(){initNavTree('md_40__log.html',''); initResizable(); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -107,70 +107,38 @@ $(document).ready(function(){initNavTree('md_99__message.html',''); initResizabl
 </div>
 
 <div><div class="header">
-  <div class="headertitle"><div class="title">Message</div></div>
+  <div class="headertitle"><div class="title">Log</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md27"></a> 送受信されるメッセージの仕様について</p>
-<p>MessagePackで送受信されます。 両方向の通信ともにn個のデータを長さ2nの配列で表現します。</p>
-<div class="fragment"><div class="line">[ kind1, data1, kind2, data2, ... ]</div>
-</div><!-- fragment --><p>see also <a class="el" href="message_8h.html">message.h</a></p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md27"></a> API Reference → <a class="el" href="classWebCFace_1_1Log.html">WebCFace::Log</a></p>
+<p>テキストのログ出力を送受信します。</p>
 <h1><a class="anchor" id="autotoc_md28"></a>
-data</h1>
-<h2><a class="anchor" id="autotoc_md29"></a>
-name (kind = 150)</h2>
-<div class="fragment"><div class="line">data = {</div>
-<div class="line">    n: &quot;client_name&quot;,</div>
-<div class="line">}</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md30"></a>
-value (kind = 0)</h2>
-<p>クライアント→サーバーへのデータの送信に使用。kind=0〜49についてはこれと同様 </p><div class="fragment"><div class="line">data = {</div>
-<div class="line">    n: &quot;value_name&quot;,</div>
-<div class="line">    d: 123,</div>
-<div class="line">}</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md31"></a>
-text (kind = 1)</h2>
-<div class="fragment"><div class="line">data = {</div>
-<div class="line">    n: &quot;value_name&quot;,</div>
-<div class="line">    d: &quot;aaaaa&quot;,</div>
-<div class="line">}</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md32"></a>
-recv (kind = 50 + n)</h2>
-<p>サーバー→クライアントへのデータの送信に使用。nはデータの種類 </p><div class="fragment"><div class="line">data = {</div>
-<div class="line">    f: &quot;client_name&quot;,</div>
-<div class="line">    n: &quot;value_name&quot;,</div>
-<div class="line">    d: 123,</div>
-<div class="line">}</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md33"></a>
-subscribe (kind = 100 + n)</h2>
-<p>クライアント→サーバー これを送信すると、(その名前の値があれば)以降サーバーからその値が更新されるたびに送られてくるようになる(上述のrecv)。 これ(subscribe)を送らなければrecvが送られてくることはない。 </p><div class="fragment"><div class="line">data = {</div>
-<div class="line">    f: &quot;client_name&quot;,</div>
-<div class="line">    n: &quot;value_name&quot;,</div>
-<div class="line">}</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md34"></a>
-call (kind = 151)</h2>
-<p>クライアント→サーバー→クライアント </p><div class="fragment"><div class="line">data = {</div>
-<div class="line">    i: 0, // callするたびに違う値を送らなければならない</div>
-<div class="line">    c: &quot;client_name&quot;, // 呼び出し元</div>
-<div class="line">    r: &quot;client_name&quot;, // 呼び出し対象</div>
-<div class="line">    n: &quot;func_name&quot;,</div>
-<div class="line">    a: [&quot;1&quot;, ...], // string[]で送らなければならない 関数に渡すときに適切にキャスト</div>
-<div class="line">}</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md35"></a>
-call_response (kind = 152)</h2>
-<p>クライアント→サーバー→クライアント </p><div class="fragment"><div class="line">data = {</div>
-<div class="line">    i: 0, // 対応するcallのid</div>
-<div class="line">    c: &quot;client_name&quot;, // 呼び出し元</div>
-<div class="line">    f: true, // 関数が存在するか</div>
-<div class="line">    e: false, // エラーが発生したか</div>
-<div class="line">    r: &quot;aaa&quot;, // 戻り値 or エラーメッセージ (stringのみ)</div>
-<div class="line">}</div>
+ログを出力する</h1>
+<p>Client::logger() でspdlogのloggerを取得でき、これを使ってログを出力できます </p><div class="fragment"><div class="line">wcli.logger()-&gt;info(<span class="stringliteral">&quot;this is info&quot;</span>);</div>
+<div class="line">wcli.logger()-&gt;error(<span class="stringliteral">&quot;this is error, error no = {}&quot;</span>, 123);</div>
+</div><!-- fragment --><p> これと同様に<code>trace</code>, <code>debug</code>, <code>info</code>, <code>warn</code>, <code>error</code>, <code>critical</code>の6段階のログレベルを使うことができます。</p>
+<p>上の例のようにspdlogではfmtライブラリを使用しており数値などをフォーマットして出力することができます。 詳細は<a href="https://github.com/gabime/spdlog">spdlog</a>, <a href="https://github.com/fmtlib/fmt">fmt</a>を参照してください</p>
+<p>また、Client::loggerSink() でspdlogのsinkを取得できます。</p>
+<p>spdlogではなくostreamを使いたい場合は、Client::loggerOStream() や Client::loggerStreamBuf() を使えます。 この場合はログレベルが常にinfoになります。</p>
+<h1><a class="anchor" id="autotoc_md29"></a>
+ログを取得する</h1>
+<p>Member::log() でLogクラスのオブジェクトが得られます </p><div class="fragment"><div class="line"><a class="code hl_class" href="classWebCFace_1_1Log.html">WebCFace::Log</a> log_a = wcli.<a class="code hl_function" href="classWebCFace_1_1Log.html#aa8fab40ead35fa8e761986d5f4000a5c">member</a>(<span class="stringliteral">&quot;a&quot;</span>).<a class="code hl_function" href="classWebCFace_1_1Member.html#a37064ebbfa8560de8c5a90fbbea4d6a6">log</a>();</div>
+<div class="ttc" id="aclassWebCFace_1_1Log_html"><div class="ttname"><a href="classWebCFace_1_1Log.html">WebCFace::Log</a></div><div class="ttdef"><b>Definition</b> data.h:302</div></div>
+<div class="ttc" id="aclassWebCFace_1_1Log_html_aa8fab40ead35fa8e761986d5f4000a5c"><div class="ttname"><a href="classWebCFace_1_1Log.html#aa8fab40ead35fa8e761986d5f4000a5c">WebCFace::Log::member</a></div><div class="ttdeci">Member member() const</div><div class="ttdoc">Memberを返す</div><div class="ttdef"><b>Definition</b> field.cc:7</div></div>
+<div class="ttc" id="aclassWebCFace_1_1Member_html_a37064ebbfa8560de8c5a90fbbea4d6a6"><div class="ttname"><a href="classWebCFace_1_1Member.html#a37064ebbfa8560de8c5a90fbbea4d6a6">WebCFace::Member::log</a></div><div class="ttdeci">Log log() const</div><div class="ttdoc">このmemberのログを参照する。</div><div class="ttdef"><b>Definition</b> member.cc:16</div></div>
+</div><!-- fragment --><p>Log::tryGet() でログデータが得られます。 </p><div class="fragment"><div class="line">std::nullopt&lt;std::vector&lt;WebCFace::LogLine&gt;&gt; log = log_a.<a class="code hl_function" href="classWebCFace_1_1Log.html#aadb158fa20765e342d4669e2c69dbc9e">tryGet</a>();</div>
+<div class="ttc" id="aclassWebCFace_1_1Log_html_aadb158fa20765e342d4669e2c69dbc9e"><div class="ttname"><a href="classWebCFace_1_1Log.html#aadb158fa20765e342d4669e2c69dbc9e">WebCFace::Log::tryGet</a></div><div class="ttdeci">std::optional&lt; std::vector&lt; LogLine &gt; &gt; tryGet() const</div><div class="ttdoc">値を取得する</div><div class="ttdef"><b>Definition</b> data.h:316</div></div>
+</div><!-- fragment --><p> Log::get() はstd::nulloptの代わりにデフォルト値を返す点以外は同じです。</p>
+<h1><a class="anchor" id="autotoc_md30"></a>
+受信イベント</h1>
+<p>Log::appendListener() などで受信したデータが変化したときにコールバックを呼び出すことができます </p><div class="fragment"><div class="line">wcli.member(<span class="stringliteral">&quot;a&quot;</span>).log().appendListener([](Log v){ <span class="comment">/* ... */</span> });</div>
 </div><!-- fragment --> </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Oct 3 2023 10:44:42 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Tue Oct 3 2023 11:36:55 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>
