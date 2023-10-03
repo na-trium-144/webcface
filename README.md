@@ -90,7 +90,7 @@ wcli.logger()->warn("this is warn");
 
 例 (amd64の場合)
 ```sh
-curl -LO https://github.com/na-trium-144/webcface/releases/download/v1.0.0/webcface_1.0.0_amd64.deb
+curl -LO https://github.com/na-trium-144/webcface/releases/download/v1.0.1/webcface_1.0.1_amd64.deb
 curl -LO https://github.com/na-trium-144/webcface-webui/releases/download/v1.0.1/webcface-webui_1.0.1_all.deb
 sudo apt install ./webcface*.deb
 ```
