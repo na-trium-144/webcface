@@ -115,6 +115,9 @@ $(document).ready(function(){initNavTree('classWebCFace_1_1Common_1_1Arg.html','
 </div><!--header-->
 <div class="contents">
 
+<p>引数の情報を表す。  
+ <a href="classWebCFace_1_1Common_1_1Arg.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="common_2func_8h_source.html">webcface/common/func.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for Arg:</div>
@@ -137,6 +140,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a0aad7e9d0741b2eeb885290eca2b05a7" id="r_a0aad7e9d0741b2eeb885290eca2b05a7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Common_1_1Arg.html#a0aad7e9d0741b2eeb885290eca2b05a7">Arg</a> (const std::string &amp;<a class="el" href="classWebCFace_1_1Common_1_1Arg.html#a1d89c28bd42ba9a52da008bb69367171">name</a>, <a class="el" href="namespaceWebCFace_1_1Common.html#acd1dd9e2d5f885ad3f73197cfa6b0185">ValType</a> <a class="el" href="classWebCFace_1_1Common_1_1Arg.html#a21eb97b014d270b80f9423022f86d322">type</a>, const std::optional&lt; <a class="el" href="classWebCFace_1_1Common_1_1ValAdaptor.html">ValAdaptor</a> &gt; &amp;<a class="el" href="classWebCFace_1_1Common_1_1Arg.html#a2e31ddffe3f62572d218e8e028423cfa">init</a>, std::optional&lt; double &gt; <a class="el" href="classWebCFace_1_1Common_1_1Arg.html#ab9fa0cb3de8ee6996e9806a4787e237b">min</a>, std::optional&lt; double &gt; <a class="el" href="classWebCFace_1_1Common_1_1Arg.html#a0aed672f8abc2efb3dff9708f52896a3">max</a>, const std::vector&lt; <a class="el" href="classWebCFace_1_1Common_1_1ValAdaptor.html">ValAdaptor</a> &gt; &amp;<a class="el" href="classWebCFace_1_1Common_1_1Arg.html#af705bc9b6f2e309a2ecbabf78abdc919">option</a>)</td></tr>
 <tr class="separator:a0aad7e9d0741b2eeb885290eca2b05a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1d89c28bd42ba9a52da008bb69367171" id="r_a1d89c28bd42ba9a52da008bb69367171"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Common_1_1Arg.html#a1d89c28bd42ba9a52da008bb69367171">name</a> () const</td></tr>
+<tr class="memdesc:a1d89c28bd42ba9a52da008bb69367171"><td class="mdescLeft">&#160;</td><td class="mdescRight">引数の名前を取得する。  <br /></td></tr>
 <tr class="separator:a1d89c28bd42ba9a52da008bb69367171"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a21eb97b014d270b80f9423022f86d322" id="r_a21eb97b014d270b80f9423022f86d322"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceWebCFace_1_1Common.html#acd1dd9e2d5f885ad3f73197cfa6b0185">ValType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Common_1_1Arg.html#a21eb97b014d270b80f9423022f86d322">type</a> () const</td></tr>
 <tr class="separator:a21eb97b014d270b80f9423022f86d322"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -181,7 +185,8 @@ Protected Attributes</h2></td></tr>
 <tr class="separator:a9ba0818ceab914663aa4e326a10ad9f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>引数の情報を表す。 func.setArg({ <a class="el" href="classWebCFace_1_1Common_1_1Arg.html">Arg</a>(引数名).init(初期値).min(最小値).max(最大値), ... }); のように使う </p>
+<div class="textblock"><p>引数の情報を表す。 </p>
+<p>func.setArg({ <a class="el" href="classWebCFace_1_1Common_1_1Arg.html" title="引数の情報を表す。">Arg</a>(引数名).init(初期値).min(最小値).max(最大値), ... }); のように使う </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="abc41d9a8e76f5ad4cecd5d7c0a7ee25d" name="abc41d9a8e76f5ad4cecd5d7c0a7ee25d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abc41d9a8e76f5ad4cecd5d7c0a7ee25d">&#9670;&#160;</a></span>Arg() <span class="overload">[1/4]</span></h2>
@@ -537,6 +542,8 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>引数の名前を取得する。 </p>
+
 </div>
 </div>
 <a id="af705bc9b6f2e309a2ecbabf78abdc919" name="af705bc9b6f2e309a2ecbabf78abdc919"></a>
@@ -789,7 +796,7 @@ template&lt;typename T &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceWebCFace.html">WebCFace</a></li><li class="navelem"><a class="el" href="namespaceWebCFace_1_1Common.html">Common</a></li><li class="navelem"><a class="el" href="classWebCFace_1_1Common_1_1Arg.html">Arg</a></li>
-    <li class="footer">Generated on Tue Oct 3 2023 07:22:21 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Tue Oct 3 2023 10:44:42 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

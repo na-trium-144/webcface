@@ -30,6 +30,6 @@ var classWebCFace_1_1AnonymousFunc =
     [ "base_init", "classWebCFace_1_1AnonymousFunc.html#ae76af49a75f2e8e46aea1d4d1d7e9e5a", null ],
     [ "data_w", "classWebCFace_1_1AnonymousFunc.html#a9ac1cb46c8dfe96538d3bd4efd9b7ae3", null ],
     [ "field_", "classWebCFace_1_1AnonymousFunc.html#aa656df3c1ad08bc32e4b91718345f7f7", null ],
-    [ "func_setter", "classWebCFace_1_1AnonymousFunc.html#aa6c78a85703431063e966fd7791c520b", null ],
+    [ "func_setter", "classWebCFace_1_1AnonymousFunc.html#a2b12a3c03aa007250232c4230e3c1eef", null ],
     [ "member_", "classWebCFace_1_1AnonymousFunc.html#a46e2aa85bc5d8406ccfa3509a9633ff6", null ]
 ];

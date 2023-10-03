@@ -110,43 +110,43 @@ $(document).ready(function(){initNavTree('md_99__message.html',''); initResizabl
   <div class="headertitle"><div class="title">Message</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md21"></a> 送受信されるメッセージの仕様について</p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md27"></a> 送受信されるメッセージの仕様について</p>
 <p>MessagePackで送受信されます。 両方向の通信ともにn個のデータを長さ2nの配列で表現します。</p>
 <div class="fragment"><div class="line">[ kind1, data1, kind2, data2, ... ]</div>
 </div><!-- fragment --><p>see also <a class="el" href="message_8h.html">message.h</a></p>
-<h1><a class="anchor" id="autotoc_md22"></a>
+<h1><a class="anchor" id="autotoc_md28"></a>
 data</h1>
-<h2><a class="anchor" id="autotoc_md23"></a>
+<h2><a class="anchor" id="autotoc_md29"></a>
 name (kind = 150)</h2>
 <div class="fragment"><div class="line">data = {</div>
 <div class="line">    n: &quot;client_name&quot;,</div>
 <div class="line">}</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md24"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md30"></a>
 value (kind = 0)</h2>
 <p>クライアント→サーバーへのデータの送信に使用。kind=0〜49についてはこれと同様 </p><div class="fragment"><div class="line">data = {</div>
 <div class="line">    n: &quot;value_name&quot;,</div>
 <div class="line">    d: 123,</div>
 <div class="line">}</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md25"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md31"></a>
 text (kind = 1)</h2>
 <div class="fragment"><div class="line">data = {</div>
 <div class="line">    n: &quot;value_name&quot;,</div>
 <div class="line">    d: &quot;aaaaa&quot;,</div>
 <div class="line">}</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md26"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md32"></a>
 recv (kind = 50 + n)</h2>
 <p>サーバー→クライアントへのデータの送信に使用。nはデータの種類 </p><div class="fragment"><div class="line">data = {</div>
 <div class="line">    f: &quot;client_name&quot;,</div>
 <div class="line">    n: &quot;value_name&quot;,</div>
 <div class="line">    d: 123,</div>
 <div class="line">}</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md27"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md33"></a>
 subscribe (kind = 100 + n)</h2>
 <p>クライアント→サーバー これを送信すると、(その名前の値があれば)以降サーバーからその値が更新されるたびに送られてくるようになる(上述のrecv)。 これ(subscribe)を送らなければrecvが送られてくることはない。 </p><div class="fragment"><div class="line">data = {</div>
 <div class="line">    f: &quot;client_name&quot;,</div>
 <div class="line">    n: &quot;value_name&quot;,</div>
 <div class="line">}</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md28"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md34"></a>
 call (kind = 151)</h2>
 <p>クライアント→サーバー→クライアント </p><div class="fragment"><div class="line">data = {</div>
 <div class="line">    i: 0, // callするたびに違う値を送らなければならない</div>
@@ -155,7 +155,7 @@ call (kind = 151)</h2>
 <div class="line">    n: &quot;func_name&quot;,</div>
 <div class="line">    a: [&quot;1&quot;, ...], // string[]で送らなければならない 関数に渡すときに適切にキャスト</div>
 <div class="line">}</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md29"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md35"></a>
 call_response (kind = 152)</h2>
 <p>クライアント→サーバー→クライアント </p><div class="fragment"><div class="line">data = {</div>
 <div class="line">    i: 0, // 対応するcallのid</div>
@@ -170,7 +170,7 @@ call_response (kind = 152)</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Oct 3 2023 07:22:21 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Tue Oct 3 2023 10:44:42 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

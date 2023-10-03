@@ -1,4 +1,28 @@
 var searchData=
 [
-  ['yellow_0',['yellow',['../namespaceWebCFace_1_1Common.html#a5dcc1f15d6a60ca34207565aeb74124aad487dd0b55dfcacdd920ccbdaeafa351',1,'WebCFace::Common']]]
+  ['wait_0',['wait',['../classWebCFace_1_1ClientData_1_1FuncOnSync.html#aa3b21853f890838c88d047d6c2786917',1,'WebCFace::ClientData::FuncOnSync']]],
+  ['webcface_1',['webcface',['../namespaceWebCFace.html',1,'WebCFace'],['../index.html',1,'WebCFace']]],
+  ['webcface_2eh_2',['webcface.h',['../webcface_8h.html',1,'']]],
+  ['webcface_3a_3acommon_3',['Common',['../namespaceWebCFace_1_1Common.html',1,'WebCFace']]],
+  ['webcface_3a_3afuncwrapper_4',['FuncWrapper',['../namespaceWebCFace_1_1FuncWrapper.html',1,'WebCFace']]],
+  ['webcface_3a_3amessage_5',['Message',['../namespaceWebCFace_1_1Message.html',1,'WebCFace']]],
+  ['webcface_3a_3amessage_3a_3amessagekind_6',['MessageKind',['../namespaceWebCFace_1_1Message_1_1MessageKind.html',1,'WebCFace::Message']]],
+  ['webcface_3a_3aserver_7',['Server',['../namespaceWebCFace_1_1Server.html',1,'WebCFace']]],
+  ['webcface_3a_3aviewcomponents_8',['ViewComponents',['../namespaceWebCFace_1_1ViewComponents.html',1,'WebCFace']]],
+  ['webcface_5fdefault_5fport_9',['WEBCFACE_DEFAULT_PORT',['../def_8h.html#ac2db178dd291a312ca3f696e69c9af55',1,'def.h']]],
+  ['webcface_5fdefault_5fport_5fs_10',['WEBCFACE_DEFAULT_PORT_S',['../def_8h.html#afbc9c6287f9dc55d9ba2f40b887deb87',1,'def.h']]],
+  ['webcface_5fdefault_5fport_5fsi_11',['WEBCFACE_DEFAULT_PORT_SI',['../def_8h.html#acdb831b5c453fa84fb4c58285d39858b',1,'def.h']]],
+  ['webcface_5fserver_5fname_12',['WEBCFACE_SERVER_NAME',['../def_8h.html#a4298b547b461c5709eb54d5171cf3b81',1,'def.h']]],
+  ['webcface_5fstr_13',['WEBCFACE_STR',['../def_8h.html#a5856f8c4dbb31d15a29a3abb4ebc01f7',1,'def.h']]],
+  ['webcface_5fversion_14',['WEBCFACE_VERSION',['../def_8h.html#a9373ced4210d2f436da678a29364095b',1,'def.h']]],
+  ['webcface_5fversion_5fi_15',['WEBCFACE_VERSION_I',['../def_8h.html#a69c677811e7da001515135f3d1b2141a',1,'def.h']]],
+  ['webcface_5fversion_5fmajor_16',['WEBCFACE_VERSION_MAJOR',['../def_8h.html#a1bc206868c13e523a5484af2deaf2c98',1,'def.h']]],
+  ['webcface_5fversion_5fminor_17',['WEBCFACE_VERSION_MINOR',['../def_8h.html#aa83206e52f1b52bbf9c7e2399c8add41',1,'def.h']]],
+  ['webcface_5fversion_5frevision_18',['WEBCFACE_VERSION_REVISION',['../def_8h.html#a4b25565a130978dd7b2b132b89b5776b',1,'def.h']]],
+  ['websock_2ecc_19',['websock.cc',['../websock_8cc.html',1,'']]],
+  ['websock_2eh_20',['websock.h',['../websock_8h.html',1,'']]],
+  ['white_21',['white',['../namespaceWebCFace_1_1Common.html#a5dcc1f15d6a60ca34207565aeb74124aad508fe45cecaf653904a0e774084bb5c',1,'WebCFace::Common']]],
+  ['wrap_22',['wrap',['../structWebCFace_1_1Common_1_1DictTraits_3_01VectorOpt_3_01T_01_4_01_4.html#a9df048124352546d37bf4bab4a6519ab',1,'WebCFace::Common::DictTraits&lt; VectorOpt&lt; T &gt; &gt;::wrap()'],['../structWebCFace_1_1Common_1_1DictTraits_3_01std_1_1shared__ptr_3_01T_01_4_01_4.html#a27f057365161c311449a735967190e24',1,'WebCFace::Common::DictTraits&lt; std::shared_ptr&lt; T &gt; &gt;::wrap()'],['../structWebCFace_1_1Common_1_1DictTraits.html#ae2d5bfb3d7db52b923afd54f19f258f9',1,'WebCFace::Common::DictTraits::wrap()']]],
+  ['wrapvec_23',['wrapvec',['../structWebCFace_1_1Common_1_1DictTraits_3_01VectorOpt_3_01T_01_4_01_4.html#ab98ce3d72780692fa7ba1e9d5b4404f5',1,'WebCFace::Common::DictTraits&lt; VectorOpt&lt; T &gt; &gt;::wrapVec()'],['../structWebCFace_1_1Common_1_1DictTraits_3_01std_1_1shared__ptr_3_01T_01_4_01_4.html#aa09f93e96cf8d18c7032d51343b2045e',1,'WebCFace::Common::DictTraits&lt; std::shared_ptr&lt; T &gt; &gt;::wrapVec()']]],
+  ['wsconnptr_24',['wsConnPtr',['../structWebCFace_1_1Server_1_1ClientData.html#a5f597f42729fddd04f0a25282496189d',1,'WebCFace::Server::ClientData']]]
 ];

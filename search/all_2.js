@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['50_20n_0',['recv (kind = 50 + n)',['../md_99__message.html#autotoc_md26',1,'']]]
+  ['30_5ffunc_2emd_0',['30_func.md',['../30__func_8md.html',1,'']]]
 ];

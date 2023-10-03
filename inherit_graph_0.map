@@ -1,7 +1,7 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$classWebCFace_1_1Common_1_1Arg.html" title=" " alt="" coords="5,5,49,31"/>
+<area shape="rect" id="Node000000" href="$classWebCFace_1_1Common_1_1Arg.html" title="引数の情報を表す。" alt="" coords="5,5,49,31"/>
 <area shape="rect" id="Node000001" href="$structWebCFace_1_1Message_1_1FuncInfo_1_1Arg.html" title=" " alt="" coords="97,31,204,56"/>
 <area shape="poly" id="edge1_Node000000_Node000001" title=" " alt="" coords="64,23,97,30,96,35,63,28"/>
-<area shape="rect" id="Node000002" href="$classWebCFace_1_1Common_1_1Arg.html" title=" " alt="" coords="5,55,49,80"/>
+<area shape="rect" id="Node000002" href="$classWebCFace_1_1Common_1_1Arg.html" title="引数の情報を表す。" alt="" coords="5,55,49,80"/>
 <area shape="poly" id="edge2_Node000002_Node000001" title=" " alt="" coords="63,58,96,51,97,56,64,63"/>
 </map>

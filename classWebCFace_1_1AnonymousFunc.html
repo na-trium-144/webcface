@@ -150,7 +150,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ae090ef2f8629ca25051051cec5eb77f9" id="r_ae090ef2f8629ca25051051cec5eb77f9"><td class="memItemLeft" align="right" valign="top">auto &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Func.html#ae090ef2f8629ca25051051cec5eb77f9">hidden</a> (bool hidden)</td></tr>
 <tr class="separator:ae090ef2f8629ca25051051cec5eb77f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeab479275be35e760a727ada61f6f070" id="r_aeab479275be35e760a727ada61f6f070"><td class="memItemLeft" align="right" valign="top">auto &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Func.html#aeab479275be35e760a727ada61f6f070">free</a> ()</td></tr>
-<tr class="memdesc:aeab479275be35e760a727ada61f6f070"><td class="mdescLeft">&#160;</td><td class="mdescRight">関数の設定を解除  <br /></td></tr>
+<tr class="memdesc:aeab479275be35e760a727ada61f6f070"><td class="mdescLeft">&#160;</td><td class="mdescRight">関数の設定を削除  <br /></td></tr>
 <tr class="separator:aeab479275be35e760a727ada61f6f070"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2f3ba42b8784ef2a1b3014ef617c1249" id="r_a2f3ba42b8784ef2a1b3014ef617c1249"><td class="memTemplParams" colspan="2">template&lt;typename... Args&gt; </td></tr>
 <tr class="memitem:a2f3ba42b8784ef2a1b3014ef617c1249"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classWebCFace_1_1Common_1_1ValAdaptor.html">ValAdaptor</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Func.html#a2f3ba42b8784ef2a1b3014ef617c1249">run</a> (Args... <a class="el" href="classWebCFace_1_1Func.html#a909f29d9c95a7bb90dec90183fd955fc">args</a>) const</td></tr>
@@ -225,8 +225,8 @@ Static Private Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
-<tr class="memitem:aa6c78a85703431063e966fd7791c520b" id="r_aa6c78a85703431063e966fd7791c520b"><td class="memItemLeft" align="right" valign="top">std::function&lt; void(<a class="el" href="classWebCFace_1_1AnonymousFunc.html">AnonymousFunc</a> &amp;)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1AnonymousFunc.html#aa6c78a85703431063e966fd7791c520b">func_setter</a> = nullptr</td></tr>
-<tr class="separator:aa6c78a85703431063e966fd7791c520b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2b12a3c03aa007250232c4230e3c1eef" id="r_a2b12a3c03aa007250232c4230e3c1eef"><td class="memItemLeft" align="right" valign="top">std::function&lt; void(<a class="el" href="classWebCFace_1_1AnonymousFunc.html">AnonymousFunc</a> &amp;)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1AnonymousFunc.html#a2b12a3c03aa007250232c4230e3c1eef">func_setter</a> = nullptr</td></tr>
+<tr class="separator:a2b12a3c03aa007250232c4230e3c1eef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae76af49a75f2e8e46aea1d4d1d7e9e5a" id="r_ae76af49a75f2e8e46aea1d4d1d7e9e5a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1AnonymousFunc.html#ae76af49a75f2e8e46aea1d4d1d7e9e5a">base_init</a> = false</td></tr>
 <tr class="separator:ae76af49a75f2e8e46aea1d4d1d7e9e5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -449,7 +449,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>関数の設定を解除 </p>
+<p>関数の設定を削除 </p>
 
 </div>
 </div>
@@ -842,7 +842,7 @@ template&lt;typename T &gt; </div>
 
 <p>引数の情報を更新する </p>
 <p>setArgsで渡された引数の情報(名前など)とFuncがすでに持っている引数の情報(型など)がマージされる</p>
-<p>関数のセットの後に呼ばなければならない (例えば Func(...).set(...).setArgs({...}) ) 関数をしたあと cli.sync() をする前に呼ばなければならない 実際にセットした関数の引数の数とargsの要素数は一致していなければならない </p>
+<p>関数のセットの後に呼ばなければならない(セット前に呼ぶと std::invalid_argument) (例えば Func(...).set(...).setArgs({...}) ) また、関数をセットしたあと cli.sync() をする前に呼ばなければならない 実際にセットした関数の引数の数とargsの要素数は一致していなければならない (一致していない場合 std::invalid_argument ) </p>
 
 </div>
 </div>
@@ -895,7 +895,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 <p>FuncWrapperをセットする。 Funcの実行時にFuncWrapperを通すことで条件を満たすまでブロックしたりする。 FuncWrapperがnullptrなら何もせずsetした関数を実行する セットしない場合 <a class="el" href="classWebCFace_1_1Client.html#a766e3df1b6de416b3e5887434d6b28f9" title="これ以降セットするFuncのデフォルトのFuncWrapperをセットする。(初期状態はnullptr)">Client::setDefaultRunCond()</a> のものが使われる</p>
-<p>関数のセットの後に呼ばなければならない </p>
+<p>関数のセットの後に呼ばなければならない(セット前に呼ぶと std::invalid_argument) </p>
 
 </div>
 </div>
@@ -1048,8 +1048,8 @@ template&lt;typename ScopeGuard &gt; </div>
 
 </div>
 </div>
-<a id="aa6c78a85703431063e966fd7791c520b" name="aa6c78a85703431063e966fd7791c520b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa6c78a85703431063e966fd7791c520b">&#9670;&#160;</a></span>func_setter</h2>
+<a id="a2b12a3c03aa007250232c4230e3c1eef" name="a2b12a3c03aa007250232c4230e3c1eef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2b12a3c03aa007250232c4230e3c1eef">&#9670;&#160;</a></span>func_setter</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1058,7 +1058,7 @@ template&lt;typename ScopeGuard &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::function&lt;void(<a class="el" href="classWebCFace_1_1AnonymousFunc.html">AnonymousFunc</a>&amp;)&gt; func_setter = nullptr</td>
+          <td class="memname">std::function&lt;void(<a class="el" href="classWebCFace_1_1AnonymousFunc.html">AnonymousFunc</a> &amp;)&gt; func_setter = nullptr</td>
         </tr>
       </table>
   </td>
@@ -1103,7 +1103,7 @@ template&lt;typename ScopeGuard &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceWebCFace.html">WebCFace</a></li><li class="navelem"><a class="el" href="classWebCFace_1_1AnonymousFunc.html">AnonymousFunc</a></li>
-    <li class="footer">Generated on Tue Oct 3 2023 07:22:21 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Tue Oct 3 2023 10:44:42 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>
