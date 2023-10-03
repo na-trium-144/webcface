@@ -1,6 +1,6 @@
 # Func, AnonymousFunc
 
-API Reference → WebCFace::Func
+API Reference → WebCFace::Func, WebCFace::AnonymousFunc
 
 別クライアントから呼び出せる関数の登録をします。
 
@@ -98,6 +98,6 @@ double ans = res.result.get();
 ## AnonymousFunc
 
 名前を指定しないFuncです。
-[Viewのボタン](./13_view.md#button)などのコールバックに関数を設定したい場合に使うことができます。
+[View](./13_view.md)のボタンなどのコールバックに関数を設定したい場合に使うことができます。
 
 wcli.func() で取得できるようにする予定だが未実装。(現在はViewComponentの内部でのみ使われている)
