@@ -1,7 +1,7 @@
-<map id="WebCFace::LoggerSink" name="WebCFace::LoggerSink">
-<area shape="rect" id="Node000001" title=" " alt="" coords="87,93,255,119"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="5,5,161,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="117,53,160,91,156,95,113,57"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="185,5,336,45"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="231,56,186,95,183,91,227,52"/>
+<map id="LoggerSink" name="LoggerSink">
+<area shape="rect" id="Node000001" title=" " alt="" coords="147,93,242,119"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,13,192,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="125,45,182,91,179,95,122,49"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="217,5,367,45"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="260,56,211,95,208,91,256,52"/>
 </map>

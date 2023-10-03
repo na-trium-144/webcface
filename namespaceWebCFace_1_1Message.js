@@ -1,26 +1,26 @@
 var namespaceWebCFace_1_1Message =
 [
     [ "MessageKind", "namespaceWebCFace_1_1Message_1_1MessageKind.html", [
-      [ "MessageKindEnum", "namespaceWebCFace_1_1Message_1_1MessageKind.html#a10acbaf3c3d75bc5effbdd1c336081cb", [
-        [ "unknown", "namespaceWebCFace_1_1Message_1_1MessageKind.html#a10acbaf3c3d75bc5effbdd1c336081cbaddcf6a4b62a3da030081ac0ab99689e7", null ],
-        [ "value", "namespaceWebCFace_1_1Message_1_1MessageKind.html#a10acbaf3c3d75bc5effbdd1c336081cba9f71b945f169a4c7d170206ec8bb4672", null ],
-        [ "text", "namespaceWebCFace_1_1Message_1_1MessageKind.html#a10acbaf3c3d75bc5effbdd1c336081cba91ef4fb01aff98d32d2ed7f770704eb4", null ],
-        [ "view", "namespaceWebCFace_1_1Message_1_1MessageKind.html#a10acbaf3c3d75bc5effbdd1c336081cba29dcabd2860d43d0317f50044177f339", null ],
-        [ "entry", "namespaceWebCFace_1_1Message_1_1MessageKind.html#a10acbaf3c3d75bc5effbdd1c336081cba6c6e9307d712d47432a557e4fc6549c9", null ],
-        [ "req", "namespaceWebCFace_1_1Message_1_1MessageKind.html#a10acbaf3c3d75bc5effbdd1c336081cba6b0aeefef0dc1dd55619a69dc18fa8f2", null ],
-        [ "res", "namespaceWebCFace_1_1Message_1_1MessageKind.html#a10acbaf3c3d75bc5effbdd1c336081cba60821b9aed89e24e7cbbd3f307e3fac0", null ],
-        [ "sync_init", "namespaceWebCFace_1_1Message_1_1MessageKind.html#a10acbaf3c3d75bc5effbdd1c336081cba34c82379ccde043a5bd10003f83dc713", null ],
-        [ "call", "namespaceWebCFace_1_1Message_1_1MessageKind.html#a10acbaf3c3d75bc5effbdd1c336081cbac2ad7e3e1ea89f38d0537b935de08999", null ],
-        [ "call_response", "namespaceWebCFace_1_1Message_1_1MessageKind.html#a10acbaf3c3d75bc5effbdd1c336081cba82e7b833c1a5785e9c12d3986281f505", null ],
-        [ "call_result", "namespaceWebCFace_1_1Message_1_1MessageKind.html#a10acbaf3c3d75bc5effbdd1c336081cbada885b01f4bf6a87f7a4dac696889a09", null ],
-        [ "func_info", "namespaceWebCFace_1_1Message_1_1MessageKind.html#a10acbaf3c3d75bc5effbdd1c336081cbab18ed756f3fa17714ed0a3e80adebc1f", null ],
-        [ "log", "namespaceWebCFace_1_1Message_1_1MessageKind.html#a10acbaf3c3d75bc5effbdd1c336081cbae40d08be8d8869a8ddce7f5c7eb7dc62", null ],
-        [ "log_req", "namespaceWebCFace_1_1Message_1_1MessageKind.html#a10acbaf3c3d75bc5effbdd1c336081cbafc6fd1d4168d99d966f43c0d50ac817f", null ],
-        [ "sync", "namespaceWebCFace_1_1Message_1_1MessageKind.html#a10acbaf3c3d75bc5effbdd1c336081cba5f51759bacdadb2ba8c2f8d7b5a42f68", null ],
-        [ "svr_version", "namespaceWebCFace_1_1Message_1_1MessageKind.html#a10acbaf3c3d75bc5effbdd1c336081cba276a9eee44a5ab8a674a261dd8547b30", null ],
-        [ "ping", "namespaceWebCFace_1_1Message_1_1MessageKind.html#a10acbaf3c3d75bc5effbdd1c336081cbad87f246afdb28111a5ac38813f8c5f9e", null ],
-        [ "ping_status", "namespaceWebCFace_1_1Message_1_1MessageKind.html#a10acbaf3c3d75bc5effbdd1c336081cbaf50c06f2437ebf37757f49f0ebd15e3e", null ],
-        [ "ping_status_req", "namespaceWebCFace_1_1Message_1_1MessageKind.html#a10acbaf3c3d75bc5effbdd1c336081cba06043ac3a9dc928425d3331045e935b8", null ]
+      [ "MessageKindEnum", "namespaceWebCFace_1_1Message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484", [
+        [ "unknown", "namespaceWebCFace_1_1Message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a5b9f6d065e6e98483b3d3ed01f4f6cbe", null ],
+        [ "value", "namespaceWebCFace_1_1Message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a97de9ab6885342a574053b8f64a563a9", null ],
+        [ "text", "namespaceWebCFace_1_1Message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a0e17259309839615d215adfe7a44fb50", null ],
+        [ "view", "namespaceWebCFace_1_1Message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484ac29e396d151e12a0e2f8ffa62decd2b2", null ],
+        [ "entry", "namespaceWebCFace_1_1Message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484aea7013f3ac85e6433e2758c1e7052ae5", null ],
+        [ "req", "namespaceWebCFace_1_1Message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a1cbc123f91f6737e5506973f4493e91c", null ],
+        [ "res", "namespaceWebCFace_1_1Message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a85bfa236dc9fc1ac1ff923b3fdcf811f", null ],
+        [ "sync_init", "namespaceWebCFace_1_1Message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a3e39a679980a898b394a7b68f942b913", null ],
+        [ "call", "namespaceWebCFace_1_1Message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a98ab4979bd774d191f9a4642f9df392f", null ],
+        [ "call_response", "namespaceWebCFace_1_1Message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484ad2b35349797c31395039e9dd563f0b38", null ],
+        [ "call_result", "namespaceWebCFace_1_1Message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484aa4b6a1e8b7f7652d391a775822cb865d", null ],
+        [ "func_info", "namespaceWebCFace_1_1Message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a2788ea84f795b0cf84dcde7488b7fd64", null ],
+        [ "log", "namespaceWebCFace_1_1Message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484aaac8d4ee23e2d305f0b0a575cda066f3", null ],
+        [ "log_req", "namespaceWebCFace_1_1Message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a826514d64c34ca326c2ba1297635e9d5", null ],
+        [ "sync", "namespaceWebCFace_1_1Message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484aa1bb8c0556b05e13283b2b1d6b30d887", null ],
+        [ "svr_version", "namespaceWebCFace_1_1Message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484ad8d5e841235d38b60263ab19fda702fc", null ],
+        [ "ping", "namespaceWebCFace_1_1Message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484aad2de303cb1ea37f4a3bd91f5ef4c29f", null ],
+        [ "ping_status", "namespaceWebCFace_1_1Message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a0cb8db73d08e6f71fe9d47fb44fdc9a5", null ],
+        [ "ping_status_req", "namespaceWebCFace_1_1Message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a0cf9ec07dc822afa5e1ec58e04e513fd", null ]
       ] ]
     ] ],
     [ "Call", "structWebCFace_1_1Message_1_1Call.html", "structWebCFace_1_1Message_1_1Call" ],
@@ -30,7 +30,7 @@ var namespaceWebCFace_1_1Message =
     [ "FuncInfo", "structWebCFace_1_1Message_1_1FuncInfo.html", "structWebCFace_1_1Message_1_1FuncInfo" ],
     [ "Log", "structWebCFace_1_1Message_1_1Log.html", "structWebCFace_1_1Message_1_1Log" ],
     [ "LogReq", "structWebCFace_1_1Message_1_1LogReq.html", "structWebCFace_1_1Message_1_1LogReq" ],
-    [ "MessageBase", "structWebCFace_1_1Message_1_1MessageBase.html", null ],
+    [ "MessageBase", "structWebCFace_1_1Message_1_1MessageBase.html", "structWebCFace_1_1Message_1_1MessageBase" ],
     [ "Ping", "structWebCFace_1_1Message_1_1Ping.html", "structWebCFace_1_1Message_1_1Ping" ],
     [ "PingStatus", "structWebCFace_1_1Message_1_1PingStatus.html", "structWebCFace_1_1Message_1_1PingStatus" ],
     [ "PingStatusReq", "structWebCFace_1_1Message_1_1PingStatusReq.html", "structWebCFace_1_1Message_1_1PingStatusReq" ],
@@ -45,9 +45,9 @@ var namespaceWebCFace_1_1Message =
     [ "Text", "structWebCFace_1_1Message_1_1Text.html", "structWebCFace_1_1Message_1_1Text" ],
     [ "Value", "structWebCFace_1_1Message_1_1Value.html", "structWebCFace_1_1Message_1_1Value" ],
     [ "View", "structWebCFace_1_1Message_1_1View.html", "structWebCFace_1_1Message_1_1View" ],
-    [ "pack", "namespaceWebCFace_1_1Message.html#a5290b53aaa09cf1da36d84156e7bff75", null ],
-    [ "packDone", "namespaceWebCFace_1_1Message.html#a669218e80fa8f0c4b7911371f0f8e264", null ],
-    [ "packSingle", "namespaceWebCFace_1_1Message.html#aa24c358704bf2a6737b632ddee8886e0", null ],
-    [ "printMsg", "namespaceWebCFace_1_1Message.html#a1b86a5dae021060ad40b62b70de9c8a2", null ],
-    [ "unpack", "namespaceWebCFace_1_1Message.html#ab28afa4299af7d6d988e3be9dbbf1c4e", null ]
+    [ "pack", "namespaceWebCFace_1_1Message.html#a36879effdf16e6acdd563b41fb630f35", null ],
+    [ "packDone", "namespaceWebCFace_1_1Message.html#a0368ef47eb403e45018a73ef46c90c62", null ],
+    [ "packSingle", "namespaceWebCFace_1_1Message.html#a965c311b611151d72a5129362ea11618", null ],
+    [ "printMsg", "namespaceWebCFace_1_1Message.html#a855dd0a1ee25870fa6a6bafa7f031066", null ],
+    [ "unpack", "namespaceWebCFace_1_1Message.html#af4c21164f578c30ba84af08bd406b981", null ]
 ];

@@ -1,5 +1,5 @@
-<map id="WebCFace::FuncNotFound" name="WebCFace::FuncNotFound">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,79,193,104"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="30,5,169,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="102,44,102,79,97,79,97,44"/>
+<map id="FuncNotFound" name="FuncNotFound">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,79,120,104"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="7,5,118,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="65,44,65,79,60,79,60,44"/>
 </map>

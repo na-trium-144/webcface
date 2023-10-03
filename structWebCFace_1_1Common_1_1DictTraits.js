@@ -1,5 +1,7 @@
 var structWebCFace_1_1Common_1_1DictTraits =
 [
-    [ "ValueType", "structWebCFace_1_1Common_1_1DictTraits.html#af8b45bbc56cbde2f0d252b1bd7cf5c7f", null ],
-    [ "VecType", "structWebCFace_1_1Common_1_1DictTraits.html#a125b55848ce59020a32a56857f531e52", null ]
+    [ "ValueType", "structWebCFace_1_1Common_1_1DictTraits.html#aecaeabaa9da616ae42bb20787878260d", null ],
+    [ "VecType", "structWebCFace_1_1Common_1_1DictTraits.html#a62045952c73d8784c546e276064d9967", null ],
+    [ "parse", "structWebCFace_1_1Common_1_1DictTraits.html#aa10c66c2df87813f43c110c64bbd6e2b", null ],
+    [ "wrap", "structWebCFace_1_1Common_1_1DictTraits.html#ae2d5bfb3d7db52b923afd54f19f258f9", null ]
 ];

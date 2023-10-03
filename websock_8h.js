@@ -1,8 +1,8 @@
 var websock_8h =
 [
-    [ "serverRun", "websock_8h.html#a485ae5a5d7f4e1ffa23126fed8fb1bae", null ],
-    [ "serverStop", "websock_8h.html#ab74d11d8eba7c08276e1856714a88096", null ],
-    [ "server_mtx", "websock_8h.html#a8b3562015cae1ccf53d48274bfac436a", null ],
-    [ "server_ping_wait", "websock_8h.html#a71f8fa599f9c1f7cbbbcc844e4e4c018", null ],
-    [ "server_stop", "websock_8h.html#a53056c527bb94185182fb8fe7b27d0e4", null ]
+    [ "serverRun", "websock_8h.html#a55d5c53c73f66be16623a85d1c4f1e97", null ],
+    [ "serverStop", "websock_8h.html#a324e1a70e006e8434fa711dd7e646727", null ],
+    [ "server_mtx", "websock_8h.html#a229b454d156fec6ab3e561a195813199", null ],
+    [ "server_ping_wait", "websock_8h.html#a4898db8d9fe1cf7bf83e4c7ac242a245", null ],
+    [ "server_stop", "websock_8h.html#a866e9256cc856d47a956a306b6a65e13", null ]
 ];

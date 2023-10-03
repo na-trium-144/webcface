@@ -1,7 +1,8 @@
 var structWebCFace_1_1Message_1_1Log =
 [
     [ "LogLine", "structWebCFace_1_1Message_1_1Log_1_1LogLine.html", "structWebCFace_1_1Message_1_1Log_1_1LogLine" ],
-    [ "MSGPACK_DEFINE_MAP", "structWebCFace_1_1Message_1_1Log.html#a428247eccab1b7f68ca2589f0a458ba5", null ],
-    [ "log", "structWebCFace_1_1Message_1_1Log.html#a1d3323171a4e3ffa1e900bf0f911d5b7", null ],
-    [ "member_id", "structWebCFace_1_1Message_1_1Log.html#a307e32db7f15238df04adc7e1c9330b2", null ]
+    [ "MSGPACK_DEFINE_MAP", "structWebCFace_1_1Message_1_1Log.html#abcd13679942ad88d92c30754a4f09021", null ],
+    [ "kind", "structWebCFace_1_1Message_1_1Log.html#ad5a4760db27f8fcd5c4028bb15f80ad9", null ],
+    [ "log", "structWebCFace_1_1Message_1_1Log.html#a01cf377de94871f470ee00209d93837b", null ],
+    [ "member_id", "structWebCFace_1_1Message_1_1Log.html#ae9313ec6cb5a526764b6163a3148970b", null ]
 ];

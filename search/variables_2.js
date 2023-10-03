@@ -1,12 +1,16 @@
 var searchData=
 [
-  ['caller_5fid_0',['caller_id',['../structWebCFace_1_1Common_1_1FuncCall.html#a2919f91815c5d4286b232784eea03a71',1,'WebCFace::Common::FuncCall::caller_id'],['../structWebCFace_1_1Message_1_1CallResponse.html#a4a096442022ce01d32270a5885676e3d',1,'WebCFace::Message::CallResponse::caller_id'],['../structWebCFace_1_1Message_1_1CallResult.html#a7343bda2469840c7a58786ce9cc98409',1,'WebCFace::Message::CallResult::caller_id']]],
-  ['caller_5fmember_5fid_1',['caller_member_id',['../structWebCFace_1_1Common_1_1FuncCall.html#a2e61dc826014975f7e34ec443bcb8d8c',1,'WebCFace::Common::FuncCall::caller_member_id'],['../structWebCFace_1_1Message_1_1CallResponse.html#a0e33b35152526ebdf4cb51d2b88b9f17',1,'WebCFace::Message::CallResponse::caller_member_id'],['../structWebCFace_1_1Message_1_1CallResult.html#a3cee32647443b0654a2eeaa0a532bd42',1,'WebCFace::Message::CallResult::caller_member_id']]],
-  ['children_2',['children',['../structWebCFace_1_1Common_1_1DictElement.html#a8b8525adc74cb930bf7811e047ccdcee',1,'WebCFace::Common::DictElement']]],
-  ['clients_3',['clients',['../structWebCFace_1_1Server_1_1Store.html#a5a91c21939ae47ec3085154c88119abc',1,'WebCFace::Server::Store']]],
-  ['clients_5fby_5fid_4',['clients_by_id',['../structWebCFace_1_1Server_1_1Store.html#a40023ae5e8e141b24fa5a38e82ea5275',1,'WebCFace::Server::Store']]],
-  ['closing_5',['closing',['../structWebCFace_1_1ClientData.html#a08da07ecbe0e06934dad51949d8a93d7',1,'WebCFace::ClientData']]],
-  ['components_6',['components',['../classWebCFace_1_1ViewBuf.html#abde4578d5a3b7a8c07424acfb1d146a8',1,'WebCFace::ViewBuf']]],
-  ['con_7',['con',['../structWebCFace_1_1Server_1_1ClientData.html#a688eeba6bceb713fd459edac93993af1',1,'WebCFace::Server::ClientData']]],
-  ['connected_5f_8',['connected_',['../structWebCFace_1_1ClientData.html#a0bc0e3c010b21d5db9d72f4dacd2c42b',1,'WebCFace::ClientData']]]
+  ['call_5fcond_0',['call_cond',['../classWebCFace_1_1ClientData_1_1FuncOnSync.html#a7e260869ddc7844368da423f41272450',1,'WebCFace::ClientData::FuncOnSync']]],
+  ['call_5fmtx_1',['call_mtx',['../classWebCFace_1_1ClientData_1_1FuncOnSync.html#a98d61a59fba66a09aed3b026f13e604f',1,'WebCFace::ClientData::FuncOnSync']]],
+  ['caller_2',['caller',['../classWebCFace_1_1AsyncFuncResult.html#aa016fe422de903a6eea6baa1b6cbe866',1,'WebCFace::AsyncFuncResult']]],
+  ['caller_5fid_3',['caller_id',['../structWebCFace_1_1Common_1_1FuncCall.html#ae2e190c8ffa2f68bd7f7e31e257928f5',1,'WebCFace::Common::FuncCall::caller_id'],['../classWebCFace_1_1AsyncFuncResult.html#ae2e190c8ffa2f68bd7f7e31e257928f5',1,'WebCFace::AsyncFuncResult::caller_id'],['../structWebCFace_1_1Message_1_1CallResponse.html#ae2e190c8ffa2f68bd7f7e31e257928f5',1,'WebCFace::Message::CallResponse::caller_id'],['../structWebCFace_1_1Message_1_1CallResult.html#ae2e190c8ffa2f68bd7f7e31e257928f5',1,'WebCFace::Message::CallResult::caller_id']]],
+  ['caller_5fmember_5fid_4',['caller_member_id',['../structWebCFace_1_1Message_1_1CallResult.html#a0be1debb3575e0247093e3219322a868',1,'WebCFace::Message::CallResult::caller_member_id'],['../structWebCFace_1_1Message_1_1CallResponse.html#a0be1debb3575e0247093e3219322a868',1,'WebCFace::Message::CallResponse::caller_member_id'],['../structWebCFace_1_1Common_1_1FuncCall.html#a0be1debb3575e0247093e3219322a868',1,'WebCFace::Common::FuncCall::caller_member_id']]],
+  ['children_5',['children',['../structWebCFace_1_1Common_1_1DictElement.html#adc086dc849c07799cc17df5cee93bcbb',1,'WebCFace::Common::DictElement::children'],['../classWebCFace_1_1Common_1_1Dict.html#a8f1320b25b2eea2c7f1d53543dda81ec',1,'WebCFace::Common::Dict::children']]],
+  ['clients_6',['clients',['../structWebCFace_1_1Server_1_1Store.html#ad47a9aa998801c465c472b11fd0a67fd',1,'WebCFace::Server::Store']]],
+  ['clients_5fby_5fid_7',['clients_by_id',['../structWebCFace_1_1Server_1_1Store.html#a9cd584d5bf32dbab4cc5b3809803e38f',1,'WebCFace::Server::Store']]],
+  ['closing_8',['closing',['../structWebCFace_1_1ClientData.html#ac12c0189fb9871dca59ac653ce95b4cf',1,'WebCFace::ClientData']]],
+  ['components_9',['components',['../classWebCFace_1_1ViewBuf.html#aef946c3f6420c84110b27c92f6637431',1,'WebCFace::ViewBuf']]],
+  ['con_10',['con',['../structWebCFace_1_1Server_1_1ClientData.html#abb05ebac08748141a091f1ba10fd0063',1,'WebCFace::Server::ClientData']]],
+  ['cond_11',['cond',['../classWebCFace_1_1Common_1_1Queue.html#a0ee0b6cec162cd216cb26acab58d4a39',1,'WebCFace::Common::Queue']]],
+  ['connected_5f_12',['connected_',['../structWebCFace_1_1ClientData.html#a394f715193a382d9c59ec69143a3cc4d',1,'WebCFace::ClientData']]]
 ];

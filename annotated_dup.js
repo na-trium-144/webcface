@@ -26,7 +26,7 @@ var annotated_dup =
         [ "FuncInfo", "structWebCFace_1_1Message_1_1FuncInfo.html", "structWebCFace_1_1Message_1_1FuncInfo" ],
         [ "Log", "structWebCFace_1_1Message_1_1Log.html", "structWebCFace_1_1Message_1_1Log" ],
         [ "LogReq", "structWebCFace_1_1Message_1_1LogReq.html", "structWebCFace_1_1Message_1_1LogReq" ],
-        [ "MessageBase", "structWebCFace_1_1Message_1_1MessageBase.html", null ],
+        [ "MessageBase", "structWebCFace_1_1Message_1_1MessageBase.html", "structWebCFace_1_1Message_1_1MessageBase" ],
         [ "Ping", "structWebCFace_1_1Message_1_1Ping.html", "structWebCFace_1_1Message_1_1Ping" ],
         [ "PingStatus", "structWebCFace_1_1Message_1_1PingStatus.html", "structWebCFace_1_1Message_1_1PingStatus" ],
         [ "PingStatusReq", "structWebCFace_1_1Message_1_1PingStatusReq.html", "structWebCFace_1_1Message_1_1PingStatusReq" ],

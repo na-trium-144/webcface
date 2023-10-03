@@ -90,7 +90,7 @@ var NAVTREE =
       [ "Class Members", "functions.html", [
         [ "All", "functions.html", "functions_dup" ],
         [ "Functions", "functions_func.html", "functions_func" ],
-        [ "Variables", "functions_vars.html", null ],
+        [ "Variables", "functions_vars.html", "functions_vars" ],
         [ "Typedefs", "functions_type.html", null ],
         [ "Related Symbols", "functions_rela.html", null ]
       ] ]
@@ -109,14 +109,15 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"classWebCFace_1_1Common_1_1Arg.html",
-"classWebCFace_1_1EventTarget.html#a6147a5ee8391ffa9442cda3e1e4d812d",
-"classWebCFace_1_1Text.html#aec65d949b87c28313bac54ec6baf96cd",
-"common_2view_8h.html#a63790627e463c24ab28ef12e4d636e03ad508fe45cecaf653904a0e774084bb5c",
-"namespaceWebCFace_1_1Common.html#aaf4e9dd872fa7df87d6d43bc57dd1c21",
-"structWebCFace_1_1Common_1_1FieldBase.html#ad89c80b43512f43401fd5435a0fc56b6",
-"structWebCFace_1_1Message_1_1Entry.html#aeb630f20bae290d8b803699ae2c3ac7e",
-"structWebCFace_1_1Message_1_1View_1_1ViewComponent.html#ababc49422d98ce2d65db3a4829ab51cc"
+"classWebCFace_1_1ClientData_1_1SyncDataStore1.html#a164b48b02f669f91616db41206a858f1",
+"classWebCFace_1_1Common_1_1Dict.html#ada57e64ab3ed8c4823e70705a8323e6f",
+"classWebCFace_1_1Log.html#ad1be7d51af13514338ccba90975d4b7f",
+"classWebCFace_1_1Value.html#aa656df3c1ad08bc32e4b91718345f7f7",
+"field_8h.html",
+"namespaceWebCFace_1_1Message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484",
+"structWebCFace_1_1Common_1_1DictTraits_3_01std_1_1shared__ptr_3_01T_01_4_01_4.html#abbe746fc1535d3cd565042e3bd51f157",
+"structWebCFace_1_1Message_1_1CallResponse.html#ad5a4760db27f8fcd5c4028bb15f80ad9",
+"structWebCFace_1_1Message_1_1SyncInit.html#aa2698cd3561f3700857d2061ae8161a7"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

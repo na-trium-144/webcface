@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>WebCFace: WebCFace::Client Class Reference</title>
+<title>WebCFace: Client Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -111,8 +111,11 @@ $(document).ready(function(){initNavTree('classWebCFace_1_1Client.html',''); ini
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="#pro-attribs">Protected Attributes</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
+<a href="#pri-static-methods">Static Private Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="classWebCFace_1_1Client-members.html">List of all members</a>  </div>
-  <div class="headertitle"><div class="title">WebCFace::Client Class Reference</div></div>
+  <div class="headertitle"><div class="title">Client Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
@@ -121,165 +124,200 @@ $(document).ready(function(){initNavTree('classWebCFace_1_1Client.html',''); ini
 
 <p><code>#include &lt;<a class="el" href="client_8h_source.html">webcface/client.h</a>&gt;</code></p>
 <div class="dynheader">
-Inheritance diagram for WebCFace::Client:</div>
+Inheritance diagram for Client:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classWebCFace_1_1Client__inherit__graph.svg" width="238" height="256"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classWebCFace_1_1Client__inherit__graph.svg" width="96" height="256"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
-Collaboration diagram for WebCFace::Client:</div>
+Collaboration diagram for Client:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classWebCFace_1_1Client__coll__graph.svg" width="238" height="256"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classWebCFace_1_1Client__coll__graph.svg" width="210" height="274"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a0aac5d4645970ad1e62e3421326e51ec" id="r_a0aac5d4645970ad1e62e3421326e51ec"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Client.html#a0aac5d4645970ad1e62e3421326e51ec">Client</a> ()</td></tr>
-<tr class="memdesc:a0aac5d4645970ad1e62e3421326e51ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">自分自身の名前を指定しせずサーバーに接続する  <br /></td></tr>
-<tr class="separator:a0aac5d4645970ad1e62e3421326e51ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8b1d585872e37528ff20e56a12e48876" id="r_a8b1d585872e37528ff20e56a12e48876"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Client.html#a8b1d585872e37528ff20e56a12e48876">Client</a> (const <a class="el" href="classWebCFace_1_1Client.html">Client</a> &amp;)=delete</td></tr>
-<tr class="separator:a8b1d585872e37528ff20e56a12e48876"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaa53f7dc3840559faaa8087a6e562fab" id="r_aaa53f7dc3840559faaa8087a6e562fab"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classWebCFace_1_1Client.html">Client</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Client.html#aaa53f7dc3840559faaa8087a6e562fab">operator=</a> (const <a class="el" href="classWebCFace_1_1Client.html">Client</a> &amp;)=delete</td></tr>
-<tr class="separator:aaa53f7dc3840559faaa8087a6e562fab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad2087d8ff800dc22b1a4712d55f608c5" id="r_ad2087d8ff800dc22b1a4712d55f608c5"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Client.html#ad2087d8ff800dc22b1a4712d55f608c5">Client</a> (const std::string &amp;<a class="el" href="classWebCFace_1_1Member.html#a1a075fb6947d283da24fc070e1aa0a05">name</a>, const std::string &amp;host=&quot;127.0.0.1&quot;, int port=<a class="el" href="def_8h.html#ac2db178dd291a312ca3f696e69c9af55">WEBCFACE_DEFAULT_PORT</a>)</td></tr>
-<tr class="memdesc:ad2087d8ff800dc22b1a4712d55f608c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">自分自身のmemberとしての名前を指定しサーバーに接続する  <br /></td></tr>
-<tr class="separator:ad2087d8ff800dc22b1a4712d55f608c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a052489dd7e1f63b3f1cb3852118adb9d" id="r_a052489dd7e1f63b3f1cb3852118adb9d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Client.html#a052489dd7e1f63b3f1cb3852118adb9d">Client</a> (const std::string &amp;<a class="el" href="classWebCFace_1_1Member.html#a1a075fb6947d283da24fc070e1aa0a05">name</a>, const std::string &amp;host, int port, std::shared_ptr&lt; <a class="el" href="structWebCFace_1_1ClientData.html">ClientData</a> &gt; data)</td></tr>
-<tr class="separator:a052489dd7e1f63b3f1cb3852118adb9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad2c8c915969a19069eeaa2f9ed433105" id="r_ad2c8c915969a19069eeaa2f9ed433105"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Client.html#ad2c8c915969a19069eeaa2f9ed433105">connected</a> () const</td></tr>
-<tr class="memdesc:ad2c8c915969a19069eeaa2f9ed433105"><td class="mdescLeft">&#160;</td><td class="mdescRight">サーバーに接続できているときtrueを返す。  <br /></td></tr>
-<tr class="separator:ad2c8c915969a19069eeaa2f9ed433105"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac47cf70c88c0381db0641a37be1ee528" id="r_ac47cf70c88c0381db0641a37be1ee528"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Client.html#ac47cf70c88c0381db0641a37be1ee528">~Client</a> ()</td></tr>
-<tr class="memdesc:ac47cf70c88c0381db0641a37be1ee528"><td class="mdescLeft">&#160;</td><td class="mdescRight">デストラクタで接続を切る。  <br /></td></tr>
-<tr class="separator:ac47cf70c88c0381db0641a37be1ee528"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af996ad37ffa7500e52da61207b5d3065" id="r_af996ad37ffa7500e52da61207b5d3065"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Client.html#af996ad37ffa7500e52da61207b5d3065">sync</a> ()</td></tr>
-<tr class="memdesc:af996ad37ffa7500e52da61207b5d3065"><td class="mdescLeft">&#160;</td><td class="mdescRight">データをまとめて送信する。  <br /></td></tr>
-<tr class="separator:af996ad37ffa7500e52da61207b5d3065"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abde8a8de472a44428e723385670641ab" id="r_abde8a8de472a44428e723385670641ab"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classWebCFace_1_1Member.html">Member</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Client.html#abde8a8de472a44428e723385670641ab">member</a> (const std::string &amp;<a class="el" href="classWebCFace_1_1Member.html#a1a075fb6947d283da24fc070e1aa0a05">name</a>)</td></tr>
-<tr class="memdesc:abde8a8de472a44428e723385670641ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">他のmemberにアクセスする。  <br /></td></tr>
-<tr class="separator:abde8a8de472a44428e723385670641ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6ca95d51d7a94f6a3e6e4fa7fc73f168" id="r_a6ca95d51d7a94f6a3e6e4fa7fc73f168"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classWebCFace_1_1Member.html">Member</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Client.html#a6ca95d51d7a94f6a3e6e4fa7fc73f168">members</a> ()</td></tr>
-<tr class="memdesc:a6ca95d51d7a94f6a3e6e4fa7fc73f168"><td class="mdescLeft">&#160;</td><td class="mdescRight">サーバーに接続されている他のmemberのリストを得る。  <br /></td></tr>
-<tr class="separator:a6ca95d51d7a94f6a3e6e4fa7fc73f168"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af4777c9fd3039f338c0a1df5d383adf8" id="r_af4777c9fd3039f338c0a1df5d383adf8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classWebCFace_1_1EventTarget.html">EventTarget</a>&lt; <a class="el" href="classWebCFace_1_1Member.html">Member</a>, int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Client.html#af4777c9fd3039f338c0a1df5d383adf8">onMemberEntry</a> ()</td></tr>
-<tr class="memdesc:af4777c9fd3039f338c0a1df5d383adf8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Memberが追加された時のイベントを設定  <br /></td></tr>
-<tr class="separator:af4777c9fd3039f338c0a1df5d383adf8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af53c611a6b126853f0160ed102ca56f6" id="r_af53c611a6b126853f0160ed102ca56f6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Client.html#af53c611a6b126853f0160ed102ca56f6">setDefaultRunCond</a> (<a class="el" href="namespaceWebCFace_1_1Common.html#a04c311f01fd557fa0da64bc2b597256d">FuncWrapperType</a> wrapper)</td></tr>
-<tr class="memdesc:af53c611a6b126853f0160ed102ca56f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">これ以降セットするFuncのデフォルトのFuncWrapperをセットする。(初期状態はnullptr)  <br /></td></tr>
-<tr class="separator:af53c611a6b126853f0160ed102ca56f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a44e7fe588d89716bfcdb785fc89de5fc" id="r_a44e7fe588d89716bfcdb785fc89de5fc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Client.html#a44e7fe588d89716bfcdb785fc89de5fc">setDefaultRunCondNone</a> ()</td></tr>
-<tr class="memdesc:a44e7fe588d89716bfcdb785fc89de5fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">デフォルトのFuncWrapperを nullptr にする  <br /></td></tr>
-<tr class="separator:a44e7fe588d89716bfcdb785fc89de5fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a63da7b8e7f46d79a50d9b3b650b80a60" id="r_a63da7b8e7f46d79a50d9b3b650b80a60"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Client.html#a63da7b8e7f46d79a50d9b3b650b80a60">setDefaultRunCondOnSync</a> ()</td></tr>
-<tr class="memdesc:a63da7b8e7f46d79a50d9b3b650b80a60"><td class="mdescLeft">&#160;</td><td class="mdescRight">デフォルトのFuncWrapperを runCondOnSync() にする  <br /></td></tr>
-<tr class="separator:a63da7b8e7f46d79a50d9b3b650b80a60"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae6bfa5d22196f285d140294130d1385f" id="r_ae6bfa5d22196f285d140294130d1385f"><td class="memTemplParams" colspan="2">template&lt;typename ScopeGuard &gt; </td></tr>
-<tr class="memitem:ae6bfa5d22196f285d140294130d1385f"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Client.html#ae6bfa5d22196f285d140294130d1385f">setDefaultRunCondScopeGuard</a> ()</td></tr>
-<tr class="memdesc:ae6bfa5d22196f285d140294130d1385f"><td class="mdescLeft">&#160;</td><td class="mdescRight">デフォルトのFuncWrapperを runCondScopeGuard() にする  <br /></td></tr>
-<tr class="separator:ae6bfa5d22196f285d140294130d1385f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a63377cf93ea2ada443a7e1f64425b693" id="r_a63377cf93ea2ada443a7e1f64425b693"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classWebCFace_1_1LoggerSink.html">LoggerSink</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Client.html#a63377cf93ea2ada443a7e1f64425b693">logger_sink</a> ()</td></tr>
-<tr class="memdesc:a63377cf93ea2ada443a7e1f64425b693"><td class="mdescLeft">&#160;</td><td class="mdescRight">サーバーに送信するspdlogのsink  <br /></td></tr>
-<tr class="separator:a63377cf93ea2ada443a7e1f64425b693"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab1aa8b8becb17b47ec04f1fb05ba1945" id="r_ab1aa8b8becb17b47ec04f1fb05ba1945"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; spdlog::logger &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Client.html#ab1aa8b8becb17b47ec04f1fb05ba1945">logger</a> ()</td></tr>
-<tr class="memdesc:ab1aa8b8becb17b47ec04f1fb05ba1945"><td class="mdescLeft">&#160;</td><td class="mdescRight">サーバーとstderr_sinkに流すspdlog::logger  <br /></td></tr>
-<tr class="separator:ab1aa8b8becb17b47ec04f1fb05ba1945"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5c1ff49f57a1a3eabc86c6bd0e7864e5" id="r_a5c1ff49f57a1a3eabc86c6bd0e7864e5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classWebCFace_1_1LoggerBuf.html">LoggerBuf</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Client.html#a5c1ff49f57a1a3eabc86c6bd0e7864e5">logger_streambuf</a> ()</td></tr>
-<tr class="memdesc:a5c1ff49f57a1a3eabc86c6bd0e7864e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">このクライアントのloggerに出力するstreambuf  <br /></td></tr>
-<tr class="separator:a5c1ff49f57a1a3eabc86c6bd0e7864e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abd1997a28a89cf56e6aeebc07b19be63" id="r_abd1997a28a89cf56e6aeebc07b19be63"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Client.html#abd1997a28a89cf56e6aeebc07b19be63">logger_ostream</a> ()</td></tr>
-<tr class="memdesc:abd1997a28a89cf56e6aeebc07b19be63"><td class="mdescLeft">&#160;</td><td class="mdescRight">logger_streambufに出力するostream  <br /></td></tr>
-<tr class="separator:abd1997a28a89cf56e6aeebc07b19be63"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae31c34b752ffb55936a308614715514d" id="r_ae31c34b752ffb55936a308614715514d"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Client.html#ae31c34b752ffb55936a308614715514d">serverVersion</a> () const</td></tr>
-<tr class="memdesc:ae31c34b752ffb55936a308614715514d"><td class="mdescLeft">&#160;</td><td class="mdescRight">WebCFaceサーバーのバージョン情報  <br /></td></tr>
-<tr class="separator:ae31c34b752ffb55936a308614715514d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa954a8b26b0736f23e1bc6ad5b9a9c8e" id="r_aa954a8b26b0736f23e1bc6ad5b9a9c8e"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Client.html#aa954a8b26b0736f23e1bc6ad5b9a9c8e">serverName</a> () const</td></tr>
-<tr class="memdesc:aa954a8b26b0736f23e1bc6ad5b9a9c8e"><td class="mdescLeft">&#160;</td><td class="mdescRight">WebCFaceサーバーの識別情報  <br /></td></tr>
-<tr class="separator:aa954a8b26b0736f23e1bc6ad5b9a9c8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1a075fb6947d283da24fc070e1aa0a05" id="r_a1a075fb6947d283da24fc070e1aa0a05"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Member.html#a1a075fb6947d283da24fc070e1aa0a05">name</a> () const</td></tr>
-<tr class="memdesc:a1a075fb6947d283da24fc070e1aa0a05"><td class="mdescLeft">&#160;</td><td class="mdescRight">Member名  <br /></td></tr>
-<tr class="separator:a1a075fb6947d283da24fc070e1aa0a05"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a38f4a0b2a4797b4dbdcc87de4b7ebb14" id="r_a38f4a0b2a4797b4dbdcc87de4b7ebb14"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classWebCFace_1_1Value.html">Value</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Member.html#a38f4a0b2a4797b4dbdcc87de4b7ebb14">value</a> (const std::string &amp;field) const</td></tr>
-<tr class="memdesc:a38f4a0b2a4797b4dbdcc87de4b7ebb14"><td class="mdescLeft">&#160;</td><td class="mdescRight">このmemberの指定した名前のvalueを参照する。  <br /></td></tr>
-<tr class="separator:a38f4a0b2a4797b4dbdcc87de4b7ebb14"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2450b43825ea5321cb9ea04dac5aee7e" id="r_a2450b43825ea5321cb9ea04dac5aee7e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classWebCFace_1_1Text.html">Text</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Member.html#a2450b43825ea5321cb9ea04dac5aee7e">text</a> (const std::string &amp;field) const</td></tr>
-<tr class="memdesc:a2450b43825ea5321cb9ea04dac5aee7e"><td class="mdescLeft">&#160;</td><td class="mdescRight">このmemberの指定した名前のtextを参照する。  <br /></td></tr>
-<tr class="separator:a2450b43825ea5321cb9ea04dac5aee7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a53e5492fd02bf7c8128b81b6b4c221cb" id="r_a53e5492fd02bf7c8128b81b6b4c221cb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classWebCFace_1_1Func.html">Func</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Member.html#a53e5492fd02bf7c8128b81b6b4c221cb">func</a> (const std::string &amp;field) const</td></tr>
-<tr class="memdesc:a53e5492fd02bf7c8128b81b6b4c221cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">このmemberの指定した名前のfuncを参照する。  <br /></td></tr>
-<tr class="separator:a53e5492fd02bf7c8128b81b6b4c221cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a71876efabf33bf00b521ffb291375f55" id="r_a71876efabf33bf00b521ffb291375f55"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classWebCFace_1_1View.html">View</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Member.html#a71876efabf33bf00b521ffb291375f55">view</a> (const std::string &amp;field) const</td></tr>
-<tr class="memdesc:a71876efabf33bf00b521ffb291375f55"><td class="mdescLeft">&#160;</td><td class="mdescRight">AnonymousFuncオブジェクトを作成しfuncをsetする  <br /></td></tr>
-<tr class="separator:a71876efabf33bf00b521ffb291375f55"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5c98cf1da3d84aed2d55302068268afb" id="r_a5c98cf1da3d84aed2d55302068268afb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classWebCFace_1_1Log.html">Log</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Member.html#a5c98cf1da3d84aed2d55302068268afb">log</a> () const</td></tr>
-<tr class="memdesc:a5c98cf1da3d84aed2d55302068268afb"><td class="mdescLeft">&#160;</td><td class="mdescRight">このmemberのログを参照する。  <br /></td></tr>
-<tr class="separator:a5c98cf1da3d84aed2d55302068268afb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aceaa9d8212927a9c33869346ffd6db31" id="r_aceaa9d8212927a9c33869346ffd6db31"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classWebCFace_1_1Value.html">Value</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Member.html#aceaa9d8212927a9c33869346ffd6db31">values</a> () const</td></tr>
-<tr class="memdesc:aceaa9d8212927a9c33869346ffd6db31"><td class="mdescLeft">&#160;</td><td class="mdescRight">このmemberが公開しているvalueのリストを返す。  <br /></td></tr>
-<tr class="separator:aceaa9d8212927a9c33869346ffd6db31"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2cb05cef52b5ae8f6105a7f99f51a002" id="r_a2cb05cef52b5ae8f6105a7f99f51a002"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classWebCFace_1_1Text.html">Text</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Member.html#a2cb05cef52b5ae8f6105a7f99f51a002">texts</a> () const</td></tr>
-<tr class="memdesc:a2cb05cef52b5ae8f6105a7f99f51a002"><td class="mdescLeft">&#160;</td><td class="mdescRight">このmemberが公開しているtextのリストを返す。  <br /></td></tr>
-<tr class="separator:a2cb05cef52b5ae8f6105a7f99f51a002"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0deff56c92f23510a070689f44b33874" id="r_a0deff56c92f23510a070689f44b33874"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classWebCFace_1_1Func.html">Func</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Member.html#a0deff56c92f23510a070689f44b33874">funcs</a> () const</td></tr>
-<tr class="memdesc:a0deff56c92f23510a070689f44b33874"><td class="mdescLeft">&#160;</td><td class="mdescRight">このmemberが公開しているfuncのリストを返す。  <br /></td></tr>
-<tr class="separator:a0deff56c92f23510a070689f44b33874"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a494444f1d3aa3ceda11637228d015d61" id="r_a494444f1d3aa3ceda11637228d015d61"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classWebCFace_1_1View.html">View</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Member.html#a494444f1d3aa3ceda11637228d015d61">views</a> () const</td></tr>
-<tr class="memdesc:a494444f1d3aa3ceda11637228d015d61"><td class="mdescLeft">&#160;</td><td class="mdescRight">このmemberが公開しているviewのリストを返す。  <br /></td></tr>
-<tr class="separator:a494444f1d3aa3ceda11637228d015d61"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a21730298213527d8297c0aac76220cb8" id="r_a21730298213527d8297c0aac76220cb8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classWebCFace_1_1EventTarget.html">EventTarget</a>&lt; <a class="el" href="classWebCFace_1_1Value.html">Value</a>, std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Member.html#a21730298213527d8297c0aac76220cb8">onValueEntry</a> () const</td></tr>
-<tr class="memdesc:a21730298213527d8297c0aac76220cb8"><td class="mdescLeft">&#160;</td><td class="mdescRight">valueが追加された時のイベント  <br /></td></tr>
-<tr class="separator:a21730298213527d8297c0aac76220cb8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0235622f1f00e7bc8b19d4786d54d54a" id="r_a0235622f1f00e7bc8b19d4786d54d54a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classWebCFace_1_1EventTarget.html">EventTarget</a>&lt; <a class="el" href="classWebCFace_1_1Text.html">Text</a>, std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Member.html#a0235622f1f00e7bc8b19d4786d54d54a">onTextEntry</a> () const</td></tr>
-<tr class="memdesc:a0235622f1f00e7bc8b19d4786d54d54a"><td class="mdescLeft">&#160;</td><td class="mdescRight">textが追加された時のイベント  <br /></td></tr>
-<tr class="separator:a0235622f1f00e7bc8b19d4786d54d54a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac3527bd479052866aae9ff1617cff5b9" id="r_ac3527bd479052866aae9ff1617cff5b9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classWebCFace_1_1EventTarget.html">EventTarget</a>&lt; <a class="el" href="classWebCFace_1_1Func.html">Func</a>, std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Member.html#ac3527bd479052866aae9ff1617cff5b9">onFuncEntry</a> () const</td></tr>
-<tr class="memdesc:ac3527bd479052866aae9ff1617cff5b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">funcが追加された時のイベント  <br /></td></tr>
-<tr class="separator:ac3527bd479052866aae9ff1617cff5b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3c1910cb2873a78c61c5b2da55a918e1" id="r_a3c1910cb2873a78c61c5b2da55a918e1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classWebCFace_1_1EventTarget.html">EventTarget</a>&lt; <a class="el" href="classWebCFace_1_1View.html">View</a>, std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Member.html#a3c1910cb2873a78c61c5b2da55a918e1">onViewEntry</a> () const</td></tr>
-<tr class="memdesc:a3c1910cb2873a78c61c5b2da55a918e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">viewが追加されたときのイベント  <br /></td></tr>
-<tr class="separator:a3c1910cb2873a78c61c5b2da55a918e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a426a32543d6f4eb62f89b1c7d129f84e" id="r_a426a32543d6f4eb62f89b1c7d129f84e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classWebCFace_1_1EventTarget.html">EventTarget</a>&lt; <a class="el" href="classWebCFace_1_1Member.html">Member</a>, std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Member.html#a426a32543d6f4eb62f89b1c7d129f84e">onSync</a> () const</td></tr>
-<tr class="memdesc:a426a32543d6f4eb62f89b1c7d129f84e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Memberがsync()したときのイベント  <br /></td></tr>
-<tr class="separator:a426a32543d6f4eb62f89b1c7d129f84e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3f19e9bfd748992442b30033f85bdef2" id="r_a3f19e9bfd748992442b30033f85bdef2"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Member.html#a3f19e9bfd748992442b30033f85bdef2">libName</a> () const</td></tr>
-<tr class="memdesc:a3f19e9bfd748992442b30033f85bdef2"><td class="mdescLeft">&#160;</td><td class="mdescRight">このMemberが使っているWebCFaceライブラリ  <br /></td></tr>
-<tr class="separator:a3f19e9bfd748992442b30033f85bdef2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:affbd7c9ccb118df5746637f8ea60c7c0" id="r_affbd7c9ccb118df5746637f8ea60c7c0"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Member.html#affbd7c9ccb118df5746637f8ea60c7c0">libVersion</a> () const</td></tr>
-<tr class="memdesc:affbd7c9ccb118df5746637f8ea60c7c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">このMemberが使っているWebCFaceのバージョン  <br /></td></tr>
-<tr class="separator:affbd7c9ccb118df5746637f8ea60c7c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a427cf56a7e5dd9476adec5bad73f9fc6" id="r_a427cf56a7e5dd9476adec5bad73f9fc6"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Member.html#a427cf56a7e5dd9476adec5bad73f9fc6">remoteAddr</a> () const</td></tr>
-<tr class="memdesc:a427cf56a7e5dd9476adec5bad73f9fc6"><td class="mdescLeft">&#160;</td><td class="mdescRight">このMemberのIPアドレス  <br /></td></tr>
-<tr class="separator:a427cf56a7e5dd9476adec5bad73f9fc6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9207095243040ce9787a157f149187d8" id="r_a9207095243040ce9787a157f149187d8"><td class="memItemLeft" align="right" valign="top">std::optional&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Member.html#a9207095243040ce9787a157f149187d8">pingStatus</a> () const</td></tr>
-<tr class="memdesc:a9207095243040ce9787a157f149187d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">通信速度を調べる  <br /></td></tr>
-<tr class="separator:a9207095243040ce9787a157f149187d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adac98ff8cc883174d39841a03ffe5473" id="r_adac98ff8cc883174d39841a03ffe5473"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classWebCFace_1_1EventTarget.html">EventTarget</a>&lt; <a class="el" href="classWebCFace_1_1Member.html">Member</a>, std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Member.html#adac98ff8cc883174d39841a03ffe5473">onPing</a> () const</td></tr>
-<tr class="memdesc:adac98ff8cc883174d39841a03ffe5473"><td class="mdescLeft">&#160;</td><td class="mdescRight">通信速度が更新された時のイベント  <br /></td></tr>
-<tr class="separator:adac98ff8cc883174d39841a03ffe5473"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ade50143084fb75a17f6eacb5a27fc0bc" id="r_ade50143084fb75a17f6eacb5a27fc0bc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classWebCFace_1_1Member.html">Member</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structWebCFace_1_1Field.html#ade50143084fb75a17f6eacb5a27fc0bc">member</a> () const</td></tr>
-<tr class="memdesc:ade50143084fb75a17f6eacb5a27fc0bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Memberを返す  <br /></td></tr>
-<tr class="separator:ade50143084fb75a17f6eacb5a27fc0bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa5777bac2de54b388226a381a4174ff0" id="r_aa5777bac2de54b388226a381a4174ff0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Client.html#aa5777bac2de54b388226a381a4174ff0">Client</a> ()</td></tr>
+<tr class="memdesc:aa5777bac2de54b388226a381a4174ff0"><td class="mdescLeft">&#160;</td><td class="mdescRight">自分自身の名前を指定しせずサーバーに接続する  <br /></td></tr>
+<tr class="separator:aa5777bac2de54b388226a381a4174ff0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab7547544036712233febe1db3149327d" id="r_ab7547544036712233febe1db3149327d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Client.html#ab7547544036712233febe1db3149327d">Client</a> (const <a class="el" href="classWebCFace_1_1Client.html">Client</a> &amp;)=delete</td></tr>
+<tr class="separator:ab7547544036712233febe1db3149327d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af502bc22d1cfbffc6d20039b58bb8575" id="r_af502bc22d1cfbffc6d20039b58bb8575"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classWebCFace_1_1Client.html">Client</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Client.html#af502bc22d1cfbffc6d20039b58bb8575">operator=</a> (const <a class="el" href="classWebCFace_1_1Client.html">Client</a> &amp;)=delete</td></tr>
+<tr class="separator:af502bc22d1cfbffc6d20039b58bb8575"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d320836152707a8b07b26abad993bdc" id="r_a8d320836152707a8b07b26abad993bdc"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Client.html#a8d320836152707a8b07b26abad993bdc">Client</a> (const std::string &amp;<a class="el" href="classWebCFace_1_1Member.html#a1d89c28bd42ba9a52da008bb69367171">name</a>, const std::string &amp;<a class="el" href="classWebCFace_1_1Client.html#a696b1086704b0858059129b61eaa4a9f">host</a>=&quot;127.0.0.1&quot;, int <a class="el" href="classWebCFace_1_1Client.html#a63c89c04d1feae07ca35558055155ffb">port</a>=<a class="el" href="def_8h.html#ac2db178dd291a312ca3f696e69c9af55">WEBCFACE_DEFAULT_PORT</a>)</td></tr>
+<tr class="memdesc:a8d320836152707a8b07b26abad993bdc"><td class="mdescLeft">&#160;</td><td class="mdescRight">自分自身のmemberとしての名前を指定しサーバーに接続する  <br /></td></tr>
+<tr class="separator:a8d320836152707a8b07b26abad993bdc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aba7bb87195e176c3f64a24076ecf3d62" id="r_aba7bb87195e176c3f64a24076ecf3d62"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Client.html#aba7bb87195e176c3f64a24076ecf3d62">Client</a> (const std::string &amp;<a class="el" href="classWebCFace_1_1Member.html#a1d89c28bd42ba9a52da008bb69367171">name</a>, const std::string &amp;<a class="el" href="classWebCFace_1_1Client.html#a696b1086704b0858059129b61eaa4a9f">host</a>, int <a class="el" href="classWebCFace_1_1Client.html#a63c89c04d1feae07ca35558055155ffb">port</a>, std::shared_ptr&lt; <a class="el" href="structWebCFace_1_1ClientData.html">ClientData</a> &gt; <a class="el" href="classWebCFace_1_1Client.html#a22a78c028eae41b03afeba7570956b6c">data</a>)</td></tr>
+<tr class="separator:aba7bb87195e176c3f64a24076ecf3d62"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa0fd96bc25e3d509fb54028c2e4b91f6" id="r_aa0fd96bc25e3d509fb54028c2e4b91f6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Client.html#aa0fd96bc25e3d509fb54028c2e4b91f6">connected</a> () const</td></tr>
+<tr class="memdesc:aa0fd96bc25e3d509fb54028c2e4b91f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">サーバーに接続できているときtrueを返す。  <br /></td></tr>
+<tr class="separator:aa0fd96bc25e3d509fb54028c2e4b91f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a37731a8f5dd5caca4cc2ddb8b556cd6c" id="r_a37731a8f5dd5caca4cc2ddb8b556cd6c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Client.html#a37731a8f5dd5caca4cc2ddb8b556cd6c">~Client</a> ()</td></tr>
+<tr class="memdesc:a37731a8f5dd5caca4cc2ddb8b556cd6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">デストラクタで接続を切る。  <br /></td></tr>
+<tr class="separator:a37731a8f5dd5caca4cc2ddb8b556cd6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad55f80ed3cd8b6c4f247763b747016af" id="r_ad55f80ed3cd8b6c4f247763b747016af"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Client.html#ad55f80ed3cd8b6c4f247763b747016af">sync</a> ()</td></tr>
+<tr class="memdesc:ad55f80ed3cd8b6c4f247763b747016af"><td class="mdescLeft">&#160;</td><td class="mdescRight">データをまとめて送信する。  <br /></td></tr>
+<tr class="separator:ad55f80ed3cd8b6c4f247763b747016af"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac2b717c14b3e16f91f0cf753e8bd3b7f" id="r_ac2b717c14b3e16f91f0cf753e8bd3b7f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classWebCFace_1_1Member.html">Member</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Client.html#ac2b717c14b3e16f91f0cf753e8bd3b7f">member</a> (const std::string &amp;<a class="el" href="classWebCFace_1_1Member.html#a1d89c28bd42ba9a52da008bb69367171">name</a>)</td></tr>
+<tr class="memdesc:ac2b717c14b3e16f91f0cf753e8bd3b7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">他のmemberにアクセスする。  <br /></td></tr>
+<tr class="separator:ac2b717c14b3e16f91f0cf753e8bd3b7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2bd9c445e89ab8b794a2430dfc9a2b69" id="r_a2bd9c445e89ab8b794a2430dfc9a2b69"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classWebCFace_1_1Member.html">Member</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Client.html#a2bd9c445e89ab8b794a2430dfc9a2b69">members</a> ()</td></tr>
+<tr class="memdesc:a2bd9c445e89ab8b794a2430dfc9a2b69"><td class="mdescLeft">&#160;</td><td class="mdescRight">サーバーに接続されている他のmemberのリストを得る。  <br /></td></tr>
+<tr class="separator:a2bd9c445e89ab8b794a2430dfc9a2b69"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8e41ff74f63de2c24b6ff775eecdc10b" id="r_a8e41ff74f63de2c24b6ff775eecdc10b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classWebCFace_1_1EventTarget.html">EventTarget</a>&lt; <a class="el" href="classWebCFace_1_1Member.html">Member</a>, int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Client.html#a8e41ff74f63de2c24b6ff775eecdc10b">onMemberEntry</a> ()</td></tr>
+<tr class="memdesc:a8e41ff74f63de2c24b6ff775eecdc10b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Memberが追加された時のイベントを設定  <br /></td></tr>
+<tr class="separator:a8e41ff74f63de2c24b6ff775eecdc10b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a766e3df1b6de416b3e5887434d6b28f9" id="r_a766e3df1b6de416b3e5887434d6b28f9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Client.html#a766e3df1b6de416b3e5887434d6b28f9">setDefaultRunCond</a> (<a class="el" href="namespaceWebCFace_1_1Common.html#a1f914f5d15fb32aa05ca882cff7f2cd4">FuncWrapperType</a> wrapper)</td></tr>
+<tr class="memdesc:a766e3df1b6de416b3e5887434d6b28f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">これ以降セットするFuncのデフォルトのFuncWrapperをセットする。(初期状態はnullptr)  <br /></td></tr>
+<tr class="separator:a766e3df1b6de416b3e5887434d6b28f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad6b0c1236f16487a1961f5ed4a58eddd" id="r_ad6b0c1236f16487a1961f5ed4a58eddd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Client.html#ad6b0c1236f16487a1961f5ed4a58eddd">setDefaultRunCondNone</a> ()</td></tr>
+<tr class="memdesc:ad6b0c1236f16487a1961f5ed4a58eddd"><td class="mdescLeft">&#160;</td><td class="mdescRight">デフォルトのFuncWrapperを nullptr にする  <br /></td></tr>
+<tr class="separator:ad6b0c1236f16487a1961f5ed4a58eddd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acb0a3287b0c8821443eff73d73558b59" id="r_acb0a3287b0c8821443eff73d73558b59"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Client.html#acb0a3287b0c8821443eff73d73558b59">setDefaultRunCondOnSync</a> ()</td></tr>
+<tr class="memdesc:acb0a3287b0c8821443eff73d73558b59"><td class="mdescLeft">&#160;</td><td class="mdescRight">デフォルトのFuncWrapperを runCondOnSync() にする  <br /></td></tr>
+<tr class="separator:acb0a3287b0c8821443eff73d73558b59"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe24cb249867a506aaace22d5440c9ab" id="r_afe24cb249867a506aaace22d5440c9ab"><td class="memTemplParams" colspan="2">template&lt;typename ScopeGuard &gt; </td></tr>
+<tr class="memitem:afe24cb249867a506aaace22d5440c9ab"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Client.html#afe24cb249867a506aaace22d5440c9ab">setDefaultRunCondScopeGuard</a> ()</td></tr>
+<tr class="memdesc:afe24cb249867a506aaace22d5440c9ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">デフォルトのFuncWrapperを runCondScopeGuard() にする  <br /></td></tr>
+<tr class="separator:afe24cb249867a506aaace22d5440c9ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab4e93bbf08400e6b7ec34dc174b91684" id="r_ab4e93bbf08400e6b7ec34dc174b91684"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classWebCFace_1_1LoggerSink.html">LoggerSink</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Client.html#ab4e93bbf08400e6b7ec34dc174b91684">logger_sink</a> ()</td></tr>
+<tr class="memdesc:ab4e93bbf08400e6b7ec34dc174b91684"><td class="mdescLeft">&#160;</td><td class="mdescRight">サーバーに送信するspdlogのsink  <br /></td></tr>
+<tr class="separator:ab4e93bbf08400e6b7ec34dc174b91684"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab8677cf817f7c6112efe1a52f34f53b4" id="r_ab8677cf817f7c6112efe1a52f34f53b4"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; spdlog::logger &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Client.html#ab8677cf817f7c6112efe1a52f34f53b4">logger</a> ()</td></tr>
+<tr class="memdesc:ab8677cf817f7c6112efe1a52f34f53b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">サーバーとstderr_sinkに流すspdlog::logger  <br /></td></tr>
+<tr class="separator:ab8677cf817f7c6112efe1a52f34f53b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad91af7acf3ee01c45cdffac39367c4e2" id="r_ad91af7acf3ee01c45cdffac39367c4e2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classWebCFace_1_1LoggerBuf.html">LoggerBuf</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Client.html#ad91af7acf3ee01c45cdffac39367c4e2">logger_streambuf</a> ()</td></tr>
+<tr class="memdesc:ad91af7acf3ee01c45cdffac39367c4e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">このクライアントのloggerに出力するstreambuf  <br /></td></tr>
+<tr class="separator:ad91af7acf3ee01c45cdffac39367c4e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9f2d968a245bf82496d67b989647f6ab" id="r_a9f2d968a245bf82496d67b989647f6ab"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Client.html#a9f2d968a245bf82496d67b989647f6ab">logger_ostream</a> ()</td></tr>
+<tr class="memdesc:a9f2d968a245bf82496d67b989647f6ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">logger_streambufに出力するostream  <br /></td></tr>
+<tr class="separator:a9f2d968a245bf82496d67b989647f6ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5bda96142bd8d7347b75963c138e31b6" id="r_a5bda96142bd8d7347b75963c138e31b6"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Client.html#a5bda96142bd8d7347b75963c138e31b6">serverVersion</a> () const</td></tr>
+<tr class="memdesc:a5bda96142bd8d7347b75963c138e31b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">WebCFaceサーバーのバージョン情報  <br /></td></tr>
+<tr class="separator:a5bda96142bd8d7347b75963c138e31b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:addb875c9dacd4c706619c690a61c37c9" id="r_addb875c9dacd4c706619c690a61c37c9"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Client.html#addb875c9dacd4c706619c690a61c37c9">serverName</a> () const</td></tr>
+<tr class="memdesc:addb875c9dacd4c706619c690a61c37c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">WebCFaceサーバーの識別情報  <br /></td></tr>
+<tr class="separator:addb875c9dacd4c706619c690a61c37c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1d89c28bd42ba9a52da008bb69367171" id="r_a1d89c28bd42ba9a52da008bb69367171"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Member.html#a1d89c28bd42ba9a52da008bb69367171">name</a> () const</td></tr>
+<tr class="memdesc:a1d89c28bd42ba9a52da008bb69367171"><td class="mdescLeft">&#160;</td><td class="mdescRight">Member名  <br /></td></tr>
+<tr class="separator:a1d89c28bd42ba9a52da008bb69367171"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9eea15697605e8270c1e80c7dc89fdd3" id="r_a9eea15697605e8270c1e80c7dc89fdd3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classWebCFace_1_1Value.html">Value</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Member.html#a9eea15697605e8270c1e80c7dc89fdd3">value</a> (const std::string &amp;field) const</td></tr>
+<tr class="memdesc:a9eea15697605e8270c1e80c7dc89fdd3"><td class="mdescLeft">&#160;</td><td class="mdescRight">このmemberの指定した名前のvalueを参照する。  <br /></td></tr>
+<tr class="separator:a9eea15697605e8270c1e80c7dc89fdd3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab13e75a9d487a0253300ade34a498791" id="r_ab13e75a9d487a0253300ade34a498791"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classWebCFace_1_1Text.html">Text</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Member.html#ab13e75a9d487a0253300ade34a498791">text</a> (const std::string &amp;field) const</td></tr>
+<tr class="memdesc:ab13e75a9d487a0253300ade34a498791"><td class="mdescLeft">&#160;</td><td class="mdescRight">このmemberの指定した名前のtextを参照する。  <br /></td></tr>
+<tr class="separator:ab13e75a9d487a0253300ade34a498791"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6bea9517f461ddc114dfbc663f1dcd3b" id="r_a6bea9517f461ddc114dfbc663f1dcd3b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classWebCFace_1_1Func.html">Func</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Member.html#a6bea9517f461ddc114dfbc663f1dcd3b">func</a> (const std::string &amp;field) const</td></tr>
+<tr class="memdesc:a6bea9517f461ddc114dfbc663f1dcd3b"><td class="mdescLeft">&#160;</td><td class="mdescRight">このmemberの指定した名前のfuncを参照する。  <br /></td></tr>
+<tr class="separator:a6bea9517f461ddc114dfbc663f1dcd3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1d5af6b8f9bfe89a2d886b28426546cf" id="r_a1d5af6b8f9bfe89a2d886b28426546cf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classWebCFace_1_1View.html">View</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Member.html#a1d5af6b8f9bfe89a2d886b28426546cf">view</a> (const std::string &amp;field) const</td></tr>
+<tr class="memdesc:a1d5af6b8f9bfe89a2d886b28426546cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">AnonymousFuncオブジェクトを作成しfuncをsetする  <br /></td></tr>
+<tr class="separator:a1d5af6b8f9bfe89a2d886b28426546cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a37064ebbfa8560de8c5a90fbbea4d6a6" id="r_a37064ebbfa8560de8c5a90fbbea4d6a6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classWebCFace_1_1Log.html">Log</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Member.html#a37064ebbfa8560de8c5a90fbbea4d6a6">log</a> () const</td></tr>
+<tr class="memdesc:a37064ebbfa8560de8c5a90fbbea4d6a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">このmemberのログを参照する。  <br /></td></tr>
+<tr class="separator:a37064ebbfa8560de8c5a90fbbea4d6a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a79db1efde6ce9c6db23757da84f030a2" id="r_a79db1efde6ce9c6db23757da84f030a2"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classWebCFace_1_1Value.html">Value</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Member.html#a79db1efde6ce9c6db23757da84f030a2">values</a> () const</td></tr>
+<tr class="memdesc:a79db1efde6ce9c6db23757da84f030a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">このmemberが公開しているvalueのリストを返す。  <br /></td></tr>
+<tr class="separator:a79db1efde6ce9c6db23757da84f030a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1cc337f3ebf4841d5fc32f519c400c5a" id="r_a1cc337f3ebf4841d5fc32f519c400c5a"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classWebCFace_1_1Text.html">Text</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Member.html#a1cc337f3ebf4841d5fc32f519c400c5a">texts</a> () const</td></tr>
+<tr class="memdesc:a1cc337f3ebf4841d5fc32f519c400c5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">このmemberが公開しているtextのリストを返す。  <br /></td></tr>
+<tr class="separator:a1cc337f3ebf4841d5fc32f519c400c5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7fd842c99612e3ce7332ea288325cd7b" id="r_a7fd842c99612e3ce7332ea288325cd7b"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classWebCFace_1_1Func.html">Func</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Member.html#a7fd842c99612e3ce7332ea288325cd7b">funcs</a> () const</td></tr>
+<tr class="memdesc:a7fd842c99612e3ce7332ea288325cd7b"><td class="mdescLeft">&#160;</td><td class="mdescRight">このmemberが公開しているfuncのリストを返す。  <br /></td></tr>
+<tr class="separator:a7fd842c99612e3ce7332ea288325cd7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a18661fc989eced84d33d56528fcc0b56" id="r_a18661fc989eced84d33d56528fcc0b56"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classWebCFace_1_1View.html">View</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Member.html#a18661fc989eced84d33d56528fcc0b56">views</a> () const</td></tr>
+<tr class="memdesc:a18661fc989eced84d33d56528fcc0b56"><td class="mdescLeft">&#160;</td><td class="mdescRight">このmemberが公開しているviewのリストを返す。  <br /></td></tr>
+<tr class="separator:a18661fc989eced84d33d56528fcc0b56"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaccaea3b4d225bc85fc186d3c4f94e82" id="r_aaccaea3b4d225bc85fc186d3c4f94e82"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classWebCFace_1_1EventTarget.html">EventTarget</a>&lt; <a class="el" href="classWebCFace_1_1Value.html">Value</a>, std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Member.html#aaccaea3b4d225bc85fc186d3c4f94e82">onValueEntry</a> () const</td></tr>
+<tr class="memdesc:aaccaea3b4d225bc85fc186d3c4f94e82"><td class="mdescLeft">&#160;</td><td class="mdescRight">valueが追加された時のイベント  <br /></td></tr>
+<tr class="separator:aaccaea3b4d225bc85fc186d3c4f94e82"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:affc69631b599102bcce96fc6c9e43919" id="r_affc69631b599102bcce96fc6c9e43919"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classWebCFace_1_1EventTarget.html">EventTarget</a>&lt; <a class="el" href="classWebCFace_1_1Text.html">Text</a>, std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Member.html#affc69631b599102bcce96fc6c9e43919">onTextEntry</a> () const</td></tr>
+<tr class="memdesc:affc69631b599102bcce96fc6c9e43919"><td class="mdescLeft">&#160;</td><td class="mdescRight">textが追加された時のイベント  <br /></td></tr>
+<tr class="separator:affc69631b599102bcce96fc6c9e43919"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0d5aa3f1b7f122622c9619eb6172137b" id="r_a0d5aa3f1b7f122622c9619eb6172137b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classWebCFace_1_1EventTarget.html">EventTarget</a>&lt; <a class="el" href="classWebCFace_1_1Func.html">Func</a>, std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Member.html#a0d5aa3f1b7f122622c9619eb6172137b">onFuncEntry</a> () const</td></tr>
+<tr class="memdesc:a0d5aa3f1b7f122622c9619eb6172137b"><td class="mdescLeft">&#160;</td><td class="mdescRight">funcが追加された時のイベント  <br /></td></tr>
+<tr class="separator:a0d5aa3f1b7f122622c9619eb6172137b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1a1cf83634276238bc17973db24a122d" id="r_a1a1cf83634276238bc17973db24a122d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classWebCFace_1_1EventTarget.html">EventTarget</a>&lt; <a class="el" href="classWebCFace_1_1View.html">View</a>, std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Member.html#a1a1cf83634276238bc17973db24a122d">onViewEntry</a> () const</td></tr>
+<tr class="memdesc:a1a1cf83634276238bc17973db24a122d"><td class="mdescLeft">&#160;</td><td class="mdescRight">viewが追加されたときのイベント  <br /></td></tr>
+<tr class="separator:a1a1cf83634276238bc17973db24a122d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acad5ab5edac4947ec922a4ba789417d7" id="r_acad5ab5edac4947ec922a4ba789417d7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classWebCFace_1_1EventTarget.html">EventTarget</a>&lt; <a class="el" href="classWebCFace_1_1Member.html">Member</a>, std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Member.html#acad5ab5edac4947ec922a4ba789417d7">onSync</a> () const</td></tr>
+<tr class="memdesc:acad5ab5edac4947ec922a4ba789417d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Memberがsync()したときのイベント  <br /></td></tr>
+<tr class="separator:acad5ab5edac4947ec922a4ba789417d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a12c305af32dafb2a49e9e68bc3b6be4c" id="r_a12c305af32dafb2a49e9e68bc3b6be4c"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Member.html#a12c305af32dafb2a49e9e68bc3b6be4c">libName</a> () const</td></tr>
+<tr class="memdesc:a12c305af32dafb2a49e9e68bc3b6be4c"><td class="mdescLeft">&#160;</td><td class="mdescRight">このMemberが使っているWebCFaceライブラリ  <br /></td></tr>
+<tr class="separator:a12c305af32dafb2a49e9e68bc3b6be4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a064ab96bd8007139693d43a4c0efa8e0" id="r_a064ab96bd8007139693d43a4c0efa8e0"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Member.html#a064ab96bd8007139693d43a4c0efa8e0">libVersion</a> () const</td></tr>
+<tr class="memdesc:a064ab96bd8007139693d43a4c0efa8e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">このMemberが使っているWebCFaceのバージョン  <br /></td></tr>
+<tr class="separator:a064ab96bd8007139693d43a4c0efa8e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a786b7cda7f3dbf6635ac2a56f2b94ca4" id="r_a786b7cda7f3dbf6635ac2a56f2b94ca4"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Member.html#a786b7cda7f3dbf6635ac2a56f2b94ca4">remoteAddr</a> () const</td></tr>
+<tr class="memdesc:a786b7cda7f3dbf6635ac2a56f2b94ca4"><td class="mdescLeft">&#160;</td><td class="mdescRight">このMemberのIPアドレス  <br /></td></tr>
+<tr class="separator:a786b7cda7f3dbf6635ac2a56f2b94ca4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4b2f7dcfbdbf338436db24cb765465ed" id="r_a4b2f7dcfbdbf338436db24cb765465ed"><td class="memItemLeft" align="right" valign="top">std::optional&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Member.html#a4b2f7dcfbdbf338436db24cb765465ed">pingStatus</a> () const</td></tr>
+<tr class="memdesc:a4b2f7dcfbdbf338436db24cb765465ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">通信速度を調べる  <br /></td></tr>
+<tr class="separator:a4b2f7dcfbdbf338436db24cb765465ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8a84109931beac2dea7f3991ea90654f" id="r_a8a84109931beac2dea7f3991ea90654f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classWebCFace_1_1EventTarget.html">EventTarget</a>&lt; <a class="el" href="classWebCFace_1_1Member.html">Member</a>, std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Member.html#a8a84109931beac2dea7f3991ea90654f">onPing</a> () const</td></tr>
+<tr class="memdesc:a8a84109931beac2dea7f3991ea90654f"><td class="mdescLeft">&#160;</td><td class="mdescRight">通信速度が更新された時のイベント  <br /></td></tr>
+<tr class="separator:a8a84109931beac2dea7f3991ea90654f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa8fab40ead35fa8e761986d5f4000a5c" id="r_aa8fab40ead35fa8e761986d5f4000a5c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classWebCFace_1_1Member.html">Member</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structWebCFace_1_1Field.html#aa8fab40ead35fa8e761986d5f4000a5c">member</a> () const</td></tr>
+<tr class="memdesc:aa8fab40ead35fa8e761986d5f4000a5c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Memberを返す  <br /></td></tr>
+<tr class="separator:aa8fab40ead35fa8e761986d5f4000a5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:a0212529c7fc8fb53c5503ea448f4a7e2" id="r_a0212529c7fc8fb53c5503ea448f4a7e2"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="structWebCFace_1_1ClientData.html">ClientData</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structWebCFace_1_1Field.html#a0212529c7fc8fb53c5503ea448f4a7e2">dataLock</a> () const</td></tr>
-<tr class="separator:a0212529c7fc8fb53c5503ea448f4a7e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a666e3d6f40ec33dac2d5656b19cf7c21" id="r_a666e3d6f40ec33dac2d5656b19cf7c21"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structWebCFace_1_1Field.html#a666e3d6f40ec33dac2d5656b19cf7c21">setCheck</a> () const</td></tr>
-<tr class="separator:a666e3d6f40ec33dac2d5656b19cf7c21"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae33fe7e0be1f7abba149be0d7ec13456" id="r_ae33fe7e0be1f7abba149be0d7ec13456"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="structWebCFace_1_1ClientData.html">ClientData</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structWebCFace_1_1Field.html#ae33fe7e0be1f7abba149be0d7ec13456">dataLock</a> () const</td></tr>
+<tr class="separator:ae33fe7e0be1f7abba149be0d7ec13456"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abc837b37c9c9c8caf17e848fc8d18af0" id="r_abc837b37c9c9c8caf17e848fc8d18af0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structWebCFace_1_1Field.html#abc837b37c9c9c8caf17e848fc8d18af0">setCheck</a> () const</td></tr>
+<tr class="separator:abc837b37c9c9c8caf17e848fc8d18af0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
-<tr class="memitem:ad63ee28a99451167657831200388e6cd" id="r_ad63ee28a99451167657831200388e6cd"><td class="memItemLeft" align="right" valign="top">std::weak_ptr&lt; <a class="el" href="structWebCFace_1_1ClientData.html">ClientData</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structWebCFace_1_1Field.html#ad63ee28a99451167657831200388e6cd">data_w</a></td></tr>
-<tr class="separator:ad63ee28a99451167657831200388e6cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad89c80b43512f43401fd5435a0fc56b6" id="r_ad89c80b43512f43401fd5435a0fc56b6"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structWebCFace_1_1Common_1_1FieldBase.html#ad89c80b43512f43401fd5435a0fc56b6">member_</a></td></tr>
-<tr class="memdesc:ad89c80b43512f43401fd5435a0fc56b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">メンバー名  <br /></td></tr>
-<tr class="separator:ad89c80b43512f43401fd5435a0fc56b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ada30fcfe8180d7cb257958d1fde266be" id="r_ada30fcfe8180d7cb257958d1fde266be"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structWebCFace_1_1Common_1_1FieldBase.html#ada30fcfe8180d7cb257958d1fde266be">field_</a></td></tr>
-<tr class="separator:ada30fcfe8180d7cb257958d1fde266be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9ac1cb46c8dfe96538d3bd4efd9b7ae3" id="r_a9ac1cb46c8dfe96538d3bd4efd9b7ae3"><td class="memItemLeft" align="right" valign="top">std::weak_ptr&lt; <a class="el" href="structWebCFace_1_1ClientData.html">ClientData</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structWebCFace_1_1Field.html#a9ac1cb46c8dfe96538d3bd4efd9b7ae3">data_w</a></td></tr>
+<tr class="separator:a9ac1cb46c8dfe96538d3bd4efd9b7ae3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a46e2aa85bc5d8406ccfa3509a9633ff6" id="r_a46e2aa85bc5d8406ccfa3509a9633ff6"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structWebCFace_1_1Common_1_1FieldBase.html#a46e2aa85bc5d8406ccfa3509a9633ff6">member_</a></td></tr>
+<tr class="memdesc:a46e2aa85bc5d8406ccfa3509a9633ff6"><td class="mdescLeft">&#160;</td><td class="mdescRight">メンバー名  <br /></td></tr>
+<tr class="separator:a46e2aa85bc5d8406ccfa3509a9633ff6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa656df3c1ad08bc32e4b91718345f7f7" id="r_aa656df3c1ad08bc32e4b91718345f7f7"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structWebCFace_1_1Common_1_1FieldBase.html#aa656df3c1ad08bc32e4b91718345f7f7">field_</a></td></tr>
+<tr class="separator:aa656df3c1ad08bc32e4b91718345f7f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr class="memitem:a5ae591df94fc66ccb85cbb6565368bca" id="r_a5ae591df94fc66ccb85cbb6565368bca"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Client.html#a5ae591df94fc66ccb85cbb6565368bca">close</a> ()</td></tr>
+<tr class="memdesc:a5ae591df94fc66ccb85cbb6565368bca"><td class="mdescLeft">&#160;</td><td class="mdescRight">接続を切り、今後再接続しない  <br /></td></tr>
+<tr class="separator:a5ae591df94fc66ccb85cbb6565368bca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adda754c80cb6746518aa0978e891f059" id="r_adda754c80cb6746518aa0978e891f059"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Client.html#adda754c80cb6746518aa0978e891f059">onRecv</a> (const std::string &amp;message)</td></tr>
+<tr class="memdesc:adda754c80cb6746518aa0978e891f059"><td class="mdescLeft">&#160;</td><td class="mdescRight">受信時の処理  <br /></td></tr>
+<tr class="separator:adda754c80cb6746518aa0978e891f059"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-static-methods" name="pri-static-methods"></a>
+Static Private Member Functions</h2></td></tr>
+<tr class="memitem:abea0ebf8029d1b375bea48dca57b9fa7" id="r_abea0ebf8029d1b375bea48dca57b9fa7"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Client.html#abea0ebf8029d1b375bea48dca57b9fa7">messageThreadMain</a> (std::shared_ptr&lt; <a class="el" href="structWebCFace_1_1ClientData.html">ClientData</a> &gt; <a class="el" href="classWebCFace_1_1Client.html#a22a78c028eae41b03afeba7570956b6c">data</a>, std::string <a class="el" href="classWebCFace_1_1Client.html#a696b1086704b0858059129b61eaa4a9f">host</a>, int <a class="el" href="classWebCFace_1_1Client.html#a63c89c04d1feae07ca35558055155ffb">port</a>)</td></tr>
+<tr class="separator:abea0ebf8029d1b375bea48dca57b9fa7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a696b1086704b0858059129b61eaa4a9f" id="r_a696b1086704b0858059129b61eaa4a9f"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Client.html#a696b1086704b0858059129b61eaa4a9f">host</a></td></tr>
+<tr class="memdesc:a696b1086704b0858059129b61eaa4a9f"><td class="mdescLeft">&#160;</td><td class="mdescRight">サーバーのホスト  <br /></td></tr>
+<tr class="separator:a696b1086704b0858059129b61eaa4a9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a63c89c04d1feae07ca35558055155ffb" id="r_a63c89c04d1feae07ca35558055155ffb"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Client.html#a63c89c04d1feae07ca35558055155ffb">port</a></td></tr>
+<tr class="memdesc:a63c89c04d1feae07ca35558055155ffb"><td class="mdescLeft">&#160;</td><td class="mdescRight">サーバーのポート  <br /></td></tr>
+<tr class="separator:a63c89c04d1feae07ca35558055155ffb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae747cd0f887e6e402965ebb2195a3185" id="r_ae747cd0f887e6e402965ebb2195a3185"><td class="memItemLeft" align="right" valign="top">std::thread&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Client.html#ae747cd0f887e6e402965ebb2195a3185">message_thread</a></td></tr>
+<tr class="memdesc:ae747cd0f887e6e402965ebb2195a3185"><td class="mdescLeft">&#160;</td><td class="mdescRight">websocket通信するスレッド  <br /></td></tr>
+<tr class="separator:ae747cd0f887e6e402965ebb2195a3185"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a42f6768c3a24209c8150e3f508645d62" id="r_a42f6768c3a24209c8150e3f508645d62"><td class="memItemLeft" align="right" valign="top">std::thread&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Client.html#a42f6768c3a24209c8150e3f508645d62">recv_thread</a></td></tr>
+<tr class="memdesc:a42f6768c3a24209c8150e3f508645d62"><td class="mdescLeft">&#160;</td><td class="mdescRight">recv_queueを処理するスレッド  <br /></td></tr>
+<tr class="separator:a42f6768c3a24209c8150e3f508645d62"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a22a78c028eae41b03afeba7570956b6c" id="r_a22a78c028eae41b03afeba7570956b6c"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="structWebCFace_1_1ClientData.html">ClientData</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Client.html#a22a78c028eae41b03afeba7570956b6c">data</a></td></tr>
+<tr class="separator:a22a78c028eae41b03afeba7570956b6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af263baa9ef749e50542f3f93e9c57c6c" id="r_af263baa9ef749e50542f3f93e9c57c6c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classWebCFace_1_1LoggerBuf.html">LoggerBuf</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Client.html#af263baa9ef749e50542f3f93e9c57c6c">logger_buf</a></td></tr>
+<tr class="separator:af263baa9ef749e50542f3f93e9c57c6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa0467c3694da65a2f55171c7fd972ab3" id="r_aa0467c3694da65a2f55171c7fd972ab3"><td class="memItemLeft" align="right" valign="top">std::ostream&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Client.html#aa0467c3694da65a2f55171c7fd972ab3">logger_os</a></td></tr>
+<tr class="separator:aa0467c3694da65a2f55171c7fd972ab3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>サーバーに接続するクライアント。 </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a0aac5d4645970ad1e62e3421326e51ec" name="a0aac5d4645970ad1e62e3421326e51ec"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0aac5d4645970ad1e62e3421326e51ec">&#9670;&#160;</a></span>Client() <span class="overload">[1/4]</span></h2>
+<a id="aa5777bac2de54b388226a381a4174ff0" name="aa5777bac2de54b388226a381a4174ff0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa5777bac2de54b388226a381a4174ff0">&#9670;&#160;</a></span>Client() <span class="overload">[1/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -288,7 +326,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">WebCFace::Client::Client </td>
+          <td class="memname"><a class="el" href="classWebCFace_1_1Client.html">Client</a> </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -306,8 +344,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a8b1d585872e37528ff20e56a12e48876" name="a8b1d585872e37528ff20e56a12e48876"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8b1d585872e37528ff20e56a12e48876">&#9670;&#160;</a></span>Client() <span class="overload">[2/4]</span></h2>
+<a id="ab7547544036712233febe1db3149327d" name="ab7547544036712233febe1db3149327d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab7547544036712233febe1db3149327d">&#9670;&#160;</a></span>Client() <span class="overload">[2/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -316,7 +354,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">WebCFace::Client::Client </td>
+          <td class="memname"><a class="el" href="classWebCFace_1_1Client.html">Client</a> </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classWebCFace_1_1Client.html">Client</a> &amp;&#160;</td>
           <td class="paramname"></td><td>)</td>
@@ -332,8 +370,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="ad2087d8ff800dc22b1a4712d55f608c5" name="ad2087d8ff800dc22b1a4712d55f608c5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad2087d8ff800dc22b1a4712d55f608c5">&#9670;&#160;</a></span>Client() <span class="overload">[3/4]</span></h2>
+<a id="a8d320836152707a8b07b26abad993bdc" name="a8d320836152707a8b07b26abad993bdc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8d320836152707a8b07b26abad993bdc">&#9670;&#160;</a></span>Client() <span class="overload">[3/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -342,7 +380,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">WebCFace::Client::Client </td>
+          <td class="memname"><a class="el" href="classWebCFace_1_1Client.html">Client</a> </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;&#160;</td>
           <td class="paramname"><em>name</em>, </td>
@@ -377,8 +415,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a052489dd7e1f63b3f1cb3852118adb9d" name="a052489dd7e1f63b3f1cb3852118adb9d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a052489dd7e1f63b3f1cb3852118adb9d">&#9670;&#160;</a></span>Client() <span class="overload">[4/4]</span></h2>
+<a id="aba7bb87195e176c3f64a24076ecf3d62" name="aba7bb87195e176c3f64a24076ecf3d62"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aba7bb87195e176c3f64a24076ecf3d62">&#9670;&#160;</a></span>Client() <span class="overload">[4/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -387,7 +425,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">WebCFace::Client::Client </td>
+          <td class="memname"><a class="el" href="classWebCFace_1_1Client.html">Client</a> </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;&#160;</td>
           <td class="paramname"><em>name</em>, </td>
@@ -425,14 +463,14 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="ac47cf70c88c0381db0641a37be1ee528" name="ac47cf70c88c0381db0641a37be1ee528"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac47cf70c88c0381db0641a37be1ee528">&#9670;&#160;</a></span>~Client()</h2>
+<a id="a37731a8f5dd5caca4cc2ddb8b556cd6c" name="a37731a8f5dd5caca4cc2ddb8b556cd6c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a37731a8f5dd5caca4cc2ddb8b556cd6c">&#9670;&#160;</a></span>~Client()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">WebCFace::Client::~Client </td>
+          <td class="memname">~<a class="el" href="classWebCFace_1_1Client.html">Client</a> </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -445,14 +483,41 @@ Protected Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="ad2c8c915969a19069eeaa2f9ed433105" name="ad2c8c915969a19069eeaa2f9ed433105"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad2c8c915969a19069eeaa2f9ed433105">&#9670;&#160;</a></span>connected()</h2>
+<a id="a5ae591df94fc66ccb85cbb6565368bca" name="a5ae591df94fc66ccb85cbb6565368bca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5ae591df94fc66ccb85cbb6565368bca">&#9670;&#160;</a></span>close()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void close </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>接続を切り、今後再接続しない </p>
+
+</div>
+</div>
+<a id="aa0fd96bc25e3d509fb54028c2e4b91f6" name="aa0fd96bc25e3d509fb54028c2e4b91f6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa0fd96bc25e3d509fb54028c2e4b91f6">&#9670;&#160;</a></span>connected()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool WebCFace::Client::connected </td>
+          <td class="memname">bool connected </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -464,8 +529,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a0212529c7fc8fb53c5503ea448f4a7e2" name="a0212529c7fc8fb53c5503ea448f4a7e2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0212529c7fc8fb53c5503ea448f4a7e2">&#9670;&#160;</a></span>dataLock()</h2>
+<a id="ae33fe7e0be1f7abba149be0d7ec13456" name="ae33fe7e0be1f7abba149be0d7ec13456"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae33fe7e0be1f7abba149be0d7ec13456">&#9670;&#160;</a></span>dataLock()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -474,7 +539,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::shared_ptr&lt; <a class="el" href="structWebCFace_1_1ClientData.html">ClientData</a> &gt; WebCFace::Field::dataLock </td>
+          <td class="memname">std::shared_ptr&lt; <a class="el" href="structWebCFace_1_1ClientData.html">ClientData</a> &gt; dataLock </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -490,8 +555,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a53e5492fd02bf7c8128b81b6b4c221cb" name="a53e5492fd02bf7c8128b81b6b4c221cb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a53e5492fd02bf7c8128b81b6b4c221cb">&#9670;&#160;</a></span>func()</h2>
+<a id="a6bea9517f461ddc114dfbc663f1dcd3b" name="a6bea9517f461ddc114dfbc663f1dcd3b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6bea9517f461ddc114dfbc663f1dcd3b">&#9670;&#160;</a></span>func()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -500,7 +565,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classWebCFace_1_1Func.html">Func</a> WebCFace::Member::func </td>
+          <td class="memname"><a class="el" href="classWebCFace_1_1Func.html">Func</a> func </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;&#160;</td>
           <td class="paramname"><em>field</em></td><td>)</td>
@@ -518,8 +583,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a0deff56c92f23510a070689f44b33874" name="a0deff56c92f23510a070689f44b33874"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0deff56c92f23510a070689f44b33874">&#9670;&#160;</a></span>funcs()</h2>
+<a id="a7fd842c99612e3ce7332ea288325cd7b" name="a7fd842c99612e3ce7332ea288325cd7b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7fd842c99612e3ce7332ea288325cd7b">&#9670;&#160;</a></span>funcs()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -528,7 +593,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt; <a class="el" href="classWebCFace_1_1Func.html">Func</a> &gt; WebCFace::Member::funcs </td>
+          <td class="memname">std::vector&lt; <a class="el" href="classWebCFace_1_1Func.html">Func</a> &gt; funcs </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -545,8 +610,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a3f19e9bfd748992442b30033f85bdef2" name="a3f19e9bfd748992442b30033f85bdef2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3f19e9bfd748992442b30033f85bdef2">&#9670;&#160;</a></span>libName()</h2>
+<a id="a12c305af32dafb2a49e9e68bc3b6be4c" name="a12c305af32dafb2a49e9e68bc3b6be4c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a12c305af32dafb2a49e9e68bc3b6be4c">&#9670;&#160;</a></span>libName()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -555,7 +620,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::string WebCFace::Member::libName </td>
+          <td class="memname">std::string libName </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -573,8 +638,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="affbd7c9ccb118df5746637f8ea60c7c0" name="affbd7c9ccb118df5746637f8ea60c7c0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#affbd7c9ccb118df5746637f8ea60c7c0">&#9670;&#160;</a></span>libVersion()</h2>
+<a id="a064ab96bd8007139693d43a4c0efa8e0" name="a064ab96bd8007139693d43a4c0efa8e0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a064ab96bd8007139693d43a4c0efa8e0">&#9670;&#160;</a></span>libVersion()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -583,7 +648,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::string WebCFace::Member::libVersion </td>
+          <td class="memname">std::string libVersion </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -600,8 +665,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a5c98cf1da3d84aed2d55302068268afb" name="a5c98cf1da3d84aed2d55302068268afb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5c98cf1da3d84aed2d55302068268afb">&#9670;&#160;</a></span>log()</h2>
+<a id="a37064ebbfa8560de8c5a90fbbea4d6a6" name="a37064ebbfa8560de8c5a90fbbea4d6a6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a37064ebbfa8560de8c5a90fbbea4d6a6">&#9670;&#160;</a></span>log()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -610,7 +675,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classWebCFace_1_1Log.html">Log</a> WebCFace::Member::log </td>
+          <td class="memname"><a class="el" href="classWebCFace_1_1Log.html">Log</a> log </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -627,8 +692,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="ab1aa8b8becb17b47ec04f1fb05ba1945" name="ab1aa8b8becb17b47ec04f1fb05ba1945"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab1aa8b8becb17b47ec04f1fb05ba1945">&#9670;&#160;</a></span>logger()</h2>
+<a id="ab8677cf817f7c6112efe1a52f34f53b4" name="ab8677cf817f7c6112efe1a52f34f53b4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab8677cf817f7c6112efe1a52f34f53b4">&#9670;&#160;</a></span>logger()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -637,7 +702,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::shared_ptr&lt; spdlog::logger &gt; WebCFace::Client::logger </td>
+          <td class="memname">std::shared_ptr&lt; spdlog::logger &gt; logger </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -654,8 +719,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="abd1997a28a89cf56e6aeebc07b19be63" name="abd1997a28a89cf56e6aeebc07b19be63"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abd1997a28a89cf56e6aeebc07b19be63">&#9670;&#160;</a></span>logger_ostream()</h2>
+<a id="a9f2d968a245bf82496d67b989647f6ab" name="a9f2d968a245bf82496d67b989647f6ab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9f2d968a245bf82496d67b989647f6ab">&#9670;&#160;</a></span>logger_ostream()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -664,7 +729,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::ostream &amp; WebCFace::Client::logger_ostream </td>
+          <td class="memname">std::ostream &amp; logger_ostream </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -681,8 +746,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a63377cf93ea2ada443a7e1f64425b693" name="a63377cf93ea2ada443a7e1f64425b693"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a63377cf93ea2ada443a7e1f64425b693">&#9670;&#160;</a></span>logger_sink()</h2>
+<a id="ab4e93bbf08400e6b7ec34dc174b91684" name="ab4e93bbf08400e6b7ec34dc174b91684"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab4e93bbf08400e6b7ec34dc174b91684">&#9670;&#160;</a></span>logger_sink()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -691,7 +756,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::shared_ptr&lt; <a class="el" href="classWebCFace_1_1LoggerSink.html">LoggerSink</a> &gt; WebCFace::Client::logger_sink </td>
+          <td class="memname">std::shared_ptr&lt; <a class="el" href="classWebCFace_1_1LoggerSink.html">LoggerSink</a> &gt; logger_sink </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -708,8 +773,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a5c1ff49f57a1a3eabc86c6bd0e7864e5" name="a5c1ff49f57a1a3eabc86c6bd0e7864e5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5c1ff49f57a1a3eabc86c6bd0e7864e5">&#9670;&#160;</a></span>logger_streambuf()</h2>
+<a id="ad91af7acf3ee01c45cdffac39367c4e2" name="ad91af7acf3ee01c45cdffac39367c4e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad91af7acf3ee01c45cdffac39367c4e2">&#9670;&#160;</a></span>logger_streambuf()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -718,7 +783,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classWebCFace_1_1LoggerBuf.html">LoggerBuf</a> * WebCFace::Client::logger_streambuf </td>
+          <td class="memname"><a class="el" href="classWebCFace_1_1LoggerBuf.html">LoggerBuf</a> * logger_streambuf </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -736,8 +801,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="ade50143084fb75a17f6eacb5a27fc0bc" name="ade50143084fb75a17f6eacb5a27fc0bc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ade50143084fb75a17f6eacb5a27fc0bc">&#9670;&#160;</a></span>member() <span class="overload">[1/2]</span></h2>
+<a id="aa8fab40ead35fa8e761986d5f4000a5c" name="aa8fab40ead35fa8e761986d5f4000a5c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa8fab40ead35fa8e761986d5f4000a5c">&#9670;&#160;</a></span>member() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -746,7 +811,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classWebCFace_1_1Member.html">Member</a> WebCFace::Field::member </td>
+          <td class="memname"><a class="el" href="classWebCFace_1_1Member.html">Member</a> member </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -763,8 +828,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="abde8a8de472a44428e723385670641ab" name="abde8a8de472a44428e723385670641ab"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abde8a8de472a44428e723385670641ab">&#9670;&#160;</a></span>member() <span class="overload">[2/2]</span></h2>
+<a id="ac2b717c14b3e16f91f0cf753e8bd3b7f" name="ac2b717c14b3e16f91f0cf753e8bd3b7f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac2b717c14b3e16f91f0cf753e8bd3b7f">&#9670;&#160;</a></span>member() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -773,7 +838,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classWebCFace_1_1Member.html">Member</a> WebCFace::Client::member </td>
+          <td class="memname"><a class="el" href="classWebCFace_1_1Member.html">Member</a> member </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;&#160;</td>
           <td class="paramname"><em>name</em></td><td>)</td>
@@ -791,8 +856,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a6ca95d51d7a94f6a3e6e4fa7fc73f168" name="a6ca95d51d7a94f6a3e6e4fa7fc73f168"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6ca95d51d7a94f6a3e6e4fa7fc73f168">&#9670;&#160;</a></span>members()</h2>
+<a id="a2bd9c445e89ab8b794a2430dfc9a2b69" name="a2bd9c445e89ab8b794a2430dfc9a2b69"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2bd9c445e89ab8b794a2430dfc9a2b69">&#9670;&#160;</a></span>members()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -801,7 +866,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt; <a class="el" href="classWebCFace_1_1Member.html">Member</a> &gt; WebCFace::Client::members </td>
+          <td class="memname">std::vector&lt; <a class="el" href="classWebCFace_1_1Member.html">Member</a> &gt; members </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -818,8 +883,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a1a075fb6947d283da24fc070e1aa0a05" name="a1a075fb6947d283da24fc070e1aa0a05"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1a075fb6947d283da24fc070e1aa0a05">&#9670;&#160;</a></span>name()</h2>
+<a id="abea0ebf8029d1b375bea48dca57b9fa7" name="abea0ebf8029d1b375bea48dca57b9fa7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abea0ebf8029d1b375bea48dca57b9fa7">&#9670;&#160;</a></span>messageThreadMain()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -828,7 +893,49 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::string WebCFace::Member::name </td>
+          <td class="memname">void messageThreadMain </td>
+          <td>(</td>
+          <td class="paramtype">std::shared_ptr&lt; <a class="el" href="structWebCFace_1_1ClientData.html">ClientData</a> &gt;&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>host</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>port</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a1d89c28bd42ba9a52da008bb69367171" name="a1d89c28bd42ba9a52da008bb69367171"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1d89c28bd42ba9a52da008bb69367171">&#9670;&#160;</a></span>name()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string name </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -845,8 +952,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="ac3527bd479052866aae9ff1617cff5b9" name="ac3527bd479052866aae9ff1617cff5b9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac3527bd479052866aae9ff1617cff5b9">&#9670;&#160;</a></span>onFuncEntry()</h2>
+<a id="a0d5aa3f1b7f122622c9619eb6172137b" name="a0d5aa3f1b7f122622c9619eb6172137b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0d5aa3f1b7f122622c9619eb6172137b">&#9670;&#160;</a></span>onFuncEntry()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -855,7 +962,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classWebCFace_1_1EventTarget.html">EventTarget</a>&lt; <a class="el" href="classWebCFace_1_1Func.html">Func</a>, std::string &gt; WebCFace::Member::onFuncEntry </td>
+          <td class="memname"><a class="el" href="classWebCFace_1_1EventTarget.html">EventTarget</a>&lt; <a class="el" href="classWebCFace_1_1Func.html">Func</a>, std::string &gt; onFuncEntry </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -869,12 +976,12 @@ Protected Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>funcが追加された時のイベント </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classWebCFace_1_1Member.html#a21730298213527d8297c0aac76220cb8" title="valueが追加された時のイベント">onValueEntry()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classWebCFace_1_1Member.html#aaccaea3b4d225bc85fc186d3c4f94e82" title="valueが追加された時のイベント">onValueEntry()</a> </dd></dl>
 
 </div>
 </div>
-<a id="af4777c9fd3039f338c0a1df5d383adf8" name="af4777c9fd3039f338c0a1df5d383adf8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af4777c9fd3039f338c0a1df5d383adf8">&#9670;&#160;</a></span>onMemberEntry()</h2>
+<a id="a8e41ff74f63de2c24b6ff775eecdc10b" name="a8e41ff74f63de2c24b6ff775eecdc10b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8e41ff74f63de2c24b6ff775eecdc10b">&#9670;&#160;</a></span>onMemberEntry()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -883,7 +990,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classWebCFace_1_1EventTarget.html">EventTarget</a>&lt; <a class="el" href="classWebCFace_1_1Member.html">Member</a>, int &gt; WebCFace::Client::onMemberEntry </td>
+          <td class="memname"><a class="el" href="classWebCFace_1_1EventTarget.html">EventTarget</a>&lt; <a class="el" href="classWebCFace_1_1Member.html">Member</a>, int &gt; onMemberEntry </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -897,12 +1004,12 @@ Protected Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Memberが追加された時のイベントを設定 </p>
-<p>このクライアントが接続する前から存在したメンバーについては 初回の <a class="el" href="classWebCFace_1_1Client.html#af996ad37ffa7500e52da61207b5d3065" title="データをまとめて送信する。">sync()</a> 後に一度に送られるので、 eventの設定は初回のsync()より前に行うと良い </p>
+<p>このクライアントが接続する前から存在したメンバーについては 初回の <a class="el" href="classWebCFace_1_1Client.html#ad55f80ed3cd8b6c4f247763b747016af" title="データをまとめて送信する。">sync()</a> 後に一度に送られるので、 eventの設定は初回のsync()より前に行うと良い </p>
 
 </div>
 </div>
-<a id="adac98ff8cc883174d39841a03ffe5473" name="adac98ff8cc883174d39841a03ffe5473"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adac98ff8cc883174d39841a03ffe5473">&#9670;&#160;</a></span>onPing()</h2>
+<a id="a8a84109931beac2dea7f3991ea90654f" name="a8a84109931beac2dea7f3991ea90654f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8a84109931beac2dea7f3991ea90654f">&#9670;&#160;</a></span>onPing()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -911,7 +1018,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classWebCFace_1_1EventTarget.html">EventTarget</a>&lt; <a class="el" href="classWebCFace_1_1Member.html">Member</a>, std::string &gt; WebCFace::Member::onPing </td>
+          <td class="memname"><a class="el" href="classWebCFace_1_1EventTarget.html">EventTarget</a>&lt; <a class="el" href="classWebCFace_1_1Member.html">Member</a>, std::string &gt; onPing </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -928,8 +1035,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a426a32543d6f4eb62f89b1c7d129f84e" name="a426a32543d6f4eb62f89b1c7d129f84e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a426a32543d6f4eb62f89b1c7d129f84e">&#9670;&#160;</a></span>onSync()</h2>
+<a id="adda754c80cb6746518aa0978e891f059" name="adda754c80cb6746518aa0978e891f059"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adda754c80cb6746518aa0978e891f059">&#9670;&#160;</a></span>onRecv()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -938,7 +1045,35 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classWebCFace_1_1EventTarget.html">EventTarget</a>&lt; <a class="el" href="classWebCFace_1_1Member.html">Member</a>, std::string &gt; WebCFace::Member::onSync </td>
+          <td class="memname">void onRecv </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>message</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>受信時の処理 </p>
+
+</div>
+</div>
+<a id="acad5ab5edac4947ec922a4ba789417d7" name="acad5ab5edac4947ec922a4ba789417d7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acad5ab5edac4947ec922a4ba789417d7">&#9670;&#160;</a></span>onSync()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classWebCFace_1_1EventTarget.html">EventTarget</a>&lt; <a class="el" href="classWebCFace_1_1Member.html">Member</a>, std::string &gt; onSync </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -955,8 +1090,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a0235622f1f00e7bc8b19d4786d54d54a" name="a0235622f1f00e7bc8b19d4786d54d54a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0235622f1f00e7bc8b19d4786d54d54a">&#9670;&#160;</a></span>onTextEntry()</h2>
+<a id="affc69631b599102bcce96fc6c9e43919" name="affc69631b599102bcce96fc6c9e43919"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#affc69631b599102bcce96fc6c9e43919">&#9670;&#160;</a></span>onTextEntry()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -965,7 +1100,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classWebCFace_1_1EventTarget.html">EventTarget</a>&lt; <a class="el" href="classWebCFace_1_1Text.html">Text</a>, std::string &gt; WebCFace::Member::onTextEntry </td>
+          <td class="memname"><a class="el" href="classWebCFace_1_1EventTarget.html">EventTarget</a>&lt; <a class="el" href="classWebCFace_1_1Text.html">Text</a>, std::string &gt; onTextEntry </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -979,12 +1114,12 @@ Protected Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>textが追加された時のイベント </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classWebCFace_1_1Member.html#a21730298213527d8297c0aac76220cb8" title="valueが追加された時のイベント">onValueEntry()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classWebCFace_1_1Member.html#aaccaea3b4d225bc85fc186d3c4f94e82" title="valueが追加された時のイベント">onValueEntry()</a> </dd></dl>
 
 </div>
 </div>
-<a id="a21730298213527d8297c0aac76220cb8" name="a21730298213527d8297c0aac76220cb8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a21730298213527d8297c0aac76220cb8">&#9670;&#160;</a></span>onValueEntry()</h2>
+<a id="aaccaea3b4d225bc85fc186d3c4f94e82" name="aaccaea3b4d225bc85fc186d3c4f94e82"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaccaea3b4d225bc85fc186d3c4f94e82">&#9670;&#160;</a></span>onValueEntry()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -993,7 +1128,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classWebCFace_1_1EventTarget.html">EventTarget</a>&lt; <a class="el" href="classWebCFace_1_1Value.html">Value</a>, std::string &gt; WebCFace::Member::onValueEntry </td>
+          <td class="memname"><a class="el" href="classWebCFace_1_1EventTarget.html">EventTarget</a>&lt; <a class="el" href="classWebCFace_1_1Value.html">Value</a>, std::string &gt; onValueEntry </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -1007,12 +1142,12 @@ Protected Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>valueが追加された時のイベント </p>
-<p>このクライアントが接続する前から存在したメンバーについては 初回の <a class="el" href="classWebCFace_1_1Client.html#af996ad37ffa7500e52da61207b5d3065" title="データをまとめて送信する。">sync()</a> 後に一度に送られるので、 eventの設定は初回のsync()より前に行うと良い </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="classWebCFace_1_1Client.html#af4777c9fd3039f338c0a1df5d383adf8" title="Memberが追加された時のイベントを設定">Client::onMemberEntry()</a> </dd></dl>
+<p>このクライアントが接続する前から存在したメンバーについては 初回の <a class="el" href="classWebCFace_1_1Client.html#ad55f80ed3cd8b6c4f247763b747016af" title="データをまとめて送信する。">sync()</a> 後に一度に送られるので、 eventの設定は初回のsync()より前に行うと良い </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="classWebCFace_1_1Client.html#a8e41ff74f63de2c24b6ff775eecdc10b" title="Memberが追加された時のイベントを設定">Client::onMemberEntry()</a> </dd></dl>
 
 </div>
 </div>
-<a id="a3c1910cb2873a78c61c5b2da55a918e1" name="a3c1910cb2873a78c61c5b2da55a918e1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3c1910cb2873a78c61c5b2da55a918e1">&#9670;&#160;</a></span>onViewEntry()</h2>
+<a id="a1a1cf83634276238bc17973db24a122d" name="a1a1cf83634276238bc17973db24a122d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1a1cf83634276238bc17973db24a122d">&#9670;&#160;</a></span>onViewEntry()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1021,7 +1156,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classWebCFace_1_1EventTarget.html">EventTarget</a>&lt; <a class="el" href="classWebCFace_1_1View.html">View</a>, std::string &gt; WebCFace::Member::onViewEntry </td>
+          <td class="memname"><a class="el" href="classWebCFace_1_1EventTarget.html">EventTarget</a>&lt; <a class="el" href="classWebCFace_1_1View.html">View</a>, std::string &gt; onViewEntry </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -1035,12 +1170,12 @@ Protected Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>viewが追加されたときのイベント </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classWebCFace_1_1Member.html#a21730298213527d8297c0aac76220cb8" title="valueが追加された時のイベント">onValueEntry()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classWebCFace_1_1Member.html#aaccaea3b4d225bc85fc186d3c4f94e82" title="valueが追加された時のイベント">onValueEntry()</a> </dd></dl>
 
 </div>
 </div>
-<a id="aaa53f7dc3840559faaa8087a6e562fab" name="aaa53f7dc3840559faaa8087a6e562fab"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaa53f7dc3840559faaa8087a6e562fab">&#9670;&#160;</a></span>operator=()</h2>
+<a id="af502bc22d1cfbffc6d20039b58bb8575" name="af502bc22d1cfbffc6d20039b58bb8575"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af502bc22d1cfbffc6d20039b58bb8575">&#9670;&#160;</a></span>operator=()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1049,7 +1184,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="classWebCFace_1_1Client.html">Client</a> &amp; WebCFace::Client::operator= </td>
+          <td class="memname">const <a class="el" href="classWebCFace_1_1Client.html">Client</a> &amp; operator= </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classWebCFace_1_1Client.html">Client</a> &amp;&#160;</td>
           <td class="paramname"></td><td>)</td>
@@ -1065,8 +1200,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a9207095243040ce9787a157f149187d8" name="a9207095243040ce9787a157f149187d8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9207095243040ce9787a157f149187d8">&#9670;&#160;</a></span>pingStatus()</h2>
+<a id="a4b2f7dcfbdbf338436db24cb765465ed" name="a4b2f7dcfbdbf338436db24cb765465ed"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4b2f7dcfbdbf338436db24cb765465ed">&#9670;&#160;</a></span>pingStatus()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1075,7 +1210,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::optional&lt; int &gt; WebCFace::Member::pingStatus </td>
+          <td class="memname">std::optional&lt; int &gt; pingStatus </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -1089,12 +1224,12 @@ Protected Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>通信速度を調べる </p>
-<p>戻り値はpingの往復時間 (ms) 初回の呼び出し(nulloptを返す)で通信速度データをリクエストし、 <a class="el" href="classWebCFace_1_1Client.html#af996ad37ffa7500e52da61207b5d3065" title="データをまとめて送信する。">sync()</a>後通信速度が得られるようになる </p>
+<p>戻り値はpingの往復時間 (ms) 初回の呼び出し(nulloptを返す)で通信速度データをリクエストし、 <a class="el" href="classWebCFace_1_1Client.html#ad55f80ed3cd8b6c4f247763b747016af" title="データをまとめて送信する。">sync()</a>後通信速度が得られるようになる </p>
 
 </div>
 </div>
-<a id="a427cf56a7e5dd9476adec5bad73f9fc6" name="a427cf56a7e5dd9476adec5bad73f9fc6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a427cf56a7e5dd9476adec5bad73f9fc6">&#9670;&#160;</a></span>remoteAddr()</h2>
+<a id="a786b7cda7f3dbf6635ac2a56f2b94ca4" name="a786b7cda7f3dbf6635ac2a56f2b94ca4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a786b7cda7f3dbf6635ac2a56f2b94ca4">&#9670;&#160;</a></span>remoteAddr()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1103,7 +1238,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::string WebCFace::Member::remoteAddr </td>
+          <td class="memname">std::string remoteAddr </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -1120,8 +1255,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="aa954a8b26b0736f23e1bc6ad5b9a9c8e" name="aa954a8b26b0736f23e1bc6ad5b9a9c8e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa954a8b26b0736f23e1bc6ad5b9a9c8e">&#9670;&#160;</a></span>serverName()</h2>
+<a id="addb875c9dacd4c706619c690a61c37c9" name="addb875c9dacd4c706619c690a61c37c9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#addb875c9dacd4c706619c690a61c37c9">&#9670;&#160;</a></span>serverName()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1130,7 +1265,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::string WebCFace::Client::serverName </td>
+          <td class="memname">std::string serverName </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -1147,8 +1282,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="ae31c34b752ffb55936a308614715514d" name="ae31c34b752ffb55936a308614715514d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae31c34b752ffb55936a308614715514d">&#9670;&#160;</a></span>serverVersion()</h2>
+<a id="a5bda96142bd8d7347b75963c138e31b6" name="a5bda96142bd8d7347b75963c138e31b6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5bda96142bd8d7347b75963c138e31b6">&#9670;&#160;</a></span>serverVersion()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1157,7 +1292,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::string WebCFace::Client::serverVersion </td>
+          <td class="memname">std::string serverVersion </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -1174,8 +1309,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a666e3d6f40ec33dac2d5656b19cf7c21" name="a666e3d6f40ec33dac2d5656b19cf7c21"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a666e3d6f40ec33dac2d5656b19cf7c21">&#9670;&#160;</a></span>setCheck()</h2>
+<a id="abc837b37c9c9c8caf17e848fc8d18af0" name="abc837b37c9c9c8caf17e848fc8d18af0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abc837b37c9c9c8caf17e848fc8d18af0">&#9670;&#160;</a></span>setCheck()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1184,7 +1319,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void WebCFace::Field::setCheck </td>
+          <td class="memname">void setCheck </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -1199,8 +1334,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="af53c611a6b126853f0160ed102ca56f6" name="af53c611a6b126853f0160ed102ca56f6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af53c611a6b126853f0160ed102ca56f6">&#9670;&#160;</a></span>setDefaultRunCond()</h2>
+<a id="a766e3df1b6de416b3e5887434d6b28f9" name="a766e3df1b6de416b3e5887434d6b28f9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a766e3df1b6de416b3e5887434d6b28f9">&#9670;&#160;</a></span>setDefaultRunCond()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1209,9 +1344,9 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void WebCFace::Client::setDefaultRunCond </td>
+          <td class="memname">void setDefaultRunCond </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespaceWebCFace_1_1Common.html#a04c311f01fd557fa0da64bc2b597256d">FuncWrapperType</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="namespaceWebCFace_1_1Common.html#a1f914f5d15fb32aa05ca882cff7f2cd4">FuncWrapperType</a>&#160;</td>
           <td class="paramname"><em>wrapper</em></td><td>)</td>
           <td></td>
         </tr>
@@ -1228,8 +1363,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a44e7fe588d89716bfcdb785fc89de5fc" name="a44e7fe588d89716bfcdb785fc89de5fc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a44e7fe588d89716bfcdb785fc89de5fc">&#9670;&#160;</a></span>setDefaultRunCondNone()</h2>
+<a id="ad6b0c1236f16487a1961f5ed4a58eddd" name="ad6b0c1236f16487a1961f5ed4a58eddd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad6b0c1236f16487a1961f5ed4a58eddd">&#9670;&#160;</a></span>setDefaultRunCondNone()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1238,7 +1373,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void WebCFace::Client::setDefaultRunCondNone </td>
+          <td class="memname">void setDefaultRunCondNone </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -1255,8 +1390,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a63da7b8e7f46d79a50d9b3b650b80a60" name="a63da7b8e7f46d79a50d9b3b650b80a60"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a63da7b8e7f46d79a50d9b3b650b80a60">&#9670;&#160;</a></span>setDefaultRunCondOnSync()</h2>
+<a id="acb0a3287b0c8821443eff73d73558b59" name="acb0a3287b0c8821443eff73d73558b59"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acb0a3287b0c8821443eff73d73558b59">&#9670;&#160;</a></span>setDefaultRunCondOnSync()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1265,7 +1400,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void WebCFace::Client::setDefaultRunCondOnSync </td>
+          <td class="memname">void setDefaultRunCondOnSync </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -1282,8 +1417,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="ae6bfa5d22196f285d140294130d1385f" name="ae6bfa5d22196f285d140294130d1385f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae6bfa5d22196f285d140294130d1385f">&#9670;&#160;</a></span>setDefaultRunCondScopeGuard()</h2>
+<a id="afe24cb249867a506aaace22d5440c9ab" name="afe24cb249867a506aaace22d5440c9ab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afe24cb249867a506aaace22d5440c9ab">&#9670;&#160;</a></span>setDefaultRunCondScopeGuard()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1294,7 +1429,7 @@ template&lt;typename ScopeGuard &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void WebCFace::Client::setDefaultRunCondScopeGuard </td>
+          <td class="memname">void setDefaultRunCondScopeGuard </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -1311,14 +1446,14 @@ template&lt;typename ScopeGuard &gt; </div>
 
 </div>
 </div>
-<a id="af996ad37ffa7500e52da61207b5d3065" name="af996ad37ffa7500e52da61207b5d3065"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af996ad37ffa7500e52da61207b5d3065">&#9670;&#160;</a></span>sync()</h2>
+<a id="ad55f80ed3cd8b6c4f247763b747016af" name="ad55f80ed3cd8b6c4f247763b747016af"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad55f80ed3cd8b6c4f247763b747016af">&#9670;&#160;</a></span>sync()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void WebCFace::Client::sync </td>
+          <td class="memname">void sync </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -1331,8 +1466,8 @@ template&lt;typename ScopeGuard &gt; </div>
 
 </div>
 </div>
-<a id="a2450b43825ea5321cb9ea04dac5aee7e" name="a2450b43825ea5321cb9ea04dac5aee7e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2450b43825ea5321cb9ea04dac5aee7e">&#9670;&#160;</a></span>text()</h2>
+<a id="ab13e75a9d487a0253300ade34a498791" name="ab13e75a9d487a0253300ade34a498791"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab13e75a9d487a0253300ade34a498791">&#9670;&#160;</a></span>text()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1341,7 +1476,7 @@ template&lt;typename ScopeGuard &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classWebCFace_1_1Text.html">Text</a> WebCFace::Member::text </td>
+          <td class="memname"><a class="el" href="classWebCFace_1_1Text.html">Text</a> text </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;&#160;</td>
           <td class="paramname"><em>field</em></td><td>)</td>
@@ -1359,8 +1494,8 @@ template&lt;typename ScopeGuard &gt; </div>
 
 </div>
 </div>
-<a id="a2cb05cef52b5ae8f6105a7f99f51a002" name="a2cb05cef52b5ae8f6105a7f99f51a002"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2cb05cef52b5ae8f6105a7f99f51a002">&#9670;&#160;</a></span>texts()</h2>
+<a id="a1cc337f3ebf4841d5fc32f519c400c5a" name="a1cc337f3ebf4841d5fc32f519c400c5a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1cc337f3ebf4841d5fc32f519c400c5a">&#9670;&#160;</a></span>texts()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1369,7 +1504,7 @@ template&lt;typename ScopeGuard &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt; <a class="el" href="classWebCFace_1_1Text.html">Text</a> &gt; WebCFace::Member::texts </td>
+          <td class="memname">std::vector&lt; <a class="el" href="classWebCFace_1_1Text.html">Text</a> &gt; texts </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -1386,8 +1521,8 @@ template&lt;typename ScopeGuard &gt; </div>
 
 </div>
 </div>
-<a id="a38f4a0b2a4797b4dbdcc87de4b7ebb14" name="a38f4a0b2a4797b4dbdcc87de4b7ebb14"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a38f4a0b2a4797b4dbdcc87de4b7ebb14">&#9670;&#160;</a></span>value()</h2>
+<a id="a9eea15697605e8270c1e80c7dc89fdd3" name="a9eea15697605e8270c1e80c7dc89fdd3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9eea15697605e8270c1e80c7dc89fdd3">&#9670;&#160;</a></span>value()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1396,7 +1531,7 @@ template&lt;typename ScopeGuard &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classWebCFace_1_1Value.html">Value</a> WebCFace::Member::value </td>
+          <td class="memname"><a class="el" href="classWebCFace_1_1Value.html">Value</a> value </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;&#160;</td>
           <td class="paramname"><em>field</em></td><td>)</td>
@@ -1414,8 +1549,8 @@ template&lt;typename ScopeGuard &gt; </div>
 
 </div>
 </div>
-<a id="aceaa9d8212927a9c33869346ffd6db31" name="aceaa9d8212927a9c33869346ffd6db31"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aceaa9d8212927a9c33869346ffd6db31">&#9670;&#160;</a></span>values()</h2>
+<a id="a79db1efde6ce9c6db23757da84f030a2" name="a79db1efde6ce9c6db23757da84f030a2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a79db1efde6ce9c6db23757da84f030a2">&#9670;&#160;</a></span>values()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1424,7 +1559,7 @@ template&lt;typename ScopeGuard &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt; <a class="el" href="classWebCFace_1_1Value.html">Value</a> &gt; WebCFace::Member::values </td>
+          <td class="memname">std::vector&lt; <a class="el" href="classWebCFace_1_1Value.html">Value</a> &gt; values </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -1441,8 +1576,8 @@ template&lt;typename ScopeGuard &gt; </div>
 
 </div>
 </div>
-<a id="a71876efabf33bf00b521ffb291375f55" name="a71876efabf33bf00b521ffb291375f55"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a71876efabf33bf00b521ffb291375f55">&#9670;&#160;</a></span>view()</h2>
+<a id="a1d5af6b8f9bfe89a2d886b28426546cf" name="a1d5af6b8f9bfe89a2d886b28426546cf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1d5af6b8f9bfe89a2d886b28426546cf">&#9670;&#160;</a></span>view()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1451,7 +1586,7 @@ template&lt;typename ScopeGuard &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classWebCFace_1_1View.html">View</a> WebCFace::Member::view </td>
+          <td class="memname"><a class="el" href="classWebCFace_1_1View.html">View</a> view </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;&#160;</td>
           <td class="paramname"><em>field</em></td><td>)</td>
@@ -1470,8 +1605,8 @@ template&lt;typename ScopeGuard &gt; </div>
 
 </div>
 </div>
-<a id="a494444f1d3aa3ceda11637228d015d61" name="a494444f1d3aa3ceda11637228d015d61"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a494444f1d3aa3ceda11637228d015d61">&#9670;&#160;</a></span>views()</h2>
+<a id="a18661fc989eced84d33d56528fcc0b56" name="a18661fc989eced84d33d56528fcc0b56"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a18661fc989eced84d33d56528fcc0b56">&#9670;&#160;</a></span>views()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1480,7 +1615,7 @@ template&lt;typename ScopeGuard &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt; <a class="el" href="classWebCFace_1_1View.html">View</a> &gt; WebCFace::Member::views </td>
+          <td class="memname">std::vector&lt; <a class="el" href="classWebCFace_1_1View.html">View</a> &gt; views </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -1498,8 +1633,8 @@ template&lt;typename ScopeGuard &gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="ad63ee28a99451167657831200388e6cd" name="ad63ee28a99451167657831200388e6cd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad63ee28a99451167657831200388e6cd">&#9670;&#160;</a></span>data_w</h2>
+<a id="a22a78c028eae41b03afeba7570956b6c" name="a22a78c028eae41b03afeba7570956b6c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a22a78c028eae41b03afeba7570956b6c">&#9670;&#160;</a></span>data</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1508,7 +1643,29 @@ template&lt;typename ScopeGuard &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::weak_ptr&lt;<a class="el" href="structWebCFace_1_1ClientData.html">ClientData</a>&gt; WebCFace::Field::data_w</td>
+          <td class="memname">std::shared_ptr&lt;<a class="el" href="structWebCFace_1_1ClientData.html">ClientData</a>&gt; data</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a9ac1cb46c8dfe96538d3bd4efd9b7ae3" name="a9ac1cb46c8dfe96538d3bd4efd9b7ae3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9ac1cb46c8dfe96538d3bd4efd9b7ae3">&#9670;&#160;</a></span>data_w</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::weak_ptr&lt;<a class="el" href="structWebCFace_1_1ClientData.html">ClientData</a>&gt; data_w</td>
         </tr>
       </table>
   </td>
@@ -1521,8 +1678,8 @@ template&lt;typename ScopeGuard &gt; </div>
 
 </div>
 </div>
-<a id="ada30fcfe8180d7cb257958d1fde266be" name="ada30fcfe8180d7cb257958d1fde266be"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ada30fcfe8180d7cb257958d1fde266be">&#9670;&#160;</a></span>field_</h2>
+<a id="aa656df3c1ad08bc32e4b91718345f7f7" name="aa656df3c1ad08bc32e4b91718345f7f7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa656df3c1ad08bc32e4b91718345f7f7">&#9670;&#160;</a></span>field_</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1531,7 +1688,7 @@ template&lt;typename ScopeGuard &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::string WebCFace::Common::FieldBase::field_</td>
+          <td class="memname">std::string field_</td>
         </tr>
       </table>
   </td>
@@ -1544,8 +1701,8 @@ template&lt;typename ScopeGuard &gt; </div>
 
 </div>
 </div>
-<a id="ad89c80b43512f43401fd5435a0fc56b6" name="ad89c80b43512f43401fd5435a0fc56b6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad89c80b43512f43401fd5435a0fc56b6">&#9670;&#160;</a></span>member_</h2>
+<a id="a696b1086704b0858059129b61eaa4a9f" name="a696b1086704b0858059129b61eaa4a9f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a696b1086704b0858059129b61eaa4a9f">&#9670;&#160;</a></span>host</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1554,7 +1711,75 @@ template&lt;typename ScopeGuard &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::string WebCFace::Common::FieldBase::member_</td>
+          <td class="memname">std::string host</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>サーバーのホスト </p>
+
+</div>
+</div>
+<a id="af263baa9ef749e50542f3f93e9c57c6c" name="af263baa9ef749e50542f3f93e9c57c6c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af263baa9ef749e50542f3f93e9c57c6c">&#9670;&#160;</a></span>logger_buf</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classWebCFace_1_1LoggerBuf.html">LoggerBuf</a> logger_buf</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa0467c3694da65a2f55171c7fd972ab3" name="aa0467c3694da65a2f55171c7fd972ab3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa0467c3694da65a2f55171c7fd972ab3">&#9670;&#160;</a></span>logger_os</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::ostream logger_os</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a46e2aa85bc5d8406ccfa3509a9633ff6" name="a46e2aa85bc5d8406ccfa3509a9633ff6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a46e2aa85bc5d8406ccfa3509a9633ff6">&#9670;&#160;</a></span>member_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string member_</td>
         </tr>
       </table>
   </td>
@@ -1565,6 +1790,78 @@ template&lt;typename ScopeGuard &gt; </div>
 </div><div class="memdoc">
 
 <p>メンバー名 </p>
+
+</div>
+</div>
+<a id="ae747cd0f887e6e402965ebb2195a3185" name="ae747cd0f887e6e402965ebb2195a3185"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae747cd0f887e6e402965ebb2195a3185">&#9670;&#160;</a></span>message_thread</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::thread message_thread</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>websocket通信するスレッド </p>
+
+</div>
+</div>
+<a id="a63c89c04d1feae07ca35558055155ffb" name="a63c89c04d1feae07ca35558055155ffb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a63c89c04d1feae07ca35558055155ffb">&#9670;&#160;</a></span>port</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int port</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>サーバーのポート </p>
+
+</div>
+</div>
+<a id="a42f6768c3a24209c8150e3f508645d62" name="a42f6768c3a24209c8150e3f508645d62"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a42f6768c3a24209c8150e3f508645d62">&#9670;&#160;</a></span>recv_thread</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::thread recv_thread</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>recv_queueを処理するスレッド </p>
 
 </div>
 </div>
@@ -1579,7 +1876,7 @@ template&lt;typename ScopeGuard &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceWebCFace.html">WebCFace</a></li><li class="navelem"><a class="el" href="classWebCFace_1_1Client.html">Client</a></li>
-    <li class="footer">Generated on Mon Oct 2 2023 03:19:13 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Tue Oct 3 2023 07:22:21 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

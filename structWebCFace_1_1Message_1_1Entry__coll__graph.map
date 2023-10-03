@@ -1,7 +1,7 @@
-<map id="WebCFace::Message::Entry&lt; T &gt;" name="WebCFace::Message::Entry&lt; T &gt;">
-<area shape="rect" id="Node000001" title=" " alt="" coords="13,227,175,267"/>
-<area shape="rect" id="Node000002" href="$structWebCFace_1_1Message_1_1MessageBase.html" title=" " alt="" coords="5,123,183,177"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="97,191,97,226,91,226,91,191"/>
-<area shape="rect" id="Node000003" href="$structWebCFace_1_1Message_1_1MessageBase.html" title="型からkindを取得するためだけのベースクラス" alt="" coords="13,5,175,45"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="97,59,97,122,91,122,91,59"/>
+<map id="Entry&lt; T &gt;" name="Entry&lt; T &gt;">
+<area shape="rect" id="Node000001" title=" " alt="" coords="47,197,141,223"/>
+<area shape="rect" id="Node000002" href="$structWebCFace_1_1Message_1_1MessageBase.html" title=" " alt="" coords="5,108,183,148"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="97,162,97,197,91,197,91,162"/>
+<area shape="rect" id="Node000003" href="$structWebCFace_1_1Message_1_1MessageBase.html" title="型からkindを取得するためだけのベースクラス" alt="" coords="19,5,169,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="97,45,97,108,91,108,91,45"/>
 </map>

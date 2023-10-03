@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['functype_0',['functype',['../namespaceWebCFace_1_1Common.html#abcba965e358b93ed9f60163b1747d1cb',1,'WebCFace::FuncType'],['../namespaceWebCFace_1_1Common.html#abcba965e358b93ed9f60163b1747d1cb',1,'WebCFace::Common::FuncType']]],
-  ['funcwrappertype_1',['funcwrappertype',['../namespaceWebCFace_1_1Common.html#a04c311f01fd557fa0da64bc2b597256d',1,'WebCFace::FuncWrapperType'],['../namespaceWebCFace_1_1Common.html#a04c311f01fd557fa0da64bc2b597256d',1,'WebCFace::Common::FuncWrapperType']]]
+  ['eventcallback_0',['EventCallback',['../classWebCFace_1_1EventTarget.html#a81e0ac19d99a43bbb9cd276e81dee44f',1,'WebCFace::EventTarget']]],
+  ['eventhandle_1',['EventHandle',['../classWebCFace_1_1EventTarget.html#ad1be7d51af13514338ccba90975d4b7f',1,'WebCFace::EventTarget']]]
 ];

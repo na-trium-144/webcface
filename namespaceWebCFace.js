@@ -2,15 +2,15 @@ var namespaceWebCFace =
 [
     [ "Common", "namespaceWebCFace_1_1Common.html", "namespaceWebCFace_1_1Common" ],
     [ "FuncWrapper", "namespaceWebCFace_1_1FuncWrapper.html", [
-      [ "runCondOnSync", "namespaceWebCFace_1_1FuncWrapper.html#a922f0bd90377750be0af8fe34fcf3555", null ],
-      [ "runCondScopeGuard", "namespaceWebCFace_1_1FuncWrapper.html#ad47081f2fc4c3fbb7b92efb8f9bfc034", null ]
+      [ "runCondOnSync", "namespaceWebCFace_1_1FuncWrapper.html#a22744944daf4ce7b3e6269c5af319940", null ],
+      [ "runCondScopeGuard", "namespaceWebCFace_1_1FuncWrapper.html#a8915696ebd012d8da17d70b5d9f05a87", null ]
     ] ],
     [ "Message", "namespaceWebCFace_1_1Message.html", "namespaceWebCFace_1_1Message" ],
     [ "Server", "namespaceWebCFace_1_1Server.html", "namespaceWebCFace_1_1Server" ],
     [ "ViewComponents", "namespaceWebCFace_1_1ViewComponents.html", [
-      [ "button", "namespaceWebCFace_1_1ViewComponents.html#a540dab34b5d9459c5758841cc3ddcf2c", null ],
-      [ "newLine", "namespaceWebCFace_1_1ViewComponents.html#acc011069ef93e5effa3673f593df7de1", null ],
-      [ "text", "namespaceWebCFace_1_1ViewComponents.html#ad5e3276fa4133e61a706e490e6d32844", null ]
+      [ "button", "namespaceWebCFace_1_1ViewComponents.html#a818c39acf0a23a489c00b0b3327881db", null ],
+      [ "newLine", "namespaceWebCFace_1_1ViewComponents.html#ab72da582724c98c1e879cadbacc78663", null ],
+      [ "text", "namespaceWebCFace_1_1ViewComponents.html#ae4003297f6bf60244afe0fc207c63dad", null ]
     ] ],
     [ "AnonymousFunc", "classWebCFace_1_1AnonymousFunc.html", "classWebCFace_1_1AnonymousFunc" ],
     [ "Arg", "classWebCFace_1_1Common_1_1Arg.html", "classWebCFace_1_1Common_1_1Arg" ],
@@ -44,47 +44,47 @@ var namespaceWebCFace =
     [ "ViewBuf", "classWebCFace_1_1ViewBuf.html", "classWebCFace_1_1ViewBuf" ],
     [ "ViewComponent", "classWebCFace_1_1ViewComponent.html", "classWebCFace_1_1ViewComponent" ],
     [ "ViewComponentBase", "structWebCFace_1_1Common_1_1ViewComponentBase.html", "structWebCFace_1_1Common_1_1ViewComponentBase" ],
-    [ "FuncType", "namespaceWebCFace_1_1Common.html#abcba965e358b93ed9f60163b1747d1cb", null ],
-    [ "FuncWrapperType", "namespaceWebCFace_1_1Common.html#a04c311f01fd557fa0da64bc2b597256d", null ],
-    [ "ValType", "namespaceWebCFace_1_1Common.html#a84c90795c2b28b86fd85c2ba4f60bf05", [
-      [ "none_", "namespaceWebCFace.html#a84c90795c2b28b86fd85c2ba4f60bf05a1e5a9491a4d910a08d95f675ca7226be", null ],
-      [ "string_", "namespaceWebCFace.html#a84c90795c2b28b86fd85c2ba4f60bf05ab83ea326a525123719676faab2944093", null ],
-      [ "bool_", "namespaceWebCFace.html#a84c90795c2b28b86fd85c2ba4f60bf05a467afb5838aa377d55cce81f84c5512b", null ],
-      [ "int_", "namespaceWebCFace.html#a84c90795c2b28b86fd85c2ba4f60bf05ad7488204e92ed01986284bef5650eb53", null ],
-      [ "float_", "namespaceWebCFace.html#a84c90795c2b28b86fd85c2ba4f60bf05aefe6d5085c67bc38cd3746f2dc8013e1", null ],
-      [ "double_", "namespaceWebCFace.html#a84c90795c2b28b86fd85c2ba4f60bf05a9ff848d203d671e297c98886f9fc0bd9", null ]
+    [ "FuncType", "namespaceWebCFace_1_1Common.html#a25e0cb91e379fadc84cd151ffeb49fea", null ],
+    [ "FuncWrapperType", "namespaceWebCFace_1_1Common.html#a1f914f5d15fb32aa05ca882cff7f2cd4", null ],
+    [ "ValType", "namespaceWebCFace_1_1Common.html#acd1dd9e2d5f885ad3f73197cfa6b0185", [
+      [ "none_", "namespaceWebCFace.html#acd1dd9e2d5f885ad3f73197cfa6b0185a1e5a9491a4d910a08d95f675ca7226be", null ],
+      [ "string_", "namespaceWebCFace.html#acd1dd9e2d5f885ad3f73197cfa6b0185ab83ea326a525123719676faab2944093", null ],
+      [ "bool_", "namespaceWebCFace.html#acd1dd9e2d5f885ad3f73197cfa6b0185a467afb5838aa377d55cce81f84c5512b", null ],
+      [ "int_", "namespaceWebCFace.html#acd1dd9e2d5f885ad3f73197cfa6b0185ad7488204e92ed01986284bef5650eb53", null ],
+      [ "float_", "namespaceWebCFace.html#acd1dd9e2d5f885ad3f73197cfa6b0185aefe6d5085c67bc38cd3746f2dc8013e1", null ],
+      [ "double_", "namespaceWebCFace.html#acd1dd9e2d5f885ad3f73197cfa6b0185a9ff848d203d671e297c98886f9fc0bd9", null ]
     ] ],
-    [ "ViewColor", "namespaceWebCFace_1_1Common.html#a63790627e463c24ab28ef12e4d636e03", [
-      [ "inherit", "namespaceWebCFace.html#a63790627e463c24ab28ef12e4d636e03a6995c373523132a1006975baf4079aa0", null ],
-      [ "black", "namespaceWebCFace.html#a63790627e463c24ab28ef12e4d636e03a1ffd9e753c8054cc61456ac7fac1ac89", null ],
-      [ "white", "namespaceWebCFace.html#a63790627e463c24ab28ef12e4d636e03ad508fe45cecaf653904a0e774084bb5c", null ],
-      [ "gray", "namespaceWebCFace.html#a63790627e463c24ab28ef12e4d636e03acda7a650c5856cf2f6738072447d7825", null ],
-      [ "red", "namespaceWebCFace.html#a63790627e463c24ab28ef12e4d636e03abda9643ac6601722a28f238714274da4", null ],
-      [ "orange", "namespaceWebCFace.html#a63790627e463c24ab28ef12e4d636e03afe01d67a002dfa0f3ac084298142eccd", null ],
-      [ "yellow", "namespaceWebCFace.html#a63790627e463c24ab28ef12e4d636e03ad487dd0b55dfcacdd920ccbdaeafa351", null ],
-      [ "green", "namespaceWebCFace.html#a63790627e463c24ab28ef12e4d636e03a9f27410725ab8cc8854a2769c7a516b8", null ],
-      [ "teal", "namespaceWebCFace.html#a63790627e463c24ab28ef12e4d636e03a3c4184e82bb3be8fa32669800fb7373c", null ],
-      [ "cyan", "namespaceWebCFace.html#a63790627e463c24ab28ef12e4d636e03a6411532ba4971f378391776a9db629d3", null ],
-      [ "blue", "namespaceWebCFace.html#a63790627e463c24ab28ef12e4d636e03a48d6215903dff56238e52e8891380c8f", null ],
-      [ "indigo", "namespaceWebCFace.html#a63790627e463c24ab28ef12e4d636e03a8a99d28c3c43cafed58cdbac5f4e9201", null ],
-      [ "purple", "namespaceWebCFace.html#a63790627e463c24ab28ef12e4d636e03abb7aedfa61007447dd6efaf9f37641e3", null ],
-      [ "pink", "namespaceWebCFace.html#a63790627e463c24ab28ef12e4d636e03a4a0b0dcedd48f780778d1cd1bb8f9877", null ]
+    [ "ViewColor", "namespaceWebCFace_1_1Common.html#a5dcc1f15d6a60ca34207565aeb74124a", [
+      [ "inherit", "namespaceWebCFace.html#a5dcc1f15d6a60ca34207565aeb74124aa6995c373523132a1006975baf4079aa0", null ],
+      [ "black", "namespaceWebCFace.html#a5dcc1f15d6a60ca34207565aeb74124aa1ffd9e753c8054cc61456ac7fac1ac89", null ],
+      [ "white", "namespaceWebCFace.html#a5dcc1f15d6a60ca34207565aeb74124aad508fe45cecaf653904a0e774084bb5c", null ],
+      [ "gray", "namespaceWebCFace.html#a5dcc1f15d6a60ca34207565aeb74124aacda7a650c5856cf2f6738072447d7825", null ],
+      [ "red", "namespaceWebCFace.html#a5dcc1f15d6a60ca34207565aeb74124aabda9643ac6601722a28f238714274da4", null ],
+      [ "orange", "namespaceWebCFace.html#a5dcc1f15d6a60ca34207565aeb74124aafe01d67a002dfa0f3ac084298142eccd", null ],
+      [ "yellow", "namespaceWebCFace.html#a5dcc1f15d6a60ca34207565aeb74124aad487dd0b55dfcacdd920ccbdaeafa351", null ],
+      [ "green", "namespaceWebCFace.html#a5dcc1f15d6a60ca34207565aeb74124aa9f27410725ab8cc8854a2769c7a516b8", null ],
+      [ "teal", "namespaceWebCFace.html#a5dcc1f15d6a60ca34207565aeb74124aa3c4184e82bb3be8fa32669800fb7373c", null ],
+      [ "cyan", "namespaceWebCFace.html#a5dcc1f15d6a60ca34207565aeb74124aa6411532ba4971f378391776a9db629d3", null ],
+      [ "blue", "namespaceWebCFace.html#a5dcc1f15d6a60ca34207565aeb74124aa48d6215903dff56238e52e8891380c8f", null ],
+      [ "indigo", "namespaceWebCFace.html#a5dcc1f15d6a60ca34207565aeb74124aa8a99d28c3c43cafed58cdbac5f4e9201", null ],
+      [ "purple", "namespaceWebCFace.html#a5dcc1f15d6a60ca34207565aeb74124aabb7aedfa61007447dd6efaf9f37641e3", null ],
+      [ "pink", "namespaceWebCFace.html#a5dcc1f15d6a60ca34207565aeb74124aa4a0b0dcedd48f780778d1cd1bb8f9877", null ]
     ] ],
-    [ "ViewComponentType", "namespaceWebCFace_1_1Common.html#ada4e2b5130ca16d3be0a0bc148dacfda", [
-      [ "text", "namespaceWebCFace.html#ada4e2b5130ca16d3be0a0bc148dacfdaa1cb251ec0d568de6a929b520c4aed8d1", null ],
-      [ "new_line", "namespaceWebCFace.html#ada4e2b5130ca16d3be0a0bc148dacfdaa620cf4c6d9756f9ce211c523f16c42a9", null ],
-      [ "button", "namespaceWebCFace.html#ada4e2b5130ca16d3be0a0bc148dacfdaace50a09343724eb82df11390e2c1de18", null ]
+    [ "ViewComponentType", "namespaceWebCFace_1_1Common.html#a11040d82967b60182816ddc035d07c28", [
+      [ "text", "namespaceWebCFace.html#a11040d82967b60182816ddc035d07c28a1cb251ec0d568de6a929b520c4aed8d1", null ],
+      [ "new_line", "namespaceWebCFace.html#a11040d82967b60182816ddc035d07c28a620cf4c6d9756f9ce211c523f16c42a9", null ],
+      [ "button", "namespaceWebCFace.html#a11040d82967b60182816ddc035d07c28ace50a09343724eb82df11390e2c1de18", null ]
     ] ],
-    [ "argToTuple", "namespaceWebCFace_1_1Common.html#ab6782d669425d37f11069466bc4451b5", null ],
-    [ "button", "namespaceWebCFace_1_1ViewComponents.html#a540dab34b5d9459c5758841cc3ddcf2c", null ],
-    [ "newLine", "namespaceWebCFace_1_1ViewComponents.html#acc011069ef93e5effa3673f593df7de1", null ],
-    [ "operator<<", "namespaceWebCFace_1_1Common.html#aaf4e9dd872fa7df87d6d43bc57dd1c21", null ],
-    [ "operator<<", "namespaceWebCFace.html#a8011aa939ef1d1f999212d05812c7d57", null ],
-    [ "operator<<", "namespaceWebCFace.html#af94320f2f01aa5512a9fb4d3b249728a", null ],
-    [ "operator<<", "namespaceWebCFace.html#a903d3954ff3bd312c4e5d641989ed6ae", null ],
-    [ "operator<<", "namespaceWebCFace_1_1Common.html#a5c13c23c1d59b0cad6c4218d43cb1cea", null ],
-    [ "text", "namespaceWebCFace_1_1ViewComponents.html#ad5e3276fa4133e61a706e490e6d32844", null ],
-    [ "valTypeOf", "namespaceWebCFace_1_1Common.html#adf945faecdf1f6e81fcb6c624bf25c48", null ],
-    [ "logger_internal_level", "namespaceWebCFace.html#aa3717b6977cda6232d518c8a11005cb5", null ],
-    [ "stderr_sink", "namespaceWebCFace.html#a438c60f805e2e1c3a02ef8db955d87a6", null ]
+    [ "argToTuple", "namespaceWebCFace_1_1Common.html#a5aeb2e4cecdcd6261d71162f7f918434", null ],
+    [ "button", "namespaceWebCFace_1_1ViewComponents.html#a818c39acf0a23a489c00b0b3327881db", null ],
+    [ "newLine", "namespaceWebCFace_1_1ViewComponents.html#ab72da582724c98c1e879cadbacc78663", null ],
+    [ "operator<<", "namespaceWebCFace_1_1Common.html#a22a1de50b886c3b43b60369169be8be9", null ],
+    [ "operator<<", "namespaceWebCFace.html#a3b45f7bce732ee80d9a1346fa7fef32a", null ],
+    [ "operator<<", "namespaceWebCFace.html#a7528ca9b8be7cf3baf4a1371085a5d87", null ],
+    [ "operator<<", "namespaceWebCFace.html#adee3d68a70be59fb6cfc97480b935199", null ],
+    [ "operator<<", "namespaceWebCFace_1_1Common.html#acc572ea980d434e6af0ac9f2e80a31cd", null ],
+    [ "text", "namespaceWebCFace_1_1ViewComponents.html#ae4003297f6bf60244afe0fc207c63dad", null ],
+    [ "valTypeOf", "namespaceWebCFace_1_1Common.html#ae0e0d190aa5fc5710b43f55098ad9ecd", null ],
+    [ "logger_internal_level", "namespaceWebCFace.html#ac5292091822245a35d8f8fcb6cb58d39", null ],
+    [ "stderr_sink", "namespaceWebCFace.html#a5cf8fa8a46f9285cf73c51c15084f383", null ]
 ];

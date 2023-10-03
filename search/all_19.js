@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['wait_0',['wait',['../classWebCFace_1_1ClientData_1_1FuncOnSync.html#a3154728a0498458feec63883434d20c7',1,'WebCFace::ClientData::FuncOnSync']]],
+  ['wait_0',['wait',['../classWebCFace_1_1ClientData_1_1FuncOnSync.html#aa3b21853f890838c88d047d6c2786917',1,'WebCFace::ClientData::FuncOnSync']]],
   ['webcface_1',['webcface',['../namespaceWebCFace.html',1,'WebCFace'],['../index.html',1,'WebCFace']]],
   ['webcface_2eh_2',['webcface.h',['../webcface_8h.html',1,'']]],
   ['webcface_3a_3acommon_3',['Common',['../namespaceWebCFace_1_1Common.html',1,'WebCFace']]],
@@ -21,8 +21,8 @@ var searchData=
   ['webcface_5fversion_5frevision_18',['WEBCFACE_VERSION_REVISION',['../def_8h.html#a4b25565a130978dd7b2b132b89b5776b',1,'def.h']]],
   ['websock_2ecc_19',['websock.cc',['../websock_8cc.html',1,'']]],
   ['websock_2eh_20',['websock.h',['../websock_8h.html',1,'']]],
-  ['white_21',['white',['../namespaceWebCFace_1_1Common.html#a63790627e463c24ab28ef12e4d636e03ad508fe45cecaf653904a0e774084bb5c',1,'WebCFace::Common']]],
-  ['wrap_22',['wrap',['../structWebCFace_1_1Common_1_1DictTraits_3_01VectorOpt_3_01T_01_4_01_4.html#aad7ccd73956475b2496ac4693fbbae41',1,'WebCFace::Common::DictTraits&lt; VectorOpt&lt; T &gt; &gt;::wrap()'],['../structWebCFace_1_1Common_1_1DictTraits_3_01std_1_1shared__ptr_3_01T_01_4_01_4.html#a791be5a1e7bb38232b9be7ce97aae54d',1,'WebCFace::Common::DictTraits&lt; std::shared_ptr&lt; T &gt; &gt;::wrap()'],['../structWebCFace_1_1Common_1_1DictTraits.html#ad2c5be2be76acc19043cab02d03055bb',1,'WebCFace::Common::DictTraits::wrap()']]],
-  ['wrapvec_23',['wrapvec',['../structWebCFace_1_1Common_1_1DictTraits_3_01VectorOpt_3_01T_01_4_01_4.html#ac9283b28e9cb491af15558e0fd24fde7',1,'WebCFace::Common::DictTraits&lt; VectorOpt&lt; T &gt; &gt;::wrapVec()'],['../structWebCFace_1_1Common_1_1DictTraits_3_01std_1_1shared__ptr_3_01T_01_4_01_4.html#a50c837e2fd604249d61a8ae187e249a4',1,'WebCFace::Common::DictTraits&lt; std::shared_ptr&lt; T &gt; &gt;::wrapVec()']]],
-  ['wsconnptr_24',['wsConnPtr',['../structWebCFace_1_1Server_1_1ClientData.html#abefe28be051d6bda64b93243f76cfd27',1,'WebCFace::Server::ClientData']]]
+  ['white_21',['white',['../namespaceWebCFace_1_1Common.html#a5dcc1f15d6a60ca34207565aeb74124aad508fe45cecaf653904a0e774084bb5c',1,'WebCFace::Common']]],
+  ['wrap_22',['wrap',['../structWebCFace_1_1Common_1_1DictTraits_3_01VectorOpt_3_01T_01_4_01_4.html#a9df048124352546d37bf4bab4a6519ab',1,'WebCFace::Common::DictTraits&lt; VectorOpt&lt; T &gt; &gt;::wrap()'],['../structWebCFace_1_1Common_1_1DictTraits_3_01std_1_1shared__ptr_3_01T_01_4_01_4.html#a27f057365161c311449a735967190e24',1,'WebCFace::Common::DictTraits&lt; std::shared_ptr&lt; T &gt; &gt;::wrap()'],['../structWebCFace_1_1Common_1_1DictTraits.html#ae2d5bfb3d7db52b923afd54f19f258f9',1,'WebCFace::Common::DictTraits::wrap()']]],
+  ['wrapvec_23',['wrapvec',['../structWebCFace_1_1Common_1_1DictTraits_3_01VectorOpt_3_01T_01_4_01_4.html#ab98ce3d72780692fa7ba1e9d5b4404f5',1,'WebCFace::Common::DictTraits&lt; VectorOpt&lt; T &gt; &gt;::wrapVec()'],['../structWebCFace_1_1Common_1_1DictTraits_3_01std_1_1shared__ptr_3_01T_01_4_01_4.html#aa09f93e96cf8d18c7032d51343b2045e',1,'WebCFace::Common::DictTraits&lt; std::shared_ptr&lt; T &gt; &gt;::wrapVec()']]],
+  ['wsconnptr_24',['wsConnPtr',['../structWebCFace_1_1Server_1_1ClientData.html#a5f597f42729fddd04f0a25282496189d',1,'WebCFace::Server::ClientData']]]
 ];

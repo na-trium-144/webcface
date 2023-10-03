@@ -1,5 +1,5 @@
 var dir_8h =
 [
-    [ "getStaticDir", "dir_8h.html#a83928c246371ae3881d071dc477251cf", null ],
-    [ "getTempDir", "dir_8h.html#a67eb888462b72234558ad5407f236e7a", null ]
+    [ "getStaticDir", "dir_8h.html#a190126a8b357424080243a1c04ee9afc", null ],
+    [ "getTempDir", "dir_8h.html#af75cf09eeecbcfd458c033ac2972eb47", null ]
 ];

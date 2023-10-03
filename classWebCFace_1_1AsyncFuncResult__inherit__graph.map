@@ -1,7 +1,7 @@
-<map id="WebCFace::AsyncFuncResult" name="WebCFace::AsyncFuncResult">
-<area shape="rect" id="Node000001" title=" " alt="" coords="15,152,222,177"/>
-<area shape="rect" id="Node000002" href="$structWebCFace_1_1Field.html" title="ClientDataの参照とメンバ名とデータ名を持つクラス" alt="" coords="55,79,182,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="121,118,121,152,116,152,116,118"/>
-<area shape="rect" id="Node000003" href="$structWebCFace_1_1Common_1_1FieldBase.html" title="メンバ名とデータ名を持つクラス" alt="" coords="5,5,232,31"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="121,44,121,79,116,79,116,44"/>
+<map id="AsyncFuncResult" name="AsyncFuncResult">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,152,137,177"/>
+<area shape="rect" id="Node000002" href="$structWebCFace_1_1Field.html" title="ClientDataの参照とメンバ名とデータ名を持つクラス" alt="" coords="45,79,98,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="74,118,74,152,69,152,69,118"/>
+<area shape="rect" id="Node000003" href="$structWebCFace_1_1Common_1_1FieldBase.html" title="メンバ名とデータ名を持つクラス" alt="" coords="29,5,114,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="74,44,74,79,69,79,69,44"/>
 </map>
