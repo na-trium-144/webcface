@@ -89,6 +89,7 @@ struct SvrVersion : public MessageBase<MessageKind::svr_version> {
  * 内容は空のmap
  *
  * clientは即座に送り返さなければならない
+ * (送り返さなくても何も起きないが)
  */
 struct Ping : public MessageBase<MessageKind::ping> {
     Ping() = default;
