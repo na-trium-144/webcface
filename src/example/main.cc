@@ -29,9 +29,9 @@ int main() {
     c.logger()->error("this is error");
     c.logger()->critical("this is critical");
     c.logger()->error("Some error message with arg: {}", 1);
-    c.logger_ostream() << "this is ostream" << std::endl;
+    c.loggerOStream() << "this is ostream" << std::endl;
     auto *buf = std::cout.rdbuf();
-    std::cout.rdbuf(c.logger_streambuf());
+    std::cout.rdbuf(c.loggerStreamBuf());
     std::cout << "this is cout" << std::endl;
     std::cout.rdbuf(buf);
 
