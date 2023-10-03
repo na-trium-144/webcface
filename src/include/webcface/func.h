@@ -71,7 +71,7 @@ class Func : protected Field {
         dataLock()->func_store.setHidden(*this, hidden);
         return *this;
     }
-    //! 関数の設定を解除
+    //! 関数の設定を削除
     auto &free() {
         dataLock()->func_store.unsetRecv(*this);
         return *this;
@@ -120,10 +120,12 @@ class Func : protected Field {
     /*!
      * setArgsで渡された引数の情報(名前など)とFuncがすでに持っている引数の情報(型など)がマージされる
      *
-     * 関数のセットの後に呼ばなければならない (例えば
-     * Func(...).set(...).setArgs({...}) ) 関数をしたあと cli.sync()
+     * 関数のセットの後に呼ばなければならない(セット前に呼ぶと
+     * std::invalid_argument) (例えば Func(...).set(...).setArgs({...}) )
+     * また、関数をセットしたあと cli.sync()
      * をする前に呼ばなければならない
      * 実際にセットした関数の引数の数とargsの要素数は一致していなければならない
+     * (一致していない場合 std::invalid_argument )
      */
     Func &setArgs(const std::vector<Arg> &args);
 
@@ -132,7 +134,8 @@ class Func : protected Field {
      * FuncWrapperがnullptrなら何もせずsetした関数を実行する
      * セットしない場合 Client::setDefaultRunCond() のものが使われる
      *
-     * 関数のセットの後に呼ばなければならない
+     * 関数のセットの後に呼ばなければならない(セット前に呼ぶと
+     * std::invalid_argument)
      */
     Func &setRunCond(FuncWrapperType wrapper);
     /*! FuncWrapperを nullptr にする
@@ -158,7 +161,7 @@ class AnonymousFunc : public Func {
         return ".tmp" + std::to_string(id++);
     }
 
-    std::function<void(AnonymousFunc&)> func_setter = nullptr;
+    std::function<void(AnonymousFunc &)> func_setter = nullptr;
     bool base_init = false;
 
   public:

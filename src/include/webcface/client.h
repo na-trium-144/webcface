@@ -106,7 +106,7 @@ class Client : public Member {
     }
 
     //! サーバーに送信するspdlogのsink
-    std::shared_ptr<LoggerSink> logger_sink() { return data->logger_sink; }
+    std::shared_ptr<LoggerSink> loggerSink() { return data->logger_sink; }
     //! サーバーとstderr_sinkに流すspdlog::logger
     std::shared_ptr<spdlog::logger> logger() { return data->logger; }
 
@@ -114,9 +114,9 @@ class Client : public Member {
     /*! levelは常にinfoになる
      * std::flushのタイミングとは無関係に、1つの改行ごとに1つのログになる
      */
-    LoggerBuf *logger_streambuf() { return &logger_buf; }
+    LoggerBuf *loggerStreamBuf() { return &logger_buf; }
     //! logger_streambufに出力するostream
-    std::ostream &logger_ostream() { return logger_os; }
+    std::ostream &loggerOStream() { return logger_os; }
 
     //! WebCFaceサーバーのバージョン情報
     std::string serverVersion() const { return data->svr_version; }

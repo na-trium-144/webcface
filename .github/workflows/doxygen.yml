@@ -9,6 +9,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
+    - name: submodule update doxygen-awesome-css
+      run: git submodule update --init external/doxygen-awesome-css
+    - name: install graphviz
+      run: sudo apt-get update && sudo apt-get install -y graphviz
     - uses: ssciwr/doxygen-install@v1
       with:
         version: "1.9.8"

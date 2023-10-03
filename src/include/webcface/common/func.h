@@ -16,8 +16,8 @@ using FuncWrapperType =
     std::function<ValAdaptor(FuncType, const std::vector<ValAdaptor> &)>;
 
 //! 引数の情報を表す。
-//! func.setArg({ Arg(引数名).init(初期値).min(最小値).max(最大値), ... });
-//! のように使う
+/*! func.setArg({ Arg(引数名).init(初期値).min(最小値).max(最大値), ... }); のように使う
+ */
 class Arg {
   protected:
     std::string name_ = "";
@@ -59,6 +59,7 @@ class Arg {
         : name_(name), type_(type), init_(init), min_(min), max_(max),
           option_(option) {}
 
+    //! 引数の名前を取得する。
     std::string name() const { return name_; }
     //! 引数の型を取得する。
     //! 型を手動で設定することはできない

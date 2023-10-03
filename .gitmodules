@@ -20,3 +20,6 @@
 [submodule "webui"]
 	path = webui
 	url = https://github.com/na-trium-144/webcface-webui.git
+[submodule "external/doxygen-awesome-css"]
+	path = external/doxygen-awesome-css
+	url = https://github.com/jothepro/doxygen-awesome-css.git
