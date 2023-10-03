@@ -25,16 +25,24 @@
 var NAVTREE =
 [
   [ "WebCFace", "index.html", [
-    [ "Example", "index.html#autotoc_md60", null ],
-    [ "Installation", "index.html#autotoc_md61", [
-      [ "Debian, Ubuntu (amd64, arm64, armhf)", "index.html#autotoc_md62", null ],
-      [ "Homebrew (MacOS, Linux)", "index.html#autotoc_md63", null ],
-      [ "Build from source", "index.html#autotoc_md64", null ]
+    [ "Repository Links", "index.html#autotoc_md60", null ],
+    [ "Example", "index.html#autotoc_md61", [
+      [ "value", "index.html#autotoc_md62", null ],
+      [ "text", "index.html#autotoc_md63", null ],
+      [ "view", "index.html#autotoc_md64", null ],
+      [ "func", "index.html#autotoc_md65", null ],
+      [ "log", "index.html#autotoc_md66", null ]
     ] ],
-    [ "Usage", "index.html#autotoc_md65", [
-      [ "Server", "index.html#autotoc_md66", null ],
-      [ "Client (C++)", "index.html#autotoc_md67", null ]
+    [ "Installation", "index.html#autotoc_md67", [
+      [ "Debian, Ubuntu (amd64, arm64, armhf)", "index.html#autotoc_md68", null ],
+      [ "Homebrew (MacOS, Linux)", "index.html#autotoc_md69", null ],
+      [ "Build from source", "index.html#autotoc_md70", null ]
     ] ],
+    [ "Usage", "index.html#autotoc_md71", [
+      [ "Server", "index.html#autotoc_md72", null ],
+      [ "Client (C++)", "index.html#autotoc_md73", null ]
+    ] ],
+    [ "Documentation", "index.html#autotoc_md74", null ],
     [ "Client", "md_01__client.html", [
       [ "sync", "md_01__client.html#autotoc_md1", null ],
       [ "切断する", "md_01__client.html#autotoc_md2", null ]
@@ -146,10 +154,10 @@ var NAVTREEINDEX =
 "classWebCFace_1_1Log.html#ad1be7d51af13514338ccba90975d4b7f",
 "classWebCFace_1_1Value.html#aa656df3c1ad08bc32e4b91718345f7f7",
 "field_8h.html",
-"namespaceWebCFace_1_1Common.html#a5dcc1f15d6a60ca34207565aeb74124aa9f27410725ab8cc8854a2769c7a516b8",
-"structWebCFace_1_1Common_1_1DictTraits_3_01VectorOpt_3_01T_01_4_01_4.html#abbe746fc1535d3cd565042e3bd51f157",
-"structWebCFace_1_1Message_1_1Call.html",
-"structWebCFace_1_1Message_1_1SvrVersion.html#ae962bcb5814e318a6704b4e8c9ad7cbc"
+"namespaceWebCFace_1_1Common.html#a5dcc1f15d6a60ca34207565aeb74124aa1ffd9e753c8054cc61456ac7fac1ac89",
+"structWebCFace_1_1Common_1_1DictTraits_3_01VectorOpt_3_01T_01_4_01_4.html#a9f70208dd87a825ead4cfaa2cb8d10d6",
+"structWebCFace_1_1Field.html#abc837b37c9c9c8caf17e848fc8d18af0",
+"structWebCFace_1_1Message_1_1Res_3_01View_01_4.html#ad5a4760db27f8fcd5c4028bb15f80ad9"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

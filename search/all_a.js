@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['c_0',['Client (C++)',['../index.html#autotoc_md67',1,'']]],
+  ['c_0',['Client (C++)',['../index.html#autotoc_md73',1,'']]],
   ['call_1',['call',['../structWebCFace_1_1Message_1_1Call.html',1,'Call'],['../namespaceWebCFace_1_1Message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a98ab4979bd774d191f9a4642f9df392f',1,'WebCFace::Message::MessageKind::call'],['../structWebCFace_1_1Message_1_1Call.html#ad6b7bfc86c9b4f640679feb6dd1efd3f',1,'WebCFace::Message::Call::Call()=default'],['../structWebCFace_1_1Message_1_1Call.html#a2b3a724c066fa45093e55a0907302590',1,'WebCFace::Message::Call::Call(const Common::FuncCall &amp;c)']]],
   ['call_20response_20webcface_3a_3amessage_3a_3acallresponse_20kind_2082_2',['call response (WebCFace::Message::CallResponse, kind = 82)',['../md_90__message.html#autotoc_md41',1,'']]],
   ['call_20result_20webcface_3a_3amessage_3a_3acallresult_20kind_2083_3',['call result (WebCFace::Message::CallResult, kind = 83)',['../md_90__message.html#autotoc_md42',1,'']]],
@@ -18,7 +18,7 @@ var searchData=
   ['children_15',['children',['../structWebCFace_1_1Common_1_1DictElement.html#adc086dc849c07799cc17df5cee93bcbb',1,'WebCFace::Common::DictElement::children'],['../classWebCFace_1_1Common_1_1Dict.html#a8f1320b25b2eea2c7f1d53543dda81ec',1,'WebCFace::Common::Dict::children']]],
   ['clear_16',['clear',['../structWebCFace_1_1Server_1_1Store.html#ac8bb3912a3ce86b15842e79d0b421204',1,'WebCFace::Server::Store']]],
   ['client_17',['client',['../classWebCFace_1_1AsyncFuncResult.html#a5db1c99e2c94b26278f3838c85cdb618',1,'WebCFace::AsyncFuncResult::Client'],['../md_01__client.html',1,'Client'],['../classWebCFace_1_1Client.html',1,'Client'],['../classWebCFace_1_1Client.html#aba7bb87195e176c3f64a24076ecf3d62',1,'WebCFace::Client::Client(const std::string &amp;name, const std::string &amp;host, int port, std::shared_ptr&lt; ClientData &gt; data)'],['../classWebCFace_1_1Client.html#a8d320836152707a8b07b26abad993bdc',1,'WebCFace::Client::Client(const std::string &amp;name, const std::string &amp;host=&quot;127.0.0.1&quot;, int port=WEBCFACE_DEFAULT_PORT)'],['../classWebCFace_1_1Client.html#ab7547544036712233febe1db3149327d',1,'WebCFace::Client::Client(const Client &amp;)=delete'],['../classWebCFace_1_1Client.html#aa5777bac2de54b388226a381a4174ff0',1,'WebCFace::Client::Client()']]],
-  ['client_20c_18',['Client (C++)',['../index.html#autotoc_md67',1,'']]],
+  ['client_20c_18',['Client (C++)',['../index.html#autotoc_md73',1,'']]],
   ['client_2ecc_19',['client.cc',['../client_8cc.html',1,'']]],
   ['client_2eh_20',['client.h',['../client_8h.html',1,'']]],
   ['client_5fdata_2ecc_21',['client_data.cc',['../client__data_8cc.html',1,'']]],
