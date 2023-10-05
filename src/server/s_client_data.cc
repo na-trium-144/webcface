@@ -1,5 +1,6 @@
 #include "s_client_data.h"
 #include "store.h"
+#include "websock.h"
 #include "../message/message.h"
 #include <webcface/common/def.h>
 #include <cinatra.hpp>
@@ -80,10 +81,16 @@ void ClientData::onRecv(const std::string &message) {
             this->last_ping_duration =
                 std::chrono::duration_cast<std::chrono::milliseconds>(
                     std::chrono::system_clock::now() - this->last_send_ping);
+            logger->debug("ping {} ms", this->last_ping_duration->count());
             break;
         }
         case MessageKind::ping_status_req: {
             this->ping_status_req = true;
+            logger->debug("ping_status_req");
+            if (ping_status != nullptr) {
+                this->pack(Message::PingStatus{{}, ping_status});
+                logger->trace("send ping_status");
+            }
             break;
         }
         case MessageKind::sync_init: {
