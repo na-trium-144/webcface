@@ -85,9 +85,15 @@ TEST_F(ServerTest, ping) {
     EXPECT_GE(s_c1->last_ping_duration->count(), 10);
     EXPECT_LE(s_c1->last_ping_duration->count(), 12);
 
-    dummy_c1->send(Message::PingStatusReq{});
+    // serverがping statusを集計するのは次のping時なのでこの場合0
     dummy_c1->recvClear();
+    dummy_c1->send(Message::PingStatusReq{});
     wait();
+    dummy_c1->recv<Message::PingStatus>(
+        [&](const auto &obj) { EXPECT_EQ(obj.status->size(), 0); },
+        [&] { ADD_FAILURE() << "Ping Status recv failed"; });
+
+    dummy_c1->recvClear();
     Server::server_ping_wait.notify_one(); // これで無理やりpingさせる
     wait();
     dummy_c1->recv<Message::PingStatus>(
