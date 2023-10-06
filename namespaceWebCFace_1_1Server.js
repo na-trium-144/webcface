@@ -9,6 +9,7 @@ var namespaceWebCFace_1_1Server =
     [ "pingThreadMain", "namespaceWebCFace_1_1Server.html#a33df3bc6f542e57bb6b239b084301718", null ],
     [ "serverRun", "namespaceWebCFace_1_1Server.html#a55d5c53c73f66be16623a85d1c4f1e97", null ],
     [ "serverStop", "namespaceWebCFace_1_1Server.html#a324e1a70e006e8434fa711dd7e646727", null ],
+    [ "ping_status", "namespaceWebCFace_1_1Server.html#a2284a2138f45992873563f8b5e95eaac", null ],
     [ "ping_thread", "namespaceWebCFace_1_1Server.html#a32d1773d4920e0fdbc9938ec0c45545e", null ],
     [ "server", "namespaceWebCFace_1_1Server.html#a32504f8405cede496b4adb8fd2cf8832", null ],
     [ "server_mtx", "namespaceWebCFace_1_1Server.html#a229b454d156fec6ab3e561a195813199", null ],

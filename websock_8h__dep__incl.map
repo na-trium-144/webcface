@@ -1,5 +1,7 @@
 <map id="server/websock.h" name="server/websock.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="9,5,145,31"/>
-<area shape="rect" id="Node000002" href="$websock_8cc.html" title=" " alt="" coords="5,79,148,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="79,44,79,79,74,79,74,44"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="113,5,249,31"/>
+<area shape="rect" id="Node000002" href="$s__client__data_8cc.html" title=" " alt="" coords="5,79,176,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="157,41,107,81,104,76,154,37"/>
+<area shape="rect" id="Node000003" href="$websock_8cc.html" title=" " alt="" coords="201,79,343,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="208,37,259,76,256,81,205,41"/>
 </map>

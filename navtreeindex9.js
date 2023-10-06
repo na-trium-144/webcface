@@ -1,5 +1,6 @@
 var NAVTREEINDEX9 =
 {
+"structWebCFace_1_1Message_1_1Res_3_01View_01_4.html#ad5a4760db27f8fcd5c4028bb15f80ad9":[13,0,0,2,16,4],
 "structWebCFace_1_1Message_1_1Res_3_01View_01_4.html#ad5a4760db27f8fcd5c4028bb15f80ad9":[14,0,0,1,15,4],
 "structWebCFace_1_1Message_1_1SvrVersion.html":[13,0,0,2,17],
 "structWebCFace_1_1Message_1_1SvrVersion.html":[14,0,0,1,16],
@@ -241,10 +242,11 @@ var NAVTREEINDEX9 =
 "websock_8cc.html#a33df3bc6f542e57bb6b239b084301718":[15,0,3,6,0],
 "websock_8cc.html#a55d5c53c73f66be16623a85d1c4f1e97":[15,0,3,6,1],
 "websock_8h.html":[15,0,3,7],
-"websock_8h.html#a229b454d156fec6ab3e561a195813199":[15,0,3,7,2],
+"websock_8h.html#a2284a2138f45992873563f8b5e95eaac":[15,0,3,7,2],
+"websock_8h.html#a229b454d156fec6ab3e561a195813199":[15,0,3,7,3],
 "websock_8h.html#a324e1a70e006e8434fa711dd7e646727":[15,0,3,7,1],
-"websock_8h.html#a4898db8d9fe1cf7bf83e4c7ac242a245":[15,0,3,7,3],
+"websock_8h.html#a4898db8d9fe1cf7bf83e4c7ac242a245":[15,0,3,7,4],
 "websock_8h.html#a55d5c53c73f66be16623a85d1c4f1e97":[15,0,3,7,0],
-"websock_8h.html#a866e9256cc856d47a956a306b6a65e13":[15,0,3,7,4],
+"websock_8h.html#a866e9256cc856d47a956a306b6a65e13":[15,0,3,7,5],
 "websock_8h_source.html":[15,0,3,7]
 };
