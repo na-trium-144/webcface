@@ -12,7 +12,7 @@ double hello2(int a, double b, bool c, const std::string &d) {
     return a + b;
 }
 int main() {
-    WebCFace::logger_internal_level = spdlog::level::trace;
+    WebCFace::logger_internal_level = spdlog::level::debug;
 
     WebCFace::Client c("example_main");
     c.value("test") = 0;
