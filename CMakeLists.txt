@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.9)
+cmake_minimum_required(VERSION 3.10)
 
 # src/include/webcface/common/def.h からバージョンを取得
 file(READ ${CMAKE_CURRENT_SOURCE_DIR}/src/include/webcface/common/def.h contents)
@@ -55,6 +55,11 @@ endif()
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     add_compile_options(-utf-8)
+endif()
+
+if(MINGW)
+    # https://stackoverflow.com/questions/10486116/what-does-this-gcc-error-relocation-truncated-to-fit-mean
+    add_link_options(-Wl,--default-image-base-low)
 endif()
 
 find_package(msgpack-cxx QUIET)
@@ -126,7 +131,7 @@ endif()
 
 if(MINGW)
     set(SPDLOG ${SPDLOG} ws2_32)
-    set(CINATRA ${CINATRA} ws2_32 wsock32 mingwex)
+    set(CINATRA ${CINATRA} ws2_32 wsock32)
 endif()
 
 
