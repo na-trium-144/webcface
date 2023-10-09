@@ -28,9 +28,9 @@ jobs:
           - os: ubuntu-latest
             c_compiler: gcc
             cpp_compiler: g++
-          - os: ubuntu-latest
-            c_compiler: clang
-            cpp_compiler: clang++
+          # - os: ubuntu-latest
+          #   c_compiler: clang
+          #   cpp_compiler: clang++
           - os: macos-latest
             c_compiler: clang
             cpp_compiler: clang++
@@ -39,8 +39,8 @@ jobs:
           #   c_compiler: gcc
           # - os: windows-latest
           #   c_compiler: clang
-          # - os: ubuntu-latest
-          #   c_compiler: cl
+          - os: ubuntu-latest
+            c_compiler: clang
           - os: macos-latest
             c_compiler: gcc
 
@@ -53,7 +53,14 @@ jobs:
     - name: Configure CMake
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
-      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DWEBCFACE_TEST=on -DWEBCFACE_EXAMPLE=on
+      env:
+        CC: ${{matrix.c_compiler}}
+        CXX: ${{matrix.cpp_compiler}}
+      run: >
+        cmake -B ${{github.workspace}}/build
+        -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+        -DWEBCFACE_TEST=on
+        -DWEBCFACE_EXAMPLE=on
 
     - name: Build
       # Build your program with the given configuration
@@ -63,5 +70,68 @@ jobs:
       working-directory: ${{github.workspace}}/build
       # Execute tests defined by the CMake configuration.
       # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
-      run: ctest -C ${{env.BUILD_TYPE}} --output-on-failure
+      run: ctest -C ${{env.BUILD_TYPE}} --output-on-failure --timeout 1
 
+
+  build-msvc:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: git submodule update
+      run: git submodule update --init --recursive
+    - name: Configure CMake
+      run: >
+        cmake -B ${{github.workspace}}/build
+        -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+        -DWEBCFACE_TEST=on
+        -DWEBCFACE_EXAMPLE=on
+    - name: Build lib
+      run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} -t webcface
+    - name: move spdlogd.dll
+      # spdlogd.dllをwebcface-testと同じディレクトリに持ってこないとなぜか実行できない
+      run: Copy-Item build\external\spdlog\Debug\spdlogd.dll build\Debug\
+    - name: Build test
+      run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
+    - name: Test
+      working-directory: ${{github.workspace}}/build
+      run: ctest -C ${{env.BUILD_TYPE}} --output-on-failure --timeout 1
+
+  build-mingw:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: msys2 {0}
+    steps:
+    - uses: msys2/setup-msys2@v2
+      with:
+        update: true
+        install: >-
+          git
+          mingw-w64-x86_64-gcc
+          mingw-w64-x86_64-clang
+          mingw-w64-x86_64-cmake
+        msystem: MINGW64
+    - uses: actions/checkout@v3
+    - name: git submodule update
+      run: git submodule update --init --recursive
+    - name: Configure CMake
+      env:
+        # CC: gcc
+        # CXX: g++
+        CC: clang
+        CXX: clang++
+      run: >
+        cmake -B build
+        -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+        -DWEBCFACE_TEST=on
+        -DWEBCFACE_EXAMPLE=on
+    - name: Build lib
+      run: cmake --build build --config ${{env.BUILD_TYPE}} -t webcface
+    - name: move libspdlogd.dll
+      # libspdlogd.dllをwebcface-testと同じディレクトリに持ってこないとなぜか実行できない
+      run: cp build/external/spdlog/libspdlogd.dll build/
+    - name: Build test
+      run: cmake --build build --config ${{env.BUILD_TYPE}}
+    - name: Test
+      working-directory: ${{github.workspace}}/build
+      run: ctest -C ${{env.BUILD_TYPE}} --output-on-failure --timeout 1
