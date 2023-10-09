@@ -27,17 +27,19 @@ endif()
 
 option(WEBCFACE_EXAMPLE "build example" OFF)
 option(WEBCFACE_TEST "build test" OFF)
+option(WEBCFACE_COVERAGE "enable generating test coverage" OFF)
 option(WEBCFACE_INSTALL "generate install target" ${IS_MAIN})
 
 message(STATUS "webcface_example = ${WEBCFACE_EXAMPLE}")
 message(STATUS "webcface_test = ${WEBCFACE_TEST}")
+message(STATUS "webcface_coverage = ${WEBCFACE_COVERAGE}")
 message(STATUS "webcface_install = ${WEBCFACE_INSTALL}")
 
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Release")
 endif()
 
-if(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
+if(${WEBCFACE_COVERAGE})
     if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
         add_compile_options(-fprofile-arcs -ftest-coverage)
         add_link_options(-lgcov --coverage)
@@ -91,7 +93,7 @@ set(EVENTPP eventpp::eventpp)
 find_package(spdlog QUIET)
 if(${spdlog_FOUND})
     message(STATUS "spdlog found")
-    set(SPDLOG spdlog::spdlog $<$<BOOL:${MINGW}>:ws2_32>)
+    set(SPDLOG spdlog::spdlog)
 else()
     message(STATUS "spdlog not found")
     set(SPDLOG_BUILD_SHARED on CACHE INTERNAL "" FORCE)
@@ -124,7 +126,7 @@ endif()
 
 if(MINGW)
     set(SPDLOG ${SPDLOG} ws2_32)
-    set(CINATRA ${CINATRA} ws2_32 wsock32)
+    set(CINATRA ${CINATRA} ws2_32 wsock32 mingwex)
 endif()
 
 
