@@ -55,6 +55,7 @@ endif()
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     add_compile_options(-utf-8)
+    set(gtest_force_shared_crt on)
 endif()
 
 if(MINGW)
