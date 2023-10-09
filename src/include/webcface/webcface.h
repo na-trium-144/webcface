@@ -1,6 +1,7 @@
 #pragma once
 // ヘッダーの上下関係はここに書かれた順
 
+#include "common/def.h"
 #include "common/val.h"
 #include "common/func.h"
 #include "common/queue.h"

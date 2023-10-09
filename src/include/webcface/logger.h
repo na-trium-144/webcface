@@ -6,11 +6,12 @@
 #include <spdlog/sinks/stdout_color_sinks.h>
 #include "common/queue.h"
 #include "common/log.h"
+#include "common/def.h"
 
 namespace WebCFace {
 class ClientData;
 
-class LoggerBuf : public std::streambuf {
+class WEBCFACE_DLL LoggerBuf : public std::streambuf {
     static constexpr int buf_size = 1024;
     char buf[buf_size];
     // bufからあふれた分を入れる
@@ -27,7 +28,7 @@ class LoggerBuf : public std::streambuf {
     LoggerBuf &operator=(const LoggerBuf &) = delete;
 };
 
-class LoggerSink : public spdlog::sinks::base_sink<std::mutex>,
+class WEBCFACE_DLL LoggerSink : public spdlog::sinks::base_sink<std::mutex>,
                    public Queue<std::shared_ptr<LogLine>> {
   protected:
     void sink_it_(const spdlog::details::log_msg &msg) override;
@@ -42,10 +43,10 @@ class LoggerSink : public spdlog::sinks::base_sink<std::mutex>,
 //! stderrに出力するsink
 //! 全clientで共通
 //! loggerからstderrに流すのを止めたい時などはこれのset_levelなどを使う
-inline auto stderr_sink =
-    std::make_shared<spdlog::sinks::stderr_color_sink_mt>();
+WEBCFACE_DLL extern std::shared_ptr<spdlog::sinks::stderr_color_sink_mt>
+    stderr_sink;
 
 //! webcfaceのログ出力レベルを設定できます
-inline spdlog::level::level_enum logger_internal_level = spdlog::level::info;
+WEBCFACE_DLL extern spdlog::level::level_enum logger_internal_level;
 
 } // namespace WebCFace

@@ -330,10 +330,12 @@ class Log : protected Field, public EventTarget<Log, std::string> {
     }
 };
 
-inline std::ostream &operator<<(std::ostream &os, const Value &data) {
+inline std::ostream &operator<<(std::ostream &os,
+                                            const Value &data) {
     return os << data.get();
 }
-inline std::ostream &operator<<(std::ostream &os, const Text &data) {
+inline std::ostream &operator<<(std::ostream &os,
+                                            const Text &data) {
     return os << data.get();
 }
 } // namespace WebCFace

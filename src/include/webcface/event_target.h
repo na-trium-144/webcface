@@ -2,6 +2,7 @@
 #include <functional>
 #include <eventpp/eventdispatcher.h>
 #include "field.h"
+
 namespace WebCFace {
 
 //! イベントを表し、コールバックの追加や削除ができるクラス、eventpp::EventQueueのラッパー

@@ -4,16 +4,17 @@
 #include "common/func.h"
 #include "common/val.h"
 #include "func_result.h"
+#include "common/def.h"
 
 namespace WebCFace {
 
 namespace FuncWrapper {
 
 //! Client::sync() まで待機し、実行完了までsync()をブロックするFuncWrapper
-FuncWrapperType runCondOnSync(const std::weak_ptr<ClientData> &data);
+WEBCFACE_DLL FuncWrapperType runCondOnSync(const std::weak_ptr<ClientData> &data);
 //! ScopeGuardをロックするFuncWrapper
 template <typename ScopeGuard>
-FuncWrapperType runCondScopeGuard() {
+inline FuncWrapperType runCondScopeGuard() {
     static auto wrapper = [](FuncType callback,
                              const std::vector<ValAdaptor> &args) {
         ScopeGuard scope_guard;
@@ -90,7 +91,7 @@ class Func : protected Field {
     ValAdaptor run(Args... args) const {
         return run({ValAdaptor(args)...});
     }
-    ValAdaptor run(const std::vector<ValAdaptor> &args_vec) const;
+    WEBCFACE_DLL ValAdaptor run(const std::vector<ValAdaptor> &args_vec) const;
     //! run()と同じ
     template <typename... Args>
     ValAdaptor operator()(Args... args) const {
@@ -107,13 +108,14 @@ class Func : protected Field {
     AsyncFuncResult &runAsync(Args... args) const {
         return runAsync({ValAdaptor(args)...});
     }
-    AsyncFuncResult &runAsync(const std::vector<ValAdaptor> &args_vec) const;
+    WEBCFACE_DLL AsyncFuncResult &
+    runAsync(const std::vector<ValAdaptor> &args_vec) const;
 
     //! 戻り値の型を返す
-    ValType returnType() const;
+    WEBCFACE_DLL ValType returnType() const;
     //! 引数の情報を返す
     //! 変更するにはsetArgsを使う(このvectorの中身を書き換えても反映されない)
-    std::vector<Arg> args() const;
+    WEBCFACE_DLL std::vector<Arg> args() const;
     const Arg args(std::size_t i) const { return args().at(i); }
 
     //! 引数の情報を更新する
@@ -127,7 +129,7 @@ class Func : protected Field {
      * 実際にセットした関数の引数の数とargsの要素数は一致していなければならない
      * (一致していない場合 std::invalid_argument )
      */
-    Func &setArgs(const std::vector<Arg> &args);
+    WEBCFACE_DLL Func &setArgs(const std::vector<Arg> &args);
 
     /*! FuncWrapperをセットする。
      * Funcの実行時にFuncWrapperを通すことで条件を満たすまでブロックしたりする。
@@ -137,7 +139,7 @@ class Func : protected Field {
      * 関数のセットの後に呼ばなければならない(セット前に呼ぶと
      * std::invalid_argument)
      */
-    Func &setRunCond(FuncWrapperType wrapper);
+    WEBCFACE_DLL Func &setRunCond(FuncWrapperType wrapper);
     /*! FuncWrapperを nullptr にする
      */
     Func &setRunCondNone() { return setRunCond(nullptr); }
@@ -155,7 +157,7 @@ class Func : protected Field {
 };
 
 
-class AnonymousFunc : public Func {
+class WEBCFACE_DLL AnonymousFunc : public Func {
     static std::string fieldNameTmp() {
         static int id = 0;
         return ".tmp" + std::to_string(id++);

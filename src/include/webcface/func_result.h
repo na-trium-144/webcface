@@ -59,6 +59,7 @@ class AsyncFuncResult : Field {
     //! 関数本体のあるmember
     Member member() const { return *this; }
 };
-auto &operator<<(std::basic_ostream<char> &os, const AsyncFuncResult &data);
+auto &operator<<(std::basic_ostream<char> &os,
+                              const AsyncFuncResult &data);
 
 } // namespace WebCFace

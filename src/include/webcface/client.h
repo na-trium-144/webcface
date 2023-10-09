@@ -23,10 +23,10 @@ class Client : public Member {
     std::thread message_thread;
     //! recv_queueを処理するスレッド
     std::thread recv_thread;
-    static void messageThreadMain(std::shared_ptr<ClientData> data,
+    WEBCFACE_DLL static void messageThreadMain(std::shared_ptr<ClientData> data,
                                   std::string host, int port);
     //! 接続を切り、今後再接続しない
-    void close();
+    WEBCFACE_DLL void close();
 
     std::shared_ptr<ClientData> data;
 
@@ -34,7 +34,7 @@ class Client : public Member {
     std::ostream logger_os;
 
     //! 受信時の処理
-    void onRecv(const std::string &message);
+    WEBCFACE_DLL void onRecv(const std::string &message);
 
   public:
     //! 自分自身の名前を指定しせずサーバーに接続する
@@ -50,12 +50,13 @@ class Client : public Member {
                     const std::string &host = "127.0.0.1",
                     int port = WEBCFACE_DEFAULT_PORT)
         : Client(name, host, port, std::make_shared<ClientData>(name)) {}
-    explicit Client(const std::string &name, const std::string &host, int port,
+    WEBCFACE_DLL explicit Client(const std::string &name,
+                                 const std::string &host, int port,
                     std::shared_ptr<ClientData> data);
     //! サーバーに接続できているときtrueを返す。
-    bool connected() const;
+    WEBCFACE_DLL bool connected() const;
     //! デストラクタで接続を切る。
-    ~Client();
+    WEBCFACE_DLL ~Client();
 
     //! データをまとめて送信する。
     /*! value,textにセットしたデータをすべて送る。
@@ -63,10 +64,12 @@ class Client : public Member {
      * また他memberの情報を取得できるのは初回のsync()の後のみ。
      * clientを使用する時は必ずsendを適当なタイミングで繰り返し呼ぶこと。
      */
-    void sync();
+    WEBCFACE_DLL void sync();
 
     //! 他のmemberにアクセスする。
-    Member member(const std::string &name) { return Member{data, name}; }
+    Member member(const std::string &name) {
+        return Member{data, name};
+    }
     //! サーバーに接続されている他のmemberのリストを得る。
     std::vector<Member> members() {
         auto keys = data->value_store.getMembers();
@@ -106,9 +109,13 @@ class Client : public Member {
     }
 
     //! サーバーに送信するspdlogのsink
-    std::shared_ptr<LoggerSink> loggerSink() { return data->logger_sink; }
+    std::shared_ptr<LoggerSink> loggerSink() {
+        return data->logger_sink;
+    }
     //! サーバーとstderr_sinkに流すspdlog::logger
-    std::shared_ptr<spdlog::logger> logger() { return data->logger; }
+    std::shared_ptr<spdlog::logger> logger() {
+        return data->logger;
+    }
 
     //! このクライアントのloggerに出力するstreambuf
     /*! levelは常にinfoになる

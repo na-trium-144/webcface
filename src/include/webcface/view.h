@@ -92,7 +92,7 @@ inline ViewComponent newLine() {
     return ViewComponent(ViewComponentType::new_line);
 }
 template <typename T>
-ViewComponent button(const std::string &text, const T &func) {
+inline ViewComponent button(const std::string &text, const T &func) {
     return ViewComponent(ViewComponentType::button).text(text).onClick(func);
 }
 } // namespace ViewComponents
@@ -136,7 +136,9 @@ class ViewBuf : public std::stringbuf {
  * 
  * 送信用viewデータは ViewBuf 内で保持するが、受信データはtryGet()時に取得するので別
  */
-class View : protected Field, public EventTarget<View>, public std::ostream {
+class View : protected Field,
+                          public EventTarget<View>,
+                          public std::ostream {
     ViewBuf sb;
     void onAppend() const override { tryGet(); }
 
