@@ -312,7 +312,7 @@ void ClientData::onRecv(const std::string &message) {
             }
             this->view[v.field].resize(v.length);
             for (const auto &d : *v.data_diff) {
-                this->view[v.field][d.first] = d.second;
+                this->view[v.field][std::stoi(d.first)] = d.second;
             }
             // このvalueをsubscribeしてるところに送り返す
             store.forEach([&](auto &cd) {
@@ -441,9 +441,10 @@ void ClientData::onRecv(const std::string &message) {
                     if (it.first == s.field ||
                         it.first.starts_with(s.field + ".")) {
                         auto diff = std::make_shared<std::unordered_map<
-                            int, WebCFace::Message::View::ViewComponent>>();
+                            std::string,
+                            WebCFace::Message::View::ViewComponent>>();
                         for (std::size_t i = 0; i < it.second.size(); i++) {
-                            diff->emplace(i, it.second[i]);
+                            diff->emplace(std::to_string(i), it.second[i]);
                         }
                         std::string sub_field;
                         if (it.first == s.field) {
