@@ -43,7 +43,7 @@ unpack(const std::string &message,
             obj_u = obj.via.array.ptr[i + 1].as<type>();                       \
         } catch (const std::exception &e) {                                    \
             logger->error("unpack error: {}, index={}, kind={}", e.what(),     \
-                          i + 1, MessageKind::kind);                           \
+                          i + 1, static_cast<int>(MessageKind::kind));         \
             printMsg(logger, message);                                         \
             continue;                                                          \
         }                                                                      \
@@ -58,8 +58,9 @@ unpack(const std::string &message,
         try {                                                                  \
             obj_u = obj.via.array.ptr[i + 1].as<Entry<type>>();                \
         } catch (const std::exception &e) {                                    \
-            logger->error("unpack error: {}, index={}, kind={}", e.what(),     \
-                          i + 1, MessageKind::entry + MessageKind::kind);      \
+            logger->error(                                                     \
+                "unpack error: {}, index={}, kind={}", e.what(), i + 1,        \
+                static_cast<int>(MessageKind::entry + MessageKind::kind));     \
             printMsg(logger, message);                                         \
             continue;                                                          \
         }                                                                      \
@@ -68,8 +69,9 @@ unpack(const std::string &message,
         try {                                                                  \
             obj_u = obj.via.array.ptr[i + 1].as<Req<type>>();                  \
         } catch (const std::exception &e) {                                    \
-            logger->error("unpack error: {}, index={}, kind={}", e.what(),     \
-                          i + 1, MessageKind::req + MessageKind::kind);        \
+            logger->error(                                                     \
+                "unpack error: {}, index={}, kind={}", e.what(), i + 1,        \
+                static_cast<int>(MessageKind::req + MessageKind::kind));       \
             printMsg(logger, message);                                         \
             continue;                                                          \
         }                                                                      \
@@ -78,8 +80,9 @@ unpack(const std::string &message,
         try {                                                                  \
             obj_u = obj.via.array.ptr[i + 1].as<Res<type>>();                  \
         } catch (const std::exception &e) {                                    \
-            logger->error("unpack error: {}, index={}, kind={}", e.what(),     \
-                          i + 1, MessageKind::res + MessageKind::kind);        \
+            logger->error(                                                     \
+                "unpack error: {}, index={}, kind={}", e.what(), i + 1,        \
+                static_cast<int>(MessageKind::res + MessageKind::kind));       \
             printMsg(logger, message);                                         \
             continue;                                                          \
         }                                                                      \
