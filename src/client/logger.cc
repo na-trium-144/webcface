@@ -21,6 +21,9 @@ int LoggerBuf::sync() {
             break;
         }
         std::string message = overflow_buf.substr(0, n);
+        if (message.size() > 0 && message.back() == '\r') {
+            message.pop_back();
+        }
         data_w.lock()->logger->info(message);
         overflow_buf = overflow_buf.substr(n + 1);
     }
@@ -37,6 +40,9 @@ void LoggerSink::sink_it_(const spdlog::details::log_msg &msg) {
     this->formatter_->format(msg, formatted);
     std::string log_text = fmt::to_string(formatted);
     if (log_text.size() > 0 && log_text.back() == '\n') {
+        log_text.pop_back();
+    }
+    if (log_text.size() > 0 && log_text.back() == '\r') {
         log_text.pop_back();
     }
     this->push(std::make_shared<LogLine>(msg.level, msg.time, log_text));
