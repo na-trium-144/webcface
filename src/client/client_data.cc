@@ -229,11 +229,11 @@ AsyncFuncResult &
 ClientData::FuncResultStore::addResult(const std::string &caller,
                                        const Field &base) {
     std::lock_guard lock(mtx);
-    unsigned int caller_id = results.size();
+    std::size_t caller_id = results.size();
     results.push_back(AsyncFuncResult{caller_id, caller, base});
     return results.back();
 }
-AsyncFuncResult &ClientData::FuncResultStore::getResult(int caller_id) {
+AsyncFuncResult &ClientData::FuncResultStore::getResult(std::size_t caller_id) {
     std::lock_guard lock(mtx);
     return results.at(caller_id);
 }

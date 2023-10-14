@@ -21,6 +21,9 @@ int LoggerBuf::sync() {
             break;
         }
         std::string message = overflow_buf.substr(0, n);
+        if (message.size() > 0 && message.back() == '\r') {
+            message.pop_back();
+        }
         data_w.lock()->logger->info(message);
         overflow_buf = overflow_buf.substr(n + 1);
     }
@@ -39,7 +42,15 @@ void LoggerSink::sink_it_(const spdlog::details::log_msg &msg) {
     if (log_text.size() > 0 && log_text.back() == '\n') {
         log_text.pop_back();
     }
+    if (log_text.size() > 0 && log_text.back() == '\r') {
+        log_text.pop_back();
+    }
     this->push(std::make_shared<LogLine>(msg.level, msg.time, log_text));
 }
+
+std::shared_ptr<spdlog::sinks::stderr_color_sink_mt> stderr_sink =
+    std::make_shared<spdlog::sinks::stderr_color_sink_mt>();
+
+spdlog::level::level_enum logger_internal_level = spdlog::level::info;
 
 } // namespace WebCFace

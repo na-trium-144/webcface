@@ -146,8 +146,7 @@ class Value : protected Field, public EventTarget<Value> {
         return *this;
     }
     Value &operator<<=(std::int32_t rhs) {
-        // int64_tも使えるようにすべきか?
-        // javascriptで扱える整数は2^53まで
+        // todo: int64_tかuint64_tにしたほうがいいかもしれない
         this->set(static_cast<std::int32_t>(this->get()) << rhs);
         return *this;
     }
@@ -330,10 +329,12 @@ class Log : protected Field, public EventTarget<Log, std::string> {
     }
 };
 
-inline std::ostream &operator<<(std::ostream &os, const Value &data) {
+inline std::ostream &operator<<(std::ostream &os,
+                                            const Value &data) {
     return os << data.get();
 }
-inline std::ostream &operator<<(std::ostream &os, const Text &data) {
+inline std::ostream &operator<<(std::ostream &os,
+                                            const Text &data) {
     return os << data.get();
 }
 } // namespace WebCFace

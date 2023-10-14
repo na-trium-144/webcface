@@ -2,13 +2,15 @@
 #include <memory>
 #include <string>
 #include "common/field_base.h"
+#include "common/def.h"
+
 namespace WebCFace {
 
-class ClientData;
+struct ClientData;
 class Member;
 
 //! ClientDataの参照とメンバ名とデータ名を持つクラス
-struct Field : public Common::FieldBase {
+struct WEBCFACE_DLL Field : public Common::FieldBase {
     //! ClientDataの参照
     //! ClientData内に保持するクラスもあるので循環参照を避けるためweak_ptr
     std::weak_ptr<ClientData> data_w;

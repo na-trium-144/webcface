@@ -86,13 +86,13 @@ void Client::sync() {
                 std::make_shared<std::unordered_map<int, ViewComponentBase>>();
             if (v_prev == view_send_prev.end()) {
                 for (std::size_t i = 0; i < v.second->size(); i++) {
-                    v_diff->emplace(i, (*v.second)[i]);
+                    v_diff->emplace(static_cast<int>(i), (*v.second)[i]);
                 }
             } else {
                 for (std::size_t i = 0; i < v.second->size(); i++) {
                     if (v_prev->second->size() <= i ||
                         (*v_prev->second)[i] != (*v.second)[i]) {
-                        v_diff->emplace(i, (*v.second)[i]);
+                        v_diff->emplace(static_cast<int>(i), (*v.second)[i]);
                     }
                 }
             }

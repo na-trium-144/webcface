@@ -8,9 +8,11 @@
 #include <optional>
 #include <string>
 #include <atomic>
+#include <cstdint>
 #include <eventpp/eventdispatcher.h>
 #include <spdlog/logger.h>
 #include "func_result.h"
+#include "common/def.h"
 #include "common/func.h"
 #include "common/queue.h"
 #include "common/view.h"
@@ -25,7 +27,7 @@ class Value;
 class Text;
 class View;
 
-struct ClientData {
+struct WEBCFACE_DLL ClientData {
 
     //! 送受信するデータを保持するクラス
     /*! memberごとにフィールドを持つデータに使う。
@@ -33,7 +35,7 @@ struct ClientData {
      * T=FuncInfoの時、entryとreqは使用しない(常にすべての関数の情報が送られてくる)
      */
     template <typename T>
-    class SyncDataStore2 {
+    class WEBCFACE_DLL SyncDataStore2 {
         std::mutex mtx;
         //! 次のsend時に送信するデータ。
         std::unordered_map<std::string, T> data_send;
@@ -145,7 +147,7 @@ struct ClientData {
     };
 
     template <typename T>
-    class SyncDataStore1 {
+    class WEBCFACE_DLL SyncDataStore1 {
         std::mutex mtx;
         std::unordered_map<std::string, T> data_recv;
         std::unordered_map<std::string, bool> req;
@@ -171,7 +173,7 @@ struct ClientData {
     /*! 関数の実行結果が返ってきた時参照する
      * また、実行するたびに連番を振る必要があるcallback_idの管理にも使う
      */
-    class FuncResultStore {
+    class WEBCFACE_DLL FuncResultStore {
         std::mutex mtx;
         std::vector<AsyncFuncResult> results;
 
@@ -181,7 +183,7 @@ struct ClientData {
                                    const Field &base);
         //! caller_idに対応するresultを返す
         //! 存在しない場合out_of_rangeを投げる
-        AsyncFuncResult &getResult(int caller_id);
+        AsyncFuncResult &getResult(std::size_t caller_id);
     };
 
     //! clientがsync()されたタイミングで実行中の関数を起こす

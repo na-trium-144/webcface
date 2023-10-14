@@ -4,6 +4,7 @@
 #include <optional>
 #include "field.h"
 #include "event_target.h"
+#include "common/def.h"
 
 namespace WebCFace {
 
@@ -12,10 +13,10 @@ class Text;
 class Func;
 class Log;
 class View;
-class ClientData;
+struct ClientData;
 
 //! 他のクライアントを参照することを表すクラス
-class Member : protected Field {
+class WEBCFACE_DLL Member : protected Field {
   public:
     Member() = default;
     Member(const std::weak_ptr<ClientData> &data_w, const std::string &member)

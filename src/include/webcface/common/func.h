@@ -5,6 +5,7 @@
 #include <optional>
 #include <string>
 #include <ostream>
+#include <cstdint>
 #include "val.h"
 
 namespace WebCFace {
@@ -172,7 +173,7 @@ struct FuncInfo {
 
 //! 関数を呼び出すのに必要なデータ。client_data->client->server->clientと送られる
 struct FuncCall {
-    unsigned int caller_id;
+    std::size_t caller_id;
     unsigned int caller_member_id;
     unsigned int target_member_id;
     std::string field;

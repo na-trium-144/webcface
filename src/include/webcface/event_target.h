@@ -2,6 +2,7 @@
 #include <functional>
 #include <eventpp/eventdispatcher.h>
 #include "field.h"
+
 namespace WebCFace {
 
 //! イベントを表し、コールバックの追加や削除ができるクラス、eventpp::EventQueueのラッパー
@@ -14,7 +15,7 @@ class EventTarget {
     using EventCallback = std::function<void(V)>;
     using EventHandle = typename Dispatcher::Handle;
 
-    Dispatcher *dispatcher;
+    Dispatcher *dispatcher = nullptr;
     Key key;
 
   protected:
