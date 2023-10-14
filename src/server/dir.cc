@@ -1,5 +1,6 @@
 #include "dir.h"
 #include <filesystem>
+#include <array>
 
 #ifdef _WIN32
 #include <windows.h>
@@ -43,23 +44,21 @@ std::filesystem::path getExeDir(const std::shared_ptr<spdlog::logger> &logger) {
 }
 std::string getStaticDir(const std::shared_ptr<spdlog::logger> &logger) {
     auto exe_dir = getExeDir(logger);
-    try {
-        // .../build/
-        auto dir = exe_dir.parent_path() / "webui" / "dist";
-        if (std::filesystem::exists(dir / "index.html")) {
-            return dir.string();
+    std::array<std::filesystem::path, 4> static_dirs = {
+        exe_dir.parent_path() / "webui" / "dist",
+        exe_dir.parent_path().parent_path() / "webui" / "dist",
+        exe_dir.parent_path().parent_path().parent_path() / "webui" / "dist",
+        exe_dir.parent_path() / "share" / "webcface" / "dist",
+    };
+    for (const auto &dir: static_dirs) {
+        try {
+            if (std::filesystem::exists(dir / "index.html")) {
+                return dir.string();
+            }
+        } catch (...) {
         }
-    } catch (...) {
     }
-    try {
-        // .../bin/
-        auto dir = exe_dir.parent_path() / "share" / "webcface" / "dist";
-        if (std::filesystem::exists(dir / "index.html")) {
-            return dir.string();
-        }
-    } catch (...) {
-    }
-    logger->critical("Cannot find static dir");
+    logger->error("Cannot find static dir");
     return "";
 }
 std::string getTempDir(const std::shared_ptr<spdlog::logger> &logger) {
