@@ -5,8 +5,8 @@
 #define WEBCFACE_DEFAULT_PORT_S WEBCFACE_DEFAULT_PORT_SI(WEBCFACE_DEFAULT_PORT)
 #define WEBCFACE_SERVER_NAME "webcface"
 #define WEBCFACE_VERSION_MAJOR 1
-#define WEBCFACE_VERSION_MINOR 0
-#define WEBCFACE_VERSION_REVISION 2
+#define WEBCFACE_VERSION_MINOR 1
+#define WEBCFACE_VERSION_REVISION 0
 #define WEBCFACE_VERSION_I(maj, min, rev)                                      \
     WEBCFACE_STR(maj) "." WEBCFACE_STR(min) "." WEBCFACE_STR(rev)
 #define WEBCFACE_VERSION                                                       \

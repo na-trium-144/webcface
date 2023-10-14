@@ -7,7 +7,8 @@ Web-based RPC &amp; UI Library
 
 C++とJavaScriptで使える、WebSocketを使ったプロセス間通信ライブラリです。
 データの送受信だけでなく、プロセス間での関数呼び出しができます。
-また、WebブラウザーでアクセスできるUIから通信されているデータを確認したり関数を実行したりできる他、テキストやボタンなどを自由に配置してそのWebブラウザーに表示させることができます。
+
+また、WebブラウザーでアクセスできるUI(webcface-webui)から通信されているデータを確認したり関数を実行したりできる他、テキストやボタンなどを自由に配置してそのWebブラウザーに表示させることができます。
 
 ## Repository Links
 
@@ -16,7 +17,7 @@ C++とJavaScriptで使える、WebSocketを使ったプロセス間通信ライ�
 * [webcface-js](https://github.com/na-trium-144/webcface-js): JavaScriptクライアント
 * [webcface-tools](https://github.com/na-trium-144/webcface-tools): クライアントとなるコマンド群
 
-## Example
+## Features
 
 ### value
 ```cpp
@@ -36,7 +37,7 @@ while(true){
 
 ![value.png](./images/value.png)
 
-(画像とソースコード例は必ずしも同じものではありません。これ以降の画像についても同様)
+(画像とソースコード例は一致していません。これ以降の画像についても同様)
 
 ### text
 ```cpp
@@ -90,8 +91,8 @@ wcli.logger()->warn("this is warn");
 
 例 (amd64の場合)
 ```sh
-curl -LO https://github.com/na-trium-144/webcface/releases/download/v1.0.2/webcface_1.0.2_amd64.deb
-curl -LO https://github.com/na-trium-144/webcface-webui/releases/download/v1.0.2/webcface-webui_1.0.2_all.deb
+curl -LO https://github.com/na-trium-144/webcface/releases/download/v1.1.0/webcface_1.1.0_amd64.deb
+curl -LO https://github.com/na-trium-144/webcface-webui/releases/download/v1.0.4/webcface-webui_1.0.4_all.deb
 curl -LO https://github.com/na-trium-144/webcface-tools/releases/download/v1.0.0/webcface-tools_1.0.0_amd64.deb
 sudo apt install ./webcface*.deb
 ```
@@ -105,22 +106,27 @@ brew install webcface webcface-webui
 ```
 
 ### Build from source
-このリポジトリをcloneして
+
+* c++20に対応したコンパイラが必要です
+* テスト済みの環境
+	* Windows
+		* MSVC: ok
+		* MinGW Clang17
+			* 終了時にSegmentation Faultするバグがありますが動作はします ([#43](https://github.com/na-trium-144/webcface/issues/43))
+		* MinGW GCC13: NG (リンクエラー)
+			* GCC12では動くっぽい?
+	* Linux
+		* GCC, Clang: ok
+	* MacOS
+		* Clang: ok
+
 ```sh
 git submodule update --init --recursive
 cmake -Bbuild
 cmake --build build
-sudo cmake --build build -t install # installする場合
+sudo cmake --build build -t install
 ```
-```sh
-cd webui
-npm ci
-npm run build
-# installする場合は
-sudo cp -r dist /usr/local/share/webcface/dist  # または /path/to/prefix/share/webcface/dist
-```
-* c++20に対応したコンパイラ & node.js v18以上 が必要です
-	* 後者は[webuiのReleases](https://github.com/na-trium-144/webcface-webui/releases) からビルド済みのtar.gzのアーカイブをダウンロードして webui/dist/ (installする場合は /path/to/prefix/share/webcface/dist) として展開することで代用できます
+* その後、[webuiのReleases](https://github.com/na-trium-144/webcface-webui/releases) からビルド済みのtar.gzのアーカイブをダウンロードして webui/dist/ (installして使う場合は /path/to/prefix/share/webcface/dist) として展開してください
 * webcfaceは外部ライブラリとして [cinatra](https://github.com/qicosmos/cinatra), [eventpp](https://github.com/wqking/eventpp), [msgpack-cxx](https://github.com/msgpack/msgpack-c), [spdlog](https://github.com/gabime/spdlog), [tclap](https://tclap.sourceforge.net) を使用します。
 	* システムにインストールされてなければsubmoduleにあるソースコードをビルドしますが、eventpp, msgpack, spdlog に関してはインストールされていればそれを使用するのでビルドが速くなります
 	* ubuntuなら `sudo apt install libspdlog-dev`, brewなら `brew install spdlog msgpack-cxx` でインストールできます
@@ -135,9 +141,8 @@ WebCFaceを使用するときはserverを常時立ち上げておく必要があ
 webcface-server
 ```
 でサーバーを起動します
-* ソースからビルドした場合は `build/webcface-server`
 
-起動時に表示されるurl (http://pcのipアドレス:7530/) をブラウザから開くとデータにアクセスすることができます
+起動時に表示されるurl (http://pcのipアドレス:7530/) をブラウザから開くとwebuiにアクセスすることができます
 
 ### Client (C++)
 
@@ -154,4 +159,5 @@ WebCFace::Client wcli("name of this client program");
 
 ## Documentation
 
-Clientライブラリの使い方は[こちら](https://na-trium-144.github.io/webcface/md_01__client.html)を参照してください。
+* Clientライブラリの使い方は[こちら](https://na-trium-144.github.io/webcface/md_01__client.html)を参照してください。
+* [example/](./example/) 以下にサンプルコードがあるのでそちらも参照してください

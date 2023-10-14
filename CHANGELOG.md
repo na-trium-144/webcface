@@ -1,3 +1,12 @@
+## [1.1.0] - 2023-10-14
+### Fixed
+* 処理が遅くても通りやすくなるようテストを修正 (#42)
+### Changed
+* webcface-jsに合わせてViewのメッセージの形式を変更 (#41)
+	* webcface-1.0とはメッセージの互換性がありません
+* MSVC, MinGWでビルドできるようにした (#36)
+* updated dependencies
+
 ## [1.0.2] - 2023-10-06
 ### Fixed
 * client再接続後にデータを受信できなくなるバグ (= pingが機能しないことがあるバグ #13) の修正 (#33)
@@ -5,7 +14,7 @@
 ### Changed
 * server側でping関連のdebug,traceメッセージ追加 (#33)
 * ping_status_req受信時にすぐping_statusを送り返すようにした (#33)
-* 外部ライブラリの更新
+* updated dependencies
 
 ## [1.0.1] - 2023-10-03
 ### Added
