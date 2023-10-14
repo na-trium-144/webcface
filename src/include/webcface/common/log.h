@@ -5,7 +5,7 @@
 namespace WebCFace {
 inline namespace Common {
 struct LogLine {
-    int level;
+    int level = 0;
     std::chrono::system_clock::time_point time;
     std::string message;
     LogLine() = default;

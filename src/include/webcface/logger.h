@@ -9,7 +9,7 @@
 #include "common/def.h"
 
 namespace WebCFace {
-class ClientData;
+struct ClientData;
 
 class WEBCFACE_DLL LoggerBuf : public std::streambuf {
     static constexpr int buf_size = 1024;

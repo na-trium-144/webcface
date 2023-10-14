@@ -4,6 +4,7 @@
 #include <future>
 #include <memory>
 #include <stdexcept>
+#include <cstdint>
 #include "field.h"
 #include "common/val.h"
 #include "member.h"
@@ -26,7 +27,7 @@ struct FuncNotFound : public std::runtime_error {
 class AsyncFuncResult : Field {
     //! 通し番号
     //! コンストラクタで設定する。実際はFuncResultStoreのvectorのindex
-    unsigned int caller_id;
+    std::size_t caller_id;
     //! 呼び出し側member 通常は自身
     std::string caller;
 
@@ -38,7 +39,7 @@ class AsyncFuncResult : Field {
     friend class Func;
     friend class Client;
 
-    AsyncFuncResult(unsigned int caller_id, const std::string &caller,
+    AsyncFuncResult(std::size_t caller_id, const std::string &caller,
                     const Field &base)
         : Field(base), caller_id(caller_id), caller(caller),
           started_(std::make_shared<std::promise<bool>>()),

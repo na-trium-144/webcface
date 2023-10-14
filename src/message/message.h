@@ -156,7 +156,7 @@ struct Call : public MessageBase<MessageKind::call>, public Common::FuncCall {
  * serverはそれをそのままcallerに送る
  */
 struct CallResponse : public MessageBase<MessageKind::call_response> {
-    unsigned int caller_id;
+    std::size_t caller_id;
     unsigned int caller_member_id;
     bool started; //!< 関数の実行を開始したかどうか
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", caller_id),
@@ -174,7 +174,7 @@ struct CallResponse : public MessageBase<MessageKind::call_response> {
  * serverはそれをそのままcallerに送る
  */
 struct CallResult : public MessageBase<MessageKind::call_result> {
-    unsigned int caller_id;
+    std::size_t caller_id;
     unsigned int caller_member_id;
     bool is_error;
     Common::ValAdaptor result;
@@ -197,10 +197,10 @@ struct Text : public MessageBase<MessageKind::text> {
 struct View : public MessageBase<MessageKind::view> {
     std::string field;
     struct ViewComponent {
-        Common::ViewComponentType type;
+        Common::ViewComponentType type = Common::ViewComponentType::text;
         std::string text;
         std::optional<std::string> on_click_member, on_click_field;
-        Common::ViewColor text_color, bg_color;
+        Common::ViewColor text_color = Common::ViewColor::inherit, bg_color = Common::ViewColor::inherit;
         ViewComponent() = default;
         ViewComponent(const Common::ViewComponentBase &vc)
             : type(vc.type_), text(vc.text_), text_color(vc.text_color_),
@@ -256,13 +256,12 @@ struct View : public MessageBase<MessageKind::view> {
 struct Log : public MessageBase<MessageKind::log> {
     unsigned int member_id;
     struct LogLine {
-        int level;
+        int level = 0;
         //! 1970/1/1からの経過ミリ秒
-        std::uint64_t time;
+        std::uint64_t time = 0;
         std::string message;
         LogLine() = default;
-        LogLine(const Common::LogLine &l)
-            : level(l.level),
+        LogLine(const Common::LogLine &l)            : level(l.level),
               time(std::chrono::duration_cast<std::chrono::milliseconds>(
                        l.time.time_since_epoch())
                        .count()),
@@ -287,7 +286,7 @@ struct LogReq : public MessageBase<MessageKind::log_req> {
 //! client(member)->server->client func登録
 //! client->server時はmemberは無視
 struct FuncInfo : public MessageBase<MessageKind::func_info> {
-    unsigned int member_id;
+    unsigned int member_id = 0;
     std::string field;
     Common::ValType return_type;
     struct Arg : public Common::Arg {

@@ -6,7 +6,7 @@
 
 namespace WebCFace {
 
-class ClientData;
+struct ClientData;
 class Member;
 
 //! ClientDataの参照とメンバ名とデータ名を持つクラス

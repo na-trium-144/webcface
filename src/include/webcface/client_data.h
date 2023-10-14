@@ -8,6 +8,7 @@
 #include <optional>
 #include <string>
 #include <atomic>
+#include <cstdint>
 #include <eventpp/eventdispatcher.h>
 #include <spdlog/logger.h>
 #include "func_result.h"
@@ -182,7 +183,7 @@ struct WEBCFACE_DLL ClientData {
                                    const Field &base);
         //! caller_idに対応するresultを返す
         //! 存在しない場合out_of_rangeを投げる
-        AsyncFuncResult &getResult(int caller_id);
+        AsyncFuncResult &getResult(std::size_t caller_id);
     };
 
     //! clientがsync()されたタイミングで実行中の関数を起こす

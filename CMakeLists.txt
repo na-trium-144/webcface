@@ -39,7 +39,9 @@ if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Release")
 endif()
 
-if(${WEBCFACE_COVERAGE})
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
+
+if(WEBCFACE_COVERAGE)
     if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
         add_compile_options(-fprofile-arcs -ftest-coverage)
         add_link_options(-lgcov --coverage)
@@ -87,7 +89,7 @@ endif()
 set(MSGPACK msgpack-cxx)
 
 find_package(eventpp QUIET)
-if(${eventpp_FOUND})
+if(eventpp_FOUND)
     message(STATUS "eventpp found")
 else()
     message(STATUS "eventpp not found")
@@ -97,7 +99,7 @@ endif()
 set(EVENTPP eventpp::eventpp)
 
 find_package(spdlog QUIET)
-if(${spdlog_FOUND})
+if(spdlog_FOUND)
     message(STATUS "spdlog found")
     set(SPDLOG spdlog::spdlog)
 else()
@@ -106,21 +108,30 @@ else()
     set(SPDLOG_BUILD_PIC on CACHE INTERNAL "" FORCE)
     set(SPDLOG_INSTALL ${WEBCFACE_INSTALL} CACHE INTERNAL "" FORCE)
     add_subdirectory(external/spdlog)
-    set(SPDLOG spdlog)
+    if(MINGW)
+        set(SPDLOG spdlog ws2_32)
+    else()
+        set(SPDLOG spdlog)
+    endif()
 endif()
 
 add_library(cinatra INTERFACE)
 target_include_directories(cinatra INTERFACE ${CMAKE_CURRENT_LIST_DIR}/external/cinatra/include)
-target_compile_options(cinatra INTERFACE -pthread)
-if(${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU")
-    target_compile_options(cinatra INTERFACE -fcoroutines -fno-tree-slp-vectorize)
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    target_compile_options(cinatra INTERFACE -pthread -fcoroutines -fno-tree-slp-vectorize)
+elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+    target_compile_options(cinatra INTERFACE -pthread)
 endif()
-set(CINATRA cinatra)
+if(MINGW)
+    set(CINATRA cinatra ws2_32 wsock32)
+else()
+    set(CINATRA cinatra)
+endif()
 
 add_library(tclap INTERFACE)
 target_include_directories(tclap INTERFACE ${CMAKE_CURRENT_LIST_DIR}/external/tclap/include)
 
-if(${WEBCFACE_TEST})
+if(WEBCFACE_TEST)
     find_package(GTest QUIET)
     if(${GTest_FOUND})
         message(STATUS "GTest found")
@@ -129,12 +140,6 @@ if(${WEBCFACE_TEST})
         add_subdirectory(external/googletest)
     endif()
 endif()
-
-if(MINGW)
-    set(SPDLOG ${SPDLOG} ws2_32)
-    set(CINATRA ${CINATRA} ws2_32 wsock32)
-endif()
-
 
 ###############################################################################
 
@@ -182,7 +187,9 @@ include_directories(${INCLUDE_DIR})
 ###############################################################################
 
 add_library(${PROJECT_NAME}-message STATIC ${MSG_SRC})
-target_compile_options(${PROJECT_NAME}-message PRIVATE -fPIC)
+if(NOT CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+    target_compile_options(${PROJECT_NAME}-message PRIVATE -fPIC)
+endif()
 target_compile_features(${PROJECT_NAME}-message PUBLIC cxx_std_20)
 target_link_libraries(${PROJECT_NAME}-message PUBLIC
     ${MSGPACK}
@@ -203,7 +210,9 @@ target_link_libraries(${PROJECT_NAME}-server PRIVATE
 )
 
 add_library(${PROJECT_NAME} SHARED ${CLI_SRC})
-target_compile_options(${PROJECT_NAME} PRIVATE -fPIC)
+if(NOT CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+    target_compile_options(${PROJECT_NAME} PRIVATE -fPIC)
+endif()
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_20)
 target_link_libraries(${PROJECT_NAME} PRIVATE
     ${PROJECT_NAME}-message
@@ -224,7 +233,7 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 
 
-if(${WEBCFACE_EXAMPLE})
+if(WEBCFACE_EXAMPLE)
     foreach(SRC IN LISTS EXAMPLE_SRC)
         get_filename_component(TARGET ${SRC} NAME_WE)
         add_executable(example_${TARGET} ${SRC})
@@ -232,7 +241,7 @@ if(${WEBCFACE_EXAMPLE})
     endforeach()
 endif()
 
-if(${WEBCFACE_TEST})
+if(WEBCFACE_TEST)
     enable_testing()
     add_executable(${PROJECT_NAME}-test ${TEST_SRC})
     target_link_libraries(${PROJECT_NAME}-test PRIVATE
@@ -249,7 +258,7 @@ endif()
 
 ###############################################################################
 # https://qiita.com/modapone/items/8f97425b6167cffc815c
-if(${WEBCFACE_INSTALL})
+if(WEBCFACE_INSTALL)
     include(CMakePackageConfigHelpers)
 
     install(TARGETS ${PROJECT_NAME}-server

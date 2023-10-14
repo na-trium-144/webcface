@@ -38,7 +38,7 @@ enum class ViewColor {
     // rose = 24,
 };
 struct ViewComponentBase {
-    ViewComponentType type_;
+    ViewComponentType type_ = ViewComponentType::text;
     std::string text_;
     std::optional<FieldBase> on_click_func_;
     ViewColor text_color_ = ViewColor::inherit;

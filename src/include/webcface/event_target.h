@@ -15,7 +15,7 @@ class EventTarget {
     using EventCallback = std::function<void(V)>;
     using EventHandle = typename Dispatcher::Handle;
 
-    Dispatcher *dispatcher;
+    Dispatcher *dispatcher = nullptr;
     Key key;
 
   protected:

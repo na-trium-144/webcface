@@ -13,7 +13,7 @@ class Text;
 class Func;
 class Log;
 class View;
-class ClientData;
+struct ClientData;
 
 //! 他のクライアントを参照することを表すクラス
 class WEBCFACE_DLL Member : protected Field {
