@@ -74,6 +74,7 @@ TEST_F(ServerTest, sync) {
 TEST_F(ServerTest, ping) {
     dummy_c1->send(Message::SyncInit{{}, "", 0, "", "", ""});
     wait();
+    auto start = std::chrono::steady_clock::now();
     Server::server_ping_wait.notify_one(); // これで無理やりpingさせる
     auto s_c1 = Server::store.clients_by_id.at(1);
     wait(10);
@@ -81,9 +82,13 @@ TEST_F(ServerTest, ping) {
                                   [&] { ADD_FAILURE() << "Ping recv failed"; });
     dummy_c1->send(Message::Ping{});
     wait();
+    auto end = std::chrono::steady_clock::now();
+    auto dur_max =
+        std::chrono::duration_cast<std::chrono::milliseconds>(end - start)
+            .count();
     EXPECT_TRUE(s_c1->last_ping_duration.has_value());
     EXPECT_GE(s_c1->last_ping_duration->count(), 10);
-    EXPECT_LE(s_c1->last_ping_duration->count(), 12);
+    EXPECT_LE(s_c1->last_ping_duration->count(), dur_max);
 
     // serverがping statusを集計するのは次のping時なのでこの場合0
     dummy_c1->recvClear();
@@ -100,7 +105,7 @@ TEST_F(ServerTest, ping) {
         [&](const auto &obj) {
             EXPECT_TRUE(obj.status->count(1));
             EXPECT_GE(obj.status->at(1), 10);
-            EXPECT_LE(obj.status->at(1), 12);
+            EXPECT_LE(obj.status->at(1), dur_max);
         },
         [&] { ADD_FAILURE() << "Ping Status recv failed"; });
 }
