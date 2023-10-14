@@ -13,7 +13,7 @@ var searchData=
   ['started_10',['started',['../classWebCFace_1_1AsyncFuncResult.html#a98d52cac5d23020581151ee1f106ec8a',1,'WebCFace::AsyncFuncResult::started'],['../structWebCFace_1_1Message_1_1CallResponse.html#a43c08d193d555a2b2a61c53d2a4e5a63',1,'WebCFace::Message::CallResponse::started']]],
   ['started_5f_11',['started_',['../classWebCFace_1_1AsyncFuncResult.html#a9987d1058c9fed182b5422e7e1e6480b',1,'WebCFace::AsyncFuncResult']]],
   ['status_12',['status',['../structWebCFace_1_1Message_1_1PingStatus.html#a4746fc25653b8d6ef854ae4e03e88d3c',1,'WebCFace::Message::PingStatus']]],
-  ['stderr_5fsink_13',['stderr_sink',['../namespaceWebCFace.html#a5cf8fa8a46f9285cf73c51c15084f383',1,'WebCFace']]],
+  ['stderr_5fsink_13',['stderr_sink',['../namespaceWebCFace.html#ac12c4637ae07ef88b19f166ec0cf8b16',1,'WebCFace']]],
   ['store_14',['store',['../namespaceWebCFace_1_1Server.html#a6deee48cbffa3ddf8b7b240e2ce36b35',1,'WebCFace::Server']]],
   ['sub_5ffield_15',['sub_field',['../structWebCFace_1_1Message_1_1Res_3_01View_01_4.html#a407ab8970bfba5734d3fd2410157a006',1,'WebCFace::Message::Res&lt; View &gt;::sub_field'],['../structWebCFace_1_1Message_1_1Res_3_01Text_01_4.html#a407ab8970bfba5734d3fd2410157a006',1,'WebCFace::Message::Res&lt; Text &gt;::sub_field'],['../structWebCFace_1_1Message_1_1Res_3_01Value_01_4.html#a407ab8970bfba5734d3fd2410157a006',1,'WebCFace::Message::Res&lt; Value &gt;::sub_field']]],
   ['svr_5fname_16',['svr_name',['../structWebCFace_1_1Message_1_1SvrVersion.html#ae962bcb5814e318a6704b4e8c9ad7cbc',1,'WebCFace::Message::SvrVersion::svr_name'],['../structWebCFace_1_1ClientData.html#ae962bcb5814e318a6704b4e8c9ad7cbc',1,'WebCFace::ClientData::svr_name']]],

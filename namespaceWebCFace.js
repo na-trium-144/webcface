@@ -86,5 +86,5 @@ var namespaceWebCFace =
     [ "text", "namespaceWebCFace_1_1ViewComponents.html#ae4003297f6bf60244afe0fc207c63dad", null ],
     [ "valTypeOf", "namespaceWebCFace_1_1Common.html#ae0e0d190aa5fc5710b43f55098ad9ecd", null ],
     [ "logger_internal_level", "namespaceWebCFace.html#ac5292091822245a35d8f8fcb6cb58d39", null ],
-    [ "stderr_sink", "namespaceWebCFace.html#a5cf8fa8a46f9285cf73c51c15084f383", null ]
+    [ "stderr_sink", "namespaceWebCFace.html#ac12c4637ae07ef88b19f166ec0cf8b16", null ]
 ];

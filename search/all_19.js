@@ -44,7 +44,7 @@ var searchData=
   ['status_41',['status',['../structWebCFace_1_1Message_1_1PingStatus.html#a4746fc25653b8d6ef854ae4e03e88d3c',1,'WebCFace::Message::PingStatus']]],
   ['status_20req_20webcface_3a_3amessage_3a_3apingstatusreq_20kind_2091_42',['ping status req (WebCFace::Message::PingStatusReq, kind = 91)',['../md_90__message.html#autotoc_md37',1,'']]],
   ['status_20webcface_3a_3amessage_3a_3apingstatus_20kind_2090_43',['ping status (WebCFace::Message::PingStatus, kind = 90)',['../md_90__message.html#autotoc_md36',1,'']]],
-  ['stderr_5fsink_44',['stderr_sink',['../namespaceWebCFace.html#a5cf8fa8a46f9285cf73c51c15084f383',1,'WebCFace']]],
+  ['stderr_5fsink_44',['stderr_sink',['../namespaceWebCFace.html#ac12c4637ae07ef88b19f166ec0cf8b16',1,'WebCFace']]],
   ['store_45',['store',['../structWebCFace_1_1Server_1_1Store.html',1,'Store'],['../structWebCFace_1_1Server_1_1Store.html#a9a4249b34504484d8738c818d7e08889',1,'WebCFace::Server::Store::Store()'],['../namespaceWebCFace_1_1Server.html#a6deee48cbffa3ddf8b7b240e2ce36b35',1,'WebCFace::Server::store']]],
   ['store_2ecc_46',['store.cc',['../store_8cc.html',1,'']]],
   ['store_2eh_47',['store.h',['../store_8h.html',1,'']]],

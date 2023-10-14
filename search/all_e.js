@@ -14,7 +14,7 @@ var searchData=
   ['getrecvrecurse_11',['getrecvrecurse',['../classWebCFace_1_1ClientData_1_1SyncDataStore2.html#a6f9ab18e76b78ff1164981e9efe0a02b',1,'WebCFace::ClientData::SyncDataStore2::getRecvRecurse(const std::string &amp;member, const std::string &amp;field)'],['../classWebCFace_1_1ClientData_1_1SyncDataStore2.html#a730da0f32c113a8386fe67d09f707de7',1,'WebCFace::ClientData::SyncDataStore2::getRecvRecurse(const FieldBase &amp;base)']]],
   ['getremoteaddr_12',['getRemoteAddr',['../structWebCFace_1_1Server_1_1ClientData.html#a9384be32aa121333e275aa991886fceb',1,'WebCFace::Server::ClientData']]],
   ['getreq_13',['getReq',['../classWebCFace_1_1ClientData_1_1SyncDataStore2.html#a53606af2d0565361cfddb73eed4041ce',1,'WebCFace::ClientData::SyncDataStore2']]],
-  ['getresult_14',['getResult',['../classWebCFace_1_1ClientData_1_1FuncResultStore.html#a029974848c8b7b7b186d25b8e6988604',1,'WebCFace::ClientData::FuncResultStore']]],
+  ['getresult_14',['getResult',['../classWebCFace_1_1ClientData_1_1FuncResultStore.html#ac20cfc93c1339d86ba319285ea35acad',1,'WebCFace::ClientData::FuncResultStore']]],
   ['getsendprev_15',['getSendPrev',['../classWebCFace_1_1ClientData_1_1SyncDataStore2.html#af21d99a7b2e1f3e201d67791c1fa4802',1,'WebCFace::ClientData::SyncDataStore2']]],
   ['getstaticdir_16',['getStaticDir',['../namespaceWebCFace_1_1Server.html#a190126a8b357424080243a1c04ee9afc',1,'WebCFace::Server']]],
   ['gettempdir_17',['getTempDir',['../namespaceWebCFace_1_1Server.html#af75cf09eeecbcfd458c033ac2972eb47',1,'WebCFace::Server']]],

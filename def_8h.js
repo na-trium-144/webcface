@@ -3,6 +3,7 @@ var def_8h =
     [ "WEBCFACE_DEFAULT_PORT", "def_8h.html#ac2db178dd291a312ca3f696e69c9af55", null ],
     [ "WEBCFACE_DEFAULT_PORT_S", "def_8h.html#afbc9c6287f9dc55d9ba2f40b887deb87", null ],
     [ "WEBCFACE_DEFAULT_PORT_SI", "def_8h.html#acdb831b5c453fa84fb4c58285d39858b", null ],
+    [ "WEBCFACE_DLL", "def_8h.html#a47af057bda855b54c212e97ffccdca01", null ],
     [ "WEBCFACE_SERVER_NAME", "def_8h.html#a4298b547b461c5709eb54d5171cf3b81", null ],
     [ "WEBCFACE_STR", "def_8h.html#a5856f8c4dbb31d15a29a3abb4ebc01f7", null ],
     [ "WEBCFACE_VERSION", "def_8h.html#a9373ced4210d2f436da678a29364095b", null ],
