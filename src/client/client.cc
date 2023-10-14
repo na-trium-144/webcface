@@ -221,7 +221,7 @@ void Client::onRecv(const std::string &message) {
             }
             (*v_prev)->resize(r.length);
             for (const auto &d : *r.data_diff) {
-                (**v_prev)[d.first] = d.second;
+                (**v_prev)[std::stoi(d.first)] = d.second;
             }
             data->view_change_event.dispatch(FieldBase{member, field},
                                              Field{data, member, field});

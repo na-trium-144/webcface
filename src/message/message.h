@@ -228,7 +228,7 @@ struct View : public MessageBase<MessageKind::view> {
                            MSGPACK_NVP("c", text_color),
                            MSGPACK_NVP("b", bg_color));
     };
-    std::shared_ptr<std::unordered_map<int, ViewComponent>> data_diff;
+    std::shared_ptr<std::unordered_map<std::string, ViewComponent>> data_diff;
     std::size_t length;
     View() = default;
     View(const std::string &field,
@@ -236,14 +236,15 @@ struct View : public MessageBase<MessageKind::view> {
              std::unordered_map<int, Common::ViewComponentBase>> &data_diff,
          std::size_t length)
         : field(field),
-          data_diff(std::make_shared<std::unordered_map<int, ViewComponent>>()),
+          data_diff(std::make_shared<
+                    std::unordered_map<std::string, ViewComponent>>()),
           length(length) {
         for (const auto &vc : *data_diff) {
-            this->data_diff->emplace(vc.first, vc.second);
+            this->data_diff->emplace(std::to_string(vc.first), vc.second);
         }
     }
     View(const std::string &field,
-         const std::shared_ptr<std::unordered_map<int, ViewComponent>>
+         const std::shared_ptr<std::unordered_map<std::string, ViewComponent>>
              &data_diff,
          std::size_t length)
         : field(field), data_diff(data_diff), length(length) {}
@@ -375,12 +376,13 @@ template <>
 struct Res<View> : public MessageBase<MessageKind::view + MessageKind::res> {
     unsigned int req_id;
     std::string sub_field;
-    std::shared_ptr<std::unordered_map<int, View::ViewComponent>> data_diff;
+    std::shared_ptr<std::unordered_map<std::string, View::ViewComponent>>
+        data_diff;
     std::size_t length;
     Res() = default;
     Res(unsigned int req_id, const std::string &sub_field,
-        const std::shared_ptr<std::unordered_map<int, View::ViewComponent>>
-            &data_diff,
+        const std::shared_ptr<
+            std::unordered_map<std::string, View::ViewComponent>> &data_diff,
         std::size_t length)
         : req_id(req_id), sub_field(sub_field), data_diff(data_diff),
           length(length) {}
