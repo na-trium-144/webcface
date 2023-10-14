@@ -21,14 +21,15 @@ unpack(const std::string &message,
     if (message.size() == 0) {
         return std::vector<std::pair<int, std::any>>{};
     }
-    try {
-        msgpack::object_handle result;
-        unpack(result, message.c_str(), message.size());
-        msgpack::object obj(result.get());
-        // msgpack::unique_ptr<msgpack::zone> z(result.zone());
+    msgpack::object_handle result;
+    unpack(result, message.c_str(), message.size());
+    msgpack::object obj(result.get());
+    // msgpack::unique_ptr<msgpack::zone> z(result.zone());
 
+    try {
         if (obj.type != msgpack::type::ARRAY || obj.via.array.size % 2 != 0) {
-            throw msgpack::type_error();
+            logger->error("unpack error: invalid array length");
+            return std::vector<std::pair<int, std::any>>{};
         }
         std::vector<std::pair<int, std::any>> ret(obj.via.array.size / 2);
         for (std::size_t i = 0; i < obj.via.array.size; i += 2) {
@@ -38,7 +39,14 @@ unpack(const std::string &message,
 
 #define MSG_PARSE(kind, type)                                                  \
     case MessageKind::kind:                                                    \
-        obj_u = obj.via.array.ptr[i + 1].as<type>();                           \
+        try {                                                                  \
+            obj_u = obj.via.array.ptr[i + 1].as<type>();                       \
+        } catch (const std::exception &e) {                                    \
+            logger->error("unpack error: {}, index={}, kind={}", e.what(),     \
+                          i + 1, MessageKind::kind);                           \
+            printMsg(logger, message);                                         \
+            continue;                                                          \
+        }                                                                      \
         break;
 
 #define MSG_PARSE_DATA(kind, type)                                             \
@@ -47,13 +55,34 @@ unpack(const std::string &message,
         static_assert(MessageKind::kind < MessageKind::entry &&                \
                       MessageKind::kind < MessageKind::req &&                  \
                       MessageKind::kind < MessageKind::res);                   \
-        obj_u = obj.via.array.ptr[i + 1].as<Entry<type>>();                    \
+        try {                                                                  \
+            obj_u = obj.via.array.ptr[i + 1].as<Entry<type>>();                \
+        } catch (const std::exception &e) {                                    \
+            logger->error("unpack error: {}, index={}, kind={}", e.what(),     \
+                          i + 1, MessageKind::entry + MessageKind::kind);      \
+            printMsg(logger, message);                                         \
+            continue;                                                          \
+        }                                                                      \
         break;                                                                 \
     case MessageKind::req + MessageKind::kind:                                 \
-        obj_u = obj.via.array.ptr[i + 1].as<Req<type>>();                      \
+        try {                                                                  \
+            obj_u = obj.via.array.ptr[i + 1].as<Req<type>>();                  \
+        } catch (const std::exception &e) {                                    \
+            logger->error("unpack error: {}, index={}, kind={}", e.what(),     \
+                          i + 1, MessageKind::req + MessageKind::kind);        \
+            printMsg(logger, message);                                         \
+            continue;                                                          \
+        }                                                                      \
         break;                                                                 \
     case MessageKind::res + MessageKind::kind:                                 \
-        obj_u = obj.via.array.ptr[i + 1].as<Res<type>>();                      \
+        try {                                                                  \
+            obj_u = obj.via.array.ptr[i + 1].as<Res<type>>();                  \
+        } catch (const std::exception &e) {                                    \
+            logger->error("unpack error: {}, index={}, kind={}", e.what(),     \
+                          i + 1, MessageKind::res + MessageKind::kind);        \
+            printMsg(logger, message);                                         \
+            continue;                                                          \
+        }                                                                      \
         break;
 
                 MSG_PARSE(sync_init, SyncInit)
@@ -87,6 +116,6 @@ unpack(const std::string &message,
         printMsg(logger, message);
         return std::vector<std::pair<int, std::any>>{};
     }
-}
+} // namespace WebCFace::Message
 
 } // namespace WebCFace::Message

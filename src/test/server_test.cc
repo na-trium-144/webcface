@@ -117,7 +117,7 @@ TEST_F(ServerTest, entry) {
     dummy_c1->send(Message::View{
         "a",
         std::make_shared<
-            std::unordered_map<int, Message::View::ViewComponent>>(),
+            std::unordered_map<std::string, Message::View::ViewComponent>>(),
         0});
     dummy_c1->send(Message::FuncInfo{
         0, "a", ValType::none_,
@@ -181,7 +181,7 @@ TEST_F(ServerTest, entry) {
     dummy_c1->send(Message::View{
         "b",
         std::make_shared<
-            std::unordered_map<int, Message::View::ViewComponent>>(),
+            std::unordered_map<std::string, Message::View::ViewComponent>>(),
         0});
     wait();
     dummy_c2->recv<Message::Entry<Message::View>>(
@@ -286,13 +286,15 @@ TEST_F(ServerTest, view) {
     dummy_c1->send(Message::Sync{});
     dummy_c1->send(Message::View{
         "a",
-        std::make_shared<std::unordered_map<int, Message::View::ViewComponent>>(
-            std::unordered_map<int, Message::View::ViewComponent>{
-                {0, ViewComponents::text("a").lockTmp(data_, "")},
-                {1, ViewComponents::newLine().lockTmp(data_, "")},
-                {2, ViewComponents::button(
-                        "f", Func{Field{std::weak_ptr<ClientData>(), "p", "q"}})
-                        .lockTmp(data_, "")}}),
+        std::make_shared<
+            std::unordered_map<std::string, Message::View::ViewComponent>>(
+            std::unordered_map<std::string, Message::View::ViewComponent>{
+                {"0", ViewComponents::text("a").lockTmp(data_, "")},
+                {"1", ViewComponents::newLine().lockTmp(data_, "")},
+                {"2",
+                 ViewComponents::button(
+                     "f", Func{Field{std::weak_ptr<ClientData>(), "p", "q"}})
+                     .lockTmp(data_, "")}}),
         3});
     wait();
     dummy_c2->send(Message::SyncInit{{}, "", 0, "", "", ""});
@@ -306,7 +308,7 @@ TEST_F(ServerTest, view) {
             EXPECT_EQ(obj.req_id, 1);
             EXPECT_EQ(obj.sub_field, "");
             EXPECT_EQ(obj.data_diff->size(), 3);
-            EXPECT_EQ(obj.data_diff->at(0).type, ViewComponentType::text);
+            EXPECT_EQ(obj.data_diff->at("0").type, ViewComponentType::text);
             EXPECT_EQ(obj.length, 3);
         },
         [&] { ADD_FAILURE() << "View Res recv failed"; });
@@ -316,9 +318,10 @@ TEST_F(ServerTest, view) {
     dummy_c1->send(Message::Sync{});
     dummy_c1->send(Message::View{
         "a",
-        std::make_shared<std::unordered_map<int, Message::View::ViewComponent>>(
-            std::unordered_map<int, Message::View::ViewComponent>{
-                {0, ViewComponents::text("b").lockTmp(data_, "")},
+        std::make_shared<
+            std::unordered_map<std::string, Message::View::ViewComponent>>(
+            std::unordered_map<std::string, Message::View::ViewComponent>{
+                {"0", ViewComponents::text("b").lockTmp(data_, "")},
             }),
         3});
     wait();
@@ -329,7 +332,7 @@ TEST_F(ServerTest, view) {
             EXPECT_EQ(obj.req_id, 1);
             EXPECT_EQ(obj.sub_field, "");
             EXPECT_EQ(obj.data_diff->size(), 1);
-            EXPECT_EQ(obj.data_diff->at(0).type, ViewComponentType::text);
+            EXPECT_EQ(obj.data_diff->at("0").type, ViewComponentType::text);
             EXPECT_EQ(obj.length, 3);
         },
         [&] { ADD_FAILURE() << "View Res recv failed"; });
