@@ -287,10 +287,10 @@ TEST_F(ClientTest, viewSend) {
             EXPECT_EQ(obj.field, "a");
             EXPECT_EQ(obj.length, 3);
             EXPECT_EQ(obj.data_diff->size(), 1);
-            EXPECT_EQ((*obj.data_diff)[0].type, ViewComponentType::text);
-            EXPECT_EQ((*obj.data_diff)[0].text, "b");
-            EXPECT_EQ((*obj.data_diff)[0].text_color, ViewColor::red);
-            EXPECT_EQ((*obj.data_diff)[0].bg_color, ViewColor::green);
+            EXPECT_EQ((*obj.data_diff)["0"].type, ViewComponentType::text);
+            EXPECT_EQ((*obj.data_diff)["0"].text, "b");
+            EXPECT_EQ((*obj.data_diff)["0"].text_color, ViewColor::red);
+            EXPECT_EQ((*obj.data_diff)["0"].bg_color, ViewColor::green);
         },
         [&] { ADD_FAILURE() << "View recv error"; });
 }

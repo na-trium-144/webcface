@@ -303,7 +303,7 @@ TEST_F(ServerTest, view) {
             EXPECT_EQ(obj.req_id, 1);
             EXPECT_EQ(obj.sub_field, "");
             EXPECT_EQ(obj.data_diff->size(), 3);
-            EXPECT_EQ(obj.data_diff->at(0).type, ViewComponentType::text);
+            EXPECT_EQ(obj.data_diff->at("0").type, ViewComponentType::text);
             EXPECT_EQ(obj.length, 3);
         },
         [&] { ADD_FAILURE() << "View Res recv failed"; });
@@ -327,7 +327,7 @@ TEST_F(ServerTest, view) {
             EXPECT_EQ(obj.req_id, 1);
             EXPECT_EQ(obj.sub_field, "");
             EXPECT_EQ(obj.data_diff->size(), 1);
-            EXPECT_EQ(obj.data_diff->at(0).type, ViewComponentType::text);
+            EXPECT_EQ(obj.data_diff->at("0").type, ViewComponentType::text);
             EXPECT_EQ(obj.length, 3);
         },
         [&] { ADD_FAILURE() << "View Res recv failed"; });
