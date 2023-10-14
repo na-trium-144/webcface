@@ -256,15 +256,15 @@ TEST_F(ClientTest, viewSend) {
             EXPECT_EQ(obj.field, "a");
             EXPECT_EQ(obj.length, 3);
             EXPECT_EQ(obj.data_diff->size(), 3);
-            EXPECT_EQ((*obj.data_diff)[0].type, ViewComponentType::text);
-            EXPECT_EQ((*obj.data_diff)[0].text, "a");
-            EXPECT_EQ((*obj.data_diff)[0].text_color, ViewColor::yellow);
-            EXPECT_EQ((*obj.data_diff)[0].bg_color, ViewColor::green);
-            EXPECT_EQ((*obj.data_diff)[1].type, ViewComponentType::new_line);
-            EXPECT_EQ((*obj.data_diff)[2].type, ViewComponentType::button);
-            EXPECT_EQ((*obj.data_diff)[2].text, "a");
-            EXPECT_EQ((*obj.data_diff)[2].on_click_member, "x");
-            EXPECT_EQ((*obj.data_diff)[2].on_click_field, "y");
+            EXPECT_EQ((*obj.data_diff)["0"].type, ViewComponentType::text);
+            EXPECT_EQ((*obj.data_diff)["0"].text, "a");
+            EXPECT_EQ((*obj.data_diff)["0"].text_color, ViewColor::yellow);
+            EXPECT_EQ((*obj.data_diff)["0"].bg_color, ViewColor::green);
+            EXPECT_EQ((*obj.data_diff)["1"].type, ViewComponentType::new_line);
+            EXPECT_EQ((*obj.data_diff)["2"].type, ViewComponentType::button);
+            EXPECT_EQ((*obj.data_diff)["2"].text, "a");
+            EXPECT_EQ((*obj.data_diff)["2"].on_click_member, "x");
+            EXPECT_EQ((*obj.data_diff)["2"].on_click_field, "y");
         },
         [&] { ADD_FAILURE() << "View recv error"; });
     dummy_s->recvClear();
@@ -308,14 +308,14 @@ TEST_F(ClientTest, viewReq) {
         [&] { ADD_FAILURE() << "View Req recv error"; });
 
     auto v =
-        std::make_shared<std::unordered_map<int, Message::View::ViewComponent>>(
-            std::unordered_map<int, Message::View::ViewComponent>{
-                {0, ViewComponents::text("a")
+        std::make_shared<std::unordered_map<std::string, Message::View::ViewComponent>>(
+            std::unordered_map<std::string, Message::View::ViewComponent>{
+                {"0", ViewComponents::text("a")
                         .textColor(ViewColor::yellow)
                         .bgColor(ViewColor::green)
                         .lockTmp(data_, "")},
-                {1, ViewComponents::newLine().lockTmp(data_, "")},
-                {2, ViewComponents::button("a", Func{Field{data_, "x", "y"}})
+                {"1", ViewComponents::newLine().lockTmp(data_, "")},
+                {"2", ViewComponents::button("a", Func{Field{data_, "x", "y"}})
                         .lockTmp(data_, "")},
             });
     dummy_s->send(Message::Res<Message::View>{1, "", v, 3});
@@ -337,9 +337,9 @@ TEST_F(ClientTest, viewReq) {
 
     // 差分だけ送る
     auto v2 =
-        std::make_shared<std::unordered_map<int, Message::View::ViewComponent>>(
-            std::unordered_map<int, Message::View::ViewComponent>{
-                {0, ViewComponents::text("b")
+        std::make_shared<std::unordered_map<std::string, Message::View::ViewComponent>>(
+            std::unordered_map<std::string, Message::View::ViewComponent>{
+                {"0", ViewComponents::text("b")
                         .textColor(ViewColor::red)
                         .bgColor(ViewColor::green)
                         .lockTmp(data_, "")},
