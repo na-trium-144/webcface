@@ -85,12 +85,7 @@ jobs:
         -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
         -DWEBCFACE_TEST=on
         -DWEBCFACE_EXAMPLE=on
-    - name: Build lib
-      run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} -t webcface
-    - name: move spdlogd.dll
-      # spdlogd.dllをwebcface-testと同じディレクトリに持ってこないとなぜか実行できない
-      run: Copy-Item build\external\spdlog\Debug\spdlogd.dll build\Debug\
-    - name: Build test
+    - name: Build
       run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
     - name: Test
       working-directory: ${{github.workspace}}/build
@@ -125,12 +120,7 @@ jobs:
         -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
         -DWEBCFACE_TEST=on
         -DWEBCFACE_EXAMPLE=on
-    - name: Build lib
-      run: cmake --build build --config ${{env.BUILD_TYPE}} -t webcface
-    - name: move libspdlogd.dll
-      # libspdlogd.dllをwebcface-testと同じディレクトリに持ってこないとなぜか実行できない
-      run: cp build/external/spdlog/libspdlogd.dll build/
-    - name: Build test
+    - name: Build
       run: cmake --build build --config ${{env.BUILD_TYPE}}
     - name: Test
       working-directory: ${{github.workspace}}/build
