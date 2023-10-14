@@ -26,7 +26,7 @@ var NAVTREE =
 [
   [ "WebCFace", "index.html", [
     [ "Repository Links", "index.html#autotoc_md60", null ],
-    [ "Example", "index.html#autotoc_md61", [
+    [ "Features", "index.html#autotoc_md61", [
       [ "value", "index.html#autotoc_md62", null ],
       [ "text", "index.html#autotoc_md63", null ],
       [ "view", "index.html#autotoc_md64", null ],

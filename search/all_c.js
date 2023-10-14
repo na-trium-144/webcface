@@ -8,10 +8,9 @@ var searchData=
   ['event_5ftarget_2eh_5',['event_target.h',['../event__target_8h.html',1,'']]],
   ['eventcallback_6',['EventCallback',['../classWebCFace_1_1EventTarget.html#a81e0ac19d99a43bbb9cd276e81dee44f',1,'WebCFace::EventTarget']]],
   ['eventhandle_7',['EventHandle',['../classWebCFace_1_1EventTarget.html#ad1be7d51af13514338ccba90975d4b7f',1,'WebCFace::EventTarget']]],
-  ['eventtarget_8',['eventtarget',['../classWebCFace_1_1EventTarget.html',1,'EventTarget&lt; V, Key, VBase &gt;'],['../classWebCFace_1_1EventTarget.html#a84069544f3491979c198d0bca4a2fa43',1,'WebCFace::EventTarget::EventTarget(Dispatcher *dispatcher, const Key &amp;key)'],['../classWebCFace_1_1EventTarget.html#ae37190389ab81b06b4db564735465928',1,'WebCFace::EventTarget::EventTarget()=default']]],
+  ['eventtarget_8',['eventtarget',['../classWebCFace_1_1EventTarget.html#ae37190389ab81b06b4db564735465928',1,'WebCFace::EventTarget::EventTarget()=default'],['../classWebCFace_1_1EventTarget.html#a84069544f3491979c198d0bca4a2fa43',1,'WebCFace::EventTarget::EventTarget(Dispatcher *dispatcher, const Key &amp;key)'],['../classWebCFace_1_1EventTarget.html',1,'EventTarget&lt; V, Key, VBase &gt;']]],
   ['eventtarget_3c_20log_2c_20std_3a_3astring_20_3e_9',['EventTarget&lt; Log, std::string &gt;',['../classWebCFace_1_1EventTarget.html',1,'WebCFace']]],
   ['eventtarget_3c_20text_20_3e_10',['EventTarget&lt; Text &gt;',['../classWebCFace_1_1EventTarget.html',1,'WebCFace']]],
   ['eventtarget_3c_20value_20_3e_11',['EventTarget&lt; Value &gt;',['../classWebCFace_1_1EventTarget.html',1,'WebCFace']]],
-  ['eventtarget_3c_20view_20_3e_12',['EventTarget&lt; View &gt;',['../classWebCFace_1_1EventTarget.html',1,'WebCFace']]],
-  ['example_13',['Example',['../index.html#autotoc_md61',1,'']]]
+  ['eventtarget_3c_20view_20_3e_12',['EventTarget&lt; View &gt;',['../classWebCFace_1_1EventTarget.html',1,'WebCFace']]]
 ];
