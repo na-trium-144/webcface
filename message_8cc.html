@@ -171,7 +171,14 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line">    <span class="keywordflow">case</span> MessageKind::kind:                                                    \</div>
-<div class="line">        obj_u = obj.via.array.ptr[i + 1].as&lt;type&gt;();                           \</div>
+<div class="line">        <span class="keywordflow">try</span> {                                                                  \</div>
+<div class="line">            obj_u = obj.via.array.ptr[i + 1].as&lt;type&gt;();                       \</div>
+<div class="line">        } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::exception &amp;e) {                                    \</div>
+<div class="line">            logger-&gt;error(<span class="stringliteral">&quot;unpack error: {}, index={}, kind={}&quot;</span>, e.what(),     \</div>
+<div class="line">                          i + 1, MessageKind::kind);                           \</div>
+<div class="line">            printMsg(logger, message);                                         \</div>
+<div class="line">            <span class="keywordflow">continue</span>;                                                          \</div>
+<div class="line">        }                                                                      \</div>
 <div class="line">        <span class="keywordflow">break</span>;</div>
 </div><!-- fragment -->
 </div>
@@ -201,21 +208,7 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">    <a class="code hl_define" href="message_8cc.html#aaced3fddf582a8670ec9f83659c007ae">MSG_PARSE</a>(kind, type)                                                      \</div>
-<div class="line">    <span class="keywordflow">case</span> MessageKind::entry + MessageKind::kind:                               \</div>
-<div class="line">        static_assert(MessageKind::kind &lt; MessageKind::entry &amp;&amp;                \</div>
-<div class="line">                      MessageKind::kind &lt; MessageKind::req &amp;&amp;                  \</div>
-<div class="line">                      MessageKind::kind &lt; MessageKind::res);                   \</div>
-<div class="line">        obj_u = obj.via.array.ptr[i + 1].as&lt;Entry&lt;type&gt;&gt;();                    \</div>
-<div class="line">        <span class="keywordflow">break</span>;                                                                 \</div>
-<div class="line">    <span class="keywordflow">case</span> MessageKind::req + MessageKind::kind:                                 \</div>
-<div class="line">        obj_u = obj.via.array.ptr[i + 1].as&lt;Req&lt;type&gt;&gt;();                      \</div>
-<div class="line">        <span class="keywordflow">break</span>;                                                                 \</div>
-<div class="line">    <span class="keywordflow">case</span> MessageKind::res + MessageKind::kind:                                 \</div>
-<div class="line">        obj_u = obj.via.array.ptr[i + 1].as&lt;Res&lt;type&gt;&gt;();                      \</div>
-<div class="line">        <span class="keywordflow">break</span>;</div>
-<div class="ttc" id="amessage_8cc_html_aaced3fddf582a8670ec9f83659c007ae"><div class="ttname"><a href="message_8cc.html#aaced3fddf582a8670ec9f83659c007ae">MSG_PARSE</a></div><div class="ttdeci">#define MSG_PARSE(kind, type)</div></div>
-</div><!-- fragment -->
+
 </div>
 </div>
 </div><!-- contents -->
@@ -224,7 +217,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d06cd19e7b0a7bd71ca3f88af4ac0d59.html">message</a></li><li class="navelem"><a class="el" href="message_8cc.html">message.cc</a></li>
-    <li class="footer">Generated on Sat Oct 14 2023 04:29:33 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Sat Oct 14 2023 04:41:40 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>
