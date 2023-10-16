@@ -2,17 +2,19 @@
 
 WebCFaceの機能紹介・チュートリアルです。
 
-### 環境構築
+## 環境構築
 READMEにしたがってwebcface, webcface-webui, webcface-toolsをインストールしましょう。
 
-### Server
+## Server
 WebCFaceを使用するときはserverを常時立ち上げておく必要があります。
 ```sh
 webcface-server
 ```
 でサーバーを起動します
 
-### WebUI
+* コマンドラインオプションで起動するポートを変更できたりします。詳細は`webcface-server -h`で確認してください
+
+## WebUI
 serverは起動したまま、起動時に表示されるurl (http://localhost:7530/) をブラウザで開きましょう。
 
 WebCFaceにクライアントが接続すると、WebUI右上のMenuに表示されます。
@@ -20,7 +22,7 @@ Menuから見たいデータを選ぶことで小さいウィンドウのよう�
 
 ウィンドウの表示状態などは自動的にブラウザ(LocalStorage)に保存され、次回アクセスしたときに復元されます。
 
-### データの送信
+## データの送信
 WebCFaceではROSのTopicのようにデータを送受信することができます。
 
 WebCFaceにデータを送信してみましょう。
@@ -33,21 +35,30 @@ WebUIから「webcface-send」→「test」を選ぶと、グラフが表示さ�
 
 また、(起動しているwebcface-sendは終了して)
 ```sh
-webcface-send --text test
+webcface-send -t text test
 ```
 を実行し、そこに文字列を打ち込んでみましょう。
 今度はWebUIから「webcface-send」→「Text Variables」を開くと入力した文字列が表示されるはずです。
 
+## tools
+webcface-toolsには`webcface-send`の他にもWebCFaceと通信して使うプログラムがいくつかあります。
+詳しくは[webcface-toolsのリポジトリ](https://github.com/na-trium-144/webcface-tools)を参照してください。
 
-### Client
-
+## Clientプログラムを作る
+C++でWebCFaceを使う場合は、次のようにCMakeでWebCFaceクライアントのライブラリとリンクすることができます。
 ```cmake
-find_package(webcface)
+find_package(webcface CONFIG REQUIRED)
 target_link_libraries(target PRIVATE webcface::webcface)
 ```
+
+C++のソースコードでは`webcface/webcface.h`をインクルードし、 Client クラスのオブジェクトを作成してください。
+WebCFaceとの各種通信の操作はこのClientクラスを通して行います。
 
 ```cpp
 #include <webcface/webcface.h>
 
 WebCFace::Client wcli("name of this client program");
 ```
+
+Clientクラスの使い方は次ページ以降で説明します。
+また、[src/example/](https://github.com/na-trium-144/webcface/tree/main/src/example) にサンプルのコードがあるので参考にしてください。
