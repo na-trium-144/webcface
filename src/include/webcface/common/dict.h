@@ -6,11 +6,13 @@
 #include <memory>
 #include <vector>
 #include <type_traits>
+#include <concepts>
 #include "vector.h"
 
 namespace WebCFace {
 inline namespace Common {
 
+struct VecTypeDisabled {};
 //! 内部データ(T)とユーザーが取得したいデータ(ValueType)を相互変換するTrait
 //! (T=ValueTypeの場合そのまま返す)
 template <typename T>
@@ -18,7 +20,7 @@ struct DictTraits {
     using ValueType = T;
     static ValueType parse(const T &val) { return val; }
     static T wrap(const ValueType &val) { return val; }
-    using VecType = void;
+    using VecType = VecTypeDisabled;
 };
 //! 内部データ(std::shared_ptr<T>)とユーザーが取得したいデータ(ValueType)を相互変換するTrait
 template <typename T>
@@ -36,8 +38,8 @@ struct DictTraits<std::shared_ptr<T>> {
     static std::shared_ptr<T> wrap(const ValueType &val) {
         return std::make_shared<T>(DictTraits<T>::wrap(val));
     }
-    template <typename V = VecType, typename = typename std::enable_if<
-                                        !std::is_same_v<V, void>>::type>
+    template <typename V = VecType>
+        requires(!std::same_as<V, VecTypeDisabled>)
     static std::shared_ptr<T> wrapVec(const V &val) {
         return std::make_shared<T>(DictTraits<T>::wrapVec(val));
     }
@@ -67,11 +69,14 @@ struct DictElement {
 
     DictElement() = default;
     //! {key, value} から変換するコンストラクタ
-    DictElement(const std::string &key,
-                const typename DictTraits<T>::ValueType &value)
-        : key(key), value(DictTraits<T>::wrap(value)) {}
-    //! {key, {value, value, ...}} から変換するコンストラクタ (DictTraits<T>
-    //! が配列を受け付けるときのみ)
+    template <typename U>
+        requires std::convertible_to<U, typename DictTraits<T>::ValueType>
+    DictElement(const std::string &key, const U &value)
+        : key(key),
+          value(DictTraits<T>::wrap(
+              static_cast<typename DictTraits<T>::ValueType>(value))) {}
+    //! {key, {value, value, ...}} から変換するコンストラクタ
+    //! (DictTraits<T>が配列を受け付けるときのみ)
     template <typename U = T>
     DictElement(const std::string &key,
                 const typename DictTraits<U>::VecType &value)
