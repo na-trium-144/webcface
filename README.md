@@ -134,4 +134,4 @@ sudo cmake --build build -t install
 
 ## Usage
 
-Clientライブラリの使い方は[こちら](https://na-trium-144.github.io/webcface/md_01__client.html)を参照してください。
+チュートリアルと使い方→ [Documentation](https://na-trium-144.github.io/webcface/md_00__tutorial.html)
