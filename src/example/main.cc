@@ -4,25 +4,39 @@
 #include <chrono>
 void hello() { std::cout << "hello, world!" << std::endl; }
 double hello2(int a, double b, bool c, const std::string &d) {
-    std::cout << "hello, world! 2" << std::endl;
-    std::cout << "  a: " << a << std::endl;
-    std::cout << "  b: " << b << std::endl;
-    std::cout << "  c: " << c << std::endl;
-    std::cout << "  d: " << d << std::endl;
+    std::cout << "hello2 args: a=" << a << ", b=" << b << ", c=" << c
+              << ", d=" << d << std::endl;
+    std::cout << "  return: a + b = " << a + b << std::endl;
     return a + b;
 }
+struct A {
+    int x = 1, y = 2;
+    A() = default;
+    // Dict → A に変換
+    A(const WebCFace::Value::Dict &d): x(d["x"]), y(d["y"]) {}
+    // A → Dictに変換
+    operator WebCFace::Value::Dict() const {
+        return {{"x", x}, {"y", y}, {"nest", {{"a", 3}, {"b", 4}}}};
+    }
+};
 int main() {
-    WebCFace::logger_internal_level = spdlog::level::debug;
+    // WebCFace::logger_internal_level = spdlog::level::debug;
 
     WebCFace::Client c("example_main");
+
+    // c.value("test").set(0);
     c.value("test") = 0;
-    c.value("dict") = {{"x", 1}, {"y", 2}, {"nest", {{"a", 3}, {"b", 4}}}};
+    // structをDictに変換するとまとめて送信することができる
+    c.value("dict") = A();
+    // 関数を登録
     c.func("func1") = hello;
+    // 引数付きの関数は引数名や各種情報をセットできる
     using Arg = WebCFace::Arg;
     c.func("func2").set(hello2).setArgs(
         {Arg("a").min(0).max(10), Arg("b"), Arg("c"),
          Arg("d").option({"hoge", "fuga", "piyo"})});
 
+    // 以下のログはすべてwebcfaceに送られる
     c.logger()->trace("this is trace");
     c.logger()->debug("this is debug");
     c.logger()->info("this is info");
@@ -38,34 +52,27 @@ int main() {
     int i = 0;
 
     while (true) {
-        std::this_thread::yield();
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
-        c.value("test")++;
+
+        // valueを更新
+        c.value("test") = i;
+        // 文字列送信
         c.text("str") = "hello";
 
         {
+            // viewを送信
             auto v = c.view("a");
             v << "hello world" << std::endl;
-            v << i << WebCFace::newLine();
+            v << i << std::endl;
             v << WebCFace::button("a",
                                   [] { std::cout << "hello" << std::endl; });
             // v.sync();
         }
         ++i;
-        
-        // c.func("aaaaaaa").run(); // self().func("aaaaaa") is not set
-        // c.member("aaaaaa").func("a").run(); // member("aaaaaa").func("a") is
-        // not set
-        // c.func("func1").run();
-        // c.func("func2").run(3, true, "hoge"); // invalid_argument
-        // c.member("example_main").func("func2").run(3, true, "hoge");
-        // runtime_error
-        // auto f = c.member("example_main")
-        //              .func("func2")
-        //              .runAsync(3, 5.5, true, "hoge");
-        // // ValAdaptor -> int, double, bool, string etc...
-        // std::cout << "return = " << static_cast<double>(f.result.get())
-        //           << std::endl;
+
+        // Dictでまとめて値を取得しstructにセット
+        A a = c.value("dict").getRecurse();
+
         c.sync();
     }
 }

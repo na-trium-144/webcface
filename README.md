@@ -134,30 +134,4 @@ sudo cmake --build build -t install
 
 ## Usage
 
-### Server
-WebCFaceを使用するときはserverを常時立ち上げておく必要があります
-
-```sh
-webcface-server
-```
-でサーバーを起動します
-
-起動時に表示されるurl (http://pcのipアドレス:7530/) をブラウザから開くとwebuiにアクセスすることができます
-
-### Client (C++)
-
-```cmake
-find_package(webcface)
-target_link_libraries(target PRIVATE webcface::webcface)
-```
-
-```cpp
-#include <webcface/webcface.h>
-
-WebCFace::Client wcli("name of this client program");
-```
-
-## Documentation
-
-* Clientライブラリの使い方は[こちら](https://na-trium-144.github.io/webcface/md_01__client.html)を参照してください。
-* [example/](./example/) 以下にサンプルコードがあるのでそちらも参照してください
+Clientライブラリの使い方は[こちら](https://na-trium-144.github.io/webcface/md_01__client.html)を参照してください。
