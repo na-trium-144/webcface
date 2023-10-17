@@ -9,6 +9,6 @@ var searchData=
   ['bool_5f_6',['bool_',['../namespaceWebCFace_1_1Common.html#acd1dd9e2d5f885ad3f73197cfa6b0185a467afb5838aa377d55cce81f84c5512b',1,'WebCFace::Common']]],
   ['buf_7',['buf',['../classWebCFace_1_1LoggerBuf.html#ae885e81bac54b36d833ae6858a7931d4',1,'WebCFace::LoggerBuf']]],
   ['buf_5fsize_8',['buf_size',['../classWebCFace_1_1LoggerBuf.html#a894e0272f9809764d91193370a07c8ee',1,'WebCFace::LoggerBuf']]],
-  ['build_20from_20source_9',['Build from source',['../index.html#autotoc_md70',1,'']]],
-  ['button_10',['button',['../namespaceWebCFace_1_1ViewComponents.html#a818c39acf0a23a489c00b0b3327881db',1,'WebCFace::button()'],['../namespaceWebCFace_1_1ViewComponents.html#a818c39acf0a23a489c00b0b3327881db',1,'WebCFace::ViewComponents::button()'],['../namespaceWebCFace_1_1Common.html#a11040d82967b60182816ddc035d07c28ace50a09343724eb82df11390e2c1de18',1,'WebCFace::Common::button'],['../md_13__view.html#autotoc_md17',1,'button']]]
+  ['build_20from_20source_9',['Build from source',['../index.html#autotoc_md77',1,'']]],
+  ['button_10',['button',['../namespaceWebCFace_1_1ViewComponents.html#a818c39acf0a23a489c00b0b3327881db',1,'WebCFace::button()'],['../namespaceWebCFace_1_1ViewComponents.html#a818c39acf0a23a489c00b0b3327881db',1,'WebCFace::ViewComponents::button()'],['../namespaceWebCFace_1_1Common.html#a11040d82967b60182816ddc035d07c28ace50a09343724eb82df11390e2c1de18',1,'WebCFace::Common::button'],['../md_13__view.html#autotoc_md24',1,'button']]]
 ];

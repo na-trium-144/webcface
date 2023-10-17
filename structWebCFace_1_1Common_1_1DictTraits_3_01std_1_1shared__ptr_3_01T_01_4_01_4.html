@@ -136,9 +136,10 @@ Static Public Member Functions</h2></td></tr>
 <tr class="separator:a9c75e410037020a27ca297a870e6f55e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a27f057365161c311449a735967190e24" id="r_a27f057365161c311449a735967190e24"><td class="memItemLeft" align="right" valign="top">static std::shared_ptr&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structWebCFace_1_1Common_1_1DictTraits_3_01std_1_1shared__ptr_3_01T_01_4_01_4.html#a27f057365161c311449a735967190e24">wrap</a> (const <a class="el" href="structWebCFace_1_1Common_1_1DictTraits_3_01std_1_1shared__ptr_3_01T_01_4_01_4.html#abbe746fc1535d3cd565042e3bd51f157">ValueType</a> &amp;val)</td></tr>
 <tr class="separator:a27f057365161c311449a735967190e24"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa09f93e96cf8d18c7032d51343b2045e" id="r_aa09f93e96cf8d18c7032d51343b2045e"><td class="memTemplParams" colspan="2">template&lt;typename V  = VecType, typename  = typename std::enable_if&lt;                                        !std::is_same_v&lt;V, void&gt;&gt;::type&gt; </td></tr>
-<tr class="memitem:aa09f93e96cf8d18c7032d51343b2045e"><td class="memTemplItemLeft" align="right" valign="top">static std::shared_ptr&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structWebCFace_1_1Common_1_1DictTraits_3_01std_1_1shared__ptr_3_01T_01_4_01_4.html#aa09f93e96cf8d18c7032d51343b2045e">wrapVec</a> (const V &amp;val)</td></tr>
-<tr class="separator:aa09f93e96cf8d18c7032d51343b2045e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6b8a393e38f600c7369438afc15918ac" id="r_a6b8a393e38f600c7369438afc15918ac"><td class="memTemplParams" colspan="2">template&lt;typename V  = VecType&gt; <br />
+requires (!std::same_as&lt;V, <a class="el" href="structWebCFace_1_1Common_1_1VecTypeDisabled.html">VecTypeDisabled</a>&gt;)</td></tr>
+<tr class="memitem:a6b8a393e38f600c7369438afc15918ac"><td class="memTemplItemLeft" align="right" valign="top">static std::shared_ptr&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structWebCFace_1_1Common_1_1DictTraits_3_01std_1_1shared__ptr_3_01T_01_4_01_4.html#a6b8a393e38f600c7369438afc15918ac">wrapVec</a> (const V &amp;val)</td></tr>
+<tr class="separator:a6b8a393e38f600c7369438afc15918ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;typename T&gt;<br />
@@ -263,15 +264,16 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="aa09f93e96cf8d18c7032d51343b2045e" name="aa09f93e96cf8d18c7032d51343b2045e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa09f93e96cf8d18c7032d51343b2045e">&#9670;&#160;</a></span>wrapVec()</h2>
+<a id="a6b8a393e38f600c7369438afc15918ac" name="a6b8a393e38f600c7369438afc15918ac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6b8a393e38f600c7369438afc15918ac">&#9670;&#160;</a></span>wrapVec()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;typename T &gt; </div>
 <div class="memtemplate">
-template&lt;typename V  = VecType, typename  = typename std::enable_if&lt;                                        !std::is_same_v&lt;V, void&gt;&gt;::type&gt; </div>
+template&lt;typename V  = VecType&gt; <br />
+requires (!std::same_as&lt;V, <a class="el" href="structWebCFace_1_1Common_1_1VecTypeDisabled.html">VecTypeDisabled</a>&gt;)</div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -302,7 +304,7 @@ template&lt;typename V  = VecType, typename  = typename std::enable_if&lt;      
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceWebCFace.html">WebCFace</a></li><li class="navelem"><a class="el" href="namespaceWebCFace_1_1Common.html">Common</a></li><li class="navelem"><a class="el" href="structWebCFace_1_1Common_1_1DictTraits_3_01std_1_1shared__ptr_3_01T_01_4_01_4.html">DictTraits&lt; std::shared_ptr&lt; T &gt; &gt;</a></li>
-    <li class="footer">Generated on Sat Oct 14 2023 11:23:25 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Tue Oct 17 2023 09:26:26 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

@@ -14,6 +14,7 @@ var namespaceWebCFace_1_1Common =
     [ "Queue", "classWebCFace_1_1Common_1_1Queue.html", "classWebCFace_1_1Common_1_1Queue" ],
     [ "ValAdaptor", "classWebCFace_1_1Common_1_1ValAdaptor.html", "classWebCFace_1_1Common_1_1ValAdaptor" ],
     [ "VectorOpt", "structWebCFace_1_1Common_1_1VectorOpt.html", "structWebCFace_1_1Common_1_1VectorOpt" ],
+    [ "VecTypeDisabled", "structWebCFace_1_1Common_1_1VecTypeDisabled.html", null ],
     [ "ViewComponentBase", "structWebCFace_1_1Common_1_1ViewComponentBase.html", "structWebCFace_1_1Common_1_1ViewComponentBase" ],
     [ "FuncType", "namespaceWebCFace_1_1Common.html#a25e0cb91e379fadc84cd151ffeb49fea", null ],
     [ "FuncWrapperType", "namespaceWebCFace_1_1Common.html#a1f914f5d15fb32aa05ca882cff7f2cd4", null ],

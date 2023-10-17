@@ -124,9 +124,11 @@ $(document).ready(function(){initNavTree('structWebCFace_1_1Common_1_1DictElemen
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a2ada23b2402db7b44933a00198d5ede8" id="r_a2ada23b2402db7b44933a00198d5ede8"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structWebCFace_1_1Common_1_1DictElement.html#a2ada23b2402db7b44933a00198d5ede8">DictElement</a> ()=default</td></tr>
 <tr class="separator:a2ada23b2402db7b44933a00198d5ede8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afc73c3c8b581730a78ebfa100bee63f0" id="r_afc73c3c8b581730a78ebfa100bee63f0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structWebCFace_1_1Common_1_1DictElement.html#afc73c3c8b581730a78ebfa100bee63f0">DictElement</a> (const std::string &amp;<a class="el" href="structWebCFace_1_1Common_1_1DictElement.html#aa4cdb693ee7f3d1d131bb328468184b7">key</a>, const typename <a class="el" href="structWebCFace_1_1Common_1_1DictTraits.html">DictTraits</a>&lt; T &gt;::ValueType &amp;<a class="el" href="structWebCFace_1_1Common_1_1DictElement.html#a016452bcef737ce9f1929ceec874af00">value</a>)</td></tr>
-<tr class="memdesc:afc73c3c8b581730a78ebfa100bee63f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">{key, value} から変換するコンストラクタ  <br /></td></tr>
-<tr class="separator:afc73c3c8b581730a78ebfa100bee63f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6200724656295d3bbf8b3c255c7813e6" id="r_a6200724656295d3bbf8b3c255c7813e6"><td class="memTemplParams" colspan="2">template&lt;typename U &gt; <br />
+requires std::convertible_to&lt;U, typename <a class="el" href="structWebCFace_1_1Common_1_1DictTraits.html">DictTraits</a>&lt;T&gt;::ValueType&gt;</td></tr>
+<tr class="memitem:a6200724656295d3bbf8b3c255c7813e6"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structWebCFace_1_1Common_1_1DictElement.html#a6200724656295d3bbf8b3c255c7813e6">DictElement</a> (const std::string &amp;<a class="el" href="structWebCFace_1_1Common_1_1DictElement.html#aa4cdb693ee7f3d1d131bb328468184b7">key</a>, const U &amp;<a class="el" href="structWebCFace_1_1Common_1_1DictElement.html#a016452bcef737ce9f1929ceec874af00">value</a>)</td></tr>
+<tr class="memdesc:a6200724656295d3bbf8b3c255c7813e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">{key, value} から変換するコンストラクタ  <br /></td></tr>
+<tr class="separator:a6200724656295d3bbf8b3c255c7813e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae7c57a6440a2eeccb6fecfff4dc2d508" id="r_ae7c57a6440a2eeccb6fecfff4dc2d508"><td class="memTemplParams" colspan="2">template&lt;typename U  = T&gt; </td></tr>
 <tr class="memitem:ae7c57a6440a2eeccb6fecfff4dc2d508"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structWebCFace_1_1Common_1_1DictElement.html#ae7c57a6440a2eeccb6fecfff4dc2d508">DictElement</a> (const std::string &amp;<a class="el" href="structWebCFace_1_1Common_1_1DictElement.html#aa4cdb693ee7f3d1d131bb328468184b7">key</a>, const typename <a class="el" href="structWebCFace_1_1Common_1_1DictTraits.html">DictTraits</a>&lt; U &gt;::VecType &amp;<a class="el" href="structWebCFace_1_1Common_1_1DictElement.html#a016452bcef737ce9f1929ceec874af00">value</a>)</td></tr>
 <tr class="separator:ae7c57a6440a2eeccb6fecfff4dc2d508"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -174,13 +176,16 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="afc73c3c8b581730a78ebfa100bee63f0" name="afc73c3c8b581730a78ebfa100bee63f0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afc73c3c8b581730a78ebfa100bee63f0">&#9670;&#160;</a></span>DictElement() <span class="overload">[2/4]</span></h2>
+<a id="a6200724656295d3bbf8b3c255c7813e6" name="a6200724656295d3bbf8b3c255c7813e6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6200724656295d3bbf8b3c255c7813e6">&#9670;&#160;</a></span>DictElement() <span class="overload">[2/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;typename T &gt; </div>
+<div class="memtemplate">
+template&lt;typename U &gt; <br />
+requires std::convertible_to&lt;U, typename <a class="el" href="structWebCFace_1_1Common_1_1DictTraits.html">DictTraits</a>&lt;T&gt;::ValueType&gt;</div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -194,7 +199,7 @@ template&lt;typename T &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const typename <a class="el" href="structWebCFace_1_1Common_1_1DictTraits.html">DictTraits</a>&lt; T &gt;::ValueType &amp;&#160;</td>
+          <td class="paramtype">const U &amp;&#160;</td>
           <td class="paramname"><em>value</em>&#160;</td>
         </tr>
         <tr>
@@ -251,7 +256,7 @@ template&lt;typename U  = T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>{key, {value, value, ...}} から変換するコンストラクタ (DictTraits&lt;T&gt; が配列を受け付けるときのみ) </p>
+<p>{key, {value, value, ...}} から変換するコンストラクタ (DictTraits&lt;T&gt;が配列を受け付けるときのみ) </p>
 
 </div>
 </div>
@@ -353,7 +358,7 @@ template&lt;typename T &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceWebCFace.html">WebCFace</a></li><li class="navelem"><a class="el" href="namespaceWebCFace_1_1Common.html">Common</a></li><li class="navelem"><a class="el" href="structWebCFace_1_1Common_1_1DictElement.html">DictElement</a></li>
-    <li class="footer">Generated on Sat Oct 14 2023 11:23:25 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Tue Oct 17 2023 09:26:26 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

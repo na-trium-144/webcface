@@ -110,7 +110,7 @@ $(document).ready(function(){initNavTree('md_01__client.html',''); initResizable
   <div class="headertitle"><div class="title">Client</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md0"></a> API Reference → <a class="el" href="classWebCFace_1_1Client.html" title="サーバーに接続するクライアント。">WebCFace::Client</a></p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md7"></a> API Reference → <a class="el" href="classWebCFace_1_1Client.html" title="サーバーに接続するクライアント。">WebCFace::Client</a></p>
 <p>WebCFaceのメインとなるクラスです。 クライアントとしてサーバーに接続します。</p>
 <div class="fragment"><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="webcface_8h.html">webcface/webcface.h</a>&gt;</span></div>
 <div class="line"> </div>
@@ -122,7 +122,7 @@ $(document).ready(function(){initNavTree('md_01__client.html',''); initResizable
 <p>コンストラクタにクライアントの名前を渡すことができますが同時に接続している他のクライアントと名前が被らないようにしてください。</p>
 <p>コンストラクタに名前を指定しない、または空文字列の場合、他のクライアントとの被りは問題ありませんがデータを送信することができなくなります (他のクライアントから値などを受信する専用)</p>
 <p>デフォルトではlocalhostの7530ポートに接続を試みますが、コンストラクタの引数でサーバーのアドレスとポートを指定できます。</p>
-<h1><a class="anchor" id="autotoc_md1"></a>
+<h1><a class="anchor" id="autotoc_md8"></a>
 sync</h1>
 <div class="fragment"><div class="line"><span class="keywordflow">while</span>(<span class="keyword">true</span>){</div>
 <div class="line">    <span class="comment">// ...</span></div>
@@ -131,7 +131,7 @@ sync</h1>
 <div class="line">}</div>
 </div><!-- fragment --><p>Client::sync() はデータを実際に送信する関数です。 データを受信する場合もサーバーにデータのリクエストをするためsync()が必要になります。</p>
 <p>メインプログラムの周期実行される場所などで繰り返し呼ぶようにしてください。</p>
-<h1><a class="anchor" id="autotoc_md2"></a>
+<h1><a class="anchor" id="autotoc_md9"></a>
 切断する</h1>
 <p>Clientクラスのデストラクタが呼ばれると通信を切断します。 </p>
 </div></div><!-- contents -->
@@ -140,7 +140,7 @@ sync</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sat Oct 14 2023 11:23:25 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Tue Oct 17 2023 09:26:26 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

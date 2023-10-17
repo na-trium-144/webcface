@@ -16,6 +16,7 @@ var annotated_dup =
         [ "Queue", "classWebCFace_1_1Common_1_1Queue.html", "classWebCFace_1_1Common_1_1Queue" ],
         [ "ValAdaptor", "classWebCFace_1_1Common_1_1ValAdaptor.html", "classWebCFace_1_1Common_1_1ValAdaptor" ],
         [ "VectorOpt", "structWebCFace_1_1Common_1_1VectorOpt.html", "structWebCFace_1_1Common_1_1VectorOpt" ],
+        [ "VecTypeDisabled", "structWebCFace_1_1Common_1_1VecTypeDisabled.html", null ],
         [ "ViewComponentBase", "structWebCFace_1_1Common_1_1ViewComponentBase.html", "structWebCFace_1_1Common_1_1ViewComponentBase" ]
       ] ],
       [ "Message", "namespaceWebCFace_1_1Message.html", [
@@ -74,6 +75,7 @@ var annotated_dup =
       [ "ValAdaptor", "classWebCFace_1_1Common_1_1ValAdaptor.html", "classWebCFace_1_1Common_1_1ValAdaptor" ],
       [ "Value", "classWebCFace_1_1Value.html", "classWebCFace_1_1Value" ],
       [ "VectorOpt", "structWebCFace_1_1Common_1_1VectorOpt.html", "structWebCFace_1_1Common_1_1VectorOpt" ],
+      [ "VecTypeDisabled", "structWebCFace_1_1Common_1_1VecTypeDisabled.html", null ],
       [ "View", "classWebCFace_1_1View.html", "classWebCFace_1_1View" ],
       [ "ViewBuf", "classWebCFace_1_1ViewBuf.html", "classWebCFace_1_1ViewBuf" ],
       [ "ViewComponent", "classWebCFace_1_1ViewComponent.html", "classWebCFace_1_1ViewComponent" ],

@@ -160,6 +160,8 @@ var hierarchy =
     [ "vector", null, [
       [ "VectorOpt< T >", "structWebCFace_1_1Common_1_1VectorOpt.html", null ]
     ] ],
+    [ "VecTypeDisabled", "structWebCFace_1_1Common_1_1VecTypeDisabled.html", null ],
+    [ "VecTypeDisabled", "structWebCFace_1_1Common_1_1VecTypeDisabled.html", null ],
     [ "ViewComponent", "structWebCFace_1_1Message_1_1View_1_1ViewComponent.html", null ],
     [ "ViewComponentBase", "structWebCFace_1_1Common_1_1ViewComponentBase.html", [
       [ "ViewComponent", "classWebCFace_1_1ViewComponent.html", null ]

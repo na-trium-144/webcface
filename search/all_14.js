@@ -4,6 +4,6 @@ var searchData=
   ['name_5f_1',['name_',['../classWebCFace_1_1Common_1_1Arg.html#a4d739cc5d335052eb9f5b2ca559b81d1',1,'WebCFace::Common::Arg']]],
   ['new_5fline_2',['new_line',['../namespaceWebCFace_1_1Common.html#a11040d82967b60182816ddc035d07c28a620cf4c6d9756f9ce211c523f16c42a9',1,'WebCFace::Common']]],
   ['newclient_3',['newClient',['../structWebCFace_1_1Server_1_1Store.html#a84bf45e1c111ecfbf928251ff2568567',1,'WebCFace::Server::Store']]],
-  ['newline_4',['newline',['../namespaceWebCFace_1_1ViewComponents.html#ab72da582724c98c1e879cadbacc78663',1,'WebCFace::newLine()'],['../namespaceWebCFace_1_1ViewComponents.html#ab72da582724c98c1e879cadbacc78663',1,'WebCFace::ViewComponents::newLine()'],['../md_13__view.html#autotoc_md16',1,'newLine']]],
+  ['newline_4',['newline',['../namespaceWebCFace_1_1ViewComponents.html#ab72da582724c98c1e879cadbacc78663',1,'WebCFace::newLine()'],['../namespaceWebCFace_1_1ViewComponents.html#ab72da582724c98c1e879cadbacc78663',1,'WebCFace::ViewComponents::newLine()'],['../md_13__view.html#autotoc_md23',1,'newLine']]],
   ['none_5f_5',['none_',['../namespaceWebCFace_1_1Common.html#acd1dd9e2d5f885ad3f73197cfa6b0185a1e5a9491a4d910a08d95f675ca7226be',1,'WebCFace::Common']]]
 ];
