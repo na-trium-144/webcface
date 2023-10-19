@@ -86,6 +86,7 @@ webcface-toolsには`webcface-send`の他にもWebCFaceと通信して使うプ�
 詳しくは[webcface-toolsのリポジトリ](https://github.com/na-trium-144/webcface-tools)を参照してください。
 
 ## Clientプログラムを作る
+
 C++でWebCFaceを使う場合は、次のようにCMakeでWebCFaceクライアントのライブラリとリンクすることができます。
 ```cmake
 find_package(webcface CONFIG REQUIRED)
@@ -103,3 +104,6 @@ WebCFace::Client wcli("name of this client program");
 
 Clientクラスの使い方は次ページ以降で説明します。
 また、[src/example/](https://github.com/na-trium-144/webcface/tree/main/src/example) にサンプルのコードがあるので参考にしてください。
+
+JavaScript用クライアントはこちら→ [webcface-js](https://github.com/na-trium-144/webcface-js)
+
