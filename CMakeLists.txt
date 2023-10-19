@@ -29,10 +29,11 @@ option(WEBCFACE_INSTALL "generate install target" ${IS_MAIN})
 option(WEBCFACE_EXAMPLE "build example" ${IS_MAIN})
 option(WEBCFACE_TEST "build test" OFF)
 option(WEBCFACE_COVERAGE "enable generating test coverage" OFF)
-option(WEBCFACE_TEST_TIMEOUT "connection timeout in test" 10)
+set(WEBCFACE_TEST_TIMEOUT 10 CACHE INTERNAL "connection timeout in test")
 
 message(STATUS "webcface_example = ${WEBCFACE_EXAMPLE}")
 message(STATUS "webcface_test = ${WEBCFACE_TEST}")
+message(STATUS "webcface_test_timeout = ${WEBCFACE_TEST_TIMEOUT} ms")
 message(STATUS "webcface_coverage = ${WEBCFACE_COVERAGE}")
 message(STATUS "webcface_install = ${WEBCFACE_INSTALL}")
 
@@ -64,6 +65,9 @@ endif()
 if(MINGW)
     # https://stackoverflow.com/questions/10486116/what-does-this-gcc-error-relocation-truncated-to-fit-mean
     add_link_options(-Wl,--default-image-base-low)
+    # https://github.com/qicosmos/cinatra/issues/91
+    # 試してみたけど特に変化なし?
+    # add_compile_definitions(_WIN32_WINNT=0x0500)
 endif()
 
 find_package(msgpack-cxx QUIET)
@@ -71,12 +75,7 @@ if(${msgpack-cxx_FOUND})
     message(STATUS "msgpack-cxx found")
 else()
     message(STATUS "msgpack-cxx not found")
-    # set(MSGPACK_BUILD_DOCS off CACHE INTERNAL "" FORCE)
-    # set(MSGPACK_BUILD_TESTS off CACHE INTERNAL "" FORCE)
-    # set(MSGPACK_BUILD_EXAMPLES off CACHE INTERNAL "" FORCE)
-    # set(MSGPACK_USE_BOOST off CACHE INTERNAL "" FORCE)
-    # add_subdirectory(external/msgpack-c)
-    # このようにmsgpackのcmakeを使うと、msgpackをインストールしてしまう
+    # msgpackのcmakelistsを使うとmsgpackをインストールしてしまうので、includeするだけ
 
     add_library(msgpack-cxx INTERFACE)
     target_compile_definitions(msgpack-cxx INTERFACE

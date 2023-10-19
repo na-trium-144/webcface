@@ -8,7 +8,7 @@
 #include <memory>
 #include <thread>
 namespace WebCFace::Server {
-std::shared_ptr<cinatra::http_server> server;
+cinatra::http_server* server;
 std::shared_ptr<std::thread> ping_thread;
 
 void pingThreadMain() {
@@ -61,7 +61,7 @@ void serverRun(int port, const spdlog::sink_ptr &sink,
     server_stop = false;
     ping_thread = std::make_shared<std::thread>(pingThreadMain);
 
-    server = std::make_shared<http_server>(1);
+    server = new http_server(1);
     auto static_dir = getStaticDir(logger);
     auto temp_dir = getTempDir(logger);
     server->set_static_dir(static_dir);

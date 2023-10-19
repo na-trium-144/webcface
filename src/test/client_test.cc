@@ -37,7 +37,14 @@ class ClientTest : public ::testing::Test {
         wait();
         std::cout << "SetUp end" << std::endl;
     }
-    void TearDown() override { std::cout << "TearDown" << std::endl; }
+    void TearDown() override {
+        std::cout << "TearDown begin" << std::endl;
+        wcli_.reset();
+        data_.reset();
+        wait();
+        dummy_s.reset();
+        std::cout << "TearDown end" << std::endl;
+    }
     std::string self_name = "test";
     std::shared_ptr<ClientData> data_;
     std::shared_ptr<Client> wcli_;

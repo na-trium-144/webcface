@@ -38,9 +38,13 @@ class ServerTest : public ::testing::Test {
         std::cout << "SetUp end" << std::endl;
     }
     void TearDown() override {
-        std::cout << "TearDown" << std::endl;
+        std::cout << "TearDown begin" << std::endl;
+        dummy_c1.reset();
+        dummy_c2.reset();
         Server::serverStop();
         server_thread->join();
+        server_thread.reset();
+        std::cout << "TearDown end" << std::endl;
     }
     std::shared_ptr<std::thread> server_thread;
     std::shared_ptr<ClientData> data_ = std::make_shared<ClientData>("a");

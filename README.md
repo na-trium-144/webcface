@@ -45,16 +45,11 @@ brew install webcface webcface-webui
 
 * c++20に対応したコンパイラが必要です
 * テスト済みの環境
-	* Windows
-		* MSVC: ok
-		* MinGW Clang17
-			* 終了時にSegmentation Faultするバグがありますが動作はします ([#43](https://github.com/na-trium-144/webcface/issues/43))
-		* MinGW GCC13: NG (リンクエラー)
-			* GCC12では動くっぽい?
-	* Linux
-		* GCC, Clang: ok
-	* MacOS
-		* Clang: ok
+	* [![CMake Test (Linux GCC)](https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-linux-gcc.yml/badge.svg?branch=main)](https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-linux-gcc.yml)
+	* [![CMake Test (Linux Clang)](https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-linux-clang.yml/badge.svg?branch=main)](https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-linux-clang.yml)
+	* [![CMake Test (MacOS Clang)](https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-macos-clang.yml/badge.svg?branch=main)](https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-macos-clang.yml)
+	* [![CMake Test (Windows MSVC)](https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-windows-msvc.yml/badge.svg?branch=main)](https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-windows-msvc.yml)
+	* [![CMake Test (Windows MinGW64 GCC)](https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-windows-gcc.yml/badge.svg?branch=main)](https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-windows-gcc.yml) (CMAKE_BUILD_TYPE=Debugだとリンクエラーになった)
 
 ```sh
 git submodule update --init --recursive
