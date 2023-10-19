@@ -5,6 +5,7 @@
 ### Changed
 * testで通信のタイムアウト時間を変更できるようにした
 * コマンドラインパーサーをtclapからcli11に変更
+* updated dependencies
 
 ## [1.1.1] - 2023-10-14
 ### Fixed
