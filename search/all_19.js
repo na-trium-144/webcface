@@ -9,7 +9,7 @@ var searchData=
   ['send_5fbuffer_6',['send_buffer',['../structWebCFace_1_1Server_1_1ClientData.html#a28beb71e3568e218778f423fd95ed391',1,'WebCFace::Server::ClientData']]],
   ['send_5flen_7',['send_len',['../structWebCFace_1_1Server_1_1ClientData.html#a87a99f62a98bec91542c1bc1d1a18ba5',1,'WebCFace::Server::ClientData']]],
   ['sendping_8',['sendPing',['../structWebCFace_1_1Server_1_1ClientData.html#ae1340d1280818fa14b61e2bf6e637366',1,'WebCFace::Server::ClientData']]],
-  ['server_9',['server',['../md_00__tutorial.html#autotoc_md2',1,'Server'],['../namespaceWebCFace_1_1Server.html#a32504f8405cede496b4adb8fd2cf8832',1,'WebCFace::Server::server']]],
+  ['server_9',['server',['../md_00__tutorial.html#autotoc_md2',1,'Server'],['../namespaceWebCFace_1_1Server.html#ab739767cf3fb205df68f80cdaa084fe2',1,'WebCFace::Server::server']]],
   ['server_5fmain_2ecc_10',['server_main.cc',['../server__main_8cc.html',1,'']]],
   ['server_5fmtx_11',['server_mtx',['../namespaceWebCFace_1_1Server.html#a229b454d156fec6ab3e561a195813199',1,'WebCFace::Server']]],
   ['server_5fping_5fwait_12',['server_ping_wait',['../namespaceWebCFace_1_1Server.html#a4898db8d9fe1cf7bf83e4c7ac242a245',1,'WebCFace::Server']]],

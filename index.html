@@ -142,26 +142,11 @@ Build from source</h2>
 <ul>
 <li>c++20に対応したコンパイラが必要です</li>
 <li>テスト済みの環境<ul>
-<li>Windows<ul>
-<li>MSVC: ok</li>
-<li>MinGW Clang17<ul>
-<li>終了時にSegmentation Faultするバグがありますが動作はします (<a href="https://github.com/na-trium-144/webcface/issues/43">#43</a>)</li>
-</ul>
-</li>
-<li>MinGW GCC13: NG (リンクエラー)<ul>
-<li>GCC12では動くっぽい?</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>Linux<ul>
-<li>GCC, Clang: ok</li>
-</ul>
-</li>
-<li>MacOS<ul>
-<li>Clang: ok</li>
-</ul>
-</li>
+<li><a href="https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-linux-gcc.yml"><img src="https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-linux-gcc.yml/badge.svg?branch=main" alt="CMake Test (Linux GCC)" style="pointer-events: none;" class="inline"/></a></li>
+<li><a href="https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-linux-clang.yml"><img src="https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-linux-clang.yml/badge.svg?branch=main" alt="CMake Test (Linux Clang)" style="pointer-events: none;" class="inline"/></a></li>
+<li><a href="https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-macos-clang.yml"><img src="https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-macos-clang.yml/badge.svg?branch=main" alt="CMake Test (MacOS Clang)" style="pointer-events: none;" class="inline"/></a></li>
+<li><a href="https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-windows-msvc.yml"><img src="https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-windows-msvc.yml/badge.svg?branch=main" alt="CMake Test (Windows MSVC)" style="pointer-events: none;" class="inline"/></a></li>
+<li><a href="https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-windows-gcc.yml"><img src="https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-windows-gcc.yml/badge.svg?branch=main" alt="CMake Test (Windows MinGW64 GCC)" style="pointer-events: none;" class="inline"/></a> (CMAKE_BUILD_TYPE=Debugだとリンクエラーになった)</li>
 </ul>
 </li>
 </ul>
@@ -187,7 +172,7 @@ Usage</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Oct 19 2023 13:55:08 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Thu Oct 19 2023 16:55:51 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

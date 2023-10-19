@@ -243,10 +243,10 @@ var NAVTREEINDEX9 =
 "webcface_8h_source.html":[14,0,1,0,11],
 "websock_8cc.html":[14,0,3,6],
 "websock_8cc.html#a324e1a70e006e8434fa711dd7e646727":[14,0,3,6,2],
-"websock_8cc.html#a32504f8405cede496b4adb8fd2cf8832":[14,0,3,6,4],
 "websock_8cc.html#a32d1773d4920e0fdbc9938ec0c45545e":[14,0,3,6,3],
 "websock_8cc.html#a33df3bc6f542e57bb6b239b084301718":[14,0,3,6,0],
 "websock_8cc.html#a55d5c53c73f66be16623a85d1c4f1e97":[14,0,3,6,1],
+"websock_8cc.html#ab739767cf3fb205df68f80cdaa084fe2":[14,0,3,6,4],
 "websock_8h.html":[14,0,3,7],
 "websock_8h.html#a2284a2138f45992873563f8b5e95eaac":[14,0,3,7,2],
 "websock_8h.html#a229b454d156fec6ab3e561a195813199":[14,0,3,7,3]

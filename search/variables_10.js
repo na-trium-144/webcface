@@ -5,7 +5,7 @@ var searchData=
   ['self_5fmember_5fname_2',['self_member_name',['../classWebCFace_1_1ClientData_1_1SyncDataStore2.html#a0f0971461fbd4ef7a1ccc6f9fedb554a',1,'WebCFace::ClientData::SyncDataStore2::self_member_name'],['../classWebCFace_1_1ClientData_1_1SyncDataStore1.html#a0f0971461fbd4ef7a1ccc6f9fedb554a',1,'WebCFace::ClientData::SyncDataStore1::self_member_name'],['../structWebCFace_1_1ClientData.html#a0f0971461fbd4ef7a1ccc6f9fedb554a',1,'WebCFace::ClientData::self_member_name']]],
   ['send_5fbuffer_3',['send_buffer',['../structWebCFace_1_1Server_1_1ClientData.html#a28beb71e3568e218778f423fd95ed391',1,'WebCFace::Server::ClientData']]],
   ['send_5flen_4',['send_len',['../structWebCFace_1_1Server_1_1ClientData.html#a87a99f62a98bec91542c1bc1d1a18ba5',1,'WebCFace::Server::ClientData']]],
-  ['server_5',['server',['../namespaceWebCFace_1_1Server.html#a32504f8405cede496b4adb8fd2cf8832',1,'WebCFace::Server']]],
+  ['server_5',['server',['../namespaceWebCFace_1_1Server.html#ab739767cf3fb205df68f80cdaa084fe2',1,'WebCFace::Server']]],
   ['server_5fmtx_6',['server_mtx',['../namespaceWebCFace_1_1Server.html#a229b454d156fec6ab3e561a195813199',1,'WebCFace::Server']]],
   ['server_5fping_5fwait_7',['server_ping_wait',['../namespaceWebCFace_1_1Server.html#a4898db8d9fe1cf7bf83e4c7ac242a245',1,'WebCFace::Server']]],
   ['server_5fstop_8',['server_stop',['../namespaceWebCFace_1_1Server.html#a866e9256cc856d47a956a306b6a65e13',1,'WebCFace::Server']]],
