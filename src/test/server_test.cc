@@ -43,6 +43,7 @@ class ServerTest : public ::testing::Test {
         dummy_c2.reset();
         Server::serverStop();
         server_thread->join();
+        server_thread.reset();
         std::cout << "TearDown end" << std::endl;
     }
     std::shared_ptr<std::thread> server_thread;
