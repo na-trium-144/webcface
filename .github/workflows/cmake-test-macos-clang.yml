@@ -1,0 +1,34 @@
+name: CMake Test (MacOS Clang)
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+env:
+  # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
+  BUILD_TYPE: Debug
+
+jobs:
+  test-macos-clang:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: "recursive"
+
+    - name: Configure CMake
+      run: >
+        cmake -B build
+        -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+        -DWEBCFACE_TEST=on
+        -DWEBCFACE_EXAMPLE=on
+        -DWEBCFACE_TEST_TIMEOUT=1000
+
+    - name: Build
+      run: cmake --build build
+
+    - name: Test
+      working-directory: ${{github.workspace}}/build
+      run: ctest --output-on-failure --timeout 15
