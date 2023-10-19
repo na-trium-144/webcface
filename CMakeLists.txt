@@ -29,10 +29,11 @@ option(WEBCFACE_INSTALL "generate install target" ${IS_MAIN})
 option(WEBCFACE_EXAMPLE "build example" ${IS_MAIN})
 option(WEBCFACE_TEST "build test" OFF)
 option(WEBCFACE_COVERAGE "enable generating test coverage" OFF)
-option(WEBCFACE_TEST_TIMEOUT "connection timeout in test" 10)
+set(WEBCFACE_TEST_TIMEOUT 10 CACHE INTERNAL "connection timeout in test")
 
 message(STATUS "webcface_example = ${WEBCFACE_EXAMPLE}")
 message(STATUS "webcface_test = ${WEBCFACE_TEST}")
+message(STATUS "webcface_test_timeout = ${WEBCFACE_TEST_TIMEOUT} ms")
 message(STATUS "webcface_coverage = ${WEBCFACE_COVERAGE}")
 message(STATUS "webcface_install = ${WEBCFACE_INSTALL}")
 
