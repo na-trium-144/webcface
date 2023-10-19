@@ -47,7 +47,7 @@ $ webcface-send test
 4
 6
 ```
-![tutorial_value](./images/tutorial_value.png)
+![tutorial_value](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_value.png)
 
 ### text
 (起動しているwebcface-sendは終了して)
@@ -61,7 +61,7 @@ webcface-send -t text test
 $ webcface-send -t text test
 hello, world!
 ```
-![tutorial_text](./images/tutorial_text.png)
+![tutorial_text](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_text.png)
 
 ### log
 ```sh
@@ -79,7 +79,7 @@ fuga
 piyo
 [2023-10-19 19:40:38.447] [webcface-send] [info] piyo
 ```
-![tutorial_logs](./images/tutorial_logs.png)
+![tutorial_logs](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_logs.png)
 
 ## tools
 webcface-toolsには`webcface-send`の他にもWebCFaceと通信して使うプログラムがいくつかあります。
