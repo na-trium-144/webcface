@@ -129,8 +129,7 @@ else()
     set(CINATRA cinatra)
 endif()
 
-add_library(tclap INTERFACE)
-target_include_directories(tclap INTERFACE ${CMAKE_CURRENT_LIST_DIR}/external/tclap/include)
+add_subdirectory(external/cli11)
 
 if(WEBCFACE_TEST)
     find_package(GTest QUIET)
@@ -207,7 +206,7 @@ target_link_libraries(${PROJECT_NAME}-server-impl PUBLIC
 add_executable(${PROJECT_NAME}-server ${SVR_MAIN_SRC})
 target_link_libraries(${PROJECT_NAME}-server PRIVATE
     ${PROJECT_NAME}-server-impl
-    tclap
+    CLI11
 )
 
 add_library(${PROJECT_NAME} SHARED ${CLI_SRC})

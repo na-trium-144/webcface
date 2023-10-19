@@ -1,28 +1,19 @@
 #include "../server/websock.h"
 #include <webcface/common/def.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
-#include <tclap/CmdLine.h>
+#include <CLI/CLI.hpp>
 
 int main(int argc, char **argv) {
-    try {
-        TCLAP::CmdLine cmd("WebCFace Server", ' ', WEBCFACE_VERSION);
-        TCLAP::ValueArg<int> portArg(
-            "p", "port", "Server port (default: " WEBCFACE_DEFAULT_PORT_S ")",
-            false, WEBCFACE_DEFAULT_PORT, "number");
-        cmd.add(portArg);
+    CLI::App app{"WebCFace Server " WEBCFACE_VERSION};
 
-        cmd.parse(argc, argv);
+    int port = WEBCFACE_DEFAULT_PORT;
+    app.add_option("-p,--port", port, "Server port");
 
-        auto stderr_sink =
-            std::make_shared<spdlog::sinks::stderr_color_sink_mt>();
+    CLI11_PARSE(app, argc, argv);
 
-        // Set HTTP listener address and port
-        // todo: 引数で変えられるようにする
-        WebCFace::Server::serverRun(portArg.getValue(), stderr_sink,
-                                    spdlog::level::trace);
-        return 0;
-    } catch (TCLAP::ArgException &e) {
-        std::cerr << "error: " << e.error() << " for arg " << e.argId()
-                  << std::endl;
-    }
+    auto stderr_sink = std::make_shared<spdlog::sinks::stderr_color_sink_mt>();
+
+    // Set HTTP listener address and port
+    // todo: 引数で変えられるようにする
+    WebCFace::Server::serverRun(port, stderr_sink, spdlog::level::trace);
 }
