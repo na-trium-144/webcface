@@ -42,7 +42,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">WebCFace<span id="projectnumber">&#160;1.1.1</span>
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;1.1.2</span>
    </div>
    <div id="projectbrief">Web-based RPC &amp; UI Library</div>
   </td>
@@ -128,7 +128,7 @@ Installation</h1>
 <h2><a class="anchor" id="autotoc_md72"></a>
 Debian, Ubuntu (amd64, arm64, armhf)</h2>
 <p><a href="https://github.com/na-trium-144/webcface/releases">WebCFaceのReleases</a> と <a href="https://github.com/na-trium-144/webcface-webui/releases">webuiのReleases</a> 、<a href="https://github.com/na-trium-144/webcface-tools/releases">toolsのReleases</a> からそれぞれ最新のdebパッケージをダウンロードしてインストールできます。</p>
-<p>例 (amd64の場合) </p><div class="fragment"><div class="line">curl -LO https://github.com/na-trium-144/webcface/releases/download/v1.1.1/webcface_1.1.1_amd64.deb</div>
+<p>例 (amd64の場合) </p><div class="fragment"><div class="line">curl -LO https://github.com/na-trium-144/webcface/releases/download/v1.1.2/webcface_1.1.2_amd64.deb</div>
 <div class="line">curl -LO https://github.com/na-trium-144/webcface-webui/releases/download/v1.0.4/webcface-webui_1.0.4_all.deb</div>
 <div class="line">curl -LO https://github.com/na-trium-144/webcface-tools/releases/download/v1.1.0/webcface-tools_1.1.0_amd64.deb</div>
 <div class="line">sudo apt install ./webcface*.deb</div>
@@ -171,7 +171,7 @@ Build from source</h2>
 <div class="line">sudo cmake --build build -t install</div>
 </div><!-- fragment --><ul>
 <li>その後、<a href="https://github.com/na-trium-144/webcface-webui/releases">webuiのReleases</a> からビルド済みのtar.gzのアーカイブをダウンロードして webui/dist/ (installして使う場合は /path/to/prefix/share/webcface/dist) として展開してください</li>
-<li>webcfaceは外部ライブラリとして <a href="https://github.com/qicosmos/cinatra">cinatra</a>, <a href="https://github.com/wqking/eventpp">eventpp</a>, <a href="https://github.com/msgpack/msgpack-c">msgpack-cxx</a>, <a href="https://github.com/gabime/spdlog">spdlog</a>, <a href="https://tclap.sourceforge.net">tclap</a> を使用します。<ul>
+<li>webcfaceは外部ライブラリとして <a href="https://github.com/qicosmos/cinatra">cinatra</a>, <a href="https://github.com/wqking/eventpp">eventpp</a>, <a href="https://github.com/msgpack/msgpack-c">msgpack-cxx</a>, <a href="https://github.com/gabime/spdlog">spdlog</a>, <a href="https://github.com/CLIUtils/CLI11.git">cli11</a> を使用します。<ul>
 <li>システムにインストールされてなければsubmoduleにあるソースコードをビルドしますが、eventpp, msgpack, spdlog に関してはインストールされていればそれを使用するのでビルドが速くなります</li>
 <li>ubuntuなら <code>sudo apt install libspdlog-dev</code>, brewなら <code>brew install spdlog msgpack-cxx</code> でインストールできます</li>
 </ul>
@@ -187,7 +187,7 @@ Usage</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Oct 19 2023 12:38:06 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Thu Oct 19 2023 13:55:08 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>
