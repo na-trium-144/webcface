@@ -13,8 +13,13 @@
 
 using namespace WebCFace;
 
-static void wait(int ms = 10) {
-    std::this_thread::sleep_for(std::chrono::milliseconds(ms));
+#ifndef WEBCFACE_TEST_TIMEOUT
+#define WEBCFACE_TEST_TIMEOUT 10
+#endif
+
+static void wait() {
+    std::this_thread::sleep_for(
+        std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
 }
 
 class ClientTest : public ::testing::Test {
@@ -307,17 +312,17 @@ TEST_F(ClientTest, viewReq) {
         },
         [&] { ADD_FAILURE() << "View Req recv error"; });
 
-    auto v =
-        std::make_shared<std::unordered_map<std::string, Message::View::ViewComponent>>(
-            std::unordered_map<std::string, Message::View::ViewComponent>{
-                {"0", ViewComponents::text("a")
-                        .textColor(ViewColor::yellow)
-                        .bgColor(ViewColor::green)
-                        .lockTmp(data_, "")},
-                {"1", ViewComponents::newLine().lockTmp(data_, "")},
-                {"2", ViewComponents::button("a", Func{Field{data_, "x", "y"}})
-                        .lockTmp(data_, "")},
-            });
+    auto v = std::make_shared<
+        std::unordered_map<std::string, Message::View::ViewComponent>>(
+        std::unordered_map<std::string, Message::View::ViewComponent>{
+            {"0", ViewComponents::text("a")
+                      .textColor(ViewColor::yellow)
+                      .bgColor(ViewColor::green)
+                      .lockTmp(data_, "")},
+            {"1", ViewComponents::newLine().lockTmp(data_, "")},
+            {"2", ViewComponents::button("a", Func{Field{data_, "x", "y"}})
+                      .lockTmp(data_, "")},
+        });
     dummy_s->send(Message::Res<Message::View>{1, "", v, 3});
     dummy_s->send(Message::Res<Message::View>{1, "c", v, 3});
     wait();
@@ -336,14 +341,14 @@ TEST_F(ClientTest, viewReq) {
     EXPECT_TRUE(data_->view_store.getRecv("a", "b.c").has_value());
 
     // 差分だけ送る
-    auto v2 =
-        std::make_shared<std::unordered_map<std::string, Message::View::ViewComponent>>(
-            std::unordered_map<std::string, Message::View::ViewComponent>{
-                {"0", ViewComponents::text("b")
-                        .textColor(ViewColor::red)
-                        .bgColor(ViewColor::green)
-                        .lockTmp(data_, "")},
-            });
+    auto v2 = std::make_shared<
+        std::unordered_map<std::string, Message::View::ViewComponent>>(
+        std::unordered_map<std::string, Message::View::ViewComponent>{
+            {"0", ViewComponents::text("b")
+                      .textColor(ViewColor::red)
+                      .bgColor(ViewColor::green)
+                      .lockTmp(data_, "")},
+        });
     dummy_s->send(Message::Res<Message::View>{1, "", v2, 3});
     wait();
     EXPECT_EQ(callback_called, 2);

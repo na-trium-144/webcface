@@ -12,8 +12,13 @@
 
 using namespace WebCFace;
 
-static void wait(int ms = 10) {
-    std::this_thread::sleep_for(std::chrono::milliseconds(ms));
+#ifndef WEBCFACE_TEST_TIMEOUT
+#define WEBCFACE_TEST_TIMEOUT 10
+#endif
+
+static void wait() {
+    std::this_thread::sleep_for(
+        std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
 }
 
 class ServerTest : public ::testing::Test {
@@ -77,7 +82,7 @@ TEST_F(ServerTest, ping) {
     auto start = std::chrono::steady_clock::now();
     Server::server_ping_wait.notify_one(); // これで無理やりpingさせる
     auto s_c1 = Server::store.clients_by_id.at(1);
-    wait(10);
+    wait();
     dummy_c1->recv<Message::Ping>([&](const auto &) {},
                                   [&] { ADD_FAILURE() << "Ping recv failed"; });
     dummy_c1->send(Message::Ping{});

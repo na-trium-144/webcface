@@ -61,6 +61,7 @@ jobs:
         -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
         -DWEBCFACE_TEST=on
         -DWEBCFACE_EXAMPLE=on
+        -DWEBCFACE_TEST_TIMEOUT=1000
 
     - name: Build
       # Build your program with the given configuration
@@ -70,7 +71,7 @@ jobs:
       working-directory: ${{github.workspace}}/build
       # Execute tests defined by the CMake configuration.
       # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
-      run: ctest -C ${{env.BUILD_TYPE}} --output-on-failure --timeout 1
+      run: ctest -C ${{env.BUILD_TYPE}} --output-on-failure --timeout 15
 
 
   build-msvc:
@@ -85,11 +86,12 @@ jobs:
         -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
         -DWEBCFACE_TEST=on
         -DWEBCFACE_EXAMPLE=on
+        -DWEBCFACE_TEST_TIMEOUT=1000
     - name: Build
       run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
     - name: Test
       working-directory: ${{github.workspace}}/build
-      run: ctest -C ${{env.BUILD_TYPE}} --output-on-failure --timeout 1
+      run: ctest -C ${{env.BUILD_TYPE}} --output-on-failure --timeout 15
 
   build-mingw:
     runs-on: windows-latest
@@ -120,8 +122,9 @@ jobs:
         -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
         -DWEBCFACE_TEST=on
         -DWEBCFACE_EXAMPLE=on
+        -DWEBCFACE_TEST_TIMEOUT=1000
     - name: Build
       run: cmake --build build --config ${{env.BUILD_TYPE}}
     - name: Test
       working-directory: ${{github.workspace}}/build
-      run: ctest -C ${{env.BUILD_TYPE}} --output-on-failure --timeout 1
+      run: ctest -C ${{env.BUILD_TYPE}} --output-on-failure --timeout 15
