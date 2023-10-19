@@ -14,12 +14,12 @@
 [submodule "external/googletest"]
 	path = external/googletest
 	url = https://github.com/google/googletest.git
-[submodule "external/tclap"]
-	path = external/tclap
-	url = https://git.code.sf.net/p/tclap/code
 [submodule "webui"]
 	path = webui
 	url = https://github.com/na-trium-144/webcface-webui.git
 [submodule "external/doxygen-awesome-css"]
 	path = external/doxygen-awesome-css
 	url = https://github.com/jothepro/doxygen-awesome-css.git
+[submodule "external/cli11"]
+	path = external/cli11
+	url = https://github.com/CLIUtils/CLI11.git
