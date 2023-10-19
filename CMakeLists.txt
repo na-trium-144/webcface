@@ -29,6 +29,7 @@ option(WEBCFACE_INSTALL "generate install target" ${IS_MAIN})
 option(WEBCFACE_EXAMPLE "build example" ${IS_MAIN})
 option(WEBCFACE_TEST "build test" OFF)
 option(WEBCFACE_COVERAGE "enable generating test coverage" OFF)
+option(WEBCFACE_TEST_TIMEOUT "connection timeout in test" 10)
 
 message(STATUS "webcface_example = ${WEBCFACE_EXAMPLE}")
 message(STATUS "webcface_test = ${WEBCFACE_TEST}")
@@ -255,6 +256,9 @@ if(WEBCFACE_TEST)
         ${PROJECT_NAME}-server-impl
         ${CINATRA}
         GTest::gtest_main
+    )
+    target_compile_definitions(${PROJECT_NAME}-test PRIVATE
+        WEBCFACE_TEST_TIMEOUT=${WEBCFACE_TEST_TIMEOUT}
     )
     include(GoogleTest)
     gtest_discover_tests(${PROJECT_NAME}-test)
