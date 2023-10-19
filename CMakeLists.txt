@@ -64,6 +64,8 @@ endif()
 if(MINGW)
     # https://stackoverflow.com/questions/10486116/what-does-this-gcc-error-relocation-truncated-to-fit-mean
     add_link_options(-Wl,--default-image-base-low)
+    # https://github.com/qicosmos/cinatra/issues/91
+    add_compile_definitions(_WIN32_WINNT=0x0500)
 endif()
 
 find_package(msgpack-cxx QUIET)
