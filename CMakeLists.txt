@@ -66,6 +66,7 @@ if(MINGW)
     # https://stackoverflow.com/questions/10486116/what-does-this-gcc-error-relocation-truncated-to-fit-mean
     add_link_options(-Wl,--default-image-base-low)
     # https://github.com/qicosmos/cinatra/issues/91
+    # 試してみたけど特に変化なし?
     # add_compile_definitions(_WIN32_WINNT=0x0500)
 endif()
 
@@ -74,12 +75,7 @@ if(${msgpack-cxx_FOUND})
     message(STATUS "msgpack-cxx found")
 else()
     message(STATUS "msgpack-cxx not found")
-    # set(MSGPACK_BUILD_DOCS off CACHE INTERNAL "" FORCE)
-    # set(MSGPACK_BUILD_TESTS off CACHE INTERNAL "" FORCE)
-    # set(MSGPACK_BUILD_EXAMPLES off CACHE INTERNAL "" FORCE)
-    # set(MSGPACK_USE_BOOST off CACHE INTERNAL "" FORCE)
-    # add_subdirectory(external/msgpack-c)
-    # このようにmsgpackのcmakeを使うと、msgpackをインストールしてしまう
+    # msgpackのcmakelistsを使うとmsgpackをインストールしてしまうので、includeするだけ
 
     add_library(msgpack-cxx INTERFACE)
     target_compile_definitions(msgpack-cxx INTERFACE
