@@ -32,7 +32,7 @@ struct DummyServer {
 
     bool connected();
     std::shared_ptr<void> connPtr;
-    std::shared_ptr<void> server_;
+    void *server_;
 
     std::thread t;
     DummyServer();
@@ -64,7 +64,7 @@ struct DummyClient {
         send(Message::packSingle(msg));
     }
 
-    std::shared_ptr<void> client_;
+    void *client_;
 
     std::thread t;
     DummyClient();
