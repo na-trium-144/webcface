@@ -10,90 +10,26 @@ C++とJavaScriptで使える、WebSocketを使ったプロセス間通信ライ�
 
 また、WebブラウザーでアクセスできるUI(webcface-webui)から通信されているデータを確認したり関数を実行したりできる他、テキストやボタンなどを自由に配置してそのWebブラウザーに表示させることができます。
 
-## Repository Links
+todo: ここにわかりやすいスクショを1つはる
+todo: 機能の一覧をかんたんにかく
+
+## Related Links
 
 * webcface: サーバー & C++クライアント
 * [webcface-webui](https://github.com/na-trium-144/webcface-webui): webブラウザ用UIアプリ
 * [webcface-js](https://github.com/na-trium-144/webcface-js): JavaScriptクライアント
 * [webcface-tools](https://github.com/na-trium-144/webcface-tools): クライアントとなるコマンド群
 
-## Features
-
-### value
-```cpp
-WebCFace::Client wcli("example_main");
-wcli.value("test") = 100;
-wcli.sync();
-```
-
-```cpp
-WebCFace::Client wcli("example_recv");
-while(true){
-	std::cout << "test = " << wcli.member("webcface_main").value("test") << std::endl;
-	wcli.sync();
-}
-```
-数値データはグラフとして表示され、スクロールして過去のデータを見ることもできます。
-
-![value.png](./images/value.png)
-
-(画像とソースコード例は一致していません。これ以降の画像についても同様)
-
-### text
-```cpp
-wcli.text("str") = "hello";
-```
-
-```cpp
-while(true){
-	std::cout << "str = " << wcli.member("webcface_main").text("str") << std::endl;
-	wcli.sync();
-}
-```
-
-![text.png](./images/text.png)
-
-### view
-webブラウザ上にテキストやボタンを自由に配置できます。
-```cpp
-auto v = wcli.view("a");
-v << "hello world" << std::endl;
-v << WebCFace::button("a", [] { std::cout << "hello" << std::endl; });
-```
-
-![view.png](./images/view.png)
-
-### func
-```cpp
-wcli.func("func1") = []{ std::cout << "hello" << std::endl; };
-```
-
-```cpp
-wcli.member("webcface_main").func("func1").run();
-```
-
-![func.png](./images/func.png)
-
-### log
-[spdlog](https://github.com/gabime/spdlog)を使用しています。
-```cpp
-wcli.logger()->debug("this is debug");
-wcli.logger()->info("this is info");
-wcli.logger()->warn("this is warn");
-```
-
-![log.png](./images/log.png)
-
 ## Installation
 
 ### Debian, Ubuntu (amd64, arm64, armhf)
-[WebCFaceのReleases](https://github.com/na-trium-144/webcface/releases) と [webuiのReleases](https://github.com/na-trium-144/webcface-webui/releases) 、(オプショナルで: [toolsのReleases](https://github.com/na-trium-144/webcface-tools/releases)) からそれぞれ最新のdebパッケージをダウンロードしてインストールできます。
+[WebCFaceのReleases](https://github.com/na-trium-144/webcface/releases) と [webuiのReleases](https://github.com/na-trium-144/webcface-webui/releases) 、[toolsのReleases](https://github.com/na-trium-144/webcface-tools/releases) からそれぞれ最新のdebパッケージをダウンロードしてインストールできます。
 
 例 (amd64の場合)
 ```sh
 curl -LO https://github.com/na-trium-144/webcface/releases/download/v1.1.1/webcface_1.1.1_amd64.deb
 curl -LO https://github.com/na-trium-144/webcface-webui/releases/download/v1.0.4/webcface-webui_1.0.4_all.deb
-curl -LO https://github.com/na-trium-144/webcface-tools/releases/download/v1.0.0/webcface-tools_1.0.0_amd64.deb
+curl -LO https://github.com/na-trium-144/webcface-tools/releases/download/v1.1.0/webcface-tools_1.1.0_amd64.deb
 sudo apt install ./webcface*.deb
 ```
 
@@ -134,4 +70,4 @@ sudo cmake --build build -t install
 
 ## Usage
 
-Clientライブラリの使い方は[こちら](https://na-trium-144.github.io/webcface/md_01__client.html)を参照してください。
+チュートリアルと使い方→ [Documentation](https://na-trium-144.github.io/webcface/md_00__tutorial.html)

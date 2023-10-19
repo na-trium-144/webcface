@@ -23,6 +23,7 @@ Menuから見たいデータを選ぶことで小さいウィンドウのよう�
 ウィンドウの表示状態などは自動的にブラウザ(LocalStorage)に保存され、次回アクセスしたときに復元されます。
 
 ## データの送信
+### value
 WebCFaceではROSのTopicのようにデータを送受信することができます。
 
 WebCFaceにデータを送信してみましょう。
@@ -33,18 +34,59 @@ webcface-send test
 
 WebUIから「webcface-send」→「test」を選ぶと、グラフが表示されると思います。
 
-また、(起動しているwebcface-sendは終了して)
+```
+$ webcface-send test
+5
+7
+3
+4
+9
+1
+2
+3
+4
+6
+```
+![tutorial_value](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_value.png)
+
+### text
+(起動しているwebcface-sendは終了して)
 ```sh
 webcface-send -t text test
 ```
 を実行し、そこに文字列を打ち込んでみましょう。
 今度はWebUIから「webcface-send」→「Text Variables」を開くと入力した文字列が表示されるはずです。
 
+```
+$ webcface-send -t text test
+hello, world!
+```
+![tutorial_text](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_text.png)
+
+### log
+```sh
+webcface-send -t log
+```
+を実行し、そこに文字列を打ち込んでみましょう。
+WebUIから「webcface-send」→「Logs」を開くと入力した文字列が表示されるはずです。
+
+```
+$ webcface-send -t log
+hoge
+[2023-10-19 19:40:35.603] [webcface-send] [info] hoge
+fuga
+[2023-10-19 19:40:37.000] [webcface-send] [info] fuga
+piyo
+[2023-10-19 19:40:38.447] [webcface-send] [info] piyo
+```
+![tutorial_logs](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_logs.png)
+
 ## tools
 webcface-toolsには`webcface-send`の他にもWebCFaceと通信して使うプログラムがいくつかあります。
 詳しくは[webcface-toolsのリポジトリ](https://github.com/na-trium-144/webcface-tools)を参照してください。
 
 ## Clientプログラムを作る
+
 C++でWebCFaceを使う場合は、次のようにCMakeでWebCFaceクライアントのライブラリとリンクすることができます。
 ```cmake
 find_package(webcface CONFIG REQUIRED)
@@ -61,4 +103,10 @@ WebCFace::Client wcli("name of this client program");
 ```
 
 Clientクラスの使い方は次ページ以降で説明します。
+
 また、[src/example/](https://github.com/na-trium-144/webcface/tree/main/src/example) にサンプルのコードがあるので参考にしてください。
+exampleはserverといっしょにインストールされており、`webcface-example-main`, `webcface-example-recv`コマンドで実行してみることができます。
+mainは各種データの送信、recvはmainが送信したデータの受信とmainにある関数の呼び出しをするプログラムになっています。
+
+JavaScript用クライアントはこちら→ [webcface-js](https://github.com/na-trium-144/webcface-js)
+
