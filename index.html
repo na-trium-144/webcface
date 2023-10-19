@@ -114,71 +114,30 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 <p>Web-based RPC &amp; UI Library</p>
 <p>C++とJavaScriptで使える、WebSocketを使ったプロセス間通信ライブラリです。 データの送受信だけでなく、プロセス間での関数呼び出しができます。</p>
 <p>また、WebブラウザーでアクセスできるUI(webcface-webui)から通信されているデータを確認したり関数を実行したりできる他、テキストやボタンなどを自由に配置してそのWebブラウザーに表示させることができます。</p>
-<h1><a class="anchor" id="autotoc_md67"></a>
-Repository Links</h1>
+<p>todo: ここにわかりやすいスクショを1つはる todo: 機能の一覧をかんたんにかく</p>
+<h1><a class="anchor" id="autotoc_md70"></a>
+Related Links</h1>
 <ul>
 <li>webcface: サーバー &amp; C++クライアント</li>
 <li><a href="https://github.com/na-trium-144/webcface-webui">webcface-webui</a>: webブラウザ用UIアプリ</li>
 <li><a href="https://github.com/na-trium-144/webcface-js">webcface-js</a>: JavaScriptクライアント</li>
 <li><a href="https://github.com/na-trium-144/webcface-tools">webcface-tools</a>: クライアントとなるコマンド群</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md68"></a>
-Features</h1>
-<h2><a class="anchor" id="autotoc_md69"></a>
-value</h2>
-<div class="fragment"><div class="line"><a class="code hl_class" href="classWebCFace_1_1Client.html">WebCFace::Client</a> wcli(<span class="stringliteral">&quot;example_main&quot;</span>);</div>
-<div class="line">wcli.value(<span class="stringliteral">&quot;test&quot;</span>) = 100;</div>
-<div class="line">wcli.sync();</div>
-<div class="ttc" id="aclassWebCFace_1_1Client_html"><div class="ttname"><a href="classWebCFace_1_1Client.html">WebCFace::Client</a></div><div class="ttdoc">サーバーに接続するクライアント。</div><div class="ttdef"><b>Definition</b> client.h:16</div></div>
-</div><!-- fragment --><div class="fragment"><div class="line"><a class="code hl_class" href="classWebCFace_1_1Client.html">WebCFace::Client</a> wcli(<span class="stringliteral">&quot;example_recv&quot;</span>);</div>
-<div class="line"><span class="keywordflow">while</span>(<span class="keyword">true</span>){</div>
-<div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;test = &quot;</span> &lt;&lt; wcli.member(<span class="stringliteral">&quot;webcface_main&quot;</span>).value(<span class="stringliteral">&quot;test&quot;</span>) &lt;&lt; std::endl;</div>
-<div class="line">    wcli.sync();</div>
-<div class="line">}</div>
-</div><!-- fragment --><p> 数値データはグラフとして表示され、スクロールして過去のデータを見ることもできます。</p>
-<p><img src="./images/value.png" alt="value.png" class="inline"/></p>
-<p>(画像とソースコード例は一致していません。これ以降の画像についても同様)</p>
-<h2><a class="anchor" id="autotoc_md70"></a>
-text</h2>
-<div class="fragment"><div class="line">wcli.text(<span class="stringliteral">&quot;str&quot;</span>) = <span class="stringliteral">&quot;hello&quot;</span>;</div>
-</div><!-- fragment --><div class="fragment"><div class="line"><span class="keywordflow">while</span>(<span class="keyword">true</span>){</div>
-<div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;str = &quot;</span> &lt;&lt; wcli.member(<span class="stringliteral">&quot;webcface_main&quot;</span>).text(<span class="stringliteral">&quot;str&quot;</span>) &lt;&lt; std::endl;</div>
-<div class="line">    wcli.sync();</div>
-<div class="line">}</div>
-</div><!-- fragment --><p><img src="./images/text.png" alt="text.png" class="inline"/></p>
-<h2><a class="anchor" id="autotoc_md71"></a>
-view</h2>
-<p>webブラウザ上にテキストやボタンを自由に配置できます。 </p><div class="fragment"><div class="line"><span class="keyword">auto</span> v = wcli.view(<span class="stringliteral">&quot;a&quot;</span>);</div>
-<div class="line">v &lt;&lt; <span class="stringliteral">&quot;hello world&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line">v &lt;&lt; <a class="code hl_function" href="namespaceWebCFace_1_1ViewComponents.html#a818c39acf0a23a489c00b0b3327881db">WebCFace::button</a>(<span class="stringliteral">&quot;a&quot;</span>, [] { std::cout &lt;&lt; <span class="stringliteral">&quot;hello&quot;</span> &lt;&lt; std::endl; });</div>
-<div class="ttc" id="anamespaceWebCFace_1_1ViewComponents_html_a818c39acf0a23a489c00b0b3327881db"><div class="ttname"><a href="namespaceWebCFace_1_1ViewComponents.html#a818c39acf0a23a489c00b0b3327881db">WebCFace::ViewComponents::button</a></div><div class="ttdeci">ViewComponent button(const std::string &amp;text, const T &amp;func)</div><div class="ttdef"><b>Definition</b> view.h:95</div></div>
-</div><!-- fragment --><p><img src="./images/view.png" alt="view.png" class="inline"/></p>
-<h2><a class="anchor" id="autotoc_md72"></a>
-func</h2>
-<div class="fragment"><div class="line">wcli.func(<span class="stringliteral">&quot;func1&quot;</span>) = []{ std::cout &lt;&lt; <span class="stringliteral">&quot;hello&quot;</span> &lt;&lt; std::endl; };</div>
-</div><!-- fragment --><div class="fragment"><div class="line">wcli.member(<span class="stringliteral">&quot;webcface_main&quot;</span>).func(<span class="stringliteral">&quot;func1&quot;</span>).run();</div>
-</div><!-- fragment --><p><img src="./images/func.png" alt="func.png" class="inline"/></p>
-<h2><a class="anchor" id="autotoc_md73"></a>
-log</h2>
-<p><a href="https://github.com/gabime/spdlog">spdlog</a>を使用しています。 </p><div class="fragment"><div class="line">wcli.logger()-&gt;debug(<span class="stringliteral">&quot;this is debug&quot;</span>);</div>
-<div class="line">wcli.logger()-&gt;info(<span class="stringliteral">&quot;this is info&quot;</span>);</div>
-<div class="line">wcli.logger()-&gt;warn(<span class="stringliteral">&quot;this is warn&quot;</span>);</div>
-</div><!-- fragment --><p><img src="./images/log.png" alt="log.png" class="inline"/></p>
-<h1><a class="anchor" id="autotoc_md74"></a>
+<h1><a class="anchor" id="autotoc_md71"></a>
 Installation</h1>
-<h2><a class="anchor" id="autotoc_md75"></a>
+<h2><a class="anchor" id="autotoc_md72"></a>
 Debian, Ubuntu (amd64, arm64, armhf)</h2>
-<p><a href="https://github.com/na-trium-144/webcface/releases">WebCFaceのReleases</a> と <a href="https://github.com/na-trium-144/webcface-webui/releases">webuiのReleases</a> 、(オプショナルで: <a href="https://github.com/na-trium-144/webcface-tools/releases">toolsのReleases</a>) からそれぞれ最新のdebパッケージをダウンロードしてインストールできます。</p>
+<p><a href="https://github.com/na-trium-144/webcface/releases">WebCFaceのReleases</a> と <a href="https://github.com/na-trium-144/webcface-webui/releases">webuiのReleases</a> 、<a href="https://github.com/na-trium-144/webcface-tools/releases">toolsのReleases</a> からそれぞれ最新のdebパッケージをダウンロードしてインストールできます。</p>
 <p>例 (amd64の場合) </p><div class="fragment"><div class="line">curl -LO https://github.com/na-trium-144/webcface/releases/download/v1.1.1/webcface_1.1.1_amd64.deb</div>
 <div class="line">curl -LO https://github.com/na-trium-144/webcface-webui/releases/download/v1.0.4/webcface-webui_1.0.4_all.deb</div>
-<div class="line">curl -LO https://github.com/na-trium-144/webcface-tools/releases/download/v1.0.0/webcface-tools_1.0.0_amd64.deb</div>
+<div class="line">curl -LO https://github.com/na-trium-144/webcface-tools/releases/download/v1.1.0/webcface-tools_1.1.0_amd64.deb</div>
 <div class="line">sudo apt install ./webcface*.deb</div>
 </div><!-- fragment --><p>(webcface-toolsの内容と使い方についてはwebcface-toolsのReadmeを参照してください)</p>
-<h2><a class="anchor" id="autotoc_md76"></a>
+<h2><a class="anchor" id="autotoc_md73"></a>
 Homebrew (MacOS, Linux)</h2>
 <div class="fragment"><div class="line">brew tap na-trium-144/webcface</div>
 <div class="line">brew install webcface webcface-webui</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md77"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md74"></a>
 Build from source</h2>
 <ul>
 <li>c++20に対応したコンパイラが必要です</li>
@@ -219,16 +178,16 @@ Build from source</h2>
 </li>
 <li><code>-DWEBCFACE_EXAMPLE=on</code>でexampleを、<code>-DWEBCFACE_TEST=on</code>でtestをビルドします。</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md78"></a>
+<h1><a class="anchor" id="autotoc_md75"></a>
 Usage</h1>
-<p>Clientライブラリの使い方は<a href="https://na-trium-144.github.io/webcface/md_01__client.html">こちら</a>を参照してください。 </p>
+<p>チュートリアルと使い方→ <a href="https://na-trium-144.github.io/webcface/md_00__tutorial.html">Documentation</a> </p>
 </div></div><!-- PageDoc -->
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Oct 17 2023 09:26:26 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Thu Oct 19 2023 11:17:14 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

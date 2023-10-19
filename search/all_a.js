@@ -1,9 +1,9 @@
 var searchData=
 [
   ['call_0',['call',['../structWebCFace_1_1Message_1_1Call.html',1,'Call'],['../namespaceWebCFace_1_1Message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a98ab4979bd774d191f9a4642f9df392f',1,'WebCFace::Message::MessageKind::call'],['../structWebCFace_1_1Message_1_1Call.html#ad6b7bfc86c9b4f640679feb6dd1efd3f',1,'WebCFace::Message::Call::Call()=default'],['../structWebCFace_1_1Message_1_1Call.html#a2b3a724c066fa45093e55a0907302590',1,'WebCFace::Message::Call::Call(const Common::FuncCall &amp;c)']]],
-  ['call_20response_20webcface_3a_3amessage_3a_3acallresponse_20kind_2082_1',['call response (WebCFace::Message::CallResponse, kind = 82)',['../md_90__message.html#autotoc_md48',1,'']]],
-  ['call_20result_20webcface_3a_3amessage_3a_3acallresult_20kind_2083_2',['call result (WebCFace::Message::CallResult, kind = 83)',['../md_90__message.html#autotoc_md49',1,'']]],
-  ['call_20webcface_3a_3amessage_3a_3acall_20kind_2081_3',['call (WebCFace::Message::Call, kind = 81)',['../md_90__message.html#autotoc_md47',1,'']]],
+  ['call_20response_20webcface_3a_3amessage_3a_3acallresponse_20kind_2082_1',['call response (WebCFace::Message::CallResponse, kind = 82)',['../md_90__message.html#autotoc_md51',1,'']]],
+  ['call_20result_20webcface_3a_3amessage_3a_3acallresult_20kind_2083_2',['call result (WebCFace::Message::CallResult, kind = 83)',['../md_90__message.html#autotoc_md52',1,'']]],
+  ['call_20webcface_3a_3amessage_3a_3acall_20kind_2081_3',['call (WebCFace::Message::Call, kind = 81)',['../md_90__message.html#autotoc_md50',1,'']]],
   ['call_5fcond_4',['call_cond',['../classWebCFace_1_1ClientData_1_1FuncOnSync.html#a7e260869ddc7844368da423f41272450',1,'WebCFace::ClientData::FuncOnSync']]],
   ['call_5fmtx_5',['call_mtx',['../classWebCFace_1_1ClientData_1_1FuncOnSync.html#a98d61a59fba66a09aed3b026f13e604f',1,'WebCFace::ClientData::FuncOnSync']]],
   ['call_5fresponse_6',['call_response',['../namespaceWebCFace_1_1Message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484ad2b35349797c31395039e9dd563f0b38',1,'WebCFace::Message::MessageKind']]],
@@ -16,7 +16,7 @@ var searchData=
   ['child_13',['child',['../classWebCFace_1_1Value.html#a058d19ec53e6cb192de3bbc39ad7df5e',1,'WebCFace::Value::child()'],['../classWebCFace_1_1Text.html#ace09bb0ba6ea85bf15c3aca99c1aa5d0',1,'WebCFace::Text::child()'],['../classWebCFace_1_1View.html#a37513dfb98fd02d2714af567cef8a050',1,'WebCFace::View::child()']]],
   ['children_14',['children',['../classWebCFace_1_1Common_1_1Dict.html#a8f1320b25b2eea2c7f1d53543dda81ec',1,'WebCFace::Common::Dict::children'],['../structWebCFace_1_1Common_1_1DictElement.html#adc086dc849c07799cc17df5cee93bcbb',1,'WebCFace::Common::DictElement::children']]],
   ['clear_15',['clear',['../structWebCFace_1_1Server_1_1Store.html#ac8bb3912a3ce86b15842e79d0b421204',1,'WebCFace::Server::Store']]],
-  ['clientプログラムを作る_16',['Clientプログラムを作る',['../md_00__tutorial.html#autotoc_md6',1,'']]],
+  ['clientプログラムを作る_16',['Clientプログラムを作る',['../md_00__tutorial.html#autotoc_md9',1,'']]],
   ['client_17',['client',['../classWebCFace_1_1Client.html',1,'Client'],['../classWebCFace_1_1AsyncFuncResult.html#a5db1c99e2c94b26278f3838c85cdb618',1,'WebCFace::AsyncFuncResult::Client'],['../classWebCFace_1_1Client.html#aa5777bac2de54b388226a381a4174ff0',1,'WebCFace::Client::Client()'],['../classWebCFace_1_1Client.html#ab7547544036712233febe1db3149327d',1,'WebCFace::Client::Client(const Client &amp;)=delete'],['../classWebCFace_1_1Client.html#ad5267143fbd5195e90399e2fd8d91721',1,'WebCFace::Client::Client(const std::string &amp;name, const std::string &amp;host=&quot;127.0.0.1&quot;, int port=7530)'],['../classWebCFace_1_1Client.html#aba7bb87195e176c3f64a24076ecf3d62',1,'WebCFace::Client::Client(const std::string &amp;name, const std::string &amp;host, int port, std::shared_ptr&lt; ClientData &gt; data)'],['../md_01__client.html',1,'Client']]],
   ['client_2ecc_18',['client.cc',['../client_8cc.html',1,'']]],
   ['client_2eh_19',['client.h',['../client_8h.html',1,'']]],
