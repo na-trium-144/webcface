@@ -25,10 +25,10 @@ else()
     set(IS_MAIN off)
 endif()
 
-option(WEBCFACE_EXAMPLE "build example" OFF)
+option(WEBCFACE_INSTALL "generate install target" ${IS_MAIN})
+option(WEBCFACE_EXAMPLE "build example" ${IS_MAIN})
 option(WEBCFACE_TEST "build test" OFF)
 option(WEBCFACE_COVERAGE "enable generating test coverage" OFF)
-option(WEBCFACE_INSTALL "generate install target" ${IS_MAIN})
 
 message(STATUS "webcface_example = ${WEBCFACE_EXAMPLE}")
 message(STATUS "webcface_test = ${WEBCFACE_TEST}")
@@ -236,8 +236,13 @@ add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 if(WEBCFACE_EXAMPLE)
     foreach(SRC IN LISTS EXAMPLE_SRC)
         get_filename_component(TARGET ${SRC} NAME_WE)
-        add_executable(example_${TARGET} ${SRC})
-        target_link_libraries(example_${TARGET} PRIVATE ${PROJECT_NAME})
+        add_executable(${PROJECT_NAME}-example-${TARGET} ${SRC})
+        target_link_libraries(${PROJECT_NAME}-example-${TARGET} PRIVATE ${PROJECT_NAME})
+        set(EXAMPLE_TARGETS ${EXAMPLE_TARGETS} ${PROJECT_NAME}-example-${TARGET})
+        set_target_properties(${PROJECT_NAME}-example-${TARGET} PROPERTIES
+            INSTALL_RPATH "$ORIGIN/;"
+            INSTALL_RPATH_USE_LINK_PATH TRUE
+        )
     endforeach()
 endif()
 
@@ -261,7 +266,7 @@ endif()
 if(WEBCFACE_INSTALL)
     include(CMakePackageConfigHelpers)
 
-    install(TARGETS ${PROJECT_NAME}-server
+    install(TARGETS ${PROJECT_NAME}-server ${EXAMPLE_TARGETS}
         RUNTIME DESTINATION bin
     )
     install(TARGETS ${PROJECT_NAME}

@@ -103,7 +103,10 @@ WebCFace::Client wcli("name of this client program");
 ```
 
 Clientクラスの使い方は次ページ以降で説明します。
+
 また、[src/example/](https://github.com/na-trium-144/webcface/tree/main/src/example) にサンプルのコードがあるので参考にしてください。
+exampleはserverといっしょにインストールされており、`webcface-example-main`, `webcface-example-recv`コマンドで実行してみることができます。
+mainは各種データの送信、recvはmainが送信したデータの受信とmainにある関数の呼び出しをするプログラムになっています。
 
 JavaScript用クライアントはこちら→ [webcface-js](https://github.com/na-trium-144/webcface-js)
 
