@@ -5,9 +5,11 @@
 
 int main(int argc, char **argv) {
     CLI::App app{"WebCFace Server " WEBCFACE_VERSION};
+    app.allow_windows_style_options();
 
     int port = WEBCFACE_DEFAULT_PORT;
-    app.add_option("-p,--port", port, "Server port");
+    app.add_option("-p,--port", port,
+                   "Server port (default: " WEBCFACE_DEFAULT_PORT_S ")");
 
     CLI11_PARSE(app, argc, argv);
 
