@@ -28,8 +28,8 @@ todo: 機能の一覧をかんたんにかく
 例 (amd64の場合)
 ```sh
 curl -LO https://github.com/na-trium-144/webcface/releases/download/v1.1.2/webcface_1.1.2_amd64.deb
-curl -LO https://github.com/na-trium-144/webcface-webui/releases/download/v1.0.4/webcface-webui_1.0.4_all.deb
-curl -LO https://github.com/na-trium-144/webcface-tools/releases/download/v1.1.0/webcface-tools_1.1.0_amd64.deb
+curl -LO https://github.com/na-trium-144/webcface-webui/releases/download/v1.0.5/webcface-webui_1.0.5_all.deb
+curl -LO https://github.com/na-trium-144/webcface-tools/releases/download/v1.1.1/webcface-tools_1.1.1_amd64.deb
 sudo apt install ./webcface*.deb
 ```
 
