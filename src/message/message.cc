@@ -31,7 +31,7 @@ unpack(const std::string &message,
             logger->error("unpack error: invalid array length");
             return std::vector<std::pair<int, std::any>>{};
         }
-        std::vector<std::pair<int, std::any>> ret(obj.via.array.size / 2);
+        std::vector<std::pair<int, std::any>> ret;
         for (std::size_t i = 0; i < obj.via.array.size; i += 2) {
             auto kind = obj.via.array.ptr[i].as<int>();
             std::any obj_u;
@@ -111,7 +111,7 @@ unpack(const std::string &message,
             }
 
             // printMsg(message);
-            ret[i / 2] = std::make_pair(kind, obj_u);
+            ret.push_back(std::make_pair(kind, obj_u));
         }
         return ret;
     } catch (const std::exception &e) {
