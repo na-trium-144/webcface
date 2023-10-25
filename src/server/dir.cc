@@ -9,6 +9,7 @@
 #include <climits>
 #else
 #include <unistd.h>
+#include <linux/limits.h>
 #endif
 
 namespace WebCFace {
