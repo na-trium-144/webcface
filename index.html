@@ -142,26 +142,34 @@ Build from source</h2>
 <ul>
 <li>c++20に対応したコンパイラが必要です</li>
 <li>テスト済みの環境<ul>
-<li><a href="https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-linux-gcc.yml"><img src="https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-linux-gcc.yml/badge.svg?branch=main" alt="CMake Test (Linux GCC)" style="pointer-events: none;" class="inline"/></a></li>
-<li><a href="https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-linux-clang.yml"><img src="https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-linux-clang.yml/badge.svg?branch=main" alt="CMake Test (Linux Clang)" style="pointer-events: none;" class="inline"/></a></li>
+<li><a href="https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-linux-gcc.yml"><img src="https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-linux-gcc.yml/badge.svg?branch=main" alt="CMake Test (Linux GCC)" style="pointer-events: none;" class="inline"/></a> (gcc-10以上)</li>
+<li><a href="https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-linux-clang.yml"><img src="https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-linux-clang.yml/badge.svg?branch=main" alt="CMake Test (Linux Clang)" style="pointer-events: none;" class="inline"/></a> (clang-13以上)</li>
 <li><a href="https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-macos-clang.yml"><img src="https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-macos-clang.yml/badge.svg?branch=main" alt="CMake Test (MacOS Clang)" style="pointer-events: none;" class="inline"/></a></li>
 <li><a href="https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-windows-msvc.yml"><img src="https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-windows-msvc.yml/badge.svg?branch=main" alt="CMake Test (Windows MSVC)" style="pointer-events: none;" class="inline"/></a></li>
-<li><a href="https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-windows-gcc.yml"><img src="https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-windows-gcc.yml/badge.svg?branch=main" alt="CMake Test (Windows MinGW64 GCC)" style="pointer-events: none;" class="inline"/></a> (CMAKE_BUILD_TYPE=Debugだとリンクエラーになった)</li>
-</ul>
-</li>
-</ul>
-<div class="fragment"><div class="line">git submodule update --init --recursive</div>
+<li><a href="https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-windows-gcc.yml"><img src="https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-windows-gcc.yml/badge.svg?branch=main" alt="CMake Test (Windows MinGW64 GCC)" style="pointer-events: none;" class="inline"/></a> (CMAKE_BUILD_TYPE=Debugだとリンクエラーになりました) <div class="fragment"><div class="line">git submodule update --init --recursive</div>
 <div class="line">cmake -Bbuild</div>
 <div class="line">cmake --build build</div>
 <div class="line">sudo cmake --build build -t install</div>
-</div><!-- fragment --><ul>
+</div><!-- fragment --></li>
+</ul>
+</li>
+<li>CMakeのオプション<ul>
+<li><code>-DWEBCFACE_SHARED=off</code>にすると共有ライブラリではなくすべて静的ライブラリになります</li>
+<li><code>-DWEBCFACE_EXAMPLE=on</code>でtestをビルドします(submoduleの場合デフォルトでoff)</li>
+<li><code>-DWEBCFACE_INSTALL=on</code>でtergetのinstallをします(submoduleの場合デフォルトでoff)</li>
+<li><code>-DWEBCFACE_TEST=on</code>でtestをビルドします(デフォルトでoff)<ul>
+<li>テストが通らない場合テスト中の通信の待機時間を<code>-DWEBCFACE_TEST_TIMEOUT=100</code>などと伸ばすとうまく行く場合があります(デフォルト=10(ms))</li>
+</ul>
+</li>
+</ul>
+</li>
 <li>その後、<a href="https://github.com/na-trium-144/webcface-webui/releases">webuiのReleases</a> からビルド済みのtar.gzのアーカイブをダウンロードして webui/dist/ (installして使う場合は /path/to/prefix/share/webcface/dist) として展開してください</li>
 <li>webcfaceは外部ライブラリとして <a href="https://github.com/qicosmos/cinatra">cinatra</a>, <a href="https://github.com/wqking/eventpp">eventpp</a>, <a href="https://github.com/msgpack/msgpack-c">msgpack-cxx</a>, <a href="https://github.com/gabime/spdlog">spdlog</a>, <a href="https://github.com/CLIUtils/CLI11.git">cli11</a> を使用します。<ul>
 <li>システムにインストールされてなければsubmoduleにあるソースコードをビルドしますが、eventpp, msgpack, spdlog に関してはインストールされていればそれを使用するのでビルドが速くなります</li>
 <li>ubuntuなら <code>sudo apt install libspdlog-dev</code>, brewなら <code>brew install spdlog msgpack-cxx</code> でインストールできます</li>
 </ul>
 </li>
-<li><code>-DWEBCFACE_EXAMPLE=on</code>でexampleを、<code>-DWEBCFACE_TEST=on</code>でtestをビルドします。</li>
+<li>このリポジトリのみでビルドしてinstallする代わりに、webcfaceを使いたいプロジェクトでこのリポジトリをsubmoduleとして追加して使うこともできます。</li>
 </ul>
 <h1><a class="anchor" id="autotoc_md75"></a>
 Usage</h1>
@@ -172,7 +180,7 @@ Usage</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Oct 25 2023 11:08:47 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Wed Oct 25 2023 12:51:53 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>
