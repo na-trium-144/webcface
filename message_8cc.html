@@ -131,10 +131,10 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:aaced3fddf582a8670ec9f83659c007ae" id="r_aaced3fddf582a8670ec9f83659c007ae"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="message_8cc.html#aaced3fddf582a8670ec9f83659c007ae">MSG_PARSE</a>(kind,  type)</td></tr>
-<tr class="separator:aaced3fddf582a8670ec9f83659c007ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae247ce4c27b63f28de18eecd12b33d2b" id="r_ae247ce4c27b63f28de18eecd12b33d2b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="message_8cc.html#ae247ce4c27b63f28de18eecd12b33d2b">MSG_PARSE_DATA</a>(kind,  type)</td></tr>
-<tr class="separator:ae247ce4c27b63f28de18eecd12b33d2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a04aeb3e9d5d5e8e26d115f8c67d12823" id="r_a04aeb3e9d5d5e8e26d115f8c67d12823"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="message_8cc.html#a04aeb3e9d5d5e8e26d115f8c67d12823">MSG_PARSE</a>(type)</td></tr>
+<tr class="separator:a04aeb3e9d5d5e8e26d115f8c67d12823"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a05d4798bb3a2da200dc481d341a092ad" id="r_a05d4798bb3a2da200dc481d341a092ad"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="message_8cc.html#a05d4798bb3a2da200dc481d341a092ad">MSG_PARSE_DATA</a>(type)</td></tr>
+<tr class="separator:a05d4798bb3a2da200dc481d341a092ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
@@ -145,8 +145,8 @@ Functions</h2></td></tr>
 <tr class="separator:af4c21164f578c30ba84af08bd406b981"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
-<a id="aaced3fddf582a8670ec9f83659c007ae" name="aaced3fddf582a8670ec9f83659c007ae"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaced3fddf582a8670ec9f83659c007ae">&#9670;&#160;</a></span>MSG_PARSE</h2>
+<a id="a04aeb3e9d5d5e8e26d115f8c67d12823" name="a04aeb3e9d5d5e8e26d115f8c67d12823"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a04aeb3e9d5d5e8e26d115f8c67d12823">&#9670;&#160;</a></span>MSG_PARSE</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -155,27 +155,17 @@ Functions</h2></td></tr>
           <td class="memname">#define MSG_PARSE</td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname">kind, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramname">type</td><td>)</td>
           <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">type&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">    <span class="keywordflow">case</span> MessageKind::kind:                                                    \</div>
+<b>Value:</b><div class="fragment"><div class="line">    <span class="keywordflow">case</span> type::kind:                                                           \</div>
 <div class="line">        <span class="keywordflow">try</span> {                                                                  \</div>
 <div class="line">            obj_u = obj.via.array.ptr[i + 1].as&lt;type&gt;();                       \</div>
 <div class="line">        } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::exception &amp;e) {                                    \</div>
-<div class="line">            logger-&gt;error(<span class="stringliteral">&quot;unpack error: {}, index={}, kind={}&quot;</span>, e.what(),     \</div>
-<div class="line">                          i + 1, <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(MessageKind::kind));         \</div>
+<div class="line">            logger-&gt;error(<span class="stringliteral">&quot;unpack error: {} at index={}, kind={}&quot;</span>, e.what(),   \</div>
+<div class="line">                          i + 1, <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(type::kind));                \</div>
 <div class="line">            printMsg(logger, message);                                         \</div>
 <div class="line">            <span class="keywordflow">continue</span>;                                                          \</div>
 <div class="line">        }                                                                      \</div>
@@ -183,8 +173,8 @@ Functions</h2></td></tr>
 </div><!-- fragment -->
 </div>
 </div>
-<a id="ae247ce4c27b63f28de18eecd12b33d2b" name="ae247ce4c27b63f28de18eecd12b33d2b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae247ce4c27b63f28de18eecd12b33d2b">&#9670;&#160;</a></span>MSG_PARSE_DATA</h2>
+<a id="a05d4798bb3a2da200dc481d341a092ad" name="a05d4798bb3a2da200dc481d341a092ad"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a05d4798bb3a2da200dc481d341a092ad">&#9670;&#160;</a></span>MSG_PARSE_DATA</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -193,22 +183,19 @@ Functions</h2></td></tr>
           <td class="memname">#define MSG_PARSE_DATA</td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname">kind, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramname">type</td><td>)</td>
           <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">type&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
-
+<b>Value:</b><div class="fragment"><div class="line">    <span class="keyword">static_assert</span>(type::kind &lt; MessageKind::entry &amp;&amp;                           \</div>
+<div class="line">                  type::kind &lt; MessageKind::req &amp;&amp;                             \</div>
+<div class="line">                  type::kind &lt; MessageKind::res);                              \</div>
+<div class="line">    MSG_PARSE(type)                                                            \</div>
+<div class="line">    MSG_PARSE(Entry&lt;type&gt;)                                                     \</div>
+<div class="line">    MSG_PARSE(Req&lt;type&gt;)                                                       \</div>
+<div class="line">    MSG_PARSE(Res&lt;type&gt;)</div>
+</div><!-- fragment -->
 </div>
 </div>
 </div><!-- contents -->
@@ -217,7 +204,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d06cd19e7b0a7bd71ca3f88af4ac0d59.html">message</a></li><li class="navelem"><a class="el" href="message_8cc.html">message.cc</a></li>
-    <li class="footer">Generated on Fri Oct 20 2023 10:11:37 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Wed Oct 25 2023 11:08:47 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>
