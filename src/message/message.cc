@@ -31,78 +31,48 @@ unpack(const std::string &message,
             logger->error("unpack error: invalid array length");
             return std::vector<std::pair<int, std::any>>{};
         }
-        std::vector<std::pair<int, std::any>> ret(obj.via.array.size / 2);
+        std::vector<std::pair<int, std::any>> ret;
         for (std::size_t i = 0; i < obj.via.array.size; i += 2) {
             auto kind = obj.via.array.ptr[i].as<int>();
             std::any obj_u;
             switch (kind) {
 
-#define MSG_PARSE(kind, type)                                                  \
-    case MessageKind::kind:                                                    \
+#define MSG_PARSE(type)                                                        \
+    case type::kind:                                                           \
         try {                                                                  \
             obj_u = obj.via.array.ptr[i + 1].as<type>();                       \
         } catch (const std::exception &e) {                                    \
-            logger->error("unpack error: {}, index={}, kind={}", e.what(),     \
-                          i + 1, static_cast<int>(MessageKind::kind));         \
+            logger->error("unpack error: {} at index={}, kind={}", e.what(),   \
+                          i + 1, static_cast<int>(type::kind));                \
             printMsg(logger, message);                                         \
             continue;                                                          \
         }                                                                      \
         break;
 
-#define MSG_PARSE_DATA(kind, type)                                             \
-    MSG_PARSE(kind, type)                                                      \
-    case MessageKind::entry + MessageKind::kind:                               \
-        static_assert(MessageKind::kind < MessageKind::entry &&                \
-                      MessageKind::kind < MessageKind::req &&                  \
-                      MessageKind::kind < MessageKind::res);                   \
-        try {                                                                  \
-            obj_u = obj.via.array.ptr[i + 1].as<Entry<type>>();                \
-        } catch (const std::exception &e) {                                    \
-            logger->error(                                                     \
-                "unpack error: {}, index={}, kind={}", e.what(), i + 1,        \
-                static_cast<int>(MessageKind::entry + MessageKind::kind));     \
-            printMsg(logger, message);                                         \
-            continue;                                                          \
-        }                                                                      \
-        break;                                                                 \
-    case MessageKind::req + MessageKind::kind:                                 \
-        try {                                                                  \
-            obj_u = obj.via.array.ptr[i + 1].as<Req<type>>();                  \
-        } catch (const std::exception &e) {                                    \
-            logger->error(                                                     \
-                "unpack error: {}, index={}, kind={}", e.what(), i + 1,        \
-                static_cast<int>(MessageKind::req + MessageKind::kind));       \
-            printMsg(logger, message);                                         \
-            continue;                                                          \
-        }                                                                      \
-        break;                                                                 \
-    case MessageKind::res + MessageKind::kind:                                 \
-        try {                                                                  \
-            obj_u = obj.via.array.ptr[i + 1].as<Res<type>>();                  \
-        } catch (const std::exception &e) {                                    \
-            logger->error(                                                     \
-                "unpack error: {}, index={}, kind={}", e.what(), i + 1,        \
-                static_cast<int>(MessageKind::res + MessageKind::kind));       \
-            printMsg(logger, message);                                         \
-            continue;                                                          \
-        }                                                                      \
-        break;
+#define MSG_PARSE_DATA(type)                                                   \
+    static_assert(type::kind < MessageKind::entry &&                           \
+                  type::kind < MessageKind::req &&                             \
+                  type::kind < MessageKind::res);                              \
+    MSG_PARSE(type)                                                            \
+    MSG_PARSE(Entry<type>)                                                     \
+    MSG_PARSE(Req<type>)                                                       \
+    MSG_PARSE(Res<type>)
 
-                MSG_PARSE(sync_init, SyncInit)
-                MSG_PARSE(call, Call)
-                MSG_PARSE(call_response, CallResponse)
-                MSG_PARSE(call_result, CallResult)
-                MSG_PARSE_DATA(value, Value)
-                MSG_PARSE_DATA(text, Text)
-                MSG_PARSE_DATA(view, View)
-                MSG_PARSE(log, Log)
-                MSG_PARSE(log_req, LogReq)
-                MSG_PARSE(func_info, FuncInfo)
-                MSG_PARSE(sync, Sync)
-                MSG_PARSE(svr_version, SvrVersion)
-                MSG_PARSE(ping, Ping)
-                MSG_PARSE(ping_status, PingStatus)
-                MSG_PARSE(ping_status_req, PingStatusReq)
+                MSG_PARSE(SyncInit)
+                MSG_PARSE(Call)
+                MSG_PARSE(CallResponse)
+                MSG_PARSE(CallResult)
+                MSG_PARSE_DATA(Value)
+                MSG_PARSE_DATA(Text)
+                MSG_PARSE_DATA(View)
+                MSG_PARSE(Log)
+                MSG_PARSE(LogReq)
+                MSG_PARSE(FuncInfo)
+                MSG_PARSE(Sync)
+                MSG_PARSE(SvrVersion)
+                MSG_PARSE(Ping)
+                MSG_PARSE(PingStatus)
+                MSG_PARSE(PingStatusReq)
 
 #undef MSG_PARSE_DATA
 #undef MSG_PARSE
@@ -111,7 +81,7 @@ unpack(const std::string &message,
             }
 
             // printMsg(message);
-            ret[i / 2] = std::make_pair(kind, obj_u);
+            ret.push_back(std::make_pair(kind, obj_u));
         }
         return ret;
     } catch (const std::exception &e) {
