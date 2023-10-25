@@ -19,7 +19,7 @@ project(webcface
 set(WEBCFACE_SOVERSION 1)
 message(STATUS "webcface ${PROJECT_VERSION}")
 
-if(${CMAKE_CURRENT_SOURCE_DIR} STREQUAL ${CMAKE_SOURCE_DIR})
+if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
     set(IS_MAIN on)
 else()
     set(IS_MAIN off)
@@ -30,12 +30,14 @@ option(WEBCFACE_EXAMPLE "build example" ${IS_MAIN})
 option(WEBCFACE_TEST "build test" OFF)
 option(WEBCFACE_COVERAGE "enable generating test coverage" OFF)
 set(WEBCFACE_TEST_TIMEOUT 10 CACHE INTERNAL "connection timeout in test")
+option(WEBCFACE_SHARED "build shared library" ON)
+option(WEBCFACE_PIC "enable PIC for shared library" ${WEBCFACE_SHARED})
 
 message(STATUS "webcface_example = ${WEBCFACE_EXAMPLE}")
-message(STATUS "webcface_test = ${WEBCFACE_TEST}")
-message(STATUS "webcface_test_timeout = ${WEBCFACE_TEST_TIMEOUT} ms")
+message(STATUS "webcface_test = ${WEBCFACE_TEST} (timeout = ${WEBCFACE_TEST_TIMEOUT} ms)")
 message(STATUS "webcface_coverage = ${WEBCFACE_COVERAGE}")
 message(STATUS "webcface_install = ${WEBCFACE_INSTALL}")
+message(STATUS "webcface_shared = ${WEBCFACE_SHARED} (pic = ${WEBCFACE_PIC})")
 
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Release")
@@ -71,7 +73,7 @@ if(MINGW)
 endif()
 
 find_package(msgpack-cxx QUIET)
-if(${msgpack-cxx_FOUND})
+if(msgpack-cxx_FOUND)
     message(STATUS "msgpack-cxx found")
 else()
     message(STATUS "msgpack-cxx not found")
@@ -83,7 +85,8 @@ else()
         MSGPACK_DEFAULT_API_VERSION=3
     )
     target_include_directories(msgpack-cxx INTERFACE
-        ${CMAKE_CURRENT_SOURCE_DIR}/external/msgpack-c/include
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/external/msgpack-c/include>
+        $<INSTALL_INTERFACE:include>
     )
 endif()
 set(MSGPACK msgpack-cxx)
@@ -104,8 +107,8 @@ if(spdlog_FOUND)
     set(SPDLOG spdlog::spdlog)
 else()
     message(STATUS "spdlog not found")
-    set(SPDLOG_BUILD_SHARED on CACHE INTERNAL "" FORCE)
-    set(SPDLOG_BUILD_PIC on CACHE INTERNAL "" FORCE)
+    set(SPDLOG_BUILD_SHARED ${WEBCFACE_SHARED} CACHE INTERNAL "" FORCE)
+    set(SPDLOG_BUILD_PIC ${WEBCFACE_PIC} CACHE INTERNAL "" FORCE)
     set(SPDLOG_INSTALL ${WEBCFACE_INSTALL} CACHE INTERNAL "" FORCE)
     add_subdirectory(external/spdlog)
     if(MINGW)
@@ -116,7 +119,10 @@ else()
 endif()
 
 add_library(cinatra INTERFACE)
-target_include_directories(cinatra INTERFACE ${CMAKE_CURRENT_LIST_DIR}/external/cinatra/include)
+target_include_directories(cinatra INTERFACE
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/external/cinatra/include>
+    $<INSTALL_INTERFACE:include>
+)
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     target_compile_options(cinatra INTERFACE -pthread -fcoroutines -fno-tree-slp-vectorize)
 elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
@@ -132,7 +138,7 @@ add_subdirectory(external/cli11)
 
 if(WEBCFACE_TEST)
     find_package(GTest QUIET)
-    if(${GTest_FOUND})
+    if(GTest_FOUND)
         message(STATUS "GTest found")
     else()
         message(STATUS "GTest not found")
@@ -186,7 +192,7 @@ include_directories(${INCLUDE_DIR})
 ###############################################################################
 
 add_library(${PROJECT_NAME}-message STATIC ${MSG_SRC})
-if(NOT CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+if(NOT CMAKE_CXX_COMPILER_ID STREQUAL "MSVC" AND WEBCFACE_PIC)
     target_compile_options(${PROJECT_NAME}-message PRIVATE -fPIC)
 endif()
 target_compile_features(${PROJECT_NAME}-message PUBLIC cxx_std_20)
@@ -208,8 +214,12 @@ target_link_libraries(${PROJECT_NAME}-server PRIVATE
     CLI11
 )
 
-add_library(${PROJECT_NAME} SHARED ${CLI_SRC})
-if(NOT CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+if(WEBCFACE_SHARED)
+    add_library(${PROJECT_NAME} SHARED ${CLI_SRC})
+else()
+    add_library(${PROJECT_NAME} STATIC ${CLI_SRC})
+endif()
+if(NOT CMAKE_CXX_COMPILER_ID STREQUAL "MSVC" AND WEBCFACE_PIC)
     target_compile_options(${PROJECT_NAME} PRIVATE -fPIC)
 endif()
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_20)
@@ -275,7 +285,14 @@ if(WEBCFACE_INSTALL)
         EXPORT ${PROJECT_NAME}-targets
         LIBRARY DESTINATION lib
     )
-    # インストールするconfigの指定、前項で生成したもの
+    if(NOT WEBCFACE_SHARED)
+        set(WEBCFACE_EXPORTS ${PROJECT_NAME}-message cinatra)
+        if(NOT msgpack-cxx_FOUND)
+            set(WEBCFACE_EXPORTS ${WEBCFACE_EXPORTS} msgpack-cxx)
+        endif()
+        install(TARGETS ${WEBCFACE_EXPORTS} EXPORT ${PROJECT_NAME}-targets)
+    endif()
+
     install(EXPORT ${PROJECT_NAME}-targets
         FILE ${PROJECT_NAME}-targets.cmake
         # 名前空間の指定
@@ -283,7 +300,6 @@ if(WEBCFACE_INSTALL)
         # インストール先
         DESTINATION lib/cmake/${PROJECT_NAME}
     )
-    # コピー元、末尾の`/`は要注意
     install(DIRECTORY ${CPP_DIR}/include/
         DESTINATION include
     )
@@ -293,20 +309,14 @@ if(WEBCFACE_INSTALL)
         INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
     )
 
-    # Package Version Fileの生成
     write_basic_package_version_file(
-        # 生成するファイルの名前
         ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config-version.cmake
-        # 互換性の判定方法の指定
         COMPATIBILITY SameMajorVersion
     )
 
-    # Package Version Fileのインストール
-    # コピー元
     install(FILES
         ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config.cmake
         ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config-version.cmake
-        # コピー先
         DESTINATION lib/cmake/${PROJECT_NAME}
     )
 
