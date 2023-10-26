@@ -25,6 +25,8 @@ todo: 機能の一覧をかんたんにかく
 ### Debian, Ubuntu (amd64, arm64, armhf)
 [WebCFaceのReleases](https://github.com/na-trium-144/webcface/releases) と [webuiのReleases](https://github.com/na-trium-144/webcface-webui/releases) 、[toolsのReleases](https://github.com/na-trium-144/webcface-tools/releases) からそれぞれ最新のdebパッケージをダウンロードしてインストールできます。
 
+debパッケージはubuntu20.04でビルドしています。20.04以上のバージョンのubuntuであれば動くはずです。
+
 例 (amd64の場合)
 ```sh
 curl -LO https://github.com/na-trium-144/webcface/releases/download/v1.1.3/webcface_1.1.3_amd64.deb
