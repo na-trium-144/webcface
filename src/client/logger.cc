@@ -1,6 +1,5 @@
 #include <webcface/logger.h>
 #include <webcface/client_data.h>
-#include <spdlog/pattern_formatter.h>
 
 namespace WebCFace {
 LoggerBuf::LoggerBuf(const std::weak_ptr<ClientData> &data_w)
@@ -31,21 +30,20 @@ int LoggerBuf::sync() {
     return 0;
 }
 
-LoggerSink::LoggerSink()
-    : spdlog::sinks::base_sink<std::mutex>(
-          std::make_unique<spdlog::pattern_formatter>("%v")) {}
+LoggerSink::LoggerSink() : spdlog::sinks::base_sink<std::mutex>() {}
 
 void LoggerSink::sink_it_(const spdlog::details::log_msg &msg) {
-    spdlog::memory_buf_t formatted;
-    this->formatter_->format(msg, formatted);
-    std::string log_text = fmt::to_string(formatted);
-    if (log_text.size() > 0 && log_text.back() == '\n') {
-        log_text.pop_back();
+    if (auto *buf_ptr = msg.payload.data()) {
+        std::string log_text(buf_ptr, buf_ptr + msg.payload.size());
+
+        if (log_text.size() > 0 && log_text.back() == '\n') {
+            log_text.pop_back();
+        }
+        if (log_text.size() > 0 && log_text.back() == '\r') {
+            log_text.pop_back();
+        }
+        this->push(std::make_shared<LogLine>(msg.level, msg.time, log_text));
     }
-    if (log_text.size() > 0 && log_text.back() == '\r') {
-        log_text.pop_back();
-    }
-    this->push(std::make_shared<LogLine>(msg.level, msg.time, log_text));
 }
 
 std::shared_ptr<spdlog::sinks::stderr_color_sink_mt> stderr_sink =
