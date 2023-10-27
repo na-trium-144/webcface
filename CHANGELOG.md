@@ -1,4 +1,6 @@
 ## [1.1.4] - 2023-10-27
+### Fixed
+* spdlog v1.5.0でビルドが通るよう修正(それより前は未検証) (#66)
 ### Changed
 * Releaseのdebパッケージがubuntuのspdlogパッケージを使うようにした
 * 依存ライブラリの都合でciでのReleaseビルドをubuntu-22.04に戻した
