@@ -1,6 +1,7 @@
 ## [1.1.4] - 2023-10-27
 ### Changed
 * Releaseのdebパッケージがubuntuのspdlogパッケージを使うようにした
+* 依存ライブラリの都合でciでのReleaseビルドをubuntu-22.04に戻した
 
 ## [1.1.3] - 2023-10-25
 ### Added
