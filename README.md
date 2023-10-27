@@ -22,10 +22,10 @@ todo: 機能の一覧をかんたんにかく
 
 ## Installation
 
-### Debian, Ubuntu (amd64, arm64, armhf)
+### Ubuntu 22.04 (amd64, arm64, armhf)
 [WebCFaceのReleases](https://github.com/na-trium-144/webcface/releases) と [webuiのReleases](https://github.com/na-trium-144/webcface-webui/releases) 、[toolsのReleases](https://github.com/na-trium-144/webcface-tools/releases) からそれぞれ最新のdebパッケージをダウンロードしてインストールできます。
 
-debパッケージはubuntu20.04でビルドしています。20.04以上のバージョンのubuntuであれば動くはずです。
+debパッケージはubuntu22.04でビルドしています。20.04以前のubuntuでは依存ライブラリの都合で動きません。debianはわかりません。
 
 例 (amd64の場合)
 ```sh
@@ -33,6 +33,7 @@ curl -LO https://github.com/na-trium-144/webcface/releases/download/v1.1.4/webcf
 curl -LO https://github.com/na-trium-144/webcface-webui/releases/download/v1.0.5/webcface-webui_1.0.5_all.deb
 curl -LO https://github.com/na-trium-144/webcface-tools/releases/download/v1.1.2/webcface-tools_1.1.2_amd64.deb
 sudo apt install ./webcface*.deb
+rm ./webcface*.deb
 ```
 
 (webcface-toolsの内容と使い方についてはwebcface-toolsのReadmeを参照してください)
