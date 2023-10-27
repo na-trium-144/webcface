@@ -27,7 +27,7 @@ var NAVTREE =
   [ "WebCFace", "index.html", [
     [ "Related Links", "index.html#autotoc_md70", null ],
     [ "Installation", "index.html#autotoc_md71", [
-      [ "Debian, Ubuntu (amd64, arm64, armhf)", "index.html#autotoc_md72", null ],
+      [ "Ubuntu 22.04 (amd64, arm64, armhf)", "index.html#autotoc_md72", null ],
       [ "Homebrew (MacOS, Linux)", "index.html#autotoc_md73", null ],
       [ "Build from source", "index.html#autotoc_md74", null ]
     ] ],
