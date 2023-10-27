@@ -29,9 +29,9 @@ debパッケージはubuntu20.04でビルドしています。20.04以上のバ�
 
 例 (amd64の場合)
 ```sh
-curl -LO https://github.com/na-trium-144/webcface/releases/download/v1.1.3/webcface_1.1.3_amd64.deb
+curl -LO https://github.com/na-trium-144/webcface/releases/download/v1.1.4/webcface_1.1.4_amd64.deb
 curl -LO https://github.com/na-trium-144/webcface-webui/releases/download/v1.0.5/webcface-webui_1.0.5_all.deb
-curl -LO https://github.com/na-trium-144/webcface-tools/releases/download/v1.1.1/webcface-tools_1.1.1_amd64.deb
+curl -LO https://github.com/na-trium-144/webcface-tools/releases/download/v1.1.2/webcface-tools_1.1.2_amd64.deb
 sudo apt install ./webcface*.deb
 ```
 
