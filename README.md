@@ -5,20 +5,23 @@
 
 Web-based RPC &amp; UI Library
 
-C++とJavaScriptで使える、WebSocketを使ったプロセス間通信ライブラリです。
-データの送受信だけでなく、プロセス間での関数呼び出しができます。
+WebSocketとMessagePackを使った、ROSのような分散型の通信ライブラリです。
+クロスプラットフォームかつ複数の言語間で通信ができます。
 
-また、WebブラウザーでアクセスできるUI(webcface-webui)から通信されているデータを確認したり関数を実行したりできる他、テキストやボタンなどを自由に配置してそのWebブラウザーに表示させることができます。
+WebブラウザーでアクセスできるUI(webcface-webui)が付属しており、ネットワーク上のPCやタブレットなどからアクセスしてWebCFaceで通信されているデータを可視化したり関数を呼び出したりできます。
+また、webuiからのアクセスを想定してテキストやボタンなどの配置を指定すると簡易なUIを作成することができます。
 
 todo: ここにわかりやすいスクショを1つはる
+
 todo: 機能の一覧をかんたんにかく
 
-## Related Links
+## Links
 
-* webcface: サーバー & C++クライアント
+* [webcface](https://github.com/na-trium-144/webcface): サーバー & C++クライアントライブラリ (このリポジトリ)
 * [webcface-webui](https://github.com/na-trium-144/webcface-webui): webブラウザ用UIアプリ
-* [webcface-js](https://github.com/na-trium-144/webcface-js): JavaScriptクライアント
-* [webcface-tools](https://github.com/na-trium-144/webcface-tools): クライアントとなるコマンド群
+* [webcface-js](https://github.com/na-trium-144/webcface-js): JavaScriptクライアントライブラリ
+* [webcface-python](https://github.com/na-trium-144/webcface-python): Pythonクライアントライブラリ
+* [webcface-tools](https://github.com/na-trium-144/webcface-tools): コマンドラインツール群
 
 ## Installation
 
