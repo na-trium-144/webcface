@@ -84,6 +84,12 @@ piyo
 ### view
 現在コマンドラインからは使用できませんが、図のようにテキストやボタンなどの配置を指定して表示させる機能があります。
 
+![tutorial_view.png](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_view.png)
+
+### func
+コマンドラインからは利用できませんが、関数をwebcfaceに登録し他のクライアントやWebUIから呼び出すことができます。
+
+![tutorial_func.png](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_func.png)
 
 ## tools
 webcface-toolsには`webcface-send`の他にもWebCFaceと通信して使うプログラムがいくつかあります。

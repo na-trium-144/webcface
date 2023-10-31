@@ -82,5 +82,4 @@ sudo cmake --build build -t install
 * このリポジトリのみでビルドしてinstallする代わりに、webcfaceを使いたいプロジェクトでこのリポジトリをsubmoduleとして追加して使うこともできます。
 
 ## Usage
-
-チュートリアルと使い方→ [Documentation](https://na-trium-144.github.io/webcface/md_00__tutorial.html)
+[Tutorial](https://na-trium-144.github.io/webcface/md_00__tutorial.html)
