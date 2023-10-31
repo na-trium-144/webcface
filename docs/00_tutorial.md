@@ -81,6 +81,10 @@ piyo
 ```
 ![tutorial_logs](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_logs.png)
 
+### view
+現在コマンドラインからは使用できませんが、図のようにテキストやボタンなどの配置を指定して表示させる機能があります。
+
+
 ## tools
 webcface-toolsには`webcface-send`の他にもWebCFaceと通信して使うプログラムがいくつかあります。
 詳しくは[webcface-toolsのリポジトリ](https://github.com/na-trium-144/webcface-tools)を参照してください。
