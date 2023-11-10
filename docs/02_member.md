@@ -2,16 +2,22 @@
 
 API Reference → WebCFace::Member
 
-同じサーバーに接続されている他のクライアントを表します。
+WebCFaceではサーバーに接続されたそれぞれのクライアントを Member と呼びます。
+(たぶんROSでいうと Node に相当します)
 
-Client::member() で取得できます
+データを受信する時など、Memberを指すために使用するのがMemberクラスです。
+Client::member() で取得できます。
+
 ```cpp
 WebCFace::Member member_a = wcli.member("a");
 ```
-これは`a`という名前のクライアントを指します
+これは`a`という名前のMember(=Clientのコンストラクタに`a`を入力したクライアント)を指します。
 
-このクライアント自身を表すMemberは引数に自身の名前を入れるか、または Client 自体がMemberを継承したクラスになっているのでそこからも得られます
-(ただし自分自身を表すMemberでは一部正常に機能しないプロパティがあります)
+Memberクラスから実際にそれぞれのデータにアクセスする方法は次ページ以降で説明します。
+
+このクライアント自身もMemberの1つです。
+各種データを送信するにも(一部例外はありますが)Memberクラスを経由する必要があります。
+Client::member()の引数に自身の名前を入れてもよいですが、Client自体がMemberを継承したクラスになっているので、キャストするか直接wcliに対して操作すればよいです。
 ```cpp
 WebCFace::Member member_self = wcli;
 ```
@@ -30,3 +36,5 @@ wcli.onMemberEntry().appendListener([](WebCFace::Member m){/* ... */});
 ```
 
 
+[Client](./01_client.md) ←前
+次→ [Value](./10_value.md)

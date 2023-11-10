@@ -15,7 +15,11 @@ class Log;
 class View;
 struct ClientData;
 
-//! 他のクライアントを参照することを表すクラス
+//! Memberを指すクラス
+/*!
+ * コンストラクタではなく Client::member(), Client::members()
+ * Client::onMemberEntry() などから取得すること
+ */
 class WEBCFACE_DLL Member : protected Field {
   public:
     Member() = default;
@@ -26,11 +30,11 @@ class WEBCFACE_DLL Member : protected Field {
     //! Member名
     std::string name() const { return member_; }
 
-    //! このmemberの指定した名前のvalueを参照する。
+    //! valueを参照する。
     Value value(const std::string &field) const;
-    //! このmemberの指定した名前のtextを参照する。
+    //! textを参照する。
     Text text(const std::string &field) const;
-    //! このmemberの指定した名前のfuncを参照する。
+    //! funcを参照する。
     Func func(const std::string &field) const;
 
     //! AnonymousFuncオブジェクトを作成しfuncをsetする
@@ -40,9 +44,9 @@ class WEBCFACE_DLL Member : protected Field {
     // ここでfunc.hにアクセスする必要があるためヘッダーの読み込み順を変えないといけない
     // }
 
-    //! このmemberの指定した名前のviewを参照する。
+    //! viewを参照する。
     View view(const std::string &field) const;
-    //! このmemberのログを参照する。
+    //! logを参照する。
     Log log() const;
 
     //! このmemberが公開しているvalueのリストを返す。
@@ -55,29 +59,40 @@ class WEBCFACE_DLL Member : protected Field {
     std::vector<View> views() const;
 
     //! valueが追加された時のイベント
-    /*! このクライアントが接続する前から存在したメンバーについては
-     * 初回の sync() 後に一度に送られるので、
-     * eventの設定は初回のsync()より前に行うと良い
-     * \sa Client::onMemberEntry()
+    /*! コールバックを設定する前から存在したデータについてはコールバックは呼び出されない。
+     * member名がわかっていれば初回のClient::sync()前に設定するか、
+     * Client::onMemberEntry() イベントのコールバックの中で各種イベントを設定すれば間に合う。
+     * \return Value追加イベントを指す EventTarget
      */
     EventTarget<Value, std::string> onValueEntry() const;
     //! textが追加された時のイベント
-    /*! \sa onValueEntry()
+    /*!
+     * \sa onValueEntry()
+     * \return Text追加イベントを指す EventTarget
      */
     EventTarget<Text, std::string> onTextEntry() const;
     //! funcが追加された時のイベント
-    /*! \sa onValueEntry()
+    /*!
+     * \sa onValueEntry()
+     * \return Func追加イベントを指す EventTarget
      */
     EventTarget<Func, std::string> onFuncEntry() const;
     //! viewが追加されたときのイベント
-    /*! \sa onValueEntry()
+    /*!
+     * \sa onValueEntry()
+     * \return View追加イベントを指す EventTarget
      */
     EventTarget<View, std::string> onViewEntry() const;
     //! Memberがsync()したときのイベント
+    /*!
+     * \sa onValueEntry()
+     * \return syncイベントを指す EventTarget
+     */
     EventTarget<Member, std::string> onSync() const;
 
-    //! このMemberが使っているWebCFaceライブラリ
-    /*! このライブラリの場合は"cpp"
+    //! このMemberが使っているWebCFaceライブラリの識別情報
+    /*!
+     * \return このライブラリの場合は"cpp"
      */
     std::string libName() const;
     //! このMemberが使っているWebCFaceのバージョン
@@ -86,12 +101,21 @@ class WEBCFACE_DLL Member : protected Field {
     std::string remoteAddr() const;
 
     //! 通信速度を調べる
-    /*! 戻り値はpingの往復時間 (ms)
-     * 初回の呼び出し(nulloptを返す)で通信速度データをリクエストし、
+    /*! 
+     * 初回の呼び出しで通信速度データをリクエストし、
      * sync()後通信速度が得られるようになる
+     * \return 初回→ std::nullopt, 2回目以降(取得できれば)→ pingの往復時間 (ms)
+     * \sa onPing()
      */
     std::optional<int> pingStatus() const;
     //! 通信速度が更新された時のイベント
+    /*!
+     * 通常は約5秒に1回更新される。
+     * 
+     * pingStatus() と同様、通信速度データのリクエストも行う。
+     * \return pingイベントを指す EventTarget
+     * \sa pingStatus()
+     */
     EventTarget<Member, std::string> onPing() const;
 };
 

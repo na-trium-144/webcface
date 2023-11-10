@@ -103,20 +103,16 @@ find_package(webcface CONFIG REQUIRED)
 target_link_libraries(target PRIVATE webcface::webcface)
 ```
 
-C++のソースコードでは`webcface/webcface.h`をインクルードし、 Client クラスのオブジェクトを作成してください。
-WebCFaceとの各種通信の操作はこのClientクラスを通して行います。
+C++のソースコードでは`<webcface/webcface.h>`をincludeしてください。
+次ページ以降でC++での使い方を解説します。
 
-```cpp
-#include <webcface/webcface.h>
-
-WebCFace::Client wcli("name of this client program");
-```
-
-Clientクラスの使い方は次ページ以降で説明します。
-
-また、[src/example/](https://github.com/na-trium-144/webcface/tree/main/src/example) にサンプルのコードがあるので参考にしてください。
+[src/example/](https://github.com/na-trium-144/webcface/tree/main/src/example) にサンプルのコードがあるので参考にしてください。
 exampleはserverといっしょにインストールされており、`webcface-example-main`, `webcface-example-recv`コマンドで実行してみることができます。
 mainは各種データの送信、recvはmainが送信したデータの受信とmainにある関数の呼び出しをするプログラムになっています。
 
-JavaScript用クライアントはこちら→ [webcface-js](https://github.com/na-trium-144/webcface-js)
+Python, JavaScriptのクライアントも使い方はだいたい同じです。
+次ページ以降のC++での使い方を軽く読んだあとにPython、JavaScriptのリファレンスでC++との相違点を確認してください。
+
+
+次→ [Client](./01_client.md)
 
