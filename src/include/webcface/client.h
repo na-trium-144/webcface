@@ -64,12 +64,12 @@ class Client : public Member {
     //! 接続を切り、今後再接続しない
     WEBCFACE_DLL void close();
 
-    //! データをまとめて送信する
-    /*! 送信用にセットしたデータをすべて送る。
-     * データ受信のリクエストを送る。
-     * 他memberの情報を取得できるのは初回のsync()の後のみ。
-     * 他memberの関数の呼び出しと結果の受信はsync()とは非同期に行われる。
-     * clientを使用する時は必ずsendを適当なタイミングで繰り返し呼ぶこと。
+    //! 送信用にセットしたデータとリクエストデータをすべて送信キューに入れる。
+    /*!
+     * 実際に送信をするのは別スレッドであり、この関数はブロックしない。
+     *
+     * * 他memberの情報を取得できるのは初回のsync()の後のみ。
+     * * 関数の呼び出しと結果の受信はsync()とは非同期に行われる。
      */
     WEBCFACE_DLL void sync();
 
@@ -91,10 +91,11 @@ class Client : public Member {
         return ret;
     }
     //! Memberが追加された時のイベント
-    /*! このクライアントが接続する前から存在したメンバーについては
+    /*! コールバックの型は void(Member)
+     * 
+     * このクライアントが接続する前から存在したメンバーについては
      * 初回の sync() 後に一度に送られるので、
      * eventの設定は初回のsync()より前に行うと良い
-     * \return Member追加イベントを指す EventTarget
      * \sa member(), members()
      */
     EventTarget<Member, int> onMemberEntry() {

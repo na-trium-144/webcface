@@ -59,40 +59,39 @@ class WEBCFACE_DLL Member : protected Field {
     std::vector<View> views() const;
 
     //! valueが追加された時のイベント
-    /*! コールバックを設定する前から存在したデータについてはコールバックは呼び出されない。
+    /*! コールバックの型は void(Value)
+     *
+     * コールバックを設定する前から存在したデータについてはコールバックは呼び出されない。
      * member名がわかっていれば初回のClient::sync()前に設定するか、
-     * Client::onMemberEntry() イベントのコールバックの中で各種イベントを設定すれば間に合う。
-     * \return Value追加イベントを指す EventTarget
+     * Client::onMemberEntry()
+     * イベントのコールバックの中で各種イベントを設定すれば間に合う。
      */
     EventTarget<Value, std::string> onValueEntry() const;
     //! textが追加された時のイベント
-    /*!
+    /*! コールバックの型は void(Text)
      * \sa onValueEntry()
-     * \return Text追加イベントを指す EventTarget
      */
     EventTarget<Text, std::string> onTextEntry() const;
     //! funcが追加された時のイベント
-    /*!
+    /*! コールバックの型は void(Func)
      * \sa onValueEntry()
-     * \return Func追加イベントを指す EventTarget
      */
     EventTarget<Func, std::string> onFuncEntry() const;
     //! viewが追加されたときのイベント
-    /*!
+    /*! コールバックの型は void(View)
      * \sa onValueEntry()
-     * \return View追加イベントを指す EventTarget
      */
     EventTarget<View, std::string> onViewEntry() const;
     //! Memberがsync()したときのイベント
-    /*!
+    /*! コールバックの型は void(Member)
      * \sa onValueEntry()
-     * \return syncイベントを指す EventTarget
      */
     EventTarget<Member, std::string> onSync() const;
 
     //! このMemberが使っているWebCFaceライブラリの識別情報
     /*!
-     * \return このライブラリの場合は"cpp"
+     * このライブラリの場合は"cpp", javascriptクライアントは"js",
+     * pythonクライアントは"python"を返す。
      */
     std::string libName() const;
     //! このMemberが使っているWebCFaceのバージョン
@@ -101,7 +100,7 @@ class WEBCFACE_DLL Member : protected Field {
     std::string remoteAddr() const;
 
     //! 通信速度を調べる
-    /*! 
+    /*!
      * 初回の呼び出しで通信速度データをリクエストし、
      * sync()後通信速度が得られるようになる
      * \return 初回→ std::nullopt, 2回目以降(取得できれば)→ pingの往復時間 (ms)
@@ -109,11 +108,10 @@ class WEBCFACE_DLL Member : protected Field {
      */
     std::optional<int> pingStatus() const;
     //! 通信速度が更新された時のイベント
-    /*!
+    /*! コールバックの型は void(Member)
+     *
      * 通常は約5秒に1回更新される。
-     * 
      * pingStatus() と同様、通信速度データのリクエストも行う。
-     * \return pingイベントを指す EventTarget
      * \sa pingStatus()
      */
     EventTarget<Member, std::string> onPing() const;
