@@ -140,8 +140,9 @@ void Client::sync() {
             Message::pack(buffer, len, Message::Log{{}, 0, log_send});
         }
 
-        if (data->ping_status_req && is_first) {
+        if (data->ping_status_req && is_first || data->ping_status_req_send) {
             Message::pack(buffer, len, Message::PingStatusReq{});
+            data->ping_status_req_send = false;
         }
 
         data->message_queue.push(Message::packDone(buffer, len));

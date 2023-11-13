@@ -78,4 +78,29 @@ TEST_F(MemberTest, eventTarget) {
     data_->sync_event.dispatch("a", Field{data_, "a"});
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
+
+    member("a").onPing().appendListener(callback<Member>());
+    data_->ping_event.dispatch("a", Field{data_, "a"});
+    EXPECT_EQ(callback_called, 1);
+    EXPECT_TRUE(data_->ping_status_req);
+    EXPECT_TRUE(data_->ping_status_req_send);
+    callback_called = 0;
+}
+TEST_F(MemberTest, libVersion) {
+    data_->member_ids["a"] = 1;
+    data_->member_lib_name[1] = "aaa";
+    data_->member_lib_ver[1] = "bbb";
+    data_->member_addr[1] = "ccc";
+    EXPECT_EQ(member("a").libName(), "aaa");
+    EXPECT_EQ(member("a").libVersion(), "bbb");
+    EXPECT_EQ(member("a").remoteAddr(), "ccc");
+}
+TEST_F(MemberTest, PingStatus) {
+    data_->member_ids["a"] = 1;
+    data_->ping_status =
+        std::make_shared<std::unordered_map<unsigned int, int>>(
+            std::unordered_map<unsigned int, int>{{1, 10}});
+    EXPECT_EQ(member("a").pingStatus(), 10);
+    EXPECT_TRUE(data_->ping_status_req);
+    EXPECT_TRUE(data_->ping_status_req_send);
 }

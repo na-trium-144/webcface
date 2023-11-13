@@ -276,5 +276,6 @@ struct WEBCFACE_DLL ClientData {
 
     std::shared_ptr<std::unordered_map<unsigned int, int>> ping_status = nullptr;
     bool ping_status_req = false;
+    bool ping_status_req_send = false;
 };
 } // namespace WebCFace
