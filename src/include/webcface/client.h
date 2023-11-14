@@ -93,9 +93,6 @@ class Client : public Member {
     //! Memberが追加された時のイベント
     /*! コールバックの型は void(Member)
      * 
-     * このクライアントが接続する前から存在したメンバーについては
-     * 初回の sync() 後に一度に送られるので、
-     * eventの設定は初回のsync()より前に行うと良い
      * \sa member(), members()
      */
     EventTarget<Member, int> onMemberEntry() {

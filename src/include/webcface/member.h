@@ -60,31 +60,22 @@ class WEBCFACE_DLL Member : protected Field {
 
     //! valueが追加された時のイベント
     /*! コールバックの型は void(Value)
-     *
-     * コールバックを設定する前から存在したデータについてはコールバックは呼び出されない。
-     * member名がわかっていれば初回のClient::sync()前に設定するか、
-     * Client::onMemberEntry()
-     * イベントのコールバックの中で各種イベントを設定すれば間に合う。
      */
     EventTarget<Value, std::string> onValueEntry() const;
     //! textが追加された時のイベント
     /*! コールバックの型は void(Text)
-     * \sa onValueEntry()
      */
     EventTarget<Text, std::string> onTextEntry() const;
     //! funcが追加された時のイベント
     /*! コールバックの型は void(Func)
-     * \sa onValueEntry()
      */
     EventTarget<Func, std::string> onFuncEntry() const;
     //! viewが追加されたときのイベント
     /*! コールバックの型は void(View)
-     * \sa onValueEntry()
      */
     EventTarget<View, std::string> onViewEntry() const;
     //! Memberがsync()したときのイベント
     /*! コールバックの型は void(Member)
-     * \sa onValueEntry()
      */
     EventTarget<Member, std::string> onSync() const;
 

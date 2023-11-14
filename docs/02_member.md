@@ -44,6 +44,8 @@ Client::onMemberEntry() で新しいメンバーが接続されたときのイ�
 ```cpp
 wcli.onMemberEntry().appendListener([](WebCFace::Member m){/* ... */});
 ```
+このクライアントが接続する前から存在したメンバーについては初回の sync() 後に一度に送られるので、
+コールバックの設定は初回のsync()より前に行うと良いです。
 
 onMemberEntry() はC++では EventTarget クラスのオブジェクトを返します。
 内部ではイベントの管理に [eventpp](https://github.com/wqking/eventpp) ライブラリを使用しており、EventTargetは eventpp::EventDispatcher のラッパーとなっています。
