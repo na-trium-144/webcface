@@ -12,7 +12,7 @@
 namespace WebCFace {
 
 //! 実数値またはその配列の送受信データを表すクラス
-/*! コンストラクタではなく Member::value() を使って取得してください
+/*! コンストラクタではなく Member::value(), Member::values(), Member::onValueEntry() を使って取得してください
  */
 class Value : protected Field, public EventTarget<Value> {
 
@@ -38,12 +38,15 @@ class Value : protected Field, public EventTarget<Value> {
     using Field::name;
 
     //! 子フィールドを返す
+    /*!
+     * \return「(thisのフィールド名).(子フィールド名)」をフィールド名とするValue
+     */
     Value child(const std::string &field) {
         return Value{*this, this->field_ + "." + field};
     }
 
     using Dict = Common::Dict<std::shared_ptr<Common::VectorOpt<double>>>;
-    //! Dictオブジェクトをセットし、EventTargetを発動する
+    //! Dictオブジェクトをセットする
     Value &set(const Dict &v) {
         if (v.hasValue()) {
             set(v.getRaw());
@@ -54,30 +57,22 @@ class Value : protected Field, public EventTarget<Value> {
         }
         return *this;
     }
-    //! 数値または配列をセットし、EventTargetを発動する
+    //! 数値または配列をセットする
     Value &set(const VectorOpt<double> &v) {
         set(std::make_shared<VectorOpt<double>>(v));
         return *this;
     }
 
-    //! Dictの値を再帰的にセットし、EventTargetを発動する
+    //! Dictの値を再帰的にセットする
     Value &operator=(const Dict &v) {
         this->set(v);
         return *this;
     }
-    //! 数値または配列をセットし、EventTargetを発動する
+    //! 数値または配列をセットする
     Value &operator=(const VectorOpt<double> &v) {
         this->set(v);
         return *this;
     }
-
-    //! このvalueを非表示にする
-    //! (他clientのentryに表示されなくする)
-    // auto &hidden(bool hidden) {
-    //     setCheck();
-    //     dataLock()->value_store.setHidden(*this, hidden);
-    //     return *this;
-    // }
 
     //! 値を返す
     std::optional<double> tryGet() const {

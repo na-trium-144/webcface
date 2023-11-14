@@ -10,6 +10,8 @@ WebCFace::Value value_hoge = wcli.member("a").value("hoge");
 ```
 これは`a`というクライアントの`hoge`という名前のデータを表します
 
+このデータの名前のことを field と呼びます。
+
 Member::values() でそのMemberが送信しているvalueのリストが得られます
 ```cpp
 for(const WebCFace::Value &v: wcli.member("a").values()){
@@ -70,11 +72,14 @@ wcli.value("a").set(a_instance); // Dictにキャストされる
 
 WebCFaceのクライアントは初期状態ではデータを受信しません。
 リクエストを送って初めてサーバーからデータが順次送られてくるようになります。
+これはValueに限らず、これ以降説明する他のデータ型のfieldについても同様です。
 
 Value::tryGet(), Value::tryGetVec(), Value::tryGetRecurse() で値のリクエストをするとともに受信した値を取得できます。
 それぞれ 1つのdoubleの値、vector、Dict を返します。
 
 初回の呼び出しではまだ受信していないためstd::nulloptを返します。
+(pythonでは None, javascriptでは null)
+
 その後Client::sync()したときに実際にリクエストが送信され、それ以降は値が得られるようになります。
 ```cpp
 while(true) {
@@ -98,6 +103,7 @@ Value::appendListener() などで受信したデータが変化したときに�
 ```cpp
 wcli.member("a").value("hoge").appendListener([](Value v){ /* ... */ });
 ```
+pythonでは Value.signal プロパティがデータが変化したときのイベントのsignalを返します。
 
 データが変化したどうかに関わらず sync() されたときにコールバックを呼び出したい場合は Member::onSync() が使えます
 ```cpp
