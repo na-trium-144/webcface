@@ -17,7 +17,8 @@ using FuncWrapperType =
     std::function<ValAdaptor(FuncType, const std::vector<ValAdaptor> &)>;
 
 //! 引数の情報を表す。
-/*! func.setArg({ Arg(引数名).init(初期値).min(最小値).max(最大値), ... }); のように使う
+/*! func.setArg({ Arg(引数名).init(初期値).min(最小値).max(最大値), ... });
+ * のように使う
  */
 class Arg {
   protected:
@@ -137,6 +138,7 @@ struct FuncInfo {
     std::vector<Arg> args;
     FuncType func_impl;
     FuncWrapperType func_wrapper;
+    bool hidden;
     auto run(const std::vector<ValAdaptor> &args) {
         if (func_wrapper) {
             return func_wrapper(func_impl, args);
@@ -146,7 +148,8 @@ struct FuncInfo {
     }
 
     FuncInfo()
-        : return_type(ValType::none_), args(), func_impl(), func_wrapper() {}
+        : return_type(ValType::none_), args(), func_impl(), func_wrapper(),
+          hidden(false) {}
     //! 任意の関数を受け取り、引数と戻り値をキャストして実行する関数を保存
     template <typename... Args, typename Ret>
     explicit FuncInfo(std::function<Ret(Args...)> func, FuncWrapperType wrapper)

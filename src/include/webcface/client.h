@@ -4,12 +4,12 @@
 #include <future>
 #include <vector>
 #include <thread>
-#include "client_data.h"
 #include "member.h"
 #include "event_target.h"
 #include "func.h"
 #include "logger.h"
 #include "common/def.h"
+#include <spdlog/logger.h>
 
 namespace WebCFace {
 //! サーバーに接続するクライアント。
@@ -23,9 +23,10 @@ class Client : public Member {
     std::thread message_thread;
     //! recv_queueを処理するスレッド
     std::thread recv_thread;
-    WEBCFACE_DLL static void messageThreadMain(std::shared_ptr<ClientData> data,
-                                               std::string host, int port);
-    std::shared_ptr<ClientData> data;
+    WEBCFACE_DLL static void
+    messageThreadMain(std::shared_ptr<Internal::ClientData> data,
+                      std::string host, int port);
+    std::shared_ptr<Internal::ClientData> data;
 
     LoggerBuf logger_buf;
     std::ostream logger_os;
@@ -48,14 +49,13 @@ class Client : public Member {
      * \arg host サーバーのアドレス
      * \arg port サーバーのポート
      */
-    explicit Client(const std::string &name,
-                    const std::string &host = "127.0.0.1",
-                    int port = WEBCFACE_DEFAULT_PORT)
-        : Client(name, host, port, std::make_shared<ClientData>(name)) {}
+    WEBCFACE_DLL explicit Client(const std::string &name,
+                                 const std::string &host = "127.0.0.1",
+                                 int port = WEBCFACE_DEFAULT_PORT);
 
     WEBCFACE_DLL explicit Client(const std::string &name,
                                  const std::string &host, int port,
-                                 std::shared_ptr<ClientData> data);
+                                 std::shared_ptr<Internal::ClientData> data);
 
     //! サーバーに接続できているときtrueを返す
     WEBCFACE_DLL bool connected() const;
@@ -82,31 +82,21 @@ class Client : public Member {
     /*! 自分自身と、無名のmemberを除く。
      * \sa member(), onMemberEntry()
      */
-    std::vector<Member> members() {
-        auto keys = data->value_store.getMembers();
-        std::vector<Member> ret(keys.size());
-        for (std::size_t i = 0; i < keys.size(); i++) {
-            ret[i] = member(keys[i]);
-        }
-        return ret;
-    }
+    WEBCFACE_DLL std::vector<Member> members();
     //! Memberが追加された時のイベント
     /*! コールバックの型は void(Member)
-     * 
+     *
      * \sa member(), members()
      */
-    EventTarget<Member, int> onMemberEntry() {
-        return EventTarget<Member, int>{&data->member_entry_event, 0};
-    }
+    WEBCFACE_DLL EventTarget<Member, int> onMemberEntry();
 
     //! これ以降セットするFuncのデフォルトのFuncWrapperをセットする。(初期状態はnullptr)
     /*!
      * Funcの実行時にFuncWrapperを通すことで条件を満たすまでブロックしたりする。
      * FuncWrapperがnullptrなら何もせずsetした関数を実行する
      */
-    void setDefaultRunCond(FuncWrapperType wrapper) {
-        data->default_func_wrapper = wrapper;
-    }
+    WEBCFACE_DLL void setDefaultRunCond(FuncWrapperType wrapper);
+
     //! デフォルトのFuncWrapperを nullptr にする
     void setDefaultRunCondNone() { setDefaultRunCond(nullptr); }
     //! デフォルトのFuncWrapperを runCondOnSync() にする
@@ -123,12 +113,12 @@ class Client : public Member {
     /*!
      * \sa logger(), loggerStreamBuf(), loggerOStream()
      */
-    std::shared_ptr<LoggerSink> loggerSink() { return data->logger_sink; }
+    WEBCFACE_DLL std::shared_ptr<LoggerSink> loggerSink();
     //! webcfaceとstderr_sinkに出力するlogger
     /*!
      * \sa loggerSink(), loggerStreamBuf(), loggerOStream()
      */
-    std::shared_ptr<spdlog::logger> logger() { return data->logger; }
+    WEBCFACE_DLL std::shared_ptr<spdlog::logger> logger();
 
     //! webcfaceに出力するstreambuf
     /*! levelは常にinfoになる。
@@ -144,13 +134,13 @@ class Client : public Member {
     std::ostream &loggerOStream() { return logger_os; }
 
     //! WebCFaceサーバーのバージョン情報
-    std::string serverVersion() const { return data->svr_version; }
+    WEBCFACE_DLL std::string serverVersion() const;
     //! WebCFaceサーバーの識別情報
     /*!
      * \return webcface付属のサーバーであれば通常は "webcface" が返る
      * \sa serverVersion()
      */
-    std::string serverName() const { return data->svr_name; }
+    WEBCFACE_DLL std::string serverName() const;
 };
 
 } // namespace WebCFace

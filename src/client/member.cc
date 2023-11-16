@@ -5,8 +5,9 @@
 #include <webcface/func.h>
 #include <webcface/view.h>
 #include <webcface/event_target.h>
-#include <webcface/client_data.h>
 #include "../message/message.h"
+#include "client_internal.h"
+
 namespace WebCFace {
 
 Value Member::value(const std::string &field) const {

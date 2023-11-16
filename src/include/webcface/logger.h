@@ -9,7 +9,9 @@
 #include "common/def.h"
 
 namespace WebCFace {
+namespace Internal {
 struct ClientData;
+}
 
 class WEBCFACE_DLL LoggerBuf : public std::streambuf {
     static constexpr int buf_size = 1024;
@@ -17,19 +19,19 @@ class WEBCFACE_DLL LoggerBuf : public std::streambuf {
     // bufからあふれた分を入れる
     std::string overflow_buf;
 
-    std::weak_ptr<ClientData> data_w;
+    std::weak_ptr<Internal::ClientData> data_w;
 
     int sync() override;
     int overflow(int c) override;
 
   public:
-    explicit LoggerBuf(const std::weak_ptr<ClientData> &data_w);
+    explicit LoggerBuf(const std::weak_ptr<Internal::ClientData> &data_w);
     LoggerBuf(const LoggerBuf &) = delete;
     LoggerBuf &operator=(const LoggerBuf &) = delete;
 };
 
 class WEBCFACE_DLL LoggerSink : public spdlog::sinks::base_sink<std::mutex>,
-                   public Queue<std::shared_ptr<LogLine>> {
+                                public Queue<std::shared_ptr<LogLine>> {
   protected:
     void sink_it_(const spdlog::details::log_msg &msg) override;
     void flush_() override {}

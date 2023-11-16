@@ -13,11 +13,8 @@
 #include "field.h"
 #include "event_target.h"
 
-#include "member.h"
 #include "func_result.h"
 #include "logger.h"
-
-#include "client_data.h"
 
 // ClientDataに対して具体的になにかする場合はこれの下
 #include "value.h"
@@ -26,4 +23,5 @@
 #include "func.h"
 #include "view.h"
 
+#include "member.h"
 #include "client.h"

@@ -3,16 +3,18 @@
 #include <string>
 #include <chrono>
 #include <thread>
+#include "client_internal.h"
+
 namespace WebCFace {
 
-void Client::messageThreadMain(std::shared_ptr<ClientData> data,
+void Client::messageThreadMain(std::shared_ptr<Internal::ClientData> data,
                                std::string host, int port) {
     while (!data->closing.load()) {
         using namespace cinatra;
         // 通信エラーで閉じる場合はdeleteするが、
         // 自分で閉じる場合は裏で受信スレッドがまだうごいているのでdeleteするとセグフォする
         auto client = new coro_http_client();
-        std::weak_ptr<ClientData> data_w = data;
+        std::weak_ptr<Internal::ClientData> data_w = data;
         auto connected_this = std::make_shared<std::atomic<bool>>(true);
 
         client->on_ws_msg([data_w, connected_this](resp_data rdata) {

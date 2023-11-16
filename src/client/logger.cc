@@ -1,8 +1,8 @@
 #include <webcface/logger.h>
-#include <webcface/client_data.h>
+#include "client_internal.h"
 
 namespace WebCFace {
-LoggerBuf::LoggerBuf(const std::weak_ptr<ClientData> &data_w)
+LoggerBuf::LoggerBuf(const std::weak_ptr<Internal::ClientData> &data_w)
     : std::streambuf(), data_w(data_w) {
     this->setp(buf, buf + sizeof(buf));
 }

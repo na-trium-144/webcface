@@ -7,9 +7,10 @@
 #include <cstdint>
 #include "field.h"
 #include "common/val.h"
-#include "member.h"
 
 namespace WebCFace {
+
+class Member;
 
 //! Funcの実行ができなかった場合発生する例外
 //! (ValueやTextで参照先が見つからなかった場合はこれではなく単にnulloptが返る)
@@ -55,12 +56,9 @@ class AsyncFuncResult : Field {
     //! (→ get() で例外がthrowされる)
     std::shared_future<ValAdaptor> result;
 
-    //! 関数の名前
-    std::string name() const { return field_; }
-    //! 関数本体のあるmember
-    Member member() const { return *this; }
+    using Field::member;
+    using Field::name;
 };
-auto &operator<<(std::basic_ostream<char> &os,
-                              const AsyncFuncResult &data);
+auto &operator<<(std::basic_ostream<char> &os, const AsyncFuncResult &data);
 
 } // namespace WebCFace
