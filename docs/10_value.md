@@ -96,23 +96,23 @@ Value::get(), Value::getVec(), Value::getRecurse() はstd::nulloptの代わり�
 
 また、doubleやstd::vector<double>, Value::Dict などの型にキャストすることでも同様に値が得られます。
 
+Value::time() でその値が送信されたとき(そのMemberがsync()したとき)の時刻が得られます。
+
 ## 受信イベント
 
-Value::appendListener() などで受信したデータが変化したときにコールバックを呼び出すことができます。
+Value::appendListener() で受信したデータが変化したときにコールバックを呼び出すことができます。
 コールバックを設定するとその値はリクエストされます。
 ```cpp
 wcli.member("a").value("hoge").appendListener([](Value v){ /* ... */ });
 ```
-pythonでは Value.signal プロパティがデータが変化したときのイベントのsignalを返します。
+pythonでは Value.signal プロパティがこのイベントのsignalを返します。
 
-データが変化したどうかに関わらず sync() されたときにコールバックを呼び出したい場合は Member::onSync() が使えます
+データが変化したどうかに関わらずそのMemberがsync()したときにコールバックを呼び出したい場合は Member::onSync() が使えます
 ```cpp
 wcli.member("a").onSync().appendListener([](Member m){ /* ... */ });
 ```
 
-また、 Value::time() でその値が送信されたとき(sync()されたとき)の時刻が得られます。
-
-例えば全Memberの全データを受信するには
+例えば全Memberの全Valueデータを受信するには
 ```cpp
 wcli.onMemberEntry().appendListener([](Member m){
 	m.onValueEntry().appendListener([](Value v){
@@ -123,3 +123,5 @@ wcli.onMemberEntry().appendListener([](Member m){
 });
 ```
 のようにすると可能です。
+
+[Member](./02_member.md) ←前 | 次→ [Text](./11_text.md)

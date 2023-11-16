@@ -1,6 +1,8 @@
 #include <gtest/gtest.h>
 #include <webcface/client_data.h>
-#include <webcface/data.h>
+#include <webcface/value.h>
+#include <webcface/text.h>
+#include <webcface/log.h>
 #include <stdexcept>
 #include <chrono>
 
