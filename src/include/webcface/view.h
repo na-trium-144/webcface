@@ -5,7 +5,6 @@
 #include <cassert>
 #include <memory>
 #include "common/view.h"
-#include "data.h"
 #include "client_data.h"
 #include "func.h"
 
@@ -26,7 +25,7 @@ class ViewComponent : protected Common::ViewComponentBase {
 
     //! AnonymousFuncをFuncオブジェクトにlockします
     ViewComponentBase &lockTmp(const std::weak_ptr<ClientData> &data_w,
-                           const std::string &field_id) {
+                               const std::string &field_id) {
         if (on_click_func_tmp != nullptr) {
             auto data = data_w.lock();
             Func on_click{Field{data_w, data->self_member_name}, field_id};
@@ -133,12 +132,11 @@ class ViewBuf : public std::stringbuf {
 
 //! Viewの送受信データを表すクラス
 /*! コンストラクタではなく Member::view() を使って取得してください
- * 
- * 送信用viewデータは ViewBuf 内で保持するが、受信データはtryGet()時に取得するので別
+ *
+ * 送信用viewデータは ViewBuf
+ * 内で保持するが、受信データはtryGet()時に取得するので別
  */
-class View : protected Field,
-                          public EventTarget<View>,
-                          public std::ostream {
+class View : protected Field, public EventTarget<View>, public std::ostream {
     ViewBuf sb;
     void onAppend() const override { tryGet(); }
 

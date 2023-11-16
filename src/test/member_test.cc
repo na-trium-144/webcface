@@ -1,7 +1,9 @@
 #include <gtest/gtest.h>
 #include <webcface/client_data.h>
 #include <webcface/member.h>
-#include <webcface/data.h>
+#include <webcface/value.h>
+#include <webcface/log.h>
+#include <webcface/text.h>
 #include <webcface/func.h>
 #include <webcface/view.h>
 #include <stdexcept>
