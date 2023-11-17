@@ -48,8 +48,8 @@ Viewオブジェクトを毎回生成・破棄せず使いまわす場合は、�
 Viewに追加する各種要素をViewComponentといいます。
 
 * C++では `WebCFace::ViewComponents` 名前空間に定義されています。 `using namespace WebCFace::ViewComponents;`をすると便利かもしれません
-* Pythonでは `import webcface.view as view` することで `view.button()` のように使えます
-* JavaScriptでは `import { viewComponents } from "webcface"`
+* Pythonでは `webcface.view_somponents` モジュール内にあり、`from webcface.view_components import *` ができます
+* JavaScriptでは `viewComponents` オブジェクト内にあります
 
 ### text
 文字列です。そのまま表示します。
@@ -117,8 +117,10 @@ button("文字列", func, { textColor: viewColor.white, bgColor: viewColor.red }
 
 ## 受信
 
-ValueやTextと同様、 View::tryGet() で受信した値を取得できます。
+ValueやTextと同様、 View::tryGet() で受信したViewデータを取得できます。
 (これを使うのはViewを表示するアプリを作る場合などですかね)
+
+Viewデータは ViewComponent のリストとして得られます。
 
 View::get() はstd::nulloptの代わりにデフォルト値を返す点以外は同じです。
 
