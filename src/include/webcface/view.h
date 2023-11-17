@@ -65,23 +65,27 @@ class ViewComponent : protected Common::ViewComponentBase {
     }
 };
 inline namespace ViewComponents {
+//! textコンポーネント
 inline ViewComponent text(const std::string &text) {
     return ViewComponent(ViewComponentType::text).text(text);
 }
+//! newLineコンポーネント
 inline ViewComponent newLine() {
     return ViewComponent(ViewComponentType::new_line);
 }
+//! buttonコンポーネント
 template <typename T>
 inline ViewComponent button(const std::string &text, const T &func) {
     return ViewComponent(ViewComponentType::button).text(text).onClick(func);
 }
 } // namespace ViewComponents
 
-//! Viewのstd::ostreamにデータが追加された際にそれをViewComponentに変換するためのstreambuf
+//! Viewの送信用データを保持する
 class ViewBuf : public std::stringbuf {
   public:
     //! 送信用のデータ
     std::vector<ViewComponent> components;
+    //! std::flush時に呼ばれる
     int sync() override {
         std::string s = this->str();
         while (true) {
@@ -113,9 +117,6 @@ class ViewBuf : public std::stringbuf {
 
 //! Viewの送受信データを表すクラス
 /*! コンストラクタではなく Member::view() を使って取得してください
- *
- * 送信用viewデータは ViewBuf
- * 内で保持するが、受信データはtryGet()時に取得するので別
  */
 class View : protected Field, public EventTarget<View>, public std::ostream {
     ViewBuf sb;
@@ -139,11 +140,14 @@ class View : protected Field, public EventTarget<View>, public std::ostream {
     using Field::member;
     using Field::name;
 
-    //! 子要素を返す
+    //! 子フィールドを返す
+    /*!
+     * \return「(thisのフィールド名).(子フィールド名)」をフィールド名とするValue
+     */
     View child(const std::string &field) {
         return View{*this, this->field_ + "." + field};
     }
-    //! 値を取得する
+    //! Viewを取得する
     std::optional<std::vector<ViewComponent>> tryGet() const {
         auto vb = getRaw();
         if (vb) {
@@ -156,31 +160,25 @@ class View : protected Field, public EventTarget<View>, public std::ostream {
             return std::nullopt;
         }
     }
+    //! Viewを取得する
     std::vector<ViewComponent> get() const {
         return tryGet().value_or(std::vector<ViewComponent>{});
     }
+    //! syncの時刻を返す
     WEBCFACE_DLL std::chrono::system_clock::time_point time() const;
-
-    // //! このviewを非表示にする
-    // //! (他clientのentryに表示されなくする)
-    // auto &hidden(bool hidden) {
-    //     setCheck();
-    //     dataLock()->view_store.setHidden(*this, hidden);
-    //     return *this;
-    // }
 
     //! 値やリクエスト状態をクリア
     WEBCFACE_DLL View &free();
 
-    //! このViewのViewBufの内容を初期化する (コンストラクタ内で自動で呼ばれる)
+    //! このViewのViewBufの内容を初期化する (コンストラクタ内でも自動で呼ばれる)
     View &init() {
         sb.components.clear();
         return *this;
     }
-    //! 文字列にフォーマット & flushし、textコンポーネントとして追加
+    //! 文字列にフォーマットし、textコンポーネントとして追加
     template <typename T>
     View &operator<<(const T &rhs) {
-        static_cast<std::ostream &>(*this) << rhs << std::flush;
+        static_cast<std::ostream &>(*this) << rhs;
         return *this;
     }
     View &operator<<(std::ostream &(*os_manip)(std::ostream &)) {
@@ -190,12 +188,14 @@ class View : protected Field, public EventTarget<View>, public std::ostream {
     //! コンポーネントを追加
     View &operator<<(const Common::ViewComponentBase &vc) {
         setCheck();
+        std::flush(*this);
         sb.components.push_back(ViewComponent{vc, this->data_w});
         return *this;
     }
     //! コンポーネントを追加
     View &operator<<(const ViewComponent &vc) {
         setCheck();
+        std::flush(*this);
         sb.components.push_back(vc);
         return *this;
     }

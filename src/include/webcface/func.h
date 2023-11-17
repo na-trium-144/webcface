@@ -53,10 +53,6 @@ class Func : protected Field {
 
   public:
     //! 関数からFuncInfoを構築しセットする
-    /*! Tは任意の関数
-     * 一度セットしたFuncに別の関数をセットすると、それ以降実行される関数は新しい関数になるが、
-     * 引数や戻り値の情報などは更新されない
-     */
     template <typename T>
     Func &set(const T &func) {
         return this->setRaw(
@@ -165,7 +161,7 @@ class Func : protected Field {
     }
 };
 
-
+//! 名前を指定せず先に関数を登録するFunc
 class AnonymousFunc : public Func {
     WEBCFACE_DLL static std::string fieldNameTmp();
 
@@ -187,7 +183,8 @@ class AnonymousFunc : public Func {
             a.hidden(true);
         };
     }
-
+    
+    //! targetに関数を移動
     WEBCFACE_DLL void lockTo(Func &target);
 };
 } // namespace WebCFace

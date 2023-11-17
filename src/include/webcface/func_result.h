@@ -13,21 +13,24 @@ namespace WebCFace {
 class Member;
 
 //! Funcの実行ができなかった場合発生する例外
-//! (ValueやTextで参照先が見つからなかった場合はこれではなく単にnulloptが返る)
+/*! (ValueやTextで参照先が見つからなかった場合はこれではなく単にnulloptが返る)
+ */
 struct FuncNotFound : public std::runtime_error {
     explicit FuncNotFound(const Common::FieldBase &base)
         : std::runtime_error("member(\"" + base.member_ + "\")" + ".func(\"" +
                              base.field_ + "\") is not set") {}
 };
 
-/*! 非同期で実行した関数の実行結果を表す。
- *  結果はshared_futureのget()で得られる。
+//! 非同期で実行した関数の実行結果を表す。
+/*! 結果はshared_futureのget()で得られる。
  *
  * リモートから呼び出しメッセージが送られてきた時非同期で実行して結果を送り返すのにもこれを利用する
  */
 class AsyncFuncResult : Field {
     //! 通し番号
-    //! コンストラクタで設定する。実際はFuncResultStoreのvectorのindex
+    /*! コンストラクタで設定する。
+     * 実際はFuncResultStoreのvectorのindex
+     */
     std::size_t caller_id;
     //! 呼び出し側member 通常は自身
     std::string caller;
@@ -36,7 +39,7 @@ class AsyncFuncResult : Field {
     std::shared_ptr<std::promise<ValAdaptor>> result_;
 
   public:
-    //! promiseに書き込むことができるクラス
+    // promiseに書き込むことができるクラス
     friend class Func;
     friend class Client;
 
@@ -53,7 +56,6 @@ class AsyncFuncResult : Field {
     std::shared_future<bool> started;
     //! 関数の実行が完了した時戻り値が入る
     //! 例外が発生した場合例外が入る
-    //! (→ get() で例外がthrowされる)
     std::shared_future<ValAdaptor> result;
 
     using Field::member;
