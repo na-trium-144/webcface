@@ -120,9 +120,13 @@ endif()
 
 set(CURL_ENABLE_SSL off CACHE INTERNAL "" FORCE)
 set(BUILD_CURL_EXE off CACHE INTERNAL "" FORCE)
+# libcurlはだいたいインストールされているが使えないのでsharedにする意味がない
+set(BUILD_SHARED_LIBS off CACHE INTERNAL "" FORCE)
+set(BUILD_STATIC_LIBS on CACHE INTERNAL "" FORCE)
+set(SHARE_LIB_OBJECT ${WEBCFACE_PIC} CACHE INTERNAL "" FORCE)
 set(ENABLE_WEBSOCKETS on CACHE INTERNAL "" FORCE)
 add_subdirectory(external/curl EXCLUDE_FROM_ALL)
-set(CURL libcurl_shared)
+set(CURL libcurl_static)
 
 add_library(cinatra INTERFACE)
 target_include_directories(cinatra INTERFACE
