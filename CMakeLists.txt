@@ -213,6 +213,10 @@ target_link_libraries(${PROJECT_NAME}-server PRIVATE
     ${PROJECT_NAME}-server-impl
     CLI11
 )
+set_target_properties(${PROJECT_NAME}-server PROPERTIES
+    INSTALL_RPATH "$ORIGIN/../lib/;$ORIGIN/;@loader_path/../lib/;@loader_path/"
+    INSTALL_RPATH_USE_LINK_PATH TRUE
+)
 
 if(WEBCFACE_SHARED)
     add_library(${PROJECT_NAME} SHARED ${CLI_SRC})
@@ -233,7 +237,7 @@ target_link_libraries(${PROJECT_NAME} PUBLIC
 )
 target_include_directories(${PROJECT_NAME} PUBLIC ${INCLUDE_DIR})
 set_target_properties(${PROJECT_NAME} PROPERTIES
-    INSTALL_RPATH "$ORIGIN/;@loader_path/;"
+    INSTALL_RPATH "$ORIGIN/;@loader_path/"
     INSTALL_RPATH_USE_LINK_PATH TRUE
     VERSION ${PROJECT_VERSION}
     SOVERSION ${WEBCFACE_SOVERSION}
