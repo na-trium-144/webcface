@@ -43,6 +43,10 @@ class Log : protected Field, public EventTarget<Log, std::string> {
         return tryGet().value_or(std::vector<LogLine>{});
     }
 
+    //! 受信したログをクリアする
+    /*!
+     * リクエスト状態は解除しない
+     */
     Log &clear() {
         dataLock()->log_store.setRecv(
             member_, std::make_shared<std::vector<std::shared_ptr<LogLine>>>());
