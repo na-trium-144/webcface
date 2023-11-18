@@ -1,3 +1,14 @@
+## [1.1.5] - 2023-11-18
+### Changed
+* readmeとtutorialを改訂 (#67)
+* viewのViewBufがflushされるタイミングを変更
+	* View::operator<< をoverrideされてないoperator<<と同じ動作にした
+* submoduleのwebuiを削除
+* リポジトリ直下にdist/を置いても認識するようにした
+* updated dependencies
+### Added
+* Log::clear() (#67)
+
 ## [1.1.4] - 2023-10-27
 ### Fixed
 * spdlog v1.5.0でビルドが通るよう修正(それより前は未検証) (#66)

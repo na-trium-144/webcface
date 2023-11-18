@@ -120,7 +120,7 @@ class Client : public Member {
     }
 
     //! webcfaceに出力するsink
-    /*!
+    /*! (v1.0.1で logger_sink から名前変更)
      * \sa logger(), loggerStreamBuf(), loggerOStream()
      */
     std::shared_ptr<LoggerSink> loggerSink() { return data->logger_sink; }
@@ -131,14 +131,16 @@ class Client : public Member {
     std::shared_ptr<spdlog::logger> logger() { return data->logger; }
 
     //! webcfaceに出力するstreambuf
-    /*! levelは常にinfoになる。
+    /*! (v1.0.1で logger_streambuf から名前変更)
+     * 
+     * levelは常にinfoになる。
      * std::flushのタイミングとは無関係に、1つの改行ごとに1つのログになる
      *
      * \sa loggerSink(), logger(), loggerOStream()
      */
     LoggerBuf *loggerStreamBuf() { return &logger_buf; }
     //! webcfaceに出力するostream
-    /*!
+    /*! (v1.0.1で logger_ostream から名前変更)
      * \sa loggerSink(), logger(), loggerStreamBuf()
      */
     std::ostream &loggerOStream() { return logger_os; }
