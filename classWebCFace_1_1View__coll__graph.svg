@@ -102,7 +102,7 @@
 <!-- Node6 -->
 <g id="Node000006" class="node">
 <title>Node6</title>
-<g id="a_Node000006"><a xlink:href="classWebCFace_1_1EventTarget.html" target="_top" xlink:title="イベントを表し、コールバックの追加や削除ができるクラス、eventpp::EventQueueのラッパー">
+<g id="a_Node000006"><a xlink:href="classWebCFace_1_1EventTarget.html" target="_top" xlink:title="イベントを表し、コールバックの追加や削除ができるクラス。">
 <polygon fill="white" stroke="#666666" points="238.5,-162 119.5,-162 119.5,-132 238.5,-132 238.5,-162"/>
 <text text-anchor="start" x="127.5" y="-150" font-family="Helvetica,sans-Serif" font-size="10.00">EventTarget&lt; V, Key,</text>
 <text text-anchor="middle" x="179" y="-139" font-family="Helvetica,sans-Serif" font-size="10.00"> VBase &gt;</text>
@@ -150,7 +150,7 @@
 <!-- Node8 -->
 <g id="Node000008" class="node">
 <title>Node8</title>
-<g id="a_Node000008"><a xlink:href="classWebCFace_1_1ViewBuf.html" target="_top" xlink:title="Viewのstd::ostreamにデータが追加された際にそれをViewComponentに変換するためのstreambuf.">
+<g id="a_Node000008"><a xlink:href="classWebCFace_1_1ViewBuf.html" target="_top" xlink:title="Viewの送信用データを保持する">
 <polygon fill="white" stroke="#666666" points="319.5,-85 262.5,-85 262.5,-66 319.5,-66 319.5,-85"/>
 <text text-anchor="middle" x="291" y="-73" font-family="Helvetica,sans-Serif" font-size="10.00">ViewBuf</text>
 </a>

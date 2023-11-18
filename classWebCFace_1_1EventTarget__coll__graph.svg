@@ -11,7 +11,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:title="イベントを表し、コールバックの追加や削除ができるクラス、eventpp::EventQueueのラッパー">
+<g id="a_Node000001"><a xlink:title="イベントを表し、コールバックの追加や削除ができるクラス。">
 <polygon fill="#999999" stroke="#666666" points="121,-30 2,-30 2,0 121,0 121,-30"/>
 <text text-anchor="start" x="10" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">EventTarget&lt; V, Key,</text>
 <text text-anchor="middle" x="61.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00"> VBase &gt;</text>

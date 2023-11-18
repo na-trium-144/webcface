@@ -11,7 +11,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:title="Viewのstd::ostreamにデータが追加された際にそれをViewComponentに変換するためのstreambuf.">
+<g id="a_Node000001"><a xlink:title="Viewの送信用データを保持する">
 <polygon fill="#999999" stroke="#666666" points="58.5,-19 1.5,-19 1.5,0 58.5,0 58.5,-19"/>
 <text text-anchor="middle" x="30" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">ViewBuf</text>
 </a>

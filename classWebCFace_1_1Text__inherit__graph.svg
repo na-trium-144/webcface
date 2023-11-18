@@ -74,7 +74,7 @@
 <!-- Node5 -->
 <g id="Node000005" class="node">
 <title>Node5</title>
-<g id="a_Node000005"><a xlink:href="classWebCFace_1_1EventTarget.html" target="_top" xlink:title="イベントを表し、コールバックの追加や削除ができるクラス、eventpp::EventQueueのラッパー">
+<g id="a_Node000005"><a xlink:href="classWebCFace_1_1EventTarget.html" target="_top" xlink:title="イベントを表し、コールバックの追加や削除ができるクラス。">
 <polygon fill="white" stroke="#666666" points="201.5,-152 82.5,-152 82.5,-122 201.5,-122 201.5,-152"/>
 <text text-anchor="start" x="90.5" y="-140" font-family="Helvetica,sans-Serif" font-size="10.00">EventTarget&lt; V, Key,</text>
 <text text-anchor="middle" x="142" y="-129" font-family="Helvetica,sans-Serif" font-size="10.00"> VBase &gt;</text>

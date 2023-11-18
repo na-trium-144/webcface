@@ -9,12 +9,12 @@
 <area shape="rect" id="Node000004" href="$classWebCFace_1_1EventTarget.html" title=" " alt="" coords="70,281,231,307"/>
 <area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="177,313,245,367,241,371,174,317"/>
 <area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="143,119,129,165,125,192,127,218,136,252,147,280,143,282,131,254,121,219,120,191,124,164,138,117"/>
-<area shape="rect" id="Node000006" href="$classWebCFace_1_1EventTarget.html" title="イベントを表し、コールバックの追加や削除ができるクラス、eventpp::EventQueueのラッパー" alt="" coords="165,179,323,219"/>
+<area shape="rect" id="Node000006" href="$classWebCFace_1_1EventTarget.html" title="イベントを表し、コールバックの追加や削除ができるクラス。" alt="" coords="165,179,323,219"/>
 <area shape="poly" id="edge7_Node000006_Node000005" title=" " alt="" coords="173,114,229,177,225,180,169,118"/>
 <area shape="poly" id="edge6_Node000004_Node000006" title=" " alt="" coords="217,230,164,283,161,279,213,227"/>
 <area shape="rect" id="Node000007" title=" " alt="" coords="255,281,331,307"/>
 <area shape="poly" id="edge8_Node000001_Node000007" title=" " alt="" coords="286,321,265,370,260,368,281,319"/>
-<area shape="rect" id="Node000008" href="$classWebCFace_1_1ViewBuf.html" title="Viewのstd::ostreamにデータが追加された際にそれをViewComponentに変換するためのstreambuf." alt="" coords="355,281,431,307"/>
+<area shape="rect" id="Node000008" href="$classWebCFace_1_1ViewBuf.html" title="Viewの送信用データを保持する" alt="" coords="355,281,431,307"/>
 <area shape="poly" id="edge9_Node000001_Node000008" title=" " alt="" coords="365,316,277,371,274,367,362,312"/>
 <area shape="rect" id="Node000009" title=" " alt="" coords="353,186,433,211"/>
 <area shape="poly" id="edge10_Node000008_Node000009" title=" " alt="" coords="396,225,396,281,391,281,391,225"/>

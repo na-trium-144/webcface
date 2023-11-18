@@ -112,20 +112,34 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 <div class="contents">
 <div class="textblock"><p><a class="anchor" id="md__2home_2runner_2work_2webcface_2webcface_2README"></a> <a href="https://github.com/na-trium-144/webcface/actions/workflows/cmake-coverage.yml"><img src="https://raw.githubusercontent.com/na-trium-144/webcface/badge/coverage.svg" alt="coverage" style="pointer-events: none;" class="inline"/></a> <a href="https://github.com/na-trium-144/webcface/releases"><img src="https://img.shields.io/github/v/release/na-trium-144/webcface" alt="release" class="inline"/></a></p>
 <p>Web-based RPC &amp; UI Library</p>
-<p>C++とJavaScriptで使える、WebSocketを使ったプロセス間通信ライブラリです。 データの送受信だけでなく、プロセス間での関数呼び出しができます。</p>
-<p>また、WebブラウザーでアクセスできるUI(webcface-webui)から通信されているデータを確認したり関数を実行したりできる他、テキストやボタンなどを自由に配置してそのWebブラウザーに表示させることができます。</p>
-<p>todo: ここにわかりやすいスクショを1つはる todo: 機能の一覧をかんたんにかく</p>
-<h1><a class="anchor" id="autotoc_md70"></a>
-Related Links</h1>
-<ul>
-<li>webcface: サーバー &amp; C++クライアント</li>
-<li><a href="https://github.com/na-trium-144/webcface-webui">webcface-webui</a>: webブラウザ用UIアプリ</li>
-<li><a href="https://github.com/na-trium-144/webcface-js">webcface-js</a>: JavaScriptクライアント</li>
-<li><a href="https://github.com/na-trium-144/webcface-tools">webcface-tools</a>: クライアントとなるコマンド群</li>
+<p>WebSocketとMessagePackを使った、ROSのような分散型の通信ライブラリです。 クロスプラットフォームかつ複数の言語間で通信ができます。</p>
+<p>WebブラウザーでアクセスできるUI(webcface-webui)が付属しており、ネットワーク上のPCやタブレットなどからアクセスしてWebCFaceで通信されているデータを可視化したり関数を呼び出したりできます。 また、webuiからのアクセスを想定してテキストやボタンなどの配置を指定すると簡易なUIを作成することができます。</p>
+<p>todo: ここにわかりやすいスクショを1つはる</p>
+<p>データ型を任意に定義できるROSとは違って、通信できるデータの種類が以下のように限定されています</p><ul>
+<li>pub-sub通信<ul>
+<li>Value : 実数 or 実数の配列</li>
+<li>Text : utf-8文字列</li>
+<li>View : UIレイアウト</li>
+<li>Log : 時刻とログレベルつきの文字列ストリーム</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md71"></a>
+</li>
+<li>その他<ul>
+<li>Func : 関数(他クライアントから引数とともに呼び出し、値を返す)</li>
+</ul>
+</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md81"></a>
+Links</h1>
+<ul>
+<li><a href="https://github.com/na-trium-144/webcface">webcface</a>: サーバー &amp; C++クライアントライブラリ (このリポジトリ)</li>
+<li><a href="https://github.com/na-trium-144/webcface-webui">webcface-webui</a>: webブラウザ用UIアプリ</li>
+<li><a href="https://github.com/na-trium-144/webcface-js">webcface-js</a>: JavaScriptクライアントライブラリ</li>
+<li><a href="https://github.com/na-trium-144/webcface-python">webcface-python</a>: Pythonクライアントライブラリ</li>
+<li><a href="https://github.com/na-trium-144/webcface-tools">webcface-tools</a>: コマンドラインツール群</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md82"></a>
 Installation</h1>
-<h2><a class="anchor" id="autotoc_md72"></a>
+<h2><a class="anchor" id="autotoc_md83"></a>
 Ubuntu 22.04 (amd64, arm64, armhf)</h2>
 <p><a href="https://github.com/na-trium-144/webcface/releases">WebCFaceのReleases</a> と <a href="https://github.com/na-trium-144/webcface-webui/releases">webuiのReleases</a> 、<a href="https://github.com/na-trium-144/webcface-tools/releases">toolsのReleases</a> からそれぞれ最新のdebパッケージをダウンロードしてインストールできます。</p>
 <p>debパッケージはubuntu22.04でビルドしています。20.04以前のubuntuでは依存ライブラリの都合で動きません。debianはわかりません。</p>
@@ -135,12 +149,14 @@ Ubuntu 22.04 (amd64, arm64, armhf)</h2>
 <div class="line">sudo apt install ./webcface*.deb</div>
 <div class="line">rm ./webcface*.deb</div>
 </div><!-- fragment --><p>(webcface-toolsの内容と使い方についてはwebcface-toolsのReadmeを参照してください)</p>
-<h2><a class="anchor" id="autotoc_md73"></a>
+<h2><a class="anchor" id="autotoc_md84"></a>
 Homebrew (MacOS, Linux)</h2>
 <div class="fragment"><div class="line">brew tap na-trium-144/webcface</div>
 <div class="line">brew install webcface webcface-webui</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md74"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md85"></a>
 Build from source</h2>
+<h3><a class="anchor" id="autotoc_md86"></a>
+Requirements</h3>
 <ul>
 <li>c++20に対応したコンパイラが必要です</li>
 <li>テスト済みの環境<ul>
@@ -148,13 +164,60 @@ Build from source</h2>
 <li><a href="https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-linux-clang.yml"><img src="https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-linux-clang.yml/badge.svg?branch=main" alt="CMake Test (Linux Clang)" style="pointer-events: none;" class="inline"/></a> (clang-13以上)</li>
 <li><a href="https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-macos-clang.yml"><img src="https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-macos-clang.yml/badge.svg?branch=main" alt="CMake Test (MacOS Clang)" style="pointer-events: none;" class="inline"/></a></li>
 <li><a href="https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-windows-msvc.yml"><img src="https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-windows-msvc.yml/badge.svg?branch=main" alt="CMake Test (Windows MSVC)" style="pointer-events: none;" class="inline"/></a></li>
-<li><a href="https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-windows-gcc.yml"><img src="https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-windows-gcc.yml/badge.svg?branch=main" alt="CMake Test (Windows MinGW64 GCC)" style="pointer-events: none;" class="inline"/></a> (CMAKE_BUILD_TYPE=Debugだとリンクエラーになりました) <div class="fragment"><div class="line">git submodule update --init --recursive</div>
+<li><a href="https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-windows-gcc.yml"><img src="https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-windows-gcc.yml/badge.svg?branch=main" alt="CMake Test (Windows MinGW64 GCC)" style="pointer-events: none;" class="inline"/></a> (CMAKE_BUILD_TYPE=Debugだとリンクエラーになりました)</li>
+</ul>
+</li>
+<li>webcfaceは外部ライブラリとして <a href="https://github.com/qicosmos/cinatra">cinatra</a>, <a href="https://github.com/wqking/eventpp">eventpp</a>, <a href="https://github.com/msgpack/msgpack-c">msgpack-cxx</a>, <a href="https://github.com/gabime/spdlog">spdlog</a>, <a href="https://github.com/CLIUtils/CLI11.git">cli11</a> を使用します。<ul>
+<li>システムにインストールされてなければsubmoduleにあるソースコードをビルドしますが、eventpp, msgpack, spdlog に関してはインストールされていればそれを使用するのでビルドが速くなります</li>
+</ul>
+</li>
+</ul>
+<details >
+<summary >
+Ubuntu 20.04, 22.04</summary>
+<p></p>
+<div class="fragment"><div class="line">sudo apt install build-essential git cmake</div>
+<div class="line">sudo apt install libspdlog-dev  # optional</div>
+</div><!-- fragment --><p>ubuntu20.04の場合デフォルトのコンパイラ(gcc-9)ではビルドできないのでgcc-10にする必要があります </p><div class="fragment"><div class="line">sudo apt install gcc-10</div>
+<div class="line">export CC=gcc-10</div>
+<div class="line">export CXX=g++-10</div>
+</div><!-- fragment --> </details>
+<details >
+<summary >
+Homebrew (MacOS, Linux)</summary>
+<p></p>
+<div class="fragment"><div class="line">brew install cmake</div>
+<div class="line">brew install spdlog msgpack-cxx  # optional</div>
+</div><!-- fragment --> </details>
+<details >
+<summary >
+Visual Studio</summary>
+<p></p>
+<ul>
+<li>Visual Studio と Git for Windows をインストールし、Developer command prompt からビルドすればいいはずです</li>
+<li>インストール先は/usr/localではない</li>
+<li>以降のビルド手順でsudoが不要です </li>
+</ul>
+</details>
+<details >
+<summary >
+MSYS2</summary>
+<p></p>
+<div class="fragment"><div class="line">pacman -S git mingw-w64-x86_64-gcc mingw-w64-x86_64-cmake make</div>
+<div class="line">pacman -S mingw-w64-x86_64-spdlog  # optional</div>
+</div><!-- fragment --><ul>
+<li>以降のビルド手順でsudoが不要です </li>
+</ul>
+</details>
+<h2><a class="anchor" id="autotoc_md87"></a>
+Build</h2>
+<div class="fragment"><div class="line">git clone https://github.com/na-trium-144/webcface</div>
+<div class="line">cd webcface</div>
+<div class="line">git submodule update --init --recursive</div>
 <div class="line">cmake -Bbuild</div>
 <div class="line">cmake --build build</div>
 <div class="line">sudo cmake --build build -t install</div>
-</div><!-- fragment --></li>
-</ul>
-</li>
+</div><!-- fragment --><ul>
 <li>CMakeのオプション<ul>
 <li><code>-DWEBCFACE_SHARED=off</code>にすると共有ライブラリではなくすべて静的ライブラリになります</li>
 <li><code>-DWEBCFACE_EXAMPLE=on</code>でtestをビルドします(submoduleの場合デフォルトでoff)</li>
@@ -165,24 +228,30 @@ Build from source</h2>
 </li>
 </ul>
 </li>
-<li>その後、<a href="https://github.com/na-trium-144/webcface-webui/releases">webuiのReleases</a> からビルド済みのtar.gzのアーカイブをダウンロードして webui/dist/ (installして使う場合は /path/to/prefix/share/webcface/dist) として展開してください</li>
-<li>webcfaceは外部ライブラリとして <a href="https://github.com/qicosmos/cinatra">cinatra</a>, <a href="https://github.com/wqking/eventpp">eventpp</a>, <a href="https://github.com/msgpack/msgpack-c">msgpack-cxx</a>, <a href="https://github.com/gabime/spdlog">spdlog</a>, <a href="https://github.com/CLIUtils/CLI11.git">cli11</a> を使用します。<ul>
-<li>システムにインストールされてなければsubmoduleにあるソースコードをビルドしますが、eventpp, msgpack, spdlog に関してはインストールされていればそれを使用するのでビルドが速くなります</li>
-<li>ubuntuなら <code>sudo apt install libspdlog-dev</code>, brewなら <code>brew install spdlog msgpack-cxx</code> でインストールできます</li>
+<li>その後、<a href="https://github.com/na-trium-144/webcface-webui/releases">webuiのReleases</a> からビルド済みのtar.gzのアーカイブをダウンロードして /usr/local/share/webcface/dist として展開する必要があります<ul>
+<li>install先が/usr/localでない場合はprefixを読み替えてください</li>
+<li>installしないでbuildディレクトリから起動する場合は、このリポジトリ直下にdist/を置いてください</li>
+<li>コマンドからやる場合は次のようになります <div class="fragment"><div class="line">curl -LO https://github.com/na-trium-144/webcface-webui/releases/download/v1.0.5/webcface-webui_1.0.5.tar.gz</div>
+<div class="line">tar zxvf webcface-webui*.tar.gz</div>
+<div class="line">sudo rm -rf /usr/local/share/webcface</div>
+<div class="line">sudo mkdir /usr/local/share/webcface</div>
+<div class="line">sudo mv dist /usr/local/share/webcface/dist</div>
+<div class="line">rm webcface-webui*.tar.gz</div>
+</div><!-- fragment --></li>
 </ul>
 </li>
 <li>このリポジトリのみでビルドしてinstallする代わりに、webcfaceを使いたいプロジェクトでこのリポジトリをsubmoduleとして追加して使うこともできます。</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md75"></a>
+<h1><a class="anchor" id="autotoc_md88"></a>
 Usage</h1>
-<p>チュートリアルと使い方→ <a href="https://na-trium-144.github.io/webcface/md_00__tutorial.html">Documentation</a> </p>
+<p>→ <a href="https://na-trium-144.github.io/webcface/md_00__tutorial.html">Tutorial</a> </p>
 </div></div><!-- PageDoc -->
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Oct 27 2023 16:39:14 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Sat Nov 18 2023 08:32:12 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

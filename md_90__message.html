@@ -110,15 +110,14 @@ $(document).ready(function(){initNavTree('md_90__message.html',''); initResizabl
   <div class="headertitle"><div class="title">Message</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md41"></a> 送受信されるメッセージの仕様について</p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md49"></a> 送受信されるメッセージの仕様について</p>
 <p>MessagePackで送受信されます。 両方向の通信ともにn個のデータを長さ2nの配列で表現します。</p>
 <div class="fragment"><div class="line">[ kind1, data1, kind2, data2, ... ]</div>
 </div><!-- fragment --><p>see also <a class="el" href="message_8h.html">message.h</a></p>
-<h1><a class="anchor" id="autotoc_md42"></a>
-data</h1>
-<p>詳細な説明は <a class="el" href="namespaceWebCFace_1_1Message.html">WebCFace::Message</a>:: 内の各メッセージのクラスの説明として書かれているのでそちらを参照してください</p>
-<h2><a class="anchor" id="autotoc_md43"></a>
-sync init (WebCFace::Message::SyncInit, kind = 80)</h2>
+<h1><a class="anchor" id="autotoc_md50"></a>
+Sync</h1>
+<h2><a class="anchor" id="autotoc_md51"></a>
+sync init (kind = 80)</h2>
 <div class="fragment"><div class="line">data = {</div>
 <div class="line">    M: string, // member name</div>
 <div class="line">    m: number, // member id</div>
@@ -128,10 +127,14 @@ sync init (WebCFace::Message::SyncInit, kind = 80)</h2>
 <div class="line">}</div>
 </div><!-- fragment --><ul>
 <li>クライアント初期化時にM,l,vのみ設定してサーバーに送信</li>
-<li>Mが空でない場合のみ、サーバーがm,aを設定し各クライアントに送信し、クライアントは新しいMemberのidを知ることができます</li>
+<li>クライアントがsync initを送信するまで、サーバーは何も送信しません</li>
+<li>Mが空でない場合のみ、サーバーがm,aを設定し各クライアントに送信し、クライアントは新しいMemberのidを知ることができます<ul>
+<li>member idはクライアントごとにサーバーが一意に振る1以上の整数です</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md44"></a>
-svr version (WebCFace::Message::SvrVersion, kind = 88)</h2>
+</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md52"></a>
+svr version (kind = 88)</h2>
 <div class="fragment"><div class="line">data = {</div>
 <div class="line">    n: string, // server name</div>
 <div class="line">    v: string, // server version</div>
@@ -139,8 +142,8 @@ svr version (WebCFace::Message::SvrVersion, kind = 88)</h2>
 </div><!-- fragment --><ul>
 <li>サーバーからクライアントに1回送られます</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md45"></a>
-ping (WebCFace::Message::Ping, kind = 89)</h2>
+<h2><a class="anchor" id="autotoc_md53"></a>
+ping (kind = 89)</h2>
 <div class="fragment"><div class="line">data = {}</div>
 </div><!-- fragment --><ul>
 <li>サーバーからクライアントに数秒に1回送られます。</li>
@@ -149,31 +152,41 @@ ping (WebCFace::Message::Ping, kind = 89)</h2>
 </ul>
 </li>
 </ul>
-<h2><a class="anchor" id="autotoc_md46"></a>
-ping status (WebCFace::Message::PingStatus, kind = 90)</h2>
+<h2><a class="anchor" id="autotoc_md54"></a>
+ping status (kind = 90)</h2>
 <div class="fragment"><div class="line">data = {</div>
 <div class="line">    s: {member_id: status, member_id: status, ...},</div>
 <div class="line">}</div>
 </div><!-- fragment --><ul>
-<li>サーバーからクライアントに各クライアントのping往復時間(ms)をまとめて送ります</li>
+<li>サーバーからクライアントに各クライアントのping往復時間(ms)をまとめて送ります<ul>
+<li>member_idとstatusの型はnumberです</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md47"></a>
-ping status req (WebCFace::Message::PingStatusReq, kind = 91)</h2>
+</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md55"></a>
+ping status req (kind = 91)</h2>
 <div class="fragment"><div class="line">data = {}</div>
 </div><!-- fragment --><ul>
 <li>クライアントからサーバーにこれを送ると、以降数秒おきにping statusが送られてくるようになります</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md48"></a>
-sync (WebCFace::Message::Sync, kind = 87)</h2>
+<h2><a class="anchor" id="autotoc_md56"></a>
+sync (kind = 87)</h2>
 <div class="fragment"><div class="line">data = {</div>
 <div class="line">    m: number; // member id</div>
 <div class="line">    t: number; // time</div>
 <div class="line">}</div>
 </div><!-- fragment --><ul>
-<li>クライアントからサーバーに、sync()時に他のデータを送信する前に1度送ります</li>
+<li>クライアントからサーバーに、sync()時に他のデータを送信する前にtのみをセットして1度送ります</li>
+<li>サーバーはmをセットし全クライアントに送り返します</li>
+<li>timeは1970/1/1 0:00(utc) からの経過ミリ秒数で表します<ul>
+<li>これ以外にも時刻を送受信するときは同様です</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md49"></a>
-func info (WebCFace::Message::FuncInfo, kind = 84)</h2>
+</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md57"></a>
+Func</h1>
+<h2><a class="anchor" id="autotoc_md58"></a>
+func info (kind = 84)</h2>
 <div class="fragment"><div class="line">data = {</div>
 <div class="line">    m: number, // member id</div>
 <div class="line">    f: string, // name</div>
@@ -188,10 +201,14 @@ func info (WebCFace::Message::FuncInfo, kind = 84)</h2>
 <div class="line">    }[],</div>
 <div class="line">}</div>
 </div><!-- fragment --><ul>
-<li>クライアント→サーバーに送り、サーバー→全クライアントに通知します</li>
+<li>クライアント→サーバーに送ると、サーバー→全クライアントに通知します<ul>
+<li>mはサーバーがセットします</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md50"></a>
-call (WebCFace::Message::Call, kind = 81)</h2>
+</li>
+<li>func infoを送らなくても関数の呼び出しは可能なので、非表示にしたい関数はfunc infoを送らなければよいです</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md59"></a>
+call (kind = 81)</h2>
 <div class="fragment"><div class="line">data = {</div>
 <div class="line">    i: number; // caller id</div>
 <div class="line">    c: number; // member id of caller</div>
@@ -200,24 +217,27 @@ call (WebCFace::Message::Call, kind = 81)</h2>
 <div class="line">    a: any[]; // arguments</div>
 <div class="line">}</div>
 </div><!-- fragment --><ul>
-<li>関数を呼び出すときにクライアント(caller)→サーバー→クライアント(target)に送られます</li>
-<li>caller idは実行結果が返ってくるときに判別できるよう、呼び出し側クライアントが任意に決めて良い数値です</li>
-<li>関数の呼び出しはsyncと無関係なタイミングで構いません</li>
-<li>また、無名のクライアントからも送信することができます </li>
+<li>関数を呼び出すときにクライアント(caller)が送信すると、そのままクライアント(target)に送られます<ul>
+<li>cはサーバーがセットします</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md51"></a>
-call response (WebCFace::Message::CallResponse, kind = 82)</h2>
+</li>
+<li>iは実行結果が返ってくるときに判別できるよう、呼び出し側クライアントが任意に決めて良い数値(0以上の整数)です</li>
+<li>関数の呼び出しはsyncと無関係なタイミングで構いません</li>
+<li>また、無名のクライアントからも送信することができます</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md60"></a>
+call response (kind = 82)</h2>
 <div class="fragment"><div class="line">data = {</div>
 <div class="line">    i: number; // caller id</div>
 <div class="line">    c: number; // member id of caller</div>
 <div class="line">    s: boolean; // if function is started</div>
 <div class="line">}</div>
 </div><!-- fragment --><ul>
-<li>関数の実行を開始した時sにtrueをセットしクライアント(target)→サーバー→クライアント(caller)に送り返します</li>
-<li>関数が存在しない場合sにfalseをセットし送り返します</li>
+<li>targetはiとcにCallと同じものを、関数の実行を開始した時sにtrueを、関数が存在しない場合にはsにfalseをセットし、サーバーに送るとクライアント(caller)に届きます</li>
+<li>targetがそもそも存在しない場合はサーバーがsにfalseをセットしてcallerに送ります</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md52"></a>
-call result (WebCFace::Message::CallResult, kind = 83)</h2>
+<h2><a class="anchor" id="autotoc_md61"></a>
+call result (kind = 83)</h2>
 <div class="fragment"><div class="line">data = {</div>
 <div class="line">    i: number; // caller id</div>
 <div class="line">    c: number; // member id of caller</div>
@@ -225,11 +245,19 @@ call result (WebCFace::Message::CallResult, kind = 83)</h2>
 <div class="line">    r: any; // result</div>
 <div class="line">}</div>
 </div><!-- fragment --><ul>
-<li>関数の実行結果を返します</li>
-<li>エラーの場合エラーの内容をrにセットします</li>
+<li>targetが関数の実行結果をeとrにセットしてサーバーに送るとcallerに届きます<ul>
+<li>エラーの場合eをtrueにしてエラーの内容をrにセットします</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md53"></a>
-value (WebCFace::Message::Value, kind = 0)</h2>
+</li>
+<li>callerはCallResponseでs=trueだった場合これが届くまで待機できます<ul>
+<li>s=falseだった場合CallResultは届きません</li>
+</ul>
+</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md62"></a>
+Value</h1>
+<h2><a class="anchor" id="autotoc_md63"></a>
+value (kind = 0)</h2>
 <div class="fragment"><div class="line">data = {</div>
 <div class="line">    f: string, // name</div>
 <div class="line">    d: number[], // data</div>
@@ -237,36 +265,31 @@ value (WebCFace::Message::Value, kind = 0)</h2>
 </div><!-- fragment --><ul>
 <li>クライアント→サーバーに更新されたデータを送ります</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md54"></a>
-value (WebCFace::Message::Value, kind = 0)</h2>
-<div class="fragment"><div class="line">data = {</div>
-<div class="line">    f: string, // name</div>
-<div class="line">    d: number[], // data</div>
-<div class="line">}</div>
-</div><!-- fragment --><ul>
-<li>クライアント→サーバーに更新されたデータを送ります</li>
-</ul>
-<h2><a class="anchor" id="autotoc_md55"></a>
-value entry (WebCFace::Message::Entry&lt;Value&gt;, kind = 20)</h2>
+<h2><a class="anchor" id="autotoc_md64"></a>
+value entry (kind = 20)</h2>
 <div class="fragment"><div class="line">data = {</div>
 <div class="line">    m: number, // member id</div>
 <div class="line">    f: string, // name</div>
 <div class="line">}</div>
 </div><!-- fragment --><ul>
-<li>新しいvalueが追加されたときにサーバー→全クライアントに通知します</li>
+<li>新しいValueが送られてきた時、サーバーは全クライアントにValueEntryを送ります</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md56"></a>
-value req (WebCFace::Message::Req&lt;Value&gt;, kind = 40)</h2>
+<h2><a class="anchor" id="autotoc_md65"></a>
+value req (kind = 40)</h2>
 <div class="fragment"><div class="line">data = {</div>
 <div class="line">    m: number, // member id</div>
 <div class="line">    f: string, // name</div>
 <div class="line">    i: number, // request id</div>
 <div class="line">}</div>
 </div><!-- fragment --><ul>
-<li>valueを受信したいときにこれを送ると以降value res がサーバーから送られてくるようになります</li>
+<li>valueを受信したいときにこれを送ると以降value resがサーバーから送られてくるようになります</li>
+<li>iはクライアントが任意に決めて良い1以上の整数です<ul>
+<li>Text, Viewなど他の種類のReqとは数値がかぶっていても問題ありません</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md57"></a>
-value res (WebCFace::Message::Res&lt;Value&gt;, kind = 60)</h2>
+</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md66"></a>
+value res (kind = 60)</h2>
 <div class="fragment"><div class="line">data = {</div>
 <div class="line">    i: number, // request id</div>
 <div class="line">    f: string, // sub field name</div>
@@ -275,17 +298,10 @@ value res (WebCFace::Message::Res&lt;Value&gt;, kind = 60)</h2>
 </div><!-- fragment --><ul>
 <li>requestに対応するvalueを送り返します</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md58"></a>
-value (WebCFace::Message::Value, kind = 0)</h2>
-<div class="fragment"><div class="line">data = {</div>
-<div class="line">    f: string, // name</div>
-<div class="line">    d: number[], // data</div>
-<div class="line">}</div>
-</div><!-- fragment --><ul>
-<li>クライアント→サーバーに更新されたデータを送ります</li>
-</ul>
-<h2><a class="anchor" id="autotoc_md59"></a>
-text (WebCFace::Message::Text, kind = 1)</h2>
+<h1><a class="anchor" id="autotoc_md67"></a>
+Text</h1>
+<h2><a class="anchor" id="autotoc_md68"></a>
+text (kind = 1)</h2>
 <div class="fragment"><div class="line">data = {</div>
 <div class="line">    f: string, // name</div>
 <div class="line">    d: string, // data</div>
@@ -293,18 +309,18 @@ text (WebCFace::Message::Text, kind = 1)</h2>
 </div><!-- fragment --><ul>
 <li>value と同様</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md60"></a>
-text entry (WebCFace::Message::Entry&lt;Text&gt;, kind = 21)</h2>
+<h2><a class="anchor" id="autotoc_md69"></a>
+text entry (kind = 21)</h2>
 <ul>
 <li>value entryと同様</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md61"></a>
-text req (WebCFace::Message::Req&lt;Text&gt;, kind = 41)</h2>
+<h2><a class="anchor" id="autotoc_md70"></a>
+text req (kind = 41)</h2>
 <ul>
 <li>value req と同様</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md62"></a>
-text res (WebCFace::Message::Res&lt;Text&gt;, kind = 61)</h2>
+<h2><a class="anchor" id="autotoc_md71"></a>
+text res (kind = 61)</h2>
 <div class="fragment"><div class="line">data = {</div>
 <div class="line">    i: number, // request id</div>
 <div class="line">    f: string, // sub field name</div>
@@ -313,8 +329,10 @@ text res (WebCFace::Message::Res&lt;Text&gt;, kind = 61)</h2>
 </div><!-- fragment --><ul>
 <li>value resと同様</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md63"></a>
-view (WebCFace::Message::View, kind = 3)</h2>
+<h1><a class="anchor" id="autotoc_md72"></a>
+View</h1>
+<h2><a class="anchor" id="autotoc_md73"></a>
+view (kind = 3)</h2>
 <div class="fragment"><div class="line">data = {</div>
 <div class="line">    f: string, // name</div>
 <div class="line">    d: {</div>
@@ -333,20 +351,26 @@ view (WebCFace::Message::View, kind = 3)</h2>
 <div class="line">}</div>
 </div><!-- fragment --><ul>
 <li>value と同様</li>
-<li>データは前回のsyncから変更された要素のみを送る</li>
+<li>データは前回のsyncから変更された要素のみを送ってください</li>
+<li>lは変更されていない分も含めたviewの全要素数です</li>
+<li>dのindexはstring型で、要素のindexを10進数で文字列にしたものです<ul>
+<li>例えば <code>[text("aaa"), text("bbb"), text("ccc")]</code> が <code>[text("aaa"), text("ccc"), text("bbb")]</code> に変更された場合のメッセージは <code>{"d": {"1": {"t": 0, "x": "ccc"}, "2": {"t": 0, "x": "bbb"}}}</code></li>
 </ul>
-<h2><a class="anchor" id="autotoc_md64"></a>
-view entry (WebCFace::Message::Entry&lt;View&gt;, kind = 23)</h2>
+</li>
+<li>C++ ver1.1で変更: dのindexをnumber型からstring型に変更</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md74"></a>
+view entry (kind = 23)</h2>
 <ul>
 <li>value entryと同様</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md65"></a>
-view req (WebCFace::Message::Req&lt;View&gt;, kind = 43)</h2>
+<h2><a class="anchor" id="autotoc_md75"></a>
+view req (kind = 43)</h2>
 <ul>
 <li>value req と同様</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md66"></a>
-view res (WebCFace::Message::Res&lt;View&gt;, kind = 63)</h2>
+<h2><a class="anchor" id="autotoc_md76"></a>
+view res (kind = 63)</h2>
 <div class="fragment"><div class="line">data = {</div>
 <div class="line">    i: number, // request id</div>
 <div class="line">    f: string, // sub field name</div>
@@ -356,18 +380,25 @@ view res (WebCFace::Message::Res&lt;View&gt;, kind = 63)</h2>
 </div><!-- fragment --><ul>
 <li>value resと同様</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md67"></a>
-log (WebCFace::Message::Log, kind = 86)</h2>
+<h1><a class="anchor" id="autotoc_md77"></a>
+Log</h1>
+<h2><a class="anchor" id="autotoc_md78"></a>
+log (kind = 86)</h2>
 <div class="fragment"><div class="line">data = {</div>
 <div class="line">    m: number, // member id</div>
-<div class="line">    l: { v: number, t: number, m: string }[],</div>
+<div class="line">    l: {</div>
+<div class="line">        v: number, // level 0〜5</div>
+<div class="line">        t: number, // time</div>
+<div class="line">        m: string, // message</div>
+<div class="line">    }[],</div>
 <div class="line">}</div>
 </div><!-- fragment --><ul>
-<li>クライアント→サーバーに新しく追加されたログのみ送ります</li>
-<li>リクエストがあればサーバー→各クライアントに送り返します</li>
+<li>クライアント→サーバーに新しく追加されたログ差分のみ送ります</li>
+<li>リクエストがあればサーバー→各クライアントにそのまま送り返します</li>
+<li>リクエスト直後、サーバーが保持しているログの全履歴を1つのlogメッセージにまとめてクライアントに送ります</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md68"></a>
-log req (WebCFace::Message::LogReq, kind = 87)</h2>
+<h2><a class="anchor" id="autotoc_md79"></a>
+log req (kind = 87)</h2>
 <div class="fragment"><div class="line">data = {</div>
 <div class="line">    M: string // member name</div>
 <div class="line">}</div>
@@ -380,7 +411,7 @@ log req (WebCFace::Message::LogReq, kind = 87)</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Oct 27 2023 16:39:14 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Sat Nov 18 2023 08:32:12 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

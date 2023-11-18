@@ -6,6 +6,7 @@ var classWebCFace_1_1Log =
     [ "Log", "classWebCFace_1_1Log.html#a907ca32e5dd84f5166dd5cd8e59984e6", null ],
     [ "Log", "classWebCFace_1_1Log.html#a578f408f0bba515f23b17da20c3babff", null ],
     [ "appendListener", "classWebCFace_1_1Log.html#a7f12a03e22df0d00f39027dd3697f48d", null ],
+    [ "clear", "classWebCFace_1_1Log.html#a90e67f24cf6a9fc1eda7ab5a7fbaa1a6", null ],
     [ "dataLock", "classWebCFace_1_1Log.html#ae33fe7e0be1f7abba149be0d7ec13456", null ],
     [ "get", "classWebCFace_1_1Log.html#ab2b35e1b920b6b4ab87b96ee259b1ffb", null ],
     [ "hasAnyListener", "classWebCFace_1_1Log.html#a2703198fd7fd6f72b1a89786870f8a39", null ],

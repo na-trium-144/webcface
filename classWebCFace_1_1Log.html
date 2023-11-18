@@ -108,6 +108,7 @@ $(document).ready(function(){initNavTree('classWebCFace_1_1Log.html',''); initRe
 
 <div class="header">
   <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="#pro-attribs">Protected Attributes</a> &#124;
@@ -119,7 +120,10 @@ $(document).ready(function(){initNavTree('classWebCFace_1_1Log.html',''); initRe
 </div><!--header-->
 <div class="contents">
 
-<p><code>#include &lt;<a class="el" href="data_8h_source.html">webcface/data.h</a>&gt;</code></p>
+<p>ログの送受信データを表すクラス  
+ <a href="classWebCFace_1_1Log.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="log_8h_source.html">webcface/log.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for Log:</div>
 <div class="dyncontent">
@@ -131,6 +135,15 @@ Collaboration diagram for Log:</div>
 <div class="center"><iframe scrolling="no" frameborder="0" src="classWebCFace_1_1Log__coll__graph.svg" width="288" height="402"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:a81e0ac19d99a43bbb9cd276e81dee44f" id="r_a81e0ac19d99a43bbb9cd276e81dee44f"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1EventTarget.html#a81e0ac19d99a43bbb9cd276e81dee44f">EventCallback</a> = std::function&lt; void(<a class="el" href="classWebCFace_1_1Log.html">Log</a>)&gt;</td></tr>
+<tr class="memdesc:a81e0ac19d99a43bbb9cd276e81dee44f"><td class="mdescLeft">&#160;</td><td class="mdescRight">イベントのコールバックの型  <br /></td></tr>
+<tr class="separator:a81e0ac19d99a43bbb9cd276e81dee44f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad1be7d51af13514338ccba90975d4b7f" id="r_ad1be7d51af13514338ccba90975d4b7f"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1EventTarget.html#ad1be7d51af13514338ccba90975d4b7f">EventHandle</a> = typename Dispatcher::Handle</td></tr>
+<tr class="memdesc:ad1be7d51af13514338ccba90975d4b7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">コールバックのHandle  <br /></td></tr>
+<tr class="separator:ad1be7d51af13514338ccba90975d4b7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a907ca32e5dd84f5166dd5cd8e59984e6" id="r_a907ca32e5dd84f5166dd5cd8e59984e6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Log.html#a907ca32e5dd84f5166dd5cd8e59984e6">Log</a> ()=default</td></tr>
@@ -138,10 +151,14 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a578f408f0bba515f23b17da20c3babff" id="r_a578f408f0bba515f23b17da20c3babff"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Log.html#a578f408f0bba515f23b17da20c3babff">Log</a> (const <a class="el" href="structWebCFace_1_1Field.html">Field</a> &amp;base)</td></tr>
 <tr class="separator:a578f408f0bba515f23b17da20c3babff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aadb158fa20765e342d4669e2c69dbc9e" id="r_aadb158fa20765e342d4669e2c69dbc9e"><td class="memItemLeft" align="right" valign="top">std::optional&lt; std::vector&lt; <a class="el" href="structWebCFace_1_1Common_1_1LogLine.html">LogLine</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Log.html#aadb158fa20765e342d4669e2c69dbc9e">tryGet</a> () const</td></tr>
-<tr class="memdesc:aadb158fa20765e342d4669e2c69dbc9e"><td class="mdescLeft">&#160;</td><td class="mdescRight">値を取得する  <br /></td></tr>
+<tr class="memdesc:aadb158fa20765e342d4669e2c69dbc9e"><td class="mdescLeft">&#160;</td><td class="mdescRight">ログを取得する  <br /></td></tr>
 <tr class="separator:aadb158fa20765e342d4669e2c69dbc9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab2b35e1b920b6b4ab87b96ee259b1ffb" id="r_ab2b35e1b920b6b4ab87b96ee259b1ffb"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structWebCFace_1_1Common_1_1LogLine.html">LogLine</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Log.html#ab2b35e1b920b6b4ab87b96ee259b1ffb">get</a> () const</td></tr>
+<tr class="memdesc:ab2b35e1b920b6b4ab87b96ee259b1ffb"><td class="mdescLeft">&#160;</td><td class="mdescRight">ログを取得する  <br /></td></tr>
 <tr class="separator:ab2b35e1b920b6b4ab87b96ee259b1ffb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a90e67f24cf6a9fc1eda7ab5a7fbaa1a6" id="r_a90e67f24cf6a9fc1eda7ab5a7fbaa1a6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classWebCFace_1_1Log.html">Log</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Log.html#a90e67f24cf6a9fc1eda7ab5a7fbaa1a6">clear</a> ()</td></tr>
+<tr class="memdesc:a90e67f24cf6a9fc1eda7ab5a7fbaa1a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">受信したログをクリアする  <br /></td></tr>
+<tr class="separator:a90e67f24cf6a9fc1eda7ab5a7fbaa1a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa8fab40ead35fa8e761986d5f4000a5c" id="r_aa8fab40ead35fa8e761986d5f4000a5c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classWebCFace_1_1Member.html">Member</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Log.html#aa8fab40ead35fa8e761986d5f4000a5c">member</a> () const</td></tr>
 <tr class="memdesc:aa8fab40ead35fa8e761986d5f4000a5c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Memberを返す  <br /></td></tr>
 <tr class="separator:aa8fab40ead35fa8e761986d5f4000a5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -191,10 +208,6 @@ Protected Attributes</h2></td></tr>
 Private Types</h2></td></tr>
 <tr class="memitem:aa7d77f4004dea8559345bbfc3d915181" id="r_aa7d77f4004dea8559345bbfc3d915181"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1EventTarget.html#aa7d77f4004dea8559345bbfc3d915181">Dispatcher</a> = eventpp::EventDispatcher&lt; std::string, void(<a class="el" href="structWebCFace_1_1Field.html">Field</a>)&gt;</td></tr>
 <tr class="separator:aa7d77f4004dea8559345bbfc3d915181"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a81e0ac19d99a43bbb9cd276e81dee44f" id="r_a81e0ac19d99a43bbb9cd276e81dee44f"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1EventTarget.html#a81e0ac19d99a43bbb9cd276e81dee44f">EventCallback</a> = std::function&lt; void(<a class="el" href="classWebCFace_1_1Log.html">Log</a>)&gt;</td></tr>
-<tr class="separator:a81e0ac19d99a43bbb9cd276e81dee44f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad1be7d51af13514338ccba90975d4b7f" id="r_ad1be7d51af13514338ccba90975d4b7f"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1EventTarget.html#ad1be7d51af13514338ccba90975d4b7f">EventHandle</a> = typename Dispatcher::Handle</td></tr>
-<tr class="separator:ad1be7d51af13514338ccba90975d4b7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
@@ -210,7 +223,8 @@ Private Attributes</h2></td></tr>
 <tr class="separator:a96313403719d705d2df812e3ba166772"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>log name使わないんだけど todo: triggerEvent </p>
+<div class="textblock"><p>ログの送受信データを表すクラス </p>
+<p>fieldを継承しているがfield名は使用していない </p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="aa7d77f4004dea8559345bbfc3d915181" name="aa7d77f4004dea8559345bbfc3d915181"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa7d77f4004dea8559345bbfc3d915181">&#9670;&#160;</a></span>Dispatcher</h2>
@@ -249,10 +263,12 @@ Private Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span><span class="mlabel">inherited</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>イベントのコールバックの型 </p>
 
 </div>
 </div>
@@ -271,10 +287,12 @@ Private Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span><span class="mlabel">inherited</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>コールバックのHandle </p>
 
 </div>
 </div>
@@ -359,6 +377,34 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="a90e67f24cf6a9fc1eda7ab5a7fbaa1a6" name="a90e67f24cf6a9fc1eda7ab5a7fbaa1a6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a90e67f24cf6a9fc1eda7ab5a7fbaa1a6">&#9670;&#160;</a></span>clear()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classWebCFace_1_1Log.html">Log</a> &amp; clear </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>受信したログをクリアする </p>
+<p>リクエスト状態は解除しない </p>
+
+</div>
+</div>
 <a id="ae33fe7e0be1f7abba149be0d7ec13456" name="ae33fe7e0be1f7abba149be0d7ec13456"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae33fe7e0be1f7abba149be0d7ec13456">&#9670;&#160;</a></span>dataLock()</h2>
 
@@ -407,6 +453,8 @@ Private Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>ログを取得する </p>
 
 </div>
 </div>
@@ -710,7 +758,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>値を取得する </p>
+<p>ログを取得する </p>
 
 </div>
 </div>
@@ -779,7 +827,7 @@ Private Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>フィールド名 <a class="el" href="classWebCFace_1_1Member.html" title="他のクライアントを参照することを表すクラス">Member</a> などフィールド名が不要なクラスでは使用しない </p>
+<p>フィールド名 <a class="el" href="classWebCFace_1_1Member.html" title="Memberを指すクラス">Member</a> などフィールド名が不要なクラスでは使用しない </p>
 
 </div>
 </div>
@@ -830,7 +878,7 @@ Private Attributes</h2></td></tr>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li>include/webcface/<a class="el" href="data_8h_source.html">data.h</a></li>
+<li>include/webcface/<a class="el" href="log_8h_source.html">log.h</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -838,7 +886,7 @@ Private Attributes</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceWebCFace.html">WebCFace</a></li><li class="navelem"><a class="el" href="classWebCFace_1_1Log.html">Log</a></li>
-    <li class="footer">Generated on Fri Oct 27 2023 16:39:14 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Sat Nov 18 2023 08:32:12 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

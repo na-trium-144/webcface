@@ -110,37 +110,42 @@ $(document).ready(function(){initNavTree('md_01__client.html',''); initResizable
   <div class="headertitle"><div class="title">Client</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md10"></a> API Reference → <a class="el" href="classWebCFace_1_1Client.html" title="サーバーに接続するクライアント。">WebCFace::Client</a></p>
-<p>WebCFaceのメインとなるクラスです。 クライアントとしてサーバーに接続します。</p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md12"></a> API Reference → <a class="el" href="classWebCFace_1_1Client.html" title="サーバーに接続するクライアント。">WebCFace::Client</a></p>
+<p>WebCFaceのメインとなるクラスです。</p>
+<p>まずはClientのオブジェクトを作成しましょう。 引数には一意な名前を設定してください。</p>
 <div class="fragment"><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="webcface_8h.html">webcface/webcface.h</a>&gt;</span></div>
 <div class="line"> </div>
-<div class="line"><a class="code hl_class" href="classWebCFace_1_1Client.html">WebCFace::Client</a> wcli(<span class="stringliteral">&quot;name of this client program&quot;</span>);</div>
-<div class="line"><span class="comment">// WebCFace::Client wcli;</span></div>
+<div class="line"><a class="code hl_class" href="classWebCFace_1_1Client.html">WebCFace::Client</a> wcli(<span class="stringliteral">&quot;sample&quot;</span>);</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// または WebCFace::Client wcli;</span></div>
 <div class="ttc" id="aclassWebCFace_1_1Client_html"><div class="ttname"><a href="classWebCFace_1_1Client.html">WebCFace::Client</a></div><div class="ttdoc">サーバーに接続するクライアント。</div><div class="ttdef"><b>Definition</b> client.h:16</div></div>
 <div class="ttc" id="awebcface_8h_html"><div class="ttname"><a href="webcface_8h.html">webcface.h</a></div></div>
-</div><!-- fragment --><p>Client オブジェクトを作ると別スレッドでサーバーへの接続を開始します。 通信が切断された場合なども自動で再接続します。</p>
-<p>コンストラクタにクライアントの名前を渡すことができますが同時に接続している他のクライアントと名前が被らないようにしてください。</p>
-<p>コンストラクタに名前を指定しない、または空文字列の場合、他のクライアントとの被りは問題ありませんがデータを送信することができなくなります (他のクライアントから値などを受信する専用)</p>
-<p>デフォルトではlocalhostの7530ポートに接続を試みますが、コンストラクタの引数でサーバーのアドレスとポートを指定できます。</p>
-<h1><a class="anchor" id="autotoc_md11"></a>
+</div><!-- fragment --><p>Client オブジェクトを作ると別スレッドでサーバーへの接続を開始します。 通信が切断された場合は自動で再接続します。</p>
+<p>コンストラクタに指定するのはこのクライアントの名前(Memberの名前)です。 同時に接続している他のクライアントと名前が被らないようにしてください。</p>
+<p>コンストラクタに名前を指定しない、または空文字列の場合、読み取り専用モードになります。 この場合他のクライアントとの被りは問題ありませんがデータを送信することができなくなります。</p>
+<p>デフォルトではlocalhostの7530ポートに接続を試みますが、サーバーのポートを変更していたり別のpcに接続する場合はコンストラクタの引数でサーバーのアドレスとポートを指定できます。</p>
+<h1><a class="anchor" id="autotoc_md13"></a>
 sync</h1>
 <div class="fragment"><div class="line"><span class="keywordflow">while</span>(<span class="keyword">true</span>){</div>
 <div class="line">    <span class="comment">// ...</span></div>
 <div class="line"> </div>
 <div class="line">    wcli.sync();</div>
 <div class="line">}</div>
-</div><!-- fragment --><p>Client::sync() はデータを実際に送信する関数です。 データを受信する場合もサーバーにデータのリクエストをするためsync()が必要になります。</p>
+</div><!-- fragment --><p>Client::sync() をすることでこれ以降の章で扱う各種データを実際に送信します。 sync()自体は送信処理はせずキューに入れるだけであり、ノンブロッキングです。</p>
+<p>データを受信するだけの場合もサーバーにデータのリクエストをするためsync()が必要になります。</p>
 <p>メインプログラムの周期実行される場所などで繰り返し呼ぶようにしてください。</p>
-<h1><a class="anchor" id="autotoc_md12"></a>
+<p>sync()を呼び出すプログラムを動かしたら、WebUIを開いてみましょう。 そして右上のメニューを開き、Clientの初期化時に指定した名前がそこに表示されていれば正しく通信できています。</p>
+<h1><a class="anchor" id="autotoc_md14"></a>
 切断する</h1>
-<p>Clientクラスのデストラクタが呼ばれると通信を切断します。 </p>
+<p>Client::close() で切断します。 またはデストラクタでも自動的に切断します。</p>
+<p><a class="el" href="md_00__tutorial.html">Tutorial</a> ←前 | 次→ <a class="el" href="md_02__member.html">Member</a> </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Oct 27 2023 16:39:14 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Sat Nov 18 2023 08:32:12 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

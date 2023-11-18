@@ -1,5 +1,5 @@
 <map id="Member" name="Member">
-<area shape="rect" id="Node000001" title="他のクライアントを参照することを表すクラス" alt="" coords="10,152,86,177"/>
+<area shape="rect" id="Node000001" title="Memberを指すクラス" alt="" coords="10,152,86,177"/>
 <area shape="rect" id="Node000002" href="$structWebCFace_1_1Field.html" title="ClientDataの参照とメンバ名とデータ名を持つクラス" alt="" coords="21,79,75,104"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="51,118,51,152,45,152,45,118"/>
 <area shape="rect" id="Node000003" href="$structWebCFace_1_1Common_1_1FieldBase.html" title="メンバ名とデータ名を持つクラス" alt="" coords="5,5,91,31"/>

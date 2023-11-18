@@ -110,67 +110,105 @@ $(document).ready(function(){initNavTree('md_13__view.html',''); initResizable()
   <div class="headertitle"><div class="title">View</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md22"></a> API Reference → <a class="el" href="classWebCFace_1_1View.html" title="Viewの送受信データを表すクラス">WebCFace::View</a></p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md26"></a> API Reference → <a class="el" href="classWebCFace_1_1View.html" title="Viewの送受信データを表すクラス">WebCFace::View</a>, <a class="el" href="classWebCFace_1_1ViewComponent.html" title="Viewに表示する要素です">WebCFace::ViewComponent</a></p>
 <p>Viewデータを送受信します。</p>
-<p>Viewは文字列やボタンなどの要素(ViewComponent)を並べて、オリジナルのUIを表示できる機能です。 (使用例はReadmeを参照)</p>
+<p>Viewは文字列やボタンなどの要素(ViewComponent)を並べて、オリジナルのUIを表示できる機能です。 (使用例はTutorialを参照)</p>
 <p>Member::view() でViewクラスのオブジェクトが得られます </p><div class="fragment"><div class="line"><a class="code hl_class" href="classWebCFace_1_1View.html">WebCFace::View</a> view_hoge = wcli.<a class="code hl_function" href="classWebCFace_1_1View.html#aa8fab40ead35fa8e761986d5f4000a5c">member</a>(<span class="stringliteral">&quot;a&quot;</span>).<a class="code hl_function" href="classWebCFace_1_1Member.html#a1d5af6b8f9bfe89a2d886b28426546cf">view</a>(<span class="stringliteral">&quot;hoge&quot;</span>);</div>
-<div class="ttc" id="aclassWebCFace_1_1Member_html_a1d5af6b8f9bfe89a2d886b28426546cf"><div class="ttname"><a href="classWebCFace_1_1Member.html#a1d5af6b8f9bfe89a2d886b28426546cf">WebCFace::Member::view</a></div><div class="ttdeci">View view(const std::string &amp;field) const</div><div class="ttdoc">AnonymousFuncオブジェクトを作成しfuncをsetする</div><div class="ttdef"><b>Definition</b> member.cc:15</div></div>
-<div class="ttc" id="aclassWebCFace_1_1View_html"><div class="ttname"><a href="classWebCFace_1_1View.html">WebCFace::View</a></div><div class="ttdoc">Viewの送受信データを表すクラス</div><div class="ttdef"><b>Definition</b> view.h:141</div></div>
+<div class="ttc" id="aclassWebCFace_1_1Member_html_a1d5af6b8f9bfe89a2d886b28426546cf"><div class="ttname"><a href="classWebCFace_1_1Member.html#a1d5af6b8f9bfe89a2d886b28426546cf">WebCFace::Member::view</a></div><div class="ttdeci">View view(const std::string &amp;field) const</div><div class="ttdoc">AnonymousFuncオブジェクトを作成しfuncをsetする</div><div class="ttdef"><b>Definition</b> member.cc:17</div></div>
+<div class="ttc" id="aclassWebCFace_1_1View_html"><div class="ttname"><a href="classWebCFace_1_1View.html">WebCFace::View</a></div><div class="ttdoc">Viewの送受信データを表すクラス</div><div class="ttdef"><b>Definition</b> view.h:140</div></div>
 <div class="ttc" id="aclassWebCFace_1_1View_html_aa8fab40ead35fa8e761986d5f4000a5c"><div class="ttname"><a href="classWebCFace_1_1View.html#aa8fab40ead35fa8e761986d5f4000a5c">WebCFace::View::member</a></div><div class="ttdeci">Member member() const</div><div class="ttdoc">Memberを返す</div><div class="ttdef"><b>Definition</b> field.cc:7</div></div>
 </div><!-- fragment --><p>Member::views() でそのMemberが送信しているviewのリストが得られます </p><div class="fragment"><div class="line"><span class="keywordflow">for</span>(<span class="keyword">const</span> <a class="code hl_class" href="classWebCFace_1_1View.html">WebCFace::View</a> &amp;v: wcli.member(<span class="stringliteral">&quot;a&quot;</span>).views()){</div>
 <div class="line">    <span class="comment">// ...</span></div>
 <div class="line">}</div>
 </div><!-- fragment --><p>Member::onViewEntry() で新しくデータが追加されたときのコールバックを設定できます </p><div class="fragment"><div class="line">wcli.member(<span class="stringliteral">&quot;a&quot;</span>).onViewEntry().appendListener([](<a class="code hl_class" href="classWebCFace_1_1View.html">WebCFace::View</a> v){ <span class="comment">/* ... */</span> });</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md23"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md27"></a>
 送信</h1>
-<p>自分自身の名前のMemberからViewオブジェクトを作り、 View::add() などで要素を追加し、 Viewオブジェクトのデストラクタが呼ばれた後のClient::sync()で送信されます </p><div class="fragment"><div class="line">{</div>
+<p>(C++, Python) 自分自身の名前のMemberからViewオブジェクトを作り、 View::add() などで要素を追加し、 最後にView::sync()をしてからClient::sync()をすることで送信されます</p><ul>
+<li>C++ではViewのデストラクタでも自動的にView.sync()が呼ばれます。</li>
+<li>Pythonではwith構文を使って <code>with wcli.view("hoge") as v:</code> などとするとwithを抜けるときに自動でv.sync()がされます。 <div class="fragment"><div class="line">{</div>
 <div class="line">    <a class="code hl_class" href="classWebCFace_1_1View.html">WebCFace::View</a> v = wcli.view(<span class="stringliteral">&quot;hoge&quot;</span>);</div>
+<div class="line">    <span class="comment">// v.init(); (自動で呼ばれる)</span></div>
 <div class="line">    v.<a class="code hl_function" href="classWebCFace_1_1View.html#aef5571129416d10663005ff406ea643f">add</a>(...);</div>
 <div class="line">    v.<a class="code hl_function" href="classWebCFace_1_1View.html#aef5571129416d10663005ff406ea643f">add</a>(...);</div>
+<div class="line">    <span class="comment">// v.sync(); (自動で呼ばれる)</span></div>
 <div class="line">}</div>
-<div class="line"><span class="comment">// ...</span></div>
+<div class="line"> </div>
 <div class="line">wcli.<a class="code hl_function" href="classWebCFace_1_1View.html#a9cb08e3833e550609bd9cc49ec7484a6">sync</a>();</div>
-<div class="ttc" id="aclassWebCFace_1_1View_html_a9cb08e3833e550609bd9cc49ec7484a6"><div class="ttname"><a href="classWebCFace_1_1View.html#a9cb08e3833e550609bd9cc49ec7484a6">WebCFace::View::sync</a></div><div class="ttdeci">View &amp; sync()</div><div class="ttdoc">Viewの内容をclientに反映し送信可能にする (デストラクタで自動で呼ばれる)</div><div class="ttdef"><b>Definition</b> view.h:264</div></div>
-<div class="ttc" id="aclassWebCFace_1_1View_html_aef5571129416d10663005ff406ea643f"><div class="ttname"><a href="classWebCFace_1_1View.html#aef5571129416d10663005ff406ea643f">WebCFace::View::add</a></div><div class="ttdeci">View &amp; add(const T &amp;rhs)</div><div class="ttdoc">コンポーネントなどを追加 (operator&lt;&lt; と同じ)</div><div class="ttdef"><b>Definition</b> view.h:258</div></div>
-</div><!-- fragment --><p>Viewはstd::ostreamを継承しており、 add() の代わりに v &lt;&lt; 表示する値; というようにもできます</p>
-<p>Viewオブジェクトを毎回生成・破棄する代わりに、 View::init() でViewを初期化、 View::sync() で反映することもできます。</p>
-<h1><a class="anchor" id="autotoc_md24"></a>
+<div class="ttc" id="aclassWebCFace_1_1View_html_a9cb08e3833e550609bd9cc49ec7484a6"><div class="ttname"><a href="classWebCFace_1_1View.html#a9cb08e3833e550609bd9cc49ec7484a6">WebCFace::View::sync</a></div><div class="ttdeci">View &amp; sync()</div><div class="ttdoc">Viewの内容をclientに反映し送信可能にする (デストラクタで自動で呼ばれる)</div><div class="ttdef"><b>Definition</b> view.h:266</div></div>
+<div class="ttc" id="aclassWebCFace_1_1View_html_aef5571129416d10663005ff406ea643f"><div class="ttname"><a href="classWebCFace_1_1View.html#aef5571129416d10663005ff406ea643f">WebCFace::View::add</a></div><div class="ttdeci">View &amp; add(const T &amp;rhs)</div><div class="ttdoc">コンポーネントなどを追加 (operator&lt;&lt; と同じ)</div><div class="ttdef"><b>Definition</b> view.h:260</div></div>
+</div><!-- fragment --></li>
+</ul>
+<p>(C++のみ) Viewはstd::ostreamを継承しており、 add() の代わりに v &lt;&lt; 表示する値; というようにもできます</p>
+<p>Viewオブジェクトを毎回生成・破棄せず使いまわす場合は、add()が一通り終わった後にView::sync()を呼び、最初のadd()の前に View::init() でViewを初期化する必要があります (そうしないとそれまでaddしたデータに追加されてしまう)</p>
+<p>JavaScriptの場合、add(), init(), sync()は用意されておらず、set()の引数に要素をまとめてセットして使います。 </p><div class="fragment"><div class="line">wcli.view(&quot;hoge&quot;).set([</div>
+<div class="line">    &quot;hello&quot;,</div>
+<div class="line">    123,</div>
+<div class="line">    viewComponents.button(&quot;aaa&quot;, () =&gt; undefined)</div>
+<div class="line">]);</div>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md28"></a>
 ViewComponent</h1>
-<p><code>using namespace <a class="el" href="namespaceWebCFace_1_1ViewComponents.html">WebCFace::ViewComponents</a>;</code>をすると便利かもしれません</p>
-<h2><a class="anchor" id="autotoc_md25"></a>
+<p>Viewに追加する各種要素をViewComponentといいます。</p>
+<ul>
+<li>C++では <code><a class="el" href="namespaceWebCFace_1_1ViewComponents.html">WebCFace::ViewComponents</a></code> 名前空間に定義されています。 <code>using namespace <a class="el" href="namespaceWebCFace_1_1ViewComponents.html">WebCFace::ViewComponents</a>;</code>をすると便利かもしれません</li>
+<li>Pythonでは <code>webcface.view_somponents</code> モジュール内にあり、<code>from webcface.view_components import *</code> ができます</li>
+<li>JavaScriptでは <code>viewComponents</code> オブジェクト内にあります</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md29"></a>
 text</h2>
-<p>文字列です。そのまま表示します。 <code><a class="el" href="namespaceWebCFace_1_1ViewComponents.html#ae4003297f6bf60244afe0fc207c63dad">WebCFace::ViewComponents::text</a>(文字列)</code> の他、ostreamでフォーマット可能なデータはそのまま渡して文字列化できます</p>
-<h2><a class="anchor" id="autotoc_md26"></a>
+<p>文字列です。そのまま表示します。 <code><a class="el" href="namespaceWebCFace_1_1ViewComponents.html#ae4003297f6bf60244afe0fc207c63dad" title="textコンポーネント">WebCFace::ViewComponents::text</a>(文字列)</code> の他、ostreamでフォーマット可能なデータはそのまま渡して文字列化できます</p>
+<p>View::add()関数, set()関数では数値やbool値は文字列に変換されます。</p>
+<p>以下はいずれも「hello」という文字列を表示します。 </p><div class="fragment"><div class="line">v.<a class="code hl_function" href="classWebCFace_1_1View.html#aef5571129416d10663005ff406ea643f">add</a>(<span class="stringliteral">&quot;hello&quot;</span>);</div>
+<div class="line">v &lt;&lt; <span class="stringliteral">&quot;hello&quot;</span>;</div>
+<div class="line">v &lt;&lt; <span class="stringliteral">&quot;he&quot;</span> &lt;&lt; <span class="stringliteral">&quot;llo&quot;</span>;</div>
+<div class="line"><span class="keyword">using namespace </span><a class="code hl_namespace" href="namespaceWebCFace_1_1ViewComponents.html">WebCFace::ViewComponents</a>;</div>
+<div class="line">v.<a class="code hl_function" href="classWebCFace_1_1View.html#aef5571129416d10663005ff406ea643f">add</a>(text(<span class="stringliteral">&quot;hello&quot;</span>));</div>
+<div class="line">v &lt;&lt; text(<span class="stringliteral">&quot;hello&quot;</span>);</div>
+<div class="ttc" id="anamespaceWebCFace_1_1ViewComponents_html"><div class="ttname"><a href="namespaceWebCFace_1_1ViewComponents.html">WebCFace::ViewComponents</a></div><div class="ttdef"><b>Definition</b> view.h:86</div></div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md30"></a>
 newLine</h2>
-<p>改行します。 <code><a class="el" href="namespaceWebCFace_1_1ViewComponents.html#ab72da582724c98c1e879cadbacc78663">WebCFace::ViewComponents::newLine()</a></code> の他、<code>std::endl</code>や<code>"\n"</code>でも改行できます</p>
-<h2><a class="anchor" id="autotoc_md27"></a>
+<p>改行します。 <code><a class="el" href="namespaceWebCFace_1_1ViewComponents.html#ab72da582724c98c1e879cadbacc78663" title="newLineコンポーネント">WebCFace::ViewComponents::newLine()</a></code> の他、<code>std::endl</code>や<code>"\n"</code>でも改行できます</p>
+<p>文字列中に<code>\n</code>があるとそこで改行されます。 以下はいずれも「hello」を2行表示します。 </p><div class="fragment"><div class="line">v.<a class="code hl_function" href="classWebCFace_1_1View.html#aef5571129416d10663005ff406ea643f">add</a>(<span class="stringliteral">&quot;hello\nhello&quot;</span>);</div>
+<div class="line">v.<a class="code hl_function" href="classWebCFace_1_1View.html#aef5571129416d10663005ff406ea643f">add</a>(<span class="stringliteral">&quot;hello&quot;</span>).<a class="code hl_function" href="classWebCFace_1_1View.html#aef5571129416d10663005ff406ea643f">add</a>(<span class="stringliteral">&quot;\n&quot;</span>).<a class="code hl_function" href="classWebCFace_1_1View.html#aef5571129416d10663005ff406ea643f">add</a>(<span class="stringliteral">&quot;hello&quot;</span>);</div>
+<div class="line">v &lt;&lt; <span class="stringliteral">&quot;hello\nhello&quot;</span>;</div>
+<div class="line">v &lt;&lt; <span class="stringliteral">&quot;hello&quot;</span> &lt;&lt; std::endl &lt;&lt; <span class="stringliteral">&quot;hello&quot;</span>;</div>
+<div class="line"><span class="keyword">using namespace </span><a class="code hl_namespace" href="namespaceWebCFace_1_1ViewComponents.html">WebCFace::ViewComponents</a>;</div>
+<div class="line">v.<a class="code hl_function" href="classWebCFace_1_1View.html#aef5571129416d10663005ff406ea643f">add</a>(text(<span class="stringliteral">&quot;hello&quot;</span>)).<a class="code hl_function" href="classWebCFace_1_1View.html#aef5571129416d10663005ff406ea643f">add</a>(newLine()).<a class="code hl_function" href="classWebCFace_1_1View.html#aef5571129416d10663005ff406ea643f">add</a>(text(<span class="stringliteral">&quot;hello&quot;</span>));</div>
+<div class="line">v &lt;&lt; text(<span class="stringliteral">&quot;hello&quot;</span>) &lt;&lt; newLine() &lt;&lt; text(<span class="stringliteral">&quot;hello&quot;</span>);</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md31"></a>
 button</h2>
 <p>ボタンを表示します。</p>
 <p>第2引数に関数を登録済みの<a class="el" href="md_30__func.html">Funcオブジェクト</a>、または関数を設定することでクリック時の動作を設定できます</p>
-<p>(AnonymousFuncオブジェクトを渡せるようにする予定だが未実装) </p><div class="fragment"><div class="line"><a class="code hl_function" href="namespaceWebCFace_1_1ViewComponents.html#a818c39acf0a23a489c00b0b3327881db">WebCFace::ViewComponents::button</a>(<span class="stringliteral">&quot;表示する文字列&quot;</span>, wcli.func(<span class="stringliteral">&quot;func name&quot;</span>));</div>
-<div class="line"><span class="comment">// WebCFace::ViewComponents::button(&quot;表示する文字列&quot;, wcli.func([](){ /* ... */ })); 未実装</span></div>
-<div class="line"><a class="code hl_function" href="namespaceWebCFace_1_1ViewComponents.html#a818c39acf0a23a489c00b0b3327881db">WebCFace::ViewComponents::button</a>(<span class="stringliteral">&quot;表示する文字列&quot;</span>, [](){ <span class="comment">/* ... */</span> });</div>
-<div class="ttc" id="anamespaceWebCFace_1_1ViewComponents_html_a818c39acf0a23a489c00b0b3327881db"><div class="ttname"><a href="namespaceWebCFace_1_1ViewComponents.html#a818c39acf0a23a489c00b0b3327881db">WebCFace::ViewComponents::button</a></div><div class="ttdeci">ViewComponent button(const std::string &amp;text, const T &amp;func)</div><div class="ttdef"><b>Definition</b> view.h:95</div></div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md28"></a>
+<p>(AnonymousFuncオブジェクトを渡せるようにする予定だが未実装) </p><div class="fragment"><div class="line"><span class="keyword">using namespace </span><a class="code hl_namespace" href="namespaceWebCFace_1_1ViewComponents.html">WebCFace::ViewComponents</a>;</div>
+<div class="line">v.<a class="code hl_function" href="classWebCFace_1_1View.html#aef5571129416d10663005ff406ea643f">add</a>(button(<span class="stringliteral">&quot;表示する文字列&quot;</span>, wcli.func(<span class="stringliteral">&quot;func name&quot;</span>)));</div>
+<div class="line"><span class="comment">// v.add(button(&quot;表示する文字列&quot;, wcli.func([](){ /* ... */ }))); 未実装</span></div>
+<div class="line">v.<a class="code hl_function" href="classWebCFace_1_1View.html#aef5571129416d10663005ff406ea643f">add</a>(button(<span class="stringliteral">&quot;表示する文字列&quot;</span>, [](){ <span class="comment">/* ... */</span> }));</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md32"></a>
 プロパティ</h2>
 <p>文字色や背景色など各Componentに共通のプロパティがあります。( <a class="el" href="classWebCFace_1_1ViewComponent.html" title="Viewに表示する要素です">WebCFace::ViewComponent</a> を参照)</p>
-<h1><a class="anchor" id="autotoc_md29"></a>
+<p>C++では </p><div class="fragment"><div class="line">button(<span class="stringliteral">&quot;文字列&quot;</span>, func).<a class="code hl_function" href="classWebCFace_1_1ViewComponent.html#a8706caeec86b7fd2c88d0cf36f62b84d">textColor</a>(WebCFace::ViewColor::white).bgColor(WebCFace::ViewColor::red)</div>
+<div class="ttc" id="aclassWebCFace_1_1ViewComponent_html_a8706caeec86b7fd2c88d0cf36f62b84d"><div class="ttname"><a href="classWebCFace_1_1ViewComponent.html#a8706caeec86b7fd2c88d0cf36f62b84d">WebCFace::ViewComponent::textColor</a></div><div class="ttdeci">ViewColor textColor() const</div><div class="ttdoc">文字色を取得</div><div class="ttdef"><b>Definition</b> view.h:72</div></div>
+</div><!-- fragment --><p> のようにメソッドチェーンして指定できます。</p>
+<p>Pythonでは </p><div class="fragment"><div class="line">button(<span class="stringliteral">&quot;文字列&quot;</span>, func, text_color=ViewColor.WHITE, bg_color=ViewColor.RED)</div>
+</div><!-- fragment --><p> のようにキーワード引数で設定できます。</p>
+<p>JavaScriptでは引数にオブジェクトを渡して </p><div class="fragment"><div class="line">button(&quot;文字列&quot;, func, { textColor: viewColor.white, bgColor: viewColor.red })</div>
+</div><!-- fragment --><p> のように指定できます。</p>
+<h1><a class="anchor" id="autotoc_md33"></a>
 受信</h1>
-<p>ValueやTextと同様、 View::tryGet() で受信した値を取得できます。 (これを使うのはViewを表示するアプリを作る場合などですかね)</p>
-<p>初回の呼び出しではまだ受信していないためstd::nulloptを返します。 その後sync()するとサーバーにリクエストが送信され、それ以降値が得られるようになります。</p>
+<p>ValueやTextと同様、 View::tryGet() で受信したViewデータを取得できます。 (これを使うのはViewを表示するアプリを作る場合などですかね)</p>
+<p>Viewデータは ViewComponent のリストとして得られます。</p>
 <p>View::get() はstd::nulloptの代わりにデフォルト値を返す点以外は同じです。</p>
-<h1><a class="anchor" id="autotoc_md30"></a>
+<h1><a class="anchor" id="autotoc_md34"></a>
 受信イベント</h1>
-<p>View::appendListener() などで受信したデータが変化したときにコールバックを呼び出すことができます</p>
-<p>データが変化したどうかに関わらず sync() されたときにコールバックを呼び出したい場合は Member::onSync() が使えます</p>
-<p>また、 View::time() でその値が送信されたとき(sync()されたとき)の時刻が得られます。 </p>
+<p>View::appendListener() で受信したデータが変化したときにコールバックを呼び出すことができます。 (Pythonでは View.signal)</p>
+<p>データが変化したどうかに関わらずそのMemberがsync()したときにコールバックを呼び出したい場合は Member::onSync() が使えます</p>
+<p><a class="el" href="md_11__text.html">Text</a> ←前 | 次→ <a class="el" href="md_30__func.html">Func</a> </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Oct 27 2023 16:39:14 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Sat Nov 18 2023 08:32:12 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

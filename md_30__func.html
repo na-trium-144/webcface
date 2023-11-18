@@ -110,35 +110,60 @@ $(document).ready(function(){initNavTree('md_30__func.html',''); initResizable()
   <div class="headertitle"><div class="title">Func, AnonymousFunc</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md31"></a> API Reference → <a class="el" href="classWebCFace_1_1Func.html" title="関数1つを表すクラス">WebCFace::Func</a>, <a class="el" href="classWebCFace_1_1AnonymousFunc.html">WebCFace::AnonymousFunc</a></p>
-<p>別クライアントから呼び出せる関数の登録をします。</p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md35"></a> API Reference → <a class="el" href="classWebCFace_1_1Func.html" title="関数1つを表すクラス">WebCFace::Func</a>, <a class="el" href="classWebCFace_1_1AnonymousFunc.html" title="名前を指定せず先に関数を登録するFunc">WebCFace::AnonymousFunc</a></p>
+<p>他Memberから呼び出せる関数の登録、 また他Memberの関数の呼び出しができます。</p>
 <p>Member::func() でFuncクラスのオブジェクトが得られます </p><div class="fragment"><div class="line"><a class="code hl_class" href="classWebCFace_1_1Func.html">WebCFace::Func</a> func_hoge = wcli.<a class="code hl_function" href="classWebCFace_1_1Func.html#aa8fab40ead35fa8e761986d5f4000a5c">member</a>(<span class="stringliteral">&quot;a&quot;</span>).<a class="code hl_function" href="classWebCFace_1_1Member.html#a6bea9517f461ddc114dfbc663f1dcd3b">func</a>(<span class="stringliteral">&quot;hoge&quot;</span>);</div>
 <div class="ttc" id="aclassWebCFace_1_1Func_html"><div class="ttname"><a href="classWebCFace_1_1Func.html">WebCFace::Func</a></div><div class="ttdoc">関数1つを表すクラス</div><div class="ttdef"><b>Definition</b> func.h:31</div></div>
 <div class="ttc" id="aclassWebCFace_1_1Func_html_aa8fab40ead35fa8e761986d5f4000a5c"><div class="ttname"><a href="classWebCFace_1_1Func.html#aa8fab40ead35fa8e761986d5f4000a5c">WebCFace::Func::member</a></div><div class="ttdeci">Member member() const</div><div class="ttdoc">Memberを返す</div><div class="ttdef"><b>Definition</b> field.cc:7</div></div>
-<div class="ttc" id="aclassWebCFace_1_1Member_html_a6bea9517f461ddc114dfbc663f1dcd3b"><div class="ttname"><a href="classWebCFace_1_1Member.html#a6bea9517f461ddc114dfbc663f1dcd3b">WebCFace::Member::func</a></div><div class="ttdeci">Func func(const std::string &amp;field) const</div><div class="ttdoc">このmemberの指定した名前のfuncを参照する。</div><div class="ttdef"><b>Definition</b> member.cc:14</div></div>
+<div class="ttc" id="aclassWebCFace_1_1Member_html_a6bea9517f461ddc114dfbc663f1dcd3b"><div class="ttname"><a href="classWebCFace_1_1Member.html#a6bea9517f461ddc114dfbc663f1dcd3b">WebCFace::Member::func</a></div><div class="ttdeci">Func func(const std::string &amp;field) const</div><div class="ttdoc">funcを参照する。</div><div class="ttdef"><b>Definition</b> member.cc:16</div></div>
 </div><!-- fragment --><p>Member::funcs() でそのMemberが送信しているfuncのリストが得られます </p><div class="fragment"><div class="line"><span class="keywordflow">for</span>(<span class="keyword">const</span> <a class="code hl_class" href="classWebCFace_1_1Func.html">WebCFace::Func</a> &amp;v: wcli.member(<span class="stringliteral">&quot;a&quot;</span>).funcs()){</div>
 <div class="line">    <span class="comment">// ...</span></div>
 <div class="line">}</div>
 </div><!-- fragment --><p>Member::onFuncEntry() で新しくデータが追加されたときのコールバックを設定できます </p><div class="fragment"><div class="line">wcli.member(<span class="stringliteral">&quot;a&quot;</span>).onFuncEntry().appendListener([](<a class="code hl_class" href="classWebCFace_1_1Func.html">WebCFace::Func</a> v){ <span class="comment">/* ... */</span> });</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md32"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md36"></a>
 関数の登録</h1>
 <p>自分自身の名前のMemberからFuncオブジェクトを作り、 Func::set() で関数を代入してください。 関数はstd::functionに変換できるものであればなんでもokです。</p>
 <p>引数、戻り値はint, double, bool, std::string型であればいくつでも自由に指定できます。 </p><div class="fragment"><div class="line">wcli.func(<span class="stringliteral">&quot;hoge&quot;</span>).set([](){ <span class="comment">/* ... */</span> });</div>
 <div class="line">wcli.func(<span class="stringliteral">&quot;fuga&quot;</span>).set([](<span class="keywordtype">int</span> a, <span class="keyword">const</span> std::string &amp;b){ <span class="keywordflow">return</span> 3.1415; });</div>
 </div><!-- fragment --><p>set() の代わりに代入演算子(Value::operator=)でも同様のことができます</p>
-<p>関数の設定後 wcli.sync() することで他のクライアントからその関数の情報を見ることができるようになります。</p>
-<h2><a class="anchor" id="autotoc_md33"></a>
+<p>Pythonでは引数と戻り値のアノテーションをすると自動で取得されます。 </p><div class="fragment"><div class="line"><span class="keyword">def </span>hoge(a: int, b: str) -&gt; float:</div>
+<div class="line">    <span class="keywordflow">return</span> 3.1415</div>
+<div class="line"> </div>
+<div class="line">wcli.func(<span class="stringliteral">&quot;hoge&quot;</span>).set(hoge)</div>
+<div class="line">wcli.func(<span class="stringliteral">&quot;lambda&quot;</span>).set(<span class="keyword">lambda</span> x: <span class="keywordflow">return</span> x + 5) <span class="comment"># ラムダ式なども可</span></div>
+</div><!-- fragment --><p> また、setを明示的に呼び出す代わりにfuncオブジェクトをデコレータにすると簡単に登録できます。 この場合func()の引数に関数名を書くのを省略すると実際の関数の名前が自動で取得され設定されます。 (明示的に関数名を渡しても良い) </p><div class="fragment"><div class="line"><span class="preprocessor">@wcli.func()</span></div>
+<div class="line"><span class="keyword">def </span>hoge(a: int, b: str) -&gt; float:</div>
+<div class="line">    <span class="keywordflow">return</span> 3.1415</div>
+</div><!-- fragment --><p>同じ名前のFuncに複数回関数をセットすると上書きされ、後に登録した関数のみが呼び出されます。 ただし引数や戻り値の型などの情報は更新されず、最初の関数のものと同じになります。</p>
+<h2><a class="anchor" id="autotoc_md37"></a>
 引数</h2>
-<p>Func::setArgs() で引数名などの情報をセットすることができます。 ただし関数をセットする前に呼ぶとエラーになります。 また、実際の関数の引数と個数が一致していなければエラーになります。 </p><div class="fragment"><div class="line">wcli.func(<span class="stringliteral">&quot;fuga&quot;</span>).setArgs(){</div>
+<p>Func::setArgs() で引数名などの情報や、引数に設定する条件をセットすることができます。 型情報を取得できないJavaScript(TypeScript含む)の場合と、Pythonでアノテーションをしなかった場合はここで型情報も指定する必要があります。 設定可能な情報の一覧は <a class="el" href="classWebCFace_1_1Common_1_1Arg.html" title="引数の情報を表す。">WebCFace::Arg</a> を参照</p>
+<p>C++では Func.setArgs() で指定できます。 関数をセットする前に呼ぶとエラーになります。 また、実際の関数の引数と個数が一致していなければエラーになります。 </p><div class="fragment"><div class="line">wcli.func(<span class="stringliteral">&quot;fuga&quot;</span>).setArgs(){</div>
 <div class="line">    <a class="code hl_class" href="classWebCFace_1_1Common_1_1Arg.html">WebCFace::Arg</a>(<span class="stringliteral">&quot;a&quot;</span>).<a class="code hl_function" href="classWebCFace_1_1Common_1_1Arg.html#a2e31ddffe3f62572d218e8e028423cfa">init</a>(100),</div>
 <div class="line">    <a class="code hl_class" href="classWebCFace_1_1Common_1_1Arg.html">WebCFace::Arg</a>(<span class="stringliteral">&quot;b&quot;</span>).<a class="code hl_function" href="classWebCFace_1_1Common_1_1Arg.html#af705bc9b6f2e309a2ecbabf78abdc919">option</a>({<span class="stringliteral">&quot;aaa&quot;</span>, <span class="stringliteral">&quot;bbb&quot;</span>, <span class="stringliteral">&quot;ccc&quot;</span>}),</div>
 <div class="line">}</div>
 <div class="ttc" id="aclassWebCFace_1_1Common_1_1Arg_html"><div class="ttname"><a href="classWebCFace_1_1Common_1_1Arg.html">WebCFace::Arg</a></div><div class="ttdoc">引数の情報を表す。</div><div class="ttdef"><b>Definition</b> func.h:22</div></div>
 <div class="ttc" id="aclassWebCFace_1_1Common_1_1Arg_html_a2e31ddffe3f62572d218e8e028423cfa"><div class="ttname"><a href="classWebCFace_1_1Common_1_1Arg.html#a2e31ddffe3f62572d218e8e028423cfa">WebCFace::Common::Arg::init</a></div><div class="ttdeci">std::optional&lt; ValAdaptor &gt; init() const</div><div class="ttdoc">デフォルト値を取得する。</div><div class="ttdef"><b>Definition</b> func.h:69</div></div>
 <div class="ttc" id="aclassWebCFace_1_1Common_1_1Arg_html_af705bc9b6f2e309a2ecbabf78abdc919"><div class="ttname"><a href="classWebCFace_1_1Common_1_1Arg.html#af705bc9b6f2e309a2ecbabf78abdc919">WebCFace::Common::Arg::option</a></div><div class="ttdeci">std::vector&lt; ValAdaptor &gt; option() const</div><div class="ttdoc">引数の選択肢を取得する。</div><div class="ttdef"><b>Definition</b> func.h:98</div></div>
+</div><!-- fragment --><p>Pythonではset()関数の引数(デコレータとして使う場合はfunc()の引数)にオプションで args と return_type を渡すことで指定できます。 関数に型アノテーションがある場合はここで型の指定は不要です。 また引数名も自動で取得されるので不要ですが明示的に指定することもできます。 </p><div class="fragment"><div class="line">wcli.func(<span class="stringliteral">&quot;hoge&quot;</span>).set(hoge, return_type=float, args=[</div>
+<div class="line">    Arg(type=int, init=100),</div>
+<div class="line">    Arg(type=str, option=[<span class="stringliteral">&quot;aaa&quot;</span>, <span class="stringliteral">&quot;bbb&quot;</span>, <span class="stringliteral">&quot;ccc&quot;</span>]),</div>
+<div class="line">])</div>
+</div><!-- fragment --><p>JavaScriptでも同様にset関数の引数で指定します。 </p><div class="fragment"><div class="line">wcli.func(&quot;hoge&quot;).set(hoge, valType.float_, [</div>
+<div class="line">    { name: &quot;a&quot;, type: valType.int_, init: 100 },</div>
+<div class="line">    { name: &quot;b&quot;, type: valType.string_, option: [&quot;aaa&quot;, &quot;bbb&quot;, &quot;ccc&quot;] },</div>
+<div class="line">]);</div>
 </div><!-- fragment --><p>他のクライアントの関数の情報は Func::returnType() や Func::args() で取得できます。</p>
-<h2><a class="anchor" id="autotoc_md34"></a>
-実行条件</h2>
+<h2><a class="anchor" id="autotoc_md38"></a>
+hidden属性</h2>
+<p>関数の設定後 Client::sync() することで他のクライアントからその関数の情報を見ることができるようになります。</p>
+<p>hidden属性をつけると他のMemberやWebUIから関数の存在を隠すことができます。 Client::funcs()でその関数の存在を確認したりFunc::args()などでの情報の取得ができなくなります。 名前がわかっていれば他Memberからでも実行は可能です。</p>
+<ul>
+<li>C++では func.hidden(true) で設定できます。</li>
+<li>JavaScript, Pythonではset()関数(Pythonデコレータの場合はfunc())の引数に指定することで設定できます。</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md39"></a>
+実行条件 (C++)</h2>
 <p>デフォルトでは、呼び出された関数は別スレッドで非同期に実行されます。 これをメインスレッドと同期させたい場合は実行条件を設定することができます。 </p><div class="fragment"><div class="line">wcli.func(<span class="stringliteral">&quot;fuga&quot;</span>).setRunCondOnSync();</div>
 </div><!-- fragment --><p> とすると呼び出された関数の実行は wcli.sync() のときに行われます。</p>
 <div class="fragment"><div class="line">wcli.func(<span class="stringliteral">&quot;fuga&quot;</span>).setRunCondScopeGuard&lt;ScopeGuard&gt;();</div>
@@ -148,24 +173,33 @@ $(document).ready(function(){initNavTree('md_30__func.html',''); initResizable()
 </div><!-- fragment --><p> とするとデフォルトの条件を設定できます。</p>
 <p>デフォルトを設定した後個別の関数について条件を設定することもできますし、 </p><div class="fragment"><div class="line">wcli.func(<span class="stringliteral">&quot;fuga&quot;</span>).setRunCondNone();</div>
 </div><!-- fragment --><p> で条件を何も課さないようにできます。</p>
-<h1><a class="anchor" id="autotoc_md35"></a>
+<h1><a class="anchor" id="autotoc_md40"></a>
 関数の実行</h1>
 <p>Func::run() で関数を実行できます。引数を渡すこともでき、戻り値もそのまま返ってきます。 他クライアントの関数も同様にrun()で実行させることができます。</p>
 <p>実行した関数が例外を投げた場合、また引数の個数が一致しない場合などはrun()が例外を投げます。 </p><div class="fragment"><div class="line"><span class="keywordtype">double</span> ans = wcli.member(<span class="stringliteral">&quot;a&quot;</span>).func(<span class="stringliteral">&quot;hoge&quot;</span>).run(1, <span class="stringliteral">&quot;aa&quot;</span>);</div>
-</div><!-- fragment --><p> operator() でも同様に実行できます。</p>
+</div><!-- fragment --><p> (C++, Python) Funcオブジェクトに()と引数をつけて直接呼び出すことでも同様に実行できます。 (C++の<code>operator()</code>, Pythonの<code>__call__</code>)</p>
 <p>Func::runAsync() は関数の実行を開始し、終了を待たずに続行します。 戻り値として AsyncFuncResult クラスのオブジェクトが返り、後から関数の戻り値や例外を取得できます。 </p><div class="fragment"><div class="line">AsyncFuncResult res = wcli.member(<span class="stringliteral">&quot;a&quot;</span>).func(<span class="stringliteral">&quot;hoge&quot;</span>).runAsync(1, <span class="stringliteral">&quot;aa&quot;</span>);</div>
 <div class="line"><span class="keywordtype">double</span> ans = res.result.get();</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md36"></a>
+</div><!-- fragment --><p> JavaScriptではrun()はなく、runAsync()のみ使えます。</p>
+<p>AsyncFuncResultからは started と result が取得できます。 started は対象の関数が存在して実行が開始したときにtrueになり、存在しなければ即座にfalseとなります。 どちらも返ってこない場合は通信に失敗しています。</p>
+<p>result は実行が完了したときに返ります。関数の戻り値、または発生した例外の情報を含んでいます。</p>
+<ul>
+<li>C++ではstartedとresultはstd::shared_futureです。取得できるまで待機するならget(), ブロックせず完了したか確認したければwait_for()などが使えます。例外はresult.get()が投げます。</li>
+<li>Pythonではstartedとresultは取得できるまで待機するgetterです。例外の場合はresultの取得時に投げます。また、取得可能になったかどうかをstarted_readyとresult_readyで取得できます。</li>
+<li>JavaScriptではstartedとresultはPromiseです。awaitで待機したり、then()とcatch()でコールバックを設定できます。</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md41"></a>
 AnonymousFunc</h1>
 <p>名前を指定しないFuncです。 <a class="el" href="md_13__view.html">View</a>のボタンなどのコールバックに関数を設定したい場合に使うことができます。</p>
-<p>wcli.func() で取得できるようにする予定だが未実装。(現在はViewComponentの内部でのみ使われている) </p>
+<p>wcli.func() で取得できるようにする予定だが未実装。(現在はViewComponentの内部でのみ使われている)</p>
+<p><a class="el" href="md_13__view.html">View</a> ←前 | 次→ <a class="el" href="md_40__log.html">Log</a> </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Oct 27 2023 16:39:14 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Sat Nov 18 2023 08:32:12 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

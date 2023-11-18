@@ -119,6 +119,9 @@ $(document).ready(function(){initNavTree('classWebCFace_1_1AnonymousFunc.html','
 </div><!--header-->
 <div class="contents">
 
+<p>名前を指定せず先に関数を登録するFunc  
+ <a href="classWebCFace_1_1AnonymousFunc.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="func_8h_source.html">webcface/func.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for AnonymousFunc:</div>
@@ -142,6 +145,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a446a0b0d6d44a4f837bc230612a8d98d"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1AnonymousFunc.html#a446a0b0d6d44a4f837bc230612a8d98d">AnonymousFunc</a> (const T &amp;func)</td></tr>
 <tr class="separator:a446a0b0d6d44a4f837bc230612a8d98d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6b1341b3301a0eff9355eae557939f94" id="r_a6b1341b3301a0eff9355eae557939f94"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1AnonymousFunc.html#a6b1341b3301a0eff9355eae557939f94">lockTo</a> (<a class="el" href="classWebCFace_1_1Func.html">Func</a> &amp;target)</td></tr>
+<tr class="memdesc:a6b1341b3301a0eff9355eae557939f94"><td class="mdescLeft">&#160;</td><td class="mdescRight">targetに関数を移動  <br /></td></tr>
 <tr class="separator:a6b1341b3301a0eff9355eae557939f94"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac1ef6049f1d5ffadba93780f4fdf41a9" id="r_ac1ef6049f1d5ffadba93780f4fdf41a9"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:ac1ef6049f1d5ffadba93780f4fdf41a9"><td class="memTemplItemLeft" align="right" valign="top">auto &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1Func.html#ac1ef6049f1d5ffadba93780f4fdf41a9">set</a> (const T &amp;func)</td></tr>
@@ -230,7 +234,9 @@ Private Attributes</h2></td></tr>
 <tr class="memitem:ae76af49a75f2e8e46aea1d4d1d7e9e5a" id="r_ae76af49a75f2e8e46aea1d4d1d7e9e5a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1AnonymousFunc.html#ae76af49a75f2e8e46aea1d4d1d7e9e5a">base_init</a> = false</td></tr>
 <tr class="separator:ae76af49a75f2e8e46aea1d4d1d7e9e5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>名前を指定せず先に関数を登録するFunc </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a5f2468f1dbcfc079190a33a37c0ab2d0" name="a5f2468f1dbcfc079190a33a37c0ab2d0"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5f2468f1dbcfc079190a33a37c0ab2d0">&#9670;&#160;</a></span>AnonymousFunc() <span class="overload">[1/3]</span></h2>
 
@@ -504,6 +510,8 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
+<p>targetに関数を移動 </p>
+
 </div>
 </div>
 <a id="aa8fab40ead35fa8e761986d5f4000a5c" name="aa8fab40ead35fa8e761986d5f4000a5c"></a>
@@ -644,8 +652,8 @@ template&lt;typename... Args&gt; </div>
 </div><div class="memdoc">
 
 <p>関数を実行する (同期) </p>
-<p>selfの関数の場合、このスレッドで直接実行する 例外が発生した場合そのままthrow, 関数が存在しない場合 <a class="el" href="structWebCFace_1_1FuncNotFound.html">FuncNotFound</a> をthrowする</p>
-<p>リモートの場合、関数呼び出しを送信し結果が返ってくるまで待機 例外が発生した場合 runtime_error, 関数が存在しない場合 <a class="el" href="structWebCFace_1_1FuncNotFound.html">FuncNotFound</a> をthrowする </p>
+<p>selfの関数の場合、このスレッドで直接実行する 例外が発生した場合そのままthrow, 関数が存在しない場合 <a class="el" href="structWebCFace_1_1FuncNotFound.html" title="Funcの実行ができなかった場合発生する例外">FuncNotFound</a> をthrowする</p>
+<p>リモートの場合、関数呼び出しを送信し結果が返ってくるまで待機 例外が発生した場合 runtime_error, 関数が存在しない場合 <a class="el" href="structWebCFace_1_1FuncNotFound.html" title="Funcの実行ができなかった場合発生する例外">FuncNotFound</a> をthrowする </p>
 
 </div>
 </div>
@@ -812,7 +820,6 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 
 <p>関数からFuncInfoを構築しセットする </p>
-<p>Tは任意の関数 一度セットしたFuncに別の関数をセットすると、それ以降実行される関数は新しい関数になるが、 引数や戻り値の情報などは更新されない </p>
 
 </div>
 </div>
@@ -1044,7 +1051,7 @@ template&lt;typename ScopeGuard &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>フィールド名 <a class="el" href="classWebCFace_1_1Member.html" title="他のクライアントを参照することを表すクラス">Member</a> などフィールド名が不要なクラスでは使用しない </p>
+<p>フィールド名 <a class="el" href="classWebCFace_1_1Member.html" title="Memberを指すクラス">Member</a> などフィールド名が不要なクラスでは使用しない </p>
 
 </div>
 </div>
@@ -1103,7 +1110,7 @@ template&lt;typename ScopeGuard &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceWebCFace.html">WebCFace</a></li><li class="navelem"><a class="el" href="classWebCFace_1_1AnonymousFunc.html">AnonymousFunc</a></li>
-    <li class="footer">Generated on Fri Oct 27 2023 16:39:14 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Sat Nov 18 2023 08:32:12 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

@@ -118,6 +118,9 @@ $(document).ready(function(){initNavTree('classWebCFace_1_1AsyncFuncResult.html'
 </div><!--header-->
 <div class="contents">
 
+<p>非同期で実行した関数の実行結果を表す。  
+ <a href="classWebCFace_1_1AsyncFuncResult.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="func__result_8h_source.html">webcface/func_result.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for AsyncFuncResult:</div>
@@ -158,6 +161,7 @@ Private Member Functions</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
 <tr class="memitem:a1857b0e2073dee1ce8b4c840768c14fc" id="r_a1857b0e2073dee1ce8b4c840768c14fc"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1AsyncFuncResult.html#a1857b0e2073dee1ce8b4c840768c14fc">caller_id</a></td></tr>
+<tr class="memdesc:a1857b0e2073dee1ce8b4c840768c14fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">通し番号  <br /></td></tr>
 <tr class="separator:a1857b0e2073dee1ce8b4c840768c14fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa016fe422de903a6eea6baa1b6cbe866" id="r_aa016fe422de903a6eea6baa1b6cbe866"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1AsyncFuncResult.html#aa016fe422de903a6eea6baa1b6cbe866">caller</a></td></tr>
 <tr class="memdesc:aa016fe422de903a6eea6baa1b6cbe866"><td class="mdescLeft">&#160;</td><td class="mdescRight">呼び出し側member 通常は自身  <br /></td></tr>
@@ -177,13 +181,13 @@ Private Attributes</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="friends" name="friends"></a>
 Friends</h2></td></tr>
 <tr class="memitem:a87c6c86ed0896880400f89c8c88c3927" id="r_a87c6c86ed0896880400f89c8c88c3927"><td class="memItemLeft" align="right" valign="top">class&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1AsyncFuncResult.html#a87c6c86ed0896880400f89c8c88c3927">Func</a></td></tr>
-<tr class="memdesc:a87c6c86ed0896880400f89c8c88c3927"><td class="mdescLeft">&#160;</td><td class="mdescRight">promiseに書き込むことができるクラス  <br /></td></tr>
 <tr class="separator:a87c6c86ed0896880400f89c8c88c3927"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5db1c99e2c94b26278f3838c85cdb618" id="r_a5db1c99e2c94b26278f3838c85cdb618"><td class="memItemLeft" align="right" valign="top">class&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWebCFace_1_1AsyncFuncResult.html#a5db1c99e2c94b26278f3838c85cdb618">Client</a></td></tr>
 <tr class="separator:a5db1c99e2c94b26278f3838c85cdb618"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>非同期で実行した関数の実行結果を表す。 結果はshared_futureのget()で得られる。</p>
+<div class="textblock"><p>非同期で実行した関数の実行結果を表す。 </p>
+<p>結果はshared_futureのget()で得られる。</p>
 <p>リモートから呼び出しメッセージが送られてきた時非同期で実行して結果を送り返すのにもこれを利用する </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a6f4fa938681b956d22483197a1a0102b" name="a6f4fa938681b956d22483197a1a0102b"></a>
@@ -377,8 +381,6 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>promiseに書き込むことができるクラス </p>
-
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
@@ -425,7 +427,9 @@ Friends</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>通し番号 コンストラクタで設定する。実際はFuncResultStoreのvectorのindex </p>
+
+<p>通し番号 </p>
+<p>コンストラクタで設定する。 実際はFuncResultStoreのvectorのindex </p>
 
 </div>
 </div>
@@ -471,7 +475,7 @@ Friends</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>フィールド名 <a class="el" href="classWebCFace_1_1Member.html" title="他のクライアントを参照することを表すクラス">Member</a> などフィールド名が不要なクラスでは使用しない </p>
+<p>フィールド名 <a class="el" href="classWebCFace_1_1Member.html" title="Memberを指すクラス">Member</a> などフィールド名が不要なクラスでは使用しない </p>
 
 </div>
 </div>
@@ -510,7 +514,7 @@ Friends</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>関数の実行が完了した時戻り値が入る 例外が発生した場合例外が入る (→ get() で例外がthrowされる) </p>
+<p>関数の実行が完了した時戻り値が入る 例外が発生した場合例外が入る </p>
 
 </div>
 </div>
@@ -582,7 +586,7 @@ Friends</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceWebCFace.html">WebCFace</a></li><li class="navelem"><a class="el" href="classWebCFace_1_1AsyncFuncResult.html">AsyncFuncResult</a></li>
-    <li class="footer">Generated on Fri Oct 27 2023 16:39:14 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Sat Nov 18 2023 08:32:12 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

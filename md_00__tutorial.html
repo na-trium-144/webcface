@@ -165,29 +165,32 @@ log</h2>
 <div class="line">piyo</div>
 <div class="line">[2023-10-19 19:40:38.447] [webcface-send] [info] piyo</div>
 </div><!-- fragment --><p> <img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_logs.png" alt="tutorial_logs" class="inline"/></p>
-<h1><a class="anchor" id="autotoc_md8"></a>
+<h2><a class="anchor" id="autotoc_md8"></a>
+view</h2>
+<p>現在コマンドラインからは使用できませんが、図のようにテキストやボタンなどの配置を指定して表示させる機能があります。</p>
+<p><img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_view.png" alt="tutorial_view.png" class="inline"/></p>
+<h2><a class="anchor" id="autotoc_md9"></a>
+func</h2>
+<p>コマンドラインからは利用できませんが、関数をwebcfaceに登録し他のクライアントやWebUIから呼び出すことができます。</p>
+<p><img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_func.png" alt="tutorial_func.png" class="inline"/></p>
+<h1><a class="anchor" id="autotoc_md10"></a>
 tools</h1>
 <p>webcface-toolsには<code>webcface-send</code>の他にもWebCFaceと通信して使うプログラムがいくつかあります。 詳しくは<a href="https://github.com/na-trium-144/webcface-tools">webcface-toolsのリポジトリ</a>を参照してください。</p>
-<h1><a class="anchor" id="autotoc_md9"></a>
+<h1><a class="anchor" id="autotoc_md11"></a>
 Clientプログラムを作る</h1>
 <p>C++でWebCFaceを使う場合は、次のようにCMakeでWebCFaceクライアントのライブラリとリンクすることができます。 </p><div class="fragment"><div class="line">find_package(webcface CONFIG REQUIRED)</div>
 <div class="line">target_link_libraries(target PRIVATE webcface::webcface)</div>
-</div><!-- fragment --><p>C++のソースコードでは<code><a class="el" href="webcface_8h.html">webcface/webcface.h</a></code>をインクルードし、 Client クラスのオブジェクトを作成してください。 WebCFaceとの各種通信の操作はこのClientクラスを通して行います。</p>
-<div class="fragment"><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="webcface_8h.html">webcface/webcface.h</a>&gt;</span></div>
-<div class="line"> </div>
-<div class="line"><a class="code hl_class" href="classWebCFace_1_1Client.html">WebCFace::Client</a> wcli(<span class="stringliteral">&quot;name of this client program&quot;</span>);</div>
-<div class="ttc" id="aclassWebCFace_1_1Client_html"><div class="ttname"><a href="classWebCFace_1_1Client.html">WebCFace::Client</a></div><div class="ttdoc">サーバーに接続するクライアント。</div><div class="ttdef"><b>Definition</b> client.h:16</div></div>
-<div class="ttc" id="awebcface_8h_html"><div class="ttname"><a href="webcface_8h.html">webcface.h</a></div></div>
-</div><!-- fragment --><p>Clientクラスの使い方は次ページ以降で説明します。</p>
-<p>また、<a href="https://github.com/na-trium-144/webcface/tree/main/src/example">src/example/</a> にサンプルのコードがあるので参考にしてください。 exampleはserverといっしょにインストールされており、<code>webcface-example-main</code>, <code>webcface-example-recv</code>コマンドで実行してみることができます。 mainは各種データの送信、recvはmainが送信したデータの受信とmainにある関数の呼び出しをするプログラムになっています。</p>
-<p>JavaScript用クライアントはこちら→ <a href="https://github.com/na-trium-144/webcface-js">webcface-js</a> </p>
+</div><!-- fragment --><p>C++のソースコードでは<code>&lt;<a class="el" href="webcface_8h.html">webcface/webcface.h</a>&gt;</code>をincludeしてください。 次ページ以降でC++での使い方を解説します。</p>
+<p><a href="https://github.com/na-trium-144/webcface/tree/main/src/example">src/example/</a> にサンプルのコードがあるので参考にしてください。 exampleはserverといっしょにインストールされており、<code>webcface-example-main</code>, <code>webcface-example-recv</code>コマンドで実行してみることができます。 mainは各種データの送信、recvはmainが送信したデータの受信とmainにある関数の呼び出しをするプログラムになっています。</p>
+<p>Python, JavaScriptのクライアントも使い方はだいたい同じです。 次ページ以降のC++での使い方を軽く読んだあとにPython、JavaScriptのリファレンスでC++との相違点を確認してください。</p>
+<p>次→ <a class="el" href="md_01__client.html">Client</a> </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Oct 27 2023 16:39:14 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Sat Nov 18 2023 08:32:12 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>
