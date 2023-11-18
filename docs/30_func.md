@@ -72,11 +72,12 @@ wcli.func("fuga").setArgs(){
 ```
 
 Pythonではset()関数の引数(デコレータとして使う場合はfunc()の引数)にオプションで args と return_type を渡すことで指定できます。
-(型アノテーションがある場合はここで型の指定は不要)
+関数に型アノテーションがある場合はここで型の指定は不要です。
+また引数名も自動で取得されるので不要ですが明示的に指定することもできます。
 ```py
 wcli.func("hoge").set(hoge, return_type=float, args=[
-	Arg("a", type=int, init=100),
-	Arg("b", type=str, option=["aaa", "bbb", "ccc"]),
+	Arg(type=int, init=100),
+	Arg(type=str, option=["aaa", "bbb", "ccc"]),
 ])
 ```
 

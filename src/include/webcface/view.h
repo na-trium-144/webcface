@@ -176,6 +176,10 @@ class View : protected Field, public EventTarget<View>, public std::ostream {
         return *this;
     }
     //! 文字列にフォーマットし、textコンポーネントとして追加
+    /*!
+     * std::ostream::operator<< でも同様の動作をするが、returnする型が異なる
+     * (std::ostream & を返すと operator<<(ViewComponent) が使えなくなる)
+     */
     template <typename T>
     View &operator<<(const T &rhs) {
         static_cast<std::ostream &>(*this) << rhs;
@@ -207,6 +211,9 @@ class View : protected Field, public EventTarget<View>, public std::ostream {
     }
 
     //! Viewの内容をclientに反映し送信可能にする (デストラクタで自動で呼ばれる)
-    View &sync() { return set(sb.components); }
+    View &sync() {
+        std::flush(*this);
+        return set(sb.components);
+    }
 };
 } // namespace WebCFace
