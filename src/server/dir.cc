@@ -45,9 +45,13 @@ std::filesystem::path getExeDir(const std::shared_ptr<spdlog::logger> &logger) {
 }
 std::string getStaticDir(const std::shared_ptr<spdlog::logger> &logger) {
     auto exe_dir = getExeDir(logger);
-    std::array<std::filesystem::path, 4> static_dirs = {
+    std::array<std::filesystem::path, 8> static_dirs = {
+        exe_dir / "dist",
+        exe_dir.parent_path() / "dist",
         exe_dir.parent_path() / "webui" / "dist",
+        exe_dir.parent_path().parent_path() / "dist",
         exe_dir.parent_path().parent_path() / "webui" / "dist",
+        exe_dir.parent_path().parent_path().parent_path() / "dist",
         exe_dir.parent_path().parent_path().parent_path() / "webui" / "dist",
         exe_dir.parent_path() / "share" / "webcface" / "dist",
     };
