@@ -42,5 +42,11 @@ class Log : protected Field, public EventTarget<Log, std::string> {
     std::vector<LogLine> get() const {
         return tryGet().value_or(std::vector<LogLine>{});
     }
+
+    Log &clear() {
+        dataLock()->log_store.setRecv(
+            member_, std::make_shared<std::vector<std::shared_ptr<LogLine>>>());
+        return *this;
+    }
 };
 } // namespace WebCFace

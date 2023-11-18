@@ -245,6 +245,18 @@ TEST_F(DataTest, logGet) {
     log("d").appendListener(callback<Log>());
     EXPECT_EQ(data_->log_store.transferReq(true).at("d"), true);
 }
+TEST_F(DataTest, logClear) {
+    using namespace std::chrono;
+    auto logs = std::make_shared<std::vector<std::shared_ptr<LogLine>>>(
+        std::vector<std::shared_ptr<LogLine>>{
+            std::make_shared<LogLine>(1, system_clock::now(), "a"),
+            std::make_shared<LogLine>(2, system_clock::now(), "b"),
+            std::make_shared<LogLine>(3, system_clock::now(), "c"),
+        });
+    data_->log_store.setRecv("a", logs);
+    log("a").clear();
+    EXPECT_EQ(log("a").tryGet().value().size(), 0);
+}
 TEST_F(DataTest, time) {
     auto t = std::chrono::system_clock::now();
     data_->sync_time_store.setRecv("a", t);

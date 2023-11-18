@@ -101,4 +101,7 @@ wcli.member("a").log().appendListener([](Log v){ /* ... */ });
 ```
 (Pythonでは Log.signal)
 
+Logオブジェクトにはこれまで受信したログデータがすべて含まれます。
+前回からの差分だけが必要な場合は、データの処理後に Log.clear() で受信したログデータをすべて削除することもできます。
+
 [Func](./30_func.md) ←前 | 次→ [Message](./90_message.md)
