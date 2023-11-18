@@ -1,3 +1,7 @@
+## [1.1.6] - 2023-11-18
+### Fixed
+* MacOSでbrew installするとexampleが動かないのを修正 (#89)
+
 ## [1.1.5] - 2023-11-18
 ### Changed
 * readmeとtutorialを改訂 (#67)
