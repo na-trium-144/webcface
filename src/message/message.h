@@ -114,9 +114,7 @@ struct PingStatusReq : public MessageBase<MessageKind::ping_status_req> {
  */
 struct Sync : public MessageBase<MessageKind::sync> {
     unsigned int member_id; //!< member id
-    //! unix時刻
-    /*! 1970/1/1 0:00(utc) からの経過ミリ秒数で表し、閏秒はカウントしない
-     */
+    //! 1970/1/1 0:00(utc) からの経過ミリ秒数で表し、閏秒はカウントしない
     std::uint64_t time;
     Sync(unsigned int member_id,
          const std::chrono::system_clock::time_point &time)
