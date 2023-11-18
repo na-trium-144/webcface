@@ -56,6 +56,7 @@ brew install webcface webcface-webui
 
 ### Build from source
 
+#### Requirements
 * c++20に対応したコンパイラが必要です
 * テスト済みの環境
 	* [![CMake Test (Linux GCC)](https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-linux-gcc.yml/badge.svg?branch=main)](https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-linux-gcc.yml) (gcc-10以上)
@@ -63,7 +64,53 @@ brew install webcface webcface-webui
 	* [![CMake Test (MacOS Clang)](https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-macos-clang.yml/badge.svg?branch=main)](https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-macos-clang.yml)
 	* [![CMake Test (Windows MSVC)](https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-windows-msvc.yml/badge.svg?branch=main)](https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-windows-msvc.yml)
 	* [![CMake Test (Windows MinGW64 GCC)](https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-windows-gcc.yml/badge.svg?branch=main)](https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-windows-gcc.yml)	(CMAKE_BUILD_TYPE=Debugだとリンクエラーになりました)
+* webcfaceは外部ライブラリとして [cinatra](https://github.com/qicosmos/cinatra), [eventpp](https://github.com/wqking/eventpp), [msgpack-cxx](https://github.com/msgpack/msgpack-c), [spdlog](https://github.com/gabime/spdlog), [cli11](https://github.com/CLIUtils/CLI11.git) を使用します。
+	* システムにインストールされてなければsubmoduleにあるソースコードをビルドしますが、eventpp, msgpack, spdlog に関してはインストールされていればそれを使用するのでビルドが速くなります
+
+<details><summary>Ubuntu 20.04, 22.04</summary>
+
 ```sh
+sudo apt install build-essential git cmake
+sudo apt install libspdlog-dev  # optional
+```
+
+ubuntu20.04の場合デフォルトのコンパイラ(gcc-9)ではビルドできないのでgcc-10にする必要があります
+```sh
+sudo apt install gcc-10
+export CC=gcc-10
+export CXX=g++-10
+```
+</details>
+
+<details><summary>Homebrew (MacOS, Linux)</summary>
+
+```sh
+brew install cmake
+brew install spdlog msgpack-cxx  # optional
+```
+</details>
+
+<details><summary>Visual Studio</summary>
+
+* Visual Studio と Git for Windows をインストールし、Developer command prompt からビルドすればいいはずです
+* インストール先は/usr/localではない
+* 以降のビルド手順でsudoが不要です
+</details>
+
+<details><summary>MSYS2</summary>
+
+```sh
+pacman -S git mingw-w64-x86_64-gcc mingw-w64-x86_64-cmake make
+pacman -S mingw-w64-x86_64-spdlog  # optional
+```
+* 以降のビルド手順でsudoが不要です
+</details>
+
+### Build
+
+```sh
+git clone https://github.com/na-trium-144/webcface
+cd webcface
 git submodule update --init --recursive
 cmake -Bbuild
 cmake --build build
@@ -75,11 +122,20 @@ sudo cmake --build build -t install
 	* `-DWEBCFACE_INSTALL=on`でtergetのinstallをします(submoduleの場合デフォルトでoff)
 	* `-DWEBCFACE_TEST=on`でtestをビルドします(デフォルトでoff)
 		* テストが通らない場合テスト中の通信の待機時間を`-DWEBCFACE_TEST_TIMEOUT=100`などと伸ばすとうまく行く場合があります(デフォルト=10(ms))
-* その後、[webuiのReleases](https://github.com/na-trium-144/webcface-webui/releases) からビルド済みのtar.gzのアーカイブをダウンロードして webui/dist/ (installして使う場合は /path/to/prefix/share/webcface/dist) として展開してください
-* webcfaceは外部ライブラリとして [cinatra](https://github.com/qicosmos/cinatra), [eventpp](https://github.com/wqking/eventpp), [msgpack-cxx](https://github.com/msgpack/msgpack-c), [spdlog](https://github.com/gabime/spdlog), [cli11](https://github.com/CLIUtils/CLI11.git) を使用します。
-	* システムにインストールされてなければsubmoduleにあるソースコードをビルドしますが、eventpp, msgpack, spdlog に関してはインストールされていればそれを使用するのでビルドが速くなります
-	* ubuntuなら `sudo apt install libspdlog-dev`, brewなら `brew install spdlog msgpack-cxx` でインストールできます
+* その後、[webuiのReleases](https://github.com/na-trium-144/webcface-webui/releases) からビルド済みのtar.gzのアーカイブをダウンロードして /usr/local/share/webcface/dist として展開する必要があります
+	* install先が/usr/localでない場合はprefixを読み替えてください
+	* installしないでbuildディレクトリから起動する場合は、このリポジトリ直下にdist/を置いてください
+	* コマンドからやる場合は次のようになります
+```sh
+curl -LO https://github.com/na-trium-144/webcface-webui/releases/download/v1.0.5/webcface-webui_1.0.5.tar.gz
+tar zxvf webcface-webui*.tar.gz
+sudo rm -rf /usr/local/share/webcface
+sudo mkdir /usr/local/share/webcface
+sudo mv dist /usr/local/share/webcface/dist
+rm webcface-webui*.tar.gz
+```
+
 * このリポジトリのみでビルドしてinstallする代わりに、webcfaceを使いたいプロジェクトでこのリポジトリをsubmoduleとして追加して使うこともできます。
 
 ## Usage
-[Tutorial](https://na-trium-144.github.io/webcface/md_00__tutorial.html)
+→ [Tutorial](https://na-trium-144.github.io/webcface/md_00__tutorial.html)
