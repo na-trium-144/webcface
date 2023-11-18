@@ -5,6 +5,7 @@
 	* View::operator<< をoverrideされてないoperator<<と同じ動作にした
 * submoduleのwebuiを削除
 * リポジトリ直下にdist/を置いても認識するようにした
+* updated dependencies
 ### Added
 * Log::clear() (#67)
 
