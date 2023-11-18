@@ -118,6 +118,12 @@ else()
     endif()
 endif()
 
+set(CURL_ENABLE_SSL off CACHE INTERNAL "" FORCE)
+set(BUILD_CURL_EXE off CACHE INTERNAL "" FORCE)
+set(ENABLE_WEBSOCKETS on CACHE INTERNAL "" FORCE)
+add_subdirectory(external/curl EXCLUDE_FROM_ALL)
+set(CURL libcurl_shared)
+
 add_library(cinatra INTERFACE)
 target_include_directories(cinatra INTERFACE
     $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/external/cinatra/include>
@@ -229,7 +235,7 @@ endif()
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_20)
 target_link_libraries(${PROJECT_NAME} PRIVATE
     ${PROJECT_NAME}-message
-    ${CINATRA}
+    ${CURL}
 )
 target_link_libraries(${PROJECT_NAME} PUBLIC
     ${EVENTPP}
