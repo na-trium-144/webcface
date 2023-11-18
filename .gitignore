@@ -2,3 +2,5 @@
 /out/
 /.vs/
 /CMakeSettings.json
+/webui/
+/dist/
