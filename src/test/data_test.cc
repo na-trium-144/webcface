@@ -1,6 +1,8 @@
 #include <gtest/gtest.h>
 #include <webcface/client_data.h>
-#include <webcface/data.h>
+#include <webcface/value.h>
+#include <webcface/text.h>
+#include <webcface/log.h>
 #include <stdexcept>
 #include <chrono>
 
@@ -242,6 +244,18 @@ TEST_F(DataTest, logGet) {
     EXPECT_EQ(data_->log_store.transferReq(true).count(self_name), 0);
     log("d").appendListener(callback<Log>());
     EXPECT_EQ(data_->log_store.transferReq(true).at("d"), true);
+}
+TEST_F(DataTest, logClear) {
+    using namespace std::chrono;
+    auto logs = std::make_shared<std::vector<std::shared_ptr<LogLine>>>(
+        std::vector<std::shared_ptr<LogLine>>{
+            std::make_shared<LogLine>(1, system_clock::now(), "a"),
+            std::make_shared<LogLine>(2, system_clock::now(), "b"),
+            std::make_shared<LogLine>(3, system_clock::now(), "c"),
+        });
+    data_->log_store.setRecv("a", logs);
+    log("a").clear();
+    EXPECT_EQ(log("a").tryGet().value().size(), 0);
 }
 TEST_F(DataTest, time) {
     auto t = std::chrono::system_clock::now();

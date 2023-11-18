@@ -11,11 +11,8 @@ MessagePackで送受信されます。
 
 see also message.h
 
-## data
-
-詳細な説明は WebCFace::Message:: 内の各メッセージのクラスの説明として書かれているのでそちらを参照してください
-
-### sync init (WebCFace::Message::SyncInit, kind = 80)
+## Sync
+### sync init (kind = 80)
 ```js
 data = {
 	M: string, // member name
@@ -26,9 +23,11 @@ data = {
 }
 ```
 * クライアント初期化時にM,l,vのみ設定してサーバーに送信
+* クライアントがsync initを送信するまで、サーバーは何も送信しません
 * Mが空でない場合のみ、サーバーがm,aを設定し各クライアントに送信し、クライアントは新しいMemberのidを知ることができます
+	* member idはクライアントごとにサーバーが一意に振る1以上の整数です
 
-### svr version (WebCFace::Message::SvrVersion, kind = 88)
+### svr version (kind = 88)
 ```js
 data = {
 	n: string, // server name
@@ -37,7 +36,7 @@ data = {
 ```
 * サーバーからクライアントに1回送られます
 
-### ping (WebCFace::Message::Ping, kind = 89)
+### ping (kind = 89)
 ```js
 data = {}
 ```
@@ -45,30 +44,35 @@ data = {}
 * クライアントは即座にpingを送り返してください
 	* 送り返さなくても通信が切断されるなどの副作用はないです
 
-### ping status (WebCFace::Message::PingStatus, kind = 90)
+### ping status (kind = 90)
 ```js
 data = {
 	s: {member_id: status, member_id: status, ...},
 }
 ```
 * サーバーからクライアントに各クライアントのping往復時間(ms)をまとめて送ります
+	* member_idとstatusの型はnumberです
 
-### ping status req (WebCFace::Message::PingStatusReq, kind = 91)
+### ping status req (kind = 91)
 ```js
 data = {}
 ```
 * クライアントからサーバーにこれを送ると、以降数秒おきにping statusが送られてくるようになります
 
-### sync (WebCFace::Message::Sync, kind = 87)
+### sync (kind = 87)
 ```js
 data = {
 	m: number; // member id
 	t: number; // time
 }
 ```
-* クライアントからサーバーに、sync()時に他のデータを送信する前に1度送ります
+* クライアントからサーバーに、sync()時に他のデータを送信する前にtのみをセットして1度送ります
+* サーバーはmをセットし全クライアントに送り返します
+* timeは1970/1/1 0:00(utc) からの経過ミリ秒数で表します
+	* これ以外にも時刻を送受信するときは同様です
 
-### func info (WebCFace::Message::FuncInfo, kind = 84)
+## Func
+### func info (kind = 84)
 ```js
 data = {
 	m: number, // member id
@@ -84,9 +88,11 @@ data = {
 	}[],
 }
 ```
-* クライアント→サーバーに送り、サーバー→全クライアントに通知します
+* クライアント→サーバーに送ると、サーバー→全クライアントに通知します
+	* mはサーバーがセットします
+* func infoを送らなくても関数の呼び出しは可能なので、非表示にしたい関数はfunc infoを送らなければよいです
 
-### call (WebCFace::Message::Call, kind = 81)
+### call (kind = 81)
 ```js
 data = {
 	i: number; // caller id
@@ -96,11 +102,13 @@ data = {
 	a: any[]; // arguments
 }
 ```
-* 関数を呼び出すときにクライアント(caller)→サーバー→クライアント(target)に送られます
-* caller idは実行結果が返ってくるときに判別できるよう、呼び出し側クライアントが任意に決めて良い数値です
+* 関数を呼び出すときにクライアント(caller)が送信すると、そのままクライアント(target)に送られます
+	* cはサーバーがセットします
+* iは実行結果が返ってくるときに判別できるよう、呼び出し側クライアントが任意に決めて良い数値(0以上の整数)です
 * 関数の呼び出しはsyncと無関係なタイミングで構いません
 * また、無名のクライアントからも送信することができます
-### call response (WebCFace::Message::CallResponse, kind = 82)
+
+### call response (kind = 82)
 ```js
 data = {
 	i: number; // caller id
@@ -108,10 +116,10 @@ data = {
 	s: boolean; // if function is started
 }
 ```
-* 関数の実行を開始した時sにtrueをセットしクライアント(target)→サーバー→クライアント(caller)に送り返します
-* 関数が存在しない場合sにfalseをセットし送り返します
+* targetはiとcにCallと同じものを、関数の実行を開始した時sにtrueを、関数が存在しない場合にはsにfalseをセットし、サーバーに送るとクライアント(caller)に届きます
+* targetがそもそも存在しない場合はサーバーがsにfalseをセットしてcallerに送ります
 
-### call result (WebCFace::Message::CallResult, kind = 83)
+### call result (kind = 83)
 ```js
 data = {
 	i: number; // caller id
@@ -120,10 +128,13 @@ data = {
 	r: any; // result
 }
 ```
-* 関数の実行結果を返します
-* エラーの場合エラーの内容をrにセットします
+* targetが関数の実行結果をeとrにセットしてサーバーに送るとcallerに届きます
+	* エラーの場合eをtrueにしてエラーの内容をrにセットします
+* callerはCallResponseでs=trueだった場合これが届くまで待機できます
+	* s=falseだった場合CallResultは届きません
 
-### value (WebCFace::Message::Value, kind = 0)
+## Value
+### value (kind = 0)
 ```js
 data = {
 	f: string, // name
@@ -132,27 +143,16 @@ data = {
 ```
 * クライアント→サーバーに更新されたデータを送ります
 
-
-### value (WebCFace::Message::Value, kind = 0)
-```js
-data = {
-	f: string, // name
-	d: number[], // data
-}
-```
-* クライアント→サーバーに更新されたデータを送ります
-
-### value entry (WebCFace::Message::Entry<Value>, kind = 20)
+### value entry (kind = 20)
 ```js
 data = {
 	m: number, // member id
 	f: string, // name
 }
 ```
-* 新しいvalueが追加されたときにサーバー→全クライアントに通知します
+* 新しいValueが送られてきた時、サーバーは全クライアントにValueEntryを送ります
 
-
-### value req (WebCFace::Message::Req<Value>, kind = 40)
+### value req (kind = 40)
 ```js
 data = {
 	m: number, // member id
@@ -160,9 +160,11 @@ data = {
 	i: number, // request id
 }
 ```
-* valueを受信したいときにこれを送ると以降value res がサーバーから送られてくるようになります
+* valueを受信したいときにこれを送ると以降value resがサーバーから送られてくるようになります
+* iはクライアントが任意に決めて良い1以上の整数です
+	* Text, Viewなど他の種類のReqとは数値がかぶっていても問題ありません
 
-### value res (WebCFace::Message::Res<Value>, kind = 60)
+### value res (kind = 60)
 ```js
 data = {
 	i: number, // request id
@@ -172,17 +174,8 @@ data = {
 ```
 * requestに対応するvalueを送り返します
 
-### value (WebCFace::Message::Value, kind = 0)
-```js
-data = {
-	f: string, // name
-	d: number[], // data
-}
-```
-* クライアント→サーバーに更新されたデータを送ります
-
-
-### text (WebCFace::Message::Text, kind = 1)
+## Text
+### text (kind = 1)
 ```js
 data = {
 	f: string, // name
@@ -191,13 +184,13 @@ data = {
 ```
 * value と同様
 
-### text entry (WebCFace::Message::Entry<Text>, kind = 21)
+### text entry (kind = 21)
 * value entryと同様
 
-### text req (WebCFace::Message::Req<Text>, kind = 41)
+### text req (kind = 41)
 * value req と同様
 
-### text res (WebCFace::Message::Res<Text>, kind = 61)
+### text res (kind = 61)
 ```js
 data = {
 	i: number, // request id
@@ -207,7 +200,8 @@ data = {
 ```
 * value resと同様
 
-### view (WebCFace::Message::View, kind = 3)
+## View
+### view (kind = 3)
 ```js
 data = {
 	f: string, // name
@@ -227,15 +221,19 @@ data = {
 }
 ```
 * value と同様
-* データは前回のsyncから変更された要素のみを送る
+* データは前回のsyncから変更された要素のみを送ってください
+* lは変更されていない分も含めたviewの全要素数です
+* dのindexはstring型で、要素のindexを10進数で文字列にしたものです
+	* 例えば `[text("aaa"), text("bbb"), text("ccc")]` が `[text("aaa"), text("ccc"), text("bbb")]` に変更された場合のメッセージは `{"d": {"1": {"t": 0, "x": "ccc"}, "2": {"t": 0, "x": "bbb"}}}`
+* C++ ver1.1で変更: dのindexをnumber型からstring型に変更
 
-### view entry (WebCFace::Message::Entry<View>, kind = 23)
+### view entry (kind = 23)
 * value entryと同様
 
-### view req (WebCFace::Message::Req<View>, kind = 43)
+### view req (kind = 43)
 * value req と同様
 
-### view res (WebCFace::Message::Res<View>, kind = 63)
+### view res (kind = 63)
 ```js
 data = {
 	i: number, // request id
@@ -246,17 +244,23 @@ data = {
 ```
 * value resと同様
 
-### log (WebCFace::Message::Log, kind = 86)
+## Log
+### log (kind = 86)
 ```js
 data = {
 	m: number, // member id
-	l: { v: number, t: number, m: string }[],
+	l: {
+		v: number, // level 0〜5
+		t: number, // time
+		m: string, // message
+	}[],
 }
 ```
-* クライアント→サーバーに新しく追加されたログのみ送ります
-* リクエストがあればサーバー→各クライアントに送り返します
+* クライアント→サーバーに新しく追加されたログ差分のみ送ります
+* リクエストがあればサーバー→各クライアントにそのまま送り返します
+* リクエスト直後、サーバーが保持しているログの全履歴を1つのlogメッセージにまとめてクライアントに送ります
 
-### log req (WebCFace::Message::LogReq, kind = 87)
+### log req (kind = 87)
 ```js
 data = {
 	M: string // member name

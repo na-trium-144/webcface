@@ -24,12 +24,12 @@ wcli.member("a").onTextEntry().appendListener([](WebCFace::Text v){ /* ... */ })
 
 ## 送信
 
-自分自身の名前のMemberからTextオブジェクトを作り、 Text::set() でデータを代入し、sync()することで送信されます
+自分自身の名前のMemberからTextオブジェクトを作り、 Text::set() でデータを代入し、Client::sync()することで送信されます
 ```cpp
 wcli.text("hoge").set("hello");
 ```
 
-Dict オブジェクトを使うと複数の値をまとめて送ることができます。
+WebCFace::Text::Dict オブジェクトを使うと複数の値をまとめて送ることができます。
 ```cpp
 struct A {
 	std::string x, y;
@@ -46,14 +46,16 @@ A a_instance;
 wcli.text("a").set(a_instance); // Dictにキャストされる
 ```
 
-set() の代わりに代入演算子(Text::operator=)でも同様のことができます
+ (C++のみ) set() の代わりに代入演算子(Text::operator=)でも同様のことができます。
 
 ## 受信
 
-Text::tryGet(), Text::tryGetRecurse() で受信した値を取得できます。
+Text::tryGet(), Text::tryGetRecurse() で値のリクエストをするとともに受信した値を取得できます。
 
 初回の呼び出しではまだ受信していないためstd::nulloptを返します。
-その後sync()するとサーバーにリクエストが送信され、それ以降値が得られるようになります。
+(pythonでは None, javascriptでは null)
+
+その後Client::sync()したときに実際にリクエストが送信され、それ以降は値が得られるようになります。
 ```cpp
 while(true) {
 	std::optional<std::string> val = wcli.member("a").text("hoge").tryGet();
@@ -71,16 +73,16 @@ Text::get(), Text::getRecurse() はstd::nulloptの代わりにデフォルト値
 
 ## 受信イベント
 
-Text::appendListener() などで受信したデータが変化したときにコールバックを呼び出すことができます
+Text::appendListener() で受信したデータが変化したときにコールバックを呼び出すことができます。
+コールバックを設定するとその値はリクエストされます。
 ```cpp
 wcli.member("a").text("hoge").appendListener([](Text v){ /* ... */ });
 ```
+pythonでは Text.signal プロパティがこのイベントのsignalを返します。
 
-データが変化したどうかに関わらず sync() されたときにコールバックを呼び出したい場合は Member::onSync() が使えます
+データが変化したどうかに関わらずそのMemberがsync()したときにコールバックを呼び出したい場合は Member::onSync() が使えます
 ```cpp
 wcli.member("a").onSync().appendListener([](Member m){ /* ... */ });
 ```
 
-また、 Text::time() でその値が送信されたとき(sync()されたとき)の時刻が得られます。
-
-
+[Value](./10_value.md) ←前 | 次→ [View](./13_view.md)

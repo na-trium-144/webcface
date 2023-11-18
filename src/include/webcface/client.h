@@ -24,10 +24,7 @@ class Client : public Member {
     //! recv_queueを処理するスレッド
     std::thread recv_thread;
     WEBCFACE_DLL static void messageThreadMain(std::shared_ptr<ClientData> data,
-                                  std::string host, int port);
-    //! 接続を切り、今後再接続しない
-    WEBCFACE_DLL void close();
-
+                                               std::string host, int port);
     std::shared_ptr<ClientData> data;
 
     LoggerBuf logger_buf;
@@ -37,40 +34,54 @@ class Client : public Member {
     WEBCFACE_DLL void onRecv(const std::string &message);
 
   public:
-    //! 自分自身の名前を指定しせずサーバーに接続する
+    Client(const Client &) = delete;
+    const Client &operator=(const Client &) = delete;
+
+    //! 名前を指定せずサーバーに接続する
     /*! サーバーのホストとポートはlocalhost:7530になる
      */
     Client() : Client("") {}
-    Client(const Client &) = delete;
-    const Client &operator=(const Client &) = delete;
-    //! 自分自身のmemberとしての名前を指定しサーバーに接続する
+    //! 名前を指定しサーバーに接続する
     /*! サーバーのホストとポートを省略した場合localhost:7530になる
+     *
+     * \arg name 名前
+     * \arg host サーバーのアドレス
+     * \arg port サーバーのポート
      */
     explicit Client(const std::string &name,
                     const std::string &host = "127.0.0.1",
                     int port = WEBCFACE_DEFAULT_PORT)
         : Client(name, host, port, std::make_shared<ClientData>(name)) {}
+
     WEBCFACE_DLL explicit Client(const std::string &name,
                                  const std::string &host, int port,
-                    std::shared_ptr<ClientData> data);
-    //! サーバーに接続できているときtrueを返す。
-    WEBCFACE_DLL bool connected() const;
-    //! デストラクタで接続を切る。
-    WEBCFACE_DLL ~Client();
+                                 std::shared_ptr<ClientData> data);
 
-    //! データをまとめて送信する。
-    /*! value,textにセットしたデータをすべて送る。
-     * 他クライアントのvalue,textを参照する場合、そのリクエストを送るのもsync()で行う。
-     * また他memberの情報を取得できるのは初回のsync()の後のみ。
-     * clientを使用する時は必ずsendを適当なタイミングで繰り返し呼ぶこと。
+    //! サーバーに接続できているときtrueを返す
+    WEBCFACE_DLL bool connected() const;
+    //! 接続を切りClientを破棄
+    WEBCFACE_DLL ~Client();
+    //! 接続を切り、今後再接続しない
+    WEBCFACE_DLL void close();
+
+    //! 送信用にセットしたデータとリクエストデータをすべて送信キューに入れる。
+    /*!
+     * 実際に送信をするのは別スレッドであり、この関数はブロックしない。
+     *
+     * * 他memberの情報を取得できるのは初回のsync()の後のみ。
+     * * 関数の呼び出しと結果の受信はsync()とは非同期に行われる。
      */
     WEBCFACE_DLL void sync();
 
-    //! 他のmemberにアクセスする。
-    Member member(const std::string &name) {
-        return Member{data, name};
-    }
+    //! 他のmemberにアクセスする
+    /*!
+     * \sa members(), onMemberEntry()
+     */
+    Member member(const std::string &name) { return Member{data, name}; }
     //! サーバーに接続されている他のmemberのリストを得る。
+    /*! 自分自身と、無名のmemberを除く。
+     * \sa member(), onMemberEntry()
+     */
     std::vector<Member> members() {
         auto keys = data->value_store.getMembers();
         std::vector<Member> ret(keys.size());
@@ -79,10 +90,10 @@ class Client : public Member {
         }
         return ret;
     }
-    //! Memberが追加された時のイベントを設定
-    /*! このクライアントが接続する前から存在したメンバーについては
-     * 初回の sync() 後に一度に送られるので、
-     * eventの設定は初回のsync()より前に行うと良い
+    //! Memberが追加された時のイベント
+    /*! コールバックの型は void(Member)
+     * 
+     * \sa member(), members()
      */
     EventTarget<Member, int> onMemberEntry() {
         return EventTarget<Member, int>{&data->member_entry_event, 0};
@@ -108,26 +119,37 @@ class Client : public Member {
         setDefaultRunCond(FuncWrapper::runCondScopeGuard<ScopeGuard>());
     }
 
-    //! サーバーに送信するspdlogのsink
-    std::shared_ptr<LoggerSink> loggerSink() {
-        return data->logger_sink;
-    }
-    //! サーバーとstderr_sinkに流すspdlog::logger
-    std::shared_ptr<spdlog::logger> logger() {
-        return data->logger;
-    }
+    //! webcfaceに出力するsink
+    /*!
+     * \sa logger(), loggerStreamBuf(), loggerOStream()
+     */
+    std::shared_ptr<LoggerSink> loggerSink() { return data->logger_sink; }
+    //! webcfaceとstderr_sinkに出力するlogger
+    /*!
+     * \sa loggerSink(), loggerStreamBuf(), loggerOStream()
+     */
+    std::shared_ptr<spdlog::logger> logger() { return data->logger; }
 
-    //! このクライアントのloggerに出力するstreambuf
-    /*! levelは常にinfoになる
+    //! webcfaceに出力するstreambuf
+    /*! levelは常にinfoになる。
      * std::flushのタイミングとは無関係に、1つの改行ごとに1つのログになる
+     *
+     * \sa loggerSink(), logger(), loggerOStream()
      */
     LoggerBuf *loggerStreamBuf() { return &logger_buf; }
-    //! logger_streambufに出力するostream
+    //! webcfaceに出力するostream
+    /*!
+     * \sa loggerSink(), logger(), loggerStreamBuf()
+     */
     std::ostream &loggerOStream() { return logger_os; }
 
     //! WebCFaceサーバーのバージョン情報
     std::string serverVersion() const { return data->svr_version; }
     //! WebCFaceサーバーの識別情報
+    /*!
+     * \return webcface付属のサーバーであれば通常は "webcface" が返る
+     * \sa serverVersion()
+     */
     std::string serverName() const { return data->svr_name; }
 };
 

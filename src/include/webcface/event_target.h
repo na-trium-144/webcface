@@ -5,22 +5,25 @@
 
 namespace WebCFace {
 
-//! イベントを表し、コールバックの追加や削除ができるクラス、eventpp::EventQueueのラッパー
-/*! 
- * V = コールバックの引数の型
- */
-template <typename V, typename Key = FieldBaseComparable, typename VBase = Field>
+//! イベントを表し、コールバックの追加や削除ができるクラス。
+template <typename V, typename Key = FieldBaseComparable,
+          typename VBase = Field>
 class EventTarget {
     using Dispatcher = eventpp::EventDispatcher<Key, void(VBase)>;
-    using EventCallback = std::function<void(V)>;
-    using EventHandle = typename Dispatcher::Handle;
-
     Dispatcher *dispatcher = nullptr;
     Key key;
 
+  public:
+    //! イベントのコールバックの型
+    using EventCallback = std::function<void(V)>;
+    //! コールバックのHandle
+    using EventHandle = typename Dispatcher::Handle;
+
   protected:
     //! イベントを発生させる。
-    void triggerEvent(const VBase &arg) const { dispatcher->dispatch(key, arg); }
+    void triggerEvent(const VBase &arg) const {
+        dispatcher->dispatch(key, arg);
+    }
 
     //! listenerを追加する際に行わなければならない処理があればoverrideする
     virtual void onAppend() const {}

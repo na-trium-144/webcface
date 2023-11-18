@@ -20,7 +20,9 @@
 #include "client_data.h"
 
 // ClientDataに対して具体的になにかする場合はこれの下
-#include "data.h"
+#include "value.h"
+#include "text.h"
+#include "log.h"
 #include "func.h"
 #include "view.h"
 
