@@ -263,6 +263,9 @@ class View : protected Field, public EventTarget<View>, public std::ostream {
     }
 
     //! Viewの内容をclientに反映し送信可能にする (デストラクタで自動で呼ばれる)
-    View &sync() { return set(sb.components); }
+    View &sync() {
+        std::flush(*this);
+        return set(sb.components);
+    }
 };
 } // namespace WebCFace
