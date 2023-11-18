@@ -228,6 +228,10 @@ class View : protected Field, public EventTarget<View>, public std::ostream {
         return *this;
     }
     //! 文字列にフォーマットし、textコンポーネントとして追加
+    /*!
+     * std::ostream::operator<< でも同様の動作をするが、returnする型が異なる
+     * (std::ostream & を返すと operator<<(ViewComponent) が使えなくなる)
+     */
     template <typename T>
     View &operator<<(const T &rhs) {
         static_cast<std::ostream &>(*this) << rhs;
