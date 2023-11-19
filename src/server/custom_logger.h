@@ -17,15 +17,15 @@ class CustomLogger : public crow::ILogHandler {
     }
     spdlog::level::level_enum convertLevel(crow::LogLevel level) {
         switch (level) {
-        case crow::LogLevel::CRITICAL:
+        case crow::LogLevel::Critical:
             return spdlog::level::critical;
-        case crow::LogLevel::ERROR:
+        case crow::LogLevel::Error:
             return spdlog::level::err;
-        case crow::LogLevel::WARNING:
+        case crow::LogLevel::Warning:
             return spdlog::level::warn;
-        case crow::LogLevel::INFO:
+        case crow::LogLevel::Info:
             return spdlog::level::info;
-        case crow::LogLevel::DEBUG:
+        case crow::LogLevel::Debug:
         default:
             return spdlog::level::debug;
         }
