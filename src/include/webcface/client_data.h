@@ -9,6 +9,7 @@
 #include <string>
 #include <atomic>
 #include <cstdint>
+#include <cstdlib>
 #include <eventpp/eventdispatcher.h>
 #include <spdlog/logger.h>
 #include "func_result.h"
@@ -212,13 +213,21 @@ struct WEBCFACE_DLL ClientData {
         : self_member_name(name), value_store(name), text_store(name),
           func_store(name), view_store(name), log_store(name),
           sync_time_store(name), logger_sink(std::make_shared<LoggerSink>()) {
+        static auto stderr_sink =
+            std::make_shared<spdlog::sinks::stderr_color_sink_mt>();
         std::vector<spdlog::sink_ptr> sinks = {logger_sink, stderr_sink};
         logger =
             std::make_shared<spdlog::logger>(name, sinks.begin(), sinks.end());
         logger->set_level(spdlog::level::trace);
         logger_internal = std::make_shared<spdlog::logger>(
             "webcface_internal(" + name + ")", stderr_sink);
-        logger_internal->set_level(logger_internal_level);
+        if (std::getenv("WEBCFACE_TRACE") != nullptr) {
+            logger_internal->set_level(spdlog::level::trace);
+        } else if (getenv("WEBCFACE_VERBOSE") != nullptr) {
+            logger_internal->set_level(spdlog::level::debug);
+        } else {
+            logger_internal->set_level(spdlog::level::off);
+        }
     }
 
     //! Client自身の名前
@@ -230,14 +239,16 @@ struct WEBCFACE_DLL ClientData {
     SyncDataStore2<std::shared_ptr<VectorOpt<double>>> value_store;
     SyncDataStore2<std::shared_ptr<std::string>> text_store;
     SyncDataStore2<std::shared_ptr<FuncInfo>> func_store;
-    SyncDataStore2<std::shared_ptr<std::vector<Common::ViewComponentBase>>> view_store;
+    SyncDataStore2<std::shared_ptr<std::vector<Common::ViewComponentBase>>>
+        view_store;
     SyncDataStore1<std::shared_ptr<std::vector<std::shared_ptr<LogLine>>>>
         log_store;
     SyncDataStore1<std::chrono::system_clock::time_point> sync_time_store;
     FuncResultStore func_result_store;
 
     std::unordered_map<std::string, unsigned int> member_ids;
-    std::unordered_map<unsigned int, std::string> member_lib_name, member_lib_ver, member_addr;
+    std::unordered_map<unsigned int, std::string> member_lib_name,
+        member_lib_ver, member_addr;
     std::string getMemberNameFromId(unsigned int id) const;
     unsigned int getMemberIdFromName(const std::string &name) const;
 
@@ -248,7 +259,8 @@ struct WEBCFACE_DLL ClientData {
     // 値は要らないイベント
     eventpp::EventDispatcher<int, void(Field)> member_entry_event;
     eventpp::EventDispatcher<std::string, void(Field)> sync_event,
-        value_entry_event, text_entry_event, func_entry_event, view_entry_event, ping_event;
+        value_entry_event, text_entry_event, func_entry_event, view_entry_event,
+        ping_event;
 
     //! sync()を待たずに即時送って欲しいメッセージを入れるキュー
     Queue<std::string> message_queue;
@@ -274,7 +286,8 @@ struct WEBCFACE_DLL ClientData {
     //! serverの情報
     std::string svr_name, svr_version;
 
-    std::shared_ptr<std::unordered_map<unsigned int, int>> ping_status = nullptr;
+    std::shared_ptr<std::unordered_map<unsigned int, int>> ping_status =
+        nullptr;
     bool ping_status_req = false;
 };
 } // namespace WebCFace

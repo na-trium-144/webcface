@@ -4,6 +4,7 @@
 #include <chrono>
 #include <thread>
 #include <cstdint>
+#include <cstdlib>
 
 namespace WebCFace {
 
@@ -11,13 +12,15 @@ void Client::messageThreadMain(std::shared_ptr<ClientData> data,
                                std::string host, int port) {
     while (!data->closing.load()) {
         CURL *handle = curl_easy_init();
-        curl_easy_setopt(handle, CURLOPT_VERBOSE, 1L);
+        if (std::getenv("WEBCFACE_TRACE") != nullptr) {
+            curl_easy_setopt(handle, CURLOPT_VERBOSE, 1L);
+        }
         curl_easy_setopt(handle, CURLOPT_URL, ("ws://" + host).c_str());
         curl_easy_setopt(handle, CURLOPT_PORT, static_cast<long>(port));
         curl_easy_setopt(handle, CURLOPT_CONNECT_ONLY, 2L);
         CURLcode ret = curl_easy_perform(handle);
         if (ret != CURLE_OK) {
-            data->logger_internal->error("connection error {}", ret);
+            data->logger_internal->trace("connection failed {}", ret);
         } else {
             data->logger_internal->debug("connected");
             data->sync_init.store(false);

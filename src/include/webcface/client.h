@@ -92,7 +92,7 @@ class Client : public Member {
     }
     //! Memberが追加された時のイベント
     /*! コールバックの型は void(Member)
-     * 
+     *
      * \sa member(), members()
      */
     EventTarget<Member, int> onMemberEntry() {
@@ -125,14 +125,16 @@ class Client : public Member {
      */
     std::shared_ptr<LoggerSink> loggerSink() { return data->logger_sink; }
     //! webcfaceとstderr_sinkに出力するlogger
-    /*!
+    /*! 初期状態では logger()->sinks() = { loggerSink(), stderr_color_sink_mt }
+     * となっている
+     *
      * \sa loggerSink(), loggerStreamBuf(), loggerOStream()
      */
     std::shared_ptr<spdlog::logger> logger() { return data->logger; }
 
     //! webcfaceに出力するstreambuf
     /*! (v1.0.1で logger_streambuf から名前変更)
-     * 
+     *
      * levelは常にinfoになる。
      * std::flushのタイミングとは無関係に、1つの改行ごとに1つのログになる
      *
