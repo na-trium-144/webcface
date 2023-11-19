@@ -2,6 +2,7 @@
 
 [![coverage](https://raw.githubusercontent.com/na-trium-144/webcface/badge/coverage.svg)](https://github.com/na-trium-144/webcface/actions/workflows/cmake-coverage.yml)
 [![release](https://img.shields.io/github/v/release/na-trium-144/webcface)](https://github.com/na-trium-144/webcface/releases)
+[![C++20](https://img.shields.io/badge/C%2B%2B-20-blue?logo=C%2B%2B)](#build-from-source)
 
 Web-based RPC &amp; UI Library
 
