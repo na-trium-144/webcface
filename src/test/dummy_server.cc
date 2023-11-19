@@ -7,7 +7,7 @@
 
 using namespace WebCFace;
 DummyServer::~DummyServer() {
-    reinterpret_cast<cinatra::http_server*>(server_)->stop();
+    reinterpret_cast<cinatra::http_server *>(server_)->stop();
     t.join();
 }
 DummyServer::DummyServer()
@@ -19,7 +19,7 @@ DummyServer::DummyServer()
           dummy_logger->set_level(spdlog::level::trace);
 
           auto server = new http_server(1);
-          server_ = reinterpret_cast<void*>(server);
+          server_ = reinterpret_cast<void *>(server);
 
           server->listen("0.0.0.0", "17530");
           server->set_http_handler<GET, POST>(
@@ -57,49 +57,3 @@ void DummyServer::send(std::string msg) {
 }
 
 bool DummyServer::connected() { return connPtr != nullptr; }
-
-
-DummyClient::~DummyClient() {
-    async_simple::coro::syncAwait(
-        reinterpret_cast<cinatra::coro_http_client*>(client_)
-            ->async_send_ws_close());
-    t.join();
-}
-DummyClient::DummyClient()
-    : t([this] {
-          using namespace cinatra;
-          static int sn = 0;
-          auto dummy_logger =
-              spdlog::stdout_color_mt("dummy_client_" + std::to_string(sn++));
-          dummy_logger->set_level(spdlog::level::trace);
-
-          // deleteするとせぐふぉする
-          auto client = new coro_http_client();
-          client_ = reinterpret_cast<void*>(client);
-
-          client->on_ws_msg([this, dummy_logger](resp_data rdata) {
-              if (rdata.net_err) {
-                  dummy_logger->error("recv error {}", rdata.net_err.message());
-              } else {
-                  dummy_logger->trace("message received");
-
-                  std::string str = std::string(rdata.resp_body);
-                  auto unpacked = Message::unpack(str, dummy_logger);
-                  for (const auto &m : unpacked) {
-                      dummy_logger->info("kind {}", m.first);
-                      recv_data.push_back(m);
-                  }
-              }
-          });
-          client->on_ws_close([dummy_logger](auto &&) {
-              dummy_logger->debug("connection closed");
-          });
-          async_simple::coro::syncAwait(
-              client->async_ws_connect("ws://127.0.0.1:27530"));
-      }) {}
-
-void DummyClient::send(std::string msg) {
-    async_simple::coro::syncAwait(
-        reinterpret_cast<cinatra::coro_http_client*>(client_)
-            ->async_send_ws(msg, true, cinatra::opcode::binary));
-}

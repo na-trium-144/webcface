@@ -3,9 +3,10 @@
 #include <vector>
 #include <utility>
 #include <thread>
+#include <webcface/common/queue.h>
 
 using namespace WebCFace;
-struct DummyServer {
+struct DummyClient {
     std::vector<std::pair<int, std::any>> recv_data;
 
     // clientからT型のメッセージを受信していればf1, そうでなければf2を実行する
@@ -30,11 +31,9 @@ struct DummyServer {
         send(Message::packSingle(msg));
     }
 
-    bool connected();
-    std::shared_ptr<void> connPtr;
-    void *server_;
-
+    std::atomic<bool> closing = false;
+    Common::Queue<std::string> msg_queue;
     std::thread t;
-    DummyServer();
-    ~DummyServer();
+    DummyClient();
+    ~DummyClient();
 };
