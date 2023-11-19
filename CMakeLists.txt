@@ -125,24 +125,23 @@ set(BUILD_SHARED_LIBS off CACHE INTERNAL "" FORCE)
 set(BUILD_STATIC_LIBS on CACHE INTERNAL "" FORCE)
 set(SHARE_LIB_OBJECT ${WEBCFACE_PIC} CACHE INTERNAL "" FORCE)
 set(ENABLE_WEBSOCKETS on CACHE INTERNAL "" FORCE)
+# staticかつinstallのときのみcurlをinstallする
+if(${WEBCFACE_SHARED} OR NOT ${WEBCFACE_INSTALL})
+    set(CURL_DISABLE_INSTALL on CACHE INTERNAL "" FORCE)
+endif()
 add_subdirectory(external/curl EXCLUDE_FROM_ALL)
 set(CURL libcurl_static)
 
-add_library(cinatra INTERFACE)
-target_include_directories(cinatra INTERFACE
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/external/cinatra/include>
-    $<INSTALL_INTERFACE:include>
-)
-if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    target_compile_options(cinatra INTERFACE -pthread -fcoroutines -fno-tree-slp-vectorize)
-elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-    target_compile_options(cinatra INTERFACE -pthread)
-endif()
-if(MINGW)
-    set(CINATRA cinatra ws2_32 wsock32)
-else()
-    set(CINATRA cinatra)
-endif()
+add_library(asio INTERFACE)
+target_include_directories(asio INTERFACE ${CMAKE_CURRENT_LIST_DIR}/external/asio/asio/include)
+set(ASIO asio)
+
+# asioがない場合find_packageしないようにするため、
+# add_subdirectoryではなくinterfaceライブラリを定義する
+add_library(Crow INTERFACE)
+target_include_directories(Crow INTERFACE ${CMAKE_CURRENT_LIST_DIR}/external/crow/include)
+target_link_libraries(Crow INTERFACE ${ASIO})
+set(CROW Crow)
 
 add_subdirectory(external/cli11)
 
@@ -215,7 +214,7 @@ target_link_libraries(${PROJECT_NAME}-message PUBLIC
 add_library(${PROJECT_NAME}-server-impl STATIC ${SVR_SRC})
 target_link_libraries(${PROJECT_NAME}-server-impl PUBLIC
     ${PROJECT_NAME}-message
-    ${CINATRA}
+    ${CROW}
     ${SPDLOG}
 )
 
@@ -302,7 +301,7 @@ if(WEBCFACE_INSTALL)
         LIBRARY DESTINATION lib
     )
     if(NOT WEBCFACE_SHARED)
-        set(WEBCFACE_EXPORTS ${PROJECT_NAME}-message cinatra)
+        set(WEBCFACE_EXPORTS ${PROJECT_NAME}-message)
         if(NOT msgpack-cxx_FOUND)
             set(WEBCFACE_EXPORTS ${WEBCFACE_EXPORTS} msgpack-cxx)
         endif()

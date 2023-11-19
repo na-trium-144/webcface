@@ -9,9 +9,10 @@ void Store::clear() {
     ClientData::last_member_id = 0;
 }
 void Store::newClient(const ClientData::wsConnPtr &con,
+                      const std::string &remote_addr,
                       const spdlog::sink_ptr &sink,
                       spdlog::level::level_enum level) {
-    auto cli = std::make_shared<ClientData>(con, sink, level);
+    auto cli = std::make_shared<ClientData>(con, remote_addr, sink, level);
     clients.emplace(con, cli);
     cli->onConnect();
 }

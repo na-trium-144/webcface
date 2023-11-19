@@ -23,3 +23,9 @@
 [submodule "external/curl"]
 	path = external/curl
 	url = https://github.com/curl/curl.git
+[submodule "external/crow"]
+	path = external/crow
+	url = https://github.com/CrowCpp/Crow.git
+[submodule "external/asio"]
+	path = external/asio
+	url = https://github.com/chriskohlhoff/asio.git

@@ -3,7 +3,6 @@
 #include "websock.h"
 #include "../message/message.h"
 #include <webcface/common/def.h>
-#include <cinatra.hpp>
 #include <algorithm>
 #include <iterator>
 
@@ -21,15 +20,10 @@ void ClientData::send() {
 }
 void ClientData::send(const std::string &msg) {
     if (connected()) {
-        std::static_pointer_cast<cinatra::connection<cinatra::NonSSL>>(con)
-            ->send_ws_binary(msg);
+        serverSend(con, msg);
     }
 }
-bool ClientData::connected() const {
-    return con &&
-           !std::static_pointer_cast<cinatra::connection<cinatra::NonSSL>>(con)
-                ->has_close();
-}
+bool ClientData::connected() const { return con != nullptr; }
 void ClientData::onConnect() { logger->info("connected"); }
 
 bool ClientData::hasReq(const std::string &member) {
@@ -57,13 +51,6 @@ std::pair<unsigned int, std::string> findReqField(
         }
     }
     return std::make_pair<unsigned int, std::string>(0, "");
-}
-
-std::string ClientData::getRemoteAddr() const {
-    std::string a =
-        std::static_pointer_cast<cinatra::connection<cinatra::NonSSL>>(con)
-            ->remote_address();
-    return a.substr(0, a.find(':'));
 }
 
 void ClientData::sendPing() {
@@ -106,7 +93,7 @@ void ClientData::onRecv(const std::string &message) {
                 // コンストラクタですでに一意のidが振られているはず
                 v.member_id = this->member_id;
             }
-            v.addr = this->getRemoteAddr();
+            v.addr = this->remote_addr;
             this->init_data = v;
             this->sync_init = true;
             store.clients_by_id.erase(this->member_id);
@@ -466,8 +453,6 @@ void ClientData::onRecv(const std::string &message) {
         case MessageKind::log_req: {
             auto s = std::any_cast<WebCFace::Message::LogReq>(obj);
             logger->debug("request log from {}", s.member);
-            std::cout << this->name << ": request log " << s.member
-                      << std::endl;
             log_req.insert(s.member);
             // 指定した値を返す
             store.findAndDo(s.member, [&](auto &cd) {

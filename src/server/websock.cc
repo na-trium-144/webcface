@@ -4,12 +4,49 @@
 #include "dir.h"
 #include <webcface/common/def.h>
 #include "../message/message.h"
-#include <cinatra.hpp>
 #include <memory>
 #include <thread>
+
 namespace WebCFace::Server {
-cinatra::http_server* server;
-std::shared_ptr<std::thread> ping_thread;
+std::string static_dir;
+}
+#define CROW_STATIC_DIRECTORY WebCFace::Server::static_dir
+#define CROW_STATIC_ENDPOINT "/<path>"
+#include <crow.h>
+
+namespace WebCFace::Server {
+
+class CustomLogger : public crow::ILogHandler {
+    std::shared_ptr<spdlog::logger> logger;
+
+  public:
+    CustomLogger(const spdlog::sink_ptr &sink) {
+        logger = std::make_shared<spdlog::logger>("crow_server", sink);
+        logger->set_level(spdlog::level::trace);
+    }
+    void log(std::string message, crow::LogLevel level) {
+        logger->log(convertLevel(level), message);
+    }
+    spdlog::level::level_enum convertLevel(crow::LogLevel level) {
+        switch (level) {
+        case crow::LogLevel::CRITICAL:
+            return spdlog::level::critical;
+        case crow::LogLevel::ERROR:
+            return spdlog::level::err;
+        case crow::LogLevel::WARNING:
+            return spdlog::level::warn;
+        case crow::LogLevel::INFO:
+            return spdlog::level::info;
+        case crow::LogLevel::DEBUG:
+        default:
+            return spdlog::level::debug;
+        }
+    }
+};
+
+std::unique_ptr<crow::SimpleApp> app;
+std::unique_ptr<std::thread> ping_thread;
+std::unique_ptr<CustomLogger> crow_logger;
 
 void pingThreadMain() {
     std::unique_lock lock(server_mtx);
@@ -40,13 +77,16 @@ void pingThreadMain() {
         });
     }
 }
+void serverSend(void *conn, const std::string &msg) {
+    reinterpret_cast<crow::websocket::connection *>(conn)->send_binary(msg);
+}
 void serverStop() {
     {
         std::lock_guard lock(server_mtx);
         server_stop = true;
     }
     server_ping_wait.notify_one();
-    server->stop();
+    app->stop();
     ping_thread->join();
 }
 void serverRun(int port, const spdlog::sink_ptr &sink,
@@ -57,72 +97,49 @@ void serverRun(int port, const spdlog::sink_ptr &sink,
     logger->info("WebCFace Server {}", WEBCFACE_VERSION);
     logger->info("http://localhost:{}", port);
 
-    using namespace cinatra;
-    server_stop = false;
-    ping_thread = std::make_shared<std::thread>(pingThreadMain);
+    crow_logger = std::make_unique<CustomLogger>(sink);
+    crow::logger::setHandler(crow_logger.get());
 
-    server = new http_server(1);
-    auto static_dir = getStaticDir(logger);
+    server_stop = false;
+    ping_thread = std::make_unique<std::thread>(pingThreadMain);
+
+    static_dir = getStaticDir(logger);
     auto temp_dir = getTempDir(logger);
-    server->set_static_dir(static_dir);
-    server->set_upload_dir(temp_dir);
     logger->debug("static dir = {}", static_dir);
     logger->debug("temp dir = {}", temp_dir);
 
-    server->listen("0.0.0.0", std::to_string(port));
+    app = std::make_unique<crow::SimpleApp>();
 
-    // web socket
-    server->set_http_handler<GET, POST>(
-        "/", [sink, level](request &req, response &res) {
-            if (req.get_content_type() == content_type::websocket) {
-
-                req.on(ws_open, [sink, level](request &req) {
-                    std::lock_guard lock(server_mtx);
-                    auto connPtr = std::static_pointer_cast<void>(
-                        req.get_conn<cinatra::NonSSL>());
-                    store.newClient(connPtr, sink, level);
-                });
-
-                req.on(ws_message, [](request &req) {
-                    std::lock_guard lock(server_mtx);
-                    auto part_data = req.get_part_data();
-                    // echo
-                    std::string str =
-                        std::string(part_data.data(), part_data.length());
-                    // req.get_conn<cinatra::NonSSL>()->send_ws_string(std::move(str));
-                    // std::cout << part_data.data() << std::endl;
-
-                    auto connPtr = std::static_pointer_cast<void>(
-                        req.get_conn<cinatra::NonSSL>());
-                    auto cli = store.getClient(connPtr);
-                    if (cli) {
-                        cli->onRecv(str);
-                    }
-
-                    // なんか送り返さないと受信できなくなるっぽい? 謎
-                    req.get_conn<cinatra::NonSSL>()->send_ws_binary("");
-                });
-
-                req.on(ws_error, [](request &req) {
-                    std::lock_guard lock(server_mtx);
-                    auto connPtr = std::static_pointer_cast<void>(
-                        req.get_conn<cinatra::NonSSL>());
-                    store.removeClient(connPtr);
-                });
-
-                req.on(ws_close, [](request &req) {
-                    std::lock_guard lock(server_mtx);
-                    auto connPtr = std::static_pointer_cast<void>(
-                        req.get_conn<cinatra::NonSSL>());
-                    store.removeClient(connPtr);
-                });
-
-            } else {
-                // ブラウザからアクセスされたらindex.htmlへリダイレクトする
-                res.redirect("index.html", true);
+    auto &route = CROW_ROUTE((*app), "/");
+    route([](crow::response &res) {
+        res.redirect("index.html");
+        res.end();
+    });
+    // CROW_WEBSOCKET_ROUTE((*app), "/")
+    route.websocket<std::remove_reference<decltype(*app)>::type>(app.get())
+        .onopen([&](crow::websocket::connection &conn) {
+            std::lock_guard lock(server_mtx);
+            store.newClient(&conn, conn.get_remote_ip(), sink, level);
+        })
+        .onclose(
+            [&](crow::websocket::connection &conn, const std::string &reason) {
+                std::lock_guard lock(server_mtx);
+                auto cli = store.getClient(&conn);
+                if (cli) {
+                    cli->con = nullptr;
+                }
+                store.removeClient(&conn);
+            })
+        .onmessage([&](crow::websocket::connection &conn,
+                       const std::string &data, bool is_binary) {
+            std::lock_guard lock(server_mtx);
+            auto cli = store.getClient(&conn);
+            if (cli) {
+                cli->onRecv(data);
             }
         });
 
-    server->run();
+    app->port(port).run();
+    serverStop();
 }
 } // namespace WebCFace::Server
