@@ -11,7 +11,7 @@ WebSocketとMessagePackを使った、ROSのような分散型の通信ライブ
 WebブラウザーでアクセスできるUI(webcface-webui)が付属しており、ネットワーク上のPCやタブレットなどからアクセスしてWebCFaceで通信されているデータを可視化したり関数を呼び出したりできます。
 また、webuiからのアクセスを想定してテキストやボタンなどの配置を指定すると簡易なUIを作成することができます。
 
-todo: ここにわかりやすいスクショを1つはる
+![webcface-webui](./docs/images/webcface-webui.png)
 
 データ型を任意に定義できるROSとは違って、通信できるデータの種類が以下のように限定されています
 * pub-sub通信
