@@ -131,7 +131,11 @@ set(CURL libcurl_static)
 
 add_library(asio INTERFACE)
 target_include_directories(asio INTERFACE ${CMAKE_CURRENT_LIST_DIR}/external/asio/asio/include)
-set(ASIO asio)
+if(MINGW)
+    set(ASIO asio ws2_32 wsock32)
+else()
+    set(ASIO asio)
+endif()
 
 # asioがない場合find_packageしないようにするため、
 # add_subdirectoryではなくinterfaceライブラリを定義する
