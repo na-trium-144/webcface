@@ -19,7 +19,8 @@ void Client::messageThreadMain(std::shared_ptr<ClientData> data,
         if (ret != CURLE_OK) {
             data->logger_internal->error("connection error {}", ret);
         } else {
-            data->logger_internal->debug("connection done");
+            data->logger_internal->debug("connected");
+            data->sync_init.store(false);
             data->connected_.store(true);
             while (!data->closing.load()) {
                 std::size_t rlen;
