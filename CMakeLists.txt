@@ -276,8 +276,8 @@ if(WEBCFACE_TEST)
         ${PROJECT_NAME}
         ${PROJECT_NAME}-message
         ${PROJECT_NAME}-server-impl
-        ${CINATRA}
         ${CURL}
+        ${CROW}
         GTest::gtest_main
     )
     target_compile_definitions(${PROJECT_NAME}-test PRIVATE

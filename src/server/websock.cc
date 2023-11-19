@@ -14,47 +14,22 @@ std::string static_dir;
 #define CROW_STATIC_ENDPOINT "/<path>"
 #include <crow.h>
 
+#include "custom_logger.h"
+
 namespace WebCFace::Server {
-
-class CustomLogger : public crow::ILogHandler {
-    std::shared_ptr<spdlog::logger> logger;
-
-  public:
-    CustomLogger(const spdlog::sink_ptr &sink) {
-        logger = std::make_shared<spdlog::logger>("crow_server", sink);
-        logger->set_level(spdlog::level::trace);
-    }
-    void log(std::string message, crow::LogLevel level) {
-        logger->log(convertLevel(level), message);
-    }
-    spdlog::level::level_enum convertLevel(crow::LogLevel level) {
-        switch (level) {
-        case crow::LogLevel::CRITICAL:
-            return spdlog::level::critical;
-        case crow::LogLevel::ERROR:
-            return spdlog::level::err;
-        case crow::LogLevel::WARNING:
-            return spdlog::level::warn;
-        case crow::LogLevel::INFO:
-            return spdlog::level::info;
-        case crow::LogLevel::DEBUG:
-        default:
-            return spdlog::level::debug;
-        }
-    }
-};
 
 std::unique_ptr<crow::SimpleApp> app;
 std::unique_ptr<std::thread> ping_thread;
-std::unique_ptr<CustomLogger> crow_logger;
+std::unique_ptr<CustomLogger> crow_custom_logger;
+std::atomic<bool> server_stop;
 
 void pingThreadMain() {
     std::unique_lock lock(server_mtx);
-    while (!server_stop) {
+    while (!server_stop.load()) {
         // ping_interval経過するかserver_stop_condで起こされるまで待機
         server_ping_wait.wait_for(lock, ClientData::ping_interval);
 
-        if (server_stop) {
+        if (server_stop.load()) {
             return;
         }
         auto new_ping_status =
@@ -81,13 +56,15 @@ void serverSend(void *conn, const std::string &msg) {
     reinterpret_cast<crow::websocket::connection *>(conn)->send_binary(msg);
 }
 void serverStop() {
-    {
-        std::lock_guard lock(server_mtx);
-        server_stop = true;
+    if (!server_stop.load()) {
+        {
+            std::lock_guard lock(server_mtx);
+            server_stop.store(true);
+        }
+        server_ping_wait.notify_one();
+        app->stop();
+        ping_thread->join();
     }
-    server_ping_wait.notify_one();
-    app->stop();
-    ping_thread->join();
 }
 void serverRun(int port, const spdlog::sink_ptr &sink,
                spdlog::level::level_enum level) {
@@ -97,10 +74,12 @@ void serverRun(int port, const spdlog::sink_ptr &sink,
     logger->info("WebCFace Server {}", WEBCFACE_VERSION);
     logger->info("http://localhost:{}", port);
 
-    crow_logger = std::make_unique<CustomLogger>(sink);
-    crow::logger::setHandler(crow_logger.get());
+    auto crow_logger = std::make_shared<spdlog::logger>("crow_server", sink);
+    crow_logger->set_level(spdlog::level::trace);
+    crow_custom_logger = std::make_unique<CustomLogger>(crow_logger);
+    crow::logger::setHandler(crow_custom_logger.get());
 
-    server_stop = false;
+    server_stop.store(false);
     ping_thread = std::make_unique<std::thread>(pingThreadMain);
 
     static_dir = getStaticDir(logger);

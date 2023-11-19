@@ -22,17 +22,27 @@ void Client::messageThreadMain(std::shared_ptr<ClientData> data,
             data->logger_internal->debug("connected");
             data->sync_init.store(false);
             data->connected_.store(true);
-            while (!data->closing.load()) {
-                std::size_t rlen;
-                const curl_ws_frame *meta;
-                char buffer[1024];
-                CURLcode ret =
-                    curl_ws_recv(handle, buffer, sizeof(buffer), &rlen, &meta);
-                if (ret == CURLE_OK) {
+            while (!data->closing.load() && data->connected_.load()) {
+                while (true) {
+                    std::size_t rlen = 0;
+                    const curl_ws_frame *meta = nullptr;
+                    char buffer[1024];
+                    ret = curl_ws_recv(handle, buffer, sizeof(buffer), &rlen,
+                                       &meta);
+                    if (meta && meta->flags & CURLWS_CLOSE) {
+                        data->logger_internal->debug("connection closed");
+                        data->connected_.store(false);
+                    }
+                    if (rlen == 0) {
+                        break;
+                    }
                     data->logger_internal->trace("message received");
                     data->recv_queue.push(std::string(buffer, rlen));
-                } else if (ret != CURLE_AGAIN) {
-                    data->logger_internal->debug("connection closed");
+                    std::size_t sent;
+                    curl_ws_send(handle, nullptr, 0, &sent, 0, CURLWS_PONG);
+                }
+                if (ret != CURLE_AGAIN) {
+                    data->logger_internal->debug("connection closed {}", ret);
                     break;
                 }
                 auto msg =

@@ -41,6 +41,8 @@ DummyClient::DummyClient()
                           dummy_logger->info("kind {}", m.first);
                           recv_data.push_back(m);
                       }
+                      std::size_t sent;
+                      curl_ws_send(handle, "", 0, &sent, 0, CURLWS_PONG);
                   } else if (ret != CURLE_AGAIN) {
                       dummy_logger->debug("connection closed");
                       break;

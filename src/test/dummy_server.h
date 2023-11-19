@@ -31,9 +31,10 @@ struct DummyServer {
     }
 
     bool connected();
-    std::shared_ptr<void> connPtr;
-    void *server_;
-
+    void *connPtr;
+    std::shared_ptr<void> server_;
+    std::shared_ptr<spdlog::logger> dummy_logger;
+    
     std::thread t;
     DummyServer();
     ~DummyServer();
