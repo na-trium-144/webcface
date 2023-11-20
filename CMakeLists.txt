@@ -128,6 +128,7 @@ set(CURL libcurl_static)
 
 add_library(asio INTERFACE)
 target_include_directories(asio INTERFACE ${CMAKE_CURRENT_LIST_DIR}/external/asio/asio/include)
+target_compile_definitions(asio INTERFACE ASIO_STANDALONE)
 if(MINGW)
     set(ASIO asio ws2_32 wsock32)
 else()

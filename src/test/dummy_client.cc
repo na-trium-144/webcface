@@ -12,7 +12,7 @@ DummyClient::~DummyClient() {
 }
 DummyClient::DummyClient()
     : t([this] {
-          static int sn = 0;
+          static int sn = 1;
           CURL *handle = curl_easy_init();
           curl_easy_setopt(handle, CURLOPT_VERBOSE, 1L);
           curl_easy_setopt(handle, CURLOPT_URL, "ws://127.0.0.1");
@@ -28,12 +28,19 @@ DummyClient::DummyClient()
           } else {
               dummy_logger->debug("connection done");
               while (!closing.load()) {
-                  std::size_t rlen;
-                  const curl_ws_frame *meta;
-                  char buffer[1024];
-                  CURLcode ret = curl_ws_recv(handle, buffer, sizeof(buffer),
-                                              &rlen, &meta);
-                  if (ret == CURLE_OK) {
+                  while (true) {
+                      std::size_t rlen = 0;
+                      const curl_ws_frame *meta = nullptr;
+                      char buffer[1024];
+                      ret = curl_ws_recv(handle, buffer, sizeof(buffer), &rlen,
+                                         &meta);
+                      if (meta && meta->flags & CURLWS_CLOSE) {
+                          dummy_logger->debug("connection closed");
+                          break;
+                      }
+                      if (rlen == 0) {
+                          break;
+                      }
                       dummy_logger->trace("message received");
                       auto unpacked = Message::unpack(std::string(buffer, rlen),
                                                       dummy_logger);
@@ -42,9 +49,10 @@ DummyClient::DummyClient()
                           recv_data.push_back(m);
                       }
                       std::size_t sent;
-                      curl_ws_send(handle, "", 0, &sent, 0, CURLWS_PONG);
-                  } else if (ret != CURLE_AGAIN) {
-                      dummy_logger->debug("connection closed");
+                      curl_ws_send(handle, nullptr, 0, &sent, 0, CURLWS_PONG);
+                  }
+                  if (ret != CURLE_AGAIN) {
+                      dummy_logger->debug("connection closed {}", ret);
                       break;
                   }
                   auto msg = msg_queue.pop(std::chrono::milliseconds(0));

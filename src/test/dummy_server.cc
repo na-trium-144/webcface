@@ -51,12 +51,12 @@ DummyServer::DummyServer()
               });
 
           server->port(17530).run();
+          std::this_thread::sleep_for(std::chrono::milliseconds(10));
       }) {}
 
 void DummyServer::send(std::string msg) {
     dummy_logger->info("send {} bytes", msg.size());
     reinterpret_cast<crow::websocket::connection *>(connPtr)->send_binary(msg);
-    std::this_thread::sleep_for(std::chrono::milliseconds(3));
 }
 
 bool DummyServer::connected() { return connPtr != nullptr; }
