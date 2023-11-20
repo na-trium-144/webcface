@@ -108,7 +108,7 @@ pacman -S mingw-w64-x86_64-spdlog  # optional
 ```
 </details>
 
-### Build
+#### Build
 
 ```sh
 git clone https://github.com/na-trium-144/webcface
