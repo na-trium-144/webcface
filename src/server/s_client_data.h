@@ -10,12 +10,13 @@
 
 namespace WebCFace::Server {
 struct ClientData {
-    using wsConnPtr = std::shared_ptr<void>;
+    using wsConnPtr = void *;
     spdlog::sink_ptr sink;
     std::shared_ptr<spdlog::logger> logger;
     spdlog::level::level_enum logger_level;
 
-    const wsConnPtr con;
+    wsConnPtr con;
+    std::string remote_addr;
     bool connected() const;
 
     //! 初回のsync()が終わったか
@@ -29,7 +30,8 @@ struct ClientData {
     std::unordered_map<std::string, std::shared_ptr<std::vector<double>>> value;
     std::unordered_map<std::string, std::shared_ptr<std::string>> text;
     std::unordered_map<std::string, std::shared_ptr<Message::FuncInfo>> func;
-    std::unordered_map<std::string, std::vector<Common::ViewComponentBase>> view;
+    std::unordered_map<std::string, std::vector<Common::ViewComponentBase>>
+        view;
     std::chrono::system_clock::time_point last_sync_time;
     //! リクエストしているmember,nameのペア
     std::unordered_map<std::string,
@@ -40,16 +42,16 @@ struct ClientData {
     //! ログ全履歴
     std::shared_ptr<std::vector<Message::Log::LogLine>> log;
 
-    std::string getRemoteAddr() const;
 
     inline static unsigned int last_member_id = 0;
 
     ClientData() = delete;
     ClientData(const ClientData &) = delete;
     ClientData &operator=(const ClientData &) = delete;
-    explicit ClientData(const wsConnPtr &con, const spdlog::sink_ptr &sink,
+    explicit ClientData(const wsConnPtr &con, const std::string &remote_addr,
+                        const spdlog::sink_ptr &sink,
                         spdlog::level::level_enum level)
-        : con(con), sink(sink), logger_level(level),
+        : con(con), remote_addr(remote_addr), sink(sink), logger_level(level),
           log(std::make_shared<std::vector<Message::Log::LogLine>>()) {
         this->member_id = ++last_member_id;
         logger = std::make_shared<spdlog::logger>(

@@ -55,16 +55,19 @@ std::string getStaticDir(const std::shared_ptr<spdlog::logger> &logger) {
         exe_dir.parent_path().parent_path().parent_path() / "webui" / "dist",
         exe_dir.parent_path() / "share" / "webcface" / "dist",
     };
-    for (const auto &dir: static_dirs) {
+    for (const auto &dir : static_dirs) {
         try {
             if (std::filesystem::exists(dir / "index.html")) {
+                logger->debug("{} found.", (dir / "index.html").string());
                 return dir.string();
             }
         } catch (...) {
         }
+        logger->debug("{} not found.", (dir / "index.html").string());
     }
-    logger->error("Cannot find static dir");
-    return "";
+    logger->warn("Cannot find webui dist directory.");
+    logger->debug("Falling back to <executable_dir>/dist");
+    return (exe_dir / "dist").string();
 }
 std::string getTempDir(const std::shared_ptr<spdlog::logger> &logger) {
     try {

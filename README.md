@@ -2,7 +2,7 @@
 
 [![coverage](https://raw.githubusercontent.com/na-trium-144/webcface/badge/coverage.svg)](https://github.com/na-trium-144/webcface/actions/workflows/cmake-coverage.yml)
 [![release](https://img.shields.io/github/v/release/na-trium-144/webcface)](https://github.com/na-trium-144/webcface/releases)
-[![C++20](https://img.shields.io/badge/C%2B%2B-20-blue?logo=C%2B%2B)](#build-from-source)
+![C++20](https://img.shields.io/badge/C%2B%2B-20-blue?logo=C%2B%2B)
 
 Web-based RPC &amp; UI Library
 
@@ -12,7 +12,7 @@ WebSocketとMessagePackを使った、ROSのような分散型の通信ライブ
 WebブラウザーでアクセスできるUI(webcface-webui)が付属しており、ネットワーク上のPCやタブレットなどからアクセスしてWebCFaceで通信されているデータを可視化したり関数を呼び出したりできます。
 また、webuiからのアクセスを想定してテキストやボタンなどの配置を指定すると簡易なUIを作成することができます。
 
-![webcface-webui](./docs/images/webcface-webui.png)
+![webcface-webui](https://raw.githubusercontent.com/na-trium-144/webcface/main/docs/images/webcface-webui.png)
 
 データ型を任意に定義できるROSとは違って、通信できるデータの種類が以下のように限定されています
 * pub-sub通信
@@ -40,7 +40,7 @@ debパッケージはubuntu22.04でビルドしています。20.04以前のubun
 
 例 (amd64の場合)
 ```sh
-curl -LO https://github.com/na-trium-144/webcface/releases/download/v1.1.6/webcface_1.1.6_amd64.deb
+curl -LO https://github.com/na-trium-144/webcface/releases/download/v1.1.7/webcface_1.1.7_amd64.deb
 curl -LO https://github.com/na-trium-144/webcface-webui/releases/download/v1.0.5/webcface-webui_1.0.5_all.deb
 curl -LO https://github.com/na-trium-144/webcface-tools/releases/download/v1.1.2/webcface-tools_1.1.2_amd64.deb
 sudo apt install ./webcface*.deb
@@ -64,9 +64,12 @@ brew install webcface webcface-webui
 	* [![CMake Test (Linux Clang)](https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-linux-clang.yml/badge.svg?branch=main)](https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-linux-clang.yml) (clang-13以上)
 	* [![CMake Test (MacOS Clang)](https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-macos-clang.yml/badge.svg?branch=main)](https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-macos-clang.yml)
 	* [![CMake Test (Windows MSVC)](https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-windows-msvc.yml/badge.svg?branch=main)](https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-windows-msvc.yml)
-	* [![CMake Test (Windows MinGW64 GCC)](https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-windows-gcc.yml/badge.svg?branch=main)](https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-windows-gcc.yml)	(CMAKE_BUILD_TYPE=Debugだとリンクエラーになりました)
-* webcfaceは外部ライブラリとして [cinatra](https://github.com/qicosmos/cinatra), [eventpp](https://github.com/wqking/eventpp), [msgpack-cxx](https://github.com/msgpack/msgpack-c), [spdlog](https://github.com/gabime/spdlog), [cli11](https://github.com/CLIUtils/CLI11.git) を使用します。
-	* システムにインストールされてなければsubmoduleにあるソースコードをビルドしますが、eventpp, msgpack, spdlog に関してはインストールされていればそれを使用するのでビルドが速くなります
+	* [![CMake Test (Windows MinGW64 GCC)](https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-windows-gcc.yml/badge.svg?branch=main)](https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-windows-gcc.yml)
+* webcfaceは外部ライブラリとして [crow](https://github.com/CrowCpp/Crow), [libcurl](https://github.com/curl/curl), [eventpp](https://github.com/wqking/eventpp), [msgpack-cxx](https://github.com/msgpack/msgpack-c), [spdlog](https://github.com/gabime/spdlog), [cli11](https://github.com/CLIUtils/CLI11.git) を使用します。
+	* システムにインストールされてなければsubmoduleにあるソースコードをビルドしますが、eventpp, msgpack, spdlog に関してはインストールされていればそれを使用します
+	* libcurlはwebsocket機能を有効にする必要があるためインストールされている場合でもソースからビルドします
+	* crowは暫定的にWindowsでSegmentation faultするバグを修正したもの([na-trium-144/Crow](https://github.com/na-trium-144/Crow) の fix-destructor-io-service ブランチ)を使用しています
+		* PullRequest: [CrowCpp/Crow #722](https://github.com/CrowCpp/Crow/pull/722)
 
 <details><summary>Ubuntu 20.04, 22.04</summary>
 
@@ -95,16 +98,14 @@ brew install spdlog msgpack-cxx  # optional
 
 * Visual Studio と Git for Windows をインストールし、Developer command prompt からビルドすればいいはずです
 * インストール先は/usr/localではない
-* 以降のビルド手順でsudoが不要です
 </details>
 
 <details><summary>MSYS2</summary>
 
 ```sh
-pacman -S git mingw-w64-x86_64-gcc mingw-w64-x86_64-cmake make
+pacman -S git mingw-w64-x86_64-gcc mingw-w64-x86_64-cmake mingw-w64-x86_64-ninja
 pacman -S mingw-w64-x86_64-spdlog  # optional
 ```
-* 以降のビルド手順でsudoが不要です
 </details>
 
 ### Build

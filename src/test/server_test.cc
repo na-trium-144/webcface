@@ -8,7 +8,7 @@
 #include <webcface/view.h>
 #include <thread>
 #include <iostream>
-#include "dummy_server.h"
+#include "dummy_client.h"
 
 using namespace WebCFace;
 

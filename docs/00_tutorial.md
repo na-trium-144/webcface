@@ -15,7 +15,7 @@ webcface-server
 * コマンドラインオプションで起動するポートを変更できたりします。詳細は`webcface-server -h`で確認してください
 
 ## WebUI
-serverは起動したまま、起動時に表示されるurl (http://localhost:7530/) をブラウザで開きましょう。
+serverは起動したまま、起動時に表示されるurl (http://localhost:7530/index.html) をブラウザで開きましょう。
 
 WebCFaceにクライアントが接続すると、WebUI右上のMenuに表示されます。
 Menuから見たいデータを選ぶことで小さいウィンドウのようなものが現れデータを見ることができます。

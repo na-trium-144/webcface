@@ -1,3 +1,13 @@
+## [1.1.7] - 2023-11-20
+### Changed
+* クライアントのwebsocketライブラリをlibcurlに、サーバー側をcrowに変更 (#90)
+* webuiのURLを http://ipアドレス:7530/index.html に変更
+### Added
+* 環境変数`WEBCFACE_VERBOSE`, `WEBCFACE_TRACE`でデバッグ情報を表示できるようにした
+* サーバー側でデバッグ情報を表示できる`-v`オプション追加
+### Fixed
+* RunCondOnSyncでデッドロックすることがあるバグを修正
+
 ## [1.1.6] - 2023-11-18
 ### Fixed
 * MacOSでbrew installするとexampleが動かないのを修正 (#89)
