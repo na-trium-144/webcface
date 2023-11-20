@@ -197,6 +197,9 @@ struct WEBCFACE_DLL ClientData {
         //! sync()側が関数を起こし完了まで待機
         void sync() {
             std::unique_lock return_lock(return_mtx);
+            {
+                std::lock_guard call_lock(call_mtx);
+            }
             call_cond.notify_all();
             return_cond.wait(return_lock);
         }
@@ -206,7 +209,13 @@ struct WEBCFACE_DLL ClientData {
             call_cond.wait(call_lock);
         }
         //! 関数側が完了を通知
-        void done() { return_cond.notify_all(); }
+        void done() {
+            {
+                // sync()側が return_cond.wait() に到達するまでブロック
+                std::lock_guard return_lock(return_mtx);
+            }
+            return_cond.notify_all();
+        }
     };
 
     explicit ClientData(const std::string &name)

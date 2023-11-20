@@ -139,6 +139,8 @@ FuncWrapper::runCondOnSync(const std::weak_ptr<ClientData> &data) {
                 ScopeGuard scope_guard{sync};
                 return callback(args);
             }
+        } else {
+            throw std::runtime_error("cannot access client data");
         }
         return ValAdaptor{};
     };

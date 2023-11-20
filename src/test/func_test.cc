@@ -156,8 +156,8 @@ TEST_F(FuncTest, funcRunCond) {
     std::this_thread::sleep_for(std::chrono::milliseconds(10));
     EXPECT_EQ(called, 0);
     auto fs = data_->func_sync_queue.pop();
-    EXPECT_TRUE(fs.has_value());
-    EXPECT_NE(*fs, nullptr);
+    ASSERT_TRUE(fs.has_value());
+    ASSERT_NE(*fs, nullptr);
     std::cout << "sync started" << std::endl;
     (*fs)->sync();
     std::cout << "sync finished" << std::endl;
