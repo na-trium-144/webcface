@@ -24,7 +24,7 @@ DummyClient::DummyClient()
           dummy_logger->set_level(spdlog::level::trace);
 
           if (ret != CURLE_OK) {
-              dummy_logger->error("connection error {}", ret);
+              dummy_logger->error("connection error {}", static_cast<int>(ret));
           } else {
               dummy_logger->debug("connection done");
               while (!closing.load()) {
@@ -52,7 +52,8 @@ DummyClient::DummyClient()
                       curl_ws_send(handle, nullptr, 0, &sent, 0, CURLWS_PONG);
                   }
                   if (ret != CURLE_AGAIN) {
-                      dummy_logger->debug("connection closed {}", ret);
+                      dummy_logger->debug("connection closed {}",
+                                          static_cast<int>(ret));
                       break;
                   }
                   auto msg = msg_queue.pop(std::chrono::milliseconds(0));
