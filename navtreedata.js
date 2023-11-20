@@ -30,9 +30,9 @@ var NAVTREE =
       [ "Ubuntu 22.04 (amd64, arm64, armhf)", "index.html#autotoc_md84", null ],
       [ "Homebrew (MacOS, Linux)", "index.html#autotoc_md85", null ],
       [ "Build from source", "index.html#autotoc_md86", [
-        [ "Requirements", "index.html#autotoc_md87", null ]
-      ] ],
-      [ "Build", "index.html#autotoc_md88", null ]
+        [ "Requirements", "index.html#autotoc_md87", null ],
+        [ "Build", "index.html#autotoc_md88", null ]
+      ] ]
     ] ],
     [ "Usage", "index.html#autotoc_md89", null ],
     [ "Tutorial", "md_00__tutorial.html", [
