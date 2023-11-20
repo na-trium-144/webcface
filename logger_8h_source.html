@@ -42,7 +42,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">WebCFace<span id="projectnumber">&#160;1.1.6</span>
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;1.1.7</span>
    </div>
    <div id="projectbrief">Web-based RPC &amp; UI Library</div>
   </td>
@@ -161,12 +161,14 @@ $(document).ready(function(){initNavTree('logger_8h_source.html',''); initResiza
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>};</div>
 </div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><a class="code hl_define" href="def_8h.html#a47af057bda855b54c212e97ffccdca01">WEBCFACE_DLL</a> <span class="keyword">extern</span> std::shared_ptr&lt;spdlog::sinks::stderr_color_sink_mt&gt;</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    <a class="code hl_variable" href="namespaceWebCFace.html#ac12c4637ae07ef88b19f166ec0cf8b16">stderr_sink</a>;</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><a class="code hl_define" href="def_8h.html#a47af057bda855b54c212e97ffccdca01">WEBCFACE_DLL</a> <span class="keyword">extern</span> spdlog::level::level_enum <a class="code hl_variable" href="namespaceWebCFace.html#ac5292091822245a35d8f8fcb6cb58d39">logger_internal_level</a>;</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><a class="code hl_define" href="def_8h.html#a47af057bda855b54c212e97ffccdca01">WEBCFACE_DLL</a> [[deprecated]] <span class="keyword">extern</span> std::shared_ptr&lt;spdlog::sinks::stderr_color_sink_mt&gt;</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    <a class="code hl_variable" href="namespaceWebCFace.html#ac12c4637ae07ef88b19f166ec0cf8b16">stderr_sink</a>;</div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>} <span class="comment">// namespace WebCFace</span></div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><a class="code hl_define" href="def_8h.html#a47af057bda855b54c212e97ffccdca01">WEBCFACE_DLL</a> [[deprecated]] <span class="keyword">extern</span> spdlog::level::level_enum <a class="code hl_variable" href="namespaceWebCFace.html#ac5292091822245a35d8f8fcb6cb58d39">logger_internal_level</a>;</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>} <span class="comment">// namespace WebCFace</span></div>
 <div class="ttc" id="aclassWebCFace_1_1Common_1_1Queue_html"><div class="ttname"><a href="classWebCFace_1_1Common_1_1Queue.html">WebCFace::Queue</a></div><div class="ttdoc">排他制御をしたただのキュー</div><div class="ttdef"><b>Definition</b> queue.h:12</div></div>
 <div class="ttc" id="aclassWebCFace_1_1LoggerBuf_html"><div class="ttname"><a href="classWebCFace_1_1LoggerBuf.html">WebCFace::LoggerBuf</a></div><div class="ttdef"><b>Definition</b> logger.h:14</div></div>
 <div class="ttc" id="aclassWebCFace_1_1LoggerBuf_html_a1990ccaa6280937852f89a62fd523cda"><div class="ttname"><a href="classWebCFace_1_1LoggerBuf.html#a1990ccaa6280937852f89a62fd523cda">WebCFace::LoggerBuf::overflow_buf</a></div><div class="ttdeci">std::string overflow_buf</div><div class="ttdef"><b>Definition</b> logger.h:18</div></div>
@@ -181,8 +183,8 @@ $(document).ready(function(){initNavTree('logger_8h_source.html',''); initResiza
 <div class="ttc" id="adef_8h_html"><div class="ttname"><a href="def_8h.html">def.h</a></div></div>
 <div class="ttc" id="adef_8h_html_a47af057bda855b54c212e97ffccdca01"><div class="ttname"><a href="def_8h.html#a47af057bda855b54c212e97ffccdca01">WEBCFACE_DLL</a></div><div class="ttdeci">#define WEBCFACE_DLL</div><div class="ttdef"><b>Definition</b> def.h:23</div></div>
 <div class="ttc" id="anamespaceWebCFace_html"><div class="ttname"><a href="namespaceWebCFace.html">WebCFace</a></div><div class="ttdef"><b>Definition</b> client.cc:12</div></div>
-<div class="ttc" id="anamespaceWebCFace_html_ac12c4637ae07ef88b19f166ec0cf8b16"><div class="ttname"><a href="namespaceWebCFace.html#ac12c4637ae07ef88b19f166ec0cf8b16">WebCFace::stderr_sink</a></div><div class="ttdeci">std::shared_ptr&lt; spdlog::sinks::stderr_color_sink_mt &gt; stderr_sink</div><div class="ttdef"><b>Definition</b> logger.cc:49</div></div>
-<div class="ttc" id="anamespaceWebCFace_html_ac5292091822245a35d8f8fcb6cb58d39"><div class="ttname"><a href="namespaceWebCFace.html#ac5292091822245a35d8f8fcb6cb58d39">WebCFace::logger_internal_level</a></div><div class="ttdeci">spdlog::level::level_enum logger_internal_level</div><div class="ttdoc">webcfaceのログ出力レベルを設定できます</div><div class="ttdef"><b>Definition</b> logger.cc:52</div></div>
+<div class="ttc" id="anamespaceWebCFace_html_ac12c4637ae07ef88b19f166ec0cf8b16"><div class="ttname"><a href="namespaceWebCFace.html#ac12c4637ae07ef88b19f166ec0cf8b16">WebCFace::stderr_sink</a></div><div class="ttdeci">std::shared_ptr&lt; spdlog::sinks::stderr_color_sink_mt &gt; stderr_sink</div><div class="ttdoc">(ver1.1.7から非推奨) stderrに出力するsink</div><div class="ttdef"><b>Definition</b> logger.cc:49</div></div>
+<div class="ttc" id="anamespaceWebCFace_html_ac5292091822245a35d8f8fcb6cb58d39"><div class="ttname"><a href="namespaceWebCFace.html#ac5292091822245a35d8f8fcb6cb58d39">WebCFace::logger_internal_level</a></div><div class="ttdeci">spdlog::level::level_enum logger_internal_level</div><div class="ttdoc">(ver1.1.7から非推奨) webcfaceのログ出力レベルを設定できます</div><div class="ttdef"><b>Definition</b> logger.cc:52</div></div>
 <div class="ttc" id="aqueue_8h_html"><div class="ttname"><a href="queue_8h.html">queue.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
@@ -190,7 +192,7 @@ $(document).ready(function(){initNavTree('logger_8h_source.html',''); initResiza
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_e6fac88a17509a9ad709623cf2c100d8.html">webcface</a></li><li class="navelem"><a class="el" href="logger_8h.html">logger.h</a></li>
-    <li class="footer">Generated on Sun Nov 19 2023 16:01:29 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Mon Nov 20 2023 11:22:47 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

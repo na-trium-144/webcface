@@ -42,7 +42,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">WebCFace<span id="projectnumber">&#160;1.1.6</span>
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;1.1.7</span>
    </div>
    <div id="projectbrief">Web-based RPC &amp; UI Library</div>
   </td>
@@ -109,6 +109,7 @@ $(document).ready(function(){initNavTree('websock_8cc.html',''); initResizable()
 <div class="header">
   <div class="summary">
 <a href="#namespaces">Namespaces</a> &#124;
+<a href="#define-members">Macros</a> &#124;
 <a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">websock.cc File Reference</div></div>
@@ -120,13 +121,14 @@ $(document).ready(function(){initNavTree('websock_8cc.html',''); initResizable()
 <code>#include &quot;<a class="el" href="dir_8h_source.html">dir.h</a>&quot;</code><br />
 <code>#include &lt;<a class="el" href="def_8h_source.html">webcface/common/def.h</a>&gt;</code><br />
 <code>#include &quot;<a class="el" href="message_8h_source.html">../message/message.h</a>&quot;</code><br />
-<code>#include &lt;cinatra.hpp&gt;</code><br />
 <code>#include &lt;memory&gt;</code><br />
 <code>#include &lt;thread&gt;</code><br />
+<code>#include &lt;crow.h&gt;</code><br />
+<code>#include &quot;<a class="el" href="custom__logger_8h_source.html">custom_logger.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for websock.cc:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="websock_8cc__incl.svg" width="2231" height="476"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="websock_8cc__incl.svg" width="2296" height="476"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
@@ -136,10 +138,19 @@ Namespaces</h2></td></tr>
 <tr class="memitem:namespaceWebCFace_1_1Server" id="r_namespaceWebCFace_1_1Server"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceWebCFace_1_1Server.html">WebCFace::Server</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:a5c9d709b448b25db7ea3f244748483b9" id="r_a5c9d709b448b25db7ea3f244748483b9"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="websock_8cc.html#a5c9d709b448b25db7ea3f244748483b9">CROW_STATIC_DIRECTORY</a>&#160;&#160;&#160;<a class="el" href="namespaceWebCFace_1_1Server.html#a0efb18b27d4a48629287b4b8790fbdf7">WebCFace::Server::static_dir</a></td></tr>
+<tr class="separator:a5c9d709b448b25db7ea3f244748483b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0fd760448a0f5fb4a3e36f95c8602a71" id="r_a0fd760448a0f5fb4a3e36f95c8602a71"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="websock_8cc.html#a0fd760448a0f5fb4a3e36f95c8602a71">CROW_STATIC_ENDPOINT</a>&#160;&#160;&#160;&quot;/&lt;path&gt;&quot;</td></tr>
+<tr class="separator:a0fd760448a0f5fb4a3e36f95c8602a71"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a33df3bc6f542e57bb6b239b084301718" id="r_a33df3bc6f542e57bb6b239b084301718"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceWebCFace_1_1Server.html#a33df3bc6f542e57bb6b239b084301718">pingThreadMain</a> ()</td></tr>
 <tr class="separator:a33df3bc6f542e57bb6b239b084301718"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a61c2320b1fc2122f40c399f95f7f2d42" id="r_a61c2320b1fc2122f40c399f95f7f2d42"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceWebCFace_1_1Server.html#a61c2320b1fc2122f40c399f95f7f2d42">serverSend</a> (void *conn, const std::string &amp;msg)</td></tr>
+<tr class="separator:a61c2320b1fc2122f40c399f95f7f2d42"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a324e1a70e006e8434fa711dd7e646727" id="r_a324e1a70e006e8434fa711dd7e646727"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceWebCFace_1_1Server.html#a324e1a70e006e8434fa711dd7e646727">serverStop</a> ()</td></tr>
 <tr class="separator:a324e1a70e006e8434fa711dd7e646727"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a55d5c53c73f66be16623a85d1c4f1e97" id="r_a55d5c53c73f66be16623a85d1c4f1e97"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceWebCFace_1_1Server.html#a55d5c53c73f66be16623a85d1c4f1e97">serverRun</a> (int port, const spdlog::sink_ptr &amp;sink, spdlog::level::level_enum level)</td></tr>
@@ -147,18 +158,53 @@ Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:ab739767cf3fb205df68f80cdaa084fe2" id="r_ab739767cf3fb205df68f80cdaa084fe2"><td class="memItemLeft" align="right" valign="top">cinatra::http_server *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceWebCFace_1_1Server.html#ab739767cf3fb205df68f80cdaa084fe2">server</a></td></tr>
-<tr class="separator:ab739767cf3fb205df68f80cdaa084fe2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a32d1773d4920e0fdbc9938ec0c45545e" id="r_a32d1773d4920e0fdbc9938ec0c45545e"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; std::thread &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceWebCFace_1_1Server.html#a32d1773d4920e0fdbc9938ec0c45545e">ping_thread</a></td></tr>
-<tr class="separator:a32d1773d4920e0fdbc9938ec0c45545e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0efb18b27d4a48629287b4b8790fbdf7" id="r_a0efb18b27d4a48629287b4b8790fbdf7"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceWebCFace_1_1Server.html#a0efb18b27d4a48629287b4b8790fbdf7">static_dir</a></td></tr>
+<tr class="separator:a0efb18b27d4a48629287b4b8790fbdf7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afb6151bd8ad60e86df1861dce46a0d18" id="r_afb6151bd8ad60e86df1861dce46a0d18"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; crow::SimpleApp &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceWebCFace_1_1Server.html#afb6151bd8ad60e86df1861dce46a0d18">app</a></td></tr>
+<tr class="separator:afb6151bd8ad60e86df1861dce46a0d18"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afea6e095e49b6ac795ddc5a7bf69acdc" id="r_afea6e095e49b6ac795ddc5a7bf69acdc"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; std::thread &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceWebCFace_1_1Server.html#afea6e095e49b6ac795ddc5a7bf69acdc">ping_thread</a></td></tr>
+<tr class="separator:afea6e095e49b6ac795ddc5a7bf69acdc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af04c40d65b7df8a8bbf0c6298240eb7e" id="r_af04c40d65b7df8a8bbf0c6298240eb7e"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classWebCFace_1_1Server_1_1CustomLogger.html">CustomLogger</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceWebCFace_1_1Server.html#af04c40d65b7df8a8bbf0c6298240eb7e">crow_custom_logger</a></td></tr>
+<tr class="separator:af04c40d65b7df8a8bbf0c6298240eb7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae1c86e419a05625de482e50f342733db" id="r_ae1c86e419a05625de482e50f342733db"><td class="memItemLeft" align="right" valign="top">std::atomic&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceWebCFace_1_1Server.html#ae1c86e419a05625de482e50f342733db">server_stop</a></td></tr>
+<tr class="separator:ae1c86e419a05625de482e50f342733db"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="a5c9d709b448b25db7ea3f244748483b9" name="a5c9d709b448b25db7ea3f244748483b9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5c9d709b448b25db7ea3f244748483b9">&#9670;&#160;</a></span>CROW_STATIC_DIRECTORY</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define CROW_STATIC_DIRECTORY&#160;&#160;&#160;<a class="el" href="namespaceWebCFace_1_1Server.html#a0efb18b27d4a48629287b4b8790fbdf7">WebCFace::Server::static_dir</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a0fd760448a0f5fb4a3e36f95c8602a71" name="a0fd760448a0f5fb4a3e36f95c8602a71"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0fd760448a0f5fb4a3e36f95c8602a71">&#9670;&#160;</a></span>CROW_STATIC_ENDPOINT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define CROW_STATIC_ENDPOINT&#160;&#160;&#160;&quot;/&lt;path&gt;&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_41e1742e44e2de38b3bc91f993fed282.html">server</a></li><li class="navelem"><a class="el" href="websock_8cc.html">websock.cc</a></li>
-    <li class="footer">Generated on Sun Nov 19 2023 16:01:29 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Mon Nov 20 2023 11:22:47 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

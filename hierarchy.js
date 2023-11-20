@@ -64,6 +64,9 @@ var hierarchy =
     [ "FuncInfo", "structWebCFace_1_1Common_1_1FuncInfo.html", null ],
     [ "FuncOnSync", "classWebCFace_1_1ClientData_1_1FuncOnSync.html", null ],
     [ "FuncResultStore", "classWebCFace_1_1ClientData_1_1FuncResultStore.html", null ],
+    [ "ILogHandler", null, [
+      [ "CustomLogger", "classWebCFace_1_1Server_1_1CustomLogger.html", null ]
+    ] ],
     [ "LogLine", "structWebCFace_1_1Common_1_1LogLine.html", null ],
     [ "LogLine", "structWebCFace_1_1Common_1_1LogLine.html", null ],
     [ "LogLine", "structWebCFace_1_1Message_1_1Log_1_1LogLine.html", null ],

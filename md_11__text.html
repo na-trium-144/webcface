@@ -42,7 +42,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">WebCFace<span id="projectnumber">&#160;1.1.6</span>
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;1.1.7</span>
    </div>
    <div id="projectbrief">Web-based RPC &amp; UI Library</div>
   </td>
@@ -110,7 +110,7 @@ $(document).ready(function(){initNavTree('md_11__text.html',''); initResizable()
   <div class="headertitle"><div class="title">Text</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md22"></a> API Reference → <a class="el" href="classWebCFace_1_1Text.html" title="文字列の送受信データを表すクラス">WebCFace::Text</a></p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md23"></a> API Reference → <a class="el" href="classWebCFace_1_1Text.html" title="文字列の送受信データを表すクラス">WebCFace::Text</a></p>
 <p>文字列(std::string)データを送受信します。 Textクラスの使い方は<a class="el" href="md_10__value.html">Value</a>とほぼ同じです。</p>
 <p>Member::text() でTextクラスのオブジェクトが得られます </p><div class="fragment"><div class="line"><a class="code hl_class" href="classWebCFace_1_1Text.html">WebCFace::Text</a> text_hoge = wcli.<a class="code hl_function" href="classWebCFace_1_1Text.html#aa8fab40ead35fa8e761986d5f4000a5c">member</a>(<span class="stringliteral">&quot;a&quot;</span>).<a class="code hl_function" href="classWebCFace_1_1Member.html#ab13e75a9d487a0253300ade34a498791">text</a>(<span class="stringliteral">&quot;hoge&quot;</span>);</div>
 <div class="ttc" id="aclassWebCFace_1_1Member_html_ab13e75a9d487a0253300ade34a498791"><div class="ttname"><a href="classWebCFace_1_1Member.html#ab13e75a9d487a0253300ade34a498791">WebCFace::Member::text</a></div><div class="ttdeci">Text text(const std::string &amp;field) const</div><div class="ttdoc">textを参照する。</div><div class="ttdef"><b>Definition</b> member.cc:15</div></div>
@@ -120,7 +120,7 @@ $(document).ready(function(){initNavTree('md_11__text.html',''); initResizable()
 <div class="line">    <span class="comment">// ...</span></div>
 <div class="line">}</div>
 </div><!-- fragment --><p>Member::onTextEntry() で新しくデータが追加されたときのコールバックを設定できます </p><div class="fragment"><div class="line">wcli.member(<span class="stringliteral">&quot;a&quot;</span>).onTextEntry().appendListener([](<a class="code hl_class" href="classWebCFace_1_1Text.html">WebCFace::Text</a> v){ <span class="comment">/* ... */</span> });</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md23"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md24"></a>
 送信</h1>
 <p>自分自身の名前のMemberからTextオブジェクトを作り、 Text::set() でデータを代入し、Client::sync()することで送信されます </p><div class="fragment"><div class="line">wcli.text(<span class="stringliteral">&quot;hoge&quot;</span>).set(<span class="stringliteral">&quot;hello&quot;</span>);</div>
 </div><!-- fragment --><p><a class="el" href="classWebCFace_1_1Text.html#ab33d2da9febb5e4c801e1ccee1dee594">WebCFace::Text::Dict</a> オブジェクトを使うと複数の値をまとめて送ることができます。 </p><div class="fragment"><div class="line"><span class="keyword">struct </span>A {</div>
@@ -138,7 +138,7 @@ $(document).ready(function(){initNavTree('md_11__text.html',''); initResizable()
 <div class="line">wcli.text(<span class="stringliteral">&quot;a&quot;</span>).set(a_instance); <span class="comment">// Dictにキャストされる</span></div>
 <div class="ttc" id="aclassWebCFace_1_1Text_html_ab33d2da9febb5e4c801e1ccee1dee594"><div class="ttname"><a href="classWebCFace_1_1Text.html#ab33d2da9febb5e4c801e1ccee1dee594">WebCFace::Text::Dict</a></div><div class="ttdeci">Common::Dict&lt; std::shared_ptr&lt; std::string &gt; &gt; Dict</div><div class="ttdef"><b>Definition</b> text.h:47</div></div>
 </div><!-- fragment --><p>(C++のみ) set() の代わりに代入演算子(Text::operator=)でも同様のことができます。</p>
-<h1><a class="anchor" id="autotoc_md24"></a>
+<h1><a class="anchor" id="autotoc_md25"></a>
 受信</h1>
 <p>Text::tryGet(), Text::tryGetRecurse() で値のリクエストをするとともに受信した値を取得できます。</p>
 <p>初回の呼び出しではまだ受信していないためstd::nulloptを返します。 (pythonでは None, javascriptでは null)</p>
@@ -152,7 +152,7 @@ $(document).ready(function(){initNavTree('md_11__text.html',''); initResizable()
 <div class="line">}</div>
 </div><!-- fragment --><p>Text::get(), Text::getRecurse() はstd::nulloptの代わりにデフォルト値を返す点以外は同じです。</p>
 <p>また、std::string, Value::Dict などの型にキャストすることでも同様に値が得られます。</p>
-<h1><a class="anchor" id="autotoc_md25"></a>
+<h1><a class="anchor" id="autotoc_md26"></a>
 受信イベント</h1>
 <p>Text::appendListener() で受信したデータが変化したときにコールバックを呼び出すことができます。 コールバックを設定するとその値はリクエストされます。 </p><div class="fragment"><div class="line">wcli.member(<span class="stringliteral">&quot;a&quot;</span>).text(<span class="stringliteral">&quot;hoge&quot;</span>).appendListener([](Text v){ <span class="comment">/* ... */</span> });</div>
 </div><!-- fragment --><p> pythonでは Text.signal プロパティがこのイベントのsignalを返します。</p>
@@ -164,7 +164,7 @@ $(document).ready(function(){initNavTree('md_11__text.html',''); initResizable()
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sun Nov 19 2023 16:01:29 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Mon Nov 20 2023 11:22:47 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

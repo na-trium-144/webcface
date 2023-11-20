@@ -45,6 +45,7 @@ var annotated_dup =
       ] ],
       [ "Server", "namespaceWebCFace_1_1Server.html", [
         [ "ClientData", "structWebCFace_1_1Server_1_1ClientData.html", "structWebCFace_1_1Server_1_1ClientData" ],
+        [ "CustomLogger", "classWebCFace_1_1Server_1_1CustomLogger.html", "classWebCFace_1_1Server_1_1CustomLogger" ],
         [ "Store", "structWebCFace_1_1Server_1_1Store.html", "structWebCFace_1_1Server_1_1Store" ]
       ] ],
       [ "AnonymousFunc", "classWebCFace_1_1AnonymousFunc.html", "classWebCFace_1_1AnonymousFunc" ],

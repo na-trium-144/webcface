@@ -1,0 +1,9 @@
+<map id="server/custom_logger.h" name="server/custom_logger.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="81,5,255,31"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,79,83,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="149,33,77,74,75,69,147,28"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="107,79,229,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="171,31,171,65,165,65,165,31"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="253,79,392,104"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="194,28,286,70,284,75,192,33"/>
+</map>

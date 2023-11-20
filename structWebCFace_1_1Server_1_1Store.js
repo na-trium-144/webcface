@@ -8,7 +8,7 @@ var structWebCFace_1_1Server_1_1Store =
     [ "forEach", "structWebCFace_1_1Server_1_1Store.html#a94c8077c55532f490af74e147bbf9d43", null ],
     [ "forEachWithName", "structWebCFace_1_1Server_1_1Store.html#aeb7d6af279a21647ec5db33cbde1abb0", null ],
     [ "getClient", "structWebCFace_1_1Server_1_1Store.html#a011a1c9153b63d4dd9bfc50d3bda6d92", null ],
-    [ "newClient", "structWebCFace_1_1Server_1_1Store.html#a84bf45e1c111ecfbf928251ff2568567", null ],
+    [ "newClient", "structWebCFace_1_1Server_1_1Store.html#ab66e8fa116f1af0f50a383d780da3191", null ],
     [ "removeClient", "structWebCFace_1_1Server_1_1Store.html#ab220140080b3a22eadbe31a1e989622d", null ],
     [ "clients", "structWebCFace_1_1Server_1_1Store.html#ad47a9aa998801c465c472b11fd0a67fd", null ],
     [ "clients_by_id", "structWebCFace_1_1Server_1_1Store.html#a9cd584d5bf32dbab4cc5b3809803e38f", null ]

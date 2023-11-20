@@ -1,5 +1,6 @@
 var dir_41e1742e44e2de38b3bc91f993fed282 =
 [
+    [ "custom_logger.h", "custom__logger_8h.html", "custom__logger_8h" ],
     [ "dir.cc", "dir_8cc.html", "dir_8cc" ],
     [ "dir.h", "dir_8h.html", "dir_8h" ],
     [ "s_client_data.cc", "s__client__data_8cc.html", "s__client__data_8cc" ],

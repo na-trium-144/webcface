@@ -42,7 +42,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">WebCFace<span id="projectnumber">&#160;1.1.6</span>
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;1.1.7</span>
    </div>
    <div id="projectbrief">Web-based RPC &amp; UI Library</div>
   </td>
@@ -126,8 +126,8 @@ Collaboration diagram for ClientData:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a5f597f42729fddd04f0a25282496189d" id="r_a5f597f42729fddd04f0a25282496189d"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structWebCFace_1_1Server_1_1ClientData.html#a5f597f42729fddd04f0a25282496189d">wsConnPtr</a> = std::shared_ptr&lt; void &gt;</td></tr>
-<tr class="separator:a5f597f42729fddd04f0a25282496189d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af92eef764fed4a1512658233c54020bf" id="r_af92eef764fed4a1512658233c54020bf"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structWebCFace_1_1Server_1_1ClientData.html#af92eef764fed4a1512658233c54020bf">wsConnPtr</a> = void *</td></tr>
+<tr class="separator:af92eef764fed4a1512658233c54020bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -135,16 +135,14 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:aa0fd96bc25e3d509fb54028c2e4b91f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aacd6967faae6a11d967dbc6c436db3b6" id="r_aacd6967faae6a11d967dbc6c436db3b6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structWebCFace_1_1Server_1_1ClientData.html#aacd6967faae6a11d967dbc6c436db3b6">hasReq</a> (const std::string &amp;member)</td></tr>
 <tr class="separator:aacd6967faae6a11d967dbc6c436db3b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9384be32aa121333e275aa991886fceb" id="r_a9384be32aa121333e275aa991886fceb"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structWebCFace_1_1Server_1_1ClientData.html#a9384be32aa121333e275aa991886fceb">getRemoteAddr</a> () const</td></tr>
-<tr class="separator:a9384be32aa121333e275aa991886fceb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a061ca974ab5d37638be4a7651c913419" id="r_a061ca974ab5d37638be4a7651c913419"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structWebCFace_1_1Server_1_1ClientData.html#a061ca974ab5d37638be4a7651c913419">ClientData</a> ()=delete</td></tr>
 <tr class="separator:a061ca974ab5d37638be4a7651c913419"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0f921605927cd51e95e4b394759ec37b" id="r_a0f921605927cd51e95e4b394759ec37b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structWebCFace_1_1Server_1_1ClientData.html#a0f921605927cd51e95e4b394759ec37b">ClientData</a> (const <a class="el" href="structWebCFace_1_1Server_1_1ClientData.html">ClientData</a> &amp;)=delete</td></tr>
 <tr class="separator:a0f921605927cd51e95e4b394759ec37b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa94c857a92834b57e17194f98953a278" id="r_aa94c857a92834b57e17194f98953a278"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structWebCFace_1_1Server_1_1ClientData.html">ClientData</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structWebCFace_1_1Server_1_1ClientData.html#aa94c857a92834b57e17194f98953a278">operator=</a> (const <a class="el" href="structWebCFace_1_1Server_1_1ClientData.html">ClientData</a> &amp;)=delete</td></tr>
 <tr class="separator:aa94c857a92834b57e17194f98953a278"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a583c35dd82dd3b3dd59875ecdcccae19" id="r_a583c35dd82dd3b3dd59875ecdcccae19"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structWebCFace_1_1Server_1_1ClientData.html#a583c35dd82dd3b3dd59875ecdcccae19">ClientData</a> (const <a class="el" href="structWebCFace_1_1Server_1_1ClientData.html#a5f597f42729fddd04f0a25282496189d">wsConnPtr</a> &amp;<a class="el" href="structWebCFace_1_1Server_1_1ClientData.html#abb05ebac08748141a091f1ba10fd0063">con</a>, const spdlog::sink_ptr &amp;<a class="el" href="structWebCFace_1_1Server_1_1ClientData.html#a11573073f52fb4b379c28b67a1a9799c">sink</a>, spdlog::level::level_enum level)</td></tr>
-<tr class="separator:a583c35dd82dd3b3dd59875ecdcccae19"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a295869b1e02456c0f66f0a8ecb75080f" id="r_a295869b1e02456c0f66f0a8ecb75080f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structWebCFace_1_1Server_1_1ClientData.html#a295869b1e02456c0f66f0a8ecb75080f">ClientData</a> (const <a class="el" href="structWebCFace_1_1Server_1_1ClientData.html#af92eef764fed4a1512658233c54020bf">wsConnPtr</a> &amp;<a class="el" href="structWebCFace_1_1Server_1_1ClientData.html#a967dcc3eba8ae3ca17c1c79580894d67">con</a>, const std::string &amp;<a class="el" href="structWebCFace_1_1Server_1_1ClientData.html#aeaede8e9fa35099287d112189aac9e3a">remote_addr</a>, const spdlog::sink_ptr &amp;<a class="el" href="structWebCFace_1_1Server_1_1ClientData.html#a11573073f52fb4b379c28b67a1a9799c">sink</a>, spdlog::level::level_enum level)</td></tr>
+<tr class="separator:a295869b1e02456c0f66f0a8ecb75080f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2812fd0bf18bb3a8e9f38f1045062ff7" id="r_a2812fd0bf18bb3a8e9f38f1045062ff7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structWebCFace_1_1Server_1_1ClientData.html#a2812fd0bf18bb3a8e9f38f1045062ff7">onConnect</a> ()</td></tr>
 <tr class="separator:a2812fd0bf18bb3a8e9f38f1045062ff7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeb6cfe926c5110a4f3708eaf32590031" id="r_aeb6cfe926c5110a4f3708eaf32590031"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structWebCFace_1_1Server_1_1ClientData.html#aeb6cfe926c5110a4f3708eaf32590031">onRecv</a> (const std::string &amp;msg)</td></tr>
@@ -169,8 +167,10 @@ Public Attributes</h2></td></tr>
 <tr class="separator:accdc73450b7a41e30a69fca53a8f2232"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad0189c65be4ee081f1fa3183a901bbb5" id="r_ad0189c65be4ee081f1fa3183a901bbb5"><td class="memItemLeft" align="right" valign="top">spdlog::level::level_enum&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structWebCFace_1_1Server_1_1ClientData.html#ad0189c65be4ee081f1fa3183a901bbb5">logger_level</a></td></tr>
 <tr class="separator:ad0189c65be4ee081f1fa3183a901bbb5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abb05ebac08748141a091f1ba10fd0063" id="r_abb05ebac08748141a091f1ba10fd0063"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structWebCFace_1_1Server_1_1ClientData.html#a5f597f42729fddd04f0a25282496189d">wsConnPtr</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structWebCFace_1_1Server_1_1ClientData.html#abb05ebac08748141a091f1ba10fd0063">con</a></td></tr>
-<tr class="separator:abb05ebac08748141a091f1ba10fd0063"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a967dcc3eba8ae3ca17c1c79580894d67" id="r_a967dcc3eba8ae3ca17c1c79580894d67"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structWebCFace_1_1Server_1_1ClientData.html#af92eef764fed4a1512658233c54020bf">wsConnPtr</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structWebCFace_1_1Server_1_1ClientData.html#a967dcc3eba8ae3ca17c1c79580894d67">con</a></td></tr>
+<tr class="separator:a967dcc3eba8ae3ca17c1c79580894d67"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeaede8e9fa35099287d112189aac9e3a" id="r_aeaede8e9fa35099287d112189aac9e3a"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structWebCFace_1_1Server_1_1ClientData.html#aeaede8e9fa35099287d112189aac9e3a">remote_addr</a></td></tr>
+<tr class="separator:aeaede8e9fa35099287d112189aac9e3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aabf3a5ce7b508dec8b9c197b0af1d8c8" id="r_aabf3a5ce7b508dec8b9c197b0af1d8c8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structWebCFace_1_1Server_1_1ClientData.html#aabf3a5ce7b508dec8b9c197b0af1d8c8">sync_init</a> = false</td></tr>
 <tr class="separator:aabf3a5ce7b508dec8b9c197b0af1d8c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9b45b3e13bd9167aab02e17e08916231" id="r_a9b45b3e13bd9167aab02e17e08916231"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structWebCFace_1_1Server_1_1ClientData.html#a9b45b3e13bd9167aab02e17e08916231">name</a></td></tr>
@@ -221,14 +221,14 @@ Static Public Attributes</h2></td></tr>
 <tr class="separator:ab513349dee41e5e85be9aaca1baa402c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Typedef Documentation</h2>
-<a id="a5f597f42729fddd04f0a25282496189d" name="a5f597f42729fddd04f0a25282496189d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5f597f42729fddd04f0a25282496189d">&#9670;&#160;</a></span>wsConnPtr</h2>
+<a id="af92eef764fed4a1512658233c54020bf" name="af92eef764fed4a1512658233c54020bf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af92eef764fed4a1512658233c54020bf">&#9670;&#160;</a></span>wsConnPtr</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="structWebCFace_1_1Server_1_1ClientData.html#a5f597f42729fddd04f0a25282496189d">wsConnPtr</a> =  std::shared_ptr&lt;void&gt;</td>
+          <td class="memname">using <a class="el" href="structWebCFace_1_1Server_1_1ClientData.html#af92eef764fed4a1512658233c54020bf">wsConnPtr</a> =  void *</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -287,8 +287,8 @@ Static Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a583c35dd82dd3b3dd59875ecdcccae19" name="a583c35dd82dd3b3dd59875ecdcccae19"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a583c35dd82dd3b3dd59875ecdcccae19">&#9670;&#160;</a></span>ClientData() <span class="overload">[3/3]</span></h2>
+<a id="a295869b1e02456c0f66f0a8ecb75080f" name="a295869b1e02456c0f66f0a8ecb75080f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a295869b1e02456c0f66f0a8ecb75080f">&#9670;&#160;</a></span>ClientData() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -299,8 +299,14 @@ Static Public Attributes</h2></td></tr>
         <tr>
           <td class="memname"><a class="el" href="structWebCFace_1_1Server_1_1ClientData.html">ClientData</a> </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="structWebCFace_1_1Server_1_1ClientData.html#a5f597f42729fddd04f0a25282496189d">wsConnPtr</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="structWebCFace_1_1Server_1_1ClientData.html#af92eef764fed4a1512658233c54020bf">wsConnPtr</a> &amp;&#160;</td>
           <td class="paramname"><em>con</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>remote_addr</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -338,23 +344,6 @@ Static Public Attributes</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">bool connected </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a9384be32aa121333e275aa991886fceb" name="a9384be32aa121333e275aa991886fceb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9384be32aa121333e275aa991886fceb">&#9670;&#160;</a></span>getRemoteAddr()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::string getRemoteAddr </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -541,14 +530,14 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="abb05ebac08748141a091f1ba10fd0063" name="abb05ebac08748141a091f1ba10fd0063"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abb05ebac08748141a091f1ba10fd0063">&#9670;&#160;</a></span>con</h2>
+<a id="a967dcc3eba8ae3ca17c1c79580894d67" name="a967dcc3eba8ae3ca17c1c79580894d67"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a967dcc3eba8ae3ca17c1c79580894d67">&#9670;&#160;</a></span>con</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="structWebCFace_1_1Server_1_1ClientData.html#a5f597f42729fddd04f0a25282496189d">wsConnPtr</a> con</td>
+          <td class="memname"><a class="el" href="structWebCFace_1_1Server_1_1ClientData.html#af92eef764fed4a1512658233c54020bf">wsConnPtr</a> con</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -769,6 +758,20 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
+<a id="aeaede8e9fa35099287d112189aac9e3a" name="aeaede8e9fa35099287d112189aac9e3a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeaede8e9fa35099287d112189aac9e3a">&#9670;&#160;</a></span>remote_addr</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string remote_addr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a28beb71e3568e218778f423fd95ed391" name="a28beb71e3568e218778f423fd95ed391"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a28beb71e3568e218778f423fd95ed391">&#9670;&#160;</a></span>send_buffer</h2>
 
@@ -924,7 +927,7 @@ template&lt;typename T &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceWebCFace.html">WebCFace</a></li><li class="navelem"><a class="el" href="namespaceWebCFace_1_1Server.html">Server</a></li><li class="navelem"><a class="el" href="structWebCFace_1_1Server_1_1ClientData.html">ClientData</a></li>
-    <li class="footer">Generated on Sun Nov 19 2023 16:01:29 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Mon Nov 20 2023 11:22:47 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

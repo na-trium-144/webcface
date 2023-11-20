@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['macos_20linux_0',['Homebrew (MacOS, Linux)',['../index.html#autotoc_md84',1,'']]],
+  ['macos_20linux_0',['Homebrew (MacOS, Linux)',['../index.html#autotoc_md85',1,'']]],
   ['main_1',['main',['../server__main_8cc.html#a3c04138a5bfe5d72780bb7e82a18e627',1,'server_main.cc']]],
   ['max_2',['max',['../classWebCFace_1_1Common_1_1Arg.html#a0466a52a01e71146cab0a104f143c851',1,'WebCFace::Common::Arg::max(double max)'],['../classWebCFace_1_1Common_1_1Arg.html#a0aed672f8abc2efb3dff9708f52896a3',1,'WebCFace::Common::Arg::max() const']]],
   ['max_5f_3',['max_',['../classWebCFace_1_1Common_1_1Arg.html#ae0b025581d8618b3f4a7524cde2c74ae',1,'WebCFace::Common::Arg']]],
