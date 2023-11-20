@@ -72,7 +72,7 @@ void serverRun(int port, const spdlog::sink_ptr &sink,
     logger->set_level(spdlog::level::trace);
 
     logger->info("WebCFace Server {}", WEBCFACE_VERSION);
-    logger->info("http://localhost:{}", port);
+    logger->info("http://localhost:{}/index.html", port);
 
     auto crow_logger = std::make_shared<spdlog::logger>("crow_server", sink);
     crow_logger->set_level(spdlog::level::trace);
@@ -89,13 +89,18 @@ void serverRun(int port, const spdlog::sink_ptr &sink,
 
     app = std::make_unique<crow::SimpleApp>();
 
+    /*
+    / にアクセスしたときindex.htmlへリダイレクトさせようとしたが、
+    windowsでなんかうまくいかなかったので諦めた
+
     auto &route = CROW_ROUTE((*app), "/");
     route([](crow::response &res) {
         res.redirect("index.html");
         res.end();
     });
-    // CROW_WEBSOCKET_ROUTE((*app), "/")
     route.websocket<std::remove_reference<decltype(*app)>::type>(app.get())
+    */
+    CROW_WEBSOCKET_ROUTE((*app), "/")
         .onopen([&](crow::websocket::connection &conn) {
             std::lock_guard lock(server_mtx);
             store.newClient(&conn, conn.get_remote_ip(), sink, level);
