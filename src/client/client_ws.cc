@@ -20,7 +20,8 @@ void Client::messageThreadMain(std::shared_ptr<ClientData> data,
         curl_easy_setopt(handle, CURLOPT_CONNECT_ONLY, 2L);
         CURLcode ret = curl_easy_perform(handle);
         if (ret != CURLE_OK) {
-            data->logger_internal->trace("connection failed {}", ret);
+            data->logger_internal->trace("connection failed {}",
+                                         static_cast<int>(ret));
         } else {
             data->logger_internal->debug("connected");
             data->sync_init.store(false);
@@ -45,7 +46,8 @@ void Client::messageThreadMain(std::shared_ptr<ClientData> data,
                     curl_ws_send(handle, nullptr, 0, &sent, 0, CURLWS_PONG);
                 }
                 if (ret != CURLE_AGAIN) {
-                    data->logger_internal->debug("connection closed {}", ret);
+                    data->logger_internal->debug("connection closed {}",
+                                                 static_cast<int>(ret));
                     break;
                 }
                 auto msg =
