@@ -63,7 +63,7 @@ brew install webcface webcface-webui
 	* [![CMake Test (Linux Clang)](https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-linux-clang.yml/badge.svg?branch=main)](https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-linux-clang.yml) (clang-13以上)
 	* [![CMake Test (MacOS Clang)](https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-macos-clang.yml/badge.svg?branch=main)](https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-macos-clang.yml)
 	* [![CMake Test (Windows MSVC)](https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-windows-msvc.yml/badge.svg?branch=main)](https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-windows-msvc.yml)
-	* [![CMake Test (Windows MinGW64 GCC)](https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-windows-gcc.yml/badge.svg?branch=main)](https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-windows-gcc.yml)	(CMAKE_BUILD_TYPE=Debugだとリンクエラーになりました)
+	* [![CMake Test (Windows MinGW64 GCC)](https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-windows-gcc.yml/badge.svg?branch=main)](https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-windows-gcc.yml)
 * webcfaceは外部ライブラリとして [crow](https://github.com/CrowCpp/Crow), [libcurl](https://github.com/curl/curl), [eventpp](https://github.com/wqking/eventpp), [msgpack-cxx](https://github.com/msgpack/msgpack-c), [spdlog](https://github.com/gabime/spdlog), [cli11](https://github.com/CLIUtils/CLI11.git) を使用します。
 	* システムにインストールされてなければsubmoduleにあるソースコードをビルドしますが、eventpp, msgpack, spdlog に関してはインストールされていればそれを使用します
 	* libcurlはwebsocket機能を有効にする必要があるためインストールされている場合でもソースからビルドします
@@ -97,16 +97,14 @@ brew install spdlog msgpack-cxx  # optional
 
 * Visual Studio と Git for Windows をインストールし、Developer command prompt からビルドすればいいはずです
 * インストール先は/usr/localではない
-* 以降のビルド手順でsudoが不要です
 </details>
 
 <details><summary>MSYS2</summary>
 
 ```sh
-pacman -S git mingw-w64-x86_64-gcc mingw-w64-x86_64-cmake make
+pacman -S git mingw-w64-x86_64-gcc mingw-w64-x86_64-cmake mingw-w64-x86_64-ninja
 pacman -S mingw-w64-x86_64-spdlog  # optional
 ```
-* 以降のビルド手順でsudoが不要です
 </details>
 
 ### Build
