@@ -110,7 +110,9 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
   <div class="headertitle"><div class="title"><a class="el" href="namespaceWebCFace.html">WebCFace</a> </div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="md__2home_2runner_2work_2webcface_2webcface_2README"></a> <a href="https://github.com/na-trium-144/webcface/actions/workflows/cmake-coverage.yml"><img src="https://raw.githubusercontent.com/na-trium-144/webcface/badge/coverage.svg" alt="coverage" style="pointer-events: none;" class="inline"/></a> <a href="https://github.com/na-trium-144/webcface/releases"><img src="https://img.shields.io/github/v/release/na-trium-144/webcface" alt="release" class="inline"/></a> <img src="https://img.shields.io/badge/C%2B%2B-20-blue?logo=C%2B%2B" alt="C++20" class="inline"/></p>
+<div class="textblock"><p><a class="anchor" id="md__2home_2runner_2work_2webcface_2webcface_2README"></a> <a href="https://github.com/na-trium-144/webcface"><img src="https://img.shields.io/badge/C%2B%2B-20-blue?logo=C%2B%2B" alt="C++20" class="inline"/></a> <a href="https://github.com/na-trium-144/webcface/releases"><img src="https://img.shields.io/github/v/release/na-trium-144/webcface" alt="release" class="inline"/></a> <a href="https://github.com/na-trium-144/webcface/actions/workflows/cmake-coverage.yml"><img src="https://raw.githubusercontent.com/na-trium-144/webcface/badge/coverage.svg" alt="coverage" style="pointer-events: none;" class="inline"/></a> <br  />
+ <a href="https://github.com/na-trium-144/webcface-python/tree/dev"><img src="https://img.shields.io/badge/python-work_in_progress-red?logo=Python&amp;logoColor=white" alt="python" class="inline"/></a> <br  />
+ <a href="https://github.com/na-trium-144/webcface-js"><img src="https://img.shields.io/badge/TypeScript-gray?logo=TypeScript&amp;logoColor=white" alt="typescript" class="inline"/></a> <a href="https://www.npmjs.com/package/webcface"><img src="https://img.shields.io/npm/v/webcface" alt="npm" class="inline"/></a></p>
 <p>Web-based RPC &amp; UI Library</p>
 <p>WebSocketとMessagePackを使った、ROSのような分散型の通信ライブラリです。 クロスプラットフォームかつ複数の言語間で通信ができます。</p>
 <p>WebブラウザーでアクセスできるUI(webcface-webui)が付属しており、ネットワーク上のPCやタブレットなどからアクセスしてWebCFaceで通信されているデータを可視化したり関数を呼び出したりできます。 また、webuiからのアクセスを想定してテキストやボタンなどの配置を指定すると簡易なUIを作成することができます。</p>
@@ -144,7 +146,7 @@ Ubuntu 22.04 (amd64, arm64, armhf)</h2>
 <p><a href="https://github.com/na-trium-144/webcface/releases">WebCFaceのReleases</a> と <a href="https://github.com/na-trium-144/webcface-webui/releases">webuiのReleases</a> 、<a href="https://github.com/na-trium-144/webcface-tools/releases">toolsのReleases</a> からそれぞれ最新のdebパッケージをダウンロードしてインストールできます。</p>
 <p>debパッケージはubuntu22.04でビルドしています。20.04以前のubuntuでは依存ライブラリの都合で動きません。debianはわかりません。</p>
 <p>例 (amd64の場合) </p><div class="fragment"><div class="line">curl -LO https://github.com/na-trium-144/webcface/releases/download/v1.1.8/webcface_1.1.8_amd64.deb</div>
-<div class="line">curl -LO https://github.com/na-trium-144/webcface-webui/releases/download/v1.0.5/webcface-webui_1.0.5_all.deb</div>
+<div class="line">curl -LO https://github.com/na-trium-144/webcface-webui/releases/download/v1.0.6/webcface-webui_1.0.6_all.deb</div>
 <div class="line">curl -LO https://github.com/na-trium-144/webcface-tools/releases/download/v1.1.2/webcface-tools_1.1.2_amd64.deb</div>
 <div class="line">sudo apt install ./webcface*.deb</div>
 <div class="line">rm ./webcface*.deb</div>
@@ -232,7 +234,7 @@ Build</h3>
 <li>その後、<a href="https://github.com/na-trium-144/webcface-webui/releases">webuiのReleases</a> からビルド済みのtar.gzのアーカイブをダウンロードして /usr/local/share/webcface/dist として展開する必要があります<ul>
 <li>install先が/usr/localでない場合はprefixを読み替えてください</li>
 <li>installしないでbuildディレクトリから起動する場合は、このリポジトリ直下にdist/を置いてください</li>
-<li>コマンドからやる場合は次のようになります <div class="fragment"><div class="line">curl -LO https://github.com/na-trium-144/webcface-webui/releases/download/v1.0.5/webcface-webui_1.0.5.tar.gz</div>
+<li>コマンドからやる場合は次のようになります <div class="fragment"><div class="line">curl -LO https://github.com/na-trium-144/webcface-webui/releases/download/v1.0.6/webcface-webui_1.0.6.tar.gz</div>
 <div class="line">tar zxvf webcface-webui*.tar.gz</div>
 <div class="line">sudo rm -rf /usr/local/share/webcface</div>
 <div class="line">sudo mkdir /usr/local/share/webcface</div>
@@ -252,7 +254,7 @@ Usage</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon Nov 20 2023 13:12:18 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Mon Nov 20 2023 13:46:13 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>
