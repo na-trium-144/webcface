@@ -67,6 +67,8 @@ brew install webcface webcface-webui
 * webcfaceは外部ライブラリとして [crow](https://github.com/CrowCpp/Crow), [libcurl](https://github.com/curl/curl), [eventpp](https://github.com/wqking/eventpp), [msgpack-cxx](https://github.com/msgpack/msgpack-c), [spdlog](https://github.com/gabime/spdlog), [cli11](https://github.com/CLIUtils/CLI11.git) を使用します。
 	* システムにインストールされてなければsubmoduleにあるソースコードをビルドしますが、eventpp, msgpack, spdlog に関してはインストールされていればそれを使用します
 	* libcurlはwebsocket機能を有効にする必要があるためインストールされている場合でもソースからビルドします
+	* crowは暫定的にWindowsでSegmentation faultするバグを修正したもの([na-trium-144/Crow](https://github.com/na-trium-144/Crow) の fix-destructor-io-service ブランチ)を使用しています
+		* PullRequest: [CrowCpp/Crow #722](https://github.com/CrowCpp/Crow/pull/722)
 
 <details><summary>Ubuntu 20.04, 22.04</summary>
 
