@@ -8,6 +8,7 @@
 #include <chrono>
 #include <atomic>
 #include <unordered_map>
+#include <cstdlib>
 #include <eventpp/eventdispatcher.h>
 #include <spdlog/logger.h>
 #include <webcface/common/vector.h>
@@ -29,13 +30,21 @@ struct ClientData {
         : self_member_name(name), value_store(name), text_store(name),
           func_store(name), view_store(name), log_store(name),
           sync_time_store(name), logger_sink(std::make_shared<LoggerSink>()) {
+        static auto stderr_sink =
+            std::make_shared<spdlog::sinks::stderr_color_sink_mt>();
         std::vector<spdlog::sink_ptr> sinks = {logger_sink, stderr_sink};
         logger =
             std::make_shared<spdlog::logger>(name, sinks.begin(), sinks.end());
         logger->set_level(spdlog::level::trace);
         logger_internal = std::make_shared<spdlog::logger>(
             "webcface_internal(" + name + ")", stderr_sink);
-        logger_internal->set_level(logger_internal_level);
+        if (std::getenv("WEBCFACE_TRACE") != nullptr) {
+            logger_internal->set_level(spdlog::level::trace);
+        } else if (getenv("WEBCFACE_VERBOSE") != nullptr) {
+            logger_internal->set_level(spdlog::level::debug);
+        } else {
+            logger_internal->set_level(spdlog::level::off);
+        }
     }
 
     //! Client自身の名前

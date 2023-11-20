@@ -45,7 +45,8 @@ class Log : protected Field, public EventTarget<Log, std::string> {
     }
 
     //! 受信したログをクリアする
-    /*!
+    /*! (v1.1.5で追加)
+     * 
      * リクエスト状態は解除しない
      */
     Log &clear() {

@@ -67,9 +67,6 @@ endif()
 if(MINGW)
     # https://stackoverflow.com/questions/10486116/what-does-this-gcc-error-relocation-truncated-to-fit-mean
     add_link_options(-Wl,--default-image-base-low)
-    # https://github.com/qicosmos/cinatra/issues/91
-    # 試してみたけど特に変化なし?
-    # add_compile_definitions(_WIN32_WINNT=0x0500)
 endif()
 
 find_package(msgpack-cxx QUIET)
@@ -118,21 +115,32 @@ else()
     endif()
 endif()
 
-add_library(cinatra INTERFACE)
-target_include_directories(cinatra INTERFACE
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/external/cinatra/include>
-    $<INSTALL_INTERFACE:include>
-)
-if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    target_compile_options(cinatra INTERFACE -pthread -fcoroutines -fno-tree-slp-vectorize)
-elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-    target_compile_options(cinatra INTERFACE -pthread)
-endif()
+set(CURL_ENABLE_SSL off CACHE INTERNAL "" FORCE)
+set(BUILD_CURL_EXE off CACHE INTERNAL "" FORCE)
+# libcurlはだいたいインストールされているが使えないのでsharedにする意味がない
+set(BUILD_SHARED_LIBS off CACHE INTERNAL "" FORCE)
+set(BUILD_STATIC_LIBS on CACHE INTERNAL "" FORCE)
+set(SHARE_LIB_OBJECT ${WEBCFACE_PIC} CACHE INTERNAL "" FORCE)
+set(ENABLE_WEBSOCKETS on CACHE INTERNAL "" FORCE)
+set(CURL_DISABLE_INSTALL on CACHE INTERNAL "" FORCE)
+add_subdirectory(external/curl)
+set(CURL libcurl_static)
+
+add_library(asio INTERFACE)
+target_include_directories(asio INTERFACE ${CMAKE_CURRENT_LIST_DIR}/external/asio/asio/include)
+target_compile_definitions(asio INTERFACE ASIO_STANDALONE)
 if(MINGW)
-    set(CINATRA cinatra ws2_32 wsock32)
+    set(ASIO asio ws2_32 wsock32)
 else()
-    set(CINATRA cinatra)
+    set(ASIO asio)
 endif()
+
+# asioがない場合find_packageしないようにするため、
+# add_subdirectoryではなくinterfaceライブラリを定義する
+add_library(Crow INTERFACE)
+target_include_directories(Crow INTERFACE ${CMAKE_CURRENT_LIST_DIR}/external/crow/include)
+target_link_libraries(Crow INTERFACE ${ASIO})
+set(CROW Crow)
 
 add_subdirectory(external/cli11)
 
@@ -183,6 +191,7 @@ set(TEST_SRC
     ${CPP_DIR}/test/logger_test.cc
     ${CPP_DIR}/test/client_test.cc
     ${CPP_DIR}/test/dummy_server.cc
+    ${CPP_DIR}/test/dummy_client.cc
     ${CPP_DIR}/test/server_test.cc
 )
 set(MSG_SRC
@@ -209,7 +218,7 @@ target_link_libraries(${PROJECT_NAME}-message PUBLIC
 add_library(${PROJECT_NAME}-server-impl STATIC ${SVR_SRC})
 target_link_libraries(${PROJECT_NAME}-server-impl PUBLIC
     ${PROJECT_NAME}-message
-    ${CINATRA}
+    ${CROW}
     ${SPDLOG}
 )
 
@@ -217,6 +226,10 @@ add_executable(${PROJECT_NAME}-server ${SVR_MAIN_SRC})
 target_link_libraries(${PROJECT_NAME}-server PRIVATE
     ${PROJECT_NAME}-server-impl
     CLI11
+)
+set_target_properties(${PROJECT_NAME}-server PROPERTIES
+    INSTALL_RPATH "$ORIGIN/../lib/;$ORIGIN/;@loader_path/../lib/;@loader_path/"
+    INSTALL_RPATH_USE_LINK_PATH TRUE
 )
 
 if(WEBCFACE_SHARED)
@@ -230,7 +243,7 @@ endif()
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_20)
 target_link_libraries(${PROJECT_NAME} PRIVATE
     ${PROJECT_NAME}-message
-    ${CINATRA}
+    ${CURL}
 )
 target_link_libraries(${PROJECT_NAME} PUBLIC
     ${EVENTPP}
@@ -238,7 +251,7 @@ target_link_libraries(${PROJECT_NAME} PUBLIC
 )
 target_include_directories(${PROJECT_NAME} PUBLIC ${INCLUDE_DIR})
 set_target_properties(${PROJECT_NAME} PROPERTIES
-    INSTALL_RPATH "$ORIGIN/;"
+    INSTALL_RPATH "$ORIGIN/;@loader_path/"
     INSTALL_RPATH_USE_LINK_PATH TRUE
     VERSION ${PROJECT_VERSION}
     SOVERSION ${WEBCFACE_SOVERSION}
@@ -254,7 +267,7 @@ if(WEBCFACE_EXAMPLE)
         target_link_libraries(${PROJECT_NAME}-example-${TARGET} PRIVATE ${PROJECT_NAME})
         set(EXAMPLE_TARGETS ${EXAMPLE_TARGETS} ${PROJECT_NAME}-example-${TARGET})
         set_target_properties(${PROJECT_NAME}-example-${TARGET} PROPERTIES
-            INSTALL_RPATH "$ORIGIN/;"
+            INSTALL_RPATH "$ORIGIN/../lib/;$ORIGIN/;@loader_path/../lib/;@loader_path/"
             INSTALL_RPATH_USE_LINK_PATH TRUE
         )
     endforeach()
@@ -267,7 +280,8 @@ if(WEBCFACE_TEST)
         ${PROJECT_NAME}
         ${PROJECT_NAME}-message
         ${PROJECT_NAME}-server-impl
-        ${CINATRA}
+        ${CURL}
+        ${CROW}
         GTest::gtest_main
     )
     target_compile_definitions(${PROJECT_NAME}-test PRIVATE
@@ -291,7 +305,7 @@ if(WEBCFACE_INSTALL)
         LIBRARY DESTINATION lib
     )
     if(NOT WEBCFACE_SHARED)
-        set(WEBCFACE_EXPORTS ${PROJECT_NAME}-message cinatra)
+        set(WEBCFACE_EXPORTS ${PROJECT_NAME}-message libcurl_static)
         if(NOT msgpack-cxx_FOUND)
             set(WEBCFACE_EXPORTS ${WEBCFACE_EXPORTS} msgpack-cxx)
         endif()

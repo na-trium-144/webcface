@@ -108,23 +108,33 @@ TEST_F(FuncTest, funcRunCond) {
     // setRunCondの動作確認
     int called = 0;
     auto add2 = [&](auto f, auto a) {
+        std::cout << "add2 called" << std::endl;
         f(a);
         called |= 2;
         return ValAdaptor{};
     };
     // default
     data_->default_func_wrapper = add2;
-    auto f = func(self_name, "a").set([&] { ++called; });
+    auto f = func(self_name, "a").set([&] {
+        ++called;
+        std::cout << "callback called" << std::endl;
+    });
+    std::cout << "run (cond=default add2) started" << std::endl;
     f.run();
+    std::cout << "run (cond=default add2) finished" << std::endl;
     EXPECT_EQ(called, 3);
 
     // 各種wrapper
     called = 0;
+    std::cout << "run (cond=None) started" << std::endl;
     f.setRunCondNone().run();
+    std::cout << "run (cond=None) finished" << std::endl;
     EXPECT_EQ(called, 1);
 
     called = 0;
+    std::cout << "run (cond=add2) started" << std::endl;
     f.setRunCond(add2).run();
+    std::cout << "run (cond=add2) finished" << std::endl;
     EXPECT_EQ(called, 3);
 
     called = 0;
@@ -133,16 +143,24 @@ TEST_F(FuncTest, funcRunCond) {
         A() { ++counter_c; }
         ~A() { ++counter_d; }
     };
+    std::cout << "run (cond=ScopeGuard<A>) started" << std::endl;
     f.setRunCondScopeGuard<A>().run();
+    std::cout << "run (cond=ScopeGuard<A>) finished" << std::endl;
     EXPECT_EQ(counter_c, 1);
     EXPECT_EQ(counter_d, 1);
     EXPECT_EQ(called, 1);
 
     called = 0;
+    std::cout << "run (cond=OnSync) started" << std::endl;
     f.setRunCondOnSync().runAsync();
     std::this_thread::sleep_for(std::chrono::milliseconds(10));
     EXPECT_EQ(called, 0);
-    (*data_->func_sync_queue.pop())->sync();
+    auto fs = data_->func_sync_queue.pop();
+    ASSERT_TRUE(fs.has_value());
+    ASSERT_NE(*fs, nullptr);
+    std::cout << "sync started" << std::endl;
+    (*fs)->sync();
+    std::cout << "sync finished" << std::endl;
     EXPECT_EQ(called, 1);
 }
 TEST_F(FuncTest, funcRunRemote) {

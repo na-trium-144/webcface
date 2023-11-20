@@ -1,105 +1,62 @@
 #include "../message/message.h"
-#include <cinatra.hpp>
 #include <spdlog/logger.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
 #include <thread>
 #include "dummy_server.h"
+#include <crow.h>
+#include "../server/custom_logger.h"
 
 using namespace WebCFace;
 DummyServer::~DummyServer() {
-    reinterpret_cast<cinatra::http_server*>(server_)->stop();
+    std::static_pointer_cast<crow::SimpleApp>(server_)->stop();
     t.join();
 }
 DummyServer::DummyServer()
     : t([this] {
-          using namespace cinatra;
           static int sn = 0;
-          auto dummy_logger =
+          dummy_logger =
               spdlog::stdout_color_mt("dummy_server_" + std::to_string(sn++));
           dummy_logger->set_level(spdlog::level::trace);
 
-          auto server = new http_server(1);
-          server_ = reinterpret_cast<void*>(server);
+          auto crow_logger =
+              spdlog::stdout_color_mt("crow_server_" + std::to_string(sn++));
+          crow_logger->set_level(spdlog::level::trace);
+          static std::unique_ptr<Server::CustomLogger> crow_custom_logger;
+          crow_custom_logger =
+              std::make_unique<Server::CustomLogger>(crow_logger);
+          crow::logger::setHandler(crow_custom_logger.get());
 
-          server->listen("0.0.0.0", "17530");
-          server->set_http_handler<GET, POST>(
-              "/", [&](request &req, response &res) {
-                  req.on(ws_open, [&](request &req) {
-                      connPtr = req.get_conn<cinatra::NonSSL>();
-                      dummy_logger->info("ws_open");
-                  });
-                  req.on(ws_message, [&](request &req) {
-                      dummy_logger->info("ws_message");
-                      auto part_data = req.get_part_data();
-                      std::string str =
-                          std::string(part_data.data(), part_data.length());
-                      auto unpacked = Message::unpack(str, dummy_logger);
-                      for (const auto &m : unpacked) {
-                          dummy_logger->info("kind {}", m.first);
-                          recv_data.push_back(m);
-                      }
-                      // なんか送り返さないと受信できなくなるっぽい? 謎
-                      send("");
-                  });
-
-                  req.on(ws_error,
-                         [&](request &req) { dummy_logger->info("ws_error"); });
-
-                  req.on(ws_close,
-                         [&](request &req) { dummy_logger->info("ws_close"); });
-              });
-          server->run();
-      }) {}
-
-void DummyServer::send(std::string msg) {
-    std::static_pointer_cast<cinatra::connection<cinatra::NonSSL>>(connPtr)
-        ->send_ws_binary(msg);
-}
-
-bool DummyServer::connected() { return connPtr != nullptr; }
+          auto server = std::make_shared<crow::SimpleApp>();
+          server_ = std::static_pointer_cast<void>(server);
 
 
-DummyClient::~DummyClient() {
-    async_simple::coro::syncAwait(
-        reinterpret_cast<cinatra::coro_http_client*>(client_)
-            ->async_send_ws_close());
-    t.join();
-}
-DummyClient::DummyClient()
-    : t([this] {
-          using namespace cinatra;
-          static int sn = 0;
-          auto dummy_logger =
-              spdlog::stdout_color_mt("dummy_client_" + std::to_string(sn++));
-          dummy_logger->set_level(spdlog::level::trace);
-
-          // deleteするとせぐふぉする
-          auto client = new coro_http_client();
-          client_ = reinterpret_cast<void*>(client);
-
-          client->on_ws_msg([this, dummy_logger](resp_data rdata) {
-              if (rdata.net_err) {
-                  dummy_logger->error("recv error {}", rdata.net_err.message());
-              } else {
-                  dummy_logger->trace("message received");
-
-                  std::string str = std::string(rdata.resp_body);
-                  auto unpacked = Message::unpack(str, dummy_logger);
+          CROW_WEBSOCKET_ROUTE((*server), "/")
+              // route.websocket<std::remove_reference<decltype(*app)>::type>(app.get())
+              .onopen([&](crow::websocket::connection &conn) {
+                  connPtr = &conn;
+                  dummy_logger->info("ws_open");
+              })
+              .onclose([&](crow::websocket::connection &conn,
+                           const std::string &reason) {
+                  dummy_logger->info("ws_close");
+              })
+              .onmessage([&](crow::websocket::connection &conn,
+                             const std::string &data, bool is_binary) {
+                  dummy_logger->info("ws_message");
+                  auto unpacked = Message::unpack(data, dummy_logger);
                   for (const auto &m : unpacked) {
                       dummy_logger->info("kind {}", m.first);
                       recv_data.push_back(m);
                   }
-              }
-          });
-          client->on_ws_close([dummy_logger](auto &&) {
-              dummy_logger->debug("connection closed");
-          });
-          async_simple::coro::syncAwait(
-              client->async_ws_connect("ws://127.0.0.1:27530"));
+              });
+
+          server->port(17530).run();
+          std::this_thread::sleep_for(std::chrono::milliseconds(10));
       }) {}
 
-void DummyClient::send(std::string msg) {
-    async_simple::coro::syncAwait(
-        reinterpret_cast<cinatra::coro_http_client*>(client_)
-            ->async_send_ws(msg, true, cinatra::opcode::binary));
+void DummyServer::send(std::string msg) {
+    dummy_logger->info("send {} bytes", msg.size());
+    reinterpret_cast<crow::websocket::connection *>(connPtr)->send_binary(msg);
 }
+
+bool DummyServer::connected() { return connPtr != nullptr; }
