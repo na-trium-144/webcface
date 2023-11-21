@@ -42,19 +42,4 @@ class WEBCFACE_DLL LoggerSink : public spdlog::sinks::base_sink<std::mutex>,
     void set_formatter_(std::unique_ptr<spdlog::formatter>) override {}
 };
 
-//! (ver1.1.7から非推奨) stderrに出力するsink
-/*! 全clientで共通
- * loggerからstderrに流すのを止めたい時などはこれのset_levelなどを使う
- * 
- * ver1.1.7以降このsinkは使用されません
- */
-WEBCFACE_DLL [[deprecated]] extern std::shared_ptr<spdlog::sinks::stderr_color_sink_mt>
-    stderr_sink;
-
-//! (ver1.1.7から非推奨) webcfaceのログ出力レベルを設定できます
-/*!
- * ver1.1.7以降この設定は無効
- */
-WEBCFACE_DLL [[deprecated]] extern spdlog::level::level_enum logger_internal_level;
-
 } // namespace WebCFace

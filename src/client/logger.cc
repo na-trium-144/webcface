@@ -46,9 +46,4 @@ void LoggerSink::sink_it_(const spdlog::details::log_msg &msg) {
     }
 }
 
-std::shared_ptr<spdlog::sinks::stderr_color_sink_mt> stderr_sink =
-    std::make_shared<spdlog::sinks::stderr_color_sink_mt>();
-
-spdlog::level::level_enum logger_internal_level = spdlog::level::info;
-
 } // namespace WebCFace

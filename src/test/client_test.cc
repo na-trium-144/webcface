@@ -32,7 +32,6 @@ class ClientTest : public ::testing::Test {
         std::cout << "SetUp begin" << std::endl;
         dummy_s = std::make_shared<DummyServer>();
         wait();
-        WebCFace::logger_internal_level = spdlog::level::trace;
         data_ = std::make_shared<Internal::ClientData>(self_name);
         wcli_ = std::make_shared<Client>(self_name, "127.0.0.1", 17530, data_);
         callback_called = 0;
@@ -53,7 +52,7 @@ class ClientTest : public ::testing::Test {
     std::shared_ptr<Internal::ClientData> data_;
     std::shared_ptr<Client> wcli_;
     std::shared_ptr<DummyServer> dummy_s;
-    int callback_called;
+    int callback_called = 0;
     template <typename V = FieldBase>
     auto callback() {
         return [&](const V &) { ++callback_called; };
