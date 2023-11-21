@@ -1,12 +1,12 @@
 #include <webcface/field.h>
 #include <webcface/member.h>
-#include <webcface/client_data.h>
+#include "client_internal.h"
 #include <stdexcept>
 
 namespace WebCFace {
 Member Field::member() const { return *this; }
 
-std::shared_ptr<ClientData> Field::dataLock() const {
+std::shared_ptr<Internal::ClientData> Field::dataLock() const {
     if (auto data = data_w.lock()) {
         return data;
     }

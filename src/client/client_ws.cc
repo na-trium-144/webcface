@@ -1,4 +1,5 @@
 #include <webcface/client.h>
+#include "client_internal.h"
 #include <curl/curl.h>
 #include <string>
 #include <chrono>
@@ -8,7 +9,7 @@
 
 namespace WebCFace {
 
-void Client::messageThreadMain(std::shared_ptr<ClientData> data,
+void Client::messageThreadMain(std::shared_ptr<Internal::ClientData> data,
                                std::string host, int port) {
     while (!data->closing.load()) {
         CURL *handle = curl_easy_init();

@@ -2,9 +2,9 @@
 #include <memory>
 #include <optional>
 #include <vector>
-#include "client_data.h"
 #include "event_target.h"
 #include "field.h"
+#include "common/log.h"
 
 namespace WebCFace {
 
@@ -14,20 +14,24 @@ namespace WebCFace {
  */
 class Log : protected Field, public EventTarget<Log, std::string> {
 
+    WEBCFACE_DLL
+    std::optional<std::shared_ptr<std::vector<std::shared_ptr<LogLine>>>>
+    getRaw() const;
+    WEBCFACE_DLL void
+    setRaw(const std::shared_ptr<std::vector<std::shared_ptr<LogLine>>> &raw)
+        const;
+
     void onAppend() const override { tryGet(); }
 
   public:
     Log() = default;
-    Log(const Field &base)
-        : Field(base), EventTarget<Log, std::string>(
-                           &this->dataLock()->log_append_event, this->member_) {
-    }
+    WEBCFACE_DLL Log(const Field &base);
 
     using Field::member;
 
     //! ログを取得する
     std::optional<std::vector<LogLine>> tryGet() const {
-        auto v = dataLock()->log_store.getRecv(member_);
+        auto v = getRaw();
         if (v) {
             std::vector<LogLine> lv((*v)->size());
             for (std::size_t i = 0; i < (*v)->size(); i++) {
@@ -45,12 +49,11 @@ class Log : protected Field, public EventTarget<Log, std::string> {
 
     //! 受信したログをクリアする
     /*! (v1.1.5で追加)
-     * 
+     *
      * リクエスト状態は解除しない
      */
     Log &clear() {
-        dataLock()->log_store.setRecv(
-            member_, std::make_shared<std::vector<std::shared_ptr<LogLine>>>());
+        setRaw(std::make_shared<std::vector<std::shared_ptr<LogLine>>>());
         return *this;
     }
 };

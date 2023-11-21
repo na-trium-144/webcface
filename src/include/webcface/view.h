@@ -5,36 +5,30 @@
 #include <cassert>
 #include <memory>
 #include "common/view.h"
-#include "client_data.h"
 #include "func.h"
+#include "event_target.h"
 
 namespace WebCFace {
-
+namespace Internal {
+struct ClientData;
+}
 //! Viewに表示する要素です
 class ViewComponent : protected Common::ViewComponentBase {
-    std::weak_ptr<ClientData> data_w;
+    std::weak_ptr<Internal::ClientData> data_w;
 
     std::shared_ptr<AnonymousFunc> on_click_func_tmp;
 
   public:
     ViewComponent() = default;
     ViewComponent(const Common::ViewComponentBase &vc,
-                  const std::weak_ptr<ClientData> &data_w)
+                  const std::weak_ptr<Internal::ClientData> &data_w)
         : Common::ViewComponentBase(vc), data_w(data_w) {}
     explicit ViewComponent(ViewComponentType type) { type_ = type; }
 
-    //! AnonymousFuncをFuncオブジェクトにlockする
-    ViewComponentBase &lockTmp(const std::weak_ptr<ClientData> &data_w,
-                               const std::string &field_id) {
-        if (on_click_func_tmp != nullptr) {
-            auto data = data_w.lock();
-            Func on_click{Field{data_w, data->self_member_name}, field_id};
-            on_click_func_tmp->lockTo(on_click);
-            on_click.hidden(true);
-            onClick(on_click);
-        }
-        return *this;
-    }
+    //! AnonymousFuncをFuncオブジェクトにlockします
+    WEBCFACE_DLL ViewComponentBase &
+    lockTmp(const std::weak_ptr<Internal::ClientData> &data_w,
+            const std::string &field_id);
 
     //! 要素の種類
     ViewComponentType type() const { return type_; }
@@ -46,22 +40,9 @@ class ViewComponent : protected Common::ViewComponentBase {
         return *this;
     }
     //! クリック時に実行される関数を取得
-    std::optional<Func> onClick() const {
-        if (on_click_func_ != std::nullopt) {
-            assert(data_w.lock() != nullptr && "ClientData not set");
-            return Field{data_w, on_click_func_->member_,
-                         on_click_func_->field_};
-        } else {
-            return std::nullopt;
-        }
-    }
+    WEBCFACE_DLL std::optional<Func> onClick() const;
     //! クリック時に実行される関数を設定
-    ViewComponent &onClick(const Func &func) {
-        // data_w = static_cast<Field>(func).data_w;
-        // on_click_func_ = static_cast<FieldBase>(func);
-        on_click_func_ = FieldBase{func.member().name(), func.name()};
-        return *this;
-    }
+    WEBCFACE_DLL ViewComponent &onClick(const Func &func);
     //! クリック時に実行される関数を設定
     template <typename T>
     ViewComponent &onClick(const T &func) {
@@ -141,45 +122,20 @@ class View : protected Field, public EventTarget<View>, public std::ostream {
     ViewBuf sb;
     void onAppend() const override { tryGet(); }
 
-    auto &set(std::vector<ViewComponent> &v) {
-        std::vector<ViewComponentBase> vb(v.size());
-        for (std::size_t i = 0; i < v.size(); i++) {
-            vb[i] = v[i].lockTmp(this->data_w,
-                                 this->name() + "_" + std::to_string(i));
-        }
-        setCheck();
-        dataLock()->view_store.setSend(
-            *this, std::make_shared<std::vector<ViewComponentBase>>(vb));
-        triggerEvent(*this);
-        return *this;
-    }
+    //! 値をセットし、EventTargetを発動する
+    WEBCFACE_DLL View &set(std::vector<ViewComponent> &v);
+    WEBCFACE_DLL std::optional<std::shared_ptr<std::vector<ViewComponentBase>>>
+    getRaw() const;
 
   public:
     View() : Field(), EventTarget<View>(), sb(), std::ostream(&sb) {}
-    View(const Field &base)
-        : Field(base), EventTarget<View>(&this->dataLock()->view_change_event,
-                                         *this),
-          sb(), std::ostream(&sb) {
-
-        if (dataLock()->isSelf(member_)) {
-            init();
-        }
-    }
+    WEBCFACE_DLL View(const Field &base);
     View(const Field &base, const std::string &field)
         : View(Field{base, field}) {}
     View(const View &rhs) : View() { *this = rhs; }
-    View &operator=(const View &rhs) {
-        this->Field::operator=(rhs);
-        this->EventTarget<View>::operator=(rhs);
-        this->sb = rhs.sb;
-        return *this;
-    }
+    WEBCFACE_DLL View &operator=(const View &rhs);
 
-    ~View() {
-        if (dataLock()->isSelf(member_)) {
-            sync();
-        }
-    }
+    WEBCFACE_DLL ~View();
 
     using Field::member;
     using Field::name;
@@ -193,7 +149,7 @@ class View : protected Field, public EventTarget<View>, public std::ostream {
     }
     //! Viewを取得する
     std::optional<std::vector<ViewComponent>> tryGet() const {
-        auto vb = dataLock()->view_store.getRecv(*this);
+        auto vb = getRaw();
         if (vb) {
             std::vector<ViewComponent> v((*vb)->size());
             for (std::size_t i = 0; i < (*vb)->size(); i++) {
@@ -208,19 +164,11 @@ class View : protected Field, public EventTarget<View>, public std::ostream {
     std::vector<ViewComponent> get() const {
         return tryGet().value_or(std::vector<ViewComponent>{});
     }
-
     //! syncの時刻を返す
-    std::chrono::system_clock::time_point time() const {
-        return dataLock()
-            ->sync_time_store.getRecv(this->member_)
-            .value_or(std::chrono::system_clock::time_point());
-    }
+    WEBCFACE_DLL std::chrono::system_clock::time_point time() const;
 
     //! 値やリクエスト状態をクリア
-    View &free() {
-        dataLock()->view_store.unsetRecv(*this);
-        return *this;
-    }
+    WEBCFACE_DLL View &free();
 
     //! このViewのViewBufの内容を初期化する (コンストラクタ内でも自動で呼ばれる)
     View &init() {

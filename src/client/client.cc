@@ -8,11 +8,15 @@
 #include <string>
 #include <chrono>
 #include "../message/message.h"
+#include "client_internal.h"
 
 namespace WebCFace {
 
+Client::Client(const std::string &name, const std::string &host, int port)
+    : Client(name, host, port, std::make_shared<Internal::ClientData>(name)) {}
+
 Client::Client(const std::string &name, const std::string &host, int port,
-               std::shared_ptr<ClientData> data)
+               std::shared_ptr<Internal::ClientData> data)
     : Member(), data(data), host(host), port(port),
       message_thread(messageThreadMain, data, host, port),
       recv_thread([this, data] {
@@ -37,6 +41,25 @@ Client::~Client() {
 void Client::close() { data->closing.store(true); }
 bool Client::connected() const { return data->connected_.load(); }
 
+std::vector<Member> Client::members() {
+    auto keys = data->value_store.getMembers();
+    std::vector<Member> ret(keys.size());
+    for (std::size_t i = 0; i < keys.size(); i++) {
+        ret[i] = member(keys[i]);
+    }
+    return ret;
+}
+EventTarget<Member, int> Client::onMemberEntry() {
+    return EventTarget<Member, int>{&data->member_entry_event, 0};
+}
+void Client::setDefaultRunCond(FuncWrapperType wrapper) {
+    data->default_func_wrapper = wrapper;
+}
+std::shared_ptr<LoggerSink> Client::loggerSink() { return data->logger_sink; }
+std::shared_ptr<spdlog::logger> Client::logger() { return data->logger; }
+std::string Client::serverVersion() const { return data->svr_version; }
+std::string Client::serverName() const { return data->svr_name; }
+
 void Client::sync() {
     if (connected()) {
         std::stringstream buffer;
@@ -53,7 +76,6 @@ void Client::sync() {
 
         Message::pack(buffer, len, Message::Sync{});
 
-        // todo: hiddenの反映
         for (const auto &v : data->value_store.transferSend(is_first)) {
             Message::pack(
                 buffer, len,
@@ -111,7 +133,7 @@ void Client::sync() {
             }
         }
         for (const auto &v : data->func_store.transferSend(is_first)) {
-            if (!data->func_store.isHidden(v.first)) {
+            if (!v.second->hidden) {
                 Message::pack(buffer, len,
                               Message::FuncInfo{v.first, *v.second});
             }
@@ -142,8 +164,9 @@ void Client::sync() {
             Message::pack(buffer, len, Message::Log{{}, 0, log_send});
         }
 
-        if (data->ping_status_req && is_first) {
+        if (data->ping_status_req && is_first || data->ping_status_req_send) {
             Message::pack(buffer, len, Message::PingStatusReq{});
+            data->ping_status_req_send = false;
         }
 
         data->message_queue.push(Message::packDone(buffer, len));

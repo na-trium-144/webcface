@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
-#include <webcface/client_data.h>
+#include "../client/client_internal.h"
+#include <webcface/member.h>
 #include <webcface/value.h>
 #include <webcface/text.h>
 #include <webcface/log.h>
@@ -10,11 +11,11 @@ using namespace WebCFace;
 class DataTest : public ::testing::Test {
   protected:
     void SetUp() override {
-        data_ = std::make_shared<ClientData>(self_name);
+        data_ = std::make_shared<Internal::ClientData>(self_name);
         callback_called = 0;
     }
     std::string self_name = "test";
-    std::shared_ptr<ClientData> data_;
+    std::shared_ptr<Internal::ClientData> data_;
     Value value(const std::string &member, const std::string &field) {
         return Value{Field{data_, member, field}};
     }
@@ -37,6 +38,10 @@ TEST_F(DataTest, field) {
     EXPECT_EQ(text("a", "b").name(), "b");
     EXPECT_EQ(text("a", "b").child("c").name(), "b.c");
     EXPECT_EQ(log("a").member().name(), "a");
+
+    EXPECT_THROW(Value().tryGet(), std::runtime_error);
+    EXPECT_THROW(Text().tryGet(), std::runtime_error);
+    EXPECT_THROW(Log().tryGet(), std::runtime_error);
 }
 TEST_F(DataTest, eventTarget) {
     value("a", "b").appendListener(callback<Value>());

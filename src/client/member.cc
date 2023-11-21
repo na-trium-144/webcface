@@ -5,8 +5,9 @@
 #include <webcface/func.h>
 #include <webcface/view.h>
 #include <webcface/event_target.h>
-#include <webcface/client_data.h>
 #include "../message/message.h"
+#include "client_internal.h"
+
 namespace WebCFace {
 
 Value Member::value(const std::string &field) const {
@@ -103,6 +104,7 @@ std::optional<int> Member::pingStatus() const {
     if (!data->ping_status_req) {
         data->message_queue.push(Message::packSingle(Message::PingStatusReq{}));
         data->ping_status_req = true;
+        data->ping_status_req_send = true;
     }
     if (data->ping_status != nullptr &&
         data->ping_status->count(data->getMemberIdFromName(member_))) {

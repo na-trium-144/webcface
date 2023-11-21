@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
-#include <webcface/client_data.h>
+#include "../client/client_internal.h"
+#include <webcface/member.h>
 #include <webcface/view.h>
 #include <webcface/func.h>
 #include <stdexcept>
@@ -9,11 +10,11 @@ using namespace WebCFace;
 class ViewTest : public ::testing::Test {
   protected:
     void SetUp() override {
-        data_ = std::make_shared<ClientData>(self_name);
+        data_ = std::make_shared<Internal::ClientData>(self_name);
         callback_called = 0;
     }
     std::string self_name = "test";
-    std::shared_ptr<ClientData> data_;
+    std::shared_ptr<Internal::ClientData> data_;
     View view(const std::string &member, const std::string &field) {
         return View{Field{data_, member, field}};
     }
@@ -35,6 +36,8 @@ TEST_F(ViewTest, field) {
     EXPECT_EQ(view("a", "b").member().name(), "a");
     EXPECT_EQ(view("a", "b").name(), "b");
     EXPECT_EQ(view("a", "b").child("c").name(), "b.c");
+
+    EXPECT_THROW(View().tryGet(), std::runtime_error);
 }
 TEST_F(ViewTest, eventTarget) {
     view("a", "b").appendListener(callback<View>());
