@@ -6,6 +6,7 @@
 ### Changed
 * クライアントのwebsocketライブラリをlibcurlに、サーバー側をcrowに変更 (#90)
 * webuiのURLを http://ipアドレス:7530/index.html に変更
+* WebCFace::stderr_sink と WebCFace::logger_internal_level をdeprecatedにした
 ### Added
 * 環境変数`WEBCFACE_VERBOSE`, `WEBCFACE_TRACE`でデバッグ情報を表示できるようにした
 * サーバー側でデバッグ情報を表示できる`-v`オプション追加
