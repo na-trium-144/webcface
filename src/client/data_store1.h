@@ -6,7 +6,7 @@
 
 namespace WebCFace::Internal {
 template <typename T>
-class SyncDataStore1 {
+WEBCFACE_DLL class SyncDataStore1 {
     std::mutex mtx;
     std::unordered_map<std::string, T> data_recv;
     std::unordered_map<std::string, bool> req;

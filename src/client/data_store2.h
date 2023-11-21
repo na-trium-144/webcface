@@ -13,7 +13,7 @@ namespace WebCFace::Internal {
  * T=FuncInfoの時、entryとreqは使用しない(常にすべての関数の情報が送られてくる)
  */
 template <typename T>
-class SyncDataStore2 {
+WEBCFACE_DLL class SyncDataStore2 {
     std::mutex mtx;
     //! 次のsend時に送信するデータ。
     std::unordered_map<std::string, T> data_send;
