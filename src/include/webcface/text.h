@@ -30,7 +30,7 @@ class Text : protected Field, public EventTarget<Text> {
   public:
     Text() = default;
     WEBCFACE_DLL Text(const Field &base);
-    Text(const Field &base, const std::string &field)
+    WEBCFACE_DLL Text(const Field &base, const std::string &field)
         : Text(Field{base, field}) {}
 
     using Field::member;

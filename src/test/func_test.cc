@@ -31,6 +31,8 @@ class FuncTest : public ::testing::Test {
 TEST_F(FuncTest, field) {
     EXPECT_EQ(func("a", "b").member().name(), "a");
     EXPECT_EQ(func("a", "b").name(), "b");
+
+    EXPECT_THROW(Func().run(), std::runtime_error);
 }
 TEST_F(FuncTest, funcSet) {
     // 関数セットしreturnTypeとargsのチェック

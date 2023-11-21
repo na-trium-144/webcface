@@ -39,7 +39,7 @@ View::View(const Field &base)
     }
 }
 View::~View() {
-    if (dataLock()->isSelf(member_)) {
+    if (data_w.lock() != nullptr && dataLock()->isSelf(member_)) {
         sync();
     }
 }

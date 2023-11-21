@@ -36,6 +36,8 @@ TEST_F(ViewTest, field) {
     EXPECT_EQ(view("a", "b").member().name(), "a");
     EXPECT_EQ(view("a", "b").name(), "b");
     EXPECT_EQ(view("a", "b").child("c").name(), "b.c");
+
+    EXPECT_THROW(View().tryGet(), std::runtime_error);
 }
 TEST_F(ViewTest, eventTarget) {
     view("a", "b").appendListener(callback<View>());

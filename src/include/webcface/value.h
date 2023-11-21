@@ -32,7 +32,7 @@ public:
   public:
     Value() = default;
     WEBCFACE_DLL Value(const Field &base);
-    Value(const Field &base, const std::string &field)
+    WEBCFACE_DLL Value(const Field &base, const std::string &field)
         : Value(Field{base, field}) {}
 
     using Field::member;

@@ -38,6 +38,10 @@ TEST_F(DataTest, field) {
     EXPECT_EQ(text("a", "b").name(), "b");
     EXPECT_EQ(text("a", "b").child("c").name(), "b.c");
     EXPECT_EQ(log("a").member().name(), "a");
+
+    EXPECT_THROW(Value().tryGet(), std::runtime_error);
+    EXPECT_THROW(Text().tryGet(), std::runtime_error);
+    EXPECT_THROW(Log().tryGet(), std::runtime_error);
 }
 TEST_F(DataTest, eventTarget) {
     value("a", "b").appendListener(callback<Value>());

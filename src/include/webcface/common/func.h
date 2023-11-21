@@ -171,7 +171,7 @@ struct FuncInfo {
                   return static_cast<ValAdaptor>(ret);
               }
           }),
-          func_wrapper(wrapper) {}
+          func_wrapper(wrapper), hidden(false) {}
 };
 
 //! 関数を呼び出すのに必要なデータ。client_data->client->server->clientと送られる
