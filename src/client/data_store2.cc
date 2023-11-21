@@ -1,6 +1,4 @@
 #include "data_store2.h"
-#include <webcface/common/func.h>
-#include <webcface/common/view.h>
 
 namespace WebCFace::Internal {
 template <typename T>
@@ -167,11 +165,11 @@ SyncDataStore2<T>::transferReq(bool is_first) {
 }
 
 
-template class SyncDataStore2<std::string>; // test用
-template class SyncDataStore2<std::shared_ptr<VectorOpt<double>>>;
-template class SyncDataStore2<std::shared_ptr<std::string>>;
-template class SyncDataStore2<std::shared_ptr<FuncInfo>>;
-template class SyncDataStore2<
-    std::shared_ptr<std::vector<Common::ViewComponentBase>>>;
+template class WEBCFACE_DLL SyncDataStore2<std::string>; // test用
+template class WEBCFACE_DLL SyncDataStore2<std::shared_ptr<VectorOpt<double>>>;
+template class WEBCFACE_DLL SyncDataStore2<std::shared_ptr<std::string>>;
+template class WEBCFACE_DLL SyncDataStore2<std::shared_ptr<FuncInfo>>;
+template class WEBCFACE_DLL
+    SyncDataStore2<std::shared_ptr<std::vector<Common::ViewComponentBase>>>;
 
 } // namespace WebCFace::Internal

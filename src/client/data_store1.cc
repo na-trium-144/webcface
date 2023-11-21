@@ -1,7 +1,4 @@
-#include <vector>
-#include <memory>
 #include "data_store1.h"
-#include <webcface/common/log.h>
 
 namespace WebCFace::Internal {
 template <typename T>
@@ -35,10 +32,10 @@ SyncDataStore1<T>::transferReq(bool is_first) {
     }
 }
 
-template class SyncDataStore1<std::string>; // test用
-
-template class SyncDataStore1<
+template class WEBCFACE_DLL SyncDataStore1<std::string>; // test用
+template class WEBCFACE_DLL SyncDataStore1<
     std::shared_ptr<std::vector<std::shared_ptr<Common::LogLine>>>>;
-template class SyncDataStore1<std::chrono::system_clock::time_point>;
+template class WEBCFACE_DLL
+    SyncDataStore1<std::chrono::system_clock::time_point>;
 
 } // namespace WebCFace::Internal

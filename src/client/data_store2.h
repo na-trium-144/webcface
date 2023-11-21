@@ -5,6 +5,9 @@
 #include <optional>
 #include <webcface/field.h>
 #include <webcface/common/dict.h>
+#include <webcface/common/def.h>
+#include <webcface/common/func.h>
+#include <webcface/common/view.h>
 
 namespace WebCFace::Internal {
 //! 送受信するデータを保持するクラス
@@ -13,7 +16,7 @@ namespace WebCFace::Internal {
  * T=FuncInfoの時、entryとreqは使用しない(常にすべての関数の情報が送られてくる)
  */
 template <typename T>
-WEBCFACE_DLL class SyncDataStore2 {
+class SyncDataStore2 {
     std::mutex mtx;
     //! 次のsend時に送信するデータ。
     std::unordered_map<std::string, T> data_send;
@@ -113,5 +116,14 @@ WEBCFACE_DLL class SyncDataStore2 {
                        std::unordered_map<std::string, unsigned int>>
     transferReq(bool is_first);
 };
+
+#ifdef _MSC_VER
+extern template class SyncDataStore2<std::string>; // test用
+extern template class SyncDataStore2<std::shared_ptr<VectorOpt<double>>>;
+extern template class SyncDataStore2<std::shared_ptr<std::string>>;
+extern template class SyncDataStore2<std::shared_ptr<FuncInfo>>;
+extern template class SyncDataStore2<
+    std::shared_ptr<std::vector<Common::ViewComponentBase>>>;
+#endif
 
 } // namespace WebCFace::Internal

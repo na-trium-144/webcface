@@ -17,8 +17,9 @@ class Log : protected Field, public EventTarget<Log, std::string> {
     WEBCFACE_DLL
     std::optional<std::shared_ptr<std::vector<std::shared_ptr<LogLine>>>>
     getRaw() const;
-    void setRaw(const std::shared_ptr<std::vector<std::shared_ptr<LogLine>>>
-                    &raw) const;
+    WEBCFACE_DLL void
+    setRaw(const std::shared_ptr<std::vector<std::shared_ptr<LogLine>>> &raw)
+        const;
 
     void onAppend() const override { tryGet(); }
 
