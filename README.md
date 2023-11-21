@@ -148,7 +148,7 @@ rm webcface-webui*.tar.gz
 ## License
 
 * WebCFaceと関連するプログラムはすべてMITライセンスで公開しています。詳細は [LICENSE](https://github.com/na-trium-144/webcface/blob/main/LICENSE)を参照してください。
-* WebCFaceが使用しているサードパーティーのライブラリのライセンスはそれぞれ以下を参照してください。
+* WebCFace本体とtoolsが使用しているサードパーティーのライブラリのライセンスはそれぞれ以下を参照してください。
 	* Crow (BSD 3-Clause) : https://github.com/CrowCpp/Crow
 	* Asio (Boost Software License) : http://think-async.com/Asio/
 	* curl : https://curl.se/docs/copyright.html
@@ -156,3 +156,5 @@ rm webcface-webui*.tar.gz
 	* msgpack-c (Boost Software License) : https://github.com/msgpack/msgpack-c
 	* spdlog (MIT) : https://github.com/gabime/spdlog
 	* CLI11 (BSD 3-Clause) : https://github.com/CLIUtils/CLI11
+	* tiny-process-library (MIT) : https://gitlab.com/eidheim/tiny-process-library (toolsで使用)
+	* toml++ (MIT) : https://github.com/marzer/tomlplusplus (toolsで使用)
