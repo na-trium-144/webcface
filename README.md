@@ -68,7 +68,7 @@ brew install webcface webcface-webui
 	* [![CMake Test (MacOS Clang)](https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-macos-clang.yml/badge.svg?branch=main)](https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-macos-clang.yml)
 	* [![CMake Test (Windows MSVC)](https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-windows-msvc.yml/badge.svg?branch=main)](https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-windows-msvc.yml)
 	* [![CMake Test (Windows MinGW64 GCC)](https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-windows-gcc.yml/badge.svg?branch=main)](https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-windows-gcc.yml)
-* webcfaceは外部ライブラリとして [crow](https://github.com/CrowCpp/Crow), [libcurl](https://github.com/curl/curl), [eventpp](https://github.com/wqking/eventpp), [msgpack-cxx](https://github.com/msgpack/msgpack-c), [spdlog](https://github.com/gabime/spdlog), [cli11](https://github.com/CLIUtils/CLI11.git) を使用します。
+* webcfaceは外部ライブラリとして [crow](https://github.com/CrowCpp/Crow), [asio](https://github.com/chriskohlhoff/asio), [libcurl](https://github.com/curl/curl), [eventpp](https://github.com/wqking/eventpp), [msgpack-cxx](https://github.com/msgpack/msgpack-c), [spdlog](https://github.com/gabime/spdlog), [cli11](https://github.com/CLIUtils/CLI11.git) を使用します。
 	* システムにインストールされてなければsubmoduleにあるソースコードをビルドしますが、eventpp, msgpack, spdlog に関してはインストールされていればそれを使用します
 	* libcurlはwebsocket機能を有効にする必要があるためインストールされている場合でもソースからビルドします
 	* crowは暫定的にWindowsでSegmentation faultするバグを修正したもの([na-trium-144/Crow](https://github.com/na-trium-144/Crow) の fix-destructor-io-service ブランチ)を使用しています
@@ -142,5 +142,17 @@ rm webcface-webui*.tar.gz
 
 * このリポジトリのみでビルドしてinstallする代わりに、webcfaceを使いたいプロジェクトでこのリポジトリをsubmoduleとして追加して使うこともできます。
 
-## Usage
+## Documentation
 → [Tutorial](https://na-trium-144.github.io/webcface/md_00__tutorial.html)
+
+## License
+
+* WebCFaceと関連するプログラムはすべてMITライセンスで公開しています。詳細は [LICENSE](https://github.com/na-trium-144/webcface/blob/main/LICENSE)を参照してください。
+* WebCFaceが使用しているサードパーティーのライブラリのライセンスはそれぞれ以下を参照してください。
+	* Crow (BSD 3-Clause) : https://github.com/CrowCpp/Crow
+	* Asio (Boost Software License) : http://think-async.com/Asio/
+	* curl : https://curl.se/docs/copyright.html
+	* eventpp (Apache 2.0) : https://github.com/wqking/eventpp
+	* msgpack-c (Boost Software License) : https://github.com/msgpack/msgpack-c
+	* spdlog (MIT) : https://github.com/gabime/spdlog
+	* CLI11 (BSD 3-Clause) : https://github.com/CLIUtils/CLI11
