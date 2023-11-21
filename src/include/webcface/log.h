@@ -17,6 +17,8 @@ class Log : protected Field, public EventTarget<Log, std::string> {
     WEBCFACE_DLL
     std::optional<std::shared_ptr<std::vector<std::shared_ptr<LogLine>>>>
     getRaw() const;
+    void setRaw(const std::shared_ptr<std::vector<std::shared_ptr<LogLine>>>
+                    &raw) const;
 
     void onAppend() const override { tryGet(); }
 
@@ -46,12 +48,11 @@ class Log : protected Field, public EventTarget<Log, std::string> {
 
     //! 受信したログをクリアする
     /*! (v1.1.5で追加)
-     * 
+     *
      * リクエスト状態は解除しない
      */
     Log &clear() {
-        dataLock()->log_store.setRecv(
-            member_, std::make_shared<std::vector<std::shared_ptr<LogLine>>>());
+        setRaw(std::make_shared<std::vector<std::shared_ptr<LogLine>>>());
         return *this;
     }
 };

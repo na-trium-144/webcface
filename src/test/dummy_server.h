@@ -34,7 +34,7 @@ struct DummyServer {
     void *connPtr;
     std::shared_ptr<void> server_;
     std::shared_ptr<spdlog::logger> dummy_logger;
-    
+
     std::thread t;
     DummyServer();
     ~DummyServer();

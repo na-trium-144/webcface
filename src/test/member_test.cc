@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include <webcface/client_data.h>
+#include "../client/client_internal.h"
 #include <webcface/member.h>
 #include <webcface/value.h>
 #include <webcface/log.h>
@@ -13,11 +13,11 @@ using namespace WebCFace;
 class MemberTest : public ::testing::Test {
   protected:
     void SetUp() override {
-        data_ = std::make_shared<ClientData>(self_name);
+        data_ = std::make_shared<Internal::ClientData>(self_name);
         callback_called = 0;
     }
     std::string self_name = "test";
-    std::shared_ptr<ClientData> data_;
+    std::shared_ptr<Internal::ClientData> data_;
     Member member(const std::string &member) {
         return Member{Field{data_, member}};
     }

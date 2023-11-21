@@ -1,3 +1,4 @@
+#pragma once
 #include <mutex>
 #include <unordered_map>
 #include <string>
@@ -26,4 +27,4 @@ class SyncDataStore1 {
     std::unordered_map<std::string, bool> transferReq(bool is_first);
 };
 
-} // namespace WebCFace
+} // namespace WebCFace::Internal

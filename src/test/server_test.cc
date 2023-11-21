@@ -1,4 +1,5 @@
 #include <gtest/gtest.h>
+#include "../client/client_internal.h"
 #include "../server/websock.h"
 #include "../server/store.h"
 #include "../server/s_client_data.h"
@@ -47,7 +48,8 @@ class ServerTest : public ::testing::Test {
         std::cout << "TearDown end" << std::endl;
     }
     std::shared_ptr<std::thread> server_thread;
-    std::shared_ptr<ClientData> data_ = std::make_shared<ClientData>("a");
+    std::shared_ptr<Internal::ClientData> data_ =
+        std::make_shared<Internal::ClientData>("a");
     std::shared_ptr<DummyClient> dummy_c1, dummy_c2;
     int callback_called;
 };
@@ -300,10 +302,10 @@ TEST_F(ServerTest, view) {
             std::unordered_map<std::string, Message::View::ViewComponent>{
                 {"0", ViewComponents::text("a").lockTmp(data_, "")},
                 {"1", ViewComponents::newLine().lockTmp(data_, "")},
-                {"2",
-                 ViewComponents::button(
-                     "f", Func{Field{std::weak_ptr<ClientData>(), "p", "q"}})
-                     .lockTmp(data_, "")}}),
+                {"2", ViewComponents::button(
+                          "f", Func{Field{std::weak_ptr<Internal::ClientData>(),
+                                          "p", "q"}})
+                          .lockTmp(data_, "")}}),
         3});
     wait();
     dummy_c2->send(Message::SyncInit{{}, "", 0, "", "", ""});

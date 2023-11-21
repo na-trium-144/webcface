@@ -1,4 +1,5 @@
 #include <webcface/client.h>
+#include "client_internal.h"
 #include <curl/curl.h>
 #include <string>
 #include <chrono>

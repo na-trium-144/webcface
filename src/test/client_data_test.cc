@@ -1,12 +1,15 @@
 #include <gtest/gtest.h>
-#include <webcface/client_data.h>
+#include "../client/client_internal.h"
+#include <webcface/member.h>
 #include <string>
 
 using namespace WebCFace;
+using namespace WebCFace::Internal;
+
 class SyncDataStore2Test : public ::testing::Test {
   protected:
     std::string self_name = "test";
-    ClientData::SyncDataStore2<std::string> s2{"test"};
+    SyncDataStore2<std::string> s2{"test"};
 };
 TEST_F(SyncDataStore2Test, self) {
     EXPECT_TRUE(s2.isSelf(self_name));
@@ -21,13 +24,6 @@ TEST_F(SyncDataStore2Test, setSend) {
     EXPECT_EQ(send.size(), 1);
     EXPECT_EQ(s2.transferSend(false).size(), 0);
     EXPECT_EQ(s2.transferSend(true).size(), 1);
-}
-TEST_F(SyncDataStore2Test, setHidden) {
-    s2.setHidden("a", true);
-    s2.setHidden("b", false);
-    EXPECT_TRUE(s2.isHidden("a"));
-    EXPECT_FALSE(s2.isHidden("b"));
-    EXPECT_FALSE(s2.isHidden("c"));
 }
 TEST_F(SyncDataStore2Test, setRecv) {
     s2.setRecv("a", "b", "c");
@@ -97,7 +93,7 @@ TEST_F(SyncDataStore2Test, setEntry) {
 class SyncDataStore1Test : public ::testing::Test {
   protected:
     std::string self_name = "test";
-    ClientData::SyncDataStore1<std::string> s1{"test"};
+    SyncDataStore1<std::string> s1{"test"};
 };
 TEST_F(SyncDataStore1Test, self) {
     EXPECT_TRUE(s1.isSelf(self_name));
@@ -122,7 +118,7 @@ TEST_F(SyncDataStore1Test, getRecv) {
 
 TEST(FuncResultStoreTest, addResult) {
     auto data = std::make_shared<ClientData>("test");
-    ClientData::FuncResultStore &s = data->func_result_store;
+    FuncResultStore &s = data->func_result_store;
     auto &r = s.addResult("a", Field{data, "b", "c"});
     EXPECT_EQ(r.name(), "c");
     EXPECT_EQ(r.member().name(), "b");

@@ -9,5 +9,9 @@ std::optional<std::shared_ptr<std::vector<std::shared_ptr<LogLine>>>>
 Log::getRaw() const {
     return dataLock()->log_store.getRecv(member_);
 }
+void Log::setRaw(
+    const std::shared_ptr<std::vector<std::shared_ptr<LogLine>>> &raw) const {
+    dataLock()->log_store.setRecv(member_, raw);
+}
 
 } // namespace WebCFace
