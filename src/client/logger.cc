@@ -1,7 +1,7 @@
 #include <webcface/logger.h>
 #include "client_internal.h"
 
-namespace WebCFace {
+namespace webcface {
 LoggerBuf::LoggerBuf(const std::weak_ptr<Internal::ClientData> &data_w)
     : std::streambuf(), data_w(data_w) {
     this->setp(buf, buf + sizeof(buf));
@@ -46,4 +46,4 @@ void LoggerSink::sink_it_(const spdlog::details::log_msg &msg) {
     }
 }
 
-} // namespace WebCFace
+} // namespace webcface

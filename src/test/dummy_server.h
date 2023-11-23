@@ -4,7 +4,7 @@
 #include <utility>
 #include <thread>
 
-using namespace WebCFace;
+using namespace webcface;
 struct DummyServer {
     std::vector<std::pair<int, std::any>> recv_data;
 

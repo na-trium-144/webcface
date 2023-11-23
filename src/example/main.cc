@@ -13,16 +13,16 @@ struct A {
     int x = 1, y = 2;
     A() = default;
     // Dict → A に変換
-    A(const WebCFace::Value::Dict &d): x(d["x"]), y(d["y"]) {}
+    A(const webcface::Value::Dict &d): x(d["x"]), y(d["y"]) {}
     // A → Dictに変換
-    operator WebCFace::Value::Dict() const {
+    operator webcface::Value::Dict() const {
         return {{"x", x}, {"y", y}, {"nest", {{"a", 3}, {"b", 4}}}};
     }
 };
 int main() {
-    // WebCFace::logger_internal_level = spdlog::level::debug;
+    // webcface::logger_internal_level = spdlog::level::debug;
 
-    WebCFace::Client c("example_main");
+    webcface::Client c("example_main");
 
     // c.value("test").set(0);
     c.value("test") = 0;
@@ -31,7 +31,7 @@ int main() {
     // 関数を登録
     c.func("func1") = hello;
     // 引数付きの関数は引数名や各種情報をセットできる
-    using Arg = WebCFace::Arg;
+    using Arg = webcface::Arg;
     c.func("func2").set(hello2).setArgs(
         {Arg("a").min(0).max(10), Arg("b"), Arg("c"),
          Arg("d").option({"hoge", "fuga", "piyo"})});
@@ -64,7 +64,7 @@ int main() {
             auto v = c.view("a");
             v << "hello world" << std::endl;
             v << i << std::endl;
-            v << WebCFace::button("a",
+            v << webcface::button("a",
                                   [] { std::cout << "hello" << std::endl; });
             // v.sync();
         }

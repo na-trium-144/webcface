@@ -7,7 +7,7 @@
 #include "field.h"
 #include "event_target.h"
 
-namespace WebCFace {
+namespace webcface {
 namespace Internal {
 struct ClientData;
 }
@@ -108,4 +108,4 @@ class Text : protected Field, public EventTarget<Text> {
 inline std::ostream &operator<<(std::ostream &os, const Text &data) {
     return os << data.get();
 }
-} // namespace WebCFace
+} // namespace webcface

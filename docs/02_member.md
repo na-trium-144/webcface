@@ -1,6 +1,6 @@
 # Member
 
-API Reference → WebCFace::Member
+API Reference → webcface::Member
 
 WebCFaceではサーバーに接続されたそれぞれのクライアントを Member と呼びます。
 (たぶんROSでいうと Node に相当します)
@@ -9,7 +9,7 @@ WebCFaceではサーバーに接続されたそれぞれのクライアントを
 Client::member() で取得できます。
 
 ```cpp
-WebCFace::Member member_a = wcli.member("a");
+webcface::Member member_a = wcli.member("a");
 ```
 これは`a`という名前のMember(=Clientのコンストラクタに`a`を入力したクライアント)を指します。
 
@@ -19,20 +19,20 @@ Memberクラスから実際にそれぞれのデータにアクセスする方�
 各種データを送信するにも(一部例外はありますが)Memberクラスを経由する必要があります。
 Client::member()の引数に自身の名前を入れてもよいですが、Client自体がMemberを継承したクラスになっているので、キャストするか直接wcliに対して操作すればよいです。
 ```cpp
-WebCFace::Member member_self = wcli;
+webcface::Member member_self = wcli;
 ```
 
 Client::members() で現在接続されているメンバーのリストが得られます
 (無名のものと、自分自身を除く)
 ```cpp
-for(const WebCFace::Member &m: wcli.members()){
+for(const webcface::Member &m: wcli.members()){
 	// ...
 }
 ```
 
 ## Field系クラスの扱いについて
 
-Memberクラスおよびこれ以降説明する各種データ型のクラス (いずれも WebCFace::Field を継承している) について、
+Memberクラスおよびこれ以降説明する各種データ型のクラス (いずれも webcface::Field を継承している) について、
 
 * それぞれコンストラクタが用意されていますが、正しくClientクラスから生成したオブジェクトでないと内部のデータにアクセスしようとするときに std::runtime_error (pythonでは RuntimeError) を投げます。
 * 構築元のClientの寿命が切れた後に操作しようとすると同様にstd::runtime_errorを投げます。
@@ -42,7 +42,7 @@ Memberクラスおよびこれ以降説明する各種データ型のクラス (
 
 Client::onMemberEntry() で新しいメンバーが接続されたときのイベントにコールバックを設定できます
 ```cpp
-wcli.onMemberEntry().appendListener([](WebCFace::Member m){/* ... */});
+wcli.onMemberEntry().appendListener([](webcface::Member m){/* ... */});
 ```
 このクライアントが接続する前から存在したメンバーについては初回の sync() 後に一度に送られるので、
 コールバックの設定は初回のsync()より前に行うと良いです。

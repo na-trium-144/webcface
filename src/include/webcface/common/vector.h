@@ -2,7 +2,7 @@
 #include <vector>
 #include <initializer_list>
 
-namespace WebCFace {
+namespace webcface {
 inline namespace Common {
 
 //! 1つの値またはvectorを持つクラス
@@ -15,4 +15,4 @@ struct VectorOpt : public std::vector<T> {
     operator T() const { return (*this)[0]; }
 };
 } // namespace Common
-} // namespace WebCFace
+} // namespace webcface

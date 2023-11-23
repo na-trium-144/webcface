@@ -1,7 +1,7 @@
 #include <webcface/text.h>
 #include "client_internal.h"
 
-namespace WebCFace {
+namespace webcface {
 Text &Text::set(const std::shared_ptr<std::string> &v) {
     setCheck();
     dataLock()->text_store.setSend(*this, v);
@@ -27,4 +27,4 @@ Text &Text::free() {
     return *this;
 }
 
-} // namespace WebCFace
+} // namespace webcface

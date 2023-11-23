@@ -11,7 +11,7 @@
 #include "func.h"
 #include "view.h"
 
-namespace WebCFace {
+namespace webcface {
 
 namespace Internal {
 struct ClientData;
@@ -110,4 +110,4 @@ class WEBCFACE_DLL Member : protected Field {
     EventTarget<Member, std::string> onPing() const;
 };
 
-} // namespace WebCFace
+} // namespace webcface

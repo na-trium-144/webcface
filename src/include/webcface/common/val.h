@@ -7,8 +7,8 @@
 #include <cstdint>
 #include <ostream>
 
-namespace WebCFace {
-//! WebCFace::Commonはserverとclientで共通のheader-onlyなクラス
+namespace webcface {
+//! webcface::Commonはserverとclientで共通のheader-onlyなクラス
 inline namespace Common {
 //! 引数や戻り値の型を表すenum
 enum class ValType {
@@ -141,4 +141,4 @@ void argToTuple(const std::vector<ValAdaptor> &args, T &tuple) {
     }
 }
 } // namespace Common
-} // namespace WebCFace
+} // namespace webcface

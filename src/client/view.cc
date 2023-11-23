@@ -2,7 +2,7 @@
 #include "client_internal.h"
 #include <webcface/member.h>
 
-namespace WebCFace {
+namespace webcface {
 ViewComponentBase &
 ViewComponent::lockTmp(const std::weak_ptr<Internal::ClientData> &data_w,
                        const std::string &field_id) {
@@ -76,4 +76,4 @@ View &View::free() {
     return *this;
 }
 
-} // namespace WebCFace
+} // namespace webcface

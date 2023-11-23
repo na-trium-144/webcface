@@ -6,7 +6,7 @@
 #include <chrono>
 #include "../message/message.h"
 
-using namespace WebCFace;
+using namespace webcface;
 class LoggerTest : public ::testing::Test {
   protected:
     void SetUp() override {

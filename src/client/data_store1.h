@@ -8,7 +8,7 @@
 #include <webcface/common/def.h>
 #include <webcface/common/log.h>
 
-namespace WebCFace::Internal {
+namespace webcface::Internal {
 template <typename T>
 class SyncDataStore1 {
     std::mutex mtx;
@@ -38,4 +38,4 @@ extern template class SyncDataStore1<
 extern template class SyncDataStore1<std::chrono::system_clock::time_point>;
 #endif
 
-} // namespace WebCFace::Internal
+} // namespace webcface::Internal

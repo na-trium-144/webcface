@@ -3,7 +3,7 @@
 #include <eventpp/eventdispatcher.h>
 #include "field.h"
 
-namespace WebCFace {
+namespace webcface {
 
 //! イベントを表し、コールバックの追加や削除ができるクラス。
 template <typename V, typename Key = FieldBaseComparable,
@@ -60,4 +60,4 @@ class EventTarget {
         return dispatcher->ownsHandle(key, handle);
     }
 };
-} // namespace WebCFace
+} // namespace webcface

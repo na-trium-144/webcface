@@ -8,7 +8,7 @@
 #include "common/log.h"
 #include "common/def.h"
 
-namespace WebCFace {
+namespace webcface {
 namespace Internal {
 struct ClientData;
 }
@@ -42,4 +42,4 @@ class WEBCFACE_DLL LoggerSink : public spdlog::sinks::base_sink<std::mutex>,
     void set_formatter_(std::unique_ptr<spdlog::formatter>) override {}
 };
 
-} // namespace WebCFace
+} // namespace webcface

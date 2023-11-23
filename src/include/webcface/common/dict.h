@@ -9,7 +9,7 @@
 #include <concepts>
 #include "vector.h"
 
-namespace WebCFace {
+namespace webcface {
 inline namespace Common {
 
 struct VecTypeDisabled {};
@@ -203,4 +203,4 @@ class Dict {
 };
 
 } // namespace Common
-} // namespace WebCFace
+} // namespace webcface

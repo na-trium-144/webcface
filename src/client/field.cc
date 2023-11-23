@@ -3,7 +3,7 @@
 #include "client_internal.h"
 #include <stdexcept>
 
-namespace WebCFace {
+namespace webcface {
 Member Field::member() const { return *this; }
 
 std::shared_ptr<Internal::ClientData> Field::dataLock() const {
@@ -19,4 +19,4 @@ void Field::setCheck() const {
             "Cannot set data to member other than self");
     }
 }
-} // namespace WebCFace
+} // namespace webcface

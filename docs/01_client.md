@@ -1,6 +1,6 @@
 # Client
 
-API Reference → WebCFace::Client
+API Reference → webcface::Client
 
 WebCFaceのメインとなるクラスです。
 
@@ -10,9 +10,9 @@ WebCFaceのメインとなるクラスです。
 ```cpp
 #include <webcface/webcface.h>
 
-WebCFace::Client wcli("sample");
+webcface::Client wcli("sample");
 
-// または WebCFace::Client wcli;
+// または webcface::Client wcli;
 ```
 
 Client オブジェクトを作ると別スレッドでサーバーへの接続を開始します。

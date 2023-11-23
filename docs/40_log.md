@@ -1,6 +1,6 @@
 # Log
 
-API Reference → WebCFace::Log
+API Reference → webcface::Log
 
 テキストのログ出力を送受信します。
 
@@ -83,13 +83,13 @@ logger.error("this is error");
 
 Member::log() でLogクラスのオブジェクトが得られます
 ```cpp
-WebCFace::Log log_a = wcli.member("a").log();
+webcface::Log log_a = wcli.member("a").log();
 ```
 
 Log::tryGet() でログデータが得られます。
 Valueなどと同様、初回の呼び出しではstd::nulloptを返し、2回目以降はログデータを取得できます。
 ```cpp
-std::nullopt<std::vector<WebCFace::LogLine>> log = log_a.tryGet();
+std::nullopt<std::vector<webcface::LogLine>> log = log_a.tryGet();
 ```
 Log::get() はstd::nulloptの代わりに空のリストを返す点以外は同じです。
 

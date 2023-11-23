@@ -8,7 +8,7 @@
 #include "field.h"
 #include "common/val.h"
 
-namespace WebCFace {
+namespace webcface {
 
 class Member;
 
@@ -63,4 +63,4 @@ class AsyncFuncResult : Field {
 };
 auto &operator<<(std::basic_ostream<char> &os, const AsyncFuncResult &data);
 
-} // namespace WebCFace
+} // namespace webcface

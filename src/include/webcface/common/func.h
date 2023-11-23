@@ -8,8 +8,8 @@
 #include <cstdint>
 #include "val.h"
 
-namespace WebCFace {
-//! WebCFace::Commonはserverとclientで共通のheader-onlyなクラス
+namespace webcface {
+//! webcface::Commonはserverとclientで共通のheader-onlyなクラス
 inline namespace Common {
 
 using FuncType = std::function<ValAdaptor(const std::vector<ValAdaptor> &)>;
@@ -180,8 +180,8 @@ struct FuncCall {
     unsigned int caller_member_id;
     unsigned int target_member_id;
     std::string field;
-    std::vector<WebCFace::ValAdaptor> args;
+    std::vector<webcface::ValAdaptor> args;
 };
 
 } // namespace Common
-} // namespace WebCFace
+} // namespace webcface

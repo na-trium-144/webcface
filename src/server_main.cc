@@ -27,5 +27,5 @@ int main(int argc, char **argv) {
 
     // Set HTTP listener address and port
     // todo: 引数で変えられるようにする
-    WebCFace::Server::serverRun(port, stderr_sink, spdlog::level::trace);
+    webcface::Server::serverRun(port, stderr_sink, spdlog::level::trace);
 }

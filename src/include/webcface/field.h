@@ -4,7 +4,7 @@
 #include "common/field_base.h"
 #include "common/def.h"
 
-namespace WebCFace {
+namespace webcface {
 
 namespace Internal {
 struct ClientData;
@@ -36,4 +36,4 @@ struct WEBCFACE_DLL Field : public Common::FieldBase {
     //! field名を返す
     std::string name() const { return field_; }
 };
-} // namespace WebCFace
+} // namespace webcface

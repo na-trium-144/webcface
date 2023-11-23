@@ -8,7 +8,7 @@
 #include "field.h"
 #include "event_target.h"
 
-namespace WebCFace {
+namespace webcface {
 namespace Internal {
 struct ClientData;
 }
@@ -185,4 +185,4 @@ inline std::ostream &operator<<(std::ostream &os, const Value &data) {
     return os << data.get();
 }
 
-} // namespace WebCFace
+} // namespace webcface

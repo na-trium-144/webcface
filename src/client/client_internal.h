@@ -23,7 +23,7 @@
 #include "data_store2.h"
 #include "func_internal.h"
 
-namespace WebCFace::Internal {
+namespace webcface::Internal {
 
 struct ClientData {
     explicit ClientData(const std::string &name)
@@ -121,4 +121,4 @@ struct ClientData {
     bool ping_status_req = false;
     bool ping_status_req_send = false;
 };
-} // namespace WebCFace::Internal
+} // namespace webcface::Internal

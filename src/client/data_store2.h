@@ -9,7 +9,7 @@
 #include <webcface/common/func.h>
 #include <webcface/common/view.h>
 
-namespace WebCFace::Internal {
+namespace webcface::Internal {
 //! 送受信するデータを保持するクラス
 /*! memberごとにフィールドを持つデータに使う。
  * member, fieldの2次元mapとなる
@@ -126,4 +126,4 @@ extern template class SyncDataStore2<
     std::shared_ptr<std::vector<Common::ViewComponentBase>>>;
 #endif
 
-} // namespace WebCFace::Internal
+} // namespace webcface::Internal

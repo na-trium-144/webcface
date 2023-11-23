@@ -8,7 +8,7 @@
 #include "func.h"
 #include "event_target.h"
 
-namespace WebCFace {
+namespace webcface {
 namespace Internal {
 struct ClientData;
 }
@@ -216,4 +216,4 @@ class View : protected Field, public EventTarget<View>, public std::ostream {
         return set(sb.components);
     }
 };
-} // namespace WebCFace
+} // namespace webcface

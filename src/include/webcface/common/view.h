@@ -3,7 +3,7 @@
 #include <optional>
 #include "field_base.h"
 
-namespace WebCFace {
+namespace webcface {
 inline namespace Common {
 enum class ViewComponentType {
     text = 0,
@@ -58,4 +58,4 @@ struct ViewComponentBase {
 };
 
 } // namespace Common
-} // namespace WebCFace
+} // namespace webcface

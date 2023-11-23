@@ -1,7 +1,7 @@
 #include "client_internal.h"
 #include <webcface/value.h>
 
-namespace WebCFace {
+namespace webcface {
 Value::Value(const Field &base)
     : Field(base), EventTarget<Value>(&this->dataLock()->value_change_event,
                                       *this) {}
@@ -28,4 +28,4 @@ Value &Value::free() {
 }
 
 
-} // namespace WebCFace
+} // namespace webcface

@@ -5,7 +5,7 @@
 #include <condition_variable>
 #include <webcface/func_result.h>
 
-namespace WebCFace::Internal {
+namespace webcface::Internal {
 
 //! AsyncFuncResultのリストを保持する。
 /*! 関数の実行結果が返ってきた時参照する
@@ -60,4 +60,4 @@ class FuncOnSync {
     }
 };
 
-} // namespace WebCFace::Internal
+} // namespace webcface::Internal

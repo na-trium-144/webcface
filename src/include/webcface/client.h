@@ -11,7 +11,7 @@
 #include "common/def.h"
 #include <spdlog/logger.h>
 
-namespace WebCFace {
+namespace webcface {
 //! サーバーに接続するクライアント。
 class Client : public Member {
   private:
@@ -147,4 +147,4 @@ class Client : public Member {
     WEBCFACE_DLL std::string serverName() const;
 };
 
-} // namespace WebCFace
+} // namespace webcface

@@ -1,7 +1,7 @@
 #include "message.h"
 #include <sstream>
 
-namespace WebCFace::Message {
+namespace webcface::Message {
 void printMsg(const std::shared_ptr<spdlog::logger> &logger,
               const std::string &message) {
     std::stringstream ss;
@@ -89,6 +89,6 @@ unpack(const std::string &message,
         printMsg(logger, message);
         return std::vector<std::pair<int, std::any>>{};
     }
-} // namespace WebCFace::Message
+} // namespace webcface::Message
 
-} // namespace WebCFace::Message
+} // namespace webcface::Message

@@ -5,7 +5,7 @@
 #include <thread>
 #include "dummy_client.h"
 
-using namespace WebCFace;
+using namespace webcface;
 DummyClient::~DummyClient() {
     closing.store(true);
     t.join();

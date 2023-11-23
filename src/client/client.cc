@@ -10,7 +10,7 @@
 #include "../message/message.h"
 #include "client_internal.h"
 
-namespace WebCFace {
+namespace webcface {
 
 Client::Client(const std::string &name, const std::string &host, int port)
     : Client(name, host, port, std::make_shared<Internal::ClientData>(name)) {}
@@ -176,24 +176,24 @@ void Client::sync() {
     }
 }
 void Client::onRecv(const std::string &message) {
-    namespace MessageKind = WebCFace::Message::MessageKind;
-    auto messages = WebCFace::Message::unpack(message, data->logger_internal);
+    namespace MessageKind = webcface::Message::MessageKind;
+    auto messages = webcface::Message::unpack(message, data->logger_internal);
     for (const auto &m : messages) {
         const auto &[kind, obj] = m;
         switch (kind) {
         case MessageKind::svr_version: {
-            auto r = std::any_cast<WebCFace::Message::SvrVersion>(obj);
+            auto r = std::any_cast<webcface::Message::SvrVersion>(obj);
             data->svr_name = r.svr_name;
             data->svr_version = r.ver;
             break;
         }
         case MessageKind::ping: {
             data->message_queue.push(
-                WebCFace::Message::packSingle(WebCFace::Message::Ping{}));
+                webcface::Message::packSingle(webcface::Message::Ping{}));
             break;
         }
         case MessageKind::ping_status: {
-            auto r = std::any_cast<WebCFace::Message::PingStatus>(obj);
+            auto r = std::any_cast<webcface::Message::PingStatus>(obj);
             data->ping_status = r.status;
             for (const auto &member : members()) {
                 data->ping_event.dispatch(member.name(),
@@ -202,7 +202,7 @@ void Client::onRecv(const std::string &message) {
             break;
         }
         case MessageKind::sync: {
-            auto r = std::any_cast<WebCFace::Message::Sync>(obj);
+            auto r = std::any_cast<webcface::Message::Sync>(obj);
             auto member = data->getMemberNameFromId(r.member_id);
             data->sync_time_store.setRecv(member, r.getTime());
             data->sync_event.dispatch(member, Field{data, member});
@@ -210,7 +210,7 @@ void Client::onRecv(const std::string &message) {
         }
         case MessageKind::value + MessageKind::res: {
             auto r =
-                std::any_cast<WebCFace::Message::Res<WebCFace::Message::Value>>(
+                std::any_cast<webcface::Message::Res<webcface::Message::Value>>(
                     obj);
             auto [member, field] =
                 data->value_store.getReq(r.req_id, r.sub_field);
@@ -223,7 +223,7 @@ void Client::onRecv(const std::string &message) {
         }
         case MessageKind::text + MessageKind::res: {
             auto r =
-                std::any_cast<WebCFace::Message::Res<WebCFace::Message::Text>>(
+                std::any_cast<webcface::Message::Res<webcface::Message::Text>>(
                     obj);
             auto [member, field] =
                 data->text_store.getReq(r.req_id, r.sub_field);
@@ -234,7 +234,7 @@ void Client::onRecv(const std::string &message) {
         }
         case MessageKind::view + MessageKind::res: {
             auto r =
-                std::any_cast<WebCFace::Message::Res<WebCFace::Message::View>>(
+                std::any_cast<webcface::Message::Res<webcface::Message::View>>(
                     obj);
             auto [member, field] =
                 data->view_store.getReq(r.req_id, r.sub_field);
@@ -253,7 +253,7 @@ void Client::onRecv(const std::string &message) {
             break;
         }
         case MessageKind::log: {
-            auto r = std::any_cast<WebCFace::Message::Log>(obj);
+            auto r = std::any_cast<webcface::Message::Log>(obj);
             auto member = data->getMemberNameFromId(r.member_id);
             auto log_s = data->log_store.getRecv(member);
             if (!log_s) {
@@ -268,13 +268,13 @@ void Client::onRecv(const std::string &message) {
             break;
         }
         case MessageKind::call: {
-            auto r = std::any_cast<WebCFace::Message::Call>(obj);
+            auto r = std::any_cast<webcface::Message::Call>(obj);
             std::thread([data = this->data, r] {
                 auto func_info =
                     data->func_store.getRecv(data->self_member_name, r.field);
                 if (func_info) {
-                    data->message_queue.push(WebCFace::Message::packSingle(
-                        WebCFace::Message::CallResponse{
+                    data->message_queue.push(webcface::Message::packSingle(
+                        webcface::Message::CallResponse{
                             {}, r.caller_id, r.caller_member_id, true}));
                     ValAdaptor result;
                     bool is_error = false;
@@ -290,22 +290,22 @@ void Client::onRecv(const std::string &message) {
                         is_error = true;
                         result = "unknown exception";
                     }
-                    data->message_queue.push(WebCFace::Message::packSingle(
-                        WebCFace::Message::CallResult{{},
+                    data->message_queue.push(webcface::Message::packSingle(
+                        webcface::Message::CallResult{{},
                                                       r.caller_id,
                                                       r.caller_member_id,
                                                       is_error,
                                                       result}));
                 } else {
-                    data->message_queue.push(WebCFace::Message::packSingle(
-                        WebCFace::Message::CallResponse{
+                    data->message_queue.push(webcface::Message::packSingle(
+                        webcface::Message::CallResponse{
                             {}, r.caller_id, r.caller_member_id, false}));
                 }
             }).detach();
             break;
         }
         case MessageKind::call_response: {
-            auto r = std::any_cast<WebCFace::Message::CallResponse>(obj);
+            auto r = std::any_cast<webcface::Message::CallResponse>(obj);
             try {
                 auto &res = data->func_result_store.getResult(r.caller_id);
                 res.started_->set_value(r.started);
@@ -328,7 +328,7 @@ void Client::onRecv(const std::string &message) {
             break;
         }
         case MessageKind::call_result: {
-            auto r = std::any_cast<WebCFace::Message::CallResult>(obj);
+            auto r = std::any_cast<webcface::Message::CallResult>(obj);
             try {
                 auto &res = data->func_result_store.getResult(r.caller_id);
                 if (r.is_error) {
@@ -354,7 +354,7 @@ void Client::onRecv(const std::string &message) {
             break;
         }
         case MessageKind::sync_init: {
-            auto r = std::any_cast<WebCFace::Message::SyncInit>(obj);
+            auto r = std::any_cast<webcface::Message::SyncInit>(obj);
             data->value_store.setEntry(r.member_name);
             data->text_store.setEntry(r.member_name);
             data->func_store.setEntry(r.member_name);
@@ -367,7 +367,7 @@ void Client::onRecv(const std::string &message) {
         }
         case MessageKind::entry + MessageKind::value: {
             auto r = std::any_cast<
-                WebCFace::Message::Entry<WebCFace::Message::Value>>(obj);
+                webcface::Message::Entry<webcface::Message::Value>>(obj);
             auto member = data->getMemberNameFromId(r.member_id);
             data->value_store.setEntry(member, r.field);
             data->value_entry_event.dispatch(member,
@@ -376,7 +376,7 @@ void Client::onRecv(const std::string &message) {
         }
         case MessageKind::entry + MessageKind::text: {
             auto r = std::any_cast<
-                WebCFace::Message::Entry<WebCFace::Message::Text>>(obj);
+                webcface::Message::Entry<webcface::Message::Text>>(obj);
             auto member = data->getMemberNameFromId(r.member_id);
             data->text_store.setEntry(member, r.field);
             data->text_entry_event.dispatch(member,
@@ -385,7 +385,7 @@ void Client::onRecv(const std::string &message) {
         }
         case MessageKind::entry + MessageKind::view: {
             auto r = std::any_cast<
-                WebCFace::Message::Entry<WebCFace::Message::View>>(obj);
+                webcface::Message::Entry<webcface::Message::View>>(obj);
             auto member = data->getMemberNameFromId(r.member_id);
             data->view_store.setEntry(member, r.field);
             data->view_entry_event.dispatch(member,
@@ -393,7 +393,7 @@ void Client::onRecv(const std::string &message) {
             break;
         }
         case MessageKind::func_info: {
-            auto r = std::any_cast<WebCFace::Message::FuncInfo>(obj);
+            auto r = std::any_cast<webcface::Message::FuncInfo>(obj);
             auto member = data->getMemberNameFromId(r.member_id);
             data->func_store.setEntry(member, r.field);
             data->func_store.setRecv(member, r.field,
@@ -420,4 +420,4 @@ void Client::onRecv(const std::string &message) {
         }
     }
 }
-} // namespace WebCFace
+} // namespace webcface

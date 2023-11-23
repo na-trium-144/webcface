@@ -6,7 +6,7 @@
 #include "field.h"
 #include "common/log.h"
 
-namespace WebCFace {
+namespace webcface {
 
 //! ログの送受信データを表すクラス
 /*!
@@ -57,4 +57,4 @@ class Log : protected Field, public EventTarget<Log, std::string> {
         return *this;
     }
 };
-} // namespace WebCFace
+} // namespace webcface

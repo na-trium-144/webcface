@@ -1,7 +1,7 @@
 #include <webcface/log.h>
 #include "client_internal.h"
 
-namespace WebCFace {
+namespace webcface {
 Log::Log(const Field &base)
     : Field(base), EventTarget<Log, std::string>(
                        &this->dataLock()->log_append_event, this->member_) {}
@@ -14,4 +14,4 @@ void Log::setRaw(
     dataLock()->log_store.setRecv(member_, raw);
 }
 
-} // namespace WebCFace
+} // namespace webcface

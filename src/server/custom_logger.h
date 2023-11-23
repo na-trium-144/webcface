@@ -5,7 +5,7 @@
 #include <spdlog/logger.h>
 #include <spdlog/common.h>
 
-namespace WebCFace::Server {
+namespace webcface::Server {
 
 class CustomLogger : public crow::ILogHandler {
     std::shared_ptr<spdlog::logger> logger;
