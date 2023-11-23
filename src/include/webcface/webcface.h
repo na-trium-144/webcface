@@ -16,7 +16,6 @@
 #include "func_result.h"
 #include "logger.h"
 
-// ClientDataに対して具体的になにかする場合はこれの下
 #include "value.h"
 #include "text.h"
 #include "log.h"
@@ -25,3 +24,6 @@
 
 #include "member.h"
 #include "client.h"
+
+// 〜v1.1 との互換性のため
+namespace WebCFace = webcface;

@@ -13,30 +13,48 @@
 namespace webcface {
 
 Client::Client(const std::string &name, const std::string &host, int port)
-    : Client(name, host, port, std::make_shared<Internal::ClientData>(name)) {}
-
-Client::Client(const std::string &name, const std::string &host, int port,
-               std::shared_ptr<Internal::ClientData> data)
-    : Member(), data(data), host(host), port(port),
-      message_thread(messageThreadMain, data, host, port),
-      recv_thread([this, data] {
-          while (!data->closing.load()) {
-              auto msg = data->recv_queue.pop(std::chrono::milliseconds(10));
-              if (msg) {
-                  this->onRecv(*msg);
-              }
-          }
-      }),
-      logger_buf(this->data), logger_os(&this->logger_buf) {
-
-    this->Member::data_w = this->data;
-    this->Member::member_ = name;
+    : Client(name, std::make_shared<Internal::ClientData>(name, host, port)) {
+    data->start();
 }
+
+Client::Client(const std::string &name,
+               std::shared_ptr<Internal::ClientData> data)
+    : Member(data, name), data(data) {}
+
+Internal::ClientData::ClientData(const std::string &name,
+                                 const std::string &host, int port)
+    : std::enable_shared_from_this<ClientData>(), self_member_name(name),
+      host(host), port(port), value_store(name), text_store(name),
+      func_store(name), view_store(name), log_store(name),
+      sync_time_store(name), logger_sink(std::make_shared<LoggerSink>()) {
+    static auto stderr_sink =
+        std::make_shared<spdlog::sinks::stderr_color_sink_mt>();
+    std::vector<spdlog::sink_ptr> sinks = {logger_sink, stderr_sink};
+    logger = std::make_shared<spdlog::logger>(name, sinks.begin(), sinks.end());
+    logger->set_level(spdlog::level::trace);
+    logger_internal = std::make_shared<spdlog::logger>(
+        "webcface_internal(" + name + ")", stderr_sink);
+    if (std::getenv("WEBCFACE_TRACE") != nullptr) {
+        logger_internal->set_level(spdlog::level::trace);
+    } else if (getenv("WEBCFACE_VERBOSE") != nullptr) {
+        logger_internal->set_level(spdlog::level::debug);
+    } else {
+        logger_internal->set_level(spdlog::level::off);
+    }
+}
+void Internal::ClientData::start() {
+    message_thread = std::make_unique<std::thread>(
+        Internal::messageThreadMain, shared_from_this(), host, port);
+    recv_thread = std::make_unique<std::thread>(Internal::recvThreadMain,
+                                                shared_from_this());
+    logger_buf = std::make_unique<LoggerBuf>(shared_from_this());
+    logger_os = std::make_unique<std::ostream>(logger_buf.get());
+}
+
 
 Client::~Client() {
     close();
-    message_thread.join();
-    recv_thread.join();
+    data->join();
 }
 void Client::close() { data->closing.store(true); }
 bool Client::connected() const { return data->connected_.load(); }
@@ -57,8 +75,19 @@ void Client::setDefaultRunCond(FuncWrapperType wrapper) {
 }
 std::shared_ptr<LoggerSink> Client::loggerSink() { return data->logger_sink; }
 std::shared_ptr<spdlog::logger> Client::logger() { return data->logger; }
+LoggerBuf *Client::loggerStreamBuf() { return data->logger_buf.get(); }
+std::ostream &Client::loggerOStream() { return *data->logger_os.get(); }
 std::string Client::serverVersion() const { return data->svr_version; }
 std::string Client::serverName() const { return data->svr_name; }
+
+void Internal::recvThreadMain(std::shared_ptr<ClientData> data) {
+    while (!data->closing.load()) {
+        auto msg = data->recv_queue.pop(std::chrono::milliseconds(10));
+        if (msg) {
+            data->onRecv(*msg);
+        }
+    }
+}
 
 void Client::sync() {
     if (connected()) {
@@ -175,37 +204,38 @@ void Client::sync() {
         (*func_sync)->sync();
     }
 }
-void Client::onRecv(const std::string &message) {
+void Internal::ClientData::onRecv(const std::string &message) {
     namespace MessageKind = webcface::Message::MessageKind;
-    auto messages = webcface::Message::unpack(message, data->logger_internal);
+    auto messages = webcface::Message::unpack(message, this->logger_internal);
     for (const auto &m : messages) {
         const auto &[kind, obj] = m;
         switch (kind) {
         case MessageKind::svr_version: {
             auto r = std::any_cast<webcface::Message::SvrVersion>(obj);
-            data->svr_name = r.svr_name;
-            data->svr_version = r.ver;
+            this->svr_name = r.svr_name;
+            this->svr_version = r.ver;
             break;
         }
         case MessageKind::ping: {
-            data->message_queue.push(
+            this->message_queue.push(
                 webcface::Message::packSingle(webcface::Message::Ping{}));
             break;
         }
         case MessageKind::ping_status: {
             auto r = std::any_cast<webcface::Message::PingStatus>(obj);
-            data->ping_status = r.status;
-            for (const auto &member : members()) {
-                data->ping_event.dispatch(member.name(),
-                                          Field{data, member.name()});
+            this->ping_status = r.status;
+            for (const auto &member_name : value_store.getMembers()) {
+                this->ping_event.dispatch(
+                    member_name, Field{shared_from_this(), member_name});
             }
             break;
         }
         case MessageKind::sync: {
             auto r = std::any_cast<webcface::Message::Sync>(obj);
-            auto member = data->getMemberNameFromId(r.member_id);
-            data->sync_time_store.setRecv(member, r.getTime());
-            data->sync_event.dispatch(member, Field{data, member});
+            auto member = this->getMemberNameFromId(r.member_id);
+            this->sync_time_store.setRecv(member, r.getTime());
+            this->sync_event.dispatch(member,
+                                      Field{shared_from_this(), member});
             break;
         }
         case MessageKind::value + MessageKind::res: {
@@ -213,12 +243,13 @@ void Client::onRecv(const std::string &message) {
                 std::any_cast<webcface::Message::Res<webcface::Message::Value>>(
                     obj);
             auto [member, field] =
-                data->value_store.getReq(r.req_id, r.sub_field);
-            data->value_store.setRecv(
+                this->value_store.getReq(r.req_id, r.sub_field);
+            this->value_store.setRecv(
                 member, field,
                 std::static_pointer_cast<VectorOpt<double>>(r.data));
-            data->value_change_event.dispatch(FieldBase{member, field},
-                                              Field{data, member, field});
+            this->value_change_event.dispatch(
+                FieldBase{member, field},
+                Field{shared_from_this(), member, field});
             break;
         }
         case MessageKind::text + MessageKind::res: {
@@ -226,10 +257,11 @@ void Client::onRecv(const std::string &message) {
                 std::any_cast<webcface::Message::Res<webcface::Message::Text>>(
                     obj);
             auto [member, field] =
-                data->text_store.getReq(r.req_id, r.sub_field);
-            data->text_store.setRecv(member, field, r.data);
-            data->text_change_event.dispatch(FieldBase{member, field},
-                                             Field{data, member, field});
+                this->text_store.getReq(r.req_id, r.sub_field);
+            this->text_store.setRecv(member, field, r.data);
+            this->text_change_event.dispatch(
+                FieldBase{member, field},
+                Field{shared_from_this(), member, field});
             break;
         }
         case MessageKind::view + MessageKind::res: {
@@ -237,39 +269,41 @@ void Client::onRecv(const std::string &message) {
                 std::any_cast<webcface::Message::Res<webcface::Message::View>>(
                     obj);
             auto [member, field] =
-                data->view_store.getReq(r.req_id, r.sub_field);
-            auto v_prev = data->view_store.getRecv(member, field);
+                this->view_store.getReq(r.req_id, r.sub_field);
+            auto v_prev = this->view_store.getRecv(member, field);
             if (v_prev == std::nullopt) {
                 v_prev =
                     std::make_shared<std::vector<ViewComponentBase>>(r.length);
-                data->view_store.setRecv(member, field, *v_prev);
+                this->view_store.setRecv(member, field, *v_prev);
             }
             (*v_prev)->resize(r.length);
             for (const auto &d : *r.data_diff) {
                 (**v_prev)[std::stoi(d.first)] = d.second;
             }
-            data->view_change_event.dispatch(FieldBase{member, field},
-                                             Field{data, member, field});
+            this->view_change_event.dispatch(
+                FieldBase{member, field},
+                Field{shared_from_this(), member, field});
             break;
         }
         case MessageKind::log: {
             auto r = std::any_cast<webcface::Message::Log>(obj);
-            auto member = data->getMemberNameFromId(r.member_id);
-            auto log_s = data->log_store.getRecv(member);
+            auto member = this->getMemberNameFromId(r.member_id);
+            auto log_s = this->log_store.getRecv(member);
             if (!log_s) {
                 log_s =
                     std::make_shared<std::vector<std::shared_ptr<LogLine>>>();
-                data->log_store.setRecv(member, *log_s);
+                this->log_store.setRecv(member, *log_s);
             }
             for (const auto &lm : *r.log) {
                 (*log_s)->push_back(std::make_shared<LogLine>(lm));
             }
-            data->log_append_event.dispatch(member, Field{data, member});
+            this->log_append_event.dispatch(member,
+                                            Field{shared_from_this(), member});
             break;
         }
         case MessageKind::call: {
             auto r = std::any_cast<webcface::Message::Call>(obj);
-            std::thread([data = this->data, r] {
+            std::thread([data = shared_from_this(), r] {
                 auto func_info =
                     data->func_store.getRecv(data->self_member_name, r.field);
                 if (func_info) {
@@ -307,7 +341,7 @@ void Client::onRecv(const std::string &message) {
         case MessageKind::call_response: {
             auto r = std::any_cast<webcface::Message::CallResponse>(obj);
             try {
-                auto &res = data->func_result_store.getResult(r.caller_id);
+                auto &res = this->func_result_store.getResult(r.caller_id);
                 res.started_->set_value(r.started);
                 if (!r.started) {
                     try {
@@ -317,11 +351,11 @@ void Client::onRecv(const std::string &message) {
                     }
                 }
             } catch (const std::future_error &e) {
-                this->data->logger_internal->error(
+                this->logger_internal->error(
                     "error receiving call response id={}: {}", r.caller_id,
                     e.what());
             } catch (const std::out_of_range &e) {
-                this->data->logger_internal->error(
+                this->logger_internal->error(
                     "error receiving call response id={}: {}", r.caller_id,
                     e.what());
             }
@@ -330,7 +364,7 @@ void Client::onRecv(const std::string &message) {
         case MessageKind::call_result: {
             auto r = std::any_cast<webcface::Message::CallResult>(obj);
             try {
-                auto &res = data->func_result_store.getResult(r.caller_id);
+                auto &res = this->func_result_store.getResult(r.caller_id);
                 if (r.is_error) {
                     try {
                         throw std::runtime_error(
@@ -343,11 +377,11 @@ void Client::onRecv(const std::string &message) {
                     res.result_->set_value(ValAdaptor{r.result});
                 }
             } catch (const std::future_error &e) {
-                this->data->logger_internal->error(
+                this->logger_internal->error(
                     "error receiving call result id={}: {}", r.caller_id,
                     e.what());
             } catch (const std::out_of_range &e) {
-                this->data->logger_internal->error(
+                this->logger_internal->error(
                     "error receiving call response id={}: {}", r.caller_id,
                     e.what());
             }
@@ -355,51 +389,52 @@ void Client::onRecv(const std::string &message) {
         }
         case MessageKind::sync_init: {
             auto r = std::any_cast<webcface::Message::SyncInit>(obj);
-            data->value_store.setEntry(r.member_name);
-            data->text_store.setEntry(r.member_name);
-            data->func_store.setEntry(r.member_name);
-            data->member_ids[r.member_name] = r.member_id;
-            data->member_lib_name[r.member_id] = r.lib_name;
-            data->member_lib_ver[r.member_id] = r.lib_ver;
-            data->member_addr[r.member_id] = r.addr;
-            data->member_entry_event.dispatch(0, Field{data, r.member_name});
+            this->value_store.setEntry(r.member_name);
+            this->text_store.setEntry(r.member_name);
+            this->func_store.setEntry(r.member_name);
+            this->member_ids[r.member_name] = r.member_id;
+            this->member_lib_name[r.member_id] = r.lib_name;
+            this->member_lib_ver[r.member_id] = r.lib_ver;
+            this->member_addr[r.member_id] = r.addr;
+            this->member_entry_event.dispatch(
+                0, Field{shared_from_this(), r.member_name});
             break;
         }
         case MessageKind::entry + MessageKind::value: {
             auto r = std::any_cast<
                 webcface::Message::Entry<webcface::Message::Value>>(obj);
-            auto member = data->getMemberNameFromId(r.member_id);
-            data->value_store.setEntry(member, r.field);
-            data->value_entry_event.dispatch(member,
-                                             Field{data, member, r.field});
+            auto member = this->getMemberNameFromId(r.member_id);
+            this->value_store.setEntry(member, r.field);
+            this->value_entry_event.dispatch(
+                member, Field{shared_from_this(), member, r.field});
             break;
         }
         case MessageKind::entry + MessageKind::text: {
             auto r = std::any_cast<
                 webcface::Message::Entry<webcface::Message::Text>>(obj);
-            auto member = data->getMemberNameFromId(r.member_id);
-            data->text_store.setEntry(member, r.field);
-            data->text_entry_event.dispatch(member,
-                                            Field{data, member, r.field});
+            auto member = this->getMemberNameFromId(r.member_id);
+            this->text_store.setEntry(member, r.field);
+            this->text_entry_event.dispatch(
+                member, Field{shared_from_this(), member, r.field});
             break;
         }
         case MessageKind::entry + MessageKind::view: {
             auto r = std::any_cast<
                 webcface::Message::Entry<webcface::Message::View>>(obj);
-            auto member = data->getMemberNameFromId(r.member_id);
-            data->view_store.setEntry(member, r.field);
-            data->view_entry_event.dispatch(member,
-                                            Field{data, member, r.field});
+            auto member = this->getMemberNameFromId(r.member_id);
+            this->view_store.setEntry(member, r.field);
+            this->view_entry_event.dispatch(
+                member, Field{shared_from_this(), member, r.field});
             break;
         }
         case MessageKind::func_info: {
             auto r = std::any_cast<webcface::Message::FuncInfo>(obj);
-            auto member = data->getMemberNameFromId(r.member_id);
-            data->func_store.setEntry(member, r.field);
-            data->func_store.setRecv(member, r.field,
+            auto member = this->getMemberNameFromId(r.member_id);
+            this->func_store.setEntry(member, r.field);
+            this->func_store.setRecv(member, r.field,
                                      std::make_shared<FuncInfo>(r));
-            data->func_entry_event.dispatch(member,
-                                            Field{data, member, r.field});
+            this->func_entry_event.dispatch(
+                member, Field{shared_from_this(), member, r.field});
             break;
         }
         case MessageKind::value:
@@ -410,12 +445,12 @@ void Client::onRecv(const std::string &message) {
         case MessageKind::view + MessageKind::req:
         case MessageKind::ping_status_req:
         case MessageKind::log_req:
-            this->data->logger_internal->warn("Invalid Message Kind {}", kind);
+            this->logger_internal->warn("Invalid Message Kind {}", kind);
             break;
         case MessageKind::unknown:
             break;
         default:
-            this->data->logger_internal->warn("Unknown Message Kind {}", kind);
+            this->logger_internal->warn("Unknown Message Kind {}", kind);
             break;
         }
     }

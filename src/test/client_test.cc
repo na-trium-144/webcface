@@ -32,8 +32,10 @@ class ClientTest : public ::testing::Test {
         std::cout << "SetUp begin" << std::endl;
         dummy_s = std::make_shared<DummyServer>();
         wait();
-        data_ = std::make_shared<Internal::ClientData>(self_name);
-        wcli_ = std::make_shared<Client>(self_name, "127.0.0.1", 17530, data_);
+        data_ = std::make_shared<Internal::ClientData>(self_name, "127.0.0.1",
+                                                       17530);
+        wcli_ = std::make_shared<Client>(self_name, data_);
+        data_->start();
         callback_called = 0;
         dummy_s->recvClear();
         // 接続を待機する (todo: 接続完了まで待機する関数があると良い)

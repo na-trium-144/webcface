@@ -11,6 +11,7 @@ class LoggerTest : public ::testing::Test {
   protected:
     void SetUp() override {
         data_ = std::make_shared<Internal::ClientData>(self_name);
+        data_->start();
     }
     std::string self_name = "test";
     std::shared_ptr<Internal::ClientData> data_;

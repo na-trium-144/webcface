@@ -25,33 +25,45 @@
 
 namespace webcface::Internal {
 
-struct ClientData {
-    explicit ClientData(const std::string &name)
-        : self_member_name(name), value_store(name), text_store(name),
-          func_store(name), view_store(name), log_store(name),
-          sync_time_store(name), logger_sink(std::make_shared<LoggerSink>()) {
-        static auto stderr_sink =
-            std::make_shared<spdlog::sinks::stderr_color_sink_mt>();
-        std::vector<spdlog::sink_ptr> sinks = {logger_sink, stderr_sink};
-        logger =
-            std::make_shared<spdlog::logger>(name, sinks.begin(), sinks.end());
-        logger->set_level(spdlog::level::trace);
-        logger_internal = std::make_shared<spdlog::logger>(
-            "webcface_internal(" + name + ")", stderr_sink);
-        if (std::getenv("WEBCFACE_TRACE") != nullptr) {
-            logger_internal->set_level(spdlog::level::trace);
-        } else if (getenv("WEBCFACE_VERBOSE") != nullptr) {
-            logger_internal->set_level(spdlog::level::debug);
-        } else {
-            logger_internal->set_level(spdlog::level::off);
-        }
-    }
+WEBCFACE_DLL void messageThreadMain(std::shared_ptr<ClientData> data,
+                                    std::string host, int port);
+
+WEBCFACE_DLL void recvThreadMain(std::shared_ptr<ClientData> data);
+
+struct ClientData : std::enable_shared_from_this<ClientData> {
+    WEBCFACE_DLL explicit ClientData(const std::string &name,
+                                     const std::string &host = "",
+                                     int port = -1);
 
     //! Client自身の名前
     std::string self_member_name;
     bool isSelf(const FieldBase &base) const {
         return base.member_ == self_member_name;
     }
+
+    std::string host;
+    int port;
+
+    //! websocket通信するスレッド
+    std::unique_ptr<std::thread> message_thread;
+    //! recv_queueを処理するスレッド
+    std::unique_ptr<std::thread> recv_thread;
+
+    //! thisに依存するものを遅れて初期化する
+    /*!
+     * * 初期化されるのはthreadと、logger関係
+     * * Clientのコンストラクタが生成する場合はClientのコンストラクタが呼ぶ
+     * * port < 0 のときwebsocket通信はしない
+     */
+    WEBCFACE_DLL void start();
+    //! threadを待機 (close時)
+    void join() {
+        message_thread->join();
+        recv_thread->join();
+    }
+
+    //! 受信時の処理
+    WEBCFACE_DLL void onRecv(const std::string &message);
 
     SyncDataStore2<std::shared_ptr<VectorOpt<double>>> value_store;
     SyncDataStore2<std::shared_ptr<std::string>> text_store;
@@ -103,8 +115,9 @@ struct ClientData {
 
     //! logのキュー
     std::shared_ptr<LoggerSink> logger_sink;
-
     std::shared_ptr<spdlog::logger> logger, logger_internal;
+    std::unique_ptr<LoggerBuf> logger_buf;
+    std::unique_ptr<std::ostream> logger_os;
 
     //! close()が呼ばれたらtrue
     std::atomic<bool> closing = false;

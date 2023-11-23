@@ -9,9 +9,9 @@
 
 namespace webcface {
 
-void Client::messageThreadMain(std::shared_ptr<Internal::ClientData> data,
-                               std::string host, int port) {
-    while (!data->closing.load()) {
+void Internal::messageThreadMain(std::shared_ptr<Internal::ClientData> data,
+                                 std::string host, int port) {
+    while (!data->closing.load() && port > 0) {
         CURL *handle = curl_easy_init();
         if (std::getenv("WEBCFACE_TRACE") != nullptr) {
             curl_easy_setopt(handle, CURLOPT_VERBOSE, 1L);

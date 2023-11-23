@@ -1,38 +1,18 @@
 #pragma once
 #include <string>
 #include <memory>
-#include <future>
 #include <vector>
-#include <thread>
+#include <spdlog/logger.h>
 #include "member.h"
 #include "event_target.h"
 #include "func.h"
 #include "logger.h"
 #include "common/def.h"
-#include <spdlog/logger.h>
 
 namespace webcface {
 //! サーバーに接続するクライアント。
 class Client : public Member {
-  private:
-    //! サーバーのホスト
-    std::string host;
-    //! サーバーのポート
-    int port;
-    //! websocket通信するスレッド
-    std::thread message_thread;
-    //! recv_queueを処理するスレッド
-    std::thread recv_thread;
-    WEBCFACE_DLL static void
-    messageThreadMain(std::shared_ptr<Internal::ClientData> data,
-                      std::string host, int port);
     std::shared_ptr<Internal::ClientData> data;
-
-    LoggerBuf logger_buf;
-    std::ostream logger_os;
-
-    //! 受信時の処理
-    WEBCFACE_DLL void onRecv(const std::string &message);
 
   public:
     Client(const Client &) = delete;
@@ -54,7 +34,6 @@ class Client : public Member {
                                  int port = WEBCFACE_DEFAULT_PORT);
 
     WEBCFACE_DLL explicit Client(const std::string &name,
-                                 const std::string &host, int port,
                                  std::shared_ptr<Internal::ClientData> data);
 
     //! サーバーに接続できているときtrueを返す
@@ -130,12 +109,12 @@ class Client : public Member {
      *
      * \sa loggerSink(), logger(), loggerOStream()
      */
-    LoggerBuf *loggerStreamBuf() { return &logger_buf; }
+    WEBCFACE_DLL LoggerBuf *loggerStreamBuf();
     //! webcfaceに出力するostream
     /*! (v1.0.1で logger_ostream から名前変更)
      * \sa loggerSink(), logger(), loggerStreamBuf()
      */
-    std::ostream &loggerOStream() { return logger_os; }
+    WEBCFACE_DLL std::ostream &loggerOStream();
 
     //! WebCFaceサーバーのバージョン情報
     WEBCFACE_DLL std::string serverVersion() const;
