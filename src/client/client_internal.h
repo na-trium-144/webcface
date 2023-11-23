@@ -49,18 +49,39 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
     //! recv_queueを処理するスレッド
     std::unique_ptr<std::thread> recv_thread;
 
-    //! thisに依存するものを遅れて初期化する
-    /*!
-     * * 初期化されるのはthreadと、logger関係
-     * * Clientのコンストラクタが生成する場合はClientのコンストラクタが呼ぶ
-     * * port < 0 のときwebsocket通信はしない
-     */
+    //! close()が呼ばれたらtrue
+    std::atomic<bool> closing = false;
+    std::atomic<bool> connected = false;
+    std::mutex connect_state_m;
+    std::condition_variable connect_state_cond;
+
+    //! 通信関係のスレッドを開始する
     WEBCFACE_DLL void start();
     //! threadを待機 (close時)
     void join() {
-        message_thread->join();
-        recv_thread->join();
+        if (message_thread->joinable()) {
+            message_thread->join();
+        }
+        if (recv_thread->joinable()) {
+            recv_thread->join();
+        }
     }
+
+    //! 初期化時に送信するメッセージをキューに入れる
+    /*!
+     * コンストラクタ直後start()前と、切断直後に生成してキューの最初に入れる
+     */
+    WEBCFACE_DLL void syncDataFirst();
+    //! sync() 時に送信するメッセージをキューに入れる
+    WEBCFACE_DLL void syncData();
+
+    //! 送信したいメッセージを入れるキュー
+    /*!
+     * 接続できていない場合送信されずキューにたまる
+     */
+    Common::Queue<std::string> message_queue;
+    //! wsが受信したメッセージを入れるキュー
+    Common::Queue<std::string> recv_queue;
 
     //! 受信時の処理
     WEBCFACE_DLL void onRecv(const std::string &message);
@@ -104,10 +125,6 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
         value_entry_event, text_entry_event, func_entry_event, view_entry_event,
         ping_event;
 
-    //! sync()を待たずに即時送って欲しいメッセージを入れるキュー
-    Common::Queue<std::string> message_queue;
-    //! wsが受信したメッセージを入れるキュー
-    Common::Queue<std::string> recv_queue;
     //! sync()のタイミングで実行を同期する関数のcondition_variable
     Common::Queue<std::shared_ptr<FuncOnSync>> func_sync_queue;
 
@@ -118,13 +135,6 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
     std::shared_ptr<spdlog::logger> logger, logger_internal;
     std::unique_ptr<LoggerBuf> logger_buf;
     std::unique_ptr<std::ostream> logger_os;
-
-    //! close()が呼ばれたらtrue
-    std::atomic<bool> closing = false;
-    std::atomic<bool> connected_ = false;
-    //! 初回のsync()で全データを送信するがそれが完了したかどうか
-    //! 再接続したらfalseに戻す
-    std::atomic<bool> sync_init = false;
 
     //! serverの情報
     std::string svr_name, svr_version;

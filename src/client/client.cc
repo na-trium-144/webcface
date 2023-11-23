@@ -13,9 +13,7 @@
 namespace webcface {
 
 Client::Client(const std::string &name, const std::string &host, int port)
-    : Client(name, std::make_shared<Internal::ClientData>(name, host, port)) {
-    data->start();
-}
+    : Client(name, std::make_shared<Internal::ClientData>(name, host, port)) {}
 
 Client::Client(const std::string &name,
                std::shared_ptr<Internal::ClientData> data)
@@ -41,14 +39,16 @@ Internal::ClientData::ClientData(const std::string &name,
     } else {
         logger_internal->set_level(spdlog::level::off);
     }
+    logger_buf = std::make_unique<LoggerBuf>(logger);
+    logger_os = std::make_unique<std::ostream>(logger_buf.get());
+
+    syncDataFirst();
 }
 void Internal::ClientData::start() {
     message_thread = std::make_unique<std::thread>(
         Internal::messageThreadMain, shared_from_this(), host, port);
     recv_thread = std::make_unique<std::thread>(Internal::recvThreadMain,
                                                 shared_from_this());
-    logger_buf = std::make_unique<LoggerBuf>(shared_from_this());
-    logger_os = std::make_unique<std::ostream>(logger_buf.get());
 }
 
 
@@ -89,116 +89,116 @@ void Internal::recvThreadMain(std::shared_ptr<ClientData> data) {
     }
 }
 
-void Client::sync() {
-    if (connected()) {
-        std::stringstream buffer;
-        int len = 0;
+void Client::start(bool wait) {
+    if (!connected()) {
+        data->start();
+        if (wait) {
+            std::unique_lock lock(data->connect_state_m);
+            data->connect_state_cond.wait(
+                lock, [&data] { return data->connected.load(); });
+        }
+    }
+}
+void Internal::ClientData::syncDataFirst() {
+    std::stringstream buffer;
+    int len = 0;
 
-        bool is_first = false;
-        if (!data->sync_init.load()) {
+    Message::pack(
+        buffer, len,
+        Message::SyncInit{{}, member_, 0, "cpp", WEBCFACE_VERSION, ""});
+
+    for (const auto &v : data->value_store.transferReq()) {
+        for (const auto &v2 : v.second) {
             Message::pack(
                 buffer, len,
-                Message::SyncInit{{}, member_, 0, "cpp", WEBCFACE_VERSION, ""});
-            is_first = true;
-            data->sync_init.store(true);
+                Message::Req<Message::Value>{{}, v.first, v2.first, v2.second});
         }
-
-        Message::pack(buffer, len, Message::Sync{});
-
-        for (const auto &v : data->value_store.transferSend(is_first)) {
+    }
+    for (const auto &v : data->text_store.transferReq()) {
+        for (const auto &v2 : v.second) {
             Message::pack(
                 buffer, len,
-                Message::Value{
-                    {},
-                    v.first,
-                    std::static_pointer_cast<std::vector<double>>(v.second)});
+                Message::Req<Message::Text>{{}, v.first, v2.first, v2.second});
         }
-        for (const auto &v : data->value_store.transferReq(is_first)) {
-            for (const auto &v2 : v.second) {
-                Message::pack(buffer, len,
-                              Message::Req<Message::Value>{
-                                  {}, v.first, v2.first, v2.second});
-            }
+    }
+    for (const auto &v : data->view_store.transferReq()) {
+        for (const auto &v2 : v.second) {
+            Message::pack(
+                buffer, len,
+                Message::Req<Message::View>{{}, v.first, v2.first, v2.second});
         }
-        for (const auto &v : data->text_store.transferSend(is_first)) {
+    }
+    for (const auto &v : data->log_store.transferReq()) {
+        Message::pack(buffer, len, Message::LogReq{{}, v.first});
+    }
 
-            Message::pack(buffer, len, Message::Text{{}, v.first, v.second});
+    auto log_s = data->log_store.getRecv(member_);
+    if (log_s) {
+        auto log_send = std::make_shared<std::vector<Message::Log::LogLine>>();
+        log_send->resize((*log_s)->size());
+        for (std::size_t i = 0; i < (*log_s)->size(); i++) {
+            (*log_send)[i] = *(**log_s)[i];
         }
-        for (const auto &v : data->text_store.transferReq(is_first)) {
-            for (const auto &v2 : v.second) {
-                Message::pack(buffer, len,
-                              Message::Req<Message::Text>{
-                                  {}, v.first, v2.first, v2.second});
+        Message::pack(buffer, len, Message::Log{{}, 0, log_send});
+    }
+
+    if (data->ping_status_req) {
+        Message::pack(buffer, len, Message::PingStatusReq{});
+    }
+
+    data->message_queue.push(Message::packDone(buffer, len));
+}
+void Internal::ClientData::syncData() {
+    Message::pack(buffer, len, Message::Sync{});
+
+    for (const auto &v : data->value_store.transferSend()) {
+        Message::pack(
+            buffer, len,
+            Message::Value{
+                {},
+                v.first,
+                std::static_pointer_cast<std::vector<double>>(v.second)});
+    }
+    for (const auto &v : data->text_store.transferSend()) {
+
+        Message::pack(buffer, len, Message::Text{{}, v.first, v.second});
+    }
+    auto view_send_prev = data->view_store.getSendPrev();
+    auto view_send = data->view_store.transferSend();
+    for (const auto &v : view_send) {
+        auto v_prev = view_send_prev.find(v.first);
+        auto v_diff =
+            std::make_shared<std::unordered_map<int, ViewComponentBase>>();
+        if (v_prev == view_send_prev.end()) {
+            for (std::size_t i = 0; i < v.second->size(); i++) {
+                v_diff->emplace(static_cast<int>(i), (*v.second)[i]);
             }
-        }
-        auto view_send_prev = data->view_store.getSendPrev(is_first);
-        auto view_send = data->view_store.transferSend(is_first);
-        for (const auto &v : view_send) {
-            auto v_prev = view_send_prev.find(v.first);
-            auto v_diff =
-                std::make_shared<std::unordered_map<int, ViewComponentBase>>();
-            if (v_prev == view_send_prev.end()) {
-                for (std::size_t i = 0; i < v.second->size(); i++) {
+        } else {
+            for (std::size_t i = 0; i < v.second->size(); i++) {
+                if (v_prev->second->size() <= i ||
+                    (*v_prev->second)[i] != (*v.second)[i]) {
                     v_diff->emplace(static_cast<int>(i), (*v.second)[i]);
                 }
-            } else {
-                for (std::size_t i = 0; i < v.second->size(); i++) {
-                    if (v_prev->second->size() <= i ||
-                        (*v_prev->second)[i] != (*v.second)[i]) {
-                        v_diff->emplace(static_cast<int>(i), (*v.second)[i]);
-                    }
-                }
-            }
-            if (!v_diff->empty()) {
-                Message::pack(buffer, len,
-                              Message::View{v.first, v_diff, v.second->size()});
             }
         }
-        for (const auto &v : data->view_store.transferReq(is_first)) {
-            for (const auto &v2 : v.second) {
-                Message::pack(buffer, len,
-                              Message::Req<Message::View>{
-                                  {}, v.first, v2.first, v2.second});
-            }
+        if (!v_diff->empty()) {
+            Message::pack(buffer, len,
+                          Message::View{v.first, v_diff, v.second->size()});
         }
-        for (const auto &v : data->func_store.transferSend(is_first)) {
-            if (!v.second->hidden) {
-                Message::pack(buffer, len,
-                              Message::FuncInfo{v.first, *v.second});
-            }
+    }
+    for (const auto &v : data->func_store.transferSend()) {
+        if (!v.second->hidden) {
+            Message::pack(buffer, len, Message::FuncInfo{v.first, *v.second});
         }
+    }
 
-        for (const auto &v : data->log_store.transferReq(is_first)) {
-            Message::pack(buffer, len, Message::LogReq{{}, v.first});
-        }
-
-        auto log_s = data->log_store.getRecv(member_);
-        if (!log_s) {
-            log_s = std::make_shared<std::vector<std::shared_ptr<LogLine>>>();
-            data->log_store.setRecv(member_, *log_s);
-        }
-        auto log_send = std::make_shared<std::vector<Message::Log::LogLine>>();
-        if (is_first) {
-            log_send->resize((*log_s)->size());
-            for (std::size_t i = 0; i < (*log_s)->size(); i++) {
-                (*log_send)[i] = *(**log_s)[i];
-            }
-        }
-        while (auto log = data->logger_sink->pop()) {
-            log_send->push_back(**log);
-            // todo: connected状態でないとlog_storeにログが記録されない
-            (*log_s)->push_back(*log);
-        }
-        if (!log_send->empty()) {
-            Message::pack(buffer, len, Message::Log{{}, 0, log_send});
-        }
-
-        if (data->ping_status_req && is_first || data->ping_status_req_send) {
-            Message::pack(buffer, len, Message::PingStatusReq{});
-            data->ping_status_req_send = false;
-        }
-
-        data->message_queue.push(Message::packDone(buffer, len));
+    data->message_queue.push(Message::packDone(buffer, len));
+}
+void Client::sync() {
+    if (!connected()) {
+        data->start(false);
+    } else {
+        data->syncData();
     }
     while (auto func_sync = data->func_sync_queue.pop()) {
         (*func_sync)->sync();

@@ -2,6 +2,7 @@
 #include <streambuf>
 #include <memory>
 #include <string>
+#include <spdlog/logger.h>
 #include <spdlog/sinks/base_sink.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
 #include "common/queue.h"
@@ -19,7 +20,7 @@ class WEBCFACE_DLL LoggerBuf : public std::streambuf {
     // bufからあふれた分を入れる
     std::string overflow_buf;
 
-    std::weak_ptr<Internal::ClientData> data_w;
+    std::shared_ptr<spdlog::logger> logger;
 
     int sync() override;
     int overflow(int c) override;

@@ -2,8 +2,8 @@
 #include "client_internal.h"
 
 namespace webcface {
-LoggerBuf::LoggerBuf(const std::weak_ptr<Internal::ClientData> &data_w)
-    : std::streambuf(), data_w(data_w) {
+LoggerBuf::LoggerBuf(const std::shared_ptr<spdlog::logger> &logger)
+    : std::streambuf(), logger(logger) {
     this->setp(buf, buf + sizeof(buf));
 }
 int LoggerBuf::overflow(int c) {
@@ -23,7 +23,7 @@ int LoggerBuf::sync() {
         if (message.size() > 0 && message.back() == '\r') {
             message.pop_back();
         }
-        data_w.lock()->logger->info(message);
+        logger->info(message);
         overflow_buf = overflow_buf.substr(n + 1);
     }
     this->setp(buf, buf + sizeof(buf));

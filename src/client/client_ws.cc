@@ -25,8 +25,11 @@ void Internal::messageThreadMain(std::shared_ptr<Internal::ClientData> data,
                                          static_cast<int>(ret));
         } else {
             data->logger_internal->debug("connected");
-            data->sync_init.store(false);
-            data->connected_.store(true);
+            {
+                std::lock_guard lock(data->connect_state_m);
+                data->connected.store(true);
+            }
+            data->connect_state_cond.notify_all();
             while (!data->closing.load() && data->connected_.load()) {
                 while (true) {
                     std::size_t rlen = 0;
@@ -61,9 +64,14 @@ void Internal::messageThreadMain(std::shared_ptr<Internal::ClientData> data,
                 }
                 std::this_thread::yield();
             }
+            {
+                std::lock_guard lock(data->connect_state_m);
+                data->connected.store(false);
+            }
+            data->connect_state_cond.notify_all();
+            data->syncDataFirst(); // 次の接続時の最初のメッセージ
         }
         curl_easy_cleanup(handle);
-        data->connected_.store(false);
         if (!data->closing.load()) {
             std::this_thread::sleep_for(std::chrono::milliseconds(10));
         }
