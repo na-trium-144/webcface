@@ -86,6 +86,7 @@ TEST_F(ClientTest, connectionBySync) {
 TEST_F(ClientTest, close) {
     wcli_->waitConnection();
     wcli_.reset();
+    wait();
     EXPECT_FALSE(dummy_s->connected());
 }
 TEST_F(ClientTest, name) { EXPECT_EQ(wcli_->name(), self_name); }
