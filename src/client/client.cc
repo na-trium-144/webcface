@@ -49,10 +49,14 @@ Internal::ClientData::ClientData(const std::string &name,
     syncDataFirst();
 }
 void Internal::ClientData::start() {
-    message_thread = std::make_unique<std::thread>(
-        Internal::messageThreadMain, shared_from_this(), host, port);
-    recv_thread = std::make_unique<std::thread>(Internal::recvThreadMain,
-                                                shared_from_this());
+    if (message_thread == nullptr) {
+        message_thread = std::make_unique<std::thread>(
+            Internal::messageThreadMain, shared_from_this(), host, port);
+    }
+    if (recv_thread == nullptr) {
+        recv_thread = std::make_unique<std::thread>(Internal::recvThreadMain,
+                                                    shared_from_this());
+    }
 }
 
 
@@ -204,7 +208,7 @@ void Internal::ClientData::syncData(bool is_first) {
         }
 
         auto log_s = *log_store->getRecv(self_member_name);
-        if (log_s->size()) {
+        if ((log_s->size() > 0 && is_first) || log_s->size() > log_sent_lines) {
             auto begin = log_s->begin();
             auto end = log_s->end();
             if (!is_first) {

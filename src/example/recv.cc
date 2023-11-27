@@ -29,9 +29,10 @@ int main() {
                 std::cout << "log [" << ll.level << "] " << ll.message
                           << std::endl;
             }
-            // l.clear();
+            l.clear();
         });
     });
+    c.start();
     while (true) {
         std::this_thread::sleep_for(std::chrono::milliseconds(1000));
         // example_mainのtestの値を取得する
@@ -42,14 +43,11 @@ int main() {
         // example_mainのfunc2を実行し結果を取得
         auto result =
             c.member("example_main").func("func2").runAsync(9, 7.1, false, "");
-        std::thread([&] {
-            try {
-                std::cout << "func2(9, 7.1, false, \"\") = "
-                          << static_cast<std::string>(result.result.get())
-                          << std::endl;
-            } catch (...) {
-            }
-        }).detach();
-        c.sync();
+        try {
+            std::cout << "func2(9, 7.1, false, \"\") = "
+                      << static_cast<std::string>(result.result.get())
+                      << std::endl;
+        } catch (...) {
+        }
     }
 }

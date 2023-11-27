@@ -24,12 +24,12 @@ void Internal::messageThreadMain(std::shared_ptr<Internal::ClientData> data,
             data->logger_internal->trace("connection failed {}",
                                          static_cast<int>(ret));
         } else {
-            data->logger_internal->debug("connected");
             {
                 std::lock_guard lock(data->connect_state_m);
                 data->connected.store(true);
             }
             data->connect_state_cond.notify_all();
+            data->logger_internal->debug("connected");
             while (!data->closing.load()) {
                 bool closed = false;
                 while (true) {
@@ -43,17 +43,21 @@ void Internal::messageThreadMain(std::shared_ptr<Internal::ClientData> data,
                         closed = true;
                         break;
                     }
-                    if (ret != CURLE_AGAIN && ret != CURLE_OK) {
+                    if (ret == CURLE_OK) {
+                        if (rlen != 0) {
+                            data->logger_internal->trace("message received");
+                            data->recv_queue.push(std::string(buffer, rlen));
+                            std::size_t sent;
+                            curl_ws_send(handle, nullptr, 0, &sent, 0,
+                                         CURLWS_PONG);
+                        }
+                    } else if (ret == CURLE_AGAIN) {
+                        break;
+                    } else {
                         data->logger_internal->debug("connection closed {}",
                                                      static_cast<int>(ret));
                         closed = true;
                         break;
-                    }
-                    if (rlen != 0) {
-                        data->logger_internal->trace("message received");
-                        data->recv_queue.push(std::string(buffer, rlen));
-                        std::size_t sent;
-                        curl_ws_send(handle, nullptr, 0, &sent, 0, CURLWS_PONG);
                     }
                 }
                 if (closed) {
