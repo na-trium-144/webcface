@@ -79,8 +79,7 @@ Value::tryGet(), Value::tryGetVec(), Value::tryGetRecurse() で値のリクエ�
 
 初回の呼び出しではまだ受信していないためstd::nulloptを返します。
 (pythonでは None, javascriptでは null)
-
-その後Client::sync()したときに実際にリクエストが送信され、それ以降は値が得られるようになります。
+別スレッドでリクエストが送信され、それ以降は値が得られるようになります。
 ```cpp
 while(true) {
 	std::optional<double> val = wcli.member("a").value("hoge").tryGet();
@@ -92,8 +91,7 @@ while(true) {
 }
 ```
 
-Value::get(), Value::getVec(), Value::getRecurse() はstd::nulloptの代わりにデフォルト値を返す点以外は同じです。
-
+Value::get(), Value::getVec(), Value::getRecurse() はstd::nulloptの代わりにデフォルト値を返す点以外は同じです。  
 また、doubleやstd::vector<double>, Value::Dict などの型にキャストすることでも同様に値が得られます。
 
 Value::time() でその値が送信されたとき(そのMemberがsync()したとき)の時刻が得られます。

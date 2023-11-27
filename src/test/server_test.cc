@@ -350,14 +350,12 @@ TEST_F(ServerTest, view) {
 }
 TEST_F(ServerTest, log) {
     dummy_c1->send(Message::SyncInit{{}, "c1", 0, "", "", ""});
-    dummy_c1->send(
-        Message::Log{{},
-                     0,
-                     std::make_shared<std::vector<Message::Log::LogLine>>(
-                         std::vector<Message::Log::LogLine>{
-                             LogLine{0, std::chrono::system_clock::now(), "0"},
-                             LogLine{1, std::chrono::system_clock::now(), "1"},
-                         })});
+    dummy_c1->send(Message::Log{
+        0, std::make_shared<std::vector<Message::Log::LogLine>>(
+               std::vector<Message::Log::LogLine>{
+                   LogLine{0, std::chrono::system_clock::now(), "0"},
+                   LogLine{1, std::chrono::system_clock::now(), "1"},
+               })});
     wait();
     dummy_c2->send(Message::SyncInit{{}, "", 0, "", "", ""});
     dummy_c2->send(Message::LogReq{{}, "c1"});
@@ -374,13 +372,11 @@ TEST_F(ServerTest, log) {
     dummy_c2->recvClear();
 
     // 変化後の値
-    dummy_c1->send(
-        Message::Log{{},
-                     0,
-                     std::make_shared<std::vector<Message::Log::LogLine>>(
-                         std::vector<Message::Log::LogLine>{
-                             LogLine{2, std::chrono::system_clock::now(), "2"},
-                         })});
+    dummy_c1->send(Message::Log{
+        0, std::make_shared<std::vector<Message::Log::LogLine>>(
+               std::vector<Message::Log::LogLine>{
+                   LogLine{2, std::chrono::system_clock::now(), "2"},
+               })});
     wait();
     dummy_c2->recv<Message::Log>(
         [&](const auto &obj) {

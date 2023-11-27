@@ -1,6 +1,7 @@
 #include <webcface/view.h>
 #include "client_internal.h"
 #include <webcface/member.h>
+#include "../message/message.h"
 
 namespace webcface {
 ViewComponentBase &
@@ -56,15 +57,33 @@ View &View::set(std::vector<ViewComponent> &v) {
         vb[i] =
             v[i].lockTmp(this->data_w, this->name() + "_" + std::to_string(i));
     }
-    setCheck();
-    dataLock()->view_store.setSend(
+    setCheck()->view_store.setSend(
         *this, std::make_shared<std::vector<ViewComponentBase>>(vb));
     triggerEvent(*this);
     return *this;
 }
-std::optional<std::shared_ptr<std::vector<ViewComponentBase>>>
-View::getRaw() const {
-    return dataLock()->view_store.getRecv(*this);
+
+inline void addViewReq(const std::shared_ptr<Internal::ClientData> &data,
+                       const std::string &member_, const std::string &field_) {
+    auto req = data->view_store.addReq(member_, field_);
+    if (req) {
+        data->message_queue->push(Message::packSingle(
+            Message::Req<Message::View>{{}, member_, field_, req}));
+    }
+}
+void View::onAppend() const { addViewReq(dataLock(), member_, field_); }
+std::optional<std::vector<ViewComponent>> View::tryGet() const {
+    auto vb = dataLock()->view_store.getRecv(*this);
+    addViewReq(dataLock(), member_, field_);
+    if (vb) {
+        std::vector<ViewComponent> v((*vb)->size());
+        for (std::size_t i = 0; i < (*vb)->size(); i++) {
+            v[i] = ViewComponent{(**vb)[i], this->data_w};
+        }
+        return v;
+    } else {
+        return std::nullopt;
+    }
 }
 std::chrono::system_clock::time_point View::time() const {
     return dataLock()
@@ -72,7 +91,10 @@ std::chrono::system_clock::time_point View::time() const {
         .value_or(std::chrono::system_clock::time_point());
 }
 View &View::free() {
-    dataLock()->view_store.unsetRecv(*this);
+    auto req = dataLock()->view_store.unsetRecv(*this);
+    if (req) {
+        // todo: リクエスト解除
+    }
     return *this;
 }
 

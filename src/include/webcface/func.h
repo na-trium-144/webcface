@@ -48,7 +48,6 @@ class Func : protected Field {
     Func &setRaw(const FuncInfo &v) {
         return setRaw(std::make_shared<FuncInfo>(v));
     }
-    WEBCFACE_DLL std::optional<std::shared_ptr<FuncInfo>> getRaw() const;
     WEBCFACE_DLL FuncWrapperType getDefaultFuncWrapper() const;
 
   public:
@@ -105,22 +104,11 @@ class Func : protected Field {
     runAsync(const std::vector<ValAdaptor> &args_vec) const;
 
     //! 戻り値の型を返す
-    WEBCFACE_DLL ValType returnType() const {
-        auto func_info = getRaw();
-        if (func_info) {
-            return (*func_info)->return_type;
-        }
-        return ValType::none_;
-    }
+    WEBCFACE_DLL ValType returnType() const;
     //! 引数の情報を返す
     //! 変更するにはsetArgsを使う(このvectorの中身を書き換えても反映されない)
-    WEBCFACE_DLL std::vector<Arg> args() const {
-        auto func_info = getRaw();
-        if (func_info) {
-            return (*func_info)->args;
-        }
-        return std::vector<Arg>{};
-    }
+    WEBCFACE_DLL std::vector<Arg> args() const;
+
     const Arg args(std::size_t i) const { return args().at(i); }
 
     //! 引数の情報を更新する
@@ -183,7 +171,7 @@ class AnonymousFunc : public Func {
             a.hidden(true);
         };
     }
-    
+
     //! targetに関数を移動
     WEBCFACE_DLL void lockTo(Func &target);
 };

@@ -85,7 +85,6 @@ TEST_F(MemberTest, eventTarget) {
     data_->ping_event.dispatch("a", Field{data_, "a"});
     EXPECT_EQ(callback_called, 1);
     EXPECT_TRUE(data_->ping_status_req);
-    EXPECT_TRUE(data_->ping_status_req_send);
     callback_called = 0;
 }
 TEST_F(MemberTest, libVersion) {
@@ -104,5 +103,4 @@ TEST_F(MemberTest, PingStatus) {
             std::unordered_map<unsigned int, int>{{1, 10}});
     EXPECT_EQ(member("a").pingStatus(), 10);
     EXPECT_TRUE(data_->ping_status_req);
-    EXPECT_TRUE(data_->ping_status_req_send);
 }

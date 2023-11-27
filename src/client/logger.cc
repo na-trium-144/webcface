@@ -2,8 +2,8 @@
 #include "client_internal.h"
 
 namespace webcface {
-LoggerBuf::LoggerBuf(const std::weak_ptr<Internal::ClientData> &data_w)
-    : std::streambuf(), data_w(data_w) {
+LoggerBuf::LoggerBuf(const std::shared_ptr<spdlog::logger> &logger)
+    : std::streambuf(), logger(logger) {
     this->setp(buf, buf + sizeof(buf));
 }
 int LoggerBuf::overflow(int c) {
@@ -23,14 +23,16 @@ int LoggerBuf::sync() {
         if (message.size() > 0 && message.back() == '\r') {
             message.pop_back();
         }
-        data_w.lock()->logger->info(message);
+        logger->info(message);
         overflow_buf = overflow_buf.substr(n + 1);
     }
     this->setp(buf, buf + sizeof(buf));
     return 0;
 }
 
-LoggerSink::LoggerSink() : spdlog::sinks::base_sink<std::mutex>() {}
+LoggerSink::LoggerSink(const std::shared_ptr<Internal::SyncDataStore1<
+                           std::shared_ptr<std::vector<LogLine>>>> &log_store)
+    : spdlog::sinks::base_sink<std::mutex>(), log_store(log_store) {}
 
 void LoggerSink::sink_it_(const spdlog::details::log_msg &msg) {
     if (auto *buf_ptr = msg.payload.data()) {
@@ -42,7 +44,12 @@ void LoggerSink::sink_it_(const spdlog::details::log_msg &msg) {
         if (log_text.size() > 0 && log_text.back() == '\r') {
             log_text.pop_back();
         }
-        this->push(std::make_shared<LogLine>(msg.level, msg.time, log_text));
+        {
+            std::lock_guard lock(log_store->mtx);
+            auto v = log_store->getRecv(log_store->self_member_name);
+            // log_storeにはClientDataのコンストラクタで空vectorを入れてある
+            (*v)->emplace_back(msg.level, msg.time, log_text);
+        }
     }
 }
 

@@ -8,12 +8,27 @@ void SyncDataStore1<T>::setRecv(const std::string &member, const T &data) {
 }
 
 template <typename T>
-std::optional<T> SyncDataStore1<T>::getRecv(const std::string &member) {
+bool SyncDataStore1<T>::addReq(const std::string &member) {
     std::lock_guard lock(mtx);
     if (!isSelf(member) && req[member] == false) {
         req[member] = true;
-        req_send[member] = true;
+        return true;
     }
+    return false;
+}
+template <typename T>
+bool SyncDataStore1<T>::clearReq(const std::string &member) {
+    std::lock_guard lock(mtx);
+    if (!isSelf(member) && req[member] == true) {
+        req[member] = false;
+        return true;
+    }
+    return false;
+}
+
+template <typename T>
+std::optional<T> SyncDataStore1<T>::getRecv(const std::string &member) {
+    std::lock_guard lock(mtx);
     auto s_it = data_recv.find(member);
     if (s_it != data_recv.end()) {
         return s_it->second;
@@ -21,20 +36,19 @@ std::optional<T> SyncDataStore1<T>::getRecv(const std::string &member) {
     return std::nullopt;
 }
 template <typename T>
-std::unordered_map<std::string, bool>
-SyncDataStore1<T>::transferReq(bool is_first) {
+std::unordered_map<std::string, bool> SyncDataStore1<T>::transferReq() {
     std::lock_guard lock(mtx);
-    if (is_first) {
-        req_send.clear();
-        return req;
-    } else {
-        return std::move(req_send);
-    }
+    // if (is_first) {
+    req_send.clear();
+    return req;
+    // } else {
+    //     return std::move(req_send);
+    // }
 }
 
 template class WEBCFACE_DLL SyncDataStore1<std::string>; // test用
-template class WEBCFACE_DLL SyncDataStore1<
-    std::shared_ptr<std::vector<std::shared_ptr<Common::LogLine>>>>;
+template class WEBCFACE_DLL
+    SyncDataStore1<std::shared_ptr<std::vector<Common::LogLine>>>;
 template class WEBCFACE_DLL
     SyncDataStore1<std::chrono::system_clock::time_point>;
 

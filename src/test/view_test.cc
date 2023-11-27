@@ -107,12 +107,12 @@ TEST_F(ViewTest, viewGet) {
     EXPECT_EQ(view("a", "b").get().size(), 1);
     EXPECT_EQ(view("a", "c").tryGet(), std::nullopt);
     EXPECT_EQ(view("a", "c").get().size(), 0);
-    EXPECT_EQ(data_->view_store.transferReq(true).at("a").at("b"), 1);
-    EXPECT_EQ(data_->view_store.transferReq(true).at("a").at("c"), 2);
+    EXPECT_EQ(data_->view_store.transferReq().at("a").at("b"), 1);
+    EXPECT_EQ(data_->view_store.transferReq().at("a").at("c"), 2);
     EXPECT_EQ(view(self_name, "b").tryGet(), std::nullopt);
-    EXPECT_EQ(data_->view_store.transferReq(true).count(self_name), 0);
+    EXPECT_EQ(data_->view_store.transferReq().count(self_name), 0);
     view("a", "d").appendListener(callback<View>());
-    EXPECT_EQ(data_->view_store.transferReq(true).at("a").at("d"), 3);
+    EXPECT_EQ(data_->view_store.transferReq().at("a").at("d"), 3);
 }
 
 TEST_F(ViewTest, time) {

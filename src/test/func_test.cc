@@ -170,9 +170,14 @@ TEST_F(FuncTest, funcRunCond) {
 }
 TEST_F(FuncTest, funcRunRemote) {
     func("a", "b").runAsync(1.23, true, "abc");
-    EXPECT_EQ(*data_->message_queue.pop(),
-              Message::packSingle(
-                  Message::Call{FuncCall{0, 0, 0, "b", {1.23, true, "abc"}}}));
+    bool call_msg_found = false;
+    while (auto msg = data_->message_queue->pop()) {
+        if (*msg == Message::packSingle(Message::Call{
+                        FuncCall{0, 0, 0, "b", {1.23, true, "abc"}}})) {
+            call_msg_found = true;
+        }
+    }
+    EXPECT_TRUE(call_msg_found);
 }
 
 TEST_F(FuncTest, afuncSet1) {

@@ -101,11 +101,7 @@ std::string Member::remoteAddr() const {
 
 std::optional<int> Member::pingStatus() const {
     auto data = dataLock();
-    if (!data->ping_status_req) {
-        data->message_queue.push(Message::packSingle(Message::PingStatusReq{}));
-        data->ping_status_req = true;
-        data->ping_status_req_send = true;
-    }
+    data->pingStatusReq();
     if (data->ping_status != nullptr &&
         data->ping_status->count(data->getMemberIdFromName(member_))) {
         return data->ping_status->at(data->getMemberIdFromName(member_));
@@ -114,8 +110,8 @@ std::optional<int> Member::pingStatus() const {
     }
 }
 EventTarget<Member, std::string> Member::onPing() const {
-    // ほんとはonAppendに追加したかったけど面倒なのでここでpingStatus呼び出してリクエストをtrueにしちゃう
-    pingStatus();
+    // ほんとはonAppendに追加したかったけど面倒なのでここでリクエストをtrueにしちゃう
+    dataLock()->pingStatusReq();
     return EventTarget<Member, std::string>{&dataLock()->ping_event, member_};
 }
 } // namespace webcface

@@ -35,7 +35,6 @@ class ClientTest : public ::testing::Test {
         data_ = std::make_shared<Internal::ClientData>(self_name, "127.0.0.1",
                                                        17530);
         wcli_ = std::make_shared<Client>(self_name, data_);
-        data_->start();
         callback_called = 0;
         dummy_s->recvClear();
         // 接続を待機する (todo: 接続完了まで待機する関数があると良い)
@@ -61,12 +60,37 @@ class ClientTest : public ::testing::Test {
     }
 };
 
-TEST_F(ClientTest, connection) {
+TEST_F(ClientTest, connectionByStart) {
+    EXPECT_FALSE(dummy_s->connected());
+    EXPECT_FALSE(wcli_->connected());
+    wcli_->start();
+    wait();
     EXPECT_TRUE(dummy_s->connected());
     EXPECT_TRUE(wcli_->connected());
 }
+TEST_F(ClientTest, connectionByWait) {
+    EXPECT_FALSE(dummy_s->connected());
+    EXPECT_FALSE(wcli_->connected());
+    wcli_->waitConnection();
+    EXPECT_TRUE(dummy_s->connected());
+    EXPECT_TRUE(wcli_->connected());
+}
+TEST_F(ClientTest, connectionBySync) {
+    EXPECT_FALSE(dummy_s->connected());
+    EXPECT_FALSE(wcli_->connected());
+    wcli_->sync();
+    wait();
+    EXPECT_TRUE(dummy_s->connected());
+    EXPECT_TRUE(wcli_->connected());
+}
+TEST_F(ClientTest, close) {
+    wcli_->waitConnection();
+    wcli_.reset();
+    EXPECT_FALSE(dummy_s->connected());
+}
 TEST_F(ClientTest, name) { EXPECT_EQ(wcli_->name(), self_name); }
 TEST_F(ClientTest, memoryLeak) {
+    wcli_->waitConnection();
     wcli_.reset();
     wait();
     EXPECT_EQ(data_.use_count(), 1);
@@ -98,12 +122,14 @@ TEST_F(ClientTest, sync) {
                         [&] { ADD_FAILURE() << "Sync recv error"; });
 }
 TEST_F(ClientTest, serverVersion) {
+    wcli_->waitConnection();
     dummy_s->send(Message::SvrVersion{{}, "a", "1"});
     wait();
     EXPECT_EQ(wcli_->serverName(), "a");
     EXPECT_EQ(wcli_->serverVersion(), "1");
 }
 TEST_F(ClientTest, ping) {
+    wcli_->waitConnection();
     dummy_s->send(Message::Ping{});
     wait();
     dummy_s->recv<Message::Ping>([&](const auto &) {},
@@ -123,6 +149,7 @@ TEST_F(ClientTest, ping) {
     EXPECT_EQ(wcli_->member("a").pingStatus().value(), 15);
 }
 TEST_F(ClientTest, entry) {
+    wcli_->waitConnection();
     wcli_->onMemberEntry().appendListener(callback<Member>());
     dummy_s->send(Message::SyncInit{{}, "a", 10, "b", "1", "12345"});
     wait();
@@ -178,6 +205,7 @@ TEST_F(ClientTest, entry) {
     callback_called = 0;
 }
 TEST_F(ClientTest, valueSend) {
+    wcli_->waitConnection();
     data_->value_store.setSend("a", std::make_shared<VectorOpt<double>>(5));
     wcli_->sync();
     wait();
@@ -190,8 +218,8 @@ TEST_F(ClientTest, valueSend) {
         [&] { ADD_FAILURE() << "Value recv error"; });
 }
 TEST_F(ClientTest, valueReq) {
-    data_->value_store.getRecv("a", "b");
-    wcli_->sync();
+    wcli_->waitConnection();
+    wcli_->member("a").value("b").tryGet();
     wait();
     wcli_->member("a").value("b").appendListener(callback<Value>());
     dummy_s->recv<Message::Req<Message::Value>>(
@@ -221,6 +249,7 @@ TEST_F(ClientTest, valueReq) {
               3);
 }
 TEST_F(ClientTest, textSend) {
+    wcli_->waitConnection();
     data_->text_store.setSend("a", std::make_shared<std::string>("b"));
     wcli_->sync();
     wait();
@@ -232,8 +261,8 @@ TEST_F(ClientTest, textSend) {
         [&] { ADD_FAILURE() << "Text recv error"; });
 }
 TEST_F(ClientTest, textReq) {
-    data_->text_store.getRecv("a", "b");
-    wcli_->sync();
+    wcli_->waitConnection();
+    wcli_->member("a").text("b").tryGet();
     wait();
     wcli_->member("a").text("b").appendListener(callback<Text>());
     dummy_s->recv<Message::Req<Message::Text>>(
@@ -255,6 +284,7 @@ TEST_F(ClientTest, textReq) {
     EXPECT_EQ(*data_->text_store.getRecv("a", "b.c").value(), "z");
 }
 TEST_F(ClientTest, viewSend) {
+    wcli_->waitConnection();
     data_->view_store.setSend(
         "a", std::make_shared<std::vector<ViewComponentBase>>(
                  std::vector<ViewComponentBase>{
@@ -312,8 +342,8 @@ TEST_F(ClientTest, viewSend) {
         [&] { ADD_FAILURE() << "View recv error"; });
 }
 TEST_F(ClientTest, viewReq) {
-    data_->view_store.getRecv("a", "b");
-    wcli_->sync();
+    wcli_->waitConnection();
+    wcli_->member("a").view("b").tryGet();
     wait();
     wcli_->member("a").view("b").appendListener(callback<View>());
     dummy_s->recv<Message::Req<Message::View>>(
@@ -376,10 +406,13 @@ TEST_F(ClientTest, viewReq) {
               ViewComponentType::new_line);
 }
 TEST_F(ClientTest, logSend) {
-    data_->logger_sink->push(
-        std::make_shared<LogLine>(0, std::chrono::system_clock::now(), "a"));
-    data_->logger_sink->push(
-        std::make_shared<LogLine>(1, std::chrono::system_clock::now(), "b"));
+    wcli_->waitConnection();
+    auto ls = std::make_shared<std::vector<Common::LogLine>>(
+        std::vector<Common::LogLine>{
+            {0, std::chrono::system_clock::now(), "a"},
+            {1, std::chrono::system_clock::now(), "b"},
+        });
+    data_->log_store->setRecv(self_name, ls);
     wcli_->sync();
     wait();
     dummy_s->recv<Message::Log>(
@@ -393,8 +426,7 @@ TEST_F(ClientTest, logSend) {
         [&] { ADD_FAILURE() << "Log recv error"; });
 
     dummy_s->recvClear();
-    data_->logger_sink->push(
-        std::make_shared<LogLine>(2, std::chrono::system_clock::now(), "c"));
+    ls->push_back(LogLine{2, std::chrono::system_clock::now(), "c"});
     wcli_->sync();
     wait();
     dummy_s->recv<Message::Log>(
@@ -406,8 +438,8 @@ TEST_F(ClientTest, logSend) {
         [&] { ADD_FAILURE() << "Log recv error"; });
 }
 TEST_F(ClientTest, logReq) {
-    data_->log_store.getRecv("a");
-    wcli_->sync();
+    wcli_->waitConnection();
+    wcli_->member("a").log().tryGet();
     wait();
     wcli_->member("a").log().appendListener(callback<Log>());
     dummy_s->recv<Message::LogReq>(
@@ -415,34 +447,31 @@ TEST_F(ClientTest, logReq) {
         [&] { ADD_FAILURE() << "Log Req recv error"; });
 
     dummy_s->send(Message::SyncInit{{}, "a", 10, "", "", ""});
-    dummy_s->send(
-        Message::Log{{},
-                     10,
-                     std::make_shared<std::vector<Message::Log::LogLine>>(
-                         std::vector<Message::Log::LogLine>{
-                             LogLine{0, std::chrono::system_clock::now(), "a"},
-                             LogLine{1, std::chrono::system_clock::now(), "b"},
-                         })});
+    dummy_s->send(Message::Log{
+        10, std::make_shared<std::vector<Message::Log::LogLine>>(
+                std::vector<Message::Log::LogLine>{
+                    LogLine{0, std::chrono::system_clock::now(), "a"},
+                    LogLine{1, std::chrono::system_clock::now(), "b"},
+                })});
     wait();
     EXPECT_EQ(callback_called, 1);
-    EXPECT_TRUE(data_->log_store.getRecv("a").has_value());
-    EXPECT_EQ(data_->log_store.getRecv("a").value()->size(), 2);
-    EXPECT_EQ(data_->log_store.getRecv("a").value()->at(0)->level, 0);
-    EXPECT_EQ(data_->log_store.getRecv("a").value()->at(0)->message, "a");
+    EXPECT_TRUE(data_->log_store->getRecv("a").has_value());
+    EXPECT_EQ(data_->log_store->getRecv("a").value()->size(), 2);
+    EXPECT_EQ(data_->log_store->getRecv("a").value()->at(0).level, 0);
+    EXPECT_EQ(data_->log_store->getRecv("a").value()->at(0).message, "a");
 
-    dummy_s->send(
-        Message::Log{{},
-                     10,
-                     std::make_shared<std::vector<Message::Log::LogLine>>(
-                         std::vector<Message::Log::LogLine>{
-                             LogLine{2, std::chrono::system_clock::now(), "c"},
-                         })});
+    dummy_s->send(Message::Log{
+        10, std::make_shared<std::vector<Message::Log::LogLine>>(
+                std::vector<Message::Log::LogLine>{
+                    LogLine{2, std::chrono::system_clock::now(), "c"},
+                })});
     wait();
     EXPECT_EQ(callback_called, 2);
-    EXPECT_TRUE(data_->log_store.getRecv("a").has_value());
-    EXPECT_EQ(data_->log_store.getRecv("a").value()->size(), 3);
+    EXPECT_TRUE(data_->log_store->getRecv("a").has_value());
+    EXPECT_EQ(data_->log_store->getRecv("a").value()->size(), 3);
 }
 TEST_F(ClientTest, funcInfo) {
+    wcli_->waitConnection();
     auto f =
         wcli_->func("a").set([](int) { return 1; }).setArgs({Arg("a").init(3)});
     wcli_->sync();
@@ -457,6 +486,7 @@ TEST_F(ClientTest, funcInfo) {
         [&] { ADD_FAILURE() << "FuncInfo recv error"; });
 }
 TEST_F(ClientTest, funcCall) {
+    wcli_->waitConnection();
     // call
     dummy_s->send(Message::SyncInit{{}, "a", 10, "", "", ""});
     wait();
@@ -530,6 +560,7 @@ TEST_F(ClientTest, funcCall) {
     EXPECT_EQ(static_cast<std::string>(r.result.get()), "b");
 }
 TEST_F(ClientTest, funcResponse) {
+    wcli_->waitConnection();
     wcli_->func("a").set([](int a) {
         if (a == 0) {
             throw std::invalid_argument("a==0");

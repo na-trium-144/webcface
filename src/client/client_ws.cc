@@ -24,10 +24,15 @@ void Internal::messageThreadMain(std::shared_ptr<Internal::ClientData> data,
             data->logger_internal->trace("connection failed {}",
                                          static_cast<int>(ret));
         } else {
+            {
+                std::lock_guard lock(data->connect_state_m);
+                data->connected.store(true);
+            }
+            data->connect_state_cond.notify_all();
             data->logger_internal->debug("connected");
-            data->sync_init.store(false);
-            data->connected_.store(true);
-            while (!data->closing.load() && data->connected_.load()) {
+            do {
+                bool closed = false;
+                // 受信ループ
                 while (true) {
                     std::size_t rlen = 0;
                     const curl_ws_frame *meta = nullptr;
@@ -36,34 +41,48 @@ void Internal::messageThreadMain(std::shared_ptr<Internal::ClientData> data,
                                        &meta);
                     if (meta && meta->flags & CURLWS_CLOSE) {
                         data->logger_internal->debug("connection closed");
-                        data->connected_.store(false);
-                    }
-                    if (rlen == 0) {
+                        closed = true;
                         break;
                     }
-                    data->logger_internal->trace("message received");
-                    data->recv_queue.push(std::string(buffer, rlen));
-                    std::size_t sent;
-                    curl_ws_send(handle, nullptr, 0, &sent, 0, CURLWS_PONG);
+                    if (ret == CURLE_OK) {
+                        if (rlen != 0) {
+                            data->logger_internal->trace("message received");
+                            data->recv_queue.push(std::string(buffer, rlen));
+                            std::size_t sent;
+                            curl_ws_send(handle, nullptr, 0, &sent, 0,
+                                         CURLWS_PONG);
+                        }
+                    } else if (ret == CURLE_AGAIN) {
+                        break;
+                    } else {
+                        data->logger_internal->debug("connection closed {}",
+                                                     static_cast<int>(ret));
+                        closed = true;
+                        break;
+                    }
                 }
-                if (ret != CURLE_AGAIN) {
-                    data->logger_internal->debug("connection closed {}",
-                                                 static_cast<int>(ret));
+                if (closed) {
                     break;
                 }
-                auto msg =
-                    data->message_queue.pop(std::chrono::milliseconds(0));
-                if (msg) {
+                // 最低一回はqueueが空になるまで送信する。
+                while (auto msg = data->message_queue->pop()) {
                     data->logger_internal->trace("sending message");
                     std::size_t sent;
                     curl_ws_send(handle, msg->c_str(), msg->size(), &sent, 0,
                                  CURLWS_BINARY);
                 }
                 std::this_thread::yield();
+            } while (!data->closing.load());
+            {
+                std::lock_guard lock(data->connect_state_m);
+                data->connected.store(false);
             }
+            data->connect_state_cond.notify_all();
+            while (data->message_queue->pop())
+                ;
+            data->syncDataFirst(); // 次の接続時の最初のメッセージ
         }
         curl_easy_cleanup(handle);
-        data->connected_.store(false);
         if (!data->closing.load()) {
             std::this_thread::sleep_for(std::chrono::milliseconds(10));
         }

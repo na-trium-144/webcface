@@ -13,10 +13,12 @@ std::shared_ptr<Internal::ClientData> Field::dataLock() const {
     throw std::runtime_error("Cannot access client data");
 }
 
-void Field::setCheck() const {
-    if (!dataLock()->isSelf(*this)) {
+std::shared_ptr<Internal::ClientData> Field::setCheck() const {
+    auto data = dataLock();
+    if (!data->isSelf(*this)) {
         throw std::invalid_argument(
             "Cannot set data to member other than self");
     }
+    return data;
 }
 } // namespace webcface

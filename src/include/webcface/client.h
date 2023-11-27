@@ -43,12 +43,21 @@ class Client : public Member {
     //! 接続を切り、今後再接続しない
     WEBCFACE_DLL void close();
 
-    //! 送信用にセットしたデータとリクエストデータをすべて送信キューに入れる。
+    //! (ver1.2で追加) サーバーに接続を開始する。
+    WEBCFACE_DLL void start();
+    //! (ver1.2で追加) サーバーに接続が成功するまで待機する。
+    /*!
+     * 接続していない場合、start()を呼び出す。
+     * \sa start()
+     */
+    WEBCFACE_DLL void waitConnection();
+
+    //! 送信用にセットしたデータをすべて送信キューに入れる。
     /*!
      * 実際に送信をするのは別スレッドであり、この関数はブロックしない。
      *
-     * * 他memberの情報を取得できるのは初回のsync()の後のみ。
-     * * 関数の呼び出しと結果の受信はsync()とは非同期に行われる。
+     * サーバーに接続していない場合、start()を呼び出す。
+     * \sa start()
      */
     WEBCFACE_DLL void sync();
 

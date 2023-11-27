@@ -49,18 +49,41 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
     //! recv_queueを処理するスレッド
     std::unique_ptr<std::thread> recv_thread;
 
-    //! thisに依存するものを遅れて初期化する
-    /*!
-     * * 初期化されるのはthreadと、logger関係
-     * * Clientのコンストラクタが生成する場合はClientのコンストラクタが呼ぶ
-     * * port < 0 のときwebsocket通信はしない
-     */
+    //! close()が呼ばれたらtrue
+    std::atomic<bool> closing = false;
+    std::atomic<bool> connected = false;
+    std::mutex connect_state_m;
+    std::condition_variable connect_state_cond;
+
+    //! 通信関係のスレッドを開始する
     WEBCFACE_DLL void start();
     //! threadを待機 (close時)
-    void join() {
-        message_thread->join();
-        recv_thread->join();
-    }
+    WEBCFACE_DLL void join();
+
+    //! 初期化時に送信するメッセージをキューに入れる
+    /*!
+     * 各種req と syncData(true) の全データが含まれる。
+     *
+     * コンストラクタ直後start()前と、切断直後に生成してキューの最初に入れる
+     */
+    WEBCFACE_DLL void syncDataFirst();
+    //! sync() 1回分のメッセージをキューに入れる
+    /*!
+     * value, text, view, log, funcの送信データの前回からの差分が含まれる。
+     * 各種reqはsyncとは無関係に送信される
+     *
+     * \param is_first trueのとき差分ではなく全データを送る
+     * (syncDataFirst()内から呼ばれる)
+     */
+    WEBCFACE_DLL void syncData(bool is_first);
+
+    //! 送信したいメッセージを入れるキュー
+    /*!
+     * 接続できていない場合送信されずキューにたまる
+     */
+    std::shared_ptr<Common::Queue<std::string>> message_queue;
+    //! wsが受信したメッセージを入れるキュ
+    Common::Queue<std::string> recv_queue;
 
     //! 受信時の処理
     WEBCFACE_DLL void onRecv(const std::string &message);
@@ -70,10 +93,11 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
     SyncDataStore2<std::shared_ptr<FuncInfo>> func_store;
     SyncDataStore2<std::shared_ptr<std::vector<Common::ViewComponentBase>>>
         view_store;
-    SyncDataStore1<std::shared_ptr<std::vector<std::shared_ptr<LogLine>>>>
+    std::shared_ptr<SyncDataStore1<std::shared_ptr<std::vector<LogLine>>>>
         log_store;
     SyncDataStore1<std::chrono::system_clock::time_point> sync_time_store;
     FuncResultStore func_result_store;
+    int log_sent_lines = 0;
 
     std::unordered_map<std::string, unsigned int> member_ids;
     std::unordered_map<unsigned int, std::string> member_lib_name,
@@ -104,10 +128,6 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
         value_entry_event, text_entry_event, func_entry_event, view_entry_event,
         ping_event;
 
-    //! sync()を待たずに即時送って欲しいメッセージを入れるキュー
-    Common::Queue<std::string> message_queue;
-    //! wsが受信したメッセージを入れるキュー
-    Common::Queue<std::string> recv_queue;
     //! sync()のタイミングで実行を同期する関数のcondition_variable
     Common::Queue<std::shared_ptr<FuncOnSync>> func_sync_queue;
 
@@ -119,19 +139,13 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
     std::unique_ptr<LoggerBuf> logger_buf;
     std::unique_ptr<std::ostream> logger_os;
 
-    //! close()が呼ばれたらtrue
-    std::atomic<bool> closing = false;
-    std::atomic<bool> connected_ = false;
-    //! 初回のsync()で全データを送信するがそれが完了したかどうか
-    //! 再接続したらfalseに戻す
-    std::atomic<bool> sync_init = false;
-
     //! serverの情報
     std::string svr_name, svr_version;
 
     std::shared_ptr<std::unordered_map<unsigned int, int>> ping_status =
         nullptr;
     bool ping_status_req = false;
-    bool ping_status_req_send = false;
+    //! ping_status_reqをtrueにしmessage_queueに投げる
+    WEBCFACE_DLL void pingStatusReq();
 };
 } // namespace webcface::Internal
