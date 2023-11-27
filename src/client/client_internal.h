@@ -69,18 +69,27 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
 
     //! 初期化時に送信するメッセージをキューに入れる
     /*!
+     * 各種req と syncData(true) の全データが含まれる。
+     *
      * コンストラクタ直後start()前と、切断直後に生成してキューの最初に入れる
      */
     WEBCFACE_DLL void syncDataFirst();
-    //! sync() 時に送信するメッセージをキューに入れる
-    WEBCFACE_DLL void syncData();
+    //! sync() 1回分のメッセージをキューに入れる
+    /*!
+     * value, text, view, log, funcの送信データの前回からの差分が含まれる。
+     * 各種reqはsyncとは無関係に送信される
+     *
+     * \param is_first trueのとき差分ではなく全データを送る
+     * (syncDataFirst()内から呼ばれる)
+     */
+    WEBCFACE_DLL void syncData(bool is_first);
 
     //! 送信したいメッセージを入れるキュー
     /*!
      * 接続できていない場合送信されずキューにたまる
      */
-    Common::Queue<std::string> message_queue;
-    //! wsが受信したメッセージを入れるキュー
+    std::shared_ptr<Common::Queue<std::string>> message_queue;
+    //! wsが受信したメッセージを入れるキュ
     Common::Queue<std::string> recv_queue;
 
     //! 受信時の処理
@@ -91,10 +100,11 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
     SyncDataStore2<std::shared_ptr<FuncInfo>> func_store;
     SyncDataStore2<std::shared_ptr<std::vector<Common::ViewComponentBase>>>
         view_store;
-    SyncDataStore1<std::shared_ptr<std::vector<std::shared_ptr<LogLine>>>>
+    std::shared_ptr<SyncDataStore1<std::shared_ptr<std::vector<LogLine>>>>
         log_store;
     SyncDataStore1<std::chrono::system_clock::time_point> sync_time_store;
     FuncResultStore func_result_store;
+    int log_sent_lines = 0;
 
     std::unordered_map<std::string, unsigned int> member_ids;
     std::unordered_map<unsigned int, std::string> member_lib_name,
@@ -142,6 +152,7 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
     std::shared_ptr<std::unordered_map<unsigned int, int>> ping_status =
         nullptr;
     bool ping_status_req = false;
-    bool ping_status_req_send = false;
+    //! ping_status_reqをtrueにしmessage_queueに投げる
+    WEBCFACE_DLL void pingStatusReq();
 };
 } // namespace webcface::Internal

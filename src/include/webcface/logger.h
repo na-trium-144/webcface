@@ -26,19 +26,26 @@ class WEBCFACE_DLL LoggerBuf : public std::streambuf {
     int overflow(int c) override;
 
   public:
-    explicit LoggerBuf(const std::weak_ptr<Internal::ClientData> &data_w);
+    explicit LoggerBuf(const std::shared_ptr<spdlog::logger> &logger);
     LoggerBuf(const LoggerBuf &) = delete;
     LoggerBuf &operator=(const LoggerBuf &) = delete;
 };
 
-class WEBCFACE_DLL LoggerSink : public spdlog::sinks::base_sink<std::mutex>,
-                                public Queue<std::shared_ptr<LogLine>> {
+namespace Internal {
+template <typename T>
+class SyncDataStore1;
+}
+
+class WEBCFACE_DLL LoggerSink : public spdlog::sinks::base_sink<std::mutex> {
+    std::shared_ptr<Internal::SyncDataStore1<std::vector<LogLine>>> log_store;
+
   protected:
     void sink_it_(const spdlog::details::log_msg &msg) override;
     void flush_() override {}
 
   public:
-    explicit LoggerSink();
+    explicit LoggerSink(const std::shared_ptr<Internal::SyncDataStore1<
+                            std::shared_ptr<std::vector<LogLine>>>> &log_store);
     void set_pattern_(const std::string &) override {}
     void set_formatter_(std::unique_ptr<spdlog::formatter>) override {}
 };

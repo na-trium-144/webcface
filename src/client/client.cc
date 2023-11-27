@@ -23,8 +23,12 @@ Internal::ClientData::ClientData(const std::string &name,
                                  const std::string &host, int port)
     : std::enable_shared_from_this<ClientData>(), self_member_name(name),
       host(host), port(port), value_store(name), text_store(name),
-      func_store(name), view_store(name), log_store(name),
-      sync_time_store(name), logger_sink(std::make_shared<LoggerSink>()) {
+      func_store(name), view_store(name),
+      log_store(std::make_shared<
+                SyncDataStore1<std::shared_ptr<std::vector<LogLine>>>>(name)),
+      sync_time_store(name),
+      message_queue(std::make_shared<Common::Queue<std::string>>()),
+      logger_sink(std::make_shared<LoggerSink>(log_store)) {
     static auto stderr_sink =
         std::make_shared<spdlog::sinks::stderr_color_sink_mt>();
     std::vector<spdlog::sink_ptr> sinks = {logger_sink, stderr_sink};
@@ -41,7 +45,7 @@ Internal::ClientData::ClientData(const std::string &name,
     }
     logger_buf = std::make_unique<LoggerBuf>(logger);
     logger_os = std::make_unique<std::ostream>(logger_buf.get());
-
+    log_store->setRecv(name, std::make_shared<std::vector<LogLine>>());
     syncDataFirst();
 }
 void Internal::ClientData::start() {
@@ -57,7 +61,7 @@ Client::~Client() {
     data->join();
 }
 void Client::close() { data->closing.store(true); }
-bool Client::connected() const { return data->connected_.load(); }
+bool Client::connected() const { return data->connected.load(); }
 
 std::vector<Member> Client::members() {
     auto keys = data->value_store.getMembers();
@@ -80,6 +84,13 @@ std::ostream &Client::loggerOStream() { return *data->logger_os.get(); }
 std::string Client::serverVersion() const { return data->svr_version; }
 std::string Client::serverName() const { return data->svr_name; }
 
+void Internal::ClientData::pingStatusReq() {
+    if (!ping_status_req) {
+        message_queue->push(Message::packSingle(Message::PingStatusReq{}));
+    }
+    ping_status_req = true;
+}
+
 void Internal::recvThreadMain(std::shared_ptr<ClientData> data) {
     while (!data->closing.load()) {
         auto msg = data->recv_queue.pop(std::chrono::milliseconds(10));
@@ -95,110 +106,128 @@ void Client::start(bool wait) {
         if (wait) {
             std::unique_lock lock(data->connect_state_m);
             data->connect_state_cond.wait(
-                lock, [&data] { return data->connected.load(); });
+                lock, [this] { return data->connected.load(); });
         }
     }
 }
 void Internal::ClientData::syncDataFirst() {
+    std::lock_guard value_lock(value_store.mtx);
+    std::lock_guard text_lock(text_store.mtx);
+    std::lock_guard view_lock(view_store.mtx);
+    std::lock_guard func_lock(func_store.mtx);
+    std::lock_guard log_lock(log_store->mtx);
+
     std::stringstream buffer;
     int len = 0;
 
-    Message::pack(
-        buffer, len,
-        Message::SyncInit{{}, member_, 0, "cpp", WEBCFACE_VERSION, ""});
+    Message::pack(buffer, len,
+                  Message::SyncInit{
+                      {}, self_member_name, 0, "cpp", WEBCFACE_VERSION, ""});
 
-    for (const auto &v : data->value_store.transferReq()) {
+    for (const auto &v : value_store.transferReq()) {
         for (const auto &v2 : v.second) {
             Message::pack(
                 buffer, len,
                 Message::Req<Message::Value>{{}, v.first, v2.first, v2.second});
         }
     }
-    for (const auto &v : data->text_store.transferReq()) {
+    for (const auto &v : text_store.transferReq()) {
         for (const auto &v2 : v.second) {
             Message::pack(
                 buffer, len,
                 Message::Req<Message::Text>{{}, v.first, v2.first, v2.second});
         }
     }
-    for (const auto &v : data->view_store.transferReq()) {
+    for (const auto &v : view_store.transferReq()) {
         for (const auto &v2 : v.second) {
             Message::pack(
                 buffer, len,
                 Message::Req<Message::View>{{}, v.first, v2.first, v2.second});
         }
     }
-    for (const auto &v : data->log_store.transferReq()) {
+    for (const auto &v : log_store->transferReq()) {
         Message::pack(buffer, len, Message::LogReq{{}, v.first});
     }
 
-    auto log_s = data->log_store.getRecv(member_);
-    if (log_s) {
-        auto log_send = std::make_shared<std::vector<Message::Log::LogLine>>();
-        log_send->resize((*log_s)->size());
-        for (std::size_t i = 0; i < (*log_s)->size(); i++) {
-            (*log_send)[i] = *(**log_s)[i];
-        }
-        Message::pack(buffer, len, Message::Log{{}, 0, log_send});
-    }
+    syncData(true);
 
-    if (data->ping_status_req) {
+    if (ping_status_req) {
         Message::pack(buffer, len, Message::PingStatusReq{});
     }
 
-    data->message_queue.push(Message::packDone(buffer, len));
+    message_queue->push(Message::packDone(buffer, len));
 }
-void Internal::ClientData::syncData() {
-    Message::pack(buffer, len, Message::Sync{});
+void Internal::ClientData::syncData(bool is_first) {
+    std::lock_guard value_lock(value_store.mtx);
+    std::lock_guard text_lock(text_store.mtx);
+    std::lock_guard view_lock(view_store.mtx);
 
-    for (const auto &v : data->value_store.transferSend()) {
-        Message::pack(
-            buffer, len,
-            Message::Value{
-                {},
-                v.first,
-                std::static_pointer_cast<std::vector<double>>(v.second)});
-    }
-    for (const auto &v : data->text_store.transferSend()) {
+    if (value_store.has_send || text_store.has_send || view_store.has_send) {
+        std::stringstream buffer;
+        int len = 0;
 
-        Message::pack(buffer, len, Message::Text{{}, v.first, v.second});
-    }
-    auto view_send_prev = data->view_store.getSendPrev();
-    auto view_send = data->view_store.transferSend();
-    for (const auto &v : view_send) {
-        auto v_prev = view_send_prev.find(v.first);
-        auto v_diff =
-            std::make_shared<std::unordered_map<int, ViewComponentBase>>();
-        if (v_prev == view_send_prev.end()) {
-            for (std::size_t i = 0; i < v.second->size(); i++) {
-                v_diff->emplace(static_cast<int>(i), (*v.second)[i]);
-            }
-        } else {
-            for (std::size_t i = 0; i < v.second->size(); i++) {
-                if (v_prev->second->size() <= i ||
-                    (*v_prev->second)[i] != (*v.second)[i]) {
+        Message::pack(buffer, len, Message::Sync{});
+
+        for (const auto &v : value_store.transferSend(is_first)) {
+            Message::pack(
+                buffer, len,
+                Message::Value{
+                    {},
+                    v.first,
+                    std::static_pointer_cast<std::vector<double>>(v.second)});
+        }
+        for (const auto &v : text_store.transferSend(is_first)) {
+            Message::pack(buffer, len, Message::Text{{}, v.first, v.second});
+        }
+        auto view_send_prev = view_store.getSendPrev(is_first);
+        auto view_send = view_store.transferSend(is_first);
+        for (const auto &v : view_send) {
+            auto v_prev = view_send_prev.find(v.first);
+            auto v_diff =
+                std::make_shared<std::unordered_map<int, ViewComponentBase>>();
+            if (v_prev == view_send_prev.end()) {
+                for (std::size_t i = 0; i < v.second->size(); i++) {
                     v_diff->emplace(static_cast<int>(i), (*v.second)[i]);
                 }
+            } else {
+                for (std::size_t i = 0; i < v.second->size(); i++) {
+                    if (v_prev->second->size() <= i ||
+                        (*v_prev->second)[i] != (*v.second)[i]) {
+                        v_diff->emplace(static_cast<int>(i), (*v.second)[i]);
+                    }
+                }
+            }
+            if (!v_diff->empty()) {
+                Message::pack(buffer, len,
+                              Message::View{v.first, v_diff, v.second->size()});
             }
         }
-        if (!v_diff->empty()) {
-            Message::pack(buffer, len,
-                          Message::View{v.first, v_diff, v.second->size()});
-        }
-    }
-    for (const auto &v : data->func_store.transferSend()) {
-        if (!v.second->hidden) {
-            Message::pack(buffer, len, Message::FuncInfo{v.first, *v.second});
-        }
-    }
 
-    data->message_queue.push(Message::packDone(buffer, len));
+        auto log_s = *log_store->getRecv(self_member_name);
+        if (log_s->size()) {
+            auto begin = log_s->begin();
+            auto end = log_s->end();
+            if (!is_first) {
+                begin += log_sent_lines;
+            }
+            log_sent_lines = log_s->size();
+            Message::pack(buffer, len, Message::Log{begin, end});
+        }
+        for (const auto &v : func_store.transferSend(is_first)) {
+            if (!v.second->hidden) {
+                Message::pack(buffer, len,
+                              Message::FuncInfo{v.first, *v.second});
+            }
+        }
+
+        message_queue->push(Message::packDone(buffer, len));
+    }
 }
 void Client::sync() {
     if (!connected()) {
-        data->start(false);
+        start(false);
     } else {
-        data->syncData();
+        data->syncData(false);
     }
     while (auto func_sync = data->func_sync_queue.pop()) {
         (*func_sync)->sync();
@@ -217,7 +246,7 @@ void Internal::ClientData::onRecv(const std::string &message) {
             break;
         }
         case MessageKind::ping: {
-            this->message_queue.push(
+            this->message_queue->push(
                 webcface::Message::packSingle(webcface::Message::Ping{}));
             break;
         }
@@ -268,6 +297,7 @@ void Internal::ClientData::onRecv(const std::string &message) {
             auto r =
                 std::any_cast<webcface::Message::Res<webcface::Message::View>>(
                     obj);
+            std::lock_guard lock(this->view_store.mtx);
             auto [member, field] =
                 this->view_store.getReq(r.req_id, r.sub_field);
             auto v_prev = this->view_store.getRecv(member, field);
@@ -288,14 +318,14 @@ void Internal::ClientData::onRecv(const std::string &message) {
         case MessageKind::log: {
             auto r = std::any_cast<webcface::Message::Log>(obj);
             auto member = this->getMemberNameFromId(r.member_id);
-            auto log_s = this->log_store.getRecv(member);
+            std::lock_guard lock(this->log_store->mtx);
+            auto log_s = this->log_store->getRecv(member);
             if (!log_s) {
-                log_s =
-                    std::make_shared<std::vector<std::shared_ptr<LogLine>>>();
-                this->log_store.setRecv(member, *log_s);
+                log_s = std::make_shared<std::vector<LogLine>>();
+                this->log_store->setRecv(member, *log_s);
             }
             for (const auto &lm : *r.log) {
-                (*log_s)->push_back(std::make_shared<LogLine>(lm));
+                (*log_s)->push_back(lm);
             }
             this->log_append_event.dispatch(member,
                                             Field{shared_from_this(), member});
@@ -307,7 +337,7 @@ void Internal::ClientData::onRecv(const std::string &message) {
                 auto func_info =
                     data->func_store.getRecv(data->self_member_name, r.field);
                 if (func_info) {
-                    data->message_queue.push(webcface::Message::packSingle(
+                    data->message_queue->push(webcface::Message::packSingle(
                         webcface::Message::CallResponse{
                             {}, r.caller_id, r.caller_member_id, true}));
                     ValAdaptor result;
@@ -324,14 +354,14 @@ void Internal::ClientData::onRecv(const std::string &message) {
                         is_error = true;
                         result = "unknown exception";
                     }
-                    data->message_queue.push(webcface::Message::packSingle(
+                    data->message_queue->push(webcface::Message::packSingle(
                         webcface::Message::CallResult{{},
                                                       r.caller_id,
                                                       r.caller_member_id,
                                                       is_error,
                                                       result}));
                 } else {
-                    data->message_queue.push(webcface::Message::packSingle(
+                    data->message_queue->push(webcface::Message::packSingle(
                         webcface::Message::CallResponse{
                             {}, r.caller_id, r.caller_member_id, false}));
                 }

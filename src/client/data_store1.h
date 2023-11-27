@@ -11,13 +11,13 @@
 namespace webcface::Internal {
 template <typename T>
 class SyncDataStore1 {
-    std::mutex mtx;
     std::unordered_map<std::string, T> data_recv;
     std::unordered_map<std::string, bool> req;
     std::unordered_map<std::string, bool> req_send;
-    std::string self_member_name;
 
   public:
+    std::string self_member_name;
+    std::recursive_mutex mtx;
     explicit SyncDataStore1(const std::string &name) : self_member_name(name) {}
 
     bool isSelf(const std::string &member) const {
@@ -28,7 +28,7 @@ class SyncDataStore1 {
 
     std::optional<T> getRecv(const std::string &member);
     //! req_sendを返し、req_sendをクリア
-    std::unordered_map<std::string, bool> transferReq(bool is_first);
+    std::unordered_map<std::string, bool> transferReq();
 };
 
 #ifdef _MSC_VER

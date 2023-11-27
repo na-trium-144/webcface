@@ -456,7 +456,7 @@ void ClientData::onRecv(const std::string &message) {
             log_req.insert(s.member);
             // 指定した値を返す
             store.findAndDo(s.member, [&](auto &cd) {
-                this->pack(webcface::Message::Log{{}, cd.member_id, cd.log});
+                this->pack(webcface::Message::Log{cd.member_id, cd.log});
                 logger->trace("send log {} lines", cd.log->size());
             });
             break;

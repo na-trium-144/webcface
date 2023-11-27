@@ -21,15 +21,14 @@ std::optional<T> SyncDataStore1<T>::getRecv(const std::string &member) {
     return std::nullopt;
 }
 template <typename T>
-std::unordered_map<std::string, bool>
-SyncDataStore1<T>::transferReq(bool is_first) {
+std::unordered_map<std::string, bool> SyncDataStore1<T>::transferReq() {
     std::lock_guard lock(mtx);
-    if (is_first) {
-        req_send.clear();
-        return req;
-    } else {
-        return std::move(req_send);
-    }
+    // if (is_first) {
+    req_send.clear();
+    return req;
+    // } else {
+    //     return std::move(req_send);
+    // }
 }
 
 template class WEBCFACE_DLL SyncDataStore1<std::string>; // test用

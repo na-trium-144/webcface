@@ -17,7 +17,6 @@ namespace webcface::Internal {
  */
 template <typename T>
 class SyncDataStore2 {
-    std::mutex mtx;
     //! 次のsend時に送信するデータ。
     std::unordered_map<std::string, T> data_send;
     std::unordered_map<std::string, T> data_send_prev;
@@ -53,6 +52,10 @@ class SyncDataStore2 {
 
   public:
     explicit SyncDataStore2(const std::string &name) : self_member_name(name) {}
+
+    std::recursive_mutex mtx;
+    //! 一度でもなにかsendしたらtrue
+    bool has_send = false;
 
     bool isSelf(const std::string &member) const {
         return member == self_member_name;
@@ -114,7 +117,7 @@ class SyncDataStore2 {
     //! req_sendを返し、req_sendをクリア
     std::unordered_map<std::string,
                        std::unordered_map<std::string, unsigned int>>
-    transferReq(bool is_first);
+    transferReq();
 };
 
 #ifdef _MSC_VER

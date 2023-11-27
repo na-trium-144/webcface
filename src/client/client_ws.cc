@@ -30,7 +30,8 @@ void Internal::messageThreadMain(std::shared_ptr<Internal::ClientData> data,
                 data->connected.store(true);
             }
             data->connect_state_cond.notify_all();
-            while (!data->closing.load() && data->connected_.load()) {
+            while (!data->closing.load()) {
+                bool closed = false;
                 while (true) {
                     std::size_t rlen = 0;
                     const curl_ws_frame *meta = nullptr;
@@ -39,23 +40,26 @@ void Internal::messageThreadMain(std::shared_ptr<Internal::ClientData> data,
                                        &meta);
                     if (meta && meta->flags & CURLWS_CLOSE) {
                         data->logger_internal->debug("connection closed");
-                        data->connected_.store(false);
-                    }
-                    if (rlen == 0) {
+                        closed = true;
                         break;
                     }
-                    data->logger_internal->trace("message received");
-                    data->recv_queue.push(std::string(buffer, rlen));
-                    std::size_t sent;
-                    curl_ws_send(handle, nullptr, 0, &sent, 0, CURLWS_PONG);
+                    if (ret != CURLE_AGAIN && ret != CURLE_OK) {
+                        data->logger_internal->debug("connection closed {}",
+                                                     static_cast<int>(ret));
+                        closed = true;
+                        break;
+                    }
+                    if (rlen != 0) {
+                        data->logger_internal->trace("message received");
+                        data->recv_queue.push(std::string(buffer, rlen));
+                        std::size_t sent;
+                        curl_ws_send(handle, nullptr, 0, &sent, 0, CURLWS_PONG);
+                    }
                 }
-                if (ret != CURLE_AGAIN) {
-                    data->logger_internal->debug("connection closed {}",
-                                                 static_cast<int>(ret));
+                if (closed) {
                     break;
                 }
-                auto msg =
-                    data->message_queue.pop(std::chrono::milliseconds(0));
+                auto msg = data->message_queue->pop();
                 if (msg) {
                     data->logger_internal->trace("sending message");
                     std::size_t sent;
@@ -69,6 +73,8 @@ void Internal::messageThreadMain(std::shared_ptr<Internal::ClientData> data,
                 data->connected.store(false);
             }
             data->connect_state_cond.notify_all();
+            while (data->message_queue->pop())
+                ;
             data->syncDataFirst(); // 次の接続時の最初のメッセージ
         }
         curl_easy_cleanup(handle);
