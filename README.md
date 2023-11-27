@@ -83,7 +83,7 @@ sudo apt install libspdlog-dev  # optional
 
 ubuntu20.04の場合デフォルトのコンパイラ(gcc-9)ではビルドできないのでgcc-10にする必要があります
 ```sh
-sudo apt install gcc-10
+sudo apt install gcc-10 g++-10
 export CC=gcc-10
 export CXX=g++-10
 ```
