@@ -19,17 +19,16 @@ struct WEBCFACE_DLL Field : public Common::FieldBase {
     std::weak_ptr<Internal::ClientData> data_w;
 
     Field() = default;
-    Field(const std::weak_ptr<Internal::ClientData> &data_w, const std::string &member,
-          const std::string &field = "")
+    Field(const std::weak_ptr<Internal::ClientData> &data_w,
+          const std::string &member, const std::string &field = "")
         : Common::FieldBase(member, field), data_w(data_w) {}
     Field(const Field &base, const std::string &field)
         : Field(base.data_w, base.member_, field) {}
 
-    //! data_wをlockする
-    //! 失敗したらruntime_errorを投げる
-    //! (clientが死なない限り失敗することはないはず)
-    std::shared_ptr<Internal::ClientData> dataLock() const;
-    void setCheck() const;
+    //! data_wをlockし、失敗したらruntime_errorを投げる
+    WEBCFACE_DLL std::shared_ptr<Internal::ClientData> dataLock() const;
+    //! data_wをlockし、memberがselfではなければinvalid_argumentを投げる
+    WEBCFACE_DLL std::shared_ptr<Internal::ClientData> setCheck() const;
 
     //! Memberを返す
     Member member() const;

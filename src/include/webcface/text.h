@@ -17,15 +17,7 @@ class Member;
 /*! コンストラクタではなく Member::text() を使って取得してください
  */
 class Text : protected Field, public EventTarget<Text> {
-  public:
-    using Dict = Common::Dict<std::shared_ptr<std::string>>;
-
-  private:
-    WEBCFACE_DLL Text &set(const std::shared_ptr<std::string> &v);
-    WEBCFACE_DLL std::optional<std::shared_ptr<std::string>> getRaw() const;
-    WEBCFACE_DLL std::optional<Dict> getRawRecurse() const;
-
-    void onAppend() const override { tryGet(); }
+    WEBCFACE_DLL void onAppend() const override;
 
   public:
     Text() = default;
@@ -44,21 +36,11 @@ class Text : protected Field, public EventTarget<Text> {
         return Text{*this, this->field_ + "." + field};
     }
 
+    using Dict = Common::Dict<std::shared_ptr<std::string>>;
     //! Dictの値を再帰的にセットする
-    Text &set(const Dict &v) {
-        if (v.hasValue()) {
-            set(v.getRaw());
-        } else {
-            for (const auto &it : v.getChildren()) {
-                child(it.first).set(it.second);
-            }
-        }
-        return *this;
-    }
+    WEBCFACE_DLL Text &set(const Dict &v);
     //! 文字列をセットする
-    Text &set(const std::string &v) {
-        return set(std::make_shared<std::string>(v));
-    }
+    WEBCFACE_DLL Text &set(const std::string &v);
     //! Dictの値を再帰的にセットする
     Text &operator=(const Dict &v) {
         this->set(v);
@@ -71,16 +53,9 @@ class Text : protected Field, public EventTarget<Text> {
     }
 
     //! 文字列を返す
-    std::optional<std::string> tryGet() const {
-        auto v = getRaw();
-        if (v) {
-            return **v;
-        } else {
-            return std::nullopt;
-        }
-    }
+    WEBCFACE_DLL std::optional<std::string> tryGet() const;
     //! 文字列を再帰的に取得しDictで返す
-    std::optional<Dict> tryGetRecurse() const { return getRawRecurse(); }
+    WEBCFACE_DLL std::optional<Dict> tryGetRecurse() const;
     //! 値を返す
     std::string get() const { return tryGet().value_or(""); }
     //! 値を再帰的に取得しDictで返す
@@ -89,14 +64,6 @@ class Text : protected Field, public EventTarget<Text> {
     operator Dict() const { return getRecurse(); }
     //! syncの時刻を返す
     WEBCFACE_DLL std::chrono::system_clock::time_point time() const;
-
-    // //! このtext非表示にする
-    // //! (他clientのentryに表示されなくする)
-    // auto &hidden(bool hidden) {
-    //     setCheck();
-    //     dataLock()->text_store.setHidden(*this, hidden);
-    //     return *this;
-    // }
 
     //! 値やリクエスト状態をクリア
     WEBCFACE_DLL Text &free();

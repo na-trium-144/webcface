@@ -13,15 +13,7 @@ namespace webcface {
  * fieldを継承しているがfield名は使用していない
  */
 class Log : protected Field, public EventTarget<Log, std::string> {
-
-    WEBCFACE_DLL
-    std::optional<std::shared_ptr<std::vector<std::shared_ptr<LogLine>>>>
-    getRaw() const;
-    WEBCFACE_DLL void
-    setRaw(const std::shared_ptr<std::vector<std::shared_ptr<LogLine>>> &raw)
-        const;
-
-    void onAppend() const override { tryGet(); }
+    WEBCFACE_DLL void onAppend() const override;
 
   public:
     Log() = default;
@@ -30,18 +22,7 @@ class Log : protected Field, public EventTarget<Log, std::string> {
     using Field::member;
 
     //! ログを取得する
-    std::optional<std::vector<LogLine>> tryGet() const {
-        auto v = getRaw();
-        if (v) {
-            std::vector<LogLine> lv((*v)->size());
-            for (std::size_t i = 0; i < (*v)->size(); i++) {
-                lv[i] = *(**v)[i];
-            }
-            return lv;
-        } else {
-            return std::nullopt;
-        }
-    }
+    WEBCFACE_DLL std::optional<std::vector<LogLine>> tryGet() const;
     //! ログを取得する
     std::vector<LogLine> get() const {
         return tryGet().value_or(std::vector<LogLine>{});
@@ -52,9 +33,6 @@ class Log : protected Field, public EventTarget<Log, std::string> {
      *
      * リクエスト状態は解除しない
      */
-    Log &clear() {
-        setRaw(std::make_shared<std::vector<std::shared_ptr<LogLine>>>());
-        return *this;
-    }
+    WEBCFACE_DLL Log &clear();
 };
 } // namespace webcface

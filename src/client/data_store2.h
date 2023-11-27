@@ -3,6 +3,7 @@
 #include <unordered_map>
 #include <string>
 #include <optional>
+#include <functional>
 #include <webcface/field.h>
 #include <webcface/common/dict.h>
 #include <webcface/common/def.h>
@@ -48,7 +49,6 @@ class SyncDataStore2 {
 
     std::string self_member_name;
 
-    void addReq(const std::string &member, const std::string &field);
 
   public:
     explicit SyncDataStore2(const std::string &name) : self_member_name(name) {}
@@ -60,6 +60,12 @@ class SyncDataStore2 {
     bool isSelf(const std::string &member) const {
         return member == self_member_name;
     }
+
+    //! リクエストを追加
+    /*!
+     * \return 追加した場合req_idを返し、すでにリクエストされていた場合0を返す
+     */
+    unsigned int addReq(const std::string &member, const std::string &field);
 
     //! 送信するデータをdata_sendとdata_recv[self_member_name]にセット
     void setSend(const std::string &name, const T &data);
@@ -79,13 +85,19 @@ class SyncDataStore2 {
         return getRecv(base.member_, base.field_);
     }
     //! data_recvから指定したfield以下のデータを返す
-    //! 指定したfieldのreq,req_sendをtrueにセット
-    //! さらに、指定したフィールド以下にデータが存在すれば
-    //! そのフィールド(sub_field)も同様にreqをセット
-    std::optional<Dict<T>> getRecvRecurse(const std::string &member,
-                                          const std::string &field);
-    std::optional<Dict<T>> getRecvRecurse(const FieldBase &base) {
-        return getRecvRecurse(base.member_, base.field_);
+    /*! 指定したfieldのreq,req_sendをtrueにセット
+     * さらに、指定したフィールド以下にデータが存在すれば
+     * そのフィールド(sub_field)も同様にreqをセット
+     *
+     * \param cb 再帰的に呼び出す
+     */
+    std::optional<Dict<T>> getRecvRecurse(
+        const std::string &member, const std::string &field,
+        const std::function<void(const std::string &)> &cb = nullptr);
+    std::optional<Dict<T>> getRecvRecurse(
+        const FieldBase &base,
+        const std::function<void(const std::string &)> &cb = nullptr) {
+        return getRecvRecurse(base.member_, base.field_, cb);
     }
     //! data_recvからデータを削除, req,req_sendをfalseにする
     void unsetRecv(const std::string &from, const std::string &name);

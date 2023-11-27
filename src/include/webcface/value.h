@@ -19,15 +19,7 @@ class Member;
  * Member::onValueEntry() を使って取得してください
  */
 class Value : protected Field, public EventTarget<Value> {
-public:
-    using Dict = Common::Dict<std::shared_ptr<Common::VectorOpt<double>>>;
-    private:
-
-    WEBCFACE_DLL Value &set(const std::shared_ptr<VectorOpt<double>> &v);
-    WEBCFACE_DLL std::optional<std::shared_ptr<VectorOpt<double>>> getRaw() const;
-    WEBCFACE_DLL std::optional<Dict> getRawRecurse() const;
-
-    void onAppend() const override { getRaw(); }
+    WEBCFACE_DLL void onAppend() const override;
 
   public:
     Value() = default;
@@ -46,22 +38,11 @@ public:
         return Value{*this, this->field_ + "." + field};
     }
 
+    using Dict = Common::Dict<std::shared_ptr<Common::VectorOpt<double>>>;
     //! Dictの値を再帰的にセットする
-    Value &set(const Dict &v) {
-        if (v.hasValue()) {
-            set(v.getRaw());
-        } else {
-            for (const auto &it : v.getChildren()) {
-                child(it.first).set(it.second);
-            }
-        }
-        return *this;
-    }
+    WEBCFACE_DLL Value &set(const Dict &v);
     //! 数値または配列をセットする
-    Value &set(const VectorOpt<double> &v) {
-        set(std::make_shared<VectorOpt<double>>(v));
-        return *this;
-    }
+    WEBCFACE_DLL Value &set(const VectorOpt<double> &v);
 
     //! Dictの値を再帰的にセットする
     Value &operator=(const Dict &v) {
@@ -75,27 +56,11 @@ public:
     }
 
     //! 値を返す
-    std::optional<double> tryGet() const {
-        auto v = getRaw();
-        if (v) {
-            return **v;
-        } else {
-            return std::nullopt;
-        }
-    }
+    WEBCFACE_DLL std::optional<double> tryGet() const;
     //! 値をvectorで返す
-    std::optional<std::vector<double>> tryGetVec() const {
-        auto v = getRaw();
-        if (v) {
-            return **v;
-        } else {
-            return std::nullopt;
-        }
-    }
+    WEBCFACE_DLL std::optional<std::vector<double>> tryGetVec() const;
     //! 値を再帰的に取得しDictで返す
-    std::optional<Dict> tryGetRecurse() const {
-        return getRawRecurse();
-    }
+    WEBCFACE_DLL std::optional<Dict> tryGetRecurse() const;
     //! 値を返す
     double get() const { return tryGet().value_or(0); }
     //! 値をvectorで返す

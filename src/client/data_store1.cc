@@ -8,12 +8,17 @@ void SyncDataStore1<T>::setRecv(const std::string &member, const T &data) {
 }
 
 template <typename T>
-std::optional<T> SyncDataStore1<T>::getRecv(const std::string &member) {
-    std::lock_guard lock(mtx);
+bool SyncDataStore1<T>::addReq(const std::string &member) {
     if (!isSelf(member) && req[member] == false) {
         req[member] = true;
-        req_send[member] = true;
+        return true;
     }
+    return false;
+}
+
+template <typename T>
+std::optional<T> SyncDataStore1<T>::getRecv(const std::string &member) {
+    std::lock_guard lock(mtx);
     auto s_it = data_recv.find(member);
     if (s_it != data_recv.end()) {
         return s_it->second;
@@ -32,8 +37,8 @@ std::unordered_map<std::string, bool> SyncDataStore1<T>::transferReq() {
 }
 
 template class WEBCFACE_DLL SyncDataStore1<std::string>; // test用
-template class WEBCFACE_DLL SyncDataStore1<
-    std::shared_ptr<std::vector<std::shared_ptr<Common::LogLine>>>>;
+template class WEBCFACE_DLL
+    SyncDataStore1<std::shared_ptr<std::vector<Common::LogLine>>>;
 template class WEBCFACE_DLL
     SyncDataStore1<std::chrono::system_clock::time_point>;
 

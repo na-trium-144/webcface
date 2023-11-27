@@ -29,8 +29,7 @@ auto &operator<<(std::basic_ostream<char> &os, const AsyncFuncResult &r) {
 
 Func::Func(const Field &base) : Field(base) {}
 Func &Func::setRaw(const std::shared_ptr<FuncInfo> &v) {
-    setCheck();
-    dataLock()->func_store.setSend(*this, v);
+    setCheck()->func_store.setSend(*this, v);
     return *this;
 }
 Func &Func::free() {
@@ -81,7 +80,7 @@ AsyncFuncResult &Func::runAsync(const std::vector<ValAdaptor> &args_vec) const {
         }).detach();
     } else {
         // リモートの場合cli.sync()を待たずに呼び出しメッセージを送る
-        data->message_queue.push(Message::packSingle(Message::Call{
+        data->message_queue->push(Message::packSingle(Message::Call{
             FuncCall{r.caller_id, 0, data->getMemberIdFromName(member_), field_,
                      args_vec}}));
         // resultはcli.onRecv内でセットされる。
@@ -89,11 +88,23 @@ AsyncFuncResult &Func::runAsync(const std::vector<ValAdaptor> &args_vec) const {
     return r;
 }
 
-std::optional<std::shared_ptr<FuncInfo>> Func::getRaw() const {
-    return dataLock()->func_store.getRecv(*this);
+ValType Func::returnType() const {
+    auto func_info = dataLock()->func_store.getRecv(*this);
+    if (func_info) {
+        return (*func_info)->return_type;
+    }
+    return ValType::none_;
 }
+std::vector<Arg> Func::args() const {
+    auto func_info = dataLock()->func_store.getRecv(*this);
+    if (func_info) {
+        return (*func_info)->args;
+    }
+    return std::vector<Arg>{};
+}
+
 Func &Func::setArgs(const std::vector<Arg> &args) {
-    auto func_info = getRaw();
+    auto func_info = setCheck()->func_store.getRecv(*this);
     if (func_info == std::nullopt) {
         throw std::invalid_argument("setArgs failed: Func not set");
     }
@@ -109,7 +120,7 @@ Func &Func::setArgs(const std::vector<Arg> &args) {
     return *this;
 }
 Func &Func::hidden(bool hidden) {
-    auto func_info = getRaw();
+    auto func_info = setCheck()->func_store.getRecv(*this);
     if (func_info == std::nullopt) {
         throw std::invalid_argument("setArgs failed: Func not set");
     }
@@ -122,7 +133,7 @@ FuncWrapperType Func::getDefaultFuncWrapper() const {
 }
 
 Func &Func::setRunCond(FuncWrapperType wrapper) {
-    auto func_info = getRaw();
+    auto func_info = setCheck()->func_store.getRecv(*this);
     if (func_info == std::nullopt) {
         throw std::invalid_argument("setRunCond failed: Func not set");
     }

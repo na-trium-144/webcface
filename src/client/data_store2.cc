@@ -48,9 +48,10 @@ void SyncDataStore2<T>::setEntry(const std::string &from,
 }
 
 template <typename T>
-void SyncDataStore2<T>::addReq(const std::string &member,
-                               const std::string &field) {
-    if (!isSelf(member) && req[member][field] <= 0) {
+unsigned int SyncDataStore2<T>::addReq(const std::string &member,
+                              const std::string &field) {
+    std::lock_guard lock(mtx);
+    if (!isSelf(member) && req[member][field] == 0) {
         unsigned int max_req = 0;
         for (const auto &r : req) {
             for (const auto &r2 : r.second) {
@@ -61,14 +62,16 @@ void SyncDataStore2<T>::addReq(const std::string &member,
         }
         req[member][field] = max_req + 1;
         req_send[member][field] = max_req + 1;
+        return max_req + 1;
     }
+    return 0;
 }
 
 template <typename T>
 std::optional<T> SyncDataStore2<T>::getRecv(const std::string &from,
                                             const std::string &name) {
     std::lock_guard lock(mtx);
-    addReq(from, name);
+    // addReq(from, name);
     auto s_it = data_recv.find(from);
     if (s_it != data_recv.end()) {
         auto it = s_it->second.find(name);
@@ -79,11 +82,11 @@ std::optional<T> SyncDataStore2<T>::getRecv(const std::string &from,
     return std::nullopt;
 }
 template <typename T>
-std::optional<Dict<T>>
-SyncDataStore2<T>::getRecvRecurse(const std::string &member,
-                                  const std::string &field) {
+std::optional<Dict<T>> SyncDataStore2<T>::getRecvRecurse(
+    const std::string &member, const std::string &field,
+    const std::function<void(const std::string &)> &cb) {
     std::lock_guard lock(mtx);
-    addReq(member, field);
+    // addReq(member, field);
     auto s_it = data_recv.find(member);
     if (s_it != data_recv.end()) {
         Dict<T> d;
@@ -91,8 +94,11 @@ SyncDataStore2<T>::getRecvRecurse(const std::string &member,
         for (const auto &it : s_it->second) {
             if (it.first.starts_with(field + ".")) {
                 d[it.first.substr(field.size() + 1)] = it.second;
-                addReq(member, it.first);
+                // addReq(member, it.first);
                 found = true;
+                if (cb) {
+                    cb(it.first);
+                }
             }
         }
         if (found) {

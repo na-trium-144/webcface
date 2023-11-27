@@ -120,12 +120,10 @@ class ViewBuf : public std::stringbuf {
  */
 class View : protected Field, public EventTarget<View>, public std::ostream {
     ViewBuf sb;
-    void onAppend() const override { tryGet(); }
+    WEBCFACE_DLL void onAppend() const override;
 
     //! 値をセットし、EventTargetを発動する
     WEBCFACE_DLL View &set(std::vector<ViewComponent> &v);
-    WEBCFACE_DLL std::optional<std::shared_ptr<std::vector<ViewComponentBase>>>
-    getRaw() const;
 
   public:
     View() : Field(), EventTarget<View>(), sb(), std::ostream(&sb) {}
@@ -142,24 +140,13 @@ class View : protected Field, public EventTarget<View>, public std::ostream {
 
     //! 子フィールドを返す
     /*!
-     * \return「(thisのフィールド名).(子フィールド名)」をフィールド名とするValue
+     * \return「(thisのフィールド名).(子フィールド名)」をフィールド名とするView
      */
     View child(const std::string &field) {
         return View{*this, this->field_ + "." + field};
     }
     //! Viewを取得する
-    std::optional<std::vector<ViewComponent>> tryGet() const {
-        auto vb = getRaw();
-        if (vb) {
-            std::vector<ViewComponent> v((*vb)->size());
-            for (std::size_t i = 0; i < (*vb)->size(); i++) {
-                v[i] = ViewComponent{(**vb)[i], this->data_w};
-            }
-            return v;
-        } else {
-            return std::nullopt;
-        }
-    }
+    WEBCFACE_DLL std::optional<std::vector<ViewComponent>> tryGet() const;
     //! Viewを取得する
     std::vector<ViewComponent> get() const {
         return tryGet().value_or(std::vector<ViewComponent>{});
