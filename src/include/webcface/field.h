@@ -26,9 +26,9 @@ struct WEBCFACE_DLL Field : public Common::FieldBase {
         : Field(base.data_w, base.member_, field) {}
 
     //! data_wをlockし、失敗したらruntime_errorを投げる
-    WEBCFACE_DLL std::shared_ptr<Internal::ClientData> dataLock() const;
+    std::shared_ptr<Internal::ClientData> dataLock() const;
     //! data_wをlockし、memberがselfではなければinvalid_argumentを投げる
-    WEBCFACE_DLL std::shared_ptr<Internal::ClientData> setCheck() const;
+    std::shared_ptr<Internal::ClientData> setCheck() const;
 
     //! Memberを返す
     Member member() const;
