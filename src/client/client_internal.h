@@ -58,14 +58,7 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
     //! 通信関係のスレッドを開始する
     WEBCFACE_DLL void start();
     //! threadを待機 (close時)
-    void join() {
-        if (message_thread->joinable()) {
-            message_thread->join();
-        }
-        if (recv_thread->joinable()) {
-            recv_thread->join();
-        }
-    }
+    WEBCFACE_DLL void join();
 
     //! 初期化時に送信するメッセージをキューに入れる
     /*!

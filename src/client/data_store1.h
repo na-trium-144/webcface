@@ -18,6 +18,7 @@ class SyncDataStore1 {
   public:
     std::string self_member_name;
     std::recursive_mutex mtx;
+
     explicit SyncDataStore1(const std::string &name) : self_member_name(name) {}
 
     //! リクエストを追加
@@ -25,6 +26,12 @@ class SyncDataStore1 {
      * \return 追加した場合trueを返し、すでにリクエストされていた場合falseを返す
      */
     bool addReq(const std::string &member);
+
+    //! リクエストを削除
+    /*!
+     * \return 削除した場合trueを返し、すでに削除されていた場合falseを返す
+     */
+    bool clearReq(const std::string &member);
 
     bool isSelf(const std::string &member) const {
         return member == self_member_name;

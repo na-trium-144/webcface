@@ -19,12 +19,12 @@ inline void addValueReq(const std::shared_ptr<Internal::ClientData> &data,
 Value &Value::set(const Value::Dict &v) {
     if (v.hasValue()) {
         setCheck()->value_store.setSend(*this, v.getRaw());
+        this->triggerEvent(*this);
     } else {
         for (const auto &it : v.getChildren()) {
             child(it.first).set(it.second);
         }
     }
-    this->triggerEvent(*this);
     return *this;
 }
 Value &Value::set(const VectorOpt<double> &v) {
@@ -67,7 +67,10 @@ std::chrono::system_clock::time_point Value::time() const {
         .value_or(std::chrono::system_clock::time_point());
 }
 Value &Value::free() {
-    dataLock()->value_store.unsetRecv(*this);
+    auto req = dataLock()->value_store.unsetRecv(*this);
+    if (req) {
+        // todo: リクエスト解除
+    }
     return *this;
 }
 

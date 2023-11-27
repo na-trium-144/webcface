@@ -38,14 +38,6 @@ class SyncDataStore2 {
     std::unordered_map<std::string,
                        std::unordered_map<std::string, unsigned int>>
         req;
-    //! 次のsend時に送信するデータ受信リクエスト
-    /*! req[member名][データ名]
-     * が1以上ならばそれをreq_idとしてリクエストをする
-     * 0ならリクエストを解除する(未実装)
-     */
-    std::unordered_map<std::string,
-                       std::unordered_map<std::string, unsigned int>>
-        req_send;
 
     std::string self_member_name;
 
@@ -54,8 +46,6 @@ class SyncDataStore2 {
     explicit SyncDataStore2(const std::string &name) : self_member_name(name) {}
 
     std::recursive_mutex mtx;
-    //! 一度でもなにかsendしたらtrue
-    bool has_send = false;
 
     bool isSelf(const std::string &member) const {
         return member == self_member_name;
@@ -63,11 +53,18 @@ class SyncDataStore2 {
 
     //! リクエストを追加
     /*!
-     * \return 追加した場合req_idを返し、すでにリクエストされていた場合0を返す
+     * memberがselfの場合無効
+     *
+     * \return 追加した場合req_idを返し、すでにリクエストされていた場合 or
+     * selfの場合 0を返す
      */
     unsigned int addReq(const std::string &member, const std::string &field);
 
-    //! 送信するデータをdata_sendとdata_recv[self_member_name]にセット
+    //! 送信するデータをセット
+    /*!
+     * データをdata_sendとdata_recv[self_member_name]にセットし、
+     * has_sendをtrueにする
+     */
     void setSend(const std::string &name, const T &data);
     void setSend(const FieldBase &base, const T &data) {
         setSend(base.field_, data);
@@ -79,7 +76,7 @@ class SyncDataStore2 {
     void setRecv(const FieldBase &base, const T &data) {
         setRecv(base.member_, base.field_, data);
     }
-    //! data_recvからデータを返す & req,req_sendをtrueにセット
+    //! data_recvからデータを返す
     std::optional<T> getRecv(const std::string &from, const std::string &name);
     std::optional<T> getRecv(const FieldBase &base) {
         return getRecv(base.member_, base.field_);
@@ -99,10 +96,13 @@ class SyncDataStore2 {
         const std::function<void(const std::string &)> &cb = nullptr) {
         return getRecvRecurse(base.member_, base.field_, cb);
     }
-    //! data_recvからデータを削除, req,req_sendをfalseにする
-    void unsetRecv(const std::string &from, const std::string &name);
-    void unsetRecv(const FieldBase &base) {
-        unsetRecv(base.member_, base.field_);
+    //! data_recvからデータを削除, reqを消す
+    /*!
+     * \return reqを削除したらtrue, reqがすでに削除されてればfalse
+     */
+    bool unsetRecv(const std::string &from, const std::string &name);
+    bool unsetRecv(const FieldBase &base) {
+        return unsetRecv(base.member_, base.field_);
     }
 
     //! entryにmember名のみ追加

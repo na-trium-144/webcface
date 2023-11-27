@@ -30,8 +30,9 @@ void Internal::messageThreadMain(std::shared_ptr<Internal::ClientData> data,
             }
             data->connect_state_cond.notify_all();
             data->logger_internal->debug("connected");
-            while (!data->closing.load()) {
+            do {
                 bool closed = false;
+                // 受信ループ
                 while (true) {
                     std::size_t rlen = 0;
                     const curl_ws_frame *meta = nullptr;
@@ -63,15 +64,15 @@ void Internal::messageThreadMain(std::shared_ptr<Internal::ClientData> data,
                 if (closed) {
                     break;
                 }
-                auto msg = data->message_queue->pop();
-                if (msg) {
+                // 最低一回はqueueが空になるまで送信する。
+                while (auto msg = data->message_queue->pop()) {
                     data->logger_internal->trace("sending message");
                     std::size_t sent;
                     curl_ws_send(handle, msg->c_str(), msg->size(), &sent, 0,
                                  CURLWS_BINARY);
                 }
                 std::this_thread::yield();
-            }
+            } while (!data->closing.load());
             {
                 std::lock_guard lock(data->connect_state_m);
                 data->connected.store(false);

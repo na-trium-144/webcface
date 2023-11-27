@@ -24,20 +24,21 @@ TEST_F(LoggerTest, logger) {
     data_->logger->warn("3");
     data_->logger->error("4");
     data_->logger->critical("5");
+    auto ls = data_->log_store->getRecv(self_name);
+    ASSERT_EQ((*ls)->size(), 6);
     for (int i = 0; i <= 5; i++) {
-        auto l = data_->logger_sink->pop();
-        EXPECT_EQ((*l)->level, i);
-        EXPECT_EQ((*l)->message, std::to_string(i));
+        EXPECT_EQ((**ls)[i].level, i);
+        EXPECT_EQ((**ls)[i].message, std::to_string(i));
     }
 }
 TEST_F(LoggerTest, loggerBuf) {
-    LoggerBuf b(data_);
+    LoggerBuf b(data_->logger);
     std::ostream os(&b);
     os << "a\nb" << std::endl;
-    auto l = data_->logger_sink->pop();
-    EXPECT_EQ((*l)->level, 2);
-    EXPECT_EQ((*l)->message, "a");
-    l = data_->logger_sink->pop();
-    EXPECT_EQ((*l)->level, 2);
-    EXPECT_EQ((*l)->message, "b");
+    auto ls = data_->log_store->getRecv(self_name);
+    ASSERT_EQ((*ls)->size(), 2);
+    EXPECT_EQ((**ls)[0].level, 2);
+    EXPECT_EQ((**ls)[0].message, "a");
+    EXPECT_EQ((**ls)[1].level, 2);
+    EXPECT_EQ((**ls)[1].message, "b");
 }

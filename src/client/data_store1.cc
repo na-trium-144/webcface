@@ -9,8 +9,18 @@ void SyncDataStore1<T>::setRecv(const std::string &member, const T &data) {
 
 template <typename T>
 bool SyncDataStore1<T>::addReq(const std::string &member) {
+    std::lock_guard lock(mtx);
     if (!isSelf(member) && req[member] == false) {
         req[member] = true;
+        return true;
+    }
+    return false;
+}
+template <typename T>
+bool SyncDataStore1<T>::clearReq(const std::string &member) {
+    std::lock_guard lock(mtx);
+    if (!isSelf(member) && req[member] == true) {
+        req[member] = false;
         return true;
     }
     return false;

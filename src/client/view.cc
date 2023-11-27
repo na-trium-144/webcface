@@ -91,7 +91,10 @@ std::chrono::system_clock::time_point View::time() const {
         .value_or(std::chrono::system_clock::time_point());
 }
 View &View::free() {
-    dataLock()->view_store.unsetRecv(*this);
+    auto req = dataLock()->view_store.unsetRecv(*this);
+    if (req) {
+        // todo: リクエスト解除
+    }
     return *this;
 }
 

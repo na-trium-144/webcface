@@ -66,7 +66,14 @@ Client::~Client() {
 }
 void Client::close() { data->closing.store(true); }
 bool Client::connected() const { return data->connected.load(); }
-
+void Internal::ClientData::join() {
+    if (message_thread != nullptr && message_thread->joinable()) {
+        message_thread->join();
+    }
+    if (recv_thread != nullptr && recv_thread->joinable()) {
+        recv_thread->join();
+    }
+}
 std::vector<Member> Client::members() {
     auto keys = data->value_store.getMembers();
     std::vector<Member> ret(keys.size());
@@ -104,14 +111,16 @@ void Internal::recvThreadMain(std::shared_ptr<ClientData> data) {
     }
 }
 
-void Client::start(bool wait) {
+void Client::start() {
     if (!connected()) {
         data->start();
-        if (wait) {
-            std::unique_lock lock(data->connect_state_m);
-            data->connect_state_cond.wait(
-                lock, [this] { return data->connected.load(); });
-        }
+    }
+}
+void Client::waitConnection() {
+    if (!connected()) {
+        data->start();
+        std::unique_lock lock(data->connect_state_m);
+        data->connect_state_cond.wait(lock, [this] { return connected(); });
     }
 }
 void Internal::ClientData::syncDataFirst() {
@@ -165,74 +174,70 @@ void Internal::ClientData::syncData(bool is_first) {
     std::lock_guard value_lock(value_store.mtx);
     std::lock_guard text_lock(text_store.mtx);
     std::lock_guard view_lock(view_store.mtx);
+    std::lock_guard func_lock(func_store.mtx);
+    std::lock_guard log_lock(log_store->mtx);
 
-    if (value_store.has_send || text_store.has_send || view_store.has_send) {
-        std::stringstream buffer;
-        int len = 0;
+    std::stringstream buffer;
+    int len = 0;
 
-        Message::pack(buffer, len, Message::Sync{});
+    Message::pack(buffer, len, Message::Sync{});
 
-        for (const auto &v : value_store.transferSend(is_first)) {
-            Message::pack(
-                buffer, len,
-                Message::Value{
-                    {},
-                    v.first,
-                    std::static_pointer_cast<std::vector<double>>(v.second)});
-        }
-        for (const auto &v : text_store.transferSend(is_first)) {
-            Message::pack(buffer, len, Message::Text{{}, v.first, v.second});
-        }
-        auto view_send_prev = view_store.getSendPrev(is_first);
-        auto view_send = view_store.transferSend(is_first);
-        for (const auto &v : view_send) {
-            auto v_prev = view_send_prev.find(v.first);
-            auto v_diff =
-                std::make_shared<std::unordered_map<int, ViewComponentBase>>();
-            if (v_prev == view_send_prev.end()) {
-                for (std::size_t i = 0; i < v.second->size(); i++) {
+    for (const auto &v : value_store.transferSend(is_first)) {
+        Message::pack(
+            buffer, len,
+            Message::Value{
+                {},
+                v.first,
+                std::static_pointer_cast<std::vector<double>>(v.second)});
+    }
+    for (const auto &v : text_store.transferSend(is_first)) {
+        Message::pack(buffer, len, Message::Text{{}, v.first, v.second});
+    }
+    auto view_send_prev = view_store.getSendPrev(is_first);
+    auto view_send = view_store.transferSend(is_first);
+    for (const auto &v : view_send) {
+        auto v_prev = view_send_prev.find(v.first);
+        auto v_diff =
+            std::make_shared<std::unordered_map<int, ViewComponentBase>>();
+        if (v_prev == view_send_prev.end()) {
+            for (std::size_t i = 0; i < v.second->size(); i++) {
+                v_diff->emplace(static_cast<int>(i), (*v.second)[i]);
+            }
+        } else {
+            for (std::size_t i = 0; i < v.second->size(); i++) {
+                if (v_prev->second->size() <= i ||
+                    (*v_prev->second)[i] != (*v.second)[i]) {
                     v_diff->emplace(static_cast<int>(i), (*v.second)[i]);
                 }
-            } else {
-                for (std::size_t i = 0; i < v.second->size(); i++) {
-                    if (v_prev->second->size() <= i ||
-                        (*v_prev->second)[i] != (*v.second)[i]) {
-                        v_diff->emplace(static_cast<int>(i), (*v.second)[i]);
-                    }
-                }
-            }
-            if (!v_diff->empty()) {
-                Message::pack(buffer, len,
-                              Message::View{v.first, v_diff, v.second->size()});
             }
         }
-
-        auto log_s = *log_store->getRecv(self_member_name);
-        if ((log_s->size() > 0 && is_first) || log_s->size() > log_sent_lines) {
-            auto begin = log_s->begin();
-            auto end = log_s->end();
-            if (!is_first) {
-                begin += log_sent_lines;
-            }
-            log_sent_lines = log_s->size();
-            Message::pack(buffer, len, Message::Log{begin, end});
+        if (!v_diff->empty()) {
+            Message::pack(buffer, len,
+                          Message::View{v.first, v_diff, v.second->size()});
         }
-        for (const auto &v : func_store.transferSend(is_first)) {
-            if (!v.second->hidden) {
-                Message::pack(buffer, len,
-                              Message::FuncInfo{v.first, *v.second});
-            }
-        }
-
-        message_queue->push(Message::packDone(buffer, len));
     }
+
+    auto log_s = *log_store->getRecv(self_member_name);
+    if ((log_s->size() > 0 && is_first) || log_s->size() > log_sent_lines) {
+        auto begin = log_s->begin();
+        auto end = log_s->end();
+        if (!is_first) {
+            begin += log_sent_lines;
+        }
+        log_sent_lines = log_s->size();
+        Message::pack(buffer, len, Message::Log{begin, end});
+    }
+    for (const auto &v : func_store.transferSend(is_first)) {
+        if (!v.second->hidden) {
+            Message::pack(buffer, len, Message::FuncInfo{v.first, *v.second});
+        }
+    }
+
+    message_queue->push(Message::packDone(buffer, len));
 }
 void Client::sync() {
-    if (!connected()) {
-        start(false);
-    } else {
-        data->syncData(false);
-    }
+    start();
+    data->syncData(false);
     while (auto func_sync = data->func_sync_queue.pop()) {
         (*func_sync)->sync();
     }

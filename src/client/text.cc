@@ -19,12 +19,12 @@ inline void addTextReq(const std::shared_ptr<Internal::ClientData> &data,
 Text &Text::set(const Text::Dict &v) {
     if (v.hasValue()) {
         setCheck()->text_store.setSend(*this, v.getRaw());
+        this->triggerEvent(*this);
     } else {
         for (const auto &it : v.getChildren()) {
             child(it.first).set(it.second);
         }
     }
-    this->triggerEvent(*this);
     return *this;
 }
 Text &Text::set(const std::string &v) {
@@ -57,7 +57,10 @@ std::chrono::system_clock::time_point Text::time() const {
         .value_or(std::chrono::system_clock::time_point());
 }
 Text &Text::free() {
-    dataLock()->text_store.unsetRecv(*this);
+    auto req = dataLock()->text_store.unsetRecv(*this);
+    if (req) {
+        // todo: リクエスト解除
+    }
     return *this;
 }
 

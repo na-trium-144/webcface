@@ -6,7 +6,6 @@ void SyncDataStore2<T>::setSend(const std::string &name, const T &data) {
     std::lock_guard lock(mtx);
     data_send[name] = data;
     data_recv[self_member_name][name] = data; // 送信後に自分の値を参照する用
-    has_send = true;
 }
 
 template <typename T>
@@ -49,7 +48,7 @@ void SyncDataStore2<T>::setEntry(const std::string &from,
 
 template <typename T>
 unsigned int SyncDataStore2<T>::addReq(const std::string &member,
-                              const std::string &field) {
+                                       const std::string &field) {
     std::lock_guard lock(mtx);
     if (!isSelf(member) && req[member][field] == 0) {
         unsigned int max_req = 0;
@@ -61,7 +60,6 @@ unsigned int SyncDataStore2<T>::addReq(const std::string &member,
             }
         }
         req[member][field] = max_req + 1;
-        req_send[member][field] = max_req + 1;
         return max_req + 1;
     }
     return 0;
@@ -108,16 +106,17 @@ std::optional<Dict<T>> SyncDataStore2<T>::getRecvRecurse(
     return std::nullopt;
 }
 template <typename T>
-void SyncDataStore2<T>::unsetRecv(const std::string &from,
+bool SyncDataStore2<T>::unsetRecv(const std::string &from,
                                   const std::string &name) {
     std::lock_guard lock(mtx);
-    if (!isSelf(from) && req[from][name] > 0) {
-        req[from].erase(name);
-        req_send[from][name] = 0;
-    }
     if (data_recv.count(from) && data_recv.at(from).count(name)) {
         data_recv.at(from).erase(name);
     }
+    if (!isSelf(from) && req[from][name] > 0) {
+        req[from].erase(name);
+        return true;
+    }
+    return false;
 }
 template <typename T>
 std::pair<std::string, std::string>
@@ -164,7 +163,7 @@ std::unordered_map<std::string, std::unordered_map<std::string, unsigned int>>
 SyncDataStore2<T>::transferReq() {
     std::lock_guard lock(mtx);
     // if (is_first) {
-    req_send.clear();
+    // req_send.clear();
     return req;
     // } else {
     //     return std::move(req_send);
