@@ -67,8 +67,7 @@ while(true) {
 }
 ```
 
-Text::get(), Text::getRecurse() はstd::nulloptの代わりにデフォルト値を返す点以外は同じです。
-
+Text::get(), Text::getRecurse() はstd::nulloptの代わりにデフォルト値を返す点以外は同じです。  
 また、std::string, Value::Dict などの型にキャストすることでも同様に値が得られます。
 
 ## 受信イベント

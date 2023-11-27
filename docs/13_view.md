@@ -49,7 +49,6 @@ wcli.sync();
 Viewオブジェクトを毎回生成・破棄せず使いまわす場合は、add()が一通り終わった後にView::sync()を呼び、最初のadd()の前に View::init() でViewを初期化する必要があります
 (そうしないとそれまでaddしたデータに追加されてしまう)
 
-
 JavaScriptの場合、add(), init(), sync()は用意されておらず、set()の引数に要素をまとめてセットして使います。
 ```js
 wcli.view("hoge").set([
@@ -68,8 +67,7 @@ Viewに追加する各種要素をViewComponentといいます。
 
 ### text
 文字列です。そのまま表示します。
-`webcface::ViewComponents::text(文字列)` の他、ostreamでフォーマット可能なデータはそのまま渡して文字列化できます
-
+`webcface::ViewComponents::text(文字列)` の他、ostreamでフォーマット可能なデータはそのまま渡して文字列化できます。  
 View::add()関数, set()関数では数値やbool値は文字列に変換されます。
 
 以下はいずれも「hello」という文字列を表示します。
