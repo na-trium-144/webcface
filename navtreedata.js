@@ -181,7 +181,7 @@ var NAVTREEINDEX =
 "structWebCFace_1_1Common_1_1DictTraits.html#a4f2ff0741e866f4f383ddbaaba558b46",
 "structWebCFace_1_1Common_1_1ViewComponentBase.html#a29db01528df533026a60f8bbdfeb5443",
 "structWebCFace_1_1Message_1_1Res_3_01Text_01_4.html#ad18fe2f1c629dd973e56e21ba23ec691",
-"val_8h.html"
+"text_8h.html#a7528ca9b8be7cf3baf4a1371085a5d87"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

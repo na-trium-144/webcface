@@ -11,5 +11,6 @@ var structWebCFace_1_1Server_1_1Store =
     [ "newClient", "structWebCFace_1_1Server_1_1Store.html#ab66e8fa116f1af0f50a383d780da3191", null ],
     [ "removeClient", "structWebCFace_1_1Server_1_1Store.html#ab220140080b3a22eadbe31a1e989622d", null ],
     [ "clients", "structWebCFace_1_1Server_1_1Store.html#ad47a9aa998801c465c472b11fd0a67fd", null ],
-    [ "clients_by_id", "structWebCFace_1_1Server_1_1Store.html#a9cd584d5bf32dbab4cc5b3809803e38f", null ]
+    [ "clients_by_id", "structWebCFace_1_1Server_1_1Store.html#a9cd584d5bf32dbab4cc5b3809803e38f", null ],
+    [ "keep_log", "structWebCFace_1_1Server_1_1Store.html#aac122449fd3bbb64fd0eb7fc567a7a46", null ]
 ];

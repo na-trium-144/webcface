@@ -199,9 +199,9 @@ Public Attributes</h2></td></tr>
 <tr class="separator:ae4a142b5a4364ec9785c085ac88891e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a544e9651584e1018b2319ef6364ec236" id="r_a544e9651584e1018b2319ef6364ec236"><td class="memItemLeft" align="right" valign="top">std::set&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structWebCFace_1_1Server_1_1ClientData.html#a544e9651584e1018b2319ef6364ec236">log_req</a></td></tr>
 <tr class="separator:a544e9651584e1018b2319ef6364ec236"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2693b6a31a72d4edec3c3e82c221bd97" id="r_a2693b6a31a72d4edec3c3e82c221bd97"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; std::vector&lt; <a class="el" href="structWebCFace_1_1Message_1_1Log_1_1LogLine.html">Message::Log::LogLine</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structWebCFace_1_1Server_1_1ClientData.html#a2693b6a31a72d4edec3c3e82c221bd97">log</a></td></tr>
-<tr class="memdesc:a2693b6a31a72d4edec3c3e82c221bd97"><td class="mdescLeft">&#160;</td><td class="mdescRight">ログ全履歴  <br /></td></tr>
-<tr class="separator:a2693b6a31a72d4edec3c3e82c221bd97"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4e79285c61bd619cb904723d694963bf" id="r_a4e79285c61bd619cb904723d694963bf"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; std::deque&lt; <a class="el" href="structWebCFace_1_1Message_1_1Log_1_1LogLine.html">Message::Log::LogLine</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structWebCFace_1_1Server_1_1ClientData.html#a4e79285c61bd619cb904723d694963bf">log</a></td></tr>
+<tr class="memdesc:a4e79285c61bd619cb904723d694963bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">ログ全履歴  <br /></td></tr>
+<tr class="separator:a4e79285c61bd619cb904723d694963bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8117ad8603d3cf802ac28675a0d446f8" id="r_a8117ad8603d3cf802ac28675a0d446f8"><td class="memItemLeft" align="right" valign="top">std::chrono::system_clock::time_point&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structWebCFace_1_1Server_1_1ClientData.html#a8117ad8603d3cf802ac28675a0d446f8">last_send_ping</a></td></tr>
 <tr class="separator:a8117ad8603d3cf802ac28675a0d446f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2aaa954beac272b1c230d2bec97be1c9" id="r_a2aaa954beac272b1c230d2bec97be1c9"><td class="memItemLeft" align="right" valign="top">std::optional&lt; std::chrono::milliseconds &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structWebCFace_1_1Server_1_1ClientData.html#a2aaa954beac272b1c230d2bec97be1c9">last_ping_duration</a></td></tr>
@@ -636,14 +636,14 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="a2693b6a31a72d4edec3c3e82c221bd97" name="a2693b6a31a72d4edec3c3e82c221bd97"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2693b6a31a72d4edec3c3e82c221bd97">&#9670;&#160;</a></span>log</h2>
+<a id="a4e79285c61bd619cb904723d694963bf" name="a4e79285c61bd619cb904723d694963bf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4e79285c61bd619cb904723d694963bf">&#9670;&#160;</a></span>log</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::shared_ptr&lt;std::vector&lt;<a class="el" href="structWebCFace_1_1Message_1_1Log_1_1LogLine.html">Message::Log::LogLine</a>&gt; &gt; log</td>
+          <td class="memname">std::shared_ptr&lt;std::deque&lt;<a class="el" href="structWebCFace_1_1Message_1_1Log_1_1LogLine.html">Message::Log::LogLine</a>&gt; &gt; log</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -927,7 +927,7 @@ template&lt;typename T &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceWebCFace.html">WebCFace</a></li><li class="navelem"><a class="el" href="namespaceWebCFace_1_1Server.html">Server</a></li><li class="navelem"><a class="el" href="structWebCFace_1_1Server_1_1ClientData.html">ClientData</a></li>
-    <li class="footer">Generated on Mon Nov 27 2023 06:27:10 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Tue Nov 28 2023 14:06:40 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

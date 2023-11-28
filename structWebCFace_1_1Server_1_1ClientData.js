@@ -21,7 +21,7 @@ var structWebCFace_1_1Server_1_1ClientData =
     [ "last_ping_duration", "structWebCFace_1_1Server_1_1ClientData.html#a2aaa954beac272b1c230d2bec97be1c9", null ],
     [ "last_send_ping", "structWebCFace_1_1Server_1_1ClientData.html#a8117ad8603d3cf802ac28675a0d446f8", null ],
     [ "last_sync_time", "structWebCFace_1_1Server_1_1ClientData.html#a4ea12c2c54723b4bbb8a256623edb6c0", null ],
-    [ "log", "structWebCFace_1_1Server_1_1ClientData.html#a2693b6a31a72d4edec3c3e82c221bd97", null ],
+    [ "log", "structWebCFace_1_1Server_1_1ClientData.html#a4e79285c61bd619cb904723d694963bf", null ],
     [ "log_req", "structWebCFace_1_1Server_1_1ClientData.html#a544e9651584e1018b2319ef6364ec236", null ],
     [ "logger", "structWebCFace_1_1Server_1_1ClientData.html#accdc73450b7a41e30a69fca53a8f2232", null ],
     [ "logger_level", "structWebCFace_1_1Server_1_1ClientData.html#ad0189c65be4ee081f1fa3183a901bbb5", null ],
