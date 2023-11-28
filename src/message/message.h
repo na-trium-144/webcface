@@ -3,6 +3,7 @@
 #include <string>
 #include <utility>
 #include <vector>
+#include <deque>
 #include <any>
 #include <cstdint>
 #include <spdlog/logger.h>
@@ -198,7 +199,8 @@ struct View : public MessageBase<MessageKind::view> {
         Common::ViewComponentType type = Common::ViewComponentType::text;
         std::string text;
         std::optional<std::string> on_click_member, on_click_field;
-        Common::ViewColor text_color = Common::ViewColor::inherit, bg_color = Common::ViewColor::inherit;
+        Common::ViewColor text_color = Common::ViewColor::inherit,
+                          bg_color = Common::ViewColor::inherit;
         ViewComponent() = default;
         ViewComponent(const Common::ViewComponentBase &vc)
             : type(vc.type_), text(vc.text_), text_color(vc.text_color_),
@@ -259,7 +261,8 @@ struct Log : public MessageBase<MessageKind::log> {
         std::uint64_t time = 0;
         std::string message;
         LogLine() = default;
-        LogLine(const Common::LogLine &l)            : level(l.level),
+        LogLine(const Common::LogLine &l)
+            : level(l.level),
               time(std::chrono::duration_cast<std::chrono::milliseconds>(
                        l.time.time_since_epoch())
                        .count()),
@@ -273,7 +276,7 @@ struct Log : public MessageBase<MessageKind::log> {
         MSGPACK_DEFINE_MAP(MSGPACK_NVP("v", level), MSGPACK_NVP("t", time),
                            MSGPACK_NVP("m", message));
     };
-    std::shared_ptr<std::vector<LogLine>> log;
+    std::shared_ptr<std::deque<LogLine>> log;
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("m", member_id), MSGPACK_NVP("l", log));
 };
 //! Logのリクエストはメンバ名のみ

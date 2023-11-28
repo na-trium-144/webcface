@@ -12,14 +12,15 @@ inline struct Store {
         clients;
     std::unordered_map<unsigned int, std::shared_ptr<ClientData>> clients_by_id;
 
+    int keep_log = 1000; // server_mainで上書きされる
+
     Store() : clients(), clients_by_id() {}
 
     //! テスト用
     void clear();
 
     void newClient(const ClientData::wsConnPtr &con,
-                   const std::string &remote_addr,
-                   const spdlog::sink_ptr &sink,
+                   const std::string &remote_addr, const spdlog::sink_ptr &sink,
                    spdlog::level::level_enum level);
     void removeClient(const ClientData::wsConnPtr &con);
     std::shared_ptr<ClientData> getClient(const ClientData::wsConnPtr &con);

@@ -40,7 +40,7 @@ struct ClientData {
     std::set<std::string> log_req;
     bool hasReq(const std::string &member);
     //! ログ全履歴
-    std::shared_ptr<std::vector<Message::Log::LogLine>> log;
+    std::shared_ptr<std::deque<Message::Log::LogLine>> log;
 
 
     inline static unsigned int last_member_id = 0;
@@ -52,7 +52,7 @@ struct ClientData {
                         const spdlog::sink_ptr &sink,
                         spdlog::level::level_enum level)
         : con(con), remote_addr(remote_addr), sink(sink), logger_level(level),
-          log(std::make_shared<std::vector<Message::Log::LogLine>>()) {
+          log(std::make_shared<std::deque<Message::Log::LogLine>>()) {
         this->member_id = ++last_member_id;
         logger = std::make_shared<spdlog::logger>(
             std::to_string(member_id) + "_(unknown client)", this->sink);

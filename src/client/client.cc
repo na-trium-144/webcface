@@ -126,11 +126,10 @@ void Client::sync() {
             log_s = std::make_shared<std::vector<std::shared_ptr<LogLine>>>();
             data->log_store.setRecv(member_, *log_s);
         }
-        auto log_send = std::make_shared<std::vector<Message::Log::LogLine>>();
+        auto log_send = std::make_shared<std::deque<Message::Log::LogLine>>();
         if (is_first) {
-            log_send->resize((*log_s)->size());
             for (std::size_t i = 0; i < (*log_s)->size(); i++) {
-                (*log_send)[i] = *(**log_s)[i];
+                log_send->push_back(*(**log_s)[i]);
             }
         }
         while (auto log = data->logger_sink->pop()) {
