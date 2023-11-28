@@ -416,8 +416,8 @@ TEST_F(ClientTest, logReq) {
     dummy_s->send(
         Message::Log{{},
                      10,
-                     std::make_shared<std::vector<Message::Log::LogLine>>(
-                         std::vector<Message::Log::LogLine>{
+                     std::make_shared<std::deque<Message::Log::LogLine>>(
+                         std::deque<Message::Log::LogLine>{
                              LogLine{0, std::chrono::system_clock::now(), "a"},
                              LogLine{1, std::chrono::system_clock::now(), "b"},
                          })});
@@ -431,8 +431,8 @@ TEST_F(ClientTest, logReq) {
     dummy_s->send(
         Message::Log{{},
                      10,
-                     std::make_shared<std::vector<Message::Log::LogLine>>(
-                         std::vector<Message::Log::LogLine>{
+                     std::make_shared<std::deque<Message::Log::LogLine>>(
+                         std::deque<Message::Log::LogLine>{
                              LogLine{2, std::chrono::system_clock::now(), "c"},
                          })});
     wait();
