@@ -27,3 +27,5 @@
 #include "view.h"
 
 #include "client.h"
+
+namespace webcface = WebCFace;
