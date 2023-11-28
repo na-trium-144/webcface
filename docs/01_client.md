@@ -54,6 +54,7 @@ Client::close() で切断します。
 
 ## ログ出力
 
+![ver1.1.7から](https://img.shields.io/badge/ver1.1.7~-00599c?logo=C%2B%2B)
 `WEBCFACE_VERBOSE` 環境変数が存在する場合、WebCFaceの通信に関するログ(接続、切断、メッセージのエラー)が出力されます。
 また `WEBCFACE_TRACE` 環境変数が存在すると内部で使用しているlibcurlの出力も表示します。
 

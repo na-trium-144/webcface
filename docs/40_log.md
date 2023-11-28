@@ -93,7 +93,8 @@ std::nullopt<std::vector<WebCFace::LogLine>> log = log_a.tryGet();
 ```
 Log::get() はstd::nulloptの代わりに空のリストを返す点以外は同じです。
 
-(ver1.1.9から) サーバーは各クライアントのログを1000行まで保持しています。
+![ver1.1.9から](https://img.shields.io/badge/ver1.1.9~-00599c?logo=C%2B%2B)
+サーバーは各クライアントのログを1000行まで保持しています。
 logの受信リクエストを送った時点から1000行より前のログは取得できません。
 serverの起動時のオプションでこの行数は変更できます。(`webcface-server -h`を参照)
 
