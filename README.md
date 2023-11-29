@@ -4,6 +4,7 @@
 [![release](https://img.shields.io/github/v/release/na-trium-144/webcface)](https://github.com/na-trium-144/webcface/releases)
 [![coverage](https://raw.githubusercontent.com/na-trium-144/webcface/badge/coverage.svg)](https://github.com/na-trium-144/webcface/actions/workflows/cmake-coverage.yml)  
 [![python](https://img.shields.io/badge/python-work_in_progress-red?logo=Python&logoColor=white)](https://github.com/na-trium-144/webcface-python/tree/dev)  
+[![javascript](https://img.shields.io/badge/JavaScript-gray?logo=JavaScript&logoColor=white)](https://github.com/na-trium-144/webcface-js)
 [![typescript](https://img.shields.io/badge/TypeScript-gray?logo=TypeScript&logoColor=white)](https://github.com/na-trium-144/webcface-js)
 [![npm](https://img.shields.io/npm/v/webcface)](https://www.npmjs.com/package/webcface)
 
@@ -44,8 +45,8 @@ debパッケージはubuntu22.04でビルドしています。20.04以前のubun
 例 (amd64の場合)
 ```sh
 curl -LO https://github.com/na-trium-144/webcface/releases/download/v1.1.8/webcface_1.1.8_amd64.deb
-curl -LO https://github.com/na-trium-144/webcface-webui/releases/download/v1.0.6/webcface-webui_1.0.6_all.deb
-curl -LO https://github.com/na-trium-144/webcface-tools/releases/download/v1.1.2/webcface-tools_1.1.2_amd64.deb
+curl -LO https://github.com/na-trium-144/webcface-webui/releases/download/v1.0.7/webcface-webui_1.0.7_all.deb
+curl -LO https://github.com/na-trium-144/webcface-tools/releases/download/v1.1.3/webcface-tools_1.1.3_amd64.deb
 sudo apt install ./webcface*.deb
 rm ./webcface*.deb
 ```
@@ -55,7 +56,7 @@ rm ./webcface*.deb
 ### Homebrew (MacOS, Linux)
 ```sh
 brew tap na-trium-144/webcface
-brew install webcface webcface-webui
+brew install webcface webcface-webui webcface-tools
 ```
 
 ### Build from source
@@ -72,7 +73,6 @@ brew install webcface webcface-webui
 	* システムにインストールされてなければsubmoduleにあるソースコードをビルドしますが、eventpp, msgpack, spdlog に関してはインストールされていればそれを使用します
 	* libcurlはwebsocket機能を有効にする必要があるためインストールされている場合でもソースからビルドします
 	* crowは暫定的にWindowsでSegmentation faultするバグを修正したもの([na-trium-144/Crow](https://github.com/na-trium-144/Crow) の fix-destructor-io-service ブランチ)を使用しています
-		* PullRequest: [CrowCpp/Crow #722](https://github.com/CrowCpp/Crow/pull/722)
 
 <details><summary>Ubuntu 20.04, 22.04</summary>
 
@@ -83,7 +83,7 @@ sudo apt install libspdlog-dev  # optional
 
 ubuntu20.04の場合デフォルトのコンパイラ(gcc-9)ではビルドできないのでgcc-10にする必要があります
 ```sh
-sudo apt install gcc-10
+sudo apt install gcc-10 g++-10
 export CC=gcc-10
 export CXX=g++-10
 ```
@@ -132,7 +132,7 @@ sudo cmake --build build -t install
 	* installしないでbuildディレクトリから起動する場合は、このリポジトリ直下にdist/を置いてください
 	* コマンドからやる場合は次のようになります
 ```sh
-curl -LO https://github.com/na-trium-144/webcface-webui/releases/download/v1.0.6/webcface-webui_1.0.6.tar.gz
+curl -LO https://github.com/na-trium-144/webcface-webui/releases/download/v1.0.7/webcface-webui_1.0.7.tar.gz
 tar zxvf webcface-webui*.tar.gz
 sudo rm -rf /usr/local/share/webcface
 sudo mkdir /usr/local/share/webcface
