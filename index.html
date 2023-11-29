@@ -112,7 +112,7 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 <div class="contents">
 <div class="textblock"><p><a class="anchor" id="md__2home_2runner_2work_2webcface_2webcface_2README"></a> <a href="https://github.com/na-trium-144/webcface"><img src="https://img.shields.io/badge/C%2B%2B-20-blue?logo=C%2B%2B" alt="C++20" class="inline"/></a> <a href="https://github.com/na-trium-144/webcface/releases"><img src="https://img.shields.io/github/v/release/na-trium-144/webcface" alt="release" class="inline"/></a> <a href="https://github.com/na-trium-144/webcface/actions/workflows/cmake-coverage.yml"><img src="https://raw.githubusercontent.com/na-trium-144/webcface/badge/coverage.svg" alt="coverage" style="pointer-events: none;" class="inline"/></a> <br  />
  <a href="https://github.com/na-trium-144/webcface-python/tree/dev"><img src="https://img.shields.io/badge/python-work_in_progress-red?logo=Python&amp;logoColor=white" alt="python" class="inline"/></a> <br  />
- <a href="https://github.com/na-trium-144/webcface-js"><img src="https://img.shields.io/badge/TypeScript-gray?logo=TypeScript&amp;logoColor=white" alt="typescript" class="inline"/></a> <a href="https://www.npmjs.com/package/webcface"><img src="https://img.shields.io/npm/v/webcface" alt="npm" class="inline"/></a></p>
+ <a href="https://github.com/na-trium-144/webcface-js"><img src="https://img.shields.io/badge/JavaScript-gray?logo=JavaScript&amp;logoColor=white" alt="javascript" class="inline"/></a> <a href="https://github.com/na-trium-144/webcface-js"><img src="https://img.shields.io/badge/TypeScript-gray?logo=TypeScript&amp;logoColor=white" alt="typescript" class="inline"/></a> <a href="https://www.npmjs.com/package/webcface"><img src="https://img.shields.io/npm/v/webcface" alt="npm" class="inline"/></a></p>
 <p>Web-based RPC &amp; UI Library</p>
 <p>WebSocketとMessagePackを使った、ROSのような分散型の通信ライブラリです。 クロスプラットフォームかつ複数の言語間で通信ができます。</p>
 <p>WebブラウザーでアクセスできるUI(webcface-webui)が付属しており、ネットワーク上のPCやタブレットなどからアクセスしてWebCFaceで通信されているデータを可視化したり関数を呼び出したりできます。 また、webuiからのアクセスを想定してテキストやボタンなどの配置を指定すると簡易なUIを作成することができます。</p>
@@ -146,15 +146,15 @@ Ubuntu 22.04 (amd64, arm64, armhf)</h2>
 <p><a href="https://github.com/na-trium-144/webcface/releases">WebCFaceのReleases</a> と <a href="https://github.com/na-trium-144/webcface-webui/releases">webuiのReleases</a> 、<a href="https://github.com/na-trium-144/webcface-tools/releases">toolsのReleases</a> からそれぞれ最新のdebパッケージをダウンロードしてインストールできます。</p>
 <p>debパッケージはubuntu22.04でビルドしています。20.04以前のubuntuでは依存ライブラリの都合で動きません。debianはわかりません。</p>
 <p>例 (amd64の場合) </p><div class="fragment"><div class="line">curl -LO https://github.com/na-trium-144/webcface/releases/download/v1.1.8/webcface_1.1.8_amd64.deb</div>
-<div class="line">curl -LO https://github.com/na-trium-144/webcface-webui/releases/download/v1.0.6/webcface-webui_1.0.6_all.deb</div>
-<div class="line">curl -LO https://github.com/na-trium-144/webcface-tools/releases/download/v1.1.2/webcface-tools_1.1.2_amd64.deb</div>
+<div class="line">curl -LO https://github.com/na-trium-144/webcface-webui/releases/download/v1.0.7/webcface-webui_1.0.7_all.deb</div>
+<div class="line">curl -LO https://github.com/na-trium-144/webcface-tools/releases/download/v1.1.3/webcface-tools_1.1.3_amd64.deb</div>
 <div class="line">sudo apt install ./webcface*.deb</div>
 <div class="line">rm ./webcface*.deb</div>
 </div><!-- fragment --><p>(webcface-toolsの内容と使い方についてはwebcface-toolsのReadmeを参照してください)</p>
 <h2><a class="anchor" id="autotoc_md85"></a>
 Homebrew (MacOS, Linux)</h2>
 <div class="fragment"><div class="line">brew tap na-trium-144/webcface</div>
-<div class="line">brew install webcface webcface-webui</div>
+<div class="line">brew install webcface webcface-webui webcface-tools</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md86"></a>
 Build from source</h2>
 <h3><a class="anchor" id="autotoc_md87"></a>
@@ -172,10 +172,7 @@ Requirements</h3>
 <li>webcfaceは外部ライブラリとして <a href="https://github.com/CrowCpp/Crow">crow</a>, <a href="https://github.com/curl/curl">libcurl</a>, <a href="https://github.com/wqking/eventpp">eventpp</a>, <a href="https://github.com/msgpack/msgpack-c">msgpack-cxx</a>, <a href="https://github.com/gabime/spdlog">spdlog</a>, <a href="https://github.com/CLIUtils/CLI11.git">cli11</a> を使用します。<ul>
 <li>システムにインストールされてなければsubmoduleにあるソースコードをビルドしますが、eventpp, msgpack, spdlog に関してはインストールされていればそれを使用します</li>
 <li>libcurlはwebsocket機能を有効にする必要があるためインストールされている場合でもソースからビルドします</li>
-<li>crowは暫定的にWindowsでSegmentation faultするバグを修正したもの(<a href="https://github.com/na-trium-144/Crow">na-trium-144/Crow</a> の fix-destructor-io-service ブランチ)を使用しています<ul>
-<li>PullRequest: <a href="https://github.com/CrowCpp/Crow/pull/722">CrowCpp/Crow #722</a></li>
-</ul>
-</li>
+<li>crowは暫定的にWindowsでSegmentation faultするバグを修正したもの(<a href="https://github.com/na-trium-144/Crow">na-trium-144/Crow</a> の fix-destructor-io-service ブランチ)を使用しています</li>
 </ul>
 </li>
 </ul>
@@ -185,7 +182,7 @@ Ubuntu 20.04, 22.04</summary>
 <p></p>
 <div class="fragment"><div class="line">sudo apt install build-essential git cmake</div>
 <div class="line">sudo apt install libspdlog-dev  # optional</div>
-</div><!-- fragment --><p>ubuntu20.04の場合デフォルトのコンパイラ(gcc-9)ではビルドできないのでgcc-10にする必要があります </p><div class="fragment"><div class="line">sudo apt install gcc-10</div>
+</div><!-- fragment --><p>ubuntu20.04の場合デフォルトのコンパイラ(gcc-9)ではビルドできないのでgcc-10にする必要があります </p><div class="fragment"><div class="line">sudo apt install gcc-10 g++-10</div>
 <div class="line">export CC=gcc-10</div>
 <div class="line">export CXX=g++-10</div>
 </div><!-- fragment --> </details>
@@ -234,7 +231,7 @@ Build</h3>
 <li>その後、<a href="https://github.com/na-trium-144/webcface-webui/releases">webuiのReleases</a> からビルド済みのtar.gzのアーカイブをダウンロードして /usr/local/share/webcface/dist として展開する必要があります<ul>
 <li>install先が/usr/localでない場合はprefixを読み替えてください</li>
 <li>installしないでbuildディレクトリから起動する場合は、このリポジトリ直下にdist/を置いてください</li>
-<li>コマンドからやる場合は次のようになります <div class="fragment"><div class="line">curl -LO https://github.com/na-trium-144/webcface-webui/releases/download/v1.0.6/webcface-webui_1.0.6.tar.gz</div>
+<li>コマンドからやる場合は次のようになります <div class="fragment"><div class="line">curl -LO https://github.com/na-trium-144/webcface-webui/releases/download/v1.0.7/webcface-webui_1.0.7.tar.gz</div>
 <div class="line">tar zxvf webcface-webui*.tar.gz</div>
 <div class="line">sudo rm -rf /usr/local/share/webcface</div>
 <div class="line">sudo mkdir /usr/local/share/webcface</div>
@@ -254,7 +251,7 @@ Usage</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Nov 28 2023 14:11:05 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Wed Nov 29 2023 17:41:00 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>
