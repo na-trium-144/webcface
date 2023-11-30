@@ -44,8 +44,8 @@ debパッケージはubuntu22.04でビルドしています。20.04以前のubun
 
 例 (amd64の場合)
 ```sh
-curl -LO https://github.com/na-trium-144/webcface/releases/download/v1.1.8/webcface_1.1.8_amd64.deb
-curl -LO https://github.com/na-trium-144/webcface-webui/releases/download/v1.0.7/webcface-webui_1.0.7_all.deb
+curl -LO https://github.com/na-trium-144/webcface/releases/download/v1.1.9/webcface_1.1.9_amd64.deb
+curl -LO https://github.com/na-trium-144/webcface-webui/releases/download/v1.0.8/webcface-webui_1.0.8_all.deb
 curl -LO https://github.com/na-trium-144/webcface-tools/releases/download/v1.1.3/webcface-tools_1.1.3_amd64.deb
 sudo apt install ./webcface*.deb
 rm ./webcface*.deb
@@ -127,20 +127,27 @@ sudo cmake --build build -t install
 	* `-DWEBCFACE_INSTALL=on`でtergetのinstallをします(submoduleの場合デフォルトでoff)
 	* `-DWEBCFACE_TEST=on`でtestをビルドします(デフォルトでoff)
 		* テストが通らない場合テスト中の通信の待機時間を`-DWEBCFACE_TEST_TIMEOUT=100`などと伸ばすとうまく行く場合があります(デフォルト=10(ms))
-* その後、[webuiのReleases](https://github.com/na-trium-144/webcface-webui/releases) からビルド済みのtar.gzのアーカイブをダウンロードして /usr/local/share/webcface/dist として展開する必要があります
-	* install先が/usr/localでない場合はprefixを読み替えてください
-	* installしないでbuildディレクトリから起動する場合は、このリポジトリ直下にdist/を置いてください
-	* コマンドからやる場合は次のようになります
+* このリポジトリのみでビルドしてinstallする代わりに、webcfaceを使いたいプロジェクトでこのリポジトリをsubmoduleとして追加して使うこともできます。
+
+#### WebUI
+* serverを自分でビルドした場合は別途webuiを読み込ませる必要があります。
+* webuiはnode.jsを使って自分でビルドすることも可能ですが、[webuiのReleases](https://github.com/na-trium-144/webcface-webui/releases) からビルド済みのtar.gzのアーカイブをダウンロードして /usr/local/share/webcface/dist として展開するのが簡単です。
+* install先が/usr/localでない場合はprefixを読み替えてください
+* installしないでbuildディレクトリから起動する場合は、このリポジトリ直下にdist/を置いてください
+* コマンドからやる場合は次のようになります
 ```sh
-curl -LO https://github.com/na-trium-144/webcface-webui/releases/download/v1.0.7/webcface-webui_1.0.7.tar.gz
+curl -LO https://github.com/na-trium-144/webcface-webui/releases/download/v1.0.8/webcface-webui_1.0.8.tar.gz
 tar zxvf webcface-webui*.tar.gz
+```
+* /usr/local に展開する場合は次のようになります
+```sh
 sudo rm -rf /usr/local/share/webcface
 sudo mkdir /usr/local/share/webcface
 sudo mv dist /usr/local/share/webcface/dist
-rm webcface-webui*.tar.gz
 ```
 
-* このリポジトリのみでビルドしてinstallする代わりに、webcfaceを使いたいプロジェクトでこのリポジトリをsubmoduleとして追加して使うこともできます。
+#### tools
+* toolsは別途 https://github.com/na-trium-144/webcface-tools.git をcloneしてビルド、インストールしてください
 
 ## Documentation
 → [Tutorial](https://na-trium-144.github.io/webcface/md_00__tutorial.html)
