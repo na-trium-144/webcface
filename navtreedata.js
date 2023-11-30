@@ -34,7 +34,8 @@ var NAVTREE =
         [ "Build", "index.html#autotoc_md88", null ]
       ] ]
     ] ],
-    [ "Usage", "index.html#autotoc_md89", null ],
+    [ "Documentation", "index.html#autotoc_md89", null ],
+    [ "License", "index.html#autotoc_md90", null ],
     [ "Tutorial", "md_00__tutorial.html", [
       [ "環境構築", "md_00__tutorial.html#autotoc_md1", null ],
       [ "Server", "md_00__tutorial.html#autotoc_md2", null ],
@@ -177,11 +178,11 @@ var NAVTREEINDEX =
 "classWebCFace_1_1Log.html#abc837b37c9c9c8caf17e848fc8d18af0",
 "classWebCFace_1_1Value.html#a9406117fe96b34fa4af36e39c5ec5f52",
 "dir_8cc.html#a517f0d3943a35342a90516c2216784ae",
-"namespaceWebCFace.html#a5dcc1f15d6a60ca34207565aeb74124aad508fe45cecaf653904a0e774084bb5c",
+"namespaceWebCFace.html#a5dcc1f15d6a60ca34207565aeb74124aad487dd0b55dfcacdd920ccbdaeafa351",
 "structWebCFace_1_1Common_1_1DictTraits.html#a4f2ff0741e866f4f383ddbaaba558b46",
 "structWebCFace_1_1Common_1_1ViewComponentBase.html#a29db01528df533026a60f8bbdfeb5443",
 "structWebCFace_1_1Message_1_1Res_3_01Text_01_4.html#ad18fe2f1c629dd973e56e21ba23ec691",
-"text_8h.html#a7528ca9b8be7cf3baf4a1371085a5d87"
+"text_8h.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

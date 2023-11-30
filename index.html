@@ -169,7 +169,7 @@ Requirements</h3>
 <li><a href="https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-windows-gcc.yml"><img src="https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-windows-gcc.yml/badge.svg?branch=main" alt="CMake Test (Windows MinGW64 GCC)" style="pointer-events: none;" class="inline"/></a></li>
 </ul>
 </li>
-<li>webcfaceは外部ライブラリとして <a href="https://github.com/CrowCpp/Crow">crow</a>, <a href="https://github.com/curl/curl">libcurl</a>, <a href="https://github.com/wqking/eventpp">eventpp</a>, <a href="https://github.com/msgpack/msgpack-c">msgpack-cxx</a>, <a href="https://github.com/gabime/spdlog">spdlog</a>, <a href="https://github.com/CLIUtils/CLI11.git">cli11</a> を使用します。<ul>
+<li>webcfaceは外部ライブラリとして <a href="https://github.com/CrowCpp/Crow">crow</a>, <a href="https://github.com/chriskohlhoff/asio">asio</a>, <a href="https://github.com/curl/curl">libcurl</a>, <a href="https://github.com/wqking/eventpp">eventpp</a>, <a href="https://github.com/msgpack/msgpack-c">msgpack-cxx</a>, <a href="https://github.com/gabime/spdlog">spdlog</a>, <a href="https://github.com/CLIUtils/CLI11.git">cli11</a> を使用します。<ul>
 <li>システムにインストールされてなければsubmoduleにあるソースコードをビルドしますが、eventpp, msgpack, spdlog に関してはインストールされていればそれを使用します</li>
 <li>libcurlはwebsocket機能を有効にする必要があるためインストールされている場合でもソースからビルドします</li>
 <li>crowは暫定的にWindowsでSegmentation faultするバグを修正したもの(<a href="https://github.com/na-trium-144/Crow">na-trium-144/Crow</a> の fix-destructor-io-service ブランチ)を使用しています</li>
@@ -243,15 +243,29 @@ Build</h3>
 <li>このリポジトリのみでビルドしてinstallする代わりに、webcfaceを使いたいプロジェクトでこのリポジトリをsubmoduleとして追加して使うこともできます。</li>
 </ul>
 <h1><a class="anchor" id="autotoc_md89"></a>
-Usage</h1>
-<p>→ <a href="https://na-trium-144.github.io/webcface/md_00__tutorial.html">Tutorial</a> </p>
+Documentation</h1>
+<p>→ <a href="https://na-trium-144.github.io/webcface/md_00__tutorial.html">Tutorial</a></p>
+<h1><a class="anchor" id="autotoc_md90"></a>
+License</h1>
+<p>WebCFaceと関連するプログラムはすべてMITライセンスで公開しています。詳細は <a href="https://github.com/na-trium-144/webcface/blob/main/LICENSE">LICENSE</a> を参照してください。</p>
+<p>WebCFace本体とtoolsが使用しているサードパーティーのライブラリのライセンスはそれぞれ以下を参照してください。</p><ul>
+<li>Crow (BSD 3-Clause) : <a href="https://github.com/CrowCpp/Crow">https://github.com/CrowCpp/Crow</a></li>
+<li>Asio (Boost Software License) : <a href="http://think-async.com/Asio/">http://think-async.com/Asio/</a></li>
+<li>curl : <a href="https://curl.se/docs/copyright.html">https://curl.se/docs/copyright.html</a></li>
+<li>eventpp (Apache 2.0) : <a href="https://github.com/wqking/eventpp">https://github.com/wqking/eventpp</a></li>
+<li>msgpack-c (Boost Software License) : <a href="https://github.com/msgpack/msgpack-c">https://github.com/msgpack/msgpack-c</a></li>
+<li>spdlog (MIT) : <a href="https://github.com/gabime/spdlog">https://github.com/gabime/spdlog</a></li>
+<li>CLI11 (BSD 3-Clause) : <a href="https://github.com/CLIUtils/CLI11">https://github.com/CLIUtils/CLI11</a></li>
+<li>tiny-process-library (MIT) : <a href="https://gitlab.com/eidheim/tiny-process-library">https://gitlab.com/eidheim/tiny-process-library</a> (toolsで使用)</li>
+<li>toml++ (MIT) : <a href="https://github.com/marzer/tomlplusplus">https://github.com/marzer/tomlplusplus</a> (toolsで使用) </li>
+</ul>
 </div></div><!-- PageDoc -->
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Nov 29 2023 17:41:00 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Thu Nov 30 2023 10:07:08 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>
