@@ -44,7 +44,7 @@ debパッケージはubuntu22.04でビルドしています。20.04以前のubun
 
 例 (amd64の場合)
 ```sh
-curl -LO https://github.com/na-trium-144/webcface/releases/download/v1.1.8/webcface_1.1.8_amd64.deb
+curl -LO https://github.com/na-trium-144/webcface/releases/download/v1.1.9/webcface_1.1.9_amd64.deb
 curl -LO https://github.com/na-trium-144/webcface-webui/releases/download/v1.0.7/webcface-webui_1.0.7_all.deb
 curl -LO https://github.com/na-trium-144/webcface-tools/releases/download/v1.1.3/webcface-tools_1.1.3_amd64.deb
 sudo apt install ./webcface*.deb
