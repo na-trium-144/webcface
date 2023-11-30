@@ -374,8 +374,8 @@ TEST_F(ClientTest, viewReq) {
               ViewComponentType::new_line);
 }
 TEST_F(ClientTest, logSend) {
-    data_->logger_sink->push(
-        std::make_shared<LogLine>(0, std::chrono::system_clock::now(), "a"));
+    data_->logger_sink->push(std::make_shared<LogLine>(
+        0, std::chrono::system_clock::now(), std::string(100000, 'a')));
     data_->logger_sink->push(
         std::make_shared<LogLine>(1, std::chrono::system_clock::now(), "b"));
     wcli_->sync();
@@ -384,7 +384,7 @@ TEST_F(ClientTest, logSend) {
         [&](const auto &obj) {
             EXPECT_EQ(obj.log->size(), 2);
             EXPECT_EQ(obj.log->at(0).level, 0);
-            EXPECT_EQ(obj.log->at(0).message, "a");
+            EXPECT_EQ(obj.log->at(0).message.size(), 100000);
             EXPECT_EQ(obj.log->at(1).level, 1);
             EXPECT_EQ(obj.log->at(1).message, "b");
         },
@@ -418,7 +418,8 @@ TEST_F(ClientTest, logReq) {
                      10,
                      std::make_shared<std::deque<Message::Log::LogLine>>(
                          std::deque<Message::Log::LogLine>{
-                             LogLine{0, std::chrono::system_clock::now(), "a"},
+                             LogLine{0, std::chrono::system_clock::now(),
+                                     std::string(100000, 'a')},
                              LogLine{1, std::chrono::system_clock::now(), "b"},
                          })});
     wait();
@@ -426,7 +427,8 @@ TEST_F(ClientTest, logReq) {
     EXPECT_TRUE(data_->log_store.getRecv("a").has_value());
     EXPECT_EQ(data_->log_store.getRecv("a").value()->size(), 2);
     EXPECT_EQ(data_->log_store.getRecv("a").value()->at(0)->level, 0);
-    EXPECT_EQ(data_->log_store.getRecv("a").value()->at(0)->message, "a");
+    EXPECT_EQ(data_->log_store.getRecv("a").value()->at(0)->message.size(),
+              100000);
 
     dummy_s->send(
         Message::Log{{},

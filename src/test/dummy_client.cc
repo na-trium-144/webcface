@@ -32,18 +32,27 @@ DummyClient::DummyClient()
                       std::size_t rlen = 0;
                       const curl_ws_frame *meta = nullptr;
                       char buffer[1024];
-                      ret = curl_ws_recv(handle, buffer, sizeof(buffer), &rlen,
-                                         &meta);
-                      if (meta && meta->flags & CURLWS_CLOSE) {
-                          dummy_logger->debug("connection closed");
-                          break;
-                      }
-                      if (rlen == 0) {
+                      std::string buf_s;
+                      do {
+                          ret = curl_ws_recv(handle, buffer, sizeof(buffer),
+                                             &rlen, &meta);
+                          if (meta && meta->flags & CURLWS_CLOSE) {
+                              dummy_logger->debug("connection closed");
+                              break;
+                          } else if (meta && meta->offset > buf_s.size()) {
+                              buf_s.append(meta->offset - buf_s.size(), '\0');
+                              buf_s.append(buffer, rlen);
+                          } else if (meta && meta->offset < buf_s.size()) {
+                              buf_s.replace(meta->offset, rlen, buffer, rlen);
+                          } else {
+                              buf_s.append(buffer, rlen);
+                          }
+                      } while (meta && meta->bytesleft > 0);
+                      if (buf_s.empty()) {
                           break;
                       }
                       dummy_logger->trace("message received");
-                      auto unpacked = Message::unpack(std::string(buffer, rlen),
-                                                      dummy_logger);
+                      auto unpacked = Message::unpack(buf_s, dummy_logger);
                       for (const auto &m : unpacked) {
                           dummy_logger->info("kind {}", m.first);
                           recv_data.push_back(m);
