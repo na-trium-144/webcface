@@ -31,11 +31,13 @@ var NAVTREE =
       [ "Homebrew (MacOS, Linux)", "index.html#autotoc_md85", null ],
       [ "Build from source", "index.html#autotoc_md86", [
         [ "Requirements", "index.html#autotoc_md87", null ],
-        [ "Build", "index.html#autotoc_md88", null ]
+        [ "Build", "index.html#autotoc_md88", null ],
+        [ "WebUI", "index.html#autotoc_md89", null ],
+        [ "tools", "index.html#autotoc_md90", null ]
       ] ]
     ] ],
-    [ "Documentation", "index.html#autotoc_md89", null ],
-    [ "License", "index.html#autotoc_md90", null ],
+    [ "Documentation", "index.html#autotoc_md91", null ],
+    [ "License", "index.html#autotoc_md92", null ],
     [ "Tutorial", "md_00__tutorial.html", [
       [ "環境構築", "md_00__tutorial.html#autotoc_md1", null ],
       [ "Server", "md_00__tutorial.html#autotoc_md2", null ],
@@ -178,11 +180,11 @@ var NAVTREEINDEX =
 "classWebCFace_1_1Log.html#abc837b37c9c9c8caf17e848fc8d18af0",
 "classWebCFace_1_1Value.html#a9406117fe96b34fa4af36e39c5ec5f52",
 "dir_8cc.html#a517f0d3943a35342a90516c2216784ae",
-"namespaceWebCFace.html#a5dcc1f15d6a60ca34207565aeb74124aad487dd0b55dfcacdd920ccbdaeafa351",
-"structWebCFace_1_1Common_1_1DictTraits.html#a4f2ff0741e866f4f383ddbaaba558b46",
+"namespaceWebCFace.html#a5dcc1f15d6a60ca34207565aeb74124aabda9643ac6601722a28f238714274da4",
+"structWebCFace_1_1Common_1_1DictTraits.html",
 "structWebCFace_1_1Common_1_1ViewComponentBase.html#a29db01528df533026a60f8bbdfeb5443",
-"structWebCFace_1_1Message_1_1Res_3_01Text_01_4.html#ad18fe2f1c629dd973e56e21ba23ec691",
-"text_8h.html"
+"structWebCFace_1_1Message_1_1Res_3_01Text_01_4.html#aa22bc17c0d20ee3553902e62814df6b4",
+"structWebCFace_1_1Server_1_1Store.html#aeb7d6af279a21647ec5db33cbde1abb0"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

@@ -1,5 +1,7 @@
 var NAVTREEINDEX10 =
 {
+"structWebCFace_1_1Server_1_1Store.html#aeb7d6af279a21647ec5db33cbde1abb0":[13,0,0,3,2,6],
+"structWebCFace_1_1Server_1_1Store.html#aeb7d6af279a21647ec5db33cbde1abb0":[14,0,0,2,2,6],
 "text_8h.html":[15,0,1,0,10],
 "text_8h.html#a7528ca9b8be7cf3baf4a1371085a5d87":[15,0,1,0,10,1],
 "text_8h_source.html":[15,0,1,0,10],
