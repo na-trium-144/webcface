@@ -206,6 +206,7 @@ set(CLI_SRC
     ${CPP_DIR}/client/func.cc
     ${CPP_DIR}/client/logger.cc
     ${CPP_DIR}/client/member.cc
+    ${CPP_DIR}/client/version.cc
 )
 set(EXAMPLE_SRC
     ${CPP_DIR}/example/main.cc
