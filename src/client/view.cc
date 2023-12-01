@@ -43,6 +43,7 @@ View &View::sync() {
     std::flush(*this);
     if (sb.modified) {
         set(sb.components);
+        sb.modified = false;
     }
     return *this;
 }
