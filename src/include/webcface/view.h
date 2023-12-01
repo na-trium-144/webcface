@@ -85,32 +85,15 @@ class ViewBuf : public std::stringbuf {
   public:
     //! 送信用のデータ
     std::vector<ViewComponent> components;
+    bool modified = false;
     //! std::flush時に呼ばれる
-    int sync() override {
-        std::string s = this->str();
-        while (true) {
-            auto p = s.find('\n');
-            if (p == std::string::npos) {
-                break;
-            }
-            std::string c1 = s.substr(0, p);
-            if (!c1.empty()) {
-                components.push_back(ViewComponents::text(c1));
-            }
-            components.push_back(ViewComponents::newLine());
-            s = s.substr(p + 1);
-        }
-        if (!s.empty()) {
-            components.push_back(ViewComponents::text(s));
-        }
-        this->str("");
-        return 0;
-    }
+    WEBCFACE_DLL int sync() override;
 
     ViewBuf() : std::stringbuf(std::ios_base::out) {}
     ViewBuf(const ViewBuf &rhs) : ViewBuf() { *this = rhs; }
     ViewBuf &operator=(const ViewBuf &rhs) {
         this->components = rhs.components;
+        this->modified = rhs.modified;
         return *this;
     }
 };
@@ -157,11 +140,14 @@ class View : protected Field, public EventTarget<View>, public std::ostream {
     //! 値やリクエスト状態をクリア
     WEBCFACE_DLL View &free();
 
-    //! このViewのViewBufの内容を初期化する (コンストラクタ内でも自動で呼ばれる)
-    View &init() {
-        sb.components.clear();
-        return *this;
-    }
+    //! このViewのViewBufの内容を初期化する
+    /*!
+     * * ver1.1まで: コンストラクタでも自動で呼ばれる。
+     * * ver1.2以降:
+     * このViewオブジェクトに追加された内容をクリアし、内容を変更済みとしてマークする
+     * (init() 後に sync() をするとViewの内容が空になる)
+     */
+    WEBCFACE_DLL View &init();
     //! 文字列にフォーマットし、textコンポーネントとして追加
     /*!
      * std::ostream::operator<< でも同様の動作をするが、returnする型が異なる
@@ -177,30 +163,36 @@ class View : protected Field, public EventTarget<View>, public std::ostream {
         return *this;
     }
     //! コンポーネントを追加
+    /*!
+     * std::flushも呼び出すことで直前に追加した未flashの文字列なども確実に追加する
+     */
     View &operator<<(const Common::ViewComponentBase &vc) {
-        setCheck();
-        std::flush(*this);
-        sb.components.push_back(ViewComponent{vc, this->data_w});
+        *this << ViewComponent{vc, this->data_w};
         return *this;
     }
     //! コンポーネントを追加
-    View &operator<<(const ViewComponent &vc) {
-        setCheck();
-        std::flush(*this);
-        sb.components.push_back(vc);
-        return *this;
-    }
-    //! コンポーネントなどを追加 (operator<< と同じ)
+    /*!
+     * std::flushも呼び出すことで直前に追加した未flashの文字列なども確実に追加する
+     */
+    WEBCFACE_DLL View &operator<<(const ViewComponent &vc);
+
+    //! コンポーネントなどを追加
+    /*!
+     * Tの型に応じた operator<< が呼ばれる
+     */
     template <typename T>
     View &add(const T &rhs) {
         *this << rhs;
         return *this;
     }
 
-    //! Viewの内容をclientに反映し送信可能にする (デストラクタで自動で呼ばれる)
-    View &sync() {
-        std::flush(*this);
-        return set(sb.components);
-    }
+    //! Viewの内容をclientに反映し送信可能にする
+    /*!
+     * デストラクタでも自動で呼ばれる。
+     *
+     * * ver1.2以降: このViewオブジェクトの内容が変更されていなければ
+     * (init()も追加もされていなければ) 何もしない。
+     */
+    WEBCFACE_DLL View &sync();
 };
 } // namespace webcface

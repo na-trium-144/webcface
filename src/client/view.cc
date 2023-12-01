@@ -33,16 +33,52 @@ ViewComponent &ViewComponent::onClick(const Func &func) {
 View::View(const Field &base)
     : Field(base), EventTarget<View>(&this->dataLock()->view_change_event,
                                      *this),
-      sb(), std::ostream(&sb) {
-
-    if (dataLock()->isSelf(member_)) {
-        init();
+      sb(), std::ostream(&sb) {}
+View &View::init() {
+    sb.components.clear();
+    sb.modified = true;
+    return *this;
+}
+View &View::sync() {
+    std::flush(*this);
+    if (sb.modified) {
+        set(sb.components);
     }
+    return *this;
 }
 View::~View() {
     if (data_w.lock() != nullptr && dataLock()->isSelf(member_)) {
         sync();
     }
+}
+View &View::operator<<(const ViewComponent &vc) {
+    setCheck();
+    std::flush(*this);
+    sb.components.push_back(vc);
+    sb.modified = true;
+    return *this;
+}
+int ViewBuf::sync() {
+    std::string s = this->str();
+    while (true) {
+        auto p = s.find('\n');
+        if (p == std::string::npos) {
+            break;
+        }
+        std::string c1 = s.substr(0, p);
+        if (!c1.empty()) {
+            components.push_back(ViewComponents::text(c1));
+        }
+        components.push_back(ViewComponents::newLine());
+        s = s.substr(p + 1);
+        modified = true;
+    }
+    if (!s.empty()) {
+        components.push_back(ViewComponents::text(s));
+        modified = true;
+    }
+    this->str("");
+    return 0;
 }
 
 View &View::operator=(const View &rhs) {
