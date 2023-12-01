@@ -60,6 +60,7 @@ TEST_F(ViewTest, viewSet) {
     v.sync();
     EXPECT_EQ(callback_called, 1);
     auto &view_data = **data_->view_store.getRecv(self_name, "b");
+    EXPECT_EQ(view_data.size(), 8);
     EXPECT_EQ(view_data[0].type_, ViewComponentType::text);
     EXPECT_EQ(view_data[0].text_, "a");
     EXPECT_EQ(view_data[1].type_, ViewComponentType::new_line);
@@ -98,6 +99,25 @@ TEST_F(ViewTest, viewSet) {
     }
     EXPECT_EQ(callback_called, 3);
     EXPECT_EQ((*data_->view_store.getRecv(self_name, "b"))->size(), 1);
+
+    {
+        View v3;
+        {
+            View v4 = view(self_name, "b");
+            v4 << "a";
+            v3 = v4;
+        } // v3にコピーされてるのでまだsyncされない
+        EXPECT_EQ(callback_called, 3);
+    } // v3のデストラクタでsyncされる
+    EXPECT_EQ(callback_called, 4);
+
+    {
+        View v5{};
+    } // エラーやセグフォしない
+    
+    View v6{};
+    v6 << "a";
+    EXPECT_THROW(v6.sync(), std::runtime_error);
 }
 TEST_F(ViewTest, viewGet) {
     auto vd = std::make_shared<std::vector<ViewComponentBase>>(

@@ -90,33 +90,40 @@ class ViewBuf : public std::stringbuf {
     WEBCFACE_DLL int sync() override;
 
     ViewBuf() : std::stringbuf(std::ios_base::out) {}
-    ViewBuf(const ViewBuf &rhs) : ViewBuf() { *this = rhs; }
-    ViewBuf &operator=(const ViewBuf &rhs) {
-        this->components = rhs.components;
-        this->modified = rhs.modified;
-        return *this;
-    }
+    ViewBuf(const ViewBuf &) = delete;
+    ViewBuf &operator=(const ViewBuf &) = delete;
 };
 
 //! Viewの送受信データを表すクラス
 /*! コンストラクタではなく Member::view() を使って取得してください
  */
 class View : protected Field, public EventTarget<View>, public std::ostream {
-    ViewBuf sb;
+    std::shared_ptr<ViewBuf> sb;
+
     WEBCFACE_DLL void onAppend() const override;
 
     //! 値をセットし、EventTargetを発動する
     WEBCFACE_DLL View &set(std::vector<ViewComponent> &v);
+    
+    WEBCFACE_DLL void onDestroy();
 
   public:
-    View() : Field(), EventTarget<View>(), sb(), std::ostream(&sb) {}
+    WEBCFACE_DLL View();
     WEBCFACE_DLL View(const Field &base);
     View(const Field &base, const std::string &field)
         : View(Field{base, field}) {}
     View(const View &rhs) : View() { *this = rhs; }
     WEBCFACE_DLL View &operator=(const View &rhs);
+    WEBCFACE_DLL View &operator=(View &&rhs);
 
-    WEBCFACE_DLL ~View();
+    //! デストラクタで sync() を呼ぶ。
+    /*!
+     * * ver1.2以降:
+     * Viewをコピーした場合は、すべてのコピーが破棄されたときにのみ sync()
+     * が呼ばれる。
+     * \sa sync()
+     */
+    ~View() { onDestroy(); }
 
     using Field::member;
     using Field::name;
@@ -188,8 +195,6 @@ class View : protected Field, public EventTarget<View>, public std::ostream {
 
     //! Viewの内容をclientに反映し送信可能にする
     /*!
-     * デストラクタでも自動で呼ばれる。
-     *
      * * ver1.2以降: このViewオブジェクトの内容が変更されていなければ
      * (init()も追加もされていなければ) 何もしない。
      */

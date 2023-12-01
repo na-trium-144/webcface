@@ -30,33 +30,40 @@ ViewComponent &ViewComponent::onClick(const Func &func) {
 }
 
 
+View::View()
+    : Field(), EventTarget<View>(),
+      sb(std::make_shared<ViewBuf>()), std::ostream() {
+    this->rdbuf(sb.get());
+}
 View::View(const Field &base)
     : Field(base), EventTarget<View>(&this->dataLock()->view_change_event,
                                      *this),
-      sb(), std::ostream(&sb) {}
+      sb(std::make_shared<ViewBuf>()), std::ostream() {
+    this->rdbuf(sb.get());
+}
 View &View::init() {
-    sb.components.clear();
-    sb.modified = true;
+    sb->components.clear();
+    sb->modified = true;
     return *this;
 }
 View &View::sync() {
     std::flush(*this);
-    if (sb.modified) {
-        set(sb.components);
-        sb.modified = false;
+    if (sb->modified) {
+        set(sb->components);
+        sb->modified = false;
     }
     return *this;
 }
-View::~View() {
-    if (data_w.lock() != nullptr && dataLock()->isSelf(member_)) {
+void View::onDestroy() {
+    if (sb.use_count() == 1 && data_w.lock() != nullptr &&
+        dataLock()->isSelf(member_)) {
         sync();
     }
 }
 View &View::operator<<(const ViewComponent &vc) {
-    setCheck();
     std::flush(*this);
-    sb.components.push_back(vc);
-    sb.modified = true;
+    sb->components.push_back(vc);
+    sb->modified = true;
     return *this;
 }
 int ViewBuf::sync() {
@@ -83,12 +90,23 @@ int ViewBuf::sync() {
 }
 
 View &View::operator=(const View &rhs) {
+    onDestroy();
     this->Field::operator=(rhs);
     this->EventTarget<View>::operator=(rhs);
     this->sb = rhs.sb;
+    this->rdbuf(sb.get());
+    return *this;
+}
+View &View::operator=(View &&rhs) {
+    onDestroy();
+    this->Field::operator=(std::move(rhs));
+    this->EventTarget<View>::operator=(std::move(rhs));
+    this->sb = std::move(rhs.sb);
+    this->rdbuf(sb.get());
     return *this;
 }
 View &View::set(std::vector<ViewComponent> &v) {
+    setCheck();
     std::vector<ViewComponentBase> vb(v.size());
     for (std::size_t i = 0; i < v.size(); i++) {
         vb[i] =
