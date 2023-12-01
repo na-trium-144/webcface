@@ -43,7 +43,9 @@ v.sync(); // ここまでにvに追加したものをクライアントに反映
 
 wcli.sync();
 ```
-C++ではViewのデストラクタでも自動的にView.sync()が呼ばれます。
+C++ではViewのデストラクタでも自動的にView.sync()が呼ばれます。  
+![ver1.2から](https://img.shields.io/badge/ver1.2~-00599c?logo=C%2B%2B)
+Viewオブジェクトをコピーした場合、Viewオブジェクトの内容はコピーされるのではなく共有され、そのすべてのコピーが破棄されるまでsync()は呼ばれません。
 ```cpp
 {
 	webcface::View v = wcli.view("hoge");
@@ -54,6 +56,7 @@ C++ではViewのデストラクタでも自動的にView.sync()が呼ばれま�
 
 wcli.sync();
 ```
+
 
 Pythonでも使い方はC++と同様です。
 Pythonではwith構文を使って `with wcli.view("hoge") as v:` などとするとwithを抜けるときに自動でv.sync()がされます。
@@ -131,7 +134,7 @@ v.add(button("表示する文字列", [](){ /* ... */ }));
 ```
 
 ### プロパティ
-文字色や背景色など各Componentに共通のプロパティがあります。( webcface::ViewComponent を参照)
+文字色や背景色など各Componentに共通のプロパティがあります。( webcface::ViewComponent を参照)  
 文字列の表示に対しても、明示的に`text(文字列)`という書き方にすればオプションを追加できます。
 
 C++では

@@ -100,7 +100,8 @@ Client::funcs()でその関数の存在を確認したりFunc::args()などで�
 名前がわかっていれば他Memberからでも実行は可能です。
 
 * C++では func.hidden(true) で設定できます。
-* JavaScript, Pythonではset()関数(Pythonデコレータの場合はfunc())の引数に指定することで設定できます。
+* ![js ver1.0.4から](https://img.shields.io/badge/ver1.0.4~-f7df1e?logo=JavaScript&logoColor=black)
+JavaScript, Pythonではset()関数(Pythonデコレータの場合はfunc())の引数に指定することで設定できます。
 
 ### 実行条件 (C++)
 
