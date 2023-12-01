@@ -4,8 +4,7 @@
 [![release](https://img.shields.io/github/v/release/na-trium-144/webcface)](https://github.com/na-trium-144/webcface/releases)
 [![coverage](https://raw.githubusercontent.com/na-trium-144/webcface/badge/coverage.svg)](https://github.com/na-trium-144/webcface/actions/workflows/cmake-coverage.yml)  
 [![python](https://img.shields.io/badge/python-work_in_progress-red?logo=Python&logoColor=white)](https://github.com/na-trium-144/webcface-python/tree/dev)  
-[![javascript](https://img.shields.io/badge/JavaScript-gray?logo=JavaScript&logoColor=white)](https://github.com/na-trium-144/webcface-js)
-[![typescript](https://img.shields.io/badge/TypeScript-gray?logo=TypeScript&logoColor=white)](https://github.com/na-trium-144/webcface-js)
+[![javascript](https://img.shields.io/badge/JavaScript%2C%20TypeScript-gray?logo=JavaScript&logoColor=white)](https://github.com/na-trium-144/webcface-js)
 [![npm](https://img.shields.io/npm/v/webcface)](https://www.npmjs.com/package/webcface)
 
 Web-based RPC &amp; UI Library
@@ -45,7 +44,7 @@ debパッケージはubuntu22.04でビルドしています。20.04以前のubun
 例 (amd64の場合)
 ```sh
 curl -LO https://github.com/na-trium-144/webcface/releases/download/v1.1.9/webcface_1.1.9_amd64.deb
-curl -LO https://github.com/na-trium-144/webcface-webui/releases/download/v1.0.8/webcface-webui_1.0.8_all.deb
+curl -LO https://github.com/na-trium-144/webcface-webui/releases/download/v1.0.10/webcface-webui_1.0.10_all.deb
 curl -LO https://github.com/na-trium-144/webcface-tools/releases/download/v1.1.3/webcface-tools_1.1.3_amd64.deb
 sudo apt install ./webcface*.deb
 rm ./webcface*.deb
@@ -136,7 +135,7 @@ sudo cmake --build build -t install
 * installしないでbuildディレクトリから起動する場合は、このリポジトリ直下にdist/を置いてください
 * コマンドからやる場合は次のようになります
 ```sh
-curl -LO https://github.com/na-trium-144/webcface-webui/releases/download/v1.0.8/webcface-webui_1.0.8.tar.gz
+curl -LO https://github.com/na-trium-144/webcface-webui/releases/download/v1.0.10/webcface-webui_1.0.10.tar.gz
 tar zxvf webcface-webui*.tar.gz
 ```
 * /usr/local に展開する場合は次のようになります
