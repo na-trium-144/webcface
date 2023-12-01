@@ -1,3 +1,14 @@
+## [1.1.9] - 2023-11-30
+### Fixed
+* 1024バイト以上の文字列を受信可能にした (#111)
+* unpack時にエラーが発生した場合にcatchするようにした (#112)
+### Changed
+* libcurlの不要な機能を無効化 (#101)
+### Added
+* namespaceを小文字の`webcface`にしても使用できるようにした (#106)
+* サーバーが保持するログを直近1000行に制限し、それを変更するオプションを追加 (#105, #110)
+* Readmeにライセンス表記を追加
+
 ## [1.1.8] - 2023-11-20
 ### Fixed
 * brewでインストールしたspdlog,fmtを使ったときのビルドエラーを修正 (#97)
@@ -6,6 +17,7 @@
 ### Changed
 * クライアントのwebsocketライブラリをlibcurlに、サーバー側をcrowに変更 (#90)
 * webuiのURLを http://ipアドレス:7530/index.html に変更
+* WebCFace::stderr_sink と WebCFace::logger_internal_level をdeprecatedにした
 ### Added
 * 環境変数`WEBCFACE_VERBOSE`, `WEBCFACE_TRACE`でデバッグ情報を表示できるようにした
 * サーバー側でデバッグ情報を表示できる`-v`オプション追加

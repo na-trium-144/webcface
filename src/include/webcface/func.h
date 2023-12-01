@@ -1,17 +1,20 @@
 #pragma once
 #include <vector>
-#include "client_data.h"
 #include "common/func.h"
 #include "common/val.h"
 #include "func_result.h"
 #include "common/def.h"
 
-namespace WebCFace {
+namespace webcface {
+namespace Internal {
+struct ClientData;
+}
 
 namespace FuncWrapper {
 
 //! Client::sync() まで待機し、実行完了までsync()をブロックするFuncWrapper
-WEBCFACE_DLL FuncWrapperType runCondOnSync(const std::weak_ptr<ClientData> &data);
+WEBCFACE_DLL FuncWrapperType
+runCondOnSync(const std::weak_ptr<Internal::ClientData> &data);
 //! ScopeGuardをロックするFuncWrapper
 template <typename ScopeGuard>
 inline FuncWrapperType runCondScopeGuard() {
@@ -33,7 +36,7 @@ class Func : protected Field {
     friend AnonymousFunc;
 
     Func() = default;
-    Func(const Field &base) : Field(base) {}
+    WEBCFACE_DLL Func(const Field &base);
     Func(const Field &base, const std::string &field)
         : Func(Field{base, field}) {}
 
@@ -41,38 +44,31 @@ class Func : protected Field {
     using Field::name;
 
   private:
-    auto &set(const std::shared_ptr<FuncInfo> &v) {
-        setCheck();
-        dataLock()->func_store.setSend(*this, v);
-        return *this;
+    WEBCFACE_DLL Func &setRaw(const std::shared_ptr<FuncInfo> &v);
+    Func &setRaw(const FuncInfo &v) {
+        return setRaw(std::make_shared<FuncInfo>(v));
     }
-    auto &set(const FuncInfo &v) { return set(std::make_shared<FuncInfo>(v)); }
+    WEBCFACE_DLL FuncWrapperType getDefaultFuncWrapper() const;
 
   public:
     //! 関数からFuncInfoを構築しセットする
     template <typename T>
-    auto &set(const T &func) {
-        return this->set(
-            FuncInfo{std::function{func}, dataLock()->default_func_wrapper});
+    Func &set(const T &func) {
+        return this->setRaw(
+            FuncInfo{std::function{func}, getDefaultFuncWrapper()});
     }
     //! 関数からFuncInfoを構築しセットする
     template <typename T>
-    auto &operator=(const T &func) {
+    Func &operator=(const T &func) {
         return this->set(func);
     }
 
     //! 関数を関数リストで非表示にする
     //! (他clientのentryに表示されなくする)
-    auto &hidden(bool hidden) {
-        setCheck();
-        dataLock()->func_store.setHidden(*this, hidden);
-        return *this;
-    }
+    WEBCFACE_DLL Func &hidden(bool hidden);
+
     //! 関数の設定を削除
-    auto &free() {
-        dataLock()->func_store.unsetRecv(*this);
-        return *this;
-    }
+    WEBCFACE_DLL Func &free();
 
     //! 関数を実行する (同期)
     /*! selfの関数の場合、このスレッドで直接実行する
@@ -112,6 +108,7 @@ class Func : protected Field {
     //! 引数の情報を返す
     //! 変更するにはsetArgsを使う(このvectorの中身を書き換えても反映されない)
     WEBCFACE_DLL std::vector<Arg> args() const;
+
     const Arg args(std::size_t i) const { return args().at(i); }
 
     //! 引数の情報を更新する
@@ -153,11 +150,8 @@ class Func : protected Field {
 };
 
 //! 名前を指定せず先に関数を登録するFunc
-class WEBCFACE_DLL AnonymousFunc : public Func {
-    static std::string fieldNameTmp() {
-        static int id = 0;
-        return ".tmp" + std::to_string(id++);
-    }
+class AnonymousFunc : public Func {
+    WEBCFACE_DLL static std::string fieldNameTmp();
 
     std::function<void(AnonymousFunc &)> func_setter = nullptr;
     bool base_init = false;
@@ -179,15 +173,6 @@ class WEBCFACE_DLL AnonymousFunc : public Func {
     }
 
     //! targetに関数を移動
-    void lockTo(Func &target) {
-        if (!base_init) {
-            this->data_w = target.data_w;
-            this->member_ = target.member_;
-            this->field_ = fieldNameTmp();
-            func_setter(*this);
-        }
-        target.set(dataLock()->func_store.getRecv(*this).value());
-        this->free();
-    }
+    WEBCFACE_DLL void lockTo(Func &target);
 };
-} // namespace WebCFace
+} // namespace webcface

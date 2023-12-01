@@ -1,6 +1,6 @@
 # View
 
-API Reference → WebCFace::View, WebCFace::ViewComponent
+API Reference → webcface::View, webcface::ViewComponent
 
 Viewデータを送受信します。
 
@@ -9,19 +9,19 @@ Viewは文字列やボタンなどの要素(ViewComponent)を並べて、オリ�
 
 Member::view() でViewクラスのオブジェクトが得られます
 ```cpp
-WebCFace::View view_hoge = wcli.member("a").view("hoge");
+webcface::View view_hoge = wcli.member("a").view("hoge");
 ```
 
 Member::views() でそのMemberが送信しているviewのリストが得られます
 ```cpp
-for(const WebCFace::View &v: wcli.member("a").views()){
+for(const webcface::View &v: wcli.member("a").views()){
 	// ...
 }
 ```
 
 Member::onViewEntry() で新しくデータが追加されたときのコールバックを設定できます
 ```cpp
-wcli.member("a").onViewEntry().appendListener([](WebCFace::View v){ /* ... */ });
+wcli.member("a").onViewEntry().appendListener([](webcface::View v){ /* ... */ });
 ```
 
 ## 送信
@@ -34,7 +34,7 @@ View::add() などで要素を追加し、
 * Pythonではwith構文を使って `with wcli.view("hoge") as v:` などとするとwithを抜けるときに自動でv.sync()がされます。
 ```cpp
 {
-	WebCFace::View v = wcli.view("hoge");
+	webcface::View v = wcli.view("hoge");
 	// v.init(); (自動で呼ばれる)
 	v.add(...);
 	v.add(...);
@@ -49,7 +49,6 @@ wcli.sync();
 Viewオブジェクトを毎回生成・破棄せず使いまわす場合は、add()が一通り終わった後にView::sync()を呼び、最初のadd()の前に View::init() でViewを初期化する必要があります
 (そうしないとそれまでaddしたデータに追加されてしまう)
 
-
 JavaScriptの場合、add(), init(), sync()は用意されておらず、set()の引数に要素をまとめてセットして使います。
 ```js
 wcli.view("hoge").set([
@@ -62,14 +61,13 @@ wcli.view("hoge").set([
 ## ViewComponent
 Viewに追加する各種要素をViewComponentといいます。
 
-* C++では `WebCFace::ViewComponents` 名前空間に定義されています。 `using namespace WebCFace::ViewComponents;`をすると便利かもしれません
+* C++では `webcface::ViewComponents` 名前空間に定義されています。 `using namespace webcface::ViewComponents;`をすると便利かもしれません
 * Pythonでは `webcface.view_somponents` モジュール内にあり、`from webcface.view_components import *` ができます
 * JavaScriptでは `viewComponents` オブジェクト内にあります
 
 ### text
 文字列です。そのまま表示します。
-`WebCFace::ViewComponents::text(文字列)` の他、ostreamでフォーマット可能なデータはそのまま渡して文字列化できます
-
+`webcface::ViewComponents::text(文字列)` の他、ostreamでフォーマット可能なデータはそのまま渡して文字列化できます。  
 View::add()関数, set()関数では数値やbool値は文字列に変換されます。
 
 以下はいずれも「hello」という文字列を表示します。
@@ -77,14 +75,14 @@ View::add()関数, set()関数では数値やbool値は文字列に変換され�
 v.add("hello");
 v << "hello";
 v << "he" << "llo";
-using namespace WebCFace::ViewComponents;
+using namespace webcface::ViewComponents;
 v.add(text("hello"));
 v << text("hello");
 ```
 
 ### newLine
 改行します。
-`WebCFace::ViewComponents::newLine()` の他、`std::endl`や`"\n"`でも改行できます
+`webcface::ViewComponents::newLine()` の他、`std::endl`や`"\n"`でも改行できます
 
 文字列中に`\n`があるとそこで改行されます。
 以下はいずれも「hello」を2行表示します。
@@ -93,7 +91,7 @@ v.add("hello\nhello");
 v.add("hello").add("\n").add("hello");
 v << "hello\nhello";
 v << "hello" << std::endl << "hello";
-using namespace WebCFace::ViewComponents;
+using namespace webcface::ViewComponents;
 v.add(text("hello")).add(newLine()).add(text("hello"));
 v << text("hello") << newLine() << text("hello");
 ```
@@ -105,18 +103,18 @@ v << text("hello") << newLine() << text("hello");
 
 (AnonymousFuncオブジェクトを渡せるようにする予定だが未実装)
 ```cpp
-using namespace WebCFace::ViewComponents;
+using namespace webcface::ViewComponents;
 v.add(button("表示する文字列", wcli.func("func name")));
 // v.add(button("表示する文字列", wcli.func([](){ /* ... */ }))); 未実装
 v.add(button("表示する文字列", [](){ /* ... */ }));
 ```
 
 ### プロパティ
-文字色や背景色など各Componentに共通のプロパティがあります。( WebCFace::ViewComponent を参照)
+文字色や背景色など各Componentに共通のプロパティがあります。( webcface::ViewComponent を参照)
 
 C++では
 ```cpp
-button("文字列", func).textColor(WebCFace::ViewColor::white).bgColor(WebCFace::ViewColor::red)
+button("文字列", func).textColor(webcface::ViewColor::white).bgColor(webcface::ViewColor::red)
 ```
 のようにメソッドチェーンして指定できます。
 

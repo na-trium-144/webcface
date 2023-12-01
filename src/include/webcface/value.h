@@ -4,33 +4,27 @@
 #include <chrono>
 #include <memory>
 #include "common/dict.h"
+#include "common/vector.h"
 #include "field.h"
-#include "client_data.h"
 #include "event_target.h"
 
-namespace WebCFace {
+namespace webcface {
+namespace Internal {
+struct ClientData;
+}
+class Member;
 
 //! 実数値またはその配列の送受信データを表すクラス
-/*! コンストラクタではなく Member::value(), Member::values(), Member::onValueEntry() を使って取得してください
+/*! コンストラクタではなく Member::value(), Member::values(),
+ * Member::onValueEntry() を使って取得してください
  */
 class Value : protected Field, public EventTarget<Value> {
-
-    void onAppend() const override { tryGet(); }
-
-    // set(Dict)の内部でつかう
-    Value &set(const std::shared_ptr<VectorOpt<double>> &v) {
-        setCheck();
-        dataLock()->value_store.setSend(*this, v);
-        this->triggerEvent(*this);
-        return *this;
-    }
+    WEBCFACE_DLL void onAppend() const override;
 
   public:
     Value() = default;
-    Value(const Field &base)
-        : Field(base), EventTarget<Value>(&this->dataLock()->value_change_event,
-                                          *this) {}
-    Value(const Field &base, const std::string &field)
+    WEBCFACE_DLL Value(const Field &base);
+    WEBCFACE_DLL Value(const Field &base, const std::string &field)
         : Value(Field{base, field}) {}
 
     using Field::member;
@@ -46,21 +40,9 @@ class Value : protected Field, public EventTarget<Value> {
 
     using Dict = Common::Dict<std::shared_ptr<Common::VectorOpt<double>>>;
     //! Dictの値を再帰的にセットする
-    Value &set(const Dict &v) {
-        if (v.hasValue()) {
-            set(v.getRaw());
-        } else {
-            for (const auto &it : v.getChildren()) {
-                child(it.first).set(it.second);
-            }
-        }
-        return *this;
-    }
+    WEBCFACE_DLL Value &set(const Dict &v);
     //! 数値または配列をセットする
-    Value &set(const VectorOpt<double> &v) {
-        set(std::make_shared<VectorOpt<double>>(v));
-        return *this;
-    }
+    WEBCFACE_DLL Value &set(const VectorOpt<double> &v);
 
     //! Dictの値を再帰的にセットする
     Value &operator=(const Dict &v) {
@@ -74,27 +56,11 @@ class Value : protected Field, public EventTarget<Value> {
     }
 
     //! 値を返す
-    std::optional<double> tryGet() const {
-        auto v = dataLock()->value_store.getRecv(*this);
-        if (v) {
-            return **v;
-        } else {
-            return std::nullopt;
-        }
-    }
+    WEBCFACE_DLL std::optional<double> tryGet() const;
     //! 値をvectorで返す
-    std::optional<std::vector<double>> tryGetVec() const {
-        auto v = dataLock()->value_store.getRecv(*this);
-        if (v) {
-            return **v;
-        } else {
-            return std::nullopt;
-        }
-    }
+    WEBCFACE_DLL std::optional<std::vector<double>> tryGetVec() const;
     //! 値を再帰的に取得しDictで返す
-    std::optional<Dict> tryGetRecurse() const {
-        return dataLock()->value_store.getRecvRecurse(*this);
-    }
+    WEBCFACE_DLL std::optional<Dict> tryGetRecurse() const;
     //! 値を返す
     double get() const { return tryGet().value_or(0); }
     //! 値をvectorで返す
@@ -107,17 +73,10 @@ class Value : protected Field, public EventTarget<Value> {
     operator std::vector<double>() const { return getVec(); }
     operator Dict() const { return getRecurse(); }
     //! syncの時刻を返す
-    std::chrono::system_clock::time_point time() const {
-        return dataLock()
-            ->sync_time_store.getRecv(this->member_)
-            .value_or(std::chrono::system_clock::time_point());
-    }
+    WEBCFACE_DLL std::chrono::system_clock::time_point time() const;
 
     //! 値やリクエスト状態をクリア
-    Value &free() {
-        dataLock()->value_store.unsetRecv(*this);
-        return *this;
-    }
+    WEBCFACE_DLL Value &free();
 
     Value &operator+=(double rhs) {
         this->set(this->get() + rhs);
@@ -187,9 +146,8 @@ class Value : protected Field, public EventTarget<Value> {
 };
 
 
-inline std::ostream &operator<<(std::ostream &os,
-                                            const Value &data) {
+inline std::ostream &operator<<(std::ostream &os, const Value &data) {
     return os << data.get();
 }
 
-} // namespace WebCFace
+} // namespace webcface

@@ -8,8 +8,8 @@
 #include <cstdint>
 #include "val.h"
 
-namespace WebCFace {
-//! WebCFace::Commonはserverとclientで共通のheader-onlyなクラス
+namespace webcface {
+//! webcface::Commonはserverとclientで共通のheader-onlyなクラス
 inline namespace Common {
 
 using FuncType = std::function<ValAdaptor(const std::vector<ValAdaptor> &)>;
@@ -17,7 +17,8 @@ using FuncWrapperType =
     std::function<ValAdaptor(FuncType, const std::vector<ValAdaptor> &)>;
 
 //! 引数の情報を表す。
-/*! func.setArg({ Arg(引数名).init(初期値).min(最小値).max(最大値), ... }); のように使う
+/*! func.setArg({ Arg(引数名).init(初期値).min(最小値).max(最大値), ... });
+ * のように使う
  */
 class Arg {
   protected:
@@ -137,6 +138,7 @@ struct FuncInfo {
     std::vector<Arg> args;
     FuncType func_impl;
     FuncWrapperType func_wrapper;
+    bool hidden;
     auto run(const std::vector<ValAdaptor> &args) {
         if (func_wrapper) {
             return func_wrapper(func_impl, args);
@@ -146,7 +148,8 @@ struct FuncInfo {
     }
 
     FuncInfo()
-        : return_type(ValType::none_), args(), func_impl(), func_wrapper() {}
+        : return_type(ValType::none_), args(), func_impl(), func_wrapper(),
+          hidden(false) {}
     //! 任意の関数を受け取り、引数と戻り値をキャストして実行する関数を保存
     template <typename... Args, typename Ret>
     explicit FuncInfo(std::function<Ret(Args...)> func, FuncWrapperType wrapper)
@@ -168,7 +171,7 @@ struct FuncInfo {
                   return static_cast<ValAdaptor>(ret);
               }
           }),
-          func_wrapper(wrapper) {}
+          func_wrapper(wrapper), hidden(false) {}
 };
 
 //! 関数を呼び出すのに必要なデータ。client_data->client->server->clientと送られる
@@ -177,8 +180,8 @@ struct FuncCall {
     unsigned int caller_member_id;
     unsigned int target_member_id;
     std::string field;
-    std::vector<WebCFace::ValAdaptor> args;
+    std::vector<webcface::ValAdaptor> args;
 };
 
 } // namespace Common
-} // namespace WebCFace
+} // namespace webcface

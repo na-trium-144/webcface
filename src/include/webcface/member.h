@@ -5,15 +5,17 @@
 #include "field.h"
 #include "event_target.h"
 #include "common/def.h"
+#include "value.h"
+#include "text.h"
+#include "log.h"
+#include "func.h"
+#include "view.h"
 
-namespace WebCFace {
+namespace webcface {
 
-class Value;
-class Text;
-class Func;
-class Log;
-class View;
+namespace Internal {
 struct ClientData;
+}
 
 //! Memberを指すクラス
 /*!
@@ -23,7 +25,7 @@ struct ClientData;
 class WEBCFACE_DLL Member : protected Field {
   public:
     Member() = default;
-    Member(const std::weak_ptr<ClientData> &data_w, const std::string &member)
+    Member(const std::weak_ptr<Internal::ClientData> &data_w, const std::string &member)
         : Field(data_w, member) {}
     Member(const Field &base) : Field(base) {}
 
@@ -108,4 +110,4 @@ class WEBCFACE_DLL Member : protected Field {
     EventTarget<Member, std::string> onPing() const;
 };
 
-} // namespace WebCFace
+} // namespace webcface

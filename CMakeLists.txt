@@ -61,6 +61,7 @@ endif()
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     add_compile_options(-utf-8)
+    add_compile_definitions(_CRT_SECURE_NO_WARNINGS)
     set(gtest_force_shared_crt on)
 endif()
 
@@ -200,12 +201,17 @@ set(SVR_SRC
 )
 set(CLI_SRC
     ${CPP_DIR}/client/client.cc
-    ${CPP_DIR}/client/client_data.cc
     ${CPP_DIR}/client/client_ws.cc
+    ${CPP_DIR}/client/data_store1.cc
+    ${CPP_DIR}/client/data_store2.cc
     ${CPP_DIR}/client/field.cc
     ${CPP_DIR}/client/func.cc
+    ${CPP_DIR}/client/log.cc
     ${CPP_DIR}/client/logger.cc
     ${CPP_DIR}/client/member.cc
+    ${CPP_DIR}/client/text.cc
+    ${CPP_DIR}/client/value.cc
+    ${CPP_DIR}/client/view.cc
     ${CPP_DIR}/client/version.cc
 )
 set(EXAMPLE_SRC

@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 
-namespace WebCFace {
+namespace webcface {
 inline namespace Common {
 //! メンバ名とデータ名を持つクラス
 struct FieldBase {
@@ -34,4 +34,4 @@ struct FieldBaseComparable : public FieldBase {
     }
 };
 } // namespace Common
-} // namespace WebCFace
+} // namespace webcface

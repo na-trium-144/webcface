@@ -6,7 +6,7 @@
 #include <crow.h>
 #include "../server/custom_logger.h"
 
-using namespace WebCFace;
+using namespace webcface;
 DummyServer::~DummyServer() {
     std::static_pointer_cast<crow::SimpleApp>(server_)->stop();
     t.join();
@@ -38,6 +38,7 @@ DummyServer::DummyServer()
               })
               .onclose([&](crow::websocket::connection &conn,
                            const std::string &reason) {
+                  connPtr = nullptr;
                   dummy_logger->info("ws_close");
               })
               .onmessage([&](crow::websocket::connection &conn,
@@ -55,8 +56,11 @@ DummyServer::DummyServer()
       }) {}
 
 void DummyServer::send(std::string msg) {
-    dummy_logger->info("send {} bytes", msg.size());
-    reinterpret_cast<crow::websocket::connection *>(connPtr)->send_binary(msg);
+    if (connPtr) {
+        dummy_logger->info("send {} bytes", msg.size());
+        reinterpret_cast<crow::websocket::connection *>(connPtr)->send_binary(
+            msg);
+    }
 }
 
 bool DummyServer::connected() { return connPtr != nullptr; }

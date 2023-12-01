@@ -1,7 +1,7 @@
 #include "message.h"
 #include <sstream>
 
-namespace WebCFace::Message {
+namespace webcface::Message {
 void printMsg(const std::shared_ptr<spdlog::logger> &logger,
               const std::string &message) {
     std::stringstream ss;
@@ -21,12 +21,12 @@ unpack(const std::string &message,
     if (message.size() == 0) {
         return std::vector<std::pair<int, std::any>>{};
     }
-    msgpack::object_handle result;
-    unpack(result, message.c_str(), message.size());
-    msgpack::object obj(result.get());
-    // msgpack::unique_ptr<msgpack::zone> z(result.zone());
-
     try {
+        msgpack::object_handle result;
+        unpack(result, message.c_str(), message.size());
+        msgpack::object obj(result.get());
+        // msgpack::unique_ptr<msgpack::zone> z(result.zone());
+
         if (obj.type != msgpack::type::ARRAY || obj.via.array.size % 2 != 0) {
             logger->error("unpack error: invalid array length");
             return std::vector<std::pair<int, std::any>>{};
@@ -89,6 +89,6 @@ unpack(const std::string &message,
         printMsg(logger, message);
         return std::vector<std::pair<int, std::any>>{};
     }
-} // namespace WebCFace::Message
+} // namespace webcface::Message
 
-} // namespace WebCFace::Message
+} // namespace webcface::Message

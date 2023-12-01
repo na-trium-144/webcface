@@ -1,25 +1,25 @@
 # Text
 
-API Reference → WebCFace::Text
+API Reference → webcface::Text
 
 文字列(std::string)データを送受信します。
 Textクラスの使い方は[Value](./10_value.md)とほぼ同じです。
 
 Member::text() でTextクラスのオブジェクトが得られます
 ```cpp
-WebCFace::Text text_hoge = wcli.member("a").text("hoge");
+webcface::Text text_hoge = wcli.member("a").text("hoge");
 ```
 
 Member::texts() でそのMemberが送信しているtextのリストが得られます
 ```cpp
-for(const WebCFace::Text &v: wcli.member("a").texts()){
+for(const webcface::Text &v: wcli.member("a").texts()){
 	// ...
 }
 ```
 
 Member::onTextEntry() で新しくデータが追加されたときのコールバックを設定できます
 ```cpp
-wcli.member("a").onTextEntry().appendListener([](WebCFace::Text v){ /* ... */ });
+wcli.member("a").onTextEntry().appendListener([](webcface::Text v){ /* ... */ });
 ```
 
 ## 送信
@@ -29,11 +29,11 @@ wcli.member("a").onTextEntry().appendListener([](WebCFace::Text v){ /* ... */ })
 wcli.text("hoge").set("hello");
 ```
 
-WebCFace::Text::Dict オブジェクトを使うと複数の値をまとめて送ることができます。
+webcface::Text::Dict オブジェクトを使うと複数の値をまとめて送ることができます。
 ```cpp
 struct A {
 	std::string x, y;
-	operator WebCFace::Text::Dict() const {
+	operator webcface::Text::Dict() const {
 		return {
 			{"x", x},
 			{"y", y},
@@ -67,8 +67,7 @@ while(true) {
 }
 ```
 
-Text::get(), Text::getRecurse() はstd::nulloptの代わりにデフォルト値を返す点以外は同じです。
-
+Text::get(), Text::getRecurse() はstd::nulloptの代わりにデフォルト値を返す点以外は同じです。  
 また、std::string, Value::Dict などの型にキャストすることでも同様に値が得られます。
 
 ## 受信イベント

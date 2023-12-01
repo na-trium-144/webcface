@@ -2,57 +2,57 @@
 #include <streambuf>
 #include <memory>
 #include <string>
+#include <spdlog/logger.h>
 #include <spdlog/sinks/base_sink.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
 #include "common/queue.h"
 #include "common/log.h"
 #include "common/def.h"
 
-namespace WebCFace {
+namespace webcface {
+namespace Internal {
 struct ClientData;
+}
 
-class WEBCFACE_DLL LoggerBuf : public std::streambuf {
+class LoggerBuf : public std::streambuf {
     static constexpr int buf_size = 1024;
     char buf[buf_size];
     // bufからあふれた分を入れる
     std::string overflow_buf;
 
-    std::weak_ptr<ClientData> data_w;
+    std::shared_ptr<spdlog::logger> logger;
 
-    int sync() override;
-    int overflow(int c) override;
+    WEBCFACE_DLL int sync() override;
+    WEBCFACE_DLL int overflow(int c) override;
 
   public:
-    explicit LoggerBuf(const std::weak_ptr<ClientData> &data_w);
+    WEBCFACE_DLL explicit LoggerBuf(
+        const std::shared_ptr<spdlog::logger> &logger);
     LoggerBuf(const LoggerBuf &) = delete;
     LoggerBuf &operator=(const LoggerBuf &) = delete;
 };
 
-class WEBCFACE_DLL LoggerSink : public spdlog::sinks::base_sink<std::mutex>,
-                   public Queue<std::shared_ptr<LogLine>> {
+namespace Internal {
+template <typename T>
+class SyncDataStore1;
+}
+
+class LoggerSink : public spdlog::sinks::base_sink<std::mutex> {
+    std::shared_ptr<
+        Internal::SyncDataStore1<std::shared_ptr<std::vector<LogLine>>>>
+        log_store;
+
   protected:
-    void sink_it_(const spdlog::details::log_msg &msg) override;
+    WEBCFACE_DLL void sink_it_(const spdlog::details::log_msg &msg) override;
     void flush_() override {}
 
   public:
-    explicit LoggerSink();
+    WEBCFACE_DLL explicit LoggerSink(
+        const std::shared_ptr<
+            Internal::SyncDataStore1<std::shared_ptr<std::vector<LogLine>>>>
+            &log_store);
     void set_pattern_(const std::string &) override {}
     void set_formatter_(std::unique_ptr<spdlog::formatter>) override {}
 };
 
-//! (ver1.1.7から非推奨) stderrに出力するsink
-/*! 全clientで共通
- * loggerからstderrに流すのを止めたい時などはこれのset_levelなどを使う
- * 
- * ver1.1.7以降このsinkは使用されません
- */
-WEBCFACE_DLL [[deprecated]] extern std::shared_ptr<spdlog::sinks::stderr_color_sink_mt>
-    stderr_sink;
-
-//! (ver1.1.7から非推奨) webcfaceのログ出力レベルを設定できます
-/*!
- * ver1.1.7以降この設定は無効
- */
-WEBCFACE_DLL [[deprecated]] extern spdlog::level::level_enum logger_internal_level;
-
-} // namespace WebCFace
+} // namespace webcface

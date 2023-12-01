@@ -3,8 +3,9 @@
 #include <chrono>
 #include <stdexcept>
 #include "../message/message.h"
+#include "client_internal.h"
 
-namespace WebCFace {
+namespace webcface {
 
 auto &operator<<(std::basic_ostream<char> &os, const AsyncFuncResult &r) {
     os << "Func(\"" << r.name() << "\"): ";
@@ -24,6 +25,16 @@ auto &operator<<(std::basic_ostream<char> &os, const AsyncFuncResult &r) {
         }
     }
     return os;
+}
+
+Func::Func(const Field &base) : Field(base) {}
+Func &Func::setRaw(const std::shared_ptr<FuncInfo> &v) {
+    setCheck()->func_store.setSend(*this, v);
+    return *this;
+}
+Func &Func::free() {
+    dataLock()->func_store.unsetRecv(*this);
+    return *this;
 }
 
 ValAdaptor Func::run(const std::vector<ValAdaptor> &args_vec) const {
@@ -69,7 +80,7 @@ AsyncFuncResult &Func::runAsync(const std::vector<ValAdaptor> &args_vec) const {
         }).detach();
     } else {
         // リモートの場合cli.sync()を待たずに呼び出しメッセージを送る
-        data->message_queue.push(Message::packSingle(Message::Call{
+        data->message_queue->push(Message::packSingle(Message::Call{
             FuncCall{r.caller_id, 0, data->getMemberIdFromName(member_), field_,
                      args_vec}}));
         // resultはcli.onRecv内でセットされる。
@@ -91,9 +102,9 @@ std::vector<Arg> Func::args() const {
     }
     return std::vector<Arg>{};
 }
+
 Func &Func::setArgs(const std::vector<Arg> &args) {
-    auto data = dataLock();
-    auto func_info = data->func_store.getRecv(*this);
+    auto func_info = setCheck()->func_store.getRecv(*this);
     if (func_info == std::nullopt) {
         throw std::invalid_argument("setArgs failed: Func not set");
     }
@@ -108,10 +119,21 @@ Func &Func::setArgs(const std::vector<Arg> &args) {
     }
     return *this;
 }
+Func &Func::hidden(bool hidden) {
+    auto func_info = setCheck()->func_store.getRecv(*this);
+    if (func_info == std::nullopt) {
+        throw std::invalid_argument("setArgs failed: Func not set");
+    }
+    (*func_info)->hidden = hidden;
+    return *this;
+}
+
+FuncWrapperType Func::getDefaultFuncWrapper() const {
+    return dataLock()->default_func_wrapper;
+}
 
 Func &Func::setRunCond(FuncWrapperType wrapper) {
-    auto data = dataLock();
-    auto func_info = data->func_store.getRecv(*this);
+    auto func_info = setCheck()->func_store.getRecv(*this);
     if (func_info == std::nullopt) {
         throw std::invalid_argument("setRunCond failed: Func not set");
     }
@@ -120,16 +142,16 @@ Func &Func::setRunCond(FuncWrapperType wrapper) {
 }
 
 FuncWrapperType
-FuncWrapper::runCondOnSync(const std::weak_ptr<ClientData> &data) {
+FuncWrapper::runCondOnSync(const std::weak_ptr<Internal::ClientData> &data) {
     return [data](FuncType callback, const std::vector<ValAdaptor> &args) {
         auto data_s = data.lock();
         if (data_s) {
-            auto sync = std::make_shared<ClientData::FuncOnSync>();
+            auto sync = std::make_shared<Internal::FuncOnSync>();
             data_s->func_sync_queue.push(sync);
             struct ScopeGuard {
-                std::shared_ptr<ClientData::FuncOnSync> sync;
+                std::shared_ptr<Internal::FuncOnSync> sync;
                 explicit ScopeGuard(
-                    const std::shared_ptr<ClientData::FuncOnSync> &sync)
+                    const std::shared_ptr<Internal::FuncOnSync> &sync)
                     : sync(sync) {
                     sync->wait();
                 }
@@ -146,4 +168,19 @@ FuncWrapper::runCondOnSync(const std::weak_ptr<ClientData> &data) {
     };
 }
 
-} // namespace WebCFace
+std::string AnonymousFunc::fieldNameTmp() {
+    static int id = 0;
+    return ".tmp" + std::to_string(id++);
+}
+void AnonymousFunc::lockTo(Func &target) {
+    if (!base_init) {
+        this->data_w = target.data_w;
+        this->member_ = target.member_;
+        this->field_ = fieldNameTmp();
+        func_setter(*this);
+    }
+    target.setRaw(dataLock()->func_store.getRecv(*this).value());
+    this->free();
+}
+
+} // namespace webcface

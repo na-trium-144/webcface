@@ -1,12 +1,12 @@
 # Value
 
-API Reference → WebCFace::Value
+API Reference → webcface::Value
 
 数値(double)データ、または数値の配列(std::vector<double>)を送受信します。
 
 Member::value() でValueクラスのオブジェクトが得られます
 ```cpp
-WebCFace::Value value_hoge = wcli.member("a").value("hoge");
+webcface::Value value_hoge = wcli.member("a").value("hoge");
 ```
 これは`a`というクライアントの`hoge`という名前のデータを表します
 
@@ -14,14 +14,14 @@ WebCFace::Value value_hoge = wcli.member("a").value("hoge");
 
 Member::values() でそのMemberが送信しているvalueのリストが得られます
 ```cpp
-for(const WebCFace::Value &v: wcli.member("a").values()){
+for(const webcface::Value &v: wcli.member("a").values()){
 	// ...
 }
 ```
 
 Member::onValueEntry() で新しくデータが追加されたときのコールバックを設定できます
 ```cpp
-wcli.member("a").onValueEntry().appendListener([](WebCFace::Value v){ /* ... */ });
+wcli.member("a").onValueEntry().appendListener([](webcface::Value v){ /* ... */ });
 ```
 ただし、コールバックを設定する前から存在したデータについてはコールバックは呼び出されません。
 Member名がわかっていれば初回のClient::sync()前に設定すればよいです。
@@ -35,12 +35,12 @@ wcli.value("hoge").set(5);
 wcli.value("fuga").set({1, 2, 3, 4, 5}); // std::vector<double>
 ```
 
-WebCFace::Value::Dict オブジェクトを使うと複数の値をまとめて送ることができます。
+webcface::Value::Dict オブジェクトを使うと複数の値をまとめて送ることができます。
 これは構造体などのデータを送るときに使えます
 ```cpp
 struct A {
 	double x, y;
-	operator WebCFace::Value::Dict() const {
+	operator webcface::Value::Dict() const {
 		return {
 			{"x", x},
 			{"y", y},
@@ -79,8 +79,7 @@ Value::tryGet(), Value::tryGetVec(), Value::tryGetRecurse() で値のリクエ�
 
 初回の呼び出しではまだ受信していないためstd::nulloptを返します。
 (pythonでは None, javascriptでは null)
-
-その後Client::sync()したときに実際にリクエストが送信され、それ以降は値が得られるようになります。
+別スレッドでリクエストが送信され、それ以降は値が得られるようになります。
 ```cpp
 while(true) {
 	std::optional<double> val = wcli.member("a").value("hoge").tryGet();
@@ -92,8 +91,7 @@ while(true) {
 }
 ```
 
-Value::get(), Value::getVec(), Value::getRecurse() はstd::nulloptの代わりにデフォルト値を返す点以外は同じです。
-
+Value::get(), Value::getVec(), Value::getRecurse() はstd::nulloptの代わりにデフォルト値を返す点以外は同じです。  
 また、doubleやstd::vector<double>, Value::Dict などの型にキャストすることでも同様に値が得られます。
 
 Value::time() でその値が送信されたとき(そのMemberがsync()したとき)の時刻が得られます。
