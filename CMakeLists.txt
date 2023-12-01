@@ -212,6 +212,7 @@ set(CLI_SRC
     ${CPP_DIR}/client/text.cc
     ${CPP_DIR}/client/value.cc
     ${CPP_DIR}/client/view.cc
+    ${CPP_DIR}/client/version.cc
 )
 set(EXAMPLE_SRC
     ${CPP_DIR}/example/main.cc

@@ -20,8 +20,6 @@ struct A {
     }
 };
 int main() {
-    // webcface::logger_internal_level = spdlog::level::debug;
-
     webcface::Client c("example_main");
 
     // c.value("test").set(0);
