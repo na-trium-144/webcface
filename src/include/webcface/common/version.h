@@ -1,7 +1,7 @@
 #pragma once
 #include <array>
 
-namespace WebCFace {
+namespace webcface {
 inline namespace Version {
 //! (ver1.2で追加) クライアントのバージョン
 /*!
