@@ -30,6 +30,7 @@ ViewComponent &ViewComponent::onClick(const Func &func) {
 }
 
 
+View::View() : Field(), EventTarget<View>(), sb(), std::ostream(&sb) {}
 View::View(const Field &base)
     : Field(base), EventTarget<View>(&this->dataLock()->view_change_event,
                                      *this),
@@ -53,7 +54,6 @@ View::~View() {
     }
 }
 View &View::operator<<(const ViewComponent &vc) {
-    setCheck();
     std::flush(*this);
     sb.components.push_back(vc);
     sb.modified = true;
@@ -81,6 +81,19 @@ int ViewBuf::sync() {
     this->str("");
     return 0;
 }
+View &View::operator<<(const View &vg) {
+    std::flush(*this);
+    if (vg.sb.modified || !vg.sb.components.empty()) {
+        for (const auto &vc : vg.sb.components) {
+            this->sb.components.push_back(vc);
+        }
+    } else if (vg.data_w.lock() != nullptr) {
+        for (const auto &vc : vg.get()) {
+            this->sb.components.push_back(vc);
+        }
+    }
+    return *this;
+}
 
 View &View::operator=(const View &rhs) {
     this->Field::operator=(rhs);
@@ -89,6 +102,7 @@ View &View::operator=(const View &rhs) {
     return *this;
 }
 View &View::set(std::vector<ViewComponent> &v) {
+    setCheck();
     std::vector<ViewComponentBase> vb(v.size());
     for (std::size_t i = 0; i < v.size(); i++) {
         vb[i] =

@@ -109,7 +109,13 @@ class View : protected Field, public EventTarget<View>, public std::ostream {
     WEBCFACE_DLL View &set(std::vector<ViewComponent> &v);
 
   public:
-    View() : Field(), EventTarget<View>(), sb(), std::ostream(&sb) {}
+    //! デフォルトコンストラクタ: clientと関連付けない
+    /*!
+     * 他のFieldをデフォルト構築した場合と同様、get()やset(), sync()などはruntime_errorを投げるが、
+     * add()やoperator<<での要素の追加は可能で、
+     * コンポーネントをグループ化して別のViewにコピーすることができる。
+     */
+    WEBCFACE_DLL View();
     WEBCFACE_DLL View(const Field &base);
     View(const Field &base, const std::string &field)
         : View(Field{base, field}) {}
@@ -175,6 +181,15 @@ class View : protected Field, public EventTarget<View>, public std::ostream {
      * std::flushも呼び出すことで直前に追加した未flashの文字列なども確実に追加する
      */
     WEBCFACE_DLL View &operator<<(const ViewComponent &vc);
+    //! 別のViewに含まれるコンポーネントを追加
+    /*!
+     * 対象のViewオブジェクトに直接追加されたコンポーネントがあればそれを追加、
+     * なければ get() で取得したものを返す
+     * (対象のViewがデフォルト構築でも例外は投げない)
+     * 
+     * std::flushも呼び出すことで直前に追加した未flashの文字列なども確実に追加する
+     */
+    WEBCFACE_DLL View &operator<<(const View &vg);
 
     //! コンポーネントなどを追加
     /*!
