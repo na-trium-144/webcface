@@ -20,13 +20,6 @@ struct A {
     }
 };
 int main() {
-    // webcface::logger_internal_level = spdlog::level::debug;
-    std::cout << WEBCFACE_VERSION << std::endl;
-    std::cout << webcface::version_s << std::endl;
-    std::cout << webcface::version[0] << std::endl;
-    std::cout << webcface::version[1] << std::endl;
-    std::cout << webcface::version[2] << std::endl;
-
     webcface::Client c("example_main");
 
     // c.value("test").set(0);
