@@ -3,6 +3,7 @@
 #include <string>
 #include <utility>
 #include <vector>
+#include <deque>
 #include <any>
 #include <cstdint>
 #include <spdlog/logger.h>
@@ -275,20 +276,20 @@ struct Log : public MessageBase<MessageKind::log> {
         MSGPACK_DEFINE_MAP(MSGPACK_NVP("v", level), MSGPACK_NVP("t", time),
                            MSGPACK_NVP("m", message));
     };
-    std::shared_ptr<std::vector<LogLine>> log;
+    std::shared_ptr<std::deque<LogLine>> log;
     Log() = default;
     Log(unsigned int member_id,
-        const std::shared_ptr<std::vector<LogLine>> &log)
+        const std::shared_ptr<std::deque<LogLine>> &log)
         : member_id(member_id), log(log) {}
     template <typename It>
     Log(const It &begin, const It &end) : member_id(0) {
-        this->log = std::make_shared<std::vector<LogLine>>();
+        this->log = std::make_shared<std::deque<LogLine>>();
         for (auto it = begin; it < end; it++) {
             this->log->push_back(*it);
         }
     }
     explicit Log(const Common::LogLine &ll) : member_id(0) {
-        this->log = std::make_shared<std::vector<LogLine>>(1);
+        this->log = std::make_shared<std::deque<LogLine>>(1);
         this->log->front() = ll;
     }
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("m", member_id), MSGPACK_NVP("l", log));

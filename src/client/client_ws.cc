@@ -37,29 +37,35 @@ void Internal::messageThreadMain(std::shared_ptr<Internal::ClientData> data,
                     std::size_t rlen = 0;
                     const curl_ws_frame *meta = nullptr;
                     char buffer[1024];
-                    ret = curl_ws_recv(handle, buffer, sizeof(buffer), &rlen,
-                                       &meta);
-                    if (meta && meta->flags & CURLWS_CLOSE) {
-                        data->logger_internal->debug("connection closed");
-                        closed = true;
-                        break;
-                    }
-                    if (ret == CURLE_OK) {
-                        if (rlen != 0) {
-                            data->logger_internal->trace("message received");
-                            data->recv_queue.push(std::string(buffer, rlen));
-                            std::size_t sent;
-                            curl_ws_send(handle, nullptr, 0, &sent, 0,
-                                         CURLWS_PONG);
+                    std::string buf_s;
+                    do {
+                        ret = curl_ws_recv(handle, buffer, sizeof(buffer),
+                                           &rlen, &meta);
+                        if (meta && meta->flags & CURLWS_CLOSE) {
+                            data->logger_internal->debug("connection closed");
+                            closed = true;
+                            break;
+                        } else if (meta && meta->offset > buf_s.size()) {
+                            buf_s.append(meta->offset - buf_s.size(), '\0');
+                            buf_s.append(buffer, rlen);
+                        } else if (meta && meta->offset < buf_s.size()) {
+                            buf_s.replace(meta->offset, rlen, buffer, rlen);
+                        } else {
+                            buf_s.append(buffer, rlen);
                         }
-                    } else if (ret == CURLE_AGAIN) {
-                        break;
-                    } else {
-                        data->logger_internal->debug("connection closed {}",
-                                                     static_cast<int>(ret));
-                        closed = true;
+                    } while (meta && meta->bytesleft > 0);
+                    if (buf_s.empty()) {
                         break;
                     }
+                    data->logger_internal->trace("message received");
+                    data->recv_queue.push(buf_s);
+                    std::size_t sent;
+                    curl_ws_send(handle, nullptr, 0, &sent, 0, CURLWS_PONG);
+                }
+                if (ret != CURLE_AGAIN && ret != CURLE_OK) {
+                    data->logger_internal->debug("connection closed {}",
+                                                 static_cast<int>(ret));
+                    closed = true;
                 }
                 if (closed) {
                     break;

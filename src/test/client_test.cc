@@ -410,7 +410,7 @@ TEST_F(ClientTest, logSend) {
     wcli_->waitConnection();
     auto ls = std::make_shared<std::vector<Common::LogLine>>(
         std::vector<Common::LogLine>{
-            {0, std::chrono::system_clock::now(), "a"},
+            {0, std::chrono::system_clock::now(), std::string(100000, 'a')},
             {1, std::chrono::system_clock::now(), "b"},
         });
     data_->log_store->setRecv(self_name, ls);
@@ -420,7 +420,7 @@ TEST_F(ClientTest, logSend) {
         [&](const auto &obj) {
             EXPECT_EQ(obj.log->size(), 2);
             EXPECT_EQ(obj.log->at(0).level, 0);
-            EXPECT_EQ(obj.log->at(0).message, "a");
+            EXPECT_EQ(obj.log->at(0).message.size(), 100000);
             EXPECT_EQ(obj.log->at(1).level, 1);
             EXPECT_EQ(obj.log->at(1).message, "b");
         },
@@ -449,9 +449,9 @@ TEST_F(ClientTest, logReq) {
 
     dummy_s->send(Message::SyncInit{{}, "a", 10, "", "", ""});
     dummy_s->send(Message::Log{
-        10, std::make_shared<std::vector<Message::Log::LogLine>>(
-                std::vector<Message::Log::LogLine>{
-                    LogLine{0, std::chrono::system_clock::now(), "a"},
+        10, std::make_shared<std::deque<Message::Log::LogLine>>(
+                std::deque<Message::Log::LogLine>{
+                    LogLine{0, std::chrono::system_clock::now(), std::string(100000, 'a')},
                     LogLine{1, std::chrono::system_clock::now(), "b"},
                 })});
     wait();
@@ -459,11 +459,11 @@ TEST_F(ClientTest, logReq) {
     EXPECT_TRUE(data_->log_store->getRecv("a").has_value());
     EXPECT_EQ(data_->log_store->getRecv("a").value()->size(), 2);
     EXPECT_EQ(data_->log_store->getRecv("a").value()->at(0).level, 0);
-    EXPECT_EQ(data_->log_store->getRecv("a").value()->at(0).message, "a");
+    EXPECT_EQ(data_->log_store->getRecv("a").value()->at(0).message.size(), 100000);
 
     dummy_s->send(Message::Log{
-        10, std::make_shared<std::vector<Message::Log::LogLine>>(
-                std::vector<Message::Log::LogLine>{
+        10, std::make_shared<std::deque<Message::Log::LogLine>>(
+                std::deque<Message::Log::LogLine>{
                     LogLine{2, std::chrono::system_clock::now(), "c"},
                 })});
     wait();
