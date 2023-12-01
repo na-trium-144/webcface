@@ -33,13 +33,13 @@ ViewComponent &ViewComponent::onClick(const Func &func) {
 View::View()
     : Field(), EventTarget<View>(),
       sb(std::make_shared<ViewBuf>()), std::ostream() {
-    this->rdbuf(sb.get());
+    this->std::ostream::init(sb.get());
 }
 View::View(const Field &base)
     : Field(base), EventTarget<View>(&this->dataLock()->view_change_event,
                                      *this),
       sb(std::make_shared<ViewBuf>()), std::ostream() {
-    this->rdbuf(sb.get());
+    this->std::ostream::init(sb.get());
 }
 View &View::init() {
     sb->components.clear();
@@ -59,6 +59,7 @@ void View::onDestroy() {
         dataLock()->isSelf(member_)) {
         sync();
     }
+    this->rdbuf(nullptr);
 }
 View &View::operator<<(const ViewComponent &vc) {
     std::flush(*this);
