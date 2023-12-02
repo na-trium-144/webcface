@@ -191,6 +191,7 @@ if(WEBCFACE_TEST)
         message(STATUS "GTest found")
     else()
         message(STATUS "GTest not found")
+        set(INSTALL_GTEST off CACHE INTERNAL "" FORCE)
         add_subdirectory(external/googletest)
     endif()
 endif()
@@ -307,7 +308,14 @@ if(WEBCFACE_EXAMPLE)
         get_filename_component(TARGET ${SRC} NAME_WE)
         add_executable(${PROJECT_NAME}-example-${TARGET} ${SRC})
         target_link_libraries(${PROJECT_NAME}-example-${TARGET} PRIVATE ${PROJECT_NAME})
-        set(EXAMPLE_TARGETS ${EXAMPLE_TARGETS} ${PROJECT_NAME}-example-${TARGET})
+        set(WEBCFACE_EXAMPLE_TARGETS
+            ${WEBCFACE_EXAMPLE_TARGETS}
+            ${PROJECT_NAME}-example-${TARGET}
+        )
+        set(WEBCFACE_EXAMPLE_TARGETS_CPACK
+            ${WEBCFACE_EXAMPLE_TARGETS_CPACK}
+            ${PROJECT_NAME}-example-${TARGET} "Example ${TARGET}"
+        )
         set_target_properties(${PROJECT_NAME}-example-${TARGET} PROPERTIES
             INSTALL_RPATH "$ORIGIN/../lib/;$ORIGIN/;@loader_path/../lib/;@loader_path/"
             INSTALL_RPATH_USE_LINK_PATH TRUE
@@ -339,26 +347,30 @@ endif()
 if(WEBCFACE_INSTALL)
     include(CMakePackageConfigHelpers)
 
-    install(TARGETS ${PROJECT_NAME}-server ${EXAMPLE_TARGETS}
+    install(TARGETS ${PROJECT_NAME}-server
         RUNTIME DESTINATION bin
     )
-    install(TARGETS ${PROJECT_NAME}
-        EXPORT ${PROJECT_NAME}-targets
-        LIBRARY DESTINATION lib
+    install(TARGETS ${WEBCFACE_EXAMPLE_TARGETS}
+        RUNTIME DESTINATION bin
     )
+
+    set(WEBCFACE_EXPORTS ${PROJECT_NAME})
     if(NOT WEBCFACE_SHARED)
-        set(WEBCFACE_EXPORTS ${PROJECT_NAME}-message libcurl_static)
+        set(WEBCFACE_EXPORTS ${WEBCFACE_EXPORTS} ${PROJECT_NAME}-message libcurl_static)
         if(NOT msgpack-cxx_FOUND)
             set(WEBCFACE_EXPORTS ${WEBCFACE_EXPORTS} msgpack-cxx)
         endif()
-        install(TARGETS ${WEBCFACE_EXPORTS} EXPORT ${PROJECT_NAME}-targets)
     endif()
+    install(TARGETS ${WEBCFACE_EXPORTS}
+        EXPORT ${PROJECT_NAME}-targets
+        LIBRARY DESTINATION lib
+        ARCHIVE DESTINATION lib
+        RUNTIME DESTINATION bin
+    )
 
     install(EXPORT ${PROJECT_NAME}-targets
         FILE ${PROJECT_NAME}-targets.cmake
-        # 名前空間の指定
         NAMESPACE ${PROJECT_NAME}::
-        # インストール先
         DESTINATION lib/cmake/${PROJECT_NAME}
     )
     install(DIRECTORY ${CPP_DIR}/include/
@@ -383,23 +395,34 @@ if(WEBCFACE_INSTALL)
 
     # https://decovar.dev/blog/2021/09/23/cmake-cpack-package-deb-apt/
     set(CPACK_VERBATIM_VARIABLES yes)
-    set(CPACK_DEBIAN_FILE_NAME DEB-DEFAULT)
     set(CPACK_PACKAGE_CONTACT "nakak_u21@yahoo.co.jp")
-    set(CPACK_DEBIAN_PACKAGE_MAINTAINER "na-trium-144 <${CPACK_PACKAGE_CONTACT}>")
-    set(CPACK_DEBIAN_PACKAGE_SHLIBDEPS yes)
-    if(${spdlog_FOUND})
-        # submoduleのspdlogを使った場合システムのspdlogとはconflictする
-        set(CPACK_DEBIAN_PACKAGE_DEPENDS "libspdlog-dev")
-    endif()
+    set(CPACK_PACKAGE_VENDOR "na-trium-144@users.noreply.github.com")
+    set(CPACK_PACKAGE_EXECUTABLES
+        webcface-server "WebCFace Server"
+        ${WEBCFACE_EXAMPLE_TARGETS_CPACK}
+    )
     set(CPACK_STRIP_FILES yes)
     set(CPACK_INSTALL_DEFAULT_DIRECTORY_PERMISSIONS
         OWNER_READ OWNER_WRITE OWNER_EXECUTE
         GROUP_READ GROUP_EXECUTE
         WORLD_READ WORLD_EXECUTE
     )
+    set(CPACK_RESOURCE_FILE_LICENSE ${CMAKE_CURRENT_LIST_DIR}/LICENSE)
+    
+    set(CPACK_DEBIAN_FILE_NAME DEB-DEFAULT)
+    set(CPACK_DEBIAN_PACKAGE_MAINTAINER "na-trium-144 <${CPACK_PACKAGE_CONTACT}>")
+    set(CPACK_DEBIAN_PACKAGE_SHLIBDEPS yes)
+    if(${spdlog_FOUND})
+        # submoduleのspdlogを使った場合システムのspdlogとはconflictする
+        set(CPACK_DEBIAN_PACKAGE_DEPENDS "libspdlog-dev")
+    endif()
     # https://gitlab.kitware.com/cmake/cmake/-/issues/21834
     set(CPACK_DEBIAN_PACKAGE_CONTROL_EXTRA "${CMAKE_CURRENT_LIST_DIR}/triggers")
     set(CPACK_DEBIAN_PACKAGE_CONTROL_STRICT_PERMISSION TRUE)
+
+    set(CPACK_NSIS_DISPLAY_NAME "WebCFace ${PROJECT_VERSION}")
+    set(CPACK_NSIS_MODIFY_PATH on)
+    set(CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL on)
 
     include(CPack)
 endif()
