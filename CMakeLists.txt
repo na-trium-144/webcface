@@ -61,7 +61,10 @@ endif()
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     add_compile_options(-utf-8)
-    add_compile_definitions(_CRT_SECURE_NO_WARNINGS)
+    add_compile_definitions(
+        _CRT_SECURE_NO_WARNINGS
+        _SILENCE_STDEXT_ARR_ITERS_DEPRECATION_WARNING
+    )
     set(gtest_force_shared_crt on)
 endif()
 
@@ -69,6 +72,9 @@ if(MINGW)
     # https://stackoverflow.com/questions/10486116/what-does-this-gcc-error-relocation-truncated-to-fit-mean
     add_link_options(-Wl,--default-image-base-low)
 endif()
+
+
+###############################################################################
 
 find_package(msgpack-cxx QUIET)
 if(msgpack-cxx_FOUND)

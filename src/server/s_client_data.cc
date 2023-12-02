@@ -318,15 +318,15 @@ void ClientData::onRecv(const std::string &message) {
             auto v = std::any_cast<webcface::Message::Log>(obj);
             v.member_id = this->member_id;
             logger->debug("log {} lines", v.log->size());
-            if (store.keep_log >= 0 && this->log->size() < store.keep_log &&
-                this->log->size() + v.log->size() >= store.keep_log) {
+            if (store.keep_log >= 0 && this->log->size() < static_cast<unsigned int>(store.keep_log) &&
+                this->log->size() + v.log->size() >= static_cast<unsigned int>(store.keep_log)) {
                 logger->info("number of log lines reached {}, so the oldest "
                              "log will be romoved.",
                              store.keep_log);
             }
             std::copy(v.log->begin(), v.log->end(),
                       std::back_inserter(*this->log));
-            while (store.keep_log >= 0 && this->log->size() > store.keep_log) {
+            while (store.keep_log >= 0 && this->log->size() > static_cast<unsigned int>(store.keep_log)) {
                 this->log->pop_front();
             }
             // このlogをsubscribeしてるところに送り返す

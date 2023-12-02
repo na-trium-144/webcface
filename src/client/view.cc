@@ -32,13 +32,13 @@ ViewComponent &ViewComponent::onClick(const Func &func) {
 
 View::View()
     : Field(), EventTarget<View>(),
-      sb(std::make_shared<ViewBuf>()), std::ostream() {
+      sb(std::make_shared<ViewBuf>()), std::ostream(nullptr) {
     this->std::ostream::init(sb.get());
 }
 View::View(const Field &base)
     : Field(base), EventTarget<View>(&this->dataLock()->view_change_event,
                                      *this),
-      sb(std::make_shared<ViewBuf>()), std::ostream() {
+      sb(std::make_shared<ViewBuf>()), std::ostream(nullptr) {
     this->std::ostream::init(sb.get());
 }
 View &View::init() {

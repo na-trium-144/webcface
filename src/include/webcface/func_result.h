@@ -41,7 +41,7 @@ class AsyncFuncResult : Field {
   public:
     // promiseに書き込むことができるクラス
     friend class Func;
-    friend class Internal::ClientData;
+    friend struct Internal::ClientData;
 
     AsyncFuncResult(std::size_t caller_id, const std::string &caller,
                     const Field &base)

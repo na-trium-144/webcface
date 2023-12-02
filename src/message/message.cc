@@ -6,7 +6,7 @@ void printMsg(const std::shared_ptr<spdlog::logger> &logger,
               const std::string &message) {
     std::stringstream ss;
     ss << "message: " << std::hex;
-    for (int i = 0; i < message.size(); i++) {
+    for (std::size_t i = 0; i < message.size(); i++) {
         ss << std::setw(3) << static_cast<int>(message[i] & 0xff);
     }
     logger->debug(ss.str());
