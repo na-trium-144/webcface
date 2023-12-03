@@ -126,6 +126,11 @@ sudo cmake --build build -t install
 	* `-DWEBCFACE_INSTALL=on`でtergetのinstallをします(submoduleの場合デフォルトでoff)
 	* `-DWEBCFACE_TEST=on`でtestをビルドします(デフォルトでoff)
 		* テストが通らない場合テスト中の通信の待機時間を`-DWEBCFACE_TEST_TIMEOUT=100`などと伸ばすとうまく行く場合があります(デフォルト=10(ms))
+	* `-DWEBCFACE_VERSION_SUFFIX`でバージョン表記を変更できます
+		* 例えばバージョン(common/def.hに定義されている)が1.2.0のとき
+		* `-DWEBCFACE_VERSION_SUFFIX=git` なら `git describe --tags` コマンドを使用して取得した文字列 (1.2.0-x-gxxxxxxx) になります(未指定の場合デフォルト)
+		* `git`以外の任意の文字列の場合 `-DWEBCFACE_VERSION_SUFFIX=hoge` で 1.2.0-hoge になります
+		* `-DWEBCFACE_VERSION_SUFFIX=` で 1.2.0 だけになります
 * このリポジトリのみでビルドしてinstallする代わりに、webcfaceを使いたいプロジェクトでこのリポジトリをsubmoduleとして追加して使うこともできます。
 
 #### WebUI

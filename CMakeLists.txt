@@ -2,22 +2,21 @@ cmake_minimum_required(VERSION 3.12)
 
 # src/include/webcface/common/def.h からバージョンを取得
 file(READ ${CMAKE_CURRENT_SOURCE_DIR}/src/include/webcface/common/def.h contents)
-string(REGEX MATCH "#define WEBCFACE_VERSION_MAJOR *([0-9a-zA-Z_]*)" NULL_OUT ${contents})
+string(REGEX MATCH "#define WEBCFACE_VERSION_MAJOR *([0-9]+)" NULL_OUT ${contents})
 set(VERSION_MAJOR ${CMAKE_MATCH_1})
-string(REGEX MATCH "#define WEBCFACE_VERSION_MINOR *([0-9a-zA-Z_]*)" NULL_OUT ${contents})
+string(REGEX MATCH "#define WEBCFACE_VERSION_MINOR *([0-9]+)" NULL_OUT ${contents})
 set(VERSION_MINOR ${CMAKE_MATCH_1})
-string(REGEX MATCH "#define WEBCFACE_VERSION_REVISION *([0-9a-zA-Z_]*)" NULL_OUT ${contents})
+string(REGEX MATCH "#define WEBCFACE_VERSION_REVISION *([0-9]+)" NULL_OUT ${contents})
 set(VERSION_REVISION ${CMAKE_MATCH_1})
-set(VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_REVISION})
+set(WEBCFACE_VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_REVISION})
 
 project(webcface
     LANGUAGES CXX
-    VERSION ${VERSION}
+    VERSION ${WEBCFACE_VERSION}
     HOMEPAGE_URL "https://github.com/na-trium-144/webcface"
     DESCRIPTION "Web-based RPC & UI Library"
 )
 set(WEBCFACE_SOVERSION 1)
-message(STATUS "webcface ${PROJECT_VERSION}")
 
 if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
     set(IS_MAIN on)
@@ -29,9 +28,32 @@ option(WEBCFACE_INSTALL "generate install target" ${IS_MAIN})
 option(WEBCFACE_EXAMPLE "build example" ${IS_MAIN})
 option(WEBCFACE_TEST "build test" OFF)
 option(WEBCFACE_COVERAGE "enable generating test coverage" OFF)
-set(WEBCFACE_TEST_TIMEOUT 10 CACHE INTERNAL "connection timeout in test")
+set(WEBCFACE_TEST_TIMEOUT 10 CACHE STRING "connection timeout in test")
 option(WEBCFACE_SHARED "build shared library" ON)
 option(WEBCFACE_PIC "enable PIC for shared library" ${WEBCFACE_SHARED})
+set(WEBCFACE_VERSION_SUFFIX "git" CACHE STRING
+    "version suffix ('git' to get automatically from git describe command)"
+)
+
+if(WEBCFACE_VERSION_SUFFIX STREQUAL "git")
+    execute_process(
+        COMMAND git describe --tags
+        WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
+        OUTPUT_VARIABLE git_describe
+        ERROR_VARIABLE git_describe_error
+        RESULT_VARIABLE git_describe_ok
+    )
+    if(git_describe_ok STREQUAL 0)
+        string(REGEX MATCH "([-0-9a-g\\.]+)" NULL_OUT ${git_describe})
+        set(WEBCFACE_VERSION ${CMAKE_MATCH_1})
+    else()
+        message(STATUS "Failed to get version from git describe: ${git_describe_error}")
+    endif()
+elseif(NOT WEBCFACE_VERSION_SUFFIX STREQUAL "")
+    set(WEBCFACE_VERSION "${PROJECT_VERSION}-${WEBCFACE_VERSION_SUFFIX}")
+endif()
+
+message(STATUS "WebCFace ${WEBCFACE_VERSION} (soversion ${WEBCFACE_SOVERSION})")
 
 message(STATUS "webcface_example = ${WEBCFACE_EXAMPLE}")
 message(STATUS "webcface_test = ${WEBCFACE_TEST} (timeout = ${WEBCFACE_TEST_TIMEOUT} ms)")
@@ -245,9 +267,15 @@ set(INCLUDE_DIR
     $<BUILD_INTERFACE:${CPP_DIR}/include>
     $<INSTALL_INTERFACE:include>
 )
-include_directories(${INCLUDE_DIR})
 
 ###############################################################################
+
+add_library(${PROJECT_NAME}-headers INTERFACE)
+target_include_directories(${PROJECT_NAME}-headers INTERFACE ${INCLUDE_DIR})
+target_compile_definitions(${PROJECT_NAME}-headers INTERFACE
+    WEBCFACE_VERSION="${WEBCFACE_VERSION}"
+)
+target_compile_features(${PROJECT_NAME}-headers INTERFACE cxx_std_20)
 
 add_library(${PROJECT_NAME}-message STATIC ${MSG_SRC})
 if(NOT CMAKE_CXX_COMPILER_ID STREQUAL "MSVC" AND WEBCFACE_PIC)
@@ -255,6 +283,7 @@ if(NOT CMAKE_CXX_COMPILER_ID STREQUAL "MSVC" AND WEBCFACE_PIC)
 endif()
 target_compile_features(${PROJECT_NAME}-message PUBLIC cxx_std_20)
 target_link_libraries(${PROJECT_NAME}-message PUBLIC
+    ${PROJECT_NAME}-headers
     ${MSGPACK}
     ${SPDLOG}
 )
@@ -262,6 +291,7 @@ target_link_libraries(${PROJECT_NAME}-message PUBLIC
 add_library(${PROJECT_NAME}-server-impl STATIC ${SVR_SRC})
 target_link_libraries(${PROJECT_NAME}-server-impl PUBLIC
     ${PROJECT_NAME}-message
+    ${PROJECT_NAME}-headers
     ${CROW}
     ${SPDLOG}
 )
@@ -269,6 +299,7 @@ target_link_libraries(${PROJECT_NAME}-server-impl PUBLIC
 add_executable(${PROJECT_NAME}-server ${SVR_MAIN_SRC})
 target_link_libraries(${PROJECT_NAME}-server PRIVATE
     ${PROJECT_NAME}-server-impl
+    ${PROJECT_NAME}-headers
     CLI11
 )
 set_target_properties(${PROJECT_NAME}-server PROPERTIES
@@ -290,10 +321,10 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
     ${CURL}
 )
 target_link_libraries(${PROJECT_NAME} PUBLIC
+    ${PROJECT_NAME}-headers
     ${EVENTPP}
     ${SPDLOG}
 )
-target_include_directories(${PROJECT_NAME} PUBLIC ${INCLUDE_DIR})
 set_target_properties(${PROJECT_NAME} PROPERTIES
     INSTALL_RPATH "$ORIGIN/;@loader_path/"
     INSTALL_RPATH_USE_LINK_PATH TRUE
@@ -355,7 +386,7 @@ if(WEBCFACE_INSTALL)
         RUNTIME DESTINATION bin
     )
 
-    set(WEBCFACE_EXPORTS ${PROJECT_NAME})
+    set(WEBCFACE_EXPORTS ${PROJECT_NAME} ${PROJECT_NAME}-headers)
     if(NOT WEBCFACE_SHARED)
         set(WEBCFACE_EXPORTS ${WEBCFACE_EXPORTS} ${PROJECT_NAME}-message libcurl_static)
         if(NOT msgpack-cxx_FOUND)
@@ -411,6 +442,7 @@ if(WEBCFACE_INSTALL)
     set(CPACK_RESOURCE_FILE_LICENSE ${CMAKE_CURRENT_LIST_DIR}/LICENSE)
     
     set(CPACK_DEBIAN_FILE_NAME DEB-DEFAULT)
+    set(CPACK_DEBIAN_PACKAGE_VERSION ${WEBCFACE_VERSION})
     set(CPACK_DEBIAN_PACKAGE_MAINTAINER "na-trium-144 <${CPACK_PACKAGE_CONTACT}>")
     set(CPACK_DEBIAN_PACKAGE_SHLIBDEPS yes)
     if(${spdlog_FOUND})
@@ -421,7 +453,7 @@ if(WEBCFACE_INSTALL)
     set(CPACK_DEBIAN_PACKAGE_CONTROL_EXTRA "${CMAKE_CURRENT_LIST_DIR}/triggers")
     set(CPACK_DEBIAN_PACKAGE_CONTROL_STRICT_PERMISSION TRUE)
 
-    set(CPACK_NSIS_DISPLAY_NAME "WebCFace ${PROJECT_VERSION}")
+    set(CPACK_NSIS_DISPLAY_NAME "WebCFace ${WEBCFACE_VERSION}")
     set(CPACK_NSIS_MODIFY_PATH on)
     set(CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL on)
 

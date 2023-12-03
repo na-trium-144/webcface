@@ -7,11 +7,14 @@
 #define WEBCFACE_VERSION_MAJOR 1
 #define WEBCFACE_VERSION_MINOR 1
 #define WEBCFACE_VERSION_REVISION 9
+// CMakeを使えばWEBCFACE_VERSIONが与えられるが、もしなければ生成
+#ifndef WEBCFACE_VERSION
 #define WEBCFACE_VERSION_I(maj, min, rev)                                      \
     WEBCFACE_STR(maj) "." WEBCFACE_STR(min) "." WEBCFACE_STR(rev)
 #define WEBCFACE_VERSION                                                       \
     WEBCFACE_VERSION_I(WEBCFACE_VERSION_MAJOR, WEBCFACE_VERSION_MINOR,         \
                        WEBCFACE_VERSION_REVISION)
+#endif
 
 #ifdef _MSC_VER
 #ifdef webcface_EXPORTS
