@@ -425,6 +425,33 @@ if(WEBCFACE_INSTALL)
         DESTINATION lib/cmake/${PROJECT_NAME}
     )
 
+    install(FILES
+        ${CMAKE_CURRENT_LIST_DIR}/README.md
+        ${CMAKE_CURRENT_LIST_DIR}/LICENSE
+        DESTINATION share/webcface
+    )
+    install(FILES
+        ${CMAKE_CURRENT_LIST_DIR}/external/asio/asio/LICENSE_1_0.txt
+        DESTINATION share/webcface/3rd_party/asio
+    )
+    install(FILES
+        ${CMAKE_CURRENT_LIST_DIR}/external/cli11/LICENSE
+        DESTINATION share/webcface/3rd_party/cli11
+    )
+    # curl: リポジトリ内にないしバイナリ配布に必須ではないのでスキップ
+    install(FILES
+        ${CMAKE_CURRENT_LIST_DIR}/external/crow/LICENSE
+        ${CMAKE_CURRENT_LIST_DIR}/external/crow/README.md
+        # 3rdpartyのライセンスがREADMEにある
+        DESTINATION share/webcface/3rd_party/crow
+    )
+    if(NOT msgpack-cxx_FOUND)
+        install(FILES
+            ${CMAKE_CURRENT_LIST_DIR}/external/msgpack-c/LICENSE_1_0.txt
+            DESTINATION share/webcface/3rd_party/msgpack-c
+        )
+    endif()
+
     # https://decovar.dev/blog/2021/09/23/cmake-cpack-package-deb-apt/
     set(CPACK_VERBATIM_VARIABLES yes)
     set(CPACK_PACKAGE_CONTACT "nakak_u21@yahoo.co.jp")

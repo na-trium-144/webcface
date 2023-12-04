@@ -145,8 +145,8 @@ tar zxvf webcface-webui*.tar.gz
 ```
 * /usr/local に展開する場合は次のようになります
 ```sh
-sudo rm -rf /usr/local/share/webcface
-sudo mkdir /usr/local/share/webcface
+sudo rm -rf /usr/local/share/webcface/dist
+sudo mkdir /usr/local/share/webcface/dist
 sudo mv dist /usr/local/share/webcface/dist
 ```
 
