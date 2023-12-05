@@ -245,6 +245,7 @@ void Client::sync() {
 void Internal::ClientData::onRecv(const std::string &message) {
     namespace MessageKind = webcface::Message::MessageKind;
     auto messages = webcface::Message::unpack(message, this->logger_internal);
+    std::vector<std::string> sync_members;
     for (const auto &m : messages) {
         const auto &[kind, obj] = m;
         switch (kind) {
@@ -272,8 +273,7 @@ void Internal::ClientData::onRecv(const std::string &message) {
             auto r = std::any_cast<webcface::Message::Sync>(obj);
             auto member = this->getMemberNameFromId(r.member_id);
             this->sync_time_store.setRecv(member, r.getTime());
-            this->sync_event.dispatch(member,
-                                      Field{shared_from_this(), member});
+            sync_members.push_back(member);
             break;
         }
         case MessageKind::value + MessageKind::res: {
@@ -492,6 +492,9 @@ void Internal::ClientData::onRecv(const std::string &message) {
             this->logger_internal->warn("Unknown Message Kind {}", kind);
             break;
         }
+    }
+    for (const auto &m : sync_members) {
+        this->sync_event.dispatch(m, Field{shared_from_this(), m});
     }
 }
 } // namespace webcface
