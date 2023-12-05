@@ -2,7 +2,6 @@
 #include <vector>
 #include <sstream>
 #include <ostream>
-#include <cassert>
 #include <memory>
 #include "common/view.h"
 #include "func.h"

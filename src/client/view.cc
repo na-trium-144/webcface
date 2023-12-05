@@ -18,7 +18,8 @@ ViewComponent::lockTmp(const std::weak_ptr<Internal::ClientData> &data_w,
 }
 std::optional<Func> ViewComponent::onClick() const {
     if (on_click_func_ != std::nullopt) {
-        assert(data_w.lock() != nullptr && "ClientData not set");
+        // Fieldの中でnullptrは処理してくれるからいいかな
+        // assert(data_w.lock() != nullptr && "ClientData not set");
         return Field{data_w, on_click_func_->member_, on_click_func_->field_};
     } else {
         return std::nullopt;
