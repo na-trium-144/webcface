@@ -13,18 +13,31 @@ env:
 
 jobs:
   build-amd64:
-    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        distro: [ubuntu22.04, ubuntu20.04]
+        include:
+          - distro: ubuntu22.04
+            cc: gcc-11
+            cxx: g++-11
+          - distro: ubuntu20.04
+            cc: gcc-10
+            cxx: g++-10
+    runs-on: ${{matrix.distro}}
     steps:
     - uses: actions/checkout@v4
       with:
         submodules: "recursive"
     - name: Install dependencies
-      run: sudo apt-get update && sudo apt-get install -y libspdlog-dev
+      run: sudo apt-get update && sudo apt-get install -y libspdlog-dev gcc-10 g++-10
     - name: Configure CMake
-      # env:
-      #   CC: gcc-10
-      #   CXX: g++-10
-      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+      env:
+        CC: ${{matrix.cc}}
+        CXX: ${{matrix.cxx}}
+      run: >
+        cmake -B ${{github.workspace}}/build
+        -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+        -DWEBCFACE_SUFFIX=${{matrix.distro}}
     - name: Build
       run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
     - name: Create Deb Package
@@ -32,7 +45,7 @@ jobs:
       run: cpack -G DEB
     - uses: actions/upload-artifact@v3
       with:
-        name: deb-amd64
+        name: deb-${{matrix.distro}}-amd64
         path: ${{github.workspace}}/build/*.deb
   
   build-multiarch:
@@ -43,11 +56,15 @@ jobs:
     # Run steps on a matrix of 4 arch/distro combinations
     strategy:
       matrix:
+        arch: [aarch64, armv7]
+        distro: [ubuntu22.04, ubuntu20.04]
         include:
-          - arch: aarch64
-            distro: ubuntu22.04
-          - arch: armv7
-            distro: ubuntu22.04
+          - distro: ubuntu22.04
+            cc: gcc-11
+            cxx: g++-11
+          - distro: ubuntu20.04
+            cc: gcc-10
+            cxx: g++-10
     steps:
       - uses: actions/checkout@v4
         with:
@@ -73,6 +90,10 @@ jobs:
           # Pass some environment variables to the container
           # env: | # YAML, but pipe character is necessary
           #   artifact_name: git-${{ matrix.distro }}_${{ matrix.arch }}
+          env: |
+            distro: ${{matrix.distro}}
+            CC: ${{matrix.cc}}
+            CXX: ${{matrix.cxx}}
 
           # The shell to run commands with in the container
           shell: /bin/sh
@@ -85,24 +106,24 @@ jobs:
           # no secrets are present in the container state or logs.
           install: |
             apt-get update -q -y
-            # apt-get install -q -y ca-certificates gpg wget
-            # wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc --no-check-certificate | gpg --dearmor - | tee /usr/share/keyrings/kitware-archive-keyring.gpg >/dev/null
-            # echo 'deb [signed-by=/usr/share/keyrings/kitware-archive-keyring.gpg] https://apt.kitware.com/ubuntu/ focal main' | tee /etc/apt/sources.list.d/kitware.list >/dev/null
-            # apt-get update -q -y
-            apt-get install -q -y build-essential cmake file
+            apt-get install -q -y ca-certificates gpg wget
+            wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc --no-check-certificate | gpg --dearmor - | tee /usr/share/keyrings/kitware-archive-keyring.gpg >/dev/null
+            echo "deb [signed-by=/usr/share/keyrings/kitware-archive-keyring.gpg] https://apt.kitware.com/ubuntu/ $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/kitware.list >/dev/null
+            apt-get update -q -y
+            apt-get install -q -y build-essential cmake file gcc-10 g++-10
 
           # Produce a binary artifact and place it in the mounted volume
           run: |
             cd /workspace
             apt-get install -q -y libspdlog-dev
-            cmake -B build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+            cmake -B build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DWEBCFACE_VERSION_SUFFIX=${distro}
             cmake --build build --config ${{env.BUILD_TYPE}}
             cd build
             cpack -G DEB
             
       - uses: actions/upload-artifact@v3
         with:
-          name: deb-${{ matrix.arch }}
+          name: deb-${{matrix.distro}}-${{ matrix.arch }}
           path: ${{github.workspace}}/build/*.deb
 
   release:
@@ -112,15 +133,27 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v3
         with:
-          name: deb-amd64
+          name: deb-ubuntu22.04-amd64
           path: ${{github.workspace}}/artifact
       - uses: actions/download-artifact@v3
         with:
-          name: deb-aarch64
+          name: deb-ubuntu22.04-aarch64
           path: ${{github.workspace}}/artifact
       - uses: actions/download-artifact@v3
         with:
-          name: deb-armv7
+          name: deb-ubuntu22.04-armv7
+          path: ${{github.workspace}}/artifact
+      - uses: actions/download-artifact@v3
+        with:
+          name: deb-ubuntu20.04-amd64
+          path: ${{github.workspace}}/artifact
+      - uses: actions/download-artifact@v3
+        with:
+          name: deb-ubuntu20.04-aarch64
+          path: ${{github.workspace}}/artifact
+      - uses: actions/download-artifact@v3
+        with:
+          name: deb-ubuntu20.04-armv7
           path: ${{github.workspace}}/artifact
       - name: Release
         uses: docker://antonyurchenko/git-release:v5
