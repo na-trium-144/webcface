@@ -1,3 +1,28 @@
+## [1.2.0] - 2023-12-07
+### Changed
+* ABIバージョンをlibwebcface.so.2 に変更。～v1.1とは互換性がありません
+	* `WebCFace::ClientData`を`webcface::Internal::ClientData`に変更 (#79)
+	* `SyncDataStore2`からhidden属性を削除し、`FuncInfo`のメンバーに追加
+	* `WebCFace::stderr_sink`と`WebCFace::logger_internal_level` を削除
+	* namespaceを`WebCFace`から`webcface`に変更
+		* 従来の`WebCFace`もaliasとして使用可能
+* 各種データのリクエストは`Client::sync()`を待たずに送信されるように変更 (#100)
+* loggerの出力したデータが即時`Client::log()`に反映されるよう変更
+* `View`のコピーやムーブで内部の`ViewBuf`を共有するように変更 (#99)
+* main以外のブランチのPRでもテストが実行されるようにした
+
+### Added
+* `Client::start()`, `Client::waitConnection()` (#100)
+* `webcface::Version::version`, `webcface::Version::version_s` (#99)
+* LICENSEファイルが /usr/share/webcface 以下にインストールされるようにした
+* gitから自分でビルドした場合、バージョン番号に`git describe`の情報がサフィックスとして追加されるようにした
+* `cpack -G NSIS`でwindows用のインストーラーを生成できるようにした
+* colcon(ament_cmake)でビルド可能にした
+
+### Fixed
+* デフォルト構築したViewがデストラクタで例外を投げるバグを修正 (#79)
+* `onSync`イベントの発生タイミングを受信データの処理後に変更 (#99)
+
 ## [1.1.9] - 2023-11-30
 ### Fixed
 * 1024バイト以上の文字列を受信可能にした (#111)

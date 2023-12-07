@@ -43,7 +43,7 @@ debパッケージはubuntu22.04でビルドしています。20.04以前のubun
 
 例 (amd64の場合)
 ```sh
-curl -LO https://github.com/na-trium-144/webcface/releases/download/v1.1.9/webcface_1.1.9_amd64.deb
+curl -LO https://github.com/na-trium-144/webcface/releases/download/v1.2.0/webcface_1.2.0_amd64.deb
 curl -LO https://github.com/na-trium-144/webcface-webui/releases/download/v1.0.10/webcface-webui_1.0.10_all.deb
 curl -LO https://github.com/na-trium-144/webcface-tools/releases/download/v1.1.3/webcface-tools_1.1.3_amd64.deb
 sudo apt install ./webcface*.deb
@@ -149,7 +149,7 @@ tar zxvf webcface-webui*.tar.gz
 * /usr/local に展開する場合は次のようになります
 ```sh
 sudo rm -rf /usr/local/share/webcface/dist
-sudo mkdir /usr/local/share/webcface/dist
+sudo mkdir /usr/local/share/webcface
 sudo mv dist /usr/local/share/webcface/dist
 ```
 

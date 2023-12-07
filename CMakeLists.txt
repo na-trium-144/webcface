@@ -16,7 +16,7 @@ project(webcface
     HOMEPAGE_URL "https://github.com/na-trium-144/webcface"
     DESCRIPTION "Web-based RPC & UI Library"
 )
-set(WEBCFACE_SOVERSION 1)
+set(WEBCFACE_SOVERSION 2)
 
 if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
     set(IS_MAIN on)
