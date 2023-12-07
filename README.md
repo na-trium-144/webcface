@@ -110,7 +110,7 @@ pacman -S mingw-w64-x86_64-spdlog  # optional
 ```
 </details>
 
-#### Build
+#### Build (with Pure CMake)
 
 ```sh
 git clone https://github.com/na-trium-144/webcface
@@ -132,6 +132,9 @@ sudo cmake --build build -t install
 		* `git`以外の任意の文字列の場合 `-DWEBCFACE_VERSION_SUFFIX=hoge` で 1.2.0-hoge になります
 		* `-DWEBCFACE_VERSION_SUFFIX=` で 1.2.0 だけになります
 * このリポジトリのみでビルドしてinstallする代わりに、webcfaceを使いたいプロジェクトでこのリポジトリをsubmoduleとして追加して使うこともできます。
+
+#### Build (with colcon, ROS2)
+* このリポジトリをワークスペースのsrcに追加して、colconでビルドすることができます
 
 #### WebUI
 * serverを自分でビルドした場合は別途webuiを読み込ませる必要があります。

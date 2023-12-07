@@ -98,6 +98,8 @@ endif()
 
 ###############################################################################
 
+find_package(ament_cmake QUIET)
+
 find_package(msgpack-cxx QUIET)
 if(msgpack-cxx_FOUND)
     message(STATUS "msgpack-cxx found")
@@ -454,7 +456,7 @@ if(WEBCFACE_INSTALL)
 
     # https://decovar.dev/blog/2021/09/23/cmake-cpack-package-deb-apt/
     set(CPACK_VERBATIM_VARIABLES yes)
-    set(CPACK_PACKAGE_CONTACT "nakak_u21@yahoo.co.jp")
+    set(CPACK_PACKAGE_CONTACT "na-trium-144@users.noreply.github.com")
     set(CPACK_PACKAGE_VENDOR "na-trium-144@users.noreply.github.com")
     set(CPACK_PACKAGE_EXECUTABLES
         webcface-server "WebCFace Server"
@@ -485,4 +487,9 @@ if(WEBCFACE_INSTALL)
     set(CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL on)
 
     include(CPack)
+
+    if(ament_cmake_FOUND)
+        ament_export_targets(${PROJECT_NAME}-targets HAS_LIBRARY_TARGET)
+        ament_package()
+    endif()
 endif()
