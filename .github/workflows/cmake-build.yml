@@ -18,12 +18,14 @@ jobs:
         distro: [ubuntu22.04, ubuntu20.04]
         include:
           - distro: ubuntu22.04
+            distro2: ubuntu-22.04
             cc: gcc-11
             cxx: g++-11
           - distro: ubuntu20.04
+            distro2: ubuntu-20.04
             cc: gcc-10
             cxx: g++-10
-    runs-on: ${{matrix.distro}}
+    runs-on: ${{matrix.distro2}}
     steps:
     - uses: actions/checkout@v4
       with:
@@ -37,7 +39,7 @@ jobs:
       run: >
         cmake -B ${{github.workspace}}/build
         -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
-        -DWEBCFACE_SUFFIX=${{matrix.distro}}
+        -DWEBCFACE_VERSION_SUFFIX=${{matrix.distro}}
     - name: Build
       run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
     - name: Create Deb Package
