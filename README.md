@@ -3,7 +3,8 @@
 [![C++20](https://img.shields.io/badge/C%2B%2B-20-blue?logo=C%2B%2B)](https://github.com/na-trium-144/webcface)
 [![release](https://img.shields.io/github/v/release/na-trium-144/webcface)](https://github.com/na-trium-144/webcface/releases)
 [![coverage](https://raw.githubusercontent.com/na-trium-144/webcface/badge/coverage.svg)](https://github.com/na-trium-144/webcface/actions/workflows/cmake-coverage.yml)  
-[![python](https://img.shields.io/badge/python-work_in_progress-red?logo=Python&logoColor=white)](https://github.com/na-trium-144/webcface-python/tree/dev)  
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/webcface?logo=Python&logoColor=white)](https://github.com/na-trium-144/webcface-python)
+[![PyPI - Version](https://img.shields.io/pypi/v/webcface)](https://pypi.org/project/webcface/)  
 [![javascript](https://img.shields.io/badge/JavaScript%2C%20TypeScript-gray?logo=JavaScript&logoColor=white)](https://github.com/na-trium-144/webcface-js)
 [![npm](https://img.shields.io/npm/v/webcface)](https://www.npmjs.com/package/webcface)
 
@@ -30,33 +31,92 @@ WebブラウザーでアクセスできるUI(webcface-webui)が付属してお�
 
 * [webcface](https://github.com/na-trium-144/webcface): サーバー & C++クライアントライブラリ (このリポジトリ)
 * [webcface-webui](https://github.com/na-trium-144/webcface-webui): webブラウザ用UIアプリ
+* [webcface-tools](https://github.com/na-trium-144/webcface-tools): コマンドラインツール群
 * [webcface-js](https://github.com/na-trium-144/webcface-js): JavaScriptクライアントライブラリ
 * [webcface-python](https://github.com/na-trium-144/webcface-python): Pythonクライアントライブラリ
-* [webcface-tools](https://github.com/na-trium-144/webcface-tools): コマンドラインツール群
+* [homebrew-webcface](https://github.com/na-trium-144/homebrew-webcface): HomebrewのTapを管理しています
+* [webcface-windows-package](https://github.com/na-trium-144/webcface-windows-package): Windows用ビルドをリリースする場所
 
 ## Installation
+以下の手順で webcface, webcface-webui, webcface-tools をインストールできます。
+(webcface-toolsの内容と使い方についてはwebcface-toolsのReadmeを参照してください)
 
-### Ubuntu 22.04 (amd64, arm64, armhf)
+### Ubuntu 20.04, 22.04 (x86_64, arm64, armhf)
 [WebCFaceのReleases](https://github.com/na-trium-144/webcface/releases) と [webuiのReleases](https://github.com/na-trium-144/webcface-webui/releases) 、[toolsのReleases](https://github.com/na-trium-144/webcface-tools/releases) からそれぞれ最新のdebパッケージをダウンロードしてインストールできます。
 
-debパッケージはubuntu22.04でビルドしています。20.04以前のubuntuでは依存ライブラリの都合で動きません。debianはわかりません。
+debパッケージはubuntu20.04と22.04でビルドしています。
+それぞれ依存するパッケージのバージョンが違います。
+Debianなど他のディストリビューションで動作するかはわかりません。
 
-例 (amd64の場合)
+コマンドからダウンロードするなら以下のようにします。
+
+* Ubuntu 22.04, x86_64
 ```sh
-curl -LO https://github.com/na-trium-144/webcface/releases/download/v1.2.0/webcface_1.2.0_amd64.deb
+curl -LO https://github.com/na-trium-144/webcface/releases/download/v1.2.0/webcface_1.2.0-ubuntu22.04_amd64.deb
 curl -LO https://github.com/na-trium-144/webcface-webui/releases/download/v1.0.10/webcface-webui_1.0.10_all.deb
-curl -LO https://github.com/na-trium-144/webcface-tools/releases/download/v1.1.3/webcface-tools_1.1.3_amd64.deb
+curl -LO https://github.com/na-trium-144/webcface-tools/releases/download/v1.1.4/webcface-tools_1.1.4-ubuntu22.04_amd64.deb
+```
+
+<details><summary>Ubuntu 22.04, arm64</summary>
+
+```sh
+curl -LO https://github.com/na-trium-144/webcface/releases/download/v1.2.0/webcface_1.2.0-ubuntu22.04_arm64.deb
+curl -LO https://github.com/na-trium-144/webcface-webui/releases/download/v1.0.10/webcface-webui_1.0.10_all.deb
+curl -LO https://github.com/na-trium-144/webcface-tools/releases/download/v1.1.4/webcface-tools_1.1.4-ubuntu22.04_arm64.deb
+```
+</details>
+
+<details><summary>Ubuntu 22.04, armhf</summary>
+
+```sh
+curl -LO https://github.com/na-trium-144/webcface/releases/download/v1.2.0/webcface_1.2.0-ubuntu22.04_armhf.deb
+curl -LO https://github.com/na-trium-144/webcface-webui/releases/download/v1.0.10/webcface-webui_1.0.10_all.deb
+curl -LO https://github.com/na-trium-144/webcface-tools/releases/download/v1.1.4/webcface-tools_1.1.4-ubuntu22.04_armhf.deb
+```
+</details>
+
+<details><summary>Ubuntu 20.04, x86_64</summary>
+
+```sh
+curl -LO https://github.com/na-trium-144/webcface/releases/download/v1.2.0/webcface_1.2.0-ubuntu20.04_amd64.deb
+curl -LO https://github.com/na-trium-144/webcface-webui/releases/download/v1.0.10/webcface-webui_1.0.10_all.deb
+curl -LO https://github.com/na-trium-144/webcface-tools/releases/download/v1.1.4/webcface-tools_1.1.4-ubuntu20.04_amd64.deb
+```
+</details>
+
+<details><summary>Ubuntu 20.04, arm64</summary>
+
+```sh
+curl -LO https://github.com/na-trium-144/webcface/releases/download/v1.2.0/webcface_1.2.0-ubuntu20.04_arm64.deb
+curl -LO https://github.com/na-trium-144/webcface-webui/releases/download/v1.0.10/webcface-webui_1.0.10_all.deb
+curl -LO https://github.com/na-trium-144/webcface-tools/releases/download/v1.1.4/webcface-tools_1.1.4-ubuntu20.04_arm64.deb
+```
+</details>
+
+<details><summary>Ubuntu 20.04, armhf</summary>
+
+```sh
+curl -LO https://github.com/na-trium-144/webcface/releases/download/v1.2.0/webcface_1.2.0-ubuntu20.04_armhf.deb
+curl -LO https://github.com/na-trium-144/webcface-webui/releases/download/v1.0.10/webcface-webui_1.0.10_all.deb
+curl -LO https://github.com/na-trium-144/webcface-tools/releases/download/v1.1.4/webcface-tools_1.1.4-ubuntu20.04_armhf.deb
+```
+</details>
+
+ダウンロードできたら
+```sh
 sudo apt install ./webcface*.deb
 rm ./webcface*.deb
 ```
-
-(webcface-toolsの内容と使い方についてはwebcface-toolsのReadmeを参照してください)
+でインストールできます
 
 ### Homebrew (MacOS, Linux)
 ```sh
 brew tap na-trium-144/webcface
 brew install webcface webcface-webui webcface-tools
 ```
+
+### Windows
+[webcface-windows-packageのRelease](https://github.com/na-trium-144/webcface-windows-package/releases)からインストーラーをダウンロードしてください。
 
 ### Build from source
 
