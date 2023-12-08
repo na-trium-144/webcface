@@ -5,7 +5,7 @@
 #include <functional>
 #include <spdlog/common.h>
 
-namespace WebCFace::Server {
+namespace webcface::Server {
 // serverは1スレッドなのでmutexについて考える必要はない
 inline struct Store {
     std::unordered_map<ClientData::wsConnPtr, std::shared_ptr<ClientData>>
@@ -41,4 +41,4 @@ inline struct Store {
     void forEachWithName(const std::function<void(ClientData &)> &func);
 } store;
 
-} // namespace WebCFace::Server
+} // namespace webcface::Server

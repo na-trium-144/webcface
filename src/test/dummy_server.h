@@ -4,7 +4,7 @@
 #include <utility>
 #include <thread>
 
-using namespace WebCFace;
+using namespace webcface;
 struct DummyServer {
     std::vector<std::pair<int, std::any>> recv_data;
 
@@ -31,10 +31,10 @@ struct DummyServer {
     }
 
     bool connected();
-    void *connPtr;
+    void *connPtr = nullptr;
     std::shared_ptr<void> server_;
     std::shared_ptr<spdlog::logger> dummy_logger;
-    
+
     std::thread t;
     DummyServer();
     ~DummyServer();

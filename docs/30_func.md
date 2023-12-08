@@ -1,25 +1,25 @@
 # Func, AnonymousFunc
 
-API Reference → WebCFace::Func, WebCFace::AnonymousFunc
+API Reference → webcface::Func, webcface::AnonymousFunc
 
 他Memberから呼び出せる関数の登録、
 また他Memberの関数の呼び出しができます。
 
 Member::func() でFuncクラスのオブジェクトが得られます
 ```cpp
-WebCFace::Func func_hoge = wcli.member("a").func("hoge");
+webcface::Func func_hoge = wcli.member("a").func("hoge");
 ```
 
 Member::funcs() でそのMemberが送信しているfuncのリストが得られます
 ```cpp
-for(const WebCFace::Func &v: wcli.member("a").funcs()){
+for(const webcface::Func &v: wcli.member("a").funcs()){
 	// ...
 }
 ```
 
 Member::onFuncEntry() で新しくデータが追加されたときのコールバックを設定できます
 ```cpp
-wcli.member("a").onFuncEntry().appendListener([](WebCFace::Func v){ /* ... */ });
+wcli.member("a").onFuncEntry().appendListener([](webcface::Func v){ /* ... */ });
 ```
 
 ## 関数の登録
@@ -59,15 +59,15 @@ def hoge(a: int, b: str) -> float:
 
 Func::setArgs() で引数名などの情報や、引数に設定する条件をセットすることができます。
 型情報を取得できないJavaScript(TypeScript含む)の場合と、Pythonでアノテーションをしなかった場合はここで型情報も指定する必要があります。
-設定可能な情報の一覧は WebCFace::Arg を参照
+設定可能な情報の一覧は webcface::Arg を参照
 
 C++では Func.setArgs() で指定できます。
 関数をセットする前に呼ぶとエラーになります。
 また、実際の関数の引数と個数が一致していなければエラーになります。
 ```cpp
 wcli.func("fuga").setArgs(){
-	WebCFace::Arg("a").init(100),
-	WebCFace::Arg("b").option({"aaa", "bbb", "ccc"}),
+	webcface::Arg("a").init(100),
+	webcface::Arg("b").option({"aaa", "bbb", "ccc"}),
 }
 ```
 
@@ -100,7 +100,8 @@ Client::funcs()でその関数の存在を確認したりFunc::args()などで�
 名前がわかっていれば他Memberからでも実行は可能です。
 
 * C++では func.hidden(true) で設定できます。
-* JavaScript, Pythonではset()関数(Pythonデコレータの場合はfunc())の引数に指定することで設定できます。
+* ![js ver1.0.4から](https://img.shields.io/badge/ver1.0.4~-f7df1e?logo=JavaScript&logoColor=black)
+JavaScript, Pythonではset()関数(Pythonデコレータの場合はfunc())の引数に指定することで設定できます。
 
 ### 実行条件 (C++)
 

@@ -1,17 +1,20 @@
 #include <gtest/gtest.h>
-#include <webcface/client_data.h>
+#include "../client/client_internal.h"
+#include <webcface/member.h>
 #include <webcface/func.h>
 #include <stdexcept>
 #include <thread>
 #include <chrono>
 #include "../message/message.h"
 
-using namespace WebCFace;
+using namespace webcface;
 class FuncTest : public ::testing::Test {
   protected:
-    void SetUp() override { data_ = std::make_shared<ClientData>(self_name); }
+    void SetUp() override {
+        data_ = std::make_shared<Internal::ClientData>(self_name);
+    }
     std::string self_name = "test";
-    std::shared_ptr<ClientData> data_;
+    std::shared_ptr<Internal::ClientData> data_;
     Func func(const std::string &member, const std::string &field) {
         return Func{Field{data_, member, field}};
     }
@@ -28,6 +31,8 @@ class FuncTest : public ::testing::Test {
 TEST_F(FuncTest, field) {
     EXPECT_EQ(func("a", "b").member().name(), "a");
     EXPECT_EQ(func("a", "b").name(), "b");
+
+    EXPECT_THROW(Func().run(), std::runtime_error);
 }
 TEST_F(FuncTest, funcSet) {
     // 関数セットしreturnTypeとargsのチェック
@@ -165,9 +170,14 @@ TEST_F(FuncTest, funcRunCond) {
 }
 TEST_F(FuncTest, funcRunRemote) {
     func("a", "b").runAsync(1.23, true, "abc");
-    EXPECT_EQ(*data_->message_queue.pop(),
-              Message::packSingle(
-                  Message::Call{FuncCall{0, 0, 0, "b", {1.23, true, "abc"}}}));
+    bool call_msg_found = false;
+    while (auto msg = data_->message_queue->pop()) {
+        if (*msg == Message::packSingle(Message::Call{
+                        FuncCall{0, 0, 0, "b", {1.23, true, "abc"}}})) {
+            call_msg_found = true;
+        }
+    }
+    EXPECT_TRUE(call_msg_found);
 }
 
 TEST_F(FuncTest, afuncSet1) {

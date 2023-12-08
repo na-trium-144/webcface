@@ -1,4 +1,5 @@
 #include <gtest/gtest.h>
+#include "../client/client_internal.h"
 #include "../server/websock.h"
 #include "../server/store.h"
 #include "../server/s_client_data.h"
@@ -10,7 +11,7 @@
 #include <iostream>
 #include "dummy_client.h"
 
-using namespace WebCFace;
+using namespace webcface;
 
 #ifndef WEBCFACE_TEST_TIMEOUT
 #define WEBCFACE_TEST_TIMEOUT 10
@@ -47,7 +48,8 @@ class ServerTest : public ::testing::Test {
         std::cout << "TearDown end" << std::endl;
     }
     std::shared_ptr<std::thread> server_thread;
-    std::shared_ptr<ClientData> data_ = std::make_shared<ClientData>("a");
+    std::shared_ptr<Internal::ClientData> data_ =
+        std::make_shared<Internal::ClientData>("a");
     std::shared_ptr<DummyClient> dummy_c1, dummy_c2;
     int callback_called;
 };
@@ -300,10 +302,10 @@ TEST_F(ServerTest, view) {
             std::unordered_map<std::string, Message::View::ViewComponent>{
                 {"0", ViewComponents::text("a").lockTmp(data_, "")},
                 {"1", ViewComponents::newLine().lockTmp(data_, "")},
-                {"2",
-                 ViewComponents::button(
-                     "f", Func{Field{std::weak_ptr<ClientData>(), "p", "q"}})
-                     .lockTmp(data_, "")}}),
+                {"2", ViewComponents::button(
+                          "f", Func{Field{std::weak_ptr<Internal::ClientData>(),
+                                          "p", "q"}})
+                          .lockTmp(data_, "")}}),
         3});
     wait();
     dummy_c2->send(Message::SyncInit{{}, "", 0, "", "", ""});
@@ -349,16 +351,14 @@ TEST_F(ServerTest, view) {
 TEST_F(ServerTest, log) {
     Server::store.keep_log = 3;
     dummy_c1->send(Message::SyncInit{{}, "c1", 0, "", "", ""});
-    dummy_c1->send(
-        Message::Log{{},
-                     0,
-                     std::make_shared<std::deque<Message::Log::LogLine>>(
-                         std::deque<Message::Log::LogLine>{
-                             LogLine{0, std::chrono::system_clock::now(), "0"},
-                             LogLine{1, std::chrono::system_clock::now(), "1"},
-                             LogLine{2, std::chrono::system_clock::now(), "2"},
-                             LogLine{3, std::chrono::system_clock::now(), "3"},
-                         })});
+    dummy_c1->send(Message::Log{
+        0, std::make_shared<std::deque<Message::Log::LogLine>>(
+               std::deque<Message::Log::LogLine>{
+                   LogLine{0, std::chrono::system_clock::now(), "0"},
+                   LogLine{1, std::chrono::system_clock::now(), "1"},
+                   LogLine{2, std::chrono::system_clock::now(), "2"},
+                   LogLine{3, std::chrono::system_clock::now(), "3"},
+               })});
     wait();
     dummy_c2->send(Message::SyncInit{{}, "", 0, "", "", ""});
     dummy_c2->send(Message::LogReq{{}, "c1"});
@@ -375,18 +375,16 @@ TEST_F(ServerTest, log) {
         [&] { ADD_FAILURE() << "Log recv failed"; });
     dummy_c2->recvClear();
 
-    // 追加分
-    dummy_c1->send(
-        Message::Log{{},
-                     0,
-                     std::make_shared<std::deque<Message::Log::LogLine>>(
-                         std::deque<Message::Log::LogLine>{
-                             LogLine{4, std::chrono::system_clock::now(), "4"},
-                             LogLine{5, std::chrono::system_clock::now(), "5"},
-                             LogLine{6, std::chrono::system_clock::now(), "6"},
-                             LogLine{7, std::chrono::system_clock::now(), "7"},
-                             LogLine{8, std::chrono::system_clock::now(), "8"},
-                         })});
+    // 変化後の値
+    dummy_c1->send(Message::Log{
+        0, std::make_shared<std::deque<Message::Log::LogLine>>(
+               std::deque<Message::Log::LogLine>{
+                   LogLine{4, std::chrono::system_clock::now(), "4"},
+                   LogLine{5, std::chrono::system_clock::now(), "5"},
+                   LogLine{6, std::chrono::system_clock::now(), "6"},
+                   LogLine{7, std::chrono::system_clock::now(), "7"},
+                   LogLine{8, std::chrono::system_clock::now(), "8"},
+               })});
     wait();
     dummy_c2->recv<Message::Log>(
         [&](const auto &obj) {

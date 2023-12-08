@@ -2,7 +2,7 @@
 #include <string>
 #include <chrono>
 
-namespace WebCFace {
+namespace webcface {
 inline namespace Common {
 struct LogLine {
     int level = 0;
@@ -14,4 +14,4 @@ struct LogLine {
         : level(level), time(time), message(message) {}
 };
 } // namespace Common
-} // namespace WebCFace
+} // namespace webcface

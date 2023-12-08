@@ -7,16 +7,16 @@
 #include <memory>
 #include <thread>
 
-namespace WebCFace::Server {
+namespace webcface::Server {
 std::string static_dir;
 }
-#define CROW_STATIC_DIRECTORY WebCFace::Server::static_dir
+#define CROW_STATIC_DIRECTORY webcface::Server::static_dir
 #define CROW_STATIC_ENDPOINT "/<path>"
 #include <crow.h>
 
 #include "custom_logger.h"
 
-namespace WebCFace::Server {
+namespace webcface::Server {
 
 std::unique_ptr<crow::SimpleApp> app;
 std::unique_ptr<std::thread> ping_thread;
@@ -126,4 +126,4 @@ void serverRun(int port, const spdlog::sink_ptr &sink,
     app->port(port).run();
     serverStop();
 }
-} // namespace WebCFace::Server
+} // namespace webcface::Server

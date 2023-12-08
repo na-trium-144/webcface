@@ -5,7 +5,7 @@
 #include <chrono>
 #include <optional>
 
-namespace WebCFace {
+namespace webcface {
 inline namespace Common {
 //! 排他制御をしたただのキュー
 template <typename T>
@@ -34,4 +34,4 @@ class Queue {
     }
 };
 } // namespace Common
-} // namespace WebCFace
+} // namespace webcface

@@ -1,12 +1,12 @@
 #include "message.h"
 #include <sstream>
 
-namespace WebCFace::Message {
+namespace webcface::Message {
 void printMsg(const std::shared_ptr<spdlog::logger> &logger,
               const std::string &message) {
     std::stringstream ss;
     ss << "message: " << std::hex;
-    for (int i = 0; i < message.size(); i++) {
+    for (std::size_t i = 0; i < message.size(); i++) {
         ss << std::setw(3) << static_cast<int>(message[i] & 0xff);
     }
     logger->debug(ss.str());
@@ -89,6 +89,6 @@ unpack(const std::string &message,
         printMsg(logger, message);
         return std::vector<std::pair<int, std::any>>{};
     }
-} // namespace WebCFace::Message
+} // namespace webcface::Message
 
-} // namespace WebCFace::Message
+} // namespace webcface::Message

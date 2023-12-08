@@ -1,20 +1,21 @@
 #include <gtest/gtest.h>
-#include <webcface/client_data.h>
+#include "../client/client_internal.h"
+#include <webcface/member.h>
 #include <webcface/value.h>
 #include <webcface/text.h>
 #include <webcface/log.h>
 #include <stdexcept>
 #include <chrono>
 
-using namespace WebCFace;
+using namespace webcface;
 class DataTest : public ::testing::Test {
   protected:
     void SetUp() override {
-        data_ = std::make_shared<ClientData>(self_name);
+        data_ = std::make_shared<Internal::ClientData>(self_name);
         callback_called = 0;
     }
     std::string self_name = "test";
-    std::shared_ptr<ClientData> data_;
+    std::shared_ptr<Internal::ClientData> data_;
     Value value(const std::string &member, const std::string &field) {
         return Value{Field{data_, member, field}};
     }
@@ -37,6 +38,10 @@ TEST_F(DataTest, field) {
     EXPECT_EQ(text("a", "b").name(), "b");
     EXPECT_EQ(text("a", "b").child("c").name(), "b.c");
     EXPECT_EQ(log("a").member().name(), "a");
+
+    EXPECT_THROW(Value().tryGet(), std::runtime_error);
+    EXPECT_THROW(Text().tryGet(), std::runtime_error);
+    EXPECT_THROW(Log().tryGet(), std::runtime_error);
 }
 TEST_F(DataTest, eventTarget) {
     value("a", "b").appendListener(callback<Value>());
@@ -161,12 +166,12 @@ TEST_F(DataTest, valueGet) {
     EXPECT_EQ(value("a", "b").get(), 123);
     EXPECT_EQ(value("a", "c").tryGet(), std::nullopt);
     EXPECT_EQ(value("a", "c").get(), 0);
-    EXPECT_EQ(data_->value_store.transferReq(true).at("a").at("b"), 1);
-    EXPECT_EQ(data_->value_store.transferReq(true).at("a").at("c"), 2);
+    EXPECT_EQ(data_->value_store.transferReq().at("a").at("b"), 1);
+    EXPECT_EQ(data_->value_store.transferReq().at("a").at("c"), 2);
     EXPECT_EQ(value(self_name, "b").tryGet(), std::nullopt);
-    EXPECT_EQ(data_->value_store.transferReq(true).count(self_name), 0);
+    EXPECT_EQ(data_->value_store.transferReq().count(self_name), 0);
     value("a", "d").appendListener(callback<Value>());
-    EXPECT_EQ(data_->value_store.transferReq(true).at("a").at("d"), 3);
+    EXPECT_EQ(data_->value_store.transferReq().at("a").at("d"), 3);
 }
 TEST_F(DataTest, valueGetDict) {
     data_->value_store.setRecv("a", "d.a",
@@ -201,12 +206,12 @@ TEST_F(DataTest, textGet) {
     EXPECT_EQ(text("a", "b").get(), "hoge");
     EXPECT_EQ(text("a", "c").tryGet(), std::nullopt);
     EXPECT_EQ(text("a", "c").get(), "");
-    EXPECT_EQ(data_->text_store.transferReq(true).at("a").at("b"), 1);
-    EXPECT_EQ(data_->text_store.transferReq(true).at("a").at("c"), 2);
+    EXPECT_EQ(data_->text_store.transferReq().at("a").at("b"), 1);
+    EXPECT_EQ(data_->text_store.transferReq().at("a").at("c"), 2);
     EXPECT_EQ(text(self_name, "b").tryGet(), std::nullopt);
-    EXPECT_EQ(data_->text_store.transferReq(true).count(self_name), 0);
+    EXPECT_EQ(data_->text_store.transferReq().count(self_name), 0);
     text("a", "d").appendListener(callback<Text>());
-    EXPECT_EQ(data_->text_store.transferReq(true).at("a").at("d"), 3);
+    EXPECT_EQ(data_->text_store.transferReq().at("a").at("d"), 3);
 }
 TEST_F(DataTest, textGetDict) {
     data_->text_store.setRecv("a", "d.a", std::make_shared<std::string>("1"));
@@ -227,33 +232,32 @@ TEST_F(DataTest, textGetDict) {
 
 TEST_F(DataTest, logGet) {
     using namespace std::chrono;
-    auto logs = std::make_shared<std::vector<std::shared_ptr<LogLine>>>(
-        std::vector<std::shared_ptr<LogLine>>{
-            std::make_shared<LogLine>(1, system_clock::now(), "a"),
-            std::make_shared<LogLine>(2, system_clock::now(), "b"),
-            std::make_shared<LogLine>(3, system_clock::now(), "c"),
-        });
-    data_->log_store.setRecv("a", logs);
+    auto logs = std::make_shared<std::vector<LogLine>>(std::vector<LogLine>{
+        {1, system_clock::now(), "a"},
+        {2, system_clock::now(), "b"},
+        {3, system_clock::now(), "c"},
+    });
+    data_->log_store->setRecv("a", logs);
     EXPECT_EQ(log("a").tryGet().value().size(), 3);
     EXPECT_EQ(log("a").get().size(), 3);
     EXPECT_EQ(log("b").tryGet(), std::nullopt);
     EXPECT_EQ(log("b").get().size(), 0);
-    EXPECT_EQ(data_->log_store.transferReq(true).at("a"), true);
-    EXPECT_EQ(data_->log_store.transferReq(true).at("b"), true);
-    EXPECT_EQ(log(self_name).tryGet(), std::nullopt);
-    EXPECT_EQ(data_->log_store.transferReq(true).count(self_name), 0);
+    EXPECT_EQ(data_->log_store->transferReq().at("a"), true);
+    EXPECT_EQ(data_->log_store->transferReq().at("b"), true);
+    ASSERT_TRUE(log(self_name).tryGet().has_value());
+    EXPECT_EQ(log(self_name).tryGet()->size(), 0);
+    EXPECT_EQ(data_->log_store->transferReq().count(self_name), 0);
     log("d").appendListener(callback<Log>());
-    EXPECT_EQ(data_->log_store.transferReq(true).at("d"), true);
+    EXPECT_EQ(data_->log_store->transferReq().at("d"), true);
 }
 TEST_F(DataTest, logClear) {
     using namespace std::chrono;
-    auto logs = std::make_shared<std::vector<std::shared_ptr<LogLine>>>(
-        std::vector<std::shared_ptr<LogLine>>{
-            std::make_shared<LogLine>(1, system_clock::now(), "a"),
-            std::make_shared<LogLine>(2, system_clock::now(), "b"),
-            std::make_shared<LogLine>(3, system_clock::now(), "c"),
-        });
-    data_->log_store.setRecv("a", logs);
+    auto logs = std::make_shared<std::vector<LogLine>>(std::vector<LogLine>{
+        {1, system_clock::now(), "a"},
+        {2, system_clock::now(), "b"},
+        {3, system_clock::now(), "c"},
+    });
+    data_->log_store->setRecv("a", logs);
     log("a").clear();
     EXPECT_EQ(log("a").tryGet().value().size(), 0);
 }

@@ -2,22 +2,21 @@ cmake_minimum_required(VERSION 3.12)
 
 # src/include/webcface/common/def.h からバージョンを取得
 file(READ ${CMAKE_CURRENT_SOURCE_DIR}/src/include/webcface/common/def.h contents)
-string(REGEX MATCH "#define WEBCFACE_VERSION_MAJOR *([0-9a-zA-Z_]*)" NULL_OUT ${contents})
+string(REGEX MATCH "#define WEBCFACE_VERSION_MAJOR *([0-9]+)" NULL_OUT ${contents})
 set(VERSION_MAJOR ${CMAKE_MATCH_1})
-string(REGEX MATCH "#define WEBCFACE_VERSION_MINOR *([0-9a-zA-Z_]*)" NULL_OUT ${contents})
+string(REGEX MATCH "#define WEBCFACE_VERSION_MINOR *([0-9]+)" NULL_OUT ${contents})
 set(VERSION_MINOR ${CMAKE_MATCH_1})
-string(REGEX MATCH "#define WEBCFACE_VERSION_REVISION *([0-9a-zA-Z_]*)" NULL_OUT ${contents})
+string(REGEX MATCH "#define WEBCFACE_VERSION_REVISION *([0-9]+)" NULL_OUT ${contents})
 set(VERSION_REVISION ${CMAKE_MATCH_1})
-set(VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_REVISION})
+set(WEBCFACE_VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_REVISION})
 
 project(webcface
     LANGUAGES CXX
-    VERSION ${VERSION}
+    VERSION ${WEBCFACE_VERSION}
     HOMEPAGE_URL "https://github.com/na-trium-144/webcface"
     DESCRIPTION "Web-based RPC & UI Library"
 )
-set(WEBCFACE_SOVERSION 1)
-message(STATUS "webcface ${PROJECT_VERSION}")
+set(WEBCFACE_SOVERSION 2)
 
 if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
     set(IS_MAIN on)
@@ -29,9 +28,32 @@ option(WEBCFACE_INSTALL "generate install target" ${IS_MAIN})
 option(WEBCFACE_EXAMPLE "build example" ${IS_MAIN})
 option(WEBCFACE_TEST "build test" OFF)
 option(WEBCFACE_COVERAGE "enable generating test coverage" OFF)
-set(WEBCFACE_TEST_TIMEOUT 10 CACHE INTERNAL "connection timeout in test")
+set(WEBCFACE_TEST_TIMEOUT 10 CACHE STRING "connection timeout in test")
 option(WEBCFACE_SHARED "build shared library" ON)
 option(WEBCFACE_PIC "enable PIC for shared library" ${WEBCFACE_SHARED})
+set(WEBCFACE_VERSION_SUFFIX "git" CACHE STRING
+    "version suffix ('git' to get automatically from git describe command)"
+)
+
+if(WEBCFACE_VERSION_SUFFIX STREQUAL "git")
+    execute_process(
+        COMMAND git describe --tags
+        WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
+        OUTPUT_VARIABLE git_describe
+        ERROR_VARIABLE git_describe_error
+        RESULT_VARIABLE git_describe_ok
+    )
+    if(git_describe_ok STREQUAL 0)
+        string(REGEX MATCH "([-0-9a-g\\.]+)" NULL_OUT ${git_describe})
+        set(WEBCFACE_VERSION ${CMAKE_MATCH_1})
+    else()
+        message(STATUS "Failed to get version from git describe: ${git_describe_error}")
+    endif()
+elseif(NOT WEBCFACE_VERSION_SUFFIX STREQUAL "")
+    set(WEBCFACE_VERSION "${PROJECT_VERSION}-${WEBCFACE_VERSION_SUFFIX}")
+endif()
+
+message(STATUS "WebCFace ${WEBCFACE_VERSION} (soversion ${WEBCFACE_SOVERSION})")
 
 message(STATUS "webcface_example = ${WEBCFACE_EXAMPLE}")
 message(STATUS "webcface_test = ${WEBCFACE_TEST} (timeout = ${WEBCFACE_TEST_TIMEOUT} ms)")
@@ -61,6 +83,10 @@ endif()
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     add_compile_options(-utf-8)
+    add_compile_definitions(
+        _CRT_SECURE_NO_WARNINGS
+        _SILENCE_STDEXT_ARR_ITERS_DEPRECATION_WARNING
+    )
     set(gtest_force_shared_crt on)
 endif()
 
@@ -68,6 +94,11 @@ if(MINGW)
     # https://stackoverflow.com/questions/10486116/what-does-this-gcc-error-relocation-truncated-to-fit-mean
     add_link_options(-Wl,--default-image-base-low)
 endif()
+
+
+###############################################################################
+
+find_package(ament_cmake QUIET)
 
 find_package(msgpack-cxx QUIET)
 if(msgpack-cxx_FOUND)
@@ -157,6 +188,7 @@ set(BUILD_STATIC_LIBS on CACHE INTERNAL "" FORCE)
 set(SHARE_LIB_OBJECT ${WEBCFACE_PIC} CACHE INTERNAL "" FORCE)
 set(ENABLE_WEBSOCKETS on CACHE INTERNAL "" FORCE)
 set(CURL_DISABLE_INSTALL on CACHE INTERNAL "" FORCE)
+set(CURL_ENABLE_EXPORT_TARGET off CACHE INTERNAL "" FORCE)
 add_subdirectory(external/curl)
 set(CURL libcurl_static)
 
@@ -184,6 +216,7 @@ if(WEBCFACE_TEST)
         message(STATUS "GTest found")
     else()
         message(STATUS "GTest not found")
+        set(INSTALL_GTEST off CACHE INTERNAL "" FORCE)
         add_subdirectory(external/googletest)
     endif()
 endif()
@@ -200,12 +233,18 @@ set(SVR_SRC
 )
 set(CLI_SRC
     ${CPP_DIR}/client/client.cc
-    ${CPP_DIR}/client/client_data.cc
     ${CPP_DIR}/client/client_ws.cc
+    ${CPP_DIR}/client/data_store1.cc
+    ${CPP_DIR}/client/data_store2.cc
     ${CPP_DIR}/client/field.cc
     ${CPP_DIR}/client/func.cc
+    ${CPP_DIR}/client/log.cc
     ${CPP_DIR}/client/logger.cc
     ${CPP_DIR}/client/member.cc
+    ${CPP_DIR}/client/text.cc
+    ${CPP_DIR}/client/value.cc
+    ${CPP_DIR}/client/view.cc
+    ${CPP_DIR}/client/version.cc
 )
 set(EXAMPLE_SRC
     ${CPP_DIR}/example/main.cc
@@ -230,9 +269,15 @@ set(INCLUDE_DIR
     $<BUILD_INTERFACE:${CPP_DIR}/include>
     $<INSTALL_INTERFACE:include>
 )
-include_directories(${INCLUDE_DIR})
 
 ###############################################################################
+
+add_library(${PROJECT_NAME}-headers INTERFACE)
+target_include_directories(${PROJECT_NAME}-headers INTERFACE ${INCLUDE_DIR})
+target_compile_definitions(${PROJECT_NAME}-headers INTERFACE
+    WEBCFACE_VERSION="${WEBCFACE_VERSION}"
+)
+target_compile_features(${PROJECT_NAME}-headers INTERFACE cxx_std_20)
 
 add_library(${PROJECT_NAME}-message STATIC ${MSG_SRC})
 if(NOT CMAKE_CXX_COMPILER_ID STREQUAL "MSVC" AND WEBCFACE_PIC)
@@ -240,6 +285,7 @@ if(NOT CMAKE_CXX_COMPILER_ID STREQUAL "MSVC" AND WEBCFACE_PIC)
 endif()
 target_compile_features(${PROJECT_NAME}-message PUBLIC cxx_std_20)
 target_link_libraries(${PROJECT_NAME}-message PUBLIC
+    ${PROJECT_NAME}-headers
     ${MSGPACK}
     ${SPDLOG}
 )
@@ -247,6 +293,7 @@ target_link_libraries(${PROJECT_NAME}-message PUBLIC
 add_library(${PROJECT_NAME}-server-impl STATIC ${SVR_SRC})
 target_link_libraries(${PROJECT_NAME}-server-impl PUBLIC
     ${PROJECT_NAME}-message
+    ${PROJECT_NAME}-headers
     ${CROW}
     ${SPDLOG}
 )
@@ -254,6 +301,7 @@ target_link_libraries(${PROJECT_NAME}-server-impl PUBLIC
 add_executable(${PROJECT_NAME}-server ${SVR_MAIN_SRC})
 target_link_libraries(${PROJECT_NAME}-server PRIVATE
     ${PROJECT_NAME}-server-impl
+    ${PROJECT_NAME}-headers
     CLI11
 )
 set_target_properties(${PROJECT_NAME}-server PROPERTIES
@@ -275,10 +323,10 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
     ${CURL}
 )
 target_link_libraries(${PROJECT_NAME} PUBLIC
+    ${PROJECT_NAME}-headers
     ${EVENTPP}
     ${SPDLOG}
 )
-target_include_directories(${PROJECT_NAME} PUBLIC ${INCLUDE_DIR})
 set_target_properties(${PROJECT_NAME} PROPERTIES
     INSTALL_RPATH "$ORIGIN/;@loader_path/"
     INSTALL_RPATH_USE_LINK_PATH TRUE
@@ -294,7 +342,14 @@ if(WEBCFACE_EXAMPLE)
         get_filename_component(TARGET ${SRC} NAME_WE)
         add_executable(${PROJECT_NAME}-example-${TARGET} ${SRC})
         target_link_libraries(${PROJECT_NAME}-example-${TARGET} PRIVATE ${PROJECT_NAME})
-        set(EXAMPLE_TARGETS ${EXAMPLE_TARGETS} ${PROJECT_NAME}-example-${TARGET})
+        set(WEBCFACE_EXAMPLE_TARGETS
+            ${WEBCFACE_EXAMPLE_TARGETS}
+            ${PROJECT_NAME}-example-${TARGET}
+        )
+        set(WEBCFACE_EXAMPLE_TARGETS_CPACK
+            ${WEBCFACE_EXAMPLE_TARGETS_CPACK}
+            ${PROJECT_NAME}-example-${TARGET} "Example ${TARGET}"
+        )
         set_target_properties(${PROJECT_NAME}-example-${TARGET} PROPERTIES
             INSTALL_RPATH "$ORIGIN/../lib/;$ORIGIN/;@loader_path/../lib/;@loader_path/"
             INSTALL_RPATH_USE_LINK_PATH TRUE
@@ -326,26 +381,30 @@ endif()
 if(WEBCFACE_INSTALL)
     include(CMakePackageConfigHelpers)
 
-    install(TARGETS ${PROJECT_NAME}-server ${EXAMPLE_TARGETS}
+    install(TARGETS ${PROJECT_NAME}-server
         RUNTIME DESTINATION bin
     )
-    install(TARGETS ${PROJECT_NAME}
-        EXPORT ${PROJECT_NAME}-targets
-        LIBRARY DESTINATION lib
+    install(TARGETS ${WEBCFACE_EXAMPLE_TARGETS}
+        RUNTIME DESTINATION bin
     )
+
+    set(WEBCFACE_EXPORTS ${PROJECT_NAME} ${PROJECT_NAME}-headers)
     if(NOT WEBCFACE_SHARED)
-        set(WEBCFACE_EXPORTS ${PROJECT_NAME}-message libcurl_static)
+        set(WEBCFACE_EXPORTS ${WEBCFACE_EXPORTS} ${PROJECT_NAME}-message libcurl_static)
         if(NOT msgpack-cxx_FOUND)
             set(WEBCFACE_EXPORTS ${WEBCFACE_EXPORTS} msgpack-cxx)
         endif()
-        install(TARGETS ${WEBCFACE_EXPORTS} EXPORT ${PROJECT_NAME}-targets)
     endif()
+    install(TARGETS ${WEBCFACE_EXPORTS}
+        EXPORT ${PROJECT_NAME}-targets
+        LIBRARY DESTINATION lib
+        ARCHIVE DESTINATION lib
+        RUNTIME DESTINATION bin
+    )
 
     install(EXPORT ${PROJECT_NAME}-targets
         FILE ${PROJECT_NAME}-targets.cmake
-        # 名前空間の指定
         NAMESPACE ${PROJECT_NAME}::
-        # インストール先
         DESTINATION lib/cmake/${PROJECT_NAME}
     )
     install(DIRECTORY ${CPP_DIR}/include/
@@ -368,25 +427,69 @@ if(WEBCFACE_INSTALL)
         DESTINATION lib/cmake/${PROJECT_NAME}
     )
 
+    install(FILES
+        ${CMAKE_CURRENT_LIST_DIR}/README.md
+        ${CMAKE_CURRENT_LIST_DIR}/LICENSE
+        DESTINATION share/webcface
+    )
+    install(FILES
+        ${CMAKE_CURRENT_LIST_DIR}/external/asio/asio/LICENSE_1_0.txt
+        DESTINATION share/webcface/3rd_party/asio
+    )
+    install(FILES
+        ${CMAKE_CURRENT_LIST_DIR}/external/cli11/LICENSE
+        DESTINATION share/webcface/3rd_party/cli11
+    )
+    # curl: リポジトリ内にないしバイナリ配布に必須ではないのでスキップ
+    install(FILES
+        ${CMAKE_CURRENT_LIST_DIR}/external/crow/LICENSE
+        ${CMAKE_CURRENT_LIST_DIR}/external/crow/README.md
+        # 3rdpartyのライセンスがREADMEにある
+        DESTINATION share/webcface/3rd_party/crow
+    )
+    if(NOT msgpack-cxx_FOUND)
+        install(FILES
+            ${CMAKE_CURRENT_LIST_DIR}/external/msgpack-c/LICENSE_1_0.txt
+            DESTINATION share/webcface/3rd_party/msgpack-c
+        )
+    endif()
+
     # https://decovar.dev/blog/2021/09/23/cmake-cpack-package-deb-apt/
     set(CPACK_VERBATIM_VARIABLES yes)
-    set(CPACK_DEBIAN_FILE_NAME DEB-DEFAULT)
-    set(CPACK_PACKAGE_CONTACT "nakak_u21@yahoo.co.jp")
-    set(CPACK_DEBIAN_PACKAGE_MAINTAINER "na-trium-144 <${CPACK_PACKAGE_CONTACT}>")
-    set(CPACK_DEBIAN_PACKAGE_SHLIBDEPS yes)
-    if(${spdlog_FOUND})
-        # submoduleのspdlogを使った場合システムのspdlogとはconflictする
-        set(CPACK_DEBIAN_PACKAGE_DEPENDS "libspdlog-dev")
-    endif()
+    set(CPACK_PACKAGE_CONTACT "na-trium-144@users.noreply.github.com")
+    set(CPACK_PACKAGE_VENDOR "na-trium-144@users.noreply.github.com")
+    set(CPACK_PACKAGE_EXECUTABLES
+        webcface-server "WebCFace Server"
+        ${WEBCFACE_EXAMPLE_TARGETS_CPACK}
+    )
     set(CPACK_STRIP_FILES yes)
     set(CPACK_INSTALL_DEFAULT_DIRECTORY_PERMISSIONS
         OWNER_READ OWNER_WRITE OWNER_EXECUTE
         GROUP_READ GROUP_EXECUTE
         WORLD_READ WORLD_EXECUTE
     )
+    set(CPACK_RESOURCE_FILE_LICENSE ${CMAKE_CURRENT_LIST_DIR}/LICENSE)
+    
+    set(CPACK_DEBIAN_FILE_NAME DEB-DEFAULT)
+    set(CPACK_DEBIAN_PACKAGE_VERSION ${WEBCFACE_VERSION})
+    set(CPACK_DEBIAN_PACKAGE_MAINTAINER "na-trium-144 <${CPACK_PACKAGE_CONTACT}>")
+    set(CPACK_DEBIAN_PACKAGE_SHLIBDEPS yes)
+    if(${spdlog_FOUND})
+        # submoduleのspdlogを使った場合システムのspdlogとはconflictする
+        set(CPACK_DEBIAN_PACKAGE_DEPENDS "libspdlog-dev")
+    endif()
     # https://gitlab.kitware.com/cmake/cmake/-/issues/21834
     set(CPACK_DEBIAN_PACKAGE_CONTROL_EXTRA "${CMAKE_CURRENT_LIST_DIR}/triggers")
     set(CPACK_DEBIAN_PACKAGE_CONTROL_STRICT_PERMISSION TRUE)
 
+    set(CPACK_NSIS_DISPLAY_NAME "WebCFace ${WEBCFACE_VERSION}")
+    set(CPACK_NSIS_MODIFY_PATH on)
+    set(CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL on)
+
     include(CPack)
+
+    if(ament_cmake_FOUND)
+        ament_export_targets(${PROJECT_NAME}-targets HAS_LIBRARY_TARGET)
+        ament_package()
+    endif()
 endif()
