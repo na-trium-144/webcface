@@ -95,6 +95,7 @@ Value::get(), Value::getVec(), Value::getRecurse() はstd::nulloptの代わり�
 また、doubleやstd::vector<double>, Value::Dict などの型にキャストすることでも同様に値が得られます。
 
 Value::time() でその値が送信されたとき(そのMemberがsync()したとき)の時刻が得られます。
+* Pythonでは Member.sync_time()
 
 ## 受信イベント
 
