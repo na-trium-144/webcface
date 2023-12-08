@@ -112,6 +112,8 @@ mainは各種データの送信、recvはmainが送信したデータの受信�
 
 Python, JavaScriptのクライアントも使い方はだいたい同じです。
 次ページ以降のC++での使い方を軽く読んだあとにPython、JavaScriptのリファレンスでC++との相違点を確認してください。
+* [webcface-python APIリファレンス](https://na-trium-144.github.io/webcface-python/)
+* [webcface-js APIリファレンス](https://na-trium-144.github.io/webcface-js/)
 
 
 次→ [Client](./01_client.md)
