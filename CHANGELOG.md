@@ -18,6 +18,7 @@
 * gitから自分でビルドした場合、バージョン番号に`git describe`の情報がサフィックスとして追加されるようにした
 * `cpack -G NSIS`でwindows用のインストーラーを生成できるようにした
 * colcon(ament_cmake)でビルド可能にした
+* Ubuntu20.04のReleaseビルドを追加
 
 ### Fixed
 * デフォルト構築したViewがデストラクタで例外を投げるバグを修正 (#79)
