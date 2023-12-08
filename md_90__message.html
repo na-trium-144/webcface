@@ -42,7 +42,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">WebCFace<span id="projectnumber">&#160;1.1.9</span>
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;1.2.0</span>
    </div>
    <div id="projectbrief">Web-based RPC &amp; UI Library</div>
   </td>
@@ -176,7 +176,10 @@ sync (kind = 87)</h2>
 <div class="line">    t: number; // time</div>
 <div class="line">}</div>
 </div><!-- fragment --><ul>
-<li>クライアントからサーバーに、sync()時に他のデータを送信する前にtのみをセットして1度送ります</li>
+<li>クライアントからサーバーに、sync()時に他のデータを送信する前にtのみをセットして1度送ります<ul>
+<li>syncと同じ配列に入れて送られたデータはすべて同時刻のデータとみなされます</li>
+</ul>
+</li>
 <li>サーバーはmをセットし全クライアントに送り返します</li>
 <li>timeは1970/1/1 0:00(utc) からの経過ミリ秒数で表します<ul>
 <li>これ以外にも時刻を送受信するときは同様です</li>
@@ -411,7 +414,7 @@ log req (kind = 87)</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Dec 1 2023 08:10:19 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Fri Dec 8 2023 11:22:08 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

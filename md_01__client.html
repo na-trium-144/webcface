@@ -42,7 +42,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">WebCFace<span id="projectnumber">&#160;1.1.9</span>
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;1.2.0</span>
    </div>
    <div id="projectbrief">Web-based RPC &amp; UI Library</div>
   </td>
@@ -110,20 +110,25 @@ $(document).ready(function(){initNavTree('md_01__client.html',''); initResizable
   <div class="headertitle"><div class="title">Client</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md12"></a> API Reference → <a class="el" href="classWebCFace_1_1Client.html" title="サーバーに接続するクライアント。">WebCFace::Client</a></p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md12"></a> API Reference → <a class="el" href="classwebcface_1_1Client.html" title="サーバーに接続するクライアント。">webcface::Client</a></p>
 <p>WebCFaceのメインとなるクラスです。</p>
 <p>まずはClientのオブジェクトを作成しましょう。 引数には一意な名前を設定してください。</p>
 <div class="fragment"><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="webcface_8h.html">webcface/webcface.h</a>&gt;</span></div>
 <div class="line"> </div>
-<div class="line"><a class="code hl_class" href="classWebCFace_1_1Client.html">WebCFace::Client</a> wcli(<span class="stringliteral">&quot;sample&quot;</span>);</div>
+<div class="line"><a class="code hl_class" href="classwebcface_1_1Client.html">webcface::Client</a> wcli(<span class="stringliteral">&quot;sample&quot;</span>);</div>
+<div class="line"><span class="comment">// または webcface::Client wcli;</span></div>
 <div class="line"> </div>
-<div class="line"><span class="comment">// または WebCFace::Client wcli;</span></div>
-<div class="ttc" id="aclassWebCFace_1_1Client_html"><div class="ttname"><a href="classWebCFace_1_1Client.html">WebCFace::Client</a></div><div class="ttdoc">サーバーに接続するクライアント。</div><div class="ttdef"><b>Definition</b> client.h:16</div></div>
+<div class="line">wcli.start();</div>
+<div class="line"><span class="comment">// または wcli.waitConnection();</span></div>
+<div class="ttc" id="aclasswebcface_1_1Client_html"><div class="ttname"><a href="classwebcface_1_1Client.html">webcface::Client</a></div><div class="ttdoc">サーバーに接続するクライアント。</div><div class="ttdef"><b>Definition</b> client.h:14</div></div>
 <div class="ttc" id="awebcface_8h_html"><div class="ttname"><a href="webcface_8h.html">webcface.h</a></div></div>
-</div><!-- fragment --><p>Client オブジェクトを作ると別スレッドでサーバーへの接続を開始します。 通信が切断された場合は自動で再接続します。</p>
-<p>コンストラクタに指定するのはこのクライアントの名前(Memberの名前)です。 同時に接続している他のクライアントと名前が被らないようにしてください。</p>
-<p>コンストラクタに名前を指定しない、または空文字列の場合、読み取り専用モードになります。 この場合他のクライアントとの被りは問題ありませんがデータを送信することができなくなります。</p>
+</div><!-- fragment --><p><strike>Client オブジェクトを作ると別スレッドでサーバーへの接続を開始します。</strike> <br  />
+ <img src="https://img.shields.io/badge/ver1.2~-00599c?logo=C%2B%2B" alt="ver1.2から" class="inline"/> Client オブジェクトを作り、start() または waitConnection() を呼ぶことで別スレッドでサーバーへの接続を開始します。 start() はブロックしませんが waitConnection() は接続が完了するまで待機します。</p>
+<p>通信が切断された場合は自動で再接続します。</p>
+<p>コンストラクタに指定するのはこのクライアントの名前(Memberの名前)です。 同時に接続している他のクライアントと名前が被らないようにしてください。 <br  />
+ コンストラクタに名前を指定しない、または空文字列の場合、読み取り専用モードになります。 この場合他のクライアントとの被りは問題ありませんがデータを送信することができなくなります。</p>
 <p>デフォルトではlocalhostの7530ポートに接続を試みますが、サーバーのポートを変更していたり別のpcに接続する場合はコンストラクタの引数でサーバーのアドレスとポートを指定できます。</p>
+<p>プログラムを起動できたら、WebUIを開いてみましょう。 そして右上のメニューを開き、Clientの初期化時に指定した名前がそこに表示されていれば正しく通信できています。</p>
 <h1><a class="anchor" id="autotoc_md13"></a>
 sync</h1>
 <div class="fragment"><div class="line"><span class="keywordflow">while</span>(<span class="keyword">true</span>){</div>
@@ -131,10 +136,9 @@ sync</h1>
 <div class="line"> </div>
 <div class="line">    wcli.sync();</div>
 <div class="line">}</div>
-</div><!-- fragment --><p>Client::sync() をすることでこれ以降の章で扱う各種データを実際に送信します。 sync()自体は送信処理はせずキューに入れるだけであり、ノンブロッキングです。</p>
-<p>データを受信するだけの場合もサーバーにデータのリクエストをするためsync()が必要になります。</p>
-<p>メインプログラムの周期実行される場所などで繰り返し呼ぶようにしてください。</p>
-<p>sync()を呼び出すプログラムを動かしたら、WebUIを開いてみましょう。 そして右上のメニューを開き、Clientの初期化時に指定した名前がそこに表示されていれば正しく通信できています。</p>
+</div><!-- fragment --><p>Client::sync() をすることでこれ以降の章で扱う各種データを実際に送信します。 sync()自体は送信処理はせずキューに入れるだけであり、ノンブロッキングです。 メインプログラムの周期実行される場所などで繰り返し呼ぶようにしてください。</p>
+<p><strike>データを受信するだけの場合もサーバーにデータのリクエストをするためsync()が必要になります。</strike> <br  />
+ <img src="https://img.shields.io/badge/ver1.2~-00599c?logo=C%2B%2B" alt="ver1.2から" class="inline"/> Funcの呼び出しとデータ受信リクエストの送信は sync() とは非同期に行われるので sync() は不要です。</p>
 <h1><a class="anchor" id="autotoc_md14"></a>
 切断する</h1>
 <p>Client::close() で切断します。 またはデストラクタでも自動的に切断します。</p>
@@ -148,7 +152,7 @@ sync</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Dec 1 2023 08:10:19 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Fri Dec 8 2023 11:22:07 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

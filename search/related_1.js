@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['func_0',['Func',['../classWebCFace_1_1AsyncFuncResult.html#a87c6c86ed0896880400f89c8c88c3927',1,'WebCFace::AsyncFuncResult']]]
+  ['internal_3a_3aclientdata_0',['ClientData',['../classwebcface_1_1AsyncFuncResult.html#a6fdef636d2887fa1efb6cdd7fb8c052d',1,'webcface::AsyncFuncResult']]]
 ];

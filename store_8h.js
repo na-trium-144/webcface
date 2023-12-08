@@ -1,5 +1,5 @@
 var store_8h =
 [
-    [ "Store", "structWebCFace_1_1Server_1_1Store.html", "structWebCFace_1_1Server_1_1Store" ],
-    [ "store", "store_8h.html#a6deee48cbffa3ddf8b7b240e2ce36b35", null ]
+    [ "Store", "structwebcface_1_1Server_1_1Store.html", "structwebcface_1_1Server_1_1Store" ],
+    [ "store", "store_8h.html#abfd5e14f43b41c0ffa015177dcc9c084", null ]
 ];

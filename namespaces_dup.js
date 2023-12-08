@@ -1,4 +1,4 @@
 var namespaces_dup =
 [
-    [ "WebCFace", "namespaceWebCFace.html", "namespaceWebCFace" ]
+    [ "webcface", "namespacewebcface.html", "namespacewebcface" ]
 ];

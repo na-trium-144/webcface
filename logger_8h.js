@@ -1,5 +1,5 @@
 var logger_8h =
 [
-    [ "LoggerBuf", "classWebCFace_1_1LoggerBuf.html", "classWebCFace_1_1LoggerBuf" ],
-    [ "LoggerSink", "classWebCFace_1_1LoggerSink.html", "classWebCFace_1_1LoggerSink" ]
+    [ "LoggerBuf", "classwebcface_1_1LoggerBuf.html", "classwebcface_1_1LoggerBuf" ],
+    [ "LoggerSink", "classwebcface_1_1LoggerSink.html", "classwebcface_1_1LoggerSink" ]
 ];
