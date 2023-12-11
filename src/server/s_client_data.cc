@@ -33,6 +33,9 @@ bool ClientData::hasReq(const std::string &member) {
            std::any_of(this->text_req[member].begin(),
                        this->text_req[member].end(),
                        [](const auto &it) { return it.second > 0; }) ||
+           std::any_of(this->image_req[member].begin(),
+                       this->image_req[member].end(),
+                       [](const auto &it) { return it.second > 0; }) ||
            std::any_of(this->view_req[member].begin(),
                        this->view_req[member].end(),
                        [](const auto &it) { return it.second > 0; });
@@ -314,19 +317,52 @@ void ClientData::onRecv(const std::string &message) {
             });
             break;
         }
+        case MessageKind::image: {
+            auto v = std::any_cast<webcface::Message::Image>(obj);
+            logger->debug("image {} ({} x {}, type={})", v.field, v.rows,
+                          v.cols, static_cast<int>(v.type));
+            if (!this->image.count(v.field)) {
+                store.forEach([&](auto &cd) {
+                    if (cd.name != this->name) {
+                        cd.pack(
+                            webcface::Message::Entry<webcface::Message::Image>{
+                                {}, this->member_id, v.field});
+                        cd.logger->trace("send image_entry {} of member {}",
+                                         v.field, this->member_id);
+                    }
+                });
+            }
+            this->image[v.field] = v.img();
+            // このimageをsubscribeしてるところに送り返す
+            store.forEach([&](auto &cd) {
+                auto [req_id, sub_field] =
+                    findReqField(cd.image_req, this->name, v.field);
+                if (req_id > 0) {
+                    cd.pack(webcface::Message::Res<webcface::Message::Image>(
+                        req_id, sub_field, v.img()));
+                    cd.logger->trace("send image_res req_id={} + '{}'", req_id,
+                                     sub_field);
+                }
+            });
+            break;
+        }
         case MessageKind::log: {
             auto v = std::any_cast<webcface::Message::Log>(obj);
             v.member_id = this->member_id;
             logger->debug("log {} lines", v.log->size());
-            if (store.keep_log >= 0 && this->log->size() < static_cast<unsigned int>(store.keep_log) &&
-                this->log->size() + v.log->size() >= static_cast<unsigned int>(store.keep_log)) {
+            if (store.keep_log >= 0 &&
+                this->log->size() < static_cast<unsigned int>(store.keep_log) &&
+                this->log->size() + v.log->size() >=
+                    static_cast<unsigned int>(store.keep_log)) {
                 logger->info("number of log lines reached {}, so the oldest "
                              "log will be romoved.",
                              store.keep_log);
             }
             std::copy(v.log->begin(), v.log->end(),
                       std::back_inserter(*this->log));
-            while (store.keep_log >= 0 && this->log->size() > static_cast<unsigned int>(store.keep_log)) {
+            while (store.keep_log >= 0 &&
+                   this->log->size() >
+                       static_cast<unsigned int>(store.keep_log)) {
                 this->log->pop_front();
             }
             // このlogをsubscribeしてるところに送り返す
@@ -459,6 +495,39 @@ void ClientData::onRecv(const std::string &message) {
             view_req[s.member][s.field] = s.req_id;
             break;
         }
+        case MessageKind::req + MessageKind::image: {
+            auto s =
+                std::any_cast<webcface::Message::Req<webcface::Message::Image>>(
+                    obj);
+            logger->debug("request image ({}): {} from {}", s.req_id, s.field,
+                          s.member);
+            // 指定した値を返す
+            store.findAndDo(s.member, [&](auto &cd) {
+                if (!this->hasReq(s.member)) {
+                    this->pack(webcface::Message::Sync{cd.member_id,
+                                                       cd.last_sync_time});
+                    logger->trace("send sync {}", this->member_id);
+                }
+                for (const auto &it : cd.image) {
+                    if (it.first == s.field ||
+                        it.first.starts_with(s.field + ".")) {
+                        std::string sub_field;
+                        if (it.first == s.field) {
+                            sub_field = "";
+                        } else {
+                            sub_field = it.first.substr(s.field.size() + 1);
+                        }
+                        this->pack(
+                            webcface::Message::Res<webcface::Message::Image>{
+                                s.req_id, sub_field, it.second});
+                        logger->trace("send image_res, req_id={} + '{}'",
+                                      s.req_id, sub_field);
+                    }
+                }
+            });
+            image_req[s.member][s.field] = s.req_id;
+            break;
+        }
         case MessageKind::log_req: {
             auto s = std::any_cast<webcface::Message::LogReq>(obj);
             logger->debug("request log from {}", s.member);
@@ -476,6 +545,8 @@ void ClientData::onRecv(const std::string &message) {
         case MessageKind::res + MessageKind::text:
         case MessageKind::entry + MessageKind::view:
         case MessageKind::res + MessageKind::view:
+        case MessageKind::entry + MessageKind::image:
+        case MessageKind::res + MessageKind::image:
         case MessageKind::svr_version:
         case MessageKind::ping_status:
             logger->warn("Invalid Message Kind {}", kind);

@@ -32,11 +32,13 @@ struct ClientData {
     std::unordered_map<std::string, std::shared_ptr<Message::FuncInfo>> func;
     std::unordered_map<std::string, std::vector<Common::ViewComponentBase>>
         view;
+    std::unordered_map<std::string, Common::Image> image;
+
     std::chrono::system_clock::time_point last_sync_time;
     //! リクエストしているmember,nameのペア
     std::unordered_map<std::string,
                        std::unordered_map<std::string, unsigned int>>
-        value_req, text_req, view_req;
+        value_req, text_req, view_req, image_req;
     std::set<std::string> log_req;
     bool hasReq(const std::string &member);
     //! ログ全履歴

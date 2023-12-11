@@ -10,11 +10,13 @@
 #include <webcface/common/func.h>
 #include <webcface/common/log.h>
 #include <webcface/common/view.h>
+#include <webcface/common/image.h>
 #include "val_adaptor.h"
 
 MSGPACK_ADD_ENUM(webcface::Common::ValType);
 MSGPACK_ADD_ENUM(webcface::Common::ViewComponentType);
 MSGPACK_ADD_ENUM(webcface::Common::ViewColor);
+MSGPACK_ADD_ENUM(webcface::Common::ImageColorType);
 
 namespace webcface::Message {
 // 新しいメッセージの定義は
@@ -25,6 +27,7 @@ enum MessageKindEnum {
     value = 0,
     text = 1,
     view = 3,
+    image = 5,
     entry = 20,
     req = 40,
     res = 60,
@@ -251,6 +254,23 @@ struct View : public MessageBase<MessageKind::view> {
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", field), MSGPACK_NVP("d", data_diff),
                        MSGPACK_NVP("l", length));
 };
+//! 生の画像データ。
+struct Image : public MessageBase<MessageKind::image> {
+    std::string field;
+    int rows, cols;
+    Common::ImageColorType type;
+    std::shared_ptr<std::vector<char>> data;
+    Image() = default;
+    Image(const std::string &field, const Common::ImageBase &img)
+        : field(field), rows(img.rows()), cols(img.cols()), type(img.type()),
+          data(img.data()) {}
+    Common::ImageBase img() const {
+        return Common::ImageBase(rows, cols, type, data);
+    }
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", field), MSGPACK_NVP("d", data),
+                       MSGPACK_NVP("r", rows), MSGPACK_NVP("c", cols),
+                       MSGPACK_NVP("t", type));
+};
 //! client(member)->server->client logを追加
 //! client->server時はmemberは無視
 struct Log : public MessageBase<MessageKind::log> {
@@ -278,8 +298,7 @@ struct Log : public MessageBase<MessageKind::log> {
     };
     std::shared_ptr<std::deque<LogLine>> log;
     Log() = default;
-    Log(unsigned int member_id,
-        const std::shared_ptr<std::deque<LogLine>> &log)
+    Log(unsigned int member_id, const std::shared_ptr<std::deque<LogLine>> &log)
         : member_id(member_id), log(log) {}
     template <typename It>
     Log(const It &begin, const It &end) : member_id(0) {
@@ -404,7 +423,25 @@ struct Res<View> : public MessageBase<MessageKind::view + MessageKind::res> {
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", req_id), MSGPACK_NVP("f", sub_field),
                        MSGPACK_NVP("d", data_diff), MSGPACK_NVP("l", length));
 };
-
+template <>
+struct Res<Image> : public MessageBase<MessageKind::image + MessageKind::res> {
+    unsigned int req_id;
+    std::string sub_field;
+    int rows, cols;
+    Common::ImageColorType type;
+    std::shared_ptr<std::vector<char>> data;
+    Res() = default;
+    Res(unsigned int req_id, const std::string &sub_field,
+        const Common::ImageBase &img)
+        : req_id(req_id), sub_field(sub_field), rows(img.rows()),
+          cols(img.cols()), type(img.type()), data(img.data()) {}
+    Common::ImageBase img() const {
+        return Common::ImageBase(rows, cols, type, data);
+    }
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", req_id), MSGPACK_NVP("f", sub_field),
+                       MSGPACK_NVP("d", data), MSGPACK_NVP("r", rows),
+                       MSGPACK_NVP("c", cols), MSGPACK_NVP("t", type));
+};
 //! msgpackのメッセージをパースしstd::anyで返す
 std::vector<std::pair<int, std::any>>
 unpack(const std::string &message,

@@ -31,6 +31,7 @@ option(WEBCFACE_COVERAGE "enable generating test coverage" OFF)
 set(WEBCFACE_TEST_TIMEOUT 10 CACHE STRING "connection timeout in test")
 option(WEBCFACE_SHARED "build shared library" ON)
 option(WEBCFACE_PIC "enable PIC for shared library" ${WEBCFACE_SHARED})
+option(WEBCFACE_USE_OPENCV "use opencv to enable image processing feature" ON)
 set(WEBCFACE_VERSION_SUFFIX "git" CACHE STRING
     "version suffix ('git' to get automatically from git describe command)"
 )
@@ -210,6 +211,10 @@ set(CROW Crow)
 
 add_subdirectory(external/cli11)
 
+if(WEBCFACE_USE_OPENCV)
+    find_package(OpenCV REQUIRED)
+endif()
+
 if(WEBCFACE_TEST)
     find_package(GTest QUIET)
     if(GTest_FOUND)
@@ -273,10 +278,22 @@ set(INCLUDE_DIR
 ###############################################################################
 
 add_library(${PROJECT_NAME}-headers INTERFACE)
-target_include_directories(${PROJECT_NAME}-headers INTERFACE ${INCLUDE_DIR})
+target_include_directories(${PROJECT_NAME}-headers INTERFACE
+    ${INCLUDE_DIR}
+    ${OpenCV_INCLUDE_DIRS}
+)
 target_compile_definitions(${PROJECT_NAME}-headers INTERFACE
     WEBCFACE_VERSION="${WEBCFACE_VERSION}"
 )
+if(WEBCFACE_USE_OPENCV)
+    target_compile_definitions(${PROJECT_NAME}-headers INTERFACE
+        WEBCFACE_USE_OPENCV=1
+    )
+else()
+    target_compile_definitions(${PROJECT_NAME}-headers INTERFACE
+        WEBCFACE_USE_OPENCV=0
+    )
+endif()
 target_compile_features(${PROJECT_NAME}-headers INTERFACE cxx_std_20)
 
 add_library(${PROJECT_NAME}-message STATIC ${MSG_SRC})
@@ -296,7 +313,9 @@ target_link_libraries(${PROJECT_NAME}-server-impl PUBLIC
     ${PROJECT_NAME}-headers
     ${CROW}
     ${SPDLOG}
+    ${OpenCV_LIBS}
 )
+
 
 add_executable(${PROJECT_NAME}-server ${SVR_MAIN_SRC})
 target_link_libraries(${PROJECT_NAME}-server PRIVATE
