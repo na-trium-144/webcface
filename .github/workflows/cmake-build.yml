@@ -40,6 +40,7 @@ jobs:
         cmake -B ${{github.workspace}}/build
         -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
         -DWEBCFACE_VERSION_SUFFIX=${{matrix.distro}}
+        -DWEBCFACE_DOWNLOAD_WEBUI=off
     - name: Build
       run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
     - name: Create Deb Package
@@ -118,7 +119,7 @@ jobs:
           run: |
             cd /workspace
             apt-get install -q -y libspdlog-dev
-            cmake -B build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DWEBCFACE_VERSION_SUFFIX=${distro}
+            cmake -B build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DWEBCFACE_VERSION_SUFFIX=${distro} -DWEBCFACE_DOWNLOAD_WEBUI=off
             cmake --build build --config ${{env.BUILD_TYPE}}
             cd build
             cpack -G DEB

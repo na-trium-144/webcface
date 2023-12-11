@@ -490,9 +490,11 @@ if(WEBCFACE_INSTALL)
         DESTINATION lib/cmake/${PROJECT_NAME}
     )
 
-    install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/dist/
-        DESTINATION share/webcface/dist
-    )
+    if(WEBCFACE_DOWNLOAD_WEBUI)
+        install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/dist/
+            DESTINATION share/webcface/dist
+        )
+    endif()
     install(FILES
         ${CMAKE_CURRENT_LIST_DIR}/README.md
         ${CMAKE_CURRENT_LIST_DIR}/LICENSE
