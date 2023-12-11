@@ -249,8 +249,10 @@ Visual Studio</summary>
 <p></p>
 <ul>
 <li>Visual Studio と Git for Windows をインストールし、Developer command prompt からビルドすればいいはずです</li>
-<li>インストール先は/usr/localではない </li>
+<li>(optionalで) vcpkgを使用する場合は <div class="fragment"><div class="line">vcpkg install spdlog msgpack eventpp</div>
+</div><!-- fragment --> でインストールした依存ライブラリも使用できます</li>
 </ul>
+<p></p>
 </details>
 <details >
 <summary >
@@ -295,17 +297,17 @@ Build (with colcon, ROS2)</h3>
 <h3><a class="anchor" id="autotoc_md91"></a>
 WebUI</h3>
 <ul>
-<li>serverを自分でビルドした場合は別途webuiを読み込ませる必要があります。</li>
-<li>webuiはnode.jsを使って自分でビルドすることも可能ですが、<a href="https://github.com/na-trium-144/webcface-webui/releases">webuiのReleases</a> からビルド済みのtar.gzのアーカイブをダウンロードして /usr/local/share/webcface/dist として展開するのが簡単です。</li>
+<li>デフォルトではビルド済みのものがcmake時にダウンロードされます。</li>
+<li><code>-DWEBCFACE_DOWNLOAD_WEBUI=off</code>を指定するとダウンロードしません。<ul>
+<li>その場合は <a href="https://github.com/na-trium-144/webcface-webui/releases">webuiのReleases</a> からビルド済みのtar.gzのアーカイブをダウンロードして /usr/local/share/webcface/dist として展開するのが簡単です。<ul>
 <li>install先が/usr/localでない場合はprefixを読み替えてください</li>
-<li>installしないでbuildディレクトリから起動する場合は、このリポジトリ直下にdist/を置いてください</li>
-<li>コマンドからやる場合は次のようになります <div class="fragment"><div class="line">curl -LO https://github.com/na-trium-144/webcface-webui/releases/download/v1.0.10/webcface-webui_1.0.10.tar.gz</div>
-<div class="line">tar zxvf webcface-webui*.tar.gz</div>
-</div><!-- fragment --></li>
-<li>/usr/local に展開する場合は次のようになります <div class="fragment"><div class="line">sudo rm -rf /usr/local/share/webcface/dist</div>
-<div class="line">sudo mkdir /usr/local/share/webcface</div>
-<div class="line">sudo mv dist /usr/local/share/webcface/dist</div>
-</div><!-- fragment --></li>
+<li>installせずに実行する場合は webcface-server のバイナリと同じディレクトリか、その1, 2, 3階層上のどこかにdistディレクトリを配置してください</li>
+</ul>
+</li>
+<li>または自分でビルドすることも可能です(node.jsが必要)</li>
+</ul>
+</li>
+<li>このリポジトリのReleasesにあるdebパッケージとhomebrewではwebcfaceのパッケージとは別で配布しています</li>
 </ul>
 <h3><a class="anchor" id="autotoc_md92"></a>
 tools</h3>
@@ -335,7 +337,7 @@ License</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Dec 8 2023 12:59:42 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Mon Dec 11 2023 14:45:56 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>
