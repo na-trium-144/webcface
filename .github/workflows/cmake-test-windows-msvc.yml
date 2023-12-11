@@ -20,19 +20,10 @@ jobs:
     - uses: actions/checkout@v4
       with:
         submodules: "recursive"
-    - name: Install Server-Media-Foundation
-      if: matrix.use_opencv == 'on'
-      shell: powershell
-      run: |
-        Install-WindowsFeature Server-Media-Foundation
-    - name: vcpkg build
-      if: matrix.use_opencv == 'on'
-      uses: johnwason/vcpkg-action@v5
-      id: vcpkg
+    - name: Install dependencies
+      uses: crazy-max/ghaction-chocolatey@v3
       with:
-        pkgs: opencv
-        triplet: x64-windows-release
-        token: ${{ github.token }}
+        args: install -y opencv
     - name: Configure CMake
       run: >
         cmake -B build
@@ -41,8 +32,8 @@ jobs:
         -DWEBCFACE_EXAMPLE=on
         -DWEBCFACE_TEST_TIMEOUT=1000
         -DWEBCFACE_USE_OPENCV=${{matrix.use_opencv}}
-        ${{ steps.vcpkg.outputs.vcpkg-cmake-config }}
-        
+        -DCMAKE_PREFIX_PATH=$Env:OPENCV_DIR
+
     - name: Build
       run: cmake --build build
 
