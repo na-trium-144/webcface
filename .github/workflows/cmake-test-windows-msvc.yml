@@ -41,7 +41,8 @@ jobs:
         -DWEBCFACE_EXAMPLE=on
         -DWEBCFACE_TEST_TIMEOUT=1000
         -DWEBCFACE_USE_OPENCV=${{matrix.use_opencv}}
-
+        ${{ steps.vcpkg.outputs.vcpkg-cmake-config }}
+        
     - name: Build
       run: cmake --build build
 
