@@ -25,7 +25,7 @@ jobs:
       run: brew update --preinstall
     - name: Install Homebrew dependencies
       if: matrix.use_opencv == 'on'
-      run: env HOMEBREW_NO_AUTO_UPDATE=1 brew install opencv
+      run: env HOMEBREW_NO_AUTO_UPDATE=1 brew install opencv || true
     - name: Configure CMake
       run: >
         cmake -B build
