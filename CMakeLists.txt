@@ -17,6 +17,7 @@ project(webcface
     DESCRIPTION "Web-based RPC & UI Library"
 )
 set(WEBCFACE_SOVERSION 2)
+set(WEBUI_VERSION 1.0.10)
 
 if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
     set(IS_MAIN on)
@@ -34,6 +35,7 @@ option(WEBCFACE_PIC "enable PIC for shared library" ${WEBCFACE_SHARED})
 set(WEBCFACE_VERSION_SUFFIX "git" CACHE STRING
     "version suffix ('git' to get automatically from git describe command)"
 )
+option(WEBCFACE_DOWNLOAD_WEBUI "download and install webui" ON)
 
 if(WEBCFACE_VERSION_SUFFIX STREQUAL "git")
     execute_process(
@@ -100,6 +102,15 @@ endif()
 
 include(FetchContent)
 
+if(WEBCFACE_DOWNLOAD_WEBUI)
+    message(STATUS "Downloading webcface-webui ${WEBUI_VERSION}")
+    FetchContent_Declare(webui
+        URL https://github.com/na-trium-144/webcface-webui/releases/download/v${WEBUI_VERSION}/webcface-webui_${WEBUI_VERSION}.tar.gz
+        SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/dist
+    )
+    FetchContent_Populate(webui)
+endif()
+
 find_package(ament_cmake QUIET)
 
 find_package(msgpack-cxx QUIET)
@@ -114,16 +125,19 @@ else()
         BUILD_COMMAND ""
     )
     # msgpackのcmakelistsを使うとmsgpackをインストールしてしまうので、includeするだけ
-    FetchContent_Populate(msgpack-cxx)
-    add_library(msgpack-cxx INTERFACE)
-    target_compile_definitions(msgpack-cxx INTERFACE
-        MSGPACK_NO_BOOST
-        MSGPACK_DEFAULT_API_VERSION=3
-    )
-    target_include_directories(msgpack-cxx INTERFACE
-        $<BUILD_INTERFACE:${msgpack-cxx_SOURCE_DIR}/include>
-        $<INSTALL_INTERFACE:include>
-    )
+    FetchContent_GetProperties(msgpack-cxx)
+    if(NOT msgpack-cxx_POPULATED)
+        FetchContent_Populate(msgpack-cxx)
+        add_library(msgpack-cxx INTERFACE)
+        target_compile_definitions(msgpack-cxx INTERFACE
+            MSGPACK_NO_BOOST
+            MSGPACK_DEFAULT_API_VERSION=3
+        )
+        target_include_directories(msgpack-cxx INTERFACE
+            $<BUILD_INTERFACE:${msgpack-cxx_SOURCE_DIR}/include>
+            $<INSTALL_INTERFACE:include>
+        )
+    endif()
 endif()
 set(MSGPACK msgpack-cxx)
 
@@ -217,12 +231,15 @@ FetchContent_Declare(asio
     GIT_TAG asio-1-29-0
     CONFIGURE_COMMAND ""
 )
-FetchContent_Populate(asio)
-add_library(asio INTERFACE)
-target_include_directories(asio INTERFACE
-    ${asio_SOURCE_DIR}/asio/include
-)
-target_compile_definitions(asio INTERFACE ASIO_STANDALONE)
+FetchContent_GetProperties(asio)
+if(NOT asio_POPULATED)
+    FetchContent_Populate(asio)
+    add_library(asio INTERFACE)
+    target_include_directories(asio INTERFACE
+        ${asio_SOURCE_DIR}/asio/include
+    )
+    target_compile_definitions(asio INTERFACE ASIO_STANDALONE)
+endif()
 if(MINGW)
     set(ASIO asio ws2_32 wsock32)
 else()
@@ -236,12 +253,15 @@ FetchContent_Declare(crow
     GIT_TAG fix-destructor-io-service
     CONFIGURE_COMMAND ""
 )
-FetchContent_Populate(crow)
-add_library(Crow INTERFACE)
-target_include_directories(Crow INTERFACE
-    ${crow_SOURCE_DIR}/include
-)
-target_link_libraries(Crow INTERFACE ${ASIO})
+FetchContent_GetProperties(crow)
+if(NOT crow_POPULATED)
+    FetchContent_Populate(crow)
+    add_library(Crow INTERFACE)
+    target_include_directories(Crow INTERFACE
+        ${crow_SOURCE_DIR}/include
+    )
+    target_link_libraries(Crow INTERFACE ${ASIO})
+endif()
 set(CROW Crow)
 
 FetchContent_Declare(cli11
@@ -419,7 +439,6 @@ if(WEBCFACE_TEST)
     gtest_discover_tests(${PROJECT_NAME}-test)
 endif()
 
-
 ###############################################################################
 # https://qiita.com/modapone/items/8f97425b6167cffc815c
 if(WEBCFACE_INSTALL)
@@ -471,29 +490,32 @@ if(WEBCFACE_INSTALL)
         DESTINATION lib/cmake/${PROJECT_NAME}
     )
 
+    install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/dist/
+        DESTINATION share/webcface/dist
+    )
     install(FILES
         ${CMAKE_CURRENT_LIST_DIR}/README.md
         ${CMAKE_CURRENT_LIST_DIR}/LICENSE
         DESTINATION share/webcface
     )
     install(FILES
-        ${CMAKE_CURRENT_LIST_DIR}/external/asio/asio/LICENSE_1_0.txt
+        ${asio_SOURCE_DIR}/asio/LICENSE_1_0.txt
         DESTINATION share/webcface/3rd_party/asio
     )
     install(FILES
-        ${CMAKE_CURRENT_LIST_DIR}/external/cli11/LICENSE
+        ${cli11_SOURCE_DIR}/LICENSE
         DESTINATION share/webcface/3rd_party/cli11
     )
     # curl: リポジトリ内にないしバイナリ配布に必須ではないのでスキップ
     install(FILES
-        ${CMAKE_CURRENT_LIST_DIR}/external/crow/LICENSE
-        ${CMAKE_CURRENT_LIST_DIR}/external/crow/README.md
+        ${crow_SOURCE_DIR}/LICENSE
+        ${crow_SOURCE_DIR}/README.md
         # 3rdpartyのライセンスがREADMEにある
         DESTINATION share/webcface/3rd_party/crow
     )
     if(NOT msgpack-cxx_FOUND)
         install(FILES
-            ${CMAKE_CURRENT_LIST_DIR}/external/msgpack-c/LICENSE_1_0.txt
+            ${msgpack-cxx_SOURCE_DIR}/LICENSE_1_0.txt
             DESTINATION share/webcface/3rd_party/msgpack-c
         )
     endif()
