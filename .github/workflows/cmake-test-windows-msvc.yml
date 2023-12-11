@@ -12,12 +12,24 @@ env:
 
 jobs:
   test-windows-msvc:
+    strategy:
+      matrix:
+        dep: ["vcpkg", "submodule"]
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v4
       with:
         submodules: "recursive"
-
+    - name: vcpkg build
+      if: matrix.dep == 'vcpkg'
+      uses: johnwason/vcpkg-action@v5
+      id: vcpkg
+      with:
+        pkgs: spdlog msgpack eventpp
+        triplet: x64-windows-release
+        token: ${{ github.token }}
+    - name: Add vcpkg Path
+      run: echo "${{github.workspace}}\vcpkg\installed\x64-windows\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
     - name: Configure CMake
       run: >
         cmake -B build
@@ -25,6 +37,7 @@ jobs:
         -DWEBCFACE_TEST=on
         -DWEBCFACE_EXAMPLE=on
         -DWEBCFACE_TEST_TIMEOUT=1000
+        ${{ steps.vcpkg.outputs.vcpkg-cmake-config }}
 
     - name: Build
       run: cmake --build build

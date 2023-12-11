@@ -13,11 +13,18 @@ env:
 
 jobs:
   test-windows-gcc:
+    strategy:
+      matrix:
+        dep: ["pacman", "submodule"]
     runs-on: windows-latest
     defaults:
       run:
         shell: msys2 {0}
     steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: "recursive"
+
     - uses: msys2/setup-msys2@v2
       with:
         update: true
@@ -27,9 +34,9 @@ jobs:
           mingw-w64-x86_64-cmake
         msystem: MINGW64
 
-    - uses: actions/checkout@v4
-      with:
-        submodules: "recursive"
+    - name: Install dependencies
+      if: matrix.dep == 'pacman'
+      run: pacman -S --noconfirm mingw-w64-x86_64-spdlog
 
     - name: Configure CMake
       env:

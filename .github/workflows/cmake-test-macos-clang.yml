@@ -12,11 +12,20 @@ env:
 
 jobs:
   test-macos-clang:
+    strategy:
+      matrix:
+        dep: ["brew", "submodule"]
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v4
       with:
         submodules: "recursive"
+    - name: Update Homebrew
+      if: matrix.dep == 'brew'
+      run: brew update --preinstall
+    - name: Install Homebrew dependencies
+      if: matrix.dep == 'brew'
+      run: env HOMEBREW_NO_AUTO_UPDATE=1 brew install spdlog msgpack-cxx
 
     - name: Configure CMake
       run: >
