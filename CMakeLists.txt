@@ -98,6 +98,8 @@ endif()
 
 ###############################################################################
 
+include(FetchContent)
+
 find_package(ament_cmake QUIET)
 
 find_package(msgpack-cxx QUIET)
@@ -105,15 +107,21 @@ if(msgpack-cxx_FOUND)
     message(STATUS "msgpack-cxx found")
 else()
     message(STATUS "msgpack-cxx not found")
+    FetchContent_Declare(msgpack-cxx
+        GIT_REPOSITORY https://github.com/msgpack/msgpack-c.git
+        GIT_TAG cpp-6.1.0
+        CONFIGURE_COMMAND ""
+        BUILD_COMMAND ""
+    )
     # msgpackのcmakelistsを使うとmsgpackをインストールしてしまうので、includeするだけ
-
+    FetchContent_Populate(msgpack-cxx)
     add_library(msgpack-cxx INTERFACE)
     target_compile_definitions(msgpack-cxx INTERFACE
         MSGPACK_NO_BOOST
         MSGPACK_DEFAULT_API_VERSION=3
     )
     target_include_directories(msgpack-cxx INTERFACE
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/external/msgpack-c/include>
+        $<BUILD_INTERFACE:${msgpack-cxx_SOURCE_DIR}/include>
         $<INSTALL_INTERFACE:include>
     )
 endif()
@@ -124,8 +132,12 @@ if(eventpp_FOUND)
     message(STATUS "eventpp found")
 else()
     message(STATUS "eventpp not found")
+    FetchContent_Declare(eventpp
+        GIT_REPOSITORY https://github.com/wqking/eventpp.git
+        GIT_TAG v0.1.3
+    )
     set(EVENTPP_INSTALL ${WEBCFACE_INSTALL} CACHE INTERNAL "" FORCE)
-    add_subdirectory(external/eventpp)
+    FetchContent_MakeAvailable(eventpp)
 endif()
 set(EVENTPP eventpp::eventpp)
 
@@ -135,10 +147,14 @@ if(spdlog_FOUND)
     set(SPDLOG spdlog::spdlog)
 else()
     message(STATUS "spdlog not found")
+    FetchContent_Declare(spdlog
+        GIT_REPOSITORY https://github.com/gabime/spdlog.git
+        GIT_TAG v1.12.0
+    )
     set(SPDLOG_BUILD_SHARED ${WEBCFACE_SHARED} CACHE INTERNAL "" FORCE)
     set(SPDLOG_BUILD_PIC ${WEBCFACE_PIC} CACHE INTERNAL "" FORCE)
     set(SPDLOG_INSTALL ${WEBCFACE_INSTALL} CACHE INTERNAL "" FORCE)
-    add_subdirectory(external/spdlog)
+    FetchContent_MakeAvailable(spdlog)
     if(MINGW)
         set(SPDLOG spdlog ws2_32)
     else()
@@ -146,6 +162,10 @@ else()
     endif()
 endif()
 
+FetchContent_Declare(curl
+    GIT_REPOSITORY https://github.com/curl/curl.git
+    GIT_TAG curl-8_5_0
+)
 set(CURL_ENABLE_SSL off CACHE INTERNAL "" FORCE)
 set(CURL_DISABLE_ALTSVC on CACHE INTERNAL "" FORCE)
 set(CURL_DISABLE_SRP on CACHE INTERNAL "" FORCE)
@@ -182,18 +202,26 @@ set(CURL_DISABLE_SOCKETPAIR on CACHE INTERNAL "" FORCE)
 set(CURL_DISABLE_TELNET on CACHE INTERNAL "" FORCE)
 set(CURL_DISABLE_TFTP on CACHE INTERNAL "" FORCE)
 set(BUILD_CURL_EXE off CACHE INTERNAL "" FORCE)
-# libcurlはだいたいインストールされているが使えないのでsharedにする意味がない
+    # libcurlはだいたいインストールされているが使えないのでsharedにする意味がない
 set(BUILD_SHARED_LIBS off CACHE INTERNAL "" FORCE)
 set(BUILD_STATIC_LIBS on CACHE INTERNAL "" FORCE)
-set(SHARE_LIB_OBJECT ${WEBCFACE_PIC} CACHE INTERNAL "" FORCE)
+SET(SHARE_LIB_OBJECT ${WEBCFACE_PIC} CACHE INTERNAL "" FORCE)
 set(ENABLE_WEBSOCKETS on CACHE INTERNAL "" FORCE)
 set(CURL_DISABLE_INSTALL on CACHE INTERNAL "" FORCE)
 set(CURL_ENABLE_EXPORT_TARGET off CACHE INTERNAL "" FORCE)
-add_subdirectory(external/curl)
+FetchContent_MakeAvailable(curl)
 set(CURL libcurl_static)
 
+FetchContent_Declare(asio
+    GIT_REPOSITORY https://github.com/chriskohlhoff/asio.git
+    GIT_TAG asio-1-29-0
+    CONFIGURE_COMMAND ""
+)
+FetchContent_Populate(asio)
 add_library(asio INTERFACE)
-target_include_directories(asio INTERFACE ${CMAKE_CURRENT_LIST_DIR}/external/asio/asio/include)
+target_include_directories(asio INTERFACE
+    ${asio_SOURCE_DIR}/asio/include
+)
 target_compile_definitions(asio INTERFACE ASIO_STANDALONE)
 if(MINGW)
     set(ASIO asio ws2_32 wsock32)
@@ -203,12 +231,24 @@ endif()
 
 # asioがない場合find_packageしないようにするため、
 # add_subdirectoryではなくinterfaceライブラリを定義する
+FetchContent_Declare(crow
+    GIT_REPOSITORY https://github.com/na-trium-144/Crow.git
+    GIT_TAG fix-destructor-io-service
+    CONFIGURE_COMMAND ""
+)
+FetchContent_Populate(crow)
 add_library(Crow INTERFACE)
-target_include_directories(Crow INTERFACE ${CMAKE_CURRENT_LIST_DIR}/external/crow/include)
+target_include_directories(Crow INTERFACE
+    ${crow_SOURCE_DIR}/include
+)
 target_link_libraries(Crow INTERFACE ${ASIO})
 set(CROW Crow)
 
-add_subdirectory(external/cli11)
+FetchContent_Declare(cli11
+    GIT_REPOSITORY https://github.com/CLIUtils/CLI11.git
+    GIT_TAG v2.3.2
+)
+FetchContent_MakeAvailable(cli11)
 
 if(WEBCFACE_TEST)
     find_package(GTest QUIET)
@@ -216,8 +256,12 @@ if(WEBCFACE_TEST)
         message(STATUS "GTest found")
     else()
         message(STATUS "GTest not found")
+        FetchContent_Declare(googletest
+            GIT_REPOSITORY https://github.com/google/googletest.git
+            GIT_TAG v1.14.0
+        )
         set(INSTALL_GTEST off CACHE INTERNAL "" FORCE)
-        add_subdirectory(external/googletest)
+        FetchContent_MakeAvailable(googletest)
     endif()
 endif()
 
