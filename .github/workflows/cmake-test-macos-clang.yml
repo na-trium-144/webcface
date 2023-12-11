@@ -12,12 +12,20 @@ env:
 
 jobs:
   test-macos-clang:
+    strategy:
+      matrix:
+        use_opencv: [on, off]
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v4
       with:
         submodules: "recursive"
-
+    - name: Update Homebrew
+      if: matrix.use_opencv == 'on'
+      run: brew update --preinstall
+    - name: Install Homebrew dependencies
+      if: matrix.use_opencv == 'on'
+      run: env HOMEBREW_NO_AUTO_UPDATE=1 brew install opencv
     - name: Configure CMake
       run: >
         cmake -B build
@@ -25,6 +33,7 @@ jobs:
         -DWEBCFACE_TEST=on
         -DWEBCFACE_EXAMPLE=on
         -DWEBCFACE_TEST_TIMEOUT=1000
+        -DWEBCFACE_USE_OPENCV=${{matrix.use_opencv}}
 
     - name: Build
       run: cmake --build build

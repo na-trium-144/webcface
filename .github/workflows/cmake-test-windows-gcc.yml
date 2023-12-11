@@ -13,6 +13,9 @@ env:
 
 jobs:
   test-windows-gcc:
+    strategy:
+      matrix:
+        use_opencv: [on, off]
     runs-on: windows-latest
     defaults:
       run:
@@ -25,6 +28,7 @@ jobs:
           git
           mingw-w64-x86_64-gcc
           mingw-w64-x86_64-cmake
+          mingw-w64-x86_64-opencv
         msystem: MINGW64
 
     - uses: actions/checkout@v4
@@ -41,6 +45,7 @@ jobs:
         -DWEBCFACE_TEST=on
         -DWEBCFACE_EXAMPLE=on
         -DWEBCFACE_TEST_TIMEOUT=1000
+        -DWEBCFACE_USE_OPENCV=${{matrix.use_opencv}}
 
     - name: Build
       run: cmake --build build
