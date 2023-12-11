@@ -399,7 +399,7 @@ if(WEBCFACE_TEST)
         WEBCFACE_TEST_TIMEOUT=${WEBCFACE_TEST_TIMEOUT}
     )
     include(GoogleTest)
-    gtest_discover_tests(${PROJECT_NAME}-test)
+    gtest_discover_tests(${PROJECT_NAME}-test DISCOVERY_TIMEOUT 600)
 endif()
 
 
