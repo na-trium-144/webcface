@@ -116,10 +116,10 @@ TEST_F(ViewTest, viewSet) {
     } // エラーやセグフォしない
     
     View v6;
-    v3 << "a" << std::endl;
-    v3 << button("f", func(self_name, "f"));
-    v3 << button("a", afunc1([]() {}));
-    v3 << button("a2", []() {});
+    v6 << "a" << std::endl;
+    v6 << button("f", func(self_name, "f"));
+    v6 << button("a", afunc1([]() {}));
+    v6 << button("a2", []() {});
     EXPECT_THROW(v6.sync(), std::runtime_error);
 
     v.init();

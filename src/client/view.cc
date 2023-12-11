@@ -92,13 +92,13 @@ int ViewBuf::sync() {
 }
 View &View::operator<<(const View &vg) {
     std::flush(*this);
-    if (vg.sb.modified || !vg.sb.components.empty()) {
-        for (const auto &vc : vg.sb.components) {
-            this->sb.components.push_back(vc);
+    if (vg.sb->modified || !vg.sb->components.empty()) {
+        for (const auto &vc : vg.sb->components) {
+            this->sb->components.push_back(vc);
         }
     } else if (vg.data_w.lock() != nullptr) {
         for (const auto &vc : vg.get()) {
-            this->sb.components.push_back(vc);
+            this->sb->components.push_back(vc);
         }
     }
     return *this;
