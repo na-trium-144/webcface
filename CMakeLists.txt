@@ -17,6 +17,7 @@ project(webcface
     DESCRIPTION "Web-based RPC & UI Library"
 )
 set(WEBCFACE_SOVERSION 2)
+set(WEBUI_VERSION 1.0.10)
 
 if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
     set(IS_MAIN on)
@@ -34,6 +35,7 @@ option(WEBCFACE_PIC "enable PIC for shared library" ${WEBCFACE_SHARED})
 set(WEBCFACE_VERSION_SUFFIX "git" CACHE STRING
     "version suffix ('git' to get automatically from git describe command)"
 )
+option(WEBCFACE_DOWNLOAD_WEBUI "download and install webui" ON)
 
 if(WEBCFACE_VERSION_SUFFIX STREQUAL "git")
     execute_process(
@@ -98,6 +100,17 @@ endif()
 
 ###############################################################################
 
+include(FetchContent)
+
+if(WEBCFACE_DOWNLOAD_WEBUI)
+    message(STATUS "Downloading webcface-webui ${WEBUI_VERSION}")
+    FetchContent_Declare(webui
+        URL https://github.com/na-trium-144/webcface-webui/releases/download/v${WEBUI_VERSION}/webcface-webui_${WEBUI_VERSION}.tar.gz
+        SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/dist
+    )
+    FetchContent_Populate(webui)
+endif()
+
 find_package(ament_cmake QUIET)
 
 find_package(msgpack-cxx QUIET)
@@ -105,17 +118,26 @@ if(msgpack-cxx_FOUND)
     message(STATUS "msgpack-cxx found")
 else()
     message(STATUS "msgpack-cxx not found")
+    FetchContent_Declare(msgpack-cxx
+        GIT_REPOSITORY https://github.com/msgpack/msgpack-c.git
+        GIT_TAG cpp-6.1.0
+        CONFIGURE_COMMAND ""
+        BUILD_COMMAND ""
+    )
     # msgpackのcmakelistsを使うとmsgpackをインストールしてしまうので、includeするだけ
-
-    add_library(msgpack-cxx INTERFACE)
-    target_compile_definitions(msgpack-cxx INTERFACE
-        MSGPACK_NO_BOOST
-        MSGPACK_DEFAULT_API_VERSION=3
-    )
-    target_include_directories(msgpack-cxx INTERFACE
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/external/msgpack-c/include>
-        $<INSTALL_INTERFACE:include>
-    )
+    FetchContent_GetProperties(msgpack-cxx)
+    if(NOT msgpack-cxx_POPULATED)
+        FetchContent_Populate(msgpack-cxx)
+        add_library(msgpack-cxx INTERFACE)
+        target_compile_definitions(msgpack-cxx INTERFACE
+            MSGPACK_NO_BOOST
+            MSGPACK_DEFAULT_API_VERSION=3
+        )
+        target_include_directories(msgpack-cxx INTERFACE
+            $<BUILD_INTERFACE:${msgpack-cxx_SOURCE_DIR}/include>
+            $<INSTALL_INTERFACE:include>
+        )
+    endif()
 endif()
 set(MSGPACK msgpack-cxx)
 
@@ -124,8 +146,12 @@ if(eventpp_FOUND)
     message(STATUS "eventpp found")
 else()
     message(STATUS "eventpp not found")
+    FetchContent_Declare(eventpp
+        GIT_REPOSITORY https://github.com/wqking/eventpp.git
+        GIT_TAG v0.1.3
+    )
     set(EVENTPP_INSTALL ${WEBCFACE_INSTALL} CACHE INTERNAL "" FORCE)
-    add_subdirectory(external/eventpp)
+    FetchContent_MakeAvailable(eventpp)
 endif()
 set(EVENTPP eventpp::eventpp)
 
@@ -135,10 +161,14 @@ if(spdlog_FOUND)
     set(SPDLOG spdlog::spdlog)
 else()
     message(STATUS "spdlog not found")
+    FetchContent_Declare(spdlog
+        GIT_REPOSITORY https://github.com/gabime/spdlog.git
+        GIT_TAG v1.12.0
+    )
     set(SPDLOG_BUILD_SHARED ${WEBCFACE_SHARED} CACHE INTERNAL "" FORCE)
     set(SPDLOG_BUILD_PIC ${WEBCFACE_PIC} CACHE INTERNAL "" FORCE)
     set(SPDLOG_INSTALL ${WEBCFACE_INSTALL} CACHE INTERNAL "" FORCE)
-    add_subdirectory(external/spdlog)
+    FetchContent_MakeAvailable(spdlog)
     if(MINGW)
         set(SPDLOG spdlog ws2_32)
     else()
@@ -146,6 +176,10 @@ else()
     endif()
 endif()
 
+FetchContent_Declare(curl
+    GIT_REPOSITORY https://github.com/curl/curl.git
+    GIT_TAG curl-8_5_0
+)
 set(CURL_ENABLE_SSL off CACHE INTERNAL "" FORCE)
 set(CURL_DISABLE_ALTSVC on CACHE INTERNAL "" FORCE)
 set(CURL_DISABLE_SRP on CACHE INTERNAL "" FORCE)
@@ -182,19 +216,30 @@ set(CURL_DISABLE_SOCKETPAIR on CACHE INTERNAL "" FORCE)
 set(CURL_DISABLE_TELNET on CACHE INTERNAL "" FORCE)
 set(CURL_DISABLE_TFTP on CACHE INTERNAL "" FORCE)
 set(BUILD_CURL_EXE off CACHE INTERNAL "" FORCE)
-# libcurlはだいたいインストールされているが使えないのでsharedにする意味がない
+    # libcurlはだいたいインストールされているが使えないのでsharedにする意味がない
 set(BUILD_SHARED_LIBS off CACHE INTERNAL "" FORCE)
 set(BUILD_STATIC_LIBS on CACHE INTERNAL "" FORCE)
-set(SHARE_LIB_OBJECT ${WEBCFACE_PIC} CACHE INTERNAL "" FORCE)
+SET(SHARE_LIB_OBJECT ${WEBCFACE_PIC} CACHE INTERNAL "" FORCE)
 set(ENABLE_WEBSOCKETS on CACHE INTERNAL "" FORCE)
 set(CURL_DISABLE_INSTALL on CACHE INTERNAL "" FORCE)
 set(CURL_ENABLE_EXPORT_TARGET off CACHE INTERNAL "" FORCE)
-add_subdirectory(external/curl)
+FetchContent_MakeAvailable(curl)
 set(CURL libcurl_static)
 
-add_library(asio INTERFACE)
-target_include_directories(asio INTERFACE ${CMAKE_CURRENT_LIST_DIR}/external/asio/asio/include)
-target_compile_definitions(asio INTERFACE ASIO_STANDALONE)
+FetchContent_Declare(asio
+    GIT_REPOSITORY https://github.com/chriskohlhoff/asio.git
+    GIT_TAG asio-1-29-0
+    CONFIGURE_COMMAND ""
+)
+FetchContent_GetProperties(asio)
+if(NOT asio_POPULATED)
+    FetchContent_Populate(asio)
+    add_library(asio INTERFACE)
+    target_include_directories(asio INTERFACE
+        ${asio_SOURCE_DIR}/asio/include
+    )
+    target_compile_definitions(asio INTERFACE ASIO_STANDALONE)
+endif()
 if(MINGW)
     set(ASIO asio ws2_32 wsock32)
 else()
@@ -203,12 +248,27 @@ endif()
 
 # asioがない場合find_packageしないようにするため、
 # add_subdirectoryではなくinterfaceライブラリを定義する
-add_library(Crow INTERFACE)
-target_include_directories(Crow INTERFACE ${CMAKE_CURRENT_LIST_DIR}/external/crow/include)
-target_link_libraries(Crow INTERFACE ${ASIO})
+FetchContent_Declare(crow
+    GIT_REPOSITORY https://github.com/na-trium-144/Crow.git
+    GIT_TAG fix-destructor-io-service
+    CONFIGURE_COMMAND ""
+)
+FetchContent_GetProperties(crow)
+if(NOT crow_POPULATED)
+    FetchContent_Populate(crow)
+    add_library(Crow INTERFACE)
+    target_include_directories(Crow INTERFACE
+        ${crow_SOURCE_DIR}/include
+    )
+    target_link_libraries(Crow INTERFACE ${ASIO})
+endif()
 set(CROW Crow)
 
-add_subdirectory(external/cli11)
+FetchContent_Declare(cli11
+    GIT_REPOSITORY https://github.com/CLIUtils/CLI11.git
+    GIT_TAG v2.3.2
+)
+FetchContent_MakeAvailable(cli11)
 
 if(WEBCFACE_TEST)
     find_package(GTest QUIET)
@@ -216,8 +276,12 @@ if(WEBCFACE_TEST)
         message(STATUS "GTest found")
     else()
         message(STATUS "GTest not found")
+        FetchContent_Declare(googletest
+            GIT_REPOSITORY https://github.com/google/googletest.git
+            GIT_TAG v1.14.0
+        )
         set(INSTALL_GTEST off CACHE INTERNAL "" FORCE)
-        add_subdirectory(external/googletest)
+        FetchContent_MakeAvailable(googletest)
     endif()
 endif()
 
@@ -375,7 +439,6 @@ if(WEBCFACE_TEST)
     gtest_discover_tests(${PROJECT_NAME}-test)
 endif()
 
-
 ###############################################################################
 # https://qiita.com/modapone/items/8f97425b6167cffc815c
 if(WEBCFACE_INSTALL)
@@ -427,29 +490,34 @@ if(WEBCFACE_INSTALL)
         DESTINATION lib/cmake/${PROJECT_NAME}
     )
 
+    if(WEBCFACE_DOWNLOAD_WEBUI)
+        install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/dist/
+            DESTINATION share/webcface/dist
+        )
+    endif()
     install(FILES
         ${CMAKE_CURRENT_LIST_DIR}/README.md
         ${CMAKE_CURRENT_LIST_DIR}/LICENSE
         DESTINATION share/webcface
     )
     install(FILES
-        ${CMAKE_CURRENT_LIST_DIR}/external/asio/asio/LICENSE_1_0.txt
+        ${asio_SOURCE_DIR}/asio/LICENSE_1_0.txt
         DESTINATION share/webcface/3rd_party/asio
     )
     install(FILES
-        ${CMAKE_CURRENT_LIST_DIR}/external/cli11/LICENSE
+        ${cli11_SOURCE_DIR}/LICENSE
         DESTINATION share/webcface/3rd_party/cli11
     )
     # curl: リポジトリ内にないしバイナリ配布に必須ではないのでスキップ
     install(FILES
-        ${CMAKE_CURRENT_LIST_DIR}/external/crow/LICENSE
-        ${CMAKE_CURRENT_LIST_DIR}/external/crow/README.md
+        ${crow_SOURCE_DIR}/LICENSE
+        ${crow_SOURCE_DIR}/README.md
         # 3rdpartyのライセンスがREADMEにある
         DESTINATION share/webcface/3rd_party/crow
     )
     if(NOT msgpack-cxx_FOUND)
         install(FILES
-            ${CMAKE_CURRENT_LIST_DIR}/external/msgpack-c/LICENSE_1_0.txt
+            ${msgpack-cxx_SOURCE_DIR}/LICENSE_1_0.txt
             DESTINATION share/webcface/3rd_party/msgpack-c
         )
     endif()
