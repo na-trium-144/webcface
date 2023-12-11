@@ -16,7 +16,6 @@
 MSGPACK_ADD_ENUM(webcface::Common::ValType);
 MSGPACK_ADD_ENUM(webcface::Common::ViewComponentType);
 MSGPACK_ADD_ENUM(webcface::Common::ViewColor);
-MSGPACK_ADD_ENUM(webcface::Common::ImageColorType);
 
 namespace webcface::Message {
 // 新しいメッセージの定義は
@@ -257,19 +256,18 @@ struct View : public MessageBase<MessageKind::view> {
 //! 生の画像データ。
 struct Image : public MessageBase<MessageKind::image> {
     std::string field;
-    int rows, cols;
-    Common::ImageColorType type;
-    std::shared_ptr<std::vector<char>> data;
+    int rows, cols, channels;
+    std::shared_ptr<std::vector<unsigned char>> data;
     Image() = default;
     Image(const std::string &field, const Common::ImageBase &img)
-        : field(field), rows(img.rows()), cols(img.cols()), type(img.type()),
-          data(img.data()) {}
+        : field(field), rows(img.rows()), cols(img.cols()),
+          channels(img.channels()), data(img.data()) {}
     Common::ImageBase img() const {
-        return Common::ImageBase(rows, cols, type, data);
+        return Common::ImageBase(rows, cols, channels, data);
     }
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", field), MSGPACK_NVP("d", data),
-                       MSGPACK_NVP("r", rows), MSGPACK_NVP("c", cols),
-                       MSGPACK_NVP("t", type));
+                       MSGPACK_NVP("h", rows), MSGPACK_NVP("w", cols),
+                       MSGPACK_NVP("c", channels));
 };
 //! client(member)->server->client logを追加
 //! client->server時はmemberは無視
@@ -427,20 +425,19 @@ template <>
 struct Res<Image> : public MessageBase<MessageKind::image + MessageKind::res> {
     unsigned int req_id;
     std::string sub_field;
-    int rows, cols;
-    Common::ImageColorType type;
-    std::shared_ptr<std::vector<char>> data;
+    int rows, cols, channels;
+    std::shared_ptr<std::vector<unsigned char>> data;
     Res() = default;
     Res(unsigned int req_id, const std::string &sub_field,
         const Common::ImageBase &img)
         : req_id(req_id), sub_field(sub_field), rows(img.rows()),
-          cols(img.cols()), type(img.type()), data(img.data()) {}
+          cols(img.cols()), channels(img.channels()), data(img.data()) {}
     Common::ImageBase img() const {
-        return Common::ImageBase(rows, cols, type, data);
+        return Common::ImageBase(rows, cols, channels, data);
     }
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", req_id), MSGPACK_NVP("f", sub_field),
-                       MSGPACK_NVP("d", data), MSGPACK_NVP("r", rows),
-                       MSGPACK_NVP("c", cols), MSGPACK_NVP("t", type));
+                       MSGPACK_NVP("d", data), MSGPACK_NVP("w", cols),
+                       MSGPACK_NVP("h", rows), MSGPACK_NVP("c", channels));
 };
 //! msgpackのメッセージをパースしstd::anyで返す
 std::vector<std::pair<int, std::any>>

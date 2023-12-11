@@ -249,12 +249,19 @@ set(CLI_SRC
     ${CPP_DIR}/client/text.cc
     ${CPP_DIR}/client/value.cc
     ${CPP_DIR}/client/view.cc
+    ${CPP_DIR}/client/image.cc
     ${CPP_DIR}/client/version.cc
 )
 set(EXAMPLE_SRC
     ${CPP_DIR}/example/main.cc
     ${CPP_DIR}/example/recv.cc
 )
+if(WEBCFACE_USE_OPENCV)
+    set(EXAMPLE_SRC ${EXAMPLE_SRC}
+        ${CPP_DIR}/example/image_send.cc
+        ${CPP_DIR}/example/image_recv.cc
+    )
+endif()
 set(TEST_SRC
     ${CPP_DIR}/test/client_data_test.cc
     ${CPP_DIR}/test/data_test.cc
@@ -345,6 +352,7 @@ target_link_libraries(${PROJECT_NAME} PUBLIC
     ${PROJECT_NAME}-headers
     ${EVENTPP}
     ${SPDLOG}
+    ${OpenCV_LIBS}
 )
 set_target_properties(${PROJECT_NAME} PROPERTIES
     INSTALL_RPATH "$ORIGIN/;@loader_path/"
@@ -494,8 +502,10 @@ if(WEBCFACE_INSTALL)
     set(CPACK_DEBIAN_PACKAGE_MAINTAINER "na-trium-144 <${CPACK_PACKAGE_CONTACT}>")
     set(CPACK_DEBIAN_PACKAGE_SHLIBDEPS yes)
     if(${spdlog_FOUND})
-        # submoduleのspdlogを使った場合システムのspdlogとはconflictする
-        set(CPACK_DEBIAN_PACKAGE_DEPENDS "libspdlog-dev")
+        set(CPACK_DEBIAN_PACKAGE_DEPENDS ${CPACK_DEBIAN_PACKAGE_DEPENDS} libspdlog-dev)
+    endif()
+    if(${OpenCV_FOUND})
+        set(CPACK_DEBIAN_PACKAGE_DEPENDS ${CPACK_DEBIAN_PACKAGE_DEPENDS} libopencv-dev)
     endif()
     # https://gitlab.kitware.com/cmake/cmake/-/issues/21834
     set(CPACK_DEBIAN_PACKAGE_CONTROL_EXTRA "${CMAKE_CURRENT_LIST_DIR}/triggers")

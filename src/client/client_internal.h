@@ -17,6 +17,7 @@
 #include <webcface/common/view.h>
 #include <webcface/common/log.h>
 #include <webcface/common/queue.h>
+#include <webcface/common/image.h>
 #include <webcface/func_result.h>
 #include <webcface/logger.h>
 #include "data_store1.h"
@@ -93,6 +94,7 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
     SyncDataStore2<std::shared_ptr<FuncInfo>> func_store;
     SyncDataStore2<std::shared_ptr<std::vector<Common::ViewComponentBase>>>
         view_store;
+    SyncDataStore2<Common::ImageBase> image_store;
     std::shared_ptr<SyncDataStore1<std::shared_ptr<std::vector<LogLine>>>>
         log_store;
     SyncDataStore1<std::chrono::system_clock::time_point> sync_time_store;
@@ -120,13 +122,14 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
 
     // 値を引数に持つイベント
     eventpp::EventDispatcher<FieldBaseComparable, void(Field)>
-        value_change_event, text_change_event, view_change_event;
+        value_change_event, text_change_event, view_change_event,
+        image_change_event;
     eventpp::EventDispatcher<std::string, void(Field)> log_append_event;
     // 値は要らないイベント
     eventpp::EventDispatcher<int, void(Field)> member_entry_event;
     eventpp::EventDispatcher<std::string, void(Field)> sync_event,
         value_entry_event, text_entry_event, func_entry_event, view_entry_event,
-        ping_event;
+        image_entry_event, ping_event;
 
     //! sync()のタイミングで実行を同期する関数のcondition_variable
     Common::Queue<std::shared_ptr<FuncOnSync>> func_sync_queue;

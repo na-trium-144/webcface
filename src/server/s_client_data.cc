@@ -319,8 +319,8 @@ void ClientData::onRecv(const std::string &message) {
         }
         case MessageKind::image: {
             auto v = std::any_cast<webcface::Message::Image>(obj);
-            logger->debug("image {} ({} x {}, type={})", v.field, v.rows,
-                          v.cols, static_cast<int>(v.type));
+            logger->debug("image {} ({} x {} x {})", v.field, v.rows, v.cols,
+                          v.channels);
             if (!this->image.count(v.field)) {
                 store.forEach([&](auto &cd) {
                     if (cd.name != this->name) {

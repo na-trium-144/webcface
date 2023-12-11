@@ -177,5 +177,6 @@ template class WEBCFACE_DLL SyncDataStore2<std::shared_ptr<std::string>>;
 template class WEBCFACE_DLL SyncDataStore2<std::shared_ptr<FuncInfo>>;
 template class WEBCFACE_DLL
     SyncDataStore2<std::shared_ptr<std::vector<Common::ViewComponentBase>>>;
+template class WEBCFACE_DLL SyncDataStore2<Common::ImageBase>;
 
 } // namespace webcface::Internal

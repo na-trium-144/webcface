@@ -23,7 +23,7 @@ Internal::ClientData::ClientData(const std::string &name,
                                  const std::string &host, int port)
     : std::enable_shared_from_this<ClientData>(), self_member_name(name),
       host(host), port(port), value_store(name), text_store(name),
-      func_store(name), view_store(name),
+      func_store(name), view_store(name), image_store(name),
       log_store(std::make_shared<
                 SyncDataStore1<std::shared_ptr<std::vector<LogLine>>>>(name)),
       sync_time_store(name),
@@ -128,6 +128,7 @@ void Internal::ClientData::syncDataFirst() {
     std::lock_guard text_lock(text_store.mtx);
     std::lock_guard view_lock(view_store.mtx);
     std::lock_guard func_lock(func_store.mtx);
+    std::lock_guard image_lock(image_store.mtx);
     std::lock_guard log_lock(log_store->mtx);
 
     std::stringstream buffer;
@@ -158,6 +159,13 @@ void Internal::ClientData::syncDataFirst() {
                 Message::Req<Message::View>{{}, v.first, v2.first, v2.second});
         }
     }
+    for (const auto &v : image_store.transferReq()) {
+        for (const auto &v2 : v.second) {
+            Message::pack(
+                buffer, len,
+                Message::Req<Message::Image>{{}, v.first, v2.first, v2.second});
+        }
+    }
     for (const auto &v : log_store->transferReq()) {
         Message::pack(buffer, len, Message::LogReq{{}, v.first});
     }
@@ -175,6 +183,7 @@ void Internal::ClientData::syncData(bool is_first) {
     std::lock_guard text_lock(text_store.mtx);
     std::lock_guard view_lock(view_store.mtx);
     std::lock_guard func_lock(func_store.mtx);
+    std::lock_guard image_lock(image_store.mtx);
     std::lock_guard log_lock(log_store->mtx);
 
     std::stringstream buffer;
@@ -215,6 +224,9 @@ void Internal::ClientData::syncData(bool is_first) {
             Message::pack(buffer, len,
                           Message::View{v.first, v_diff, v.second->size()});
         }
+    }
+    for (const auto &v : image_store.transferSend(is_first)) {
+        Message::pack(buffer, len, Message::Image{v.first, v.second});
     }
 
     auto log_s = *log_store->getRecv(self_member_name);
@@ -320,6 +332,18 @@ void Internal::ClientData::onRecv(const std::string &message) {
                 (**v_prev)[std::stoi(d.first)] = d.second;
             }
             this->view_change_event.dispatch(
+                FieldBase{member, field},
+                Field{shared_from_this(), member, field});
+            break;
+        }
+        case MessageKind::image + MessageKind::res: {
+            auto r =
+                std::any_cast<webcface::Message::Res<webcface::Message::Image>>(
+                    obj);
+            auto [member, field] =
+                this->image_store.getReq(r.req_id, r.sub_field);
+            this->image_store.setRecv(member, field, r.img());
+            this->image_change_event.dispatch(
                 FieldBase{member, field},
                 Field{shared_from_this(), member, field});
             break;

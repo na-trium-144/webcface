@@ -10,6 +10,7 @@
 #include "log.h"
 #include "func.h"
 #include "view.h"
+#include "image.h"
 
 namespace webcface {
 
@@ -25,7 +26,8 @@ struct ClientData;
 class WEBCFACE_DLL Member : protected Field {
   public:
     Member() = default;
-    Member(const std::weak_ptr<Internal::ClientData> &data_w, const std::string &member)
+    Member(const std::weak_ptr<Internal::ClientData> &data_w,
+           const std::string &member)
         : Field(data_w, member) {}
     Member(const Field &base) : Field(base) {}
 
@@ -36,6 +38,8 @@ class WEBCFACE_DLL Member : protected Field {
     Value value(const std::string &field) const;
     //! textを参照する。
     Text text(const std::string &field) const;
+    //! imageを参照する。
+    Image image(const std::string &field) const;
     //! funcを参照する。
     Func func(const std::string &field) const;
 
@@ -59,6 +63,8 @@ class WEBCFACE_DLL Member : protected Field {
     std::vector<Func> funcs() const;
     //! このmemberが公開しているviewのリストを返す。
     std::vector<View> views() const;
+    //! このmemberが公開しているimageのリストを返す。
+    std::vector<Image> images() const;
 
     //! valueが追加された時のイベント
     /*! コールバックの型は void(Value)
@@ -72,6 +78,10 @@ class WEBCFACE_DLL Member : protected Field {
     /*! コールバックの型は void(Func)
      */
     EventTarget<Func, std::string> onFuncEntry() const;
+    //! imageが追加されたときのイベント
+    /*! コールバックの型は void(Image)
+     */
+    EventTarget<Image, std::string> onImageEntry() const;
     //! viewが追加されたときのイベント
     /*! コールバックの型は void(View)
      */
