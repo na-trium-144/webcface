@@ -25,7 +25,7 @@ jobs:
       run: brew update --preinstall
     - name: Install Homebrew dependencies
       if: matrix.dep == 'brew'
-      run: env HOMEBREW_NO_AUTO_UPDATE=1 brew install spdlog msgpack-cxx
+      run: env HOMEBREW_NO_AUTO_UPDATE=1 brew install spdlog msgpack-cxx || true
 
     - name: Configure CMake
       run: >
