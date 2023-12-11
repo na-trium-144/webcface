@@ -32,7 +32,7 @@ jobs:
         -DWEBCFACE_EXAMPLE=on
         -DWEBCFACE_TEST_TIMEOUT=1000
         -DWEBCFACE_USE_OPENCV=${{matrix.use_opencv}}
-        -DCMAKE_PREFIX_PATH=$Env:OPENCV_DIR
+        -DCMAKE_PREFIX_PATH=c:\tools\opencv\build\x64\vc16\lib
 
     - name: Build
       run: cmake --build build
