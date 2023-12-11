@@ -159,7 +159,12 @@ brew install spdlog msgpack-cxx  # optional
 <details><summary>Visual Studio</summary>
 
 * Visual Studio と Git for Windows をインストールし、Developer command prompt からビルドすればいいはずです
-* インストール先は/usr/localではない
+* (optionalで) vcpkgを使用する場合は
+```sh
+vcpkg install spdlog msgpack eventpp
+```
+でインストールした依存ライブラリも使用できます
+
 </details>
 
 <details><summary>MSYS2</summary>
@@ -197,21 +202,13 @@ sudo cmake --build build -t install
 * このリポジトリをワークスペースのsrcに追加して、colconでビルドすることができます
 
 #### WebUI
-* serverを自分でビルドした場合は別途webuiを読み込ませる必要があります。
-* webuiはnode.jsを使って自分でビルドすることも可能ですが、[webuiのReleases](https://github.com/na-trium-144/webcface-webui/releases) からビルド済みのtar.gzのアーカイブをダウンロードして /usr/local/share/webcface/dist として展開するのが簡単です。
-* install先が/usr/localでない場合はprefixを読み替えてください
-* installしないでbuildディレクトリから起動する場合は、このリポジトリ直下にdist/を置いてください
-* コマンドからやる場合は次のようになります
-```sh
-curl -LO https://github.com/na-trium-144/webcface-webui/releases/download/v1.0.10/webcface-webui_1.0.10.tar.gz
-tar zxvf webcface-webui*.tar.gz
-```
-* /usr/local に展開する場合は次のようになります
-```sh
-sudo rm -rf /usr/local/share/webcface/dist
-sudo mkdir /usr/local/share/webcface
-sudo mv dist /usr/local/share/webcface/dist
-```
+* デフォルトではビルド済みのものがcmake時にダウンロードされます。
+* `-DWEBCFACE_DOWNLOAD_WEBUI=off`を指定するとダウンロードしません。
+	* その場合は [webuiのReleases](https://github.com/na-trium-144/webcface-webui/releases) からビルド済みのtar.gzのアーカイブをダウンロードして /usr/local/share/webcface/dist として展開するのが簡単です。
+		* install先が/usr/localでない場合はprefixを読み替えてください
+		* installせずに実行する場合は webcface-server のバイナリと同じディレクトリか、その1, 2, 3階層上のどこかにdistディレクトリを配置してください
+	* または自分でビルドすることも可能です(node.jsが必要)
+* このリポジトリのReleasesにあるdebパッケージとhomebrewではwebcfaceのパッケージとは別で配布しています
 
 #### tools
 * toolsは別途 https://github.com/na-trium-144/webcface-tools.git をcloneしてビルド、インストールしてください
