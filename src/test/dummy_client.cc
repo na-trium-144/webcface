@@ -39,11 +39,11 @@ DummyClient::DummyClient()
                           if (meta && meta->flags & CURLWS_CLOSE) {
                               dummy_logger->debug("connection closed");
                               break;
-                          } else if (meta && meta->offset > buf_s.size()) {
-                              buf_s.append(meta->offset - buf_s.size(), '\0');
+                          } else if (meta && static_cast<std::size_t>(meta->offset) > buf_s.size()) {
+                              buf_s.append(static_cast<std::size_t>(meta->offset) - buf_s.size(), '\0');
                               buf_s.append(buffer, rlen);
-                          } else if (meta && meta->offset < buf_s.size()) {
-                              buf_s.replace(meta->offset, rlen, buffer, rlen);
+                          } else if (meta && static_cast<std::size_t>(meta->offset) < buf_s.size()) {
+                              buf_s.replace(static_cast<std::size_t>(meta->offset), rlen, buffer, rlen);
                           } else {
                               buf_s.append(buffer, rlen);
                           }

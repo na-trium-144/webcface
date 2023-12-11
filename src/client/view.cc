@@ -18,7 +18,8 @@ ViewComponent::lockTmp(const std::weak_ptr<Internal::ClientData> &data_w,
 }
 std::optional<Func> ViewComponent::onClick() const {
     if (on_click_func_ != std::nullopt) {
-        assert(data_w.lock() != nullptr && "ClientData not set");
+        // Fieldの中でnullptrは処理してくれるからいいかな
+        // assert(data_w.lock() != nullptr && "ClientData not set");
         return Field{data_w, on_click_func_->member_, on_click_func_->field_};
     } else {
         return std::nullopt;
@@ -30,33 +31,41 @@ ViewComponent &ViewComponent::onClick(const Func &func) {
 }
 
 
-View::View() : Field(), EventTarget<View>(), sb(), std::ostream(&sb) {}
+View::View()
+    : Field(), EventTarget<View>(),
+      sb(std::make_shared<ViewBuf>()), std::ostream(nullptr) {
+    this->std::ostream::init(sb.get());
+}
 View::View(const Field &base)
     : Field(base), EventTarget<View>(&this->dataLock()->view_change_event,
                                      *this),
-      sb(), std::ostream(&sb) {}
+      sb(std::make_shared<ViewBuf>()), std::ostream(nullptr) {
+    this->std::ostream::init(sb.get());
+}
 View &View::init() {
-    sb.components.clear();
-    sb.modified = true;
+    sb->components.clear();
+    sb->modified = true;
     return *this;
 }
 View &View::sync() {
     std::flush(*this);
-    if (sb.modified) {
-        set(sb.components);
-        sb.modified = false;
+    if (sb->modified) {
+        set(sb->components);
+        sb->modified = false;
     }
     return *this;
 }
-View::~View() {
-    if (data_w.lock() != nullptr && dataLock()->isSelf(member_)) {
+void View::onDestroy() {
+    if (sb.use_count() == 1 && data_w.lock() != nullptr &&
+        dataLock()->isSelf(member_)) {
         sync();
     }
+    this->rdbuf(nullptr);
 }
 View &View::operator<<(const ViewComponent &vc) {
     std::flush(*this);
-    sb.components.push_back(vc);
-    sb.modified = true;
+    sb->components.push_back(vc);
+    sb->modified = true;
     return *this;
 }
 int ViewBuf::sync() {
@@ -96,9 +105,19 @@ View &View::operator<<(const View &vg) {
 }
 
 View &View::operator=(const View &rhs) {
+    onDestroy();
     this->Field::operator=(rhs);
     this->EventTarget<View>::operator=(rhs);
     this->sb = rhs.sb;
+    this->rdbuf(sb.get());
+    return *this;
+}
+View &View::operator=(View &&rhs) {
+    onDestroy();
+    this->Field::operator=(std::move(rhs));
+    this->EventTarget<View>::operator=(std::move(rhs));
+    this->sb = std::move(rhs.sb);
+    this->rdbuf(sb.get());
     return *this;
 }
 View &View::set(std::vector<ViewComponent> &v) {

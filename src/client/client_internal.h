@@ -97,7 +97,7 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
         log_store;
     SyncDataStore1<std::chrono::system_clock::time_point> sync_time_store;
     FuncResultStore func_result_store;
-    int log_sent_lines = 0;
+    std::size_t log_sent_lines = 0;
 
     std::unordered_map<std::string, unsigned int> member_ids;
     std::unordered_map<unsigned int, std::string> member_lib_name,

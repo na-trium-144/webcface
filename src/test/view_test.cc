@@ -100,15 +100,30 @@ TEST_F(ViewTest, viewSet) {
     EXPECT_EQ(callback_called, 3);
     EXPECT_EQ((*data_->view_store.getRecv(self_name, "b"))->size(), 1);
 
-    View v3;
+    {
+        View v3;
+        {
+            View v4 = view(self_name, "b");
+            v4 << "a";
+            v3 = v4;
+        } // v3にコピーされてるのでまだsyncされない
+        EXPECT_EQ(callback_called, 3);
+    } // v3のデストラクタでsyncされる
+    EXPECT_EQ(callback_called, 4);
+
+    {
+        View v5{};
+    } // エラーやセグフォしない
+    
+    View v6;
     v3 << "a" << std::endl;
     v3 << button("f", func(self_name, "f"));
     v3 << button("a", afunc1([]() {}));
     v3 << button("a2", []() {});
-    EXPECT_THROW(v3.sync(), std::runtime_error);
+    EXPECT_THROW(v6.sync(), std::runtime_error);
 
     v.init();
-    v << v3;
+    v << v6;
     v.sync();
     EXPECT_EQ(callback_called, 4);
     view_data = **data_->view_store.getRecv(self_name, "b");
