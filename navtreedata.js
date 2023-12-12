@@ -84,7 +84,7 @@ var NAVTREE =
       [ "受信", "md_13__view.html#autotoc_md34", null ],
       [ "受信イベント", "md_13__view.html#autotoc_md35", null ]
     ] ],
-    [ "Func, AnonymousFunc", "md_30__func.html", [
+    [ "Func", "md_30__func.html", [
       [ "関数の登録", "md_30__func.html#autotoc_md37", [
         [ "引数", "md_30__func.html#autotoc_md38", null ],
         [ "hidden属性", "md_30__func.html#autotoc_md39", null ],

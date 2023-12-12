@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['func_20anonymousfunc_0',['Func, AnonymousFunc',['../md_30__func.html',1,'']]]
+  ['log_0',['Log',['../md_40__log.html',1,'']]]
 ];
