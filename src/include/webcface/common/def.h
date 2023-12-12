@@ -6,7 +6,7 @@
 #define WEBCFACE_SERVER_NAME "webcface"
 #define WEBCFACE_VERSION_MAJOR 1
 #define WEBCFACE_VERSION_MINOR 2
-#define WEBCFACE_VERSION_REVISION 0
+#define WEBCFACE_VERSION_REVISION 1
 // CMakeを使えばWEBCFACE_VERSIONが与えられるが、もしなければ生成
 #ifndef WEBCFACE_VERSION
 #define WEBCFACE_VERSION_I(maj, min, rev)                                      \
