@@ -14,12 +14,10 @@ jobs:
   test-windows-msvc:
     strategy:
       matrix:
-        dep: ["submodule"]
+        dep: ["source"]
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v4
-      with:
-        submodules: "recursive"
     # - name: vcpkg build
     #   if: matrix.dep == 'vcpkg'
     #   uses: johnwason/vcpkg-action@v5

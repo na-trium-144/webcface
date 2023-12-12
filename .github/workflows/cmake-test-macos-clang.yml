@@ -14,12 +14,10 @@ jobs:
   test-macos-clang:
     strategy:
       matrix:
-        dep: ["brew", "submodule"]
+        dep: ["brew", "source"]
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v4
-      with:
-        submodules: "recursive"
     - name: Update Homebrew
       if: matrix.dep == 'brew'
       run: brew update --preinstall

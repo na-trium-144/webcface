@@ -14,12 +14,10 @@ jobs:
   test-linux-clang:
     strategy:
       matrix:
-        dep: ["apt", "submodule"]
+        dep: ["apt", "source"]
     runs-on: ubuntu-20.04
     steps:
     - uses: actions/checkout@v4
-      with:
-        submodules: "recursive"
 
     - name: Install dependencies
       if: matrix.dep == 'apt'

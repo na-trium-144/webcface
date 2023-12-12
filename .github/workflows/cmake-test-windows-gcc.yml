@@ -15,15 +15,13 @@ jobs:
   test-windows-gcc:
     strategy:
       matrix:
-        dep: ["pacman", "submodule"]
+        dep: ["pacman", "source"]
     runs-on: windows-latest
     defaults:
       run:
         shell: msys2 {0}
     steps:
     - uses: actions/checkout@v4
-      with:
-        submodules: "recursive"
 
     - uses: msys2/setup-msys2@v2
       with:
