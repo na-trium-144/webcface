@@ -19,8 +19,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-      with:
-        submodules: "recursive"
     
     - name: Configure CMake
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
@@ -47,7 +45,7 @@ jobs:
       id: coverage
       run: |
         gcovr -s -e src/example/ -e src/test/ -e external/
-        COVERAGE=$(gcovr -e src/example/ -e src/test/ -e external/ | grep TOTAL | awk '{print $4}')
+        COVERAGE=$(gcovr -e src/example/ -e src/test/ -e external/ -e build/ | grep TOTAL | awk '{print $4}')
         echo "##[set-output name=lines;]${COVERAGE}"
 
     - uses: actions/checkout@v3

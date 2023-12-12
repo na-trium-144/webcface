@@ -129,7 +129,7 @@ brew install webcface webcface-webui webcface-tools
 	* [![CMake Test (Windows MSVC)](https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-windows-msvc.yml/badge.svg?branch=main)](https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-windows-msvc.yml)
 	* [![CMake Test (Windows MinGW64 GCC)](https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-windows-gcc.yml/badge.svg?branch=main)](https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-windows-gcc.yml)
 * webcfaceは外部ライブラリとして [crow](https://github.com/CrowCpp/Crow), [asio](https://github.com/chriskohlhoff/asio), [libcurl](https://github.com/curl/curl), [eventpp](https://github.com/wqking/eventpp), [msgpack-cxx](https://github.com/msgpack/msgpack-c), [spdlog](https://github.com/gabime/spdlog), [cli11](https://github.com/CLIUtils/CLI11.git) を使用します。
-	* システムにインストールされてなければsubmoduleにあるソースコードをビルドしますが、eventpp, msgpack, spdlog に関してはインストールされていればそれを使用します
+	* cmake時に自動的にFetchContentでソースコード取得しビルドしますが、eventpp, msgpack, spdlog に関してはシステムにインストールされていてfind_packageで見つけることができればそれを使用します
 	* libcurlはwebsocket機能を有効にする必要があるためインストールされている場合でもソースからビルドします
 	* crowは暫定的にWindowsでSegmentation faultするバグを修正したもの([na-trium-144/Crow](https://github.com/na-trium-144/Crow) の fix-destructor-io-service ブランチ)を使用しています
 
@@ -158,13 +158,8 @@ brew install spdlog msgpack-cxx  # optional
 
 <details><summary>Visual Studio</summary>
 
-* Visual Studio と Git for Windows をインストールし、Developer command prompt からビルドすればいいはずです
-* (optionalで) vcpkgを使用する場合は
-```sh
-vcpkg install spdlog msgpack eventpp
-```
-でインストールした依存ライブラリも使用できます
-
+* Visual Studio 2019, 2022 でcloneしたwebcfaceのフォルダーを開くとビルドできます
+* Developer Command Promptからcmakeコマンドを使ってもビルドできます
 </details>
 
 <details><summary>MSYS2</summary>
@@ -178,9 +173,6 @@ pacman -S mingw-w64-x86_64-spdlog  # optional
 #### Build (with Pure CMake)
 
 ```sh
-git clone https://github.com/na-trium-144/webcface
-cd webcface
-git submodule update --init --recursive
 cmake -Bbuild
 cmake --build build
 sudo cmake --build build -t install
@@ -196,7 +188,6 @@ sudo cmake --build build -t install
 		* `-DWEBCFACE_VERSION_SUFFIX=git` なら `git describe --tags` コマンドを使用して取得した文字列 (1.2.0-x-gxxxxxxx) になります(未指定の場合のデフォルト)
 		* `git`以外の任意の文字列の場合 `-DWEBCFACE_VERSION_SUFFIX=hoge` で 1.2.0-hoge になります
 		* `-DWEBCFACE_VERSION_SUFFIX=` で 1.2.0 だけになります
-* このリポジトリのみでビルドしてinstallする代わりに、webcfaceを使いたいプロジェクトでこのリポジトリをsubmoduleとして追加して使うこともできます。
 
 #### Build (with colcon, ROS2)
 * このリポジトリをワークスペースのsrcに追加して、colconでビルドすることができます
@@ -214,7 +205,10 @@ sudo cmake --build build -t install
 * toolsは別途 https://github.com/na-trium-144/webcface-tools.git をcloneしてビルド、インストールしてください
 
 ## Documentation
-→ [Tutorial](https://na-trium-144.github.io/webcface/md_00__tutorial.html)
+* [Tutorial](https://na-trium-144.github.io/webcface/md_00__tutorial.html)
+* [APIリファレンス](https://na-trium-144.github.io/webcface/namespaces.html)
+* [webcface-python APIリファレンス](https://na-trium-144.github.io/webcface-python/)
+* [webcface-js APIリファレンス](https://na-trium-144.github.io/webcface-js/)
 
 ## License
 
