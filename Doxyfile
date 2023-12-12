@@ -1059,7 +1059,7 @@ EXCLUDE_SYMLINKS       = NO
 # Note that the wildcards are matched against the file with absolute path, so to
 # exclude all test directories for example use the pattern */test/*
 
-EXCLUDE_PATTERNS       = */external/* */test/* */example/* */build/* */webui/*
+EXCLUDE_PATTERNS       = */docs/*/* */test/* */example/* */build/*
 
 # The EXCLUDE_SYMBOLS tag can be used to specify one or more symbol names
 # (namespaces, classes, functions, etc.) that should be excluded from the
@@ -1313,7 +1313,7 @@ HTML_FILE_EXTENSION    = .html
 # of the possible markers and block names see the documentation.
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
-HTML_HEADER            = header.html
+HTML_HEADER            = docs/header.html
 
 # The HTML_FOOTER tag can be used to specify a user-defined HTML footer for each
 # generated HTML page. If the tag is left blank doxygen will generate a standard
@@ -1354,10 +1354,10 @@ HTML_STYLESHEET        =
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
 HTML_EXTRA_STYLESHEET  = \
-    external/doxygen-awesome-css/doxygen-awesome.css \
-    external/doxygen-awesome-css/doxygen-awesome-sidebar-only.css \
-    external/doxygen-awesome-css/doxygen-awesome-sidebar-only-darkmode-toggle.css \
-    doxygen_custom.css
+    docs/doxygen-awesome-css/doxygen-awesome.css \
+    docs/doxygen-awesome-css/doxygen-awesome-sidebar-only.css \
+    docs/doxygen-awesome-css/doxygen-awesome-sidebar-only-darkmode-toggle.css \
+    docs/doxygen_custom.css
 
 # The HTML_EXTRA_FILES tag can be used to specify one or more extra images or
 # other source files which should be copied to the HTML output directory. Note
@@ -1368,12 +1368,12 @@ HTML_EXTRA_STYLESHEET  = \
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
 HTML_EXTRA_FILES       = \
-    external/doxygen-awesome-css/doxygen-awesome-darkmode-toggle.js \
-    external/doxygen-awesome-css/doxygen-awesome-fragment-copy-button.js \
-    external/doxygen-awesome-css/doxygen-awesome-paragraph-link.js \
+    docs/doxygen-awesome-css/doxygen-awesome-darkmode-toggle.js \
+    docs/doxygen-awesome-css/doxygen-awesome-fragment-copy-button.js \
+    docs/doxygen-awesome-css/doxygen-awesome-paragraph-link.js \
 
-# external/doxygen-awesome-css/doxygen-awesome-interactive-toc.js
-# external/doxygen-awesome-css/doxygen-awesome-tabs.js
+# docs/doxygen-awesome-css/doxygen-awesome-interactive-toc.js
+# docs/doxygen-awesome-css/doxygen-awesome-tabs.js
 
 # The HTML_COLORSTYLE tag can be used to specify if the generated HTML output
 # should be rendered with a dark or light theme.

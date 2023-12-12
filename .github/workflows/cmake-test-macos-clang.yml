@@ -14,18 +14,21 @@ jobs:
   test-macos-clang:
     strategy:
       matrix:
-        use_opencv: [on, off]
+        dep: ["brew-opencv", "brew", "source"]
+        include:
+        - dep: brew-opencv
+          use_opencv: on
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v4
-      with:
-        submodules: "recursive"
-    - name: Update Homebrew
-      if: matrix.use_opencv == 'on'
-      run: brew update --preinstall
     - name: Install Homebrew dependencies
-      if: matrix.use_opencv == 'on'
-      run: env HOMEBREW_NO_AUTO_UPDATE=1 brew install opencv || true
+      env:
+        HOMEBREW_NO_AUTO_UPDATE: 1
+      run: |
+        brew update --preinstall
+        if [ ${{matrix.dep}} = brew ]; then brew install spdlog msgpack-cxx || true; fi
+        if [ ${{matrix.dep}} = brew-opencv ]; then brew install spdlog msgpack-cxx opencv || true; fi
+
     - name: Configure CMake
       run: >
         cmake -B build

@@ -14,14 +14,20 @@ jobs:
   test-linux-gcc:
     strategy:
       matrix:
-        use_opencv: [on, off]
+        dep: ["apt-opencv", "apt", "source"]
+        include:
+        - dep: apt-opencv
+          use_opencv: on
     runs-on: ubuntu-20.04
     steps:
     - uses: actions/checkout@v4
-      with:
-        submodules: "recursive"
     - name: Install dependencies
-      run: sudo apt-get update && sudo apt-get install -y gcc-10 g++-10 libopencv-dev
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y gcc-10 g++-10
+        if [ ${{matrix.dep}} = apt ]; then sudo apt-get install -y libspdlog-dev; fi
+        if [ ${{matrix.dep}} = apt-opencv ]; then sudo apt-get install -y libspdlog-dev libopencv-dev; fi
+
     - name: Configure CMake
       env:
         CC: gcc-10
