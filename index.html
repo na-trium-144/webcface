@@ -220,7 +220,7 @@ Requirements</h3>
 </ul>
 </li>
 <li>webcfaceは外部ライブラリとして <a href="https://github.com/CrowCpp/Crow">crow</a>, <a href="https://github.com/chriskohlhoff/asio">asio</a>, <a href="https://github.com/curl/curl">libcurl</a>, <a href="https://github.com/wqking/eventpp">eventpp</a>, <a href="https://github.com/msgpack/msgpack-c">msgpack-cxx</a>, <a href="https://github.com/gabime/spdlog">spdlog</a>, <a href="https://github.com/CLIUtils/CLI11.git">cli11</a> を使用します。<ul>
-<li>システムにインストールされてなければsubmoduleにあるソースコードをビルドしますが、eventpp, msgpack, spdlog に関してはインストールされていればそれを使用します</li>
+<li>cmake時に自動的にFetchContentでソースコード取得しビルドしますが、eventpp, msgpack, spdlog に関してはシステムにインストールされていてfind_packageで見つけることができればそれを使用します</li>
 <li>libcurlはwebsocket機能を有効にする必要があるためインストールされている場合でもソースからビルドします</li>
 <li>crowは暫定的にWindowsでSegmentation faultするバグを修正したもの(<a href="https://github.com/na-trium-144/Crow">na-trium-144/Crow</a> の fix-destructor-io-service ブランチ)を使用しています</li>
 </ul>
@@ -248,11 +248,9 @@ Homebrew (MacOS, Linux)</summary>
 Visual Studio</summary>
 <p></p>
 <ul>
-<li>Visual Studio と Git for Windows をインストールし、Developer command prompt からビルドすればいいはずです</li>
-<li>(optionalで) vcpkgを使用する場合は <div class="fragment"><div class="line">vcpkg install spdlog msgpack eventpp</div>
-</div><!-- fragment --> でインストールした依存ライブラリも使用できます</li>
+<li>Visual Studio 2019, 2022 でcloneしたwebcfaceのフォルダーを開くとビルドできます</li>
+<li>Developer Command Promptからcmakeコマンドを使ってもビルドできます </li>
 </ul>
-<p></p>
 </details>
 <details >
 <summary >
@@ -263,10 +261,7 @@ MSYS2</summary>
 </div><!-- fragment --> </details>
 <h3><a class="anchor" id="autotoc_md89"></a>
 Build (with Pure CMake)</h3>
-<div class="fragment"><div class="line">git clone https://github.com/na-trium-144/webcface</div>
-<div class="line">cd webcface</div>
-<div class="line">git submodule update --init --recursive</div>
-<div class="line">cmake -Bbuild</div>
+<div class="fragment"><div class="line">cmake -Bbuild</div>
 <div class="line">cmake --build build</div>
 <div class="line">sudo cmake --build build -t install</div>
 </div><!-- fragment --><ul>
@@ -287,7 +282,6 @@ Build (with Pure CMake)</h3>
 </li>
 </ul>
 </li>
-<li>このリポジトリのみでビルドしてinstallする代わりに、webcfaceを使いたいプロジェクトでこのリポジトリをsubmoduleとして追加して使うこともできます。</li>
 </ul>
 <h3><a class="anchor" id="autotoc_md90"></a>
 Build (with colcon, ROS2)</h3>
@@ -316,7 +310,12 @@ tools</h3>
 </ul>
 <h1><a class="anchor" id="autotoc_md93"></a>
 Documentation</h1>
-<p>→ <a href="https://na-trium-144.github.io/webcface/md_00__tutorial.html">Tutorial</a></p>
+<ul>
+<li><a href="https://na-trium-144.github.io/webcface/md_00__tutorial.html">Tutorial</a></li>
+<li><a href="https://na-trium-144.github.io/webcface/namespaces.html">APIリファレンス</a></li>
+<li><a href="https://na-trium-144.github.io/webcface-python/">webcface-python APIリファレンス</a></li>
+<li><a href="https://na-trium-144.github.io/webcface-js/">webcface-js APIリファレンス</a></li>
+</ul>
 <h1><a class="anchor" id="autotoc_md94"></a>
 License</h1>
 <p>WebCFaceと関連するプログラムはすべてMITライセンスで公開しています。詳細は <a href="https://github.com/na-trium-144/webcface/blob/main/LICENSE">LICENSE</a> を参照してください。</p>
@@ -337,7 +336,7 @@ License</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon Dec 11 2023 14:45:56 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Tue Dec 12 2023 11:00:41 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>
