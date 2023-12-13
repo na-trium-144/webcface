@@ -35,9 +35,12 @@ class ImageBase {
     int rows() const { return rows_; }
     int cols() const { return cols_; }
     int channels() const { return channels_; }
-    std::shared_ptr<std::vector<unsigned char>> data() const { return data_; }
+    std::shared_ptr<std::vector<unsigned char>> dataPtr() const {
+        return data_;
+    }
+    const std::vector<unsigned char> &data() const { return *data_; }
     unsigned char at(int row, int col, int ch = 0) const {
-        return data()->at((row * cols() + col) * channels() + ch);
+        return dataPtr()->at((row * cols() + col) * channels() + ch);
     }
 };
 
@@ -106,5 +109,24 @@ using ImageFrame = ImageWithCV;
 using ImageFrame = ImageBase;
 #endif
 
+enum class ImageCompressMode {
+    raw = 0,
+    jpeg = 1,
+    webp = 2,
+    png = 3,
+};
+struct ImageReq {
+    std::optional<int> rows, cols;
+    int channels = 4;
+    ImageCompressMode mode = ImageCompressMode::raw;
+    int quality = 0;
+
+    bool operator==(const ImageReq &rhs) const {
+        return rows == rhs.rows && cols == rhs.cols &&
+               channels == rhs.channels && mode == rhs.mode &&
+               quality == rhs.quality;
+    }
+    bool operator!=(const ImageReq &rhs) const { return !(*this == rhs); }
+};
 } // namespace Common
 } // namespace webcface

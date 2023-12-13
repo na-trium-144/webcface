@@ -94,7 +94,7 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
     SyncDataStore2<std::shared_ptr<FuncInfo>> func_store;
     SyncDataStore2<std::shared_ptr<std::vector<Common::ViewComponentBase>>>
         view_store;
-    SyncDataStore2<Common::ImageBase> image_store;
+    SyncDataStore2<Common::ImageBase, Common::ImageReq> image_store;
     std::shared_ptr<SyncDataStore1<std::shared_ptr<std::vector<LogLine>>>>
         log_store;
     SyncDataStore1<std::chrono::system_clock::time_point> sync_time_store;

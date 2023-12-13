@@ -7,6 +7,18 @@ Image::Image(const Field &base)
     : Field(base), EventTarget<Image>(&this->dataLock()->image_change_event,
                                       *this) {}
 
+Image &Image::request(std::optional<int> rows, std::optional<int> cols,
+                      int channels, Common::ImageCompressMode mode,
+                      int quality) {
+    auto req = dataLock()->image_store.addReq(
+        member_, field_, {rows, cols, channels, mode, quality});
+    if (req) {
+        dataLock()->message_queue->push(Message::packSingle(
+            Message::Req<Message::Image>{{}, member_, field_, req}));
+    }
+    return *this;
+}
+
 inline void addImageReq(const std::shared_ptr<Internal::ClientData> &data,
                         const std::string &member_, const std::string &field_) {
     auto req = data->image_store.addReq(member_, field_);

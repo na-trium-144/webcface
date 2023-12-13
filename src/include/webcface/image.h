@@ -46,6 +46,13 @@ class Image : protected Field, public EventTarget<Image> {
         return *this;
     }
 
+    Image &request(std::optional<int> rows = std::nullopt,
+                   std::optional<int> cols = std::nullopt, int channels = 4) {
+        return request(rows, cols, channels, Common::ImageCompressMode::raw, 0);
+    }
+    WEBCFACE_DLL Image &request(std::optional<int> rows,
+                                std::optional<int> cols, int channels,
+                                Common::ImageCompressMode mode, int quality);
     //! 画像を返す
     WEBCFACE_DLL std::optional<ImageFrame> tryGet() const;
     //! 画像を返す (データがない場合0x0の画像が返る)

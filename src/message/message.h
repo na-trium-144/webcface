@@ -261,7 +261,7 @@ struct Image : public MessageBase<MessageKind::image> {
     Image() = default;
     Image(const std::string &field, const Common::ImageBase &img)
         : field(field), rows(img.rows()), cols(img.cols()),
-          channels(img.channels()), data(img.data()) {}
+          channels(img.channels()), data(img.dataPtr()) {}
     Common::ImageBase img() const {
         return Common::ImageBase(rows, cols, channels, data);
     }
@@ -431,7 +431,7 @@ struct Res<Image> : public MessageBase<MessageKind::image + MessageKind::res> {
     Res(unsigned int req_id, const std::string &sub_field,
         const Common::ImageBase &img)
         : req_id(req_id), sub_field(sub_field), rows(img.rows()),
-          cols(img.cols()), channels(img.channels()), data(img.data()) {}
+          cols(img.cols()), channels(img.channels()), data(img.dataPtr()) {}
     Common::ImageBase img() const {
         return Common::ImageBase(rows, cols, channels, data);
     }
