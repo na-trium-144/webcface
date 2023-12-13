@@ -8,8 +8,10 @@ int main() {
     wcli.waitConnection();
 
     while(true){
-        webcface::ImageData img = wcli.member("example_image_send").image("sample").get();
-        if(!img.mat().empty()){
+        webcface::Image img = wcli.member("example_image_send").image("sample");
+        // auto mat = wcli.member("example_image_send").image("sample").mat(); NG
+        auto mat2 = img.mat(); // OK
+        if(!mat2.empty()){
             cv::imshow("Display window (image_recv)", img.mat());
             cv::waitKey(0); // Wait for a keystroke in the window
             cv::imwrite("recv_image.png", img.mat());

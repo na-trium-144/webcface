@@ -16,7 +16,8 @@ inline void addImageReq(const std::shared_ptr<Internal::ClientData> &data,
     }
 }
 
-Image &Image::set(const ImageData &img) {
+Image &Image::set(const ImageFrame &img) {
+    this->img = img;
     setCheck()->image_store.setSend(*this, img);
     this->triggerEvent(*this);
     return *this;
@@ -24,15 +25,26 @@ Image &Image::set(const ImageData &img) {
 
 void Image::onAppend() const { addImageReq(dataLock(), member_, field_); }
 
-std::optional<ImageData> Image::tryGet() const {
-    auto v = dataLock()->image_store.getRecv(*this);
+std::optional<ImageFrame> Image::tryGet() const {
     addImageReq(dataLock(), member_, field_);
-    if (v) {
-        return *v;
+    if (this->img) {
+        return *this->img;
     } else {
         return std::nullopt;
     }
 }
+
+#ifdef WEBCFACE_USE_OPENCV
+cv::Mat Image::mat() & {
+    if (!this->img) {
+        this->img = dataLock()->image_store.getRecv(*this);
+    }
+    if (this->img) {
+        return this->img->mat();
+    }
+    return cv::Mat();
+}
+#endif
 
 std::chrono::system_clock::time_point Image::time() const {
     return dataLock()
@@ -41,6 +53,7 @@ std::chrono::system_clock::time_point Image::time() const {
 }
 Image &Image::free() {
     auto req = dataLock()->image_store.unsetRecv(*this);
+    this->img = std::nullopt;
     if (req) {
         // todo: リクエスト解除
     }

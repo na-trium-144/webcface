@@ -17,6 +17,8 @@ class Member;
 /*! コンストラクタではなく Member::image() を使って取得してください
  */
 class Image : protected Field, public EventTarget<Image> {
+    std::optional<Common::ImageFrame> img = std::nullopt;
+
     WEBCFACE_DLL void onAppend() const override;
 
   public:
@@ -37,20 +39,23 @@ class Image : protected Field, public EventTarget<Image> {
     }
 
     //! 画像をセットする
-    WEBCFACE_DLL Image &set(const ImageData &img);
+    WEBCFACE_DLL Image &set(const ImageFrame &img);
     //! 画像をセットする
-    Image &operator=(const ImageData &img) {
+    Image &operator=(const ImageFrame &img) {
         this->set(img);
         return *this;
     }
 
     //! 画像を返す
-    WEBCFACE_DLL std::optional<ImageData> tryGet() const;
+    WEBCFACE_DLL std::optional<ImageFrame> tryGet() const;
     //! 画像を返す (データがない場合0x0の画像が返る)
-    ImageData get() const { return tryGet().value_or(ImageData{}); }
+    ImageFrame get() const { return tryGet().value_or(ImageFrame{}); }
 
-    operator ImageData() const { return get(); }
+    operator ImageFrame() const { return get(); }
 
+#ifdef WEBCFACE_USE_OPENCV
+    WEBCFACE_DLL cv::Mat mat() &;
+#endif
     //! syncの時刻を返す
     WEBCFACE_DLL std::chrono::system_clock::time_point time() const;
 

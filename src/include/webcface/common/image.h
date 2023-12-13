@@ -97,13 +97,13 @@ class ImageWithCV : public ImageBase {
         }
     }
     // operator cv::Mat &() { return mat_; }
-    cv::Mat &mat() { return mat_; }
+    cv::Mat &mat() & { return mat_; }
 };
 
-using ImageData = ImageWithCV;
+using ImageFrame = ImageWithCV;
 
 #else
-using ImageData = ImageBase;
+using ImageFrame = ImageBase;
 #endif
 
 } // namespace Common
