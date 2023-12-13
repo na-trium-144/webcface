@@ -8,8 +8,15 @@
 
 namespace webcface::Server {
 void ClientData::onClose() {
-    // 作ったものの何もすることがなかった
     logger->info("connection closed");
+
+    closing.store(true);
+    for(auto &v: image_convert_thread){
+        for(auto &v2: v.second){
+            v2.second->join();
+        }
+    }
+    logger->trace("image_convert_thread stopped");
 }
 void ClientData::send() {
     if (connected() && send_len > 0) {
@@ -319,8 +326,8 @@ void ClientData::onRecv(const std::string &message) {
         }
         case MessageKind::image: {
             auto v = std::any_cast<webcface::Message::Image>(obj);
-            logger->debug("image {} ({} x {} x {})", v.field, v.rows, v.cols,
-                          v.channels);
+            logger->debug("image {} ({} x {} x {})", v.field, v.rows(),
+                          v.cols(), v.channels());
             if (!this->image.count(v.field)) {
                 store.forEach([&](auto &cd) {
                     if (cd.name != this->name) {
@@ -332,18 +339,12 @@ void ClientData::onRecv(const std::string &message) {
                     }
                 });
             }
-            this->image[v.field] = v.img();
             // このimageをsubscribeしてるところに送り返す
-            store.forEach([&](auto &cd) {
-                auto [req_id, sub_field] =
-                    findReqField(cd.image_req, this->name, v.field);
-                if (req_id > 0) {
-                    cd.pack(webcface::Message::Res<webcface::Message::Image>(
-                        req_id, sub_field, v.img()));
-                    cd.logger->trace("send image_res req_id={} + '{}'", req_id,
-                                     sub_field);
-                }
-            });
+            {
+                std::lock_guard lock(this->image_m[v.field]);
+                this->image[v.field] = v;
+                this->image_cv[v.field].notify_all();
+            }
             break;
         }
         case MessageKind::log: {
@@ -499,32 +500,39 @@ void ClientData::onRecv(const std::string &message) {
             auto s =
                 std::any_cast<webcface::Message::Req<webcface::Message::Image>>(
                     obj);
-            logger->debug("request image ({}): {} from {}", s.req_id, s.field,
-                          s.member);
-            // 指定した値を返す
-            store.findAndDo(s.member, [&](auto &cd) {
-                if (!this->hasReq(s.member)) {
-                    this->pack(webcface::Message::Sync{cd.member_id,
-                                                       cd.last_sync_time});
-                    logger->trace("send sync {}", this->member_id);
-                }
-                for (const auto &it : cd.image) {
-                    if (it.first == s.field ||
-                        it.first.starts_with(s.field + ".")) {
-                        std::string sub_field;
-                        if (it.first == s.field) {
-                            sub_field = "";
-                        } else {
-                            sub_field = it.first.substr(s.field.size() + 1);
+            logger->debug(
+                "request image ({}): {} from {}, {} x {} x {}, mode={}, q={}",
+                s.req_id, s.field, s.member, s.rows.value_or(-1),
+                s.cols.value_or(-1), s.channels, static_cast<int>(s.mode),
+                s.quality);
+            image_req_info[s.member][s.field] = s;
+            if (!image_convert_thread[s.member].count(s.field)) {
+                image_convert_thread[s.member].emplace(
+                    s.field,
+                    std::thread([this, member = s.member, field = s.field] {
+                        while (true) {
+                            store.findAndDo(member, [&](ClientData &cd) {
+                                while (true) {
+                                    std::unique_lock lock(cd.image_m[field]);
+                                    auto cv_ret = cd.image_cv[field].wait_for(
+                                        lock, std::chrono::milliseconds(1));
+                                    if (this->closing.load()) {
+                                        break;
+                                    }
+                                    if (cv_ret != std::cv_status::timeout) {
+                                        Common::ImageWithCV img = cd.image[field];
+                                        cv::Mat m = img.mat();
+                                        // 変換処理
+                                    }
+                                }
+                            });
+                            if (this->closing.load()) {
+                                break;
+                            }
+                            std::this_thread::yield();
                         }
-                        this->pack(
-                            webcface::Message::Res<webcface::Message::Image>{
-                                s.req_id, sub_field, it.second});
-                        logger->trace("send image_res, req_id={} + '{}'",
-                                      s.req_id, sub_field);
-                    }
-                }
-            });
+                    }));
+            }
             image_req[s.member][s.field] = s.req_id;
             break;
         }

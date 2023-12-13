@@ -161,9 +161,10 @@ void Internal::ClientData::syncDataFirst() {
     }
     for (const auto &v : image_store.transferReq()) {
         for (const auto &v2 : v.second) {
-            Message::pack(
-                buffer, len,
-                Message::Req<Message::Image>{{}, v.first, v2.first, v2.second});
+            Message::pack(buffer, len,
+                          Message::Req<Message::Image>{
+                              v.first, v2.first, v2.second,
+                              image_store.getReqInfo(v.first, v2.first)});
         }
     }
     for (const auto &v : log_store->transferReq()) {
@@ -342,7 +343,7 @@ void Internal::ClientData::onRecv(const std::string &message) {
                     obj);
             auto [member, field] =
                 this->image_store.getReq(r.req_id, r.sub_field);
-            this->image_store.setRecv(member, field, r.img());
+            this->image_store.setRecv(member, field, r);
             this->image_change_event.dispatch(
                 FieldBase{member, field},
                 Field{shared_from_this(), member, field});

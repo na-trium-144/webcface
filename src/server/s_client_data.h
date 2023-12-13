@@ -4,6 +4,9 @@
 #include <unordered_map>
 #include <chrono>
 #include <optional>
+#include <mutex>
+#include <atomic>
+#include <condition_variable>
 #include "../message/message.h"
 #include <spdlog/common.h>
 #include <spdlog/logger.h>
@@ -33,12 +36,23 @@ struct ClientData {
     std::unordered_map<std::string, std::vector<Common::ViewComponentBase>>
         view;
     std::unordered_map<std::string, Common::ImageBase> image;
+    // 画像が変化したことを知らせるcv
+    std::unordered_map<std::string, std::mutex> image_m;
+    std::unordered_map<std::string, std::condition_variable> image_cv;
 
     std::chrono::system_clock::time_point last_sync_time;
     //! リクエストしているmember,nameのペア
     std::unordered_map<std::string,
                        std::unordered_map<std::string, unsigned int>>
         value_req, text_req, view_req, image_req;
+    // 画像をそれぞれのリクエストに合わせて変換するスレッド
+    std::unordered_map<std::string,
+                       std::unordered_map<std::string, Common::ImageReq>>
+        image_req_info;
+    std::unordered_map<
+        std::string,
+        std::unordered_map<std::string, std::optional<std::thread>>>
+        image_convert_thread;
     std::set<std::string> log_req;
     bool hasReq(const std::string &member);
     //! ログ全履歴
@@ -64,6 +78,7 @@ struct ClientData {
     void onConnect();
     void onRecv(const std::string &msg);
     void onClose();
+    std::atomic<bool> closing = false;
 
     void sendPing();
     static constexpr std::chrono::milliseconds ping_interval{5000};

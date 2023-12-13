@@ -13,8 +13,9 @@ Image &Image::request(std::optional<int> rows, std::optional<int> cols,
     auto req = dataLock()->image_store.addReq(
         member_, field_, {rows, cols, channels, mode, quality});
     if (req) {
-        dataLock()->message_queue->push(Message::packSingle(
-            Message::Req<Message::Image>{{}, member_, field_, req}));
+        dataLock()->message_queue->push(
+            Message::packSingle(Message::Req<Message::Image>{
+                member_, field_, req, {rows, cols, channels, mode, quality}}));
     }
     return *this;
 }
@@ -24,7 +25,7 @@ inline void addImageReq(const std::shared_ptr<Internal::ClientData> &data,
     auto req = data->image_store.addReq(member_, field_);
     if (req) {
         data->message_queue->push(Message::packSingle(
-            Message::Req<Message::Image>{{}, member_, field_, req}));
+            Message::Req<Message::Image>{member_, field_, req, {}}));
     }
 }
 
