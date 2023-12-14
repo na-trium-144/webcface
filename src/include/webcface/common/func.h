@@ -8,6 +8,12 @@
 #include <cstdint>
 #include "val.h"
 
+#ifdef min
+#pragma message("warning: Disabling macro definition of 'min' and 'max', since they conflicts in webcface/func.h.")
+#undef min
+#undef max
+#endif
+
 namespace webcface {
 //! webcface::Commonはserverとclientで共通のheader-onlyなクラス
 inline namespace Common {
@@ -16,9 +22,12 @@ using FuncType = std::function<ValAdaptor(const std::vector<ValAdaptor> &)>;
 using FuncWrapperType =
     std::function<ValAdaptor(FuncType, const std::vector<ValAdaptor> &)>;
 
-//! 引数の情報を表す。
-/*! func.setArg({ Arg(引数名).init(初期値).min(最小値).max(最大値), ... });
+/*!
+ * \brief 引数の情報を表す。
+ *
+ * func.setArg({ Arg(引数名).init(初期値).min(最小値).max(最大値), ... });
  * のように使う
+ * 
  */
 class Arg {
   protected:
@@ -29,7 +38,10 @@ class Arg {
     std::vector<ValAdaptor> option_;
 
   public:
-    //! 引数のargが持っている情報でthisを上書きする。
+    /*!
+     * \brief 引数のargが持っている情報でthisを上書きする。
+     * 
+     */
     void mergeConfig(const Arg &rhs) {
         if (rhs.name_ != "") {
             name_ = rhs.name_;
@@ -53,7 +65,10 @@ class Arg {
     explicit Arg(ValType type) : type_(type) {}
 
     Arg() = default;
-    //! 引数名を設定する。
+    /*!
+     * \brief 引数名を設定する。
+     * 
+     */
     Arg(const std::string &name) : name_(name) {}
     Arg(const std::string &name, ValType type,
         const std::optional<ValAdaptor> &init, std::optional<double> min,
@@ -61,49 +76,83 @@ class Arg {
         : name_(name), type_(type), init_(init), min_(min), max_(max),
           option_(option) {}
 
-    //! 引数の名前を取得する。
+    /*!
+     * \brief 引数の名前を取得する。
+     * 
+     */
     std::string name() const { return name_; }
-    //! 引数の型を取得する。
-    //! 型を手動で設定することはできない
+    /*!
+     * \brief 引数の型を取得する。
+     * 
+     * 型を手動で設定することはできない
+     *
+     */
     ValType type() const { return type_; }
-    //! デフォルト値を取得する。
+    /*!
+     * \brief デフォルト値を取得する。
+     * 
+     */
     std::optional<ValAdaptor> init() const { return init_; }
-    //! デフォルト値を設定する。
+    /*!
+     * \brief デフォルト値を設定する。
+     * 
+     */
     Arg &init(const ValAdaptor &init) {
         init_ = init;
         return *this;
     }
-    //! 最小値を取得する。
+    /*!
+     * \brief 最小値を取得する。
+     * 
+     */
     std::optional<double> min() const { return min_; }
-    //! 最小値を設定する。
-    //! string型引数の場合最小の文字数を表す。
-    //! bool型引数の場合効果がない。
-    //! option() はクリアされる。
+    /*!
+     * \brief 最小値を設定する。
+     * 
+     * * string型引数の場合最小の文字数を表す。
+     * * bool型引数の場合効果がない。
+     * * option() はクリアされる。
+     * 
+     */
     Arg &min(double min) {
         min_ = min;
         option_.clear();
         return *this;
     }
-    //! 最大値を取得する。
+    /*!
+     * \brief 最大値を取得する。
+     * 
+     */
     std::optional<double> max() const { return max_; }
-    //! 最大値を設定する。
-    //! string型引数の場合最大の文字数を表す。
-    //! bool型引数の場合効果がない。
-    //! option() はクリアされる。
+    /*! 
+     * \brief 最大値を設定する。
+     * 
+     * * string型引数の場合最大の文字数を表す。
+     * * bool型引数の場合効果がない。
+     * * option() はクリアされる。
+     *
+     */
     Arg &max(double max) {
         max_ = max;
         option_.clear();
         return *this;
     }
-    //! 引数の選択肢を取得する。
+    /*!
+     * \brief 引数の選択肢を取得する。
+     * 
+     */
     std::vector<ValAdaptor> option() const { return option_; }
     Arg &option(const std::vector<ValAdaptor> &option) {
         option_ = option;
         min_ = max_ = std::nullopt;
         return *this;
     }
-    //! 引数の選択肢を設定する。
-    //! min(), max() はクリアされる。
+    /*!
+     * \brief 引数の選択肢を設定する。
+     * 
+     * * min(), max() はクリアされる。
+     * 
+     */
     template <typename T>
     Arg &option(std::initializer_list<T> option) {
         return this->option(
@@ -132,7 +181,10 @@ inline auto &operator<<(std::basic_ostream<char> &os, const Arg &arg) {
     return os;
 }
 
-//! 関数1つの情報を表す。関数の実体も持つ
+/*!
+ * \brief 関数1つの情報を表す。関数の実体も持つ
+ * 
+ */
 struct FuncInfo {
     ValType return_type;
     std::vector<Arg> args;
@@ -150,7 +202,10 @@ struct FuncInfo {
     FuncInfo()
         : return_type(ValType::none_), args(), func_impl(), func_wrapper(),
           hidden(false) {}
-    //! 任意の関数を受け取り、引数と戻り値をキャストして実行する関数を保存
+    /*!
+     * \brief 任意の関数を受け取り、引数と戻り値をキャストして実行する関数を保存
+     * 
+     */
     template <typename... Args, typename Ret>
     explicit FuncInfo(std::function<Ret(Args...)> func, FuncWrapperType wrapper)
         : return_type(valTypeOf<Ret>()), args({Arg{valTypeOf<Args>()}...}),
@@ -174,7 +229,12 @@ struct FuncInfo {
           func_wrapper(wrapper), hidden(false) {}
 };
 
-//! 関数を呼び出すのに必要なデータ。client_data->client->server->clientと送られる
+/*!
+ * \brief 関数を呼び出すのに必要なデータ。
+ *
+ * client_data->client->server->clientと送られる 
+ *
+ */
 struct FuncCall {
     std::size_t caller_id;
     unsigned int caller_member_id;

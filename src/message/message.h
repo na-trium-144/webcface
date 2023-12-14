@@ -21,6 +21,7 @@ MSGPACK_ADD_ENUM(webcface::Common::ImageCompressMode);
 namespace webcface::Message {
 // 新しいメッセージの定義は
 // kind追記→struct作成→message.ccに追記→s_client_data.ccに追記→client.ccに追記
+
 namespace MessageKind {
 enum MessageKindEnum {
     unknown = -1,
@@ -46,13 +47,18 @@ enum MessageKindEnum {
 };
 }
 
-//! 型からkindを取得するためだけのベースクラス
+/*!
+ * \brief 型からkindを取得するためだけのベースクラス
+ * 
+ */
 template <int k>
 struct MessageBase {
     static constexpr int kind = k;
 };
-//! client初期化(client->server->client)
-/*! clientは接続後最初に1回、
+/*!
+ * \brief client初期化(client->server->client)
+ * 
+ * clientは接続後最初に1回、
  * member_name,lib_name,lib_verを送る
  *
  * member_nameが空文字列でない場合、同時に接続している他のクライアントと被ってはいけない
@@ -66,59 +72,102 @@ struct MessageBase {
  * member_nameが空でなかった場合は他の全クライアントにmember_idとaddrを載せて通知する
  */
 struct SyncInit : public MessageBase<MessageKind::sync_init> {
-    std::string member_name; //!< member名
-    unsigned int member_id;  //!< member id (1以上)
-    //! clientライブラリの名前(id) このライブラリでは"cpp"
-    /*! 新しくライブラリ作ることがあったら変えて識別できるようにすると良いかも
+    /*!
+     * \brief member名
+     * 
+     */
+    std::string member_name;
+    /*!
+     * \brief member id (1以上)
+     * 
+     */
+    unsigned int member_id;
+    /*!
+     * \brief clientライブラリの名前(id) このライブラリでは"cpp"
+     * 
+     * 新しくライブラリ作ることがあったら変えて識別できるようにすると良いかも
+     * 
      */
     std::string lib_name;
-    std::string lib_ver; //!< clientライブラリのバージョン
-    std::string addr;    //!< clientのipアドレス
+    std::string lib_ver;
+    std::string addr;
+
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("M", member_name),
                        MSGPACK_NVP("m", member_id), MSGPACK_NVP("l", lib_name),
                        MSGPACK_NVP("v", lib_ver), MSGPACK_NVP("a", addr));
 };
 
-//! serverのバージョン情報(server->client)
-/*! serverはSyncInit受信後にこれを返す
+/*!
+ * \brief serverのバージョン情報(server->client)
+ * 
+ * serverはSyncInit受信後にこれを返す
+ * 
  */
 struct SvrVersion : public MessageBase<MessageKind::svr_version> {
-    std::string svr_name; //!< serverの名前 このライブラリでは"webcface"
-    std::string ver;      //!< serverのバージョン
+    /*!
+     * \brief serverの名前
+     * 
+     * このライブラリでは "webcface"
+     * 
+     */
+    std::string svr_name;
+    /*!
+     * \brief serverのバージョン
+     * 
+     */
+    std::string ver;
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("n", svr_name), MSGPACK_NVP("v", ver));
 };
-//! ping(server->client->server)
-/*! serverが一定間隔でこれをclientに送る
+/*!
+ * \brief ping(server->client->server)
+ * 
+ * serverが一定間隔でこれをclientに送る
  *
  * 内容は空のmap
  *
  * clientは即座に送り返さなければならない
  * (送り返さなくても何も起きないが)
+ * 
  */
 struct Ping : public MessageBase<MessageKind::ping> {
     Ping() = default;
 };
-//! 各クライアントのping状況 (server->client)
+/*!
+ * \brief 各クライアントのping状況 (server->client)
+ *
+ */
 struct PingStatus : public MessageBase<MessageKind::ping_status> {
-    //! member_id: ping応答時間(ms) のmap
+    /*!
+     * \brief member_id: ping応答時間(ms) のmap
+     *
+     */
     std::shared_ptr<std::unordered_map<unsigned int, int>> status;
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("s", status));
 };
-//! ping状況のリクエスト (client->server)
-/*! これを送ると以降serverが一定間隔でPingStatusを送り返す
+/*!
+ * \brief ping状況のリクエスト (client->server)
+ * 
+ * これを送ると以降serverが一定間隔でPingStatusを送り返す
+ * 
  */
 struct PingStatusReq : public MessageBase<MessageKind::ping_status_req> {
     PingStatusReq() = default;
 };
-//! syncの時刻(client->server->client)
-/*! clientは各sync()ごとに1回、他のメッセージより先に現在時刻を送る
+/*!
+ * \brief syncの時刻(client->server->client)
+ * 
+ * clientは各sync()ごとに1回、他のメッセージより先に現在時刻を送る
  *
  * serverはそのclientのデータを1つ以上requestしているクライアントに対して
  * member_idを載せて送る
+ * 
  */
 struct Sync : public MessageBase<MessageKind::sync> {
     unsigned int member_id; //!< member id
-    //! 1970/1/1 0:00(utc) からの経過ミリ秒数で表し、閏秒はカウントしない
+    /*!
+     * \brief 1970/1/1 0:00(utc) からの経過ミリ秒数で表し、閏秒はカウントしない
+     * 
+     */
     std::uint64_t time;
     Sync(unsigned int member_id,
          const std::chrono::system_clock::time_point &time)
@@ -134,10 +183,13 @@ struct Sync : public MessageBase<MessageKind::sync> {
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("m", member_id), MSGPACK_NVP("t", time));
 };
 
-//! 関数呼び出し (client(caller)->server->client(receiver))
-/*! caller側clientが一意のcaller_idを振る(0以上の整数)
+/*!
+ * \brief 関数呼び出し (client(caller)->server->client(receiver))
+ * 
+ * caller側clientが一意のcaller_idを振る(0以上の整数)
  *
  * serverはcaller_member_idをつけてreceiverに送る
+ * 
  */
 struct Call : public MessageBase<MessageKind::call>, public Common::FuncCall {
     Call() = default;
@@ -148,14 +200,16 @@ struct Call : public MessageBase<MessageKind::call>, public Common::FuncCall {
                        MSGPACK_NVP("r", target_member_id),
                        MSGPACK_NVP("f", field), MSGPACK_NVP("a", args));
 };
-//! 関数呼び出しの応答1 (client(receiver)->server->client(caller))
-/*! clientはcalled_id,caller_member_idと、関数の実行を開始したかどうかを返す
+/*!
+ * \brief 関数呼び出しの応答1 (client(receiver)->server->client(caller))
+ * 
+ * clientはcalled_id,caller_member_idと、関数の実行を開始したかどうかを返す
  *
- * 関数の実行に時間がかかる場合も実行完了を待たずにstartedをtrueにして送る
- *
- * 対象の関数が存在しない場合、startedをfalseにして送る
+ * * 関数の実行に時間がかかる場合も実行完了を待たずにstartedをtrueにして送る
+ * * 対象の関数が存在しない場合、startedをfalseにして送る
  *
  * serverはそれをそのままcallerに送る
+ * 
  */
 struct CallResponse : public MessageBase<MessageKind::call_response> {
     std::size_t caller_id;
@@ -165,15 +219,17 @@ struct CallResponse : public MessageBase<MessageKind::call_response> {
                        MSGPACK_NVP("c", caller_member_id),
                        MSGPACK_NVP("s", started));
 };
-//! 関数呼び出しの応答2 (client(receiver)->server->client(caller))
-/*! clientはcalled_id,caller_member_idと、関数の実行結果を返す
+/*!
+ * \brief 関数呼び出しの応答2 (client(receiver)->server->client(caller))
+ * 
+ * clientはcalled_id,caller_member_idと、関数の実行結果を返す
  *
  * resultに結果を文字列または数値または真偽値で返す
- * 結果が無い場合は "" を返す
- *
- * 例外が発生した場合はis_errorをtrueにしresultに例外の内容を文字列で入れて返す
+ * * 結果が無い場合は "" を返す
+ * * 例外が発生した場合はis_errorをtrueにしresultに例外の内容を文字列で入れて返す
  *
  * serverはそれをそのままcallerに送る
+ * 
  */
 struct CallResult : public MessageBase<MessageKind::call_result> {
     std::size_t caller_id;
@@ -184,13 +240,11 @@ struct CallResult : public MessageBase<MessageKind::call_result> {
                        MSGPACK_NVP("c", caller_member_id),
                        MSGPACK_NVP("e", is_error), MSGPACK_NVP("r", result));
 };
-//! client(member)->server->client Valueを更新
 struct Value : public MessageBase<MessageKind::value> {
     std::string field;
     std::shared_ptr<std::vector<double>> data;
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", field), MSGPACK_NVP("d", data));
 };
-//! client(member)->server->client Textを更新
 struct Text : public MessageBase<MessageKind::text> {
     std::string field;
     std::shared_ptr<std::string> data;
@@ -254,7 +308,6 @@ struct View : public MessageBase<MessageKind::view> {
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", field), MSGPACK_NVP("d", data_diff),
                        MSGPACK_NVP("l", length));
 };
-//! 生の画像データ。
 struct Image : public MessageBase<MessageKind::image>,
                public Common::ImageBase {
     std::string field;
@@ -265,13 +318,20 @@ struct Image : public MessageBase<MessageKind::image>,
                        MSGPACK_NVP("h", rows_), MSGPACK_NVP("w", cols_),
                        MSGPACK_NVP("c", channels_), MSGPACK_NVP("p", mode_));
 };
-//! client(member)->server->client logを追加
-//! client->server時はmemberは無視
+/*!
+ * \brief client(member)->server->client logを追加
+ * 
+ * client->server時はmemberは無視
+ * 
+ */
 struct Log : public MessageBase<MessageKind::log> {
     unsigned int member_id;
     struct LogLine {
         int level = 0;
-        //! 1970/1/1からの経過ミリ秒
+        /*!
+         * \brief 1970/1/1からの経過ミリ秒
+         * 
+         */
         std::uint64_t time = 0;
         std::string message;
         LogLine() = default;
@@ -307,13 +367,16 @@ struct Log : public MessageBase<MessageKind::log> {
     }
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("m", member_id), MSGPACK_NVP("l", log));
 };
-//! Logのリクエストはメンバ名のみ
 struct LogReq : public MessageBase<MessageKind::log_req> {
     std::string member;
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("M", member));
 };
-//! client(member)->server->client func登録
-//! client->server時はmemberは無視
+/*!
+ * \brief client(member)->server->client func登録
+ * 
+ * client->server時はmemberは無視
+ * 
+ */
 struct FuncInfo : public MessageBase<MessageKind::func_info> {
     unsigned int member_id = 0;
     std::string field;
@@ -352,13 +415,16 @@ struct FuncInfo : public MessageBase<MessageKind::func_info> {
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("m", member_id), MSGPACK_NVP("f", field),
                        MSGPACK_NVP("r", return_type), MSGPACK_NVP("a", args));
 };
-//! client->server 以降Recvを送るようリクエスト
-//! todo: 解除できるようにする
+/*!
+ * \brief client->server 以降Recvを送るようリクエスト
+ * 
+ * todo: 解除できるようにする
+ * 
+ */
 template <typename T>
 struct Req : public MessageBase<T::kind + MessageKind::req> {
     std::string member;
     std::string field;
-    //! 1以上
     unsigned int req_id;
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", req_id), MSGPACK_NVP("M", member),
                        MSGPACK_NVP("f", field));
@@ -368,7 +434,6 @@ struct Req<Image> : public MessageBase<MessageKind::image + MessageKind::req>,
                     public Common::ImageReq {
     std::string member;
     std::string field;
-    //! 1以上
     unsigned int req_id;
 
     Req() = default;
@@ -382,8 +447,12 @@ struct Req<Image> : public MessageBase<MessageKind::image + MessageKind::req>,
                        MSGPACK_NVP("h", rows), MSGPACK_NVP("c", channels),
                        MSGPACK_NVP("p", mode), MSGPACK_NVP("q", quality));
 };
-//! server->client 新しいvalueなどの報告
-//! Funcの場合はこれではなくFuncInfoを使用
+/*!
+ * \brief server->client 新しいvalueなどの報告
+ * 
+ * Funcの場合はこれではなくFuncInfoを使用
+ * 
+ */
 template <typename T>
 struct Entry : public MessageBase<T::kind + MessageKind::entry> {
     unsigned int member_id;
@@ -392,9 +461,13 @@ struct Entry : public MessageBase<T::kind + MessageKind::entry> {
 };
 template <typename T>
 struct Res {};
-//! server->client  Value,Textなどのfieldをreqidに変えただけのもの
-//! requestしたフィールドの子フィールドの場合sub_fieldにフィールド名を入れて返す
-//! →その場合clientが再度requestを送るはず
+/*!
+ * \brief server->client  Value,Textなどのfieldをreqidに変えただけのもの
+ * 
+ * requestしたフィールドの子フィールドの場合sub_fieldにフィールド名を入れて返す
+ * →その場合clientが再度requestを送るはず
+ * 
+ */
 template <>
 struct Res<Value> : public MessageBase<MessageKind::value + MessageKind::res> {
     unsigned int req_id;
@@ -450,12 +523,18 @@ struct Res<Image> : public MessageBase<MessageKind::image + MessageKind::res>,
                        MSGPACK_NVP("h", rows_), MSGPACK_NVP("c", channels_),
                        MSGPACK_NVP("p", mode_));
 };
-//! msgpackのメッセージをパースしstd::anyで返す
+/*!
+ * \brief msgpackのメッセージをパースしstd::anyで返す
+ * 
+ */
 std::vector<std::pair<int, std::any>>
 unpack(const std::string &message,
        const std::shared_ptr<spdlog::logger> &logger);
 
-//! メッセージ1つを要素数2の配列としてシリアル化
+/*!
+ * \brief メッセージ1つを要素数2の配列としてシリアル化
+ * 
+ */
 template <typename T>
 std::string packSingle(const T &obj) {
     msgpack::type::tuple<int, T> src(static_cast<int>(T::kind), obj);
@@ -464,7 +543,10 @@ std::string packSingle(const T &obj) {
     return buffer.str();
 }
 
-//! メッセージをシリアル化しbufferに追加
+/*!
+ * \brief メッセージをシリアル化しbufferに追加
+ * 
+ */
 template <typename T>
 void pack(std::stringstream &buffer, int &len, const T &obj) {
     msgpack::pack(buffer, static_cast<int>(T::kind));
