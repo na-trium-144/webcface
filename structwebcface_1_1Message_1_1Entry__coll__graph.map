@@ -1,5 +1,5 @@
 <map id="Entry&lt; T &gt;" name="Entry&lt; T &gt;">
-<area shape="rect" id="Node000001" title=" " alt="" coords="47,197,141,223"/>
+<area shape="rect" id="Node000001" title="server&#45;&gt;client 新しいvalueなどの報告" alt="" coords="47,197,141,223"/>
 <area shape="rect" id="Node000002" href="$structwebcface_1_1Message_1_1MessageBase.html" title=" " alt="" coords="5,108,183,148"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="97,162,97,197,91,197,91,162"/>
 <area shape="rect" id="Node000003" href="$structwebcface_1_1Message_1_1MessageBase.html" title="型からkindを取得するためだけのベースクラス" alt="" coords="19,5,169,31"/>

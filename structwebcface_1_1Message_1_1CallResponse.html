@@ -154,8 +154,10 @@ Static Public Attributes</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>関数呼び出しの応答1 (client(receiver)-&gt;server-&gt;client(caller)) </p>
 <p>clientはcalled_id,caller_member_idと、関数の実行を開始したかどうかを返す</p>
-<p>関数の実行に時間がかかる場合も実行完了を待たずにstartedをtrueにして送る</p>
-<p>対象の関数が存在しない場合、startedをfalseにして送る</p>
+<ul>
+<li>関数の実行に時間がかかる場合も実行完了を待たずにstartedをtrueにして送る</li>
+<li>対象の関数が存在しない場合、startedをfalseにして送る</li>
+</ul>
 <p>serverはそれをそのままcallerに送る </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a546b52a8d88695cd921cf5f162424a8e" name="a546b52a8d88695cd921cf5f162424a8e"></a>
@@ -268,7 +270,7 @@ Static Public Attributes</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="namespacewebcface_1_1Message.html">Message</a></li><li class="navelem"><a class="el" href="structwebcface_1_1Message_1_1CallResponse.html">CallResponse</a></li>
-    <li class="footer">Generated on Tue Dec 12 2023 13:34:19 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Thu Dec 14 2023 10:18:48 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

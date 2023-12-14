@@ -46,13 +46,13 @@
 <area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="598,97,636,97,636,103,598,103"/>
 <area shape="rect" id="Node000007" href="$structwebcface_1_1Message_1_1CallResult.html" title="関数呼び出しの応答2 (client(receiver)&#45;&gt;server&#45;&gt;client(caller))" alt="" coords="647,151,735,177"/>
 <area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="598,161,647,161,647,167,598,167"/>
-<area shape="rect" id="Node000009" href="$structwebcface_1_1Message_1_1Entry.html" title=" " alt="" coords="644,215,739,241"/>
+<area shape="rect" id="Node000009" href="$structwebcface_1_1Message_1_1Entry.html" title="server&#45;&gt;client 新しいvalueなどの報告" alt="" coords="644,215,739,241"/>
 <area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="579,225,644,225,644,231,579,231"/>
-<area shape="rect" id="Node000011" href="$structwebcface_1_1Message_1_1FuncInfo.html" title=" " alt="" coords="653,279,730,305"/>
+<area shape="rect" id="Node000011" href="$structwebcface_1_1Message_1_1FuncInfo.html" title="client(member)&#45;&gt;server&#45;&gt;client func登録" alt="" coords="653,279,730,305"/>
 <area shape="poly" id="edge10_Node000010_Node000011" title=" " alt="" coords="598,289,652,289,652,295,598,295"/>
-<area shape="rect" id="Node000013" href="$structwebcface_1_1Message_1_1Log.html" title=" " alt="" coords="669,343,714,369"/>
+<area shape="rect" id="Node000013" href="$structwebcface_1_1Message_1_1Log.html" title="client(member)&#45;&gt;server&#45;&gt;client logを追加" alt="" coords="669,343,714,369"/>
 <area shape="poly" id="edge12_Node000012_Node000013" title=" " alt="" coords="598,353,669,353,669,359,598,359"/>
-<area shape="rect" id="Node000015" href="$structwebcface_1_1Message_1_1LogReq.html" title="Logのリクエストはメンバ名のみ" alt="" coords="656,407,727,433"/>
+<area shape="rect" id="Node000015" href="$structwebcface_1_1Message_1_1LogReq.html" title=" " alt="" coords="656,407,727,433"/>
 <area shape="poly" id="edge14_Node000014_Node000015" title=" " alt="" coords="598,417,656,417,656,423,598,423"/>
 <area shape="rect" id="Node000017" href="$structwebcface_1_1Message_1_1Ping.html" title="ping(server&#45;&gt;client&#45;&gt;server)" alt="" coords="666,471,717,497"/>
 <area shape="poly" id="edge16_Node000016_Node000017" title=" " alt="" coords="598,481,666,481,666,487,598,487"/>
@@ -60,11 +60,11 @@
 <area shape="poly" id="edge18_Node000018_Node000019" title=" " alt="" coords="598,545,646,545,646,551,598,551"/>
 <area shape="rect" id="Node000021" href="$structwebcface_1_1Message_1_1PingStatusReq.html" title="ping状況のリクエスト (client&#45;&gt;server)" alt="" coords="633,599,749,625"/>
 <area shape="poly" id="edge20_Node000020_Node000021" title=" " alt="" coords="598,609,633,609,633,615,598,615"/>
-<area shape="rect" id="Node000023" href="$structwebcface_1_1Message_1_1Req.html" title=" " alt="" coords="649,663,734,689"/>
+<area shape="rect" id="Node000023" href="$structwebcface_1_1Message_1_1Req.html" title="client&#45;&gt;server 以降Recvを送るようリクエスト" alt="" coords="649,663,734,689"/>
 <area shape="poly" id="edge22_Node000022_Node000023" title=" " alt="" coords="576,673,648,673,648,679,576,679"/>
 <area shape="rect" id="Node000025" href="$structwebcface_1_1Message_1_1Res_3_01Text_01_4.html" title=" " alt="" coords="640,727,743,753"/>
 <area shape="poly" id="edge24_Node000024_Node000025" title=" " alt="" coords="598,737,640,737,640,743,598,743"/>
-<area shape="rect" id="Node000027" href="$structwebcface_1_1Message_1_1Res_3_01Value_01_4.html" title=" " alt="" coords="635,791,747,817"/>
+<area shape="rect" id="Node000027" href="$structwebcface_1_1Message_1_1Res_3_01Value_01_4.html" title="server&#45;&gt;client Value,Textなどのfieldをreqidに変えただけのもの" alt="" coords="635,791,747,817"/>
 <area shape="poly" id="edge26_Node000026_Node000027" title=" " alt="" coords="598,801,635,801,635,807,598,807"/>
 <area shape="rect" id="Node000029" href="$structwebcface_1_1Message_1_1Res_3_01View_01_4.html" title=" " alt="" coords="637,855,745,881"/>
 <area shape="poly" id="edge28_Node000028_Node000029" title=" " alt="" coords="598,865,637,865,637,871,598,871"/>
@@ -74,9 +74,9 @@
 <area shape="poly" id="edge32_Node000032_Node000033" title=" " alt="" coords="598,993,665,993,665,999,598,999"/>
 <area shape="rect" id="Node000035" href="$structwebcface_1_1Message_1_1SyncInit.html" title="client初期化(client&#45;&gt;server&#45;&gt;client)" alt="" coords="654,1047,729,1073"/>
 <area shape="poly" id="edge34_Node000034_Node000035" title=" " alt="" coords="598,1057,654,1057,654,1063,598,1063"/>
-<area shape="rect" id="Node000037" href="$structwebcface_1_1Message_1_1Text.html" title="client(member)&#45;&gt;server&#45;&gt;client Textを更新" alt="" coords="667,1111,716,1137"/>
+<area shape="rect" id="Node000037" href="$structwebcface_1_1Message_1_1Text.html" title=" " alt="" coords="667,1111,716,1137"/>
 <area shape="poly" id="edge36_Node000036_Node000037" title=" " alt="" coords="598,1121,666,1121,666,1127,598,1127"/>
-<area shape="rect" id="Node000039" href="$structwebcface_1_1Message_1_1Value.html" title="client(member)&#45;&gt;server&#45;&gt;client Valueを更新" alt="" coords="662,1175,721,1201"/>
+<area shape="rect" id="Node000039" href="$structwebcface_1_1Message_1_1Value.html" title=" " alt="" coords="662,1175,721,1201"/>
 <area shape="poly" id="edge38_Node000038_Node000039" title=" " alt="" coords="599,1185,662,1185,662,1191,599,1191"/>
 <area shape="rect" id="Node000041" href="$structwebcface_1_1Message_1_1View.html" title=" " alt="" coords="664,1239,719,1265"/>
 <area shape="poly" id="edge40_Node000040_Node000041" title=" " alt="" coords="598,1249,664,1249,664,1255,598,1255"/>

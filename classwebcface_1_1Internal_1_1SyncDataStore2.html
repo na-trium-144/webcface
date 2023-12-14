@@ -161,6 +161,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a5fb25a7dd4f1d58c9e17d2e1c49abfa0" id="r_a5fb25a7dd4f1d58c9e17d2e1c49abfa0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore1.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore2.html#a5fb25a7dd4f1d58c9e17d2e1c49abfa0">unsetRecv</a> (<a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore1.html">const</a> <a class="el" href="structwebcface_1_1Common_1_1FieldBase.html">FieldBase</a> &amp;<a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore1.html">base</a>)</td></tr>
 <tr class="separator:a5fb25a7dd4f1d58c9e17d2e1c49abfa0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae5159998b2f3c3ffd0e5348849de4a82" id="r_ae5159998b2f3c3ffd0e5348849de4a82"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore1.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore2.html#ae5159998b2f3c3ffd0e5348849de4a82">setEntry</a> (<a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore1.html">const</a> std::string &amp;<a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore1.html">from</a>)</td></tr>
+<tr class="memdesc:ae5159998b2f3c3ffd0e5348849de4a82"><td class="mdescLeft">&#160;</td><td class="mdescRight">entryにmember名のみ追加  <br /></td></tr>
 <tr class="separator:ae5159998b2f3c3ffd0e5348849de4a82"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af7f7796677cbffbf00b64bbd4282d2d3" id="r_af7f7796677cbffbf00b64bbd4282d2d3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore1.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore2.html#af7f7796677cbffbf00b64bbd4282d2d3">setEntry</a> (<a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore1.html">const</a> std::string &amp;<a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore1.html">from</a>, <a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore1.html">const</a> std::string &amp;<a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore1.html">e</a>)</td></tr>
 <tr class="memdesc:af7f7796677cbffbf00b64bbd4282d2d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">受信したentryを追加  <br /></td></tr>
@@ -174,6 +175,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a6b6088e559bad5cecb111a06f5ee7ee9"><td class="mdescLeft">&#160;</td><td class="mdescRight">member名のりすとを取得(entryから)  <br /></td></tr>
 <tr class="separator:a6b6088e559bad5cecb111a06f5ee7ee9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a53606af2d0565361cfddb73eed4041ce" id="r_a53606af2d0565361cfddb73eed4041ce"><td class="memItemLeft" align="right" valign="top">std::pair&lt; std::string, std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore2.html#a53606af2d0565361cfddb73eed4041ce">getReq</a> (<a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore1.html">unsigned</a> <a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore1.html">int</a> req_id, <a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore1.html">const</a> std::string &amp;sub_field)</td></tr>
+<tr class="memdesc:a53606af2d0565361cfddb73eed4041ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">req_idに対応するmember名とフィールド名を返す  <br /></td></tr>
 <tr class="separator:a53606af2d0565361cfddb73eed4041ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adf062a5d18fd41bf6f38c20a4ff5e71c" id="r_adf062a5d18fd41bf6f38c20a4ff5e71c"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; std::string, <a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore1.html">T</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore2.html#adf062a5d18fd41bf6f38c20a4ff5e71c">transferSend</a> (<a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore1.html">bool</a> <a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore1.html">is_first</a>)</td></tr>
 <tr class="memdesc:adf062a5d18fd41bf6f38c20a4ff5e71c"><td class="mdescLeft">&#160;</td><td class="mdescRight">data_sendを返し、data_sendをクリア  <br /></td></tr>
@@ -518,6 +520,8 @@ template&lt;<a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore1.html
       </table>
 </div><div class="memdoc">
 
+<p>req_idに対応するmember名とフィールド名を返す </p>
+
 </div>
 </div>
 <a id="af21d99a7b2e1f3e201d67791c1fa4802" name="af21d99a7b2e1f3e201d67791c1fa4802"></a>
@@ -585,7 +589,9 @@ template&lt;<a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore1.html
         </tr>
       </table>
 </div><div class="memdoc">
-<p>entryにmember名のみ追加 ambiguousなので引数にFieldBaseは使わない (そもそも必要ない) </p>
+
+<p>entryにmember名のみ追加 </p>
+<p>ambiguousなので引数にFieldBaseは使わない (そもそも必要ない) </p>
 
 </div>
 </div>
@@ -1054,7 +1060,7 @@ template&lt;<a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore1.html
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="namespacewebcface_1_1Internal.html">Internal</a></li><li class="navelem"><a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore2.html">SyncDataStore2</a></li>
-    <li class="footer">Generated on Tue Dec 12 2023 13:34:19 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Thu Dec 14 2023 10:18:48 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

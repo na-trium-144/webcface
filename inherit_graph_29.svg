@@ -21,7 +21,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:href="structwebcface_1_1Message_1_1Log.html" target="_top" xlink:title=" ">
+<g id="a_Node000001"><a xlink:href="structwebcface_1_1Message_1_1Log.html" target="_top" xlink:title="client(member)&#45;&gt;server&#45;&gt;client logを追加">
 <polygon fill="white" stroke="#666666" points="231,-24.5 197,-24.5 197,-5.5 231,-5.5 231,-24.5"/>
 <text text-anchor="middle" x="214" y="-12.5" font-family="Helvetica,sans-Serif" font-size="10.00">Log</text>
 </a>

@@ -4,6 +4,6 @@
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="142,156,193,208,189,212,138,160"/>
 <area shape="rect" id="Node000003" href="$structwebcface_1_1Message_1_1MessageBase.html" title="型からkindを取得するためだけのベースクラス" alt="" coords="37,5,188,31"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="115,45,115,108,110,108,110,45"/>
-<area shape="rect" id="Node000004" href="$classwebcface_1_1Common_1_1ValAdaptor.html" title=" " alt="" coords="245,115,338,141"/>
+<area shape="rect" id="Node000004" href="$classwebcface_1_1Common_1_1ValAdaptor.html" title="数値、文字列などの値を相互変換するクラス" alt="" coords="245,115,338,141"/>
 <area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="273,152,215,212,211,209,269,149"/>
 </map>

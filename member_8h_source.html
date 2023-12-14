@@ -134,72 +134,63 @@ $(document).ready(function(){initNavTree('member_8h_source.html',''); initResiza
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="keyword">struct </span>ClientData;</div>
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>}</div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
-<div class="foldopen" id="foldopen00025" data-start="{" data-end="};">
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno"><a class="line" href="classwebcface_1_1Member.html">   25</a></span><span class="keyword">class </span><a class="code hl_define" href="def_8h.html#a47af057bda855b54c212e97ffccdca01">WEBCFACE_DLL</a> <a class="code hl_class" href="classwebcface_1_1Member.html">Member</a> : <span class="keyword">protected</span> <a class="code hl_struct" href="structwebcface_1_1Field.html">Field</a> {</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>  <span class="keyword">public</span>:</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="classwebcface_1_1Member.html#a1a5b3da87c7076e24dee4f7f55604e6c">   27</a></span>    <a class="code hl_function" href="classwebcface_1_1Member.html#a1a5b3da87c7076e24dee4f7f55604e6c">Member</a>() = <span class="keywordflow">default</span>;</div>
-<div class="foldopen" id="foldopen00028" data-start="{" data-end="}">
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="classwebcface_1_1Member.html#a384362c101248350ac774bf411d886e9">   28</a></span>    <a class="code hl_function" href="classwebcface_1_1Member.html#a384362c101248350ac774bf411d886e9">Member</a>(<span class="keyword">const</span> std::weak_ptr&lt;Internal::ClientData&gt; &amp;data_w, <span class="keyword">const</span> std::string &amp;member)</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>        : <a class="code hl_struct" href="structwebcface_1_1Field.html">Field</a>(data_w, member) {}</div>
+<div class="foldopen" id="foldopen00027" data-start="{" data-end="};">
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="classwebcface_1_1Member.html">   27</a></span><span class="keyword">class </span><a class="code hl_define" href="def_8h.html#a47af057bda855b54c212e97ffccdca01">WEBCFACE_DLL</a> <a class="code hl_class" href="classwebcface_1_1Member.html">Member</a> : <span class="keyword">protected</span> <a class="code hl_struct" href="structwebcface_1_1Field.html">Field</a> {</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>  <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="classwebcface_1_1Member.html#a1a5b3da87c7076e24dee4f7f55604e6c">   29</a></span>    <a class="code hl_function" href="classwebcface_1_1Member.html#a1a5b3da87c7076e24dee4f7f55604e6c">Member</a>() = <span class="keywordflow">default</span>;</div>
+<div class="foldopen" id="foldopen00030" data-start="{" data-end="}">
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="classwebcface_1_1Member.html#a384362c101248350ac774bf411d886e9">   30</a></span>    <a class="code hl_function" href="classwebcface_1_1Member.html#a384362c101248350ac774bf411d886e9">Member</a>(<span class="keyword">const</span> std::weak_ptr&lt;Internal::ClientData&gt; &amp;data_w, <span class="keyword">const</span> std::string &amp;member)</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>        : <a class="code hl_struct" href="structwebcface_1_1Field.html">Field</a>(data_w, member) {}</div>
 </div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="classwebcface_1_1Member.html#af9c306505ae358dd2fef77173cebc6c8">   30</a></span>    <a class="code hl_function" href="classwebcface_1_1Member.html#af9c306505ae358dd2fef77173cebc6c8">Member</a>(<span class="keyword">const</span> <a class="code hl_struct" href="structwebcface_1_1Field.html">Field</a> &amp;base) : <a class="code hl_struct" href="structwebcface_1_1Field.html">Field</a>(base) {}</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="classwebcface_1_1Member.html#a1d89c28bd42ba9a52da008bb69367171">   33</a></span>    std::string <a class="code hl_function" href="classwebcface_1_1Member.html#a1d89c28bd42ba9a52da008bb69367171">name</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> member_; }</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    <a class="code hl_class" href="classwebcface_1_1Value.html">Value</a> value(<span class="keyword">const</span> std::string &amp;field) <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    <a class="code hl_class" href="classwebcface_1_1Text.html">Text</a> text(<span class="keyword">const</span> std::string &amp;field) <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    <a class="code hl_class" href="classwebcface_1_1Func.html">Func</a> func(<span class="keyword">const</span> std::string &amp;field) <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    <span class="comment">// template &lt;typename T&gt;</span></div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    <span class="comment">// AnonymousFunc func(const T &amp;func) const{</span></div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    <span class="comment">// todo:</span></div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    <span class="comment">// ここでfunc.hにアクセスする必要があるためヘッダーの読み込み順を変えないといけない</span></div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    <span class="comment">// }</span></div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    <a class="code hl_class" href="classwebcface_1_1View.html">View</a> view(<span class="keyword">const</span> std::string &amp;field) <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    <a class="code hl_class" href="classwebcface_1_1Log.html">Log</a> log() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    std::vector&lt;Value&gt; values() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    std::vector&lt;Text&gt; texts() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    std::vector&lt;Func&gt; funcs() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    std::vector&lt;View&gt; views() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    <a class="code hl_class" href="classwebcface_1_1EventTarget.html">EventTarget&lt;Value, std::string&gt;</a> onValueEntry() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span> </div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    <a class="code hl_class" href="classwebcface_1_1EventTarget.html">EventTarget&lt;Text, std::string&gt;</a> onTextEntry() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    <a class="code hl_class" href="classwebcface_1_1EventTarget.html">EventTarget&lt;Func, std::string&gt;</a> onFuncEntry() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno"><a class="line" href="classwebcface_1_1Member.html#af9c306505ae358dd2fef77173cebc6c8">   32</a></span>    <a class="code hl_function" href="classwebcface_1_1Member.html#af9c306505ae358dd2fef77173cebc6c8">Member</a>(<span class="keyword">const</span> <a class="code hl_struct" href="structwebcface_1_1Field.html">Field</a> &amp;base) : <a class="code hl_struct" href="structwebcface_1_1Field.html">Field</a>(base) {}</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno"><a class="line" href="classwebcface_1_1Member.html#a1d89c28bd42ba9a52da008bb69367171">   38</a></span>    std::string <a class="code hl_function" href="classwebcface_1_1Member.html#a1d89c28bd42ba9a52da008bb69367171">name</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> member_; }</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    <a class="code hl_class" href="classwebcface_1_1Value.html">Value</a> value(<span class="keyword">const</span> std::string &amp;field) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    <a class="code hl_class" href="classwebcface_1_1Text.html">Text</a> text(<span class="keyword">const</span> std::string &amp;field) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    <a class="code hl_class" href="classwebcface_1_1Func.html">Func</a> func(<span class="keyword">const</span> std::string &amp;field) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    <span class="comment">// template &lt;typename T&gt;</span></div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    <span class="comment">// AnonymousFunc func(const T &amp;func) const{</span></div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    <span class="comment">// todo:</span></div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    <span class="comment">// ここでfunc.hにアクセスする必要があるためヘッダーの読み込み順を変えないといけない</span></div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    <span class="comment">// }</span></div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    <a class="code hl_class" href="classwebcface_1_1View.html">View</a> view(<span class="keyword">const</span> std::string &amp;field) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    <a class="code hl_class" href="classwebcface_1_1Log.html">Log</a> log() <span class="keyword">const</span>;</div>
 <div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> </div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    <a class="code hl_class" href="classwebcface_1_1EventTarget.html">EventTarget&lt;View, std::string&gt;</a> onViewEntry() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    <a class="code hl_class" href="classwebcface_1_1EventTarget.html">EventTarget&lt;Member, std::string&gt;</a> onSync() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span> </div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span> </div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    std::string libName() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>    std::string libVersion() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>    std::string remoteAddr() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span> </div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span> </div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    std::optional&lt;int&gt; pingStatus() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span> </div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>    <a class="code hl_class" href="classwebcface_1_1EventTarget.html">EventTarget&lt;Member, std::string&gt;</a> onPing() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>};</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    std::vector&lt;Value&gt; values() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>    std::vector&lt;Text&gt; texts() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>    std::vector&lt;Func&gt; funcs() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>    std::vector&lt;View&gt; views() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span> </div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>    <a class="code hl_class" href="classwebcface_1_1EventTarget.html">EventTarget&lt;Value, std::string&gt;</a> onValueEntry() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>    <a class="code hl_class" href="classwebcface_1_1EventTarget.html">EventTarget&lt;Text, std::string&gt;</a> onTextEntry() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>    <a class="code hl_class" href="classwebcface_1_1EventTarget.html">EventTarget&lt;Func, std::string&gt;</a> onFuncEntry() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>    <a class="code hl_class" href="classwebcface_1_1EventTarget.html">EventTarget&lt;View, std::string&gt;</a> onViewEntry() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>    <a class="code hl_class" href="classwebcface_1_1EventTarget.html">EventTarget&lt;Member, std::string&gt;</a> onSync() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span> </div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>    std::string libName() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>    std::string libVersion() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>    std::string remoteAddr() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span> </div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>    std::optional&lt;int&gt; pingStatus() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>    <a class="code hl_class" href="classwebcface_1_1EventTarget.html">EventTarget&lt;Member, std::string&gt;</a> onPing() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>};</div>
 </div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span> </div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>} <span class="comment">// namespace webcface</span></div>
-<div class="ttc" id="aclasswebcface_1_1EventTarget_html"><div class="ttname"><a href="classwebcface_1_1EventTarget.html">webcface::EventTarget</a></div><div class="ttdoc">イベントを表し、コールバックの追加や削除ができるクラス。</div><div class="ttdef"><b>Definition</b> event_target.h:11</div></div>
-<div class="ttc" id="aclasswebcface_1_1Func_html"><div class="ttname"><a href="classwebcface_1_1Func.html">webcface::Func</a></div><div class="ttdoc">関数1つを表すクラス</div><div class="ttdef"><b>Definition</b> func.h:34</div></div>
-<div class="ttc" id="aclasswebcface_1_1Log_html"><div class="ttname"><a href="classwebcface_1_1Log.html">webcface::Log</a></div><div class="ttdoc">ログの送受信データを表すクラス</div><div class="ttdef"><b>Definition</b> log.h:15</div></div>
-<div class="ttc" id="aclasswebcface_1_1Member_html"><div class="ttname"><a href="classwebcface_1_1Member.html">webcface::Member</a></div><div class="ttdoc">Memberを指すクラス</div><div class="ttdef"><b>Definition</b> member.h:25</div></div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span> </div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>} <span class="comment">// namespace webcface</span></div>
+<div class="ttc" id="aclasswebcface_1_1EventTarget_html"><div class="ttname"><a href="classwebcface_1_1EventTarget.html">webcface::EventTarget</a></div><div class="ttdoc">イベントを表し、コールバックの追加や削除ができるクラス。</div><div class="ttdef"><b>Definition</b> event_target.h:14</div></div>
+<div class="ttc" id="aclasswebcface_1_1Func_html"><div class="ttname"><a href="classwebcface_1_1Func.html">webcface::Func</a></div><div class="ttdoc">関数1つを表すクラス</div><div class="ttdef"><b>Definition</b> func.h:43</div></div>
+<div class="ttc" id="aclasswebcface_1_1Log_html"><div class="ttname"><a href="classwebcface_1_1Log.html">webcface::Log</a></div><div class="ttdoc">ログの送受信データを表すクラス</div><div class="ttdef"><b>Definition</b> log.h:17</div></div>
+<div class="ttc" id="aclasswebcface_1_1Member_html"><div class="ttname"><a href="classwebcface_1_1Member.html">webcface::Member</a></div><div class="ttdoc">Memberを指すクラス</div><div class="ttdef"><b>Definition</b> member.h:27</div></div>
 <div class="ttc" id="aclasswebcface_1_1Member_html_a1a5b3da87c7076e24dee4f7f55604e6c"><div class="ttname"><a href="classwebcface_1_1Member.html#a1a5b3da87c7076e24dee4f7f55604e6c">webcface::Member::Member</a></div><div class="ttdeci">Member()=default</div></div>
-<div class="ttc" id="aclasswebcface_1_1Member_html_a1d89c28bd42ba9a52da008bb69367171"><div class="ttname"><a href="classwebcface_1_1Member.html#a1d89c28bd42ba9a52da008bb69367171">webcface::Member::name</a></div><div class="ttdeci">std::string name() const</div><div class="ttdoc">Member名</div><div class="ttdef"><b>Definition</b> member.h:33</div></div>
-<div class="ttc" id="aclasswebcface_1_1Member_html_a384362c101248350ac774bf411d886e9"><div class="ttname"><a href="classwebcface_1_1Member.html#a384362c101248350ac774bf411d886e9">webcface::Member::Member</a></div><div class="ttdeci">Member(const std::weak_ptr&lt; Internal::ClientData &gt; &amp;data_w, const std::string &amp;member)</div><div class="ttdef"><b>Definition</b> member.h:28</div></div>
-<div class="ttc" id="aclasswebcface_1_1Member_html_af9c306505ae358dd2fef77173cebc6c8"><div class="ttname"><a href="classwebcface_1_1Member.html#af9c306505ae358dd2fef77173cebc6c8">webcface::Member::Member</a></div><div class="ttdeci">Member(const Field &amp;base)</div><div class="ttdef"><b>Definition</b> member.h:30</div></div>
-<div class="ttc" id="aclasswebcface_1_1Text_html"><div class="ttname"><a href="classwebcface_1_1Text.html">webcface::Text</a></div><div class="ttdoc">文字列の送受信データを表すクラス</div><div class="ttdef"><b>Definition</b> text.h:19</div></div>
-<div class="ttc" id="aclasswebcface_1_1Value_html"><div class="ttname"><a href="classwebcface_1_1Value.html">webcface::Value</a></div><div class="ttdoc">実数値またはその配列の送受信データを表すクラス</div><div class="ttdef"><b>Definition</b> value.h:21</div></div>
-<div class="ttc" id="aclasswebcface_1_1View_html"><div class="ttname"><a href="classwebcface_1_1View.html">webcface::View</a></div><div class="ttdoc">Viewの送受信データを表すクラス</div><div class="ttdef"><b>Definition</b> view.h:99</div></div>
+<div class="ttc" id="aclasswebcface_1_1Member_html_a1d89c28bd42ba9a52da008bb69367171"><div class="ttname"><a href="classwebcface_1_1Member.html#a1d89c28bd42ba9a52da008bb69367171">webcface::Member::name</a></div><div class="ttdeci">std::string name() const</div><div class="ttdoc">Member名</div><div class="ttdef"><b>Definition</b> member.h:38</div></div>
+<div class="ttc" id="aclasswebcface_1_1Member_html_a384362c101248350ac774bf411d886e9"><div class="ttname"><a href="classwebcface_1_1Member.html#a384362c101248350ac774bf411d886e9">webcface::Member::Member</a></div><div class="ttdeci">Member(const std::weak_ptr&lt; Internal::ClientData &gt; &amp;data_w, const std::string &amp;member)</div><div class="ttdef"><b>Definition</b> member.h:30</div></div>
+<div class="ttc" id="aclasswebcface_1_1Member_html_af9c306505ae358dd2fef77173cebc6c8"><div class="ttname"><a href="classwebcface_1_1Member.html#af9c306505ae358dd2fef77173cebc6c8">webcface::Member::Member</a></div><div class="ttdeci">Member(const Field &amp;base)</div><div class="ttdef"><b>Definition</b> member.h:32</div></div>
+<div class="ttc" id="aclasswebcface_1_1Text_html"><div class="ttname"><a href="classwebcface_1_1Text.html">webcface::Text</a></div><div class="ttdoc">文字列の送受信データを表すクラス</div><div class="ttdef"><b>Definition</b> text.h:22</div></div>
+<div class="ttc" id="aclasswebcface_1_1Value_html"><div class="ttname"><a href="classwebcface_1_1Value.html">webcface::Value</a></div><div class="ttdoc">実数値またはその配列の送受信データを表すクラス</div><div class="ttdef"><b>Definition</b> value.h:24</div></div>
+<div class="ttc" id="aclasswebcface_1_1View_html"><div class="ttname"><a href="classwebcface_1_1View.html">webcface::View</a></div><div class="ttdoc">Viewの送受信データを表すクラス</div><div class="ttdef"><b>Definition</b> view.h:153</div></div>
 <div class="ttc" id="adef_8h_html"><div class="ttname"><a href="def_8h.html">def.h</a></div></div>
 <div class="ttc" id="adef_8h_html_a47af057bda855b54c212e97ffccdca01"><div class="ttname"><a href="def_8h.html#a47af057bda855b54c212e97ffccdca01">WEBCFACE_DLL</a></div><div class="ttdeci">#define WEBCFACE_DLL</div><div class="ttdef"><b>Definition</b> def.h:26</div></div>
 <div class="ttc" id="aevent__target_8h_html"><div class="ttname"><a href="event__target_8h.html">event_target.h</a></div></div>
@@ -217,7 +208,7 @@ $(document).ready(function(){initNavTree('member_8h_source.html',''); initResiza
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_e6fac88a17509a9ad709623cf2c100d8.html">webcface</a></li><li class="navelem"><a class="el" href="member_8h.html">member.h</a></li>
-    <li class="footer">Generated on Tue Dec 12 2023 13:34:19 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Thu Dec 14 2023 10:18:48 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

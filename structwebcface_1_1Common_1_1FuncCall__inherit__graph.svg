@@ -11,7 +11,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:title="関数を呼び出すのに必要なデータ。client_data&#45;&gt;client&#45;&gt;server&#45;&gt;clientと送られる">
+<g id="a_Node000001"><a xlink:title="関数を呼び出すのに必要なデータ。">
 <polygon fill="#999999" stroke="#666666" points="58,-74 0,-74 0,-55 58,-55 58,-74"/>
 <text text-anchor="middle" x="29" y="-62" font-family="Helvetica,sans-Serif" font-size="10.00">FuncCall</text>
 </a>
