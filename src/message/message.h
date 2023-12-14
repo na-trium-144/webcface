@@ -309,6 +309,7 @@ struct View : public MessageBase<MessageKind::view> {
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", field), MSGPACK_NVP("d", data_diff),
                        MSGPACK_NVP("l", length));
 };
+
 struct Image : public MessageBase<MessageKind::image>,
                public Common::ImageBase {
     std::string field;
@@ -510,6 +511,7 @@ struct Res<View> : public MessageBase<MessageKind::view + MessageKind::res> {
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", req_id), MSGPACK_NVP("f", sub_field),
                        MSGPACK_NVP("d", data_diff), MSGPACK_NVP("l", length));
 };
+
 template <>
 struct Res<Image> : public MessageBase<MessageKind::image + MessageKind::res>,
                     public Common::ImageBase {

@@ -52,7 +52,7 @@ Debianなど他のディストリビューションで動作するかはわか�
 
 * Ubuntu 22.04, x86_64
 ```sh
-curl -LO https://github.com/na-trium-144/webcface/releases/download/v1.2.0/webcface_1.2.0-ubuntu22.04_amd64.deb
+curl -LO https://github.com/na-trium-144/webcface/releases/download/v1.2.1/webcface_1.2.1-ubuntu22.04_amd64.deb
 curl -LO https://github.com/na-trium-144/webcface-webui/releases/download/v1.0.10/webcface-webui_1.0.10_all.deb
 curl -LO https://github.com/na-trium-144/webcface-tools/releases/download/v1.1.6/webcface-tools_1.1.6-ubuntu22.04_amd64.deb
 ```
@@ -60,7 +60,7 @@ curl -LO https://github.com/na-trium-144/webcface-tools/releases/download/v1.1.6
 <details><summary>Ubuntu 22.04, arm64</summary>
 
 ```sh
-curl -LO https://github.com/na-trium-144/webcface/releases/download/v1.2.0/webcface_1.2.0-ubuntu22.04_arm64.deb
+curl -LO https://github.com/na-trium-144/webcface/releases/download/v1.2.1/webcface_1.2.1-ubuntu22.04_arm64.deb
 curl -LO https://github.com/na-trium-144/webcface-webui/releases/download/v1.0.10/webcface-webui_1.0.10_all.deb
 curl -LO https://github.com/na-trium-144/webcface-tools/releases/download/v1.1.6/webcface-tools_1.1.6-ubuntu22.04_arm64.deb
 ```
@@ -69,7 +69,7 @@ curl -LO https://github.com/na-trium-144/webcface-tools/releases/download/v1.1.6
 <details><summary>Ubuntu 22.04, armhf</summary>
 
 ```sh
-curl -LO https://github.com/na-trium-144/webcface/releases/download/v1.2.0/webcface_1.2.0-ubuntu22.04_armhf.deb
+curl -LO https://github.com/na-trium-144/webcface/releases/download/v1.2.1/webcface_1.2.1-ubuntu22.04_armhf.deb
 curl -LO https://github.com/na-trium-144/webcface-webui/releases/download/v1.0.10/webcface-webui_1.0.10_all.deb
 curl -LO https://github.com/na-trium-144/webcface-tools/releases/download/v1.1.6/webcface-tools_1.1.6-ubuntu22.04_armhf.deb
 ```
@@ -78,7 +78,7 @@ curl -LO https://github.com/na-trium-144/webcface-tools/releases/download/v1.1.6
 <details><summary>Ubuntu 20.04, x86_64</summary>
 
 ```sh
-curl -LO https://github.com/na-trium-144/webcface/releases/download/v1.2.0/webcface_1.2.0-ubuntu20.04_amd64.deb
+curl -LO https://github.com/na-trium-144/webcface/releases/download/v1.2.1/webcface_1.2.1-ubuntu20.04_amd64.deb
 curl -LO https://github.com/na-trium-144/webcface-webui/releases/download/v1.0.10/webcface-webui_1.0.10_all.deb
 curl -LO https://github.com/na-trium-144/webcface-tools/releases/download/v1.1.6/webcface-tools_1.1.6-ubuntu20.04_amd64.deb
 ```
@@ -87,7 +87,7 @@ curl -LO https://github.com/na-trium-144/webcface-tools/releases/download/v1.1.6
 <details><summary>Ubuntu 20.04, arm64</summary>
 
 ```sh
-curl -LO https://github.com/na-trium-144/webcface/releases/download/v1.2.0/webcface_1.2.0-ubuntu20.04_arm64.deb
+curl -LO https://github.com/na-trium-144/webcface/releases/download/v1.2.1/webcface_1.2.1-ubuntu20.04_arm64.deb
 curl -LO https://github.com/na-trium-144/webcface-webui/releases/download/v1.0.10/webcface-webui_1.0.10_all.deb
 curl -LO https://github.com/na-trium-144/webcface-tools/releases/download/v1.1.6/webcface-tools_1.1.6-ubuntu20.04_arm64.deb
 ```
@@ -96,7 +96,7 @@ curl -LO https://github.com/na-trium-144/webcface-tools/releases/download/v1.1.6
 <details><summary>Ubuntu 20.04, armhf</summary>
 
 ```sh
-curl -LO https://github.com/na-trium-144/webcface/releases/download/v1.2.0/webcface_1.2.0-ubuntu20.04_armhf.deb
+curl -LO https://github.com/na-trium-144/webcface/releases/download/v1.2.1/webcface_1.2.1-ubuntu20.04_armhf.deb
 curl -LO https://github.com/na-trium-144/webcface-webui/releases/download/v1.0.10/webcface-webui_1.0.10_all.deb
 curl -LO https://github.com/na-trium-144/webcface-tools/releases/download/v1.1.6/webcface-tools_1.1.6-ubuntu20.04_armhf.deb
 ```

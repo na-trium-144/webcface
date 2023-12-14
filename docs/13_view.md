@@ -44,7 +44,7 @@ v.sync(); // ここまでにvに追加したものをクライアントに反映
 wcli.sync();
 ```
 C++ではViewのデストラクタでも自動的にView.sync()が呼ばれます。  
-![ver1.2から](https://img.shields.io/badge/ver1.2~-00599c?logo=C%2B%2B)
+![c++ ver1.2](https://img.shields.io/badge/1.2~-00599c?logo=C%2B%2B)
 Viewオブジェクトをコピーした場合、Viewオブジェクトの内容はコピーされるのではなく共有され、そのすべてのコピーが破棄されるまでsync()は呼ばれません。
 ```cpp
 {
