@@ -8,9 +8,11 @@
 
 namespace webcface {
 
-//! ログの送受信データを表すクラス
 /*!
+ * \brief ログの送受信データを表すクラス
+ *
  * fieldを継承しているがfield名は使用していない
+ * 
  */
 class Log : protected Field, public EventTarget<Log, std::string> {
     WEBCFACE_DLL void onAppend() const override;
@@ -21,15 +23,21 @@ class Log : protected Field, public EventTarget<Log, std::string> {
 
     using Field::member;
 
-    //! ログを取得する
+    /*!
+     * \brief ログを取得する
+     * 
+     */
     WEBCFACE_DLL std::optional<std::vector<LogLine>> tryGet() const;
-    //! ログを取得する
+    /*!
+     * \brief ログを取得する
+     * 
+     */
     std::vector<LogLine> get() const {
         return tryGet().value_or(std::vector<LogLine>{});
     }
 
-    //! 受信したログをクリアする
-    /*! (v1.1.5で追加)
+    /*!
+     * \brief (ver1.1.5で追加) 受信したログをクリアする
      *
      * リクエスト状態は解除しない
      */

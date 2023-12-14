@@ -86,12 +86,18 @@ struct DictElement {
         : key(key), children(li) {}
 };
 
-//! 値の型をTに制限した、連想配列もどき
-/*! T型の値1つ または 複数の子要素(名前とDictのペア)を持つ
+/*!
+ * \brief 値の型をTに制限した、連想配列もどき
+ * 
+ * T型の値1つ または 複数の子要素(名前とDictのペア)を持つ
+ * 
  */
 template <typename T>
 class Dict {
-    // Tがshared_ptrの場合があるので、値に破壊的変更をしてはいけない
+    /*!
+     * Tがshared_ptrの場合があるので、値に破壊的変更をしてはいけない
+     * 
+     */
     std::shared_ptr<std::unordered_map<std::string, T>> children;
     //! operator[]などのアクセスのときにつけるprefix (末尾ピリオドを含まない)
     std::string search_base_key;
