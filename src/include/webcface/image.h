@@ -60,7 +60,7 @@ class Image : protected Field, public EventTarget<Image> {
 
     operator ImageFrame() const { return get(); }
 
-#ifdef WEBCFACE_USE_OPENCV
+#if WEBCFACE_USE_OPENCV
     WEBCFACE_DLL cv::Mat mat() &;
 #endif
     //! syncの時刻を返す

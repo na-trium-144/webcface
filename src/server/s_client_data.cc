@@ -563,6 +563,7 @@ void ClientData::imageConvertThreadMain(const std::string &member,
     // 初回はすぐに変換を試す。
     // 2回目以降はcd.image[field]が更新されたとき。
     bool first_convert = true;
+    static bool disabled_notify = false;
     logger->trace("imageConvertThreadMain started for {}, {}", member, field);
     while (true) {
         store.findAndDo(member, [&](ClientData &cd) {
@@ -580,13 +581,14 @@ void ClientData::imageConvertThreadMain(const std::string &member,
                     }
                 }
                 if (cv_ret != std::cv_status::timeout || first_convert) {
-                    logger->trace("converting image of {}, {}", member,
-                                  field);
-                    Common::ImageWithCV img = cd.image[field];
+                    logger->trace("converting image of {}, {}", member, field);
+                    Common::ImageFrame img = cd.image[field];
+#if WEBCFACE_USE_OPENCV
                     cv::Mat m = img.mat();
                     if (m.empty()) {
                         break;
                     }
+#endif
                     // 変換処理
                     auto info = this->image_req_info[member][field];
                     auto [req_id, sub_field] =
@@ -594,8 +596,9 @@ void ClientData::imageConvertThreadMain(const std::string &member,
                     auto sync = webcface::Message::Sync{cd.member_id,
                                                         cd.last_sync_time};
 
+                    int rows = img.rows(), cols = img.cols();
                     if (info.rows || info.cols) {
-                        int rows, cols;
+#if WEBCFACE_USE_OPENCV
                         if (info.rows) {
                             rows = *info.rows;
                         } else {
@@ -612,8 +615,16 @@ void ClientData::imageConvertThreadMain(const std::string &member,
                         }
 
                         cv::resize(m, m, cv::Size(rows, cols));
+#else
+                        if(!disabled_notify){
+                            this->logger->warn("Cannot convert image since OpenCV is disabled.");
+                        }
+                        disabled_notify = true;
+                        break;
+#endif
                     }
-                    if (info.channels != m.channels()) {
+                    if (info.channels != img.channels()) {
+#if WEBCFACE_USE_OPENCV
                         switch (m.channels()) {
                         case 4:
                             switch (info.channels) {
@@ -646,10 +657,18 @@ void ClientData::imageConvertThreadMain(const std::string &member,
                             }
                             break;
                         }
+#else
+                        if(!disabled_notify){
+                            this->logger->warn("Cannot convert image since OpenCV is disabled.");
+                        }
+                        disabled_notify = true;
+                        break;
+#endif
                     }
                     auto encoded =
                         std::make_shared<std::vector<unsigned char>>();
                     switch (info.mode) {
+#if WEBCFACE_USE_OPENCV
                     case Common::ImageCompressMode::raw:
                         encoded->assign(
                             reinterpret_cast<unsigned char *>(m.data),
@@ -669,8 +688,19 @@ void ClientData::imageConvertThreadMain(const std::string &member,
                             ".jpg", m, *encoded,
                             {cv::IMWRITE_PNG_COMPRESSION, info.quality});
                         break;
+#else
+                    case Common::ImageCompressMode::raw:
+                        encoded = img.dataPtr();
+                        break;
+                    default:
+                        if(!disabled_notify){
+                            this->logger->warn("Cannot convert image since OpenCV is disabled.");
+                        }
+                        disabled_notify = true;
+                        break;
+#endif
                     }
-                    Common::ImageBase img_send{m.rows, m.cols, m.channels(),
+                    Common::ImageBase img_send{rows, cols, info.channels,
                                                encoded, info.mode};
 
                     {
@@ -686,6 +716,7 @@ void ClientData::imageConvertThreadMain(const std::string &member,
                 }
                 first_convert = false;
             }
+            first_convert = false;
         });
         if (this->closing.load()) {
             break;

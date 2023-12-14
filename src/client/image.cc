@@ -48,7 +48,7 @@ std::optional<ImageFrame> Image::tryGet() const {
     }
 }
 
-#ifdef WEBCFACE_USE_OPENCV
+#if WEBCFACE_USE_OPENCV
 cv::Mat Image::mat() & {
     this->img = dataLock()->image_store.getRecv(*this);
     if (this->img) {
