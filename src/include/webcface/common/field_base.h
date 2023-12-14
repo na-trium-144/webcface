@@ -3,12 +3,19 @@
 
 namespace webcface {
 inline namespace Common {
-//! メンバ名とデータ名を持つクラス
+/*!
+ * \brief メンバ名とデータ名を持つクラス
+ * 
+ */
 struct FieldBase {
-    //! メンバー名
-    std::string member_;
-    //! フィールド名
-    //! Member などフィールド名が不要なクラスでは使用しない
+    std::string member_; //!< メンバー名
+
+    /*!
+     * \brief フィールド名
+     *
+     * Memberなどフィールド名が不要なクラスでは使用しない
+     * 
+     */
     std::string field_;
 
     FieldBase() = default;

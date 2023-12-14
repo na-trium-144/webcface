@@ -5,7 +5,10 @@
 
 namespace webcface {
 
-//! イベントを表し、コールバックの追加や削除ができるクラス。
+/*!
+ * \brief イベントを表し、コールバックの追加や削除ができるクラス。
+ *
+ */
 template <typename V, typename Key = FieldBaseComparable,
           typename VBase = Field>
 class EventTarget {
@@ -14,18 +17,30 @@ class EventTarget {
     Key key;
 
   public:
-    //! イベントのコールバックの型
+    /*!
+     * \brief イベントのコールバックの型
+     * 
+     */
     using EventCallback = std::function<void(V)>;
-    //! コールバックのHandle
+    /*!
+     * \brief コールバックのHandle
+     * 
+     */
     using EventHandle = typename Dispatcher::Handle;
 
   protected:
-    //! イベントを発生させる。
+    /*!
+     * \brief イベントを発生させる。
+     * 
+     */
     void triggerEvent(const VBase &arg) const {
         dispatcher->dispatch(key, arg);
     }
 
-    //! listenerを追加する際に行わなければならない処理があればoverrideする
+    /*!
+     * \brief listenerを追加する際に行わなければならない処理があればoverrideする
+     * 
+     */
     virtual void onAppend() const {}
 
   public:
@@ -33,29 +48,47 @@ class EventTarget {
     EventTarget(Dispatcher *dispatcher, const Key &key)
         : dispatcher(dispatcher), key(key) {}
 
-    //! イベントのコールバックをリストの最後に追加する。
+    /*!
+     * \brief イベントのコールバックをリストの最後に追加する。
+     * 
+     */
     EventHandle appendListener(const EventCallback &callback) const {
         onAppend();
         return dispatcher->appendListener(key, callback);
     }
-    //! イベントのコールバックをリストの最初に追加する。
+    /*!
+     * \brief イベントのコールバックをリストの最初に追加する。
+     * 
+     */
     EventHandle prependListener(const EventCallback &callback) const {
         onAppend();
         return dispatcher->prependListener(key, callback);
     }
-    //! イベントのコールバックを間に挿入する。
+    /*!
+     * \brief イベントのコールバックを間に挿入する。
+     * 
+     */
     EventHandle insertListener(const EventCallback &callback,
                                const EventHandle &before) const {
         onAppend();
         return dispatcher->insertListener(key, callback, before);
     }
-    //! コールバックを削除する。
+    /*!
+     * \brief コールバックを削除する。
+     * 
+     */
     bool removeListener(const EventHandle &handle) const {
         return dispatcher->removeListener(key, handle);
     }
-    //! コールバックが登録されているかを調べる。
+    /*!
+     * \brief コールバックが登録されているかを調べる。
+     * 
+     */
     bool hasAnyListener() const { return dispatcher->hasAnyListener(key); }
-    //! handleがこのイベントのものかを調べる。
+    /*!
+     * \brief handleがこのイベントのものかを調べる。
+     * 
+     */
     bool ownsHandle(const EventHandle &handle) const {
         return dispatcher->ownsHandle(key, handle);
     }
