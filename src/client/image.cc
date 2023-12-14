@@ -16,6 +16,7 @@ Image &Image::request(std::optional<int> rows, std::optional<int> cols,
         dataLock()->message_queue->push(
             Message::packSingle(Message::Req<Message::Image>{
                 member_, field_, req, {rows, cols, channels, mode, quality}}));
+        this->clear();
     }
     return *this;
 }
@@ -49,9 +50,7 @@ std::optional<ImageFrame> Image::tryGet() const {
 
 #ifdef WEBCFACE_USE_OPENCV
 cv::Mat Image::mat() & {
-    if (!this->img) {
-        this->img = dataLock()->image_store.getRecv(*this);
-    }
+    this->img = dataLock()->image_store.getRecv(*this);
     if (this->img) {
         return this->img->mat();
     }
@@ -63,6 +62,10 @@ std::chrono::system_clock::time_point Image::time() const {
     return dataLock()
         ->sync_time_store.getRecv(this->member_)
         .value_or(std::chrono::system_clock::time_point());
+}
+Image &Image::clear() {
+    dataLock()->image_store.clearRecv(*this);
+    return *this;
 }
 Image &Image::free() {
     auto req = dataLock()->image_store.unsetRecv(*this);

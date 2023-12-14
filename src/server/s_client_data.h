@@ -53,6 +53,8 @@ struct ClientData {
         std::string,
         std::unordered_map<std::string, std::optional<std::thread>>>
         image_convert_thread;
+    void imageConvertThreadMain(const std::string &member, const std::string &field);
+
     std::set<std::string> log_req;
     bool hasReq(const std::string &member);
     //! ログ全履歴

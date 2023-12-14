@@ -6,15 +6,25 @@
 #include <algorithm>
 #include <iterator>
 
+#if WEBCFACE_USE_OPENCV
+#include <opencv2/core.hpp>
+#include <opencv2/imgcodecs.hpp>
+#include <opencv2/imgproc.hpp>
+#endif
+
 namespace webcface::Server {
 void ClientData::onClose() {
     logger->info("connection closed");
 
     closing.store(true);
-    for(auto &v: image_convert_thread){
-        for(auto &v2: v.second){
+    for (auto &v : image_convert_thread) {
+        for (auto &v2 : v.second) {
             v2.second->join();
         }
+    }
+    for (auto &v : image_cv) {
+        std::lock_guard lock(image_m[v.first]);
+        v.second.notify_all();
     }
     logger->trace("image_convert_thread stopped");
 }
@@ -506,34 +516,14 @@ void ClientData::onRecv(const std::string &message) {
                 s.cols.value_or(-1), s.channels, static_cast<int>(s.mode),
                 s.quality);
             image_req_info[s.member][s.field] = s;
+            image_req[s.member][s.field] = s.req_id;
             if (!image_convert_thread[s.member].count(s.field)) {
                 image_convert_thread[s.member].emplace(
                     s.field,
                     std::thread([this, member = s.member, field = s.field] {
-                        while (true) {
-                            store.findAndDo(member, [&](ClientData &cd) {
-                                while (true) {
-                                    std::unique_lock lock(cd.image_m[field]);
-                                    auto cv_ret = cd.image_cv[field].wait_for(
-                                        lock, std::chrono::milliseconds(1));
-                                    if (this->closing.load()) {
-                                        break;
-                                    }
-                                    if (cv_ret != std::cv_status::timeout) {
-                                        Common::ImageWithCV img = cd.image[field];
-                                        cv::Mat m = img.mat();
-                                        // 変換処理
-                                    }
-                                }
-                            });
-                            if (this->closing.load()) {
-                                break;
-                            }
-                            std::this_thread::yield();
-                        }
+                        this->imageConvertThreadMain(member, field);
                     }));
             }
-            image_req[s.member][s.field] = s.req_id;
             break;
         }
         case MessageKind::log_req: {
@@ -565,5 +555,142 @@ void ClientData::onRecv(const std::string &message) {
         }
     }
     store.clientSendAll();
+}
+
+void ClientData::imageConvertThreadMain(const std::string &member,
+                                        const std::string &field) {
+    // cdの画像を変換しthisに送信
+    // 初回はすぐに変換を試す。
+    // 2回目以降はcd.image[field]が更新されたとき。
+    bool first_convert = true;
+    logger->trace("imageConvertThreadMain started for {}, {}", member, field);
+    while (true) {
+        store.findAndDo(member, [&](ClientData &cd) {
+            std::unique_lock lock(cd.image_m[field]);
+            while (true) {
+                std::cv_status cv_ret;
+                if (!first_convert) {
+                    cv_ret = cd.image_cv[field].wait_for(
+                        lock, std::chrono::milliseconds(1));
+                    if (cd.closing.load()) {
+                        break;
+                    }
+                    if (this->closing.load()) {
+                        break;
+                    }
+                }
+                if (cv_ret != std::cv_status::timeout || first_convert) {
+                    logger->trace("converting image of {}, {}", member,
+                                  field);
+                    Common::ImageWithCV img = cd.image[field];
+                    cv::Mat m = img.mat();
+                    if (m.empty()) {
+                        break;
+                    }
+                    // 変換処理
+                    auto info = this->image_req_info[member][field];
+                    auto [req_id, sub_field] =
+                        findReqField(this->image_req, member, field);
+                    auto sync = webcface::Message::Sync{cd.member_id,
+                                                        cd.last_sync_time};
+
+                    if (info.rows || info.cols) {
+                        int rows, cols;
+                        if (info.rows) {
+                            rows = *info.rows;
+                        } else {
+                            rows = static_cast<int>(
+                                static_cast<double>(*info.cols) * m.rows /
+                                m.cols);
+                        }
+                        if (info.cols) {
+                            cols = *info.cols;
+                        } else {
+                            cols = static_cast<int>(
+                                static_cast<double>(*info.rows) * m.cols /
+                                m.rows);
+                        }
+
+                        cv::resize(m, m, cv::Size(rows, cols));
+                    }
+                    if (info.channels != m.channels()) {
+                        switch (m.channels()) {
+                        case 4:
+                            switch (info.channels) {
+                            case 3:
+                                cv::cvtColor(m, m, cv::COLOR_BGRA2BGR);
+                                break;
+                            case 1:
+                                cv::cvtColor(m, m, cv::COLOR_BGRA2GRAY);
+                                break;
+                            }
+                            break;
+                        case 3:
+                            switch (info.channels) {
+                            case 4:
+                                cv::cvtColor(m, m, cv::COLOR_BGR2BGRA);
+                                break;
+                            case 1:
+                                cv::cvtColor(m, m, cv::COLOR_BGR2GRAY);
+                                break;
+                            }
+                            break;
+                        case 1:
+                            switch (info.channels) {
+                            case 4:
+                                cv::cvtColor(m, m, cv::COLOR_GRAY2BGRA);
+                                break;
+                            case 3:
+                                cv::cvtColor(m, m, cv::COLOR_GRAY2BGR);
+                                break;
+                            }
+                            break;
+                        }
+                    }
+                    auto encoded =
+                        std::make_shared<std::vector<unsigned char>>();
+                    switch (info.mode) {
+                    case Common::ImageCompressMode::raw:
+                        encoded->assign(
+                            reinterpret_cast<unsigned char *>(m.data),
+                            reinterpret_cast<unsigned char *>(m.data) +
+                                m.total() * m.channels());
+                        break;
+                    case Common::ImageCompressMode::jpeg:
+                        cv::imencode(".jpg", m, *encoded,
+                                     {cv::IMWRITE_JPEG_QUALITY, info.quality});
+                        break;
+                    case Common::ImageCompressMode::webp:
+                        cv::imencode(".jpg", m, *encoded,
+                                     {cv::IMWRITE_WEBP_QUALITY, info.quality});
+                        break;
+                    case Common::ImageCompressMode::png:
+                        cv::imencode(
+                            ".jpg", m, *encoded,
+                            {cv::IMWRITE_PNG_COMPRESSION, info.quality});
+                        break;
+                    }
+                    Common::ImageBase img_send{m.rows, m.cols, m.channels(),
+                                               encoded, info.mode};
+
+                    {
+                        std::lock_guard lock(server_mtx);
+                        this->pack(sync);
+                        this->pack(
+                            webcface::Message::Res<webcface::Message::Image>{
+                                req_id, sub_field, img_send});
+                        logger->trace("send image_res req_id={} + '{}'", req_id,
+                                      sub_field);
+                        this->send();
+                    }
+                }
+                first_convert = false;
+            }
+        });
+        if (this->closing.load()) {
+            break;
+        }
+        std::this_thread::yield();
+    }
 }
 } // namespace webcface::Server

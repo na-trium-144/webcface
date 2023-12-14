@@ -263,7 +263,7 @@ struct Image : public MessageBase<MessageKind::image>,
         : field(field), ImageBase(img) {}
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", field), MSGPACK_NVP("d", data_),
                        MSGPACK_NVP("h", rows_), MSGPACK_NVP("w", cols_),
-                       MSGPACK_NVP("c", channels_));
+                       MSGPACK_NVP("c", channels_), MSGPACK_NVP("p", mode_));
 };
 //! client(member)->server->client logを追加
 //! client->server時はmemberは無視
@@ -447,7 +447,8 @@ struct Res<Image> : public MessageBase<MessageKind::image + MessageKind::res>,
         : req_id(req_id), sub_field(sub_field), ImageBase(img) {}
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", req_id), MSGPACK_NVP("f", sub_field),
                        MSGPACK_NVP("d", data_), MSGPACK_NVP("w", cols_),
-                       MSGPACK_NVP("h", rows_), MSGPACK_NVP("c", channels_));
+                       MSGPACK_NVP("h", rows_), MSGPACK_NVP("c", channels_),
+                       MSGPACK_NVP("p", mode_));
 };
 //! msgpackのメッセージをパースしstd::anyで返す
 std::vector<std::pair<int, std::any>>

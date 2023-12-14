@@ -47,7 +47,7 @@ class Image : protected Field, public EventTarget<Image> {
     }
 
     Image &request(std::optional<int> rows = std::nullopt,
-                   std::optional<int> cols = std::nullopt, int channels = 4) {
+                   std::optional<int> cols = std::nullopt, int channels = 3) {
         return request(rows, cols, channels, Common::ImageCompressMode::raw, 0);
     }
     WEBCFACE_DLL Image &request(std::optional<int> rows,
@@ -68,6 +68,9 @@ class Image : protected Field, public EventTarget<Image> {
 
     //! 値やリクエスト状態をクリア
     WEBCFACE_DLL Image &free();
+
+    //! 画像をクリア (リクエスト状態は解除しない)
+    WEBCFACE_DLL Image &clear();
 };
 
 } // namespace webcface
