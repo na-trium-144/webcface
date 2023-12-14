@@ -148,6 +148,15 @@ bool SyncDataStore2<T, ReqT>::unsetRecv(const std::string &from,
     return false;
 }
 template <typename T, typename ReqT>
+void SyncDataStore2<T, ReqT>::clearRecv(const std::string &from,
+                                        const std::string &name) {
+    std::lock_guard lock(mtx);
+    if (data_recv.count(from) && data_recv.at(from).count(name)) {
+        data_recv.at(from).erase(name);
+    }
+    return;
+}
+template <typename T, typename ReqT>
 std::pair<std::string, std::string>
 SyncDataStore2<T, ReqT>::getReq(unsigned int req_id,
                                 const std::string &sub_field) {

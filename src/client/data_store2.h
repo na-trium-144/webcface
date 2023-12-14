@@ -16,7 +16,7 @@ namespace webcface::Internal {
 //! 送受信するデータを保持するクラス
 /*! memberごとにフィールドを持つデータに使う。
  * member, fieldの2次元mapとなる
- * 
+ *
  * T=FuncInfoの時、entryとreqは使用しない(常にすべての関数の情報が送られてくる)
  */
 template <typename T, typename ReqT = int>
@@ -93,6 +93,12 @@ class SyncDataStore2 {
     void setRecv(const FieldBase &base, const T &data) {
         setRecv(base.member_, base.field_, data);
     }
+    //! 受信したデータを削除
+    void clearRecv(const std::string &from, const std::string &name);
+    void clearRecv(const FieldBase &base) {
+        clearRecv(base.member_, base.field_);
+    }
+
     //! data_recvからデータを返す
     std::optional<T> getRecv(const std::string &from, const std::string &name);
     std::optional<T> getRecv(const FieldBase &base) {
