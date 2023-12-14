@@ -17,6 +17,7 @@ MSGPACK_ADD_ENUM(webcface::Common::ValType);
 MSGPACK_ADD_ENUM(webcface::Common::ViewComponentType);
 MSGPACK_ADD_ENUM(webcface::Common::ViewColor);
 MSGPACK_ADD_ENUM(webcface::Common::ImageCompressMode);
+MSGPACK_ADD_ENUM(webcface::Common::ImageColorMode);
 
 namespace webcface::Message {
 // 新しいメッセージの定義は
@@ -316,7 +317,7 @@ struct Image : public MessageBase<MessageKind::image>,
         : field(field), ImageBase(img) {}
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", field), MSGPACK_NVP("d", data_),
                        MSGPACK_NVP("h", rows_), MSGPACK_NVP("w", cols_),
-                       MSGPACK_NVP("c", channels_), MSGPACK_NVP("p", mode_));
+                       MSGPACK_NVP("l", color_mode_), MSGPACK_NVP("p", cmp_mode_));
 };
 /*!
  * \brief client(member)->server->client logを追加
@@ -444,8 +445,8 @@ struct Req<Image> : public MessageBase<MessageKind::image + MessageKind::req>,
 
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", req_id), MSGPACK_NVP("M", member),
                        MSGPACK_NVP("f", field), MSGPACK_NVP("w", cols),
-                       MSGPACK_NVP("h", rows), MSGPACK_NVP("c", channels),
-                       MSGPACK_NVP("p", mode), MSGPACK_NVP("q", quality));
+                       MSGPACK_NVP("h", rows), MSGPACK_NVP("l", color_mode),
+                       MSGPACK_NVP("p", cmp_mode), MSGPACK_NVP("q", quality));
 };
 /*!
  * \brief server->client 新しいvalueなどの報告
@@ -520,8 +521,8 @@ struct Res<Image> : public MessageBase<MessageKind::image + MessageKind::res>,
         : req_id(req_id), sub_field(sub_field), ImageBase(img) {}
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", req_id), MSGPACK_NVP("f", sub_field),
                        MSGPACK_NVP("d", data_), MSGPACK_NVP("w", cols_),
-                       MSGPACK_NVP("h", rows_), MSGPACK_NVP("c", channels_),
-                       MSGPACK_NVP("p", mode_));
+                       MSGPACK_NVP("h", rows_), 
+                       MSGPACK_NVP("l", color_mode_), MSGPACK_NVP("p", cmp_mode_));
 };
 /*!
  * \brief msgpackのメッセージをパースしstd::anyで返す

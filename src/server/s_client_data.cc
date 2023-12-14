@@ -511,9 +511,9 @@ void ClientData::onRecv(const std::string &message) {
                 std::any_cast<webcface::Message::Req<webcface::Message::Image>>(
                     obj);
             logger->debug(
-                "request image ({}): {} from {}, {} x {} x {}, mode={}, q={}",
+                "request image ({}): {} from {}, {} x {}, color={}, mode={}, q={}",
                 s.req_id, s.field, s.member, s.rows.value_or(-1),
-                s.cols.value_or(-1), s.channels, static_cast<int>(s.mode),
+                s.cols.value_or(-1), (s.color_mode ? static_cast<int>(*s.color_mode) : -1), static_cast<int>(s.cmp_mode),
                 s.quality);
             image_req_info[s.member][s.field] = s;
             image_req[s.member][s.field] = s.req_id;
@@ -557,6 +557,71 @@ void ClientData::onRecv(const std::string &message) {
     store.clientSendAll();
 }
 
+static int colorConvert(Common::ImageColorMode src_mode, Common::ImageColorMode dst_mode){
+    switch (src_mode) {
+    case Common::ImageColorMode::gray:
+        switch (dst_mode) {
+        case Common::ImageColorMode::bgr:
+            return cv::COLOR_GRAY2BGR;
+        case Common::ImageColorMode::bgra:
+            return cv::COLOR_GRAY2BGRA;
+        case Common::ImageColorMode::rgb:
+            return cv::COLOR_GRAY2RGB;
+        case Common::ImageColorMode::rgba:
+            return cv::COLOR_GRAY2RGBA;
+        }
+        break;
+    case Common::ImageColorMode::bgr:
+        switch (dst_mode) {
+        case Common::ImageColorMode::gray:
+            return cv::COLOR_BGR2GRAY;
+        case Common::ImageColorMode::bgra:
+            return cv::COLOR_BGR2BGRA;
+        case Common::ImageColorMode::rgb:
+            return cv::COLOR_BGR2RGB;
+        case Common::ImageColorMode::rgba:
+            return cv::COLOR_BGR2RGBA;
+        }
+        break;
+    case Common::ImageColorMode::bgra:
+        switch (dst_mode) {
+        case Common::ImageColorMode::gray:
+            return cv::COLOR_BGRA2GRAY;
+        case Common::ImageColorMode::bgr:
+            return cv::COLOR_BGRA2BGR;
+        case Common::ImageColorMode::rgb:
+            return cv::COLOR_BGRA2RGB;
+        case Common::ImageColorMode::rgba:
+            return cv::COLOR_BGRA2RGBA;
+        }
+        break;        
+    case Common::ImageColorMode::rgb:
+        switch (dst_mode) {
+        case Common::ImageColorMode::gray:
+            return cv::COLOR_RGB2GRAY;
+        case Common::ImageColorMode::bgr:
+            return cv::COLOR_RGB2BGR;
+        case Common::ImageColorMode::bgra:
+            return cv::COLOR_RGB2BGRA;
+        case Common::ImageColorMode::rgba:
+            return cv::COLOR_RGB2RGBA;
+        }
+        break;
+    case Common::ImageColorMode::rgba:
+        switch (dst_mode) {
+        case Common::ImageColorMode::gray:
+            return cv::COLOR_RGBA2GRAY;
+        case Common::ImageColorMode::bgr:
+            return cv::COLOR_RGBA2BGR;
+        case Common::ImageColorMode::bgra:
+            return cv::COLOR_RGBA2BGRA;
+        case Common::ImageColorMode::rgb:
+            return cv::COLOR_RGBA2RGB;
+        }
+        break;
+    }
+    return -1;
+}
 void ClientData::imageConvertThreadMain(const std::string &member,
                                         const std::string &field) {
     // cdの画像を変換しthisに送信
@@ -623,40 +688,9 @@ void ClientData::imageConvertThreadMain(const std::string &member,
                         break;
 #endif
                     }
-                    if (info.channels != img.channels()) {
+                    if (info.color_mode && *info.color_mode != img.color_mode()) {
 #if WEBCFACE_USE_OPENCV
-                        switch (m.channels()) {
-                        case 4:
-                            switch (info.channels) {
-                            case 3:
-                                cv::cvtColor(m, m, cv::COLOR_BGRA2BGR);
-                                break;
-                            case 1:
-                                cv::cvtColor(m, m, cv::COLOR_BGRA2GRAY);
-                                break;
-                            }
-                            break;
-                        case 3:
-                            switch (info.channels) {
-                            case 4:
-                                cv::cvtColor(m, m, cv::COLOR_BGR2BGRA);
-                                break;
-                            case 1:
-                                cv::cvtColor(m, m, cv::COLOR_BGR2GRAY);
-                                break;
-                            }
-                            break;
-                        case 1:
-                            switch (info.channels) {
-                            case 4:
-                                cv::cvtColor(m, m, cv::COLOR_GRAY2BGRA);
-                                break;
-                            case 3:
-                                cv::cvtColor(m, m, cv::COLOR_GRAY2BGR);
-                                break;
-                            }
-                            break;
-                        }
+                        cv::cvtColor(m, m, colorConvert(img.color_mode(), *info.color_mode));
 #else
                         if(!disabled_notify){
                             this->logger->warn("Cannot convert image since OpenCV is disabled.");
@@ -667,7 +701,7 @@ void ClientData::imageConvertThreadMain(const std::string &member,
                     }
                     auto encoded =
                         std::make_shared<std::vector<unsigned char>>();
-                    switch (info.mode) {
+                    switch (info.cmp_mode) {
 #if WEBCFACE_USE_OPENCV
                     case Common::ImageCompressMode::raw:
                         encoded->assign(
@@ -700,8 +734,8 @@ void ClientData::imageConvertThreadMain(const std::string &member,
                         break;
 #endif
                     }
-                    Common::ImageBase img_send{rows, cols, info.channels,
-                                               encoded, info.mode};
+                    Common::ImageBase img_send{rows, cols, encoded,
+                                               *info.color_mode, info.cmp_mode};
 
                     {
                         std::lock_guard lock(server_mtx);
