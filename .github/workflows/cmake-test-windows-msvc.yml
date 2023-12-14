@@ -45,3 +45,29 @@ jobs:
         WEBCFACE_TRACE: 1
       working-directory: ${{github.workspace}}/build
       run: ctest --output-on-failure --timeout 15
+
+  include-cp932:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Configure CMake
+      run: >
+        cmake -B build
+        -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+        -DWEBCFACE_DOWNLOAD_WEBUI=off
+
+    - name: Write test.cpp
+      run: |
+        Set-Content test.cpp "#include<webcface/webcface.h>"
+        Add-Content test.cpp "int main(){}"
+
+    - name: Compile with cl
+      run: >
+        cl
+        /I src\include
+        /I build\_deps\spdlog-src\include
+        /I build\_deps\eventpp-src\include
+        /source-charset:.932
+        /std:c++20
+        test.cpp
