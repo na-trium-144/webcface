@@ -14,13 +14,13 @@ namespace FuncWrapper {
 
 /*!
  * \brief Client::sync() まで待機し、実行完了までsync()をブロックするFuncWrapper
- * 
+ *
  */
 WEBCFACE_DLL FuncWrapperType
 runCondOnSync(const std::weak_ptr<Internal::ClientData> &data);
 /*!
  * \brief ScopeGuardをロックするFuncWrapper
- * 
+ *
  */
 template <typename ScopeGuard>
 inline FuncWrapperType runCondScopeGuard() {
@@ -38,7 +38,7 @@ class AnonymousFunc;
 
 /*!
  * \brief 関数1つを表すクラス
- * 
+ *
  */
 class Func : protected Field {
   public:
@@ -62,7 +62,7 @@ class Func : protected Field {
   public:
     /*!
      * \brief 関数からFuncInfoを構築しセットする
-     * 
+     *
      */
     template <typename T>
     Func &set(const T &func) {
@@ -71,7 +71,7 @@ class Func : protected Field {
     }
     /*!
      * \brief 関数からFuncInfoを構築しセットする
-     * 
+     *
      */
     template <typename T>
     Func &operator=(const T &func) {
@@ -81,19 +81,19 @@ class Func : protected Field {
     /*!
      * \brief 関数を関数リストで非表示にする
      * (他clientのentryに表示されなくする)
-     * 
+     *
      */
     WEBCFACE_DLL Func &hidden(bool hidden);
 
     /*!
      * \brief 関数の設定を削除
-     * 
+     *
      */
     WEBCFACE_DLL Func &free();
 
     /*!
      * \brief 関数を実行する (同期)
-     * 
+     *
      * selfの関数の場合、このスレッドで直接実行する
      * 例外が発生した場合そのままthrow, 関数が存在しない場合 FuncNotFound
      * をthrowする
@@ -101,7 +101,7 @@ class Func : protected Field {
      * リモートの場合、関数呼び出しを送信し結果が返ってくるまで待機
      * 例外が発生した場合 runtime_error, 関数が存在しない場合 FuncNotFound
      * をthrowする
-     * 
+     *
      */
     template <typename... Args>
     ValAdaptor run(Args... args) const {
@@ -110,7 +110,7 @@ class Func : protected Field {
     WEBCFACE_DLL ValAdaptor run(const std::vector<ValAdaptor> &args_vec) const;
     /*!
      * \brief run()と同じ
-     * 
+     *
      */
     template <typename... Args>
     ValAdaptor operator()(Args... args) const {
@@ -119,12 +119,12 @@ class Func : protected Field {
 
     /*!
      * \brief 関数を実行する (非同期)
-     * 
+     *
      * 非同期で実行する
      * 戻り値やエラー、例外はAsyncFuncResultから取得する
      *
      * AsyncFuncResultはClient内部で保持されているのでClientが破棄されるまで参照は切れない
-     * 
+     *
      */
     template <typename... Args>
     AsyncFuncResult &runAsync(Args... args) const {
@@ -135,14 +135,14 @@ class Func : protected Field {
 
     /*!
      * \brief 戻り値の型を返す
-     * 
+     *
      */
     WEBCFACE_DLL ValType returnType() const;
     /*!
      * \brief 引数の情報を返す
-     * 
+     *
      * 変更するにはsetArgsを使う(このvectorの中身を書き換えても反映されない)
-     * 
+     *
      */
     WEBCFACE_DLL std::vector<Arg> args() const;
 
@@ -150,7 +150,7 @@ class Func : protected Field {
 
     /*!
      * \brief 引数の情報を更新する
-     * 
+     *
      * setArgsで渡された引数の情報(名前など)とFuncがすでに持っている引数の情報(型など)がマージされる
      *
      * 関数のセットの後に呼ばなければならない(セット前に呼ぶと
@@ -159,37 +159,37 @@ class Func : protected Field {
      * をする前に呼ばなければならない
      * 実際にセットした関数の引数の数とargsの要素数は一致していなければならない
      * (一致していない場合 std::invalid_argument )
-     * 
+     *
      */
     WEBCFACE_DLL Func &setArgs(const std::vector<Arg> &args);
 
     /*!
      * \brief FuncWrapperをセットする。
-     * 
+     *
      * Funcの実行時にFuncWrapperを通すことで条件を満たすまでブロックしたりする。
      * FuncWrapperがnullptrなら何もせずsetした関数を実行する
      * セットしない場合 Client::setDefaultRunCond() のものが使われる
      *
      * 関数のセットの後に呼ばなければならない(セット前に呼ぶと
      * std::invalid_argument)
-     * 
+     *
      */
     WEBCFACE_DLL Func &setRunCond(FuncWrapperType wrapper);
     /*!
      * \brief FuncWrapperを nullptr にする
-     * 
+     *
      */
     Func &setRunCondNone() { return setRunCond(nullptr); }
     /*!
      * \brief FuncWrapperを runCondOnSync() にする
-     * 
+     *
      */
     Func &setRunCondOnSync() {
         return setRunCond(FuncWrapper::runCondOnSync(data_w));
     }
     /*!
      * \brief FuncWrapperを runCondScopeGuard() にする
-     * 
+     *
      */
     template <typename ScopeGuard>
     Func &setRunCondScopeGuard() {
@@ -199,7 +199,7 @@ class Func : protected Field {
 
 /*!
  * \brief 名前を指定せず先に関数を登録するFunc
- * 
+ *
  */
 class AnonymousFunc : public Func {
     WEBCFACE_DLL static std::string fieldNameTmp();
@@ -225,7 +225,7 @@ class AnonymousFunc : public Func {
 
     /*!
      * \brief targetに関数を移動
-     * 
+     *
      */
     WEBCFACE_DLL void lockTo(Func &target);
 };

@@ -12,11 +12,12 @@ int main() {
 
     webcface::Image img = wcli.member("example_image_send").image("sample");
     img.request();
-    img.appendListener([](auto){std::cout << "image updated" << std::endl;});
-    while(true){
-        // auto mat = wcli.member("example_image_send").image("sample").mat(); NG
+    img.appendListener([](auto) { std::cout << "image updated" << std::endl; });
+    while (true) {
+        // auto mat = wcli.member("example_image_send").image("sample").mat();
+        // NG
         auto mat2 = img.mat(); // OK
-        if(!mat2.empty()){
+        if (!mat2.empty()) {
             cv::imshow("Display window (image_recv)", img.mat());
             cv::waitKey(1); // Wait for a keystroke in the window
             cv::imwrite("recv_image.png", img.mat());
@@ -25,9 +26,9 @@ int main() {
         std::this_thread::yield();
     }
     img.request(300, 300);
-    while(true){
+    while (true) {
         auto mat2 = img.mat(); // OK
-        if(!mat2.empty()){
+        if (!mat2.empty()) {
             cv::imshow("Display window (image_recv, 300x300)", img.mat());
             cv::waitKey(1); // Wait for a keystroke in the window
             break;
@@ -35,29 +36,31 @@ int main() {
         std::this_thread::yield();
     }
     img.request(std::nullopt, std::nullopt, 1);
-    while(true){
+    while (true) {
         auto mat2 = img.mat(); // OK
-        if(!mat2.empty()){
+        if (!mat2.empty()) {
             cv::imshow("Display window (image_recv, gray)", img.mat());
             cv::waitKey(1); // Wait for a keystroke in the window
             break;
         }
         std::this_thread::yield();
     }
-    img.request(std::nullopt, std::nullopt, 3, webcface::ImageCompressMode::jpeg, 20);
-    while(true){
+    img.request(std::nullopt, std::nullopt, 3,
+                webcface::ImageCompressMode::jpeg, 20);
+    while (true) {
         auto mat2 = img.mat(); // OK
-        if(!mat2.empty()){
+        if (!mat2.empty()) {
             cv::imshow("Display window (image_recv, jpeg)", img.mat());
             cv::waitKey(1); // Wait for a keystroke in the window
             break;
         }
         std::this_thread::yield();
     }
-    img.request(std::nullopt, std::nullopt, 3, webcface::ImageCompressMode::png, 1);
-    while(true){
+    img.request(std::nullopt, std::nullopt, 3, webcface::ImageCompressMode::png,
+                1);
+    while (true) {
         auto mat2 = img.mat(); // OK
-        if(!mat2.empty()){
+        if (!mat2.empty()) {
             cv::imshow("Display window (image_recv, png)", img.mat());
             cv::waitKey(0); // Wait for a keystroke in the window
             break;

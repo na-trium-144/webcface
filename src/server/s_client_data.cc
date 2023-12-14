@@ -510,11 +510,12 @@ void ClientData::onRecv(const std::string &message) {
             auto s =
                 std::any_cast<webcface::Message::Req<webcface::Message::Image>>(
                     obj);
-            logger->debug(
-                "request image ({}): {} from {}, {} x {}, color={}, mode={}, q={}",
-                s.req_id, s.field, s.member, s.rows.value_or(-1),
-                s.cols.value_or(-1), (s.color_mode ? static_cast<int>(*s.color_mode) : -1), static_cast<int>(s.cmp_mode),
-                s.quality);
+            logger->debug("request image ({}): {} from {}, {} x {}, color={}, "
+                          "mode={}, q={}",
+                          s.req_id, s.field, s.member, s.rows.value_or(-1),
+                          s.cols.value_or(-1),
+                          (s.color_mode ? static_cast<int>(*s.color_mode) : -1),
+                          static_cast<int>(s.cmp_mode), s.quality);
             image_req_info[s.member][s.field] = s;
             image_req[s.member][s.field] = s.req_id;
             if (!image_convert_thread[s.member].count(s.field)) {
@@ -557,7 +558,9 @@ void ClientData::onRecv(const std::string &message) {
     store.clientSendAll();
 }
 
-static int colorConvert(Common::ImageColorMode src_mode, Common::ImageColorMode dst_mode){
+#if WEBCFACE_USE_OPENCV
+static int colorConvert(Common::ImageColorMode src_mode,
+                        Common::ImageColorMode dst_mode) {
     switch (src_mode) {
     case Common::ImageColorMode::gray:
         switch (dst_mode) {
@@ -594,7 +597,7 @@ static int colorConvert(Common::ImageColorMode src_mode, Common::ImageColorMode 
         case Common::ImageColorMode::rgba:
             return cv::COLOR_BGRA2RGBA;
         }
-        break;        
+        break;
     case Common::ImageColorMode::rgb:
         switch (dst_mode) {
         case Common::ImageColorMode::gray:
@@ -622,6 +625,8 @@ static int colorConvert(Common::ImageColorMode src_mode, Common::ImageColorMode 
     }
     return -1;
 }
+#endif
+
 void ClientData::imageConvertThreadMain(const std::string &member,
                                         const std::string &field) {
     // cdの画像を変換しthisに送信
@@ -688,9 +693,12 @@ void ClientData::imageConvertThreadMain(const std::string &member,
                         break;
 #endif
                     }
-                    if (info.color_mode && *info.color_mode != img.color_mode()) {
+                    if (info.color_mode &&
+                        *info.color_mode != img.color_mode()) {
 #if WEBCFACE_USE_OPENCV
-                        cv::cvtColor(m, m, colorConvert(img.color_mode(), *info.color_mode));
+                        cv::cvtColor(
+                            m, m,
+                            colorConvert(img.color_mode(), *info.color_mode));
 #else
                         if(!disabled_notify){
                             this->logger->warn("Cannot convert image since OpenCV is disabled.");

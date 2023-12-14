@@ -28,11 +28,11 @@ enum class ImageCompressMode {
 
 /*!
  * \brief 画像データ
- * 
+ *
  * * 8bitのグレースケール, BGR, BGRAフォーマットのみを扱う
  * * 画像受信時にはjpegやpngなどにエンコードされたデータが入ることもある
  * * データはshared_ptrで保持され、Imageをコピーしてもコピーされない
- * 
+ *
  */
 class ImageBase {
   protected:
@@ -44,19 +44,19 @@ class ImageBase {
   public:
     /*!
      * \brief 空のImageを作成
-     * 
+     *
      */
     ImageBase()
         : rows_(0), cols_(0),
           data_(std::make_shared<std::vector<unsigned char>>()),
-          color_mode_(ImageColorMode::gray),
-          cmp_mode_(ImageCompressMode::raw) {}
+          color_mode_(ImageColorMode::gray), cmp_mode_(ImageCompressMode::raw) {
+    }
     ImageBase(int rows, int cols,
               std::shared_ptr<std::vector<unsigned char>> data,
               ImageColorMode color_mode = ImageColorMode::bgr,
               ImageCompressMode cmp_mode = ImageCompressMode::raw)
-        : rows_(rows), cols_(cols), data_(data),
-          color_mode_(color_mode), cmp_mode_(cmp_mode) {
+        : rows_(rows), cols_(cols), data_(data), color_mode_(color_mode),
+          cmp_mode_(cmp_mode) {
         if (cmp_mode == ImageCompressMode::raw &&
             rows * cols * channels() != data->size()) {
             throw std::invalid_argument("data size does not match");
@@ -64,42 +64,43 @@ class ImageBase {
     }
     /*!
      * \brief 生画像データの配列からImageを取得
-     * 
+     *
      * dataから rows * cols * channels バイトがコピーされる
-     * 
+     *
      * \param rows 画像の高さ
      * \param cols 画像の幅
      * \param data 画像データ
      * \param color_mode データの構造を指定
      * (デフォルトはOpenCVのBGR, uint8*3バイト)
-     * 
+     *
      */
-    ImageBase(int rows, int cols, const void* data,
+    ImageBase(int rows, int cols, const void *data,
               ImageColorMode color_mode = ImageColorMode::bgr)
-        : rows_(rows), cols_(cols),color_mode_(color_mode), cmp_mode_(ImageCompressMode::raw),
+        : rows_(rows), cols_(cols), color_mode_(color_mode),
+          cmp_mode_(ImageCompressMode::raw),
           data_(std::make_shared<std::vector<unsigned char>>(
-            static_cast<const unsigned char *>(data),
-            static_cast<const unsigned char *>(data) + rows * cols * channels()))
-          {}
+              static_cast<const unsigned char *>(data),
+              static_cast<const unsigned char *>(data) +
+                  rows * cols * channels())) {}
 
     /*!
      * \brief 画像の幅
-     * 
+     *
      */
     int rows() const { return rows_; }
-    /*! 
+    /*!
      * \brief 画像の高さ
      *
      */
     int cols() const { return cols_; }
     /*!
      * \brief 1ピクセル当たりのデータサイズ(byte数)を取得
-     * 
+     *
      * \return 1, 3, or 4
-     * 
+     *
      */
     int channels() const {
-        switch(color_mode_){
+        switch (color_mode_) {
         case ImageColorMode::gray:
             return 1;
         case ImageColorMode::bgr:
@@ -114,14 +115,14 @@ class ImageBase {
     }
     /*!
      * \brief 色の並び順 (生画像データの場合)
-     * 
+     *
      * compress_modeがrawでない場合意味を持たない。
-     * 
+     *
      */
     ImageColorMode color_mode() const { return color_mode_; }
     /*!
      * \brief 画像の圧縮モード
-     * 
+     *
      */
     ImageCompressMode compress_mode() const { return cmp_mode_; }
     std::shared_ptr<std::vector<unsigned char>> dataPtr() const {
@@ -129,15 +130,15 @@ class ImageBase {
     }
     /*!
      * \brief 画像データ
-     * 
-     * \return compress_modeがrawの場合、rows * cols * channels 要素の画像データ。
-     * それ以外の場合、圧縮された画像のデータ
-     * 
+     *
+     * \return compress_modeがrawの場合、rows * cols * channels
+     * 要素の画像データ。 それ以外の場合、圧縮された画像のデータ
+     *
      */
     const std::vector<unsigned char> &data() const { return *data_; }
     /*!
      * \brief 画像の要素にアクセス
-     * 
+     *
      * compress_modeがrawでない場合は正常にアクセスできない。
      */
     unsigned char at(int row, int col, int ch = 0) const {
@@ -170,14 +171,14 @@ class ImageWithCV : public ImageBase {
   public:
     /*!
      * \brief 空のImageを作成
-     * 
+     *
      */
     ImageWithCV() = default;
     /*!
      * \brief 画像データからcv::Matを生成
-     * 
+     *
      * ほかのコンストラクタからもこれが呼ばれる
-     * 
+     *
      */
     ImageWithCV(const ImageBase &base) : ImageBase(base) {
         if (cmp_mode_ == ImageCompressMode::raw) {
@@ -191,38 +192,36 @@ class ImageWithCV : public ImageBase {
     }
     ImageWithCV(int rows, int cols,
                 std::shared_ptr<std::vector<unsigned char>> data,
-                ImageColorMode color_mode,
-                ImageCompressMode cmp_mode)
+                ImageColorMode color_mode, ImageCompressMode cmp_mode)
         : ImageWithCV(ImageBase(rows, cols, data, color_mode, cmp_mode)) {}
 
     /*!
      * \brief 生画像データの配列からImageを取得
-     * 
+     *
      * dataから rows * cols * channels バイトがコピーされる
-     * 
+     *
      * \param rows 画像の高さ
      * \param cols 画像の幅
      * \param data 画像データ
      * \param color_mode データの構造を指定
      * (デフォルトはOpenCVのBGR, uint8*3バイト)
-     * 
+     *
      */
-    ImageWithCV(int rows, int cols,
-              const void* data,
-              ImageColorMode color_mode = ImageColorMode::bgr
-            ): ImageWithCV(ImageBase(rows, cols, data, color_mode)){}
+    ImageWithCV(int rows, int cols, const void *data,
+                ImageColorMode color_mode = ImageColorMode::bgr)
+        : ImageWithCV(ImageBase(rows, cols, data, color_mode)) {}
 
     /*!
      * \brief cv::MatからImageを取得
-     * 
+     *
      * matのコピーを内部に保持し、またmatの中身のデータもコピーする
-     * 
+     *
      * \param mat 画像データ フォーマットはCV_8UC1, CV_8UC3, CV_8UC4のみ対応
      * \param color_mode 色のモードを指定 (デフォルトはBGRA)
      */
     ImageWithCV(const cv::Mat &mat,
-        ImageColorMode color_mode = ImageColorMode::bgr)
-    : ImageBase(), mat_(mat) {
+                ImageColorMode color_mode = ImageColorMode::bgr)
+        : ImageBase(), mat_(mat) {
         rows_ = mat.rows;
         cols_ = mat.cols;
         color_mode_ = color_mode;
@@ -232,7 +231,7 @@ class ImageWithCV : public ImageBase {
                 "webcface::ImageData supports CV_8UC1 (grayscale), CV_8UC3 "
                 "(BGR) or CV_8UC4 (BGRA) format only.");
         }
-        if(mat.channels() != channels()){
+        if (mat.channels() != channels()) {
             throw std::invalid_argument("color_mode does not match");
         }
         data_ = std::make_shared<std::vector<unsigned char>>();
@@ -252,11 +251,11 @@ class ImageWithCV : public ImageBase {
     // operator cv::Mat &() { return mat_; }
     /*!
      * \brief cv::Matに変換した画像を返す
-     * 
+     *
      * 生画像の場合cv::Matの内部のデータは
      * ImageWithCV (=ImageFrame)が保持しているので、
      * ImageWithCVの一時オブジェクトからmatを取り出すことはできない。
-     * 
+     *
      */
     cv::Mat &mat() & { return mat_; }
 };
@@ -275,8 +274,8 @@ struct ImageReq {
 
     bool operator==(const ImageReq &rhs) const {
         return rows == rhs.rows && cols == rhs.cols &&
-               color_mode == rhs.color_mode &&
-               cmp_mode == rhs.cmp_mode && quality == rhs.quality;
+               color_mode == rhs.color_mode && cmp_mode == rhs.cmp_mode &&
+               quality == rhs.quality;
     }
     bool operator!=(const ImageReq &rhs) const { return !(*this == rhs); }
 };

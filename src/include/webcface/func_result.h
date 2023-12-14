@@ -14,9 +14,9 @@ class Member;
 
 /*!
  * \brief Funcの実行ができなかった場合発生する例外
- * 
+ *
  * (ValueやTextで参照先が見つからなかった場合はこれではなく単にnulloptが返る)
- * 
+ *
  */
 struct FuncNotFound : public std::runtime_error {
     explicit FuncNotFound(const Common::FieldBase &base)
@@ -26,22 +26,22 @@ struct FuncNotFound : public std::runtime_error {
 
 /*!
  * \brief 非同期で実行した関数の実行結果を表す。
- * 
+ *
  * 結果はshared_futureのget()で得られる。
  *
  * リモートから呼び出しメッセージが送られてきた時非同期で実行して結果を送り返すのにもこれを利用する
- * 
+ *
  */
 class AsyncFuncResult : Field {
     /*!
      * \brief 通し番号
-     * 
+     *
      * コンストラクタで設定する。
      * 実際はFuncResultStoreのvectorのindex
-     * 
+     *
      */
     std::size_t caller_id;
-    
+
     std::string caller; //< 呼び出し側member 通常は自身
 
     std::shared_ptr<std::promise<bool>> started_;
@@ -60,17 +60,17 @@ class AsyncFuncResult : Field {
 
     /*!
      * \brief リモートに呼び出しメッセージが到達したときに値が入る
-     * 
+     *
      * \return 実行開始したらtrue, 呼び出しに失敗したらfalseが返る。
      * falseの場合resultにFuncNotFound例外が入る
-     * 
+     *
      */
     std::shared_future<bool> started;
     /*!
      * \brief 関数の実行が完了した時戻り値が入る
-     * 
+     *
      * 例外が発生した場合例外が入る
-     * 
+     *
      */
     std::shared_future<ValAdaptor> result;
 
