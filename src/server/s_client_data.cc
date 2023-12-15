@@ -632,121 +632,124 @@ void ClientData::imageConvertThreadMain(const std::string &member,
     logger->trace("imageConvertThreadMain started for {}, {}", member, field);
     while (true) {
         store.findAndDo(member, [&](ClientData &cd) {
-            std::unique_lock lock(cd.image_m[field]);
             while (true) {
-                std::cv_status cv_ret;
-                if (!first_convert) {
-                    cv_ret = cd.image_cv[field].wait_for(
-                        lock, std::chrono::milliseconds(1));
-                    if (cd.closing.load()) {
-                        break;
+                Common::ImageFrame img; 
+                {
+                    std::unique_lock lock(cd.image_m[field]);
+                    std::cv_status cv_ret;
+                    if (!first_convert) {
+                        cv_ret = cd.image_cv[field].wait_for(
+                            lock, std::chrono::milliseconds(1));
+                        if (cd.closing.load()) {
+                            break;
+                        }
+                        if (this->closing.load()) {
+                            break;
+                        }
                     }
-                    if (this->closing.load()) {
-                        break;
+                    if (!first_convert && cv_ret != std::cv_status::timeout) {
+                        continue;
                     }
-                }
-                if (cv_ret != std::cv_status::timeout || first_convert) {
                     logger->trace("converting image of {}, {}", member, field);
-                    Common::ImageFrame img = cd.image[field];
+                    img = cd.image[field];
+                }
+                if (img.empty()) {
+                    break;
+                }
 #if WEBCFACE_USE_OPENCV
-                    cv::Mat m = img.mat();
-                    if (m.empty()) {
-                        break;
-                    }
+                cv::Mat m = img.mat();
 #endif
-                    // 変換処理
-                    auto info = this->image_req_info[member][field];
-                    auto [req_id, sub_field] =
-                        findReqField(this->image_req, member, field);
-                    auto sync = webcface::Message::Sync{cd.member_id,
-                                                        cd.last_sync_time};
+                // 変換処理
+                auto info = this->image_req_info[member][field];
+                auto [req_id, sub_field] =
+                    findReqField(this->image_req, member, field);
+                auto sync =
+                    webcface::Message::Sync{cd.member_id, cd.last_sync_time};
 
-                    int rows = img.rows(), cols = img.cols();
-                    if (info.rows || info.cols) {
+                int rows = img.rows(), cols = img.cols();
+                if (info.rows || info.cols) {
 #if WEBCFACE_USE_OPENCV
-                        if (info.rows) {
-                            rows = *info.rows;
-                        } else {
-                            rows = static_cast<int>(
-                                static_cast<double>(*info.cols) * m.rows /
-                                m.cols);
-                        }
-                        if (info.cols) {
-                            cols = *info.cols;
-                        } else {
-                            cols = static_cast<int>(
-                                static_cast<double>(*info.rows) * m.cols /
-                                m.rows);
-                        }
+                    if (info.rows) {
+                        rows = *info.rows;
+                    } else {
+                        rows = static_cast<int>(
+                            static_cast<double>(*info.cols) * m.rows / m.cols);
+                    }
+                    if (info.cols) {
+                        cols = *info.cols;
+                    } else {
+                        cols = static_cast<int>(
+                            static_cast<double>(*info.rows) * m.cols / m.rows);
+                    }
 
-                        cv::resize(m, m, cv::Size(rows, cols));
+                    cv::resize(m, m, cv::Size(rows, cols));
 #else
-                        if(!disabled_notify){
-                            this->logger->warn("Cannot convert image since OpenCV is disabled.");
+                        if (!disabled_notify) {
+                            this->logger->warn("Cannot convert image since "
+                                               "OpenCV is disabled.");
                         }
                         disabled_notify = true;
                         break;
 #endif
-                    }
-                    if (info.color_mode && *info.color_mode != img.color_mode()) {
+                }
+                if (info.color_mode && *info.color_mode != img.color_mode()) {
 #if WEBCFACE_USE_OPENCV
-                        cv::cvtColor(m, m, colorConvert(img.color_mode(), *info.color_mode));
+                    cv::cvtColor(
+                        m, m, colorConvert(img.color_mode(), *info.color_mode));
 #else
-                        if(!disabled_notify){
-                            this->logger->warn("Cannot convert image since OpenCV is disabled.");
+                        if (!disabled_notify) {
+                            this->logger->warn("Cannot convert image since "
+                                               "OpenCV is disabled.");
                         }
                         disabled_notify = true;
                         break;
 #endif
-                    }
-                    auto encoded =
-                        std::make_shared<std::vector<unsigned char>>();
-                    switch (info.cmp_mode) {
+                }
+                auto encoded = std::make_shared<std::vector<unsigned char>>();
+                switch (info.cmp_mode) {
 #if WEBCFACE_USE_OPENCV
-                    case Common::ImageCompressMode::raw:
-                        encoded->assign(
-                            reinterpret_cast<unsigned char *>(m.data),
-                            reinterpret_cast<unsigned char *>(m.data) +
-                                m.total() * m.channels());
-                        break;
-                    case Common::ImageCompressMode::jpeg:
-                        cv::imencode(".jpg", m, *encoded,
-                                     {cv::IMWRITE_JPEG_QUALITY, info.quality});
-                        break;
-                    case Common::ImageCompressMode::webp:
-                        cv::imencode(".jpg", m, *encoded,
-                                     {cv::IMWRITE_WEBP_QUALITY, info.quality});
-                        break;
-                    case Common::ImageCompressMode::png:
-                        cv::imencode(
-                            ".jpg", m, *encoded,
-                            {cv::IMWRITE_PNG_COMPRESSION, info.quality});
-                        break;
+                case Common::ImageCompressMode::raw:
+                    encoded->assign(reinterpret_cast<unsigned char *>(m.data),
+                                    reinterpret_cast<unsigned char *>(m.data) +
+                                        m.total() * m.channels());
+                    break;
+                case Common::ImageCompressMode::jpeg:
+                    cv::imencode(".jpg", m, *encoded,
+                                 {cv::IMWRITE_JPEG_QUALITY, info.quality});
+                    break;
+                case Common::ImageCompressMode::webp:
+                    cv::imencode(".jpg", m, *encoded,
+                                 {cv::IMWRITE_WEBP_QUALITY, info.quality});
+                    break;
+                case Common::ImageCompressMode::png:
+                    cv::imencode(".jpg", m, *encoded,
+                                 {cv::IMWRITE_PNG_COMPRESSION, info.quality});
+                    break;
 #else
                     case Common::ImageCompressMode::raw:
                         encoded = img.dataPtr();
                         break;
                     default:
-                        if(!disabled_notify){
-                            this->logger->warn("Cannot convert image since OpenCV is disabled.");
+                        if (!disabled_notify) {
+                            this->logger->warn("Cannot convert image since "
+                                               "OpenCV is disabled.");
                         }
                         disabled_notify = true;
                         break;
 #endif
-                    }
-                    Common::ImageBase img_send{rows, cols, encoded,
-                                               *info.color_mode, info.cmp_mode};
+                }
+                Common::ImageBase img_send{
+                    rows, cols, encoded,
+                    info.color_mode.value_or(img.color_mode()), info.cmp_mode};
 
-                    {
-                        std::lock_guard lock(server_mtx);
-                        this->pack(sync);
-                        this->pack(
-                            webcface::Message::Res<webcface::Message::Image>{
-                                req_id, sub_field, img_send});
-                        logger->trace("send image_res req_id={} + '{}'", req_id,
-                                      sub_field);
-                        this->send();
-                    }
+                {
+                    std::lock_guard lock(server_mtx);
+                    this->pack(sync);
+                    this->pack(webcface::Message::Res<webcface::Message::Image>{
+                        req_id, sub_field, img_send});
+                    logger->trace("send image_res req_id={} + '{}'", req_id,
+                                  sub_field);
+                    this->send();
                 }
                 first_convert = false;
             }

@@ -10,7 +10,8 @@ int main() {
 
     // image_sendを5回起動して終了すると5通りのリクエストをして表示するサンプル
 
-    webcface::Image img = wcli.member("example_image_send").image("sample");
+    //webcface::Image img = wcli.member("example_image_send").image("sample");
+    webcface::Image img = wcli.member("kinect").image("color");
     img.request();
     img.appendListener([](auto){std::cout << "image updated" << std::endl;});
     while(true){
@@ -34,7 +35,7 @@ int main() {
         }
         std::this_thread::yield();
     }
-    img.request(std::nullopt, std::nullopt, 1);
+    img.request(std::nullopt, std::nullopt, webcface::ImageColorMode::gray);
     while(true){
         auto mat2 = img.mat(); // OK
         if(!mat2.empty()){
@@ -44,7 +45,7 @@ int main() {
         }
         std::this_thread::yield();
     }
-    img.request(std::nullopt, std::nullopt, 3, webcface::ImageCompressMode::jpeg, 20);
+    img.request(std::nullopt, std::nullopt, webcface::ImageCompressMode::jpeg, 20);
     while(true){
         auto mat2 = img.mat(); // OK
         if(!mat2.empty()){
@@ -54,7 +55,7 @@ int main() {
         }
         std::this_thread::yield();
     }
-    img.request(std::nullopt, std::nullopt, 3, webcface::ImageCompressMode::png, 1);
+    img.request(std::nullopt, std::nullopt, webcface::ImageCompressMode::png, 1);
     while(true){
         auto mat2 = img.mat(); // OK
         if(!mat2.empty()){

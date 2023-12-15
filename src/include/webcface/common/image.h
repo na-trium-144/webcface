@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <memory>
+#include <cstdint>
 #include <stdexcept>
 
 // todo: cmakeなしでヘッダー読んだときにopencvの有無を判別する
@@ -36,7 +37,7 @@ enum class ImageCompressMode {
  */
 class ImageBase {
   protected:
-    int rows_, cols_;
+    std::size_t rows_, cols_;
     std::shared_ptr<std::vector<unsigned char>> data_;
     ImageColorMode color_mode_;
     ImageCompressMode cmp_mode_;
@@ -76,29 +77,37 @@ class ImageBase {
      */
     ImageBase(int rows, int cols, const void* data,
               ImageColorMode color_mode = ImageColorMode::bgr)
-        : rows_(rows), cols_(cols),color_mode_(color_mode), cmp_mode_(ImageCompressMode::raw),
-          data_(std::make_shared<std::vector<unsigned char>>(
+        : rows_(rows), cols_(cols),color_mode_(color_mode), cmp_mode_(ImageCompressMode::raw) {
+        data_ = std::make_shared<std::vector<unsigned char>>(
             static_cast<const unsigned char *>(data),
-            static_cast<const unsigned char *>(data) + rows * cols * channels()))
-          {}
+            static_cast<const unsigned char *>(data) +
+                rows * cols * channels());
+    }
 
+    /*!
+     * \brief 画像が空かどうかを返す
+     * 
+     * \return dataPtr()->size() == 0
+     * 
+     */
+    bool empty() const { return data_->size() == 0; }
     /*!
      * \brief 画像の幅
      * 
      */
-    int rows() const { return rows_; }
+    std::size_t rows() const { return rows_; }
     /*! 
      * \brief 画像の高さ
      *
      */
-    int cols() const { return cols_; }
+    std::size_t cols() const { return cols_; }
     /*!
      * \brief 1ピクセル当たりのデータサイズ(byte数)を取得
      * 
      * \return 1, 3, or 4
      * 
      */
-    int channels() const {
+    std::size_t channels() const {
         switch(color_mode_){
         case ImageColorMode::gray:
             return 1;
@@ -140,7 +149,7 @@ class ImageBase {
      * 
      * compress_modeがrawでない場合は正常にアクセスできない。
      */
-    unsigned char at(int row, int col, int ch = 0) const {
+    unsigned char at(std::size_t row, std::size_t col, std::size_t ch = 0) const {
         return dataPtr()->at((row * cols() + col) * channels() + ch);
     }
 };
@@ -179,9 +188,11 @@ class ImageWithCV : public ImageBase {
      * ほかのコンストラクタからもこれが呼ばれる
      * 
      */
-    ImageWithCV(const ImageBase &base) : ImageBase(base) {
-        if (cmp_mode_ == ImageCompressMode::raw) {
-            mat_ = cv::Mat{rows_, cols_, CvType(), &data_->at(0)};
+    ImageWithCV(const ImageBase &base) : ImageBase(base), mat_() {
+        if (empty()) {
+            // mat_ = empty
+        } else if (cmp_mode_ == ImageCompressMode::raw) {
+            mat_ = cv::Mat{static_cast<int>(rows_), static_cast<int>(cols_), CvType(), &data_->at(0)};
         } else {
             mat_ = cv::imdecode(*data_, cv::IMREAD_COLOR);
             if (rows_ != mat_.rows || cols_ != mat_.cols) {
