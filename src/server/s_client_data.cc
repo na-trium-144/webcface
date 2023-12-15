@@ -5,6 +5,7 @@
 #include <webcface/common/def.h>
 #include <algorithm>
 #include <iterator>
+#include <thread>
 
 #if WEBCFACE_USE_OPENCV
 #include <opencv2/core.hpp>
