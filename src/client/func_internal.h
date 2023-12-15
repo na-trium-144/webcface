@@ -9,10 +9,10 @@ namespace webcface::Internal {
 
 /*!
  * \brief AsyncFuncResultのリストを保持する。
- * 
+ *
  * 関数の実行結果が返ってきた時参照する
  * また、実行するたびに連番を振る必要があるcallback_idの管理にも使う
- * 
+ *
  */
 class FuncResultStore {
     std::mutex mtx;
@@ -21,7 +21,7 @@ class FuncResultStore {
   public:
     /*!
      * \brief 新しいcaller_idを振って新しいAsyncFuncResultを生成しそれを返す
-     * 
+     *
      */
     AsyncFuncResult &addResult(const std::string &caller, const Field &base) {
         std::lock_guard lock(mtx);
@@ -31,9 +31,9 @@ class FuncResultStore {
     }
     /*!
      * \brief caller_idに対応するresultを返す
-     * 
+     *
      * 存在しない場合out_of_rangeを投げる
-     * 
+     *
      */
     AsyncFuncResult &getResult(std::size_t caller_id) {
         std::lock_guard lock(mtx);
@@ -44,7 +44,7 @@ class FuncResultStore {
 /*!
  * \brief clientがsync()されたタイミングで実行中の関数を起こす
  * さらにその関数が完了するまで待機する
- * 
+ *
  */
 class FuncOnSync {
     std::mutex call_mtx, return_mtx;
@@ -53,7 +53,7 @@ class FuncOnSync {
   public:
     /*!
      * \brief sync()側が関数を起こし完了まで待機
-     * 
+     *
      */
     void sync() {
         std::unique_lock return_lock(return_mtx);
@@ -63,7 +63,7 @@ class FuncOnSync {
     }
     /*!
      * \brief 関数側がsync()まで待機
-     * 
+     *
      */
     void wait() {
         std::unique_lock call_lock(call_mtx);
@@ -71,7 +71,7 @@ class FuncOnSync {
     }
     /*!
      * \brief 関数側が完了を通知
-     * 
+     *
      */
     void done() {
         {

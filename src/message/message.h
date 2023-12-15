@@ -50,7 +50,7 @@ enum MessageKindEnum {
 
 /*!
  * \brief 型からkindを取得するためだけのベースクラス
- * 
+ *
  */
 template <int k>
 struct MessageBase {
@@ -58,7 +58,7 @@ struct MessageBase {
 };
 /*!
  * \brief client初期化(client->server->client)
- * 
+ *
  * clientは接続後最初に1回、
  * member_name,lib_name,lib_verを送る
  *
@@ -75,19 +75,19 @@ struct MessageBase {
 struct SyncInit : public MessageBase<MessageKind::sync_init> {
     /*!
      * \brief member名
-     * 
+     *
      */
     std::string member_name;
     /*!
      * \brief member id (1以上)
-     * 
+     *
      */
     unsigned int member_id;
     /*!
      * \brief clientライブラリの名前(id) このライブラリでは"cpp"
-     * 
+     *
      * 新しくライブラリ作ることがあったら変えて識別できるようにすると良いかも
-     * 
+     *
      */
     std::string lib_name;
     std::string lib_ver;
@@ -100,35 +100,35 @@ struct SyncInit : public MessageBase<MessageKind::sync_init> {
 
 /*!
  * \brief serverのバージョン情報(server->client)
- * 
+ *
  * serverはSyncInit受信後にこれを返す
- * 
+ *
  */
 struct SvrVersion : public MessageBase<MessageKind::svr_version> {
     /*!
      * \brief serverの名前
-     * 
+     *
      * このライブラリでは "webcface"
-     * 
+     *
      */
     std::string svr_name;
     /*!
      * \brief serverのバージョン
-     * 
+     *
      */
     std::string ver;
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("n", svr_name), MSGPACK_NVP("v", ver));
 };
 /*!
  * \brief ping(server->client->server)
- * 
+ *
  * serverが一定間隔でこれをclientに送る
  *
  * 内容は空のmap
  *
  * clientは即座に送り返さなければならない
  * (送り返さなくても何も起きないが)
- * 
+ *
  */
 struct Ping : public MessageBase<MessageKind::ping> {
     Ping() = default;
@@ -147,27 +147,27 @@ struct PingStatus : public MessageBase<MessageKind::ping_status> {
 };
 /*!
  * \brief ping状況のリクエスト (client->server)
- * 
+ *
  * これを送ると以降serverが一定間隔でPingStatusを送り返す
- * 
+ *
  */
 struct PingStatusReq : public MessageBase<MessageKind::ping_status_req> {
     PingStatusReq() = default;
 };
 /*!
  * \brief syncの時刻(client->server->client)
- * 
+ *
  * clientは各sync()ごとに1回、他のメッセージより先に現在時刻を送る
  *
  * serverはそのclientのデータを1つ以上requestしているクライアントに対して
  * member_idを載せて送る
- * 
+ *
  */
 struct Sync : public MessageBase<MessageKind::sync> {
     unsigned int member_id; //!< member id
     /*!
      * \brief 1970/1/1 0:00(utc) からの経過ミリ秒数で表し、閏秒はカウントしない
-     * 
+     *
      */
     std::uint64_t time;
     Sync(unsigned int member_id,
@@ -186,11 +186,11 @@ struct Sync : public MessageBase<MessageKind::sync> {
 
 /*!
  * \brief 関数呼び出し (client(caller)->server->client(receiver))
- * 
+ *
  * caller側clientが一意のcaller_idを振る(0以上の整数)
  *
  * serverはcaller_member_idをつけてreceiverに送る
- * 
+ *
  */
 struct Call : public MessageBase<MessageKind::call>, public Common::FuncCall {
     Call() = default;
@@ -203,14 +203,14 @@ struct Call : public MessageBase<MessageKind::call>, public Common::FuncCall {
 };
 /*!
  * \brief 関数呼び出しの応答1 (client(receiver)->server->client(caller))
- * 
+ *
  * clientはcalled_id,caller_member_idと、関数の実行を開始したかどうかを返す
  *
  * * 関数の実行に時間がかかる場合も実行完了を待たずにstartedをtrueにして送る
  * * 対象の関数が存在しない場合、startedをfalseにして送る
  *
  * serverはそれをそのままcallerに送る
- * 
+ *
  */
 struct CallResponse : public MessageBase<MessageKind::call_response> {
     std::size_t caller_id;
@@ -222,7 +222,7 @@ struct CallResponse : public MessageBase<MessageKind::call_response> {
 };
 /*!
  * \brief 関数呼び出しの応答2 (client(receiver)->server->client(caller))
- * 
+ *
  * clientはcalled_id,caller_member_idと、関数の実行結果を返す
  *
  * resultに結果を文字列または数値または真偽値で返す
@@ -230,7 +230,7 @@ struct CallResponse : public MessageBase<MessageKind::call_response> {
  * * 例外が発生した場合はis_errorをtrueにしresultに例外の内容を文字列で入れて返す
  *
  * serverはそれをそのままcallerに送る
- * 
+ *
  */
 struct CallResult : public MessageBase<MessageKind::call_result> {
     std::size_t caller_id;
@@ -309,6 +309,7 @@ struct View : public MessageBase<MessageKind::view> {
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", field), MSGPACK_NVP("d", data_diff),
                        MSGPACK_NVP("l", length));
 };
+
 struct Image : public MessageBase<MessageKind::image>,
                public Common::ImageBase {
     std::string field;
@@ -317,13 +318,14 @@ struct Image : public MessageBase<MessageKind::image>,
         : field(field), ImageBase(img) {}
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", field), MSGPACK_NVP("d", data_),
                        MSGPACK_NVP("h", rows_), MSGPACK_NVP("w", cols_),
-                       MSGPACK_NVP("l", color_mode_), MSGPACK_NVP("p", cmp_mode_));
+                       MSGPACK_NVP("l", color_mode_),
+                       MSGPACK_NVP("p", cmp_mode_));
 };
 /*!
  * \brief client(member)->server->client logを追加
- * 
+ *
  * client->server時はmemberは無視
- * 
+ *
  */
 struct Log : public MessageBase<MessageKind::log> {
     unsigned int member_id;
@@ -331,7 +333,7 @@ struct Log : public MessageBase<MessageKind::log> {
         int level = 0;
         /*!
          * \brief 1970/1/1からの経過ミリ秒
-         * 
+         *
          */
         std::uint64_t time = 0;
         std::string message;
@@ -374,9 +376,9 @@ struct LogReq : public MessageBase<MessageKind::log_req> {
 };
 /*!
  * \brief client(member)->server->client func登録
- * 
+ *
  * client->server時はmemberは無視
- * 
+ *
  */
 struct FuncInfo : public MessageBase<MessageKind::func_info> {
     unsigned int member_id = 0;
@@ -418,9 +420,9 @@ struct FuncInfo : public MessageBase<MessageKind::func_info> {
 };
 /*!
  * \brief client->server 以降Recvを送るようリクエスト
- * 
+ *
  * todo: 解除できるようにする
- * 
+ *
  */
 template <typename T>
 struct Req : public MessageBase<T::kind + MessageKind::req> {
@@ -450,9 +452,9 @@ struct Req<Image> : public MessageBase<MessageKind::image + MessageKind::req>,
 };
 /*!
  * \brief server->client 新しいvalueなどの報告
- * 
+ *
  * Funcの場合はこれではなくFuncInfoを使用
- * 
+ *
  */
 template <typename T>
 struct Entry : public MessageBase<T::kind + MessageKind::entry> {
@@ -464,10 +466,10 @@ template <typename T>
 struct Res {};
 /*!
  * \brief server->client  Value,Textなどのfieldをreqidに変えただけのもの
- * 
+ *
  * requestしたフィールドの子フィールドの場合sub_fieldにフィールド名を入れて返す
  * →その場合clientが再度requestを送るはず
- * 
+ *
  */
 template <>
 struct Res<Value> : public MessageBase<MessageKind::value + MessageKind::res> {
@@ -510,6 +512,7 @@ struct Res<View> : public MessageBase<MessageKind::view + MessageKind::res> {
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", req_id), MSGPACK_NVP("f", sub_field),
                        MSGPACK_NVP("d", data_diff), MSGPACK_NVP("l", length));
 };
+
 template <>
 struct Res<Image> : public MessageBase<MessageKind::image + MessageKind::res>,
                     public Common::ImageBase {
@@ -521,12 +524,12 @@ struct Res<Image> : public MessageBase<MessageKind::image + MessageKind::res>,
         : req_id(req_id), sub_field(sub_field), ImageBase(img) {}
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", req_id), MSGPACK_NVP("f", sub_field),
                        MSGPACK_NVP("d", data_), MSGPACK_NVP("w", cols_),
-                       MSGPACK_NVP("h", rows_), 
-                       MSGPACK_NVP("l", color_mode_), MSGPACK_NVP("p", cmp_mode_));
+                       MSGPACK_NVP("h", rows_), MSGPACK_NVP("l", color_mode_),
+                       MSGPACK_NVP("p", cmp_mode_));
 };
 /*!
  * \brief msgpackのメッセージをパースしstd::anyで返す
- * 
+ *
  */
 std::vector<std::pair<int, std::any>>
 unpack(const std::string &message,
@@ -534,7 +537,7 @@ unpack(const std::string &message,
 
 /*!
  * \brief メッセージ1つを要素数2の配列としてシリアル化
- * 
+ *
  */
 template <typename T>
 std::string packSingle(const T &obj) {
@@ -546,7 +549,7 @@ std::string packSingle(const T &obj) {
 
 /*!
  * \brief メッセージをシリアル化しbufferに追加
- * 
+ *
  */
 template <typename T>
 void pack(std::stringstream &buffer, int &len, const T &obj) {

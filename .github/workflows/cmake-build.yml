@@ -109,7 +109,7 @@ jobs:
             wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc --no-check-certificate | gpg --dearmor - | tee /usr/share/keyrings/kitware-archive-keyring.gpg >/dev/null
             echo "deb [signed-by=/usr/share/keyrings/kitware-archive-keyring.gpg] https://apt.kitware.com/ubuntu/ $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/kitware.list >/dev/null
             apt-get update -q -y
-            apt-get install -q -y build-essential cmake file gcc-10 g++-10
+            apt-get install -q -y build-essential cmake file gcc-10 g++-10 git
 
           # Produce a binary artifact and place it in the mounted volume
           run: |

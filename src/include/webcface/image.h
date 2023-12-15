@@ -46,15 +46,17 @@ class Image : protected Field, public EventTarget<Image> {
         return *this;
     }
 
-    Image &request(std::optional<int> rows = std::nullopt,
-                   std::optional<int> cols = std::nullopt,
-                   std::optional<Common::ImageColorMode> color_mode = std::nullopt) {
-        return request(rows, cols, Common::ImageCompressMode::raw, 0, color_mode);
+    Image &
+    request(std::optional<int> rows = std::nullopt,
+            std::optional<int> cols = std::nullopt,
+            std::optional<Common::ImageColorMode> color_mode = std::nullopt) {
+        return request(rows, cols, Common::ImageCompressMode::raw, 0,
+                       color_mode);
     }
-    WEBCFACE_DLL Image &request(std::optional<int> rows,
-                                std::optional<int> cols,
-                                Common::ImageCompressMode cmp_mode, int quality,
-                                std::optional<Common::ImageColorMode> color_mode = std::nullopt);
+    WEBCFACE_DLL Image &
+    request(std::optional<int> rows, std::optional<int> cols,
+            Common::ImageCompressMode cmp_mode, int quality,
+            std::optional<Common::ImageColorMode> color_mode = std::nullopt);
     //! 画像を返す
     WEBCFACE_DLL std::optional<ImageFrame> tryGet() const;
     //! 画像を返す (データがない場合0x0の画像が返る)

@@ -23,7 +23,7 @@ struct ClientData;
  *
  * コンストラクタではなく Client::member(), Client::members()
  * Client::onMemberEntry() などから取得すること
- * 
+ *
  */
 class WEBCFACE_DLL Member : protected Field {
   public:
@@ -35,34 +35,34 @@ class WEBCFACE_DLL Member : protected Field {
 
     /*!
      * \brief Member名
-     * 
+     *
      */
     std::string name() const { return member_; }
 
     /*!
      * \brief valueを参照する。
-     * 
+     *
      */
     Value value(const std::string &field) const;
     /*!
      * \brief textを参照する。
-     * 
+     *
      */
     Text text(const std::string &field) const;
     /*!
      * \brief imageを参照する。
-     * 
+     *
      */
     Image image(const std::string &field) const;
     /*!
      * \brief funcを参照する。
-     * 
+     *
      */
     Func func(const std::string &field) const;
 
     /*!
      * \brief AnonymousFuncオブジェクトを作成しfuncをsetする
-     * 
+     *
      */
     // template <typename T>
     // AnonymousFunc func(const T &func) const{
@@ -72,74 +72,74 @@ class WEBCFACE_DLL Member : protected Field {
 
     /*!
      * \brief viewを参照する。
-     * 
+     *
      */
     View view(const std::string &field) const;
     /*!
      * \brief logを参照する。
-     * 
+     *
      */
     Log log() const;
 
     /*!
      * \brief このmemberが公開しているvalueのリストを返す。
-     * 
+     *
      */
     std::vector<Value> values() const;
     /*!
      * \brief このmemberが公開しているtextのリストを返す。
-     * 
+     *
      */
     std::vector<Text> texts() const;
     /*!
      * \brief このmemberが公開しているfuncのリストを返す。
-     * 
+     *
      */
     std::vector<Func> funcs() const;
     /*!
      * \brief このmemberが公開しているviewのリストを返す。
-     * 
+     *
      */
     std::vector<View> views() const;
     /*!
      * \brief このmemberが公開しているimageのリストを返す。
-     * 
+     *
      */
     std::vector<Image> images() const;
 
     /*!
      * \brief valueが追加された時のイベント
-     * 
+     *
      * コールバックの型は void(Value)
-     * 
+     *
      */
     EventTarget<Value, std::string> onValueEntry() const;
     /*!
      * \brief textが追加された時のイベント
-     * 
+     *
      * コールバックの型は void(Text)
-     * 
+     *
      */
     EventTarget<Text, std::string> onTextEntry() const;
     /*!
      * \brief funcが追加された時のイベント
-     * 
+     *
      * コールバックの型は void(Func)
-     * 
+     *
      */
     EventTarget<Func, std::string> onFuncEntry() const;
     /*!
      * \brief imageが追加されたときのイベント
-     * 
+     *
      * コールバックの型は void(Image)
-     * 
+     *
      */
     EventTarget<Image, std::string> onImageEntry() const;
     /*!
      * \brief viewが追加されたときのイベント
-     * 
+     *
      * コールバックの型は void(View)
-     * 
+     *
      */
     EventTarget<View, std::string> onViewEntry() const;
     /*!
@@ -153,7 +153,7 @@ class WEBCFACE_DLL Member : protected Field {
      *
      * \return このライブラリの場合は"cpp", javascriptクライアントは"js",
      * pythonクライアントは"python"を返す。
-     * 
+     *
      */
     std::string libName() const;
     /*!
@@ -174,18 +174,18 @@ class WEBCFACE_DLL Member : protected Field {
      * sync()後通信速度が得られるようになる
      * \return 初回→ std::nullopt, 2回目以降(取得できれば)→ pingの往復時間 (ms)
      * \sa onPing()
-     * 
+     *
      */
     std::optional<int> pingStatus() const;
     /*!
      * \brief 通信速度が更新された時のイベント
-     * 
+     *
      * コールバックの型は void(Member)
      *
      * 通常は約5秒に1回更新される。
      * pingStatus() と同様、通信速度データのリクエストも行う。
      * \sa pingStatus()
-     * 
+     *
      */
     EventTarget<Member, std::string> onPing() const;
 };

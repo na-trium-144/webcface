@@ -37,7 +37,7 @@ ValType valTypeOf() {
 
 /*!
  * \brief 型名を出力する。
- * 
+ *
  */
 inline std::ostream &operator<<(std::ostream &os, ValType a) {
     switch (a) {
@@ -58,9 +58,9 @@ inline std::ostream &operator<<(std::ostream &os, ValType a) {
 
 /*!
  * \brief 数値、文字列などの値を相互変換するクラス
- * 
+ *
  * Funcの引数、戻り値などに使う
- * 
+ *
  */
 class ValAdaptor {
     std::string value;
@@ -93,9 +93,7 @@ class ValAdaptor {
             return 0;
         }
     }
-    operator bool() const{
-        return value == std::to_string(true);
-    }
+    operator bool() const { return value == std::to_string(true); }
     template <typename T>
         requires std::convertible_to<double, T>
     operator T() const {
@@ -135,7 +133,8 @@ class ValAdaptor {
 };
 
 // inline std::ostream &operator<<(std::ostream &os, const ValAdaptor &a) {
-//     return os << static_cast<std::string>(a) << "(type=" << a.valType() << ")";
+//     return os << static_cast<std::string>(a) << "(type=" << a.valType() <<
+//     ")";
 // }
 
 //! ValAdaptorのリストから任意の型のタプルに変換する
