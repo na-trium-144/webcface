@@ -7,6 +7,7 @@
 #include <mutex>
 #include <atomic>
 #include <condition_variable>
+#include <thread>
 #include "../message/message.h"
 #include <spdlog/common.h>
 #include <spdlog/logger.h>
