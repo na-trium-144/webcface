@@ -37,6 +37,7 @@ struct ClientData {
     std::unordered_map<std::string, std::vector<Common::ViewComponentBase>>
         view;
     std::unordered_map<std::string, Common::ImageBase> image;
+    std::unordered_map<std::string, int> image_changed;
     // 画像が変化したことを知らせるcv
     std::unordered_map<std::string, std::mutex> image_m;
     std::unordered_map<std::string, std::condition_variable> image_cv;
@@ -46,6 +47,8 @@ struct ClientData {
     std::unordered_map<std::string,
                        std::unordered_map<std::string, unsigned int>>
         value_req, text_req, view_req, image_req;
+    // リクエストが変化したことをスレッドに知らせる
+    std::unordered_map<std::string, std::unordered_map<std::string, int>> image_req_changed;
     // 画像をそれぞれのリクエストに合わせて変換するスレッド
     std::unordered_map<std::string,
                        std::unordered_map<std::string, Common::ImageReq>>

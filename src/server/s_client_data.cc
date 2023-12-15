@@ -353,6 +353,7 @@ void ClientData::onRecv(const std::string &message) {
             {
                 std::lock_guard lock(this->image_m[v.field]);
                 this->image[v.field] = v;
+                this->image_changed[v.field]++;
                 this->image_cv[v.field].notify_all();
             }
             break;
@@ -518,6 +519,7 @@ void ClientData::onRecv(const std::string &message) {
                           static_cast<int>(s.cmp_mode), s.quality);
             image_req_info[s.member][s.field] = s;
             image_req[s.member][s.field] = s.req_id;
+            image_req_changed[s.member][s.field]++;
             if (!image_convert_thread[s.member].count(s.field)) {
                 image_convert_thread[s.member].emplace(
                     s.field,
@@ -630,9 +632,8 @@ static int colorConvert(Common::ImageColorMode src_mode,
 void ClientData::imageConvertThreadMain(const std::string &member,
                                         const std::string &field) {
     // cdの画像を変換しthisに送信
-    // 初回はすぐに変換を試す。
-    // 2回目以降はcd.image[field]が更新されたとき。
-    bool first_convert = true;
+    // cd.image[field]が更新されるかリクエストが更新されたときに変換を行う。
+    int last_image_flag = -1, last_req_flag = -1;
     static bool disabled_notify = false;
     logger->trace("imageConvertThreadMain started for {}, {}", member, field);
     while (true) {
@@ -642,19 +643,19 @@ void ClientData::imageConvertThreadMain(const std::string &member,
                 {
                     std::unique_lock lock(cd.image_m[field]);
                     std::cv_status cv_ret;
-                    if (!first_convert) {
-                        cv_ret = cd.image_cv[field].wait_for(
-                            lock, std::chrono::milliseconds(1));
-                        if (cd.closing.load()) {
-                            break;
-                        }
-                        if (this->closing.load()) {
-                            break;
-                        }
+                    cd.image_cv[field].wait_for(lock, std::chrono::milliseconds(1));
+                    if (cd.closing.load()) {
+                        break;
                     }
-                    if (!first_convert && cv_ret != std::cv_status::timeout) {
+                    if (this->closing.load()) {
+                        break;
+                    }
+                    if (cd.image_changed[field] == last_image_flag &&
+                        this->image_req_changed[member][field] == last_req_flag) {
                         continue;
                     }
+                    last_image_flag = cd.image_changed[field];
+                    last_req_flag = this->image_req_changed[member][field];
                     logger->trace("converting image of {}, {}", member, field);
                     img = cd.image[field];
                 }
@@ -756,9 +757,7 @@ void ClientData::imageConvertThreadMain(const std::string &member,
                                   sub_field);
                     this->send();
                 }
-                first_convert = false;
             }
-            first_convert = false;
         });
         if (this->closing.load()) {
             break;
