@@ -59,6 +59,10 @@ class Func : protected Field {
     }
     WEBCFACE_DLL FuncWrapperType getDefaultFuncWrapper() const;
 
+    WEBCFACE_DLL void runImpl(std::shared_ptr<Internal::ClientData> data,
+                        FieldBase base,
+                        AsyncFuncResult r, std::vector<ValAdaptor> args_vec) const;
+
   public:
     /*!
      * \brief 関数からFuncInfoを構築しセットする
@@ -108,6 +112,7 @@ class Func : protected Field {
         return run({ValAdaptor(args)...});
     }
     WEBCFACE_DLL ValAdaptor run(const std::vector<ValAdaptor> &args_vec) const;
+    WEBCFACE_DLL wcfMultiVal &runCVal(const std::vector<ValAdaptor> &args_vec) const;
     /*!
      * \brief run()と同じ
      * 

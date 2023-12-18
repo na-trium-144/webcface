@@ -6,6 +6,7 @@
 #include <stdexcept>
 #include <cstdint>
 #include <ostream>
+#include "../c_wcf.h"
 
 namespace webcface {
 //! webcface::Commonはserverとclientで共通のheader-onlyなクラス
@@ -64,10 +65,11 @@ inline std::ostream &operator<<(std::ostream &os, ValType a) {
  */
 class ValAdaptor {
     std::string value;
+    wcfMultiVal wcf_val;
     ValType type;
 
   public:
-    ValAdaptor() : value(""), type(ValType::none_) {}
+    ValAdaptor() : value(""), type(ValType::none_){}
 
     // cast from run()
     ValAdaptor(const std::string &value)
@@ -82,16 +84,48 @@ class ValAdaptor {
         requires std::floating_point<T>
     ValAdaptor(T value) : value(std::to_string(value)), type(ValType::float_) {}
 
+    /*!
+     * \brief wcfMultiValから変換
+     * 
+     * valのint, double, strのいずれか1つに値をセットして渡すと、
+     * データ型を判別する
+     * 
+     * as_strの文字列はコピーして保持する
+     * 
+     */
+    ValAdaptor(const wcfMultiVal &val){
+        if(val.as_str != nullptr){
+            value = val.as_str;
+            type = ValType::string_;
+        }else if(val.as_double != 0){
+            value = std::to_string(val.as_double);
+            type = ValType::float_;
+        }else{
+            value = std::to_string(val.as_int);
+            type = ValType::int_;
+        }
+    }
+
     ValType valType() const { return type; }
+    /*!
+     * \brief wcfMultiValへの変換
+     * 
+     * int, double, strをそれぞれ埋めて返す
+     * 
+     * wcfMultiValオブジェクト本体, as_strの本体はValAdapterが保持している
+     * 
+     */
+    wcfMultiVal &toCVal() & {
+        wcf_val.as_int = std::atoi(value.c_str());
+        wcf_val.as_double = std::atof(value.c_str());
+        wcf_val.as_str = value.c_str();
+        return wcf_val;
+    }
 
     // cast to function
     operator const std::string &() const { return value; }
     operator double() const {
-        try {
-            return std::stod(value);
-        } catch (...) {
-            return 0;
-        }
+        return std::atof(value.c_str());
     }
     operator bool() const{
         return value == std::to_string(true);
@@ -128,6 +162,11 @@ class ValAdaptor {
         return *this;
     }
     ValAdaptor &operator=(const std::string &v) {
+        value = v;
+        type = ValType::string_;
+        return *this;
+    }
+    ValAdaptor &operator=(const char *v) {
         value = v;
         type = ValType::string_;
         return *this;
