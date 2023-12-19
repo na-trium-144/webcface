@@ -80,7 +80,11 @@ if(WEBCFACE_COVERAGE)
 endif()
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    add_compile_options(-Wno-psabi)
+    add_compile_options(-Wno-psabi) # refer to PR#9
+    add_compile_options(-Wall -Wextra -Wpedantic)
+endif()
+if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+    add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
