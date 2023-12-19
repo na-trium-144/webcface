@@ -24,9 +24,9 @@ struct ClientData {
 
     /*!
      * \brief 初回のsync() が終わったか
-     * 
+     *
      * falseならentryの通知などはしない
-     * 
+     *
      */
     bool sync_init = false;
 
@@ -52,13 +52,14 @@ struct ClientData {
      * \brief まだ完了していない自分へのcall呼び出しのリスト
      *
      * [caller_member_id][caller_id]
-     * 
+     *
      * 呼び出し開始で2, response返したら1, result返したら0
-     * 
+     *
      * 切断時にそれぞれにresponseを返す必要がある。
      *
      */
-    std::unordered_map<unsigned int, std::unordered_map<unsigned int, int>> pending_calls;
+    std::unordered_map<unsigned int, std::unordered_map<std::size_t, int>>
+        pending_calls;
 
     inline static unsigned int last_member_id = 0;
 

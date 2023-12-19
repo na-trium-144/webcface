@@ -81,14 +81,14 @@ void Store::findConnectedAndDo(unsigned int id,
     }
 }
 void Store::forEach(const std::function<void(ClientDataPtr)> &func) {
-    for (const auto cd : clients) {
+    for (const auto &cd : clients) {
         if (cd.second->sync_init) {
             func(cd.second);
         }
     }
 }
 void Store::forEachWithName(const std::function<void(ClientDataPtr)> &func) {
-    for (const auto cd : clients_by_id) {
+    for (const auto &cd : clients_by_id) {
         if (cd.second->sync_init) {
             func(cd.second);
         }
