@@ -112,4 +112,10 @@ Logオブジェクトにはこれまで受信したログデータがすべて�
 ![py ver1.0](https://img.shields.io/badge/1.0~-3776ab?logo=python&logoColor=white)
 前回からの差分だけが必要な場合は、データの処理後に Log::clear() で受信したログデータをすべて削除することもできます。
 
-[Func](./30_func.md) ←前 | 次→ [Message](./90_message.md)
+<div class="section_buttons">
+
+| Previous |     Next |
+|:---------|---------:|
+| [Func](30_func.md) | |
+
+</div>

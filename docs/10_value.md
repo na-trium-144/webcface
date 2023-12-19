@@ -123,4 +123,10 @@ wcli.onMemberEntry().appendListener([](Member m){
 ```
 のようにすると可能です。
 
-[Member](./02_member.md) ←前 | 次→ [Text](./11_text.md)
+<div class="section_buttons">
+
+| Previous |     Next |
+|:---------|---------:|
+| [Member](02_member.md) | [Text](11_text.md) |
+
+</div>
