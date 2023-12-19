@@ -55,17 +55,25 @@ Text::tryGet(), Text::tryGetRecurse() で値のリクエストをするととも
 初回の呼び出しではまだ受信していないためstd::nulloptを返します。
 (pythonでは None, javascriptでは null)
 
-その後Client::sync()したときに実際にリクエストが送信され、それ以降は値が得られるようになります。
+~~その後Client::sync()したときに実際にリクエストが送信され、~~  
+![c++ ver1.2](https://img.shields.io/badge/1.2~-00599c?logo=C%2B%2B)
+![js ver1.1](https://img.shields.io/badge/1.1~-f7df1e?logo=JavaScript&logoColor=black)
+![py ver1.0](https://img.shields.io/badge/1.0~-3776ab?logo=python&logoColor=white)
+別スレッドでリクエストが送信され、それ以降は値が得られるようになります。
 ```cpp
 while(true) {
 	std::optional<std::string> val = wcli.member("a").text("hoge").tryGet();
 	if(val) {
 		std::cout << "hoge = " << *val << std::endl;
 	}
-	wcli.sync();
+	// wcli.sync();
 	std::this_thread::sleep_for(std::chrono::milliseconds(10));
 }
 ```
+
+![js ver1.1](https://img.shields.io/badge/1.1~-f7df1e?logo=JavaScript&logoColor=black)
+![py ver1.0](https://img.shields.io/badge/1.0~-3776ab?logo=python&logoColor=white)
+Text::request()で明示的にリクエストを送信することもできます。
 
 Text::get(), Text::getRecurse() はstd::nulloptの代わりにデフォルト値を返す点以外は同じです。  
 また、std::string, Value::Dict などの型にキャストすることでも同様に値が得られます。
@@ -84,4 +92,10 @@ pythonでは Text.signal プロパティがこのイベントのsignalを返し�
 wcli.member("a").onSync().appendListener([](Member m){ /* ... */ });
 ```
 
-[Value](./10_value.md) ←前 | 次→ [View](./13_view.md)
+<div class="section_buttons">
+
+| Previous |     Next |
+|:---------|---------:|
+| [Value](10_value.md) | [View](13_view.md) |
+
+</div>

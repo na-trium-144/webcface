@@ -44,7 +44,7 @@ v.sync(); // ここまでにvに追加したものをクライアントに反映
 wcli.sync();
 ```
 C++ではViewのデストラクタでも自動的にView.sync()が呼ばれます。  
-![ver1.2から](https://img.shields.io/badge/ver1.2~-00599c?logo=C%2B%2B)
+![c++ ver1.2](https://img.shields.io/badge/1.2~-00599c?logo=C%2B%2B)
 Viewオブジェクトをコピーした場合、Viewオブジェクトの内容はコピーされるのではなく共有され、そのすべてのコピーが破棄されるまでsync()は呼ばれません。
 ```cpp
 {
@@ -171,4 +171,10 @@ View::appendListener() で受信したデータが変化したときにコール
 
 データが変化したどうかに関わらずそのMemberがsync()したときにコールバックを呼び出したい場合は Member::onSync() が使えます
 
-[Text](./11_text.md) ←前 | 次→ [Func](./30_func.md)
+<div class="section_buttons">
+
+| Previous |     Next |
+|:---------|---------:|
+| [Text](11_text.md) | [Func](30_func.md) |
+
+</div>

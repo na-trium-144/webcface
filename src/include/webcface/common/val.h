@@ -34,7 +34,11 @@ ValType valTypeOf() {
         return ValType::string_;
     }
 }
-//! 型名を出力する
+
+/*!
+ * \brief 型名を出力する。
+ * 
+ */
 inline std::ostream &operator<<(std::ostream &os, ValType a) {
     switch (a) {
     case ValType::none_:
@@ -52,8 +56,12 @@ inline std::ostream &operator<<(std::ostream &os, ValType a) {
     }
 }
 
-//! 数値、文字列などの値を相互変換するクラス
-//! Funcの引数、戻り値などに使う
+/*!
+ * \brief 数値、文字列などの値を相互変換するクラス
+ * 
+ * Funcの引数、戻り値などに使う
+ * 
+ */
 class ValAdaptor {
     std::string value;
     ValType type;

@@ -226,7 +226,7 @@ data = {
 * lは変更されていない分も含めたviewの全要素数です
 * dのindexはstring型で、要素のindexを10進数で文字列にしたものです
 	* 例えば `[text("aaa"), text("bbb"), text("ccc")]` が `[text("aaa"), text("ccc"), text("bbb")]` に変更された場合のメッセージは `{"d": {"1": {"t": 0, "x": "ccc"}, "2": {"t": 0, "x": "bbb"}}}`
-* ![ver1.1から](https://img.shields.io/badge/ver1.1~-00599c?logo=C%2B%2B) 
+* ![c++ ver1.1](https://img.shields.io/badge/1.1~-00599c?logo=C%2B%2B) 
 dのindexをnumber型からstring型に変更
 
 ### view entry (kind = 23)

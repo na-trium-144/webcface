@@ -11,7 +11,10 @@ namespace webcface {
 namespace Internal {
 struct ClientData;
 }
-//! Viewに表示する要素です
+/*!
+ * \brief Viewに表示する要素です
+ * 
+ */
 class ViewComponent : protected Common::ViewComponentBase {
     std::weak_ptr<Internal::ClientData> data_w;
 
@@ -24,68 +27,116 @@ class ViewComponent : protected Common::ViewComponentBase {
         : Common::ViewComponentBase(vc), data_w(data_w) {}
     explicit ViewComponent(ViewComponentType type) { type_ = type; }
 
-    //! AnonymousFuncをFuncオブジェクトにlockします
+    /*!
+     * \brief AnonymousFuncをFuncオブジェクトにlockします
+     * 
+     */
     WEBCFACE_DLL ViewComponentBase &
     lockTmp(const std::weak_ptr<Internal::ClientData> &data_w,
             const std::string &field_id);
 
-    //! 要素の種類
+    /*!
+     * \brief 要素の種類
+     * 
+     */
     ViewComponentType type() const { return type_; }
-    //! 表示する文字列を取得
+    /*!
+     * \brief 表示する文字列を取得
+     * 
+     */
     std::string text() const { return text_; }
-    //! 表示する文字列を設定
+    /*!
+     * \brief 表示する文字列を設定
+     * 
+     */
     ViewComponent &text(const std::string &text) {
         text_ = text;
         return *this;
     }
-    //! クリック時に実行される関数を取得
+    /*!
+     * \brief クリック時に実行される関数を取得
+     * 
+     */
     WEBCFACE_DLL std::optional<Func> onClick() const;
-    //! クリック時に実行される関数を設定
+    /*!
+     * \brief クリック時に実行される関数を設定
+     * 
+     */
     WEBCFACE_DLL ViewComponent &onClick(const Func &func);
-    //! クリック時に実行される関数を設定
+    /*!
+     * \brief クリック時に実行される関数を設定
+     * 
+     */
     template <typename T>
     ViewComponent &onClick(const T &func) {
         on_click_func_tmp = std::make_shared<AnonymousFunc>(func);
         return *this;
     }
-    //! 文字色を取得
+    /*!
+     * \brief 文字色を取得
+     * 
+     */
     ViewColor textColor() const { return text_color_; }
-    //! 文字色を設定
+    /*!
+     * \brief 文字色を設定
+     * 
+     */
     ViewComponent &textColor(ViewColor c) {
         text_color_ = c;
         return *this;
     }
-    //! 背景色を取得
+    /*!
+     * \brief 背景色を取得
+     * 
+     */
     ViewColor bgColor() const { return bg_color_; }
-    //! 背景色を設定
+    /*!
+     * \brief 背景色を設定
+     * 
+     */
     ViewComponent &bgColor(ViewColor c) {
         bg_color_ = c;
         return *this;
     }
 };
 inline namespace ViewComponents {
-//! textコンポーネント
+/*!
+ * \brief textコンポーネント
+ * 
+ */
 inline ViewComponent text(const std::string &text) {
     return ViewComponent(ViewComponentType::text).text(text);
 }
-//! newLineコンポーネント
+/*!
+ * \brief newLineコンポーネント
+ * 
+ */
 inline ViewComponent newLine() {
     return ViewComponent(ViewComponentType::new_line);
 }
-//! buttonコンポーネント
+/*!
+ * \brief buttonコンポーネント
+ * 
+ */
 template <typename T>
 inline ViewComponent button(const std::string &text, const T &func) {
     return ViewComponent(ViewComponentType::button).text(text).onClick(func);
 }
 } // namespace ViewComponents
 
-//! Viewの送信用データを保持する
+/*!
+ * \brief Viewの送信用データを保持する
+ * 
+ */
 class ViewBuf : public std::stringbuf {
   public:
-    //! 送信用のデータ
+    /*!
+     * \brief 送信用のデータ
+     * 
+     */
     std::vector<ViewComponent> components;
     bool modified = false;
-    //! std::flush時に呼ばれる
+
     WEBCFACE_DLL int sync() override;
 
     ViewBuf() : std::stringbuf(std::ios_base::out) {}
@@ -93,15 +144,21 @@ class ViewBuf : public std::stringbuf {
     ViewBuf &operator=(const ViewBuf &) = delete;
 };
 
-//! Viewの送受信データを表すクラス
-/*! コンストラクタではなく Member::view() を使って取得してください
+/*!
+ * \brief Viewの送受信データを表すクラス
+ * 
+ * コンストラクタではなく Member::view() を使って取得してください
+ * 
  */
 class View : protected Field, public EventTarget<View>, public std::ostream {
     std::shared_ptr<ViewBuf> sb;
 
     WEBCFACE_DLL void onAppend() const override;
 
-    //! 値をセットし、EventTargetを発動する
+    /*!
+     * \brief 値をセットし、EventTargetを発動する
+     * 
+     */
     WEBCFACE_DLL View &set(std::vector<ViewComponent> &v);
     
     WEBCFACE_DLL void onDestroy();
@@ -121,49 +178,69 @@ class View : protected Field, public EventTarget<View>, public std::ostream {
     WEBCFACE_DLL View &operator=(const View &rhs);
     WEBCFACE_DLL View &operator=(View &&rhs);
 
-    //! デストラクタで sync() を呼ぶ。
     /*!
+     * \brief デストラクタで sync() を呼ぶ。
+     *
      * * ver1.2以降:
      * Viewをコピーした場合は、すべてのコピーが破棄されたときにのみ sync()
      * が呼ばれる。
      * \sa sync()
+     * 
      */
     ~View() { onDestroy(); }
 
     using Field::member;
     using Field::name;
 
-    //! 子フィールドを返す
     /*!
+     * \brief 子フィールドを返す
+     *
      * \return「(thisのフィールド名).(子フィールド名)」をフィールド名とするView
+     * 
      */
     View child(const std::string &field) {
         return View{*this, this->field_ + "." + field};
     }
-    //! Viewを取得する
+    /*!
+     * \brief Viewを取得する
+     * 
+     */
     WEBCFACE_DLL std::optional<std::vector<ViewComponent>> tryGet() const;
-    //! Viewを取得する
+    /*!
+     * \brief Viewを取得する
+     * 
+     */
     std::vector<ViewComponent> get() const {
         return tryGet().value_or(std::vector<ViewComponent>{});
     }
-    //! syncの時刻を返す
+    /*!
+     * \brief syncの時刻を返す
+     * 
+     */
     WEBCFACE_DLL std::chrono::system_clock::time_point time() const;
 
-    //! 値やリクエスト状態をクリア
+    /*!
+     * \brief 値やリクエスト状態をクリア
+     * 
+     */
     WEBCFACE_DLL View &free();
 
-    //! このViewのViewBufの内容を初期化する
     /*!
+     * \brief このViewのViewBufの内容を初期化する
+     *
      * * ver1.1まで: コンストラクタでも自動で呼ばれる。
      * * ver1.2以降:
      * このViewオブジェクトに追加された内容をクリアし、内容を変更済みとしてマークする
      * (init() 後に sync() をするとViewの内容が空になる)
+     * 
      */
     WEBCFACE_DLL View &init();
-    //! 文字列にフォーマットし、textコンポーネントとして追加
     /*!
+     * \brief 文字列にフォーマットし、textコンポーネントとして追加
+     *
      * std::ostream::operator<< でも同様の動作をするが、returnする型が異なる
      * (std::ostream & を返すと operator<<(ViewComponent) が使えなくなる)
+     * 
      */
     template <typename T>
     View &operator<<(const T &rhs) {
@@ -174,17 +251,21 @@ class View : protected Field, public EventTarget<View>, public std::ostream {
         os_manip(*this);
         return *this;
     }
-    //! コンポーネントを追加
     /*!
+     * \brief コンポーネントを追加
+     *
      * std::flushも呼び出すことで直前に追加した未flashの文字列なども確実に追加する
+     * 
      */
     View &operator<<(const Common::ViewComponentBase &vc) {
         *this << ViewComponent{vc, this->data_w};
         return *this;
     }
-    //! コンポーネントを追加
     /*!
+     * \brief コンポーネントを追加
+     *
      * std::flushも呼び出すことで直前に追加した未flashの文字列なども確実に追加する
+     *
      */
     WEBCFACE_DLL View &operator<<(const ViewComponent &vc);
     //! 別のViewに含まれるコンポーネントを追加
@@ -197,9 +278,11 @@ class View : protected Field, public EventTarget<View>, public std::ostream {
      */
     WEBCFACE_DLL View &operator<<(const View &vg);
 
-    //! コンポーネントなどを追加
     /*!
+     * \brief コンポーネントなどを追加
+     *
      * Tの型に応じた operator<< が呼ばれる
+     * 
      */
     template <typename T>
     View &add(const T &rhs) {
@@ -207,10 +290,12 @@ class View : protected Field, public EventTarget<View>, public std::ostream {
         return *this;
     }
 
-    //! Viewの内容をclientに反映し送信可能にする
     /*!
+     * \brief Viewの内容をclientに反映し送信可能にする
+     *
      * * ver1.2以降: このViewオブジェクトの内容が変更されていなければ
      * (init()も追加もされていなければ) 何もしない。
+     * 
      */
     WEBCFACE_DLL View &sync();
 };

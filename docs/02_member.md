@@ -55,4 +55,10 @@ onMemberEntry() はC++では EventTarget クラスのオブジェクトを返し
 
 これ以降の章でもいくつかイベントが登場しますが、いずれもこれと同様の実装、使い方になっています。
 
-[Client](./01_client.md) ←前 | 次→ [Value](./10_value.md)
+<div class="section_buttons">
+
+| Previous |     Next |
+|:---------|---------:|
+| [Client](01_client.md) | [Value](10_value.md) |
+
+</div>

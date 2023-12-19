@@ -1,4 +1,4 @@
-# Func, AnonymousFunc
+# Func
 
 API Reference → webcface::Func, webcface::AnonymousFunc
 
@@ -100,7 +100,8 @@ Client::funcs()でその関数の存在を確認したりFunc::args()などで�
 名前がわかっていれば他Memberからでも実行は可能です。
 
 * C++では func.hidden(true) で設定できます。
-* ![js ver1.0.4から](https://img.shields.io/badge/ver1.0.4~-f7df1e?logo=JavaScript&logoColor=black)
+* ![js ver1.0.4](https://img.shields.io/badge/1.0.4~-f7df1e?logo=JavaScript&logoColor=black)
+![py ver1.0](https://img.shields.io/badge/1.0~-3776ab?logo=python&logoColor=white)
 JavaScript, Pythonではset()関数(Pythonデコレータの場合はfunc())の引数に指定することで設定できます。
 
 ### 実行条件 (C++)
@@ -168,4 +169,10 @@ result は実行が完了したときに返ります。関数の戻り値、ま�
 
 wcli.func() で取得できるようにする予定だが未実装。(現在はViewComponentの内部でのみ使われている)
 
-[View](./13_view.md) ←前 | 次→ [Log](./40_log.md)
+<div class="section_buttons">
+
+| Previous |     Next |
+|:---------|---------:|
+| [View](13_view.md) | [Log](40_log.md) |
+
+</div>

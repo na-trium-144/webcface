@@ -6,11 +6,23 @@
 #include <spdlog/common.h>
 
 namespace webcface::Server {
-// serverは1スレッドなのでmutexについて考える必要はない
+using ClientDataPtr = std::shared_ptr<ClientData>;
 inline struct Store {
-    std::unordered_map<ClientData::wsConnPtr, std::shared_ptr<ClientData>>
+
+    /*!
+     * \brief 現在接続されているクライアントの一覧
+     * 
+     */
+    std::unordered_map<ClientData::wsConnPtr, ClientDataPtr>
         clients;
-    std::unordered_map<unsigned int, std::shared_ptr<ClientData>> clients_by_id;
+    /*!
+     * \brief すべてのクライアントのデータ
+     * 切断されてもデータは残り、valueやlogなどあとで参照できる
+     * * 名前があるクライアントは同じ名前で再接続されたときに上書きする。
+     * * (ver1.2.2から) 名前がないクライアントは切断時に削除 (idを被らせないためnullptrで埋める)
+     * 
+     */
+    std::unordered_map<unsigned int, ClientDataPtr> clients_by_id;
 
     int keep_log = 1000; // server_mainで上書きされる
 
@@ -23,22 +35,45 @@ inline struct Store {
                    const std::string &remote_addr, const spdlog::sink_ptr &sink,
                    spdlog::level::level_enum level);
     void removeClient(const ClientData::wsConnPtr &con);
-    std::shared_ptr<ClientData> getClient(const ClientData::wsConnPtr &con);
+    ClientDataPtr getClient(const ClientData::wsConnPtr &con);
 
     void clientSendAll();
 
-    // 指定したnameのclientがあればfuncを、そうでなければfunc_elseを実行
+    /*!
+     * \brief 指定したnameのclientがあればfuncを、そうでなければfunc_elseを実行
+     * 
+     */
     void findAndDo(const std::string &name,
-                   const std::function<void(ClientData &)> &func,
+                   const std::function<void(ClientDataPtr)> &func,
                    const std::function<void()> &func_else = nullptr);
-    // 指定したidのclientがあればfuncを、そうでなければfunc_elseを実行
+    /*!
+     * \brief 指定したidのclientがあればfuncを、そうでなければfunc_elseを実行
+     * 
+     */
     void findAndDo(unsigned int id,
-                   const std::function<void(ClientData &)> &func,
+                   const std::function<void(ClientDataPtr)> &func,
                    const std::function<void()> &func_else = nullptr);
-    //! sync_initが完了している各ClientDataに対して処理をする
-    void forEach(const std::function<void(ClientData &)> &func);
-    //! sync_initが完了し名前のある各ClientDataに対して処理をする
-    void forEachWithName(const std::function<void(ClientData &)> &func);
+    /*!
+     * \brief 指定したidのclientが切断前であればfuncを、そうでなければfunc_elseを実行
+     *
+     */
+    void findConnectedAndDo(unsigned int id,
+                            const std::function<void(ClientDataPtr)> &func,
+                            const std::function<void()> &func_else = nullptr);
+    /*!
+     * \brief 各ClientDataに対して処理をする
+     * 
+     * 切断後も含む
+     * 
+     */
+    void forEach(const std::function<void(ClientDataPtr)> &func);
+    /*!
+     * \brief 名前のある各ClientDataに対して処理をする
+     * 
+     * 切断後も含む
+     * 
+     */
+    void forEachWithName(const std::function<void(ClientDataPtr)> &func);
 } store;
 
 } // namespace webcface::Server
