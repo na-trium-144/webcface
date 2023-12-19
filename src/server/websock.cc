@@ -34,20 +34,20 @@ void pingThreadMain() {
         }
         auto new_ping_status =
             std::make_shared<std::unordered_map<unsigned int, int>>();
-        store.forEach([&](auto &cd) {
-            if (cd.last_ping_duration) {
-                new_ping_status->emplace(cd.member_id,
-                                         cd.last_ping_duration->count());
+        store.forEach([&](auto cd) {
+            if (cd->last_ping_duration) {
+                new_ping_status->emplace(cd->member_id,
+                                         cd->last_ping_duration->count());
             }
         });
         ping_status = new_ping_status;
         auto msg = Message::packSingle(Message::PingStatus{{}, ping_status});
-        store.forEach([&](auto &cd) {
-            cd.logger->trace("ping");
-            cd.sendPing();
-            if (cd.ping_status_req) {
-                cd.send(msg);
-                cd.logger->trace("send ping_status");
+        store.forEach([&](auto cd) {
+            cd->logger->trace("ping");
+            cd->sendPing();
+            if (cd->ping_status_req) {
+                cd->send(msg);
+                cd->logger->trace("send ping_status");
             }
         });
     }
