@@ -90,6 +90,19 @@ int ViewBuf::sync() {
     this->str("");
     return 0;
 }
+View &View::operator<<(const View &vg) {
+    std::flush(*this);
+    if (vg.sb->modified || !vg.sb->components.empty()) {
+        for (const auto &vc : vg.sb->components) {
+            this->sb->components.push_back(vc);
+        }
+    } else if (vg.data_w.lock() != nullptr) {
+        for (const auto &vc : vg.get()) {
+            this->sb->components.push_back(vc);
+        }
+    }
+    return *this;
+}
 
 View &View::operator=(const View &rhs) {
     onDestroy();

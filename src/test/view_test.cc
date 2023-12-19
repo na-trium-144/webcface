@@ -59,8 +59,8 @@ TEST_F(ViewTest, viewSet) {
     v << button("a2", []() {});
     v.sync();
     EXPECT_EQ(callback_called, 1);
-    auto &view_data = **data_->view_store.getRecv(self_name, "b");
-    EXPECT_EQ(view_data.size(), 8);
+    auto view_data = **data_->view_store.getRecv(self_name, "b");
+    ASSERT_EQ(view_data.size(), 8);
     EXPECT_EQ(view_data[0].type_, ViewComponentType::text);
     EXPECT_EQ(view_data[0].text_, "a");
     EXPECT_EQ(view_data[1].type_, ViewComponentType::new_line);
@@ -115,9 +115,29 @@ TEST_F(ViewTest, viewSet) {
         View v5{};
     } // エラーやセグフォしない
     
-    View v6{};
-    v6 << "a";
+    View v6;
+    v6 << "a" << std::endl;
+    v6 << button("f", func(self_name, "f"));
+    v6 << button("a", afunc1([]() {}));
+    v6 << button("a2", []() {});
     EXPECT_THROW(v6.sync(), std::runtime_error);
+
+    v.init();
+    v << v6;
+    v.sync();
+    EXPECT_EQ(callback_called, 4);
+    view_data = **data_->view_store.getRecv(self_name, "b");
+    ASSERT_EQ(view_data.size(), 5);
+    EXPECT_EQ(view_data[0].type_, ViewComponentType::text);
+    EXPECT_EQ(view_data[0].text_, "a");
+    EXPECT_EQ(view_data[1].type_, ViewComponentType::new_line);
+    EXPECT_EQ(view_data[2].type_, ViewComponentType::button);
+    EXPECT_EQ(view_data[2].on_click_func_->member_, self_name);
+    EXPECT_EQ(view_data[2].on_click_func_->field_, "f");
+    EXPECT_EQ(view_data[3].type_, ViewComponentType::button);
+    EXPECT_EQ(view_data[3].on_click_func_->member_, self_name);
+    EXPECT_EQ(view_data[4].type_, ViewComponentType::button);
+    EXPECT_EQ(view_data[4].on_click_func_->member_, self_name);
 }
 TEST_F(ViewTest, viewGet) {
     auto vd = std::make_shared<std::vector<ViewComponentBase>>(
