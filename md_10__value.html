@@ -158,15 +158,17 @@ $(document).ready(function(){initNavTree('md_10__value.html',''); initResizable(
 受信</h1>
 <p>WebCFaceのクライアントは初期状態ではデータを受信しません。 リクエストを送って初めてサーバーからデータが順次送られてくるようになります。 これはValueに限らず、これ以降説明する他のデータ型のfieldについても同様です。</p>
 <p>Value::tryGet(), Value::tryGetVec(), Value::tryGetRecurse() で値のリクエストをするとともに受信した値を取得できます。 それぞれ 1つのdoubleの値、vector、Dict を返します。</p>
-<p>初回の呼び出しではまだ受信していないためstd::nulloptを返します。 (pythonでは None, javascriptでは null) 別スレッドでリクエストが送信され、それ以降は値が得られるようになります。 </p><div class="fragment"><div class="line"><span class="keywordflow">while</span>(<span class="keyword">true</span>) {</div>
+<p>初回の呼び出しではまだ受信していないためstd::nulloptを返します。 (pythonでは None, javascriptでは null) <strike>その後Client::sync()したときに実際にリクエストが送信され、</strike> <br  />
+ <img src="https://img.shields.io/badge/1.2~-00599c?logo=C%2B%2B" alt="c++ ver1.2" class="inline"/> <img src="https://img.shields.io/badge/1.1~-f7df1e?logo=JavaScript&amp;logoColor=black" alt="js ver1.1" class="inline"/> <img src="https://img.shields.io/badge/1.0~-3776ab?logo=python&amp;logoColor=white" alt="py ver1.0" class="inline"/> 別スレッドでリクエストが送信され、それ以降は値が得られるようになります。 </p><div class="fragment"><div class="line"><span class="keywordflow">while</span>(<span class="keyword">true</span>) {</div>
 <div class="line">    std::optional&lt;double&gt; val = wcli.member(<span class="stringliteral">&quot;a&quot;</span>).value(<span class="stringliteral">&quot;hoge&quot;</span>).tryGet();</div>
 <div class="line">    <span class="keywordflow">if</span>(val) {</div>
 <div class="line">        std::cout &lt;&lt; <span class="stringliteral">&quot;hoge = &quot;</span> &lt;&lt; *val &lt;&lt; std::endl;</div>
 <div class="line">    }</div>
-<div class="line">    wcli.sync();</div>
+<div class="line">    <span class="comment">// wcli.sync();</span></div>
 <div class="line">    std::this_thread::sleep_for(std::chrono::milliseconds(10));</div>
 <div class="line">}</div>
-</div><!-- fragment --><p>Value::get(), Value::getVec(), Value::getRecurse() はstd::nulloptの代わりにデフォルト値を返す点以外は同じです。 <br  />
+</div><!-- fragment --><p><img src="https://img.shields.io/badge/1.1~-f7df1e?logo=JavaScript&amp;logoColor=black" alt="js ver1.1" class="inline"/> <img src="https://img.shields.io/badge/1.0~-3776ab?logo=python&amp;logoColor=white" alt="py ver1.0" class="inline"/> Value::request()で明示的にリクエストを送信することもできます。</p>
+<p>Value::get(), Value::getVec(), Value::getRecurse() はstd::nulloptの代わりにデフォルト値を返す点以外は同じです。 <br  />
  また、doubleやstd::vector&lt;double&gt;, Value::Dict などの型にキャストすることでも同様に値が得られます。</p>
 <p>Value::time() でその値が送信されたとき(そのMemberがsync()したとき)の時刻が得られます。</p><ul>
 <li>Pythonでは Member.sync_time()</li>
@@ -196,7 +198,7 @@ $(document).ready(function(){initNavTree('md_10__value.html',''); initResizable(
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Dec 19 2023 09:52:12 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Tue Dec 19 2023 10:07:14 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

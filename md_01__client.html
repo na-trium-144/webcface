@@ -123,7 +123,7 @@ $(document).ready(function(){initNavTree('md_01__client.html',''); initResizable
 <div class="ttc" id="aclasswebcface_1_1Client_html"><div class="ttname"><a href="classwebcface_1_1Client.html">webcface::Client</a></div><div class="ttdoc">サーバーに接続するクライアント。</div><div class="ttdef"><b>Definition</b> client.h:17</div></div>
 <div class="ttc" id="awebcface_8h_html"><div class="ttname"><a href="webcface_8h.html">webcface.h</a></div></div>
 </div><!-- fragment --><p><strike>Client オブジェクトを作ると別スレッドでサーバーへの接続を開始します。</strike> <br  />
- <img src="https://img.shields.io/badge/1.2~-00599c?logo=C%2B%2B" alt="c++ ver1.2" class="inline"/> <img src="https://img.shields.io/badge/1.0~-3776ab?logo=python&amp;logoColor=white" alt="py ver1.0" class="inline"/> Client オブジェクトを作り、start() または waitConnection() を呼ぶことで別スレッドでサーバーへの接続を開始します。 start() はブロックしませんが waitConnection() は接続が完了するまで待機します。</p>
+ <img src="https://img.shields.io/badge/1.2~-00599c?logo=C%2B%2B" alt="c++ ver1.2" class="inline"/> <img src="https://img.shields.io/badge/1.1~-f7df1e?logo=JavaScript&amp;logoColor=black" alt="js ver1.1" class="inline"/> <img src="https://img.shields.io/badge/1.0~-3776ab?logo=python&amp;logoColor=white" alt="py ver1.0" class="inline"/> Client オブジェクトを作り、start() または waitConnection() を呼ぶことで別スレッドでサーバーへの接続を開始します。 start() はブロックしませんが waitConnection() は接続が完了するまで待機します。</p>
 <p>通信が切断された場合は自動で再接続します。</p>
 <p>コンストラクタに指定するのはこのクライアントの名前(Memberの名前)です。 同時に接続している他のクライアントと名前が被らないようにしてください。 <br  />
  コンストラクタに名前を指定しない、または空文字列の場合、読み取り専用モードになります。 この場合他のクライアントとの被りは問題ありませんがデータを送信することができなくなります。</p>
@@ -138,13 +138,13 @@ sync</h1>
 <div class="line">}</div>
 </div><!-- fragment --><p>Client::sync() をすることでこれ以降の章で扱う各種データを実際に送信します。 sync()自体は送信処理はせずキューに入れるだけであり、ノンブロッキングです。 メインプログラムの周期実行される場所などで繰り返し呼ぶようにしてください。</p>
 <p><strike>データを受信するだけの場合もサーバーにデータのリクエストをするためsync()が必要になります。</strike> <br  />
- <img src="https://img.shields.io/badge/1.2~-00599c?logo=C%2B%2B" alt="c++ ver1.2" class="inline"/> <img src="https://img.shields.io/badge/1.0~-3776ab?logo=python&amp;logoColor=white" alt="py ver1.0" class="inline"/> Funcの呼び出しとデータ受信リクエストの送信は sync() とは非同期に行われるので sync() は不要です。</p>
+ <img src="https://img.shields.io/badge/1.2~-00599c?logo=C%2B%2B" alt="c++ ver1.2" class="inline"/> <img src="https://img.shields.io/badge/1.1~-f7df1e?logo=JavaScript&amp;logoColor=black" alt="js ver1.1" class="inline"/> <img src="https://img.shields.io/badge/1.0~-3776ab?logo=python&amp;logoColor=white" alt="py ver1.0" class="inline"/> Funcの呼び出しとデータ受信リクエストの送信は sync() とは非同期に行われるので sync() は不要です。</p>
 <h1><a class="anchor" id="autotoc_md14"></a>
 切断する</h1>
 <p>Client::close() で切断します。 またはデストラクタでも自動的に切断します。</p>
 <h1><a class="anchor" id="autotoc_md15"></a>
 ログ出力</h1>
-<p><img src="https://img.shields.io/badge/1.1.7~-00599c?logo=C%2B%2B" alt="c++ ver1.1.7" class="inline"/> <img src="https://img.shields.io/badge/1.0~-3776ab?logo=python&amp;logoColor=white" alt="py ver1.0" class="inline"/> <code>WEBCFACE_VERBOSE</code> 環境変数が存在する場合、WebCFaceの通信に関するログ(接続、切断、メッセージのエラー)が出力されます。 また <code>WEBCFACE_TRACE</code> 環境変数が存在すると内部で使用しているlibcurlの出力も表示します。</p>
+<p><img src="https://img.shields.io/badge/1.1.7~-00599c?logo=C%2B%2B" alt="c++ ver1.1.7" class="inline"/> <img src="https://img.shields.io/badge/1.1~-f7df1e?logo=JavaScript&amp;logoColor=black" alt="js ver1.1" class="inline"/> <img src="https://img.shields.io/badge/1.0~-3776ab?logo=python&amp;logoColor=white" alt="py ver1.0" class="inline"/> <code>WEBCFACE_VERBOSE</code> 環境変数が存在する場合、WebCFaceの通信に関するログ(接続、切断、メッセージのエラー)が出力されます。 また <code>WEBCFACE_TRACE</code> 環境変数が存在すると内部で使用しているlibcurlの出力も表示します。</p>
 <div class="section_buttons"></div><div class="section_buttons"><table class="markdownTable">
 <tr class="markdownTableHead">
 <th class="markdownTableHeadLeft">Previous   </th><th class="markdownTableHeadRight">Next    </th></tr>
@@ -157,7 +157,7 @@ sync</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Dec 19 2023 09:52:12 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Tue Dec 19 2023 10:07:14 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

@@ -142,15 +142,17 @@ $(document).ready(function(){initNavTree('md_11__text.html',''); initResizable()
 受信</h1>
 <p>Text::tryGet(), Text::tryGetRecurse() で値のリクエストをするとともに受信した値を取得できます。</p>
 <p>初回の呼び出しではまだ受信していないためstd::nulloptを返します。 (pythonでは None, javascriptでは null)</p>
-<p>その後Client::sync()したときに実際にリクエストが送信され、それ以降は値が得られるようになります。 </p><div class="fragment"><div class="line"><span class="keywordflow">while</span>(<span class="keyword">true</span>) {</div>
+<p><strike>その後Client::sync()したときに実際にリクエストが送信され、</strike> <br  />
+ <img src="https://img.shields.io/badge/1.2~-00599c?logo=C%2B%2B" alt="c++ ver1.2" class="inline"/> <img src="https://img.shields.io/badge/1.1~-f7df1e?logo=JavaScript&amp;logoColor=black" alt="js ver1.1" class="inline"/> <img src="https://img.shields.io/badge/1.0~-3776ab?logo=python&amp;logoColor=white" alt="py ver1.0" class="inline"/> 別スレッドでリクエストが送信され、それ以降は値が得られるようになります。 </p><div class="fragment"><div class="line"><span class="keywordflow">while</span>(<span class="keyword">true</span>) {</div>
 <div class="line">    std::optional&lt;std::string&gt; val = wcli.member(<span class="stringliteral">&quot;a&quot;</span>).text(<span class="stringliteral">&quot;hoge&quot;</span>).tryGet();</div>
 <div class="line">    <span class="keywordflow">if</span>(val) {</div>
 <div class="line">        std::cout &lt;&lt; <span class="stringliteral">&quot;hoge = &quot;</span> &lt;&lt; *val &lt;&lt; std::endl;</div>
 <div class="line">    }</div>
-<div class="line">    wcli.sync();</div>
+<div class="line">    <span class="comment">// wcli.sync();</span></div>
 <div class="line">    std::this_thread::sleep_for(std::chrono::milliseconds(10));</div>
 <div class="line">}</div>
-</div><!-- fragment --><p>Text::get(), Text::getRecurse() はstd::nulloptの代わりにデフォルト値を返す点以外は同じです。 <br  />
+</div><!-- fragment --><p><img src="https://img.shields.io/badge/1.1~-f7df1e?logo=JavaScript&amp;logoColor=black" alt="js ver1.1" class="inline"/> <img src="https://img.shields.io/badge/1.0~-3776ab?logo=python&amp;logoColor=white" alt="py ver1.0" class="inline"/> Text::request()で明示的にリクエストを送信することもできます。</p>
+<p>Text::get(), Text::getRecurse() はstd::nulloptの代わりにデフォルト値を返す点以外は同じです。 <br  />
  また、std::string, Value::Dict などの型にキャストすることでも同様に値が得られます。</p>
 <h1><a class="anchor" id="autotoc_md26"></a>
 受信イベント</h1>
@@ -169,7 +171,7 @@ $(document).ready(function(){initNavTree('md_11__text.html',''); initResizable()
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Dec 19 2023 09:52:12 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Tue Dec 19 2023 10:07:14 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>
