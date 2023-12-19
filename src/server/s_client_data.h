@@ -15,12 +15,19 @@ struct ClientData {
     std::shared_ptr<spdlog::logger> logger;
     spdlog::level::level_enum logger_level;
 
+    /*!
+     * \brief ws接続のポインタ、切断後(onClose後)nullptrになる
+     */
     wsConnPtr con;
     std::string remote_addr;
-    bool connected() const;
+    bool connected() const { return con != nullptr; }
 
-    //! 初回のsync()が終わったか
-    //! falseならentryの通知などはしない
+    /*!
+     * \brief 初回のsync() が終わったか
+     *
+     * falseならentryの通知などはしない
+     *
+     */
     bool sync_init = false;
 
     std::string name;
@@ -41,7 +48,18 @@ struct ClientData {
     bool hasReq(const std::string &member);
     //! ログ全履歴
     std::shared_ptr<std::deque<Message::Log::LogLine>> log;
-
+    /*!
+     * \brief まだ完了していない自分へのcall呼び出しのリスト
+     *
+     * [caller_member_id][caller_id]
+     *
+     * 呼び出し開始で2, response返したら1, result返したら0
+     *
+     * 切断時にそれぞれにresponseを返す必要がある。
+     *
+     */
+    std::unordered_map<unsigned int, std::unordered_map<std::size_t, int>>
+        pending_calls;
 
     inline static unsigned int last_member_id = 0;
 

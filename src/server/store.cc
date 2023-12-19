@@ -20,11 +20,14 @@ void Store::removeClient(const ClientData::wsConnPtr &con) {
     auto it = clients.find(con);
     if (it != clients.end()) {
         it->second->onClose();
+        // 名前があるクライアントのデータはclients_by_idに残す
+        if (it->second->name.empty()) {
+            clients_by_id[it->second->member_id] = nullptr;
+        }
         clients.erase(con);
-        // clients_by_idは残す
     }
 }
-std::shared_ptr<ClientData> Store::getClient(const ClientData::wsConnPtr &con) {
+ClientDataPtr Store::getClient(const ClientData::wsConnPtr &con) {
     auto it = clients.find(con);
     if (it != clients.end()) {
         return it->second;
@@ -40,13 +43,13 @@ void Store::clientSendAll() {
 }
 
 void Store::findAndDo(const std::string &name,
-                      const std::function<void(ClientData &)> &func,
+                      const std::function<void(ClientDataPtr)> &func,
                       const std::function<void()> &func_else) {
     auto cd =
         std::find_if(clients_by_id.begin(), clients_by_id.end(),
                      [&](const auto &cd) { return cd.second->name == name; });
-    if (cd != clients_by_id.end()) {
-        func(*cd->second);
+    if (cd != clients_by_id.end() && cd->second->sync_init) {
+        func(cd->second);
     } else {
         if (func_else != nullptr) {
             func_else();
@@ -54,28 +57,40 @@ void Store::findAndDo(const std::string &name,
     }
 }
 void Store::findAndDo(unsigned int id,
-                      const std::function<void(ClientData &)> &func,
+                      const std::function<void(ClientDataPtr)> &func,
                       const std::function<void()> &func_else) {
     auto cd = clients_by_id.find(id);
-    if (cd != clients_by_id.end()) {
-        func(*cd->second);
+    if (cd != clients_by_id.end() && cd->second->sync_init) {
+        func(cd->second);
     } else {
         if (func_else != nullptr) {
             func_else();
         }
     }
 }
-void Store::forEach(const std::function<void(ClientData &)> &func) {
-    for (const auto cd : clients) {
-        if (cd.second->sync_init) {
-            func(*cd.second);
+void Store::findConnectedAndDo(unsigned int id,
+                      const std::function<void(ClientDataPtr)> &func,
+                      const std::function<void()> &func_else) {
+    auto cd = clients_by_id.find(id);
+    if (cd != clients_by_id.end() && cd->second->sync_init && cd->second->connected()) {
+        func(cd->second);
+    } else {
+        if (func_else != nullptr) {
+            func_else();
         }
     }
 }
-void Store::forEachWithName(const std::function<void(ClientData &)> &func) {
-    for (const auto cd : clients_by_id) {
+void Store::forEach(const std::function<void(ClientDataPtr)> &func) {
+    for (const auto &cd : clients) {
         if (cd.second->sync_init) {
-            func(*cd.second);
+            func(cd.second);
+        }
+    }
+}
+void Store::forEachWithName(const std::function<void(ClientDataPtr)> &func) {
+    for (const auto &cd : clients_by_id) {
+        if (cd.second->sync_init) {
+            func(cd.second);
         }
     }
 }
