@@ -66,4 +66,10 @@ Client::close() で切断します。
 `WEBCFACE_VERBOSE` 環境変数が存在する場合、WebCFaceの通信に関するログ(接続、切断、メッセージのエラー)が出力されます。
 また `WEBCFACE_TRACE` 環境変数が存在すると内部で使用しているlibcurlの出力も表示します。
 
-[Tutorial](./00_tutorial.md) ←前 | 次→ [Member](./02_member.md)
+<div class="section_buttons">
+
+| Previous |     Next |
+|:---------|---------:|
+| [Tutorial](00_tutorial.md) | [Member](02_member.md) |
+
+</div>

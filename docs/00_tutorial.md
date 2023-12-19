@@ -115,6 +115,10 @@ Python, JavaScriptのクライアントも使い方はだいたい同じです�
 * [webcface-python APIリファレンス](https://na-trium-144.github.io/webcface-python/)
 * [webcface-js APIリファレンス](https://na-trium-144.github.io/webcface-js/)
 
+<div class="section_buttons">
 
-次→ [Client](./01_client.md)
+| Previous |     Next |
+|:---------|---------:|
+|  | [Client](01_client.md) |
 
+</div>

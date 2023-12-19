@@ -84,4 +84,10 @@ pythonでは Text.signal プロパティがこのイベントのsignalを返し�
 wcli.member("a").onSync().appendListener([](Member m){ /* ... */ });
 ```
 
-[Value](./10_value.md) ←前 | 次→ [View](./13_view.md)
+<div class="section_buttons">
+
+| Previous |     Next |
+|:---------|---------:|
+| [Value](10_value.md) | [View](13_view.md) |
+
+</div>

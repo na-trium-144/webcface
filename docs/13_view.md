@@ -171,4 +171,10 @@ View::appendListener() で受信したデータが変化したときにコール
 
 データが変化したどうかに関わらずそのMemberがsync()したときにコールバックを呼び出したい場合は Member::onSync() が使えます
 
-[Text](./11_text.md) ←前 | 次→ [Func](./30_func.md)
+<div class="section_buttons">
+
+| Previous |     Next |
+|:---------|---------:|
+| [Text](11_text.md) | [Func](30_func.md) |
+
+</div>
