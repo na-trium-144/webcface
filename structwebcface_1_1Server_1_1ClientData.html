@@ -168,10 +168,12 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:ad0189c65be4ee081f1fa3183a901bbb5" id="r_ad0189c65be4ee081f1fa3183a901bbb5"><td class="memItemLeft" align="right" valign="top">spdlog::level::level_enum&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Server_1_1ClientData.html#ad0189c65be4ee081f1fa3183a901bbb5">logger_level</a></td></tr>
 <tr class="separator:ad0189c65be4ee081f1fa3183a901bbb5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a967dcc3eba8ae3ca17c1c79580894d67" id="r_a967dcc3eba8ae3ca17c1c79580894d67"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structwebcface_1_1Server_1_1ClientData.html#af92eef764fed4a1512658233c54020bf">wsConnPtr</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Server_1_1ClientData.html#a967dcc3eba8ae3ca17c1c79580894d67">con</a></td></tr>
+<tr class="memdesc:a967dcc3eba8ae3ca17c1c79580894d67"><td class="mdescLeft">&#160;</td><td class="mdescRight">ws接続のポインタ、切断後(onClose後)nullptrになる  <br /></td></tr>
 <tr class="separator:a967dcc3eba8ae3ca17c1c79580894d67"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeaede8e9fa35099287d112189aac9e3a" id="r_aeaede8e9fa35099287d112189aac9e3a"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Server_1_1ClientData.html#aeaede8e9fa35099287d112189aac9e3a">remote_addr</a></td></tr>
 <tr class="separator:aeaede8e9fa35099287d112189aac9e3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aabf3a5ce7b508dec8b9c197b0af1d8c8" id="r_aabf3a5ce7b508dec8b9c197b0af1d8c8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Server_1_1ClientData.html#aabf3a5ce7b508dec8b9c197b0af1d8c8">sync_init</a> = false</td></tr>
+<tr class="memdesc:aabf3a5ce7b508dec8b9c197b0af1d8c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">初回のsync() が終わったか  <br /></td></tr>
 <tr class="separator:aabf3a5ce7b508dec8b9c197b0af1d8c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9b45b3e13bd9167aab02e17e08916231" id="r_a9b45b3e13bd9167aab02e17e08916231"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Server_1_1ClientData.html#a9b45b3e13bd9167aab02e17e08916231">name</a></td></tr>
 <tr class="separator:a9b45b3e13bd9167aab02e17e08916231"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -202,6 +204,9 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a4e79285c61bd619cb904723d694963bf" id="r_a4e79285c61bd619cb904723d694963bf"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; std::deque&lt; <a class="el" href="structwebcface_1_1Message_1_1Log_1_1LogLine.html">Message::Log::LogLine</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Server_1_1ClientData.html#a4e79285c61bd619cb904723d694963bf">log</a></td></tr>
 <tr class="memdesc:a4e79285c61bd619cb904723d694963bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">ログ全履歴  <br /></td></tr>
 <tr class="separator:a4e79285c61bd619cb904723d694963bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6754409c137fc411ce6b10016d2d8718" id="r_a6754409c137fc411ce6b10016d2d8718"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; unsigned int, std::unordered_map&lt; std::size_t, int &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Server_1_1ClientData.html#a6754409c137fc411ce6b10016d2d8718">pending_calls</a></td></tr>
+<tr class="memdesc:a6754409c137fc411ce6b10016d2d8718"><td class="mdescLeft">&#160;</td><td class="mdescRight">まだ完了していない自分へのcall呼び出しのリスト  <br /></td></tr>
+<tr class="separator:a6754409c137fc411ce6b10016d2d8718"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8117ad8603d3cf802ac28675a0d446f8" id="r_a8117ad8603d3cf802ac28675a0d446f8"><td class="memItemLeft" align="right" valign="top">std::chrono::system_clock::time_point&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Server_1_1ClientData.html#a8117ad8603d3cf802ac28675a0d446f8">last_send_ping</a></td></tr>
 <tr class="separator:a8117ad8603d3cf802ac28675a0d446f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2aaa954beac272b1c230d2bec97be1c9" id="r_a2aaa954beac272b1c230d2bec97be1c9"><td class="memItemLeft" align="right" valign="top">std::optional&lt; std::chrono::milliseconds &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Server_1_1ClientData.html#a2aaa954beac272b1c230d2bec97be1c9">last_ping_duration</a></td></tr>
@@ -341,6 +346,9 @@ Static Public Attributes</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">bool connected </td>
@@ -349,6 +357,11 @@ Static Public Attributes</h2></td></tr>
           <td> const</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
@@ -542,6 +555,8 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
+<p>ws接続のポインタ、切断後(onClose後)nullptrになる </p>
+
 </div>
 </div>
 <a id="a51eebe93c62cc25bd332c820cbbb6d3c" name="a51eebe93c62cc25bd332c820cbbb6d3c"></a>
@@ -722,6 +737,25 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
+<a id="a6754409c137fc411ce6b10016d2d8718" name="a6754409c137fc411ce6b10016d2d8718"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6754409c137fc411ce6b10016d2d8718">&#9670;&#160;</a></span>pending_calls</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::unordered_map&lt;unsigned int, std::unordered_map&lt;std::size_t, int&gt; &gt; pending_calls</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>まだ完了していない自分へのcall呼び出しのリスト </p>
+<p>[caller_member_id][caller_id]</p>
+<p>呼び出し開始で2, response返したら1, result返したら0</p>
+<p>切断時にそれぞれにresponseを返す必要がある。 </p>
+
+</div>
+</div>
 <a id="ab513349dee41e5e85be9aaca1baa402c" name="ab513349dee41e5e85be9aaca1baa402c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab513349dee41e5e85be9aaca1baa402c">&#9670;&#160;</a></span>ping_interval</h2>
 
@@ -825,7 +859,9 @@ template&lt;typename T &gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>初回のsync()が終わったか falseならentryの通知などはしない </p>
+
+<p>初回のsync() が終わったか </p>
+<p>falseならentryの通知などはしない </p>
 
 </div>
 </div>
@@ -927,7 +963,7 @@ template&lt;typename T &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="namespacewebcface_1_1Server.html">Server</a></li><li class="navelem"><a class="el" href="structwebcface_1_1Server_1_1ClientData.html">ClientData</a></li>
-    <li class="footer">Generated on Tue Dec 19 2023 03:30:25 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Tue Dec 19 2023 09:44:39 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

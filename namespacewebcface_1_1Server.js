@@ -3,6 +3,7 @@ var namespacewebcface_1_1Server =
     [ "ClientData", "structwebcface_1_1Server_1_1ClientData.html", "structwebcface_1_1Server_1_1ClientData" ],
     [ "CustomLogger", "classwebcface_1_1Server_1_1CustomLogger.html", "classwebcface_1_1Server_1_1CustomLogger" ],
     [ "Store", "structwebcface_1_1Server_1_1Store.html", "structwebcface_1_1Server_1_1Store" ],
+    [ "ClientDataPtr", "namespacewebcface_1_1Server.html#ac49d764f17dea1515f5a737b042031c6", null ],
     [ "findReqField", "namespacewebcface_1_1Server.html#acbbf602b630a7d78f782ccd88ee2f8b8", null ],
     [ "getExeDir", "namespacewebcface_1_1Server.html#a517f0d3943a35342a90516c2216784ae", null ],
     [ "getStaticDir", "namespacewebcface_1_1Server.html#a190126a8b357424080243a1c04ee9afc", null ],

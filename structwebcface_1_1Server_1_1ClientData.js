@@ -27,6 +27,7 @@ var structwebcface_1_1Server_1_1ClientData =
     [ "logger_level", "structwebcface_1_1Server_1_1ClientData.html#ad0189c65be4ee081f1fa3183a901bbb5", null ],
     [ "member_id", "structwebcface_1_1Server_1_1ClientData.html#ae9313ec6cb5a526764b6163a3148970b", null ],
     [ "name", "structwebcface_1_1Server_1_1ClientData.html#a9b45b3e13bd9167aab02e17e08916231", null ],
+    [ "pending_calls", "structwebcface_1_1Server_1_1ClientData.html#a6754409c137fc411ce6b10016d2d8718", null ],
     [ "ping_interval", "structwebcface_1_1Server_1_1ClientData.html#ab513349dee41e5e85be9aaca1baa402c", null ],
     [ "ping_status_req", "structwebcface_1_1Server_1_1ClientData.html#aa4d0490f94c85fcb4e1d41b615f02f0c", null ],
     [ "remote_addr", "structwebcface_1_1Server_1_1ClientData.html#aeaede8e9fa35099287d112189aac9e3a", null ],

@@ -2,7 +2,7 @@ var searchData=
 [
   ['get_0',['get',['../classwebcface_1_1Log.html#ab2b35e1b920b6b4ab87b96ee259b1ffb',1,'webcface::Log::get()'],['../classwebcface_1_1Text.html#a6269c0946f8016322b84c015972d83c1',1,'webcface::Text::get()'],['../classwebcface_1_1Value.html#af53ec2e557ea14cce1373e0f77954c82',1,'webcface::Value::get()'],['../classwebcface_1_1View.html#a9b724c2d1ab5fa7806d58ed8e4d9b9a9',1,'webcface::View::get()'],['../classwebcface_1_1Common_1_1Dict.html#a7d458272f1665e1cf4c3fb7b6f964dec',1,'webcface::Common::Dict::get() const']]],
   ['getchildren_1',['getChildren',['../classwebcface_1_1Common_1_1Dict.html#ada57e64ab3ed8c4823e70705a8323e6f',1,'webcface::Common::Dict']]],
-  ['getclient_2',['getClient',['../structwebcface_1_1Server_1_1Store.html#a011a1c9153b63d4dd9bfc50d3bda6d92',1,'webcface::Server::Store']]],
+  ['getclient_2',['getClient',['../structwebcface_1_1Server_1_1Store.html#a194a1fc0a3b5da1082a7755147afae13',1,'webcface::Server::Store']]],
   ['getdefaultfuncwrapper_3',['getDefaultFuncWrapper',['../classwebcface_1_1Func.html#a97ecd85f8105c2a1f85bbe354ec9b33c',1,'webcface::Func']]],
   ['getentry_4',['getentry',['../classwebcface_1_1Internal_1_1SyncDataStore2.html#a2ad0dd04bc4bd458476f4d1aba9f40ec',1,'webcface::Internal::SyncDataStore2::getEntry(const FieldBase &amp;base)'],['../classwebcface_1_1Internal_1_1SyncDataStore2.html#a088e2cb338270b97057730d61965f795',1,'webcface::Internal::SyncDataStore2::getEntry(const std::string &amp;from)']]],
   ['getexedir_5',['getExeDir',['../namespacewebcface_1_1Server.html#a517f0d3943a35342a90516c2216784ae',1,'webcface::Server']]],
