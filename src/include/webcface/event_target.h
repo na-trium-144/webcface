@@ -19,19 +19,19 @@ class EventTarget {
   public:
     /*!
      * \brief イベントのコールバックの型
-     * 
+     *
      */
     using EventCallback = std::function<void(V)>;
     /*!
      * \brief コールバックのHandle
-     * 
+     *
      */
     using EventHandle = typename Dispatcher::Handle;
 
   protected:
     /*!
      * \brief イベントを発生させる。
-     * 
+     *
      */
     void triggerEvent(const VBase &arg) const {
         dispatcher->dispatch(key, arg);
@@ -39,7 +39,7 @@ class EventTarget {
 
     /*!
      * \brief listenerを追加する際に行わなければならない処理があればoverrideする
-     * 
+     *
      */
     virtual void onAppend() const {}
 
@@ -50,7 +50,7 @@ class EventTarget {
 
     /*!
      * \brief イベントのコールバックをリストの最後に追加する。
-     * 
+     *
      */
     EventHandle appendListener(const EventCallback &callback) const {
         onAppend();
@@ -58,7 +58,7 @@ class EventTarget {
     }
     /*!
      * \brief イベントのコールバックをリストの最初に追加する。
-     * 
+     *
      */
     EventHandle prependListener(const EventCallback &callback) const {
         onAppend();
@@ -66,7 +66,7 @@ class EventTarget {
     }
     /*!
      * \brief イベントのコールバックを間に挿入する。
-     * 
+     *
      */
     EventHandle insertListener(const EventCallback &callback,
                                const EventHandle &before) const {
@@ -75,19 +75,19 @@ class EventTarget {
     }
     /*!
      * \brief コールバックを削除する。
-     * 
+     *
      */
     bool removeListener(const EventHandle &handle) const {
         return dispatcher->removeListener(key, handle);
     }
     /*!
      * \brief コールバックが登録されているかを調べる。
-     * 
+     *
      */
     bool hasAnyListener() const { return dispatcher->hasAnyListener(key); }
     /*!
      * \brief handleがこのイベントのものかを調べる。
-     * 
+     *
      */
     bool ownsHandle(const EventHandle &handle) const {
         return dispatcher->ownsHandle(key, handle);

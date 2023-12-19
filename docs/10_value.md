@@ -79,6 +79,10 @@ Value::tryGet(), Value::tryGetVec(), Value::tryGetRecurse() で値のリクエ�
 
 初回の呼び出しではまだ受信していないためstd::nulloptを返します。
 (pythonでは None, javascriptでは null)
+~~その後Client::sync()したときに実際にリクエストが送信され、~~  
+![c++ ver1.2](https://img.shields.io/badge/1.2~-00599c?logo=C%2B%2B)
+![js ver1.1](https://img.shields.io/badge/1.1~-f7df1e?logo=JavaScript&logoColor=black)
+![py ver1.0](https://img.shields.io/badge/1.0~-3776ab?logo=python&logoColor=white)
 別スレッドでリクエストが送信され、それ以降は値が得られるようになります。
 ```cpp
 while(true) {
@@ -86,10 +90,14 @@ while(true) {
 	if(val) {
 		std::cout << "hoge = " << *val << std::endl;
 	}
-	wcli.sync();
+	// wcli.sync();
 	std::this_thread::sleep_for(std::chrono::milliseconds(10));
 }
 ```
+
+![js ver1.1](https://img.shields.io/badge/1.1~-f7df1e?logo=JavaScript&logoColor=black)
+![py ver1.0](https://img.shields.io/badge/1.0~-3776ab?logo=python&logoColor=white)
+Value::request()で明示的にリクエストを送信することもできます。
 
 Value::get(), Value::getVec(), Value::getRecurse() はstd::nulloptの代わりにデフォルト値を返す点以外は同じです。  
 また、doubleやstd::vector<double>, Value::Dict などの型にキャストすることでも同様に値が得られます。
@@ -123,4 +131,10 @@ wcli.onMemberEntry().appendListener([](Member m){
 ```
 のようにすると可能です。
 
-[Member](./02_member.md) ←前 | 次→ [Text](./11_text.md)
+<div class="section_buttons">
+
+| Previous |     Next |
+|:---------|---------:|
+| [Member](02_member.md) | [Text](11_text.md) |
+
+</div>
