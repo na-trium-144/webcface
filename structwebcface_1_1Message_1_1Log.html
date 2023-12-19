@@ -148,12 +148,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ab8f706bbf317b2d48c9d9d389ed4fcb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac3ba7948a19965b5ad829b3a46495222" id="r_ac3ba7948a19965b5ad829b3a46495222"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Message_1_1Log.html#ac3ba7948a19965b5ad829b3a46495222">Log</a> (const <a class="el" href="structwebcface_1_1Common_1_1LogLine.html">Common::LogLine</a> &amp;ll)</td></tr>
 <tr class="separator:ac3ba7948a19965b5ad829b3a46495222"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abcd13679942ad88d92c30754a4f09021" id="r_abcd13679942ad88d92c30754a4f09021"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Message_1_1Log.html#abcd13679942ad88d92c30754a4f09021">MSGPACK_DEFINE_MAP</a> (MSGPACK_NVP(&quot;m&quot;, <a class="el" href="structwebcface_1_1Message_1_1Log.html#ae9313ec6cb5a526764b6163a3148970b">member_id</a>), MSGPACK_NVP(&quot;l&quot;, <a class="el" href="structwebcface_1_1Message_1_1Log.html#a9839eb518f73d8514bc57b917246bac5">log</a>))</td></tr>
-<tr class="separator:abcd13679942ad88d92c30754a4f09021"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:ae9313ec6cb5a526764b6163a3148970b" id="r_ae9313ec6cb5a526764b6163a3148970b"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Message_1_1Log.html#ae9313ec6cb5a526764b6163a3148970b">member_id</a></td></tr>
+<tr class="memitem:ae9313ec6cb5a526764b6163a3148970b" id="r_ae9313ec6cb5a526764b6163a3148970b"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Message_1_1Log.html#ae9313ec6cb5a526764b6163a3148970b">member_id</a> = 0</td></tr>
 <tr class="separator:ae9313ec6cb5a526764b6163a3148970b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9839eb518f73d8514bc57b917246bac5" id="r_a9839eb518f73d8514bc57b917246bac5"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; std::deque&lt; <a class="el" href="structwebcface_1_1Message_1_1Log_1_1LogLine.html">LogLine</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Message_1_1Log.html#a9839eb518f73d8514bc57b917246bac5">log</a></td></tr>
 <tr class="separator:a9839eb518f73d8514bc57b917246bac5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -292,35 +290,6 @@ template&lt;typename It &gt; </div>
 
 </div>
 </div>
-<h2 class="groupheader">Member Function Documentation</h2>
-<a id="abcd13679942ad88d92c30754a4f09021" name="abcd13679942ad88d92c30754a4f09021"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abcd13679942ad88d92c30754a4f09021">&#9670;&#160;</a></span>MSGPACK_DEFINE_MAP()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">MSGPACK_DEFINE_MAP </td>
-          <td>(</td>
-          <td class="paramtype">MSGPACK_NVP(&quot;m&quot;, <a class="el" href="structwebcface_1_1Message_1_1Log.html#ae9313ec6cb5a526764b6163a3148970b">member_id</a>)&#160;</td>
-          <td class="paramname">, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">MSGPACK_NVP(&quot;l&quot;, <a class="el" href="structwebcface_1_1Message_1_1Log.html#a9839eb518f73d8514bc57b917246bac5">log</a>)&#160;</td>
-          <td class="paramname">&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <h2 class="groupheader">Member Data Documentation</h2>
 <a id="ad5a4760db27f8fcd5c4028bb15f80ad9" name="ad5a4760db27f8fcd5c4028bb15f80ad9"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad5a4760db27f8fcd5c4028bb15f80ad9">&#9670;&#160;</a></span>kind</h2>
@@ -365,7 +334,7 @@ template&lt;typename It &gt; </div>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">unsigned int member_id</td>
+          <td class="memname">unsigned int member_id = 0</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -381,7 +350,7 @@ template&lt;typename It &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="namespacewebcface_1_1Message.html">Message</a></li><li class="navelem"><a class="el" href="structwebcface_1_1Message_1_1Log.html">Log</a></li>
-    <li class="footer">Generated on Thu Dec 14 2023 10:18:48 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Tue Dec 19 2023 03:30:25 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

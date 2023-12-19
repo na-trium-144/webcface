@@ -2,7 +2,6 @@ var structwebcface_1_1Message_1_1View_1_1ViewComponent =
 [
     [ "ViewComponent", "structwebcface_1_1Message_1_1View_1_1ViewComponent.html#a1017917f2ea7d0f8ade067794c67e918", null ],
     [ "ViewComponent", "structwebcface_1_1Message_1_1View_1_1ViewComponent.html#a47055f57a9afaaeadc6b6de63ea52396", null ],
-    [ "MSGPACK_DEFINE_MAP", "structwebcface_1_1Message_1_1View_1_1ViewComponent.html#ad09f455831eaaee8ea76b84c59045b36", null ],
     [ "ViewComponentBase", "structwebcface_1_1Message_1_1View_1_1ViewComponent.html#a0d573408923a34574158e349f53067e9", null ],
     [ "bg_color", "structwebcface_1_1Message_1_1View_1_1ViewComponent.html#ada64e6dee7615eb103374de9ecb31e0f", null ],
     [ "on_click_field", "structwebcface_1_1Message_1_1View_1_1ViewComponent.html#aacb7b2f8e24a3ab13847d4b40584d20f", null ],

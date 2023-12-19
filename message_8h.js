@@ -46,9 +46,6 @@ var message_8h =
       [ "ping_status", "message_8h.html#a1432d06fc2e2d1f6da93d1c04dec4484a0cb8db73d08e6f71fe9d47fb44fdc9a5", null ],
       [ "ping_status_req", "message_8h.html#a1432d06fc2e2d1f6da93d1c04dec4484a0cf9ec07dc822afa5e1ec58e04e513fd", null ]
     ] ],
-    [ "MSGPACK_ADD_ENUM", "message_8h.html#a12fffc0d3c81f3ec1d3560777f91eba8", null ],
-    [ "MSGPACK_ADD_ENUM", "message_8h.html#aae76d3797d6bbc71e21c25af5f2481d8", null ],
-    [ "MSGPACK_ADD_ENUM", "message_8h.html#a51587ddfd0290f2204f1d77e845dde4e", null ],
     [ "pack", "message_8h.html#a36879effdf16e6acdd563b41fb630f35", null ],
     [ "packDone", "message_8h.html#a0368ef47eb403e45018a73ef46c90c62", null ],
     [ "packSingle", "message_8h.html#a965c311b611151d72a5129362ea11618", null ],

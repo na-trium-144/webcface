@@ -4,7 +4,6 @@ var structwebcface_1_1Message_1_1FuncInfo =
     [ "FuncInfo", "structwebcface_1_1Message_1_1FuncInfo.html#a227b05abb1bc9f7c6a913d6a2fe7cb3b", null ],
     [ "FuncInfo", "structwebcface_1_1Message_1_1FuncInfo.html#aa0f637d5d9228c4d44155d252d72c666", null ],
     [ "FuncInfo", "structwebcface_1_1Message_1_1FuncInfo.html#a2a45d43a18b91791b85fe158bb2102f9", null ],
-    [ "MSGPACK_DEFINE_MAP", "structwebcface_1_1Message_1_1FuncInfo.html#a93fe8e0078cc81399283a1d1d048fd40", null ],
     [ "FuncInfo", "structwebcface_1_1Message_1_1FuncInfo.html#a79b075bc9a7a8a0f9fdf68c2a49fdf9c", null ],
     [ "args", "structwebcface_1_1Message_1_1FuncInfo.html#a609a1869c27479747f5264c6604a277a", null ],
     [ "field", "structwebcface_1_1Message_1_1FuncInfo.html#a97bab0e4c0ea8b12272a606c825360e7", null ],

@@ -2,7 +2,6 @@ var structwebcface_1_1Message_1_1Call =
 [
     [ "Call", "structwebcface_1_1Message_1_1Call.html#ad6b7bfc86c9b4f640679feb6dd1efd3f", null ],
     [ "Call", "structwebcface_1_1Message_1_1Call.html#a2b3a724c066fa45093e55a0907302590", null ],
-    [ "MSGPACK_DEFINE_MAP", "structwebcface_1_1Message_1_1Call.html#a59c0a06b76d1c55e7a931506180271b2", null ],
     [ "args", "structwebcface_1_1Message_1_1Call.html#a0a632dba4003495b0fa39d2b205142ee", null ],
     [ "caller_id", "structwebcface_1_1Message_1_1Call.html#a1857b0e2073dee1ce8b4c840768c14fc", null ],
     [ "caller_member_id", "structwebcface_1_1Message_1_1Call.html#a0be1debb3575e0247093e3219322a868", null ],

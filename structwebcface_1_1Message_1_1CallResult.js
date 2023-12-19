@@ -1,6 +1,5 @@
 var structwebcface_1_1Message_1_1CallResult =
 [
-    [ "MSGPACK_DEFINE_MAP", "structwebcface_1_1Message_1_1CallResult.html#a1222b93ca006c5335936edcc24189d94", null ],
     [ "caller_id", "structwebcface_1_1Message_1_1CallResult.html#a1857b0e2073dee1ce8b4c840768c14fc", null ],
     [ "caller_member_id", "structwebcface_1_1Message_1_1CallResult.html#a0be1debb3575e0247093e3219322a868", null ],
     [ "is_error", "structwebcface_1_1Message_1_1CallResult.html#acd18c0daa978bc72c767aadc56717bfe", null ],

@@ -5,7 +5,6 @@ var structwebcface_1_1Message_1_1Log =
     [ "Log", "structwebcface_1_1Message_1_1Log.html#a1de379263e3bf3792c37faa87fb66212", null ],
     [ "Log", "structwebcface_1_1Message_1_1Log.html#ab8f706bbf317b2d48c9d9d389ed4fcb6", null ],
     [ "Log", "structwebcface_1_1Message_1_1Log.html#ac3ba7948a19965b5ad829b3a46495222", null ],
-    [ "MSGPACK_DEFINE_MAP", "structwebcface_1_1Message_1_1Log.html#abcd13679942ad88d92c30754a4f09021", null ],
     [ "kind", "structwebcface_1_1Message_1_1Log.html#ad5a4760db27f8fcd5c4028bb15f80ad9", null ],
     [ "log", "structwebcface_1_1Message_1_1Log.html#a9839eb518f73d8514bc57b917246bac5", null ],
     [ "member_id", "structwebcface_1_1Message_1_1Log.html#ae9313ec6cb5a526764b6163a3148970b", null ]

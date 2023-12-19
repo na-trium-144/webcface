@@ -259,7 +259,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a786b7cda7f3dbf6635ac2a56f2b94ca4"><td class="mdescLeft">&#160;</td><td class="mdescRight">このMemberのIPアドレス  <br /></td></tr>
 <tr class="separator:a786b7cda7f3dbf6635ac2a56f2b94ca4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4b2f7dcfbdbf338436db24cb765465ed" id="r_a4b2f7dcfbdbf338436db24cb765465ed"><td class="memItemLeft" align="right" valign="top">std::optional&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Member.html#a4b2f7dcfbdbf338436db24cb765465ed">pingStatus</a> () const</td></tr>
-<tr class="memdesc:a4b2f7dcfbdbf338436db24cb765465ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">通信速度を調べる /* 初回の呼び出しで通信速度データをリクエストし、 sync()後通信速度が得られるようになる  <br /></td></tr>
+<tr class="memdesc:a4b2f7dcfbdbf338436db24cb765465ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">通信速度を調べる  <br /></td></tr>
 <tr class="separator:a4b2f7dcfbdbf338436db24cb765465ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8a84109931beac2dea7f3991ea90654f" id="r_a8a84109931beac2dea7f3991ea90654f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1EventTarget.html">EventTarget</a>&lt; <a class="el" href="classwebcface_1_1Member.html">Member</a>, std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Member.html#a8a84109931beac2dea7f3991ea90654f">onPing</a> () const</td></tr>
 <tr class="memdesc:a8a84109931beac2dea7f3991ea90654f"><td class="mdescLeft">&#160;</td><td class="mdescRight">通信速度が更新された時のイベント  <br /></td></tr>
@@ -918,7 +918,7 @@ Private Attributes</h2></td></tr>
 
 <p>通信速度が更新された時のイベント </p>
 <p>コールバックの型は void(Member)</p>
-<p>通常は約5秒に1回更新される。 <a class="el" href="classwebcface_1_1Member.html#a4b2f7dcfbdbf338436db24cb765465ed" title="通信速度を調べる /* 初回の呼び出しで通信速度データをリクエストし、 sync()後通信速度が得られるようになる">pingStatus()</a> と同様、通信速度データのリクエストも行う。 </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="classwebcface_1_1Member.html#a4b2f7dcfbdbf338436db24cb765465ed" title="通信速度を調べる /* 初回の呼び出しで通信速度データをリクエストし、 sync()後通信速度が得られるようになる">pingStatus()</a> </dd></dl>
+<p>通常は約5秒に1回更新される。 <a class="el" href="classwebcface_1_1Member.html#a4b2f7dcfbdbf338436db24cb765465ed" title="通信速度を調べる">pingStatus()</a> と同様、通信速度データのリクエストも行う。 </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="classwebcface_1_1Member.html#a4b2f7dcfbdbf338436db24cb765465ed" title="通信速度を調べる">pingStatus()</a> </dd></dl>
 
 </div>
 </div>
@@ -1082,8 +1082,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>通信速度を調べる /* 初回の呼び出しで通信速度データをリクエストし、 <a class="el" href="classwebcface_1_1Client.html#ad55f80ed3cd8b6c4f247763b747016af" title="送信用にセットしたデータをすべて送信キューに入れる。">sync()</a>後通信速度が得られるようになる </p>
-<dl class="section return"><dt>Returns</dt><dd>初回→ std::nullopt, 2回目以降(取得できれば)→ pingの往復時間 (ms) </dd></dl>
+<p>通信速度を調べる </p>
+<p>初回の呼び出しで通信速度データをリクエストし、 <a class="el" href="classwebcface_1_1Client.html#ad55f80ed3cd8b6c4f247763b747016af" title="送信用にセットしたデータをすべて送信キューに入れる。">sync()</a>後通信速度が得られるようになる </p><dl class="section return"><dt>Returns</dt><dd>初回→ std::nullopt, 2回目以降(取得できれば)→ pingの往復時間 (ms) </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classwebcface_1_1Member.html#a8a84109931beac2dea7f3991ea90654f" title="通信速度が更新された時のイベント">onPing()</a> </dd></dl>
 
 </div>
@@ -1617,7 +1617,7 @@ template&lt;typename ScopeGuard &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="classwebcface_1_1Client.html">Client</a></li>
-    <li class="footer">Generated on Thu Dec 14 2023 10:18:48 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Tue Dec 19 2023 03:30:25 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

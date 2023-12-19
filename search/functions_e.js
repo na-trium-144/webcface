@@ -7,7 +7,7 @@ var searchData=
   ['parsevec_4',['parsevec',['../structwebcface_1_1Common_1_1DictTraits_3_01std_1_1shared__ptr_3_01T_01_4_01_4.html#a9c75e410037020a27ca297a870e6f55e',1,'webcface::Common::DictTraits&lt; std::shared_ptr&lt; T &gt; &gt;::parseVec()'],['../structwebcface_1_1Common_1_1DictTraits_3_01VectorOpt_3_01T_01_4_01_4.html#a9f70208dd87a825ead4cfaa2cb8d10d6',1,'webcface::Common::DictTraits&lt; VectorOpt&lt; T &gt; &gt;::parseVec()']]],
   ['ping_5',['Ping',['../structwebcface_1_1Message_1_1Ping.html#a356be4db19e685aa6b8ac181b9e33dac',1,'webcface::Message::Ping']]],
   ['pingstatus_6',['pingStatus',['../classwebcface_1_1Member.html#a4b2f7dcfbdbf338436db24cb765465ed',1,'webcface::Member']]],
-  ['pingstatusreq_7',['pingstatusreq',['../structwebcface_1_1Internal_1_1ClientData.html#a18722967c4ac050ffc2ac7418f2f40dc',1,'webcface::Internal::ClientData::pingStatusReq()'],['../structwebcface_1_1Message_1_1PingStatusReq.html#ad2bf5af6a72a51c681f21b7862af9020',1,'webcface::Message::PingStatusReq::PingStatusReq()']]],
+  ['pingstatusreq_7',['pingstatusreq',['../structwebcface_1_1Message_1_1PingStatusReq.html#ad2bf5af6a72a51c681f21b7862af9020',1,'webcface::Message::PingStatusReq::PingStatusReq()'],['../structwebcface_1_1Internal_1_1ClientData.html#a18722967c4ac050ffc2ac7418f2f40dc',1,'webcface::Internal::ClientData::pingStatusReq()']]],
   ['pingthreadmain_8',['pingThreadMain',['../namespacewebcface_1_1Server.html#a33df3bc6f542e57bb6b239b084301718',1,'webcface::Server']]],
   ['pop_9',['pop',['../classwebcface_1_1Common_1_1Queue.html#aa168f4e708abc9d119958b708f107601',1,'webcface::Common::Queue']]],
   ['prependlistener_10',['prependListener',['../classwebcface_1_1EventTarget.html#a9406117fe96b34fa4af36e39c5ec5f52',1,'webcface::EventTarget']]],

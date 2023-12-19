@@ -108,7 +108,6 @@ $(document).ready(function(){initNavTree('structwebcface_1_1Message_1_1SyncInit.
 
 <div class="header">
   <div class="summary">
-<a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="structwebcface_1_1Message_1_1SyncInit-members.html">List of all members</a>  </div>
@@ -131,11 +130,6 @@ Collaboration diagram for SyncInit:</div>
 <div class="center"><iframe scrolling="no" frameborder="0" src="structwebcface_1_1Message_1_1SyncInit__coll__graph.svg" width="264" height="228"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
-Public Member Functions</h2></td></tr>
-<tr class="memitem:a58b84e0aee93bac88d74da04f29f7eb0" id="r_a58b84e0aee93bac88d74da04f29f7eb0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Message_1_1SyncInit.html#a58b84e0aee93bac88d74da04f29f7eb0">MSGPACK_DEFINE_MAP</a> (MSGPACK_NVP(&quot;M&quot;, <a class="el" href="structwebcface_1_1Message_1_1SyncInit.html#a3c1ec895509287379c2c3e843b987862">member_name</a>), MSGPACK_NVP(&quot;m&quot;, <a class="el" href="structwebcface_1_1Message_1_1SyncInit.html#ae9313ec6cb5a526764b6163a3148970b">member_id</a>), MSGPACK_NVP(&quot;l&quot;, <a class="el" href="structwebcface_1_1Message_1_1SyncInit.html#add091ede649287c2dd955ef4b0e26080">lib_name</a>), MSGPACK_NVP(&quot;v&quot;, <a class="el" href="structwebcface_1_1Message_1_1SyncInit.html#aa2698cd3561f3700857d2061ae8161a7">lib_ver</a>), MSGPACK_NVP(&quot;a&quot;, <a class="el" href="structwebcface_1_1Message_1_1SyncInit.html#a3928426d40e05861b624661a53aa445b">addr</a>))</td></tr>
-<tr class="separator:a58b84e0aee93bac88d74da04f29f7eb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:a3c1ec895509287379c2c3e843b987862" id="r_a3c1ec895509287379c2c3e843b987862"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Message_1_1SyncInit.html#a3c1ec895509287379c2c3e843b987862">member_name</a></td></tr>
@@ -163,54 +157,7 @@ Static Public Attributes</h2></td></tr>
 <p>member_nameが空文字列でない場合、同時に接続している他のクライアントと被ってはいけない 過去に同名で接続したクライアントがある場合同じmember_idが振られる</p>
 <p>member_nameが空文字列の場合、他のクライアントとの被りは問題ないが、 他のクライアントにはこのクライアントの存在が通知されず、 valueなどのデータを送ることはできない</p>
 <p>serverはmember_idを振り、 member_nameが空でなかった場合は他の全クライアントにmember_idとaddrを載せて通知する </p>
-</div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a58b84e0aee93bac88d74da04f29f7eb0" name="a58b84e0aee93bac88d74da04f29f7eb0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a58b84e0aee93bac88d74da04f29f7eb0">&#9670;&#160;</a></span>MSGPACK_DEFINE_MAP()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">MSGPACK_DEFINE_MAP </td>
-          <td>(</td>
-          <td class="paramtype">MSGPACK_NVP(&quot;M&quot;, <a class="el" href="structwebcface_1_1Message_1_1SyncInit.html#a3c1ec895509287379c2c3e843b987862">member_name</a>)&#160;</td>
-          <td class="paramname">, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">MSGPACK_NVP(&quot;m&quot;, <a class="el" href="structwebcface_1_1Message_1_1SyncInit.html#ae9313ec6cb5a526764b6163a3148970b">member_id</a>)&#160;</td>
-          <td class="paramname">, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">MSGPACK_NVP(&quot;l&quot;, <a class="el" href="structwebcface_1_1Message_1_1SyncInit.html#add091ede649287c2dd955ef4b0e26080">lib_name</a>)&#160;</td>
-          <td class="paramname">, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">MSGPACK_NVP(&quot;v&quot;, <a class="el" href="structwebcface_1_1Message_1_1SyncInit.html#aa2698cd3561f3700857d2061ae8161a7">lib_ver</a>)&#160;</td>
-          <td class="paramname">, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">MSGPACK_NVP(&quot;a&quot;, <a class="el" href="structwebcface_1_1Message_1_1SyncInit.html#a3928426d40e05861b624661a53aa445b">addr</a>)&#160;</td>
-          <td class="paramname">&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<h2 class="groupheader">Member Data Documentation</h2>
+</div><h2 class="groupheader">Member Data Documentation</h2>
 <a id="a3928426d40e05861b624661a53aa445b" name="a3928426d40e05861b624661a53aa445b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3928426d40e05861b624661a53aa445b">&#9670;&#160;</a></span>addr</h2>
 
@@ -319,7 +266,7 @@ Static Public Attributes</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="namespacewebcface_1_1Message.html">Message</a></li><li class="navelem"><a class="el" href="structwebcface_1_1Message_1_1SyncInit.html">SyncInit</a></li>
-    <li class="footer">Generated on Thu Dec 14 2023 10:18:48 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Tue Dec 19 2023 03:30:25 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

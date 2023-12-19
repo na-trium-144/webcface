@@ -182,11 +182,11 @@ var NAVTREEINDEX =
 "classwebcface_1_1LoggerBuf.html#a6e7ea839d8eae81c2fbe10edcd4cab4d",
 "classwebcface_1_1Value.html#ab3dda82cce4f51951278190e41bf8dfa",
 "dir_8h.html#a190126a8b357424080243a1c04ee9afc",
-"namespacewebcface.html#a2519e960a6d716c731d3f6052b155506",
-"structwebcface_1_1Common_1_1DictTraits_3_01std_1_1shared__ptr_3_01T_01_4_01_4.html#abbe746fc1535d3cd565042e3bd51f157",
-"structwebcface_1_1Internal_1_1ClientData.html#a22c4656dcedd1c68d5cb26ac10289329",
-"structwebcface_1_1Message_1_1Log_1_1LogLine.html#a9276c31eac3b41aa773fb454c1876e2c",
-"structwebcface_1_1Server_1_1ClientData.html#aabf3a5ce7b508dec8b9c197b0af1d8c8"
+"namespacewebcface.html#a56477b79b2dde08913f06982f0bdeae2",
+"structwebcface_1_1Common_1_1FieldBase.html",
+"structwebcface_1_1Internal_1_1ClientData.html#a2565f1cb718c388a462b127500bd3b7d",
+"structwebcface_1_1Message_1_1PingStatusReq.html",
+"structwebcface_1_1Server_1_1Store.html#ab220140080b3a22eadbe31a1e989622d"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

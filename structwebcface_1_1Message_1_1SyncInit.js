@@ -1,6 +1,5 @@
 var structwebcface_1_1Message_1_1SyncInit =
 [
-    [ "MSGPACK_DEFINE_MAP", "structwebcface_1_1Message_1_1SyncInit.html#a58b84e0aee93bac88d74da04f29f7eb0", null ],
     [ "addr", "structwebcface_1_1Message_1_1SyncInit.html#a3928426d40e05861b624661a53aa445b", null ],
     [ "kind", "structwebcface_1_1Message_1_1SyncInit.html#ad5a4760db27f8fcd5c4028bb15f80ad9", null ],
     [ "lib_name", "structwebcface_1_1Message_1_1SyncInit.html#add091ede649287c2dd955ef4b0e26080", null ],
