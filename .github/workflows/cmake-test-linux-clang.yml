@@ -1,4 +1,4 @@
-name: CMake Test (Linux Clang)
+name: CMake Test (Linux Clang) and Clang-Tidy
 
 on:
   push:
@@ -42,6 +42,7 @@ jobs:
         -DWEBCFACE_EXAMPLE=on
         -DWEBCFACE_TEST_TIMEOUT=50
         -DWEBCFACE_USE_OPENCV=${{matrix.use_opencv}}
+        -DCMAKE_CXX_CLANG_TIDY=${{ env.LLVM_PATH }}/bin/clang-tidy
 
     - name: Build
       run: cmake --build build

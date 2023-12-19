@@ -14,9 +14,39 @@
 
 namespace webcface::Server {
 void ClientData::onClose() {
+    con = nullptr;
     logger->info("connection closed");
-
     closing.store(true);
+    for (const auto &pm : pending_calls) {
+        store.findAndDo(pm.first, [&](auto cd) {
+            for (const auto &pi : pm.second) {
+                switch (pi.second) {
+                case 2:
+                    cd->send(Message::packSingle(
+                        Message::CallResponse{{}, pi.first, pm.first, false}));
+                    cd->logger->debug("pending call aborted, sending "
+                                      "call_response (caller_id {})",
+                                      pi.first);
+                    break;
+                case 1:
+                    cd->send(Message::packSingle(Message::CallResult{
+                        {},
+                        pi.first,
+                        pm.first,
+                        true,
+                        "member(\"" + this->name + "\") Disconnected"}));
+                    cd->logger->debug("pending call aborted, sending "
+                                      "call_result (caller_id {})",
+                                      pi.first);
+                    break;
+                case 0:
+                    break;
+                default:
+                    throw std::runtime_error("invalid pending_call");
+                }
+            }
+        });
+    }
     for (auto &v : image_convert_thread) {
         for (auto &v2 : v.second) {
             v2.second->join();
@@ -40,8 +70,7 @@ void ClientData::send(const std::string &msg) {
         serverSend(con, msg);
     }
 }
-bool ClientData::connected() const { return con != nullptr; }
-void ClientData::onConnect() { logger->info("connected"); }
+void ClientData::onConnect() { logger->debug("websocket connected"); }
 
 bool ClientData::hasReq(const std::string &member) {
     return std::any_of(this->value_req[member].begin(),
@@ -128,11 +157,12 @@ void ClientData::onRecv(const std::string &message) {
                 this->logger->debug(
                     "sync_init name={}, member_id={} (before {})", this->name,
                     this->member_id, member_id_before);
+                this->logger->info("successfully connected and initialized.");
                 // 全クライアントに新しいMemberを通知
-                store.forEach([&](auto &cd) {
-                    if (cd.member_id != this->member_id) {
-                        cd.pack(v);
-                        cd.logger->trace("send sync_init {} ({})", this->name,
+                store.forEach([&](auto cd) {
+                    if (cd->member_id != this->member_id) {
+                        cd->pack(v);
+                        cd->logger->trace("send sync_init {} ({})", this->name,
                                          this->member_id);
                     }
                 });
@@ -140,37 +170,37 @@ void ClientData::onRecv(const std::string &message) {
             this->pack(webcface::Message::SvrVersion{
                 {}, WEBCFACE_SERVER_NAME, WEBCFACE_VERSION});
             // 逆に新しいMemberに他の全Memberのentryを通知
-            store.forEachWithName([&](auto &cd) {
-                if (cd.member_id != this->member_id) {
-                    this->pack(cd.init_data);
-                    logger->trace("send sync_init {} ({})", cd.name,
-                                  cd.member_id);
+            store.forEachWithName([&](auto cd) {
+                if (cd->member_id != this->member_id) {
+                    this->pack(cd->init_data);
+                    logger->trace("send sync_init {} ({})", cd->name,
+                                  cd->member_id);
 
-                    for (const auto &f : cd.value) {
+                    for (const auto &f : cd->value) {
                         this->pack(
                             webcface::Message::Entry<webcface::Message::Value>{
-                                {}, cd.member_id, f.first});
+                                {}, cd->member_id, f.first});
                         logger->trace("send value_entry {} of member {}",
-                                      f.first, cd.member_id);
+                                      f.first, cd->member_id);
                     }
-                    for (const auto &f : cd.text) {
+                    for (const auto &f : cd->text) {
                         this->pack(
                             webcface::Message::Entry<webcface::Message::Text>{
-                                {}, cd.member_id, f.first});
+                                {}, cd->member_id, f.first});
                         logger->trace("send text_entry {} of member {}",
-                                      f.first, cd.member_id);
+                                      f.first, cd->member_id);
                     }
-                    for (const auto &f : cd.view) {
+                    for (const auto &f : cd->view) {
                         this->pack(
                             webcface::Message::Entry<webcface::Message::View>{
-                                {}, cd.member_id, f.first});
+                                {}, cd->member_id, f.first});
                         logger->trace("send view_entry {} of member {}",
-                                      f.first, cd.member_id);
+                                      f.first, cd->member_id);
                     }
-                    for (const auto &f : cd.func) {
+                    for (const auto &f : cd->func) {
                         this->pack(*f.second);
                         logger->trace("send func_info {} of member {}",
-                                      f.second->field, cd.member_id);
+                                      f.second->field, cd->member_id);
                     }
                 }
             });
@@ -181,10 +211,10 @@ void ClientData::onRecv(const std::string &message) {
             v.member_id = this->member_id;
             logger->debug("sync");
             // 1つ以上リクエストしているクライアントにはsyncの情報を流す
-            store.forEach([&](auto &cd) {
-                if (cd.hasReq(this->name)) {
-                    cd.pack(v);
-                    cd.logger->trace("send sync {}", this->member_id);
+            store.forEach([&](auto cd) {
+                if (cd->hasReq(this->name)) {
+                    cd->pack(v);
+                    cd->logger->trace("send sync {}", this->member_id);
                 }
             });
             break;
@@ -196,17 +226,18 @@ void ClientData::onRecv(const std::string &message) {
                 "call caller_id={}, target_id={}, field={}, with {} args",
                 v.caller_id, v.target_member_id, v.field, v.args.size());
             // そのままターゲットのクライアントに送る
-            store.findAndDo(
+            store.findConnectedAndDo(
                 v.target_member_id,
-                [&](auto &cd) {
-                    cd.pack(v);
-                    cd.logger->trace("send call caller_id={}, target_id={}, "
+                [&](auto cd) {
+                    cd->pack(v);
+                    cd->pending_calls[this->member_id][v.caller_id] = 2;
+                    cd->logger->trace("send call caller_id={}, target_id={}, "
                                      "field={}, with {} args",
                                      v.caller_id, v.target_member_id, v.field,
                                      v.args.size());
                 },
                 [&]() {
-                    // 関数存在しないときの処理
+                    // 関数存在しないor切断されているときの処理
                     this->pack(webcface::Message::CallResponse{
                         {}, v.caller_id, v.caller_member_id, false});
                     logger->debug("call target not found");
@@ -217,10 +248,11 @@ void ClientData::onRecv(const std::string &message) {
             auto v = std::any_cast<webcface::Message::CallResponse>(obj);
             logger->debug("call_response to (member_id {}, caller_id {}), {}",
                           v.caller_member_id, v.caller_id, v.started);
+            this->pending_calls[v.caller_member_id][v.caller_id] = 1;
             // そのままcallerに送る
-            store.findAndDo(v.caller_member_id, [&](auto &cd) {
-                cd.pack(v);
-                cd.logger->trace(
+            store.findAndDo(v.caller_member_id, [&](auto cd) {
+                cd->pack(v);
+                cd->logger->trace(
                     "send call_response to (member_id {}, caller_id {}), {}",
                     v.caller_member_id, v.caller_id, v.started);
             });
@@ -231,10 +263,11 @@ void ClientData::onRecv(const std::string &message) {
             logger->debug("call_result to (member_id {}, caller_id {}), {}",
                           v.caller_member_id, v.caller_id,
                           static_cast<std::string>(v.result));
+            this->pending_calls[v.caller_member_id][v.caller_id] = 0;
             // そのままcallerに送る
-            store.findAndDo(v.caller_member_id, [&](auto &cd) {
-                cd.pack(v);
-                cd.logger->trace(
+            store.findAndDo(v.caller_member_id, [&](auto cd) {
+                cd->pack(v);
+                cd->logger->trace(
                     "send call_result to (member_id {}, caller_id {}), {}",
                     v.caller_member_id, v.caller_id,
                     static_cast<std::string>(v.result));
@@ -250,25 +283,25 @@ void ClientData::onRecv(const std::string &message) {
                               v.data->size());
             }
             if (!this->value.count(v.field)) {
-                store.forEach([&](auto &cd) {
-                    if (cd.name != this->name) {
-                        cd.pack(
+                store.forEach([&](auto cd) {
+                    if (cd->name != this->name) {
+                        cd->pack(
                             webcface::Message::Entry<webcface::Message::Value>{
                                 {}, this->member_id, v.field});
-                        cd.logger->trace("send value_entry {} of member {}",
+                        cd->logger->trace("send value_entry {} of member {}",
                                          v.field, this->member_id);
                     }
                 });
             }
             this->value[v.field] = v.data;
             // このvalueをsubscribeしてるところに送り返す
-            store.forEach([&](auto &cd) {
+            store.forEach([&](auto cd) {
                 auto [req_id, sub_field] =
-                    findReqField(cd.value_req, this->name, v.field);
+                    findReqField(cd->value_req, this->name, v.field);
                 if (req_id > 0) {
-                    cd.pack(webcface::Message::Res<webcface::Message::Value>(
+                    cd->pack(webcface::Message::Res<webcface::Message::Value>(
                         req_id, sub_field, v.data));
-                    cd.logger->trace("send value_res req_id={} + '{}'", req_id,
+                    cd->logger->trace("send value_res req_id={} + '{}'", req_id,
                                      sub_field);
                 }
             });
@@ -278,25 +311,25 @@ void ClientData::onRecv(const std::string &message) {
             auto v = std::any_cast<webcface::Message::Text>(obj);
             logger->debug("text {} = {}", v.field, *v.data);
             if (!this->text.count(v.field)) {
-                store.forEach([&](auto &cd) {
-                    if (cd.name != this->name) {
-                        cd.pack(
+                store.forEach([&](auto cd) {
+                    if (cd->name != this->name) {
+                        cd->pack(
                             webcface::Message::Entry<webcface::Message::Text>{
                                 {}, this->member_id, v.field});
-                        cd.logger->trace("send text_entry {} of member {}",
+                        cd->logger->trace("send text_entry {} of member {}",
                                          v.field, this->member_id);
                     }
                 });
             }
             this->text[v.field] = v.data;
             // このvalueをsubscribeしてるところに送り返す
-            store.forEach([&](auto &cd) {
+            store.forEach([&](auto cd) {
                 auto [req_id, sub_field] =
-                    findReqField(cd.text_req, this->name, v.field);
+                    findReqField(cd->text_req, this->name, v.field);
                 if (req_id > 0) {
-                    cd.pack(webcface::Message::Res<webcface::Message::Text>(
+                    cd->pack(webcface::Message::Res<webcface::Message::Text>(
                         req_id, sub_field, v.data));
-                    cd.logger->trace("send text_res {}, req_id={} + '{}'",
+                    cd->logger->trace("send text_res {}, req_id={} + '{}'",
                                      *v.data, req_id, sub_field);
                 }
             });
@@ -307,12 +340,12 @@ void ClientData::onRecv(const std::string &message) {
             logger->debug("view {} diff={}, length={}", v.field,
                           v.data_diff->size(), v.length);
             if (!this->view.count(v.field)) {
-                store.forEach([&](auto &cd) {
-                    if (cd.name != this->name) {
-                        cd.pack(
+                store.forEach([&](auto cd) {
+                    if (cd->name != this->name) {
+                        cd->pack(
                             webcface::Message::Entry<webcface::Message::View>{
                                 {}, this->member_id, v.field});
-                        cd.logger->trace("send view_entry {} of member {}",
+                        cd->logger->trace("send view_entry {} of member {}",
                                          v.field, this->member_id);
                     }
                 });
@@ -322,13 +355,13 @@ void ClientData::onRecv(const std::string &message) {
                 this->view[v.field][std::stoi(d.first)] = d.second;
             }
             // このvalueをsubscribeしてるところに送り返す
-            store.forEach([&](auto &cd) {
+            store.forEach([&](auto cd) {
                 auto [req_id, sub_field] =
-                    findReqField(cd.view_req, this->name, v.field);
+                    findReqField(cd->view_req, this->name, v.field);
                 if (req_id > 0) {
-                    cd.pack(webcface::Message::Res<webcface::Message::View>(
+                    cd->pack(webcface::Message::Res<webcface::Message::View>(
                         req_id, sub_field, v.data_diff, v.length));
-                    cd.logger->trace("send view_res req_id={} + '{}'", req_id,
+                    cd->logger->trace("send view_res req_id={} + '{}'", req_id,
                                      sub_field);
                 }
             });
@@ -378,10 +411,10 @@ void ClientData::onRecv(const std::string &message) {
                 this->log->pop_front();
             }
             // このlogをsubscribeしてるところに送り返す
-            store.forEach([&](auto &cd) {
-                if (cd.log_req.count(this->name)) {
-                    cd.pack(v);
-                    cd.logger->trace("send log {} lines", v.log->size());
+            store.forEach([&](auto cd) {
+                if (cd->log_req.count(this->name)) {
+                    cd->pack(v);
+                    cd->logger->trace("send log {} lines", v.log->size());
                 }
             });
             break;
@@ -391,10 +424,10 @@ void ClientData::onRecv(const std::string &message) {
             v.member_id = this->member_id;
             logger->debug("func_info {}", v.field);
             if (!this->func.count(v.field)) {
-                store.forEach([&](auto &cd) {
-                    if (cd.member_id != this->member_id) {
-                        cd.pack(v);
-                        cd.logger->trace("send func_info {} of member {}",
+                store.forEach([&](auto cd) {
+                    if (cd->member_id != this->member_id) {
+                        cd->pack(v);
+                        cd->logger->trace("send func_info {} of member {}",
                                          v.field, this->member_id);
                     }
                 });
@@ -409,13 +442,13 @@ void ClientData::onRecv(const std::string &message) {
             logger->debug("request value ({}): {} from {}", s.req_id, s.field,
                           s.member);
             // 指定した値を返す
-            store.findAndDo(s.member, [&](auto &cd) {
+            store.findAndDo(s.member, [&](auto cd) {
                 if (!this->hasReq(s.member)) {
-                    this->pack(webcface::Message::Sync{cd.member_id,
-                                                       cd.last_sync_time});
+                    this->pack(webcface::Message::Sync{cd->member_id,
+                                                       cd->last_sync_time});
                     logger->trace("send sync {}", this->member_id);
                 }
-                for (const auto &it : cd.value) {
+                for (const auto &it : cd->value) {
                     if (it.first == s.field ||
                         it.first.starts_with(s.field + ".")) {
                         std::string sub_field;
@@ -442,13 +475,13 @@ void ClientData::onRecv(const std::string &message) {
             logger->debug("request text ({}): {} from {}", s.req_id, s.field,
                           s.member);
             // 指定した値を返す
-            store.findAndDo(s.member, [&](auto &cd) {
+            store.findAndDo(s.member, [&](auto cd) {
                 if (!this->hasReq(s.member)) {
-                    this->pack(webcface::Message::Sync{cd.member_id,
-                                                       cd.last_sync_time});
+                    this->pack(webcface::Message::Sync{cd->member_id,
+                                                       cd->last_sync_time});
                     logger->trace("send sync {}", this->member_id);
                 }
-                for (const auto &it : cd.text) {
+                for (const auto &it : cd->text) {
                     if (it.first == s.field ||
                         it.first.starts_with(s.field + ".")) {
                         std::string sub_field;
@@ -475,13 +508,13 @@ void ClientData::onRecv(const std::string &message) {
             logger->debug("request view ({}): {} from {}", s.req_id, s.field,
                           s.member);
             // 指定した値を返す
-            store.findAndDo(s.member, [&](auto &cd) {
+            store.findAndDo(s.member, [&](auto cd) {
                 if (!this->hasReq(s.member)) {
-                    this->pack(webcface::Message::Sync{cd.member_id,
-                                                       cd.last_sync_time});
+                    this->pack(webcface::Message::Sync{cd->member_id,
+                                                       cd->last_sync_time});
                     logger->trace("send sync {}", this->member_id);
                 }
-                for (const auto &it : cd.view) {
+                for (const auto &it : cd->view) {
                     if (it.first == s.field ||
                         it.first.starts_with(s.field + ".")) {
                         auto diff = std::make_shared<std::unordered_map<
@@ -534,9 +567,9 @@ void ClientData::onRecv(const std::string &message) {
             logger->debug("request log from {}", s.member);
             log_req.insert(s.member);
             // 指定した値を返す
-            store.findAndDo(s.member, [&](auto &cd) {
-                this->pack(webcface::Message::Log{cd.member_id, cd.log});
-                logger->trace("send log {} lines", cd.log->size());
+            store.findAndDo(s.member, [&](auto cd) {
+                this->pack(webcface::Message::Log{cd->member_id, cd->log});
+                logger->trace("send log {} lines", cd->log->size());
             });
             break;
         }

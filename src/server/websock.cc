@@ -34,20 +34,20 @@ void pingThreadMain() {
         }
         auto new_ping_status =
             std::make_shared<std::unordered_map<unsigned int, int>>();
-        store.forEach([&](auto &cd) {
-            if (cd.last_ping_duration) {
-                new_ping_status->emplace(cd.member_id,
-                                         cd.last_ping_duration->count());
+        store.forEach([&](auto cd) {
+            if (cd->last_ping_duration) {
+                new_ping_status->emplace(cd->member_id,
+                                         cd->last_ping_duration->count());
             }
         });
         ping_status = new_ping_status;
         auto msg = Message::packSingle(Message::PingStatus{{}, ping_status});
-        store.forEach([&](auto &cd) {
-            cd.logger->trace("ping");
-            cd.sendPing();
-            if (cd.ping_status_req) {
-                cd.send(msg);
-                cd.logger->trace("send ping_status");
+        store.forEach([&](auto cd) {
+            cd->logger->trace("ping");
+            cd->sendPing();
+            if (cd->ping_status_req) {
+                cd->send(msg);
+                cd->logger->trace("send ping_status");
             }
         });
     }
@@ -105,17 +105,17 @@ void serverRun(int port, const spdlog::sink_ptr &sink,
             std::lock_guard lock(server_mtx);
             store.newClient(&conn, conn.get_remote_ip(), sink, level);
         })
-        .onclose(
-            [&](crow::websocket::connection &conn, const std::string &reason) {
-                std::lock_guard lock(server_mtx);
-                auto cli = store.getClient(&conn);
-                if (cli) {
-                    cli->con = nullptr;
-                }
-                store.removeClient(&conn);
-            })
+        .onclose([&](crow::websocket::connection &conn,
+                     const std::string & /*reason*/) {
+            std::lock_guard lock(server_mtx);
+            auto cli = store.getClient(&conn);
+            if (cli) {
+                cli->con = nullptr;
+            }
+            store.removeClient(&conn);
+        })
         .onmessage([&](crow::websocket::connection &conn,
-                       const std::string &data, bool is_binary) {
+                       const std::string &data, bool /*is_binary*/) {
             std::lock_guard lock(server_mtx);
             auto cli = store.getClient(&conn);
             if (cli) {

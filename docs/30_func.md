@@ -169,4 +169,10 @@ result は実行が完了したときに返ります。関数の戻り値、ま�
 
 wcli.func() で取得できるようにする予定だが未実装。(現在はViewComponentの内部でのみ使われている)
 
-[View](./13_view.md) ←前 | 次→ [Log](./40_log.md)
+<div class="section_buttons">
+
+| Previous |     Next |
+|:---------|---------:|
+| [View](13_view.md) | [Log](40_log.md) |
+
+</div>

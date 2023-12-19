@@ -1,3 +1,11 @@
+## [1.2.2] - 2023-12-19
+### Changed
+* windowsで文字セットがcp932のままwebcfaceをincludeしてもコンパイルが通るようにした (#131)
+* Wall, Wextra, Wpedantic (gcc, clang), W3 (msvc) フラグを追加 (#138)
+* ciにclang-tidyのチェックを追加
+### Fixed
+* callで呼び出したメンバーが通信切断されているとき、また呼び出し中に切断されたときに、サーバーがcallresponseやcallresultを呼び出し元に返すようにした (#141)
+
 ## [1.2.1] - 2023-12-12
 ### Changed
 * 依存ライブラリをsubmoduleではなくFetchContentで取得するように変更 (#128)

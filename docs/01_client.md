@@ -19,6 +19,7 @@ wcli.start();
 
 ~~Client オブジェクトを作ると別スレッドでサーバーへの接続を開始します。~~  
 ![c++ ver1.2](https://img.shields.io/badge/1.2~-00599c?logo=C%2B%2B)
+![js ver1.1](https://img.shields.io/badge/1.1~-f7df1e?logo=JavaScript&logoColor=black)
 ![py ver1.0](https://img.shields.io/badge/1.0~-3776ab?logo=python&logoColor=white)
 Client オブジェクトを作り、start() または waitConnection() を呼ぶことで別スレッドでサーバーへの接続を開始します。
 start() はブロックしませんが waitConnection() は接続が完了するまで待機します。
@@ -51,6 +52,7 @@ sync()自体は送信処理はせずキューに入れるだけであり、ノ�
 
 ~~データを受信するだけの場合もサーバーにデータのリクエストをするためsync()が必要になります。~~  
 ![c++ ver1.2](https://img.shields.io/badge/1.2~-00599c?logo=C%2B%2B)
+![js ver1.1](https://img.shields.io/badge/1.1~-f7df1e?logo=JavaScript&logoColor=black)
 ![py ver1.0](https://img.shields.io/badge/1.0~-3776ab?logo=python&logoColor=white)
 Funcの呼び出しとデータ受信リクエストの送信は sync() とは非同期に行われるので sync() は不要です。
 
@@ -62,8 +64,15 @@ Client::close() で切断します。
 ## ログ出力
 
 ![c++ ver1.1.7](https://img.shields.io/badge/1.1.7~-00599c?logo=C%2B%2B)
+![js ver1.1](https://img.shields.io/badge/1.1~-f7df1e?logo=JavaScript&logoColor=black)
 ![py ver1.0](https://img.shields.io/badge/1.0~-3776ab?logo=python&logoColor=white)
 `WEBCFACE_VERBOSE` 環境変数が存在する場合、WebCFaceの通信に関するログ(接続、切断、メッセージのエラー)が出力されます。
 また `WEBCFACE_TRACE` 環境変数が存在すると内部で使用しているlibcurlの出力も表示します。
 
-[Tutorial](./00_tutorial.md) ←前 | 次→ [Member](./02_member.md)
+<div class="section_buttons">
+
+| Previous |     Next |
+|:---------|---------:|
+| [Tutorial](00_tutorial.md) | [Member](02_member.md) |
+
+</div>

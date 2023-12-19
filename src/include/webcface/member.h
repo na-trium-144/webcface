@@ -169,7 +169,7 @@ class WEBCFACE_DLL Member : protected Field {
 
     /*!
      * \brief 通信速度を調べる
-    /*
+     *
      * 初回の呼び出しで通信速度データをリクエストし、
      * sync()後通信速度が得られるようになる
      * \return 初回→ std::nullopt, 2回目以降(取得できれば)→ pingの往復時間 (ms)
