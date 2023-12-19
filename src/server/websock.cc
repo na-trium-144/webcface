@@ -105,17 +105,17 @@ void serverRun(int port, const spdlog::sink_ptr &sink,
             std::lock_guard lock(server_mtx);
             store.newClient(&conn, conn.get_remote_ip(), sink, level);
         })
-        .onclose(
-            [&](crow::websocket::connection &conn, const std::string &reason) {
-                std::lock_guard lock(server_mtx);
-                auto cli = store.getClient(&conn);
-                if (cli) {
-                    cli->con = nullptr;
-                }
-                store.removeClient(&conn);
-            })
+        .onclose([&](crow::websocket::connection &conn,
+                     const std::string & /*reason*/) {
+            std::lock_guard lock(server_mtx);
+            auto cli = store.getClient(&conn);
+            if (cli) {
+                cli->con = nullptr;
+            }
+            store.removeClient(&conn);
+        })
         .onmessage([&](crow::websocket::connection &conn,
-                       const std::string &data, bool is_binary) {
+                       const std::string &data, bool /*is_binary*/) {
             std::lock_guard lock(server_mtx);
             auto cli = store.getClient(&conn);
             if (cli) {

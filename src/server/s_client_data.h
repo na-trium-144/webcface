@@ -51,7 +51,7 @@ struct ClientData {
     explicit ClientData(const wsConnPtr &con, const std::string &remote_addr,
                         const spdlog::sink_ptr &sink,
                         spdlog::level::level_enum level)
-        : con(con), remote_addr(remote_addr), sink(sink), logger_level(level),
+        : sink(sink), logger_level(level), con(con), remote_addr(remote_addr),
           log(std::make_shared<std::deque<Message::Log::LogLine>>()) {
         this->member_id = ++last_member_id;
         logger = std::make_shared<spdlog::logger>(

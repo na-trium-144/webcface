@@ -12,9 +12,9 @@
 #include <webcface/common/view.h>
 #include "val_adaptor.h"
 
-MSGPACK_ADD_ENUM(webcface::Common::ValType);
-MSGPACK_ADD_ENUM(webcface::Common::ViewComponentType);
-MSGPACK_ADD_ENUM(webcface::Common::ViewColor);
+MSGPACK_ADD_ENUM(webcface::Common::ValType)
+MSGPACK_ADD_ENUM(webcface::Common::ViewComponentType)
+MSGPACK_ADD_ENUM(webcface::Common::ViewColor)
 
 namespace webcface::Message {
 // 新しいメッセージの定義は
@@ -46,7 +46,7 @@ enum MessageKindEnum {
 
 /*!
  * \brief 型からkindを取得するためだけのベースクラス
- * 
+ *
  */
 template <int k>
 struct MessageBase {
@@ -54,7 +54,7 @@ struct MessageBase {
 };
 /*!
  * \brief client初期化(client->server->client)
- * 
+ *
  * clientは接続後最初に1回、
  * member_name,lib_name,lib_verを送る
  *
@@ -71,19 +71,19 @@ struct MessageBase {
 struct SyncInit : public MessageBase<MessageKind::sync_init> {
     /*!
      * \brief member名
-     * 
+     *
      */
     std::string member_name;
     /*!
      * \brief member id (1以上)
-     * 
+     *
      */
     unsigned int member_id;
     /*!
      * \brief clientライブラリの名前(id) このライブラリでは"cpp"
-     * 
+     *
      * 新しくライブラリ作ることがあったら変えて識別できるようにすると良いかも
-     * 
+     *
      */
     std::string lib_name;
     std::string lib_ver;
@@ -91,40 +91,40 @@ struct SyncInit : public MessageBase<MessageKind::sync_init> {
 
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("M", member_name),
                        MSGPACK_NVP("m", member_id), MSGPACK_NVP("l", lib_name),
-                       MSGPACK_NVP("v", lib_ver), MSGPACK_NVP("a", addr));
+                       MSGPACK_NVP("v", lib_ver), MSGPACK_NVP("a", addr))
 };
 
 /*!
  * \brief serverのバージョン情報(server->client)
- * 
+ *
  * serverはSyncInit受信後にこれを返す
- * 
+ *
  */
 struct SvrVersion : public MessageBase<MessageKind::svr_version> {
     /*!
      * \brief serverの名前
-     * 
+     *
      * このライブラリでは "webcface"
-     * 
+     *
      */
     std::string svr_name;
     /*!
      * \brief serverのバージョン
-     * 
+     *
      */
     std::string ver;
-    MSGPACK_DEFINE_MAP(MSGPACK_NVP("n", svr_name), MSGPACK_NVP("v", ver));
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("n", svr_name), MSGPACK_NVP("v", ver))
 };
 /*!
  * \brief ping(server->client->server)
- * 
+ *
  * serverが一定間隔でこれをclientに送る
  *
  * 内容は空のmap
  *
  * clientは即座に送り返さなければならない
  * (送り返さなくても何も起きないが)
- * 
+ *
  */
 struct Ping : public MessageBase<MessageKind::ping> {
     Ping() = default;
@@ -139,31 +139,31 @@ struct PingStatus : public MessageBase<MessageKind::ping_status> {
      *
      */
     std::shared_ptr<std::unordered_map<unsigned int, int>> status;
-    MSGPACK_DEFINE_MAP(MSGPACK_NVP("s", status));
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("s", status))
 };
 /*!
  * \brief ping状況のリクエスト (client->server)
- * 
+ *
  * これを送ると以降serverが一定間隔でPingStatusを送り返す
- * 
+ *
  */
 struct PingStatusReq : public MessageBase<MessageKind::ping_status_req> {
     PingStatusReq() = default;
 };
 /*!
  * \brief syncの時刻(client->server->client)
- * 
+ *
  * clientは各sync()ごとに1回、他のメッセージより先に現在時刻を送る
  *
  * serverはそのclientのデータを1つ以上requestしているクライアントに対して
  * member_idを載せて送る
- * 
+ *
  */
 struct Sync : public MessageBase<MessageKind::sync> {
     unsigned int member_id; //!< member id
     /*!
      * \brief 1970/1/1 0:00(utc) からの経過ミリ秒数で表し、閏秒はカウントしない
-     * 
+     *
      */
     std::uint64_t time;
     Sync(unsigned int member_id,
@@ -177,16 +177,16 @@ struct Sync : public MessageBase<MessageKind::sync> {
         return std::chrono::system_clock::time_point(
             std::chrono::milliseconds(time));
     }
-    MSGPACK_DEFINE_MAP(MSGPACK_NVP("m", member_id), MSGPACK_NVP("t", time));
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("m", member_id), MSGPACK_NVP("t", time))
 };
 
 /*!
  * \brief 関数呼び出し (client(caller)->server->client(receiver))
- * 
+ *
  * caller側clientが一意のcaller_idを振る(0以上の整数)
  *
  * serverはcaller_member_idをつけてreceiverに送る
- * 
+ *
  */
 struct Call : public MessageBase<MessageKind::call>, public Common::FuncCall {
     Call() = default;
@@ -195,18 +195,18 @@ struct Call : public MessageBase<MessageKind::call>, public Common::FuncCall {
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", caller_id),
                        MSGPACK_NVP("c", caller_member_id),
                        MSGPACK_NVP("r", target_member_id),
-                       MSGPACK_NVP("f", field), MSGPACK_NVP("a", args));
+                       MSGPACK_NVP("f", field), MSGPACK_NVP("a", args))
 };
 /*!
  * \brief 関数呼び出しの応答1 (client(receiver)->server->client(caller))
- * 
+ *
  * clientはcalled_id,caller_member_idと、関数の実行を開始したかどうかを返す
  *
  * * 関数の実行に時間がかかる場合も実行完了を待たずにstartedをtrueにして送る
  * * 対象の関数が存在しない場合、startedをfalseにして送る
  *
  * serverはそれをそのままcallerに送る
- * 
+ *
  */
 struct CallResponse : public MessageBase<MessageKind::call_response> {
     std::size_t caller_id;
@@ -214,11 +214,11 @@ struct CallResponse : public MessageBase<MessageKind::call_response> {
     bool started; //!< 関数の実行を開始したかどうか
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", caller_id),
                        MSGPACK_NVP("c", caller_member_id),
-                       MSGPACK_NVP("s", started));
+                       MSGPACK_NVP("s", started))
 };
 /*!
  * \brief 関数呼び出しの応答2 (client(receiver)->server->client(caller))
- * 
+ *
  * clientはcalled_id,caller_member_idと、関数の実行結果を返す
  *
  * resultに結果を文字列または数値または真偽値で返す
@@ -226,7 +226,7 @@ struct CallResponse : public MessageBase<MessageKind::call_response> {
  * * 例外が発生した場合はis_errorをtrueにしresultに例外の内容を文字列で入れて返す
  *
  * serverはそれをそのままcallerに送る
- * 
+ *
  */
 struct CallResult : public MessageBase<MessageKind::call_result> {
     std::size_t caller_id;
@@ -235,17 +235,17 @@ struct CallResult : public MessageBase<MessageKind::call_result> {
     Common::ValAdaptor result;
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", caller_id),
                        MSGPACK_NVP("c", caller_member_id),
-                       MSGPACK_NVP("e", is_error), MSGPACK_NVP("r", result));
+                       MSGPACK_NVP("e", is_error), MSGPACK_NVP("r", result))
 };
 struct Value : public MessageBase<MessageKind::value> {
     std::string field;
     std::shared_ptr<std::vector<double>> data;
-    MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", field), MSGPACK_NVP("d", data));
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", field), MSGPACK_NVP("d", data))
 };
 struct Text : public MessageBase<MessageKind::text> {
     std::string field;
     std::shared_ptr<std::string> data;
-    MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", field), MSGPACK_NVP("d", data));
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", field), MSGPACK_NVP("d", data))
 };
 struct View : public MessageBase<MessageKind::view> {
     std::string field;
@@ -280,7 +280,7 @@ struct View : public MessageBase<MessageKind::view> {
                            MSGPACK_NVP("L", on_click_member),
                            MSGPACK_NVP("l", on_click_field),
                            MSGPACK_NVP("c", text_color),
-                           MSGPACK_NVP("b", bg_color));
+                           MSGPACK_NVP("b", bg_color))
     };
     std::shared_ptr<std::unordered_map<std::string, ViewComponent>> data_diff;
     std::size_t length;
@@ -303,22 +303,22 @@ struct View : public MessageBase<MessageKind::view> {
          std::size_t length)
         : field(field), data_diff(data_diff), length(length) {}
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", field), MSGPACK_NVP("d", data_diff),
-                       MSGPACK_NVP("l", length));
+                       MSGPACK_NVP("l", length))
 };
 
 /*!
  * \brief client(member)->server->client logを追加
- * 
+ *
  * client->server時はmemberは無視
- * 
+ *
  */
 struct Log : public MessageBase<MessageKind::log> {
-    unsigned int member_id;
+    unsigned int member_id = 0;
     struct LogLine {
         int level = 0;
         /*!
          * \brief 1970/1/1からの経過ミリ秒
-         * 
+         *
          */
         std::uint64_t time = 0;
         std::string message;
@@ -336,12 +336,11 @@ struct Log : public MessageBase<MessageKind::log> {
                     message};
         }
         MSGPACK_DEFINE_MAP(MSGPACK_NVP("v", level), MSGPACK_NVP("t", time),
-                           MSGPACK_NVP("m", message));
+                           MSGPACK_NVP("m", message))
     };
     std::shared_ptr<std::deque<LogLine>> log;
     Log() = default;
-    Log(unsigned int member_id,
-        const std::shared_ptr<std::deque<LogLine>> &log)
+    Log(unsigned int member_id, const std::shared_ptr<std::deque<LogLine>> &log)
         : member_id(member_id), log(log) {}
     template <typename It>
     Log(const It &begin, const It &end) : member_id(0) {
@@ -354,17 +353,17 @@ struct Log : public MessageBase<MessageKind::log> {
         this->log = std::make_shared<std::deque<LogLine>>(1);
         this->log->front() = ll;
     }
-    MSGPACK_DEFINE_MAP(MSGPACK_NVP("m", member_id), MSGPACK_NVP("l", log));
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("m", member_id), MSGPACK_NVP("l", log))
 };
 struct LogReq : public MessageBase<MessageKind::log_req> {
     std::string member;
-    MSGPACK_DEFINE_MAP(MSGPACK_NVP("M", member));
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("M", member))
 };
 /*!
  * \brief client(member)->server->client func登録
- * 
+ *
  * client->server時はmemberは無視
- * 
+ *
  */
 struct FuncInfo : public MessageBase<MessageKind::func_info> {
     unsigned int member_id = 0;
@@ -375,7 +374,7 @@ struct FuncInfo : public MessageBase<MessageKind::func_info> {
         Arg(const Common::Arg &a) : Common::Arg(a) {}
         MSGPACK_DEFINE_MAP(MSGPACK_NVP("n", name_), MSGPACK_NVP("t", type_),
                            MSGPACK_NVP("i", init_), MSGPACK_NVP("m", min_),
-                           MSGPACK_NVP("x", max_), MSGPACK_NVP("o", option_));
+                           MSGPACK_NVP("x", max_), MSGPACK_NVP("o", option_))
     };
     std::shared_ptr<std::vector<Arg>> args;
     FuncInfo() = default;
@@ -386,8 +385,8 @@ struct FuncInfo : public MessageBase<MessageKind::func_info> {
           args(args) {}
     explicit FuncInfo(const std::string &field, const Common::FuncInfo &info)
         : MessageBase<MessageKind::func_info>(), field(field),
-          args(std::make_shared<std::vector<Arg>>(info.args.size())),
-          return_type(info.return_type) {
+          return_type(info.return_type),
+          args(std::make_shared<std::vector<Arg>>(info.args.size())) {
         for (std::size_t i = 0; i < info.args.size(); i++) {
             (*args)[i] = info.args[i];
         }
@@ -402,13 +401,13 @@ struct FuncInfo : public MessageBase<MessageKind::func_info> {
         return info;
     }
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("m", member_id), MSGPACK_NVP("f", field),
-                       MSGPACK_NVP("r", return_type), MSGPACK_NVP("a", args));
+                       MSGPACK_NVP("r", return_type), MSGPACK_NVP("a", args))
 };
 /*!
  * \brief client->server 以降Recvを送るようリクエスト
- * 
+ *
  * todo: 解除できるようにする
- * 
+ *
  */
 template <typename T>
 struct Req : public MessageBase<T::kind + MessageKind::req> {
@@ -416,28 +415,28 @@ struct Req : public MessageBase<T::kind + MessageKind::req> {
     std::string field;
     unsigned int req_id;
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", req_id), MSGPACK_NVP("M", member),
-                       MSGPACK_NVP("f", field));
+                       MSGPACK_NVP("f", field))
 };
 /*!
  * \brief server->client 新しいvalueなどの報告
- * 
+ *
  * Funcの場合はこれではなくFuncInfoを使用
- * 
+ *
  */
 template <typename T>
 struct Entry : public MessageBase<T::kind + MessageKind::entry> {
     unsigned int member_id;
     std::string field;
-    MSGPACK_DEFINE_MAP(MSGPACK_NVP("m", member_id), MSGPACK_NVP("f", field));
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("m", member_id), MSGPACK_NVP("f", field))
 };
 template <typename T>
 struct Res {};
 /*!
  * \brief server->client  Value,Textなどのfieldをreqidに変えただけのもの
- * 
+ *
  * requestしたフィールドの子フィールドの場合sub_fieldにフィールド名を入れて返す
  * →その場合clientが再度requestを送るはず
- * 
+ *
  */
 template <>
 struct Res<Value> : public MessageBase<MessageKind::value + MessageKind::res> {
@@ -449,7 +448,7 @@ struct Res<Value> : public MessageBase<MessageKind::value + MessageKind::res> {
         const std::shared_ptr<std::vector<double>> &data)
         : req_id(req_id), sub_field(sub_field), data(data) {}
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", req_id), MSGPACK_NVP("f", sub_field),
-                       MSGPACK_NVP("d", data));
+                       MSGPACK_NVP("d", data))
 };
 template <>
 struct Res<Text> : public MessageBase<MessageKind::text + MessageKind::res> {
@@ -461,7 +460,7 @@ struct Res<Text> : public MessageBase<MessageKind::text + MessageKind::res> {
         const std::shared_ptr<std::string> &data)
         : req_id(req_id), sub_field(sub_field), data(data) {}
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", req_id), MSGPACK_NVP("f", sub_field),
-                       MSGPACK_NVP("d", data));
+                       MSGPACK_NVP("d", data))
 };
 template <>
 struct Res<View> : public MessageBase<MessageKind::view + MessageKind::res> {
@@ -478,12 +477,12 @@ struct Res<View> : public MessageBase<MessageKind::view + MessageKind::res> {
         : req_id(req_id), sub_field(sub_field), data_diff(data_diff),
           length(length) {}
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", req_id), MSGPACK_NVP("f", sub_field),
-                       MSGPACK_NVP("d", data_diff), MSGPACK_NVP("l", length));
+                       MSGPACK_NVP("d", data_diff), MSGPACK_NVP("l", length))
 };
 
 /*!
  * \brief msgpackのメッセージをパースしstd::anyで返す
- * 
+ *
  */
 std::vector<std::pair<int, std::any>>
 unpack(const std::string &message,
@@ -491,7 +490,7 @@ unpack(const std::string &message,
 
 /*!
  * \brief メッセージ1つを要素数2の配列としてシリアル化
- * 
+ *
  */
 template <typename T>
 std::string packSingle(const T &obj) {
@@ -503,7 +502,7 @@ std::string packSingle(const T &obj) {
 
 /*!
  * \brief メッセージをシリアル化しbufferに追加
- * 
+ *
  */
 template <typename T>
 void pack(std::stringstream &buffer, int &len, const T &obj) {

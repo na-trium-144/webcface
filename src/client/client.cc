@@ -22,12 +22,13 @@ Client::Client(const std::string &name,
 Internal::ClientData::ClientData(const std::string &name,
                                  const std::string &host, int port)
     : std::enable_shared_from_this<ClientData>(), self_member_name(name),
-      host(host), port(port), value_store(name), text_store(name),
-      func_store(name), view_store(name),
+      host(host), port(port),
+      message_queue(std::make_shared<Common::Queue<std::string>>()),
+      value_store(name), text_store(name), func_store(name), view_store(name),
       log_store(std::make_shared<
                 SyncDataStore1<std::shared_ptr<std::vector<LogLine>>>>(name)),
       sync_time_store(name),
-      message_queue(std::make_shared<Common::Queue<std::string>>()),
+
       logger_sink(std::make_shared<LoggerSink>(log_store)) {
     static auto stderr_sink =
         std::make_shared<spdlog::sinks::stderr_color_sink_mt>();

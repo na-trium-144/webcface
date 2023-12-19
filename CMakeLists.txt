@@ -80,11 +80,10 @@ if(WEBCFACE_COVERAGE)
 endif()
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    add_compile_options(-Wno-psabi)
+    add_compile_options(-Wno-psabi) # refer to PR#9
 endif()
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-    add_compile_options(-utf-8)
     add_compile_definitions(
         _CRT_SECURE_NO_WARNINGS
         _SILENCE_STDEXT_ARR_ITERS_DEPRECATION_WARNING
@@ -286,6 +285,17 @@ if(WEBCFACE_TEST)
 endif()
 
 ###############################################################################
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    add_compile_options(-Wall -Wextra -Wpedantic)
+    add_compile_options(-Wno-psabi) # refer to PR#9
+endif()
+if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+    add_compile_options(-Wall -Wextra -Wpedantic)
+endif()
+
+if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+    add_compile_options(/utf-8 /W3)
+endif()
 
 set(CPP_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 set(SVR_MAIN_SRC ${CPP_DIR}/server_main.cc)
