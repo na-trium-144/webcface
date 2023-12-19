@@ -181,7 +181,7 @@ class View : protected Field, public EventTarget<View>, public std::ostream {
      * \sa sync()
      * 
      */
-    ~View() { onDestroy(); }
+    ~View() override { onDestroy(); }
 
     using Field::member;
     using Field::name;

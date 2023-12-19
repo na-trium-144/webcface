@@ -48,6 +48,8 @@ class EventTarget {
     EventTarget(Dispatcher *dispatcher, const Key &key)
         : dispatcher(dispatcher), key(key) {}
 
+    virtual ~EventTarget() {}
+    
     /*!
      * \brief イベントのコールバックをリストの最後に追加する。
      *
