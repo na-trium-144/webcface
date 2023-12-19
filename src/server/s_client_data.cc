@@ -53,7 +53,7 @@ void ClientData::send(const std::string &msg) {
         serverSend(con, msg);
     }
 }
-void ClientData::onConnect() { logger->info("connected"); }
+void ClientData::onConnect() { logger->debug("websocket connected"); }
 
 bool ClientData::hasReq(const std::string &member) {
     return std::any_of(this->value_req[member].begin(),
@@ -137,6 +137,7 @@ void ClientData::onRecv(const std::string &message) {
                 this->logger->debug(
                     "sync_init name={}, member_id={} (before {})", this->name,
                     this->member_id, member_id_before);
+                this->logger->info("successfully connected and initialized.");
                 // 全クライアントに新しいMemberを通知
                 store.forEach([&](auto cd) {
                     if (cd->member_id != this->member_id) {
