@@ -157,14 +157,19 @@ $(document).ready(function(){initNavTree('md_11__text.html',''); initResizable()
 <p>Text::appendListener() で受信したデータが変化したときにコールバックを呼び出すことができます。 コールバックを設定するとその値はリクエストされます。 </p><div class="fragment"><div class="line">wcli.member(<span class="stringliteral">&quot;a&quot;</span>).text(<span class="stringliteral">&quot;hoge&quot;</span>).appendListener([](Text v){ <span class="comment">/* ... */</span> });</div>
 </div><!-- fragment --><p> pythonでは Text.signal プロパティがこのイベントのsignalを返します。</p>
 <p>データが変化したどうかに関わらずそのMemberがsync()したときにコールバックを呼び出したい場合は Member::onSync() が使えます </p><div class="fragment"><div class="line">wcli.member(<span class="stringliteral">&quot;a&quot;</span>).onSync().appendListener([](Member m){ <span class="comment">/* ... */</span> });</div>
-</div><!-- fragment --><p><a class="el" href="md_10__value.html">Value</a> ←前 | 次→ <a class="el" href="md_13__view.html">View</a> </p>
-</div></div><!-- contents -->
+</div><!-- fragment --><div class="section_buttons"></div><div class="section_buttons"><table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadLeft">Previous   </th><th class="markdownTableHeadRight">Next    </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyLeft"><a class="el" href="md_10__value.html">Value</a>   </td><td class="markdownTableBodyRight"><a class="el" href="md_13__view.html">View</a>   </td></tr>
+</table>
+</div><div class="section_buttons"></div> </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Dec 19 2023 09:44:39 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Tue Dec 19 2023 09:52:12 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>
