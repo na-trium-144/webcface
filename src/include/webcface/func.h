@@ -112,7 +112,8 @@ class Func : protected Field {
         return run({ValAdaptor(args)...});
     }
     WEBCFACE_DLL ValAdaptor run(const std::vector<ValAdaptor> &args_vec) const;
-    WEBCFACE_DLL wcfMultiVal &runCVal(const std::vector<ValAdaptor> &args_vec) const;
+    WEBCFACE_DLL std::pair<wcfStatus, wcfMultiVal *>
+    runCVal(const std::vector<ValAdaptor> &args_vec) const;
     /*!
      * \brief run()と同じ
      * 

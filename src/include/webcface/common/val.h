@@ -65,7 +65,7 @@ inline std::ostream &operator<<(std::ostream &os, ValType a) {
  */
 class ValAdaptor {
     std::string value;
-    wcfMultiVal wcf_val;
+    wcfMultiVal c_val;
     ValType type;
 
   public:
@@ -112,14 +112,16 @@ class ValAdaptor {
      * 
      * int, double, strをそれぞれ埋めて返す
      * 
-     * wcfMultiValオブジェクト本体, as_strの本体はValAdapterが保持している
+     * as_strの本体はValAdapterが保持しているので、ValAdaptorの一時オブジェクトからは使用不可
      * 
      */
-    wcfMultiVal &toCVal() & {
-        wcf_val.as_int = std::atoi(value.c_str());
-        wcf_val.as_double = std::atof(value.c_str());
-        wcf_val.as_str = value.c_str();
-        return wcf_val;
+    wcfMultiVal *toCVal() & {
+        c_val = {
+            .as_int = std::atoi(value.c_str()),
+            .as_double = std::atof(value.c_str()),
+            .as_str = value.c_str(),
+        };
+        return &c_val;
     }
 
     // cast to function

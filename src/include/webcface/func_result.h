@@ -48,9 +48,21 @@ class AsyncFuncResult : Field {
     std::shared_ptr<std::promise<ValAdaptor>> result_;
 
     ValAdaptor result_val;
-    wcfMultiVal &toCVal() & {
-        result_val = result.get();
-        return result_val.toCVal();
+    std::pair<wcfStatus, wcfMultiVal *> toCVal() & {
+        try {
+            result_val = result.get();
+            return {WCF_OK, result_val.toCVal()};
+        }
+        catch (const FuncNotFound& e) {
+            result_val = e.what();
+            return {WCF_NOT_FOUND, result_val.toCVal()};
+        } catch (const std::exception &e) {
+            result_val = e.what();
+            return {WCF_EXCEPTION, result_val.toCVal()};
+        } catch (...) {
+            result_val = "unknown exception";
+            return {WCF_EXCEPTION, result_val.toCVal()};
+        }
     }
 
   public:

@@ -73,7 +73,8 @@ ValAdaptor Func::run(const std::vector<ValAdaptor> &args_vec) const {
         // 例外が発生した場合はthrowされる
     }
 }
-wcfMultiVal &Func::runCVal(const std::vector<ValAdaptor> &args_vec) const {
+std::pair<wcfStatus, wcfMultiVal *>
+Func::runCVal(const std::vector<ValAdaptor> &args_vec) const {
     auto data = dataLock();
     if (data->isSelf(*this)) {
         auto &r = data->func_result_store.addResult("", *this);
