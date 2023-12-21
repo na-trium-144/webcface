@@ -38,7 +38,7 @@ ValType valTypeOf() {
 
 /*!
  * \brief 型名を出力する。
- * 
+ *
  */
 inline std::ostream &operator<<(std::ostream &os, ValType a) {
     switch (a) {
@@ -59,9 +59,9 @@ inline std::ostream &operator<<(std::ostream &os, ValType a) {
 
 /*!
  * \brief 数値、文字列などの値を相互変換するクラス
- * 
+ *
  * Funcの引数、戻り値などに使う
- * 
+ *
  */
 class ValAdaptor {
     std::string value;
@@ -69,7 +69,7 @@ class ValAdaptor {
     ValType type;
 
   public:
-    ValAdaptor() : value(""), type(ValType::none_){}
+    ValAdaptor() : value(""), type(ValType::none_) {}
 
     // cast from run()
     ValAdaptor(const std::string &value)
@@ -86,21 +86,21 @@ class ValAdaptor {
 
     /*!
      * \brief wcfMultiValから変換
-     * 
+     *
      * valのint, double, strのいずれか1つに値をセットして渡すと、
      * データ型を判別する
-     * 
+     *
      * as_strの文字列はコピーして保持する
-     * 
+     *
      */
-    ValAdaptor(const wcfMultiVal &val){
-        if(val.as_str != nullptr){
+    ValAdaptor(const wcfMultiVal &val) {
+        if (val.as_str != nullptr) {
             value = val.as_str;
             type = ValType::string_;
-        }else if(val.as_double != 0){
+        } else if (val.as_double != 0) {
             value = std::to_string(val.as_double);
             type = ValType::float_;
-        }else{
+        } else {
             value = std::to_string(val.as_int);
             type = ValType::int_;
         }
@@ -109,11 +109,11 @@ class ValAdaptor {
     ValType valType() const { return type; }
     /*!
      * \brief wcfMultiValへの変換
-     * 
+     *
      * int, double, strをそれぞれ埋めて返す
-     * 
+     *
      * as_strの本体はValAdapterが保持しているので、ValAdaptorの一時オブジェクトからは使用不可
-     * 
+     *
      */
     wcfMultiVal *toCVal() & {
         c_val = {
@@ -126,12 +126,8 @@ class ValAdaptor {
 
     // cast to function
     operator const std::string &() const { return value; }
-    operator double() const {
-        return std::atof(value.c_str());
-    }
-    operator bool() const{
-        return value == std::to_string(true);
-    }
+    operator double() const { return std::atof(value.c_str()); }
+    operator bool() const { return value == std::to_string(true); }
     template <typename T>
         requires std::convertible_to<double, T>
     operator T() const {
@@ -176,7 +172,8 @@ class ValAdaptor {
 };
 
 // inline std::ostream &operator<<(std::ostream &os, const ValAdaptor &a) {
-//     return os << static_cast<std::string>(a) << "(type=" << a.valType() << ")";
+//     return os << static_cast<std::string>(a) << "(type=" << a.valType() <<
+//     ")";
 // }
 
 //! ValAdaptorのリストから任意の型のタプルに変換する

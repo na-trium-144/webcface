@@ -38,10 +38,8 @@ Func &Func::free() {
 }
 
 void Func::runImpl(std::shared_ptr<Internal::ClientData> data,
-                        FieldBase base,
-                        AsyncFuncResult r,
-                        std::vector<ValAdaptor> args_vec) const {
-    auto func_info = data->func_store.getRecv(base);
+                   AsyncFuncResult r, std::vector<ValAdaptor> args_vec) const {
+    auto func_info = data->func_store.getRecv(*this);
     if (func_info) {
         r.started_->set_value(true);
         try {
@@ -53,7 +51,7 @@ void Func::runImpl(std::shared_ptr<Internal::ClientData> data,
     } else {
         r.started_->set_value(false);
         try {
-            throw FuncNotFound(base);
+            throw FuncNotFound(*this);
         } catch (...) {
             r.result_->set_exception(std::current_exception());
         }
@@ -64,7 +62,7 @@ ValAdaptor Func::run(const std::vector<ValAdaptor> &args_vec) const {
     if (data->isSelf(*this)) {
         auto &r = data->func_result_store.addResult("", *this);
         // selfの場合このスレッドでそのまま関数を実行する
-        runImpl(data, *this, r, args_vec);
+        runImpl(data, r, args_vec);
         return r.result.get();
     } else {
         // リモートの場合runAsyncし結果が返るまで待機
@@ -79,7 +77,7 @@ Func::runCVal(const std::vector<ValAdaptor> &args_vec) const {
     if (data->isSelf(*this)) {
         auto &r = data->func_result_store.addResult("", *this);
         // selfの場合このスレッドでそのまま関数を実行する
-        runImpl(data, *this, r, args_vec);
+        runImpl(data, r, args_vec);
         return r.toCVal();
     } else {
         // リモートの場合runAsyncし結果が返るまで待機
@@ -93,7 +91,7 @@ AsyncFuncResult &Func::runAsync(const std::vector<ValAdaptor> &args_vec) const {
     auto &r = data->func_result_store.addResult("", *this);
     if (data->isSelf(*this)) {
         // selfの場合、新しいAsyncFuncResultに別スレッドで実行した結果を入れる
-        std::thread([&](){runImpl(data, *this, r, args_vec);}).detach();
+        std::thread([=, *this, &r]() { runImpl(data, r, args_vec); }).detach();
     } else {
         // リモートの場合cli.sync()を待たずに呼び出しメッセージを送る
         data->message_queue->push(Message::packSingle(Message::Call{
