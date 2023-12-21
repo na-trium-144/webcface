@@ -319,7 +319,9 @@ set(CLI_SRC
     ${CPP_DIR}/client/value.cc
     ${CPP_DIR}/client/view.cc
     ${CPP_DIR}/client/version.cc
-    ${CPP_DIR}/client/c_wcf.cc
+    ${CPP_DIR}/c_wcf/client.cc
+    ${CPP_DIR}/c_wcf/value.cc
+    ${CPP_DIR}/c_wcf/func.cc
 )
 set(EXAMPLE_SRC
     ${CPP_DIR}/example/main.cc
