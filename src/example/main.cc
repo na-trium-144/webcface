@@ -69,7 +69,7 @@ int main() {
         ++i;
 
         // Dictでまとめて値を取得しstructにセット
-        A a = c.value("dict").getRecurse();
+        [[maybe_unused]] A a = c.value("dict").getRecurse();
 
         c.sync();
     }
