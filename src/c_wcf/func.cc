@@ -1,4 +1,4 @@
-#include "c_wcli.h"
+#include "c_wcf_internal.h"
 
 template <typename ArgPtr>
 static inline wcfStatus wcfFuncRunImpl(wcfClient wcli, const char *member,
@@ -34,5 +34,77 @@ wcfStatus wcfFuncRunD(wcfClient wcli, const char *member, const char *field,
 wcfStatus wcfFuncRunI(wcfClient wcli, const char *member, const char *field,
                       const int *args, int arg_size, wcfMultiVal **result) {
     return wcfFuncRunImpl(wcli, member, field, args, arg_size, result);
+}
+
+wcfStatus wcfFuncListen(wcfClient wcli, const char *field,
+                        const wcfValType *arg_types, int arg_size,
+                        wcfValType return_type) {
+    auto wcli_ = getWcli(wcli);
+    if (!wcli_) {
+        return WCF_BAD_WCLI;
+    }
+    std::vector<Arg> args(arg_size);
+    for (int i = 0; i < arg_size; i++) {
+        args[i].type(static_cast<ValType>(arg_types[i]));
+    }
+    wcli_->funcListener(field)
+        .setArgs(args)
+        .setReturnType(static_cast<ValType>(return_type))
+        .listen();
+    return WCF_OK;
+}
+wcfStatus wcfFuncFetchCall(wcfClient wcli, const char *field,
+                           wcfFuncListenerHandler **handler) {
+    auto wcli_ = getWcli(wcli);
+    if (!wcli_) {
+        return WCF_BAD_WCLI;
+    }
+    auto h = wcli_->funcListener(field).fetchCall();
+    if (h) {
+        auto hp = new FuncListenerHandler(*h);
+        auto whp = new wcfFuncListenerHandler();
+        whp->args = hp->args().data();
+        whp->arg_size = hp->args().size();
+        whp->handler = static_cast<void *>(hp);
+        *handler = whp;
+        fetched_handlers.push_back(whp);
+        return WCF_OK;
+    } else {
+        return WCF_NOT_CALLED;
+    }
+}
+wcfStatus wcfFuncRespond(wcfClient wcli, const wcfFuncListenerHandler *handler,
+                         const wcfMultiVal *value) {
+    auto wcli_ = getWcli(wcli);
+    if (!wcli_) {
+        return WCF_BAD_WCLI;
+    }
+    auto h_ = getFuncListenerHandler(handler);
+    if (!h_) {
+        return WCF_BAD_HANDLER;
+    }
+    h_->handler->respond(value);
+    fetched_handlers.erase(
+        std::find(fetched_handlers.begin(), fetched_handlers.end(), handler));
+    delete h_->handler;
+    delete h_;
+    return WCF_OK;
+}
+wcfStatus wcfFuncReject(wcfClient wcli, const wcfFuncListenerHandler *handler,
+                        const char *message) {
+    auto wcli_ = getWcli(wcli);
+    if (!wcli_) {
+        return WCF_BAD_WCLI;
+    }
+    auto h_ = getFuncListenerHandler(handler);
+    if (!h_) {
+        return WCF_BAD_HANDLER;
+    }
+    h_->handler->reject(message);
+    fetched_handlers.erase(
+        std::find(fetched_handlers.begin(), fetched_handlers.end(), handler));
+    delete h_->handler;
+    delete h_;
+    return WCF_OK;
 }
 }

@@ -85,10 +85,16 @@ class Arg {
     /*!
      * \brief 引数の型を取得する。
      *
-     * 型を手動で設定することはできない
-     *
      */
     ValType type() const { return type_; }
+    /*!
+     * \brief 引数の型を設定する。
+     *
+     */
+    Arg &type(ValType type) {
+        type_ = type;
+        return *this;
+    }
     /*!
      * \brief デフォルト値を取得する。
      *

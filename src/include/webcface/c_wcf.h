@@ -10,8 +10,18 @@ typedef void *wcfClient;
 enum wcfStatus {
     WCF_OK = 0,
     WCF_BAD_WCLI = 1,
-    WCF_NOT_FOUND = 2,
-    WCF_EXCEPTION = 3,
+    WCF_BAD_HANDLER = 2,
+    WCF_NOT_FOUND = 3,
+    WCF_EXCEPTION = 4,
+    WCF_NOT_CALLED = 5,
+};
+
+enum wcfValType {
+    WCF_NONE = 0,
+    WCF_STRING = 1,
+    WCF_BOOL = 2,
+    WCF_INT = 3,
+    WCF_FLOAT = 4,
 };
 
 /*!
@@ -174,6 +184,25 @@ WEBCFACE_DLL wcfStatus wcfFuncRunD(wcfClient wcli, const char *member,
 WEBCFACE_DLL wcfStatus wcfFuncRunI(wcfClient wcli, const char *member,
                                    const char *field, const int *args,
                                    int arg_size, wcfMultiVal **result);
+
+struct wcfFuncListenerHandler {
+    wcfMultiVal *args;
+    int arg_size;
+    void *handler;
+};
+
+WEBCFACE_DLL wcfStatus wcfFuncListen(wcfClient wcli, const char *field,
+                                     const wcfValType *arg_types, int arg_size,
+                                     wcfValType return_type);
+WEBCFACE_DLL wcfStatus wcfFuncFetchCall(wcfClient wcli, const char *field,
+                                        wcfFuncListenerHandler **handler);
+
+WEBCFACE_DLL wcfStatus wcfFuncRespond(wcfClient wcli,
+                                      const wcfFuncListenerHandler *handler,
+                                      const wcfMultiVal *value);
+WEBCFACE_DLL wcfStatus wcfFuncReject(wcfClient wcli,
+                                     const wcfFuncListenerHandler *handler,
+                                     const char *message);
 
 #ifdef __cplusplus
 }

@@ -1,4 +1,4 @@
-#include "c_wcli.h"
+#include "c_wcf_internal.h"
 
 extern "C" {
 wcfStatus wcfValueSet(wcfClient wcli, const char *field, double value) {

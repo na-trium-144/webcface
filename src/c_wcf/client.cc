@@ -1,4 +1,4 @@
-#include "c_wcli.h"
+#include "c_wcf_internal.h"
 
 extern "C"{
 wcfClient wcfInit(const char *name, const char *host, int port){
