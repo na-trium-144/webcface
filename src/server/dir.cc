@@ -16,7 +16,8 @@ namespace webcface {
 namespace Server {
 
 // https://stackoverflow.com/questions/50889647/best-way-to-get-exe-folder-path
-std::filesystem::path getExeDir(const std::shared_ptr<spdlog::logger> &logger) {
+std::filesystem::path
+getExeDir([[maybe_unused]] const std::shared_ptr<spdlog::logger> &logger) {
 #ifdef _WIN32
     // Windows specific
     wchar_t szPath[MAX_PATH];
