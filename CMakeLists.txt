@@ -291,7 +291,6 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
 endif()
 if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     add_compile_options(-Wall -Wextra -Wpedantic -Werror)
-    add_compile_options(-Wno-delete-non-abstract-non-virtual-dtor) # todo: fix later
 endif()
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
