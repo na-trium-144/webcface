@@ -17,9 +17,7 @@ FuncListener &FuncListener::listen() {
             }
             auto result = std::make_shared<std::promise<ValAdaptor>>();
             this->dataLock()->func_listener_handlers[this->field_].push(
-                FuncListenerHandler{
-                    *this, std::make_shared<std::vector<ValAdaptor>>(args_vec),
-                    result});
+                FuncListenerHandler{args_vec, result});
             return result->get_future().get();
         },
         nullptr,

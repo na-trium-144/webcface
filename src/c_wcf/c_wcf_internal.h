@@ -38,12 +38,12 @@ inline Client *getWcli(wcfClient wcli) {
  * \brief voidポインタからFuncListenerHandlerオブジェクトを復元
  *
  */
-inline wcfFuncListenerHandler *getFuncListenerHandler(void *handler) {
+inline const wcfFuncListenerHandler *getFuncListenerHandler(const void *handler) {
     if (std::find(fetched_handlers.begin(), fetched_handlers.end(), handler) ==
         fetched_handlers.end()) {
         return nullptr;
     }
-    return static_cast<wcfFuncListenerHandler *>(handler);
+    return static_cast<const wcfFuncListenerHandler *>(handler);
 }
 
 } // namespace c_wcf

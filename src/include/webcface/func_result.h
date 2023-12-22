@@ -48,19 +48,24 @@ class AsyncFuncResult : Field {
     std::shared_ptr<std::promise<ValAdaptor>> result_;
 
     ValAdaptor result_val;
+    wcfMultiVal c_result_val;
     std::pair<wcfStatus, wcfMultiVal *> toCVal() & {
         try {
             result_val = result.get();
-            return {WCF_OK, result_val.toCVal()};
+            c_result_val = result_val.toCVal();
+            return {WCF_OK, &c_result_val};
         } catch (const FuncNotFound &e) {
             result_val = e.what();
-            return {WCF_NOT_FOUND, result_val.toCVal()};
+            c_result_val = result_val.toCVal();
+            return {WCF_NOT_FOUND, &c_result_val};
         } catch (const std::exception &e) {
             result_val = e.what();
-            return {WCF_EXCEPTION, result_val.toCVal()};
+            c_result_val = result_val.toCVal();
+            return {WCF_EXCEPTION, &c_result_val};
         } catch (...) {
             result_val = "unknown exception";
-            return {WCF_EXCEPTION, result_val.toCVal()};
+            c_result_val = result_val.toCVal();
+            return {WCF_EXCEPTION, &c_result_val};
         }
     }
 
@@ -97,23 +102,35 @@ class AsyncFuncResult : Field {
 auto &operator<<(std::basic_ostream<char> &os, const AsyncFuncResult &data);
 
 
-class FuncListenerHandler : Field {
-    std::shared_ptr<std::vector<ValAdaptor>> args_;
+class FuncListenerHandler {
+    std::vector<ValAdaptor> args_;
+    std::vector<wcfMultiVal> c_args_;
     std::shared_ptr<std::promise<ValAdaptor>> result_;
 
+
   public:
-    FuncListenerHandler()
-        : Field(), args_(std::make_shared<std::vector<ValAdaptor>>()),
-          result_(nullptr) {}
-    FuncListenerHandler(const Field &base,
-                        const std::shared_ptr<std::vector<ValAdaptor>> &args,
+    FuncListenerHandler() = default;
+    FuncListenerHandler(const std::vector<ValAdaptor> &args,
                         const std::shared_ptr<std::promise<ValAdaptor>> &result)
-        : Field(base), args_(args), result_(result) {}
+        : args_(args), c_args_(), result_(result) {}
 
     /*!
      * \brief 関数の引数を取得する
+     * 
      */
-    std::vector<ValAdaptor> args() const { return *args_; }
+    std::vector<ValAdaptor> args() const { return args_; }
+    /*!
+     * \brief 関数の引数をwcfMultiValに変換して取得する
+     * 引数の本体はargsが持っているので、FuncListenerHandlerの一時オブジェクトからは使えない
+     * 
+     */
+    std::vector<wcfMultiVal> &toCArgs() & {
+        c_args_.resize(args_.size());
+        for (std::size_t i = 0; i < args_.size(); i++) {
+            c_args_.push_back(args_[i].toCVal());
+        }
+        return c_args_;
+    }
     /*!
      * \brief 関数の結果を送信する
      *
