@@ -39,7 +39,7 @@ jobs:
         -DWEBCFACE_TEST=on
         -DWEBCFACE_EXAMPLE=on
         -DWEBCFACE_TEST_TIMEOUT=50
-        -DCMAKE_CXX_CLANG_TIDY=${{ env.LLVM_PATH }}/bin/clang-tidy
+        "-DCMAKE_CXX_CLANG_TIDY=${{env.LLVM_PATH}}/bin/clang-tidy;--header-filter=$(pwd)/src/;--warnings-as-errors"
 
     - name: Build
       run: cmake --build build

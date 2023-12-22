@@ -286,11 +286,12 @@ endif()
 
 ###############################################################################
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    add_compile_options(-Wall -Wextra -Wpedantic)
+    add_compile_options(-Wall -Wextra -Wpedantic -Werror)
     add_compile_options(-Wno-psabi) # refer to PR#9
 endif()
 if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-    add_compile_options(-Wall -Wextra -Wpedantic)
+    add_compile_options(-Wall -Wextra -Wpedantic -Werror)
+    add_compile_options(-Wno-delete-non-abstract-non-virtual-dtor) # todo: fix later
 endif()
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")

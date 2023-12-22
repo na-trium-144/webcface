@@ -36,13 +36,12 @@ DummyServer::DummyServer()
                   connPtr = &conn;
                   dummy_logger->info("ws_open");
               })
-              .onclose([&](crow::websocket::connection &conn,
-                           const std::string &reason) {
+              .onclose([&](crow::websocket::connection &, const std::string &) {
                   connPtr = nullptr;
                   dummy_logger->info("ws_close");
               })
-              .onmessage([&](crow::websocket::connection &conn,
-                             const std::string &data, bool is_binary) {
+              .onmessage([&](crow::websocket::connection &,
+                             const std::string &data, bool) {
                   dummy_logger->info("ws_message");
                   auto unpacked = Message::unpack(data, dummy_logger);
                   for (const auto &m : unpacked) {
