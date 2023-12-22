@@ -52,7 +52,7 @@ class Func : protected Field {
     using Field::member;
     using Field::name;
 
-  private:
+  protected:
     WEBCFACE_DLL Func &setRaw(const std::shared_ptr<FuncInfo> &v);
     Func &setRaw(const FuncInfo &v) {
         return setRaw(std::make_shared<FuncInfo>(v));

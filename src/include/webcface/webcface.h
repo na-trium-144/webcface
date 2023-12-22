@@ -23,6 +23,7 @@
 #include "text.h"
 #include "log.h"
 #include "func.h"
+#include "func_listener.h"
 #include "view.h"
 
 #include "member.h"

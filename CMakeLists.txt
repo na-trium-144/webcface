@@ -312,6 +312,7 @@ set(CLI_SRC
     ${CPP_DIR}/client/data_store2.cc
     ${CPP_DIR}/client/field.cc
     ${CPP_DIR}/client/func.cc
+    ${CPP_DIR}/client/func_listener.cc
     ${CPP_DIR}/client/log.cc
     ${CPP_DIR}/client/logger.cc
     ${CPP_DIR}/client/member.cc
@@ -331,6 +332,7 @@ set(TEST_SRC
     ${CPP_DIR}/test/client_data_test.cc
     ${CPP_DIR}/test/data_test.cc
     ${CPP_DIR}/test/func_test.cc
+    ${CPP_DIR}/test/func_listener_test.cc
     ${CPP_DIR}/test/view_test.cc
     ${CPP_DIR}/test/member_test.cc
     ${CPP_DIR}/test/logger_test.cc

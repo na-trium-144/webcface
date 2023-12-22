@@ -52,8 +52,7 @@ class AsyncFuncResult : Field {
         try {
             result_val = result.get();
             return {WCF_OK, result_val.toCVal()};
-        }
-        catch (const FuncNotFound& e) {
+        } catch (const FuncNotFound &e) {
             result_val = e.what();
             return {WCF_NOT_FOUND, result_val.toCVal()};
         } catch (const std::exception &e) {
@@ -97,4 +96,57 @@ class AsyncFuncResult : Field {
 };
 auto &operator<<(std::basic_ostream<char> &os, const AsyncFuncResult &data);
 
+
+class FuncListenerHandler : Field {
+    std::shared_ptr<std::vector<ValAdaptor>> args_;
+    std::shared_ptr<std::promise<ValAdaptor>> result_;
+
+  public:
+    FuncListenerHandler()
+        : Field(), args_(std::make_shared<std::vector<ValAdaptor>>()),
+          result_(nullptr) {}
+    FuncListenerHandler(const Field &base,
+                        const std::shared_ptr<std::vector<ValAdaptor>> &args,
+                        const std::shared_ptr<std::promise<ValAdaptor>> &result)
+        : Field(base), args_(args), result_(result) {}
+
+    /*!
+     * \brief 関数の引数を取得する
+     */
+    std::vector<ValAdaptor> args() const { return *args_; }
+    /*!
+     * \brief 関数の結果を送信する
+     *
+     * * 2回呼ぶと std::future_error を投げる
+     * * このHandlerがデフォルト構築されていた場合 std::runtime_error を投げる
+     *
+     */
+    void respond(ValAdaptor value = "") {
+        if (result_) {
+            result_->set_value(value);
+        } else {
+            throw std::runtime_error("FuncListenerHandler does not have valid "
+                                     "pointer to function call");
+        }
+    }
+    /*!
+     * \brief 関数の結果を例外として送信する
+     *
+     * * 2回呼ぶと std::future_error を投げる
+     * * このHandlerがデフォルト構築されていた場合 std::runtime_error を投げる
+     *
+     */
+    void reject(const std::string &message) {
+        if (result_) {
+            try {
+                throw std::runtime_error(message);
+            } catch (const std::runtime_error &) {
+                result_->set_exception(std::current_exception());
+            }
+        } else {
+            throw std::runtime_error("FuncListenerHandler does not have valid "
+                                     "pointer to function call");
+        }
+    }
+};
 } // namespace webcface
