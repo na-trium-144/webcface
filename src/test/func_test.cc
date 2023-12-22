@@ -181,7 +181,7 @@ TEST_F(FuncTest, funcRunRemote) {
 }
 
 TEST_F(FuncTest, afuncSet1) {
-    auto a = afunc1([](int a) {});
+    auto a = afunc1([](int) {});
     a.setArgs({Arg("a").init(0).min(-1).max(1)});
     auto f = func(self_name, "a");
     a.lockTo(f);
@@ -191,7 +191,7 @@ TEST_F(FuncTest, afuncSet1) {
     EXPECT_EQ(static_cast<int>(*f.args(0).max()), 1);
 }
 TEST_F(FuncTest, afuncSet2) {
-    auto a = afunc2([](int a) {});
+    auto a = afunc2([](int) {});
     // a.setArgs({Arg("a").init(0).min(-1).max(1)});
     auto f = func(self_name, "a");
     a.lockTo(f);
