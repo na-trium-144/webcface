@@ -18,7 +18,7 @@ inline std::vector<wcfClient> wcli_list;
  * \brief wcfFuncFetchCallで取得されたwcfFuncListenerHandlerのリスト
  *
  */
-inline std::vector<void *> fetched_handlers;
+inline std::vector<void *> fetched_handles;
 
 /*!
  * \brief voidポインタからclientオブジェクトを復元
@@ -38,12 +38,12 @@ inline Client *getWcli(wcfClient wcli) {
  * \brief voidポインタからFuncListenerHandlerオブジェクトを復元
  *
  */
-inline const wcfFuncListenerHandler *getFuncListenerHandler(const void *handler) {
-    if (std::find(fetched_handlers.begin(), fetched_handlers.end(), handler) ==
-        fetched_handlers.end()) {
+inline const wcfFuncCallHandle *getFuncCallHandle(const void *handler) {
+    if (std::find(fetched_handles.begin(), fetched_handles.end(), handler) ==
+        fetched_handles.end()) {
         return nullptr;
     }
-    return static_cast<const wcfFuncListenerHandler *>(handler);
+    return static_cast<const wcfFuncCallHandle *>(handler);
 }
 
 } // namespace c_wcf

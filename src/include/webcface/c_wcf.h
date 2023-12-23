@@ -6,24 +6,23 @@ extern "C" {
 #endif
 
 typedef void *wcfClient;
+typedef int wcfStatus;
+typedef int wcfValType;
 
-enum wcfStatus : int {
-    WCF_OK = 0,
-    WCF_BAD_WCLI = 1,
-    WCF_BAD_HANDLER = 2,
-    WCF_INVALID_ARGUMENT = 3,
-    WCF_NOT_FOUND = 4,
-    WCF_EXCEPTION = 5,
-    WCF_NOT_CALLED = 6,
-};
+#define WCF_OK 0
+#define WCF_BAD_WCLI 1
+#define WCF_BAD_HANDLE 2
+#define WCF_INVALID_ARGUMENT 3
+#define WCF_NOT_FOUND 4
+#define WCF_EXCEPTION 5
+#define WCF_NOT_CALLED 6
 
-enum wcfValType : int {
-    WCF_NONE = 0,
-    WCF_STRING = 1,
-    WCF_BOOL = 2,
-    WCF_INT = 3,
-    WCF_FLOAT = 4,
-};
+#define WCF_VAL_NONE 0
+#define WCF_VAL_STRING 1
+#define WCF_VAL_BOOL 2
+#define WCF_VAL_INT 3
+#define WCF_VAL_FLOAT 4
+#define WCF_VAL_DOUBLE 4
 
 /*!
  * \brief クライアントを初期化する
@@ -185,26 +184,26 @@ WEBCFACE_DLL wcfStatus wcfFuncRunI(wcfClient wcli, const char *member,
                                    const char *field, const int *args,
                                    int arg_size, wcfMultiVal **result);
 
-struct wcfFuncListenerHandler {
-    wcfMultiVal *args;
-    int arg_size;
-    void *handler;
+struct wcfFuncCallHandle {
+    const wcfMultiVal *args;
+    const int arg_size;
+    void *handle;
 };
 
 /*!
  * \brief 関数呼び出しの待受を開始する
- * 
+ *
  * \param wcli Clientポインタ
  * \param field 関数名
  * \param arg_types 受け取る引数の型をwcfValTypeの配列で指定
  * \param arg_size 受け取る引数の個数
  * \param return_type 戻り値の型を指定
  * \return wcliが無効ならWCF_BAD_WCLI
- * 
+ *
  */
 WEBCFACE_DLL wcfStatus wcfFuncListen(wcfClient wcli, const char *field,
-                                     const int *arg_types, int arg_size,
-                                     int return_type);
+                                     const wcfValType *arg_types, int arg_size,
+                                     wcfValType return_type);
 /*!
  * \brief 関数が呼び出されたかどうかを確認
  *
@@ -215,33 +214,66 @@ WEBCFACE_DLL wcfStatus wcfFuncListen(wcfClient wcli, const char *field,
  *
  * \param wcli Clientポインタ
  * \param field 関数名
- * \param handler handlerを受け取る変数のポインタを指定
+ * \param handle handleポインタを受け取る変数
  * \return wcliが無効ならWCF_BAD_WCLI,
  * まだ関数が呼び出されていない or ListenしていないならWCF_NOT_CALLED
- * 
+ *
  */
 WEBCFACE_DLL wcfStatus wcfFuncFetchCall(wcfClient wcli, const char *field,
-                                        wcfFuncListenerHandler **handler);
+                                        wcfFuncCallHandle **handle);
+/*!
+ * \brief wcfFuncCallHandleから引数を文字列で取得
+ *
+ * \param handle 関数呼び出しに対応するhandle
+ * \param index 引数の番号
+ * \return handle->args[index].as_str
+ * handleが無効の場合やindexが範囲外の場合はnullptrを返す
+ *
+ */
+WEBCFACE_DLL const char *wcfFuncCallArgS(const wcfFuncCallHandle *handle,
+                                         int index);
+/*!
+ * \brief wcfFuncCallHandleから引数をdoubleで取得
+ *
+ * \param handle 関数呼び出しに対応するhandle
+ * \param index 引数の番号
+ * \return handle->args[index].as_double
+ * handleが無効の場合やindexが範囲外の場合は0を返す
+ *
+ */
+WEBCFACE_DLL double wcfFuncCallArgD(const wcfFuncCallHandle *handle, int index);
+/*!
+ * \brief wcfFuncCallHandleから引数をintで取得
+ *
+ * \param handle 関数呼び出しに対応するhandle
+ * \param index 引数の番号
+ * \return handle->args[index].as_int
+ * handleが無効の場合やindexが範囲外の場合は0を返す
+ *
+ */
+WEBCFACE_DLL int wcfFuncCallArgI(const wcfFuncCallHandle *handle, int index);
 
 /*!
  * \brief 関数呼び出しに対して値を返す
- * 
- * \param handler 関数呼び出しに対応するhandler
+ *
+ * 値を返すとhandleはdeleteされ使えなくなる
+ * \param handle 関数呼び出しに対応するhandle
  * \param value 返す値
- * \return handlerが無効またはすでにrespondかreject済みならWCF_BAD_HANDLER
- * 
+ * \return handleが無効ならWCF_BAD_HANDLE
+ *
  */
-WEBCFACE_DLL wcfStatus wcfFuncRespond(const wcfFuncListenerHandler *handler,
+WEBCFACE_DLL wcfStatus wcfFuncRespond(const wcfFuncCallHandle *handle,
                                       const wcfMultiVal *value);
 /*!
  * \brief 関数呼び出しに対してエラーメッセージを返す
- * 
- * \param handler 関数呼び出しに対応するhandler
+ *
+ * エラーメッセージを返すとhandleはdeleteされ使えなくなる
+ * \param handle 関数呼び出しに対応するhandle
  * \param message 返すメッセージ
- * \return handlerが無効またはすでにrespondかreject済みならWCF_BAD_HANDLER
- * 
+ * \return handleが無効ならWCF_BAD_HANDLE
+ *
  */
-WEBCFACE_DLL wcfStatus wcfFuncReject(const wcfFuncListenerHandler *handler,
+WEBCFACE_DLL wcfStatus wcfFuncReject(const wcfFuncCallHandle *handle,
                                      const char *message);
 
 #ifdef __cplusplus

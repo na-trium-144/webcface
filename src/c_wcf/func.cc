@@ -39,9 +39,8 @@ wcfStatus wcfFuncRunI(wcfClient wcli, const char *member, const char *field,
     return wcfFuncRunImpl(wcli, member, field, args, arg_size, result);
 }
 
-wcfStatus wcfFuncListen(wcfClient wcli, const char *field,
-                        const int *arg_types, int arg_size,
-                        int return_type) {
+wcfStatus wcfFuncListen(wcfClient wcli, const char *field, const int *arg_types,
+                        int arg_size, int return_type) {
     auto wcli_ = getWcli(wcli);
     if (!wcli_) {
         return WCF_BAD_WCLI;
@@ -60,49 +59,81 @@ wcfStatus wcfFuncListen(wcfClient wcli, const char *field,
     return WCF_OK;
 }
 wcfStatus wcfFuncFetchCall(wcfClient wcli, const char *field,
-                           wcfFuncListenerHandler **handler) {
+                           wcfFuncCallHandle **handle) {
     auto wcli_ = getWcli(wcli);
     if (!wcli_) {
         return WCF_BAD_WCLI;
     }
     auto h = wcli_->funcListener(field).fetchCall();
     if (h) {
-        auto hp = new FuncListenerHandler(*h);
-        auto whp = new wcfFuncListenerHandler();
-        whp->args = hp->toCArgs().data();
-        whp->arg_size = hp->args().size();
-        whp->handler = static_cast<void *>(hp);
-        *handler = whp;
-        fetched_handlers.push_back(whp);
+        auto hp = new FuncCallHandle(*h);
+        auto whp = new wcfFuncCallHandle{
+            .args = hp->toCArgs().data(),
+            .arg_size = static_cast<int>(hp->args().size()),
+            .handle = static_cast<void *>(hp),
+        };
+        *handle = whp;
+        fetched_handles.push_back(whp);
         return WCF_OK;
     } else {
         return WCF_NOT_CALLED;
     }
 }
-wcfStatus wcfFuncRespond(const wcfFuncListenerHandler *handler,
-                         const wcfMultiVal *value) {
-    auto wh_ = getFuncListenerHandler(handler);
+const char *wcfFuncCallArgS(const wcfFuncCallHandle *handle, int index) {
+    auto wh_ = getFuncCallHandle(handle);
     if (!wh_) {
-        return WCF_BAD_HANDLER;
+        return nullptr;
     }
-    auto h_ = static_cast<FuncListenerHandler *>(wh_->handler);
+    if (index < 0 || index >= wh_->arg_size) {
+        return nullptr;
+    }
+    return wh_->args[index].as_str;
+}
+double wcfFuncCallArgD(const wcfFuncCallHandle *handle, int index) {
+    auto wh_ = getFuncCallHandle(handle);
+    if (!wh_) {
+        return 0;
+    }
+    if (index < 0 || index >= wh_->arg_size) {
+        return 0;
+    }
+    return wh_->args[index].as_double;
+}
+int wcfFuncCallArgI(const wcfFuncCallHandle *handle, int index) {
+    auto wh_ = getFuncCallHandle(handle);
+    if (!wh_) {
+        return 0;
+    }
+    if (index < 0 || index >= wh_->arg_size) {
+        return 0;
+    }
+    return wh_->args[index].as_int;
+}
+
+
+wcfStatus wcfFuncRespond(const wcfFuncCallHandle *handle,
+                         const wcfMultiVal *value) {
+    auto wh_ = getFuncCallHandle(handle);
+    if (!wh_) {
+        return WCF_BAD_HANDLE;
+    }
+    auto h_ = static_cast<FuncCallHandle *>(wh_->handle);
     h_->respond(value);
-    fetched_handlers.erase(
-        std::find(fetched_handlers.begin(), fetched_handlers.end(), handler));
+    fetched_handles.erase(
+        std::find(fetched_handles.begin(), fetched_handles.end(), handle));
     delete h_;
     delete wh_;
     return WCF_OK;
 }
-wcfStatus wcfFuncReject(const wcfFuncListenerHandler *handler,
-                        const char *message) {
-    auto wh_ = getFuncListenerHandler(handler);
+wcfStatus wcfFuncReject(const wcfFuncCallHandle *handle, const char *message) {
+    auto wh_ = getFuncCallHandle(handle);
     if (!wh_) {
-        return WCF_BAD_HANDLER;
+        return WCF_BAD_HANDLE;
     }
-    auto h_ = static_cast<FuncListenerHandler *>(wh_->handler);
+    auto h_ = static_cast<FuncCallHandle *>(wh_->handle);
     h_->reject(message);
-    fetched_handlers.erase(
-        std::find(fetched_handlers.begin(), fetched_handlers.end(), handler));
+    fetched_handles.erase(
+        std::find(fetched_handles.begin(), fetched_handles.end(), handle));
     delete h_;
     delete wh_;
     return WCF_OK;

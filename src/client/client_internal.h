@@ -133,7 +133,7 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
      * \brief listenerがfetchするの待ちの関数呼び出しをためておく
      *
      */
-    std::unordered_map<std::string, Common::Queue<FuncListenerHandler>>
+    std::unordered_map<std::string, Common::Queue<FuncCallHandle>>
         func_listener_handlers;
 
     std::unordered_map<std::string, unsigned int> member_ids;

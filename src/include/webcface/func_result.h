@@ -102,27 +102,26 @@ class AsyncFuncResult : Field {
 auto &operator<<(std::basic_ostream<char> &os, const AsyncFuncResult &data);
 
 
-class FuncListenerHandler {
+class FuncCallHandle {
     std::vector<ValAdaptor> args_;
     std::vector<wcfMultiVal> c_args_;
     std::shared_ptr<std::promise<ValAdaptor>> result_;
 
-
   public:
-    FuncListenerHandler() = default;
-    FuncListenerHandler(const std::vector<ValAdaptor> &args,
-                        const std::shared_ptr<std::promise<ValAdaptor>> &result)
+    FuncCallHandle() = default;
+    FuncCallHandle(const std::vector<ValAdaptor> &args,
+                   const std::shared_ptr<std::promise<ValAdaptor>> &result)
         : args_(args), c_args_(), result_(result) {}
 
     /*!
      * \brief 関数の引数を取得する
-     * 
+     *
      */
     std::vector<ValAdaptor> args() const { return args_; }
     /*!
      * \brief 関数の引数をwcfMultiValに変換して取得する
-     * 引数の本体はargsが持っているので、FuncListenerHandlerの一時オブジェクトからは使えない
-     * 
+     * 引数の本体はargsが持っているので、FuncCallHandleの一時オブジェクトからは使えない
+     *
      */
     std::vector<wcfMultiVal> &toCArgs() & {
         c_args_.resize(args_.size());
@@ -135,14 +134,14 @@ class FuncListenerHandler {
      * \brief 関数の結果を送信する
      *
      * * 2回呼ぶと std::future_error を投げる
-     * * このHandlerがデフォルト構築されていた場合 std::runtime_error を投げる
+     * * このHandleがデフォルト構築されていた場合 std::runtime_error を投げる
      *
      */
     void respond(ValAdaptor value = "") {
         if (result_) {
             result_->set_value(value);
         } else {
-            throw std::runtime_error("FuncListenerHandler does not have valid "
+            throw std::runtime_error("FuncCallHandle does not have valid "
                                      "pointer to function call");
         }
     }
@@ -150,7 +149,7 @@ class FuncListenerHandler {
      * \brief 関数の結果を例外として送信する
      *
      * * 2回呼ぶと std::future_error を投げる
-     * * このHandlerがデフォルト構築されていた場合 std::runtime_error を投げる
+     * * このHandleがデフォルト構築されていた場合 std::runtime_error を投げる
      *
      */
     void reject(const std::string &message) {
@@ -161,7 +160,7 @@ class FuncListenerHandler {
                 result_->set_exception(std::current_exception());
             }
         } else {
-            throw std::runtime_error("FuncListenerHandler does not have valid "
+            throw std::runtime_error("FuncCallHandle does not have valid "
                                      "pointer to function call");
         }
     }

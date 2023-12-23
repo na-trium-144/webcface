@@ -74,13 +74,13 @@ class FuncListener : protected Func {
     /*!
      * \brief 関数が呼び出されたかどうかを確認
      *
-     * 1回の関数呼び出しに対してfetchCallは1回だけhandlerを返す
+     * 1回の関数呼び出しに対してfetchCallは1回だけhandleを返す
      *
      * \return
-     * 呼び出されたらその引数と、値を返す用の関数が入ったhandlerを返す。
+     * 呼び出されたらその引数と、値を返す用の関数が入ったhandleを返す。
      * まだ呼び出されてなければnulloptを返す。
      *
      */
-    WEBCFACE_DLL std::optional<FuncListenerHandler> fetchCall() const;
+    WEBCFACE_DLL std::optional<FuncCallHandle> fetchCall() const;
 };
 } // namespace webcface

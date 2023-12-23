@@ -17,7 +17,7 @@ FuncListener &FuncListener::listen() {
             }
             auto result = std::make_shared<std::promise<ValAdaptor>>();
             this->dataLock()->func_listener_handlers[this->field_].push(
-                FuncListenerHandler{args_vec, result});
+                FuncCallHandle{args_vec, result});
             return result->get_future().get();
         },
         nullptr,
@@ -26,7 +26,7 @@ FuncListener &FuncListener::listen() {
     return *this;
 }
 
-std::optional<FuncListenerHandler> FuncListener::fetchCall() const {
+std::optional<FuncCallHandle> FuncListener::fetchCall() const {
     return this->setCheck()->func_listener_handlers[this->field_].pop();
 }
 
