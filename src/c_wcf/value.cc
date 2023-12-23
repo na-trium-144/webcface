@@ -18,19 +18,22 @@ wcfStatus wcfValueSetVecD(wcfClient wcli, const char *field,
     wcli_->value(field).set(std::vector<double>(value, value + size));
     return WCF_OK;
 }
-wcfStatus wcfValueGetVecD(wcfClient wcli, const char* member, const char* field,
-    double* values, int size, int* recv_size) {
+wcfStatus wcfValueGetVecD(wcfClient wcli, const char *member, const char *field,
+                          double *values, int size, int *recv_size) {
     *recv_size = 0;
     auto wcli_ = getWcli(wcli);
     if (!wcli_) {
         return WCF_BAD_WCLI;
     }
+    if (size < 0) {
+        return WCF_INVALID_ARGUMENT;
+    }
     auto vec = wcli_->member(member).value(field).tryGetVec();
     if (vec) {
-        int copy_size = size < vec->size() ? size : vec->size();
+        int copy_size =
+            size < static_cast<int>(vec->size()) ? size : vec->size();
         std::memcpy(values, vec->data(), copy_size * sizeof(double));
-        std::memset(values + copy_size, 0,
-                    (size - copy_size) * sizeof(double));
+        std::memset(values + copy_size, 0, (size - copy_size) * sizeof(double));
         *recv_size = vec->size();
         return WCF_OK;
     } else {
