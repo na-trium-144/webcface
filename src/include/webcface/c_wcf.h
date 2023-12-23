@@ -128,62 +128,6 @@ WEBCFACE_DLL wcfStatus wcfFuncRun(wcfClient wcli, const char *member,
                                   const char *field, const wcfMultiVal *args,
                                   int arg_size, wcfMultiVal **result);
 
-/*!
- * \brief 関数を呼び出す(文字列配列)
- *
- * 数値やboolの引数は10進数で文字列にして渡す。
- *
- * \param wcli Clientポインタ
- * \param member memberの名前
- * \param field funcの名前
- * \param args 引数の文字列配列
- * \param arg_size 引数の個数
- * \param result 結果を格納する変数(wcfMultiVal*)へのポインタ
- * \return wcliが無効ならWCF_BAD_WCLI,
- * 対象のmemberやfieldが存在しない場合 WCF_NOT_FOUND,
- * 関数で例外が発生した場合 WCF_EXCEPTION
- *
- */
-WEBCFACE_DLL wcfStatus wcfFuncRunS(wcfClient wcli, const char *member,
-                                   const char *field, const char **args,
-                                   int arg_size, wcfMultiVal **result);
-
-/*!
- * \brief 関数を呼び出す(double配列)
- *
- * \param wcli Clientポインタ
- * \param member memberの名前
- * \param field funcの名前
- * \param args 引数の配列
- * \param arg_size 引数の個数
- * \param result 結果を格納する変数(wcfMultiVal*)へのポインタ
- * \return wcliが無効ならWCF_BAD_WCLI,
- * 対象のmemberやfieldが存在しない場合 WCF_NOT_FOUND,
- * 関数で例外が発生した場合 WCF_EXCEPTION
- *
- */
-WEBCFACE_DLL wcfStatus wcfFuncRunD(wcfClient wcli, const char *member,
-                                   const char *field, const double *args,
-                                   int arg_size, wcfMultiVal **result);
-
-/*!
- * \brief 関数を呼び出す(int配列)
- *
- * \param wcli Clientポインタ
- * \param member memberの名前
- * \param field funcの名前
- * \param args 引数の配列
- * \param arg_size 引数の個数
- * \param result 結果を格納する変数(wcfMultiVal*)へのポインタ
- * \return wcliが無効ならWCF_BAD_WCLI,
- * 対象のmemberやfieldが存在しない場合 WCF_NOT_FOUND,
- * 関数で例外が発生した場合 WCF_EXCEPTION
- *
- */
-WEBCFACE_DLL wcfStatus wcfFuncRunI(wcfClient wcli, const char *member,
-                                   const char *field, const int *args,
-                                   int arg_size, wcfMultiVal **result);
-
 struct wcfFuncCallHandle {
     const wcfMultiVal *args;
     const int arg_size;
@@ -221,37 +165,6 @@ WEBCFACE_DLL wcfStatus wcfFuncListen(wcfClient wcli, const char *field,
  */
 WEBCFACE_DLL wcfStatus wcfFuncFetchCall(wcfClient wcli, const char *field,
                                         wcfFuncCallHandle **handle);
-/*!
- * \brief wcfFuncCallHandleから引数を文字列で取得
- *
- * \param handle 関数呼び出しに対応するhandle
- * \param index 引数の番号
- * \return handle->args[index].as_str
- * handleが無効の場合やindexが範囲外の場合はnullptrを返す
- *
- */
-WEBCFACE_DLL const char *wcfFuncCallArgS(const wcfFuncCallHandle *handle,
-                                         int index);
-/*!
- * \brief wcfFuncCallHandleから引数をdoubleで取得
- *
- * \param handle 関数呼び出しに対応するhandle
- * \param index 引数の番号
- * \return handle->args[index].as_double
- * handleが無効の場合やindexが範囲外の場合は0を返す
- *
- */
-WEBCFACE_DLL double wcfFuncCallArgD(const wcfFuncCallHandle *handle, int index);
-/*!
- * \brief wcfFuncCallHandleから引数をintで取得
- *
- * \param handle 関数呼び出しに対応するhandle
- * \param index 引数の番号
- * \return handle->args[index].as_int
- * handleが無効の場合やindexが範囲外の場合は0を返す
- *
- */
-WEBCFACE_DLL int wcfFuncCallArgI(const wcfFuncCallHandle *handle, int index);
 
 /*!
  * \brief 関数呼び出しに対して値を返す

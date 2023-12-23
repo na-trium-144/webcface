@@ -1,9 +1,9 @@
 #include "c_wcf_internal.h"
 
-template <typename ArgPtr>
-static inline wcfStatus wcfFuncRunImpl(wcfClient wcli, const char *member,
-                                       const char *field, ArgPtr args,
-                                       int arg_size, wcfMultiVal **result) {
+extern "C" {
+wcfStatus wcfFuncRun(wcfClient wcli, const char *member, const char *field,
+                     const wcfMultiVal *args, int arg_size,
+                     wcfMultiVal **result) {
     auto wcli_ = getWcli(wcli);
     if (!wcli_) {
         return WCF_BAD_WCLI;
@@ -18,25 +18,6 @@ static inline wcfStatus wcfFuncRunImpl(wcfClient wcli, const char *member,
     auto [status, res] = wcli_->member(member).func(field).runCVal(args_v);
     *result = res;
     return status;
-}
-
-extern "C" {
-wcfStatus wcfFuncRun(wcfClient wcli, const char *member, const char *field,
-                     const wcfMultiVal *args, int arg_size,
-                     wcfMultiVal **result) {
-    return wcfFuncRunImpl(wcli, member, field, args, arg_size, result);
-}
-wcfStatus wcfFuncRunS(wcfClient wcli, const char *member, const char *field,
-                      const char **args, int arg_size, wcfMultiVal **result) {
-    return wcfFuncRunImpl(wcli, member, field, args, arg_size, result);
-}
-wcfStatus wcfFuncRunD(wcfClient wcli, const char *member, const char *field,
-                      const double *args, int arg_size, wcfMultiVal **result) {
-    return wcfFuncRunImpl(wcli, member, field, args, arg_size, result);
-}
-wcfStatus wcfFuncRunI(wcfClient wcli, const char *member, const char *field,
-                      const int *args, int arg_size, wcfMultiVal **result) {
-    return wcfFuncRunImpl(wcli, member, field, args, arg_size, result);
 }
 
 wcfStatus wcfFuncListen(wcfClient wcli, const char *field, const int *arg_types,
@@ -79,37 +60,6 @@ wcfStatus wcfFuncFetchCall(wcfClient wcli, const char *field,
         return WCF_NOT_CALLED;
     }
 }
-const char *wcfFuncCallArgS(const wcfFuncCallHandle *handle, int index) {
-    auto wh_ = getFuncCallHandle(handle);
-    if (!wh_) {
-        return nullptr;
-    }
-    if (index < 0 || index >= wh_->arg_size) {
-        return nullptr;
-    }
-    return wh_->args[index].as_str;
-}
-double wcfFuncCallArgD(const wcfFuncCallHandle *handle, int index) {
-    auto wh_ = getFuncCallHandle(handle);
-    if (!wh_) {
-        return 0;
-    }
-    if (index < 0 || index >= wh_->arg_size) {
-        return 0;
-    }
-    return wh_->args[index].as_double;
-}
-int wcfFuncCallArgI(const wcfFuncCallHandle *handle, int index) {
-    auto wh_ = getFuncCallHandle(handle);
-    if (!wh_) {
-        return 0;
-    }
-    if (index < 0 || index >= wh_->arg_size) {
-        return 0;
-    }
-    return wh_->args[index].as_int;
-}
-
 
 wcfStatus wcfFuncRespond(const wcfFuncCallHandle *handle,
                          const wcfMultiVal *value) {
