@@ -138,12 +138,12 @@ typedef struct wcfMultiVal {
     /*!
      * \brief char*型でのアクセス
      * 
-     * as_intまたはas_doubleに値をセットして渡す場合はas_strはNULLにすること。
+     * as_intまたはas_doubleに値をセットして渡す場合はas_strはnullにすること。
      *
-     * 値が返ってくる場合はas_strがNULLになっていることはない。(何も返さない場合でも空文字列が入る)
+     * 値が返ってくる場合はas_strがnullになっていることはない。(何も返さない場合でも空文字列が入る)
      *
      */
-    const char *as_str = NULL;
+    const char *as_str = 0;
 } wcfMultiVal;
 
 /*!
