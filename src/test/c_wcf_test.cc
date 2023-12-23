@@ -256,7 +256,7 @@ TEST_F(CClientTest, funcListen) {
     EXPECT_EQ(h->args[1].as_double, 1.5);
     EXPECT_EQ(std::string(h->args[2].as_str), "aaa");
 
-    wcfMultiVal ans = {.as_double = 123.45};
+    wcfMultiVal ans = wcfValD(123.45);
     EXPECT_EQ(wcfFuncRespond(h, &ans), WCF_OK);
     EXPECT_EQ(wcfFuncRespond(h, &ans), WCF_BAD_HANDLE);
     EXPECT_EQ(wcfFuncRespond(nullptr, &ans), WCF_BAD_HANDLE);
