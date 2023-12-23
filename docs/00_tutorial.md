@@ -110,6 +110,11 @@ C++のソースコードでは`<webcface/webcface.h>`をincludeしてくださ�
 exampleはserverといっしょにインストールされており、`webcface-example-main`, `webcface-example-recv`コマンドで実行してみることができます。
 mainは各種データの送信、recvはmainが送信したデータの受信とmainにある関数の呼び出しをするプログラムになっています。
 
+![c++ ver1.3](https://img.shields.io/badge/1.3~-00599c?logo=C%2B%2B)
+C++ではなくCからアクセスできるAPIもあります。
+[Interface for C](80_c_interface.md) を参照してください。
+MATLABなど、Cのライブラリにアクセスすることができる言語からwebcfaceのライブラリをロードして使用することができます。
+
 Python, JavaScriptのクライアントも使い方はだいたい同じです。
 次ページ以降のC++での使い方を軽く読んだあとにPython、JavaScriptのリファレンスでC++との相違点を確認してください。
 * [webcface-python APIリファレンス](https://na-trium-144.github.io/webcface-python/)

@@ -29,7 +29,7 @@ WebブラウザーでアクセスできるUI(webcface-webui)が付属してお�
 
 ## Links
 
-* [webcface](https://github.com/na-trium-144/webcface): サーバー & C++クライアントライブラリ (このリポジトリ)
+* [webcface](https://github.com/na-trium-144/webcface): サーバー & C/C++クライアントライブラリ (このリポジトリ)
 * [webcface-webui](https://github.com/na-trium-144/webcface-webui): webブラウザ用UIアプリ
 * [webcface-tools](https://github.com/na-trium-144/webcface-tools): コマンドラインツール群
 * [webcface-js](https://github.com/na-trium-144/webcface-js): JavaScriptクライアントライブラリ

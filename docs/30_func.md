@@ -131,6 +131,39 @@ wcli.func("fuga").setRunCondNone();
 ```
 で条件を何も課さないようにできます。
 
+## FuncListener (関数の待ち受け)
+![c++ ver1.3](https://img.shields.io/badge/1.3~-00599c?logo=C%2B%2B)
+
+呼び出されたとき実行する関数を登録する代わりに、呼び出されたかどうかを監視し任意のタイミングで値を返すということもできます。
+
+```cpp
+wcli.funcListener("hoge").listen();
+```
+で待ち受けを開始し、func.set()と同様関数が登録され他クライアントから見られるようになります。
+(listen()ではブロックはしません)
+
+引数を受け取りたい場合は
+```cpp
+wcli.funcListener("hoge").listen(3);
+```
+のように引数の個数を指定するか、または
+```cpp
+wcli.funcListener("hoge").setArgs({...}).listen();
+```
+とすると通常のfuncと同様引数のオプションを設定可能です。
+(func.setArgs()はfunc.set()の後でしたが、funcListenerではlisten()の前に実行する必要があります。)
+
+その後、任意のタイミングで
+```cpp
+std::optional<webcface::FuncCallHandle> handle = wcli.funcListener("hoge").fetchCall();
+```
+とすることで関数が呼び出されたかどうかを調べることができます。
+listen時に指定した引数の個数と呼び出し時の個数が一致しない場合、fetchCallで取得する前に呼び出し元に例外が投げられます(呼び出されていないのと同じことになります)
+
+その関数がまだ呼び出されていない場合はstd::nulloptが返ります。
+関数が呼び出された場合、`handle.args()`で引数を調べ、`handle.respond()`で関数のreturnと同様に関数の終了を示したり値を返してください。
+また`handle.reject()`でエラーメッセージを返すことができます(呼び出し元にはruntime_errorを投げたものとして返ります)
+
 ## 関数の実行
 
 Func::run() で関数を実行できます。引数を渡すこともでき、戻り値もそのまま返ってきます。

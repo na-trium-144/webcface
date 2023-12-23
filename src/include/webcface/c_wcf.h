@@ -114,10 +114,36 @@ WEBCFACE_DLL wcfStatus wcfValueGetVecD(wcfClient *wcli, const char *member,
                                        const char *field, double *values,
                                        int size, int *recv_size);
 
+/*!
+ * \brief 数値と文字列をまとめて扱うためのstruct
+ *
+ * wcfMultiValを引数に渡す場合は、 as_int, as_double, as_str
+ * のいずれか1つのみに値を入れて使う。
+ *
+ * wcfMultiValが関数から返ってくる場合は、as_int, as_double,
+ * as_strがすべて埋まった状態で返ってくる。
+ *
+ */
 typedef struct wcfMultiVal {
+    /*!
+     * \brief int型でのアクセス
+     *
+     */
     int as_int = 0;
+    /*!
+     * \brief double型でのアクセス
+     *
+     */
     double as_double = 0;
-    const char *as_str = nullptr;
+    /*!
+     * \brief char*型でのアクセス
+     * 
+     * as_intまたはas_doubleに値をセットして渡す場合はas_strはNULLにすること。
+     *
+     * 値が返ってくる場合はas_strがNULLになっていることはない。(何も返さない場合でも空文字列が入る)
+     *
+     */
+    const char *as_str = NULL;
 } wcfMultiVal;
 
 /*!
@@ -138,8 +164,22 @@ WEBCFACE_DLL wcfStatus wcfFuncRun(wcfClient *wcli, const char *member,
                                   const char *field, const wcfMultiVal *args,
                                   int arg_size, wcfMultiVal **result);
 
+/*!
+ * \brief 受信した関数呼び出しの情報を保持するstruct
+ * 
+ */
 struct wcfFuncCallHandle {
+    /*!
+     * \brief 呼び出された引数
+     * 
+     */
     const wcfMultiVal *const args;
+    /*!
+     * \brief 引数の個数
+     * 
+     * listen時に指定した個数と必ず同じになる。
+     * 
+     */
     const int arg_size;
     void *const handle;
 };
