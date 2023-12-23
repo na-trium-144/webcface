@@ -11,7 +11,7 @@ set(VERSION_REVISION ${CMAKE_MATCH_1})
 set(WEBCFACE_VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_REVISION})
 
 project(webcface
-    LANGUAGES CXX
+    LANGUAGES CXX C
     VERSION ${WEBCFACE_VERSION}
     HOMEPAGE_URL "https://github.com/na-trium-144/webcface"
     DESCRIPTION "Web-based RPC & UI Library"
@@ -328,6 +328,7 @@ set(CLI_SRC
 set(EXAMPLE_SRC
     ${CPP_DIR}/example/main.cc
     ${CPP_DIR}/example/recv.cc
+    ${CPP_DIR}/example/c_example.c
 )
 set(TEST_SRC
     ${CPP_DIR}/test/client_data_test.cc
@@ -358,7 +359,7 @@ target_include_directories(${PROJECT_NAME}-headers INTERFACE ${INCLUDE_DIR})
 target_compile_definitions(${PROJECT_NAME}-headers INTERFACE
     WEBCFACE_VERSION="${WEBCFACE_VERSION}"
 )
-target_compile_features(${PROJECT_NAME}-headers INTERFACE cxx_std_20)
+target_compile_features(${PROJECT_NAME}-headers INTERFACE cxx_std_20 c_std_99)
 
 add_library(${PROJECT_NAME}-message STATIC ${MSG_SRC})
 if(NOT CMAKE_CXX_COMPILER_ID STREQUAL "MSVC" AND WEBCFACE_PIC)

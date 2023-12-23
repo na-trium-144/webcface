@@ -6,6 +6,9 @@ wcfClient *wcfInit(const char *name, const char *host, int port) {
     wcli_list.push_back(wcli);
     return wcli;
 }
+wcfClient *wcfInitDefault(const char *name) {
+    return wcfInit(name, "127.0.0.1", WEBCFACE_DEFAULT_PORT);
+}
 int wcfIsValid(wcfClient *wcli) {
     if (getWcli(wcli)) {
         return 1;
@@ -46,5 +49,17 @@ wcfStatus wcfSync(wcfClient *wcli) {
     }
     wcli_->sync();
     return WCF_OK;
+}
+wcfMultiVal wcfValI(int value) {
+    wcfMultiVal val = {.as_int = value, .as_double = 0, .as_str = 0};
+    return val;
+}
+wcfMultiVal wcfValD(double value) {
+    wcfMultiVal val = {.as_int = 0, .as_double = value, .as_str = 0};
+    return val;
+}
+wcfMultiVal wcfValS(const char *value) {
+    wcfMultiVal val = {.as_int = 0, .as_double = 0, .as_str = value};
+    return val;
 }
 }

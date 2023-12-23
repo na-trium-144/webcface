@@ -29,9 +29,16 @@ typedef int wcfValType;
  * \return Clientのポインタ
  *
  */
-WEBCFACE_DLL wcfClient *wcfInit(const char *name,
-                                const char *host = "127.0.0.1",
-                                int port = WEBCFACE_DEFAULT_PORT);
+WEBCFACE_DLL wcfClient *wcfInit(const char *name, const char *host, int port);
+/*!
+ * \brief クライアントを初期化する
+ *
+ *  (サーバーのアドレスとポートはデフォルトになる)
+ * \return Clientのポインタ
+ *
+ */
+WEBCFACE_DLL wcfClient *wcfInitDefault(const char *name);
+
 /*!
  * \brief 有効なClientのポインタであるかを返す
  * \return
@@ -119,6 +126,7 @@ WEBCFACE_DLL wcfStatus wcfValueGetVecD(wcfClient *wcli, const char *member,
  *
  * wcfMultiValを引数に渡す場合は、 as_int, as_double, as_str
  * のいずれか1つのみに値を入れて使う。
+ * wcfValI(), wcfValD(), wcfValS() 関数で値をセットできる。
  *
  * wcfMultiValが関数から返ってくる場合は、as_int, as_double,
  * as_strがすべて埋まった状態で返ってくる。
@@ -129,22 +137,26 @@ typedef struct wcfMultiVal {
      * \brief int型でのアクセス
      *
      */
-    int as_int = 0;
+    int as_int;
     /*!
      * \brief double型でのアクセス
      *
      */
-    double as_double = 0;
+    double as_double;
     /*!
      * \brief char*型でのアクセス
-     * 
+     *
      * as_intまたはas_doubleに値をセットして渡す場合はas_strはnullにすること。
      *
      * 値が返ってくる場合はas_strがnullになっていることはない。(何も返さない場合でも空文字列が入る)
      *
      */
-    const char *as_str = 0;
+    const char *as_str;
 } wcfMultiVal;
+
+WEBCFACE_DLL wcfMultiVal wcfValI(int value);
+WEBCFACE_DLL wcfMultiVal wcfValD(double value);
+WEBCFACE_DLL wcfMultiVal wcfValS(const char *value);
 
 /*!
  * \brief 関数を呼び出す
@@ -166,23 +178,23 @@ WEBCFACE_DLL wcfStatus wcfFuncRun(wcfClient *wcli, const char *member,
 
 /*!
  * \brief 受信した関数呼び出しの情報を保持するstruct
- * 
+ *
  */
-struct wcfFuncCallHandle {
+typedef struct wcfFuncCallHandle {
     /*!
      * \brief 呼び出された引数
-     * 
+     *
      */
     const wcfMultiVal *const args;
     /*!
      * \brief 引数の個数
-     * 
+     *
      * listen時に指定した個数と必ず同じになる。
-     * 
+     *
      */
     const int arg_size;
     void *const handle;
-};
+} wcfFuncCallHandle;
 
 /*!
  * \brief 関数呼び出しの待受を開始する

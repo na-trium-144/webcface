@@ -143,9 +143,9 @@ TEST_F(CClientTest, funcRun) {
     EXPECT_EQ(wcfStart(wcli_), WCF_OK);
 
     wcfMultiVal args[3] = {
-        {.as_int = 42},
-        {.as_double = 1.5},
-        {.as_str = "aaa"},
+        wcfValI(42),
+        wcfValD(1.5),
+        wcfValS("aaa"),
     };
     wcfMultiVal *ret;
     EXPECT_EQ(wcfFuncRun(wcli_, "a", "b", args, -1, &ret),
@@ -270,6 +270,6 @@ TEST_F(CClientTest, funcListen) {
         },
         [&] { ADD_FAILURE() << "CallResult recv error"; });
     dummy_s->recvClear();
-    
+
     EXPECT_EQ(wcfFuncFetchCall(wcli_, "a", &h), WCF_NOT_CALLED);
 }

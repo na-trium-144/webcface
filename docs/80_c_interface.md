@@ -13,10 +13,11 @@ CからアクセスできるAPIとして、wcf〜 で始まる名前の関数や
 (詳細な説明はC++用の[Client](01_client.md)の章も参照)
 
 ```c
-wcfClient *wcli = wcfInit("sample");
+wcfClient *wcli = wcfInitDefault("sample");
 wcfStart(wcli);
 ```
 でclientを生成し、接続します。
+サーバーのアドレスとポートを指定したい場合`wcfInit()`を使います
 
 ```c
 while(1){
@@ -69,9 +70,9 @@ sizeに受信した値の個数、valueに受信した値が入ります。
 
 ```c
 wcfMultiVal args[3] = {
-    {.as_int = 42},
-    {.as_double = 1.5},
-    {.as_str = "aaa"},
+    wcfValI(42),
+    wcfValD(1.5),
+    wcfValS("aaa"),
 };
 wcfMultiVal *ret;
 wcfFuncRun(wcli_, "a", "b", args, 3, &ret);
@@ -100,7 +101,7 @@ listen時に指定した引数の個数と呼び出し時の個数が一致し�
 その関数がまだ呼び出されていない場合は`WCF_NOT_CALLED`が返ります。
 関数が呼び出された場合`WCF_OK`が返り、`handle->args`に引数が格納されます。
 ```c
-wcfMultiVal res = {.as_double = 123.45};
+wcfMultiVal res = wcfValD(123.45);
 wcfFuncRespond(handle, &res);
 ```
 で関数のreturnと同様に関数を終了して値を返したり、
