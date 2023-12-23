@@ -5,7 +5,7 @@
 extern "C" {
 #endif
 
-typedef void *wcfClient;
+typedef void wcfClient;
 typedef int wcfStatus;
 typedef int wcfValType;
 
@@ -29,27 +29,34 @@ typedef int wcfValType;
  * \return Clientのポインタ
  *
  */
-WEBCFACE_DLL wcfClient wcfInit(const char *name, const char *host = "127.0.0.1",
-                               int port = WEBCFACE_DEFAULT_PORT);
+WEBCFACE_DLL wcfClient *wcfInit(const char *name,
+                                const char *host = "127.0.0.1",
+                                int port = WEBCFACE_DEFAULT_PORT);
 /*!
  * \brief 有効なClientのポインタであるかを返す
  * \return
  * wcliが正常にwcfInitされwcfCloseする前のポインタであれば1、そうでなければ0
  *
  */
-WEBCFACE_DLL int wcfIsInstance(wcfClient wcli);
+WEBCFACE_DLL int wcfIsValid(wcfClient *wcli);
+/*!
+ * \brief Clientが接続されているかどうかを返す
+ * \return wcliが正常にwcfInitされサーバーに接続できていれば1、そうでなければ0
+ *
+ */
+WEBCFACE_DLL int wcfIsConnected(wcfClient *wcli);
 /*!
  * \brief クライアントを閉じる
  * \return wcliが無効ならWCF_BAD_WCLI
  *
  */
-WEBCFACE_DLL wcfStatus wcfClose(wcfClient wcli);
+WEBCFACE_DLL wcfStatus wcfClose(wcfClient *wcli);
 /*!
  * \brief 接続を開始する
  * \return wcliが無効ならWCF_BAD_WCLI
  *
  */
-WEBCFACE_DLL wcfStatus wcfStart(wcfClient wcli);
+WEBCFACE_DLL wcfStatus wcfStart(wcfClient *wcli);
 /*!
  * \brief 送信用にセットしたデータをすべて送信キューに入れる。
  *
@@ -60,7 +67,7 @@ WEBCFACE_DLL wcfStatus wcfStart(wcfClient wcli);
  * \return wcliが無効ならWCF_BAD_WCLI
  *
  */
-WEBCFACE_DLL wcfStatus wcfSync(wcfClient wcli);
+WEBCFACE_DLL wcfStatus wcfSync(wcfClient *wcli);
 
 /*!
  * \brief 単一の値を送信する
@@ -70,7 +77,7 @@ WEBCFACE_DLL wcfStatus wcfSync(wcfClient wcli);
  * \return wcliが無効ならWCF_BAD_WCLI
  *
  */
-WEBCFACE_DLL wcfStatus wcfValueSet(wcfClient wcli, const char *field,
+WEBCFACE_DLL wcfStatus wcfValueSet(wcfClient *wcli, const char *field,
                                    double value);
 /*!
  * \brief 複数の値を送信する(doubleの配列)
@@ -81,7 +88,7 @@ WEBCFACE_DLL wcfStatus wcfValueSet(wcfClient wcli, const char *field,
  * \return wcliが無効ならWCF_BAD_WCLI
  *
  */
-WEBCFACE_DLL wcfStatus wcfValueSetVecD(wcfClient wcli, const char *field,
+WEBCFACE_DLL wcfStatus wcfValueSetVecD(wcfClient *wcli, const char *field,
                                        const double *values, int size);
 
 /*!
@@ -89,6 +96,9 @@ WEBCFACE_DLL wcfStatus wcfValueSetVecD(wcfClient wcli, const char *field,
  *
  * sizeに指定したサイズより実際に受信した値の個数のほうが大きい場合、
  * valuesにはsize分の値のみを格納しrecv_sizeには本来のサイズを返す
+ * 
+ * size > recv_size の場合、またはWCF_NOT_FOUNDの場合、
+ * 配列の余った範囲は0で埋められる
  *
  * \param wcli Clientポインタ
  * \param member memberの名前
@@ -100,7 +110,7 @@ WEBCFACE_DLL wcfStatus wcfValueSetVecD(wcfClient wcli, const char *field,
  * 対象のmemberやfieldが存在しない場合 WCF_NOT_FOUND
  *
  */
-WEBCFACE_DLL wcfStatus wcfValueGetVecD(wcfClient wcli, const char *member,
+WEBCFACE_DLL wcfStatus wcfValueGetVecD(wcfClient *wcli, const char *member,
                                        const char *field, double *values,
                                        int size, int *recv_size);
 
@@ -124,14 +134,14 @@ typedef struct wcfMultiVal {
  * 関数で例外が発生した場合 WCF_EXCEPTION
  *
  */
-WEBCFACE_DLL wcfStatus wcfFuncRun(wcfClient wcli, const char *member,
+WEBCFACE_DLL wcfStatus wcfFuncRun(wcfClient *wcli, const char *member,
                                   const char *field, const wcfMultiVal *args,
                                   int arg_size, wcfMultiVal **result);
 
 struct wcfFuncCallHandle {
-    const wcfMultiVal *args;
+    const wcfMultiVal *const args;
     const int arg_size;
-    void *handle;
+    void *const handle;
 };
 
 /*!
@@ -145,7 +155,7 @@ struct wcfFuncCallHandle {
  * \return wcliが無効ならWCF_BAD_WCLI
  *
  */
-WEBCFACE_DLL wcfStatus wcfFuncListen(wcfClient wcli, const char *field,
+WEBCFACE_DLL wcfStatus wcfFuncListen(wcfClient *wcli, const char *field,
                                      const wcfValType *arg_types, int arg_size,
                                      wcfValType return_type);
 /*!
@@ -163,7 +173,7 @@ WEBCFACE_DLL wcfStatus wcfFuncListen(wcfClient wcli, const char *field,
  * まだ関数が呼び出されていない or ListenしていないならWCF_NOT_CALLED
  *
  */
-WEBCFACE_DLL wcfStatus wcfFuncFetchCall(wcfClient wcli, const char *field,
+WEBCFACE_DLL wcfStatus wcfFuncFetchCall(wcfClient *wcli, const char *field,
                                         wcfFuncCallHandle **handle);
 
 /*!

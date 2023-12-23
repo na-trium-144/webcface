@@ -1,7 +1,7 @@
 #include "c_wcf_internal.h"
 
 extern "C" {
-wcfStatus wcfValueSet(wcfClient wcli, const char *field, double value) {
+wcfStatus wcfValueSet(wcfClient *wcli, const char *field, double value) {
     auto wcli_ = getWcli(wcli);
     if (!wcli_) {
         return WCF_BAD_WCLI;
@@ -9,7 +9,7 @@ wcfStatus wcfValueSet(wcfClient wcli, const char *field, double value) {
     wcli_->value(field).set(value);
     return WCF_OK;
 }
-wcfStatus wcfValueSetVecD(wcfClient wcli, const char *field,
+wcfStatus wcfValueSetVecD(wcfClient *wcli, const char *field,
                           const double *value, int size) {
     auto wcli_ = getWcli(wcli);
     if (!wcli_) {
@@ -18,8 +18,9 @@ wcfStatus wcfValueSetVecD(wcfClient wcli, const char *field,
     wcli_->value(field).set(std::vector<double>(value, value + size));
     return WCF_OK;
 }
-wcfStatus wcfValueGetVecD(wcfClient wcli, const char *member, const char *field,
-                          double *values, int size, int *recv_size) {
+wcfStatus wcfValueGetVecD(wcfClient *wcli, const char *member,
+                          const char *field, double *values, int size,
+                          int *recv_size) {
     *recv_size = 0;
     auto wcli_ = getWcli(wcli);
     if (!wcli_) {
@@ -37,6 +38,7 @@ wcfStatus wcfValueGetVecD(wcfClient wcli, const char *member, const char *field,
         *recv_size = vec->size();
         return WCF_OK;
     } else {
+        std::memset(values, 0, size * sizeof(double));
         return WCF_NOT_FOUND;
     }
 }

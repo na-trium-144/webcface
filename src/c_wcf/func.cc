@@ -1,7 +1,7 @@
 #include "c_wcf_internal.h"
 
 extern "C" {
-wcfStatus wcfFuncRun(wcfClient wcli, const char *member, const char *field,
+wcfStatus wcfFuncRun(wcfClient *wcli, const char *member, const char *field,
                      const wcfMultiVal *args, int arg_size,
                      wcfMultiVal **result) {
     auto wcli_ = getWcli(wcli);
@@ -20,8 +20,8 @@ wcfStatus wcfFuncRun(wcfClient wcli, const char *member, const char *field,
     return status;
 }
 
-wcfStatus wcfFuncListen(wcfClient wcli, const char *field, const int *arg_types,
-                        int arg_size, int return_type) {
+wcfStatus wcfFuncListen(wcfClient *wcli, const char *field,
+                        const int *arg_types, int arg_size, int return_type) {
     auto wcli_ = getWcli(wcli);
     if (!wcli_) {
         return WCF_BAD_WCLI;
@@ -39,7 +39,7 @@ wcfStatus wcfFuncListen(wcfClient wcli, const char *field, const int *arg_types,
         .listen();
     return WCF_OK;
 }
-wcfStatus wcfFuncFetchCall(wcfClient wcli, const char *field,
+wcfStatus wcfFuncFetchCall(wcfClient *wcli, const char *field,
                            wcfFuncCallHandle **handle) {
     auto wcli_ = getWcli(wcli);
     if (!wcli_) {

@@ -12,7 +12,7 @@ inline namespace c_wcf {
  * wcfInit時に追加、wcfClose時に削除する
  *
  */
-inline std::vector<wcfClient> wcli_list;
+inline std::vector<wcfClient *> wcli_list;
 
 /*!
  * \brief wcfFuncFetchCallで取得されたwcfFuncListenerHandlerのリスト
@@ -27,7 +27,7 @@ inline std::vector<void *> fetched_handles;
  * Clientのポインタ、またはwcliがwcfInitで生成されたポインタでなければnullptr
  *
  */
-inline Client *getWcli(wcfClient wcli) {
+inline Client *getWcli(wcfClient *wcli) {
     if (std::find(wcli_list.begin(), wcli_list.end(), wcli) ==
         wcli_list.end()) {
         return nullptr;

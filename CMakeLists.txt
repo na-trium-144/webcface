@@ -341,6 +341,7 @@ set(TEST_SRC
     ${CPP_DIR}/test/dummy_server.cc
     ${CPP_DIR}/test/dummy_client.cc
     ${CPP_DIR}/test/server_test.cc
+    ${CPP_DIR}/test/c_wcf_test.cc
 )
 set(MSG_SRC
     ${CPP_DIR}/message/message.cc
