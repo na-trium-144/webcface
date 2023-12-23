@@ -68,7 +68,7 @@ wcfStatus wcfFuncRespond(const wcfFuncCallHandle *handle,
         return WCF_BAD_HANDLE;
     }
     auto h_ = static_cast<FuncCallHandle *>(wh_->handle);
-    h_->respond(value);
+    h_->respond(*value);
     fetched_handles.erase(
         std::find(fetched_handles.begin(), fetched_handles.end(), handle));
     delete h_;

@@ -126,7 +126,7 @@ class FuncCallHandle {
     std::vector<wcfMultiVal> &toCArgs() & {
         c_args_.resize(args_.size());
         for (std::size_t i = 0; i < args_.size(); i++) {
-            c_args_.push_back(args_[i].toCVal());
+            c_args_[i] = args_[i].toCVal();
         }
         return c_args_;
     }

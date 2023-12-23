@@ -96,7 +96,7 @@ WEBCFACE_DLL wcfStatus wcfValueSetVecD(wcfClient *wcli, const char *field,
  *
  * sizeに指定したサイズより実際に受信した値の個数のほうが大きい場合、
  * valuesにはsize分の値のみを格納しrecv_sizeには本来のサイズを返す
- * 
+ *
  * size > recv_size の場合、またはWCF_NOT_FOUNDの場合、
  * 配列の余った範囲は0で埋められる
  *
@@ -115,9 +115,9 @@ WEBCFACE_DLL wcfStatus wcfValueGetVecD(wcfClient *wcli, const char *member,
                                        int size, int *recv_size);
 
 typedef struct wcfMultiVal {
-    int as_int;
-    double as_double;
-    const char *as_str;
+    int as_int = 0;
+    double as_double = 0;
+    const char *as_str = nullptr;
 } wcfMultiVal;
 
 /*!
