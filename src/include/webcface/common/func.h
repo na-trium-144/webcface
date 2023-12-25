@@ -7,6 +7,7 @@
 #include <ostream>
 #include <cstdint>
 #include "val.h"
+#include "def.h"
 
 #ifdef min
 #pragma message("warning: Disabling macro definition of 'min' and 'max', since they conflicts in webcface/func.h.")
@@ -14,7 +15,7 @@
 #undef max
 #endif
 
-namespace webcface {
+namespace WEBCFACE_NS {
 //! webcface::Commonはserverとclientで共通のheader-onlyなクラス
 inline namespace Common {
 
@@ -240,8 +241,8 @@ struct FuncCall {
     unsigned int caller_member_id;
     unsigned int target_member_id;
     std::string field;
-    std::vector<webcface::ValAdaptor> args;
+    std::vector<WEBCFACE_NS::ValAdaptor> args;
 };
 
 } // namespace Common
-} // namespace webcface
+} // namespace WEBCFACE_NS

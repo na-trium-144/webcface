@@ -7,8 +7,9 @@
 #include "../message/message.h"
 #include <spdlog/common.h>
 #include <spdlog/logger.h>
+#include <webcface/common/def.h>
 
-namespace webcface::Server {
+namespace WEBCFACE_NS::Server {
 struct ClientData {
     using wsConnPtr = void *;
     spdlog::sink_ptr sink;
@@ -97,4 +98,4 @@ struct ClientData {
         Message::pack(send_buffer, send_len, data);
     }
 };
-} // namespace webcface::Server
+} // namespace WEBCFACE_NS::Server

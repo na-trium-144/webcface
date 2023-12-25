@@ -2,7 +2,7 @@
 #include <webcface/value.h>
 #include "../message/message.h"
 
-namespace webcface {
+namespace WEBCFACE_NS {
 Value::Value(const Field &base)
     : Field(base), EventTarget<Value>(&this->dataLock()->value_change_event,
                                       *this) {}
@@ -75,4 +75,4 @@ Value &Value::free() {
 }
 
 
-} // namespace webcface
+} // namespace WEBCFACE_NS

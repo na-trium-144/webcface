@@ -2,7 +2,7 @@
 #include "s_client_data.h"
 #include <algorithm>
 
-namespace webcface::Server {
+namespace WEBCFACE_NS::Server {
 void Store::clear() {
     clients.clear();
     clients_by_id.clear();
@@ -69,10 +69,11 @@ void Store::findAndDo(unsigned int id,
     }
 }
 void Store::findConnectedAndDo(unsigned int id,
-                      const std::function<void(ClientDataPtr)> &func,
-                      const std::function<void()> &func_else) {
+                               const std::function<void(ClientDataPtr)> &func,
+                               const std::function<void()> &func_else) {
     auto cd = clients_by_id.find(id);
-    if (cd != clients_by_id.end() && cd->second->sync_init && cd->second->connected()) {
+    if (cd != clients_by_id.end() && cd->second->sync_init &&
+        cd->second->connected()) {
         func(cd->second);
     } else {
         if (func_else != nullptr) {
@@ -94,4 +95,4 @@ void Store::forEachWithName(const std::function<void(ClientDataPtr)> &func) {
         }
     }
 }
-} // namespace webcface::Server
+} // namespace WEBCFACE_NS::Server

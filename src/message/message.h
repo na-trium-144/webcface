@@ -10,13 +10,14 @@
 #include <webcface/common/func.h>
 #include <webcface/common/log.h>
 #include <webcface/common/view.h>
+#include <webcface/common/def.h>
 #include "val_adaptor.h"
 
-MSGPACK_ADD_ENUM(webcface::Common::ValType)
-MSGPACK_ADD_ENUM(webcface::Common::ViewComponentType)
-MSGPACK_ADD_ENUM(webcface::Common::ViewColor)
+MSGPACK_ADD_ENUM(WEBCFACE_NS::Common::ValType)
+MSGPACK_ADD_ENUM(WEBCFACE_NS::Common::ViewComponentType)
+MSGPACK_ADD_ENUM(WEBCFACE_NS::Common::ViewColor)
 
-namespace webcface::Message {
+namespace WEBCFACE_NS::Message {
 // 新しいメッセージの定義は
 // kind追記→struct作成→message.ccに追記→s_client_data.ccに追記→client.ccに追記
 
@@ -519,7 +520,7 @@ inline std::string packDone(std::stringstream &buffer, int len) {
     return buffer2.str();
 }
 
-} // namespace webcface::Message
+} // namespace WEBCFACE_NS::Message
 
 namespace msgpack {
 MSGPACK_API_VERSION_NAMESPACE(MSGPACK_DEFAULT_API_NS) {
@@ -540,17 +541,17 @@ MSGPACK_API_VERSION_NAMESPACE(MSGPACK_DEFAULT_API_NS) {
         }
     };
     template <>
-    struct convert<webcface::Message::Ping>
-        : public EmptyConvert<webcface::Message::Ping> {};
+    struct convert<WEBCFACE_NS::Message::Ping>
+        : public EmptyConvert<WEBCFACE_NS::Message::Ping> {};
     template <>
-    struct convert<webcface::Message::PingStatusReq>
-        : public EmptyConvert<webcface::Message::PingStatusReq> {};
+    struct convert<WEBCFACE_NS::Message::PingStatusReq>
+        : public EmptyConvert<WEBCFACE_NS::Message::PingStatusReq> {};
     template <>
-    struct pack<webcface::Message::Ping>
-        : public EmptyPack<webcface::Message::Ping> {};
+    struct pack<WEBCFACE_NS::Message::Ping>
+        : public EmptyPack<WEBCFACE_NS::Message::Ping> {};
     template <>
-    struct pack<webcface::Message::PingStatusReq>
-        : public EmptyPack<webcface::Message::PingStatusReq> {};
+    struct pack<WEBCFACE_NS::Message::PingStatusReq>
+        : public EmptyPack<WEBCFACE_NS::Message::PingStatusReq> {};
     } // namespace adaptor
 }
 } // namespace msgpack

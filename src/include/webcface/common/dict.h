@@ -8,8 +8,9 @@
 #include <type_traits>
 #include <concepts>
 #include "vector.h"
+#include "def.h"
 
-namespace webcface {
+namespace WEBCFACE_NS {
 inline namespace Common {
 
 struct VecTypeDisabled {};
@@ -39,8 +40,8 @@ struct DictTraits<std::shared_ptr<T>> {
         return std::make_shared<T>(DictTraits<T>::wrap(val));
     }
     template <typename V = VecType>
-        requires(!std::same_as<V, VecTypeDisabled>)
-    static std::shared_ptr<T> wrapVec(const V &val) {
+    requires(!std::same_as<V, VecTypeDisabled>) static std::shared_ptr<
+        T> wrapVec(const V &val) {
         return std::make_shared<T>(DictTraits<T>::wrapVec(val));
     }
 };
@@ -70,7 +71,7 @@ struct DictElement {
     DictElement() = default;
     //! {key, value} から変換するコンストラクタ
     template <typename U>
-        requires std::convertible_to<U, typename DictTraits<T>::ValueType>
+    requires std::convertible_to<U, typename DictTraits<T>::ValueType>
     DictElement(const std::string &key, const U &value)
         : key(key),
           value(DictTraits<T>::wrap(
@@ -209,4 +210,4 @@ class Dict {
 };
 
 } // namespace Common
-} // namespace webcface
+} // namespace WEBCFACE_NS

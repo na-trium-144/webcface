@@ -22,6 +22,13 @@
 #else
 #define WEBCFACE_DLL __declspec(dllimport)
 #endif
+#ifdef _DEBUG
+#define WEBCFACE_NS webcfaced
+#else
+#define WEBCFACE_NS webcface
+#endif
 #else
 #define WEBCFACE_DLL
+#define WEBCFACE_NS webcface
 #endif
+

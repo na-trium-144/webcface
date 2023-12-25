@@ -6,9 +6,9 @@
 #include <stdexcept>
 #include <cstdint>
 #include <ostream>
+#include "def.h"
 
-namespace webcface {
-//! webcface::Commonはserverとclientで共通のheader-onlyなクラス
+namespace WEBCFACE_NS {
 inline namespace Common {
 //! 引数や戻り値の型を表すenum
 enum class ValType {
@@ -37,7 +37,7 @@ ValType valTypeOf() {
 
 /*!
  * \brief 型名を出力する。
- * 
+ *
  */
 inline std::ostream &operator<<(std::ostream &os, ValType a) {
     switch (a) {
@@ -58,9 +58,9 @@ inline std::ostream &operator<<(std::ostream &os, ValType a) {
 
 /*!
  * \brief 数値、文字列などの値を相互変換するクラス
- * 
+ *
  * Funcの引数、戻り値などに使う
- * 
+ *
  */
 class ValAdaptor {
     std::string value;
@@ -76,11 +76,11 @@ class ValAdaptor {
     ValAdaptor(bool value)
         : value(std::to_string(value)), type(ValType::bool_) {}
     template <typename T>
-        requires std::integral<T>
-    ValAdaptor(T value) : value(std::to_string(value)), type(ValType::int_) {}
+    requires std::integral<T> ValAdaptor(T value)
+        : value(std::to_string(value)), type(ValType::int_) {}
     template <typename T>
-        requires std::floating_point<T>
-    ValAdaptor(T value) : value(std::to_string(value)), type(ValType::float_) {}
+    requires std::floating_point<T> ValAdaptor(T value)
+        : value(std::to_string(value)), type(ValType::float_) {}
 
     ValType valType() const { return type; }
 
@@ -93,16 +93,12 @@ class ValAdaptor {
             return 0;
         }
     }
-    operator bool() const{
-        return value == std::to_string(true);
-    }
+    operator bool() const { return value == std::to_string(true); }
     template <typename T>
-        requires std::convertible_to<double, T>
-    operator T() const {
-        return static_cast<T>(operator double());
-    }
+    requires std::convertible_to<double, T>
+    operator T() const { return static_cast<T>(operator double()); }
     template <typename T>
-        requires std::convertible_to<std::string, T>
+    requires std::convertible_to<std::string, T>
     operator T() const {
         return static_cast<T>(operator const std::string &());
     }
@@ -114,15 +110,13 @@ class ValAdaptor {
         return *this;
     }
     template <typename T>
-        requires std::integral<T>
-    ValAdaptor &operator=(T v) {
+    requires std::integral<T> ValAdaptor &operator=(T v) {
         value = std::to_string(v);
         type = ValType::int_;
         return *this;
     }
     template <typename T>
-        requires std::floating_point<T>
-    ValAdaptor &operator=(T v) {
+    requires std::floating_point<T> ValAdaptor &operator=(T v) {
         value = std::to_string(v);
         type = ValType::float_;
         return *this;
@@ -135,7 +129,8 @@ class ValAdaptor {
 };
 
 // inline std::ostream &operator<<(std::ostream &os, const ValAdaptor &a) {
-//     return os << static_cast<std::string>(a) << "(type=" << a.valType() << ")";
+//     return os << static_cast<std::string>(a) << "(type=" << a.valType() <<
+//     ")";
 // }
 
 //! ValAdaptorのリストから任意の型のタプルに変換する
@@ -149,4 +144,4 @@ void argToTuple(const std::vector<ValAdaptor> &args, T &tuple) {
     }
 }
 } // namespace Common
-} // namespace webcface
+} // namespace WEBCFACE_NS

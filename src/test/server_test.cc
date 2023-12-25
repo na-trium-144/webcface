@@ -11,7 +11,7 @@
 #include <iostream>
 #include "dummy_client.h"
 
-using namespace webcface;
+using namespace WEBCFACE_NS;
 
 #ifndef WEBCFACE_TEST_TIMEOUT
 #define WEBCFACE_TEST_TIMEOUT 10

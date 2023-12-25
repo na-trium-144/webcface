@@ -2,8 +2,9 @@
 #include <functional>
 #include <eventpp/eventdispatcher.h>
 #include "field.h"
+#include "common/def.h"
 
-namespace webcface {
+namespace WEBCFACE_NS {
 
 /*!
  * \brief イベントを表し、コールバックの追加や削除ができるクラス。
@@ -93,4 +94,4 @@ class EventTarget {
         return dispatcher->ownsHandle(key, handle);
     }
 };
-} // namespace webcface
+} // namespace WEBCFACE_NS
