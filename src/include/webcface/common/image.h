@@ -3,6 +3,7 @@
 #include <memory>
 #include <cstdint>
 #include <stdexcept>
+#include "def.h"
 
 // todo: cmakeなしでヘッダー読んだときにopencvの有無を判別する
 #if WEBCFACE_USE_OPENCV
@@ -10,7 +11,7 @@
 #include <opencv2/imgcodecs.hpp>
 #endif
 
-namespace webcface {
+namespace WEBCFACE_NS {
 inline namespace Common {
 
 enum class ImageColorMode {
@@ -77,7 +78,8 @@ class ImageBase {
      */
     ImageBase(int rows, int cols, const void *data,
               ImageColorMode color_mode = ImageColorMode::bgr)
-        : rows_(rows), cols_(cols),color_mode_(color_mode), cmp_mode_(ImageCompressMode::raw) {
+        : rows_(rows), cols_(cols), color_mode_(color_mode),
+          cmp_mode_(ImageCompressMode::raw) {
         data_ = std::make_shared<std::vector<unsigned char>>(
             static_cast<const unsigned char *>(data),
             static_cast<const unsigned char *>(data) +
@@ -86,9 +88,9 @@ class ImageBase {
 
     /*!
      * \brief 画像が空かどうかを返す
-     * 
+     *
      * \return dataPtr()->size() == 0
-     * 
+     *
      */
     bool empty() const { return data_->size() == 0; }
     /*!
@@ -96,7 +98,7 @@ class ImageBase {
      *
      */
     std::size_t rows() const { return rows_; }
-    /*! 
+    /*!
      * \brief 画像の高さ
      *
      */
@@ -108,7 +110,7 @@ class ImageBase {
      *
      */
     std::size_t channels() const {
-        switch(color_mode_){
+        switch (color_mode_) {
         case ImageColorMode::gray:
             return 1;
         case ImageColorMode::bgr:
@@ -149,7 +151,8 @@ class ImageBase {
      *
      * compress_modeがrawでない場合は正常にアクセスできない。
      */
-    unsigned char at(std::size_t row, std::size_t col, std::size_t ch = 0) const {
+    unsigned char at(std::size_t row, std::size_t col,
+                     std::size_t ch = 0) const {
         return dataPtr()->at((row * cols() + col) * channels() + ch);
     }
 };
@@ -192,7 +195,8 @@ class ImageWithCV : public ImageBase {
         if (empty()) {
             // mat_ = empty
         } else if (cmp_mode_ == ImageCompressMode::raw) {
-            mat_ = cv::Mat{static_cast<int>(rows_), static_cast<int>(cols_), CvType(), &data_->at(0)};
+            mat_ = cv::Mat{static_cast<int>(rows_), static_cast<int>(cols_),
+                           CvType(), &data_->at(0)};
         } else {
             mat_ = cv::imdecode(*data_, cv::IMREAD_COLOR);
             if (rows_ != mat_.rows || cols_ != mat_.cols) {
@@ -290,4 +294,4 @@ struct ImageReq {
     bool operator!=(const ImageReq &rhs) const { return !(*this == rhs); }
 };
 } // namespace Common
-} // namespace webcface
+} // namespace WEBCFACE_NS

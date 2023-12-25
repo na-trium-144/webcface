@@ -340,7 +340,7 @@ void Internal::ClientData::onRecv(const std::string &message) {
         }
         case MessageKind::image + MessageKind::res: {
             auto r =
-                std::any_cast<webcface::Message::Res<webcface::Message::Image>>(
+                std::any_cast<WEBCFACE_NS::Message::Res<WEBCFACE_NS::Message::Image>>(
                     obj);
             auto [member, field] =
                 this->image_store.getReq(r.req_id, r.sub_field);

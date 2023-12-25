@@ -2,7 +2,7 @@
 #include "client_internal.h"
 #include "../message/message.h"
 
-namespace webcface {
+namespace WEBCFACE_NS {
 Image::Image(const Field &base)
     : Field(base), EventTarget<Image>(&this->dataLock()->image_change_event,
                                       *this) {}
@@ -79,4 +79,4 @@ Image &Image::free() {
     return *this;
 }
 
-} // namespace webcface
+} // namespace WEBCFACE_NS

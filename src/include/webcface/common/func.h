@@ -17,7 +17,6 @@
 #endif
 
 namespace WEBCFACE_NS {
-//! webcface::Commonはserverとclientで共通のheader-onlyなクラス
 inline namespace Common {
 
 using FuncType = std::function<ValAdaptor(const std::vector<ValAdaptor> &)>;

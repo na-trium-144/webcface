@@ -368,16 +368,16 @@ void ClientData::onRecv(const std::string &message) {
             break;
         }
         case MessageKind::image: {
-            auto v = std::any_cast<webcface::Message::Image>(obj);
+            auto v = std::any_cast<WEBCFACE_NS::Message::Image>(obj);
             logger->debug("image {} ({} x {} x {})", v.field, v.rows(),
                           v.cols(), v.channels());
             if (!this->image.count(v.field)) {
-                store.forEach([&](auto &cd) {
-                    if (cd.name != this->name) {
-                        cd.pack(
-                            webcface::Message::Entry<webcface::Message::Image>{
+                store.forEach([&](auto cd) {
+                    if (cd->name != this->name) {
+                        cd->pack(
+                            WEBCFACE_NS::Message::Entry<WEBCFACE_NS::Message::Image>{
                                 {}, this->member_id, v.field});
-                        cd.logger->trace("send image_entry {} of member {}",
+                        cd->logger->trace("send image_entry {} of member {}",
                                          v.field, this->member_id);
                     }
                 });
@@ -542,7 +542,7 @@ void ClientData::onRecv(const std::string &message) {
         }
         case MessageKind::req + MessageKind::image: {
             auto s =
-                std::any_cast<webcface::Message::Req<webcface::Message::Image>>(
+                std::any_cast<WEBCFACE_NS::Message::Req<WEBCFACE_NS::Message::Image>>(
                     obj);
             logger->debug("request image ({}): {} from {}, {} x {}, color={}, "
                           "mode={}, q={}",
@@ -670,27 +670,27 @@ void ClientData::imageConvertThreadMain(const std::string &member,
     static bool disabled_notify = false;
     logger->trace("imageConvertThreadMain started for {}, {}", member, field);
     while (true) {
-        store.findAndDo(member, [&](ClientData &cd) {
+        store.findAndDo(member, [&](auto cd) {
             while (true) {
                 Common::ImageFrame img; 
                 {
-                    std::unique_lock lock(cd.image_m[field]);
+                    std::unique_lock lock(cd->image_m[field]);
                     std::cv_status cv_ret;
-                    cd.image_cv[field].wait_for(lock, std::chrono::milliseconds(1));
-                    if (cd.closing.load()) {
+                    cd->image_cv[field].wait_for(lock, std::chrono::milliseconds(1));
+                    if (cd->closing.load()) {
                         break;
                     }
                     if (this->closing.load()) {
                         break;
                     }
-                    if (cd.image_changed[field] == last_image_flag &&
+                    if (cd->image_changed[field] == last_image_flag &&
                         this->image_req_changed[member][field] == last_req_flag) {
                         continue;
                     }
-                    last_image_flag = cd.image_changed[field];
+                    last_image_flag = cd->image_changed[field];
                     last_req_flag = this->image_req_changed[member][field];
                     logger->trace("converting image of {}, {}", member, field);
-                    img = cd.image[field];
+                    img = cd->image[field];
                 }
                 if (img.empty()) {
                     break;
@@ -703,7 +703,7 @@ void ClientData::imageConvertThreadMain(const std::string &member,
                 auto [req_id, sub_field] =
                     findReqField(this->image_req, member, field);
                 auto sync =
-                    webcface::Message::Sync{cd.member_id, cd.last_sync_time};
+                    WEBCFACE_NS::Message::Sync{cd->member_id, cd->last_sync_time};
 
                 int rows = img.rows(), cols = img.cols();
                 if (info.rows || info.cols) {
@@ -784,7 +784,7 @@ void ClientData::imageConvertThreadMain(const std::string &member,
                 {
                     std::lock_guard lock(server_mtx);
                     this->pack(sync);
-                    this->pack(webcface::Message::Res<webcface::Message::Image>{
+                    this->pack(WEBCFACE_NS::Message::Res<WEBCFACE_NS::Message::Image>{
                         req_id, sub_field, img_send});
                     logger->trace("send image_res req_id={} + '{}'", req_id,
                                   sub_field);

@@ -53,7 +53,7 @@ class Member : protected Field {
      * \brief imageを参照する。
      *
      */
-    Image image(const std::string &field) const;
+    WEBCFACE_DLL Image image(const std::string &field) const;
     /*!
      * \brief funcを参照する。
      *
@@ -134,7 +134,7 @@ class Member : protected Field {
      * コールバックの型は void(Image)
      *
      */
-    EventTarget<Image, std::string> onImageEntry() const;
+    WEBCFACE_DLL EventTarget<Image, std::string> onImageEntry() const;
     /*!
      * \brief viewが追加されたときのイベント
      *
