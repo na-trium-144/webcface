@@ -12,7 +12,7 @@
 #include <linux/limits.h>
 #endif
 
-namespace webcface {
+namespace WEBCFACE_NS {
 namespace Server {
 
 // https://stackoverflow.com/questions/50889647/best-way-to-get-exe-folder-path
@@ -79,4 +79,4 @@ std::string getTempDir(const std::shared_ptr<spdlog::logger> &logger) {
     }
 }
 } // namespace Server
-} // namespace webcface
+} // namespace WEBCFACE_NS

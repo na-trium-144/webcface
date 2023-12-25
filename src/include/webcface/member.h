@@ -12,7 +12,7 @@
 #include "view.h"
 #include "image.h"
 
-namespace webcface {
+namespace WEBCFACE_NS {
 
 namespace Internal {
 struct ClientData;
@@ -25,7 +25,7 @@ struct ClientData;
  * Client::onMemberEntry() などから取得すること
  *
  */
-class WEBCFACE_DLL Member : protected Field {
+class Member : protected Field {
   public:
     Member() = default;
     Member(const std::weak_ptr<Internal::ClientData> &data_w,
@@ -43,12 +43,12 @@ class WEBCFACE_DLL Member : protected Field {
      * \brief valueを参照する。
      *
      */
-    Value value(const std::string &field) const;
+    WEBCFACE_DLL Value value(const std::string &field) const;
     /*!
      * \brief textを参照する。
      *
      */
-    Text text(const std::string &field) const;
+    WEBCFACE_DLL Text text(const std::string &field) const;
     /*!
      * \brief imageを参照する。
      *
@@ -58,7 +58,7 @@ class WEBCFACE_DLL Member : protected Field {
      * \brief funcを参照する。
      *
      */
-    Func func(const std::string &field) const;
+    WEBCFACE_DLL Func func(const std::string &field) const;
 
     /*!
      * \brief AnonymousFuncオブジェクトを作成しfuncをsetする
@@ -74,38 +74,38 @@ class WEBCFACE_DLL Member : protected Field {
      * \brief viewを参照する。
      *
      */
-    View view(const std::string &field) const;
+    WEBCFACE_DLL View view(const std::string &field) const;
     /*!
      * \brief logを参照する。
      *
      */
-    Log log() const;
+    WEBCFACE_DLL Log log() const;
 
     /*!
      * \brief このmemberが公開しているvalueのリストを返す。
      *
      */
-    std::vector<Value> values() const;
+    WEBCFACE_DLL std::vector<Value> values() const;
     /*!
      * \brief このmemberが公開しているtextのリストを返す。
      *
      */
-    std::vector<Text> texts() const;
+    WEBCFACE_DLL std::vector<Text> texts() const;
     /*!
      * \brief このmemberが公開しているfuncのリストを返す。
      *
      */
-    std::vector<Func> funcs() const;
+    WEBCFACE_DLL std::vector<Func> funcs() const;
     /*!
      * \brief このmemberが公開しているviewのリストを返す。
      *
      */
-    std::vector<View> views() const;
+    WEBCFACE_DLL std::vector<View> views() const;
     /*!
      * \brief このmemberが公開しているimageのリストを返す。
      *
      */
-    std::vector<Image> images() const;
+    WEBCFACE_DLL std::vector<Image> images() const;
 
     /*!
      * \brief valueが追加された時のイベント
@@ -113,21 +113,21 @@ class WEBCFACE_DLL Member : protected Field {
      * コールバックの型は void(Value)
      *
      */
-    EventTarget<Value, std::string> onValueEntry() const;
+    WEBCFACE_DLL EventTarget<Value, std::string> onValueEntry() const;
     /*!
      * \brief textが追加された時のイベント
      *
      * コールバックの型は void(Text)
      *
      */
-    EventTarget<Text, std::string> onTextEntry() const;
+    WEBCFACE_DLL EventTarget<Text, std::string> onTextEntry() const;
     /*!
      * \brief funcが追加された時のイベント
      *
      * コールバックの型は void(Func)
      *
      */
-    EventTarget<Func, std::string> onFuncEntry() const;
+    WEBCFACE_DLL EventTarget<Func, std::string> onFuncEntry() const;
     /*!
      * \brief imageが追加されたときのイベント
      *
@@ -141,12 +141,12 @@ class WEBCFACE_DLL Member : protected Field {
      * コールバックの型は void(View)
      *
      */
-    EventTarget<View, std::string> onViewEntry() const;
+    WEBCFACE_DLL EventTarget<View, std::string> onViewEntry() const;
     /*!
      * \brief Memberがsync()したときのイベント
      * コールバックの型は void(Member)
      */
-    EventTarget<Member, std::string> onSync() const;
+    WEBCFACE_DLL EventTarget<Member, std::string> onSync() const;
 
     /*!
      * \brief このMemberが使っているWebCFaceライブラリの識別情報
@@ -155,17 +155,17 @@ class WEBCFACE_DLL Member : protected Field {
      * pythonクライアントは"python"を返す。
      *
      */
-    std::string libName() const;
+    WEBCFACE_DLL std::string libName() const;
     /*!
      * \brief このMemberが使っているWebCFaceのバージョン
      *
      */
-    std::string libVersion() const;
+    WEBCFACE_DLL std::string libVersion() const;
     /*!
      * \brief このMemberのIPアドレス
      *
      */
-    std::string remoteAddr() const;
+    WEBCFACE_DLL std::string remoteAddr() const;
 
     /*!
      * \brief 通信速度を調べる
@@ -176,7 +176,7 @@ class WEBCFACE_DLL Member : protected Field {
      * \sa onPing()
      *
      */
-    std::optional<int> pingStatus() const;
+    WEBCFACE_DLL std::optional<int> pingStatus() const;
     /*!
      * \brief 通信速度が更新された時のイベント
      *
@@ -187,7 +187,7 @@ class WEBCFACE_DLL Member : protected Field {
      * \sa pingStatus()
      *
      */
-    EventTarget<Member, std::string> onPing() const;
+    WEBCFACE_DLL EventTarget<Member, std::string> onPing() const;
 };
 
-} // namespace webcface
+} // namespace WEBCFACE_NS

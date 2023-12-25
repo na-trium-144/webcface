@@ -6,7 +6,7 @@
 #include <crow.h>
 #include "../server/custom_logger.h"
 
-using namespace webcface;
+using namespace WEBCFACE_NS;
 DummyServer::~DummyServer() {
     std::static_pointer_cast<crow::SimpleApp>(server_)->stop();
     t.join();

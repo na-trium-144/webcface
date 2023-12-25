@@ -2,7 +2,7 @@
 #include "client_internal.h"
 #include "../message/message.h"
 
-namespace webcface {
+namespace WEBCFACE_NS {
 Log::Log(const Field &base)
     : Field(base), EventTarget<Log, std::string>(
                        &this->dataLock()->log_append_event, this->member_) {}
@@ -34,4 +34,4 @@ Log &Log::clear() {
     return *this;
 }
 
-} // namespace webcface
+} // namespace WEBCFACE_NS

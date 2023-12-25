@@ -4,8 +4,9 @@
 #include <string>
 #include <condition_variable>
 #include <webcface/func_result.h>
+#include <webcface/common/def.h>
 
-namespace webcface::Internal {
+namespace WEBCFACE_NS::Internal {
 
 /*!
  * \brief AsyncFuncResultのリストを保持する。
@@ -83,4 +84,4 @@ class FuncOnSync {
     }
 };
 
-} // namespace webcface::Internal
+} // namespace WEBCFACE_NS::Internal

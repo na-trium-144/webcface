@@ -12,7 +12,7 @@
 #include <webcface/common/view.h>
 #include <webcface/common/image.h>
 
-namespace webcface::Internal {
+namespace WEBCFACE_NS::Internal {
 /*!
  * \brief 送受信するデータを保持するクラス
  *
@@ -229,4 +229,4 @@ extern template class SyncDataStore2<
 extern template class SyncDataStore2<Common::ImageBase, Common::ImageReq>;
 #endif
 
-} // namespace webcface::Internal
+} // namespace WEBCFACE_NS::Internal

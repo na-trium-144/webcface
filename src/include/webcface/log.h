@@ -5,8 +5,9 @@
 #include "event_target.h"
 #include "field.h"
 #include "common/log.h"
+#include "common/def.h"
 
-namespace webcface {
+namespace WEBCFACE_NS {
 
 /*!
  * \brief ログの送受信データを表すクラス
@@ -43,4 +44,4 @@ class Log : protected Field, public EventTarget<Log, std::string> {
      */
     WEBCFACE_DLL Log &clear();
 };
-} // namespace webcface
+} // namespace WEBCFACE_NS

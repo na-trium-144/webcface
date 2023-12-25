@@ -6,8 +6,9 @@
 #include "common/dict.h"
 #include "field.h"
 #include "event_target.h"
+#include "common/def.h"
 
-namespace webcface {
+namespace WEBCFACE_NS {
 namespace Internal {
 struct ClientData;
 }
@@ -110,4 +111,4 @@ class Text : protected Field, public EventTarget<Text> {
 inline std::ostream &operator<<(std::ostream &os, const Text &data) {
     return os << data.get();
 }
-} // namespace webcface
+} // namespace WEBCFACE_NS

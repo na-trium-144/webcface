@@ -27,5 +27,11 @@
 #include "member.h"
 #include "client.h"
 
+#ifdef _MSC_VER
+#ifdef _DEBUG
+namespace webcface = webcfaced;
+#endif
+#endif
+
 // 〜v1.1 との互換性のため
 namespace WebCFace = webcface;

@@ -6,8 +6,9 @@
 #include "common/view.h"
 #include "func.h"
 #include "event_target.h"
+#include "common/def.h"
 
-namespace webcface {
+namespace WEBCFACE_NS {
 namespace Internal {
 struct ClientData;
 }
@@ -284,4 +285,4 @@ class View : protected Field, public EventTarget<View>, public std::ostream {
      */
     WEBCFACE_DLL View &sync();
 };
-} // namespace webcface
+} // namespace WEBCFACE_NS

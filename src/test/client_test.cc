@@ -15,7 +15,7 @@
 #include <iostream>
 #include "dummy_server.h"
 
-using namespace webcface;
+using namespace WEBCFACE_NS;
 
 #ifndef WEBCFACE_TEST_TIMEOUT
 #define WEBCFACE_TEST_TIMEOUT 10
@@ -99,7 +99,7 @@ TEST_F(ClientTest, memoryLeak) {
 TEST_F(ClientTest, sync) {
     wcli_->sync();
     wait();
-    using namespace webcface::Message;
+    using namespace WEBCFACE_NS::Message;
     dummy_s->recv<SyncInit>(
         [&](const auto &obj) {
             EXPECT_EQ(obj.member_name, self_name);

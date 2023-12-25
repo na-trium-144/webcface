@@ -1,8 +1,9 @@
 #pragma once
 #include <string>
 #include <chrono>
+#include "def.h"
 
-namespace webcface {
+namespace WEBCFACE_NS {
 inline namespace Common {
 struct LogLine {
     int level = 0;
@@ -14,4 +15,4 @@ struct LogLine {
         : level(level), time(time), message(message) {}
 };
 } // namespace Common
-} // namespace webcface
+} // namespace WEBCFACE_NS

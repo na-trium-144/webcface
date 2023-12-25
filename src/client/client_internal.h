@@ -23,8 +23,9 @@
 #include "data_store1.h"
 #include "data_store2.h"
 #include "func_internal.h"
+#include <webcface/common/def.h>
 
-namespace webcface::Internal {
+namespace WEBCFACE_NS::Internal {
 
 WEBCFACE_DLL void messageThreadMain(std::shared_ptr<ClientData> data,
                                     std::string host, int port);
@@ -183,4 +184,4 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
      */
     WEBCFACE_DLL void pingStatusReq();
 };
-} // namespace webcface::Internal
+} // namespace WEBCFACE_NS::Internal

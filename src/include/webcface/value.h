@@ -7,8 +7,9 @@
 #include "common/vector.h"
 #include "field.h"
 #include "event_target.h"
+#include "common/def.h"
 
-namespace webcface {
+namespace WEBCFACE_NS {
 namespace Internal {
 struct ClientData;
 }
@@ -203,4 +204,4 @@ inline std::ostream &operator<<(std::ostream &os, const Value &data) {
     return os << data.get();
 }
 
-} // namespace webcface
+} // namespace WEBCFACE_NS

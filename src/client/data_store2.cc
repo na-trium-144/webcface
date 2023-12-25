@@ -1,6 +1,6 @@
 #include "data_store2.h"
 
-namespace webcface::Internal {
+namespace WEBCFACE_NS::Internal {
 template <typename T, typename ReqT>
 void SyncDataStore2<T, ReqT>::setSend(const std::string &name, const T &data) {
     std::lock_guard lock(mtx);
@@ -219,4 +219,4 @@ template class WEBCFACE_DLL SyncDataStore2<
     std::shared_ptr<std::vector<Common::ViewComponentBase>>, int>;
 template class WEBCFACE_DLL SyncDataStore2<Common::ImageBase, Common::ImageReq>;
 
-} // namespace webcface::Internal
+} // namespace WEBCFACE_NS::Internal

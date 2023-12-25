@@ -3,7 +3,7 @@
 #include "../message/message.h"
 #include "client_internal.h"
 
-namespace webcface {
+namespace WEBCFACE_NS {
 
 Value Member::value(const std::string &field) const {
     return Value{*this, field};
@@ -124,4 +124,4 @@ EventTarget<Member, std::string> Member::onPing() const {
     dataLock()->pingStatusReq();
     return EventTarget<Member, std::string>{&dataLock()->ping_event, member_};
 }
-} // namespace webcface
+} // namespace WEBCFACE_NS

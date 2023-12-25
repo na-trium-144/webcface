@@ -4,7 +4,7 @@
 #include "common/field_base.h"
 #include "common/def.h"
 
-namespace webcface {
+namespace WEBCFACE_NS {
 
 namespace Internal {
 struct ClientData;
@@ -13,7 +13,7 @@ struct ClientData;
 class Member;
 
 //! ClientDataの参照とメンバ名とデータ名を持つクラス
-struct WEBCFACE_DLL Field : public Common::FieldBase {
+struct Field : public Common::FieldBase {
     //! ClientDataの参照
     //! ClientData内に保持するクラスもあるので循環参照を避けるためweak_ptr
     std::weak_ptr<Internal::ClientData> data_w;
@@ -26,13 +26,13 @@ struct WEBCFACE_DLL Field : public Common::FieldBase {
         : Field(base.data_w, base.member_, field) {}
 
     //! data_wをlockし、失敗したらruntime_errorを投げる
-    std::shared_ptr<Internal::ClientData> dataLock() const;
+    WEBCFACE_DLL std::shared_ptr<Internal::ClientData> dataLock() const;
     //! data_wをlockし、memberがselfではなければinvalid_argumentを投げる
-    std::shared_ptr<Internal::ClientData> setCheck() const;
+    WEBCFACE_DLL std::shared_ptr<Internal::ClientData> setCheck() const;
 
     //! Memberを返す
-    Member member() const;
+    WEBCFACE_DLL Member member() const;
     //! field名を返す
     std::string name() const { return field_; }
 };
-} // namespace webcface
+} // namespace WEBCFACE_NS
