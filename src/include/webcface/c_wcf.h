@@ -132,7 +132,7 @@ WEBCFACE_DLL wcfStatus wcfValueGetVecD(wcfClient *wcli, const char *member,
  * as_strがすべて埋まった状態で返ってくる。
  *
  */
-typedef struct wcfMultiVal {
+WEBCFACE_DLL typedef struct wcfMultiVal {
     /*!
      * \brief int型でのアクセス
      *
@@ -180,7 +180,7 @@ WEBCFACE_DLL wcfStatus wcfFuncRun(wcfClient *wcli, const char *member,
  * \brief 受信した関数呼び出しの情報を保持するstruct
  *
  */
-typedef struct wcfFuncCallHandle {
+WEBCFACE_DLL typedef struct wcfFuncCallHandle {
     /*!
      * \brief 呼び出された引数
      *
