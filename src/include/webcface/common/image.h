@@ -199,7 +199,8 @@ class ImageWithCV : public ImageBase {
                            CvType(), &data_->at(0)};
         } else {
             mat_ = cv::imdecode(*data_, cv::IMREAD_COLOR);
-            if (rows_ != mat_.rows || cols_ != mat_.cols) {
+            if (static_cast<int>(rows_) != mat_.rows ||
+                static_cast<int>(cols_) != mat_.cols) {
                 throw std::invalid_argument("data size does not match");
             }
         }
@@ -245,7 +246,7 @@ class ImageWithCV : public ImageBase {
                 "webcface::ImageData supports CV_8UC1 (grayscale), CV_8UC3 "
                 "(BGR) or CV_8UC4 (BGRA) format only.");
         }
-        if (mat.channels() != channels()) {
+        if (mat.channels() != static_cast<int>(channels())) {
             throw std::invalid_argument("color_mode does not match");
         }
         data_ = std::make_shared<std::vector<unsigned char>>();

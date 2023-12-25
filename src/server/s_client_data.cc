@@ -607,6 +607,8 @@ static int colorConvert(Common::ImageColorMode src_mode,
             return cv::COLOR_GRAY2RGB;
         case Common::ImageColorMode::rgba:
             return cv::COLOR_GRAY2RGBA;
+        case Common::ImageColorMode::gray:
+            break;
         }
         break;
     case Common::ImageColorMode::bgr:
@@ -619,6 +621,8 @@ static int colorConvert(Common::ImageColorMode src_mode,
             return cv::COLOR_BGR2RGB;
         case Common::ImageColorMode::rgba:
             return cv::COLOR_BGR2RGBA;
+        case Common::ImageColorMode::bgr:
+            break;
         }
         break;
     case Common::ImageColorMode::bgra:
@@ -631,6 +635,8 @@ static int colorConvert(Common::ImageColorMode src_mode,
             return cv::COLOR_BGRA2RGB;
         case Common::ImageColorMode::rgba:
             return cv::COLOR_BGRA2RGBA;
+        case Common::ImageColorMode::bgra:
+            break;
         }
         break;
     case Common::ImageColorMode::rgb:
@@ -643,6 +649,8 @@ static int colorConvert(Common::ImageColorMode src_mode,
             return cv::COLOR_RGB2BGRA;
         case Common::ImageColorMode::rgba:
             return cv::COLOR_RGB2RGBA;
+        case Common::ImageColorMode::rgb:
+            break;
         }
         break;
     case Common::ImageColorMode::rgba:
@@ -655,6 +663,8 @@ static int colorConvert(Common::ImageColorMode src_mode,
             return cv::COLOR_RGBA2BGRA;
         case Common::ImageColorMode::rgb:
             return cv::COLOR_RGBA2RGB;
+        case Common::ImageColorMode::rgba:
+            break;
         }
         break;
     }
@@ -667,7 +677,7 @@ void ClientData::imageConvertThreadMain(const std::string &member,
     // cdの画像を変換しthisに送信
     // cd.image[field]が更新されるかリクエストが更新されたときに変換を行う。
     int last_image_flag = -1, last_req_flag = -1;
-    static bool disabled_notify = false;
+    [[maybe_unused]] static bool disabled_notify = false;
     logger->trace("imageConvertThreadMain started for {}, {}", member, field);
     while (true) {
         store.findAndDo(member, [&](auto cd) {
@@ -675,7 +685,6 @@ void ClientData::imageConvertThreadMain(const std::string &member,
                 Common::ImageFrame img; 
                 {
                     std::unique_lock lock(cd->image_m[field]);
-                    std::cv_status cv_ret;
                     cd->image_cv[field].wait_for(lock, std::chrono::milliseconds(1));
                     if (cd->closing.load()) {
                         break;

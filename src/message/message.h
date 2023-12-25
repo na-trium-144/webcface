@@ -316,7 +316,7 @@ struct Image : public MessageBase<MessageKind::image>,
     std::string field;
     Image() = default;
     Image(const std::string &field, const Common::ImageBase &img)
-        : field(field), ImageBase(img) {}
+        : ImageBase(img), field(field) {}
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", field), MSGPACK_NVP("d", data_),
                        MSGPACK_NVP("h", rows_), MSGPACK_NVP("w", cols_),
                        MSGPACK_NVP("l", color_mode_),
@@ -443,7 +443,7 @@ struct Req<Image> : public MessageBase<MessageKind::image + MessageKind::req>,
     Req() = default;
     Req(const std::string &member, const std::string &field,
         unsigned int req_id, const Common::ImageReq &ireq)
-        : member(member), field(field), req_id(req_id), Common::ImageReq(ireq) {
+        : Common::ImageReq(ireq), member(member), field(field), req_id(req_id) {
     }
 
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", req_id), MSGPACK_NVP("M", member),
@@ -522,7 +522,7 @@ struct Res<Image> : public MessageBase<MessageKind::image + MessageKind::res>,
     Res() = default;
     Res(unsigned int req_id, const std::string &sub_field,
         const Common::ImageBase &img)
-        : req_id(req_id), sub_field(sub_field), ImageBase(img) {}
+        : ImageBase(img), req_id(req_id), sub_field(sub_field) {}
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", req_id), MSGPACK_NVP("f", sub_field),
                        MSGPACK_NVP("d", data_), MSGPACK_NVP("w", cols_),
                        MSGPACK_NVP("h", rows_), MSGPACK_NVP("l", color_mode_),
