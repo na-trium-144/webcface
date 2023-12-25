@@ -177,23 +177,23 @@ void ClientData::onRecv(const std::string &message) {
                                   cd->member_id);
 
                     for (const auto &f : cd->value) {
-                        this->pack(
-                            WEBCFACE_NS::Message::Entry<WEBCFACE_NS::Message::Value>{
-                                {}, cd->member_id, f.first});
+                        this->pack(WEBCFACE_NS::Message::Entry<
+                                   WEBCFACE_NS::Message::Value>{
+                            {}, cd->member_id, f.first});
                         logger->trace("send value_entry {} of member {}",
                                       f.first, cd->member_id);
                     }
                     for (const auto &f : cd->text) {
-                        this->pack(
-                            WEBCFACE_NS::Message::Entry<WEBCFACE_NS::Message::Text>{
-                                {}, cd->member_id, f.first});
+                        this->pack(WEBCFACE_NS::Message::Entry<
+                                   WEBCFACE_NS::Message::Text>{
+                            {}, cd->member_id, f.first});
                         logger->trace("send text_entry {} of member {}",
                                       f.first, cd->member_id);
                     }
                     for (const auto &f : cd->view) {
-                        this->pack(
-                            WEBCFACE_NS::Message::Entry<WEBCFACE_NS::Message::View>{
-                                {}, cd->member_id, f.first});
+                        this->pack(WEBCFACE_NS::Message::Entry<
+                                   WEBCFACE_NS::Message::View>{
+                            {}, cd->member_id, f.first});
                         logger->trace("send view_entry {} of member {}",
                                       f.first, cd->member_id);
                     }
@@ -285,9 +285,9 @@ void ClientData::onRecv(const std::string &message) {
             if (!this->value.count(v.field)) {
                 store.forEach([&](auto cd) {
                     if (cd->name != this->name) {
-                        cd->pack(
-                            WEBCFACE_NS::Message::Entry<WEBCFACE_NS::Message::Value>{
-                                {}, this->member_id, v.field});
+                        cd->pack(WEBCFACE_NS::Message::Entry<
+                                 WEBCFACE_NS::Message::Value>{
+                            {}, this->member_id, v.field});
                         cd->logger->trace("send value_entry {} of member {}",
                                           v.field, this->member_id);
                     }
@@ -299,8 +299,9 @@ void ClientData::onRecv(const std::string &message) {
                 auto [req_id, sub_field] =
                     findReqField(cd->value_req, this->name, v.field);
                 if (req_id > 0) {
-                    cd->pack(WEBCFACE_NS::Message::Res<WEBCFACE_NS::Message::Value>(
-                        req_id, sub_field, v.data));
+                    cd->pack(
+                        WEBCFACE_NS::Message::Res<WEBCFACE_NS::Message::Value>(
+                            req_id, sub_field, v.data));
                     cd->logger->trace("send value_res req_id={} + '{}'", req_id,
                                       sub_field);
                 }
@@ -313,9 +314,9 @@ void ClientData::onRecv(const std::string &message) {
             if (!this->text.count(v.field)) {
                 store.forEach([&](auto cd) {
                     if (cd->name != this->name) {
-                        cd->pack(
-                            WEBCFACE_NS::Message::Entry<WEBCFACE_NS::Message::Text>{
-                                {}, this->member_id, v.field});
+                        cd->pack(WEBCFACE_NS::Message::Entry<
+                                 WEBCFACE_NS::Message::Text>{
+                            {}, this->member_id, v.field});
                         cd->logger->trace("send text_entry {} of member {}",
                                           v.field, this->member_id);
                     }
@@ -327,8 +328,9 @@ void ClientData::onRecv(const std::string &message) {
                 auto [req_id, sub_field] =
                     findReqField(cd->text_req, this->name, v.field);
                 if (req_id > 0) {
-                    cd->pack(WEBCFACE_NS::Message::Res<WEBCFACE_NS::Message::Text>(
-                        req_id, sub_field, v.data));
+                    cd->pack(
+                        WEBCFACE_NS::Message::Res<WEBCFACE_NS::Message::Text>(
+                            req_id, sub_field, v.data));
                     cd->logger->trace("send text_res {}, req_id={} + '{}'",
                                       *v.data, req_id, sub_field);
                 }
@@ -342,9 +344,9 @@ void ClientData::onRecv(const std::string &message) {
             if (!this->view.count(v.field)) {
                 store.forEach([&](auto cd) {
                     if (cd->name != this->name) {
-                        cd->pack(
-                            WEBCFACE_NS::Message::Entry<WEBCFACE_NS::Message::View>{
-                                {}, this->member_id, v.field});
+                        cd->pack(WEBCFACE_NS::Message::Entry<
+                                 WEBCFACE_NS::Message::View>{
+                            {}, this->member_id, v.field});
                         cd->logger->trace("send view_entry {} of member {}",
                                           v.field, this->member_id);
                     }
@@ -359,8 +361,9 @@ void ClientData::onRecv(const std::string &message) {
                 auto [req_id, sub_field] =
                     findReqField(cd->view_req, this->name, v.field);
                 if (req_id > 0) {
-                    cd->pack(WEBCFACE_NS::Message::Res<WEBCFACE_NS::Message::View>(
-                        req_id, sub_field, v.data_diff, v.length));
+                    cd->pack(
+                        WEBCFACE_NS::Message::Res<WEBCFACE_NS::Message::View>(
+                            req_id, sub_field, v.data_diff, v.length));
                     cd->logger->trace("send view_res req_id={} + '{}'", req_id,
                                       sub_field);
                 }
@@ -374,11 +377,11 @@ void ClientData::onRecv(const std::string &message) {
             if (!this->image.count(v.field)) {
                 store.forEach([&](auto cd) {
                     if (cd->name != this->name) {
-                        cd->pack(
-                            WEBCFACE_NS::Message::Entry<WEBCFACE_NS::Message::Image>{
-                                {}, this->member_id, v.field});
+                        cd->pack(WEBCFACE_NS::Message::Entry<
+                                 WEBCFACE_NS::Message::Image>{
+                            {}, this->member_id, v.field});
                         cd->logger->trace("send image_entry {} of member {}",
-                                         v.field, this->member_id);
+                                          v.field, this->member_id);
                     }
                 });
             }
@@ -436,16 +439,15 @@ void ClientData::onRecv(const std::string &message) {
             break;
         }
         case MessageKind::req + MessageKind::value: {
-            auto s =
-                std::any_cast<WEBCFACE_NS::Message::Req<WEBCFACE_NS::Message::Value>>(
-                    obj);
+            auto s = std::any_cast<
+                WEBCFACE_NS::Message::Req<WEBCFACE_NS::Message::Value>>(obj);
             logger->debug("request value ({}): {} from {}", s.req_id, s.field,
                           s.member);
             // 指定した値を返す
             store.findAndDo(s.member, [&](auto cd) {
                 if (!this->hasReq(s.member)) {
                     this->pack(WEBCFACE_NS::Message::Sync{cd->member_id,
-                                                       cd->last_sync_time});
+                                                          cd->last_sync_time});
                     logger->trace("send sync {}", this->member_id);
                 }
                 for (const auto &it : cd->value) {
@@ -457,9 +459,9 @@ void ClientData::onRecv(const std::string &message) {
                         } else {
                             sub_field = it.first.substr(s.field.size() + 1);
                         }
-                        this->pack(
-                            WEBCFACE_NS::Message::Res<WEBCFACE_NS::Message::Value>{
-                                s.req_id, sub_field, it.second});
+                        this->pack(WEBCFACE_NS::Message::Res<
+                                   WEBCFACE_NS::Message::Value>{
+                            s.req_id, sub_field, it.second});
                         logger->trace("send value_res req_id={} + '{}'",
                                       s.req_id, sub_field);
                     }
@@ -469,16 +471,15 @@ void ClientData::onRecv(const std::string &message) {
             break;
         }
         case MessageKind::req + MessageKind::text: {
-            auto s =
-                std::any_cast<WEBCFACE_NS::Message::Req<WEBCFACE_NS::Message::Text>>(
-                    obj);
+            auto s = std::any_cast<
+                WEBCFACE_NS::Message::Req<WEBCFACE_NS::Message::Text>>(obj);
             logger->debug("request text ({}): {} from {}", s.req_id, s.field,
                           s.member);
             // 指定した値を返す
             store.findAndDo(s.member, [&](auto cd) {
                 if (!this->hasReq(s.member)) {
                     this->pack(WEBCFACE_NS::Message::Sync{cd->member_id,
-                                                       cd->last_sync_time});
+                                                          cd->last_sync_time});
                     logger->trace("send sync {}", this->member_id);
                 }
                 for (const auto &it : cd->text) {
@@ -490,9 +491,9 @@ void ClientData::onRecv(const std::string &message) {
                         } else {
                             sub_field = it.first.substr(s.field.size() + 1);
                         }
-                        this->pack(
-                            WEBCFACE_NS::Message::Res<WEBCFACE_NS::Message::Text>{
-                                s.req_id, sub_field, it.second});
+                        this->pack(WEBCFACE_NS::Message::Res<
+                                   WEBCFACE_NS::Message::Text>{
+                            s.req_id, sub_field, it.second});
                         logger->trace("send text_res {}, req_id={} + '{}'",
                                       *it.second, s.req_id, sub_field);
                     }
@@ -502,16 +503,15 @@ void ClientData::onRecv(const std::string &message) {
             break;
         }
         case MessageKind::req + MessageKind::view: {
-            auto s =
-                std::any_cast<WEBCFACE_NS::Message::Req<WEBCFACE_NS::Message::View>>(
-                    obj);
+            auto s = std::any_cast<
+                WEBCFACE_NS::Message::Req<WEBCFACE_NS::Message::View>>(obj);
             logger->debug("request view ({}): {} from {}", s.req_id, s.field,
                           s.member);
             // 指定した値を返す
             store.findAndDo(s.member, [&](auto cd) {
                 if (!this->hasReq(s.member)) {
                     this->pack(WEBCFACE_NS::Message::Sync{cd->member_id,
-                                                       cd->last_sync_time});
+                                                          cd->last_sync_time});
                     logger->trace("send sync {}", this->member_id);
                 }
                 for (const auto &it : cd->view) {
@@ -529,9 +529,9 @@ void ClientData::onRecv(const std::string &message) {
                         } else {
                             sub_field = it.first.substr(s.field.size() + 1);
                         }
-                        this->pack(
-                            WEBCFACE_NS::Message::Res<WEBCFACE_NS::Message::View>{
-                                s.req_id, sub_field, diff, it.second.size()});
+                        this->pack(WEBCFACE_NS::Message::Res<
+                                   WEBCFACE_NS::Message::View>{
+                            s.req_id, sub_field, diff, it.second.size()});
                         logger->trace("send view_res req_id={} + '{}'",
                                       s.req_id, sub_field);
                     }
@@ -541,9 +541,8 @@ void ClientData::onRecv(const std::string &message) {
             break;
         }
         case MessageKind::req + MessageKind::image: {
-            auto s =
-                std::any_cast<WEBCFACE_NS::Message::Req<WEBCFACE_NS::Message::Image>>(
-                    obj);
+            auto s = std::any_cast<
+                WEBCFACE_NS::Message::Req<WEBCFACE_NS::Message::Image>>(obj);
             logger->debug("request image ({}): {} from {}, {} x {}, color={}, "
                           "mode={}, q={}",
                           s.req_id, s.field, s.member, s.rows.value_or(-1),
@@ -677,23 +676,22 @@ void ClientData::imageConvertThreadMain(const std::string &member,
     // cdの画像を変換しthisに送信
     // cd.image[field]が更新されるかリクエストが更新されたときに変換を行う。
     int last_image_flag = -1, last_req_flag = -1;
-    [[maybe_unused]] static bool disabled_notify = false;
+    auto last_frame = std::chrono::steady_clock::now();
     logger->trace("imageConvertThreadMain started for {}, {}", member, field);
     while (true) {
         store.findAndDo(member, [&](auto cd) {
-            while (true) {
-                Common::ImageFrame img; 
+            while (!cd->closing.load() && !this->closing.load()) {
+                Common::ImageFrame img;
                 {
                     std::unique_lock lock(cd->image_m[field]);
-                    cd->image_cv[field].wait_for(lock, std::chrono::milliseconds(1));
-                    if (cd->closing.load()) {
-                        break;
-                    }
-                    if (this->closing.load()) {
+                    cd->image_cv[field].wait_for(lock,
+                                                 std::chrono::milliseconds(1));
+                    if (cd->closing.load() || this->closing.load()) {
                         break;
                     }
                     if (cd->image_changed[field] == last_image_flag &&
-                        this->image_req_changed[member][field] == last_req_flag) {
+                        this->image_req_changed[member][field] ==
+                            last_req_flag) {
                         continue;
                     }
                     last_image_flag = cd->image_changed[field];
@@ -711,10 +709,11 @@ void ClientData::imageConvertThreadMain(const std::string &member,
                 auto info = this->image_req_info[member][field];
                 auto [req_id, sub_field] =
                     findReqField(this->image_req, member, field);
-                auto sync =
-                    WEBCFACE_NS::Message::Sync{cd->member_id, cd->last_sync_time};
+                auto sync = WEBCFACE_NS::Message::Sync{cd->member_id,
+                                                       cd->last_sync_time};
 
                 int rows = img.rows(), cols = img.cols();
+
                 if (info.rows || info.cols) {
 #if WEBCFACE_USE_OPENCV
                     if (info.rows) {
@@ -730,14 +729,16 @@ void ClientData::imageConvertThreadMain(const std::string &member,
                             static_cast<double>(*info.rows) * m.cols / m.rows);
                     }
 
+                    if (rows <= 0 || cols <= 0) {
+                        this->logger->error("Invalid image conversion request "
+                                            "(rows={}, cols={})",
+                                            rows, cols);
+                        return;
+                    }
                     cv::resize(m, m, cv::Size(rows, cols));
 #else
-                        if (!disabled_notify) {
-                            this->logger->warn("Cannot convert image since "
-                                               "OpenCV is disabled.");
-                        }
-                        disabled_notify = true;
-                        break;
+                    this->logger->warn("Cannot convert image since OpenCV is disabled.");
+                    return;
 #endif
                 }
                 if (info.color_mode && *info.color_mode != img.color_mode()) {
@@ -745,12 +746,8 @@ void ClientData::imageConvertThreadMain(const std::string &member,
                     cv::cvtColor(
                         m, m, colorConvert(img.color_mode(), *info.color_mode));
 #else
-                        if (!disabled_notify) {
-                            this->logger->warn("Cannot convert image since "
-                                               "OpenCV is disabled.");
-                        }
-                        disabled_notify = true;
-                        break;
+                    this->logger->warn("Cannot convert image since OpenCV is disabled.");
+                    return;
 #endif
                 }
                 auto encoded = std::make_shared<std::vector<unsigned char>>();
@@ -762,28 +759,42 @@ void ClientData::imageConvertThreadMain(const std::string &member,
                                         m.total() * m.channels());
                     break;
                 case Common::ImageCompressMode::jpeg:
+                    if (info.quality < 0 || info.quality > 100) {
+                        this->logger->error("Invalid image conversion request "
+                                            "(jpeg, quality={})",
+                                            info.quality);
+                        return;
+                    }
                     cv::imencode(".jpg", m, *encoded,
                                  {cv::IMWRITE_JPEG_QUALITY, info.quality});
                     break;
                 case Common::ImageCompressMode::webp:
+                    if (info.quality < 1 || info.quality > 100) {
+                        this->logger->error("Invalid image conversion request "
+                                            "(webp, quality={})",
+                                            info.quality);
+                        return;
+                    }
                     cv::imencode(".jpg", m, *encoded,
                                  {cv::IMWRITE_WEBP_QUALITY, info.quality});
                     break;
                 case Common::ImageCompressMode::png:
+                    if (info.quality < 0 || info.quality > 9) {
+                        this->logger->error("Invalid image conversion request "
+                                            "(png, compression={})",
+                                            info.quality);
+                        return;
+                    }
                     cv::imencode(".jpg", m, *encoded,
                                  {cv::IMWRITE_PNG_COMPRESSION, info.quality});
                     break;
 #else
-                    case Common::ImageCompressMode::raw:
-                        encoded = img.dataPtr();
-                        break;
-                    default:
-                        if (!disabled_notify) {
-                            this->logger->warn("Cannot convert image since "
-                                               "OpenCV is disabled.");
-                        }
-                        disabled_notify = true;
-                        break;
+                case Common::ImageCompressMode::raw:
+                    encoded = img.dataPtr();
+                    break;
+                default:
+                    this->logger->warn("Cannot convert image since OpenCV is disabled.");
+                    return;
 #endif
                 }
                 Common::ImageBase img_send{
@@ -793,11 +804,25 @@ void ClientData::imageConvertThreadMain(const std::string &member,
                 {
                     std::lock_guard lock(server_mtx);
                     this->pack(sync);
-                    this->pack(WEBCFACE_NS::Message::Res<WEBCFACE_NS::Message::Image>{
-                        req_id, sub_field, img_send});
+                    this->pack(
+                        WEBCFACE_NS::Message::Res<WEBCFACE_NS::Message::Image>{
+                            req_id, sub_field, img_send});
                     logger->trace("send image_res req_id={} + '{}'", req_id,
                                   sub_field);
                     this->send();
+                }
+                if (info.frame_rate && *info.frame_rate > 0) {
+                    std::chrono::milliseconds delay{
+                        static_cast<int>(1000 / *info.frame_rate)};
+                    while (
+                        std::chrono::duration_cast<std::chrono::milliseconds>(
+                            std::chrono::steady_clock::now() - last_frame) <
+                            delay &&
+                        !cd->closing.load() && !this->closing.load()) {
+                        std::this_thread::sleep_for(
+                            std::chrono::milliseconds(1));
+                    }
+                    last_frame += delay;
                 }
             }
         });

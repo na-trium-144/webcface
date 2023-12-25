@@ -449,7 +449,8 @@ struct Req<Image> : public MessageBase<MessageKind::image + MessageKind::req>,
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", req_id), MSGPACK_NVP("M", member),
                        MSGPACK_NVP("f", field), MSGPACK_NVP("w", cols),
                        MSGPACK_NVP("h", rows), MSGPACK_NVP("l", color_mode),
-                       MSGPACK_NVP("p", cmp_mode), MSGPACK_NVP("q", quality));
+                       MSGPACK_NVP("p", cmp_mode), MSGPACK_NVP("q", quality),
+                       MSGPACK_NVP("r", frame_rate));
 };
 /*!
  * \brief server->client 新しいvalueなどの報告

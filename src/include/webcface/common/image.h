@@ -286,6 +286,7 @@ struct ImageReq {
     std::optional<ImageColorMode> color_mode = ImageColorMode::bgra;
     ImageCompressMode cmp_mode = ImageCompressMode::raw;
     int quality = 0;
+    std::optional<double> frame_rate;
 
     bool operator==(const ImageReq &rhs) const {
         return rows == rhs.rows && cols == rhs.cols &&

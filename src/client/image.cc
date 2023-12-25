@@ -9,16 +9,18 @@ Image::Image(const Field &base)
 
 Image &Image::request(std::optional<int> rows, std::optional<int> cols,
                       Common::ImageCompressMode cmp_mode, int quality,
-                      std::optional<Common::ImageColorMode> color_mode) {
+                      std::optional<Common::ImageColorMode> color_mode,
+                      std::optional<double> frame_rate) {
     auto req = dataLock()->image_store.addReq(
-        member_, field_, {rows, cols, color_mode, cmp_mode, quality});
+        member_, field_,
+        {rows, cols, color_mode, cmp_mode, quality, frame_rate});
     if (req) {
         dataLock()->message_queue->push(
             Message::packSingle(Message::Req<Message::Image>{
                 member_,
                 field_,
                 req,
-                {rows, cols, color_mode, cmp_mode, quality}}));
+                {rows, cols, color_mode, cmp_mode, quality, frame_rate}}));
         this->clear();
     }
     return *this;
