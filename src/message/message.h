@@ -320,7 +320,7 @@ struct Image : public MessageBase<MessageKind::image>,
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", field), MSGPACK_NVP("d", data_),
                        MSGPACK_NVP("h", rows_), MSGPACK_NVP("w", cols_),
                        MSGPACK_NVP("l", color_mode_),
-                       MSGPACK_NVP("p", cmp_mode_));
+                       MSGPACK_NVP("p", cmp_mode_))
 };
 /*!
  * \brief client(member)->server->client logを追加
@@ -450,7 +450,7 @@ struct Req<Image> : public MessageBase<MessageKind::image + MessageKind::req>,
                        MSGPACK_NVP("f", field), MSGPACK_NVP("w", cols),
                        MSGPACK_NVP("h", rows), MSGPACK_NVP("l", color_mode),
                        MSGPACK_NVP("p", cmp_mode), MSGPACK_NVP("q", quality),
-                       MSGPACK_NVP("r", frame_rate));
+                       MSGPACK_NVP("r", frame_rate))
 };
 /*!
  * \brief server->client 新しいvalueなどの報告
@@ -527,7 +527,7 @@ struct Res<Image> : public MessageBase<MessageKind::image + MessageKind::res>,
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", req_id), MSGPACK_NVP("f", sub_field),
                        MSGPACK_NVP("d", data_), MSGPACK_NVP("w", cols_),
                        MSGPACK_NVP("h", rows_), MSGPACK_NVP("l", color_mode_),
-                       MSGPACK_NVP("p", cmp_mode_));
+                       MSGPACK_NVP("p", cmp_mode_))
 };
 /*!
  * \brief msgpackのメッセージをパースしstd::anyで返す
