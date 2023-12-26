@@ -467,6 +467,8 @@ TEST_F(ServerTest, image) {
         1,
         {std::nullopt, std::nullopt, std::nullopt, ImageCompressMode::png, 5, std::nullopt}});
     wait();
+    wait();
+    wait();
     dummy_c2->recv<Message::Sync>([&](auto) {},
                                   [&] { ADD_FAILURE() << "Sync recv failed"; });
     dummy_c2->recv<Message::Res<Message::Image>>(
