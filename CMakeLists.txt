@@ -6,6 +6,7 @@ project(webcface
     HOMEPAGE_URL "https://github.com/na-trium-144/webcface"
     DESCRIPTION "Web-based RPC & UI Library"
 )
+set(WEBCFACE_VERSION ${PROJECT_VERSION})
 set(WEBCFACE_SOVERSION 2)
 set(WEBUI_VERSION 1.0.11)
 
@@ -45,7 +46,6 @@ if(WEBCFACE_VERSION_SUFFIX STREQUAL "git")
         set(WEBCFACE_VERSION ${CMAKE_MATCH_1})
     else()
         message(STATUS "Failed to get version from git describe: ${git_describe_error}")
-        set(WEBCFACE_VERSION ${PROJECT_VERSION})
     endif()
 elseif(NOT WEBCFACE_VERSION_SUFFIX STREQUAL "")
     set(WEBCFACE_VERSION "${PROJECT_VERSION}-${WEBCFACE_VERSION_SUFFIX}")
