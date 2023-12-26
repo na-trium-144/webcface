@@ -14,8 +14,10 @@ struct ClientData;
 }
 class Member;
 
-//! 画像の送受信データを表すクラス
-/*! コンストラクタではなく Member::image() を使って取得してください
+/*!
+ * \brief (ver1.3から追加) 画像の送受信データを表すクラス
+ * 
+ * コンストラクタではなく Member::image() を使って取得してください
  */
 class Image : protected Field, public EventTarget<Image> {
     std::optional<Common::ImageFrame> img = std::nullopt;
@@ -31,9 +33,11 @@ class Image : protected Field, public EventTarget<Image> {
     using Field::member;
     using Field::name;
 
-    //! 子フィールドを返す
     /*!
-     * \return「(thisのフィールド名).(子フィールド名)」をフィールド名とするValue
+     * \brief 子フィールドを返す
+     *
+     * \return「(thisのフィールド名).(子フィールド名)」をフィールド名とするImage
+     * 
      */
     Image child(const std::string &field) {
         return Image{*this, this->field_ + "." + field};

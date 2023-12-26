@@ -24,6 +24,7 @@ WebブラウザーでアクセスできるUI(webcface-webui)が付属してお�
 	* Text : utf-8文字列
 	* View : UIレイアウト
 	* Log : 時刻とログレベルつきの文字列ストリーム
+	* Image : 画像
 * その他
 	* Func : 関数(他クライアントから引数とともに呼び出し、値を返す)
 
@@ -128,8 +129,10 @@ brew install webcface webcface-webui webcface-tools
 	* [![CMake Test (MacOS Clang)](https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-macos-clang.yml/badge.svg?branch=main)](https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-macos-clang.yml)
 	* [![CMake Test (Windows MSVC)](https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-windows-msvc.yml/badge.svg?branch=main)](https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-windows-msvc.yml)
 	* [![CMake Test (Windows MinGW64 GCC)](https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-windows-gcc.yml/badge.svg?branch=main)](https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-windows-gcc.yml)
-* webcfaceは外部ライブラリとして [crow](https://github.com/CrowCpp/Crow), [asio](https://github.com/chriskohlhoff/asio), [libcurl](https://github.com/curl/curl), [eventpp](https://github.com/wqking/eventpp), [msgpack-cxx](https://github.com/msgpack/msgpack-c), [spdlog](https://github.com/gabime/spdlog), [cli11](https://github.com/CLIUtils/CLI11.git) を使用します。
+* webcfaceは外部ライブラリとして [crow](https://github.com/CrowCpp/Crow), [asio](https://github.com/chriskohlhoff/asio), [libcurl](https://github.com/curl/curl), [eventpp](https://github.com/wqking/eventpp), [msgpack-cxx](https://github.com/msgpack/msgpack-c), [spdlog](https://github.com/gabime/spdlog), [cli11](https://github.com/CLIUtils/CLI11.git), [opencv](https://opencv.org/) を使用します。
 	* cmake時に自動的にFetchContentでソースコード取得しビルドしますが、eventpp, msgpack, spdlog に関してはシステムにインストールされていてfind_packageで見つけることができればそれを使用します
+	* opencvはソースからビルドしません。別途インストールする必要があります。
+		* またはcmake時のオプションでopencvを使わないようにすることもできます (画像の変換機能が無効になります)
 	* libcurlはwebsocket機能を有効にする必要があるためインストールされている場合でもソースからビルドします
 	* crowは暫定的にWindowsでSegmentation faultするバグを修正したもの([na-trium-144/Crow](https://github.com/na-trium-144/Crow) の fix-destructor-io-service ブランチ)を使用しています
 
@@ -137,7 +140,7 @@ brew install webcface webcface-webui webcface-tools
 
 ```sh
 sudo apt install build-essential git cmake
-sudo apt install libspdlog-dev  # optional
+sudo apt install libopencv-dev libspdlog-dev  # optional
 ```
 
 ubuntu20.04の場合デフォルトのコンパイラ(gcc-9)ではビルドできないのでgcc-10にする必要があります
@@ -152,7 +155,7 @@ export CXX=g++-10
 
 ```sh
 brew install cmake
-brew install spdlog msgpack-cxx  # optional
+brew install opencv spdlog msgpack-cxx  # optional
 ```
 </details>
 
@@ -160,13 +163,16 @@ brew install spdlog msgpack-cxx  # optional
 
 * Visual Studio 2019, 2022 でcloneしたwebcfaceのフォルダーを開くとビルドできます
 * Developer Command Promptからcmakeコマンドを使ってもビルドできます
+* OpenCVを使う場合は[公式サイト](https://opencv.org/releases/)からダウンロードしてください
+	* またはchocolateyで`choco install opencv`など
+
 </details>
 
 <details><summary>MSYS2</summary>
 
 ```sh
 pacman -S git mingw-w64-x86_64-gcc mingw-w64-x86_64-cmake mingw-w64-x86_64-ninja
-pacman -S mingw-w64-x86_64-spdlog  # optional
+pacman -S mingw-w64-x86_64-opencv mingw-w64-x86_64-spdlog  # optional
 ```
 </details>
 
@@ -178,6 +184,7 @@ cmake --build build
 sudo cmake --build build -t install
 ```
 * CMakeのオプション
+	* `-DWEBCFACE_USE_OPENCV=off`にするとOpenCVを使用しないようになります
 	* `-DWEBCFACE_SHARED=off`にすると共有ライブラリではなくすべて静的ライブラリになります
 	* `-DWEBCFACE_EXAMPLE=on`でtestをビルドします(submoduleの場合デフォルトでoff)
 	* `-DWEBCFACE_INSTALL=on`でtergetのinstallをします(submoduleの場合デフォルトでoff)
@@ -222,5 +229,6 @@ WebCFace本体とtoolsが使用しているサードパーティーのライブ�
 * msgpack-c (Boost Software License) : https://github.com/msgpack/msgpack-c
 * spdlog (MIT) : https://github.com/gabime/spdlog
 * CLI11 (BSD 3-Clause) : https://github.com/CLIUtils/CLI11
+* OpenCV (Apache 2.0) : https://opencv.org/license/
 * tiny-process-library (MIT) : https://gitlab.com/eidheim/tiny-process-library (toolsで使用)
 * toml++ (MIT) : https://github.com/marzer/tomlplusplus (toolsで使用)

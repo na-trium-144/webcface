@@ -29,7 +29,7 @@ enum class ImageCompressMode {
 };
 
 /*!
- * \brief 画像データ
+ * \brief (ver1.3から追加) 画像データ
  *
  * * 8bitのグレースケール, BGR, BGRAフォーマットのみを扱う
  * * 画像受信時にはjpegやpngなどにエンコードされたデータが入ることもある
@@ -158,8 +158,9 @@ class ImageBase {
 };
 
 #if WEBCFACE_USE_OPENCV
-//! 画像データ
 /*!
+ * \brief (ver1.3から追加) 画像データ
+ *
  * 自身の持つデータを参照するcv::Matを生成、保持する。
  */
 class ImageWithCV : public ImageBase {
