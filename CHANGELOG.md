@@ -1,3 +1,24 @@
+## [1.3.0] - 2023-12-26
+### Changed
+* debugビルドのdllファイル名をwebcfacedに変更 (#148)
+* debugビルドのnamespaceをwebcfacedに変更
+	* webcface/webcface.h をインクルードすればwebcfaceにエイリアスが貼られる
+* windowsでdllにバージョン情報を追加
+### Added
+* imageの送受信機能追加(#124)
+	* Imageのメッセージ(kind=5)、Imageフィールドクラスを追加
+	* s_ClientDataに画像の変換をするスレッドを追加
+	* SyncDataStore2に
+		* テンプレートパラメータReqTを追加
+		* SyncDataStore2::getReqInfoを追加
+		* SyncDataStore2::clearRecvを追加
+	* opencvへの依存
+### Fixed
+* -Werrorフラグを設定、clangとgccでのwarningを修正 (#146)
+* Memberクラス全体をexportするのをやめた (warningの修正) (#148)
+* EventTargetのvirtualデストラクタを追加 (#144)
+
+
 ## [1.2.2] - 2023-12-19
 ### Changed
 * windowsで文字セットがcp932のままwebcfaceをincludeしてもコンパイルが通るようにした (#131)
