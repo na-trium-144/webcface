@@ -424,7 +424,7 @@ TEST_F(ServerTest, image) {
         {
             5, 5, ImageColorMode::gray, ImageCompressMode::raw, 0,
             1000.0 / WEBCFACE_TEST_TIMEOUT /
-                2 // wait()のtimeoutに間に合わないようにする
+                3 // wait()のtimeoutに間に合わないようにする
         }});
     wait();
     dummy_c2->recv<Message::Sync>([&](auto) {},
