@@ -259,6 +259,9 @@ if(NOT crow_POPULATED)
         ${crow_SOURCE_DIR}/include
     )
     target_link_libraries(Crow INTERFACE ${ASIO})
+    if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+        target_compile_options(Crow INTERFACE -Wno-type-limits)
+    endif()
 endif()
 set(CROW Crow)
 
