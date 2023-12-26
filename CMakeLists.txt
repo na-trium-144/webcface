@@ -512,11 +512,19 @@ if(WEBCFACE_INSTALL)
     install(DIRECTORY ${CPP_DIR}/include/
         DESTINATION include
     )
-    configure_package_config_file(
-        ${CMAKE_CURRENT_SOURCE_DIR}/cmake/${PROJECT_NAME}-config.cmake.in
-        ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config.cmake
-        INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
-    )
+    if(WEBCFACE_USE_OPENCV)
+        configure_package_config_file(
+            ${CMAKE_CURRENT_SOURCE_DIR}/cmake/${PROJECT_NAME}-config.opencv.cmake.in
+            ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config.cmake
+            INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
+        )
+    else()
+        configure_package_config_file(
+            ${CMAKE_CURRENT_SOURCE_DIR}/cmake/${PROJECT_NAME}-config.no-opencv.cmake.in
+            ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config.cmake
+            INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
+        )
+    endif()
 
     write_basic_package_version_file(
         ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config-version.cmake
