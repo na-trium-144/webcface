@@ -4,8 +4,9 @@
 #include <stdexcept>
 #include "../message/message.h"
 #include "client_internal.h"
+#include <webcface/common/def.h>
 
-namespace webcface {
+namespace WEBCFACE_NS {
 
 auto &operator<<(std::basic_ostream<char> &os, const AsyncFuncResult &r) {
     os << "Func(\"" << r.name() << "\"): ";
@@ -183,4 +184,4 @@ void AnonymousFunc::lockTo(Func &target) {
     this->free();
 }
 
-} // namespace webcface
+} // namespace WEBCFACE_NS

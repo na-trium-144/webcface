@@ -5,7 +5,13 @@
 #include <CLI/CLI.hpp>
 
 int main(int argc, char **argv) {
-    CLI::App app{"WebCFace Server " WEBCFACE_VERSION};
+    std::string server_ver = "WebCFace Server " WEBCFACE_VERSION ", OpenCV ";
+    if constexpr (WEBCFACE_USE_OPENCV) {
+        server_ver += "Enabled";
+    } else {
+        server_ver += "Disabled";
+    }
+    CLI::App app{server_ver};
     app.allow_windows_style_options();
 
     int port = WEBCFACE_DEFAULT_PORT;
@@ -33,6 +39,6 @@ int main(int argc, char **argv) {
         stderr_sink->set_level(spdlog::level::info);
     }
 
-    webcface::Server::store.keep_log = keep_log;
-    webcface::Server::serverRun(port, stderr_sink, spdlog::level::trace);
+    WEBCFACE_NS::Server::store.keep_log = keep_log;
+    WEBCFACE_NS::Server::serverRun(port, stderr_sink, spdlog::level::trace);
 }

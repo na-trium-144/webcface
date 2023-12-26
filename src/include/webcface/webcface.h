@@ -10,6 +10,7 @@
 #include "common/log.h"
 #include "common/view.h"
 #include "common/dict.h"
+#include "common/image.h"
 
 #include "field.h"
 #include "event_target.h"
@@ -25,6 +26,12 @@
 
 #include "member.h"
 #include "client.h"
+
+#ifdef _MSC_VER
+#ifdef _DEBUG
+namespace webcface = webcfaced;
+#endif
+#endif
 
 // 〜v1.1 との互換性のため
 namespace WebCFace = webcface;

@@ -7,7 +7,7 @@
 #include <cstdint>
 #include <cstdlib>
 
-namespace webcface {
+namespace WEBCFACE_NS {
 
 void Internal::messageThreadMain(std::shared_ptr<Internal::ClientData> data,
                                  std::string host, int port) {
@@ -45,11 +45,18 @@ void Internal::messageThreadMain(std::shared_ptr<Internal::ClientData> data,
                             data->logger_internal->debug("connection closed");
                             closed = true;
                             break;
-                        } else if (meta && static_cast<std::size_t>(meta->offset) > buf_s.size()) {
-                            buf_s.append(static_cast<std::size_t>(meta->offset) - buf_s.size(), '\0');
+                        } else if (meta && static_cast<std::size_t>(
+                                               meta->offset) > buf_s.size()) {
+                            buf_s.append(
+                                static_cast<std::size_t>(meta->offset) -
+                                    buf_s.size(),
+                                '\0');
                             buf_s.append(buffer, rlen);
-                        } else if (meta && static_cast<std::size_t>(meta->offset) < buf_s.size()) {
-                            buf_s.replace(static_cast<std::size_t>(meta->offset), rlen, buffer, rlen);
+                        } else if (meta && static_cast<std::size_t>(
+                                               meta->offset) < buf_s.size()) {
+                            buf_s.replace(
+                                static_cast<std::size_t>(meta->offset), rlen,
+                                buffer, rlen);
                         } else {
                             buf_s.append(buffer, rlen);
                         }
@@ -95,4 +102,4 @@ void Internal::messageThreadMain(std::shared_ptr<Internal::ClientData> data,
     }
 }
 
-} // namespace webcface
+} // namespace WEBCFACE_NS
