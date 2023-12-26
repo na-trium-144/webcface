@@ -114,6 +114,7 @@ jobs:
           # Produce a binary artifact and place it in the mounted volume
           run: |
             cd /workspace
+            apt-get update -q -y
             apt-get install -q -y libopencv-dev libspdlog-dev
             cmake -B build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DWEBCFACE_VERSION_SUFFIX=${distro} -DWEBCFACE_DOWNLOAD_WEBUI=off
             cmake --build build --config ${{env.BUILD_TYPE}}
