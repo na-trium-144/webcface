@@ -6,7 +6,7 @@ namespace WEBCFACE_NS {
 inline namespace Common {
 /*!
  * \brief メンバ名とデータ名を持つクラス
- * 
+ *
  */
 struct FieldBase {
     std::string member_; //!< メンバー名
@@ -15,7 +15,7 @@ struct FieldBase {
      * \brief フィールド名
      *
      * Memberなどフィールド名が不要なクラスでは使用しない
-     * 
+     *
      */
     std::string field_;
 

@@ -1,22 +1,22 @@
 #include "data_store2.h"
 
 namespace WEBCFACE_NS::Internal {
-template <typename T>
-void SyncDataStore2<T>::setSend(const std::string &name, const T &data) {
+template <typename T, typename ReqT>
+void SyncDataStore2<T, ReqT>::setSend(const std::string &name, const T &data) {
     std::lock_guard lock(mtx);
     data_send[name] = data;
     data_recv[self_member_name][name] = data; // 送信後に自分の値を参照する用
 }
 
-template <typename T>
-void SyncDataStore2<T>::setRecv(const std::string &from,
-                                const std::string &name, const T &data) {
+template <typename T, typename ReqT>
+void SyncDataStore2<T, ReqT>::setRecv(const std::string &from,
+                                      const std::string &name, const T &data) {
     std::lock_guard lock(mtx);
     data_recv[from][name] = data;
 }
 
-template <typename T>
-std::vector<std::string> SyncDataStore2<T>::getMembers() {
+template <typename T, typename ReqT>
+std::vector<std::string> SyncDataStore2<T, ReqT>::getMembers() {
     std::lock_guard lock(mtx);
     std::vector<std::string> k;
     for (const auto &r : entry) {
@@ -24,8 +24,9 @@ std::vector<std::string> SyncDataStore2<T>::getMembers() {
     }
     return k;
 }
-template <typename T>
-std::vector<std::string> SyncDataStore2<T>::getEntry(const std::string &name) {
+template <typename T, typename ReqT>
+std::vector<std::string>
+SyncDataStore2<T, ReqT>::getEntry(const std::string &name) {
     std::lock_guard lock(mtx);
     auto e = entry.find(name);
     if (e != entry.end()) {
@@ -34,21 +35,21 @@ std::vector<std::string> SyncDataStore2<T>::getEntry(const std::string &name) {
         return std::vector<std::string>{};
     }
 }
-template <typename T>
-void SyncDataStore2<T>::setEntry(const std::string &from) {
+template <typename T, typename ReqT>
+void SyncDataStore2<T, ReqT>::setEntry(const std::string &from) {
     std::lock_guard lock(mtx);
     entry.emplace(std::make_pair(from, std::vector<std::string>{}));
 }
-template <typename T>
-void SyncDataStore2<T>::setEntry(const std::string &from,
-                                 const std::string &e) {
+template <typename T, typename ReqT>
+void SyncDataStore2<T, ReqT>::setEntry(const std::string &from,
+                                       const std::string &e) {
     std::lock_guard lock(mtx);
     entry[from].push_back(e);
 }
 
-template <typename T>
-unsigned int SyncDataStore2<T>::addReq(const std::string &member,
-                                       const std::string &field) {
+template <typename T, typename ReqT>
+unsigned int SyncDataStore2<T, ReqT>::addReq(const std::string &member,
+                                             const std::string &field) {
     std::lock_guard lock(mtx);
     if (!isSelf(member) && req[member][field] == 0) {
         unsigned int max_req = 0;
@@ -64,10 +65,38 @@ unsigned int SyncDataStore2<T>::addReq(const std::string &member,
     }
     return 0;
 }
+template <typename T, typename ReqT>
+unsigned int SyncDataStore2<T, ReqT>::addReq(const std::string &member,
+                                             const std::string &field,
+                                             const ReqT &req_info) {
+    std::lock_guard lock(mtx);
+    if (!isSelf(member) && (req[member][field] == 0 ||
+                            this->req_info[member][field] != req_info)) {
+        unsigned int max_req = 0;
+        for (const auto &r : req) {
+            for (const auto &r2 : r.second) {
+                if (r2.second > max_req) {
+                    max_req = r2.second;
+                }
+            }
+        }
+        req[member][field] = max_req + 1;
+        this->req_info[member][field] = req_info;
+        return max_req + 1;
+    }
+    return 0;
+}
 
-template <typename T>
-std::optional<T> SyncDataStore2<T>::getRecv(const std::string &from,
-                                            const std::string &name) {
+template <typename T, typename ReqT>
+const ReqT &SyncDataStore2<T, ReqT>::getReqInfo(const std::string &member,
+                                                const std::string &field) {
+    return req_info[member][field];
+}
+
+
+template <typename T, typename ReqT>
+std::optional<T> SyncDataStore2<T, ReqT>::getRecv(const std::string &from,
+                                                  const std::string &name) {
     std::lock_guard lock(mtx);
     // addReq(from, name);
     auto s_it = data_recv.find(from);
@@ -79,8 +108,8 @@ std::optional<T> SyncDataStore2<T>::getRecv(const std::string &from,
     }
     return std::nullopt;
 }
-template <typename T>
-std::optional<Dict<T>> SyncDataStore2<T>::getRecvRecurse(
+template <typename T, typename ReqT>
+std::optional<Dict<T>> SyncDataStore2<T, ReqT>::getRecvRecurse(
     const std::string &member, const std::string &field,
     const std::function<void(const std::string &)> &cb) {
     std::lock_guard lock(mtx);
@@ -105,9 +134,9 @@ std::optional<Dict<T>> SyncDataStore2<T>::getRecvRecurse(
     }
     return std::nullopt;
 }
-template <typename T>
-bool SyncDataStore2<T>::unsetRecv(const std::string &from,
-                                  const std::string &name) {
+template <typename T, typename ReqT>
+bool SyncDataStore2<T, ReqT>::unsetRecv(const std::string &from,
+                                        const std::string &name) {
     std::lock_guard lock(mtx);
     if (data_recv.count(from) && data_recv.at(from).count(name)) {
         data_recv.at(from).erase(name);
@@ -118,9 +147,19 @@ bool SyncDataStore2<T>::unsetRecv(const std::string &from,
     }
     return false;
 }
-template <typename T>
+template <typename T, typename ReqT>
+void SyncDataStore2<T, ReqT>::clearRecv(const std::string &from,
+                                        const std::string &name) {
+    std::lock_guard lock(mtx);
+    if (data_recv.count(from) && data_recv.at(from).count(name)) {
+        data_recv.at(from).erase(name);
+    }
+    return;
+}
+template <typename T, typename ReqT>
 std::pair<std::string, std::string>
-SyncDataStore2<T>::getReq(unsigned int req_id, const std::string &sub_field) {
+SyncDataStore2<T, ReqT>::getReq(unsigned int req_id,
+                                const std::string &sub_field) {
     std::lock_guard lock(mtx);
     for (const auto &r : req) {
         for (const auto &r2 : r.second) {
@@ -136,9 +175,9 @@ SyncDataStore2<T>::getReq(unsigned int req_id, const std::string &sub_field) {
     return std::make_pair("", "");
 }
 
-template <typename T>
+template <typename T, typename ReqT>
 std::unordered_map<std::string, T>
-SyncDataStore2<T>::transferSend(bool is_first) {
+SyncDataStore2<T, ReqT>::transferSend(bool is_first) {
     std::lock_guard lock(mtx);
     if (is_first) {
         data_send.clear();
@@ -148,9 +187,9 @@ SyncDataStore2<T>::transferSend(bool is_first) {
         return std::move(data_send);
     }
 }
-template <typename T>
+template <typename T, typename ReqT>
 std::unordered_map<std::string, T>
-SyncDataStore2<T>::getSendPrev(bool is_first) {
+SyncDataStore2<T, ReqT>::getSendPrev(bool is_first) {
     std::lock_guard lock(mtx);
     if (is_first) {
         return std::unordered_map<std::string, T>{};
@@ -158,9 +197,9 @@ SyncDataStore2<T>::getSendPrev(bool is_first) {
         return data_send_prev;
     }
 }
-template <typename T>
+template <typename T, typename ReqT>
 std::unordered_map<std::string, std::unordered_map<std::string, unsigned int>>
-SyncDataStore2<T>::transferReq() {
+SyncDataStore2<T, ReqT>::transferReq() {
     std::lock_guard lock(mtx);
     // if (is_first) {
     // req_send.clear();
@@ -170,12 +209,14 @@ SyncDataStore2<T>::transferReq() {
     // }
 }
 
-
-template class WEBCFACE_DLL SyncDataStore2<std::string>; // test用
-template class WEBCFACE_DLL SyncDataStore2<std::shared_ptr<VectorOpt<double>>>;
-template class WEBCFACE_DLL SyncDataStore2<std::shared_ptr<std::string>>;
-template class WEBCFACE_DLL SyncDataStore2<std::shared_ptr<FuncInfo>>;
+// ライブラリ外からは参照できないが、testのためにexportしている
+template class WEBCFACE_DLL SyncDataStore2<std::string, int>; // test用
 template class WEBCFACE_DLL
-    SyncDataStore2<std::shared_ptr<std::vector<Common::ViewComponentBase>>>;
+    SyncDataStore2<std::shared_ptr<VectorOpt<double>>, int>;
+template class WEBCFACE_DLL SyncDataStore2<std::shared_ptr<std::string>, int>;
+template class WEBCFACE_DLL SyncDataStore2<std::shared_ptr<FuncInfo>, int>;
+template class WEBCFACE_DLL SyncDataStore2<
+    std::shared_ptr<std::vector<Common::ViewComponentBase>>, int>;
+template class WEBCFACE_DLL SyncDataStore2<Common::ImageBase, Common::ImageReq>;
 
 } // namespace WEBCFACE_NS::Internal

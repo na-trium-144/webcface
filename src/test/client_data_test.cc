@@ -86,6 +86,12 @@ TEST_F(SyncDataStore2Test, unsetRecv) {
     EXPECT_EQ(s2.getReq(1, "").second, "");
     EXPECT_EQ(s2.getRecv("a", "b"), std::nullopt);
 }
+TEST_F(SyncDataStore2Test, clearRecv) {
+    s2.setRecv("a", "b", "c");
+    s2.clearRecv("a", "b");
+    s2.clearRecv("d", "e");
+    EXPECT_EQ(s2.getRecv("a", "b"), std::nullopt);
+}
 TEST_F(SyncDataStore2Test, setEntry) {
     s2.setEntry("a");
     EXPECT_EQ(s2.getMembers().size(), 1);

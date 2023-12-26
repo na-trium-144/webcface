@@ -8,6 +8,7 @@
 #include <webcface/log.h>
 #include <webcface/view.h>
 #include <webcface/func.h>
+#include <webcface/image.h>
 #include <webcface/common/def.h>
 #include "../message/message.h"
 #include <chrono>
@@ -170,7 +171,7 @@ TEST_F(ClientTest, entry) {
     wait();
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
-    EXPECT_EQ(m.values().size(), 1);
+    ASSERT_EQ(m.values().size(), 1);
     EXPECT_EQ(m.values()[0].name(), "b");
 
     m.onTextEntry().appendListener(callback<Text>());
@@ -178,7 +179,7 @@ TEST_F(ClientTest, entry) {
     wait();
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
-    EXPECT_EQ(m.texts().size(), 1);
+    ASSERT_EQ(m.texts().size(), 1);
     EXPECT_EQ(m.texts()[0].name(), "c");
 
     m.onViewEntry().appendListener(callback<View>());
@@ -186,8 +187,16 @@ TEST_F(ClientTest, entry) {
     wait();
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
-    EXPECT_EQ(m.views().size(), 1);
+    ASSERT_EQ(m.views().size(), 1);
     EXPECT_EQ(m.views()[0].name(), "d");
+
+    m.onImageEntry().appendListener(callback<Image>());
+    dummy_s->send(Message::Entry<Message::Image>{{}, 10, "d"});
+    wait();
+    EXPECT_EQ(callback_called, 1);
+    callback_called = 0;
+    ASSERT_EQ(m.images().size(), 1);
+    EXPECT_EQ(m.images()[0].name(), "d");
 
     m.onFuncEntry().appendListener(callback<Func>());
     dummy_s->send(Message::FuncInfo{
@@ -405,6 +414,46 @@ TEST_F(ClientTest, viewReq) {
               ViewColor::green);
     EXPECT_EQ(data_->view_store.getRecv("a", "b").value()->at(1).type_,
               ViewComponentType::new_line);
+}
+TEST_F(ClientTest, imageSend) {
+    wcli_->waitConnection();
+    data_->image_store.setSend(
+        "a", ImageFrame{
+                 100, 100,
+                 std::make_shared<std::vector<unsigned char>>(100 * 100 * 3)});
+    wcli_->sync();
+    wait();
+    dummy_s->recv<Message::Image>(
+        [&](const auto &obj) {
+            EXPECT_EQ(obj.field, "a");
+            EXPECT_EQ(obj.data().size(), 100 * 100 * 3);
+        },
+        [&] { ADD_FAILURE() << "Image recv error"; });
+}
+TEST_F(ClientTest, imageReq) {
+    wcli_->waitConnection();
+    wcli_->member("a").image("b").tryGet();
+    wait();
+    wcli_->member("a").image("b").appendListener(callback<Image>());
+    dummy_s->recv<Message::Req<Message::Image>>([&](const auto &obj) {
+        EXPECT_EQ(obj.member, "a");
+        EXPECT_EQ(obj.field, "b");
+        EXPECT_EQ(obj.req_id, 1);
+        EXPECT_EQ(static_cast<ImageReq>(obj),
+                  (ImageReq{std::nullopt, std::nullopt, std::nullopt,
+                            ImageCompressMode::raw, 0, std::nullopt}));
+    },
+        [&] { ADD_FAILURE() << "Image Req recv error"; });
+    ImageFrame img(100, 100,
+                   std::make_shared<std::vector<unsigned char>>(100 * 100 * 3));
+    dummy_s->send(Message::Res<Message::Image>{1, "", img});
+    dummy_s->send(Message::Res<Message::Image>{1, "c", img});
+    wait();
+    EXPECT_EQ(callback_called, 1);
+    ASSERT_TRUE(data_->image_store.getRecv("a", "b").has_value());
+    EXPECT_EQ(data_->image_store.getRecv("a", "b")->data().size(), img.data().size());
+    ASSERT_TRUE(data_->image_store.getRecv("a", "b.c").has_value());
+    EXPECT_EQ(data_->image_store.getRecv("a", "b.c")->data().size(), img.data().size());
 }
 TEST_F(ClientTest, logSend) {
     wcli_->waitConnection();

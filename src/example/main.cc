@@ -13,7 +13,7 @@ struct A {
     int x = 1, y = 2;
     A() = default;
     // Dict → A に変換
-    A(const webcface::Value::Dict &d): x(d["x"]), y(d["y"]) {}
+    A(const webcface::Value::Dict &d) : x(d["x"]), y(d["y"]) {}
     // A → Dictに変換
     operator webcface::Value::Dict() const {
         return {{"x", x}, {"y", y}, {"nest", {{"a", 3}, {"b", 4}}}};

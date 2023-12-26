@@ -10,12 +10,15 @@
 #include <webcface/common/func.h>
 #include <webcface/common/log.h>
 #include <webcface/common/view.h>
+#include <webcface/common/image.h>
 #include <webcface/common/def.h>
 #include "val_adaptor.h"
 
 MSGPACK_ADD_ENUM(WEBCFACE_NS::Common::ValType)
 MSGPACK_ADD_ENUM(WEBCFACE_NS::Common::ViewComponentType)
 MSGPACK_ADD_ENUM(WEBCFACE_NS::Common::ViewColor)
+MSGPACK_ADD_ENUM(WEBCFACE_NS::Common::ImageCompressMode)
+MSGPACK_ADD_ENUM(WEBCFACE_NS::Common::ImageColorMode)
 
 namespace WEBCFACE_NS::Message {
 // 新しいメッセージの定義は
@@ -27,6 +30,7 @@ enum MessageKindEnum {
     value = 0,
     text = 1,
     view = 3,
+    image = 5,
     entry = 20,
     req = 40,
     res = 60,
@@ -307,6 +311,17 @@ struct View : public MessageBase<MessageKind::view> {
                        MSGPACK_NVP("l", length))
 };
 
+struct Image : public MessageBase<MessageKind::image>,
+               public Common::ImageBase {
+    std::string field;
+    Image() = default;
+    Image(const std::string &field, const Common::ImageBase &img)
+        : ImageBase(img), field(field) {}
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", field), MSGPACK_NVP("d", data_),
+                       MSGPACK_NVP("h", rows_), MSGPACK_NVP("w", cols_),
+                       MSGPACK_NVP("l", color_mode_),
+                       MSGPACK_NVP("p", cmp_mode_))
+};
 /*!
  * \brief client(member)->server->client logを追加
  *
@@ -418,6 +433,25 @@ struct Req : public MessageBase<T::kind + MessageKind::req> {
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", req_id), MSGPACK_NVP("M", member),
                        MSGPACK_NVP("f", field))
 };
+template <>
+struct Req<Image> : public MessageBase<MessageKind::image + MessageKind::req>,
+                    public Common::ImageReq {
+    std::string member;
+    std::string field;
+    unsigned int req_id;
+
+    Req() = default;
+    Req(const std::string &member, const std::string &field,
+        unsigned int req_id, const Common::ImageReq &ireq)
+        : Common::ImageReq(ireq), member(member), field(field), req_id(req_id) {
+    }
+
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", req_id), MSGPACK_NVP("M", member),
+                       MSGPACK_NVP("f", field), MSGPACK_NVP("w", cols),
+                       MSGPACK_NVP("h", rows), MSGPACK_NVP("l", color_mode),
+                       MSGPACK_NVP("p", cmp_mode), MSGPACK_NVP("q", quality),
+                       MSGPACK_NVP("r", frame_rate))
+};
 /*!
  * \brief server->client 新しいvalueなどの報告
  *
@@ -481,6 +515,20 @@ struct Res<View> : public MessageBase<MessageKind::view + MessageKind::res> {
                        MSGPACK_NVP("d", data_diff), MSGPACK_NVP("l", length))
 };
 
+template <>
+struct Res<Image> : public MessageBase<MessageKind::image + MessageKind::res>,
+                    public Common::ImageBase {
+    unsigned int req_id;
+    std::string sub_field;
+    Res() = default;
+    Res(unsigned int req_id, const std::string &sub_field,
+        const Common::ImageBase &img)
+        : ImageBase(img), req_id(req_id), sub_field(sub_field) {}
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", req_id), MSGPACK_NVP("f", sub_field),
+                       MSGPACK_NVP("d", data_), MSGPACK_NVP("w", cols_),
+                       MSGPACK_NVP("h", rows_), MSGPACK_NVP("l", color_mode_),
+                       MSGPACK_NVP("p", cmp_mode_))
+};
 /*!
  * \brief msgpackのメッセージをパースしstd::anyで返す
  *

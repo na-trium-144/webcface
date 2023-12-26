@@ -175,6 +175,6 @@ View::appendListener() で受信したデータが変化したときにコール
 
 | Previous |     Next |
 |:---------|---------:|
-| [Text](11_text.md) | [Func](30_func.md) |
+| [Text](11_text.md) | [Image](15_image.md) |
 
 </div>

@@ -4,11 +4,13 @@
 #include <string>
 #include <optional>
 #include <functional>
+#include <concepts>
 #include <webcface/field.h>
 #include <webcface/common/dict.h>
 #include <webcface/common/def.h>
 #include <webcface/common/func.h>
 #include <webcface/common/view.h>
+#include <webcface/common/image.h>
 
 namespace WEBCFACE_NS::Internal {
 /*!
@@ -16,10 +18,11 @@ namespace WEBCFACE_NS::Internal {
  *
  * memberごとにフィールドを持つデータに使う。
  * member, fieldの2次元mapとなる
+ *
  * T=FuncInfoの時、entryとreqは使用しない(常にすべての関数の情報が送られてくる)
  *
  */
-template <typename T>
+template <typename T, typename ReqT = int>
 class SyncDataStore2 {
     /*!
      * \brief 次のsend時に送信するデータ。
@@ -53,6 +56,12 @@ class SyncDataStore2 {
     std::unordered_map<std::string,
                        std::unordered_map<std::string, unsigned int>>
         req;
+    /*!
+     * \brief リクエストに必要なデータ
+     *
+     */
+    std::unordered_map<std::string, std::unordered_map<std::string, ReqT>>
+        req_info;
 
     std::string self_member_name;
 
@@ -76,6 +85,19 @@ class SyncDataStore2 {
      *
      */
     unsigned int addReq(const std::string &member, const std::string &field);
+    /*!
+     * \brief リクエストを追加
+     *
+     * req_infoが前回と異なっていればすでにリクエストされていても上書きする
+     *
+     * memberがselfの場合無効
+     *
+     * \return 追加した場合req_idを返し、すでにリクエストされていた場合 or
+     * selfの場合 0を返す
+     *
+     */
+    unsigned int addReq(const std::string &member, const std::string &field,
+                        const ReqT &req_info);
 
     /*!
      * \brief 送信するデータをセット
@@ -97,6 +119,14 @@ class SyncDataStore2 {
                  const T &data);
     void setRecv(const FieldBase &base, const T &data) {
         setRecv(base.member_, base.field_, data);
+    }
+    /*!
+     * \brief 受信したデータを削除
+     *
+     */
+    void clearRecv(const std::string &from, const std::string &name);
+    void clearRecv(const FieldBase &base) {
+        clearRecv(base.member_, base.field_);
     }
 
     /*!
@@ -168,6 +198,11 @@ class SyncDataStore2 {
      */
     std::pair<std::string, std::string> getReq(unsigned int req_id,
                                                const std::string &sub_field);
+    /*!
+     * \brief member名とフィールド名に対応するreq_infoを返す
+     *
+     */
+    const ReqT &getReqInfo(const std::string &member, const std::string &field);
 
     /*!
      * \brief data_sendを返し、data_sendをクリア
@@ -185,12 +220,13 @@ class SyncDataStore2 {
 };
 
 #ifdef _MSC_VER
-extern template class SyncDataStore2<std::string>; // test用
-extern template class SyncDataStore2<std::shared_ptr<VectorOpt<double>>>;
-extern template class SyncDataStore2<std::shared_ptr<std::string>>;
-extern template class SyncDataStore2<std::shared_ptr<FuncInfo>>;
+extern template class SyncDataStore2<std::string, int>; // test用
+extern template class SyncDataStore2<std::shared_ptr<VectorOpt<double>>, int>;
+extern template class SyncDataStore2<std::shared_ptr<std::string>, int>;
+extern template class SyncDataStore2<std::shared_ptr<FuncInfo>, int>;
 extern template class SyncDataStore2<
-    std::shared_ptr<std::vector<Common::ViewComponentBase>>>;
+    std::shared_ptr<std::vector<Common::ViewComponentBase>>, int>;
+extern template class SyncDataStore2<Common::ImageBase, Common::ImageReq>;
 #endif
 
 } // namespace WEBCFACE_NS::Internal

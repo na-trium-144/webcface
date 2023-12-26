@@ -10,6 +10,7 @@
 #include "log.h"
 #include "func.h"
 #include "view.h"
+#include "image.h"
 
 namespace WEBCFACE_NS {
 
@@ -48,6 +49,11 @@ class Member : protected Field {
      *
      */
     WEBCFACE_DLL Text text(const std::string &field) const;
+    /*!
+     * \brief imageを参照する。
+     *
+     */
+    WEBCFACE_DLL Image image(const std::string &field) const;
     /*!
      * \brief funcを参照する。
      *
@@ -95,6 +101,11 @@ class Member : protected Field {
      *
      */
     WEBCFACE_DLL std::vector<View> views() const;
+    /*!
+     * \brief このmemberが公開しているimageのリストを返す。
+     *
+     */
+    WEBCFACE_DLL std::vector<Image> images() const;
 
     /*!
      * \brief valueが追加された時のイベント
@@ -117,6 +128,13 @@ class Member : protected Field {
      *
      */
     WEBCFACE_DLL EventTarget<Func, std::string> onFuncEntry() const;
+    /*!
+     * \brief imageが追加されたときのイベント
+     *
+     * コールバックの型は void(Image)
+     *
+     */
+    WEBCFACE_DLL EventTarget<Image, std::string> onImageEntry() const;
     /*!
      * \brief viewが追加されたときのイベント
      *
