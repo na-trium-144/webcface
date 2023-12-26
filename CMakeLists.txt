@@ -6,6 +6,7 @@ project(webcface
     HOMEPAGE_URL "https://github.com/na-trium-144/webcface"
     DESCRIPTION "Web-based RPC & UI Library"
 )
+set(WEBCFACE_CONTACT "na-trium-144@users.noreply.github.com")
 set(WEBCFACE_VERSION ${PROJECT_VERSION})
 set(WEBCFACE_SOVERSION 2)
 set(WEBUI_VERSION 1.0.11)
@@ -326,6 +327,10 @@ set(CLI_SRC
     ${CPP_DIR}/client/image.cc
     ${CPP_DIR}/client/version.cc
 )
+if(MSVC)
+    set(CLI_SRC ${CLI_SRC} ${CPP_DIR}/version.rc)
+endif()
+
 set(EXAMPLE_SRC
     ${CPP_DIR}/example/main.cc
     ${CPP_DIR}/example/recv.cc
@@ -376,6 +381,9 @@ target_link_libraries(${PROJECT_NAME}-message PUBLIC
     ${MSGPACK}
     ${SPDLOG}
 )
+set_target_properties(${PROJECT_NAME}-message PROPERTIES
+    DEBUG_POSTFIX d
+)
 
 add_library(${PROJECT_NAME}-server-impl STATIC ${SVR_SRC})
 target_link_libraries(${PROJECT_NAME}-server-impl PUBLIC
@@ -406,6 +414,10 @@ endif()
 if(NOT CMAKE_CXX_COMPILER_ID STREQUAL "MSVC" AND WEBCFACE_PIC)
     target_compile_options(${PROJECT_NAME} PRIVATE -fPIC)
 endif()
+target_compile_definitions(${PROJECT_NAME} PRIVATE
+    WEBCFACE_CONTACT="${WEBCFACE_CONTACT}"
+    WEBCFACE_DESCRIPTION="${PROJECT_DESCRIPTION}"
+)
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_20)
 target_link_libraries(${PROJECT_NAME} PRIVATE
     ${PROJECT_NAME}-message
