@@ -63,14 +63,30 @@ jobs:
 
   include-cp932:
     runs-on: windows-latest
+    strategy:
+      matrix:
+        dep: ["with-opencv", "source"]
+        include:
+        - dep: with-opencv
+          use_opencv: on
     steps:
     - uses: actions/checkout@v4
+    - name: Install dependencies
+      if: matrix.dep == 'with-opencv'
+      uses: crazy-max/ghaction-chocolatey@v3
+      with:
+        args: install -y opencv
+    - name: Add opencv to path
+      if: matrix.dep == 'with-opencv'
+      run: echo "c:\tools\opencv\build\x64\vc16\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
     
     - name: Configure CMake
       run: >
         cmake -B build
         -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
         -DWEBCFACE_DOWNLOAD_WEBUI=off
+        -DWEBCFACE_USE_OPENCV=${{matrix.use_opencv}}
+        -DCMAKE_PREFIX_PATH=c:\tools\opencv\build\x64\vc16\lib
 
     - name: Write test.cpp
       run: |

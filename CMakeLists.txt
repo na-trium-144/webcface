@@ -293,11 +293,12 @@ endif()
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     add_compile_options(-Wall -Wextra -Wpedantic -Werror)
     add_compile_options(-Wno-psabi) # refer to PR#9
+    add_compile_options(-Wno-deprecated-enum-enum-conversion) # inside opencv
 endif()
 if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     add_compile_options(-Wall -Wextra -Wpedantic -Werror)
     add_compile_options(-Wno-delete-non-abstract-non-virtual-dtor) # todo: fix later
-    add_compile_options(-Wno-c11-extensions) # inside opencv
+    add_compile_options(-Wno-c11-extensions -Wno-deprecated-enum-enum-conversion) # inside opencv
 endif()
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
