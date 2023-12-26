@@ -492,6 +492,15 @@ void Internal::ClientData::onRecv(const std::string &message) {
                 member, Field{shared_from_this(), member, r.field});
             break;
         }
+        case MessageKind::entry + MessageKind::image: {
+            auto r = std::any_cast<
+                WEBCFACE_NS::Message::Entry<WEBCFACE_NS::Message::Image>>(obj);
+            auto member = this->getMemberNameFromId(r.member_id);
+            this->image_store.setEntry(member, r.field);
+            this->image_entry_event.dispatch(
+                member, Field{shared_from_this(), member, r.field});
+            break;
+        }
         case MessageKind::func_info: {
             auto r = std::any_cast<WEBCFACE_NS::Message::FuncInfo>(obj);
             auto member = this->getMemberNameFromId(r.member_id);

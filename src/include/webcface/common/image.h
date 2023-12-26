@@ -207,7 +207,8 @@ class ImageWithCV : public ImageBase {
     }
     ImageWithCV(int rows, int cols,
                 std::shared_ptr<std::vector<unsigned char>> data,
-                ImageColorMode color_mode, ImageCompressMode cmp_mode)
+                ImageColorMode color_mode = ImageColorMode::bgr,
+                ImageCompressMode cmp_mode = ImageCompressMode::raw)
         : ImageWithCV(ImageBase(rows, cols, data, color_mode, cmp_mode)) {}
 
     /*!
@@ -282,11 +283,11 @@ using ImageFrame = ImageBase;
 #endif
 
 struct ImageReq {
-    std::optional<int> rows, cols;
-    std::optional<ImageColorMode> color_mode = ImageColorMode::bgra;
+    std::optional<int> rows = std::nullopt, cols = std::nullopt;
+    std::optional<ImageColorMode> color_mode = std::nullopt;
     ImageCompressMode cmp_mode = ImageCompressMode::raw;
     int quality = 0;
-    std::optional<double> frame_rate;
+    std::optional<double> frame_rate = std::nullopt;
 
     bool operator==(const ImageReq &rhs) const {
         return rows == rhs.rows && cols == rhs.cols &&

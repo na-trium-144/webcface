@@ -66,11 +66,11 @@ class Image : protected Field, public EventTarget<Image> {
             std::optional<Common::ImageColorMode> color_mode,
             std::optional<double> frame_rate);
     //! 画像を返す
-    WEBCFACE_DLL std::optional<ImageFrame> tryGet() const;
+    WEBCFACE_DLL std::optional<ImageFrame> tryGet();
     //! 画像を返す (データがない場合0x0の画像が返る)
-    ImageFrame get() const { return tryGet().value_or(ImageFrame{}); }
+    ImageFrame get() { return tryGet().value_or(ImageFrame{}); }
 
-    operator ImageFrame() const { return get(); }
+    operator ImageFrame() { return get(); }
 
 #if WEBCFACE_USE_OPENCV
     WEBCFACE_DLL cv::Mat mat() &;

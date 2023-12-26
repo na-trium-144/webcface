@@ -197,6 +197,13 @@ void ClientData::onRecv(const std::string &message) {
                         logger->trace("send view_entry {} of member {}",
                                       f.first, cd->member_id);
                     }
+                    for (const auto &f : cd->image) {
+                        this->pack(WEBCFACE_NS::Message::Entry<
+                                   WEBCFACE_NS::Message::Image>{
+                            {}, cd->member_id, f.first});
+                        logger->trace("send image_entry {} of member {}",
+                                      f.first, cd->member_id);
+                    }
                     for (const auto &f : cd->func) {
                         this->pack(*f.second);
                         logger->trace("send func_info {} of member {}",
@@ -544,11 +551,12 @@ void ClientData::onRecv(const std::string &message) {
             auto s = std::any_cast<
                 WEBCFACE_NS::Message::Req<WEBCFACE_NS::Message::Image>>(obj);
             logger->debug("request image ({}): {} from {}, {} x {}, color={}, "
-                          "mode={}, q={}",
+                          "mode={}, q={}, fps={}",
                           s.req_id, s.field, s.member, s.rows.value_or(-1),
                           s.cols.value_or(-1),
                           (s.color_mode ? static_cast<int>(*s.color_mode) : -1),
-                          static_cast<int>(s.cmp_mode), s.quality);
+                          static_cast<int>(s.cmp_mode), s.quality,
+                          s.frame_rate.value_or(-1));
             image_req_info[s.member][s.field] = s;
             image_req[s.member][s.field] = s.req_id;
             image_req_changed[s.member][s.field]++;
@@ -676,7 +684,6 @@ void ClientData::imageConvertThreadMain(const std::string &member,
     // cdの画像を変換しthisに送信
     // cd.image[field]が更新されるかリクエストが更新されたときに変換を行う。
     int last_image_flag = -1, last_req_flag = -1;
-    auto last_frame = std::chrono::steady_clock::now();
     logger->trace("imageConvertThreadMain started for {}, {}", member, field);
     while (true) {
         store.findAndDo(member, [&](auto cd) {
@@ -705,6 +712,7 @@ void ClientData::imageConvertThreadMain(const std::string &member,
 #if WEBCFACE_USE_OPENCV
                 cv::Mat m = img.mat();
 #endif
+                auto last_frame = std::chrono::steady_clock::now();
                 // 変換処理
                 auto info = this->image_req_info[member][field];
                 auto [req_id, sub_field] =
@@ -775,7 +783,7 @@ void ClientData::imageConvertThreadMain(const std::string &member,
                                             info.quality);
                         return;
                     }
-                    cv::imencode(".jpg", m, *encoded,
+                    cv::imencode(".webp", m, *encoded,
                                  {cv::IMWRITE_WEBP_QUALITY, info.quality});
                     break;
                 case Common::ImageCompressMode::png:
@@ -785,7 +793,7 @@ void ClientData::imageConvertThreadMain(const std::string &member,
                                             info.quality);
                         return;
                     }
-                    cv::imencode(".jpg", m, *encoded,
+                    cv::imencode(".png", m, *encoded,
                                  {cv::IMWRITE_PNG_COMPRESSION, info.quality});
                     break;
 #else
@@ -822,7 +830,7 @@ void ClientData::imageConvertThreadMain(const std::string &member,
                         std::this_thread::sleep_for(
                             std::chrono::milliseconds(1));
                     }
-                    last_frame += delay;
+                    //last_frame = std::chrono::steady_clock::now();
                 }
             }
         });

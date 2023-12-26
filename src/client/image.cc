@@ -44,12 +44,13 @@ Image &Image::set(const ImageFrame &img) {
 
 void Image::onAppend() const { addImageReq(dataLock(), member_, field_); }
 
-std::optional<ImageFrame> Image::tryGet() const {
+std::optional<ImageFrame> Image::tryGet() {
     addImageReq(dataLock(), member_, field_);
     if (this->img) {
-        return *this->img;
+        return this->img;
     } else {
-        return std::nullopt;
+        this->img = dataLock()->image_store.getRecv(*this);
+        return this->img;
     }
 }
 

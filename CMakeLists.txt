@@ -343,6 +343,7 @@ set(TEST_SRC
     ${CPP_DIR}/test/data_test.cc
     ${CPP_DIR}/test/func_test.cc
     ${CPP_DIR}/test/view_test.cc
+    ${CPP_DIR}/test/image_test.cc
     ${CPP_DIR}/test/member_test.cc
     ${CPP_DIR}/test/logger_test.cc
     ${CPP_DIR}/test/client_test.cc
