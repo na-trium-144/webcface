@@ -1,23 +1,17 @@
 cmake_minimum_required(VERSION 3.12)
 
-# src/include/webcface/common/def.h からバージョンを取得
-file(READ ${CMAKE_CURRENT_SOURCE_DIR}/src/include/webcface/common/def.h contents)
-string(REGEX MATCH "#define WEBCFACE_VERSION_MAJOR *([0-9]+)" NULL_OUT ${contents})
-set(VERSION_MAJOR ${CMAKE_MATCH_1})
-string(REGEX MATCH "#define WEBCFACE_VERSION_MINOR *([0-9]+)" NULL_OUT ${contents})
-set(VERSION_MINOR ${CMAKE_MATCH_1})
-string(REGEX MATCH "#define WEBCFACE_VERSION_REVISION *([0-9]+)" NULL_OUT ${contents})
-set(VERSION_REVISION ${CMAKE_MATCH_1})
-set(WEBCFACE_VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_REVISION})
-
 project(webcface
     LANGUAGES CXX
-    VERSION ${WEBCFACE_VERSION}
+    VERSION 1.3.0
     HOMEPAGE_URL "https://github.com/na-trium-144/webcface"
     DESCRIPTION "Web-based RPC & UI Library"
 )
 set(WEBCFACE_SOVERSION 2)
 set(WEBUI_VERSION 1.0.11)
+
+set(WEBCFACE_VERSION_MAJOR ${PROJECT_VERSION_MAJOR})
+set(WEBCFACE_VERSION_MINOR ${PROJECT_VERSION_MINOR})
+set(WEBCFACE_VERSION_REVISION ${PROJECT_VERSION_PATCH})
 
 if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
     set(IS_MAIN on)
@@ -51,6 +45,7 @@ if(WEBCFACE_VERSION_SUFFIX STREQUAL "git")
         set(WEBCFACE_VERSION ${CMAKE_MATCH_1})
     else()
         message(STATUS "Failed to get version from git describe: ${git_describe_error}")
+        set(WEBCFACE_VERSION ${PROJECT_VERSION})
     endif()
 elseif(NOT WEBCFACE_VERSION_SUFFIX STREQUAL "")
     set(WEBCFACE_VERSION "${PROJECT_VERSION}-${WEBCFACE_VERSION_SUFFIX}")
@@ -63,6 +58,7 @@ message(STATUS "webcface_test = ${WEBCFACE_TEST} (timeout = ${WEBCFACE_TEST_TIME
 message(STATUS "webcface_coverage = ${WEBCFACE_COVERAGE}")
 message(STATUS "webcface_install = ${WEBCFACE_INSTALL}")
 message(STATUS "webcface_shared = ${WEBCFACE_SHARED} (pic = ${WEBCFACE_PIC})")
+message(STATUS "webcface_use_opencv = ${WEBCFACE_USE_OPENCV}")
 
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Release")
@@ -97,6 +93,7 @@ if(MINGW)
     add_link_options(-Wl,--default-image-base-low)
 endif()
 
+configure_file(cmake/def.h.in ${CMAKE_CURRENT_SOURCE_DIR}/src/include/webcface/common/def.h @ONLY)
 
 ###############################################################################
 
@@ -367,18 +364,6 @@ target_include_directories(${PROJECT_NAME}-headers INTERFACE
     ${INCLUDE_DIR}
     ${OpenCV_INCLUDE_DIRS}
 )
-target_compile_definitions(${PROJECT_NAME}-headers INTERFACE
-    WEBCFACE_VERSION="${WEBCFACE_VERSION}"
-)
-if(WEBCFACE_USE_OPENCV)
-    target_compile_definitions(${PROJECT_NAME}-headers INTERFACE
-        WEBCFACE_USE_OPENCV=1
-    )
-else()
-    target_compile_definitions(${PROJECT_NAME}-headers INTERFACE
-        WEBCFACE_USE_OPENCV=0
-    )
-endif()
 target_compile_features(${PROJECT_NAME}-headers INTERFACE cxx_std_20)
 
 add_library(${PROJECT_NAME}-message STATIC ${MSG_SRC})
