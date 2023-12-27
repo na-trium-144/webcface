@@ -3,28 +3,28 @@
 ![c++ ver1.3](https://img.shields.io/badge/1.3~-00599c?logo=C%2B%2B)
 ![js ver1.2](https://img.shields.io/badge/1.2~-f7df1e?logo=JavaScript&logoColor=black)
 
-API Reference ¨ webcface::Image
+API Reference â†’ webcface::Image
 
-‰æ‘œƒf[ƒ^‚ğ‘—óM‚µ‚Ü‚·B
+ç”»åƒãƒ‡ãƒ¼ã‚¿ã‚’é€å—ä¿¡ã—ã¾ã™ã€‚
 
-Member::image() ‚ÅImageƒNƒ‰ƒX‚ÌƒIƒuƒWƒFƒNƒg‚ª“¾‚ç‚ê‚Ü‚·
+Member::image() ã§Imageã‚¯ãƒ©ã‚¹ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒå¾—ã‚‰ã‚Œã¾ã™
 ```cpp
 webcface::Image image_hoge = wcli.member("a").image("hoge");
 ```
 
-Member::images() ‚Å‚»‚ÌMember‚ª‘—M‚µ‚Ä‚¢‚éimage‚ÌƒŠƒXƒg‚ª“¾‚ç‚ê‚Ü‚·
+Member::images() ã§ãã®MemberãŒé€ä¿¡ã—ã¦ã„ã‚‹imageã®ãƒªã‚¹ãƒˆãŒå¾—ã‚‰ã‚Œã¾ã™
 ```cpp
 for(const webcface::Image &v: wcli.member("a").images()){
 	// ...
 }
 ```
 
-Member::onImageEntry() ‚ÅV‚µ‚­ƒf[ƒ^‚ª’Ç‰Á‚³‚ê‚½‚Æ‚«‚ÌƒR[ƒ‹ƒoƒbƒN‚ğİ’è‚Å‚«‚Ü‚·
+Member::onImageEntry() ã§æ–°ã—ããƒ‡ãƒ¼ã‚¿ãŒè¿½åŠ ã•ã‚ŒãŸã¨ãã®ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã‚’è¨­å®šã§ãã¾ã™
 ```cpp
 wcli.member("a").onImageEntry().appendListener([](webcface::Image v){ /* ... */ });
 ```
 
-TODO: ƒhƒLƒ…ƒƒ“ƒg‚ğ‘‚­
+TODO: ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆã‚’æ›¸ã
 
 
 <div class="section_buttons">
