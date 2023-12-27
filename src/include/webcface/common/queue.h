@@ -4,8 +4,9 @@
 #include <condition_variable>
 #include <chrono>
 #include <optional>
+#include "def.h"
 
-namespace webcface {
+namespace WEBCFACE_NS {
 inline namespace Common {
 //! 排他制御をしたただのキュー
 template <typename T>
@@ -34,4 +35,4 @@ class Queue {
     }
 };
 } // namespace Common
-} // namespace webcface
+} // namespace WEBCFACE_NS

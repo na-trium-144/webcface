@@ -4,14 +4,15 @@
 #include <memory>
 #include <spdlog/logger.h>
 #include <spdlog/common.h>
+#include <webcface/common/def.h>
 
-namespace webcface::Server {
+namespace WEBCFACE_NS::Server {
 
 class CustomLogger : public crow::ILogHandler {
     std::shared_ptr<spdlog::logger> logger;
 
   public:
-    CustomLogger(std::shared_ptr<spdlog::logger> logger): logger(logger) {}
+    CustomLogger(std::shared_ptr<spdlog::logger> logger) : logger(logger) {}
     void log(std::string message, crow::LogLevel level) {
         logger->log(convertLevel(level), message);
     }
@@ -31,4 +32,4 @@ class CustomLogger : public crow::ILogHandler {
         }
     }
 };
-}
+} // namespace WEBCFACE_NS::Server

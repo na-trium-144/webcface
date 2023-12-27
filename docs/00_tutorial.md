@@ -95,13 +95,27 @@ piyo
 webcface-toolsには`webcface-send`の他にもWebCFaceと通信して使うプログラムがいくつかあります。
 詳しくは[webcface-toolsのリポジトリ](https://github.com/na-trium-144/webcface-tools)を参照してください。
 
-## Clientプログラムを作る
+## Clientライブラリ
 
 C++でWebCFaceを使う場合は、次のようにCMakeでWebCFaceクライアントのライブラリとリンクすることができます。
 ```cmake
 find_package(webcface CONFIG REQUIRED)
 target_link_libraries(target PRIVATE webcface::webcface)
 ```
+
+* find_packageでwebcfaceが見つからない場合はwebcfaceのインストール場所をCMAKE_PREFIX_PATHに設定してください。
+* FetchContentやsubmoduleでこのリポジトリを追加して使うこともできます。また、ROS2のワークスペースのsrcに追加してcolconでビルドすることもできます。
+    * OpenCVを使用しない場合は`WEBCFACE_USE_OPENCV`をoffにすれば使用しないようにできます。
+
+VisualStudioでCMakeを使わない場合は  
+インクルードディレクトリ: `C:\Program Files\webcface\include`, `C:\Program Files\webcface\opencv\include`  
+ライブラリディレクトリ: `C:\Program Files\webcface\lib`, `C:\Program Files\webcface\opencv\x64\vc16\lib`  
+を追加し、  
+Releaseの場合 webcface.lib, spdlog.lib, opencv_world481.lib  
+Debugの場合 webcfaced.lib, spdlogd.lib, opencv_world481d.lib  
+(opencvのバージョンが異なったら読み替えてください)をリンクしてください。  
+また、`C:\Program Files\webcface\bin` を環境変数のPathに追加するか、その中にあるdllファイルを実行ファイルのディレクトリにコピーして読み込ませてください
+
 
 C++のソースコードでは`<webcface/webcface.h>`をincludeしてください。
 次ページ以降でC++での使い方を解説します。

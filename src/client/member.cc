@@ -1,14 +1,9 @@
 #include <webcface/member.h>
-#include <webcface/value.h>
-#include <webcface/text.h>
-#include <webcface/log.h>
-#include <webcface/func.h>
-#include <webcface/view.h>
 #include <webcface/event_target.h>
 #include "../message/message.h"
 #include "client_internal.h"
 
-namespace webcface {
+namespace WEBCFACE_NS {
 
 Value Member::value(const std::string &field) const {
     return Value{*this, field};
@@ -16,6 +11,9 @@ Value Member::value(const std::string &field) const {
 Text Member::text(const std::string &field) const { return Text{*this, field}; }
 Func Member::func(const std::string &field) const { return Func{*this, field}; }
 View Member::view(const std::string &field) const { return View{*this, field}; }
+Image Member::image(const std::string &field) const {
+    return Image{*this, field};
+}
 Log Member::log() const { return Log{*this}; }
 
 EventTarget<Value, std::string> Member::onValueEntry() const {
@@ -33,6 +31,10 @@ EventTarget<Func, std::string> Member::onFuncEntry() const {
 EventTarget<View, std::string> Member::onViewEntry() const {
     return EventTarget<View, std::string>{&dataLock()->view_entry_event,
                                           member_};
+}
+EventTarget<Image, std::string> Member::onImageEntry() const {
+    return EventTarget<Image, std::string>{&dataLock()->image_entry_event,
+                                           member_};
 }
 EventTarget<Member, std::string> Member::onSync() const {
     return EventTarget<Member, std::string>{&dataLock()->sync_event, member_};
@@ -67,6 +69,14 @@ std::vector<View> Member::views() const {
     std::vector<View> ret(keys.size());
     for (std::size_t i = 0; i < keys.size(); i++) {
         ret[i] = view(keys[i]);
+    }
+    return ret;
+}
+std::vector<Image> Member::images() const {
+    auto keys = dataLock()->image_store.getEntry(*this);
+    std::vector<Image> ret(keys.size());
+    for (std::size_t i = 0; i < keys.size(); i++) {
+        ret[i] = image(keys[i]);
     }
     return ret;
 }
@@ -114,4 +124,4 @@ EventTarget<Member, std::string> Member::onPing() const {
     dataLock()->pingStatusReq();
     return EventTarget<Member, std::string>{&dataLock()->ping_event, member_};
 }
-} // namespace webcface
+} // namespace WEBCFACE_NS

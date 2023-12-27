@@ -7,8 +7,9 @@
 #include <cstdint>
 #include "field.h"
 #include "common/val.h"
+#include "common/def.h"
 
-namespace webcface {
+namespace WEBCFACE_NS {
 
 class Member;
 
@@ -165,4 +166,4 @@ class FuncCallHandle {
         }
     }
 };
-} // namespace webcface
+} // namespace WEBCFACE_NS

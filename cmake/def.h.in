@@ -1,0 +1,34 @@
+#pragma once
+#define WEBCFACE_STR(v) #v
+#define WEBCFACE_DEFAULT_PORT 7530
+#define WEBCFACE_DEFAULT_PORT_SI(port) WEBCFACE_STR(port)
+#define WEBCFACE_DEFAULT_PORT_S WEBCFACE_DEFAULT_PORT_SI(WEBCFACE_DEFAULT_PORT)
+#define WEBCFACE_SERVER_NAME "webcface"
+#cmakedefine WEBCFACE_VERSION_MAJOR @WEBCFACE_VERSION_MAJOR@
+#cmakedefine WEBCFACE_VERSION_MINOR @WEBCFACE_VERSION_MINOR@
+#ifndef WEBCFACE_VERSION_MINOR
+#define WEBCFACE_VERSION_MINOR 0
+#endif
+#cmakedefine WEBCFACE_VERSION_REVISION @WEBCFACE_VERSION_REVISION@
+#ifndef WEBCFACE_VERSION_REVISION
+#define WEBCFACE_VERSION_REVISION 0
+#endif
+#cmakedefine WEBCFACE_VERSION "@WEBCFACE_VERSION@"
+#cmakedefine01 WEBCFACE_USE_OPENCV
+
+#ifdef _MSC_VER
+#ifdef webcface_EXPORTS
+#define WEBCFACE_DLL __declspec(dllexport)
+#else
+#define WEBCFACE_DLL __declspec(dllimport)
+#endif
+#ifdef _DEBUG
+#define WEBCFACE_NS webcfaced
+#else
+#define WEBCFACE_NS webcface
+#endif
+#else
+#define WEBCFACE_DLL
+#define WEBCFACE_NS webcface
+#endif
+

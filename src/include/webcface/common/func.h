@@ -7,6 +7,7 @@
 #include <ostream>
 #include <cstdint>
 #include "val.h"
+#include "def.h"
 
 #ifdef min
 #pragma message(                                                               \
@@ -15,8 +16,7 @@
 #undef max
 #endif
 
-namespace webcface {
-//! webcface::Commonはserverとclientで共通のheader-onlyなクラス
+namespace WEBCFACE_NS {
 inline namespace Common {
 
 using FuncType = std::function<ValAdaptor(const std::vector<ValAdaptor> &)>;
@@ -252,8 +252,8 @@ struct FuncCall {
     unsigned int caller_member_id;
     unsigned int target_member_id;
     std::string field;
-    std::vector<webcface::ValAdaptor> args;
+    std::vector<WEBCFACE_NS::ValAdaptor> args;
 };
 
 } // namespace Common
-} // namespace webcface
+} // namespace WEBCFACE_NS

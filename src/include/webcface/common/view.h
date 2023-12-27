@@ -2,8 +2,9 @@
 #include <string>
 #include <optional>
 #include "field_base.h"
+#include "def.h"
 
-namespace webcface {
+namespace WEBCFACE_NS {
 inline namespace Common {
 enum class ViewComponentType {
     text = 0,
@@ -58,4 +59,4 @@ struct ViewComponentBase {
 };
 
 } // namespace Common
-} // namespace webcface
+} // namespace WEBCFACE_NS

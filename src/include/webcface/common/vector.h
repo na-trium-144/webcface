@@ -1,8 +1,9 @@
 #pragma once
 #include <vector>
 #include <initializer_list>
+#include "def.h"
 
-namespace webcface {
+namespace WEBCFACE_NS {
 inline namespace Common {
 
 //! 1つの値またはvectorを持つクラス
@@ -15,4 +16,4 @@ struct VectorOpt : public std::vector<T> {
     operator T() const { return (*this)[0]; }
 };
 } // namespace Common
-} // namespace webcface
+} // namespace WEBCFACE_NS
