@@ -4,11 +4,16 @@
 #include <unordered_map>
 #include <chrono>
 #include <optional>
+#include <mutex>
+#include <atomic>
+#include <condition_variable>
+#include <thread>
 #include "../message/message.h"
 #include <spdlog/common.h>
 #include <spdlog/logger.h>
+#include <webcface/common/def.h>
 
-namespace webcface::Server {
+namespace WEBCFACE_NS::Server {
 struct ClientData {
     using wsConnPtr = void *;
     spdlog::sink_ptr sink;
@@ -39,11 +44,30 @@ struct ClientData {
     std::unordered_map<std::string, std::shared_ptr<Message::FuncInfo>> func;
     std::unordered_map<std::string, std::vector<Common::ViewComponentBase>>
         view;
+    std::unordered_map<std::string, Common::ImageBase> image;
+    std::unordered_map<std::string, int> image_changed;
+    // 画像が変化したことを知らせるcv
+    std::unordered_map<std::string, std::mutex> image_m;
+    std::unordered_map<std::string, std::condition_variable> image_cv;
+
     std::chrono::system_clock::time_point last_sync_time;
     //! リクエストしているmember,nameのペア
     std::unordered_map<std::string,
                        std::unordered_map<std::string, unsigned int>>
-        value_req, text_req, view_req;
+        value_req, text_req, view_req, image_req;
+    // リクエストが変化したことをスレッドに知らせる
+    std::unordered_map<std::string, std::unordered_map<std::string, int>> image_req_changed;
+    // 画像をそれぞれのリクエストに合わせて変換するスレッド
+    std::unordered_map<std::string,
+                       std::unordered_map<std::string, Common::ImageReq>>
+        image_req_info;
+    std::unordered_map<
+        std::string,
+        std::unordered_map<std::string, std::optional<std::thread>>>
+        image_convert_thread;
+    void imageConvertThreadMain(const std::string &member,
+                                const std::string &field);
+
     std::set<std::string> log_req;
     bool hasReq(const std::string &member);
     //! ログ全履歴
@@ -80,6 +104,7 @@ struct ClientData {
     void onConnect();
     void onRecv(const std::string &msg);
     void onClose();
+    std::atomic<bool> closing = false;
 
     void sendPing();
     static constexpr std::chrono::milliseconds ping_interval{5000};
@@ -97,4 +122,4 @@ struct ClientData {
         Message::pack(send_buffer, send_len, data);
     }
 };
-} // namespace webcface::Server
+} // namespace WEBCFACE_NS::Server

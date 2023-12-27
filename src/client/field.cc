@@ -2,8 +2,9 @@
 #include <webcface/member.h>
 #include "client_internal.h"
 #include <stdexcept>
+#include <webcface/common/def.h>
 
-namespace webcface {
+namespace WEBCFACE_NS {
 Member Field::member() const { return *this; }
 
 std::shared_ptr<Internal::ClientData> Field::dataLock() const {
@@ -21,4 +22,4 @@ std::shared_ptr<Internal::ClientData> Field::setCheck() const {
     }
     return data;
 }
-} // namespace webcface
+} // namespace WEBCFACE_NS

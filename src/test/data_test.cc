@@ -7,7 +7,7 @@
 #include <stdexcept>
 #include <chrono>
 
-using namespace webcface;
+using namespace WEBCFACE_NS;
 class DataTest : public ::testing::Test {
   protected:
     void SetUp() override {

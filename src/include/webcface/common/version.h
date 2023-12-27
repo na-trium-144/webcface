@@ -1,7 +1,8 @@
 #pragma once
 #include <array>
+#include "def.h"
 
-namespace webcface {
+namespace WEBCFACE_NS {
 inline namespace Version {
 //! (ver1.2で追加) クライアントのバージョン
 /*!

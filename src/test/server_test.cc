@@ -7,11 +7,12 @@
 #include <webcface/common/def.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
 #include <webcface/view.h>
+#include <webcface/image.h>
 #include <thread>
 #include <iostream>
 #include "dummy_client.h"
 
-using namespace webcface;
+using namespace WEBCFACE_NS;
 
 #ifndef WEBCFACE_TEST_TIMEOUT
 #define WEBCFACE_TEST_TIMEOUT 10
@@ -130,6 +131,10 @@ TEST_F(ServerTest, entry) {
         std::make_shared<
             std::unordered_map<std::string, Message::View::ViewComponent>>(),
         0});
+    dummy_c1->send(Message::Image{
+        "a", ImageFrame{
+                 100, 100,
+                 std::make_shared<std::vector<unsigned char>>(100 * 100 * 3)}});
     dummy_c1->send(Message::FuncInfo{
         0, "a", ValType::none_,
         std::make_shared<std::vector<Message::FuncInfo::Arg>>()});
@@ -160,7 +165,13 @@ TEST_F(ServerTest, entry) {
             EXPECT_EQ(obj.member_id, 1);
             EXPECT_EQ(obj.field, "a");
         },
-        [&] { ADD_FAILURE() << "View Entry recv failed"; });
+        [&] { ADD_FAILURE() << "View Entry recv failed"; }); 
+    dummy_c2->recv<Message::Entry<Message::Image>>(
+        [&](const auto &obj) {
+            EXPECT_EQ(obj.member_id, 1);
+            EXPECT_EQ(obj.field, "a");
+        },
+        [&] { ADD_FAILURE() << "Image Entry recv failed"; });
     dummy_c2->recv<Message::FuncInfo>(
         [&](const auto &obj) {
             EXPECT_EQ(obj.member_id, 1);
@@ -201,6 +212,18 @@ TEST_F(ServerTest, entry) {
             EXPECT_EQ(obj.field, "b");
         },
         [&] { ADD_FAILURE() << "View Entry recv failed"; });
+    dummy_c1->send(Message::Image{
+        "b",
+        ImageFrame{50, 50,
+                   std::make_shared<std::vector<unsigned char>>(50 * 50 * 3)}});
+    wait();
+    dummy_c2->recv<Message::Entry<Message::Image>>(
+        [&](const auto &obj) {
+            EXPECT_EQ(obj.member_id, 1);
+            EXPECT_EQ(obj.field, "b");
+        },
+        [&] { ADD_FAILURE() << "Image Entry recv failed"; });
+
     dummy_c1->send(Message::FuncInfo{
         0, "b", ValType::none_,
         std::make_shared<std::vector<Message::FuncInfo::Arg>>()});
@@ -347,6 +370,125 @@ TEST_F(ServerTest, view) {
             EXPECT_EQ(obj.length, 3);
         },
         [&] { ADD_FAILURE() << "View Res recv failed"; });
+}
+TEST_F(ServerTest, image) {
+    dummy_c1->send(Message::SyncInit{{}, "c1", 0, "", "", ""});
+    auto sendImage = [&] {
+        dummy_c1->send(Message::Sync{});
+        dummy_c1->send(Message::Image{
+            "a", ImageFrame{10, 10,
+                            std::make_shared<std::vector<unsigned char>>(
+                                10 * 10 * 3)}});
+    };
+    sendImage();
+    wait();
+    dummy_c2->send(Message::SyncInit{{}, "", 0, "", "", ""});
+
+    // normal request
+    dummy_c2->send(Message::Req<Message::Image>{"c1", "a", 1, {}});
+    wait();
+    dummy_c2->recv<Message::Sync>([&](auto) {},
+                                  [&] { ADD_FAILURE() << "Sync recv failed"; });
+    dummy_c2->recv<Message::Res<Message::Image>>(
+        [&](const auto &obj) {
+            EXPECT_EQ(obj.req_id, 1);
+            EXPECT_EQ(obj.sub_field, "");
+            EXPECT_EQ(obj.data().size(), 10 * 10 * 3);
+        },
+        [&] { ADD_FAILURE() << "Image Res recv failed"; });
+    dummy_c2->recvClear();
+
+    // 変化後の値
+    sendImage();
+    wait();
+    dummy_c2->recv<Message::Sync>([&](auto) {},
+                                  [&] { ADD_FAILURE() << "Sync recv failed"; });
+    dummy_c2->recv<Message::Res<Message::Image>>(
+        [&](const auto &obj) {
+            EXPECT_EQ(obj.req_id, 1);
+            EXPECT_EQ(obj.sub_field, "");
+            EXPECT_EQ(obj.data().size(), 10 * 10 * 3);
+            EXPECT_EQ(obj.rows(), 10);
+            EXPECT_EQ(obj.cols(), 10);
+            EXPECT_EQ(obj.color_mode(), ImageColorMode::bgr);
+        },
+        [&] { ADD_FAILURE() << "Image Res recv failed 1"; });
+    dummy_c2->recvClear();
+
+#if WEBCFACE_USE_OPENCV
+    // resize, convert color, frame rate
+    dummy_c2->send(Message::Req<Message::Image>{
+        "c1",
+        "a",
+        1,
+        {
+            5, 5, ImageColorMode::gray, ImageCompressMode::raw, 0,
+            1000.0 / WEBCFACE_TEST_TIMEOUT /
+                3 // wait()のtimeoutに間に合わないようにする
+        }});
+    wait();
+    dummy_c2->recv<Message::Sync>([&](auto) {},
+                                  [&] { ADD_FAILURE() << "Sync recv failed"; });
+    dummy_c2->recv<Message::Res<Message::Image>>(
+        [&](const auto &obj) {
+            EXPECT_EQ(obj.req_id, 1);
+            EXPECT_EQ(obj.sub_field, "");
+            EXPECT_EQ(obj.data().size(), 5 * 5 * 1);
+            EXPECT_EQ(obj.rows(), 5);
+            EXPECT_EQ(obj.cols(), 5);
+            EXPECT_EQ(obj.color_mode(), ImageColorMode::gray);
+        },
+        [&] { ADD_FAILURE() << "Image Res recv failed 2"; });
+    dummy_c2->recvClear();
+
+    sendImage();
+    wait();
+    dummy_c2->recv<Message::Res<Message::Image>>(
+        [&](auto) { ADD_FAILURE() << "should not receive Image Res 3"; },
+        [] {});
+    wait();
+    wait();
+    dummy_c2->recv<Message::Res<Message::Image>>(
+        [&](const auto &obj) {
+            EXPECT_EQ(obj.req_id, 1);
+            EXPECT_EQ(obj.sub_field, "");
+            EXPECT_EQ(obj.data().size(), 5 * 5 * 1);
+            EXPECT_EQ(obj.rows(), 5);
+            EXPECT_EQ(obj.cols(), 5);
+            EXPECT_EQ(obj.color_mode(), ImageColorMode::gray);
+        },
+        [&] { ADD_FAILURE() << "Image Res recv failed 3"; });
+    dummy_c2->recvClear();
+
+    // compress
+    dummy_c2->send(Message::Req<Message::Image>{
+        "c1",
+        "a",
+        1,
+        {std::nullopt, std::nullopt, std::nullopt, ImageCompressMode::png, 5, std::nullopt}});
+    wait();
+    wait();
+    wait();
+    dummy_c2->recv<Message::Sync>([&](auto) {},
+                                  [&] { ADD_FAILURE() << "Sync recv failed"; });
+    dummy_c2->recv<Message::Res<Message::Image>>(
+        [&](const auto &obj) {
+            EXPECT_EQ(obj.req_id, 1);
+            EXPECT_EQ(obj.sub_field, "");
+            ImageFrame img{
+                10, 10,
+                std::make_shared<std::vector<unsigned char>>(10 * 10 * 3)};
+            std::vector<unsigned char> dst;
+            cv::imencode(".png", img.mat(), dst,
+                         {cv::IMWRITE_PNG_COMPRESSION, 5});
+            EXPECT_EQ(obj.data().size(), dst.size());
+            EXPECT_EQ(obj.rows(), 10);
+            EXPECT_EQ(obj.cols(), 10);
+            EXPECT_EQ(obj.compress_mode(), ImageCompressMode::png);
+        },
+        [&] { ADD_FAILURE() << "Image Res recv failed 4"; });
+    dummy_c2->recvClear();
+#endif
 }
 TEST_F(ServerTest, log) {
     Server::store.keep_log = 3;
