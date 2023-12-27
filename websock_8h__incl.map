@@ -1,13 +1,15 @@
 <map id="server/websock.h" name="server/websock.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="260,5,396,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="327,5,463,31"/>
 <area shape="rect" id="Node000002" title=" " alt="" coords="5,79,144,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="288,33,130,77,128,72,287,28"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="344,33,140,78,139,73,343,28"/>
 <area shape="rect" id="Node000003" title=" " alt="" coords="168,79,232,104"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="309,33,234,74,232,69,306,28"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="364,33,245,76,244,71,362,28"/>
 <area shape="rect" id="Node000004" title=" " alt="" coords="257,79,399,104"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="331,31,331,65,325,65,325,31"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="386,33,350,70,346,67,382,29"/>
 <area shape="rect" id="Node000005" title=" " alt="" coords="424,79,501,104"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="351,28,430,70,427,74,348,33"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="408,29,444,67,440,70,404,33"/>
 <area shape="rect" id="Node000006" title=" " alt="" coords="526,79,650,104"/>
-<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="370,28,533,72,532,78,369,33"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="427,28,545,71,543,76,425,33"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="675,79,856,104"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="455,28,692,73,691,79,454,33"/>
 </map>

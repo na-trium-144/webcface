@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['unknown_0',['unknown',['../namespacewebcface_1_1Message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a5b9f6d065e6e98483b3d3ed01f4f6cbe',1,'webcface::Message::MessageKind']]]
+  ['teal_0',['teal',['../namespaceWEBCFACE__NS_1_1Common.html#a5dcc1f15d6a60ca34207565aeb74124aa3c4184e82bb3be8fa32669800fb7373c',1,'WEBCFACE_NS::Common']]],
+  ['text_1',['text',['../namespaceWEBCFACE__NS_1_1Message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a0e17259309839615d215adfe7a44fb50',1,'WEBCFACE_NS::Message::MessageKind::text'],['../namespaceWEBCFACE__NS_1_1Common.html#a11040d82967b60182816ddc035d07c28a1cb251ec0d568de6a929b520c4aed8d1',1,'WEBCFACE_NS::Common::text']]]
 ];

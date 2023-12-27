@@ -1,25 +1,8 @@
 var searchData=
 [
-  ['member_0',['Member',['../classwebcface_1_1Member.html',1,'webcface']]],
-  ['messagebase_1',['MessageBase',['../structwebcface_1_1Message_1_1MessageBase.html',1,'webcface::Message']]],
-  ['messagebase_3c_20messagekind_3a_3acall_20_3e_2',['MessageBase&lt; MessageKind::call &gt;',['../structwebcface_1_1Message_1_1MessageBase.html',1,'webcface::Message']]],
-  ['messagebase_3c_20messagekind_3a_3acall_5fresponse_20_3e_3',['MessageBase&lt; MessageKind::call_response &gt;',['../structwebcface_1_1Message_1_1MessageBase.html',1,'webcface::Message']]],
-  ['messagebase_3c_20messagekind_3a_3acall_5fresult_20_3e_4',['MessageBase&lt; MessageKind::call_result &gt;',['../structwebcface_1_1Message_1_1MessageBase.html',1,'webcface::Message']]],
-  ['messagebase_3c_20messagekind_3a_3afunc_5finfo_20_3e_5',['MessageBase&lt; MessageKind::func_info &gt;',['../structwebcface_1_1Message_1_1MessageBase.html',1,'webcface::Message']]],
-  ['messagebase_3c_20messagekind_3a_3alog_20_3e_6',['MessageBase&lt; MessageKind::log &gt;',['../structwebcface_1_1Message_1_1MessageBase.html',1,'webcface::Message']]],
-  ['messagebase_3c_20messagekind_3a_3alog_5freq_20_3e_7',['MessageBase&lt; MessageKind::log_req &gt;',['../structwebcface_1_1Message_1_1MessageBase.html',1,'webcface::Message']]],
-  ['messagebase_3c_20messagekind_3a_3aping_20_3e_8',['MessageBase&lt; MessageKind::ping &gt;',['../structwebcface_1_1Message_1_1MessageBase.html',1,'webcface::Message']]],
-  ['messagebase_3c_20messagekind_3a_3aping_5fstatus_20_3e_9',['MessageBase&lt; MessageKind::ping_status &gt;',['../structwebcface_1_1Message_1_1MessageBase.html',1,'webcface::Message']]],
-  ['messagebase_3c_20messagekind_3a_3aping_5fstatus_5freq_20_3e_10',['MessageBase&lt; MessageKind::ping_status_req &gt;',['../structwebcface_1_1Message_1_1MessageBase.html',1,'webcface::Message']]],
-  ['messagebase_3c_20messagekind_3a_3asvr_5fversion_20_3e_11',['MessageBase&lt; MessageKind::svr_version &gt;',['../structwebcface_1_1Message_1_1MessageBase.html',1,'webcface::Message']]],
-  ['messagebase_3c_20messagekind_3a_3async_20_3e_12',['MessageBase&lt; MessageKind::sync &gt;',['../structwebcface_1_1Message_1_1MessageBase.html',1,'webcface::Message']]],
-  ['messagebase_3c_20messagekind_3a_3async_5finit_20_3e_13',['MessageBase&lt; MessageKind::sync_init &gt;',['../structwebcface_1_1Message_1_1MessageBase.html',1,'webcface::Message']]],
-  ['messagebase_3c_20messagekind_3a_3atext_20_3e_14',['MessageBase&lt; MessageKind::text &gt;',['../structwebcface_1_1Message_1_1MessageBase.html',1,'webcface::Message']]],
-  ['messagebase_3c_20messagekind_3a_3atext_2bmessagekind_3a_3ares_20_3e_15',['MessageBase&lt; MessageKind::text+MessageKind::res &gt;',['../structwebcface_1_1Message_1_1MessageBase.html',1,'webcface::Message']]],
-  ['messagebase_3c_20messagekind_3a_3avalue_20_3e_16',['MessageBase&lt; MessageKind::value &gt;',['../structwebcface_1_1Message_1_1MessageBase.html',1,'webcface::Message']]],
-  ['messagebase_3c_20messagekind_3a_3avalue_2bmessagekind_3a_3ares_20_3e_17',['MessageBase&lt; MessageKind::value+MessageKind::res &gt;',['../structwebcface_1_1Message_1_1MessageBase.html',1,'webcface::Message']]],
-  ['messagebase_3c_20messagekind_3a_3aview_20_3e_18',['MessageBase&lt; MessageKind::view &gt;',['../structwebcface_1_1Message_1_1MessageBase.html',1,'webcface::Message']]],
-  ['messagebase_3c_20messagekind_3a_3aview_2bmessagekind_3a_3ares_20_3e_19',['MessageBase&lt; MessageKind::view+MessageKind::res &gt;',['../structwebcface_1_1Message_1_1MessageBase.html',1,'webcface::Message']]],
-  ['messagebase_3c_20t_3a_3akind_2bmessagekind_3a_3aentry_20_3e_20',['MessageBase&lt; T::kind+MessageKind::entry &gt;',['../structwebcface_1_1Message_1_1MessageBase.html',1,'webcface::Message']]],
-  ['messagebase_3c_20t_3a_3akind_2bmessagekind_3a_3areq_20_3e_21',['MessageBase&lt; T::kind+MessageKind::req &gt;',['../structwebcface_1_1Message_1_1MessageBase.html',1,'webcface::Message']]]
+  ['log_0',['log',['../classWEBCFACE__NS_1_1Log.html',1,'Log'],['../structWEBCFACE__NS_1_1Message_1_1Log.html',1,'Log']]],
+  ['loggerbuf_1',['LoggerBuf',['../classWEBCFACE__NS_1_1LoggerBuf.html',1,'WEBCFACE_NS']]],
+  ['loggersink_2',['LoggerSink',['../classWEBCFACE__NS_1_1LoggerSink.html',1,'WEBCFACE_NS']]],
+  ['logline_3',['logline',['../structWEBCFACE__NS_1_1Common_1_1LogLine.html',1,'LogLine'],['../structWEBCFACE__NS_1_1Common_1_1LogLine.html',1,'LogLine'],['../structWEBCFACE__NS_1_1Message_1_1Log_1_1LogLine.html',1,'Log::LogLine']]],
+  ['logreq_4',['LogReq',['../structWEBCFACE__NS_1_1Message_1_1LogReq.html',1,'WEBCFACE_NS::Message']]]
 ];

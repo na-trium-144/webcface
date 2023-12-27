@@ -10,6 +10,7 @@ var dir_db3a54907829b36871118d03417739cd =
     [ "field.cc", "field_8cc.html", null ],
     [ "func.cc", "func_8cc.html", "func_8cc" ],
     [ "func_internal.h", "func__internal_8h.html", "func__internal_8h" ],
+    [ "image.cc", "image_8cc.html", "image_8cc" ],
     [ "log.cc", "log_8cc.html", "log_8cc" ],
     [ "logger.cc", "logger_8cc.html", null ],
     [ "member.cc", "member_8cc.html", null ],

@@ -1,0 +1,95 @@
+<map id="MessageBase&lt; k &gt;" name="MessageBase&lt; k &gt;">
+<area shape="rect" id="Node000001" title="型からkindを取得するためだけのベースクラス" alt="" coords="5,729,156,754"/>
+<area shape="rect" id="Node000002" href="$structWEBCFACE__NS_1_1Message_1_1MessageBase.html" title=" " alt="" coords="375,17,589,57"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="79,715,81,580,93,385,105,285,122,194,146,120,161,92,178,70,199,53,221,40,271,24,324,17,375,17,375,23,324,22,273,29,224,45,202,58,182,74,166,94,151,122,128,196,110,286,98,386,86,580,84,715"/>
+<area shape="rect" id="Node000004" href="$structWEBCFACE__NS_1_1Message_1_1MessageBase.html" title=" " alt="" coords="375,81,589,121"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="80,715,84,592,98,418,110,329,127,248,149,183,163,157,178,138,210,121,259,109,316,103,374,99,375,105,316,108,260,115,212,126,182,142,167,160,154,185,132,250,115,330,103,418,89,592,85,715"/>
+<area shape="rect" id="Node000006" href="$structWEBCFACE__NS_1_1Message_1_1MessageBase.html" title=" " alt="" coords="375,145,589,185"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="80,715,86,603,102,448,114,370,131,298,152,240,164,218,178,201,204,191,252,182,374,170,375,175,253,188,206,196,182,205,169,221,157,242,136,300,120,371,107,449,92,604,85,715"/>
+<area shape="rect" id="Node000008" href="$structWEBCFACE__NS_1_1Message_1_1MessageBase.html" title=" " alt="" coords="393,209,571,249"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="81,715,89,616,107,481,119,413,135,351,155,301,178,267,193,257,214,249,268,238,331,231,393,227,393,233,331,236,269,243,216,254,196,262,182,271,159,304,140,353,125,414,112,482,95,616,86,715"/>
+<area shape="rect" id="Node000010" href="$structWEBCFACE__NS_1_1Message_1_1MessageBase.html" title=" " alt="" coords="375,273,589,313"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="82,715,93,630,113,519,141,413,158,371,178,343,211,326,259,313,374,297,375,302,260,318,213,331,182,347,163,374,146,414,118,520,98,631,87,715"/>
+<area shape="rect" id="Node000012" href="$structWEBCFACE__NS_1_1Message_1_1MessageBase.html" title=" " alt="" coords="375,337,589,377"/>
+<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="78,715,80,651,93,566,105,521,123,478,147,438,178,403,211,386,259,374,374,360,375,365,260,379,213,391,182,407,151,441,128,480,110,523,98,567,86,651,84,715"/>
+<area shape="rect" id="Node000014" href="$structWEBCFACE__NS_1_1Message_1_1MessageBase.html" title=" " alt="" coords="375,401,589,441"/>
+<area shape="poly" id="edge13_Node000001_Node000014" title=" " alt="" coords="80,715,85,660,100,590,112,553,129,518,151,486,178,458,211,442,260,431,374,421,375,426,261,437,213,447,182,462,155,489,134,521,117,555,105,591,90,661,85,715"/>
+<area shape="rect" id="Node000016" href="$structWEBCFACE__NS_1_1Message_1_1MessageBase.html" title=" " alt="" coords="375,465,589,505"/>
+<area shape="poly" id="edge15_Node000001_Node000016" title=" " alt="" coords="84,715,94,673,111,623,139,573,157,550,179,531,212,516,260,504,374,489,375,495,261,509,214,521,181,536,161,554,143,576,116,625,99,675,89,716"/>
+<area shape="rect" id="Node000018" href="$structWEBCFACE__NS_1_1Message_1_1MessageBase.html" title=" " alt="" coords="375,529,589,569"/>
+<area shape="poly" id="edge17_Node000001_Node000018" title=" " alt="" coords="87,714,100,683,119,646,145,610,179,580,213,567,261,558,374,549,375,554,262,563,214,572,181,585,149,613,124,648,105,685,92,716"/>
+<area shape="rect" id="Node000020" href="$structWEBCFACE__NS_1_1Message_1_1MessageBase.html" title=" " alt="" coords="375,593,589,633"/>
+<area shape="poly" id="edge19_Node000001_Node000020" title=" " alt="" coords="99,715,133,680,155,662,179,648,227,630,277,618,374,608,375,613,278,624,228,635,181,653,158,667,136,684,102,719"/>
+<area shape="rect" id="Node000022" href="$structWEBCFACE__NS_1_1Message_1_1MessageBase.html" title=" " alt="" coords="375,657,589,697"/>
+<area shape="poly" id="edge21_Node000001_Node000022" title=" " alt="" coords="127,722,179,707,279,690,374,681,375,686,280,695,181,712,129,727"/>
+<area shape="rect" id="Node000024" href="$structWEBCFACE__NS_1_1Message_1_1MessageBase.html" title=" " alt="" coords="397,721,567,761"/>
+<area shape="poly" id="edge23_Node000001_Node000024" title=" " alt="" coords="170,739,397,739,397,744,170,744"/>
+<area shape="rect" id="Node000026" href="$structWEBCFACE__NS_1_1Message_1_1MessageBase.html" title=" " alt="" coords="375,785,589,825"/>
+<area shape="poly" id="edge25_Node000001_Node000026" title=" " alt="" coords="126,756,181,773,280,790,375,799,374,804,279,795,179,779,124,762"/>
+<area shape="rect" id="Node000028" href="$structWEBCFACE__NS_1_1Message_1_1MessageBase.html" title=" " alt="" coords="375,849,589,889"/>
+<area shape="poly" id="edge27_Node000001_Node000028" title=" " alt="" coords="102,764,136,801,157,818,181,832,228,850,278,861,328,868,375,871,374,876,327,873,277,867,227,855,179,837,154,823,132,804,98,767"/>
+<area shape="rect" id="Node000030" href="$structWEBCFACE__NS_1_1Message_1_1MessageBase.html" title=" " alt="" coords="375,913,589,953"/>
+<area shape="poly" id="edge29_Node000001_Node000030" title=" " alt="" coords="91,766,103,800,122,838,148,876,181,906,227,927,276,940,326,945,374,945,374,950,326,950,275,945,225,932,179,910,144,879,117,841,98,802,86,768"/>
+<area shape="rect" id="Node000032" href="$structWEBCFACE__NS_1_1Message_1_1MessageBase.html" title=" " alt="" coords="375,977,589,1017"/>
+<area shape="poly" id="edge31_Node000001_Node000032" title=" " alt="" coords="87,768,94,816,110,875,122,905,138,934,157,959,181,980,214,993,261,1000,374,1001,374,1007,261,1005,212,998,179,985,154,963,133,936,117,907,105,877,88,817,81,768"/>
+<area shape="rect" id="Node000034" href="$structWEBCFACE__NS_1_1Message_1_1MessageBase.html" title=" " alt="" coords="375,1041,589,1081"/>
+<area shape="poly" id="edge33_Node000001_Node000034" title=" " alt="" coords="84,768,88,826,101,900,114,939,131,976,153,1010,181,1038,213,1051,261,1059,375,1063,375,1069,260,1065,212,1057,179,1042,149,1013,126,979,109,941,96,902,83,826,79,768"/>
+<area shape="rect" id="Node000036" href="$structWEBCFACE__NS_1_1Message_1_1MessageBase.html" title=" " alt="" coords="375,1105,589,1145"/>
+<area shape="poly" id="edge35_Node000001_Node000036" title=" " alt="" coords="88,767,100,845,119,946,147,1041,164,1076,182,1099,213,1113,261,1122,375,1127,375,1132,260,1127,211,1118,178,1103,159,1079,142,1042,114,947,94,846,83,768"/>
+<area shape="rect" id="Node000038" href="$structWEBCFACE__NS_1_1Message_1_1MessageBase.html" title=" " alt="" coords="375,1169,589,1209"/>
+<area shape="poly" id="edge37_Node000001_Node000038" title=" " alt="" coords="87,768,97,855,116,970,129,1028,144,1080,162,1121,182,1149,206,1157,253,1166,375,1179,374,1184,252,1171,205,1163,178,1153,157,1124,139,1081,124,1029,111,971,92,856,82,768"/>
+<area shape="rect" id="Node000040" href="$structWEBCFACE__NS_1_1Message_1_1MessageBase.html" title=" " alt="" coords="375,1233,589,1273"/>
+<area shape="poly" id="edge39_Node000001_Node000040" title=" " alt="" coords="86,768,94,867,112,1002,124,1070,140,1131,159,1180,182,1213,212,1229,260,1239,375,1250,374,1255,259,1245,211,1234,178,1217,155,1183,135,1132,119,1071,106,1003,89,868,81,768"/>
+<area shape="rect" id="Node000042" href="$structWEBCFACE__NS_1_1Message_1_1MessageBase.html" title=" " alt="" coords="375,1297,589,1337"/>
+<area shape="poly" id="edge41_Node000001_Node000042" title=" " alt="" coords="86,768,92,877,108,1029,121,1106,137,1176,157,1233,169,1254,182,1270,212,1287,260,1299,375,1311,374,1317,259,1304,210,1292,178,1274,165,1257,152,1235,132,1178,115,1107,103,1030,87,878,80,768"/>
+<area shape="rect" id="Node000044" href="$structWEBCFACE__NS_1_1Message_1_1MessageBase.html" title=" " alt="" coords="375,1361,589,1401"/>
+<area shape="poly" id="edge43_Node000001_Node000044" title=" " alt="" coords="85,768,90,889,104,1059,117,1146,133,1225,155,1289,168,1313,182,1331,202,1348,224,1361,272,1380,324,1388,374,1390,374,1396,323,1394,271,1385,221,1366,199,1352,178,1335,163,1316,150,1291,128,1226,111,1147,99,1060,85,889,80,768"/>
+<area shape="rect" id="Node000046" href="$structWEBCFACE__NS_1_1Message_1_1MessageBase.html" title=" " alt="" coords="375,1425,589,1465"/>
+<area shape="poly" id="edge45_Node000001_Node000046" title=" " alt="" coords="84,768,86,903,98,1099,110,1198,127,1289,151,1363,166,1391,182,1411,202,1427,224,1440,272,1456,324,1462,374,1461,374,1466,324,1467,271,1461,221,1445,199,1432,178,1415,161,1394,146,1365,122,1291,105,1199,93,1099,81,904,79,768"/>
+<area shape="rect" id="Node000003" href="$structWEBCFACE__NS_1_1Message_1_1Call.html" title="関数呼び出し (client(caller)&#45;&gt;server&#45;&gt;client(receiver))" alt="" coords="675,25,721,50"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="603,35,674,35,674,40,603,40"/>
+<area shape="rect" id="Node000005" href="$structWEBCFACE__NS_1_1Message_1_1CallResponse.html" title="関数呼び出しの応答1 (client(receiver)&#45;&gt;server&#45;&gt;client(caller))" alt="" coords="643,89,753,114"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="603,99,642,99,642,104,603,104"/>
+<area shape="rect" id="Node000007" href="$structWEBCFACE__NS_1_1Message_1_1CallResult.html" title="関数呼び出しの応答2 (client(receiver)&#45;&gt;server&#45;&gt;client(caller))" alt="" coords="654,153,742,178"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="603,163,654,163,654,168,603,168"/>
+<area shape="rect" id="Node000009" href="$structWEBCFACE__NS_1_1Message_1_1Entry.html" title="server&#45;&gt;client 新しいvalueなどの報告" alt="" coords="651,217,745,242"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="584,227,651,227,651,232,584,232"/>
+<area shape="rect" id="Node000011" href="$structWEBCFACE__NS_1_1Message_1_1FuncInfo.html" title="client(member)&#45;&gt;server&#45;&gt;client func登録" alt="" coords="659,281,737,306"/>
+<area shape="poly" id="edge10_Node000010_Node000011" title=" " alt="" coords="603,291,659,291,659,296,603,296"/>
+<area shape="rect" id="Node000013" href="$structWEBCFACE__NS_1_1Message_1_1Image.html" title=" " alt="" coords="667,345,729,370"/>
+<area shape="poly" id="edge12_Node000012_Node000013" title=" " alt="" coords="603,355,666,355,666,360,603,360"/>
+<area shape="rect" id="Node000015" href="$structWEBCFACE__NS_1_1Message_1_1Log.html" title="client(member)&#45;&gt;server&#45;&gt;client logを追加" alt="" coords="675,409,721,434"/>
+<area shape="poly" id="edge14_Node000014_Node000015" title=" " alt="" coords="603,419,675,419,675,424,603,424"/>
+<area shape="rect" id="Node000017" href="$structWEBCFACE__NS_1_1Message_1_1LogReq.html" title=" " alt="" coords="663,473,733,498"/>
+<area shape="poly" id="edge16_Node000016_Node000017" title=" " alt="" coords="603,483,663,483,663,488,603,488"/>
+<area shape="rect" id="Node000019" href="$structWEBCFACE__NS_1_1Message_1_1Ping.html" title="ping(server&#45;&gt;client&#45;&gt;server)" alt="" coords="673,537,723,562"/>
+<area shape="poly" id="edge18_Node000018_Node000019" title=" " alt="" coords="603,547,672,547,672,552,603,552"/>
+<area shape="rect" id="Node000021" href="$structWEBCFACE__NS_1_1Message_1_1PingStatus.html" title="各クライアントのping状況 (server&#45;&gt;client)" alt="" coords="653,601,743,626"/>
+<area shape="poly" id="edge20_Node000020_Node000021" title=" " alt="" coords="603,611,652,611,652,616,603,616"/>
+<area shape="rect" id="Node000023" href="$structWEBCFACE__NS_1_1Message_1_1PingStatusReq.html" title="ping状況のリクエスト (client&#45;&gt;server)" alt="" coords="640,665,756,690"/>
+<area shape="poly" id="edge22_Node000022_Node000023" title=" " alt="" coords="603,675,640,675,640,680,603,680"/>
+<area shape="rect" id="Node000025" href="$structWEBCFACE__NS_1_1Message_1_1Req.html" title="client&#45;&gt;server 以降Recvを送るようリクエスト" alt="" coords="655,729,741,754"/>
+<area shape="poly" id="edge24_Node000024_Node000025" title=" " alt="" coords="581,739,655,739,655,744,581,744"/>
+<area shape="rect" id="Node000027" href="$structWEBCFACE__NS_1_1Message_1_1Req_3_01Image_01_4.html" title=" " alt="" coords="639,793,757,818"/>
+<area shape="poly" id="edge26_Node000026_Node000027" title=" " alt="" coords="603,803,639,803,639,808,603,808"/>
+<area shape="rect" id="Node000029" href="$structWEBCFACE__NS_1_1Message_1_1Res_3_01Image_01_4.html" title=" " alt="" coords="639,857,757,882"/>
+<area shape="poly" id="edge28_Node000028_Node000029" title=" " alt="" coords="603,867,639,867,639,872,603,872"/>
+<area shape="rect" id="Node000031" href="$structWEBCFACE__NS_1_1Message_1_1Res_3_01Text_01_4.html" title=" " alt="" coords="647,921,749,946"/>
+<area shape="poly" id="edge30_Node000030_Node000031" title=" " alt="" coords="603,931,646,931,646,936,603,936"/>
+<area shape="rect" id="Node000033" href="$structWEBCFACE__NS_1_1Message_1_1Res_3_01Value_01_4.html" title="server&#45;&gt;client Value,Textなどのfieldをreqidに変えただけのもの" alt="" coords="642,985,754,1010"/>
+<area shape="poly" id="edge32_Node000032_Node000033" title=" " alt="" coords="603,995,642,995,642,1000,603,1000"/>
+<area shape="rect" id="Node000035" href="$structWEBCFACE__NS_1_1Message_1_1Res_3_01View_01_4.html" title=" " alt="" coords="644,1049,752,1074"/>
+<area shape="poly" id="edge34_Node000034_Node000035" title=" " alt="" coords="603,1059,644,1059,644,1064,603,1064"/>
+<area shape="rect" id="Node000037" href="$structWEBCFACE__NS_1_1Message_1_1SvrVersion.html" title="serverのバージョン情報(server&#45;&gt;client)" alt="" coords="653,1113,743,1138"/>
+<area shape="poly" id="edge36_Node000036_Node000037" title=" " alt="" coords="603,1123,652,1123,652,1128,603,1128"/>
+<area shape="rect" id="Node000039" href="$structWEBCFACE__NS_1_1Message_1_1Sync.html" title="syncの時刻(client&#45;&gt;server&#45;&gt;client)" alt="" coords="671,1177,725,1202"/>
+<area shape="poly" id="edge38_Node000038_Node000039" title=" " alt="" coords="603,1187,671,1187,671,1192,603,1192"/>
+<area shape="rect" id="Node000041" href="$structWEBCFACE__NS_1_1Message_1_1SyncInit.html" title="client初期化(client&#45;&gt;server&#45;&gt;client)" alt="" coords="661,1241,735,1266"/>
+<area shape="poly" id="edge40_Node000040_Node000041" title=" " alt="" coords="603,1251,660,1251,660,1256,603,1256"/>
+<area shape="rect" id="Node000043" href="$structWEBCFACE__NS_1_1Message_1_1Text.html" title=" " alt="" coords="673,1305,723,1330"/>
+<area shape="poly" id="edge42_Node000042_Node000043" title=" " alt="" coords="603,1315,673,1315,673,1320,603,1320"/>
+<area shape="rect" id="Node000045" href="$structWEBCFACE__NS_1_1Message_1_1Value.html" title=" " alt="" coords="669,1369,727,1394"/>
+<area shape="poly" id="edge44_Node000044_Node000045" title=" " alt="" coords="603,1379,669,1379,669,1384,603,1384"/>
+<area shape="rect" id="Node000047" href="$structWEBCFACE__NS_1_1Message_1_1View.html" title=" " alt="" coords="671,1433,725,1458"/>
+<area shape="poly" id="edge46_Node000046_Node000047" title=" " alt="" coords="603,1443,670,1443,670,1448,603,1448"/>
+</map>

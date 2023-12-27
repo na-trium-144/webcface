@@ -1,17 +1,17 @@
 var indexSectionsWithContent =
 {
   0: "01234689abcdefghijklmnopqrstuvwxy~デプロ切受実引環送関",
-  1: "acdeflmpqrstv",
+  1: "acdefilmpqrstv",
   2: "w",
-  3: "01349cdeflmqrstvw",
+  3: "01349cdefilmqrstvw",
   4: "abcdefghijlmnoprstuvw~",
   5: "abcdefhiklmnopqrstv",
-  6: "cdefvw",
-  7: "mv",
-  8: "bcdefgilnoprstuvwy",
+  6: "cdefivw",
+  7: "imv",
+  8: "bcdefgijlnoprstuvwy",
   9: "fi",
-  10: "cmw",
-  11: "cflmtvw"
+  10: "cm",
+  11: "cfilmtvw"
 };
 
 var indexSectionNames =

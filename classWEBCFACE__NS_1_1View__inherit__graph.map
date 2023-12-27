@@ -1,0 +1,13 @@
+<map id="View" name="View">
+<area shape="rect" id="Node000001" title="Viewの送受信データを表すクラス" alt="" coords="163,183,218,208"/>
+<area shape="rect" id="Node000002" href="$structWEBCFACE__NS_1_1Field.html" title="ClientDataの参照とメンバ名とデータ名を持つクラス" alt="" coords="25,108,79,133"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="88,138,170,180,167,185,85,142"/>
+<area shape="rect" id="Node000003" href="$structWEBCFACE__NS_1_1Common_1_1FieldBase.html" title="メンバ名とデータ名を持つクラス" alt="" coords="5,13,91,38"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="52,52,54,108,49,108,46,52"/>
+<area shape="rect" id="Node000004" href="$classWEBCFACE__NS_1_1EventTarget.html" title=" " alt="" coords="110,108,271,133"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="193,148,193,182,188,182,188,148"/>
+<area shape="rect" id="Node000005" href="$classWEBCFACE__NS_1_1EventTarget.html" title="イベントを表し、コールバックの追加や削除ができるクラス。" alt="" coords="115,5,274,45"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="196,59,194,108,189,108,191,59"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="295,108,371,133"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="299,142,215,185,212,180,297,137"/>
+</map>

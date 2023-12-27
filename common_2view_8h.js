@@ -1,6 +1,6 @@
 var common_2view_8h =
 [
-    [ "ViewComponentBase", "structwebcface_1_1Common_1_1ViewComponentBase.html", "structwebcface_1_1Common_1_1ViewComponentBase" ],
+    [ "ViewComponentBase", "structWEBCFACE__NS_1_1Common_1_1ViewComponentBase.html", "structWEBCFACE__NS_1_1Common_1_1ViewComponentBase" ],
     [ "ViewColor", "common_2view_8h.html#a5dcc1f15d6a60ca34207565aeb74124a", [
       [ "inherit", "common_2view_8h.html#a5dcc1f15d6a60ca34207565aeb74124aa6995c373523132a1006975baf4079aa0", null ],
       [ "black", "common_2view_8h.html#a5dcc1f15d6a60ca34207565aeb74124aa1ffd9e753c8054cc61456ac7fac1ac89", null ],

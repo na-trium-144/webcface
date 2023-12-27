@@ -1,7 +1,9 @@
 var searchData=
 [
-  ['string_5f_0',['string_',['../namespacewebcface_1_1Common.html#acd1dd9e2d5f885ad3f73197cfa6b0185ab83ea326a525123719676faab2944093',1,'webcface::Common']]],
-  ['svr_5fversion_1',['svr_version',['../namespacewebcface_1_1Message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484ad8d5e841235d38b60263ab19fda702fc',1,'webcface::Message::MessageKind']]],
-  ['sync_2',['sync',['../namespacewebcface_1_1Message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484aa1bb8c0556b05e13283b2b1d6b30d887',1,'webcface::Message::MessageKind']]],
-  ['sync_5finit_3',['sync_init',['../namespacewebcface_1_1Message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a3e39a679980a898b394a7b68f942b913',1,'webcface::Message::MessageKind']]]
+  ['raw_0',['raw',['../namespaceWEBCFACE__NS_1_1Common.html#ab72e620a597e5f750b2c9b3391e84dedabdd166af3a63f7be696dd17a218a6ffb',1,'WEBCFACE_NS::Common']]],
+  ['red_1',['red',['../namespaceWEBCFACE__NS_1_1Common.html#a5dcc1f15d6a60ca34207565aeb74124aabda9643ac6601722a28f238714274da4',1,'WEBCFACE_NS::Common']]],
+  ['req_2',['req',['../namespaceWEBCFACE__NS_1_1Message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a1cbc123f91f6737e5506973f4493e91c',1,'WEBCFACE_NS::Message::MessageKind']]],
+  ['res_3',['res',['../namespaceWEBCFACE__NS_1_1Message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a85bfa236dc9fc1ac1ff923b3fdcf811f',1,'WEBCFACE_NS::Message::MessageKind']]],
+  ['rgb_4',['rgb',['../namespaceWEBCFACE__NS_1_1Common.html#abcfd96b0be942012c2f4641b4741a31eaef70a6546536ccd835479f6cddc0188e',1,'WEBCFACE_NS::Common']]],
+  ['rgba_5',['rgba',['../namespaceWEBCFACE__NS_1_1Common.html#abcfd96b0be942012c2f4641b4741a31ea7082a31b8759c9d59795876351ec63aa',1,'WEBCFACE_NS::Common']]]
 ];

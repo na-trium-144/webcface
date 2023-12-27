@@ -1,0 +1,15 @@
+<map id="Image" name="Image">
+<area shape="rect" id="Node000001" title="(ver1.3から追加) 画像の送受信データを表すクラス" alt="" coords="17,356,79,381"/>
+<area shape="rect" id="Node000002" href="$structWEBCFACE__NS_1_1Field.html" title="ClientDataの参照とメンバ名とデータ名を持つクラス" alt="" coords="5,129,59,155"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="36,168,50,355,45,356,31,168"/>
+<area shape="rect" id="Node000003" href="$structWEBCFACE__NS_1_1Common_1_1FieldBase.html" title="メンバ名とデータ名を持つクラス" alt="" coords="5,5,91,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="47,45,36,130,31,129,42,44"/>
+<area shape="rect" id="Node000005" href="$structWEBCFACE__NS_1_1Common_1_1FieldBaseComparable.html" title=" " alt="" coords="70,80,234,105"/>
+<area shape="poly" id="edge5_Node000005_Node000003" title=" " alt="" coords="77,36,137,78,134,82,74,41"/>
+<area shape="rect" id="Node000004" href="$classWEBCFACE__NS_1_1EventTarget.html" title=" " alt="" coords="69,281,240,307"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="128,317,67,358,64,354,125,312"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="141,118,123,165,119,191,121,218,134,252,149,280,145,283,129,255,116,219,114,191,118,163,136,116"/>
+<area shape="rect" id="Node000006" href="$classWEBCFACE__NS_1_1EventTarget.html" title="イベントを表し、コールバックの追加や削除ができるクラス。" alt="" coords="158,179,317,219"/>
+<area shape="poly" id="edge7_Node000006_Node000005" title=" " alt="" coords="172,114,224,177,220,180,168,118"/>
+<area shape="poly" id="edge6_Node000004_Node000006" title=" " alt="" coords="213,231,167,283,163,279,209,227"/>
+</map>

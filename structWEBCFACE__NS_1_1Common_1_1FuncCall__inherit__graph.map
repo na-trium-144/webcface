@@ -1,0 +1,5 @@
+<map id="FuncCall" name="FuncCall">
+<area shape="rect" id="Node000001" title="関数を呼び出すのに必要なデータ。" alt="" coords="5,5,83,31"/>
+<area shape="rect" id="Node000002" href="$structWEBCFACE__NS_1_1Message_1_1Call.html" title="関数呼び出し (client(caller)&#45;&gt;server&#45;&gt;client(receiver))" alt="" coords="21,79,67,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="47,44,47,79,41,79,41,44"/>
+</map>

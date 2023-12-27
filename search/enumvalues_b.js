@@ -1,6 +1,9 @@
 var searchData=
 [
-  ['red_0',['red',['../namespacewebcface_1_1Common.html#a5dcc1f15d6a60ca34207565aeb74124aabda9643ac6601722a28f238714274da4',1,'webcface::Common']]],
-  ['req_1',['req',['../namespacewebcface_1_1Message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a1cbc123f91f6737e5506973f4493e91c',1,'webcface::Message::MessageKind']]],
-  ['res_2',['res',['../namespacewebcface_1_1Message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a85bfa236dc9fc1ac1ff923b3fdcf811f',1,'webcface::Message::MessageKind']]]
+  ['ping_0',['ping',['../namespaceWEBCFACE__NS_1_1Message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484aad2de303cb1ea37f4a3bd91f5ef4c29f',1,'WEBCFACE_NS::Message::MessageKind']]],
+  ['ping_5fstatus_1',['ping_status',['../namespaceWEBCFACE__NS_1_1Message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a0cb8db73d08e6f71fe9d47fb44fdc9a5',1,'WEBCFACE_NS::Message::MessageKind']]],
+  ['ping_5fstatus_5freq_2',['ping_status_req',['../namespaceWEBCFACE__NS_1_1Message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a0cf9ec07dc822afa5e1ec58e04e513fd',1,'WEBCFACE_NS::Message::MessageKind']]],
+  ['pink_3',['pink',['../namespaceWEBCFACE__NS_1_1Common.html#a5dcc1f15d6a60ca34207565aeb74124aa4a0b0dcedd48f780778d1cd1bb8f9877',1,'WEBCFACE_NS::Common']]],
+  ['png_4',['png',['../namespaceWEBCFACE__NS_1_1Common.html#ab72e620a597e5f750b2c9b3391e84dedabff139fa05ac583f685a523ab3d110a0',1,'WEBCFACE_NS::Common']]],
+  ['purple_5',['purple',['../namespaceWEBCFACE__NS_1_1Common.html#a5dcc1f15d6a60ca34207565aeb74124aabb7aedfa61007447dd6efaf9f37641e3',1,'WEBCFACE_NS::Common']]]
 ];

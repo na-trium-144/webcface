@@ -1,4 +1,4 @@
 var client_8h =
 [
-    [ "Client", "classwebcface_1_1Client.html", "classwebcface_1_1Client" ]
+    [ "Client", "classWEBCFACE__NS_1_1Client.html", "classWEBCFACE__NS_1_1Client" ]
 ];

@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['new_5fline_0',['new_line',['../namespacewebcface_1_1Common.html#a11040d82967b60182816ddc035d07c28a620cf4c6d9756f9ce211c523f16c42a9',1,'webcface::Common']]],
-  ['none_5f_1',['none_',['../namespacewebcface_1_1Common.html#acd1dd9e2d5f885ad3f73197cfa6b0185a1e5a9491a4d910a08d95f675ca7226be',1,'webcface::Common']]]
+  ['log_0',['log',['../namespaceWEBCFACE__NS_1_1Message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484aaac8d4ee23e2d305f0b0a575cda066f3',1,'WEBCFACE_NS::Message::MessageKind']]],
+  ['log_5freq_1',['log_req',['../namespaceWEBCFACE__NS_1_1Message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a826514d64c34ca326c2ba1297635e9d5',1,'WEBCFACE_NS::Message::MessageKind']]]
 ];

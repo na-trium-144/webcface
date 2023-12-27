@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['log_0',['log',['../namespacewebcface_1_1Message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484aaac8d4ee23e2d305f0b0a575cda066f3',1,'webcface::Message::MessageKind']]],
-  ['log_5freq_1',['log_req',['../namespacewebcface_1_1Message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a826514d64c34ca326c2ba1297635e9d5',1,'webcface::Message::MessageKind']]]
+  ['jpeg_0',['jpeg',['../namespaceWEBCFACE__NS_1_1Common.html#ab72e620a597e5f750b2c9b3391e84dedaab4f3ccba74857c5f2ba0d5b7dbf65e1',1,'WEBCFACE_NS::Common']]]
 ];
