@@ -246,6 +246,13 @@ data = {
 ```
 * value resと同様
 
+## Image
+TODO: あとで書く
+### image (kind = 5)
+### image entry (kind = 25)
+### image req (kind = 45)
+### image res (kind = 65)
+
 ## Log
 ### log (kind = 86)
 ```js
