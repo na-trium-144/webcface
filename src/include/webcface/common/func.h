@@ -85,10 +85,16 @@ class Arg {
     /*!
      * \brief 引数の型を取得する。
      *
-     * 型を手動で設定することはできない
-     *
      */
     ValType type() const { return type_; }
+    /*!
+     * \brief 引数の型を設定する。
+     *
+     */
+    Arg &type(ValType type) {
+        type_ = type;
+        return *this;
+    }
     /*!
      * \brief デフォルト値を取得する。
      *
@@ -203,6 +209,11 @@ struct FuncInfo {
     FuncInfo()
         : return_type(ValType::none_), args(), func_impl(), func_wrapper(),
           hidden(false) {}
+    FuncInfo(ValType return_type, const std::vector<Arg> &args,
+             FuncType func_impl, FuncWrapperType func_wrapper, bool hidden)
+        : return_type(return_type), args(args), func_impl(func_impl),
+          func_wrapper(func_wrapper), hidden(hidden) {}
+
     /*!
      * \brief 任意の関数を受け取り、引数と戻り値をキャストして実行する関数を保存
      *

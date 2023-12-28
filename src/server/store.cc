@@ -22,7 +22,7 @@ void Store::removeClient(const ClientData::wsConnPtr &con) {
         it->second->onClose();
         // 名前があるクライアントのデータはclients_by_idに残す
         if (it->second->name.empty()) {
-            clients_by_id[it->second->member_id] = nullptr;
+            clients_by_id.erase(it->second->member_id);
         }
         clients.erase(con);
     }

@@ -52,12 +52,16 @@ class Func : protected Field {
     using Field::member;
     using Field::name;
 
-  private:
+  protected:
     WEBCFACE_DLL Func &setRaw(const std::shared_ptr<FuncInfo> &v);
     Func &setRaw(const FuncInfo &v) {
         return setRaw(std::make_shared<FuncInfo>(v));
     }
     WEBCFACE_DLL FuncWrapperType getDefaultFuncWrapper() const;
+
+    WEBCFACE_DLL void runImpl(std::shared_ptr<Internal::ClientData> data,
+                              AsyncFuncResult r,
+                              std::vector<ValAdaptor> args_vec) const;
 
   public:
     /*!
@@ -108,6 +112,8 @@ class Func : protected Field {
         return run({ValAdaptor(args)...});
     }
     WEBCFACE_DLL ValAdaptor run(const std::vector<ValAdaptor> &args_vec) const;
+    WEBCFACE_DLL std::pair<wcfStatus, wcfMultiVal *>
+    runCVal(const std::vector<ValAdaptor> &args_vec) const;
     /*!
      * \brief run()と同じ
      *

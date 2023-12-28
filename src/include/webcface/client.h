@@ -6,6 +6,7 @@
 #include "member.h"
 #include "event_target.h"
 #include "func.h"
+#include "func_listener.h"
 #include "logger.h"
 #include "common/def.h"
 
@@ -109,6 +110,14 @@ class Client : public Member {
      * \sa member(), members()
      */
     WEBCFACE_DLL EventTarget<Member, int> onMemberEntry();
+
+    /*!
+     * \brief FuncListenerを作成する
+     *
+     */
+    FuncListener funcListener(const std::string &field) {
+        return FuncListener{*this, field};
+    }
 
     /*!
      * \brief

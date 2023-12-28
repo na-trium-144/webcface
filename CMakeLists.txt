@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.12)
 
 project(webcface
-    LANGUAGES CXX
+    LANGUAGES CXX C
     VERSION 1.3.0
     HOMEPAGE_URL "https://github.com/na-trium-144/webcface"
     DESCRIPTION "Web-based RPC & UI Library"
@@ -237,6 +237,9 @@ if(NOT asio_POPULATED)
         ${asio_SOURCE_DIR}/asio/include
     )
     target_compile_definitions(asio INTERFACE ASIO_STANDALONE)
+    if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+        target_compile_options(asio INTERFACE -Wno-deprecated-declarations)
+    endif()
 endif()
 if(MINGW)
     set(ASIO asio ws2_32 wsock32)
@@ -294,11 +297,16 @@ endif()
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     add_compile_options(-Wall -Wextra -Wpedantic -Werror)
     add_compile_options(-Wno-psabi) # refer to PR#9
-    add_compile_options(-Wno-deprecated-enum-enum-conversion) # inside opencv
+    add_compile_options( # inside opencv
+        $<$<COMPILE_LANGUAGE:CXX>:-Wno-deprecated-enum-enum-conversion>
+    )
 endif()
 if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     add_compile_options(-Wall -Wextra -Wpedantic -Werror)
-    add_compile_options(-Wno-c11-extensions -Wno-deprecated-enum-enum-conversion) # inside opencv
+    add_compile_options( # inside opencv
+        -Wno-c11-extensions
+        $<$<COMPILE_LANGUAGE:CXX>:-Wno-deprecated-enum-enum-conversion>
+    )
 endif()
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
@@ -320,6 +328,7 @@ set(CLI_SRC
     ${CPP_DIR}/client/data_store2.cc
     ${CPP_DIR}/client/field.cc
     ${CPP_DIR}/client/func.cc
+    ${CPP_DIR}/client/func_listener.cc
     ${CPP_DIR}/client/log.cc
     ${CPP_DIR}/client/logger.cc
     ${CPP_DIR}/client/member.cc
@@ -328,6 +337,9 @@ set(CLI_SRC
     ${CPP_DIR}/client/view.cc
     ${CPP_DIR}/client/image.cc
     ${CPP_DIR}/client/version.cc
+    ${CPP_DIR}/c_wcf/client.cc
+    ${CPP_DIR}/c_wcf/value.cc
+    ${CPP_DIR}/c_wcf/func.cc
 )
 if(MSVC)
     set(CLI_SRC ${CLI_SRC} ${CPP_DIR}/version.rc)
@@ -336,6 +348,7 @@ endif()
 set(EXAMPLE_SRC
     ${CPP_DIR}/example/main.cc
     ${CPP_DIR}/example/recv.cc
+    ${CPP_DIR}/example/c_example.c
 )
 if(WEBCFACE_USE_OPENCV)
     set(EXAMPLE_SRC ${EXAMPLE_SRC}
@@ -347,6 +360,7 @@ set(TEST_SRC
     ${CPP_DIR}/test/client_data_test.cc
     ${CPP_DIR}/test/data_test.cc
     ${CPP_DIR}/test/func_test.cc
+    ${CPP_DIR}/test/func_listener_test.cc
     ${CPP_DIR}/test/view_test.cc
     ${CPP_DIR}/test/image_test.cc
     ${CPP_DIR}/test/member_test.cc
@@ -355,6 +369,7 @@ set(TEST_SRC
     ${CPP_DIR}/test/dummy_server.cc
     ${CPP_DIR}/test/dummy_client.cc
     ${CPP_DIR}/test/server_test.cc
+    ${CPP_DIR}/test/c_wcf_test.cc
 )
 set(MSG_SRC
     ${CPP_DIR}/message/message.cc
@@ -371,7 +386,7 @@ target_include_directories(${PROJECT_NAME}-headers INTERFACE
     ${INCLUDE_DIR}
     ${OpenCV_INCLUDE_DIRS}
 )
-target_compile_features(${PROJECT_NAME}-headers INTERFACE cxx_std_20)
+target_compile_features(${PROJECT_NAME}-headers INTERFACE cxx_std_20 c_std_99)
 
 add_library(${PROJECT_NAME}-message STATIC ${MSG_SRC})
 if(NOT CMAKE_CXX_COMPILER_ID STREQUAL "MSVC" AND WEBCFACE_PIC)
