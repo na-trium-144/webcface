@@ -237,6 +237,9 @@ if(NOT asio_POPULATED)
         ${asio_SOURCE_DIR}/asio/include
     )
     target_compile_definitions(asio INTERFACE ASIO_STANDALONE)
+    if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+        target_compile_options(asio INTERFACE -Wno-deprecated-declarations)
+    endif()
 endif()
 if(MINGW)
     set(ASIO asio ws2_32 wsock32)
@@ -294,11 +297,16 @@ endif()
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     add_compile_options(-Wall -Wextra -Wpedantic -Werror)
     add_compile_options(-Wno-psabi) # refer to PR#9
-    add_compile_options(-Wno-deprecated-enum-enum-conversion) # inside opencv
+    add_compile_options( # inside opencv
+        $<$<COMPILE_LANGUAGE:CXX>:-Wno-deprecated-enum-enum-conversion>
+    )
 endif()
 if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     add_compile_options(-Wall -Wextra -Wpedantic -Werror)
-    add_compile_options(-Wno-c11-extensions -Wno-deprecated-enum-enum-conversion) # inside opencv
+    add_compile_options( # inside opencv
+        -Wno-c11-extensions
+        $<$<COMPILE_LANGUAGE:CXX>:-Wno-deprecated-enum-enum-conversion>
+    )
 endif()
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
