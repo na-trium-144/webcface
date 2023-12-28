@@ -131,7 +131,7 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 </ul>
 </li>
 </ul>
-<h1><a class="anchor" id="autotoc_md83"></a>
+<h1><a class="anchor" id="autotoc_md88"></a>
 Links</h1>
 <ul>
 <li><a href="https://github.com/na-trium-144/webcface">webcface</a>: サーバー &amp; C++クライアントライブラリ (このリポジトリ)</li>
@@ -142,10 +142,10 @@ Links</h1>
 <li><a href="https://github.com/na-trium-144/homebrew-webcface">homebrew-webcface</a>: HomebrewのTapを管理しています</li>
 <li><a href="https://github.com/na-trium-144/webcface-windows-package">webcface-windows-package</a>: Windows用ビルドをリリースする場所</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md84"></a>
+<h1><a class="anchor" id="autotoc_md89"></a>
 Installation</h1>
 <p>以下の手順で webcface, webcface-webui, webcface-tools をインストールできます。 (webcface-toolsの内容と使い方についてはwebcface-toolsのReadmeを参照してください)</p>
-<h2><a class="anchor" id="autotoc_md85"></a>
+<h2><a class="anchor" id="autotoc_md90"></a>
 Ubuntu 20.04, 22.04 (x86_64, arm64, armhf)</h2>
 <p><a href="https://github.com/na-trium-144/webcface/releases">WebCFaceのReleases</a> と <a href="https://github.com/na-trium-144/webcface-webui/releases">webuiのReleases</a> 、<a href="https://github.com/na-trium-144/webcface-tools/releases">toolsのReleases</a> からそれぞれ最新のdebパッケージをダウンロードしてインストールできます。</p>
 <p>debパッケージはubuntu20.04と22.04でビルドしています。 それぞれ依存するパッケージのバージョンが違います。 Debianなど他のディストリビューションで動作するかはわかりません。</p>
@@ -201,16 +201,16 @@ Ubuntu 20.04, armhf</summary>
 <p>ダウンロードできたら </p><div class="fragment"><div class="line">sudo apt install ./webcface*.deb</div>
 <div class="line">rm ./webcface*.deb</div>
 </div><!-- fragment --><p> でインストールできます</p>
-<h2><a class="anchor" id="autotoc_md86"></a>
+<h2><a class="anchor" id="autotoc_md91"></a>
 Homebrew (MacOS, Linux)</h2>
 <div class="fragment"><div class="line">brew tap na-trium-144/webcface</div>
 <div class="line">brew install webcface webcface-webui webcface-tools</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md87"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md92"></a>
 Windows</h2>
 <p><a href="https://github.com/na-trium-144/webcface-windows-package/releases">webcface-windows-packageのRelease</a>からインストーラーをダウンロードしてください。</p>
-<h2><a class="anchor" id="autotoc_md88"></a>
+<h2><a class="anchor" id="autotoc_md93"></a>
 Build from source</h2>
-<h3><a class="anchor" id="autotoc_md89"></a>
+<h3><a class="anchor" id="autotoc_md94"></a>
 Requirements</h3>
 <ul>
 <li>c++20に対応したコンパイラが必要です</li>
@@ -271,7 +271,7 @@ MSYS2</summary>
 <div class="fragment"><div class="line">pacman -S git mingw-w64-x86_64-gcc mingw-w64-x86_64-cmake mingw-w64-x86_64-ninja</div>
 <div class="line">pacman -S mingw-w64-x86_64-opencv mingw-w64-x86_64-spdlog  # optional</div>
 </div><!-- fragment --> </details>
-<h3><a class="anchor" id="autotoc_md90"></a>
+<h3><a class="anchor" id="autotoc_md95"></a>
 Build (with Pure CMake)</h3>
 <div class="fragment"><div class="line">cmake -Bbuild</div>
 <div class="line">cmake --build build</div>
@@ -296,12 +296,12 @@ Build (with Pure CMake)</h3>
 </ul>
 </li>
 </ul>
-<h3><a class="anchor" id="autotoc_md91"></a>
+<h3><a class="anchor" id="autotoc_md96"></a>
 Build (with colcon, ROS2)</h3>
 <ul>
 <li>このリポジトリをワークスペースのsrcに追加して、colconでビルドすることができます</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md92"></a>
+<h3><a class="anchor" id="autotoc_md97"></a>
 WebUI</h3>
 <ul>
 <li>デフォルトではビルド済みのものがcmake時にダウンロードされます。</li>
@@ -316,12 +316,12 @@ WebUI</h3>
 </li>
 <li>このリポジトリのReleasesにあるdebパッケージとhomebrewではwebcfaceのパッケージとは別で配布しています</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md93"></a>
+<h3><a class="anchor" id="autotoc_md98"></a>
 tools</h3>
 <ul>
 <li>toolsは別途 <a href="https://github.com/na-trium-144/webcface-tools.git">https://github.com/na-trium-144/webcface-tools.git</a> をcloneしてビルド、インストールしてください</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md94"></a>
+<h1><a class="anchor" id="autotoc_md99"></a>
 Documentation</h1>
 <ul>
 <li><a href="https://na-trium-144.github.io/webcface/md_00__tutorial.html">Tutorial</a></li>
@@ -329,7 +329,7 @@ Documentation</h1>
 <li><a href="https://na-trium-144.github.io/webcface-python/">webcface-python APIリファレンス</a></li>
 <li><a href="https://na-trium-144.github.io/webcface-js/">webcface-js APIリファレンス</a></li>
 </ul>
-<h1><a class="anchor" id="autotoc_md95"></a>
+<h1><a class="anchor" id="autotoc_md100"></a>
 License</h1>
 <p>WebCFaceと関連するプログラムはすべてMITライセンスで公開しています。詳細は <a href="https://github.com/na-trium-144/webcface/blob/main/LICENSE">LICENSE</a> を参照してください。</p>
 <p>WebCFace本体とtoolsが使用しているサードパーティーのライブラリのライセンスはそれぞれ以下を参照してください。</p><ul>
@@ -350,7 +350,7 @@ License</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Dec 28 2023 10:27:45 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Thu Dec 28 2023 10:49:17 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

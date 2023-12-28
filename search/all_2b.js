@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['関数の実行_0',['関数の実行',['../md_30__func.html#autotoc_md42',1,'']]],
-  ['関数の登録_1',['関数の登録',['../md_30__func.html#autotoc_md38',1,'']]]
+  ['送信_0',['送信',['../md_10__value.html#autotoc_md20',1,'送信'],['../md_11__text.html#autotoc_md24',1,'送信'],['../md_13__view.html#autotoc_md28',1,'送信']]]
 ];

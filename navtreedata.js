@@ -25,21 +25,21 @@
 var NAVTREE =
 [
   [ "WebCFace", "index.html", [
-    [ "Links", "index.html#autotoc_md83", null ],
-    [ "Installation", "index.html#autotoc_md84", [
-      [ "Ubuntu 20.04, 22.04 (x86_64, arm64, armhf)", "index.html#autotoc_md85", null ],
-      [ "Homebrew (MacOS, Linux)", "index.html#autotoc_md86", null ],
-      [ "Windows", "index.html#autotoc_md87", null ],
-      [ "Build from source", "index.html#autotoc_md88", [
-        [ "Requirements", "index.html#autotoc_md89", null ],
-        [ "Build (with Pure CMake)", "index.html#autotoc_md90", null ],
-        [ "Build (with colcon, ROS2)", "index.html#autotoc_md91", null ],
-        [ "WebUI", "index.html#autotoc_md92", null ],
-        [ "tools", "index.html#autotoc_md93", null ]
+    [ "Links", "index.html#autotoc_md88", null ],
+    [ "Installation", "index.html#autotoc_md89", [
+      [ "Ubuntu 20.04, 22.04 (x86_64, arm64, armhf)", "index.html#autotoc_md90", null ],
+      [ "Homebrew (MacOS, Linux)", "index.html#autotoc_md91", null ],
+      [ "Windows", "index.html#autotoc_md92", null ],
+      [ "Build from source", "index.html#autotoc_md93", [
+        [ "Requirements", "index.html#autotoc_md94", null ],
+        [ "Build (with Pure CMake)", "index.html#autotoc_md95", null ],
+        [ "Build (with colcon, ROS2)", "index.html#autotoc_md96", null ],
+        [ "WebUI", "index.html#autotoc_md97", null ],
+        [ "tools", "index.html#autotoc_md98", null ]
       ] ]
     ] ],
-    [ "Documentation", "index.html#autotoc_md94", null ],
-    [ "License", "index.html#autotoc_md95", null ],
+    [ "Documentation", "index.html#autotoc_md99", null ],
+    [ "License", "index.html#autotoc_md100", null ],
     [ "Tutorial", "md_00__tutorial.html", [
       [ "環境構築", "md_00__tutorial.html#autotoc_md1", null ],
       [ "Server", "md_00__tutorial.html#autotoc_md2", null ],
@@ -136,9 +136,15 @@ var NAVTREE =
         [ "view req (kind = 43)", "md_90__message.html#autotoc_md77", null ],
         [ "view res (kind = 63)", "md_90__message.html#autotoc_md78", null ]
       ] ],
-      [ "Log", "md_90__message.html#autotoc_md79", [
-        [ "log (kind = 86)", "md_90__message.html#autotoc_md80", null ],
-        [ "log req (kind = 87)", "md_90__message.html#autotoc_md81", null ]
+      [ "Image", "md_90__message.html#autotoc_md79", [
+        [ "image (kind = 5)", "md_90__message.html#autotoc_md80", null ],
+        [ "image entry (kind = 25)", "md_90__message.html#autotoc_md81", null ],
+        [ "image req (kind = 45)", "md_90__message.html#autotoc_md82", null ],
+        [ "image res (kind = 65)", "md_90__message.html#autotoc_md83", null ]
+      ] ],
+      [ "Log", "md_90__message.html#autotoc_md84", [
+        [ "log (kind = 86)", "md_90__message.html#autotoc_md85", null ],
+        [ "log req (kind = 87)", "md_90__message.html#autotoc_md86", null ]
       ] ]
     ] ],
     [ "Namespaces", "namespaces.html", [
@@ -184,11 +190,11 @@ var NAVTREEINDEX =
 "classwebcface_1_1Log.html#aadb158fa20765e342d4669e2c69dbc9e",
 "classwebcface_1_1Value.html#a9406117fe96b34fa4af36e39c5ec5f52",
 "data__store1_8cc.html",
-"message_8h.html#a1432d06fc2e2d1f6da93d1c04dec4484a1cbc123f91f6737e5506973f4493e91c",
-"structWEBCFACE__NS_1_1Internal_1_1ClientData.html#a519596fa89d77a8d02d9e52d807e536a",
-"structWEBCFACE__NS_1_1Message_1_1Res_3_01Image_01_4.html#ad5a4760db27f8fcd5c4028bb15f80ad9",
-"structWEBCFACE__NS_1_1Server_1_1Store.html#a600b56705f117f1407babf1fa84175f7",
-"structwebcface_1_1Common_1_1ImageReq.html#a8162d7cf934001ca32074947dd65e920"
+"message_8h.html#a0368ef47eb403e45018a73ef46c90c62",
+"structWEBCFACE__NS_1_1Internal_1_1ClientData.html#a42215014610973eb53bbbcc9d435d887",
+"structWEBCFACE__NS_1_1Message_1_1Res_3_01Image_01_4.html#a892d201412fcc08e620eebdf53269e9b",
+"structWEBCFACE__NS_1_1Server_1_1Store.html#a5125f3d5e3421758bfac2bfe1a276749",
+"structwebcface_1_1Common_1_1ImageReq.html#a7187b583e49c0d80afef70b80e631a4b"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
