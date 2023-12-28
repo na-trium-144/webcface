@@ -18,6 +18,12 @@ jobs:
         version: "1.9.8"
     - name: Delete doxygen download
       run: rm -r doxygen-*
+    - name: Install dependencies
+      run: sudo apt-get update && sudo apt-get install -y libopencv-dev libspdlog-dev
+    - name: Configure CMake
+      run: >
+        cmake -B ${{github.workspace}}/build
+        -DWEBCFACE_DOWNLOAD_WEBUI=off
     - name: Generate Documentation
       run: |
         mkdir -p build/doxygen
