@@ -1,4 +1,4 @@
 var log_8h =
 [
-    [ "Log", "classWEBCFACE__NS_1_1Log.html", "classWEBCFACE__NS_1_1Log" ]
+    [ "Log", "classwebcface_1_1Log.html", "classwebcface_1_1Log" ]
 ];

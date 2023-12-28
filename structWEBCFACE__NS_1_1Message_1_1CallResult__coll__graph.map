@@ -1,9 +1,5 @@
 <map id="CallResult" name="CallResult">
-<area shape="rect" id="Node000001" title="関数呼び出しの応答2 (client(receiver)&#45;&gt;server&#45;&gt;client(caller))" alt="" coords="158,211,246,236"/>
-<area shape="rect" id="Node000002" href="$structWEBCFACE__NS_1_1Message_1_1MessageBase.html" title=" " alt="" coords="5,108,220,148"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="142,156,193,208,189,212,138,160"/>
-<area shape="rect" id="Node000003" href="$structWEBCFACE__NS_1_1Message_1_1MessageBase.html" title="型からkindを取得するためだけのベースクラス" alt="" coords="37,5,188,31"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="115,45,115,108,110,108,110,45"/>
-<area shape="rect" id="Node000004" href="$classWEBCFACE__NS_1_1Common_1_1ValAdaptor.html" title="数値、文字列などの値を相互変換するクラス" alt="" coords="245,115,338,141"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="273,152,215,212,211,209,269,149"/>
+<area shape="rect" id="Node000001" title="関数呼び出しの応答2 (client(receiver)&#45;&gt;server&#45;&gt;client(caller))" alt="" coords="37,79,125,104"/>
+<area shape="rect" id="Node000002" href="$structWEBCFACE__NS_1_1Message_1_1MessageBase.html" title="型からkindを取得するためだけのベースクラス" alt="" coords="5,5,156,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="83,44,83,79,78,79,78,44"/>
 </map>

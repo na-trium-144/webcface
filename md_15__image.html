@@ -111,19 +111,22 @@ $(document).ready(function(){initNavTree('md_15__image.html',''); initResizable(
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p><a class="anchor" id="autotoc_md36"></a> <img src="https://img.shields.io/badge/1.3~-00599c?logo=C%2B%2B" alt="c++ ver1.3" class="inline"/> <img src="https://img.shields.io/badge/1.2~-f7df1e?logo=JavaScript&amp;logoColor=black" alt="js ver1.2" class="inline"/></p>
-<p>API Reference → webcface::Image</p>
+<p>API Reference → <a class="el" href="classwebcface_1_1Image.html" title="(ver1.3から追加) 画像の送受信データを表すクラス">webcface::Image</a></p>
 <p>画像データを送受信します。</p>
-<p>Member::image() でImageクラスのオブジェクトが得られます </p><div class="fragment"><div class="line">webcface::Image image_hoge = wcli.member(<span class="stringliteral">&quot;a&quot;</span>).image(<span class="stringliteral">&quot;hoge&quot;</span>);</div>
-</div><!-- fragment --><p>Member::images() でそのMemberが送信しているimageのリストが得られます </p><div class="fragment"><div class="line"><span class="keywordflow">for</span>(<span class="keyword">const</span> webcface::Image &amp;v: wcli.member(<span class="stringliteral">&quot;a&quot;</span>).images()){</div>
+<p>Member::image() でImageクラスのオブジェクトが得られます </p><div class="fragment"><div class="line"><a class="code hl_class" href="classwebcface_1_1Image.html">webcface::Image</a> image_hoge = wcli.<a class="code hl_function" href="classwebcface_1_1Image.html#aa8fab40ead35fa8e761986d5f4000a5c">member</a>(<span class="stringliteral">&quot;a&quot;</span>).<a class="code hl_function" href="classwebcface_1_1Member.html#a33adc56c4542e55d02d6cba9e8a83b34">image</a>(<span class="stringliteral">&quot;hoge&quot;</span>);</div>
+<div class="ttc" id="aclasswebcface_1_1Image_html"><div class="ttname"><a href="classwebcface_1_1Image.html">webcface::Image</a></div><div class="ttdoc">(ver1.3から追加) 画像の送受信データを表すクラス</div><div class="ttdef"><b>Definition</b> image.h:22</div></div>
+<div class="ttc" id="aclasswebcface_1_1Image_html_aa8fab40ead35fa8e761986d5f4000a5c"><div class="ttname"><a href="classwebcface_1_1Image.html#aa8fab40ead35fa8e761986d5f4000a5c">webcface::Image::member</a></div><div class="ttdeci">Member member() const</div><div class="ttdoc">Memberを返す</div><div class="ttdef"><b>Definition</b> field.cc:8</div></div>
+<div class="ttc" id="aclasswebcface_1_1Member_html_a33adc56c4542e55d02d6cba9e8a83b34"><div class="ttname"><a href="classwebcface_1_1Member.html#a33adc56c4542e55d02d6cba9e8a83b34">webcface::Member::image</a></div><div class="ttdeci">Image image(const std::string &amp;field) const</div><div class="ttdoc">imageを参照する。</div><div class="ttdef"><b>Definition</b> member.cc:14</div></div>
+</div><!-- fragment --><p>Member::images() でそのMemberが送信しているimageのリストが得られます </p><div class="fragment"><div class="line"><span class="keywordflow">for</span>(<span class="keyword">const</span> <a class="code hl_class" href="classwebcface_1_1Image.html">webcface::Image</a> &amp;v: wcli.member(<span class="stringliteral">&quot;a&quot;</span>).images()){</div>
 <div class="line">    <span class="comment">// ...</span></div>
 <div class="line">}</div>
-</div><!-- fragment --><p>Member::onImageEntry() で新しくデータが追加されたときのコールバックを設定できます </p><div class="fragment"><div class="line">wcli.member(<span class="stringliteral">&quot;a&quot;</span>).onImageEntry().appendListener([](webcface::Image v){ <span class="comment">/* ... */</span> });</div>
+</div><!-- fragment --><p>Member::onImageEntry() で新しくデータが追加されたときのコールバックを設定できます </p><div class="fragment"><div class="line">wcli.member(<span class="stringliteral">&quot;a&quot;</span>).onImageEntry().appendListener([](<a class="code hl_class" href="classwebcface_1_1Image.html">webcface::Image</a> v){ <span class="comment">/* ... */</span> });</div>
 </div><!-- fragment --><p>TODO: ドキュメントを書く</p>
 <div class="section_buttons"></div><div class="section_buttons"><table class="markdownTable">
 <tr class="markdownTableHead">
 <th class="markdownTableHeadLeft">Previous   </th><th class="markdownTableHeadRight">Next    </th></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyLeft"><a class="el" href="md_13__view.html">Value</a>   </td><td class="markdownTableBodyRight"><a class="el" href="md_30__func.html">Func</a>   </td></tr>
+<td class="markdownTableBodyLeft"><a class="el" href="md_13__view.html">View</a>   </td><td class="markdownTableBodyRight"><a class="el" href="md_30__func.html">Func</a>   </td></tr>
 </table>
 </div><div class="section_buttons"></div> </div></div><!-- contents -->
 </div><!-- PageDoc -->
@@ -131,7 +134,7 @@ $(document).ready(function(){initNavTree('md_15__image.html',''); initResizable(
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Dec 27 2023 05:33:18 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Thu Dec 28 2023 10:27:45 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

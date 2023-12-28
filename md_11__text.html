@@ -110,19 +110,22 @@ $(document).ready(function(){initNavTree('md_11__text.html',''); initResizable()
   <div class="headertitle"><div class="title">Text</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md23"></a> API Reference → webcface::Text</p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md23"></a> API Reference → <a class="el" href="classwebcface_1_1Text.html" title="文字列の送受信データを表すクラス">webcface::Text</a></p>
 <p>文字列(std::string)データを送受信します。 Textクラスの使い方は<a class="el" href="md_10__value.html">Value</a>とほぼ同じです。</p>
-<p>Member::text() でTextクラスのオブジェクトが得られます </p><div class="fragment"><div class="line">webcface::Text text_hoge = wcli.member(<span class="stringliteral">&quot;a&quot;</span>).text(<span class="stringliteral">&quot;hoge&quot;</span>);</div>
-</div><!-- fragment --><p>Member::texts() でそのMemberが送信しているtextのリストが得られます </p><div class="fragment"><div class="line"><span class="keywordflow">for</span>(<span class="keyword">const</span> webcface::Text &amp;v: wcli.member(<span class="stringliteral">&quot;a&quot;</span>).texts()){</div>
+<p>Member::text() でTextクラスのオブジェクトが得られます </p><div class="fragment"><div class="line"><a class="code hl_class" href="classwebcface_1_1Text.html">webcface::Text</a> text_hoge = wcli.<a class="code hl_function" href="classwebcface_1_1Text.html#aa8fab40ead35fa8e761986d5f4000a5c">member</a>(<span class="stringliteral">&quot;a&quot;</span>).<a class="code hl_function" href="classwebcface_1_1Member.html#ab13e75a9d487a0253300ade34a498791">text</a>(<span class="stringliteral">&quot;hoge&quot;</span>);</div>
+<div class="ttc" id="aclasswebcface_1_1Member_html_ab13e75a9d487a0253300ade34a498791"><div class="ttname"><a href="classwebcface_1_1Member.html#ab13e75a9d487a0253300ade34a498791">webcface::Member::text</a></div><div class="ttdeci">Text text(const std::string &amp;field) const</div><div class="ttdoc">textを参照する。</div><div class="ttdef"><b>Definition</b> member.cc:11</div></div>
+<div class="ttc" id="aclasswebcface_1_1Text_html"><div class="ttname"><a href="classwebcface_1_1Text.html">webcface::Text</a></div><div class="ttdoc">文字列の送受信データを表すクラス</div><div class="ttdef"><b>Definition</b> text.h:23</div></div>
+<div class="ttc" id="aclasswebcface_1_1Text_html_aa8fab40ead35fa8e761986d5f4000a5c"><div class="ttname"><a href="classwebcface_1_1Text.html#aa8fab40ead35fa8e761986d5f4000a5c">webcface::Text::member</a></div><div class="ttdeci">Member member() const</div><div class="ttdoc">Memberを返す</div><div class="ttdef"><b>Definition</b> field.cc:8</div></div>
+</div><!-- fragment --><p>Member::texts() でそのMemberが送信しているtextのリストが得られます </p><div class="fragment"><div class="line"><span class="keywordflow">for</span>(<span class="keyword">const</span> <a class="code hl_class" href="classwebcface_1_1Text.html">webcface::Text</a> &amp;v: wcli.member(<span class="stringliteral">&quot;a&quot;</span>).texts()){</div>
 <div class="line">    <span class="comment">// ...</span></div>
 <div class="line">}</div>
-</div><!-- fragment --><p>Member::onTextEntry() で新しくデータが追加されたときのコールバックを設定できます </p><div class="fragment"><div class="line">wcli.member(<span class="stringliteral">&quot;a&quot;</span>).onTextEntry().appendListener([](webcface::Text v){ <span class="comment">/* ... */</span> });</div>
+</div><!-- fragment --><p>Member::onTextEntry() で新しくデータが追加されたときのコールバックを設定できます </p><div class="fragment"><div class="line">wcli.member(<span class="stringliteral">&quot;a&quot;</span>).onTextEntry().appendListener([](<a class="code hl_class" href="classwebcface_1_1Text.html">webcface::Text</a> v){ <span class="comment">/* ... */</span> });</div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md24"></a>
 送信</h1>
 <p>自分自身の名前のMemberからTextオブジェクトを作り、 Text::set() でデータを代入し、Client::sync()することで送信されます </p><div class="fragment"><div class="line">wcli.text(<span class="stringliteral">&quot;hoge&quot;</span>).set(<span class="stringliteral">&quot;hello&quot;</span>);</div>
-</div><!-- fragment --><p>webcface::Text::Dict オブジェクトを使うと複数の値をまとめて送ることができます。 </p><div class="fragment"><div class="line"><span class="keyword">struct </span>A {</div>
+</div><!-- fragment --><p><a class="el" href="classwebcface_1_1Text.html#ab33d2da9febb5e4c801e1ccee1dee594">webcface::Text::Dict</a> オブジェクトを使うと複数の値をまとめて送ることができます。 </p><div class="fragment"><div class="line"><span class="keyword">struct </span>A {</div>
 <div class="line">    std::string x, y;</div>
-<div class="line">    <span class="keyword">operator</span> webcface::Text::Dict()<span class="keyword"> const </span>{</div>
+<div class="line">    <span class="keyword">operator</span> <a class="code hl_typedef" href="classwebcface_1_1Text.html#ab33d2da9febb5e4c801e1ccee1dee594">webcface::Text::Dict</a>()<span class="keyword"> const </span>{</div>
 <div class="line">        <span class="keywordflow">return</span> {</div>
 <div class="line">            {<span class="stringliteral">&quot;x&quot;</span>, x},</div>
 <div class="line">            {<span class="stringliteral">&quot;y&quot;</span>, y},</div>
@@ -133,6 +136,7 @@ $(document).ready(function(){initNavTree('md_11__text.html',''); initResizable()
 <div class="line"> </div>
 <div class="line">A a_instance;</div>
 <div class="line">wcli.text(<span class="stringliteral">&quot;a&quot;</span>).set(a_instance); <span class="comment">// Dictにキャストされる</span></div>
+<div class="ttc" id="aclasswebcface_1_1Text_html_ab33d2da9febb5e4c801e1ccee1dee594"><div class="ttname"><a href="classwebcface_1_1Text.html#ab33d2da9febb5e4c801e1ccee1dee594">webcface::Text::Dict</a></div><div class="ttdeci">Common::Dict&lt; std::shared_ptr&lt; std::string &gt; &gt; Dict</div><div class="ttdef"><b>Definition</b> text.h:45</div></div>
 </div><!-- fragment --><p>(C++のみ) set() の代わりに代入演算子(Text::operator=)でも同様のことができます。</p>
 <h1><a class="anchor" id="autotoc_md25"></a>
 受信</h1>
@@ -167,7 +171,7 @@ $(document).ready(function(){initNavTree('md_11__text.html',''); initResizable()
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Dec 27 2023 05:33:18 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Thu Dec 28 2023 10:27:45 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

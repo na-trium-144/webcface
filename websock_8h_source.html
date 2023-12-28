@@ -121,13 +121,13 @@ $(document).ready(function(){initNavTree('websock_8h_source.html',''); initResiz
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &lt;condition_variable&gt;</span></div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &lt;memory&gt;</span></div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &lt;unordered_map&gt;</span></div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &lt;webcface/common/def.h&gt;</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &lt;<a class="code" href="def_8h.html">webcface/common/def.h</a>&gt;</span></div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceWEBCFACE__NS.html">WEBCFACE_NS</a> {</div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="keyword">namespace </span>Server {</div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno"><a class="line" href="namespaceWEBCFACE__NS_1_1Server.html#a4898db8d9fe1cf7bf83e4c7ac242a245">   11</a></span><span class="keyword">inline</span> std::condition_variable <a class="code hl_variable" href="namespaceWEBCFACE__NS_1_1Server.html#a4898db8d9fe1cf7bf83e4c7ac242a245">server_ping_wait</a>;</div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno"><a class="line" href="namespaceWEBCFACE__NS_1_1Server.html#a229b454d156fec6ab3e561a195813199">   12</a></span><span class="keyword">inline</span> std::mutex <a class="code hl_variable" href="namespaceWEBCFACE__NS_1_1Server.html#a229b454d156fec6ab3e561a195813199">server_mtx</a>;</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno"><a class="line" href="namespaceWEBCFACE__NS_1_1Server.html#a2284a2138f45992873563f8b5e95eaac">   13</a></span><span class="keyword">inline</span> std::shared_ptr&lt;std::unordered_map&lt;unsigned int, int&gt;&gt; <a class="code hl_variable" href="namespaceWEBCFACE__NS_1_1Server.html#a2284a2138f45992873563f8b5e95eaac">ping_status</a>;</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno"><a class="line" href="namespaceWEBCFACE__NS_1_1Server.html#a2284a2138f45992873563f8b5e95eaac">   13</a></span><span class="keyword">inline</span> std::shared_ptr&lt;std::unordered_map&lt;unsigned int, int&gt;&gt; ping_status;</div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="keywordtype">void</span> <a class="code hl_function" href="namespaceWEBCFACE__NS_1_1Server.html#a61c2320b1fc2122f40c399f95f7f2d42">serverSend</a>(<span class="keywordtype">void</span> *conn, <span class="keyword">const</span> std::string &amp;msg);</div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="keywordtype">void</span> <a class="code hl_function" href="namespaceWEBCFACE__NS_1_1Server.html#a324e1a70e006e8434fa711dd7e646727">serverStop</a>();</div>
@@ -135,7 +135,7 @@ $(document).ready(function(){initNavTree('websock_8h_source.html',''); initResiz
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>               spdlog::level::level_enum level);</div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>} <span class="comment">// namespace Server</span></div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>} <span class="comment">// namespace WEBCFACE_NS</span></div>
-<div class="ttc" id="anamespaceWEBCFACE__NS_1_1Server_html_a2284a2138f45992873563f8b5e95eaac"><div class="ttname"><a href="namespaceWEBCFACE__NS_1_1Server.html#a2284a2138f45992873563f8b5e95eaac">WEBCFACE_NS::Server::ping_status</a></div><div class="ttdeci">std::shared_ptr&lt; std::unordered_map&lt; unsigned int, int &gt; &gt; ping_status</div><div class="ttdef"><b>Definition</b> websock.h:13</div></div>
+<div class="ttc" id="adef_8h_html"><div class="ttname"><a href="def_8h.html">def.h</a></div></div>
 <div class="ttc" id="anamespaceWEBCFACE__NS_1_1Server_html_a229b454d156fec6ab3e561a195813199"><div class="ttname"><a href="namespaceWEBCFACE__NS_1_1Server.html#a229b454d156fec6ab3e561a195813199">WEBCFACE_NS::Server::server_mtx</a></div><div class="ttdeci">std::mutex server_mtx</div><div class="ttdef"><b>Definition</b> websock.h:12</div></div>
 <div class="ttc" id="anamespaceWEBCFACE__NS_1_1Server_html_a324e1a70e006e8434fa711dd7e646727"><div class="ttname"><a href="namespaceWEBCFACE__NS_1_1Server.html#a324e1a70e006e8434fa711dd7e646727">WEBCFACE_NS::Server::serverStop</a></div><div class="ttdeci">void serverStop()</div><div class="ttdef"><b>Definition</b> websock.cc:58</div></div>
 <div class="ttc" id="anamespaceWEBCFACE__NS_1_1Server_html_a4898db8d9fe1cf7bf83e4c7ac242a245"><div class="ttname"><a href="namespaceWEBCFACE__NS_1_1Server.html#a4898db8d9fe1cf7bf83e4c7ac242a245">WEBCFACE_NS::Server::server_ping_wait</a></div><div class="ttdeci">std::condition_variable server_ping_wait</div><div class="ttdef"><b>Definition</b> websock.h:11</div></div>
@@ -148,7 +148,7 @@ $(document).ready(function(){initNavTree('websock_8h_source.html',''); initResiz
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_41e1742e44e2de38b3bc91f993fed282.html">server</a></li><li class="navelem"><a class="el" href="websock_8h.html">websock.h</a></li>
-    <li class="footer">Generated on Wed Dec 27 2023 05:33:18 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Thu Dec 28 2023 10:27:45 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

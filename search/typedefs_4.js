@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['imageframe_0',['imageframe',['../namespaceWEBCFACE__NS_1_1Common.html#a0087821f758e8bee52c23fab5ac188ef',1,'WEBCFACE_NS::ImageFrame'],['../namespaceWEBCFACE__NS_1_1Common.html#a0087821f758e8bee52c23fab5ac188ef',1,'WEBCFACE_NS::Common::ImageFrame']]]
+  ['imageframe_0',['imageframe',['../namespacewebcface_1_1Common.html#af7ff7d8593c083aca2355bc561bf8804',1,'webcface::ImageFrame'],['../namespacewebcface_1_1Common.html#af7ff7d8593c083aca2355bc561bf8804',1,'webcface::Common::ImageFrame']]]
 ];

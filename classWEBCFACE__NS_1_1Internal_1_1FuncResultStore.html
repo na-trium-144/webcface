@@ -122,10 +122,10 @@ $(document).ready(function(){initNavTree('classWEBCFACE__NS_1_1Internal_1_1FuncR
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:adc1e3c995d4739088e53324bf9ed8c29" id="r_adc1e3c995d4739088e53324bf9ed8c29"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classWEBCFACE__NS_1_1AsyncFuncResult.html">AsyncFuncResult</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWEBCFACE__NS_1_1Internal_1_1FuncResultStore.html#adc1e3c995d4739088e53324bf9ed8c29">addResult</a> (<a class="el" href="classWEBCFACE__NS_1_1Internal_1_1SyncDataStore1.html">const</a> std::string &amp;caller, <a class="el" href="classWEBCFACE__NS_1_1Internal_1_1SyncDataStore1.html">const</a> <a class="el" href="structWEBCFACE__NS_1_1Field.html">Field</a> &amp;<a class="el" href="classWEBCFACE__NS_1_1Internal_1_1SyncDataStore1.html">base</a>)</td></tr>
+<tr class="memitem:adc1e3c995d4739088e53324bf9ed8c29" id="r_adc1e3c995d4739088e53324bf9ed8c29"><td class="memItemLeft" align="right" valign="top">AsyncFuncResult &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWEBCFACE__NS_1_1Internal_1_1FuncResultStore.html#adc1e3c995d4739088e53324bf9ed8c29">addResult</a> (const std::string &amp;caller, const Field &amp;base)</td></tr>
 <tr class="memdesc:adc1e3c995d4739088e53324bf9ed8c29"><td class="mdescLeft">&#160;</td><td class="mdescRight">新しいcaller_idを振って新しいAsyncFuncResultを生成しそれを返す  <br /></td></tr>
 <tr class="separator:adc1e3c995d4739088e53324bf9ed8c29"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac20cfc93c1339d86ba319285ea35acad" id="r_ac20cfc93c1339d86ba319285ea35acad"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classWEBCFACE__NS_1_1AsyncFuncResult.html">AsyncFuncResult</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWEBCFACE__NS_1_1Internal_1_1FuncResultStore.html#ac20cfc93c1339d86ba319285ea35acad">getResult</a> (std::size_t caller_id)</td></tr>
+<tr class="memitem:ac20cfc93c1339d86ba319285ea35acad" id="r_ac20cfc93c1339d86ba319285ea35acad"><td class="memItemLeft" align="right" valign="top">AsyncFuncResult &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWEBCFACE__NS_1_1Internal_1_1FuncResultStore.html#ac20cfc93c1339d86ba319285ea35acad">getResult</a> (std::size_t caller_id)</td></tr>
 <tr class="memdesc:ac20cfc93c1339d86ba319285ea35acad"><td class="mdescLeft">&#160;</td><td class="mdescRight">caller_idに対応するresultを返す  <br /></td></tr>
 <tr class="separator:ac20cfc93c1339d86ba319285ea35acad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -133,7 +133,7 @@ Public Member Functions</h2></td></tr>
 Private Attributes</h2></td></tr>
 <tr class="memitem:ad5e0dbd36f0d71fce9b00b7f991b2f38" id="r_ad5e0dbd36f0d71fce9b00b7f991b2f38"><td class="memItemLeft" align="right" valign="top">std::mutex&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWEBCFACE__NS_1_1Internal_1_1FuncResultStore.html#ad5e0dbd36f0d71fce9b00b7f991b2f38">mtx</a></td></tr>
 <tr class="separator:ad5e0dbd36f0d71fce9b00b7f991b2f38"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa502b4aa1f4086894cdfc3288a0ee881" id="r_aa502b4aa1f4086894cdfc3288a0ee881"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classWEBCFACE__NS_1_1AsyncFuncResult.html">AsyncFuncResult</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWEBCFACE__NS_1_1Internal_1_1FuncResultStore.html#aa502b4aa1f4086894cdfc3288a0ee881">results</a></td></tr>
+<tr class="memitem:aa502b4aa1f4086894cdfc3288a0ee881" id="r_aa502b4aa1f4086894cdfc3288a0ee881"><td class="memItemLeft" align="right" valign="top">std::vector&lt; AsyncFuncResult &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWEBCFACE__NS_1_1Internal_1_1FuncResultStore.html#aa502b4aa1f4086894cdfc3288a0ee881">results</a></td></tr>
 <tr class="separator:aa502b4aa1f4086894cdfc3288a0ee881"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -150,15 +150,15 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classWEBCFACE__NS_1_1AsyncFuncResult.html">AsyncFuncResult</a> &amp; addResult </td>
+          <td class="memname">AsyncFuncResult &amp; addResult </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classWEBCFACE__NS_1_1Internal_1_1SyncDataStore1.html">const</a> std::string &amp;&#160;</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
           <td class="paramname"><em>caller</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classWEBCFACE__NS_1_1Internal_1_1SyncDataStore1.html">const</a> <a class="el" href="structWEBCFACE__NS_1_1Field.html">Field</a> &amp;&#160;</td>
+          <td class="paramtype">const Field &amp;&#160;</td>
           <td class="paramname"><em>base</em>&#160;</td>
         </tr>
         <tr>
@@ -188,7 +188,7 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classWEBCFACE__NS_1_1AsyncFuncResult.html">AsyncFuncResult</a> &amp; getResult </td>
+          <td class="memname">AsyncFuncResult &amp; getResult </td>
           <td>(</td>
           <td class="paramtype">std::size_t&#160;</td>
           <td class="paramname"><em>caller_id</em></td><td>)</td>
@@ -240,7 +240,7 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt;<a class="el" href="classWEBCFACE__NS_1_1AsyncFuncResult.html">AsyncFuncResult</a>&gt; results</td>
+          <td class="memname">std::vector&lt;AsyncFuncResult&gt; results</td>
         </tr>
       </table>
   </td>
@@ -261,7 +261,7 @@ Private Attributes</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceWEBCFACE__NS.html">WEBCFACE_NS</a></li><li class="navelem"><a class="el" href="namespaceWEBCFACE__NS_1_1Internal.html">Internal</a></li><li class="navelem"><a class="el" href="classWEBCFACE__NS_1_1Internal_1_1FuncResultStore.html">FuncResultStore</a></li>
-    <li class="footer">Generated on Wed Dec 27 2023 05:33:19 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Thu Dec 28 2023 10:27:45 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

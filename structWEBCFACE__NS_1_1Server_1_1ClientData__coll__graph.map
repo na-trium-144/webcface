@@ -1,9 +1,7 @@
 <map id="ClientData" name="ClientData">
-<area shape="rect" id="Node000001" title=" " alt="" coords="67,285,158,311"/>
-<area shape="rect" id="Node000002" href="$structWEBCFACE__NS_1_1Message_1_1SyncInit.html" title="client初期化(client&#45;&gt;server&#45;&gt;client)" alt="" coords="75,197,150,223"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="115,237,115,285,110,285,110,237"/>
-<area shape="rect" id="Node000003" href="$structWEBCFACE__NS_1_1Message_1_1MessageBase.html" title=" " alt="" coords="5,108,220,148"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="115,162,115,197,110,197,110,162"/>
-<area shape="rect" id="Node000004" href="$structWEBCFACE__NS_1_1Message_1_1MessageBase.html" title="型からkindを取得するためだけのベースクラス" alt="" coords="37,5,188,31"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="115,45,115,108,110,108,110,45"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="35,168,126,193"/>
+<area shape="rect" id="Node000002" href="$structWEBCFACE__NS_1_1Message_1_1SyncInit.html" title="client初期化(client&#45;&gt;server&#45;&gt;client)" alt="" coords="43,80,118,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="83,119,83,167,78,167,78,119"/>
+<area shape="rect" id="Node000003" href="$structWEBCFACE__NS_1_1Message_1_1MessageBase.html" title="型からkindを取得するためだけのベースクラス" alt="" coords="5,5,156,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="83,45,83,80,78,80,78,45"/>
 </map>

@@ -1,11 +1,10 @@
 <map id="client/version.cc" name="client/version.cc">
-<area shape="rect" id="Node000001" title=" " alt="" coords="141,5,269,31"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="5,79,187,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="189,33,127,73,124,69,186,28"/>
-<area shape="rect" id="Node000003" href="$version_8h.html" title=" " alt="" coords="211,79,421,104"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="225,28,288,69,285,73,222,33"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="248,152,304,177"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="312,106,292,141,287,139,307,103"/>
-<area shape="rect" id="Node000005" title=" " alt="" coords="329,152,383,177"/>
-<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="325,103,345,139,340,141,320,106"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="103,5,231,31"/>
+<area shape="rect" id="Node000002" href="$def_8h.html" title=" " alt="" coords="5,152,187,177"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="158,32,141,54,125,80,113,110,104,139,99,138,108,108,120,77,137,51,154,29"/>
+<area shape="rect" id="Node000003" href="$version_8h.html" title=" " alt="" coords="134,79,343,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="180,29,219,67,215,71,177,33"/>
+<area shape="poly" id="edge4_Node000003_Node000002" title=" " alt="" coords="217,106,133,148,130,143,215,102"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="211,152,267,177"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="241,104,241,138,236,138,236,104"/>
 </map>
