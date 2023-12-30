@@ -1,3 +1,9 @@
+## [1.3.1] - 2023-12-30
+### Changed
+* clang17でのコンパイルエラーを修正
+### Fixed
+* v1.2.2, v1.3.0 でサーバーがsegmentation faultするバグを修正 (#160)
+
 ## [1.3.0] - 2023-12-26
 ### Changed
 * debugビルドのdllファイル名をwebcfacedに変更 (#148)
