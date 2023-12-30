@@ -20,7 +20,6 @@ inline struct Store {
      * 切断されてもデータは残り、valueやlogなどあとで参照できる
      * * 名前があるクライアントは同じ名前で再接続されたときに上書きする。
      * * (ver1.2.2から) 名前がないクライアントは切断時に削除
-     * (idを被らせないためnullptrで埋める)
      *
      */
     std::unordered_map<unsigned int, ClientDataPtr> clients_by_id;
