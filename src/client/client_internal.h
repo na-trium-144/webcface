@@ -159,7 +159,7 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
     eventpp::EventDispatcher<int, void(Field)> member_entry_event;
     eventpp::EventDispatcher<std::string, void(Field)> sync_event,
         value_entry_event, text_entry_event, func_entry_event, view_entry_event,
-        image_entry_event, ping_event;
+        robot_model_entry_event, image_entry_event, ping_event;
 
     /*!
      * \brief sync()のタイミングで実行を同期する関数のcondition_variable

@@ -24,6 +24,7 @@
 #include "log.h"
 #include "func.h"
 #include "view.h"
+#include "robot_model.h"
 
 #include "member.h"
 #include "client.h"

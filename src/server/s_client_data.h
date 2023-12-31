@@ -54,9 +54,10 @@ struct ClientData {
     //! リクエストしているmember,nameのペア
     std::unordered_map<std::string,
                        std::unordered_map<std::string, unsigned int>>
-        value_req, text_req, view_req, image_req;
+        value_req, text_req, view_req, image_req, robot_model_req;
     // リクエストが変化したことをスレッドに知らせる
-    std::unordered_map<std::string, std::unordered_map<std::string, int>> image_req_changed;
+    std::unordered_map<std::string, std::unordered_map<std::string, int>>
+        image_req_changed;
     // 画像をそれぞれのリクエストに合わせて変換するスレッド
     std::unordered_map<std::string,
                        std::unordered_map<std::string, Common::ImageReq>>
@@ -67,6 +68,10 @@ struct ClientData {
         image_convert_thread;
     void imageConvertThreadMain(const std::string &member,
                                 const std::string &field);
+    std::unordered_map<
+        std::string,
+        std::shared_ptr<std::vector<Message::RobotModel::RobotLink>>>
+        robot_model;
 
     std::set<std::string> log_req;
     bool hasReq(const std::string &member);

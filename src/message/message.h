@@ -274,9 +274,9 @@ struct RobotModel : public MessageBase<MessageKind::robot_model> {
                   const std::vector<std::string> &link_names)
             : name(link.name), joint_name(link.joint.name),
               joint_parent(
-                  std::distance(std::find(link_names.begin(), link_names.end(),
-                                          link.joint.parent_name),
-                                link_names.begin())),
+                  std::distance(link_names.begin(),
+                                std::find(link_names.begin(), link_names.end(),
+                                          link.joint.parent_name))),
               joint_type(link.joint.type),
               joint_origin_pos(link.joint.origin.pos()),
               joint_origin_rot(link.joint.origin.rot()),
@@ -290,7 +290,8 @@ struct RobotModel : public MessageBase<MessageKind::robot_model> {
             return Common::RobotLink{
                 name,
                 {joint_name,
-                 link_names.at(joint_parent),
+                 joint_parent < link_names.size() ? link_names.at(joint_parent)
+                                                  : "",
                  joint_type,
                  {joint_origin_pos, joint_origin_rot},
                  joint_angle},
@@ -319,18 +320,18 @@ struct RobotModel : public MessageBase<MessageKind::robot_model> {
                const std::vector<Common::RobotLink> &common_links)
         : field(field),
           data(std::make_shared<std::vector<RobotLink>>(common_links.size())) {
-        std::vector<std::string> link_names(common_links.size());
+        std::vector<std::string> link_names;
         for (std::size_t i = 0; i < common_links.size(); i++) {
             (*data)[i] = RobotLink{common_links[i], link_names};
-            link_names[i] = (*data)[i].name;
+            link_names.push_back((*data)[i].name);
         }
     }
     std::vector<Common::RobotLink> commonLinks() const {
         std::vector<Common::RobotLink> common_links(data->size());
-        std::vector<std::string> link_names(data->size());
+        std::vector<std::string> link_names;
         for (std::size_t i = 0; i < data->size(); i++) {
-            link_names[i] = (*data)[i].name;
             common_links[i] = (*data)[i].toCommonLink(link_names);
+            link_names.push_back((*data)[i].name);
         }
         return common_links;
     }
@@ -595,7 +596,8 @@ struct Res<RobotModel>
     Res(unsigned int req_id, const std::string &sub_field,
         const std::vector<Common::RobotLink> &common_links)
         : req_id(req_id), sub_field(sub_field),
-          data(std::make_shared<std::vector<RobotModel::RobotLink>>(common_links.size())) {
+          data(std::make_shared<std::vector<RobotModel::RobotLink>>(
+              common_links.size())) {
         std::vector<std::string> link_names(common_links.size());
         for (std::size_t i = 0; i < common_links.size(); i++) {
             (*data)[i] = RobotModel::RobotLink{common_links[i], link_names};
@@ -604,10 +606,10 @@ struct Res<RobotModel>
     }
     std::vector<Common::RobotLink> commonLinks() const {
         std::vector<Common::RobotLink> common_links(data->size());
-        std::vector<std::string> link_names(data->size());
+        std::vector<std::string> link_names;
         for (std::size_t i = 0; i < data->size(); i++) {
-            link_names[i] = (*data)[i].name;
             common_links[i] = (*data)[i].toCommonLink(link_names);
+            link_names.push_back((*data)[i].name);
         }
         return common_links;
     }
