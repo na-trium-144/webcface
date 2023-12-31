@@ -126,6 +126,7 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
     SyncDataStore2<std::shared_ptr<std::vector<Common::ViewComponentBase>>>
         view_store;
     SyncDataStore2<Common::ImageBase, Common::ImageReq> image_store;
+    SyncDataStore2<std::vector<Common::RobotLink>> robot_model_store;
     std::shared_ptr<SyncDataStore1<std::shared_ptr<std::vector<LogLine>>>>
         log_store;
     SyncDataStore1<std::chrono::system_clock::time_point> sync_time_store;
@@ -153,7 +154,7 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
 
     eventpp::EventDispatcher<FieldBaseComparable, void(Field)>
         value_change_event, text_change_event, view_change_event,
-        image_change_event;
+        image_change_event, robot_model_change_event;
     eventpp::EventDispatcher<std::string, void(Field)> log_append_event;
     eventpp::EventDispatcher<int, void(Field)> member_entry_event;
     eventpp::EventDispatcher<std::string, void(Field)> sync_event,

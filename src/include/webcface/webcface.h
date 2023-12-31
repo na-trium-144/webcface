@@ -11,6 +11,7 @@
 #include "common/view.h"
 #include "common/dict.h"
 #include "common/image.h"
+#include "common/robot_model.h"
 
 #include "field.h"
 #include "event_target.h"

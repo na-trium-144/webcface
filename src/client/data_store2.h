@@ -11,6 +11,7 @@
 #include <webcface/common/func.h>
 #include <webcface/common/view.h>
 #include <webcface/common/image.h>
+#include <webcface/common/robot_model.h>
 
 namespace WEBCFACE_NS::Internal {
 /*!
@@ -226,6 +227,7 @@ extern template class SyncDataStore2<std::shared_ptr<std::string>, int>;
 extern template class SyncDataStore2<std::shared_ptr<FuncInfo>, int>;
 extern template class SyncDataStore2<
     std::shared_ptr<std::vector<Common::ViewComponentBase>>, int>;
+extern template class SyncDataStore2<std::vector<Common::RobotLink>, int>;
 extern template class SyncDataStore2<Common::ImageBase, Common::ImageReq>;
 #endif
 

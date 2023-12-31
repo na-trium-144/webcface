@@ -24,7 +24,8 @@ Internal::ClientData::ClientData(const std::string &name,
     : std::enable_shared_from_this<ClientData>(), self_member_name(name),
       host(host), port(port),
       message_queue(std::make_shared<Common::Queue<std::string>>()),
-      value_store(name), text_store(name), func_store(name), view_store(name), image_store(name),
+      value_store(name), text_store(name), func_store(name), view_store(name),
+      image_store(name), robot_model_store(name),
       log_store(std::make_shared<
                 SyncDataStore1<std::shared_ptr<std::vector<LogLine>>>>(name)),
       sync_time_store(name),
@@ -258,7 +259,8 @@ void Client::sync() {
 }
 void Internal::ClientData::onRecv(const std::string &message) {
     namespace MessageKind = WEBCFACE_NS::Message::MessageKind;
-    auto messages = WEBCFACE_NS::Message::unpack(message, this->logger_internal);
+    auto messages =
+        WEBCFACE_NS::Message::unpack(message, this->logger_internal);
     std::vector<std::string> sync_members;
     for (const auto &m : messages) {
         const auto &[kind, obj] = m;
@@ -291,9 +293,8 @@ void Internal::ClientData::onRecv(const std::string &message) {
             break;
         }
         case MessageKind::value + MessageKind::res: {
-            auto r =
-                std::any_cast<WEBCFACE_NS::Message::Res<WEBCFACE_NS::Message::Value>>(
-                    obj);
+            auto r = std::any_cast<
+                WEBCFACE_NS::Message::Res<WEBCFACE_NS::Message::Value>>(obj);
             auto [member, field] =
                 this->value_store.getReq(r.req_id, r.sub_field);
             this->value_store.setRecv(
@@ -305,9 +306,8 @@ void Internal::ClientData::onRecv(const std::string &message) {
             break;
         }
         case MessageKind::text + MessageKind::res: {
-            auto r =
-                std::any_cast<WEBCFACE_NS::Message::Res<WEBCFACE_NS::Message::Text>>(
-                    obj);
+            auto r = std::any_cast<
+                WEBCFACE_NS::Message::Res<WEBCFACE_NS::Message::Text>>(obj);
             auto [member, field] =
                 this->text_store.getReq(r.req_id, r.sub_field);
             this->text_store.setRecv(member, field, r.data);
@@ -317,9 +317,8 @@ void Internal::ClientData::onRecv(const std::string &message) {
             break;
         }
         case MessageKind::view + MessageKind::res: {
-            auto r =
-                std::any_cast<WEBCFACE_NS::Message::Res<WEBCFACE_NS::Message::View>>(
-                    obj);
+            auto r = std::any_cast<
+                WEBCFACE_NS::Message::Res<WEBCFACE_NS::Message::View>>(obj);
             std::lock_guard lock(this->view_store.mtx);
             auto [member, field] =
                 this->view_store.getReq(r.req_id, r.sub_field);
@@ -339,9 +338,8 @@ void Internal::ClientData::onRecv(const std::string &message) {
             break;
         }
         case MessageKind::image + MessageKind::res: {
-            auto r =
-                std::any_cast<WEBCFACE_NS::Message::Res<WEBCFACE_NS::Message::Image>>(
-                    obj);
+            auto r = std::any_cast<
+                WEBCFACE_NS::Message::Res<WEBCFACE_NS::Message::Image>>(obj);
             auto [member, field] =
                 this->image_store.getReq(r.req_id, r.sub_field);
             this->image_store.setRecv(member, field, r);
@@ -391,10 +389,10 @@ void Internal::ClientData::onRecv(const std::string &message) {
                     }
                     data->message_queue->push(WEBCFACE_NS::Message::packSingle(
                         WEBCFACE_NS::Message::CallResult{{},
-                                                      r.caller_id,
-                                                      r.caller_member_id,
-                                                      is_error,
-                                                      result}));
+                                                         r.caller_id,
+                                                         r.caller_member_id,
+                                                         is_error,
+                                                         result}));
                 } else {
                     data->message_queue->push(WEBCFACE_NS::Message::packSingle(
                         WEBCFACE_NS::Message::CallResponse{

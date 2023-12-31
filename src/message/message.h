@@ -11,6 +11,7 @@
 #include <webcface/common/log.h>
 #include <webcface/common/view.h>
 #include <webcface/common/image.h>
+#include <webcface/common/robot_model.h>
 #include <webcface/common/def.h>
 #include "val_adaptor.h"
 
@@ -19,6 +20,8 @@ MSGPACK_ADD_ENUM(WEBCFACE_NS::Common::ViewComponentType)
 MSGPACK_ADD_ENUM(WEBCFACE_NS::Common::ViewColor)
 MSGPACK_ADD_ENUM(WEBCFACE_NS::Common::ImageCompressMode)
 MSGPACK_ADD_ENUM(WEBCFACE_NS::Common::ImageColorMode)
+MSGPACK_ADD_ENUM(WEBCFACE_NS::Common::RobotJointType)
+MSGPACK_ADD_ENUM(WEBCFACE_NS::Common::RobotGeometryType)
 
 namespace WEBCFACE_NS::Message {
 // 新しいメッセージの定義は
@@ -31,6 +34,7 @@ enum MessageKindEnum {
     text = 1,
     view = 3,
     image = 5,
+    robot_model = 6,
     entry = 20,
     req = 40,
     res = 60,
@@ -250,6 +254,87 @@ struct Value : public MessageBase<MessageKind::value> {
 struct Text : public MessageBase<MessageKind::text> {
     std::string field;
     std::shared_ptr<std::string> data;
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", field), MSGPACK_NVP("d", data))
+};
+struct RobotModel : public MessageBase<MessageKind::robot_model> {
+    std::string field;
+    struct RobotLink {
+        std::string name;
+        std::string joint_name;
+        std::size_t joint_parent;
+        Common::RobotJointType joint_type;
+        std::array<double, 3> joint_origin_pos, joint_origin_rot;
+        double joint_angle = 0;
+        Common::RobotGeometryType geometry_type;
+        std::array<double, 3> geometry_origin_pos, geometry_origin_rot;
+        std::vector<double> geometry_properties;
+        Common::ViewColor color;
+        RobotLink() = default;
+        RobotLink(const Common::RobotLink &link,
+                  const std::vector<std::string> &link_names)
+            : name(link.name), joint_name(link.joint.name),
+              joint_parent(
+                  std::distance(std::find(link_names.begin(), link_names.end(),
+                                          link.joint.parent_name),
+                                link_names.begin())),
+              joint_type(link.joint.type),
+              joint_origin_pos(link.joint.origin.pos()),
+              joint_origin_rot(link.joint.origin.rot()),
+              joint_angle(link.joint.angle), geometry_type(link.geometry.type),
+              geometry_origin_pos(link.geometry.origin.pos()),
+              geometry_origin_rot(link.geometry.origin.rot()),
+              geometry_properties(link.geometry.properties), color(link.color) {
+        }
+        Common::RobotLink
+        toCommonLink(const std::vector<std::string> &link_names) const {
+            return Common::RobotLink{
+                name,
+                {joint_name,
+                 link_names.at(joint_parent),
+                 joint_type,
+                 {joint_origin_pos, joint_origin_rot},
+                 joint_angle},
+                {geometry_type,
+                 {geometry_origin_pos, geometry_origin_rot},
+                 geometry_properties},
+                color,
+            };
+        }
+        MSGPACK_DEFINE_MAP(
+            MSGPACK_NVP("n", name), MSGPACK_NVP("jn", joint_name),
+            MSGPACK_NVP("jp", joint_parent), MSGPACK_NVP("jt", joint_type),
+            MSGPACK_NVP("js", joint_origin_pos),
+            MSGPACK_NVP("jr", joint_origin_rot), MSGPACK_NVP("ja", joint_angle),
+            MSGPACK_NVP("gt", geometry_type),
+            MSGPACK_NVP("gs", geometry_origin_pos),
+            MSGPACK_NVP("gr", geometry_origin_rot),
+            MSGPACK_NVP("gp", geometry_properties), MSGPACK_NVP("c", color))
+    };
+    std::shared_ptr<std::vector<RobotLink>> data;
+    RobotModel() = default;
+    RobotModel(const std::string &field,
+               const std::shared_ptr<std::vector<RobotLink>> &data)
+        : field(field), data(data) {}
+    RobotModel(const std::string &field,
+               const std::vector<Common::RobotLink> &common_links)
+        : field(field),
+          data(std::make_shared<std::vector<RobotLink>>(common_links.size())) {
+        std::vector<std::string> link_names(common_links.size());
+        for (std::size_t i = 0; i < common_links.size(); i++) {
+            (*data)[i] = RobotLink{common_links[i], link_names};
+            link_names[i] = (*data)[i].name;
+        }
+    }
+    std::vector<Common::RobotLink> commonLinks() const {
+        std::vector<Common::RobotLink> common_links(data->size());
+        std::vector<std::string> link_names(data->size());
+        for (std::size_t i = 0; i < data->size(); i++) {
+            link_names[i] = (*data)[i].name;
+            common_links[i] = (*data)[i].toCommonLink(link_names);
+        }
+        return common_links;
+    }
+
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", field), MSGPACK_NVP("d", data))
 };
 struct View : public MessageBase<MessageKind::view> {
@@ -494,6 +579,39 @@ struct Res<Text> : public MessageBase<MessageKind::text + MessageKind::res> {
     Res(unsigned int req_id, const std::string &sub_field,
         const std::shared_ptr<std::string> &data)
         : req_id(req_id), sub_field(sub_field), data(data) {}
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", req_id), MSGPACK_NVP("f", sub_field),
+                       MSGPACK_NVP("d", data))
+};
+template <>
+struct Res<RobotModel>
+    : public MessageBase<MessageKind::robot_model + MessageKind::res> {
+    unsigned int req_id;
+    std::string sub_field;
+    std::shared_ptr<std::vector<RobotModel::RobotLink>> data;
+    Res() = default;
+    Res(unsigned int req_id, const std::string &sub_field,
+        const std::shared_ptr<std::vector<RobotModel::RobotLink>> &data)
+        : req_id(req_id), sub_field(sub_field), data(data) {}
+    Res(unsigned int req_id, const std::string &sub_field,
+        const std::vector<Common::RobotLink> &common_links)
+        : req_id(req_id), sub_field(sub_field),
+          data(std::make_shared<std::vector<RobotModel::RobotLink>>(common_links.size())) {
+        std::vector<std::string> link_names(common_links.size());
+        for (std::size_t i = 0; i < common_links.size(); i++) {
+            (*data)[i] = RobotModel::RobotLink{common_links[i], link_names};
+            link_names[i] = (*data)[i].name;
+        }
+    }
+    std::vector<Common::RobotLink> commonLinks() const {
+        std::vector<Common::RobotLink> common_links(data->size());
+        std::vector<std::string> link_names(data->size());
+        for (std::size_t i = 0; i < data->size(); i++) {
+            link_names[i] = (*data)[i].name;
+            common_links[i] = (*data)[i].toCommonLink(link_names);
+        }
+        return common_links;
+    }
+
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", req_id), MSGPACK_NVP("f", sub_field),
                        MSGPACK_NVP("d", data))
 };
