@@ -47,6 +47,10 @@ int main() {
     std::cout << "this is cout" << std::endl;
     std::cout.rdbuf(buf);
 
+    c.robotModel("aaa").set({
+        webcface::RobotLink{"link1", {}, {}, webcface::ViewColor::yellow},
+    });
+
     int i = 0;
 
     while (true) {
