@@ -1,7 +1,0 @@
-<map id="Call" name="Call">
-<area shape="rect" id="Node000001" title="関数呼び出し (client(caller)&#45;&gt;server&#45;&gt;client(receiver))" alt="" coords="127,79,173,104"/>
-<area shape="rect" id="Node000002" href="$structWEBCFACE__NS_1_1Message_1_1MessageBase.html" title="型からkindを取得するためだけのベースクラス" alt="" coords="5,5,156,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="103,39,141,77,137,80,100,43"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="181,5,258,31"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="200,43,163,80,159,77,197,39"/>
-</map>

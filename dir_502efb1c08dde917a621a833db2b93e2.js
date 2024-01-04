@@ -9,6 +9,6 @@ var dir_502efb1c08dde917a621a833db2b93e2 =
     [ "queue.h", "queue_8h.html", "queue_8h" ],
     [ "val.h", "val_8h.html", "val_8h" ],
     [ "vector.h", "vector_8h.html", "vector_8h" ],
-    [ "version.h", "version_8h.html", "version_8h" ],
+    [ "version.h", "version_8h.html", null ],
     [ "view.h", "common_2view_8h.html", "common_2view_8h" ]
 ];

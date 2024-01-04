@@ -1,7 +1,0 @@
-<map id="Image" name="Image">
-<area shape="rect" id="Node000001" title=" " alt="" coords="123,79,185,104"/>
-<area shape="rect" id="Node000002" href="$structWEBCFACE__NS_1_1Message_1_1MessageBase.html" title="型からkindを取得するためだけのベースクラス" alt="" coords="5,5,156,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="104,38,144,77,140,80,101,42"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="180,5,275,31"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="207,42,168,80,164,77,204,38"/>
-</map>

@@ -170,28 +170,27 @@ text</h2>
 <div class="line">v &lt;&lt; <span class="stringliteral">&quot;hello&quot;</span>;</div>
 <div class="line">v &lt;&lt; <span class="stringliteral">&quot;he&quot;</span> &lt;&lt; <span class="stringliteral">&quot;llo&quot;</span>;</div>
 <div class="line"><span class="keyword">using namespace </span><a class="code hl_namespace" href="namespacewebcface_1_1ViewComponents.html">webcface::ViewComponents</a>;</div>
-<div class="line"><a class="code hl_class" href="classwebcface_1_1Common_1_1Queue.html">v</a>.add(text(<span class="stringliteral">&quot;hello&quot;</span>));</div>
-<div class="line"><a class="code hl_class" href="classwebcface_1_1Common_1_1Queue.html">v</a> &lt;&lt; text(<span class="stringliteral">&quot;hello&quot;</span>);</div>
-<div class="ttc" id="aclasswebcface_1_1Common_1_1Queue_html"><div class="ttname"><a href="classwebcface_1_1Common_1_1Queue.html">webcface::Queue</a></div><div class="ttdoc">排他制御をしたただのキュー</div><div class="ttdef"><b>Definition</b> queue.h:13</div></div>
+<div class="line">v.add(text(<span class="stringliteral">&quot;hello&quot;</span>));</div>
+<div class="line">v &lt;&lt; text(<span class="stringliteral">&quot;hello&quot;</span>);</div>
 <div class="ttc" id="anamespacewebcface_1_1ViewComponents_html"><div class="ttname"><a href="namespacewebcface_1_1ViewComponents.html">webcface::ViewComponents</a></div><div class="ttdef"><b>Definition</b> view.h:103</div></div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md31"></a>
 newLine</h2>
 <p>改行します。 <code><a class="el" href="namespacewebcface_1_1ViewComponents.html#ab72da582724c98c1e879cadbacc78663" title="newLineコンポーネント">webcface::ViewComponents::newLine()</a></code> の他、<code>std::endl</code>や<code>"\n"</code>でも改行できます</p>
-<p>文字列中に<code>\n</code>があるとそこで改行されます。 以下はいずれも「hello」を2行表示します。 </p><div class="fragment"><div class="line"><a class="code hl_class" href="classwebcface_1_1Common_1_1Queue.html">v</a>.add(<span class="stringliteral">&quot;hello\nhello&quot;</span>);</div>
-<div class="line"><a class="code hl_class" href="classwebcface_1_1Common_1_1Queue.html">v</a>.add(<span class="stringliteral">&quot;hello&quot;</span>).add(<span class="stringliteral">&quot;\n&quot;</span>).add(<span class="stringliteral">&quot;hello&quot;</span>);</div>
-<div class="line"><a class="code hl_class" href="classwebcface_1_1Common_1_1Queue.html">v</a> &lt;&lt; <span class="stringliteral">&quot;hello\nhello&quot;</span>;</div>
-<div class="line"><a class="code hl_class" href="classwebcface_1_1Common_1_1Queue.html">v</a> &lt;&lt; <span class="stringliteral">&quot;hello&quot;</span> &lt;&lt; std::endl &lt;&lt; <span class="stringliteral">&quot;hello&quot;</span>;</div>
+<p>文字列中に<code>\n</code>があるとそこで改行されます。 以下はいずれも「hello」を2行表示します。 </p><div class="fragment"><div class="line">v.add(<span class="stringliteral">&quot;hello\nhello&quot;</span>);</div>
+<div class="line">v.add(<span class="stringliteral">&quot;hello&quot;</span>).add(<span class="stringliteral">&quot;\n&quot;</span>).add(<span class="stringliteral">&quot;hello&quot;</span>);</div>
+<div class="line">v &lt;&lt; <span class="stringliteral">&quot;hello\nhello&quot;</span>;</div>
+<div class="line">v &lt;&lt; <span class="stringliteral">&quot;hello&quot;</span> &lt;&lt; std::endl &lt;&lt; <span class="stringliteral">&quot;hello&quot;</span>;</div>
 <div class="line"><span class="keyword">using namespace </span><a class="code hl_namespace" href="namespacewebcface_1_1ViewComponents.html">webcface::ViewComponents</a>;</div>
-<div class="line"><a class="code hl_class" href="classwebcface_1_1Common_1_1Queue.html">v</a>.add(text(<span class="stringliteral">&quot;hello&quot;</span>)).add(newLine()).add(text(<span class="stringliteral">&quot;hello&quot;</span>));</div>
-<div class="line"><a class="code hl_class" href="classwebcface_1_1Common_1_1Queue.html">v</a> &lt;&lt; text(<span class="stringliteral">&quot;hello&quot;</span>) &lt;&lt; newLine() &lt;&lt; text(<span class="stringliteral">&quot;hello&quot;</span>);</div>
+<div class="line">v.add(text(<span class="stringliteral">&quot;hello&quot;</span>)).add(newLine()).add(text(<span class="stringliteral">&quot;hello&quot;</span>));</div>
+<div class="line">v &lt;&lt; text(<span class="stringliteral">&quot;hello&quot;</span>) &lt;&lt; newLine() &lt;&lt; text(<span class="stringliteral">&quot;hello&quot;</span>);</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md32"></a>
 button</h2>
 <p>ボタンを表示します。</p>
 <p>第2引数に関数を登録済みの<a class="el" href="md_30__func.html">Funcオブジェクト</a>、または関数を設定することでクリック時の動作を設定できます</p>
 <p>(AnonymousFuncオブジェクトを渡せるようにする予定だが未実装) </p><div class="fragment"><div class="line"><span class="keyword">using namespace </span><a class="code hl_namespace" href="namespacewebcface_1_1ViewComponents.html">webcface::ViewComponents</a>;</div>
-<div class="line"><a class="code hl_class" href="classwebcface_1_1Common_1_1Queue.html">v</a>.add(button(<span class="stringliteral">&quot;表示する文字列&quot;</span>, <a class="code hl_class" href="classwebcface_1_1Common_1_1Queue.html">wcli</a>.func(<span class="stringliteral">&quot;func name&quot;</span>)));</div>
+<div class="line">v.add(button(<span class="stringliteral">&quot;表示する文字列&quot;</span>, wcli.func(<span class="stringliteral">&quot;func name&quot;</span>)));</div>
 <div class="line"><span class="comment">// v.add(button(&quot;表示する文字列&quot;, wcli.func([](){ /* ... */ }))); 未実装</span></div>
-<div class="line"><a class="code hl_class" href="classwebcface_1_1Common_1_1Queue.html">v</a>.add(button(<span class="stringliteral">&quot;表示する文字列&quot;</span>, [](){ <span class="comment">/* ... */</span> }));</div>
+<div class="line">v.add(button(<span class="stringliteral">&quot;表示する文字列&quot;</span>, [](){ <span class="comment">/* ... */</span> }));</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md33"></a>
 プロパティ</h2>
 <p>文字色や背景色など各Componentに共通のプロパティがあります。( <a class="el" href="classwebcface_1_1ViewComponent.html" title="Viewに表示する要素です">webcface::ViewComponent</a> を参照) <br  />
@@ -224,7 +223,7 @@ button</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Jan 4 2024 08:43:13 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Thu Jan 4 2024 17:25:13 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

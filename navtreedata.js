@@ -184,17 +184,18 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"classwebcface_1_1Client.html#a1cc337f3ebf4841d5fc32f519c400c5a",
-"classwebcface_1_1Common_1_1Dict.html#abf9cd78c0cf2e2260c8954374f7f776c",
-"classwebcface_1_1Common_1_1ValAdaptor.html#a9f1785647f8051f6cf2fc0655d7d8f9a",
-"classwebcface_1_1Log.html#aadb158fa20765e342d4669e2c69dbc9e",
-"classwebcface_1_1Value.html#a9406117fe96b34fa4af36e39c5ec5f52",
-"data__store1_8cc.html",
-"message_8h.html#a0368ef47eb403e45018a73ef46c90c62",
-"structWEBCFACE__NS_1_1Internal_1_1ClientData.html#a42215014610973eb53bbbcc9d435d887",
-"structWEBCFACE__NS_1_1Message_1_1Res_3_01Image_01_4.html#a892d201412fcc08e620eebdf53269e9b",
-"structWEBCFACE__NS_1_1Server_1_1Store.html#a5125f3d5e3421758bfac2bfe1a276749",
-"structwebcface_1_1Common_1_1ImageReq.html#a7187b583e49c0d80afef70b80e631a4b"
+"classwebcface_1_1Common_1_1Arg.html#a4d739cc5d335052eb9f5b2ca559b81d1",
+"classwebcface_1_1Common_1_1ImageWithCV.html#a521057fe89403ba60e0e3351a76b2c07",
+"classwebcface_1_1Image.html#a07aeebfdc5af719a2f4c15e59d858363",
+"classwebcface_1_1LoggerBuf.html#a1990ccaa6280937852f89a62fd523cda",
+"classwebcface_1_1Value.html#a96313403719d705d2df812e3ba166772",
+"data__store1_8h_source.html",
+"message_8h.html#a1432d06fc2e2d1f6da93d1c04dec4484a0cb8db73d08e6f71fe9d47fb44fdc9a5",
+"structwebcface_1_1Common_1_1DictTraits.html#aa10c66c2df87813f43c110c64bbd6e2b",
+"structwebcface_1_1Common_1_1VectorOpt.html",
+"structwebcface_1_1Message_1_1FuncInfo.html#a2a45d43a18b91791b85fe158bb2102f9",
+"structwebcface_1_1Message_1_1Res_3_01Value_01_4.html",
+"structwebcface_1_1Server_1_1Store.html#ac8bb3912a3ce86b15842e79d0b421204"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

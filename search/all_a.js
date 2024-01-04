@@ -1,7 +1,7 @@
 var searchData=
 [
   ['base_5finit_0',['base_init',['../classwebcface_1_1AnonymousFunc.html#ae76af49a75f2e8e46aea1d4d1d7e9e5a',1,'webcface::AnonymousFunc']]],
-  ['bg_5fcolor_1',['bg_color',['../structWEBCFACE__NS_1_1Message_1_1View_1_1ViewComponent.html#ada64e6dee7615eb103374de9ecb31e0f',1,'WEBCFACE_NS::Message::View::ViewComponent']]],
+  ['bg_5fcolor_1',['bg_color',['../structwebcface_1_1Message_1_1View_1_1ViewComponent.html#ada64e6dee7615eb103374de9ecb31e0f',1,'webcface::Message::View::ViewComponent']]],
   ['bg_5fcolor_5f_2',['bg_color_',['../structwebcface_1_1Common_1_1ViewComponentBase.html#a8415e8f779a0379933ef77327b47038e',1,'webcface::Common::ViewComponentBase']]],
   ['bgcolor_3',['bgcolor',['../classwebcface_1_1ViewComponent.html#a0c7bbfd827dad423e8b35018263fc981',1,'webcface::ViewComponent::bgColor() const'],['../classwebcface_1_1ViewComponent.html#ab2788276db7dbcb6255996160caaafce',1,'webcface::ViewComponent::bgColor(ViewColor c)']]],
   ['bgr_4',['bgr',['../namespacewebcface_1_1Common.html#abcfd96b0be942012c2f4641b4741a31ea84746ad530563de3445efec60aa7ff59',1,'webcface::Common']]],

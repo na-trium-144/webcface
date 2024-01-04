@@ -127,7 +127,7 @@ $(document).ready(function(){initNavTree('val__adaptor_8h_source.html',''); init
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>    <span class="keyword">namespace </span>adaptor {</div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>    <span class="keyword">template</span> &lt;&gt;</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>    <span class="keyword">struct </span>convert&lt;<a class="code hl_namespace" href="namespaceWEBCFACE__NS.html">WEBCFACE_NS</a>::ValAdaptor&gt; {</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>    <span class="keyword">struct </span>convert&lt;<a class="code hl_define" href="def_8h.html#ac7a8c78cf90e9e699574316ba855f40c">WEBCFACE_NS</a>::ValAdaptor&gt; {</div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>        msgpack::object <span class="keyword">const</span> &amp;operator()(msgpack::object <span class="keyword">const</span> &amp;o,</div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>                                          WEBCFACE_NS::ValAdaptor &amp;v)<span class="keyword"> const </span>{</div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>            <span class="keywordflow">switch</span> (o.type) {</div>
@@ -157,7 +157,7 @@ $(document).ready(function(){initNavTree('val__adaptor_8h_source.html',''); init
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>        }</div>
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    };</div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    <span class="keyword">template</span> &lt;&gt;</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    <span class="keyword">struct </span><a class="code hl_function" href="namespaceWEBCFACE__NS_1_1Message.html#a36879effdf16e6acdd563b41fb630f35">pack</a>&lt;<a class="code hl_namespace" href="namespaceWEBCFACE__NS.html">WEBCFACE_NS</a>::ValAdaptor&gt; {</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    <span class="keyword">struct </span><a class="code hl_function" href="namespacewebcface_1_1Message.html#a36879effdf16e6acdd563b41fb630f35">pack</a>&lt;<a class="code hl_define" href="def_8h.html#ac7a8c78cf90e9e699574316ba855f40c">WEBCFACE_NS</a>::ValAdaptor&gt; {</div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>        <span class="keyword">template</span> &lt;<span class="keyword">typename</span> Stream&gt;</div>
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>        msgpack::packer&lt;Stream&gt; &amp;operator()(msgpack::packer&lt;Stream&gt; &amp;o,</div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>                                            <span class="keyword">const</span> WEBCFACE_NS::ValAdaptor &amp;v) {</div>
@@ -183,8 +183,8 @@ $(document).ready(function(){initNavTree('val__adaptor_8h_source.html',''); init
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>}</div>
 <div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>} <span class="comment">// namespace msgpack</span></div>
 <div class="ttc" id="adef_8h_html"><div class="ttname"><a href="def_8h.html">def.h</a></div></div>
-<div class="ttc" id="anamespaceWEBCFACE__NS_1_1Message_html_a36879effdf16e6acdd563b41fb630f35"><div class="ttname"><a href="namespaceWEBCFACE__NS_1_1Message.html#a36879effdf16e6acdd563b41fb630f35">WEBCFACE_NS::Message::pack</a></div><div class="ttdeci">void pack(std::stringstream &amp;buffer, int &amp;len, const T &amp;obj)</div><div class="ttdoc">メッセージをシリアル化しbufferに追加</div><div class="ttdef"><b>Definition</b> message.h:557</div></div>
-<div class="ttc" id="anamespaceWEBCFACE__NS_html"><div class="ttname"><a href="namespaceWEBCFACE__NS.html">WEBCFACE_NS</a></div><div class="ttdef"><b>Definition</b> client.cc:13</div></div>
+<div class="ttc" id="adef_8h_html_ac7a8c78cf90e9e699574316ba855f40c"><div class="ttname"><a href="def_8h.html#ac7a8c78cf90e9e699574316ba855f40c">WEBCFACE_NS</a></div><div class="ttdeci">#define WEBCFACE_NS</div><div class="ttdef"><b>Definition</b> def.h:32</div></div>
+<div class="ttc" id="anamespacewebcface_1_1Message_html_a36879effdf16e6acdd563b41fb630f35"><div class="ttname"><a href="namespacewebcface_1_1Message.html#a36879effdf16e6acdd563b41fb630f35">webcface::Message::pack</a></div><div class="ttdeci">void pack(std::stringstream &amp;buffer, int &amp;len, const T &amp;obj)</div><div class="ttdoc">メッセージをシリアル化しbufferに追加</div><div class="ttdef"><b>Definition</b> message.h:557</div></div>
 <div class="ttc" id="aval_8h_html"><div class="ttname"><a href="val_8h.html">val.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
@@ -192,7 +192,7 @@ $(document).ready(function(){initNavTree('val__adaptor_8h_source.html',''); init
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d06cd19e7b0a7bd71ca3f88af4ac0d59.html">message</a></li><li class="navelem"><a class="el" href="val__adaptor_8h.html">val_adaptor.h</a></li>
-    <li class="footer">Generated on Thu Jan 4 2024 08:43:13 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Thu Jan 4 2024 17:25:13 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

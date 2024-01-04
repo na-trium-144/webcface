@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['entry_0',['Entry',['../structWEBCFACE__NS_1_1Message_1_1Entry.html',1,'WEBCFACE_NS::Message']]],
+  ['entry_0',['Entry',['../structwebcface_1_1Message_1_1Entry.html',1,'webcface::Message']]],
   ['eventtarget_1',['EventTarget',['../classwebcface_1_1EventTarget.html',1,'webcface']]],
   ['eventtarget_3c_20image_20_3e_2',['EventTarget&lt; Image &gt;',['../classwebcface_1_1EventTarget.html',1,'webcface']]],
   ['eventtarget_3c_20log_2c_20std_3a_3astring_20_3e_3',['EventTarget&lt; Log, std::string &gt;',['../classwebcface_1_1EventTarget.html',1,'webcface']]],

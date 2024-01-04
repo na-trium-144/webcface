@@ -108,23 +108,95 @@ $(document).ready(function(){initNavTree('namespacewebcface_1_1Internal.html',''
 
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a>  </div>
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">webcface::Internal Namespace Reference</div></div>
 </div><!--header-->
 <div class="contents">
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html">ClientData</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Internal_1_1FuncOnSync.html">FuncOnSync</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">clientがsync()されたタイミングで実行中の関数を起こす さらにその関数が完了するまで待機する  <a href="classwebcface_1_1Internal_1_1FuncOnSync.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Internal_1_1FuncResultStore.html">FuncResultStore</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">AsyncFuncResultのリストを保持する。  <a href="classwebcface_1_1Internal_1_1FuncResultStore.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore1.html">SyncDataStore1</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore2.html">SyncDataStore2</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">送受信するデータを保持するクラス  <a href="classwebcface_1_1Internal_1_1SyncDataStore2.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:abea0ebf8029d1b375bea48dca57b9fa7" id="r_abea0ebf8029d1b375bea48dca57b9fa7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore1.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Internal.html#abea0ebf8029d1b375bea48dca57b9fa7">messageThreadMain</a> (std::shared_ptr&lt; <a class="el" href="structwebcface_1_1Internal_1_1ClientData.html">ClientData</a> &gt; data, std::string host, <a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore1.html">int</a> port)</td></tr>
+<tr class="separator:abea0ebf8029d1b375bea48dca57b9fa7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab7dcb25feb9553f343aec62dfe9bbbd2" id="r_ab7dcb25feb9553f343aec62dfe9bbbd2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore1.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Internal.html#ab7dcb25feb9553f343aec62dfe9bbbd2">recvThreadMain</a> (std::shared_ptr&lt; <a class="el" href="structwebcface_1_1Internal_1_1ClientData.html">ClientData</a> &gt; data)</td></tr>
+<tr class="separator:ab7dcb25feb9553f343aec62dfe9bbbd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Function Documentation</h2>
+<a id="abea0ebf8029d1b375bea48dca57b9fa7" name="abea0ebf8029d1b375bea48dca57b9fa7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abea0ebf8029d1b375bea48dca57b9fa7">&#9670;&#160;</a></span>messageThreadMain()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore1.html">void</a> messageThreadMain </td>
+          <td>(</td>
+          <td class="paramtype">std::shared_ptr&lt; <a class="el" href="structwebcface_1_1Internal_1_1ClientData.html">ClientData</a> &gt;&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>host</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore1.html">int</a>&#160;</td>
+          <td class="paramname"><em>port</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ab7dcb25feb9553f343aec62dfe9bbbd2" name="ab7dcb25feb9553f343aec62dfe9bbbd2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab7dcb25feb9553f343aec62dfe9bbbd2">&#9670;&#160;</a></span>recvThreadMain()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore1.html">void</a> recvThreadMain </td>
+          <td>(</td>
+          <td class="paramtype">std::shared_ptr&lt; <a class="el" href="structwebcface_1_1Internal_1_1ClientData.html">ClientData</a> &gt;&#160;</td>
+          <td class="paramname"><em>data</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="namespacewebcface_1_1Internal.html">Internal</a></li>
-    <li class="footer">Generated on Thu Jan 4 2024 08:43:13 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Thu Jan 4 2024 17:25:13 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

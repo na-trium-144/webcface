@@ -6,9 +6,11 @@ var namespacewebcface =
       [ "runCondScopeGuard", "namespacewebcface_1_1FuncWrapper.html#a8915696ebd012d8da17d70b5d9f05a87", null ]
     ] ],
     [ "Internal", "namespacewebcface_1_1Internal.html", "namespacewebcface_1_1Internal" ],
+    [ "Message", "namespacewebcface_1_1Message.html", "namespacewebcface_1_1Message" ],
+    [ "Server", "namespacewebcface_1_1Server.html", "namespacewebcface_1_1Server" ],
     [ "Version", "namespacewebcface_1_1Version.html", [
-      [ "version", "namespacewebcface_1_1Version.html#a180d5d3e729b73528555d2e115b4e2cc", null ],
-      [ "version_s", "namespacewebcface_1_1Version.html#a38ae52f20e218797da52da0302a74830", null ]
+      [ "version", "namespacewebcface_1_1Version.html#a342b6f41244b8f7bce0c63b449f20dc1", null ],
+      [ "version_s", "namespacewebcface_1_1Version.html#ac908c368a4d24ffe7c3b3906522e0fc8", null ]
     ] ],
     [ "ViewComponents", "namespacewebcface_1_1ViewComponents.html", [
       [ "button", "namespacewebcface_1_1ViewComponents.html#a818c39acf0a23a489c00b0b3327881db", null ],
@@ -96,16 +98,21 @@ var namespacewebcface =
       [ "new_line", "namespacewebcface.html#a11040d82967b60182816ddc035d07c28a620cf4c6d9756f9ce211c523f16c42a9", null ],
       [ "button", "namespacewebcface.html#a11040d82967b60182816ddc035d07c28ace50a09343724eb82df11390e2c1de18", null ]
     ] ],
+    [ "addImageReq", "namespacewebcface.html#a806db4628483c6797b577ed9a0b961e1", null ],
+    [ "addLogReq", "namespacewebcface.html#a2519e960a6d716c731d3f6052b155506", null ],
+    [ "addTextReq", "namespacewebcface.html#a56477b79b2dde08913f06982f0bdeae2", null ],
+    [ "addValueReq", "namespacewebcface.html#a270ce44113fa7f19baddd043e65e719c", null ],
+    [ "addViewReq", "namespacewebcface.html#afa0e8d6eaa050284dd10dd65374e3a40", null ],
     [ "argToTuple", "namespacewebcface_1_1Common.html#a5aeb2e4cecdcd6261d71162f7f918434", null ],
     [ "button", "namespacewebcface_1_1ViewComponents.html#a818c39acf0a23a489c00b0b3327881db", null ],
     [ "newLine", "namespacewebcface_1_1ViewComponents.html#ab72da582724c98c1e879cadbacc78663", null ],
     [ "operator<<", "namespacewebcface_1_1Common.html#a22a1de50b886c3b43b60369169be8be9", null ],
-    [ "operator<<", "namespacewebcface.html#a65bb5f56a1829b52c49b3e96eb1ea09a", null ],
+    [ "operator<<", "namespacewebcface.html#a3b45f7bce732ee80d9a1346fa7fef32a", null ],
     [ "operator<<", "namespacewebcface.html#a7528ca9b8be7cf3baf4a1371085a5d87", null ],
     [ "operator<<", "namespacewebcface.html#adee3d68a70be59fb6cfc97480b935199", null ],
     [ "operator<<", "namespacewebcface_1_1Common.html#acc572ea980d434e6af0ac9f2e80a31cd", null ],
     [ "text", "namespacewebcface_1_1ViewComponents.html#ae4003297f6bf60244afe0fc207c63dad", null ],
     [ "valTypeOf", "namespacewebcface_1_1Common.html#ae0e0d190aa5fc5710b43f55098ad9ecd", null ],
-    [ "version", "namespacewebcface_1_1Version.html#a180d5d3e729b73528555d2e115b4e2cc", null ],
-    [ "version_s", "namespacewebcface_1_1Version.html#a38ae52f20e218797da52da0302a74830", null ]
+    [ "version", "namespacewebcface_1_1Version.html#a342b6f41244b8f7bce0c63b449f20dc1", null ],
+    [ "version_s", "namespacewebcface_1_1Version.html#ac908c368a4d24ffe7c3b3906522e0fc8", null ]
 ];

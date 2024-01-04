@@ -1,3 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$structwebcface_1_1Common_1_1DictTraits_3_01VectorOpt_3_01T_01_4_01_4.html" title="内部データ(VectorOpt&lt;T&gt;)とユーザーが取得したいデータ(ValueType)を相互変換するTrait" alt="" coords="5,5,168,45"/>
+<area shape="rect" id="Node000000" title=" " alt="" coords="5,5,192,31"/>
+<area shape="rect" id="Node000001" href="$structwebcface_1_1Internal_1_1ClientData.html" title=" " alt="" coords="240,5,331,31"/>
+<area shape="poly" id="edge4_Node000000_Node000001" title=" " alt="" coords="206,15,240,15,240,21,206,21"/>
 </map>

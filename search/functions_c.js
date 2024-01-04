@@ -1,6 +1,6 @@
 var searchData=
 [
   ['name_0',['name',['../classwebcface_1_1Common_1_1Arg.html#a1d89c28bd42ba9a52da008bb69367171',1,'webcface::Common::Arg::name()'],['../structwebcface_1_1Field.html#a1d89c28bd42ba9a52da008bb69367171',1,'webcface::Field::name()'],['../classwebcface_1_1Member.html#a1d89c28bd42ba9a52da008bb69367171',1,'webcface::Member::name()'],['../classwebcface_1_1Func.html#a1d89c28bd42ba9a52da008bb69367171',1,'webcface::Func::name()'],['../classwebcface_1_1AsyncFuncResult.html#a1d89c28bd42ba9a52da008bb69367171',1,'webcface::AsyncFuncResult::name()'],['../classwebcface_1_1Image.html#a1d89c28bd42ba9a52da008bb69367171',1,'webcface::Image::name()'],['../classwebcface_1_1Text.html#a1d89c28bd42ba9a52da008bb69367171',1,'webcface::Text::name()'],['../classwebcface_1_1Value.html#a1d89c28bd42ba9a52da008bb69367171',1,'webcface::Value::name()'],['../classwebcface_1_1View.html#a1d89c28bd42ba9a52da008bb69367171',1,'webcface::View::name()']]],
-  ['newclient_1',['newClient',['../structWEBCFACE__NS_1_1Server_1_1Store.html#ab66e8fa116f1af0f50a383d780da3191',1,'WEBCFACE_NS::Server::Store']]],
+  ['newclient_1',['newClient',['../structwebcface_1_1Server_1_1Store.html#ab66e8fa116f1af0f50a383d780da3191',1,'webcface::Server::Store']]],
   ['newline_2',['newline',['../namespacewebcface_1_1ViewComponents.html#ab72da582724c98c1e879cadbacc78663',1,'webcface::newLine()'],['../namespacewebcface_1_1ViewComponents.html#ab72da582724c98c1e879cadbacc78663',1,'webcface::ViewComponents::newLine()']]]
 ];

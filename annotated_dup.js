@@ -23,7 +23,43 @@ var annotated_dup =
         [ "ViewComponentBase", "structwebcface_1_1Common_1_1ViewComponentBase.html", "structwebcface_1_1Common_1_1ViewComponentBase" ]
       ] ],
       [ "Internal", "namespacewebcface_1_1Internal.html", [
-        [ "SyncDataStore1", "classwebcface_1_1Internal_1_1SyncDataStore1.html", null ]
+        [ "ClientData", "structwebcface_1_1Internal_1_1ClientData.html", "structwebcface_1_1Internal_1_1ClientData" ],
+        [ "FuncOnSync", "classwebcface_1_1Internal_1_1FuncOnSync.html", "classwebcface_1_1Internal_1_1FuncOnSync" ],
+        [ "FuncResultStore", "classwebcface_1_1Internal_1_1FuncResultStore.html", "classwebcface_1_1Internal_1_1FuncResultStore" ],
+        [ "SyncDataStore1", "classwebcface_1_1Internal_1_1SyncDataStore1.html", "classwebcface_1_1Internal_1_1SyncDataStore1" ],
+        [ "SyncDataStore2", "classwebcface_1_1Internal_1_1SyncDataStore2.html", "classwebcface_1_1Internal_1_1SyncDataStore2" ]
+      ] ],
+      [ "Message", "namespacewebcface_1_1Message.html", [
+        [ "Call", "structwebcface_1_1Message_1_1Call.html", "structwebcface_1_1Message_1_1Call" ],
+        [ "CallResponse", "structwebcface_1_1Message_1_1CallResponse.html", "structwebcface_1_1Message_1_1CallResponse" ],
+        [ "CallResult", "structwebcface_1_1Message_1_1CallResult.html", "structwebcface_1_1Message_1_1CallResult" ],
+        [ "Entry", "structwebcface_1_1Message_1_1Entry.html", "structwebcface_1_1Message_1_1Entry" ],
+        [ "FuncInfo", "structwebcface_1_1Message_1_1FuncInfo.html", "structwebcface_1_1Message_1_1FuncInfo" ],
+        [ "Image", "structwebcface_1_1Message_1_1Image.html", "structwebcface_1_1Message_1_1Image" ],
+        [ "Log", "structwebcface_1_1Message_1_1Log.html", "structwebcface_1_1Message_1_1Log" ],
+        [ "LogReq", "structwebcface_1_1Message_1_1LogReq.html", "structwebcface_1_1Message_1_1LogReq" ],
+        [ "MessageBase", "structwebcface_1_1Message_1_1MessageBase.html", "structwebcface_1_1Message_1_1MessageBase" ],
+        [ "Ping", "structwebcface_1_1Message_1_1Ping.html", "structwebcface_1_1Message_1_1Ping" ],
+        [ "PingStatus", "structwebcface_1_1Message_1_1PingStatus.html", "structwebcface_1_1Message_1_1PingStatus" ],
+        [ "PingStatusReq", "structwebcface_1_1Message_1_1PingStatusReq.html", "structwebcface_1_1Message_1_1PingStatusReq" ],
+        [ "Req", "structwebcface_1_1Message_1_1Req.html", "structwebcface_1_1Message_1_1Req" ],
+        [ "Req< Image >", "structwebcface_1_1Message_1_1Req_3_01Image_01_4.html", "structwebcface_1_1Message_1_1Req_3_01Image_01_4" ],
+        [ "Res", "structwebcface_1_1Message_1_1Res.html", null ],
+        [ "Res< Image >", "structwebcface_1_1Message_1_1Res_3_01Image_01_4.html", "structwebcface_1_1Message_1_1Res_3_01Image_01_4" ],
+        [ "Res< Text >", "structwebcface_1_1Message_1_1Res_3_01Text_01_4.html", "structwebcface_1_1Message_1_1Res_3_01Text_01_4" ],
+        [ "Res< Value >", "structwebcface_1_1Message_1_1Res_3_01Value_01_4.html", "structwebcface_1_1Message_1_1Res_3_01Value_01_4" ],
+        [ "Res< View >", "structwebcface_1_1Message_1_1Res_3_01View_01_4.html", "structwebcface_1_1Message_1_1Res_3_01View_01_4" ],
+        [ "SvrVersion", "structwebcface_1_1Message_1_1SvrVersion.html", "structwebcface_1_1Message_1_1SvrVersion" ],
+        [ "Sync", "structwebcface_1_1Message_1_1Sync.html", "structwebcface_1_1Message_1_1Sync" ],
+        [ "SyncInit", "structwebcface_1_1Message_1_1SyncInit.html", "structwebcface_1_1Message_1_1SyncInit" ],
+        [ "Text", "structwebcface_1_1Message_1_1Text.html", "structwebcface_1_1Message_1_1Text" ],
+        [ "Value", "structwebcface_1_1Message_1_1Value.html", "structwebcface_1_1Message_1_1Value" ],
+        [ "View", "structwebcface_1_1Message_1_1View.html", "structwebcface_1_1Message_1_1View" ]
+      ] ],
+      [ "Server", "namespacewebcface_1_1Server.html", [
+        [ "ClientData", "structwebcface_1_1Server_1_1ClientData.html", "structwebcface_1_1Server_1_1ClientData" ],
+        [ "CustomLogger", "classwebcface_1_1Server_1_1CustomLogger.html", "classwebcface_1_1Server_1_1CustomLogger" ],
+        [ "Store", "structwebcface_1_1Server_1_1Store.html", "structwebcface_1_1Server_1_1Store" ]
       ] ],
       [ "AnonymousFunc", "classwebcface_1_1AnonymousFunc.html", "classwebcface_1_1AnonymousFunc" ],
       [ "Arg", "classwebcface_1_1Common_1_1Arg.html", "classwebcface_1_1Common_1_1Arg" ],
@@ -61,46 +97,5 @@ var annotated_dup =
       [ "ViewBuf", "classwebcface_1_1ViewBuf.html", "classwebcface_1_1ViewBuf" ],
       [ "ViewComponent", "classwebcface_1_1ViewComponent.html", "classwebcface_1_1ViewComponent" ],
       [ "ViewComponentBase", "structwebcface_1_1Common_1_1ViewComponentBase.html", "structwebcface_1_1Common_1_1ViewComponentBase" ]
-    ] ],
-    [ "WEBCFACE_NS", "namespaceWEBCFACE__NS.html", [
-      [ "Internal", "namespaceWEBCFACE__NS_1_1Internal.html", [
-        [ "ClientData", "structWEBCFACE__NS_1_1Internal_1_1ClientData.html", "structWEBCFACE__NS_1_1Internal_1_1ClientData" ],
-        [ "FuncOnSync", "classWEBCFACE__NS_1_1Internal_1_1FuncOnSync.html", "classWEBCFACE__NS_1_1Internal_1_1FuncOnSync" ],
-        [ "FuncResultStore", "classWEBCFACE__NS_1_1Internal_1_1FuncResultStore.html", "classWEBCFACE__NS_1_1Internal_1_1FuncResultStore" ],
-        [ "SyncDataStore1", "classWEBCFACE__NS_1_1Internal_1_1SyncDataStore1.html", "classWEBCFACE__NS_1_1Internal_1_1SyncDataStore1" ],
-        [ "SyncDataStore2", "classWEBCFACE__NS_1_1Internal_1_1SyncDataStore2.html", "classWEBCFACE__NS_1_1Internal_1_1SyncDataStore2" ]
-      ] ],
-      [ "Message", "namespaceWEBCFACE__NS_1_1Message.html", [
-        [ "Call", "structWEBCFACE__NS_1_1Message_1_1Call.html", "structWEBCFACE__NS_1_1Message_1_1Call" ],
-        [ "CallResponse", "structWEBCFACE__NS_1_1Message_1_1CallResponse.html", "structWEBCFACE__NS_1_1Message_1_1CallResponse" ],
-        [ "CallResult", "structWEBCFACE__NS_1_1Message_1_1CallResult.html", "structWEBCFACE__NS_1_1Message_1_1CallResult" ],
-        [ "Entry", "structWEBCFACE__NS_1_1Message_1_1Entry.html", "structWEBCFACE__NS_1_1Message_1_1Entry" ],
-        [ "FuncInfo", "structWEBCFACE__NS_1_1Message_1_1FuncInfo.html", "structWEBCFACE__NS_1_1Message_1_1FuncInfo" ],
-        [ "Image", "structWEBCFACE__NS_1_1Message_1_1Image.html", "structWEBCFACE__NS_1_1Message_1_1Image" ],
-        [ "Log", "structWEBCFACE__NS_1_1Message_1_1Log.html", "structWEBCFACE__NS_1_1Message_1_1Log" ],
-        [ "LogReq", "structWEBCFACE__NS_1_1Message_1_1LogReq.html", "structWEBCFACE__NS_1_1Message_1_1LogReq" ],
-        [ "MessageBase", "structWEBCFACE__NS_1_1Message_1_1MessageBase.html", "structWEBCFACE__NS_1_1Message_1_1MessageBase" ],
-        [ "Ping", "structWEBCFACE__NS_1_1Message_1_1Ping.html", "structWEBCFACE__NS_1_1Message_1_1Ping" ],
-        [ "PingStatus", "structWEBCFACE__NS_1_1Message_1_1PingStatus.html", "structWEBCFACE__NS_1_1Message_1_1PingStatus" ],
-        [ "PingStatusReq", "structWEBCFACE__NS_1_1Message_1_1PingStatusReq.html", "structWEBCFACE__NS_1_1Message_1_1PingStatusReq" ],
-        [ "Req", "structWEBCFACE__NS_1_1Message_1_1Req.html", "structWEBCFACE__NS_1_1Message_1_1Req" ],
-        [ "Req< Image >", "structWEBCFACE__NS_1_1Message_1_1Req_3_01Image_01_4.html", "structWEBCFACE__NS_1_1Message_1_1Req_3_01Image_01_4" ],
-        [ "Res", "structWEBCFACE__NS_1_1Message_1_1Res.html", null ],
-        [ "Res< Image >", "structWEBCFACE__NS_1_1Message_1_1Res_3_01Image_01_4.html", "structWEBCFACE__NS_1_1Message_1_1Res_3_01Image_01_4" ],
-        [ "Res< Text >", "structWEBCFACE__NS_1_1Message_1_1Res_3_01Text_01_4.html", "structWEBCFACE__NS_1_1Message_1_1Res_3_01Text_01_4" ],
-        [ "Res< Value >", "structWEBCFACE__NS_1_1Message_1_1Res_3_01Value_01_4.html", "structWEBCFACE__NS_1_1Message_1_1Res_3_01Value_01_4" ],
-        [ "Res< View >", "structWEBCFACE__NS_1_1Message_1_1Res_3_01View_01_4.html", "structWEBCFACE__NS_1_1Message_1_1Res_3_01View_01_4" ],
-        [ "SvrVersion", "structWEBCFACE__NS_1_1Message_1_1SvrVersion.html", "structWEBCFACE__NS_1_1Message_1_1SvrVersion" ],
-        [ "Sync", "structWEBCFACE__NS_1_1Message_1_1Sync.html", "structWEBCFACE__NS_1_1Message_1_1Sync" ],
-        [ "SyncInit", "structWEBCFACE__NS_1_1Message_1_1SyncInit.html", "structWEBCFACE__NS_1_1Message_1_1SyncInit" ],
-        [ "Text", "structWEBCFACE__NS_1_1Message_1_1Text.html", "structWEBCFACE__NS_1_1Message_1_1Text" ],
-        [ "Value", "structWEBCFACE__NS_1_1Message_1_1Value.html", "structWEBCFACE__NS_1_1Message_1_1Value" ],
-        [ "View", "structWEBCFACE__NS_1_1Message_1_1View.html", "structWEBCFACE__NS_1_1Message_1_1View" ]
-      ] ],
-      [ "Server", "namespaceWEBCFACE__NS_1_1Server.html", [
-        [ "ClientData", "structWEBCFACE__NS_1_1Server_1_1ClientData.html", "structWEBCFACE__NS_1_1Server_1_1ClientData" ],
-        [ "CustomLogger", "classWEBCFACE__NS_1_1Server_1_1CustomLogger.html", "classWEBCFACE__NS_1_1Server_1_1CustomLogger" ],
-        [ "Store", "structWEBCFACE__NS_1_1Server_1_1Store.html", "structWEBCFACE__NS_1_1Server_1_1Store" ]
-      ] ]
     ] ]
 ];

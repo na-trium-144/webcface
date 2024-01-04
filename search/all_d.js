@@ -2,7 +2,7 @@ var searchData=
 [
   ['emplace_0',['emplace',['../classwebcface_1_1Common_1_1Dict.html#a33d9844c6d1fdd0ef489488ca94e6287',1,'webcface::Common::Dict']]],
   ['empty_1',['empty',['../classwebcface_1_1Common_1_1ImageBase.html#a644718bb2fb240de962dc3c9a1fdf0dc',1,'webcface::Common::ImageBase']]],
-  ['entry_2',['entry',['../structWEBCFACE__NS_1_1Message_1_1Entry.html',1,'Entry&lt; T &gt;'],['../namespaceWEBCFACE__NS_1_1Message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484aea7013f3ac85e6433e2758c1e7052ae5',1,'WEBCFACE_NS::Message::MessageKind::entry'],['../classWEBCFACE__NS_1_1Internal_1_1SyncDataStore2.html#a9c4e53be3f8989f0b338fd4e119a578a',1,'WEBCFACE_NS::Internal::SyncDataStore2::entry']]],
+  ['entry_2',['entry',['../structwebcface_1_1Message_1_1Entry.html',1,'Entry&lt; T &gt;'],['../namespacewebcface_1_1Message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484aea7013f3ac85e6433e2758c1e7052ae5',1,'webcface::Message::MessageKind::entry'],['../classwebcface_1_1Internal_1_1SyncDataStore2.html#a9c4e53be3f8989f0b338fd4e119a578a',1,'webcface::Internal::SyncDataStore2::entry']]],
   ['entry_20kind_2020_3',['value entry (kind = 20)',['../md_90__message.html#autotoc_md66',1,'']]],
   ['entry_20kind_2021_4',['text entry (kind = 21)',['../md_90__message.html#autotoc_md71',1,'']]],
   ['entry_20kind_2023_5',['view entry (kind = 23)',['../md_90__message.html#autotoc_md76',1,'']]],

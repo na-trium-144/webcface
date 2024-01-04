@@ -1,5 +1,0 @@
-<map id="FuncInfo" name="FuncInfo">
-<area shape="rect" id="Node000001" title="client(member)&#45;&gt;server&#45;&gt;client func登録" alt="" coords="42,79,119,104"/>
-<area shape="rect" id="Node000002" href="$structWEBCFACE__NS_1_1Message_1_1MessageBase.html" title="型からkindを取得するためだけのベースクラス" alt="" coords="5,5,156,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="83,44,83,79,78,79,78,44"/>
-</map>
