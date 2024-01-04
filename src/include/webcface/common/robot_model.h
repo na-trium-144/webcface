@@ -4,6 +4,7 @@
 #include <optional>
 #include <vector>
 #include <array>
+#include <stdexcept>
 #include "view.h"
 
 namespace WEBCFACE_NS {
@@ -45,10 +46,18 @@ struct RobotJoint {
     Transform origin;
     double angle = 0;
 };
+inline namespace RobotJoints {
+inline RobotJoint fixedJoint(const std::string &name,
+                             const std::string &parent_name,
+                             const Transform &origin) {
+    return RobotJoint{name, parent_name, RobotJointType::fixed, origin, 0};
+}
+} // namespace RobotJoints
+
 enum class RobotGeometryType {
     none = 0,
     line = 1,
-    plain = 2,
+    plane = 2,
     box = 3,
 };
 struct RobotGeometry {
@@ -65,13 +74,29 @@ struct Line : RobotGeometry {
     Line(const Transform &origin, const Transform &end)
         : RobotGeometry(RobotGeometryType::line, origin,
                         {end.pos()[0], end.pos()[1], end.pos()[2]}) {}
-    Line(const RobotGeometry &rg) : RobotGeometry(rg) {}
+    Line(const RobotGeometry &rg) : RobotGeometry(rg) {
+        if (properties.size() != 3) {
+            throw std::invalid_argument("number of properties does not match");
+        }
+    }
     Transform end() const {
         return Transform{{properties[0], properties[1], properties[2]},
                          {0, 0, 0}};
     }
 };
+struct Plane : RobotGeometry {
+    Plane(const Transform &origin, double width, double height)
+        : RobotGeometry(RobotGeometryType::plane, origin, {width, height}) {}
+    Plane(const RobotGeometry &rg) : RobotGeometry(rg) {
+        if (properties.size() != 2) {
+            throw std::invalid_argument("number of properties does not match");
+        }
+    }
+    double width() const { return properties[0]; }
+    double height() const { return properties[1]; }
+};
 } // namespace RobotGeometries
+
 struct RobotLink {
     std::string name;
     RobotJoint joint;
