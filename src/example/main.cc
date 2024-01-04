@@ -48,7 +48,15 @@ int main() {
     std::cout.rdbuf(buf);
 
     c.robotModel("aaa").set({
-        webcface::RobotLink{"link1", {}, {}, webcface::ViewColor::yellow},
+        webcface::RobotLink{"link1",
+                            {},
+                            webcface::Line{{0, 0, 0}, {0, 1, 0}},
+                            webcface::ViewColor::yellow},
+        webcface::RobotLink{
+            "link2",
+            {"joint1", "link1", webcface::RobotJointType::fixed, {0, 1, 0}, 0},
+            webcface::Line{{0, 0, 0}, {1, 0, 0}},
+            webcface::ViewColor::green},
     });
 
     int i = 0;
