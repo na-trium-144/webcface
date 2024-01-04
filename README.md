@@ -136,8 +136,7 @@ brew install webcface webcface-webui webcface-tools
 	* opencvはソースからビルドしません。別途インストールする必要があります。
 		* またはcmake時のオプションでopencvを使わないようにすることもできます (画像の変換機能が無効になります)
 	* libcurlはwebsocket機能を有効にする必要があるためインストールされている場合でもソースからビルドします
-	* crowは暫定的にWindowsでSegmentation faultするバグを修正したもの([na-trium-144/Crow](https://github.com/na-trium-144/Crow) の fix-destructor-io-service ブランチ)を使用しています
-
+	
 <details><summary>Ubuntu 20.04, 22.04</summary>
 
 ```sh
