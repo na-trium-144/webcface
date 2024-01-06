@@ -332,6 +332,7 @@ set(CLI_SRC
     ${CPP_DIR}/client/logger.cc
     ${CPP_DIR}/client/member.cc
     ${CPP_DIR}/client/text.cc
+    ${CPP_DIR}/client/robot_model.cc
     ${CPP_DIR}/client/value.cc
     ${CPP_DIR}/client/view.cc
     ${CPP_DIR}/client/image.cc
@@ -356,6 +357,7 @@ set(TEST_SRC
     ${CPP_DIR}/test/data_test.cc
     ${CPP_DIR}/test/func_test.cc
     ${CPP_DIR}/test/view_test.cc
+    ${CPP_DIR}/test/robot_model_test.cc
     ${CPP_DIR}/test/image_test.cc
     ${CPP_DIR}/test/member_test.cc
     ${CPP_DIR}/test/logger_test.cc

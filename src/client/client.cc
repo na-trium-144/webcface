@@ -24,7 +24,8 @@ Internal::ClientData::ClientData(const std::string &name,
     : std::enable_shared_from_this<ClientData>(), self_member_name(name),
       host(host), port(port),
       message_queue(std::make_shared<Common::Queue<std::string>>()),
-      value_store(name), text_store(name), func_store(name), view_store(name), image_store(name),
+      value_store(name), text_store(name), func_store(name), view_store(name),
+      image_store(name), robot_model_store(name),
       log_store(std::make_shared<
                 SyncDataStore1<std::shared_ptr<std::vector<LogLine>>>>(name)),
       sync_time_store(name),
@@ -130,6 +131,7 @@ void Internal::ClientData::syncDataFirst() {
     std::lock_guard view_lock(view_store.mtx);
     std::lock_guard func_lock(func_store.mtx);
     std::lock_guard image_lock(image_store.mtx);
+    std::lock_guard robot_model_lock(robot_model_store.mtx);
     std::lock_guard log_lock(log_store->mtx);
 
     std::stringstream buffer;
@@ -160,6 +162,13 @@ void Internal::ClientData::syncDataFirst() {
                 Message::Req<Message::View>{{}, v.first, v2.first, v2.second});
         }
     }
+    for (const auto &v : robot_model_store.transferReq()) {
+        for (const auto &v2 : v.second) {
+            Message::pack(
+                buffer, len,
+                Message::Req<Message::RobotModel>{{}, v.first, v2.first, v2.second});
+        }
+    }
     for (const auto &v : image_store.transferReq()) {
         for (const auto &v2 : v.second) {
             Message::pack(buffer, len,
@@ -186,6 +195,7 @@ void Internal::ClientData::syncData(bool is_first) {
     std::lock_guard view_lock(view_store.mtx);
     std::lock_guard func_lock(func_store.mtx);
     std::lock_guard image_lock(image_store.mtx);
+    std::lock_guard robot_model_lock(robot_model_store.mtx);
     std::lock_guard log_lock(log_store->mtx);
 
     std::stringstream buffer;
@@ -203,6 +213,9 @@ void Internal::ClientData::syncData(bool is_first) {
     }
     for (const auto &v : text_store.transferSend(is_first)) {
         Message::pack(buffer, len, Message::Text{{}, v.first, v.second});
+    }
+    for (const auto &v : robot_model_store.transferSend(is_first)) {
+        Message::pack(buffer, len, Message::RobotModel{v.first, v.second});
     }
     auto view_send_prev = view_store.getSendPrev(is_first);
     auto view_send = view_store.transferSend(is_first);
@@ -258,7 +271,8 @@ void Client::sync() {
 }
 void Internal::ClientData::onRecv(const std::string &message) {
     namespace MessageKind = WEBCFACE_NS::Message::MessageKind;
-    auto messages = WEBCFACE_NS::Message::unpack(message, this->logger_internal);
+    auto messages =
+        WEBCFACE_NS::Message::unpack(message, this->logger_internal);
     std::vector<std::string> sync_members;
     for (const auto &m : messages) {
         const auto &[kind, obj] = m;
@@ -291,9 +305,8 @@ void Internal::ClientData::onRecv(const std::string &message) {
             break;
         }
         case MessageKind::value + MessageKind::res: {
-            auto r =
-                std::any_cast<WEBCFACE_NS::Message::Res<WEBCFACE_NS::Message::Value>>(
-                    obj);
+            auto r = std::any_cast<
+                WEBCFACE_NS::Message::Res<WEBCFACE_NS::Message::Value>>(obj);
             auto [member, field] =
                 this->value_store.getReq(r.req_id, r.sub_field);
             this->value_store.setRecv(
@@ -305,9 +318,8 @@ void Internal::ClientData::onRecv(const std::string &message) {
             break;
         }
         case MessageKind::text + MessageKind::res: {
-            auto r =
-                std::any_cast<WEBCFACE_NS::Message::Res<WEBCFACE_NS::Message::Text>>(
-                    obj);
+            auto r = std::any_cast<
+                WEBCFACE_NS::Message::Res<WEBCFACE_NS::Message::Text>>(obj);
             auto [member, field] =
                 this->text_store.getReq(r.req_id, r.sub_field);
             this->text_store.setRecv(member, field, r.data);
@@ -316,10 +328,20 @@ void Internal::ClientData::onRecv(const std::string &message) {
                 Field{shared_from_this(), member, field});
             break;
         }
+        case MessageKind::robot_model + MessageKind::res: {
+            auto r = std::any_cast<
+                WEBCFACE_NS::Message::Res<WEBCFACE_NS::Message::RobotModel>>(obj);
+            auto [member, field] =
+                this->robot_model_store.getReq(r.req_id, r.sub_field);
+            this->robot_model_store.setRecv(member, field, r.commonLinks());
+            this->robot_model_change_event.dispatch(
+                FieldBase{member, field},
+                Field{shared_from_this(), member, field});
+            break;
+        }
         case MessageKind::view + MessageKind::res: {
-            auto r =
-                std::any_cast<WEBCFACE_NS::Message::Res<WEBCFACE_NS::Message::View>>(
-                    obj);
+            auto r = std::any_cast<
+                WEBCFACE_NS::Message::Res<WEBCFACE_NS::Message::View>>(obj);
             std::lock_guard lock(this->view_store.mtx);
             auto [member, field] =
                 this->view_store.getReq(r.req_id, r.sub_field);
@@ -339,9 +361,8 @@ void Internal::ClientData::onRecv(const std::string &message) {
             break;
         }
         case MessageKind::image + MessageKind::res: {
-            auto r =
-                std::any_cast<WEBCFACE_NS::Message::Res<WEBCFACE_NS::Message::Image>>(
-                    obj);
+            auto r = std::any_cast<
+                WEBCFACE_NS::Message::Res<WEBCFACE_NS::Message::Image>>(obj);
             auto [member, field] =
                 this->image_store.getReq(r.req_id, r.sub_field);
             this->image_store.setRecv(member, field, r);
@@ -391,10 +412,10 @@ void Internal::ClientData::onRecv(const std::string &message) {
                     }
                     data->message_queue->push(WEBCFACE_NS::Message::packSingle(
                         WEBCFACE_NS::Message::CallResult{{},
-                                                      r.caller_id,
-                                                      r.caller_member_id,
-                                                      is_error,
-                                                      result}));
+                                                         r.caller_id,
+                                                         r.caller_member_id,
+                                                         is_error,
+                                                         result}));
                 } else {
                     data->message_queue->push(WEBCFACE_NS::Message::packSingle(
                         WEBCFACE_NS::Message::CallResponse{
@@ -492,6 +513,15 @@ void Internal::ClientData::onRecv(const std::string &message) {
                 member, Field{shared_from_this(), member, r.field});
             break;
         }
+        case MessageKind::entry + MessageKind::robot_model: {
+            auto r = std::any_cast<
+                WEBCFACE_NS::Message::Entry<WEBCFACE_NS::Message::RobotModel>>(obj);
+            auto member = this->getMemberNameFromId(r.member_id);
+            this->robot_model_store.setEntry(member, r.field);
+            this->robot_model_entry_event.dispatch(
+                member, Field{shared_from_this(), member, r.field});
+            break;
+        }
         case MessageKind::entry + MessageKind::image: {
             auto r = std::any_cast<
                 WEBCFACE_NS::Message::Entry<WEBCFACE_NS::Message::Image>>(obj);
@@ -514,9 +544,13 @@ void Internal::ClientData::onRecv(const std::string &message) {
         case MessageKind::value:
         case MessageKind::text:
         case MessageKind::view:
+        case MessageKind::robot_model:
+        case MessageKind::image:
         case MessageKind::value + MessageKind::req:
         case MessageKind::text + MessageKind::req:
         case MessageKind::view + MessageKind::req:
+        case MessageKind::robot_model + MessageKind::req:
+        case MessageKind::image + MessageKind::req:
         case MessageKind::ping_status_req:
         case MessageKind::log_req:
             this->logger_internal->warn("Invalid Message Kind {}", kind);

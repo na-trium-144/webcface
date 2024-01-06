@@ -47,6 +47,23 @@ int main() {
     std::cout << "this is cout" << std::endl;
     std::cout.rdbuf(buf);
 
+    c.robotModel("aaa").set({
+        webcface::RobotLink{"plane",
+                            {},
+                            webcface::Plane{{}, 10, 10},
+                            webcface::ViewColor::gray},
+        webcface::RobotLink{
+            "link1",
+            webcface::fixedJoint("joint1", "plane",
+                                 {{0, 0, 0}, {0, -std::numbers::pi / 2, 0}}),
+            webcface::Line{{0, 0, 0}, {1, 0, 0}}, webcface::ViewColor::yellow},
+        webcface::RobotLink{
+            "link2",
+            webcface::fixedJoint("joint1", "link1",
+                                 {{1, 0, 0}, {0, std::numbers::pi / 4, 0}}),
+            webcface::Line{{0, 0, 0}, {1, 0, 0}}, webcface::ViewColor::green},
+    });
+
     int i = 0;
 
     while (true) {

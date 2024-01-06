@@ -11,6 +11,7 @@
 #include "func.h"
 #include "view.h"
 #include "image.h"
+#include "robot_model.h"
 
 namespace WEBCFACE_NS {
 
@@ -49,6 +50,11 @@ class Member : protected Field {
      *
      */
     WEBCFACE_DLL Text text(const std::string &field) const;
+    /*!
+     * \brief robot_modelを参照する。
+     *
+     */
+    WEBCFACE_DLL RobotModel robotModel(const std::string &field) const;
     /*!
      * \brief imageを参照する。
      *
@@ -92,6 +98,11 @@ class Member : protected Field {
      */
     WEBCFACE_DLL std::vector<Text> texts() const;
     /*!
+     * \brief このmemberが公開しているrobotModelのリストを返す。
+     *
+     */
+    WEBCFACE_DLL std::vector<RobotModel> robotModels() const;
+    /*!
      * \brief このmemberが公開しているfuncのリストを返す。
      *
      */
@@ -121,6 +132,13 @@ class Member : protected Field {
      *
      */
     WEBCFACE_DLL EventTarget<Text, std::string> onTextEntry() const;
+    /*!
+     * \brief robotModelが追加された時のイベント
+     *
+     * コールバックの型は void(RobotModel)
+     *
+     */
+    WEBCFACE_DLL EventTarget<RobotModel, std::string> onRobotModelEntry() const;
     /*!
      * \brief funcが追加された時のイベント
      *
