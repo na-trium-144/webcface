@@ -44,6 +44,8 @@ struct ClientData {
     std::unordered_map<std::string, std::shared_ptr<Message::FuncInfo>> func;
     std::unordered_map<std::string, std::vector<Common::ViewComponentBase>>
         view;
+    std::unordered_map<std::string, std::vector<Common::Canvas3DComponentBase>>
+        canvas3d;
     std::unordered_map<std::string, Common::ImageBase> image;
     std::unordered_map<std::string, int> image_changed;
     // 画像が変化したことを知らせるcv
@@ -54,7 +56,7 @@ struct ClientData {
     //! リクエストしているmember,nameのペア
     std::unordered_map<std::string,
                        std::unordered_map<std::string, unsigned int>>
-        value_req, text_req, view_req, image_req, robot_model_req;
+        value_req, text_req, view_req, image_req, robot_model_req, canvas3d_req;
     // リクエストが変化したことをスレッドに知らせる
     std::unordered_map<std::string, std::unordered_map<std::string, int>>
         image_req_changed;

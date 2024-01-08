@@ -85,6 +85,9 @@ bool ClientData::hasReq(const std::string &member) {
            std::any_of(this->robot_model_req[member].begin(),
                        this->robot_model_req[member].end(),
                        [](const auto &it) { return it.second > 0; }) ||
+           std::any_of(this->canvas3d_req[member].begin(),
+                       this->canvas3d_req[member].end(),
+                       [](const auto &it) { return it.second > 0; }) ||
            std::any_of(this->view_req[member].begin(),
                        this->view_req[member].end(),
                        [](const auto &it) { return it.second > 0; });
@@ -198,6 +201,13 @@ void ClientData::onRecv(const std::string &message) {
                                    WEBCFACE_NS::Message::RobotModel>{
                             {}, cd->member_id, f.first});
                         logger->trace("send robot_model_entry {} of member {}",
+                                      f.first, cd->member_id);
+                    }
+                    for (const auto &f : cd->canvas3d) {
+                        this->pack(WEBCFACE_NS::Message::Entry<
+                                   WEBCFACE_NS::Message::Canvas3D>{
+                            {}, cd->member_id, f.first});
+                        logger->trace("send canvas3d_entry {} of member {}",
                                       f.first, cd->member_id);
                     }
                     for (const auto &f : cd->view) {
@@ -417,6 +427,39 @@ void ClientData::onRecv(const std::string &message) {
             });
             break;
         }
+        case MessageKind::canvas3d: {
+            auto v = std::any_cast<WEBCFACE_NS::Message::Canvas3D>(obj);
+            logger->debug("canvas3d {} diff={}, length={}", v.field,
+                          v.data_diff->size(), v.length);
+            if (!this->canvas3d.count(v.field)) {
+                store.forEach([&](auto cd) {
+                    if (cd->name != this->name) {
+                        cd->pack(WEBCFACE_NS::Message::Entry<
+                                 WEBCFACE_NS::Message::Canvas3D>{
+                            {}, this->member_id, v.field});
+                        cd->logger->trace("send canvas3d_entry {} of member {}",
+                                          v.field, this->member_id);
+                    }
+                });
+            }
+            this->canvas3d[v.field].resize(v.length);
+            for (const auto &d : *v.data_diff) {
+                this->canvas3d[v.field][std::stoi(d.first)] = d.second;
+            }
+            // このvalueをsubscribeしてるところに送り返す
+            store.forEach([&](auto cd) {
+                auto [req_id, sub_field] =
+                    findReqField(cd->canvas3d_req, this->name, v.field);
+                if (req_id > 0) {
+                    cd->pack(
+                        WEBCFACE_NS::Message::Res<WEBCFACE_NS::Message::Canvas3D>(
+                            req_id, sub_field, v.data_diff, v.length));
+                    cd->logger->trace("send canvas3d_res req_id={} + '{}'", req_id,
+                                      sub_field);
+                }
+            });
+            break;
+        }
         case MessageKind::image: {
             auto v = std::any_cast<WEBCFACE_NS::Message::Image>(obj);
             logger->debug("image {} ({} x {} x {})", v.field, v.rows(),
@@ -620,6 +663,44 @@ void ClientData::onRecv(const std::string &message) {
             view_req[s.member][s.field] = s.req_id;
             break;
         }
+    case MessageKind::req + MessageKind::canvas3d: {
+            auto s = std::any_cast<
+                WEBCFACE_NS::Message::Req<WEBCFACE_NS::Message::Canvas3D>>(obj);
+            logger->debug("request canvas3d ({}): {} from {}", s.req_id, s.field,
+                          s.member);
+            // 指定した値を返す
+            store.findAndDo(s.member, [&](auto cd) {
+                if (!this->hasReq(s.member)) {
+                    this->pack(WEBCFACE_NS::Message::Sync{cd->member_id,
+                                                          cd->last_sync_time});
+                    logger->trace("send sync {}", this->member_id);
+                }
+                for (const auto &it : cd->canvas3d) {
+                    if (it.first == s.field ||
+                        it.first.starts_with(s.field + ".")) {
+                        auto diff = std::make_shared<std::unordered_map<
+                            std::string,
+                            WEBCFACE_NS::Message::Canvas3D::Canvas3DComponent>>();
+                        for (std::size_t i = 0; i < it.second.size(); i++) {
+                            diff->emplace(std::to_string(i), it.second[i]);
+                        }
+                        std::string sub_field;
+                        if (it.first == s.field) {
+                            sub_field = "";
+                        } else {
+                            sub_field = it.first.substr(s.field.size() + 1);
+                        }
+                        this->pack(WEBCFACE_NS::Message::Res<
+                                   WEBCFACE_NS::Message::Canvas3D>{
+                            s.req_id, sub_field, diff, it.second.size()});
+                        logger->trace("send canvas3d_res req_id={} + '{}'",
+                                      s.req_id, sub_field);
+                    }
+                }
+            });
+            canvas3d_req[s.member][s.field] = s.req_id;
+            break;
+        }
         case MessageKind::req + MessageKind::image: {
             auto s = std::any_cast<
                 WEBCFACE_NS::Message::Req<WEBCFACE_NS::Message::Image>>(obj);
@@ -661,6 +742,8 @@ void ClientData::onRecv(const std::string &message) {
         case MessageKind::res + MessageKind::robot_model:
         case MessageKind::entry + MessageKind::view:
         case MessageKind::res + MessageKind::view:
+        case MessageKind::entry + MessageKind::canvas3d:
+        case MessageKind::res + MessageKind::canvas3d:
         case MessageKind::entry + MessageKind::image:
         case MessageKind::res + MessageKind::image:
         case MessageKind::svr_version:

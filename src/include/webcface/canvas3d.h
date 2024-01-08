@@ -64,7 +64,7 @@ inline Plane plane(const Transform &origin, double width, double height) {
  * \brief Canvas3Dに表示する要素
  *
  */
-class Canvas3DComponent : protected Common::Canvas3DComponentBase {
+class Canvas3DComponent : public Common::Canvas3DComponentBase {
     std::weak_ptr<Internal::ClientData> data_w;
 
   public:
