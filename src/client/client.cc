@@ -226,51 +226,12 @@ void Internal::ClientData::syncData(bool is_first) {
     for (const auto &v : robot_model_store.transferSend(is_first)) {
         Message::pack(buffer, len, Message::RobotModel{v.first, v.second});
     }
-    auto view_send_prev = view_store.getSendPrev(is_first);
-    auto view_send = view_store.transferSend(is_first);
-    for (const auto &v : view_send) {
-        auto v_prev = view_send_prev.find(v.first);
-        auto v_diff =
-            std::make_shared<std::unordered_map<int, ViewComponentBase>>();
-        if (v_prev == view_send_prev.end()) {
-            for (std::size_t i = 0; i < v.second->size(); i++) {
-                v_diff->emplace(static_cast<int>(i), (*v.second)[i]);
-            }
-        } else {
-            for (std::size_t i = 0; i < v.second->size(); i++) {
-                if (v_prev->second->size() <= i ||
-                    (*v_prev->second)[i] != (*v.second)[i]) {
-                    v_diff->emplace(static_cast<int>(i), (*v.second)[i]);
-                }
-            }
-        }
-        if (!v_diff->empty()) {
-            Message::pack(buffer, len,
-                          Message::View{v.first, v_diff, v.second->size()});
-        }
+    for (const auto &p : view_store.transferSendDiff<Message::View>(is_first)) {
+        Message::pack(buffer, len, p);
     }
-    auto canvas3d_send_prev = canvas3d_store.getSendPrev(is_first);
-    auto canvas3d_send = canvas3d_store.transferSend(is_first);
-    for (const auto &v : canvas3d_send) {
-        auto v_prev = canvas3d_send_prev.find(v.first);
-        auto v_diff =
-            std::make_shared<std::unordered_map<int, Canvas3DComponentBase>>();
-        if (v_prev == canvas3d_send_prev.end()) {
-            for (std::size_t i = 0; i < v.second->size(); i++) {
-                v_diff->emplace(static_cast<int>(i), (*v.second)[i]);
-            }
-        } else {
-            for (std::size_t i = 0; i < v.second->size(); i++) {
-                if (v_prev->second->size() <= i ||
-                    (*v_prev->second)[i] != (*v.second)[i]) {
-                    v_diff->emplace(static_cast<int>(i), (*v.second)[i]);
-                }
-            }
-        }
-        if (!v_diff->empty()) {
-            Message::pack(buffer, len,
-                          Message::Canvas3D{v.first, v_diff, v.second->size()});
-        }
+    for (const auto &p :
+         canvas3d_store.transferSendDiff<Message::Canvas3D>(is_first)) {
+        Message::pack(buffer, len, p);
     }
     for (const auto &v : image_store.transferSend(is_first)) {
         Message::pack(buffer, len, Message::Image{v.first, v.second});
