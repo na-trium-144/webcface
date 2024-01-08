@@ -25,6 +25,7 @@ class RobotModel : protected Field, public EventTarget<RobotModel> {
     WEBCFACE_DLL RobotModel(const Field &base, const std::string &field)
         : RobotModel(Field{base, field}) {}
 
+    friend class Canvas3D;
     using Field::member;
     using Field::name;
 

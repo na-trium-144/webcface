@@ -8,6 +8,7 @@
 #include "common/def.h"
 #include "common/canvas3d.h"
 #include "common/robot_model.h"
+#include "robot_model.h"
 
 namespace WEBCFACE_NS {
 namespace Internal {
@@ -74,7 +75,7 @@ class Canvas3DComponent : protected Common::Canvas3DComponentBase {
  */
 class Canvas3D : protected Field, public EventTarget<Canvas3D> {
     std::shared_ptr<std::vector<Canvas3DComponent>> components;
-    bool modified;
+    std::shared_ptr<bool> modified;
 
     WEBCFACE_DLL void onAppend() const override;
 
@@ -126,7 +127,7 @@ class Canvas3D : protected Field, public EventTarget<Canvas3D> {
      * \brief Canvasの内容を取得する
      *
      */
-    std::vector<ViewComponent> get() const {
+    std::vector<Canvas3DComponent> get() const {
         return tryGet().value_or(std::vector<Canvas3DComponent>{});
     }
     /*!
@@ -150,36 +151,64 @@ class Canvas3D : protected Field, public EventTarget<Canvas3D> {
      *
      */
     WEBCFACE_DLL Canvas3D &init();
+
     /*!
-     * \brief コンポーネントを追加
+     * \brief Componentを追加
      *
      */
-    Canvas3D &operator<<(const Common::Canvas3DComponentBase &vc) {
-        *this << Canvas3DComponent{vc, this->data_w};
+    WEBCFACE_DLL Canvas3D &add(const Canvas3DComponentBase &cc) {
+        add({cc, this->data_w});
         return *this;
     }
     /*!
-     * \brief コンポーネントを追加
+     * \brief Componentを追加
      *
      */
-    WEBCFACE_DLL Canvas3D &operator<<(const Canvas3DComponent &vc);
+    WEBCFACE_DLL Canvas3D &add(const Canvas3DComponent &cc);
 
     /*!
-     * \brief コンポーネントなどを追加
-     *
-     * Tの型に応じた operator<< が呼ばれる
+     * \brief Geometryを追加
      *
      */
-    template <typename T>
-    Canvas3D &add(const T &rhs) {
-        *this << rhs;
+    WEBCFACE_DLL Canvas3D &add(const Geometry &geometry,
+                               const Transform &origin,
+                               const ViewColor &color = ViewColor::inherit) {
+        add(Common::Canvas3DComponentBase{Canvas3DComponentType::geometry,
+                                          origin,
+                                          color,
+                                          geometry,
+                                          std::nullopt,
+                                          {}});
+        return *this;
+    }
+    /*!
+     * \brief RobotModelを追加
+     *
+     * jointのangleを変更できる。
+     * それ以外のパラメータは元のモデルのまま。
+     *
+     */
+    WEBCFACE_DLL Canvas3D &add(const RobotModel &model_field,
+                               std::unordered_map<std::string, double> angles,
+                               const Transform &origin,
+                               const ViewColor &color = ViewColor::inherit) {
+        std::unordered_map<unsigned int, double> angles_i;
+        for (std::size_t ji = 0; ji < model_field.get().size(); ji++) {
+            auto j = model_field.get()[ji];
+            if (angles.count(j.name)) {
+                angles_i[ji] = angles[j.name];
+            }
+        }
+        add(Common::Canvas3DComponentBase{
+            Canvas3DComponentType::robot_model, origin, color, std::nullopt,
+            static_cast<FieldBase>(model_field), angles_i});
         return *this;
     }
 
     /*!
      * \brief Viewの内容をclientに反映し送信可能にする
      *
-     * * ver1.2以降: このViewオブジェクトの内容が変更されていなければ
+     * このCanvas3Dオブジェクトの内容が変更されていなければ
      * (init()も追加もされていなければ) 何もしない。
      *
      */

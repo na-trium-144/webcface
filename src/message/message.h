@@ -12,6 +12,7 @@
 #include <webcface/common/view.h>
 #include <webcface/common/image.h>
 #include <webcface/common/robot_model.h>
+#include <webcface/common/canvas3d.h>
 #include <webcface/common/def.h>
 #include "val_adaptor.h"
 
@@ -21,7 +22,8 @@ MSGPACK_ADD_ENUM(WEBCFACE_NS::Common::ViewColor)
 MSGPACK_ADD_ENUM(WEBCFACE_NS::Common::ImageCompressMode)
 MSGPACK_ADD_ENUM(WEBCFACE_NS::Common::ImageColorMode)
 MSGPACK_ADD_ENUM(WEBCFACE_NS::Common::RobotJointType)
-MSGPACK_ADD_ENUM(WEBCFACE_NS::Common::RobotGeometryType)
+MSGPACK_ADD_ENUM(WEBCFACE_NS::Common::GeometryType)
+MSGPACK_ADD_ENUM(WEBCFACE_NS::Common::Canvas3DComponentType)
 
 namespace WEBCFACE_NS::Message {
 // 新しいメッセージの定義は
@@ -35,6 +37,7 @@ enum MessageKindEnum {
     view = 3,
     image = 5,
     robot_model = 6,
+    canvas3d = 7,
     entry = 20,
     req = 40,
     res = 60,
@@ -265,8 +268,7 @@ struct RobotModel : public MessageBase<MessageKind::robot_model> {
         Common::RobotJointType joint_type;
         std::array<double, 3> joint_origin_pos, joint_origin_rot;
         double joint_angle = 0;
-        Common::RobotGeometryType geometry_type;
-        std::array<double, 3> geometry_origin_pos, geometry_origin_rot;
+        Common::GeometryType geometry_type;
         std::vector<double> geometry_properties;
         Common::ViewColor color;
         RobotLink() = default;
@@ -281,8 +283,6 @@ struct RobotModel : public MessageBase<MessageKind::robot_model> {
               joint_origin_pos(link.joint.origin.pos()),
               joint_origin_rot(link.joint.origin.rot()),
               joint_angle(link.joint.angle), geometry_type(link.geometry.type),
-              geometry_origin_pos(link.geometry.origin.pos()),
-              geometry_origin_rot(link.geometry.origin.rot()),
               geometry_properties(link.geometry.properties), color(link.color) {
         }
         Common::RobotLink
@@ -297,9 +297,7 @@ struct RobotModel : public MessageBase<MessageKind::robot_model> {
                  joint_type,
                  {joint_origin_pos, joint_origin_rot},
                  joint_angle},
-                {geometry_type,
-                 {geometry_origin_pos, geometry_origin_rot},
-                 geometry_properties},
+                {geometry_type, geometry_properties},
                 color,
             };
         }
@@ -309,8 +307,6 @@ struct RobotModel : public MessageBase<MessageKind::robot_model> {
             MSGPACK_NVP("js", joint_origin_pos),
             MSGPACK_NVP("jr", joint_origin_rot), MSGPACK_NVP("ja", joint_angle),
             MSGPACK_NVP("gt", geometry_type),
-            MSGPACK_NVP("gs", geometry_origin_pos),
-            MSGPACK_NVP("gr", geometry_origin_rot),
             MSGPACK_NVP("gp", geometry_properties), MSGPACK_NVP("c", color))
     };
     std::shared_ptr<std::vector<RobotLink>> data;
@@ -398,7 +394,80 @@ struct View : public MessageBase<MessageKind::view> {
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", field), MSGPACK_NVP("d", data_diff),
                        MSGPACK_NVP("l", length))
 };
-
+struct Canvas3D : public MessageBase<MessageKind::canvas3d> {
+    std::string field;
+    struct Canvas3DComponent {
+        Common::Canvas3DComponentType type =
+            Common::Canvas3DComponentType::geometry;
+        std::array<double, 3> origin_pos, origin_rot;
+        ViewColor color;
+        std::optional<Common::GeometryType> geometry_type;
+        std::vector<double> geometry_properties;
+        std::optional<std::string> field_member, field_field;
+        std::unordered_map<unsigned int, double> angles;
+        Canvas3DComponent() = default;
+        Canvas3DComponent(const Common::Canvas3DComponentBase &vc)
+            : type(vc.type_), origin_pos(vc.origin_.pos()),
+              origin_rot(vc.origin_.rot()), color(vc.color_),
+              angles(vc.angles_) {
+            if (vc.geometry_ != std::nullopt) {
+                geometry_type = vc.geometry_->type;
+                geometry_properties = vc.geometry_->properties;
+            }
+            if (vc.field_base_ != std::nullopt) {
+                field_member = vc.field_base_->member_;
+                field_field = vc.field_base_->field_;
+            }
+        }
+        operator Common::Canvas3DComponentBase() const {
+            Common::Canvas3DComponentBase vc;
+            vc.type_ = type;
+            vc.origin_ = {origin_pos, origin_rot};
+            vc.color_ = color;
+            if (geometry_type != std::nullopt) {
+                vc.geometry_ = {*geometry_type, geometry_properties};
+            }
+            if (field_member != std::nullopt) {
+                vc.field_base_ = {*field_member, *field_field};
+            }
+            vc.angles_ = angles;
+            return vc;
+        }
+        MSGPACK_DEFINE_MAP(MSGPACK_NVP("t", type),
+                           MSGPACK_NVP("op", origin_pos),
+                           MSGPACK_NVP("or", origin_rot),
+                           MSGPACK_NVP("c", color),
+                           MSGPACK_NVP("gt", geometry_type),
+                           MSGPACK_NVP("gp", geometry_properties),
+                           MSGPACK_NVP("fm", field_member),
+                           MSGPACK_NVP("ff", field_field),
+                           MSGPACK_NVP("a", angles))
+    };
+    std::shared_ptr<std::unordered_map<std::string, Canvas3DComponent>>
+        data_diff;
+    std::size_t length;
+    Canvas3D() = default;
+    Canvas3D(
+        const std::string &field,
+        const std::shared_ptr<
+            std::unordered_map<int, Common::Canvas3DComponentBase>> &data_diff,
+        std::size_t length)
+        : field(field),
+          data_diff(std::make_shared<
+                    std::unordered_map<std::string, Canvas3DComponent>>()),
+          length(length) {
+        for (const auto &vc : *data_diff) {
+            this->data_diff->emplace(std::to_string(vc.first), vc.second);
+        }
+    }
+    Canvas3D(const std::string &field,
+             const std::shared_ptr<
+                 std::unordered_map<std::string, Canvas3DComponent>> &data_diff,
+             std::size_t length)
+        : field(field), data_diff(data_diff), length(length) {}
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", field), MSGPACK_NVP("d", data_diff),
+                       MSGPACK_NVP("l", length))
+};
 struct Image : public MessageBase<MessageKind::image>,
                public Common::ImageBase {
     std::string field;
@@ -630,6 +699,26 @@ struct Res<View> : public MessageBase<MessageKind::view + MessageKind::res> {
     Res(unsigned int req_id, const std::string &sub_field,
         const std::shared_ptr<
             std::unordered_map<std::string, View::ViewComponent>> &data_diff,
+        std::size_t length)
+        : req_id(req_id), sub_field(sub_field), data_diff(data_diff),
+          length(length) {}
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", req_id), MSGPACK_NVP("f", sub_field),
+                       MSGPACK_NVP("d", data_diff), MSGPACK_NVP("l", length))
+};
+template <>
+struct Res<Canvas3D>
+    : public MessageBase<MessageKind::canvas3d + MessageKind::res> {
+    unsigned int req_id;
+    std::string sub_field;
+    std::shared_ptr<
+        std::unordered_map<std::string, Canvas3D::Canvas3DComponent>>
+        data_diff;
+    std::size_t length;
+    Res() = default;
+    Res(unsigned int req_id, const std::string &sub_field,
+        const std::shared_ptr<
+            std::unordered_map<std::string, Canvas3D::Canvas3DComponent>>
+            &data_diff,
         std::size_t length)
         : req_id(req_id), sub_field(sub_field), data_diff(data_diff),
           length(length) {}

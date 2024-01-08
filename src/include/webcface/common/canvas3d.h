@@ -5,6 +5,7 @@
 #include "view.h"
 #include <vector>
 #include <optional>
+#include <unordered_map>
 
 namespace WEBCFACE_NS {
 inline namespace Common {
@@ -35,6 +36,7 @@ struct Canvas3DComponentBase {
     ViewColor color_;
     std::optional<Geometry> geometry_;
     std::optional<FieldBase> field_base_;
+    std::unordered_map<unsigned int, double> angles_;
 };
 
 } // namespace Common

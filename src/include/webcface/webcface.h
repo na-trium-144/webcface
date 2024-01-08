@@ -26,8 +26,8 @@
 #include "log.h"
 #include "func.h"
 #include "view.h"
-#include "canvas3d.h"
 #include "robot_model.h"
+#include "canvas3d.h"
 
 #include "member.h"
 #include "client.h"
