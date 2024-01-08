@@ -3,6 +3,7 @@
 #include <sstream>
 #include <ostream>
 #include <memory>
+#include <utility>
 #include "func.h"
 #include "event_target.h"
 #include "common/def.h"
@@ -32,6 +33,9 @@ struct Line : Geometry {
         return Transform{properties[3], properties[4], properties[5], 0, 0, 0};
     }
 };
+inline Line line(const Transform &begin, const Transform &end) {
+    return Line(begin, end);
+}
 struct Plane : Geometry {
     Plane(const Transform &origin, double width, double height)
         : Geometry(GeometryType::plane,
@@ -50,6 +54,10 @@ struct Plane : Geometry {
     double width() const { return properties[0]; }
     double height() const { return properties[1]; }
 };
+inline Plane plane(const Transform &origin, double width, double height) {
+    return Plane(origin, width, height);
+}
+
 } // namespace Geometries
 
 /*!
@@ -178,18 +186,18 @@ class Canvas3D : protected Field, public EventTarget<Canvas3D> {
      *
      */
     WEBCFACE_DLL Canvas3D &add(const RobotModel &model_field,
-                               std::unordered_map<std::string, double> angles,
                                const Transform &origin,
-                               const ViewColor &color = ViewColor::inherit) {
+                               std::unordered_map<std::string, double> angles) {
         std::unordered_map<unsigned int, double> angles_i;
-        for (std::size_t ji = 0; ji < model_field.get().size(); ji++) {
-            auto j = model_field.get()[ji];
+        auto model = model_field.get();
+        for (std::size_t ji = 0; ji < model.size(); ji++) {
+            const auto &j = model[ji].joint;
             if (angles.count(j.name)) {
                 angles_i[ji] = angles[j.name];
             }
         }
-        add({Canvas3DComponentType::robot_model, origin, color, std::nullopt,
-             static_cast<FieldBase>(model_field), angles_i});
+        add({Canvas3DComponentType::robot_model, origin, ViewColor::inherit,
+             std::nullopt, static_cast<FieldBase>(model_field), angles_i});
         return *this;
     }
 

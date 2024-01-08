@@ -11,7 +11,7 @@ Canvas3D::Canvas3D()
       modified(std::make_shared<bool>(false)) {}
 Canvas3D::Canvas3D(const Field &base)
     : Field(base),
-      EventTarget<Canvas3D>(&this->dataLock()->view_change_event, *this),
+      EventTarget<Canvas3D>(&this->dataLock()->canvas3d_change_event, *this),
       components(std::make_shared<std::vector<Canvas3DComponentBase>>()),
       modified(std::make_shared<bool>(false)) {}
 Canvas3D &Canvas3D::init() {
