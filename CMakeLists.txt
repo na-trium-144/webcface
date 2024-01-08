@@ -300,6 +300,7 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     add_compile_options( # inside opencv
         $<$<COMPILE_LANGUAGE:CXX>:-Wno-deprecated-enum-enum-conversion>
     )
+    add_compile_options(-Wno-array-bounds) # inside fmt (fmtlib/fmt#3354)
 endif()
 if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     add_compile_options(-Wall -Wextra -Wpedantic -Werror)
