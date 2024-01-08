@@ -74,7 +74,7 @@ class Canvas3DComponent : protected Common::Canvas3DComponentBase {
  *
  */
 class Canvas3D : protected Field, public EventTarget<Canvas3D> {
-    std::shared_ptr<std::vector<Canvas3DComponent>> components;
+    std::shared_ptr<std::vector<Canvas3DComponentBase>> components;
     std::shared_ptr<bool> modified;
 
     WEBCFACE_DLL void onAppend() const override;
@@ -83,7 +83,7 @@ class Canvas3D : protected Field, public EventTarget<Canvas3D> {
      * \brief 値をセットし、EventTargetを発動する
      *
      */
-    WEBCFACE_DLL Canvas3D &set(std::vector<Canvas3DComponent> &v);
+    WEBCFACE_DLL Canvas3D &set(std::vector<Canvas3DComponentBase> &v);
 
     WEBCFACE_DLL void onDestroy();
 
@@ -92,9 +92,6 @@ class Canvas3D : protected Field, public EventTarget<Canvas3D> {
     WEBCFACE_DLL Canvas3D(const Field &base);
     Canvas3D(const Field &base, const std::string &field)
         : Canvas3D(Field{base, field}) {}
-    Canvas3D(const Canvas3D &rhs) : Canvas3D() { *this = rhs; }
-    WEBCFACE_DLL Canvas3D &operator=(const Canvas3D &rhs);
-    WEBCFACE_DLL Canvas3D &operator=(Canvas3D &&rhs);
 
     /*!
      * \brief デストラクタで sync() を呼ぶ。
@@ -156,15 +153,7 @@ class Canvas3D : protected Field, public EventTarget<Canvas3D> {
      * \brief Componentを追加
      *
      */
-    WEBCFACE_DLL Canvas3D &add(const Canvas3DComponentBase &cc) {
-        add({cc, this->data_w});
-        return *this;
-    }
-    /*!
-     * \brief Componentを追加
-     *
-     */
-    WEBCFACE_DLL Canvas3D &add(const Canvas3DComponent &cc);
+    WEBCFACE_DLL Canvas3D &add(const Canvas3DComponentBase &cc);
 
     /*!
      * \brief Geometryを追加
@@ -173,12 +162,12 @@ class Canvas3D : protected Field, public EventTarget<Canvas3D> {
     WEBCFACE_DLL Canvas3D &add(const Geometry &geometry,
                                const Transform &origin,
                                const ViewColor &color = ViewColor::inherit) {
-        add(Common::Canvas3DComponentBase{Canvas3DComponentType::geometry,
-                                          origin,
-                                          color,
-                                          geometry,
-                                          std::nullopt,
-                                          {}});
+        add({Canvas3DComponentType::geometry,
+             origin,
+             color,
+             geometry,
+             std::nullopt,
+             {}});
         return *this;
     }
     /*!
@@ -199,9 +188,8 @@ class Canvas3D : protected Field, public EventTarget<Canvas3D> {
                 angles_i[ji] = angles[j.name];
             }
         }
-        add(Common::Canvas3DComponentBase{
-            Canvas3DComponentType::robot_model, origin, color, std::nullopt,
-            static_cast<FieldBase>(model_field), angles_i});
+        add({Canvas3DComponentType::robot_model, origin, color, std::nullopt,
+             static_cast<FieldBase>(model_field), angles_i});
         return *this;
     }
 

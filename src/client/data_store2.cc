@@ -218,6 +218,8 @@ template class WEBCFACE_DLL SyncDataStore2<std::shared_ptr<FuncInfo>, int>;
 template class WEBCFACE_DLL SyncDataStore2<
     std::shared_ptr<std::vector<Common::ViewComponentBase>>, int>;
 template class WEBCFACE_DLL SyncDataStore2<std::vector<Common::RobotLink>, int>;
+template class WEBCFACE_DLL SyncDataStore2<
+    std::shared_ptr<std::vector<Common::Canvas3DComponentBase>>, int>;
 template class WEBCFACE_DLL SyncDataStore2<Common::ImageBase, Common::ImageReq>;
 
 } // namespace WEBCFACE_NS::Internal

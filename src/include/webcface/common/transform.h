@@ -29,6 +29,11 @@ class Transform {
                     std::array<double, 3>{z_angle, y_angle, x_angle}) {}
     std::array<double, 3> pos() const { return pos_; }
     std::array<double, 3> rot() const { return rot_; }
+
+    bool operator==(const Transform &rhs) const {
+        return pos_ == rhs.pos_ && rot_ == rhs.rot_;
+    }
+    bool operator!=(const Transform &rhs) const { return !(*this == rhs); }
 };
 } // namespace Common
 } // namespace WEBCFACE_NS
