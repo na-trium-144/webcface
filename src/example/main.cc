@@ -3,6 +3,7 @@
 #include <iostream>
 #include <chrono>
 #include <numbers>
+#include <cmath>
 
 void hello() { std::cout << "hello, world!" << std::endl; }
 double hello2(int a, double b, bool c, const std::string &d) {
@@ -49,22 +50,69 @@ int main() {
     std::cout << "this is cout" << std::endl;
     std::cout.rdbuf(buf);
 
-    c.robotModel("aaa").set({
-        webcface::RobotLink{"plane",
-                            {},
-                            webcface::Plane{{}, 10, 10},
-                            webcface::ViewColor::gray},
-        webcface::RobotLink{
-            "link1",
-            webcface::fixedJoint("joint1", "plane",
-                                 {{0, 0, 0}, {0, -std::numbers::pi / 2, 0}}),
-            webcface::Line{{0, 0, 0}, {1, 0, 0}}, webcface::ViewColor::yellow},
-        webcface::RobotLink{
-            "link2",
-            webcface::fixedJoint("joint1", "link1",
-                                 {{1, 0, 0}, {0, std::numbers::pi / 4, 0}}),
-            webcface::Line{{0, 0, 0}, {1, 0, 0}}, webcface::ViewColor::green},
-    });
+    {
+        using namespace webcface::Geometries;
+        using namespace webcface::RobotJoints;
+        c.robotModel("geometries")
+            .set(
+                {// plane: 中心座標系と幅、高さを指定 (指定した座標系のxy平面)
+                 {"plane", {}, plane({}, 10, 10), webcface::ViewColor::gray},
+                 // line: linkの座標系で2点指定
+                 {"line1",
+                  fixedJoint("joint1", "plane",
+                             {{0, 0, 0}, {0, -std::numbers::pi / 2, 0}}),
+                  line({0, 0, 0}, {1, 0, 0}), webcface::ViewColor::yellow},
+                 {"line2",
+                  fixedJoint("joint2", "line1",
+                             {{1, 0, 0}, {0, std::numbers::pi / 4, 0}}),
+                  line({0, 0, 0}, {1, 0, 0}), webcface::ViewColor::green},
+                 {"line3", fixedJoint("joint3", "line1", {}),
+                  line({0.5, 1, 0}, {0.5, -1, 0}), webcface::ViewColor::red},
+                 // box: linkの座標系で2点指定
+                 {"box", fixedJoint("joint4", "plane", {1, 0, 0, 0, 0, 0}),
+                  box({-0.3, -0.3, 0}, {0.3, 0.3, 0.6}),
+                  webcface::ViewColor::yellow},
+                 // circle: 中心座標系と半径を指定 (指定した座標系のxy平面)
+                 {"circle", fixedJoint("joint5", "plane", {2, 0, 0, 0, 0, 0}),
+                  circle({0, 0, 0.1, 0, 0, 0}, 0.3),
+                  webcface::ViewColor::yellow},
+                 // cylinder:
+                 // 1つの面の中心座標系と半径、押出長さを指定(x正方向に伸びる)
+                 {"cylinder", fixedJoint("joint6", "plane", {3, 0, 0, 0, 0, 0}),
+                  cylinder({0, 0, 0, 0, -std::numbers::pi / 2, 0}, 0.3, 1),
+                  webcface::ViewColor::yellow},
+                 // sphere: 中心点と半径を指定
+                 {"sphere", fixedJoint("joint6", "plane", {4, 0, 0, 0, 0, 0}),
+                  sphere({0, 0, 0.6}, 0.3), webcface::ViewColor::yellow}});
+
+        c.robotModel("omniwheel")
+            .set({
+                {"base",
+                 {},
+                 box({-0.2, -0.2, 0.04}, {0.2, 0.2, 0.06}),
+                 webcface::ViewColor::inherit},
+                {"wheel_lf",
+                 fixedJoint("joint_lf", "base",
+                            {0.2, 0.2, 0.05, -std::numbers::pi / 4, 0, 0}),
+                 cylinder({0, 0, 0, std::numbers::pi / 2, 0, 0}, 0.05, 0.01),
+                 webcface::ViewColor::inherit},
+                {"wheel_rf",
+                 fixedJoint("joint_rf", "base",
+                            {0.2, -0.2, 0.05, std::numbers::pi / 4, 0, 0}),
+                 cylinder({0, 0, 0, std::numbers::pi / 2, 0, 0}, 0.05, 0.01),
+                 webcface::ViewColor::inherit},
+                {"wheel_lb",
+                 fixedJoint("joint_lb", "base",
+                            {-0.2, 0.2, 0.05, std::numbers::pi / 4, 0, 0}),
+                 cylinder({0, 0, 0, std::numbers::pi / 2, 0, 0}, 0.05, 0.01),
+                 webcface::ViewColor::inherit},
+                {"wheel_rb",
+                 fixedJoint("joint_rb", "base",
+                            {-0.2, -0.2, 0.05, -std::numbers::pi / 4, 0, 0}),
+                 cylinder({0, 0, 0, std::numbers::pi / 2, 0, 0}, 0.05, 0.01),
+                 webcface::ViewColor::inherit},
+            });
+    }
 
     int i = 0;
 
@@ -85,6 +133,24 @@ int main() {
                                   [] { std::cout << "hello" << std::endl; });
             // v.sync();
         }
+
+        auto world = c.canvas3D("omniwheel_world");
+        world.add(webcface::plane({}, 3, 3), {}, webcface::ViewColor::white);
+        world.add(webcface::box({-1.5, -1.5, 0}, {1.5, -1.5, 0.1}), {},
+                  webcface::ViewColor::gray);
+        world.add(webcface::box({-1.5, 1.5, 0}, {1.5, 1.5, 0.1}), {},
+                  webcface::ViewColor::gray);
+        world.add(webcface::box({-1.5, -1.5, 0}, {-1.5, 1.5, 0.1}), {},
+                  webcface::ViewColor::gray);
+        world.add(webcface::box({1.5, -1.5, 0}, {1.5, 1.5, 0.1}), {},
+                  webcface::ViewColor::gray);
+        world.add(c.robotModel("omniwheel"),
+                  {-0.3 * std::sin(i / 3.0), 0.3 * std::cos(i / 3.0), 0,
+                   i / 3.0, 0, 0},
+                  {});
+        world.sync();
+
+
         ++i;
 
         // Dictでまとめて値を取得しstructにセット

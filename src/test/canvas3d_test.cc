@@ -57,15 +57,16 @@ TEST_F(Canvas3DTest, set) {
     using namespace WEBCFACE_NS::Geometries;
 
     auto v = canvas(self_name, "b");
-    v.add(line({0, 0, 0}, {3, 3, 3}), {1, 1, 1}, ViewColor::red);
-    v.add(plane({0, 0, 0, 0, 0, 0}, 10, 10), {2, 2, 2}, ViewColor::yellow);
-    v.add(robot_model(self_name, "b"), {3, 3, 3}, {{"j0", 123}});
+    v.add(line({0, 0, 0}, {3, 3, 3}), {1, 1, 1, 0, 0, 0}, ViewColor::red);
+    v.add(plane({0, 0, 0, 0, 0, 0}, 10, 10), {2, 2, 2, 0, 0, 0},
+          ViewColor::yellow);
+    v.add(robot_model(self_name, "b"), {3, 3, 3, 0, 0, 0}, {{"j0", 123}});
     v.sync();
     EXPECT_EQ(callback_called, 1);
     auto &canvas3d_data = **data_->canvas3d_store.getRecv(self_name, "b");
     ASSERT_EQ(canvas3d_data.size(), 3);
     EXPECT_EQ(canvas3d_data[0].type_, Canvas3DComponentType::geometry);
-    EXPECT_EQ(canvas3d_data[0].origin_, Transform(1, 1, 1));
+    EXPECT_EQ(canvas3d_data[0].origin_, Transform(1, 1, 1, 0, 0, 0));
     EXPECT_EQ(canvas3d_data[0].color_, ViewColor::red);
     ASSERT_NE(canvas3d_data[0].geometry_, std::nullopt);
     EXPECT_EQ(canvas3d_data[0].geometry_->type, GeometryType::line);
@@ -75,7 +76,7 @@ TEST_F(Canvas3DTest, set) {
     EXPECT_EQ(canvas3d_data[0].angles_.size(), 0);
 
     EXPECT_EQ(canvas3d_data[1].type_, Canvas3DComponentType::geometry);
-    EXPECT_EQ(canvas3d_data[1].origin_, Transform(2, 2, 2));
+    EXPECT_EQ(canvas3d_data[1].origin_, Transform(2, 2, 2, 0, 0, 0));
     EXPECT_EQ(canvas3d_data[1].color_, ViewColor::yellow);
     ASSERT_NE(canvas3d_data[1].geometry_, std::nullopt);
     EXPECT_EQ(canvas3d_data[1].geometry_->type, GeometryType::plane);
@@ -85,7 +86,7 @@ TEST_F(Canvas3DTest, set) {
     EXPECT_EQ(canvas3d_data[1].angles_.size(), 0);
 
     EXPECT_EQ(canvas3d_data[2].type_, Canvas3DComponentType::robot_model);
-    EXPECT_EQ(canvas3d_data[2].origin_, Transform(3, 3, 3));
+    EXPECT_EQ(canvas3d_data[2].origin_, Transform(3, 3, 3, 0, 0, 0));
     EXPECT_EQ(canvas3d_data[2].color_, ViewColor::inherit);
     EXPECT_EQ(canvas3d_data[2].geometry_, std::nullopt);
     ASSERT_NE(canvas3d_data[2].field_base_, std::nullopt);

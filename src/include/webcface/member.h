@@ -12,6 +12,7 @@
 #include "view.h"
 #include "image.h"
 #include "robot_model.h"
+#include "canvas3d.h"
 
 namespace WEBCFACE_NS {
 
@@ -82,6 +83,11 @@ class Member : protected Field {
      */
     WEBCFACE_DLL View view(const std::string &field) const;
     /*!
+     * \brief canvas3dを参照する。
+     *
+     */
+    WEBCFACE_DLL Canvas3D canvas3D(const std::string &field) const;
+    /*!
      * \brief logを参照する。
      *
      */
@@ -112,6 +118,11 @@ class Member : protected Field {
      *
      */
     WEBCFACE_DLL std::vector<View> views() const;
+    /*!
+     * \brief このmemberが公開しているcanvas3dのリストを返す。
+     *
+     */
+    WEBCFACE_DLL std::vector<Canvas3D> canvas3DEntries() const;
     /*!
      * \brief このmemberが公開しているimageのリストを返す。
      *
@@ -160,6 +171,13 @@ class Member : protected Field {
      *
      */
     WEBCFACE_DLL EventTarget<View, std::string> onViewEntry() const;
+    /*!
+     * \brief canvas3dが追加されたときのイベント
+     *
+     * コールバックの型は void(Canvas3D)
+     *
+     */
+    WEBCFACE_DLL EventTarget<Canvas3D, std::string> onCanvas3DEntry() const;
     /*!
      * \brief Memberがsync()したときのイベント
      * コールバックの型は void(Member)

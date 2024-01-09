@@ -404,12 +404,11 @@ struct Canvas3D : public MessageBase<MessageKind::canvas3d> {
         std::optional<Common::GeometryType> geometry_type;
         std::vector<double> geometry_properties;
         std::optional<std::string> field_member, field_field;
-        std::unordered_map<unsigned int, double> angles;
+        std::unordered_map<std::string, double> angles;
         Canvas3DComponent() = default;
         Canvas3DComponent(const Common::Canvas3DComponentBase &vc)
             : type(vc.type_), origin_pos(vc.origin_.pos()),
-              origin_rot(vc.origin_.rot()), color(vc.color_),
-              angles(vc.angles_) {
+              origin_rot(vc.origin_.rot()), color(vc.color_), angles() {
             if (vc.geometry_ != std::nullopt) {
                 geometry_type = vc.geometry_->type;
                 geometry_properties = vc.geometry_->properties;
@@ -417,6 +416,9 @@ struct Canvas3D : public MessageBase<MessageKind::canvas3d> {
             if (vc.field_base_ != std::nullopt) {
                 field_member = vc.field_base_->member_;
                 field_field = vc.field_base_->field_;
+            }
+            for (const auto &a : vc.angles_) {
+                angles.emplace(std::to_string(a.first), a.second);
             }
         }
         operator Common::Canvas3DComponentBase() const {
@@ -430,7 +432,9 @@ struct Canvas3D : public MessageBase<MessageKind::canvas3d> {
             if (field_member != std::nullopt) {
                 vc.field_base_ = {*field_member, *field_field};
             }
-            vc.angles_ = angles;
+            for (const auto &a : angles) {
+                vc.angles_.emplace(std::stoi(a.first), a.second);
+            }
             return vc;
         }
         MSGPACK_DEFINE_MAP(MSGPACK_NVP("t", type),

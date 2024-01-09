@@ -15,6 +15,9 @@ enum class GeometryType {
     line = 1,
     plane = 2,
     box = 3,
+    circle = 4,
+    cylinder = 5,
+    sphere = 6,
 };
 struct Geometry {
     GeometryType type;

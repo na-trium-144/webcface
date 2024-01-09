@@ -17,7 +17,7 @@ struct ClientData;
 }
 inline namespace Geometries {
 struct Line : Geometry {
-    Line(const Transform &begin, const Transform &end)
+    Line(const Point &begin, const Point &end)
         : Geometry(GeometryType::line,
                    {begin.pos()[0], begin.pos()[1], begin.pos()[2],
                     end.pos()[0], end.pos()[1], end.pos()[2]}) {}
@@ -26,14 +26,14 @@ struct Line : Geometry {
             throw std::invalid_argument("number of properties does not match");
         }
     }
-    Transform begin() const {
-        return Transform{properties[0], properties[1], properties[2], 0, 0, 0};
+    Point begin() const {
+        return Point{properties[0], properties[1], properties[2]};
     }
-    Transform end() const {
-        return Transform{properties[3], properties[4], properties[5], 0, 0, 0};
+    Point end() const {
+        return Point{properties[3], properties[4], properties[5]};
     }
 };
-inline Line line(const Transform &begin, const Transform &end) {
+inline Line line(const Point &begin, const Point &end) {
     return Line(begin, end);
 }
 struct Plane : Geometry {
@@ -51,11 +51,94 @@ struct Plane : Geometry {
         return Transform{properties[0], properties[1], properties[2],
                          properties[3], properties[4], properties[5]};
     }
-    double width() const { return properties[0]; }
-    double height() const { return properties[1]; }
+    double width() const { return properties[6]; }
+    double height() const { return properties[7]; }
 };
 inline Plane plane(const Transform &origin, double width, double height) {
     return Plane(origin, width, height);
+}
+
+struct Box : Geometry {
+    Box(const Point &vertex1, const Point &vertex2)
+        : Geometry(GeometryType::box,
+                   {vertex1.pos()[0], vertex1.pos()[1], vertex1.pos()[2],
+                    vertex2.pos()[0], vertex2.pos()[1], vertex2.pos()[2]}) {}
+    Box(const Geometry &rg) : Geometry(rg) {
+        if (properties.size() != 6) {
+            throw std::invalid_argument("number of properties does not match");
+        }
+    }
+    Point vertex1() const {
+        return Point{properties[0], properties[1], properties[2]};
+    }
+    Point vertex2() const {
+        return Point{properties[3], properties[4], properties[5]};
+    }
+};
+inline Box box(const Point &vertex1, const Point &vertex2) {
+    return Box{vertex1, vertex2};
+}
+
+struct Circle : Geometry {
+    Circle(const Transform &origin, double radius)
+        : Geometry(GeometryType::circle,
+                   {origin.pos()[0], origin.pos()[1], origin.pos()[2],
+                    origin.rot()[0], origin.rot()[1], origin.rot()[2],
+                    radius}) {}
+    Circle(const Geometry &rg) : Geometry(rg) {
+        if (properties.size() != 7) {
+            throw std::invalid_argument("number of properties does not match");
+        }
+    }
+    Transform origin() const {
+        return Transform{properties[0], properties[1], properties[2],
+                         properties[3], properties[4], properties[5]};
+    }
+    double radius() const { return properties[6]; }
+};
+inline Circle circle(const Transform &origin, double radius) {
+    return Circle{origin, radius};
+}
+
+struct Cylinder : Geometry {
+    Cylinder(const Transform &origin, double radius, double length)
+        : Geometry(GeometryType::cylinder,
+                   {origin.pos()[0], origin.pos()[1], origin.pos()[2],
+                    origin.rot()[0], origin.rot()[1], origin.rot()[2], radius,
+                    length}) {}
+    Cylinder(const Geometry &rg) : Geometry(rg) {
+        if (properties.size() != 8) {
+            throw std::invalid_argument("number of properties does not match");
+        }
+    }
+    Transform origin() const {
+        return Transform{properties[0], properties[1], properties[2],
+                         properties[3], properties[4], properties[5]};
+    }
+    double radius() const { return properties[6]; }
+    double length() const { return properties[7]; }
+};
+inline Cylinder cylinder(const Transform &origin, double radius,
+                         double length) {
+    return Cylinder{origin, radius, length};
+}
+
+struct Sphere : Geometry {
+    Sphere(const Point &origin, double radius)
+        : Geometry(GeometryType::sphere, {origin.pos()[0], origin.pos()[1],
+                                          origin.pos()[2], radius}) {}
+    Sphere(const Geometry &rg) : Geometry(rg) {
+        if (properties.size() != 4) {
+            throw std::invalid_argument("number of properties does not match");
+        }
+    }
+    Point origin() const {
+        return Point{properties[0], properties[1], properties[2]};
+    }
+    double radius() const { return properties[3]; }
+};
+inline Sphere sphere(const Point &origin, double radius) {
+    return Sphere{origin, radius};
 }
 
 } // namespace Geometries
