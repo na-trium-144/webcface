@@ -39,7 +39,7 @@ struct Canvas3DComponentBase {
     ViewColor color_;
     std::optional<Geometry> geometry_;
     std::optional<FieldBase> field_base_;
-    std::unordered_map<unsigned int, double> angles_;
+    std::unordered_map<std::size_t, double> angles_;
 
     bool operator==(const Canvas3DComponentBase &rhs) const {
         return type_ == rhs.type_ && origin_ == rhs.origin_ &&

@@ -264,7 +264,7 @@ struct RobotModel : public MessageBase<MessageKind::robot_model> {
     struct RobotLink {
         std::string name;
         std::string joint_name;
-        int joint_parent;
+        std::size_t joint_parent;
         Common::RobotJointType joint_type;
         std::array<double, 3> joint_origin_pos, joint_origin_rot;
         double joint_angle = 0;

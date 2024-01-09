@@ -271,7 +271,7 @@ class Canvas3D : protected Field, public EventTarget<Canvas3D> {
     WEBCFACE_DLL Canvas3D &add(const RobotModel &model_field,
                                const Transform &origin,
                                std::unordered_map<std::string, double> angles) {
-        std::unordered_map<unsigned int, double> angles_i;
+        std::unordered_map<std::size_t, double> angles_i;
         auto model = model_field.get();
         for (std::size_t ji = 0; ji < model.size(); ji++) {
             const auto &j = model[ji].joint;

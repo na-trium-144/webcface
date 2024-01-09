@@ -49,8 +49,10 @@ TEST_F(Canvas3DTest, set) {
     robot_model(self_name, "b")
         .set({
             RobotLink{"l0", {}, {}, ViewColor::black},
-            RobotLink{
-                "l1", webcface::fixedJoint("l0", {0, 0, 0}), {}, ViewColor::black},
+            RobotLink{"l1",
+                      WEBCFACE_NS::fixedJoint("l0", {0, 0, 0}),
+                      {},
+                      ViewColor::black},
         });
     using namespace WEBCFACE_NS::Geometries;
 

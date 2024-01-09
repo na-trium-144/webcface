@@ -878,7 +878,8 @@ void ClientData::imageConvertThreadMain(const std::string &member,
                 auto sync = WEBCFACE_NS::Message::Sync{cd->member_id,
                                                        cd->last_sync_time};
 
-                int rows = img.rows(), cols = img.cols();
+                int rows = static_cast<int>(img.rows()),
+                    cols = static_cast<int>(img.cols());
 
                 if (info.rows || info.cols) {
 #if WEBCFACE_USE_OPENCV
