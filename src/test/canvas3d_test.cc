@@ -46,16 +46,17 @@ TEST_F(Canvas3DTest, eventTarget) {
 TEST_F(Canvas3DTest, set) {
     data_->canvas3d_change_event.appendListener(FieldBase{self_name, "b"},
                                                 callback());
+    using namespace WEBCFACE_NS::Geometries;
+    using namespace WEBCFACE_NS::RobotJoints;
     robot_model(self_name, "b")
         .set({
-            RobotLink{"l0", {}, {}, ViewColor::black},
+            RobotLink{"l0", {}, ViewColor::black},
             RobotLink{
                 "l1",
-                WEBCFACE_NS::rotationalJoint("j0", "l0", {0, 0, 0, 0, 0, 0}),
+                rotationalJoint("j0", "l0", {0, 0, 0, 0, 0, 0}),
                 {},
                 ViewColor::black},
         });
-    using namespace WEBCFACE_NS::Geometries;
 
     auto v = canvas(self_name, "b");
     v.add(line({0, 0, 0}, {3, 3, 3}), {1, 1, 1, 0, 0, 0}, ViewColor::red);

@@ -290,8 +290,7 @@ struct RobotModel : public MessageBase<MessageKind::robot_model> {
             return Common::RobotLink{
                 name,
                 {joint_name,
-                 joint_parent >= 0 &&
-                         joint_parent < static_cast<int>(link_names.size())
+                 joint_parent < link_names.size()
                      ? link_names.at(joint_parent)
                      : "",
                  joint_type,

@@ -8,9 +8,10 @@ namespace WEBCFACE_NS {
 inline namespace Common {
 
 enum class RobotJointType {
-    fixed = 0,
-    rotational = 1,
-    prismatic = 2,
+    fixed_absolute = 0,
+    fixed = 1,
+    rotational = 2,
+    prismatic = 3,
 };
 struct RobotJoint {
     std::string name;
@@ -21,9 +22,30 @@ struct RobotJoint {
 };
 inline namespace RobotJoints {
 /*!
+ * \brief 親リンクをもたず座標を定義する
+ * 
+ * ベースのリンクなどに使う
+ * \param origin 子リンクの絶対座標
+ * 
+ */
+inline RobotJoint fixedAbsolute(const Transform &origin) {
+    return RobotJoint{"", "", RobotJointType::fixed_absolute, origin, 0};
+}
+/*!
+ * \brief 親リンクをもたず座標を定義する
+ *
+ * ベースのリンクなどに使う
+ * \param origin 子リンクの絶対座標
+ *
+ */
+inline RobotJoint fixedAbsolute(const Point &origin) {
+    return fixedAbsolute(Transform{origin, {}});
+}
+/*!
  * \brief 固定された関節
  * \param parent_name 親リンクの名前
  * \param origin 親リンクの座標系で子リンクの原点
+ * 
  */
 inline RobotJoint fixedJoint(const std::string &parent_name,
                              const Transform &origin) {
@@ -36,8 +58,7 @@ inline RobotJoint fixedJoint(const std::string &parent_name,
  */
 inline RobotJoint fixedJoint(const std::string &parent_name,
                              const Point &origin) {
-    return RobotJoint{"", parent_name, RobotJointType::fixed,
-                      Transform{origin, {}}, 0};
+    return fixedJoint(parent_name, Transform{origin, {}});
 }
 /*!
  * \brief 回転関節
@@ -91,6 +112,7 @@ struct RobotLink {
         : name(name), joint(joint), geometry(geometry), color(color) {}
     /*!
      * ベースのリンクではjointを省略可能
+     * (fixedAbsolute({0, 0, 0})になる)
      * \param name リンクの名前
      * \param geometry リンクの形状 (表示用)
      * \param color 色 (表示用)
@@ -98,7 +120,7 @@ struct RobotLink {
      */
     RobotLink(const std::string &name, const Geometry &geometry,
               ViewColor color = ViewColor::inherit)
-        : RobotLink(name, {}, geometry, color) {}
+        : RobotLink(name, fixedAbsolute({0, 0, 0}), geometry, color) {}
 };
 } // namespace Common
 } // namespace WEBCFACE_NS
