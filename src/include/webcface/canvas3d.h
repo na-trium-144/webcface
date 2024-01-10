@@ -262,6 +262,17 @@ class Canvas3D : protected Field, public EventTarget<Canvas3D> {
         return *this;
     }
     /*!
+     * \brief Geometryを追加
+     *
+     * originを省略した場合 identity()
+     *
+     */
+    WEBCFACE_DLL Canvas3D &add(const Geometry &geometry,
+                               const ViewColor &color = ViewColor::inherit) {
+        add(geometry, identity(), color);
+        return *this;
+    }
+    /*!
      * \brief RobotModelを追加
      *
      * jointのangleを変更できる。

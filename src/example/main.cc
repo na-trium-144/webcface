@@ -55,7 +55,8 @@ int main() {
         using namespace webcface::RobotJoints;
         c.robotModel("geometries")
             .set({// plane: 中心座標系と幅、高さを指定 (指定した座標系のxy平面)
-                  {"plane", plane({}, 10, 10), webcface::ViewColor::gray},
+                  {"plane", plane(webcface::identity(), 10, 10),
+                   webcface::ViewColor::gray},
                   // line: linkの座標系で2点指定
                   {"line1",
                    fixedJoint("plane",
@@ -140,14 +141,14 @@ int main() {
         }
 
         auto world = c.canvas3D("omniwheel_world");
-        world.add(webcface::plane({}, 3, 3), {}, webcface::ViewColor::white);
-        world.add(webcface::box({-1.5, -1.5, 0}, {1.5, -1.5, 0.1}), {},
+        world.add(webcface::plane({}, 3, 3), webcface::ViewColor::white);
+        world.add(webcface::box({-1.5, -1.5, 0}, {1.5, -1.5, 0.1}),
                   webcface::ViewColor::gray);
-        world.add(webcface::box({-1.5, 1.5, 0}, {1.5, 1.5, 0.1}), {},
+        world.add(webcface::box({-1.5, 1.5, 0}, {1.5, 1.5, 0.1}),
                   webcface::ViewColor::gray);
-        world.add(webcface::box({-1.5, -1.5, 0}, {-1.5, 1.5, 0.1}), {},
+        world.add(webcface::box({-1.5, -1.5, 0}, {-1.5, 1.5, 0.1}),
                   webcface::ViewColor::gray);
-        world.add(webcface::box({1.5, -1.5, 0}, {1.5, 1.5, 0.1}), {},
+        world.add(webcface::box({1.5, -1.5, 0}, {1.5, 1.5, 0.1}),
                   webcface::ViewColor::gray);
         world.add(c.robotModel("omniwheel"),
                   {-0.3 * std::sin(i / 3.0), 0.3 * std::cos(i / 3.0), 0,

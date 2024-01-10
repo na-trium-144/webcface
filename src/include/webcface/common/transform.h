@@ -51,5 +51,8 @@ class Transform : public Point {
     }
     bool operator!=(const Transform &rhs) const { return !(*this == rhs); }
 };
+
+inline Transform identity() { return Transform{}; }
+
 } // namespace Common
 } // namespace WEBCFACE_NS
