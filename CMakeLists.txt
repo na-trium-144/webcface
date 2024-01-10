@@ -346,10 +346,6 @@ set(CLI_SRC
     ${CPP_DIR}/client/image.cc
     ${CPP_DIR}/client/version.cc
 )
-if(WIN32)
-    set(CLI_SRC ${CLI_SRC} ${CPP_DIR}/version.rc)
-endif()
-
 set(EXAMPLE_SRC
     ${CPP_DIR}/example/main.cc
     ${CPP_DIR}/example/recv.cc
@@ -376,6 +372,12 @@ set(TEST_SRC
 set(MSG_SRC
     ${CPP_DIR}/message/message.cc
 )
+if(WIN32)
+    set(VERSION_RC ${CPP_DIR}/version.rc)
+else()
+    set(VERSION_RC "")
+endif()
+
 set(INCLUDE_DIR
     $<BUILD_INTERFACE:${CPP_DIR}/include>
     $<INSTALL_INTERFACE:include>
@@ -414,7 +416,7 @@ target_link_libraries(${PROJECT_NAME}-server-impl PUBLIC
 )
 
 
-add_executable(${PROJECT_NAME}-server ${SVR_MAIN_SRC})
+add_executable(${PROJECT_NAME}-server ${SVR_MAIN_SRC} ${VERSION_RC})
 target_link_libraries(${PROJECT_NAME}-server PRIVATE
     ${PROJECT_NAME}-server-impl
     ${PROJECT_NAME}-headers
@@ -424,9 +426,13 @@ set_target_properties(${PROJECT_NAME}-server PROPERTIES
     INSTALL_RPATH "$ORIGIN/../lib/;$ORIGIN/;@loader_path/../lib/;@loader_path/"
     INSTALL_RPATH_USE_LINK_PATH TRUE
 )
+target_compile_definitions(${PROJECT_NAME}-server PRIVATE
+    FILE_DESCRIPTION="WebCFace Server"
+    FILE_IS_APP
+)
 
 if(WEBCFACE_SHARED)
-    add_library(${PROJECT_NAME} SHARED ${CLI_SRC})
+    add_library(${PROJECT_NAME} SHARED ${CLI_SRC} ${VERSION_RC})
 else()
     add_library(${PROJECT_NAME} STATIC ${CLI_SRC})
 endif()
@@ -454,11 +460,10 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 
 add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 
-
 if(WEBCFACE_EXAMPLE)
     foreach(SRC IN LISTS EXAMPLE_SRC)
         get_filename_component(TARGET ${SRC} NAME_WE)
-        add_executable(${PROJECT_NAME}-example-${TARGET} ${SRC})
+        add_executable(${PROJECT_NAME}-example-${TARGET} ${SRC} ${VERSION_RC})
         target_link_libraries(${PROJECT_NAME}-example-${TARGET} PRIVATE ${PROJECT_NAME})
         set(WEBCFACE_EXAMPLE_TARGETS
             ${WEBCFACE_EXAMPLE_TARGETS}
@@ -471,6 +476,10 @@ if(WEBCFACE_EXAMPLE)
         set_target_properties(${PROJECT_NAME}-example-${TARGET} PROPERTIES
             INSTALL_RPATH "$ORIGIN/../lib/;$ORIGIN/;@loader_path/../lib/;@loader_path/"
             INSTALL_RPATH_USE_LINK_PATH TRUE
+        )
+        target_compile_definitions(${PROJECT_NAME}-example-${TARGET} PRIVATE
+            FILE_DESCRIPTION="WebCFace Example ${TARGET}"
+            FILE_IS_APP
         )
     endforeach()
 endif()

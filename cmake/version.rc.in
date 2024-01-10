@@ -7,12 +7,20 @@
 #define VER_DEBUG 0
 #endif
 
+#ifndef FILE_DESCRIPTION
+#define FILE_DESCRIPTION "@PROJECT_DESCRIPTION@"
+#endif
+
 VS_VERSION_INFO VERSIONINFO
 FILEVERSION     WEBCFACE_VERSION_MAJOR,WEBCFACE_VERSION_MINOR,WEBCFACE_VERSION_REVISION,0
 PRODUCTVERSION  WEBCFACE_VERSION_MAJOR,WEBCFACE_VERSION_MINOR,WEBCFACE_VERSION_REVISION,0
 FILEFLAGS       VER_DEBUG
 FILEOS          VOS__WINDOWS32
+#ifdef FILE_IS_APP
+FILETYPE        VFT_APP
+#else
 FILETYPE        VFT_DLL
+#endif
 FILESUBTYPE     VFT2_UNKNOWN
 BEGIN
     BLOCK "StringFileInfo"
@@ -20,11 +28,11 @@ BEGIN
         BLOCK "040904E4"
         BEGIN
             VALUE "CompanyName",      "@WEBCFACE_CONTACT@\0"
-            VALUE "FileDescription",  "@PROJECT_DESCRIPTION@\0"
+            VALUE "FileDescription",  FILE_DESCRIPTION "\0"
             VALUE "FileVersion",      WEBCFACE_VERSION
             VALUE "InternalName",     "webcface\0"
             // VALUE "OriginalFilename", "@WEBCFACE_FILENAME@\0"
-            VALUE "ProductName",      "webcface\0"
+            VALUE "ProductName",      "WebCFace\0"
             VALUE "ProductVersion",   WEBCFACE_VERSION
             VALUE "LegalCopyright",   "Copyright (c) na-trium-144\0"
         END
