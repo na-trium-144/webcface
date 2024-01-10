@@ -94,7 +94,16 @@ if(MINGW)
     add_link_options(-Wl,--default-image-base-low)
 endif()
 
-configure_file(cmake/def.h.in ${CMAKE_CURRENT_SOURCE_DIR}/src/include/webcface/common/def.h @ONLY)
+configure_file(
+    cmake/def.h.in
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/include/webcface/common/def.h
+    @ONLY
+)
+configure_file(
+    cmake/version.rc.in
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/version.rc
+    @ONLY
+)
 
 ###############################################################################
 
@@ -337,7 +346,7 @@ set(CLI_SRC
     ${CPP_DIR}/client/image.cc
     ${CPP_DIR}/client/version.cc
 )
-if(MSVC)
+if(WIN32)
     set(CLI_SRC ${CLI_SRC} ${CPP_DIR}/version.rc)
 endif()
 
@@ -424,10 +433,6 @@ endif()
 if(NOT CMAKE_CXX_COMPILER_ID STREQUAL "MSVC" AND WEBCFACE_PIC)
     target_compile_options(${PROJECT_NAME} PRIVATE -fPIC)
 endif()
-target_compile_definitions(${PROJECT_NAME} PRIVATE
-    WEBCFACE_CONTACT="${WEBCFACE_CONTACT}"
-    WEBCFACE_DESCRIPTION="${PROJECT_DESCRIPTION}"
-)
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_20)
 target_link_libraries(${PROJECT_NAME} PRIVATE
     ${PROJECT_NAME}-message
@@ -581,8 +586,8 @@ if(WEBCFACE_INSTALL)
 
     # https://decovar.dev/blog/2021/09/23/cmake-cpack-package-deb-apt/
     set(CPACK_VERBATIM_VARIABLES yes)
-    set(CPACK_PACKAGE_CONTACT "na-trium-144@users.noreply.github.com")
-    set(CPACK_PACKAGE_VENDOR "na-trium-144@users.noreply.github.com")
+    set(CPACK_PACKAGE_CONTACT ${WEBCFACE_CONTACT})
+    set(CPACK_PACKAGE_VENDOR ${WEBCFACE_CONTACT})
     set(CPACK_PACKAGE_EXECUTABLES
         webcface-server "WebCFace Server"
         ${WEBCFACE_EXAMPLE_TARGETS_CPACK}
