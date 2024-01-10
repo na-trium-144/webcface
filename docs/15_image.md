@@ -31,6 +31,6 @@ TODO: ドキュメントを書く
 
 | Previous |     Next |
 |:---------|---------:|
-| [View](13_view.md) | [Func](30_func.md) |
+| [View](13_view.md) | [Canvas3D](20_canvas3d.md) |
 
 </div>

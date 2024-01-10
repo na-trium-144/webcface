@@ -11,6 +11,8 @@
 #include "func.h"
 #include "view.h"
 #include "image.h"
+#include "robot_model.h"
+#include "canvas3d.h"
 
 namespace WEBCFACE_NS {
 
@@ -50,6 +52,11 @@ class Member : protected Field {
      */
     WEBCFACE_DLL Text text(const std::string &field) const;
     /*!
+     * \brief robot_modelを参照する。
+     *
+     */
+    WEBCFACE_DLL RobotModel robotModel(const std::string &field) const;
+    /*!
      * \brief imageを参照する。
      *
      */
@@ -76,6 +83,11 @@ class Member : protected Field {
      */
     WEBCFACE_DLL View view(const std::string &field) const;
     /*!
+     * \brief canvas3dを参照する。
+     *
+     */
+    WEBCFACE_DLL Canvas3D canvas3D(const std::string &field) const;
+    /*!
      * \brief logを参照する。
      *
      */
@@ -92,6 +104,11 @@ class Member : protected Field {
      */
     WEBCFACE_DLL std::vector<Text> texts() const;
     /*!
+     * \brief このmemberが公開しているrobotModelのリストを返す。
+     *
+     */
+    WEBCFACE_DLL std::vector<RobotModel> robotModels() const;
+    /*!
      * \brief このmemberが公開しているfuncのリストを返す。
      *
      */
@@ -101,6 +118,11 @@ class Member : protected Field {
      *
      */
     WEBCFACE_DLL std::vector<View> views() const;
+    /*!
+     * \brief このmemberが公開しているcanvas3dのリストを返す。
+     *
+     */
+    WEBCFACE_DLL std::vector<Canvas3D> canvas3DEntries() const;
     /*!
      * \brief このmemberが公開しているimageのリストを返す。
      *
@@ -122,6 +144,13 @@ class Member : protected Field {
      */
     WEBCFACE_DLL EventTarget<Text, std::string> onTextEntry() const;
     /*!
+     * \brief robotModelが追加された時のイベント
+     *
+     * コールバックの型は void(RobotModel)
+     *
+     */
+    WEBCFACE_DLL EventTarget<RobotModel, std::string> onRobotModelEntry() const;
+    /*!
      * \brief funcが追加された時のイベント
      *
      * コールバックの型は void(Func)
@@ -142,6 +171,13 @@ class Member : protected Field {
      *
      */
     WEBCFACE_DLL EventTarget<View, std::string> onViewEntry() const;
+    /*!
+     * \brief canvas3dが追加されたときのイベント
+     *
+     * コールバックの型は void(Canvas3D)
+     *
+     */
+    WEBCFACE_DLL EventTarget<Canvas3D, std::string> onCanvas3DEntry() const;
     /*!
      * \brief Memberがsync()したときのイベント
      * コールバックの型は void(Member)

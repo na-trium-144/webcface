@@ -9,8 +9,14 @@ Value Member::value(const std::string &field) const {
     return Value{*this, field};
 }
 Text Member::text(const std::string &field) const { return Text{*this, field}; }
+RobotModel Member::robotModel(const std::string &field) const {
+    return RobotModel{*this, field};
+}
 Func Member::func(const std::string &field) const { return Func{*this, field}; }
 View Member::view(const std::string &field) const { return View{*this, field}; }
+Canvas3D Member::canvas3D(const std::string &field) const {
+    return Canvas3D{*this, field};
+}
 Image Member::image(const std::string &field) const {
     return Image{*this, field};
 }
@@ -24,6 +30,10 @@ EventTarget<Text, std::string> Member::onTextEntry() const {
     return EventTarget<Text, std::string>{&dataLock()->text_entry_event,
                                           member_};
 }
+EventTarget<RobotModel, std::string> Member::onRobotModelEntry() const {
+    return EventTarget<RobotModel, std::string>{
+        &dataLock()->robot_model_entry_event, member_};
+}
 EventTarget<Func, std::string> Member::onFuncEntry() const {
     return EventTarget<Func, std::string>{&dataLock()->func_entry_event,
                                           member_};
@@ -31,6 +41,10 @@ EventTarget<Func, std::string> Member::onFuncEntry() const {
 EventTarget<View, std::string> Member::onViewEntry() const {
     return EventTarget<View, std::string>{&dataLock()->view_entry_event,
                                           member_};
+}
+EventTarget<Canvas3D, std::string> Member::onCanvas3DEntry() const {
+    return EventTarget<Canvas3D, std::string>{&dataLock()->canvas3d_entry_event,
+                                              member_};
 }
 EventTarget<Image, std::string> Member::onImageEntry() const {
     return EventTarget<Image, std::string>{&dataLock()->image_entry_event,
@@ -56,6 +70,14 @@ std::vector<Text> Member::texts() const {
     }
     return ret;
 }
+std::vector<RobotModel> Member::robotModels() const {
+    auto keys = dataLock()->robot_model_store.getEntry(*this);
+    std::vector<RobotModel> ret(keys.size());
+    for (std::size_t i = 0; i < keys.size(); i++) {
+        ret[i] = robotModel(keys[i]);
+    }
+    return ret;
+}
 std::vector<Func> Member::funcs() const {
     auto keys = dataLock()->func_store.getEntry(*this);
     std::vector<Func> ret(keys.size());
@@ -69,6 +91,14 @@ std::vector<View> Member::views() const {
     std::vector<View> ret(keys.size());
     for (std::size_t i = 0; i < keys.size(); i++) {
         ret[i] = view(keys[i]);
+    }
+    return ret;
+}
+std::vector<Canvas3D> Member::canvas3DEntries() const {
+    auto keys = dataLock()->canvas3d_store.getEntry(*this);
+    std::vector<Canvas3D> ret(keys.size());
+    for (std::size_t i = 0; i < keys.size(); i++) {
+        ret[i] = canvas3D(keys[i]);
     }
     return ret;
 }

@@ -66,6 +66,8 @@ unpack(const std::string &message,
                 MSG_PARSE_DATA(Text)
                 MSG_PARSE_DATA(View)
                 MSG_PARSE_DATA(Image)
+                MSG_PARSE_DATA(RobotModel)
+                MSG_PARSE_DATA(Canvas3D)
                 MSG_PARSE(Log)
                 MSG_PARSE(LogReq)
                 MSG_PARSE(FuncInfo)

@@ -11,6 +11,9 @@
 #include "common/view.h"
 #include "common/dict.h"
 #include "common/image.h"
+#include "common/transform.h"
+#include "common/canvas3d.h"
+#include "common/robot_model.h"
 
 #include "field.h"
 #include "event_target.h"
@@ -23,6 +26,8 @@
 #include "log.h"
 #include "func.h"
 #include "view.h"
+#include "robot_model.h"
+#include "canvas3d.h"
 
 #include "member.h"
 #include "client.h"
