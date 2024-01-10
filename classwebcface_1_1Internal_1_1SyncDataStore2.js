@@ -24,6 +24,7 @@ var classwebcface_1_1Internal_1_1SyncDataStore2 =
     [ "setSend", "classwebcface_1_1Internal_1_1SyncDataStore2.html#aba9d6e1a94ce823d386950a2a1cf164c", null ],
     [ "transferReq", "classwebcface_1_1Internal_1_1SyncDataStore2.html#a3fef7cbcca7a949aee39af1dede841ca", null ],
     [ "transferSend", "classwebcface_1_1Internal_1_1SyncDataStore2.html#adf062a5d18fd41bf6f38c20a4ff5e71c", null ],
+    [ "transferSendDiff", "classwebcface_1_1Internal_1_1SyncDataStore2.html#a58187b18f0bf6b33813a97e6b0a0d3d0", null ],
     [ "unsetRecv", "classwebcface_1_1Internal_1_1SyncDataStore2.html#a5fb25a7dd4f1d58c9e17d2e1c49abfa0", null ],
     [ "unsetRecv", "classwebcface_1_1Internal_1_1SyncDataStore2.html#a08082289da26ceddc7c1795aa65aa298", null ],
     [ "data_recv", "classwebcface_1_1Internal_1_1SyncDataStore2.html#a2298a42f89fb1ff4e0b7cec606b978b1", null ],

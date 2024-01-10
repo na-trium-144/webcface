@@ -9,6 +9,13 @@ var hierarchy =
     [ "base_sink", null, [
       [ "LoggerSink", "classwebcface_1_1LoggerSink.html", null ]
     ] ],
+    [ "Canvas3DComponent", "structwebcface_1_1Message_1_1Canvas3D_1_1Canvas3DComponent.html", null ],
+    [ "Canvas3DComponentBase", "structwebcface_1_1Common_1_1Canvas3DComponentBase.html", [
+      [ "Canvas3DComponent", "classwebcface_1_1Canvas3DComponent.html", null ]
+    ] ],
+    [ "Canvas3DComponentBase", "structwebcface_1_1Common_1_1Canvas3DComponentBase.html", [
+      [ "Canvas3DComponent", "classwebcface_1_1Canvas3DComponent.html", null ]
+    ] ],
     [ "ClientData", "structwebcface_1_1Server_1_1ClientData.html", null ],
     [ "Dict< T >", "classwebcface_1_1Common_1_1Dict.html", null ],
     [ "Dict< T >", "classwebcface_1_1Common_1_1Dict.html", null ],
@@ -24,11 +31,17 @@ var hierarchy =
       [ "ClientData", "structwebcface_1_1Internal_1_1ClientData.html", null ]
     ] ],
     [ "EventTarget< V, Key, VBase >", "classwebcface_1_1EventTarget.html", null ],
+    [ "EventTarget< Canvas3D >", "classwebcface_1_1EventTarget.html", [
+      [ "Canvas3D", "classwebcface_1_1Canvas3D.html", null ]
+    ] ],
     [ "EventTarget< Image >", "classwebcface_1_1EventTarget.html", [
       [ "Image", "classwebcface_1_1Image.html", null ]
     ] ],
     [ "EventTarget< Log, std::string >", "classwebcface_1_1EventTarget.html", [
       [ "Log", "classwebcface_1_1Log.html", null ]
+    ] ],
+    [ "EventTarget< RobotModel >", "classwebcface_1_1EventTarget.html", [
+      [ "RobotModel", "classwebcface_1_1RobotModel.html", null ]
     ] ],
     [ "EventTarget< Text >", "classwebcface_1_1EventTarget.html", [
       [ "Text", "classwebcface_1_1Text.html", null ]
@@ -43,6 +56,7 @@ var hierarchy =
       [ "FieldBaseComparable", "structwebcface_1_1Common_1_1FieldBaseComparable.html", null ],
       [ "Field", "structwebcface_1_1Field.html", [
         [ "AsyncFuncResult", "classwebcface_1_1AsyncFuncResult.html", null ],
+        [ "Canvas3D", "classwebcface_1_1Canvas3D.html", null ],
         [ "Func", "classwebcface_1_1Func.html", [
           [ "AnonymousFunc", "classwebcface_1_1AnonymousFunc.html", null ]
         ] ],
@@ -51,6 +65,7 @@ var hierarchy =
         [ "Member", "classwebcface_1_1Member.html", [
           [ "Client", "classwebcface_1_1Client.html", null ]
         ] ],
+        [ "RobotModel", "classwebcface_1_1RobotModel.html", null ],
         [ "Text", "classwebcface_1_1Text.html", null ],
         [ "Value", "classwebcface_1_1Value.html", null ],
         [ "View", "classwebcface_1_1View.html", null ]
@@ -70,6 +85,16 @@ var hierarchy =
     [ "FuncInfo", "structwebcface_1_1Common_1_1FuncInfo.html", null ],
     [ "FuncOnSync", "classwebcface_1_1Internal_1_1FuncOnSync.html", null ],
     [ "FuncResultStore", "classwebcface_1_1Internal_1_1FuncResultStore.html", null ],
+    [ "Geometry", null, [
+      [ "Box", "structwebcface_1_1Geometries_1_1Box.html", null ],
+      [ "Circle", "structwebcface_1_1Geometries_1_1Circle.html", null ],
+      [ "Cylinder", "structwebcface_1_1Geometries_1_1Cylinder.html", null ],
+      [ "Line", "structwebcface_1_1Geometries_1_1Line.html", null ],
+      [ "Plane", "structwebcface_1_1Geometries_1_1Plane.html", null ],
+      [ "Sphere", "structwebcface_1_1Geometries_1_1Sphere.html", null ]
+    ] ],
+    [ "Geometry", "structwebcface_1_1Common_1_1Geometry.html", null ],
+    [ "Geometry", "structwebcface_1_1Common_1_1Geometry.html", null ],
     [ "ILogHandler", null, [
       [ "CustomLogger", "classwebcface_1_1Server_1_1CustomLogger.html", null ]
     ] ],
@@ -102,6 +127,12 @@ var hierarchy =
     [ "MessageBase< MessageKind::call_result >", "structwebcface_1_1Message_1_1MessageBase.html", [
       [ "CallResult", "structwebcface_1_1Message_1_1CallResult.html", null ]
     ] ],
+    [ "MessageBase< MessageKind::canvas3d >", "structwebcface_1_1Message_1_1MessageBase.html", [
+      [ "Canvas3D", "structwebcface_1_1Message_1_1Canvas3D.html", null ]
+    ] ],
+    [ "MessageBase< MessageKind::canvas3d+MessageKind::res >", "structwebcface_1_1Message_1_1MessageBase.html", [
+      [ "Res< Canvas3D >", "structwebcface_1_1Message_1_1Res_3_01Canvas3D_01_4.html", null ]
+    ] ],
     [ "MessageBase< MessageKind::func_info >", "structwebcface_1_1Message_1_1MessageBase.html", [
       [ "FuncInfo", "structwebcface_1_1Message_1_1FuncInfo.html", null ]
     ] ],
@@ -128,6 +159,12 @@ var hierarchy =
     ] ],
     [ "MessageBase< MessageKind::ping_status_req >", "structwebcface_1_1Message_1_1MessageBase.html", [
       [ "PingStatusReq", "structwebcface_1_1Message_1_1PingStatusReq.html", null ]
+    ] ],
+    [ "MessageBase< MessageKind::robot_model >", "structwebcface_1_1Message_1_1MessageBase.html", [
+      [ "RobotModel", "structwebcface_1_1Message_1_1RobotModel.html", null ]
+    ] ],
+    [ "MessageBase< MessageKind::robot_model+MessageKind::res >", "structwebcface_1_1Message_1_1MessageBase.html", [
+      [ "Res< RobotModel >", "structwebcface_1_1Message_1_1Res_3_01RobotModel_01_4.html", null ]
     ] ],
     [ "MessageBase< MessageKind::svr_version >", "structwebcface_1_1Message_1_1MessageBase.html", [
       [ "SvrVersion", "structwebcface_1_1Message_1_1SvrVersion.html", null ]
@@ -165,11 +202,22 @@ var hierarchy =
     [ "ostream", null, [
       [ "View", "classwebcface_1_1View.html", null ]
     ] ],
+    [ "Point", "classwebcface_1_1Common_1_1Point.html", [
+      [ "Transform", "classwebcface_1_1Common_1_1Transform.html", null ]
+    ] ],
+    [ "Point", "classwebcface_1_1Common_1_1Point.html", [
+      [ "Transform", "classwebcface_1_1Common_1_1Transform.html", null ]
+    ] ],
     [ "Queue< T >", "classwebcface_1_1Common_1_1Queue.html", null ],
     [ "Queue< T >", "classwebcface_1_1Common_1_1Queue.html", null ],
     [ "Queue< std::shared_ptr< webcface::Internal::FuncOnSync > >", "classwebcface_1_1Common_1_1Queue.html", null ],
     [ "Queue< std::string >", "classwebcface_1_1Common_1_1Queue.html", null ],
     [ "Res< T >", "structwebcface_1_1Message_1_1Res.html", null ],
+    [ "RobotJoint", "structwebcface_1_1Common_1_1RobotJoint.html", null ],
+    [ "RobotJoint", "structwebcface_1_1Common_1_1RobotJoint.html", null ],
+    [ "RobotLink", "structwebcface_1_1Common_1_1RobotLink.html", null ],
+    [ "RobotLink", "structwebcface_1_1Message_1_1RobotModel_1_1RobotLink.html", null ],
+    [ "RobotLink", "structwebcface_1_1Common_1_1RobotLink.html", null ],
     [ "runtime_error", null, [
       [ "FuncNotFound", "structwebcface_1_1FuncNotFound.html", null ]
     ] ],
@@ -184,9 +232,11 @@ var hierarchy =
     [ "SyncDataStore1< std::chrono::system_clock::time_point >", "classwebcface_1_1Internal_1_1SyncDataStore1.html", null ],
     [ "SyncDataStore2< T, ReqT >", "classwebcface_1_1Internal_1_1SyncDataStore2.html", null ],
     [ "SyncDataStore2< std::shared_ptr< std::string > >", "classwebcface_1_1Internal_1_1SyncDataStore2.html", null ],
+    [ "SyncDataStore2< std::shared_ptr< std::vector< webcface::Common::Canvas3DComponentBase > > >", "classwebcface_1_1Internal_1_1SyncDataStore2.html", null ],
     [ "SyncDataStore2< std::shared_ptr< std::vector< webcface::Common::ViewComponentBase > > >", "classwebcface_1_1Internal_1_1SyncDataStore2.html", null ],
     [ "SyncDataStore2< std::shared_ptr< webcface::FuncInfo > >", "classwebcface_1_1Internal_1_1SyncDataStore2.html", null ],
     [ "SyncDataStore2< std::shared_ptr< webcface::VectorOpt< double > > >", "classwebcface_1_1Internal_1_1SyncDataStore2.html", null ],
+    [ "SyncDataStore2< std::vector< webcface::Common::RobotLink > >", "classwebcface_1_1Internal_1_1SyncDataStore2.html", null ],
     [ "SyncDataStore2< webcface::Common::ImageBase, webcface::Common::ImageReq >", "classwebcface_1_1Internal_1_1SyncDataStore2.html", null ],
     [ "ValAdaptor", "classwebcface_1_1Common_1_1ValAdaptor.html", null ],
     [ "ValAdaptor", "classwebcface_1_1Common_1_1ValAdaptor.html", null ],

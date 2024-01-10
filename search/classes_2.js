@@ -1,8 +1,14 @@
 var searchData=
 [
-  ['dict_0',['dict',['../classwebcface_1_1Common_1_1Dict.html',1,'Dict&lt; T &gt;'],['../classwebcface_1_1Common_1_1Dict.html',1,'Dict&lt; T &gt;']]],
-  ['dictelement_1',['dictelement',['../structwebcface_1_1Common_1_1DictElement.html',1,'DictElement&lt; T &gt;'],['../structwebcface_1_1Common_1_1DictElement.html',1,'DictElement&lt; T &gt;']]],
-  ['dicttraits_2',['dicttraits',['../structwebcface_1_1Common_1_1DictTraits.html',1,'DictTraits&lt; T &gt;'],['../structwebcface_1_1Common_1_1DictTraits.html',1,'DictTraits&lt; T &gt;']]],
-  ['dicttraits_3c_20std_3a_3ashared_5fptr_3c_20t_20_3e_20_3e_3',['dicttraits&lt; std::shared_ptr&lt; t &gt; &gt;',['../structwebcface_1_1Common_1_1DictTraits_3_01std_1_1shared__ptr_3_01T_01_4_01_4.html',1,'DictTraits&lt; std::shared_ptr&lt; T &gt; &gt;'],['../structwebcface_1_1Common_1_1DictTraits_3_01std_1_1shared__ptr_3_01T_01_4_01_4.html',1,'DictTraits&lt; std::shared_ptr&lt; T &gt; &gt;']]],
-  ['dicttraits_3c_20vectoropt_3c_20t_20_3e_20_3e_4',['dicttraits&lt; vectoropt&lt; t &gt; &gt;',['../structwebcface_1_1Common_1_1DictTraits_3_01VectorOpt_3_01T_01_4_01_4.html',1,'DictTraits&lt; VectorOpt&lt; T &gt; &gt;'],['../structwebcface_1_1Common_1_1DictTraits_3_01VectorOpt_3_01T_01_4_01_4.html',1,'DictTraits&lt; VectorOpt&lt; T &gt; &gt;']]]
+  ['call_0',['Call',['../structwebcface_1_1Message_1_1Call.html',1,'webcface::Message']]],
+  ['callresponse_1',['CallResponse',['../structwebcface_1_1Message_1_1CallResponse.html',1,'webcface::Message']]],
+  ['callresult_2',['CallResult',['../structwebcface_1_1Message_1_1CallResult.html',1,'webcface::Message']]],
+  ['canvas3d_3',['canvas3d',['../classwebcface_1_1Canvas3D.html',1,'Canvas3D'],['../structwebcface_1_1Message_1_1Canvas3D.html',1,'Canvas3D']]],
+  ['canvas3dcomponent_4',['canvas3dcomponent',['../classwebcface_1_1Canvas3DComponent.html',1,'Canvas3DComponent'],['../structwebcface_1_1Message_1_1Canvas3D_1_1Canvas3DComponent.html',1,'Canvas3D::Canvas3DComponent']]],
+  ['canvas3dcomponentbase_5',['canvas3dcomponentbase',['../structwebcface_1_1Common_1_1Canvas3DComponentBase.html',1,'Canvas3DComponentBase'],['../structwebcface_1_1Common_1_1Canvas3DComponentBase.html',1,'Canvas3DComponentBase']]],
+  ['circle_6',['circle',['../structwebcface_1_1Geometries_1_1Circle.html',1,'Circle'],['../structwebcface_1_1Geometries_1_1Circle.html',1,'Circle']]],
+  ['client_7',['Client',['../classwebcface_1_1Client.html',1,'webcface']]],
+  ['clientdata_8',['clientdata',['../structwebcface_1_1Internal_1_1ClientData.html',1,'ClientData'],['../structwebcface_1_1Server_1_1ClientData.html',1,'ClientData']]],
+  ['customlogger_9',['CustomLogger',['../classwebcface_1_1Server_1_1CustomLogger.html',1,'webcface::Server']]],
+  ['cylinder_10',['cylinder',['../structwebcface_1_1Geometries_1_1Cylinder.html',1,'Cylinder'],['../structwebcface_1_1Geometries_1_1Cylinder.html',1,'Cylinder']]]
 ];

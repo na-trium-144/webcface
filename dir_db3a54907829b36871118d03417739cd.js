@@ -1,5 +1,6 @@
 var dir_db3a54907829b36871118d03417739cd =
 [
+    [ "canvas3d.cc", "canvas3d_8cc.html", "canvas3d_8cc" ],
     [ "client.cc", "client_8cc.html", null ],
     [ "client_internal.h", "client__internal_8h.html", "client__internal_8h" ],
     [ "client_ws.cc", "client__ws_8cc.html", null ],
@@ -14,6 +15,7 @@ var dir_db3a54907829b36871118d03417739cd =
     [ "log.cc", "log_8cc.html", "log_8cc" ],
     [ "logger.cc", "logger_8cc.html", null ],
     [ "member.cc", "member_8cc.html", null ],
+    [ "robot_model.cc", "robot__model_8cc.html", "robot__model_8cc" ],
     [ "text.cc", "text_8cc.html", "text_8cc" ],
     [ "value.cc", "value_8cc.html", "value_8cc" ],
     [ "version.cc", "version_8cc.html", "version_8cc" ],

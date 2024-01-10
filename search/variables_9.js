@@ -1,22 +1,10 @@
 var searchData=
 [
-  ['last_5fmember_5fid_0',['last_member_id',['../structwebcface_1_1Server_1_1ClientData.html#a0081b80badb945836f0baaa9ac22ba71',1,'webcface::Server::ClientData']]],
-  ['last_5fping_5fduration_1',['last_ping_duration',['../structwebcface_1_1Server_1_1ClientData.html#a2aaa954beac272b1c230d2bec97be1c9',1,'webcface::Server::ClientData']]],
-  ['last_5fsend_5fping_2',['last_send_ping',['../structwebcface_1_1Server_1_1ClientData.html#a8117ad8603d3cf802ac28675a0d446f8',1,'webcface::Server::ClientData']]],
-  ['last_5fsync_5ftime_3',['last_sync_time',['../structwebcface_1_1Server_1_1ClientData.html#a4ea12c2c54723b4bbb8a256623edb6c0',1,'webcface::Server::ClientData']]],
-  ['length_4',['length',['../structwebcface_1_1Message_1_1View.html#a8b13bdf398a3697b2bb7125debce52bf',1,'webcface::Message::View::length'],['../structwebcface_1_1Message_1_1Res_3_01View_01_4.html#a8b13bdf398a3697b2bb7125debce52bf',1,'webcface::Message::Res&lt; View &gt;::length']]],
-  ['level_5',['level',['../structwebcface_1_1Common_1_1LogLine.html#acf4d33ee4cff36f69b924471174dcb11',1,'webcface::Common::LogLine::level'],['../structwebcface_1_1Message_1_1Log_1_1LogLine.html#acf4d33ee4cff36f69b924471174dcb11',1,'webcface::Message::Log::LogLine::level']]],
-  ['lib_5fname_6',['lib_name',['../structwebcface_1_1Message_1_1SyncInit.html#add091ede649287c2dd955ef4b0e26080',1,'webcface::Message::SyncInit']]],
-  ['lib_5fver_7',['lib_ver',['../structwebcface_1_1Message_1_1SyncInit.html#aa2698cd3561f3700857d2061ae8161a7',1,'webcface::Message::SyncInit']]],
-  ['log_8',['log',['../structwebcface_1_1Message_1_1Log.html#a9839eb518f73d8514bc57b917246bac5',1,'webcface::Message::Log::log'],['../structwebcface_1_1Server_1_1ClientData.html#a4e79285c61bd619cb904723d694963bf',1,'webcface::Server::ClientData::log']]],
-  ['log_5fappend_5fevent_9',['log_append_event',['../structwebcface_1_1Internal_1_1ClientData.html#ab9beb12c09f6aac1f7987f3d34e7eb42',1,'webcface::Internal::ClientData']]],
-  ['log_5freq_10',['log_req',['../structwebcface_1_1Server_1_1ClientData.html#a544e9651584e1018b2319ef6364ec236',1,'webcface::Server::ClientData']]],
-  ['log_5fsent_5flines_11',['log_sent_lines',['../structwebcface_1_1Internal_1_1ClientData.html#aba7df97e7d2aed6c1dfce7eef73001e2',1,'webcface::Internal::ClientData']]],
-  ['log_5fstore_12',['log_store',['../structwebcface_1_1Internal_1_1ClientData.html#aace74fe3da9efe8f6e14626ea96bd71c',1,'webcface::Internal::ClientData::log_store'],['../classwebcface_1_1LoggerSink.html#aa469cdc667a9666df750cc0d9b2ac93e',1,'webcface::LoggerSink::log_store']]],
-  ['logger_13',['logger',['../structwebcface_1_1Internal_1_1ClientData.html#accdc73450b7a41e30a69fca53a8f2232',1,'webcface::Internal::ClientData::logger'],['../classwebcface_1_1LoggerBuf.html#accdc73450b7a41e30a69fca53a8f2232',1,'webcface::LoggerBuf::logger'],['../classwebcface_1_1Server_1_1CustomLogger.html#accdc73450b7a41e30a69fca53a8f2232',1,'webcface::Server::CustomLogger::logger'],['../structwebcface_1_1Server_1_1ClientData.html#accdc73450b7a41e30a69fca53a8f2232',1,'webcface::Server::ClientData::logger']]],
-  ['logger_5fbuf_14',['logger_buf',['../structwebcface_1_1Internal_1_1ClientData.html#af20ba93acad9647a43b7bd0c074706d9',1,'webcface::Internal::ClientData']]],
-  ['logger_5finternal_15',['logger_internal',['../structwebcface_1_1Internal_1_1ClientData.html#ae7bdc5a9588d9977fd43d9b2e3cd511a',1,'webcface::Internal::ClientData']]],
-  ['logger_5flevel_16',['logger_level',['../structwebcface_1_1Server_1_1ClientData.html#ad0189c65be4ee081f1fa3183a901bbb5',1,'webcface::Server::ClientData']]],
-  ['logger_5fos_17',['logger_os',['../structwebcface_1_1Internal_1_1ClientData.html#a8c50582f51bfc4e42a32cc87dbb62874',1,'webcface::Internal::ClientData']]],
-  ['logger_5fsink_18',['logger_sink',['../structwebcface_1_1Internal_1_1ClientData.html#aa89ac4e0d1c136a997c3688a29577679',1,'webcface::Internal::ClientData']]]
+  ['joint_0',['joint',['../structwebcface_1_1Common_1_1RobotLink.html#a2c3f77c9acaa0f8c43395295b21a7608',1,'webcface::Common::RobotLink']]],
+  ['joint_5fangle_1',['joint_angle',['../structwebcface_1_1Message_1_1RobotModel_1_1RobotLink.html#a0d1d3c258be36be01381b2ccf7b3cbe6',1,'webcface::Message::RobotModel::RobotLink']]],
+  ['joint_5fname_2',['joint_name',['../structwebcface_1_1Message_1_1RobotModel_1_1RobotLink.html#a0864bd115fa1d8bf473e1412ee46dc8c',1,'webcface::Message::RobotModel::RobotLink']]],
+  ['joint_5forigin_5fpos_3',['joint_origin_pos',['../structwebcface_1_1Message_1_1RobotModel_1_1RobotLink.html#a80ab0c819a2221547fb01ed076b2367e',1,'webcface::Message::RobotModel::RobotLink']]],
+  ['joint_5forigin_5frot_4',['joint_origin_rot',['../structwebcface_1_1Message_1_1RobotModel_1_1RobotLink.html#a4295a535f555232b38ed3d8b268eca1c',1,'webcface::Message::RobotModel::RobotLink']]],
+  ['joint_5fparent_5',['joint_parent',['../structwebcface_1_1Message_1_1RobotModel_1_1RobotLink.html#a87fbc7ad98ae4b56bedd97703c2e55ce',1,'webcface::Message::RobotModel::RobotLink']]],
+  ['joint_5ftype_6',['joint_type',['../structwebcface_1_1Message_1_1RobotModel_1_1RobotLink.html#a3e98c07d782f7591463f6e2a6da8159d',1,'webcface::Message::RobotModel::RobotLink']]]
 ];

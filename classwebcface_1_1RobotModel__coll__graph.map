@@ -1,0 +1,15 @@
+<map id="RobotModel" name="RobotModel">
+<area shape="rect" id="Node000001" title="RobotModelの送受信データを表すクラス" alt="" coords="5,356,105,381"/>
+<area shape="rect" id="Node000002" href="$structwebcface_1_1Field.html" title="ClientDataの参照とメンバ名とデータ名を持つクラス" alt="" coords="13,129,66,155"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="44,168,57,355,52,356,38,168"/>
+<area shape="rect" id="Node000003" href="$structwebcface_1_1Common_1_1FieldBase.html" title="メンバ名とデータ名を持つクラス" alt="" coords="13,5,98,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="55,45,43,130,38,129,49,44"/>
+<area shape="rect" id="Node000005" href="$structwebcface_1_1Common_1_1FieldBaseComparable.html" title=" " alt="" coords="77,80,241,105"/>
+<area shape="poly" id="edge5_Node000005_Node000003" title=" " alt="" coords="85,36,144,78,141,82,82,41"/>
+<area shape="rect" id="Node000004" href="$classwebcface_1_1EventTarget.html" title=" " alt="" coords="77,281,284,307"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="150,316,77,358,74,353,147,311"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="151,119,137,165,134,192,138,218,154,253,173,280,169,283,149,255,133,219,129,192,132,164,146,117"/>
+<area shape="rect" id="Node000006" href="$classwebcface_1_1EventTarget.html" title="イベントを表し、コールバックの追加や削除ができるクラス。" alt="" coords="175,179,333,219"/>
+<area shape="poly" id="edge7_Node000006_Node000005" title=" " alt="" coords="181,114,239,177,235,180,177,117"/>
+<area shape="poly" id="edge6_Node000004_Node000006" title=" " alt="" coords="233,231,192,283,188,279,229,228"/>
+</map>

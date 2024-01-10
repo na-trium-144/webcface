@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['valtype_0',['valtype',['../namespacewebcface_1_1Common.html#acd1dd9e2d5f885ad3f73197cfa6b0185',1,'webcface::ValType'],['../namespacewebcface_1_1Common.html#acd1dd9e2d5f885ad3f73197cfa6b0185',1,'webcface::Common::ValType']]],
-  ['viewcolor_1',['viewcolor',['../namespacewebcface_1_1Common.html#a5dcc1f15d6a60ca34207565aeb74124a',1,'webcface::ViewColor'],['../namespacewebcface_1_1Common.html#a5dcc1f15d6a60ca34207565aeb74124a',1,'webcface::Common::ViewColor']]],
-  ['viewcomponenttype_2',['viewcomponenttype',['../namespacewebcface_1_1Common.html#a11040d82967b60182816ddc035d07c28',1,'webcface::ViewComponentType'],['../namespacewebcface_1_1Common.html#a11040d82967b60182816ddc035d07c28',1,'webcface::Common::ViewComponentType']]]
+  ['imagecolormode_0',['imagecolormode',['../namespacewebcface_1_1Common.html#abcfd96b0be942012c2f4641b4741a31e',1,'webcface::ImageColorMode'],['../namespacewebcface_1_1Common.html#abcfd96b0be942012c2f4641b4741a31e',1,'webcface::Common::ImageColorMode']]],
+  ['imagecompressmode_1',['imagecompressmode',['../namespacewebcface_1_1Common.html#ab72e620a597e5f750b2c9b3391e84ded',1,'webcface::ImageCompressMode'],['../namespacewebcface_1_1Common.html#ab72e620a597e5f750b2c9b3391e84ded',1,'webcface::Common::ImageCompressMode']]]
 ];

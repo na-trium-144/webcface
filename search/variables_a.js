@@ -1,20 +1,6 @@
 var searchData=
 [
-  ['mat_5f_0',['mat_',['../classwebcface_1_1Common_1_1ImageWithCV.html#a00b7670cd1af99eb368b34b7724c9304',1,'webcface::Common::ImageWithCV']]],
-  ['max_5f_1',['max_',['../classwebcface_1_1Common_1_1Arg.html#ae0b025581d8618b3f4a7524cde2c74ae',1,'webcface::Common::Arg']]],
-  ['member_2',['member',['../structwebcface_1_1Message_1_1LogReq.html#ab4fc52453246166f09c4cecd507a38a7',1,'webcface::Message::LogReq::member'],['../structwebcface_1_1Message_1_1Req.html#ab4fc52453246166f09c4cecd507a38a7',1,'webcface::Message::Req::member'],['../structwebcface_1_1Message_1_1Req_3_01Image_01_4.html#ab4fc52453246166f09c4cecd507a38a7',1,'webcface::Message::Req&lt; Image &gt;::member']]],
-  ['member_5f_3',['member_',['../structwebcface_1_1Common_1_1FieldBase.html#a46e2aa85bc5d8406ccfa3509a9633ff6',1,'webcface::Common::FieldBase']]],
-  ['member_5faddr_4',['member_addr',['../structwebcface_1_1Internal_1_1ClientData.html#a7d3129cf10a92bd12cf4d967fa12edcc',1,'webcface::Internal::ClientData']]],
-  ['member_5fentry_5fevent_5',['member_entry_event',['../structwebcface_1_1Internal_1_1ClientData.html#a5fc5bf885dda6d4a7b5d51d507b3be05',1,'webcface::Internal::ClientData']]],
-  ['member_5fid_6',['member_id',['../structwebcface_1_1Message_1_1SyncInit.html#ae9313ec6cb5a526764b6163a3148970b',1,'webcface::Message::SyncInit::member_id'],['../structwebcface_1_1Message_1_1Sync.html#ae9313ec6cb5a526764b6163a3148970b',1,'webcface::Message::Sync::member_id'],['../structwebcface_1_1Message_1_1Log.html#ae9313ec6cb5a526764b6163a3148970b',1,'webcface::Message::Log::member_id'],['../structwebcface_1_1Message_1_1FuncInfo.html#ae9313ec6cb5a526764b6163a3148970b',1,'webcface::Message::FuncInfo::member_id'],['../structwebcface_1_1Message_1_1Entry.html#ae9313ec6cb5a526764b6163a3148970b',1,'webcface::Message::Entry::member_id'],['../structwebcface_1_1Server_1_1ClientData.html#ae9313ec6cb5a526764b6163a3148970b',1,'webcface::Server::ClientData::member_id']]],
-  ['member_5fids_7',['member_ids',['../structwebcface_1_1Internal_1_1ClientData.html#af0d7fa3532109378af164f7321989bc1',1,'webcface::Internal::ClientData']]],
-  ['member_5flib_5fname_8',['member_lib_name',['../structwebcface_1_1Internal_1_1ClientData.html#a033268534fb70c182c9279306d8b2329',1,'webcface::Internal::ClientData']]],
-  ['member_5flib_5fver_9',['member_lib_ver',['../structwebcface_1_1Internal_1_1ClientData.html#a2379c61c4c44468309940c18285c50e9',1,'webcface::Internal::ClientData']]],
-  ['member_5fname_10',['member_name',['../structwebcface_1_1Message_1_1SyncInit.html#a3c1ec895509287379c2c3e843b987862',1,'webcface::Message::SyncInit']]],
-  ['message_11',['message',['../structwebcface_1_1Common_1_1LogLine.html#a36bd74109f547f7f8198faf5a12d2879',1,'webcface::Common::LogLine::message'],['../structwebcface_1_1Message_1_1Log_1_1LogLine.html#a36bd74109f547f7f8198faf5a12d2879',1,'webcface::Message::Log::LogLine::message']]],
-  ['message_5fqueue_12',['message_queue',['../structwebcface_1_1Internal_1_1ClientData.html#ae634efd684c1b705a5fb2587f45ce235',1,'webcface::Internal::ClientData']]],
-  ['message_5fthread_13',['message_thread',['../structwebcface_1_1Internal_1_1ClientData.html#aed4841dd8eacd5ab7f3b925c6c9475ff',1,'webcface::Internal::ClientData']]],
-  ['min_5f_14',['min_',['../classwebcface_1_1Common_1_1Arg.html#a45fb6de0b5002feb0203ac9f32f536c2',1,'webcface::Common::Arg']]],
-  ['modified_15',['modified',['../classwebcface_1_1ViewBuf.html#a48b46e9dd96a6a268ee4e28d52a3ed87',1,'webcface::ViewBuf']]],
-  ['mtx_16',['mtx',['../classwebcface_1_1Internal_1_1SyncDataStore1.html#a8e3a00b8e2de7776167cc2c41c29294c',1,'webcface::Internal::SyncDataStore1::mtx'],['../classwebcface_1_1Internal_1_1SyncDataStore2.html#a8e3a00b8e2de7776167cc2c41c29294c',1,'webcface::Internal::SyncDataStore2::mtx'],['../classwebcface_1_1Internal_1_1FuncResultStore.html#ad5e0dbd36f0d71fce9b00b7f991b2f38',1,'webcface::Internal::FuncResultStore::mtx'],['../classwebcface_1_1Common_1_1Queue.html#ad5e0dbd36f0d71fce9b00b7f991b2f38',1,'webcface::Common::Queue::mtx']]]
+  ['keep_5flog_0',['keep_log',['../structwebcface_1_1Server_1_1Store.html#aac122449fd3bbb64fd0eb7fc567a7a46',1,'webcface::Server::Store']]],
+  ['key_1',['key',['../structwebcface_1_1Common_1_1DictElement.html#aa4cdb693ee7f3d1d131bb328468184b7',1,'webcface::Common::DictElement::key'],['../classwebcface_1_1EventTarget.html#a96313403719d705d2df812e3ba166772',1,'webcface::EventTarget::key']]],
+  ['kind_2',['kind',['../structwebcface_1_1Message_1_1MessageBase.html#ad5a4760db27f8fcd5c4028bb15f80ad9',1,'webcface::Message::MessageBase']]]
 ];

@@ -110,13 +110,13 @@ $(document).ready(function(){initNavTree('md_90__message.html',''); initResizabl
   <div class="headertitle"><div class="title">Message</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md51"></a> 送受信されるメッセージの仕様について</p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md61"></a> 送受信されるメッセージの仕様について</p>
 <p>MessagePackで送受信されます。 両方向の通信ともにn個のデータを長さ2nの配列で表現します。</p>
 <div class="fragment"><div class="line">[ kind1, data1, kind2, data2, ... ]</div>
 </div><!-- fragment --><p>see also <a class="el" href="message_8h.html">message.h</a></p>
-<h1><a class="anchor" id="autotoc_md52"></a>
+<h1><a class="anchor" id="autotoc_md62"></a>
 Sync</h1>
-<h2><a class="anchor" id="autotoc_md53"></a>
+<h2><a class="anchor" id="autotoc_md63"></a>
 sync init (kind = 80)</h2>
 <div class="fragment"><div class="line">data = {</div>
 <div class="line">    M: string, // member name</div>
@@ -133,7 +133,7 @@ sync init (kind = 80)</h2>
 </ul>
 </li>
 </ul>
-<h2><a class="anchor" id="autotoc_md54"></a>
+<h2><a class="anchor" id="autotoc_md64"></a>
 svr version (kind = 88)</h2>
 <div class="fragment"><div class="line">data = {</div>
 <div class="line">    n: string, // server name</div>
@@ -142,7 +142,7 @@ svr version (kind = 88)</h2>
 </div><!-- fragment --><ul>
 <li>サーバーからクライアントに1回送られます</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md55"></a>
+<h2><a class="anchor" id="autotoc_md65"></a>
 ping (kind = 89)</h2>
 <div class="fragment"><div class="line">data = {}</div>
 </div><!-- fragment --><ul>
@@ -152,7 +152,7 @@ ping (kind = 89)</h2>
 </ul>
 </li>
 </ul>
-<h2><a class="anchor" id="autotoc_md56"></a>
+<h2><a class="anchor" id="autotoc_md66"></a>
 ping status (kind = 90)</h2>
 <div class="fragment"><div class="line">data = {</div>
 <div class="line">    s: {member_id: status, member_id: status, ...},</div>
@@ -163,13 +163,13 @@ ping status (kind = 90)</h2>
 </ul>
 </li>
 </ul>
-<h2><a class="anchor" id="autotoc_md57"></a>
+<h2><a class="anchor" id="autotoc_md67"></a>
 ping status req (kind = 91)</h2>
 <div class="fragment"><div class="line">data = {}</div>
 </div><!-- fragment --><ul>
 <li>クライアントからサーバーにこれを送ると、以降数秒おきにping statusが送られてくるようになります</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md58"></a>
+<h2><a class="anchor" id="autotoc_md68"></a>
 sync (kind = 87)</h2>
 <div class="fragment"><div class="line">data = {</div>
 <div class="line">    m: number; // member id</div>
@@ -186,9 +186,9 @@ sync (kind = 87)</h2>
 </ul>
 </li>
 </ul>
-<h1><a class="anchor" id="autotoc_md59"></a>
+<h1><a class="anchor" id="autotoc_md69"></a>
 Func</h1>
-<h2><a class="anchor" id="autotoc_md60"></a>
+<h2><a class="anchor" id="autotoc_md70"></a>
 func info (kind = 84)</h2>
 <div class="fragment"><div class="line">data = {</div>
 <div class="line">    m: number, // member id</div>
@@ -210,7 +210,7 @@ func info (kind = 84)</h2>
 </li>
 <li>func infoを送らなくても関数の呼び出しは可能なので、非表示にしたい関数はfunc infoを送らなければよいです</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md61"></a>
+<h2><a class="anchor" id="autotoc_md71"></a>
 call (kind = 81)</h2>
 <div class="fragment"><div class="line">data = {</div>
 <div class="line">    i: number; // caller id</div>
@@ -228,7 +228,7 @@ call (kind = 81)</h2>
 <li>関数の呼び出しはsyncと無関係なタイミングで構いません</li>
 <li>また、無名のクライアントからも送信することができます</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md62"></a>
+<h2><a class="anchor" id="autotoc_md72"></a>
 call response (kind = 82)</h2>
 <div class="fragment"><div class="line">data = {</div>
 <div class="line">    i: number; // caller id</div>
@@ -239,7 +239,7 @@ call response (kind = 82)</h2>
 <li>targetはiとcにCallと同じものを、関数の実行を開始した時sにtrueを、関数が存在しない場合にはsにfalseをセットし、サーバーに送るとクライアント(caller)に届きます</li>
 <li>targetがそもそも存在しない場合はサーバーがsにfalseをセットしてcallerに送ります</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md63"></a>
+<h2><a class="anchor" id="autotoc_md73"></a>
 call result (kind = 83)</h2>
 <div class="fragment"><div class="line">data = {</div>
 <div class="line">    i: number; // caller id</div>
@@ -257,9 +257,9 @@ call result (kind = 83)</h2>
 </ul>
 </li>
 </ul>
-<h1><a class="anchor" id="autotoc_md64"></a>
+<h1><a class="anchor" id="autotoc_md74"></a>
 Value</h1>
-<h2><a class="anchor" id="autotoc_md65"></a>
+<h2><a class="anchor" id="autotoc_md75"></a>
 value (kind = 0)</h2>
 <div class="fragment"><div class="line">data = {</div>
 <div class="line">    f: string, // name</div>
@@ -268,7 +268,7 @@ value (kind = 0)</h2>
 </div><!-- fragment --><ul>
 <li>クライアント→サーバーに更新されたデータを送ります</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md66"></a>
+<h2><a class="anchor" id="autotoc_md76"></a>
 value entry (kind = 20)</h2>
 <div class="fragment"><div class="line">data = {</div>
 <div class="line">    m: number, // member id</div>
@@ -277,7 +277,7 @@ value entry (kind = 20)</h2>
 </div><!-- fragment --><ul>
 <li>新しいValueが送られてきた時、サーバーは全クライアントにValueEntryを送ります</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md67"></a>
+<h2><a class="anchor" id="autotoc_md77"></a>
 value req (kind = 40)</h2>
 <div class="fragment"><div class="line">data = {</div>
 <div class="line">    m: number, // member id</div>
@@ -291,7 +291,7 @@ value req (kind = 40)</h2>
 </ul>
 </li>
 </ul>
-<h2><a class="anchor" id="autotoc_md68"></a>
+<h2><a class="anchor" id="autotoc_md78"></a>
 value res (kind = 60)</h2>
 <div class="fragment"><div class="line">data = {</div>
 <div class="line">    i: number, // request id</div>
@@ -301,9 +301,9 @@ value res (kind = 60)</h2>
 </div><!-- fragment --><ul>
 <li>requestに対応するvalueを送り返します</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md69"></a>
+<h1><a class="anchor" id="autotoc_md79"></a>
 Text</h1>
-<h2><a class="anchor" id="autotoc_md70"></a>
+<h2><a class="anchor" id="autotoc_md80"></a>
 text (kind = 1)</h2>
 <div class="fragment"><div class="line">data = {</div>
 <div class="line">    f: string, // name</div>
@@ -312,17 +312,17 @@ text (kind = 1)</h2>
 </div><!-- fragment --><ul>
 <li>value と同様</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md71"></a>
+<h2><a class="anchor" id="autotoc_md81"></a>
 text entry (kind = 21)</h2>
 <ul>
 <li>value entryと同様</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md72"></a>
+<h2><a class="anchor" id="autotoc_md82"></a>
 text req (kind = 41)</h2>
 <ul>
 <li>value req と同様</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md73"></a>
+<h2><a class="anchor" id="autotoc_md83"></a>
 text res (kind = 61)</h2>
 <div class="fragment"><div class="line">data = {</div>
 <div class="line">    i: number, // request id</div>
@@ -332,9 +332,9 @@ text res (kind = 61)</h2>
 </div><!-- fragment --><ul>
 <li>value resと同様</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md74"></a>
+<h1><a class="anchor" id="autotoc_md84"></a>
 View</h1>
-<h2><a class="anchor" id="autotoc_md75"></a>
+<h2><a class="anchor" id="autotoc_md85"></a>
 view (kind = 3)</h2>
 <div class="fragment"><div class="line">data = {</div>
 <div class="line">    f: string, // name</div>
@@ -362,17 +362,17 @@ view (kind = 3)</h2>
 </li>
 <li><img src="https://img.shields.io/badge/1.1~-00599c?logo=C%2B%2B" alt="c++ ver1.1" class="inline"/> dのindexをnumber型からstring型に変更</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md76"></a>
+<h2><a class="anchor" id="autotoc_md86"></a>
 view entry (kind = 23)</h2>
 <ul>
 <li>value entryと同様</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md77"></a>
+<h2><a class="anchor" id="autotoc_md87"></a>
 view req (kind = 43)</h2>
 <ul>
 <li>value req と同様</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md78"></a>
+<h2><a class="anchor" id="autotoc_md88"></a>
 view res (kind = 63)</h2>
 <div class="fragment"><div class="line">data = {</div>
 <div class="line">    i: number, // request id</div>
@@ -383,20 +383,20 @@ view res (kind = 63)</h2>
 </div><!-- fragment --><ul>
 <li>value resと同様</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md79"></a>
+<h1><a class="anchor" id="autotoc_md89"></a>
 Image</h1>
 <p>TODO: あとで書く </p>
-<h2><a class="anchor" id="autotoc_md80"></a>
+<h2><a class="anchor" id="autotoc_md90"></a>
 image (kind = 5)</h2>
-<h2><a class="anchor" id="autotoc_md81"></a>
+<h2><a class="anchor" id="autotoc_md91"></a>
 image entry (kind = 25)</h2>
-<h2><a class="anchor" id="autotoc_md82"></a>
+<h2><a class="anchor" id="autotoc_md92"></a>
 image req (kind = 45)</h2>
-<h2><a class="anchor" id="autotoc_md83"></a>
+<h2><a class="anchor" id="autotoc_md93"></a>
 image res (kind = 65)</h2>
-<h1><a class="anchor" id="autotoc_md84"></a>
+<h1><a class="anchor" id="autotoc_md94"></a>
 Log</h1>
-<h2><a class="anchor" id="autotoc_md85"></a>
+<h2><a class="anchor" id="autotoc_md95"></a>
 log (kind = 86)</h2>
 <div class="fragment"><div class="line">data = {</div>
 <div class="line">    m: number, // member id</div>
@@ -411,7 +411,7 @@ log (kind = 86)</h2>
 <li>リクエストがあればサーバー→各クライアントにそのまま送り返します</li>
 <li>リクエスト直後、サーバーが保持しているログの全履歴を1つのlogメッセージにまとめてクライアントに送ります</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md86"></a>
+<h2><a class="anchor" id="autotoc_md96"></a>
 log req (kind = 87)</h2>
 <div class="fragment"><div class="line">data = {</div>
 <div class="line">    M: string // member name</div>
@@ -425,7 +425,7 @@ log req (kind = 87)</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Jan 10 2024 01:51:41 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Wed Jan 10 2024 03:27:27 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

@@ -1,10 +1,8 @@
 var searchData=
 [
-  ['req_0',['Req',['../structwebcface_1_1Message_1_1Req.html',1,'webcface::Message']]],
-  ['req_3c_20image_20_3e_1',['Req&lt; Image &gt;',['../structwebcface_1_1Message_1_1Req_3_01Image_01_4.html',1,'webcface::Message']]],
-  ['res_2',['Res',['../structwebcface_1_1Message_1_1Res.html',1,'webcface::Message']]],
-  ['res_3c_20image_20_3e_3',['Res&lt; Image &gt;',['../structwebcface_1_1Message_1_1Res_3_01Image_01_4.html',1,'webcface::Message']]],
-  ['res_3c_20text_20_3e_4',['Res&lt; Text &gt;',['../structwebcface_1_1Message_1_1Res_3_01Text_01_4.html',1,'webcface::Message']]],
-  ['res_3c_20value_20_3e_5',['Res&lt; Value &gt;',['../structwebcface_1_1Message_1_1Res_3_01Value_01_4.html',1,'webcface::Message']]],
-  ['res_3c_20view_20_3e_6',['Res&lt; View &gt;',['../structwebcface_1_1Message_1_1Res_3_01View_01_4.html',1,'webcface::Message']]]
+  ['ping_0',['Ping',['../structwebcface_1_1Message_1_1Ping.html',1,'webcface::Message']]],
+  ['pingstatus_1',['PingStatus',['../structwebcface_1_1Message_1_1PingStatus.html',1,'webcface::Message']]],
+  ['pingstatusreq_2',['PingStatusReq',['../structwebcface_1_1Message_1_1PingStatusReq.html',1,'webcface::Message']]],
+  ['plane_3',['plane',['../structwebcface_1_1Geometries_1_1Plane.html',1,'Plane'],['../structwebcface_1_1Geometries_1_1Plane.html',1,'Plane']]],
+  ['point_4',['point',['../classwebcface_1_1Common_1_1Point.html',1,'Point'],['../classwebcface_1_1Common_1_1Point.html',1,'Point']]]
 ];
