@@ -6,7 +6,7 @@
 #include <stdexcept>
 #include <chrono>
 
-using namespace webcface;
+using namespace WEBCFACE_NS;
 class ViewTest : public ::testing::Test {
   protected:
     void SetUp() override {
@@ -49,7 +49,7 @@ TEST_F(ViewTest, eventTarget) {
 TEST_F(ViewTest, viewSet) {
     data_->view_change_event.appendListener(FieldBase{self_name, "b"},
                                             callback());
-    using namespace webcface::ViewComponents;
+    using namespace WEBCFACE_NS::ViewComponents;
     auto v = view(self_name, "b");
     v << "a\n" << 1;
     v << text("aaa").textColor(ViewColor::yellow).bgColor(ViewColor::green)

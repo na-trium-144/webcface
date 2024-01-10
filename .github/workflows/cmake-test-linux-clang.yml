@@ -14,21 +14,23 @@ jobs:
   test-linux-clang:
     strategy:
       matrix:
-        dep: ["apt", "source"]
+        dep: ["apt-opencv", "apt", "source"]
+        include:
+        - dep: apt-opencv
+          use_opencv: on
     runs-on: ubuntu-20.04
     steps:
     - uses: actions/checkout@v4
 
     - name: Install dependencies
-      if: matrix.dep == 'apt'
       run: |
         sudo apt-get update
-        sudo apt-get install -y libspdlog-dev
+        if [ ${{matrix.dep}} = apt ]; then sudo apt-get install -y libspdlog-dev; fi
+        if [ ${{matrix.dep}} = apt-opencv ]; then sudo apt-get install -y libspdlog-dev libopencv-dev; fi
     - name: Install clang-13
       uses: KyleMayes/install-llvm-action@v1
       with:
         version: "13"
-
     - name: Configure CMake
       env:
         CC: ${{ env.LLVM_PATH }}/bin/clang
@@ -39,7 +41,8 @@ jobs:
         -DWEBCFACE_TEST=on
         -DWEBCFACE_EXAMPLE=on
         -DWEBCFACE_TEST_TIMEOUT=50
-        -DCMAKE_CXX_CLANG_TIDY=${{ env.LLVM_PATH }}/bin/clang-tidy
+        -DWEBCFACE_USE_OPENCV=${{matrix.use_opencv}}
+        "-DCMAKE_CXX_CLANG_TIDY=${{env.LLVM_PATH}}/bin/clang-tidy;--header-filter=$(pwd)/src/;--warnings-as-errors"
 
     - name: Build
       run: cmake --build build

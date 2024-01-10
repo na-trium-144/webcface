@@ -2,8 +2,9 @@
 #include <string>
 #include <optional>
 #include "field_base.h"
+#include "def.h"
 
-namespace webcface {
+namespace WEBCFACE_NS {
 inline namespace Common {
 enum class ViewComponentType {
     text = 0,
@@ -48,7 +49,8 @@ struct ViewComponentBase {
         return type_ == rhs.type_ && text_ == rhs.text_ &&
                ((on_click_func_ == std::nullopt &&
                  rhs.on_click_func_ == std::nullopt) ||
-                (on_click_func_->member_ == rhs.on_click_func_->member_ &&
+                (on_click_func_ && rhs.on_click_func_ &&
+                 on_click_func_->member_ == rhs.on_click_func_->member_ &&
                  on_click_func_->field_ == rhs.on_click_func_->field_)) &&
                text_color_ == rhs.text_color_ && bg_color_ == rhs.bg_color_;
     }
@@ -58,4 +60,4 @@ struct ViewComponentBase {
 };
 
 } // namespace Common
-} // namespace webcface
+} // namespace WEBCFACE_NS

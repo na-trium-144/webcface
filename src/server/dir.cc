@@ -12,11 +12,12 @@
 #include <linux/limits.h>
 #endif
 
-namespace webcface {
+namespace WEBCFACE_NS {
 namespace Server {
 
 // https://stackoverflow.com/questions/50889647/best-way-to-get-exe-folder-path
-std::filesystem::path getExeDir(const std::shared_ptr<spdlog::logger> &logger) {
+std::filesystem::path
+getExeDir([[maybe_unused]] const std::shared_ptr<spdlog::logger> &logger) {
 #ifdef _WIN32
     // Windows specific
     wchar_t szPath[MAX_PATH];
@@ -78,4 +79,4 @@ std::string getTempDir(const std::shared_ptr<spdlog::logger> &logger) {
     }
 }
 } // namespace Server
-} // namespace webcface
+} // namespace WEBCFACE_NS

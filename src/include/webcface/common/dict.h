@@ -8,8 +8,9 @@
 #include <type_traits>
 #include <concepts>
 #include "vector.h"
+#include "def.h"
 
-namespace webcface {
+namespace WEBCFACE_NS {
 inline namespace Common {
 
 struct VecTypeDisabled {};
@@ -39,8 +40,8 @@ struct DictTraits<std::shared_ptr<T>> {
         return std::make_shared<T>(DictTraits<T>::wrap(val));
     }
     template <typename V = VecType>
-        requires(!std::same_as<V, VecTypeDisabled>)
-    static std::shared_ptr<T> wrapVec(const V &val) {
+    requires(!std::same_as<V, VecTypeDisabled>) static std::shared_ptr<
+        T> wrapVec(const V &val) {
         return std::make_shared<T>(DictTraits<T>::wrapVec(val));
     }
 };
@@ -70,7 +71,7 @@ struct DictElement {
     DictElement() = default;
     //! {key, value} から変換するコンストラクタ
     template <typename U>
-        requires std::convertible_to<U, typename DictTraits<T>::ValueType>
+    requires std::convertible_to<U, typename DictTraits<T>::ValueType>
     DictElement(const std::string &key, const U &value)
         : key(key),
           value(DictTraits<T>::wrap(
@@ -88,15 +89,15 @@ struct DictElement {
 
 /*!
  * \brief 値の型をTに制限した、連想配列もどき
- * 
+ *
  * T型の値1つ または 複数の子要素(名前とDictのペア)を持つ
- * 
+ *
  */
 template <typename T>
 class Dict {
     /*!
      * Tがshared_ptrの場合があるので、値に破壊的変更をしてはいけない
-     * 
+     *
      */
     std::shared_ptr<std::unordered_map<std::string, T>> children;
     //! operator[]などのアクセスのときにつけるprefix (末尾ピリオドを含まない)
@@ -209,4 +210,4 @@ class Dict {
 };
 
 } // namespace Common
-} // namespace webcface
+} // namespace WEBCFACE_NS

@@ -3,7 +3,7 @@
 #include <webcface/member.h>
 #include "../message/message.h"
 
-namespace webcface {
+namespace WEBCFACE_NS {
 ViewComponentBase &
 ViewComponent::lockTmp(const std::weak_ptr<Internal::ClientData> &data_w,
                        const std::string &field_id) {
@@ -168,4 +168,4 @@ View &View::free() {
     return *this;
 }
 
-} // namespace webcface
+} // namespace WEBCFACE_NS

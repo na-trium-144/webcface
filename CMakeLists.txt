@@ -1,23 +1,19 @@
 cmake_minimum_required(VERSION 3.12)
 
-# src/include/webcface/common/def.h からバージョンを取得
-file(READ ${CMAKE_CURRENT_SOURCE_DIR}/src/include/webcface/common/def.h contents)
-string(REGEX MATCH "#define WEBCFACE_VERSION_MAJOR *([0-9]+)" NULL_OUT ${contents})
-set(VERSION_MAJOR ${CMAKE_MATCH_1})
-string(REGEX MATCH "#define WEBCFACE_VERSION_MINOR *([0-9]+)" NULL_OUT ${contents})
-set(VERSION_MINOR ${CMAKE_MATCH_1})
-string(REGEX MATCH "#define WEBCFACE_VERSION_REVISION *([0-9]+)" NULL_OUT ${contents})
-set(VERSION_REVISION ${CMAKE_MATCH_1})
-set(WEBCFACE_VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_REVISION})
-
 project(webcface
     LANGUAGES CXX
-    VERSION ${WEBCFACE_VERSION}
+    VERSION 1.3.1
     HOMEPAGE_URL "https://github.com/na-trium-144/webcface"
     DESCRIPTION "Web-based RPC & UI Library"
 )
-set(WEBCFACE_SOVERSION 2)
-set(WEBUI_VERSION 1.0.11)
+set(WEBCFACE_CONTACT "na-trium-144@users.noreply.github.com")
+set(WEBCFACE_VERSION ${PROJECT_VERSION})
+set(WEBCFACE_SOVERSION 3)
+set(WEBUI_VERSION 1.1.0)
+
+set(WEBCFACE_VERSION_MAJOR ${PROJECT_VERSION_MAJOR})
+set(WEBCFACE_VERSION_MINOR ${PROJECT_VERSION_MINOR})
+set(WEBCFACE_VERSION_REVISION ${PROJECT_VERSION_PATCH})
 
 if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
     set(IS_MAIN on)
@@ -32,6 +28,7 @@ option(WEBCFACE_COVERAGE "enable generating test coverage" OFF)
 set(WEBCFACE_TEST_TIMEOUT 10 CACHE STRING "connection timeout in test")
 option(WEBCFACE_SHARED "build shared library" ON)
 option(WEBCFACE_PIC "enable PIC for shared library" ${WEBCFACE_SHARED})
+option(WEBCFACE_USE_OPENCV "use opencv to enable image processing feature" ON)
 set(WEBCFACE_VERSION_SUFFIX "git" CACHE STRING
     "version suffix ('git' to get automatically from git describe command)"
 )
@@ -62,6 +59,7 @@ message(STATUS "webcface_test = ${WEBCFACE_TEST} (timeout = ${WEBCFACE_TEST_TIME
 message(STATUS "webcface_coverage = ${WEBCFACE_COVERAGE}")
 message(STATUS "webcface_install = ${WEBCFACE_INSTALL}")
 message(STATUS "webcface_shared = ${WEBCFACE_SHARED} (pic = ${WEBCFACE_PIC})")
+message(STATUS "webcface_use_opencv = ${WEBCFACE_USE_OPENCV}")
 
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Release")
@@ -96,6 +94,16 @@ if(MINGW)
     add_link_options(-Wl,--default-image-base-low)
 endif()
 
+configure_file(
+    cmake/def.h.in
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/include/webcface/common/def.h
+    @ONLY
+)
+configure_file(
+    cmake/version.rc.in
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/version.rc
+    @ONLY
+)
 
 ###############################################################################
 
@@ -238,6 +246,9 @@ if(NOT asio_POPULATED)
         ${asio_SOURCE_DIR}/asio/include
     )
     target_compile_definitions(asio INTERFACE ASIO_STANDALONE)
+    if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+        target_compile_options(asio INTERFACE -Wno-deprecated-declarations)
+    endif()
 endif()
 if(MINGW)
     set(ASIO asio ws2_32 wsock32)
@@ -248,8 +259,8 @@ endif()
 # asioがない場合find_packageしないようにするため、
 # add_subdirectoryではなくinterfaceライブラリを定義する
 FetchContent_Declare(crow
-    GIT_REPOSITORY https://github.com/na-trium-144/Crow.git
-    GIT_TAG fix-destructor-io-service
+    GIT_REPOSITORY https://github.com/CrowCpp/Crow.git
+    GIT_TAG 921ce6f
     CONFIGURE_COMMAND ""
 )
 FetchContent_GetProperties(crow)
@@ -260,6 +271,9 @@ if(NOT crow_POPULATED)
         ${crow_SOURCE_DIR}/include
     )
     target_link_libraries(Crow INTERFACE ${ASIO})
+    if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+        target_compile_options(Crow INTERFACE -Wno-type-limits)
+    endif()
 endif()
 set(CROW Crow)
 
@@ -268,6 +282,10 @@ FetchContent_Declare(cli11
     GIT_TAG v2.3.2
 )
 FetchContent_MakeAvailable(cli11)
+
+if(WEBCFACE_USE_OPENCV)
+    find_package(OpenCV REQUIRED)
+endif()
 
 if(WEBCFACE_TEST)
     find_package(GTest QUIET)
@@ -286,11 +304,22 @@ endif()
 
 ###############################################################################
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    add_compile_options(-Wall -Wextra -Wpedantic)
+    add_compile_options(-Wall -Wextra -Wpedantic -Werror)
     add_compile_options(-Wno-psabi) # refer to PR#9
+    add_compile_options( # inside opencv
+        $<$<COMPILE_LANGUAGE:CXX>:-Wno-deprecated-enum-enum-conversion>
+    )
+    add_compile_options( # inside fmt (fmtlib/fmt#3354)
+        -Wno-array-bounds
+        -Wno-stringop-overflow
+    )
 endif()
 if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-    add_compile_options(-Wall -Wextra -Wpedantic)
+    add_compile_options(-Wall -Wextra -Wpedantic -Werror)
+    add_compile_options( # inside opencv
+        -Wno-c11-extensions
+        $<$<COMPILE_LANGUAGE:CXX>:-Wno-deprecated-enum-enum-conversion>
+    )
 endif()
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
@@ -316,19 +345,31 @@ set(CLI_SRC
     ${CPP_DIR}/client/logger.cc
     ${CPP_DIR}/client/member.cc
     ${CPP_DIR}/client/text.cc
+    ${CPP_DIR}/client/robot_model.cc
+    ${CPP_DIR}/client/canvas3d.cc
     ${CPP_DIR}/client/value.cc
     ${CPP_DIR}/client/view.cc
+    ${CPP_DIR}/client/image.cc
     ${CPP_DIR}/client/version.cc
 )
 set(EXAMPLE_SRC
     ${CPP_DIR}/example/main.cc
     ${CPP_DIR}/example/recv.cc
 )
+if(WEBCFACE_USE_OPENCV)
+    set(EXAMPLE_SRC ${EXAMPLE_SRC}
+        ${CPP_DIR}/example/image_send.cc
+        ${CPP_DIR}/example/image_recv.cc
+    )
+endif()
 set(TEST_SRC
     ${CPP_DIR}/test/client_data_test.cc
     ${CPP_DIR}/test/data_test.cc
     ${CPP_DIR}/test/func_test.cc
     ${CPP_DIR}/test/view_test.cc
+    ${CPP_DIR}/test/robot_model_test.cc
+    ${CPP_DIR}/test/canvas3d_test.cc
+    ${CPP_DIR}/test/image_test.cc
     ${CPP_DIR}/test/member_test.cc
     ${CPP_DIR}/test/logger_test.cc
     ${CPP_DIR}/test/client_test.cc
@@ -339,6 +380,12 @@ set(TEST_SRC
 set(MSG_SRC
     ${CPP_DIR}/message/message.cc
 )
+if(WIN32)
+    set(VERSION_RC ${CPP_DIR}/version.rc)
+else()
+    set(VERSION_RC "")
+endif()
+
 set(INCLUDE_DIR
     $<BUILD_INTERFACE:${CPP_DIR}/include>
     $<INSTALL_INTERFACE:include>
@@ -347,9 +394,9 @@ set(INCLUDE_DIR
 ###############################################################################
 
 add_library(${PROJECT_NAME}-headers INTERFACE)
-target_include_directories(${PROJECT_NAME}-headers INTERFACE ${INCLUDE_DIR})
-target_compile_definitions(${PROJECT_NAME}-headers INTERFACE
-    WEBCFACE_VERSION="${WEBCFACE_VERSION}"
+target_include_directories(${PROJECT_NAME}-headers INTERFACE
+    ${INCLUDE_DIR}
+    ${OpenCV_INCLUDE_DIRS}
 )
 target_compile_features(${PROJECT_NAME}-headers INTERFACE cxx_std_20)
 
@@ -363,6 +410,9 @@ target_link_libraries(${PROJECT_NAME}-message PUBLIC
     ${MSGPACK}
     ${SPDLOG}
 )
+set_target_properties(${PROJECT_NAME}-message PROPERTIES
+    DEBUG_POSTFIX d
+)
 
 add_library(${PROJECT_NAME}-server-impl STATIC ${SVR_SRC})
 target_link_libraries(${PROJECT_NAME}-server-impl PUBLIC
@@ -370,9 +420,11 @@ target_link_libraries(${PROJECT_NAME}-server-impl PUBLIC
     ${PROJECT_NAME}-headers
     ${CROW}
     ${SPDLOG}
+    ${OpenCV_LIBS}
 )
 
-add_executable(${PROJECT_NAME}-server ${SVR_MAIN_SRC})
+
+add_executable(${PROJECT_NAME}-server ${SVR_MAIN_SRC} ${VERSION_RC})
 target_link_libraries(${PROJECT_NAME}-server PRIVATE
     ${PROJECT_NAME}-server-impl
     ${PROJECT_NAME}-headers
@@ -382,9 +434,13 @@ set_target_properties(${PROJECT_NAME}-server PROPERTIES
     INSTALL_RPATH "$ORIGIN/../lib/;$ORIGIN/;@loader_path/../lib/;@loader_path/"
     INSTALL_RPATH_USE_LINK_PATH TRUE
 )
+target_compile_definitions(${PROJECT_NAME}-server PRIVATE
+    FILE_DESCRIPTION="WebCFace Server"
+    FILE_IS_APP
+)
 
 if(WEBCFACE_SHARED)
-    add_library(${PROJECT_NAME} SHARED ${CLI_SRC})
+    add_library(${PROJECT_NAME} SHARED ${CLI_SRC} ${VERSION_RC})
 else()
     add_library(${PROJECT_NAME} STATIC ${CLI_SRC})
 endif()
@@ -400,6 +456,7 @@ target_link_libraries(${PROJECT_NAME} PUBLIC
     ${PROJECT_NAME}-headers
     ${EVENTPP}
     ${SPDLOG}
+    ${OpenCV_LIBS}
 )
 set_target_properties(${PROJECT_NAME} PROPERTIES
     INSTALL_RPATH "$ORIGIN/;@loader_path/"
@@ -407,14 +464,19 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
     VERSION ${PROJECT_VERSION}
     SOVERSION ${WEBCFACE_SOVERSION}
 )
+if(WIN32)
+    set_target_properties(${PROJECT_NAME} PROPERTIES
+        DEBUG_POSTFIX "${WEBCFACE_SOVERSION}d"
+        RELEASE_POSTFIX "${WEBCFACE_SOVERSION}"
+    )
+endif()
 
 add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
-
 
 if(WEBCFACE_EXAMPLE)
     foreach(SRC IN LISTS EXAMPLE_SRC)
         get_filename_component(TARGET ${SRC} NAME_WE)
-        add_executable(${PROJECT_NAME}-example-${TARGET} ${SRC})
+        add_executable(${PROJECT_NAME}-example-${TARGET} ${SRC} ${VERSION_RC})
         target_link_libraries(${PROJECT_NAME}-example-${TARGET} PRIVATE ${PROJECT_NAME})
         set(WEBCFACE_EXAMPLE_TARGETS
             ${WEBCFACE_EXAMPLE_TARGETS}
@@ -427,6 +489,10 @@ if(WEBCFACE_EXAMPLE)
         set_target_properties(${PROJECT_NAME}-example-${TARGET} PROPERTIES
             INSTALL_RPATH "$ORIGIN/../lib/;$ORIGIN/;@loader_path/../lib/;@loader_path/"
             INSTALL_RPATH_USE_LINK_PATH TRUE
+        )
+        target_compile_definitions(${PROJECT_NAME}-example-${TARGET} PRIVATE
+            FILE_DESCRIPTION="WebCFace Example ${TARGET}"
+            FILE_IS_APP
         )
     endforeach()
 endif()
@@ -446,7 +512,7 @@ if(WEBCFACE_TEST)
         WEBCFACE_TEST_TIMEOUT=${WEBCFACE_TEST_TIMEOUT}
     )
     include(GoogleTest)
-    gtest_discover_tests(${PROJECT_NAME}-test)
+    gtest_discover_tests(${PROJECT_NAME}-test DISCOVERY_TIMEOUT 600)
 endif()
 
 ###############################################################################
@@ -483,11 +549,19 @@ if(WEBCFACE_INSTALL)
     install(DIRECTORY ${CPP_DIR}/include/
         DESTINATION include
     )
-    configure_package_config_file(
-        ${CMAKE_CURRENT_SOURCE_DIR}/cmake/${PROJECT_NAME}-config.cmake.in
-        ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config.cmake
-        INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
-    )
+    if(WEBCFACE_USE_OPENCV)
+        configure_package_config_file(
+            ${CMAKE_CURRENT_SOURCE_DIR}/cmake/${PROJECT_NAME}-config.opencv.cmake.in
+            ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config.cmake
+            INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
+        )
+    else()
+        configure_package_config_file(
+            ${CMAKE_CURRENT_SOURCE_DIR}/cmake/${PROJECT_NAME}-config.no-opencv.cmake.in
+            ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config.cmake
+            INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
+        )
+    endif()
 
     write_basic_package_version_file(
         ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config-version.cmake
@@ -534,8 +608,8 @@ if(WEBCFACE_INSTALL)
 
     # https://decovar.dev/blog/2021/09/23/cmake-cpack-package-deb-apt/
     set(CPACK_VERBATIM_VARIABLES yes)
-    set(CPACK_PACKAGE_CONTACT "na-trium-144@users.noreply.github.com")
-    set(CPACK_PACKAGE_VENDOR "na-trium-144@users.noreply.github.com")
+    set(CPACK_PACKAGE_CONTACT ${WEBCFACE_CONTACT})
+    set(CPACK_PACKAGE_VENDOR ${WEBCFACE_CONTACT})
     set(CPACK_PACKAGE_EXECUTABLES
         webcface-server "WebCFace Server"
         ${WEBCFACE_EXAMPLE_TARGETS_CPACK}
@@ -553,8 +627,10 @@ if(WEBCFACE_INSTALL)
     set(CPACK_DEBIAN_PACKAGE_MAINTAINER "na-trium-144 <${CPACK_PACKAGE_CONTACT}>")
     set(CPACK_DEBIAN_PACKAGE_SHLIBDEPS yes)
     if(${spdlog_FOUND})
-        # submoduleのspdlogを使った場合システムのspdlogとはconflictする
-        set(CPACK_DEBIAN_PACKAGE_DEPENDS "libspdlog-dev")
+        set(CPACK_DEBIAN_PACKAGE_DEPENDS ${CPACK_DEBIAN_PACKAGE_DEPENDS} libspdlog-dev)
+    endif()
+    if(${OpenCV_FOUND})
+        set(CPACK_DEBIAN_PACKAGE_DEPENDS ${CPACK_DEBIAN_PACKAGE_DEPENDS} libopencv-dev)
     endif()
     # https://gitlab.kitware.com/cmake/cmake/-/issues/21834
     set(CPACK_DEBIAN_PACKAGE_CONTROL_EXTRA "${CMAKE_CURRENT_LIST_DIR}/cmake/triggers")

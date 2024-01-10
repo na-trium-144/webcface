@@ -1,0 +1,9 @@
+@PACKAGE_INIT@
+
+include(CMakeFindDependencyMacro)
+find_dependency(eventpp)
+find_dependency(spdlog)
+# webcface-windows-package installs opencv
+list(APPEND CMAKE_PREFIX_PATH "${CMAKE_CURRENT_LIST_DIR}/../../../opencv")
+find_dependency(OpenCV)
+include(${CMAKE_CURRENT_LIST_DIR}/webcface-targets.cmake)

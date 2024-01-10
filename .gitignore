@@ -4,3 +4,5 @@
 /CMakeSettings.json
 /webui/
 /dist/
+def.h
+version.rc

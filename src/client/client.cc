@@ -10,7 +10,7 @@
 #include "../message/message.h"
 #include "client_internal.h"
 
-namespace webcface {
+namespace WEBCFACE_NS {
 
 Client::Client(const std::string &name, const std::string &host, int port)
     : Client(name, std::make_shared<Internal::ClientData>(name, host, port)) {}
@@ -25,6 +25,7 @@ Internal::ClientData::ClientData(const std::string &name,
       host(host), port(port),
       message_queue(std::make_shared<Common::Queue<std::string>>()),
       value_store(name), text_store(name), func_store(name), view_store(name),
+      image_store(name), robot_model_store(name), canvas3d_store(name),
       log_store(std::make_shared<
                 SyncDataStore1<std::shared_ptr<std::vector<LogLine>>>>(name)),
       sync_time_store(name),
@@ -129,6 +130,9 @@ void Internal::ClientData::syncDataFirst() {
     std::lock_guard text_lock(text_store.mtx);
     std::lock_guard view_lock(view_store.mtx);
     std::lock_guard func_lock(func_store.mtx);
+    std::lock_guard image_lock(image_store.mtx);
+    std::lock_guard robot_model_lock(robot_model_store.mtx);
+    std::lock_guard canvas3d_lock(canvas3d_store.mtx);
     std::lock_guard log_lock(log_store->mtx);
 
     std::stringstream buffer;
@@ -159,6 +163,28 @@ void Internal::ClientData::syncDataFirst() {
                 Message::Req<Message::View>{{}, v.first, v2.first, v2.second});
         }
     }
+    for (const auto &v : robot_model_store.transferReq()) {
+        for (const auto &v2 : v.second) {
+            Message::pack(buffer, len,
+                          Message::Req<Message::RobotModel>{
+                              {}, v.first, v2.first, v2.second});
+        }
+    }
+    for (const auto &v : canvas3d_store.transferReq()) {
+        for (const auto &v2 : v.second) {
+            Message::pack(buffer, len,
+                          Message::Req<Message::Canvas3D>{
+                              {}, v.first, v2.first, v2.second});
+        }
+    }
+    for (const auto &v : image_store.transferReq()) {
+        for (const auto &v2 : v.second) {
+            Message::pack(buffer, len,
+                          Message::Req<Message::Image>{
+                              v.first, v2.first, v2.second,
+                              image_store.getReqInfo(v.first, v2.first)});
+        }
+    }
     for (const auto &v : log_store->transferReq()) {
         Message::pack(buffer, len, Message::LogReq{{}, v.first});
     }
@@ -176,6 +202,9 @@ void Internal::ClientData::syncData(bool is_first) {
     std::lock_guard text_lock(text_store.mtx);
     std::lock_guard view_lock(view_store.mtx);
     std::lock_guard func_lock(func_store.mtx);
+    std::lock_guard image_lock(image_store.mtx);
+    std::lock_guard robot_model_lock(robot_model_store.mtx);
+    std::lock_guard canvas3d_lock(canvas3d_store.mtx);
     std::lock_guard log_lock(log_store->mtx);
 
     std::stringstream buffer;
@@ -194,28 +223,18 @@ void Internal::ClientData::syncData(bool is_first) {
     for (const auto &v : text_store.transferSend(is_first)) {
         Message::pack(buffer, len, Message::Text{{}, v.first, v.second});
     }
-    auto view_send_prev = view_store.getSendPrev(is_first);
-    auto view_send = view_store.transferSend(is_first);
-    for (const auto &v : view_send) {
-        auto v_prev = view_send_prev.find(v.first);
-        auto v_diff =
-            std::make_shared<std::unordered_map<int, ViewComponentBase>>();
-        if (v_prev == view_send_prev.end()) {
-            for (std::size_t i = 0; i < v.second->size(); i++) {
-                v_diff->emplace(static_cast<int>(i), (*v.second)[i]);
-            }
-        } else {
-            for (std::size_t i = 0; i < v.second->size(); i++) {
-                if (v_prev->second->size() <= i ||
-                    (*v_prev->second)[i] != (*v.second)[i]) {
-                    v_diff->emplace(static_cast<int>(i), (*v.second)[i]);
-                }
-            }
-        }
-        if (!v_diff->empty()) {
-            Message::pack(buffer, len,
-                          Message::View{v.first, v_diff, v.second->size()});
-        }
+    for (const auto &v : robot_model_store.transferSend(is_first)) {
+        Message::pack(buffer, len, Message::RobotModel{v.first, v.second});
+    }
+    for (const auto &p : view_store.transferSendDiff<Message::View>(is_first)) {
+        Message::pack(buffer, len, p);
+    }
+    for (const auto &p :
+         canvas3d_store.transferSendDiff<Message::Canvas3D>(is_first)) {
+        Message::pack(buffer, len, p);
+    }
+    for (const auto &v : image_store.transferSend(is_first)) {
+        Message::pack(buffer, len, Message::Image{v.first, v.second});
     }
 
     auto log_s = *log_store->getRecv(self_member_name);
@@ -244,25 +263,26 @@ void Client::sync() {
     }
 }
 void Internal::ClientData::onRecv(const std::string &message) {
-    namespace MessageKind = webcface::Message::MessageKind;
-    auto messages = webcface::Message::unpack(message, this->logger_internal);
+    namespace MessageKind = WEBCFACE_NS::Message::MessageKind;
+    auto messages =
+        WEBCFACE_NS::Message::unpack(message, this->logger_internal);
     std::vector<std::string> sync_members;
     for (const auto &m : messages) {
         const auto &[kind, obj] = m;
         switch (kind) {
         case MessageKind::svr_version: {
-            auto r = std::any_cast<webcface::Message::SvrVersion>(obj);
+            auto r = std::any_cast<WEBCFACE_NS::Message::SvrVersion>(obj);
             this->svr_name = r.svr_name;
             this->svr_version = r.ver;
             break;
         }
         case MessageKind::ping: {
             this->message_queue->push(
-                webcface::Message::packSingle(webcface::Message::Ping{}));
+                WEBCFACE_NS::Message::packSingle(WEBCFACE_NS::Message::Ping{}));
             break;
         }
         case MessageKind::ping_status: {
-            auto r = std::any_cast<webcface::Message::PingStatus>(obj);
+            auto r = std::any_cast<WEBCFACE_NS::Message::PingStatus>(obj);
             this->ping_status = r.status;
             for (const auto &member_name : value_store.getMembers()) {
                 this->ping_event.dispatch(
@@ -271,16 +291,15 @@ void Internal::ClientData::onRecv(const std::string &message) {
             break;
         }
         case MessageKind::sync: {
-            auto r = std::any_cast<webcface::Message::Sync>(obj);
+            auto r = std::any_cast<WEBCFACE_NS::Message::Sync>(obj);
             auto member = this->getMemberNameFromId(r.member_id);
             this->sync_time_store.setRecv(member, r.getTime());
             sync_members.push_back(member);
             break;
         }
         case MessageKind::value + MessageKind::res: {
-            auto r =
-                std::any_cast<webcface::Message::Res<webcface::Message::Value>>(
-                    obj);
+            auto r = std::any_cast<
+                WEBCFACE_NS::Message::Res<WEBCFACE_NS::Message::Value>>(obj);
             auto [member, field] =
                 this->value_store.getReq(r.req_id, r.sub_field);
             this->value_store.setRecv(
@@ -292,9 +311,8 @@ void Internal::ClientData::onRecv(const std::string &message) {
             break;
         }
         case MessageKind::text + MessageKind::res: {
-            auto r =
-                std::any_cast<webcface::Message::Res<webcface::Message::Text>>(
-                    obj);
+            auto r = std::any_cast<
+                WEBCFACE_NS::Message::Res<WEBCFACE_NS::Message::Text>>(obj);
             auto [member, field] =
                 this->text_store.getReq(r.req_id, r.sub_field);
             this->text_store.setRecv(member, field, r.data);
@@ -303,10 +321,21 @@ void Internal::ClientData::onRecv(const std::string &message) {
                 Field{shared_from_this(), member, field});
             break;
         }
+        case MessageKind::robot_model + MessageKind::res: {
+            auto r = std::any_cast<
+                WEBCFACE_NS::Message::Res<WEBCFACE_NS::Message::RobotModel>>(
+                obj);
+            auto [member, field] =
+                this->robot_model_store.getReq(r.req_id, r.sub_field);
+            this->robot_model_store.setRecv(member, field, r.commonLinks());
+            this->robot_model_change_event.dispatch(
+                FieldBase{member, field},
+                Field{shared_from_this(), member, field});
+            break;
+        }
         case MessageKind::view + MessageKind::res: {
-            auto r =
-                std::any_cast<webcface::Message::Res<webcface::Message::View>>(
-                    obj);
+            auto r = std::any_cast<
+                WEBCFACE_NS::Message::Res<WEBCFACE_NS::Message::View>>(obj);
             std::lock_guard lock(this->view_store.mtx);
             auto [member, field] =
                 this->view_store.getReq(r.req_id, r.sub_field);
@@ -325,8 +354,40 @@ void Internal::ClientData::onRecv(const std::string &message) {
                 Field{shared_from_this(), member, field});
             break;
         }
+        case MessageKind::canvas3d + MessageKind::res: {
+            auto r = std::any_cast<
+                WEBCFACE_NS::Message::Res<WEBCFACE_NS::Message::Canvas3D>>(obj);
+            std::lock_guard lock(this->canvas3d_store.mtx);
+            auto [member, field] =
+                this->canvas3d_store.getReq(r.req_id, r.sub_field);
+            auto v_prev = this->canvas3d_store.getRecv(member, field);
+            if (v_prev == std::nullopt) {
+                v_prev = std::make_shared<std::vector<Canvas3DComponentBase>>(
+                    r.length);
+                this->canvas3d_store.setRecv(member, field, *v_prev);
+            }
+            (*v_prev)->resize(r.length);
+            for (const auto &d : *r.data_diff) {
+                (**v_prev)[std::stoi(d.first)] = d.second;
+            }
+            this->canvas3d_change_event.dispatch(
+                FieldBase{member, field},
+                Field{shared_from_this(), member, field});
+            break;
+        }
+        case MessageKind::image + MessageKind::res: {
+            auto r = std::any_cast<
+                WEBCFACE_NS::Message::Res<WEBCFACE_NS::Message::Image>>(obj);
+            auto [member, field] =
+                this->image_store.getReq(r.req_id, r.sub_field);
+            this->image_store.setRecv(member, field, r);
+            this->image_change_event.dispatch(
+                FieldBase{member, field},
+                Field{shared_from_this(), member, field});
+            break;
+        }
         case MessageKind::log: {
-            auto r = std::any_cast<webcface::Message::Log>(obj);
+            auto r = std::any_cast<WEBCFACE_NS::Message::Log>(obj);
             auto member = this->getMemberNameFromId(r.member_id);
             std::lock_guard lock(this->log_store->mtx);
             auto log_s = this->log_store->getRecv(member);
@@ -342,13 +403,13 @@ void Internal::ClientData::onRecv(const std::string &message) {
             break;
         }
         case MessageKind::call: {
-            auto r = std::any_cast<webcface::Message::Call>(obj);
+            auto r = std::any_cast<WEBCFACE_NS::Message::Call>(obj);
             std::thread([data = shared_from_this(), r] {
                 auto func_info =
                     data->func_store.getRecv(data->self_member_name, r.field);
                 if (func_info) {
-                    data->message_queue->push(webcface::Message::packSingle(
-                        webcface::Message::CallResponse{
+                    data->message_queue->push(WEBCFACE_NS::Message::packSingle(
+                        WEBCFACE_NS::Message::CallResponse{
                             {}, r.caller_id, r.caller_member_id, true}));
                     ValAdaptor result;
                     bool is_error = false;
@@ -364,22 +425,22 @@ void Internal::ClientData::onRecv(const std::string &message) {
                         is_error = true;
                         result = "unknown exception";
                     }
-                    data->message_queue->push(webcface::Message::packSingle(
-                        webcface::Message::CallResult{{},
-                                                      r.caller_id,
-                                                      r.caller_member_id,
-                                                      is_error,
-                                                      result}));
+                    data->message_queue->push(WEBCFACE_NS::Message::packSingle(
+                        WEBCFACE_NS::Message::CallResult{{},
+                                                         r.caller_id,
+                                                         r.caller_member_id,
+                                                         is_error,
+                                                         result}));
                 } else {
-                    data->message_queue->push(webcface::Message::packSingle(
-                        webcface::Message::CallResponse{
+                    data->message_queue->push(WEBCFACE_NS::Message::packSingle(
+                        WEBCFACE_NS::Message::CallResponse{
                             {}, r.caller_id, r.caller_member_id, false}));
                 }
             }).detach();
             break;
         }
         case MessageKind::call_response: {
-            auto r = std::any_cast<webcface::Message::CallResponse>(obj);
+            auto r = std::any_cast<WEBCFACE_NS::Message::CallResponse>(obj);
             try {
                 auto &res = this->func_result_store.getResult(r.caller_id);
                 res.started_->set_value(r.started);
@@ -402,7 +463,7 @@ void Internal::ClientData::onRecv(const std::string &message) {
             break;
         }
         case MessageKind::call_result: {
-            auto r = std::any_cast<webcface::Message::CallResult>(obj);
+            auto r = std::any_cast<WEBCFACE_NS::Message::CallResult>(obj);
             try {
                 auto &res = this->func_result_store.getResult(r.caller_id);
                 if (r.is_error) {
@@ -428,7 +489,7 @@ void Internal::ClientData::onRecv(const std::string &message) {
             break;
         }
         case MessageKind::sync_init: {
-            auto r = std::any_cast<webcface::Message::SyncInit>(obj);
+            auto r = std::any_cast<WEBCFACE_NS::Message::SyncInit>(obj);
             this->value_store.setEntry(r.member_name);
             this->text_store.setEntry(r.member_name);
             this->func_store.setEntry(r.member_name);
@@ -442,7 +503,7 @@ void Internal::ClientData::onRecv(const std::string &message) {
         }
         case MessageKind::entry + MessageKind::value: {
             auto r = std::any_cast<
-                webcface::Message::Entry<webcface::Message::Value>>(obj);
+                WEBCFACE_NS::Message::Entry<WEBCFACE_NS::Message::Value>>(obj);
             auto member = this->getMemberNameFromId(r.member_id);
             this->value_store.setEntry(member, r.field);
             this->value_entry_event.dispatch(
@@ -451,7 +512,7 @@ void Internal::ClientData::onRecv(const std::string &message) {
         }
         case MessageKind::entry + MessageKind::text: {
             auto r = std::any_cast<
-                webcface::Message::Entry<webcface::Message::Text>>(obj);
+                WEBCFACE_NS::Message::Entry<WEBCFACE_NS::Message::Text>>(obj);
             auto member = this->getMemberNameFromId(r.member_id);
             this->text_store.setEntry(member, r.field);
             this->text_entry_event.dispatch(
@@ -460,15 +521,44 @@ void Internal::ClientData::onRecv(const std::string &message) {
         }
         case MessageKind::entry + MessageKind::view: {
             auto r = std::any_cast<
-                webcface::Message::Entry<webcface::Message::View>>(obj);
+                WEBCFACE_NS::Message::Entry<WEBCFACE_NS::Message::View>>(obj);
             auto member = this->getMemberNameFromId(r.member_id);
             this->view_store.setEntry(member, r.field);
             this->view_entry_event.dispatch(
                 member, Field{shared_from_this(), member, r.field});
             break;
         }
+        case MessageKind::entry + MessageKind::canvas3d: {
+            auto r = std::any_cast<
+                WEBCFACE_NS::Message::Entry<WEBCFACE_NS::Message::Canvas3D>>(
+                obj);
+            auto member = this->getMemberNameFromId(r.member_id);
+            this->canvas3d_store.setEntry(member, r.field);
+            this->canvas3d_entry_event.dispatch(
+                member, Field{shared_from_this(), member, r.field});
+            break;
+        }
+        case MessageKind::entry + MessageKind::robot_model: {
+            auto r = std::any_cast<
+                WEBCFACE_NS::Message::Entry<WEBCFACE_NS::Message::RobotModel>>(
+                obj);
+            auto member = this->getMemberNameFromId(r.member_id);
+            this->robot_model_store.setEntry(member, r.field);
+            this->robot_model_entry_event.dispatch(
+                member, Field{shared_from_this(), member, r.field});
+            break;
+        }
+        case MessageKind::entry + MessageKind::image: {
+            auto r = std::any_cast<
+                WEBCFACE_NS::Message::Entry<WEBCFACE_NS::Message::Image>>(obj);
+            auto member = this->getMemberNameFromId(r.member_id);
+            this->image_store.setEntry(member, r.field);
+            this->image_entry_event.dispatch(
+                member, Field{shared_from_this(), member, r.field});
+            break;
+        }
         case MessageKind::func_info: {
-            auto r = std::any_cast<webcface::Message::FuncInfo>(obj);
+            auto r = std::any_cast<WEBCFACE_NS::Message::FuncInfo>(obj);
             auto member = this->getMemberNameFromId(r.member_id);
             this->func_store.setEntry(member, r.field);
             this->func_store.setRecv(member, r.field,
@@ -480,9 +570,15 @@ void Internal::ClientData::onRecv(const std::string &message) {
         case MessageKind::value:
         case MessageKind::text:
         case MessageKind::view:
+        case MessageKind::canvas3d:
+        case MessageKind::robot_model:
+        case MessageKind::image:
         case MessageKind::value + MessageKind::req:
         case MessageKind::text + MessageKind::req:
         case MessageKind::view + MessageKind::req:
+        case MessageKind::canvas3d + MessageKind::req:
+        case MessageKind::robot_model + MessageKind::req:
+        case MessageKind::image + MessageKind::req:
         case MessageKind::ping_status_req:
         case MessageKind::log_req:
             this->logger_internal->warn("Invalid Message Kind {}", kind);
@@ -498,4 +594,4 @@ void Internal::ClientData::onRecv(const std::string &message) {
         this->sync_event.dispatch(m, Field{shared_from_this(), m});
     }
 }
-} // namespace webcface
+} // namespace WEBCFACE_NS
