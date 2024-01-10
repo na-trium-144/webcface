@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.12)
 
 project(webcface
     LANGUAGES CXX
-    VERSION 1.3.1
+    VERSION 1.4.0
     HOMEPAGE_URL "https://github.com/na-trium-144/webcface"
     DESCRIPTION "Web-based RPC & UI Library"
 )
