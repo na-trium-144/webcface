@@ -198,6 +198,35 @@ SyncDataStore2<T, ReqT>::getSendPrev(bool is_first) {
     }
 }
 template <typename T, typename ReqT>
+template <typename RetPack>
+std::vector<RetPack> SyncDataStore2<T, ReqT>::transferSendDiff(bool is_first) {
+    auto send_prev = getSendPrev(is_first);
+    auto send = transferSend(is_first);
+    using ElemT = typename T::element_type::value_type;
+    std::vector<RetPack> ret;
+    for (const auto &v : send) {
+        auto v_prev = send_prev.find(v.first);
+        auto v_diff = std::make_shared<std::unordered_map<int, ElemT>>();
+        if (v_prev == send_prev.end()) {
+            for (std::size_t i = 0; i < v.second->size(); i++) {
+                v_diff->emplace(static_cast<int>(i), (*v.second)[i]);
+            }
+        } else {
+            for (std::size_t i = 0; i < v.second->size(); i++) {
+                if (v_prev->second->size() <= i ||
+                    (*v_prev->second)[i] != (*v.second)[i]) {
+                    v_diff->emplace(static_cast<int>(i), (*v.second)[i]);
+                }
+            }
+        }
+        if (!v_diff->empty()) {
+            ret.emplace_back(v.first, v_diff, v.second->size());
+        }
+    }
+    return ret;
+}
+
+template <typename T, typename ReqT>
 std::unordered_map<std::string, std::unordered_map<std::string, unsigned int>>
 SyncDataStore2<T, ReqT>::transferReq() {
     std::lock_guard lock(mtx);
@@ -217,6 +246,16 @@ template class WEBCFACE_DLL SyncDataStore2<std::shared_ptr<std::string>, int>;
 template class WEBCFACE_DLL SyncDataStore2<std::shared_ptr<FuncInfo>, int>;
 template class WEBCFACE_DLL SyncDataStore2<
     std::shared_ptr<std::vector<Common::ViewComponentBase>>, int>;
+template class WEBCFACE_DLL SyncDataStore2<std::vector<Common::RobotLink>, int>;
+template class WEBCFACE_DLL SyncDataStore2<
+    std::shared_ptr<std::vector<Common::Canvas3DComponentBase>>, int>;
 template class WEBCFACE_DLL SyncDataStore2<Common::ImageBase, Common::ImageReq>;
+
+template WEBCFACE_DLL std::vector<Message::Canvas3D>
+SyncDataStore2<std::shared_ptr<std::vector<Common::Canvas3DComponentBase>>,
+               int>::transferSendDiff<Message::Canvas3D>(bool);
+template WEBCFACE_DLL std::vector<Message::View>
+SyncDataStore2<std::shared_ptr<std::vector<Common::ViewComponentBase>>,
+               int>::transferSendDiff<Message::View>(bool);
 
 } // namespace WEBCFACE_NS::Internal

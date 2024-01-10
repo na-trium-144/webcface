@@ -8,6 +8,8 @@
 #include <spdlog/sinks/stdout_color_sinks.h>
 #include <webcface/view.h>
 #include <webcface/image.h>
+#include <webcface/robot_model.h>
+#include <webcface/canvas3d.h>
 #include <thread>
 #include <iostream>
 #include "dummy_client.h"
@@ -126,6 +128,12 @@ TEST_F(ServerTest, entry) {
     dummy_c1->send(
         Message::Value{{}, "a", std::make_shared<std::vector<double>>(1)});
     dummy_c1->send(Message::Text{{}, "a", std::make_shared<std::string>("")});
+    dummy_c1->send(Message::RobotModel{"a", std::vector<Common::RobotLink>()});
+    dummy_c1->send(Message::Canvas3D{
+        "a",
+        std::make_shared<std::unordered_map<
+            std::string, Message::Canvas3D::Canvas3DComponent>>(),
+        0});
     dummy_c1->send(Message::View{
         "a",
         std::make_shared<
@@ -160,12 +168,24 @@ TEST_F(ServerTest, entry) {
             EXPECT_EQ(obj.field, "a");
         },
         [&] { ADD_FAILURE() << "Text Entry recv failed"; });
+    dummy_c2->recv<Message::Entry<Message::RobotModel>>(
+        [&](const auto &obj) {
+            EXPECT_EQ(obj.member_id, 1);
+            EXPECT_EQ(obj.field, "a");
+        },
+        [&] { ADD_FAILURE() << "RobotModel Entry recv failed"; });
     dummy_c2->recv<Message::Entry<Message::View>>(
         [&](const auto &obj) {
             EXPECT_EQ(obj.member_id, 1);
             EXPECT_EQ(obj.field, "a");
         },
-        [&] { ADD_FAILURE() << "View Entry recv failed"; }); 
+        [&] { ADD_FAILURE() << "View Entry recv failed"; });
+    dummy_c2->recv<Message::Entry<Message::Canvas3D>>(
+        [&](const auto &obj) {
+            EXPECT_EQ(obj.member_id, 1);
+            EXPECT_EQ(obj.field, "a");
+        },
+        [&] { ADD_FAILURE() << "Canvas3D Entry recv failed"; });
     dummy_c2->recv<Message::Entry<Message::Image>>(
         [&](const auto &obj) {
             EXPECT_EQ(obj.member_id, 1);
@@ -200,6 +220,14 @@ TEST_F(ServerTest, entry) {
             EXPECT_EQ(obj.field, "b");
         },
         [&] { ADD_FAILURE() << "Text Entry recv failed"; });
+    dummy_c1->send(Message::RobotModel{"b", std::vector<Common::RobotLink>()});
+    wait();
+    dummy_c2->recv<Message::Entry<Message::RobotModel>>(
+        [&](const auto &obj) {
+            EXPECT_EQ(obj.member_id, 1);
+            EXPECT_EQ(obj.field, "b");
+        },
+        [&] { ADD_FAILURE() << "RobotModel Entry recv failed"; });
     dummy_c1->send(Message::View{
         "b",
         std::make_shared<
@@ -212,6 +240,18 @@ TEST_F(ServerTest, entry) {
             EXPECT_EQ(obj.field, "b");
         },
         [&] { ADD_FAILURE() << "View Entry recv failed"; });
+    dummy_c1->send(Message::Canvas3D{
+        "b",
+        std::make_shared<std::unordered_map<
+            std::string, Message::Canvas3D::Canvas3DComponent>>(),
+        0});
+    wait();
+    dummy_c2->recv<Message::Entry<Message::Canvas3D>>(
+        [&](const auto &obj) {
+            EXPECT_EQ(obj.member_id, 1);
+            EXPECT_EQ(obj.field, "b");
+        },
+        [&] { ADD_FAILURE() << "Canvas3D Entry recv failed"; });
     dummy_c1->send(Message::Image{
         "b",
         ImageFrame{50, 50,
@@ -315,6 +355,53 @@ TEST_F(ServerTest, text) {
         },
         [&] { ADD_FAILURE() << "Text Res recv failed"; });
 }
+TEST_F(ServerTest, robotModel) {
+    dummy_c1->send(Message::SyncInit{{}, "c1", 0, "", "", ""});
+    dummy_c1->send(Message::Sync{});
+    dummy_c1->send(
+        Message::RobotModel{"a", {RobotLink{"a", {}, {}, ViewColor::black}}});
+    wait();
+    dummy_c2->send(Message::SyncInit{{}, "", 0, "", "", ""});
+    dummy_c2->send(Message::Req<Message::RobotModel>{{}, "c1", "a", 1});
+    wait();
+    // req時の値
+    dummy_c2->recv<Message::Sync>([&](auto) {},
+                                  [&] { ADD_FAILURE() << "Sync recv failed"; });
+    dummy_c2->recv<Message::Res<Message::RobotModel>>(
+        [&](const auto &obj) {
+            EXPECT_EQ(obj.req_id, 1);
+            EXPECT_EQ(obj.sub_field, "");
+            EXPECT_EQ(obj.commonLinks().size(), 1);
+        },
+        [&] { ADD_FAILURE() << "RobotModel Res recv failed"; });
+    dummy_c2->recvClear();
+
+    // 変化後の値
+    dummy_c1->send(Message::Sync{});
+    dummy_c1->send(Message::RobotModel{
+        "a",
+        {
+            RobotLink{"a", {}, {}, ViewColor::black},
+            RobotLink{"b", {}, {}, ViewColor::black},
+            RobotLink{"c",
+                      {"j", "a", RobotJointType::fixed, {}, 0},
+                      {},
+                      ViewColor::black},
+        }});
+    wait();
+    dummy_c2->recv<Message::Sync>([&](auto) {},
+                                  [&] { ADD_FAILURE() << "Sync recv failed"; });
+    dummy_c2->recv<Message::Res<Message::RobotModel>>(
+        [&](const auto &obj) {
+            EXPECT_EQ(obj.req_id, 1);
+            EXPECT_EQ(obj.sub_field, "");
+            ASSERT_EQ(obj.commonLinks().size(), 3);
+            EXPECT_EQ(obj.commonLinks()[0].joint.parent_name, "");
+            EXPECT_EQ(obj.commonLinks()[1].joint.parent_name, "");
+            EXPECT_EQ(obj.commonLinks()[2].joint.parent_name, "a");
+        },
+        [&] { ADD_FAILURE() << "RobotModel Res recv failed"; });
+}
 TEST_F(ServerTest, view) {
     dummy_c1->send(Message::SyncInit{{}, "c1", 0, "", "", ""});
     dummy_c1->send(Message::Sync{});
@@ -370,6 +457,57 @@ TEST_F(ServerTest, view) {
             EXPECT_EQ(obj.length, 3);
         },
         [&] { ADD_FAILURE() << "View Res recv failed"; });
+}
+TEST_F(ServerTest, canvas3d) {
+    dummy_c1->send(Message::SyncInit{{}, "c1", 0, "", "", ""});
+    dummy_c1->send(Message::Sync{});
+    dummy_c1->send(Message::Canvas3D{
+        "a",
+        std::make_shared<std::unordered_map<
+            std::string, Message::Canvas3D::Canvas3DComponent>>(
+            std::unordered_map<std::string,
+                               Message::Canvas3D::Canvas3DComponent>{
+                {"0", {}}, {"1", {}}, {"2", {}}}),
+        3});
+    wait();
+    dummy_c2->send(Message::SyncInit{{}, "", 0, "", "", ""});
+    dummy_c2->send(Message::Req<Message::Canvas3D>{{}, "c1", "a", 1});
+    wait();
+    // req時の値
+    dummy_c2->recv<Message::Sync>([&](auto) {},
+                                  [&] { ADD_FAILURE() << "Sync recv failed"; });
+    dummy_c2->recv<Message::Res<Message::Canvas3D>>(
+        [&](const auto &obj) {
+            EXPECT_EQ(obj.req_id, 1);
+            EXPECT_EQ(obj.sub_field, "");
+            EXPECT_EQ(obj.data_diff->size(), 3);
+            EXPECT_EQ(obj.length, 3);
+        },
+        [&] { ADD_FAILURE() << "Canvas3D Res recv failed"; });
+    dummy_c2->recvClear();
+
+    // 変化後の値
+    dummy_c1->send(Message::Sync{});
+    dummy_c1->send(Message::Canvas3D{
+        "a",
+        std::make_shared<std::unordered_map<
+            std::string, Message::Canvas3D::Canvas3DComponent>>(
+            std::unordered_map<std::string,
+                               Message::Canvas3D::Canvas3DComponent>{
+                {"0", {}},
+            }),
+        3});
+    wait();
+    dummy_c2->recv<Message::Sync>([&](auto) {},
+                                  [&] { ADD_FAILURE() << "Sync recv failed"; });
+    dummy_c2->recv<Message::Res<Message::Canvas3D>>(
+        [&](const auto &obj) {
+            EXPECT_EQ(obj.req_id, 1);
+            EXPECT_EQ(obj.sub_field, "");
+            EXPECT_EQ(obj.data_diff->size(), 1);
+            EXPECT_EQ(obj.length, 3);
+        },
+        [&] { ADD_FAILURE() << "Canvas3D Res recv failed"; });
 }
 TEST_F(ServerTest, image) {
     dummy_c1->send(Message::SyncInit{{}, "c1", 0, "", "", ""});
@@ -465,7 +603,8 @@ TEST_F(ServerTest, image) {
         "c1",
         "a",
         1,
-        {std::nullopt, std::nullopt, std::nullopt, ImageCompressMode::png, 5, std::nullopt}});
+        {std::nullopt, std::nullopt, std::nullopt, ImageCompressMode::png, 5,
+         std::nullopt}});
     wait();
     wait();
     wait();

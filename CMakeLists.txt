@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.12)
 
 project(webcface
     LANGUAGES CXX C
-    VERSION 1.3.0
+    VERSION 1.3.1
     HOMEPAGE_URL "https://github.com/na-trium-144/webcface"
     DESCRIPTION "Web-based RPC & UI Library"
 )
@@ -94,7 +94,16 @@ if(MINGW)
     add_link_options(-Wl,--default-image-base-low)
 endif()
 
-configure_file(cmake/def.h.in ${CMAKE_CURRENT_SOURCE_DIR}/src/include/webcface/common/def.h @ONLY)
+configure_file(
+    cmake/def.h.in
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/include/webcface/common/def.h
+    @ONLY
+)
+configure_file(
+    cmake/version.rc.in
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/version.rc
+    @ONLY
+)
 
 ###############################################################################
 
@@ -250,8 +259,8 @@ endif()
 # asioがない場合find_packageしないようにするため、
 # add_subdirectoryではなくinterfaceライブラリを定義する
 FetchContent_Declare(crow
-    GIT_REPOSITORY https://github.com/na-trium-144/Crow.git
-    GIT_TAG fix-destructor-io-service
+    GIT_REPOSITORY https://github.com/CrowCpp/Crow.git
+    GIT_TAG 921ce6f
     CONFIGURE_COMMAND ""
 )
 FetchContent_GetProperties(crow)
@@ -300,6 +309,10 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     add_compile_options( # inside opencv
         $<$<COMPILE_LANGUAGE:CXX>:-Wno-deprecated-enum-enum-conversion>
     )
+    add_compile_options( # inside fmt (fmtlib/fmt#3354)
+        -Wno-array-bounds
+        -Wno-stringop-overflow
+    )
 endif()
 if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     add_compile_options(-Wall -Wextra -Wpedantic -Werror)
@@ -333,6 +346,8 @@ set(CLI_SRC
     ${CPP_DIR}/client/logger.cc
     ${CPP_DIR}/client/member.cc
     ${CPP_DIR}/client/text.cc
+    ${CPP_DIR}/client/robot_model.cc
+    ${CPP_DIR}/client/canvas3d.cc
     ${CPP_DIR}/client/value.cc
     ${CPP_DIR}/client/view.cc
     ${CPP_DIR}/client/image.cc
@@ -341,10 +356,6 @@ set(CLI_SRC
     ${CPP_DIR}/c_wcf/value.cc
     ${CPP_DIR}/c_wcf/func.cc
 )
-if(MSVC)
-    set(CLI_SRC ${CLI_SRC} ${CPP_DIR}/version.rc)
-endif()
-
 set(EXAMPLE_SRC
     ${CPP_DIR}/example/main.cc
     ${CPP_DIR}/example/recv.cc
@@ -362,6 +373,8 @@ set(TEST_SRC
     ${CPP_DIR}/test/func_test.cc
     ${CPP_DIR}/test/func_listener_test.cc
     ${CPP_DIR}/test/view_test.cc
+    ${CPP_DIR}/test/robot_model_test.cc
+    ${CPP_DIR}/test/canvas3d_test.cc
     ${CPP_DIR}/test/image_test.cc
     ${CPP_DIR}/test/member_test.cc
     ${CPP_DIR}/test/logger_test.cc
@@ -374,6 +387,12 @@ set(TEST_SRC
 set(MSG_SRC
     ${CPP_DIR}/message/message.cc
 )
+if(WIN32)
+    set(VERSION_RC ${CPP_DIR}/version.rc)
+else()
+    set(VERSION_RC "")
+endif()
+
 set(INCLUDE_DIR
     $<BUILD_INTERFACE:${CPP_DIR}/include>
     $<INSTALL_INTERFACE:include>
@@ -412,7 +431,7 @@ target_link_libraries(${PROJECT_NAME}-server-impl PUBLIC
 )
 
 
-add_executable(${PROJECT_NAME}-server ${SVR_MAIN_SRC})
+add_executable(${PROJECT_NAME}-server ${SVR_MAIN_SRC} ${VERSION_RC})
 target_link_libraries(${PROJECT_NAME}-server PRIVATE
     ${PROJECT_NAME}-server-impl
     ${PROJECT_NAME}-headers
@@ -422,19 +441,19 @@ set_target_properties(${PROJECT_NAME}-server PROPERTIES
     INSTALL_RPATH "$ORIGIN/../lib/;$ORIGIN/;@loader_path/../lib/;@loader_path/"
     INSTALL_RPATH_USE_LINK_PATH TRUE
 )
+target_compile_definitions(${PROJECT_NAME}-server PRIVATE
+    FILE_DESCRIPTION="WebCFace Server"
+    FILE_IS_APP
+)
 
 if(WEBCFACE_SHARED)
-    add_library(${PROJECT_NAME} SHARED ${CLI_SRC})
+    add_library(${PROJECT_NAME} SHARED ${CLI_SRC} ${VERSION_RC})
 else()
     add_library(${PROJECT_NAME} STATIC ${CLI_SRC})
 endif()
 if(NOT CMAKE_CXX_COMPILER_ID STREQUAL "MSVC" AND WEBCFACE_PIC)
     target_compile_options(${PROJECT_NAME} PRIVATE -fPIC)
 endif()
-target_compile_definitions(${PROJECT_NAME} PRIVATE
-    WEBCFACE_CONTACT="${WEBCFACE_CONTACT}"
-    WEBCFACE_DESCRIPTION="${PROJECT_DESCRIPTION}"
-)
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_20)
 target_link_libraries(${PROJECT_NAME} PRIVATE
     ${PROJECT_NAME}-message
@@ -449,18 +468,22 @@ target_link_libraries(${PROJECT_NAME} PUBLIC
 set_target_properties(${PROJECT_NAME} PROPERTIES
     INSTALL_RPATH "$ORIGIN/;@loader_path/"
     INSTALL_RPATH_USE_LINK_PATH TRUE
-    DEBUG_POSTFIX d
     VERSION ${PROJECT_VERSION}
     SOVERSION ${WEBCFACE_SOVERSION}
 )
+if(WIN32)
+    set_target_properties(${PROJECT_NAME} PROPERTIES
+        DEBUG_POSTFIX "${WEBCFACE_SOVERSION}d"
+        RELEASE_POSTFIX "${WEBCFACE_SOVERSION}"
+    )
+endif()
 
 add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
-
 
 if(WEBCFACE_EXAMPLE)
     foreach(SRC IN LISTS EXAMPLE_SRC)
         get_filename_component(TARGET ${SRC} NAME_WE)
-        add_executable(${PROJECT_NAME}-example-${TARGET} ${SRC})
+        add_executable(${PROJECT_NAME}-example-${TARGET} ${SRC} ${VERSION_RC})
         target_link_libraries(${PROJECT_NAME}-example-${TARGET} PRIVATE ${PROJECT_NAME})
         set(WEBCFACE_EXAMPLE_TARGETS
             ${WEBCFACE_EXAMPLE_TARGETS}
@@ -473,6 +496,10 @@ if(WEBCFACE_EXAMPLE)
         set_target_properties(${PROJECT_NAME}-example-${TARGET} PROPERTIES
             INSTALL_RPATH "$ORIGIN/../lib/;$ORIGIN/;@loader_path/../lib/;@loader_path/"
             INSTALL_RPATH_USE_LINK_PATH TRUE
+        )
+        target_compile_definitions(${PROJECT_NAME}-example-${TARGET} PRIVATE
+            FILE_DESCRIPTION="WebCFace Example ${TARGET}"
+            FILE_IS_APP
         )
     endforeach()
 endif()
@@ -588,8 +615,8 @@ if(WEBCFACE_INSTALL)
 
     # https://decovar.dev/blog/2021/09/23/cmake-cpack-package-deb-apt/
     set(CPACK_VERBATIM_VARIABLES yes)
-    set(CPACK_PACKAGE_CONTACT "na-trium-144@users.noreply.github.com")
-    set(CPACK_PACKAGE_VENDOR "na-trium-144@users.noreply.github.com")
+    set(CPACK_PACKAGE_CONTACT ${WEBCFACE_CONTACT})
+    set(CPACK_PACKAGE_VENDOR ${WEBCFACE_CONTACT})
     set(CPACK_PACKAGE_EXECUTABLES
         webcface-server "WebCFace Server"
         ${WEBCFACE_EXAMPLE_TARGETS_CPACK}

@@ -1,6 +1,6 @@
 # Func
 
-API Reference → webcface::Func, webcface::AnonymousFunc
+API Reference → webcface::Func
 
 他Memberから呼び出せる関数の登録、
 また他Memberの関数の呼び出しができます。
@@ -194,18 +194,10 @@ result は実行が完了したときに返ります。関数の戻り値、ま�
 * Pythonではstartedとresultは取得できるまで待機するgetterです。例外の場合はresultの取得時に投げます。また、取得可能になったかどうかをstarted_readyとresult_readyで取得できます。
 * JavaScriptではstartedとresultはPromiseです。awaitで待機したり、then()とcatch()でコールバックを設定できます。
 
-
-## AnonymousFunc
-
-名前を指定しないFuncです。
-[View](./13_view.md)のボタンなどのコールバックに関数を設定したい場合に使うことができます。
-
-wcli.func() で取得できるようにする予定だが未実装。(現在はViewComponentの内部でのみ使われている)
-
 <div class="section_buttons">
 
 | Previous |     Next |
 |:---------|---------:|
-| [View](13_view.md) | [Log](40_log.md) |
+| [RobotModel](21_robot_model.md) | [Log](40_log.md) |
 
 </div>

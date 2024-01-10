@@ -11,6 +11,9 @@
 #include <webcface/common/func.h>
 #include <webcface/common/view.h>
 #include <webcface/common/image.h>
+#include <webcface/common/robot_model.h>
+#include <webcface/common/canvas3d.h>
+#include "../message/message.h"
 
 namespace WEBCFACE_NS::Internal {
 /*!
@@ -210,6 +213,16 @@ class SyncDataStore2 {
      */
     std::unordered_map<std::string, T> transferSend(bool is_first);
     std::unordered_map<std::string, T> getSendPrev(bool is_first);
+
+    /*!
+     * \brief 前回のsendとの差分を返し、data_sendをクリア
+     *
+     * RetPackはMessage::Viewなど
+     *
+     */
+    template <typename RetPack>
+    std::vector<RetPack> transferSendDiff(bool is_first);
+
     /*!
      * \brief req_sendを返し、req_sendをクリア
      *
@@ -226,7 +239,17 @@ extern template class SyncDataStore2<std::shared_ptr<std::string>, int>;
 extern template class SyncDataStore2<std::shared_ptr<FuncInfo>, int>;
 extern template class SyncDataStore2<
     std::shared_ptr<std::vector<Common::ViewComponentBase>>, int>;
+extern template class SyncDataStore2<std::vector<Common::RobotLink>, int>;
+extern template class SyncDataStore2<
+    std::shared_ptr<std::vector<Common::Canvas3DComponentBase>>, int>;
 extern template class SyncDataStore2<Common::ImageBase, Common::ImageReq>;
+
+extern template std::vector<Message::Canvas3D>
+SyncDataStore2<std::shared_ptr<std::vector<Common::Canvas3DComponentBase>>,
+               int>::transferSendDiff<Message::Canvas3D>(bool);
+extern template std::vector<Message::View>
+SyncDataStore2<std::shared_ptr<std::vector<Common::ViewComponentBase>>,
+               int>::transferSendDiff<Message::View>(bool);
 #endif
 
 } // namespace WEBCFACE_NS::Internal

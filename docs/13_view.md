@@ -1,6 +1,6 @@
 # View
 
-API Reference → webcface::View, webcface::ViewComponent
+API Reference → webcface::View, webcface::ViewComponent, webcface::ViewComponents
 
 Viewデータを送受信します。
 
@@ -86,6 +86,7 @@ wcli.view("hoge").set([
 Viewに追加する各種要素をViewComponentといいます。
 
 * C++では `webcface::ViewComponents` 名前空間に定義されています。 `using namespace webcface::ViewComponents;`をすると便利かもしれません
+	* `webcface::` の名前空間でもアクセス可能です
 * Pythonでは `webcface.view_somponents` モジュール内にあり、`from webcface.view_components import *` ができます
 * JavaScriptでは `viewComponents` オブジェクト内にあります
 
@@ -125,7 +126,6 @@ v << text("hello") << newLine() << text("hello");
 
 第2引数に関数を登録済みの[Funcオブジェクト](./30_func.md)、または関数を設定することでクリック時の動作を設定できます
 
-(AnonymousFuncオブジェクトを渡せるようにする予定だが未実装)
 ```cpp
 using namespace webcface::ViewComponents;
 v.add(button("表示する文字列", wcli.func("func name")));
@@ -133,8 +133,22 @@ v.add(button("表示する文字列", wcli.func("func name")));
 v.add(button("表示する文字列", [](){ /* ... */ }));
 ```
 
+<!--
+2行目のように Member::func() に関数を渡すと、名前を設定しないFuncオブジェクト(AnonymousFunc)が生成されます。
+実行される関数はfunc()を通さずに関数を渡した場合と同じですが、
+Funcオブジェクトなので実行条件などのオプションを設定することができます。
+-->
+
 ### プロパティ
-文字色や背景色など各Componentに共通のプロパティがあります。( webcface::ViewComponent を参照)  
+文字色や背景色など各Componentに共通のプロパティがあります。
+(詳細は webcface::ViewComponent を参照)  
+
+* textColor: 文字色
+* bgColor: 背景色
+* onClick: クリックしたときに実行される関数またはFuncオブジェクト
+
+色は webcface::ViewColor のenumで指定します。
+
 文字列の表示に対しても、明示的に`text(文字列)`という書き方にすればオプションを追加できます。
 
 C++では
@@ -160,7 +174,9 @@ button("文字列", func, { textColor: viewColor.white, bgColor: viewColor.red }
 ValueやTextと同様、 View::tryGet() で受信したViewデータを取得できます。
 (これを使うのはViewを表示するアプリを作る場合などですかね)
 
-Viewデータは ViewComponent のリストとして得られます。
+Viewデータは ViewComponent のリストとして得られ、
+ViewComponentオブジェクトから各種プロパティを取得できます。
+onClick()で得られるFuncオブジェクトは`runAsync()`などでそのまま実行させることができます。
 
 View::get() はstd::nulloptの代わりにデフォルト値を返す点以外は同じです。
 
