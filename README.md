@@ -123,6 +123,8 @@ brew install webcface webcface-webui webcface-tools
 
 ### Build from source
 
+以下はwebcfaceをソースからビルドする場合の説明です。(webcfaceをインストールした場合は不要です。)
+
 #### Requirements
 * c++20に対応したコンパイラが必要です
 * テスト済みの環境
