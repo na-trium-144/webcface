@@ -4,7 +4,7 @@
 #include "common/val.h"
 #include "func_result.h"
 
-namespace webcface {
+namespace WEBCFACE_NS {
 
 class FuncListener : protected Func {
     ValType return_type_ = ValType::none_;
@@ -83,4 +83,4 @@ class FuncListener : protected Func {
      */
     WEBCFACE_DLL std::optional<FuncCallHandle> fetchCall() const;
 };
-} // namespace webcface
+} // namespace WEBCFACE_NS

@@ -2,7 +2,7 @@
 #include <webcface/func.h>
 #include "client_internal.h"
 
-namespace webcface {
+namespace WEBCFACE_NS {
 FuncListener::FuncListener(const Field &base) : Func(base) {}
 
 FuncListener &FuncListener::listen() {
@@ -30,4 +30,4 @@ std::optional<FuncCallHandle> FuncListener::fetchCall() const {
     return this->setCheck()->func_listener_handlers[this->field_].pop();
 }
 
-} // namespace webcface
+} // namespace WEBCFACE_NS
