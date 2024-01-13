@@ -1,3 +1,12 @@
+## [1.4.0] - 2023-01-10
+### Added
+* RobotModel, Canvas3Dの送受信機能追加 (#162)
+### Changed
+* MinGWのビルドでもdllにバージョン情報が追加されるようにした (#166)
+* webcface-serverとexampleにもバージョン情報追加
+* dllのファイル名にsoversionを追加 (webcface.dll → webcface3.dll, libwebcface.dll → libwebcface3.dll)
+* crowを crowcpp/crow のmasterブランチに変更 (#163)
+
 ## [1.3.1] - 2023-12-30
 ### Changed
 * clang17でのコンパイルエラーを修正
