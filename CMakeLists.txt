@@ -396,9 +396,11 @@ set(INCLUDE_DIR
 add_library(${PROJECT_NAME}-headers INTERFACE)
 target_include_directories(${PROJECT_NAME}-headers INTERFACE
     ${INCLUDE_DIR}
-    ${OpenCV_INCLUDE_DIRS}
 )
 target_compile_features(${PROJECT_NAME}-headers INTERFACE cxx_std_20)
+if(WEBCFACE_USE_OPENCV)
+    target_link_libraries(${PROJECT_NAME}-headers INTERFACE ${OpenCV_LIBS})
+endif()
 
 add_library(${PROJECT_NAME}-message STATIC ${MSG_SRC})
 if(NOT CMAKE_CXX_COMPILER_ID STREQUAL "MSVC" AND WEBCFACE_PIC)
@@ -420,7 +422,6 @@ target_link_libraries(${PROJECT_NAME}-server-impl PUBLIC
     ${PROJECT_NAME}-headers
     ${CROW}
     ${SPDLOG}
-    ${OpenCV_LIBS}
 )
 
 
@@ -456,7 +457,6 @@ target_link_libraries(${PROJECT_NAME} PUBLIC
     ${PROJECT_NAME}-headers
     ${EVENTPP}
     ${SPDLOG}
-    ${OpenCV_LIBS}
 )
 set_target_properties(${PROJECT_NAME} PROPERTIES
     INSTALL_RPATH "$ORIGIN/;@loader_path/"
