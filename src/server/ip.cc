@@ -1,20 +1,25 @@
 #include "ip.h"
-#ifdef WIN32
+
+#ifdef _WIN32
 #include <winsock2.h>
 #include <iphlpapi.h>
 #include <ws2tcpip.h>
-#pragma comment(lib, "IPHLPAPI.lib")
 #define MALLOC(x) HeapAlloc(GetProcessHeap(), 0, (x))
 #define FREE(x) HeapFree(GetProcessHeap(), 0, (x))
+
+#else
+#include <ifaddrs.h>
+#include <arpa/inet.h>
+
 #endif
 
 namespace WEBCFACE_NS {
 namespace Server {
 std::vector<std::string>
-getIpAddresses(const std::shared_ptr<spdlog::logger> &logger) {
-#ifdef WIN32
+getIpAddresses([[maybe_unused]] const std::shared_ptr<spdlog::logger> &logger) {
     std::vector<std::string> ret;
 
+#ifdef _WIN32
     PIP_ADAPTER_ADDRESSES pAddresses = NULL;
     ULONG outBufLen = 15000;
     for (int i = 0; i < 3; i++) {
@@ -65,10 +70,33 @@ getIpAddresses(const std::shared_ptr<spdlog::logger> &logger) {
         FREE(pAddresses);
         break;
     }
-    return ret;
+
+#else
+    // Linux, Mac
+
+    ifaddrs *ifAddrStruct = NULL;
+
+    getifaddrs(&ifAddrStruct);
+
+    for (ifaddrs *ifa = ifAddrStruct; ifa != NULL; ifa = ifa->ifa_next) {
+        if (!ifa->ifa_addr) {
+            continue;
+        }
+        if (ifa->ifa_addr->sa_family == AF_INET) { // check it is IP4
+            // is a valid IP4 Address
+            char addressBuffer[INET_ADDRSTRLEN];
+            inet_ntop(AF_INET,
+                      &reinterpret_cast<sockaddr_in *>(ifa->ifa_addr)->sin_addr,
+                      addressBuffer, INET_ADDRSTRLEN);
+            ret.push_back(addressBuffer);
+        }
+    }
+    if (ifAddrStruct != NULL) {
+        freeifaddrs(ifAddrStruct);
+    }
 #endif
 
-    return {};
+    return ret;
 }
 } // namespace Server
 } // namespace WEBCFACE_NS

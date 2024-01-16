@@ -445,7 +445,11 @@ target_link_libraries(${PROJECT_NAME}-server-impl PUBLIC
     ${CROW}
     ${SPDLOG}
 )
-
+if(WIN32)
+    target_link_libraries(${PROJECT_NAME}-server-impl PRIVATE
+        IPHLPAPI.lib
+    )
+endif()
 
 add_executable(${PROJECT_NAME}-server ${SVR_MAIN_SRC} ${VERSION_RC})
 target_link_libraries(${PROJECT_NAME}-server PRIVATE

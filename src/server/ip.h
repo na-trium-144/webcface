@@ -2,7 +2,6 @@
 #include <webcface/common/def.h>
 #include <vector>
 #include <string>
-#define SPDLOG_WCHAR_TO_UTF8_SUPPORT
 #include <spdlog/logger.h>
 
 namespace WEBCFACE_NS {
