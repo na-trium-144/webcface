@@ -2,6 +2,7 @@
 #include "store.h"
 #include "s_client_data.h"
 #include "dir.h"
+#include "ip.h"
 #include <webcface/common/def.h>
 #include "../message/message.h"
 #include <memory>
@@ -72,7 +73,11 @@ void serverRun(int port, const spdlog::sink_ptr &sink,
     logger->set_level(spdlog::level::trace);
 
     logger->info("WebCFace Server {}", WEBCFACE_VERSION);
-    logger->info("http://localhost:{}/index.html", port);
+    std::thread([logger, port] {
+        for (const auto &addr : getIpAddresses(logger)) {
+            logger->info("http://{}:{}/index.html", addr, port);
+        }
+    }).detach();
 
     auto crow_logger = std::make_shared<spdlog::logger>("crow_server", sink);
     crow_logger->set_level(spdlog::level::trace);

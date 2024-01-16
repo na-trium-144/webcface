@@ -354,6 +354,7 @@ set(SVR_SRC
     ${CPP_DIR}/server/store.cc
     ${CPP_DIR}/server/websock.cc
     ${CPP_DIR}/server/dir.cc
+    ${CPP_DIR}/server/ip.cc
 )
 set(CLI_SRC
     ${CPP_DIR}/client/client.cc
