@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.12)
 
 project(webcface
     LANGUAGES CXX C
-    VERSION 1.4.0
+    VERSION 1.4.1
     HOMEPAGE_URL "https://github.com/na-trium-144/webcface"
     DESCRIPTION "Web-based RPC & UI Library"
 )
@@ -33,6 +33,8 @@ set(WEBCFACE_VERSION_SUFFIX "git" CACHE STRING
     "version suffix ('git' to get automatically from git describe command)"
 )
 option(WEBCFACE_DOWNLOAD_WEBUI "download and install webui" ON)
+option(WEBCFACE_FIND_LIBS "find and use msgpack-cxx, eventpp and spdlog installation" ON)
+option(WEBCFACE_FIND_AMENT "find and use ament_cmake installation" ON)
 
 if(WEBCFACE_VERSION_SUFFIX STREQUAL "git")
     execute_process(
@@ -60,6 +62,8 @@ message(STATUS "webcface_coverage = ${WEBCFACE_COVERAGE}")
 message(STATUS "webcface_install = ${WEBCFACE_INSTALL}")
 message(STATUS "webcface_shared = ${WEBCFACE_SHARED} (pic = ${WEBCFACE_PIC})")
 message(STATUS "webcface_use_opencv = ${WEBCFACE_USE_OPENCV}")
+message(STATUS "webcface_find_libs = ${WEBCFACE_FIND_LIBS}")
+message(STATUS "webcface_find_ament = ${WEBCFACE_FIND_AMENT}")
 
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Release")
@@ -118,13 +122,20 @@ if(WEBCFACE_DOWNLOAD_WEBUI)
     FetchContent_Populate(webui)
 endif()
 
-find_package(ament_cmake QUIET)
+if(WEBCFACE_FIND_AMENT)
+    find_package(ament_cmake QUIET)
+endif()
+if(ament_cmake_FOUND)
+    message(STATUS "ament_cmake Found")
+endif()
 
-find_package(msgpack-cxx QUIET)
+if(WEBCFACE_FIND_LIBS)
+    find_package(msgpack-cxx QUIET)
+endif()
 if(msgpack-cxx_FOUND)
-    message(STATUS "msgpack-cxx found")
+    message(STATUS "msgpack-cxx ${msgpack-cxx_VERSION} Found: ${msgpack-cxx_DIR}")
 else()
-    message(STATUS "msgpack-cxx not found")
+    message(STATUS "msgpack-cxx Not Found, Fetching Source...")
     FetchContent_Declare(msgpack-cxx
         GIT_REPOSITORY https://github.com/msgpack/msgpack-c.git
         GIT_TAG cpp-6.1.0
@@ -148,11 +159,13 @@ else()
 endif()
 set(MSGPACK msgpack-cxx)
 
-find_package(eventpp QUIET)
+if(WEBCFACE_FIND_LIBS)
+    find_package(eventpp QUIET)
+endif()
 if(eventpp_FOUND)
-    message(STATUS "eventpp found")
+    message(STATUS "eventpp ${eventpp_VERSION} Found: ${eventpp_DIR}")
 else()
-    message(STATUS "eventpp not found")
+    message(STATUS "eventpp Not Found, Fetching Source...")
     FetchContent_Declare(eventpp
         GIT_REPOSITORY https://github.com/wqking/eventpp.git
         GIT_TAG v0.1.3
@@ -162,12 +175,14 @@ else()
 endif()
 set(EVENTPP eventpp::eventpp)
 
-find_package(spdlog QUIET)
+if(WEBCFACE_FIND_LIBS)
+    find_package(spdlog QUIET)
+endif()
 if(spdlog_FOUND)
-    message(STATUS "spdlog found")
+    message(STATUS "spdlog ${spdlog_VERSION} Found: ${spdlog_DIR}")
     set(SPDLOG spdlog::spdlog)
 else()
-    message(STATUS "spdlog not found")
+    message(STATUS "spdlog Not Found, Fetching Source...")
     FetchContent_Declare(spdlog
         GIT_REPOSITORY https://github.com/gabime/spdlog.git
         GIT_TAG v1.12.0
@@ -183,6 +198,7 @@ else()
     endif()
 endif()
 
+message(STATUS "Fetching curl Source...")
 FetchContent_Declare(curl
     GIT_REPOSITORY https://github.com/curl/curl.git
     GIT_TAG curl-8_5_0
@@ -233,6 +249,7 @@ set(CURL_ENABLE_EXPORT_TARGET off CACHE INTERNAL "" FORCE)
 FetchContent_MakeAvailable(curl)
 set(CURL libcurl_static)
 
+message(STATUS "Fetching asio Source...")
 FetchContent_Declare(asio
     GIT_REPOSITORY https://github.com/chriskohlhoff/asio.git
     GIT_TAG asio-1-29-0
@@ -256,6 +273,7 @@ else()
     set(ASIO asio)
 endif()
 
+message(STATUS "Fetching crow Source...")
 # asioがない場合find_packageしないようにするため、
 # add_subdirectoryではなくinterfaceライブラリを定義する
 FetchContent_Declare(crow
@@ -277,6 +295,7 @@ if(NOT crow_POPULATED)
 endif()
 set(CROW Crow)
 
+message(STATUS "Fetching cli11 Source...")
 FetchContent_Declare(cli11
     GIT_REPOSITORY https://github.com/CLIUtils/CLI11.git
     GIT_TAG v2.3.2
@@ -288,11 +307,13 @@ if(WEBCFACE_USE_OPENCV)
 endif()
 
 if(WEBCFACE_TEST)
-    find_package(GTest QUIET)
+    if(WEBCFACE_FIND_LIBS)
+        find_package(GTest QUIET)
+    endif()
     if(GTest_FOUND)
-        message(STATUS "GTest found")
+        message(STATUS "GTest ${GTest_VERSION} Found: ${GTest_DIR}")
     else()
-        message(STATUS "GTest not found")
+        message(STATUS "GTest Not Found, Fetching Source...")
         FetchContent_Declare(googletest
             GIT_REPOSITORY https://github.com/google/googletest.git
             GIT_TAG v1.14.0
@@ -403,9 +424,11 @@ set(INCLUDE_DIR
 add_library(${PROJECT_NAME}-headers INTERFACE)
 target_include_directories(${PROJECT_NAME}-headers INTERFACE
     ${INCLUDE_DIR}
-    ${OpenCV_INCLUDE_DIRS}
 )
 target_compile_features(${PROJECT_NAME}-headers INTERFACE cxx_std_20 c_std_99)
+if(WEBCFACE_USE_OPENCV)
+    target_link_libraries(${PROJECT_NAME}-headers INTERFACE ${OpenCV_LIBS})
+endif()
 
 add_library(${PROJECT_NAME}-message STATIC ${MSG_SRC})
 if(NOT CMAKE_CXX_COMPILER_ID STREQUAL "MSVC" AND WEBCFACE_PIC)
@@ -427,7 +450,6 @@ target_link_libraries(${PROJECT_NAME}-server-impl PUBLIC
     ${PROJECT_NAME}-headers
     ${CROW}
     ${SPDLOG}
-    ${OpenCV_LIBS}
 )
 
 
@@ -463,7 +485,6 @@ target_link_libraries(${PROJECT_NAME} PUBLIC
     ${PROJECT_NAME}-headers
     ${EVENTPP}
     ${SPDLOG}
-    ${OpenCV_LIBS}
 )
 set_target_properties(${PROJECT_NAME} PROPERTIES
     INSTALL_RPATH "$ORIGIN/;@loader_path/"

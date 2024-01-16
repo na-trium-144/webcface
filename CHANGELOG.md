@@ -1,4 +1,8 @@
-## [1.4.0] - 2023-01-10
+## [1.4.1] - 2024-01-15
+### Fixed
+* (主にwindows)インストール後にfind_packageしたときインストール前のOpenCV_INCLUDE_DIRのパスを参照してしまっていたのを修正 (#169)
+
+## [1.4.0] - 2024-01-10
 ### Added
 * RobotModel, Canvas3Dの送受信機能追加 (#162)
 ### Changed
