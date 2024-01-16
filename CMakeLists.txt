@@ -2,13 +2,13 @@ cmake_minimum_required(VERSION 3.12)
 
 project(webcface
     LANGUAGES CXX C
-    VERSION 1.4.1
+    VERSION 1.5.0
     HOMEPAGE_URL "https://github.com/na-trium-144/webcface"
     DESCRIPTION "Web-based RPC & UI Library"
 )
 set(WEBCFACE_CONTACT "na-trium-144@users.noreply.github.com")
 set(WEBCFACE_VERSION ${PROJECT_VERSION})
-set(WEBCFACE_SOVERSION 3)
+set(WEBCFACE_SOVERSION 5)
 set(WEBUI_VERSION 1.2.0)
 
 set(WEBCFACE_VERSION_MAJOR ${PROJECT_VERSION_MAJOR})

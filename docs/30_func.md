@@ -132,7 +132,7 @@ wcli.func("fuga").setRunCondNone();
 で条件を何も課さないようにできます。
 
 ## FuncListener (関数の待ち受け)
-![c++ ver1.3](https://img.shields.io/badge/1.3~-00599c?logo=C%2B%2B)
+![c++ ver1.5](https://img.shields.io/badge/1.5~-00599c?logo=C%2B%2B)
 
 呼び出されたとき実行する関数を登録する代わりに、呼び出されたかどうかを監視し任意のタイミングで値を返すということもできます。
 

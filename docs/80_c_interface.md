@@ -1,5 +1,5 @@
 # Interface for C
-![c++ ver1.3](https://img.shields.io/badge/1.3~-00599c?logo=C%2B%2B)
+![c++ ver1.5](https://img.shields.io/badge/1.5~-00599c?logo=C%2B%2B)
 
 API Reference → webcface/c_wcf.h
 
@@ -80,6 +80,25 @@ wcfFuncRun(wcli_, "a", "b", args, 3, &ret);
 ```
 関数が存在しない場合`WCF_NOT_FOUND`を返します。
 関数が例外を投げた場合`WCF_EXCEPTION`を返し、ret->as_strにエラーメッセージが入ります。
+
+### 非同期での呼び出し
+
+```c
+wcfMultiVal args[3] = {
+    wcfValI(42),
+    wcfValD(1.5),
+    wcfValS("aaa"),
+};
+wcfAsyncFuncResult *async_res;
+wcfFuncRunAsync(wcli_, "a", "b", args, 3, &async_res);
+
+wcfMultiVal *ret;
+wcfFuncGetResult(async_res, &ret);
+// ex.) ret->as_double = 123.45
+```
+関数の実行がまだ完了していなければwcfFuncGetResultは`WCF_NOT_RETURNED`を返します。
+
+wcfFuncWaitResult は関数の実行が完了し結果が返ってくるまで待機します。
 
 ### 関数の待ち受け (他clientから呼び出される)
 
