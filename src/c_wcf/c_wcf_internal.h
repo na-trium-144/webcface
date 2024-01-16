@@ -21,6 +21,12 @@ inline std::vector<wcfClient *> wcli_list;
 inline std::vector<void *> fetched_handles;
 
 /*!
+ * \brief wcfFuncRunAsyncで取得されたwcfAsyncFuncResultのリスト
+ *
+ */
+inline std::vector<AsyncFuncResult *> func_result_list;
+
+/*!
  * \brief voidポインタからclientオブジェクトを復元
  *
  * \return
@@ -44,6 +50,14 @@ inline const wcfFuncCallHandle *getFuncCallHandle(const void *handler) {
         return nullptr;
     }
     return static_cast<const wcfFuncCallHandle *>(handler);
+}
+
+inline AsyncFuncResult *getAsyncFuncResult(wcfAsyncFuncResult *res) {
+    if (std::find(func_result_list.begin(), func_result_list.end(), res) ==
+        func_result_list.end()) {
+        return nullptr;
+    }
+    return static_cast<AsyncFuncResult *>(res);
 }
 
 } // namespace c_wcf

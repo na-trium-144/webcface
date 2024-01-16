@@ -16,6 +16,7 @@ typedef int wcfValType;
 #define WCF_NOT_FOUND 4
 #define WCF_EXCEPTION 5
 #define WCF_NOT_CALLED 6
+#define WCF_NOT_RETURNED 7
 
 #define WCF_VAL_NONE 0
 #define WCF_VAL_STRING 1
@@ -158,6 +159,8 @@ WEBCFACE_DLL wcfMultiVal wcfValI(int value);
 WEBCFACE_DLL wcfMultiVal wcfValD(double value);
 WEBCFACE_DLL wcfMultiVal wcfValS(const char *value);
 
+typedef void wcfAsyncFuncResult;
+
 /*!
  * \brief 関数を呼び出す
  *
@@ -175,6 +178,49 @@ WEBCFACE_DLL wcfMultiVal wcfValS(const char *value);
 WEBCFACE_DLL wcfStatus wcfFuncRun(wcfClient *wcli, const char *member,
                                   const char *field, const wcfMultiVal *args,
                                   int arg_size, wcfMultiVal **result);
+
+/*!
+ * \brief 関数を非同期で呼び出す
+ *
+ * \param wcli Clientポインタ
+ * \param member memberの名前
+ * \param field funcの名前
+ * \param args 引数の配列
+ * \param arg_size 引数の個数
+ * \param result 結果を格納する変数(wcfAsyncFuncResult*)へのポインタ
+ * \return wcliが無効ならWCF_BAD_WCLI
+ *
+ */
+WEBCFACE_DLL wcfStatus wcfFuncRunAsync(wcfClient *wcli, const char *member,
+                                       const char *field,
+                                       const wcfMultiVal *args, int arg_size,
+                                       wcfAsyncFuncResult **result);
+
+/*!
+ * \brief 非同期で呼び出した関数の実行結果を取得
+ * 
+ * \param async_res 関数呼び出しに対応するAsyncFuncResult
+ * \param result 結果を格納する変数(wcfMultiVal*)へのポインタ
+ * \return async_resが無効な場合 WCF_BAD_HANDLE,
+ * 対象のmemberやfieldが存在しない場合 WCF_NOT_FOUND,
+ * 関数で例外が発生した場合 WCF_EXCEPTION,
+ * まだ結果が返ってきていない場合 WCF_NOT_RETURNED
+ * 
+ */
+WEBCFACE_DLL wcfStatus wcfFuncGetResult(wcfAsyncFuncResult *async_res,
+                                        wcfMultiVal **result);
+/*!
+ * \brief 非同期で呼び出した関数の実行完了まで待機し、結果を取得
+ *
+ * \param async_res 関数呼び出しに対応するAsyncFuncResult
+ * \param result 結果を格納する変数(wcfMultiVal*)へのポインタ
+ * \return async_resが無効な場合 WCF_BAD_HANDLE,
+ * 対象のmemberやfieldが存在しない場合 WCF_NOT_FOUND,
+ * 関数で例外が発生した場合 WCF_EXCEPTION
+ *
+ */
+WEBCFACE_DLL wcfStatus wcfFuncWaitResult(wcfAsyncFuncResult *async_res,
+                                         wcfMultiVal **result);
 
 /*!
  * \brief 受信した関数呼び出しの情報を保持するstruct

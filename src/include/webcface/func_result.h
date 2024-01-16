@@ -49,25 +49,6 @@ class AsyncFuncResult : Field {
 
     ValAdaptor result_val;
     wcfMultiVal c_result_val;
-    std::pair<wcfStatus, wcfMultiVal *> toCVal() & {
-        try {
-            result_val = result.get();
-            c_result_val = result_val.toCVal();
-            return {WCF_OK, &c_result_val};
-        } catch (const FuncNotFound &e) {
-            result_val = e.what();
-            c_result_val = result_val.toCVal();
-            return {WCF_NOT_FOUND, &c_result_val};
-        } catch (const std::exception &e) {
-            result_val = e.what();
-            c_result_val = result_val.toCVal();
-            return {WCF_EXCEPTION, &c_result_val};
-        } catch (...) {
-            result_val = "unknown exception";
-            c_result_val = result_val.toCVal();
-            return {WCF_EXCEPTION, &c_result_val};
-        }
-    }
 
   public:
     friend class Func;
@@ -98,6 +79,26 @@ class AsyncFuncResult : Field {
 
     using Field::member;
     using Field::name;
+
+    std::pair<wcfStatus, wcfMultiVal *> toCVal() & {
+        try {
+            result_val = result.get();
+            c_result_val = result_val.toCVal();
+            return {WCF_OK, &c_result_val};
+        } catch (const FuncNotFound &e) {
+            result_val = e.what();
+            c_result_val = result_val.toCVal();
+            return {WCF_NOT_FOUND, &c_result_val};
+        } catch (const std::exception &e) {
+            result_val = e.what();
+            c_result_val = result_val.toCVal();
+            return {WCF_EXCEPTION, &c_result_val};
+        } catch (...) {
+            result_val = "unknown exception";
+            c_result_val = result_val.toCVal();
+            return {WCF_EXCEPTION, &c_result_val};
+        }
+    }
 };
 auto &operator<<(std::basic_ostream<char> &os, const AsyncFuncResult &data);
 

@@ -147,70 +147,93 @@ TEST_F(CClientTest, funcRun) {
         wcfValD(1.5),
         wcfValS("aaa"),
     };
-    wcfMultiVal *ret;
+    wcfMultiVal *ret, *async_ret;
+    wcfAsyncFuncResult *async_res;
     EXPECT_EQ(wcfFuncRun(wcli_, "a", "b", args, -1, &ret),
+              WCF_INVALID_ARGUMENT);
+    EXPECT_EQ(wcfFuncRunAsync(wcli_, "a", "b", args, -1, &async_res),
               WCF_INVALID_ARGUMENT);
     std::thread t([&]() {
         // 1
         EXPECT_EQ(wcfFuncRun(wcli_, "a", "b", args, 3, &ret), WCF_NOT_FOUND);
+        wcfFuncRunAsync(wcli_, "a", "b", args, 3, &async_res);
+        EXPECT_EQ(wcfFuncGetResult(async_res, &async_ret), WCF_NOT_RETURNED);
+        EXPECT_EQ(wcfFuncWaitResult(async_res, &async_ret), WCF_NOT_FOUND);
         // 2
         EXPECT_EQ(wcfFuncRun(wcli_, "a", "b", args, 3, &ret), WCF_OK);
         EXPECT_EQ(ret->as_int, 123);
         EXPECT_EQ(ret->as_double, 123.45);
         EXPECT_EQ(std::string(ret->as_str), "123.45");
+        wcfFuncRunAsync(wcli_, "a", "b", args, 3, &async_res);
+        EXPECT_EQ(wcfFuncWaitResult(async_res, &async_ret), WCF_OK);
+        EXPECT_EQ(async_ret->as_int, 123);
+        EXPECT_EQ(async_ret->as_double, 123.45);
+        EXPECT_EQ(std::string(async_ret->as_str), "123.45");
         // 3
         EXPECT_EQ(wcfFuncRun(wcli_, "a", "b", args, 3, &ret), WCF_EXCEPTION);
         EXPECT_EQ(ret->as_int, 0);
         EXPECT_EQ(ret->as_double, 0);
         EXPECT_EQ(std::string(ret->as_str), "error");
+        wcfFuncRunAsync(wcli_, "a", "b", args, 3, &async_res);
+        EXPECT_EQ(wcfFuncWaitResult(async_res, &async_ret), WCF_EXCEPTION);
+        EXPECT_EQ(async_ret->as_int, 0);
+        EXPECT_EQ(async_ret->as_double, 0);
+        EXPECT_EQ(std::string(async_ret->as_str), "error");
     });
 
     std::size_t caller_id = 0;
     // 1
-    wait();
-    dummy_s->recv<Message::Call>(
-        [&](const auto &obj) {
-            EXPECT_EQ(obj.caller_id, caller_id);
-            EXPECT_EQ(obj.target_member_id, 0);
-            EXPECT_EQ(obj.field, "b");
-            EXPECT_EQ(obj.args.size(), 3);
-            EXPECT_EQ(static_cast<int>(obj.args.at(0)), 42);
-            EXPECT_EQ(static_cast<double>(obj.args.at(1)), 1.5);
-            EXPECT_EQ(static_cast<std::string>(obj.args.at(2)), "aaa");
-        },
-        [&]() { ADD_FAILURE() << "Call recv error"; });
-    dummy_s->recvClear();
-    dummy_s->send(Message::CallResponse{{}, caller_id, 1, false});
-    caller_id++;
+    for (int i = 0; i < 2; i++) {
+        wait();
+        dummy_s->recv<Message::Call>(
+            [&](const auto &obj) {
+                EXPECT_EQ(obj.caller_id, caller_id);
+                EXPECT_EQ(obj.target_member_id, 0);
+                EXPECT_EQ(obj.field, "b");
+                EXPECT_EQ(obj.args.size(), 3);
+                EXPECT_EQ(static_cast<int>(obj.args.at(0)), 42);
+                EXPECT_EQ(static_cast<double>(obj.args.at(1)), 1.5);
+                EXPECT_EQ(static_cast<std::string>(obj.args.at(2)), "aaa");
+            },
+            [&]() { ADD_FAILURE() << "Call recv error"; });
+        dummy_s->recvClear();
+        dummy_s->send(Message::CallResponse{{}, caller_id, 1, false});
+        caller_id++;
+    }
 
     // 2
-    wait();
-    dummy_s->recv<Message::Call>(
-        [&](const auto &obj) {
-            EXPECT_EQ(obj.caller_id, caller_id);
-            EXPECT_EQ(obj.target_member_id, 0);
-            EXPECT_EQ(obj.field, "b");
-            EXPECT_EQ(obj.args.size(), 3);
-        },
-        [&]() { ADD_FAILURE() << "Call recv error"; });
-    dummy_s->recvClear();
-    dummy_s->send(Message::CallResponse{{}, caller_id, 1, true});
-    dummy_s->send(Message::CallResult{{}, caller_id, 1, false, "123.45"});
-    caller_id++;
+    for (int i = 0; i < 2; i++) {
+        wait();
+        dummy_s->recv<Message::Call>(
+            [&](const auto &obj) {
+                EXPECT_EQ(obj.caller_id, caller_id);
+                EXPECT_EQ(obj.target_member_id, 0);
+                EXPECT_EQ(obj.field, "b");
+                EXPECT_EQ(obj.args.size(), 3);
+            },
+            [&]() { ADD_FAILURE() << "Call recv error"; });
+        dummy_s->recvClear();
+        dummy_s->send(Message::CallResponse{{}, caller_id, 1, true});
+        dummy_s->send(Message::CallResult{{}, caller_id, 1, false, "123.45"});
+        caller_id++;
+    }
 
     // 3
-    wait();
-    dummy_s->recv<Message::Call>(
-        [&](const auto &obj) {
-            EXPECT_EQ(obj.caller_id, caller_id);
-            EXPECT_EQ(obj.target_member_id, 0);
-            EXPECT_EQ(obj.field, "b");
-            EXPECT_EQ(obj.args.size(), 3);
-        },
-        [&]() { ADD_FAILURE() << "Call recv error"; });
-    dummy_s->recvClear();
-    dummy_s->send(Message::CallResponse{{}, caller_id, 1, true});
-    dummy_s->send(Message::CallResult{{}, caller_id, 1, true, "error"});
+    for (int i = 0; i < 2; i++) {
+        wait();
+        dummy_s->recv<Message::Call>(
+            [&](const auto &obj) {
+                EXPECT_EQ(obj.caller_id, caller_id);
+                EXPECT_EQ(obj.target_member_id, 0);
+                EXPECT_EQ(obj.field, "b");
+                EXPECT_EQ(obj.args.size(), 3);
+            },
+            [&]() { ADD_FAILURE() << "Call recv error"; });
+        dummy_s->recvClear();
+        dummy_s->send(Message::CallResponse{{}, caller_id, 1, true});
+        dummy_s->send(Message::CallResult{{}, caller_id, 1, true, "error"});
+        caller_id++;
+    }
 
     t.join();
 }

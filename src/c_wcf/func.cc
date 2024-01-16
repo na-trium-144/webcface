@@ -20,6 +20,51 @@ wcfStatus wcfFuncRun(wcfClient *wcli, const char *member, const char *field,
     return status;
 }
 
+wcfStatus wcfFuncRunAsync(wcfClient *wcli, const char *member,
+                          const char *field, const wcfMultiVal *args,
+                          int arg_size, wcfAsyncFuncResult **result) {
+    auto wcli_ = getWcli(wcli);
+    if (!wcli_) {
+        return WCF_BAD_WCLI;
+    }
+    if (arg_size < 0) {
+        return WCF_INVALID_ARGUMENT;
+    }
+    std::vector<ValAdaptor> args_v(arg_size);
+    for (int i = 0; i < arg_size; i++) {
+        args_v[i] = args[i];
+    }
+    AsyncFuncResult *a_res = &wcli_->member(member).func(field).runAsync(args_v);
+    func_result_list.push_back(a_res);
+    *result = static_cast<wcfAsyncFuncResult *>(a_res);
+    return WCF_OK;
+}
+
+wcfStatus wcfFuncGetResult(wcfAsyncFuncResult *async_res,
+                           wcfMultiVal **result) {
+    auto res = getAsyncFuncResult(async_res);
+    if (!res) {
+        return WCF_BAD_HANDLE;
+    }
+    if (res->result.wait_for(std::chrono::milliseconds(0)) !=
+        std::future_status::ready) {
+        return WCF_NOT_RETURNED;
+    }
+    auto [status, res2] = res->toCVal();
+    *result = res2;
+    return status;
+}
+wcfStatus wcfFuncWaitResult(wcfAsyncFuncResult *async_res,
+                            wcfMultiVal **result) {
+    auto res = getAsyncFuncResult(async_res);
+    if (!res) {
+        return WCF_BAD_HANDLE;
+    }
+    auto [status, res2] = res->toCVal();
+    *result = res2;
+    return status;
+}
+
 wcfStatus wcfFuncListen(wcfClient *wcli, const char *field,
                         const int *arg_types, int arg_size, int return_type) {
     auto wcli_ = getWcli(wcli);
