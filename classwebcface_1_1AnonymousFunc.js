@@ -19,6 +19,8 @@ var classwebcface_1_1AnonymousFunc =
     [ "run", "classwebcface_1_1AnonymousFunc.html#a0a6e0cb1563299a51d5f56819b197125", null ],
     [ "runAsync", "classwebcface_1_1AnonymousFunc.html#ac918a688f7b7d7ea24d2351750db9c38", null ],
     [ "runAsync", "classwebcface_1_1AnonymousFunc.html#a53a399f639eafb5efacf783c44b70d97", null ],
+    [ "runCVal", "classwebcface_1_1AnonymousFunc.html#a4d789e3559ae14942f4472340da8de58", null ],
+    [ "runImpl", "classwebcface_1_1AnonymousFunc.html#a7939430f461aeea40f64fda6188a0be8", null ],
     [ "set", "classwebcface_1_1AnonymousFunc.html#aa55156bf6486cd2b0c74394634474062", null ],
     [ "setArgs", "classwebcface_1_1AnonymousFunc.html#af46084997dea863bc15d6f57352d506c", null ],
     [ "setCheck", "classwebcface_1_1AnonymousFunc.html#a46ba439f46fffe25a1fe549c380fcd3b", null ],

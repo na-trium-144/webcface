@@ -42,7 +42,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">WebCFace<span id="projectnumber">&#160;1.4.1</span>
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;1.5.0</span>
    </div>
    <div id="projectbrief">Web-based RPC &amp; UI Library</div>
   </td>
@@ -120,6 +120,8 @@ $(document).ready(function(){initNavTree('namespacewebcface.html',''); initResiz
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
 Namespaces</h2></td></tr>
+<tr class="memitem:namespacewebcface_1_1c__wcf" id="r_namespacewebcface_1_1c__wcf"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1c__wcf.html">c_wcf</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacewebcface_1_1Common" id="r_namespacewebcface_1_1Common"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Common.html">Common</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacewebcface_1_1FuncWrapper" id="r_namespacewebcface_1_1FuncWrapper"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1FuncWrapper.html">FuncWrapper</a></td></tr>
@@ -198,8 +200,12 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Common_1_1FuncCall.html">FuncCall</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">関数を呼び出すのに必要なデータ。  <a href="structwebcface_1_1Common_1_1FuncCall.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1FuncCallHandle.html">FuncCallHandle</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Common_1_1FuncInfo.html">FuncInfo</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">関数1つの情報を表す。関数の実体も持つ  <a href="structwebcface_1_1Common_1_1FuncInfo.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1FuncListener.html">FuncListener</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1FuncNotFound.html">FuncNotFound</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Funcの実行ができなかった場合発生する例外  <a href="structwebcface_1_1FuncNotFound.html#details">More...</a><br /></td></tr>
@@ -367,6 +373,14 @@ Enumerations</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:aa85a685a0f454a26de052129b942f7ae" id="r_aa85a685a0f454a26de052129b942f7ae"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Client.html">Client</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1c__wcf.html#aa85a685a0f454a26de052129b942f7ae">getWcli</a> (<a class="el" href="c__wcf_8h.html#a11e35bfe0822747dfabcce7f5220016a">wcfClient</a> *wcli)</td></tr>
+<tr class="memdesc:aa85a685a0f454a26de052129b942f7ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">voidポインタからclientオブジェクトを復元  <br /></td></tr>
+<tr class="separator:aa85a685a0f454a26de052129b942f7ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac29d8a1459f6cefaa695450d60e57312" id="r_ac29d8a1459f6cefaa695450d60e57312"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structwcfFuncCallHandle.html">wcfFuncCallHandle</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1c__wcf.html#ac29d8a1459f6cefaa695450d60e57312">getFuncCallHandle</a> (const void *handler)</td></tr>
+<tr class="memdesc:ac29d8a1459f6cefaa695450d60e57312"><td class="mdescLeft">&#160;</td><td class="mdescRight">voidポインタからFuncListenerHandlerオブジェクトを復元  <br /></td></tr>
+<tr class="separator:ac29d8a1459f6cefaa695450d60e57312"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae7f36d3bf68361495a17df5c399caa64" id="r_ae7f36d3bf68361495a17df5c399caa64"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1AsyncFuncResult.html">AsyncFuncResult</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1c__wcf.html#ae7f36d3bf68361495a17df5c399caa64">getAsyncFuncResult</a> (<a class="el" href="c__wcf_8h.html#adde5cf85e4e5d0d5e980329221d1fac3">wcfAsyncFuncResult</a> *res)</td></tr>
+<tr class="separator:ae7f36d3bf68361495a17df5c399caa64"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a00c28ef2ef3a055c7adf0ae97b7a8f07" id="r_a00c28ef2ef3a055c7adf0ae97b7a8f07"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface.html#a00c28ef2ef3a055c7adf0ae97b7a8f07">addCanvas3DReq</a> (const std::shared_ptr&lt; <a class="el" href="structwebcface_1_1Internal_1_1ClientData.html">Internal::ClientData</a> &gt; &amp;data, const std::string &amp;member_, const std::string &amp;field_)</td></tr>
 <tr class="separator:a00c28ef2ef3a055c7adf0ae97b7a8f07"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3b45f7bce732ee80d9a1346fa7fef32a" id="r_a3b45f7bce732ee80d9a1346fa7fef32a"><td class="memItemLeft" align="right" valign="top">auto &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface.html#a3b45f7bce732ee80d9a1346fa7fef32a">operator&lt;&lt;</a> (std::basic_ostream&lt; char &gt; &amp;os, const <a class="el" href="classwebcface_1_1AsyncFuncResult.html">AsyncFuncResult</a> &amp;r)</td></tr>
@@ -445,10 +459,19 @@ Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
+<tr class="memitem:a06ec85c3a4c532a455f4c6534b658875" id="r_a06ec85c3a4c532a455f4c6534b658875"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="c__wcf_8h.html#a11e35bfe0822747dfabcce7f5220016a">wcfClient</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1c__wcf.html#a06ec85c3a4c532a455f4c6534b658875">wcli_list</a></td></tr>
+<tr class="memdesc:a06ec85c3a4c532a455f4c6534b658875"><td class="mdescLeft">&#160;</td><td class="mdescRight">wcfInitで作られたクライアントのリスト  <br /></td></tr>
+<tr class="separator:a06ec85c3a4c532a455f4c6534b658875"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a54e61705d6b28a541424f3af3782e822" id="r_a54e61705d6b28a541424f3af3782e822"><td class="memItemLeft" align="right" valign="top">std::vector&lt; void * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1c__wcf.html#a54e61705d6b28a541424f3af3782e822">fetched_handles</a></td></tr>
+<tr class="memdesc:a54e61705d6b28a541424f3af3782e822"><td class="mdescLeft">&#160;</td><td class="mdescRight">wcfFuncFetchCallで取得されたwcfFuncListenerHandlerのリスト  <br /></td></tr>
+<tr class="separator:a54e61705d6b28a541424f3af3782e822"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:accbeaaf8800ef4256d6ac03f8a607d3e" id="r_accbeaaf8800ef4256d6ac03f8a607d3e"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classwebcface_1_1AsyncFuncResult.html">AsyncFuncResult</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1c__wcf.html#accbeaaf8800ef4256d6ac03f8a607d3e">func_result_list</a></td></tr>
+<tr class="memdesc:accbeaaf8800ef4256d6ac03f8a607d3e"><td class="mdescLeft">&#160;</td><td class="mdescRight">wcfFuncRunAsyncで取得されたwcfAsyncFuncResultのリスト  <br /></td></tr>
+<tr class="separator:accbeaaf8800ef4256d6ac03f8a607d3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a342b6f41244b8f7bce0c63b449f20dc1" id="r_a342b6f41244b8f7bce0c63b449f20dc1"><td class="memItemLeft" align="right" valign="top">const std::array&lt; int, 3 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Version.html#a342b6f41244b8f7bce0c63b449f20dc1">version</a></td></tr>
 <tr class="memdesc:a342b6f41244b8f7bce0c63b449f20dc1"><td class="mdescLeft">&#160;</td><td class="mdescRight">(ver1.2で追加) クライアントのバージョン  <br /></td></tr>
 <tr class="separator:a342b6f41244b8f7bce0c63b449f20dc1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac908c368a4d24ffe7c3b3906522e0fc8" id="r_ac908c368a4d24ffe7c3b3906522e0fc8"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Version.html#ac908c368a4d24ffe7c3b3906522e0fc8">version_s</a> = &quot;1.4.1&quot;</td></tr>
+<tr class="memitem:ac908c368a4d24ffe7c3b3906522e0fc8" id="r_ac908c368a4d24ffe7c3b3906522e0fc8"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Version.html#ac908c368a4d24ffe7c3b3906522e0fc8">version_s</a> = &quot;1.5.0&quot;</td></tr>
 <tr class="memdesc:ac908c368a4d24ffe7c3b3906522e0fc8"><td class="mdescLeft">&#160;</td><td class="mdescRight">(ver1.2で追加) クライアントのバージョン(文字列)  <br /></td></tr>
 <tr class="separator:ac908c368a4d24ffe7c3b3906522e0fc8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -847,7 +870,7 @@ Variables</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li>
-    <li class="footer">Generated on Tue Jan 16 2024 04:29:59 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Tue Jan 16 2024 07:32:15 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

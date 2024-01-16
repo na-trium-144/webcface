@@ -42,7 +42,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">WebCFace<span id="projectnumber">&#160;1.4.1</span>
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;1.5.0</span>
    </div>
    <div id="projectbrief">Web-based RPC &amp; UI Library</div>
   </td>
@@ -110,7 +110,7 @@ $(document).ready(function(){initNavTree('md_21__robot__model.html',''); initRes
   <div class="headertitle"><div class="title">RobotModel</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md42"></a> <img src="https://img.shields.io/badge/1.4~-00599c?logo=C%2B%2B" alt="c++ ver1.4" class="inline"/> <img src="https://img.shields.io/badge/1.3~-f7df1e?logo=JavaScript&amp;logoColor=black" alt="js ver1.3" class="inline"/></p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md45"></a> <img src="https://img.shields.io/badge/1.4~-00599c?logo=C%2B%2B" alt="c++ ver1.4" class="inline"/> <img src="https://img.shields.io/badge/1.3~-f7df1e?logo=JavaScript&amp;logoColor=black" alt="js ver1.3" class="inline"/></p>
 <p>API Reference → <a class="el" href="classwebcface_1_1RobotModel.html" title="RobotModelの送受信データを表すクラス">webcface::RobotModel</a></p>
 <p>RobotModelはリンク(link)と関節(joint)の構造を定義します。 WebUIで <a class="el" href="md_20__canvas3d.html">Canvas3D</a> 上に表示して関節を動かすことができます。 RobotModel単体でそのまま表示することもできます。</p>
 <p>Member::robotModel() でRobotModelクラスのオブジェクトが得られます </p><div class="fragment"><div class="line"><a class="code hl_class" href="classwebcface_1_1RobotModel.html">webcface::RobotModel</a> hoge = wcli.<a class="code hl_function" href="classwebcface_1_1RobotModel.html#aa8fab40ead35fa8e761986d5f4000a5c">member</a>(<span class="stringliteral">&quot;a&quot;</span>).<a class="code hl_function" href="classwebcface_1_1Member.html#a015c8de31760d7e971b2dfcad890b66d">robotModel</a>(<span class="stringliteral">&quot;hoge&quot;</span>);</div>
@@ -121,7 +121,7 @@ $(document).ready(function(){initNavTree('md_21__robot__model.html',''); initRes
 <div class="line">    <span class="comment">// ...</span></div>
 <div class="line">}</div>
 </div><!-- fragment --><p>Member::onRobotModelEntry() で新しくデータが追加されたときのコールバックを設定できます </p><div class="fragment"><div class="line">wcli.member(<span class="stringliteral">&quot;a&quot;</span>).onRobotModelEntry().appendListener([](<a class="code hl_class" href="classwebcface_1_1RobotModel.html">webcface::RobotModel</a> v){ <span class="comment">/* ... */</span> });</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md43"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md46"></a>
 送信(定義)</h1>
 <p>モデルはRobotLinkのリストで表されます。 RobotModel::set() でリンクのリストをセットすることでモデルを定義し送信できます。</p>
 <div class="fragment"><div class="line">wcli.robotModel(<span class="stringliteral">&quot;hoge&quot;</span>).set({</div>
@@ -140,7 +140,7 @@ $(document).ready(function(){initNavTree('md_21__robot__model.html',''); initRes
 <div class="line">});</div>
 <div class="ttc" id="aclasswebcface_1_1Common_1_1Transform_html"><div class="ttname"><a href="classwebcface_1_1Common_1_1Transform.html">webcface::Transform</a></div><div class="ttdoc">3次元の座標と回転</div><div class="ttdef"><b>Definition</b> transform.h:30</div></div>
 <div class="ttc" id="astructwebcface_1_1Common_1_1RobotLink_html"><div class="ttname"><a href="structwebcface_1_1Common_1_1RobotLink.html">webcface::RobotLink</a></div><div class="ttdef"><b>Definition</b> robot_model.h:97</div></div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md44"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md47"></a>
 RobotLink</h2>
 <p>RobotLinkのコンストラクタには</p><ul>
 <li>リンクの名前</li>
@@ -150,7 +150,7 @@ RobotLink</h2>
 </ul>
 <p>を指定する必要があります。</p>
 <p>Geometryについては<a class="el" href="md_20__canvas3d.html">Canvas3D</a>、ViewColorについては<a class="el" href="md_13__view.html">View</a>のページを参照してください。</p>
-<h2><a class="anchor" id="autotoc_md45"></a>
+<h2><a class="anchor" id="autotoc_md48"></a>
 RobotJoint</h2>
 <p>RobotJointには以下の4種類があります。 C++では <code><a class="el" href="namespacewebcface_1_1Common_1_1RobotJoints.html">webcface::RobotJoints</a></code> 名前空間に定義されていますが、<code>webcface::</code> の名前空間でもアクセス可能です。</p>
 <ul>
@@ -179,7 +179,7 @@ RobotJoint</h2>
 </ul>
 </li>
 </ul>
-<h1><a class="anchor" id="autotoc_md46"></a>
+<h1><a class="anchor" id="autotoc_md49"></a>
 Canvas3Dに表示する</h1>
 <div class="fragment"><div class="line">canvas.add(</div>
 <div class="line">    wcli.robotModel(<span class="stringliteral">&quot;hoge&quot;</span>),</div>
@@ -194,7 +194,7 @@ Canvas3Dに表示する</h1>
 <li>RobotModelはこのプログラム内で定義したものではなく別Memberのものを指定することもできます。</li>
 <li>引数に渡す回転角の型は std::unordered_map&lt;std::string, double&gt; で指定します。 初期化子リストで指定するなら上の例のようになります。</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md47"></a>
+<h1><a class="anchor" id="autotoc_md50"></a>
 受信</h1>
 <p>RobotModel::tryGet(), get() で RobotLink のリストを取得できます。 <a class="el" href="structwebcface_1_1Common_1_1RobotLink.html">webcface::RobotLink</a> のリファレンスを参照してください。</p>
 <p>RobotLink::appendListener() で受信したデータが変化したときにコールバックを呼び出すことができます。</p>
@@ -210,7 +210,7 @@ Canvas3Dに表示する</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Jan 16 2024 04:29:59 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Tue Jan 16 2024 07:32:15 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

@@ -107,30 +107,12 @@
 </a>
 </g>
 </g>
-<!-- Node8 -->
-<g id="Node000008" class="node">
-<title>Node8</title>
-<g id="a_Node000008"><a xlink:href="classwebcface_1_1Image.html" target="_top" xlink:title="(ver1.3から追加) 画像の送受信データを表すクラス">
-<polygon fill="white" stroke="#666666" points="306,-74 259,-74 259,-55 306,-55 306,-74"/>
-<text text-anchor="middle" x="282.5" y="-62" font-family="Helvetica,sans-Serif" font-size="10.00">Image</text>
-</a>
-</g>
-</g>
-<!-- Node3&#45;&gt;Node8 -->
-<g id="edge7_Node000003_Node000008" class="edge">
-<title>Node3&#45;&gt;Node8</title>
-<g id="a_edge7_Node000003_Node000008"><a xlink:title=" ">
-<path fill="none" stroke="darkgreen" d="M349.8,-104.7C333.22,-95.04 311.59,-82.44 297.39,-74.17"/>
-<polygon fill="darkgreen" stroke="darkgreen" points="348.48,-107.98 358.88,-109.98 352,-101.93 348.48,-107.98"/>
-</a>
-</g>
-</g>
 <!-- Node9 -->
 <g id="Node000009" class="node">
 <title>Node9</title>
-<g id="a_Node000009"><a xlink:href="classwebcface_1_1Log.html" target="_top" xlink:title="ログの送受信データを表すクラス">
-<polygon fill="white" stroke="#666666" points="358.5,-74 324.5,-74 324.5,-55 358.5,-55 358.5,-74"/>
-<text text-anchor="middle" x="341.5" y="-62" font-family="Helvetica,sans-Serif" font-size="10.00">Log</text>
+<g id="a_Node000009"><a xlink:href="classwebcface_1_1Image.html" target="_top" xlink:title="(ver1.3から追加) 画像の送受信データを表すクラス">
+<polygon fill="white" stroke="#666666" points="306,-74 259,-74 259,-55 306,-55 306,-74"/>
+<text text-anchor="middle" x="282.5" y="-62" font-family="Helvetica,sans-Serif" font-size="10.00">Image</text>
 </a>
 </g>
 </g>
@@ -138,17 +120,17 @@
 <g id="edge8_Node000003_Node000009" class="edge">
 <title>Node3&#45;&gt;Node9</title>
 <g id="a_edge8_Node000003_Node000009"><a xlink:title=" ">
-<path fill="none" stroke="darkgreen" d="M363,-101.1C357.53,-92.04 351.08,-81.37 346.69,-74.09"/>
-<polygon fill="darkgreen" stroke="darkgreen" points="360.05,-103 368.22,-109.75 366.04,-99.38 360.05,-103"/>
+<path fill="none" stroke="darkgreen" d="M349.8,-104.7C333.22,-95.04 311.59,-82.44 297.39,-74.17"/>
+<polygon fill="darkgreen" stroke="darkgreen" points="348.48,-107.98 358.88,-109.98 352,-101.93 348.48,-107.98"/>
 </a>
 </g>
 </g>
 <!-- Node10 -->
 <g id="Node000010" class="node">
 <title>Node10</title>
-<g id="a_Node000010"><a xlink:href="classwebcface_1_1Member.html" target="_top" xlink:title="Memberを指すクラス">
-<polygon fill="white" stroke="#666666" points="434,-74 377,-74 377,-55 434,-55 434,-74"/>
-<text text-anchor="middle" x="405.5" y="-62" font-family="Helvetica,sans-Serif" font-size="10.00">Member</text>
+<g id="a_Node000010"><a xlink:href="classwebcface_1_1Log.html" target="_top" xlink:title="ログの送受信データを表すクラス">
+<polygon fill="white" stroke="#666666" points="358.5,-74 324.5,-74 324.5,-55 358.5,-55 358.5,-74"/>
+<text text-anchor="middle" x="341.5" y="-62" font-family="Helvetica,sans-Serif" font-size="10.00">Log</text>
 </a>
 </g>
 </g>
@@ -156,35 +138,35 @@
 <g id="edge9_Node000003_Node000010" class="edge">
 <title>Node3&#45;&gt;Node10</title>
 <g id="a_edge9_Node000003_Node000010"><a xlink:title=" ">
+<path fill="none" stroke="darkgreen" d="M363,-101.1C357.53,-92.04 351.08,-81.37 346.69,-74.09"/>
+<polygon fill="darkgreen" stroke="darkgreen" points="360.05,-103 368.22,-109.75 366.04,-99.38 360.05,-103"/>
+</a>
+</g>
+</g>
+<!-- Node11 -->
+<g id="Node000011" class="node">
+<title>Node11</title>
+<g id="a_Node000011"><a xlink:href="classwebcface_1_1Member.html" target="_top" xlink:title="Memberを指すクラス">
+<polygon fill="white" stroke="#666666" points="434,-74 377,-74 377,-55 434,-55 434,-74"/>
+<text text-anchor="middle" x="405.5" y="-62" font-family="Helvetica,sans-Serif" font-size="10.00">Member</text>
+</a>
+</g>
+</g>
+<!-- Node3&#45;&gt;Node11 -->
+<g id="edge10_Node000003_Node000011" class="edge">
+<title>Node3&#45;&gt;Node11</title>
+<g id="a_edge10_Node000003_Node000011"><a xlink:title=" ">
 <path fill="none" stroke="darkgreen" d="M384,-101.1C389.47,-92.04 395.92,-81.37 400.31,-74.09"/>
 <polygon fill="darkgreen" stroke="darkgreen" points="380.96,-99.38 378.78,-109.75 386.95,-103 380.96,-99.38"/>
-</a>
-</g>
-</g>
-<!-- Node12 -->
-<g id="Node000012" class="node">
-<title>Node12</title>
-<g id="a_Node000012"><a xlink:href="classwebcface_1_1RobotModel.html" target="_top" xlink:title="RobotModelの送受信データを表すクラス">
-<polygon fill="white" stroke="#666666" points="527,-74 452,-74 452,-55 527,-55 527,-74"/>
-<text text-anchor="middle" x="489.5" y="-62" font-family="Helvetica,sans-Serif" font-size="10.00">RobotModel</text>
-</a>
-</g>
-</g>
-<!-- Node3&#45;&gt;Node12 -->
-<g id="edge11_Node000003_Node000012" class="edge">
-<title>Node3&#45;&gt;Node12</title>
-<g id="a_edge11_Node000003_Node000012"><a xlink:title=" ">
-<path fill="none" stroke="darkgreen" d="M401.37,-105.77C422.77,-95.99 451.74,-82.75 470.52,-74.17"/>
-<polygon fill="darkgreen" stroke="darkgreen" points="399.78,-102.65 392.14,-109.98 402.69,-109.01 399.78,-102.65"/>
 </a>
 </g>
 </g>
 <!-- Node13 -->
 <g id="Node000013" class="node">
 <title>Node13</title>
-<g id="a_Node000013"><a xlink:href="classwebcface_1_1Text.html" target="_top" xlink:title="文字列の送受信データを表すクラス">
-<polygon fill="white" stroke="#666666" points="582,-74 545,-74 545,-55 582,-55 582,-74"/>
-<text text-anchor="middle" x="563.5" y="-62" font-family="Helvetica,sans-Serif" font-size="10.00">Text</text>
+<g id="a_Node000013"><a xlink:href="classwebcface_1_1RobotModel.html" target="_top" xlink:title="RobotModelの送受信データを表すクラス">
+<polygon fill="white" stroke="#666666" points="527,-74 452,-74 452,-55 527,-55 527,-74"/>
+<text text-anchor="middle" x="489.5" y="-62" font-family="Helvetica,sans-Serif" font-size="10.00">RobotModel</text>
 </a>
 </g>
 </g>
@@ -192,17 +174,17 @@
 <g id="edge12_Node000003_Node000013" class="edge">
 <title>Node3&#45;&gt;Node13</title>
 <g id="a_edge12_Node000003_Node000013"><a xlink:title=" ">
-<path fill="none" stroke="darkgreen" d="M403.5,-110.68C436.28,-102.05 490.28,-87.58 536.5,-74 539.23,-73.2 542.12,-72.32 544.94,-71.45"/>
-<polygon fill="darkgreen" stroke="darkgreen" points="402.43,-107.34 393.65,-113.27 404.21,-114.11 402.43,-107.34"/>
+<path fill="none" stroke="darkgreen" d="M401.37,-105.77C422.77,-95.99 451.74,-82.75 470.52,-74.17"/>
+<polygon fill="darkgreen" stroke="darkgreen" points="399.78,-102.65 392.14,-109.98 402.69,-109.01 399.78,-102.65"/>
 </a>
 </g>
 </g>
 <!-- Node14 -->
 <g id="Node000014" class="node">
 <title>Node14</title>
-<g id="a_Node000014"><a xlink:href="classwebcface_1_1Value.html" target="_top" xlink:title="実数値またはその配列の送受信データを表すクラス">
-<polygon fill="white" stroke="#666666" points="644.5,-74 600.5,-74 600.5,-55 644.5,-55 644.5,-74"/>
-<text text-anchor="middle" x="622.5" y="-62" font-family="Helvetica,sans-Serif" font-size="10.00">Value</text>
+<g id="a_Node000014"><a xlink:href="classwebcface_1_1Text.html" target="_top" xlink:title="文字列の送受信データを表すクラス">
+<polygon fill="white" stroke="#666666" points="582,-74 545,-74 545,-55 582,-55 582,-74"/>
+<text text-anchor="middle" x="563.5" y="-62" font-family="Helvetica,sans-Serif" font-size="10.00">Text</text>
 </a>
 </g>
 </g>
@@ -210,17 +192,17 @@
 <g id="edge13_Node000003_Node000014" class="edge">
 <title>Node3&#45;&gt;Node14</title>
 <g id="a_edge13_Node000003_Node000014"><a xlink:title=" ">
-<path fill="none" stroke="darkgreen" d="M403.64,-113C445.83,-105.16 524.83,-89.93 591.5,-74 594.32,-73.33 597.28,-72.57 600.19,-71.81"/>
-<polygon fill="darkgreen" stroke="darkgreen" points="402.93,-109.57 393.74,-114.83 404.2,-116.46 402.93,-109.57"/>
+<path fill="none" stroke="darkgreen" d="M403.5,-110.68C436.28,-102.05 490.28,-87.58 536.5,-74 539.23,-73.2 542.12,-72.32 544.94,-71.45"/>
+<polygon fill="darkgreen" stroke="darkgreen" points="402.43,-107.34 393.65,-113.27 404.21,-114.11 402.43,-107.34"/>
 </a>
 </g>
 </g>
 <!-- Node15 -->
 <g id="Node000015" class="node">
 <title>Node15</title>
-<g id="a_Node000015"><a xlink:href="classwebcface_1_1View.html" target="_top" xlink:title="Viewの送受信データを表すクラス">
-<polygon fill="white" stroke="#666666" points="704,-74 663,-74 663,-55 704,-55 704,-74"/>
-<text text-anchor="middle" x="683.5" y="-62" font-family="Helvetica,sans-Serif" font-size="10.00">View</text>
+<g id="a_Node000015"><a xlink:href="classwebcface_1_1Value.html" target="_top" xlink:title="実数値またはその配列の送受信データを表すクラス">
+<polygon fill="white" stroke="#666666" points="644.5,-74 600.5,-74 600.5,-55 644.5,-55 644.5,-74"/>
+<text text-anchor="middle" x="622.5" y="-62" font-family="Helvetica,sans-Serif" font-size="10.00">Value</text>
 </a>
 </g>
 </g>
@@ -228,6 +210,24 @@
 <g id="edge14_Node000003_Node000015" class="edge">
 <title>Node3&#45;&gt;Node15</title>
 <g id="a_edge14_Node000003_Node000015"><a xlink:title=" ">
+<path fill="none" stroke="darkgreen" d="M403.64,-113C445.83,-105.16 524.83,-89.93 591.5,-74 594.32,-73.33 597.28,-72.57 600.19,-71.81"/>
+<polygon fill="darkgreen" stroke="darkgreen" points="402.93,-109.57 393.74,-114.83 404.2,-116.46 402.93,-109.57"/>
+</a>
+</g>
+</g>
+<!-- Node16 -->
+<g id="Node000016" class="node">
+<title>Node16</title>
+<g id="a_Node000016"><a xlink:href="classwebcface_1_1View.html" target="_top" xlink:title="Viewの送受信データを表すクラス">
+<polygon fill="white" stroke="#666666" points="704,-74 663,-74 663,-55 704,-55 704,-74"/>
+<text text-anchor="middle" x="683.5" y="-62" font-family="Helvetica,sans-Serif" font-size="10.00">View</text>
+</a>
+</g>
+</g>
+<!-- Node3&#45;&gt;Node16 -->
+<g id="edge15_Node000003_Node000016" class="edge">
+<title>Node3&#45;&gt;Node16</title>
+<g id="a_edge15_Node000003_Node000016"><a xlink:title=" ">
 <path fill="none" stroke="darkgreen" d="M403.81,-114.88C455.43,-108.45 563.52,-93.82 653.5,-74 656.57,-73.32 659.78,-72.52 662.92,-71.68"/>
 <polygon fill="darkgreen" stroke="darkgreen" points="403.18,-111.43 393.69,-116.13 404.04,-118.38 403.18,-111.43"/>
 </a>
@@ -237,8 +237,8 @@
 <g id="Node000007" class="node">
 <title>Node7</title>
 <g id="a_Node000007"><a xlink:href="classwebcface_1_1AnonymousFunc.html" target="_top" xlink:title="名前を指定せず先に関数を登録するFunc">
-<polygon fill="white" stroke="#666666" points="270,-19 173,-19 173,0 270,0 270,-19"/>
-<text text-anchor="middle" x="221.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">AnonymousFunc</text>
+<polygon fill="white" stroke="#666666" points="216,-19 119,-19 119,0 216,0 216,-19"/>
+<text text-anchor="middle" x="167.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">AnonymousFunc</text>
 </a>
 </g>
 </g>
@@ -246,24 +246,42 @@
 <g id="edge6_Node000006_Node000007" class="edge">
 <title>Node6&#45;&gt;Node7</title>
 <g id="a_edge6_Node000006_Node000007"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M221.5,-44.66C221.5,-35.93 221.5,-25.99 221.5,-19.09"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="218,-44.75 221.5,-54.75 225,-44.75 218,-44.75"/>
+<path fill="none" stroke="#63b8ff" d="M205.22,-47.52C195.7,-38.18 184.06,-26.75 176.25,-19.09"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="202.99,-50.24 212.58,-54.75 207.9,-45.25 202.99,-50.24"/>
 </a>
 </g>
 </g>
-<!-- Node11 -->
-<g id="Node000011" class="node">
-<title>Node11</title>
-<g id="a_Node000011"><a xlink:href="classwebcface_1_1Client.html" target="_top" xlink:title="サーバーに接続するクライアント。">
+<!-- Node8 -->
+<g id="Node000008" class="node">
+<title>Node8</title>
+<g id="a_Node000008"><a xlink:href="classwebcface_1_1FuncListener.html" target="_top" xlink:title=" ">
+<polygon fill="white" stroke="#666666" points="312.5,-19 234.5,-19 234.5,0 312.5,0 312.5,-19"/>
+<text text-anchor="middle" x="273.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">FuncListener</text>
+</a>
+</g>
+</g>
+<!-- Node6&#45;&gt;Node8 -->
+<g id="edge7_Node000006_Node000008" class="edge">
+<title>Node6&#45;&gt;Node8</title>
+<g id="a_edge7_Node000006_Node000008"><a xlink:title=" ">
+<path fill="none" stroke="darkgreen" d="M237.18,-47.52C246.34,-38.18 257.55,-26.75 265.07,-19.09"/>
+<polygon fill="darkgreen" stroke="darkgreen" points="234.59,-45.16 230.09,-54.75 239.59,-50.06 234.59,-45.16"/>
+</a>
+</g>
+</g>
+<!-- Node12 -->
+<g id="Node000012" class="node">
+<title>Node12</title>
+<g id="a_Node000012"><a xlink:href="classwebcface_1_1Client.html" target="_top" xlink:title="サーバーに接続するクライアント。">
 <polygon fill="white" stroke="#666666" points="428,-19 383,-19 383,0 428,0 428,-19"/>
 <text text-anchor="middle" x="405.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">Client</text>
 </a>
 </g>
 </g>
-<!-- Node10&#45;&gt;Node11 -->
-<g id="edge10_Node000010_Node000011" class="edge">
-<title>Node10&#45;&gt;Node11</title>
-<g id="a_edge10_Node000010_Node000011"><a xlink:title=" ">
+<!-- Node11&#45;&gt;Node12 -->
+<g id="edge11_Node000011_Node000012" class="edge">
+<title>Node11&#45;&gt;Node12</title>
+<g id="a_edge11_Node000011_Node000012"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M405.5,-44.66C405.5,-35.93 405.5,-25.99 405.5,-19.09"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="402,-44.75 405.5,-54.75 409,-44.75 402,-44.75"/>
 </a>

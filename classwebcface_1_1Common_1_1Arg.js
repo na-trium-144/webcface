@@ -16,6 +16,7 @@ var classwebcface_1_1Common_1_1Arg =
     [ "option", "classwebcface_1_1Common_1_1Arg.html#a5a3dbf4be3183a9dac311af489d528fb", null ],
     [ "option", "classwebcface_1_1Common_1_1Arg.html#a9e130c8a45bdeff444f24705e173ac47", null ],
     [ "type", "classwebcface_1_1Common_1_1Arg.html#a21eb97b014d270b80f9423022f86d322", null ],
+    [ "type", "classwebcface_1_1Common_1_1Arg.html#ae244be41ed6a5e3dea4aa18ad6eadf65", null ],
     [ "init_", "classwebcface_1_1Common_1_1Arg.html#ad96e625f32b799716f14170bc855e1fc", null ],
     [ "max_", "classwebcface_1_1Common_1_1Arg.html#ae0b025581d8618b3f4a7524cde2c74ae", null ],
     [ "min_", "classwebcface_1_1Common_1_1Arg.html#a45fb6de0b5002feb0203ac9f32f536c2", null ],

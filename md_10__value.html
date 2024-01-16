@@ -42,7 +42,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">WebCFace<span id="projectnumber">&#160;1.4.1</span>
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;1.5.0</span>
    </div>
    <div id="projectbrief">Web-based RPC &amp; UI Library</div>
   </td>
@@ -110,7 +110,7 @@ $(document).ready(function(){initNavTree('md_10__value.html',''); initResizable(
   <div class="headertitle"><div class="title">Value</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md19"></a> API Reference → <a class="el" href="classwebcface_1_1Value.html" title="実数値またはその配列の送受信データを表すクラス">webcface::Value</a></p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md22"></a> API Reference → <a class="el" href="classwebcface_1_1Value.html" title="実数値またはその配列の送受信データを表すクラス">webcface::Value</a></p>
 <p>数値(double)データ、または数値の配列(std::vector&lt;double&gt;)を送受信します。</p>
 <p>Member::value() でValueクラスのオブジェクトが得られます </p><div class="fragment"><div class="line"><a class="code hl_class" href="classwebcface_1_1Value.html">webcface::Value</a> value_hoge = wcli.<a class="code hl_function" href="classwebcface_1_1Value.html#aa8fab40ead35fa8e761986d5f4000a5c">member</a>(<span class="stringliteral">&quot;a&quot;</span>).<a class="code hl_function" href="classwebcface_1_1Member.html#a9eea15697605e8270c1e80c7dc89fdd3">value</a>(<span class="stringliteral">&quot;hoge&quot;</span>);</div>
 <div class="ttc" id="aclasswebcface_1_1Member_html_a9eea15697605e8270c1e80c7dc89fdd3"><div class="ttname"><a href="classwebcface_1_1Member.html#a9eea15697605e8270c1e80c7dc89fdd3">webcface::Member::value</a></div><div class="ttdeci">Value value(const std::string &amp;field) const</div><div class="ttdoc">valueを参照する。</div><div class="ttdef"><b>Definition</b> member.cc:8</div></div>
@@ -123,7 +123,7 @@ $(document).ready(function(){initNavTree('md_10__value.html',''); initResizable(
 <div class="line">}</div>
 </div><!-- fragment --><p>Member::onValueEntry() で新しくデータが追加されたときのコールバックを設定できます </p><div class="fragment"><div class="line">wcli.member(<span class="stringliteral">&quot;a&quot;</span>).onValueEntry().appendListener([](<a class="code hl_class" href="classwebcface_1_1Value.html">webcface::Value</a> v){ <span class="comment">/* ... */</span> });</div>
 </div><!-- fragment --><p> ただし、コールバックを設定する前から存在したデータについてはコールバックは呼び出されません。 Member名がわかっていれば初回のClient::sync()前に設定すればよいです。 そうでなければClient::onMemberEntry()イベントのコールバックの中で各種イベントを設定すればよいです。</p>
-<h1><a class="anchor" id="autotoc_md20"></a>
+<h1><a class="anchor" id="autotoc_md23"></a>
 送信</h1>
 <p>自分自身の名前のMemberからValueオブジェクトを作り、 Value::set() でデータを代入し、Client::sync()することで送信されます </p><div class="fragment"><div class="line">wcli.value(<span class="stringliteral">&quot;hoge&quot;</span>).set(5);</div>
 <div class="line">wcli.value(<span class="stringliteral">&quot;fuga&quot;</span>).set({1, 2, 3, 4, 5}); <span class="comment">// std::vector&lt;double&gt;</span></div>
@@ -154,7 +154,7 @@ $(document).ready(function(){initNavTree('md_10__value.html',''); initResizable(
 <div class="line"><span class="comment">*/</span></div>
 <div class="ttc" id="aclasswebcface_1_1Value_html_abd060664db33cb59cfcd689bf58c5870"><div class="ttname"><a href="classwebcface_1_1Value.html#abd060664db33cb59cfcd689bf58c5870">webcface::Value::Dict</a></div><div class="ttdeci">Common::Dict&lt; std::shared_ptr&lt; Common::VectorOpt&lt; double &gt; &gt; &gt; Dict</div><div class="ttdef"><b>Definition</b> value.h:47</div></div>
 </div><!-- fragment --><p>(C++のみ) set() の代わりに代入演算子(Value::operator=)でも同様のことができます。 また、 operator+= など、doubleやintの変数で使える各種演算子も使えます</p>
-<h1><a class="anchor" id="autotoc_md21"></a>
+<h1><a class="anchor" id="autotoc_md24"></a>
 受信</h1>
 <p>WebCFaceのクライアントは初期状態ではデータを受信しません。 リクエストを送って初めてサーバーからデータが順次送られてくるようになります。 これはValueに限らず、これ以降説明する他のデータ型のfieldについても同様です。</p>
 <p>Value::tryGet(), Value::tryGetVec(), Value::tryGetRecurse() で値のリクエストをするとともに受信した値を取得できます。 それぞれ 1つのdoubleの値、vector、Dict を返します。</p>
@@ -173,7 +173,7 @@ $(document).ready(function(){initNavTree('md_10__value.html',''); initResizable(
 <p>Value::time() でその値が送信されたとき(そのMemberがsync()したとき)の時刻が得られます。</p><ul>
 <li>Pythonでは Member.sync_time()</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md22"></a>
+<h1><a class="anchor" id="autotoc_md25"></a>
 受信イベント</h1>
 <p>Value::appendListener() で受信したデータが変化したときにコールバックを呼び出すことができます。 コールバックを設定するとその値はリクエストされます。 </p><div class="fragment"><div class="line">wcli.member(<span class="stringliteral">&quot;a&quot;</span>).value(<span class="stringliteral">&quot;hoge&quot;</span>).appendListener([](Value v){ <span class="comment">/* ... */</span> });</div>
 </div><!-- fragment --><p> pythonでは Value.signal プロパティがこのイベントのsignalを返します。</p>
@@ -198,7 +198,7 @@ $(document).ready(function(){initNavTree('md_10__value.html',''); initResizable(
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Jan 16 2024 04:29:59 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Tue Jan 16 2024 07:32:15 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

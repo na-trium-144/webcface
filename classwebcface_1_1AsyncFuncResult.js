@@ -5,8 +5,10 @@ var classwebcface_1_1AsyncFuncResult =
     [ "member", "classwebcface_1_1AsyncFuncResult.html#aa8fab40ead35fa8e761986d5f4000a5c", null ],
     [ "name", "classwebcface_1_1AsyncFuncResult.html#a1d89c28bd42ba9a52da008bb69367171", null ],
     [ "setCheck", "classwebcface_1_1AsyncFuncResult.html#a46ba439f46fffe25a1fe549c380fcd3b", null ],
+    [ "toCVal", "classwebcface_1_1AsyncFuncResult.html#ae51efe7511df515509f678e7bd0e7e85", null ],
     [ "Func", "classwebcface_1_1AsyncFuncResult.html#a87c6c86ed0896880400f89c8c88c3927", null ],
     [ "ClientData", "classwebcface_1_1AsyncFuncResult.html#a6fdef636d2887fa1efb6cdd7fb8c052d", null ],
+    [ "c_result_val", "classwebcface_1_1AsyncFuncResult.html#a131f9af8d3ed59a578d4871658bf4136", null ],
     [ "caller", "classwebcface_1_1AsyncFuncResult.html#aa016fe422de903a6eea6baa1b6cbe866", null ],
     [ "caller_id", "classwebcface_1_1AsyncFuncResult.html#a1857b0e2073dee1ce8b4c840768c14fc", null ],
     [ "data_w", "classwebcface_1_1AsyncFuncResult.html#acf420a0ba1ce5e817feac0f51c9056dc", null ],
@@ -14,6 +16,7 @@ var classwebcface_1_1AsyncFuncResult =
     [ "member_", "classwebcface_1_1AsyncFuncResult.html#a46e2aa85bc5d8406ccfa3509a9633ff6", null ],
     [ "result", "classwebcface_1_1AsyncFuncResult.html#a05a565f888fd60985445985ca89ba408", null ],
     [ "result_", "classwebcface_1_1AsyncFuncResult.html#afc9e6a7c8ffbc23a11370e3fe514465d", null ],
+    [ "result_val", "classwebcface_1_1AsyncFuncResult.html#acce4280dfef65c456ffa963c777f029c", null ],
     [ "started", "classwebcface_1_1AsyncFuncResult.html#a98d52cac5d23020581151ee1f106ec8a", null ],
     [ "started_", "classwebcface_1_1AsyncFuncResult.html#a9987d1058c9fed182b5422e7e1e6480b", null ]
 ];

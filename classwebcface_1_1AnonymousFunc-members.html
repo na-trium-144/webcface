@@ -42,7 +42,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">WebCFace<span id="projectnumber">&#160;1.4.1</span>
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;1.5.0</span>
    </div>
    <div id="projectbrief">Web-based RPC &amp; UI Library</div>
   </td>
@@ -134,7 +134,7 @@ $(document).ready(function(){initNavTree('classwebcface_1_1AnonymousFunc.html','
   <tr class="even"><td class="entry"><a class="el" href="classwebcface_1_1Func.html#adada2c37b82d83a495578451c5407bfe">Func</a>(const Field &amp;base)</td><td class="entry"><a class="el" href="classwebcface_1_1Func.html">Func</a></td><td class="entry"></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="classwebcface_1_1Func.html#a2e7940e8c5fb2c154c6f168ceea799f1">Func</a>(const Field &amp;base, const std::string &amp;field)</td><td class="entry"><a class="el" href="classwebcface_1_1Func.html">Func</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classwebcface_1_1AnonymousFunc.html#a2b12a3c03aa007250232c4230e3c1eef">func_setter</a></td><td class="entry"><a class="el" href="classwebcface_1_1AnonymousFunc.html">AnonymousFunc</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
-  <tr class="odd"><td class="entry"><a class="el" href="classwebcface_1_1Func.html#a97ecd85f8105c2a1f85bbe354ec9b33c">getDefaultFuncWrapper</a>() const</td><td class="entry"><a class="el" href="classwebcface_1_1Func.html">Func</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classwebcface_1_1Func.html#a97ecd85f8105c2a1f85bbe354ec9b33c">getDefaultFuncWrapper</a>() const</td><td class="entry"><a class="el" href="classwebcface_1_1Func.html">Func</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classwebcface_1_1Func.html#a070c5fe3f3cb1c8b51de82f77110c282">hidden</a>(bool hidden)</td><td class="entry"><a class="el" href="classwebcface_1_1Func.html">Func</a></td><td class="entry"></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="classwebcface_1_1AnonymousFunc.html#a6b1341b3301a0eff9355eae557939f94">lockTo</a>(Func &amp;target)</td><td class="entry"><a class="el" href="classwebcface_1_1AnonymousFunc.html">AnonymousFunc</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classwebcface_1_1Func.html#aa8fab40ead35fa8e761986d5f4000a5c">member</a>() const</td><td class="entry"><a class="el" href="classwebcface_1_1Func.html">Func</a></td><td class="entry"></td></tr>
@@ -147,11 +147,13 @@ $(document).ready(function(){initNavTree('classwebcface_1_1AnonymousFunc.html','
   <tr class="odd"><td class="entry"><a class="el" href="classwebcface_1_1Func.html#a0a6e0cb1563299a51d5f56819b197125">run</a>(const std::vector&lt; ValAdaptor &gt; &amp;args_vec) const</td><td class="entry"><a class="el" href="classwebcface_1_1Func.html">Func</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classwebcface_1_1Func.html#ac918a688f7b7d7ea24d2351750db9c38">runAsync</a>(Args... args) const</td><td class="entry"><a class="el" href="classwebcface_1_1Func.html">Func</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="classwebcface_1_1Func.html#a53a399f639eafb5efacf783c44b70d97">runAsync</a>(const std::vector&lt; ValAdaptor &gt; &amp;args_vec) const</td><td class="entry"><a class="el" href="classwebcface_1_1Func.html">Func</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classwebcface_1_1Func.html#a4d789e3559ae14942f4472340da8de58">runCVal</a>(const std::vector&lt; ValAdaptor &gt; &amp;args_vec) const</td><td class="entry"><a class="el" href="classwebcface_1_1Func.html">Func</a></td><td class="entry"></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classwebcface_1_1Func.html#a7939430f461aeea40f64fda6188a0be8">runImpl</a>(std::shared_ptr&lt; Internal::ClientData &gt; data, AsyncFuncResult r, std::vector&lt; ValAdaptor &gt; args_vec) const</td><td class="entry"><a class="el" href="classwebcface_1_1Func.html">Func</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classwebcface_1_1Func.html#aa55156bf6486cd2b0c74394634474062">set</a>(const T &amp;func)</td><td class="entry"><a class="el" href="classwebcface_1_1Func.html">Func</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="classwebcface_1_1Func.html#af46084997dea863bc15d6f57352d506c">setArgs</a>(const std::vector&lt; Arg &gt; &amp;args)</td><td class="entry"><a class="el" href="classwebcface_1_1Func.html">Func</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="structwebcface_1_1Field.html#a46ba439f46fffe25a1fe549c380fcd3b">setCheck</a>() const</td><td class="entry"><a class="el" href="structwebcface_1_1Field.html">Field</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
-  <tr class="odd"><td class="entry"><a class="el" href="classwebcface_1_1Func.html#a255ab867eeca51e0b527b12393d16b9b">setRaw</a>(const std::shared_ptr&lt; FuncInfo &gt; &amp;v)</td><td class="entry"><a class="el" href="classwebcface_1_1Func.html">Func</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classwebcface_1_1Func.html#ac959389e860864dce0ac6176ea056841">setRaw</a>(const FuncInfo &amp;v)</td><td class="entry"><a class="el" href="classwebcface_1_1Func.html">Func</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">private</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classwebcface_1_1Func.html#a255ab867eeca51e0b527b12393d16b9b">setRaw</a>(const std::shared_ptr&lt; FuncInfo &gt; &amp;v)</td><td class="entry"><a class="el" href="classwebcface_1_1Func.html">Func</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classwebcface_1_1Func.html#ac959389e860864dce0ac6176ea056841">setRaw</a>(const FuncInfo &amp;v)</td><td class="entry"><a class="el" href="classwebcface_1_1Func.html">Func</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">protected</span></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="classwebcface_1_1Func.html#ac2fa49a4ca748a0c462948a2a0b7ca63">setRunCond</a>(FuncWrapperType wrapper)</td><td class="entry"><a class="el" href="classwebcface_1_1Func.html">Func</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classwebcface_1_1Func.html#abca1b4fa27c54013f70a0a8b1db45b04">setRunCondNone</a>()</td><td class="entry"><a class="el" href="classwebcface_1_1Func.html">Func</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="classwebcface_1_1Func.html#afc0ddf4c463d96f543b9f9be11000789">setRunCondOnSync</a>()</td><td class="entry"><a class="el" href="classwebcface_1_1Func.html">Func</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
@@ -161,7 +163,7 @@ $(document).ready(function(){initNavTree('classwebcface_1_1AnonymousFunc.html','
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Jan 16 2024 04:29:59 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Tue Jan 16 2024 07:32:15 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

@@ -1,5 +1,6 @@
 var files_dup =
 [
+    [ "c_wcf", "dir_e20733c077072a869a8a8de8e75bf9b9.html", "dir_e20733c077072a869a8a8de8e75bf9b9" ],
     [ "client", "dir_db3a54907829b36871118d03417739cd.html", "dir_db3a54907829b36871118d03417739cd" ],
     [ "include", "dir_d44c64559bbebec7f509842c48db8b23.html", "dir_d44c64559bbebec7f509842c48db8b23" ],
     [ "message", "dir_d06cd19e7b0a7bd71ca3f88af4ac0d59.html", "dir_d06cd19e7b0a7bd71ca3f88af4ac0d59" ],

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['定義_0',['送信(定義)',['../md_21__robot__model.html#autotoc_md43',1,'']]]
+  ['切断する_0',['切断する',['../md_01__client.html#autotoc_md17',1,'']]]
 ];

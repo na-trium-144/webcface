@@ -58,7 +58,8 @@ var hierarchy =
         [ "AsyncFuncResult", "classwebcface_1_1AsyncFuncResult.html", null ],
         [ "Canvas3D", "classwebcface_1_1Canvas3D.html", null ],
         [ "Func", "classwebcface_1_1Func.html", [
-          [ "AnonymousFunc", "classwebcface_1_1AnonymousFunc.html", null ]
+          [ "AnonymousFunc", "classwebcface_1_1AnonymousFunc.html", null ],
+          [ "FuncListener", "classwebcface_1_1FuncListener.html", null ]
         ] ],
         [ "Image", "classwebcface_1_1Image.html", null ],
         [ "Log", "classwebcface_1_1Log.html", null ],
@@ -81,6 +82,7 @@ var hierarchy =
     [ "FuncCall", "structwebcface_1_1Common_1_1FuncCall.html", [
       [ "Call", "structwebcface_1_1Message_1_1Call.html", null ]
     ] ],
+    [ "FuncCallHandle", "classwebcface_1_1FuncCallHandle.html", null ],
     [ "FuncInfo", "structwebcface_1_1Common_1_1FuncInfo.html", null ],
     [ "FuncInfo", "structwebcface_1_1Common_1_1FuncInfo.html", null ],
     [ "FuncOnSync", "classwebcface_1_1Internal_1_1FuncOnSync.html", null ],
@@ -251,5 +253,7 @@ var hierarchy =
     ] ],
     [ "ViewComponentBase", "structwebcface_1_1Common_1_1ViewComponentBase.html", [
       [ "ViewComponent", "classwebcface_1_1ViewComponent.html", null ]
-    ] ]
+    ] ],
+    [ "wcfFuncCallHandle", "structwcfFuncCallHandle.html", null ],
+    [ "wcfMultiVal", "structwcfMultiVal.html", null ]
 ];

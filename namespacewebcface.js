@@ -1,5 +1,13 @@
 var namespacewebcface =
 [
+    [ "c_wcf", "namespacewebcface_1_1c__wcf.html", [
+      [ "getAsyncFuncResult", "namespacewebcface_1_1c__wcf.html#ae7f36d3bf68361495a17df5c399caa64", null ],
+      [ "getFuncCallHandle", "namespacewebcface_1_1c__wcf.html#ac29d8a1459f6cefaa695450d60e57312", null ],
+      [ "getWcli", "namespacewebcface_1_1c__wcf.html#aa85a685a0f454a26de052129b942f7ae", null ],
+      [ "fetched_handles", "namespacewebcface_1_1c__wcf.html#a54e61705d6b28a541424f3af3782e822", null ],
+      [ "func_result_list", "namespacewebcface_1_1c__wcf.html#accbeaaf8800ef4256d6ac03f8a607d3e", null ],
+      [ "wcli_list", "namespacewebcface_1_1c__wcf.html#a06ec85c3a4c532a455f4c6534b658875", null ]
+    ] ],
     [ "Common", "namespacewebcface_1_1Common.html", "namespacewebcface_1_1Common" ],
     [ "FuncWrapper", "namespacewebcface_1_1FuncWrapper.html", [
       [ "runCondOnSync", "namespacewebcface_1_1FuncWrapper.html#a70393bdcf733bbe5047c263f8c774d4b", null ],
@@ -47,7 +55,9 @@ var namespacewebcface =
     [ "FieldBaseComparable", "structwebcface_1_1Common_1_1FieldBaseComparable.html", "structwebcface_1_1Common_1_1FieldBaseComparable" ],
     [ "Func", "classwebcface_1_1Func.html", "classwebcface_1_1Func" ],
     [ "FuncCall", "structwebcface_1_1Common_1_1FuncCall.html", "structwebcface_1_1Common_1_1FuncCall" ],
+    [ "FuncCallHandle", "classwebcface_1_1FuncCallHandle.html", "classwebcface_1_1FuncCallHandle" ],
     [ "FuncInfo", "structwebcface_1_1Common_1_1FuncInfo.html", "structwebcface_1_1Common_1_1FuncInfo" ],
+    [ "FuncListener", "classwebcface_1_1FuncListener.html", "classwebcface_1_1FuncListener" ],
     [ "FuncNotFound", "structwebcface_1_1FuncNotFound.html", "structwebcface_1_1FuncNotFound" ],
     [ "Geometry", "structwebcface_1_1Common_1_1Geometry.html", "structwebcface_1_1Common_1_1Geometry" ],
     [ "Image", "classwebcface_1_1Image.html", "classwebcface_1_1Image" ],
@@ -157,6 +167,9 @@ var namespacewebcface =
     [ "fixedAbsolute", "namespacewebcface_1_1Common_1_1RobotJoints.html#a8363a9d9d1a5bb07f44dcc2b980f41c4", null ],
     [ "fixedJoint", "namespacewebcface_1_1Common_1_1RobotJoints.html#a6a1d2d6fd9d0b1572170fadfbf7c2191", null ],
     [ "fixedJoint", "namespacewebcface_1_1Common_1_1RobotJoints.html#a2a6e15a4be95eaa5b1b45f7eb5c39f83", null ],
+    [ "getAsyncFuncResult", "namespacewebcface_1_1c__wcf.html#ae7f36d3bf68361495a17df5c399caa64", null ],
+    [ "getFuncCallHandle", "namespacewebcface_1_1c__wcf.html#ac29d8a1459f6cefaa695450d60e57312", null ],
+    [ "getWcli", "namespacewebcface_1_1c__wcf.html#aa85a685a0f454a26de052129b942f7ae", null ],
     [ "identity", "namespacewebcface_1_1Common.html#a9cc7119f63c09d929d8218008d2bb386", null ],
     [ "line", "namespacewebcface_1_1Geometries.html#a9b0372912f77d939615cfbc13d9ba714", null ],
     [ "newLine", "namespacewebcface_1_1ViewComponents.html#ab72da582724c98c1e879cadbacc78663", null ],
@@ -171,6 +184,9 @@ var namespacewebcface =
     [ "sphere", "namespacewebcface_1_1Geometries.html#acea1b0bf6350d46ddff7c5cb7fbddfef", null ],
     [ "text", "namespacewebcface_1_1ViewComponents.html#ae4003297f6bf60244afe0fc207c63dad", null ],
     [ "valTypeOf", "namespacewebcface_1_1Common.html#ae0e0d190aa5fc5710b43f55098ad9ecd", null ],
+    [ "fetched_handles", "namespacewebcface_1_1c__wcf.html#a54e61705d6b28a541424f3af3782e822", null ],
+    [ "func_result_list", "namespacewebcface_1_1c__wcf.html#accbeaaf8800ef4256d6ac03f8a607d3e", null ],
     [ "version", "namespacewebcface_1_1Version.html#a342b6f41244b8f7bce0c63b449f20dc1", null ],
-    [ "version_s", "namespacewebcface_1_1Version.html#ac908c368a4d24ffe7c3b3906522e0fc8", null ]
+    [ "version_s", "namespacewebcface_1_1Version.html#ac908c368a4d24ffe7c3b3906522e0fc8", null ],
+    [ "wcli_list", "namespacewebcface_1_1c__wcf.html#a06ec85c3a4c532a455f4c6534b658875", null ]
 ];

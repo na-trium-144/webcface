@@ -8,9 +8,9 @@ var searchData=
   ['parsevec_5',['parsevec',['../structwebcface_1_1Common_1_1DictTraits_3_01std_1_1shared__ptr_3_01T_01_4_01_4.html#a9c75e410037020a27ca297a870e6f55e',1,'webcface::Common::DictTraits&lt; std::shared_ptr&lt; T &gt; &gt;::parseVec()'],['../structwebcface_1_1Common_1_1DictTraits_3_01VectorOpt_3_01T_01_4_01_4.html#a9f70208dd87a825ead4cfaa2cb8d10d6',1,'webcface::Common::DictTraits&lt; VectorOpt&lt; T &gt; &gt;::parseVec()']]],
   ['pending_5fcalls_6',['pending_calls',['../structwebcface_1_1Server_1_1ClientData.html#a6754409c137fc411ce6b10016d2d8718',1,'webcface::Server::ClientData']]],
   ['ping_7',['ping',['../structwebcface_1_1Message_1_1Ping.html#a356be4db19e685aa6b8ac181b9e33dac',1,'webcface::Message::Ping::Ping()'],['../structwebcface_1_1Message_1_1Ping.html',1,'Ping'],['../namespacewebcface_1_1Message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484aad2de303cb1ea37f4a3bd91f5ef4c29f',1,'webcface::Message::MessageKind::ping']]],
-  ['ping_20kind_2089_8',['ping (kind = 89)',['../md_90__message.html#autotoc_md65',1,'']]],
-  ['ping_20status_20kind_2090_9',['ping status (kind = 90)',['../md_90__message.html#autotoc_md66',1,'']]],
-  ['ping_20status_20req_20kind_2091_10',['ping status req (kind = 91)',['../md_90__message.html#autotoc_md67',1,'']]],
+  ['ping_20kind_2089_8',['ping (kind = 89)',['../md_90__message.html#autotoc_md78',1,'']]],
+  ['ping_20status_20kind_2090_9',['ping status (kind = 90)',['../md_90__message.html#autotoc_md79',1,'']]],
+  ['ping_20status_20req_20kind_2091_10',['ping status req (kind = 91)',['../md_90__message.html#autotoc_md80',1,'']]],
   ['ping_5fevent_11',['ping_event',['../structwebcface_1_1Internal_1_1ClientData.html#a81f542ca0255d1ec55c63e1e05ea1b8b',1,'webcface::Internal::ClientData']]],
   ['ping_5finterval_12',['ping_interval',['../structwebcface_1_1Server_1_1ClientData.html#ab513349dee41e5e85be9aaca1baa402c',1,'webcface::Server::ClientData']]],
   ['ping_5fstatus_13',['ping_status',['../structwebcface_1_1Internal_1_1ClientData.html#a2284a2138f45992873563f8b5e95eaac',1,'webcface::Internal::ClientData::ping_status'],['../namespacewebcface_1_1Message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a0cb8db73d08e6f71fe9d47fb44fdc9a5',1,'webcface::Message::MessageKind::ping_status'],['../namespacewebcface_1_1Server.html#a2284a2138f45992873563f8b5e95eaac',1,'webcface::Server::ping_status']]],
@@ -23,7 +23,7 @@ var searchData=
   ['plane_20',['plane',['../structwebcface_1_1Geometries_1_1Plane.html#ad345b2282f0ab6e0986341e2a4157557',1,'webcface::Geometries::Plane::Plane()'],['../namespacewebcface_1_1Geometries.html#af451bb3372a8350234b9bcfbe17433f3',1,'webcface::plane()'],['../namespacewebcface_1_1Geometries.html#af451bb3372a8350234b9bcfbe17433f3',1,'webcface::Geometries::plane()'],['../namespacewebcface_1_1Common.html#a1b753fd9c2659910ca1a042a05b56be6abb302c9b5204d593ba3657055842a5fb',1,'webcface::Common::plane'],['../structwebcface_1_1Geometries_1_1Plane.html#ae990f2eee488a49dd9427e00ba7613f1',1,'webcface::Geometries::Plane::Plane()'],['../structwebcface_1_1Geometries_1_1Plane.html',1,'Plane'],['../structwebcface_1_1Geometries_1_1Plane.html',1,'Plane']]],
   ['png_21',['png',['../namespacewebcface_1_1Common.html#ab72e620a597e5f750b2c9b3391e84dedabff139fa05ac583f685a523ab3d110a0',1,'webcface::Common']]],
   ['point_22',['point',['../classwebcface_1_1Common_1_1Point.html#afb231ad1d2e0cffba84da70b2de40264',1,'webcface::Common::Point::Point(double x, double y, double z)'],['../classwebcface_1_1Common_1_1Point.html#a82f158725c2ac6ab958b31e055a8ee78',1,'webcface::Common::Point::Point(const std::array&lt; double, 3 &gt; &amp;pos={0, 0, 0})'],['../classwebcface_1_1Common_1_1Point.html',1,'Point'],['../classwebcface_1_1Common_1_1Point.html',1,'Point']]],
-  ['point_20transform_23',['Point, Transform',['../md_20__canvas3d.html#autotoc_md38',1,'']]],
+  ['point_20transform_23',['Point, Transform',['../md_20__canvas3d.html#autotoc_md41',1,'']]],
   ['pop_24',['pop',['../classwebcface_1_1Common_1_1Queue.html#aa168f4e708abc9d119958b708f107601',1,'webcface::Common::Queue']]],
   ['port_25',['port',['../structwebcface_1_1Internal_1_1ClientData.html#a63c89c04d1feae07ca35558055155ffb',1,'webcface::Internal::ClientData']]],
   ['pos_26',['pos',['../classwebcface_1_1Common_1_1Point.html#a82be71fc0efcaed4fdb76c20a4f9ac19',1,'webcface::Common::Point']]],
@@ -33,8 +33,8 @@ var searchData=
   ['prismatic_30',['prismatic',['../namespacewebcface_1_1Common.html#af888dd203afb5bdf79dc950d618bcad9a0d41282a7e78ab3eb95eacac16448b69',1,'webcface::Common']]],
   ['prismaticjoint_31',['prismaticjoint',['../namespacewebcface_1_1Common_1_1RobotJoints.html#af91d31e4d0b0bfbad874d554d56c74b7',1,'webcface::prismaticJoint()'],['../namespacewebcface_1_1Common_1_1RobotJoints.html#af91d31e4d0b0bfbad874d554d56c74b7',1,'webcface::Common::prismaticJoint()'],['../namespacewebcface_1_1Common_1_1RobotJoints.html#af91d31e4d0b0bfbad874d554d56c74b7',1,'webcface::Common::RobotJoints::prismaticJoint()']]],
   ['properties_32',['properties',['../structwebcface_1_1Common_1_1Geometry.html#a584562cb81f03bbbca44583995836cf7',1,'webcface::Common::Geometry']]],
-  ['pure_20cmake_33',['Build (with Pure CMake)',['../index.html#autotoc_md105',1,'']]],
+  ['pure_20cmake_33',['Build (with Pure CMake)',['../index.html#autotoc_md118',1,'']]],
   ['purple_34',['purple',['../namespacewebcface_1_1Common.html#a5dcc1f15d6a60ca34207565aeb74124aabb7aedfa61007447dd6efaf9f37641e3',1,'webcface::Common']]],
   ['push_35',['push',['../classwebcface_1_1Common_1_1Queue.html#a28ee7920d4166b13750f0958a72aba96',1,'webcface::Common::Queue']]],
-  ['python_36',['Python',['../md_40__log.html#autotoc_md57',1,'']]]
+  ['python_36',['Python',['../md_40__log.html#autotoc_md61',1,'']]]
 ];

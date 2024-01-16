@@ -100,7 +100,9 @@ var annotated_dup =
       [ "FieldBaseComparable", "structwebcface_1_1Common_1_1FieldBaseComparable.html", "structwebcface_1_1Common_1_1FieldBaseComparable" ],
       [ "Func", "classwebcface_1_1Func.html", "classwebcface_1_1Func" ],
       [ "FuncCall", "structwebcface_1_1Common_1_1FuncCall.html", "structwebcface_1_1Common_1_1FuncCall" ],
+      [ "FuncCallHandle", "classwebcface_1_1FuncCallHandle.html", "classwebcface_1_1FuncCallHandle" ],
       [ "FuncInfo", "structwebcface_1_1Common_1_1FuncInfo.html", "structwebcface_1_1Common_1_1FuncInfo" ],
+      [ "FuncListener", "classwebcface_1_1FuncListener.html", "classwebcface_1_1FuncListener" ],
       [ "FuncNotFound", "structwebcface_1_1FuncNotFound.html", "structwebcface_1_1FuncNotFound" ],
       [ "Geometry", "structwebcface_1_1Common_1_1Geometry.html", "structwebcface_1_1Common_1_1Geometry" ],
       [ "Image", "classwebcface_1_1Image.html", "classwebcface_1_1Image" ],
@@ -130,5 +132,7 @@ var annotated_dup =
       [ "ViewBuf", "classwebcface_1_1ViewBuf.html", "classwebcface_1_1ViewBuf" ],
       [ "ViewComponent", "classwebcface_1_1ViewComponent.html", "classwebcface_1_1ViewComponent" ],
       [ "ViewComponentBase", "structwebcface_1_1Common_1_1ViewComponentBase.html", "structwebcface_1_1Common_1_1ViewComponentBase" ]
-    ] ]
+    ] ],
+    [ "wcfFuncCallHandle", "structwcfFuncCallHandle.html", "structwcfFuncCallHandle" ],
+    [ "wcfMultiVal", "structwcfMultiVal.html", "structwcfMultiVal" ]
 ];

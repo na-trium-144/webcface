@@ -19,6 +19,7 @@ var structwebcface_1_1Internal_1_1ClientData =
     [ "connected", "structwebcface_1_1Internal_1_1ClientData.html#a195c6b7fd85d54552d2b1223c2003516", null ],
     [ "default_func_wrapper", "structwebcface_1_1Internal_1_1ClientData.html#a16b1a4633690c8ffc0e408ed79ffac23", null ],
     [ "func_entry_event", "structwebcface_1_1Internal_1_1ClientData.html#a34ebb3032bbe99f59443808e9c5d53d0", null ],
+    [ "func_listener_handlers", "structwebcface_1_1Internal_1_1ClientData.html#acc9b7543917838eef1ad9d744e1cc613", null ],
     [ "func_result_store", "structwebcface_1_1Internal_1_1ClientData.html#a00f818e1a82882952d07c59cb3557b2d", null ],
     [ "func_store", "structwebcface_1_1Internal_1_1ClientData.html#aba6278f3073c02ac159adbf4719d611f", null ],
     [ "func_sync_queue", "structwebcface_1_1Internal_1_1ClientData.html#a42215014610973eb53bbbcc9d435d887", null ],
