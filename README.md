@@ -188,6 +188,7 @@ sudo cmake --build build -t install
 ```
 * CMakeのオプション
 	* `-DWEBCFACE_USE_OPENCV=off`にするとOpenCVを使用しないようになります
+	* `-DWEBCFACE_FIND_LIBS=off`にするとmsgpack, eventpp, spdlogをfind_packageせずソースからビルドします
 	* `-DWEBCFACE_SHARED=off`にすると共有ライブラリではなくすべて静的ライブラリになります
 	* `-DWEBCFACE_EXAMPLE=on`でtestをビルドします(submoduleの場合デフォルトでoff)
 	* `-DWEBCFACE_INSTALL=on`でtergetのinstallをします(submoduleの場合デフォルトでoff)
