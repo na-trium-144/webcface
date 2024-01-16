@@ -1,0 +1,17 @@
+<map id="server/ip.cc" name="server/ip.cc">
+<area shape="rect" id="Node000001" title=" " alt="" coords="323,5,421,31"/>
+<area shape="rect" id="Node000002" href="$ip_8h.html" title=" " alt="" coords="262,79,309,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="360,33,312,72,308,68,356,29"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="333,79,411,104"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="375,31,375,65,369,65,369,31"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="435,79,527,104"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="391,28,453,69,450,73,388,33"/>
+<area shape="rect" id="Node000003" href="$def_8h.html" title=" " alt="" coords="5,152,187,177"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="263,104,140,150,139,145,261,99"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="211,152,274,177"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="281,106,259,142,254,139,276,103"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="299,152,357,177"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="295,103,316,139,312,142,290,106"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="382,152,503,177"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="310,101,406,144,404,149,308,106"/>
+</map>
