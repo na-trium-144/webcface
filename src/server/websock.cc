@@ -93,6 +93,7 @@ void serverRun(int port, const spdlog::sink_ptr &sink,
     logger->debug("temp dir = {}", temp_dir);
 
     app = std::make_unique<crow::SimpleApp>();
+    app->loglevel(crow::LogLevel::Warning);
 
     /*
     / にアクセスしたときindex.htmlへリダイレクトさせようとしたが、
