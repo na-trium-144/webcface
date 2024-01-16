@@ -354,6 +354,7 @@ set(SVR_SRC
     ${CPP_DIR}/server/store.cc
     ${CPP_DIR}/server/websock.cc
     ${CPP_DIR}/server/dir.cc
+    ${CPP_DIR}/server/ip.cc
 )
 set(CLI_SRC
     ${CPP_DIR}/client/client.cc
@@ -451,7 +452,11 @@ target_link_libraries(${PROJECT_NAME}-server-impl PUBLIC
     ${CROW}
     ${SPDLOG}
 )
-
+if(WIN32)
+    target_link_libraries(${PROJECT_NAME}-server-impl PRIVATE
+        IPHLPAPI.lib
+    )
+endif()
 
 add_executable(${PROJECT_NAME}-server ${SVR_MAIN_SRC} ${VERSION_RC})
 target_link_libraries(${PROJECT_NAME}-server PRIVATE
