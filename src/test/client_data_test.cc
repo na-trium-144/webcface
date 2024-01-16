@@ -3,8 +3,8 @@
 #include <webcface/member.h>
 #include <string>
 
-using namespace webcface;
-using namespace webcface::Internal;
+using namespace WEBCFACE_NS;
+using namespace WEBCFACE_NS::Internal;
 
 class SyncDataStore2Test : public ::testing::Test {
   protected:
@@ -84,6 +84,12 @@ TEST_F(SyncDataStore2Test, unsetRecv) {
     EXPECT_TRUE(reqi2);
     EXPECT_EQ(s2.getReq(1, "").first, "");
     EXPECT_EQ(s2.getReq(1, "").second, "");
+    EXPECT_EQ(s2.getRecv("a", "b"), std::nullopt);
+}
+TEST_F(SyncDataStore2Test, clearRecv) {
+    s2.setRecv("a", "b", "c");
+    s2.clearRecv("a", "b");
+    s2.clearRecv("d", "e");
     EXPECT_EQ(s2.getRecv("a", "b"), std::nullopt);
 }
 TEST_F(SyncDataStore2Test, setEntry) {

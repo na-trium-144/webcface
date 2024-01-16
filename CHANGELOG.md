@@ -1,3 +1,39 @@
+## [1.4.0] - 2023-01-10
+### Added
+* RobotModel, Canvas3Dの送受信機能追加 (#162)
+### Changed
+* MinGWのビルドでもdllにバージョン情報が追加されるようにした (#166)
+* webcface-serverとexampleにもバージョン情報追加
+* dllのファイル名にsoversionを追加 (webcface.dll → webcface3.dll, libwebcface.dll → libwebcface3.dll)
+* crowを crowcpp/crow のmasterブランチに変更 (#163)
+
+## [1.3.1] - 2023-12-30
+### Changed
+* clang17でのコンパイルエラーを修正
+### Fixed
+* v1.2.2, v1.3.0 でサーバーがsegmentation faultするバグを修正 (#160)
+
+## [1.3.0] - 2023-12-26
+### Changed
+* debugビルドのdllファイル名をwebcfacedに変更 (#148)
+* debugビルドのnamespaceをwebcfacedに変更
+	* webcface/webcface.h をインクルードすればwebcfaceにエイリアスが貼られる
+* windowsでdllにバージョン情報を追加
+### Added
+* imageの送受信機能追加(#124)
+	* Imageのメッセージ(kind=5)、Imageフィールドクラスを追加
+	* s_ClientDataに画像の変換をするスレッドを追加
+	* SyncDataStore2に
+		* テンプレートパラメータReqTを追加
+		* SyncDataStore2::getReqInfoを追加
+		* SyncDataStore2::clearRecvを追加
+	* opencvへの依存
+### Fixed
+* -Werrorフラグを設定、clangとgccでのwarningを修正 (#146)
+* Memberクラス全体をexportするのをやめた (warningの修正) (#148)
+* EventTargetのvirtualデストラクタを追加 (#144)
+
+
 ## [1.2.2] - 2023-12-19
 ### Changed
 * windowsで文字セットがcp932のままwebcfaceをincludeしてもコンパイルが通るようにした (#131)

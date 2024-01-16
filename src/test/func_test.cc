@@ -7,7 +7,7 @@
 #include <chrono>
 #include "../message/message.h"
 
-using namespace webcface;
+using namespace WEBCFACE_NS;
 class FuncTest : public ::testing::Test {
   protected:
     void SetUp() override {
