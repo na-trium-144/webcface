@@ -29,7 +29,6 @@ Internal::ClientData::ClientData(const std::string &name,
       log_store(std::make_shared<
                 SyncDataStore1<std::shared_ptr<std::vector<LogLine>>>>(name)),
       sync_time_store(name),
-
       logger_sink(std::make_shared<LoggerSink>(log_store)) {
     static auto stderr_sink =
         std::make_shared<spdlog::sinks::stderr_color_sink_mt>();

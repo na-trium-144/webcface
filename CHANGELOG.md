@@ -1,3 +1,12 @@
+## [1.5.0] - 2024-01-16
+### Changed
+* ABIバージョンを libwebcface.so.5, webcface5.dll に変更。
+* cmake時にfind_packageで読み込んだmsgpack,eventpp,spdlogのバージョンなどの情報を表示するようにした (#171)
+### Added
+* C言語からwebcfaceにアクセスできる関数を追加 (#136)
+* FuncListener追加 (#136)
+* 依存ライブラリのmsgpack,eventpp,spdlogについてfind_packageをしないようにするcmakeオプション追加 (#171)
+
 ## [1.4.1] - 2024-01-15
 ### Fixed
 * (主にwindows)インストール後にfind_packageしたときインストール前のOpenCV_INCLUDE_DIRのパスを参照してしまっていたのを修正 (#169)
@@ -19,6 +28,7 @@
 
 ## [1.3.0] - 2023-12-26
 ### Changed
+* ABIバージョンをlibwebcface.so.3 に変更
 * debugビルドのdllファイル名をwebcfacedに変更 (#148)
 * debugビルドのnamespaceをwebcfacedに変更
 	* webcface/webcface.h をインクルードすればwebcfaceにエイリアスが貼られる

@@ -6,6 +6,7 @@
 #include <stdexcept>
 #include <cstdint>
 #include <ostream>
+#include "../c_wcf.h"
 #include "def.h"
 
 namespace WEBCFACE_NS {
@@ -82,17 +83,48 @@ class ValAdaptor {
     requires std::floating_point<T> ValAdaptor(T value)
         : value(std::to_string(value)), type(ValType::float_) {}
 
+    /*!
+     * \brief wcfMultiValから変換
+     *
+     * valのint, double, strのいずれか1つに値をセットして渡すと、
+     * データ型を判別する
+     *
+     * as_strの文字列はコピーして保持する
+     *
+     */
+    ValAdaptor(const wcfMultiVal &val) {
+        if (val.as_str != nullptr) {
+            value = val.as_str;
+            type = ValType::string_;
+        } else if (val.as_double != 0) {
+            value = std::to_string(val.as_double);
+            type = ValType::float_;
+        } else {
+            value = std::to_string(val.as_int);
+            type = ValType::int_;
+        }
+    }
+
     ValType valType() const { return type; }
+    /*!
+     * \brief wcfMultiValへの変換
+     *
+     * int, double, strをそれぞれ埋めて返す
+     *
+     * as_strの本体はValAdapterが保持しているので、ValAdaptorの一時オブジェクトからは使用不可
+     *
+     */
+    wcfMultiVal toCVal() & {
+        return wcfMultiVal {
+            .as_int = std::atoi(value.c_str()),
+            .as_double = std::atof(value.c_str()),
+            .as_str = value.c_str(),
+        };
+    }
 
     // cast to function
     operator const std::string &() const { return value; }
-    operator double() const {
-        try {
-            return std::stod(value);
-        } catch (...) {
-            return 0;
-        }
-    }
+    operator double() const { return std::atof(value.c_str()); }
     operator bool() const { return value == std::to_string(true); }
     template <typename T>
     requires std::convertible_to<double, T>
@@ -122,6 +154,11 @@ class ValAdaptor {
         return *this;
     }
     ValAdaptor &operator=(const std::string &v) {
+        value = v;
+        type = ValType::string_;
+        return *this;
+    }
+    ValAdaptor &operator=(const char *v) {
         value = v;
         type = ValType::string_;
         return *this;

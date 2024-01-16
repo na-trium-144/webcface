@@ -97,6 +97,8 @@ webcface-toolsには`webcface-send`の他にもWebCFaceと通信して使うプ�
 
 ## Clientライブラリ
 
+### C++
+
 C++でWebCFaceを使う場合は、次のようにCMakeでWebCFaceクライアントのライブラリとリンクすることができます。
 ```cmake
 find_package(webcface CONFIG REQUIRED)
@@ -108,14 +110,13 @@ target_link_libraries(target PRIVATE webcface::webcface)
     * OpenCVを使用しない場合は`WEBCFACE_USE_OPENCV`をoffにすれば使用しないようにできます。
 
 VisualStudioでCMakeを使わない場合は  
-インクルードディレクトリ: `C:\Program Files\webcface\include`, `C:\Program Files\webcface\opencv\include`  
-ライブラリディレクトリ: `C:\Program Files\webcface\lib`, `C:\Program Files\webcface\opencv\x64\vc16\lib`  
+インクルードディレクトリ: `C:\Program Files\WebCFace\include`, `C:\Program Files\WebCFace\opencv\include`  
+ライブラリディレクトリ: `C:\Program Files\WebCFace\lib`, `C:\Program Files\WebCFace\opencv\x64\vc16\lib`  
 を追加し、  
-Releaseの場合 webcface.lib, spdlog.lib, opencv_world481.lib  
-Debugの場合 webcfaced.lib, spdlogd.lib, opencv_world481d.lib  
+Releaseの場合 webcface.lib, spdlog.lib, opencv_world490.lib  
+Debugの場合 webcfaced.lib, spdlogd.lib, opencv_world490d.lib  
 (opencvのバージョンが異なったら読み替えてください)をリンクしてください。  
 また、`C:\Program Files\webcface\bin` を環境変数のPathに追加するか、その中にあるdllファイルを実行ファイルのディレクトリにコピーして読み込ませてください
-
 
 C++のソースコードでは`<webcface/webcface.h>`をincludeしてください。
 次ページ以降でC++での使い方を解説します。
@@ -123,6 +124,17 @@ C++のソースコードでは`<webcface/webcface.h>`をincludeしてくださ�
 [src/example/](https://github.com/na-trium-144/webcface/tree/main/src/example) にサンプルのコードがあるので参考にしてください。
 exampleはserverといっしょにインストールされており、`webcface-example-main`, `webcface-example-recv`コマンドで実行してみることができます。
 mainは各種データの送信、recvはmainが送信したデータの受信とmainにある関数の呼び出しをするプログラムになっています。
+
+### C
+
+![c++ ver1.5](https://img.shields.io/badge/1.5~-00599c?logo=C%2B%2B)
+C++ではなくCからアクセスできるAPIもあります。
+[Interface for C](80_c_interface.md) を参照してください。
+MATLABなど、Cのライブラリにアクセスすることができる言語からwebcfaceのライブラリをロードして使用することができます。
+
+CMakeの書き方はC++の場合と同じです。
+
+### その他
 
 Python, JavaScriptのクライアントも使い方はだいたい同じです。
 次ページ以降のC++での使い方を軽く読んだあとにPython、JavaScriptのリファレンスでC++との相違点を確認してください。

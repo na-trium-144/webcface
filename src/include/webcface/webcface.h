@@ -2,6 +2,8 @@
 // ヘッダーの上下関係はここに書かれた順
 
 #include "common/def.h"
+#include "c_wcf.h"
+
 #include "common/version.h"
 #include "common/val.h"
 #include "common/func.h"
@@ -25,6 +27,7 @@
 #include "text.h"
 #include "log.h"
 #include "func.h"
+#include "func_listener.h"
 #include "view.h"
 #include "robot_model.h"
 #include "canvas3d.h"

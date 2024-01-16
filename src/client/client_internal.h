@@ -137,6 +137,13 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
     FuncResultStore func_result_store;
     std::size_t log_sent_lines = 0;
 
+    /*!
+     * \brief listenerがfetchするの待ちの関数呼び出しをためておく
+     *
+     */
+    std::unordered_map<std::string, Common::Queue<FuncCallHandle>>
+        func_listener_handlers;
+
     std::unordered_map<std::string, unsigned int> member_ids;
     std::unordered_map<unsigned int, std::string> member_lib_name,
         member_lib_ver, member_addr;

@@ -1,14 +1,14 @@
 cmake_minimum_required(VERSION 3.12)
 
 project(webcface
-    LANGUAGES CXX
-    VERSION 1.4.1
+    LANGUAGES CXX C
+    VERSION 1.5.0
     HOMEPAGE_URL "https://github.com/na-trium-144/webcface"
     DESCRIPTION "Web-based RPC & UI Library"
 )
 set(WEBCFACE_CONTACT "na-trium-144@users.noreply.github.com")
 set(WEBCFACE_VERSION ${PROJECT_VERSION})
-set(WEBCFACE_SOVERSION 3)
+set(WEBCFACE_SOVERSION 5)
 set(WEBUI_VERSION 1.2.0)
 
 set(WEBCFACE_VERSION_MAJOR ${PROJECT_VERSION_MAJOR})
@@ -362,6 +362,7 @@ set(CLI_SRC
     ${CPP_DIR}/client/data_store2.cc
     ${CPP_DIR}/client/field.cc
     ${CPP_DIR}/client/func.cc
+    ${CPP_DIR}/client/func_listener.cc
     ${CPP_DIR}/client/log.cc
     ${CPP_DIR}/client/logger.cc
     ${CPP_DIR}/client/member.cc
@@ -372,10 +373,14 @@ set(CLI_SRC
     ${CPP_DIR}/client/view.cc
     ${CPP_DIR}/client/image.cc
     ${CPP_DIR}/client/version.cc
+    ${CPP_DIR}/c_wcf/client.cc
+    ${CPP_DIR}/c_wcf/value.cc
+    ${CPP_DIR}/c_wcf/func.cc
 )
 set(EXAMPLE_SRC
     ${CPP_DIR}/example/main.cc
     ${CPP_DIR}/example/recv.cc
+    ${CPP_DIR}/example/c_example.c
 )
 if(WEBCFACE_USE_OPENCV)
     set(EXAMPLE_SRC ${EXAMPLE_SRC}
@@ -387,6 +392,7 @@ set(TEST_SRC
     ${CPP_DIR}/test/client_data_test.cc
     ${CPP_DIR}/test/data_test.cc
     ${CPP_DIR}/test/func_test.cc
+    ${CPP_DIR}/test/func_listener_test.cc
     ${CPP_DIR}/test/view_test.cc
     ${CPP_DIR}/test/robot_model_test.cc
     ${CPP_DIR}/test/canvas3d_test.cc
@@ -397,6 +403,7 @@ set(TEST_SRC
     ${CPP_DIR}/test/dummy_server.cc
     ${CPP_DIR}/test/dummy_client.cc
     ${CPP_DIR}/test/server_test.cc
+    ${CPP_DIR}/test/c_wcf_test.cc
 )
 set(MSG_SRC
     ${CPP_DIR}/message/message.cc
@@ -418,7 +425,7 @@ add_library(${PROJECT_NAME}-headers INTERFACE)
 target_include_directories(${PROJECT_NAME}-headers INTERFACE
     ${INCLUDE_DIR}
 )
-target_compile_features(${PROJECT_NAME}-headers INTERFACE cxx_std_20)
+target_compile_features(${PROJECT_NAME}-headers INTERFACE cxx_std_20 c_std_99)
 if(WEBCFACE_USE_OPENCV)
     target_link_libraries(${PROJECT_NAME}-headers INTERFACE ${OpenCV_LIBS})
 endif()

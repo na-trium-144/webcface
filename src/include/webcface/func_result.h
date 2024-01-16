@@ -48,6 +48,9 @@ class AsyncFuncResult : Field {
     std::shared_ptr<std::promise<bool>> started_;
     std::shared_ptr<std::promise<ValAdaptor>> result_;
 
+    ValAdaptor result_val;
+    wcfMultiVal c_result_val;
+
   public:
     friend class Func;
     friend struct Internal::ClientData;
@@ -77,7 +80,91 @@ class AsyncFuncResult : Field {
 
     using Field::member;
     using Field::name;
+
+    std::pair<wcfStatus, wcfMultiVal *> toCVal() & {
+        try {
+            result_val = result.get();
+            c_result_val = result_val.toCVal();
+            return {WCF_OK, &c_result_val};
+        } catch (const FuncNotFound &e) {
+            result_val = e.what();
+            c_result_val = result_val.toCVal();
+            return {WCF_NOT_FOUND, &c_result_val};
+        } catch (const std::exception &e) {
+            result_val = e.what();
+            c_result_val = result_val.toCVal();
+            return {WCF_EXCEPTION, &c_result_val};
+        } catch (...) {
+            result_val = "unknown exception";
+            c_result_val = result_val.toCVal();
+            return {WCF_EXCEPTION, &c_result_val};
+        }
+    }
 };
 auto &operator<<(std::basic_ostream<char> &os, const AsyncFuncResult &data);
 
+
+class FuncCallHandle {
+    std::vector<ValAdaptor> args_;
+    std::vector<wcfMultiVal> c_args_;
+    std::shared_ptr<std::promise<ValAdaptor>> result_;
+
+  public:
+    FuncCallHandle() = default;
+    FuncCallHandle(const std::vector<ValAdaptor> &args,
+                   const std::shared_ptr<std::promise<ValAdaptor>> &result)
+        : args_(args), c_args_(), result_(result) {}
+
+    /*!
+     * \brief 関数の引数を取得する
+     *
+     */
+    std::vector<ValAdaptor> args() const { return args_; }
+    /*!
+     * \brief 関数の引数をwcfMultiValに変換して取得する
+     * 引数の本体はargsが持っているので、FuncCallHandleの一時オブジェクトからは使えない
+     *
+     */
+    std::vector<wcfMultiVal> &toCArgs() & {
+        c_args_.resize(args_.size());
+        for (std::size_t i = 0; i < args_.size(); i++) {
+            c_args_[i] = args_[i].toCVal();
+        }
+        return c_args_;
+    }
+    /*!
+     * \brief 関数の結果を送信する
+     *
+     * * 2回呼ぶと std::future_error を投げる
+     * * このHandleがデフォルト構築されていた場合 std::runtime_error を投げる
+     *
+     */
+    void respond(ValAdaptor value = "") {
+        if (result_) {
+            result_->set_value(value);
+        } else {
+            throw std::runtime_error("FuncCallHandle does not have valid "
+                                     "pointer to function call");
+        }
+    }
+    /*!
+     * \brief 関数の結果を例外として送信する
+     *
+     * * 2回呼ぶと std::future_error を投げる
+     * * このHandleがデフォルト構築されていた場合 std::runtime_error を投げる
+     *
+     */
+    void reject(const std::string &message) {
+        if (result_) {
+            try {
+                throw std::runtime_error(message);
+            } catch (const std::runtime_error &) {
+                result_->set_exception(std::current_exception());
+            }
+        } else {
+            throw std::runtime_error("FuncCallHandle does not have valid "
+                                     "pointer to function call");
+        }
+    }
+};
 } // namespace WEBCFACE_NS
