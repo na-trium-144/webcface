@@ -157,7 +157,6 @@ else()
         )
     endif()
 endif()
-set(MSGPACK msgpack-cxx)
 
 if(WEBCFACE_FIND_LIBS)
     find_package(eventpp QUIET)
@@ -173,14 +172,12 @@ else()
     set(EVENTPP_INSTALL ${WEBCFACE_INSTALL} CACHE INTERNAL "" FORCE)
     FetchContent_MakeAvailable(eventpp)
 endif()
-set(EVENTPP eventpp::eventpp)
 
 if(WEBCFACE_FIND_LIBS)
     find_package(spdlog QUIET)
 endif()
 if(spdlog_FOUND)
     message(STATUS "spdlog ${spdlog_VERSION} Found: ${spdlog_DIR}")
-    set(SPDLOG spdlog::spdlog)
 else()
     message(STATUS "spdlog Not Found, Fetching Source...")
     FetchContent_Declare(spdlog
@@ -191,11 +188,6 @@ else()
     set(SPDLOG_BUILD_PIC ${WEBCFACE_PIC} CACHE INTERNAL "" FORCE)
     set(SPDLOG_INSTALL ${WEBCFACE_INSTALL} CACHE INTERNAL "" FORCE)
     FetchContent_MakeAvailable(spdlog)
-    if(MINGW)
-        set(SPDLOG spdlog ws2_32)
-    else()
-        set(SPDLOG spdlog)
-    endif()
 endif()
 
 message(STATUS "Fetching curl Source...")
@@ -247,7 +239,6 @@ set(ENABLE_WEBSOCKETS on CACHE INTERNAL "" FORCE)
 set(CURL_DISABLE_INSTALL on CACHE INTERNAL "" FORCE)
 set(CURL_ENABLE_EXPORT_TARGET off CACHE INTERNAL "" FORCE)
 FetchContent_MakeAvailable(curl)
-set(CURL libcurl_static)
 
 message(STATUS "Fetching asio Source...")
 FetchContent_Declare(asio
@@ -266,11 +257,9 @@ if(NOT asio_POPULATED)
     if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
         target_compile_options(asio INTERFACE -Wno-deprecated-declarations)
     endif()
-endif()
-if(MINGW)
-    set(ASIO asio ws2_32 wsock32)
-else()
-    set(ASIO asio)
+    if(MINGW)
+        target_link_libraries(asio INTERFACE ws2_32 wsock32)
+    endif()
 endif()
 
 message(STATUS "Fetching crow Source...")
@@ -288,12 +277,11 @@ if(NOT crow_POPULATED)
     target_include_directories(Crow INTERFACE
         ${crow_SOURCE_DIR}/include
     )
-    target_link_libraries(Crow INTERFACE ${ASIO})
+    target_link_libraries(Crow INTERFACE asio)
     if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
         target_compile_options(Crow INTERFACE -Wno-type-limits)
     endif()
 endif()
-set(CROW Crow)
 
 message(STATUS "Fetching cli11 Source...")
 FetchContent_Declare(cli11
@@ -426,7 +414,7 @@ add_library(${PROJECT_NAME}-headers INTERFACE)
 target_include_directories(${PROJECT_NAME}-headers INTERFACE
     ${INCLUDE_DIR}
 )
-target_compile_features(${PROJECT_NAME}-headers INTERFACE cxx_std_20 c_std_99)
+target_compile_features(${PROJECT_NAME}-headers INTERFACE cxx_std_20)
 if(WEBCFACE_USE_OPENCV)
     target_link_libraries(${PROJECT_NAME}-headers INTERFACE ${OpenCV_LIBS})
 endif()
@@ -438,19 +426,22 @@ endif()
 target_compile_features(${PROJECT_NAME}-message PUBLIC cxx_std_20)
 target_link_libraries(${PROJECT_NAME}-message PUBLIC
     ${PROJECT_NAME}-headers
-    ${MSGPACK}
-    ${SPDLOG}
+    msgpack-cxx
+    spdlog::spdlog
 )
-set_target_properties(${PROJECT_NAME}-message PROPERTIES
-    DEBUG_POSTFIX d
-)
+if(MINGW)
+    target_link_libraries(${PROJECT_NAME}-message PUBLIC ws2_32)
+endif()
+if(WIN32)
+    set_target_properties(${PROJECT_NAME}-message PROPERTIES
+        DEBUG_POSTFIX d
+    )
+endif()
 
 add_library(${PROJECT_NAME}-server-impl STATIC ${SVR_SRC})
 target_link_libraries(${PROJECT_NAME}-server-impl PUBLIC
     ${PROJECT_NAME}-message
-    ${PROJECT_NAME}-headers
-    ${CROW}
-    ${SPDLOG}
+    Crow
 )
 if(WIN32)
     target_link_libraries(${PROJECT_NAME}-server-impl PRIVATE
@@ -461,7 +452,6 @@ endif()
 add_executable(${PROJECT_NAME}-server ${SVR_MAIN_SRC} ${VERSION_RC})
 target_link_libraries(${PROJECT_NAME}-server PRIVATE
     ${PROJECT_NAME}-server-impl
-    ${PROJECT_NAME}-headers
     CLI11
 )
 set_target_properties(${PROJECT_NAME}-server PROPERTIES
@@ -484,12 +474,12 @@ endif()
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_20)
 target_link_libraries(${PROJECT_NAME} PRIVATE
     ${PROJECT_NAME}-message
-    ${CURL}
+    libcurl_static
 )
 target_link_libraries(${PROJECT_NAME} PUBLIC
     ${PROJECT_NAME}-headers
-    ${EVENTPP}
-    ${SPDLOG}
+    eventpp::eventpp
+    spdlog::spdlog
 )
 set_target_properties(${PROJECT_NAME} PROPERTIES
     INSTALL_RPATH "$ORIGIN/;@loader_path/"
@@ -503,8 +493,19 @@ if(WIN32)
         RELEASE_POSTFIX "${WEBCFACE_SOVERSION}"
     )
 endif()
-
 add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
+
+add_library(wcf INTERFACE)
+target_include_directories(wcf INTERFACE ${INCLUDE_DIR})
+target_compile_features(wcf INTERFACE c_std_99)
+target_link_libraries(wcf INTERFACE
+    $<TARGET_FILE_NAME:${PROJECT_NAME}>
+    $<TARGET_FILE_NAME:spdlog::spdlog>
+)
+if(WEBCFACE_USE_OPENCV)
+    target_link_libraries(wcf INTERFACE ${OpenCV_LIBS})
+endif()
+add_library(${PROJECT_NAME}::wcf ALIAS wcf)
 
 if(WEBCFACE_EXAMPLE)
     foreach(SRC IN LISTS EXAMPLE_SRC)
@@ -537,8 +538,8 @@ if(WEBCFACE_TEST)
         ${PROJECT_NAME}
         ${PROJECT_NAME}-message
         ${PROJECT_NAME}-server-impl
-        ${CURL}
-        ${CROW}
+        libcurl_static
+        Crow
         GTest::gtest_main
     )
     target_compile_definitions(${PROJECT_NAME}-test PRIVATE
