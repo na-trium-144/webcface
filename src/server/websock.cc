@@ -54,7 +54,9 @@ void pingThreadMain() {
     }
 }
 void serverSend(void *conn, const std::string &msg) {
-    reinterpret_cast<crow::websocket::connection *>(conn)->send_binary(msg);
+    if (!server_stop.load()) {
+        reinterpret_cast<crow::websocket::connection *>(conn)->send_binary(msg);
+    }
 }
 void serverStop() {
     if (!server_stop.load()) {
