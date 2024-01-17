@@ -29,7 +29,7 @@ var NAVTREE =
     [ "Installation", "index.html#autotoc_md112", [
       [ "Ubuntu 20.04, 22.04 (x86_64, arm64, armhf)", "index.html#autotoc_md113", null ],
       [ "Homebrew (MacOS, Linux)", "index.html#autotoc_md114", null ],
-      [ "Windows", "index.html#autotoc_md115", null ],
+      [ "Windows (MSVC)", "index.html#autotoc_md115", null ],
       [ "Build from source", "index.html#autotoc_md116", [
         [ "Requirements", "index.html#autotoc_md117", null ],
         [ "Build (with Pure CMake)", "index.html#autotoc_md118", null ],

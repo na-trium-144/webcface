@@ -189,20 +189,42 @@ C++</h2>
 </ul>
 </li>
 </ul>
-<p>VisualStudioでCMakeを使わない場合は <br  />
- インクルードディレクトリ: <code>C:\Program Files\WebCFace\include</code>, <code>C:\Program Files\WebCFace\opencv\include</code> <br  />
- ライブラリディレクトリ: <code>C:\Program Files\WebCFace\lib</code>, <code>C:\Program Files\WebCFace\opencv\x64\vc16\lib</code> <br  />
- を追加し、 <br  />
- Releaseの場合 webcface.lib, spdlog.lib, opencv_world490.lib <br  />
- Debugの場合 webcfaced.lib, spdlogd.lib, opencv_world490d.lib <br  />
- (opencvのバージョンが異なったら読み替えてください)をリンクしてください。 <br  />
- また、<code>C:\Program Files\webcface\bin</code> を環境変数のPathに追加するか、その中にあるdllファイルを実行ファイルのディレクトリにコピーして読み込ませてください</p>
+<details >
+<summary >
+CMakeを使わない場合は</summary>
+<p></p>
+<ul>
+<li>Windows (MSVC)<ul>
+<li>インクルードディレクトリ: <code>C:\Program Files\WebCFace\include</code>, <code>C:\Program Files\WebCFace\opencv\include</code></li>
+<li>ライブラリディレクトリ: <code>C:\Program Files\WebCFace\lib</code>, <code>C:\Program Files\WebCFace\opencv\x64\vc16\lib</code></li>
+<li>リンクするライブラリは<ul>
+<li>Releaseの場合 webcface5.lib, spdlog.lib, opencv_world490.lib</li>
+<li>Debugの場合 webcface5d.lib, spdlogd.lib, opencv_world490d.lib</li>
+</ul>
+</li>
+<li>また、<code>C:\Program Files\WebCFace\bin</code> を環境変数のPathに追加するか、その中にあるdllファイルを実行ファイルのディレクトリにコピーして読み込ませてください</li>
+</ul>
+</li>
+<li>Linux<ul>
+<li>Releasesで配布しているdebパッケージの場合はインストール先は /usr です</li>
+<li>libwebcface.so, libspdlog.so にリンクしてください</li>
+</ul>
+</li>
+<li>MacOS<ul>
+<li>Linuxと同様 libwebcface.dylib, libspdlog.dylib にリンクしてください</li>
+</ul>
+</li>
+</ul>
+<p></p>
+</details>
 <p>C++のソースコードでは<code>&lt;<a class="el" href="webcface_8h.html">webcface/webcface.h</a>&gt;</code>をincludeしてください。 次ページ以降でC++での使い方を解説します。</p>
 <p><a href="https://github.com/na-trium-144/webcface/tree/main/src/example">src/example/</a> にサンプルのコードがあるので参考にしてください。 exampleはserverといっしょにインストールされており、<code>webcface-example-main</code>, <code>webcface-example-recv</code>コマンドで実行してみることができます。 mainは各種データの送信、recvはmainが送信したデータの受信とmainにある関数の呼び出しをするプログラムになっています。</p>
 <h2><a class="anchor" id="autotoc_md13"></a>
 C</h2>
 <p><img src="https://img.shields.io/badge/1.5~-00599c?logo=C%2B%2B" alt="c++ ver1.5" class="inline"/> C++ではなくCからアクセスできるAPIもあります。 <a class="el" href="md_80__c__interface.html">Interface for C</a> を参照してください。 MATLABなど、Cのライブラリにアクセスすることができる言語からwebcfaceのライブラリをロードして使用することができます。</p>
-<p>CMakeの書き方はC++の場合と同じです。</p>
+<p><strike>CMakeの書き方はC++の場合と同じです。</strike> <br  />
+ <img src="https://img.shields.io/badge/1.5.1~-00599c?logo=C%2B%2B" alt="c++ ver1.5.1" class="inline"/> Cの場合は <code>webcface::wcf</code> をリンクしてください。</p>
+<p>CMakeを使わない場合リンクするライブラリはC++の場合と同じです。</p>
 <h2><a class="anchor" id="autotoc_md14"></a>
 その他</h2>
 <p>Python, JavaScriptのクライアントも使い方はだいたい同じです。 次ページ以降のC++での使い方を軽く読んだあとにPython、JavaScriptのリファレンスでC++との相違点を確認してください。</p><ul>
@@ -221,7 +243,7 @@ C</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Jan 16 2024 14:17:42 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Wed Jan 17 2024 03:54:28 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

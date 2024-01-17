@@ -76,7 +76,7 @@ var searchData=
   ['webui_73',['webui',['../md_00__tutorial.html#autotoc_md3',1,'WebUI'],['../index.html#autotoc_md120',1,'WebUI']]],
   ['white_74',['white',['../namespacewebcface_1_1Common.html#a5dcc1f15d6a60ca34207565aeb74124aad508fe45cecaf653904a0e774084bb5c',1,'webcface::Common']]],
   ['width_75',['width',['../structwebcface_1_1Geometries_1_1Plane.html#a1efc0a0dcb559bb39e916e5d06dea3b7',1,'webcface::Geometries::Plane']]],
-  ['windows_76',['Windows',['../index.html#autotoc_md115',1,'']]],
+  ['windows_20msvc_76',['Windows (MSVC)',['../index.html#autotoc_md115',1,'']]],
   ['with_20colcon_20ros2_77',['Build (with colcon, ROS2)',['../index.html#autotoc_md119',1,'']]],
   ['with_20pure_20cmake_78',['Build (with Pure CMake)',['../index.html#autotoc_md118',1,'']]],
   ['wrap_79',['wrap',['../structwebcface_1_1Common_1_1DictTraits.html#ae2d5bfb3d7db52b923afd54f19f258f9',1,'webcface::Common::DictTraits::wrap()'],['../structwebcface_1_1Common_1_1DictTraits_3_01std_1_1shared__ptr_3_01T_01_4_01_4.html#a27f057365161c311449a735967190e24',1,'webcface::Common::DictTraits&lt; std::shared_ptr&lt; T &gt; &gt;::wrap()'],['../structwebcface_1_1Common_1_1DictTraits_3_01VectorOpt_3_01T_01_4_01_4.html#a9df048124352546d37bf4bab4a6519ab',1,'webcface::Common::DictTraits&lt; VectorOpt&lt; T &gt; &gt;::wrap()']]],
