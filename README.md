@@ -58,8 +58,8 @@ Debianなど他のディストリビューションで動作するかはわか�
 <details open><summary>Ubuntu 22.04, x86_64</summary>
 
 ```sh
-curl -LO https://github.com/na-trium-144/webcface/releases/download/v1.5.1/webcface_1.5.1-ubuntu22.04_amd64.deb
-curl -LO https://github.com/na-trium-144/webcface-webui/releases/download/v1.3.0/webcface-webui_1.3.0-s_amd64.deb
+curl -LO https://github.com/na-trium-144/webcface/releases/download/v1.5.2/webcface_1.5.2-ubuntu22.04_amd64.deb
+curl -LO https://github.com/na-trium-144/webcface-webui/releases/download/v1.3.1/webcface-webui_1.3.1-s_amd64.deb
 curl -LO https://github.com/na-trium-144/webcface-tools/releases/download/v1.2.1/webcface-tools_1.2.1-ubuntu22.04_amd64.deb
 ```
 </details>
@@ -67,8 +67,8 @@ curl -LO https://github.com/na-trium-144/webcface-tools/releases/download/v1.2.1
 <details><summary>Ubuntu 22.04, arm64</summary>
 
 ```sh
-curl -LO https://github.com/na-trium-144/webcface/releases/download/v1.5.1/webcface_1.5.1-ubuntu22.04_arm64.deb
-curl -LO https://github.com/na-trium-144/webcface-webui/releases/download/v1.3.0/webcface-webui_1.3.0-s_arm64.deb
+curl -LO https://github.com/na-trium-144/webcface/releases/download/v1.5.2/webcface_1.5.2-ubuntu22.04_arm64.deb
+curl -LO https://github.com/na-trium-144/webcface-webui/releases/download/v1.3.1/webcface-webui_1.3.1-s_arm64.deb
 curl -LO https://github.com/na-trium-144/webcface-tools/releases/download/v1.2.1/webcface-tools_1.2.1-ubuntu22.04_arm64.deb
 ```
 </details>
@@ -76,8 +76,8 @@ curl -LO https://github.com/na-trium-144/webcface-tools/releases/download/v1.2.1
 <details><summary>Ubuntu 22.04, armhf</summary>
 
 ```sh
-curl -LO https://github.com/na-trium-144/webcface/releases/download/v1.5.1/webcface_1.5.1-ubuntu22.04_armhf.deb
-curl -LO https://github.com/na-trium-144/webcface-webui/releases/download/v1.3.0/webcface-webui_1.3.0-s_armhf.deb
+curl -LO https://github.com/na-trium-144/webcface/releases/download/v1.5.2/webcface_1.5.2-ubuntu22.04_armhf.deb
+curl -LO https://github.com/na-trium-144/webcface-webui/releases/download/v1.3.1/webcface-webui_1.3.1-s_armhf.deb
 curl -LO https://github.com/na-trium-144/webcface-tools/releases/download/v1.2.1/webcface-tools_1.2.1-ubuntu22.04_armhf.deb
 ```
 </details>
@@ -85,8 +85,8 @@ curl -LO https://github.com/na-trium-144/webcface-tools/releases/download/v1.2.1
 <details><summary>Ubuntu 20.04, x86_64</summary>
 
 ```sh
-curl -LO https://github.com/na-trium-144/webcface/releases/download/v1.5.1/webcface_1.5.1-ubuntu20.04_amd64.deb
-curl -LO https://github.com/na-trium-144/webcface-webui/releases/download/v1.3.0/webcface-webui_1.3.0-s_amd64.deb
+curl -LO https://github.com/na-trium-144/webcface/releases/download/v1.5.2/webcface_1.5.2-ubuntu20.04_amd64.deb
+curl -LO https://github.com/na-trium-144/webcface-webui/releases/download/v1.3.1/webcface-webui_1.3.1-s_amd64.deb
 curl -LO https://github.com/na-trium-144/webcface-tools/releases/download/v1.2.1/webcface-tools_1.2.1-ubuntu20.04_amd64.deb
 ```
 </details>
@@ -94,8 +94,8 @@ curl -LO https://github.com/na-trium-144/webcface-tools/releases/download/v1.2.1
 <details><summary>Ubuntu 20.04, arm64</summary>
 
 ```sh
-curl -LO https://github.com/na-trium-144/webcface/releases/download/v1.5.1/webcface_1.5.1-ubuntu20.04_arm64.deb
-curl -LO https://github.com/na-trium-144/webcface-webui/releases/download/v1.3.0/webcface-webui_1.3.0-s_arm64.deb
+curl -LO https://github.com/na-trium-144/webcface/releases/download/v1.5.2/webcface_1.5.2-ubuntu20.04_arm64.deb
+curl -LO https://github.com/na-trium-144/webcface-webui/releases/download/v1.3.1/webcface-webui_1.3.1-s_arm64.deb
 curl -LO https://github.com/na-trium-144/webcface-tools/releases/download/v1.2.1/webcface-tools_1.2.1-ubuntu20.04_arm64.deb
 ```
 </details>
@@ -103,8 +103,8 @@ curl -LO https://github.com/na-trium-144/webcface-tools/releases/download/v1.2.1
 <details><summary>Ubuntu 20.04, armhf</summary>
 
 ```sh
-curl -LO https://github.com/na-trium-144/webcface/releases/download/v1.5.1/webcface_1.5.1-ubuntu20.04_armhf.deb
-curl -LO https://github.com/na-trium-144/webcface-webui/releases/download/v1.3.0/webcface-webui_1.3.0-s_armhf.deb
+curl -LO https://github.com/na-trium-144/webcface/releases/download/v1.5.2/webcface_1.5.2-ubuntu20.04_armhf.deb
+curl -LO https://github.com/na-trium-144/webcface-webui/releases/download/v1.3.1/webcface-webui_1.3.1-s_armhf.deb
 curl -LO https://github.com/na-trium-144/webcface-tools/releases/download/v1.2.1/webcface-tools_1.2.1-ubuntu20.04_armhf.deb
 ```
 </details>
