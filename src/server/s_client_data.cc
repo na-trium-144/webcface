@@ -902,7 +902,7 @@ void ClientData::imageConvertThreadMain(const std::string &member,
                                             rows, cols);
                         return;
                     }
-                    cv::resize(m, m, cv::Size(rows, cols));
+                    cv::resize(m, m, cv::Size(cols, rows));
 #else
                     this->logger->warn("Cannot convert image since OpenCV is disabled.");
                     return;
