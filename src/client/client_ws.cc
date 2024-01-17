@@ -30,6 +30,7 @@ void Internal::messageThreadMain(std::shared_ptr<Internal::ClientData> data,
             }
             data->connect_state_cond.notify_all();
             data->logger_internal->debug("connected");
+            std::string buf_s;
             do {
                 bool closed = false;
                 // 受信ループ
@@ -37,7 +38,6 @@ void Internal::messageThreadMain(std::shared_ptr<Internal::ClientData> data,
                     std::size_t rlen = 0;
                     const curl_ws_frame *meta = nullptr;
                     char buffer[1024];
-                    std::string buf_s;
                     do {
                         ret = curl_ws_recv(handle, buffer, sizeof(buffer),
                                            &rlen, &meta);
@@ -64,10 +64,13 @@ void Internal::messageThreadMain(std::shared_ptr<Internal::ClientData> data,
                     if (buf_s.empty()) {
                         break;
                     }
-                    data->logger_internal->trace("message received");
-                    data->recv_queue.push(buf_s);
-                    std::size_t sent;
-                    curl_ws_send(handle, nullptr, 0, &sent, 0, CURLWS_PONG);
+                    if(ret == CURLE_OK && meta && meta->bytesleft == 0){
+                        data->logger_internal->trace("message received len={}", buf_s.size());
+                        data->recv_queue.push(buf_s);
+                        std::size_t sent;
+                        curl_ws_send(handle, nullptr, 0, &sent, 0, CURLWS_PONG);
+                        buf_s.clear();
+                    }
                 }
                 if (ret != CURLE_AGAIN && ret != CURLE_OK) {
                     data->logger_internal->debug("connection closed {}",

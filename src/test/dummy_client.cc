@@ -27,23 +27,30 @@ DummyClient::DummyClient()
               dummy_logger->error("connection error {}", static_cast<int>(ret));
           } else {
               dummy_logger->debug("connection done");
+              std::string buf_s;
               while (!closing.load()) {
                   while (true) {
                       std::size_t rlen = 0;
                       const curl_ws_frame *meta = nullptr;
                       char buffer[1024];
-                      std::string buf_s;
                       do {
                           ret = curl_ws_recv(handle, buffer, sizeof(buffer),
                                              &rlen, &meta);
                           if (meta && meta->flags & CURLWS_CLOSE) {
                               dummy_logger->debug("connection closed");
                               break;
-                          } else if (meta && static_cast<std::size_t>(meta->offset) > buf_s.size()) {
-                              buf_s.append(static_cast<std::size_t>(meta->offset) - buf_s.size(), '\0');
+                          } else if (meta && static_cast<std::size_t>(
+                                                 meta->offset) > buf_s.size()) {
+                              buf_s.append(
+                                  static_cast<std::size_t>(meta->offset) -
+                                      buf_s.size(),
+                                  '\0');
                               buf_s.append(buffer, rlen);
-                          } else if (meta && static_cast<std::size_t>(meta->offset) < buf_s.size()) {
-                              buf_s.replace(static_cast<std::size_t>(meta->offset), rlen, buffer, rlen);
+                          } else if (meta && static_cast<std::size_t>(
+                                                 meta->offset) < buf_s.size()) {
+                              buf_s.replace(
+                                  static_cast<std::size_t>(meta->offset), rlen,
+                                  buffer, rlen);
                           } else {
                               buf_s.append(buffer, rlen);
                           }
@@ -51,14 +58,19 @@ DummyClient::DummyClient()
                       if (buf_s.empty()) {
                           break;
                       }
-                      dummy_logger->trace("message received");
-                      auto unpacked = Message::unpack(buf_s, dummy_logger);
-                      for (const auto &m : unpacked) {
-                          dummy_logger->info("kind {}", m.first);
-                          recv_data.push_back(m);
+                      if (ret == CURLE_OK && meta && meta->bytesleft == 0) {
+                          dummy_logger->trace("message received len={}",
+                                              buf_s.size());
+                          auto unpacked = Message::unpack(buf_s, dummy_logger);
+                          for (const auto &m : unpacked) {
+                              dummy_logger->info("kind {}", m.first);
+                              recv_data.push_back(m);
+                          }
+                          std::size_t sent;
+                          curl_ws_send(handle, nullptr, 0, &sent, 0,
+                                       CURLWS_PONG);
+                          buf_s.clear();
                       }
-                      std::size_t sent;
-                      curl_ws_send(handle, nullptr, 0, &sent, 0, CURLWS_PONG);
                   }
                   if (ret != CURLE_AGAIN) {
                       dummy_logger->debug("connection closed {}",
