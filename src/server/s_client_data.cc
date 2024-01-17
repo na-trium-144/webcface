@@ -902,7 +902,7 @@ void ClientData::imageConvertThreadMain(const std::string &member,
                                             rows, cols);
                         return;
                     }
-                    cv::resize(m, m, cv::Size(rows, cols));
+                    cv::resize(m, m, cv::Size(cols, rows));
 #else
                     this->logger->warn("Cannot convert image since OpenCV is disabled.");
                     return;
@@ -968,15 +968,20 @@ void ClientData::imageConvertThreadMain(const std::string &member,
                     rows, cols, encoded,
                     info.color_mode.value_or(img.color_mode()), info.cmp_mode};
 
-                {
-                    std::lock_guard lock(server_mtx);
-                    this->pack(sync);
-                    this->pack(
-                        WEBCFACE_NS::Message::Res<WEBCFACE_NS::Message::Image>{
+                while (!cd->closing.load() && !this->closing.load()) {
+                    if (server_mtx.try_lock()) {
+                        this->pack(sync);
+                        this->pack(WEBCFACE_NS::Message::Res<
+                                   WEBCFACE_NS::Message::Image>{
                             req_id, sub_field, img_send});
-                    logger->trace("send image_res req_id={} + '{}'", req_id,
-                                  sub_field);
-                    this->send();
+                        logger->trace("send image_res req_id={} + '{}'", req_id,
+                                      sub_field);
+                        this->send();
+                        server_mtx.unlock();
+                        break;
+                    } else {
+                        std::this_thread::yield();
+                    }
                 }
                 if (info.frame_rate && *info.frame_rate > 0) {
                     std::chrono::milliseconds delay{
