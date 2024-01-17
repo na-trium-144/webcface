@@ -499,8 +499,8 @@ add_library(wcf INTERFACE)
 target_include_directories(wcf INTERFACE ${INCLUDE_DIR})
 target_compile_features(wcf INTERFACE c_std_99)
 target_link_libraries(wcf INTERFACE
-    $<TARGET_FILE_NAME:${PROJECT_NAME}>
-    $<TARGET_FILE_NAME:spdlog::spdlog>
+    $<TARGET_LINKER_FILE:${PROJECT_NAME}::${PROJECT_NAME}>
+    $<TARGET_LINKER_FILE:spdlog::spdlog>
 )
 if(WEBCFACE_USE_OPENCV)
     target_link_libraries(wcf INTERFACE ${OpenCV_LIBS})
@@ -561,7 +561,7 @@ if(WEBCFACE_INSTALL)
         RUNTIME DESTINATION bin
     )
 
-    set(WEBCFACE_EXPORTS ${PROJECT_NAME} ${PROJECT_NAME}-headers)
+    set(WEBCFACE_EXPORTS ${PROJECT_NAME} ${PROJECT_NAME}-headers wcf)
     if(NOT WEBCFACE_SHARED)
         set(WEBCFACE_EXPORTS ${WEBCFACE_EXPORTS} ${PROJECT_NAME}-message libcurl_static)
         if(NOT msgpack-cxx_FOUND)
