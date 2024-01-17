@@ -1,3 +1,12 @@
+## [1.5.1] - 2024-01-17
+### Fixed
+* CMakeでwebcface::webcfaceからc_std_99を削除 (#175)
+	* それとは別にC言語のターゲットとしてwebcface::wcfを追加
+### Changed
+* Crowのinfoレベルのログを非表示にした (#172)
+### Added
+* serverでlocalhostではなくpcのipアドレスを表示するようにした (#172)
+
 ## [1.5.0] - 2024-01-16
 ### Changed
 * ABIバージョンを libwebcface.so.5, webcface5.dll に変更。
