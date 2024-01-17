@@ -109,14 +109,22 @@ target_link_libraries(target PRIVATE webcface::webcface)
 * FetchContentやsubmoduleでこのリポジトリを追加して使うこともできます。また、ROS2のワークスペースのsrcに追加してcolconでビルドすることもできます。
     * OpenCVを使用しない場合は`WEBCFACE_USE_OPENCV`をoffにすれば使用しないようにできます。
 
-VisualStudioでCMakeを使わない場合は  
-インクルードディレクトリ: `C:\Program Files\WebCFace\include`, `C:\Program Files\WebCFace\opencv\include`  
-ライブラリディレクトリ: `C:\Program Files\WebCFace\lib`, `C:\Program Files\WebCFace\opencv\x64\vc16\lib`  
-を追加し、  
-Releaseの場合 webcface.lib, spdlog.lib, opencv_world490.lib  
-Debugの場合 webcfaced.lib, spdlogd.lib, opencv_world490d.lib  
-(opencvのバージョンが異なったら読み替えてください)をリンクしてください。  
-また、`C:\Program Files\webcface\bin` を環境変数のPathに追加するか、その中にあるdllファイルを実行ファイルのディレクトリにコピーして読み込ませてください
+<details><summary>CMakeを使わない場合は</summary>
+
+* Windows (MSVC)
+    * インクルードディレクトリ: `C:\Program Files\WebCFace\include`, `C:\Program Files\WebCFace\opencv\include`
+    * ライブラリディレクトリ: `C:\Program Files\WebCFace\lib`, `C:\Program Files\WebCFace\opencv\x64\vc16\lib`
+    * リンクするライブラリは
+        * Releaseの場合 webcface5.lib, spdlog.lib, opencv_world490.lib
+        * Debugの場合 webcface5d.lib, spdlogd.lib, opencv_world490d.lib
+    * また、`C:\Program Files\WebCFace\bin` を環境変数のPathに追加するか、その中にあるdllファイルを実行ファイルのディレクトリにコピーして読み込ませてください
+* Linux
+    * Releasesで配布しているdebパッケージの場合はインストール先は /usr です
+    * libwebcface.so, libspdlog.so にリンクしてください
+* MacOS
+    * Linuxと同様 libwebcface.dylib, libspdlog.dylib にリンクしてください
+
+</details>
 
 C++のソースコードでは`<webcface/webcface.h>`をincludeしてください。
 次ページ以降でC++での使い方を解説します。
@@ -132,7 +140,11 @@ C++ではなくCからアクセスできるAPIもあります。
 [Interface for C](80_c_interface.md) を参照してください。
 MATLABなど、Cのライブラリにアクセスすることができる言語からwebcfaceのライブラリをロードして使用することができます。
 
-CMakeの書き方はC++の場合と同じです。
+~~CMakeの書き方はC++の場合と同じです。~~  
+![c++ ver1.5.1](https://img.shields.io/badge/1.5.1~-00599c?logo=C%2B%2B)
+Cの場合は `webcface::wcf` をリンクしてください。
+
+CMakeを使わない場合リンクするライブラリはC++の場合と同じです。
 
 ### その他
 

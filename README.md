@@ -122,8 +122,10 @@ brew tap na-trium-144/webcface
 brew install webcface webcface-webui webcface-tools
 ```
 
-### Windows
+### Windows (MSVC)
 [webcface-windows-packageのRelease](https://github.com/na-trium-144/webcface-windows-package/releases)からインストーラーをダウンロードしてください。
+
+MinGW用バイナリは今のところ配布していません(ソースからビルドしてください)
 
 ### Build from source
 
