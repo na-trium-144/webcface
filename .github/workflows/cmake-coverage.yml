@@ -54,7 +54,7 @@ jobs:
     - name: Get coverage
       id: coverage
       run: |
-        gcovr -s -e src/example/ -e src/test/ -e external/
+        gcovr -s -e src/example/ -e src/test/ -e external/ -e build/
         COVERAGE=$(gcovr -e src/example/ -e src/test/ -e external/ -e build/ | grep TOTAL | awk '{print $4}')
         echo "##[set-output name=lines;]${COVERAGE}"
 
