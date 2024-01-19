@@ -251,7 +251,7 @@ void ClientData::onRecv(const std::string &message) {
             auto v = std::any_cast<WEBCFACE_NS::Message::Call>(obj);
             v.caller_member_id = this->member_id;
             for (auto &a : v.args) {
-                a = utf8::replace_invalid(a);
+                a = utf8::replace_invalid(static_cast<std::string>(a));
             }
             logger->debug(
                 "call caller_id={}, target_id={}, field={}, with {} args",
@@ -291,7 +291,8 @@ void ClientData::onRecv(const std::string &message) {
         }
         case MessageKind::call_result: {
             auto v = std::any_cast<WEBCFACE_NS::Message::CallResult>(obj);
-            v.result = utf8::replace_invalid(v.result);
+            v.result =
+                utf8::replace_invalid(static_cast<std::string>(v.result));
             logger->debug("call_result to (member_id {}, caller_id {}), {}",
                           v.caller_member_id, v.caller_id,
                           static_cast<std::string>(v.result));
@@ -527,14 +528,16 @@ void ClientData::onRecv(const std::string &message) {
             for (auto &a : *v.args) {
                 std::vector<Common::ValAdaptor> replaced_opt;
                 for (auto &o : a.option()) {
-                    replaced_opt.push_back(utf8::replace_invalid(o));
+                    replaced_opt.push_back(
+                        utf8::replace_invalid(static_cast<std::string>(o)));
                 }
-                a = Common::Arg(utf8::replace_invalid(a.name()), a.type(),
-                                a.init()
-                                    ? std::make_optional<Common::ValAdaptor>(
-                                          utf8::replace_invalid(*a.init()))
-                                    : std::nullopt,
-                                a.min(), a.max(), replaced_opt);
+                a = Common::Arg(
+                    utf8::replace_invalid(a.name()), a.type(),
+                    a.init() ? std::make_optional<Common::ValAdaptor>(
+                                   utf8::replace_invalid(
+                                       static_cast<std::string>(*a.init())))
+                             : std::nullopt,
+                    a.min(), a.max(), replaced_opt);
             }
             logger->debug("func_info {}", v.field);
             if (!this->func.count(v.field)) {
