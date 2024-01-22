@@ -290,6 +290,19 @@ FetchContent_Declare(cli11
 )
 FetchContent_MakeAvailable(cli11)
 
+message(STATUS "Fetching utfcpp Source...")
+FetchContent_Declare(utfcpp
+    GIT_REPOSITORY https://github.com/nemtrif/utfcpp.git
+    GIT_TAG v4.0.5
+)
+if(NOT utfcpp_POPULATED)
+    FetchContent_Populate(utfcpp)
+    add_library(utfcpp INTERFACE)
+    target_include_directories(utfcpp INTERFACE
+        ${utfcpp_SOURCE_DIR}/source
+    )
+endif()
+
 if(WEBCFACE_USE_OPENCV)
     find_package(OpenCV REQUIRED)
 endif()
@@ -442,6 +455,7 @@ add_library(${PROJECT_NAME}-server-impl STATIC ${SVR_SRC})
 target_link_libraries(${PROJECT_NAME}-server-impl PUBLIC
     ${PROJECT_NAME}-message
     Crow
+    utfcpp
 )
 if(WIN32)
     target_link_libraries(${PROJECT_NAME}-server-impl PRIVATE
@@ -639,6 +653,10 @@ if(WEBCFACE_INSTALL)
             DESTINATION share/webcface/3rd_party/msgpack-c
         )
     endif()
+    install(FILES
+        ${utfcpp_SOURCE_DIR}/LICENSE
+        DESTINATION share/webcface/3rd_party/utfcpp
+    )
 
     # https://decovar.dev/blog/2021/09/23/cmake-cpack-package-deb-apt/
     set(CPACK_VERBATIM_VARIABLES yes)

@@ -5,6 +5,7 @@
 #include <webcface/common/def.h>
 #include <algorithm>
 #include <iterator>
+#include <utf8.h>
 
 #if WEBCFACE_USE_OPENCV
 #include <opencv2/core.hpp>
@@ -249,6 +250,9 @@ void ClientData::onRecv(const std::string &message) {
         case MessageKind::call: {
             auto v = std::any_cast<WEBCFACE_NS::Message::Call>(obj);
             v.caller_member_id = this->member_id;
+            for (auto &a : v.args) {
+                a = utf8::replace_invalid(static_cast<std::string>(a));
+            }
             logger->debug(
                 "call caller_id={}, target_id={}, field={}, with {} args",
                 v.caller_id, v.target_member_id, v.field, v.args.size());
@@ -287,6 +291,8 @@ void ClientData::onRecv(const std::string &message) {
         }
         case MessageKind::call_result: {
             auto v = std::any_cast<WEBCFACE_NS::Message::CallResult>(obj);
+            v.result =
+                utf8::replace_invalid(static_cast<std::string>(v.result));
             logger->debug("call_result to (member_id {}, caller_id {}), {}",
                           v.caller_member_id, v.caller_id,
                           static_cast<std::string>(v.result));
@@ -337,6 +343,7 @@ void ClientData::onRecv(const std::string &message) {
         }
         case MessageKind::text: {
             auto v = std::any_cast<WEBCFACE_NS::Message::Text>(obj);
+            *v.data = utf8::replace_invalid(*v.data);
             logger->debug("text {} = {}", v.field, *v.data);
             if (!this->text.count(v.field)) {
                 store.forEach([&](auto cd) {
@@ -410,7 +417,8 @@ void ClientData::onRecv(const std::string &message) {
                 });
             }
             this->view[v.field].resize(v.length);
-            for (const auto &d : *v.data_diff) {
+            for (auto &d : *v.data_diff) {
+                d.second.text = utf8::replace_invalid(d.second.text);
                 this->view[v.field][std::stoi(d.first)] = d.second;
             }
             // このvalueをsubscribeしてるところに送り返す
@@ -451,11 +459,11 @@ void ClientData::onRecv(const std::string &message) {
                 auto [req_id, sub_field] =
                     findReqField(cd->canvas3d_req, this->name, v.field);
                 if (req_id > 0) {
-                    cd->pack(
-                        WEBCFACE_NS::Message::Res<WEBCFACE_NS::Message::Canvas3D>(
-                            req_id, sub_field, v.data_diff, v.length));
-                    cd->logger->trace("send canvas3d_res req_id={} + '{}'", req_id,
-                                      sub_field);
+                    cd->pack(WEBCFACE_NS::Message::Res<
+                             WEBCFACE_NS::Message::Canvas3D>(
+                        req_id, sub_field, v.data_diff, v.length));
+                    cd->logger->trace("send canvas3d_res req_id={} + '{}'",
+                                      req_id, sub_field);
                 }
             });
             break;
@@ -496,8 +504,10 @@ void ClientData::onRecv(const std::string &message) {
                              "log will be romoved.",
                              store.keep_log);
             }
-            std::copy(v.log->begin(), v.log->end(),
-                      std::back_inserter(*this->log));
+            for (auto &ll : *v.log) {
+                ll.message = utf8::replace_invalid(ll.message);
+                this->log->push_back(ll);
+            }
             while (store.keep_log >= 0 &&
                    this->log->size() >
                        static_cast<unsigned int>(store.keep_log)) {
@@ -515,6 +525,20 @@ void ClientData::onRecv(const std::string &message) {
         case MessageKind::func_info: {
             auto v = std::any_cast<WEBCFACE_NS::Message::FuncInfo>(obj);
             v.member_id = this->member_id;
+            for (auto &a : *v.args) {
+                std::vector<Common::ValAdaptor> replaced_opt;
+                for (auto &o : a.option()) {
+                    replaced_opt.push_back(
+                        utf8::replace_invalid(static_cast<std::string>(o)));
+                }
+                a = Common::Arg(
+                    utf8::replace_invalid(a.name()), a.type(),
+                    a.init() ? std::make_optional<Common::ValAdaptor>(
+                                   utf8::replace_invalid(
+                                       static_cast<std::string>(*a.init())))
+                             : std::nullopt,
+                    a.min(), a.max(), replaced_opt);
+            }
             logger->debug("func_info {}", v.field);
             if (!this->func.count(v.field)) {
                 store.forEach([&](auto cd) {
@@ -663,11 +687,11 @@ void ClientData::onRecv(const std::string &message) {
             view_req[s.member][s.field] = s.req_id;
             break;
         }
-    case MessageKind::req + MessageKind::canvas3d: {
+        case MessageKind::req + MessageKind::canvas3d: {
             auto s = std::any_cast<
                 WEBCFACE_NS::Message::Req<WEBCFACE_NS::Message::Canvas3D>>(obj);
-            logger->debug("request canvas3d ({}): {} from {}", s.req_id, s.field,
-                          s.member);
+            logger->debug("request canvas3d ({}): {} from {}", s.req_id,
+                          s.field, s.member);
             // 指定した値を返す
             store.findAndDo(s.member, [&](auto cd) {
                 if (!this->hasReq(s.member)) {
@@ -679,8 +703,8 @@ void ClientData::onRecv(const std::string &message) {
                     if (it.first == s.field ||
                         it.first.starts_with(s.field + ".")) {
                         auto diff = std::make_shared<std::unordered_map<
-                            std::string,
-                            WEBCFACE_NS::Message::Canvas3D::Canvas3DComponent>>();
+                            std::string, WEBCFACE_NS::Message::Canvas3D::
+                                             Canvas3DComponent>>();
                         for (std::size_t i = 0; i < it.second.size(); i++) {
                             diff->emplace(std::to_string(i), it.second[i]);
                         }
