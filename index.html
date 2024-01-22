@@ -224,7 +224,7 @@ Requirements</h3>
 <li><a href="https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-windows-gcc.yml"><img src="https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-windows-gcc.yml/badge.svg?branch=main" alt="CMake Test (Windows MinGW64 GCC)" style="pointer-events: none;" class="inline"/></a></li>
 </ul>
 </li>
-<li>webcfaceは外部ライブラリとして <a href="https://github.com/CrowCpp/Crow">crow</a>, <a href="https://github.com/chriskohlhoff/asio">asio</a>, <a href="https://github.com/curl/curl">libcurl</a>, <a href="https://github.com/wqking/eventpp">eventpp</a>, <a href="https://github.com/msgpack/msgpack-c">msgpack-cxx</a>, <a href="https://github.com/gabime/spdlog">spdlog</a>, <a href="https://github.com/CLIUtils/CLI11.git">cli11</a>, <a href="https://opencv.org/">opencv</a> を使用します。<ul>
+<li>webcfaceは外部ライブラリとして <a href="https://github.com/CrowCpp/Crow">crow</a>, <a href="https://github.com/chriskohlhoff/asio">asio</a>, <a href="https://github.com/curl/curl">libcurl</a>, <a href="https://github.com/wqking/eventpp">eventpp</a>, <a href="https://github.com/msgpack/msgpack-c">msgpack-cxx</a>, <a href="https://github.com/gabime/spdlog">spdlog</a>, <a href="https://github.com/CLIUtils/CLI11.git">cli11</a>, <a href="https://github.com/nemtrif/utfcpp">UTF8-CPP</a>, <a href="https://opencv.org/">opencv</a> を使用します。<ul>
 <li>cmake時に自動的にFetchContentでソースコード取得しビルドしますが、eventpp, msgpack, spdlog に関してはシステムにインストールされていてfind_packageで見つけることができればそれを使用します</li>
 <li>opencvはソースからビルドしません。別途インストールする必要があります。<ul>
 <li>またはcmake時のオプションでopencvを使わないようにすることもできます (画像の変換機能が無効になります)</li>
@@ -342,6 +342,7 @@ License</h1>
 <li>msgpack-c (Boost Software License) : <a href="https://github.com/msgpack/msgpack-c">https://github.com/msgpack/msgpack-c</a></li>
 <li>spdlog (MIT) : <a href="https://github.com/gabime/spdlog">https://github.com/gabime/spdlog</a></li>
 <li>CLI11 (BSD 3-Clause) : <a href="https://github.com/CLIUtils/CLI11">https://github.com/CLIUtils/CLI11</a></li>
+<li>UTF8-CPP (BSD 1.0) : <a href="https://github.com/nemtrif/utfcpp">https://github.com/nemtrif/utfcpp</a></li>
 <li>OpenCV (Apache 2.0) : <a href="https://opencv.org/license/">https://opencv.org/license/</a></li>
 <li>tiny-process-library (MIT) : <a href="https://gitlab.com/eidheim/tiny-process-library">https://gitlab.com/eidheim/tiny-process-library</a> (toolsで使用)</li>
 <li>toml++ (MIT) : <a href="https://github.com/marzer/tomlplusplus">https://github.com/marzer/tomlplusplus</a> (toolsで使用) </li>
@@ -352,7 +353,7 @@ License</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Jan 19 2024 10:03:41 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Mon Jan 22 2024 13:58:30 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>
