@@ -4,6 +4,7 @@ var structwebcface_1_1Server_1_1ClientData =
     [ "ClientData", "structwebcface_1_1Server_1_1ClientData.html#a061ca974ab5d37638be4a7651c913419", null ],
     [ "ClientData", "structwebcface_1_1Server_1_1ClientData.html#a0f921605927cd51e95e4b394759ec37b", null ],
     [ "ClientData", "structwebcface_1_1Server_1_1ClientData.html#a295869b1e02456c0f66f0a8ecb75080f", null ],
+    [ "~ClientData", "structwebcface_1_1Server_1_1ClientData.html#ac8ad1cac97096793572e6b25080ab32c", null ],
     [ "connected", "structwebcface_1_1Server_1_1ClientData.html#aa0fd96bc25e3d509fb54028c2e4b91f6", null ],
     [ "hasReq", "structwebcface_1_1Server_1_1ClientData.html#aacd6967faae6a11d967dbc6c436db3b6", null ],
     [ "imageConvertThreadMain", "structwebcface_1_1Server_1_1ClientData.html#a6fc900e5c5b1249ed201e61387095c19", null ],

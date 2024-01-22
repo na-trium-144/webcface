@@ -1,6 +1,7 @@
 var structwebcface_1_1Server_1_1Store =
 [
     [ "Store", "structwebcface_1_1Server_1_1Store.html#a9a4249b34504484d8738c818d7e08889", null ],
+    [ "~Store", "structwebcface_1_1Server_1_1Store.html#a27078c8f020fc9dc62f3149179df9bb6", null ],
     [ "clear", "structwebcface_1_1Server_1_1Store.html#ac8bb3912a3ce86b15842e79d0b421204", null ],
     [ "clientSendAll", "structwebcface_1_1Server_1_1Store.html#a937b33f9efb3d5d56b0ba71669ed2d96", null ],
     [ "findAndDo", "structwebcface_1_1Server_1_1Store.html#a6f23dd973b6a70920b271efbd64a45e4", null ],
