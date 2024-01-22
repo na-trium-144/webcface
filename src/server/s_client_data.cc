@@ -15,6 +15,9 @@
 
 namespace WEBCFACE_NS::Server {
 void ClientData::onClose() {
+    if (con == nullptr) {
+        return;
+    }
     con = nullptr;
     logger->info("connection closed");
     closing.store(true);

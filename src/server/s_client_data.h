@@ -107,6 +107,7 @@ struct ClientData {
             std::to_string(member_id) + "_(unknown client)", this->sink);
         logger->set_level(this->logger_level);
     }
+    ~ClientData() { onClose(); }
 
     void onConnect();
     void onRecv(const std::string &msg);

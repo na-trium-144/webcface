@@ -116,10 +116,6 @@ void serverRun(int port, const spdlog::sink_ptr &sink,
         .onclose([&](crow::websocket::connection &conn,
                      const std::string & /*reason*/) {
             std::lock_guard lock(server_mtx);
-            auto cli = store.getClient(&conn);
-            if (cli) {
-                cli->con = nullptr;
-            }
             store.removeClient(&conn);
         })
         .onmessage([&](crow::websocket::connection &conn,
