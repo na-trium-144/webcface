@@ -27,6 +27,7 @@ inline struct Store {
     int keep_log = 1000; // server_mainで上書きされる
 
     Store() : clients(), clients_by_id() {}
+    ~Store() { clear(); }
 
     //! テスト用
     void clear();
