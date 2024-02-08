@@ -156,7 +156,7 @@ data = {
 ### value req (kind = 40)
 ```js
 data = {
-	m: number, // member id
+	M: number, // member id
 	f: string, // name
 	i: number, // request id
 }
@@ -247,11 +247,139 @@ data = {
 * value resと同様
 
 ## Image
-TODO: あとで書く
+
+![c++ ver1.3](https://img.shields.io/badge/1.3~-00599c?logo=C%2B%2B)
+
 ### image (kind = 5)
+```js
+data = {
+	f: string, // name
+	d: ArrayBuffer, // data (uchar[])
+	w: number, // width
+	h: number, // height
+	l: number, // color mode
+	p: number, // compression mode
+}
+```
+
 ### image entry (kind = 25)
+* value entryと同様
+
 ### image req (kind = 45)
+```js
+data = {
+	M: number, // member id
+	f: string, // name
+	i: number, // request id
+	w: number | null, // width
+	h: number | null, // height
+	l: number | null,  // color mode
+	p: number, // compression mode
+	q: number, // quality
+	r: number, // frame rate
+}
+```
+
 ### image res (kind = 65)
+```js
+data = {
+	i: number, // request id
+	f: string, // sub field name
+	d: ArrayBuffer, // data (uchar[])
+	w: number, // width
+	h: number, // height
+	l: number, // color mode
+	p: number, // compression mode
+}
+```
+* value resと同様
+
+## Canvas3D
+
+![c++ ver1.4](https://img.shields.io/badge/1.4~-00599c?logo=C%2B%2B)
+
+### canvas3d (kind = 7)
+```js
+data = {
+	f: string, // name
+	d: {
+		index: {
+			t: number, // type
+			op: number[3], // origin pos
+			or: number[3], // origin rot
+			c: number, // color
+			gt: number | null, // geometry type
+			gp: number[], // geometry properties
+			fm: string | null, // field member
+			ff: string | null, // field name
+			a: { name: angle, ... } // joint angles
+		},
+		index: {},
+		...
+	},
+	l: number, // data length
+}
+```
+* viewと同様、前回のsyncから変更された要素のみを送る
+* lは変更されていない分も含めたcanvasの全要素数
+* dのindexはstring型で、要素のindexを10進数で文字列にしたもの
+* geometry propertiesの要素数と内容はgeometryの種類によって異なる
+* robotmodelを参照する場合そのモデルのmemberとfield名をfmとffにセット
+
+### canvas3d entry (kind = 27)
+* value entryと同様
+
+### canvas3d req (kind = 47)
+* value req と同様
+
+### canvas3d res (kind = 67)
+```js
+data = {
+	i: number, // request id
+	f: string, // sub field name
+	d: {...},
+	l: number,
+}
+```
+* value resと同様
+
+## RobotModel
+
+![c++ ver1.4](https://img.shields.io/badge/1.4~-00599c?logo=C%2B%2B)
+
+### robotmodel (kind = 6)
+```js
+data = {
+	f: string, // name
+	d: { // links data
+		n: string, // link name
+		jn: string, // joint name
+		jp: number, // parent link index
+		jt: number, // joint type
+		js: number[3], // joint origin pos
+		jr: number[3], // joint origin rot
+		ja: number, // joint angle
+		gt: number, // geometry type
+		gp: number[], // geometry properties
+		c: number, // color
+	}[],
+}
+```
+
+### robotmodel entry (kind = 26)
+* value entryと同様
+
+### robotmodel req (kind = 46)
+* value req と同様
+
+### robotmodel res (kind = 66)
+```js
+data = {
+	i: number, // request id
+	f: string, // sub field name
+	d: {...}[], // data
+}
+```
 
 ## Log
 ### log (kind = 86)
