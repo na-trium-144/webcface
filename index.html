@@ -283,7 +283,10 @@ Build (with Pure CMake)</h3>
 <li><code>-DWEBCFACE_FIND_LIBS=off</code>にするとmsgpack, eventpp, spdlogをfind_packageせずソースからビルドします</li>
 <li><code>-DWEBCFACE_SHARED=off</code>にすると共有ライブラリではなくすべて静的ライブラリになります</li>
 <li><code>-DWEBCFACE_EXAMPLE=on</code>でtestをビルドします(submoduleの場合デフォルトでoff)</li>
-<li><code>-DWEBCFACE_INSTALL=on</code>でtergetのinstallをします(submoduleの場合デフォルトでoff)</li>
+<li><code>-DWEBCFACE_INSTALL=on</code>でtargetをinstallします(submoduleの場合デフォルトでoff)<ul>
+<li>さらに<code>-DWEBCFACE_INSTALL_SERVICE=on</code>で <a href="cmake/webcafce-server.service">webcface-server.service</a> を lib/systemd/system にインストールします (デフォルトでoff)</li>
+</ul>
+</li>
 <li><code>-DWEBCFACE_TEST=on</code>でtestをビルドします(デフォルトでoff)<ul>
 <li>テストが通らない場合テスト中の通信の待機時間を<code>-DWEBCFACE_TEST_TIMEOUT=100</code>などと伸ばすとうまく行く場合があります(デフォルト=10(ms))</li>
 </ul>
@@ -353,7 +356,7 @@ License</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon Jan 22 2024 18:07:41 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Fri Feb 9 2024 07:12:10 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>
