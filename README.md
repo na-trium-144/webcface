@@ -197,7 +197,8 @@ sudo cmake --build build -t install
 	* `-DWEBCFACE_FIND_LIBS=off`にするとmsgpack, eventpp, spdlogをfind_packageせずソースからビルドします
 	* `-DWEBCFACE_SHARED=off`にすると共有ライブラリではなくすべて静的ライブラリになります
 	* `-DWEBCFACE_EXAMPLE=on`でtestをビルドします(submoduleの場合デフォルトでoff)
-	* `-DWEBCFACE_INSTALL=on`でtergetのinstallをします(submoduleの場合デフォルトでoff)
+	* `-DWEBCFACE_INSTALL=on`でtargetをinstallします(submoduleの場合デフォルトでoff)
+		* さらに`-DWEBCFACE_INSTALL_SERVICE=on`で [webcface-server.service](cmake/webcafce-server.service) を lib/systemd/system にインストールします (デフォルトでoff)
 	* `-DWEBCFACE_TEST=on`でtestをビルドします(デフォルトでoff)
 		* テストが通らない場合テスト中の通信の待機時間を`-DWEBCFACE_TEST_TIMEOUT=100`などと伸ばすとうまく行く場合があります(デフォルト=10(ms))
 	* `-DWEBCFACE_VERSION_SUFFIX`でバージョン表記を変更できます
