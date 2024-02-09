@@ -39,6 +39,7 @@ jobs:
         -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
         -DWEBCFACE_VERSION_SUFFIX=${{matrix.distro}}
         -DWEBCFACE_DOWNLOAD_WEBUI=off
+        -DWEBCFACE_INSTALL_SERVICE=on
     - name: Build
       run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
     - name: Create Deb Package
@@ -116,7 +117,7 @@ jobs:
             cd /workspace
             apt-get update -q -y
             apt-get install -q -y libopencv-dev libspdlog-dev
-            cmake -B build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DWEBCFACE_VERSION_SUFFIX=${distro} -DWEBCFACE_DOWNLOAD_WEBUI=off
+            cmake -B build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DWEBCFACE_VERSION_SUFFIX=${distro} -DWEBCFACE_DOWNLOAD_WEBUI=off -DWEBCFACE_INSTALL_SERVICE=on
             cmake --build build --config ${{env.BUILD_TYPE}}
             cd build
             cpack -G DEB
