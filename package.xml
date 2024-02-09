@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package format="3">
 	<name>webcface</name>
-	<version>1.5.2</version>
+	<version>1.5.3</version>
 	<description>Web-based RPC &amp; UI Library</description>
 	<maintainer email="na-trium-144@users.noreply.github.com">na-trium-144</maintainer>
 	<license>MIT</license>
