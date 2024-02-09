@@ -22,6 +22,7 @@ else()
 endif()
 
 option(WEBCFACE_INSTALL "generate install target" ${IS_MAIN})
+option(WEBCFACE_INSTALL_SERVICE "generate install target for systemd service file" OFF)
 option(WEBCFACE_EXAMPLE "build example" ${IS_MAIN})
 option(WEBCFACE_TEST "build test" OFF)
 option(WEBCFACE_COVERAGE "enable generating test coverage" OFF)
@@ -621,6 +622,13 @@ if(WEBCFACE_INSTALL)
         ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config-version.cmake
         DESTINATION lib/cmake/${PROJECT_NAME}
     )
+
+    if(WEBCFACE_INSTALL_SERVICE)
+        install(FILES
+            ${CMAKE_CURRENT_SOURCE_DIR}/cmake/webcface-server.service
+            DESTINATION lib/systemd/system
+        )
+    endif()
 
     if(WEBCFACE_DOWNLOAD_WEBUI)
         install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/dist/
