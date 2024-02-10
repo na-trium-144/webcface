@@ -34,7 +34,9 @@ enum MessageKindEnum {
     unknown = -1,
     value = 0,
     text = 1,
+    binary = 2,
     view = 3,
+    canvas2d = 4,
     image = 5,
     robot_model = 6,
     canvas3d = 7,
@@ -290,9 +292,8 @@ struct RobotModel : public MessageBase<MessageKind::robot_model> {
             return Common::RobotLink{
                 name,
                 {joint_name,
-                 joint_parent < link_names.size()
-                     ? link_names.at(joint_parent)
-                     : "",
+                 joint_parent < link_names.size() ? link_names.at(joint_parent)
+                                                  : "",
                  joint_type,
                  {joint_origin_pos, joint_origin_rot},
                  joint_angle},
@@ -469,6 +470,54 @@ struct Canvas3D : public MessageBase<MessageKind::canvas3d> {
              std::size_t length)
         : field(field), data_diff(data_diff), length(length) {}
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", field), MSGPACK_NVP("d", data_diff),
+                       MSGPACK_NVP("l", length))
+};
+struct Canvas2D : public MessageBase<MessageKind::canvas2d> {
+    std::string field;
+    double width, height;
+    struct Canvas2DComponent {
+        Common::Canvas2DComponentType type;
+        Common::GeometryType geometry_type;
+        ViewColor color;
+        std::vector<double> properties;
+        Canvas2DComponent() = default;
+        Canvas2DComponent(const Common::Canvas2DComponentBase &vc)
+            : type(vc.geometry_.type), color(vc.color_),
+              properties(vc.geometry_.properties) {}
+        operator Common::Canvas2DComponentBase() const {
+            Common::Canvas2DComponentBase vc;
+            vc.color_ = color;
+            vc.geometry_ = {type, properties};
+            return vc;
+        }
+        MSGPACK_DEFINE_MAP(MSGPACK_NVP("t", type), MSGPACK_NVP("c", color),
+                           MSGPACK_NVP("p", properties))
+    };
+    std::shared_ptr<std::unordered_map<std::string, Canvas2DComponent>>
+        data_diff;
+    std::size_t length;
+    Canvas2D() = default;
+    Canvas2D(
+        const std::string &field, double width, double height,
+        const std::shared_ptr<
+            std::unordered_map<int, Common::Canvas2DComponentBase>> &data_diff,
+        std::size_t length)
+        : field(field), width(width), height(height),
+          data_diff(std::make_shared<
+                    std::unordered_map<std::string, Canvas2DComponent>>()),
+          length(length) {
+        for (const auto &vc : *data_diff) {
+            this->data_diff->emplace(std::to_string(vc.first), vc.second);
+        }
+    }
+    Canvas2D(const std::string &field, double width, double height,
+             const std::shared_ptr<
+                 std::unordered_map<std::string, Canvas2DComponent>> &data_diff,
+             std::size_t length)
+        : field(field), width(width), height(height), data_diff(data_diff),
+          length(length) {}
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", field), MSGPACK_NVP("w", width),
+                       MSGPACK_NVP("h", height), MSGPACK_NVP("d", data_diff),
                        MSGPACK_NVP("l", length))
 };
 struct Image : public MessageBase<MessageKind::image>,
