@@ -5,6 +5,7 @@
 #include <memory>
 #include <utility>
 #include <stdexcept>
+#include <concepts>
 #include "func.h"
 #include "event_target.h"
 #include "common/def.h"
@@ -17,7 +18,7 @@ namespace Internal {
 struct ClientData;
 }
 inline namespace Geometries {
-struct Line : GeometryBoth {
+struct Line : Geometry, Geometry3D, Geometry2D {
     Line(const Point &begin, const Point &end)
         : Geometry(GeometryType::line,
                    {begin.pos()[0], begin.pos()[1], begin.pos()[2],
@@ -37,7 +38,7 @@ struct Line : GeometryBoth {
 inline Line line(const Point &begin, const Point &end) {
     return Line(begin, end);
 }
-struct Polygon : GeometryBoth {
+struct Polygon : Geometry, Geometry3D, Geometry2D {
     Polygon(const std::vector<Point> &points)
         : Geometry(GeometryType::polygon, {}) {
         for (const auto &p : points) {
@@ -65,7 +66,7 @@ struct Polygon : GeometryBoth {
 inline Polygon polygon(const std::vector<Point> &points) {
     return Polygon(points);
 }
-struct Plane : Geometry3D {
+struct Plane : Geometry, Geometry3D {
     Plane(const Transform &origin, double width, double height)
         : Geometry(GeometryType::plane,
                    {origin.pos()[0], origin.pos()[1], origin.pos()[2],
@@ -87,7 +88,7 @@ inline Plane plane(const Transform &origin, double width, double height) {
     return Plane(origin, width, height);
 }
 
-struct Box : Geometry3D {
+struct Box : Geometry, Geometry3D {
     Box(const Point &vertex1, const Point &vertex2)
         : Geometry(GeometryType::box,
                    {vertex1.pos()[0], vertex1.pos()[1], vertex1.pos()[2],
@@ -108,7 +109,7 @@ inline Box box(const Point &vertex1, const Point &vertex2) {
     return Box{vertex1, vertex2};
 }
 
-struct Circle : GeometryBoth {
+struct Circle : Geometry, Geometry3D, Geometry2D {
     Circle(const Transform &origin, double radius)
         : Geometry(GeometryType::circle,
                    {origin.pos()[0], origin.pos()[1], origin.pos()[2],
@@ -129,7 +130,7 @@ inline Circle circle(const Transform &origin, double radius) {
     return Circle{origin, radius};
 }
 
-struct Cylinder : Geometry3D {
+struct Cylinder : Geometry, Geometry3D {
     Cylinder(const Transform &origin, double radius, double length)
         : Geometry(GeometryType::cylinder,
                    {origin.pos()[0], origin.pos()[1], origin.pos()[2],
@@ -152,7 +153,7 @@ inline Cylinder cylinder(const Transform &origin, double radius,
     return Cylinder{origin, radius, length};
 }
 
-struct Sphere : Geometry3D {
+struct Sphere : Geometry, Geometry3D {
     Sphere(const Point &origin, double radius)
         : Geometry(GeometryType::sphere, {origin.pos()[0], origin.pos()[1],
                                           origin.pos()[2], radius}) {}
@@ -279,8 +280,9 @@ class Canvas3D : protected Field, public EventTarget<Canvas3D> {
      * \brief Geometryを追加
      *
      */
-    WEBCFACE_DLL Canvas3D &add(const Geometry3D &geometry,
-                               const Transform &origin,
+    template <typename G>
+        requires std::derived_from<G, Geometry3D>
+    WEBCFACE_DLL Canvas3D &add(const G &geometry, const Transform &origin,
                                const ViewColor &color = ViewColor::inherit) {
         add({Canvas3DComponentType::geometry,
              origin,
@@ -296,7 +298,9 @@ class Canvas3D : protected Field, public EventTarget<Canvas3D> {
      * originを省略した場合 identity()
      *
      */
-    WEBCFACE_DLL Canvas3D &add(const Geometry3D &geometry,
+    template <typename G>
+        requires std::derived_from<G, Geometry3D>
+    WEBCFACE_DLL Canvas3D &add(const G &geometry,
                                const ViewColor &color = ViewColor::inherit) {
         add(geometry, identity(), color);
         return *this;

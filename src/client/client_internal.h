@@ -20,6 +20,7 @@
 #include <webcface/common/image.h>
 #include <webcface/common/robot_model.h>
 #include <webcface/common/canvas3d.h>
+#include <webcface/common/canvas2d.h>
 #include <webcface/func_result.h>
 #include <webcface/logger.h>
 #include "data_store1.h"
@@ -131,6 +132,7 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
     SyncDataStore2<std::vector<Common::RobotLink>> robot_model_store;
     SyncDataStore2<std::shared_ptr<std::vector<Common::Canvas3DComponentBase>>>
         canvas3d_store;
+    SyncDataStore2<std::shared_ptr<Common::Canvas2DData>> canvas2d_store;
     std::shared_ptr<SyncDataStore1<std::shared_ptr<std::vector<LogLine>>>>
         log_store;
     SyncDataStore1<std::chrono::system_clock::time_point> sync_time_store;
@@ -165,13 +167,14 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
 
     eventpp::EventDispatcher<FieldBaseComparable, void(Field)>
         value_change_event, text_change_event, view_change_event,
-        image_change_event, robot_model_change_event, canvas3d_change_event;
+        image_change_event, robot_model_change_event, canvas3d_change_event,
+        canvas2d_change_event;
     eventpp::EventDispatcher<std::string, void(Field)> log_append_event;
     eventpp::EventDispatcher<int, void(Field)> member_entry_event;
     eventpp::EventDispatcher<std::string, void(Field)> sync_event,
         value_entry_event, text_entry_event, func_entry_event, view_entry_event,
         robot_model_entry_event, image_entry_event, canvas3d_entry_event,
-        ping_event;
+        canvas2d_entry_event, ping_event;
 
     /*!
      * \brief sync()のタイミングで実行を同期する関数のcondition_variable

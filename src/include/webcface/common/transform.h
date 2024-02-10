@@ -16,7 +16,7 @@ class Point {
 
   public:
     Point(const std::array<double, 3> &pos = {0, 0, 0}) : pos_(pos) {}
-    Point(const std::array<double, 2> &pos = {0, 0})
+    Point(const std::array<double, 2> &pos)
         : pos_({pos[0], pos[1], 0}) {}
     Point(double x, double y, double z = 0)
         : Point(std::array<double, 3>{x, y, z}) {}

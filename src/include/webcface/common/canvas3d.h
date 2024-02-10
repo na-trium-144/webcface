@@ -32,20 +32,8 @@ struct Geometry {
     Geometry(GeometryType type, const std::vector<double> &properties)
         : type(type), properties(properties) {}
 };
-struct GeometryBoth : Geometry {
-    GeometryBoth(GeometryType type, const std::vector<double> &properties)
-        : Geometry(type, properties) {}
-};
-struct Geometry3D : Geometry {
-    Geometry3D(GeometryType type, const std::vector<double> &properties)
-        : Geometry(type, properties) {}
-    Geometry3D(const GeometryBoth &g) : Geometry(g) {}
-};
-struct Geometry2D : Geometry {
-    Geometry2D(GeometryType type, const std::vector<double> &properties)
-        : Geometry(type, properties) {}
-    Geometry2D(const GeometryBoth &g) : Geometry(g) {}
-};
+struct Geometry3D {};
+struct Geometry2D {};
 
 enum class Canvas3DComponentType {
     geometry = 0,

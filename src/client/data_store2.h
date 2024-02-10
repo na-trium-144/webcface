@@ -13,6 +13,7 @@
 #include <webcface/common/image.h>
 #include <webcface/common/robot_model.h>
 #include <webcface/common/canvas3d.h>
+#include <webcface/common/canvas2d.h>
 #include "../message/message.h"
 
 namespace WEBCFACE_NS::Internal {
@@ -215,22 +216,27 @@ class SyncDataStore2 {
     std::unordered_map<std::string, T> getSendPrev(bool is_first);
 
     /*!
-     * \brief 前回のsendとの差分を返し、data_sendをクリア
-     *
-     * RetPackはMessage::Viewなど
-     *
-     */
-    template <typename RetPack>
-    std::vector<RetPack> transferSendDiff(bool is_first);
-
-    /*!
      * \brief req_sendを返し、req_sendをクリア
      *
      */
     std::unordered_map<std::string,
                        std::unordered_map<std::string, unsigned int>>
     transferReq();
+
+    template <typename ElemT>
+    std::shared_ptr<std::unordered_map<int, ElemT>>
+    getDiff(std::vector<ElemT> *current, std::vector<ElemT> *prev = nullptr) {
+        auto v_diff = std::make_shared<std::unordered_map<int, ElemT>>();
+        for (std::size_t i = 0; i < current->size(); i++) {
+            if (!prev || prev->size() <= i || (*prev)[i] != (*current)[i]) {
+                v_diff->emplace(static_cast<int>(i), (*current)[i]);
+            }
+        }
+        return v_diff;
+    }
+
 };
+
 
 #ifdef _MSC_VER
 extern template class SyncDataStore2<std::string, int>; // test用
@@ -242,14 +248,10 @@ extern template class SyncDataStore2<
 extern template class SyncDataStore2<std::vector<Common::RobotLink>, int>;
 extern template class SyncDataStore2<
     std::shared_ptr<std::vector<Common::Canvas3DComponentBase>>, int>;
+extern template class SyncDataStore2<std::shared_ptr<Common::Canvas2DData>,
+                                     int>;
 extern template class SyncDataStore2<Common::ImageBase, Common::ImageReq>;
 
-extern template std::vector<Message::Canvas3D>
-SyncDataStore2<std::shared_ptr<std::vector<Common::Canvas3DComponentBase>>,
-               int>::transferSendDiff<Message::Canvas3D>(bool);
-extern template std::vector<Message::View>
-SyncDataStore2<std::shared_ptr<std::vector<Common::ViewComponentBase>>,
-               int>::transferSendDiff<Message::View>(bool);
 #endif
 
 } // namespace WEBCFACE_NS::Internal

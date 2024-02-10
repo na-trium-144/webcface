@@ -1,4 +1,6 @@
 #pragma once
+#include <concepts>
+#include <memory>
 #include "common/def.h"
 #include "common/canvas2d.h"
 #include "event_target.h"
@@ -6,6 +8,16 @@
 
 namespace WEBCFACE_NS {
 
+class Canvas2DComponent : public Common::Canvas2DComponentBase {
+    std::weak_ptr<Internal::ClientData> data_w;
+
+  public:
+    Canvas2DComponent() = default;
+    Canvas2DComponent(const Common::Canvas2DComponentBase &vc,
+                      const std::weak_ptr<Internal::ClientData> &data_w)
+        : Common::Canvas2DComponentBase(vc), data_w(data_w) {}
+    explicit Canvas2DComponent(Canvas2DComponentType type) { type_ = type; }
+};
 /*!
  * \brief Canvas2Dの送受信データを表すクラス
  *
@@ -31,6 +43,11 @@ class Canvas2D : protected Field, public EventTarget<Canvas2D> {
     WEBCFACE_DLL Canvas2D(const Field &base);
     Canvas2D(const Field &base, const std::string &field)
         : Canvas2D(Field{base, field}) {}
+    Canvas2D(const Field &base, const std::string &field, double width,
+             double height)
+        : Canvas2D(Field{base, field}) {
+        init(width, height);
+    }
 
     /*!
      * \brief デストラクタで sync() を呼ぶ。
@@ -86,7 +103,7 @@ class Canvas2D : protected Field, public EventTarget<Canvas2D> {
      * (init() 後に sync() をすると空のCanvas2Dが送信される)
      *
      */
-    WEBCFACE_DLL Canvas2D &init();
+    WEBCFACE_DLL Canvas2D &init(double width, double height);
 
     /*!
      * \brief Componentを追加
@@ -98,14 +115,18 @@ class Canvas2D : protected Field, public EventTarget<Canvas2D> {
      * \brief Geometryを追加
      *
      */
-    WEBCFACE_DLL Canvas2D &add(const Geometry &geometry, const ViewColor &color,
+    template <typename G>
+        requires std::derived_from<G, Geometry2D>
+    WEBCFACE_DLL Canvas2D &add(const G &geometry, const ViewColor &color,
                                const ViewColor &fill = ViewColor::inherit,
                                double stroke_width = 1) {
         add({Canvas2DComponentType::geometry, color, fill, stroke_width,
              geometry});
         return *this;
     }
-    WEBCFACE_DLL Canvas2D &add(const Geometry &geometry, const ViewColor &color,
+    template <typename G>
+        requires std::derived_from<G, Geometry3D>
+    WEBCFACE_DLL Canvas2D &add(const G &geometry, const ViewColor &color,
                                double stroke_width) {
         add({Canvas2DComponentType::geometry, color, ViewColor::inherit,
              stroke_width, geometry});

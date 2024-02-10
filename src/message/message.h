@@ -13,6 +13,7 @@
 #include <webcface/common/image.h>
 #include <webcface/common/robot_model.h>
 #include <webcface/common/canvas3d.h>
+#include <webcface/common/canvas2d.h>
 #include <webcface/common/def.h>
 #include "val_adaptor.h"
 
@@ -24,6 +25,7 @@ MSGPACK_ADD_ENUM(WEBCFACE_NS::Common::ImageColorMode)
 MSGPACK_ADD_ENUM(WEBCFACE_NS::Common::RobotJointType)
 MSGPACK_ADD_ENUM(WEBCFACE_NS::Common::GeometryType)
 MSGPACK_ADD_ENUM(WEBCFACE_NS::Common::Canvas3DComponentType)
+MSGPACK_ADD_ENUM(WEBCFACE_NS::Common::Canvas2DComponentType)
 
 namespace WEBCFACE_NS::Message {
 // 新しいメッセージの定義は
@@ -478,20 +480,32 @@ struct Canvas2D : public MessageBase<MessageKind::canvas2d> {
     struct Canvas2DComponent {
         Common::Canvas2DComponentType type;
         Common::GeometryType geometry_type;
-        ViewColor color;
+        ViewColor color, fill;
+        double stroke_width;
         std::vector<double> properties;
         Canvas2DComponent() = default;
         Canvas2DComponent(const Common::Canvas2DComponentBase &vc)
-            : type(vc.geometry_.type), color(vc.color_),
-              properties(vc.geometry_.properties) {}
+            : type(vc.type_), color(vc.color_), fill(vc.fill_),
+              stroke_width(vc.stroke_width_), properties() {
+            if (vc.geometry_) {
+                geometry_type = vc.geometry_->type;
+                properties = vc.geometry_->properties;
+            }
+        }
         operator Common::Canvas2DComponentBase() const {
             Common::Canvas2DComponentBase vc;
+            vc.type_ = type;
             vc.color_ = color;
-            vc.geometry_ = {type, properties};
+            vc.fill_ = fill;
+            vc.stroke_width_ = stroke_width;
+            vc.geometry_ = {geometry_type, properties};
             return vc;
         }
         MSGPACK_DEFINE_MAP(MSGPACK_NVP("t", type), MSGPACK_NVP("c", color),
-                           MSGPACK_NVP("p", properties))
+                           MSGPACK_NVP("f", fill),
+                           MSGPACK_NVP("s", stroke_width),
+                           MSGPACK_NVP("gt", geometry_type),
+                           MSGPACK_NVP("gp", properties))
     };
     std::shared_ptr<std::unordered_map<std::string, Canvas2DComponent>>
         data_diff;
@@ -775,6 +789,29 @@ struct Res<Canvas3D>
         : req_id(req_id), sub_field(sub_field), data_diff(data_diff),
           length(length) {}
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", req_id), MSGPACK_NVP("f", sub_field),
+                       MSGPACK_NVP("d", data_diff), MSGPACK_NVP("l", length))
+};
+template <>
+struct Res<Canvas2D>
+    : public MessageBase<MessageKind::canvas2d + MessageKind::res> {
+    unsigned int req_id;
+    std::string sub_field;
+    double width, height;
+    std::shared_ptr<
+        std::unordered_map<std::string, Canvas2D::Canvas2DComponent>>
+        data_diff;
+    std::size_t length;
+    Res() = default;
+    Res(unsigned int req_id, const std::string &sub_field, double width,
+        double height,
+        const std::shared_ptr<
+            std::unordered_map<std::string, Canvas2D::Canvas2DComponent>>
+            &data_diff,
+        std::size_t length)
+        : req_id(req_id), sub_field(sub_field), width(width), height(height),
+          data_diff(data_diff), length(length) {}
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", req_id), MSGPACK_NVP("f", sub_field),
+                       MSGPACK_NVP("w", width), MSGPACK_NVP("h", height),
                        MSGPACK_NVP("d", data_diff), MSGPACK_NVP("l", length))
 };
 
