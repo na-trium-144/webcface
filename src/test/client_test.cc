@@ -9,6 +9,9 @@
 #include <webcface/view.h>
 #include <webcface/func.h>
 #include <webcface/image.h>
+#include <webcface/canvas3d.h>
+#include <webcface/canvas2d.h>
+#include <webcface/robot_model.h>
 #include <webcface/common/def.h>
 #include "../message/message.h"
 #include <chrono>
@@ -189,6 +192,30 @@ TEST_F(ClientTest, entry) {
     callback_called = 0;
     ASSERT_EQ(m.views().size(), 1);
     EXPECT_EQ(m.views()[0].name(), "d");
+
+    m.onCanvas2DEntry().appendListener(callback<Canvas2D>());
+    dummy_s->send(Message::Entry<Message::Canvas2D>{{}, 10, "d"});
+    wait();
+    EXPECT_EQ(callback_called, 1);
+    callback_called = 0;
+    ASSERT_EQ(m.canvas2DEntries().size(), 1);
+    EXPECT_EQ(m.canvas2DEntries()[0].name(), "d");
+
+    m.onCanvas3DEntry().appendListener(callback<Canvas3D>());
+    dummy_s->send(Message::Entry<Message::Canvas3D>{{}, 10, "d"});
+    wait();
+    EXPECT_EQ(callback_called, 1);
+    callback_called = 0;
+    ASSERT_EQ(m.canvas3DEntries().size(), 1);
+    EXPECT_EQ(m.canvas3DEntries()[0].name(), "d");
+
+    m.onRobotModelEntry().appendListener(callback<RobotModel>());
+    dummy_s->send(Message::Entry<Message::RobotModel>{{}, 10, "d"});
+    wait();
+    EXPECT_EQ(callback_called, 1);
+    callback_called = 0;
+    ASSERT_EQ(m.robotModels().size(), 1);
+    EXPECT_EQ(m.robotModels()[0].name(), "d");
 
     m.onImageEntry().appendListener(callback<Image>());
     dummy_s->send(Message::Entry<Message::Image>{{}, 10, "d"});
