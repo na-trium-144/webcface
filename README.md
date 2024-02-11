@@ -122,6 +122,17 @@ brew tap na-trium-144/webcface
 brew install webcface webcface-webui webcface-tools
 ```
 
+### App Bundle for MacOS
+[homebrew-webcfaceのRelease](https://github.com/na-trium-144/homebrew-webcface/releases) から .app.zip ファイルをダウンロードするか、
+```sh
+brew tap na-trium-144/webcface
+brew install --cask webcface-webui-server
+```
+でインストールできます。
+
+インストールしたappを起動するとWebUIのウィンドウとwebcface-serverが起動します。(詳細はドキュメントの [Overview](https://na-trium-144.github.io/webcface/md_00__overview.html) を参照)
+
+
 ### Windows (MSVC)
 [webcface-windows-packageのRelease](https://github.com/na-trium-144/webcface-windows-package/releases)からインストーラーをダウンロードしてください。
 
@@ -223,7 +234,7 @@ sudo cmake --build build -t install
 * toolsは別途 https://github.com/na-trium-144/webcface-tools.git をcloneしてビルド、インストールしてください
 
 ## Documentation
-* [Tutorial](https://na-trium-144.github.io/webcface/md_00__tutorial.html)
+* まずはここから→ [Overview](https://na-trium-144.github.io/webcface/md_00__overview.html)
 * [APIリファレンス](https://na-trium-144.github.io/webcface/namespaces.html)
 * [webcface-python APIリファレンス](https://na-trium-144.github.io/webcface-python/)
 * [webcface-js APIリファレンス](https://na-trium-144.github.io/webcface-js/)

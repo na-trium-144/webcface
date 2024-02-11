@@ -1,12 +1,14 @@
-# Tutorial
+# Overview
 
 WebCFaceの機能紹介・チュートリアルです。
 
 ## 環境構築
-READMEにしたがってwebcface, webcface-webui, webcface-toolsをインストールしましょう。
+READMEにしたがって webcface, webcface-webui, webcface-tools をインストールしましょう。
 
 ## Server
 WebCFaceを使用するときはserverを常時立ち上げておく必要があります。
+
+### コマンドラインから
 ```sh
 webcface-server
 ```
@@ -14,8 +16,35 @@ webcface-server
 
 * コマンドラインオプションで起動するポートを変更できたりします。詳細は`webcface-server -h`で確認してください
 
+### WebUIから (Server Mode)
+WebUIをブラウザーからではなくアプリとして開くと、バックグラウンドでいっしょにサーバーが起動します。
+
+* Windowsではスタートメニューの WebCFace → WebCFace WebUI Server を起動してください。
+* MacOSではREADMEにしたがってAppバンドルをダウンロードして起動してください
+
+WebUIの画面を閉じるとserverも終了します。
+
+(ソースコードとバイナリ配布はこのリポジトリではなく [webcface-webui](https://github.com/na-trium-144/webcface-webui) に含まれるので、ソースからビルドする場合または個別にダウンロードしたい場合はそちらを参照してください)
+
+### サービスとして (Linuxのみ)
+![c++ ver1.5.3](https://img.shields.io/badge/1.5.3~-00599c?logo=C%2B%2B)
+
+配布しているdebパッケージでは [cmake/webcface-server.service](https://github.com/na-trium-144/webcface/blob/main/cmake/webcface-server.service) がインストールされ、
+```sh
+sudo systemctl enable webcface-server
+sudo systemctl start webcface-server
+```
+でサーバーを常時自動起動させることができます。
+
+また
+```sh
+sudo systemctl enable webcface-launcher
+sudo systemctl start webcface-launcher
+```
+でwebcface-launcherも自動起動させることができます。
+
 ## WebUI
-serverは起動したまま、起動時に表示されるurl (http://localhost:7530/index.html) をブラウザで開きましょう。
+serverは起動したまま、起動時に表示されるurl (http:\//IPアドレス:7530/index.html) をブラウザで開きましょう。
 
 WebCFaceにクライアントが接続すると、WebUI右上のMenuに表示されます。
 Menuから見たいデータを選ぶことで小さいウィンドウのようなものが現れデータを見ることができます。
