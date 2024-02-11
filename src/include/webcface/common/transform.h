@@ -16,8 +16,7 @@ class Point {
 
   public:
     Point(const std::array<double, 3> &pos = {0, 0, 0}) : pos_(pos) {}
-    Point(const std::array<double, 2> &pos)
-        : pos_({pos[0], pos[1], 0}) {}
+    Point(const std::array<double, 2> &pos) : pos_({pos[0], pos[1], 0}) {}
     Point(double x, double y, double z = 0)
         : Point(std::array<double, 3>{x, y, z}) {}
     std::array<double, 3> pos() const { return pos_; }
@@ -25,12 +24,17 @@ class Point {
      * ver1.6から追加
      *
      */
-    std::array<double, 2> pos2() const { return {pos_[0], pos_[1]}; }
+    std::array<double, 3> &pos() { return pos_; }
     /*!
      * ver1.6から追加
      *
      */
     double pos(std::size_t i) const { return pos_.at(i); }
+    /*!
+     * ver1.6から追加
+     *
+     */
+    double &pos(std::size_t i) { return pos_.at(i); }
 
     bool operator==(const Point &rhs) const { return pos_ == rhs.pos_; }
     bool operator!=(const Point &rhs) const { return !(*this == rhs); }
@@ -72,6 +76,16 @@ class Transform : public Point {
      *
      */
     double rot(std::size_t i) const { return rot_.at(i); }
+    /*!
+     * ver1.6から追加
+     *
+     */
+    double &rot(std::size_t i) { return rot_.at(i); }
+    /*!
+     * ver1.6から追加
+     *
+     */
+    std::array<double, 3> &rot() { return rot_; }
 
     bool operator==(const Transform &rhs) const {
         return pos_ == rhs.pos_ && rot_ == rhs.rot_;

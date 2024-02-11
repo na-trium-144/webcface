@@ -15,6 +15,7 @@
 #include "common/image.h"
 #include "common/transform.h"
 #include "common/canvas3d.h"
+#include "common/canvas2d.h"
 #include "common/robot_model.h"
 
 #include "field.h"
@@ -31,6 +32,7 @@
 #include "view.h"
 #include "robot_model.h"
 #include "canvas3d.h"
+#include "canvas2d.h"
 
 #include "member.h"
 #include "client.h"

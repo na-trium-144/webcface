@@ -17,6 +17,9 @@ View Member::view(const std::string &field) const { return View{*this, field}; }
 Canvas3D Member::canvas3D(const std::string &field) const {
     return Canvas3D{*this, field};
 }
+Canvas2D Member::canvas2D(const std::string &field) const {
+    return Canvas2D{*this, field};
+}
 Image Member::image(const std::string &field) const {
     return Image{*this, field};
 }
@@ -44,6 +47,10 @@ EventTarget<View, std::string> Member::onViewEntry() const {
 }
 EventTarget<Canvas3D, std::string> Member::onCanvas3DEntry() const {
     return EventTarget<Canvas3D, std::string>{&dataLock()->canvas3d_entry_event,
+                                              member_};
+}
+EventTarget<Canvas2D, std::string> Member::onCanvas2DEntry() const {
+    return EventTarget<Canvas2D, std::string>{&dataLock()->canvas2d_entry_event,
                                               member_};
 }
 EventTarget<Image, std::string> Member::onImageEntry() const {
@@ -99,6 +106,14 @@ std::vector<Canvas3D> Member::canvas3DEntries() const {
     std::vector<Canvas3D> ret(keys.size());
     for (std::size_t i = 0; i < keys.size(); i++) {
         ret[i] = canvas3D(keys[i]);
+    }
+    return ret;
+}
+std::vector<Canvas2D> Member::canvas2DEntries() const {
+    auto keys = dataLock()->canvas2d_store.getEntry(*this);
+    std::vector<Canvas2D> ret(keys.size());
+    for (std::size_t i = 0; i < keys.size(); i++) {
+        ret[i] = canvas2D(keys[i]);
     }
     return ret;
 }

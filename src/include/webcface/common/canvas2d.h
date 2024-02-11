@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <optional>
+#include <stdexcept>
 #include "def.h"
 #include "transform.h"
 #include "view.h"
@@ -33,8 +34,16 @@ struct Canvas2DComponentBase {
 };
 
 struct Canvas2DData {
-    double width, height;
+    double width = 0, height = 0;
     std::vector<Canvas2DComponentBase> components;
+
+    void checkSize() const {
+        if (width <= 0 && height <= 0) {
+            throw std::invalid_argument("Canvas2D size is invalid (" +
+                                        std::to_string(width) + ", " +
+                                        std::to_string(height) + ")");
+        }
+    }
 };
 
 } // namespace Common

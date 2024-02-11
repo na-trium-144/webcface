@@ -479,9 +479,9 @@ struct Canvas2D : public MessageBase<MessageKind::canvas2d> {
     double width, height;
     struct Canvas2DComponent {
         Common::Canvas2DComponentType type;
-        Common::GeometryType geometry_type;
         ViewColor color, fill;
         double stroke_width;
+        Common::GeometryType geometry_type;
         std::vector<double> properties;
         Canvas2DComponent() = default;
         Canvas2DComponent(const Common::Canvas2DComponentBase &vc)
@@ -492,6 +492,12 @@ struct Canvas2D : public MessageBase<MessageKind::canvas2d> {
                 properties = vc.geometry_->properties;
             }
         }
+        Canvas2DComponent(Canvas2DComponentType type, ViewColor color,
+                          ViewColor fill, double stroke_width,
+                          GeometryType geometry_type,
+                          const std::vector<double> &properties)
+            : type(type), color(color), fill(fill), stroke_width(stroke_width),
+              geometry_type(geometry_type), properties(properties) {}
         operator Common::Canvas2DComponentBase() const {
             Common::Canvas2DComponentBase vc;
             vc.type_ = type;

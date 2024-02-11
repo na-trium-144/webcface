@@ -66,12 +66,24 @@ struct Polygon : Geometry, Geometry3D, Geometry2D {
 inline Polygon polygon(const std::vector<Point> &points) {
     return Polygon(points);
 }
-struct Plane : Geometry, Geometry3D {
+struct Plane : Geometry, Geometry3D, Geometry2D {
     Plane(const Transform &origin, double width, double height)
         : Geometry(GeometryType::plane,
                    {origin.pos()[0], origin.pos()[1], origin.pos()[2],
                     origin.rot()[0], origin.rot()[1], origin.rot()[2], width,
                     height}) {}
+    Plane(const Point &p1, const Point &p2)
+        : Geometry(GeometryType::plane, {}) {
+        Transform origin = identity();
+        for (int i = 0; i < 2; i++) {
+            origin.pos(i) = (p1.pos(i) + p2.pos(i)) / 2;
+        }
+        double width = std::abs(p1.pos(0) - p2.pos(0));
+        double height = std::abs(p1.pos(0) - p2.pos(0));
+        properties = {origin.pos(0), origin.pos(1), origin.pos(2),
+                      origin.rot(0), origin.rot(1), origin.rot(2),
+                      width,         height};
+    }
     Plane(const Geometry &rg) : Geometry(rg) {
         if (properties.size() != 8) {
             throw std::invalid_argument("number of properties does not match");
@@ -87,6 +99,12 @@ struct Plane : Geometry, Geometry3D {
 inline Plane plane(const Transform &origin, double width, double height) {
     return Plane(origin, width, height);
 }
+inline Plane plane(const Point &p1, const Point &p2) { return Plane(p1, p2); }
+using Rect = Plane;
+inline Rect rect(const Transform &origin, double width, double height) {
+    return Rect(origin, width, height);
+}
+inline Rect rect(const Point &p1, const Point &p2) { return Rect(p1, p2); }
 
 struct Box : Geometry, Geometry3D {
     Box(const Point &vertex1, const Point &vertex2)

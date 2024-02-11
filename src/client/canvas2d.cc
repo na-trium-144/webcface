@@ -11,7 +11,7 @@ Canvas2D::Canvas2D()
       modified(std::make_shared<bool>(false)) {}
 Canvas2D::Canvas2D(const Field &base)
     : Field(base), EventTarget<Canvas2D>(
-                       &this->dataLock()->canvas3d_change_event, *this),
+                       &this->dataLock()->canvas2d_change_event, *this),
       canvas_data(std::make_shared<Canvas2DData>()),
       modified(std::make_shared<bool>(false)) {}
 Canvas2D &Canvas2D::init(double width, double height) {
@@ -35,12 +35,14 @@ void Canvas2D::onDestroy() {
     }
 }
 WEBCFACE_DLL Canvas2D &Canvas2D::add(const Canvas2DComponentBase &cc) {
+    canvas_data->checkSize();
     canvas_data->components.push_back(cc);
     *modified = true;
     return *this;
 }
 
 Canvas2D &Canvas2D::set(Canvas2DData &v) {
+    canvas_data->checkSize();
     setCheck()->canvas2d_store.setSend(*this,
                                        std::make_shared<Canvas2DData>(v));
     triggerEvent(*this);
