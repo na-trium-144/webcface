@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.12)
 
 project(webcface
     LANGUAGES CXX C
-    VERSION 1.5.2
+    VERSION 1.5.3
     HOMEPAGE_URL "https://github.com/na-trium-144/webcface"
     DESCRIPTION "Web-based RPC & UI Library"
 )
@@ -22,6 +22,7 @@ else()
 endif()
 
 option(WEBCFACE_INSTALL "generate install target" ${IS_MAIN})
+option(WEBCFACE_INSTALL_SERVICE "generate install target for systemd service file" OFF)
 option(WEBCFACE_EXAMPLE "build example" ${IS_MAIN})
 option(WEBCFACE_TEST "build test" OFF)
 option(WEBCFACE_COVERAGE "enable generating test coverage" OFF)
@@ -60,6 +61,7 @@ message(STATUS "webcface_example = ${WEBCFACE_EXAMPLE}")
 message(STATUS "webcface_test = ${WEBCFACE_TEST} (timeout = ${WEBCFACE_TEST_TIMEOUT} ms)")
 message(STATUS "webcface_coverage = ${WEBCFACE_COVERAGE}")
 message(STATUS "webcface_install = ${WEBCFACE_INSTALL}")
+message(STATUS "webcface_install_service = ${WEBCFACE_INSTALL_SERVICE}")
 message(STATUS "webcface_shared = ${WEBCFACE_SHARED} (pic = ${WEBCFACE_PIC})")
 message(STATUS "webcface_use_opencv = ${WEBCFACE_USE_OPENCV}")
 message(STATUS "webcface_find_libs = ${WEBCFACE_FIND_LIBS}")
@@ -621,6 +623,13 @@ if(WEBCFACE_INSTALL)
         ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config-version.cmake
         DESTINATION lib/cmake/${PROJECT_NAME}
     )
+
+    if(WEBCFACE_INSTALL_SERVICE)
+        install(FILES
+            ${CMAKE_CURRENT_SOURCE_DIR}/cmake/webcface-server.service
+            DESTINATION lib/systemd/system
+        )
+    endif()
 
     if(WEBCFACE_DOWNLOAD_WEBUI)
         install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/dist/

@@ -58,54 +58,54 @@ Debianなど他のディストリビューションで動作するかはわか�
 <details open><summary>Ubuntu 22.04, x86_64</summary>
 
 ```sh
-curl -LO https://github.com/na-trium-144/webcface/releases/download/v1.5.2/webcface_1.5.2-ubuntu22.04_amd64.deb
+curl -LO https://github.com/na-trium-144/webcface/releases/download/v1.5.3/webcface_1.5.3-ubuntu22.04_amd64.deb
 curl -LO https://github.com/na-trium-144/webcface-webui/releases/download/v1.3.2/webcface-webui_1.3.2-s_amd64.deb
-curl -LO https://github.com/na-trium-144/webcface-tools/releases/download/v1.3.0/webcface-tools_1.3.0-ubuntu22.04_amd64.deb
+curl -LO https://github.com/na-trium-144/webcface-tools/releases/download/v1.3.1/webcface-tools_1.3.1-ubuntu22.04_amd64.deb
 ```
 </details>
 
 <details><summary>Ubuntu 22.04, arm64</summary>
 
 ```sh
-curl -LO https://github.com/na-trium-144/webcface/releases/download/v1.5.2/webcface_1.5.2-ubuntu22.04_arm64.deb
+curl -LO https://github.com/na-trium-144/webcface/releases/download/v1.5.3/webcface_1.5.3-ubuntu22.04_arm64.deb
 curl -LO https://github.com/na-trium-144/webcface-webui/releases/download/v1.3.2/webcface-webui_1.3.2-s_arm64.deb
-curl -LO https://github.com/na-trium-144/webcface-tools/releases/download/v1.3.0/webcface-tools_1.3.0-ubuntu22.04_arm64.deb
+curl -LO https://github.com/na-trium-144/webcface-tools/releases/download/v1.3.1/webcface-tools_1.3.1-ubuntu22.04_arm64.deb
 ```
 </details>
 
 <details><summary>Ubuntu 22.04, armhf</summary>
 
 ```sh
-curl -LO https://github.com/na-trium-144/webcface/releases/download/v1.5.2/webcface_1.5.2-ubuntu22.04_armhf.deb
+curl -LO https://github.com/na-trium-144/webcface/releases/download/v1.5.3/webcface_1.5.3-ubuntu22.04_armhf.deb
 curl -LO https://github.com/na-trium-144/webcface-webui/releases/download/v1.3.2/webcface-webui_1.3.2-s_armhf.deb
-curl -LO https://github.com/na-trium-144/webcface-tools/releases/download/v1.3.0/webcface-tools_1.3.0-ubuntu22.04_armhf.deb
+curl -LO https://github.com/na-trium-144/webcface-tools/releases/download/v1.3.1/webcface-tools_1.3.1-ubuntu22.04_armhf.deb
 ```
 </details>
 
 <details><summary>Ubuntu 20.04, x86_64</summary>
 
 ```sh
-curl -LO https://github.com/na-trium-144/webcface/releases/download/v1.5.2/webcface_1.5.2-ubuntu20.04_amd64.deb
+curl -LO https://github.com/na-trium-144/webcface/releases/download/v1.5.3/webcface_1.5.3-ubuntu20.04_amd64.deb
 curl -LO https://github.com/na-trium-144/webcface-webui/releases/download/v1.3.2/webcface-webui_1.3.2-s_amd64.deb
-curl -LO https://github.com/na-trium-144/webcface-tools/releases/download/v1.3.0/webcface-tools_1.3.0-ubuntu20.04_amd64.deb
+curl -LO https://github.com/na-trium-144/webcface-tools/releases/download/v1.3.1/webcface-tools_1.3.1-ubuntu20.04_amd64.deb
 ```
 </details>
 
 <details><summary>Ubuntu 20.04, arm64</summary>
 
 ```sh
-curl -LO https://github.com/na-trium-144/webcface/releases/download/v1.5.2/webcface_1.5.2-ubuntu20.04_arm64.deb
+curl -LO https://github.com/na-trium-144/webcface/releases/download/v1.5.3/webcface_1.5.3-ubuntu20.04_arm64.deb
 curl -LO https://github.com/na-trium-144/webcface-webui/releases/download/v1.3.2/webcface-webui_1.3.2-s_arm64.deb
-curl -LO https://github.com/na-trium-144/webcface-tools/releases/download/v1.3.0/webcface-tools_1.3.0-ubuntu20.04_arm64.deb
+curl -LO https://github.com/na-trium-144/webcface-tools/releases/download/v1.3.1/webcface-tools_1.3.1-ubuntu20.04_arm64.deb
 ```
 </details>
 
 <details><summary>Ubuntu 20.04, armhf</summary>
 
 ```sh
-curl -LO https://github.com/na-trium-144/webcface/releases/download/v1.5.2/webcface_1.5.2-ubuntu20.04_armhf.deb
+curl -LO https://github.com/na-trium-144/webcface/releases/download/v1.5.3/webcface_1.5.3-ubuntu20.04_armhf.deb
 curl -LO https://github.com/na-trium-144/webcface-webui/releases/download/v1.3.2/webcface-webui_1.3.2-s_armhf.deb
-curl -LO https://github.com/na-trium-144/webcface-tools/releases/download/v1.3.0/webcface-tools_1.3.0-ubuntu20.04_armhf.deb
+curl -LO https://github.com/na-trium-144/webcface-tools/releases/download/v1.3.1/webcface-tools_1.3.1-ubuntu20.04_armhf.deb
 ```
 </details>
 
@@ -197,7 +197,8 @@ sudo cmake --build build -t install
 	* `-DWEBCFACE_FIND_LIBS=off`にするとmsgpack, eventpp, spdlogをfind_packageせずソースからビルドします
 	* `-DWEBCFACE_SHARED=off`にすると共有ライブラリではなくすべて静的ライブラリになります
 	* `-DWEBCFACE_EXAMPLE=on`でtestをビルドします(submoduleの場合デフォルトでoff)
-	* `-DWEBCFACE_INSTALL=on`でtergetのinstallをします(submoduleの場合デフォルトでoff)
+	* `-DWEBCFACE_INSTALL=on`でtargetをinstallします(submoduleの場合デフォルトでoff)
+		* さらに`-DWEBCFACE_INSTALL_SERVICE=on`で [webcface-server.service](cmake/webcafce-server.service) を lib/systemd/system にインストールします (デフォルトでoff)
 	* `-DWEBCFACE_TEST=on`でtestをビルドします(デフォルトでoff)
 		* テストが通らない場合テスト中の通信の待機時間を`-DWEBCFACE_TEST_TIMEOUT=100`などと伸ばすとうまく行く場合があります(デフォルト=10(ms))
 	* `-DWEBCFACE_VERSION_SUFFIX`でバージョン表記を変更できます

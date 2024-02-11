@@ -1,3 +1,11 @@
+## [1.5.3] - 2024-02-09
+### Fixed
+* Macでserver終了時にabortするバグを修正 (#184)
+### Changed
+* サーバー側でtext, log, view, funcinfo, call, callresult内の文字列に対してutf-8でデコードできないデータを置き換えるようにした (#183)
+### Added
+* ReleaseするUbuntuのdebパッケージで lib/systemd/system/webcface-server.service をインストールするようにした (#186)
+
 ## [1.5.2] - 2024-01-17
 ### Fixed
 * client側で受信データが途中で途切れてエラーになるバグを修正 (#177)
