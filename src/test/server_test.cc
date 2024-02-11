@@ -10,6 +10,7 @@
 #include <webcface/image.h>
 #include <webcface/robot_model.h>
 #include <webcface/canvas3d.h>
+#include <webcface/canvas2d.h>
 #include <thread>
 #include <iostream>
 #include "dummy_client.h"
@@ -134,6 +135,11 @@ TEST_F(ServerTest, entry) {
         std::make_shared<std::unordered_map<
             std::string, Message::Canvas3D::Canvas3DComponent>>(),
         0});
+    dummy_c1->send(Message::Canvas2D{
+        "a", 0, 0,
+        std::make_shared<std::unordered_map<
+            std::string, Message::Canvas2D::Canvas2DComponent>>(),
+        0});
     dummy_c1->send(Message::View{
         "a",
         std::make_shared<
@@ -186,6 +192,12 @@ TEST_F(ServerTest, entry) {
             EXPECT_EQ(obj.field, "a");
         },
         [&] { ADD_FAILURE() << "Canvas3D Entry recv failed"; });
+    dummy_c2->recv<Message::Entry<Message::Canvas2D>>(
+        [&](const auto &obj) {
+            EXPECT_EQ(obj.member_id, 1);
+            EXPECT_EQ(obj.field, "a");
+        },
+        [&] { ADD_FAILURE() << "Canvas2D Entry recv failed"; });
     dummy_c2->recv<Message::Entry<Message::Image>>(
         [&](const auto &obj) {
             EXPECT_EQ(obj.member_id, 1);
@@ -252,6 +264,18 @@ TEST_F(ServerTest, entry) {
             EXPECT_EQ(obj.field, "b");
         },
         [&] { ADD_FAILURE() << "Canvas3D Entry recv failed"; });
+    dummy_c1->send(Message::Canvas2D{
+        "b", 0, 0,
+        std::make_shared<std::unordered_map<
+            std::string, Message::Canvas2D::Canvas2DComponent>>(),
+        0});
+    wait();
+    dummy_c2->recv<Message::Entry<Message::Canvas2D>>(
+        [&](const auto &obj) {
+            EXPECT_EQ(obj.member_id, 1);
+            EXPECT_EQ(obj.field, "b");
+        },
+        [&] { ADD_FAILURE() << "Canvas2D Entry recv failed"; });
     dummy_c1->send(Message::Image{
         "b",
         ImageFrame{50, 50,
@@ -508,6 +532,57 @@ TEST_F(ServerTest, canvas3d) {
             EXPECT_EQ(obj.length, 3);
         },
         [&] { ADD_FAILURE() << "Canvas3D Res recv failed"; });
+}
+TEST_F(ServerTest, canvas2d) {
+    dummy_c1->send(Message::SyncInit{{}, "c1", 0, "", "", ""});
+    dummy_c1->send(Message::Sync{});
+    dummy_c1->send(Message::Canvas2D{
+        "a", 0, 0,
+        std::make_shared<std::unordered_map<
+            std::string, Message::Canvas2D::Canvas2DComponent>>(
+            std::unordered_map<std::string,
+                               Message::Canvas2D::Canvas2DComponent>{
+                {"0", {}}, {"1", {}}, {"2", {}}}),
+        3});
+    wait();
+    dummy_c2->send(Message::SyncInit{{}, "", 0, "", "", ""});
+    dummy_c2->send(Message::Req<Message::Canvas2D>{{}, "c1", "a", 1});
+    wait();
+    // req時の値
+    dummy_c2->recv<Message::Sync>([&](auto) {},
+                                  [&] { ADD_FAILURE() << "Sync recv failed"; });
+    dummy_c2->recv<Message::Res<Message::Canvas2D>>(
+        [&](const auto &obj) {
+            EXPECT_EQ(obj.req_id, 1);
+            EXPECT_EQ(obj.sub_field, "");
+            EXPECT_EQ(obj.data_diff->size(), 3);
+            EXPECT_EQ(obj.length, 3);
+        },
+        [&] { ADD_FAILURE() << "Canvas2D Res recv failed"; });
+    dummy_c2->recvClear();
+
+    // 変化後の値
+    dummy_c1->send(Message::Sync{});
+    dummy_c1->send(Message::Canvas2D{
+        "a", 0, 0,
+        std::make_shared<std::unordered_map<
+            std::string, Message::Canvas2D::Canvas2DComponent>>(
+            std::unordered_map<std::string,
+                               Message::Canvas2D::Canvas2DComponent>{
+                {"0", {}},
+            }),
+        3});
+    wait();
+    dummy_c2->recv<Message::Sync>([&](auto) {},
+                                  [&] { ADD_FAILURE() << "Sync recv failed"; });
+    dummy_c2->recv<Message::Res<Message::Canvas2D>>(
+        [&](const auto &obj) {
+            EXPECT_EQ(obj.req_id, 1);
+            EXPECT_EQ(obj.sub_field, "");
+            EXPECT_EQ(obj.data_diff->size(), 1);
+            EXPECT_EQ(obj.length, 3);
+        },
+        [&] { ADD_FAILURE() << "Canvas2D Res recv failed"; });
 }
 TEST_F(ServerTest, image) {
     dummy_c1->send(Message::SyncInit{{}, "c1", 0, "", "", ""});
