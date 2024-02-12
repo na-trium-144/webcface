@@ -118,6 +118,11 @@ int main() {
                    rotationalJoint("line_rotation", "line1",
                                    {0, 0, 0.3, 0, 0, 0}),
                    line({0, 0, 0}, {0.5, 0, 0}), webcface::ViewColor::red}});
+
+        auto cv = c.canvas2D("canvas");
+        cv.init(100, 100);
+        cv.add(rect({10, 10}, {90, 90}), webcface::ViewColor::black);
+        cv.add(line({20, 20}, {80, 80}), webcface::ViewColor::black);
     }
 
     int i = 0;
