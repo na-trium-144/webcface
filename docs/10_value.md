@@ -204,13 +204,15 @@ Value::time() でその値が送信されたとき(そのMemberがsync()した�
 
 ### Entry
 
-Member::values() でそのMemberが送信しているvalueのリストが得られます
+~~Member::values() で~~ そのMemberが送信しているvalueのリストが得られます  
+![c++ ver1.6](https://img.shields.io/badge/1.6~-00599c?logo=C%2B%2B)
+Member::valueEntries() に変更
 
 <div class="tabbed">
 
 - <b class="tab-title">C++</b>
     ```cpp
-    for(const webcface::Value &v: wcli.member("foo").values()){
+    for(const webcface::Value &v: wcli.member("foo").valueEntries()){
         // ...
     }
     ```

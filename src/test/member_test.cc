@@ -44,20 +44,20 @@ TEST_F(MemberTest, field) {
 TEST_F(MemberTest, getEntry) {
     data_->value_store.setEntry("a");
     data_->value_store.setEntry("a", "a");
-    EXPECT_EQ(member("a").values().size(), 1);
-    EXPECT_EQ(member("a").values()[0].name(), "a");
+    EXPECT_EQ(member("a").valueEntries().size(), 1);
+    EXPECT_EQ(member("a").valueEntries()[0].name(), "a");
     data_->text_store.setEntry("a");
     data_->text_store.setEntry("a", "a");
-    EXPECT_EQ(member("a").texts().size(), 1);
-    EXPECT_EQ(member("a").texts()[0].name(), "a");
+    EXPECT_EQ(member("a").textEntries().size(), 1);
+    EXPECT_EQ(member("a").textEntries()[0].name(), "a");
     data_->func_store.setEntry("a");
     data_->func_store.setEntry("a", "a");
-    EXPECT_EQ(member("a").funcs().size(), 1);
-    EXPECT_EQ(member("a").funcs()[0].name(), "a");
+    EXPECT_EQ(member("a").funcEntries().size(), 1);
+    EXPECT_EQ(member("a").funcEntries()[0].name(), "a");
     data_->view_store.setEntry("a");
     data_->view_store.setEntry("a", "a");
-    EXPECT_EQ(member("a").views().size(), 1);
-    EXPECT_EQ(member("a").views()[0].name(), "a");
+    EXPECT_EQ(member("a").viewEntries().size(), 1);
+    EXPECT_EQ(member("a").viewEntries()[0].name(), "a");
 }
 TEST_F(MemberTest, eventTarget) {
     member("a").onValueEntry().appendListener(callback<Value>());

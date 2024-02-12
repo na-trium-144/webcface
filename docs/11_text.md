@@ -130,13 +130,15 @@ Text::time() でその値が送信されたとき(そのMemberがsync()したと
 
 ### Entry
 
-Member::texts() でそのMemberが送信しているtextのリストが得られます
+~~Member::texts() で~~ そのMemberが送信しているtextのリストが得られます  
+![c++ ver1.6](https://img.shields.io/badge/1.6~-00599c?logo=C%2B%2B)
+Member::textEntries() に変更
 
 <div class="tabbed">
 
 - <b class="tab-title">C++</b>
     ```cpp
-    for(const webcface::Text &v: wcli.member("foo").texts()){
+    for(const webcface::Text &v: wcli.member("foo").textEntries()){
         // ...
     }
     ```
