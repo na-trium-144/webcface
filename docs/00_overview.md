@@ -5,6 +5,9 @@ WebCFaceの機能紹介・チュートリアルです。
 ## 環境構築
 READMEにしたがって webcface, webcface-webui, webcface-tools をインストールしましょう。
 
+さらにJavaScriptで利用したい場合は `npm install webcface` 、
+Pythonで利用したい場合は `pip install webcface` でクライアントをインストールしてください。
+
 ## Server
 WebCFaceを使用するときはserverを常時立ち上げておく必要があります。
 
@@ -44,52 +47,32 @@ sudo systemctl start webcface-launcher
 でwebcface-launcherも自動起動させることができます。
 
 ## WebUI
-serverは起動したまま、起動時に表示されるurl (http:\//IPアドレス:7530/index.html) をブラウザで開きましょう。
+serverは起動したまま、起動時に表示されるurl (http://IPアドレス:7530/index.html) をブラウザで開きましょう。
 
 WebCFaceにクライアントが接続すると、WebUI右上のMenuに表示されます。
 Menuから見たいデータを選ぶことで小さいウィンドウのようなものが現れデータを見ることができます。
 
 ウィンドウの表示状態などは自動的にブラウザ(LocalStorage)に保存され、次回アクセスしたときに復元されます。
 
-## データの送信
-### value
+## データ型
 WebCFaceではROSのTopicのようにデータを送受信することができます。
 
-WebCFaceにデータを送信してみましょう。
-```sh
-webcface-send test
-```
-を実行し、そこにいくつか数字を打ち込んでみましょう。(1つ入力するごとに改行してください)
+### Value
+数値データ、または1次元数値配列を送受信する型です。
+double型で送受信されます。
 
-WebUIから「webcface-send」→「test」を選ぶと、グラフが表示されると思います。
+WebUI では受信したデータがグラフとして表示されます。
 
-```
-$ webcface-send test
-5
-7
-3
-4
-9
-1
-2
-3
-4
-6
-```
 ![tutorial_value](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_value.png)
 
-### text
-(起動しているwebcface-sendは終了して)
-```sh
-webcface-send -t text test
-```
-を実行し、そこに文字列を打ち込んでみましょう。
-今度はWebUIから「webcface-send」→「Text Variables」を開くと入力した文字列が表示されるはずです。
+@warning WebUI では数値配列のデータの表示が未実装です (配列の先頭の値のみが表示されます)
 
-```
-$ webcface-send -t text test
-hello, world!
-```
+### text
+
+文字列データを送受信する型です。
+
+WebUI では図のように文字列が表示されます。
+
 ![tutorial_text](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_text.png)
 
 ### log
