@@ -74,7 +74,7 @@ WebUI では受信したデータがグラフとして表示されます。
 
 \warning WebUI では数値配列のデータの表示が未実装です (配列の先頭の値のみが表示されます)
 
-### text
+### Text
 
 文字列データを送受信する型です。
 
@@ -82,10 +82,18 @@ WebUI では図のように文字列が表示されます。
 
 ![tutorial_text](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_text.png)
 
-### view
+### View
 図のようにテキストやボタンなどの配置を指定してWebUIに表示させる機能です。
 
 ![tutorial_view.png](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_view.png)
+
+### Image
+画像データを送受信する型です。
+C++ではOpenCVの画像データと相互変換できます。
+
+画像のリサイズ、圧縮などの処理をサーバー側でやる機能があります
+
+WebUIでは最大10fpsで画像を表示できます。
 
 ### log
 ```sh
