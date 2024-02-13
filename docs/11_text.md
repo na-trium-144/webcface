@@ -1,9 +1,13 @@
 # Text
 
-API Reference →
-C++ webcface::Text
-JavaScript [Text](https://na-trium-144.github.io/webcface-js/classes/Text.html)
-Python [webcface.Text](https://na-trium-144.github.io/webcface-python/webcface.text.html#webcface.text.Text)
+\since
+<span class="since-c"></span>
+<span class="since-js"></span>
+<span class="since-py"></span>
+\sa
+* C++ webcface::Text
+* JavaScript [Text](https://na-trium-144.github.io/webcface-js/classes/Text.html)
+* Python [webcface.Text](https://na-trium-144.github.io/webcface-python/webcface.text.html#webcface.text.Text)
 
 文字列データを送受信します。
 
@@ -107,80 +111,37 @@ Text::tryGet(), Text::tryGetRecurse() で値のリクエストをするととも
     hoge = wcli.member("foo").text("hoge").try_get()
     ```
     初回の呼び出しではまだ受信していないため、
-    tryGet() はNoneを返します。  
+    try_get() はNoneを返します。  
     get() はNoneの代わりに空文字列を返します。
 
 </div>
 
 ~~その後Client::sync()したときに実際にリクエストが送信され、~~  
-![c++ ver1.2](https://img.shields.io/badge/1.2~-00599c?logo=C%2B%2B)
-![js ver1.1](https://img.shields.io/badge/1.1~-f7df1e?logo=JavaScript&logoColor=black)
-![py ver1.0](https://img.shields.io/badge/1.0~-3776ab?logo=python&logoColor=white)
+<span class="since-c">1.2</span>
+<span class="since-js">1.1</span>
+<span class="since-py"></span>
 別スレッドでリクエストが送信され、それ以降は値が得られるようになります。
 
-@note ![js ver1.1](https://img.shields.io/badge/1.1~-f7df1e?logo=JavaScript&logoColor=black)
-![py ver1.0](https://img.shields.io/badge/1.0~-3776ab?logo=python&logoColor=white)
+\note
+<span class="since-js">1.1</span>
+<span class="since-py"></span>
 Text::request()で明示的にリクエストを送信することもできます。
 
 ### 時刻
 
 Text::time() でその値が送信されたとき(そのMemberがsync()したとき)の時刻が得られます。
 
-@note Pythonでは Member.sync_time()
+\note Pythonでは Member.sync_time()
 
 ### Entry
 
 ~~Member::texts() で~~ そのMemberが送信しているtextのリストが得られます  
-![c++ ver1.6](https://img.shields.io/badge/1.6~-00599c?logo=C%2B%2B)
+<span class="since-c">1.6</span>
 Member::textEntries() に変更
 
-<div class="tabbed">
+また、Member::onTextEntry() で新しくデータが追加されたときのコールバックを設定できます
 
-- <b class="tab-title">C++</b>
-    ```cpp
-    for(const webcface::Text &v: wcli.member("foo").textEntries()){
-        // ...
-    }
-    ```
-- <b class="tab-title">JavaScript</b>
-    ```js
-    for(const v of wcli.member("foo").texts()){
-        // ...
-    }
-    ```
-- <b class="tab-title">Python</b>
-    ```python
-    for v in wcli.member("foo").texts():
-        # ...
-    ```
-
-</div>
-
-Member::onTextEntry() で新しくデータが追加されたときのコールバックを設定できます
-
-<div class="tabbed">
-
-- <b class="tab-title">C++</b>
-    ```cpp
-    wcli.member("foo").onTextEntry().appendListener([](webcface::Text v){ /* ... */ });
-    ```
-- <b class="tab-title">JavaScript</b>
-    ```ts
-    import { Text } from "webcface";
-    wcli.member("foo").onTextEntry.on((v: Text) => { /* ... */ });
-    ```
-- <b class="tab-title">Python</b>
-    ```python
-    def text_entry(v: webcface.Text):
-        pass
-    wcli.member("foo").on_text_entry.connect(text_entry)
-    ```
-
-</div>
-
-ただし、コールバックを設定する前から存在したデータについてはコールバックは呼び出されません。
-Member名がわかっていれば初回のClient::sync()前に設定すればよいです。
-そうでなければClient::onMemberEntry()イベントのコールバックの中で各種イベントを設定すればよいです。
+いずれも使い方は [Value](./10_value.md) と同様なのでそちらを参照してください
 
 ### Event
 
@@ -189,31 +150,7 @@ Member名がわかっていれば初回のClient::sync()前に設定すればよ
 
 また、データが変化したどうかに関わらずそのMemberがsync()したときにコールバックを呼び出したい場合は Member::onSync() が使えます
 
-<div class="tabbed">
-
-- <b class="tab-title">C++</b>
-    ```cpp
-    wcli.member("foo").text("hoge").appendListener([](webcface::Text v){ /* ... */ });
-    wcli.member("foo").onSync().appendListener([](webcface::Member m){ /* ... */ });
-    ```
-- <b class="tab-title">JavaScript</b>
-    ```ts
-    import { Member, Text } from "webcface";
-    wcli.member("foo").text("hoge").on((v: Text) => { /* ... */ });
-    wcli.member("foo").onSync.on((m: Member) => { /* ... */ });
-    ```
-- <b class="tab-title">Python</b>
-    pythonでは Text.signal プロパティがこのイベントのsignalを返します。
-    ```python
-    def text_change(v: webcface.Text):
-        pass
-    wcli.member("foo").text("hoge").signal.connect(text_change)
-    def synced(m: webcface.Member):
-        pass
-    wcli.member("foo").on_sync.connect(synced)
-    ```
-
-</div>
+使い方は [Value](./10_value.md) と同様なのでそちらを参照してください
 
 <div class="section_buttons">
 

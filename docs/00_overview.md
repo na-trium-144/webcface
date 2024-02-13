@@ -2,6 +2,12 @@
 
 WebCFaceの機能紹介・チュートリアルです。
 
+このドキュメントでは仕様変更された機能は
+C,C++のwebcface <span class="since-c"></span>,
+webcface-js <span class="since-js"></span>,
+webcface-python <span class="since-py"></span>
+の画像で示します。
+
 ## 環境構築
 READMEにしたがって webcface, webcface-webui, webcface-tools をインストールしましょう。
 
@@ -30,7 +36,8 @@ WebUIの画面を閉じるとserverも終了します。
 (ソースコードとバイナリ配布はこのリポジトリではなく [webcface-webui](https://github.com/na-trium-144/webcface-webui) に含まれるので、ソースからビルドする場合または個別にダウンロードしたい場合はそちらを参照してください)
 
 ### サービスとして (Linuxのみ)
-![c++ ver1.5.3](https://img.shields.io/badge/1.5.3~-00599c?logo=C%2B%2B)
+
+\since <span class="since-c">1.5.3</span>
 
 配布しているdebパッケージでは [cmake/webcface-server.service](https://github.com/na-trium-144/webcface/blob/main/cmake/webcface-server.service) がインストールされ、
 ```sh
@@ -65,7 +72,7 @@ WebUI では受信したデータがグラフとして表示されます。
 
 ![tutorial_value](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_value.png)
 
-@warning WebUI では数値配列のデータの表示が未実装です (配列の先頭の値のみが表示されます)
+\warning WebUI では数値配列のデータの表示が未実装です (配列の先頭の値のみが表示されます)
 
 ### text
 
@@ -74,6 +81,11 @@ WebUI では受信したデータがグラフとして表示されます。
 WebUI では図のように文字列が表示されます。
 
 ![tutorial_text](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_text.png)
+
+### view
+図のようにテキストやボタンなどの配置を指定してWebUIに表示させる機能です。
+
+![tutorial_view.png](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_view.png)
 
 ### log
 ```sh
@@ -92,11 +104,6 @@ piyo
 [2023-10-19 19:40:38.447] [webcface-send] [info] piyo
 ```
 ![tutorial_logs](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_logs.png)
-
-### view
-現在コマンドラインからは使用できませんが、図のようにテキストやボタンなどの配置を指定して表示させる機能があります。
-
-![tutorial_view.png](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_view.png)
 
 ### func
 コマンドラインからは利用できませんが、関数をwebcfaceに登録し他のクライアントやWebUIから呼び出すことができます。
@@ -147,13 +154,14 @@ mainは各種データの送信、recvはmainが送信したデータの受信�
 
 ### C
 
-![c++ ver1.5](https://img.shields.io/badge/1.5~-00599c?logo=C%2B%2B)
+\since <span class="since-c">1.5</span>
+
 C++ではなくCからアクセスできるAPIもあります。
 [Interface for C](80_c_interface.md) を参照してください。
 MATLABなど、Cのライブラリにアクセスすることができる言語からwebcfaceのライブラリをロードして使用することができます。
 
 ~~CMakeの書き方はC++の場合と同じです。~~  
-![c++ ver1.5.1](https://img.shields.io/badge/1.5.1~-00599c?logo=C%2B%2B)
+<span class="since-c">1.5.1</span>
 Cの場合は `webcface::wcf` をリンクしてください。
 
 CMakeを使わない場合リンクするライブラリはC++の場合と同じです。

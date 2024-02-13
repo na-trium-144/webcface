@@ -1,9 +1,9 @@
 # Member
 
-API Reference →
-C++ webcface::Member
-JavaScript [Member](https://na-trium-144.github.io/webcface-js/classes/Member.html)
-Python [webcface.Member](https://na-trium-144.github.io/webcface-python/webcface.member.html#webcface.member.Member)
+\sa
+* C++ webcface::Member
+* JavaScript [Member](https://na-trium-144.github.io/webcface-js/classes/Member.html)
+* Python [webcface.Member](https://na-trium-144.github.io/webcface-python/webcface.member.html#webcface.member.Member)
 
 WebCFaceではサーバーに接続されたそれぞれのクライアントを Member と呼びます。
 (たぶんROSでいうと Node に相当します)
@@ -109,6 +109,41 @@ Client::onMemberEntry() で新しいメンバーが接続されたときのイ�
 </div>
 
 これ以降の章でもいくつかイベントが登場しますが、いずれもこれと同様の実装、使い方になっています。
+
+## クライアントの情報
+
+Member::libVersion(), Member::libName(), Member::remoteAddr() でクライアントの情報を取得できます。
+(WebUI の Connection Info に表示されているのと同じ情報が取得できます)
+
+## ping
+
+Member::pingStatus() でそのクライアントの通信速度を取得できます。(int型で、単位はms)
+通信速度の情報は5秒に1回更新され、更新されたときにonPingイベントが発生します
+
+
+<div class="tabbed">
+
+- <b class="tab-title">C++</b>
+    ```cpp
+    wcli.member("foo").onPing().appendListener([](webcface::Member m){
+        std::cout << m.name() << ": " << m.pingStatus() << " ms" << std::endl;
+    });
+    ```
+- <b class="tab-title">JavaScript</b>
+    ```ts
+    import { Member } from "webcface";
+    wcli.member("foo").onPing.on((m: Member) => {
+        console.log(`${m.name}: ${m.pingStatus} ms`);
+    });
+    ```
+- <b class="tab-title">Python</b>
+    ```python
+    def ping_update(m: webcface.Member):
+        print(f"{m.name}: {m.ping_status} ms")
+    wcli.member("foo").on_ping.connect(ping_update)
+    ```
+
+</div>
 
 <div class="section_buttons">
 

@@ -1,9 +1,13 @@
 # Value
 
-API Reference →
-C++ webcface::Value
-JavaScript [Value](https://na-trium-144.github.io/webcface-js/classes/Value.html)
-Python [webcface.Value](https://na-trium-144.github.io/webcface-python/webcface.value.html#webcface.value.Value)
+\since
+<span class="since-c"></span>
+<span class="since-js"></span>
+<span class="since-py"></span>
+\sa
+* C++ webcface::Value
+* JavaScript [Value](https://na-trium-144.github.io/webcface-js/classes/Value.html)
+* Python [webcface.Value](https://na-trium-144.github.io/webcface-python/webcface.value.html#webcface.value.Value)
 
 数値データ、または1次元数値配列を送受信する型です。
 
@@ -145,15 +149,15 @@ Value::tryGet(), Value::tryGetVec(), Value::tryGetRecurse() で値のリクエ�
     hoge = wcli.member("foo").value("hoge").try_get()
     ```
     初回の呼び出しではまだ受信していないため、
-    tryGet(), tryGetVec() はNoneを返します。  
+    try_get(), try_get_vec() はNoneを返します。  
     get(), getVec() はNoneの代わりにデフォルト値を返します。
 
 </div>
 
 ~~その後Client::sync()したときに実際にリクエストが送信され、~~  
-![c++ ver1.2](https://img.shields.io/badge/1.2~-00599c?logo=C%2B%2B)
-![js ver1.1](https://img.shields.io/badge/1.1~-f7df1e?logo=JavaScript&logoColor=black)
-![py ver1.0](https://img.shields.io/badge/1.0~-3776ab?logo=python&logoColor=white)
+<span class="since-c">1.2</span>
+<span class="since-js">1.1</span>
+<span class="since-py"></span>
 自動的に別スレッドでリクエストが送信され、それ以降は値が得られるようになります。
 そのため、次の例のように繰り返し取得して使ってください。
 
@@ -192,20 +196,21 @@ Value::tryGet(), Value::tryGetVec(), Value::tryGetRecurse() で値のリクエ�
 </div>
 
 
-@note ![js ver1.1](https://img.shields.io/badge/1.1~-f7df1e?logo=JavaScript&logoColor=black)
-![py ver1.0](https://img.shields.io/badge/1.0~-3776ab?logo=python&logoColor=white)
+\note
+<span class="since-js">1.1</span>
+<span class="since-py"></span>
 Value::request()で明示的にリクエストを送信することもできます。
 
 ### 時刻
 
 Value::time() でその値が送信されたとき(そのMemberがsync()したとき)の時刻が得られます。
 
-@note Pythonでは Member.sync_time()
+\note Pythonでは Member.sync_time()
 
 ### Entry
 
 ~~Member::values() で~~ そのMemberが送信しているvalueのリストが得られます  
-![c++ ver1.6](https://img.shields.io/badge/1.6~-00599c?logo=C%2B%2B)
+<span class="since-c">1.6</span>
 Member::valueEntries() に変更
 
 <div class="tabbed">

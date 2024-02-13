@@ -19,3 +19,10 @@ html.dark-mode {
     --fragment-background: #28342c;
     --fragment-foreground: #dbebe0;
 }
+.since > dt {
+    display: inline-block;
+    margin-right: 8px;
+}
+.since > dd {
+    display: inline-block;
+}
