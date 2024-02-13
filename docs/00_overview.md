@@ -95,6 +95,22 @@ C++ではOpenCVの画像データと相互変換できます。
 
 WebUIでは最大10fpsで画像を表示できます。
 
+### Canvas3D
+3D空間上のオブジェクト配置データを送受信する型です。
+
+WebUI上で3次元の図形を描画することができます。
+
+![tutorial_canvas3d.png](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_canvas3d.png)
+
+### RobotModel
+
+ロボットのリンクと関節の構造の情報を送受信する型です。
+事前に定義したRobotModelの各関節の角度だけを後で指定してCanvas3Dに描画することができます。
+
+WebUI上ではCanvas3D上に描画して表示する他、RobotModel単体でも表示することができます。
+
+![tutorial_wheel.png](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_wheel.png)
+
 ### log
 ```sh
 webcface-send -t log

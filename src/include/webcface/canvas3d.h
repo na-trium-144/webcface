@@ -248,6 +248,9 @@ class Canvas3D : protected Field, public EventTarget<Canvas3D> {
 
     /*!
      * \brief Geometryを追加
+     * \param geometry 表示する図形
+     * \param origin geometryを移動する
+     * \param color 表示色 (省略時のinheritはWebUI上ではgrayと同じ)
      *
      */
     WEBCFACE_DLL Canvas3D &add(const Geometry &geometry,
@@ -264,7 +267,7 @@ class Canvas3D : protected Field, public EventTarget<Canvas3D> {
     /*!
      * \brief Geometryを追加
      *
-     * originを省略した場合 identity()
+     * originを省略した場合 identity() になる
      *
      */
     WEBCFACE_DLL Canvas3D &add(const Geometry &geometry,

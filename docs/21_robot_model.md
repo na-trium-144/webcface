@@ -1,30 +1,15 @@
 # RobotModel
 
-![c++ ver1.4](https://img.shields.io/badge/1.4~-00599c?logo=C%2B%2B)
-![js ver1.3](https://img.shields.io/badge/1.3~-f7df1e?logo=JavaScript&logoColor=black)
-
-API Reference → webcface::RobotModel
+\since
+<span class="since-c">1.4</span>
+<span class="since-js">1.3</span>
+\sa
+* C++ webcface::RobotModel
+* JavaScript [RobotModel](https://na-trium-144.github.io/webcface-js/classes/RobotModel.html)
+* Python 未実装 <!--[webcface.Canvas3D](https://na-trium-144.github.io/webcface-python/webcface.canvas3d.html#webcface.canvas3d.Canvas3D)-->
 
 RobotModelはリンク(link)と関節(joint)の構造を定義します。
-WebUIで [Canvas3D](20_canvas3d.md) 上に表示して関節を動かすことができます。
-RobotModel単体でそのまま表示することもできます。
-
-Member::robotModel() でRobotModelクラスのオブジェクトが得られます
-```cpp
-webcface::RobotModel hoge = wcli.member("a").robotModel("hoge");
-```
-
-Member::robotModels() でそのMemberが送信しているRobotModelのリストが得られます
-```cpp
-for(const webcface::RobotModel &v: wcli.member("a").robotModels()){
-    // ...
-}
-```
-
-Member::onRobotModelEntry() で新しくデータが追加されたときのコールバックを設定できます
-```cpp
-wcli.member("a").onRobotModelEntry().appendListener([](webcface::RobotModel v){ /* ... */ });
-```
+[Canvas3D](20_canvas3d.md) 上に表示して関節を動かすことができます。
 
 ## 送信(定義)
 
