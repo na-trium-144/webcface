@@ -226,8 +226,7 @@ data = {
 * lは変更されていない分も含めたviewの全要素数です
 * dのindexはstring型で、要素のindexを10進数で文字列にしたものです
 	* 例えば `[text("aaa"), text("bbb"), text("ccc")]` が `[text("aaa"), text("ccc"), text("bbb")]` に変更された場合のメッセージは `{"d": {"1": {"t": 0, "x": "ccc"}, "2": {"t": 0, "x": "bbb"}}}`
-* ![c++ ver1.1](https://img.shields.io/badge/1.1~-00599c?logo=C%2B%2B) 
-dのindexをnumber型からstring型に変更
+* <span class="since-c">1.1</span> dのindexをnumber型からstring型に変更
 
 ### view entry (kind = 23)
 * value entryと同様
@@ -248,7 +247,7 @@ data = {
 
 ## Image
 
-![c++ ver1.3](https://img.shields.io/badge/1.3~-00599c?logo=C%2B%2B)
+\since <span class="since-c">1.3</span>
 
 ### image (kind = 5)
 ```js
@@ -294,9 +293,61 @@ data = {
 ```
 * value resと同様
 
+## Canvas2D
+
+\since <span class="since-c">1.6</span>
+
+### canvas2d (kind = 4)
+```js
+data = {
+	f: string, // name
+	w: number, // width
+	h: number, // height
+	d: {
+		index: {
+			t: number, // type
+			op: number[2], // origin pos
+			or: number, // origin rot
+			c: number, // color
+			f: number, // fill
+			s: number, // stroke width
+			gt: number | null, // geometry type
+			gp: number[], // geometry properties
+		},
+		index: {},
+		...
+	},
+	l: number, // data length
+}
+```
+* viewと同様、前回のsyncから変更された要素のみを送る
+* lは変更されていない分も含めたcanvasの全要素数
+* dのindexはstring型で、要素のindexを10進数で文字列にしたもの
+* geometry propertiesの要素数と内容はgeometryの種類によって異なる
+
+### canvas2d entry (kind = 24)
+* value entryと同様
+
+### canvas2d req (kind = 44)
+* value req と同様
+
+### canvas2d res (kind = 64)
+```js
+data = {
+	i: number, // request id
+	f: string, // sub field name
+	w: number, // width
+	h: number, // height
+	d: {...},
+	l: number,
+}
+```
+* value resと同様
+
+
 ## Canvas3D
 
-![c++ ver1.4](https://img.shields.io/badge/1.4~-00599c?logo=C%2B%2B)
+\since <span class="since-c">1.4</span>
 
 ### canvas3d (kind = 7)
 ```js
@@ -345,7 +396,7 @@ data = {
 
 ## RobotModel
 
-![c++ ver1.4](https://img.shields.io/badge/1.4~-00599c?logo=C%2B%2B)
+\since <span class="since-c">1.4</span>
 
 ### robotmodel (kind = 6)
 ```js

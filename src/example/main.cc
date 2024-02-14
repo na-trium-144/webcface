@@ -141,9 +141,10 @@ int main() {
         }
 
         auto v = c.view("test_buttons");
-        v << "　　" << webcface::button("↑", []{}) << std::endl;
-        v << webcface::button("←", []{}) << "　　" << webcface::button("→", []{}) << std::endl;
-        v << "　　" << webcface::button("↓", []{}) << std::endl;
+        v << "　　" << webcface::button("↑", [] {}) << std::endl;
+        v << webcface::button("←", [] {}) << "　　"
+          << webcface::button("→", [] {}) << std::endl;
+        v << "　　" << webcface::button("↓", [] {}) << std::endl;
         v.sync();
 
         auto world = c.canvas3D("omniwheel_world");
@@ -162,6 +163,30 @@ int main() {
                   {{"line_rotation", -i}});
         world.sync();
 
+
+        {
+            auto cv = c.canvas2D("canvas");
+            cv.init(100, 100);
+            cv.add(webcface::rect({10, 10}, {90, 90}),
+                   webcface::ViewColor::black);
+            cv.add(webcface::circle(webcface::Point{50, 50}, 20),
+                   webcface::ViewColor::red);
+            webcface::Transform pos{
+                {50 + 20 * std::cos(i / 3.0), 50 - 20 * std::sin(i / 3.0)},
+                -i / 3.0};
+            cv.add(webcface::polygon(
+                       {{0, -5}, {-5, 0}, {-5, 10}, {5, 10}, {5, 0}}),
+                   pos, webcface::ViewColor::black, webcface::ViewColor::yellow,
+                   2);
+            cv.add(webcface::circle(webcface::Point{-5, 0}, 2), pos,
+                   webcface::ViewColor::black, webcface::ViewColor::gray, 0.5);
+            cv.add(webcface::circle(webcface::Point{-5, 10}, 2), pos,
+                   webcface::ViewColor::black, webcface::ViewColor::gray, 0.5);
+            cv.add(webcface::circle(webcface::Point{5, 10}, 2), pos,
+                   webcface::ViewColor::black, webcface::ViewColor::gray, 0.5);
+            cv.add(webcface::circle(webcface::Point{5, 0}, 2), pos,
+                   webcface::ViewColor::black, webcface::ViewColor::gray, 0.5);
+        }
 
         ++i;
 

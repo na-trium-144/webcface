@@ -26,6 +26,7 @@ Internal::ClientData::ClientData(const std::string &name,
       message_queue(std::make_shared<Common::Queue<std::string>>()),
       value_store(name), text_store(name), func_store(name), view_store(name),
       image_store(name), robot_model_store(name), canvas3d_store(name),
+      canvas2d_store(name),
       log_store(std::make_shared<
                 SyncDataStore1<std::shared_ptr<std::vector<LogLine>>>>(name)),
       sync_time_store(name),
@@ -132,6 +133,7 @@ void Internal::ClientData::syncDataFirst() {
     std::lock_guard image_lock(image_store.mtx);
     std::lock_guard robot_model_lock(robot_model_store.mtx);
     std::lock_guard canvas3d_lock(canvas3d_store.mtx);
+    std::lock_guard canvas2d_lock(canvas2d_store.mtx);
     std::lock_guard log_lock(log_store->mtx);
 
     std::stringstream buffer;
@@ -176,6 +178,13 @@ void Internal::ClientData::syncDataFirst() {
                               {}, v.first, v2.first, v2.second});
         }
     }
+    for (const auto &v : canvas2d_store.transferReq()) {
+        for (const auto &v2 : v.second) {
+            Message::pack(buffer, len,
+                          Message::Req<Message::Canvas2D>{
+                              {}, v.first, v2.first, v2.second});
+        }
+    }
     for (const auto &v : image_store.transferReq()) {
         for (const auto &v2 : v.second) {
             Message::pack(buffer, len,
@@ -204,6 +213,7 @@ void Internal::ClientData::syncData(bool is_first) {
     std::lock_guard image_lock(image_store.mtx);
     std::lock_guard robot_model_lock(robot_model_store.mtx);
     std::lock_guard canvas3d_lock(canvas3d_store.mtx);
+    std::lock_guard canvas2d_lock(canvas2d_store.mtx);
     std::lock_guard log_lock(log_store->mtx);
 
     std::stringstream buffer;
@@ -225,12 +235,40 @@ void Internal::ClientData::syncData(bool is_first) {
     for (const auto &v : robot_model_store.transferSend(is_first)) {
         Message::pack(buffer, len, Message::RobotModel{v.first, v.second});
     }
-    for (const auto &p : view_store.transferSendDiff<Message::View>(is_first)) {
-        Message::pack(buffer, len, p);
+    auto view_prev = view_store.getSendPrev(is_first);
+    for (const auto &p : view_store.transferSend(is_first)) {
+        auto v_prev = view_prev.find(p.first);
+        auto v_diff = view_store.getDiff(
+            p.second.get(),
+            v_prev == view_prev.end() ? nullptr : v_prev->second.get());
+        if (!v_diff->empty()) {
+            Message::pack(buffer, len,
+                          Message::View{p.first, v_diff, p.second->size()});
+        }
     }
-    for (const auto &p :
-         canvas3d_store.transferSendDiff<Message::Canvas3D>(is_first)) {
-        Message::pack(buffer, len, p);
+    auto canvas3d_prev = canvas3d_store.getSendPrev(is_first);
+    for (const auto &p : canvas3d_store.transferSend(is_first)) {
+        auto v_prev = canvas3d_prev.find(p.first);
+        auto v_diff = canvas3d_store.getDiff(
+            p.second.get(),
+            v_prev == canvas3d_prev.end() ? nullptr : v_prev->second.get());
+        if (!v_diff->empty()) {
+            Message::pack(buffer, len,
+                          Message::Canvas3D{p.first, v_diff, p.second->size()});
+        }
+    }
+    auto canvas2d_prev = canvas2d_store.getSendPrev(is_first);
+    for (const auto &p : canvas2d_store.transferSend(is_first)) {
+        auto v_prev = canvas2d_prev.find(p.first);
+        auto v_diff = view_store.getDiff(
+            &p.second->components,
+            v_prev == canvas2d_prev.end() ? nullptr : &v_prev->second->components);
+        if (!v_diff->empty()) {
+            Message::pack(buffer, len,
+                          Message::Canvas2D{p.first, p.second->width,
+                                            p.second->height, v_diff,
+                                            p.second->components.size()});
+        }
     }
     for (const auto &v : image_store.transferSend(is_first)) {
         Message::pack(buffer, len, Message::Image{v.first, v.second});
@@ -370,6 +408,28 @@ void Internal::ClientData::onRecv(const std::string &message) {
                 (**v_prev)[std::stoi(d.first)] = d.second;
             }
             this->canvas3d_change_event.dispatch(
+                FieldBase{member, field},
+                Field{shared_from_this(), member, field});
+            break;
+        }
+        case MessageKind::canvas2d + MessageKind::res: {
+            auto r = std::any_cast<
+                WEBCFACE_NS::Message::Res<WEBCFACE_NS::Message::Canvas2D>>(obj);
+            std::lock_guard lock(this->canvas2d_store.mtx);
+            auto [member, field] =
+                this->canvas2d_store.getReq(r.req_id, r.sub_field);
+            auto v_prev = this->canvas2d_store.getRecv(member, field);
+            if (v_prev == std::nullopt) {
+                v_prev = std::make_shared<Canvas2DData>();
+                this->canvas2d_store.setRecv(member, field, *v_prev);
+            }
+            (*v_prev)->width = r.width;
+            (*v_prev)->height = r.height;
+            (*v_prev)->components.resize(r.length);
+            for (const auto &d : *r.data_diff) {
+                (*v_prev)->components[std::stoi(d.first)] = d.second;
+            }
+            this->canvas2d_change_event.dispatch(
                 FieldBase{member, field},
                 Field{shared_from_this(), member, field});
             break;
@@ -537,6 +597,16 @@ void Internal::ClientData::onRecv(const std::string &message) {
                 member, Field{shared_from_this(), member, r.field});
             break;
         }
+        case MessageKind::entry + MessageKind::canvas2d: {
+            auto r = std::any_cast<
+                WEBCFACE_NS::Message::Entry<WEBCFACE_NS::Message::Canvas2D>>(
+                obj);
+            auto member = this->getMemberNameFromId(r.member_id);
+            this->canvas2d_store.setEntry(member, r.field);
+            this->canvas2d_entry_event.dispatch(
+                member, Field{shared_from_this(), member, r.field});
+            break;
+        }
         case MessageKind::entry + MessageKind::robot_model: {
             auto r = std::any_cast<
                 WEBCFACE_NS::Message::Entry<WEBCFACE_NS::Message::RobotModel>>(
@@ -570,12 +640,14 @@ void Internal::ClientData::onRecv(const std::string &message) {
         case MessageKind::text:
         case MessageKind::view:
         case MessageKind::canvas3d:
+        case MessageKind::canvas2d:
         case MessageKind::robot_model:
         case MessageKind::image:
         case MessageKind::value + MessageKind::req:
         case MessageKind::text + MessageKind::req:
         case MessageKind::view + MessageKind::req:
         case MessageKind::canvas3d + MessageKind::req:
+        case MessageKind::canvas2d + MessageKind::req:
         case MessageKind::robot_model + MessageKind::req:
         case MessageKind::image + MessageKind::req:
         case MessageKind::ping_status_req:

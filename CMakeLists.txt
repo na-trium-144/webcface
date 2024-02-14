@@ -373,6 +373,7 @@ set(CLI_SRC
     ${CPP_DIR}/client/text.cc
     ${CPP_DIR}/client/robot_model.cc
     ${CPP_DIR}/client/canvas3d.cc
+    ${CPP_DIR}/client/canvas2d.cc
     ${CPP_DIR}/client/value.cc
     ${CPP_DIR}/client/view.cc
     ${CPP_DIR}/client/image.cc
@@ -400,6 +401,7 @@ set(TEST_SRC
     ${CPP_DIR}/test/view_test.cc
     ${CPP_DIR}/test/robot_model_test.cc
     ${CPP_DIR}/test/canvas3d_test.cc
+    ${CPP_DIR}/test/canvas2d_test.cc
     ${CPP_DIR}/test/image_test.cc
     ${CPP_DIR}/test/member_test.cc
     ${CPP_DIR}/test/logger_test.cc

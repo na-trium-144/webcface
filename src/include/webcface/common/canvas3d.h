@@ -10,14 +10,20 @@
 namespace WEBCFACE_NS {
 inline namespace Common {
 
+/*!
+ * \brief Canvas3Dと2Dで共用、図形の種類を表す
+ *
+ */
 enum class GeometryType {
     none = 0,
     line = 1,
     plane = 2,
+    rect = 2,
     box = 3,
     circle = 4,
     cylinder = 5,
     sphere = 6,
+    polygon = 7,
 };
 struct Geometry {
     GeometryType type;
@@ -26,6 +32,8 @@ struct Geometry {
     Geometry(GeometryType type, const std::vector<double> &properties)
         : type(type), properties(properties) {}
 };
+struct Geometry3D {};
+struct Geometry2D {};
 
 enum class Canvas3DComponentType {
     geometry = 0,

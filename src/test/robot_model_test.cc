@@ -39,7 +39,7 @@ TEST_F(RobotModelTest, eventTarget) {
 TEST_F(RobotModelTest, set) {
     data_->robot_model_change_event.appendListener(FieldBase{self_name, "b"},
                                                    callback());
-    model(self_name, "b").set({RobotLink{"a", {}, {}, ViewColor::black}});
+    model(self_name, "b").set({RobotLink{"a", Geometry{}, ViewColor::black}});
     EXPECT_EQ(data_->robot_model_store.getRecv(self_name, "b")->size(), 1);
     EXPECT_EQ(callback_called, 1);
     EXPECT_THROW(model("a", "b").set({}), std::invalid_argument);
@@ -47,7 +47,7 @@ TEST_F(RobotModelTest, set) {
 
 TEST_F(RobotModelTest, get) {
     data_->robot_model_store.setRecv(
-        "a", "b", {RobotLink{"a", {}, {}, ViewColor::black}});
+        "a", "b", {RobotLink{"a", Geometry{}, ViewColor::black}});
     EXPECT_EQ(model("a", "b").tryGet()->size(), 1);
     EXPECT_EQ(model("a", "b").get().size(), 1);
     EXPECT_EQ(model("a", "c").tryGet(), std::nullopt);

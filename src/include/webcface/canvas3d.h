@@ -4,6 +4,8 @@
 #include <ostream>
 #include <memory>
 #include <utility>
+#include <stdexcept>
+#include <concepts>
 #include "func.h"
 #include "event_target.h"
 #include "common/def.h"
@@ -16,7 +18,7 @@ namespace Internal {
 struct ClientData;
 }
 inline namespace Geometries {
-struct Line : Geometry {
+struct Line : Geometry, Geometry3D, Geometry2D {
     Line(const Point &begin, const Point &end)
         : Geometry(GeometryType::line,
                    {begin.pos()[0], begin.pos()[1], begin.pos()[2],
@@ -36,12 +38,64 @@ struct Line : Geometry {
 inline Line line(const Point &begin, const Point &end) {
     return Line(begin, end);
 }
-struct Plane : Geometry {
+struct Polygon : Geometry, Geometry3D, Geometry2D {
+    Polygon(const std::vector<Point> &points)
+        : Geometry(GeometryType::polygon, {}) {
+        for (const auto &p : points) {
+            properties.push_back(p.pos(0));
+            properties.push_back(p.pos(1));
+            properties.push_back(p.pos(2));
+        }
+    }
+    Polygon(const Geometry &rg) : Geometry(rg) {
+        if (properties.size() % 3 != 0 || size() == 0) {
+            throw std::invalid_argument("number of properties does not match");
+        }
+    }
+    std::size_t size() const { return properties.size() / 3; }
+    Point at(std::size_t i) const {
+        if (i >= size()) {
+            throw std::out_of_range("Polygon::at(" + std::to_string(i) +
+                                    "), size = " + std::to_string(size()));
+        }
+        return Point{properties[i * 3 + 0], properties[i * 3 + 1],
+                     properties[i * 3 + 2]};
+    }
+    Point operator[](std::size_t i) const { return at(i); }
+};
+inline Polygon polygon(const std::vector<Point> &points) {
+    return Polygon(points);
+}
+struct Plane : Geometry, Geometry3D, Geometry2D {
     Plane(const Transform &origin, double width, double height)
         : Geometry(GeometryType::plane,
                    {origin.pos()[0], origin.pos()[1], origin.pos()[2],
                     origin.rot()[0], origin.rot()[1], origin.rot()[2], width,
                     height}) {}
+    /*!
+     * ver1.6で追加
+     *
+     */
+    Plane(const Point &origin, double width, double height)
+        : Geometry(GeometryType::plane,
+                   {origin.pos()[0], origin.pos()[1], origin.pos()[2], 0, 0, 0,
+                    width, height}) {}
+    /*!
+     * ver1.6で追加
+     *
+     */
+    Plane(const Point &p1, const Point &p2)
+        : Geometry(GeometryType::plane, {}) {
+        Transform origin = identity();
+        for (int i = 0; i < 2; i++) {
+            origin.pos(i) = (p1.pos(i) + p2.pos(i)) / 2;
+        }
+        double width = std::abs(p1.pos(0) - p2.pos(0));
+        double height = std::abs(p1.pos(0) - p2.pos(0));
+        properties = {origin.pos(0), origin.pos(1), origin.pos(2),
+                      origin.rot(0), origin.rot(1), origin.rot(2),
+                      width,         height};
+    }
     Plane(const Geometry &rg) : Geometry(rg) {
         if (properties.size() != 8) {
             throw std::invalid_argument("number of properties does not match");
@@ -53,12 +107,29 @@ struct Plane : Geometry {
     }
     double width() const { return properties[6]; }
     double height() const { return properties[7]; }
+    /*!
+     * todo: 3次元のplaneの場合正しくない
+     *
+     */
+    Point vertex1() const {
+        return {properties[0] - width() / 2, properties[1] - height() / 2,
+                properties[2]};
+    }
+    Point vertex2() const {
+        return {properties[0] + width() / 2, properties[1] + height() / 2,
+                properties[2]};
+    }
 };
 inline Plane plane(const Transform &origin, double width, double height) {
     return Plane(origin, width, height);
 }
+using Rect = Plane;
+inline Rect rect(const Point &origin, double width, double height) {
+    return Rect(origin, width, height);
+}
+inline Rect rect(const Point &p1, const Point &p2) { return Rect(p1, p2); }
 
-struct Box : Geometry {
+struct Box : Geometry, Geometry3D {
     Box(const Point &vertex1, const Point &vertex2)
         : Geometry(GeometryType::box,
                    {vertex1.pos()[0], vertex1.pos()[1], vertex1.pos()[2],
@@ -76,15 +147,22 @@ struct Box : Geometry {
     }
 };
 inline Box box(const Point &vertex1, const Point &vertex2) {
-    return Box{vertex1, vertex2};
+    return Box(vertex1, vertex2);
 }
 
-struct Circle : Geometry {
+struct Circle : Geometry, Geometry3D, Geometry2D {
     Circle(const Transform &origin, double radius)
         : Geometry(GeometryType::circle,
                    {origin.pos()[0], origin.pos()[1], origin.pos()[2],
                     origin.rot()[0], origin.rot()[1], origin.rot()[2],
                     radius}) {}
+    /*!
+     * ver1.6で追加
+     *
+     */
+    Circle(const Point &origin, double radius)
+        : Geometry(GeometryType::circle, {origin.pos()[0], origin.pos()[1],
+                                          origin.pos()[2], 0, 0, 0, radius}) {}
     Circle(const Geometry &rg) : Geometry(rg) {
         if (properties.size() != 7) {
             throw std::invalid_argument("number of properties does not match");
@@ -97,10 +175,13 @@ struct Circle : Geometry {
     double radius() const { return properties[6]; }
 };
 inline Circle circle(const Transform &origin, double radius) {
-    return Circle{origin, radius};
+    return Circle(origin, radius);
+}
+inline Circle circle(const Point &origin, double radius) {
+    return Circle(origin, radius);
 }
 
-struct Cylinder : Geometry {
+struct Cylinder : Geometry, Geometry3D {
     Cylinder(const Transform &origin, double radius, double length)
         : Geometry(GeometryType::cylinder,
                    {origin.pos()[0], origin.pos()[1], origin.pos()[2],
@@ -123,7 +204,7 @@ inline Cylinder cylinder(const Transform &origin, double radius,
     return Cylinder{origin, radius, length};
 }
 
-struct Sphere : Geometry {
+struct Sphere : Geometry, Geometry3D {
     Sphere(const Point &origin, double radius)
         : Geometry(GeometryType::sphere, {origin.pos()[0], origin.pos()[1],
                                           origin.pos()[2], radius}) {}
@@ -253,9 +334,10 @@ class Canvas3D : protected Field, public EventTarget<Canvas3D> {
      * \param color 表示色 (省略時のinheritはWebUI上ではgrayと同じ)
      *
      */
-    WEBCFACE_DLL Canvas3D &add(const Geometry &geometry,
-                               const Transform &origin,
-                               const ViewColor &color = ViewColor::inherit) {
+    template <typename G>
+        requires std::derived_from<G, Geometry3D>
+    Canvas3D &add(const G &geometry, const Transform &origin,
+                  const ViewColor &color = ViewColor::inherit) {
         add({Canvas3DComponentType::geometry,
              origin,
              color,
@@ -270,8 +352,10 @@ class Canvas3D : protected Field, public EventTarget<Canvas3D> {
      * originを省略した場合 identity() になる
      *
      */
-    WEBCFACE_DLL Canvas3D &add(const Geometry &geometry,
-                               const ViewColor &color = ViewColor::inherit) {
+    template <typename G>
+        requires std::derived_from<G, Geometry3D>
+    Canvas3D &add(const G &geometry,
+                  const ViewColor &color = ViewColor::inherit) {
         add(geometry, identity(), color);
         return *this;
     }

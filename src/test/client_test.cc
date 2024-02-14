@@ -9,6 +9,9 @@
 #include <webcface/view.h>
 #include <webcface/func.h>
 #include <webcface/image.h>
+#include <webcface/canvas3d.h>
+#include <webcface/canvas2d.h>
+#include <webcface/robot_model.h>
 #include <webcface/common/def.h>
 #include "../message/message.h"
 #include <chrono>
@@ -189,6 +192,30 @@ TEST_F(ClientTest, entry) {
     callback_called = 0;
     ASSERT_EQ(m.viewEntries().size(), 1);
     EXPECT_EQ(m.viewEntries()[0].name(), "d");
+
+    m.onCanvas2DEntry().appendListener(callback<Canvas2D>());
+    dummy_s->send(Message::Entry<Message::Canvas2D>{{}, 10, "d"});
+    wait();
+    EXPECT_EQ(callback_called, 1);
+    callback_called = 0;
+    ASSERT_EQ(m.canvas2DEntries().size(), 1);
+    EXPECT_EQ(m.canvas2DEntries()[0].name(), "d");
+
+    m.onCanvas3DEntry().appendListener(callback<Canvas3D>());
+    dummy_s->send(Message::Entry<Message::Canvas3D>{{}, 10, "d"});
+    wait();
+    EXPECT_EQ(callback_called, 1);
+    callback_called = 0;
+    ASSERT_EQ(m.canvas3DEntries().size(), 1);
+    EXPECT_EQ(m.canvas3DEntries()[0].name(), "d");
+
+    m.onRobotModelEntry().appendListener(callback<RobotModel>());
+    dummy_s->send(Message::Entry<Message::RobotModel>{{}, 10, "d"});
+    wait();
+    EXPECT_EQ(callback_called, 1);
+    callback_called = 0;
+    ASSERT_EQ(m.robotModelEntries().size(), 1);
+    EXPECT_EQ(m.robotModelEntries()[0].name(), "d");
 
     m.onImageEntry().appendListener(callback<Image>());
     dummy_s->send(Message::Entry<Message::Image>{{}, 10, "d"});
@@ -415,6 +442,415 @@ TEST_F(ClientTest, viewReq) {
     EXPECT_EQ(data_->view_store.getRecv("a", "b").value()->at(1).type_,
               ViewComponentType::new_line);
 }
+TEST_F(ClientTest, canvas2DSend) {
+    wcli_->waitConnection();
+    data_->canvas2d_store.setSend(
+        "a",
+        std::make_shared<Canvas2DData>(
+            100, 100,
+            std::vector<Canvas2DComponentBase>{
+                {Canvas2DComponentType::geometry, identity(), ViewColor::black,
+                 ViewColor::white, 5, Geometries::line({0, 0}, {30, 30})},
+                {Canvas2DComponentType::geometry, identity(), ViewColor::black,
+                 ViewColor::white, 5, Geometries::rect({0, 0}, {30, 30})},
+                {Canvas2DComponentType::geometry, identity(), ViewColor::black,
+                 ViewColor::white, 5,
+                 Geometries::polygon({{0, 0}, {30, 30}, {50, 20}})},
+            }));
+    wcli_->sync();
+    wait();
+    dummy_s->recv<Message::Canvas2D>(
+        [&](const auto &obj) {
+            EXPECT_EQ(obj.field, "a");
+            EXPECT_EQ(obj.length, 3);
+            ASSERT_EQ(obj.data_diff->size(), 3);
+            EXPECT_EQ(obj.width, 100);
+            EXPECT_EQ(obj.height, 100);
+            EXPECT_EQ((*obj.data_diff)["0"].type,
+                      Canvas2DComponentType::geometry);
+            EXPECT_EQ((*obj.data_diff)["0"].color, ViewColor::black);
+            EXPECT_EQ((*obj.data_diff)["0"].fill, ViewColor::white);
+            EXPECT_EQ((*obj.data_diff)["0"].properties,
+                      (std::vector<double>{0, 0, 0, 30, 30, 0}));
+            EXPECT_EQ((*obj.data_diff)["0"].geometry_type, GeometryType::line);
+            EXPECT_EQ((*obj.data_diff)["1"].geometry_type, GeometryType::rect);
+            EXPECT_EQ((*obj.data_diff)["2"].geometry_type,
+                      GeometryType::polygon);
+        },
+        [&] { ADD_FAILURE() << "Canvas2D recv error"; });
+    dummy_s->recvClear();
+
+    data_->canvas2d_store.setSend(
+        "a",
+        std::make_shared<Canvas2DData>(
+            100, 100,
+            std::vector<Canvas2DComponentBase>{
+                {Canvas2DComponentType::geometry, identity(), ViewColor::red,
+                 ViewColor::white, 5, Geometries::line({0, 0}, {30, 30})},
+                {Canvas2DComponentType::geometry, identity(), ViewColor::black,
+                 ViewColor::white, 5, Geometries::rect({0, 0}, {30, 30})},
+                {Canvas2DComponentType::geometry, identity(), ViewColor::black,
+                 ViewColor::white, 5,
+                 Geometries::polygon({{0, 0}, {30, 30}, {50, 20}})},
+            }));
+    wcli_->sync();
+    wait();
+    dummy_s->recv<Message::Canvas2D>(
+        [&](const auto &obj) {
+            EXPECT_EQ(obj.field, "a");
+            EXPECT_EQ(obj.length, 3);
+            ASSERT_EQ(obj.data_diff->size(), 1);
+            EXPECT_EQ((*obj.data_diff)["0"].type,
+                      Canvas2DComponentType::geometry);
+            EXPECT_EQ((*obj.data_diff)["0"].color, ViewColor::red);
+            EXPECT_EQ((*obj.data_diff)["0"].fill, ViewColor::white);
+            EXPECT_EQ((*obj.data_diff)["0"].properties,
+                      (std::vector<double>{0, 0, 0, 30, 30, 0}));
+        },
+        [&] { ADD_FAILURE() << "Canvas2D recv error"; });
+}
+TEST_F(ClientTest, canvas2DReq) {
+    wcli_->waitConnection();
+    wcli_->member("a").canvas2D("b").tryGet();
+    wait();
+    wcli_->member("a").canvas2D("b").appendListener(callback<Canvas2D>());
+    dummy_s->recv<Message::Req<Message::Canvas2D>>(
+        [&](const auto &obj) {
+            EXPECT_EQ(obj.member, "a");
+            EXPECT_EQ(obj.field, "b");
+            EXPECT_EQ(obj.req_id, 1);
+        },
+        [&] { ADD_FAILURE() << "Canvas2D Req recv error"; });
+
+    auto v = std::make_shared<
+        std::unordered_map<std::string, Message::Canvas2D::Canvas2DComponent>>(
+        std::unordered_map<std::string, Message::Canvas2D::Canvas2DComponent>{
+            {"0",
+             {Canvas2DComponentType::geometry,
+              identity(),
+              ViewColor::black,
+              ViewColor::white,
+              5,
+              GeometryType::line,
+              {0, 0, 0, 30, 30, 0}}},
+            {"1",
+             {Canvas2DComponentType::geometry,
+              identity(),
+              ViewColor::black,
+              ViewColor::white,
+              5,
+              GeometryType::rect,
+              {0, 0}}},
+            {"2",
+             {Canvas2DComponentType::geometry,
+              identity(),
+              ViewColor::black,
+              ViewColor::white,
+              5,
+              GeometryType::polygon,
+              {0, 0, 0, 30, 30, 0, 50, 20, 0}}},
+        });
+    dummy_s->send(Message::Res<Message::Canvas2D>{1, "", 200, 200, v, 3});
+    dummy_s->send(Message::Res<Message::Canvas2D>{1, "c", 200, 200, v, 3});
+    wait();
+    EXPECT_EQ(callback_called, 1);
+    EXPECT_TRUE(data_->canvas2d_store.getRecv("a", "b").has_value());
+    EXPECT_EQ(data_->canvas2d_store.getRecv("a", "b").value()->width, 200);
+    EXPECT_EQ(data_->canvas2d_store.getRecv("a", "b").value()->height, 200);
+    EXPECT_EQ(
+        data_->canvas2d_store.getRecv("a", "b").value()->components.size(), 3);
+    EXPECT_EQ(
+        data_->canvas2d_store.getRecv("a", "b").value()->components.at(0).type_,
+        Canvas2DComponentType::geometry);
+    EXPECT_EQ(data_->canvas2d_store.getRecv("a", "b")
+                  .value()
+                  ->components.at(0)
+                  .color_,
+              ViewColor::black);
+    EXPECT_EQ(
+        data_->canvas2d_store.getRecv("a", "b").value()->components.at(0).fill_,
+        ViewColor::white);
+    EXPECT_EQ(data_->canvas2d_store.getRecv("a", "b")
+                  .value()
+                  ->components.at(0)
+                  .geometry_->type,
+              GeometryType::line);
+    EXPECT_EQ(data_->canvas2d_store.getRecv("a", "b")
+                  .value()
+                  ->components.at(0)
+                  .geometry_->properties,
+              (std::vector<double>{0, 0, 0, 30, 30, 0}));
+    EXPECT_EQ(
+        data_->canvas2d_store.getRecv("a", "b").value()->components.at(1).type_,
+        Canvas2DComponentType::geometry);
+    EXPECT_EQ(data_->canvas2d_store.getRecv("a", "b")
+                  .value()
+                  ->components.at(1)
+                  .geometry_->type,
+              GeometryType::rect);
+    EXPECT_TRUE(data_->canvas2d_store.getRecv("a", "b.c").has_value());
+
+    // 差分だけ送る
+    auto v2 = std::make_shared<
+        std::unordered_map<std::string, Message::Canvas2D::Canvas2DComponent>>(
+        std::unordered_map<std::string, Message::Canvas2D::Canvas2DComponent>{
+            {"0",
+             {Canvas2DComponentType::geometry,
+              identity(),
+              ViewColor::red,
+              ViewColor::white,
+              5,
+              GeometryType::line,
+              {0, 0, 0, 30, 30, 0}}},
+        });
+    dummy_s->send(Message::Res<Message::Canvas2D>{1, "", 100, 100, v2, 3});
+    wait();
+    EXPECT_EQ(callback_called, 2);
+    EXPECT_EQ(
+        data_->canvas2d_store.getRecv("a", "b").value()->components.size(), 3);
+    EXPECT_EQ(
+        data_->canvas2d_store.getRecv("a", "b").value()->components.at(0).type_,
+        Canvas2DComponentType::geometry);
+    EXPECT_EQ(data_->canvas2d_store.getRecv("a", "b")
+                  .value()
+                  ->components.at(0)
+                  .color_,
+              ViewColor::red);
+    EXPECT_EQ(
+        data_->canvas2d_store.getRecv("a", "b").value()->components.at(0).fill_,
+        ViewColor::white);
+    EXPECT_EQ(data_->canvas2d_store.getRecv("a", "b")
+                  .value()
+                  ->components.at(0)
+                  .geometry_->type,
+              GeometryType::line);
+    EXPECT_EQ(data_->canvas2d_store.getRecv("a", "b")
+                  .value()
+                  ->components.at(0)
+                  .geometry_->properties,
+              (std::vector<double>{0, 0, 0, 30, 30, 0}));
+    EXPECT_EQ(
+        data_->canvas2d_store.getRecv("a", "b").value()->components.at(1).type_,
+        Canvas2DComponentType::geometry);
+    EXPECT_EQ(data_->canvas2d_store.getRecv("a", "b")
+                  .value()
+                  ->components.at(1)
+                  .geometry_->type,
+              GeometryType::rect);
+}
+TEST_F(ClientTest, canvas3DSend) {
+    wcli_->waitConnection();
+    data_->canvas3d_store.setSend(
+        "a", std::make_shared<std::vector<Canvas3DComponentBase>>(
+                 std::vector<Canvas3DComponentBase>{
+                     {Canvas3DComponentType::geometry,
+                      identity(),
+                      ViewColor::black,
+                      Geometries::line({0, 0, 0}, {30, 30, 30}),
+                      std::nullopt,
+                      {}},
+                     {Canvas3DComponentType::geometry,
+                      identity(),
+                      ViewColor::black,
+                      Geometries::rect({0, 0}, {30, 30}),
+                      std::nullopt,
+                      {}},
+                     {Canvas3DComponentType::geometry,
+                      identity(),
+                      ViewColor::black,
+                      Geometries::sphere({0, 0, 0}, 1),
+                      std::nullopt,
+                      {}},
+                 }));
+    wcli_->sync();
+    wait();
+    dummy_s->recv<Message::Canvas3D>(
+        [&](const auto &obj) {
+            EXPECT_EQ(obj.field, "a");
+            EXPECT_EQ(obj.length, 3);
+            ASSERT_EQ(obj.data_diff->size(), 3);
+            EXPECT_EQ((*obj.data_diff)["0"].type,
+                      Canvas3DComponentType::geometry);
+            EXPECT_EQ((*obj.data_diff)["0"].color, ViewColor::black);
+            EXPECT_EQ((*obj.data_diff)["0"].geometry_properties,
+                      (std::vector<double>{0, 0, 0, 30, 30, 30}));
+            EXPECT_EQ((*obj.data_diff)["0"].geometry_type, GeometryType::line);
+            EXPECT_EQ((*obj.data_diff)["1"].geometry_type, GeometryType::rect);
+            EXPECT_EQ((*obj.data_diff)["2"].geometry_type,
+                      GeometryType::sphere);
+        },
+        [&] { ADD_FAILURE() << "Canvas3D recv error"; });
+    dummy_s->recvClear();
+
+    data_->canvas3d_store.setSend(
+        "a", std::make_shared<std::vector<Canvas3DComponentBase>>(
+                 std::vector<Canvas3DComponentBase>{
+                     {Canvas3DComponentType::geometry,
+                      identity(),
+                      ViewColor::red,
+                      Geometries::line({0, 0, 0}, {30, 30, 30}),
+                      std::nullopt,
+                      {}},
+                     {Canvas3DComponentType::geometry,
+                      identity(),
+                      ViewColor::black,
+                      Geometries::rect({0, 0}, {30, 30}),
+                      std::nullopt,
+                      {}},
+                     {Canvas3DComponentType::geometry,
+                      identity(),
+                      ViewColor::black,
+                      Geometries::sphere({0, 0, 0}, 1),
+                      std::nullopt,
+                      {}},
+                 }));
+    wcli_->sync();
+    wait();
+    dummy_s->recv<Message::Canvas3D>(
+        [&](const auto &obj) {
+            EXPECT_EQ(obj.field, "a");
+            EXPECT_EQ(obj.length, 3);
+            ASSERT_EQ(obj.data_diff->size(), 1);
+            EXPECT_EQ((*obj.data_diff)["0"].type,
+                      Canvas3DComponentType::geometry);
+            EXPECT_EQ((*obj.data_diff)["0"].color, ViewColor::red);
+            EXPECT_EQ((*obj.data_diff)["0"].geometry_properties,
+                      (std::vector<double>{0, 0, 0, 30, 30, 30}));
+            EXPECT_EQ((*obj.data_diff)["0"].geometry_type, GeometryType::line);
+        },
+        [&] { ADD_FAILURE() << "Canvas3D recv error"; });
+}
+TEST_F(ClientTest, canvas3DReq) {
+    wcli_->waitConnection();
+    wcli_->member("a").canvas3D("b").tryGet();
+    wait();
+    wcli_->member("a").canvas3D("b").appendListener(callback<Canvas3D>());
+    dummy_s->recv<Message::Req<Message::Canvas3D>>(
+        [&](const auto &obj) {
+            EXPECT_EQ(obj.member, "a");
+            EXPECT_EQ(obj.field, "b");
+            EXPECT_EQ(obj.req_id, 1);
+        },
+        [&] { ADD_FAILURE() << "Canvas3D Req recv error"; });
+
+    auto v = std::make_shared<
+        std::unordered_map<std::string, Message::Canvas3D::Canvas3DComponent>>(
+        std::unordered_map<std::string, Message::Canvas3D::Canvas3DComponent>{
+            {"0",
+             Canvas3DComponentBase{Canvas3DComponentType::geometry,
+                                   identity(),
+                                   ViewColor::black,
+                                   Geometries::line({0, 0, 0}, {30, 30, 30}),
+                                   std::nullopt,
+                                   {}}},
+            {"1", Canvas3DComponentBase{Canvas3DComponentType::geometry,
+                                        identity(),
+                                        ViewColor::black,
+                                        Geometries::rect({0, 0}, {30, 30}),
+                                        std::nullopt,
+                                        {}}},
+            {"2", Canvas3DComponentBase{Canvas3DComponentType::geometry,
+                                        identity(),
+                                        ViewColor::black,
+                                        Geometries::sphere({0, 0, 0}, 1),
+                                        std::nullopt,
+                                        {}}},
+        });
+    dummy_s->send(Message::Res<Message::Canvas3D>{1, "", v, 3});
+    dummy_s->send(Message::Res<Message::Canvas3D>{1, "c", v, 3});
+    wait();
+    EXPECT_EQ(callback_called, 1);
+    EXPECT_TRUE(data_->canvas3d_store.getRecv("a", "b").has_value());
+    EXPECT_EQ(data_->canvas3d_store.getRecv("a", "b").value()->size(), 3);
+    EXPECT_EQ(data_->canvas3d_store.getRecv("a", "b").value()->at(0).type_,
+              Canvas3DComponentType::geometry);
+    EXPECT_EQ(data_->canvas3d_store.getRecv("a", "b").value()->at(0).color_,
+              ViewColor::black);
+    EXPECT_EQ(
+        data_->canvas3d_store.getRecv("a", "b").value()->at(0).geometry_->type,
+        GeometryType::line);
+    EXPECT_EQ(data_->canvas3d_store.getRecv("a", "b")
+                  .value()
+                  ->at(0)
+                  .geometry_->properties,
+              (std::vector<double>{0, 0, 0, 30, 30, 30}));
+    EXPECT_EQ(data_->canvas3d_store.getRecv("a", "b").value()->at(1).type_,
+              Canvas3DComponentType::geometry);
+    EXPECT_EQ(
+        data_->canvas3d_store.getRecv("a", "b").value()->at(1).geometry_->type,
+        GeometryType::rect);
+    EXPECT_TRUE(data_->canvas3d_store.getRecv("a", "b.c").has_value());
+
+    // 差分だけ送る
+    auto v2 = std::make_shared<
+        std::unordered_map<std::string, Message::Canvas3D::Canvas3DComponent>>(
+        std::unordered_map<std::string, Message::Canvas3D::Canvas3DComponent>{
+            {"0",
+             Canvas3DComponentBase{Canvas3DComponentType::geometry,
+                                   identity(),
+                                   ViewColor::red,
+                                   Geometries::line({0, 0, 0}, {30, 30, 30}),
+                                   std::nullopt,
+                                   {}}},
+        });
+    dummy_s->send(Message::Res<Message::Canvas3D>{1, "", v2, 3});
+    wait();
+    EXPECT_EQ(callback_called, 2);
+    EXPECT_EQ(data_->canvas3d_store.getRecv("a", "b").value()->size(), 3);
+    EXPECT_EQ(data_->canvas3d_store.getRecv("a", "b").value()->at(0).type_,
+              Canvas3DComponentType::geometry);
+    EXPECT_EQ(data_->canvas3d_store.getRecv("a", "b").value()->at(0).color_,
+              ViewColor::red);
+    EXPECT_EQ(
+        data_->canvas3d_store.getRecv("a", "b").value()->at(0).geometry_->type,
+        GeometryType::line);
+    EXPECT_EQ(data_->canvas3d_store.getRecv("a", "b")
+                  .value()
+                  ->at(0)
+                  .geometry_->properties,
+              (std::vector<double>{0, 0, 0, 30, 30, 30}));
+    EXPECT_EQ(data_->canvas3d_store.getRecv("a", "b").value()->at(1).type_,
+              Canvas3DComponentType::geometry);
+    EXPECT_EQ(
+        data_->canvas3d_store.getRecv("a", "b").value()->at(1).geometry_->type,
+        GeometryType::rect);
+}
+TEST_F(ClientTest, robotModelSend) {
+    wcli_->waitConnection();
+    data_->robot_model_store.setSend(
+        "a", {RobotLink{"a", Geometry{}, ViewColor::black}});
+    wcli_->sync();
+    wait();
+    dummy_s->recv<Message::RobotModel>(
+        [&](const auto &obj) {
+            EXPECT_EQ(obj.field, "a");
+            EXPECT_EQ(obj.data->size(), 1);
+        },
+        [&] { ADD_FAILURE() << "RobotModel recv error"; });
+}
+TEST_F(ClientTest, robotModelReq) {
+    wcli_->waitConnection();
+    wcli_->member("a").robotModel("b").tryGet();
+    wait();
+    wcli_->member("a").robotModel("b").appendListener(callback<RobotModel>());
+    dummy_s->recv<Message::Req<Message::RobotModel>>(
+        [&](const auto &obj) {
+            EXPECT_EQ(obj.member, "a");
+            EXPECT_EQ(obj.field, "b");
+            EXPECT_EQ(obj.req_id, 1);
+        },
+        [&] { ADD_FAILURE() << "RobotModel Req recv error"; });
+    dummy_s->send(Message::Res<Message::RobotModel>{
+        1, "", {RobotLink{"a", Geometry{}, ViewColor::black}}});
+    dummy_s->send(Message::Res<Message::RobotModel>{
+        1, "c", {RobotLink{"a", Geometry{}, ViewColor::black}}});
+    wait();
+    EXPECT_EQ(callback_called, 1);
+    EXPECT_TRUE(data_->robot_model_store.getRecv("a", "b").has_value());
+    EXPECT_EQ(data_->robot_model_store.getRecv("a", "b").value().size(), 1);
+    EXPECT_TRUE(data_->robot_model_store.getRecv("a", "b.c").has_value());
+    EXPECT_EQ(data_->robot_model_store.getRecv("a", "b.c").value().size(), 1);
+}
 TEST_F(ClientTest, imageSend) {
     wcli_->waitConnection();
     data_->image_store.setSend(
@@ -435,14 +871,15 @@ TEST_F(ClientTest, imageReq) {
     wcli_->member("a").image("b").tryGet();
     wait();
     wcli_->member("a").image("b").appendListener(callback<Image>());
-    dummy_s->recv<Message::Req<Message::Image>>([&](const auto &obj) {
-        EXPECT_EQ(obj.member, "a");
-        EXPECT_EQ(obj.field, "b");
-        EXPECT_EQ(obj.req_id, 1);
-        EXPECT_EQ(static_cast<ImageReq>(obj),
-                  (ImageReq{std::nullopt, std::nullopt, std::nullopt,
-                            ImageCompressMode::raw, 0, std::nullopt}));
-    },
+    dummy_s->recv<Message::Req<Message::Image>>(
+        [&](const auto &obj) {
+            EXPECT_EQ(obj.member, "a");
+            EXPECT_EQ(obj.field, "b");
+            EXPECT_EQ(obj.req_id, 1);
+            EXPECT_EQ(static_cast<ImageReq>(obj),
+                      (ImageReq{std::nullopt, std::nullopt, std::nullopt,
+                                ImageCompressMode::raw, 0, std::nullopt}));
+        },
         [&] { ADD_FAILURE() << "Image Req recv error"; });
     ImageFrame img(100, 100,
                    std::make_shared<std::vector<unsigned char>>(100 * 100 * 3));
@@ -451,9 +888,11 @@ TEST_F(ClientTest, imageReq) {
     wait();
     EXPECT_EQ(callback_called, 1);
     ASSERT_TRUE(data_->image_store.getRecv("a", "b").has_value());
-    EXPECT_EQ(data_->image_store.getRecv("a", "b")->data().size(), img.data().size());
+    EXPECT_EQ(data_->image_store.getRecv("a", "b")->data().size(),
+              img.data().size());
     ASSERT_TRUE(data_->image_store.getRecv("a", "b.c").has_value());
-    EXPECT_EQ(data_->image_store.getRecv("a", "b.c")->data().size(), img.data().size());
+    EXPECT_EQ(data_->image_store.getRecv("a", "b.c")->data().size(),
+              img.data().size());
 }
 TEST_F(ClientTest, logSend) {
     wcli_->waitConnection();
@@ -500,7 +939,8 @@ TEST_F(ClientTest, logReq) {
     dummy_s->send(Message::Log{
         10, std::make_shared<std::deque<Message::Log::LogLine>>(
                 std::deque<Message::Log::LogLine>{
-                    LogLine{0, std::chrono::system_clock::now(), std::string(100000, 'a')},
+                    LogLine{0, std::chrono::system_clock::now(),
+                            std::string(100000, 'a')},
                     LogLine{1, std::chrono::system_clock::now(), "b"},
                 })});
     wait();
@@ -508,7 +948,8 @@ TEST_F(ClientTest, logReq) {
     EXPECT_TRUE(data_->log_store->getRecv("a").has_value());
     EXPECT_EQ(data_->log_store->getRecv("a").value()->size(), 2);
     EXPECT_EQ(data_->log_store->getRecv("a").value()->at(0).level, 0);
-    EXPECT_EQ(data_->log_store->getRecv("a").value()->at(0).message.size(), 100000);
+    EXPECT_EQ(data_->log_store->getRecv("a").value()->at(0).message.size(),
+              100000);
 
     dummy_s->send(Message::Log{
         10, std::make_shared<std::deque<Message::Log::LogLine>>(
