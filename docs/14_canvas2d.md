@@ -39,7 +39,6 @@ Pointでは x, y 座標、Transformでは回転角(radianで、 (x, y) = (1, 0) 
     console.log(r.pos[0]); // 1 (x座標)
     console.log(r.rot[0]); // pi / 2 (z軸回り)
     ```
-    Transform.tfMatrix2 で3x3の同次変換行列が得られます。
 
 </div>
 

@@ -158,6 +158,13 @@ C++ではOpenCVの画像データと相互変換できます。
 
 WebUIでは最大10fpsで画像を表示できます。
 
+### Canvas2D
+2Dの図形の描画データを送受信する型です。
+
+WebUI上で2次元の図形を描画することができます。
+
+![tutorial_canvas2d.png](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_canvas2d.png)
+
 ### Canvas3D
 3D空間上のオブジェクト配置データを送受信する型です。
 
