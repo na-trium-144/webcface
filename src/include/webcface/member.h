@@ -63,6 +63,9 @@ class Member : protected Field {
     Canvas3D canvas3D(const std::string &field) const {
         return Canvas3D{*this, field};
     }
+    Canvas2D canvas2D(const std::string &field) const {
+        return Canvas2D{*this, field};
+    }
     Log log() const { return Log{*this}; }
 
     /*!

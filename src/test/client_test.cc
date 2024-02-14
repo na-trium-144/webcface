@@ -214,8 +214,8 @@ TEST_F(ClientTest, entry) {
     wait();
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
-    ASSERT_EQ(m.robotModels().size(), 1);
-    EXPECT_EQ(m.robotModels()[0].name(), "d");
+    ASSERT_EQ(m.robotModelEntries().size(), 1);
+    EXPECT_EQ(m.robotModelEntries()[0].name(), "d");
 
     m.onImageEntry().appendListener(callback<Image>());
     dummy_s->send(Message::Entry<Message::Image>{{}, 10, "d"});
