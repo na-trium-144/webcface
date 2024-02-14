@@ -56,6 +56,9 @@ Client::value からValueオブジェクトを作り、 Value::set() でデー�
 ROSのTopicではPointやTransformなど目的に応じてさまざまな型が用意されていますが、
 WebCFaceではそういう場合はValueを複数用意して送信することを想定しています。
 
+\todo
+Pythonの辞書型への対応は未実装
+
 <div class="tabbed">
 
 - <b class="tab-title">C++</b>
@@ -205,7 +208,9 @@ Value::request()で明示的にリクエストを送信することもできま�
 
 Value::time() でその値が送信されたとき(そのMemberがsync()したとき)の時刻が得られます。
 
-\note Pythonでは Member.sync_time()
+\note
+Pythonでは Member.sync_time() です
+C++,JavaScriptでも今後仕様変更して統一するかも
 
 ### Entry
 

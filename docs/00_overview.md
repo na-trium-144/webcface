@@ -111,28 +111,17 @@ WebUI上ではCanvas3D上に描画して表示する他、RobotModel単体でも
 
 ![tutorial_wheel.png](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_wheel.png)
 
-### log
-```sh
-webcface-send -t log
-```
-を実行し、そこに文字列を打ち込んでみましょう。
-WebUIから「webcface-send」→「Logs」を開くと入力した文字列が表示されるはずです。
-
-```
-$ webcface-send -t log
-hoge
-[2023-10-19 19:40:35.603] [webcface-send] [info] hoge
-fuga
-[2023-10-19 19:40:37.000] [webcface-send] [info] fuga
-piyo
-[2023-10-19 19:40:38.447] [webcface-send] [info] piyo
-```
-![tutorial_logs](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_logs.png)
-
-### func
-コマンドラインからは利用できませんが、関数をwebcfaceに登録し他のクライアントやWebUIから呼び出すことができます。
+### Func
+関数をwebcfaceに登録し、他のクライアントやWebUIから呼び出すことができます。
 
 ![tutorial_func.png](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_func.png)
+
+### Log
+エラーメッセージなどを送受信するデータ型です。
+出力した文字列1行ごとにタイムスタンプとログのレベルの情報を加えて送信し、WebUIに表示することができます。
+
+![tutorial_logs](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_logs.png)
+
 
 ## tools
 webcface-toolsには`webcface-send`の他にもWebCFaceと通信して使うプログラムがいくつかあります。

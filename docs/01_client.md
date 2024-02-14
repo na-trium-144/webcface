@@ -105,13 +105,16 @@ Funcの呼び出しとデータ受信リクエストの送信は sync() とは�
 
 Client::close() で切断します。
 
-* C++ではClientのデストラクタでも自動的に切断します。
+\note
+C++ではClientのデストラクタでも自動的に切断します。
 
 ## サーバーの情報
 
 Client::serverVersion(), Client::serverName() でサーバーの情報を取得できます。
-* ただしClientの接続が完了し受信するまでは取得できません(空文字列になります)。
-    * 受信するのは waitConnection() の待機完了よりも後です。
+
+\warning
+Clientの接続が完了し受信するまでは取得できません(空文字列になります)。
+受信するのは waitConnection() の待機完了よりも後です。
 
 ## ログ出力
 
@@ -123,6 +126,7 @@ Client::serverVersion(), Client::serverName() でサーバーの情報を取得�
 `WEBCFACE_VERBOSE` 環境変数が存在する場合、WebCFaceの通信に関するログ(接続、切断、メッセージのエラー)が出力されます。
 また `WEBCFACE_TRACE` 環境変数が存在すると内部で使用しているlibcurlの出力も表示します。
 
+\note
 <span class="since-js">1.1</span>
 ClientのコンストラクタでlogLevelに `"trace"` または `"verbose"` を指定することでも表示できます。
 
