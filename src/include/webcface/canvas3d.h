@@ -36,7 +36,7 @@ struct Line : Geometry, Geometry3D, Geometry2D {
     }
 };
 inline Line line(const Point &begin, const Point &end) {
-    return line(begin, end);
+    return Line(begin, end);
 }
 struct Polygon : Geometry, Geometry3D, Geometry2D {
     Polygon(const std::vector<Point> &points)
