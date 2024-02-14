@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <optional>
+#include <concepts>
 #include "field.h"
 #include "event_target.h"
 #include "common/def.h"
@@ -42,88 +43,70 @@ class Member : protected Field {
      */
     std::string name() const { return member_; }
 
-    /*!
-     * \brief valueを参照する。
-     *
-     */
-    WEBCFACE_DLL Value value(const std::string &field) const;
-    /*!
-     * \brief textを参照する。
-     *
-     */
-    WEBCFACE_DLL Text text(const std::string &field) const;
-    /*!
-     * \brief robot_modelを参照する。
-     *
-     */
-    WEBCFACE_DLL RobotModel robotModel(const std::string &field) const;
-    /*!
-     * \brief imageを参照する。
-     *
-     */
-    WEBCFACE_DLL Image image(const std::string &field) const;
-    /*!
-     * \brief funcを参照する。
-     *
-     */
-    WEBCFACE_DLL Func func(const std::string &field) const;
-
+    Value value(const std::string &field) const { return Value{*this, field}; }
+    Text text(const std::string &field) const { return Text{*this, field}; }
+    RobotModel robotModel(const std::string &field) const {
+        return RobotModel{*this, field};
+    }
+    Image image(const std::string &field) const { return Image{*this, field}; }
+    Func func(const std::string &field) const { return Func{*this, field}; }
     /*!
      * \brief AnonymousFuncオブジェクトを作成しfuncをsetする
      *
      */
-    // template <typename T>
-    // AnonymousFunc func(const T &func) const{
-    // todo:
-    // ここでfunc.hにアクセスする必要があるためヘッダーの読み込み順を変えないといけない
-    // }
-
-    /*!
-     * \brief viewを参照する。
-     *
-     */
-    WEBCFACE_DLL View view(const std::string &field) const;
-    /*!
-     * \brief canvas3dを参照する。
-     *
-     */
-    WEBCFACE_DLL Canvas3D canvas3D(const std::string &field) const;
-    /*!
-     * \brief canvas2dを参照する。
-     *
-     */
-    WEBCFACE_DLL Canvas2D canvas2D(const std::string &field) const;
-    /*!
-     * \brief logを参照する。
-     *
-     */
-    WEBCFACE_DLL Log log() const;
+    template <typename T>
+        requires(!std::convertible_to<T, std::string>)
+    AnonymousFunc func(const T &func) const {
+        return AnonymousFunc{*this, func};
+    }
+    View view(const std::string &field) const { return View{*this, field}; }
+    Canvas3D canvas3D(const std::string &field) const {
+        return Canvas3D{*this, field};
+    }
+    Log log() const { return Log{*this}; }
 
     /*!
      * \brief このmemberが公開しているvalueのリストを返す。
      *
+     * (ver1.6で values から名前変更)
+     *
      */
-    WEBCFACE_DLL std::vector<Value> values() const;
+    WEBCFACE_DLL std::vector<Value> valueEntries() const;
+    [[deprecated]] std::vector<Value> values() const { return valueEntries(); }
     /*!
      * \brief このmemberが公開しているtextのリストを返す。
      *
+     * (ver1.6で texts から名前変更)
+     *
      */
-    WEBCFACE_DLL std::vector<Text> texts() const;
+    WEBCFACE_DLL std::vector<Text> textEntries() const;
+    [[deprecated]] std::vector<Text> texts() const { return textEntries(); }
     /*!
      * \brief このmemberが公開しているrobotModelのリストを返す。
      *
+     * (ver1.6で robotModels から名前変更)
+     *
      */
-    WEBCFACE_DLL std::vector<RobotModel> robotModels() const;
+    WEBCFACE_DLL std::vector<RobotModel> robotModelEntries() const;
+    [[deprecated]] std::vector<RobotModel> robotModels() const {
+        return robotModelEntries();
+    }
     /*!
      * \brief このmemberが公開しているfuncのリストを返す。
      *
+     * (ver1.6で funcs から名前変更)
+     *
      */
-    WEBCFACE_DLL std::vector<Func> funcs() const;
+    WEBCFACE_DLL std::vector<Func> funcEntries() const;
+    [[deprecated]] std::vector<Func> funcs() const { return funcEntries(); }
     /*!
      * \brief このmemberが公開しているviewのリストを返す。
      *
+     * (ver1.6で views から名前変更)
+     *
      */
-    WEBCFACE_DLL std::vector<View> views() const;
+    WEBCFACE_DLL std::vector<View> viewEntries() const;
+    [[deprecated]] std::vector<View> views() const { return viewEntries(); }
     /*!
      * \brief このmemberが公開しているcanvas3dのリストを返す。
      *
@@ -137,8 +120,11 @@ class Member : protected Field {
     /*!
      * \brief このmemberが公開しているimageのリストを返す。
      *
+     * (ver1.6で images から名前変更)
+     *
      */
-    WEBCFACE_DLL std::vector<Image> images() const;
+    WEBCFACE_DLL std::vector<Image> imageEntries() const;
+    [[deprecated]] std::vector<Image> images() const { return imageEntries(); }
 
     /*!
      * \brief valueが追加された時のイベント

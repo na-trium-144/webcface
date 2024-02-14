@@ -1,116 +1,139 @@
 # Log
 
-API Reference → webcface::Log
+\since
+<span class="since-c"></span>
+<span class="since-js"></span>
+<span class="since-py"></span>
+\sa
+* C++ webcface::Log
+* JavaScript [Log](https://na-trium-144.github.io/webcface-js/classes/Log.html)
+* Python [webcface.Log](https://na-trium-144.github.io/webcface-python/webcface.log.html#webcface.log.Log)
 
 テキストのログ出力を送受信します。
 
-## ログを出力する
-
-### C++
-[spdlog](https://github.com/gabime/spdlog) ライブラリを利用しています。
-
-Client::logger() でspdlogのloggerを取得でき、これを使ってログを出力できます
-```cpp
-wcli.logger()->info("this is info");
-wcli.logger()->error("this is error, error no = {}", 123);
+## コマンドライン
+```sh
+webcface-send -t log
 ```
-これと同様に`trace`, `debug`, `info`, `warn`, `error`, `critical`の6段階のログレベルを使うことができます。
+を実行し、文字列を入力すると送信されます。
 
-上の例のようにspdlogではfmtライブラリを使用しており数値などをフォーマットして出力することができます。
-詳細は[spdlog](https://github.com/gabime/spdlog), [fmt](https://github.com/fmtlib/fmt)を参照してください
+他のコマンドからpipeしてWebCFaceに送信するという使い方ができます。
 
-Client::logger() はwebcfaceに送信するだけでなく標準出力にも出力します。
-この挙動を変えたい場合はlogger()->sinks()を変更するか、
-またClient::loggerSink()でログをwebcfaceに送信するsinkを取得できるのでこれを他のloggerにセットして使うこともできます。
+## 送信
 
-spdlogではなくostreamを使いたい場合は
-```cpp
-wcli.loggerOStream() << "hello" << std::endl;
-```
-のように出力したり、
-```cpp
-std::cout.rdbuf(&wcli.loggerStreamBuf());
-std::cout << "hello" << std::endl;
-```
-のようにcoutやcerrの出力先を置き換えることができます。
-この場合はログレベルが設定できず、常にinfoになります。
+<div class="tabbed">
 
-### Python
-Python標準のloggingモジュールを使います。
+- <b class="tab-title">C++</b>
+    [spdlog](https://github.com/gabime/spdlog) ライブラリを利用しています。
 
-Client.logging_handler をLoggerのhandlerとして追加して使います。
-```py
-from logging import getLogger, DEBUG, StreamHandler
-logger = getLogger(__name__)
-logger.setLevel(DEBUG)
-ch = StreamHandler()
-ch.setLevel(DEBUG)
-logger.addHandler(ch)
-logger.addHandler(wcli.logger_handler) # これでloggerのhandlerに登録される
+    Client::logger() はwebcfaceとstderrに出力するloggerです。
+    これを使ってログを出力できます
+    ```cpp
+    wcli.logger()->info("this is info");
+    wcli.logger()->error("this is error, error no = {}", 123);
+    ```
+    これと同様に`trace`, `debug`, `info`, `warn`, `error`, `critical`の6段階のログレベルを使うことができます。
 
-logger.info("hello") # コンソールとwebcfaceの両方に出力される
-```
+    上の例のようにspdlogではfmtライブラリを使用しており数値などをフォーマットして出力することができます。
+    詳細は[spdlog](https://github.com/gabime/spdlog), [fmt](https://github.com/fmtlib/fmt)を参照してください
 
-また、printを使いたい場合などは Client.logging_io で取得できるIOオブジェクトが使えます。
-```py
-import sys
-sys.stdout = wcli.logging_io
-print("hello")
-```
-### JavaScript
-[log4js](https://www.npmjs.com/package/log4js)を使います。
+    Client::loggerSink()でログをwebcfaceに送信するsinkを取得できるので、これを他のloggerにセットして使うこともできます。
+    または Client.logger() の出力先のsinkを変更することもできます。
+    (詳細はspdlogのドキュメントを読んでください。)
 
-log4jsのappenderにClient.logAppenderを登録すると出力されます。
-```js
-import log4js from "log4js";
+    spdlogではなくostreamを使いたい場合は
+    ```cpp
+    wcli.loggerOStream() << "hello" << std::endl;
+    ```
+    のように出力したり、
+    ```cpp
+    std::cout.rdbuf(&wcli.loggerStreamBuf());
+    std::cout << "hello" << std::endl;
+    ```
+    のようにcoutやcerrの出力先を置き換えることができます。
+    この場合はログレベルが設定できず、常にinfoになります。
 
-log4js.configure({
-  appenders: {
-    out: { type: "stdout" },
-    wcli: { type: wcli.logAppender },
-  },
-  categories: {
-    default: { appenders: ["out", "wcli"], level: "debug" },
-  },
-});
-const logger = log4js.getLogger();
-logger.info("this is info");
-logger.warn("this is warn");
-logger.error("this is error");
-```
+- <b class="tab-title">JavaScript</b>
+    [log4js](https://www.npmjs.com/package/log4js)を使います。
 
-## ログを取得する
+    log4jsのappenderにClient.logAppenderを登録すると出力されます。
+    ```js
+    import log4js from "log4js";
 
-Member::log() でLogクラスのオブジェクトが得られます
-```cpp
-webcface::Log log_a = wcli.member("a").log();
-```
+    log4js.configure({
+      appenders: {
+        out: { type: "stdout" },
+        wcli: { type: wcli.logAppender },
+      },
+      categories: {
+        default: { appenders: ["out", "wcli"], level: "debug" },
+      },
+    });
+    const logger = log4js.getLogger();
+    logger.info("this is info");
+    logger.warn("this is warn");
+    logger.error("this is error");
+    ```
 
-Log::tryGet() でログデータが得られます。
-Valueなどと同様、初回の呼び出しではstd::nulloptを返し、2回目以降はログデータを取得できます。
-```cpp
-std::nullopt<std::vector<webcface::LogLine>> log = log_a.tryGet();
-```
-Log::get() はstd::nulloptの代わりに空のリストを返す点以外は同じです。
+- <b class="tab-title">Python</b>
+    Python標準のloggingモジュールを使うことができます。
 
-![c++ ver1.1.9](https://img.shields.io/badge/1.1.9~-00599c?logo=C%2B%2B)
+    Client.logging_handler をLoggerのhandlerとして追加して使います。
+    ```py
+    from logging import getLogger, DEBUG, StreamHandler
+    logger = getLogger(__name__)
+    logger.setLevel(DEBUG)
+    ch = StreamHandler()
+    ch.setLevel(DEBUG)
+    logger.addHandler(ch)
+    logger.addHandler(wcli.logger_handler) # これでloggerのhandlerに登録される
+
+    logger.info("hello") # コンソールとwebcfaceの両方に出力される
+    ```
+
+    printを使いたい場合など、 Client.logging_io で取得できるIOオブジェクトを使って送信することもできます。
+    logging_io はwebcfaceに送信すると同時に`sys.__stderr__`にも出力します。
+    ```py
+    import sys
+    sys.stdout = wcli.logging_io
+    print("hello")
+    ```
+
+</div>
+
+## 受信
+
+Member::log() でLogクラスのオブジェクトが得られ、
+Log::tryGet() でデータのリクエストをするとともにログが得られます。
+
+ログデータは
+webcface::LogLine
+(JavaScript [LogLine](https://na-trium-144.github.io/webcface-js/interfaces/LogLine.html),
+Python [webcface.LogLine](https://na-trium-144.github.io/webcface-python/webcface.log_handler.html#webcface.log_handler.LogLine))
+のリストとして得られ、
+メッセージ、ログレベル、時刻を取得できます。
+
+<span class="since-c">1.1.5</span>
+<span class="since-js">1.0.4</span>
+<span class="since-py"></span>
+Logオブジェクトにはこれまで受信したログデータがすべて含まれますが、
+前回からの差分だけが必要な場合は、データの処理後に Log::clear() で受信したログデータをすべて削除することもできます。
+
+\note
+<span class="since-c">1.1.9</span>
 サーバーは各クライアントのログを1000行まで保持しています。
 logの受信リクエストを送った時点から1000行より前のログは取得できません。
 serverの起動時のオプションでこの行数は変更できます。(`webcface-server -h`を参照)
 
-## 受信イベント
+### Event
 
-Log::appendListener() で受信したデータが変化したときにコールバックを呼び出すことができます
-```cpp
-wcli.member("a").log().appendListener([](Log v){ /* ... */ });
-```
-(Pythonでは Log.signal)
+受信したデータが変化したときにコールバックを呼び出すことができます。
+コールバックを設定することでもその値はリクエストされます。
 
-Logオブジェクトにはこれまで受信したログデータがすべて含まれます。  
-![c++ ver1.1.5](https://img.shields.io/badge/1.1.5~-00599c?logo=C%2B%2B)
-![js ver1.0.4](https://img.shields.io/badge/1.0.4~-f7df1e?logo=JavaScript&logoColor=black)
-![py ver1.0](https://img.shields.io/badge/1.0~-3776ab?logo=python&logoColor=white)
-前回からの差分だけが必要な場合は、データの処理後に Log::clear() で受信したログデータをすべて削除することもできます。
+また、データが変化したどうかに関わらずそのMemberがsync()したときにコールバックを呼び出したい場合は Member::onSync() が使えます
+
+使い方は [Value](./10_value.md) と同様なのでそちらを参照してください
+
 
 <div class="section_buttons">
 

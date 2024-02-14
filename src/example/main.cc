@@ -145,6 +145,12 @@ int main() {
             // v.sync();
         }
 
+        auto v = c.view("test_buttons");
+        v << "　　" << webcface::button("↑", []{}) << std::endl;
+        v << webcface::button("←", []{}) << "　　" << webcface::button("→", []{}) << std::endl;
+        v << "　　" << webcface::button("↓", []{}) << std::endl;
+        v.sync();
+
         auto world = c.canvas3D("omniwheel_world");
         world.add(webcface::plane({}, 3, 3), webcface::ViewColor::white);
         world.add(webcface::box({-1.5, -1.5, 0}, {1.5, -1.5, 0.1}),

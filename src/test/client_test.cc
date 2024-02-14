@@ -174,24 +174,24 @@ TEST_F(ClientTest, entry) {
     wait();
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
-    ASSERT_EQ(m.values().size(), 1);
-    EXPECT_EQ(m.values()[0].name(), "b");
+    ASSERT_EQ(m.valueEntries().size(), 1);
+    EXPECT_EQ(m.valueEntries()[0].name(), "b");
 
     m.onTextEntry().appendListener(callback<Text>());
     dummy_s->send(Message::Entry<Message::Text>{{}, 10, "c"});
     wait();
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
-    ASSERT_EQ(m.texts().size(), 1);
-    EXPECT_EQ(m.texts()[0].name(), "c");
+    ASSERT_EQ(m.textEntries().size(), 1);
+    EXPECT_EQ(m.textEntries()[0].name(), "c");
 
     m.onViewEntry().appendListener(callback<View>());
     dummy_s->send(Message::Entry<Message::View>{{}, 10, "d"});
     wait();
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
-    ASSERT_EQ(m.views().size(), 1);
-    EXPECT_EQ(m.views()[0].name(), "d");
+    ASSERT_EQ(m.viewEntries().size(), 1);
+    EXPECT_EQ(m.viewEntries()[0].name(), "d");
 
     m.onCanvas2DEntry().appendListener(callback<Canvas2D>());
     dummy_s->send(Message::Entry<Message::Canvas2D>{{}, 10, "d"});
@@ -222,8 +222,8 @@ TEST_F(ClientTest, entry) {
     wait();
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
-    ASSERT_EQ(m.images().size(), 1);
-    EXPECT_EQ(m.images()[0].name(), "d");
+    ASSERT_EQ(m.imageEntries().size(), 1);
+    EXPECT_EQ(m.imageEntries()[0].name(), "d");
 
     m.onFuncEntry().appendListener(callback<Func>());
     dummy_s->send(Message::FuncInfo{
@@ -232,8 +232,8 @@ TEST_F(ClientTest, entry) {
     wait();
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
-    EXPECT_EQ(m.funcs().size(), 1);
-    EXPECT_EQ(m.funcs()[0].name(), "a");
+    EXPECT_EQ(m.funcEntries().size(), 1);
+    EXPECT_EQ(m.funcEntries()[0].name(), "a");
 
     m.onSync().appendListener(callback<Member>());
     dummy_s->send(Message::Sync{10, std::chrono::system_clock::now()});

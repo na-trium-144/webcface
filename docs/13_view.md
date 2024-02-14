@@ -1,191 +1,323 @@
 # View
 
-API Reference → webcface::View, webcface::ViewComponent, webcface::ViewComponents
+\since
+<span class="since-c"></span>
+<span class="since-js"></span>
+<span class="since-py"></span>
+\sa
+* C++ webcface::View
+* JavaScript [View](https://na-trium-144.github.io/webcface-js/classes/View.html)
+* Python [webcface.View](https://na-trium-144.github.io/webcface-python/webcface.view.html#webcface.view.View)
 
-Viewデータを送受信します。
-
-Viewは文字列やボタンなどの要素(ViewComponent)を並べて、オリジナルのUIを表示できる機能です。
-(使用例はTutorialを参照)
-
-Member::view() でViewクラスのオブジェクトが得られます
-```cpp
-webcface::View view_hoge = wcli.member("a").view("hoge");
-```
-
-Member::views() でそのMemberが送信しているviewのリストが得られます
-```cpp
-for(const webcface::View &v: wcli.member("a").views()){
-	// ...
-}
-```
-
-Member::onViewEntry() で新しくデータが追加されたときのコールバックを設定できます
-```cpp
-wcli.member("a").onViewEntry().appendListener([](webcface::View v){ /* ... */ });
-```
+テキストやボタンなどの配置を送受信します。
 
 ## 送信
 
-自分自身の名前のMemberからViewオブジェクトを作り、
-View::add() などで要素を追加し、
-最後にView::sync()をしてからClient::sync()をすることで送信されます。
+<div class="tabbed">
 
-Viewはstd::ostreamを継承しており、 add() の代わりに v << 表示する値; というようにもできます。
-ostreamに出力可能なものはそのままviewに出力できます。
-ostreamと同様にフォーマットを指定したり、std::endlで改行もできます。
+- <b class="tab-title">C++</b>
+    Client::view からViewオブジェクトを作り、
+    View::add() などで要素を追加し、
+    最後にView::sync()をしてからClient::sync()をすることで送信されます。
 
-```cpp
-webcface::View v = wcli.view("hoge");
-// v.init(); // ←オブジェクトvを新規に構築せず繰り返し使いまわす場合は必要
-v << ...; // v.add(...) と等価
-v << ...;
-v.sync(); // ここまでにvに追加したものをクライアントに反映
+    Viewはstd::ostreamを継承しており、 add() の代わりに v << 表示する値; というようにもできます。
+    ostreamに出力可能なものはそのままviewにテキストとして出力できます。
+    ostreamと同様にフォーマットを指定したり、std::endlで改行もできます。
+    ```cpp
+    webcface::View v = wcli.view("hoge");
+    // v.init(); // ←オブジェクトvを新規に構築せず繰り返し使いまわす場合は必要
+    v << ...; // v.add(...) と等価
+    v << ...;
+    v.sync(); // ここまでにvに追加したものをクライアントに反映
+    wcli.sync();
+    ```
+    C++ではViewのデストラクタでも自動的にView.sync()が呼ばれます。
+    ```cpp
+    {
+        webcface::View v = wcli.view("hoge");
+        v << ...;
+        v << ...;
+        // v.sync(); (自動で呼ばれる)
+    }
+    wcli.sync();
+    ```
+    \note
+    <span class="since-c">1.2</span>
+    Viewオブジェクトをコピーした場合、Viewオブジェクトの内容はコピーされるのではなく共有され、そのすべてのコピーが破棄されるまでsync()は呼ばれません。
 
-wcli.sync();
-```
-C++ではViewのデストラクタでも自動的にView.sync()が呼ばれます。  
-![c++ ver1.2](https://img.shields.io/badge/1.2~-00599c?logo=C%2B%2B)
-Viewオブジェクトをコピーした場合、Viewオブジェクトの内容はコピーされるのではなく共有され、そのすべてのコピーが破棄されるまでsync()は呼ばれません。
-```cpp
-{
-	webcface::View v = wcli.view("hoge");
-	v << ...;
-	v << ...;
-	// v.sync(); (自動で呼ばれる)
-}
+- <b class="tab-title">JavaScript</b>
+    Client::view からViewオブジェクトを作り、
+    set()の引数に要素をまとめてセットして使います。
+    ```ts
+    wcli.view("hoge").set([
+        "hello",
+        123,
+        viewComponents.button("aaa", () => undefined)
+    ]);
+    ```
 
-wcli.sync();
-```
-
-
-Pythonでも使い方はC++と同様です。
-Pythonではwith構文を使って `with wcli.view("hoge") as v:` などとするとwithを抜けるときに自動でv.sync()がされます。
-```py
-v = wcli.view("hoge")
-# v.init(); ←オブジェクトvを新規に構築せず繰り返し使いまわす場合は必要
-v.add(...)
-v.sync()
-```
-```py
-with wcli.view("hoge") as v:
+- <b class="tab-title">Python</b>
+    Client.view からViewオブジェクトを作り、
+    View.add() などで要素を追加し、
+    最後にView.sync()をしてからClient.sync()をすることで送信されます。
+    ```py
+    v = wcli.view("hoge")
+    # v.init() ←オブジェクトvを新規に構築せず繰り返し使いまわす場合は必要
     v.add(...)
-    v.add(...)
-    # v.sync() (自動で呼ばれる)
-```
+    v.sync()
+    ```
+    with構文を使って `with wcli.view("hoge") as v:` などとするとwithを抜けるときに自動でv.sync()がされます。
+    ```py
+    with wcli.view("hoge") as v:
+        v.add(...)
+        v.add(...)
+        # v.sync() (自動で呼ばれる)
+    ```
 
-JavaScriptの場合、add(), init(), sync()は用意されておらず、set()の引数に要素をまとめてセットして使います。
-```js
-wcli.view("hoge").set([
-	"hello",
-	123,
-	viewComponents.button("aaa", () => undefined)
-]);
-```
+</div>
 
 ## ViewComponent
 Viewに追加する各種要素をViewComponentといいます。
 
-* C++では `webcface::ViewComponents` 名前空間に定義されています。 `using namespace webcface::ViewComponents;`をすると便利かもしれません
-	* `webcface::` の名前空間でもアクセス可能です
-* Pythonでは `webcface.view_somponents` モジュール内にあり、`from webcface.view_components import *` ができます
-* JavaScriptでは `viewComponents` オブジェクト内にあります
+<div class="tabbed">
+
+- <b class="tab-title">C++</b>
+    C++では `webcface::ViewComponents` 名前空間に定義されています。
+    ```cpp
+    using namespace webcface::ViewComponents;
+    ```
+    をすると便利かもしれません
+    \note ViewComponentsはinlineなので、 `webcface::` の名前空間でもアクセス可能です
+
+- <b class="tab-title">JavaScript</b>
+    JavaScriptでは [`viewComponents`](https://na-trium-144.github.io/webcface-js/variables/viewComponents.html) オブジェクト内にあります
+    ```ts
+    import { viewComponents } from "webcface";
+    ```
+
+- <b class="tab-title">Python</b>
+    Pythonでは [`webcface.view_somponents`](https://na-trium-144.github.io/webcface-python/webcface.view_components.html) モジュール内にあり、
+    ```python
+    from webcface.view_components import *
+    ```
+    とすることもできます
+
+</div>
 
 ### text
 文字列です。そのまま表示します。
-`webcface::ViewComponents::text(文字列)` の他、ostreamでフォーマット可能なデータはそのまま渡して文字列化できます。  
-View::add()関数, set()関数では数値やbool値は文字列に変換されます。
 
-以下はいずれも「hello」という文字列を表示します。
-```cpp
-v.add("hello");
-v << "hello";
-v << "he" << "llo";
-using namespace webcface::ViewComponents;
-v.add(text("hello"));
-v << text("hello");
-```
+<div class="tabbed">
+
+- <b class="tab-title">C++</b>
+    std::ostreamでフォーマット可能なデータはそのまま渡して文字列化できます。
+    View::add()関数, set()関数でも同様に文字列に変換されます。
+    ```cpp
+    v.add("hello").add(123);
+    v << "hello" << 123;
+    ```
+    `text(文字列)`を使うとテキストの色を変更することができます。
+    ```cpp
+    v.add(webcface::ViewComponents::text("hello").textColor(webcface::ViewColor::red));
+    v << webcface::ViewComponents::text("hello").textColor(webcface::ViewColor::red);
+    ```
+
+- <b class="tab-title">JavaScript</b>
+    string, number, boolean は文字列に変換されます。
+    ```ts
+    wcli.view("hoge").set([
+        "hello",
+        123,
+    ]);
+    ```
+    `text(文字列)`を使うとテキストの色を変更することができます。
+    ```ts
+    import { viewComponents, viewColor } from "webcface";
+    wcli.view("hoge").set([
+        viewComponents.text("hello", { textColor: viewColor.red }),
+        123,
+    ]);
+    ```
+
+- <b class="tab-title">Python</b>
+    str, int, float, bool は文字列に変換されます。
+    ```cpp
+    v.add("hello").add(123)
+    ```
+    `text(文字列)`を使うとテキストの色を変更することができます。
+    ```cpp
+    v.add(webcface.view_components.text("hello", text_color=webcface.view_components.view_color.RED))
+    ```
+
+</div>
 
 ### newLine
 改行します。
-`webcface::ViewComponents::newLine()` の他、`std::endl`や`"\n"`でも改行できます
 
-文字列中に`\n`があるとそこで改行されます。
-以下はいずれも「hello」を2行表示します。
-```cpp
-v.add("hello\nhello");
-v.add("hello").add("\n").add("hello");
-v << "hello\nhello";
-v << "hello" << std::endl << "hello";
-using namespace webcface::ViewComponents;
-v.add(text("hello")).add(newLine()).add(text("hello"));
-v << text("hello") << newLine() << text("hello");
-```
+<div class="tabbed">
+
+- <b class="tab-title">C++</b>
+    `webcface::ViewComponents::newLine()` の他、`std::endl`や`"\n"`でも改行できます。
+    `\n`は単体でなく文字列中にあってもそこで改行されます。
+    ```cpp
+    v.add("hello\nhello");
+    v.add("hello").add("\n").add("hello");
+    v << "hello\nhello";
+    v << "hello" << std::endl << "hello";
+    using namespace webcface::ViewComponents;
+    v.add(text("hello")).add(newLine()).add(text("hello"));
+    v << text("hello") << newLine() << text("hello");
+    ```
+- <b class="tab-title">JavaScript</b>
+    `newLine()`の他`"\n"`でも改行できます。
+    `\n`は単体でなく文字列中にあってもそこで改行されます。
+    ```ts
+    wcli.view("hoge").set([
+        "hello\nhello",
+        viewComponents.newLine(),
+        "hello",
+    ]);
+    ```
+
+- <b class="tab-title">Python</b>
+    `new_line()` の他、`"\n"`でも改行できます。
+    `\n`は単体でなく文字列中にあってもそこで改行されます。
+    ```cpp
+    v.add("hello\nhello");
+    v.add("hello").add("\n").add("hello");
+    v.add(text("hello")).add(new_line()).add(text("hello"));
+    ```
+
+</div>
+
 
 ### button
 ボタンを表示します。
 
-第2引数に関数を登録済みの[Funcオブジェクト](./30_func.md)、または関数を設定することでクリック時の動作を設定できます
+クリック時の動作は、関数を登録済みの[Funcオブジェクト](./30_func.md)、または関数を直接設定できます。
 
-```cpp
-using namespace webcface::ViewComponents;
-v.add(button("表示する文字列", wcli.func("func name")));
-// v.add(button("表示する文字列", wcli.func([](){ /* ... */ }))); 未実装
-v.add(button("表示する文字列", [](){ /* ... */ }));
-```
+\note 別のMemberのFuncオブジェクトを渡すこともできます
+(ボタンを押すと別のMemberに登録されている関数が実行される)
 
-<!--
-2行目のように Member::func() に関数を渡すと、名前を設定しないFuncオブジェクト(AnonymousFunc)が生成されます。
-実行される関数はfunc()を通さずに関数を渡した場合と同じですが、
-Funcオブジェクトなので実行条件などのオプションを設定することができます。
--->
+<div class="tabbed">
 
-### プロパティ
-文字色や背景色など各Componentに共通のプロパティがあります。
-(詳細は webcface::ViewComponent を参照)  
+- <b class="tab-title">C++</b>
+    Funcオブジェクトの場合
+    ```cpp
+    wcli.func("hoge").set(/*...*/);
+    v << webcface::ViewComponents.button("表示する文字列", wcli.func("hoge"));
+    // v.add(...) でも同様
+    ```
+    関数を直接渡す場合
+    (WebUIや他MemberからはFuncの存在は見えません)
+    ```cpp
+    v << webcface::ViewComponents.button("表示する文字列", [](){ /* ... */ });
+    ```
+    <span class="since-c">1.6</span> AnonymousFunc  
+    関数を直接渡す場合と同様Funcの存在は見えません  
+    Funcオブジェクトと同様実行条件などのオプションを設定することができます。
+    ```cpp
+    v << webcface::ViewComponents.button(
+        "表示する文字列",
+        wcli.func([](){ /* ... */ })/*.setRunCond...*/
+    );
+    ```
+    文字の色、背景色を設定できます
+    (デフォルトではどちらも `ViewColor::inherit` で、その場合WebUI上では文字色=black、背景色=greenになります)
+    ```cpp
+    v << webcface::ViewComponents::button(/* ... */)
+            .textColor(webcface::ViewColor::red)
+            .bgColor(webcface::ViewColor::yellow);
+    ```
+- <b class="tab-title">JavaScript</b>
+    Funcオブジェクトの場合
+    ```ts
+    wcli.func("hoge").set(/* ... */);
+    wcli.view("hoge").set([
+        viewComponents.button("表示する文字列", wcli.func("hoge")),
+    ]);
+    ```
+    関数を直接渡す場合
+    (WebUIや他MemberからはFuncの存在は見えません)
+    ```ts
+    wcli.view("hoge").set([
+        viewComponents.button("表示する文字列", () => {/* ... */})
+    ]);
+    ```
+    文字の色、背景色を設定できます
+    (デフォルトではどちらも `viewColor.inherit` で、その場合WebUI上では文字色=black、背景色=greenになります)
+    ```ts
+    wcli.view("hoge").set([
+        viewComponents.button(/* ... */, {
+            textColor: viewColor.red,
+            bgColor: viewColor.yellow,
+        })
+    ]);
+    ```
+- <b class="tab-title">Python</b>
+    Funcオブジェクトの場合
+    ```py
+    wcli.func("hoge").set(...)
+    v.add(webcface.view_components.button("表示する文字列", wcli.func("hoge")))
+    ```
+    関数を直接渡す場合
+    (WebUIや他MemberからはFuncの存在は見えません)
+    ```py
+    def hoge():
+        pass
+    v.add(webcface.view_components.button("表示する文字列", hoge));
+    ```
+    文字の色、背景色を設定できます
+    (デフォルトではどちらも `view_color.INHERIT` で、その場合WebUI上では文字色=black、背景色=greenになります)
+    ```py
+    v.add(webcface.view_components.button(
+        ... ,
+        text_color=webcface.view_components.view_color.RED,
+        bg_color=webcface.view_components.view_color.YELLOW,
+    ))
+    ```
 
-* textColor: 文字色
-* bgColor: 背景色
-* onClick: クリックしたときに実行される関数またはFuncオブジェクト
-
-色は webcface::ViewColor のenumで指定します。
-
-文字列の表示に対しても、明示的に`text(文字列)`という書き方にすればオプションを追加できます。
-
-C++では
-```cpp
-button("文字列", func).textColor(webcface::ViewColor::white).bgColor(webcface::ViewColor::red)
-```
-のようにメソッドチェーンして指定できます。
-
-Pythonでは
-```python
-button("文字列", func, text_color=ViewColor.WHITE, bg_color=ViewColor.RED)
-```
-のようにキーワード引数で設定できます。
-
-JavaScriptでは引数にオブジェクトを渡して
-```js
-button("文字列", func, { textColor: viewColor.white, bgColor: viewColor.red })
-```
-のように指定できます。
+</div>
 
 ## 受信
 
-ValueやTextと同様、 View::tryGet() で受信したViewデータを取得できます。
+ValueやTextと同様、Member::view() でViewクラスのオブジェクトが得られ、
+View::tryGet(), View::get() で受信したViewデータを取得できます。
 (これを使うのはViewを表示するアプリを作る場合などですかね)
 
-Viewデータは ViewComponent のリストとして得られ、
+Viewデータは
+webcface::ViewComponent
+(JavaScript [ViewComponent](https://na-trium-144.github.io/webcface-js/classes/ViewComponent.html),
+Python [webcface.ViewComponent](https://na-trium-144.github.io/webcface-python/webcface.view.html#webcface.view.ViewComponent))
+のリストとして得られ、
 ViewComponentオブジェクトから各種プロパティを取得できます。
 onClick()で得られるFuncオブジェクトは`runAsync()`などでそのまま実行させることができます。
 
-View::get() はstd::nulloptの代わりにデフォルト値を返す点以外は同じです。
 
-## 受信イベント
+### 時刻
 
-View::appendListener() で受信したデータが変化したときにコールバックを呼び出すことができます。
-(Pythonでは View.signal)
+View::time() でその値が送信されたとき(そのMemberがsync()したとき)の時刻が得られます。
 
-データが変化したどうかに関わらずそのMemberがsync()したときにコールバックを呼び出したい場合は Member::onSync() が使えます
+\note Pythonでは Member.sync_time()
+
+### Entry
+
+~~Member::views() で~~ そのMemberが送信しているviewのリストが得られます  
+<span class="since-c">1.6</span>
+Member::viewEntries() に変更
+
+また、Member::onViewEntry() で新しくデータが追加されたときのコールバックを設定できます
+
+いずれも使い方は [Value](./10_value.md) と同様なのでそちらを参照してください
+
+### Event
+
+受信したデータが変化したときにコールバックを呼び出すことができます。
+コールバックを設定することでもその値はリクエストされます。
+
+また、データが変化したどうかに関わらずそのMemberがsync()したときにコールバックを呼び出したい場合は Member::onSync() が使えます
+
+使い方は [Value](./10_value.md) と同様なのでそちらを参照してください
 
 <div class="section_buttons">
 
