@@ -209,6 +209,34 @@ Client::funcEntries()でその関数の存在を確認したりFunc::args()な�
 
     詳細は webcface::FuncCallHandle
 
+- <b class="tab-title">C</b>
+    ```c
+    wcfValType args_type[3] = {WCF_VAL_INT, WCF_VAL_DOUBLE, WCF_VAL_STRING};
+    wcfFuncListen(wcli, "hoge", args_type, 3, WCF_VAL_INT);
+    ```
+    で待ち受けを開始し、func.set()と同様関数が登録され他クライアントから見られるようになります。
+    (wcfFuncListen()ではブロックはしません)
+
+    その後、任意のタイミングで
+    ```c
+    wcfFuncCallHandle *handle;
+    wcfFuncFetchCall(wcli, "hoge", &handle);
+    ```
+    とすることで関数が呼び出されたかどうかを調べることができます。
+    listen時に指定した引数の個数と呼び出し時の個数が一致しない場合、fetchCallで取得する前に呼び出し元に例外が投げられます(呼び出されていないのと同じことになります)
+
+    その関数がまだ呼び出されていない場合は`WCF_NOT_CALLED`が返ります。
+    関数が呼び出された場合`WCF_OK`が返り、`handle->args`に引数が格納されます。
+    ```c
+    wcfMultiVal ans = wcfValD(123.45);
+    wcfFuncRespond(handle, &ans);
+    ```
+    で関数のreturnと同様に関数を終了して値を返したり、
+    ```c
+    wcfFuncReject(handle, "エラーメッセージ");
+    ```
+    でエラーメッセージを返すことができます(呼び出し元にはruntime_errorを投げたものとして返ります)
+
 </div>
 
 ## 関数の情報の取得
@@ -244,6 +272,20 @@ Func::run() で関数を実行できます。引数を渡すこともでき、�
     Funcオブジェクトに()と引数をつけて直接呼び出すことでも同様に実行できます。
     (`Func::operator()`)
 
+- <b class="tab-title">C</b>
+    ```c
+    wcfMultiVal args[3] = {
+        wcfValI(42), // int
+        wcfValD(1.5), // double
+        wcfValS("aaa"), // string
+    };
+    wcfMultiVal *ans;
+    int ret = wcfFuncRun(wcli_, "a", "b", args, 3, &ans);
+    // ex.) ret = WCF_OK, ans->as_double = 123.45
+    ```
+    関数が存在しない場合`WCF_NOT_FOUND`を返します。
+    関数が例外を投げた場合`WCF_EXCEPTION`を返し、ret->as_strにエラーメッセージが入ります。
+
 - <b class="tab-title">Python</b>
     ```py
     ans = wcli.member("foo").func("hoge").run(1, "aa")
@@ -274,6 +316,26 @@ AsyncFuncResultからは started と result が取得できます。
 
     詳細は webcface::AsyncFuncResult を参照してください。
 
+- <b class="tab-title">C</b>
+    ```c
+    wcfMultiVal args[3] = {
+        wcfValI(42),
+        wcfValD(1.5),
+        wcfValS("aaa"),
+    };
+    wcfAsyncFuncResult *async_res;
+    wcfFuncRunAsync(wcli_, "a", "b", args, 3, &async_res);
+
+    wcfMultiVal *ans;
+    int ret = wcfFuncGetResult(async_res, &ans);
+    // ex.) ret = WCF_OK, ans->as_double = 123.45
+
+    int ret = wcfFuncWaitResult(async_res, &ans);
+    // ex.) ret = WCF_OK, ans->as_double = 123.45
+    ```
+    関数の実行がまだ完了していなければwcfFuncGetResultは`WCF_NOT_RETURNED`を返します。
+
+    wcfFuncWaitResult は関数の実行が完了し結果が返ってくるまで待機します。
 
 - <b class="tab-title">JavaScript</b>
     \note

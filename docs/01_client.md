@@ -7,6 +7,18 @@
 
 WebCFaceのメインとなるクラスです。
 
+* ~~Client オブジェクトを作ると別スレッドでサーバーへの接続を開始します。~~
+    * <span class="since-c">1.2</span>
+<span class="since-js">1.1</span>
+<span class="since-py"></span>
+Client オブジェクトを作り、start() を呼ぶことでサーバーへの接続を開始します。
+        * (C++, Python のみ) start() の代わりに waitConnection() を使うと接続が完了するまで待機することができます。
+* バックグラウンド(別スレッド)で接続が完了するまでの間はデータの受信などはできません。
+* 通信が切断された場合は自動で再接続します。
+* コンストラクタに指定するのはこのクライアントの名前(Memberの名前)です。
+    * 同時に接続している他のクライアントと名前が被らないようにしてください。
+* デフォルトではlocalhostの7530ポートに接続を試みますが、サーバーのポートを変更していたり別のpcに接続する場合はコンストラクタの引数でサーバーのアドレスとポートを指定できます。
+
 <div class="tabbed">
 
 - <b class="tab-title">C++</b>
@@ -18,6 +30,24 @@ WebCFaceのメインとなるクラスです。
     wcli.start();
     // または wcli.waitConnection();
     ```
+    接続できているかどうかは `wcli.connected()` で取得できます。
+
+- <b class="tab-title">C</b>
+    ```c
+    #include <webcface/c_wcf.h>
+
+    wcfClient *wcli = wcfInitDefault("sample");
+    wcfStart(wcli);
+    ```
+    でclientを生成し、接続します。
+    サーバーのアドレスとポートを指定したい場合`wcfInit()`を使います
+    ```c
+    #include <webcface/c_wcf.h>
+
+    wcfClient *wcli = wcfInit("sample", "127.0.0.1", 7530);
+    wcfStart(wcli);
+    ```
+    接続できているかどうかは `wcfIsConnected(wcli)` で取得できます。
 - <b class="tab-title">JavaScript</b>
     ```ts
     import { Client } from "webcface";
@@ -26,6 +56,7 @@ WebCFaceのメインとなるクラスです。
 
     wcli.start();
     ```
+    接続できているかどうかは `wcli.connected` で取得できます。
 - <b class="tab-title">Python</b>
     ```python
     import webcface
@@ -35,21 +66,9 @@ WebCFaceのメインとなるクラスです。
     wcli.start()
     # または wcli.wait_connection()
     ```
+    接続できているかどうかは `wcli.connected` で取得できます。
 
 </div>
-
-* ~~Client オブジェクトを作ると別スレッドでサーバーへの接続を開始します。~~
-    * <span class="since-c">1.2</span>
-<span class="since-js">1.1</span>
-<span class="since-py"></span>
-Client オブジェクトを作り、start() を呼ぶことでサーバーへの接続を開始します。
-        * (C++, Python のみ) start() の代わりに waitConnection() を使うと接続が完了するまで待機することができます。
-* バックグラウンド(別スレッド)で接続が完了するまでの間はデータの受信などはできません。
-* 接続できているかどうかは `Client::connected()` で取得できます。
-* 通信が切断された場合は自動で再接続します。
-* コンストラクタに指定するのはこのクライアントの名前(Memberの名前)です。
-    * 同時に接続している他のクライアントと名前が被らないようにしてください。
-* デフォルトではlocalhostの7530ポートに接続を試みますが、サーバーのポートを変更していたり別のpcに接続する場合はコンストラクタの引数でサーバーのアドレスとポートを指定できます。
 
 \note
 コンストラクタに名前を指定しない、または空文字列の場合、読み取り専用モードになります。  
@@ -72,6 +91,14 @@ Client オブジェクトを作り、start() を呼ぶことでサーバーへ�
         std::this_thread.sleep_for(std::chrono::milliseconds(100));
     }
     ```
+- <b class="tab-title">C</b>
+    ```c
+    while(1){
+        // ...
+        wcfSync(wcli);
+    }
+    ```
+
 - <b class="tab-title">JavaScript</b>
     ```ts
     setInterval(() => {
@@ -89,7 +116,7 @@ Client オブジェクトを作り、start() を呼ぶことでサーバーへ�
 
 </div>
 
-Client::sync() をすることでこれ以降の章で扱う各種データを実際に送信します。
+sync() をすることでこれ以降の章で扱う各種データを実際に送信します。
 
 * sync()自体は送信処理はせずキューに入れるだけであり、ノンブロッキングです。
 メインプログラムの周期実行される場所などで繰り返し呼ぶようにしてください。
@@ -103,14 +130,43 @@ Funcの呼び出しとデータ受信リクエストの送信は sync() とは�
 
 ## 切断する
 
-Client::close() で切断します。
+<div class="tabbed">
 
-\note
-C++ではClientのデストラクタでも自動的に切断します。
+- <b class="tab-title">C++</b>
+    ```cpp
+    wcli.close();
+    ```
+    \note
+    C++ではClientのデストラクタでも自動的に切断します。
+- <b class="tab-title">C</b>
+    ```c
+    wcfClose(wcli);
+    ```
+- <b class="tab-title">JavaScript</b>
+    ```ts
+    wcli.close();
+    ```
+- <b class="tab-title">Python</b>
+    ```py
+    wcli.close()
+    ```
+
+</div>
+
 
 ## サーバーの情報
 
-Client::serverVersion(), Client::serverName() でサーバーの情報を取得できます。
+
+<div class="tabbed">
+
+- <b class="tab-title">C++</b>
+    `wcli.serverVersion()`, `wcli.serverName()` でサーバーの情報を取得できます。
+- <b class="tab-title">JavaScript</b>
+    `wcli.serverVersion`, `wcli.serverName` でサーバーの情報を取得できます。
+- <b class="tab-title">Python</b>
+    `wcli.serverVersion`, `wcli.serverName` でサーバーの情報を取得できます。
+    
+</div>
 
 \warning
 Clientの接続が完了し受信するまでは取得できません(空文字列になります)。

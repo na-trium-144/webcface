@@ -37,6 +37,18 @@ Client::value からValueオブジェクトを作り、 Value::set() でデー�
     wcli.value("hoge") = 5;
     ```
 
+- <b class="tab-title">C</b>
+    double型の単一の値は
+    ```c
+    wcfValueSet(wcli, "hoge", 123.45);
+    ```
+    配列データは
+    ```c
+    double value[5] = {1, 2, 3, 4, 5};
+    wcfValueSetVecD(wcli, "fuga", value, 5);
+    ```
+    のように送信できます。
+
 - <b class="tab-title">JavaScript</b>
     ```ts
     wcli.value("hoge").set(5);
@@ -124,9 +136,7 @@ WebCFaceのクライアントは初期状態ではデータを受信しません
 ![pub-sub](https://github.com/na-trium-144/webcface/raw/main/docs/images/pub-sub.png)
 
 Member::value() でValueクラスのオブジェクトが得られ、
-Value::tryGet(), Value::tryGetVec(), Value::tryGetRecurse() で値のリクエストをするとともに受信した値を取得できます。
-それぞれ 1つのdoubleの値、vector<double>、Dict を返します。
-(Dict はC++のみ)
+Value::tryGet(), Value::tryGetVec() などで値のリクエストをするとともに受信した値を取得できます。
 
 例えば`foo`というクライアントの`hoge`という名前のデータを取得したい場合は次のようにします。
 
@@ -135,14 +145,32 @@ Value::tryGet(), Value::tryGetVec(), Value::tryGetRecurse() で値のリクエ�
 - <b class="tab-title">C++</b>
     ```cpp
     std::optional<double> hoge = wcli.member("foo").value("hoge").tryGet();
+    std::optional<std::vector<double>> hoge = wcli.member("foo").value("hoge").tryGetVec();
+    std::optional<webcface::Value::Dict> hoge = wcli.member("foo").value("hoge").tryGetRecurse();
     ```
     初回の呼び出しではまだ受信していないため、
     tryGet(), tryGetVec(), tryGetRecurse() はstd::nulloptを返します。  
     get(), getVec(), getRecurse() はstd::nulloptの代わりにデフォルト値を返します。  
     また、doubleやstd::vector<double>, Value::Dict などの型にキャストすることでも同様に値が得られます。
+- <b class="tab-title">C</b>
+    ```c
+    double value[5];
+    int size;
+    int ret = wcfValueGetVecD(wcli, "a", "hoge", value, 5, &size);
+    // ex.) ret = WCF_NOT_FOUND
+
+    // few moments later,
+    ret = wcfValueGetVecD(wcli, "a", "hoge", value, 5, &size);
+    // ex.) ret = WCF_OK, value = {123.45, 0, 0, 0, 0}, size = 1
+    ```
+    sizeに受信した値の個数、valueに受信した値が入ります。
+
+    初回の呼び出しでは`WCF_NOT_FOUND`を返し、別スレッドでリクエストが送信されます。
+
 - <b class="tab-title">JavaScript</b>
     ```ts
     const hoge: double | null = wcli.member("foo").value("hoge").tryGet();
+    const hoge: double[] | null = wcli.member("foo").value("hoge").tryGetVec();
     ```
     初回の呼び出しではまだ受信していないため、
     tryGet(), tryGetVec() はnullを返します。  
@@ -150,6 +178,7 @@ Value::tryGet(), Value::tryGetVec(), Value::tryGetRecurse() で値のリクエ�
 - <b class="tab-title">Python</b>
     ```python
     hoge = wcli.member("foo").value("hoge").try_get()
+    hoge = wcli.member("foo").value("hoge").try_get_vec()
     ```
     初回の呼び出しではまだ受信していないため、
     try_get(), try_get_vec() はNoneを返します。  
