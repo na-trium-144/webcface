@@ -34,8 +34,35 @@
 <script type="text/javascript">
     DoxygenAwesomeParagraphLink.init()
 </script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeTabs.init()
+</script>
+<script type="text/javascript">
+  function insertBadge(){
+    for(const sp of document.getElementsByClassName('since-c')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-00599c?logo=C%2B%2B" alt="c++ ver${ver}" class="inline">`;
+    }
+    for(const sp of document.getElementsByClassName('since-js')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-f7df1e?logo=JavaScript&amp;logoColor=black" alt="js ver${ver}" class="inline">`;
+    }
+    for(const sp of document.getElementsByClassName('since-py')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-3776ab?logo=python&amp;logoColor=white" alt="python ver${ver}" class="inline">`;
+    }
+  }
+</script>
 </head>
-<body>
+<body onload="insertBadge();">
+<!-- https://tholman.com/github-corners/ -->
+<a href="https://github.com/na-trium-144/webcface" class="github-corner" aria-label="View source on GitHub">
+  <svg width="80" height="80" viewBox="0 0 250 250" style="fill:#64CEAA; color:#fff; position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path>
+  </svg>
+</a>
+<style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
 <div id="titlearea">
 <table cellspacing="0" cellpadding="0">
@@ -110,13 +137,13 @@ $(document).ready(function(){initNavTree('md_90__message.html',''); initResizabl
   <div class="headertitle"><div class="title">Message</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md74"></a> 送受信されるメッセージの仕様について</p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md107"></a> 送受信されるメッセージの仕様について</p>
 <p>MessagePackで送受信されます。 両方向の通信ともにn個のデータを長さ2nの配列で表現します。</p>
 <div class="fragment"><div class="line">[ kind1, data1, kind2, data2, ... ]</div>
 </div><!-- fragment --><p>see also <a class="el" href="message_8h.html">message.h</a></p>
-<h1><a class="anchor" id="autotoc_md75"></a>
+<h1><a class="anchor" id="autotoc_md108"></a>
 Sync</h1>
-<h2><a class="anchor" id="autotoc_md76"></a>
+<h2><a class="anchor" id="autotoc_md109"></a>
 sync init (kind = 80)</h2>
 <div class="fragment"><div class="line">data = {</div>
 <div class="line">    M: string, // member name</div>
@@ -133,7 +160,7 @@ sync init (kind = 80)</h2>
 </ul>
 </li>
 </ul>
-<h2><a class="anchor" id="autotoc_md77"></a>
+<h2><a class="anchor" id="autotoc_md110"></a>
 svr version (kind = 88)</h2>
 <div class="fragment"><div class="line">data = {</div>
 <div class="line">    n: string, // server name</div>
@@ -142,7 +169,7 @@ svr version (kind = 88)</h2>
 </div><!-- fragment --><ul>
 <li>サーバーからクライアントに1回送られます</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md78"></a>
+<h2><a class="anchor" id="autotoc_md111"></a>
 ping (kind = 89)</h2>
 <div class="fragment"><div class="line">data = {}</div>
 </div><!-- fragment --><ul>
@@ -152,7 +179,7 @@ ping (kind = 89)</h2>
 </ul>
 </li>
 </ul>
-<h2><a class="anchor" id="autotoc_md79"></a>
+<h2><a class="anchor" id="autotoc_md112"></a>
 ping status (kind = 90)</h2>
 <div class="fragment"><div class="line">data = {</div>
 <div class="line">    s: {member_id: status, member_id: status, ...},</div>
@@ -163,13 +190,13 @@ ping status (kind = 90)</h2>
 </ul>
 </li>
 </ul>
-<h2><a class="anchor" id="autotoc_md80"></a>
+<h2><a class="anchor" id="autotoc_md113"></a>
 ping status req (kind = 91)</h2>
 <div class="fragment"><div class="line">data = {}</div>
 </div><!-- fragment --><ul>
 <li>クライアントからサーバーにこれを送ると、以降数秒おきにping statusが送られてくるようになります</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md81"></a>
+<h2><a class="anchor" id="autotoc_md114"></a>
 sync (kind = 87)</h2>
 <div class="fragment"><div class="line">data = {</div>
 <div class="line">    m: number; // member id</div>
@@ -186,9 +213,9 @@ sync (kind = 87)</h2>
 </ul>
 </li>
 </ul>
-<h1><a class="anchor" id="autotoc_md82"></a>
+<h1><a class="anchor" id="autotoc_md115"></a>
 Func</h1>
-<h2><a class="anchor" id="autotoc_md83"></a>
+<h2><a class="anchor" id="autotoc_md116"></a>
 func info (kind = 84)</h2>
 <div class="fragment"><div class="line">data = {</div>
 <div class="line">    m: number, // member id</div>
@@ -210,7 +237,7 @@ func info (kind = 84)</h2>
 </li>
 <li>func infoを送らなくても関数の呼び出しは可能なので、非表示にしたい関数はfunc infoを送らなければよいです</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md84"></a>
+<h2><a class="anchor" id="autotoc_md117"></a>
 call (kind = 81)</h2>
 <div class="fragment"><div class="line">data = {</div>
 <div class="line">    i: number; // caller id</div>
@@ -228,7 +255,7 @@ call (kind = 81)</h2>
 <li>関数の呼び出しはsyncと無関係なタイミングで構いません</li>
 <li>また、無名のクライアントからも送信することができます</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md85"></a>
+<h2><a class="anchor" id="autotoc_md118"></a>
 call response (kind = 82)</h2>
 <div class="fragment"><div class="line">data = {</div>
 <div class="line">    i: number; // caller id</div>
@@ -239,7 +266,7 @@ call response (kind = 82)</h2>
 <li>targetはiとcにCallと同じものを、関数の実行を開始した時sにtrueを、関数が存在しない場合にはsにfalseをセットし、サーバーに送るとクライアント(caller)に届きます</li>
 <li>targetがそもそも存在しない場合はサーバーがsにfalseをセットしてcallerに送ります</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md86"></a>
+<h2><a class="anchor" id="autotoc_md119"></a>
 call result (kind = 83)</h2>
 <div class="fragment"><div class="line">data = {</div>
 <div class="line">    i: number; // caller id</div>
@@ -257,9 +284,9 @@ call result (kind = 83)</h2>
 </ul>
 </li>
 </ul>
-<h1><a class="anchor" id="autotoc_md87"></a>
+<h1><a class="anchor" id="autotoc_md120"></a>
 Value</h1>
-<h2><a class="anchor" id="autotoc_md88"></a>
+<h2><a class="anchor" id="autotoc_md121"></a>
 value (kind = 0)</h2>
 <div class="fragment"><div class="line">data = {</div>
 <div class="line">    f: string, // name</div>
@@ -268,7 +295,7 @@ value (kind = 0)</h2>
 </div><!-- fragment --><ul>
 <li>クライアント→サーバーに更新されたデータを送ります</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md89"></a>
+<h2><a class="anchor" id="autotoc_md122"></a>
 value entry (kind = 20)</h2>
 <div class="fragment"><div class="line">data = {</div>
 <div class="line">    m: number, // member id</div>
@@ -277,10 +304,10 @@ value entry (kind = 20)</h2>
 </div><!-- fragment --><ul>
 <li>新しいValueが送られてきた時、サーバーは全クライアントにValueEntryを送ります</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md90"></a>
+<h2><a class="anchor" id="autotoc_md123"></a>
 value req (kind = 40)</h2>
 <div class="fragment"><div class="line">data = {</div>
-<div class="line">    m: number, // member id</div>
+<div class="line">    M: number, // member id</div>
 <div class="line">    f: string, // name</div>
 <div class="line">    i: number, // request id</div>
 <div class="line">}</div>
@@ -291,7 +318,7 @@ value req (kind = 40)</h2>
 </ul>
 </li>
 </ul>
-<h2><a class="anchor" id="autotoc_md91"></a>
+<h2><a class="anchor" id="autotoc_md124"></a>
 value res (kind = 60)</h2>
 <div class="fragment"><div class="line">data = {</div>
 <div class="line">    i: number, // request id</div>
@@ -301,9 +328,9 @@ value res (kind = 60)</h2>
 </div><!-- fragment --><ul>
 <li>requestに対応するvalueを送り返します</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md92"></a>
+<h1><a class="anchor" id="autotoc_md125"></a>
 Text</h1>
-<h2><a class="anchor" id="autotoc_md93"></a>
+<h2><a class="anchor" id="autotoc_md126"></a>
 text (kind = 1)</h2>
 <div class="fragment"><div class="line">data = {</div>
 <div class="line">    f: string, // name</div>
@@ -312,17 +339,17 @@ text (kind = 1)</h2>
 </div><!-- fragment --><ul>
 <li>value と同様</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md94"></a>
+<h2><a class="anchor" id="autotoc_md127"></a>
 text entry (kind = 21)</h2>
 <ul>
 <li>value entryと同様</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md95"></a>
+<h2><a class="anchor" id="autotoc_md128"></a>
 text req (kind = 41)</h2>
 <ul>
 <li>value req と同様</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md96"></a>
+<h2><a class="anchor" id="autotoc_md129"></a>
 text res (kind = 61)</h2>
 <div class="fragment"><div class="line">data = {</div>
 <div class="line">    i: number, // request id</div>
@@ -332,9 +359,9 @@ text res (kind = 61)</h2>
 </div><!-- fragment --><ul>
 <li>value resと同様</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md97"></a>
+<h1><a class="anchor" id="autotoc_md130"></a>
 View</h1>
-<h2><a class="anchor" id="autotoc_md98"></a>
+<h2><a class="anchor" id="autotoc_md131"></a>
 view (kind = 3)</h2>
 <div class="fragment"><div class="line">data = {</div>
 <div class="line">    f: string, // name</div>
@@ -362,17 +389,17 @@ view (kind = 3)</h2>
 </li>
 <li><img src="https://img.shields.io/badge/1.1~-00599c?logo=C%2B%2B" alt="c++ ver1.1" class="inline"/> dのindexをnumber型からstring型に変更</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md99"></a>
+<h2><a class="anchor" id="autotoc_md132"></a>
 view entry (kind = 23)</h2>
 <ul>
 <li>value entryと同様</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md100"></a>
+<h2><a class="anchor" id="autotoc_md133"></a>
 view req (kind = 43)</h2>
 <ul>
 <li>value req と同様</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md101"></a>
+<h2><a class="anchor" id="autotoc_md134"></a>
 view res (kind = 63)</h2>
 <div class="fragment"><div class="line">data = {</div>
 <div class="line">    i: number, // request id</div>
@@ -383,20 +410,143 @@ view res (kind = 63)</h2>
 </div><!-- fragment --><ul>
 <li>value resと同様</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md102"></a>
+<h1><a class="anchor" id="autotoc_md135"></a>
 Image</h1>
-<p>TODO: あとで書く </p>
-<h2><a class="anchor" id="autotoc_md103"></a>
+<p><img src="https://img.shields.io/badge/1.3~-00599c?logo=C%2B%2B" alt="c++ ver1.3" class="inline"/></p>
+<h2><a class="anchor" id="autotoc_md136"></a>
 image (kind = 5)</h2>
-<h2><a class="anchor" id="autotoc_md104"></a>
+<div class="fragment"><div class="line">data = {</div>
+<div class="line">    f: string, // name</div>
+<div class="line">    d: ArrayBuffer, // data (uchar[])</div>
+<div class="line">    w: number, // width</div>
+<div class="line">    h: number, // height</div>
+<div class="line">    l: number, // color mode</div>
+<div class="line">    p: number, // compression mode</div>
+<div class="line">}</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md137"></a>
 image entry (kind = 25)</h2>
-<h2><a class="anchor" id="autotoc_md105"></a>
+<ul>
+<li>value entryと同様</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md138"></a>
 image req (kind = 45)</h2>
-<h2><a class="anchor" id="autotoc_md106"></a>
+<div class="fragment"><div class="line">data = {</div>
+<div class="line">    M: number, // member id</div>
+<div class="line">    f: string, // name</div>
+<div class="line">    i: number, // request id</div>
+<div class="line">    w: number | null, // width</div>
+<div class="line">    h: number | null, // height</div>
+<div class="line">    l: number | null,  // color mode</div>
+<div class="line">    p: number, // compression mode</div>
+<div class="line">    q: number, // quality</div>
+<div class="line">    r: number, // frame rate</div>
+<div class="line">}</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md139"></a>
 image res (kind = 65)</h2>
-<h1><a class="anchor" id="autotoc_md107"></a>
+<div class="fragment"><div class="line">data = {</div>
+<div class="line">    i: number, // request id</div>
+<div class="line">    f: string, // sub field name</div>
+<div class="line">    d: ArrayBuffer, // data (uchar[])</div>
+<div class="line">    w: number, // width</div>
+<div class="line">    h: number, // height</div>
+<div class="line">    l: number, // color mode</div>
+<div class="line">    p: number, // compression mode</div>
+<div class="line">}</div>
+</div><!-- fragment --><ul>
+<li>value resと同様</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md140"></a>
+Canvas3D</h1>
+<p><img src="https://img.shields.io/badge/1.4~-00599c?logo=C%2B%2B" alt="c++ ver1.4" class="inline"/></p>
+<h2><a class="anchor" id="autotoc_md141"></a>
+canvas3d (kind = 7)</h2>
+<div class="fragment"><div class="line">data = {</div>
+<div class="line">    f: string, // name</div>
+<div class="line">    d: {</div>
+<div class="line">        index: {</div>
+<div class="line">            t: number, // type</div>
+<div class="line">            op: number[3], // origin pos</div>
+<div class="line">            or: number[3], // origin rot</div>
+<div class="line">            c: number, // color</div>
+<div class="line">            gt: number | null, // geometry type</div>
+<div class="line">            gp: number[], // geometry properties</div>
+<div class="line">            fm: string | null, // field member</div>
+<div class="line">            ff: string | null, // field name</div>
+<div class="line">            a: { name: angle, ... } // joint angles</div>
+<div class="line">        },</div>
+<div class="line">        index: {},</div>
+<div class="line">        ...</div>
+<div class="line">    },</div>
+<div class="line">    l: number, // data length</div>
+<div class="line">}</div>
+</div><!-- fragment --><ul>
+<li>viewと同様、前回のsyncから変更された要素のみを送る</li>
+<li>lは変更されていない分も含めたcanvasの全要素数</li>
+<li>dのindexはstring型で、要素のindexを10進数で文字列にしたもの</li>
+<li>geometry propertiesの要素数と内容はgeometryの種類によって異なる</li>
+<li>robotmodelを参照する場合そのモデルのmemberとfield名をfmとffにセット</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md142"></a>
+canvas3d entry (kind = 27)</h2>
+<ul>
+<li>value entryと同様</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md143"></a>
+canvas3d req (kind = 47)</h2>
+<ul>
+<li>value req と同様</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md144"></a>
+canvas3d res (kind = 67)</h2>
+<div class="fragment"><div class="line">data = {</div>
+<div class="line">    i: number, // request id</div>
+<div class="line">    f: string, // sub field name</div>
+<div class="line">    d: {...},</div>
+<div class="line">    l: number,</div>
+<div class="line">}</div>
+</div><!-- fragment --><ul>
+<li>value resと同様</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md145"></a>
+RobotModel</h1>
+<p><img src="https://img.shields.io/badge/1.4~-00599c?logo=C%2B%2B" alt="c++ ver1.4" class="inline"/></p>
+<h2><a class="anchor" id="autotoc_md146"></a>
+robotmodel (kind = 6)</h2>
+<div class="fragment"><div class="line">data = {</div>
+<div class="line">    f: string, // name</div>
+<div class="line">    d: { // links data</div>
+<div class="line">        n: string, // link name</div>
+<div class="line">        jn: string, // joint name</div>
+<div class="line">        jp: number, // parent link index</div>
+<div class="line">        jt: number, // joint type</div>
+<div class="line">        js: number[3], // joint origin pos</div>
+<div class="line">        jr: number[3], // joint origin rot</div>
+<div class="line">        ja: number, // joint angle</div>
+<div class="line">        gt: number, // geometry type</div>
+<div class="line">        gp: number[], // geometry properties</div>
+<div class="line">        c: number, // color</div>
+<div class="line">    }[],</div>
+<div class="line">}</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md147"></a>
+robotmodel entry (kind = 26)</h2>
+<ul>
+<li>value entryと同様</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md148"></a>
+robotmodel req (kind = 46)</h2>
+<ul>
+<li>value req と同様</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md149"></a>
+robotmodel res (kind = 66)</h2>
+<div class="fragment"><div class="line">data = {</div>
+<div class="line">    i: number, // request id</div>
+<div class="line">    f: string, // sub field name</div>
+<div class="line">    d: {...}[], // data</div>
+<div class="line">}</div>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md150"></a>
 Log</h1>
-<h2><a class="anchor" id="autotoc_md108"></a>
+<h2><a class="anchor" id="autotoc_md151"></a>
 log (kind = 86)</h2>
 <div class="fragment"><div class="line">data = {</div>
 <div class="line">    m: number, // member id</div>
@@ -411,7 +561,7 @@ log (kind = 86)</h2>
 <li>リクエストがあればサーバー→各クライアントにそのまま送り返します</li>
 <li>リクエスト直後、サーバーが保持しているログの全履歴を1つのlogメッセージにまとめてクライアントに送ります</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md109"></a>
+<h2><a class="anchor" id="autotoc_md152"></a>
 log req (kind = 87)</h2>
 <div class="fragment"><div class="line">data = {</div>
 <div class="line">    M: string // member name</div>
@@ -425,7 +575,7 @@ log req (kind = 87)</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Feb 9 2024 08:30:45 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Wed Feb 14 2024 09:52:09 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

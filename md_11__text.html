@@ -34,8 +34,35 @@
 <script type="text/javascript">
     DoxygenAwesomeParagraphLink.init()
 </script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeTabs.init()
+</script>
+<script type="text/javascript">
+  function insertBadge(){
+    for(const sp of document.getElementsByClassName('since-c')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-00599c?logo=C%2B%2B" alt="c++ ver${ver}" class="inline">`;
+    }
+    for(const sp of document.getElementsByClassName('since-js')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-f7df1e?logo=JavaScript&amp;logoColor=black" alt="js ver${ver}" class="inline">`;
+    }
+    for(const sp of document.getElementsByClassName('since-py')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-3776ab?logo=python&amp;logoColor=white" alt="python ver${ver}" class="inline">`;
+    }
+  }
+</script>
 </head>
-<body>
+<body onload="insertBadge();">
+<!-- https://tholman.com/github-corners/ -->
+<a href="https://github.com/na-trium-144/webcface" class="github-corner" aria-label="View source on GitHub">
+  <svg width="80" height="80" viewBox="0 0 250 250" style="fill:#64CEAA; color:#fff; position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path>
+  </svg>
+</a>
+<style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
 <div id="titlearea">
 <table cellspacing="0" cellpadding="0">
@@ -110,20 +137,35 @@ $(document).ready(function(){initNavTree('md_11__text.html',''); initResizable()
   <div class="headertitle"><div class="title">Text</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md26"></a> API Reference → <a class="el" href="classwebcface_1_1Text.html" title="文字列の送受信データを表すクラス">webcface::Text</a></p>
-<p>文字列(std::string)データを送受信します。 Textクラスの使い方は<a class="el" href="md_10__value.html">Value</a>とほぼ同じです。</p>
-<p>Member::text() でTextクラスのオブジェクトが得られます </p><div class="fragment"><div class="line"><a class="code hl_class" href="classwebcface_1_1Text.html">webcface::Text</a> text_hoge = wcli.<a class="code hl_function" href="classwebcface_1_1Text.html#aa8fab40ead35fa8e761986d5f4000a5c">member</a>(<span class="stringliteral">&quot;a&quot;</span>).<a class="code hl_function" href="classwebcface_1_1Member.html#ab13e75a9d487a0253300ade34a498791">text</a>(<span class="stringliteral">&quot;hoge&quot;</span>);</div>
-<div class="ttc" id="aclasswebcface_1_1Member_html_ab13e75a9d487a0253300ade34a498791"><div class="ttname"><a href="classwebcface_1_1Member.html#ab13e75a9d487a0253300ade34a498791">webcface::Member::text</a></div><div class="ttdeci">Text text(const std::string &amp;field) const</div><div class="ttdoc">textを参照する。</div><div class="ttdef"><b>Definition</b> member.cc:11</div></div>
-<div class="ttc" id="aclasswebcface_1_1Text_html"><div class="ttname"><a href="classwebcface_1_1Text.html">webcface::Text</a></div><div class="ttdoc">文字列の送受信データを表すクラス</div><div class="ttdef"><b>Definition</b> text.h:23</div></div>
-<div class="ttc" id="aclasswebcface_1_1Text_html_aa8fab40ead35fa8e761986d5f4000a5c"><div class="ttname"><a href="classwebcface_1_1Text.html#aa8fab40ead35fa8e761986d5f4000a5c">webcface::Text::member</a></div><div class="ttdeci">Member member() const</div><div class="ttdoc">Memberを返す</div><div class="ttdef"><b>Definition</b> field.cc:8</div></div>
-</div><!-- fragment --><p>Member::texts() でそのMemberが送信しているtextのリストが得られます </p><div class="fragment"><div class="line"><span class="keywordflow">for</span>(<span class="keyword">const</span> <a class="code hl_class" href="classwebcface_1_1Text.html">webcface::Text</a> &amp;v: wcli.member(<span class="stringliteral">&quot;a&quot;</span>).texts()){</div>
-<div class="line">    <span class="comment">// ...</span></div>
-<div class="line">}</div>
-</div><!-- fragment --><p>Member::onTextEntry() で新しくデータが追加されたときのコールバックを設定できます </p><div class="fragment"><div class="line">wcli.member(<span class="stringliteral">&quot;a&quot;</span>).onTextEntry().appendListener([](<a class="code hl_class" href="classwebcface_1_1Text.html">webcface::Text</a> v){ <span class="comment">/* ... */</span> });</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md27"></a>
+<div class="textblock"><p><a class="anchor" id="autotoc_md40"></a> </p><dl class="section since"><dt>Since</dt><dd><span class="since-c"></span> <span class="since-js"></span> <span class="since-py"></span> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><ul>
+<li>C++ <a class="el" href="classwebcface_1_1Text.html" title="文字列の送受信データを表すクラス">webcface::Text</a></li>
+<li>JavaScript <a href="https://na-trium-144.github.io/webcface-js/classes/Text.html">Text</a></li>
+<li>Python <a href="https://na-trium-144.github.io/webcface-python/webcface.text.html#webcface.text.Text">webcface.Text</a></li>
+</ul>
+</dd></dl>
+<p>文字列データを送受信します。</p>
+<p>使い方は<a class="el" href="md_10__value.html">Value</a>とほぼ同じです。</p>
+<h1><a class="anchor" id="autotoc_md41"></a>
+コマンドライン</h1>
+<div class="fragment"><div class="line">webcface-send -t text</div>
+</div><!-- fragment --><p> を実行し、文字列を入力すると送信されます。(1つ入力するごとに改行してください)</p>
+<h1><a class="anchor" id="autotoc_md42"></a>
 送信</h1>
-<p>自分自身の名前のMemberからTextオブジェクトを作り、 Text::set() でデータを代入し、Client::sync()することで送信されます </p><div class="fragment"><div class="line">wcli.text(<span class="stringliteral">&quot;hoge&quot;</span>).set(<span class="stringliteral">&quot;hello&quot;</span>);</div>
-</div><!-- fragment --><p><a class="el" href="classwebcface_1_1Text.html#ab33d2da9febb5e4c801e1ccee1dee594">webcface::Text::Dict</a> オブジェクトを使うと複数の値をまとめて送ることができます。 </p><div class="fragment"><div class="line"><span class="keyword">struct </span>A {</div>
+<p>Client::text からTextオブジェクトを作り、 Text::set() でデータを代入し、Client::sync()することで送信されます</p>
+<div class="tabbed"></div><div class="tabbed"><ul>
+<li><b class="tab-title">C++</b> <div class="fragment"><div class="line">wcli.text(<span class="stringliteral">&quot;hoge&quot;</span>).set(<span class="stringliteral">&quot;hello&quot;</span>);</div>
+</div><!-- fragment --> (C++のみ) set() の代わりに代入演算子(Text::operator=)でも同様のことができます。 <div class="fragment"><div class="line">wcli.text(<span class="stringliteral">&quot;hoge&quot;</span>) = <span class="stringliteral">&quot;hello&quot;</span>;</div>
+</div><!-- fragment --></li>
+<li><b class="tab-title">JavaScript</b> <div class="fragment"><div class="line">wcli.text(&quot;hoge&quot;).set(&quot;hello&quot;);</div>
+</div><!-- fragment --></li>
+<li><b class="tab-title">Python</b> <div class="fragment"><div class="line">wcli.text(<span class="stringliteral">&quot;hoge&quot;</span>).set(<span class="stringliteral">&quot;hello&quot;</span>)</div>
+</div><!-- fragment --></li>
+</ul>
+</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md43"></a>
+複数の値をまとめて送る</h2>
+<div class="tabbed"></div><div class="tabbed"><ul>
+<li><b class="tab-title">C++</b> <a class="el" href="classwebcface_1_1Text.html#ab33d2da9febb5e4c801e1ccee1dee594">webcface::Text::Dict</a> オブジェクトを使うと複数の値をまとめて送ることができます。 <div class="fragment"><div class="line"><span class="keyword">struct </span>A {</div>
 <div class="line">    std::string x, y;</div>
 <div class="line">    <span class="keyword">operator</span> <a class="code hl_typedef" href="classwebcface_1_1Text.html#ab33d2da9febb5e4c801e1ccee1dee594">webcface::Text::Dict</a>()<span class="keyword"> const </span>{</div>
 <div class="line">        <span class="keywordflow">return</span> {</div>
@@ -137,29 +179,49 @@ $(document).ready(function(){initNavTree('md_11__text.html',''); initResizable()
 <div class="line">A a_instance;</div>
 <div class="line">wcli.text(<span class="stringliteral">&quot;a&quot;</span>).set(a_instance); <span class="comment">// Dictにキャストされる</span></div>
 <div class="ttc" id="aclasswebcface_1_1Text_html_ab33d2da9febb5e4c801e1ccee1dee594"><div class="ttname"><a href="classwebcface_1_1Text.html#ab33d2da9febb5e4c801e1ccee1dee594">webcface::Text::Dict</a></div><div class="ttdeci">Common::Dict&lt; std::shared_ptr&lt; std::string &gt; &gt; Dict</div><div class="ttdef"><b>Definition</b> text.h:45</div></div>
-</div><!-- fragment --><p>(C++のみ) set() の代わりに代入演算子(Text::operator=)でも同様のことができます。</p>
-<h1><a class="anchor" id="autotoc_md28"></a>
+</div><!-- fragment --></li>
+<li><b class="tab-title">JavaScript</b> オブジェクトを渡すことができます。 <div class="fragment"><div class="line">wcli.text(&quot;a&quot;).set({</div>
+<div class="line">    x: &quot;aaa&quot;,</div>
+<div class="line">    y: &quot;bbb&quot;,</div>
+<div class="line">    // Value::Dictと同様、入れ子にもできます</div>
+<div class="line">});</div>
+</div><!-- fragment --></li>
+</ul>
+</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md44"></a>
 受信</h1>
-<p>Text::tryGet(), Text::tryGetRecurse() で値のリクエストをするとともに受信した値を取得できます。</p>
-<p>初回の呼び出しではまだ受信していないためstd::nulloptを返します。 (pythonでは None, javascriptでは null)</p>
-<p><strike>その後Client::sync()したときに実際にリクエストが送信され、</strike> <br  />
- <img src="https://img.shields.io/badge/1.2~-00599c?logo=C%2B%2B" alt="c++ ver1.2" class="inline"/> <img src="https://img.shields.io/badge/1.1~-f7df1e?logo=JavaScript&amp;logoColor=black" alt="js ver1.1" class="inline"/> <img src="https://img.shields.io/badge/1.0~-3776ab?logo=python&amp;logoColor=white" alt="py ver1.0" class="inline"/> 別スレッドでリクエストが送信され、それ以降は値が得られるようになります。 </p><div class="fragment"><div class="line"><span class="keywordflow">while</span>(<span class="keyword">true</span>) {</div>
-<div class="line">    std::optional&lt;std::string&gt; val = wcli.member(<span class="stringliteral">&quot;a&quot;</span>).text(<span class="stringliteral">&quot;hoge&quot;</span>).tryGet();</div>
-<div class="line">    <span class="keywordflow">if</span>(val) {</div>
-<div class="line">        std::cout &lt;&lt; <span class="stringliteral">&quot;hoge = &quot;</span> &lt;&lt; *val &lt;&lt; std::endl;</div>
-<div class="line">    }</div>
-<div class="line">    <span class="comment">// wcli.sync();</span></div>
-<div class="line">    std::this_thread::sleep_for(std::chrono::milliseconds(10));</div>
-<div class="line">}</div>
-</div><!-- fragment --><p><img src="https://img.shields.io/badge/1.1~-f7df1e?logo=JavaScript&amp;logoColor=black" alt="js ver1.1" class="inline"/> <img src="https://img.shields.io/badge/1.0~-3776ab?logo=python&amp;logoColor=white" alt="py ver1.0" class="inline"/> Text::request()で明示的にリクエストを送信することもできます。</p>
-<p>Text::get(), Text::getRecurse() はstd::nulloptの代わりにデフォルト値を返す点以外は同じです。 <br  />
- また、std::string, Value::Dict などの型にキャストすることでも同様に値が得られます。</p>
-<h1><a class="anchor" id="autotoc_md29"></a>
-受信イベント</h1>
-<p>Text::appendListener() で受信したデータが変化したときにコールバックを呼び出すことができます。 コールバックを設定するとその値はリクエストされます。 </p><div class="fragment"><div class="line">wcli.member(<span class="stringliteral">&quot;a&quot;</span>).text(<span class="stringliteral">&quot;hoge&quot;</span>).appendListener([](Text v){ <span class="comment">/* ... */</span> });</div>
-</div><!-- fragment --><p> pythonでは Text.signal プロパティがこのイベントのsignalを返します。</p>
-<p>データが変化したどうかに関わらずそのMemberがsync()したときにコールバックを呼び出したい場合は Member::onSync() が使えます </p><div class="fragment"><div class="line">wcli.member(<span class="stringliteral">&quot;a&quot;</span>).onSync().appendListener([](Member m){ <span class="comment">/* ... */</span> });</div>
-</div><!-- fragment --><div class="section_buttons"></div><div class="section_buttons"><table class="markdownTable">
+<p>Member::text() でTextクラスのオブジェクトが得られ、 Text::tryGet(), Text::tryGetRecurse() で値のリクエストをするとともに受信した値を取得できます。 (Dict はC++のみ)</p>
+<p>例えば<code>foo</code>というクライアントの<code>hoge</code>という名前のデータを取得したい場合は次のようにします。</p>
+<div class="tabbed"></div><div class="tabbed"><ul>
+<li><b class="tab-title">C++</b> <div class="fragment"><div class="line">std::optional&lt;std::string&gt; hoge = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).text(<span class="stringliteral">&quot;hoge&quot;</span>).tryGet();</div>
+</div><!-- fragment --> 初回の呼び出しではまだ受信していないため、 tryGet(), tryGetRecurse() はstd::nulloptを返します。 <br  />
+ get(), getRecurse() はstd::nulloptの代わりにデフォルト値を返します。 <br  />
+ また、std::string, Text::Dict などの型にキャストすることでも同様に値が得られます。</li>
+<li><b class="tab-title">JavaScript</b> <div class="fragment"><div class="line">const hoge: string | null = wcli.member(&quot;foo&quot;).text(&quot;hoge&quot;).tryGet();</div>
+</div><!-- fragment --> 初回の呼び出しではまだ受信していないため、 tryGet() はnullを返します。 <br  />
+ get() はnullの代わりに空文字列を返します。</li>
+<li><b class="tab-title">Python</b> <div class="fragment"><div class="line">hoge = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).text(<span class="stringliteral">&quot;hoge&quot;</span>).try_get()</div>
+</div><!-- fragment --> 初回の呼び出しではまだ受信していないため、 try_get() はNoneを返します。 <br  />
+ get() はNoneの代わりに空文字列を返します。</li>
+</ul>
+</div><div class="tabbed"></div><p><strike>その後Client::sync()したときに実際にリクエストが送信され、</strike> <br  />
+ <span class="since-c">1.2</span> <span class="since-js">1.1</span> <span class="since-py"></span> 別スレッドでリクエストが送信され、それ以降は値が得られるようになります。</p>
+<dl class="section note"><dt>Note</dt><dd><span class="since-js">1.1</span> <span class="since-py"></span> Text::request()で明示的にリクエストを送信することもできます。</dd></dl>
+<h2><a class="anchor" id="autotoc_md45"></a>
+時刻</h2>
+<p>Text::time() でその値が送信されたとき(そのMemberがsync()したとき)の時刻が得られます。</p>
+<dl class="section note"><dt>Note</dt><dd>Pythonでは Member.sync_time()</dd></dl>
+<h2><a class="anchor" id="autotoc_md46"></a>
+Entry</h2>
+<p><strike>Member::texts() で</strike> そのMemberが送信しているtextのリストが得られます <br  />
+ <span class="since-c">1.6</span> Member::textEntries() に変更</p>
+<p>また、Member::onTextEntry() で新しくデータが追加されたときのコールバックを設定できます</p>
+<p>いずれも使い方は <a class="el" href="md_10__value.html">Value</a> と同様なのでそちらを参照してください</p>
+<h2><a class="anchor" id="autotoc_md47"></a>
+Event</h2>
+<p>受信したデータが変化したときにコールバックを呼び出すことができます。 コールバックを設定することでもその値はリクエストされます。</p>
+<p>また、データが変化したどうかに関わらずそのMemberがsync()したときにコールバックを呼び出したい場合は Member::onSync() が使えます</p>
+<p>使い方は <a class="el" href="md_10__value.html">Value</a> と同様なのでそちらを参照してください</p>
+<div class="section_buttons"></div><div class="section_buttons"><table class="markdownTable">
 <tr class="markdownTableHead">
 <th class="markdownTableHeadLeft">Previous   </th><th class="markdownTableHeadRight">Next    </th></tr>
 <tr class="markdownTableRowOdd">
@@ -171,7 +233,7 @@ $(document).ready(function(){initNavTree('md_11__text.html',''); initResizable()
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Feb 9 2024 08:30:45 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Wed Feb 14 2024 09:52:09 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

@@ -34,8 +34,35 @@
 <script type="text/javascript">
     DoxygenAwesomeParagraphLink.init()
 </script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeTabs.init()
+</script>
+<script type="text/javascript">
+  function insertBadge(){
+    for(const sp of document.getElementsByClassName('since-c')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-00599c?logo=C%2B%2B" alt="c++ ver${ver}" class="inline">`;
+    }
+    for(const sp of document.getElementsByClassName('since-js')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-f7df1e?logo=JavaScript&amp;logoColor=black" alt="js ver${ver}" class="inline">`;
+    }
+    for(const sp of document.getElementsByClassName('since-py')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-3776ab?logo=python&amp;logoColor=white" alt="python ver${ver}" class="inline">`;
+    }
+  }
+</script>
 </head>
-<body>
+<body onload="insertBadge();">
+<!-- https://tholman.com/github-corners/ -->
+<a href="https://github.com/na-trium-144/webcface" class="github-corner" aria-label="View source on GitHub">
+  <svg width="80" height="80" viewBox="0 0 250 250" style="fill:#64CEAA; color:#fff; position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path>
+  </svg>
+</a>
+<style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
 <div id="titlearea">
 <table cellspacing="0" cellpadding="0">
@@ -110,44 +137,59 @@ $(document).ready(function(){initNavTree('md_20__canvas3d.html',''); initResizab
   <div class="headertitle"><div class="title">Canvas3D</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md40"></a> <img src="https://img.shields.io/badge/1.4~-00599c?logo=C%2B%2B" alt="c++ ver1.4" class="inline"/> <img src="https://img.shields.io/badge/1.3~-f7df1e?logo=JavaScript&amp;logoColor=black" alt="js ver1.3" class="inline"/></p>
-<p>API Reference → <a class="el" href="classwebcface_1_1Canvas3D.html" title="Canvas3Dの送受信データを表すクラス">webcface::Canvas3D</a>, <a class="el" href="namespacewebcface_1_1Geometries.html">webcface::Geometries</a>, <a class="el" href="classwebcface_1_1Common_1_1Point.html" title="3次元の座標">webcface::Point</a>, <a class="el" href="classwebcface_1_1Common_1_1Transform.html" title="3次元の座標と回転">webcface::Transform</a></p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md65"></a> </p><dl class="section since"><dt>Since</dt><dd><span class="since-c">1.4</span> <span class="since-js">1.3</span> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><ul>
+<li>C++ <a class="el" href="classwebcface_1_1Canvas3D.html" title="Canvas3Dの送受信データを表すクラス">webcface::Canvas3D</a></li>
+<li>JavaScript <a href="https://na-trium-144.github.io/webcface-js/classes/Canvas3D.html">Canvas3D</a></li>
+<li>Python 未実装</li>
+</ul>
+</dd></dl>
 <p>3D空間上のオブジェクト配置データを送受信し、WebUI上に表示できます。</p>
-<p>Member::canvas3D() でCanvas3Dクラスのオブジェクトが得られます </p><div class="fragment"><div class="line"><a class="code hl_class" href="classwebcface_1_1Canvas3D.html">webcface::Canvas3D</a> hoge = wcli.<a class="code hl_function" href="classwebcface_1_1Canvas3D.html#aa8fab40ead35fa8e761986d5f4000a5c">member</a>(<span class="stringliteral">&quot;a&quot;</span>).<a class="code hl_function" href="classwebcface_1_1Member.html#a0754c19390f54b3f2c8ee81456ecc1b8">canvas3D</a>(<span class="stringliteral">&quot;hoge&quot;</span>);</div>
-<div class="ttc" id="aclasswebcface_1_1Canvas3D_html"><div class="ttname"><a href="classwebcface_1_1Canvas3D.html">webcface::Canvas3D</a></div><div class="ttdoc">Canvas3Dの送受信データを表すクラス</div><div class="ttdef"><b>Definition</b> canvas3d.h:167</div></div>
-<div class="ttc" id="aclasswebcface_1_1Canvas3D_html_aa8fab40ead35fa8e761986d5f4000a5c"><div class="ttname"><a href="classwebcface_1_1Canvas3D.html#aa8fab40ead35fa8e761986d5f4000a5c">webcface::Canvas3D::member</a></div><div class="ttdeci">Member member() const</div><div class="ttdoc">Memberを返す</div><div class="ttdef"><b>Definition</b> field.cc:8</div></div>
-<div class="ttc" id="aclasswebcface_1_1Member_html_a0754c19390f54b3f2c8ee81456ecc1b8"><div class="ttname"><a href="classwebcface_1_1Member.html#a0754c19390f54b3f2c8ee81456ecc1b8">webcface::Member::canvas3D</a></div><div class="ttdeci">Canvas3D canvas3D(const std::string &amp;field) const</div><div class="ttdoc">canvas3dを参照する。</div><div class="ttdef"><b>Definition</b> member.cc:17</div></div>
-</div><!-- fragment --><p>Member::canvas3DEntries() でそのMemberが送信しているCanvas3Dのリストが得られます </p><div class="fragment"><div class="line"><span class="keywordflow">for</span>(<span class="keyword">const</span> <a class="code hl_class" href="classwebcface_1_1Canvas3D.html">webcface::Canvas3D</a> &amp;v: wcli.member(<span class="stringliteral">&quot;a&quot;</span>).canvas3DEntries()){</div>
-<div class="line">    <span class="comment">// ...</span></div>
-<div class="line">}</div>
-</div><!-- fragment --><p>Member::onCanvas3DEntry() で新しくデータが追加されたときのコールバックを設定できます </p><div class="fragment"><div class="line">wcli.member(<span class="stringliteral">&quot;a&quot;</span>).onCanvas3DEntry().appendListener([](<a class="code hl_class" href="classwebcface_1_1Canvas3D.html">webcface::Canvas3D</a> v){ <span class="comment">/* ... */</span> });</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md41"></a>
+<h1><a class="anchor" id="autotoc_md66"></a>
 Point, Transform</h1>
 <p>WebCFaceでは3次元の座標を表すクラスとして <a class="el" href="classwebcface_1_1Common_1_1Point.html" title="3次元の座標">webcface::Point</a>, 座標変換(平行移動してから回転)を表すクラスとして <a class="el" href="classwebcface_1_1Common_1_1Transform.html" title="3次元の座標と回転">webcface::Transform</a> があります。</p>
 <p>Pointでは x, y, z 座標、Transformでは x, y, z 座標と z, y, x軸回りの回転角を指定します。 (WebCFaceでは回転はz-y-xの順で回転するオイラー角で表現します。)</p>
-<p>Point, Transformオブジェクトからは<code>pos()</code>, <code>rot()</code>で座標と回転角を取得できます。 </p><div class="fragment"><div class="line">Point p{1, 2, 3};</div>
-<div class="line"><span class="keywordtype">double</span> x = p.pos()[0]; <span class="comment">// 1 (x座標)</span></div>
-<div class="line">Transform r{1, 2, 3, 4, 5, 6};</div>
-<div class="line"><span class="keywordtype">double</span> x = r.pos()[0]; <span class="comment">// 1 (x座標)</span></div>
-<div class="line"><span class="keywordtype">double</span> alpha = r.rot()[0]; <span class="comment">// 4 (z軸回り)</span></div>
-</div><!-- fragment --><p><a class="el" href="namespacewebcface_1_1Common.html#a9cc7119f63c09d929d8218008d2bb386">webcface::identity()</a> は原点、回転なしのTransformを返します。</p>
-<h1><a class="anchor" id="autotoc_md42"></a>
+<div class="tabbed"></div><div class="tabbed"><ul>
+<li><b class="tab-title">C++</b> Point, Transformオブジェクトからは<code>pos()</code>, <code>rot()</code>で座標と回転角を取得できます。 <div class="fragment"><div class="line">Point p{1, 2, 3};</div>
+<div class="line">std::cout &lt;&lt; p.pos(0); <span class="comment">// 1 (x座標)</span></div>
+<div class="line">Transform r{1, 2, 3, std::numbers::pi / 2, 0, 0};</div>
+<div class="line">std::cout &lt;&lt; r.pos(0); <span class="comment">// 1 (x座標)</span></div>
+<div class="line">std::cout &lt;&lt; r.rot(0); <span class="comment">// pi / 2 (z軸回り)</span></div>
+</div><!-- fragment --> <a class="el" href="namespacewebcface_1_1Common.html#a9cc7119f63c09d929d8218008d2bb386">webcface::identity()</a> は原点、回転なしのTransformを返します。</li>
+<li><b class="tab-title">JavaScript</b> <a href="https://na-trium-144.github.io/webcface-js/classes/Point.html">Point</a>, <a href="https://na-trium-144.github.io/webcface-js/classes/Transform.html">Transform</a> オブジェクトからは<code>pos</code>, <code>rot</code>で座標と回転角を取得できます。 <div class="fragment"><div class="line">import { Point, Transform } from &quot;webcface&quot;;</div>
+<div class="line">const p = new Point([1, 2, 3]);</div>
+<div class="line">console.log(p.pos[0]); // 1 (x座標)</div>
+<div class="line">const r = new Transform([1, 2, 3], [Math.PI / 2, 0, 0]);</div>
+<div class="line">console.log(r.pos[0]); // 1 (x座標)</div>
+<div class="line">console.log(r.rot[0]); // pi / 2 (z軸回り)</div>
+</div><!-- fragment --> また、Transform.rotMatrix で3x3の回転行列、Transform.tfMatrix で4x4の同次変換行列が得られます。</li>
+</ul>
+</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md67"></a>
 送信</h1>
-<p>使い方は<a class="el" href="md_13__view.html">View</a>とだいたい同じになっています。 Canvas3Dオブジェクトを作り、 Canvas3D::add() で要素を追加し、 最後にCanvas3D::sync()をしてからClient::sync()をすることで送信されます。</p>
-<div class="fragment"><div class="line"><a class="code hl_class" href="classwebcface_1_1Canvas3D.html">webcface::Canvas3D</a> canvas = wcli.canvas3D(<span class="stringliteral">&quot;hoge&quot;</span>);</div>
+<p>使い方は<a class="el" href="md_13__view.html">View</a>とだいたい同じになっています。</p>
+<div class="tabbed"></div><div class="tabbed"><ul>
+<li><p class="startli"><b class="tab-title">C++</b> Client::canvas3d からCanvas3Dオブジェクトを作り、 Canvas3D::add() で要素を追加し、 最後にCanvas3D::sync()をしてからClient::sync()をすることで送信されます。 </p><div class="fragment"><div class="line"><a class="code hl_class" href="classwebcface_1_1Canvas3D.html">webcface::Canvas3D</a> canvas = wcli.canvas3D(<span class="stringliteral">&quot;hoge&quot;</span>);</div>
 <div class="line"><span class="comment">// canvas.init(); // ←オブジェクトcanvasを新規に構築せず繰り返し使いまわす場合は必要</span></div>
 <div class="line">canvas.<a class="code hl_function" href="classwebcface_1_1Canvas3D.html#a33ff806aea7697fb808c50493e4eb764">add</a>(...);</div>
 <div class="line">canvas.<a class="code hl_function" href="classwebcface_1_1Canvas3D.html#a420903f6795f1dd202e02d481a010822">sync</a>(); <span class="comment">// ここまでにcanvasに追加したものをクライアントに反映</span></div>
-<div class="line"> </div>
 <div class="line">wcli.<a class="code hl_function" href="classwebcface_1_1Canvas3D.html#a420903f6795f1dd202e02d481a010822">sync</a>();</div>
+<div class="ttc" id="aclasswebcface_1_1Canvas3D_html"><div class="ttname"><a href="classwebcface_1_1Canvas3D.html">webcface::Canvas3D</a></div><div class="ttdoc">Canvas3Dの送受信データを表すクラス</div><div class="ttdef"><b>Definition</b> canvas3d.h:167</div></div>
 <div class="ttc" id="aclasswebcface_1_1Canvas3D_html_a33ff806aea7697fb808c50493e4eb764"><div class="ttname"><a href="classwebcface_1_1Canvas3D.html#a33ff806aea7697fb808c50493e4eb764">webcface::Canvas3D::add</a></div><div class="ttdeci">Canvas3D &amp; add(const Canvas3DComponentBase &amp;cc)</div><div class="ttdoc">Componentを追加</div><div class="ttdef"><b>Definition</b> canvas3d.cc:35</div></div>
 <div class="ttc" id="aclasswebcface_1_1Canvas3D_html_a420903f6795f1dd202e02d481a010822"><div class="ttname"><a href="classwebcface_1_1Canvas3D.html#a420903f6795f1dd202e02d481a010822">webcface::Canvas3D::sync</a></div><div class="ttdeci">Canvas3D &amp; sync()</div><div class="ttdoc">Viewの内容をclientに反映し送信可能にする</div><div class="ttdef"><b>Definition</b> canvas3d.cc:22</div></div>
-</div><!-- fragment --><p> C++ではCanvas3Dのデストラクタでも自動的にCanvas3D::sync()が呼ばれます。 Canvas3Dオブジェクトをコピーした場合、Canvas3Dオブジェクトの内容はコピーされるのではなく共有され、そのすべてのコピーが破棄されるまでsync()は呼ばれません。</p>
-<p>addに指定可能なものとして、Geometry(後述)、<a class="el" href="md_21__robot__model.html">RobotModel</a> があります。</p>
-<h2><a class="anchor" id="autotoc_md43"></a>
+</div><!-- fragment --><p> C++ではCanvas3Dのデストラクタでも自動的にCanvas3D::sync()が呼ばれます。</p>
+<dl class="section note"><dt>Note</dt><dd>Canvas3Dオブジェクトをコピーした場合、Canvas3Dオブジェクトの内容はコピーされるのではなく共有され、そのすべてのコピーが破棄されるまでsync()は呼ばれません。</dd></dl>
+</li>
+<li><b class="tab-title">JavaScript</b> Client::canvas3D からCanvas3Dオブジェクトを作り、 set()の引数に要素をまとめてセットして使います。 <div class="fragment"><div class="line">wcli.canvas3D(&quot;hoge&quot;).set([</div>
+<div class="line">    ...</div>
+<div class="line">]);</div>
+</div><!-- fragment --></li>
+</ul>
+</div><div class="tabbed"></div><p>Canvas3Dに追加できる要素として、Geometry(後述)、<a class="el" href="md_21__robot__model.html">RobotModel</a> があります。</p>
+<h2><a class="anchor" id="autotoc_md68"></a>
 Geometry</h2>
 <p>3次元の図形を表示するにはGeometryを指定します。</p>
-<div class="fragment"><div class="line"><span class="keyword">using namespace </span><a class="code hl_namespace" href="namespacewebcface_1_1Geometries.html">webcface::Geometries</a>;</div>
+<div class="tabbed"></div><div class="tabbed"><ul>
+<li><p class="startli"><b class="tab-title">C++</b> </p><div class="fragment"><div class="line"><span class="keyword">using namespace </span><a class="code hl_namespace" href="namespacewebcface_1_1Geometries.html">webcface::Geometries</a>;</div>
 <div class="line">canvas.<a class="code hl_function" href="classwebcface_1_1Canvas3D.html#a33ff806aea7697fb808c50493e4eb764">add</a>(</div>
 <div class="line">    box(<a class="code hl_class" href="classwebcface_1_1Common_1_1Point.html">webcface::Point</a>{0, 0, 0}, <a class="code hl_class" href="classwebcface_1_1Common_1_1Point.html">webcface::Point</a>{2, 2, 2}),</div>
 <div class="line">    <a class="code hl_function" href="namespacewebcface_1_1Common.html#a9cc7119f63c09d929d8218008d2bb386">webcface::identity</a>(),</div>
@@ -156,44 +198,59 @@ Geometry</h2>
 <div class="ttc" id="aclasswebcface_1_1Common_1_1Point_html"><div class="ttname"><a href="classwebcface_1_1Common_1_1Point.html">webcface::Point</a></div><div class="ttdoc">3次元の座標</div><div class="ttdef"><b>Definition</b> transform.h:11</div></div>
 <div class="ttc" id="anamespacewebcface_1_1Common_html_a9cc7119f63c09d929d8218008d2bb386"><div class="ttname"><a href="namespacewebcface_1_1Common.html#a9cc7119f63c09d929d8218008d2bb386">webcface::Common::identity</a></div><div class="ttdeci">Transform identity()</div><div class="ttdef"><b>Definition</b> transform.h:55</div></div>
 <div class="ttc" id="anamespacewebcface_1_1Geometries_html"><div class="ttname"><a href="namespacewebcface_1_1Geometries.html">webcface::Geometries</a></div><div class="ttdef"><b>Definition</b> canvas3d.h:18</div></div>
-</div><!-- fragment --><ul>
-<li>最初の引数にGeometryを指定します。引数は種類ごとに異なります。(後述)</li>
-<li>2番目の引数にTransformを指定するとGeometryを移動することができます。省略時はidentity()になります。</li>
-<li>3番目の引数に色を指定します。指定方法はViewと同様の <a class="el" href="namespacewebcface_1_1Common.html#a5dcc1f15d6a60ca34207565aeb74124a">webcface::ViewColor</a> です。省略時はinherit(表示上はgrayと同じ)になります。</li>
-</ul>
-<p>C++ではGeometryは <a class="el" href="namespacewebcface_1_1Geometries.html">webcface::Geometries</a> 名前空間に定義されていますが、<code>webcface::</code> の名前空間でもアクセス可能です。</p>
-<p>以下のGeometryが利用可能です。</p>
-<ul>
-<li><code>line(Point begin, Point end)</code><ul>
-<li>beginからendまで直線を引く</li>
-</ul>
+</div><!-- fragment --><p> addの引数に表示したいgeometryと、表示する位置、色を指定します。 詳細は <a class="el" href="classwebcface_1_1Canvas3D.html#a33ff806aea7697fb808c50493e4eb764" title="Componentを追加">webcface::Canvas3D::add</a> を参照してください</p>
+<p class="startli">C++ではGeometryは <a class="el" href="namespacewebcface_1_1Geometries.html">webcface::Geometries</a> 名前空間に定義されていますが、<code>webcface::</code> の名前空間でもアクセス可能です。</p>
 </li>
-<li><code>plane(Transform origin, double width, double height)</code><ul>
-<li>originのxy平面上に、originを中心として幅(x方向の長さ)がwidth, 高さ(y方向の長さ)がheightの長方形を描画</li>
-</ul>
-</li>
-<li><code>box(Point vertex1, Point vertex2)</code><ul>
-<li>対角の頂点2点を指定して直方体を描画</li>
-<li>各辺は x, y, z 軸に平行</li>
-</ul>
-</li>
-<li><code>circle(Transform origin, double radius)</code><ul>
-<li>originのxy平面上に、originを中心として半径radiusの円を描画</li>
-</ul>
-</li>
-<li><code>cylinder(Transform origin, double radius, double length)</code><ul>
-<li>originのyz平面上にoriginを中心として半径radiusの円を描画し、それをx軸方向にlength押し出した円柱を描画</li>
-</ul>
-</li>
-<li><code>sphere(Point origin, double radius)</code><ul>
-<li>originを中心とし半径radiusの球を描画</li>
-</ul>
+<li><p class="startli"><b class="tab-title">JavaScript</b> </p><div class="fragment"><div class="line">import { geometries, viewColor, Point, Transform } from &quot;webcface&quot;;</div>
+<div class="line">canvas.set([</div>
+<div class="line">    [</div>
+<div class="line">        geometries.box(new Point(0, 0, 0), new Point(2, 2, 2)),</div>
+<div class="line">        new Transform(),</div>
+<div class="line">        viewColor.gray,</div>
+<div class="line">    ],</div>
+<div class="line">]);</div>
+</div><!-- fragment --><p> setの引数にgeometry、表示する位置(Transform)、色の3つをArrayにして指定します。</p>
+<p class="startli">Geometryは <a href="https://na-trium-144.github.io/webcface-js/variables/geometries.html">geometries</a> に定義されています</p>
 </li>
 </ul>
-<h1><a class="anchor" id="autotoc_md44"></a>
+</div><div class="tabbed"></div><p>Geometryは以下のものが用意されています。</p>
+<h2><a class="anchor" id="autotoc_md69"></a>
+Line</h2>
+<p>指定した2点間に直線を引きます </p><div class="fragment"><div class="line">line(<a class="code hl_class" href="classwebcface_1_1Common_1_1Point.html">Point</a> begin, <a class="code hl_class" href="classwebcface_1_1Common_1_1Point.html">Point</a> end)</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md70"></a>
+Plane</h2>
+<p>originのxy平面上に、originを中心として幅(x方向の長さ)がwidth, 高さ(y方向の長さ)がheightの長方形を描画します </p><div class="fragment"><div class="line">plane(<a class="code hl_class" href="classwebcface_1_1Common_1_1Transform.html">Transform</a> origin, <span class="keywordtype">double</span> width, <span class="keywordtype">double</span> height)</div>
+<div class="ttc" id="aclasswebcface_1_1Common_1_1Transform_html"><div class="ttname"><a href="classwebcface_1_1Common_1_1Transform.html">webcface::Transform</a></div><div class="ttdoc">3次元の座標と回転</div><div class="ttdef"><b>Definition</b> transform.h:30</div></div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md71"></a>
+Box</h2>
+<p>指定した2点を頂点とし、各辺がx, y, z軸に平行な直方体を描画します </p><div class="fragment"><div class="line">box(<a class="code hl_class" href="classwebcface_1_1Common_1_1Point.html">Point</a> vertex1, <a class="code hl_class" href="classwebcface_1_1Common_1_1Point.html">Point</a> vertex2)</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md72"></a>
+Circle</h2>
+<p>originのxy平面上に、originを中心として半径radiusの円を描画します </p><div class="fragment"><div class="line">circle(<a class="code hl_class" href="classwebcface_1_1Common_1_1Transform.html">Transform</a> origin, <span class="keywordtype">double</span> radius)</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md73"></a>
+Cylinder</h2>
+<p>originのyz平面上にoriginを中心として半径radiusの円を描画し、 それをx軸方向にlength押し出した円柱を描画します </p><div class="fragment"><div class="line">cylinder(<a class="code hl_class" href="classwebcface_1_1Common_1_1Transform.html">Transform</a> origin, <span class="keywordtype">double</span> radius, <span class="keywordtype">double</span> length)</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md74"></a>
+Sphere</h2>
+<p>originを中心とし半径radiusの球を描画します </p><div class="fragment"><div class="line">sphere(<a class="code hl_class" href="classwebcface_1_1Common_1_1Point.html">Point</a> origin, <span class="keywordtype">double</span> radius)</div>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md75"></a>
 受信</h1>
-<p>Canvas3D::tryGet(), get() で Canvas3DComponent のリストを取得できます。 Canvas3DComponent オブジェクトからGeometryなどパラメータを取得する方法に関しては <a class="el" href="classwebcface_1_1Canvas3DComponent.html" title="Canvas3Dに表示する要素">webcface::Canvas3DComponent</a> のリファレンスを参照してください。</p>
-<p>Canvas3D::appendListener() で受信したデータが変化したときにコールバックを呼び出すことができます。</p>
+<p>Viewなどと同様、Member::canvas3D() でCanvas3Dクラスのオブジェクトが得られ、 Canvas3D::tryGet() で値のリクエストをするとともに受信した値を取得できます。</p>
+<p>Canvas3Dデータは <a class="el" href="classwebcface_1_1Canvas3DComponent.html" title="Canvas3Dに表示する要素">webcface::Canvas3DComponent</a> (JavaScript <a href="https://na-trium-144.github.io/webcface-js/classes/Canvas3DComponent.html">Canvas3DComponent</a>)</p>
+<p>のリストとして得られ、 Canvas3DComponentオブジェクトから各種プロパティを取得できます。</p>
+<h2><a class="anchor" id="autotoc_md76"></a>
+時刻</h2>
+<p>Canvas3D::time() でその値が送信されたとき(そのMemberがsync()したとき)の時刻が得られます。</p>
+<h2><a class="anchor" id="autotoc_md77"></a>
+Entry</h2>
+<p>Member::canvas3DEntries() でそのMemberが送信しているCanvas3Dのリストが得られます</p>
+<p>また、Member::onCanvas3DEntry() で新しくデータが追加されたときのコールバックを設定できます</p>
+<p>いずれも使い方は <a class="el" href="md_10__value.html">Value</a> と同様なのでそちらを参照してください</p>
+<h2><a class="anchor" id="autotoc_md78"></a>
+Event</h2>
+<p>受信したデータが変化したときにコールバックを呼び出すことができます。 コールバックを設定することでもその値はリクエストされます。</p>
+<p>また、データが変化したどうかに関わらずそのMemberがsync()したときにコールバックを呼び出したい場合は Member::onSync() が使えます</p>
+<p>使い方は <a class="el" href="md_10__value.html">Value</a> と同様なのでそちらを参照してください</p>
 <div class="section_buttons"></div><div class="section_buttons"><table class="markdownTable">
 <tr class="markdownTableHead">
 <th class="markdownTableHeadLeft">Previous   </th><th class="markdownTableHeadRight">Next    </th></tr>
@@ -206,7 +263,7 @@ Geometry</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Feb 9 2024 08:30:45 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Wed Feb 14 2024 09:52:09 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

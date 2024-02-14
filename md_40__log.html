@@ -34,8 +34,35 @@
 <script type="text/javascript">
     DoxygenAwesomeParagraphLink.init()
 </script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeTabs.init()
+</script>
+<script type="text/javascript">
+  function insertBadge(){
+    for(const sp of document.getElementsByClassName('since-c')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-00599c?logo=C%2B%2B" alt="c++ ver${ver}" class="inline">`;
+    }
+    for(const sp of document.getElementsByClassName('since-js')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-f7df1e?logo=JavaScript&amp;logoColor=black" alt="js ver${ver}" class="inline">`;
+    }
+    for(const sp of document.getElementsByClassName('since-py')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-3776ab?logo=python&amp;logoColor=white" alt="python ver${ver}" class="inline">`;
+    }
+  }
+</script>
 </head>
-<body>
+<body onload="insertBadge();">
+<!-- https://tholman.com/github-corners/ -->
+<a href="https://github.com/na-trium-144/webcface" class="github-corner" aria-label="View source on GitHub">
+  <svg width="80" height="80" viewBox="0 0 250 250" style="fill:#64CEAA; color:#fff; position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path>
+  </svg>
+</a>
+<style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
 <div id="titlearea">
 <table cellspacing="0" cellpadding="0">
@@ -110,41 +137,35 @@ $(document).ready(function(){initNavTree('md_40__log.html',''); initResizable();
   <div class="headertitle"><div class="title">Log</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md58"></a> API Reference → <a class="el" href="classwebcface_1_1Log.html" title="ログの送受信データを表すクラス">webcface::Log</a></p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md102"></a> </p><dl class="section since"><dt>Since</dt><dd><span class="since-c"></span> <span class="since-js"></span> <span class="since-py"></span> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><ul>
+<li>C++ <a class="el" href="classwebcface_1_1Log.html" title="ログの送受信データを表すクラス">webcface::Log</a></li>
+<li>JavaScript <a href="https://na-trium-144.github.io/webcface-js/classes/Log.html">Log</a></li>
+<li>Python <a href="https://na-trium-144.github.io/webcface-python/webcface.log.html#webcface.log.Log">webcface.Log</a></li>
+</ul>
+</dd></dl>
 <p>テキストのログ出力を送受信します。</p>
-<h1><a class="anchor" id="autotoc_md59"></a>
-ログを出力する</h1>
-<h2><a class="anchor" id="autotoc_md60"></a>
-C++</h2>
-<p><a href="https://github.com/gabime/spdlog">spdlog</a> ライブラリを利用しています。</p>
-<p>Client::logger() でspdlogのloggerを取得でき、これを使ってログを出力できます </p><div class="fragment"><div class="line">wcli.logger()-&gt;info(<span class="stringliteral">&quot;this is info&quot;</span>);</div>
+<h1><a class="anchor" id="autotoc_md103"></a>
+コマンドライン</h1>
+<div class="fragment"><div class="line">webcface-send -t log</div>
+</div><!-- fragment --><p> を実行し、文字列を入力すると送信されます。</p>
+<p>他のコマンドからpipeしてWebCFaceに送信するという使い方ができます。</p>
+<h1><a class="anchor" id="autotoc_md104"></a>
+送信</h1>
+<div class="tabbed"></div><div class="tabbed"><ul>
+<li><p class="startli"><b class="tab-title">C++</b> <a href="https://github.com/gabime/spdlog">spdlog</a> ライブラリを利用しています。</p>
+<p class="startli">Client::logger() はwebcfaceとstderrに出力するloggerです。 これを使ってログを出力できます </p><div class="fragment"><div class="line">wcli.logger()-&gt;info(<span class="stringliteral">&quot;this is info&quot;</span>);</div>
 <div class="line">wcli.logger()-&gt;error(<span class="stringliteral">&quot;this is error, error no = {}&quot;</span>, 123);</div>
 </div><!-- fragment --><p> これと同様に<code>trace</code>, <code>debug</code>, <code>info</code>, <code>warn</code>, <code>error</code>, <code>critical</code>の6段階のログレベルを使うことができます。</p>
-<p>上の例のようにspdlogではfmtライブラリを使用しており数値などをフォーマットして出力することができます。 詳細は<a href="https://github.com/gabime/spdlog">spdlog</a>, <a href="https://github.com/fmtlib/fmt">fmt</a>を参照してください</p>
-<p>Client::logger() はwebcfaceに送信するだけでなく標準出力にも出力します。 この挙動を変えたい場合はlogger()-&gt;sinks()を変更するか、 またClient::loggerSink()でログをwebcfaceに送信するsinkを取得できるのでこれを他のloggerにセットして使うこともできます。</p>
-<p>spdlogではなくostreamを使いたい場合は </p><div class="fragment"><div class="line">wcli.loggerOStream() &lt;&lt; <span class="stringliteral">&quot;hello&quot;</span> &lt;&lt; std::endl;</div>
+<p class="startli">上の例のようにspdlogではfmtライブラリを使用しており数値などをフォーマットして出力することができます。 詳細は<a href="https://github.com/gabime/spdlog">spdlog</a>, <a href="https://github.com/fmtlib/fmt">fmt</a>を参照してください</p>
+<p class="startli">Client::loggerSink()でログをwebcfaceに送信するsinkを取得できるので、これを他のloggerにセットして使うこともできます。 または Client.logger() の出力先のsinkを変更することもできます。 (詳細はspdlogのドキュメントを読んでください。)</p>
+<p class="startli">spdlogではなくostreamを使いたい場合は </p><div class="fragment"><div class="line">wcli.loggerOStream() &lt;&lt; <span class="stringliteral">&quot;hello&quot;</span> &lt;&lt; std::endl;</div>
 </div><!-- fragment --><p> のように出力したり、 </p><div class="fragment"><div class="line">std::cout.rdbuf(&amp;wcli.loggerStreamBuf());</div>
 <div class="line">std::cout &lt;&lt; <span class="stringliteral">&quot;hello&quot;</span> &lt;&lt; std::endl;</div>
 </div><!-- fragment --><p> のようにcoutやcerrの出力先を置き換えることができます。 この場合はログレベルが設定できず、常にinfoになります。</p>
-<h2><a class="anchor" id="autotoc_md61"></a>
-Python</h2>
-<p>Python標準のloggingモジュールを使います。</p>
-<p>Client.logging_handler をLoggerのhandlerとして追加して使います。 </p><div class="fragment"><div class="line"><span class="keyword">from</span> logging <span class="keyword">import</span> getLogger, DEBUG, StreamHandler</div>
-<div class="line">logger = getLogger(__name__)</div>
-<div class="line">logger.setLevel(DEBUG)</div>
-<div class="line">ch = StreamHandler()</div>
-<div class="line">ch.setLevel(DEBUG)</div>
-<div class="line">logger.addHandler(ch)</div>
-<div class="line">logger.addHandler(wcli.logger_handler) <span class="comment"># これでloggerのhandlerに登録される</span></div>
-<div class="line"> </div>
-<div class="line">logger.info(<span class="stringliteral">&quot;hello&quot;</span>) <span class="comment"># コンソールとwebcfaceの両方に出力される</span></div>
-</div><!-- fragment --><p>また、printを使いたい場合などは Client.logging_io で取得できるIOオブジェクトが使えます。 </p><div class="fragment"><div class="line"><span class="keyword">import</span> sys</div>
-<div class="line">sys.stdout = wcli.logging_io</div>
-<div class="line">print(<span class="stringliteral">&quot;hello&quot;</span>)</div>
-</div><!-- fragment --> <h2><a class="anchor" id="autotoc_md62"></a>
-JavaScript</h2>
-<p><a href="https://www.npmjs.com/package/log4js">log4js</a>を使います。</p>
-<p>log4jsのappenderにClient.logAppenderを登録すると出力されます。 </p><div class="fragment"><div class="line">import log4js from &quot;log4js&quot;;</div>
+</li>
+<li><p class="startli"><b class="tab-title">JavaScript</b> <a href="https://www.npmjs.com/package/log4js">log4js</a>を使います。</p>
+<p class="startli">log4jsのappenderにClient.logAppenderを登録すると出力されます。 </p><div class="fragment"><div class="line">import log4js from &quot;log4js&quot;;</div>
 <div class="line"> </div>
 <div class="line">log4js.configure({</div>
 <div class="line">  appenders: {</div>
@@ -159,22 +180,33 @@ JavaScript</h2>
 <div class="line">logger.info(&quot;this is info&quot;);</div>
 <div class="line">logger.warn(&quot;this is warn&quot;);</div>
 <div class="line">logger.error(&quot;this is error&quot;);</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md63"></a>
-ログを取得する</h1>
-<p>Member::log() でLogクラスのオブジェクトが得られます </p><div class="fragment"><div class="line"><a class="code hl_class" href="classwebcface_1_1Log.html">webcface::Log</a> log_a = wcli.<a class="code hl_function" href="classwebcface_1_1Log.html#aa8fab40ead35fa8e761986d5f4000a5c">member</a>(<span class="stringliteral">&quot;a&quot;</span>).<a class="code hl_function" href="classwebcface_1_1Member.html#a37064ebbfa8560de8c5a90fbbea4d6a6">log</a>();</div>
-<div class="ttc" id="aclasswebcface_1_1Log_html"><div class="ttname"><a href="classwebcface_1_1Log.html">webcface::Log</a></div><div class="ttdoc">ログの送受信データを表すクラス</div><div class="ttdef"><b>Definition</b> log.h:18</div></div>
-<div class="ttc" id="aclasswebcface_1_1Log_html_aa8fab40ead35fa8e761986d5f4000a5c"><div class="ttname"><a href="classwebcface_1_1Log.html#aa8fab40ead35fa8e761986d5f4000a5c">webcface::Log::member</a></div><div class="ttdeci">Member member() const</div><div class="ttdoc">Memberを返す</div><div class="ttdef"><b>Definition</b> field.cc:8</div></div>
-<div class="ttc" id="aclasswebcface_1_1Member_html_a37064ebbfa8560de8c5a90fbbea4d6a6"><div class="ttname"><a href="classwebcface_1_1Member.html#a37064ebbfa8560de8c5a90fbbea4d6a6">webcface::Member::log</a></div><div class="ttdeci">Log log() const</div><div class="ttdoc">logを参照する。</div><div class="ttdef"><b>Definition</b> member.cc:23</div></div>
-</div><!-- fragment --><p>Log::tryGet() でログデータが得られます。 Valueなどと同様、初回の呼び出しではstd::nulloptを返し、2回目以降はログデータを取得できます。 </p><div class="fragment"><div class="line">std::nullopt&lt;std::vector&lt;webcface::LogLine&gt;&gt; log = log_a.<a class="code hl_function" href="classwebcface_1_1Log.html#aadb158fa20765e342d4669e2c69dbc9e">tryGet</a>();</div>
-<div class="ttc" id="aclasswebcface_1_1Log_html_aadb158fa20765e342d4669e2c69dbc9e"><div class="ttname"><a href="classwebcface_1_1Log.html#aadb158fa20765e342d4669e2c69dbc9e">webcface::Log::tryGet</a></div><div class="ttdeci">std::optional&lt; std::vector&lt; LogLine &gt; &gt; tryGet() const</div><div class="ttdoc">ログを取得する</div><div class="ttdef"><b>Definition</b> log.cc:21</div></div>
-</div><!-- fragment --><p> Log::get() はstd::nulloptの代わりに空のリストを返す点以外は同じです。</p>
-<p><img src="https://img.shields.io/badge/1.1.9~-00599c?logo=C%2B%2B" alt="c++ ver1.1.9" class="inline"/> サーバーは各クライアントのログを1000行まで保持しています。 logの受信リクエストを送った時点から1000行より前のログは取得できません。 serverの起動時のオプションでこの行数は変更できます。(<code>webcface-server -h</code>を参照)</p>
-<h1><a class="anchor" id="autotoc_md64"></a>
-受信イベント</h1>
-<p>Log::appendListener() で受信したデータが変化したときにコールバックを呼び出すことができます </p><div class="fragment"><div class="line">wcli.member(<span class="stringliteral">&quot;a&quot;</span>).log().appendListener([](Log v){ <span class="comment">/* ... */</span> });</div>
-</div><!-- fragment --><p> (Pythonでは Log.signal)</p>
-<p>Logオブジェクトにはこれまで受信したログデータがすべて含まれます。 <br  />
- <img src="https://img.shields.io/badge/1.1.5~-00599c?logo=C%2B%2B" alt="c++ ver1.1.5" class="inline"/> <img src="https://img.shields.io/badge/1.0.4~-f7df1e?logo=JavaScript&amp;logoColor=black" alt="js ver1.0.4" class="inline"/> <img src="https://img.shields.io/badge/1.0~-3776ab?logo=python&amp;logoColor=white" alt="py ver1.0" class="inline"/> 前回からの差分だけが必要な場合は、データの処理後に Log::clear() で受信したログデータをすべて削除することもできます。</p>
+</div><!-- fragment --></li>
+<li><p class="startli"><b class="tab-title">Python</b> Python標準のloggingモジュールを使うことができます。</p>
+<p class="startli">Client.logging_handler をLoggerのhandlerとして追加して使います。 </p><div class="fragment"><div class="line"><span class="keyword">from</span> logging <span class="keyword">import</span> getLogger, DEBUG, StreamHandler</div>
+<div class="line">logger = getLogger(__name__)</div>
+<div class="line">logger.setLevel(DEBUG)</div>
+<div class="line">ch = StreamHandler()</div>
+<div class="line">ch.setLevel(DEBUG)</div>
+<div class="line">logger.addHandler(ch)</div>
+<div class="line">logger.addHandler(wcli.logger_handler) <span class="comment"># これでloggerのhandlerに登録される</span></div>
+<div class="line"> </div>
+<div class="line">logger.info(<span class="stringliteral">&quot;hello&quot;</span>) <span class="comment"># コンソールとwebcfaceの両方に出力される</span></div>
+</div><!-- fragment --><p class="startli">printを使いたい場合など、 Client.logging_io で取得できるIOオブジェクトを使って送信することもできます。 logging_io はwebcfaceに送信すると同時に<code>sys.__stderr__</code>にも出力します。 </p><div class="fragment"><div class="line"><span class="keyword">import</span> sys</div>
+<div class="line">sys.stdout = wcli.logging_io</div>
+<div class="line">print(<span class="stringliteral">&quot;hello&quot;</span>)</div>
+</div><!-- fragment --></li>
+</ul>
+</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md105"></a>
+受信</h1>
+<p>Member::log() でLogクラスのオブジェクトが得られ、 Log::tryGet() でデータのリクエストをするとともにログが得られます。</p>
+<p>ログデータは <a class="el" href="structwebcface_1_1Common_1_1LogLine.html">webcface::LogLine</a> (JavaScript <a href="https://na-trium-144.github.io/webcface-js/interfaces/LogLine.html">LogLine</a>, Python <a href="https://na-trium-144.github.io/webcface-python/webcface.log_handler.html#webcface.log_handler.LogLine">webcface.LogLine</a>) のリストとして得られ、 メッセージ、ログレベル、時刻を取得できます。</p>
+<p><span class="since-c">1.1.5</span> <span class="since-js">1.0.4</span> <span class="since-py"></span> Logオブジェクトにはこれまで受信したログデータがすべて含まれますが、 前回からの差分だけが必要な場合は、データの処理後に Log::clear() で受信したログデータをすべて削除することもできます。</p>
+<dl class="section note"><dt>Note</dt><dd><span class="since-c">1.1.9</span> サーバーは各クライアントのログを1000行まで保持しています。 logの受信リクエストを送った時点から1000行より前のログは取得できません。 serverの起動時のオプションでこの行数は変更できます。(<code>webcface-server -h</code>を参照)</dd></dl>
+<h2><a class="anchor" id="autotoc_md106"></a>
+Event</h2>
+<p>受信したデータが変化したときにコールバックを呼び出すことができます。 コールバックを設定することでもその値はリクエストされます。</p>
+<p>また、データが変化したどうかに関わらずそのMemberがsync()したときにコールバックを呼び出したい場合は Member::onSync() が使えます</p>
+<p>使い方は <a class="el" href="md_10__value.html">Value</a> と同様なのでそちらを参照してください</p>
 <div class="section_buttons"></div><div class="section_buttons"><table class="markdownTable">
 <tr class="markdownTableHead">
 <th class="markdownTableHeadLeft">Previous   </th><th class="markdownTableHeadRight">Next    </th></tr>
@@ -187,7 +219,7 @@ JavaScript</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Feb 9 2024 08:30:45 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Wed Feb 14 2024 09:52:09 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

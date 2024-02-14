@@ -34,8 +34,35 @@
 <script type="text/javascript">
     DoxygenAwesomeParagraphLink.init()
 </script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeTabs.init()
+</script>
+<script type="text/javascript">
+  function insertBadge(){
+    for(const sp of document.getElementsByClassName('since-c')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-00599c?logo=C%2B%2B" alt="c++ ver${ver}" class="inline">`;
+    }
+    for(const sp of document.getElementsByClassName('since-js')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-f7df1e?logo=JavaScript&amp;logoColor=black" alt="js ver${ver}" class="inline">`;
+    }
+    for(const sp of document.getElementsByClassName('since-py')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-3776ab?logo=python&amp;logoColor=white" alt="python ver${ver}" class="inline">`;
+    }
+  }
+</script>
 </head>
-<body>
+<body onload="insertBadge();">
+<!-- https://tholman.com/github-corners/ -->
+<a href="https://github.com/na-trium-144/webcface" class="github-corner" aria-label="View source on GitHub">
+  <svg width="80" height="80" viewBox="0 0 250 250" style="fill:#64CEAA; color:#fff; position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path>
+  </svg>
+</a>
+<style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
 <div id="titlearea">
 <table cellspacing="0" cellpadding="0">
@@ -131,7 +158,7 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 <li>Canvas3D: 3D空間内のオブジェクト描画</li>
 <li>RobotModel: リンクやジョイントの定義</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md111"></a>
+<h1><a class="anchor" id="autotoc_md154"></a>
 Links</h1>
 <ul>
 <li><a href="https://github.com/na-trium-144/webcface">webcface</a>: サーバー &amp; C/C++クライアントライブラリ (このリポジトリ)</li>
@@ -142,10 +169,10 @@ Links</h1>
 <li><a href="https://github.com/na-trium-144/homebrew-webcface">homebrew-webcface</a>: HomebrewのTapを管理しています</li>
 <li><a href="https://github.com/na-trium-144/webcface-windows-package">webcface-windows-package</a>: Windows用ビルドをリリースする場所</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md112"></a>
+<h1><a class="anchor" id="autotoc_md155"></a>
 Installation</h1>
 <p>以下の手順で webcface, webcface-webui, webcface-tools をインストールできます。 (webcface-toolsの内容と使い方についてはwebcface-toolsのReadmeを参照してください)</p>
-<h2><a class="anchor" id="autotoc_md113"></a>
+<h2><a class="anchor" id="autotoc_md156"></a>
 Ubuntu 20.04, 22.04 (x86_64, arm64, armhf)</h2>
 <p><a href="https://github.com/na-trium-144/webcface/releases">WebCFaceのReleases</a> と <a href="https://github.com/na-trium-144/webcface-webui/releases">webuiのReleases</a> 、<a href="https://github.com/na-trium-144/webcface-tools/releases">toolsのReleases</a> からそれぞれ最新のdebパッケージをダウンロードしてインストールできます。</p>
 <p>debパッケージはubuntu20.04と22.04でビルドしています。 それぞれ依存するパッケージのバージョンが違います。 Debianなど他のディストリビューションで動作するかはわかりません。</p>
@@ -201,18 +228,24 @@ Ubuntu 20.04, armhf</summary>
 <p>ダウンロードできたら </p><div class="fragment"><div class="line">sudo apt install ./webcface*.deb</div>
 <div class="line">rm ./webcface*.deb</div>
 </div><!-- fragment --><p> でインストールできます</p>
-<h2><a class="anchor" id="autotoc_md114"></a>
+<h2><a class="anchor" id="autotoc_md157"></a>
 Homebrew (MacOS, Linux)</h2>
 <div class="fragment"><div class="line">brew tap na-trium-144/webcface</div>
 <div class="line">brew install webcface webcface-webui webcface-tools</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md115"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md158"></a>
+App Bundle for MacOS</h2>
+<p><a href="https://github.com/na-trium-144/homebrew-webcface/releases">homebrew-webcfaceのRelease</a> から .app.zip ファイルをダウンロードするか、 </p><div class="fragment"><div class="line">brew tap na-trium-144/webcface</div>
+<div class="line">brew install --cask webcface-webui-server</div>
+</div><!-- fragment --><p> でインストールできます。</p>
+<p>インストールしたappを起動するとWebUIのウィンドウとwebcface-serverが起動します。(詳細はドキュメントの <a href="https://na-trium-144.github.io/webcface/md_00__overview.html">Overview</a> を参照)</p>
+<h2><a class="anchor" id="autotoc_md159"></a>
 Windows (MSVC)</h2>
 <p><a href="https://github.com/na-trium-144/webcface-windows-package/releases">webcface-windows-packageのRelease</a>からインストーラーをダウンロードしてください。</p>
 <p>MinGW用バイナリは今のところ配布していません(ソースからビルドしてください)</p>
-<h2><a class="anchor" id="autotoc_md116"></a>
+<h2><a class="anchor" id="autotoc_md160"></a>
 Build from source</h2>
 <p>以下はwebcfaceをソースからビルドする場合の説明です。(webcfaceをインストールした場合は不要です。)</p>
-<h3><a class="anchor" id="autotoc_md117"></a>
+<h3><a class="anchor" id="autotoc_md161"></a>
 Requirements</h3>
 <ul>
 <li>c++20に対応したコンパイラが必要です</li>
@@ -272,7 +305,7 @@ MSYS2</summary>
 <div class="fragment"><div class="line">pacman -S git mingw-w64-x86_64-gcc mingw-w64-x86_64-cmake mingw-w64-x86_64-ninja</div>
 <div class="line">pacman -S mingw-w64-x86_64-opencv mingw-w64-x86_64-spdlog  # optional</div>
 </div><!-- fragment --> </details>
-<h3><a class="anchor" id="autotoc_md118"></a>
+<h3><a class="anchor" id="autotoc_md162"></a>
 Build (with Pure CMake)</h3>
 <div class="fragment"><div class="line">cmake -Bbuild</div>
 <div class="line">cmake --build build</div>
@@ -301,12 +334,12 @@ Build (with Pure CMake)</h3>
 </ul>
 </li>
 </ul>
-<h3><a class="anchor" id="autotoc_md119"></a>
+<h3><a class="anchor" id="autotoc_md163"></a>
 Build (with colcon, ROS2)</h3>
 <ul>
 <li>このリポジトリをワークスペースのsrcに追加して、colconでビルドすることができます</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md120"></a>
+<h3><a class="anchor" id="autotoc_md164"></a>
 WebUI</h3>
 <ul>
 <li>デフォルトではビルド済みのものがcmake時にダウンロードされます。</li>
@@ -321,20 +354,20 @@ WebUI</h3>
 </li>
 <li>このリポジトリのReleasesにあるdebパッケージとhomebrewではwebcfaceのパッケージとは別で配布しています</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md121"></a>
+<h3><a class="anchor" id="autotoc_md165"></a>
 tools</h3>
 <ul>
 <li>toolsは別途 <a href="https://github.com/na-trium-144/webcface-tools.git">https://github.com/na-trium-144/webcface-tools.git</a> をcloneしてビルド、インストールしてください</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md122"></a>
+<h1><a class="anchor" id="autotoc_md166"></a>
 Documentation</h1>
 <ul>
-<li><a href="https://na-trium-144.github.io/webcface/md_00__tutorial.html">Tutorial</a></li>
+<li>まずはここから→ <a href="https://na-trium-144.github.io/webcface/md_00__overview.html">Overview</a></li>
 <li><a href="https://na-trium-144.github.io/webcface/namespaces.html">APIリファレンス</a></li>
 <li><a href="https://na-trium-144.github.io/webcface-python/">webcface-python APIリファレンス</a></li>
 <li><a href="https://na-trium-144.github.io/webcface-js/">webcface-js APIリファレンス</a></li>
 </ul>
-<h1><a class="anchor" id="autotoc_md123"></a>
+<h1><a class="anchor" id="autotoc_md167"></a>
 License</h1>
 <p>WebCFaceと関連するプログラムはすべてMITライセンスで公開しています。詳細は <a href="https://github.com/na-trium-144/webcface/blob/main/LICENSE">LICENSE</a> を参照してください。</p>
 <p>WebCFace本体とtoolsが使用しているサードパーティーのライブラリのライセンスはそれぞれ以下を参照してください。</p><ul>
@@ -356,7 +389,7 @@ License</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Feb 9 2024 08:30:45 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Wed Feb 14 2024 09:52:09 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>
