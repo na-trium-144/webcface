@@ -303,8 +303,8 @@ class Canvas3D : protected Field, public EventTarget<Canvas3D> {
      */
     template <typename G>
         requires std::derived_from<G, Geometry3D>
-    WEBCFACE_DLL Canvas3D &add(const G &geometry, const Transform &origin,
-                               const ViewColor &color = ViewColor::inherit) {
+    Canvas3D &add(const G &geometry, const Transform &origin,
+                  const ViewColor &color = ViewColor::inherit) {
         add({Canvas3DComponentType::geometry,
              origin,
              color,
@@ -321,8 +321,8 @@ class Canvas3D : protected Field, public EventTarget<Canvas3D> {
      */
     template <typename G>
         requires std::derived_from<G, Geometry3D>
-    WEBCFACE_DLL Canvas3D &add(const G &geometry,
-                               const ViewColor &color = ViewColor::inherit) {
+    Canvas3D &add(const G &geometry,
+                  const ViewColor &color = ViewColor::inherit) {
         add(geometry, identity(), color);
         return *this;
     }

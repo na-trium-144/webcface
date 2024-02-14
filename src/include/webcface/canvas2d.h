@@ -117,17 +117,17 @@ class Canvas2D : protected Field, public EventTarget<Canvas2D> {
      */
     template <typename G>
         requires std::derived_from<G, Geometry2D>
-    WEBCFACE_DLL Canvas2D &add(const G &geometry, const ViewColor &color,
-                               const ViewColor &fill = ViewColor::inherit,
-                               double stroke_width = 1) {
+    Canvas2D &add(const G &geometry, const ViewColor &color,
+                  const ViewColor &fill = ViewColor::inherit,
+                  double stroke_width = 1) {
         add({Canvas2DComponentType::geometry, color, fill, stroke_width,
              geometry});
         return *this;
     }
     template <typename G>
         requires std::derived_from<G, Geometry3D>
-    WEBCFACE_DLL Canvas2D &add(const G &geometry, const ViewColor &color,
-                               double stroke_width) {
+    Canvas2D &add(const G &geometry, const ViewColor &color,
+                  double stroke_width) {
         add({Canvas2DComponentType::geometry, color, ViewColor::inherit,
              stroke_width, geometry});
         return *this;

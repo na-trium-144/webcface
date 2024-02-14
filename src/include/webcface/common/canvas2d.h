@@ -36,7 +36,10 @@ struct Canvas2DComponentBase {
 struct Canvas2DData {
     double width = 0, height = 0;
     std::vector<Canvas2DComponentBase> components;
-
+    Canvas2DData() = default;
+    Canvas2DData(double width, double height,
+                 const std::vector<Canvas2DComponentBase> &components)
+        : width(width), height(height), components(components) {}
     void checkSize() const {
         if (width <= 0 && height <= 0) {
             throw std::invalid_argument("Canvas2D size is invalid (" +
