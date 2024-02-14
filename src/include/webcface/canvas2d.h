@@ -96,7 +96,7 @@ class Canvas2D : protected Field, public EventTarget<Canvas2D> {
     WEBCFACE_DLL Canvas2D &free();
 
     /*!
-     * \brief このCanvas2Dに追加した内容を初期化する
+     * \brief Canvasのサイズを指定 & このCanvas2Dに追加した内容を初期化する
      *
      * このCanvas2Dオブジェクトに追加された内容をクリアし、
      * 内容を変更済みとしてマークする
@@ -114,16 +114,60 @@ class Canvas2D : protected Field, public EventTarget<Canvas2D> {
     /*!
      * \brief Geometryを追加
      *
+     * 事前に init() かコンストラクタでCanvasのサイズを指定しないと
+     * std::invalid_argument を投げます
+     * \param geometry 表示したい図形
+     * \param origin geometryを移動する
+     * \param color 図形の枠線の色 (省略時のinheritはWebUI上ではblackと同じ)
+     * \param fill 塗りつぶしの色 (省略時のinheritはWebUI上では透明)
+     * \param stroke_width 枠線の太さ
+     *
      */
     template <typename G>
         requires std::derived_from<G, Geometry2D>
-    Canvas2D &add(const G &geometry, const ViewColor &color,
+    Canvas2D &add(const G &geometry, const Transform &origin,
+                  const ViewColor &color = ViewColor::inherit,
                   const ViewColor &fill = ViewColor::inherit,
                   double stroke_width = 1) {
-        add({Canvas2DComponentType::geometry, color, fill, stroke_width,
+        add({Canvas2DComponentType::geometry, origin, color, fill, stroke_width,
              geometry});
         return *this;
     }
+    /*!
+     * \brief Geometryを追加
+     *
+     * origin を省略した場合identity()になる
+     *
+     */
+    template <typename G>
+        requires std::derived_from<G, Geometry2D>
+    Canvas2D &
+    add(const G &geometry, const ViewColor &color = ViewColor::inherit,
+        const ViewColor &fill = ViewColor::inherit, double stroke_width = 1) {
+        add({Canvas2DComponentType::geometry, identity(), color, fill,
+             stroke_width, geometry});
+        return *this;
+    }
+    /*!
+     * \brief Geometryを追加
+     *
+     * fillを省略
+     *
+     */
+    template <typename G>
+        requires std::derived_from<G, Geometry3D>
+    Canvas2D &add(const G &geometry, const Transform &origin,
+                  const ViewColor &color, double stroke_width) {
+        add({Canvas2DComponentType::geometry, origin, color, ViewColor::inherit,
+             stroke_width, geometry});
+        return *this;
+    }
+    /*!
+     * \brief Geometryを追加
+     *
+     * originとfillを省略
+     *
+     */
     template <typename G>
         requires std::derived_from<G, Geometry3D>
     Canvas2D &add(const G &geometry, const ViewColor &color,

@@ -16,13 +16,15 @@ enum class Canvas2DComponentType {
 
 struct Canvas2DComponentBase {
     Canvas2DComponentType type_;
+    Transform origin_;
     ViewColor color_, fill_;
     double stroke_width_;
     std::optional<Geometry> geometry_;
 
     bool operator==(const Canvas2DComponentBase &rhs) const {
-        return type_ == rhs.type_ && color_ == rhs.color_ &&
-               fill_ == rhs.fill_ && stroke_width_ == rhs.stroke_width_ &&
+        return type_ == rhs.type_ && origin_ == rhs.origin_ &&
+               color_ == rhs.color_ && fill_ == rhs.fill_ &&
+               stroke_width_ == rhs.stroke_width_ &&
                ((geometry_ == std::nullopt && rhs.geometry_ == std::nullopt) ||
                 (geometry_ && rhs.geometry_ &&
                  geometry_->type == rhs.geometry_->type &&

@@ -36,7 +36,7 @@ struct Line : Geometry, Geometry3D, Geometry2D {
     }
 };
 inline Line line(const Point &begin, const Point &end) {
-    return Line(begin, end);
+    return line(begin, end);
 }
 struct Polygon : Geometry, Geometry3D, Geometry2D {
     Polygon(const std::vector<Point> &points)
@@ -72,6 +72,18 @@ struct Plane : Geometry, Geometry3D, Geometry2D {
                    {origin.pos()[0], origin.pos()[1], origin.pos()[2],
                     origin.rot()[0], origin.rot()[1], origin.rot()[2], width,
                     height}) {}
+    /*!
+     * ver1.6で追加
+     *
+     */
+    Plane(const Point &origin, double width, double height)
+        : Geometry(GeometryType::plane,
+                   {origin.pos()[0], origin.pos()[1], origin.pos()[2], 0, 0, 0,
+                    width, height}) {}
+    /*!
+     * ver1.6で追加
+     *
+     */
     Plane(const Point &p1, const Point &p2)
         : Geometry(GeometryType::plane, {}) {
         Transform origin = identity();
@@ -95,13 +107,24 @@ struct Plane : Geometry, Geometry3D, Geometry2D {
     }
     double width() const { return properties[6]; }
     double height() const { return properties[7]; }
+    /*!
+     * todo: 3次元のplaneの場合正しくない
+     *
+     */
+    Point vertex1() const {
+        return {properties[0] - width() / 2, properties[1] - height() / 2,
+                properties[2]};
+    }
+    Point vertex2() const {
+        return {properties[0] + width() / 2, properties[1] + height() / 2,
+                properties[2]};
+    }
 };
 inline Plane plane(const Transform &origin, double width, double height) {
     return Plane(origin, width, height);
 }
-inline Plane plane(const Point &p1, const Point &p2) { return Plane(p1, p2); }
 using Rect = Plane;
-inline Rect rect(const Transform &origin, double width, double height) {
+inline Rect rect(const Point &origin, double width, double height) {
     return Rect(origin, width, height);
 }
 inline Rect rect(const Point &p1, const Point &p2) { return Rect(p1, p2); }
@@ -124,7 +147,7 @@ struct Box : Geometry, Geometry3D {
     }
 };
 inline Box box(const Point &vertex1, const Point &vertex2) {
-    return Box{vertex1, vertex2};
+    return Box(vertex1, vertex2);
 }
 
 struct Circle : Geometry, Geometry3D, Geometry2D {
@@ -133,6 +156,13 @@ struct Circle : Geometry, Geometry3D, Geometry2D {
                    {origin.pos()[0], origin.pos()[1], origin.pos()[2],
                     origin.rot()[0], origin.rot()[1], origin.rot()[2],
                     radius}) {}
+    /*!
+     * ver1.6で追加
+     *
+     */
+    Circle(const Point &origin, double radius)
+        : Geometry(GeometryType::circle, {origin.pos()[0], origin.pos()[1],
+                                          origin.pos()[2], 0, 0, 0, radius}) {}
     Circle(const Geometry &rg) : Geometry(rg) {
         if (properties.size() != 7) {
             throw std::invalid_argument("number of properties does not match");
@@ -145,7 +175,10 @@ struct Circle : Geometry, Geometry3D, Geometry2D {
     double radius() const { return properties[6]; }
 };
 inline Circle circle(const Transform &origin, double radius) {
-    return Circle{origin, radius};
+    return Circle(origin, radius);
+}
+inline Circle circle(const Point &origin, double radius) {
+    return Circle(origin, radius);
 }
 
 struct Cylinder : Geometry, Geometry3D {

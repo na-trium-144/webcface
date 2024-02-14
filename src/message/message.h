@@ -299,7 +299,7 @@ struct RobotModel : public MessageBase<MessageKind::robot_model> {
                  joint_type,
                  {joint_origin_pos, joint_origin_rot},
                  joint_angle},
-                {geometry_type, geometry_properties},
+                Common::Geometry{geometry_type, geometry_properties},
                 color,
             };
         }
@@ -479,36 +479,46 @@ struct Canvas2D : public MessageBase<MessageKind::canvas2d> {
     double width, height;
     struct Canvas2DComponent {
         Common::Canvas2DComponentType type;
+        std::array<double, 2> origin_pos;
+        double origin_rot;
         ViewColor color, fill;
         double stroke_width;
         Common::GeometryType geometry_type;
         std::vector<double> properties;
         Canvas2DComponent() = default;
         Canvas2DComponent(const Common::Canvas2DComponentBase &vc)
-            : type(vc.type_), color(vc.color_), fill(vc.fill_),
+            : type(vc.type_),
+              origin_pos({vc.origin_.pos(0), vc.origin_.pos(1)}),
+              origin_rot(vc.origin_.rot(0)), color(vc.color_), fill(vc.fill_),
               stroke_width(vc.stroke_width_), properties() {
             if (vc.geometry_) {
                 geometry_type = vc.geometry_->type;
                 properties = vc.geometry_->properties;
             }
         }
-        Canvas2DComponent(Canvas2DComponentType type, ViewColor color,
+        Canvas2DComponent(Canvas2DComponentType type,
+                          const Common::Transform &origin, ViewColor color,
                           ViewColor fill, double stroke_width,
                           GeometryType geometry_type,
                           const std::vector<double> &properties)
-            : type(type), color(color), fill(fill), stroke_width(stroke_width),
-              geometry_type(geometry_type), properties(properties) {}
+            : type(type), origin_pos({origin.pos(0), origin.pos(1)}),
+              origin_rot(origin.rot(0)), color(color), fill(fill),
+              stroke_width(stroke_width), geometry_type(geometry_type),
+              properties(properties) {}
         operator Common::Canvas2DComponentBase() const {
             Common::Canvas2DComponentBase vc;
             vc.type_ = type;
+            vc.origin_ = {origin_pos, origin_rot};
             vc.color_ = color;
             vc.fill_ = fill;
             vc.stroke_width_ = stroke_width;
             vc.geometry_ = {geometry_type, properties};
             return vc;
         }
-        MSGPACK_DEFINE_MAP(MSGPACK_NVP("t", type), MSGPACK_NVP("c", color),
-                           MSGPACK_NVP("f", fill),
+        MSGPACK_DEFINE_MAP(MSGPACK_NVP("t", type),
+                           MSGPACK_NVP("op", origin_pos),
+                           MSGPACK_NVP("or", origin_rot),
+                           MSGPACK_NVP("c", color), MSGPACK_NVP("f", fill),
                            MSGPACK_NVP("s", stroke_width),
                            MSGPACK_NVP("gt", geometry_type),
                            MSGPACK_NVP("gp", properties))

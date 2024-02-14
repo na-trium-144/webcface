@@ -50,12 +50,9 @@ TEST_F(Canvas3DTest, set) {
     using namespace WEBCFACE_NS::RobotJoints;
     robot_model(self_name, "b")
         .set({
-            RobotLink{"l0", {}, ViewColor::black},
-            RobotLink{
-                "l1",
-                rotationalJoint("j0", "l0", {0, 0, 0, 0, 0, 0}),
-                {},
-                ViewColor::black},
+            RobotLink{"l0", Geometry{}, ViewColor::black},
+            RobotLink{"l1", rotationalJoint("j0", "l0", {0, 0, 0, 0, 0, 0}),
+                      Geometry{}, ViewColor::black},
         });
 
     auto v = canvas(self_name, "b");

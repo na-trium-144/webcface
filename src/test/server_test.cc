@@ -383,7 +383,7 @@ TEST_F(ServerTest, robotModel) {
     dummy_c1->send(Message::SyncInit{{}, "c1", 0, "", "", ""});
     dummy_c1->send(Message::Sync{});
     dummy_c1->send(
-        Message::RobotModel{"a", {RobotLink{"a", {}, {}, ViewColor::black}}});
+        Message::RobotModel{"a", {RobotLink{"a", Geometry{}, ViewColor::black}}});
     wait();
     dummy_c2->send(Message::SyncInit{{}, "", 0, "", "", ""});
     dummy_c2->send(Message::Req<Message::RobotModel>{{}, "c1", "a", 1});
@@ -405,11 +405,11 @@ TEST_F(ServerTest, robotModel) {
     dummy_c1->send(Message::RobotModel{
         "a",
         {
-            RobotLink{"a", {}, {}, ViewColor::black},
-            RobotLink{"b", {}, {}, ViewColor::black},
+            RobotLink{"a", {}, Geometry{}, ViewColor::black},
+            RobotLink{"b", {}, Geometry{}, ViewColor::black},
             RobotLink{"c",
                       {"j", "a", RobotJointType::fixed, {}, 0},
-                      {},
+                      Geometry{},
                       ViewColor::black},
         }});
     wait();

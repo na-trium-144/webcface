@@ -3,6 +3,7 @@
 #include "view.h"
 #include "canvas3d.h"
 #include <string>
+#include <concepts>
 
 namespace WEBCFACE_NS {
 inline namespace Common {
@@ -23,10 +24,10 @@ struct RobotJoint {
 inline namespace RobotJoints {
 /*!
  * \brief 親リンクをもたず座標を定義する
- * 
+ *
  * ベースのリンクなどに使う
  * \param origin 子リンクの絶対座標
- * 
+ *
  */
 inline RobotJoint fixedAbsolute(const Transform &origin) {
     return RobotJoint{"", "", RobotJointType::fixed_absolute, origin, 0};
@@ -45,7 +46,7 @@ inline RobotJoint fixedAbsolute(const Point &origin) {
  * \brief 固定された関節
  * \param parent_name 親リンクの名前
  * \param origin 親リンクの座標系で子リンクの原点
- * 
+ *
  */
 inline RobotJoint fixedJoint(const std::string &parent_name,
                              const Transform &origin) {
@@ -107,8 +108,10 @@ struct RobotLink {
      * \param color 色 (表示用)
      *
      */
+    template <typename G>
+        requires std::derived_from<G, Geometry3D> || std::same_as<G, Geometry>
     RobotLink(const std::string &name, const RobotJoint &joint,
-              const Geometry &geometry, ViewColor color = ViewColor::inherit)
+              const G &geometry, ViewColor color = ViewColor::inherit)
         : name(name), joint(joint), geometry(geometry), color(color) {}
     /*!
      * ベースのリンクではjointを省略可能
@@ -118,7 +121,9 @@ struct RobotLink {
      * \param color 色 (表示用)
      *
      */
-    RobotLink(const std::string &name, const Geometry &geometry,
+    template <typename G>
+        requires std::derived_from<G, Geometry3D> || std::same_as<G, Geometry>
+    RobotLink(const std::string &name, const G &geometry,
               ViewColor color = ViewColor::inherit)
         : RobotLink(name, fixedAbsolute({0, 0, 0}), geometry, color) {}
 };
