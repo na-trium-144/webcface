@@ -76,6 +76,9 @@
 
 </div>
 
+\note
+Viewの2回目以降の送信時にはWebCFace内部では前回からの差分のみが送信されるので、通信量が削減されます
+
 ## ViewComponent
 Viewに追加する各種要素をViewComponentといいます。
 

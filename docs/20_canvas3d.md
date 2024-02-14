@@ -12,10 +12,10 @@
 
 ## Point, Transform
 
-WebCFaceでは3次元の座標を表すクラスとして webcface::Point, 座標変換(平行移動してから回転)を表すクラスとして webcface::Transform があります。
+WebCFaceでは3次元の座標を webcface::Point, 座標変換(平行移動してから回転)を webcface::Transform で表せます([Canvas2D](./14_canvas2d.md)での2次元の座標を表すクラスと共通です)。
 
 Pointでは x, y, z 座標、Transformでは x, y, z 座標と z, y, x軸回りの回転角を指定します。
-(WebCFaceでは回転はz-y-xの順で回転するオイラー角で表現します。)
+(WebCFaceでは3次元の回転はz-y-xの順で回転するオイラー角で表現します。)
 
 <div class="tabbed">
 
@@ -77,11 +77,15 @@ Pointでは x, y, z 座標、Transformでは x, y, z 座標と z, y, x軸回り�
 
 </div>
 
+\note
+Viewと同様、Canvas3Dの2回目以降の送信時にはWebCFace内部では前回からの差分のみが送信されます
+
 Canvas3Dに追加できる要素として、Geometry(後述)、[RobotModel](./21_robot_model.md) があります。
 
-### Geometry
+### Geometry (3次元)
 
 3次元の図形を表示するにはGeometryを指定します。
+一部の図形は2次元のGeometryと共通のインタフェースになっています。
 
 <div class="tabbed">
 
@@ -128,6 +132,7 @@ originのxy平面上に、originを中心として幅(x方向の長さ)がwidth,
 ```cpp
 plane(Transform origin, double width, double height)
 ```
+webcface内部では2次元の Rect と同じ扱いです
 
 ### Box
 指定した2点を頂点とし、各辺がx, y, z軸に平行な直方体を描画します
