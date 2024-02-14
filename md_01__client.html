@@ -137,7 +137,7 @@ $(document).ready(function(){initNavTree('md_01__client.html',''); initResizable
   <div class="headertitle"><div class="title">Client</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md21"></a> </p><dl class="section see"><dt>See also</dt><dd><ul>
+<div class="textblock"><p><a class="anchor" id="autotoc_md22"></a> </p><dl class="section see"><dt>See also</dt><dd><ul>
 <li>C++ <a class="el" href="classwebcface_1_1Client.html" title="サーバーに接続するクライアント。">webcface::Client</a></li>
 <li>JavaScript <a href="https://na-trium-144.github.io/webcface-js/classes/Client.html">Client</a></li>
 <li>Python <a href="https://na-trium-144.github.io/webcface-python/webcface.client.html#webcface.client.Client">webcface.Client</a></li>
@@ -201,7 +201,7 @@ $(document).ready(function(){initNavTree('md_01__client.html',''); initResizable
 </div><div class="tabbed"></div><dl class="section note"><dt>Note</dt><dd>コンストラクタに名前を指定しない、または空文字列の場合、読み取り専用モードになります。 <br  />
  この場合データを送信することができなくなりますが、同じプログラムを複数起動することができます (WebUIではこの仕様を使っています)</dd></dl>
 <p>プログラムを起動できたら、WebUIを開いてみましょう。 そして右上のメニューを開き、Clientの初期化時に指定した名前がそこに表示されていれば正しく通信できています。</p>
-<h1><a class="anchor" id="autotoc_md22"></a>
+<h1><a class="anchor" id="autotoc_md23"></a>
 sync</h1>
 <div class="tabbed"></div><div class="tabbed"><ul>
 <li><b class="tab-title">C++</b> <div class="fragment"><div class="line"><span class="keywordflow">while</span>(<span class="keyword">true</span>){</div>
@@ -240,7 +240,7 @@ sync</h1>
 </ul>
 </li>
 </ul>
-<h1><a class="anchor" id="autotoc_md23"></a>
+<h1><a class="anchor" id="autotoc_md24"></a>
 切断する</h1>
 <div class="tabbed"></div><div class="tabbed"><ul>
 <li><b class="tab-title">C++</b> <div class="fragment"><div class="line">wcli.close();</div>
@@ -254,7 +254,7 @@ sync</h1>
 <li><b class="tab-title">Python</b> <div class="fragment"><div class="line">wcli.close()</div>
 </div><!-- fragment --></li>
 </ul>
-</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md24"></a>
+</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md25"></a>
 サーバーの情報</h1>
 <div class="tabbed"></div><div class="tabbed"><ul>
 <li><b class="tab-title">C++</b> <code>wcli.serverVersion()</code>, <code>wcli.serverName()</code> でサーバーの情報を取得できます。</li>
@@ -262,7 +262,7 @@ sync</h1>
 <li><b class="tab-title">Python</b> <code>wcli.serverVersion</code>, <code>wcli.serverName</code> でサーバーの情報を取得できます。</li>
 </ul>
 </div><div class="tabbed"></div><dl class="section warning"><dt>Warning</dt><dd>Clientの接続が完了し受信するまでは取得できません(空文字列になります)。 受信するのは waitConnection() の待機完了よりも後です。</dd></dl>
-<h1><a class="anchor" id="autotoc_md25"></a>
+<h1><a class="anchor" id="autotoc_md26"></a>
 ログ出力</h1>
 <dl class="section since"><dt>Since</dt><dd><span class="since-c">1.1.7</span> <span class="since-js">1.1</span> <span class="since-py"></span></dd></dl>
 <p><code>WEBCFACE_VERBOSE</code> 環境変数が存在する場合、WebCFaceの通信に関するログ(接続、切断、メッセージのエラー)が出力されます。 また <code>WEBCFACE_TRACE</code> 環境変数が存在すると内部で使用しているlibcurlの出力も表示します。</p>
@@ -279,7 +279,7 @@ sync</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Feb 14 2024 09:52:09 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Wed Feb 14 2024 16:37:35 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

@@ -137,7 +137,7 @@ $(document).ready(function(){initNavTree('md_10__value.html',''); initResizable(
   <div class="headertitle"><div class="title">Value</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md32"></a> </p><dl class="section since"><dt>Since</dt><dd><span class="since-c"></span> <span class="since-js"></span> <span class="since-py"></span> </dd></dl>
+<div class="textblock"><p><a class="anchor" id="autotoc_md33"></a> </p><dl class="section since"><dt>Since</dt><dd><span class="since-c"></span> <span class="since-js"></span> <span class="since-py"></span> </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><ul>
 <li>C++ <a class="el" href="classwebcface_1_1Value.html" title="実数値またはその配列の送受信データを表すクラス">webcface::Value</a></li>
 <li>JavaScript <a href="https://na-trium-144.github.io/webcface-js/classes/Value.html">Value</a></li>
@@ -145,12 +145,12 @@ $(document).ready(function(){initNavTree('md_10__value.html',''); initResizable(
 </ul>
 </dd></dl>
 <p>数値データ、または1次元数値配列を送受信する型です。</p>
-<h1><a class="anchor" id="autotoc_md33"></a>
+<h1><a class="anchor" id="autotoc_md34"></a>
 コマンドライン</h1>
 <div class="fragment"><div class="line">webcface-send </div>
 </div><!-- fragment --><p> を実行し、数字を入力すると送信されます。(1つ入力するごとに改行してください)</p>
 <p>オプションでclientやデータの名前を変更できます。詳細は <code>webcface-send -h</code> を参照</p>
-<h1><a class="anchor" id="autotoc_md34"></a>
+<h1><a class="anchor" id="autotoc_md35"></a>
 送信</h1>
 <p>Client::value からValueオブジェクトを作り、 Value::set() でデータを代入し、Client::sync()することで送信されます。</p>
 <div class="tabbed"></div><div class="tabbed"><ul>
@@ -171,7 +171,7 @@ $(document).ready(function(){initNavTree('md_10__value.html',''); initResizable(
 <div class="line">wcli.value(<span class="stringliteral">&quot;fuga&quot;</span>).set([1, 2, 3, 4, 5])</div>
 </div><!-- fragment --></li>
 </ul>
-</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md35"></a>
+</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md36"></a>
 複数の値をまとめて送る</h2>
 <p>ROSのTopicではPointやTransformなど目的に応じてさまざまな型が用意されていますが、 WebCFaceではそういう場合はValueを複数用意して送信することを想定しています。</p>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000001">Todo:</a></b></dt><dd>Pythonの辞書型への対応は未実装</dd></dl>
@@ -221,7 +221,7 @@ $(document).ready(function(){initNavTree('md_10__value.html',''); initResizable(
 <div class="line">*/</div>
 </div><!-- fragment --></li>
 </ul>
-</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md36"></a>
+</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md37"></a>
 受信</h1>
 <p>WebCFaceのクライアントは初期状態ではデータを受信しません。 リクエストを送って初めてサーバーからデータが順次送られてくるようになります。 これはValueに限らず、これ以降説明する他のデータ型のfieldについても同様です。</p>
 <p><img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/pub-sub.png" alt="pub-sub" class="inline"/></p>
@@ -281,11 +281,11 @@ $(document).ready(function(){initNavTree('md_10__value.html',''); initResizable(
 </div><!-- fragment --></li>
 </ul>
 </div><div class="tabbed"></div><dl class="section note"><dt>Note</dt><dd><span class="since-js">1.1</span> <span class="since-py"></span> Value::request()で明示的にリクエストを送信することもできます。</dd></dl>
-<h2><a class="anchor" id="autotoc_md37"></a>
+<h2><a class="anchor" id="autotoc_md38"></a>
 時刻</h2>
 <p>Value::time() でその値が送信されたとき(そのMemberがsync()したとき)の時刻が得られます。</p>
 <dl class="section note"><dt>Note</dt><dd>Pythonでは Member.sync_time() です C++,JavaScriptでも今後仕様変更して統一するかも</dd></dl>
-<h2><a class="anchor" id="autotoc_md38"></a>
+<h2><a class="anchor" id="autotoc_md39"></a>
 Entry</h2>
 <p><strike>Member::values() で</strike> そのMemberが送信しているvalueのリストが得られます <br  />
  <span class="since-c">1.6</span> Member::valueEntries() に変更</p>
@@ -316,14 +316,14 @@ Entry</h2>
 </div><!-- fragment --></li>
 </ul>
 </div><div class="tabbed"></div><p>ただし、コールバックを設定する前から存在したデータについてはコールバックは呼び出されません。 Member名がわかっていれば初回のClient::sync()前に設定すればよいです。 そうでなければClient::onMemberEntry()イベントのコールバックの中で各種イベントを設定すればよいです。</p>
-<h2><a class="anchor" id="autotoc_md39"></a>
+<h2><a class="anchor" id="autotoc_md40"></a>
 Event</h2>
 <p>受信したデータが変化したときにコールバックを呼び出すことができます。 コールバックを設定することでもその値はリクエストされます。</p>
 <p>また、データが変化したどうかに関わらずそのMemberがsync()したときにコールバックを呼び出したい場合は Member::onSync() が使えます</p>
 <div class="tabbed"></div><div class="tabbed"><ul>
 <li><b class="tab-title">C++</b> <div class="fragment"><div class="line">wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).value(<span class="stringliteral">&quot;hoge&quot;</span>).appendListener([](<a class="code hl_class" href="classwebcface_1_1Value.html">webcface::Value</a> v){ <span class="comment">/* ... */</span> });</div>
 <div class="line">wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).onSync().appendListener([](<a class="code hl_class" href="classwebcface_1_1Member.html">webcface::Member</a> m){ <span class="comment">/* ... */</span> });</div>
-<div class="ttc" id="aclasswebcface_1_1Member_html"><div class="ttname"><a href="classwebcface_1_1Member.html">webcface::Member</a></div><div class="ttdoc">Memberを指すクラス</div><div class="ttdef"><b>Definition</b> member.h:31</div></div>
+<div class="ttc" id="aclasswebcface_1_1Member_html"><div class="ttname"><a href="classwebcface_1_1Member.html">webcface::Member</a></div><div class="ttdoc">Memberを指すクラス</div><div class="ttdef"><b>Definition</b> member.h:32</div></div>
 </div><!-- fragment --> 例えば全Memberの全Valueデータを受信するには <div class="fragment"><div class="line">wcli.onMemberEntry().appendListener([](<a class="code hl_class" href="classwebcface_1_1Member.html">webcface::Member</a> m){</div>
 <div class="line">    m.<a class="code hl_function" href="classwebcface_1_1Member.html#aaccaea3b4d225bc85fc186d3c4f94e82">onValueEntry</a>().appendListener([](<a class="code hl_class" href="classwebcface_1_1Value.html">webcface::Value</a> v){</div>
 <div class="line">        v.<a class="code hl_function" href="classwebcface_1_1EventTarget.html#a7f12a03e22df0d00f39027dd3697f48d">appendListener</a>([](<a class="code hl_class" href="classwebcface_1_1Value.html">webcface::Value</a> v){</div>
@@ -365,7 +365,7 @@ Event</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Feb 14 2024 09:52:09 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Wed Feb 14 2024 16:37:35 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

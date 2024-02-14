@@ -9,6 +9,8 @@ var namespacewebcface_1_1Common =
       [ "rotationalJoint", "namespacewebcface_1_1Common_1_1RobotJoints.html#a6c27f9d2d917bb1e4a35b89070583c67", null ]
     ] ],
     [ "Arg", "classwebcface_1_1Common_1_1Arg.html", "classwebcface_1_1Common_1_1Arg" ],
+    [ "Canvas2DComponentBase", "structwebcface_1_1Common_1_1Canvas2DComponentBase.html", "structwebcface_1_1Common_1_1Canvas2DComponentBase" ],
+    [ "Canvas2DData", "structwebcface_1_1Common_1_1Canvas2DData.html", "structwebcface_1_1Common_1_1Canvas2DData" ],
     [ "Canvas3DComponentBase", "structwebcface_1_1Common_1_1Canvas3DComponentBase.html", "structwebcface_1_1Common_1_1Canvas3DComponentBase" ],
     [ "Dict", "classwebcface_1_1Common_1_1Dict.html", "classwebcface_1_1Common_1_1Dict" ],
     [ "DictElement", "structwebcface_1_1Common_1_1DictElement.html", "structwebcface_1_1Common_1_1DictElement" ],
@@ -20,6 +22,8 @@ var namespacewebcface_1_1Common =
     [ "FuncCall", "structwebcface_1_1Common_1_1FuncCall.html", "structwebcface_1_1Common_1_1FuncCall" ],
     [ "FuncInfo", "structwebcface_1_1Common_1_1FuncInfo.html", "structwebcface_1_1Common_1_1FuncInfo" ],
     [ "Geometry", "structwebcface_1_1Common_1_1Geometry.html", "structwebcface_1_1Common_1_1Geometry" ],
+    [ "Geometry2D", "structwebcface_1_1Common_1_1Geometry2D.html", null ],
+    [ "Geometry3D", "structwebcface_1_1Common_1_1Geometry3D.html", null ],
     [ "ImageBase", "classwebcface_1_1Common_1_1ImageBase.html", "classwebcface_1_1Common_1_1ImageBase" ],
     [ "ImageReq", "structwebcface_1_1Common_1_1ImageReq.html", "structwebcface_1_1Common_1_1ImageReq" ],
     [ "ImageWithCV", "classwebcface_1_1Common_1_1ImageWithCV.html", "classwebcface_1_1Common_1_1ImageWithCV" ],
@@ -36,6 +40,9 @@ var namespacewebcface_1_1Common =
     [ "FuncType", "namespacewebcface_1_1Common.html#a25e0cb91e379fadc84cd151ffeb49fea", null ],
     [ "FuncWrapperType", "namespacewebcface_1_1Common.html#a1f914f5d15fb32aa05ca882cff7f2cd4", null ],
     [ "ImageFrame", "namespacewebcface_1_1Common.html#af7ff7d8593c083aca2355bc561bf8804", null ],
+    [ "Canvas2DComponentType", "namespacewebcface_1_1Common.html#a18133126518e30ea437441c60fa26928", [
+      [ "geometry", "namespacewebcface_1_1Common.html#a18133126518e30ea437441c60fa26928aed7daeb157cd9b31e53896ad3c771a26", null ]
+    ] ],
     [ "Canvas3DComponentType", "namespacewebcface_1_1Common.html#ae4f79363f6fbf146d1a71f07a2e42155", [
       [ "geometry", "namespacewebcface_1_1Common.html#ae4f79363f6fbf146d1a71f07a2e42155aed7daeb157cd9b31e53896ad3c771a26", null ],
       [ "robot_model", "namespacewebcface_1_1Common.html#ae4f79363f6fbf146d1a71f07a2e42155a62f0410e1f33e82ebb526dac91059087", null ]
@@ -44,10 +51,12 @@ var namespacewebcface_1_1Common =
       [ "none", "namespacewebcface_1_1Common.html#a1b753fd9c2659910ca1a042a05b56be6a334c4a4c42fdb79d7ebc3e73b517e6f8", null ],
       [ "line", "namespacewebcface_1_1Common.html#a1b753fd9c2659910ca1a042a05b56be6a6438c669e0d0de98e6929c2cc0fac474", null ],
       [ "plane", "namespacewebcface_1_1Common.html#a1b753fd9c2659910ca1a042a05b56be6abb302c9b5204d593ba3657055842a5fb", null ],
+      [ "rect", "namespacewebcface_1_1Common.html#a1b753fd9c2659910ca1a042a05b56be6a2676d7b68ff2c97c5776c6e5da218c01", null ],
       [ "box", "namespacewebcface_1_1Common.html#a1b753fd9c2659910ca1a042a05b56be6a34be958a921e43d813a2075297d8e862", null ],
       [ "circle", "namespacewebcface_1_1Common.html#a1b753fd9c2659910ca1a042a05b56be6a9b6ddeba5b33e577c07c35d8505c6072", null ],
       [ "cylinder", "namespacewebcface_1_1Common.html#a1b753fd9c2659910ca1a042a05b56be6a9c7cd9fc9aa15fae1e37885314637c36", null ],
-      [ "sphere", "namespacewebcface_1_1Common.html#a1b753fd9c2659910ca1a042a05b56be6a34248a9bfcbd589d9b5fccb6a0ac6963", null ]
+      [ "sphere", "namespacewebcface_1_1Common.html#a1b753fd9c2659910ca1a042a05b56be6a34248a9bfcbd589d9b5fccb6a0ac6963", null ],
+      [ "polygon", "namespacewebcface_1_1Common.html#a1b753fd9c2659910ca1a042a05b56be6ae4fdf3290654756def4e6816fddce608", null ]
     ] ],
     [ "ImageColorMode", "namespacewebcface_1_1Common.html#abcfd96b0be942012c2f4641b4741a31e", [
       [ "gray", "namespacewebcface_1_1Common.html#abcfd96b0be942012c2f4641b4741a31eacda7a650c5856cf2f6738072447d7825", null ],

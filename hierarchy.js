@@ -9,6 +9,15 @@ var hierarchy =
     [ "base_sink", null, [
       [ "LoggerSink", "classwebcface_1_1LoggerSink.html", null ]
     ] ],
+    [ "Canvas2DComponent", "structwebcface_1_1Message_1_1Canvas2D_1_1Canvas2DComponent.html", null ],
+    [ "Canvas2DComponentBase", "structwebcface_1_1Common_1_1Canvas2DComponentBase.html", [
+      [ "Canvas2DComponent", "classwebcface_1_1Canvas2DComponent.html", null ]
+    ] ],
+    [ "Canvas2DComponentBase", "structwebcface_1_1Common_1_1Canvas2DComponentBase.html", [
+      [ "Canvas2DComponent", "classwebcface_1_1Canvas2DComponent.html", null ]
+    ] ],
+    [ "Canvas2DData", "structwebcface_1_1Common_1_1Canvas2DData.html", null ],
+    [ "Canvas2DData", "structwebcface_1_1Common_1_1Canvas2DData.html", null ],
     [ "Canvas3DComponent", "structwebcface_1_1Message_1_1Canvas3D_1_1Canvas3DComponent.html", null ],
     [ "Canvas3DComponentBase", "structwebcface_1_1Common_1_1Canvas3DComponentBase.html", [
       [ "Canvas3DComponent", "classwebcface_1_1Canvas3DComponent.html", null ]
@@ -31,6 +40,9 @@ var hierarchy =
       [ "ClientData", "structwebcface_1_1Internal_1_1ClientData.html", null ]
     ] ],
     [ "EventTarget< V, Key, VBase >", "classwebcface_1_1EventTarget.html", null ],
+    [ "EventTarget< Canvas2D >", "classwebcface_1_1EventTarget.html", [
+      [ "Canvas2D", "classwebcface_1_1Canvas2D.html", null ]
+    ] ],
     [ "EventTarget< Canvas3D >", "classwebcface_1_1EventTarget.html", [
       [ "Canvas3D", "classwebcface_1_1Canvas3D.html", null ]
     ] ],
@@ -56,6 +68,7 @@ var hierarchy =
       [ "FieldBaseComparable", "structwebcface_1_1Common_1_1FieldBaseComparable.html", null ],
       [ "Field", "structwebcface_1_1Field.html", [
         [ "AsyncFuncResult", "classwebcface_1_1AsyncFuncResult.html", null ],
+        [ "Canvas2D", "classwebcface_1_1Canvas2D.html", null ],
         [ "Canvas3D", "classwebcface_1_1Canvas3D.html", null ],
         [ "Func", "classwebcface_1_1Func.html", [
           [ "AnonymousFunc", "classwebcface_1_1AnonymousFunc.html", null ],
@@ -93,10 +106,30 @@ var hierarchy =
       [ "Cylinder", "structwebcface_1_1Geometries_1_1Cylinder.html", null ],
       [ "Line", "structwebcface_1_1Geometries_1_1Line.html", null ],
       [ "Plane", "structwebcface_1_1Geometries_1_1Plane.html", null ],
+      [ "Polygon", "structwebcface_1_1Geometries_1_1Polygon.html", null ],
       [ "Sphere", "structwebcface_1_1Geometries_1_1Sphere.html", null ]
     ] ],
     [ "Geometry", "structwebcface_1_1Common_1_1Geometry.html", null ],
     [ "Geometry", "structwebcface_1_1Common_1_1Geometry.html", null ],
+    [ "Geometry2D", null, [
+      [ "Circle", "structwebcface_1_1Geometries_1_1Circle.html", null ],
+      [ "Line", "structwebcface_1_1Geometries_1_1Line.html", null ],
+      [ "Plane", "structwebcface_1_1Geometries_1_1Plane.html", null ],
+      [ "Polygon", "structwebcface_1_1Geometries_1_1Polygon.html", null ]
+    ] ],
+    [ "Geometry2D", "structwebcface_1_1Common_1_1Geometry2D.html", null ],
+    [ "Geometry2D", "structwebcface_1_1Common_1_1Geometry2D.html", null ],
+    [ "Geometry3D", null, [
+      [ "Box", "structwebcface_1_1Geometries_1_1Box.html", null ],
+      [ "Circle", "structwebcface_1_1Geometries_1_1Circle.html", null ],
+      [ "Cylinder", "structwebcface_1_1Geometries_1_1Cylinder.html", null ],
+      [ "Line", "structwebcface_1_1Geometries_1_1Line.html", null ],
+      [ "Plane", "structwebcface_1_1Geometries_1_1Plane.html", null ],
+      [ "Polygon", "structwebcface_1_1Geometries_1_1Polygon.html", null ],
+      [ "Sphere", "structwebcface_1_1Geometries_1_1Sphere.html", null ]
+    ] ],
+    [ "Geometry3D", "structwebcface_1_1Common_1_1Geometry3D.html", null ],
+    [ "Geometry3D", "structwebcface_1_1Common_1_1Geometry3D.html", null ],
     [ "ILogHandler", null, [
       [ "CustomLogger", "classwebcface_1_1Server_1_1CustomLogger.html", null ]
     ] ],
@@ -128,6 +161,12 @@ var hierarchy =
     ] ],
     [ "MessageBase< MessageKind::call_result >", "structwebcface_1_1Message_1_1MessageBase.html", [
       [ "CallResult", "structwebcface_1_1Message_1_1CallResult.html", null ]
+    ] ],
+    [ "MessageBase< MessageKind::canvas2d >", "structwebcface_1_1Message_1_1MessageBase.html", [
+      [ "Canvas2D", "structwebcface_1_1Message_1_1Canvas2D.html", null ]
+    ] ],
+    [ "MessageBase< MessageKind::canvas2d+MessageKind::res >", "structwebcface_1_1Message_1_1MessageBase.html", [
+      [ "Res< Canvas2D >", "structwebcface_1_1Message_1_1Res_3_01Canvas2D_01_4.html", null ]
     ] ],
     [ "MessageBase< MessageKind::canvas3d >", "structwebcface_1_1Message_1_1MessageBase.html", [
       [ "Canvas3D", "structwebcface_1_1Message_1_1Canvas3D.html", null ]
@@ -236,6 +275,7 @@ var hierarchy =
     [ "SyncDataStore2< std::shared_ptr< std::string > >", "classwebcface_1_1Internal_1_1SyncDataStore2.html", null ],
     [ "SyncDataStore2< std::shared_ptr< std::vector< webcface::Common::Canvas3DComponentBase > > >", "classwebcface_1_1Internal_1_1SyncDataStore2.html", null ],
     [ "SyncDataStore2< std::shared_ptr< std::vector< webcface::Common::ViewComponentBase > > >", "classwebcface_1_1Internal_1_1SyncDataStore2.html", null ],
+    [ "SyncDataStore2< std::shared_ptr< webcface::Common::Canvas2DData > >", "classwebcface_1_1Internal_1_1SyncDataStore2.html", null ],
     [ "SyncDataStore2< std::shared_ptr< webcface::FuncInfo > >", "classwebcface_1_1Internal_1_1SyncDataStore2.html", null ],
     [ "SyncDataStore2< std::shared_ptr< webcface::VectorOpt< double > > >", "classwebcface_1_1Internal_1_1SyncDataStore2.html", null ],
     [ "SyncDataStore2< std::vector< webcface::Common::RobotLink > >", "classwebcface_1_1Internal_1_1SyncDataStore2.html", null ],

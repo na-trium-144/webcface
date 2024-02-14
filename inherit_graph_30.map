@@ -1,3 +1,30 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$structwebcface_1_1Message_1_1Log_1_1LogLine.html" title=" " alt="" coords="5,5,108,31"/>
+<area shape="rect" id="Node000000" title=" " alt="" coords="15,191,101,216"/>
+<area shape="rect" id="Node000001" href="$structwebcface_1_1Geometries_1_1Box.html" title=" " alt="" coords="173,203,220,228"/>
+<area shape="poly" id="edge39_Node000000_Node000001" title=" " alt="" coords="116,206,173,211,173,216,115,211"/>
+<area shape="rect" id="Node000003" href="$structwebcface_1_1Geometries_1_1Circle.html" title=" " alt="" coords="167,153,226,179"/>
+<area shape="poly" id="edge40_Node000000_Node000003" title=" " alt="" coords="114,186,167,171,168,176,115,191"/>
+<area shape="rect" id="Node000008" href="$structwebcface_1_1Geometries_1_1Cylinder.html" title=" " alt="" coords="159,252,235,277"/>
+<area shape="poly" id="edge41_Node000000_Node000008" title=" " alt="" coords="101,219,168,250,166,254,99,224"/>
+<area shape="rect" id="Node000005" href="$structwebcface_1_1Geometries_1_1Line.html" title=" " alt="" coords="172,5,221,31"/>
+<area shape="poly" id="edge42_Node000000_Node000005" title=" " alt="" coords="104,181,109,176,121,159,128,143,133,111,138,77,145,59,157,40,170,28,174,32,161,44,149,62,143,78,138,111,133,144,126,162,113,180,108,185"/>
+<area shape="rect" id="Node000006" href="$structwebcface_1_1Geometries_1_1Plane.html" title=" " alt="" coords="167,55,226,80"/>
+<area shape="poly" id="edge43_Node000000_Node000006" title=" " alt="" coords="103,181,109,176,125,155,133,134,141,113,157,90,170,78,174,82,161,93,145,115,138,136,130,157,113,180,106,185"/>
+<area shape="rect" id="Node000007" href="$structwebcface_1_1Geometries_1_1Polygon.html" title=" " alt="" coords="159,104,234,129"/>
+<area shape="poly" id="edge44_Node000000_Node000007" title=" " alt="" coords="98,182,109,176,133,158,157,139,173,127,176,132,160,143,137,162,112,180,101,187"/>
+<area shape="rect" id="Node000009" href="$structwebcface_1_1Geometries_1_1Sphere.html" title=" " alt="" coords="163,301,230,327"/>
+<area shape="poly" id="edge45_Node000000_Node000009" title=" " alt="" coords="85,223,160,288,176,299,173,303,157,292,81,228"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="5,80,111,105"/>
+<area shape="poly" id="edge46_Node000004_Node000003" title=" " alt="" coords="96,109,173,151,170,155,94,114"/>
+<area shape="poly" id="edge47_Node000004_Node000005" title=" " alt="" coords="94,71,171,29,173,33,96,75"/>
+<area shape="poly" id="edge48_Node000004_Node000006" title=" " alt="" coords="123,78,167,70,168,75,124,83"/>
+<area shape="poly" id="edge49_Node000004_Node000007" title=" " alt="" coords="125,101,160,108,159,113,124,107"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,141,111,167"/>
+<area shape="poly" id="edge50_Node000002_Node000001" title=" " alt="" coords="101,170,174,203,172,208,99,175"/>
+<area shape="poly" id="edge51_Node000002_Node000003" title=" " alt="" coords="125,157,167,161,167,166,124,162"/>
+<area shape="poly" id="edge52_Node000002_Node000008" title=" " alt="" coords="106,172,112,176,128,192,138,207,146,222,161,239,175,250,171,254,157,243,142,225,133,210,124,195,109,180,103,176"/>
+<area shape="poly" id="edge53_Node000002_Node000005" title=" " alt="" coords="90,131,109,115,123,95,132,78,141,60,157,40,171,29,174,33,161,44,146,63,137,80,128,98,113,118,93,135"/>
+<area shape="poly" id="edge54_Node000002_Node000006" title=" " alt="" coords="89,132,174,78,177,82,92,136"/>
+<area shape="poly" id="edge55_Node000002_Node000007" title=" " alt="" coords="118,135,158,124,160,129,119,140"/>
+<area shape="poly" id="edge56_Node000002_Node000009" title=" " alt="" coords="109,173,113,176,132,205,138,232,144,260,161,288,173,299,169,303,157,292,139,261,133,234,127,207,109,180,105,176"/>
 </map>

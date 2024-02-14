@@ -1,10 +1,5 @@
 var searchData=
 [
-  ['wcfasyncfuncresult_0',['wcfAsyncFuncResult',['../c__wcf_8h.html#adde5cf85e4e5d0d5e980329221d1fac3',1,'c_wcf.h']]],
-  ['wcfclient_1',['wcfClient',['../c__wcf_8h.html#a11e35bfe0822747dfabcce7f5220016a',1,'c_wcf.h']]],
-  ['wcffunccallhandle_2',['wcfFuncCallHandle',['../c__wcf_8h.html#a6f52e8c4748a8e6f2aaa124c7f76767a',1,'c_wcf.h']]],
-  ['wcfmultival_3',['wcfMultiVal',['../c__wcf_8h.html#a568ed45b4dde95e33d4c9ea3bbbdfdd9',1,'c_wcf.h']]],
-  ['wcfstatus_4',['wcfStatus',['../c__wcf_8h.html#a3ac4b9c21f837154212676efa87b0b40',1,'c_wcf.h']]],
-  ['wcfvaltype_5',['wcfValType',['../c__wcf_8h.html#a591e95597f03b0187640d6e065e0ebf9',1,'c_wcf.h']]],
-  ['wsconnptr_6',['wsConnPtr',['../structwebcface_1_1Server_1_1ClientData.html#af92eef764fed4a1512658233c54020bf',1,'webcface::Server::ClientData']]]
+  ['valuetype_0',['valuetype',['../structwebcface_1_1Common_1_1DictTraits.html#aecaeabaa9da616ae42bb20787878260d',1,'webcface::Common::DictTraits::ValueType'],['../structwebcface_1_1Common_1_1DictTraits_3_01std_1_1shared__ptr_3_01T_01_4_01_4.html#abbe746fc1535d3cd565042e3bd51f157',1,'webcface::Common::DictTraits&lt; std::shared_ptr&lt; T &gt; &gt;::ValueType'],['../structwebcface_1_1Common_1_1DictTraits_3_01VectorOpt_3_01T_01_4_01_4.html#abbe746fc1535d3cd565042e3bd51f157',1,'webcface::Common::DictTraits&lt; VectorOpt&lt; T &gt; &gt;::ValueType']]],
+  ['vectype_1',['vectype',['../structwebcface_1_1Common_1_1DictTraits.html#a4f2ff0741e866f4f383ddbaaba558b46',1,'webcface::Common::DictTraits::VecType'],['../structwebcface_1_1Common_1_1DictTraits_3_01std_1_1shared__ptr_3_01T_01_4_01_4.html#a0ae7486ac8fce69a73ef68dbeaef581f',1,'webcface::Common::DictTraits&lt; std::shared_ptr&lt; T &gt; &gt;::VecType'],['../structwebcface_1_1Common_1_1DictTraits_3_01VectorOpt_3_01T_01_4_01_4.html#a175b5e6bd60a318120950b3cfe1c05b5',1,'webcface::Common::DictTraits&lt; VectorOpt&lt; T &gt; &gt;::VecType']]]
 ];

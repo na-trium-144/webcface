@@ -156,17 +156,18 @@ $(document).ready(function(){initNavTree('message_8h.html',''); initResizable();
 <code>#include &lt;<a class="el" href="common_2image_8h_source.html">webcface/common/image.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="common_2robot__model_8h_source.html">webcface/common/robot_model.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="common_2canvas3d_8h_source.html">webcface/common/canvas3d.h</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="common_2canvas2d_8h_source.html">webcface/common/canvas2d.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="def_8h_source.html">webcface/common/def.h</a>&gt;</code><br />
 <code>#include &quot;<a class="el" href="val__adaptor_8h_source.html">val_adaptor.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for message.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="message_8h__incl.svg" width="2562" height="418"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="message_8h__incl.svg" width="2610" height="418"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="message_8h__dep__incl.svg" width="2727" height="256"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="message_8h__dep__incl.svg" width="2894" height="256"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 <p><a href="message_8h_source.html">Go to the source code of this file.</a></p>
@@ -219,6 +220,10 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Message_1_1Canvas3D_1_1Canvas3DComponent.html">Canvas3D::Canvas3DComponent</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Message_1_1Canvas2D.html">Canvas2D</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Message_1_1Canvas2D_1_1Canvas2DComponent.html">Canvas2D::Canvas2DComponent</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Message_1_1Image.html">Image</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Message_1_1Log.html">Log</a></td></tr>
@@ -254,6 +259,8 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Message_1_1Res_3_01Canvas3D_01_4.html">Res&lt; Canvas3D &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Message_1_1Res_3_01Canvas2D_01_4.html">Res&lt; Canvas2D &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Message_1_1Res_3_01Image_01_4.html">Res&lt; Image &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -272,29 +279,31 @@ Enumerations</h2></td></tr>
 &#160;&#160;<a class="el" href="namespacewebcface_1_1Message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a5b9f6d065e6e98483b3d3ed01f4f6cbe">unknown</a> = -1
 , <a class="el" href="namespacewebcface_1_1Message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a97de9ab6885342a574053b8f64a563a9">value</a> = 0
 , <a class="el" href="namespacewebcface_1_1Message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a0e17259309839615d215adfe7a44fb50">text</a> = 1
-, <a class="el" href="namespacewebcface_1_1Message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484ac29e396d151e12a0e2f8ffa62decd2b2">view</a> = 3
+, <a class="el" href="namespacewebcface_1_1Message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a4c41ae0ac8cc59e0caeaa4984dd5d469">binary</a> = 2
 , <br />
-&#160;&#160;<a class="el" href="namespacewebcface_1_1Message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a8a5db7fcf7037d194c940c851e01ffa0">image</a> = 5
+&#160;&#160;<a class="el" href="namespacewebcface_1_1Message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484ac29e396d151e12a0e2f8ffa62decd2b2">view</a> = 3
+, <a class="el" href="namespacewebcface_1_1Message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a45d34fe96ef84cda03d680c845767f11">canvas2d</a> = 4
+, <a class="el" href="namespacewebcface_1_1Message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a8a5db7fcf7037d194c940c851e01ffa0">image</a> = 5
 , <a class="el" href="namespacewebcface_1_1Message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a1f82b99b22bbc3a04f791f54c6cce572">robot_model</a> = 6
-, <a class="el" href="namespacewebcface_1_1Message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484af898abe3b8c22f47ff430d58cbc09a80">canvas3d</a> = 7
+, <br />
+&#160;&#160;<a class="el" href="namespacewebcface_1_1Message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484af898abe3b8c22f47ff430d58cbc09a80">canvas3d</a> = 7
 , <a class="el" href="namespacewebcface_1_1Message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484aea7013f3ac85e6433e2758c1e7052ae5">entry</a> = 20
-, <br />
-&#160;&#160;<a class="el" href="namespacewebcface_1_1Message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a1cbc123f91f6737e5506973f4493e91c">req</a> = 40
+, <a class="el" href="namespacewebcface_1_1Message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a1cbc123f91f6737e5506973f4493e91c">req</a> = 40
 , <a class="el" href="namespacewebcface_1_1Message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a85bfa236dc9fc1ac1ff923b3fdcf811f">res</a> = 60
-, <a class="el" href="namespacewebcface_1_1Message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a3e39a679980a898b394a7b68f942b913">sync_init</a> = 80
+, <br />
+&#160;&#160;<a class="el" href="namespacewebcface_1_1Message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a3e39a679980a898b394a7b68f942b913">sync_init</a> = 80
 , <a class="el" href="namespacewebcface_1_1Message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a98ab4979bd774d191f9a4642f9df392f">call</a> = 81
-, <br />
-&#160;&#160;<a class="el" href="namespacewebcface_1_1Message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484ad2b35349797c31395039e9dd563f0b38">call_response</a> = 82
+, <a class="el" href="namespacewebcface_1_1Message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484ad2b35349797c31395039e9dd563f0b38">call_response</a> = 82
 , <a class="el" href="namespacewebcface_1_1Message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484aa4b6a1e8b7f7652d391a775822cb865d">call_result</a> = 83
-, <a class="el" href="namespacewebcface_1_1Message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a2788ea84f795b0cf84dcde7488b7fd64">func_info</a> = 84
+, <br />
+&#160;&#160;<a class="el" href="namespacewebcface_1_1Message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a2788ea84f795b0cf84dcde7488b7fd64">func_info</a> = 84
 , <a class="el" href="namespacewebcface_1_1Message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484aaac8d4ee23e2d305f0b0a575cda066f3">log</a> = 85
-, <br />
-&#160;&#160;<a class="el" href="namespacewebcface_1_1Message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a826514d64c34ca326c2ba1297635e9d5">log_req</a> = 86
+, <a class="el" href="namespacewebcface_1_1Message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a826514d64c34ca326c2ba1297635e9d5">log_req</a> = 86
 , <a class="el" href="namespacewebcface_1_1Message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484aa1bb8c0556b05e13283b2b1d6b30d887">sync</a> = 87
-, <a class="el" href="namespacewebcface_1_1Message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484ad8d5e841235d38b60263ab19fda702fc">svr_version</a> = 88
-, <a class="el" href="namespacewebcface_1_1Message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484aad2de303cb1ea37f4a3bd91f5ef4c29f">ping</a> = 89
 , <br />
-&#160;&#160;<a class="el" href="namespacewebcface_1_1Message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a0cb8db73d08e6f71fe9d47fb44fdc9a5">ping_status</a> = 90
+&#160;&#160;<a class="el" href="namespacewebcface_1_1Message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484ad8d5e841235d38b60263ab19fda702fc">svr_version</a> = 88
+, <a class="el" href="namespacewebcface_1_1Message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484aad2de303cb1ea37f4a3bd91f5ef4c29f">ping</a> = 89
+, <a class="el" href="namespacewebcface_1_1Message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a0cb8db73d08e6f71fe9d47fb44fdc9a5">ping_status</a> = 90
 , <a class="el" href="namespacewebcface_1_1Message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a0cf9ec07dc822afa5e1ec58e04e513fd">ping_status_req</a> = 91
 <br />
  }</td></tr>
@@ -322,7 +331,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d06cd19e7b0a7bd71ca3f88af4ac0d59.html">message</a></li><li class="navelem"><a class="el" href="message_8h.html">message.h</a></li>
-    <li class="footer">Generated on Wed Feb 14 2024 09:52:09 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Wed Feb 14 2024 16:37:35 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

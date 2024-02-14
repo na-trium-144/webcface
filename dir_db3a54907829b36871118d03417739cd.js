@@ -1,5 +1,6 @@
 var dir_db3a54907829b36871118d03417739cd =
 [
+    [ "canvas2d.cc", "canvas2d_8cc.html", "canvas2d_8cc" ],
     [ "canvas3d.cc", "canvas3d_8cc.html", "canvas3d_8cc" ],
     [ "client.cc", "client_2client_8cc.html", null ],
     [ "client_internal.h", "client__internal_8h.html", "client__internal_8h" ],

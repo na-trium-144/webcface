@@ -57,7 +57,7 @@
 <!-- Node4 -->
 <g id="Node000004" class="node">
 <title>Node4</title>
-<g id="a_Node000004"><a xlink:href="classwebcface_1_1Common_1_1Point.html" target="_top" xlink:title="3次元の座標">
+<g id="a_Node000004"><a xlink:href="classwebcface_1_1Common_1_1Point.html" target="_top" xlink:title="3次元 or 2次元の座標">
 <polygon fill="white" stroke="#666666" points="93.5,-197 52.5,-197 52.5,-178 93.5,-178 93.5,-197"/>
 <text text-anchor="middle" x="73" y="-185" font-family="Helvetica,sans-Serif" font-size="10.00">Point</text>
 </a>

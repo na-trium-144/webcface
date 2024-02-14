@@ -9,5 +9,5 @@ var searchData=
   ['ping_5fthread_6',['ping_thread',['../namespacewebcface_1_1Server.html#afea6e095e49b6ac795ddc5a7bf69acdc',1,'webcface::Server']]],
   ['port_7',['port',['../structwebcface_1_1Internal_1_1ClientData.html#a63c89c04d1feae07ca35558055155ffb',1,'webcface::Internal::ClientData']]],
   ['pos_5f_8',['pos_',['../classwebcface_1_1Common_1_1Point.html#ab014b6d294b9bc55f5b53f09e27647db',1,'webcface::Common::Point']]],
-  ['properties_9',['properties',['../structwebcface_1_1Common_1_1Geometry.html#a584562cb81f03bbbca44583995836cf7',1,'webcface::Common::Geometry']]]
+  ['properties_9',['properties',['../structwebcface_1_1Common_1_1Geometry.html#a584562cb81f03bbbca44583995836cf7',1,'webcface::Common::Geometry::properties'],['../structwebcface_1_1Message_1_1Canvas2D_1_1Canvas2DComponent.html#a584562cb81f03bbbca44583995836cf7',1,'webcface::Message::Canvas2D::Canvas2DComponent::properties']]]
 ];

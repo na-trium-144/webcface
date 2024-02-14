@@ -6,8 +6,8 @@ var searchData=
   ['on_5fclick_5fmember_3',['on_click_member',['../structwebcface_1_1Message_1_1View_1_1ViewComponent.html#ab0fbaf4ca7a2787586a4b9fdddd53039',1,'webcface::Message::View::ViewComponent']]],
   ['option_5f_4',['option_',['../classwebcface_1_1Common_1_1Arg.html#a9ba0818ceab914663aa4e326a10ad9f5',1,'webcface::Common::Arg']]],
   ['origin_5',['origin',['../structwebcface_1_1Common_1_1RobotJoint.html#aa07b689d69aaaf24720b0c2b782ad518',1,'webcface::Common::RobotJoint']]],
-  ['origin_5f_6',['origin_',['../structwebcface_1_1Common_1_1Canvas3DComponentBase.html#a05df68f5f0d213367feacfc47d7ac757',1,'webcface::Common::Canvas3DComponentBase']]],
-  ['origin_5fpos_7',['origin_pos',['../structwebcface_1_1Message_1_1Canvas3D_1_1Canvas3DComponent.html#a6c162d332e05aa37f4adca46ca6fda1c',1,'webcface::Message::Canvas3D::Canvas3DComponent']]],
-  ['origin_5frot_8',['origin_rot',['../structwebcface_1_1Message_1_1Canvas3D_1_1Canvas3DComponent.html#a0a045d1f0f1491757f096b220b807a86',1,'webcface::Message::Canvas3D::Canvas3DComponent']]],
+  ['origin_5f_6',['origin_',['../structwebcface_1_1Common_1_1Canvas2DComponentBase.html#a05df68f5f0d213367feacfc47d7ac757',1,'webcface::Common::Canvas2DComponentBase::origin_'],['../structwebcface_1_1Common_1_1Canvas3DComponentBase.html#a05df68f5f0d213367feacfc47d7ac757',1,'webcface::Common::Canvas3DComponentBase::origin_']]],
+  ['origin_5fpos_7',['origin_pos',['../structwebcface_1_1Message_1_1Canvas3D_1_1Canvas3DComponent.html#a6c162d332e05aa37f4adca46ca6fda1c',1,'webcface::Message::Canvas3D::Canvas3DComponent::origin_pos'],['../structwebcface_1_1Message_1_1Canvas2D_1_1Canvas2DComponent.html#a1e636118a1f4af674a23894596382d09',1,'webcface::Message::Canvas2D::Canvas2DComponent::origin_pos']]],
+  ['origin_5frot_8',['origin_rot',['../structwebcface_1_1Message_1_1Canvas3D_1_1Canvas3DComponent.html#a0a045d1f0f1491757f096b220b807a86',1,'webcface::Message::Canvas3D::Canvas3DComponent::origin_rot'],['../structwebcface_1_1Message_1_1Canvas2D_1_1Canvas2DComponent.html#ad7d9918e58f46b2bf8bf8edc2c7e2f41',1,'webcface::Message::Canvas2D::Canvas2DComponent::origin_rot']]],
   ['overflow_5fbuf_9',['overflow_buf',['../classwebcface_1_1LoggerBuf.html#a1990ccaa6280937852f89a62fd523cda',1,'webcface::LoggerBuf']]]
 ];

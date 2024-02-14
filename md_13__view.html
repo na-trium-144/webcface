@@ -137,7 +137,7 @@ $(document).ready(function(){initNavTree('md_13__view.html',''); initResizable()
   <div class="headertitle"><div class="title">View</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md48"></a> </p><dl class="section since"><dt>Since</dt><dd><span class="since-c"></span> <span class="since-js"></span> <span class="since-py"></span> </dd></dl>
+<div class="textblock"><p><a class="anchor" id="autotoc_md49"></a> </p><dl class="section since"><dt>Since</dt><dd><span class="since-c"></span> <span class="since-js"></span> <span class="since-py"></span> </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><ul>
 <li>C++ <a class="el" href="classwebcface_1_1View.html" title="Viewの送受信データを表すクラス">webcface::View</a></li>
 <li>JavaScript <a href="https://na-trium-144.github.io/webcface-js/classes/View.html">View</a></li>
@@ -145,7 +145,7 @@ $(document).ready(function(){initNavTree('md_13__view.html',''); initResizable()
 </ul>
 </dd></dl>
 <p>テキストやボタンなどの配置を送受信します。</p>
-<h1><a class="anchor" id="autotoc_md49"></a>
+<h1><a class="anchor" id="autotoc_md50"></a>
 送信</h1>
 <div class="tabbed"></div><div class="tabbed"><ul>
 <li><p class="startli"><b class="tab-title">C++</b> Client::view からViewオブジェクトを作り、 View::add() などで要素を追加し、 最後にView::sync()をしてからClient::sync()をすることで送信されます。</p>
@@ -182,7 +182,8 @@ $(document).ready(function(){initNavTree('md_13__view.html',''); initResizable()
 <div class="line">    <span class="comment"># v.sync() (自動で呼ばれる)</span></div>
 </div><!-- fragment --></li>
 </ul>
-</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md50"></a>
+</div><div class="tabbed"></div><dl class="section note"><dt>Note</dt><dd>Viewの2回目以降の送信時にはWebCFace内部では前回からの差分のみが送信されるので、通信量が削減されます</dd></dl>
+<h1><a class="anchor" id="autotoc_md51"></a>
 ViewComponent</h1>
 <p>Viewに追加する各種要素をViewComponentといいます。</p>
 <div class="tabbed"></div><div class="tabbed"><ul>
@@ -195,7 +196,7 @@ ViewComponent</h1>
 <li><b class="tab-title">Python</b> Pythonでは <a href="https://na-trium-144.github.io/webcface-python/webcface.view_components.html"><code>webcface.view_somponents</code></a> モジュール内にあり、 <div class="fragment"><div class="line"><span class="keyword">from</span> webcface.view_components <span class="keyword">import</span> *</div>
 </div><!-- fragment --> とすることもできます</li>
 </ul>
-</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md51"></a>
+</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md52"></a>
 text</h2>
 <p>文字列です。そのまま表示します。</p>
 <div class="tabbed"></div><div class="tabbed"><ul>
@@ -222,7 +223,7 @@ text</h2>
 <div class="ttc" id="anamespacewebcface_html"><div class="ttname"><a href="namespacewebcface.html">webcface</a></div><div class="ttdef"><b>Definition</b> c_wcf_internal.h:7</div></div>
 </div><!-- fragment --></li>
 </ul>
-</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md52"></a>
+</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md53"></a>
 newLine</h2>
 <p>改行します。</p>
 <div class="tabbed"></div><div class="tabbed"><ul>
@@ -245,7 +246,7 @@ newLine</h2>
 <div class="line">v.<a class="code hl_function" href="classwebcface_1_1View.html#aef5571129416d10663005ff406ea643f">add</a>(text(<span class="stringliteral">&quot;hello&quot;</span>)).<a class="code hl_function" href="classwebcface_1_1View.html#aef5571129416d10663005ff406ea643f">add</a>(new_line()).<a class="code hl_function" href="classwebcface_1_1View.html#aef5571129416d10663005ff406ea643f">add</a>(text(<span class="stringliteral">&quot;hello&quot;</span>));</div>
 </div><!-- fragment --></li>
 </ul>
-</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md53"></a>
+</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md54"></a>
 button</h2>
 <p>ボタンを表示します。</p>
 <p>クリック時の動作は、関数を登録済みの<a class="el" href="md_30__func.html">Funcオブジェクト</a>、または関数を直接設定できます。</p>
@@ -292,21 +293,21 @@ button</h2>
 <div class="line">))</div>
 </div><!-- fragment --></li>
 </ul>
-</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md54"></a>
+</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md55"></a>
 受信</h1>
 <p>ValueやTextと同様、Member::view() でViewクラスのオブジェクトが得られ、 View::tryGet(), View::get() で受信したViewデータを取得できます。 (これを使うのはViewを表示するアプリを作る場合などですかね)</p>
 <p>Viewデータは <a class="el" href="classwebcface_1_1ViewComponent.html" title="Viewに表示する要素です">webcface::ViewComponent</a> (JavaScript <a href="https://na-trium-144.github.io/webcface-js/classes/ViewComponent.html">ViewComponent</a>, Python <a href="https://na-trium-144.github.io/webcface-python/webcface.view.html#webcface.view.ViewComponent">webcface.ViewComponent</a>) のリストとして得られ、 ViewComponentオブジェクトから各種プロパティを取得できます。 onClick()で得られるFuncオブジェクトは<code>runAsync()</code>などでそのまま実行させることができます。</p>
-<h2><a class="anchor" id="autotoc_md55"></a>
+<h2><a class="anchor" id="autotoc_md56"></a>
 時刻</h2>
 <p>View::time() でその値が送信されたとき(そのMemberがsync()したとき)の時刻が得られます。</p>
 <dl class="section note"><dt>Note</dt><dd>Pythonでは Member.sync_time()</dd></dl>
-<h2><a class="anchor" id="autotoc_md56"></a>
+<h2><a class="anchor" id="autotoc_md57"></a>
 Entry</h2>
 <p><strike>Member::views() で</strike> そのMemberが送信しているviewのリストが得られます <br  />
  <span class="since-c">1.6</span> Member::viewEntries() に変更</p>
 <p>また、Member::onViewEntry() で新しくデータが追加されたときのコールバックを設定できます</p>
 <p>いずれも使い方は <a class="el" href="md_10__value.html">Value</a> と同様なのでそちらを参照してください</p>
-<h2><a class="anchor" id="autotoc_md57"></a>
+<h2><a class="anchor" id="autotoc_md58"></a>
 Event</h2>
 <p>受信したデータが変化したときにコールバックを呼び出すことができます。 コールバックを設定することでもその値はリクエストされます。</p>
 <p>また、データが変化したどうかに関わらずそのMemberがsync()したときにコールバックを呼び出したい場合は Member::onSync() が使えます</p>
@@ -323,7 +324,7 @@ Event</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Feb 14 2024 09:52:09 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Wed Feb 14 2024 16:37:35 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

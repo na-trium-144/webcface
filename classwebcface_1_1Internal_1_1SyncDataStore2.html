@@ -150,7 +150,7 @@ $(document).ready(function(){initNavTree('classwebcface_1_1Internal_1_1SyncDataS
 <div class="dynheader">
 Inheritance diagram for SyncDataStore2&lt; T, ReqT &gt;:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classwebcface_1_1Internal_1_1SyncDataStore2__inherit__graph.svg" width="820" height="602"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classwebcface_1_1Internal_1_1SyncDataStore2__inherit__graph.svg" width="820" height="707"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -220,13 +220,12 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:adf062a5d18fd41bf6f38c20a4ff5e71c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af21d99a7b2e1f3e201d67791c1fa4802" id="r_af21d99a7b2e1f3e201d67791c1fa4802"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; std::string, T &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore2.html#af21d99a7b2e1f3e201d67791c1fa4802">getSendPrev</a> (bool is_first)</td></tr>
 <tr class="separator:af21d99a7b2e1f3e201d67791c1fa4802"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a58187b18f0bf6b33813a97e6b0a0d3d0" id="r_a58187b18f0bf6b33813a97e6b0a0d3d0"><td class="memTemplParams" colspan="2">template&lt;typename RetPack &gt; </td></tr>
-<tr class="memitem:a58187b18f0bf6b33813a97e6b0a0d3d0"><td class="memTemplItemLeft" align="right" valign="top">std::vector&lt; RetPack &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore2.html#a58187b18f0bf6b33813a97e6b0a0d3d0">transferSendDiff</a> (bool is_first)</td></tr>
-<tr class="memdesc:a58187b18f0bf6b33813a97e6b0a0d3d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">前回のsendとの差分を返し、data_sendをクリア  <br /></td></tr>
-<tr class="separator:a58187b18f0bf6b33813a97e6b0a0d3d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3fef7cbcca7a949aee39af1dede841ca" id="r_a3fef7cbcca7a949aee39af1dede841ca"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; std::string, std::unordered_map&lt; std::string, unsigned int &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore2.html#a3fef7cbcca7a949aee39af1dede841ca">transferReq</a> ()</td></tr>
 <tr class="memdesc:a3fef7cbcca7a949aee39af1dede841ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">req_sendを返し、req_sendをクリア  <br /></td></tr>
 <tr class="separator:a3fef7cbcca7a949aee39af1dede841ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a29fbfee8d5538d29ea9a58ae6a492c5b" id="r_a29fbfee8d5538d29ea9a58ae6a492c5b"><td class="memTemplParams" colspan="2">template&lt;typename ElemT &gt; </td></tr>
+<tr class="memitem:a29fbfee8d5538d29ea9a58ae6a492c5b"><td class="memTemplItemLeft" align="right" valign="top">std::shared_ptr&lt; std::unordered_map&lt; int, ElemT &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore2.html#a29fbfee8d5538d29ea9a58ae6a492c5b">getDiff</a> (std::vector&lt; ElemT &gt; *current, std::vector&lt; ElemT &gt; *prev=nullptr)</td></tr>
+<tr class="separator:a29fbfee8d5538d29ea9a58ae6a492c5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -422,6 +421,46 @@ template&lt;typename T , typename ReqT &gt; </div>
 </div><div class="memdoc">
 
 <p>受信したデータを削除 </p>
+
+</div>
+</div>
+<a id="a29fbfee8d5538d29ea9a58ae6a492c5b" name="a29fbfee8d5538d29ea9a58ae6a492c5b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a29fbfee8d5538d29ea9a58ae6a492c5b">&#9670;&#160;</a></span>getDiff()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename ReqT  = int&gt; </div>
+<div class="memtemplate">
+template&lt;typename ElemT &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::shared_ptr&lt; std::unordered_map&lt; int, ElemT &gt; &gt; getDiff </td>
+          <td>(</td>
+          <td class="paramtype">std::vector&lt; ElemT &gt; *&#160;</td>
+          <td class="paramname"><em>current</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; ElemT &gt; *&#160;</td>
+          <td class="paramname"><em>prev</em> = <code>nullptr</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -996,31 +1035,6 @@ template&lt;typename T , typename ReqT &gt; </div>
 
 </div>
 </div>
-<a id="a58187b18f0bf6b33813a97e6b0a0d3d0" name="a58187b18f0bf6b33813a97e6b0a0d3d0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a58187b18f0bf6b33813a97e6b0a0d3d0">&#9670;&#160;</a></span>transferSendDiff()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T , typename ReqT &gt; </div>
-<div class="memtemplate">
-template&lt;typename RetPack &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">template std::vector&lt; <a class="el" href="structwebcface_1_1Message_1_1View.html">Message::View</a> &gt; transferSendDiff&lt; <a class="el" href="structwebcface_1_1Message_1_1View.html">Message::View</a> &gt; </td>
-          <td>(</td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>is_first</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>前回のsendとの差分を返し、data_sendをクリア </p>
-<p>RetPackはMessage::Viewなど </p>
-
-</div>
-</div>
 <a id="a5fb25a7dd4f1d58c9e17d2e1c49abfa0" name="a5fb25a7dd4f1d58c9e17d2e1c49abfa0"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5fb25a7dd4f1d58c9e17d2e1c49abfa0">&#9670;&#160;</a></span>unsetRecv() <span class="overload">[1/2]</span></h2>
 
@@ -1290,7 +1304,7 @@ template&lt;typename T , typename ReqT  = int&gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="namespacewebcface_1_1Internal.html">Internal</a></li><li class="navelem"><a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore2.html">SyncDataStore2</a></li>
-    <li class="footer">Generated on Wed Feb 14 2024 09:52:09 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Wed Feb 14 2024 16:37:36 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

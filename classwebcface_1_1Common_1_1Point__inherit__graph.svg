@@ -11,7 +11,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:title="3次元の座標">
+<g id="a_Node000001"><a xlink:title="3次元 or 2次元の座標">
 <polygon fill="#999999" stroke="#666666" points="53,-74 12,-74 12,-55 53,-55 53,-74"/>
 <text text-anchor="middle" x="32.5" y="-62" font-family="Helvetica,sans-Serif" font-size="10.00">Point</text>
 </a>

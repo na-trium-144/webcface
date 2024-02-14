@@ -1,0 +1,9 @@
+<map id="Polygon" name="Polygon">
+<area shape="rect" id="Node000001" title=" " alt="" coords="131,79,206,104"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,5,92,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="81,35,150,76,148,81,79,40"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="116,5,221,31"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="171,44,171,79,166,79,166,44"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="245,5,351,31"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="266,40,191,81,189,76,264,35"/>
+</map>
