@@ -326,6 +326,6 @@ Member::viewEntries() に変更
 
 | Previous |     Next |
 |:---------|---------:|
-| [Text](11_text.md) | [Image](15_image.md) |
+| [Text](11_text.md) | [Canvas2D](14_canvas2d.md) |
 
 </div>

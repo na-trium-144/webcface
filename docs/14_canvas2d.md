@@ -169,6 +169,6 @@ Member::canvas2DEntries() でそのMemberが送信しているCanvas2Dのリス�
 
 | Previous |     Next |
 |:---------|---------:|
-| [Image](15_image.md) | [RobotModel](21_robot_model.md) |
+| [View](13_view.md) | [Image](15_image.md) |
 
 </div>
