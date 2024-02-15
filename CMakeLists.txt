@@ -592,6 +592,10 @@ if(WEBCFACE_INSTALL)
         ARCHIVE DESTINATION lib
         RUNTIME DESTINATION bin
     )
+    install(FILES $<TARGET_PDB_FILE:${PROJECT_NAME}>
+        DESTINATION bin
+        OPTIONAL
+    )
 
     install(EXPORT ${PROJECT_NAME}-targets
         FILE ${PROJECT_NAME}-targets.cmake
