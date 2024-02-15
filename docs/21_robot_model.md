@@ -20,30 +20,40 @@ Client::robotModel からRobotModelオブジェクトを作り、 RobotModel::se
 <div class="tabbed">
 
 - <b class="tab-title">C++</b>
+    例
     ```cpp
     using namespace webcface::RobotJoints;
     using namespace webcface::Geometries;
-    wcli.robotModel("hoge").set({
-        webcface::RobotLink(
-            "a",
-            fixedAbsolute(),
-            line(...),
-            webcface::ViewColor::yellow
-        ),
-        webcface::RobotLink(
-            "b",
-            rotationalJoint("joint1", "a", webcface::Transform{...}, 0),
-            line(...),
-            webcface::ViewColor::red
-        ),
-    });
+    wcli.robotModel("omniwheel")
+        .set({{"base", box({-0.2, -0.2, 0.04}, {0.2, 0.2, 0.06}),
+               webcface::ViewColor::inherit},
+              {"wheel_lf",
+               rotationalJoint(
+                   "joint_lf", "base",
+                   {0.2, 0.2, 0.05, -std::numbers::pi / 4, 0, 0}),
+               cylinder({0, 0, 0, std::numbers::pi / 2, 0, 0}, 0.05, 0.01),
+               webcface::ViewColor::inherit},
+              {"wheel_rf",
+               rotationalJoint(
+                   "joint_rf", "base",
+                   {0.2, -0.2, 0.05, std::numbers::pi / 4, 0, 0}),
+               cylinder({0, 0, 0, std::numbers::pi / 2, 0, 0}, 0.05, 0.01),
+               webcface::ViewColor::inherit},
+               // ... 省略
+              {"line2",
+               rotationalJoint("line_rotation", "line1",
+                               {0, 0, 0.3, 0, 0, 0}),
+               line({0, 0, 0}, {0.5, 0, 0}),
+               webcface::ViewColor::red}
+        });
     ```
+    (この謎のロボット何)
+
+    ![tutorial_wheel_model.png](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_wheel_model.png)
 
 </div>
 
-## RobotLink
-
-RobotLinkのコンストラクタには
+それぞれのリンクには
 * リンクの名前
 * 関節の情報 (RobotJoint) (省略可→fixedAbsolute())
 * リンクの形状 (Geometry)
@@ -91,22 +101,20 @@ prismaticJoint(std::string joint_name, std::string parent, Transform origin, dou
 <div class="tabbed">
 
 - <b class="tab-title">C++</b>
+    例 (src/example/main.cc を参照)
     ```cpp
-    canvas.add(
-        wcli.robotModel("hoge"),
-        webcface::identity(),
-        {
-            {"joint1", std::numbers::pi / 4},
-            {...},
-        },
-    );
+    world.add(wcli.robotModel("omniwheel"),  // RobotModel のドキュメントを参照
+              webcface::Transform{ ... },
+              {
+                {"line_rotation", -i},
+              });
     ```
     Canvas3D::addの第1引数にRobotModel、第2引数にモデルの位置、第3引数にjointの回転角を指定してCanvas3Dにモデルを表示することができます。
-    引数に渡す回転角の型は `std::unordered_map<std::string, double>` で指定します。
+    jointの回転角は {"joint_name", angle} のリストで渡します。
     \note
     RobotModelはこのプログラム内で定義したものではなく別Memberのものを指定することもできます。
 
-    　<!-- -->
+    ![tutorial_wheel.png](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_wheel.png)
 
 </div>
 

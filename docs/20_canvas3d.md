@@ -54,13 +54,29 @@ Pointでは x, y, z 座標、Transformでは x, y, z 座標と z, y, x軸回り�
     Client::canvas3d からCanvas3Dオブジェクトを作り、
     Canvas3D::add() で要素を追加し、
     最後にCanvas3D::sync()をしてからClient::sync()をすることで送信されます。
+
+    例
     ```cpp
-    webcface::Canvas3D canvas = wcli.canvas3D("hoge");
-    // canvas.init(); // ←オブジェクトcanvasを新規に構築せず繰り返し使いまわす場合は必要
-    canvas.add(...);
-    canvas.sync(); // ここまでにcanvasに追加したものをクライアントに反映
+    webcface::Canvas3D world = wcli.canvas3D("omniwheel_world");
+    // world.init(); // ←オブジェクトcanvasを新規に構築せず繰り返し使いまわす場合は必要
+    world.add(webcface::plane(webcface::identity(), 3, 3),
+              webcface::ViewColor::white);
+    world.add(webcface::box({-1.5, -1.5, 0}, {1.5, -1.5, 0.1}),
+              webcface::ViewColor::gray);
+    world.add(webcface::box({-1.5, 1.5, 0}, {1.5, 1.5, 0.1}),
+              webcface::ViewColor::gray);
+    world.add(webcface::box({-1.5, -1.5, 0}, {-1.5, 1.5, 0.1}),
+              webcface::ViewColor::gray);
+    world.add(webcface::box({1.5, -1.5, 0}, {1.5, 1.5, 0.1}),
+              webcface::ViewColor::gray);
+    world.add(wcli.robotModel("omniwheel"),  // RobotModel のドキュメントを参照
+              { ... },
+              {{"line_rotation", -i}});
+    world.sync(); // ここまでにcanvasに追加したものをクライアントに反映
     wcli.sync();
     ```
+    ![tutorial_wheel.png](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_wheel.png)
+
     C++ではCanvas3Dのデストラクタでも自動的にCanvas3D::sync()が呼ばれます。
 
     \note
