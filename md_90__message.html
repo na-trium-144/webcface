@@ -38,6 +38,10 @@
 <script type="text/javascript">
     DoxygenAwesomeTabs.init()
 </script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeInteractiveToc.init()
+</script>
 <script type="text/javascript">
   function insertBadge(){
     for(const sp of document.getElementsByClassName('since-c')){
@@ -137,7 +141,71 @@ $(document).ready(function(){initNavTree('md_90__message.html',''); initResizabl
   <div class="headertitle"><div class="title">Message</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md119"></a> 送受信されるメッセージの仕様について</p>
+<div class="toc"><h3>Table of Contents</h3>
+<ul><li class="level1"><a href="#autotoc_md120">Sync</a><ul><li class="level2"><a href="#autotoc_md121">sync init (kind = 80)</a></li>
+<li class="level2"><a href="#autotoc_md122">svr version (kind = 88)</a></li>
+<li class="level2"><a href="#autotoc_md123">ping (kind = 89)</a></li>
+<li class="level2"><a href="#autotoc_md124">ping status (kind = 90)</a></li>
+<li class="level2"><a href="#autotoc_md125">ping status req (kind = 91)</a></li>
+<li class="level2"><a href="#autotoc_md126">sync (kind = 87)</a></li>
+</ul>
+</li>
+<li class="level1"><a href="#autotoc_md127">Func</a><ul><li class="level2"><a href="#autotoc_md128">func info (kind = 84)</a></li>
+<li class="level2"><a href="#autotoc_md129">call (kind = 81)</a></li>
+<li class="level2"><a href="#autotoc_md130">call response (kind = 82)</a></li>
+<li class="level2"><a href="#autotoc_md131">call result (kind = 83)</a></li>
+</ul>
+</li>
+<li class="level1"><a href="#autotoc_md132">Value</a><ul><li class="level2"><a href="#autotoc_md133">value (kind = 0)</a></li>
+<li class="level2"><a href="#autotoc_md134">value entry (kind = 20)</a></li>
+<li class="level2"><a href="#autotoc_md135">value req (kind = 40)</a></li>
+<li class="level2"><a href="#autotoc_md136">value res (kind = 60)</a></li>
+</ul>
+</li>
+<li class="level1"><a href="#autotoc_md137">Text</a><ul><li class="level2"><a href="#autotoc_md138">text (kind = 1)</a></li>
+<li class="level2"><a href="#autotoc_md139">text entry (kind = 21)</a></li>
+<li class="level2"><a href="#autotoc_md140">text req (kind = 41)</a></li>
+<li class="level2"><a href="#autotoc_md141">text res (kind = 61)</a></li>
+</ul>
+</li>
+<li class="level1"><a href="#autotoc_md142">View</a><ul><li class="level2"><a href="#autotoc_md143">view (kind = 3)</a></li>
+<li class="level2"><a href="#autotoc_md144">view entry (kind = 23)</a></li>
+<li class="level2"><a href="#autotoc_md145">view req (kind = 43)</a></li>
+<li class="level2"><a href="#autotoc_md146">view res (kind = 63)</a></li>
+</ul>
+</li>
+<li class="level1"><a href="#autotoc_md147">Image</a><ul><li class="level2"><a href="#autotoc_md148">image (kind = 5)</a></li>
+<li class="level2"><a href="#autotoc_md149">image entry (kind = 25)</a></li>
+<li class="level2"><a href="#autotoc_md150">image req (kind = 45)</a></li>
+<li class="level2"><a href="#autotoc_md151">image res (kind = 65)</a></li>
+</ul>
+</li>
+<li class="level1"><a href="#autotoc_md152">Canvas2D</a><ul><li class="level2"><a href="#autotoc_md153">canvas2d (kind = 4)</a></li>
+<li class="level2"><a href="#autotoc_md154">canvas2d entry (kind = 24)</a></li>
+<li class="level2"><a href="#autotoc_md155">canvas2d req (kind = 44)</a></li>
+<li class="level2"><a href="#autotoc_md156">canvas2d res (kind = 64)</a></li>
+</ul>
+</li>
+<li class="level1"><a href="#autotoc_md157">Canvas3D</a><ul><li class="level2"><a href="#autotoc_md158">canvas3d (kind = 7)</a></li>
+<li class="level2"><a href="#autotoc_md159">canvas3d entry (kind = 27)</a></li>
+<li class="level2"><a href="#autotoc_md160">canvas3d req (kind = 47)</a></li>
+<li class="level2"><a href="#autotoc_md161">canvas3d res (kind = 67)</a></li>
+</ul>
+</li>
+<li class="level1"><a href="#autotoc_md162">RobotModel</a><ul><li class="level2"><a href="#autotoc_md163">robotmodel (kind = 6)</a></li>
+<li class="level2"><a href="#autotoc_md164">robotmodel entry (kind = 26)</a></li>
+<li class="level2"><a href="#autotoc_md165">robotmodel req (kind = 46)</a></li>
+<li class="level2"><a href="#autotoc_md166">robotmodel res (kind = 66)</a></li>
+</ul>
+</li>
+<li class="level1"><a href="#autotoc_md167">Log</a><ul><li class="level2"><a href="#autotoc_md168">log (kind = 86)</a></li>
+<li class="level2"><a href="#autotoc_md169">log req (kind = 87)</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="textblock"><p><a class="anchor" id="autotoc_md119"></a></p>
+<p>送受信されるメッセージの仕様について</p>
 <p>MessagePackで送受信されます。 両方向の通信ともにn個のデータを長さ2nの配列で表現します。</p>
 <div class="fragment"><div class="line">[ kind1, data1, kind2, data2, ... ]</div>
 </div><!-- fragment --><p>see also <a class="el" href="message_8h.html">message.h</a></p>
@@ -629,7 +697,7 @@ log req (kind = 87)</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Feb 15 2024 01:29:10 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Thu Feb 15 2024 07:06:29 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

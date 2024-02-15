@@ -255,6 +255,7 @@ var NAVTREE =
       ] ]
     ] ],
     [ "Todo List", "todo.html", null ],
+    [ "Deprecated List", "deprecated.html", null ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
       [ "Namespace Members", "namespacemembers.html", [
@@ -301,8 +302,8 @@ var NAVTREEINDEX =
 "classwebcface_1_1Internal_1_1SyncDataStore2.html#a457e6ba0953f027454f739b6964e582e",
 "classwebcface_1_1RobotModel.html#a735728df2425c6e5542c6c29521778bc",
 "classwebcface_1_1View.html#a1f7ae0967ad8f645a577950db724ffdb",
-"dict_8h.html",
-"md_30__func.html",
+"deprecated.html",
+"md_21__robot__model.html#autotoc_md99",
 "namespacewebcface_1_1Common.html#af888dd203afb5bdf79dc950d618bcad9",
 "structwebcface_1_1Common_1_1Canvas3DComponentBase.html#a6a3c6f623cefece397f2c40ae313e1db",
 "structwebcface_1_1Common_1_1Geometry.html#a3c15f4fb0c5d6002dc0fd5b2a6ee7760",

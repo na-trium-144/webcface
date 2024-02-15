@@ -11,7 +11,7 @@ var indexSectionsWithContent =
   8: "bcdefgijlnoprstuvwy",
   9: "cfi",
   10: "cmw",
-  11: "cfilmortvw"
+  11: "cdfilmortvw"
 };
 
 var indexSectionNames =
