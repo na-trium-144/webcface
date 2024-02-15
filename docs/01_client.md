@@ -1,5 +1,6 @@
 # Client
 
+\tableofcontents
 \sa
 * C++ webcface::Client
 * JavaScript [Client](https://na-trium-144.github.io/webcface-js/classes/Client.html)

@@ -71,44 +71,57 @@ class Member : protected Field {
     /*!
      * \brief このmemberが公開しているvalueのリストを返す。
      *
-     * (ver1.6で values から名前変更)
-     *
      */
     WEBCFACE_DLL std::vector<Value> valueEntries() const;
+    /*!
+     * \brief このmemberが公開しているvalueのリストを返す。
+     * \deprecated 1.6で valueEntries() に変更
+     *
+     */
     [[deprecated]] std::vector<Value> values() const { return valueEntries(); }
     /*!
      * \brief このmemberが公開しているtextのリストを返す。
      *
-     * (ver1.6で texts から名前変更)
-     *
      */
     WEBCFACE_DLL std::vector<Text> textEntries() const;
+    /*!
+     * \brief このmemberが公開しているtextのリストを返す。
+     * \deprecated 1.6で textEntries() に変更
+     */
     [[deprecated]] std::vector<Text> texts() const { return textEntries(); }
     /*!
      * \brief このmemberが公開しているrobotModelのリストを返す。
      *
-     * (ver1.6で robotModels から名前変更)
-     *
      */
     WEBCFACE_DLL std::vector<RobotModel> robotModelEntries() const;
+    /*!
+     * \brief このmemberが公開しているrobotModelのリストを返す。
+     * \deprecated 1.6で robotModelEntries() に変更
+     *
+     */
     [[deprecated]] std::vector<RobotModel> robotModels() const {
         return robotModelEntries();
     }
     /*!
      * \brief このmemberが公開しているfuncのリストを返す。
      *
-     * (ver1.6で funcs から名前変更)
-     *
      */
     WEBCFACE_DLL std::vector<Func> funcEntries() const;
+    /*!
+     * \brief このmemberが公開しているfuncのリストを返す。
+     * \deprecated 1.6で funcEntries() に変更
+     *
+     */
     [[deprecated]] std::vector<Func> funcs() const { return funcEntries(); }
     /*!
      * \brief このmemberが公開しているviewのリストを返す。
      *
-     * (ver1.6で views から名前変更)
-     *
      */
     WEBCFACE_DLL std::vector<View> viewEntries() const;
+    /*!
+     * \brief このmemberが公開しているviewのリストを返す。
+     * \deprecated 1.6で viewEntries() に変更
+     */
     [[deprecated]] std::vector<View> views() const { return viewEntries(); }
     /*!
      * \brief このmemberが公開しているcanvas3dのリストを返す。
@@ -123,10 +136,12 @@ class Member : protected Field {
     /*!
      * \brief このmemberが公開しているimageのリストを返す。
      *
-     * (ver1.6で images から名前変更)
-     *
      */
     WEBCFACE_DLL std::vector<Image> imageEntries() const;
+    /*!
+     * \brief このmemberが公開しているimageのリストを返す。
+     * \deprecated 1.6で imageEntries() に変更
+     */
     [[deprecated]] std::vector<Image> images() const { return imageEntries(); }
 
     /*!

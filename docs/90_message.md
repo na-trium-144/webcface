@@ -1,5 +1,7 @@
 # Message
 
+\tableofcontents
+
 送受信されるメッセージの仕様について
 
 MessagePackで送受信されます。

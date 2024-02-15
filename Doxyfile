@@ -662,7 +662,7 @@ SHOW_INCLUDE_FILES     = YES
 # which file to include in order to use the member.
 # The default value is: NO.
 
-SHOW_GROUPED_MEMB_INC  = NO
+SHOW_GROUPED_MEMB_INC  = YES
 
 # If the FORCE_LOCAL_INCLUDES tag is set to YES then doxygen will list include
 # files with double quotes in the documentation rather than with sharp brackets.
@@ -1372,9 +1372,7 @@ HTML_EXTRA_FILES       = \
     docs/doxygen-awesome-css/doxygen-awesome-fragment-copy-button.js \
     docs/doxygen-awesome-css/doxygen-awesome-paragraph-link.js \
     docs/doxygen-awesome-css/doxygen-awesome-tabs.js \
-
-# docs/doxygen-awesome-css/doxygen-awesome-interactive-toc.js
-# docs/doxygen-awesome-css/doxygen-awesome-tabs.js
+    docs/doxygen-awesome-css/doxygen-awesome-interactive-toc.js
 
 # The HTML_COLORSTYLE tag can be used to specify if the generated HTML output
 # should be rendered with a dark or light theme.
