@@ -1,5 +1,6 @@
 # Image
 
+\tableofcontents
 \since
 <span class="since-c">1.3</span>
 <span class="since-js">1.2</span>

@@ -1,5 +1,6 @@
 # Canvas2D
 
+\tableofcontents
 \since
 <span class="since-c">1.6</span>
 <span class="since-js">1.4</span>

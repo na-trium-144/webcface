@@ -1,5 +1,6 @@
 # RobotModel
 
+\tableofcontents
 \since
 <span class="since-c">1.4</span>
 <span class="since-js">1.3</span>

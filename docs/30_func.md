@@ -1,5 +1,6 @@
 # Func
 
+\tableofcontents
 \since
 <span class="since-c"></span>
 <span class="since-js"></span>
