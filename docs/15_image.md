@@ -203,6 +203,6 @@ Member::imageEntries() に変更
 
 | Previous |     Next |
 |:---------|---------:|
-| [View](13_view.md) | [Canvas3D](20_canvas3d.md) |
+| [Canvas2D](14_canvas2d.md) | [Canvas3D](20_canvas3d.md) |
 
 </div>

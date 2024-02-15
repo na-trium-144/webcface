@@ -53,13 +53,27 @@ Pointでは x, y 座標、Transformでは回転角(radianで、 (x, y) = (1, 0) 
     Canvas2D::init() でCanvasのサイズを指定し、
     Canvas2D::add() で要素を追加し、
     最後にCanvas2D::sync()をしてからClient::sync()をすることで送信されます。
+
+    例 (src/example/main.cc を参照)
     ```cpp
-    webcface::Canvas2D canvas = wcli.canvas2D("hoge");
+    webcface::Canvas2D canvas = wcli.canvas2D("canvas");
     canvas.init(100, 100);
-    canvas.add(...);
+    canvas.add(webcface::rect({10, 10}, {90, 90}),
+               webcface::ViewColor::black);
+    canvas.add(webcface::circle(webcface::Point{50, 50}, 20),
+               webcface::ViewColor::red);
+    webcface::Transform pos{ ... };
+    canvas.add(webcface::polygon(
+                   {{0, -5}, {-5, 0}, {-5, 10}, {5, 10}, {5, 0}}),
+               pos,
+               webcface::ViewColor::black, webcface::ViewColor::yellow,
+               2);
+    // ... 省略
     canvas.sync(); // ここまでにcanvasに追加したものをクライアントに反映
     wcli.sync();
     ```
+    ![tutorial_canvas2d.png](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_canvas2d.png)
+
     C++ではCanvas2Dのデストラクタでも自動的にCanvas2D::sync()が呼ばれます。
 
     \note
@@ -71,8 +85,6 @@ Pointでは x, y 座標、Transformでは回転角(radianで、 (x, y) = (1, 0) 
 
 \note
 Viewと同様、Canvas3Dの2回目以降の送信時にはWebCFace内部では前回からの差分のみが送信されます
-
-Canvas2Dに図形を追加するにはGeometryを使います。
 
 ### Geometry (2次元)
 
@@ -169,6 +181,6 @@ Member::canvas2DEntries() でそのMemberが送信しているCanvas2Dのリス�
 
 | Previous |     Next |
 |:---------|---------:|
-| [Image](15_image.md) | [RobotModel](21_robot_model.md) |
+| [View](13_view.md) | [Image](15_image.md) |
 
 </div>

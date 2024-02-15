@@ -23,18 +23,23 @@
     Viewはstd::ostreamを継承しており、 add() の代わりに v << 表示する値; というようにもできます。
     ostreamに出力可能なものはそのままviewにテキストとして出力できます。
     ostreamと同様にフォーマットを指定したり、std::endlで改行もできます。
+
+    例
     ```cpp
-    webcface::View v = wcli.view("hoge");
+    webcface::View v = wcli.view("a");
     // v.init(); // ←オブジェクトvを新規に構築せず繰り返し使いまわす場合は必要
-    v << ...; // v.add(...) と等価
-    v << ...;
+    v << "hello world" << std::endl; // v.add("hello world").add("\n") と等価
+    v << i << std::endl; // i はintの変数とか
+    v << webcface::button("a", [] { std::cout << "hello" << std::endl; }) << std::endl;
     v.sync(); // ここまでにvに追加したものをクライアントに反映
     wcli.sync();
     ```
+    ![tutorial_view.png](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_view.png)
+
     C++ではViewのデストラクタでも自動的にView.sync()が呼ばれます。
     ```cpp
     {
-        webcface::View v = wcli.view("hoge");
+        webcface::View v = wcli.view("a");
         v << ...;
         v << ...;
         // v.sync(); (自動で呼ばれる)
@@ -48,27 +53,37 @@
 - <b class="tab-title">JavaScript</b>
     Client::view からViewオブジェクトを作り、
     set()の引数に要素をまとめてセットして使います。
+
+    例
     ```ts
-    wcli.view("hoge").set([
-        "hello",
-        123,
-        viewComponents.button("aaa", () => undefined)
+    wcli.view("a").set([
+        "hello world\n",
+        i, // i は適当な変数とか
+        "\n",
+        viewComponents.button("a", () => console.log("hello"))
     ]);
     ```
+    ![tutorial_view.png](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_view.png)
 
 - <b class="tab-title">Python</b>
     Client.view からViewオブジェクトを作り、
     View.add() などで要素を追加し、
     最後にView.sync()をしてからClient.sync()をすることで送信されます。
+    
+    例
     ```py
-    v = wcli.view("hoge")
+    v = wcli.view("a")
     # v.init() ←オブジェクトvを新規に構築せず繰り返し使いまわす場合は必要
-    v.add(...)
+    v.add("hello world\n")
+    v.add(i).add("\n") # i は適当な変数とか
+    v.add(webcface.view_components.button("a", lambda: print("hello")))
     v.sync()
     ```
+    ![tutorial_view.png](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_view.png)
+
     with構文を使って `with wcli.view("hoge") as v:` などとするとwithを抜けるときに自動でv.sync()がされます。
     ```py
-    with wcli.view("hoge") as v:
+    with wcli.view("a") as v:
         v.add(...)
         v.add(...)
         # v.sync() (自動で呼ばれる)
@@ -326,6 +341,6 @@ Member::viewEntries() に変更
 
 | Previous |     Next |
 |:---------|---------:|
-| [Text](11_text.md) | [Image](15_image.md) |
+| [Text](11_text.md) | [Canvas2D](14_canvas2d.md) |
 
 </div>

@@ -1,3 +1,15 @@
+## [1.6.1] - 2024-02-15
+### Fixed
+* Canvas2D::add の引数を修正
+
+## [1.6.0] - 2024-02-15
+### Added
+* Canvas2D (#189)
+* Member::func(const T &func) (#185)
+### Changed
+* ドキュメントを全体的に書き直し。 (#185)
+* values → valueEntries など名前変更 (以前の関数はdeprecatedになります) (#185)
+
 ## [1.5.3] - 2024-02-09
 ### Fixed
 * Macでserver終了時にabortするバグを修正 (#184)
