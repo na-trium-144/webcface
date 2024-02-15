@@ -592,6 +592,12 @@ if(WEBCFACE_INSTALL)
         ARCHIVE DESTINATION lib
         RUNTIME DESTINATION bin
     )
+    if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+        install(FILES $<TARGET_PDB_FILE:${PROJECT_NAME}>
+            DESTINATION bin
+            OPTIONAL
+        )
+    endif()
 
     install(EXPORT ${PROJECT_NAME}-targets
         FILE ${PROJECT_NAME}-targets.cmake
