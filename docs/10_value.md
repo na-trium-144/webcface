@@ -66,6 +66,66 @@ Client::value からValueオブジェクトを作り、 Value::set() でデー�
 
 ### 複数の値をまとめて送る
 
+Valueの名前に半角ピリオドを含めると、WebUI上ではフォルダアイコンで表示されグループ化されて表示されます。
+
+\note
+Valueに限らず他のデータ型 ([View](./13_view.md), [Canvas2D](./14_canvas2d.md), [Image](./15_image.md), [Canvas3D](./20_canvas3d.md), [RobotModel](./21_robot_model.md)) でも同様です。
+
+<div class="tabbed">
+
+- <b class="tab-title">C++</b>
+    ```cpp
+    wcli.value("pos.x") = 1;
+    wcli.value("pos.y") = 2;
+    wcli.value("pos.z") = 3;
+    ```
+    Value::child() でも同じ結果になります。
+    ```cpp
+    webcface::Value pos = wcli.value("pos");
+    pos.child("x") = 1;
+    pos.child("y") = 2;
+    pos.child("z") = 3;
+    ```
+
+- <b class="tab-title">C</b>
+    ```c
+    wcfValueSet(wcli, "pos.x", 1);
+    wcfValueSet(wcli, "pos.y", 2);
+    wcfValueSet(wcli, "pos.z", 3);
+    ```
+
+- <b class="tab-title">JavaScript</b>
+    ```ts
+    wcli.value("pos.x").set(1);
+    wcli.value("pos.y").set(2);
+    wcli.value("pos.z").set(3);
+    ```
+    Value.child() でも同じ結果になります。
+    ```ts
+    const pos: Value = wcli.value("pos");
+    pos.child("x").set(1);
+    pos.child("y").set(2);
+    pos.child("z").set(3);
+    ```
+
+- <b class="tab-title">Python</b>
+    ```python
+    wcli.value("pos.x").set(1)
+    wcli.value("pos.y").set(2)
+    wcli.value("pos.z").set(3)
+    ```
+    Value.child() でも同じ結果になります。
+    ```python
+    pos = wcli.value("pos")
+    pos.child("x").set(1)
+    pos.child("y").set(2)
+    pos.child("z").set(3)
+    ```
+
+</div>
+
+![value_child](https://github.com/na-trium-144/webcface/raw/main/docs/images/value_child.png)
+
 ROSのTopicではPointやTransformなど目的に応じてさまざまな型が用意されていますが、
 WebCFaceではそういう場合はValueを複数用意して送信することを想定しています。
 
