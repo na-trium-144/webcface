@@ -1,3 +1,10 @@
+## [1.6.2] - 2024-02-18
+### Changed
+* ver.0の古いWebCFaceのCMakeが読み込まれた時ヘッダーがエラーを出すようにした (#195)
+### Fixed
+* WindowsでBUILD_TYPEがRelWithDebInfoやMinSizeRelでfind_packageした場合正しくリンクされるよう修正 (#193)
+* Windowsでpdbファイルもインストールされるようにした
+
 ## [1.6.1] - 2024-02-15
 ### Fixed
 * Canvas2D::add の引数を修正
