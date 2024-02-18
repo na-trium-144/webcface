@@ -142,18 +142,18 @@ $(document).ready(function(){initNavTree('md_11__text.html',''); initResizable()
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md42">コマンドライン</a></li>
-<li class="level1"><a href="#autotoc_md43">送信</a><ul><li class="level2"><a href="#autotoc_md44">複数の値をまとめて送る</a></li>
+<ul><li class="level1"><a href="#autotoc_md44">コマンドライン</a></li>
+<li class="level1"><a href="#autotoc_md45">送信</a><ul><li class="level2"><a href="#autotoc_md46">複数の値をまとめて送る</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md45">受信</a><ul><li class="level2"><a href="#autotoc_md46">時刻</a></li>
-<li class="level2"><a href="#autotoc_md47">Entry</a></li>
-<li class="level2"><a href="#autotoc_md48">Event</a></li>
+<li class="level1"><a href="#autotoc_md47">受信</a><ul><li class="level2"><a href="#autotoc_md48">時刻</a></li>
+<li class="level2"><a href="#autotoc_md49">Entry</a></li>
+<li class="level2"><a href="#autotoc_md50">Event</a></li>
 </ul>
 </li>
 </ul>
 </div>
-<div class="textblock"><p><a class="anchor" id="autotoc_md41"></a></p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md43"></a></p>
 <dl class="section since"><dt>Since</dt><dd><span class="since-c"></span> <span class="since-js"></span> <span class="since-py"></span> </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><ul>
 <li>C++ <a class="el" href="classwebcface_1_1Text.html" title="文字列の送受信データを表すクラス">webcface::Text</a></li>
@@ -163,11 +163,11 @@ $(document).ready(function(){initNavTree('md_11__text.html',''); initResizable()
 </dd></dl>
 <p>文字列データを送受信します。</p>
 <p>使い方は<a class="el" href="md_10__value.html">Value</a>とほぼ同じです。</p>
-<h1><a class="anchor" id="autotoc_md42"></a>
+<h1><a class="anchor" id="autotoc_md44"></a>
 コマンドライン</h1>
 <div class="fragment"><div class="line">webcface-send -t text</div>
 </div><!-- fragment --><p> を実行し、文字列を入力すると送信されます。(1つ入力するごとに改行してください)</p>
-<h1><a class="anchor" id="autotoc_md43"></a>
+<h1><a class="anchor" id="autotoc_md45"></a>
 送信</h1>
 <p>Client::text からTextオブジェクトを作り、 Text::set() でデータを代入し、Client::sync()することで送信されます</p>
 <div class="tabbed"></div><div class="tabbed"><ul>
@@ -179,7 +179,7 @@ $(document).ready(function(){initNavTree('md_11__text.html',''); initResizable()
 <li><b class="tab-title">Python</b> <div class="fragment"><div class="line">wcli.text(<span class="stringliteral">&quot;hoge&quot;</span>).set(<span class="stringliteral">&quot;hello&quot;</span>)</div>
 </div><!-- fragment --></li>
 </ul>
-</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md44"></a>
+</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md46"></a>
 複数の値をまとめて送る</h2>
 <div class="tabbed"></div><div class="tabbed"><ul>
 <li><b class="tab-title">C++</b> <a class="el" href="classwebcface_1_1Text.html#ab33d2da9febb5e4c801e1ccee1dee594">webcface::Text::Dict</a> オブジェクトを使うと複数の値をまとめて送ることができます。 <div class="fragment"><div class="line"><span class="keyword">struct </span>A {</div>
@@ -204,7 +204,7 @@ $(document).ready(function(){initNavTree('md_11__text.html',''); initResizable()
 <div class="line">});</div>
 </div><!-- fragment --></li>
 </ul>
-</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md45"></a>
+</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md47"></a>
 受信</h1>
 <p>Member::text() でTextクラスのオブジェクトが得られ、 Text::tryGet(), Text::tryGetRecurse() で値のリクエストをするとともに受信した値を取得できます。 (Dict はC++のみ)</p>
 <p>例えば<code>foo</code>というクライアントの<code>hoge</code>という名前のデータを取得したい場合は次のようにします。</p>
@@ -223,17 +223,17 @@ $(document).ready(function(){initNavTree('md_11__text.html',''); initResizable()
 </div><div class="tabbed"></div><p><strike>その後Client::sync()したときに実際にリクエストが送信され、</strike> <br  />
  <span class="since-c">1.2</span> <span class="since-js">1.1</span> <span class="since-py"></span> 別スレッドでリクエストが送信され、それ以降は値が得られるようになります。</p>
 <dl class="section note"><dt>Note</dt><dd><span class="since-js">1.1</span> <span class="since-py"></span> Text::request()で明示的にリクエストを送信することもできます。</dd></dl>
-<h2><a class="anchor" id="autotoc_md46"></a>
+<h2><a class="anchor" id="autotoc_md48"></a>
 時刻</h2>
 <p>Text::time() でその値が送信されたとき(そのMemberがsync()したとき)の時刻が得られます。</p>
 <dl class="section note"><dt>Note</dt><dd>Pythonでは Member.sync_time()</dd></dl>
-<h2><a class="anchor" id="autotoc_md47"></a>
+<h2><a class="anchor" id="autotoc_md49"></a>
 Entry</h2>
 <p><strike>Member::texts() で</strike> そのMemberが送信しているtextのリストが得られます <br  />
  <span class="since-c">1.6</span> Member::textEntries() に変更</p>
 <p>また、Member::onTextEntry() で新しくデータが追加されたときのコールバックを設定できます</p>
 <p>いずれも使い方は <a class="el" href="md_10__value.html">Value</a> と同様なのでそちらを参照してください</p>
-<h2><a class="anchor" id="autotoc_md48"></a>
+<h2><a class="anchor" id="autotoc_md50"></a>
 Event</h2>
 <p>受信したデータが変化したときにコールバックを呼び出すことができます。 コールバックを設定することでもその値はリクエストされます。</p>
 <p>また、データが変化したどうかに関わらずそのMemberがsync()したときにコールバックを呼び出したい場合は Member::onSync() が使えます</p>
@@ -250,7 +250,7 @@ Event</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sun Feb 18 2024 08:23:38 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Sun Feb 18 2024 12:33:36 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

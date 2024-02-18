@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['macos_0',['App Bundle for MacOS',['../index.html#autotoc_md175',1,'']]],
-  ['macos_20linux_1',['Homebrew (MacOS, Linux)',['../index.html#autotoc_md174',1,'']]],
+  ['macos_0',['App Bundle for MacOS',['../index.html#autotoc_md177',1,'']]],
+  ['macos_20linux_1',['Homebrew (MacOS, Linux)',['../index.html#autotoc_md176',1,'']]],
   ['main_2',['main',['../server__main_8cc.html#a3c04138a5bfe5d72780bb7e82a18e627',1,'server_main.cc']]],
   ['mat_3',['mat',['../classwebcface_1_1Common_1_1ImageWithCV.html#ae2dc633e1f4accbd560728266d37146d',1,'webcface::Common::ImageWithCV::mat()'],['../classwebcface_1_1Image.html#a152191e2fee25e947ec6b91752a9cd86',1,'webcface::Image::mat()']]],
   ['mat_5f_4',['mat_',['../classwebcface_1_1Common_1_1ImageWithCV.html#a00b7670cd1af99eb368b34b7724c9304',1,'webcface::Common::ImageWithCV']]],
@@ -18,7 +18,7 @@ var searchData=
   ['member_5flib_5fname_15',['member_lib_name',['../structwebcface_1_1Internal_1_1ClientData.html#a033268534fb70c182c9279306d8b2329',1,'webcface::Internal::ClientData']]],
   ['member_5flib_5fver_16',['member_lib_ver',['../structwebcface_1_1Internal_1_1ClientData.html#a2379c61c4c44468309940c18285c50e9',1,'webcface::Internal::ClientData']]],
   ['member_5fname_17',['member_name',['../structwebcface_1_1Message_1_1SyncInit.html#a3c1ec895509287379c2c3e843b987862',1,'webcface::Message::SyncInit']]],
-  ['members_18',['members',['../md_02__member.html#autotoc_md28',1,'members'],['../classwebcface_1_1Client.html#a2bd9c445e89ab8b794a2430dfc9a2b69',1,'webcface::Client::members()']]],
+  ['members_18',['members',['../md_02__member.html#autotoc_md30',1,'members'],['../classwebcface_1_1Client.html#a2bd9c445e89ab8b794a2430dfc9a2b69',1,'webcface::Client::members()']]],
   ['mergeconfig_19',['mergeConfig',['../classwebcface_1_1Common_1_1Arg.html#a6f63fdc4404726d1e3a62a8b3b577806',1,'webcface::Common::Arg']]],
   ['message_20',['message',['../structwebcface_1_1Common_1_1LogLine.html#a36bd74109f547f7f8198faf5a12d2879',1,'webcface::Common::LogLine::message'],['../structwebcface_1_1Message_1_1Log_1_1LogLine.html#a36bd74109f547f7f8198faf5a12d2879',1,'webcface::Message::Log::LogLine::message'],['../md_90__message.html',1,'Message']]],
   ['message_2ecc_21',['message.cc',['../message_8cc.html',1,'']]],
@@ -63,6 +63,6 @@ var searchData=
   ['modified_60',['modified',['../classwebcface_1_1ViewBuf.html#a48b46e9dd96a6a268ee4e28d52a3ed87',1,'webcface::ViewBuf::modified'],['../classwebcface_1_1Canvas3D.html#a238d800202b1b7f4c22c35780825d4ff',1,'webcface::Canvas3D::modified'],['../classwebcface_1_1Canvas2D.html#a238d800202b1b7f4c22c35780825d4ff',1,'webcface::Canvas2D::modified']]],
   ['msg_5fparse_61',['MSG_PARSE',['../message_8cc.html#a04aeb3e9d5d5e8e26d115f8c67d12823',1,'message.cc']]],
   ['msg_5fparse_5fdata_62',['MSG_PARSE_DATA',['../message_8cc.html#a05d4798bb3a2da200dc481d341a092ad',1,'message.cc']]],
-  ['msvc_63',['Windows (MSVC)',['../index.html#autotoc_md176',1,'']]],
+  ['msvc_63',['Windows (MSVC)',['../index.html#autotoc_md178',1,'']]],
   ['mtx_64',['mtx',['../classwebcface_1_1Common_1_1Queue.html#ad5e0dbd36f0d71fce9b00b7f991b2f38',1,'webcface::Common::Queue::mtx'],['../classwebcface_1_1Internal_1_1FuncResultStore.html#ad5e0dbd36f0d71fce9b00b7f991b2f38',1,'webcface::Internal::FuncResultStore::mtx'],['../classwebcface_1_1Internal_1_1SyncDataStore2.html#a8e3a00b8e2de7776167cc2c41c29294c',1,'webcface::Internal::SyncDataStore2::mtx'],['../classwebcface_1_1Internal_1_1SyncDataStore1.html#a8e3a00b8e2de7776167cc2c41c29294c',1,'webcface::Internal::SyncDataStore1::mtx']]]
 ];

@@ -142,24 +142,24 @@ $(document).ready(function(){initNavTree('md_20__canvas3d.html',''); initResizab
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md79">Point, Transform</a></li>
-<li class="level1"><a href="#autotoc_md80">送信</a><ul><li class="level2"><a href="#autotoc_md81">Geometry (3次元)</a></li>
-<li class="level2"><a href="#autotoc_md82">Line</a></li>
-<li class="level2"><a href="#autotoc_md83">Plane</a></li>
-<li class="level2"><a href="#autotoc_md84">Box</a></li>
-<li class="level2"><a href="#autotoc_md85">Circle</a></li>
-<li class="level2"><a href="#autotoc_md86">Cylinder</a></li>
-<li class="level2"><a href="#autotoc_md87">Sphere</a></li>
+<ul><li class="level1"><a href="#autotoc_md81">Point, Transform</a></li>
+<li class="level1"><a href="#autotoc_md82">送信</a><ul><li class="level2"><a href="#autotoc_md83">Geometry (3次元)</a></li>
+<li class="level2"><a href="#autotoc_md84">Line</a></li>
+<li class="level2"><a href="#autotoc_md85">Plane</a></li>
+<li class="level2"><a href="#autotoc_md86">Box</a></li>
+<li class="level2"><a href="#autotoc_md87">Circle</a></li>
+<li class="level2"><a href="#autotoc_md88">Cylinder</a></li>
+<li class="level2"><a href="#autotoc_md89">Sphere</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md88">受信</a><ul><li class="level2"><a href="#autotoc_md89">時刻</a></li>
-<li class="level2"><a href="#autotoc_md90">Entry</a></li>
-<li class="level2"><a href="#autotoc_md91">Event</a></li>
+<li class="level1"><a href="#autotoc_md90">受信</a><ul><li class="level2"><a href="#autotoc_md91">時刻</a></li>
+<li class="level2"><a href="#autotoc_md92">Entry</a></li>
+<li class="level2"><a href="#autotoc_md93">Event</a></li>
 </ul>
 </li>
 </ul>
 </div>
-<div class="textblock"><p><a class="anchor" id="autotoc_md78"></a></p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md80"></a></p>
 <dl class="section since"><dt>Since</dt><dd><span class="since-c">1.4</span> <span class="since-js">1.3</span> </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><ul>
 <li>C++ <a class="el" href="classwebcface_1_1Canvas3D.html" title="Canvas3Dの送受信データを表すクラス">webcface::Canvas3D</a></li>
@@ -168,7 +168,7 @@ $(document).ready(function(){initNavTree('md_20__canvas3d.html',''); initResizab
 </ul>
 </dd></dl>
 <p>3D空間上のオブジェクト配置データを送受信し、WebUI上に表示できます。</p>
-<h1><a class="anchor" id="autotoc_md79"></a>
+<h1><a class="anchor" id="autotoc_md81"></a>
 Point, Transform</h1>
 <p>WebCFaceでは3次元の座標を <a class="el" href="classwebcface_1_1Common_1_1Point.html" title="3次元 or 2次元の座標">webcface::Point</a>, 座標変換(平行移動してから回転)を <a class="el" href="classwebcface_1_1Common_1_1Transform.html" title="3次元の座標と回転">webcface::Transform</a> で表せます(<a class="el" href="md_14__canvas2d.html">Canvas2D</a>での2次元の座標を表すクラスと共通です)。</p>
 <p>Pointでは x, y, z 座標、Transformでは x, y, z 座標と z, y, x軸回りの回転角を指定します。 (WebCFaceでは3次元の回転はz-y-xの順で回転するオイラー角で表現します。)</p>
@@ -187,7 +187,7 @@ Point, Transform</h1>
 <div class="line">console.log(r.rot[0]); // pi / 2 (z軸回り)</div>
 </div><!-- fragment --> また、Transform.rotMatrix で3x3の回転行列、Transform.tfMatrix で4x4の同次変換行列が得られます。</li>
 </ul>
-</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md80"></a>
+</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md82"></a>
 送信</h1>
 <p>使い方は<a class="el" href="md_13__view.html">View</a>とだいたい同じになっています。</p>
 <div class="tabbed"></div><div class="tabbed"><ul>
@@ -226,7 +226,7 @@ Point, Transform</h1>
 </ul>
 </div><div class="tabbed"></div><dl class="section note"><dt>Note</dt><dd>Viewと同様、Canvas3Dの2回目以降の送信時にはWebCFace内部では前回からの差分のみが送信されます</dd></dl>
 <p>Canvas3Dに追加できる要素として、Geometry(後述)、<a class="el" href="md_21__robot__model.html">RobotModel</a> があります。</p>
-<h2><a class="anchor" id="autotoc_md81"></a>
+<h2><a class="anchor" id="autotoc_md83"></a>
 Geometry (3次元)</h2>
 <p>3次元の図形を表示するにはGeometryを指定します。 一部の図形は2次元のGeometryと共通のインタフェースになっています。</p>
 <div class="tabbed"></div><div class="tabbed"><ul>
@@ -254,40 +254,40 @@ Geometry (3次元)</h2>
 </li>
 </ul>
 </div><div class="tabbed"></div><p>Geometryは以下のものが用意されています。</p>
-<h2><a class="anchor" id="autotoc_md82"></a>
+<h2><a class="anchor" id="autotoc_md84"></a>
 Line</h2>
 <p>指定した2点間に直線を引きます </p><div class="fragment"><div class="line">line(<a class="code hl_class" href="classwebcface_1_1Common_1_1Point.html">Point</a> begin, <a class="code hl_class" href="classwebcface_1_1Common_1_1Point.html">Point</a> end)</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md83"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md85"></a>
 Plane</h2>
 <p>originのxy平面上に、originを中心として幅(x方向の長さ)がwidth, 高さ(y方向の長さ)がheightの長方形を描画します </p><div class="fragment"><div class="line">plane(<a class="code hl_class" href="classwebcface_1_1Common_1_1Transform.html">Transform</a> origin, <span class="keywordtype">double</span> width, <span class="keywordtype">double</span> height)</div>
 <div class="ttc" id="aclasswebcface_1_1Common_1_1Transform_html"><div class="ttname"><a href="classwebcface_1_1Common_1_1Transform.html">webcface::Transform</a></div><div class="ttdoc">3次元の座標と回転</div><div class="ttdef"><b>Definition</b> transform.h:53</div></div>
 </div><!-- fragment --><p> webcface内部では2次元の Rect と同じ扱いです</p>
-<h2><a class="anchor" id="autotoc_md84"></a>
+<h2><a class="anchor" id="autotoc_md86"></a>
 Box</h2>
 <p>指定した2点を頂点とし、各辺がx, y, z軸に平行な直方体を描画します </p><div class="fragment"><div class="line">box(<a class="code hl_class" href="classwebcface_1_1Common_1_1Point.html">Point</a> vertex1, <a class="code hl_class" href="classwebcface_1_1Common_1_1Point.html">Point</a> vertex2)</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md85"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md87"></a>
 Circle</h2>
 <p>originのxy平面上に、originを中心として半径radiusの円を描画します </p><div class="fragment"><div class="line">circle(<a class="code hl_class" href="classwebcface_1_1Common_1_1Transform.html">Transform</a> origin, <span class="keywordtype">double</span> radius)</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md86"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md88"></a>
 Cylinder</h2>
 <p>originのyz平面上にoriginを中心として半径radiusの円を描画し、 それをx軸方向にlength押し出した円柱を描画します </p><div class="fragment"><div class="line">cylinder(<a class="code hl_class" href="classwebcface_1_1Common_1_1Transform.html">Transform</a> origin, <span class="keywordtype">double</span> radius, <span class="keywordtype">double</span> length)</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md87"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md89"></a>
 Sphere</h2>
 <p>originを中心とし半径radiusの球を描画します </p><div class="fragment"><div class="line">sphere(<a class="code hl_class" href="classwebcface_1_1Common_1_1Point.html">Point</a> origin, <span class="keywordtype">double</span> radius)</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md88"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md90"></a>
 受信</h1>
 <p>Viewなどと同様、Member::canvas3D() でCanvas3Dクラスのオブジェクトが得られ、 Canvas3D::tryGet() で値のリクエストをするとともに受信した値を取得できます。</p>
 <p>Canvas3Dデータは <a class="el" href="classwebcface_1_1Canvas3DComponent.html" title="Canvas3Dに表示する要素">webcface::Canvas3DComponent</a> (JavaScript <a href="https://na-trium-144.github.io/webcface-js/classes/Canvas3DComponent.html">Canvas3DComponent</a>)</p>
 <p>のリストとして得られ、 Canvas3DComponentオブジェクトから各種プロパティを取得できます。</p>
-<h2><a class="anchor" id="autotoc_md89"></a>
+<h2><a class="anchor" id="autotoc_md91"></a>
 時刻</h2>
 <p>Canvas3D::time() でその値が送信されたとき(そのMemberがsync()したとき)の時刻が得られます。</p>
-<h2><a class="anchor" id="autotoc_md90"></a>
+<h2><a class="anchor" id="autotoc_md92"></a>
 Entry</h2>
 <p>Member::canvas3DEntries() でそのMemberが送信しているCanvas3Dのリストが得られます</p>
 <p>また、Member::onCanvas3DEntry() で新しくデータが追加されたときのコールバックを設定できます</p>
 <p>いずれも使い方は <a class="el" href="md_10__value.html">Value</a> と同様なのでそちらを参照してください</p>
-<h2><a class="anchor" id="autotoc_md91"></a>
+<h2><a class="anchor" id="autotoc_md93"></a>
 Event</h2>
 <p>受信したデータが変化したときにコールバックを呼び出すことができます。 コールバックを設定することでもその値はリクエストされます。</p>
 <p>また、データが変化したどうかに関わらずそのMemberがsync()したときにコールバックを呼び出したい場合は Member::onSync() が使えます</p>
@@ -304,7 +304,7 @@ Event</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sun Feb 18 2024 08:23:38 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Sun Feb 18 2024 12:33:36 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

@@ -142,16 +142,16 @@ $(document).ready(function(){initNavTree('md_15__image.html',''); initResizable(
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md72">コマンドライン</a></li>
-<li class="level1"><a href="#autotoc_md73">送信</a></li>
-<li class="level1"><a href="#autotoc_md74">受信</a><ul><li class="level2"><a href="#autotoc_md75">時刻</a></li>
-<li class="level2"><a href="#autotoc_md76">Entry</a></li>
-<li class="level2"><a href="#autotoc_md77">Event</a></li>
+<ul><li class="level1"><a href="#autotoc_md74">コマンドライン</a></li>
+<li class="level1"><a href="#autotoc_md75">送信</a></li>
+<li class="level1"><a href="#autotoc_md76">受信</a><ul><li class="level2"><a href="#autotoc_md77">時刻</a></li>
+<li class="level2"><a href="#autotoc_md78">Entry</a></li>
+<li class="level2"><a href="#autotoc_md79">Event</a></li>
 </ul>
 </li>
 </ul>
 </div>
-<div class="textblock"><p><a class="anchor" id="autotoc_md71"></a></p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md73"></a></p>
 <dl class="section since"><dt>Since</dt><dd><span class="since-c">1.3</span> <span class="since-js">1.2</span> </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><ul>
 <li>C++ <a class="el" href="classwebcface_1_1Image.html" title="(ver1.3から追加) 画像の送受信データを表すクラス">webcface::Image</a></li>
@@ -160,11 +160,11 @@ $(document).ready(function(){initNavTree('md_15__image.html',''); initResizable(
 </ul>
 </dd></dl>
 <p>画像データを送受信します。</p>
-<h1><a class="anchor" id="autotoc_md72"></a>
+<h1><a class="anchor" id="autotoc_md74"></a>
 コマンドライン</h1>
 <div class="fragment"><div class="line">webcface-cv-capture 0</div>
 </div><!-- fragment --><p> などとするとOpenCVのVideoCaptureでキャプチャできるWebカメラなどの画像をwebcfaceに送信することができます。</p>
-<h1><a class="anchor" id="autotoc_md73"></a>
+<h1><a class="anchor" id="autotoc_md75"></a>
 送信</h1>
 <p>Client::image からImageオブジェクトを作り、 Image::set() で画像データを代入し、Client::sync()することで送信されます</p>
 <div class="tabbed"></div><div class="tabbed"><ul>
@@ -193,7 +193,7 @@ ImageFrameをImageにsetして送信します。 <div class="fragment"><div clas
 <p class="startli">ImageFrameをImageにsetして送信します。 </p><div class="fragment"><div class="line">wcli.image(<span class="stringliteral">&quot;hoge&quot;</span>).set(frame);</div>
 </div><!-- fragment --></li>
 </ul>
-</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md74"></a>
+</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md76"></a>
 受信</h1>
 <p>Member::image() でImageクラスのオブジェクトが得られ、 Image::request() で画像のリクエストをした後 Image::tryGet() で受信した画像を取得できます。</p>
 <p>リクエスト時の引数で画像のサイズとフォーマットを指定でき、その場合サーバー側で変換してから送られます。 <br  />
@@ -250,16 +250,16 @@ ImageFrameをImageにsetして送信します。 <div class="fragment"><div clas
  また、 ImageFrame.toBase64() でbase64にエンコードすることができます。</p>
 </li>
 </ul>
-</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md75"></a>
+</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md77"></a>
 時刻</h2>
 <p>Image::time() でその値が送信されたとき(そのMemberがsync()したとき)の時刻が得られます。</p>
-<h2><a class="anchor" id="autotoc_md76"></a>
+<h2><a class="anchor" id="autotoc_md78"></a>
 Entry</h2>
 <p><strike>Member::images() で</strike> そのMemberが送信しているimageのリストが得られます <br  />
  <span class="since-c">1.6</span> Member::imageEntries() に変更</p>
 <p>また、Member::onImageEntry() で新しくデータが追加されたときのコールバックを設定できます</p>
 <p>いずれも使い方は <a class="el" href="md_10__value.html">Value</a> と同様なのでそちらを参照してください</p>
-<h2><a class="anchor" id="autotoc_md77"></a>
+<h2><a class="anchor" id="autotoc_md79"></a>
 Event</h2>
 <p>受信したデータが変化したときにコールバックを呼び出すことができます。 コールバックを設定することでもその値はリクエストされます。</p>
 <p>また、データが変化したどうかに関わらずそのMemberがsync()したときにコールバックを呼び出したい場合は Member::onSync() が使えます</p>
@@ -276,7 +276,7 @@ Event</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sun Feb 18 2024 08:23:38 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Sun Feb 18 2024 12:33:36 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

@@ -1,5 +1,7 @@
 var NAVTREEINDEX18 =
 {
+"structwebcface_1_1Server_1_1ClientData.html#ae9399f5ec7881c5d18173def8068108e":[20,0,0,4,0,13],
+"structwebcface_1_1Server_1_1ClientData.html#ae9399f5ec7881c5d18173def8068108e":[19,0,0,7,0,13],
 "structwebcface_1_1Server_1_1ClientData.html#aeaede8e9fa35099287d112189aac9e3a":[20,0,0,4,0,45],
 "structwebcface_1_1Server_1_1ClientData.html#aeaede8e9fa35099287d112189aac9e3a":[19,0,0,7,0,45],
 "structwebcface_1_1Server_1_1ClientData.html#aeb6cfe926c5110a4f3708eaf32590031":[20,0,0,4,0,10],

@@ -149,21 +149,22 @@ $(document).ready(function(){initNavTree('md_00__overview.html',''); initResizab
 </ul>
 </li>
 <li class="level1"><a href="#autotoc_md6">WebUI</a></li>
-<li class="level1"><a href="#autotoc_md7">Clientライブラリ</a><ul><li class="level2"><a href="#autotoc_md8">C++</a></li>
-<li class="level2"><a href="#autotoc_md9">C</a></li>
-<li class="level2"><a href="#autotoc_md10">その他</a></li>
+<li class="level1"><a href="#autotoc_md7">PlotJuggler</a></li>
+<li class="level1"><a href="#autotoc_md8">Clientライブラリ</a><ul><li class="level2"><a href="#autotoc_md9">C++</a></li>
+<li class="level2"><a href="#autotoc_md10">C</a></li>
+<li class="level2"><a href="#autotoc_md11">その他</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md11">tools</a></li>
-<li class="level1"><a href="#autotoc_md12">データ型</a><ul><li class="level2"><a href="#autotoc_md13">Value</a></li>
-<li class="level2"><a href="#autotoc_md14">Text</a></li>
-<li class="level2"><a href="#autotoc_md15">View</a></li>
-<li class="level2"><a href="#autotoc_md16">Image</a></li>
-<li class="level2"><a href="#autotoc_md17">Canvas2D</a></li>
-<li class="level2"><a href="#autotoc_md18">Canvas3D</a></li>
-<li class="level2"><a href="#autotoc_md19">RobotModel</a></li>
-<li class="level2"><a href="#autotoc_md20">Func</a></li>
-<li class="level2"><a href="#autotoc_md21">Log</a></li>
+<li class="level1"><a href="#autotoc_md12">tools</a></li>
+<li class="level1"><a href="#autotoc_md13">データ型</a><ul><li class="level2"><a href="#autotoc_md14">Value</a></li>
+<li class="level2"><a href="#autotoc_md15">Text</a></li>
+<li class="level2"><a href="#autotoc_md16">View</a></li>
+<li class="level2"><a href="#autotoc_md17">Image</a></li>
+<li class="level2"><a href="#autotoc_md18">Canvas2D</a></li>
+<li class="level2"><a href="#autotoc_md19">Canvas3D</a></li>
+<li class="level2"><a href="#autotoc_md20">RobotModel</a></li>
+<li class="level2"><a href="#autotoc_md21">Func</a></li>
+<li class="level2"><a href="#autotoc_md22">Log</a></li>
 </ul>
 </li>
 </ul>
@@ -209,15 +210,18 @@ WebUI</h1>
 <p>WebCFaceにクライアントが接続すると、WebUI右上のMenuに表示されます。 Menuから見たいデータを選ぶことで小さいウィンドウのようなものが現れデータを見ることができます。</p>
 <p>ウィンドウの表示状態などは自動的にブラウザ(LocalStorage)に保存され、次回アクセスしたときに復元されます。</p>
 <h1><a class="anchor" id="autotoc_md7"></a>
+PlotJuggler</h1>
+<p><a href="https://github.com/na-trium-144/plotjuggler-webcface-plugin">plotjuggler-webcface-plugin</a> のREADMEにしたがってプラグインをビルドしてインストールすると、 <a href="https://github.com/facontidavide/PlotJuggler">PlotJuggler</a> からWebCFaceのデータにアクセスできるようになります。 ビルド済みバイナリでの配布はしていません。</p>
+<h1><a class="anchor" id="autotoc_md8"></a>
 Clientライブラリ</h1>
-<h2><a class="anchor" id="autotoc_md8"></a>
+<h2><a class="anchor" id="autotoc_md9"></a>
 C++</h2>
 <p>C++でWebCFaceを使う場合は、次のようにCMakeでWebCFaceクライアントのライブラリとリンクすることができます。 </p><div class="fragment"><div class="line">find_package(webcface CONFIG REQUIRED)</div>
 <div class="line">target_link_libraries(target PRIVATE webcface::webcface)</div>
 </div><!-- fragment --><ul>
 <li>find_packageでwebcfaceが見つからない場合はwebcfaceのインストール場所を<code>CMAKE_PREFIX_PATH</code>か<code>webcface_DIR</code>に設定してください。</li>
 <li>FetchContentやsubmoduleでこのリポジトリを追加して使うこともできます。また、ROS2のワークスペースのsrcに追加してcolconでビルドすることもできます。<ul>
-<li>OpenCVを使用しない場合は<code>WEBCFACE_USE_OPENCV</code>をoffにすれば使用しないようにできます。</li>
+<li>CMakeのオプション(OpenCVを使用しないようにする、staticライブラリにするなど)はREADMEを参照してください</li>
 </ul>
 </li>
 </ul>
@@ -239,18 +243,19 @@ CMakeを使わない場合は</summary>
 </li>
 <li>Linux<ul>
 <li>Releasesで配布しているdebパッケージの場合はインストール先は /usr です</li>
-<li>libwebcface.so, libspdlog.so にリンクしてください</li>
+<li>WebCFaceは現状pkgconfigのファイルを作っていないので、libwebcface.soに手動でリンクしてください (<code>-lwebcface</code> とか?)</li>
+<li>依存ライブラリのspdlogとopencvはpkgconfigに対応しているので、コンパイル時の引数に <code>$(pkgconfig --cflags spdlog opencv4)</code> 、リンク時に <code>$(pkgconfig --libs spdlog opencv4)</code> を渡せばよいと思います</li>
 </ul>
 </li>
 <li>MacOS<ul>
-<li>Linuxと同様 libwebcface.dylib, libspdlog.dylib にリンクしてください</li>
+<li>Linuxと同様 libwebcface.dylib とspdlogとopencvにリンクしてください</li>
 </ul>
 </li>
 </ul>
 <p></p>
 </details>
 <p>C++のソースコードでは<code>&lt;<a class="el" href="webcface_8h.html">webcface/webcface.h</a>&gt;</code>をincludeしてください。 次ページ以降でC++での使い方を解説します。</p>
-<h2><a class="anchor" id="autotoc_md9"></a>
+<h2><a class="anchor" id="autotoc_md10"></a>
 C</h2>
 <dl class="section since"><dt>Since</dt><dd><span class="since-c">1.5</span></dd></dl>
 <p>C++ではなくCからアクセスできるAPIとして、wcf〜 で始まる名前の関数やstructが用意されています。 (C++ライブラリのうちの一部の機能しかまだ実装していませんが)</p>
@@ -259,58 +264,58 @@ C</h2>
 <p><strike>CMakeの書き方はC++の場合と同じです。</strike> <br  />
  <span class="since-c">1.5.1</span> Cの場合は <code>webcface::wcf</code> をリンクしてください。</p>
 <p>CMakeを使わない場合リンクするライブラリはC++の場合と同じです。</p>
-<h2><a class="anchor" id="autotoc_md10"></a>
+<h2><a class="anchor" id="autotoc_md11"></a>
 その他</h2>
 <p>Python, JavaScriptのクライアントも使い方はだいたい同じです。 次ページ以降のドキュメントとともにPython、JavaScriptのリファレンスも参照してください。</p><ul>
 <li><a href="https://na-trium-144.github.io/webcface-python/">webcface-python APIリファレンス</a></li>
 <li><a href="https://na-trium-144.github.io/webcface-js/">webcface-js APIリファレンス</a></li>
 </ul>
-<h1><a class="anchor" id="autotoc_md11"></a>
+<h1><a class="anchor" id="autotoc_md12"></a>
 tools</h1>
 <p>webcface-toolsにはWebCFaceと通信して使うコマンドラインツールがいくつかあります。 詳しくは<a href="https://github.com/na-trium-144/webcface-tools">webcface-toolsのリポジトリ</a>を参照してください。</p>
-<h1><a class="anchor" id="autotoc_md12"></a>
+<h1><a class="anchor" id="autotoc_md13"></a>
 データ型</h1>
 <p>WebCFaceではROSのTopicのようにデータを送受信することができます。</p>
-<h2><a class="anchor" id="autotoc_md13"></a>
+<h2><a class="anchor" id="autotoc_md14"></a>
 Value</h2>
 <p>数値データ、または1次元数値配列を送受信する型です。 double型で送受信されます。</p>
 <p>WebUI では受信したデータがグラフとして表示されます。</p>
 <p><img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_value.png" alt="tutorial_value" class="inline"/></p>
 <dl class="section warning"><dt>Warning</dt><dd>WebUI では数値配列のデータの表示が未実装です (配列の先頭の値のみが表示されます)</dd></dl>
-<h2><a class="anchor" id="autotoc_md14"></a>
+<h2><a class="anchor" id="autotoc_md15"></a>
 Text</h2>
 <p>文字列データを送受信する型です。</p>
 <p>WebUI では図のように文字列が表示されます。</p>
 <p><img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_text.png" alt="tutorial_text" class="inline"/></p>
-<h2><a class="anchor" id="autotoc_md15"></a>
+<h2><a class="anchor" id="autotoc_md16"></a>
 View</h2>
 <p>図のようにテキストやボタンなどの配置を指定してWebUIに表示させる機能です。</p>
 <p><img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_view.png" alt="tutorial_view.png" class="inline"/></p>
-<h2><a class="anchor" id="autotoc_md16"></a>
+<h2><a class="anchor" id="autotoc_md17"></a>
 Image</h2>
 <p>画像データを送受信する型です。 C++ではOpenCVの画像データと相互変換できます。</p>
 <p>画像のリサイズ、圧縮などの処理をサーバー側でやる機能があります</p>
 <p>WebUIでは最大10fpsで画像を表示できます。</p>
-<h2><a class="anchor" id="autotoc_md17"></a>
+<h2><a class="anchor" id="autotoc_md18"></a>
 Canvas2D</h2>
 <p>2Dの図形の描画データを送受信する型です。</p>
 <p>WebUI上で2次元の図形を描画することができます。</p>
 <p><img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_canvas2d.png" alt="tutorial_canvas2d.png" class="inline"/></p>
-<h2><a class="anchor" id="autotoc_md18"></a>
+<h2><a class="anchor" id="autotoc_md19"></a>
 Canvas3D</h2>
 <p>3D空間上のオブジェクト配置データを送受信する型です。</p>
 <p>WebUI上で3次元の図形を描画することができます。</p>
 <p><img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_canvas3d.png" alt="tutorial_canvas3d.png" class="inline"/></p>
-<h2><a class="anchor" id="autotoc_md19"></a>
+<h2><a class="anchor" id="autotoc_md20"></a>
 RobotModel</h2>
 <p>ロボットのリンクと関節の構造の情報を送受信する型です。 事前に定義したRobotModelの各関節の角度だけを後で指定してCanvas3Dに描画することができます。</p>
 <p>WebUI上ではCanvas3D上に描画して表示する他、RobotModel単体でも表示することができます。</p>
 <p><img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_wheel.png" alt="tutorial_wheel.png" class="inline"/></p>
-<h2><a class="anchor" id="autotoc_md20"></a>
+<h2><a class="anchor" id="autotoc_md21"></a>
 Func</h2>
 <p>関数をwebcfaceに登録し、他のクライアントやWebUIから呼び出すことができます。</p>
 <p><img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_func.png" alt="tutorial_func.png" class="inline"/></p>
-<h2><a class="anchor" id="autotoc_md21"></a>
+<h2><a class="anchor" id="autotoc_md22"></a>
 Log</h2>
 <p>エラーメッセージなどを送受信するデータ型です。 出力した文字列1行ごとにタイムスタンプとログのレベルの情報を加えて送信し、WebUIに表示することができます。</p>
 <p><img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_logs.png" alt="tutorial_logs" class="inline"/></p>
@@ -326,7 +331,7 @@ Log</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sun Feb 18 2024 08:23:38 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Sun Feb 18 2024 12:33:36 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>
