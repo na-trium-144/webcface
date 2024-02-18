@@ -63,6 +63,12 @@ Menuから見たいデータを選ぶことで小さいウィンドウのよう�
 
 ウィンドウの表示状態などは自動的にブラウザ(LocalStorage)に保存され、次回アクセスしたときに復元されます。
 
+## PlotJuggler
+
+[plotjuggler-webcface-plugin](https://github.com/na-trium-144/plotjuggler-webcface-plugin) のREADMEにしたがってプラグインをビルドしてインストールすると、
+[PlotJuggler](https://github.com/facontidavide/PlotJuggler) からWebCFaceのデータにアクセスできるようになります。
+ビルド済みバイナリでの配布はしていません。
+
 ## Clientライブラリ
 
 ### C++
@@ -75,7 +81,7 @@ target_link_libraries(target PRIVATE webcface::webcface)
 
 * find_packageでwebcfaceが見つからない場合はwebcfaceのインストール場所を`CMAKE_PREFIX_PATH`か`webcface_DIR`に設定してください。
 * FetchContentやsubmoduleでこのリポジトリを追加して使うこともできます。また、ROS2のワークスペースのsrcに追加してcolconでビルドすることもできます。
-    * OpenCVを使用しない場合は`WEBCFACE_USE_OPENCV`をoffにすれば使用しないようにできます。
+    * CMakeのオプション(OpenCVを使用しないようにする、staticライブラリにするなど)はREADMEを参照してください
 
 <details><summary>CMakeを使わない場合は</summary>
 
@@ -88,9 +94,10 @@ target_link_libraries(target PRIVATE webcface::webcface)
     * また、`C:\Program Files\WebCFace\bin` を環境変数のPathに追加するか、その中にあるdllファイルを実行ファイルのディレクトリにコピーして読み込ませてください
 * Linux
     * Releasesで配布しているdebパッケージの場合はインストール先は /usr です
-    * libwebcface.so, libspdlog.so にリンクしてください
+    * WebCFaceは現状pkgconfigのファイルを作っていないので、libwebcface.soに手動でリンクしてください (`-lwebcface` とか?)
+    * 依存ライブラリのspdlogとopencvはpkgconfigに対応しているので、コンパイル時の引数に `$(pkgconfig --cflags spdlog opencv4)` 、リンク時に `$(pkgconfig --libs spdlog opencv4)` を渡せばよいと思います
 * MacOS
-    * Linuxと同様 libwebcface.dylib, libspdlog.dylib にリンクしてください
+    * Linuxと同様 libwebcface.dylib とspdlogとopencvにリンクしてください
 
 </details>
 
