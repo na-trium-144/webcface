@@ -154,6 +154,40 @@ Funcの呼び出しとデータ受信リクエストの送信は sync() とは�
 
 </div>
 
+\warning
+closeしたあと再度start()を呼んで再接続することはできません。
+
+## バージョン情報
+
+いま使用しているWebCFaceライブラリのバージョンを確認できます。
+
+<div class="tabbed">
+
+- <b class="tab-title">C++</b>
+    ライブラリのヘッダーファイルのバージョンは
+    `WEBCFACE_VERSION` で文字列として(例: `"1.2.0-ubuntu22.04`)、
+    `WEBCFACE_VERSION_MAJOR`, `WEBCFACE_VERSION_MINOR`, `WEBCFACE_VERSION_REVISION` で数値として(例: それぞれ `1`, `2`, `0`)
+    取得できます。
+    コンパイル時に(`#if` や `if constexpr` で)バージョンによって処理を変えることができます。
+
+    実行時にリンクしているライブラリのバージョンは
+    webcface::version_s で文字列として(例: `"1.2.0-ubuntu22.04`)、
+    webcface::version で数値として(例: `{1, 2, 0}`)
+    取得できます。
+- <b class="tab-title">C</b>
+    ライブラリのヘッダーファイルのバージョンは
+    `WEBCFACE_VERSION` で文字列として(例: `"1.2.0-ubuntu22.04`)、
+    `WEBCFACE_VERSION_MAJOR`, `WEBCFACE_VERSION_MINOR`, `WEBCFACE_VERSION_REVISION` で数値として(例: それぞれ `1`, `2`, `0`)
+    取得できます。
+    コンパイル時に(`#if` で)バージョンによって処理を変えることができます。
+
+- <b class="tab-title">Python</b>
+    \since <span class="since-py">1.0.2</span>
+
+    `webcface.__version__` で文字列として(例: `"1.0.2"`)取得できます。
+    
+</div>
+
 
 ## サーバーの情報
 
