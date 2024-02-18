@@ -1,4 +1,10 @@
 #pragma once
+#ifdef WEBCFACE_STATIC_DIR
+// clang-format off
+#error "This header file is for WebCFace ver.1.x but is used with WebCFace ver.0.x CMake files"
+// clang-format on
+#endif
+
 // ヘッダーの上下関係はここに書かれた順
 
 #include "common/def.h"
