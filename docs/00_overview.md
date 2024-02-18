@@ -63,6 +63,12 @@ Menuから見たいデータを選ぶことで小さいウィンドウのよう�
 
 ウィンドウの表示状態などは自動的にブラウザ(LocalStorage)に保存され、次回アクセスしたときに復元されます。
 
+## PlotJuggler
+
+[plotjuggler-webcface-plugin](https://github.com/na-trium-144/plotjuggler-webcface-plugin) のREADMEにしたがってプラグインをビルドしてインストールすると、
+[PlotJuggler](https://github.com/facontidavide/PlotJuggler) からWebCFaceのデータにアクセスできるようになります。
+ビルド済みバイナリでの配布はしていません。
+
 ## Clientライブラリ
 
 ### C++

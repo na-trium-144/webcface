@@ -33,6 +33,8 @@ WebブラウザーでアクセスできるUI(webcface-webui)が付属してお�
 * Canvas3D: 3D空間内のオブジェクト描画
 * RobotModel: リンクやジョイントの定義
 
+[plotjuggler-webcface-plugin](https://github.com/na-trium-144/plotjuggler-webcface-plugin) を使うと、WebCFaceで通信されているデータを [PlotJuggler](https://github.com/facontidavide/PlotJuggler) を使って見ることもできます。
+
 ## Links
 
 * [webcface](https://github.com/na-trium-144/webcface): サーバー & C/C++クライアントライブラリ (このリポジトリ)
@@ -42,6 +44,7 @@ WebブラウザーでアクセスできるUI(webcface-webui)が付属してお�
 * [webcface-python](https://github.com/na-trium-144/webcface-python): Pythonクライアントライブラリ
 * [homebrew-webcface](https://github.com/na-trium-144/homebrew-webcface): HomebrewのTapを管理しています
 * [webcface-windows-package](https://github.com/na-trium-144/webcface-windows-package): Windows用ビルドをリリースする場所
+* [plogjuggler-webcface-plugin](https://github.com/na-trium-144/plotjuggler-webcface-plugin): PlotJuggler プラグイン
 
 ## Installation
 以下の手順で webcface, webcface-webui, webcface-tools をインストールできます。
