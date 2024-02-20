@@ -42,4 +42,19 @@ wcfStatus wcfValueGetVecD(wcfClient *wcli, const char *member,
         return WCF_NOT_FOUND;
     }
 }
+wcfStatus wcfValueGet(wcfClient *wcli, const char *member, const char *field,
+                      double *value) {
+    *value = 0;
+    auto wcli_ = getWcli(wcli);
+    if (!wcli_) {
+        return WCF_BAD_WCLI;
+    }
+    auto val = wcli_->member(member).value(field).tryGet();
+    if (val) {
+        *value = *val;
+        return WCF_OK;
+    } else {
+        return WCF_NOT_FOUND;
+    }
+}
 }

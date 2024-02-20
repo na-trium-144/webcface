@@ -102,6 +102,22 @@ WEBCFACE_DLL wcfStatus wcfValueSetVecD(wcfClient *wcli, const char *field,
 /*!
  * \brief 値を受信する
  *
+ * 配列データを受信した場合先頭の1つのみを返す
+ * 
+ * WCF_NOT_FOUNDの場合valueには0が返る
+ * \param wcli Clientポインタ
+ * \param member memberの名前
+ * \param field valueの名前
+ * \param value 受信した値が返る
+ * \return wcliが無効ならWCF_BAD_WCLI,
+ * 対象のmemberやfieldが存在しない場合 WCF_NOT_FOUND
+ *
+ */
+WEBCFACE_DLL wcfStatus wcfValueGet(wcfClient *wcli, const char *member,
+                                   const char *field, double *value);
+/*!
+ * \brief 値を受信する
+ *
  * sizeに指定したサイズより実際に受信した値の個数のほうが大きい場合、
  * valuesにはsize分の値のみを格納しrecv_sizeには本来のサイズを返す
  *
@@ -121,6 +137,51 @@ WEBCFACE_DLL wcfStatus wcfValueSetVecD(wcfClient *wcli, const char *field,
 WEBCFACE_DLL wcfStatus wcfValueGetVecD(wcfClient *wcli, const char *member,
                                        const char *field, double *values,
                                        int size, int *recv_size);
+
+/*!
+ * \brief 文字列を送信する(null終端)
+ * \param wcli Clientポインタ
+ * \param field textの名前
+ * \param text 送信する文字列(null終端)
+ * \return wcliが無効ならWCF_BAD_WCLI
+ *
+ */
+WEBCFACE_DLL wcfStatus wcfTextSet(wcfClient *wcli, const char *field,
+                                  const char *text);
+/*!
+ * \brief 文字列を送信する
+ * \param wcli Clientポインタ
+ * \param field textの名前
+ * \param text 送信する文字列
+ * \param size 送信する文字列の長さ
+ * \return wcliが無効ならWCF_BAD_WCLI
+ *
+ */
+WEBCFACE_DLL wcfStatus wcfTextSetN(wcfClient *wcli, const char *field,
+                                   const char *text, int size);
+
+/*!
+ * \brief 文字列を受信する
+ *
+ * sizeに指定したサイズより実際に受信した文字列の長さのほうが大きいか同じ場合、
+ * textには(size-1)文字+null終端を格納しrecv_sizeには本来の長さを返す
+ *
+ * size > recv_size の場合、またはWCF_NOT_FOUNDの場合、
+ * null終端より後ろの余った範囲はそのまま
+ *
+ * \param wcli Clientポインタ
+ * \param member memberの名前
+ * \param field textの名前
+ * \param text 受信した文字列を格納するポインタ
+ * \param size 配列のサイズ
+ * \param recv_size 実際に受信した文字列の長さが返る
+ * \return wcliが無効ならWCF_BAD_WCLI,
+ * 対象のmemberやfieldが存在しない場合 WCF_NOT_FOUND
+ *
+ */
+WEBCFACE_DLL wcfStatus wcfTextGet(wcfClient *wcli, const char *member,
+                                  const char *field, char *text, int size,
+                                  int *recv_size);
 
 /*!
  * \brief 数値と文字列をまとめて扱うためのstruct
@@ -198,14 +259,14 @@ WEBCFACE_DLL wcfStatus wcfFuncRunAsync(wcfClient *wcli, const char *member,
 
 /*!
  * \brief 非同期で呼び出した関数の実行結果を取得
- * 
+ *
  * \param async_res 関数呼び出しに対応するAsyncFuncResult
  * \param result 結果を格納する変数(wcfMultiVal*)へのポインタ
  * \return async_resが無効な場合 WCF_BAD_HANDLE,
  * 対象のmemberやfieldが存在しない場合 WCF_NOT_FOUND,
  * 関数で例外が発生した場合 WCF_EXCEPTION,
  * まだ結果が返ってきていない場合 WCF_NOT_RETURNED
- * 
+ *
  */
 WEBCFACE_DLL wcfStatus wcfFuncGetResult(wcfAsyncFuncResult *async_res,
                                         wcfMultiVal **result);

@@ -380,6 +380,7 @@ set(CLI_SRC
     ${CPP_DIR}/client/version.cc
     ${CPP_DIR}/c_wcf/client.cc
     ${CPP_DIR}/c_wcf/value.cc
+    ${CPP_DIR}/c_wcf/text.cc
     ${CPP_DIR}/c_wcf/func.cc
 )
 set(EXAMPLE_SRC

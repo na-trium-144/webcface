@@ -98,6 +98,7 @@ TEST_F(CClientTest, valueSend) {
 }
 TEST_F(CClientTest, valueReq) {
     double value[5] = {1, 1, 1, 1, 1};
+    double value1 = 1;
     int size;
     EXPECT_EQ(wcfValueGetVecD(wcli_, "a", "b", value, -1, &size),
               WCF_INVALID_ARGUMENT);
@@ -107,6 +108,8 @@ TEST_F(CClientTest, valueReq) {
     EXPECT_EQ(value[2], 0);
     EXPECT_EQ(value[3], 0);
     EXPECT_EQ(value[4], 0);
+    EXPECT_EQ(wcfValueGet(wcli_, "a", "b", &value1), WCF_NOT_FOUND);
+    EXPECT_EQ(value1, 0);
     EXPECT_EQ(wcfStart(wcli_), WCF_OK);
     wait();
     dummy_s->recv<Message::Req<Message::Value>>(
@@ -130,13 +133,18 @@ TEST_F(CClientTest, valueReq) {
     EXPECT_EQ(value[2], 2);
     EXPECT_EQ(value[3], 0);
     EXPECT_EQ(value[4], 0);
+    EXPECT_EQ(wcfValueGet(wcli_, "a", "b", &value1), WCF_OK);
+    EXPECT_EQ(value1, 1);
 
     value[0] = 0;
     value[1] = 0;
     value[2] = 0;
+    value1 = 0;
     size = 0;
     EXPECT_EQ(wcfValueGetVecD(wcli_, "a", "b.c", value, 5, &size), WCF_OK);
     EXPECT_EQ(size, 3);
+    EXPECT_EQ(wcfValueGet(wcli_, "a", "b.c", &value1), WCF_OK);
+    EXPECT_EQ(value1, 1);
 }
 
 TEST_F(CClientTest, funcRun) {
