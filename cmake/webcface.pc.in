@@ -8,6 +8,4 @@ URL: @PROJECT_HOMEPAGE_URL@
 Version: @WEBCFACE_VERSION@
 CFlags: -I${includedir}
 Libs: -L${libdir} -lwebcface
-Requires: spdlog opencv4
-
-
+Requires: @WEBCFACE_PKGCONFIG_REQUIRES@
