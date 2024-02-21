@@ -297,6 +297,7 @@ Value::tryGet(), Value::tryGetVec() などで値のリクエストをすると�
 
 
 \note
+<span class="since-c">1.7</span>
 <span class="since-js">1.1</span>
 <span class="since-py"></span>
 Value::request()で明示的にリクエストを送信することもできます。
