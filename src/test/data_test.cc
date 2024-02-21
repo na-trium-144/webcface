@@ -28,6 +28,9 @@ class DataTest : public ::testing::Test {
     auto callback() {
         return [&](const V &) { ++callback_called; };
     }
+    auto callbackVoid() {
+        return [&]() { ++callback_called; };
+    }
 };
 
 TEST_F(DataTest, field) {
@@ -44,11 +47,21 @@ TEST_F(DataTest, field) {
     EXPECT_THROW(Log().tryGet(), std::runtime_error);
 }
 TEST_F(DataTest, eventTarget) {
-    value("a", "b").appendListener(callback<Value>());
+    auto handle = value("a", "b").appendListener(callback<Value>());
     data_->value_change_event.dispatch(FieldBase{"a", "b"},
                                        Field{data_, "a", "b"});
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
+    value("a", "b").removeListener(handle);
+    data_->value_change_event.dispatch(FieldBase{"a", "b"},
+                                       Field{data_, "a", "b"});
+    EXPECT_EQ(callback_called, 0);
+    value("a", "b").appendListener(callbackVoid());
+    data_->value_change_event.dispatch(FieldBase{"a", "b"},
+                                       Field{data_, "a", "b"});
+    EXPECT_EQ(callback_called, 1);
+    callback_called = 0;
+
     text("a", "b").appendListener(callback<Text>());
     data_->text_change_event.dispatch(FieldBase{"a", "b"},
                                       Field{data_, "a", "b"});

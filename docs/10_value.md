@@ -391,6 +391,14 @@ Member名がわかっていれば初回のClient::sync()前に設定すればよ
     });
     ```
     のようにすると可能です。
+
+    <span class="since-c">1.7</span>
+    引数を持たない関数もイベントのコールバックに設定可能です。
+    ```cpp
+    wcli.member("foo").value("hoge").appendListener([]() {
+        std::cout << "foo.hoge changed" << std::endl;
+    });
+    ```
 - <b class="tab-title">JavaScript</b>
     ```ts
     import { Member, Value } from "webcface";
