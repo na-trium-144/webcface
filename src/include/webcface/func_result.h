@@ -90,32 +90,53 @@ struct AsyncFuncResultSetter : Field {
 };
 
 class FuncCallHandle {
-    std::vector<ValAdaptor> args_;
-    std::vector<wcfMultiVal> c_args_;
-    std::shared_ptr<std::promise<ValAdaptor>> result_;
+    struct HandleData {
+        const std::vector<ValAdaptor> args_;
+        std::vector<wcfMultiVal> c_args_;
+        std::promise<ValAdaptor> result_;
+        HandleData(const std::vector<ValAdaptor> &args,
+                   std::promise<ValAdaptor> &&result)
+            : args_(args), c_args_(args.size()), result_(std::move(result)) {
+            for (std::size_t i = 0; i < args_.size(); i++) {
+                c_args_[i].as_int = args_[i];
+                c_args_[i].as_double = args_[i];
+                c_args_[i].as_str =
+                    static_cast<const std::string &>(args_[i]).c_str();
+            }
+        }
+    };
+    std::shared_ptr<HandleData> handle_data_;
 
   public:
     FuncCallHandle() = default;
     FuncCallHandle(const std::vector<ValAdaptor> &args,
-                   const std::shared_ptr<std::promise<ValAdaptor>> &result)
-        : args_(args), c_args_(args.size()), result_(result) {
-        for (std::size_t i = 0; i < args_.size(); i++) {
-            c_args_[i].as_int = args_[i];
-            c_args_[i].as_double = args_[i];
-            c_args_[i].as_str =
-                static_cast<const std::string &>(args_[i]).c_str();
+                   std::promise<ValAdaptor> &&result)
+        : handle_data_(std::make_shared<HandleData>(args, std::move(result))) {}
+    /*!
+     * \brief 関数の引数を取得する
+     *
+     */
+    const std::vector<ValAdaptor> &args() const {
+        if (handle_data_) {
+            return handle_data_->args_;
+        } else {
+            throw std::runtime_error("FuncCallHandle does not have valid "
+                                     "pointer to function call");
         }
     }
     /*!
      * \brief 関数の引数を取得する
+     * \since ver1.7
      *
      */
-    std::vector<ValAdaptor> args() const { return args_; }
-    /*!
-     * \brief 関数の引数を取得する
-     *
-     */
-    const wcfMultiVal *cArgs() const { return c_args_.data(); }
+    const wcfMultiVal *cArgs() const {
+        if (handle_data_) {
+            return handle_data_->c_args_.data();
+        } else {
+            throw std::runtime_error("FuncCallHandle does not have valid "
+                                     "pointer to function call");
+        }
+    }
     /*!
      * \brief 関数の結果を送信する
      *
@@ -124,8 +145,8 @@ class FuncCallHandle {
      *
      */
     void respond(ValAdaptor value = "") {
-        if (result_) {
-            result_->set_value(value);
+        if (handle_data_) {
+            handle_data_->result_.set_value(value);
         } else {
             throw std::runtime_error("FuncCallHandle does not have valid "
                                      "pointer to function call");
@@ -139,11 +160,11 @@ class FuncCallHandle {
      *
      */
     void reject(const std::string &message) {
-        if (result_) {
+        if (handle_data_) {
             try {
                 throw std::runtime_error(message);
             } catch (const std::runtime_error &) {
-                result_->set_exception(std::current_exception());
+                handle_data_->result_.set_exception(std::current_exception());
             }
         } else {
             throw std::runtime_error("FuncCallHandle does not have valid "
