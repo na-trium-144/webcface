@@ -93,11 +93,11 @@ target_link_libraries(target PRIVATE webcface::webcface)
         * Debugの場合 webcface6d.lib, spdlogd.lib, opencv_world490d.lib
     * また、`C:\Program Files\WebCFace\bin` を環境変数のPathに追加するか、その中にあるdllファイルを実行ファイルのディレクトリにコピーして読み込ませてください
 * Linux
-    * Releasesで配布しているdebパッケージの場合はインストール先は /usr です
-    * WebCFaceは現状pkgconfigのファイルを作っていないので、libwebcface.soに手動でリンクしてください (`-lwebcface` とか?)
-    * 依存ライブラリのspdlogとopencvはpkgconfigに対応しているので、コンパイル時の引数に `$(pkgconfig --cflags spdlog opencv4)` 、リンク時に `$(pkgconfig --libs spdlog opencv4)` を渡せばよいと思います
+    * pkgconfigを使用してコンパイル時の引数に `$(pkg-config --cflags webcface)` 、リンク時に `$(pkg-config --libs webcface)` を渡せばよいです
+    * 手動でリンクするなら lib/libwebcface.so をリンクしてください
+        * Releasesで配布しているdebパッケージの場合はインストール先は /usr です
 * MacOS
-    * Linuxと同様 libwebcface.dylib とspdlogとopencvにリンクしてください
+    * Linuxと同様pkgconfigを使ってコンパイル、リンクできると思います
 
 </details>
 
