@@ -210,9 +210,10 @@ class View : protected Field, public EventTarget<View>, public std::ostream {
     }
     /*!
      * \brief syncの時刻を返す
+     * \deprecated 1.7でMember::syncTime()に変更
      *
      */
-    WEBCFACE_DLL std::chrono::system_clock::time_point time() const;
+    [[deprecated]] WEBCFACE_DLL std::chrono::system_clock::time_point time() const;
 
     /*!
      * \brief 値やリクエスト状態をクリア

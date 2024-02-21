@@ -73,9 +73,7 @@ std::optional<std::vector<Canvas2DComponent>> Canvas2D::tryGet() const {
     }
 }
 std::chrono::system_clock::time_point Canvas2D::time() const {
-    return dataLock()
-        ->sync_time_store.getRecv(this->member_)
-        .value_or(std::chrono::system_clock::time_point());
+    return member().syncTime();
 }
 Canvas2D &Canvas2D::free() {
     auto req = dataLock()->canvas2d_store.unsetRecv(*this);

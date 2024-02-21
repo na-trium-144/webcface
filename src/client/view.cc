@@ -143,9 +143,7 @@ std::optional<std::vector<ViewComponent>> View::tryGet() const {
     }
 }
 std::chrono::system_clock::time_point View::time() const {
-    return dataLock()
-        ->sync_time_store.getRecv(this->member_)
-        .value_or(std::chrono::system_clock::time_point());
+    return member().syncTime();
 }
 View &View::free() {
     auto req = dataLock()->view_store.unsetRecv(*this);

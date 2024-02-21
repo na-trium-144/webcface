@@ -135,9 +135,4 @@ TEST_F(ViewTest, viewGet) {
     EXPECT_EQ(data_->view_store.transferReq().at("a").at("d"), 3);
 }
 
-TEST_F(ViewTest, time) {
-    auto t = std::chrono::system_clock::now();
-    data_->sync_time_store.setRecv("a", t);
-    EXPECT_EQ(view("a", "b").time(), t);
-}
 // todo: hidden, free

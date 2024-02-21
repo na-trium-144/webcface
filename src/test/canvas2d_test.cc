@@ -122,9 +122,4 @@ TEST_F(Canvas2DTest, get) {
     EXPECT_EQ(data_->canvas2d_store.transferReq().at("a").at("d"), 3);
 }
 
-TEST_F(Canvas2DTest, time) {
-    auto t = std::chrono::system_clock::now();
-    data_->sync_time_store.setRecv("a", t);
-    EXPECT_EQ(canvas("a", "b").time(), t);
-}
 // todo: hidden, free

@@ -180,9 +180,4 @@ TEST_F(ImageTest, imageGet) {
               (ImageReq{std::nullopt, std::nullopt, std::nullopt,
                         ImageCompressMode::raw, 0, std::nullopt}));
 }
-TEST_F(ImageTest, time) {
-    auto t = std::chrono::system_clock::now();
-    data_->sync_time_store.setRecv("a", t);
-    EXPECT_EQ(image("a", "b").time(), t);
-}
 // todo: hidden, free

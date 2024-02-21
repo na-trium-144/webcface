@@ -69,9 +69,7 @@ std::optional<std::vector<Canvas3DComponent>> Canvas3D::tryGet() const {
     }
 }
 std::chrono::system_clock::time_point Canvas3D::time() const {
-    return dataLock()
-        ->sync_time_store.getRecv(this->member_)
-        .value_or(std::chrono::system_clock::time_point());
+    return member().syncTime();
 }
 Canvas3D &Canvas3D::free() {
     auto req = dataLock()->canvas3d_store.unsetRecv(*this);

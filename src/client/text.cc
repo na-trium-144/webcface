@@ -1,4 +1,5 @@
 #include <webcface/text.h>
+#include <webcface/member.h>
 #include "client_internal.h"
 #include "../message/message.h"
 
@@ -52,9 +53,7 @@ std::optional<Text::Dict> Text::tryGetRecurse() const {
         });
 }
 std::chrono::system_clock::time_point Text::time() const {
-    return dataLock()
-        ->sync_time_store.getRecv(this->member_)
-        .value_or(std::chrono::system_clock::time_point());
+    return member().syncTime();
 }
 Text &Text::free() {
     auto req = dataLock()->text_store.unsetRecv(*this);

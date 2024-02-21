@@ -263,10 +263,4 @@ TEST_F(DataTest, logClear) {
     log("a").clear();
     EXPECT_EQ(log("a").tryGet().value().size(), 0);
 }
-TEST_F(DataTest, time) {
-    auto t = std::chrono::system_clock::now();
-    data_->sync_time_store.setRecv("a", t);
-    EXPECT_EQ(value("a", "b").time(), t);
-    EXPECT_EQ(text("a", "b").time(), t);
-}
 // todo: hidden, free

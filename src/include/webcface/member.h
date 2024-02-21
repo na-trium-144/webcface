@@ -207,6 +207,12 @@ class Member : protected Field {
     WEBCFACE_DLL EventTarget<Member, std::string> onSync() const;
 
     /*!
+     * \brief 最後のsync()の時刻を返す
+     * \since ver1.7 (Value::time(), Text::time() 等から変更)
+     *
+     */
+    WEBCFACE_DLL std::chrono::system_clock::time_point syncTime() const;
+    /*!
      * \brief このMemberが使っているWebCFaceライブラリの識別情報
      *
      * \return このライブラリの場合は"cpp", javascriptクライアントは"js",

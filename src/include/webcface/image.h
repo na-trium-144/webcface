@@ -119,8 +119,13 @@ class Image : protected Field, public EventTarget<Image> {
 #if WEBCFACE_USE_OPENCV
     WEBCFACE_DLL cv::Mat mat() &;
 #endif
-    //! syncの時刻を返す
-    WEBCFACE_DLL std::chrono::system_clock::time_point time() const;
+    /*!
+     * \brief syncの時刻を返す
+     * \deprecated 1.7でMember::syncTime()に変更
+     *
+     */
+    [[deprecated]] WEBCFACE_DLL std::chrono::system_clock::time_point
+    time() const;
 
     //! 値やリクエスト状態をクリア
     WEBCFACE_DLL Image &free();

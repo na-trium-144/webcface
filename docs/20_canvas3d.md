@@ -189,9 +189,10 @@ Canvas3DComponentオブジェクトから各種プロパティを取得できま
 
 ### 時刻
 
-Canvas3D::time() でその値が送信されたとき(そのMemberがsync()したとき)の時刻が得られます。
-
-<!--\note Pythonでは Member.sync_time()-->
+~~Canvas3D::time()~~ でその値が送信されたとき(そのMemberがsync()したとき)の時刻が得られます。  
+<span class="since-c">1.7</span>
+<span class="since-py"></span>
+Member::syncTime() に変更
 
 ### Entry
 

@@ -1,4 +1,5 @@
 #include <webcface/robot_model.h>
+#include <webcface/member.h>
 #include "client_internal.h"
 #include "../message/message.h"
 
@@ -34,9 +35,7 @@ std::optional<std::vector<RobotLink>> RobotModel::tryGet() const {
     }
 }
 std::chrono::system_clock::time_point RobotModel::time() const {
-    return dataLock()
-        ->sync_time_store.getRecv(this->member_)
-        .value_or(std::chrono::system_clock::time_point());
+    return member().syncTime();
 }
 RobotModel &RobotModel::free() {
     auto req = dataLock()->robot_model_store.unsetRecv(*this);

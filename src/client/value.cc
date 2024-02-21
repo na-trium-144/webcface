@@ -1,5 +1,6 @@
 #include "client_internal.h"
 #include <webcface/value.h>
+#include <webcface/member.h>
 #include "../message/message.h"
 
 namespace WEBCFACE_NS {
@@ -62,9 +63,7 @@ std::optional<Value::Dict> Value::tryGetRecurse() const {
         });
 }
 std::chrono::system_clock::time_point Value::time() const {
-    return dataLock()
-        ->sync_time_store.getRecv(this->member_)
-        .value_or(std::chrono::system_clock::time_point());
+    return member().syncTime();
 }
 Value &Value::free() {
     auto req = dataLock()->value_store.unsetRecv(*this);
