@@ -106,21 +106,6 @@ class ValAdaptor {
     }
 
     ValType valType() const { return type; }
-    /*!
-     * \brief wcfMultiValへの変換
-     *
-     * int, double, strをそれぞれ埋めて返す
-     *
-     * as_strの本体はValAdapterが保持しているので、ValAdaptorの一時オブジェクトからは使用不可
-     *
-     */
-    wcfMultiVal toCVal() & {
-        return wcfMultiVal {
-            .as_int = std::atoi(value.c_str()),
-            .as_double = std::atof(value.c_str()),
-            .as_str = value.c_str(),
-        };
-    }
 
     // cast to function
     operator const std::string &() const { return value; }

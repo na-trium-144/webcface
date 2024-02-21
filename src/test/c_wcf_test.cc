@@ -166,27 +166,36 @@ TEST_F(CClientTest, funcRun) {
         EXPECT_EQ(wcfFuncRun(wcli_, "a", "b", args, 3, &ret), WCF_NOT_FOUND);
         wcfFuncRunAsync(wcli_, "a", "b", args, 3, &async_res);
         EXPECT_EQ(wcfFuncGetResult(async_res, &async_ret), WCF_NOT_RETURNED);
+        EXPECT_EQ(wcfFreeResult(async_ret), WCF_BAD_HANDLE);
         EXPECT_EQ(wcfFuncWaitResult(async_res, &async_ret), WCF_NOT_FOUND);
+        EXPECT_EQ(wcfFreeResult(async_ret), WCF_OK);
+        EXPECT_EQ(wcfFuncWaitResult(async_res, &async_ret), WCF_BAD_HANDLE);
         // 2
         EXPECT_EQ(wcfFuncRun(wcli_, "a", "b", args, 3, &ret), WCF_OK);
         EXPECT_EQ(ret->as_int, 123);
         EXPECT_EQ(ret->as_double, 123.45);
         EXPECT_EQ(std::string(ret->as_str), "123.45");
+        EXPECT_EQ(wcfFreeResult(ret), WCF_OK);
+        EXPECT_EQ(wcfFreeResult(ret), WCF_BAD_HANDLE);
         wcfFuncRunAsync(wcli_, "a", "b", args, 3, &async_res);
         EXPECT_EQ(wcfFuncWaitResult(async_res, &async_ret), WCF_OK);
         EXPECT_EQ(async_ret->as_int, 123);
         EXPECT_EQ(async_ret->as_double, 123.45);
         EXPECT_EQ(std::string(async_ret->as_str), "123.45");
+        EXPECT_EQ(wcfFreeResult(async_ret), WCF_OK);
+        EXPECT_EQ(wcfFreeResult(async_ret), WCF_BAD_HANDLE);
         // 3
         EXPECT_EQ(wcfFuncRun(wcli_, "a", "b", args, 3, &ret), WCF_EXCEPTION);
         EXPECT_EQ(ret->as_int, 0);
         EXPECT_EQ(ret->as_double, 0);
         EXPECT_EQ(std::string(ret->as_str), "error");
+        EXPECT_EQ(wcfFreeResult(ret), WCF_OK);
         wcfFuncRunAsync(wcli_, "a", "b", args, 3, &async_res);
         EXPECT_EQ(wcfFuncWaitResult(async_res, &async_ret), WCF_EXCEPTION);
         EXPECT_EQ(async_ret->as_int, 0);
         EXPECT_EQ(async_ret->as_double, 0);
         EXPECT_EQ(std::string(async_ret->as_str), "error");
+        EXPECT_EQ(wcfFreeResult(async_ret), WCF_OK);
     });
 
     std::size_t caller_id = 0;

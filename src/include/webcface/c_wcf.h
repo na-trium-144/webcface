@@ -103,7 +103,7 @@ WEBCFACE_DLL wcfStatus wcfValueSetVecD(wcfClient *wcli, const char *field,
  * \brief 値を受信する
  *
  * 配列データを受信した場合先頭の1つのみを返す
- * 
+ *
  * WCF_NOT_FOUNDの場合valueには0が返る
  * \param wcli Clientポインタ
  * \param member memberの名前
@@ -248,14 +248,14 @@ WEBCFACE_DLL wcfStatus wcfFuncRun(wcfClient *wcli, const char *member,
  * \param field funcの名前
  * \param args 引数の配列
  * \param arg_size 引数の個数
- * \param result 結果を格納する変数(wcfAsyncFuncResult*)へのポインタ
+ * \param async_res 結果を格納する変数(wcfAsyncFuncResult*)へのポインタ
  * \return wcliが無効ならWCF_BAD_WCLI
  *
  */
 WEBCFACE_DLL wcfStatus wcfFuncRunAsync(wcfClient *wcli, const char *member,
                                        const char *field,
                                        const wcfMultiVal *args, int arg_size,
-                                       wcfAsyncFuncResult **result);
+                                       wcfAsyncFuncResult **async_res);
 
 /*!
  * \brief 非同期で呼び出した関数の実行結果を取得
@@ -284,6 +284,15 @@ WEBCFACE_DLL wcfStatus wcfFuncWaitResult(wcfAsyncFuncResult *async_res,
                                          wcfMultiVal **result);
 
 /*!
+ * \brief 取得した関数の戻り値のデータを破棄
+ *
+ * \param result 結果を格納した変数(wcfMultiVal*)
+ * \return resultが無効な場合WCF_BAD_HANDLE
+ *
+ */
+WEBCFACE_DLL wcfStatus wcfFreeResult(const wcfMultiVal *result);
+
+/*!
  * \brief 受信した関数呼び出しの情報を保持するstruct
  *
  */
@@ -292,15 +301,14 @@ WEBCFACE_DLL typedef struct wcfFuncCallHandle {
      * \brief 呼び出された引数
      *
      */
-    const wcfMultiVal *const args;
+    const wcfMultiVal *args;
     /*!
      * \brief 引数の個数
      *
      * listen時に指定した個数と必ず同じになる。
      *
      */
-    const int arg_size;
-    void *const handle;
+    int arg_size;
 } wcfFuncCallHandle;
 
 /*!

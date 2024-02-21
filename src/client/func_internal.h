@@ -17,28 +17,49 @@ namespace WEBCFACE_NS::Internal {
  */
 class FuncResultStore {
     std::mutex mtx;
-    std::vector<AsyncFuncResult> results;
+    std::unordered_map<std::size_t, AsyncFuncResultSetter> result_setter;
+    std::size_t next_caller_id = 0;
 
   public:
     /*!
      * \brief 新しいcaller_idを振って新しいAsyncFuncResultを生成しそれを返す
      *
      */
-    AsyncFuncResult &addResult(const std::string &caller, const Field &base) {
+    AsyncFuncResult addResult(const Field &base) {
         std::lock_guard lock(mtx);
-        std::size_t caller_id = results.size();
-        results.push_back(AsyncFuncResult{caller_id, caller, base});
-        return results.back();
+        std::size_t caller_id = next_caller_id++;
+        result_setter.emplace(caller_id, AsyncFuncResultSetter{base});
+        return AsyncFuncResult{
+            base, caller_id,
+            result_setter.at(caller_id).started.get_future().share(),
+            result_setter.at(caller_id).result.get_future().share()};
     }
     /*!
-     * \brief caller_idに対応するresultを返す
-     *
-     * 存在しない場合out_of_rangeを投げる
+     * \brief promiseを取得
      *
      */
-    AsyncFuncResult &getResult(std::size_t caller_id) {
+    AsyncFuncResultSetter &resultSetter(std::size_t caller_id) {
         std::lock_guard lock(mtx);
-        return results.at(caller_id);
+        auto it = result_setter.find(caller_id);
+        if (it != result_setter.end()) {
+            return it->second;
+        } else {
+            throw std::out_of_range("caller id not found");
+        }
+    }
+    /*!
+     * \brief resultを設定し終わったpromiseを削除
+     *
+     * 
+     */
+    void removeResultSetter(std::size_t caller_id) {
+        std::lock_guard lock(mtx);
+        auto it = result_setter.find(caller_id);
+        if (it != result_setter.end()) {
+            result_setter.erase(it);
+        } else {
+            throw std::out_of_range("caller id not found");
+        }
     }
 };
 
