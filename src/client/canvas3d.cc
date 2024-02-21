@@ -10,8 +10,8 @@ Canvas3D::Canvas3D()
       components(std::make_shared<std::vector<Canvas3DComponentBase>>()),
       modified(std::make_shared<bool>(false)) {}
 Canvas3D::Canvas3D(const Field &base)
-    : Field(base),
-      EventTarget<Canvas3D>(&this->dataLock()->canvas3d_change_event, *this),
+    : Field(base), EventTarget<Canvas3D>(
+                       &this->dataLock()->canvas3d_change_event, *this),
       components(std::make_shared<std::vector<Canvas3DComponentBase>>()),
       modified(std::make_shared<bool>(false)) {}
 Canvas3D &Canvas3D::init() {
@@ -45,19 +45,18 @@ Canvas3D &Canvas3D::set(std::vector<Canvas3DComponentBase> &v) {
     return *this;
 }
 
-inline void addCanvas3DReq(const std::shared_ptr<Internal::ClientData> &data,
-                           const std::string &member_,
-                           const std::string &field_) {
+void Canvas3D::request() const {
+    auto data = dataLock();
     auto req = data->canvas3d_store.addReq(member_, field_);
     if (req) {
         data->message_queue->push(Message::packSingle(
             Message::Req<Message::Canvas3D>{{}, member_, field_, req}));
     }
 }
-void Canvas3D::onAppend() const { addCanvas3DReq(dataLock(), member_, field_); }
+void Canvas3D::onAppend() const { request(); }
 std::optional<std::vector<Canvas3DComponent>> Canvas3D::tryGet() const {
     auto vb = dataLock()->canvas3d_store.getRecv(*this);
-    addCanvas3DReq(dataLock(), member_, field_);
+    request();
     if (vb) {
         std::vector<Canvas3DComponent> v((*vb)->size());
         for (std::size_t i = 0; i < (*vb)->size(); i++) {

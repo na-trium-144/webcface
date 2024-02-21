@@ -8,8 +8,8 @@ Value::Value(const Field &base)
     : Field(base), EventTarget<Value>(&this->dataLock()->value_change_event,
                                       *this) {}
 
-inline void addValueReq(const std::shared_ptr<Internal::ClientData> &data,
-                        const std::string &member_, const std::string &field_) {
+void Value::request() const {
+    auto data = dataLock();
     auto req = data->value_store.addReq(member_, field_);
     if (req) {
         data->message_queue->push(Message::packSingle(
@@ -35,11 +35,11 @@ Value &Value::set(const VectorOpt<double> &v) {
     return *this;
 }
 
-void Value::onAppend() const { addValueReq(dataLock(), member_, field_); }
+void Value::onAppend() const { request(); }
 
 std::optional<double> Value::tryGet() const {
     auto v = dataLock()->value_store.getRecv(*this);
-    addValueReq(dataLock(), member_, field_);
+    request();
     if (v) {
         return **v;
     } else {
@@ -48,7 +48,7 @@ std::optional<double> Value::tryGet() const {
 }
 std::optional<std::vector<double>> Value::tryGetVec() const {
     auto v = dataLock()->value_store.getRecv(*this);
-    addValueReq(dataLock(), member_, field_);
+    request();
     if (v) {
         return **v;
     } else {
@@ -56,11 +56,10 @@ std::optional<std::vector<double>> Value::tryGetVec() const {
     }
 }
 std::optional<Value::Dict> Value::tryGetRecurse() const {
-    addValueReq(dataLock(), member_, field_);
+    request();
     return dataLock()->value_store.getRecvRecurse(
-        *this, [this](const std::string &subfield) {
-            addValueReq(dataLock(), member_, subfield);
-        });
+        *this,
+        [this](const std::string &subfield) { child(subfield).request(); });
 }
 std::chrono::system_clock::time_point Value::time() const {
     return member().syncTime();

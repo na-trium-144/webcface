@@ -49,19 +49,18 @@ Canvas2D &Canvas2D::set(Canvas2DData &v) {
     return *this;
 }
 
-inline void addCanvas2DReq(const std::shared_ptr<Internal::ClientData> &data,
-                           const std::string &member_,
-                           const std::string &field_) {
+void Canvas2D::request() const {
+    auto data = dataLock();
     auto req = data->canvas2d_store.addReq(member_, field_);
     if (req) {
         data->message_queue->push(Message::packSingle(
             Message::Req<Message::Canvas2D>{{}, member_, field_, req}));
     }
 }
-void Canvas2D::onAppend() const { addCanvas2DReq(dataLock(), member_, field_); }
+void Canvas2D::onAppend() const { request(); }
 std::optional<std::vector<Canvas2DComponent>> Canvas2D::tryGet() const {
+    request();
     auto vb = dataLock()->canvas2d_store.getRecv(*this);
-    addCanvas2DReq(dataLock(), member_, field_);
     if (vb) {
         std::vector<Canvas2DComponent> v((*vb)->components.size());
         for (std::size_t i = 0; i < (*vb)->components.size(); i++) {

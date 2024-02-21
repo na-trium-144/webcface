@@ -38,7 +38,7 @@ class Text : protected Field, public EventTarget<Text> {
      * \return「(thisのフィールド名).(子フィールド名)」をフィールド名とするText
      *
      */
-    Text child(const std::string &field) {
+    Text child(const std::string &field) const {
         return Text{*this, this->field_ + "." + field};
     }
 
@@ -70,6 +70,12 @@ class Text : protected Field, public EventTarget<Text> {
         return *this;
     }
 
+    /*!
+     * \brief 文字列をリクエストする
+     * \since ver1.7
+     * 
+     */
+    WEBCFACE_DLL void request() const;
     /*!
      * \brief 文字列を返す
      *

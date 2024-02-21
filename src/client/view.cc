@@ -120,18 +120,18 @@ View &View::set(std::vector<ViewComponent> &v) {
     return *this;
 }
 
-inline void addViewReq(const std::shared_ptr<Internal::ClientData> &data,
-                       const std::string &member_, const std::string &field_) {
+void View::request() const {
+    auto data = dataLock();
     auto req = data->view_store.addReq(member_, field_);
     if (req) {
         data->message_queue->push(Message::packSingle(
             Message::Req<Message::View>{{}, member_, field_, req}));
     }
 }
-void View::onAppend() const { addViewReq(dataLock(), member_, field_); }
+void View::onAppend() const { request(); }
 std::optional<std::vector<ViewComponent>> View::tryGet() const {
+    request();
     auto vb = dataLock()->view_store.getRecv(*this);
-    addViewReq(dataLock(), member_, field_);
     if (vb) {
         std::vector<ViewComponent> v((*vb)->size());
         for (std::size_t i = 0; i < (*vb)->size(); i++) {

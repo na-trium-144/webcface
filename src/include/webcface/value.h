@@ -40,7 +40,7 @@ class Value : protected Field, public EventTarget<Value> {
      * \return「(thisのフィールド名).(子フィールド名)」をフィールド名とするValue
      *
      */
-    Value child(const std::string &field) {
+    Value child(const std::string &field) const {
         return Value{*this, this->field_ + "." + field};
     }
 
@@ -73,6 +73,12 @@ class Value : protected Field, public EventTarget<Value> {
         return *this;
     }
 
+    /*!
+     * \brief 値をリクエストする
+     * \since ver1.7
+     *
+     */
+    WEBCFACE_DLL void request() const;
     /*!
      * \brief 値を返す
      *

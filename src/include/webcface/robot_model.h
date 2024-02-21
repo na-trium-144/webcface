@@ -42,7 +42,12 @@ class RobotModel : protected Field, public EventTarget<RobotModel> {
         this->set(v);
         return *this;
     }
-
+    /*!
+     * \brief モデルをリクエストする
+     * \since ver1.7
+     *
+     */
+    WEBCFACE_DLL void request() const;
     /*!
      * \brief モデルを返す
      *
