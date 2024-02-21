@@ -242,13 +242,15 @@ CMakeを使わない場合は</summary>
 </ul>
 </li>
 <li>Linux<ul>
+<li>pkgconfigを使用してコンパイル時の引数に <code>$(pkg-config --cflags webcface)</code> 、リンク時に <code>$(pkg-config --libs webcface)</code> を渡せばよいです</li>
+<li>手動でリンクするなら lib/libwebcface.so をリンクしてください<ul>
 <li>Releasesで配布しているdebパッケージの場合はインストール先は /usr です</li>
-<li>WebCFaceは現状pkgconfigのファイルを作っていないので、libwebcface.soに手動でリンクしてください (<code>-lwebcface</code> とか?)</li>
-<li>依存ライブラリのspdlogとopencvはpkgconfigに対応しているので、コンパイル時の引数に <code>$(pkgconfig --cflags spdlog opencv4)</code> 、リンク時に <code>$(pkgconfig --libs spdlog opencv4)</code> を渡せばよいと思います</li>
+</ul>
+</li>
 </ul>
 </li>
 <li>MacOS<ul>
-<li>Linuxと同様 libwebcface.dylib とspdlogとopencvにリンクしてください</li>
+<li>Linuxと同様pkgconfigを使ってコンパイル、リンクできると思います</li>
 </ul>
 </li>
 </ul>
@@ -331,7 +333,7 @@ Log</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sun Feb 18 2024 13:52:32 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Wed Feb 21 2024 17:46:20 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>
