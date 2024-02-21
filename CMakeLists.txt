@@ -631,6 +631,19 @@ if(WEBCFACE_INSTALL)
         ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config-version.cmake
         DESTINATION lib/cmake/${PROJECT_NAME}
     )
+    if(WEBCFACE_USE_OPENCV)
+        set(WEBCFACE_PKGCONFIG_REQUIRES "spdlog opencv4")
+    else()
+        set(WEBCFACE_PKGCONFIG_REQUIRES "spdlog")
+    endif()
+    configure_file(
+        ${CMAKE_CURRENT_SOURCE_DIR}/cmake/${PROJECT_NAME}.pc.in
+        ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.pc
+        @ONLY
+    )
+    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.pc
+        DESTINATION lib/pkgconfig
+    )
 
     if(WEBCFACE_INSTALL_SERVICE)
         install(FILES
