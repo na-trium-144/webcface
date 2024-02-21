@@ -32,6 +32,11 @@ Client::value からValueオブジェクトを作り、 Value::set() でデー�
     wcli.value("hoge").set(5);
     wcli.value("fuga").set({1, 2, 3, 4, 5});
     ```
+    \note
+    <span class="since-c">1.7</span>
+    配列データは`std::vector<double>`だけでなく、std::arrayや生配列などstd::ranges::rangeに合うものならなんでも使えます。
+    要素の型はdoubleに変換可能ならなんでもokです。
+
      (C++のみ) set() の代わりに代入演算子(Value::operator=)でも同様のことができます。
     また、 operator+= など、doubleやintの変数で使える各種演算子も使えます
     ```cpp
@@ -64,7 +69,7 @@ Client::value からValueオブジェクトを作り、 Value::set() でデー�
 
 </div>
 
-### 複数の値をまとめて送る
+### グループ化
 
 Valueの名前に半角ピリオドを含めると、WebUI上ではフォルダアイコンで表示されグループ化されて表示されます。
 
@@ -128,6 +133,8 @@ Valueに限らず他のデータ型 ([View](./13_view.md), [Canvas2D](./14_canva
 
 ROSのTopicではPointやTransformなど目的に応じてさまざまな型が用意されていますが、
 WebCFaceではそういう場合はValueを複数用意して送信することを想定しています。
+
+### 複数の値をまとめて送る
 
 \todo
 Pythonの辞書型への対応は未実装
