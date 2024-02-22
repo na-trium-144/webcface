@@ -155,7 +155,7 @@ $(document).ready(function(){initNavTree('md_00__overview.html',''); initResizab
 <li class="level2"><a href="#autotoc_md11">その他</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md12">tools</a></li>
+<li class="level1"><a href="#autotoc_md12">Tools</a></li>
 <li class="level1"><a href="#autotoc_md13">データ型</a><ul><li class="level2"><a href="#autotoc_md14">Value</a></li>
 <li class="level2"><a href="#autotoc_md15">Text</a></li>
 <li class="level2"><a href="#autotoc_md16">View</a></li>
@@ -201,9 +201,6 @@ WebUIから (Server Mode)</h2>
 <p>配布しているdebパッケージでは <a href="https://github.com/na-trium-144/webcface/blob/main/cmake/webcface-server.service">cmake/webcface-server.service</a> がインストールされ、 </p><div class="fragment"><div class="line">sudo systemctl enable webcface-server</div>
 <div class="line">sudo systemctl start webcface-server</div>
 </div><!-- fragment --><p> でサーバーを常時自動起動させることができます。</p>
-<p>また </p><div class="fragment"><div class="line">sudo systemctl enable webcface-launcher</div>
-<div class="line">sudo systemctl start webcface-launcher</div>
-</div><!-- fragment --><p> でwebcface-launcherも自動起動させることができます。</p>
 <h1><a class="anchor" id="autotoc_md6"></a>
 WebUI</h1>
 <p>serverは起動したまま、起動時に表示されるurl (<a href="http://IPアドレス:7530/index.html">http://IPアドレス:7530/index.html</a>) をブラウザで開きましょう。</p>
@@ -273,15 +270,21 @@ C</h2>
 <li><a href="https://na-trium-144.github.io/webcface-js/">webcface-js APIリファレンス</a></li>
 </ul>
 <h1><a class="anchor" id="autotoc_md12"></a>
-tools</h1>
-<p>webcface-toolsにはWebCFaceと通信して使うコマンドラインツールがいくつかあります。 詳しくは<a href="https://github.com/na-trium-144/webcface-tools">webcface-toolsのリポジトリ</a>を参照してください。</p>
+Tools</h1>
+<p>webcface-toolsにはWebCFaceと通信して使うコマンドラインツールがいくつかあります。</p>
+<p>それぞれ以下のページを参照してください。</p><ul>
+<li><a class="el" href="md_70__launcher.html">webcface-launcher</a></li>
+<li><a class="el" href="md_71__send.html">webcface-send</a></li>
+<li><a class="el" href="md_72__cv__capture.html">webcface-cv-capture</a></li>
+</ul>
 <h1><a class="anchor" id="autotoc_md13"></a>
 データ型</h1>
 <p>WebCFaceではROSのTopicのようにデータを送受信することができます。</p>
 <h2><a class="anchor" id="autotoc_md14"></a>
 Value</h2>
 <p>数値データ、または1次元数値配列を送受信する型です。 double型で送受信されます。</p>
-<p>WebUI では受信したデータがグラフとして表示されます。</p>
+<p>WebUI では受信したデータがグラフとして表示されます。 (グラフの画面を表示するより前のデータにはアクセスできません)</p>
+<p>マウスドラッグで移動、Ctrl+スクロール・Ctrl+Alt+スクロールでそれぞれx, y方向の拡大縮小ができます。</p>
 <p><img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_value.png" alt="tutorial_value" class="inline"/></p>
 <dl class="section warning"><dt>Warning</dt><dd>WebUI では数値配列のデータの表示が未実装です (配列の先頭の値のみが表示されます)</dd></dl>
 <h2><a class="anchor" id="autotoc_md15"></a>
@@ -307,6 +310,7 @@ Canvas2D</h2>
 Canvas3D</h2>
 <p>3D空間上のオブジェクト配置データを送受信する型です。</p>
 <p>WebUI上で3次元の図形を描画することができます。</p>
+<p>ドラッグで回転、Ctrl+ドラッグ(またはホイールを押しながらドラッグ)で移動、スクロールで拡大縮小ができます。</p>
 <p><img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_canvas3d.png" alt="tutorial_canvas3d.png" class="inline"/></p>
 <h2><a class="anchor" id="autotoc_md20"></a>
 RobotModel</h2>
@@ -333,7 +337,7 @@ Log</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Feb 21 2024 17:46:20 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Thu Feb 22 2024 09:57:47 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

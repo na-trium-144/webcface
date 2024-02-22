@@ -1,9 +1,9 @@
 var indexSectionsWithContent =
 {
-  0: "0123456789abcdefghijklmnopqrstuvwxy~そクコサデバロ切受実引時環複送関",
+  0: "0123456789abcdefghijklmnopqrstuvwxy~そクコサデバロ切受実引時環複設送関",
   1: "abcdefgilmpqrstvw",
   2: "w",
-  3: "012349cdefilmqrstvw",
+  3: "0123479cdefilmqrstvw",
   4: "abcdefghijlmnoprstuvw~",
   5: "abcdefghijklmnopqrstvw",
   6: "cdefirvw",
@@ -11,7 +11,7 @@ var indexSectionsWithContent =
   8: "bcdefgijlnoprstuvwy",
   9: "cfi",
   10: "cmw",
-  11: "cdfilmortvw"
+  11: "cdfilmorstvw"
 };
 
 var indexSectionNames =
