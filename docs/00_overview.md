@@ -48,13 +48,6 @@ sudo systemctl start webcface-server
 ```
 でサーバーを常時自動起動させることができます。
 
-また
-```sh
-sudo systemctl enable webcface-launcher
-sudo systemctl start webcface-launcher
-```
-でwebcface-launcherも自動起動させることができます。
-
 ## WebUI
 serverは起動したまま、起動時に表示されるurl (http://IPアドレス:7530/index.html) をブラウザで開きましょう。
 
@@ -129,9 +122,14 @@ Python, JavaScriptのクライアントも使い方はだいたい同じです�
 * [webcface-python APIリファレンス](https://na-trium-144.github.io/webcface-python/)
 * [webcface-js APIリファレンス](https://na-trium-144.github.io/webcface-js/)
 
-## tools
+## Tools
+
 webcface-toolsにはWebCFaceと通信して使うコマンドラインツールがいくつかあります。
-詳しくは[webcface-toolsのリポジトリ](https://github.com/na-trium-144/webcface-tools)を参照してください。
+
+それぞれ以下のページを参照してください。
+* [webcface-launcher](./70_launcher.md)
+* [webcface-send](./71_send.md)
+* [webcface-cv-capture](./72_cv_capture.md)
 
 ## データ型
 WebCFaceではROSのTopicのようにデータを送受信することができます。
@@ -141,6 +139,9 @@ WebCFaceではROSのTopicのようにデータを送受信することができ�
 double型で送受信されます。
 
 WebUI では受信したデータがグラフとして表示されます。
+(グラフの画面を表示するより前のデータにはアクセスできません)
+
+マウスドラッグで移動、Ctrl+スクロール・Ctrl+Alt+スクロールでそれぞれx, y方向の拡大縮小ができます。
 
 ![tutorial_value](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_value.png)
 
@@ -178,6 +179,8 @@ WebUI上で2次元の図形を描画することができます。
 3D空間上のオブジェクト配置データを送受信する型です。
 
 WebUI上で3次元の図形を描画することができます。
+
+ドラッグで回転、Ctrl+ドラッグ(またはホイールを押しながらドラッグ)で移動、スクロールで拡大縮小ができます。
 
 ![tutorial_canvas3d.png](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_canvas3d.png)
 
