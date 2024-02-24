@@ -27,16 +27,6 @@ webcface-server
 
 * コマンドラインオプションで起動するポートを変更できたりします。詳細は`webcface-server -h`で確認してください
 
-### WebUIから (Server Mode)
-WebUIをブラウザーからではなくアプリとして開くと、バックグラウンドでいっしょにサーバーが起動します。
-
-* Windowsではスタートメニューの WebCFace → WebCFace WebUI Server を起動してください。
-* MacOSではREADMEにしたがってAppバンドルをダウンロードして起動してください
-
-WebUIの画面を閉じるとserverも終了します。
-
-(ソースコードとバイナリ配布はこのリポジトリではなく [webcface-webui](https://github.com/na-trium-144/webcface-webui) に含まれるので、ソースからビルドする場合または個別にダウンロードしたい場合はそちらを参照してください)
-
 ### サービスとして (Linuxのみ)
 
 \since <span class="since-c">1.5.3</span>
@@ -55,6 +45,30 @@ WebCFaceにクライアントが接続すると、WebUI右上のMenuに表示さ
 Menuから見たいデータを選ぶことで小さいウィンドウのようなものが現れデータを見ることができます。
 
 ウィンドウの表示状態などは自動的にブラウザ(LocalStorage)に保存され、次回アクセスしたときに復元されます。
+
+### WebUI Server Mode
+WebUIをブラウザーからではなくアプリとして開くと、バックグラウンドでいっしょにサーバーが起動します。
+
+* Windowsではスタートメニューの WebCFace → WebCFace WebUI Server を起動してください。
+* MacOSではREADMEにしたがってAppバンドルをダウンロードして起動してください
+
+\note ソースコードとバイナリ配布はこのリポジトリではなく [webcface-webui](https://github.com/na-trium-144/webcface-webui) に含まれるので、ソースからビルドする場合または個別にダウンロードしたい場合はそちらを参照してください
+
+この場合、通常のWebUIにはないメニュー項目がいくつか現れます。
+ここで操作した内容は自動的に保存されます。
+
+* Import Config, Export Config: 自動保存されるServer Modeの設定を別ファイルに保存したり読み込むことができます。
+* Server Status: サーバーの状態、IPアドレスが見れます。またLauncherの起動、停止ができます。
+* Logs: サーバーの出力するログが見れます。
+* Launcher Config: [webcface-launcher](./70_launcher.md) の設定を編集できます。
+
+![webui-server](https://github.com/na-trium-144/webcface/raw/main/docs/images/webui-server.png)
+
+WebUIの画面を閉じるとserverも終了します。
+次に画面を開いた時自動的に前回の状態が復元されます。
+
+\note
+設定を自動保存する場所はWindowsでは `C:\Users\(user)\AppData\Roaming\webcface\sg.toml` 、それ以外では `$HOME/.webcface.sg.toml` です。
 
 ## PlotJuggler
 
