@@ -148,6 +148,7 @@ $(document).ready(function(){initNavTree('md_70__launcher.html',''); initResizab
 <li class="level2"><a href="#autotoc_md126">command</a></li>
 </ul>
 </li>
+<li class="level1"><a href="#autotoc_md127">WebUIからの設定</a></li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="autotoc_md121"></a></p>
@@ -157,7 +158,11 @@ $(document).ready(function(){initNavTree('md_70__launcher.html',''); initResizab
 </div><!-- fragment --><p> のように指定して起動します。</p>
 <p>WebUI上ではそれぞれの設定ファイルに書かれたそれぞれのコマンドを開始するボタンと停止するボタンが表示されます。</p>
 <p><img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/launcher.png" alt="launcher.png" class="inline"/></p>
-<dl class="section note"><dt>Note</dt><dd>Stopボタンを押すと、Linux,MacOSではSIGINT(Ctrl+C)が送られます。 WindowsではTerminateProcessでプロセスツリー全体を停止します。 (外部ライブラリの <a href="https://gitlab.com/eidheim/tiny-process-library/">tiny-process-library</a> を使用しています)</dd></dl>
+<dl class="section note"><dt>Note</dt><dd><ul>
+<li>Stopボタンを押すと、Linux,MacOSではSIGINT(Ctrl+C)が送られます。 WindowsではTerminateProcessでプロセスツリー全体を停止します。 (外部ライブラリの <a href="https://gitlab.com/eidheim/tiny-process-library/">tiny-process-library</a> を使用しています)</li>
+<li>(tools ver1.4.2から、Linux,MacOS) webcface-launcherを停止すると、実行中のコマンドにもシグナルが送られます。 SIGINT(Ctrl+C)で停止しない場合は、複数回Ctrl+Cを押すとSIGTERM、SIGKILLに移行して強制的に停止します。</li>
+</ul>
+</dd></dl>
 <h1><a class="anchor" id="autotoc_md122"></a>
 サービスとして (Linuxのみ)</h1>
 <p>配布しているdebパッケージからインストールした場合は、serverと同様に </p><div class="fragment"><div class="line">sudo systemctl enable webcface-launcher</div>
@@ -217,6 +222,7 @@ command</h2>
 </li>
 <li>exec (必須)<ul>
 <li>実行するコマンドです</li>
+<li>スペース区切りで引数も記述できます。</li>
 </ul>
 </li>
 <li>workdir<ul>
@@ -235,17 +241,30 @@ command</h2>
 </ul>
 </li>
 <li>env (tools ver1.4 から)<ul>
-<li>環境変数を設定します。 </li>
+<li>環境変数を設定します。</li>
 </ul>
 </li>
 </ul>
+<h1><a class="anchor" id="autotoc_md127"></a>
+WebUIからの設定</h1>
+<p>WebUI Server Mode ではGUIから設定ファイルを記述することができます。</p>
+<ul>
+<li>Add New Command でコマンドを追加し、コマンド名、Exec、Workdir を設定できます。<ul>
+<li>Exec と Workdir の右の「...」ボタンを押すとファイル選択ダイアログ、ディレクトリ選択ダイアログが表示されます。</li>
+</ul>
+</li>
+<li>Save ボタンを押すと WebUI Server Mode の設定として保存されます。</li>
+<li>Cancel ボタンを押すと最後にSaveしたときの内容に戻ります。</li>
+</ul>
+<p><img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/webui-server_launcher-setting.png" alt="webui-server_launcher-setting" class="inline"/></p>
+<dl class="section note"><dt>Note</dt><dd>Launcherの起動・停止はメニューの「Server Status」からできます </dd></dl>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Feb 23 2024 16:47:33 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Sat Feb 24 2024 04:46:09 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

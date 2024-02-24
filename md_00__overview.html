@@ -144,11 +144,12 @@ $(document).ready(function(){initNavTree('md_00__overview.html',''); initResizab
 <div class="toc"><h3>Table of Contents</h3>
 <ul><li class="level1"><a href="#autotoc_md1">環境構築</a></li>
 <li class="level1"><a href="#autotoc_md2">Server</a><ul><li class="level2"><a href="#autotoc_md3">コマンドラインから</a></li>
-<li class="level2"><a href="#autotoc_md4">WebUIから (Server Mode)</a></li>
-<li class="level2"><a href="#autotoc_md5">サービスとして (Linuxのみ)</a></li>
+<li class="level2"><a href="#autotoc_md4">サービスとして (Linuxのみ)</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md6">WebUI</a></li>
+<li class="level1"><a href="#autotoc_md5">WebUI</a><ul><li class="level2"><a href="#autotoc_md6">WebUI Server Mode</a></li>
+</ul>
+</li>
 <li class="level1"><a href="#autotoc_md7">PlotJuggler</a></li>
 <li class="level1"><a href="#autotoc_md8">Clientライブラリ</a><ul><li class="level2"><a href="#autotoc_md9">C++</a></li>
 <li class="level2"><a href="#autotoc_md10">C</a></li>
@@ -187,25 +188,34 @@ Server</h1>
 <li>コマンドラインオプションで起動するポートを変更できたりします。詳細は<code>webcface-server -h</code>で確認してください</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md4"></a>
-WebUIから (Server Mode)</h2>
-<p>WebUIをブラウザーからではなくアプリとして開くと、バックグラウンドでいっしょにサーバーが起動します。</p>
-<ul>
-<li>Windowsではスタートメニューの WebCFace → WebCFace WebUI Server を起動してください。</li>
-<li>MacOSではREADMEにしたがってAppバンドルをダウンロードして起動してください</li>
-</ul>
-<p>WebUIの画面を閉じるとserverも終了します。</p>
-<p>(ソースコードとバイナリ配布はこのリポジトリではなく <a href="https://github.com/na-trium-144/webcface-webui">webcface-webui</a> に含まれるので、ソースからビルドする場合または個別にダウンロードしたい場合はそちらを参照してください)</p>
-<h2><a class="anchor" id="autotoc_md5"></a>
 サービスとして (Linuxのみ)</h2>
 <dl class="section since"><dt>Since</dt><dd><span class="since-c">1.5.3</span></dd></dl>
 <p>配布しているdebパッケージでは <a href="https://github.com/na-trium-144/webcface/blob/main/cmake/webcface-server.service">cmake/webcface-server.service</a> がインストールされ、 </p><div class="fragment"><div class="line">sudo systemctl enable webcface-server</div>
 <div class="line">sudo systemctl start webcface-server</div>
 </div><!-- fragment --><p> でサーバーを常時自動起動させることができます。</p>
-<h1><a class="anchor" id="autotoc_md6"></a>
+<h1><a class="anchor" id="autotoc_md5"></a>
 WebUI</h1>
 <p>serverは起動したまま、起動時に表示されるurl (<a href="http://IPアドレス:7530/index.html">http://IPアドレス:7530/index.html</a>) をブラウザで開きましょう。</p>
 <p>WebCFaceにクライアントが接続すると、WebUI右上のMenuに表示されます。 Menuから見たいデータを選ぶことで小さいウィンドウのようなものが現れデータを見ることができます。</p>
 <p>ウィンドウの表示状態などは自動的にブラウザ(LocalStorage)に保存され、次回アクセスしたときに復元されます。</p>
+<h2><a class="anchor" id="autotoc_md6"></a>
+WebUI Server Mode</h2>
+<p>WebUIをブラウザーからではなくアプリとして開くと、バックグラウンドでいっしょにサーバーが起動します。</p>
+<ul>
+<li>Windowsではスタートメニューの WebCFace → WebCFace WebUI Server を起動してください。</li>
+<li>MacOSではREADMEにしたがってAppバンドルをダウンロードして起動してください</li>
+</ul>
+<dl class="section note"><dt>Note</dt><dd>ソースコードとバイナリ配布はこのリポジトリではなく <a href="https://github.com/na-trium-144/webcface-webui">webcface-webui</a> に含まれるので、ソースからビルドする場合または個別にダウンロードしたい場合はそちらを参照してください</dd></dl>
+<p>この場合、通常のWebUIにはないメニュー項目がいくつか現れます。 ここで操作した内容は自動的に保存されます。</p>
+<ul>
+<li>Import Config, Export Config: 自動保存されるServer Modeの設定を別ファイルに保存したり読み込むことができます。</li>
+<li>Server Status: サーバーの状態、IPアドレスが見れます。またLauncherの起動、停止ができます。</li>
+<li>Logs: サーバーの出力するログが見れます。</li>
+<li>Launcher Config: <a class="el" href="md_70__launcher.html">webcface-launcher</a> の設定を編集できます。</li>
+</ul>
+<p><img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/webui-server.png" alt="webui-server" class="inline"/></p>
+<p>WebUIの画面を閉じるとserverも終了します。 次に画面を開いた時自動的に前回の状態が復元されます。</p>
+<dl class="section note"><dt>Note</dt><dd>設定を自動保存する場所はWindowsでは <code>C:\Users\(user)\AppData\Roaming\webcface\sg.toml</code> 、それ以外では <code>$HOME/.webcface.sg.toml</code> です。</dd></dl>
 <h1><a class="anchor" id="autotoc_md7"></a>
 PlotJuggler</h1>
 <p><a href="https://github.com/na-trium-144/plotjuggler-webcface-plugin">plotjuggler-webcface-plugin</a> のREADMEにしたがってプラグインをビルドしてインストールすると、 <a href="https://github.com/facontidavide/PlotJuggler">PlotJuggler</a> からWebCFaceのデータにアクセスできるようになります。 ビルド済みバイナリでの配布はしていません。</p>
@@ -337,7 +347,7 @@ Log</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Feb 23 2024 16:47:33 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Sat Feb 24 2024 04:46:09 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>
