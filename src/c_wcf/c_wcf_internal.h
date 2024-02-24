@@ -1,7 +1,7 @@
 #pragma once
 #include <algorithm>
 #include <vector>
-#include <webcface/c_wcf.h>
+#include <webcface/wcf.h>
 #include <webcface/client.h>
 #include <webcface/common/val.h>
 

@@ -9,6 +9,7 @@
 #include <webcface/view.h>
 #include <webcface/func.h>
 #include <webcface/common/def.h>
+#include <webcface/wcf.h>
 #include "../message/message.h"
 #include <chrono>
 #include <thread>

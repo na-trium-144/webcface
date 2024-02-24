@@ -6,7 +6,7 @@
 #include <stdexcept>
 #include <cstdint>
 #include <ostream>
-#include "../c_wcf.h"
+#include "../c_wcf/def_types.h"
 #include "def.h"
 
 namespace WEBCFACE_NS {

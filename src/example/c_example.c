@@ -1,4 +1,4 @@
-#include <webcface/c_wcf.h>
+#include <webcface/wcf.h>
 #include <stdio.h>
 
 int main(void) {
