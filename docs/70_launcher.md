@@ -20,6 +20,7 @@ WebUI上ではそれぞれの設定ファイルに書かれたそれぞれのコ
 * Stopボタンを押すと、Linux,MacOSではSIGINT(Ctrl+C)が送られます。
 WindowsではTerminateProcessでプロセスツリー全体を停止します。
 (外部ライブラリの [tiny-process-library](https://gitlab.com/eidheim/tiny-process-library/) を使用しています)
+* launcherから `cmd /c` などを使って別のプロセスを起動した場合、停止ボタンを押してcmdは停止してもその内側で起動したプロセスは停止しない場合があります。その場合はtaskkillなどで停止するコマンドを別途登録しておくとよいかも
 * (tools ver1.4.2から、Linux,MacOS) webcface-launcherを停止すると、実行中のコマンドにもシグナルが送られます。
 SIGINT(Ctrl+C)で停止しない場合は、複数回Ctrl+Cを押すとSIGTERM、SIGKILLに移行して強制的に停止します。
 
