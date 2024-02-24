@@ -17,9 +17,11 @@ WebUI上ではそれぞれの設定ファイルに書かれたそれぞれのコ
 ![launcher.png](https://github.com/na-trium-144/webcface/raw/main/docs/images/launcher.png)
 
 \note
-Stopボタンを押すと、Linux,MacOSではSIGINT(Ctrl+C)が送られます。
+* Stopボタンを押すと、Linux,MacOSではSIGINT(Ctrl+C)が送られます。
 WindowsではTerminateProcessでプロセスツリー全体を停止します。
 (外部ライブラリの [tiny-process-library](https://gitlab.com/eidheim/tiny-process-library/) を使用しています)
+* (tools ver1.4.2から、Linux,MacOS) webcface-launcherを停止すると、実行中のコマンドにもシグナルが送られます。
+SIGINT(Ctrl+C)で停止しない場合は、複数回Ctrl+Cを押すとSIGTERM、SIGKILLに移行して強制的に停止します。
 
 ## サービスとして (Linuxのみ)
 配布しているdebパッケージからインストールした場合は、serverと同様に
@@ -78,6 +80,7 @@ initセクションは省略できます。
     * webcfaceに表示される名前です
 * exec (必須)
     * 実行するコマンドです
+    * スペース区切りで引数も記述できます。
 * workdir
     * コマンドを実行するディレクトリです。
     * 省略時カレントディレクトリになります
@@ -90,3 +93,14 @@ initセクションは省略できます。
 * env (tools ver1.4 から)
     * 環境変数を設定します。
 
+## WebUIからの設定
+WebUI Server Mode ではGUIから設定ファイルを記述することができます。
+
+* Add New Command でコマンドを追加し、コマンド名、Exec、Workdir を設定できます。
+    * Exec と Workdir の右の「...」ボタンを押すとファイル選択ダイアログ、ディレクトリ選択ダイアログが表示されます。
+* Save ボタンを押すと WebUI Server Mode の設定として保存されます。
+* Cancel ボタンを押すと最後にSaveしたときの内容に戻ります。
+
+![webui-server_launcher-setting](https://github.com/na-trium-144/webcface/raw/main/docs/images/webui-server_launcher-setting.png)
+
+\note Launcherの起動・停止はメニューの「Server Status」からできます
