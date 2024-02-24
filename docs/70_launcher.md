@@ -88,6 +88,7 @@ initセクションは省略できます。
 * stdout_capture (tools ver1.3.1 から)
     * `"never"`, `"onerror"`(デフォルト), `"always"` が指定可能です
     * alwaysではコマンド終了時、onerrorではエラーで終了時にコマンドの標準出力とエラー出力の内容をlauncherのボタンの下に表示します
+    * always,onerrorではコマンドの標準出力とエラー出力をキャプチャーするため、とくにwindowsではneverにしないとうまく動作しないプログラムもあるようです。
 * stdout_utf8 (windowsのみ、tools ver1.3.1 から)
     * falseの場合(デフォルト)、stdout_captureで取得したデータはANSIエンコーディングとみなし、UTF-8に変換してからWebCFaceに送られます。
     * trueの場合、stdout_captureで取得したデータをUTF-8とみなし、そのままWebCFaceに送ります。
