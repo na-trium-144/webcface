@@ -16,6 +16,22 @@ ViewComponent::lockTmp(const std::weak_ptr<Internal::ClientData> &data_w,
     }
     return *this;
 }
+wcfViewComponent ViewComponent::cData() const {
+    wcfViewComponent vcc;
+    vcc.type = static_cast<int>(this->type());
+    vcc.text = this->text_.empty() ? nullptr : this->text_.c_str();
+    if (this->on_click_func_) {
+        vcc.on_click_member = this->on_click_func_->member_.c_str();
+        vcc.on_click_field = this->on_click_func_->field_.c_str();
+    } else {
+        vcc.on_click_member = nullptr;
+        vcc.on_click_field = nullptr;
+    }
+    vcc.text_color = static_cast<int>(this->text_color_);
+    vcc.bg_color = static_cast<int>(this->bg_color_);
+    return vcc;
+}
+
 std::optional<Func> ViewComponent::onClick() const {
     if (on_click_func_ != std::nullopt) {
         // Fieldの中でnullptrは処理してくれるからいいかな

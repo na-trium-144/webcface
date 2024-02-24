@@ -73,10 +73,11 @@ WEBCFACE_DLL wcfStatus wcfFuncWaitResult(wcfAsyncFuncResult *async_res,
  * \brief 取得した関数の戻り値のデータを破棄
  *
  * \param result 結果を格納した変数(wcfMultiVal*)
- * \return resultが無効な場合WCF_BAD_HANDLE
+ * \return resultが wcfFuncRun, wcfFuncGetResult, wcfFuncWaitResult
+ * で取得したものでない場合WCF_BAD_HANDLE
  *
  */
-WEBCFACE_DLL wcfStatus wcfFreeResult(const wcfMultiVal *result);
+WEBCFACE_DLL wcfStatus wcfFuncFreeResult(const wcfMultiVal *result);
 
 /*!
  * \brief 関数呼び出しの待受を開始する

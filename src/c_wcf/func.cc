@@ -27,7 +27,7 @@ resultToCVal(AsyncFuncResult async_res) {
 }
 
 extern "C" {
-wcfStatus wcfFreeResult(const wcfMultiVal *result) {
+wcfStatus wcfFuncFreeResult(const wcfMultiVal *result) {
     auto it = func_val_list.find(result);
     if (it == func_val_list.end()) {
         return WCF_BAD_HANDLE;

@@ -17,26 +17,37 @@ inline std::vector<wcfClient *> wcli_list;
 
 /*!
  * \brief wcfFuncFetchCallで取得されたwcfFuncCallHandleのリスト
- * 
+ *
  * wcfFuncCallHandleをnewして追加、returnかreject時にdeleteして削除
  *
  */
-inline std::unordered_map<const wcfFuncCallHandle *, FuncCallHandle> fetched_handles;
+inline std::unordered_map<const wcfFuncCallHandle *, FuncCallHandle>
+    fetched_handles;
 
 /*!
  * \brief wcfFuncRunAsyncで取得されたwcfAsyncFuncResultのリスト
  *
  * wcfFuncRunAsyncでnewし、GetResultやWaitResultでdelete
- * 
+ *
  */
 inline std::vector<AsyncFuncResult *> func_result_list;
 
 /*!
- * \brief wcfFuncRun, wcfFuncGetResultで取得されたwcfMultiValとValAdaptorのリスト
- * 
+ * \brief wcfFuncRun,
+ * wcfFuncGetResultで取得されたwcfMultiValとValAdaptorのリスト
+ *
  * wcfMultiValをnewし、このリスト内のvalAdapterへのポインタをもつ
  */
-inline std::unordered_map<const wcfMultiVal *, Common::ValAdaptor> func_val_list;
+inline std::unordered_map<const wcfMultiVal *, Common::ValAdaptor>
+    func_val_list;
+
+
+/*!
+ * \brief wcfViewGetで取得されたwcfViewComponentとViewComponentBase
+ */
+inline std::unordered_map<const wcfViewComponent *,
+                          const std::vector<ViewComponent>>
+    view_list;
 
 /*!
  * \brief voidポインタからclientオブジェクトを復元

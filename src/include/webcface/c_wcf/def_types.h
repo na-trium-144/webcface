@@ -78,6 +78,53 @@ WEBCFACE_DLL typedef struct wcfFuncCallHandle {
     int arg_size;
 } wcfFuncCallHandle;
 
+#define WCF_VIEW_TEXT 0
+#define WCF_VIEW_NEW_LINE 1
+#define WCF_VIEW_BUTTON 2
+
+#define WCF_COLOR_INHERIT 0
+#define WCF_COLOR_BLACK 1
+#define WCF_COLOR_WHITE 2
+#define WCF_COLOR_GRAY 4
+#define WCF_COLOR_RED 8
+#define WCF_COLOR_ORANGE 9
+#define WCF_COLOR_YELLOW 11
+#define WCF_COLOR_GREEN 13
+#define WCF_COLOR_TEAL 15
+#define WCF_COLOR_CYAN 16
+#define WCF_COLOR_BLUE 18
+#define WCF_COLOR_INDIGO 19
+#define WCF_COLOR_PURPLE 21
+#define WCF_COLOR_PINK 23
+
+WEBCFACE_DLL typedef struct wcfViewComponent {
+    /*!
+     * \brief Componentの種類
+     *
+     */
+    int type;
+    /*!
+     * \brief 表示する文字列 (空の場合nullptr)
+     *
+     */
+    const char *text;
+    /*!
+     * \brief クリック時に実行するFuncのmemberとfield、またはnullptr
+     *
+     */
+    const char *on_click_member, *on_click_field;
+    /*!
+     * \brief テキストの色
+     *
+     */
+    int text_color;
+    /*!
+     * \brief 背景の色
+     *
+     */
+    int bg_color;
+} wcfViewComponent;
+
 #ifdef __cplusplus
 }
 #endif

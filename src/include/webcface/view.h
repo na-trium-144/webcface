@@ -36,6 +36,8 @@ class ViewComponent : protected Common::ViewComponentBase {
     lockTmp(const std::weak_ptr<Internal::ClientData> &data_w,
             const std::string &field_id);
 
+    WEBCFACE_DLL wcfViewComponent cData() const;
+    
     /*!
      * \brief 要素の種類
      *
