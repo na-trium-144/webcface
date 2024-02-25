@@ -62,4 +62,22 @@ wcfMultiVal wcfValS(const char *value) {
     wcfMultiVal val = {.as_int = 0, .as_double = 0, .as_str = value};
     return val;
 }
+
+wcfStatus wcfDestroy(const void *ptr) {
+    auto f_ptr = static_cast<const wcfMultiVal *>(ptr);
+    auto f_it = func_val_list.find(f_ptr);
+    if (f_it != func_val_list.end()) {
+        func_val_list.erase(f_it);
+        delete f_ptr;
+        return WCF_OK;
+    }
+    auto v_ptr = static_cast<const wcfViewComponent *>(ptr);
+    auto v_it = view_list.find(v_ptr);
+    if (v_it != view_list.end()) {
+        view_list.erase(v_it);
+        delete[] v_ptr;
+        return WCF_OK;
+    }
+    return WCF_BAD_HANDLE;
+}
 }

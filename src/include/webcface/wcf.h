@@ -4,3 +4,4 @@
 #include "c_wcf/value.h"
 #include "c_wcf/text.h"
 #include "c_wcf/func.h"
+#include "c_wcf/view.h"

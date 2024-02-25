@@ -27,16 +27,6 @@ resultToCVal(AsyncFuncResult async_res) {
 }
 
 extern "C" {
-wcfStatus wcfFuncFreeResult(const wcfMultiVal *result) {
-    auto it = func_val_list.find(result);
-    if (it == func_val_list.end()) {
-        return WCF_BAD_HANDLE;
-    }
-    func_val_list.erase(it);
-    delete result;
-    return WCF_OK;
-}
-
 wcfStatus wcfFuncRun(wcfClient *wcli, const char *member, const char *field,
                      const wcfMultiVal *args, int arg_size,
                      wcfMultiVal **result) {

@@ -46,9 +46,10 @@ wcfStatus wcfViewSet(wcfClient *wcli, const char *field,
         v.add(ViewComponentBase{
             static_cast<ViewComponentType>(p->type),
             p->text ? p->text : "",
-            p->on_click_member && p->on_click_field
-                ? std::make_optional<FieldBase>(p->on_click_member,
-                                                p->on_click_field)
+            p->on_click_field
+                ? std::make_optional<FieldBase>(
+                      p->on_click_member ? p->on_click_member : wcli_->name(),
+                      p->on_click_field)
                 : std::nullopt,
             static_cast<ViewColor>(p->text_color),
             static_cast<ViewColor>(p->bg_color),
@@ -83,13 +84,4 @@ wcfStatus wcfViewGet(wcfClient *wcli, const char *member, const char *field,
     }
 }
 
-wcfStatus wcfViewFree(const wcfViewComponent *components) {
-    auto it = view_list.find(components);
-    if (it == view_list.end()) {
-        return WCF_BAD_HANDLE;
-    }
-    view_list.erase(it);
-    delete[] components;
-    return WCF_OK;
-}
 }

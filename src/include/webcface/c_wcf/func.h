@@ -70,16 +70,6 @@ WEBCFACE_DLL wcfStatus wcfFuncWaitResult(wcfAsyncFuncResult *async_res,
                                          wcfMultiVal **result);
 
 /*!
- * \brief 取得した関数の戻り値のデータを破棄
- *
- * \param result 結果を格納した変数(wcfMultiVal*)
- * \return resultが wcfFuncRun, wcfFuncGetResult, wcfFuncWaitResult
- * で取得したものでない場合WCF_BAD_HANDLE
- *
- */
-WEBCFACE_DLL wcfStatus wcfFuncFreeResult(const wcfMultiVal *result);
-
-/*!
  * \brief 関数呼び出しの待受を開始する
  *
  * \param wcli Clientポインタ

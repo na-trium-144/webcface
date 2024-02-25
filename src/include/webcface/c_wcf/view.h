@@ -10,6 +10,7 @@ WEBCFACE_DLL wcfViewComponent wcfNewLine();
 /*!
  * \param text 表示する文字列
  * \param on_click_member クリック時に実行するFuncのmember
+ * またはnullptr(自分自身を表す)
  * \param on_click_field クリック時に実行するFuncの名前
  */
 WEBCFACE_DLL wcfViewComponent wcfButton(const char *text,
@@ -43,14 +44,6 @@ WEBCFACE_DLL wcfStatus wcfViewGet(wcfClient *wcli, const char *member,
                                   const char *field,
                                   wcfViewComponent **components,
                                   int *recv_size);
-
-/*!
- * \brief 取得したViewのデータを破棄
- * \param components 結果を格納した変数
- * \return componentsが wcfViewGet で取得したものでない場合WCF_BAD_HANDLE
- *
- */
-WEBCFACE_DLL wcfStatus wcfViewFree(const wcfViewComponent *components);
 
 #ifdef __cplusplus
 }

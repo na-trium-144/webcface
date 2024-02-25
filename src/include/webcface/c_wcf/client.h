@@ -56,6 +56,16 @@ WEBCFACE_DLL wcfStatus wcfStart(wcfClient *wcli);
  */
 WEBCFACE_DLL wcfStatus wcfSync(wcfClient *wcli);
 
+/*!
+ * \brief wcfの関数から取得したポインタのデータを破棄
+ *
+ * \param ptr データを格納したポインタ
+ * \return ptrが wcfFuncRun, wcfFuncGetResult, wcfFuncWaitResult, wcfViewGet
+ * で取得したものでない場合WCF_BAD_HANDLE
+ *
+ */
+WEBCFACE_DLL wcfStatus wcfDestroy(const void *ptr);
+
 #ifdef __cplusplus
 }
 #endif
