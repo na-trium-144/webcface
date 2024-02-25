@@ -37,7 +37,7 @@ class ViewComponent : protected Common::ViewComponentBase {
             const std::string &field_id);
 
     WEBCFACE_DLL wcfViewComponent cData() const;
-    
+
     /*!
      * \brief 要素の種類
      *
@@ -132,13 +132,29 @@ inline ViewComponent button(const std::string &text, const T &func) {
  *
  */
 class ViewBuf : public std::stringbuf {
-  public:
     /*!
      * \brief 送信用のデータ
      *
      */
-    std::vector<ViewComponent> components;
-    bool modified = false;
+    std::vector<ViewComponent> components_;
+    bool modified_ = false;
+
+  public:
+    const std::vector<ViewComponent> &components() const { return components_; }
+    std::vector<ViewComponent> &components() { return components_; }
+    bool modified() const { return modified_; }
+    /*!
+     * \brief componentsに追加
+     *
+     * textは改行で分割する
+     *
+     */
+    WEBCFACE_DLL void push(const ViewComponent &vc);
+    void init() {
+        components_.clear();
+        modified_ = true;
+    }
+    void syncDone() { modified_ = false; }
 
     WEBCFACE_DLL int sync() override;
 

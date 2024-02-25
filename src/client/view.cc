@@ -59,15 +59,14 @@ View::View(const Field &base)
     this->std::ostream::init(sb.get());
 }
 View &View::init() {
-    sb->components.clear();
-    sb->modified = true;
+    sb->init();
     return *this;
 }
 View &View::sync() {
     std::flush(*this);
-    if (sb->modified) {
-        set(sb->components);
-        sb->modified = false;
+    if (sb->modified()) {
+        set(sb->components());
+        sb->syncDone();
     }
     return *this;
 }
@@ -80,29 +79,40 @@ void View::onDestroy() {
 }
 View &View::operator<<(const ViewComponent &vc) {
     std::flush(*this);
-    sb->components.push_back(vc);
-    sb->modified = true;
+    sb->push(vc);
     return *this;
 }
+void ViewBuf::push(const ViewComponent &vc) {
+    if (vc.type() == ViewComponentType::text) {
+        std::string s = vc.text();
+        while (true) {
+            auto p = s.find('\n');
+            if (p == std::string::npos) {
+                break;
+            }
+            std::string c1 = s.substr(0, p);
+            if (!c1.empty()) {
+                ViewComponent vc_new = vc;
+                vc_new.text(c1);
+                components_.push_back(vc_new);
+            }
+            components_.push_back(ViewComponents::newLine());
+            s = s.substr(p + 1);
+            modified_ = true;
+        }
+        if (!s.empty()) {
+            ViewComponent vc_new = vc;
+            vc_new.text(s);
+            components_.push_back(vc_new);
+            modified_ = true;
+        }
+    } else {
+        components_.push_back(vc);
+        modified_ = true;
+    }
+}
 int ViewBuf::sync() {
-    std::string s = this->str();
-    while (true) {
-        auto p = s.find('\n');
-        if (p == std::string::npos) {
-            break;
-        }
-        std::string c1 = s.substr(0, p);
-        if (!c1.empty()) {
-            components.push_back(ViewComponents::text(c1));
-        }
-        components.push_back(ViewComponents::newLine());
-        s = s.substr(p + 1);
-        modified = true;
-    }
-    if (!s.empty()) {
-        components.push_back(ViewComponents::text(s));
-        modified = true;
-    }
+    this->push(ViewComponents::text(this->str()));
     this->str("");
     return 0;
 }
