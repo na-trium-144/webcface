@@ -6,7 +6,10 @@ wcfStatus wcfTextSet(wcfClient *wcli, const char *field, const char *text) {
     if (!wcli_) {
         return WCF_BAD_WCLI;
     }
-    wcli_->text(field).set(text);
+    if (!field) {
+        return WCF_INVALID_ARGUMENT;
+    }
+    wcli_->text(field).set(text ? text : "");
     return WCF_OK;
 }
 wcfStatus wcfTextSetN(wcfClient *wcli, const char *field, const char *text,
@@ -15,13 +18,16 @@ wcfStatus wcfTextSetN(wcfClient *wcli, const char *field, const char *text,
     if (!wcli_) {
         return WCF_BAD_WCLI;
     }
+    if (!field) {
+        return WCF_INVALID_ARGUMENT;
+    }
     wcli_->text(field).set(std::string(text, size));
     return WCF_OK;
 }
 wcfStatus wcfTextGet(wcfClient *wcli, const char *member, const char *field,
                      char *text, int size, int *recv_size) {
     *recv_size = 0;
-    if (size <= 0) {
+    if (!field || size <= 0) {
         return WCF_INVALID_ARGUMENT;
     }
     text[0] = 0;
@@ -29,7 +35,7 @@ wcfStatus wcfTextGet(wcfClient *wcli, const char *member, const char *field,
     if (!wcli_) {
         return WCF_BAD_WCLI;
     }
-    auto str = wcli_->member(member).text(field).tryGet();
+    auto str = wcli_->member(member ? member : "").text(field).tryGet();
     if (str) {
         int copy_size = (size - 1) < static_cast<int>(str->size())
                             ? (size - 1)

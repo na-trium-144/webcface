@@ -34,15 +34,15 @@ wcfStatus wcfFuncRun(wcfClient *wcli, const char *member, const char *field,
     if (!wcli_) {
         return WCF_BAD_WCLI;
     }
-    if (arg_size < 0) {
+    if (!field || arg_size < 0) {
         return WCF_INVALID_ARGUMENT;
     }
     std::vector<ValAdaptor> args_v(arg_size);
     for (int i = 0; i < arg_size; i++) {
         args_v[i] = args[i];
     }
-    auto [status, result_p] =
-        resultToCVal(wcli_->member(member).func(field).runAsync(args_v));
+    auto [status, result_p] = resultToCVal(
+        wcli_->member(member ? member : "").func(field).runAsync(args_v));
     *result = result_p;
     return status;
 }
@@ -54,15 +54,15 @@ wcfStatus wcfFuncRunAsync(wcfClient *wcli, const char *member,
     if (!wcli_) {
         return WCF_BAD_WCLI;
     }
-    if (arg_size < 0) {
+    if (!field || arg_size < 0) {
         return WCF_INVALID_ARGUMENT;
     }
     std::vector<ValAdaptor> args_v(arg_size);
     for (int i = 0; i < arg_size; i++) {
         args_v[i] = args[i];
     }
-    AsyncFuncResult *a_res =
-        new AsyncFuncResult(wcli_->member(member).func(field).runAsync(args_v));
+    AsyncFuncResult *a_res = new AsyncFuncResult(
+        wcli_->member(member ? member : "").func(field).runAsync(args_v));
     func_result_list.push_back(a_res);
     *async_res = a_res;
     return WCF_OK;
@@ -105,7 +105,7 @@ wcfStatus wcfFuncListen(wcfClient *wcli, const char *field,
     if (!wcli_) {
         return WCF_BAD_WCLI;
     }
-    if (arg_size < 0) {
+    if (!field || arg_size < 0) {
         return WCF_INVALID_ARGUMENT;
     }
     std::vector<Arg> args(arg_size);
@@ -123,6 +123,9 @@ wcfStatus wcfFuncFetchCall(wcfClient *wcli, const char *field,
     auto wcli_ = getWcli(wcli);
     if (!wcli_) {
         return WCF_BAD_WCLI;
+    }
+    if (!field) {
+        return WCF_INVALID_ARGUMENT;
     }
     auto h = wcli_->funcListener(field).fetchCall();
     if (h) {
@@ -154,7 +157,7 @@ wcfStatus wcfFuncReject(const wcfFuncCallHandle *handle, const char *message) {
     if (it == fetched_handles.end()) {
         return WCF_BAD_HANDLE;
     }
-    it->second.reject(message);
+    it->second.reject(message ? message : "");
     fetched_handles.erase(it);
     delete handle;
     return WCF_OK;

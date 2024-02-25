@@ -40,6 +40,9 @@ wcfStatus wcfViewSet(wcfClient *wcli, const char *field,
     if (!wcli_) {
         return WCF_BAD_WCLI;
     }
+    if (!field || size < 0) {
+        return WCF_INVALID_ARGUMENT;
+    }
     auto v = wcli_->view(field);
     v.init();
     for (auto p = components; p < components + size; p++) {
@@ -49,7 +52,7 @@ wcfStatus wcfViewSet(wcfClient *wcli, const char *field,
             p->on_click_field
                 ? std::make_optional<FieldBase>(
                       p->on_click_member ? p->on_click_member : wcli_->name(),
-                      p->on_click_field)
+                      p->on_click_field ? p->on_click_field : "")
                 : std::nullopt,
             static_cast<ViewColor>(p->text_color),
             static_cast<ViewColor>(p->bg_color),
@@ -66,7 +69,10 @@ wcfStatus wcfViewGet(wcfClient *wcli, const char *member, const char *field,
     if (!wcli_) {
         return WCF_BAD_WCLI;
     }
-    auto vc = wcli_->member(member).view(field).tryGet();
+    if (!field) {
+        return WCF_INVALID_ARGUMENT;
+    }
+    auto vc = wcli_->member(member ? member : "").view(field).tryGet();
     if (vc) {
         if (!vc->empty()) {
             auto vcc_p = new wcfViewComponent[vc->size()];
@@ -83,5 +89,4 @@ wcfStatus wcfViewGet(wcfClient *wcli, const char *member, const char *field,
         return WCF_NOT_FOUND;
     }
 }
-
 }
