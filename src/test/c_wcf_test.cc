@@ -205,6 +205,7 @@ TEST_F(CClientTest, textReq) {
 }
 
 TEST_F(CClientTest, funcRun) {
+    using namespace std::string_literals;
     EXPECT_EQ(wcfStart(wcli_), WCF_OK);
 
     wcfMultiVal args[3] = {
@@ -231,27 +232,27 @@ TEST_F(CClientTest, funcRun) {
         EXPECT_EQ(wcfFuncRun(wcli_, "a", "b", args, 3, &ret), WCF_OK);
         EXPECT_EQ(ret->as_int, 123);
         EXPECT_EQ(ret->as_double, 123.45);
-        EXPECT_EQ(std::string(ret->as_str), "123.45");
+        EXPECT_EQ(ret->as_str, "123.45"s);
         EXPECT_EQ(wcfDestroy(ret), WCF_OK);
         EXPECT_EQ(wcfDestroy(ret), WCF_BAD_HANDLE);
         wcfFuncRunAsync(wcli_, "a", "b", args, 3, &async_res);
         EXPECT_EQ(wcfFuncWaitResult(async_res, &async_ret), WCF_OK);
         EXPECT_EQ(async_ret->as_int, 123);
         EXPECT_EQ(async_ret->as_double, 123.45);
-        EXPECT_EQ(std::string(async_ret->as_str), "123.45");
+        EXPECT_EQ(async_ret->as_str, "123.45"s);
         EXPECT_EQ(wcfDestroy(async_ret), WCF_OK);
         EXPECT_EQ(wcfDestroy(async_ret), WCF_BAD_HANDLE);
         // 3
         EXPECT_EQ(wcfFuncRun(wcli_, "a", "b", args, 3, &ret), WCF_EXCEPTION);
         EXPECT_EQ(ret->as_int, 0);
         EXPECT_EQ(ret->as_double, 0);
-        EXPECT_EQ(std::string(ret->as_str), "error");
+        EXPECT_EQ(ret->as_str, "error"s);
         EXPECT_EQ(wcfDestroy(ret), WCF_OK);
         wcfFuncRunAsync(wcli_, "a", "b", args, 3, &async_res);
         EXPECT_EQ(wcfFuncWaitResult(async_res, &async_ret), WCF_EXCEPTION);
         EXPECT_EQ(async_ret->as_int, 0);
         EXPECT_EQ(async_ret->as_double, 0);
-        EXPECT_EQ(std::string(async_ret->as_str), "error");
+        EXPECT_EQ(async_ret->as_str, "error"s);
         EXPECT_EQ(wcfDestroy(async_ret), WCF_OK);
     });
 
@@ -313,6 +314,7 @@ TEST_F(CClientTest, funcRun) {
 }
 
 TEST_F(CClientTest, funcListen) {
+    using namespace std::string_literals;
     EXPECT_EQ(wcfStart(wcli_), WCF_OK);
 
     int arg_types[3] = {WCF_VAL_INT, WCF_VAL_DOUBLE, WCF_VAL_STRING};
@@ -349,9 +351,9 @@ TEST_F(CClientTest, funcListen) {
     EXPECT_EQ(h->arg_size, 3);
     EXPECT_EQ(h->args[0].as_int, 42);
     EXPECT_EQ(h->args[0].as_double, 42.0);
-    EXPECT_EQ(std::string(h->args[0].as_str), "42");
+    EXPECT_EQ(h->args[0].as_str, "42"s);
     EXPECT_EQ(h->args[1].as_double, 1.5);
-    EXPECT_EQ(std::string(h->args[2].as_str), "aaa");
+    EXPECT_EQ(h->args[2].as_str, "aaa"s);
 
     wcfMultiVal ans = wcfValD(123.45);
     EXPECT_EQ(wcfFuncRespond(h, &ans), WCF_OK);
