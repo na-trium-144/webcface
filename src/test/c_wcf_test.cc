@@ -147,6 +147,62 @@ TEST_F(CClientTest, valueReq) {
     EXPECT_EQ(wcfValueGet(wcli_, "a", "b.c", &value1), WCF_OK);
     EXPECT_EQ(value1, 1);
 }
+TEST_F(CClientTest, textSend) {
+    EXPECT_EQ(wcfTextSet(wcli_, "a", "hello"), WCF_OK);
+    EXPECT_EQ(wcfSync(wcli_), WCF_OK);
+    wait();
+    dummy_s->recv<Message::Text>(
+        [&](const auto &obj) {
+            EXPECT_EQ(obj.field, "a");
+            EXPECT_EQ(*obj.data, "hello");
+        },
+        [&] { ADD_FAILURE() << "Text recv error"; });
+    dummy_s->recvClear();
+
+    EXPECT_EQ(wcfTextSetN(wcli_, "b", "hellohello", 5), WCF_OK);
+    EXPECT_EQ(wcfSync(wcli_), WCF_OK);
+    wait();
+    dummy_s->recv<Message::Text>(
+        [&](const auto &obj) {
+            EXPECT_EQ(obj.field, "b");
+            EXPECT_EQ(*obj.data, "hello");
+        },
+        [&] { ADD_FAILURE() << "Text recv error"; });
+    dummy_s->recvClear();
+}
+TEST_F(CClientTest, textReq) {
+    char text[5] = {1, 1, 1, 1, 1};
+    int size;
+    EXPECT_EQ(wcfTextGet(wcli_, "a", "b", text, -1, &size),
+              WCF_INVALID_ARGUMENT);
+    EXPECT_EQ(wcfTextGet(wcli_, "a", "b", text, 5, &size), WCF_NOT_FOUND);
+    EXPECT_EQ(text[0], 0);
+    EXPECT_EQ(wcfStart(wcli_), WCF_OK);
+    wait();
+    dummy_s->recv<Message::Req<Message::Text>>(
+        [&](const auto &obj) {
+            EXPECT_EQ(obj.member, "a");
+            EXPECT_EQ(obj.field, "b");
+            EXPECT_EQ(obj.req_id, 1);
+        },
+        [&] { ADD_FAILURE() << "Text Req recv error"; });
+    dummy_s->send(Message::Res<Message::Text>{
+        1, "", std::make_shared<std::string>("hello")});
+    dummy_s->send(Message::Res<Message::Text>{
+        1, "c", std::make_shared<std::string>("hello")});
+    wait();
+    EXPECT_EQ(wcfTextGet(wcli_, "a", "b", text, 5, &size), WCF_OK);
+    EXPECT_EQ(size, 5);
+    EXPECT_EQ(text[0], 'h');
+    EXPECT_EQ(text[1], 'e');
+    EXPECT_EQ(text[2], 'l');
+    EXPECT_EQ(text[3], 'l');
+    EXPECT_EQ(text[4], 0);
+
+    size = 0;
+    EXPECT_EQ(wcfTextGet(wcli_, "a", "b.c", text, 5, &size), WCF_OK);
+    EXPECT_EQ(size, 5);
+}
 
 TEST_F(CClientTest, funcRun) {
     EXPECT_EQ(wcfStart(wcli_), WCF_OK);
