@@ -182,14 +182,14 @@ ImageFrameをImageにsetして送信します。 <div class="fragment"><div clas
 </div><!-- fragment --><p> ImageColorModeとしては <code>gray</code>(8bitグレースケール)、<code>rgb</code>(8bit×3)、<code>bgr</code>(8bit×3)、<code>rgba</code>(8bit×4)、<code>bgra</code>(8bit×4) が扱えます。 </p><dl class="section note"><dt>Note</dt><dd>ImageFrameオブジェクト内部では画像データは<code>shared_ptr&lt;vector&lt;unsigned char&gt;&gt;</code>で保持されます。 <br  />
  ImageFrameのコンストラクタでdataの内容がすべてコピーされます。 <br  />
  ImageFrameをコピーした場合は画像データが共有されます(コピーされません)。 </dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000002">Todo:</a></b></dt><dd>C++とJavaScriptでImageFrameのコンストラクタのサイズ指定が違うので、そのうち仕様変更をして統一する必要がある</dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000003">Todo:</a></b></dt><dd>C++とJavaScriptでImageFrameのコンストラクタのサイズ指定が違うので、そのうち仕様変更をして統一する必要がある</dd></dl>
 <p class="startli">ImageFrameをImageにsetして送信します。 </p><div class="fragment"><div class="line">wcli.image(<span class="stringliteral">&quot;hoge&quot;</span>).set(frame);</div>
 </div><!-- fragment --><p> (C++のみ) set() の代わりに代入演算子(Image::operator=)でも同様のことができます。 </p><div class="fragment"><div class="line">wcli.image(<span class="stringliteral">&quot;hoge&quot;</span>) = frame;</div>
 </div><!-- fragment --></li>
 <li><p class="startli"><b class="tab-title">JavaScript</b> 画像データを表す型として <a href="https://na-trium-144.github.io/webcface-js/classes/ImageFrame.html">ImageFrame</a> があります。 生の画像データがあればImageFrameのコンストラクタに渡すことができます。 </p><div class="fragment"><div class="line">import { ImageFrame, imageColorMode } from &quot;webcface&quot;;</div>
 <div class="line">const data: ArrayBuffer = /* ... */;</div>
 <div class="line">const frame: ImageFrame = new ImageFrame(640, 480, data, imageColorMode.rgb); // 画像サイズは 横, 縦 で指定</div>
-</div><!-- fragment --><p> imageColorModeとしては <code>gray</code>(8bitグレースケール)、<code>rgb</code>(8bit×3)、<code>bgr</code>(8bit✕3)、<code>rgba</code>(8bit✕4)、<code>bgra</code>(8bit✕4) が扱えます。 </p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000003">Todo:</a></b></dt><dd>C++とJavaScriptでImageFrameのコンストラクタのサイズ指定が違うので、そのうち仕様変更をして統一する必要がある</dd></dl>
+</div><!-- fragment --><p> imageColorModeとしては <code>gray</code>(8bitグレースケール)、<code>rgb</code>(8bit×3)、<code>bgr</code>(8bit✕3)、<code>rgba</code>(8bit✕4)、<code>bgra</code>(8bit✕4) が扱えます。 </p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000004">Todo:</a></b></dt><dd>C++とJavaScriptでImageFrameのコンストラクタのサイズ指定が違うので、そのうち仕様変更をして統一する必要がある</dd></dl>
 <p class="startli">ImageFrameをImageにsetして送信します。 </p><div class="fragment"><div class="line">wcli.image(<span class="stringliteral">&quot;hoge&quot;</span>).set(frame);</div>
 </div><!-- fragment --></li>
 </ul>
@@ -252,7 +252,8 @@ ImageFrameをImageにsetして送信します。 <div class="fragment"><div clas
 </ul>
 </div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md78"></a>
 時刻</h2>
-<p>Image::time() でその値が送信されたとき(そのMemberがsync()したとき)の時刻が得られます。</p>
+<p><strike>Image::time()</strike> でその値が送信されたとき(そのMemberがsync()したとき)の時刻が得られます。 <br  />
+ <span class="since-c">1.7</span> <span class="since-py"></span> Member::syncTime() に変更</p>
 <h2><a class="anchor" id="autotoc_md79"></a>
 Entry</h2>
 <p><strike>Member::images() で</strike> そのMemberが送信しているimageのリストが得られます <br  />
@@ -276,7 +277,7 @@ Event</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon Feb 26 2024 11:08:04 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Mon Feb 26 2024 11:41:17 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

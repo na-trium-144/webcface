@@ -181,27 +181,28 @@ $(document).ready(function(){initNavTree('robot__model_8h_source.html',''); init
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    }</div>
 </div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    <a class="code hl_define" href="def_8h.html#a47af057bda855b54c212e97ffccdca01">WEBCFACE_DLL</a> std::optional&lt;std::vector&lt;RobotLink&gt;&gt; tryGet() <span class="keyword">const</span>;</div>
-<div class="foldopen" id="foldopen00055" data-start="{" data-end="}">
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno"><a class="line" href="classwebcface_1_1RobotModel.html#aea910688df1426b4e1ce5092af8c2245">   55</a></span>    std::vector&lt;RobotLink&gt; <a class="code hl_function" href="classwebcface_1_1RobotModel.html#aea910688df1426b4e1ce5092af8c2245">get</a>()<span class="keyword"> const </span>{</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>        <span class="keywordflow">return</span> tryGet().value_or(std::vector&lt;RobotLink&gt;{});</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    }</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    <a class="code hl_define" href="def_8h.html#a47af057bda855b54c212e97ffccdca01">WEBCFACE_DLL</a> <span class="keywordtype">void</span> request() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    <a class="code hl_define" href="def_8h.html#a47af057bda855b54c212e97ffccdca01">WEBCFACE_DLL</a> std::optional&lt;std::vector&lt;RobotLink&gt;&gt; tryGet() <span class="keyword">const</span>;</div>
+<div class="foldopen" id="foldopen00060" data-start="{" data-end="}">
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno"><a class="line" href="classwebcface_1_1RobotModel.html#aea910688df1426b4e1ce5092af8c2245">   60</a></span>    std::vector&lt;RobotLink&gt; <a class="code hl_function" href="classwebcface_1_1RobotModel.html#aea910688df1426b4e1ce5092af8c2245">get</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>        <span class="keywordflow">return</span> tryGet().value_or(std::vector&lt;RobotLink&gt;{});</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    }</div>
 </div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno"><a class="line" href="classwebcface_1_1RobotModel.html#a7e15ce4242494b52d4fea72ce315859d">   58</a></span>    <span class="keyword">operator</span> std::vector&lt;RobotLink&gt;()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> get(); }</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    <a class="code hl_define" href="def_8h.html#a47af057bda855b54c212e97ffccdca01">WEBCFACE_DLL</a> std::chrono::system_clock::time_point time() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    <a class="code hl_define" href="def_8h.html#a47af057bda855b54c212e97ffccdca01">WEBCFACE_DLL</a> <a class="code hl_class" href="classwebcface_1_1RobotModel.html">RobotModel</a> &amp;free();</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>};</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno"><a class="line" href="classwebcface_1_1RobotModel.html#a7e15ce4242494b52d4fea72ce315859d">   63</a></span>    <span class="keyword">operator</span> std::vector&lt;RobotLink&gt;()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> get(); }</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    [[deprecated]] <a class="code hl_define" href="def_8h.html#a47af057bda855b54c212e97ffccdca01">WEBCFACE_DLL</a> std::chrono::system_clock::time_point</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    time() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    <a class="code hl_define" href="def_8h.html#a47af057bda855b54c212e97ffccdca01">WEBCFACE_DLL</a> <a class="code hl_class" href="classwebcface_1_1RobotModel.html">RobotModel</a> &amp;free();</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>};</div>
 </div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>} <span class="comment">// namespace WEBCFACE_NS</span></div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span> </div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>} <span class="comment">// namespace WEBCFACE_NS</span></div>
 <div class="ttc" id="aclasswebcface_1_1Canvas3D_html"><div class="ttname"><a href="classwebcface_1_1Canvas3D.html">webcface::Canvas3D</a></div><div class="ttdoc">Canvas3Dの送受信データを表すクラス</div><div class="ttdef"><b>Definition</b> canvas3d.h:248</div></div>
 <div class="ttc" id="aclasswebcface_1_1EventTarget_html"><div class="ttname"><a href="classwebcface_1_1EventTarget.html">webcface::EventTarget</a></div><div class="ttdoc">イベントを表し、コールバックの追加や削除ができるクラス。</div><div class="ttdef"><b>Definition</b> event_target.h:15</div></div>
 <div class="ttc" id="aclasswebcface_1_1RobotModel_html"><div class="ttname"><a href="classwebcface_1_1RobotModel.html">webcface::RobotModel</a></div><div class="ttdoc">RobotModelの送受信データを表すクラス</div><div class="ttdef"><b>Definition</b> robot_model.h:19</div></div>
 <div class="ttc" id="aclasswebcface_1_1RobotModel_html_a1b04a79e8abc6a77ead8bfcaabe6a9cb"><div class="ttname"><a href="classwebcface_1_1RobotModel.html#a1b04a79e8abc6a77ead8bfcaabe6a9cb">webcface::RobotModel::operator=</a></div><div class="ttdeci">RobotModel &amp; operator=(const std::vector&lt; RobotLink &gt; &amp;v)</div><div class="ttdoc">モデルをセットする</div><div class="ttdef"><b>Definition</b> robot_model.h:41</div></div>
 <div class="ttc" id="aclasswebcface_1_1RobotModel_html_a8446c961b3429e13fd10146e783ecdc8"><div class="ttname"><a href="classwebcface_1_1RobotModel.html#a8446c961b3429e13fd10146e783ecdc8">webcface::RobotModel::RobotModel</a></div><div class="ttdeci">RobotModel()=default</div></div>
-<div class="ttc" id="aclasswebcface_1_1RobotModel_html_aea910688df1426b4e1ce5092af8c2245"><div class="ttname"><a href="classwebcface_1_1RobotModel.html#aea910688df1426b4e1ce5092af8c2245">webcface::RobotModel::get</a></div><div class="ttdeci">std::vector&lt; RobotLink &gt; get() const</div><div class="ttdoc">モデルを返す</div><div class="ttdef"><b>Definition</b> robot_model.h:55</div></div>
+<div class="ttc" id="aclasswebcface_1_1RobotModel_html_aea910688df1426b4e1ce5092af8c2245"><div class="ttname"><a href="classwebcface_1_1RobotModel.html#aea910688df1426b4e1ce5092af8c2245">webcface::RobotModel::get</a></div><div class="ttdeci">std::vector&lt; RobotLink &gt; get() const</div><div class="ttdoc">モデルを返す</div><div class="ttdef"><b>Definition</b> robot_model.h:60</div></div>
 <div class="ttc" id="aclasswebcface_1_1RobotModel_html_afe3d1eb1514a300dfa907650e1db3b72"><div class="ttname"><a href="classwebcface_1_1RobotModel.html#afe3d1eb1514a300dfa907650e1db3b72">webcface::RobotModel::RobotModel</a></div><div class="ttdeci">RobotModel(const Field &amp;base, const std::string &amp;field)</div><div class="ttdef"><b>Definition</b> robot_model.h:25</div></div>
 <div class="ttc" id="acommon_2robot__model_8h_html"><div class="ttname"><a href="common_2robot__model_8h.html">robot_model.h</a></div></div>
 <div class="ttc" id="adef_8h_html"><div class="ttname"><a href="def_8h.html">def.h</a></div></div>
@@ -216,7 +217,7 @@ $(document).ready(function(){initNavTree('robot__model_8h_source.html',''); init
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_e6fac88a17509a9ad709623cf2c100d8.html">webcface</a></li><li class="navelem"><a class="el" href="robot__model_8h.html">robot_model.h</a></li>
-    <li class="footer">Generated on Mon Feb 26 2024 11:08:04 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Mon Feb 26 2024 11:41:17 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

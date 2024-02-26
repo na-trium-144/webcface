@@ -57,6 +57,7 @@ var classwebcface_1_1Client =
     [ "setDefaultRunCondScopeGuard", "classwebcface_1_1Client.html#afe24cb249867a506aaace22d5440c9ab", null ],
     [ "start", "classwebcface_1_1Client.html#a60de64d75454385b23995437f1d72669", null ],
     [ "sync", "classwebcface_1_1Client.html#ad55f80ed3cd8b6c4f247763b747016af", null ],
+    [ "syncTime", "classwebcface_1_1Client.html#aaace8ffd82d2eb79c72f3411d3311b9b", null ],
     [ "text", "classwebcface_1_1Client.html#ab13e75a9d487a0253300ade34a498791", null ],
     [ "textEntries", "classwebcface_1_1Client.html#a56970716d867cddc9b9dfe92ad8394bb", null ],
     [ "texts", "classwebcface_1_1Client.html#a1cc337f3ebf4841d5fc32f519c400c5a", null ],

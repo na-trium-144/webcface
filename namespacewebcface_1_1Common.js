@@ -37,6 +37,7 @@ var namespacewebcface_1_1Common =
     [ "VectorOpt", "structwebcface_1_1Common_1_1VectorOpt.html", "structwebcface_1_1Common_1_1VectorOpt" ],
     [ "VecTypeDisabled", "structwebcface_1_1Common_1_1VecTypeDisabled.html", null ],
     [ "ViewComponentBase", "structwebcface_1_1Common_1_1ViewComponentBase.html", "structwebcface_1_1Common_1_1ViewComponentBase" ],
+    [ "Range", "conceptwebcface_1_1Common_1_1Range.html", null ],
     [ "FuncType", "namespacewebcface_1_1Common.html#a25e0cb91e379fadc84cd151ffeb49fea", null ],
     [ "FuncWrapperType", "namespacewebcface_1_1Common.html#a1f914f5d15fb32aa05ca882cff7f2cd4", null ],
     [ "ImageFrame", "namespacewebcface_1_1Common.html#af7ff7d8593c083aca2355bc561bf8804", null ],

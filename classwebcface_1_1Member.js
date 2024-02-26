@@ -36,6 +36,7 @@ var classwebcface_1_1Member =
     [ "robotModelEntries", "classwebcface_1_1Member.html#ab37e532eaf47e650c828f9484dee08b8", null ],
     [ "robotModels", "classwebcface_1_1Member.html#a2e0eced713028d20cd2c49c819131d80", null ],
     [ "setCheck", "classwebcface_1_1Member.html#a46ba439f46fffe25a1fe549c380fcd3b", null ],
+    [ "syncTime", "classwebcface_1_1Member.html#aaace8ffd82d2eb79c72f3411d3311b9b", null ],
     [ "text", "classwebcface_1_1Member.html#ab13e75a9d487a0253300ade34a498791", null ],
     [ "textEntries", "classwebcface_1_1Member.html#a56970716d867cddc9b9dfe92ad8394bb", null ],
     [ "texts", "classwebcface_1_1Member.html#a1cc337f3ebf4841d5fc32f519c400c5a", null ],
