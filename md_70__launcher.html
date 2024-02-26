@@ -160,6 +160,7 @@ $(document).ready(function(){initNavTree('md_70__launcher.html',''); initResizab
 <p><img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/launcher.png" alt="launcher.png" class="inline"/></p>
 <dl class="section note"><dt>Note</dt><dd><ul>
 <li>Stopボタンを押すと、Linux,MacOSではSIGINT(Ctrl+C)が送られます。 WindowsではTerminateProcessでプロセスツリー全体を停止します。 (外部ライブラリの <a href="https://gitlab.com/eidheim/tiny-process-library/">tiny-process-library</a> を使用しています)</li>
+<li>launcherから <code>cmd /c</code> などを使って別のプロセスを起動した場合、停止ボタンを押してcmdは停止してもその内側で起動したプロセスは停止しない場合があります。その場合はtaskkillなどで停止するコマンドを別途登録しておくとよいかも</li>
 <li>(tools ver1.4.2から、Linux,MacOS) webcface-launcherを停止すると、実行中のコマンドにもシグナルが送られます。 SIGINT(Ctrl+C)で停止しない場合は、複数回Ctrl+Cを押すとSIGTERM、SIGKILLに移行して強制的に停止します。</li>
 </ul>
 </dd></dl>
@@ -233,6 +234,7 @@ command</h2>
 <li>stdout_capture (tools ver1.3.1 から)<ul>
 <li><code>"never"</code>, <code>"onerror"</code>(デフォルト), <code>"always"</code> が指定可能です</li>
 <li>alwaysではコマンド終了時、onerrorではエラーで終了時にコマンドの標準出力とエラー出力の内容をlauncherのボタンの下に表示します</li>
+<li>always,onerrorではコマンドの標準出力とエラー出力をキャプチャーするため、とくにwindowsではneverにしないとうまく動作しないプログラムもあるようです。</li>
 </ul>
 </li>
 <li>stdout_utf8 (windowsのみ、tools ver1.3.1 から)<ul>
@@ -264,7 +266,7 @@ WebUIからの設定</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon Feb 26 2024 11:41:17 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Mon Feb 26 2024 12:50:53 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>
