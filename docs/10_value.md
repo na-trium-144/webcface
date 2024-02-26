@@ -306,6 +306,7 @@ C++,JavaScriptでも今後仕様変更して統一するかも
 
 ~~Member::values() で~~ そのMemberが送信しているvalueのリストが得られます  
 <span class="since-c">1.6</span>
+<span class="since-py">1.1</span>
 Member::valueEntries() に変更
 
 <div class="tabbed">
