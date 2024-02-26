@@ -36,6 +36,18 @@ Client::text からTextオブジェクトを作り、 Text::set() でデータ�
     wcli.text("hoge") = "hello";
     ```
 
+- <b class="tab-title">C</b>
+    \since <span class="since-c">1.7</span>
+
+    null終端の文字列はwcfTextSetで送信できます
+    ```c
+    wcfTextSet(wcli, "hoge", "hello");
+    ```
+    null終端でない場合はwcfTextSetNが使えます
+    ```c
+    wcfTextSetN(wcli, "hoge", "hello", 5);
+    ```
+
 - <b class="tab-title">JavaScript</b>
     ```ts
     wcli.text("hoge").set("hello");
@@ -48,6 +60,7 @@ Client::text からTextオブジェクトを作り、 Text::set() でデータ�
 
 </div>
 
+<!--Valueと同様名前に半角ピリオドを含めると、WebUI上ではフォルダアイコンで表示されグループ化されて表示されます。-->
 
 ### 複数の値をまとめて送る
 
@@ -100,6 +113,28 @@ Text::tryGet(), Text::tryGetRecurse() で値のリクエストをするととも
     tryGet(), tryGetRecurse() はstd::nulloptを返します。  
     get(), getRecurse() はstd::nulloptの代わりにデフォルト値を返します。  
     また、std::string, Text::Dict などの型にキャストすることでも同様に値が得られます。
+- <b class="tab-title">C</b>
+    \since <span class="since-c">1.7</span>
+
+    ```c
+    char text[6];
+    int size;
+    int ret = wcfTextGet(wcli, "a", "hoge", text, 6, &size);
+    // ex.) ret = WCF_NOT_FOUND
+
+    // few moments later,
+    ret = wcfTextGet(wcli, "a", "hoge", text, 6, &size);
+    // ex.) ret = WCF_OK, text = "hello\0", size = 5
+    ```
+    受信した文字列を格納するバッファとそのサイズ(null終端を含む)を指定します。
+
+    sizeに受信した文字列の長さ、バッファに受信した文字列が入ります。
+    文字列がバッファの長さを超える場合は、バッファのサイズ - 1 の文字列とnullが格納されます。
+
+    初回の呼び出しでは`WCF_NOT_FOUND`を返し、別スレッドでリクエストが送信されます。
+
+    \note member名に空文字列またはNULLを指定すると自分自身を指します。
+
 - <b class="tab-title">JavaScript</b>
     ```ts
     const hoge: string | null = wcli.member("foo").text("hoge").tryGet();

@@ -6,6 +6,7 @@ extern "C" {
 
 /*!
  * \brief 文字列を送信する(null終端)
+ * \since 1.7
  * \param wcli Clientポインタ
  * \param field textの名前
  * \param text 送信する文字列(null終端)
@@ -16,6 +17,7 @@ WEBCFACE_DLL wcfStatus wcfTextSet(wcfClient *wcli, const char *field,
                                   const char *text);
 /*!
  * \brief 文字列を送信する
+ * \since 1.7
  * \param wcli Clientポインタ
  * \param field textの名前
  * \param text 送信する文字列
@@ -28,6 +30,7 @@ WEBCFACE_DLL wcfStatus wcfTextSetN(wcfClient *wcli, const char *field,
 
 /*!
  * \brief 文字列を受信する
+ * \since 1.7
  *
  * sizeに指定したサイズより実際に受信した文字列の長さのほうが大きいか同じ場合、
  * textには(size-1)文字+null終端を格納しrecv_sizeには本来の長さを返す

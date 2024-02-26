@@ -51,6 +51,28 @@
     <span class="since-c">1.2</span>
     Viewオブジェクトをコピーした場合、Viewオブジェクトの内容はコピーされるのではなく共有され、そのすべてのコピーが破棄されるまでsync()は呼ばれません。
 
+- <b class="tab-title">C</b>
+    \since <span class="since-c">1.7</span>
+
+    wcfViewComponent の配列を wcfViewSet に指定することで送信されます。
+
+    例
+    ```cpp
+    wcfViewComponent vc[10];
+    vc[0] = wcfText("hello world\n");
+    char buf[10];
+    sprintf(buf, "%d", i); // i はintの変数とか
+    vc[1] = wcfText(buf);
+    vc[2] = wcfNewLine(); // wcfText("\n") と同じ
+    wcfFuncListen(wcli, "hoge", ...) // 関数の登録: 詳細は Func のページを参照
+    vc[3] = wcfButton("a", NULL, "hoge");
+    
+    wcfViewSet(wcli, "a", vc, 4);
+    wcli.sync();
+    ```
+
+    ![tutorial_view.png](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_view.png)
+
 - <b class="tab-title">JavaScript</b>
     Client::view からViewオブジェクトを作り、
     set()の引数に要素をまとめてセットして使います。
@@ -141,6 +163,13 @@ Viewに追加する各種要素をViewComponentといいます。
     v << webcface::ViewComponents::text("hello").textColor(webcface::ViewColor::red);
     ```
 
+- <b class="tab-title">C</b>
+    text_color でテキストの色を変更することができます。
+    ```c
+    vc[0] = wcfText("hello");
+    vc[0].text_color = WCF_COLOR_RED;
+    ```
+
 - <b class="tab-title">JavaScript</b>
     string, number, boolean は文字列に変換されます。
     ```ts
@@ -187,6 +216,13 @@ Viewに追加する各種要素をViewComponentといいます。
     v.add(text("hello")).add(newLine()).add(text("hello"));
     v << text("hello") << newLine() << text("hello");
     ```
+- <b class="tab-title">C</b>
+    ```c
+    vc[0] = wcfText("\n");
+    vc[0] = wcfNewLine();
+    ```
+    wcfTextの文字列の途中に`\n`がある場合もそこで改行されます
+
 - <b class="tab-title">JavaScript</b>
     `newLine()`の他`"\n"`でも改行できます。
     `\n`は単体でなく文字列中にあってもそこで改行されます。
@@ -248,6 +284,20 @@ Viewに追加する各種要素をViewComponentといいます。
             .textColor(webcface::ViewColor::red)
             .bgColor(webcface::ViewColor::yellow);
     ```
+
+- <b class="tab-title">C</b>
+    関数の登録方法は [Func](./30_func.md) を参照してください。
+    登録したFuncのmember名と名前をbuttonに指定します。
+    member名をNULLまたは空文字列にすると自分自身が登録した関数を指します。
+    ```c
+    vc[0] = wcfButton("表示する文字列", NULL, "hoge");
+    ```
+    text_color, bg_color でテキストと背景の色を変更することができます。
+    ```c
+    vc[0].text_color = WCF_COLOR_RED;
+    vc[0].bg_color = WCF_COLOR_YELLOW;
+    ```
+
 - <b class="tab-title">JavaScript</b>
     Funcオブジェクトの場合
     ```ts
@@ -312,6 +362,9 @@ Python [webcface.ViewComponent](https://na-trium-144.github.io/webcface-python/w
 ViewComponentオブジェクトから各種プロパティを取得できます。
 onClick()で得られるFuncオブジェクトは`runAsync()`などでそのまま実行させることができます。
 
+<span class="since-c">1.7</span>
+Cの場合は wcfViewGet で wcfViewComponent の配列が得られます。
+取得した配列は不要になったら wcfDestroy で破棄してください。
 
 ### 時刻
 

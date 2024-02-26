@@ -3,11 +3,16 @@ extern "C" {
 #endif
 
 /*!
+ * \since 1.7
  * \param text 表示する文字列
  */
 WEBCFACE_DLL wcfViewComponent wcfText(const char *text);
+/*!
+ * \since 1.7
+ */
 WEBCFACE_DLL wcfViewComponent wcfNewLine();
 /*!
+ * \since 1.7
  * \param text 表示する文字列
  * \param on_click_member クリック時に実行するFuncのmember
  * またはnullptr(自分自身を表す)
@@ -19,6 +24,7 @@ WEBCFACE_DLL wcfViewComponent wcfButton(const char *text,
 
 /*!
  * \brief Viewを送信する
+ * \since 1.7
  * \param wcli Clientポインタ
  * \param field viewの名前
  * \param components 送信するデータの配列へのポインタ
@@ -31,6 +37,7 @@ WEBCFACE_DLL wcfStatus wcfViewSet(wcfClient *wcli, const char *field,
 
 /*!
  * \brief Viewを受信する
+ * \since 1.7
  * \param wcli Clientポインタ
  * \param member memberの名前
  * \param field viewの名前

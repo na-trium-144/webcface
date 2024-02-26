@@ -4,13 +4,22 @@
 extern "C" {
 #endif
 
+/*!
+ * \since 1.5
+ */
 WEBCFACE_DLL wcfMultiVal wcfValI(int value);
+/*!
+ * \since 1.5
+ */
 WEBCFACE_DLL wcfMultiVal wcfValD(double value);
+/*!
+ * \since 1.5
+ */
 WEBCFACE_DLL wcfMultiVal wcfValS(const char *value);
 
 /*!
  * \brief 関数を呼び出す
- *
+ * \since 1.5
  * \param wcli Clientポインタ
  * \param member memberの名前
  * \param field funcの名前
@@ -28,7 +37,7 @@ WEBCFACE_DLL wcfStatus wcfFuncRun(wcfClient *wcli, const char *member,
 
 /*!
  * \brief 関数を非同期で呼び出す
- *
+ * \since 1.5
  * \param wcli Clientポインタ
  * \param member memberの名前
  * \param field funcの名前
@@ -45,7 +54,7 @@ WEBCFACE_DLL wcfStatus wcfFuncRunAsync(wcfClient *wcli, const char *member,
 
 /*!
  * \brief 非同期で呼び出した関数の実行結果を取得
- *
+ * \since 1.5
  * \param async_res 関数呼び出しに対応するAsyncFuncResult
  * \param result 結果を格納する変数(wcfMultiVal*)へのポインタ
  * \return async_resが無効な場合 WCF_BAD_HANDLE,
@@ -58,7 +67,7 @@ WEBCFACE_DLL wcfStatus wcfFuncGetResult(wcfAsyncFuncResult *async_res,
                                         wcfMultiVal **result);
 /*!
  * \brief 非同期で呼び出した関数の実行完了まで待機し、結果を取得
- *
+ * \since 1.5
  * \param async_res 関数呼び出しに対応するAsyncFuncResult
  * \param result 結果を格納する変数(wcfMultiVal*)へのポインタ
  * \return async_resが無効な場合 WCF_BAD_HANDLE,
@@ -71,7 +80,7 @@ WEBCFACE_DLL wcfStatus wcfFuncWaitResult(wcfAsyncFuncResult *async_res,
 
 /*!
  * \brief 関数呼び出しの待受を開始する
- *
+ * \since 1.5
  * \param wcli Clientポインタ
  * \param field 関数名
  * \param arg_types 受け取る引数の型をwcfValTypeの配列で指定
@@ -85,6 +94,7 @@ WEBCFACE_DLL wcfStatus wcfFuncListen(wcfClient *wcli, const char *field,
                                      wcfValType return_type);
 /*!
  * \brief 関数が呼び出されたかどうかを確認
+ * \since 1.5
  *
  * 1回の関数呼び出しに対してfetchCallは1回だけhandlerを返す
  *
@@ -103,6 +113,7 @@ WEBCFACE_DLL wcfStatus wcfFuncFetchCall(wcfClient *wcli, const char *field,
 
 /*!
  * \brief 関数呼び出しに対して値を返す
+ * \since 1.5
  *
  * 値を返すとhandleはdeleteされ使えなくなる
  * \param handle 関数呼び出しに対応するhandle
@@ -114,6 +125,7 @@ WEBCFACE_DLL wcfStatus wcfFuncRespond(const wcfFuncCallHandle *handle,
                                       const wcfMultiVal *value);
 /*!
  * \brief 関数呼び出しに対してエラーメッセージを返す
+ * \since 1.5
  *
  * エラーメッセージを返すとhandleはdeleteされ使えなくなる
  * \param handle 関数呼び出しに対応するhandle
