@@ -251,6 +251,7 @@ Func::returnType() や Func::args() で関数の引数や戻り値の情報を�
 
 ~~Member::funcs() で~~ そのMemberが送信している関数のリストが得られます  
 <span class="since-c">1.6</span>
+<span class="since-py">1.1</span>
 Member::funcEntries() に変更
 
 また、Member::onFuncEntry() で新しく関数が追加されたときのコールバックを設定できます

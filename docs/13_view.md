@@ -137,7 +137,7 @@ Viewに追加する各種要素をViewComponentといいます。
     ```
 
 - <b class="tab-title">Python</b>
-    Pythonでは [`webcface.view_somponents`](https://na-trium-144.github.io/webcface-python/webcface.view_components.html) モジュール内にあり、
+    Pythonでは [`webcface.view_components`](https://na-trium-144.github.io/webcface-python/webcface.view_components.html) モジュール内にあり、
     ```python
     from webcface.view_components import *
     ```
@@ -377,6 +377,7 @@ Member::syncTime() に変更
 
 ~~Member::views() で~~ そのMemberが送信しているviewのリストが得られます  
 <span class="since-c">1.6</span>
+<span class="since-py">1.1</span>
 Member::viewEntries() に変更
 
 また、Member::onViewEntry() で新しくデータが追加されたときのコールバックを設定できます

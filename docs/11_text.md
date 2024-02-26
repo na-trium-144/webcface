@@ -175,6 +175,7 @@ Member::syncTime() に変更
 
 ~~Member::texts() で~~ そのMemberが送信しているtextのリストが得られます  
 <span class="since-c">1.6</span>
+<span class="since-py">1.1</span>
 Member::textEntries() に変更
 
 また、Member::onTextEntry() で新しくデータが追加されたときのコールバックを設定できます

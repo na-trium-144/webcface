@@ -4,10 +4,11 @@
 \since
 <span class="since-c">1.4</span>
 <span class="since-js">1.3</span>
+<span class="since-py">1.1</span>
 \sa
 * C++ webcface::Canvas3D
 * JavaScript [Canvas3D](https://na-trium-144.github.io/webcface-js/classes/Canvas3D.html)
-* Python 未実装 <!--[webcface.Canvas3D](https://na-trium-144.github.io/webcface-python/webcface.canvas3d.html#webcface.canvas3d.Canvas3D)-->
+* Python [webcface.Canvas3D](https://na-trium-144.github.io/webcface-python/webcface.canvas3d.html#webcface.canvas3d.Canvas3D)
 
 3D空間上のオブジェクト配置データを送受信し、WebUI上に表示できます。
 
@@ -42,6 +43,23 @@ Pointでは x, y, z 座標、Transformでは x, y, z 座標と z, y, x軸回り�
     console.log(r.rot[0]); // pi / 2 (z軸回り)
     ```
     また、Transform.rotMatrix で3x3の回転行列、Transform.tfMatrix で4x4の同次変換行列が得られます。
+
+- <b class="tab-title">Python</b>
+    [webcface.Point](https://na-trium-144.github.io/webcface-python/webcface.transform.html#webcface.transform.Point), [webcface.Transform](https://na-trium-144.github.io/webcface-python/webcface.transform.html#webcface.transform.Transform) オブジェクトからは`pos`, `rot`で座標と回転角を取得できます。
+    ```py
+    p = webcface.Point([1, 2, 3])
+    print(p.pos[0]) # 1 (x座標)
+    r = webcface.Transform([1, 2, 3], [math.pi / 2, 0, 0])
+    print(r.pos[0]) # 1 (x座標)
+    print(r.rot[0]) # pi / 2 (z軸回り)
+    ```
+    webcface.identity() は原点、回転なしのTransformを返します。
+
+    Point同士は加算、減算、`==`, `!=`での比較ができます。
+    また、int,floatと乗算、除算ができます。
+
+    引数にPointやTransformをとる関数では、webcface.Point に変換することなく
+    `[1, 2, 3]`のようなリストのままでも使えるものもあります。
 
 </div>
 
@@ -92,6 +110,13 @@ Pointでは x, y, z 座標、Transformでは x, y, z 座標と z, y, x軸回り�
     ]);
     ```
 
+- <b class="tab-title">Python</b>
+    Client.canvas3d からCanvas3Dオブジェクトを作り、
+    Canvas3D.add() で要素を追加し、
+    最後にCanvas3D.sync()をしてからClient.sync()をすることで送信されます。
+
+    with構文を使って `with wcli.canvas3d("hoge") as canvas:` などとするとwithを抜けるときに自動でcanvas.sync()がされます。
+
 </div>
 
 \note
@@ -119,6 +144,7 @@ Canvas3Dに追加できる要素として、Geometry(後述)、[RobotModel](./21
     詳細は webcface::Canvas3D::add を参照してください
     
     C++ではGeometryは webcface::Geometries 名前空間に定義されていますが、`webcface::` の名前空間でもアクセス可能です。
+
 - <b class="tab-title">JavaScript</b>
     ```ts
     import { geometries, viewColor, Point, Transform } from "webcface";
@@ -133,6 +159,13 @@ Canvas3Dに追加できる要素として、Geometry(後述)、[RobotModel](./21
     setの引数にgeometry、表示する位置(Transform)、色の3つをArrayにして指定します。
 
     Geometryは [geometries](https://na-trium-144.github.io/webcface-js/variables/geometries.html) に定義されています
+
+- <b class="tab-title">Python</b>
+    Pythonでは [`webcface.geometries`](https://na-trium-144.github.io/webcface-python/webcface.geometries.html) モジュール内にあり、
+    ```python
+    from webcface.geometries import *
+    ```
+    とすることもできます
 
 </div>
 
