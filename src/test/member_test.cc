@@ -104,3 +104,8 @@ TEST_F(MemberTest, PingStatus) {
     EXPECT_EQ(member("a").pingStatus(), 10);
     EXPECT_TRUE(data_->ping_status_req);
 }
+TEST_F(MemberTest, syncTime) {
+    auto t = std::chrono::system_clock::now();
+    data_->sync_time_store.setRecv("a", t);
+    EXPECT_EQ(member("a").syncTime(), t);
+}

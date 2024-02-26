@@ -159,15 +159,17 @@ Text::tryGet(), Text::tryGetRecurse() で値のリクエストをするととも
 別スレッドでリクエストが送信され、それ以降は値が得られるようになります。
 
 \note
+<span class="since-c">1.7</span>
 <span class="since-js">1.1</span>
 <span class="since-py"></span>
 Text::request()で明示的にリクエストを送信することもできます。
 
 ### 時刻
 
-Text::time() でその値が送信されたとき(そのMemberがsync()したとき)の時刻が得られます。
-
-\note Pythonでは Member.sync_time()
+~~Text::time()~~ でその値が送信されたとき(そのMemberがsync()したとき)の時刻が得られます。  
+<span class="since-c">1.7</span>
+<span class="since-py"></span>
+Member::syncTime() に変更
 
 ### Entry
 

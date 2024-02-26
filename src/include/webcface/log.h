@@ -25,6 +25,12 @@ class Log : protected Field, public EventTarget<Log, std::string> {
     using Field::member;
 
     /*!
+     * \brief ログをリクエストする
+     * \since ver1.7
+     *
+     */
+    WEBCFACE_DLL void request() const;
+    /*!
      * \brief ログを取得する
      *
      */

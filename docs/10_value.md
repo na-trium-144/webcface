@@ -32,6 +32,11 @@ Client::value からValueオブジェクトを作り、 Value::set() でデー�
     wcli.value("hoge").set(5);
     wcli.value("fuga").set({1, 2, 3, 4, 5});
     ```
+    \note
+    <span class="since-c">1.7</span>
+    配列データは`std::vector<double>`だけでなく、std::arrayや生配列などstd::ranges::rangeに合うものならなんでも使えます。
+    要素の型はdoubleに変換可能ならなんでもokです。
+
      (C++のみ) set() の代わりに代入演算子(Value::operator=)でも同様のことができます。
     また、 operator+= など、doubleやintの変数で使える各種演算子も使えます
     ```cpp
@@ -301,17 +306,20 @@ Value::tryGet(), Value::tryGetVec() などで値のリクエストをすると�
 
 
 \note
+<span class="since-c">1.7</span>
 <span class="since-js">1.1</span>
 <span class="since-py"></span>
 Value::request()で明示的にリクエストを送信することもできます。
 
 ### 時刻
 
-Value::time() でその値が送信されたとき(そのMemberがsync()したとき)の時刻が得られます。
+~~Value::time()~~ でその値が送信されたとき(そのMemberがsync()したとき)の時刻が得られます。  
+<span class="since-c">1.7</span>
+<span class="since-py"></span>
+Member::syncTime() に変更
+(Textなど他のデータの送信時刻と共通です)
 
-\note
-Pythonでは Member.sync_time() です
-C++,JavaScriptでも今後仕様変更して統一するかも
+\todo JavaScriptでもMember.syncTimeに統一する
 
 ### Entry
 
@@ -392,6 +400,14 @@ Member名がわかっていれば初回のClient::sync()前に設定すればよ
     });
     ```
     のようにすると可能です。
+
+    <span class="since-c">1.7</span>
+    引数を持たない関数もイベントのコールバックに設定可能です。
+    ```cpp
+    wcli.member("foo").value("hoge").appendListener([]() {
+        std::cout << "foo.hoge changed" << std::endl;
+    });
+    ```
 - <b class="tab-title">JavaScript</b>
     ```ts
     import { Member, Value } from "webcface";

@@ -40,7 +40,7 @@ class Value : protected Field, public EventTarget<Value> {
      * \return「(thisのフィールド名).(子フィールド名)」をフィールド名とするValue
      *
      */
-    Value child(const std::string &field) {
+    Value child(const std::string &field) const {
         return Value{*this, this->field_ + "." + field};
     }
 
@@ -73,6 +73,12 @@ class Value : protected Field, public EventTarget<Value> {
         return *this;
     }
 
+    /*!
+     * \brief 値をリクエストする
+     * \since ver1.7
+     *
+     */
+    WEBCFACE_DLL void request() const;
     /*!
      * \brief 値を返す
      *
@@ -110,9 +116,10 @@ class Value : protected Field, public EventTarget<Value> {
     operator Dict() const { return getRecurse(); }
     /*!
      * \brief syncの時刻を返す
-     *
+     * \deprecated 1.7で Member::syncTime() に変更
      */
-    WEBCFACE_DLL std::chrono::system_clock::time_point time() const;
+    [[deprecated]] WEBCFACE_DLL std::chrono::system_clock::time_point
+    time() const;
 
     /*!
      * \brief 値やリクエスト状態をクリア

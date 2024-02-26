@@ -59,8 +59,3 @@ TEST_F(RobotModelTest, get) {
     model("a", "d").appendListener(callback<RobotModel>());
     EXPECT_EQ(data_->robot_model_store.transferReq().at("a").at("d"), 3);
 }
-TEST_F(RobotModelTest, time) {
-    auto t = std::chrono::system_clock::now();
-    data_->sync_time_store.setRecv("a", t);
-    EXPECT_EQ(model("a", "b").time(), t);
-}

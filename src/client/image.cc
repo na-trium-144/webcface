@@ -1,4 +1,5 @@
 #include <webcface/image.h>
+#include <webcface/member.h>
 #include "client_internal.h"
 #include "../message/message.h"
 
@@ -65,9 +66,7 @@ cv::Mat Image::mat() & {
 #endif
 
 std::chrono::system_clock::time_point Image::time() const {
-    return dataLock()
-        ->sync_time_store.getRecv(this->member_)
-        .value_or(std::chrono::system_clock::time_point());
+    return member().syncTime();
 }
 Image &Image::clear() {
     dataLock()->image_store.clearRecv(*this);

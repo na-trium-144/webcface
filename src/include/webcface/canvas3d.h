@@ -288,6 +288,12 @@ class Canvas3D : protected Field, public EventTarget<Canvas3D> {
         return Canvas3D{*this, this->field_ + "." + field};
     }
     /*!
+     * \brief canvasの内容をリクエストする
+     * \since ver1.7
+     *
+     */
+    WEBCFACE_DLL void request() const;
+    /*!
      * \brief Canvasの内容を取得する
      *
      */
@@ -301,9 +307,10 @@ class Canvas3D : protected Field, public EventTarget<Canvas3D> {
     }
     /*!
      * \brief syncの時刻を返す
-     *
+     * \deprecated 1.7でMember::syncTime()に変更
      */
-    WEBCFACE_DLL std::chrono::system_clock::time_point time() const;
+    [[deprecated]] WEBCFACE_DLL std::chrono::system_clock::time_point
+    time() const;
 
     /*!
      * \brief 値やリクエスト状態をクリア

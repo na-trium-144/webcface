@@ -1,4 +1,5 @@
 #include <webcface/text.h>
+#include <webcface/member.h>
 #include "client_internal.h"
 #include "../message/message.h"
 
@@ -7,8 +8,8 @@ Text::Text(const Field &base)
     : Field(base), EventTarget<Text>(&this->dataLock()->text_change_event,
                                      *this) {}
 
-inline void addTextReq(const std::shared_ptr<Internal::ClientData> &data,
-                       const std::string &member_, const std::string &field_) {
+void Text::request() const {
+    auto data = dataLock();
     auto req = data->text_store.addReq(member_, field_);
     if (req) {
         data->message_queue->push(Message::packSingle(
@@ -33,11 +34,11 @@ Text &Text::set(const std::string &v) {
     return *this;
 }
 
-void Text::onAppend() const { addTextReq(dataLock(), member_, field_); }
+void Text::onAppend() const { request(); }
 
 std::optional<std::string> Text::tryGet() const {
     auto v = dataLock()->text_store.getRecv(*this);
-    addTextReq(dataLock(), member_, field_);
+    request();
     if (v) {
         return **v;
     } else {
@@ -45,16 +46,13 @@ std::optional<std::string> Text::tryGet() const {
     }
 }
 std::optional<Text::Dict> Text::tryGetRecurse() const {
-    addTextReq(dataLock(), member_, field_);
+    request();
     return dataLock()->text_store.getRecvRecurse(
-        *this, [this](const std::string &subfield) {
-            addTextReq(dataLock(), member_, subfield);
-        });
+        *this,
+        [this](const std::string &subfield) { child(subfield).request(); });
 }
 std::chrono::system_clock::time_point Text::time() const {
-    return dataLock()
-        ->sync_time_store.getRecv(this->member_)
-        .value_or(std::chrono::system_clock::time_point());
+    return member().syncTime();
 }
 Text &Text::free() {
     auto req = dataLock()->text_store.unsetRecv(*this);

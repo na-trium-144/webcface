@@ -106,6 +106,12 @@ std::vector<Image> Member::imageEntries() const {
     return ret;
 }
 
+std::chrono::system_clock::time_point Member::syncTime() const {
+    return dataLock()
+        ->sync_time_store.getRecv(this->member_)
+        .value_or(std::chrono::system_clock::time_point());
+}
+
 std::string Member::libName() const {
     auto data = dataLock();
     auto m_id = data->getMemberIdFromName(member_);

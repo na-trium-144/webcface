@@ -50,7 +50,7 @@ class EventTarget {
         : dispatcher(dispatcher), key(key) {}
 
     virtual ~EventTarget() {}
-    
+
     /*!
      * \brief イベントのコールバックをリストの最後に追加する。
      *
@@ -58,6 +58,17 @@ class EventTarget {
     EventHandle appendListener(const EventCallback &callback) const {
         onAppend();
         return dispatcher->appendListener(key, callback);
+    }
+    /*!
+     * \brief イベントのコールバックをリストの最後に追加する。
+     * (引数なしのコールバック)
+     * \since ver1.7
+     *
+     */
+    template <typename F>
+        requires std::invocable<F>
+    EventHandle appendListener(const F &callback) const {
+        return appendListener([callback](const auto &) { callback(); });
     }
     /*!
      * \brief イベントのコールバックをリストの最初に追加する。
@@ -68,6 +79,17 @@ class EventTarget {
         return dispatcher->prependListener(key, callback);
     }
     /*!
+     * \brief イベントのコールバックをリストの最初に追加する。
+     * (引数なしのコールバック)
+     * \since ver1.7
+     *
+     */
+    template <typename F>
+        requires std::invocable<F>
+    EventHandle prependListener(const F &callback) const {
+        return prependListener([callback](const auto &) { callback(); });
+    }
+    /*!
      * \brief イベントのコールバックを間に挿入する。
      *
      */
@@ -75,6 +97,18 @@ class EventTarget {
                                const EventHandle &before) const {
         onAppend();
         return dispatcher->insertListener(key, callback, before);
+    }
+    /*!
+     * \brief イベントのコールバックを間に挿入する。
+     * (引数なしのコールバック)
+     * \since 1.7
+     *
+     */
+    template <typename F>
+        requires std::invocable<F>
+    EventHandle insertListener(const F &callback,
+                               const EventHandle &before) const {
+        return insertListener([callback](const auto &) { callback(); }, before);
     }
     /*!
      * \brief コールバックを削除する。

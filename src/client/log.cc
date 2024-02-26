@@ -7,8 +7,9 @@ Log::Log(const Field &base)
     : Field(base), EventTarget<Log, std::string>(
                        &this->dataLock()->log_append_event, this->member_) {}
 
-inline void addLogReq(const std::shared_ptr<Internal::ClientData> &data,
-                      const std::string &member_) {
+
+void Log::request() const {
+    auto data = dataLock();
     auto req = data->log_store->addReq(member_);
     if (req) {
         data->message_queue->push(
@@ -16,11 +17,11 @@ inline void addLogReq(const std::shared_ptr<Internal::ClientData> &data,
     }
 }
 
-void Log::onAppend() const { addLogReq(dataLock(), member_); }
+void Log::onAppend() const { request(); }
 
 std::optional<std::vector<LogLine>> Log::tryGet() const {
+    request();
     auto v = dataLock()->log_store->getRecv(member_);
-    addLogReq(dataLock(), member_);
     if (v) {
         return **v;
     } else {

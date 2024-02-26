@@ -1,4 +1,5 @@
 #include <webcface/robot_model.h>
+#include <webcface/member.h>
 #include "client_internal.h"
 #include "../message/message.h"
 
@@ -7,8 +8,8 @@ RobotModel::RobotModel(const Field &base)
     : Field(base), EventTarget<RobotModel>(
                        &this->dataLock()->robot_model_change_event, *this) {}
 
-inline void addRMReq(const std::shared_ptr<Internal::ClientData> &data,
-                     const std::string &member_, const std::string &field_) {
+void RobotModel::request() const {
+    auto data = dataLock();
     auto req = data->robot_model_store.addReq(member_, field_);
     if (req) {
         data->message_queue->push(Message::packSingle(
@@ -22,11 +23,11 @@ RobotModel &RobotModel::set(const std::vector<RobotLink> &v) {
     return *this;
 }
 
-void RobotModel::onAppend() const { addRMReq(dataLock(), member_, field_); }
+void RobotModel::onAppend() const { request(); }
 
 std::optional<std::vector<RobotLink>> RobotModel::tryGet() const {
+    request();
     auto v = dataLock()->robot_model_store.getRecv(*this);
-    addRMReq(dataLock(), member_, field_);
     if (v) {
         return *v;
     } else {
@@ -34,9 +35,7 @@ std::optional<std::vector<RobotLink>> RobotModel::tryGet() const {
     }
 }
 std::chrono::system_clock::time_point RobotModel::time() const {
-    return dataLock()
-        ->sync_time_store.getRecv(this->member_)
-        .value_or(std::chrono::system_clock::time_point());
+    return member().syncTime();
 }
 RobotModel &RobotModel::free() {
     auto req = dataLock()->robot_model_store.unsetRecv(*this);
