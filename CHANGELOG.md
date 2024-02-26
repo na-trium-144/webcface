@@ -1,3 +1,20 @@
+## [1.7.0] - 2024-02-26
+### Added
+* Cの関数追加 (#198)
+	* wcfValueGet
+	* wcfTextSet, wcfTextSetN, wcfTextGet
+	* wcfViewComponents, wcfViewSet, wcfViewGet
+	* wcfDestroy
+* Value::request() など (#199)
+* 各種イベントのコールバックに引数を持たない関数を登録可能にした
+### Changed
+* Funcの実行結果のデータの保持方法を変更 (#198)
+	* Client内部にAsyncFuncResultを保持しないようにした
+	* 内部で使用している一部メンバ関数の削除、変更
+* Client::member() に空文字列が渡された場合thisを返すようにした
+* Value::set() にテンプレート引数で std::vector<double> 以外の配列型が使えるようにした (#199)
+* Value::time() などを Member::syncTime() に変更
+
 ## [1.6.3] - 2024-02-22
 ### Added
 * pkgconfigのファイルを生成するようにした (#200)
