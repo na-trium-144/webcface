@@ -4,11 +4,12 @@
 \since
 <span class="since-c">1.6</span>
 <span class="since-js">1.4</span>
+<span class="since-py">1.1</span>
 \sa
 * C++ webcface::Canvas2D
 * JavaScript [Canvas2D](https://na-trium-144.github.io/webcface-js/classes/Canvas2D.html)
 (受信機能のみ)
-* Python 未実装 <!--[webcface.Canvas3D](https://na-trium-144.github.io/webcface-python/webcface.canvas3d.html#webcface.canvas3d.Canvas3D)-->
+* Python [webcface.Canvas2D](https://na-trium-144.github.io/webcface-python/webcface.canvas2d.html#webcface.canvas2d.Canvas2D)
 
 
 ## Point, Transform
@@ -40,6 +41,23 @@ Pointでは x, y 座標、Transformでは回転角(radianで、 (x, y) = (1, 0) 
     console.log(r.pos[0]); // 1 (x座標)
     console.log(r.rot[0]); // pi / 2 (z軸回り)
     ```
+
+- <b class="tab-title">Python</b>
+    [webcface.Point](https://na-trium-144.github.io/webcface-python/webcface.transform.html#webcface.transform.Point), [webcface.Transform](https://na-trium-144.github.io/webcface-python/webcface.transform.html#webcface.transform.Transform) オブジェクトからは`pos`, `rot`で座標と回転角を取得できます。
+    ```py
+    p = webcface.Point([1, 2])
+    print(p.pos[0]) # 1 (x座標)
+    r = webcface.Transform([1, 2], math.pi / 2)
+    print(r.pos[0]) # 1 (x座標)
+    print(r.rot[0]) # pi / 2 (z軸回り)
+    ```
+    webcface.identity() は原点、回転なしのTransformを返します。
+
+    Point同士は加算、減算、`==`, `!=`での比較ができます。
+    また、int,floatと乗算、除算ができます。
+
+    引数にPointやTransformをとる関数では、webcface.Point に変換することなく
+    `[1, 2]`のようなリストのままでも使えるものもあります。
 
 </div>
 
@@ -82,6 +100,46 @@ Pointでは x, y 座標、Transformでは回転角(radianで、 (x, y) = (1, 0) 
 
     WebUIで表示するときには、initで指定したサイズの中で図を描画したものが画面の大きさに合わせて拡大縮小されます。
 
+- <b class="tab-title">Python</b>
+    Client.canvas2d からCanvas2Dオブジェクトを作り、
+    Canvas2D.init() でCanvasのサイズを指定し、
+    Canvas2D.add() で要素を追加し、
+    最後にCanvas2D.sync()をしてからClient.sync()をすることで送信されます。
+
+    例
+    ```py
+    canvas = wcli.canvas2d("canvas")
+    canvas.init(100, 100)
+    canvas.add(
+        webcface.geometries.rect(webcface.Point(10, 10), webcface.Point(90, 90)),
+        color=webcface.ViewColor.BLACK,
+    )
+    canvas.add(
+        webcface.geometries.circle(webcface.Transform([50, 50], 0), 20),
+        color=webcface.ViewColor.RED,
+    )
+    pos = webcface.Transform(...)
+    canvas.add(
+        webcface.geometries.polygon([[0, -5], [-5, 0], [-5, 10], [5, 10], [5, 0]]),
+        pos,
+        color=webcface.ViewColor.BLACK,
+        fill=webcface.ViewColor.YELLOW,
+        stroke_width=2
+    )
+    # ... 省略
+    canvas.sync() # ここまでにcanvasに追加したものをクライアントに反映
+    wcli.sync()#
+    ```
+    ![tutorial_canvas2d.png](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_canvas2d.png)
+
+    init() で指定するキャンバスのサイズを canvas2d() 時に指定することもできます。(init() は不要になります)
+    ```py
+    canvas = wcli.canvas2d("canvas", 100, 100)
+    ```
+    また、with構文を使って `with wcli.canvas2d("hoge", width, height) as canvas:` などとするとwithを抜けるときに自動でcanvas.sync()がされます。
+
+    WebUIで表示するときには、initで指定したサイズの中で図を描画したものが画面の大きさに合わせて拡大縮小されます。
+
 </div>
 
 \note
@@ -108,6 +166,13 @@ Viewと同様、Canvas3Dの2回目以降の送信時にはWebCFace内部では�
     詳細は webcface::Canvas2D::add を参照してください
     
     C++ではGeometryは webcface::Geometries 名前空間に定義されていますが、`webcface::` の名前空間でもアクセス可能です。
+
+- <b class="tab-title">Python</b>
+    Pythonでは [`webcface.geometries`](https://na-trium-144.github.io/webcface-python/webcface.geometries.html) モジュール内にあり、
+    ```python
+    from webcface.geometries import *
+    ```
+    とすることもできます
 
 </div>
 
@@ -138,6 +203,10 @@ originを中心として半径radiusの円を描画します
 circle(Point origin, double radius)
 ```
 
+\warning
+PythonではCanvas3Dとの兼ね合いで第1引数はTransform
+(使いにくいのでなんとかならないか?)
+
 ### Polygon
 指定した点をつなげた図形を描画します
 ```cpp
@@ -146,14 +215,16 @@ polygon(std::vector<Point> points)
 
 ## 受信
 Viewなどと同様、Member::canvas2D() でCanvas2Dクラスのオブジェクトが得られ、
-Canvas3D::tryGet() で値のリクエストをするとともに受信した値を取得できます。
+Canvas2D::tryGet() で値のリクエストをするとともに受信した値を取得できます。
 
 Canvas2Dデータは
 webcface::Canvas2DComponent
-(JavaScript [Canvas2DComponent](https://na-trium-144.github.io/webcface-js/classes/Canvas3DComponent.html))
-<!--Python [webcface.ViewComponent](https://na-trium-144.github.io/webcface-python/webcface.view.html#webcface.view.ViewComponent))-->
+(JavaScript [Canvas2DComponent](https://na-trium-144.github.io/webcface-js/classes/Canvas3DComponent.html)),
+Python [webcface.Canvas2DComponent](https://na-trium-144.github.io/webcface-python/webcface.canvas2d.html#webcface.canvas2d.Canvas2DComponent))
 のリストとして得られ、
 Canvas2DComponentオブジェクトから各種プロパティを取得できます。
+
+また、Canvasの幅と高さも取得できます。
 
 ### 時刻
 

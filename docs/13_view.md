@@ -115,7 +115,7 @@ Viewに追加する各種要素をViewComponentといいます。
     ```
 
 - <b class="tab-title">Python</b>
-    Pythonでは [`webcface.view_somponents`](https://na-trium-144.github.io/webcface-python/webcface.view_components.html) モジュール内にあり、
+    Pythonでは [`webcface.view_components`](https://na-trium-144.github.io/webcface-python/webcface.view_components.html) モジュール内にあり、
     ```python
     from webcface.view_components import *
     ```
