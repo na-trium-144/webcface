@@ -34,33 +34,16 @@ struct FuncNotFound : public std::runtime_error {
  *
  */
 class AsyncFuncResult : Field {
-    /*!
-     * \brief 通し番号
-     *
-     * コンストラクタで設定する。
-     * 実際はFuncResultStoreのvectorのindex
-     *
-     */
     std::size_t caller_id;
-
-    std::string caller; //< 呼び出し側member 通常は自身
-
-    std::shared_ptr<std::promise<bool>> started_;
-    std::shared_ptr<std::promise<ValAdaptor>> result_;
-
-    ValAdaptor result_val;
-    wcfMultiVal c_result_val;
 
   public:
     friend class Func;
-    friend struct Internal::ClientData;
 
-    AsyncFuncResult(std::size_t caller_id, const std::string &caller,
-                    const Field &base)
-        : Field(base), caller_id(caller_id), caller(caller),
-          started_(std::make_shared<std::promise<bool>>()),
-          result_(std::make_shared<std::promise<ValAdaptor>>()),
-          started(started_->get_future()), result(result_->get_future()) {}
+    AsyncFuncResult(const Field &base, std::size_t caller_id,
+                    const std::shared_future<bool> &started_f,
+                    const std::shared_future<ValAdaptor> &result_f)
+        : Field(base), caller_id(caller_id), started(started_f),
+          result(result_f) {}
 
     /*!
      * \brief リモートに呼び出しメッセージが到達したときに値が入る
@@ -80,57 +63,79 @@ class AsyncFuncResult : Field {
 
     using Field::member;
     using Field::name;
-
-    std::pair<wcfStatus, wcfMultiVal *> toCVal() & {
-        try {
-            result_val = result.get();
-            c_result_val = result_val.toCVal();
-            return {WCF_OK, &c_result_val};
-        } catch (const FuncNotFound &e) {
-            result_val = e.what();
-            c_result_val = result_val.toCVal();
-            return {WCF_NOT_FOUND, &c_result_val};
-        } catch (const std::exception &e) {
-            result_val = e.what();
-            c_result_val = result_val.toCVal();
-            return {WCF_EXCEPTION, &c_result_val};
-        } catch (...) {
-            result_val = "unknown exception";
-            c_result_val = result_val.toCVal();
-            return {WCF_EXCEPTION, &c_result_val};
-        }
-    }
 };
 auto &operator<<(std::basic_ostream<char> &os, const AsyncFuncResult &data);
 
+/*!
+ * \brief AsyncFuncResultの結果をセットする
+ */
+struct AsyncFuncResultSetter : Field {
+    std::promise<bool> started;
+    std::promise<ValAdaptor> result;
+    AsyncFuncResultSetter() = default;
+    explicit AsyncFuncResultSetter(const Field &base)
+        : Field(base), started(), result() {}
+    void setStarted(bool is_started) {
+        started.set_value(is_started);
+        if (!is_started) {
+            try {
+                throw FuncNotFound(*this);
+            } catch (...) {
+                result.set_exception(std::current_exception());
+            }
+        }
+    }
+    void setResult(ValAdaptor result_val) { result.set_value(result_val); }
+    void setResultException(std::exception_ptr e) { result.set_exception(e); }
+};
 
 class FuncCallHandle {
-    std::vector<ValAdaptor> args_;
-    std::vector<wcfMultiVal> c_args_;
-    std::shared_ptr<std::promise<ValAdaptor>> result_;
+    struct HandleData {
+        const std::vector<ValAdaptor> args_;
+        std::vector<wcfMultiVal> c_args_;
+        std::promise<ValAdaptor> result_;
+        HandleData(const std::vector<ValAdaptor> &args,
+                   std::promise<ValAdaptor> &&result)
+            : args_(args), c_args_(args.size()), result_(std::move(result)) {
+            for (std::size_t i = 0; i < args_.size(); i++) {
+                c_args_[i].as_int = args_[i];
+                c_args_[i].as_double = args_[i];
+                c_args_[i].as_str =
+                    static_cast<const std::string &>(args_[i]).c_str();
+            }
+        }
+    };
+    std::shared_ptr<HandleData> handle_data_;
 
   public:
     FuncCallHandle() = default;
     FuncCallHandle(const std::vector<ValAdaptor> &args,
-                   const std::shared_ptr<std::promise<ValAdaptor>> &result)
-        : args_(args), c_args_(), result_(result) {}
-
+                   std::promise<ValAdaptor> &&result)
+        : handle_data_(std::make_shared<HandleData>(args, std::move(result))) {}
     /*!
      * \brief 関数の引数を取得する
      *
      */
-    std::vector<ValAdaptor> args() const { return args_; }
+    const std::vector<ValAdaptor> &args() const {
+        if (handle_data_) {
+            return handle_data_->args_;
+        } else {
+            throw std::runtime_error("FuncCallHandle does not have valid "
+                                     "pointer to function call");
+        }
+    }
     /*!
-     * \brief 関数の引数をwcfMultiValに変換して取得する
-     * 引数の本体はargsが持っているので、FuncCallHandleの一時オブジェクトからは使えない
+     * \brief 関数の引数を取得する
+     * \since ver1.7
      *
      */
-    std::vector<wcfMultiVal> &toCArgs() & {
-        c_args_.resize(args_.size());
-        for (std::size_t i = 0; i < args_.size(); i++) {
-            c_args_[i] = args_[i].toCVal();
+    const wcfMultiVal *cArgs() const {
+        if (handle_data_) {
+            return handle_data_->c_args_.data();
+        } else {
+            throw std::runtime_error("FuncCallHandle does not have valid "
+                                     "pointer to function call");
         }
-        return c_args_;
     }
     /*!
      * \brief 関数の結果を送信する
@@ -140,8 +145,8 @@ class FuncCallHandle {
      *
      */
     void respond(ValAdaptor value = "") {
-        if (result_) {
-            result_->set_value(value);
+        if (handle_data_) {
+            handle_data_->result_.set_value(value);
         } else {
             throw std::runtime_error("FuncCallHandle does not have valid "
                                      "pointer to function call");
@@ -155,11 +160,11 @@ class FuncCallHandle {
      *
      */
     void reject(const std::string &message) {
-        if (result_) {
+        if (handle_data_) {
             try {
                 throw std::runtime_error(message);
             } catch (const std::runtime_error &) {
-                result_->set_exception(std::current_exception());
+                handle_data_->result_.set_exception(std::current_exception());
             }
         } else {
             throw std::runtime_error("FuncCallHandle does not have valid "

@@ -16,6 +16,22 @@ ViewComponent::lockTmp(const std::weak_ptr<Internal::ClientData> &data_w,
     }
     return *this;
 }
+wcfViewComponent ViewComponent::cData() const {
+    wcfViewComponent vcc;
+    vcc.type = static_cast<int>(this->type());
+    vcc.text = this->text_.empty() ? nullptr : this->text_.c_str();
+    if (this->on_click_func_) {
+        vcc.on_click_member = this->on_click_func_->member_.c_str();
+        vcc.on_click_field = this->on_click_func_->field_.c_str();
+    } else {
+        vcc.on_click_member = nullptr;
+        vcc.on_click_field = nullptr;
+    }
+    vcc.text_color = static_cast<int>(this->text_color_);
+    vcc.bg_color = static_cast<int>(this->bg_color_);
+    return vcc;
+}
+
 std::optional<Func> ViewComponent::onClick() const {
     if (on_click_func_ != std::nullopt) {
         // Fieldの中でnullptrは処理してくれるからいいかな
@@ -43,15 +59,14 @@ View::View(const Field &base)
     this->std::ostream::init(sb.get());
 }
 View &View::init() {
-    sb->components.clear();
-    sb->modified = true;
+    sb->init();
     return *this;
 }
 View &View::sync() {
     std::flush(*this);
-    if (sb->modified) {
-        set(sb->components);
-        sb->modified = false;
+    if (sb->modified()) {
+        set(sb->components());
+        sb->syncDone();
     }
     return *this;
 }
@@ -64,29 +79,40 @@ void View::onDestroy() {
 }
 View &View::operator<<(const ViewComponent &vc) {
     std::flush(*this);
-    sb->components.push_back(vc);
-    sb->modified = true;
+    sb->push(vc);
     return *this;
 }
+void ViewBuf::push(const ViewComponent &vc) {
+    if (vc.type() == ViewComponentType::text) {
+        std::string s = vc.text();
+        while (true) {
+            auto p = s.find('\n');
+            if (p == std::string::npos) {
+                break;
+            }
+            std::string c1 = s.substr(0, p);
+            if (!c1.empty()) {
+                ViewComponent vc_new = vc;
+                vc_new.text(c1);
+                components_.push_back(vc_new);
+            }
+            components_.push_back(ViewComponents::newLine());
+            s = s.substr(p + 1);
+            modified_ = true;
+        }
+        if (!s.empty()) {
+            ViewComponent vc_new = vc;
+            vc_new.text(s);
+            components_.push_back(vc_new);
+            modified_ = true;
+        }
+    } else {
+        components_.push_back(vc);
+        modified_ = true;
+    }
+}
 int ViewBuf::sync() {
-    std::string s = this->str();
-    while (true) {
-        auto p = s.find('\n');
-        if (p == std::string::npos) {
-            break;
-        }
-        std::string c1 = s.substr(0, p);
-        if (!c1.empty()) {
-            components.push_back(ViewComponents::text(c1));
-        }
-        components.push_back(ViewComponents::newLine());
-        s = s.substr(p + 1);
-        modified = true;
-    }
-    if (!s.empty()) {
-        components.push_back(ViewComponents::text(s));
-        modified = true;
-    }
+    this->push(ViewComponents::text(this->str()));
     this->str("");
     return 0;
 }

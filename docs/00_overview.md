@@ -27,16 +27,6 @@ webcface-server
 
 * コマンドラインオプションで起動するポートを変更できたりします。詳細は`webcface-server -h`で確認してください
 
-### WebUIから (Server Mode)
-WebUIをブラウザーからではなくアプリとして開くと、バックグラウンドでいっしょにサーバーが起動します。
-
-* Windowsではスタートメニューの WebCFace → WebCFace WebUI Server を起動してください。
-* MacOSではREADMEにしたがってAppバンドルをダウンロードして起動してください
-
-WebUIの画面を閉じるとserverも終了します。
-
-(ソースコードとバイナリ配布はこのリポジトリではなく [webcface-webui](https://github.com/na-trium-144/webcface-webui) に含まれるので、ソースからビルドする場合または個別にダウンロードしたい場合はそちらを参照してください)
-
 ### サービスとして (Linuxのみ)
 
 \since <span class="since-c">1.5.3</span>
@@ -48,13 +38,6 @@ sudo systemctl start webcface-server
 ```
 でサーバーを常時自動起動させることができます。
 
-また
-```sh
-sudo systemctl enable webcface-launcher
-sudo systemctl start webcface-launcher
-```
-でwebcface-launcherも自動起動させることができます。
-
 ## WebUI
 serverは起動したまま、起動時に表示されるurl (http://IPアドレス:7530/index.html) をブラウザで開きましょう。
 
@@ -62,6 +45,30 @@ WebCFaceにクライアントが接続すると、WebUI右上のMenuに表示さ
 Menuから見たいデータを選ぶことで小さいウィンドウのようなものが現れデータを見ることができます。
 
 ウィンドウの表示状態などは自動的にブラウザ(LocalStorage)に保存され、次回アクセスしたときに復元されます。
+
+### WebUI Server Mode
+WebUIをブラウザーからではなくアプリとして開くと、バックグラウンドでいっしょにサーバーが起動します。
+
+* Windowsではスタートメニューの WebCFace → WebCFace WebUI Server を起動してください。
+* MacOSではREADMEにしたがってAppバンドルをダウンロードして起動してください
+
+\note ソースコードとバイナリ配布はこのリポジトリではなく [webcface-webui](https://github.com/na-trium-144/webcface-webui) に含まれるので、ソースからビルドする場合または個別にダウンロードしたい場合はそちらを参照してください
+
+この場合、通常のWebUIにはないメニュー項目がいくつか現れます。
+ここで操作した内容は自動的に保存されます。
+
+* Import Config, Export Config: 自動保存されるServer Modeの設定を別ファイルに保存したり読み込むことができます。
+* Server Status: サーバーの状態、IPアドレスが見れます。またLauncherの起動、停止ができます。
+* Logs: サーバーの出力するログが見れます。
+* Launcher Config: [webcface-launcher](./70_launcher.md) の設定を編集できます。
+
+![webui-server](https://github.com/na-trium-144/webcface/raw/main/docs/images/webui-server.png)
+
+WebUIの画面を閉じるとserverも終了します。
+次に画面を開いた時自動的に前回の状態が復元されます。
+
+\note
+設定を自動保存する場所はWindowsでは `C:\Users\(user)\AppData\Roaming\webcface\sg.toml` 、それ以外では `$HOME/.webcface.sg.toml` です。
 
 ## PlotJuggler
 
@@ -93,11 +100,11 @@ target_link_libraries(target PRIVATE webcface::webcface)
         * Debugの場合 webcface6d.lib, spdlogd.lib, opencv_world490d.lib
     * また、`C:\Program Files\WebCFace\bin` を環境変数のPathに追加するか、その中にあるdllファイルを実行ファイルのディレクトリにコピーして読み込ませてください
 * Linux
-    * Releasesで配布しているdebパッケージの場合はインストール先は /usr です
-    * WebCFaceは現状pkgconfigのファイルを作っていないので、libwebcface.soに手動でリンクしてください (`-lwebcface` とか?)
-    * 依存ライブラリのspdlogとopencvはpkgconfigに対応しているので、コンパイル時の引数に `$(pkgconfig --cflags spdlog opencv4)` 、リンク時に `$(pkgconfig --libs spdlog opencv4)` を渡せばよいと思います
+    * pkgconfigを使用してコンパイル時の引数に `$(pkg-config --cflags webcface)` 、リンク時に `$(pkg-config --libs webcface)` を渡せばよいです
+    * 手動でリンクするなら lib/libwebcface.so をリンクしてください
+        * Releasesで配布しているdebパッケージの場合はインストール先は /usr です
 * MacOS
-    * Linuxと同様 libwebcface.dylib とspdlogとopencvにリンクしてください
+    * Linuxと同様pkgconfigを使ってコンパイル、リンクできると思います
 
 </details>
 
@@ -111,7 +118,8 @@ C++のソースコードでは`<webcface/webcface.h>`をincludeしてくださ�
 C++ではなくCからアクセスできるAPIとして、wcf〜 で始まる名前の関数やstructが用意されています。
 (C++ライブラリのうちの一部の機能しかまだ実装していませんが)
 
-`<webcface/c_wcf.h>` をincludeすることで使えます。
+~~&lt;webcface/c_wcf.h&gt; をincludeすることで使えます。~~  
+<span class="since-c">1.7</span> &lt;webcface/wcf.h&gt; をincludeすることで使えます。(c_wcf.hも一応使えます)  
 ほとんどの関数は戻り値がint型で、成功した場合0(=`WCF_OK`)、例外が発生した場合正の値を返します。
 
 MATLABなど、Cのライブラリにアクセスすることができる言語からwebcfaceのライブラリをロードして使用することができます。
@@ -129,9 +137,14 @@ Python, JavaScriptのクライアントも使い方はだいたい同じです�
 * [webcface-python APIリファレンス](https://na-trium-144.github.io/webcface-python/)
 * [webcface-js APIリファレンス](https://na-trium-144.github.io/webcface-js/)
 
-## tools
+## Tools
+
 webcface-toolsにはWebCFaceと通信して使うコマンドラインツールがいくつかあります。
-詳しくは[webcface-toolsのリポジトリ](https://github.com/na-trium-144/webcface-tools)を参照してください。
+
+それぞれ以下のページを参照してください。
+* [webcface-launcher](./70_launcher.md)
+* [webcface-send](./71_send.md)
+* [webcface-cv-capture](./72_cv_capture.md)
 
 ## データ型
 WebCFaceではROSのTopicのようにデータを送受信することができます。
@@ -141,6 +154,9 @@ WebCFaceではROSのTopicのようにデータを送受信することができ�
 double型で送受信されます。
 
 WebUI では受信したデータがグラフとして表示されます。
+(グラフの画面を表示するより前のデータにはアクセスできません)
+
+マウスドラッグで移動、Ctrl+スクロール・Ctrl+Alt+スクロールでそれぞれx, y方向の拡大縮小ができます。
 
 ![tutorial_value](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_value.png)
 
@@ -178,6 +194,8 @@ WebUI上で2次元の図形を描画することができます。
 3D空間上のオブジェクト配置データを送受信する型です。
 
 WebUI上で3次元の図形を描画することができます。
+
+ドラッグで回転、Ctrl+ドラッグ(またはホイールを押しながらドラッグ)で移動、スクロールで拡大縮小ができます。
 
 ![tutorial_canvas3d.png](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_canvas3d.png)
 

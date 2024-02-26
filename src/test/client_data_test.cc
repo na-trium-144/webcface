@@ -148,10 +148,9 @@ TEST_F(SyncDataStore1Test, getRecv) {
 TEST(FuncResultStoreTest, addResult) {
     auto data = std::make_shared<ClientData>("test");
     FuncResultStore &s = data->func_result_store;
-    auto &r = s.addResult("a", Field{data, "b", "c"});
+    auto r = s.addResult(Field{data, "b", "c"});
     EXPECT_EQ(r.name(), "c");
     EXPECT_EQ(r.member().name(), "b");
-    EXPECT_EQ(&s.getResult(0), &r);
 }
 
 TEST(ClientDataTest, self) {

@@ -41,6 +41,9 @@ Client オブジェクトを作り、start() を呼ぶことでサーバーへ�
     wcfStart(wcli);
     ```
     でclientを生成し、接続します。
+
+    \note <span class="since-c">1.7</span> 引数にnullptrを渡した場合空文字列(後述)と同様になります
+
     サーバーのアドレスとポートを指定したい場合`wcfInit()`を使います
     ```c
     #include <webcface/c_wcf.h>
@@ -49,6 +52,7 @@ Client オブジェクトを作り、start() を呼ぶことでサーバーへ�
     wcfStart(wcli);
     ```
     接続できているかどうかは `wcfIsConnected(wcli)` で取得できます。
+    
 - <b class="tab-title">JavaScript</b>
     ```ts
     import { Client } from "webcface";

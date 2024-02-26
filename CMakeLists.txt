@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.12)
 
 project(webcface
     LANGUAGES CXX C
-    VERSION 1.6.2
+    VERSION 1.6.3
     HOMEPAGE_URL "https://github.com/na-trium-144/webcface"
     DESCRIPTION "Web-based RPC & UI Library"
 )
@@ -380,7 +380,9 @@ set(CLI_SRC
     ${CPP_DIR}/client/version.cc
     ${CPP_DIR}/c_wcf/client.cc
     ${CPP_DIR}/c_wcf/value.cc
+    ${CPP_DIR}/c_wcf/text.cc
     ${CPP_DIR}/c_wcf/func.cc
+    ${CPP_DIR}/c_wcf/view.cc
 )
 set(EXAMPLE_SRC
     ${CPP_DIR}/example/main.cc
@@ -630,6 +632,19 @@ if(WEBCFACE_INSTALL)
         ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config.cmake
         ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config-version.cmake
         DESTINATION lib/cmake/${PROJECT_NAME}
+    )
+    if(WEBCFACE_USE_OPENCV)
+        set(WEBCFACE_PKGCONFIG_REQUIRES "spdlog opencv4")
+    else()
+        set(WEBCFACE_PKGCONFIG_REQUIRES "spdlog")
+    endif()
+    configure_file(
+        ${CMAKE_CURRENT_SOURCE_DIR}/cmake/${PROJECT_NAME}.pc.in
+        ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.pc
+        @ONLY
+    )
+    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.pc
+        DESTINATION lib/pkgconfig
     )
 
     if(WEBCFACE_INSTALL_SERVICE)

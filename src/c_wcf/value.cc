@@ -6,6 +6,9 @@ wcfStatus wcfValueSet(wcfClient *wcli, const char *field, double value) {
     if (!wcli_) {
         return WCF_BAD_WCLI;
     }
+    if (!field) {
+        return WCF_INVALID_ARGUMENT;
+    }
     wcli_->value(field).set(value);
     return WCF_OK;
 }
@@ -14,6 +17,9 @@ wcfStatus wcfValueSetVecD(wcfClient *wcli, const char *field,
     auto wcli_ = getWcli(wcli);
     if (!wcli_) {
         return WCF_BAD_WCLI;
+    }
+    if (!field) {
+        return WCF_INVALID_ARGUMENT;
     }
     wcli_->value(field).set(std::vector<double>(value, value + size));
     return WCF_OK;
@@ -26,10 +32,10 @@ wcfStatus wcfValueGetVecD(wcfClient *wcli, const char *member,
     if (!wcli_) {
         return WCF_BAD_WCLI;
     }
-    if (size < 0) {
+    if (!field || size < 0) {
         return WCF_INVALID_ARGUMENT;
     }
-    auto vec = wcli_->member(member).value(field).tryGetVec();
+    auto vec = wcli_->member(member ? member : "").value(field).tryGetVec();
     if (vec) {
         int copy_size =
             size < static_cast<int>(vec->size()) ? size : vec->size();
@@ -39,6 +45,24 @@ wcfStatus wcfValueGetVecD(wcfClient *wcli, const char *member,
         return WCF_OK;
     } else {
         std::memset(values, 0, size * sizeof(double));
+        return WCF_NOT_FOUND;
+    }
+}
+wcfStatus wcfValueGet(wcfClient *wcli, const char *member, const char *field,
+                      double *value) {
+    *value = 0;
+    auto wcli_ = getWcli(wcli);
+    if (!wcli_) {
+        return WCF_BAD_WCLI;
+    }
+    if (!field) {
+        return WCF_INVALID_ARGUMENT;
+    }
+    auto val = wcli_->member(member ? member : "").value(field).tryGet();
+    if (val) {
+        *value = *val;
+        return WCF_OK;
+    } else {
         return WCF_NOT_FOUND;
     }
 }

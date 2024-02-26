@@ -234,6 +234,15 @@ Value::tryGet(), Value::tryGetVec() などで値のリクエストをすると�
     sizeに受信した値の個数、valueに受信した値が入ります。
 
     初回の呼び出しでは`WCF_NOT_FOUND`を返し、別スレッドでリクエストが送信されます。
+    
+    <span class="since-c">1.7</span>
+    1つの値のみを受信する場合はwcfValueGetも使えます。
+    ```c
+    double value;
+    ret = wcfValueGet(wcli, "a", "hoge", &value);
+    ```
+
+    \note <span class="since-c">1.7</span> member名に空文字列またはNULLを指定すると自分自身を指します。
 
 - <b class="tab-title">JavaScript</b>
     ```ts

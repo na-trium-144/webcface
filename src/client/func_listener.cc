@@ -15,10 +15,11 @@ FuncListener &FuncListener::listen() {
                     "requires " + std::to_string(this->args_.size()) +
                     " arguments, got " + std::to_string(args_vec.size()));
             }
-            auto result = std::make_shared<std::promise<ValAdaptor>>();
+            std::promise<ValAdaptor> result;
+            std::future<ValAdaptor> result_f = result.get_future();
             this->dataLock()->func_listener_handlers[this->field_].push(
-                FuncCallHandle{args_vec, result});
-            return result->get_future().get();
+                FuncCallHandle{args_vec, std::move(result)});
+            return result_f.get();
         },
         nullptr,
         this->hidden_,

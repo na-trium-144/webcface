@@ -90,10 +90,17 @@ class Client : public Member {
     /*!
      * \brief 他のmemberにアクセスする
      *
+     * (ver1.7から)nameが空の場合 *this を返す
      * \sa members(), onMemberEntry()
      *
      */
-    Member member(const std::string &name) { return Member{data, name}; }
+    Member member(const std::string &name) {
+        if (name.empty()) {
+            return *this;
+        } else {
+            return Member{data, name};
+        }
+    }
     /*!
      * \brief サーバーに接続されている他のmemberのリストを得る。
      *
