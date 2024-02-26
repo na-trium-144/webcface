@@ -89,6 +89,7 @@ var annotated_dup =
       [ "AnonymousFunc", "classwebcface_1_1AnonymousFunc.html", "classwebcface_1_1AnonymousFunc" ],
       [ "Arg", "classwebcface_1_1Common_1_1Arg.html", "classwebcface_1_1Common_1_1Arg" ],
       [ "AsyncFuncResult", "classwebcface_1_1AsyncFuncResult.html", "classwebcface_1_1AsyncFuncResult" ],
+      [ "AsyncFuncResultSetter", "structwebcface_1_1AsyncFuncResultSetter.html", "structwebcface_1_1AsyncFuncResultSetter" ],
       [ "Box", "structwebcface_1_1Geometries_1_1Box.html", "structwebcface_1_1Geometries_1_1Box" ],
       [ "Canvas2D", "classwebcface_1_1Canvas2D.html", "classwebcface_1_1Canvas2D" ],
       [ "Canvas2DComponent", "classwebcface_1_1Canvas2DComponent.html", "classwebcface_1_1Canvas2DComponent" ],
@@ -148,5 +149,6 @@ var annotated_dup =
       [ "ViewComponentBase", "structwebcface_1_1Common_1_1ViewComponentBase.html", "structwebcface_1_1Common_1_1ViewComponentBase" ]
     ] ],
     [ "wcfFuncCallHandle", "structwcfFuncCallHandle.html", "structwcfFuncCallHandle" ],
-    [ "wcfMultiVal", "structwcfMultiVal.html", "structwcfMultiVal" ]
+    [ "wcfMultiVal", "structwcfMultiVal.html", "structwcfMultiVal" ],
+    [ "wcfViewComponent", "structwcfViewComponent.html", "structwcfViewComponent" ]
 ];

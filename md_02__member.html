@@ -172,7 +172,9 @@ $(document).ready(function(){initNavTree('md_02__member.html',''); initResizable
 </ul>
 </div><div class="tabbed"></div><p>これは<code>foo</code>という名前のMember(=Clientのコンストラクタに<code>foo</code>を入力したクライアント)を指します。</p>
 <p>Memberクラスから実際にそれぞれのデータにアクセスする方法は次ページ以降で説明します。</p>
-<p>このクライアント自身もMemberの1つですが、Client自体がMemberを継承したクラスになっているので、直接Clientのオブジェクト(wcli)に対して操作すればよいです。 (<code>member()</code> の引数に自身の名前を入れても同じです)</p>
+<p>このクライアント自身もMemberの1つですが、Client自体がMemberを継承したクラスになっているので、直接Clientのオブジェクト(wcli)に対して操作すればよいです。</p>
+<dl class="section note"><dt>Note</dt><dd><code>member()</code> の引数に自身の名前を入れると、Clientオブジェクトに直接アクセスする場合と同様です。 <br  />
+ <span class="since-c">1.7</span> 引数に空文字列を入れても同様です。</dd></dl>
 <h1><a class="anchor" id="autotoc_md30"></a>
 members</h1>
 <p>Client::members() で現在接続されているメンバーのリストが得られます (無名のものと、自分自身を除く)</p>
@@ -253,7 +255,7 @@ ping</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sat Feb 24 2024 04:46:09 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Mon Feb 26 2024 11:08:04 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

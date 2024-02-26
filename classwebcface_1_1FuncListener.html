@@ -201,8 +201,8 @@ Protected Member Functions</h2></td></tr>
 <tr class="separator:ac959389e860864dce0ac6176ea056841"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a97ecd85f8105c2a1f85bbe354ec9b33c" id="r_a97ecd85f8105c2a1f85bbe354ec9b33c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacewebcface_1_1Common.html#a1f914f5d15fb32aa05ca882cff7f2cd4">FuncWrapperType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Func.html#a97ecd85f8105c2a1f85bbe354ec9b33c">getDefaultFuncWrapper</a> () const</td></tr>
 <tr class="separator:a97ecd85f8105c2a1f85bbe354ec9b33c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7939430f461aeea40f64fda6188a0be8" id="r_a7939430f461aeea40f64fda6188a0be8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Func.html#a7939430f461aeea40f64fda6188a0be8">runImpl</a> (std::shared_ptr&lt; <a class="el" href="structwebcface_1_1Internal_1_1ClientData.html">Internal::ClientData</a> &gt; data, <a class="el" href="classwebcface_1_1AsyncFuncResult.html">AsyncFuncResult</a> r, std::vector&lt; <a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html">ValAdaptor</a> &gt; args_vec) const</td></tr>
-<tr class="separator:a7939430f461aeea40f64fda6188a0be8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a98a31b69dc44f2cd36853631872cf95e" id="r_a98a31b69dc44f2cd36853631872cf95e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Func.html#a98a31b69dc44f2cd36853631872cf95e">runImpl</a> (std::size_t caller_id, std::vector&lt; <a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html">ValAdaptor</a> &gt; args_vec) const</td></tr>
+<tr class="separator:a98a31b69dc44f2cd36853631872cf95e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa55156bf6486cd2b0c74394634474062" id="r_aa55156bf6486cd2b0c74394634474062"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:aa55156bf6486cd2b0c74394634474062"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Func.html">Func</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Func.html#aa55156bf6486cd2b0c74394634474062">set</a> (const T &amp;func)</td></tr>
 <tr class="memdesc:aa55156bf6486cd2b0c74394634474062"><td class="mdescLeft">&#160;</td><td class="mdescRight">関数からFuncInfoを構築しセットする  <br /></td></tr>
@@ -216,18 +216,16 @@ Protected Member Functions</h2></td></tr>
 <tr class="separator:a2f3ba42b8784ef2a1b3014ef617c1249"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0a6e0cb1563299a51d5f56819b197125" id="r_a0a6e0cb1563299a51d5f56819b197125"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html">ValAdaptor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Func.html#a0a6e0cb1563299a51d5f56819b197125">run</a> (const std::vector&lt; <a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html">ValAdaptor</a> &gt; &amp;args_vec) const</td></tr>
 <tr class="separator:a0a6e0cb1563299a51d5f56819b197125"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4d789e3559ae14942f4472340da8de58" id="r_a4d789e3559ae14942f4472340da8de58"><td class="memItemLeft" align="right" valign="top">std::pair&lt; <a class="el" href="c__wcf_8h.html#a3ac4b9c21f837154212676efa87b0b40">wcfStatus</a>, <a class="el" href="structwcfMultiVal.html">wcfMultiVal</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Func.html#a4d789e3559ae14942f4472340da8de58">runCVal</a> (const std::vector&lt; <a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html">ValAdaptor</a> &gt; &amp;args_vec) const</td></tr>
-<tr class="separator:a4d789e3559ae14942f4472340da8de58"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a00e2dc2334b2ecc26c1650fdb500273f" id="r_a00e2dc2334b2ecc26c1650fdb500273f"><td class="memTemplParams" colspan="2">template&lt;typename... Args&gt; </td></tr>
 <tr class="memitem:a00e2dc2334b2ecc26c1650fdb500273f"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html">ValAdaptor</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Func.html#a00e2dc2334b2ecc26c1650fdb500273f">operator()</a> (Args... <a class="el" href="classwebcface_1_1Func.html#a909f29d9c95a7bb90dec90183fd955fc">args</a>) const</td></tr>
 <tr class="memdesc:a00e2dc2334b2ecc26c1650fdb500273f"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classwebcface_1_1Func.html#a2f3ba42b8784ef2a1b3014ef617c1249" title="関数を実行する (同期)">run()</a>と同じ  <br /></td></tr>
 <tr class="separator:a00e2dc2334b2ecc26c1650fdb500273f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac918a688f7b7d7ea24d2351750db9c38" id="r_ac918a688f7b7d7ea24d2351750db9c38"><td class="memTemplParams" colspan="2">template&lt;typename... Args&gt; </td></tr>
-<tr class="memitem:ac918a688f7b7d7ea24d2351750db9c38"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1AsyncFuncResult.html">AsyncFuncResult</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Func.html#ac918a688f7b7d7ea24d2351750db9c38">runAsync</a> (Args... <a class="el" href="classwebcface_1_1Func.html#a909f29d9c95a7bb90dec90183fd955fc">args</a>) const</td></tr>
-<tr class="memdesc:ac918a688f7b7d7ea24d2351750db9c38"><td class="mdescLeft">&#160;</td><td class="mdescRight">関数を実行する (非同期)  <br /></td></tr>
-<tr class="separator:ac918a688f7b7d7ea24d2351750db9c38"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a53a399f639eafb5efacf783c44b70d97" id="r_a53a399f639eafb5efacf783c44b70d97"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1AsyncFuncResult.html">AsyncFuncResult</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Func.html#a53a399f639eafb5efacf783c44b70d97">runAsync</a> (const std::vector&lt; <a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html">ValAdaptor</a> &gt; &amp;args_vec) const</td></tr>
-<tr class="separator:a53a399f639eafb5efacf783c44b70d97"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6c7d2134b3d2c7a2fc8ad11999b9c30e" id="r_a6c7d2134b3d2c7a2fc8ad11999b9c30e"><td class="memTemplParams" colspan="2">template&lt;typename... Args&gt; </td></tr>
+<tr class="memitem:a6c7d2134b3d2c7a2fc8ad11999b9c30e"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1AsyncFuncResult.html">AsyncFuncResult</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Func.html#a6c7d2134b3d2c7a2fc8ad11999b9c30e">runAsync</a> (Args... <a class="el" href="classwebcface_1_1Func.html#a909f29d9c95a7bb90dec90183fd955fc">args</a>) const</td></tr>
+<tr class="memdesc:a6c7d2134b3d2c7a2fc8ad11999b9c30e"><td class="mdescLeft">&#160;</td><td class="mdescRight">関数を実行する (非同期)  <br /></td></tr>
+<tr class="separator:a6c7d2134b3d2c7a2fc8ad11999b9c30e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a53f34fc1054b91f7a9fa4f795d9c70e2" id="r_a53f34fc1054b91f7a9fa4f795d9c70e2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1AsyncFuncResult.html">AsyncFuncResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Func.html#a53f34fc1054b91f7a9fa4f795d9c70e2">runAsync</a> (const std::vector&lt; <a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html">ValAdaptor</a> &gt; &amp;args_vec) const</td></tr>
+<tr class="separator:a53f34fc1054b91f7a9fa4f795d9c70e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaa3ac7a20ca3b5e5b747213b3f435719" id="r_aaa3ac7a20ca3b5e5b747213b3f435719"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacewebcface_1_1Common.html#acd1dd9e2d5f885ad3f73197cfa6b0185">ValType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Func.html#aaa3ac7a20ca3b5e5b747213b3f435719">returnType</a> () const</td></tr>
 <tr class="memdesc:aaa3ac7a20ca3b5e5b747213b3f435719"><td class="mdescLeft">&#160;</td><td class="mdescRight">戻り値の型を返す  <br /></td></tr>
 <tr class="separator:aaa3ac7a20ca3b5e5b747213b3f435719"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -767,8 +765,8 @@ template&lt;typename... Args&gt; </div>
 
 </div>
 </div>
-<a id="ac918a688f7b7d7ea24d2351750db9c38" name="ac918a688f7b7d7ea24d2351750db9c38"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac918a688f7b7d7ea24d2351750db9c38">&#9670;&#160;</a></span>runAsync() <span class="overload">[1/2]</span></h2>
+<a id="a6c7d2134b3d2c7a2fc8ad11999b9c30e" name="a6c7d2134b3d2c7a2fc8ad11999b9c30e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6c7d2134b3d2c7a2fc8ad11999b9c30e">&#9670;&#160;</a></span>runAsync() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -779,7 +777,7 @@ template&lt;typename... Args&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classwebcface_1_1AsyncFuncResult.html">AsyncFuncResult</a> &amp; runAsync </td>
+          <td class="memname"><a class="el" href="classwebcface_1_1AsyncFuncResult.html">AsyncFuncResult</a> runAsync </td>
           <td>(</td>
           <td class="paramtype">Args...&#160;</td>
           <td class="paramname"><em>args</em></td><td>)</td>
@@ -794,13 +792,12 @@ template&lt;typename... Args&gt; </div>
 </div><div class="memdoc">
 
 <p>関数を実行する (非同期) </p>
-<p>非同期で実行する 戻り値やエラー、例外はAsyncFuncResultから取得する</p>
-<p>AsyncFuncResultはClient内部で保持されているのでClientが破棄されるまで参照は切れない </p>
+<p>非同期で実行する 戻り値やエラー、例外はAsyncFuncResultから取得する </p>
 
 </div>
 </div>
-<a id="a53a399f639eafb5efacf783c44b70d97" name="a53a399f639eafb5efacf783c44b70d97"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a53a399f639eafb5efacf783c44b70d97">&#9670;&#160;</a></span>runAsync() <span class="overload">[2/2]</span></h2>
+<a id="a53f34fc1054b91f7a9fa4f795d9c70e2" name="a53f34fc1054b91f7a9fa4f795d9c70e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a53f34fc1054b91f7a9fa4f795d9c70e2">&#9670;&#160;</a></span>runAsync() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -809,7 +806,7 @@ template&lt;typename... Args&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classwebcface_1_1AsyncFuncResult.html">AsyncFuncResult</a> &amp; runAsync </td>
+          <td class="memname"><a class="el" href="classwebcface_1_1AsyncFuncResult.html">AsyncFuncResult</a> runAsync </td>
           <td>(</td>
           <td class="paramtype">const std::vector&lt; <a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html">ValAdaptor</a> &gt; &amp;&#160;</td>
           <td class="paramname"><em>args_vec</em></td><td>)</td>
@@ -825,34 +822,8 @@ template&lt;typename... Args&gt; </div>
 
 </div>
 </div>
-<a id="a4d789e3559ae14942f4472340da8de58" name="a4d789e3559ae14942f4472340da8de58"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4d789e3559ae14942f4472340da8de58">&#9670;&#160;</a></span>runCVal()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::pair&lt; <a class="el" href="c__wcf_8h.html#a3ac4b9c21f837154212676efa87b0b40">wcfStatus</a>, <a class="el" href="structwcfMultiVal.html">wcfMultiVal</a> * &gt; runCVal </td>
-          <td>(</td>
-          <td class="paramtype">const std::vector&lt; <a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html">ValAdaptor</a> &gt; &amp;&#160;</td>
-          <td class="paramname"><em>args_vec</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a7939430f461aeea40f64fda6188a0be8" name="a7939430f461aeea40f64fda6188a0be8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7939430f461aeea40f64fda6188a0be8">&#9670;&#160;</a></span>runImpl()</h2>
+<a id="a98a31b69dc44f2cd36853631872cf95e" name="a98a31b69dc44f2cd36853631872cf95e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a98a31b69dc44f2cd36853631872cf95e">&#9670;&#160;</a></span>runImpl()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -863,14 +834,8 @@ template&lt;typename... Args&gt; </div>
         <tr>
           <td class="memname">void runImpl </td>
           <td>(</td>
-          <td class="paramtype">std::shared_ptr&lt; <a class="el" href="structwebcface_1_1Internal_1_1ClientData.html">Internal::ClientData</a> &gt;&#160;</td>
-          <td class="paramname"><em>data</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classwebcface_1_1AsyncFuncResult.html">AsyncFuncResult</a>&#160;</td>
-          <td class="paramname"><em>r</em>, </td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>caller_id</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -1344,7 +1309,7 @@ template&lt;typename ScopeGuard &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="classwebcface_1_1FuncListener.html">FuncListener</a></li>
-    <li class="footer">Generated on Sat Feb 24 2024 04:46:09 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Mon Feb 26 2024 11:08:04 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

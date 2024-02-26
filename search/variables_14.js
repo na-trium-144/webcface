@@ -11,6 +11,7 @@ var searchData=
   ['view_8',['view',['../structwebcface_1_1Server_1_1ClientData.html#af9b4d9963a3a0d4d813f3c49041b6ba7',1,'webcface::Server::ClientData']]],
   ['view_5fchange_5fevent_9',['view_change_event',['../structwebcface_1_1Internal_1_1ClientData.html#a700e22120dae85e1ec98c5f5b608b59f',1,'webcface::Internal::ClientData']]],
   ['view_5fentry_5fevent_10',['view_entry_event',['../structwebcface_1_1Internal_1_1ClientData.html#a108c030a8e9e5cdae706deeeb7dc7057',1,'webcface::Internal::ClientData']]],
-  ['view_5freq_11',['view_req',['../structwebcface_1_1Server_1_1ClientData.html#ae4a142b5a4364ec9785c085ac88891e7',1,'webcface::Server::ClientData']]],
-  ['view_5fstore_12',['view_store',['../structwebcface_1_1Internal_1_1ClientData.html#acd227dc80d599dfb2121a1668ea1dc92',1,'webcface::Internal::ClientData']]]
+  ['view_5flist_11',['view_list',['../namespacewebcface_1_1c__wcf.html#ad00c61be6f2c302f30305a8d2c9fea8b',1,'webcface::view_list'],['../namespacewebcface_1_1c__wcf.html#ad00c61be6f2c302f30305a8d2c9fea8b',1,'webcface::c_wcf::view_list']]],
+  ['view_5freq_12',['view_req',['../structwebcface_1_1Server_1_1ClientData.html#ae4a142b5a4364ec9785c085ac88891e7',1,'webcface::Server::ClientData']]],
+  ['view_5fstore_13',['view_store',['../structwebcface_1_1Internal_1_1ClientData.html#acd227dc80d599dfb2121a1668ea1dc92',1,'webcface::Internal::ClientData']]]
 ];

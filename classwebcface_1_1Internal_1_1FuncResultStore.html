@@ -153,26 +153,31 @@ $(document).ready(function(){initNavTree('classwebcface_1_1Internal_1_1FuncResul
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:adc1e3c995d4739088e53324bf9ed8c29" id="r_adc1e3c995d4739088e53324bf9ed8c29"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1AsyncFuncResult.html">AsyncFuncResult</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Internal_1_1FuncResultStore.html#adc1e3c995d4739088e53324bf9ed8c29">addResult</a> (const std::string &amp;caller, const <a class="el" href="structwebcface_1_1Field.html">Field</a> &amp;base)</td></tr>
-<tr class="memdesc:adc1e3c995d4739088e53324bf9ed8c29"><td class="mdescLeft">&#160;</td><td class="mdescRight">新しいcaller_idを振って新しいAsyncFuncResultを生成しそれを返す  <br /></td></tr>
-<tr class="separator:adc1e3c995d4739088e53324bf9ed8c29"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac20cfc93c1339d86ba319285ea35acad" id="r_ac20cfc93c1339d86ba319285ea35acad"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1AsyncFuncResult.html">AsyncFuncResult</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Internal_1_1FuncResultStore.html#ac20cfc93c1339d86ba319285ea35acad">getResult</a> (std::size_t caller_id)</td></tr>
-<tr class="memdesc:ac20cfc93c1339d86ba319285ea35acad"><td class="mdescLeft">&#160;</td><td class="mdescRight">caller_idに対応するresultを返す  <br /></td></tr>
-<tr class="separator:ac20cfc93c1339d86ba319285ea35acad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6d3928f6b27622a0ea13fb9dcd9eaacf" id="r_a6d3928f6b27622a0ea13fb9dcd9eaacf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1AsyncFuncResult.html">AsyncFuncResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Internal_1_1FuncResultStore.html#a6d3928f6b27622a0ea13fb9dcd9eaacf">addResult</a> (const <a class="el" href="structwebcface_1_1Field.html">Field</a> &amp;base)</td></tr>
+<tr class="memdesc:a6d3928f6b27622a0ea13fb9dcd9eaacf"><td class="mdescLeft">&#160;</td><td class="mdescRight">新しいcaller_idを振って新しいAsyncFuncResultを生成しそれを返す  <br /></td></tr>
+<tr class="separator:a6d3928f6b27622a0ea13fb9dcd9eaacf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a180171480b3b5abe976b3b68e407ff80" id="r_a180171480b3b5abe976b3b68e407ff80"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structwebcface_1_1AsyncFuncResultSetter.html">AsyncFuncResultSetter</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Internal_1_1FuncResultStore.html#a180171480b3b5abe976b3b68e407ff80">resultSetter</a> (std::size_t caller_id)</td></tr>
+<tr class="memdesc:a180171480b3b5abe976b3b68e407ff80"><td class="mdescLeft">&#160;</td><td class="mdescRight">promiseを取得  <br /></td></tr>
+<tr class="separator:a180171480b3b5abe976b3b68e407ff80"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac49e5f547c6e832a91b736a9252847e7" id="r_ac49e5f547c6e832a91b736a9252847e7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Internal_1_1FuncResultStore.html#ac49e5f547c6e832a91b736a9252847e7">removeResultSetter</a> (std::size_t caller_id)</td></tr>
+<tr class="memdesc:ac49e5f547c6e832a91b736a9252847e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">resultを設定し終わったpromiseを削除  <br /></td></tr>
+<tr class="separator:ac49e5f547c6e832a91b736a9252847e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
 <tr class="memitem:ad5e0dbd36f0d71fce9b00b7f991b2f38" id="r_ad5e0dbd36f0d71fce9b00b7f991b2f38"><td class="memItemLeft" align="right" valign="top">std::mutex&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Internal_1_1FuncResultStore.html#ad5e0dbd36f0d71fce9b00b7f991b2f38">mtx</a></td></tr>
 <tr class="separator:ad5e0dbd36f0d71fce9b00b7f991b2f38"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa502b4aa1f4086894cdfc3288a0ee881" id="r_aa502b4aa1f4086894cdfc3288a0ee881"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classwebcface_1_1AsyncFuncResult.html">AsyncFuncResult</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Internal_1_1FuncResultStore.html#aa502b4aa1f4086894cdfc3288a0ee881">results</a></td></tr>
-<tr class="separator:aa502b4aa1f4086894cdfc3288a0ee881"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a000588e714e272d7f0e2dd01d7eafe72" id="r_a000588e714e272d7f0e2dd01d7eafe72"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; std::size_t, <a class="el" href="structwebcface_1_1AsyncFuncResultSetter.html">AsyncFuncResultSetter</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Internal_1_1FuncResultStore.html#a000588e714e272d7f0e2dd01d7eafe72">result_setter</a></td></tr>
+<tr class="separator:a000588e714e272d7f0e2dd01d7eafe72"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad9420448994757ee4ac10d0428747c56" id="r_ad9420448994757ee4ac10d0428747c56"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Internal_1_1FuncResultStore.html#ad9420448994757ee4ac10d0428747c56">next_caller_id</a> = 0</td></tr>
+<tr class="separator:ad9420448994757ee4ac10d0428747c56"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>AsyncFuncResultのリストを保持する。 </p>
 <p>関数の実行結果が返ってきた時参照する また、実行するたびに連番を振る必要があるcallback_idの管理にも使う </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="adc1e3c995d4739088e53324bf9ed8c29" name="adc1e3c995d4739088e53324bf9ed8c29"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adc1e3c995d4739088e53324bf9ed8c29">&#9670;&#160;</a></span>addResult()</h2>
+<a id="a6d3928f6b27622a0ea13fb9dcd9eaacf" name="a6d3928f6b27622a0ea13fb9dcd9eaacf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6d3928f6b27622a0ea13fb9dcd9eaacf">&#9670;&#160;</a></span>addResult()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -181,21 +186,11 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classwebcface_1_1AsyncFuncResult.html">AsyncFuncResult</a> &amp; addResult </td>
+          <td class="memname"><a class="el" href="classwebcface_1_1AsyncFuncResult.html">AsyncFuncResult</a> addResult </td>
           <td>(</td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>caller</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
           <td class="paramtype">const <a class="el" href="structwebcface_1_1Field.html">Field</a> &amp;&#160;</td>
-          <td class="paramname"><em>base</em>&#160;</td>
-        </tr>
-        <tr>
+          <td class="paramname"><em>base</em></td><td>)</td>
           <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -209,8 +204,8 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="ac20cfc93c1339d86ba319285ea35acad" name="ac20cfc93c1339d86ba319285ea35acad"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac20cfc93c1339d86ba319285ea35acad">&#9670;&#160;</a></span>getResult()</h2>
+<a id="ac49e5f547c6e832a91b736a9252847e7" name="ac49e5f547c6e832a91b736a9252847e7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac49e5f547c6e832a91b736a9252847e7">&#9670;&#160;</a></span>removeResultSetter()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -219,7 +214,7 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classwebcface_1_1AsyncFuncResult.html">AsyncFuncResult</a> &amp; getResult </td>
+          <td class="memname">void removeResultSetter </td>
           <td>(</td>
           <td class="paramtype">std::size_t&#160;</td>
           <td class="paramname"><em>caller_id</em></td><td>)</td>
@@ -233,8 +228,35 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>caller_idに対応するresultを返す </p>
-<p>存在しない場合out_of_rangeを投げる </p>
+<p>resultを設定し終わったpromiseを削除 </p>
+
+</div>
+</div>
+<a id="a180171480b3b5abe976b3b68e407ff80" name="a180171480b3b5abe976b3b68e407ff80"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a180171480b3b5abe976b3b68e407ff80">&#9670;&#160;</a></span>resultSetter()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structwebcface_1_1AsyncFuncResultSetter.html">AsyncFuncResultSetter</a> &amp; resultSetter </td>
+          <td>(</td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>caller_id</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>promiseを取得 </p>
 
 </div>
 </div>
@@ -261,8 +283,8 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="aa502b4aa1f4086894cdfc3288a0ee881" name="aa502b4aa1f4086894cdfc3288a0ee881"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa502b4aa1f4086894cdfc3288a0ee881">&#9670;&#160;</a></span>results</h2>
+<a id="ad9420448994757ee4ac10d0428747c56" name="ad9420448994757ee4ac10d0428747c56"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad9420448994757ee4ac10d0428747c56">&#9670;&#160;</a></span>next_caller_id</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -271,7 +293,29 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt;<a class="el" href="classwebcface_1_1AsyncFuncResult.html">AsyncFuncResult</a>&gt; results</td>
+          <td class="memname">std::size_t next_caller_id = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a000588e714e272d7f0e2dd01d7eafe72" name="a000588e714e272d7f0e2dd01d7eafe72"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a000588e714e272d7f0e2dd01d7eafe72">&#9670;&#160;</a></span>result_setter</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::unordered_map&lt;std::size_t, <a class="el" href="structwebcface_1_1AsyncFuncResultSetter.html">AsyncFuncResultSetter</a>&gt; result_setter</td>
         </tr>
       </table>
   </td>
@@ -292,7 +336,7 @@ Private Attributes</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="namespacewebcface_1_1Internal.html">Internal</a></li><li class="navelem"><a class="el" href="classwebcface_1_1Internal_1_1FuncResultStore.html">FuncResultStore</a></li>
-    <li class="footer">Generated on Sat Feb 24 2024 04:46:09 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Mon Feb 26 2024 11:08:04 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

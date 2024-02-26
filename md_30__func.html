@@ -142,21 +142,21 @@ $(document).ready(function(){initNavTree('md_30__func.html',''); initResizable()
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md107">関数の登録</a><ul><li class="level2"><a href="#autotoc_md108">引数と戻り値型</a></li>
-<li class="level2"><a href="#autotoc_md109">hidden属性</a></li>
-<li class="level2"><a href="#autotoc_md110">実行条件</a></li>
+<ul><li class="level1"><a href="#autotoc_md108">関数の登録</a><ul><li class="level2"><a href="#autotoc_md109">引数と戻り値型</a></li>
+<li class="level2"><a href="#autotoc_md110">hidden属性</a></li>
+<li class="level2"><a href="#autotoc_md111">実行条件</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md111">FuncListener</a></li>
-<li class="level1"><a href="#autotoc_md112">関数の情報の取得</a><ul><li class="level2"><a href="#autotoc_md113">Entry</a></li>
+<li class="level1"><a href="#autotoc_md112">FuncListener</a></li>
+<li class="level1"><a href="#autotoc_md113">関数の情報の取得</a><ul><li class="level2"><a href="#autotoc_md114">Entry</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md114">関数の実行</a><ul><li class="level2"><a href="#autotoc_md115">runAsync</a></li>
+<li class="level1"><a href="#autotoc_md115">関数の実行</a><ul><li class="level2"><a href="#autotoc_md116">runAsync</a></li>
 </ul>
 </li>
 </ul>
 </div>
-<div class="textblock"><p><a class="anchor" id="autotoc_md106"></a></p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md107"></a></p>
 <dl class="section since"><dt>Since</dt><dd><span class="since-c"></span> <span class="since-js"></span> <span class="since-py"></span> </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><ul>
 <li>C++ <a class="el" href="classwebcface_1_1Func.html" title="関数1つを表すクラス">webcface::Func</a></li>
@@ -165,7 +165,7 @@ $(document).ready(function(){initNavTree('md_30__func.html',''); initResizable()
 </ul>
 </dd></dl>
 <p>他Memberから呼び出せる関数の登録、 また他Memberの関数の呼び出しができます。</p>
-<h1><a class="anchor" id="autotoc_md107"></a>
+<h1><a class="anchor" id="autotoc_md108"></a>
 関数の登録</h1>
 <p>Client::func からFuncオブジェクトを作り、 Func::set() で関数を登録し、Client::sync()することで送信されます</p>
 <div class="tabbed"></div><div class="tabbed"><ul>
@@ -186,7 +186,7 @@ $(document).ready(function(){initNavTree('md_30__func.html',''); initResizable()
 </div><!-- fragment --></li>
 </ul>
 </div><div class="tabbed"></div><dl class="section note"><dt>Note</dt><dd>同じ名前のFuncに複数回関数をセットすると上書きされ、後に登録した関数のみが呼び出されます。 ただし引数や戻り値の型などの情報は更新されず、最初の関数のものと同じになります。</dd></dl>
-<h2><a class="anchor" id="autotoc_md108"></a>
+<h2><a class="anchor" id="autotoc_md109"></a>
 引数と戻り値型</h2>
 <div class="tabbed"></div><div class="tabbed"><ul>
 <li><p class="startli"><b class="tab-title">C++</b> Func::setArgs() で引数名などの情報や、引数に設定する条件をセットすることができます。 設定可能な情報の一覧は <a class="el" href="classwebcface_1_1Common_1_1Arg.html" title="引数の情報を表す。">webcface::Arg</a> を参照</p>
@@ -211,7 +211,7 @@ $(document).ready(function(){initNavTree('md_30__func.html',''); initResizable()
 <div class="line">])</div>
 </div><!-- fragment --></li>
 </ul>
-</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md109"></a>
+</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md110"></a>
 hidden属性</h2>
 <p>関数の設定後 Client::sync() することで他のクライアントからその関数の情報を見ることができるようになります。</p>
 <p>hidden属性をつけると他のMemberやWebUIから関数の存在を隠すことができます。 Client::funcEntries()でその関数の存在を確認したりFunc::args()などでの情報の取得ができなくなります。 ただし関数の名前がわかっていれば他Memberからでも実行は可能です。</p>
@@ -223,7 +223,7 @@ hidden属性</h2>
 <li><b class="tab-title">Python</b> set()関数(デコレータの場合はfunc())の引数に指定することで設定できます。 <div class="fragment"><div class="line">wcli.func(<span class="stringliteral">&quot;hoge&quot;</span>).set(hoge, return_type=float, args=[...], hidden=<span class="keyword">True</span>)</div>
 </div><!-- fragment --></li>
 </ul>
-</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md110"></a>
+</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md111"></a>
 実行条件</h2>
 <div class="tabbed"></div><div class="tabbed"><ul>
 <li><p class="startli"><b class="tab-title">C++</b> C++では呼び出された関数は別スレッドで非同期に実行されます。 これをメインスレッドと同期させたい場合は実行条件を設定することができます。 </p><div class="fragment"><div class="line">wcli.func(<span class="stringliteral">&quot;fuga&quot;</span>).setRunCondOnSync();</div>
@@ -241,7 +241,7 @@ hidden属性</h2>
 </div><!-- fragment --><p> で条件を何も課さないようにできます。</p>
 </li>
 </ul>
-</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md111"></a>
+</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md112"></a>
 FuncListener</h1>
 <p>呼び出されたとき実行する関数を登録する代わりに、呼び出されたかどうかを監視し任意のタイミングで値を返すということもできます。</p>
 <div class="tabbed"></div><div class="tabbed"><ul>
@@ -255,47 +255,47 @@ FuncListener</h1>
 <p class="startli">その関数がまだ呼び出されていない場合はstd::nulloptが返ります。 関数が呼び出された場合、<code>handle.args()</code>で引数を調べ、<code>handle.respond()</code>で関数のreturnと同様に関数の終了を示したり値を返してください。 また<code>handle.reject()</code>でエラーメッセージを返すことができます(呼び出し元にはruntime_errorを投げたものとして返ります)</p>
 <p class="startli">詳細は <a class="el" href="classwebcface_1_1FuncCallHandle.html">webcface::FuncCallHandle</a></p>
 </li>
-<li><p class="startli"><b class="tab-title">C</b> </p><div class="fragment"><div class="line"><a class="code hl_typedef" href="c__wcf_8h.html#a591e95597f03b0187640d6e065e0ebf9">wcfValType</a> args_type[3] = {<a class="code hl_define" href="c__wcf_8h.html#abd2a76bd13d2f46adc50b37dab5aea82">WCF_VAL_INT</a>, <a class="code hl_define" href="c__wcf_8h.html#a2306c4b946f0df0f3ea9c887a7166097">WCF_VAL_DOUBLE</a>, <a class="code hl_define" href="c__wcf_8h.html#aedda21f773048d009229f2191a402f49">WCF_VAL_STRING</a>};</div>
-<div class="line"><a class="code hl_function" href="c__wcf_2func_8cc.html#aa1c13b3edf6acd517d23943d2a17c86e">wcfFuncListen</a>(wcli, <span class="stringliteral">&quot;hoge&quot;</span>, args_type, 3, <a class="code hl_define" href="c__wcf_8h.html#abd2a76bd13d2f46adc50b37dab5aea82">WCF_VAL_INT</a>);</div>
-<div class="ttc" id="ac__wcf_2func_8cc_html_aa1c13b3edf6acd517d23943d2a17c86e"><div class="ttname"><a href="c__wcf_2func_8cc.html#aa1c13b3edf6acd517d23943d2a17c86e">wcfFuncListen</a></div><div class="ttdeci">wcfStatus wcfFuncListen(wcfClient *wcli, const char *field, const int *arg_types, int arg_size, int return_type)</div><div class="ttdoc">関数呼び出しの待受を開始する</div><div class="ttdef"><b>Definition</b> func.cc:68</div></div>
-<div class="ttc" id="ac__wcf_8h_html_a2306c4b946f0df0f3ea9c887a7166097"><div class="ttname"><a href="c__wcf_8h.html#a2306c4b946f0df0f3ea9c887a7166097">WCF_VAL_DOUBLE</a></div><div class="ttdeci">#define WCF_VAL_DOUBLE</div><div class="ttdef"><b>Definition</b> c_wcf.h:26</div></div>
-<div class="ttc" id="ac__wcf_8h_html_a591e95597f03b0187640d6e065e0ebf9"><div class="ttname"><a href="c__wcf_8h.html#a591e95597f03b0187640d6e065e0ebf9">wcfValType</a></div><div class="ttdeci">int wcfValType</div><div class="ttdef"><b>Definition</b> c_wcf.h:10</div></div>
-<div class="ttc" id="ac__wcf_8h_html_abd2a76bd13d2f46adc50b37dab5aea82"><div class="ttname"><a href="c__wcf_8h.html#abd2a76bd13d2f46adc50b37dab5aea82">WCF_VAL_INT</a></div><div class="ttdeci">#define WCF_VAL_INT</div><div class="ttdef"><b>Definition</b> c_wcf.h:24</div></div>
-<div class="ttc" id="ac__wcf_8h_html_aedda21f773048d009229f2191a402f49"><div class="ttname"><a href="c__wcf_8h.html#aedda21f773048d009229f2191a402f49">WCF_VAL_STRING</a></div><div class="ttdeci">#define WCF_VAL_STRING</div><div class="ttdef"><b>Definition</b> c_wcf.h:22</div></div>
+<li><p class="startli"><b class="tab-title">C</b> </p><div class="fragment"><div class="line"><a class="code hl_typedef" href="def__types_8h.html#a591e95597f03b0187640d6e065e0ebf9">wcfValType</a> args_type[3] = {<a class="code hl_define" href="def__types_8h.html#abd2a76bd13d2f46adc50b37dab5aea82">WCF_VAL_INT</a>, <a class="code hl_define" href="def__types_8h.html#a2306c4b946f0df0f3ea9c887a7166097">WCF_VAL_DOUBLE</a>, <a class="code hl_define" href="def__types_8h.html#aedda21f773048d009229f2191a402f49">WCF_VAL_STRING</a>};</div>
+<div class="line"><a class="code hl_function" href="c__wcf_2func_8cc.html#aa1c13b3edf6acd517d23943d2a17c86e">wcfFuncListen</a>(wcli, <span class="stringliteral">&quot;hoge&quot;</span>, args_type, 3, <a class="code hl_define" href="def__types_8h.html#abd2a76bd13d2f46adc50b37dab5aea82">WCF_VAL_INT</a>);</div>
+<div class="ttc" id="ac__wcf_2func_8cc_html_aa1c13b3edf6acd517d23943d2a17c86e"><div class="ttname"><a href="c__wcf_2func_8cc.html#aa1c13b3edf6acd517d23943d2a17c86e">wcfFuncListen</a></div><div class="ttdeci">wcfStatus wcfFuncListen(wcfClient *wcli, const char *field, const int *arg_types, int arg_size, int return_type)</div><div class="ttdoc">関数呼び出しの待受を開始する</div><div class="ttdef"><b>Definition</b> func.cc:102</div></div>
+<div class="ttc" id="adef__types_8h_html_a2306c4b946f0df0f3ea9c887a7166097"><div class="ttname"><a href="def__types_8h.html#a2306c4b946f0df0f3ea9c887a7166097">WCF_VAL_DOUBLE</a></div><div class="ttdeci">#define WCF_VAL_DOUBLE</div><div class="ttdef"><b>Definition</b> def_types.h:27</div></div>
+<div class="ttc" id="adef__types_8h_html_a591e95597f03b0187640d6e065e0ebf9"><div class="ttname"><a href="def__types_8h.html#a591e95597f03b0187640d6e065e0ebf9">wcfValType</a></div><div class="ttdeci">int wcfValType</div><div class="ttdef"><b>Definition</b> def_types.h:10</div></div>
+<div class="ttc" id="adef__types_8h_html_abd2a76bd13d2f46adc50b37dab5aea82"><div class="ttname"><a href="def__types_8h.html#abd2a76bd13d2f46adc50b37dab5aea82">WCF_VAL_INT</a></div><div class="ttdeci">#define WCF_VAL_INT</div><div class="ttdef"><b>Definition</b> def_types.h:25</div></div>
+<div class="ttc" id="adef__types_8h_html_aedda21f773048d009229f2191a402f49"><div class="ttname"><a href="def__types_8h.html#aedda21f773048d009229f2191a402f49">WCF_VAL_STRING</a></div><div class="ttdeci">#define WCF_VAL_STRING</div><div class="ttdef"><b>Definition</b> def_types.h:23</div></div>
 </div><!-- fragment --><p> で待ち受けを開始し、func.set()と同様関数が登録され他クライアントから見られるようになります。 (<a class="el" href="c__wcf_2func_8cc.html#aa1c13b3edf6acd517d23943d2a17c86e" title="関数呼び出しの待受を開始する">wcfFuncListen()</a>ではブロックはしません)</p>
 <p class="startli">その後、任意のタイミングで </p><div class="fragment"><div class="line"><a class="code hl_struct" href="structwcfFuncCallHandle.html">wcfFuncCallHandle</a> *handle;</div>
 <div class="line"><a class="code hl_function" href="c__wcf_2func_8cc.html#ab5e31cd0b36abb92a6a6ae74202b1415">wcfFuncFetchCall</a>(wcli, <span class="stringliteral">&quot;hoge&quot;</span>, &amp;handle);</div>
-<div class="ttc" id="ac__wcf_2func_8cc_html_ab5e31cd0b36abb92a6a6ae74202b1415"><div class="ttname"><a href="c__wcf_2func_8cc.html#ab5e31cd0b36abb92a6a6ae74202b1415">wcfFuncFetchCall</a></div><div class="ttdeci">wcfStatus wcfFuncFetchCall(wcfClient *wcli, const char *field, wcfFuncCallHandle **handle)</div><div class="ttdoc">関数が呼び出されたかどうかを確認</div><div class="ttdef"><b>Definition</b> func.cc:87</div></div>
-<div class="ttc" id="astructwcfFuncCallHandle_html"><div class="ttname"><a href="structwcfFuncCallHandle.html">wcfFuncCallHandle</a></div><div class="ttdoc">受信した関数呼び出しの情報を保持するstruct</div><div class="ttdef"><b>Definition</b> c_wcf.h:229</div></div>
+<div class="ttc" id="ac__wcf_2func_8cc_html_ab5e31cd0b36abb92a6a6ae74202b1415"><div class="ttname"><a href="c__wcf_2func_8cc.html#ab5e31cd0b36abb92a6a6ae74202b1415">wcfFuncFetchCall</a></div><div class="ttdeci">wcfStatus wcfFuncFetchCall(wcfClient *wcli, const char *field, wcfFuncCallHandle **handle)</div><div class="ttdoc">関数が呼び出されたかどうかを確認</div><div class="ttdef"><b>Definition</b> func.cc:121</div></div>
+<div class="ttc" id="astructwcfFuncCallHandle_html"><div class="ttname"><a href="structwcfFuncCallHandle.html">wcfFuncCallHandle</a></div><div class="ttdoc">受信した関数呼び出しの情報を保持するstruct</div><div class="ttdef"><b>Definition</b> def_types.h:66</div></div>
 </div><!-- fragment --><p> とすることで関数が呼び出されたかどうかを調べることができます。 listen時に指定した引数の個数と呼び出し時の個数が一致しない場合、fetchCallで取得する前に呼び出し元に例外が投げられます(呼び出されていないのと同じことになります)</p>
 <p class="startli">その関数がまだ呼び出されていない場合は<code>WCF_NOT_CALLED</code>が返ります。 関数が呼び出された場合<code>WCF_OK</code>が返り、<code>handle-&gt;args</code>に引数が格納されます。 </p><div class="fragment"><div class="line"><a class="code hl_struct" href="structwcfMultiVal.html">wcfMultiVal</a> ans = <a class="code hl_function" href="c__wcf_2client_8cc.html#aee7f0f53dcb913e408f3032f7c9f796b">wcfValD</a>(123.45);</div>
 <div class="line"><a class="code hl_function" href="c__wcf_2func_8cc.html#a0cde58bb43011b9e54fc80881cd19c30">wcfFuncRespond</a>(handle, &amp;ans);</div>
 <div class="ttc" id="ac__wcf_2client_8cc_html_aee7f0f53dcb913e408f3032f7c9f796b"><div class="ttname"><a href="c__wcf_2client_8cc.html#aee7f0f53dcb913e408f3032f7c9f796b">wcfValD</a></div><div class="ttdeci">wcfMultiVal wcfValD(double value)</div><div class="ttdef"><b>Definition</b> client.cc:57</div></div>
-<div class="ttc" id="ac__wcf_2func_8cc_html_a0cde58bb43011b9e54fc80881cd19c30"><div class="ttname"><a href="c__wcf_2func_8cc.html#a0cde58bb43011b9e54fc80881cd19c30">wcfFuncRespond</a></div><div class="ttdeci">wcfStatus wcfFuncRespond(const wcfFuncCallHandle *handle, const wcfMultiVal *value)</div><div class="ttdoc">関数呼び出しに対して値を返す</div><div class="ttdef"><b>Definition</b> func.cc:109</div></div>
-<div class="ttc" id="astructwcfMultiVal_html"><div class="ttname"><a href="structwcfMultiVal.html">wcfMultiVal</a></div><div class="ttdoc">数値と文字列をまとめて扱うためのstruct</div><div class="ttdef"><b>Definition</b> c_wcf.h:136</div></div>
+<div class="ttc" id="ac__wcf_2func_8cc_html_a0cde58bb43011b9e54fc80881cd19c30"><div class="ttname"><a href="c__wcf_2func_8cc.html#a0cde58bb43011b9e54fc80881cd19c30">wcfFuncRespond</a></div><div class="ttdeci">wcfStatus wcfFuncRespond(const wcfFuncCallHandle *handle, const wcfMultiVal *value)</div><div class="ttdoc">関数呼び出しに対して値を返す</div><div class="ttdef"><b>Definition</b> func.cc:144</div></div>
+<div class="ttc" id="astructwcfMultiVal_html"><div class="ttname"><a href="structwcfMultiVal.html">wcfMultiVal</a></div><div class="ttdoc">数値と文字列をまとめて扱うためのstruct</div><div class="ttdef"><b>Definition</b> def_types.h:40</div></div>
 </div><!-- fragment --><p> で関数のreturnと同様に関数を終了して値を返したり、 </p><div class="fragment"><div class="line"><a class="code hl_function" href="c__wcf_2func_8cc.html#a31bfc6b700cc627887821b6e7bfb9a81">wcfFuncReject</a>(handle, <span class="stringliteral">&quot;エラーメッセージ&quot;</span>);</div>
-<div class="ttc" id="ac__wcf_2func_8cc_html_a31bfc6b700cc627887821b6e7bfb9a81"><div class="ttname"><a href="c__wcf_2func_8cc.html#a31bfc6b700cc627887821b6e7bfb9a81">wcfFuncReject</a></div><div class="ttdeci">wcfStatus wcfFuncReject(const wcfFuncCallHandle *handle, const char *message)</div><div class="ttdoc">関数呼び出しに対してエラーメッセージを返す</div><div class="ttdef"><b>Definition</b> func.cc:123</div></div>
+<div class="ttc" id="ac__wcf_2func_8cc_html_a31bfc6b700cc627887821b6e7bfb9a81"><div class="ttname"><a href="c__wcf_2func_8cc.html#a31bfc6b700cc627887821b6e7bfb9a81">wcfFuncReject</a></div><div class="ttdeci">wcfStatus wcfFuncReject(const wcfFuncCallHandle *handle, const char *message)</div><div class="ttdoc">関数呼び出しに対してエラーメッセージを返す</div><div class="ttdef"><b>Definition</b> func.cc:155</div></div>
 </div><!-- fragment --><p> でエラーメッセージを返すことができます(呼び出し元にはruntime_errorを投げたものとして返ります)</p>
 </li>
 </ul>
-</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md112"></a>
+</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md113"></a>
 関数の情報の取得</h1>
 <p>Member::func() でFuncクラスのオブジェクトが得られ、 Func::returnType() や Func::args() で関数の引数や戻り値の情報を取得できます。</p>
 <p>他のデータ型と違ってデータをリクエストする機能はなく、 関数の情報はクライアントが関数を登録してsync()した時点で送られてきます。</p>
-<h2><a class="anchor" id="autotoc_md113"></a>
+<h2><a class="anchor" id="autotoc_md114"></a>
 Entry</h2>
 <p><strike>Member::funcs() で</strike> そのMemberが送信している関数のリストが得られます <br  />
  <span class="since-c">1.6</span> Member::funcEntries() に変更</p>
 <p>また、Member::onFuncEntry() で新しく関数が追加されたときのコールバックを設定できます</p>
 <p>いずれも使い方は <a class="el" href="md_10__value.html">Value</a> と同様なのでそちらを参照してください</p>
-<h1><a class="anchor" id="autotoc_md114"></a>
+<h1><a class="anchor" id="autotoc_md115"></a>
 関数の実行</h1>
 <p>Func::run() で関数を実行できます。引数を渡すこともでき、戻り値もそのまま返ってきます。 他クライアントの関数も同様にrun()で実行させることができます。</p>
 <p>実行した関数が例外を投げた場合、また引数の個数が一致しない場合などはrun()が例外を投げます。</p>
 <div class="tabbed"></div><div class="tabbed"><ul>
 <li><b class="tab-title">C++</b> <div class="fragment"><div class="line"><span class="keywordtype">double</span> ans = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).func(<span class="stringliteral">&quot;hoge&quot;</span>).run(1, <span class="stringliteral">&quot;aa&quot;</span>);</div>
 </div><!-- fragment --> Funcオブジェクトに()と引数をつけて直接呼び出すことでも同様に実行できます。 (<code>Func::operator()</code>)</li>
-<li><b class="tab-title">C</b> <div class="fragment"><div class="line"><a class="code hl_struct" href="structwcfMultiVal.html">wcfMultiVal</a> args[3] = {</div>
+<li><p class="startli"><b class="tab-title">C</b> </p><div class="fragment"><div class="line"><a class="code hl_struct" href="structwcfMultiVal.html">wcfMultiVal</a> args[3] = {</div>
 <div class="line">    <a class="code hl_function" href="c__wcf_2client_8cc.html#aa371cd469c55d58b0332f2261a120533">wcfValI</a>(42), <span class="comment">// int</span></div>
 <div class="line">    <a class="code hl_function" href="c__wcf_2client_8cc.html#aee7f0f53dcb913e408f3032f7c9f796b">wcfValD</a>(1.5), <span class="comment">// double</span></div>
 <div class="line">    <a class="code hl_function" href="c__wcf_2client_8cc.html#aef51e8d5db05da0a19a3c4f58a4c5193">wcfValS</a>(<span class="stringliteral">&quot;aaa&quot;</span>), <span class="comment">// string</span></div>
@@ -305,12 +305,14 @@ Entry</h2>
 <div class="line"><span class="comment">// ex.) ret = WCF_OK, ans-&gt;as_double = 123.45</span></div>
 <div class="ttc" id="ac__wcf_2client_8cc_html_aa371cd469c55d58b0332f2261a120533"><div class="ttname"><a href="c__wcf_2client_8cc.html#aa371cd469c55d58b0332f2261a120533">wcfValI</a></div><div class="ttdeci">wcfMultiVal wcfValI(int value)</div><div class="ttdef"><b>Definition</b> client.cc:53</div></div>
 <div class="ttc" id="ac__wcf_2client_8cc_html_aef51e8d5db05da0a19a3c4f58a4c5193"><div class="ttname"><a href="c__wcf_2client_8cc.html#aef51e8d5db05da0a19a3c4f58a4c5193">wcfValS</a></div><div class="ttdeci">wcfMultiVal wcfValS(const char *value)</div><div class="ttdef"><b>Definition</b> client.cc:61</div></div>
-<div class="ttc" id="ac__wcf_2func_8cc_html_a66bdb804a3f7e0b7ef620180fbab9dfe"><div class="ttname"><a href="c__wcf_2func_8cc.html#a66bdb804a3f7e0b7ef620180fbab9dfe">wcfFuncRun</a></div><div class="ttdeci">wcfStatus wcfFuncRun(wcfClient *wcli, const char *member, const char *field, const wcfMultiVal *args, int arg_size, wcfMultiVal **result)</div><div class="ttdoc">関数を呼び出す</div><div class="ttdef"><b>Definition</b> func.cc:4</div></div>
-</div><!-- fragment --> 関数が存在しない場合<code>WCF_NOT_FOUND</code>を返します。 関数が例外を投げた場合<code>WCF_EXCEPTION</code>を返し、ret-&gt;as_strにエラーメッセージが入ります。</li>
+<div class="ttc" id="ac__wcf_2func_8cc_html_a66bdb804a3f7e0b7ef620180fbab9dfe"><div class="ttname"><a href="c__wcf_2func_8cc.html#a66bdb804a3f7e0b7ef620180fbab9dfe">wcfFuncRun</a></div><div class="ttdeci">wcfStatus wcfFuncRun(wcfClient *wcli, const char *member, const char *field, const wcfMultiVal *args, int arg_size, wcfMultiVal **result)</div><div class="ttdoc">関数を呼び出す</div><div class="ttdef"><b>Definition</b> func.cc:30</div></div>
+</div><!-- fragment --><p> 関数が存在しない場合<code>WCF_NOT_FOUND</code>を返します。 関数が例外を投げた場合<code>WCF_EXCEPTION</code>を返し、ret-&gt;as_strにエラーメッセージが入ります。</p>
+<p class="startli"><span class="since-c">1.7</span> 結果が格納されているポインタは、不要になったら wcfDestroy(ans); で破棄してください。</p>
+</li>
 <li><b class="tab-title">Python</b> <div class="fragment"><div class="line">ans = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).func(<span class="stringliteral">&quot;hoge&quot;</span>).run(1, <span class="stringliteral">&quot;aa&quot;</span>)</div>
 </div><!-- fragment --> Funcオブジェクトに()と引数をつけて直接呼び出すことでも同様に実行できます。 (<code>Func::__call__</code>)</li>
 </ul>
-</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md115"></a>
+</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md116"></a>
 runAsync</h2>
 <p>Func::runAsync() は関数の実行を開始し、終了を待たずに続行します。 戻り値として AsyncFuncResult クラスのオブジェクトが返り、後から関数の戻り値や例外を取得できます。</p>
 <p>AsyncFuncResultからは started と result が取得できます。</p><ul>
@@ -328,8 +330,8 @@ runAsync</h2>
 <div class="line">    <a class="code hl_function" href="c__wcf_2client_8cc.html#aee7f0f53dcb913e408f3032f7c9f796b">wcfValD</a>(1.5),</div>
 <div class="line">    <a class="code hl_function" href="c__wcf_2client_8cc.html#aef51e8d5db05da0a19a3c4f58a4c5193">wcfValS</a>(<span class="stringliteral">&quot;aaa&quot;</span>),</div>
 <div class="line">};</div>
-<div class="line"><a class="code hl_typedef" href="c__wcf_8h.html#adde5cf85e4e5d0d5e980329221d1fac3">wcfAsyncFuncResult</a> *async_res;</div>
-<div class="line"><a class="code hl_function" href="c__wcf_2func_8cc.html#a2aa5bd18ab948b8e38fd3f62932e2554">wcfFuncRunAsync</a>(wcli_, <span class="stringliteral">&quot;a&quot;</span>, <span class="stringliteral">&quot;b&quot;</span>, args, 3, &amp;async_res);</div>
+<div class="line"><a class="code hl_typedef" href="def__types_8h.html#adde5cf85e4e5d0d5e980329221d1fac3">wcfAsyncFuncResult</a> *async_res;</div>
+<div class="line"><a class="code hl_function" href="c__wcf_2func_8cc.html#ac39ef7c2929a4cd2d7d65f0343d6cb32">wcfFuncRunAsync</a>(wcli_, <span class="stringliteral">&quot;a&quot;</span>, <span class="stringliteral">&quot;b&quot;</span>, args, 3, &amp;async_res);</div>
 <div class="line"> </div>
 <div class="line"><a class="code hl_struct" href="structwcfMultiVal.html">wcfMultiVal</a> *ans;</div>
 <div class="line"><span class="keywordtype">int</span> ret = <a class="code hl_function" href="c__wcf_2func_8cc.html#a394ed677c8419881c1501dc822ca07bf">wcfFuncGetResult</a>(async_res, &amp;ans);</div>
@@ -337,12 +339,13 @@ runAsync</h2>
 <div class="line"> </div>
 <div class="line"><span class="keywordtype">int</span> ret = <a class="code hl_function" href="c__wcf_2func_8cc.html#a5f1da69de76906baf2254538bede11ad">wcfFuncWaitResult</a>(async_res, &amp;ans);</div>
 <div class="line"><span class="comment">// ex.) ret = WCF_OK, ans-&gt;as_double = 123.45</span></div>
-<div class="ttc" id="ac__wcf_2func_8cc_html_a2aa5bd18ab948b8e38fd3f62932e2554"><div class="ttname"><a href="c__wcf_2func_8cc.html#a2aa5bd18ab948b8e38fd3f62932e2554">wcfFuncRunAsync</a></div><div class="ttdeci">wcfStatus wcfFuncRunAsync(wcfClient *wcli, const char *member, const char *field, const wcfMultiVal *args, int arg_size, wcfAsyncFuncResult **result)</div><div class="ttdoc">関数を非同期で呼び出す</div><div class="ttdef"><b>Definition</b> func.cc:23</div></div>
-<div class="ttc" id="ac__wcf_2func_8cc_html_a394ed677c8419881c1501dc822ca07bf"><div class="ttname"><a href="c__wcf_2func_8cc.html#a394ed677c8419881c1501dc822ca07bf">wcfFuncGetResult</a></div><div class="ttdeci">wcfStatus wcfFuncGetResult(wcfAsyncFuncResult *async_res, wcfMultiVal **result)</div><div class="ttdoc">非同期で呼び出した関数の実行結果を取得</div><div class="ttdef"><b>Definition</b> func.cc:43</div></div>
-<div class="ttc" id="ac__wcf_2func_8cc_html_a5f1da69de76906baf2254538bede11ad"><div class="ttname"><a href="c__wcf_2func_8cc.html#a5f1da69de76906baf2254538bede11ad">wcfFuncWaitResult</a></div><div class="ttdeci">wcfStatus wcfFuncWaitResult(wcfAsyncFuncResult *async_res, wcfMultiVal **result)</div><div class="ttdoc">非同期で呼び出した関数の実行完了まで待機し、結果を取得</div><div class="ttdef"><b>Definition</b> func.cc:57</div></div>
-<div class="ttc" id="ac__wcf_8h_html_adde5cf85e4e5d0d5e980329221d1fac3"><div class="ttname"><a href="c__wcf_8h.html#adde5cf85e4e5d0d5e980329221d1fac3">wcfAsyncFuncResult</a></div><div class="ttdeci">void wcfAsyncFuncResult</div><div class="ttdef"><b>Definition</b> c_wcf.h:162</div></div>
+<div class="ttc" id="ac__wcf_2func_8cc_html_a394ed677c8419881c1501dc822ca07bf"><div class="ttname"><a href="c__wcf_2func_8cc.html#a394ed677c8419881c1501dc822ca07bf">wcfFuncGetResult</a></div><div class="ttdeci">wcfStatus wcfFuncGetResult(wcfAsyncFuncResult *async_res, wcfMultiVal **result)</div><div class="ttdoc">非同期で呼び出した関数の実行結果を取得</div><div class="ttdef"><b>Definition</b> func.cc:71</div></div>
+<div class="ttc" id="ac__wcf_2func_8cc_html_a5f1da69de76906baf2254538bede11ad"><div class="ttname"><a href="c__wcf_2func_8cc.html#a5f1da69de76906baf2254538bede11ad">wcfFuncWaitResult</a></div><div class="ttdeci">wcfStatus wcfFuncWaitResult(wcfAsyncFuncResult *async_res, wcfMultiVal **result)</div><div class="ttdoc">非同期で呼び出した関数の実行完了まで待機し、結果を取得</div><div class="ttdef"><b>Definition</b> func.cc:88</div></div>
+<div class="ttc" id="ac__wcf_2func_8cc_html_ac39ef7c2929a4cd2d7d65f0343d6cb32"><div class="ttname"><a href="c__wcf_2func_8cc.html#ac39ef7c2929a4cd2d7d65f0343d6cb32">wcfFuncRunAsync</a></div><div class="ttdeci">wcfStatus wcfFuncRunAsync(wcfClient *wcli, const char *member, const char *field, const wcfMultiVal *args, int arg_size, wcfAsyncFuncResult **async_res)</div><div class="ttdoc">関数を非同期で呼び出す</div><div class="ttdef"><b>Definition</b> func.cc:50</div></div>
+<div class="ttc" id="adef__types_8h_html_adde5cf85e4e5d0d5e980329221d1fac3"><div class="ttname"><a href="def__types_8h.html#adde5cf85e4e5d0d5e980329221d1fac3">wcfAsyncFuncResult</a></div><div class="ttdeci">void wcfAsyncFuncResult</div><div class="ttdef"><b>Definition</b> def_types.h:11</div></div>
 </div><!-- fragment --><p> 関数の実行がまだ完了していなければwcfFuncGetResultは<code>WCF_NOT_RETURNED</code>を返します。</p>
 <p class="startli">wcfFuncWaitResult は関数の実行が完了し結果が返ってくるまで待機します。</p>
+<p class="startli"><span class="since-c">1.7</span> 結果が格納されているポインタは、不要になったら wcfDestroy(ans); で破棄してください。</p>
 </li>
 <li><b class="tab-title">JavaScript</b> <dl class="section note"><dt>Note</dt><dd>JavaScriptではrun()はなく、runAsync()のみ使えます。</dd></dl>
 <div class="fragment"><div class="line">import { AsyncFuncResult } from &quot;webcface&quot;;</div>
@@ -369,7 +372,7 @@ runAsync</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sat Feb 24 2024 04:46:09 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Mon Feb 26 2024 11:08:04 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

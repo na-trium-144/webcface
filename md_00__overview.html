@@ -268,7 +268,9 @@ CMakeを使わない場合は</summary>
 C</h2>
 <dl class="section since"><dt>Since</dt><dd><span class="since-c">1.5</span></dd></dl>
 <p>C++ではなくCからアクセスできるAPIとして、wcf〜 で始まる名前の関数やstructが用意されています。 (C++ライブラリのうちの一部の機能しかまだ実装していませんが)</p>
-<p><code>&lt;<a class="el" href="c__wcf_8h.html">webcface/c_wcf.h</a>&gt;</code> をincludeすることで使えます。 ほとんどの関数は戻り値がint型で、成功した場合0(=<code>WCF_OK</code>)、例外が発生した場合正の値を返します。</p>
+<p><strike>&lt;<a class="el" href="c__wcf_8h.html">webcface/c_wcf.h</a>&gt; をincludeすることで使えます。</strike> <br  />
+ <span class="since-c">1.7</span> &lt;<a class="el" href="wcf_8h.html">webcface/wcf.h</a>&gt; をincludeすることで使えます。(c_wcf.hも一応使えます) <br  />
+ ほとんどの関数は戻り値がint型で、成功した場合0(=<code>WCF_OK</code>)、例外が発生した場合正の値を返します。</p>
 <p>MATLABなど、Cのライブラリにアクセスすることができる言語からwebcfaceのライブラリをロードして使用することができます。</p>
 <p><strike>CMakeの書き方はC++の場合と同じです。</strike> <br  />
  <span class="since-c">1.5.1</span> Cの場合は <code>webcface::wcf</code> をリンクしてください。</p>
@@ -347,7 +349,7 @@ Log</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sat Feb 24 2024 04:46:09 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Mon Feb 26 2024 11:08:04 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

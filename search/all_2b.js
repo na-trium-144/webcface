@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['切断する_0',['切断する',['../md_01__client.html#autotoc_md25',1,'']]]
+  ['ログ出力_0',['ログ出力',['../md_01__client.html#autotoc_md28',1,'']]]
 ];

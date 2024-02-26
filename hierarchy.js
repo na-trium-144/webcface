@@ -68,6 +68,7 @@ var hierarchy =
       [ "FieldBaseComparable", "structwebcface_1_1Common_1_1FieldBaseComparable.html", null ],
       [ "Field", "structwebcface_1_1Field.html", [
         [ "AsyncFuncResult", "classwebcface_1_1AsyncFuncResult.html", null ],
+        [ "AsyncFuncResultSetter", "structwebcface_1_1AsyncFuncResultSetter.html", null ],
         [ "Canvas2D", "classwebcface_1_1Canvas2D.html", null ],
         [ "Canvas3D", "classwebcface_1_1Canvas3D.html", null ],
         [ "Func", "classwebcface_1_1Func.html", [
@@ -130,6 +131,7 @@ var hierarchy =
     ] ],
     [ "Geometry3D", "structwebcface_1_1Common_1_1Geometry3D.html", null ],
     [ "Geometry3D", "structwebcface_1_1Common_1_1Geometry3D.html", null ],
+    [ "HandleData", "structwebcface_1_1FuncCallHandle_1_1HandleData.html", null ],
     [ "ILogHandler", null, [
       [ "CustomLogger", "classwebcface_1_1Server_1_1CustomLogger.html", null ]
     ] ],
@@ -295,5 +297,6 @@ var hierarchy =
       [ "ViewComponent", "classwebcface_1_1ViewComponent.html", null ]
     ] ],
     [ "wcfFuncCallHandle", "structwcfFuncCallHandle.html", null ],
-    [ "wcfMultiVal", "structwcfMultiVal.html", null ]
+    [ "wcfMultiVal", "structwcfMultiVal.html", null ],
+    [ "wcfViewComponent", "structwcfViewComponent.html", null ]
 ];

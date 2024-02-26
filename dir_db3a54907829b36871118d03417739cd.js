@@ -18,8 +18,8 @@ var dir_db3a54907829b36871118d03417739cd =
     [ "logger.cc", "logger_8cc.html", null ],
     [ "member.cc", "member_8cc.html", null ],
     [ "robot_model.cc", "robot__model_8cc.html", "robot__model_8cc" ],
-    [ "text.cc", "text_8cc.html", "text_8cc" ],
+    [ "text.cc", "client_2text_8cc.html", "client_2text_8cc" ],
     [ "value.cc", "client_2value_8cc.html", "client_2value_8cc" ],
     [ "version.cc", "version_8cc.html", "version_8cc" ],
-    [ "view.cc", "view_8cc.html", "view_8cc" ]
+    [ "view.cc", "client_2view_8cc.html", "client_2view_8cc" ]
 ];

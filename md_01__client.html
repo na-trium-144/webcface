@@ -183,20 +183,23 @@ $(document).ready(function(){initNavTree('md_01__client.html',''); initResizable
 <div class="ttc" id="aclasswebcface_1_1Client_html"><div class="ttname"><a href="classwebcface_1_1Client.html">webcface::Client</a></div><div class="ttdoc">サーバーに接続するクライアント。</div><div class="ttdef"><b>Definition</b> client.h:18</div></div>
 <div class="ttc" id="awebcface_8h_html"><div class="ttname"><a href="webcface_8h.html">webcface.h</a></div></div>
 </div><!-- fragment --> 接続できているかどうかは <code>wcli.connected()</code> で取得できます。</li>
-<li><b class="tab-title">C</b> <div class="fragment"><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="c__wcf_8h.html">webcface/c_wcf.h</a>&gt;</span></div>
+<li><p class="startli"><b class="tab-title">C</b> </p><div class="fragment"><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="c__wcf_8h.html">webcface/c_wcf.h</a>&gt;</span></div>
 <div class="line"> </div>
-<div class="line"><a class="code hl_typedef" href="c__wcf_8h.html#a11e35bfe0822747dfabcce7f5220016a">wcfClient</a> *wcli = <a class="code hl_function" href="c__wcf_2client_8cc.html#a4ea5df14c6f1a58b4590f9269abf82bb">wcfInitDefault</a>(<span class="stringliteral">&quot;sample&quot;</span>);</div>
+<div class="line"><a class="code hl_typedef" href="def__types_8h.html#a11e35bfe0822747dfabcce7f5220016a">wcfClient</a> *wcli = <a class="code hl_function" href="c__wcf_2client_8cc.html#a4ea5df14c6f1a58b4590f9269abf82bb">wcfInitDefault</a>(<span class="stringliteral">&quot;sample&quot;</span>);</div>
 <div class="line"><a class="code hl_function" href="c__wcf_2client_8cc.html#ad84e50d3482bedb7ccfa278bfc00120c">wcfStart</a>(wcli);</div>
 <div class="ttc" id="ac__wcf_2client_8cc_html_a4ea5df14c6f1a58b4590f9269abf82bb"><div class="ttname"><a href="c__wcf_2client_8cc.html#a4ea5df14c6f1a58b4590f9269abf82bb">wcfInitDefault</a></div><div class="ttdeci">wcfClient * wcfInitDefault(const char *name)</div><div class="ttdoc">クライアントを初期化する</div><div class="ttdef"><b>Definition</b> client.cc:9</div></div>
 <div class="ttc" id="ac__wcf_2client_8cc_html_ad84e50d3482bedb7ccfa278bfc00120c"><div class="ttname"><a href="c__wcf_2client_8cc.html#ad84e50d3482bedb7ccfa278bfc00120c">wcfStart</a></div><div class="ttdeci">wcfStatus wcfStart(wcfClient *wcli)</div><div class="ttdoc">接続を開始する</div><div class="ttdef"><b>Definition</b> client.cc:37</div></div>
 <div class="ttc" id="ac__wcf_8h_html"><div class="ttname"><a href="c__wcf_8h.html">c_wcf.h</a></div></div>
-<div class="ttc" id="ac__wcf_8h_html_a11e35bfe0822747dfabcce7f5220016a"><div class="ttname"><a href="c__wcf_8h.html#a11e35bfe0822747dfabcce7f5220016a">wcfClient</a></div><div class="ttdeci">void wcfClient</div><div class="ttdef"><b>Definition</b> c_wcf.h:8</div></div>
-</div><!-- fragment --> でclientを生成し、接続します。 サーバーのアドレスとポートを指定したい場合<code><a class="el" href="c__wcf_2client_8cc.html#a91204ffa8e81e5821926147321aaf101" title="クライアントを初期化する">wcfInit()</a></code>を使います <div class="fragment"><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="c__wcf_8h.html">webcface/c_wcf.h</a>&gt;</span></div>
+<div class="ttc" id="adef__types_8h_html_a11e35bfe0822747dfabcce7f5220016a"><div class="ttname"><a href="def__types_8h.html#a11e35bfe0822747dfabcce7f5220016a">wcfClient</a></div><div class="ttdeci">void wcfClient</div><div class="ttdef"><b>Definition</b> def_types.h:8</div></div>
+</div><!-- fragment --><p> でclientを生成し、接続します。</p>
+<dl class="section note"><dt>Note</dt><dd><span class="since-c">1.7</span> 引数にnullptrを渡した場合空文字列(後述)と同様になります</dd></dl>
+<p>サーバーのアドレスとポートを指定したい場合<code><a class="el" href="c__wcf_2client_8cc.html#a91204ffa8e81e5821926147321aaf101" title="クライアントを初期化する">wcfInit()</a></code>を使います </p><div class="fragment"><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="c__wcf_8h.html">webcface/c_wcf.h</a>&gt;</span></div>
 <div class="line"> </div>
-<div class="line"><a class="code hl_typedef" href="c__wcf_8h.html#a11e35bfe0822747dfabcce7f5220016a">wcfClient</a> *wcli = <a class="code hl_function" href="c__wcf_2client_8cc.html#a91204ffa8e81e5821926147321aaf101">wcfInit</a>(<span class="stringliteral">&quot;sample&quot;</span>, <span class="stringliteral">&quot;127.0.0.1&quot;</span>, 7530);</div>
+<div class="line"><a class="code hl_typedef" href="def__types_8h.html#a11e35bfe0822747dfabcce7f5220016a">wcfClient</a> *wcli = <a class="code hl_function" href="c__wcf_2client_8cc.html#a91204ffa8e81e5821926147321aaf101">wcfInit</a>(<span class="stringliteral">&quot;sample&quot;</span>, <span class="stringliteral">&quot;127.0.0.1&quot;</span>, 7530);</div>
 <div class="line"><a class="code hl_function" href="c__wcf_2client_8cc.html#ad84e50d3482bedb7ccfa278bfc00120c">wcfStart</a>(wcli);</div>
 <div class="ttc" id="ac__wcf_2client_8cc_html_a91204ffa8e81e5821926147321aaf101"><div class="ttname"><a href="c__wcf_2client_8cc.html#a91204ffa8e81e5821926147321aaf101">wcfInit</a></div><div class="ttdeci">wcfClient * wcfInit(const char *name, const char *host, int port)</div><div class="ttdoc">クライアントを初期化する</div><div class="ttdef"><b>Definition</b> client.cc:4</div></div>
-</div><!-- fragment --> 接続できているかどうかは <code>wcfIsConnected(wcli)</code> で取得できます。</li>
+</div><!-- fragment --><p> 接続できているかどうかは <code>wcfIsConnected(wcli)</code> で取得できます。</p>
+</li>
 <li><b class="tab-title">JavaScript</b> <div class="fragment"><div class="line">import { Client } from &quot;webcface&quot;;</div>
 <div class="line"> </div>
 <div class="line">const wcli = Client(&quot;sample&quot;);</div>
@@ -313,7 +316,7 @@ sync</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sat Feb 24 2024 04:46:09 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Mon Feb 26 2024 11:08:04 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>
