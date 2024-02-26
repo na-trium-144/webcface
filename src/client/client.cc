@@ -260,9 +260,10 @@ void Internal::ClientData::syncData(bool is_first) {
     auto canvas2d_prev = canvas2d_store.getSendPrev(is_first);
     for (const auto &p : canvas2d_store.transferSend(is_first)) {
         auto v_prev = canvas2d_prev.find(p.first);
-        auto v_diff = view_store.getDiff(
-            &p.second->components,
-            v_prev == canvas2d_prev.end() ? nullptr : &v_prev->second->components);
+        auto v_diff = view_store.getDiff(&p.second->components,
+                                         v_prev == canvas2d_prev.end()
+                                             ? nullptr
+                                             : &v_prev->second->components);
         if (!v_diff->empty()) {
             Message::pack(buffer, len,
                           Message::Canvas2D{p.first, p.second->width,
@@ -501,14 +502,10 @@ void Internal::ClientData::onRecv(const std::string &message) {
         case MessageKind::call_response: {
             auto r = std::any_cast<WEBCFACE_NS::Message::CallResponse>(obj);
             try {
-                auto &res = this->func_result_store.getResult(r.caller_id);
-                res.started_->set_value(r.started);
+                this->func_result_store.resultSetter(r.caller_id)
+                    .setStarted(r.started);
                 if (!r.started) {
-                    try {
-                        throw FuncNotFound(res);
-                    } catch (...) {
-                        res.result_->set_exception(std::current_exception());
-                    }
+                    this->func_result_store.removeResultSetter(r.caller_id);
                 }
             } catch (const std::future_error &e) {
                 this->logger_internal->error(
@@ -524,18 +521,20 @@ void Internal::ClientData::onRecv(const std::string &message) {
         case MessageKind::call_result: {
             auto r = std::any_cast<WEBCFACE_NS::Message::CallResult>(obj);
             try {
-                auto &res = this->func_result_store.getResult(r.caller_id);
                 if (r.is_error) {
                     try {
                         throw std::runtime_error(
                             static_cast<std::string>(r.result));
                     } catch (...) {
-                        res.result_->set_exception(std::current_exception());
+                        this->func_result_store.resultSetter(r.caller_id)
+                            .setResultException(std::current_exception());
                     }
                 } else {
+                    this->func_result_store.resultSetter(r.caller_id)
+                        .setResult(r.result);
                     // todo: 戻り値の型?
-                    res.result_->set_value(ValAdaptor{r.result});
                 }
+                this->func_result_store.removeResultSetter(r.caller_id);
             } catch (const std::future_error &e) {
                 this->logger_internal->error(
                     "error receiving call result id={}: {}", r.caller_id,

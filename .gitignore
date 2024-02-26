@@ -4,6 +4,6 @@
 /CMakeSettings.json
 /webui/
 /dist/
-def.h
+/src/include/webcface/common/def.h
 version.rc
 /Testing/

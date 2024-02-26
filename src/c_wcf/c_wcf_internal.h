@@ -1,30 +1,53 @@
 #pragma once
 #include <algorithm>
 #include <vector>
-#include <webcface/c_wcf.h>
+#include <webcface/wcf.h>
 #include <webcface/client.h>
+#include <webcface/common/val.h>
 
 namespace WEBCFACE_NS {
 inline namespace c_wcf {
 /*!
  * \brief wcfInitで作られたクライアントのリスト
  *
- * wcfInit時に追加、wcfClose時に削除する
+ * wcfInit時にnewして追加、wcfClose時にdeleteして削除する
  *
  */
 inline std::vector<wcfClient *> wcli_list;
 
 /*!
- * \brief wcfFuncFetchCallで取得されたwcfFuncListenerHandlerのリスト
+ * \brief wcfFuncFetchCallで取得されたwcfFuncCallHandleのリスト
+ *
+ * wcfFuncCallHandleをnewして追加、returnかreject時にdeleteして削除
  *
  */
-inline std::vector<void *> fetched_handles;
+inline std::unordered_map<const wcfFuncCallHandle *, FuncCallHandle>
+    fetched_handles;
 
 /*!
  * \brief wcfFuncRunAsyncで取得されたwcfAsyncFuncResultのリスト
  *
+ * wcfFuncRunAsyncでnewし、GetResultやWaitResultでdelete
+ *
  */
 inline std::vector<AsyncFuncResult *> func_result_list;
+
+/*!
+ * \brief wcfFuncRun,
+ * wcfFuncGetResultで取得されたwcfMultiValとValAdaptorのリスト
+ *
+ * wcfMultiValをnewし、このリスト内のvalAdapterへのポインタをもつ
+ */
+inline std::unordered_map<const wcfMultiVal *, Common::ValAdaptor>
+    func_val_list;
+
+
+/*!
+ * \brief wcfViewGetで取得されたwcfViewComponentとViewComponentBase
+ */
+inline std::unordered_map<const wcfViewComponent *,
+                          const std::vector<ViewComponent>>
+    view_list;
 
 /*!
  * \brief voidポインタからclientオブジェクトを復元
@@ -39,17 +62,6 @@ inline Client *getWcli(wcfClient *wcli) {
         return nullptr;
     }
     return static_cast<Client *>(wcli);
-}
-/*!
- * \brief voidポインタからFuncListenerHandlerオブジェクトを復元
- *
- */
-inline const wcfFuncCallHandle *getFuncCallHandle(const void *handler) {
-    if (std::find(fetched_handles.begin(), fetched_handles.end(), handler) ==
-        fetched_handles.end()) {
-        return nullptr;
-    }
-    return static_cast<const wcfFuncCallHandle *>(handler);
 }
 
 inline AsyncFuncResult *getAsyncFuncResult(wcfAsyncFuncResult *res) {

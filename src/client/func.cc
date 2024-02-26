@@ -38,61 +38,46 @@ Func &Func::free() {
     return *this;
 }
 
-void Func::runImpl(std::shared_ptr<Internal::ClientData> data,
-                   AsyncFuncResult r, std::vector<ValAdaptor> args_vec) const {
+void Func::runImpl(std::size_t caller_id,
+                   std::vector<ValAdaptor> args_vec) const {
+    auto data = dataLock();
     auto func_info = data->func_store.getRecv(*this);
     if (func_info) {
-        r.started_->set_value(true);
+        data->func_result_store.resultSetter(caller_id).setStarted(true);
         try {
             auto ret = (*func_info)->run(args_vec);
-            r.result_->set_value(ret);
+            data->func_result_store.resultSetter(caller_id).setResult(ret);
         } catch (...) {
-            r.result_->set_exception(std::current_exception());
+            data->func_result_store.resultSetter(caller_id).setResultException(
+                std::current_exception());
         }
     } else {
-        r.started_->set_value(false);
-        try {
-            throw FuncNotFound(*this);
-        } catch (...) {
-            r.result_->set_exception(std::current_exception());
-        }
+        data->func_result_store.resultSetter(caller_id).setStarted(false);
     }
+    data->func_result_store.removeResultSetter(caller_id);
 }
 ValAdaptor Func::run(const std::vector<ValAdaptor> &args_vec) const {
     auto data = dataLock();
     if (data->isSelf(*this)) {
-        auto &r = data->func_result_store.addResult("", *this);
+        auto r = data->func_result_store.addResult(*this);
         // selfの場合このスレッドでそのまま関数を実行する
-        runImpl(data, r, args_vec);
+        runImpl(r.caller_id, args_vec);
         return r.result.get();
     } else {
         // リモートの場合runAsyncし結果が返るまで待機
-        auto &async_res = this->runAsync(args_vec);
+        auto async_res = this->runAsync(args_vec);
         return async_res.result.get();
         // 例外が発生した場合はthrowされる
     }
 }
-std::pair<wcfStatus, wcfMultiVal *>
-Func::runCVal(const std::vector<ValAdaptor> &args_vec) const {
+AsyncFuncResult Func::runAsync(const std::vector<ValAdaptor> &args_vec) const {
     auto data = dataLock();
-    if (data->isSelf(*this)) {
-        auto &r = data->func_result_store.addResult("", *this);
-        // selfの場合このスレッドでそのまま関数を実行する
-        runImpl(data, r, args_vec);
-        return r.toCVal();
-    } else {
-        // リモートの場合runAsyncし結果が返るまで待機
-        auto &async_res = this->runAsync(args_vec);
-        return async_res.toCVal();
-        // 例外が発生した場合はthrowされる
-    }
-}
-AsyncFuncResult &Func::runAsync(const std::vector<ValAdaptor> &args_vec) const {
-    auto data = dataLock();
-    auto &r = data->func_result_store.addResult("", *this);
+    auto r = data->func_result_store.addResult(*this);
     if (data->isSelf(*this)) {
         // selfの場合、新しいAsyncFuncResultに別スレッドで実行した結果を入れる
-        std::thread([=, *this, &r]() { runImpl(data, r, args_vec); }).detach();
+        std::thread([*this, caller_id = r.caller_id, args_vec]() {
+            runImpl(caller_id, args_vec);
+        }).detach();
     } else {
         // リモートの場合cli.sync()を待たずに呼び出しメッセージを送る
         data->message_queue->push(Message::packSingle(Message::Call{

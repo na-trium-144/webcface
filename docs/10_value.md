@@ -64,7 +64,7 @@ Client::value からValueオブジェクトを作り、 Value::set() でデー�
 
 </div>
 
-### 複数の値をまとめて送る
+### グループ化
 
 Valueの名前に半角ピリオドを含めると、WebUI上ではフォルダアイコンで表示されグループ化されて表示されます。
 
@@ -128,6 +128,8 @@ Valueに限らず他のデータ型 ([View](./13_view.md), [Canvas2D](./14_canva
 
 ROSのTopicではPointやTransformなど目的に応じてさまざまな型が用意されていますが、
 WebCFaceではそういう場合はValueを複数用意して送信することを想定しています。
+
+### 複数の値をまとめて送る
 
 \todo
 Pythonの辞書型への対応は未実装
@@ -227,6 +229,15 @@ Value::tryGet(), Value::tryGetVec() などで値のリクエストをすると�
     sizeに受信した値の個数、valueに受信した値が入ります。
 
     初回の呼び出しでは`WCF_NOT_FOUND`を返し、別スレッドでリクエストが送信されます。
+    
+    <span class="since-c">1.7</span>
+    1つの値のみを受信する場合はwcfValueGetも使えます。
+    ```c
+    double value;
+    ret = wcfValueGet(wcli, "a", "hoge", &value);
+    ```
+
+    \note <span class="since-c">1.7</span> member名に空文字列またはNULLを指定すると自分自身を指します。
 
 - <b class="tab-title">JavaScript</b>
     ```ts

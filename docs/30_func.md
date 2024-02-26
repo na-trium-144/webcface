@@ -287,6 +287,9 @@ Func::run() で関数を実行できます。引数を渡すこともでき、�
     関数が存在しない場合`WCF_NOT_FOUND`を返します。
     関数が例外を投げた場合`WCF_EXCEPTION`を返し、ret->as_strにエラーメッセージが入ります。
 
+    <span class="since-c">1.7</span>
+    結果が格納されているポインタは、不要になったら wcfDestroy(ans); で破棄してください。
+
 - <b class="tab-title">Python</b>
     ```py
     ans = wcli.member("foo").func("hoge").run(1, "aa")
@@ -337,6 +340,9 @@ AsyncFuncResultからは started と result が取得できます。
     関数の実行がまだ完了していなければwcfFuncGetResultは`WCF_NOT_RETURNED`を返します。
 
     wcfFuncWaitResult は関数の実行が完了し結果が返ってくるまで待機します。
+
+    <span class="since-c">1.7</span>
+    結果が格納されているポインタは、不要になったら wcfDestroy(ans); で破棄してください。
 
 - <b class="tab-title">JavaScript</b>
     \note

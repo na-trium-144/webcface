@@ -1027,7 +1027,8 @@ TEST_F(ClientTest, funcCall) {
     try {
         r.result.get();
     } catch (const std::runtime_error &e) {
-        EXPECT_EQ(std::string(e.what()), "a");
+        using namespace std::string_literals;
+        EXPECT_EQ(e.what(), "a"s);
     }
     dummy_s->recvClear();
 

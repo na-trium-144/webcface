@@ -2,12 +2,12 @@
 
 extern "C" {
 wcfClient *wcfInit(const char *name, const char *host, int port) {
-    auto wcli = new Client(name, host, port);
+    auto wcli = new Client(name ? name : "", host ? host : "127.0.0.1", port);
     wcli_list.push_back(wcli);
     return wcli;
 }
 wcfClient *wcfInitDefault(const char *name) {
-    return wcfInit(name, "127.0.0.1", WEBCFACE_DEFAULT_PORT);
+    return wcfInit(name ? name : "", "127.0.0.1", WEBCFACE_DEFAULT_PORT);
 }
 int wcfIsValid(wcfClient *wcli) {
     if (getWcli(wcli)) {
@@ -61,5 +61,23 @@ wcfMultiVal wcfValD(double value) {
 wcfMultiVal wcfValS(const char *value) {
     wcfMultiVal val = {.as_int = 0, .as_double = 0, .as_str = value};
     return val;
+}
+
+wcfStatus wcfDestroy(const void *ptr) {
+    auto f_ptr = static_cast<const wcfMultiVal *>(ptr);
+    auto f_it = func_val_list.find(f_ptr);
+    if (f_it != func_val_list.end()) {
+        func_val_list.erase(f_it);
+        delete f_ptr;
+        return WCF_OK;
+    }
+    auto v_ptr = static_cast<const wcfViewComponent *>(ptr);
+    auto v_it = view_list.find(v_ptr);
+    if (v_it != view_list.end()) {
+        view_list.erase(v_it);
+        delete[] v_ptr;
+        return WCF_OK;
+    }
+    return WCF_BAD_HANDLE;
 }
 }

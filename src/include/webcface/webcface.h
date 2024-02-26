@@ -8,7 +8,7 @@
 // ヘッダーの上下関係はここに書かれた順
 
 #include "common/def.h"
-#include "c_wcf.h"
+#include "wcf.h"
 
 #include "common/version.h"
 #include "common/val.h"

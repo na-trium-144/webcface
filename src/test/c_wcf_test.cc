@@ -9,6 +9,7 @@
 #include <webcface/view.h>
 #include <webcface/func.h>
 #include <webcface/common/def.h>
+#include <webcface/wcf.h>
 #include "../message/message.h"
 #include <chrono>
 #include <thread>
@@ -98,6 +99,7 @@ TEST_F(CClientTest, valueSend) {
 }
 TEST_F(CClientTest, valueReq) {
     double value[5] = {1, 1, 1, 1, 1};
+    double value1 = 1;
     int size;
     EXPECT_EQ(wcfValueGetVecD(wcli_, "a", "b", value, -1, &size),
               WCF_INVALID_ARGUMENT);
@@ -107,6 +109,8 @@ TEST_F(CClientTest, valueReq) {
     EXPECT_EQ(value[2], 0);
     EXPECT_EQ(value[3], 0);
     EXPECT_EQ(value[4], 0);
+    EXPECT_EQ(wcfValueGet(wcli_, "a", "b", &value1), WCF_NOT_FOUND);
+    EXPECT_EQ(value1, 0);
     EXPECT_EQ(wcfStart(wcli_), WCF_OK);
     wait();
     dummy_s->recv<Message::Req<Message::Value>>(
@@ -130,16 +134,78 @@ TEST_F(CClientTest, valueReq) {
     EXPECT_EQ(value[2], 2);
     EXPECT_EQ(value[3], 0);
     EXPECT_EQ(value[4], 0);
+    EXPECT_EQ(wcfValueGet(wcli_, "a", "b", &value1), WCF_OK);
+    EXPECT_EQ(value1, 1);
 
     value[0] = 0;
     value[1] = 0;
     value[2] = 0;
+    value1 = 0;
     size = 0;
     EXPECT_EQ(wcfValueGetVecD(wcli_, "a", "b.c", value, 5, &size), WCF_OK);
     EXPECT_EQ(size, 3);
+    EXPECT_EQ(wcfValueGet(wcli_, "a", "b.c", &value1), WCF_OK);
+    EXPECT_EQ(value1, 1);
+}
+TEST_F(CClientTest, textSend) {
+    EXPECT_EQ(wcfTextSet(wcli_, "a", "hello"), WCF_OK);
+    EXPECT_EQ(wcfSync(wcli_), WCF_OK);
+    wait();
+    dummy_s->recv<Message::Text>(
+        [&](const auto &obj) {
+            EXPECT_EQ(obj.field, "a");
+            EXPECT_EQ(*obj.data, "hello");
+        },
+        [&] { ADD_FAILURE() << "Text recv error"; });
+    dummy_s->recvClear();
+
+    EXPECT_EQ(wcfTextSetN(wcli_, "b", "hellohello", 5), WCF_OK);
+    EXPECT_EQ(wcfSync(wcli_), WCF_OK);
+    wait();
+    dummy_s->recv<Message::Text>(
+        [&](const auto &obj) {
+            EXPECT_EQ(obj.field, "b");
+            EXPECT_EQ(*obj.data, "hello");
+        },
+        [&] { ADD_FAILURE() << "Text recv error"; });
+    dummy_s->recvClear();
+}
+TEST_F(CClientTest, textReq) {
+    char text[5] = {1, 1, 1, 1, 1};
+    int size;
+    EXPECT_EQ(wcfTextGet(wcli_, "a", "b", text, -1, &size),
+              WCF_INVALID_ARGUMENT);
+    EXPECT_EQ(wcfTextGet(wcli_, "a", "b", text, 5, &size), WCF_NOT_FOUND);
+    EXPECT_EQ(text[0], 0);
+    EXPECT_EQ(wcfStart(wcli_), WCF_OK);
+    wait();
+    dummy_s->recv<Message::Req<Message::Text>>(
+        [&](const auto &obj) {
+            EXPECT_EQ(obj.member, "a");
+            EXPECT_EQ(obj.field, "b");
+            EXPECT_EQ(obj.req_id, 1);
+        },
+        [&] { ADD_FAILURE() << "Text Req recv error"; });
+    dummy_s->send(Message::Res<Message::Text>{
+        1, "", std::make_shared<std::string>("hello")});
+    dummy_s->send(Message::Res<Message::Text>{
+        1, "c", std::make_shared<std::string>("hello")});
+    wait();
+    EXPECT_EQ(wcfTextGet(wcli_, "a", "b", text, 5, &size), WCF_OK);
+    EXPECT_EQ(size, 5);
+    EXPECT_EQ(text[0], 'h');
+    EXPECT_EQ(text[1], 'e');
+    EXPECT_EQ(text[2], 'l');
+    EXPECT_EQ(text[3], 'l');
+    EXPECT_EQ(text[4], 0);
+
+    size = 0;
+    EXPECT_EQ(wcfTextGet(wcli_, "a", "b.c", text, 5, &size), WCF_OK);
+    EXPECT_EQ(size, 5);
 }
 
 TEST_F(CClientTest, funcRun) {
+    using namespace std::string_literals;
     EXPECT_EQ(wcfStart(wcli_), WCF_OK);
 
     wcfMultiVal args[3] = {
@@ -158,27 +224,36 @@ TEST_F(CClientTest, funcRun) {
         EXPECT_EQ(wcfFuncRun(wcli_, "a", "b", args, 3, &ret), WCF_NOT_FOUND);
         wcfFuncRunAsync(wcli_, "a", "b", args, 3, &async_res);
         EXPECT_EQ(wcfFuncGetResult(async_res, &async_ret), WCF_NOT_RETURNED);
+        EXPECT_EQ(wcfDestroy(async_ret), WCF_BAD_HANDLE);
         EXPECT_EQ(wcfFuncWaitResult(async_res, &async_ret), WCF_NOT_FOUND);
+        EXPECT_EQ(wcfDestroy(async_ret), WCF_OK);
+        EXPECT_EQ(wcfFuncWaitResult(async_res, &async_ret), WCF_BAD_HANDLE);
         // 2
         EXPECT_EQ(wcfFuncRun(wcli_, "a", "b", args, 3, &ret), WCF_OK);
         EXPECT_EQ(ret->as_int, 123);
         EXPECT_EQ(ret->as_double, 123.45);
-        EXPECT_EQ(std::string(ret->as_str), "123.45");
+        EXPECT_EQ(ret->as_str, "123.45"s);
+        EXPECT_EQ(wcfDestroy(ret), WCF_OK);
+        EXPECT_EQ(wcfDestroy(ret), WCF_BAD_HANDLE);
         wcfFuncRunAsync(wcli_, "a", "b", args, 3, &async_res);
         EXPECT_EQ(wcfFuncWaitResult(async_res, &async_ret), WCF_OK);
         EXPECT_EQ(async_ret->as_int, 123);
         EXPECT_EQ(async_ret->as_double, 123.45);
-        EXPECT_EQ(std::string(async_ret->as_str), "123.45");
+        EXPECT_EQ(async_ret->as_str, "123.45"s);
+        EXPECT_EQ(wcfDestroy(async_ret), WCF_OK);
+        EXPECT_EQ(wcfDestroy(async_ret), WCF_BAD_HANDLE);
         // 3
         EXPECT_EQ(wcfFuncRun(wcli_, "a", "b", args, 3, &ret), WCF_EXCEPTION);
         EXPECT_EQ(ret->as_int, 0);
         EXPECT_EQ(ret->as_double, 0);
-        EXPECT_EQ(std::string(ret->as_str), "error");
+        EXPECT_EQ(ret->as_str, "error"s);
+        EXPECT_EQ(wcfDestroy(ret), WCF_OK);
         wcfFuncRunAsync(wcli_, "a", "b", args, 3, &async_res);
         EXPECT_EQ(wcfFuncWaitResult(async_res, &async_ret), WCF_EXCEPTION);
         EXPECT_EQ(async_ret->as_int, 0);
         EXPECT_EQ(async_ret->as_double, 0);
-        EXPECT_EQ(std::string(async_ret->as_str), "error");
+        EXPECT_EQ(async_ret->as_str, "error"s);
+        EXPECT_EQ(wcfDestroy(async_ret), WCF_OK);
     });
 
     std::size_t caller_id = 0;
@@ -239,6 +314,7 @@ TEST_F(CClientTest, funcRun) {
 }
 
 TEST_F(CClientTest, funcListen) {
+    using namespace std::string_literals;
     EXPECT_EQ(wcfStart(wcli_), WCF_OK);
 
     int arg_types[3] = {WCF_VAL_INT, WCF_VAL_DOUBLE, WCF_VAL_STRING};
@@ -275,9 +351,9 @@ TEST_F(CClientTest, funcListen) {
     EXPECT_EQ(h->arg_size, 3);
     EXPECT_EQ(h->args[0].as_int, 42);
     EXPECT_EQ(h->args[0].as_double, 42.0);
-    EXPECT_EQ(std::string(h->args[0].as_str), "42");
+    EXPECT_EQ(h->args[0].as_str, "42"s);
     EXPECT_EQ(h->args[1].as_double, 1.5);
-    EXPECT_EQ(std::string(h->args[2].as_str), "aaa");
+    EXPECT_EQ(h->args[2].as_str, "aaa"s);
 
     wcfMultiVal ans = wcfValD(123.45);
     EXPECT_EQ(wcfFuncRespond(h, &ans), WCF_OK);
@@ -295,4 +371,96 @@ TEST_F(CClientTest, funcListen) {
     dummy_s->recvClear();
 
     EXPECT_EQ(wcfFuncFetchCall(wcli_, "a", &h), WCF_NOT_CALLED);
+}
+
+TEST_F(CClientTest, viewSend) {
+    wcfViewComponent vc[10];
+    vc[0] = wcfText("abc\n123");
+    vc[1] = wcfNewLine();
+    vc[2] = wcfButton("a", nullptr, "c");
+    vc[3] = wcfButton("a", "b", "c");
+    vc[3].text_color = WCF_COLOR_RED;
+    vc[3].bg_color = WCF_COLOR_GREEN;
+
+    EXPECT_EQ(wcfViewSet(wcli_, "b", vc, 4), WCF_OK);
+    EXPECT_EQ(wcfSync(wcli_), WCF_OK);
+    wait();
+    dummy_s->recv<Message::View>(
+        [&](const auto &obj) {
+            EXPECT_EQ(obj.field, "b");
+            EXPECT_EQ(obj.length, 6);
+            EXPECT_EQ(obj.data_diff->size(), 6);
+            EXPECT_EQ((*obj.data_diff)["0"].type, ViewComponentType::text);
+            EXPECT_EQ((*obj.data_diff)["0"].text, "abc");
+            EXPECT_EQ((*obj.data_diff)["1"].type, ViewComponentType::new_line);
+            EXPECT_EQ((*obj.data_diff)["2"].type, ViewComponentType::text);
+            EXPECT_EQ((*obj.data_diff)["2"].text, "123");
+
+            EXPECT_EQ((*obj.data_diff)["3"].type, ViewComponentType::new_line);
+
+            EXPECT_EQ((*obj.data_diff)["4"].type, ViewComponentType::button);
+            EXPECT_EQ((*obj.data_diff)["4"].text, "a");
+            EXPECT_EQ((*obj.data_diff)["4"].on_click_member, self_name);
+            EXPECT_EQ((*obj.data_diff)["4"].on_click_field, "c");
+
+            EXPECT_EQ((*obj.data_diff)["5"].type, ViewComponentType::button);
+            EXPECT_EQ((*obj.data_diff)["5"].text, "a");
+            EXPECT_EQ((*obj.data_diff)["5"].on_click_member, "b");
+            EXPECT_EQ((*obj.data_diff)["5"].on_click_field, "c");
+            EXPECT_EQ((*obj.data_diff)["5"].text_color, ViewColor::red);
+            EXPECT_EQ((*obj.data_diff)["5"].bg_color, ViewColor::green);
+        },
+        [&] { ADD_FAILURE() << "View recv error"; });
+    dummy_s->recvClear();
+}
+TEST_F(CClientTest, viewReq) {
+    using namespace std::string_literals;
+    wcfViewComponent *vc;
+    int size = 1;
+    EXPECT_EQ(wcfViewGet(wcli_, "a", "b", &vc, &size), WCF_NOT_FOUND);
+    EXPECT_EQ(size, 0);
+    EXPECT_EQ(wcfStart(wcli_), WCF_OK);
+    wait();
+    dummy_s->recv<Message::Req<Message::View>>(
+        [&](const auto &obj) {
+            EXPECT_EQ(obj.member, "a");
+            EXPECT_EQ(obj.field, "b");
+            EXPECT_EQ(obj.req_id, 1);
+        },
+        [&] { ADD_FAILURE() << "View Req recv error"; });
+
+    auto v = std::make_shared<
+        std::unordered_map<std::string, Message::View::ViewComponent>>(
+        std::unordered_map<std::string, Message::View::ViewComponent>{
+            {"0", ViewComponents::text("a")
+                      .textColor(ViewColor::yellow)
+                      .bgColor(ViewColor::green)
+                      .lockTmp({}, "")},
+            {"1", ViewComponents::newLine().lockTmp({}, "")},
+            {"2", ViewComponents::button("a", Func{Field{{}, "x", "y"}})
+                      .lockTmp({}, "")},
+        });
+    dummy_s->send(Message::Res<Message::View>{1, "", v, 3});
+    dummy_s->send(Message::Res<Message::View>{1, "c", v, 3});
+    wait();
+    EXPECT_EQ(wcfViewGet(wcli_, "a", "b", &vc, &size), WCF_OK);
+    EXPECT_EQ(size, 3);
+    EXPECT_EQ(vc[0].type, WCF_VIEW_TEXT);
+    EXPECT_EQ(vc[0].text, "a"s);
+    EXPECT_EQ(vc[0].on_click_member, nullptr);
+    EXPECT_EQ(vc[0].on_click_field, nullptr);
+    EXPECT_EQ(vc[0].text_color, WCF_COLOR_YELLOW);
+    EXPECT_EQ(vc[0].bg_color, WCF_COLOR_GREEN);
+    EXPECT_EQ(vc[1].type, WCF_VIEW_NEW_LINE);
+    EXPECT_EQ(vc[2].type, WCF_VIEW_BUTTON);
+    EXPECT_EQ(vc[2].text, "a"s);
+    EXPECT_EQ(vc[2].on_click_member, "x"s);
+    EXPECT_EQ(vc[2].on_click_field, "y"s);
+    EXPECT_EQ(wcfDestroy(vc), WCF_OK);
+    EXPECT_EQ(wcfDestroy(vc), WCF_BAD_HANDLE);
+
+    size = 0;
+    EXPECT_EQ(wcfViewGet(wcli_, "a", "b.c", &vc, &size), WCF_OK);
+    EXPECT_EQ(size, 3);
+    EXPECT_EQ(wcfDestroy(vc), WCF_OK);
 }

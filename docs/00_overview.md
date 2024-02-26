@@ -118,7 +118,8 @@ C++のソースコードでは`<webcface/webcface.h>`をincludeしてくださ�
 C++ではなくCからアクセスできるAPIとして、wcf〜 で始まる名前の関数やstructが用意されています。
 (C++ライブラリのうちの一部の機能しかまだ実装していませんが)
 
-`<webcface/c_wcf.h>` をincludeすることで使えます。
+~~&lt;webcface/c_wcf.h&gt; をincludeすることで使えます。~~  
+<span class="since-c">1.7</span> &lt;webcface/wcf.h&gt; をincludeすることで使えます。(c_wcf.hも一応使えます)  
 ほとんどの関数は戻り値がint型で、成功した場合0(=`WCF_OK`)、例外が発生した場合正の値を返します。
 
 MATLABなど、Cのライブラリにアクセスすることができる言語からwebcfaceのライブラリをロードして使用することができます。

@@ -59,8 +59,7 @@ class Func : protected Field {
     }
     WEBCFACE_DLL FuncWrapperType getDefaultFuncWrapper() const;
 
-    WEBCFACE_DLL void runImpl(std::shared_ptr<Internal::ClientData> data,
-                              AsyncFuncResult r,
+    WEBCFACE_DLL void runImpl(std::size_t caller_id,
                               std::vector<ValAdaptor> args_vec) const;
 
   public:
@@ -112,8 +111,6 @@ class Func : protected Field {
         return run({ValAdaptor(args)...});
     }
     WEBCFACE_DLL ValAdaptor run(const std::vector<ValAdaptor> &args_vec) const;
-    WEBCFACE_DLL std::pair<wcfStatus, wcfMultiVal *>
-    runCVal(const std::vector<ValAdaptor> &args_vec) const;
     /*!
      * \brief run()と同じ
      *
@@ -129,14 +126,12 @@ class Func : protected Field {
      * 非同期で実行する
      * 戻り値やエラー、例外はAsyncFuncResultから取得する
      *
-     * AsyncFuncResultはClient内部で保持されているのでClientが破棄されるまで参照は切れない
-     *
      */
     template <typename... Args>
-    AsyncFuncResult &runAsync(Args... args) const {
+    AsyncFuncResult runAsync(Args... args) const {
         return runAsync({ValAdaptor(args)...});
     }
-    WEBCFACE_DLL AsyncFuncResult &
+    WEBCFACE_DLL AsyncFuncResult
     runAsync(const std::vector<ValAdaptor> &args_vec) const;
 
     /*!
