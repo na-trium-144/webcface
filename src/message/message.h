@@ -485,6 +485,7 @@ struct Canvas2D : public MessageBase<MessageKind::canvas2d> {
         double stroke_width;
         Common::GeometryType geometry_type;
         std::vector<double> properties;
+        std::optional<std::string> on_click_member, on_click_field;
         Canvas2DComponent() = default;
         Canvas2DComponent(const Common::Canvas2DComponentBase &vc)
             : type(vc.type_),
@@ -494,6 +495,10 @@ struct Canvas2D : public MessageBase<MessageKind::canvas2d> {
             if (vc.geometry_) {
                 geometry_type = vc.geometry_->type;
                 properties = vc.geometry_->properties;
+            }
+            if (vc.on_click_func_) {
+                on_click_member = vc.on_click_func_->member_;
+                on_click_field = vc.on_click_func_->field_;
             }
         }
         Canvas2DComponent(Canvas2DComponentType type,
@@ -513,15 +518,18 @@ struct Canvas2D : public MessageBase<MessageKind::canvas2d> {
             vc.fill_ = fill;
             vc.stroke_width_ = stroke_width;
             vc.geometry_ = {geometry_type, properties};
+            if (on_click_member && on_click_field) {
+                vc.on_click_func_ = std::make_optional<FieldBase>(
+                    *on_click_member, *on_click_field);
+            }
             return vc;
         }
-        MSGPACK_DEFINE_MAP(MSGPACK_NVP("t", type),
-                           MSGPACK_NVP("op", origin_pos),
-                           MSGPACK_NVP("or", origin_rot),
-                           MSGPACK_NVP("c", color), MSGPACK_NVP("f", fill),
-                           MSGPACK_NVP("s", stroke_width),
-                           MSGPACK_NVP("gt", geometry_type),
-                           MSGPACK_NVP("gp", properties))
+        MSGPACK_DEFINE_MAP(
+            MSGPACK_NVP("t", type), MSGPACK_NVP("op", origin_pos),
+            MSGPACK_NVP("or", origin_rot), MSGPACK_NVP("c", color),
+            MSGPACK_NVP("f", fill), MSGPACK_NVP("s", stroke_width),
+            MSGPACK_NVP("gt", geometry_type), MSGPACK_NVP("gp", properties),
+            MSGPACK_NVP("L", on_click_member), MSGPACK_NVP("l", on_click_field))
     };
     std::shared_ptr<std::unordered_map<std::string, Canvas2DComponent>>
         data_diff;

@@ -5,11 +5,13 @@
 #include "common/canvas2d.h"
 #include "event_target.h"
 #include "field.h"
+#include "func.h"
 
 namespace WEBCFACE_NS {
 
 class Canvas2DComponent : public Common::Canvas2DComponentBase {
     std::weak_ptr<Internal::ClientData> data_w;
+    std::shared_ptr<AnonymousFunc> on_click_func_tmp;
 
   public:
     Canvas2DComponent() = default;
@@ -17,6 +19,42 @@ class Canvas2DComponent : public Common::Canvas2DComponentBase {
                       const std::weak_ptr<Internal::ClientData> &data_w)
         : Common::Canvas2DComponentBase(vc), data_w(data_w) {}
     explicit Canvas2DComponent(Canvas2DComponentType type) { type_ = type; }
+
+    /*!
+     * \brief 要素の種類
+     *
+     */
+    Canvas2DComponentType type() const { return type_; }
+    /*!
+     * \brief 要素の移動
+     *
+     */
+    Transform origin() const { return origin_; }
+    /*!
+     * \brief 色
+     *
+     */
+    ViewColor color() const { return color_; }
+    /*!
+     * \brief 塗りつぶし色
+     *
+     */
+    ViewColor fillColor() const { return fill_; }
+    /*!
+     * \brief 線の太さ
+     *
+     */
+    double strokeWidth() const { return stroke_width_; }
+    /*!
+     * \brief geometryを取得
+     *
+     */
+    const std::optional<Geometry> &geometry() const { return geometry_; };
+    /*!
+     * \brief クリック時に実行される関数を取得
+     *
+     */
+    WEBCFACE_DLL std::optional<Func> onClick() const;
 };
 /*!
  * \brief Canvas2Dの送受信データを表すクラス
