@@ -6,56 +6,10 @@
 #include "event_target.h"
 #include "field.h"
 #include "func.h"
+#include "canvas_data.h"
 
 namespace WEBCFACE_NS {
 
-class Canvas2DComponent : public Common::Canvas2DComponentBase {
-    std::weak_ptr<Internal::ClientData> data_w;
-    std::shared_ptr<AnonymousFunc> on_click_func_tmp;
-
-  public:
-    Canvas2DComponent() = default;
-    Canvas2DComponent(const Common::Canvas2DComponentBase &vc,
-                      const std::weak_ptr<Internal::ClientData> &data_w)
-        : Common::Canvas2DComponentBase(vc), data_w(data_w) {}
-    explicit Canvas2DComponent(Canvas2DComponentType type) { type_ = type; }
-
-    /*!
-     * \brief 要素の種類
-     *
-     */
-    Canvas2DComponentType type() const { return type_; }
-    /*!
-     * \brief 要素の移動
-     *
-     */
-    Transform origin() const { return origin_; }
-    /*!
-     * \brief 色
-     *
-     */
-    ViewColor color() const { return color_; }
-    /*!
-     * \brief 塗りつぶし色
-     *
-     */
-    ViewColor fillColor() const { return fill_; }
-    /*!
-     * \brief 線の太さ
-     *
-     */
-    double strokeWidth() const { return stroke_width_; }
-    /*!
-     * \brief geometryを取得
-     *
-     */
-    const std::optional<Geometry> &geometry() const { return geometry_; };
-    /*!
-     * \brief クリック時に実行される関数を取得
-     *
-     */
-    WEBCFACE_DLL std::optional<Func> onClick() const;
-};
 /*!
  * \brief Canvas2Dの送受信データを表すクラス
  *
@@ -158,6 +112,14 @@ class Canvas2D : protected Field, public EventTarget<Canvas2D> {
 
     /*!
      * \brief Geometryを追加
+     * \since 1.8
+     */
+    Canvas2D &add(const CanvasCommonComponent &cc) {
+        add(static_cast<Canvas2DComponent>(cc));
+        return *this;
+    }
+    /*!
+     * \brief Geometryを追加
      *
      * 事前に init() かコンストラクタでCanvasのサイズを指定しないと
      * std::invalid_argument を投げます
@@ -166,16 +128,18 @@ class Canvas2D : protected Field, public EventTarget<Canvas2D> {
      * \param color 図形の枠線の色 (省略時のinheritはWebUI上ではblackと同じ)
      * \param fill 塗りつぶしの色 (省略時のinheritはWebUI上では透明)
      * \param stroke_width 枠線の太さ
+     * \deprecated 1.8〜
+     * CanvasCommonComponent に直接プロパティを設定できるようにしたため、
+     * add時の引数での設定は不要
      *
      */
-    template <typename G>
-        requires std::derived_from<G, Geometry2D>
-    Canvas2D &add(const G &geometry, const Transform &origin,
-                  const ViewColor &color = ViewColor::inherit,
-                  const ViewColor &fill = ViewColor::inherit,
-                  double stroke_width = 1) {
+    [[deprecated]] Canvas2D &add(const CanvasCommonComponent &geometry,
+                                 const Transform &origin,
+                                 const ViewColor &color = ViewColor::inherit,
+                                 const ViewColor &fill = ViewColor::inherit,
+                                 double stroke_width = 1) {
         add({Canvas2DComponentType::geometry, origin, color, fill, stroke_width,
-             geometry});
+             geometry.geometry_common, std::nullopt});
         return *this;
     }
     /*!
@@ -183,14 +147,17 @@ class Canvas2D : protected Field, public EventTarget<Canvas2D> {
      *
      * origin を省略した場合identity()になる
      *
+     * \deprecated 1.8〜
+     * CanvasCommonComponent に直接プロパティを設定できるようにしたため、
+     * add時の引数での設定は不要
+     *
      */
-    template <typename G>
-        requires std::derived_from<G, Geometry2D>
-    Canvas2D &
-    add(const G &geometry, const ViewColor &color = ViewColor::inherit,
-        const ViewColor &fill = ViewColor::inherit, double stroke_width = 1) {
+    [[deprecated]] Canvas2D &add(const CanvasCommonComponent &geometry,
+                                 const ViewColor &color = ViewColor::inherit,
+                                 const ViewColor &fill = ViewColor::inherit,
+                                 double stroke_width = 1) {
         add({Canvas2DComponentType::geometry, identity(), color, fill,
-             stroke_width, geometry});
+             stroke_width, geometry.geometry_common, std::nullopt});
         return *this;
     }
     /*!
@@ -198,13 +165,16 @@ class Canvas2D : protected Field, public EventTarget<Canvas2D> {
      *
      * fillを省略
      *
+     * \deprecated 1.8〜
+     * CanvasCommonComponent に直接プロパティを設定できるようにしたため、
+     * add時の引数での設定は不要
+     *
      */
-    template <typename G>
-        requires std::derived_from<G, Geometry2D>
-    Canvas2D &add(const G &geometry, const Transform &origin,
-                  const ViewColor &color, double stroke_width) {
+    [[deprecated]] Canvas2D &add(const CanvasCommonComponent &geometry,
+                                 const Transform &origin,
+                                 const ViewColor &color, double stroke_width) {
         add({Canvas2DComponentType::geometry, origin, color, ViewColor::inherit,
-             stroke_width, geometry});
+             stroke_width, geometry.geometry_common, std::nullopt});
         return *this;
     }
     /*!
@@ -212,13 +182,16 @@ class Canvas2D : protected Field, public EventTarget<Canvas2D> {
      *
      * originとfillを省略
      *
+     * \deprecated 1.8〜
+     * CanvasCommonComponent に直接プロパティを設定できるようにしたため、
+     * add時の引数での設定は不要
+     *
      */
-    template <typename G>
-        requires std::derived_from<G, Geometry2D>
-    Canvas2D &add(const G &geometry, const ViewColor &color,
-                  double stroke_width) {
-        add({Canvas2DComponentType::geometry, color, ViewColor::inherit,
-             stroke_width, geometry});
+    [[deprecated]] Canvas2D &add(const CanvasCommonComponent &geometry,
+                                 const ViewColor &color, double stroke_width) {
+        add({Canvas2DComponentType::geometry, identity(), color,
+             ViewColor::inherit, stroke_width, geometry.geometry_common,
+             std::nullopt});
         return *this;
     }
     /*!
