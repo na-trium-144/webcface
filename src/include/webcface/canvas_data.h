@@ -1,6 +1,8 @@
 #pragma once
 #include "common/canvas2d.h"
 #include "common/canvas3d.h"
+#include "func.h"
+#include <memory>
 
 namespace WEBCFACE_NS {
 namespace Internal {
@@ -26,6 +28,27 @@ class Canvas3DComponent : public Common::Canvas3DComponentBase {
           common_geometry_tmp(common_geometry_tmp) {
         type_ = Canvas3DComponentType::geometry;
     }
+
+    /*!
+     * \brief 要素の種類
+     *
+     */
+    Canvas2DComponentType type() const { return type_; }
+    /*!
+     * \brief 要素の移動
+     *
+     */
+    Transform origin() const { return origin_; }
+    /*!
+     * \brief 色
+     *
+     */
+    ViewColor color() const { return color_; }
+    /*!
+     * \brief geometryを取得
+     *
+     */
+    const std::optional<Geometry> &geometry() const { return geometry_; };
 };
 
 /*!
@@ -96,6 +119,20 @@ class Canvas2DComponent : public Common::Canvas2DComponentBase {
      *
      */
     WEBCFACE_DLL std::optional<Func> onClick() const;
+    /*!
+     * \brief クリック時に実行される関数を設定
+     *
+     */
+    WEBCFACE_DLL Canvas2DComponent &onClick(const Func &func);
+    /*!
+     * \brief クリック時に実行される関数を設定
+     *
+     */
+    template <typename T>
+    Canvas2DComponent &onClick(const T &func) {
+        on_click_func_tmp = std::make_shared<AnonymousFunc>(func);
+        return *this;
+    }
 };
 
 /*!
@@ -103,6 +140,7 @@ class Canvas2DComponent : public Common::Canvas2DComponentBase {
  *
  * 各種Geometry型の共通クラス。
  *
+ * todo: 継承である必要はない
  */
 class CanvasCommonComponent : Canvas2DComponent, Canvas3DComponent {
     Geometry geometry_common;
@@ -115,6 +153,33 @@ class CanvasCommonComponent : Canvas2DComponent, Canvas3DComponent {
         : Canvas2DComponent(&geometry_common),
           Canvas3DComponent(&geometry_common),
           geometry_common(type, std::move(properties)) {}
+    /*!
+     * \brief クリック時に実行される関数を設定
+     *
+     */
+    template <typename T>
+    CanvasCommonComponent &onClick(const T &func) {
+        this->Canvas2DComponent::onClick(func);
+        return *this;
+    }
+    /*!
+     * \brief 要素の移動
+     *
+     */
+    CanvasCommonComponent &origin(const Transform &origin) {
+        this->Canvas2DComponent::origin_ = origin;
+        this->Canvas3DComponent::origin_ = origin;
+        return *this;
+    }
+    /*!
+     * \brief 色
+     *
+     */
+    CanvasCommonComponent &color(ViewColor c) {
+        this->Canvas2DComponent::color_ = c;
+        this->Canvas3DComponent::color_ = c;
+        return *this;
+    }
 };
 
 inline namespace Geometries {

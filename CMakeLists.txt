@@ -374,6 +374,7 @@ set(CLI_SRC
     ${CPP_DIR}/client/robot_model.cc
     ${CPP_DIR}/client/canvas3d.cc
     ${CPP_DIR}/client/canvas2d.cc
+    ${CPP_DIR}/client/canvas_data.cc
     ${CPP_DIR}/client/value.cc
     ${CPP_DIR}/client/view.cc
     ${CPP_DIR}/client/image.cc
