@@ -15,25 +15,18 @@ struct ClientData;
  */
 class Canvas3DComponent : public Common::Canvas3DComponentBase {
     std::weak_ptr<Internal::ClientData> data_w;
-    Geometry *common_geometry_tmp;
 
   public:
     Canvas3DComponent() = default;
     Canvas3DComponent(const Common::Canvas3DComponentBase &vc,
                       const std::weak_ptr<Internal::ClientData> &data_w)
-        : Common::Canvas3DComponentBase(vc), data_w(data_w),
-          common_geometry_tmp(nullptr) {}
-    explicit Canvas3DComponent(Geometry *common_geometry_tmp)
-        : Common::Canvas3DComponentBase(), data_w(),
-          common_geometry_tmp(common_geometry_tmp) {
-        type_ = Canvas3DComponentType::geometry;
-    }
+        : Common::Canvas3DComponentBase(vc), data_w(data_w) {}
 
     /*!
      * \brief 要素の種類
      *
      */
-    Canvas2DComponentType type() const { return type_; }
+    Canvas3DComponentType type() const { return type_; }
     /*!
      * \brief 要素の移動
      *
@@ -61,23 +54,16 @@ class Canvas3DComponent : public Common::Canvas3DComponentBase {
 class Canvas2DComponent : public Common::Canvas2DComponentBase {
     std::weak_ptr<Internal::ClientData> data_w;
     std::shared_ptr<AnonymousFunc> on_click_func_tmp;
-    Geometry *common_geometry_tmp;
 
   public:
     Canvas2DComponent() = default;
     Canvas2DComponent(const Common::Canvas2DComponentBase &vc,
                       const std::weak_ptr<Internal::ClientData> &data_w)
         : Common::Canvas2DComponentBase(vc), data_w(data_w),
-          on_click_func_tmp(nullptr), common_geometry_tmp(nullptr) {}
-    explicit Canvas2DComponent(Geometry *common_geometry_tmp)
-        : Common::Canvas2DComponentBase(), data_w(), on_click_func_tmp(nullptr),
-          common_geometry_tmp(common_geometry_tmp) {
-        type_ = Canvas2DComponentType::geometry;
-    }
+          on_click_func_tmp(nullptr) {}
 
     /*!
      * \brief AnonymousFuncをFuncオブジェクトにlock
-     * & geometry_tmpをBaseのgeometryにセット
      *
      */
     WEBCFACE_DLL Canvas2DComponentBase &
@@ -138,28 +124,76 @@ class Canvas2DComponent : public Common::Canvas2DComponentBase {
 /*!
  * \brief Canvas2D, Canvas3DにGeometryをaddするときに使うインタフェース
  *
- * 各種Geometry型の共通クラス。
+ * Geometryにオプションを追加して、
+ * add時にCanvas2DComponentかCanvas3DComponentにキャストする
  *
- * todo: 継承である必要はない
+ * RobotLink用にGeometryにキャストすることもできる
+ *
  */
-class CanvasCommonComponent : Canvas2DComponent, Canvas3DComponent {
+class CanvasCommonComponent {
     Geometry geometry_common;
+    std::optional<Canvas2DComponent> component_2d;
+    std::optional<Canvas3DComponent> component_3d;
+
+    void init2() {
+        if (!component_2d) {
+            component_2d = std::make_optional<Canvas2DComponent>();
+            component_2d->type_ = Canvas2DComponentType::geometry;
+        }
+    }
+    void init3() {
+        if (!component_3d) {
+            component_3d = std::make_optional<Canvas3DComponent>();
+            component_3d->type_ = Canvas3DComponentType::geometry;
+        }
+    }
+    void init() {
+        init2();
+        init3();
+    }
 
   public:
-    friend class Canvas2D;
-    friend class Canvas3D;
     CanvasCommonComponent() = default;
     CanvasCommonComponent(GeometryType type, std::vector<double> &&properties)
-        : Canvas2DComponent(&geometry_common),
-          Canvas3DComponent(&geometry_common),
-          geometry_common(type, std::move(properties)) {}
+        : geometry_common(type, std::move(properties)),
+          component_2d(std::nullopt), component_3d(std::nullopt) {}
+
+    operator Geometry &() { return geometry_common; }
+    operator const Geometry &() const { return geometry_common; }
+    operator Geometry &&() && { return std::move(geometry_common); }
+    operator Canvas2DComponent &() {
+        init2();
+        component_2d->geometry_ =
+            std::make_optional<Geometry>(std::move(geometry_common));
+        return *component_2d;
+    }
+    operator Canvas2DComponent &&() && {
+        init2();
+        component_2d->geometry_ =
+            std::make_optional<Geometry>(std::move(geometry_common));
+        return std::move(*component_2d);
+    }
+    operator Canvas3DComponent &() {
+        init3();
+        component_3d->geometry_ =
+            std::make_optional<Geometry>(std::move(geometry_common));
+        return *component_3d;
+    }
+    operator Canvas3DComponent &&() && {
+        init3();
+        component_3d->geometry_ =
+            std::make_optional<Geometry>(std::move(geometry_common));
+        return std::move(*component_3d);
+    }
+
     /*!
      * \brief クリック時に実行される関数を設定
      *
      */
     template <typename T>
     CanvasCommonComponent &onClick(const T &func) {
-        this->Canvas2DComponent::onClick(func);
+        init2();
+        component_2d->onClick(func);
         return *this;
     }
     /*!
@@ -167,8 +201,9 @@ class CanvasCommonComponent : Canvas2DComponent, Canvas3DComponent {
      *
      */
     CanvasCommonComponent &origin(const Transform &origin) {
-        this->Canvas2DComponent::origin_ = origin;
-        this->Canvas3DComponent::origin_ = origin;
+        init();
+        component_2d->origin_ = origin;
+        component_3d->origin_ = origin;
         return *this;
     }
     /*!
@@ -176,8 +211,27 @@ class CanvasCommonComponent : Canvas2DComponent, Canvas3DComponent {
      *
      */
     CanvasCommonComponent &color(ViewColor c) {
-        this->Canvas2DComponent::color_ = c;
-        this->Canvas3DComponent::color_ = c;
+        init();
+        component_2d->color_ = c;
+        component_3d->color_ = c;
+        return *this;
+    }
+    /*!
+     * \brief 背景色 (2Dのみ)
+     *
+     */
+    CanvasCommonComponent &fill(ViewColor c) {
+        init2();
+        component_2d->fill_ = c;
+        return *this;
+    }
+    /*!
+     * \brief 線の太さ (2Dのみ)
+     *
+     */
+    CanvasCommonComponent &strokeWidth(double s) {
+        init2();
+        component_2d->stroke_width_ = s;
         return *this;
     }
 };

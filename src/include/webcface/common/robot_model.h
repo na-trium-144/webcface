@@ -108,10 +108,8 @@ struct RobotLink {
      * \param color 色 (表示用)
      *
      */
-    template <typename G>
-        requires std::derived_from<G, Geometry3D> || std::same_as<G, Geometry>
     RobotLink(const std::string &name, const RobotJoint &joint,
-              const G &geometry, ViewColor color = ViewColor::inherit)
+              const Geometry &geometry, ViewColor color = ViewColor::inherit)
         : name(name), joint(joint), geometry(geometry), color(color) {}
     /*!
      * ベースのリンクではjointを省略可能
@@ -121,9 +119,7 @@ struct RobotLink {
      * \param color 色 (表示用)
      *
      */
-    template <typename G>
-        requires std::derived_from<G, Geometry3D> || std::same_as<G, Geometry>
-    RobotLink(const std::string &name, const G &geometry,
+    RobotLink(const std::string &name, const Geometry &geometry,
               ViewColor color = ViewColor::inherit)
         : RobotLink(name, fixedAbsolute({0, 0, 0}), geometry, color) {}
 };

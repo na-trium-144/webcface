@@ -113,15 +113,33 @@ class Canvas3D : protected Field, public EventTarget<Canvas3D> {
 
     /*!
      * \brief Geometryを追加
+     * \since 1.8
+     */
+    Canvas3D &add(CanvasCommonComponent &&cc) {
+        add(static_cast<Canvas3DComponent &&>(std::move(cc)));
+        return *this;
+    }
+    /*!
+     * \brief Geometryを追加
+     * \since 1.8
+     */
+    Canvas3D &add(CanvasCommonComponent &cc) {
+        add(static_cast<Canvas3DComponent &>(cc));
+        return *this;
+    }
+    /*!
+     * \brief Geometryを追加
      * \param geometry 表示する図形
      * \param origin geometryを移動する
      * \param color 表示色 (省略時のinheritはWebUI上ではgrayと同じ)
+     * \deprecated 1.8〜
+     * CanvasCommonComponent に直接プロパティを設定できるようにしたため、
+     * add時の引数での設定は不要
      *
      */
-    template <typename G>
-        requires std::derived_from<G, Geometry3D>
-    Canvas3D &add(const G &geometry, const Transform &origin,
-                  const ViewColor &color = ViewColor::inherit) {
+    [[deprecated]] Canvas3D &add(const Geometry &geometry,
+                                 const Transform &origin,
+                                 const ViewColor &color = ViewColor::inherit) {
         add({Canvas3DComponentType::geometry,
              origin,
              color,
@@ -134,13 +152,19 @@ class Canvas3D : protected Field, public EventTarget<Canvas3D> {
      * \brief Geometryを追加
      *
      * originを省略した場合 identity() になる
+     * \deprecated 1.8〜
+     * CanvasCommonComponent に直接プロパティを設定できるようにしたため、
+     * add時の引数での設定は不要
      *
      */
-    template <typename G>
-        requires std::derived_from<G, Geometry3D>
-    Canvas3D &add(const G &geometry,
-                  const ViewColor &color = ViewColor::inherit) {
-        add(geometry, identity(), color);
+    [[deprecated]] Canvas3D &add(const Geometry &geometry,
+                                 const ViewColor &color = ViewColor::inherit) {
+        add({Canvas3DComponentType::geometry,
+             identity(),
+             color,
+             geometry,
+             std::nullopt,
+             {}});
         return *this;
     }
     /*!

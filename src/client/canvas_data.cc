@@ -14,9 +14,6 @@ Canvas2DComponent::lockTmp(const std::weak_ptr<Internal::ClientData> &data_w,
         on_click.hidden(true);
         onClick(on_click);
     }
-    if (common_geometry_tmp != nullptr) {
-        geometry_ = std::make_optional<Geometry>(*common_geometry_tmp);
-    }
     return *this;
 }
 

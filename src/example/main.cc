@@ -53,6 +53,8 @@ int main() {
     {
         using namespace webcface::Geometries;
         using namespace webcface::RobotJoints;
+        webcface::RobotLink lp{"plane", plane(webcface::identity(), 10, 10),
+                               webcface::ViewColor::gray};
         c.robotModel("geometries")
             .set({// plane: 中心座標系と幅、高さを指定 (指定した座標系のxy平面)
                   {"plane", plane(webcface::identity(), 10, 10),
@@ -148,15 +150,15 @@ int main() {
         v.sync();
 
         auto world = c.canvas3D("omniwheel_world");
-        world.add(webcface::plane({}, 3, 3), webcface::ViewColor::white);
-        world.add(webcface::box({-1.5, -1.5, 0}, {1.5, -1.5, 0.1}),
-                  webcface::ViewColor::gray);
-        world.add(webcface::box({-1.5, 1.5, 0}, {1.5, 1.5, 0.1}),
-                  webcface::ViewColor::gray);
-        world.add(webcface::box({-1.5, -1.5, 0}, {-1.5, 1.5, 0.1}),
-                  webcface::ViewColor::gray);
-        world.add(webcface::box({1.5, -1.5, 0}, {1.5, 1.5, 0.1}),
-                  webcface::ViewColor::gray);
+        world.add(webcface::plane({}, 3, 3).color(webcface::ViewColor::white));
+        world.add(webcface::box({-1.5, -1.5, 0}, {1.5, -1.5, 0.1})
+                      .color(webcface::ViewColor::gray));
+        world.add(webcface::box({-1.5, 1.5, 0}, {1.5, 1.5, 0.1})
+                      .color(webcface::ViewColor::gray));
+        world.add(webcface::box({-1.5, -1.5, 0}, {-1.5, 1.5, 0.1})
+                      .color(webcface::ViewColor::gray));
+        world.add(webcface::box({1.5, -1.5, 0}, {1.5, 1.5, 0.1})
+                      .color(webcface::ViewColor::gray));
         world.add(c.robotModel("omniwheel"),
                   {-0.3 * std::sin(i / 3.0), 0.3 * std::cos(i / 3.0), 0,
                    i / 3.0, 0, 0},
@@ -167,25 +169,39 @@ int main() {
         {
             auto cv = c.canvas2D("canvas");
             cv.init(100, 100);
-            cv.add(webcface::rect({10, 10}, {90, 90}),
-                   webcface::ViewColor::black);
-            cv.add(webcface::circle(webcface::Point{50, 50}, 20),
-                   webcface::ViewColor::red);
+            cv.add(webcface::rect({10, 10}, {90, 90})
+                       .color(webcface::ViewColor::black));
+            cv.add(webcface::circle(webcface::Point{50, 50}, 20)
+                       .color(webcface::ViewColor::red));
             webcface::Transform pos{
                 {50 + 20 * std::cos(i / 3.0), 50 - 20 * std::sin(i / 3.0)},
                 -i / 3.0};
-            cv.add(webcface::polygon(
-                       {{0, -5}, {-5, 0}, {-5, 10}, {5, 10}, {5, 0}}),
-                   pos, webcface::ViewColor::black, webcface::ViewColor::yellow,
-                   2);
-            cv.add(webcface::circle(webcface::Point{-5, 0}, 2), pos,
-                   webcface::ViewColor::black, webcface::ViewColor::gray, 0.5);
-            cv.add(webcface::circle(webcface::Point{-5, 10}, 2), pos,
-                   webcface::ViewColor::black, webcface::ViewColor::gray, 0.5);
-            cv.add(webcface::circle(webcface::Point{5, 10}, 2), pos,
-                   webcface::ViewColor::black, webcface::ViewColor::gray, 0.5);
-            cv.add(webcface::circle(webcface::Point{5, 0}, 2), pos,
-                   webcface::ViewColor::black, webcface::ViewColor::gray, 0.5);
+            cv.add(
+                webcface::polygon({{0, -5}, {-5, 0}, {-5, 10}, {5, 10}, {5, 0}})
+                    .origin(pos)
+                    .color(webcface::ViewColor::black)
+                    .fill(webcface::ViewColor::yellow)
+                    .strokeWidth(2));
+            cv.add(webcface::circle(webcface::Point{-5, 0}, 2)
+                       .origin(pos)
+                       .color(webcface::ViewColor::black)
+                       .fill(webcface::ViewColor::gray)
+                       .strokeWidth(0.5));
+            cv.add(webcface::circle(webcface::Point{-5, 10}, 2)
+                       .origin(pos)
+                       .color(webcface::ViewColor::black)
+                       .fill(webcface::ViewColor::gray)
+                       .strokeWidth(0.5));
+            cv.add(webcface::circle(webcface::Point{5, 10}, 2)
+                       .origin(pos)
+                       .color(webcface::ViewColor::black)
+                       .fill(webcface::ViewColor::gray)
+                       .strokeWidth(0.5));
+            cv.add(webcface::circle(webcface::Point{5, 0}, 2)
+                       .origin(pos)
+                       .color(webcface::ViewColor::black)
+                       .fill(webcface::ViewColor::gray)
+                       .strokeWidth(0.5));
         }
 
         ++i;

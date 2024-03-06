@@ -33,6 +33,11 @@ struct Geometry {
         : type(type), properties(properties) {}
     Geometry(GeometryType type, std::vector<double> &&properties)
         : type(type), properties(std::move(properties)) {}
+
+    template <typename GeometryDerived>
+    GeometryDerived as() const {
+        return GeometryDerived{*this};
+    }
 };
 struct Geometry3D {};
 struct Geometry2D {};

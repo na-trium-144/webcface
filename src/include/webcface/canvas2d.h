@@ -114,8 +114,16 @@ class Canvas2D : protected Field, public EventTarget<Canvas2D> {
      * \brief Geometryを追加
      * \since 1.8
      */
-    Canvas2D &add(const CanvasCommonComponent &cc) {
-        add(static_cast<Canvas2DComponent>(cc));
+    Canvas2D &add(CanvasCommonComponent &&cc) {
+        add(static_cast<Canvas2DComponent &&>(std::move(cc)));
+        return *this;
+    }
+    /*!
+     * \brief Geometryを追加
+     * \since 1.8
+     */
+    Canvas2D &add(CanvasCommonComponent &cc) {
+        add(static_cast<Canvas2DComponent &>(cc));
         return *this;
     }
     /*!
@@ -133,13 +141,13 @@ class Canvas2D : protected Field, public EventTarget<Canvas2D> {
      * add時の引数での設定は不要
      *
      */
-    [[deprecated]] Canvas2D &add(const CanvasCommonComponent &geometry,
+    [[deprecated]] Canvas2D &add(const Geometry &geometry,
                                  const Transform &origin,
                                  const ViewColor &color = ViewColor::inherit,
                                  const ViewColor &fill = ViewColor::inherit,
                                  double stroke_width = 1) {
         add({Canvas2DComponentType::geometry, origin, color, fill, stroke_width,
-             geometry.geometry_common, std::nullopt});
+             geometry, std::nullopt});
         return *this;
     }
     /*!
@@ -152,12 +160,12 @@ class Canvas2D : protected Field, public EventTarget<Canvas2D> {
      * add時の引数での設定は不要
      *
      */
-    [[deprecated]] Canvas2D &add(const CanvasCommonComponent &geometry,
+    [[deprecated]] Canvas2D &add(const Geometry &geometry,
                                  const ViewColor &color = ViewColor::inherit,
                                  const ViewColor &fill = ViewColor::inherit,
                                  double stroke_width = 1) {
         add({Canvas2DComponentType::geometry, identity(), color, fill,
-             stroke_width, geometry.geometry_common, std::nullopt});
+             stroke_width, geometry, std::nullopt});
         return *this;
     }
     /*!
@@ -170,11 +178,11 @@ class Canvas2D : protected Field, public EventTarget<Canvas2D> {
      * add時の引数での設定は不要
      *
      */
-    [[deprecated]] Canvas2D &add(const CanvasCommonComponent &geometry,
+    [[deprecated]] Canvas2D &add(const Geometry &geometry,
                                  const Transform &origin,
                                  const ViewColor &color, double stroke_width) {
         add({Canvas2DComponentType::geometry, origin, color, ViewColor::inherit,
-             stroke_width, geometry.geometry_common, std::nullopt});
+             stroke_width, geometry, std::nullopt});
         return *this;
     }
     /*!
@@ -187,11 +195,10 @@ class Canvas2D : protected Field, public EventTarget<Canvas2D> {
      * add時の引数での設定は不要
      *
      */
-    [[deprecated]] Canvas2D &add(const CanvasCommonComponent &geometry,
+    [[deprecated]] Canvas2D &add(const Geometry &geometry,
                                  const ViewColor &color, double stroke_width) {
         add({Canvas2DComponentType::geometry, identity(), color,
-             ViewColor::inherit, stroke_width, geometry.geometry_common,
-             std::nullopt});
+             ViewColor::inherit, stroke_width, geometry, std::nullopt});
         return *this;
     }
     /*!
