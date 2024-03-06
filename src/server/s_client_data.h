@@ -46,7 +46,7 @@ struct ClientData {
         view;
     std::unordered_map<std::string, std::vector<Common::Canvas3DComponentBase>>
         canvas3d;
-    std::unordered_map<std::string, Common::Canvas2DData> canvas2d;
+    std::unordered_map<std::string, Common::Canvas2DDataBase> canvas2d;
     std::unordered_map<std::string, Common::ImageBase> image;
     std::unordered_map<std::string, int> image_changed;
     // 画像が変化したことを知らせるcv

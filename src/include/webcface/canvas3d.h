@@ -23,7 +23,7 @@ namespace WEBCFACE_NS {
  *
  */
 class Canvas3D : protected Field, public EventTarget<Canvas3D> {
-    std::shared_ptr<std::vector<Canvas3DComponentBase>> components;
+    std::shared_ptr<std::vector<Canvas3DComponent>> components;
     std::shared_ptr<bool> modified;
 
     WEBCFACE_DLL void onAppend() const override;
@@ -32,7 +32,7 @@ class Canvas3D : protected Field, public EventTarget<Canvas3D> {
      * \brief 値をセットし、EventTargetを発動する
      *
      */
-    WEBCFACE_DLL Canvas3D &set(std::vector<Canvas3DComponentBase> &v);
+    WEBCFACE_DLL Canvas3D &set();
 
     WEBCFACE_DLL void onDestroy();
 
@@ -109,7 +109,7 @@ class Canvas3D : protected Field, public EventTarget<Canvas3D> {
      * \brief Componentを追加
      *
      */
-    WEBCFACE_DLL Canvas3D &add(const Canvas3DComponentBase &cc);
+    WEBCFACE_DLL Canvas3D &add(const Canvas3DComponent &cc);
 
     /*!
      * \brief Geometryを追加
@@ -140,12 +140,12 @@ class Canvas3D : protected Field, public EventTarget<Canvas3D> {
     [[deprecated]] Canvas3D &add(const Geometry &geometry,
                                  const Transform &origin,
                                  const ViewColor &color = ViewColor::inherit) {
-        add({Canvas3DComponentType::geometry,
-             origin,
-             color,
-             geometry,
-             std::nullopt,
-             {}});
+        add(Canvas3DComponent{{Canvas3DComponentType::geometry,
+                               origin,
+                               color,
+                               geometry,
+                               std::nullopt,
+                               {}}});
         return *this;
     }
     /*!
@@ -159,12 +159,12 @@ class Canvas3D : protected Field, public EventTarget<Canvas3D> {
      */
     [[deprecated]] Canvas3D &add(const Geometry &geometry,
                                  const ViewColor &color = ViewColor::inherit) {
-        add({Canvas3DComponentType::geometry,
-             identity(),
-             color,
-             geometry,
-             std::nullopt,
-             {}});
+        add(Canvas3DComponent{{Canvas3DComponentType::geometry,
+                               identity(),
+                               color,
+                               geometry,
+                               std::nullopt,
+                               {}}});
         return *this;
     }
     /*!
@@ -172,11 +172,14 @@ class Canvas3D : protected Field, public EventTarget<Canvas3D> {
      *
      * jointのangleを変更できる。
      * それ以外のパラメータは元のモデルのまま。
+     * \deprecated 1.8〜
+     * RobotModel に直接プロパティを設定できるようにしたため、
+     * add時の引数での設定は不要
      *
      */
-    WEBCFACE_DLL Canvas3D &add(const RobotModel &model_field,
-                               const Transform &origin,
-                               std::unordered_map<std::string, double> angles) {
+    [[deprecated]] WEBCFACE_DLL Canvas3D &
+    add(const RobotModel &model_field, const Transform &origin,
+        std::unordered_map<std::string, double> angles) {
         std::unordered_map<std::size_t, double> angles_i;
         auto model = model_field.get();
         for (std::size_t ji = 0; ji < model.size(); ji++) {
@@ -185,8 +188,9 @@ class Canvas3D : protected Field, public EventTarget<Canvas3D> {
                 angles_i[ji] = angles[j.name];
             }
         }
-        add({Canvas3DComponentType::robot_model, origin, ViewColor::inherit,
-             std::nullopt, static_cast<FieldBase>(model_field), angles_i});
+        add(Canvas3DComponent{{Canvas3DComponentType::robot_model, origin,
+                               ViewColor::inherit, std::nullopt,
+                               static_cast<FieldBase>(model_field), angles_i}});
         return *this;
     }
 

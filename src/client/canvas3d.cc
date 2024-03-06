@@ -7,12 +7,12 @@ namespace WEBCFACE_NS {
 
 Canvas3D::Canvas3D()
     : Field(), EventTarget<Canvas3D>(),
-      components(std::make_shared<std::vector<Canvas3DComponentBase>>()),
+      components(std::make_shared<std::vector<Canvas3DComponent>>()),
       modified(std::make_shared<bool>(false)) {}
 Canvas3D::Canvas3D(const Field &base)
     : Field(base), EventTarget<Canvas3D>(
                        &this->dataLock()->canvas3d_change_event, *this),
-      components(std::make_shared<std::vector<Canvas3DComponentBase>>()),
+      components(std::make_shared<std::vector<Canvas3DComponent>>()),
       modified(std::make_shared<bool>(false)) {}
 Canvas3D &Canvas3D::init() {
     components->clear();
@@ -21,7 +21,7 @@ Canvas3D &Canvas3D::init() {
 }
 Canvas3D &Canvas3D::sync() {
     if (*modified) {
-        set(*components);
+        set();
         *modified = false;
     }
     return *this;
@@ -32,15 +32,20 @@ void Canvas3D::onDestroy() {
         sync();
     }
 }
-WEBCFACE_DLL Canvas3D &Canvas3D::add(const Canvas3DComponentBase &cc) {
+WEBCFACE_DLL Canvas3D &Canvas3D::add(const Canvas3DComponent &cc) {
     components->push_back(cc);
     *modified = true;
     return *this;
 }
 
-Canvas3D &Canvas3D::set(std::vector<Canvas3DComponentBase> &v) {
-    setCheck()->canvas3d_store.setSend(
-        *this, std::make_shared<std::vector<Canvas3DComponentBase>>(v));
+Canvas3D &Canvas3D::set() {
+    auto cb = std::make_shared<std::vector<Canvas3DComponentBase>>();
+    cb->reserve(components->size());
+    for (std::size_t i = 0; i < components->size(); i++) {
+        cb->push_back(components->at(i).lockTmp(
+            this->data_w, this->name() + "_" + std::to_string(i)));
+    }
+    setCheck()->canvas3d_store.setSend(*this, cb);
     triggerEvent(*this);
     return *this;
 }

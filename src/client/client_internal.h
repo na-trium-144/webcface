@@ -132,7 +132,7 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
     SyncDataStore2<std::vector<Common::RobotLink>> robot_model_store;
     SyncDataStore2<std::shared_ptr<std::vector<Common::Canvas3DComponentBase>>>
         canvas3d_store;
-    SyncDataStore2<std::shared_ptr<Common::Canvas2DData>> canvas2d_store;
+    SyncDataStore2<std::shared_ptr<Common::Canvas2DDataBase>> canvas2d_store;
     std::shared_ptr<SyncDataStore1<std::shared_ptr<std::vector<LogLine>>>>
         log_store;
     SyncDataStore1<std::chrono::system_clock::time_point> sync_time_store;

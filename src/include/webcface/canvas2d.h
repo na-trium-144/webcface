@@ -10,6 +10,26 @@
 
 namespace WEBCFACE_NS {
 
+struct Canvas2DData {
+    double width = 0, height = 0;
+    std::vector<Canvas2DComponent> components;
+    Canvas2DData() = default;
+    Canvas2DData(double width, double height,
+                 std::vector<Canvas2DComponent> &&components)
+        : width(width), height(height), components(std::move(components)) {}
+    void checkSize() const {
+        if (width <= 0 && height <= 0) {
+            throw std::invalid_argument("Canvas2D size is invalid (" +
+                                        std::to_string(width) + ", " +
+                                        std::to_string(height) + ")");
+        }
+    }
+    WEBCFACE_DLL Canvas2DDataBase
+    lockTmp(std::weak_ptr<Internal::ClientData> data_w,
+            const std::string &field_name);
+};
+
+
 /*!
  * \brief Canvas2Dの送受信データを表すクラス
  *
@@ -26,7 +46,7 @@ class Canvas2D : protected Field, public EventTarget<Canvas2D> {
      * \brief 値をセットし、EventTargetを発動する
      *
      */
-    WEBCFACE_DLL Canvas2D &set(Canvas2DData &v);
+    WEBCFACE_DLL Canvas2D &set();
 
     WEBCFACE_DLL void onDestroy();
 
@@ -108,7 +128,7 @@ class Canvas2D : protected Field, public EventTarget<Canvas2D> {
      * \brief Componentを追加
      *
      */
-    WEBCFACE_DLL Canvas2D &add(const Canvas2DComponentBase &cc);
+    WEBCFACE_DLL Canvas2D &add(const Canvas2DComponent &cc);
 
     /*!
      * \brief Geometryを追加
@@ -146,8 +166,8 @@ class Canvas2D : protected Field, public EventTarget<Canvas2D> {
                                  const ViewColor &color = ViewColor::inherit,
                                  const ViewColor &fill = ViewColor::inherit,
                                  double stroke_width = 1) {
-        add({Canvas2DComponentType::geometry, origin, color, fill, stroke_width,
-             geometry, std::nullopt});
+        add(Canvas2DComponent{{Canvas2DComponentType::geometry, origin, color,
+                               fill, stroke_width, geometry, std::nullopt}});
         return *this;
     }
     /*!
@@ -164,8 +184,9 @@ class Canvas2D : protected Field, public EventTarget<Canvas2D> {
                                  const ViewColor &color = ViewColor::inherit,
                                  const ViewColor &fill = ViewColor::inherit,
                                  double stroke_width = 1) {
-        add({Canvas2DComponentType::geometry, identity(), color, fill,
-             stroke_width, geometry, std::nullopt});
+        add(Canvas2DComponent{{Canvas2DComponentType::geometry, identity(),
+                               color, fill, stroke_width, geometry,
+                               std::nullopt}});
         return *this;
     }
     /*!
@@ -181,8 +202,9 @@ class Canvas2D : protected Field, public EventTarget<Canvas2D> {
     [[deprecated]] Canvas2D &add(const Geometry &geometry,
                                  const Transform &origin,
                                  const ViewColor &color, double stroke_width) {
-        add({Canvas2DComponentType::geometry, origin, color, ViewColor::inherit,
-             stroke_width, geometry, std::nullopt});
+        add(Canvas2DComponent{{Canvas2DComponentType::geometry, origin, color,
+                               ViewColor::inherit, stroke_width, geometry,
+                               std::nullopt}});
         return *this;
     }
     /*!
@@ -197,8 +219,9 @@ class Canvas2D : protected Field, public EventTarget<Canvas2D> {
      */
     [[deprecated]] Canvas2D &add(const Geometry &geometry,
                                  const ViewColor &color, double stroke_width) {
-        add({Canvas2DComponentType::geometry, identity(), color,
-             ViewColor::inherit, stroke_width, geometry, std::nullopt});
+        add(Canvas2DComponent{{Canvas2DComponentType::geometry, identity(),
+                               color, ViewColor::inherit, stroke_width,
+                               geometry, std::nullopt}});
         return *this;
     }
     /*!

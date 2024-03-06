@@ -36,8 +36,8 @@
 #include "func.h"
 #include "func_listener.h"
 #include "view.h"
-#include "robot_model.h"
 #include "canvas_data.h"
+#include "robot_model.h"
 #include "canvas3d.h"
 #include "canvas2d.h"
 

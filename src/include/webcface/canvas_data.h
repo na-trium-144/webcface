@@ -8,12 +8,13 @@ namespace WEBCFACE_NS {
 namespace Internal {
 struct ClientData;
 }
+class RobotModel;
 
 /*!
  * \brief Canvas3Dに表示する要素
  *
  */
-class Canvas3DComponent : public Common::Canvas3DComponentBase {
+class Canvas3DComponent : protected Common::Canvas3DComponentBase {
     std::weak_ptr<Internal::ClientData> data_w;
 
   public:
@@ -21,6 +22,30 @@ class Canvas3DComponent : public Common::Canvas3DComponentBase {
     Canvas3DComponent(const Common::Canvas3DComponentBase &vc,
                       const std::weak_ptr<Internal::ClientData> &data_w)
         : Common::Canvas3DComponentBase(vc), data_w(data_w) {}
+    explicit Canvas3DComponent(const Common::Canvas3DComponentBase &vc)
+        : Common::Canvas3DComponentBase(vc), data_w() {}
+    Canvas3DComponent(Canvas3DComponentType type,
+                      const std::weak_ptr<Internal::ClientData> &data_w)
+        : Common::Canvas3DComponentBase(), data_w(data_w) {
+        type_ = type;
+    }
+    explicit Canvas3DComponent(Canvas3DComponentType type)
+        : Common::Canvas3DComponentBase(), data_w() {
+        type_ = type;
+    }
+
+    /*!
+     * \brief AnonymousFuncをFuncオブジェクトにlock
+     *
+     * 現状Funcをセットする要素無いのでなにもしない
+     *
+     */
+    Canvas3DComponentBase &
+    lockTmp(const std::weak_ptr<Internal::ClientData> & /*data_w*/,
+            const std::string & /*field_id*/) {
+        return *this;
+    }
+
 
     /*!
      * \brief 要素の種類
@@ -33,15 +58,52 @@ class Canvas3DComponent : public Common::Canvas3DComponentBase {
      */
     Transform origin() const { return origin_; }
     /*!
+     * \brief 要素の移動
+     *
+     */
+    Canvas3DComponent &origin(const Transform &origin) {
+        origin_ = origin;
+        return *this;
+    }
+    /*!
      * \brief 色
      *
      */
     ViewColor color() const { return color_; }
     /*!
+     * \brief 色
+     *
+     */
+    Canvas3DComponent &color(ViewColor color) {
+        color_ = color;
+        return *this;
+    }
+    /*!
      * \brief geometryを取得
      *
      */
     const std::optional<Geometry> &geometry() const { return geometry_; };
+    /*!
+     * \brief geometryをセット
+     *
+     */
+    Canvas3DComponent &geometry(Geometry &&g) {
+        geometry_.emplace(std::move(g));
+        return *this;
+    };
+    /*!
+     * \brief RobotModelを取得
+     *
+     */
+    WEBCFACE_DLL std::optional<RobotModel> robotModel() const;
+    WEBCFACE_DLL Canvas3DComponent &robotModel(const RobotModel &field);
+    /*!
+     * \brief RobotModelの関節を設定
+     * \param angles RobotJointの名前と角度のリスト
+     *
+     */
+    WEBCFACE_DLL Canvas3DComponent &
+    angles(const std::unordered_map<std::string, double> &angles);
 };
 
 /*!
@@ -51,7 +113,7 @@ class Canvas3DComponent : public Common::Canvas3DComponentBase {
  * 今のところこのクラスのオブジェクトのデータを変更する用途はない。
  *
  */
-class Canvas2DComponent : public Common::Canvas2DComponentBase {
+class Canvas2DComponent : protected Common::Canvas2DComponentBase {
     std::weak_ptr<Internal::ClientData> data_w;
     std::shared_ptr<AnonymousFunc> on_click_func_tmp;
 
@@ -61,6 +123,20 @@ class Canvas2DComponent : public Common::Canvas2DComponentBase {
                       const std::weak_ptr<Internal::ClientData> &data_w)
         : Common::Canvas2DComponentBase(vc), data_w(data_w),
           on_click_func_tmp(nullptr) {}
+    explicit Canvas2DComponent(const Common::Canvas2DComponentBase &vc)
+        : Common::Canvas2DComponentBase(vc), data_w(),
+          on_click_func_tmp(nullptr) {}
+    Canvas2DComponent(Canvas2DComponentType type,
+                      const std::weak_ptr<Internal::ClientData> &data_w)
+        : Common::Canvas2DComponentBase(), data_w(data_w),
+          on_click_func_tmp(nullptr) {
+        type_ = type;
+    }
+    explicit Canvas2DComponent(Canvas2DComponentType type)
+        : Common::Canvas2DComponentBase(), data_w(),
+          on_click_func_tmp(nullptr) {
+        type_ = type;
+    }
 
     /*!
      * \brief AnonymousFuncをFuncオブジェクトにlock
@@ -80,26 +156,50 @@ class Canvas2DComponent : public Common::Canvas2DComponentBase {
      *
      */
     Transform origin() const { return origin_; }
+    Canvas2DComponent &origin(const Transform &origin) {
+        origin_ = origin;
+        return *this;
+    }
     /*!
      * \brief 色
      *
      */
     ViewColor color() const { return color_; }
+    Canvas2DComponent &color(const ViewColor &color) {
+        color_ = color;
+        return *this;
+    }
     /*!
      * \brief 塗りつぶし色
      *
      */
     ViewColor fillColor() const { return fill_; }
+    Canvas2DComponent &fillColor(const ViewColor &color) {
+        fill_ = color;
+        return *this;
+    }
     /*!
      * \brief 線の太さ
      *
      */
     double strokeWidth() const { return stroke_width_; }
+    Canvas2DComponent &strokeWidth(double s) {
+        stroke_width_ = s;
+        return *this;
+    }
     /*!
      * \brief geometryを取得
      *
      */
     const std::optional<Geometry> &geometry() const { return geometry_; };
+    /*!
+     * \brief geometryをセット
+     *
+     */
+    Canvas2DComponent &geometry(Geometry &&g) {
+        geometry_.emplace(std::move(g));
+        return *this;
+    };
     /*!
      * \brief クリック時に実行される関数を取得
      *
@@ -137,14 +237,12 @@ class CanvasCommonComponent {
 
     void init2() {
         if (!component_2d) {
-            component_2d = std::make_optional<Canvas2DComponent>();
-            component_2d->type_ = Canvas2DComponentType::geometry;
+            component_2d.emplace(Canvas2DComponentType::geometry);
         }
     }
     void init3() {
         if (!component_3d) {
-            component_3d = std::make_optional<Canvas3DComponent>();
-            component_3d->type_ = Canvas3DComponentType::geometry;
+            component_3d.emplace(Canvas3DComponentType::geometry);
         }
     }
     void init() {
@@ -163,26 +261,22 @@ class CanvasCommonComponent {
     operator Geometry &&() && { return std::move(geometry_common); }
     operator Canvas2DComponent &() {
         init2();
-        component_2d->geometry_ =
-            std::make_optional<Geometry>(std::move(geometry_common));
+        component_2d->geometry(std::move(geometry_common));
         return *component_2d;
     }
     operator Canvas2DComponent &&() && {
         init2();
-        component_2d->geometry_ =
-            std::make_optional<Geometry>(std::move(geometry_common));
+        component_2d->geometry(std::move(geometry_common));
         return std::move(*component_2d);
     }
     operator Canvas3DComponent &() {
         init3();
-        component_3d->geometry_ =
-            std::make_optional<Geometry>(std::move(geometry_common));
+        component_3d->geometry(std::move(geometry_common));
         return *component_3d;
     }
     operator Canvas3DComponent &&() && {
         init3();
-        component_3d->geometry_ =
-            std::make_optional<Geometry>(std::move(geometry_common));
+        component_3d->geometry(std::move(geometry_common));
         return std::move(*component_3d);
     }
 
@@ -202,8 +296,8 @@ class CanvasCommonComponent {
      */
     CanvasCommonComponent &origin(const Transform &origin) {
         init();
-        component_2d->origin_ = origin;
-        component_3d->origin_ = origin;
+        component_2d->origin(origin);
+        component_3d->origin(origin);
         return *this;
     }
     /*!
@@ -212,17 +306,17 @@ class CanvasCommonComponent {
      */
     CanvasCommonComponent &color(ViewColor c) {
         init();
-        component_2d->color_ = c;
-        component_3d->color_ = c;
+        component_2d->color(c);
+        component_3d->color(c);
         return *this;
     }
     /*!
      * \brief 背景色 (2Dのみ)
      *
      */
-    CanvasCommonComponent &fill(ViewColor c) {
+    CanvasCommonComponent &fillColor(ViewColor c) {
         init2();
-        component_2d->fill_ = c;
+        component_2d->fillColor(c);
         return *this;
     }
     /*!
@@ -231,7 +325,7 @@ class CanvasCommonComponent {
      */
     CanvasCommonComponent &strokeWidth(double s) {
         init2();
-        component_2d->stroke_width_ = s;
+        component_2d->strokeWidth(s);
         return *this;
     }
 };

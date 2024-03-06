@@ -159,10 +159,10 @@ int main() {
                       .color(webcface::ViewColor::gray));
         world.add(webcface::box({1.5, -1.5, 0}, {1.5, 1.5, 0.1})
                       .color(webcface::ViewColor::gray));
-        world.add(c.robotModel("omniwheel"),
-                  {-0.3 * std::sin(i / 3.0), 0.3 * std::cos(i / 3.0), 0,
-                   i / 3.0, 0, 0},
-                  {{"line_rotation", -i}});
+        world.add(c.robotModel("omniwheel")
+                      .origin({-0.3 * std::sin(i / 3.0),
+                               0.3 * std::cos(i / 3.0), 0, i / 3.0, 0, 0})
+                      .angles({{"line_rotation", -i}}));
         world.sync();
 
 
@@ -180,27 +180,27 @@ int main() {
                 webcface::polygon({{0, -5}, {-5, 0}, {-5, 10}, {5, 10}, {5, 0}})
                     .origin(pos)
                     .color(webcface::ViewColor::black)
-                    .fill(webcface::ViewColor::yellow)
+                    .fillColor(webcface::ViewColor::yellow)
                     .strokeWidth(2));
             cv.add(webcface::circle(webcface::Point{-5, 0}, 2)
                        .origin(pos)
                        .color(webcface::ViewColor::black)
-                       .fill(webcface::ViewColor::gray)
+                       .fillColor(webcface::ViewColor::gray)
                        .strokeWidth(0.5));
             cv.add(webcface::circle(webcface::Point{-5, 10}, 2)
                        .origin(pos)
                        .color(webcface::ViewColor::black)
-                       .fill(webcface::ViewColor::gray)
+                       .fillColor(webcface::ViewColor::gray)
                        .strokeWidth(0.5));
             cv.add(webcface::circle(webcface::Point{5, 10}, 2)
                        .origin(pos)
                        .color(webcface::ViewColor::black)
-                       .fill(webcface::ViewColor::gray)
+                       .fillColor(webcface::ViewColor::gray)
                        .strokeWidth(0.5));
             cv.add(webcface::circle(webcface::Point{5, 0}, 2)
                        .origin(pos)
                        .color(webcface::ViewColor::black)
-                       .fill(webcface::ViewColor::gray)
+                       .fillColor(webcface::ViewColor::gray)
                        .strokeWidth(0.5));
         }
 

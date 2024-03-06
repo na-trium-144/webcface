@@ -3,6 +3,7 @@
 #include "common/robot_model.h"
 #include "field.h"
 #include "event_target.h"
+#include "canvas_data.h"
 
 namespace WEBCFACE_NS {
 namespace Internal {
@@ -15,8 +16,13 @@ class Member;
  *
  * コンストラクタではなく Member::robotModel() を使って取得してください
  *
+ * (1.8〜) Canvas3DComponentを継承しており origin(), color()
+ * などを指定してCanvas3Dに追加することができる
+ *
  */
-class RobotModel : protected Field, public EventTarget<RobotModel> {
+class RobotModel : protected Field,
+                   public EventTarget<RobotModel>,
+                   public Canvas3DComponent {
     WEBCFACE_DLL void onAppend() const override;
 
   public:

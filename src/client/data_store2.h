@@ -248,7 +248,7 @@ extern template class SyncDataStore2<
 extern template class SyncDataStore2<std::vector<Common::RobotLink>, int>;
 extern template class SyncDataStore2<
     std::shared_ptr<std::vector<Common::Canvas3DComponentBase>>, int>;
-extern template class SyncDataStore2<std::shared_ptr<Common::Canvas2DData>,
+extern template class SyncDataStore2<std::shared_ptr<Common::Canvas2DDataBase>,
                                      int>;
 extern template class SyncDataStore2<Common::ImageBase, Common::ImageReq>;
 

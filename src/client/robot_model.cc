@@ -6,7 +6,10 @@
 namespace WEBCFACE_NS {
 RobotModel::RobotModel(const Field &base)
     : Field(base), EventTarget<RobotModel>(
-                       &this->dataLock()->robot_model_change_event, *this) {}
+                       &this->dataLock()->robot_model_change_event, *this),
+      Canvas3DComponent(Canvas3DComponentType::robot_model, this->dataLock()) {
+    this->Canvas3DComponent::robotModel(*this);
+}
 
 void RobotModel::request() const {
     auto data = dataLock();
