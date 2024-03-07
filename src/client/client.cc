@@ -421,7 +421,7 @@ void Internal::ClientData::onRecv(const std::string &message) {
                 this->canvas2d_store.getReq(r.req_id, r.sub_field);
             auto v_prev = this->canvas2d_store.getRecv(member, field);
             if (v_prev == std::nullopt) {
-                v_prev = std::make_shared<Canvas2DData>();
+                v_prev = std::make_shared<Common::Canvas2DData>();
                 this->canvas2d_store.setRecv(member, field, *v_prev);
             }
             (*v_prev)->width = r.width;
