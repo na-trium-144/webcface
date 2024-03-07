@@ -206,9 +206,12 @@ class Value : protected Field, public EventTarget<Value> {
     // 比較演算子の定義は不要
 };
 
-
-inline std::ostream &operator<<(std::ostream &os, const Value &data) {
-    return os << data.get();
-}
+/*!
+ * \brief Valueをostreamに渡すとValueの中身を表示
+ *
+ * 1.8〜 複数の値に対応 & 受信してない時nullと表示するようにした
+ *
+ */
+WEBCFACE_DLL std::ostream &operator<<(std::ostream &os, const Value &data);
 
 } // namespace WEBCFACE_NS
