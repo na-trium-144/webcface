@@ -253,6 +253,28 @@ TEST_F(ClientTest, valueSend) {
             EXPECT_EQ(obj.data->at(0), 5);
         },
         [&] { ADD_FAILURE() << "Value recv error"; });
+    dummy_s->recvClear();
+
+    data_->value_store.setSend("a", std::make_shared<VectorOpt<double>>(5));
+    wcli_->sync();
+    wait();
+    dummy_s->recv<Message::Value>(
+        [&](const auto &) { ADD_FAILURE() << "should not receive same Value"; },
+        [&] {});
+    dummy_s->recvClear();
+
+    data_->value_store.setSend(
+        "a", std::make_shared<VectorOpt<double>>(std::array<double, 2>{5, 2}));
+    wcli_->sync();
+    wait();
+    dummy_s->recv<Message::Value>(
+        [&](const auto &obj) {
+            EXPECT_EQ(obj.field, "a");
+            ASSERT_EQ(obj.data->size(), 2);
+            EXPECT_EQ(obj.data->at(0), 5);
+            EXPECT_EQ(obj.data->at(1), 2);
+        },
+        [&] { ADD_FAILURE() << "Value recv error"; });
 }
 TEST_F(ClientTest, valueReq) {
     wcli_->waitConnection();
@@ -294,6 +316,25 @@ TEST_F(ClientTest, textSend) {
         [&](const auto &obj) {
             EXPECT_EQ(obj.field, "a");
             EXPECT_EQ(*obj.data, "b");
+        },
+        [&] { ADD_FAILURE() << "Text recv error"; });
+    dummy_s->recvClear();
+
+    data_->text_store.setSend("a", std::make_shared<std::string>("b"));
+    wcli_->sync();
+    wait();
+    dummy_s->recv<Message::Text>(
+        [&](const auto &) { ADD_FAILURE() << "should not receive same Text"; },
+        [&] {});
+    dummy_s->recvClear();
+
+    data_->text_store.setSend("a", std::make_shared<std::string>("c"));
+    wcli_->sync();
+    wait();
+    dummy_s->recv<Message::Text>(
+        [&](const auto &obj) {
+            EXPECT_EQ(obj.field, "a");
+            EXPECT_EQ(*obj.data, "c");
         },
         [&] { ADD_FAILURE() << "Text recv error"; });
 }
