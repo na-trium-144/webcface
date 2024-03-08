@@ -34,7 +34,6 @@ class SyncDataStore2 {
      */
     std::unordered_map<std::string, T> data_send;
     std::unordered_map<std::string, T> data_send_prev;
-
     /*!
      * \brief 送信済みデータ&受信済みデータ
      *
@@ -234,23 +233,28 @@ class SyncDataStore2 {
         }
         return v_diff;
     }
-
 };
 
+using ValueData = std::shared_ptr<VectorOpt<double>>;
+using TextData = std::shared_ptr<std::string>;
+using FuncData = std::shared_ptr<FuncInfo>;
+using ViewData = std::shared_ptr<std::vector<Common::ViewComponentBase>>;
+using RobotModelData = std::vector<Common::RobotLink>;
+using Canvas3DData =
+    std::shared_ptr<std::vector<Common::Canvas3DComponentBase>>;
+using Canvas2DData = std::shared_ptr<Common::Canvas2DData>;
+using ImageData = Common::ImageBase;
 
 #ifdef _MSC_VER
 extern template class SyncDataStore2<std::string, int>; // test用
-extern template class SyncDataStore2<std::shared_ptr<VectorOpt<double>>, int>;
-extern template class SyncDataStore2<std::shared_ptr<std::string>, int>;
-extern template class SyncDataStore2<std::shared_ptr<FuncInfo>, int>;
-extern template class SyncDataStore2<
-    std::shared_ptr<std::vector<Common::ViewComponentBase>>, int>;
-extern template class SyncDataStore2<std::vector<Common::RobotLink>, int>;
-extern template class SyncDataStore2<
-    std::shared_ptr<std::vector<Common::Canvas3DComponentBase>>, int>;
-extern template class SyncDataStore2<std::shared_ptr<Common::Canvas2DData>,
-                                     int>;
-extern template class SyncDataStore2<Common::ImageBase, Common::ImageReq>;
+extern template class SyncDataStore2<ValueData, int>;
+extern template class SyncDataStore2<TextData, int>;
+extern template class SyncDataStore2<FuncData, int>;
+extern template class SyncDataStore2<ViewData, int>;
+extern template class SyncDataStore2<RobotModelData, int>;
+extern template class SyncDataStore2<Canvas3DData, int>;
+extern template class SyncDataStore2<Canvas2DData, int>;
+extern template class SyncDataStore2<ImageData, Common::ImageReq>;
 
 #endif
 

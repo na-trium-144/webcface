@@ -73,7 +73,7 @@ class Text : protected Field, public EventTarget<Text> {
     /*!
      * \brief 文字列をリクエストする
      * \since ver1.7
-     * 
+     *
      */
     WEBCFACE_DLL void request() const;
     /*!
@@ -115,7 +115,9 @@ class Text : protected Field, public EventTarget<Text> {
     bool operator!=(const std::string &rhs) const { return this->get() != rhs; }
 };
 
-inline std::ostream &operator<<(std::ostream &os, const Text &data) {
-    return os << data.get();
-}
+/*!
+ * \brief Textをostreamに渡すとTextの中身を表示
+ *
+ */
+WEBCFACE_DLL std::ostream &operator<<(std::ostream &os, const Text &data);
 } // namespace WEBCFACE_NS

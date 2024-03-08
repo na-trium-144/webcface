@@ -121,6 +121,7 @@ void ClientData::sendPing() {
     send(Message::packSingle(Message::Ping{}));
 }
 void ClientData::onRecv(const std::string &message) {
+    static std::unordered_map<int, bool> message_kind_warned;
     namespace MessageKind = WEBCFACE_NS::Message::MessageKind;
     auto messages = WEBCFACE_NS::Message::unpack(message, this->logger);
     for (const auto &m : messages) {
@@ -807,7 +808,8 @@ void ClientData::onRecv(const std::string &message) {
                         this->pack(WEBCFACE_NS::Message::Res<
                                    WEBCFACE_NS::Message::Canvas2D>{
                             s.req_id, sub_field, it.second.width,
-                            it.second.height, diff, it.second.components.size()});
+                            it.second.height, diff,
+                            it.second.components.size()});
                         logger->trace("send canvas2d_res req_id={} + '{}'",
                                       s.req_id, sub_field);
                     }
@@ -865,10 +867,16 @@ void ClientData::onRecv(const std::string &message) {
         case MessageKind::res + MessageKind::image:
         case MessageKind::svr_version:
         case MessageKind::ping_status:
-            logger->warn("Invalid Message Kind {}", kind);
+            if (!message_kind_warned[kind]) {
+                logger->warn("Invalid Message Kind {}", kind);
+                message_kind_warned[kind] = true;
+            }
             break;
         default:
-            logger->warn("Unknown Message Kind {}", kind);
+            if (!message_kind_warned[kind]) {
+                logger->warn("Unknown Message Kind {}", kind);
+                message_kind_warned[kind] = true;
+            }
             break;
         }
     }
@@ -954,10 +962,17 @@ static int colorConvert(Common::ImageColorMode src_mode,
 }
 #endif
 
+/*!
+ * \brief cdの画像を変換しthisに送信
+ *
+ * cd.image[field]が更新されるかリクエストが更新されたときに変換を行う。
+ *
+ */
 void ClientData::imageConvertThreadMain(const std::string &member,
                                         const std::string &field) {
-    // cdの画像を変換しthisに送信
-    // cd.image[field]が更新されるかリクエストが更新されたときに変換を行う。
+#if !WEBCFACE_USE_OPENCV
+    static bool opencv_warned = false;
+#endif
     int last_image_flag = -1, last_req_flag = -1;
     logger->trace("imageConvertThreadMain started for {}, {}", member, field);
     while (true) {
@@ -1021,7 +1036,10 @@ void ClientData::imageConvertThreadMain(const std::string &member,
                     }
                     cv::resize(m, m, cv::Size(cols, rows));
 #else
-                    this->logger->warn("Cannot convert image since OpenCV is disabled.");
+                    if(!opencv_warned){
+                        this->logger->warn("Cannot convert image since OpenCV is disabled.");
+                        opencv_warned = true;
+                    }
                     return;
 #endif
                 }
@@ -1030,7 +1048,10 @@ void ClientData::imageConvertThreadMain(const std::string &member,
                     cv::cvtColor(
                         m, m, colorConvert(img.color_mode(), *info.color_mode));
 #else
-                    this->logger->warn("Cannot convert image since OpenCV is disabled.");
+                    if(!opencv_warned){
+                        this->logger->warn("Cannot convert image since OpenCV is disabled.");
+                        opencv_warned = true;
+                    }
                     return;
 #endif
                 }
@@ -1077,7 +1098,10 @@ void ClientData::imageConvertThreadMain(const std::string &member,
                     encoded = img.dataPtr();
                     break;
                 default:
-                    this->logger->warn("Cannot convert image since OpenCV is disabled.");
+                    if(!opencv_warned){
+                        this->logger->warn("Cannot convert image since OpenCV is disabled.");
+                        opencv_warned = true;
+                    }
                     return;
 #endif
                 }

@@ -72,5 +72,17 @@ Value &Value::free() {
     return *this;
 }
 
+std::ostream &operator<<(std::ostream &os, const Value &data) {
+    auto v = data.tryGetVec();
+    if (v) {
+        os << (v->size() > 0 ? v->at(0) : 0.0);
+        for (std::size_t i = 1; i < v->size(); i++) {
+            os << ", " << v->at(i);
+        }
+    } else {
+        os << "null";
+    }
+    return os;
+}
 
 } // namespace WEBCFACE_NS

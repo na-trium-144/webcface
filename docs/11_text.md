@@ -113,6 +113,12 @@ Text::tryGet(), Text::tryGetRecurse() で値のリクエストをするととも
     tryGet(), tryGetRecurse() はstd::nulloptを返します。  
     get(), getRecurse() はstd::nulloptの代わりにデフォルト値を返します。  
     また、std::string, Text::Dict などの型にキャストすることでも同様に値が得られます。
+
+    std::ostreamにTextを直接渡して表示することもできます。
+    ```cpp
+    std::cout << "hoge = " << wcli.member("foo").text("hoge") << std::endl;
+    ```
+
 - <b class="tab-title">C</b>
     \since <span class="since-c">1.7</span>
 
