@@ -73,7 +73,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">WebCFace<span id="projectnumber">&#160;1.7.0</span>
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;1.8.0</span>
    </div>
    <div id="projectbrief">Web-based RPC &amp; UI Library</div>
   </td>
@@ -168,15 +168,20 @@ $(document).ready(function(){initNavTree('md_01__client.html',''); initResizable
 <li>バックグラウンド(別スレッド)で接続が完了するまでの間はデータの受信などはできません。</li>
 <li>通信が切断された場合は自動で再接続します。</li>
 <li>コンストラクタに指定するのはこのクライアントの名前(Memberの名前)です。<ul>
-<li>同時に接続している他のクライアントと名前が被らないようにしてください。</li>
+<li>同時に接続している他のクライアントと名前が被らないようにしてください。同じ名前で複数のクライアントが接続した場合正常に通信できない場合があります。</li>
 </ul>
 </li>
-<li>デフォルトではlocalhostの7530ポートに接続を試みますが、サーバーのポートを変更していたり別のpcに接続する場合はコンストラクタの引数でサーバーのアドレスとポートを指定できます。</li>
+<li>デフォルトではlocalhostの7530ポートに接続を試みますが、サーバーのポートを変更していたり別のpcに接続する場合はコンストラクタの引数でサーバーのアドレスとポートを指定できます。<ul>
+<li>特にwebブラウザ上でJavaScriptから接続しようとする場合、サーバー側からみたlocalhostではなくブラウザ側からみたlocalhostへ接続しようとするので注意してください (<a href="https://developer.mozilla.org/ja/docs/Web/API/Location/host">location.host</a> などを接続先アドレスに指定する必要があります)</li>
+</ul>
+</li>
 </ul>
 <div class="tabbed"></div><div class="tabbed"><ul>
 <li><b class="tab-title">C++</b> <div class="fragment"><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="webcface_8h.html">webcface/webcface.h</a>&gt;</span></div>
 <div class="line"> </div>
 <div class="line"><a class="code hl_class" href="classwebcface_1_1Client.html">webcface::Client</a> wcli(<span class="stringliteral">&quot;sample&quot;</span>);</div>
+<div class="line"><span class="comment">// アドレスを指定する場合</span></div>
+<div class="line"><span class="comment">// webcface::Client wcli(&quot;sample&quot;, &quot;192.168.1.1&quot;, 7530);</span></div>
 <div class="line"> </div>
 <div class="line">wcli.start();</div>
 <div class="line"><span class="comment">// または wcli.waitConnection();</span></div>
@@ -195,7 +200,7 @@ $(document).ready(function(){initNavTree('md_01__client.html',''); initResizable
 <dl class="section note"><dt>Note</dt><dd><span class="since-c">1.7</span> 引数にnullptrを渡した場合空文字列(後述)と同様になります</dd></dl>
 <p>サーバーのアドレスとポートを指定したい場合<code><a class="el" href="c__wcf_2client_8cc.html#a91204ffa8e81e5821926147321aaf101" title="クライアントを初期化する">wcfInit()</a></code>を使います </p><div class="fragment"><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="c__wcf_8h.html">webcface/c_wcf.h</a>&gt;</span></div>
 <div class="line"> </div>
-<div class="line"><a class="code hl_typedef" href="def__types_8h.html#a11e35bfe0822747dfabcce7f5220016a">wcfClient</a> *wcli = <a class="code hl_function" href="c__wcf_2client_8cc.html#a91204ffa8e81e5821926147321aaf101">wcfInit</a>(<span class="stringliteral">&quot;sample&quot;</span>, <span class="stringliteral">&quot;127.0.0.1&quot;</span>, 7530);</div>
+<div class="line"><a class="code hl_typedef" href="def__types_8h.html#a11e35bfe0822747dfabcce7f5220016a">wcfClient</a> *wcli = <a class="code hl_function" href="c__wcf_2client_8cc.html#a91204ffa8e81e5821926147321aaf101">wcfInit</a>(<span class="stringliteral">&quot;sample&quot;</span>, <span class="stringliteral">&quot;192.168.1.1&quot;</span>, 7530);</div>
 <div class="line"><a class="code hl_function" href="c__wcf_2client_8cc.html#ad84e50d3482bedb7ccfa278bfc00120c">wcfStart</a>(wcli);</div>
 <div class="ttc" id="ac__wcf_2client_8cc_html_a91204ffa8e81e5821926147321aaf101"><div class="ttname"><a href="c__wcf_2client_8cc.html#a91204ffa8e81e5821926147321aaf101">wcfInit</a></div><div class="ttdeci">wcfClient * wcfInit(const char *name, const char *host, int port)</div><div class="ttdoc">クライアントを初期化する</div><div class="ttdef"><b>Definition</b> client.cc:4</div></div>
 </div><!-- fragment --><p> 接続できているかどうかは <code>wcfIsConnected(wcli)</code> で取得できます。</p>
@@ -203,12 +208,16 @@ $(document).ready(function(){initNavTree('md_01__client.html',''); initResizable
 <li><b class="tab-title">JavaScript</b> <div class="fragment"><div class="line">import { Client } from &quot;webcface&quot;;</div>
 <div class="line"> </div>
 <div class="line">const wcli = Client(&quot;sample&quot;);</div>
+<div class="line">// アドレスを指定する場合</div>
+<div class="line">// const wcli = Client(&quot;sample&quot;, &quot;192.168.1.1&quot;, 7530);</div>
 <div class="line"> </div>
 <div class="line">wcli.start();</div>
 </div><!-- fragment --> 接続できているかどうかは <code>wcli.connected</code> で取得できます。</li>
 <li><b class="tab-title">Python</b> <div class="fragment"><div class="line"><span class="keyword">import</span> webcface</div>
 <div class="line"> </div>
 <div class="line">wcli = <a class="code hl_class" href="classwebcface_1_1Client.html">webcface.Client</a>(<span class="stringliteral">&quot;sample&quot;</span>)</div>
+<div class="line"><span class="comment"># アドレスを指定する場合</span></div>
+<div class="line"><span class="comment"># wcli = webcface.Client(&quot;sample&quot;, &quot;192.168.1.1&quot;, 7530)</span></div>
 <div class="line"> </div>
 <div class="line">wcli.start()</div>
 <div class="line"><span class="comment"># または wcli.wait_connection()</span></div>
@@ -216,6 +225,8 @@ $(document).ready(function(){initNavTree('md_01__client.html',''); initResizable
 </ul>
 </div><div class="tabbed"></div><dl class="section note"><dt>Note</dt><dd>コンストラクタに名前を指定しない、または空文字列の場合、読み取り専用モードになります。 <br  />
  この場合データを送信することができなくなりますが、同じプログラムを複数起動することができます (WebUIではこの仕様を使っています)</dd></dl>
+<p>クライアントが正常に接続できると、サーバーのログに </p><div class="fragment"><div class="line">[info] Successfully connected and initialized.</div>
+</div><!-- fragment --><p> などと表示されます。 (クライアントの名前を指定しなかった場合は表示されません)</p>
 <p>プログラムを起動できたら、WebUIを開いてみましょう。 そして右上のメニューを開き、Clientの初期化時に指定した名前がそこに表示されていれば正しく通信できています。</p>
 <h1><a class="anchor" id="autotoc_md24"></a>
 sync</h1>
@@ -270,7 +281,9 @@ sync</h1>
 <li><b class="tab-title">Python</b> <div class="fragment"><div class="line">wcli.close()</div>
 </div><!-- fragment --></li>
 </ul>
-</div><div class="tabbed"></div><dl class="section warning"><dt>Warning</dt><dd>closeしたあと再度start()を呼んで再接続することはできません。</dd></dl>
+</div><div class="tabbed"></div><p>切断するとサーバーのログに </p><div class="fragment"><div class="line">[info] connection closed</div>
+</div><!-- fragment --><p> などと表示されます。</p>
+<dl class="section warning"><dt>Warning</dt><dd>closeしたあと再度start()を呼んで再接続することはできません。</dd></dl>
 <h1><a class="anchor" id="autotoc_md26"></a>
 バージョン情報</h1>
 <p>いま使用しているWebCFaceライブラリのバージョンを確認できます。</p>
@@ -316,7 +329,7 @@ sync</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon Feb 26 2024 14:09:49 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Fri Mar 8 2024 15:11:20 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

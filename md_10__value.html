@@ -73,7 +73,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">WebCFace<span id="projectnumber">&#160;1.7.0</span>
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;1.8.0</span>
    </div>
    <div id="projectbrief">Web-based RPC &amp; UI Library</div>
   </td>
@@ -228,6 +228,7 @@ $(document).ready(function(){initNavTree('md_10__value.html',''); initResizable(
 </ul>
 </div><div class="tabbed"></div><p><img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/value_child.png" alt="value_child" class="inline"/></p>
 <p>ROSのTopicではPointやTransformなど目的に応じてさまざまな型が用意されていますが、 WebCFaceではそういう場合はValueを複数用意して送信することを想定しています。</p>
+<dl class="section note"><dt>Note</dt><dd><span class="since-c">1.8</span> 同じデータを繰り返しsetした場合は、通信量を削減するため実際には最初の1度しか送信されないようになっています。 (<a class="el" href="md_11__text.html">Text</a> についても同様)</dd></dl>
 <h2><a class="anchor" id="autotoc_md39"></a>
 複数の値をまとめて送る</h2>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000001">Todo:</a></b></dt><dd>Pythonの辞書型への対応は未実装</dd></dl>
@@ -284,12 +285,14 @@ $(document).ready(function(){initNavTree('md_10__value.html',''); initResizable(
 <p>Member::value() でValueクラスのオブジェクトが得られ、 Value::tryGet(), Value::tryGetVec() などで値のリクエストをするとともに受信した値を取得できます。</p>
 <p>例えば<code>foo</code>というクライアントの<code>hoge</code>という名前のデータを取得したい場合は次のようにします。</p>
 <div class="tabbed"></div><div class="tabbed"><ul>
-<li><b class="tab-title">C++</b> <div class="fragment"><div class="line">std::optional&lt;double&gt; hoge = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).value(<span class="stringliteral">&quot;hoge&quot;</span>).tryGet();</div>
+<li><p class="startli"><b class="tab-title">C++</b> </p><div class="fragment"><div class="line">std::optional&lt;double&gt; hoge = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).value(<span class="stringliteral">&quot;hoge&quot;</span>).tryGet();</div>
 <div class="line">std::optional&lt;std::vector&lt;double&gt;&gt; hoge = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).value(<span class="stringliteral">&quot;hoge&quot;</span>).tryGetVec();</div>
 <div class="line">std::optional&lt;webcface::Value::Dict&gt; hoge = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).value(<span class="stringliteral">&quot;hoge&quot;</span>).tryGetRecurse();</div>
-</div><!-- fragment --> 初回の呼び出しではまだ受信していないため、 tryGet(), tryGetVec(), tryGetRecurse() はstd::nulloptを返します。 <br  />
+</div><!-- fragment --><p> 初回の呼び出しではまだ受信していないため、 tryGet(), tryGetVec(), tryGetRecurse() はstd::nulloptを返します。 <br  />
  get(), getVec(), getRecurse() はstd::nulloptの代わりにデフォルト値を返します。 <br  />
- また、doubleやstd::vector&lt;double&gt;, Value::Dict などの型にキャストすることでも同様に値が得られます。</li>
+ また、doubleやstd::vector&lt;double&gt;, Value::Dict などの型にキャストすることでも同様に値が得られます。</p>
+<p class="startli"><span class="since-c">1.8</span> std::ostreamにValueを直接渡して表示することもできます。 まだ受信していない場合nullと表示されます。 </p><div class="fragment"><div class="line">std::cout &lt;&lt; <span class="stringliteral">&quot;hoge = &quot;</span> &lt;&lt; wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).value(<span class="stringliteral">&quot;hoge&quot;</span>) &lt;&lt; std::endl;</div>
+</div><!-- fragment --></li>
 <li><p class="startli"><b class="tab-title">C</b> </p><div class="fragment"><div class="line"><span class="keywordtype">double</span> value[5];</div>
 <div class="line"><span class="keywordtype">int</span> size;</div>
 <div class="line"><span class="keywordtype">int</span> ret = <a class="code hl_function" href="c__wcf_2value_8cc.html#a0f854340c16f01ef95424003d1ae84ca">wcfValueGetVecD</a>(wcli, <span class="stringliteral">&quot;a&quot;</span>, <span class="stringliteral">&quot;hoge&quot;</span>, value, 5, &amp;size);</div>
@@ -429,7 +432,7 @@ Event</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon Feb 26 2024 14:09:49 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Fri Mar 8 2024 15:11:20 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>
