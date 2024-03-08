@@ -37,6 +37,23 @@ Canvas3DComponent &Canvas3DComponent::angles(
                                     "but robotModel not defined");
     }
 }
+Canvas3DComponent &Canvas3DComponent::angle(const std::string &joint_name,
+                                            double angle) {
+    auto rm = robotModel();
+    if (rm) {
+        auto model = rm->get();
+        for (std::size_t ji = 0; ji < model.size(); ji++) {
+            const auto &j = model[ji].joint;
+            if (joint_name == j.name) {
+                angles_[ji] = angle;
+            }
+        }
+        return *this;
+    } else {
+        throw std::invalid_argument("Tried to set Canvas3DComponent::angles "
+                                    "but robotModel not defined");
+    }
+}
 
 Canvas2DComponentBase &
 Canvas2DComponent::lockTmp(const std::weak_ptr<Internal::ClientData> &data_w,

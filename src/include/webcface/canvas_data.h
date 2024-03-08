@@ -98,12 +98,20 @@ class Canvas3DComponent : protected Common::Canvas3DComponentBase {
     WEBCFACE_DLL std::optional<RobotModel> robotModel() const;
     WEBCFACE_DLL Canvas3DComponent &robotModel(const RobotModel &field);
     /*!
-     * \brief RobotModelの関節を設定
+     * \brief RobotModelの関節をまとめて設定
      * \param angles RobotJointの名前と角度のリスト
      *
      */
     WEBCFACE_DLL Canvas3DComponent &
     angles(const std::unordered_map<std::string, double> &angles);
+    /*!
+     * \brief RobotModelの関節を設定
+     * \param joint_name RobotJointの名前
+     * \param angle 角度
+     *
+     */
+    WEBCFACE_DLL Canvas3DComponent &angle(const std::string &joint_name,
+                                          double angle);
 };
 
 /*!
