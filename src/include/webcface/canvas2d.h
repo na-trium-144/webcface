@@ -129,21 +129,26 @@ class Canvas2D : protected Field, public EventTarget<Canvas2D> {
      *
      */
     WEBCFACE_DLL Canvas2D &add(const Canvas2DComponent &cc);
+    /*!
+     * \brief Componentを追加
+     *
+     */
+    WEBCFACE_DLL Canvas2D &add(Canvas2DComponent &&cc);
 
     /*!
      * \brief Geometryを追加
-     * \since 1.8
+     * \since 1.9
      */
     Canvas2D &add(CanvasCommonComponent &&cc) {
-        add(static_cast<Canvas2DComponent &&>(std::move(cc)));
+        add(std::move(cc.to2()));
         return *this;
     }
     /*!
      * \brief Geometryを追加
-     * \since 1.8
+     * \since 1.9
      */
     Canvas2D &add(CanvasCommonComponent &cc) {
-        add(static_cast<Canvas2DComponent &>(cc));
+        add(cc.to2());
         return *this;
     }
     /*!
@@ -156,7 +161,7 @@ class Canvas2D : protected Field, public EventTarget<Canvas2D> {
      * \param color 図形の枠線の色 (省略時のinheritはWebUI上ではblackと同じ)
      * \param fill 塗りつぶしの色 (省略時のinheritはWebUI上では透明)
      * \param stroke_width 枠線の太さ
-     * \deprecated 1.8〜
+     * \deprecated 1.9〜
      * CanvasCommonComponent に直接プロパティを設定できるようにしたため、
      * add時の引数での設定は不要
      *
@@ -175,7 +180,7 @@ class Canvas2D : protected Field, public EventTarget<Canvas2D> {
      *
      * origin を省略した場合identity()になる
      *
-     * \deprecated 1.8〜
+     * \deprecated 1.9〜
      * CanvasCommonComponent に直接プロパティを設定できるようにしたため、
      * add時の引数での設定は不要
      *
@@ -194,7 +199,7 @@ class Canvas2D : protected Field, public EventTarget<Canvas2D> {
      *
      * fillを省略
      *
-     * \deprecated 1.8〜
+     * \deprecated 1.9〜
      * CanvasCommonComponent に直接プロパティを設定できるようにしたため、
      * add時の引数での設定は不要
      *
@@ -212,7 +217,7 @@ class Canvas2D : protected Field, public EventTarget<Canvas2D> {
      *
      * originとfillを省略
      *
-     * \deprecated 1.8〜
+     * \deprecated 1.9〜
      * CanvasCommonComponent に直接プロパティを設定できるようにしたため、
      * add時の引数での設定は不要
      *

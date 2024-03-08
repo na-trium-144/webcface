@@ -110,21 +110,26 @@ class Canvas3D : protected Field, public EventTarget<Canvas3D> {
      *
      */
     WEBCFACE_DLL Canvas3D &add(const Canvas3DComponent &cc);
+    /*!
+     * \brief Componentを追加
+     *
+     */
+    WEBCFACE_DLL Canvas3D &add(Canvas3DComponent &&cc);
 
     /*!
      * \brief Geometryを追加
-     * \since 1.8
+     * \since 1.9
      */
     Canvas3D &add(CanvasCommonComponent &&cc) {
-        add(static_cast<Canvas3DComponent &&>(std::move(cc)));
+        add(std::move(cc.to3()));
         return *this;
     }
     /*!
      * \brief Geometryを追加
-     * \since 1.8
+     * \since 1.9
      */
     Canvas3D &add(CanvasCommonComponent &cc) {
-        add(static_cast<Canvas3DComponent &>(cc));
+        add(cc.to3());
         return *this;
     }
     /*!
@@ -132,7 +137,7 @@ class Canvas3D : protected Field, public EventTarget<Canvas3D> {
      * \param geometry 表示する図形
      * \param origin geometryを移動する
      * \param color 表示色 (省略時のinheritはWebUI上ではgrayと同じ)
-     * \deprecated 1.8〜
+     * \deprecated 1.9〜
      * CanvasCommonComponent に直接プロパティを設定できるようにしたため、
      * add時の引数での設定は不要
      *
@@ -152,7 +157,7 @@ class Canvas3D : protected Field, public EventTarget<Canvas3D> {
      * \brief Geometryを追加
      *
      * originを省略した場合 identity() になる
-     * \deprecated 1.8〜
+     * \deprecated 1.9〜
      * CanvasCommonComponent に直接プロパティを設定できるようにしたため、
      * add時の引数での設定は不要
      *
@@ -172,7 +177,7 @@ class Canvas3D : protected Field, public EventTarget<Canvas3D> {
      *
      * jointのangleを変更できる。
      * それ以外のパラメータは元のモデルのまま。
-     * \deprecated 1.8〜
+     * \deprecated 1.9〜
      * RobotModel に直接プロパティを設定できるようにしたため、
      * add時の引数での設定は不要
      *

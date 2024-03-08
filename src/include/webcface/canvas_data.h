@@ -238,8 +238,7 @@ class Canvas2DComponent : protected Common::Canvas2DComponentBase {
  * RobotLink用にGeometryにキャストすることもできる
  *
  */
-class CanvasCommonComponent {
-    Geometry geometry_common;
+class CanvasCommonComponent : public Geometry {
     std::optional<Canvas2DComponent> component_2d;
     std::optional<Canvas3DComponent> component_3d;
 
@@ -261,31 +260,18 @@ class CanvasCommonComponent {
   public:
     CanvasCommonComponent() = default;
     CanvasCommonComponent(GeometryType type, std::vector<double> &&properties)
-        : geometry_common(type, std::move(properties)),
-          component_2d(std::nullopt), component_3d(std::nullopt) {}
+        : Geometry(type, std::move(properties)), component_2d(std::nullopt),
+          component_3d(std::nullopt) {}
 
-    operator Geometry &() { return geometry_common; }
-    operator const Geometry &() const { return geometry_common; }
-    operator Geometry &&() && { return std::move(geometry_common); }
-    operator Canvas2DComponent &() {
+    Canvas2DComponent &to2() {
         init2();
-        component_2d->geometry(std::move(geometry_common));
+        component_2d->geometry(std::move(static_cast<Geometry &>(*this)));
         return *component_2d;
     }
-    operator Canvas2DComponent &&() && {
-        init2();
-        component_2d->geometry(std::move(geometry_common));
-        return std::move(*component_2d);
-    }
-    operator Canvas3DComponent &() {
+    Canvas3DComponent &to3() {
         init3();
-        component_3d->geometry(std::move(geometry_common));
+        component_3d->geometry(std::move(static_cast<Geometry &>(*this)));
         return *component_3d;
-    }
-    operator Canvas3DComponent &&() && {
-        init3();
-        component_3d->geometry(std::move(geometry_common));
-        return std::move(*component_3d);
     }
 
     /*!

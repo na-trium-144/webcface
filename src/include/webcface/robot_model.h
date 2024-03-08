@@ -16,7 +16,7 @@ class Member;
  *
  * コンストラクタではなく Member::robotModel() を使って取得してください
  *
- * (1.8〜) Canvas3DComponentを継承しており origin(), color()
+ * (1.9〜) Canvas3DComponentを継承しており origin(), color()
  * などを指定してCanvas3Dに追加することができる
  *
  */

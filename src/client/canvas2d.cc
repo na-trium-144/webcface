@@ -54,6 +54,12 @@ WEBCFACE_DLL Canvas2D &Canvas2D::add(const Canvas2DComponent &cc) {
     *modified = true;
     return *this;
 }
+WEBCFACE_DLL Canvas2D &Canvas2D::add(Canvas2DComponent &&cc) {
+    canvas_data->checkSize();
+    canvas_data->components.push_back(std::move(cc));
+    *modified = true;
+    return *this;
+}
 
 Canvas2D &Canvas2D::set() {
     canvas_data->checkSize();

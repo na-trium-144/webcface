@@ -37,6 +37,11 @@ WEBCFACE_DLL Canvas3D &Canvas3D::add(const Canvas3DComponent &cc) {
     *modified = true;
     return *this;
 }
+WEBCFACE_DLL Canvas3D &Canvas3D::add(Canvas3DComponent &&cc) {
+    components->push_back(std::move(cc));
+    *modified = true;
+    return *this;
+}
 
 Canvas3D &Canvas3D::set() {
     auto cb = std::make_shared<std::vector<Canvas3DComponentBase>>();
