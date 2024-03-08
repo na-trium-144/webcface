@@ -1,11 +1,34 @@
 #include "data_store2.h"
+#include <type_traits>
 
 namespace WEBCFACE_NS::Internal {
+
+/*!
+ * \brief setSend時にこれを実際に送信すべきかどうか
+ *
+ */
+template <typename T>
+static bool shouldSend(const T &prev, const T &current) {
+    if constexpr (std::is_same_v<T, ValueData> || std::is_same_v<T, TextData>) {
+        return *prev != *current;
+    } else if constexpr (std::is_same_v<T, std::string>) {
+        return prev != current;
+    } else if constexpr (std::is_same_v<T, FuncData>) {
+        // Funcは内容が変更されても2回目以降送信しない
+        return false;
+    } else {
+        return true;
+    }
+}
+
 template <typename T, typename ReqT>
 void SyncDataStore2<T, ReqT>::setSend(const std::string &name, const T &data) {
     std::lock_guard lock(mtx);
-    data_send[name] = data;
-    data_recv[self_member_name][name] = data; // 送信後に自分の値を参照する用
+    auto &recv_self = data_recv[self_member_name];
+    if (!recv_self.count(name) || shouldSend(recv_self[name], data)) {
+        data_send[name] = data;
+    }
+    recv_self[name] = data; // 送信後に自分の値を参照する用
 }
 
 template <typename T, typename ReqT>
@@ -212,16 +235,12 @@ SyncDataStore2<T, ReqT>::transferReq() {
 
 // ライブラリ外からは参照できないが、testのためにexportしている
 template class WEBCFACE_DLL SyncDataStore2<std::string, int>; // test用
-template class WEBCFACE_DLL
-    SyncDataStore2<std::shared_ptr<VectorOpt<double>>, int>;
-template class WEBCFACE_DLL SyncDataStore2<std::shared_ptr<std::string>, int>;
-template class WEBCFACE_DLL SyncDataStore2<std::shared_ptr<FuncInfo>, int>;
-template class WEBCFACE_DLL SyncDataStore2<
-    std::shared_ptr<std::vector<Common::ViewComponentBase>>, int>;
-template class WEBCFACE_DLL SyncDataStore2<std::vector<Common::RobotLink>, int>;
-template class WEBCFACE_DLL SyncDataStore2<
-    std::shared_ptr<std::vector<Common::Canvas3DComponentBase>>, int>;
-template class WEBCFACE_DLL
-    SyncDataStore2<std::shared_ptr<Common::Canvas2DDataBase>, int>;
-template class WEBCFACE_DLL SyncDataStore2<Common::ImageBase, Common::ImageReq>;
+template class WEBCFACE_DLL SyncDataStore2<ValueData, int>;
+template class WEBCFACE_DLL SyncDataStore2<TextData, int>;
+template class WEBCFACE_DLL SyncDataStore2<FuncData, int>;
+template class WEBCFACE_DLL SyncDataStore2<ViewData, int>;
+template class WEBCFACE_DLL SyncDataStore2<RobotModelData, int>;
+template class WEBCFACE_DLL SyncDataStore2<Canvas3DData, int>;
+template class WEBCFACE_DLL SyncDataStore2<Canvas2DData, int>;
+template class WEBCFACE_DLL SyncDataStore2<ImageData, Common::ImageReq>;
 } // namespace WEBCFACE_NS::Internal

@@ -134,6 +134,11 @@ Valueに限らず他のデータ型 ([View](./13_view.md), [Canvas2D](./14_canva
 ROSのTopicではPointやTransformなど目的に応じてさまざまな型が用意されていますが、
 WebCFaceではそういう場合はValueを複数用意して送信することを想定しています。
 
+\note
+<span class="since-c">1.8</span>
+同じデータを繰り返しsetした場合は、通信量を削減するため実際には最初の1度しか送信されないようになっています。
+([Text](./11_text.md) についても同様)
+
 ### 複数の値をまとめて送る
 
 \todo
@@ -220,6 +225,14 @@ Value::tryGet(), Value::tryGetVec() などで値のリクエストをすると�
     tryGet(), tryGetVec(), tryGetRecurse() はstd::nulloptを返します。  
     get(), getVec(), getRecurse() はstd::nulloptの代わりにデフォルト値を返します。  
     また、doubleやstd::vector<double>, Value::Dict などの型にキャストすることでも同様に値が得られます。
+
+    <span class="since-c">1.8</span>
+    std::ostreamにValueを直接渡して表示することもできます。
+    まだ受信していない場合nullと表示されます。
+    ```cpp
+    std::cout << "hoge = " << wcli.member("foo").value("hoge") << std::endl;
+    ```
+
 - <b class="tab-title">C</b>
     ```c
     double value[5];

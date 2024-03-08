@@ -129,6 +129,8 @@ int main() {
 
         // valueを更新
         c.value("test") = i;
+        c.value("not_frequent") = static_cast<int>(i / 10);
+
         // 文字列送信
         c.text("str") = "hello";
 

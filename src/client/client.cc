@@ -301,6 +301,7 @@ void Client::sync() {
     }
 }
 void Internal::ClientData::onRecv(const std::string &message) {
+    static std::unordered_map<int, bool> message_kind_warned;
     namespace MessageKind = WEBCFACE_NS::Message::MessageKind;
     auto messages =
         WEBCFACE_NS::Message::unpack(message, this->logger_internal);
@@ -651,12 +652,18 @@ void Internal::ClientData::onRecv(const std::string &message) {
         case MessageKind::image + MessageKind::req:
         case MessageKind::ping_status_req:
         case MessageKind::log_req:
-            this->logger_internal->warn("Invalid Message Kind {}", kind);
+            if (!message_kind_warned[kind]) {
+                logger->warn("Invalid Message Kind {}", kind);
+                message_kind_warned[kind] = true;
+            }
             break;
         case MessageKind::unknown:
             break;
         default:
-            this->logger_internal->warn("Unknown Message Kind {}", kind);
+            if (!message_kind_warned[kind]) {
+                logger->warn("Unknown Message Kind {}", kind);
+                message_kind_warned[kind] = true;
+            }
             break;
         }
     }

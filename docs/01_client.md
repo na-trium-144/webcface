@@ -17,8 +17,9 @@ Client オブジェクトを作り、start() を呼ぶことでサーバーへ�
 * バックグラウンド(別スレッド)で接続が完了するまでの間はデータの受信などはできません。
 * 通信が切断された場合は自動で再接続します。
 * コンストラクタに指定するのはこのクライアントの名前(Memberの名前)です。
-    * 同時に接続している他のクライアントと名前が被らないようにしてください。
+    * 同時に接続している他のクライアントと名前が被らないようにしてください。同じ名前で複数のクライアントが接続した場合正常に通信できない場合があります。
 * デフォルトではlocalhostの7530ポートに接続を試みますが、サーバーのポートを変更していたり別のpcに接続する場合はコンストラクタの引数でサーバーのアドレスとポートを指定できます。
+    * 特にwebブラウザ上でJavaScriptから接続しようとする場合、サーバー側からみたlocalhostではなくブラウザ側からみたlocalhostへ接続しようとするので注意してください ([location.host](https://developer.mozilla.org/ja/docs/Web/API/Location/host) などを接続先アドレスに指定する必要があります)
 
 <div class="tabbed">
 
@@ -27,6 +28,8 @@ Client オブジェクトを作り、start() を呼ぶことでサーバーへ�
     #include <webcface/webcface.h>
 
     webcface::Client wcli("sample");
+    // アドレスを指定する場合
+    // webcface::Client wcli("sample", "192.168.1.1", 7530);
 
     wcli.start();
     // または wcli.waitConnection();
@@ -48,7 +51,7 @@ Client オブジェクトを作り、start() を呼ぶことでサーバーへ�
     ```c
     #include <webcface/c_wcf.h>
 
-    wcfClient *wcli = wcfInit("sample", "127.0.0.1", 7530);
+    wcfClient *wcli = wcfInit("sample", "192.168.1.1", 7530);
     wcfStart(wcli);
     ```
     接続できているかどうかは `wcfIsConnected(wcli)` で取得できます。
@@ -58,6 +61,8 @@ Client オブジェクトを作り、start() を呼ぶことでサーバーへ�
     import { Client } from "webcface";
 
     const wcli = Client("sample");
+    // アドレスを指定する場合
+    // const wcli = Client("sample", "192.168.1.1", 7530);
 
     wcli.start();
     ```
@@ -67,6 +72,8 @@ Client オブジェクトを作り、start() を呼ぶことでサーバーへ�
     import webcface
 
     wcli = webcface.Client("sample")
+    # アドレスを指定する場合
+    # wcli = webcface.Client("sample", "192.168.1.1", 7530)
 
     wcli.start()
     # または wcli.wait_connection()
@@ -79,6 +86,13 @@ Client オブジェクトを作り、start() を呼ぶことでサーバーへ�
 コンストラクタに名前を指定しない、または空文字列の場合、読み取り専用モードになります。  
 この場合データを送信することができなくなりますが、同じプログラムを複数起動することができます
 (WebUIではこの仕様を使っています)
+
+クライアントが正常に接続できると、サーバーのログに
+```
+[info] Successfully connected and initialized.
+```
+などと表示されます。
+(クライアントの名前を指定しなかった場合は表示されません)
 
 プログラムを起動できたら、WebUIを開いてみましょう。
 そして右上のメニューを開き、Clientの初期化時に指定した名前がそこに表示されていれば正しく通信できています。
@@ -157,6 +171,12 @@ Funcの呼び出しとデータ受信リクエストの送信は sync() とは�
     ```
 
 </div>
+
+切断するとサーバーのログに
+```
+[info] connection closed
+```
+などと表示されます。
 
 \warning
 closeしたあと再度start()を呼んで再接続することはできません。
