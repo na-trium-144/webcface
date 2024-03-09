@@ -23,6 +23,9 @@ class Member;
 class RobotModel : protected Field,
                    public EventTarget<RobotModel>,
                    public Canvas3DComponent {
+    std::shared_ptr<std::vector<RobotLink>> links;
+    std::shared_ptr<bool> modified;
+    
     WEBCFACE_DLL void onAppend() const override;
 
   public:

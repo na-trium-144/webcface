@@ -34,5 +34,13 @@ struct Field : public Common::FieldBase {
     WEBCFACE_DLL Member member() const;
     //! field名を返す
     std::string name() const { return field_; }
+
+    /*!
+     * \brief memberがselfならtrue
+     *
+     * data_wがlockできなければruntime_errorを投げる
+     *
+     */
+    WEBCFACE_DLL bool isSelf() const;
 };
 } // namespace WEBCFACE_NS

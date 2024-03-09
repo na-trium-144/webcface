@@ -3,6 +3,7 @@
 #include <sstream>
 #include <ostream>
 #include <memory>
+#include <utility>
 #include "common/view.h"
 #include "func.h"
 #include "event_target.h"
@@ -47,7 +48,7 @@ class ViewComponent : protected Common::ViewComponentBase {
      * \brief 表示する文字列を取得
      *
      */
-    std::string text() const { return text_; }
+    const std::string &text() const { return text_; }
     /*!
      * \brief 表示する文字列を設定
      *
@@ -128,39 +129,94 @@ inline ViewComponent button(const std::string &text, const T &func) {
 } // namespace ViewComponents
 
 /*!
+ * \brief View,Canvasなどで送信用にaddされたデータを管理する
+ *
+ */
+template <typename Component>
+class DataSetBuffer {
+    Field target_;
+    std::vector<Component> components_;
+    bool modified_;
+
+  public:
+    DataSetBuffer() : target_(), components_(), modified_(false) {}
+    explicit DataSetBuffer(const Field &base)
+        : target_(base), components_(), modified_(false) {}
+    DataSetBuffer(const DataSetBuffer &) = delete;
+    DataSetBuffer(DataSetBuffer &&) = delete;
+    DataSetBuffer &operator=(const DataSetBuffer &) = delete;
+    DataSetBuffer &operator=(DataSetBuffer &&) = delete;
+
+    ~DataSetBuffer() {
+        if (!target_.data_w.expired() && target_.isSelf()) {
+            sync();
+        }
+    }
+
+    /*!
+     * \brief データを処理しtargetにsetする
+     *
+     * 実装は型ごと
+     *
+     */
+    void sync();
+
+    void init() {
+        components_.clear();
+        modified_ = true;
+    }
+    void add(const Component &cp) {
+        components_.push_back(cp);
+        modified_ = true;
+    }
+    void add(Component &&cp) {
+        components_.push_back(std::move(cp));
+        modified_ = true;
+    }
+    void set(const std::vector<Component> &cv) {
+        for (const auto &cp : cv) {
+            components_.push_back(cp);
+        }
+        modified_ = true;
+    }
+    void set(std::initializer_list<Component> cl) {
+        for (const auto &cp : cl) {
+            components_.push_back(cp);
+        }
+        modified_ = true;
+    }
+    const std::vector<Component> &components() const { return components_; }
+};
+
+template <>
+WEBCFACE_DLL void DataSetBuffer<ViewComponent>::sync();
+
+/*!
  * \brief Viewの送信用データを保持する
  *
  */
-class ViewBuf : public std::stringbuf {
+class ViewBuf : public std::stringbuf, public DataSetBuffer<ViewComponent> {
     /*!
-     * \brief 送信用のデータ
+     * こっちはstreambufのsync
      *
      */
-    std::vector<ViewComponent> components_;
-    bool modified_ = false;
+    WEBCFACE_DLL int sync() override;
 
   public:
-    const std::vector<ViewComponent> &components() const { return components_; }
-    std::vector<ViewComponent> &components() { return components_; }
-    bool modified() const { return modified_; }
     /*!
      * \brief componentsに追加
      *
      * textは改行で分割する
      *
      */
-    WEBCFACE_DLL void push(const ViewComponent &vc);
-    void init() {
-        components_.clear();
-        modified_ = true;
-    }
-    void syncDone() { modified_ = false; }
+    WEBCFACE_DLL void addVC(const ViewComponent &vc);
+    WEBCFACE_DLL void addVC(ViewComponent &&vc);
+    WEBCFACE_DLL void addText(const ViewComponent &vc);
+    void syncSetBuf() { this->DataSetBuffer<ViewComponent>::sync(); }
 
-    WEBCFACE_DLL int sync() override;
-
-    ViewBuf() : std::stringbuf(std::ios_base::out) {}
-    ViewBuf(const ViewBuf &) = delete;
-    ViewBuf &operator=(const ViewBuf &) = delete;
+    WEBCFACE_DLL explicit ViewBuf();
+    WEBCFACE_DLL explicit ViewBuf(const Field &base);
+    WEBCFACE_DLL ~ViewBuf();
 };
 
 /*!
@@ -174,36 +230,21 @@ class View : protected Field, public EventTarget<View>, public std::ostream {
 
     WEBCFACE_DLL void onAppend() const override;
 
-    /*!
-     * \brief 値をセットし、EventTargetを発動する
-     *
-     */
-    WEBCFACE_DLL View &set(std::vector<ViewComponent> &v);
-
-    WEBCFACE_DLL void onDestroy();
-
   public:
     WEBCFACE_DLL View();
     WEBCFACE_DLL View(const Field &base);
     View(const Field &base, const std::string &field)
         : View(Field{base, field}) {}
     View(const View &rhs) : View() { *this = rhs; }
+    View(View &&rhs) : View() { *this = std::move(rhs); }
     WEBCFACE_DLL View &operator=(const View &rhs);
     WEBCFACE_DLL View &operator=(View &&rhs);
-
-    /*!
-     * \brief デストラクタで sync() を呼ぶ。
-     *
-     * * ver1.2以降:
-     * Viewをコピーした場合は、すべてのコピーが破棄されたときにのみ sync()
-     * が呼ばれる。
-     * \sa sync()
-     *
-     */
-    ~View() override { onDestroy(); }
+    WEBCFACE_DLL ~View() override;
 
     using Field::member;
     using Field::name;
+
+    friend DataSetBuffer<ViewComponent>;
 
     /*!
      * \brief 子フィールドを返す
@@ -237,7 +278,8 @@ class View : protected Field, public EventTarget<View>, public std::ostream {
      * \deprecated 1.7でMember::syncTime()に変更
      *
      */
-    [[deprecated]] WEBCFACE_DLL std::chrono::system_clock::time_point time() const;
+    [[deprecated]] WEBCFACE_DLL std::chrono::system_clock::time_point
+    time() const;
 
     /*!
      * \brief 値やリクエスト状態をクリア
@@ -261,23 +303,23 @@ class View : protected Field, public EventTarget<View>, public std::ostream {
      * std::ostream::operator<< でも同様の動作をするが、returnする型が異なる
      * (std::ostream & を返すと operator<<(ViewComponent) が使えなくなる)
      *
+     * ver1.9〜 const参照ではなく&&型にしてforwardするようにした
+     *
      */
     template <typename T>
-    View &operator<<(const T &rhs) {
-        static_cast<std::ostream &>(*this) << rhs;
+    View &operator<<(T &&rhs) {
+        static_cast<std::ostream &>(*this) << std::forward<T>(rhs);
         return *this;
     }
     View &operator<<(std::ostream &(*os_manip)(std::ostream &)) {
         os_manip(*this);
         return *this;
     }
-    /*!
-     * \brief コンポーネントを追加
-     *
-     * std::flushも呼び出すことで直前に追加した未flashの文字列なども確実に追加する
-     *
-     */
-    View &operator<<(const Common::ViewComponentBase &vc) {
+    View &operator<<(Common::ViewComponentBase &vc) {
+        *this << ViewComponent{vc, this->data_w};
+        return *this;
+    }
+    View &operator<<(Common::ViewComponentBase &&vc) {
         *this << ViewComponent{vc, this->data_w};
         return *this;
     }
@@ -287,17 +329,27 @@ class View : protected Field, public EventTarget<View>, public std::ostream {
      * std::flushも呼び出すことで直前に追加した未flashの文字列なども確実に追加する
      *
      */
-    WEBCFACE_DLL View &operator<<(const ViewComponent &vc);
+    WEBCFACE_DLL View &operator<<(ViewComponent &vc);
+    /*!
+     * \brief コンポーネントを追加
+     *
+     * std::flushも呼び出すことで直前に追加した未flashの文字列なども確実に追加する
+     * \since ver1.9
+     *
+     */
+    WEBCFACE_DLL View &operator<<(ViewComponent &&vc);
 
     /*!
      * \brief コンポーネントなどを追加
      *
      * Tの型に応じた operator<< が呼ばれる
      *
+     * ver1.9〜 const参照から&&に変更してforwardするようにした
+     *
      */
     template <typename T>
-    View &add(const T &rhs) {
-        *this << rhs;
+    View &add(T &&rhs) {
+        *this << std::forward<T>(rhs);
         return *this;
     }
 
