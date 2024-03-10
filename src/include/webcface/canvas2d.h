@@ -10,7 +10,7 @@
 
 namespace WEBCFACE_NS {
 
-struct Canvas2DData {
+struct WEBCFACE_DLL Canvas2DData {
     double width = 0, height = 0;
     std::vector<Canvas2DComponent> components;
     Canvas2DData() = default;
@@ -24,11 +24,13 @@ struct Canvas2DData {
                                         std::to_string(height) + ")");
         }
     }
-    WEBCFACE_DLL Canvas2DDataBase
+    Canvas2DDataBase
     lockTmp(std::weak_ptr<Internal::ClientData> data_w,
             const std::string &field_name);
 };
 
+class Canvas2D;
+extern template class WEBCFACE_IMPORT EventTarget<Canvas2D>;
 
 /*!
  * \brief Canvas2Dの送受信データを表すクラス
@@ -36,23 +38,23 @@ struct Canvas2DData {
  * コンストラクタではなく Member::canvas2D() を使って取得してください
  *
  */
-class Canvas2D : protected Field, public EventTarget<Canvas2D> {
+class WEBCFACE_DLL Canvas2D : protected Field, public EventTarget<Canvas2D> {
     std::shared_ptr<Canvas2DData> canvas_data;
     std::shared_ptr<bool> modified;
 
-    WEBCFACE_DLL void onAppend() const override;
+    void onAppend() const override;
 
     /*!
      * \brief 値をセットし、EventTargetを発動する
      *
      */
-    WEBCFACE_DLL Canvas2D &set();
+    Canvas2D &set();
 
-    WEBCFACE_DLL void onDestroy();
+    void onDestroy();
 
   public:
-    WEBCFACE_DLL Canvas2D();
-    WEBCFACE_DLL Canvas2D(const Field &base);
+    Canvas2D();
+    Canvas2D(const Field &base);
     Canvas2D(const Field &base, const std::string &field)
         : Canvas2D(Field{base, field}) {}
     Canvas2D(const Field &base, const std::string &field, double width,
@@ -88,12 +90,12 @@ class Canvas2D : protected Field, public EventTarget<Canvas2D> {
      * \since ver1.7
      *
      */
-    WEBCFACE_DLL void request() const;
+    void request() const;
     /*!
      * \brief Canvasの内容を取得する
      *
      */
-    WEBCFACE_DLL std::optional<std::vector<Canvas2DComponent>> tryGet() const;
+    std::optional<std::vector<Canvas2DComponent>> tryGet() const;
     /*!
      * \brief Canvasの内容を取得する
      *
@@ -105,14 +107,14 @@ class Canvas2D : protected Field, public EventTarget<Canvas2D> {
      * \brief syncの時刻を返す
      * \deprecated 1.7でMember::syncTime()に変更
      */
-    [[deprecated]] WEBCFACE_DLL std::chrono::system_clock::time_point
+    [[deprecated]] std::chrono::system_clock::time_point
     time() const;
 
     /*!
      * \brief 値やリクエスト状態をクリア
      *
      */
-    WEBCFACE_DLL Canvas2D &free();
+    Canvas2D &free();
 
     /*!
      * \brief Canvasのサイズを指定 & このCanvas2Dに追加した内容を初期化する
@@ -122,18 +124,18 @@ class Canvas2D : protected Field, public EventTarget<Canvas2D> {
      * (init() 後に sync() をすると空のCanvas2Dが送信される)
      *
      */
-    WEBCFACE_DLL Canvas2D &init(double width, double height);
+    Canvas2D &init(double width, double height);
 
     /*!
      * \brief Componentを追加
      *
      */
-    WEBCFACE_DLL Canvas2D &add(const Canvas2DComponent &cc);
+    Canvas2D &add(const Canvas2DComponent &cc);
     /*!
      * \brief Componentを追加
      *
      */
-    WEBCFACE_DLL Canvas2D &add(Canvas2DComponent &&cc);
+    Canvas2D &add(Canvas2DComponent &&cc);
 
     /*!
      * \brief Geometryを追加
@@ -236,6 +238,6 @@ class Canvas2D : protected Field, public EventTarget<Canvas2D> {
      * (init()も追加もされていなければ) 何もしない。
      *
      */
-    WEBCFACE_DLL Canvas2D &sync();
+    Canvas2D &sync();
 };
 } // namespace WEBCFACE_NS

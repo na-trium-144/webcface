@@ -5,6 +5,8 @@
 
 namespace WEBCFACE_NS {
 
+template class WEBCFACE_DLL EventTarget<Canvas3D>;
+
 Canvas3D::Canvas3D()
     : Field(), EventTarget<Canvas3D>(),
       components(std::make_shared<std::vector<Canvas3DComponent>>()),

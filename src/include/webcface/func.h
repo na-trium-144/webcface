@@ -40,12 +40,12 @@ class AnonymousFunc;
  * \brief 関数1つを表すクラス
  *
  */
-class Func : protected Field {
+class WEBCFACE_DLL Func : protected Field {
   public:
     friend AnonymousFunc;
 
     Func() = default;
-    WEBCFACE_DLL Func(const Field &base);
+    Func(const Field &base);
     Func(const Field &base, const std::string &field)
         : Func(Field{base, field}) {}
 
@@ -53,13 +53,13 @@ class Func : protected Field {
     using Field::name;
 
   protected:
-    WEBCFACE_DLL Func &setRaw(const std::shared_ptr<FuncInfo> &v);
+    Func &setRaw(const std::shared_ptr<FuncInfo> &v);
     Func &setRaw(const FuncInfo &v) {
         return setRaw(std::make_shared<FuncInfo>(v));
     }
-    WEBCFACE_DLL FuncWrapperType getDefaultFuncWrapper() const;
+    FuncWrapperType getDefaultFuncWrapper() const;
 
-    WEBCFACE_DLL void runImpl(std::size_t caller_id,
+    void runImpl(std::size_t caller_id,
                               std::vector<ValAdaptor> args_vec) const;
 
   public:
@@ -86,13 +86,13 @@ class Func : protected Field {
      * (他clientのentryに表示されなくする)
      *
      */
-    WEBCFACE_DLL Func &hidden(bool hidden);
+    Func &hidden(bool hidden);
 
     /*!
      * \brief 関数の設定を削除
      *
      */
-    WEBCFACE_DLL Func &free();
+    Func &free();
 
     /*!
      * \brief 関数を実行する (同期)
@@ -110,7 +110,7 @@ class Func : protected Field {
     ValAdaptor run(Args... args) const {
         return run({ValAdaptor(args)...});
     }
-    WEBCFACE_DLL ValAdaptor run(const std::vector<ValAdaptor> &args_vec) const;
+    ValAdaptor run(const std::vector<ValAdaptor> &args_vec) const;
     /*!
      * \brief run()と同じ
      *
@@ -131,21 +131,21 @@ class Func : protected Field {
     AsyncFuncResult runAsync(Args... args) const {
         return runAsync({ValAdaptor(args)...});
     }
-    WEBCFACE_DLL AsyncFuncResult
+    AsyncFuncResult
     runAsync(const std::vector<ValAdaptor> &args_vec) const;
 
     /*!
      * \brief 戻り値の型を返す
      *
      */
-    WEBCFACE_DLL ValType returnType() const;
+    ValType returnType() const;
     /*!
      * \brief 引数の情報を返す
      *
      * 変更するにはsetArgsを使う(このvectorの中身を書き換えても反映されない)
      *
      */
-    WEBCFACE_DLL std::vector<Arg> args() const;
+    std::vector<Arg> args() const;
 
     const Arg args(std::size_t i) const { return args().at(i); }
 
@@ -162,7 +162,7 @@ class Func : protected Field {
      * (一致していない場合 std::invalid_argument )
      *
      */
-    WEBCFACE_DLL Func &setArgs(const std::vector<Arg> &args);
+    Func &setArgs(const std::vector<Arg> &args);
 
     /*!
      * \brief FuncWrapperをセットする。
@@ -175,7 +175,7 @@ class Func : protected Field {
      * std::invalid_argument)
      *
      */
-    WEBCFACE_DLL Func &setRunCond(FuncWrapperType wrapper);
+    Func &setRunCond(FuncWrapperType wrapper);
     /*!
      * \brief FuncWrapperを nullptr にする
      *
@@ -202,8 +202,8 @@ class Func : protected Field {
  * \brief 名前を指定せず先に関数を登録するFunc
  *
  */
-class AnonymousFunc : public Func {
-    WEBCFACE_DLL static std::string fieldNameTmp();
+class WEBCFACE_DLL AnonymousFunc : public Func {
+    static std::string fieldNameTmp();
 
     std::function<void(AnonymousFunc &)> func_setter = nullptr;
     bool base_init = false;
@@ -228,6 +228,6 @@ class AnonymousFunc : public Func {
      * \brief targetに関数を移動
      *
      */
-    WEBCFACE_DLL void lockTo(Func &target);
+    void lockTo(Func &target);
 };
 } // namespace WEBCFACE_NS

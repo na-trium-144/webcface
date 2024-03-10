@@ -16,29 +16,32 @@
 
 namespace WEBCFACE_NS {
 
+class Canvas3D;
+extern template class WEBCFACE_IMPORT EventTarget<Canvas3D>;
+
 /*!
  * \brief Canvas3Dの送受信データを表すクラス
  *
  * コンストラクタではなく Member::canvas3D() を使って取得してください
  *
  */
-class Canvas3D : protected Field, public EventTarget<Canvas3D> {
+class WEBCFACE_DLL Canvas3D : protected Field, public EventTarget<Canvas3D> {
     std::shared_ptr<std::vector<Canvas3DComponent>> components;
     std::shared_ptr<bool> modified;
 
-    WEBCFACE_DLL void onAppend() const override;
+    void onAppend() const override;
 
     /*!
      * \brief 値をセットし、EventTargetを発動する
      *
      */
-    WEBCFACE_DLL Canvas3D &set();
+    Canvas3D &set();
 
-    WEBCFACE_DLL void onDestroy();
+    void onDestroy();
 
   public:
-    WEBCFACE_DLL Canvas3D();
-    WEBCFACE_DLL Canvas3D(const Field &base);
+    Canvas3D();
+    Canvas3D(const Field &base);
     Canvas3D(const Field &base, const std::string &field)
         : Canvas3D(Field{base, field}) {}
 
@@ -69,12 +72,12 @@ class Canvas3D : protected Field, public EventTarget<Canvas3D> {
      * \since ver1.7
      *
      */
-    WEBCFACE_DLL void request() const;
+    void request() const;
     /*!
      * \brief Canvasの内容を取得する
      *
      */
-    WEBCFACE_DLL std::optional<std::vector<Canvas3DComponent>> tryGet() const;
+    std::optional<std::vector<Canvas3DComponent>> tryGet() const;
     /*!
      * \brief Canvasの内容を取得する
      *
@@ -86,14 +89,14 @@ class Canvas3D : protected Field, public EventTarget<Canvas3D> {
      * \brief syncの時刻を返す
      * \deprecated 1.7でMember::syncTime()に変更
      */
-    [[deprecated]] WEBCFACE_DLL std::chrono::system_clock::time_point
+    [[deprecated]] std::chrono::system_clock::time_point
     time() const;
 
     /*!
      * \brief 値やリクエスト状態をクリア
      *
      */
-    WEBCFACE_DLL Canvas3D &free();
+    Canvas3D &free();
 
     /*!
      * \brief このCanvas3Dに追加した内容を初期化する
@@ -103,18 +106,18 @@ class Canvas3D : protected Field, public EventTarget<Canvas3D> {
      * (init() 後に sync() をすると空のCanvas3Dが送信される)
      *
      */
-    WEBCFACE_DLL Canvas3D &init();
+    Canvas3D &init();
 
     /*!
      * \brief Componentを追加
      *
      */
-    WEBCFACE_DLL Canvas3D &add(const Canvas3DComponent &cc);
+    Canvas3D &add(const Canvas3DComponent &cc);
     /*!
      * \brief Componentを追加
      *
      */
-    WEBCFACE_DLL Canvas3D &add(Canvas3DComponent &&cc);
+    Canvas3D &add(Canvas3DComponent &&cc);
 
     /*!
      * \brief Geometryを追加
@@ -182,7 +185,7 @@ class Canvas3D : protected Field, public EventTarget<Canvas3D> {
      * add時の引数での設定は不要
      *
      */
-    [[deprecated]] WEBCFACE_DLL Canvas3D &
+    [[deprecated]] Canvas3D &
     add(const RobotModel &model_field, const Transform &origin,
         std::unordered_map<std::string, double> angles) {
         std::unordered_map<std::size_t, double> angles_i;
@@ -206,6 +209,6 @@ class Canvas3D : protected Field, public EventTarget<Canvas3D> {
      * (init()も追加もされていなければ) 何もしない。
      *
      */
-    WEBCFACE_DLL Canvas3D &sync();
+    Canvas3D &sync();
 };
 } // namespace WEBCFACE_NS

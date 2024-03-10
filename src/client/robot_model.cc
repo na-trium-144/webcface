@@ -4,6 +4,9 @@
 #include "../message/message.h"
 
 namespace WEBCFACE_NS {
+
+template class WEBCFACE_DLL EventTarget<RobotModel>;
+
 RobotModel::RobotModel(const Field &base)
     : Field(base), EventTarget<RobotModel>(
                        &this->dataLock()->robot_model_change_event, *this),

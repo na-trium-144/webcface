@@ -11,11 +11,12 @@
 #include "common/def.h"
 
 namespace WEBCFACE_NS {
+
 /*!
  * \brief サーバーに接続するクライアント。
  *
  */
-class Client : public Member {
+class WEBCFACE_DLL Client : public Member {
     std::shared_ptr<Internal::ClientData> data;
 
   public:
@@ -39,34 +40,34 @@ class Client : public Member {
      * \arg port サーバーのポート
      *
      */
-    WEBCFACE_DLL explicit Client(const std::string &name,
+    explicit Client(const std::string &name,
                                  const std::string &host = "127.0.0.1",
                                  int port = WEBCFACE_DEFAULT_PORT);
 
-    WEBCFACE_DLL explicit Client(const std::string &name,
+    explicit Client(const std::string &name,
                                  std::shared_ptr<Internal::ClientData> data);
 
     /*!
      * \brief サーバーに接続できているときtrueを返す
      *
      */
-    WEBCFACE_DLL bool connected() const;
+    bool connected() const;
     /*!
      * \brief 接続を切りClientを破棄
      *
      */
-    WEBCFACE_DLL ~Client();
+    ~Client();
     /*!
      * \brief 接続を切り、今後再接続しない
      *
      */
-    WEBCFACE_DLL void close();
+    void close();
 
     /*!
      * \brief (ver1.2で追加) サーバーに接続を開始する。
      *
      */
-    WEBCFACE_DLL void start();
+    void start();
     /*!
      * \brief (ver1.2で追加) サーバーに接続が成功するまで待機する。
      *
@@ -74,7 +75,7 @@ class Client : public Member {
      * \sa start()
      *
      */
-    WEBCFACE_DLL void waitConnection();
+    void waitConnection();
 
     /*!
      * \brief 送信用にセットしたデータをすべて送信キューに入れる。
@@ -85,7 +86,7 @@ class Client : public Member {
      * \sa start()
      *
      */
-    WEBCFACE_DLL void sync();
+    void sync();
 
     /*!
      * \brief 他のmemberにアクセスする
@@ -108,7 +109,7 @@ class Client : public Member {
      * \sa member(), onMemberEntry()
      *
      */
-    WEBCFACE_DLL std::vector<Member> members();
+    std::vector<Member> members();
     /*!
      * \brief Memberが追加された時のイベント
      *
@@ -116,7 +117,7 @@ class Client : public Member {
      *
      * \sa member(), members()
      */
-    WEBCFACE_DLL EventTarget<Member, int> onMemberEntry();
+    EventTarget<Member, int> onMemberEntry();
 
     /*!
      * \brief FuncListenerを作成する
@@ -134,7 +135,7 @@ class Client : public Member {
      * FuncWrapperがnullptrなら何もせずsetした関数を実行する
      *
      */
-    WEBCFACE_DLL void setDefaultRunCond(FuncWrapperType wrapper);
+    void setDefaultRunCond(FuncWrapperType wrapper);
 
     /*!
      * \brief デフォルトのFuncWrapperを nullptr にする
@@ -164,7 +165,7 @@ class Client : public Member {
      * \sa logger(), loggerStreamBuf(), loggerOStream()
      *
      */
-    WEBCFACE_DLL std::shared_ptr<LoggerSink> loggerSink();
+    std::shared_ptr<LoggerSink> loggerSink();
     /*!
      * \brief webcfaceとstderr_sinkに出力するlogger
      *
@@ -174,7 +175,7 @@ class Client : public Member {
      * \sa loggerSink(), loggerStreamBuf(), loggerOStream()
      *
      */
-    WEBCFACE_DLL std::shared_ptr<spdlog::logger> logger();
+    std::shared_ptr<spdlog::logger> logger();
 
     /*!
      * \brief webcfaceに出力するstreambuf
@@ -187,7 +188,7 @@ class Client : public Member {
      * \sa loggerSink(), logger(), loggerOStream()
      *
      */
-    WEBCFACE_DLL LoggerBuf *loggerStreamBuf();
+    LoggerBuf *loggerStreamBuf();
     /*!
      * \brief webcfaceに出力するostream
      *
@@ -195,13 +196,13 @@ class Client : public Member {
      * \sa loggerSink(), logger(), loggerStreamBuf()
      *
      */
-    WEBCFACE_DLL std::ostream &loggerOStream();
+    std::ostream &loggerOStream();
 
     /*!
      * \brief WebCFaceサーバーのバージョン情報
      *
      */
-    WEBCFACE_DLL std::string serverVersion() const;
+    std::string serverVersion() const;
     /*!
      * \brief WebCFaceサーバーの識別情報
      *
@@ -209,7 +210,7 @@ class Client : public Member {
      * \sa serverVersion()
      *
      */
-    WEBCFACE_DLL std::string serverName() const;
+    std::string serverName() const;
 };
 
 } // namespace WEBCFACE_NS

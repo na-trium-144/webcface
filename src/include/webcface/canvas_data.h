@@ -14,7 +14,7 @@ class RobotModel;
  * \brief Canvas3Dに表示する要素
  *
  */
-class Canvas3DComponent : protected Common::Canvas3DComponentBase {
+class WEBCFACE_DLL Canvas3DComponent : protected Common::Canvas3DComponentBase {
     std::weak_ptr<Internal::ClientData> data_w;
 
   public:
@@ -95,14 +95,14 @@ class Canvas3DComponent : protected Common::Canvas3DComponentBase {
      * \brief RobotModelを取得
      *
      */
-    WEBCFACE_DLL std::optional<RobotModel> robotModel() const;
-    WEBCFACE_DLL Canvas3DComponent &robotModel(const RobotModel &field);
+    std::optional<RobotModel> robotModel() const;
+    Canvas3DComponent &robotModel(const RobotModel &field);
     /*!
      * \brief RobotModelの関節をまとめて設定
      * \param angles RobotJointの名前と角度のリスト
      *
      */
-    WEBCFACE_DLL Canvas3DComponent &
+    Canvas3DComponent &
     angles(const std::unordered_map<std::string, double> &angles);
     /*!
      * \brief RobotModelの関節を設定
@@ -110,7 +110,7 @@ class Canvas3DComponent : protected Common::Canvas3DComponentBase {
      * \param angle 角度
      *
      */
-    WEBCFACE_DLL Canvas3DComponent &angle(const std::string &joint_name,
+    Canvas3DComponent &angle(const std::string &joint_name,
                                           double angle);
 };
 
@@ -121,7 +121,7 @@ class Canvas3DComponent : protected Common::Canvas3DComponentBase {
  * 今のところこのクラスのオブジェクトのデータを変更する用途はない。
  *
  */
-class Canvas2DComponent : protected Common::Canvas2DComponentBase {
+class WEBCFACE_DLL Canvas2DComponent : protected Common::Canvas2DComponentBase {
     std::weak_ptr<Internal::ClientData> data_w;
     std::shared_ptr<AnonymousFunc> on_click_func_tmp;
 
@@ -150,7 +150,7 @@ class Canvas2DComponent : protected Common::Canvas2DComponentBase {
      * \brief AnonymousFuncをFuncオブジェクトにlock
      *
      */
-    WEBCFACE_DLL Canvas2DComponentBase &
+    Canvas2DComponentBase &
     lockTmp(const std::weak_ptr<Internal::ClientData> &data_w,
             const std::string &field_id);
 
@@ -212,12 +212,12 @@ class Canvas2DComponent : protected Common::Canvas2DComponentBase {
      * \brief クリック時に実行される関数を取得
      *
      */
-    WEBCFACE_DLL std::optional<Func> onClick() const;
+    std::optional<Func> onClick() const;
     /*!
      * \brief クリック時に実行される関数を設定
      *
      */
-    WEBCFACE_DLL Canvas2DComponent &onClick(const Func &func);
+    Canvas2DComponent &onClick(const Func &func);
     /*!
      * \brief クリック時に実行される関数を設定
      *

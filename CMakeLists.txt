@@ -92,7 +92,7 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
         _CRT_SECURE_NO_WARNINGS
         _SILENCE_STDEXT_ARR_ITERS_DEPRECATION_WARNING
     )
-    set(gtest_force_shared_crt on)
+    set(gtest_force_shared_crt on CACHE INTERNAL "" FORCE)
 endif()
 
 if(MINGW)
@@ -347,7 +347,7 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 endif()
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-    add_compile_options(/utf-8 /W3)
+    add_compile_options(/utf-8 /W4)
 endif()
 
 set(CPP_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)

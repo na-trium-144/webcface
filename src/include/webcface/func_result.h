@@ -19,7 +19,7 @@ class Member;
  * (ValueやTextで参照先が見つからなかった場合はこれではなく単にnulloptが返る)
  *
  */
-struct FuncNotFound : public std::runtime_error {
+struct WEBCFACE_DLL FuncNotFound : public std::runtime_error {
     explicit FuncNotFound(const Common::FieldBase &base)
         : std::runtime_error("member(\"" + base.member_ + "\")" + ".func(\"" +
                              base.field_ + "\") is not set") {}
@@ -33,7 +33,7 @@ struct FuncNotFound : public std::runtime_error {
  * リモートから呼び出しメッセージが送られてきた時非同期で実行して結果を送り返すのにもこれを利用する
  *
  */
-class AsyncFuncResult : Field {
+class WEBCFACE_DLL AsyncFuncResult : Field {
     std::size_t caller_id;
 
   public:

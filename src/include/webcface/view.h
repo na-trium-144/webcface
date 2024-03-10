@@ -1,6 +1,5 @@
 #pragma once
 #include <vector>
-#include <sstream>
 #include <ostream>
 #include <memory>
 #include <utility>
@@ -12,12 +11,15 @@
 namespace WEBCFACE_NS {
 namespace Internal {
 struct ClientData;
+template <typename Component>
+class DataSetBuffer;
+class ViewBuf;
 }
 /*!
  * \brief Viewに表示する要素です
  *
  */
-class ViewComponent : protected Common::ViewComponentBase {
+class WEBCFACE_DLL ViewComponent : protected Common::ViewComponentBase {
     std::weak_ptr<Internal::ClientData> data_w;
 
     std::shared_ptr<AnonymousFunc> on_click_func_tmp;
@@ -33,11 +35,11 @@ class ViewComponent : protected Common::ViewComponentBase {
      * \brief AnonymousFuncをFuncオブジェクトにlockします
      *
      */
-    WEBCFACE_DLL ViewComponentBase &
+    ViewComponentBase &
     lockTmp(const std::weak_ptr<Internal::ClientData> &data_w,
             const std::string &field_id);
 
-    WEBCFACE_DLL wcfViewComponent cData() const;
+    wcfViewComponent cData() const;
 
     /*!
      * \brief 要素の種類
@@ -61,12 +63,12 @@ class ViewComponent : protected Common::ViewComponentBase {
      * \brief クリック時に実行される関数を取得
      *
      */
-    WEBCFACE_DLL std::optional<Func> onClick() const;
+    std::optional<Func> onClick() const;
     /*!
      * \brief クリック時に実行される関数を設定
      *
      */
-    WEBCFACE_DLL ViewComponent &onClick(const Func &func);
+    ViewComponent &onClick(const Func &func);
     /*!
      * \brief クリック時に実行される関数を設定
      *
@@ -128,96 +130,9 @@ inline ViewComponent button(const std::string &text, const T &func) {
 }
 } // namespace ViewComponents
 
-/*!
- * \brief View,Canvasなどで送信用にaddされたデータを管理する
- *
- */
-template <typename Component>
-class DataSetBuffer {
-    Field target_;
-    std::vector<Component> components_;
-    bool modified_;
 
-  public:
-    DataSetBuffer() : target_(), components_(), modified_(false) {}
-    explicit DataSetBuffer(const Field &base)
-        : target_(base), components_(), modified_(false) {}
-    DataSetBuffer(const DataSetBuffer &) = delete;
-    DataSetBuffer(DataSetBuffer &&) = delete;
-    DataSetBuffer &operator=(const DataSetBuffer &) = delete;
-    DataSetBuffer &operator=(DataSetBuffer &&) = delete;
-
-    ~DataSetBuffer() {
-        if (!target_.data_w.expired() && target_.isSelf()) {
-            sync();
-        }
-    }
-
-    /*!
-     * \brief データを処理しtargetにsetする
-     *
-     * 実装は型ごと
-     *
-     */
-    void sync();
-
-    void init() {
-        components_.clear();
-        modified_ = true;
-    }
-    void add(const Component &cp) {
-        components_.push_back(cp);
-        modified_ = true;
-    }
-    void add(Component &&cp) {
-        components_.push_back(std::move(cp));
-        modified_ = true;
-    }
-    void set(const std::vector<Component> &cv) {
-        for (const auto &cp : cv) {
-            components_.push_back(cp);
-        }
-        modified_ = true;
-    }
-    void set(std::initializer_list<Component> cl) {
-        for (const auto &cp : cl) {
-            components_.push_back(cp);
-        }
-        modified_ = true;
-    }
-    const std::vector<Component> &components() const { return components_; }
-};
-
-template <>
-WEBCFACE_DLL void DataSetBuffer<ViewComponent>::sync();
-
-/*!
- * \brief Viewの送信用データを保持する
- *
- */
-class ViewBuf : public std::stringbuf, public DataSetBuffer<ViewComponent> {
-    /*!
-     * こっちはstreambufのsync
-     *
-     */
-    WEBCFACE_DLL int sync() override;
-
-  public:
-    /*!
-     * \brief componentsに追加
-     *
-     * textは改行で分割する
-     *
-     */
-    WEBCFACE_DLL void addVC(const ViewComponent &vc);
-    WEBCFACE_DLL void addVC(ViewComponent &&vc);
-    WEBCFACE_DLL void addText(const ViewComponent &vc);
-    void syncSetBuf() { this->DataSetBuffer<ViewComponent>::sync(); }
-
-    WEBCFACE_DLL explicit ViewBuf();
-    WEBCFACE_DLL explicit ViewBuf(const Field &base);
-    WEBCFACE_DLL ~ViewBuf();
-};
+class View;
+extern template class WEBCFACE_IMPORT EventTarget<View>;
 
 /*!
  * \brief Viewの送受信データを表すクラス
@@ -226,7 +141,7 @@ class ViewBuf : public std::stringbuf, public DataSetBuffer<ViewComponent> {
  *
  */
 class WEBCFACE_DLL View : protected Field, public EventTarget<View>, public std::ostream {
-    std::shared_ptr<ViewBuf> sb;
+    std::shared_ptr<Internal::ViewBuf> sb;
 
     void onAppend() const override;
 
@@ -244,7 +159,7 @@ class WEBCFACE_DLL View : protected Field, public EventTarget<View>, public std:
     using Field::member;
     using Field::name;
 
-    friend DataSetBuffer<ViewComponent>;
+    friend Internal::DataSetBuffer<ViewComponent>;
 
     /*!
      * \brief 子フィールドを返す

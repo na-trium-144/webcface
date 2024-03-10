@@ -4,6 +4,9 @@
 #include "../message/message.h"
 
 namespace WEBCFACE_NS {
+
+template class WEBCFACE_DLL EventTarget<Text>;
+
 Text::Text(const Field &base)
     : Field(base), EventTarget<Text>(&this->dataLock()->text_change_event,
                                      *this) {}

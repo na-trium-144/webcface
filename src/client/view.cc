@@ -2,8 +2,12 @@
 #include "client_internal.h"
 #include <webcface/member.h>
 #include "../message/message.h"
+#include "data_buffer.h"
 
 namespace WEBCFACE_NS {
+
+template class WEBCFACE_DLL EventTarget<View>;
+
 ViewComponentBase &
 ViewComponent::lockTmp(const std::weak_ptr<Internal::ClientData> &data_w,
                        const std::string &field_id) {
@@ -49,22 +53,22 @@ ViewComponent &ViewComponent::onClick(const Func &func) {
 
 View::View()
     : Field(), EventTarget<View>(), std::ostream(nullptr),
-      sb(std::make_shared<ViewBuf>()) {
+      sb(std::make_shared<Internal::ViewBuf>()) {
     this->std::ostream::init(sb.get());
 }
 View::View(const Field &base)
     : Field(base), EventTarget<View>(&this->dataLock()->view_change_event,
                                      *this),
-      std::ostream(nullptr), sb(std::make_shared<ViewBuf>(base)) {
+      std::ostream(nullptr), sb(std::make_shared<Internal::ViewBuf>(base)) {
     this->std::ostream::init(sb.get());
 }
 View::~View() { this->rdbuf(nullptr); }
 
-ViewBuf::ViewBuf()
+Internal::ViewBuf::ViewBuf()
     : std::stringbuf(std::ios_base::out), DataSetBuffer<ViewComponent>() {}
-ViewBuf::ViewBuf(const Field &base)
+Internal::ViewBuf::ViewBuf(const Field &base)
     : std::stringbuf(std::ios_base::out), DataSetBuffer<ViewComponent>(base) {}
-ViewBuf::~ViewBuf() { sync(); }
+Internal::ViewBuf::~ViewBuf() { sync(); }
 
 View &View::init() {
     sb->init();
@@ -76,7 +80,7 @@ View &View::sync() {
     return *this;
 }
 template <>
-void DataSetBuffer<ViewComponent>::sync() {
+void Internal::DataSetBuffer<ViewComponent>::sync() {
     if (modified_) {
         modified_ = false;
         auto vb = std::make_shared<std::vector<ViewComponentBase>>();
@@ -100,7 +104,7 @@ View &View::operator<<(ViewComponent &&vc) {
     sb->addVC(std::move(vc));
     return *this;
 }
-void ViewBuf::addText(const ViewComponent &vc) {
+void Internal::ViewBuf::addText(const ViewComponent &vc) {
     std::string s = vc.text();
     while (true) {
         auto p = s.find('\n');
@@ -122,21 +126,21 @@ void ViewBuf::addText(const ViewComponent &vc) {
         add(std::move(vc_new));
     }
 }
-void ViewBuf::addVC(const ViewComponent &vc) {
+void Internal::ViewBuf::addVC(const ViewComponent &vc) {
     if (vc.type() == ViewComponentType::text) {
         addText(vc);
     } else {
         add(vc);
     }
 }
-void ViewBuf::addVC(ViewComponent &&vc) {
+void Internal::ViewBuf::addVC(ViewComponent &&vc) {
     if (vc.type() == ViewComponentType::text) {
         addText(vc);
     } else {
         add(std::move(vc));
     }
 }
-int ViewBuf::sync() {
+int Internal::ViewBuf::sync() {
     if (!this->str().empty()) {
         this->addText(ViewComponents::text(this->str()));
         this->str("");

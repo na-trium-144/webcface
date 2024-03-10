@@ -5,6 +5,8 @@
 
 namespace WEBCFACE_NS {
 
+template class WEBCFACE_DLL EventTarget<Canvas2D>;
+
 Canvas2DDataBase
 Canvas2DData::lockTmp(std::weak_ptr<Internal::ClientData> data_w,
                       const std::string &field_name) {

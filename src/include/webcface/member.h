@@ -29,7 +29,7 @@ struct ClientData;
  * Client::onMemberEntry() などから取得すること
  *
  */
-class Member : protected Field {
+class WEBCFACE_DLL Member : protected Field {
   public:
     Member() = default;
     Member(const std::weak_ptr<Internal::ClientData> &data_w,
@@ -72,7 +72,7 @@ class Member : protected Field {
      * \brief このmemberが公開しているvalueのリストを返す。
      *
      */
-    WEBCFACE_DLL std::vector<Value> valueEntries() const;
+    std::vector<Value> valueEntries() const;
     /*!
      * \brief このmemberが公開しているvalueのリストを返す。
      * \deprecated 1.6で valueEntries() に変更
@@ -83,7 +83,7 @@ class Member : protected Field {
      * \brief このmemberが公開しているtextのリストを返す。
      *
      */
-    WEBCFACE_DLL std::vector<Text> textEntries() const;
+    std::vector<Text> textEntries() const;
     /*!
      * \brief このmemberが公開しているtextのリストを返す。
      * \deprecated 1.6で textEntries() に変更
@@ -93,7 +93,7 @@ class Member : protected Field {
      * \brief このmemberが公開しているrobotModelのリストを返す。
      *
      */
-    WEBCFACE_DLL std::vector<RobotModel> robotModelEntries() const;
+    std::vector<RobotModel> robotModelEntries() const;
     /*!
      * \brief このmemberが公開しているrobotModelのリストを返す。
      * \deprecated 1.6で robotModelEntries() に変更
@@ -106,7 +106,7 @@ class Member : protected Field {
      * \brief このmemberが公開しているfuncのリストを返す。
      *
      */
-    WEBCFACE_DLL std::vector<Func> funcEntries() const;
+    std::vector<Func> funcEntries() const;
     /*!
      * \brief このmemberが公開しているfuncのリストを返す。
      * \deprecated 1.6で funcEntries() に変更
@@ -117,7 +117,7 @@ class Member : protected Field {
      * \brief このmemberが公開しているviewのリストを返す。
      *
      */
-    WEBCFACE_DLL std::vector<View> viewEntries() const;
+    std::vector<View> viewEntries() const;
     /*!
      * \brief このmemberが公開しているviewのリストを返す。
      * \deprecated 1.6で viewEntries() に変更
@@ -127,17 +127,17 @@ class Member : protected Field {
      * \brief このmemberが公開しているcanvas3dのリストを返す。
      *
      */
-    WEBCFACE_DLL std::vector<Canvas3D> canvas3DEntries() const;
+    std::vector<Canvas3D> canvas3DEntries() const;
     /*!
      * \brief このmemberが公開しているcanvas2dのリストを返す。
      *
      */
-    WEBCFACE_DLL std::vector<Canvas2D> canvas2DEntries() const;
+    std::vector<Canvas2D> canvas2DEntries() const;
     /*!
      * \brief このmemberが公開しているimageのリストを返す。
      *
      */
-    WEBCFACE_DLL std::vector<Image> imageEntries() const;
+    std::vector<Image> imageEntries() const;
     /*!
      * \brief このmemberが公開しているimageのリストを返す。
      * \deprecated 1.6で imageEntries() に変更
@@ -150,68 +150,68 @@ class Member : protected Field {
      * コールバックの型は void(Value)
      *
      */
-    WEBCFACE_DLL EventTarget<Value, std::string> onValueEntry() const;
+    EventTarget<Value, std::string> onValueEntry() const;
     /*!
      * \brief textが追加された時のイベント
      *
      * コールバックの型は void(Text)
      *
      */
-    WEBCFACE_DLL EventTarget<Text, std::string> onTextEntry() const;
+    EventTarget<Text, std::string> onTextEntry() const;
     /*!
      * \brief robotModelが追加された時のイベント
      *
      * コールバックの型は void(RobotModel)
      *
      */
-    WEBCFACE_DLL EventTarget<RobotModel, std::string> onRobotModelEntry() const;
+    EventTarget<RobotModel, std::string> onRobotModelEntry() const;
     /*!
      * \brief funcが追加された時のイベント
      *
      * コールバックの型は void(Func)
      *
      */
-    WEBCFACE_DLL EventTarget<Func, std::string> onFuncEntry() const;
+    EventTarget<Func, std::string> onFuncEntry() const;
     /*!
      * \brief imageが追加されたときのイベント
      *
      * コールバックの型は void(Image)
      *
      */
-    WEBCFACE_DLL EventTarget<Image, std::string> onImageEntry() const;
+    EventTarget<Image, std::string> onImageEntry() const;
     /*!
      * \brief viewが追加されたときのイベント
      *
      * コールバックの型は void(View)
      *
      */
-    WEBCFACE_DLL EventTarget<View, std::string> onViewEntry() const;
+    EventTarget<View, std::string> onViewEntry() const;
     /*!
      * \brief canvas3dが追加されたときのイベント
      *
      * コールバックの型は void(Canvas3D)
      *
      */
-    WEBCFACE_DLL EventTarget<Canvas3D, std::string> onCanvas3DEntry() const;
+    EventTarget<Canvas3D, std::string> onCanvas3DEntry() const;
     /*!
      * \brief canvas2dが追加されたときのイベント
      *
      * コールバックの型は void(Canvas2D)
      *
      */
-    WEBCFACE_DLL EventTarget<Canvas2D, std::string> onCanvas2DEntry() const;
+    EventTarget<Canvas2D, std::string> onCanvas2DEntry() const;
     /*!
      * \brief Memberがsync()したときのイベント
      * コールバックの型は void(Member)
      */
-    WEBCFACE_DLL EventTarget<Member, std::string> onSync() const;
+    EventTarget<Member, std::string> onSync() const;
 
     /*!
      * \brief 最後のsync()の時刻を返す
      * \since ver1.7 (Value::time(), Text::time() 等から変更)
      *
      */
-    WEBCFACE_DLL std::chrono::system_clock::time_point syncTime() const;
+    std::chrono::system_clock::time_point syncTime() const;
     /*!
      * \brief このMemberが使っているWebCFaceライブラリの識別情報
      *
@@ -219,17 +219,17 @@ class Member : protected Field {
      * pythonクライアントは"python"を返す。
      *
      */
-    WEBCFACE_DLL std::string libName() const;
+    std::string libName() const;
     /*!
      * \brief このMemberが使っているWebCFaceのバージョン
      *
      */
-    WEBCFACE_DLL std::string libVersion() const;
+    std::string libVersion() const;
     /*!
      * \brief このMemberのIPアドレス
      *
      */
-    WEBCFACE_DLL std::string remoteAddr() const;
+    std::string remoteAddr() const;
 
     /*!
      * \brief 通信速度を調べる
@@ -240,7 +240,7 @@ class Member : protected Field {
      * \sa onPing()
      *
      */
-    WEBCFACE_DLL std::optional<int> pingStatus() const;
+    std::optional<int> pingStatus() const;
     /*!
      * \brief 通信速度が更新された時のイベント
      *
@@ -251,7 +251,7 @@ class Member : protected Field {
      * \sa pingStatus()
      *
      */
-    WEBCFACE_DLL EventTarget<Member, std::string> onPing() const;
+    EventTarget<Member, std::string> onPing() const;
 };
 
 } // namespace WEBCFACE_NS
