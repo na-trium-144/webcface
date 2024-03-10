@@ -225,21 +225,21 @@ class ViewBuf : public std::stringbuf, public DataSetBuffer<ViewComponent> {
  * コンストラクタではなく Member::view() を使って取得してください
  *
  */
-class View : protected Field, public EventTarget<View>, public std::ostream {
+class WEBCFACE_DLL View : protected Field, public EventTarget<View>, public std::ostream {
     std::shared_ptr<ViewBuf> sb;
 
-    WEBCFACE_DLL void onAppend() const override;
+    void onAppend() const override;
 
   public:
-    WEBCFACE_DLL View();
-    WEBCFACE_DLL View(const Field &base);
+    View();
+    View(const Field &base);
     View(const Field &base, const std::string &field)
         : View(Field{base, field}) {}
     View(const View &rhs) : View() { *this = rhs; }
     View(View &&rhs) : View() { *this = std::move(rhs); }
-    WEBCFACE_DLL View &operator=(const View &rhs);
-    WEBCFACE_DLL View &operator=(View &&rhs);
-    WEBCFACE_DLL ~View() override;
+    View &operator=(const View &rhs);
+    View &operator=(View &&rhs);
+    ~View() override;
 
     using Field::member;
     using Field::name;
@@ -260,12 +260,12 @@ class View : protected Field, public EventTarget<View>, public std::ostream {
      * \since ver1.7
      *
      */
-    WEBCFACE_DLL void request() const;
+    void request() const;
     /*!
      * \brief Viewを取得する
      *
      */
-    WEBCFACE_DLL std::optional<std::vector<ViewComponent>> tryGet() const;
+    std::optional<std::vector<ViewComponent>> tryGet() const;
     /*!
      * \brief Viewを取得する
      *
@@ -278,14 +278,14 @@ class View : protected Field, public EventTarget<View>, public std::ostream {
      * \deprecated 1.7でMember::syncTime()に変更
      *
      */
-    [[deprecated]] WEBCFACE_DLL std::chrono::system_clock::time_point
+    [[deprecated]] std::chrono::system_clock::time_point
     time() const;
 
     /*!
      * \brief 値やリクエスト状態をクリア
      *
      */
-    WEBCFACE_DLL View &free();
+    View &free();
 
     /*!
      * \brief このViewのViewBufの内容を初期化する
@@ -296,7 +296,7 @@ class View : protected Field, public EventTarget<View>, public std::ostream {
      * (init() 後に sync() をするとViewの内容が空になる)
      *
      */
-    WEBCFACE_DLL View &init();
+    View &init();
     /*!
      * \brief 文字列にフォーマットし、textコンポーネントとして追加
      *
@@ -329,7 +329,7 @@ class View : protected Field, public EventTarget<View>, public std::ostream {
      * std::flushも呼び出すことで直前に追加した未flashの文字列なども確実に追加する
      *
      */
-    WEBCFACE_DLL View &operator<<(ViewComponent &vc);
+    View &operator<<(ViewComponent &vc);
     /*!
      * \brief コンポーネントを追加
      *
@@ -337,7 +337,7 @@ class View : protected Field, public EventTarget<View>, public std::ostream {
      * \since ver1.9
      *
      */
-    WEBCFACE_DLL View &operator<<(ViewComponent &&vc);
+    View &operator<<(ViewComponent &&vc);
 
     /*!
      * \brief コンポーネントなどを追加
@@ -360,6 +360,6 @@ class View : protected Field, public EventTarget<View>, public std::ostream {
      * (init()も追加もされていなければ) 何もしない。
      *
      */
-    WEBCFACE_DLL View &sync();
+    View &sync();
 };
 } // namespace WEBCFACE_NS
