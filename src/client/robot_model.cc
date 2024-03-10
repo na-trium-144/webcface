@@ -30,12 +30,10 @@ RobotModel &RobotModel::sync() {
     return *this;
 }
 template <>
-void Internal::DataSetBuffer<RobotLink>::sync() {
-    if (modified_) {
-        modified_ = false;
-        target_.setCheck()->robot_model_store.setSend(target_, components_);
-        static_cast<RobotModel>(target_).triggerEvent(target_);
-    }
+void Internal::DataSetBuffer<RobotLink>::onSync() {
+    auto ls = std::make_shared<std::vector<RobotLink>>(std::move(components_));
+    target_.setCheck()->robot_model_store.setSend(target_, ls);
+    static_cast<RobotModel>(target_).triggerEvent(target_);
 }
 RobotModel &RobotModel::operator<<(const RobotLink &vc) {
     sb->add(vc);
@@ -56,8 +54,7 @@ void RobotModel::request() const {
 }
 
 RobotModel &RobotModel::set(const std::vector<RobotLink> &v) {
-    setCheck()->robot_model_store.setSend(*this, v);
-    this->triggerEvent(*this);
+    sb->set(v);
     return *this;
 }
 
@@ -67,7 +64,7 @@ std::optional<std::vector<RobotLink>> RobotModel::tryGet() const {
     request();
     auto v = dataLock()->robot_model_store.getRecv(*this);
     if (v) {
-        return *v;
+        return **v;
     } else {
         return std::nullopt;
     }

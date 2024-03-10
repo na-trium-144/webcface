@@ -2,74 +2,52 @@
 #include "client_internal.h"
 #include <webcface/member.h>
 #include "../message/message.h"
+#include "data_buffer.h"
 
 namespace WEBCFACE_NS {
 
 template class WEBCFACE_DLL EventTarget<Canvas2D>;
 
-Canvas2DDataBase
-Canvas2DData::lockTmp(std::weak_ptr<Internal::ClientData> data_w,
-                      const std::string &field_name) {
-    Canvas2DDataBase cb;
-    cb.width = this->width;
-    cb.height = this->height;
-    cb.components.reserve(this->components.size());
-    for (std::size_t i = 0; i < this->components.size(); i++) {
-        cb.components.emplace_back(std::move(this->components[i].lockTmp(
-            data_w, field_name + "_" + std::to_string(i))));
-    }
-    return cb;
-}
-
 Canvas2D::Canvas2D()
     : Field(), EventTarget<Canvas2D>(),
-      canvas_data(std::make_shared<Canvas2DData>()),
-      modified(std::make_shared<bool>(false)) {}
+      sb(std::make_shared<Internal::Canvas2DDataBuf>()) {}
 Canvas2D::Canvas2D(const Field &base)
     : Field(base), EventTarget<Canvas2D>(
                        &this->dataLock()->canvas2d_change_event, *this),
-      canvas_data(std::make_shared<Canvas2DData>()),
-      modified(std::make_shared<bool>(false)) {}
+      sb(std::make_shared<Internal::Canvas2DDataBuf>(base)) {}
 Canvas2D &Canvas2D::init(double width, double height) {
-    canvas_data->components.clear();
-    canvas_data->width = width;
-    canvas_data->height = height;
-    *modified = true;
+    sb->init(width, height);
     return *this;
 }
 Canvas2D &Canvas2D::sync() {
-    if (*modified) {
-        set();
-        *modified = false;
-    }
+    sb->sync();
     return *this;
 }
-void Canvas2D::onDestroy() {
-    if (canvas_data.use_count() == 1 && data_w.lock() != nullptr &&
-        dataLock()->isSelf(member_)) {
-        sync();
-    }
-}
-WEBCFACE_DLL Canvas2D &Canvas2D::add(const Canvas2DComponent &cc) {
-    canvas_data->checkSize();
-    canvas_data->components.push_back(cc);
-    *modified = true;
+Canvas2D &Canvas2D::operator<<(const Canvas2DComponent &cc) {
+    sb->add(cc);
     return *this;
 }
-WEBCFACE_DLL Canvas2D &Canvas2D::add(Canvas2DComponent &&cc) {
-    canvas_data->checkSize();
-    canvas_data->components.push_back(std::move(cc));
-    *modified = true;
+Canvas2D &Canvas2D::operator<<(Canvas2DComponent &&cc) {
+    sb->add(std::move(cc));
     return *this;
 }
 
-Canvas2D &Canvas2D::set() {
-    canvas_data->checkSize();
-    setCheck()->canvas2d_store.setSend(
-        *this, std::make_shared<Canvas2DDataBase>(
-                   canvas_data->lockTmp(this->data_w, this->name())));
-    triggerEvent(*this);
-    return *this;
+template <>
+void Internal::DataSetBuffer<Canvas2DComponent>::onSync(){
+    auto c2buf = dynamic_cast<Canvas2DDataBuf *>(this);
+    if(!c2buf){
+        throw std::runtime_error("Failed to access Canvas2DDataBuf");
+    }
+    c2buf->checkSize();
+
+    auto cb = std::make_shared<Canvas2DDataBase>(c2buf->width_, c2buf->height_);
+    cb->components.reserve(this->components_.size());
+    for (std::size_t i = 0; i < this->components_.size(); i++) {
+        cb->components.emplace_back(std::move(this->components_[i].lockTmp(
+            target_.data_w, target_.name() + "_" + std::to_string(i))));
+    }
+    target_.setCheck()->canvas2d_store.setSend(target_, cb);
+    static_cast<Canvas2D>(target_).triggerEvent(target_);
 }
 
 void Canvas2D::request() const {

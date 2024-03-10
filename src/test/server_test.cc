@@ -129,7 +129,7 @@ TEST_F(ServerTest, entry) {
     dummy_c1->send(
         Message::Value{{}, "a", std::make_shared<std::vector<double>>(1)});
     dummy_c1->send(Message::Text{{}, "a", std::make_shared<std::string>("")});
-    dummy_c1->send(Message::RobotModel{"a", std::vector<Common::RobotLink>()});
+    dummy_c1->send(Message::RobotModel{"a", std::make_shared<std::vector<Common::RobotLink>>()});
     dummy_c1->send(Message::Canvas3D{
         "a",
         std::make_shared<std::unordered_map<
@@ -232,7 +232,7 @@ TEST_F(ServerTest, entry) {
             EXPECT_EQ(obj.field, "b");
         },
         [&] { ADD_FAILURE() << "Text Entry recv failed"; });
-    dummy_c1->send(Message::RobotModel{"b", std::vector<Common::RobotLink>()});
+    dummy_c1->send(Message::RobotModel{"b", std::make_shared<std::vector<Common::RobotLink>>()});
     wait();
     dummy_c2->recv<Message::Entry<Message::RobotModel>>(
         [&](const auto &obj) {
@@ -383,7 +383,8 @@ TEST_F(ServerTest, robotModel) {
     dummy_c1->send(Message::SyncInit{{}, "c1", 0, "", "", ""});
     dummy_c1->send(Message::Sync{});
     dummy_c1->send(
-        Message::RobotModel{"a", {RobotLink{"a", Geometry{}, ViewColor::black}}});
+        Message::RobotModel{"a", std::make_shared<std::vector<RobotLink>>(
+            std::vector<RobotLink>{{"a", Geometry{}, ViewColor::black}})});
     wait();
     dummy_c2->send(Message::SyncInit{{}, "", 0, "", "", ""});
     dummy_c2->send(Message::Req<Message::RobotModel>{{}, "c1", "a", 1});
@@ -395,7 +396,7 @@ TEST_F(ServerTest, robotModel) {
         [&](const auto &obj) {
             EXPECT_EQ(obj.req_id, 1);
             EXPECT_EQ(obj.sub_field, "");
-            EXPECT_EQ(obj.commonLinks().size(), 1);
+            EXPECT_EQ(obj.commonLinks()->size(), 1);
         },
         [&] { ADD_FAILURE() << "RobotModel Res recv failed"; });
     dummy_c2->recvClear();
@@ -404,14 +405,15 @@ TEST_F(ServerTest, robotModel) {
     dummy_c1->send(Message::Sync{});
     dummy_c1->send(Message::RobotModel{
         "a",
-        {
+        std::make_shared<std::vector<RobotLink>>(
+            std::vector<RobotLink>{
             RobotLink{"a", {}, Geometry{}, ViewColor::black},
             RobotLink{"b", {}, Geometry{}, ViewColor::black},
             RobotLink{"c",
                       {"j", "a", RobotJointType::fixed, {}, 0},
                       Geometry{},
                       ViewColor::black},
-        }});
+        })});
     wait();
     dummy_c2->recv<Message::Sync>([&](auto) {},
                                   [&] { ADD_FAILURE() << "Sync recv failed"; });
@@ -419,10 +421,10 @@ TEST_F(ServerTest, robotModel) {
         [&](const auto &obj) {
             EXPECT_EQ(obj.req_id, 1);
             EXPECT_EQ(obj.sub_field, "");
-            ASSERT_EQ(obj.commonLinks().size(), 3);
-            EXPECT_EQ(obj.commonLinks()[0].joint.parent_name, "");
-            EXPECT_EQ(obj.commonLinks()[1].joint.parent_name, "");
-            EXPECT_EQ(obj.commonLinks()[2].joint.parent_name, "a");
+            ASSERT_EQ(obj.commonLinks()->size(), 3);
+            EXPECT_EQ(obj.commonLinks()->at(0).joint.parent_name, "");
+            EXPECT_EQ(obj.commonLinks()->at(1).joint.parent_name, "");
+            EXPECT_EQ(obj.commonLinks()->at(2).joint.parent_name, "a");
         },
         [&] { ADD_FAILURE() << "RobotModel Res recv failed"; });
 }

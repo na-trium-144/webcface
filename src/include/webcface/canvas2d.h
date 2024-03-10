@@ -9,25 +9,11 @@
 #include "canvas_data.h"
 
 namespace WEBCFACE_NS {
-
-struct WEBCFACE_DLL Canvas2DData {
-    double width = 0, height = 0;
-    std::vector<Canvas2DComponent> components;
-    Canvas2DData() = default;
-    Canvas2DData(double width, double height,
-                 std::vector<Canvas2DComponent> &&components)
-        : width(width), height(height), components(std::move(components)) {}
-    void checkSize() const {
-        if (width <= 0 && height <= 0) {
-            throw std::invalid_argument("Canvas2D size is invalid (" +
-                                        std::to_string(width) + ", " +
-                                        std::to_string(height) + ")");
-        }
-    }
-    Canvas2DDataBase
-    lockTmp(std::weak_ptr<Internal::ClientData> data_w,
-            const std::string &field_name);
-};
+namespace Internal {
+template <typename Component>
+class DataSetBuffer;
+class Canvas2DDataBuf;
+}
 
 class Canvas2D;
 extern template class WEBCFACE_IMPORT EventTarget<Canvas2D>;
@@ -39,18 +25,9 @@ extern template class WEBCFACE_IMPORT EventTarget<Canvas2D>;
  *
  */
 class WEBCFACE_DLL Canvas2D : protected Field, public EventTarget<Canvas2D> {
-    std::shared_ptr<Canvas2DData> canvas_data;
-    std::shared_ptr<bool> modified;
+    std::shared_ptr<Internal::Canvas2DDataBuf> sb;
 
     void onAppend() const override;
-
-    /*!
-     * \brief 値をセットし、EventTargetを発動する
-     *
-     */
-    Canvas2D &set();
-
-    void onDestroy();
 
   public:
     Canvas2D();
@@ -63,18 +40,9 @@ class WEBCFACE_DLL Canvas2D : protected Field, public EventTarget<Canvas2D> {
         init(width, height);
     }
 
-    /*!
-     * \brief デストラクタで sync() を呼ぶ。
-     *
-     * Canvas2Dをコピーした場合は、すべてのコピーが破棄されたときにのみ sync()
-     * が呼ばれる。
-     * \sa sync()
-     *
-     */
-    ~Canvas2D() override { onDestroy(); }
-
     using Field::member;
     using Field::name;
+    friend Internal::DataSetBuffer<Canvas2DComponent>;
 
     /*!
      * \brief 子フィールドを返す
@@ -128,29 +96,47 @@ class WEBCFACE_DLL Canvas2D : protected Field, public EventTarget<Canvas2D> {
 
     /*!
      * \brief Componentを追加
-     *
+     * \since ver1.9
+     * 
      */
-    Canvas2D &add(const Canvas2DComponent &cc);
+    Canvas2D &operator<<(const Canvas2DComponent &cc);
+    /*!
+     * \brief Componentを追加
+     * \since ver1.9
+     * 
+     */
+    Canvas2D &operator<<(Canvas2DComponent &&cc);
     /*!
      * \brief Componentを追加
      *
      */
-    Canvas2D &add(Canvas2DComponent &&cc);
+    Canvas2D &add(const Canvas2DComponent &cc){
+        *this << cc;
+        return *this;
+    }
+    /*!
+     * \brief Componentを追加
+     *
+     */
+    Canvas2D &add(Canvas2DComponent &&cc){
+        *this << std::move(cc);
+        return *this;
+    }
 
     /*!
      * \brief Geometryを追加
-     * \since 1.9
+     * \since ver1.9
      */
     Canvas2D &add(CanvasCommonComponent &&cc) {
-        add(std::move(cc.to2()));
+        *this << std::move(cc.to2());
         return *this;
     }
     /*!
      * \brief Geometryを追加
-     * \since 1.9
+     * \since ver1.9
      */
     Canvas2D &add(CanvasCommonComponent &cc) {
-        add(cc.to2());
+        *this << cc.to2();
         return *this;
     }
     /*!

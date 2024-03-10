@@ -46,6 +46,8 @@ struct Canvas2DDataBase {
     double width = 0, height = 0;
     std::vector<Canvas2DComponentBase> components;
     Canvas2DDataBase() = default;
+    Canvas2DDataBase(double width, double height)
+        : width(width), height(height), components() {}
     Canvas2DDataBase(double width, double height,
                  std::vector<Canvas2DComponentBase> &&components)
         : width(width), height(height), components(std::move(components)) {}

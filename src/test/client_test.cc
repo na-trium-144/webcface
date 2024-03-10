@@ -883,7 +883,8 @@ TEST_F(ClientTest, canvas3DReq) {
 TEST_F(ClientTest, robotModelSend) {
     wcli_->waitConnection();
     data_->robot_model_store.setSend(
-        "a", {RobotLink{"a", Geometry{}, ViewColor::black}});
+        "a", std::make_shared<std::vector<RobotLink>>(
+            std::vector<RobotLink>{{"a", Geometry{}, ViewColor::black}}));
     wcli_->sync();
     wait();
     dummy_s->recv<Message::RobotModel>(
@@ -905,16 +906,18 @@ TEST_F(ClientTest, robotModelReq) {
             EXPECT_EQ(obj.req_id, 1);
         },
         [&] { ADD_FAILURE() << "RobotModel Req recv error"; });
-    dummy_s->send(Message::Res<Message::RobotModel>{
-        1, "", {RobotLink{"a", Geometry{}, ViewColor::black}}});
-    dummy_s->send(Message::Res<Message::RobotModel>{
-        1, "c", {RobotLink{"a", Geometry{}, ViewColor::black}}});
+    dummy_s->send(Message::Res<Message::RobotModel>(
+        1, "", std::make_shared<std::vector<RobotLink>>(
+            std::vector<RobotLink>{{"a", Geometry{}, ViewColor::black}})));
+    dummy_s->send(Message::Res<Message::RobotModel>(
+        1, "c", std::make_shared<std::vector<RobotLink>>(
+            std::vector<RobotLink>{{"a", Geometry{}, ViewColor::black}})));
     wait();
     EXPECT_EQ(callback_called, 1);
     EXPECT_TRUE(data_->robot_model_store.getRecv("a", "b").has_value());
-    EXPECT_EQ(data_->robot_model_store.getRecv("a", "b").value().size(), 1);
+    EXPECT_EQ(data_->robot_model_store.getRecv("a", "b").value()->size(), 1);
     EXPECT_TRUE(data_->robot_model_store.getRecv("a", "b.c").has_value());
-    EXPECT_EQ(data_->robot_model_store.getRecv("a", "b.c").value().size(), 1);
+    EXPECT_EQ(data_->robot_model_store.getRecv("a", "b.c").value()->size(), 1);
 }
 TEST_F(ClientTest, imageSend) {
     wcli_->waitConnection();
