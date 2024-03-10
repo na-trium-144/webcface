@@ -94,7 +94,7 @@ void Internal::DataSetBuffer<ViewComponent>::sync() {
     }
 }
 
-View &View::operator<<(ViewComponent &vc) {
+View &View::operator<<(const ViewComponent &vc) {
     std::flush(*this);
     sb->addVC(vc);
     return *this;

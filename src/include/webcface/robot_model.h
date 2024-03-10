@@ -8,6 +8,8 @@
 namespace WEBCFACE_NS {
 namespace Internal {
 struct ClientData;
+template <typename Component>
+class DataSetBuffer;
 }
 class Member;
 
@@ -26,13 +28,12 @@ extern template class WEBCFACE_IMPORT EventTarget<RobotModel>;
 class WEBCFACE_DLL RobotModel : protected Field,
                    public EventTarget<RobotModel>,
                    public Canvas3DComponent {
-    std::shared_ptr<std::vector<RobotLink>> links;
-    std::shared_ptr<bool> modified;
+    std::shared_ptr<Internal::DataSetBuffer<RobotLink>> sb;
     
     void onAppend() const override;
 
   public:
-    RobotModel() = default;
+    RobotModel();
     RobotModel(const Field &base);
     RobotModel(const Field &base, const std::string &field)
         : RobotModel(Field{base, field}) {}
@@ -40,6 +41,37 @@ class WEBCFACE_DLL RobotModel : protected Field,
     friend class Canvas3D;
     using Field::member;
     using Field::name;
+    friend Internal::DataSetBuffer<RobotLink>;
+
+    /*!
+     * \brief モデルを初期化
+     * \since ver1.9
+     */
+    RobotModel &init();
+    /*!
+     * \brief モデルにlinkを追加
+     * \since ver1.9
+     */
+    RobotModel &operator<<(const RobotLink &rl);
+    /*!
+     * \brief モデルにlinkを追加
+     * \since ver1.9
+     */
+    RobotModel &operator<<(RobotLink &&rl);
+    /*!
+     * \brief モデルにlinkを追加
+     * \since ver1.9
+     */
+    template <typename T>
+    RobotModel &add(T &&rl) {
+        *this << std::forward<T>(rl);
+        return *this;
+    }
+    /*!
+     * \brief addで追加したモデルをセットする
+     * \since ver1.9
+     */
+    RobotModel &sync();
 
     /*!
      * \brief モデルをセットする

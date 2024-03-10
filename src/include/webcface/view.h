@@ -234,6 +234,10 @@ class WEBCFACE_DLL View : protected Field, public EventTarget<View>, public std:
         *this << ViewComponent{vc, this->data_w};
         return *this;
     }
+    View &operator<<(const Common::ViewComponentBase &vc) {
+        *this << ViewComponent{vc, this->data_w};
+        return *this;
+    }
     View &operator<<(Common::ViewComponentBase &&vc) {
         *this << ViewComponent{vc, this->data_w};
         return *this;
@@ -244,7 +248,11 @@ class WEBCFACE_DLL View : protected Field, public EventTarget<View>, public std:
      * std::flushも呼び出すことで直前に追加した未flashの文字列なども確実に追加する
      *
      */
-    View &operator<<(ViewComponent &vc);
+    View &operator<<(const ViewComponent &vc);
+    View &operator<<(ViewComponent &vc) {
+        *this << static_cast<const ViewComponent &>(vc);
+        return *this;
+    }
     /*!
      * \brief コンポーネントを追加
      *
