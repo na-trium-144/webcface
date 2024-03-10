@@ -96,6 +96,8 @@ template <>
 void DataSetBuffer<RobotLink>::onSync();
 template <>
 void DataSetBuffer<Canvas2DComponent>::onSync();
+template <>
+void DataSetBuffer<Canvas3DComponent>::onSync();
 
 /*!
  * \brief Viewの送信用データを保持する

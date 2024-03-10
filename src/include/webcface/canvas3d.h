@@ -15,6 +15,10 @@
 #include "canvas_data.h"
 
 namespace WEBCFACE_NS {
+namespace Internal {
+template <typename Component>
+class DataSetBuffer;
+}
 
 class Canvas3D;
 extern template class WEBCFACE_IMPORT EventTarget<Canvas3D>;
@@ -26,18 +30,9 @@ extern template class WEBCFACE_IMPORT EventTarget<Canvas3D>;
  *
  */
 class WEBCFACE_DLL Canvas3D : protected Field, public EventTarget<Canvas3D> {
-    std::shared_ptr<std::vector<Canvas3DComponent>> components;
-    std::shared_ptr<bool> modified;
+    std::shared_ptr<Internal::DataSetBuffer<Canvas3DComponent>> sb;
 
     void onAppend() const override;
-
-    /*!
-     * \brief 値をセットし、EventTargetを発動する
-     *
-     */
-    Canvas3D &set();
-
-    void onDestroy();
 
   public:
     Canvas3D();
@@ -45,18 +40,9 @@ class WEBCFACE_DLL Canvas3D : protected Field, public EventTarget<Canvas3D> {
     Canvas3D(const Field &base, const std::string &field)
         : Canvas3D(Field{base, field}) {}
 
-    /*!
-     * \brief デストラクタで sync() を呼ぶ。
-     *
-     * Canvas3Dをコピーした場合は、すべてのコピーが破棄されたときにのみ sync()
-     * が呼ばれる。
-     * \sa sync()
-     *
-     */
-    ~Canvas3D() override { onDestroy(); }
-
     using Field::member;
     using Field::name;
+    friend Internal::DataSetBuffer<Canvas3DComponent>;
 
     /*!
      * \brief 子フィールドを返す
@@ -110,29 +96,45 @@ class WEBCFACE_DLL Canvas3D : protected Field, public EventTarget<Canvas3D> {
 
     /*!
      * \brief Componentを追加
-     *
+     * \since ver1.9
      */
-    Canvas3D &add(const Canvas3DComponent &cc);
+    Canvas3D &operator<<(const Canvas3DComponent &cc);
     /*!
      * \brief Componentを追加
-     *
+     * \since ver1.9
      */
-    Canvas3D &add(Canvas3DComponent &&cc);
+    Canvas3D &operator<<(Canvas3DComponent &&cc);
+    /*!
+     * \brief Componentを追加
+     * 
+     */
+    Canvas3D &add(const Canvas3DComponent &cc){
+        *this << cc;
+        return *this;
+    }
+    /*!
+     * \brief Componentを追加
+     * 
+     */
+    Canvas3D &add(Canvas3DComponent &&cc){
+        *this << std::move(cc);
+        return *this;
+    }
 
     /*!
      * \brief Geometryを追加
-     * \since 1.9
+     * \since ver1.9
      */
     Canvas3D &add(CanvasCommonComponent &&cc) {
-        add(std::move(cc.to3()));
+        *this << std::move(cc.to3());
         return *this;
     }
     /*!
      * \brief Geometryを追加
-     * \since 1.9
+     * \since ver1.9
      */
     Canvas3D &add(CanvasCommonComponent &cc) {
-        add(cc.to3());
+        *this << cc.to3();
         return *this;
     }
     /*!
