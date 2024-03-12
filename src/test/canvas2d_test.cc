@@ -18,6 +18,13 @@ class Canvas2DTest : public ::testing::Test {
     Canvas2D canvas(const std::string &member, const std::string &field) {
         return Canvas2D{Field{data_, member, field}};
     }
+    Func func(const std::string &member, const std::string &field) {
+        return Func{Field{data_, member, field}};
+    }
+    template <typename T>
+    AnonymousFunc afunc1(const T &func) {
+        return AnonymousFunc{Field{data_, self_name, ""}, func};
+    }
     int callback_called;
     template <typename V = FieldBase>
     auto callback() {
@@ -45,8 +52,8 @@ TEST_F(Canvas2DTest, set) {
     using namespace WEBCFACE_NS::Geometries;
 
     auto v = canvas(self_name, "b").init(100, 150);
-    v.add(line({0, 0}, {3, 3}).color(ViewColor::red));
-    v.add(plane({0, 0}, 10, 10).color(ViewColor::yellow));
+    v.add(line({0, 0}, {3, 3}).color(ViewColor::red).onClick(func(self_name, "f")));
+    v.add(plane({0, 0}, 10, 10).color(ViewColor::yellow).onClick(afunc1([]{})));
     v.sync();
     EXPECT_EQ(callback_called, 1);
     auto &canvas2d_data = **data_->canvas2d_store.getRecv(self_name, "b");
@@ -60,6 +67,9 @@ TEST_F(Canvas2DTest, set) {
     EXPECT_EQ(canvas2d_data.components[0].geometry_->type, GeometryType::line);
     EXPECT_EQ(canvas2d_data.components[0].geometry_->properties,
               (std::vector<double>{0, 0, 0, 3, 3, 0}));
+    ASSERT_NE(canvas2d_data.components[0].on_click_func_, std::nullopt);
+    EXPECT_EQ(canvas2d_data.components[0].on_click_func_->member_, self_name);
+    EXPECT_EQ(canvas2d_data.components[0].on_click_func_->field_, "f");
 
     EXPECT_EQ(canvas2d_data.components[1].type_,
               Canvas2DComponentType::geometry);
@@ -68,6 +78,9 @@ TEST_F(Canvas2DTest, set) {
     EXPECT_EQ(canvas2d_data.components[1].geometry_->type, GeometryType::plane);
     EXPECT_EQ(canvas2d_data.components[1].geometry_->properties,
               (std::vector<double>{0, 0, 0, 0, 0, 0, 10, 10}));
+    ASSERT_NE(canvas2d_data.components[0].on_click_func_, std::nullopt);
+    EXPECT_EQ(canvas2d_data.components[0].on_click_func_->member_, self_name);
+    EXPECT_NE(canvas2d_data.components[0].on_click_func_->field_, "");
 
     v.init(1, 1);
     v.sync();

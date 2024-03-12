@@ -505,15 +505,6 @@ struct Canvas2D : public MessageBase<MessageKind::canvas2d> {
                 on_click_field = vc.on_click_func_->field_;
             }
         }
-        Canvas2DComponent(Canvas2DComponentType type,
-                          const Common::Transform &origin, ViewColor color,
-                          ViewColor fill, double stroke_width,
-                          GeometryType geometry_type,
-                          const std::vector<double> &properties)
-            : type(type), origin_pos({origin.pos(0), origin.pos(1)}),
-              origin_rot(origin.rot(0)), color(color), fill(fill),
-              stroke_width(stroke_width), geometry_type(geometry_type),
-              properties(properties) {}
         operator Common::Canvas2DComponentBase() const {
             Common::Canvas2DComponentBase vc;
             vc.type_ = type;

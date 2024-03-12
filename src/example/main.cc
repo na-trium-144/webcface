@@ -173,6 +173,12 @@ int main() {
             cv.init(100, 100);
             cv.add(webcface::rect({10, 10}, {90, 90})
                        .color(webcface::ViewColor::black));
+            cv.add(webcface::circle(webcface::Point{50, 50}, 10)
+                       .color(webcface::ViewColor::black)
+                       .fillColor(webcface::ViewColor::gray)
+                       .onClick([] {
+                           std::cout << "Canvas Clicked!!" << std::endl;
+                       }));
             cv.add(webcface::circle(webcface::Point{50, 50}, 20)
                        .color(webcface::ViewColor::red));
             webcface::Transform pos{
