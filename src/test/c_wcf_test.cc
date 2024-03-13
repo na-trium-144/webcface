@@ -373,6 +373,61 @@ TEST_F(CClientTest, funcListen) {
     EXPECT_EQ(wcfFuncFetchCall(wcli_, "a", &h), WCF_NOT_CALLED);
 }
 
+std::function<void(wcfFuncCallHandle *h)> callback_obj = nullptr;
+void callbackFunc(wcfFuncCallHandle *h) { callback_obj(h); }
+TEST_F(CClientTest, funcSet) {
+    using namespace std::string_literals;
+    EXPECT_EQ(wcfStart(wcli_), WCF_OK);
+
+    int arg_types[3] = {WCF_VAL_INT, WCF_VAL_DOUBLE, WCF_VAL_STRING};
+    callback_obj = [&](wcfFuncCallHandle *h) {
+        EXPECT_EQ(h->arg_size, 3);
+        EXPECT_EQ(h->args[0].as_int, 42);
+        EXPECT_EQ(h->args[0].as_double, 42.0);
+        EXPECT_EQ(h->args[0].as_str, "42"s);
+        EXPECT_EQ(h->args[1].as_double, 1.5);
+        EXPECT_EQ(h->args[2].as_str, "aaa"s);
+
+        wcfMultiVal ans = wcfValD(123.45);
+        EXPECT_EQ(wcfFuncRespond(h, &ans), WCF_OK);
+        EXPECT_EQ(wcfFuncRespond(h, &ans), WCF_BAD_HANDLE);
+        EXPECT_EQ(wcfFuncRespond(nullptr, &ans), WCF_BAD_HANDLE);
+    };
+    wcfFuncSet(wcli_, "a", arg_types, 3, WCF_VAL_INT, callbackFunc);
+    EXPECT_EQ(wcfSync(wcli_), WCF_OK);
+    wait();
+    dummy_s->recv<Message::FuncInfo>(
+        [&](const auto &obj) {
+            EXPECT_EQ(obj.field, "a");
+            EXPECT_EQ(obj.return_type, ValType::int_);
+            EXPECT_EQ(obj.args->size(), 3);
+            EXPECT_EQ(obj.args->at(0).type(), ValType::int_);
+            EXPECT_EQ(obj.args->at(1).type(), ValType::double_);
+            EXPECT_EQ(obj.args->at(2).type(), ValType::string_);
+        },
+        [&] { ADD_FAILURE() << "FuncInfo recv error"; });
+    dummy_s->recvClear();
+
+    dummy_s->send(Message::Call{{0, 1, 1, "a", {42, 1.5, "aaa"}}});
+    wait();
+
+    dummy_s->recv<Message::CallResponse>(
+        [&](const auto &obj) {
+            EXPECT_EQ(obj.caller_id, 0);
+            EXPECT_EQ(obj.caller_member_id, 1);
+            EXPECT_TRUE(obj.started);
+        },
+        [&] { ADD_FAILURE() << "CallResponse recv error"; });
+    dummy_s->recv<Message::CallResult>(
+        [&](const auto &obj) {
+            EXPECT_EQ(obj.caller_id, 0);
+            EXPECT_EQ(obj.caller_member_id, 1);
+            EXPECT_FALSE(obj.is_error);
+            EXPECT_EQ(static_cast<double>(obj.result), 123.45);
+        },
+        [&] { ADD_FAILURE() << "CallResult recv error"; });
+}
+
 TEST_F(CClientTest, viewSend) {
     wcfViewComponent vc[10];
     vc[0] = wcfText("abc\n123");

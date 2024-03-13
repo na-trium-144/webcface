@@ -26,6 +26,15 @@ resultToCVal(AsyncFuncResult async_res) {
     return std::make_pair(status, result);
 }
 
+static wcfFuncCallHandle *createHandle(const FuncCallHandle &h) {
+    auto whp = new wcfFuncCallHandle{};
+    fetched_handles.emplace(whp, h);
+    auto &h_ref = fetched_handles.at(whp);
+    whp->args = h_ref.cArgs();
+    whp->arg_size = static_cast<int>(h_ref.args().size());
+    return whp;
+}
+
 extern "C" {
 wcfStatus wcfFuncRun(wcfClient *wcli, const char *member, const char *field,
                      const wcfMultiVal *args, int arg_size,
@@ -99,6 +108,27 @@ wcfStatus wcfFuncWaitResult(wcfAsyncFuncResult *async_res,
     return status;
 }
 
+wcfStatus wcfFuncSet(wcfClient *wcli, const char *field, const int *arg_types,
+                     int arg_size, int return_type, wcfFuncCallback callback) {
+    auto wcli_ = getWcli(wcli);
+    if (!wcli_) {
+        return WCF_BAD_WCLI;
+    }
+    if (!field || arg_size < 0) {
+        return WCF_INVALID_ARGUMENT;
+    }
+    std::vector<Arg> args(arg_size);
+    for (int i = 0; i < arg_size; i++) {
+        args[i].type(static_cast<ValType>(arg_types[i]));
+    }
+    wcli_->func(field).set(args, static_cast<ValType>(return_type),
+                           [callback](FuncCallHandle handle) {
+                               wcfFuncCallHandle *whp = createHandle(handle);
+                               callback(whp);
+                               wcfFuncRespond(whp, nullptr);
+                           });
+    return WCF_OK;
+}
 wcfStatus wcfFuncListen(wcfClient *wcli, const char *field,
                         const int *arg_types, int arg_size, int return_type) {
     auto wcli_ = getWcli(wcli);
@@ -129,12 +159,7 @@ wcfStatus wcfFuncFetchCall(wcfClient *wcli, const char *field,
     }
     auto h = wcli_->funcListener(field).fetchCall();
     if (h) {
-        auto whp = new wcfFuncCallHandle{};
-        fetched_handles.emplace(whp, std::move(*h));
-        auto &h_ref = fetched_handles.at(whp);
-        whp->args = h_ref.cArgs();
-        whp->arg_size = static_cast<int>(h_ref.args().size());
-        *handle = whp;
+        *handle = createHandle(*h);
         return WCF_OK;
     } else {
         return WCF_NOT_CALLED;
@@ -147,7 +172,11 @@ wcfStatus wcfFuncRespond(const wcfFuncCallHandle *handle,
     if (it == fetched_handles.end()) {
         return WCF_BAD_HANDLE;
     }
-    it->second.respond(*value);
+    if (value) {
+        it->second.respond(*value);
+    } else {
+        it->second.respond();
+    }
     fetched_handles.erase(it);
     delete handle;
     return WCF_OK;
