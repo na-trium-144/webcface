@@ -251,25 +251,33 @@ class WEBCFACE_DLL Canvas2DComponent : protected Common::Canvas2DComponentBase {
     Canvas2DComponentType type() const { return type_; }
     /*!
      * \brief 要素の移動
-     *
+     * 
+     * 要素を平行移動&回転します。
+     * 
      */
-    Transform origin() const { return origin_; }
     Canvas2DComponent &origin(const Transform &origin) {
         origin_ = origin;
         return *this;
     }
+    Transform origin() const { return origin_; }
     /*!
      * \brief 色
      *
+     * 図形の輪郭の色を指定します。
+     * デフォルト時のinheritはWebUI上ではblackとして表示されます
+     * 
      */
-    ViewColor color() const { return color_; }
     Canvas2DComponent &color(const ViewColor &color) {
         color_ = color;
         return *this;
     }
+    ViewColor color() const { return color_; }
     /*!
      * \brief 塗りつぶし色
      *
+     * 図形の塗りつぶし色を指定します。
+     * デフォルト時のinheritはWebUI上では透明になります
+     * 
      */
     ViewColor fillColor() const { return fill_; }
     Canvas2DComponent &fillColor(const ViewColor &color) {
@@ -279,27 +287,39 @@ class WEBCFACE_DLL Canvas2DComponent : protected Common::Canvas2DComponentBase {
     /*!
      * \brief 線の太さ
      *
+     * 図形の輪郭の太さを指定します。
+     * 太さ1はCanvas2Dの座標系で1の長さ分の太さになります(拡大縮小で太さが変わる)
+     * 
+     * 指定しない場合0となり、WebUIではその場合Canvasの拡大に関係なく1ピクセルになります
+     * 
      */
-    double strokeWidth() const { return stroke_width_; }
     Canvas2DComponent &strokeWidth(double s) {
         stroke_width_ = s;
         return *this;
     }
+    double strokeWidth() const { return stroke_width_; }
     /*!
      * \brief 文字の大きさ(高さ)
+     * \since ver1.9
      *
-     * 内部のデータとしてはstrokeWidthのデータを使いまわしている
+     * 文字の大きさを指定します(Text要素の場合のみ)
+     * 大きさ1は文字の高さがCanvas2Dの座標系で1の長さ分になります(拡大縮小で大きさが変わる)
+     * 
+     * 内部のデータとしてはstrokeWidthのデータを使いまわしています
+     * 
      */
-    double textSize() const { return stroke_width_; }
     Canvas2DComponent &textSize(double s) { return strokeWidth(s); }
+    double textSize() const { return stroke_width_; }
     /*!
      * \brief 表示する文字列
      * \since ver1.9
+     * 
      */
     const std::string &text() const { return text_; }
     /*!
      * \brief 表示する文字列を設定
      * \since ver1.9
+     * 
      */
     Canvas2DComponent &text(const std::string &text) {
         text_ = text;
@@ -320,17 +340,17 @@ class WEBCFACE_DLL Canvas2DComponent : protected Common::Canvas2DComponentBase {
     };
     /*!
      * \brief クリック時に実行される関数を取得
-     *
+     * \since ver1.9
      */
     std::optional<Func> onClick() const;
     /*!
      * \brief クリック時に実行される関数を設定
-     *
+     * \since ver1.9
      */
     Canvas2DComponent &onClick(const Func &func);
     /*!
      * \brief クリック時に実行される関数を設定
-     *
+     * \since ver1.9
      */
     template <typename T>
     Canvas2DComponent &onClick(const T &func) {
@@ -343,6 +363,8 @@ class WEBCFACE_DLL Canvas2DComponent : protected Common::Canvas2DComponentBase {
  * \brief Canvas2D, Canvas3D (, View) に要素をaddするときに使うインタフェース
  *
  * add時に各種Componentにキャストする
+ * 
+ * 各オプションの詳細な説明は ViewComponent, Canvas2DComponent, Canvas3DComponent を参照
  *
  */
 template <bool V, bool C2, bool C3>

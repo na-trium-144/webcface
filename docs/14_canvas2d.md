@@ -8,7 +8,6 @@
 \sa
 * C++ webcface::Canvas2D
 * JavaScript [Canvas2D](https://na-trium-144.github.io/webcface-js/classes/Canvas2D.html)
-(受信機能のみ)
 * Python [webcface.Canvas2D](https://na-trium-144.github.io/webcface-python/webcface.canvas2d.html#webcface.canvas2d.Canvas2D)
 
 
@@ -70,23 +69,25 @@ Pointでは x, y 座標、Transformでは回転角(radianで、 (x, y) = (1, 0) 
 - <b class="tab-title">C++</b>
     Client::canvas2d からCanvas2Dオブジェクトを作り、
     Canvas2D::init() でCanvasのサイズを指定し、
-    Canvas2D::add() で要素を追加し、
+    [View](./13_view.md)と同様に Canvas2D::add() または operator<< で要素を追加し、
     最後にCanvas2D::sync()をしてからClient::sync()をすることで送信されます。
 
-    例 (src/example/main.cc を参照)
+    \note ver1.9からadd関数の仕様を変更し << 演算子も実装して、Viewと同じ使い方になりました
+
+    例 <span class="since-c">1.9</span> (src/example/main.cc も参照)
     ```cpp
     webcface::Canvas2D canvas = wcli.canvas2D("canvas");
     canvas.init(100, 100);
-    canvas.add(webcface::rect({10, 10}, {90, 90}),
-               webcface::ViewColor::black);
-    canvas.add(webcface::circle(webcface::Point{50, 50}, 20),
-               webcface::ViewColor::red);
+    canvas << webcface::rect({10, 10}, {90, 90})
+                .color(webcface::ViewColor::black)
+           << webcface::circle(webcface::Point{50, 50}, 20)
+                .color(webcface::ViewColor::red);
     webcface::Transform pos{ ... };
-    canvas.add(webcface::polygon(
-                   {{0, -5}, {-5, 0}, {-5, 10}, {5, 10}, {5, 0}}),
-               pos,
-               webcface::ViewColor::black, webcface::ViewColor::yellow,
-               2);
+    canvas << webcface::polygon({{0, -5}, {-5, 0}, {-5, 10}, {5, 10}, {5, 0}})
+                .origin(pos)
+                .color(webcface::ViewColor::black)
+                .fillColor(webcface::ViewColor::yellow)
+                .strokeWidth(2);
     // ... 省略
     canvas.sync(); // ここまでにcanvasに追加したものをクライアントに反映
     wcli.sync();
@@ -97,6 +98,35 @@ Pointでは x, y 座標、Transformでは回転角(radianで、 (x, y) = (1, 0) 
 
     \note
     Canvas2Dオブジェクトをコピーした場合、Canvas2Dオブジェクトの内容はコピーされるのではなく共有され、そのすべてのコピーが破棄されるまでsync()は呼ばれません。
+
+    WebUIで表示するときには、initで指定したサイズの中で図を描画したものが画面の大きさに合わせて拡大縮小されます。
+
+- <b class="tab-title">JavaScript</b>
+    \since <span class="since-js">1.5</span>
+    
+    Client.canvas2D からCanvas2Dオブジェクトを作り、
+    set()の引数に要素をまとめてセットして使います。
+
+    例
+    ```ts
+    const pos = new Transform(...);
+    wcli.canvas2D("canvas").set(100, 100, [
+        geometries.rect(new Point(10, 10), new Point(90, 90), {
+            color: viewColor.black,
+        }),
+        geometries.circle(new Point(50, 50), 20, {
+            color: viewColor.red,
+        }),
+        geometries.polygon([...], {
+            origin: pos,
+            color: viewColor.black,
+            fillColor: viewColor.yellow,
+            strokeWidth: 2,
+        }),
+    ]);
+    wcli.sync();
+    ```
+    ![tutorial_canvas2d.png](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_canvas2d.png)
 
     WebUIで表示するときには、initで指定したサイズの中で図を描画したものが画面の大きさに合わせて拡大縮小されます。
 
@@ -152,20 +182,28 @@ Viewと同様、Canvas3Dの2回目以降の送信時にはWebCFace内部では�
 <div class="tabbed">
 
 - <b class="tab-title">C++</b>
+    \since <span class="since-c">1.9</span>
+
+    `webcface::Geometries` 名前空間に定義されています。
     ```cpp
     using namespace webcface::Geometries;
-    canvas.add(
-        rect({0, 0}, {100, 100}),
-        webcface::identity(),
-        webcface::ViewColor::gray,
-        webcface::ViewColor::white,
-        1
-    );
     ```
-    addの引数に表示したいgeometryと、表示する位置の平行移動or回転、枠線の色、塗りつぶしの色、枠線の太さを指定します。
-    詳細は webcface::Canvas2D::add を参照してください
-    
-    C++ではGeometryは webcface::Geometries 名前空間に定義されていますが、`webcface::` の名前空間でもアクセス可能です。
+    をすると便利かもしれません
+    \note namespace Geometries はinlineなので、 `webcface::` の名前空間でもアクセス可能です
+
+    各要素はそれぞれの関数から webcface::Canvas2DComponent または webcface::TemporalComponent のオブジェクトとして得られます。
+    `rect(...).color(...)` などのようにメソッドチェーンすることで各要素にオプションを設定できます。
+
+    色、線の太さ、クリック時に実行する関数などを設定できます。
+    使用可能なオプションは webcface::Canvas2DComponent のそれぞれのメソッドの説明を参照してください。
+    関数の実行については[Func](./30_func.md)も参照してください
+
+- <b class="tab-title">JavaScript</b>
+    JavaScriptでは [`geometries`](https://na-trium-144.github.io/webcface-js/variables/geometries.html) オブジェクト内にそれぞれの要素を表す関数があります
+    ```ts
+    import { geometries } from "webcface";
+    ```
+    オプションはそれぞれ関数の引数にオブジェクトで渡すことができます。
 
 - <b class="tab-title">Python</b>
     Pythonでは [`webcface.geometries`](https://na-trium-144.github.io/webcface-python/webcface.geometries.html) モジュール内にあり、
@@ -176,8 +214,30 @@ Viewと同様、Canvas3Dの2回目以降の送信時にはWebCFace内部では�
 
 </div>
 
+<details><summary>ver1.8以前のC++</summary>
+
+```cpp
+using namespace webcface::Geometries;
+canvas.add(
+    rect({0, 0}, {100, 100}),
+    webcface::identity(),
+    webcface::ViewColor::gray,
+    webcface::ViewColor::white,
+    1
+);
+```
+addの引数に表示したいgeometryと、表示する位置の平行移動or回転、枠線の色、塗りつぶしの色、枠線の太さを指定します。
+詳細は webcface::Canvas2D::add を参照してください
+
+C++ではGeometryは webcface::Geometries 名前空間に定義されていますが、`webcface::` の名前空間でもアクセス可能です。
+
+</details>
+
+
 座標系は 右方向がx座標正、下方向がy座標正です。
 (したがって回転角は右回りが正になります。)
+
+描画したものが重なる場合、後にaddした要素が上に描画されます。
 
 Geometryは以下のものが用意されています。
 
