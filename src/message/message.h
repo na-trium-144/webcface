@@ -316,10 +316,10 @@ struct RobotModel : public MessageBase<MessageKind::robot_model> {
     RobotModel(const std::string &field,
                const std::shared_ptr<std::vector<RobotLink>> &data)
         : field(field), data(data) {}
-    RobotModel(const std::string &field,
-               const std::shared_ptr<std::vector<Common::RobotLink>> &common_links)
-        : field(field),
-          data(std::make_shared<std::vector<RobotLink>>()) {
+    RobotModel(
+        const std::string &field,
+        const std::shared_ptr<std::vector<Common::RobotLink>> &common_links)
+        : field(field), data(std::make_shared<std::vector<RobotLink>>()) {
         data->reserve(common_links->size());
         std::vector<std::string> link_names;
         link_names.reserve(common_links->size());
@@ -490,12 +490,13 @@ struct Canvas2D : public MessageBase<MessageKind::canvas2d> {
         Common::GeometryType geometry_type;
         std::vector<double> properties;
         std::optional<std::string> on_click_member, on_click_field;
+        std::string text;
         Canvas2DComponent() = default;
         Canvas2DComponent(const Common::Canvas2DComponentBase &vc)
             : type(vc.type_),
               origin_pos({vc.origin_.pos(0), vc.origin_.pos(1)}),
               origin_rot(vc.origin_.rot(0)), color(vc.color_), fill(vc.fill_),
-              stroke_width(vc.stroke_width_), properties() {
+              stroke_width(vc.stroke_width_), properties(), text(vc.text_) {
             if (vc.geometry_) {
                 geometry_type = vc.geometry_->type;
                 properties = vc.geometry_->properties;
@@ -517,6 +518,7 @@ struct Canvas2D : public MessageBase<MessageKind::canvas2d> {
                 vc.on_click_func_ = std::make_optional<FieldBase>(
                     *on_click_member, *on_click_field);
             }
+            vc.text_ = text;
             return vc;
         }
         MSGPACK_DEFINE_MAP(
@@ -524,7 +526,8 @@ struct Canvas2D : public MessageBase<MessageKind::canvas2d> {
             MSGPACK_NVP("or", origin_rot), MSGPACK_NVP("c", color),
             MSGPACK_NVP("f", fill), MSGPACK_NVP("s", stroke_width),
             MSGPACK_NVP("gt", geometry_type), MSGPACK_NVP("gp", properties),
-            MSGPACK_NVP("L", on_click_member), MSGPACK_NVP("l", on_click_field))
+            MSGPACK_NVP("L", on_click_member), MSGPACK_NVP("l", on_click_field),
+            MSGPACK_NVP("x", text))
     };
     std::shared_ptr<std::unordered_map<std::string, Canvas2DComponent>>
         data_diff;

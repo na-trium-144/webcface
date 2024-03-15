@@ -11,6 +11,97 @@ struct ClientData;
 class RobotModel;
 
 /*!
+ * \brief Viewに表示する要素です
+ *
+ */
+class WEBCFACE_DLL ViewComponent : protected Common::ViewComponentBase {
+    std::weak_ptr<Internal::ClientData> data_w;
+
+    std::shared_ptr<AnonymousFunc> on_click_func_tmp;
+
+  public:
+    ViewComponent() = default;
+    ViewComponent(const Common::ViewComponentBase &vc,
+                  const std::weak_ptr<Internal::ClientData> &data_w)
+        : Common::ViewComponentBase(vc), data_w(data_w) {}
+    explicit ViewComponent(ViewComponentType type) { type_ = type; }
+
+    /*!
+     * \brief AnonymousFuncをFuncオブジェクトにlockします
+     *
+     */
+    ViewComponentBase &
+    lockTmp(const std::weak_ptr<Internal::ClientData> &data_w,
+            const std::string &field_id);
+
+    wcfViewComponent cData() const;
+
+    /*!
+     * \brief 要素の種類
+     *
+     */
+    ViewComponentType type() const { return type_; }
+    /*!
+     * \brief 表示する文字列を取得
+     *
+     */
+    const std::string &text() const { return text_; }
+    /*!
+     * \brief 表示する文字列を設定
+     *
+     */
+    ViewComponent &text(const std::string &text) {
+        text_ = text;
+        return *this;
+    }
+    /*!
+     * \brief クリック時に実行される関数を取得
+     *
+     */
+    std::optional<Func> onClick() const;
+    /*!
+     * \brief クリック時に実行される関数を設定
+     *
+     */
+    ViewComponent &onClick(const Func &func);
+    /*!
+     * \brief クリック時に実行される関数を設定
+     *
+     */
+    template <typename T>
+    ViewComponent &onClick(const T &func) {
+        on_click_func_tmp = std::make_shared<AnonymousFunc>(func);
+        return *this;
+    }
+    /*!
+     * \brief 文字色を取得
+     *
+     */
+    ViewColor textColor() const { return text_color_; }
+    /*!
+     * \brief 文字色を設定
+     *
+     */
+    ViewComponent &textColor(ViewColor c) {
+        text_color_ = c;
+        return *this;
+    }
+    /*!
+     * \brief 背景色を取得
+     *
+     */
+    ViewColor bgColor() const { return bg_color_; }
+    /*!
+     * \brief 背景色を設定
+     *
+     */
+    ViewComponent &bgColor(ViewColor c) {
+        bg_color_ = c;
+        return *this;
+    }
+};
+
+/*!
  * \brief Canvas3Dに表示する要素
  *
  */
@@ -87,8 +178,8 @@ class WEBCFACE_DLL Canvas3DComponent : protected Common::Canvas3DComponentBase {
      * \brief geometryをセット
      *
      */
-    Canvas3DComponent &geometry(Geometry &&g) {
-        geometry_.emplace(std::move(g));
+    Canvas3DComponent &geometry(const Geometry &g) {
+        geometry_.emplace(g);
         return *this;
     };
     /*!
@@ -110,14 +201,13 @@ class WEBCFACE_DLL Canvas3DComponent : protected Common::Canvas3DComponentBase {
      * \param angle 角度
      *
      */
-    Canvas3DComponent &angle(const std::string &joint_name,
-                                          double angle);
+    Canvas3DComponent &angle(const std::string &joint_name, double angle);
 };
 
 /*!
  * \brief Canvas2Dの各要素を表すクラス。
  *
- * Geometryをセットするときは CanvasCommonComponent を使うので、
+ * Geometryをセットするときは TemporalComponent を使うので、
  * 今のところこのクラスのオブジェクトのデータを変更する用途はない。
  *
  */
@@ -196,6 +286,19 @@ class WEBCFACE_DLL Canvas2DComponent : protected Common::Canvas2DComponentBase {
         return *this;
     }
     /*!
+     * \brief 表示する文字列
+     * \since ver1.9
+     */
+    const std::string &text() const { return text_; }
+    /*!
+     * \brief 表示する文字列を設定
+     * \since ver1.9
+     */
+    Canvas2DComponent &text(const std::string &text) {
+        text_ = text;
+        return *this;
+    }
+    /*!
      * \brief geometryを取得
      *
      */
@@ -204,8 +307,8 @@ class WEBCFACE_DLL Canvas2DComponent : protected Common::Canvas2DComponentBase {
      * \brief geometryをセット
      *
      */
-    Canvas2DComponent &geometry(Geometry &&g) {
-        geometry_.emplace(std::move(g));
+    Canvas2DComponent &geometry(const Geometry &g) {
+        geometry_.emplace(g);
         return *this;
     };
     /*!
@@ -230,100 +333,180 @@ class WEBCFACE_DLL Canvas2DComponent : protected Common::Canvas2DComponentBase {
 };
 
 /*!
- * \brief Canvas2D, Canvas3DにGeometryをaddするときに使うインタフェース
+ * \brief Canvas2D, Canvas3D (, View) に要素をaddするときに使うインタフェース
  *
- * Geometryにオプションを追加して、
- * add時にCanvas2DComponentかCanvas3DComponentにキャストする
- *
- * RobotLink用にGeometryにキャストすることもできる
+ * add時に各種Componentにキャストする
  *
  */
-class CanvasCommonComponent : public Geometry {
-    std::optional<Canvas2DComponent> component_2d;
-    std::optional<Canvas3DComponent> component_3d;
-
-    void init2() {
-        if (!component_2d) {
-            component_2d.emplace(Canvas2DComponentType::geometry);
-        }
-    }
-    void init3() {
-        if (!component_3d) {
-            component_3d.emplace(Canvas3DComponentType::geometry);
-        }
-    }
-    void init() {
-        init2();
-        init3();
-    }
+template <bool V, bool C2, bool C3>
+class TemporalComponent {
+  protected:
+    std::optional<std::conditional_t<V, ViewComponent, int>> component_v;
+    std::optional<std::conditional_t<C2, Canvas2DComponent, int>> component_2d;
+    std::optional<std::conditional_t<C3, Canvas3DComponent, int>> component_3d;
 
   public:
-    CanvasCommonComponent() = default;
-    CanvasCommonComponent(GeometryType type, std::vector<double> &&properties)
-        : Geometry(type, std::move(properties)), component_2d(std::nullopt),
-          component_3d(std::nullopt) {}
-
-    Canvas2DComponent &to2() {
-        init2();
-        component_2d->geometry(std::move(static_cast<Geometry &>(*this)));
+    TemporalComponent() = default;
+    explicit TemporalComponent(const std::string &text)
+        requires(V && C2 && !C3)
+    {
+        initV(ViewComponentType::text);
+        component_v->text(text);
+        init2(Canvas2DComponentType::text);
+        component_2d->text(text);
+    }
+    TemporalComponent &initV(ViewComponentType type)
+        requires V
+    {
+        component_v.emplace(type);
+        return *this;
+    }
+    TemporalComponent &init2(Canvas2DComponentType type)
+        requires C2
+    {
+        component_2d.emplace(type);
+        return *this;
+    }
+    TemporalComponent &init3(Canvas3DComponentType type)
+        requires C3
+    {
+        component_3d.emplace(type);
+        return *this;
+    }
+    ViewComponent &toV()
+        requires V
+    {
+        return *component_v;
+    }
+    Canvas2DComponent &to2()
+        requires C2
+    {
+        // component_2d->geometry(std::move(static_cast<Geometry &>(*this)));
         return *component_2d;
     }
-    Canvas3DComponent &to3() {
-        init3();
-        component_3d->geometry(std::move(static_cast<Geometry &>(*this)));
+    Canvas3DComponent &to3()
+        requires C3
+    {
+        // component_3d->geometry(std::move(static_cast<Geometry &>(*this)));
         return *component_3d;
     }
-
     /*!
-     * \brief クリック時に実行される関数を設定
+     * \brief クリック時に実行される関数を設定 (Viewまたは2D)
      *
      */
     template <typename T>
-    CanvasCommonComponent &onClick(const T &func) {
-        init2();
-        component_2d->onClick(func);
+    TemporalComponent &onClick(const T &func)
+        requires(V || C2)
+    {
+        if constexpr (V) {
+            component_v->onClick(func);
+        }
+        if constexpr (C2) {
+            component_2d->onClick(func);
+        }
         return *this;
     }
     /*!
-     * \brief 要素の移動
+     * \brief 要素の移動 (2Dまたは3D)
      *
      */
-    CanvasCommonComponent &origin(const Transform &origin) {
-        init();
-        component_2d->origin(origin);
-        component_3d->origin(origin);
+    TemporalComponent &origin(const Transform &origin)
+        requires(C2 || C3)
+    {
+        if constexpr (C2) {
+            component_2d->origin(origin);
+        }
+        if constexpr (C3) {
+            component_3d->origin(origin);
+        }
         return *this;
     }
     /*!
      * \brief 色
      *
+     * Viewの要素では textColor を設定する
      */
-    CanvasCommonComponent &color(ViewColor c) {
-        init();
-        component_2d->color(c);
-        component_3d->color(c);
+    TemporalComponent &color(ViewColor c)
+        requires(V || C2 || C3)
+    {
+        if constexpr (V) {
+            component_v->textColor(c);
+        }
+        if constexpr (C2) {
+            component_2d->color(c);
+        }
+        if constexpr (C3) {
+            component_3d->color(c);
+        }
         return *this;
     }
     /*!
-     * \brief 背景色 (2Dのみ)
+     * \brief 文字色 (Viewまたは2D)
+     *
+     * Canvas2DのTextでは fillColor を設定する
+     */
+    TemporalComponent &textColor(ViewColor c)
+        requires(V || C2)
+    {
+        if constexpr (V) {
+            component_v->textColor(c);
+        }
+        if constexpr (C2) {
+            component_2d->fillColor(c);
+        }
+        return *this;
+    }
+    /*!
+     * \brief 背景色 (Viewまたは2D)
      *
      */
-    CanvasCommonComponent &fillColor(ViewColor c) {
-        init2();
-        component_2d->fillColor(c);
+    TemporalComponent &fillColor(ViewColor c)
+        requires(V || C2)
+    {
+        if constexpr (V) {
+            component_v->bgColor(c);
+        }
+        if constexpr (C2) {
+            component_2d->fillColor(c);
+        }
         return *this;
+    }
+    /*!
+     * \brief 背景色 (Viewまたは2D)
+     *
+     */
+    TemporalComponent &bgColor(ViewColor c)
+        requires(V || C2)
+    {
+        return fillColor(c);
     }
     /*!
      * \brief 線の太さ (2Dのみ)
      *
+     * 文字の太さではない
      */
-    CanvasCommonComponent &strokeWidth(double s) {
-        init2();
-        component_2d->strokeWidth(s);
+    TemporalComponent &strokeWidth(double s)
+        requires(C2)
+    {
+        if constexpr (C2) {
+            component_2d->strokeWidth(s);
+        }
         return *this;
     }
 };
+class TemporalGeometry : public TemporalComponent<false, true, true>,
+                         public Geometry {
+  public:
+    TemporalGeometry(GeometryType type, std::vector<double> &&properties)
+        : TemporalComponent(), Geometry(type, std::move(properties)) {
+        this->init2(Canvas2DComponentType::geometry);
+        this->init3(Canvas3DComponentType::geometry);
+        this->component_2d->geometry(static_cast<Geometry &>(*this));
+        this->component_3d->geometry(static_cast<Geometry &>(*this));
+    }
+};
 
+inline namespace Components {
 inline namespace Geometries {
 struct Line {
     const Geometry &base;
@@ -341,9 +524,9 @@ struct Line {
                      base.properties[5]};
     }
 };
-inline CanvasCommonComponent line(const Point &begin, const Point &end) {
-    return CanvasCommonComponent(
-        GeometryType::line, {begin.pos()[0], begin.pos()[1], begin.pos()[2],
+inline TemporalGeometry line(const Point &begin, const Point &end) {
+    return TemporalGeometry(GeometryType::line,
+                            {begin.pos()[0], begin.pos()[1], begin.pos()[2],
                              end.pos()[0], end.pos()[1], end.pos()[2]});
 }
 struct Polygon {
@@ -364,7 +547,7 @@ struct Polygon {
     }
     Point operator[](std::size_t i) const { return at(i); }
 };
-inline CanvasCommonComponent polygon(const std::vector<Point> &points) {
+inline TemporalGeometry polygon(const std::vector<Point> &points) {
     std::vector<double> properties;
     properties.reserve(points.size() * 3);
     for (const auto &p : points) {
@@ -372,7 +555,7 @@ inline CanvasCommonComponent polygon(const std::vector<Point> &points) {
         properties.push_back(p.pos(1));
         properties.push_back(p.pos(2));
     }
-    return CanvasCommonComponent(GeometryType::polygon, std::move(properties));
+    return TemporalGeometry(GeometryType::polygon, std::move(properties));
 }
 struct Plane {
     const Geometry &base;
@@ -401,31 +584,30 @@ struct Plane {
                 base.properties[1] + height() / 2, base.properties[2]};
     }
 };
-inline CanvasCommonComponent plane(const Transform &origin, double width,
-                                   double height) {
-    return CanvasCommonComponent(
-        GeometryType::plane,
-        {origin.pos()[0], origin.pos()[1], origin.pos()[2], origin.rot()[0],
-         origin.rot()[1], origin.rot()[2], width, height});
+inline TemporalGeometry plane(const Transform &origin, double width,
+                              double height) {
+    return TemporalGeometry(GeometryType::plane,
+                            {origin.pos()[0], origin.pos()[1], origin.pos()[2],
+                             origin.rot()[0], origin.rot()[1], origin.rot()[2],
+                             width, height});
 }
 using Rect = Plane;
-inline CanvasCommonComponent rect(const Point &origin, double width,
-                                  double height) {
-    return CanvasCommonComponent{GeometryType::plane,
-                                 {origin.pos()[0], origin.pos()[1],
-                                  origin.pos()[2], 0, 0, 0, width, height}};
+inline TemporalGeometry rect(const Point &origin, double width, double height) {
+    return TemporalGeometry{GeometryType::plane,
+                            {origin.pos()[0], origin.pos()[1], origin.pos()[2],
+                             0, 0, 0, width, height}};
 }
-inline CanvasCommonComponent rect(const Point &p1, const Point &p2) {
+inline TemporalGeometry rect(const Point &p1, const Point &p2) {
     Transform origin = identity();
     for (int i = 0; i < 2; i++) {
         origin.pos(i) = (p1.pos(i) + p2.pos(i)) / 2;
     }
     double width = std::abs(p1.pos(0) - p2.pos(0));
     double height = std::abs(p1.pos(0) - p2.pos(0));
-    return CanvasCommonComponent{GeometryType::plane,
-                                 {origin.pos(0), origin.pos(1), origin.pos(2),
-                                  origin.rot(0), origin.rot(1), origin.rot(2),
-                                  width, height}};
+    return TemporalGeometry{GeometryType::plane,
+                            {origin.pos(0), origin.pos(1), origin.pos(2),
+                             origin.rot(0), origin.rot(1), origin.rot(2), width,
+                             height}};
 }
 
 struct Box {
@@ -444,11 +626,11 @@ struct Box {
                      base.properties[5]};
     }
 };
-inline CanvasCommonComponent box(const Point &vertex1, const Point &vertex2) {
-    return CanvasCommonComponent{GeometryType::box,
-                                 {vertex1.pos()[0], vertex1.pos()[1],
-                                  vertex1.pos()[2], vertex2.pos()[0],
-                                  vertex2.pos()[1], vertex2.pos()[2]}};
+inline TemporalGeometry box(const Point &vertex1, const Point &vertex2) {
+    return TemporalGeometry{GeometryType::box,
+                            {vertex1.pos()[0], vertex1.pos()[1],
+                             vertex1.pos()[2], vertex2.pos()[0],
+                             vertex2.pos()[1], vertex2.pos()[2]}};
 }
 
 struct Circle {
@@ -465,14 +647,14 @@ struct Circle {
     }
     double radius() const { return base.properties[6]; }
 };
-inline CanvasCommonComponent circle(const Transform &origin, double radius) {
-    return CanvasCommonComponent{GeometryType::circle,
-                                 {origin.pos()[0], origin.pos()[1],
-                                  origin.pos()[2], origin.rot()[0],
-                                  origin.rot()[1], origin.rot()[2], radius}};
+inline TemporalGeometry circle(const Transform &origin, double radius) {
+    return TemporalGeometry{GeometryType::circle,
+                            {origin.pos()[0], origin.pos()[1], origin.pos()[2],
+                             origin.rot()[0], origin.rot()[1], origin.rot()[2],
+                             radius}};
 }
-inline CanvasCommonComponent circle(const Point &origin, double radius) {
-    return CanvasCommonComponent{
+inline TemporalGeometry circle(const Point &origin, double radius) {
+    return TemporalGeometry{
         GeometryType::circle,
         {origin.pos()[0], origin.pos()[1], origin.pos()[2], 0, 0, 0, radius}};
 }
@@ -492,12 +674,12 @@ struct Cylinder {
     double radius() const { return base.properties[6]; }
     double length() const { return base.properties[7]; }
 };
-inline CanvasCommonComponent cylinder(const Transform &origin, double radius,
-                                      double length) {
-    return CanvasCommonComponent{
-        GeometryType::cylinder,
-        {origin.pos()[0], origin.pos()[1], origin.pos()[2], origin.rot()[0],
-         origin.rot()[1], origin.rot()[2], radius, length}};
+inline TemporalGeometry cylinder(const Transform &origin, double radius,
+                                 double length) {
+    return TemporalGeometry{GeometryType::cylinder,
+                            {origin.pos()[0], origin.pos()[1], origin.pos()[2],
+                             origin.rot()[0], origin.rot()[1], origin.rot()[2],
+                             radius, length}};
 }
 
 struct Sphere {
@@ -513,12 +695,40 @@ struct Sphere {
     }
     double radius() const { return base.properties[3]; }
 };
-inline CanvasCommonComponent sphere(const Point &origin, double radius) {
-    return CanvasCommonComponent{
+inline TemporalGeometry sphere(const Point &origin, double radius) {
+    return TemporalGeometry{
         GeometryType::sphere,
         {origin.pos()[0], origin.pos()[1], origin.pos()[2], radius}};
 }
 
 
 } // namespace Geometries
+
+/*!
+ * \brief textコンポーネント
+ *
+ */
+inline TemporalComponent<true, true, false> text(const std::string &text) {
+    return TemporalComponent<true, true, false>(text);
+}
+/*!
+ * \brief newLineコンポーネント
+ *
+ */
+inline ViewComponent newLine() {
+    return ViewComponent(ViewComponentType::new_line);
+}
+
+/*!
+ * \brief buttonコンポーネント
+ *
+ */
+template <typename T>
+inline ViewComponent button(const std::string &text, const T &func) {
+    return ViewComponent(ViewComponentType::button).text(text).onClick(func);
+}
+
+} // namespace Components
+namespace ViewComponents = Components;
+
 } // namespace WEBCFACE_NS

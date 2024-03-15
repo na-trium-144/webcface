@@ -125,7 +125,8 @@ class WEBCFACE_DLL Canvas3D : protected Field, public EventTarget<Canvas3D> {
      * \brief Geometryを追加
      * \since ver1.9
      */
-    Canvas3D &add(CanvasCommonComponent &&cc) {
+    template <bool V, bool C2>
+    Canvas3D &add(TemporalComponent<V, C2, true> &&cc) {
         *this << std::move(cc.to3());
         return *this;
     }
@@ -133,7 +134,8 @@ class WEBCFACE_DLL Canvas3D : protected Field, public EventTarget<Canvas3D> {
      * \brief Geometryを追加
      * \since ver1.9
      */
-    Canvas3D &add(CanvasCommonComponent &cc) {
+    template <bool V, bool C2>
+    Canvas3D &add(TemporalComponent<V, C2, true> &cc) {
         *this << cc.to3();
         return *this;
     }
@@ -143,7 +145,7 @@ class WEBCFACE_DLL Canvas3D : protected Field, public EventTarget<Canvas3D> {
      * \param origin geometryを移動する
      * \param color 表示色 (省略時のinheritはWebUI上ではgrayと同じ)
      * \deprecated 1.9〜
-     * CanvasCommonComponent に直接プロパティを設定できるようにしたため、
+     * TemporalComponent に直接プロパティを設定できるようにしたため、
      * add時の引数での設定は不要
      *
      */
@@ -163,7 +165,7 @@ class WEBCFACE_DLL Canvas3D : protected Field, public EventTarget<Canvas3D> {
      *
      * originを省略した場合 identity() になる
      * \deprecated 1.9〜
-     * CanvasCommonComponent に直接プロパティを設定できるようにしたため、
+     * TemporalComponent に直接プロパティを設定できるようにしたため、
      * add時の引数での設定は不要
      *
      */

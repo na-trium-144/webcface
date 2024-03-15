@@ -7,6 +7,7 @@
 #include "func.h"
 #include "event_target.h"
 #include "common/def.h"
+#include "canvas_data.h"
 
 namespace WEBCFACE_NS {
 namespace Internal {
@@ -14,122 +15,7 @@ struct ClientData;
 template <typename Component>
 class DataSetBuffer;
 class ViewBuf;
-}
-/*!
- * \brief Viewに表示する要素です
- *
- */
-class WEBCFACE_DLL ViewComponent : protected Common::ViewComponentBase {
-    std::weak_ptr<Internal::ClientData> data_w;
-
-    std::shared_ptr<AnonymousFunc> on_click_func_tmp;
-
-  public:
-    ViewComponent() = default;
-    ViewComponent(const Common::ViewComponentBase &vc,
-                  const std::weak_ptr<Internal::ClientData> &data_w)
-        : Common::ViewComponentBase(vc), data_w(data_w) {}
-    explicit ViewComponent(ViewComponentType type) { type_ = type; }
-
-    /*!
-     * \brief AnonymousFuncをFuncオブジェクトにlockします
-     *
-     */
-    ViewComponentBase &
-    lockTmp(const std::weak_ptr<Internal::ClientData> &data_w,
-            const std::string &field_id);
-
-    wcfViewComponent cData() const;
-
-    /*!
-     * \brief 要素の種類
-     *
-     */
-    ViewComponentType type() const { return type_; }
-    /*!
-     * \brief 表示する文字列を取得
-     *
-     */
-    const std::string &text() const { return text_; }
-    /*!
-     * \brief 表示する文字列を設定
-     *
-     */
-    ViewComponent &text(const std::string &text) {
-        text_ = text;
-        return *this;
-    }
-    /*!
-     * \brief クリック時に実行される関数を取得
-     *
-     */
-    std::optional<Func> onClick() const;
-    /*!
-     * \brief クリック時に実行される関数を設定
-     *
-     */
-    ViewComponent &onClick(const Func &func);
-    /*!
-     * \brief クリック時に実行される関数を設定
-     *
-     */
-    template <typename T>
-    ViewComponent &onClick(const T &func) {
-        on_click_func_tmp = std::make_shared<AnonymousFunc>(func);
-        return *this;
-    }
-    /*!
-     * \brief 文字色を取得
-     *
-     */
-    ViewColor textColor() const { return text_color_; }
-    /*!
-     * \brief 文字色を設定
-     *
-     */
-    ViewComponent &textColor(ViewColor c) {
-        text_color_ = c;
-        return *this;
-    }
-    /*!
-     * \brief 背景色を取得
-     *
-     */
-    ViewColor bgColor() const { return bg_color_; }
-    /*!
-     * \brief 背景色を設定
-     *
-     */
-    ViewComponent &bgColor(ViewColor c) {
-        bg_color_ = c;
-        return *this;
-    }
-};
-inline namespace ViewComponents {
-/*!
- * \brief textコンポーネント
- *
- */
-inline ViewComponent text(const std::string &text) {
-    return ViewComponent(ViewComponentType::text).text(text);
-}
-/*!
- * \brief newLineコンポーネント
- *
- */
-inline ViewComponent newLine() {
-    return ViewComponent(ViewComponentType::new_line);
-}
-/*!
- * \brief buttonコンポーネント
- *
- */
-template <typename T>
-inline ViewComponent button(const std::string &text, const T &func) {
-    return ViewComponent(ViewComponentType::button).text(text).onClick(func);
-}
-} // namespace ViewComponents
-
+} // namespace Internal
 
 class View;
 extern template class WEBCFACE_IMPORT EventTarget<View>;
@@ -140,7 +26,9 @@ extern template class WEBCFACE_IMPORT EventTarget<View>;
  * コンストラクタではなく Member::view() を使って取得してください
  *
  */
-class WEBCFACE_DLL View : protected Field, public EventTarget<View>, public std::ostream {
+class WEBCFACE_DLL View : protected Field,
+                          public EventTarget<View>,
+                          public std::ostream {
     std::shared_ptr<Internal::ViewBuf> sb;
 
     void onAppend() const override;
@@ -193,8 +81,7 @@ class WEBCFACE_DLL View : protected Field, public EventTarget<View>, public std:
      * \deprecated 1.7でMember::syncTime()に変更
      *
      */
-    [[deprecated]] std::chrono::system_clock::time_point
-    time() const;
+    [[deprecated]] std::chrono::system_clock::time_point time() const;
 
     /*!
      * \brief 値やリクエスト状態をクリア
@@ -240,6 +127,21 @@ class WEBCFACE_DLL View : protected Field, public EventTarget<View>, public std:
     }
     View &operator<<(Common::ViewComponentBase &&vc) {
         *this << ViewComponent{vc, this->data_w};
+        return *this;
+    }
+    template <bool C2, bool C3>
+    View &operator<<(TemporalComponent<true, C2, C3> &vc) {
+        *this << vc.toV();
+        return *this;
+    }
+    template <bool C2, bool C3>
+    View &operator<<(const TemporalComponent<true, C2, C3> &vc) {
+        *this << vc.toV();
+        return *this;
+    }
+    template <bool C2, bool C3>
+    View &operator<<(TemporalComponent<true, C2, C3> &&vc) {
+        *this << std::move(vc.toV());
         return *this;
     }
     /*!

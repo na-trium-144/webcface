@@ -13,6 +13,7 @@ inline namespace Common {
 
 enum class Canvas2DComponentType {
     geometry = 0,
+    text = 3,
 };
 
 struct Canvas2DComponentBase {
@@ -22,6 +23,7 @@ struct Canvas2DComponentBase {
     double stroke_width_;
     std::optional<Geometry> geometry_;
     std::optional<FieldBase> on_click_func_;
+    std::string text_;
 
     bool operator==(const Canvas2DComponentBase &rhs) const {
         return type_ == rhs.type_ && origin_ == rhs.origin_ &&
@@ -35,7 +37,8 @@ struct Canvas2DComponentBase {
                  rhs.on_click_func_ == std::nullopt) ||
                 (on_click_func_ && rhs.on_click_func_ &&
                  on_click_func_->member_ == rhs.on_click_func_->member_ &&
-                 on_click_func_->field_ == rhs.on_click_func_->field_));
+                 on_click_func_->field_ == rhs.on_click_func_->field_)) &&
+               text_ == rhs.text_;
     }
     bool operator!=(const Canvas2DComponentBase &rhs) const {
         return !(*this == rhs);
@@ -49,7 +52,7 @@ struct Canvas2DDataBase {
     Canvas2DDataBase(double width, double height)
         : width(width), height(height), components() {}
     Canvas2DDataBase(double width, double height,
-                 std::vector<Canvas2DComponentBase> &&components)
+                     std::vector<Canvas2DComponentBase> &&components)
         : width(width), height(height), components(std::move(components)) {}
 };
 

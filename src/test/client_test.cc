@@ -369,6 +369,7 @@ TEST_F(ClientTest, viewSend) {
                      ViewComponents::text("a")
                          .textColor(ViewColor::yellow)
                          .bgColor(ViewColor::green)
+                         .toV()
                          .lockTmp(data_, ""),
                      ViewComponents::newLine().lockTmp(data_, ""),
                      ViewComponents::button("a", Func{Field{data_, "x", "y"}})
@@ -400,6 +401,7 @@ TEST_F(ClientTest, viewSend) {
                      ViewComponents::text("b")
                          .textColor(ViewColor::red)
                          .bgColor(ViewColor::green)
+                         .toV()
                          .lockTmp(data_, ""),
                      ViewComponents::newLine().lockTmp(data_, ""),
                      ViewComponents::button("a", Func{Field{data_, "x", "y"}})
@@ -438,6 +440,7 @@ TEST_F(ClientTest, viewReq) {
             {"0", ViewComponents::text("a")
                       .textColor(ViewColor::yellow)
                       .bgColor(ViewColor::green)
+                      .toV()
                       .lockTmp(data_, "")},
             {"1", ViewComponents::newLine().lockTmp(data_, "")},
             {"2", ViewComponents::button("a", Func{Field{data_, "x", "y"}})
@@ -467,6 +470,7 @@ TEST_F(ClientTest, viewReq) {
             {"0", ViewComponents::text("b")
                       .textColor(ViewColor::red)
                       .bgColor(ViewColor::green)
+                      .toV()
                       .lockTmp(data_, "")},
         });
     dummy_s->send(Message::Res<Message::View>{1, "", v2, 3});

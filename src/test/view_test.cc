@@ -121,7 +121,7 @@ TEST_F(ViewTest, viewSet) {
 }
 TEST_F(ViewTest, viewGet) {
     auto vd = std::make_shared<std::vector<ViewComponentBase>>(
-        std::vector<ViewComponentBase>{text("a").lockTmp(data_, "")});
+        std::vector<ViewComponentBase>{text("a").toV().lockTmp(data_, "")});
     data_->view_store.setRecv("a", "b", vd);
     EXPECT_EQ(view("a", "b").tryGet().value().size(), 1);
     EXPECT_EQ(view("a", "b").get().size(), 1);

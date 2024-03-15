@@ -139,7 +139,7 @@ void Internal::ViewBuf::addVC(ViewComponent &&vc) {
 }
 int Internal::ViewBuf::sync() {
     if (!this->str().empty()) {
-        this->addText(ViewComponents::text(this->str()));
+        this->addText(ViewComponents::text(this->str()).toV());
         this->str("");
     }
     return 0;

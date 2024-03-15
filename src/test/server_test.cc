@@ -129,7 +129,8 @@ TEST_F(ServerTest, entry) {
     dummy_c1->send(
         Message::Value{{}, "a", std::make_shared<std::vector<double>>(1)});
     dummy_c1->send(Message::Text{{}, "a", std::make_shared<std::string>("")});
-    dummy_c1->send(Message::RobotModel{"a", std::make_shared<std::vector<Common::RobotLink>>()});
+    dummy_c1->send(Message::RobotModel{
+        "a", std::make_shared<std::vector<Common::RobotLink>>()});
     dummy_c1->send(Message::Canvas3D{
         "a",
         std::make_shared<std::unordered_map<
@@ -232,7 +233,8 @@ TEST_F(ServerTest, entry) {
             EXPECT_EQ(obj.field, "b");
         },
         [&] { ADD_FAILURE() << "Text Entry recv failed"; });
-    dummy_c1->send(Message::RobotModel{"b", std::make_shared<std::vector<Common::RobotLink>>()});
+    dummy_c1->send(Message::RobotModel{
+        "b", std::make_shared<std::vector<Common::RobotLink>>()});
     wait();
     dummy_c2->recv<Message::Entry<Message::RobotModel>>(
         [&](const auto &obj) {
@@ -382,9 +384,9 @@ TEST_F(ServerTest, text) {
 TEST_F(ServerTest, robotModel) {
     dummy_c1->send(Message::SyncInit{{}, "c1", 0, "", "", ""});
     dummy_c1->send(Message::Sync{});
-    dummy_c1->send(
-        Message::RobotModel{"a", std::make_shared<std::vector<RobotLink>>(
-            std::vector<RobotLink>{{"a", Geometry{}, ViewColor::black}})});
+    dummy_c1->send(Message::RobotModel{
+        "a", std::make_shared<std::vector<RobotLink>>(
+                 std::vector<RobotLink>{{"a", Geometry{}, ViewColor::black}})});
     wait();
     dummy_c2->send(Message::SyncInit{{}, "", 0, "", "", ""});
     dummy_c2->send(Message::Req<Message::RobotModel>{{}, "c1", "a", 1});
@@ -404,16 +406,14 @@ TEST_F(ServerTest, robotModel) {
     // 変化後の値
     dummy_c1->send(Message::Sync{});
     dummy_c1->send(Message::RobotModel{
-        "a",
-        std::make_shared<std::vector<RobotLink>>(
-            std::vector<RobotLink>{
-            RobotLink{"a", {}, Geometry{}, ViewColor::black},
-            RobotLink{"b", {}, Geometry{}, ViewColor::black},
-            RobotLink{"c",
-                      {"j", "a", RobotJointType::fixed, {}, 0},
-                      Geometry{},
-                      ViewColor::black},
-        })});
+        "a", std::make_shared<std::vector<RobotLink>>(std::vector<RobotLink>{
+                 RobotLink{"a", {}, Geometry{}, ViewColor::black},
+                 RobotLink{"b", {}, Geometry{}, ViewColor::black},
+                 RobotLink{"c",
+                           {"j", "a", RobotJointType::fixed, {}, 0},
+                           Geometry{},
+                           ViewColor::black},
+             })});
     wait();
     dummy_c2->recv<Message::Sync>([&](auto) {},
                                   [&] { ADD_FAILURE() << "Sync recv failed"; });
@@ -436,7 +436,7 @@ TEST_F(ServerTest, view) {
         std::make_shared<
             std::unordered_map<std::string, Message::View::ViewComponent>>(
             std::unordered_map<std::string, Message::View::ViewComponent>{
-                {"0", ViewComponents::text("a").lockTmp(data_, "")},
+                {"0", ViewComponents::text("a").toV().lockTmp(data_, "")},
                 {"1", ViewComponents::newLine().lockTmp(data_, "")},
                 {"2", ViewComponents::button(
                           "f", Func{Field{std::weak_ptr<Internal::ClientData>(),
@@ -468,7 +468,7 @@ TEST_F(ServerTest, view) {
         std::make_shared<
             std::unordered_map<std::string, Message::View::ViewComponent>>(
             std::unordered_map<std::string, Message::View::ViewComponent>{
-                {"0", ViewComponents::text("b").lockTmp(data_, "")},
+                {"0", ViewComponents::text("b").toV().lockTmp(data_, "")},
             }),
         3});
     wait();

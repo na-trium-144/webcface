@@ -13,7 +13,7 @@ namespace Internal {
 template <typename Component>
 class DataSetBuffer;
 class Canvas2DDataBuf;
-}
+} // namespace Internal
 
 class Canvas2D;
 extern template class WEBCFACE_IMPORT EventTarget<Canvas2D>;
@@ -75,8 +75,7 @@ class WEBCFACE_DLL Canvas2D : protected Field, public EventTarget<Canvas2D> {
      * \brief syncの時刻を返す
      * \deprecated 1.7でMember::syncTime()に変更
      */
-    [[deprecated]] std::chrono::system_clock::time_point
-    time() const;
+    [[deprecated]] std::chrono::system_clock::time_point time() const;
 
     /*!
      * \brief 値やリクエスト状態をクリア
@@ -97,20 +96,20 @@ class WEBCFACE_DLL Canvas2D : protected Field, public EventTarget<Canvas2D> {
     /*!
      * \brief Componentを追加
      * \since ver1.9
-     * 
+     *
      */
     Canvas2D &operator<<(const Canvas2DComponent &cc);
     /*!
      * \brief Componentを追加
      * \since ver1.9
-     * 
+     *
      */
     Canvas2D &operator<<(Canvas2DComponent &&cc);
     /*!
      * \brief Componentを追加
      *
      */
-    Canvas2D &add(const Canvas2DComponent &cc){
+    Canvas2D &add(const Canvas2DComponent &cc) {
         *this << cc;
         return *this;
     }
@@ -118,7 +117,7 @@ class WEBCFACE_DLL Canvas2D : protected Field, public EventTarget<Canvas2D> {
      * \brief Componentを追加
      *
      */
-    Canvas2D &add(Canvas2DComponent &&cc){
+    Canvas2D &add(Canvas2DComponent &&cc) {
         *this << std::move(cc);
         return *this;
     }
@@ -127,7 +126,8 @@ class WEBCFACE_DLL Canvas2D : protected Field, public EventTarget<Canvas2D> {
      * \brief Geometryを追加
      * \since ver1.9
      */
-    Canvas2D &add(CanvasCommonComponent &&cc) {
+    template <bool V, bool C3>
+    Canvas2D &add(TemporalComponent<V, true, C3> &&cc) {
         *this << std::move(cc.to2());
         return *this;
     }
@@ -135,7 +135,8 @@ class WEBCFACE_DLL Canvas2D : protected Field, public EventTarget<Canvas2D> {
      * \brief Geometryを追加
      * \since ver1.9
      */
-    Canvas2D &add(CanvasCommonComponent &cc) {
+    template <bool V, bool C3>
+    Canvas2D &add(TemporalComponent<V, true, C3> &cc) {
         *this << cc.to2();
         return *this;
     }
@@ -150,7 +151,7 @@ class WEBCFACE_DLL Canvas2D : protected Field, public EventTarget<Canvas2D> {
      * \param fill 塗りつぶしの色 (省略時のinheritはWebUI上では透明)
      * \param stroke_width 枠線の太さ
      * \deprecated 1.9〜
-     * CanvasCommonComponent に直接プロパティを設定できるようにしたため、
+     * TemporalComponent に直接プロパティを設定できるようにしたため、
      * add時の引数での設定は不要
      *
      */
@@ -160,7 +161,8 @@ class WEBCFACE_DLL Canvas2D : protected Field, public EventTarget<Canvas2D> {
                                  const ViewColor &fill = ViewColor::inherit,
                                  double stroke_width = 1) {
         add(Canvas2DComponent{{Canvas2DComponentType::geometry, origin, color,
-                               fill, stroke_width, geometry, std::nullopt}});
+                               fill, stroke_width, geometry, std::nullopt,
+                               ""}});
         return *this;
     }
     /*!
@@ -169,7 +171,7 @@ class WEBCFACE_DLL Canvas2D : protected Field, public EventTarget<Canvas2D> {
      * origin を省略した場合identity()になる
      *
      * \deprecated 1.9〜
-     * CanvasCommonComponent に直接プロパティを設定できるようにしたため、
+     * TemporalComponent に直接プロパティを設定できるようにしたため、
      * add時の引数での設定は不要
      *
      */
@@ -179,7 +181,7 @@ class WEBCFACE_DLL Canvas2D : protected Field, public EventTarget<Canvas2D> {
                                  double stroke_width = 1) {
         add(Canvas2DComponent{{Canvas2DComponentType::geometry, identity(),
                                color, fill, stroke_width, geometry,
-                               std::nullopt}});
+                               std::nullopt, ""}});
         return *this;
     }
     /*!
@@ -188,7 +190,7 @@ class WEBCFACE_DLL Canvas2D : protected Field, public EventTarget<Canvas2D> {
      * fillを省略
      *
      * \deprecated 1.9〜
-     * CanvasCommonComponent に直接プロパティを設定できるようにしたため、
+     * TemporalComponent に直接プロパティを設定できるようにしたため、
      * add時の引数での設定は不要
      *
      */
@@ -197,7 +199,7 @@ class WEBCFACE_DLL Canvas2D : protected Field, public EventTarget<Canvas2D> {
                                  const ViewColor &color, double stroke_width) {
         add(Canvas2DComponent{{Canvas2DComponentType::geometry, origin, color,
                                ViewColor::inherit, stroke_width, geometry,
-                               std::nullopt}});
+                               std::nullopt, ""}});
         return *this;
     }
     /*!
@@ -206,7 +208,7 @@ class WEBCFACE_DLL Canvas2D : protected Field, public EventTarget<Canvas2D> {
      * originとfillを省略
      *
      * \deprecated 1.9〜
-     * CanvasCommonComponent に直接プロパティを設定できるようにしたため、
+     * TemporalComponent に直接プロパティを設定できるようにしたため、
      * add時の引数での設定は不要
      *
      */
@@ -214,7 +216,7 @@ class WEBCFACE_DLL Canvas2D : protected Field, public EventTarget<Canvas2D> {
                                  const ViewColor &color, double stroke_width) {
         add(Canvas2DComponent{{Canvas2DComponentType::geometry, identity(),
                                color, ViewColor::inherit, stroke_width,
-                               geometry, std::nullopt}});
+                               geometry, std::nullopt, ""}});
         return *this;
     }
     /*!
