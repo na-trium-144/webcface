@@ -104,20 +104,18 @@ class WEBCFACE_DLL Canvas3D : protected Field, public EventTarget<Canvas3D> {
      * \since ver1.9
      */
     Canvas3D &operator<<(Canvas3DComponent &&cc);
+
     /*!
-     * \brief Componentを追加
-     * 
+     * \brief コンポーネントなどを追加
+     *
+     * Tの型に応じた operator<< が呼ばれる
+     *
+     * \since ver1.9〜
+     *
      */
-    Canvas3D &add(const Canvas3DComponent &cc){
-        *this << cc;
-        return *this;
-    }
-    /*!
-     * \brief Componentを追加
-     * 
-     */
-    Canvas3D &add(Canvas3DComponent &&cc){
-        *this << std::move(cc);
+    template <typename T>
+    Canvas3D &add(T &&cc){
+        *this << std::forward<T>(cc);
         return *this;
     }
 
@@ -126,7 +124,7 @@ class WEBCFACE_DLL Canvas3D : protected Field, public EventTarget<Canvas3D> {
      * \since ver1.9
      */
     template <bool V, bool C2>
-    Canvas3D &add(TemporalComponent<V, C2, true> &&cc) {
+    Canvas3D &operator<<(TemporalComponent<V, C2, true> &&cc) {
         *this << std::move(cc.to3());
         return *this;
     }
@@ -135,7 +133,7 @@ class WEBCFACE_DLL Canvas3D : protected Field, public EventTarget<Canvas3D> {
      * \since ver1.9
      */
     template <bool V, bool C2>
-    Canvas3D &add(TemporalComponent<V, C2, true> &cc) {
+    Canvas3D &operator<<(TemporalComponent<V, C2, true> &cc) {
         *this << cc.to3();
         return *this;
     }

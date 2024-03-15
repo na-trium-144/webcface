@@ -286,6 +286,13 @@ class WEBCFACE_DLL Canvas2DComponent : protected Common::Canvas2DComponentBase {
         return *this;
     }
     /*!
+     * \brief 文字の大きさ(高さ)
+     *
+     * 内部のデータとしてはstrokeWidthのデータを使いまわしている
+     */
+    double textSize() const { return stroke_width_; }
+    Canvas2DComponent &textSize(double s) { return strokeWidth(s); }
+    /*!
      * \brief 表示する文字列
      * \since ver1.9
      */
@@ -490,6 +497,18 @@ class TemporalComponent {
     {
         if constexpr (C2) {
             component_2d->strokeWidth(s);
+        }
+        return *this;
+    }
+    /*!
+     * \brief 文字の大きさ (2Dのみ)
+     *
+     */
+    TemporalComponent &textSize(double s)
+        requires(C2)
+    {
+        if constexpr (C2) {
+            component_2d->textSize(s);
         }
         return *this;
     }

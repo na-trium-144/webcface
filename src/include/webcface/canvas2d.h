@@ -105,29 +105,26 @@ class WEBCFACE_DLL Canvas2D : protected Field, public EventTarget<Canvas2D> {
      *
      */
     Canvas2D &operator<<(Canvas2DComponent &&cc);
-    /*!
-     * \brief Componentを追加
-     *
-     */
-    Canvas2D &add(const Canvas2DComponent &cc) {
-        *this << cc;
-        return *this;
-    }
-    /*!
-     * \brief Componentを追加
-     *
-     */
-    Canvas2D &add(Canvas2DComponent &&cc) {
-        *this << std::move(cc);
-        return *this;
-    }
 
+    /*!
+     * \brief コンポーネントなどを追加
+     *
+     * Tの型に応じた operator<< が呼ばれる
+     *
+     * \since ver1.9〜
+     *
+     */
+    template <typename T>
+    Canvas2D &add(T &&cc) {
+        *this << std::forward<T>(cc);
+        return *this;
+    }
     /*!
      * \brief Geometryを追加
      * \since ver1.9
      */
     template <bool V, bool C3>
-    Canvas2D &add(TemporalComponent<V, true, C3> &&cc) {
+    Canvas2D &operator<<(TemporalComponent<V, true, C3> &&cc) {
         *this << std::move(cc.to2());
         return *this;
     }
@@ -136,7 +133,7 @@ class WEBCFACE_DLL Canvas2D : protected Field, public EventTarget<Canvas2D> {
      * \since ver1.9
      */
     template <bool V, bool C3>
-    Canvas2D &add(TemporalComponent<V, true, C3> &cc) {
+    Canvas2D &operator<<(TemporalComponent<V, true, C3> &cc) {
         *this << cc.to2();
         return *this;
     }
