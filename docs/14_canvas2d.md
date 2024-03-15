@@ -72,9 +72,9 @@ Pointでは x, y 座標、Transformでは回転角(radianで、 (x, y) = (1, 0) 
     [View](./13_view.md)と同様に Canvas2D::add() または operator<< で要素を追加し、
     最後にCanvas2D::sync()をしてからClient::sync()をすることで送信されます。
 
-    \note ver1.9からadd関数の仕様を変更し << 演算子も実装して、Viewと同じ使い方になりました
+    \note <span class="since-c">1.9</span> add関数の仕様を変更し << 演算子も実装して、Viewと同じ使い方になりました
 
-    例 <span class="since-c">1.9</span> (src/example/main.cc も参照)
+    例 (src/example/main.cc も参照)
     ```cpp
     webcface::Canvas2D canvas = wcli.canvas2D("canvas");
     canvas.init(100, 100);
@@ -229,8 +229,6 @@ canvas.add(
 addの引数に表示したいgeometryと、表示する位置の平行移動or回転、枠線の色、塗りつぶしの色、枠線の太さを指定します。
 詳細は webcface::Canvas2D::add を参照してください
 
-C++ではGeometryは webcface::Geometries 名前空間に定義されていますが、`webcface::` の名前空間でもアクセス可能です。
-
 </details>
 
 
@@ -273,7 +271,7 @@ PythonではCanvas3Dとの兼ね合いで第1引数はTransform
 polygon(std::vector<Point> points)
 ```
 
-## 文字列の表示
+### 文字列の表示
 
 <div class="tabbed">
 

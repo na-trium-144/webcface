@@ -71,26 +71,29 @@ Pointでは x, y, z 座標、Transformでは x, y, z 座標と z, y, x軸回り�
 
 - <b class="tab-title">C++</b>
     Client::canvas3d からCanvas3Dオブジェクトを作り、
-    Canvas3D::add() で要素を追加し、
+    [View](./13_view.md)と同様に Canvas3D::add() または operator<< で要素を追加し、
     最後にCanvas3D::sync()をしてからClient::sync()をすることで送信されます。
+
+    \note <span class="since-c">1.9</span> add関数の仕様を変更し << 演算子も実装して、Viewと同じ使い方になりました
 
     例
     ```cpp
     webcface::Canvas3D world = wcli.canvas3D("omniwheel_world");
     // world.init(); // ←オブジェクトcanvasを新規に構築せず繰り返し使いまわす場合は必要
-    world.add(webcface::plane(webcface::identity(), 3, 3),
-              webcface::ViewColor::white);
-    world.add(webcface::box({-1.5, -1.5, 0}, {1.5, -1.5, 0.1}),
-              webcface::ViewColor::gray);
-    world.add(webcface::box({-1.5, 1.5, 0}, {1.5, 1.5, 0.1}),
-              webcface::ViewColor::gray);
-    world.add(webcface::box({-1.5, -1.5, 0}, {-1.5, 1.5, 0.1}),
-              webcface::ViewColor::gray);
-    world.add(webcface::box({1.5, -1.5, 0}, {1.5, 1.5, 0.1}),
-              webcface::ViewColor::gray);
-    world.add(wcli.robotModel("omniwheel"),  // RobotModel のドキュメントを参照
-              { ... },
-              {{"line_rotation", -i}});
+    world << webcface::plane(webcface::identity(), 3, 3)
+                .color(webcface::ViewColor::white);
+    world << webcface::box({-1.5, -1.5, 0}, {1.5, -1.5, 0.1})
+                .color(webcface::ViewColor::gray);
+    world << webcface::box({-1.5, 1.5, 0}, {1.5, 1.5, 0.1})
+                .color(webcface::ViewColor::gray);
+    world << webcface::box({-1.5, -1.5, 0}, {-1.5, 1.5, 0.1})
+                .color(webcface::ViewColor::gray);
+    world << webcface::box({1.5, -1.5, 0}, {1.5, 1.5, 0.1})
+                .color(webcface::ViewColor::gray);
+    // RobotModel のドキュメントを参照
+    world << wcli.robotModel("omniwheel")
+                .origin(...)
+                .angle("line_rotation", -i);
     world.sync(); // ここまでにcanvasに追加したものをクライアントに反映
     wcli.sync();
     ```
@@ -132,33 +135,29 @@ Canvas3Dに追加できる要素として、Geometry(後述)、[RobotModel](./21
 <div class="tabbed">
 
 - <b class="tab-title">C++</b>
+    \since <span class="since-c">1.9</span>
+
+    `webcface::Geometries` 名前空間に定義されています。
     ```cpp
     using namespace webcface::Geometries;
-    canvas.add(
-        box(webcface::Point{0, 0, 0}, webcface::Point{2, 2, 2}),
-        webcface::identity(),
-        webcface::ViewColor::gray
-    );
     ```
-    addの引数に表示したいgeometryと、表示する位置、色を指定します。
-    詳細は webcface::Canvas3D::add を参照してください
-    
-    C++ではGeometryは webcface::Geometries 名前空間に定義されていますが、`webcface::` の名前空間でもアクセス可能です。
+    をすると便利かもしれません
+    \note namespace Geometries はinlineなので、 `webcface::` の名前空間でもアクセス可能です
+
+    各要素はそれぞれの関数から webcface::Canvas3DComponent または webcface::TemporalComponent のオブジェクトとして得られます。
+    `box(...).color(...)` などのようにメソッドチェーンすることで各要素にオプションを設定できます。
+
+    色、表示位置<!-- 、クリック時に実行する関数 -->などを設定できます。
+    使用可能なオプションは webcface::Canvas3DComponent のそれぞれのメソッドの説明を参照してください。
+    <!-- 関数の実行については[Func](./30_func.md)も参照してください -->
+
 
 - <b class="tab-title">JavaScript</b>
+    JavaScriptでは [`geometries`](https://na-trium-144.github.io/webcface-js/variables/geometries.html) オブジェクト内にそれぞれの要素を表す関数があります
     ```ts
-    import { geometries, viewColor, Point, Transform } from "webcface";
-    canvas.set([
-        [
-            geometries.box(new Point(0, 0, 0), new Point(2, 2, 2)),
-            new Transform(),
-            viewColor.gray,
-        ],
-    ]);
+    import { geometries } from "webcface";
     ```
-    setの引数にgeometry、表示する位置(Transform)、色の3つをArrayにして指定します。
-
-    Geometryは [geometries](https://na-trium-144.github.io/webcface-js/variables/geometries.html) に定義されています
+    オプションはそれぞれ関数の引数にオブジェクトで渡すことができます。
 
 - <b class="tab-title">Python</b>
     Pythonでは [`webcface.geometries`](https://na-trium-144.github.io/webcface-python/webcface.geometries.html) モジュール内にあり、

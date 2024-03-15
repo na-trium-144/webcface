@@ -483,7 +483,7 @@ class TemporalComponent {
     /*!
      * \brief 色
      *
-     * Viewの要素では textColor を設定する
+     * Viewの要素では textColor として設定される
      */
     TemporalComponent &color(ViewColor c)
         requires(V || C2 || C3)
@@ -502,7 +502,7 @@ class TemporalComponent {
     /*!
      * \brief 文字色 (Viewまたは2D)
      *
-     * Canvas2DのTextでは fillColor を設定する
+     * Canvas2DのTextでは fillColor が文字色の代わりに使われている
      */
     TemporalComponent &textColor(ViewColor c)
         requires(V || C2)
