@@ -500,7 +500,8 @@ void ClientData::onRecv(const std::string &message) {
             this->canvas2d[v.field].width = v.width;
             this->canvas2d[v.field].height = v.height;
             this->canvas2d[v.field].components.resize(v.length);
-            for (const auto &d : *v.data_diff) {
+            for (auto &d : *v.data_diff) {
+                d.second.text = utf8::replace_invalid(d.second.text);
                 this->canvas2d[v.field].components[std::stoi(d.first)] =
                     d.second;
             }
