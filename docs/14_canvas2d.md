@@ -241,13 +241,13 @@ C++ではGeometryは webcface::Geometries 名前空間に定義されていま�
 
 Geometryは以下のものが用意されています。
 
-### Line
+#### Line
 指定した2点間に直線を引きます
 ```cpp
 line(Point begin, Point end)
 ```
 
-### Rect
+#### Rect
 指定した2点を頂点としx軸,y軸に平行な辺をもつ長方形を描画します
 ```cpp
 rect(Point vertex1, Point vertex2)
@@ -257,7 +257,7 @@ rect(Point vertex1, Point vertex2)
 rect(Point origin, double width, double height)
 ```
 
-### Circle
+#### Circle
 originを中心として半径radiusの円を描画します
 ```cpp
 circle(Point origin, double radius)
@@ -267,11 +267,29 @@ circle(Point origin, double radius)
 PythonではCanvas3Dとの兼ね合いで第1引数はTransform
 (使いにくいのでなんとかならないか?)
 
-### Polygon
+#### Polygon
 指定した点をつなげた図形を描画します
 ```cpp
 polygon(std::vector<Point> points)
 ```
+
+## 文字列の表示
+
+<div class="tabbed">
+
+- <b class="tab-title">C++</b>
+    \since <span class="since-c">1.9</span>
+
+    `webcface::Components::text()` をCanvas2Dに追加することができます。
+    `textColor()`, `textSize()` などのオプションが使えます。
+    ```cpp
+    canvas << webcface::text("Button")
+                .origin({35, 45})
+                .textColor(webcface::ViewColor::orange)
+                .textSize(10);
+    ```
+
+</div>
 
 ## 受信
 Viewなどと同様、Member::canvas2D() でCanvas2Dクラスのオブジェクトが得られ、
