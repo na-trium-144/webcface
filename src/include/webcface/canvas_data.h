@@ -61,16 +61,28 @@ class WEBCFACE_DLL ViewComponent : protected Common::ViewComponentBase {
     std::optional<Func> onClick() const;
     /*!
      * \brief クリック時に実行される関数を設定
+     * \param func 実行する関数を指すFuncオブジェクト
      *
      */
     ViewComponent &onClick(const Func &func);
     /*!
      * \brief クリック時に実行される関数を設定
+     * \param func 実行する任意の関数(std::functionにキャスト可能ならなんでもok)
      *
      */
-    template <typename T>
-    ViewComponent &onClick(const T &func) {
+    template <typename Ret>
+    ViewComponent &onClick(std::function<Ret()> func) {
         on_click_func_tmp = std::make_shared<AnonymousFunc>(func);
+        return *this;
+    }
+    /*!
+     * \brief クリック時に実行される関数を設定
+     * \param func Client::func() で得られるAnonymousFuncオブジェクト
+     * (ver1.9からコピー不可なので、一時オブジェクトでない場合はmoveすること)
+     *
+     */
+    ViewComponent &onClick(AnonymousFunc &&func) {
+        on_click_func_tmp = std::make_shared<AnonymousFunc>(std::move(func));
         return *this;
     }
     /*!
@@ -251,9 +263,9 @@ class WEBCFACE_DLL Canvas2DComponent : protected Common::Canvas2DComponentBase {
     Canvas2DComponentType type() const { return type_; }
     /*!
      * \brief 要素の移動
-     * 
+     *
      * 要素を平行移動&回転します。
-     * 
+     *
      */
     Canvas2DComponent &origin(const Transform &origin) {
         origin_ = origin;
@@ -265,7 +277,7 @@ class WEBCFACE_DLL Canvas2DComponent : protected Common::Canvas2DComponentBase {
      *
      * 図形の輪郭の色を指定します。
      * デフォルト時のinheritはWebUI上ではblackとして表示されます
-     * 
+     *
      */
     Canvas2DComponent &color(const ViewColor &color) {
         color_ = color;
@@ -277,7 +289,7 @@ class WEBCFACE_DLL Canvas2DComponent : protected Common::Canvas2DComponentBase {
      *
      * 図形の塗りつぶし色を指定します。
      * デフォルト時のinheritはWebUI上では透明になります
-     * 
+     *
      */
     ViewColor fillColor() const { return fill_; }
     Canvas2DComponent &fillColor(const ViewColor &color) {
@@ -289,9 +301,9 @@ class WEBCFACE_DLL Canvas2DComponent : protected Common::Canvas2DComponentBase {
      *
      * 図形の輪郭の太さを指定します。
      * 太さ1はCanvas2Dの座標系で1の長さ分の太さになります(拡大縮小で太さが変わる)
-     * 
+     *
      * 指定しない場合0となり、WebUIではその場合Canvasの拡大に関係なく1ピクセルになります
-     * 
+     *
      */
     Canvas2DComponent &strokeWidth(double s) {
         stroke_width_ = s;
@@ -304,22 +316,22 @@ class WEBCFACE_DLL Canvas2DComponent : protected Common::Canvas2DComponentBase {
      *
      * 文字の大きさを指定します(Text要素の場合のみ)
      * 大きさ1は文字の高さがCanvas2Dの座標系で1の長さ分になります(拡大縮小で大きさが変わる)
-     * 
+     *
      * 内部のデータとしてはstrokeWidthのデータを使いまわしています
-     * 
+     *
      */
     Canvas2DComponent &textSize(double s) { return strokeWidth(s); }
     double textSize() const { return stroke_width_; }
     /*!
      * \brief 表示する文字列
      * \since ver1.9
-     * 
+     *
      */
     const std::string &text() const { return text_; }
     /*!
      * \brief 表示する文字列を設定
      * \since ver1.9
-     * 
+     *
      */
     Canvas2DComponent &text(const std::string &text) {
         text_ = text;
@@ -346,15 +358,30 @@ class WEBCFACE_DLL Canvas2DComponent : protected Common::Canvas2DComponentBase {
     /*!
      * \brief クリック時に実行される関数を設定
      * \since ver1.9
+     * \param func 実行する関数を指すFuncオブジェクト
+     *
      */
     Canvas2DComponent &onClick(const Func &func);
     /*!
      * \brief クリック時に実行される関数を設定
      * \since ver1.9
+     * \param func 実行する任意の関数(std::functionにキャスト可能ならなんでもok)
+     *
      */
-    template <typename T>
-    Canvas2DComponent &onClick(const T &func) {
+    template <typename Ret>
+    Canvas2DComponent &onClick(std::function<Ret()> func) {
         on_click_func_tmp = std::make_shared<AnonymousFunc>(func);
+        return *this;
+    }
+    /*!
+     * \brief クリック時に実行される関数を設定
+     * \since ver1.9
+     * \param func Client::func() で得られるAnonymousFuncオブジェクト
+     * (コピー不可なので、一時オブジェクトでない場合はmoveすること)
+     *
+     */
+    Canvas2DComponent &onClick(AnonymousFunc &&func) {
+        on_click_func_tmp = std::make_shared<AnonymousFunc>(std::move(func));
         return *this;
     }
 };
@@ -363,8 +390,9 @@ class WEBCFACE_DLL Canvas2DComponent : protected Common::Canvas2DComponentBase {
  * \brief Canvas2D, Canvas3D (, View) に要素をaddするときに使うインタフェース
  *
  * add時に各種Componentにキャストする
- * 
- * 各オプションの詳細な説明は ViewComponent, Canvas2DComponent, Canvas3DComponent を参照
+ *
+ * 各オプションの詳細な説明は ViewComponent, Canvas2DComponent,
+ * Canvas3DComponent を参照
  *
  */
 template <bool V, bool C2, bool C3>
@@ -421,17 +449,19 @@ class TemporalComponent {
     }
     /*!
      * \brief クリック時に実行される関数を設定 (Viewまたは2D)
-     *
+     * 
+     * 引数については ViewComponent::onClick(), Canvas2DComponent::onClick() を参照
+     * 
      */
     template <typename T>
-    TemporalComponent &onClick(const T &func)
+    TemporalComponent &onClick(T &&func)
         requires(V || C2)
     {
         if constexpr (V) {
-            component_v->onClick(func);
+            component_v->onClick(std::forward<T>(func));
         }
         if constexpr (C2) {
-            component_2d->onClick(func);
+            component_2d->onClick(std::forward<T>(func));
         }
         return *this;
     }

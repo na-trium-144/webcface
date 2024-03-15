@@ -59,8 +59,7 @@ class WEBCFACE_DLL Func : protected Field {
     }
     FuncWrapperType getDefaultFuncWrapper() const;
 
-    void runImpl(std::size_t caller_id,
-                              std::vector<ValAdaptor> args_vec) const;
+    void runImpl(std::size_t caller_id, std::vector<ValAdaptor> args_vec) const;
 
   public:
     /*!
@@ -131,8 +130,7 @@ class WEBCFACE_DLL Func : protected Field {
     AsyncFuncResult runAsync(Args... args) const {
         return runAsync({ValAdaptor(args)...});
     }
-    AsyncFuncResult
-    runAsync(const std::vector<ValAdaptor> &args_vec) const;
+    AsyncFuncResult runAsync(const std::vector<ValAdaptor> &args_vec) const;
 
     /*!
      * \brief 戻り値の型を返す
@@ -210,12 +208,22 @@ class WEBCFACE_DLL AnonymousFunc : public Func {
 
   public:
     AnonymousFunc() = default;
+    /*!
+     * 一時的な名前(fieldNameTmp())をつけたFuncとしてdataに登録し、
+     * lockTmp() 呼び出し時に正式な名前のFuncに内容を移動する。
+     *
+     */
     template <typename T>
     AnonymousFunc(const Field &base, const T &func)
         : Func(base, fieldNameTmp()), base_init(true) {
         this->set(func);
         this->hidden(true);
     }
+    /*!
+     * コンストラクタでdataが渡されなかった場合は関数を内部で保持し(func_setter)、
+     * lockTmp() 時にdataに登録する
+     *
+     */
     template <typename T>
     AnonymousFunc(const T &func) {
         func_setter = [func](AnonymousFunc &a) {
@@ -223,9 +231,23 @@ class WEBCFACE_DLL AnonymousFunc : public Func {
             a.hidden(true);
         };
     }
-
+    AnonymousFunc(const AnonymousFunc &) = delete;
+    AnonymousFunc &operator=(const AnonymousFunc &) = delete;
+    AnonymousFunc(AnonymousFunc &&other) { *this = std::move(other); }
+    /*!
+     * \brief otherの中身を移動し、otherは未初期化にする
+     * \since ver1.9
+     *
+     * 未初期化 == func_setterが空でbase_initがfalse
+     *
+     */
+    AnonymousFunc &operator=(AnonymousFunc &&other);
     /*!
      * \brief targetに関数を移動
+     *
+     * (ver1.9〜) thisが未初期化の場合 std::runtime_error を投げる
+     *
+     * (ver1.9〜) 2回実行すると std::runtime_error
      *
      */
     void lockTo(Func &target);
