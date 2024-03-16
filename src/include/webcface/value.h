@@ -15,6 +15,9 @@ struct ClientData;
 }
 class Member;
 
+class Value;
+extern template class WEBCFACE_IMPORT EventTarget<Value>;
+
 /*!
  * \brief 実数値またはその配列の送受信データを表すクラス
  *
@@ -22,13 +25,13 @@ class Member;
  * Member::onValueEntry() を使って取得してください
  *
  */
-class Value : protected Field, public EventTarget<Value> {
-    WEBCFACE_DLL void onAppend() const override;
+class WEBCFACE_DLL Value : protected Field, public EventTarget<Value> {
+    void onAppend() const override;
 
   public:
     Value() = default;
-    WEBCFACE_DLL Value(const Field &base);
-    WEBCFACE_DLL Value(const Field &base, const std::string &field)
+    Value(const Field &base);
+    Value(const Field &base, const std::string &field)
         : Value(Field{base, field}) {}
 
     using Field::member;
@@ -49,12 +52,12 @@ class Value : protected Field, public EventTarget<Value> {
      * \brief Dictの値を再帰的にセットする
      *
      */
-    WEBCFACE_DLL Value &set(const Dict &v);
+    Value &set(const Dict &v);
     /*!
      * \brief 数値または配列をセットする
      *
      */
-    WEBCFACE_DLL Value &set(const VectorOpt<double> &v);
+    Value &set(const VectorOpt<double> &v);
 
     /*!
      * \brief Dictの値を再帰的にセットする
@@ -78,22 +81,22 @@ class Value : protected Field, public EventTarget<Value> {
      * \since ver1.7
      *
      */
-    WEBCFACE_DLL void request() const;
+    void request() const;
     /*!
      * \brief 値を返す
      *
      */
-    WEBCFACE_DLL std::optional<double> tryGet() const;
+    std::optional<double> tryGet() const;
     /*!
      * \brief 値をvectorで返す
      *
      */
-    WEBCFACE_DLL std::optional<std::vector<double>> tryGetVec() const;
+    std::optional<std::vector<double>> tryGetVec() const;
     /*!
      * \brief 値を再帰的に取得しDictで返す
      *
      */
-    WEBCFACE_DLL std::optional<Dict> tryGetRecurse() const;
+    std::optional<Dict> tryGetRecurse() const;
     /*!
      * \brief 値を返す
      *
@@ -118,14 +121,14 @@ class Value : protected Field, public EventTarget<Value> {
      * \brief syncの時刻を返す
      * \deprecated 1.7で Member::syncTime() に変更
      */
-    [[deprecated]] WEBCFACE_DLL std::chrono::system_clock::time_point
+    [[deprecated]] std::chrono::system_clock::time_point
     time() const;
 
     /*!
      * \brief 値やリクエスト状態をクリア
      *
      */
-    WEBCFACE_DLL Value &free();
+    Value &free();
 
     Value &operator+=(double rhs) {
         this->set(this->get() + rhs);

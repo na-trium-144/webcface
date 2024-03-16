@@ -3,6 +3,9 @@
 #include "../message/message.h"
 
 namespace WEBCFACE_NS {
+
+template class WEBCFACE_DLL EventTarget<Log, std::string>;
+
 Log::Log(const Field &base)
     : Field(base), EventTarget<Log, std::string>(
                        &this->dataLock()->log_append_event, this->member_) {}

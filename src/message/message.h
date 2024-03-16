@@ -316,21 +316,25 @@ struct RobotModel : public MessageBase<MessageKind::robot_model> {
     RobotModel(const std::string &field,
                const std::shared_ptr<std::vector<RobotLink>> &data)
         : field(field), data(data) {}
-    RobotModel(const std::string &field,
-               const std::vector<Common::RobotLink> &common_links)
-        : field(field),
-          data(std::make_shared<std::vector<RobotLink>>(common_links.size())) {
+    RobotModel(
+        const std::string &field,
+        const std::shared_ptr<std::vector<Common::RobotLink>> &common_links)
+        : field(field), data(std::make_shared<std::vector<RobotLink>>()) {
+        data->reserve(common_links->size());
         std::vector<std::string> link_names;
-        for (std::size_t i = 0; i < common_links.size(); i++) {
-            (*data)[i] = RobotLink{common_links[i], link_names};
+        link_names.reserve(common_links->size());
+        for (std::size_t i = 0; i < common_links->size(); i++) {
+            data->emplace_back(common_links->at(i), link_names);
             link_names.push_back((*data)[i].name);
         }
     }
-    std::vector<Common::RobotLink> commonLinks() const {
-        std::vector<Common::RobotLink> common_links(data->size());
+    std::shared_ptr<std::vector<Common::RobotLink>> commonLinks() const {
+        auto common_links = std::make_shared<std::vector<Common::RobotLink>>();
+        common_links->reserve(data->size());
         std::vector<std::string> link_names;
+        link_names.reserve(data->size());
         for (std::size_t i = 0; i < data->size(); i++) {
-            common_links[i] = (*data)[i].toCommonLink(link_names);
+            common_links->push_back((*data)[i].toCommonLink(link_names));
             link_names.push_back((*data)[i].name);
         }
         return common_links;
@@ -485,26 +489,23 @@ struct Canvas2D : public MessageBase<MessageKind::canvas2d> {
         double stroke_width;
         Common::GeometryType geometry_type;
         std::vector<double> properties;
+        std::optional<std::string> on_click_member, on_click_field;
+        std::string text;
         Canvas2DComponent() = default;
         Canvas2DComponent(const Common::Canvas2DComponentBase &vc)
             : type(vc.type_),
               origin_pos({vc.origin_.pos(0), vc.origin_.pos(1)}),
               origin_rot(vc.origin_.rot(0)), color(vc.color_), fill(vc.fill_),
-              stroke_width(vc.stroke_width_), properties() {
+              stroke_width(vc.stroke_width_), properties(), text(vc.text_) {
             if (vc.geometry_) {
                 geometry_type = vc.geometry_->type;
                 properties = vc.geometry_->properties;
             }
+            if (vc.on_click_func_) {
+                on_click_member = vc.on_click_func_->member_;
+                on_click_field = vc.on_click_func_->field_;
+            }
         }
-        Canvas2DComponent(Canvas2DComponentType type,
-                          const Common::Transform &origin, ViewColor color,
-                          ViewColor fill, double stroke_width,
-                          GeometryType geometry_type,
-                          const std::vector<double> &properties)
-            : type(type), origin_pos({origin.pos(0), origin.pos(1)}),
-              origin_rot(origin.rot(0)), color(color), fill(fill),
-              stroke_width(stroke_width), geometry_type(geometry_type),
-              properties(properties) {}
         operator Common::Canvas2DComponentBase() const {
             Common::Canvas2DComponentBase vc;
             vc.type_ = type;
@@ -513,15 +514,20 @@ struct Canvas2D : public MessageBase<MessageKind::canvas2d> {
             vc.fill_ = fill;
             vc.stroke_width_ = stroke_width;
             vc.geometry_ = {geometry_type, properties};
+            if (on_click_member && on_click_field) {
+                vc.on_click_func_ = std::make_optional<FieldBase>(
+                    *on_click_member, *on_click_field);
+            }
+            vc.text_ = text;
             return vc;
         }
-        MSGPACK_DEFINE_MAP(MSGPACK_NVP("t", type),
-                           MSGPACK_NVP("op", origin_pos),
-                           MSGPACK_NVP("or", origin_rot),
-                           MSGPACK_NVP("c", color), MSGPACK_NVP("f", fill),
-                           MSGPACK_NVP("s", stroke_width),
-                           MSGPACK_NVP("gt", geometry_type),
-                           MSGPACK_NVP("gp", properties))
+        MSGPACK_DEFINE_MAP(
+            MSGPACK_NVP("t", type), MSGPACK_NVP("op", origin_pos),
+            MSGPACK_NVP("or", origin_rot), MSGPACK_NVP("c", color),
+            MSGPACK_NVP("f", fill), MSGPACK_NVP("s", stroke_width),
+            MSGPACK_NVP("gt", geometry_type), MSGPACK_NVP("gp", properties),
+            MSGPACK_NVP("L", on_click_member), MSGPACK_NVP("l", on_click_field),
+            MSGPACK_NVP("x", text))
     };
     std::shared_ptr<std::unordered_map<std::string, Canvas2DComponent>>
         data_diff;
@@ -747,21 +753,24 @@ struct Res<RobotModel>
         const std::shared_ptr<std::vector<RobotModel::RobotLink>> &data)
         : req_id(req_id), sub_field(sub_field), data(data) {}
     Res(unsigned int req_id, const std::string &sub_field,
-        const std::vector<Common::RobotLink> &common_links)
+        const std::shared_ptr<std::vector<Common::RobotLink>> &common_links)
         : req_id(req_id), sub_field(sub_field),
-          data(std::make_shared<std::vector<RobotModel::RobotLink>>(
-              common_links.size())) {
-        std::vector<std::string> link_names(common_links.size());
-        for (std::size_t i = 0; i < common_links.size(); i++) {
-            (*data)[i] = RobotModel::RobotLink{common_links[i], link_names};
-            link_names[i] = (*data)[i].name;
+          data(std::make_shared<std::vector<RobotModel::RobotLink>>()) {
+        data->reserve(common_links->size());
+        std::vector<std::string> link_names;
+        link_names.reserve(common_links->size());
+        for (std::size_t i = 0; i < common_links->size(); i++) {
+            data->emplace_back(common_links->at(i), link_names);
+            link_names.push_back((*data)[i].name);
         }
     }
-    std::vector<Common::RobotLink> commonLinks() const {
-        std::vector<Common::RobotLink> common_links(data->size());
+    std::shared_ptr<std::vector<Common::RobotLink>> commonLinks() const {
+        auto common_links = std::make_shared<std::vector<Common::RobotLink>>();
+        common_links->reserve(data->size());
         std::vector<std::string> link_names;
+        link_names.reserve(data->size());
         for (std::size_t i = 0; i < data->size(); i++) {
-            common_links[i] = (*data)[i].toCommonLink(link_names);
+            common_links->push_back((*data)[i].toCommonLink(link_names));
             link_names.push_back((*data)[i].name);
         }
         return common_links;

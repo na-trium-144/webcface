@@ -18,6 +18,13 @@ class Canvas2DTest : public ::testing::Test {
     Canvas2D canvas(const std::string &member, const std::string &field) {
         return Canvas2D{Field{data_, member, field}};
     }
+    Func func(const std::string &member, const std::string &field) {
+        return Func{Field{data_, member, field}};
+    }
+    template <typename T>
+    AnonymousFunc afunc1(const T &func) {
+        return AnonymousFunc{Field{data_, self_name, ""}, func};
+    }
     int callback_called;
     template <typename V = FieldBase>
     auto callback() {
@@ -45,8 +52,8 @@ TEST_F(Canvas2DTest, set) {
     using namespace WEBCFACE_NS::Geometries;
 
     auto v = canvas(self_name, "b").init(100, 150);
-    v.add(line({0, 0}, {3, 3}), ViewColor::red);
-    v.add(plane({0, 0}, 10, 10), ViewColor::yellow);
+    v.add(line({0, 0}, {3, 3}).color(ViewColor::red).onClick(func(self_name, "f")));
+    v.add(plane({0, 0}, 10, 10).color(ViewColor::yellow).onClick(afunc1([]{})));
     v.sync();
     EXPECT_EQ(callback_called, 1);
     auto &canvas2d_data = **data_->canvas2d_store.getRecv(self_name, "b");
@@ -60,6 +67,9 @@ TEST_F(Canvas2DTest, set) {
     EXPECT_EQ(canvas2d_data.components[0].geometry_->type, GeometryType::line);
     EXPECT_EQ(canvas2d_data.components[0].geometry_->properties,
               (std::vector<double>{0, 0, 0, 3, 3, 0}));
+    ASSERT_NE(canvas2d_data.components[0].on_click_func_, std::nullopt);
+    EXPECT_EQ(canvas2d_data.components[0].on_click_func_->member_, self_name);
+    EXPECT_EQ(canvas2d_data.components[0].on_click_func_->field_, "f");
 
     EXPECT_EQ(canvas2d_data.components[1].type_,
               Canvas2DComponentType::geometry);
@@ -68,6 +78,9 @@ TEST_F(Canvas2DTest, set) {
     EXPECT_EQ(canvas2d_data.components[1].geometry_->type, GeometryType::plane);
     EXPECT_EQ(canvas2d_data.components[1].geometry_->properties,
               (std::vector<double>{0, 0, 0, 0, 0, 0, 10, 10}));
+    ASSERT_NE(canvas2d_data.components[0].on_click_func_, std::nullopt);
+    EXPECT_EQ(canvas2d_data.components[0].on_click_func_->member_, self_name);
+    EXPECT_NE(canvas2d_data.components[0].on_click_func_->field_, "");
 
     v.init(1, 1);
     v.sync();
@@ -78,7 +91,7 @@ TEST_F(Canvas2DTest, set) {
     {
         auto v2 = canvas(self_name, "b");
         v2.init(1, 1);
-        v2.add(Canvas2DComponentBase{});
+        v2.add(Canvas2DComponent{});
     }
     EXPECT_EQ(callback_called, 3);
     EXPECT_EQ(
@@ -89,7 +102,7 @@ TEST_F(Canvas2DTest, set) {
         {
             Canvas2D v4 = canvas(self_name, "b");
             v4.init(1, 1);
-            v4.add(Canvas2DComponentBase{});
+            v4.add(Canvas2DComponent{});
             v3 = v4;
         } // v3にコピーされてるのでまだsyncされない
         EXPECT_EQ(callback_called, 3);
@@ -100,14 +113,14 @@ TEST_F(Canvas2DTest, set) {
 
     Canvas2D v6{};
     v6.init(1, 1);
-    v6.add(Canvas2DComponentBase{});
+    v6.add(Canvas2DComponent{});
     EXPECT_THROW(v6.sync(), std::runtime_error);
 
     Canvas2D v7{};
-    EXPECT_THROW(v7.add(Canvas2DComponentBase{}), std::invalid_argument);
+    EXPECT_THROW(v7.add(Canvas2DComponent{}), std::invalid_argument);
 }
 TEST_F(Canvas2DTest, get) {
-    auto vd = std::make_shared<Canvas2DData>();
+    auto vd = std::make_shared<Common::Canvas2DDataBase>();
     vd->components.resize(1);
     data_->canvas2d_store.setRecv("a", "b", vd);
     EXPECT_EQ(canvas("a", "b").tryGet().value().size(), 1);

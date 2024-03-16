@@ -4,6 +4,9 @@
 #include "../message/message.h"
 
 namespace WEBCFACE_NS {
+
+template class WEBCFACE_DLL EventTarget<Value>;
+
 Value::Value(const Field &base)
     : Field(base), EventTarget<Value>(&this->dataLock()->value_change_event,
                                       *this) {}

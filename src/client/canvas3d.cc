@@ -2,47 +2,46 @@
 #include "client_internal.h"
 #include <webcface/member.h>
 #include "../message/message.h"
+#include "data_buffer.h"
 
 namespace WEBCFACE_NS {
 
+template class WEBCFACE_DLL EventTarget<Canvas3D>;
+
 Canvas3D::Canvas3D()
     : Field(), EventTarget<Canvas3D>(),
-      components(std::make_shared<std::vector<Canvas3DComponentBase>>()),
-      modified(std::make_shared<bool>(false)) {}
+      sb(std::make_shared<Internal::DataSetBuffer<Canvas3DComponent>>()) {}
 Canvas3D::Canvas3D(const Field &base)
     : Field(base), EventTarget<Canvas3D>(
                        &this->dataLock()->canvas3d_change_event, *this),
-      components(std::make_shared<std::vector<Canvas3DComponentBase>>()),
-      modified(std::make_shared<bool>(false)) {}
+      sb(std::make_shared<Internal::DataSetBuffer<Canvas3DComponent>>(base)) {}
 Canvas3D &Canvas3D::init() {
-    components->clear();
-    *modified = true;
+    sb->init();
     return *this;
 }
 Canvas3D &Canvas3D::sync() {
-    if (*modified) {
-        set(*components);
-        *modified = false;
-    }
+    sb->sync();
     return *this;
 }
-void Canvas3D::onDestroy() {
-    if (components.use_count() == 1 && data_w.lock() != nullptr &&
-        dataLock()->isSelf(member_)) {
-        sync();
-    }
+Canvas3D &Canvas3D::operator<<(const Canvas3DComponent &cc) {
+    sb->add(cc);
+    return *this;
 }
-WEBCFACE_DLL Canvas3D &Canvas3D::add(const Canvas3DComponentBase &cc) {
-    components->push_back(cc);
-    *modified = true;
+Canvas3D &Canvas3D::operator<<(Canvas3DComponent &&cc) {
+    sb->add(std::move(cc));
     return *this;
 }
 
-Canvas3D &Canvas3D::set(std::vector<Canvas3DComponentBase> &v) {
-    setCheck()->canvas3d_store.setSend(
-        *this, std::make_shared<std::vector<Canvas3DComponentBase>>(v));
-    triggerEvent(*this);
-    return *this;
+template <>
+void Internal::DataSetBuffer<Canvas3DComponent>::onSync(){
+    auto cb = std::make_shared<std::vector<Canvas3DComponentBase>>();
+    cb->reserve(components_.size());
+    for (std::size_t i = 0; i < components_.size(); i++) {
+        cb->push_back(std::move(components_.at(i).lockTmp(
+            target_.data_w, target_.name() + "_" + std::to_string(i))));
+    }
+    target_.setCheck()->canvas3d_store.setSend(target_, cb);
+    static_cast<Canvas3D>(target_).triggerEvent(target_);
 }
 
 void Canvas3D::request() const {

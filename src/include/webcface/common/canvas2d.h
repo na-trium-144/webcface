@@ -6,12 +6,14 @@
 #include "transform.h"
 #include "view.h"
 #include "canvas3d.h"
+#include "field_base.h"
 
 namespace WEBCFACE_NS {
 inline namespace Common {
 
 enum class Canvas2DComponentType {
     geometry = 0,
+    text = 3,
 };
 
 struct Canvas2DComponentBase {
@@ -20,6 +22,8 @@ struct Canvas2DComponentBase {
     ViewColor color_, fill_;
     double stroke_width_;
     std::optional<Geometry> geometry_;
+    std::optional<FieldBase> on_click_func_;
+    std::string text_;
 
     bool operator==(const Canvas2DComponentBase &rhs) const {
         return type_ == rhs.type_ && origin_ == rhs.origin_ &&
@@ -28,27 +32,28 @@ struct Canvas2DComponentBase {
                ((geometry_ == std::nullopt && rhs.geometry_ == std::nullopt) ||
                 (geometry_ && rhs.geometry_ &&
                  geometry_->type == rhs.geometry_->type &&
-                 geometry_->properties == rhs.geometry_->properties));
+                 geometry_->properties == rhs.geometry_->properties)) &&
+               ((on_click_func_ == std::nullopt &&
+                 rhs.on_click_func_ == std::nullopt) ||
+                (on_click_func_ && rhs.on_click_func_ &&
+                 on_click_func_->member_ == rhs.on_click_func_->member_ &&
+                 on_click_func_->field_ == rhs.on_click_func_->field_)) &&
+               text_ == rhs.text_;
     }
     bool operator!=(const Canvas2DComponentBase &rhs) const {
         return !(*this == rhs);
     }
 };
 
-struct Canvas2DData {
+struct Canvas2DDataBase {
     double width = 0, height = 0;
     std::vector<Canvas2DComponentBase> components;
-    Canvas2DData() = default;
-    Canvas2DData(double width, double height,
-                 const std::vector<Canvas2DComponentBase> &components)
-        : width(width), height(height), components(components) {}
-    void checkSize() const {
-        if (width <= 0 && height <= 0) {
-            throw std::invalid_argument("Canvas2D size is invalid (" +
-                                        std::to_string(width) + ", " +
-                                        std::to_string(height) + ")");
-        }
-    }
+    Canvas2DDataBase() = default;
+    Canvas2DDataBase(double width, double height)
+        : width(width), height(height), components() {}
+    Canvas2DDataBase(double width, double height,
+                     std::vector<Canvas2DComponentBase> &&components)
+        : width(width), height(height), components(std::move(components)) {}
 };
 
 } // namespace Common

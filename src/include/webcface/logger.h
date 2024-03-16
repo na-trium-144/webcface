@@ -14,7 +14,7 @@ namespace Internal {
 struct ClientData;
 }
 
-class LoggerBuf : public std::streambuf {
+class WEBCFACE_DLL LoggerBuf : public std::streambuf {
     static constexpr int buf_size = 1024;
     char buf[buf_size];
     // bufからあふれた分を入れる
@@ -22,11 +22,11 @@ class LoggerBuf : public std::streambuf {
 
     std::shared_ptr<spdlog::logger> logger;
 
-    WEBCFACE_DLL int sync() override;
-    WEBCFACE_DLL int overflow(int c) override;
+    int sync() override;
+    int overflow(int c) override;
 
   public:
-    WEBCFACE_DLL explicit LoggerBuf(
+    explicit LoggerBuf(
         const std::shared_ptr<spdlog::logger> &logger);
     LoggerBuf(const LoggerBuf &) = delete;
     LoggerBuf &operator=(const LoggerBuf &) = delete;
@@ -37,17 +37,17 @@ template <typename T>
 class SyncDataStore1;
 }
 
-class LoggerSink : public spdlog::sinks::base_sink<std::mutex> {
+class WEBCFACE_DLL LoggerSink : public spdlog::sinks::base_sink<std::mutex> {
     std::shared_ptr<
         Internal::SyncDataStore1<std::shared_ptr<std::vector<LogLine>>>>
         log_store;
 
   protected:
-    WEBCFACE_DLL void sink_it_(const spdlog::details::log_msg &msg) override;
+    void sink_it_(const spdlog::details::log_msg &msg) override;
     void flush_() override {}
 
   public:
-    WEBCFACE_DLL explicit LoggerSink(
+    explicit LoggerSink(
         const std::shared_ptr<
             Internal::SyncDataStore1<std::shared_ptr<std::vector<LogLine>>>>
             &log_store);

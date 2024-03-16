@@ -4,6 +4,9 @@
 #include "../message/message.h"
 
 namespace WEBCFACE_NS {
+
+template class WEBCFACE_DLL EventTarget<Image>;
+
 Image::Image(const Field &base)
     : Field(base), EventTarget<Image>(&this->dataLock()->image_change_event,
                                       *this) {}

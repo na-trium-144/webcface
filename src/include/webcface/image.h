@@ -14,17 +14,20 @@ struct ClientData;
 }
 class Member;
 
+class Image;
+extern template class WEBCFACE_IMPORT EventTarget<Image>;
+
 /*!
  * \brief (ver1.3から追加) 画像の送受信データを表すクラス
  *
  * コンストラクタではなく Member::image() を使って取得してください
  */
-class Image : protected Field, public EventTarget<Image> {
+class WEBCFACE_DLL Image : protected Field, public EventTarget<Image> {
     std::optional<Common::ImageFrame> img = std::nullopt;
 
-    WEBCFACE_DLL void onAppend() const override;
+    void onAppend() const override;
 
-    WEBCFACE_DLL Image &
+    Image &
     request(std::optional<int> rows, std::optional<int> cols,
             Common::ImageCompressMode cmp_mode, int quality,
             std::optional<Common::ImageColorMode> color_mode,
@@ -32,8 +35,8 @@ class Image : protected Field, public EventTarget<Image> {
 
   public:
     Image() = default;
-    WEBCFACE_DLL Image(const Field &base);
-    WEBCFACE_DLL Image(const Field &base, const std::string &field)
+    Image(const Field &base);
+    Image(const Field &base, const std::string &field)
         : Image(Field{base, field}) {}
 
     using Field::member;
@@ -51,7 +54,7 @@ class Image : protected Field, public EventTarget<Image> {
      * \brief 画像をセットする
      *
      */
-    WEBCFACE_DLL Image &set(const ImageFrame &img);
+    Image &set(const ImageFrame &img);
     /*!
      * \brief 画像をセットする
      *
@@ -105,7 +108,7 @@ class Image : protected Field, public EventTarget<Image> {
      * リクエストしていない場合すべてデフォルトで(元画像のフォーマットで)リクエストする
      *
      */
-    WEBCFACE_DLL std::optional<ImageFrame> tryGet();
+    std::optional<ImageFrame> tryGet();
     /*!
      * \brief 画像を返す (データがない場合0x0の画像が返る)
      *
@@ -117,21 +120,21 @@ class Image : protected Field, public EventTarget<Image> {
     operator ImageFrame() { return get(); }
 
 #if WEBCFACE_USE_OPENCV
-    WEBCFACE_DLL cv::Mat mat() &;
+    cv::Mat mat() &;
 #endif
     /*!
      * \brief syncの時刻を返す
      * \deprecated 1.7でMember::syncTime()に変更
      *
      */
-    [[deprecated]] WEBCFACE_DLL std::chrono::system_clock::time_point
+    [[deprecated]] std::chrono::system_clock::time_point
     time() const;
 
     //! 値やリクエスト状態をクリア
-    WEBCFACE_DLL Image &free();
+    Image &free();
 
     //! 画像をクリア (リクエスト状態は解除しない)
-    WEBCFACE_DLL Image &clear();
+    Image &clear();
 };
 
 } // namespace WEBCFACE_NS

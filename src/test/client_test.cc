@@ -369,6 +369,7 @@ TEST_F(ClientTest, viewSend) {
                      ViewComponents::text("a")
                          .textColor(ViewColor::yellow)
                          .bgColor(ViewColor::green)
+                         .toV()
                          .lockTmp(data_, ""),
                      ViewComponents::newLine().lockTmp(data_, ""),
                      ViewComponents::button("a", Func{Field{data_, "x", "y"}})
@@ -400,6 +401,7 @@ TEST_F(ClientTest, viewSend) {
                      ViewComponents::text("b")
                          .textColor(ViewColor::red)
                          .bgColor(ViewColor::green)
+                         .toV()
                          .lockTmp(data_, ""),
                      ViewComponents::newLine().lockTmp(data_, ""),
                      ViewComponents::button("a", Func{Field{data_, "x", "y"}})
@@ -438,6 +440,7 @@ TEST_F(ClientTest, viewReq) {
             {"0", ViewComponents::text("a")
                       .textColor(ViewColor::yellow)
                       .bgColor(ViewColor::green)
+                      .toV()
                       .lockTmp(data_, "")},
             {"1", ViewComponents::newLine().lockTmp(data_, "")},
             {"2", ViewComponents::button("a", Func{Field{data_, "x", "y"}})
@@ -467,6 +470,7 @@ TEST_F(ClientTest, viewReq) {
             {"0", ViewComponents::text("b")
                       .textColor(ViewColor::red)
                       .bgColor(ViewColor::green)
+                      .toV()
                       .lockTmp(data_, "")},
         });
     dummy_s->send(Message::Res<Message::View>{1, "", v2, 3});
@@ -486,18 +490,31 @@ TEST_F(ClientTest, viewReq) {
 TEST_F(ClientTest, canvas2DSend) {
     wcli_->waitConnection();
     data_->canvas2d_store.setSend(
-        "a",
-        std::make_shared<Canvas2DData>(
-            100, 100,
-            std::vector<Canvas2DComponentBase>{
-                {Canvas2DComponentType::geometry, identity(), ViewColor::black,
-                 ViewColor::white, 5, Geometries::line({0, 0}, {30, 30})},
-                {Canvas2DComponentType::geometry, identity(), ViewColor::black,
-                 ViewColor::white, 5, Geometries::rect({0, 0}, {30, 30})},
-                {Canvas2DComponentType::geometry, identity(), ViewColor::black,
-                 ViewColor::white, 5,
-                 Geometries::polygon({{0, 0}, {30, 30}, {50, 20}})},
-            }));
+        "a", std::make_shared<Canvas2DDataBase>(
+                 100, 100,
+                 std::vector<Canvas2DComponentBase>{
+                     Geometries::line({0, 0}, {30, 30})
+                         .color(ViewColor::black)
+                         .fillColor(ViewColor::white)
+                         .strokeWidth(5)
+                         .onClick(Func{Field{data_, self_name, "f"}})
+                         .to2()
+                         .lockTmp(data_, ""),
+                     Geometries::rect({0, 0}, {30, 30})
+                         .color(ViewColor::black)
+                         .fillColor(ViewColor::white)
+                         .strokeWidth(5)
+                         .onClick(Func{Field{data_, self_name, "f"}})
+                         .to2()
+                         .lockTmp(data_, ""),
+                     Geometries::polygon({{0, 0}, {30, 30}, {50, 20}})
+                         .color(ViewColor::black)
+                         .fillColor(ViewColor::white)
+                         .strokeWidth(5)
+                         .onClick(Func{Field{data_, self_name, "f"}})
+                         .to2()
+                         .lockTmp(data_, ""),
+                 }));
     wcli_->sync();
     wait();
     dummy_s->recv<Message::Canvas2D>(
@@ -514,6 +531,8 @@ TEST_F(ClientTest, canvas2DSend) {
             EXPECT_EQ((*obj.data_diff)["0"].properties,
                       (std::vector<double>{0, 0, 0, 30, 30, 0}));
             EXPECT_EQ((*obj.data_diff)["0"].geometry_type, GeometryType::line);
+            EXPECT_EQ((*obj.data_diff)["0"].on_click_member, self_name);
+            EXPECT_EQ((*obj.data_diff)["0"].on_click_field, "f");
             EXPECT_EQ((*obj.data_diff)["1"].geometry_type, GeometryType::rect);
             EXPECT_EQ((*obj.data_diff)["2"].geometry_type,
                       GeometryType::polygon);
@@ -522,18 +541,31 @@ TEST_F(ClientTest, canvas2DSend) {
     dummy_s->recvClear();
 
     data_->canvas2d_store.setSend(
-        "a",
-        std::make_shared<Canvas2DData>(
-            100, 100,
-            std::vector<Canvas2DComponentBase>{
-                {Canvas2DComponentType::geometry, identity(), ViewColor::red,
-                 ViewColor::white, 5, Geometries::line({0, 0}, {30, 30})},
-                {Canvas2DComponentType::geometry, identity(), ViewColor::black,
-                 ViewColor::white, 5, Geometries::rect({0, 0}, {30, 30})},
-                {Canvas2DComponentType::geometry, identity(), ViewColor::black,
-                 ViewColor::white, 5,
-                 Geometries::polygon({{0, 0}, {30, 30}, {50, 20}})},
-            }));
+        "a", std::make_shared<Canvas2DDataBase>(
+                 100, 100,
+                 std::vector<Canvas2DComponentBase>{
+                     Geometries::line({0, 0}, {30, 30})
+                         .color(ViewColor::red) // changed
+                         .fillColor(ViewColor::white)
+                         .strokeWidth(5)
+                         .onClick(Func{Field{data_, self_name, "f"}})
+                         .to2()
+                         .lockTmp(data_, ""),
+                     Geometries::rect({0, 0}, {30, 30})
+                         .color(ViewColor::black)
+                         .fillColor(ViewColor::white)
+                         .strokeWidth(5)
+                         .onClick(Func{Field{data_, self_name, "f"}})
+                         .to2()
+                         .lockTmp(data_, ""),
+                     Geometries::polygon({{0, 0}, {30, 30}, {50, 20}})
+                         .color(ViewColor::black)
+                         .fillColor(ViewColor::white)
+                         .strokeWidth(5)
+                         .onClick(Func{Field{data_, self_name, "f"}})
+                         .to2()
+                         .lockTmp(data_, ""),
+                 }));
     wcli_->sync();
     wait();
     dummy_s->recv<Message::Canvas2D>(
@@ -566,30 +598,27 @@ TEST_F(ClientTest, canvas2DReq) {
     auto v = std::make_shared<
         std::unordered_map<std::string, Message::Canvas2D::Canvas2DComponent>>(
         std::unordered_map<std::string, Message::Canvas2D::Canvas2DComponent>{
-            {"0",
-             {Canvas2DComponentType::geometry,
-              identity(),
-              ViewColor::black,
-              ViewColor::white,
-              5,
-              GeometryType::line,
-              {0, 0, 0, 30, 30, 0}}},
-            {"1",
-             {Canvas2DComponentType::geometry,
-              identity(),
-              ViewColor::black,
-              ViewColor::white,
-              5,
-              GeometryType::rect,
-              {0, 0}}},
-            {"2",
-             {Canvas2DComponentType::geometry,
-              identity(),
-              ViewColor::black,
-              ViewColor::white,
-              5,
-              GeometryType::polygon,
-              {0, 0, 0, 30, 30, 0, 50, 20, 0}}},
+            {"0", Geometries::line({0, 0}, {30, 30})
+                      .color(ViewColor::black)
+                      .fillColor(ViewColor::white)
+                      .strokeWidth(5)
+                      .onClick(Func{Field{data_, self_name, "f"}})
+                      .to2()
+                      .lockTmp(data_, "")},
+            {"1", Geometries::rect({0, 0}, {30, 30})
+                      .color(ViewColor::black)
+                      .fillColor(ViewColor::white)
+                      .strokeWidth(5)
+                      .onClick(Func{Field{data_, self_name, "f"}})
+                      .to2()
+                      .lockTmp(data_, "")},
+            {"2", Geometries::polygon({{0, 0}, {30, 30}, {50, 20}})
+                      .color(ViewColor::black)
+                      .fillColor(ViewColor::white)
+                      .strokeWidth(5)
+                      .onClick(Func{Field{data_, self_name, "f"}})
+                      .to2()
+                      .lockTmp(data_, "")},
         });
     dummy_s->send(Message::Res<Message::Canvas2D>{1, "", 200, 200, v, 3});
     dummy_s->send(Message::Res<Message::Canvas2D>{1, "c", 200, 200, v, 3});
@@ -621,6 +650,16 @@ TEST_F(ClientTest, canvas2DReq) {
                   ->components.at(0)
                   .geometry_->properties,
               (std::vector<double>{0, 0, 0, 30, 30, 0}));
+    EXPECT_EQ(data_->canvas2d_store.getRecv("a", "b")
+                  .value()
+                  ->components.at(0)
+                  .on_click_func_->member_,
+              self_name);
+    EXPECT_EQ(data_->canvas2d_store.getRecv("a", "b")
+                  .value()
+                  ->components.at(0)
+                  .on_click_func_->field_,
+              "f");
     EXPECT_EQ(
         data_->canvas2d_store.getRecv("a", "b").value()->components.at(1).type_,
         Canvas2DComponentType::geometry);
@@ -635,14 +674,13 @@ TEST_F(ClientTest, canvas2DReq) {
     auto v2 = std::make_shared<
         std::unordered_map<std::string, Message::Canvas2D::Canvas2DComponent>>(
         std::unordered_map<std::string, Message::Canvas2D::Canvas2DComponent>{
-            {"0",
-             {Canvas2DComponentType::geometry,
-              identity(),
-              ViewColor::red,
-              ViewColor::white,
-              5,
-              GeometryType::line,
-              {0, 0, 0, 30, 30, 0}}},
+            {"0", Geometries::line({0, 0}, {30, 30})
+                      .color(ViewColor::red)
+                      .fillColor(ViewColor::white)
+                      .strokeWidth(5)
+                      .onClick(Func{Field{data_, self_name, "f"}})
+                      .to2()
+                      .lockTmp(data_, "")},
         });
     dummy_s->send(Message::Res<Message::Canvas2D>{1, "", 100, 100, v2, 3});
     wait();
@@ -682,27 +720,30 @@ TEST_F(ClientTest, canvas2DReq) {
 TEST_F(ClientTest, canvas3DSend) {
     wcli_->waitConnection();
     data_->canvas3d_store.setSend(
-        "a", std::make_shared<std::vector<Canvas3DComponentBase>>(
-                 std::vector<Canvas3DComponentBase>{
-                     {Canvas3DComponentType::geometry,
-                      identity(),
-                      ViewColor::black,
-                      Geometries::line({0, 0, 0}, {30, 30, 30}),
-                      std::nullopt,
-                      {}},
-                     {Canvas3DComponentType::geometry,
-                      identity(),
-                      ViewColor::black,
-                      Geometries::rect({0, 0}, {30, 30}),
-                      std::nullopt,
-                      {}},
-                     {Canvas3DComponentType::geometry,
-                      identity(),
-                      ViewColor::black,
-                      Geometries::sphere({0, 0, 0}, 1),
-                      std::nullopt,
-                      {}},
-                 }));
+        "a",
+        std::make_shared<std::vector<Canvas3DComponentBase>>(
+            std::vector<Canvas3DComponentBase>{
+                {Canvas3DComponentType::geometry,
+                 identity(),
+                 ViewColor::black,
+                 std::make_optional<Geometry>(
+                     Geometries::line({0, 0, 0}, {30, 30, 30})),
+                 std::nullopt,
+                 {}},
+                {Canvas3DComponentType::geometry,
+                 identity(),
+                 ViewColor::black,
+                 std::make_optional<Geometry>(
+                     Geometries::rect({0, 0}, {30, 30})),
+                 std::nullopt,
+                 {}},
+                {Canvas3DComponentType::geometry,
+                 identity(),
+                 ViewColor::black,
+                 std::make_optional<Geometry>(Geometries::sphere({0, 0, 0}, 1)),
+                 std::nullopt,
+                 {}},
+            }));
     wcli_->sync();
     wait();
     dummy_s->recv<Message::Canvas3D>(
@@ -724,27 +765,30 @@ TEST_F(ClientTest, canvas3DSend) {
     dummy_s->recvClear();
 
     data_->canvas3d_store.setSend(
-        "a", std::make_shared<std::vector<Canvas3DComponentBase>>(
-                 std::vector<Canvas3DComponentBase>{
-                     {Canvas3DComponentType::geometry,
-                      identity(),
-                      ViewColor::red,
-                      Geometries::line({0, 0, 0}, {30, 30, 30}),
-                      std::nullopt,
-                      {}},
-                     {Canvas3DComponentType::geometry,
-                      identity(),
-                      ViewColor::black,
-                      Geometries::rect({0, 0}, {30, 30}),
-                      std::nullopt,
-                      {}},
-                     {Canvas3DComponentType::geometry,
-                      identity(),
-                      ViewColor::black,
-                      Geometries::sphere({0, 0, 0}, 1),
-                      std::nullopt,
-                      {}},
-                 }));
+        "a",
+        std::make_shared<std::vector<Canvas3DComponentBase>>(
+            std::vector<Canvas3DComponentBase>{
+                {Canvas3DComponentType::geometry,
+                 identity(),
+                 ViewColor::red,
+                 std::make_optional<Geometry>(
+                     Geometries::line({0, 0, 0}, {30, 30, 30})),
+                 std::nullopt,
+                 {}},
+                {Canvas3DComponentType::geometry,
+                 identity(),
+                 ViewColor::black,
+                 std::make_optional<Geometry>(
+                     Geometries::rect({0, 0}, {30, 30})),
+                 std::nullopt,
+                 {}},
+                {Canvas3DComponentType::geometry,
+                 identity(),
+                 ViewColor::black,
+                 std::make_optional<Geometry>(Geometries::sphere({0, 0, 0}, 1)),
+                 std::nullopt,
+                 {}},
+            }));
     wcli_->sync();
     wait();
     dummy_s->recv<Message::Canvas3D>(
@@ -777,23 +821,26 @@ TEST_F(ClientTest, canvas3DReq) {
     auto v = std::make_shared<
         std::unordered_map<std::string, Message::Canvas3D::Canvas3DComponent>>(
         std::unordered_map<std::string, Message::Canvas3D::Canvas3DComponent>{
-            {"0",
-             Canvas3DComponentBase{Canvas3DComponentType::geometry,
-                                   identity(),
-                                   ViewColor::black,
-                                   Geometries::line({0, 0, 0}, {30, 30, 30}),
-                                   std::nullopt,
-                                   {}}},
+            {"0", Canvas3DComponentBase{Canvas3DComponentType::geometry,
+                                        identity(),
+                                        ViewColor::black,
+                                        std::make_optional<Geometry>(
+                                            Geometries::line({0, 0, 0},
+                                                             {30, 30, 30})),
+                                        std::nullopt,
+                                        {}}},
             {"1", Canvas3DComponentBase{Canvas3DComponentType::geometry,
                                         identity(),
                                         ViewColor::black,
-                                        Geometries::rect({0, 0}, {30, 30}),
+                                        std::make_optional<Geometry>(
+                                            Geometries::rect({0, 0}, {30, 30})),
                                         std::nullopt,
                                         {}}},
             {"2", Canvas3DComponentBase{Canvas3DComponentType::geometry,
                                         identity(),
                                         ViewColor::black,
-                                        Geometries::sphere({0, 0, 0}, 1),
+                                        std::make_optional<Geometry>(
+                                            Geometries::sphere({0, 0, 0}, 1)),
                                         std::nullopt,
                                         {}}},
         });
@@ -826,13 +873,14 @@ TEST_F(ClientTest, canvas3DReq) {
     auto v2 = std::make_shared<
         std::unordered_map<std::string, Message::Canvas3D::Canvas3DComponent>>(
         std::unordered_map<std::string, Message::Canvas3D::Canvas3DComponent>{
-            {"0",
-             Canvas3DComponentBase{Canvas3DComponentType::geometry,
-                                   identity(),
-                                   ViewColor::red,
-                                   Geometries::line({0, 0, 0}, {30, 30, 30}),
-                                   std::nullopt,
-                                   {}}},
+            {"0", Canvas3DComponentBase{Canvas3DComponentType::geometry,
+                                        identity(),
+                                        ViewColor::red,
+                                        std::make_optional<Geometry>(
+                                            Geometries::line({0, 0, 0},
+                                                             {30, 30, 30})),
+                                        std::nullopt,
+                                        {}}},
         });
     dummy_s->send(Message::Res<Message::Canvas3D>{1, "", v2, 3});
     wait();
@@ -859,7 +907,8 @@ TEST_F(ClientTest, canvas3DReq) {
 TEST_F(ClientTest, robotModelSend) {
     wcli_->waitConnection();
     data_->robot_model_store.setSend(
-        "a", {RobotLink{"a", Geometry{}, ViewColor::black}});
+        "a", std::make_shared<std::vector<RobotLink>>(
+                 std::vector<RobotLink>{{"a", Geometry{}, ViewColor::black}}));
     wcli_->sync();
     wait();
     dummy_s->recv<Message::RobotModel>(
@@ -881,16 +930,20 @@ TEST_F(ClientTest, robotModelReq) {
             EXPECT_EQ(obj.req_id, 1);
         },
         [&] { ADD_FAILURE() << "RobotModel Req recv error"; });
-    dummy_s->send(Message::Res<Message::RobotModel>{
-        1, "", {RobotLink{"a", Geometry{}, ViewColor::black}}});
-    dummy_s->send(Message::Res<Message::RobotModel>{
-        1, "c", {RobotLink{"a", Geometry{}, ViewColor::black}}});
+    dummy_s->send(Message::Res<Message::RobotModel>(
+        1, "",
+        std::make_shared<std::vector<RobotLink>>(
+            std::vector<RobotLink>{{"a", Geometry{}, ViewColor::black}})));
+    dummy_s->send(Message::Res<Message::RobotModel>(
+        1, "c",
+        std::make_shared<std::vector<RobotLink>>(
+            std::vector<RobotLink>{{"a", Geometry{}, ViewColor::black}})));
     wait();
     EXPECT_EQ(callback_called, 1);
     EXPECT_TRUE(data_->robot_model_store.getRecv("a", "b").has_value());
-    EXPECT_EQ(data_->robot_model_store.getRecv("a", "b").value().size(), 1);
+    EXPECT_EQ(data_->robot_model_store.getRecv("a", "b").value()->size(), 1);
     EXPECT_TRUE(data_->robot_model_store.getRecv("a", "b.c").has_value());
-    EXPECT_EQ(data_->robot_model_store.getRecv("a", "b.c").value().size(), 1);
+    EXPECT_EQ(data_->robot_model_store.getRecv("a", "b.c").value()->size(), 1);
 }
 TEST_F(ClientTest, imageSend) {
     wcli_->waitConnection();

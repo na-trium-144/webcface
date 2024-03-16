@@ -22,4 +22,8 @@ std::shared_ptr<Internal::ClientData> Field::setCheck() const {
     }
     return data;
 }
+
+bool Field::isSelf() const { return dataLock()->isSelf(*this); }
+
+
 } // namespace WEBCFACE_NS

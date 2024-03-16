@@ -130,4 +130,5 @@ class EventTarget {
         return dispatcher->ownsHandle(key, handle);
     }
 };
+
 } // namespace WEBCFACE_NS

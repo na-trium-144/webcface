@@ -40,12 +40,12 @@ class AnonymousFunc;
  * \brief 関数1つを表すクラス
  *
  */
-class Func : protected Field {
+class WEBCFACE_DLL Func : protected Field {
   public:
     friend AnonymousFunc;
 
     Func() = default;
-    WEBCFACE_DLL Func(const Field &base);
+    Func(const Field &base);
     Func(const Field &base, const std::string &field)
         : Func(Field{base, field}) {}
 
@@ -53,14 +53,13 @@ class Func : protected Field {
     using Field::name;
 
   protected:
-    WEBCFACE_DLL Func &setRaw(const std::shared_ptr<FuncInfo> &v);
+    Func &setRaw(const std::shared_ptr<FuncInfo> &v);
     Func &setRaw(const FuncInfo &v) {
         return setRaw(std::make_shared<FuncInfo>(v));
     }
-    WEBCFACE_DLL FuncWrapperType getDefaultFuncWrapper() const;
+    FuncWrapperType getDefaultFuncWrapper() const;
 
-    WEBCFACE_DLL void runImpl(std::size_t caller_id,
-                              std::vector<ValAdaptor> args_vec) const;
+    void runImpl(std::size_t caller_id, std::vector<ValAdaptor> args_vec) const;
 
   public:
     /*!
@@ -86,13 +85,13 @@ class Func : protected Field {
      * (他clientのentryに表示されなくする)
      *
      */
-    WEBCFACE_DLL Func &hidden(bool hidden);
+    Func &hidden(bool hidden);
 
     /*!
      * \brief 関数の設定を削除
      *
      */
-    WEBCFACE_DLL Func &free();
+    Func &free();
 
     /*!
      * \brief 関数を実行する (同期)
@@ -110,7 +109,7 @@ class Func : protected Field {
     ValAdaptor run(Args... args) const {
         return run({ValAdaptor(args)...});
     }
-    WEBCFACE_DLL ValAdaptor run(const std::vector<ValAdaptor> &args_vec) const;
+    ValAdaptor run(const std::vector<ValAdaptor> &args_vec) const;
     /*!
      * \brief run()と同じ
      *
@@ -131,21 +130,20 @@ class Func : protected Field {
     AsyncFuncResult runAsync(Args... args) const {
         return runAsync({ValAdaptor(args)...});
     }
-    WEBCFACE_DLL AsyncFuncResult
-    runAsync(const std::vector<ValAdaptor> &args_vec) const;
+    AsyncFuncResult runAsync(const std::vector<ValAdaptor> &args_vec) const;
 
     /*!
      * \brief 戻り値の型を返す
      *
      */
-    WEBCFACE_DLL ValType returnType() const;
+    ValType returnType() const;
     /*!
      * \brief 引数の情報を返す
      *
      * 変更するにはsetArgsを使う(このvectorの中身を書き換えても反映されない)
      *
      */
-    WEBCFACE_DLL std::vector<Arg> args() const;
+    std::vector<Arg> args() const;
 
     const Arg args(std::size_t i) const { return args().at(i); }
 
@@ -162,7 +160,7 @@ class Func : protected Field {
      * (一致していない場合 std::invalid_argument )
      *
      */
-    WEBCFACE_DLL Func &setArgs(const std::vector<Arg> &args);
+    Func &setArgs(const std::vector<Arg> &args);
 
     /*!
      * \brief FuncWrapperをセットする。
@@ -175,7 +173,7 @@ class Func : protected Field {
      * std::invalid_argument)
      *
      */
-    WEBCFACE_DLL Func &setRunCond(FuncWrapperType wrapper);
+    Func &setRunCond(FuncWrapperType wrapper);
     /*!
      * \brief FuncWrapperを nullptr にする
      *
@@ -202,20 +200,30 @@ class Func : protected Field {
  * \brief 名前を指定せず先に関数を登録するFunc
  *
  */
-class AnonymousFunc : public Func {
-    WEBCFACE_DLL static std::string fieldNameTmp();
+class WEBCFACE_DLL AnonymousFunc : public Func {
+    static std::string fieldNameTmp();
 
     std::function<void(AnonymousFunc &)> func_setter = nullptr;
     bool base_init = false;
 
   public:
     AnonymousFunc() = default;
+    /*!
+     * 一時的な名前(fieldNameTmp())をつけたFuncとしてdataに登録し、
+     * lockTmp() 呼び出し時に正式な名前のFuncに内容を移動する。
+     *
+     */
     template <typename T>
     AnonymousFunc(const Field &base, const T &func)
         : Func(base, fieldNameTmp()), base_init(true) {
         this->set(func);
         this->hidden(true);
     }
+    /*!
+     * コンストラクタでdataが渡されなかった場合は関数を内部で保持し(func_setter)、
+     * lockTmp() 時にdataに登録する
+     *
+     */
     template <typename T>
     AnonymousFunc(const T &func) {
         func_setter = [func](AnonymousFunc &a) {
@@ -223,11 +231,25 @@ class AnonymousFunc : public Func {
             a.hidden(true);
         };
     }
-
+    AnonymousFunc(const AnonymousFunc &) = delete;
+    AnonymousFunc &operator=(const AnonymousFunc &) = delete;
+    AnonymousFunc(AnonymousFunc &&other) { *this = std::move(other); }
+    /*!
+     * \brief otherの中身を移動し、otherは未初期化にする
+     * \since ver1.9
+     *
+     * 未初期化 == func_setterが空でbase_initがfalse
+     *
+     */
+    AnonymousFunc &operator=(AnonymousFunc &&other);
     /*!
      * \brief targetに関数を移動
      *
+     * (ver1.9〜) thisが未初期化の場合 std::runtime_error を投げる
+     *
+     * (ver1.9〜) 2回実行すると std::runtime_error
+     *
      */
-    WEBCFACE_DLL void lockTo(Func &target);
+    void lockTo(Func &target);
 };
 } // namespace WEBCFACE_NS

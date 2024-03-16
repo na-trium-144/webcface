@@ -9,18 +9,21 @@
 
 namespace WEBCFACE_NS {
 
+class Log;
+extern template class WEBCFACE_IMPORT EventTarget<Log, std::string>;
+
 /*!
  * \brief ログの送受信データを表すクラス
  *
  * fieldを継承しているがfield名は使用していない
  *
  */
-class Log : protected Field, public EventTarget<Log, std::string> {
-    WEBCFACE_DLL void onAppend() const override;
+class WEBCFACE_DLL Log : protected Field, public EventTarget<Log, std::string> {
+    void onAppend() const override;
 
   public:
     Log() = default;
-    WEBCFACE_DLL Log(const Field &base);
+    Log(const Field &base);
 
     using Field::member;
 
@@ -29,12 +32,12 @@ class Log : protected Field, public EventTarget<Log, std::string> {
      * \since ver1.7
      *
      */
-    WEBCFACE_DLL void request() const;
+    void request() const;
     /*!
      * \brief ログを取得する
      *
      */
-    WEBCFACE_DLL std::optional<std::vector<LogLine>> tryGet() const;
+    std::optional<std::vector<LogLine>> tryGet() const;
     /*!
      * \brief ログを取得する
      *
@@ -48,6 +51,6 @@ class Log : protected Field, public EventTarget<Log, std::string> {
      *
      * リクエスト状態は解除しない
      */
-    WEBCFACE_DLL Log &clear();
+    Log &clear();
 };
 } // namespace WEBCFACE_NS
