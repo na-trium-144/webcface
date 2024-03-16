@@ -1,3 +1,18 @@
+## [1.9.0] - 2024-03-16
+### Added
+* Canvas2DにonClickとtext要素を追加 (#210)
+* TemporalComponentクラスを追加
+* wcfFuncCallback型, wcfFuncSet関数 (#213)
+* Func::setで引数にhandleをとるcallbackを登録する機能を追加
+### Changed
+* Geometriesの各関数の戻り値の仕様変更 (#210)
+* ViewComponents → Components
+* Viewのinit(),add(),sync()の処理を抽象化→ Internal::DataSetBuffer
+* Canvas2D,Canvas3D,RobotModelのadd関数仕様変更
+* (Windows) クラス全体をdllexportするように変更
+* AnonymousFuncオブジェクトをコピー不可にした
+* wcfFuncRespondでnullptrを使えるようにした (#213)
+
 ## [1.8.0] - 2024-03-08
 ### Changed
 * Value, Textで値が変化したときのみ送信するようにした (#209)
