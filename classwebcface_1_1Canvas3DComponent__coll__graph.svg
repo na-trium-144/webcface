@@ -30,8 +30,8 @@
 <g id="edge1_Node000001_Node000002" class="edge">
 <title>Node2&#45;&gt;Node1</title>
 <g id="a_edge1_Node000001_Node000002"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M73,-45.3C73,-36.41 73,-26.28 73,-19.25"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="69.5,-45.58 73,-55.58 76.5,-45.58 69.5,-45.58"/>
+<path fill="none" stroke="darkgreen" d="M73,-45.3C73,-36.41 73,-26.28 73,-19.25"/>
+<polygon fill="darkgreen" stroke="darkgreen" points="69.5,-45.58 73,-55.58 76.5,-45.58 69.5,-45.58"/>
 </a>
 </g>
 </g>

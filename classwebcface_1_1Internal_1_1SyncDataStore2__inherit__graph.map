@@ -1,19 +1,19 @@
 <map id="SyncDataStore2&lt; T, ReqT &gt;" name="SyncDataStore2&lt; T, ReqT &gt;">
-<area shape="rect" id="Node000001" title="送受信するデータを保持するクラス" alt="" coords="5,336,159,376"/>
-<area shape="rect" id="Node000002" href="$classwebcface_1_1Internal_1_1SyncDataStore2.html" title=" " alt="" coords="558,54,757,109"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="84,322,92,273,109,215,137,158,157,132,181,111,225,85,272,67,321,55,372,48,471,48,558,57,557,63,471,53,372,54,322,60,274,72,227,90,184,115,161,136,142,161,114,217,97,274,89,323"/>
-<area shape="rect" id="Node000003" href="$classwebcface_1_1Internal_1_1SyncDataStore2.html" title=" " alt="" coords="553,133,762,173"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="90,322,102,287,121,248,147,211,181,182,210,169,248,160,344,149,452,145,552,146,552,152,452,150,345,154,249,165,212,174,184,186,151,215,126,251,107,289,95,323"/>
-<area shape="rect" id="Node000004" href="$classwebcface_1_1Internal_1_1SyncDataStore2.html" title=" " alt="" coords="569,198,745,253"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="108,324,141,293,182,268,231,250,282,237,386,220,485,214,569,216,569,221,485,220,387,225,283,242,232,255,184,273,144,298,111,328"/>
-<area shape="rect" id="Node000005" href="$classwebcface_1_1Internal_1_1SyncDataStore2.html" title=" " alt="" coords="517,277,798,347"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="172,340,182,339,356,324,516,315,517,320,356,329,183,344,173,345"/>
-<area shape="rect" id="Node000006" href="$classwebcface_1_1Internal_1_1SyncDataStore2.html" title=" " alt="" coords="537,371,777,426"/>
-<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="156,377,183,383,275,394,369,400,537,401,537,406,369,405,275,399,182,388,155,382"/>
-<area shape="rect" id="Node000007" href="$classwebcface_1_1Internal_1_1SyncDataStore2.html" title=" " alt="" coords="565,450,749,505"/>
-<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="111,384,144,414,184,438,232,454,282,467,384,482,481,486,565,484,565,489,481,491,384,487,281,472,230,460,182,442,141,418,108,388"/>
-<area shape="rect" id="Node000008" href="$classwebcface_1_1Internal_1_1SyncDataStore2.html" title=" " alt="" coords="500,529,815,599"/>
-<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="94,389,105,425,124,466,150,506,184,536,220,556,259,571,299,581,340,588,422,594,499,590,500,595,422,599,339,594,297,587,257,576,218,561,181,541,146,509,119,469,100,427,88,390"/>
-<area shape="rect" id="Node000009" href="$classwebcface_1_1Internal_1_1SyncDataStore2.html" title=" " alt="" coords="545,623,769,678"/>
-<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="86,390,91,447,105,518,118,554,135,588,157,618,184,643,228,669,276,685,326,695,377,699,428,697,477,692,565,675,566,681,478,698,429,703,377,704,325,700,274,691,226,673,181,647,153,622,130,590,113,556,100,519,85,448,81,390"/>
+<area shape="rect" id="Node000001" title="送受信するデータを保持するクラス" alt="" coords="5,191,159,231"/>
+<area shape="rect" id="Node000002" href="$classwebcface_1_1Internal_1_1SyncDataStore2.html" title=" " alt="" coords="379,14,602,39"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="93,177,107,148,126,115,151,84,181,59,228,37,279,23,330,16,379,15,379,20,331,22,280,28,230,42,184,64,154,88,130,118,111,150,98,179"/>
+<area shape="rect" id="Node000003" href="$classwebcface_1_1Internal_1_1SyncDataStore2.html" title=" " alt="" coords="383,63,598,89"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="107,178,140,146,181,119,231,100,283,87,383,74,383,79,284,92,233,105,184,124,143,150,110,182"/>
+<area shape="rect" id="Node000004" href="$classwebcface_1_1Internal_1_1SyncDataStore2.html" title=" " alt="" coords="382,113,599,138"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="136,183,182,167,284,145,382,131,382,137,285,150,183,172,138,188"/>
+<area shape="rect" id="Node000005" href="$classwebcface_1_1Internal_1_1SyncDataStore2.html" title=" " alt="" coords="381,162,600,187"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="172,200,381,182,381,187,173,205"/>
+<area shape="rect" id="Node000006" href="$classwebcface_1_1Internal_1_1SyncDataStore2.html" title=" " alt="" coords="371,211,611,266"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="142,233,183,244,278,253,370,250,371,255,278,258,182,249,140,238"/>
+<area shape="rect" id="Node000007" href="$classwebcface_1_1Internal_1_1SyncDataStore2.html" title=" " alt="" coords="381,291,600,331"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="119,237,149,257,184,274,233,288,284,298,381,308,381,313,283,303,231,293,182,278,147,262,116,241"/>
+<area shape="rect" id="Node000008" href="$classwebcface_1_1Internal_1_1SyncDataStore2.html" title=" " alt="" coords="364,355,617,381"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="103,241,137,287,159,308,184,326,227,345,273,357,319,365,364,369,364,375,318,371,271,363,225,350,181,330,155,312,133,290,99,244"/>
+<area shape="rect" id="Node000009" href="$classwebcface_1_1Internal_1_1SyncDataStore2.html" title=" " alt="" coords="364,405,617,430"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="94,243,106,279,124,319,150,358,184,388,210,403,238,413,296,426,355,430,408,427,409,433,355,435,295,432,236,419,208,407,181,393,146,361,120,322,101,281,89,245"/>
 </map>

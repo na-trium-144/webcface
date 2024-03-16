@@ -151,65 +151,95 @@ $(document).ready(function(){initNavTree('robot__model_8h_source.html',''); init
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &quot;<a class="code" href="common_2robot__model_8h.html">common/robot_model.h</a>&quot;</span></div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &quot;<a class="code" href="field_8h.html">field.h</a>&quot;</span></div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &quot;<a class="code" href="event__target_8h.html">event_target.h</a>&quot;</span></div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="keyword">namespace </span><a class="code hl_define" href="def_8h.html#ac7a8c78cf90e9e699574316ba855f40c">WEBCFACE_NS</a> {</div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="keyword">namespace </span>Internal {</div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="keyword">struct </span>ClientData;</div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>}</div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="keyword">class </span>Member;</div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
-<div class="foldopen" id="foldopen00019" data-start="{" data-end="};">
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno"><a class="line" href="classwebcface_1_1RobotModel.html">   19</a></span><span class="keyword">class </span><a class="code hl_class" href="classwebcface_1_1RobotModel.html">RobotModel</a> : <span class="keyword">protected</span> <a class="code hl_struct" href="structwebcface_1_1Field.html">Field</a>, <span class="keyword">public</span> <a class="code hl_class" href="classwebcface_1_1EventTarget.html">EventTarget</a>&lt;RobotModel&gt; {</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>    <a class="code hl_define" href="def_8h.html#a47af057bda855b54c212e97ffccdca01">WEBCFACE_DLL</a> <span class="keywordtype">void</span> onAppend() <span class="keyword">const override</span>;</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>  <span class="keyword">public</span>:</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno"><a class="line" href="classwebcface_1_1RobotModel.html#a8446c961b3429e13fd10146e783ecdc8">   23</a></span>    <a class="code hl_function" href="classwebcface_1_1RobotModel.html#a8446c961b3429e13fd10146e783ecdc8">RobotModel</a>() = <span class="keywordflow">default</span>;</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>    <a class="code hl_define" href="def_8h.html#a47af057bda855b54c212e97ffccdca01">WEBCFACE_DLL</a> <a class="code hl_class" href="classwebcface_1_1RobotModel.html">RobotModel</a>(<span class="keyword">const</span> <a class="code hl_struct" href="structwebcface_1_1Field.html">Field</a> &amp;base);</div>
-<div class="foldopen" id="foldopen00025" data-start="{" data-end="}">
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno"><a class="line" href="classwebcface_1_1RobotModel.html#afe3d1eb1514a300dfa907650e1db3b72">   25</a></span>    <a class="code hl_define" href="def_8h.html#a47af057bda855b54c212e97ffccdca01">WEBCFACE_DLL</a> <a class="code hl_function" href="classwebcface_1_1RobotModel.html#afe3d1eb1514a300dfa907650e1db3b72">RobotModel</a>(<span class="keyword">const</span> <a class="code hl_struct" href="structwebcface_1_1Field.html">Field</a> &amp;base, <span class="keyword">const</span> std::string &amp;field)</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>        : <a class="code hl_class" href="classwebcface_1_1RobotModel.html">RobotModel</a>(<a class="code hl_struct" href="structwebcface_1_1Field.html">Field</a>{base, field}) {}</div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &quot;<a class="code" href="canvas__data_8h.html">canvas_data.h</a>&quot;</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="keyword">namespace </span><a class="code hl_define" href="def_8h.html#ac7a8c78cf90e9e699574316ba855f40c">WEBCFACE_NS</a> {</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="keyword">namespace </span>Internal {</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="keyword">struct </span>ClientData;</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> Component&gt;</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="keyword">class </span>DataSetBuffer;</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>}</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="keyword">class </span>Member;</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span> </div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="keyword">class </span>RobotModel;</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="keyword">extern</span> <span class="keyword">template</span> <span class="keyword">class </span><a class="code hl_define" href="def_8h.html#a0c2b2b9ef0ccf8db12f940291bea9246">WEBCFACE_IMPORT</a> EventTarget&lt;RobotModel&gt;;</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
+<div class="foldopen" id="foldopen00028" data-start="{" data-end="};">
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="classwebcface_1_1RobotModel.html">   28</a></span><span class="keyword">class </span><a class="code hl_define" href="def_8h.html#a47af057bda855b54c212e97ffccdca01">WEBCFACE_DLL</a> <a class="code hl_class" href="classwebcface_1_1RobotModel.html">RobotModel</a> : <span class="keyword">protected</span> <a class="code hl_struct" href="structwebcface_1_1Field.html">Field</a>,</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>                   <span class="keyword">public</span> <a class="code hl_class" href="classwebcface_1_1EventTarget.html">EventTarget&lt;RobotModel&gt;</a>,</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>                   <span class="keyword">public</span> <a class="code hl_class" href="classwebcface_1_1Canvas3DComponent.html">Canvas3DComponent</a> {</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="classwebcface_1_1RobotModel.html#a387e4f775d6000301a4b78b482000cbb">   31</a></span>    std::shared_ptr&lt;Internal::DataSetBuffer&lt;RobotLink&gt;&gt; <a class="code hl_variable" href="classwebcface_1_1RobotModel.html#a387e4f775d6000301a4b78b482000cbb">sb</a>;</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    </div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    <span class="keywordtype">void</span> onAppend() <span class="keyword">const override</span>;</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    <a class="code hl_class" href="classwebcface_1_1RobotModel.html">RobotModel</a>();</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    <a class="code hl_class" href="classwebcface_1_1RobotModel.html">RobotModel</a>(<span class="keyword">const</span> <a class="code hl_struct" href="structwebcface_1_1Field.html">Field</a> &amp;base);</div>
+<div class="foldopen" id="foldopen00038" data-start="{" data-end="}">
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno"><a class="line" href="classwebcface_1_1RobotModel.html#afe3d1eb1514a300dfa907650e1db3b72">   38</a></span>    <a class="code hl_function" href="classwebcface_1_1RobotModel.html#afe3d1eb1514a300dfa907650e1db3b72">RobotModel</a>(<span class="keyword">const</span> <a class="code hl_struct" href="structwebcface_1_1Field.html">Field</a> &amp;base, <span class="keyword">const</span> std::string &amp;field)</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>        : <a class="code hl_class" href="classwebcface_1_1RobotModel.html">RobotModel</a>(<a class="code hl_struct" href="structwebcface_1_1Field.html">Field</a>{base, field}) {}</div>
 </div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="classwebcface_1_1RobotModel.html#ae85fd7d5b31473ad0f0ddf0c4b14ef39">   28</a></span>    <span class="keyword">friend</span> <span class="keyword">class </span><a class="code hl_class" href="classwebcface_1_1Canvas3D.html">Canvas3D</a>;</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    <span class="keyword">using </span>Field::member;</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    <span class="keyword">using </span>Field::name;</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    <a class="code hl_define" href="def_8h.html#a47af057bda855b54c212e97ffccdca01">WEBCFACE_DLL</a> <a class="code hl_class" href="classwebcface_1_1RobotModel.html">RobotModel</a> &amp;set(<span class="keyword">const</span> std::vector&lt;RobotLink&gt; &amp;v);</div>
-<div class="foldopen" id="foldopen00041" data-start="{" data-end="}">
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno"><a class="line" href="classwebcface_1_1RobotModel.html#a1b04a79e8abc6a77ead8bfcaabe6a9cb">   41</a></span>    <a class="code hl_class" href="classwebcface_1_1RobotModel.html">RobotModel</a> &amp;<a class="code hl_function" href="classwebcface_1_1RobotModel.html#a1b04a79e8abc6a77ead8bfcaabe6a9cb">operator=</a>(<span class="keyword">const</span> std::vector&lt;RobotLink&gt; &amp;v) {</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>        this-&gt;set(v);</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    }</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno"><a class="line" href="classwebcface_1_1RobotModel.html#ae85fd7d5b31473ad0f0ddf0c4b14ef39">   41</a></span>    <span class="keyword">friend</span> <span class="keyword">class </span><a class="code hl_class" href="classwebcface_1_1Canvas3D.html">Canvas3D</a>;</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    <span class="keyword">using </span>Field::member;</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    <span class="keyword">using </span>Field::name;</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    <span class="keyword">friend</span> <a class="code hl_class" href="classwebcface_1_1Internal_1_1DataSetBuffer.html">Internal::DataSetBuffer&lt;RobotLink&gt;</a>;</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    <a class="code hl_class" href="classwebcface_1_1RobotModel.html">RobotModel</a> &amp;init();</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    <a class="code hl_class" href="classwebcface_1_1RobotModel.html">RobotModel</a> &amp;<a class="code hl_function" href="namespacewebcface.html#a3b45f7bce732ee80d9a1346fa7fef32a">operator&lt;&lt;</a>(<span class="keyword">const</span> <a class="code hl_struct" href="structwebcface_1_1Common_1_1RobotLink.html">RobotLink</a> &amp;rl);</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    <a class="code hl_class" href="classwebcface_1_1RobotModel.html">RobotModel</a> &amp;<a class="code hl_function" href="namespacewebcface.html#a3b45f7bce732ee80d9a1346fa7fef32a">operator&lt;&lt;</a>(<a class="code hl_struct" href="structwebcface_1_1Common_1_1RobotLink.html">RobotLink</a> &amp;&amp;rl);</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="foldopen" id="foldopen00066" data-start="{" data-end="}">
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno"><a class="line" href="classwebcface_1_1RobotModel.html#a38c39af4a48d4aa30e79e2d591cb6738">   66</a></span>    <a class="code hl_class" href="classwebcface_1_1RobotModel.html">RobotModel</a> &amp;<a class="code hl_function" href="classwebcface_1_1RobotModel.html#a38c39af4a48d4aa30e79e2d591cb6738">add</a>(T &amp;&amp;rl) {</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>        *this &lt;&lt; std::forward&lt;T&gt;(rl);</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    }</div>
 </div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    <a class="code hl_define" href="def_8h.html#a47af057bda855b54c212e97ffccdca01">WEBCFACE_DLL</a> <span class="keywordtype">void</span> request() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    <a class="code hl_define" href="def_8h.html#a47af057bda855b54c212e97ffccdca01">WEBCFACE_DLL</a> std::optional&lt;std::vector&lt;RobotLink&gt;&gt; tryGet() <span class="keyword">const</span>;</div>
-<div class="foldopen" id="foldopen00060" data-start="{" data-end="}">
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno"><a class="line" href="classwebcface_1_1RobotModel.html#aea910688df1426b4e1ce5092af8c2245">   60</a></span>    std::vector&lt;RobotLink&gt; <a class="code hl_function" href="classwebcface_1_1RobotModel.html#aea910688df1426b4e1ce5092af8c2245">get</a>()<span class="keyword"> const </span>{</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>        <span class="keywordflow">return</span> tryGet().value_or(std::vector&lt;RobotLink&gt;{});</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    }</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    <a class="code hl_class" href="classwebcface_1_1RobotModel.html">RobotModel</a> &amp;sync();</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span> </div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    <a class="code hl_class" href="classwebcface_1_1RobotModel.html">RobotModel</a> &amp;set(<span class="keyword">const</span> std::vector&lt;RobotLink&gt; &amp;v);</div>
+<div class="foldopen" id="foldopen00085" data-start="{" data-end="}">
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno"><a class="line" href="classwebcface_1_1RobotModel.html#a1b04a79e8abc6a77ead8bfcaabe6a9cb">   85</a></span>    <a class="code hl_class" href="classwebcface_1_1RobotModel.html">RobotModel</a> &amp;<a class="code hl_function" href="classwebcface_1_1RobotModel.html#a1b04a79e8abc6a77ead8bfcaabe6a9cb">operator=</a>(<span class="keyword">const</span> std::vector&lt;RobotLink&gt; &amp;v) {</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>        this-&gt;set(v);</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    }</div>
 </div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno"><a class="line" href="classwebcface_1_1RobotModel.html#a7e15ce4242494b52d4fea72ce315859d">   63</a></span>    <span class="keyword">operator</span> std::vector&lt;RobotLink&gt;()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> get(); }</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    [[deprecated]] <a class="code hl_define" href="def_8h.html#a47af057bda855b54c212e97ffccdca01">WEBCFACE_DLL</a> std::chrono::system_clock::time_point</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    time() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    <a class="code hl_define" href="def_8h.html#a47af057bda855b54c212e97ffccdca01">WEBCFACE_DLL</a> <a class="code hl_class" href="classwebcface_1_1RobotModel.html">RobotModel</a> &amp;free();</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>};</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    <span class="keywordtype">void</span> request() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>    std::optional&lt;std::vector&lt;RobotLink&gt;&gt; tryGet() <span class="keyword">const</span>;</div>
+<div class="foldopen" id="foldopen00104" data-start="{" data-end="}">
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno"><a class="line" href="classwebcface_1_1RobotModel.html#aea910688df1426b4e1ce5092af8c2245">  104</a></span>    std::vector&lt;RobotLink&gt; <a class="code hl_function" href="classwebcface_1_1RobotModel.html#aea910688df1426b4e1ce5092af8c2245">get</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>        <span class="keywordflow">return</span> tryGet().value_or(std::vector&lt;RobotLink&gt;{});</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>    }</div>
 </div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span> </div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>} <span class="comment">// namespace WEBCFACE_NS</span></div>
-<div class="ttc" id="aclasswebcface_1_1Canvas3D_html"><div class="ttname"><a href="classwebcface_1_1Canvas3D.html">webcface::Canvas3D</a></div><div class="ttdoc">Canvas3Dの送受信データを表すクラス</div><div class="ttdef"><b>Definition</b> canvas3d.h:248</div></div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno"><a class="line" href="classwebcface_1_1RobotModel.html#a7e15ce4242494b52d4fea72ce315859d">  107</a></span>    <span class="keyword">operator</span> std::vector&lt;RobotLink&gt;()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> get(); }</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>    [[deprecated]] std::chrono::system_clock::time_point</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>    time() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span> </div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>    <a class="code hl_class" href="classwebcface_1_1RobotModel.html">RobotModel</a> &amp;free();</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>};</div>
+</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span> </div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>} <span class="comment">// namespace WEBCFACE_NS</span></div>
+<div class="ttc" id="acanvas__data_8h_html"><div class="ttname"><a href="canvas__data_8h.html">canvas_data.h</a></div></div>
+<div class="ttc" id="aclasswebcface_1_1Canvas3DComponent_html"><div class="ttname"><a href="classwebcface_1_1Canvas3DComponent.html">webcface::Canvas3DComponent</a></div><div class="ttdoc">Canvas3Dに表示する要素</div><div class="ttdef"><b>Definition</b> canvas_data.h:120</div></div>
+<div class="ttc" id="aclasswebcface_1_1Canvas3D_html"><div class="ttname"><a href="classwebcface_1_1Canvas3D.html">webcface::Canvas3D</a></div><div class="ttdoc">Canvas3Dの送受信データを表すクラス</div><div class="ttdef"><b>Definition</b> canvas3d.h:32</div></div>
 <div class="ttc" id="aclasswebcface_1_1EventTarget_html"><div class="ttname"><a href="classwebcface_1_1EventTarget.html">webcface::EventTarget</a></div><div class="ttdoc">イベントを表し、コールバックの追加や削除ができるクラス。</div><div class="ttdef"><b>Definition</b> event_target.h:15</div></div>
-<div class="ttc" id="aclasswebcface_1_1RobotModel_html"><div class="ttname"><a href="classwebcface_1_1RobotModel.html">webcface::RobotModel</a></div><div class="ttdoc">RobotModelの送受信データを表すクラス</div><div class="ttdef"><b>Definition</b> robot_model.h:19</div></div>
-<div class="ttc" id="aclasswebcface_1_1RobotModel_html_a1b04a79e8abc6a77ead8bfcaabe6a9cb"><div class="ttname"><a href="classwebcface_1_1RobotModel.html#a1b04a79e8abc6a77ead8bfcaabe6a9cb">webcface::RobotModel::operator=</a></div><div class="ttdeci">RobotModel &amp; operator=(const std::vector&lt; RobotLink &gt; &amp;v)</div><div class="ttdoc">モデルをセットする</div><div class="ttdef"><b>Definition</b> robot_model.h:41</div></div>
-<div class="ttc" id="aclasswebcface_1_1RobotModel_html_a8446c961b3429e13fd10146e783ecdc8"><div class="ttname"><a href="classwebcface_1_1RobotModel.html#a8446c961b3429e13fd10146e783ecdc8">webcface::RobotModel::RobotModel</a></div><div class="ttdeci">RobotModel()=default</div></div>
-<div class="ttc" id="aclasswebcface_1_1RobotModel_html_aea910688df1426b4e1ce5092af8c2245"><div class="ttname"><a href="classwebcface_1_1RobotModel.html#aea910688df1426b4e1ce5092af8c2245">webcface::RobotModel::get</a></div><div class="ttdeci">std::vector&lt; RobotLink &gt; get() const</div><div class="ttdoc">モデルを返す</div><div class="ttdef"><b>Definition</b> robot_model.h:60</div></div>
-<div class="ttc" id="aclasswebcface_1_1RobotModel_html_afe3d1eb1514a300dfa907650e1db3b72"><div class="ttname"><a href="classwebcface_1_1RobotModel.html#afe3d1eb1514a300dfa907650e1db3b72">webcface::RobotModel::RobotModel</a></div><div class="ttdeci">RobotModel(const Field &amp;base, const std::string &amp;field)</div><div class="ttdef"><b>Definition</b> robot_model.h:25</div></div>
+<div class="ttc" id="aclasswebcface_1_1Internal_1_1DataSetBuffer_html"><div class="ttname"><a href="classwebcface_1_1Internal_1_1DataSetBuffer.html">webcface::Internal::DataSetBuffer</a></div><div class="ttdoc">View,Canvasなどで送信用にaddされたデータを管理する</div><div class="ttdef"><b>Definition</b> data_buffer.h:17</div></div>
+<div class="ttc" id="aclasswebcface_1_1RobotModel_html"><div class="ttname"><a href="classwebcface_1_1RobotModel.html">webcface::RobotModel</a></div><div class="ttdoc">RobotModelの送受信データを表すクラス</div><div class="ttdef"><b>Definition</b> robot_model.h:30</div></div>
+<div class="ttc" id="aclasswebcface_1_1RobotModel_html_a1b04a79e8abc6a77ead8bfcaabe6a9cb"><div class="ttname"><a href="classwebcface_1_1RobotModel.html#a1b04a79e8abc6a77ead8bfcaabe6a9cb">webcface::RobotModel::operator=</a></div><div class="ttdeci">RobotModel &amp; operator=(const std::vector&lt; RobotLink &gt; &amp;v)</div><div class="ttdoc">モデルをセットする</div><div class="ttdef"><b>Definition</b> robot_model.h:85</div></div>
+<div class="ttc" id="aclasswebcface_1_1RobotModel_html_a387e4f775d6000301a4b78b482000cbb"><div class="ttname"><a href="classwebcface_1_1RobotModel.html#a387e4f775d6000301a4b78b482000cbb">webcface::RobotModel::sb</a></div><div class="ttdeci">std::shared_ptr&lt; Internal::DataSetBuffer&lt; RobotLink &gt; &gt; sb</div><div class="ttdef"><b>Definition</b> robot_model.h:31</div></div>
+<div class="ttc" id="aclasswebcface_1_1RobotModel_html_a38c39af4a48d4aa30e79e2d591cb6738"><div class="ttname"><a href="classwebcface_1_1RobotModel.html#a38c39af4a48d4aa30e79e2d591cb6738">webcface::RobotModel::add</a></div><div class="ttdeci">RobotModel &amp; add(T &amp;&amp;rl)</div><div class="ttdoc">モデルにlinkを追加</div><div class="ttdef"><b>Definition</b> robot_model.h:66</div></div>
+<div class="ttc" id="aclasswebcface_1_1RobotModel_html_aea910688df1426b4e1ce5092af8c2245"><div class="ttname"><a href="classwebcface_1_1RobotModel.html#aea910688df1426b4e1ce5092af8c2245">webcface::RobotModel::get</a></div><div class="ttdeci">std::vector&lt; RobotLink &gt; get() const</div><div class="ttdoc">モデルを返す</div><div class="ttdef"><b>Definition</b> robot_model.h:104</div></div>
+<div class="ttc" id="aclasswebcface_1_1RobotModel_html_afe3d1eb1514a300dfa907650e1db3b72"><div class="ttname"><a href="classwebcface_1_1RobotModel.html#afe3d1eb1514a300dfa907650e1db3b72">webcface::RobotModel::RobotModel</a></div><div class="ttdeci">RobotModel(const Field &amp;base, const std::string &amp;field)</div><div class="ttdef"><b>Definition</b> robot_model.h:38</div></div>
 <div class="ttc" id="acommon_2robot__model_8h_html"><div class="ttname"><a href="common_2robot__model_8h.html">robot_model.h</a></div></div>
 <div class="ttc" id="adef_8h_html"><div class="ttname"><a href="def_8h.html">def.h</a></div></div>
-<div class="ttc" id="adef_8h_html_a47af057bda855b54c212e97ffccdca01"><div class="ttname"><a href="def_8h.html#a47af057bda855b54c212e97ffccdca01">WEBCFACE_DLL</a></div><div class="ttdeci">#define WEBCFACE_DLL</div><div class="ttdef"><b>Definition</b> def.h:31</div></div>
-<div class="ttc" id="adef_8h_html_ac7a8c78cf90e9e699574316ba855f40c"><div class="ttname"><a href="def_8h.html#ac7a8c78cf90e9e699574316ba855f40c">WEBCFACE_NS</a></div><div class="ttdeci">#define WEBCFACE_NS</div><div class="ttdef"><b>Definition</b> def.h:32</div></div>
+<div class="ttc" id="adef_8h_html_a0c2b2b9ef0ccf8db12f940291bea9246"><div class="ttname"><a href="def_8h.html#a0c2b2b9ef0ccf8db12f940291bea9246">WEBCFACE_IMPORT</a></div><div class="ttdeci">#define WEBCFACE_IMPORT</div><div class="ttdef"><b>Definition</b> def.h:34</div></div>
+<div class="ttc" id="adef_8h_html_a47af057bda855b54c212e97ffccdca01"><div class="ttname"><a href="def_8h.html#a47af057bda855b54c212e97ffccdca01">WEBCFACE_DLL</a></div><div class="ttdeci">#define WEBCFACE_DLL</div><div class="ttdef"><b>Definition</b> def.h:33</div></div>
+<div class="ttc" id="adef_8h_html_ac7a8c78cf90e9e699574316ba855f40c"><div class="ttname"><a href="def_8h.html#ac7a8c78cf90e9e699574316ba855f40c">WEBCFACE_NS</a></div><div class="ttdeci">#define WEBCFACE_NS</div><div class="ttdef"><b>Definition</b> def.h:35</div></div>
 <div class="ttc" id="aevent__target_8h_html"><div class="ttname"><a href="event__target_8h.html">event_target.h</a></div></div>
 <div class="ttc" id="afield_8h_html"><div class="ttname"><a href="field_8h.html">field.h</a></div></div>
+<div class="ttc" id="anamespacewebcface_html_a3b45f7bce732ee80d9a1346fa7fef32a"><div class="ttname"><a href="namespacewebcface.html#a3b45f7bce732ee80d9a1346fa7fef32a">webcface::operator&lt;&lt;</a></div><div class="ttdeci">auto &amp; operator&lt;&lt;(std::basic_ostream&lt; char &gt; &amp;os, const AsyncFuncResult &amp;r)</div><div class="ttdef"><b>Definition</b> func.cc:11</div></div>
+<div class="ttc" id="astructwebcface_1_1Common_1_1RobotLink_html"><div class="ttname"><a href="structwebcface_1_1Common_1_1RobotLink.html">webcface::RobotLink</a></div><div class="ttdef"><b>Definition</b> robot_model.h:98</div></div>
 <div class="ttc" id="astructwebcface_1_1Field_html"><div class="ttname"><a href="structwebcface_1_1Field.html">webcface::Field</a></div><div class="ttdoc">ClientDataの参照とメンバ名とデータ名を持つクラス</div><div class="ttdef"><b>Definition</b> field.h:16</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
@@ -217,7 +247,7 @@ $(document).ready(function(){initNavTree('robot__model_8h_source.html',''); init
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_e6fac88a17509a9ad709623cf2c100d8.html">webcface</a></li><li class="navelem"><a class="el" href="robot__model_8h.html">robot_model.h</a></li>
-    <li class="footer">Generated on Tue Mar 12 2024 04:26:49 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Sat Mar 16 2024 01:15:15 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

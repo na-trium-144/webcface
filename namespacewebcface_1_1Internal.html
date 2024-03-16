@@ -148,7 +148,12 @@ $(document).ready(function(){initNavTree('namespacewebcface_1_1Internal.html',''
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Internal_1_1Canvas2DDataBuf.html">Canvas2DDataBuf</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html">ClientData</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Internal_1_1DataSetBuffer.html">DataSetBuffer</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classwebcface_1_1View.html" title="Viewの送受信データを表すクラス">View</a>,Canvasなどで送信用にaddされたデータを管理する  <a href="classwebcface_1_1Internal_1_1DataSetBuffer.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Internal_1_1FuncOnSync.html">FuncOnSync</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">clientがsync()されたタイミングで実行中の関数を起こす さらにその関数が完了するまで待機する  <a href="classwebcface_1_1Internal_1_1FuncOnSync.html#details">More...</a><br /></td></tr>
@@ -161,6 +166,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore2.html">SyncDataStore2</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">送受信するデータを保持するクラス  <a href="classwebcface_1_1Internal_1_1SyncDataStore2.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Internal_1_1ViewBuf.html">ViewBuf</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Viewの送信用データを保持する  <a href="classwebcface_1_1Internal_1_1ViewBuf.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
@@ -172,12 +180,12 @@ Typedefs</h2></td></tr>
 <tr class="separator:ac0d89cc32a3164abf18e9dfafcf15532"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a82ba3dfe2c2f8fdc2661559f821cc37f" id="r_a82ba3dfe2c2f8fdc2661559f821cc37f"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Internal.html#a82ba3dfe2c2f8fdc2661559f821cc37f">ViewData</a> = std::shared_ptr&lt; std::vector&lt; <a class="el" href="structwebcface_1_1Common_1_1ViewComponentBase.html">Common::ViewComponentBase</a> &gt; &gt;</td></tr>
 <tr class="separator:a82ba3dfe2c2f8fdc2661559f821cc37f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae132241e0adb311b2e41a4ac75efa685" id="r_ae132241e0adb311b2e41a4ac75efa685"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Internal.html#ae132241e0adb311b2e41a4ac75efa685">RobotModelData</a> = std::vector&lt; <a class="el" href="structwebcface_1_1Common_1_1RobotLink.html">Common::RobotLink</a> &gt;</td></tr>
-<tr class="separator:ae132241e0adb311b2e41a4ac75efa685"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aca074f5e4bc873cc9d4a8af693fdece1" id="r_aca074f5e4bc873cc9d4a8af693fdece1"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Internal.html#aca074f5e4bc873cc9d4a8af693fdece1">RobotModelData</a> = std::shared_ptr&lt; std::vector&lt; <a class="el" href="structwebcface_1_1Common_1_1RobotLink.html">Common::RobotLink</a> &gt; &gt;</td></tr>
+<tr class="separator:aca074f5e4bc873cc9d4a8af693fdece1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4ca4d08bfc016620de495c6d2a8805cf" id="r_a4ca4d08bfc016620de495c6d2a8805cf"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Internal.html#a4ca4d08bfc016620de495c6d2a8805cf">Canvas3DData</a> = std::shared_ptr&lt; std::vector&lt; <a class="el" href="structwebcface_1_1Common_1_1Canvas3DComponentBase.html">Common::Canvas3DComponentBase</a> &gt; &gt;</td></tr>
 <tr class="separator:a4ca4d08bfc016620de495c6d2a8805cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa9d8328097377fd6c1eebbe8135631f6" id="r_aa9d8328097377fd6c1eebbe8135631f6"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Internal.html#aa9d8328097377fd6c1eebbe8135631f6">Canvas2DData</a> = std::shared_ptr&lt; <a class="el" href="structwebcface_1_1Common_1_1Canvas2DData.html">Common::Canvas2DData</a> &gt;</td></tr>
-<tr class="separator:aa9d8328097377fd6c1eebbe8135631f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a19bd08458eaa080b9fb782422e2f907d" id="r_a19bd08458eaa080b9fb782422e2f907d"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Internal.html#a19bd08458eaa080b9fb782422e2f907d">Canvas2DData</a> = std::shared_ptr&lt; <a class="el" href="structwebcface_1_1Common_1_1Canvas2DDataBase.html">Common::Canvas2DDataBase</a> &gt;</td></tr>
+<tr class="separator:a19bd08458eaa080b9fb782422e2f907d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8c6d0a075c8c538242b0759f1c4aa4b8" id="r_a8c6d0a075c8c538242b0759f1c4aa4b8"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Internal.html#a8c6d0a075c8c538242b0759f1c4aa4b8">ImageData</a> = <a class="el" href="classwebcface_1_1Common_1_1ImageBase.html">Common::ImageBase</a></td></tr>
 <tr class="separator:a8c6d0a075c8c538242b0759f1c4aa4b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -193,14 +201,14 @@ Functions</h2></td></tr>
 <tr class="separator:aa75afe668d3595431d5d644f1213cba6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Typedef Documentation</h2>
-<a id="aa9d8328097377fd6c1eebbe8135631f6" name="aa9d8328097377fd6c1eebbe8135631f6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa9d8328097377fd6c1eebbe8135631f6">&#9670;&#160;</a></span>Canvas2DData</h2>
+<a id="a19bd08458eaa080b9fb782422e2f907d" name="a19bd08458eaa080b9fb782422e2f907d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a19bd08458eaa080b9fb782422e2f907d">&#9670;&#160;</a></span>Canvas2DData</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="namespacewebcface_1_1Internal.html#aa9d8328097377fd6c1eebbe8135631f6">Canvas2DData</a> =  std::shared_ptr&lt;<a class="el" href="structwebcface_1_1Common_1_1Canvas2DData.html">Common::Canvas2DData</a>&gt;</td>
+          <td class="memname">using <a class="el" href="namespacewebcface_1_1Internal.html#a19bd08458eaa080b9fb782422e2f907d">Canvas2DData</a> =  std::shared_ptr&lt;<a class="el" href="structwebcface_1_1Common_1_1Canvas2DDataBase.html">Common::Canvas2DDataBase</a>&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -249,14 +257,14 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ae132241e0adb311b2e41a4ac75efa685" name="ae132241e0adb311b2e41a4ac75efa685"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae132241e0adb311b2e41a4ac75efa685">&#9670;&#160;</a></span>RobotModelData</h2>
+<a id="aca074f5e4bc873cc9d4a8af693fdece1" name="aca074f5e4bc873cc9d4a8af693fdece1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aca074f5e4bc873cc9d4a8af693fdece1">&#9670;&#160;</a></span>RobotModelData</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="namespacewebcface_1_1Internal.html#ae132241e0adb311b2e41a4ac75efa685">RobotModelData</a> =  std::vector&lt;<a class="el" href="structwebcface_1_1Common_1_1RobotLink.html">Common::RobotLink</a>&gt;</td>
+          <td class="memname">using <a class="el" href="namespacewebcface_1_1Internal.html#aca074f5e4bc873cc9d4a8af693fdece1">RobotModelData</a> =  std::shared_ptr&lt;std::vector&lt;<a class="el" href="structwebcface_1_1Common_1_1RobotLink.html">Common::RobotLink</a>&gt; &gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -404,7 +412,7 @@ template&lt;typename T &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="namespacewebcface_1_1Internal.html">Internal</a></li>
-    <li class="footer">Generated on Tue Mar 12 2024 04:26:49 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Sat Mar 16 2024 01:15:15 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

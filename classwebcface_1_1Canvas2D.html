@@ -185,9 +185,6 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:aeca8a71abc298392b00c262a8a172f60"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2a172ba51f892b0852d8d436fd6bab4d" id="r_a2a172ba51f892b0852d8d436fd6bab4d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Canvas2D.html#a2a172ba51f892b0852d8d436fd6bab4d">Canvas2D</a> (const <a class="el" href="structwebcface_1_1Field.html">Field</a> &amp;base, const std::string &amp;field, double width, double height)</td></tr>
 <tr class="separator:a2a172ba51f892b0852d8d436fd6bab4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a58020451b202dd6ee7f6b8d4095b81bc" id="r_a58020451b202dd6ee7f6b8d4095b81bc"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Canvas2D.html#a58020451b202dd6ee7f6b8d4095b81bc">~Canvas2D</a> () override</td></tr>
-<tr class="memdesc:a58020451b202dd6ee7f6b8d4095b81bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">デストラクタで <a class="el" href="classwebcface_1_1Canvas2D.html#a3890eb056296a1300dcb980995f7c455" title="内容をclientに反映し送信可能にする">sync()</a> を呼ぶ。  <br /></td></tr>
-<tr class="separator:a58020451b202dd6ee7f6b8d4095b81bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6b4b2e50cee7e1a8fb087b04ede6be60" id="r_a6b4b2e50cee7e1a8fb087b04ede6be60"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Canvas2D.html">Canvas2D</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Canvas2D.html#a6b4b2e50cee7e1a8fb087b04ede6be60">child</a> (const std::string &amp;field) const</td></tr>
 <tr class="memdesc:a6b4b2e50cee7e1a8fb087b04ede6be60"><td class="mdescLeft">&#160;</td><td class="mdescRight">子フィールドを返す  <br /></td></tr>
 <tr class="separator:a6b4b2e50cee7e1a8fb087b04ede6be60"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -209,29 +206,36 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aa6cf92b494a2713ea147e7ad429d082d" id="r_aa6cf92b494a2713ea147e7ad429d082d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Canvas2D.html">Canvas2D</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Canvas2D.html#aa6cf92b494a2713ea147e7ad429d082d">init</a> (double width, double height)</td></tr>
 <tr class="memdesc:aa6cf92b494a2713ea147e7ad429d082d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Canvasのサイズを指定 &amp; このCanvas2Dに追加した内容を初期化する  <br /></td></tr>
 <tr class="separator:aa6cf92b494a2713ea147e7ad429d082d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab39156553dc58526065d6a8bd6e79067" id="r_ab39156553dc58526065d6a8bd6e79067"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Canvas2D.html">Canvas2D</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Canvas2D.html#ab39156553dc58526065d6a8bd6e79067">add</a> (const <a class="el" href="structwebcface_1_1Common_1_1Canvas2DComponentBase.html">Canvas2DComponentBase</a> &amp;cc)</td></tr>
-<tr class="memdesc:ab39156553dc58526065d6a8bd6e79067"><td class="mdescLeft">&#160;</td><td class="mdescRight">Componentを追加  <br /></td></tr>
-<tr class="separator:ab39156553dc58526065d6a8bd6e79067"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae7286e0bae437482e2811226c66a43fc" id="r_ae7286e0bae437482e2811226c66a43fc"><td class="memTemplParams" colspan="2">template&lt;typename G &gt; <br />
-requires std::derived_from&lt;G, <a class="el" href="structwebcface_1_1Common_1_1Geometry2D.html">Geometry2D</a>&gt;</td></tr>
-<tr class="memitem:ae7286e0bae437482e2811226c66a43fc"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Canvas2D.html">Canvas2D</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Canvas2D.html#ae7286e0bae437482e2811226c66a43fc">add</a> (const G &amp;geometry, const <a class="el" href="classwebcface_1_1Common_1_1Transform.html">Transform</a> &amp;origin, const <a class="el" href="namespacewebcface_1_1Common.html#a5dcc1f15d6a60ca34207565aeb74124a">ViewColor</a> &amp;color=ViewColor::inherit, const <a class="el" href="namespacewebcface_1_1Common.html#a5dcc1f15d6a60ca34207565aeb74124a">ViewColor</a> &amp;fill=ViewColor::inherit, double stroke_width=1)</td></tr>
-<tr class="memdesc:ae7286e0bae437482e2811226c66a43fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Geometryを追加  <br /></td></tr>
-<tr class="separator:ae7286e0bae437482e2811226c66a43fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adb4afcc10d3d7ef6c6797dc278736bfc" id="r_adb4afcc10d3d7ef6c6797dc278736bfc"><td class="memTemplParams" colspan="2">template&lt;typename G &gt; <br />
-requires std::derived_from&lt;G, <a class="el" href="structwebcface_1_1Common_1_1Geometry2D.html">Geometry2D</a>&gt;</td></tr>
-<tr class="memitem:adb4afcc10d3d7ef6c6797dc278736bfc"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Canvas2D.html">Canvas2D</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Canvas2D.html#adb4afcc10d3d7ef6c6797dc278736bfc">add</a> (const G &amp;geometry, const <a class="el" href="namespacewebcface_1_1Common.html#a5dcc1f15d6a60ca34207565aeb74124a">ViewColor</a> &amp;color=ViewColor::inherit, const <a class="el" href="namespacewebcface_1_1Common.html#a5dcc1f15d6a60ca34207565aeb74124a">ViewColor</a> &amp;fill=ViewColor::inherit, double stroke_width=1)</td></tr>
-<tr class="memdesc:adb4afcc10d3d7ef6c6797dc278736bfc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Geometryを追加  <br /></td></tr>
-<tr class="separator:adb4afcc10d3d7ef6c6797dc278736bfc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afdb8cdbcb0c310d4bbcf8413969cc86e" id="r_afdb8cdbcb0c310d4bbcf8413969cc86e"><td class="memTemplParams" colspan="2">template&lt;typename G &gt; <br />
-requires std::derived_from&lt;G, <a class="el" href="structwebcface_1_1Common_1_1Geometry2D.html">Geometry2D</a>&gt;</td></tr>
-<tr class="memitem:afdb8cdbcb0c310d4bbcf8413969cc86e"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Canvas2D.html">Canvas2D</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Canvas2D.html#afdb8cdbcb0c310d4bbcf8413969cc86e">add</a> (const G &amp;geometry, const <a class="el" href="classwebcface_1_1Common_1_1Transform.html">Transform</a> &amp;origin, const <a class="el" href="namespacewebcface_1_1Common.html#a5dcc1f15d6a60ca34207565aeb74124a">ViewColor</a> &amp;color, double stroke_width)</td></tr>
-<tr class="memdesc:afdb8cdbcb0c310d4bbcf8413969cc86e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Geometryを追加  <br /></td></tr>
-<tr class="separator:afdb8cdbcb0c310d4bbcf8413969cc86e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2987e9406e13e289f7d18f92784f469a" id="r_a2987e9406e13e289f7d18f92784f469a"><td class="memTemplParams" colspan="2">template&lt;typename G &gt; <br />
-requires std::derived_from&lt;G, <a class="el" href="structwebcface_1_1Common_1_1Geometry2D.html">Geometry2D</a>&gt;</td></tr>
-<tr class="memitem:a2987e9406e13e289f7d18f92784f469a"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Canvas2D.html">Canvas2D</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Canvas2D.html#a2987e9406e13e289f7d18f92784f469a">add</a> (const G &amp;geometry, const <a class="el" href="namespacewebcface_1_1Common.html#a5dcc1f15d6a60ca34207565aeb74124a">ViewColor</a> &amp;color, double stroke_width)</td></tr>
-<tr class="memdesc:a2987e9406e13e289f7d18f92784f469a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Geometryを追加  <br /></td></tr>
-<tr class="separator:a2987e9406e13e289f7d18f92784f469a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a62cc71314f2a8e11d0929a4d33b593ac" id="r_a62cc71314f2a8e11d0929a4d33b593ac"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Canvas2D.html">Canvas2D</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Canvas2D.html#a62cc71314f2a8e11d0929a4d33b593ac">operator&lt;&lt;</a> (const <a class="el" href="classwebcface_1_1Canvas2DComponent.html">Canvas2DComponent</a> &amp;cc)</td></tr>
+<tr class="memdesc:a62cc71314f2a8e11d0929a4d33b593ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Componentを追加  <br /></td></tr>
+<tr class="separator:a62cc71314f2a8e11d0929a4d33b593ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acc5cba16cc2a963ae997209ca5d717b6" id="r_acc5cba16cc2a963ae997209ca5d717b6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Canvas2D.html">Canvas2D</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Canvas2D.html#acc5cba16cc2a963ae997209ca5d717b6">operator&lt;&lt;</a> (<a class="el" href="classwebcface_1_1Canvas2DComponent.html">Canvas2DComponent</a> &amp;&amp;cc)</td></tr>
+<tr class="memdesc:acc5cba16cc2a963ae997209ca5d717b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Componentを追加  <br /></td></tr>
+<tr class="separator:acc5cba16cc2a963ae997209ca5d717b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af2d7719b1cf8babfa1d0f720e6fb54ab" id="r_af2d7719b1cf8babfa1d0f720e6fb54ab"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:af2d7719b1cf8babfa1d0f720e6fb54ab"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Canvas2D.html">Canvas2D</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Canvas2D.html#af2d7719b1cf8babfa1d0f720e6fb54ab">add</a> (T &amp;&amp;cc)</td></tr>
+<tr class="memdesc:af2d7719b1cf8babfa1d0f720e6fb54ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">コンポーネントなどを追加  <br /></td></tr>
+<tr class="separator:af2d7719b1cf8babfa1d0f720e6fb54ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a10b974a74e12a9936a1b476e3cd1095c" id="r_a10b974a74e12a9936a1b476e3cd1095c"><td class="memTemplParams" colspan="2">template&lt;bool V, bool C3&gt; </td></tr>
+<tr class="memitem:a10b974a74e12a9936a1b476e3cd1095c"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Canvas2D.html">Canvas2D</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Canvas2D.html#a10b974a74e12a9936a1b476e3cd1095c">operator&lt;&lt;</a> (<a class="el" href="classwebcface_1_1TemporalComponent.html">TemporalComponent</a>&lt; V, true, C3 &gt; &amp;&amp;cc)</td></tr>
+<tr class="memdesc:a10b974a74e12a9936a1b476e3cd1095c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Geometryを追加  <br /></td></tr>
+<tr class="separator:a10b974a74e12a9936a1b476e3cd1095c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a571089715c116cd8da3a091e460a87a5" id="r_a571089715c116cd8da3a091e460a87a5"><td class="memTemplParams" colspan="2">template&lt;bool V, bool C3&gt; </td></tr>
+<tr class="memitem:a571089715c116cd8da3a091e460a87a5"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Canvas2D.html">Canvas2D</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Canvas2D.html#a571089715c116cd8da3a091e460a87a5">operator&lt;&lt;</a> (<a class="el" href="classwebcface_1_1TemporalComponent.html">TemporalComponent</a>&lt; V, true, C3 &gt; &amp;cc)</td></tr>
+<tr class="memdesc:a571089715c116cd8da3a091e460a87a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Geometryを追加  <br /></td></tr>
+<tr class="separator:a571089715c116cd8da3a091e460a87a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3c96af042aee8144ac08090068699b8c" id="r_a3c96af042aee8144ac08090068699b8c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Canvas2D.html">Canvas2D</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Canvas2D.html#a3c96af042aee8144ac08090068699b8c">add</a> (const <a class="el" href="structwebcface_1_1Common_1_1Geometry.html">Geometry</a> &amp;geometry, const <a class="el" href="classwebcface_1_1Common_1_1Transform.html">Transform</a> &amp;origin, const <a class="el" href="namespacewebcface_1_1Common.html#a5dcc1f15d6a60ca34207565aeb74124a">ViewColor</a> &amp;color=ViewColor::inherit, const <a class="el" href="namespacewebcface_1_1Common.html#a5dcc1f15d6a60ca34207565aeb74124a">ViewColor</a> &amp;fill=ViewColor::inherit, double stroke_width=1)</td></tr>
+<tr class="memdesc:a3c96af042aee8144ac08090068699b8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Geometryを追加  <br /></td></tr>
+<tr class="separator:a3c96af042aee8144ac08090068699b8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a199f6e1d4b85db95cdc95070ef7de64f" id="r_a199f6e1d4b85db95cdc95070ef7de64f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Canvas2D.html">Canvas2D</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Canvas2D.html#a199f6e1d4b85db95cdc95070ef7de64f">add</a> (const <a class="el" href="structwebcface_1_1Common_1_1Geometry.html">Geometry</a> &amp;geometry, const <a class="el" href="namespacewebcface_1_1Common.html#a5dcc1f15d6a60ca34207565aeb74124a">ViewColor</a> &amp;color=ViewColor::inherit, const <a class="el" href="namespacewebcface_1_1Common.html#a5dcc1f15d6a60ca34207565aeb74124a">ViewColor</a> &amp;fill=ViewColor::inherit, double stroke_width=1)</td></tr>
+<tr class="memdesc:a199f6e1d4b85db95cdc95070ef7de64f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Geometryを追加  <br /></td></tr>
+<tr class="separator:a199f6e1d4b85db95cdc95070ef7de64f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8638fa3ede151bd40b72366ad27dd466" id="r_a8638fa3ede151bd40b72366ad27dd466"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Canvas2D.html">Canvas2D</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Canvas2D.html#a8638fa3ede151bd40b72366ad27dd466">add</a> (const <a class="el" href="structwebcface_1_1Common_1_1Geometry.html">Geometry</a> &amp;geometry, const <a class="el" href="classwebcface_1_1Common_1_1Transform.html">Transform</a> &amp;origin, const <a class="el" href="namespacewebcface_1_1Common.html#a5dcc1f15d6a60ca34207565aeb74124a">ViewColor</a> &amp;color, double stroke_width)</td></tr>
+<tr class="memdesc:a8638fa3ede151bd40b72366ad27dd466"><td class="mdescLeft">&#160;</td><td class="mdescRight">Geometryを追加  <br /></td></tr>
+<tr class="separator:a8638fa3ede151bd40b72366ad27dd466"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a944399d973a106aa129a537a554a7760" id="r_a944399d973a106aa129a537a554a7760"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Canvas2D.html">Canvas2D</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Canvas2D.html#a944399d973a106aa129a537a554a7760">add</a> (const <a class="el" href="structwebcface_1_1Common_1_1Geometry.html">Geometry</a> &amp;geometry, const <a class="el" href="namespacewebcface_1_1Common.html#a5dcc1f15d6a60ca34207565aeb74124a">ViewColor</a> &amp;color, double stroke_width)</td></tr>
+<tr class="memdesc:a944399d973a106aa129a537a554a7760"><td class="mdescLeft">&#160;</td><td class="mdescRight">Geometryを追加  <br /></td></tr>
+<tr class="separator:a944399d973a106aa129a537a554a7760"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3890eb056296a1300dcb980995f7c455" id="r_a3890eb056296a1300dcb980995f7c455"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Canvas2D.html">Canvas2D</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Canvas2D.html#a3890eb056296a1300dcb980995f7c455">sync</a> ()</td></tr>
 <tr class="memdesc:a3890eb056296a1300dcb980995f7c455"><td class="mdescLeft">&#160;</td><td class="mdescRight">内容をclientに反映し送信可能にする  <br /></td></tr>
 <tr class="separator:a3890eb056296a1300dcb980995f7c455"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -277,6 +281,9 @@ Protected Member Functions</h2></td></tr>
 <tr class="memitem:a46ba439f46fffe25a1fe549c380fcd3b" id="r_a46ba439f46fffe25a1fe549c380fcd3b"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="structwebcface_1_1Internal_1_1ClientData.html">Internal::ClientData</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#a46ba439f46fffe25a1fe549c380fcd3b">setCheck</a> () const</td></tr>
 <tr class="memdesc:a46ba439f46fffe25a1fe549c380fcd3b"><td class="mdescLeft">&#160;</td><td class="mdescRight">data_wをlockし、memberがselfではなければinvalid_argumentを投げる  <br /></td></tr>
 <tr class="separator:a46ba439f46fffe25a1fe549c380fcd3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0522a651826ba6fcbb9ce86258e8fa30" id="r_a0522a651826ba6fcbb9ce86258e8fa30"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#a0522a651826ba6fcbb9ce86258e8fa30">isSelf</a> () const</td></tr>
+<tr class="memdesc:a0522a651826ba6fcbb9ce86258e8fa30"><td class="mdescLeft">&#160;</td><td class="mdescRight">memberがselfならtrue  <br /></td></tr>
+<tr class="separator:a0522a651826ba6fcbb9ce86258e8fa30"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9a4e01a36d38e9e2adfaf3e12b65ee61" id="r_a9a4e01a36d38e9e2adfaf3e12b65ee61"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1EventTarget.html#a9a4e01a36d38e9e2adfaf3e12b65ee61">triggerEvent</a> (const <a class="el" href="structwebcface_1_1Field.html">Field</a> &amp;arg) const</td></tr>
 <tr class="memdesc:a9a4e01a36d38e9e2adfaf3e12b65ee61"><td class="mdescLeft">&#160;</td><td class="mdescRight">イベントを発生させる。  <br /></td></tr>
 <tr class="separator:a9a4e01a36d38e9e2adfaf3e12b65ee61"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -302,18 +309,11 @@ Private Member Functions</h2></td></tr>
 <tr class="memitem:a80580c25783f70a8654f924b26c61703" id="r_a80580c25783f70a8654f924b26c61703"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Canvas2D.html#a80580c25783f70a8654f924b26c61703">onAppend</a> () const override</td></tr>
 <tr class="memdesc:a80580c25783f70a8654f924b26c61703"><td class="mdescLeft">&#160;</td><td class="mdescRight">listenerを追加する際に行わなければならない処理があればoverrideする  <br /></td></tr>
 <tr class="separator:a80580c25783f70a8654f924b26c61703"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0c37c6b0270fcc50c95f792869a1080c" id="r_a0c37c6b0270fcc50c95f792869a1080c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Canvas2D.html">Canvas2D</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Canvas2D.html#a0c37c6b0270fcc50c95f792869a1080c">set</a> (<a class="el" href="structwebcface_1_1Common_1_1Canvas2DData.html">Canvas2DData</a> &amp;v)</td></tr>
-<tr class="memdesc:a0c37c6b0270fcc50c95f792869a1080c"><td class="mdescLeft">&#160;</td><td class="mdescRight">値をセットし、EventTargetを発動する  <br /></td></tr>
-<tr class="separator:a0c37c6b0270fcc50c95f792869a1080c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8a744b43949a3939f448facad211e3d2" id="r_a8a744b43949a3939f448facad211e3d2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Canvas2D.html#a8a744b43949a3939f448facad211e3d2">onDestroy</a> ()</td></tr>
-<tr class="separator:a8a744b43949a3939f448facad211e3d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
-<tr class="memitem:a7c64fd412bfe2331d86279710f12556e" id="r_a7c64fd412bfe2331d86279710f12556e"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="structwebcface_1_1Common_1_1Canvas2DData.html">Canvas2DData</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Canvas2D.html#a7c64fd412bfe2331d86279710f12556e">canvas_data</a></td></tr>
-<tr class="separator:a7c64fd412bfe2331d86279710f12556e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a238d800202b1b7f4c22c35780825d4ff" id="r_a238d800202b1b7f4c22c35780825d4ff"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Canvas2D.html#a238d800202b1b7f4c22c35780825d4ff">modified</a></td></tr>
-<tr class="separator:a238d800202b1b7f4c22c35780825d4ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab56a8ce47e2a1e89f0e21c3fc4f14043" id="r_ab56a8ce47e2a1e89f0e21c3fc4f14043"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classwebcface_1_1Internal_1_1Canvas2DDataBuf.html">Internal::Canvas2DDataBuf</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Canvas2D.html#ab56a8ce47e2a1e89f0e21c3fc4f14043">sb</a></td></tr>
+<tr class="separator:ab56a8ce47e2a1e89f0e21c3fc4f14043"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a93504a6646cc5bd2be1d2b5e7c87cedc" id="r_a93504a6646cc5bd2be1d2b5e7c87cedc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1EventTarget.html#aa7d77f4004dea8559345bbfc3d915181">Dispatcher</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1EventTarget.html#a93504a6646cc5bd2be1d2b5e7c87cedc">dispatcher</a></td></tr>
 <tr class="separator:a93504a6646cc5bd2be1d2b5e7c87cedc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a96313403719d705d2df812e3ba166772" id="r_a96313403719d705d2df812e3ba166772"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structwebcface_1_1Common_1_1FieldBaseComparable.html">FieldBaseComparable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1EventTarget.html#a96313403719d705d2df812e3ba166772">key</a></td></tr>
@@ -513,63 +513,12 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a58020451b202dd6ee7f6b8d4095b81bc" name="a58020451b202dd6ee7f6b8d4095b81bc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a58020451b202dd6ee7f6b8d4095b81bc">&#9670;&#160;</a></span>~Canvas2D()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">~<a class="el" href="classwebcface_1_1Canvas2D.html">Canvas2D</a> </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>デストラクタで <a class="el" href="classwebcface_1_1Canvas2D.html#a3890eb056296a1300dcb980995f7c455" title="内容をclientに反映し送信可能にする">sync()</a> を呼ぶ。 </p>
-<p>Canvas2Dをコピーした場合は、すべてのコピーが破棄されたときにのみ <a class="el" href="classwebcface_1_1Canvas2D.html#a3890eb056296a1300dcb980995f7c455" title="内容をclientに反映し送信可能にする">sync()</a> が呼ばれる。 </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="classwebcface_1_1Canvas2D.html#a3890eb056296a1300dcb980995f7c455" title="内容をclientに反映し送信可能にする">sync()</a> </dd></dl>
-
-</div>
-</div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="ab39156553dc58526065d6a8bd6e79067" name="ab39156553dc58526065d6a8bd6e79067"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab39156553dc58526065d6a8bd6e79067">&#9670;&#160;</a></span>add() <span class="overload">[1/5]</span></h2>
+<a id="a8638fa3ede151bd40b72366ad27dd466" name="a8638fa3ede151bd40b72366ad27dd466"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8638fa3ede151bd40b72366ad27dd466">&#9670;&#160;</a></span>add() <span class="overload">[1/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classwebcface_1_1Canvas2D.html">Canvas2D</a> &amp; add </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="structwebcface_1_1Common_1_1Canvas2DComponentBase.html">Canvas2DComponentBase</a> &amp;&#160;</td>
-          <td class="paramname"><em>cc</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Componentを追加 </p>
-
-</div>
-</div>
-<a id="afdb8cdbcb0c310d4bbcf8413969cc86e" name="afdb8cdbcb0c310d4bbcf8413969cc86e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afdb8cdbcb0c310d4bbcf8413969cc86e">&#9670;&#160;</a></span>add() <span class="overload">[2/5]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename G &gt; <br />
-requires std::derived_from&lt;G, <a class="el" href="structwebcface_1_1Common_1_1Geometry2D.html">Geometry2D</a>&gt;</div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -577,7 +526,7 @@ requires std::derived_from&lt;G, <a class="el" href="structwebcface_1_1Common_1_
         <tr>
           <td class="memname"><a class="el" href="classwebcface_1_1Canvas2D.html">Canvas2D</a> &amp; add </td>
           <td>(</td>
-          <td class="paramtype">const G &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="structwebcface_1_1Common_1_1Geometry.html">Geometry</a> &amp;&#160;</td>
           <td class="paramname"><em>geometry</em>, </td>
         </tr>
         <tr>
@@ -612,18 +561,16 @@ requires std::derived_from&lt;G, <a class="el" href="structwebcface_1_1Common_1_
 </div><div class="memdoc">
 
 <p>Geometryを追加 </p>
-<p>fillを省略 </p>
+<p>fillを省略</p>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000004">Deprecated:</a></b></dt><dd>1.9〜 <a class="el" href="classwebcface_1_1TemporalComponent.html" title="Canvas2D, Canvas3D (, View) に要素をaddするときに使うインタフェース">TemporalComponent</a> に直接プロパティを設定できるようにしたため、 add時の引数での設定は不要</dd></dl>
 
 </div>
 </div>
-<a id="ae7286e0bae437482e2811226c66a43fc" name="ae7286e0bae437482e2811226c66a43fc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae7286e0bae437482e2811226c66a43fc">&#9670;&#160;</a></span>add() <span class="overload">[3/5]</span></h2>
+<a id="a3c96af042aee8144ac08090068699b8c" name="a3c96af042aee8144ac08090068699b8c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3c96af042aee8144ac08090068699b8c">&#9670;&#160;</a></span>add() <span class="overload">[2/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;typename G &gt; <br />
-requires std::derived_from&lt;G, <a class="el" href="structwebcface_1_1Common_1_1Geometry2D.html">Geometry2D</a>&gt;</div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -631,7 +578,7 @@ requires std::derived_from&lt;G, <a class="el" href="structwebcface_1_1Common_1_
         <tr>
           <td class="memname"><a class="el" href="classwebcface_1_1Canvas2D.html">Canvas2D</a> &amp; add </td>
           <td>(</td>
-          <td class="paramtype">const G &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="structwebcface_1_1Common_1_1Geometry.html">Geometry</a> &amp;&#160;</td>
           <td class="paramname"><em>geometry</em>, </td>
         </tr>
         <tr>
@@ -682,17 +629,15 @@ requires std::derived_from&lt;G, <a class="el" href="structwebcface_1_1Common_1_
   </table>
   </dd>
 </dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000002">Deprecated:</a></b></dt><dd>1.9〜 <a class="el" href="classwebcface_1_1TemporalComponent.html" title="Canvas2D, Canvas3D (, View) に要素をaddするときに使うインタフェース">TemporalComponent</a> に直接プロパティを設定できるようにしたため、 add時の引数での設定は不要</dd></dl>
 
 </div>
 </div>
-<a id="a2987e9406e13e289f7d18f92784f469a" name="a2987e9406e13e289f7d18f92784f469a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2987e9406e13e289f7d18f92784f469a">&#9670;&#160;</a></span>add() <span class="overload">[4/5]</span></h2>
+<a id="a944399d973a106aa129a537a554a7760" name="a944399d973a106aa129a537a554a7760"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a944399d973a106aa129a537a554a7760">&#9670;&#160;</a></span>add() <span class="overload">[3/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;typename G &gt; <br />
-requires std::derived_from&lt;G, <a class="el" href="structwebcface_1_1Common_1_1Geometry2D.html">Geometry2D</a>&gt;</div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -700,7 +645,7 @@ requires std::derived_from&lt;G, <a class="el" href="structwebcface_1_1Common_1_
         <tr>
           <td class="memname"><a class="el" href="classwebcface_1_1Canvas2D.html">Canvas2D</a> &amp; add </td>
           <td>(</td>
-          <td class="paramtype">const G &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="structwebcface_1_1Common_1_1Geometry.html">Geometry</a> &amp;&#160;</td>
           <td class="paramname"><em>geometry</em>, </td>
         </tr>
         <tr>
@@ -729,18 +674,16 @@ requires std::derived_from&lt;G, <a class="el" href="structwebcface_1_1Common_1_
 </div><div class="memdoc">
 
 <p>Geometryを追加 </p>
-<p>originとfillを省略 </p>
+<p>originとfillを省略</p>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000005">Deprecated:</a></b></dt><dd>1.9〜 <a class="el" href="classwebcface_1_1TemporalComponent.html" title="Canvas2D, Canvas3D (, View) に要素をaddするときに使うインタフェース">TemporalComponent</a> に直接プロパティを設定できるようにしたため、 add時の引数での設定は不要</dd></dl>
 
 </div>
 </div>
-<a id="adb4afcc10d3d7ef6c6797dc278736bfc" name="adb4afcc10d3d7ef6c6797dc278736bfc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adb4afcc10d3d7ef6c6797dc278736bfc">&#9670;&#160;</a></span>add() <span class="overload">[5/5]</span></h2>
+<a id="a199f6e1d4b85db95cdc95070ef7de64f" name="a199f6e1d4b85db95cdc95070ef7de64f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a199f6e1d4b85db95cdc95070ef7de64f">&#9670;&#160;</a></span>add() <span class="overload">[4/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;typename G &gt; <br />
-requires std::derived_from&lt;G, <a class="el" href="structwebcface_1_1Common_1_1Geometry2D.html">Geometry2D</a>&gt;</div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -748,7 +691,7 @@ requires std::derived_from&lt;G, <a class="el" href="structwebcface_1_1Common_1_
         <tr>
           <td class="memname"><a class="el" href="classwebcface_1_1Canvas2D.html">Canvas2D</a> &amp; add </td>
           <td>(</td>
-          <td class="paramtype">const G &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="structwebcface_1_1Common_1_1Geometry.html">Geometry</a> &amp;&#160;</td>
           <td class="paramname"><em>geometry</em>, </td>
         </tr>
         <tr>
@@ -783,7 +726,40 @@ requires std::derived_from&lt;G, <a class="el" href="structwebcface_1_1Common_1_
 </div><div class="memdoc">
 
 <p>Geometryを追加 </p>
-<p>origin を省略した場合identity()になる </p>
+<p>origin を省略した場合identity()になる</p>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000003">Deprecated:</a></b></dt><dd>1.9〜 <a class="el" href="classwebcface_1_1TemporalComponent.html" title="Canvas2D, Canvas3D (, View) に要素をaddするときに使うインタフェース">TemporalComponent</a> に直接プロパティを設定できるようにしたため、 add時の引数での設定は不要</dd></dl>
+
+</div>
+</div>
+<a id="af2d7719b1cf8babfa1d0f720e6fb54ab" name="af2d7719b1cf8babfa1d0f720e6fb54ab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af2d7719b1cf8babfa1d0f720e6fb54ab">&#9670;&#160;</a></span>add() <span class="overload">[5/5]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1Canvas2D.html">Canvas2D</a> &amp; add </td>
+          <td>(</td>
+          <td class="paramtype">T &amp;&amp;&#160;</td>
+          <td class="paramname"><em>cc</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>コンポーネントなどを追加 </p>
+<p>Tの型に応じた operator&lt;&lt; が呼ばれる</p>
+<dl class="section since"><dt>Since</dt><dd>ver1.9〜 </dd></dl>
 
 </div>
 </div>
@@ -1081,6 +1057,34 @@ requires std::derived_from&lt;G, <a class="el" href="structwebcface_1_1Common_1_
 
 </div>
 </div>
+<a id="a0522a651826ba6fcbb9ce86258e8fa30" name="a0522a651826ba6fcbb9ce86258e8fa30"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0522a651826ba6fcbb9ce86258e8fa30">&#9670;&#160;</a></span>isSelf()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool isSelf </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>memberがselfならtrue </p>
+<p>data_wがlockできなければruntime_errorを投げる </p>
+
+</div>
+</div>
 <a id="aa8fab40ead35fa8e761986d5f4000a5c" name="aa8fab40ead35fa8e761986d5f4000a5c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa8fab40ead35fa8e761986d5f4000a5c">&#9670;&#160;</a></span>member()</h2>
 
@@ -1156,28 +1160,107 @@ requires std::derived_from&lt;G, <a class="el" href="structwebcface_1_1Common_1_
 
 </div>
 </div>
-<a id="a8a744b43949a3939f448facad211e3d2" name="a8a744b43949a3939f448facad211e3d2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8a744b43949a3939f448facad211e3d2">&#9670;&#160;</a></span>onDestroy()</h2>
+<a id="acc5cba16cc2a963ae997209ca5d717b6" name="acc5cba16cc2a963ae997209ca5d717b6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acc5cba16cc2a963ae997209ca5d717b6">&#9670;&#160;</a></span>operator&lt;&lt;() <span class="overload">[1/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1Canvas2D.html">Canvas2D</a> &amp; operator&lt;&lt; </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classwebcface_1_1Canvas2DComponent.html">Canvas2DComponent</a> &amp;&amp;&#160;</td>
+          <td class="paramname"><em>cc</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Componentを追加 </p>
+<dl class="section since"><dt>Since</dt><dd>ver1.9 </dd></dl>
+
+</div>
+</div>
+<a id="a62cc71314f2a8e11d0929a4d33b593ac" name="a62cc71314f2a8e11d0929a4d33b593ac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a62cc71314f2a8e11d0929a4d33b593ac">&#9670;&#160;</a></span>operator&lt;&lt;() <span class="overload">[2/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1Canvas2D.html">Canvas2D</a> &amp; operator&lt;&lt; </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classwebcface_1_1Canvas2DComponent.html">Canvas2DComponent</a> &amp;&#160;</td>
+          <td class="paramname"><em>cc</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Componentを追加 </p>
+<dl class="section since"><dt>Since</dt><dd>ver1.9 </dd></dl>
+
+</div>
+</div>
+<a id="a10b974a74e12a9936a1b476e3cd1095c" name="a10b974a74e12a9936a1b476e3cd1095c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a10b974a74e12a9936a1b476e3cd1095c">&#9670;&#160;</a></span>operator&lt;&lt;() <span class="overload">[3/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;bool V, bool C3&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void onDestroy </td>
+          <td class="memname"><a class="el" href="classwebcface_1_1Canvas2D.html">Canvas2D</a> &amp; operator&lt;&lt; </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype"><a class="el" href="classwebcface_1_1TemporalComponent.html">TemporalComponent</a>&lt; V, true, C3 &gt; &amp;&amp;&#160;</td>
+          <td class="paramname"><em>cc</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Geometryを追加 </p>
+<dl class="section since"><dt>Since</dt><dd>ver1.9 </dd></dl>
+
+</div>
+</div>
+<a id="a571089715c116cd8da3a091e460a87a5" name="a571089715c116cd8da3a091e460a87a5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a571089715c116cd8da3a091e460a87a5">&#9670;&#160;</a></span>operator&lt;&lt;() <span class="overload">[4/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;bool V, bool C3&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1Canvas2D.html">Canvas2D</a> &amp; operator&lt;&lt; </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classwebcface_1_1TemporalComponent.html">TemporalComponent</a>&lt; V, true, C3 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>cc</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Geometryを追加 </p>
+<dl class="section since"><dt>Since</dt><dd>ver1.9 </dd></dl>
 
 </div>
 </div>
@@ -1314,34 +1397,6 @@ requires std::derived_from&lt;G, <a class="el" href="structwebcface_1_1Common_1_
 
 </div>
 </div>
-<a id="a0c37c6b0270fcc50c95f792869a1080c" name="a0c37c6b0270fcc50c95f792869a1080c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0c37c6b0270fcc50c95f792869a1080c">&#9670;&#160;</a></span>set()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classwebcface_1_1Canvas2D.html">Canvas2D</a> &amp; set </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structwebcface_1_1Common_1_1Canvas2DData.html">Canvas2DData</a> &amp;&#160;</td>
-          <td class="paramname"><em>v</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>値をセットし、EventTargetを発動する </p>
-
-</div>
-</div>
 <a id="a46ba439f46fffe25a1fe549c380fcd3b" name="a46ba439f46fffe25a1fe549c380fcd3b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a46ba439f46fffe25a1fe549c380fcd3b">&#9670;&#160;</a></span>setCheck()</h2>
 
@@ -1457,28 +1512,6 @@ requires std::derived_from&lt;G, <a class="el" href="structwebcface_1_1Common_1_
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="a7c64fd412bfe2331d86279710f12556e" name="a7c64fd412bfe2331d86279710f12556e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7c64fd412bfe2331d86279710f12556e">&#9670;&#160;</a></span>canvas_data</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::shared_ptr&lt;<a class="el" href="structwebcface_1_1Common_1_1Canvas2DData.html">Canvas2DData</a>&gt; canvas_data</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a id="acf420a0ba1ce5e817feac0f51c9056dc" name="acf420a0ba1ce5e817feac0f51c9056dc"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#acf420a0ba1ce5e817feac0f51c9056dc">&#9670;&#160;</a></span>data_w</h2>
 
@@ -1595,8 +1628,8 @@ requires std::derived_from&lt;G, <a class="el" href="structwebcface_1_1Common_1_
 
 </div>
 </div>
-<a id="a238d800202b1b7f4c22c35780825d4ff" name="a238d800202b1b7f4c22c35780825d4ff"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a238d800202b1b7f4c22c35780825d4ff">&#9670;&#160;</a></span>modified</h2>
+<a id="ab56a8ce47e2a1e89f0e21c3fc4f14043" name="ab56a8ce47e2a1e89f0e21c3fc4f14043"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab56a8ce47e2a1e89f0e21c3fc4f14043">&#9670;&#160;</a></span>sb</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1605,7 +1638,7 @@ requires std::derived_from&lt;G, <a class="el" href="structwebcface_1_1Common_1_
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::shared_ptr&lt;bool&gt; modified</td>
+          <td class="memname">std::shared_ptr&lt;<a class="el" href="classwebcface_1_1Internal_1_1Canvas2DDataBuf.html">Internal::Canvas2DDataBuf</a>&gt; sb</td>
         </tr>
       </table>
   </td>
@@ -1627,7 +1660,7 @@ requires std::derived_from&lt;G, <a class="el" href="structwebcface_1_1Common_1_
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="classwebcface_1_1Canvas2D.html">Canvas2D</a></li>
-    <li class="footer">Generated on Tue Mar 12 2024 04:26:49 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Sat Mar 16 2024 01:15:15 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

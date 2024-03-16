@@ -4,7 +4,7 @@ var searchData=
   ['value_5fchange_5fevent_1',['value_change_event',['../structwebcface_1_1Internal_1_1ClientData.html#a519596fa89d77a8d02d9e52d807e536a',1,'webcface::Internal::ClientData']]],
   ['value_5fentry_5fevent_2',['value_entry_event',['../structwebcface_1_1Internal_1_1ClientData.html#a995eacf51faee5cd34a86d5b16b36ae3',1,'webcface::Internal::ClientData']]],
   ['value_5freq_3',['value_req',['../structwebcface_1_1Server_1_1ClientData.html#a1bdab4ef0abc08b77f15dd65ea199d45',1,'webcface::Server::ClientData']]],
-  ['value_5fstore_4',['value_store',['../structwebcface_1_1Internal_1_1ClientData.html#a84d4b4ae41aefc35f940467533e7013b',1,'webcface::Internal::ClientData']]],
+  ['value_5fstore_4',['value_store',['../structwebcface_1_1Internal_1_1ClientData.html#adfcd5d2cf6cd85f495ad76f69542d1ff',1,'webcface::Internal::ClientData']]],
   ['ver_5',['ver',['../structwebcface_1_1Message_1_1SvrVersion.html#a79dba1acba5901e97673898b4d9a9357',1,'webcface::Message::SvrVersion']]],
   ['version_6',['version',['../namespacewebcface_1_1Version.html#a342b6f41244b8f7bce0c63b449f20dc1',1,'webcface::Version::version'],['../namespacewebcface_1_1Version.html#a342b6f41244b8f7bce0c63b449f20dc1',1,'webcface::version']]],
   ['version_5fs_7',['version_s',['../namespacewebcface_1_1Version.html#ac908c368a4d24ffe7c3b3906522e0fc8',1,'webcface::Version::version_s'],['../namespacewebcface_1_1Version.html#ac908c368a4d24ffe7c3b3906522e0fc8',1,'webcface::version_s']]],
@@ -13,5 +13,5 @@ var searchData=
   ['view_5fentry_5fevent_10',['view_entry_event',['../structwebcface_1_1Internal_1_1ClientData.html#a108c030a8e9e5cdae706deeeb7dc7057',1,'webcface::Internal::ClientData']]],
   ['view_5flist_11',['view_list',['../namespacewebcface_1_1c__wcf.html#ad00c61be6f2c302f30305a8d2c9fea8b',1,'webcface::view_list'],['../namespacewebcface_1_1c__wcf.html#ad00c61be6f2c302f30305a8d2c9fea8b',1,'webcface::c_wcf::view_list']]],
   ['view_5freq_12',['view_req',['../structwebcface_1_1Server_1_1ClientData.html#ae4a142b5a4364ec9785c085ac88891e7',1,'webcface::Server::ClientData']]],
-  ['view_5fstore_13',['view_store',['../structwebcface_1_1Internal_1_1ClientData.html#acd227dc80d599dfb2121a1668ea1dc92',1,'webcface::Internal::ClientData']]]
+  ['view_5fstore_13',['view_store',['../structwebcface_1_1Internal_1_1ClientData.html#a46328f067d5ff78cb779ea146511ca15',1,'webcface::Internal::ClientData']]]
 ];

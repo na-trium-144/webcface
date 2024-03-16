@@ -2,9 +2,11 @@ var dir_db3a54907829b36871118d03417739cd =
 [
     [ "canvas2d.cc", "canvas2d_8cc.html", null ],
     [ "canvas3d.cc", "canvas3d_8cc.html", null ],
+    [ "canvas_data.cc", "canvas__data_8cc.html", null ],
     [ "client.cc", "client_2client_8cc.html", null ],
     [ "client_internal.h", "client__internal_8h.html", "client__internal_8h" ],
     [ "client_ws.cc", "client__ws_8cc.html", null ],
+    [ "data_buffer.h", "data__buffer_8h.html", "data__buffer_8h" ],
     [ "data_store1.cc", "data__store1_8cc.html", null ],
     [ "data_store1.h", "data__store1_8h.html", "data__store1_8h" ],
     [ "data_store2.cc", "data__store2_8cc.html", "data__store2_8cc" ],

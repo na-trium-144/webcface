@@ -13,6 +13,7 @@ var classwebcface_1_1Log =
     [ "hasAnyListener", "classwebcface_1_1Log.html#a2703198fd7fd6f72b1a89786870f8a39", null ],
     [ "insertListener", "classwebcface_1_1Log.html#a73c8c26e96adcb4e9066b9b209efcac9", null ],
     [ "insertListener", "classwebcface_1_1Log.html#ad0ebf1e03f850ab607f5cf308c316399", null ],
+    [ "isSelf", "classwebcface_1_1Log.html#a0522a651826ba6fcbb9ce86258e8fa30", null ],
     [ "member", "classwebcface_1_1Log.html#aa8fab40ead35fa8e761986d5f4000a5c", null ],
     [ "name", "classwebcface_1_1Log.html#a1d89c28bd42ba9a52da008bb69367171", null ],
     [ "onAppend", "classwebcface_1_1Log.html#a80580c25783f70a8654f924b26c61703", null ],

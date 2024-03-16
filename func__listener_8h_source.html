@@ -155,14 +155,14 @@ $(document).ready(function(){initNavTree('func__listener_8h_source.html',''); in
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="keyword">namespace </span><a class="code hl_define" href="def_8h.html#ac7a8c78cf90e9e699574316ba855f40c">WEBCFACE_NS</a> {</div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
 <div class="foldopen" id="foldopen00009" data-start="{" data-end="};">
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno"><a class="line" href="classwebcface_1_1FuncListener.html">    9</a></span><span class="keyword">class </span><a class="code hl_class" href="classwebcface_1_1FuncListener.html">FuncListener</a> : <span class="keyword">protected</span> <a class="code hl_class" href="classwebcface_1_1Func.html">Func</a> {</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno"><a class="line" href="classwebcface_1_1FuncListener.html">    9</a></span><span class="keyword">class </span><a class="code hl_define" href="def_8h.html#a47af057bda855b54c212e97ffccdca01">WEBCFACE_DLL</a> <a class="code hl_class" href="classwebcface_1_1FuncListener.html">FuncListener</a> : <span class="keyword">protected</span> <a class="code hl_class" href="classwebcface_1_1Func.html">Func</a> {</div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno"><a class="line" href="classwebcface_1_1FuncListener.html#a02a4a129895f29f53a02d5a209a14a74">   10</a></span>    <a class="code hl_enumeration" href="namespacewebcface_1_1Common.html#acd1dd9e2d5f885ad3f73197cfa6b0185">ValType</a> return_type_ = ValType::none_;</div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno"><a class="line" href="classwebcface_1_1FuncListener.html#a931353c281ffd3335b0d53efdfb75f31">   11</a></span>    std::vector&lt;Arg&gt; args_{};</div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno"><a class="line" href="classwebcface_1_1FuncListener.html#acaa04a44b52496c9e782a403c2fb93a3">   12</a></span>    <span class="keywordtype">bool</span> hidden_ = <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>  <span class="keyword">public</span>:</div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno"><a class="line" href="classwebcface_1_1FuncListener.html#ab632293648bc3b7cd1f03836579951be">   15</a></span>    <a class="code hl_function" href="classwebcface_1_1FuncListener.html#ab632293648bc3b7cd1f03836579951be">FuncListener</a>() = <span class="keywordflow">default</span>;</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    <a class="code hl_define" href="def_8h.html#a47af057bda855b54c212e97ffccdca01">WEBCFACE_DLL</a> <a class="code hl_class" href="classwebcface_1_1FuncListener.html">FuncListener</a>(<span class="keyword">const</span> <a class="code hl_struct" href="structwebcface_1_1Field.html">Field</a> &amp;base);</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    <a class="code hl_class" href="classwebcface_1_1FuncListener.html">FuncListener</a>(<span class="keyword">const</span> <a class="code hl_struct" href="structwebcface_1_1Field.html">Field</a> &amp;base);</div>
 <div class="foldopen" id="foldopen00017" data-start="{" data-end="}">
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno"><a class="line" href="classwebcface_1_1FuncListener.html#ae33990976927aeaba295e33a01c34a52">   17</a></span>    <a class="code hl_function" href="classwebcface_1_1FuncListener.html#ae33990976927aeaba295e33a01c34a52">FuncListener</a>(<span class="keyword">const</span> <a class="code hl_struct" href="structwebcface_1_1Field.html">Field</a> &amp;base, <span class="keyword">const</span> std::string &amp;field)</div>
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>        : <a class="code hl_class" href="classwebcface_1_1FuncListener.html">FuncListener</a>(<a class="code hl_struct" href="structwebcface_1_1Field.html">Field</a>{base, field}) {}</div>
@@ -171,7 +171,7 @@ $(document).ready(function(){initNavTree('func__listener_8h_source.html',''); in
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>    <span class="keyword">using </span>Field::member;</div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    <span class="keyword">using </span>Field::name;</div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    <a class="code hl_define" href="def_8h.html#a47af057bda855b54c212e97ffccdca01">WEBCFACE_DLL</a> <a class="code hl_class" href="classwebcface_1_1FuncListener.html">FuncListener</a> &amp;listen();</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    <a class="code hl_class" href="classwebcface_1_1FuncListener.html">FuncListener</a> &amp;listen();</div>
 <div class="foldopen" id="foldopen00034" data-start="{" data-end="}">
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno"><a class="line" href="classwebcface_1_1FuncListener.html#ae372eed41ec0667e4d3811b904ff954f">   34</a></span>    <a class="code hl_class" href="classwebcface_1_1FuncListener.html">FuncListener</a> &amp;<a class="code hl_function" href="classwebcface_1_1FuncListener.html#ae372eed41ec0667e4d3811b904ff954f">listen</a>(std::size_t args_num,</div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>                         <a class="code hl_enumeration" href="namespacewebcface_1_1Common.html#acd1dd9e2d5f885ad3f73197cfa6b0185">ValType</a> return_type = ValType::none_) {</div>
@@ -201,7 +201,7 @@ $(document).ready(function(){initNavTree('func__listener_8h_source.html',''); in
 <div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    }</div>
 </div>
 <div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span> </div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>    <a class="code hl_define" href="def_8h.html#a47af057bda855b54c212e97ffccdca01">WEBCFACE_DLL</a> std::optional&lt;FuncCallHandle&gt; fetchCall() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>    std::optional&lt;FuncCallHandle&gt; fetchCall() <span class="keyword">const</span>;</div>
 <div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>};</div>
 </div>
 <div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>} <span class="comment">// namespace WEBCFACE_NS</span></div>
@@ -213,8 +213,8 @@ $(document).ready(function(){initNavTree('func__listener_8h_source.html',''); in
 <div class="ttc" id="aclasswebcface_1_1FuncListener_html_ae33990976927aeaba295e33a01c34a52"><div class="ttname"><a href="classwebcface_1_1FuncListener.html#ae33990976927aeaba295e33a01c34a52">webcface::FuncListener::FuncListener</a></div><div class="ttdeci">FuncListener(const Field &amp;base, const std::string &amp;field)</div><div class="ttdef"><b>Definition</b> func_listener.h:17</div></div>
 <div class="ttc" id="aclasswebcface_1_1FuncListener_html_ae372eed41ec0667e4d3811b904ff954f"><div class="ttname"><a href="classwebcface_1_1FuncListener.html#ae372eed41ec0667e4d3811b904ff954f">webcface::FuncListener::listen</a></div><div class="ttdeci">FuncListener &amp; listen(std::size_t args_num, ValType return_type=ValType::none_)</div><div class="ttdoc">関数呼び出しの待受を開始する</div><div class="ttdef"><b>Definition</b> func_listener.h:34</div></div>
 <div class="ttc" id="aclasswebcface_1_1Func_html"><div class="ttname"><a href="classwebcface_1_1Func.html">webcface::Func</a></div><div class="ttdoc">関数1つを表すクラス</div><div class="ttdef"><b>Definition</b> func.h:43</div></div>
-<div class="ttc" id="adef_8h_html_a47af057bda855b54c212e97ffccdca01"><div class="ttname"><a href="def_8h.html#a47af057bda855b54c212e97ffccdca01">WEBCFACE_DLL</a></div><div class="ttdeci">#define WEBCFACE_DLL</div><div class="ttdef"><b>Definition</b> def.h:31</div></div>
-<div class="ttc" id="adef_8h_html_ac7a8c78cf90e9e699574316ba855f40c"><div class="ttname"><a href="def_8h.html#ac7a8c78cf90e9e699574316ba855f40c">WEBCFACE_NS</a></div><div class="ttdeci">#define WEBCFACE_NS</div><div class="ttdef"><b>Definition</b> def.h:32</div></div>
+<div class="ttc" id="adef_8h_html_a47af057bda855b54c212e97ffccdca01"><div class="ttname"><a href="def_8h.html#a47af057bda855b54c212e97ffccdca01">WEBCFACE_DLL</a></div><div class="ttdeci">#define WEBCFACE_DLL</div><div class="ttdef"><b>Definition</b> def.h:33</div></div>
+<div class="ttc" id="adef_8h_html_ac7a8c78cf90e9e699574316ba855f40c"><div class="ttname"><a href="def_8h.html#ac7a8c78cf90e9e699574316ba855f40c">WEBCFACE_NS</a></div><div class="ttdeci">#define WEBCFACE_NS</div><div class="ttdef"><b>Definition</b> def.h:35</div></div>
 <div class="ttc" id="afield_8h_html"><div class="ttname"><a href="field_8h.html">field.h</a></div></div>
 <div class="ttc" id="afunc_8h_html"><div class="ttname"><a href="func_8h.html">func.h</a></div></div>
 <div class="ttc" id="afunc__result_8h_html"><div class="ttname"><a href="func__result_8h.html">func_result.h</a></div></div>
@@ -227,7 +227,7 @@ $(document).ready(function(){initNavTree('func__listener_8h_source.html',''); in
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_e6fac88a17509a9ad709623cf2c100d8.html">webcface</a></li><li class="navelem"><a class="el" href="func__listener_8h.html">func_listener.h</a></li>
-    <li class="footer">Generated on Tue Mar 12 2024 04:26:49 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Sat Mar 16 2024 01:15:15 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

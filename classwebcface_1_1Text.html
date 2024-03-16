@@ -271,6 +271,9 @@ Protected Member Functions</h2></td></tr>
 <tr class="memitem:a46ba439f46fffe25a1fe549c380fcd3b" id="r_a46ba439f46fffe25a1fe549c380fcd3b"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="structwebcface_1_1Internal_1_1ClientData.html">Internal::ClientData</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#a46ba439f46fffe25a1fe549c380fcd3b">setCheck</a> () const</td></tr>
 <tr class="memdesc:a46ba439f46fffe25a1fe549c380fcd3b"><td class="mdescLeft">&#160;</td><td class="mdescRight">data_wをlockし、memberがselfではなければinvalid_argumentを投げる  <br /></td></tr>
 <tr class="separator:a46ba439f46fffe25a1fe549c380fcd3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0522a651826ba6fcbb9ce86258e8fa30" id="r_a0522a651826ba6fcbb9ce86258e8fa30"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#a0522a651826ba6fcbb9ce86258e8fa30">isSelf</a> () const</td></tr>
+<tr class="memdesc:a0522a651826ba6fcbb9ce86258e8fa30"><td class="mdescLeft">&#160;</td><td class="mdescRight">memberがselfならtrue  <br /></td></tr>
+<tr class="separator:a0522a651826ba6fcbb9ce86258e8fa30"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9a4e01a36d38e9e2adfaf3e12b65ee61" id="r_a9a4e01a36d38e9e2adfaf3e12b65ee61"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1EventTarget.html#a9a4e01a36d38e9e2adfaf3e12b65ee61">triggerEvent</a> (const <a class="el" href="structwebcface_1_1Field.html">Field</a> &amp;arg) const</td></tr>
 <tr class="memdesc:a9a4e01a36d38e9e2adfaf3e12b65ee61"><td class="mdescLeft">&#160;</td><td class="mdescRight">イベントを発生させる。  <br /></td></tr>
 <tr class="separator:a9a4e01a36d38e9e2adfaf3e12b65ee61"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -763,6 +766,34 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="a0522a651826ba6fcbb9ce86258e8fa30" name="a0522a651826ba6fcbb9ce86258e8fa30"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0522a651826ba6fcbb9ce86258e8fa30">&#9670;&#160;</a></span>isSelf()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool isSelf </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>memberがselfならtrue </p>
+<p>data_wがlockできなければruntime_errorを投げる </p>
+
+</div>
+</div>
 <a id="aa8fab40ead35fa8e761986d5f4000a5c" name="aa8fab40ead35fa8e761986d5f4000a5c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa8fab40ead35fa8e761986d5f4000a5c">&#9670;&#160;</a></span>member()</h2>
 
@@ -1212,7 +1243,7 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>syncの時刻を返す </p>
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000011">Deprecated:</a></b></dt><dd>1.7でMember::syncTime()に変更 </dd></dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000018">Deprecated:</a></b></dt><dd>1.7でMember::syncTime()に変更 </dd></dl>
 
 </div>
 </div>
@@ -1409,7 +1440,7 @@ Private Attributes</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="classwebcface_1_1Text.html">Text</a></li>
-    <li class="footer">Generated on Tue Mar 12 2024 04:26:49 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Sat Mar 16 2024 01:15:15 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

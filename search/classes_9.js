@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['line_0',['line',['../structwebcface_1_1Geometries_1_1Line.html',1,'Line'],['../structwebcface_1_1Geometries_1_1Line.html',1,'Line']]],
+  ['line_0',['line',['../structwebcface_1_1Components_1_1Geometries_1_1Line.html',1,'Line'],['../structwebcface_1_1Components_1_1Geometries_1_1Line.html',1,'Line'],['../structwebcface_1_1Components_1_1Geometries_1_1Line.html',1,'Line']]],
   ['log_1',['log',['../classwebcface_1_1Log.html',1,'Log'],['../structwebcface_1_1Message_1_1Log.html',1,'Log']]],
   ['loggerbuf_2',['LoggerBuf',['../classwebcface_1_1LoggerBuf.html',1,'webcface']]],
   ['loggersink_3',['LoggerSink',['../classwebcface_1_1LoggerSink.html',1,'webcface']]],

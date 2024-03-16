@@ -1,5 +1,5 @@
 <map id="Canvas2DComponent" name="Canvas2DComponent">
-<area shape="rect" id="Node000001" title=" " alt="" coords="21,243,184,268"/>
+<area shape="rect" id="Node000001" title="Canvas2Dの各要素を表すクラス。" alt="" coords="21,243,184,268"/>
 <area shape="rect" id="Node000002" href="$structwebcface_1_1Common_1_1Canvas2DComponentBase.html" title=" " alt="" coords="5,168,200,193"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="105,208,105,242,100,242,100,208"/>
 <area shape="rect" id="Node000003" href="$classwebcface_1_1Common_1_1Transform.html" title="3次元の座標と回転" alt="" coords="59,80,146,105"/>

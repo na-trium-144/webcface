@@ -5,6 +5,7 @@ var dir_e6fac88a17509a9ad709623cf2c100d8 =
     [ "c_wcf.h", "c__wcf_8h.html", null ],
     [ "canvas2d.h", "canvas2d_8h.html", "canvas2d_8h" ],
     [ "canvas3d.h", "canvas3d_8h.html", "canvas3d_8h" ],
+    [ "canvas_data.h", "canvas__data_8h.html", "canvas__data_8h" ],
     [ "client.h", "client_8h.html", "client_8h" ],
     [ "event_target.h", "event__target_8h.html", "event__target_8h" ],
     [ "field.h", "field_8h.html", "field_8h" ],

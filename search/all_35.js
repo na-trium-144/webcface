@@ -1,6 +1,4 @@
 var searchData=
 [
-  ['関数の実行_0',['関数の実行',['../md_30__func.html#autotoc_md115',1,'']]],
-  ['関数の情報の取得_1',['関数の情報の取得',['../md_30__func.html#autotoc_md113',1,'']]],
-  ['関数の登録_2',['関数の登録',['../md_30__func.html#autotoc_md108',1,'']]]
+  ['送信_0',['送信',['../md_10__value.html#autotoc_md37',1,'送信'],['../md_11__text.html#autotoc_md46',1,'送信'],['../md_13__view.html#autotoc_md53',1,'送信'],['../md_14__canvas2d.html#autotoc_md64',1,'送信'],['../md_15__image.html#autotoc_md77',1,'送信'],['../todo.html#_todo000003',1,'送信'],['../todo.html#_todo000004',1,'送信'],['../md_20__canvas3d.html#autotoc_md84',1,'送信'],['../md_21__robot__model.html#autotoc_md97',1,'送信'],['../md_40__log.html#autotoc_md120',1,'送信']]]
 ];

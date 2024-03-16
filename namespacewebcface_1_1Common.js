@@ -10,7 +10,7 @@ var namespacewebcface_1_1Common =
     ] ],
     [ "Arg", "classwebcface_1_1Common_1_1Arg.html", "classwebcface_1_1Common_1_1Arg" ],
     [ "Canvas2DComponentBase", "structwebcface_1_1Common_1_1Canvas2DComponentBase.html", "structwebcface_1_1Common_1_1Canvas2DComponentBase" ],
-    [ "Canvas2DData", "structwebcface_1_1Common_1_1Canvas2DData.html", "structwebcface_1_1Common_1_1Canvas2DData" ],
+    [ "Canvas2DDataBase", "structwebcface_1_1Common_1_1Canvas2DDataBase.html", "structwebcface_1_1Common_1_1Canvas2DDataBase" ],
     [ "Canvas3DComponentBase", "structwebcface_1_1Common_1_1Canvas3DComponentBase.html", "structwebcface_1_1Common_1_1Canvas3DComponentBase" ],
     [ "Dict", "classwebcface_1_1Common_1_1Dict.html", "classwebcface_1_1Common_1_1Dict" ],
     [ "DictElement", "structwebcface_1_1Common_1_1DictElement.html", "structwebcface_1_1Common_1_1DictElement" ],
@@ -42,7 +42,8 @@ var namespacewebcface_1_1Common =
     [ "FuncWrapperType", "namespacewebcface_1_1Common.html#a1f914f5d15fb32aa05ca882cff7f2cd4", null ],
     [ "ImageFrame", "namespacewebcface_1_1Common.html#af7ff7d8593c083aca2355bc561bf8804", null ],
     [ "Canvas2DComponentType", "namespacewebcface_1_1Common.html#a18133126518e30ea437441c60fa26928", [
-      [ "geometry", "namespacewebcface_1_1Common.html#a18133126518e30ea437441c60fa26928aed7daeb157cd9b31e53896ad3c771a26", null ]
+      [ "geometry", "namespacewebcface_1_1Common.html#a18133126518e30ea437441c60fa26928aed7daeb157cd9b31e53896ad3c771a26", null ],
+      [ "text", "namespacewebcface_1_1Common.html#a18133126518e30ea437441c60fa26928a1cb251ec0d568de6a929b520c4aed8d1", null ]
     ] ],
     [ "Canvas3DComponentType", "namespacewebcface_1_1Common.html#ae4f79363f6fbf146d1a71f07a2e42155", [
       [ "geometry", "namespacewebcface_1_1Common.html#ae4f79363f6fbf146d1a71f07a2e42155aed7daeb157cd9b31e53896ad3c771a26", null ],

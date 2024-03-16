@@ -10,6 +10,7 @@ var classwebcface_1_1FuncListener =
     [ "free", "classwebcface_1_1FuncListener.html#a2ab7cc09912b8dd1ab69e918f3a11f97", null ],
     [ "getDefaultFuncWrapper", "classwebcface_1_1FuncListener.html#a97ecd85f8105c2a1f85bbe354ec9b33c", null ],
     [ "hidden", "classwebcface_1_1FuncListener.html#ac3e3982e1b6ab57b3fca9b56eb57e1ed", null ],
+    [ "isSelf", "classwebcface_1_1FuncListener.html#a0522a651826ba6fcbb9ce86258e8fa30", null ],
     [ "listen", "classwebcface_1_1FuncListener.html#a3912e9b176afc608717e60cc8967a78b", null ],
     [ "listen", "classwebcface_1_1FuncListener.html#ae372eed41ec0667e4d3811b904ff954f", null ],
     [ "member", "classwebcface_1_1FuncListener.html#aa8fab40ead35fa8e761986d5f4000a5c", null ],

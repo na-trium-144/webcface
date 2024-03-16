@@ -16,7 +16,7 @@ var structwebcface_1_1Server_1_1ClientData =
     [ "send", "structwebcface_1_1Server_1_1ClientData.html#ae9399f5ec7881c5d18173def8068108e", null ],
     [ "send", "structwebcface_1_1Server_1_1ClientData.html#a7edd1c1b67fdc8afad49429555458822", null ],
     [ "sendPing", "structwebcface_1_1Server_1_1ClientData.html#ae1340d1280818fa14b61e2bf6e637366", null ],
-    [ "canvas2d", "structwebcface_1_1Server_1_1ClientData.html#abbc2cecc427b89d13c19a1f270b57ed9", null ],
+    [ "canvas2d", "structwebcface_1_1Server_1_1ClientData.html#a7394408491811e26a7efaa6e3426fc89", null ],
     [ "canvas2d_req", "structwebcface_1_1Server_1_1ClientData.html#ad6a6d43bed921b2d357cde1cbe0871c8", null ],
     [ "canvas3d", "structwebcface_1_1Server_1_1ClientData.html#a72e8cd0e5a438f6369a77560e0e8d8ab", null ],
     [ "canvas3d_req", "structwebcface_1_1Server_1_1ClientData.html#aa51eaff355f716591f196e16266871c3", null ],

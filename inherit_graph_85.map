@@ -1,3 +1,7 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$classwebcface_1_1Internal_1_1SyncDataStore2.html" title=" " alt="" coords="5,5,215,45"/>
+<area shape="rect" id="Node000000" href="$classwebcface_1_1Common_1_1Point.html" title="3次元 or 2次元の座標" alt="" coords="5,5,60,31"/>
+<area shape="rect" id="Node000001" href="$classwebcface_1_1Common_1_1Transform.html" title="3次元の座標と回転" alt="" coords="108,31,195,56"/>
+<area shape="poly" id="edge83_Node000000_Node000001" title=" " alt="" coords="74,24,108,32,107,37,73,29"/>
+<area shape="rect" id="Node000002" href="$classwebcface_1_1Common_1_1Point.html" title="3次元 or 2次元の座標" alt="" coords="5,55,60,80"/>
+<area shape="poly" id="edge84_Node000002_Node000001" title=" " alt="" coords="73,57,107,49,108,55,74,62"/>
 </map>

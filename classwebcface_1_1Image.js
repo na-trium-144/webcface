@@ -16,6 +16,7 @@ var classwebcface_1_1Image =
     [ "hasAnyListener", "classwebcface_1_1Image.html#a2703198fd7fd6f72b1a89786870f8a39", null ],
     [ "insertListener", "classwebcface_1_1Image.html#a73c8c26e96adcb4e9066b9b209efcac9", null ],
     [ "insertListener", "classwebcface_1_1Image.html#ad0ebf1e03f850ab607f5cf308c316399", null ],
+    [ "isSelf", "classwebcface_1_1Image.html#a0522a651826ba6fcbb9ce86258e8fa30", null ],
     [ "mat", "classwebcface_1_1Image.html#a152191e2fee25e947ec6b91752a9cd86", null ],
     [ "member", "classwebcface_1_1Image.html#aa8fab40ead35fa8e761986d5f4000a5c", null ],
     [ "name", "classwebcface_1_1Image.html#a1d89c28bd42ba9a52da008bb69367171", null ],

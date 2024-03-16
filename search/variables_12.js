@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['sb_0',['sb',['../classwebcface_1_1View.html#a0a66e0b75932a0452a073ac8bc854a84',1,'webcface::View']]],
+  ['sb_0',['sb',['../classwebcface_1_1Canvas3D.html#a1b4ab24b88f6d86158f3afdbdd5f4419',1,'webcface::Canvas3D::sb'],['../classwebcface_1_1RobotModel.html#a387e4f775d6000301a4b78b482000cbb',1,'webcface::RobotModel::sb'],['../classwebcface_1_1View.html#a1136aca6f4719f3833a1c901832789de',1,'webcface::View::sb'],['../classwebcface_1_1Canvas2D.html#ab56a8ce47e2a1e89f0e21c3fc4f14043',1,'webcface::Canvas2D::sb']]],
   ['search_5fbase_5fkey_1',['search_base_key',['../classwebcface_1_1Common_1_1Dict.html#a683528871c736f42f1db0982df586f4a',1,'webcface::Common::Dict']]],
   ['self_5fmember_5fname_2',['self_member_name',['../structwebcface_1_1Internal_1_1ClientData.html#a0f0971461fbd4ef7a1ccc6f9fedb554a',1,'webcface::Internal::ClientData::self_member_name'],['../classwebcface_1_1Internal_1_1SyncDataStore1.html#a0f0971461fbd4ef7a1ccc6f9fedb554a',1,'webcface::Internal::SyncDataStore1::self_member_name'],['../classwebcface_1_1Internal_1_1SyncDataStore2.html#a0f0971461fbd4ef7a1ccc6f9fedb554a',1,'webcface::Internal::SyncDataStore2::self_member_name']]],
   ['send_5fbuffer_3',['send_buffer',['../structwebcface_1_1Server_1_1ClientData.html#a28beb71e3568e218778f423fd95ed391',1,'webcface::Server::ClientData']]],

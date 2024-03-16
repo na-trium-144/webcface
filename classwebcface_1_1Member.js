@@ -15,6 +15,7 @@ var classwebcface_1_1Member =
     [ "image", "classwebcface_1_1Member.html#a33adc56c4542e55d02d6cba9e8a83b34", null ],
     [ "imageEntries", "classwebcface_1_1Member.html#aa71834447f8b14aa597bf6add6a33749", null ],
     [ "images", "classwebcface_1_1Member.html#a45ca97bd85fbb26eefa7b5133f3287f4", null ],
+    [ "isSelf", "classwebcface_1_1Member.html#a0522a651826ba6fcbb9ce86258e8fa30", null ],
     [ "libName", "classwebcface_1_1Member.html#a12c305af32dafb2a49e9e68bc3b6be4c", null ],
     [ "libVersion", "classwebcface_1_1Member.html#a064ab96bd8007139693d43a4c0efa8e0", null ],
     [ "log", "classwebcface_1_1Member.html#a37064ebbfa8560de8c5a90fbbea4d6a6", null ],
