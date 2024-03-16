@@ -207,6 +207,9 @@ Protected Member Functions</h2></td></tr>
 <tr class="memitem:aa55156bf6486cd2b0c74394634474062"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Func.html">Func</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Func.html#aa55156bf6486cd2b0c74394634474062">set</a> (const T &amp;func)</td></tr>
 <tr class="memdesc:aa55156bf6486cd2b0c74394634474062"><td class="mdescLeft">&#160;</td><td class="mdescRight">関数からFuncInfoを構築しセットする  <br /></td></tr>
 <tr class="separator:aa55156bf6486cd2b0c74394634474062"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7427c0d5b0fb0ac70dc126a980216b4c" id="r_a7427c0d5b0fb0ac70dc126a980216b4c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Func.html">Func</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Func.html#a7427c0d5b0fb0ac70dc126a980216b4c">set</a> (const std::vector&lt; <a class="el" href="classwebcface_1_1Common_1_1Arg.html">Arg</a> &gt; &amp;<a class="el" href="classwebcface_1_1Func.html#a909f29d9c95a7bb90dec90183fd955fc">args</a>, <a class="el" href="namespacewebcface_1_1Common.html#acd1dd9e2d5f885ad3f73197cfa6b0185">ValType</a> return_type, std::function&lt; void(<a class="el" href="classwebcface_1_1FuncCallHandle.html">FuncCallHandle</a>)&gt; callback)</td></tr>
+<tr class="memdesc:a7427c0d5b0fb0ac70dc126a980216b4c"><td class="mdescLeft">&#160;</td><td class="mdescRight">引数にFuncCallHandleを取る関数を登録する  <br /></td></tr>
+<tr class="separator:a7427c0d5b0fb0ac70dc126a980216b4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2ab7cc09912b8dd1ab69e918f3a11f97" id="r_a2ab7cc09912b8dd1ab69e918f3a11f97"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Func.html">Func</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Func.html#a2ab7cc09912b8dd1ab69e918f3a11f97">free</a> ()</td></tr>
 <tr class="memdesc:a2ab7cc09912b8dd1ab69e918f3a11f97"><td class="mdescLeft">&#160;</td><td class="mdescRight">関数の設定を削除  <br /></td></tr>
 <tr class="separator:a2ab7cc09912b8dd1ab69e918f3a11f97"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -889,8 +892,54 @@ template&lt;typename... Args&gt; </div>
 
 </div>
 </div>
+<a id="a7427c0d5b0fb0ac70dc126a980216b4c" name="a7427c0d5b0fb0ac70dc126a980216b4c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7427c0d5b0fb0ac70dc126a980216b4c">&#9670;&#160;</a></span>set() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1Func.html">Func</a> &amp; set </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="classwebcface_1_1Common_1_1Arg.html">Arg</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>args</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacewebcface_1_1Common.html#acd1dd9e2d5f885ad3f73197cfa6b0185">ValType</a>&#160;</td>
+          <td class="paramname"><em>return_type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::function&lt; void(<a class="el" href="classwebcface_1_1FuncCallHandle.html">FuncCallHandle</a>)&gt;&#160;</td>
+          <td class="paramname"><em>callback</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>引数にFuncCallHandleを取る関数を登録する </p>
+<dl class="section since"><dt>Since</dt><dd>ver1.9</dd></dl>
+<p>cからの呼び出し用 </p>
+
+</div>
+</div>
 <a id="aa55156bf6486cd2b0c74394634474062" name="aa55156bf6486cd2b0c74394634474062"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa55156bf6486cd2b0c74394634474062">&#9670;&#160;</a></span>set()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aa55156bf6486cd2b0c74394634474062">&#9670;&#160;</a></span>set() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1340,7 +1389,7 @@ template&lt;typename ScopeGuard &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="classwebcface_1_1FuncListener.html">FuncListener</a></li>
-    <li class="footer">Generated on Sat Mar 16 2024 01:52:14 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Sat Mar 16 2024 02:04:21 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

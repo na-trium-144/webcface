@@ -36,6 +36,7 @@ var def__types_8h =
     [ "WCF_VIEW_TEXT", "def__types_8h.html#a6d08503dc22e7b52807308f52ecf306e", null ],
     [ "wcfAsyncFuncResult", "def__types_8h.html#adde5cf85e4e5d0d5e980329221d1fac3", null ],
     [ "wcfClient", "def__types_8h.html#a11e35bfe0822747dfabcce7f5220016a", null ],
+    [ "wcfFuncCallback", "def__types_8h.html#a36819ce6e20b1c9c117f59f903955d64", null ],
     [ "wcfFuncCallHandle", "def__types_8h.html#a6f52e8c4748a8e6f2aaa124c7f76767a", null ],
     [ "wcfMultiVal", "def__types_8h.html#a568ed45b4dde95e33d4c9ea3bbbdfdd9", null ],
     [ "wcfStatus", "def__types_8h.html#a3ac4b9c21f837154212676efa87b0b40", null ],

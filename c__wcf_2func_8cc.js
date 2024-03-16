@@ -1,5 +1,6 @@
 var c__wcf_2func_8cc =
 [
+    [ "createHandle", "c__wcf_2func_8cc.html#a28ca37667f97fa78629d37ce95cc41e2", null ],
     [ "resultToCVal", "c__wcf_2func_8cc.html#abc7da60e11d72d30c5e0014745ce8f02", null ],
     [ "wcfFuncFetchCall", "c__wcf_2func_8cc.html#ab5e31cd0b36abb92a6a6ae74202b1415", null ],
     [ "wcfFuncGetResult", "c__wcf_2func_8cc.html#a394ed677c8419881c1501dc822ca07bf", null ],
@@ -8,5 +9,6 @@ var c__wcf_2func_8cc =
     [ "wcfFuncRespond", "c__wcf_2func_8cc.html#a0cde58bb43011b9e54fc80881cd19c30", null ],
     [ "wcfFuncRun", "c__wcf_2func_8cc.html#a66bdb804a3f7e0b7ef620180fbab9dfe", null ],
     [ "wcfFuncRunAsync", "c__wcf_2func_8cc.html#ac39ef7c2929a4cd2d7d65f0343d6cb32", null ],
+    [ "wcfFuncSet", "c__wcf_2func_8cc.html#a24d2cc4125df231866e6b1e5ef56866e", null ],
     [ "wcfFuncWaitResult", "c__wcf_2func_8cc.html#a5f1da69de76906baf2254538bede11ad", null ]
 ];
