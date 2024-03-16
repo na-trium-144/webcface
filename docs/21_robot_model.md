@@ -21,32 +21,36 @@ Client::robotModel からRobotModelオブジェクトを作り、 RobotModel::se
 <div class="tabbed">
 
 - <b class="tab-title">C++</b>
+    \note <span class="since-c">1.9</span> add関数と << 演算子を追加し、
+    まとめてsetする代わりにViewと同様1つずつaddし最後にsyncする使い方ができるようになりました
+
     例
     ```cpp
     using namespace webcface::RobotJoints;
     using namespace webcface::Geometries;
-    wcli.robotModel("omniwheel")
-        .set({{"base", box({-0.2, -0.2, 0.04}, {0.2, 0.2, 0.06}),
-               webcface::ViewColor::inherit},
-              {"wheel_lf",
-               rotationalJoint(
-                   "joint_lf", "base",
-                   {0.2, 0.2, 0.05, -std::numbers::pi / 4, 0, 0}),
-               cylinder({0, 0, 0, std::numbers::pi / 2, 0, 0}, 0.05, 0.01),
-               webcface::ViewColor::inherit},
-              {"wheel_rf",
-               rotationalJoint(
-                   "joint_rf", "base",
-                   {0.2, -0.2, 0.05, std::numbers::pi / 4, 0, 0}),
-               cylinder({0, 0, 0, std::numbers::pi / 2, 0, 0}, 0.05, 0.01),
-               webcface::ViewColor::inherit},
-               // ... 省略
-              {"line2",
-               rotationalJoint("line_rotation", "line1",
-                               {0, 0, 0.3, 0, 0, 0}),
-               line({0, 0, 0}, {0.5, 0, 0}),
-               webcface::ViewColor::red}
-        });
+    auto m = wcli.robotModel("omniwheel")
+    m.add({"base", box({-0.2, -0.2, 0.04}, {0.2, 0.2, 0.06}),
+           webcface::ViewColor::inherit})
+     .add({"wheel_lf",
+           rotationalJoint(
+               "joint_lf", "base",
+               {0.2, 0.2, 0.05, -std::numbers::pi / 4, 0, 0}),
+           cylinder({0, 0, 0, std::numbers::pi / 2, 0, 0}, 0.05, 0.01),
+           webcface::ViewColor::inherit})
+     .add({"wheel_rf",
+           rotationalJoint(
+               "joint_rf", "base",
+               {0.2, -0.2, 0.05, std::numbers::pi / 4, 0, 0}),
+           cylinder({0, 0, 0, std::numbers::pi / 2, 0, 0}, 0.05, 0.01),
+           webcface::ViewColor::inherit})
+     // ... 省略
+     .add({"line2",
+           rotationalJoint("line_rotation", "line1",
+                           {0, 0, 0.3, 0, 0, 0}),
+           line({0, 0, 0}, {0.5, 0, 0}),
+           webcface::ViewColor::red});
+    m.sync();
+    wcli.sync();
     ```
     (この謎のロボット何)
 

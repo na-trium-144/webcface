@@ -310,11 +310,14 @@ data = {
 			t: number, // type
 			op: number[2], // origin pos
 			or: number, // origin rot
-			c: number, // color
-			f: number, // fill
-			s: number, // stroke width
+			c: number, // stroke color
+			f: number, // fill color / text color
+			s: number, // stroke width / font size
 			gt: number | null, // geometry type
 			gp: number[], // geometry properties
+			L: string | null, // onclick member
+			l: string | null, // onclick field
+			x: string, // text
 		},
 		index: {},
 		...
@@ -326,6 +329,8 @@ data = {
 * lは変更されていない分も含めたcanvasの全要素数
 * dのindexはstring型で、要素のindexを10進数で文字列にしたもの
 * geometry propertiesの要素数と内容はgeometryの種類によって異なる
+* <span class="since-c">1.9</span> onClickとtext追加
+* textの色はfillの色、textのサイズはstrokeWidthのデータを流用
 
 ### canvas2d entry (kind = 24)
 * value entryと同様

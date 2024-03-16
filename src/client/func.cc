@@ -197,8 +197,18 @@ std::string AnonymousFunc::fieldNameTmp() {
     static int id = 0;
     return ".tmp" + std::to_string(id++);
 }
+AnonymousFunc &AnonymousFunc::operator=(AnonymousFunc &&other) {
+    this->func_setter = std::move(other.func_setter);
+    this->base_init = other.base_init;
+    this->Func::operator=(std::move(static_cast<Func &>(other)));
+    other.base_init = false;
+    return *this;
+}
 void AnonymousFunc::lockTo(Func &target) {
     if (!base_init) {
+        if (!func_setter) {
+            throw std::runtime_error("Cannot lock empty AnonymousFunc");
+        }
         this->data_w = target.data_w;
         this->member_ = target.member_;
         this->field_ = fieldNameTmp();
@@ -206,6 +216,8 @@ void AnonymousFunc::lockTo(Func &target) {
     }
     target.setRaw(dataLock()->func_store.getRecv(*this).value());
     this->free();
+    func_setter = nullptr;
+    base_init = false;
 }
 
 } // namespace WEBCFACE_NS

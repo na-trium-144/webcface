@@ -5,42 +5,33 @@
 #include "common/canvas2d.h"
 #include "event_target.h"
 #include "field.h"
+#include "func.h"
+#include "canvas_data.h"
 
 namespace WEBCFACE_NS {
+namespace Internal {
+template <typename Component>
+class DataSetBuffer;
+class Canvas2DDataBuf;
+} // namespace Internal
 
-class Canvas2DComponent : public Common::Canvas2DComponentBase {
-    std::weak_ptr<Internal::ClientData> data_w;
+class Canvas2D;
+extern template class WEBCFACE_IMPORT EventTarget<Canvas2D>;
 
-  public:
-    Canvas2DComponent() = default;
-    Canvas2DComponent(const Common::Canvas2DComponentBase &vc,
-                      const std::weak_ptr<Internal::ClientData> &data_w)
-        : Common::Canvas2DComponentBase(vc), data_w(data_w) {}
-    explicit Canvas2DComponent(Canvas2DComponentType type) { type_ = type; }
-};
 /*!
  * \brief Canvas2Dの送受信データを表すクラス
  *
  * コンストラクタではなく Member::canvas2D() を使って取得してください
  *
  */
-class Canvas2D : protected Field, public EventTarget<Canvas2D> {
-    std::shared_ptr<Canvas2DData> canvas_data;
-    std::shared_ptr<bool> modified;
+class WEBCFACE_DLL Canvas2D : protected Field, public EventTarget<Canvas2D> {
+    std::shared_ptr<Internal::Canvas2DDataBuf> sb;
 
-    WEBCFACE_DLL void onAppend() const override;
-
-    /*!
-     * \brief 値をセットし、EventTargetを発動する
-     *
-     */
-    WEBCFACE_DLL Canvas2D &set(Canvas2DData &v);
-
-    WEBCFACE_DLL void onDestroy();
+    void onAppend() const override;
 
   public:
-    WEBCFACE_DLL Canvas2D();
-    WEBCFACE_DLL Canvas2D(const Field &base);
+    Canvas2D();
+    Canvas2D(const Field &base);
     Canvas2D(const Field &base, const std::string &field)
         : Canvas2D(Field{base, field}) {}
     Canvas2D(const Field &base, const std::string &field, double width,
@@ -49,18 +40,9 @@ class Canvas2D : protected Field, public EventTarget<Canvas2D> {
         init(width, height);
     }
 
-    /*!
-     * \brief デストラクタで sync() を呼ぶ。
-     *
-     * Canvas2Dをコピーした場合は、すべてのコピーが破棄されたときにのみ sync()
-     * が呼ばれる。
-     * \sa sync()
-     *
-     */
-    ~Canvas2D() override { onDestroy(); }
-
     using Field::member;
     using Field::name;
+    friend Internal::DataSetBuffer<Canvas2DComponent>;
 
     /*!
      * \brief 子フィールドを返す
@@ -76,12 +58,12 @@ class Canvas2D : protected Field, public EventTarget<Canvas2D> {
      * \since ver1.7
      *
      */
-    WEBCFACE_DLL void request() const;
+    void request() const;
     /*!
      * \brief Canvasの内容を取得する
      *
      */
-    WEBCFACE_DLL std::optional<std::vector<Canvas2DComponent>> tryGet() const;
+    std::optional<std::vector<Canvas2DComponent>> tryGet() const;
     /*!
      * \brief Canvasの内容を取得する
      *
@@ -93,14 +75,13 @@ class Canvas2D : protected Field, public EventTarget<Canvas2D> {
      * \brief syncの時刻を返す
      * \deprecated 1.7でMember::syncTime()に変更
      */
-    [[deprecated]] WEBCFACE_DLL std::chrono::system_clock::time_point
-    time() const;
+    [[deprecated]] std::chrono::system_clock::time_point time() const;
 
     /*!
      * \brief 値やリクエスト状態をクリア
      *
      */
-    WEBCFACE_DLL Canvas2D &free();
+    Canvas2D &free();
 
     /*!
      * \brief Canvasのサイズを指定 & このCanvas2Dに追加した内容を初期化する
@@ -110,14 +91,52 @@ class Canvas2D : protected Field, public EventTarget<Canvas2D> {
      * (init() 後に sync() をすると空のCanvas2Dが送信される)
      *
      */
-    WEBCFACE_DLL Canvas2D &init(double width, double height);
+    Canvas2D &init(double width, double height);
 
     /*!
      * \brief Componentを追加
+     * \since ver1.9
      *
      */
-    WEBCFACE_DLL Canvas2D &add(const Canvas2DComponentBase &cc);
+    Canvas2D &operator<<(const Canvas2DComponent &cc);
+    /*!
+     * \brief Componentを追加
+     * \since ver1.9
+     *
+     */
+    Canvas2D &operator<<(Canvas2DComponent &&cc);
 
+    /*!
+     * \brief コンポーネントなどを追加
+     *
+     * Tの型に応じた operator<< が呼ばれる
+     *
+     * \since ver1.9〜
+     *
+     */
+    template <typename T>
+    Canvas2D &add(T &&cc) {
+        *this << std::forward<T>(cc);
+        return *this;
+    }
+    /*!
+     * \brief Geometryを追加
+     * \since ver1.9
+     */
+    template <bool V, bool C3>
+    Canvas2D &operator<<(TemporalComponent<V, true, C3> &&cc) {
+        *this << std::move(cc.to2());
+        return *this;
+    }
+    /*!
+     * \brief Geometryを追加
+     * \since ver1.9
+     */
+    template <bool V, bool C3>
+    Canvas2D &operator<<(TemporalComponent<V, true, C3> &cc) {
+        *this << cc.to2();
+        return *this;
+    }
     /*!
      * \brief Geometryを追加
      *
@@ -128,16 +147,19 @@ class Canvas2D : protected Field, public EventTarget<Canvas2D> {
      * \param color 図形の枠線の色 (省略時のinheritはWebUI上ではblackと同じ)
      * \param fill 塗りつぶしの色 (省略時のinheritはWebUI上では透明)
      * \param stroke_width 枠線の太さ
+     * \deprecated 1.9〜
+     * TemporalComponent に直接プロパティを設定できるようにしたため、
+     * add時の引数での設定は不要
      *
      */
-    template <typename G>
-        requires std::derived_from<G, Geometry2D>
-    Canvas2D &add(const G &geometry, const Transform &origin,
-                  const ViewColor &color = ViewColor::inherit,
-                  const ViewColor &fill = ViewColor::inherit,
-                  double stroke_width = 1) {
-        add({Canvas2DComponentType::geometry, origin, color, fill, stroke_width,
-             geometry});
+    [[deprecated]] Canvas2D &add(const Geometry &geometry,
+                                 const Transform &origin,
+                                 const ViewColor &color = ViewColor::inherit,
+                                 const ViewColor &fill = ViewColor::inherit,
+                                 double stroke_width = 1) {
+        add(Canvas2DComponent{{Canvas2DComponentType::geometry, origin, color,
+                               fill, stroke_width, geometry, std::nullopt,
+                               ""}});
         return *this;
     }
     /*!
@@ -145,14 +167,18 @@ class Canvas2D : protected Field, public EventTarget<Canvas2D> {
      *
      * origin を省略した場合identity()になる
      *
+     * \deprecated 1.9〜
+     * TemporalComponent に直接プロパティを設定できるようにしたため、
+     * add時の引数での設定は不要
+     *
      */
-    template <typename G>
-        requires std::derived_from<G, Geometry2D>
-    Canvas2D &
-    add(const G &geometry, const ViewColor &color = ViewColor::inherit,
-        const ViewColor &fill = ViewColor::inherit, double stroke_width = 1) {
-        add({Canvas2DComponentType::geometry, identity(), color, fill,
-             stroke_width, geometry});
+    [[deprecated]] Canvas2D &add(const Geometry &geometry,
+                                 const ViewColor &color = ViewColor::inherit,
+                                 const ViewColor &fill = ViewColor::inherit,
+                                 double stroke_width = 1) {
+        add(Canvas2DComponent{{Canvas2DComponentType::geometry, identity(),
+                               color, fill, stroke_width, geometry,
+                               std::nullopt, ""}});
         return *this;
     }
     /*!
@@ -160,13 +186,17 @@ class Canvas2D : protected Field, public EventTarget<Canvas2D> {
      *
      * fillを省略
      *
+     * \deprecated 1.9〜
+     * TemporalComponent に直接プロパティを設定できるようにしたため、
+     * add時の引数での設定は不要
+     *
      */
-    template <typename G>
-        requires std::derived_from<G, Geometry2D>
-    Canvas2D &add(const G &geometry, const Transform &origin,
-                  const ViewColor &color, double stroke_width) {
-        add({Canvas2DComponentType::geometry, origin, color, ViewColor::inherit,
-             stroke_width, geometry});
+    [[deprecated]] Canvas2D &add(const Geometry &geometry,
+                                 const Transform &origin,
+                                 const ViewColor &color, double stroke_width) {
+        add(Canvas2DComponent{{Canvas2DComponentType::geometry, origin, color,
+                               ViewColor::inherit, stroke_width, geometry,
+                               std::nullopt, ""}});
         return *this;
     }
     /*!
@@ -174,13 +204,16 @@ class Canvas2D : protected Field, public EventTarget<Canvas2D> {
      *
      * originとfillを省略
      *
+     * \deprecated 1.9〜
+     * TemporalComponent に直接プロパティを設定できるようにしたため、
+     * add時の引数での設定は不要
+     *
      */
-    template <typename G>
-        requires std::derived_from<G, Geometry2D>
-    Canvas2D &add(const G &geometry, const ViewColor &color,
-                  double stroke_width) {
-        add({Canvas2DComponentType::geometry, color, ViewColor::inherit,
-             stroke_width, geometry});
+    [[deprecated]] Canvas2D &add(const Geometry &geometry,
+                                 const ViewColor &color, double stroke_width) {
+        add(Canvas2DComponent{{Canvas2DComponentType::geometry, identity(),
+                               color, ViewColor::inherit, stroke_width,
+                               geometry, std::nullopt, ""}});
         return *this;
     }
     /*!
@@ -190,6 +223,6 @@ class Canvas2D : protected Field, public EventTarget<Canvas2D> {
      * (init()も追加もされていなければ) 何もしない。
      *
      */
-    WEBCFACE_DLL Canvas2D &sync();
+    Canvas2D &sync();
 };
 } // namespace WEBCFACE_NS

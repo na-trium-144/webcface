@@ -2,11 +2,47 @@
 #include <webcface/member.h>
 #include "client_internal.h"
 #include "../message/message.h"
+#include "data_buffer.h"
 
 namespace WEBCFACE_NS {
+
+template class WEBCFACE_DLL EventTarget<RobotModel>;
+
+RobotModel::RobotModel()
+    : Field(), EventTarget<RobotModel>(),
+      Canvas3DComponent(Canvas3DComponentType::robot_model),
+      sb(std::make_shared<Internal::DataSetBuffer<RobotLink>>()) {}
+
 RobotModel::RobotModel(const Field &base)
     : Field(base), EventTarget<RobotModel>(
-                       &this->dataLock()->robot_model_change_event, *this) {}
+                       &this->dataLock()->robot_model_change_event, *this),
+      Canvas3DComponent(Canvas3DComponentType::robot_model, this->dataLock()),
+      sb(std::make_shared<Internal::DataSetBuffer<RobotLink>>(base)) {
+    this->Canvas3DComponent::robotModel(*this);
+}
+
+RobotModel &RobotModel::init() {
+    sb->init();
+    return *this;
+}
+RobotModel &RobotModel::sync() {
+    sb->sync();
+    return *this;
+}
+template <>
+void Internal::DataSetBuffer<RobotLink>::onSync() {
+    auto ls = std::make_shared<std::vector<RobotLink>>(std::move(components_));
+    target_.setCheck()->robot_model_store.setSend(target_, ls);
+    static_cast<RobotModel>(target_).triggerEvent(target_);
+}
+RobotModel &RobotModel::operator<<(const RobotLink &vc) {
+    sb->add(vc);
+    return *this;
+}
+RobotModel &RobotModel::operator<<(RobotLink &&vc) {
+    sb->add(std::move(vc));
+    return *this;
+}
 
 void RobotModel::request() const {
     auto data = dataLock();
@@ -18,8 +54,7 @@ void RobotModel::request() const {
 }
 
 RobotModel &RobotModel::set(const std::vector<RobotLink> &v) {
-    setCheck()->robot_model_store.setSend(*this, v);
-    this->triggerEvent(*this);
+    sb->set(v);
     return *this;
 }
 
@@ -29,7 +64,7 @@ std::optional<std::vector<RobotLink>> RobotModel::tryGet() const {
     request();
     auto v = dataLock()->robot_model_store.getRecv(*this);
     if (v) {
-        return *v;
+        return **v;
     } else {
         return std::nullopt;
     }

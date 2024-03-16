@@ -2,8 +2,12 @@
 #include "client_internal.h"
 #include <webcface/member.h>
 #include "../message/message.h"
+#include "data_buffer.h"
 
 namespace WEBCFACE_NS {
+
+template class WEBCFACE_DLL EventTarget<View>;
+
 ViewComponentBase &
 ViewComponent::lockTmp(const std::weak_ptr<Internal::ClientData> &data_w,
                        const std::string &field_id) {
@@ -49,76 +53,99 @@ ViewComponent &ViewComponent::onClick(const Func &func) {
 
 View::View()
     : Field(), EventTarget<View>(), std::ostream(nullptr),
-      sb(std::make_shared<ViewBuf>()) {
+      sb(std::make_shared<Internal::ViewBuf>()) {
     this->std::ostream::init(sb.get());
 }
 View::View(const Field &base)
     : Field(base), EventTarget<View>(&this->dataLock()->view_change_event,
                                      *this),
-      std::ostream(nullptr), sb(std::make_shared<ViewBuf>()) {
+      std::ostream(nullptr), sb(std::make_shared<Internal::ViewBuf>(base)) {
     this->std::ostream::init(sb.get());
 }
+View::~View() { this->rdbuf(nullptr); }
+
+Internal::ViewBuf::ViewBuf()
+    : std::stringbuf(std::ios_base::out), DataSetBuffer<ViewComponent>() {}
+Internal::ViewBuf::ViewBuf(const Field &base)
+    : std::stringbuf(std::ios_base::out), DataSetBuffer<ViewComponent>(base) {}
+Internal::ViewBuf::~ViewBuf() { sync(); }
+
 View &View::init() {
     sb->init();
     return *this;
 }
 View &View::sync() {
     std::flush(*this);
-    if (sb->modified()) {
-        set(sb->components());
-        sb->syncDone();
-    }
+    sb->syncSetBuf();
     return *this;
 }
-void View::onDestroy() {
-    if (sb.use_count() == 1 && data_w.lock() != nullptr &&
-        dataLock()->isSelf(member_)) {
-        sync();
+template <>
+void Internal::DataSetBuffer<ViewComponent>::onSync() {
+    auto vb = std::make_shared<std::vector<ViewComponentBase>>();
+    vb->reserve(components_.size());
+    for (std::size_t i = 0; i < components_.size(); i++) {
+        vb->push_back(std::move(components_[i].lockTmp(
+            target_.data_w, target_.name() + "_" + std::to_string(i))));
     }
-    this->rdbuf(nullptr);
+    target_.setCheck()->view_store.setSend(target_, vb);
+    static_cast<View>(target_).triggerEvent(target_);
 }
+
 View &View::operator<<(const ViewComponent &vc) {
     std::flush(*this);
-    sb->push(vc);
+    sb->addVC(vc);
     return *this;
 }
-void ViewBuf::push(const ViewComponent &vc) {
-    if (vc.type() == ViewComponentType::text) {
-        std::string s = vc.text();
-        while (true) {
-            auto p = s.find('\n');
-            if (p == std::string::npos) {
-                break;
-            }
-            std::string c1 = s.substr(0, p);
-            if (!c1.empty()) {
-                ViewComponent vc_new = vc;
-                vc_new.text(c1);
-                components_.push_back(vc_new);
-            }
-            components_.push_back(ViewComponents::newLine());
-            s = s.substr(p + 1);
-            modified_ = true;
+View &View::operator<<(ViewComponent &&vc) {
+    std::flush(*this);
+    sb->addVC(std::move(vc));
+    return *this;
+}
+void Internal::ViewBuf::addText(const ViewComponent &vc) {
+    std::string s = vc.text();
+    while (true) {
+        auto p = s.find('\n');
+        if (p == std::string::npos) {
+            break;
         }
-        if (!s.empty()) {
+        std::string c1 = s.substr(0, p);
+        if (!c1.empty()) {
             ViewComponent vc_new = vc;
-            vc_new.text(s);
-            components_.push_back(vc_new);
-            modified_ = true;
+            vc_new.text(c1);
+            add(std::move(vc_new));
         }
-    } else {
-        components_.push_back(vc);
-        modified_ = true;
+        add(ViewComponents::newLine());
+        s = s.substr(p + 1);
+    }
+    if (!s.empty()) {
+        ViewComponent vc_new = vc;
+        vc_new.text(s);
+        add(std::move(vc_new));
     }
 }
-int ViewBuf::sync() {
-    this->push(ViewComponents::text(this->str()));
-    this->str("");
+void Internal::ViewBuf::addVC(const ViewComponent &vc) {
+    if (vc.type() == ViewComponentType::text) {
+        addText(vc);
+    } else {
+        add(vc);
+    }
+}
+void Internal::ViewBuf::addVC(ViewComponent &&vc) {
+    if (vc.type() == ViewComponentType::text) {
+        addText(vc);
+    } else {
+        add(std::move(vc));
+    }
+}
+int Internal::ViewBuf::sync() {
+    if (!this->str().empty()) {
+        this->addText(ViewComponents::text(this->str()).toV());
+        this->str("");
+    }
     return 0;
 }
 
 View &View::operator=(const View &rhs) {
-    onDestroy();
     this->Field::operator=(rhs);
     this->EventTarget<View>::operator=(rhs);
     this->sb = rhs.sb;
@@ -126,23 +153,10 @@ View &View::operator=(const View &rhs) {
     return *this;
 }
 View &View::operator=(View &&rhs) {
-    onDestroy();
     this->Field::operator=(std::move(rhs));
     this->EventTarget<View>::operator=(std::move(rhs));
     this->sb = std::move(rhs.sb);
     this->rdbuf(sb.get());
-    return *this;
-}
-View &View::set(std::vector<ViewComponent> &v) {
-    setCheck();
-    std::vector<ViewComponentBase> vb(v.size());
-    for (std::size_t i = 0; i < v.size(); i++) {
-        vb[i] =
-            v[i].lockTmp(this->data_w, this->name() + "_" + std::to_string(i));
-    }
-    setCheck()->view_store.setSend(
-        *this, std::make_shared<std::vector<ViewComponentBase>>(vb));
-    triggerEvent(*this);
     return *this;
 }
 

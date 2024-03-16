@@ -123,25 +123,34 @@ Viewに追加する各種要素をViewComponentといいます。
 <div class="tabbed">
 
 - <b class="tab-title">C++</b>
-    C++では `webcface::ViewComponents` 名前空間に定義されています。
+    <span class="since-c">1.9</span> `webcface::Components` 名前空間に定義されています。
     ```cpp
-    using namespace webcface::ViewComponents;
+    using namespace webcface::Components;
     ```
     をすると便利かもしれません
-    \note ViewComponentsはinlineなので、 `webcface::` の名前空間でもアクセス可能です
+    \note namespace Components はinlineなので、 `webcface::` の名前空間でもアクセス可能です
+
+    ver1.8以前はViewComponentsという名前空間でしたが現在はエイリアスになっておりどちらでもok
+
+    各要素はそれぞれの関数から webcface::ViewComponent または webcface::TemporalComponent のオブジェクトとして得られます。
+    `button(...).textColor(...)` などのようにメソッドチェーンすることで各要素にオプションを設定できます。
+
 
 - <b class="tab-title">JavaScript</b>
-    JavaScriptでは [`viewComponents`](https://na-trium-144.github.io/webcface-js/variables/viewComponents.html) オブジェクト内にあります
+    JavaScriptでは [`viewComponents`](https://na-trium-144.github.io/webcface-js/variables/viewComponents.html) オブジェクト内にそれぞれの要素を表す関数があります
     ```ts
     import { viewComponents } from "webcface";
     ```
+    オプションはそれぞれ関数の引数にオブジェクトで渡すことができます。(詳細はこの後のそれぞれの要素の説明を参照)
 
 - <b class="tab-title">Python</b>
-    Pythonでは [`webcface.view_components`](https://na-trium-144.github.io/webcface-python/webcface.view_components.html) モジュール内にあり、
+    Pythonでは [`webcface.view_components`](https://na-trium-144.github.io/webcface-python/webcface.view_components.html) モジュール内にそれぞれの要素を表す関数があります
     ```python
     from webcface.view_components import *
     ```
     とすることもできます
+
+    それぞれ関数のキーワード引数でオプションを設定できます。
 
 </div>
 

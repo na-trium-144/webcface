@@ -56,10 +56,15 @@ TEST_F(Canvas3DTest, set) {
         });
 
     auto v = canvas(self_name, "b");
-    v.add(line({0, 0, 0}, {3, 3, 3}), {1, 1, 1, 0, 0, 0}, ViewColor::red);
-    v.add(plane({0, 0, 0, 0, 0, 0}, 10, 10), {2, 2, 2, 0, 0, 0},
-          ViewColor::yellow);
-    v.add(robot_model(self_name, "b"), {3, 3, 3, 0, 0, 0}, {{"j0", 123}});
+    v.add(line({0, 0, 0}, {3, 3, 3})
+              .origin({1, 1, 1, 0, 0, 0})
+              .color(ViewColor::red));
+    v.add(plane({0, 0, 0, 0, 0, 0}, 10, 10)
+              .origin({2, 2, 2, 0, 0, 0})
+              .color(ViewColor::yellow));
+    v.add(robot_model(self_name, "b")
+              .origin({3, 3, 3, 0, 0, 0})
+              .angle("j0", 123));
     v.sync();
     EXPECT_EQ(callback_called, 1);
     auto &canvas3d_data = **data_->canvas3d_store.getRecv(self_name, "b");
@@ -101,7 +106,7 @@ TEST_F(Canvas3DTest, set) {
 
     {
         auto v2 = canvas(self_name, "b");
-        v2.add(Canvas3DComponentBase{});
+        v2.add(Canvas3DComponent{});
     }
     EXPECT_EQ(callback_called, 3);
     EXPECT_EQ((*data_->canvas3d_store.getRecv(self_name, "b"))->size(), 1);
@@ -110,7 +115,7 @@ TEST_F(Canvas3DTest, set) {
         Canvas3D v3;
         {
             Canvas3D v4 = canvas(self_name, "b");
-            v4.add(Canvas3DComponentBase{});
+            v4.add(Canvas3DComponent{});
             v3 = v4;
         } // v3にコピーされてるのでまだsyncされない
         EXPECT_EQ(callback_called, 3);
@@ -120,7 +125,7 @@ TEST_F(Canvas3DTest, set) {
     { Canvas3D v5{}; } // エラーやセグフォしない
 
     Canvas3D v6{};
-    v6.add(Canvas3DComponentBase{});
+    v6.add(Canvas3DComponent{});
     ;
     EXPECT_THROW(v6.sync(), std::runtime_error);
 }

@@ -6,14 +6,14 @@
 
 namespace WEBCFACE_NS {
 
-class FuncListener : protected Func {
+class WEBCFACE_DLL FuncListener : protected Func {
     ValType return_type_ = ValType::none_;
     std::vector<Arg> args_{};
     bool hidden_ = false;
 
   public:
     FuncListener() = default;
-    WEBCFACE_DLL FuncListener(const Field &base);
+    FuncListener(const Field &base);
     FuncListener(const Field &base, const std::string &field)
         : FuncListener(Field{base, field}) {}
 
@@ -24,7 +24,7 @@ class FuncListener : protected Func {
      * \brief 関数呼び出しの待受を開始する
      *
      */
-    WEBCFACE_DLL FuncListener &listen();
+    FuncListener &listen();
     /*!
      * \brief 関数呼び出しの待受を開始する
      * \param args_num 引数の個数 (setArgsで設定していない場合)
@@ -81,6 +81,6 @@ class FuncListener : protected Func {
      * まだ呼び出されてなければnulloptを返す。
      *
      */
-    WEBCFACE_DLL std::optional<FuncCallHandle> fetchCall() const;
+    std::optional<FuncCallHandle> fetchCall() const;
 };
 } // namespace WEBCFACE_NS

@@ -196,16 +196,22 @@ WebUIでは最大10fpsで画像を表示できます。
 
 WebUI上で2次元の図形を描画することができます。
 
+また、Viewのように特定の部分をクリックしたときに関数を実行させることもできUIとしても使えます。
+
 ![tutorial_canvas2d.png](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_canvas2d.png)
+
+WebUIではマウス操作やタッチ操作で画面を動かしたり拡大縮小できます。
+右下のアイコンから操作説明が見れます。
 
 ### Canvas3D
 3D空間上のオブジェクト配置データを送受信する型です。
 
 WebUI上で3次元の図形を描画することができます。
 
-ドラッグで回転、Ctrl+ドラッグ(またはホイールを押しながらドラッグ)で移動、スクロールで拡大縮小ができます。
-
 ![tutorial_canvas3d.png](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_canvas3d.png)
+
+WebUIではマウス操作やタッチ操作で画面を動かしたり拡大縮小できます。
+右下のアイコンから操作説明が見れます。
 
 ### RobotModel
 

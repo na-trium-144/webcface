@@ -13,7 +13,7 @@ struct ClientData;
 class Member;
 
 //! ClientDataの参照とメンバ名とデータ名を持つクラス
-struct Field : public Common::FieldBase {
+struct WEBCFACE_DLL Field : public Common::FieldBase {
     //! ClientDataの参照
     //! ClientData内に保持するクラスもあるので循環参照を避けるためweak_ptr
     std::weak_ptr<Internal::ClientData> data_w;
@@ -26,13 +26,21 @@ struct Field : public Common::FieldBase {
         : Field(base.data_w, base.member_, field) {}
 
     //! data_wをlockし、失敗したらruntime_errorを投げる
-    WEBCFACE_DLL std::shared_ptr<Internal::ClientData> dataLock() const;
+    std::shared_ptr<Internal::ClientData> dataLock() const;
     //! data_wをlockし、memberがselfではなければinvalid_argumentを投げる
-    WEBCFACE_DLL std::shared_ptr<Internal::ClientData> setCheck() const;
+    std::shared_ptr<Internal::ClientData> setCheck() const;
 
     //! Memberを返す
-    WEBCFACE_DLL Member member() const;
+    Member member() const;
     //! field名を返す
     std::string name() const { return field_; }
+
+    /*!
+     * \brief memberがselfならtrue
+     *
+     * data_wがlockできなければruntime_errorを投げる
+     *
+     */
+    bool isSelf() const;
 };
 } // namespace WEBCFACE_NS

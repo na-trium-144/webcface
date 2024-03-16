@@ -14,19 +14,22 @@ struct ClientData;
 }
 class Member;
 
+class Text;
+extern template class WEBCFACE_IMPORT EventTarget<Text>;
+
 /*!
  * \brief 文字列の送受信データを表すクラス
  *
  * コンストラクタではなく Member::text() を使って取得してください
  *
  */
-class Text : protected Field, public EventTarget<Text> {
-    WEBCFACE_DLL void onAppend() const override;
+class WEBCFACE_DLL Text : protected Field, public EventTarget<Text> {
+    void onAppend() const override;
 
   public:
     Text() = default;
-    WEBCFACE_DLL Text(const Field &base);
-    WEBCFACE_DLL Text(const Field &base, const std::string &field)
+    Text(const Field &base);
+    Text(const Field &base, const std::string &field)
         : Text(Field{base, field}) {}
 
     using Field::member;
@@ -47,12 +50,12 @@ class Text : protected Field, public EventTarget<Text> {
      * \brief Dictの値を再帰的にセットする
      *
      */
-    WEBCFACE_DLL Text &set(const Dict &v);
+    Text &set(const Dict &v);
     /*!
      * \brief 文字列をセットする
      *
      */
-    WEBCFACE_DLL Text &set(const std::string &v);
+    Text &set(const std::string &v);
     /*!
      * \brief Dictの値を再帰的にセットする
      *
@@ -75,17 +78,17 @@ class Text : protected Field, public EventTarget<Text> {
      * \since ver1.7
      *
      */
-    WEBCFACE_DLL void request() const;
+    void request() const;
     /*!
      * \brief 文字列を返す
      *
      */
-    WEBCFACE_DLL std::optional<std::string> tryGet() const;
+    std::optional<std::string> tryGet() const;
     /*!
      * \brief 文字列を再帰的に取得しDictで返す
      *
      */
-    WEBCFACE_DLL std::optional<Dict> tryGetRecurse() const;
+    std::optional<Dict> tryGetRecurse() const;
     /*!
      * \brief 値を返す
      *
@@ -102,14 +105,14 @@ class Text : protected Field, public EventTarget<Text> {
      * \brief syncの時刻を返す
      * \deprecated 1.7でMember::syncTime()に変更
      */
-    [[deprecated]] WEBCFACE_DLL std::chrono::system_clock::time_point
+    [[deprecated]] std::chrono::system_clock::time_point
     time() const;
 
     /*!
      * \brief 値やリクエスト状態をクリア
      *
      */
-    WEBCFACE_DLL Text &free();
+    Text &free();
 
     bool operator==(const std::string &rhs) const { return this->get() == rhs; }
     bool operator!=(const std::string &rhs) const { return this->get() != rhs; }
@@ -120,4 +123,5 @@ class Text : protected Field, public EventTarget<Text> {
  *
  */
 WEBCFACE_DLL std::ostream &operator<<(std::ostream &os, const Text &data);
+
 } // namespace WEBCFACE_NS

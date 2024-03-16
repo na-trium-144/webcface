@@ -10,7 +10,7 @@ WEBCFACE_DLL wcfViewComponent wcfText(const char *text);
 /*!
  * \since 1.7
  */
-WEBCFACE_DLL wcfViewComponent wcfNewLine();
+WEBCFACE_DLL wcfViewComponent wcfNewLine(void);
 /*!
  * \since 1.7
  * \param text 表示する文字列

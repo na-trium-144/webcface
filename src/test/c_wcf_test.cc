@@ -492,6 +492,7 @@ TEST_F(CClientTest, viewReq) {
             {"0", ViewComponents::text("a")
                       .textColor(ViewColor::yellow)
                       .bgColor(ViewColor::green)
+                      .toV()
                       .lockTmp({}, "")},
             {"1", ViewComponents::newLine().lockTmp({}, "")},
             {"2", ViewComponents::button("a", Func{Field{{}, "x", "y"}})
