@@ -28,6 +28,45 @@ Client::func からFuncオブジェクトを作り、 Func::set() で関数を�
     ```
     set() の代わりに代入演算子(Value::operator=)でも同様のことができます
 
+- <b class="tab-title">C</b>
+    \since <span class="since-c">1.9</span>
+
+    wcfFuncSet で関数ポインタを登録できます。  
+    登録する関数の引数は wcfFuncCallHandle* と void* の2つで、
+    前者は引数のデータを取得したり結果を返すのに使用します。  
+    後者には登録時に任意のデータのポインタを渡すことができます。(使用しない場合はNULLでよいです。)
+    ```c
+    void callback(wcfFuncCallHandle *handle, void *user_data_p) {
+        struct UserData *user_data = (struct UserData *)user_data_p;
+        // do something
+        wcfMultiVal ans = wcfValI(123); // return value
+        wcfFuncRespond(handle, ans);
+    }
+    wcfValType args_type[3] = {WCF_VAL_INT, WCF_VAL_DOUBLE, WCF_VAL_STRING};
+    struct UserData user_data = {...};
+    wcfFuncSet(wcli, "hoge", args_type, 3, WCF_VAL_INT, callback, &user_data);
+    ```
+    set時には受け取りたい引数の型、個数、戻り値の型を指定します。
+    型は WCF_VAL_NONE, WCF_VAL_STRING, WCF_VAL_BOOL, WCF_VAL_INT, WCF_VAL_DOUBLE が指定できます。
+
+    callbackが呼び出されたとき `handle->args` に引数が格納されます。
+    set時に指定した引数の個数と呼び出し時の個数が一致しない場合、callbackが実行される前に呼び出し元に例外が投げられます(呼び出されていないのと同じことになります)
+
+    値を返すのはreturnではなくhandleを介して行います。
+    ```c
+    wcfMultiVal ans = wcfValD(123.45);
+    wcfFuncRespond(handle, &ans);
+    ```
+    で関数のreturnと同様に関数を終了して値を返します
+    (戻り値が不要な場合は `wcfFuncRespond(handle, NULL);` も可)
+    ```c
+    wcfFuncReject(handle, "エラーメッセージ");
+    ```
+    でエラーメッセージを返すことができます(呼び出し元にはruntime_errorを投げたものとして返ります)
+    (`wcfFuncReject(handle, NULL);` も可)
+
+    respondもrejectもせずにreturnした場合は自動的に空の値でrespondします。
+
 - <b class="tab-title">JavaScript</b>
     引数、戻り値はnumber, bool, string型であればいくつでも自由に指定できます。
     ```ts
@@ -215,7 +254,7 @@ Client::funcEntries()でその関数の存在を確認したりFunc::args()な�
     wcfValType args_type[3] = {WCF_VAL_INT, WCF_VAL_DOUBLE, WCF_VAL_STRING};
     wcfFuncListen(wcli, "hoge", args_type, 3, WCF_VAL_INT);
     ```
-    で待ち受けを開始し、func.set()と同様関数が登録され他クライアントから見られるようになります。
+    で待ち受けを開始し、wcfFuncSet() と同様関数が登録され他クライアントから見られるようになります。
     (wcfFuncListen()ではブロックはしません)
 
     その後、任意のタイミングで
@@ -232,11 +271,13 @@ Client::funcEntries()でその関数の存在を確認したりFunc::args()な�
     wcfMultiVal ans = wcfValD(123.45);
     wcfFuncRespond(handle, &ans);
     ```
-    で関数のreturnと同様に関数を終了して値を返したり、
+    で関数のreturnと同様に関数を終了して値を返します
+    (<span class="since-c">1.9</span> 戻り値が不要な場合は `wcfFuncRespond(handle, NULL);` も可)
     ```c
     wcfFuncReject(handle, "エラーメッセージ");
     ```
     でエラーメッセージを返すことができます(呼び出し元にはruntime_errorを投げたものとして返ります)
+    (`wcfFuncReject(handle, NULL);` も可)
 
 </div>
 

@@ -92,14 +92,16 @@ WEBCFACE_DLL wcfStatus wcfFuncWaitResult(wcfAsyncFuncResult *async_res,
  * \param arg_size 受け取る引数の個数
  * \param return_type 戻り値の型を指定
  * \param callback 実行する関数:
- * wcfFuncCallhandle* 型の引数を一つ取り何もreturnしない。
+ * wcfFuncCallhandle* 型と void* 型の引数を1つずつ取り、何もreturnしない。
+ * \param user_data 関数に引数として渡す追加のデータ
+ * callbackが呼び出されるときに第2引数にそのまま渡される。
  * \return wcliが無効ならWCF_BAD_WCLI
  *
  */
 WEBCFACE_DLL wcfStatus wcfFuncSet(wcfClient *wcli, const char *field,
                                   const wcfValType *arg_types, int arg_size,
                                   wcfValType return_type,
-                                  wcfFuncCallback callback);
+                                  wcfFuncCallback callback, void *user_data);
 
 /*!
  * \brief 関数呼び出しの待受を開始する

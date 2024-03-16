@@ -373,14 +373,16 @@ TEST_F(CClientTest, funcListen) {
     EXPECT_EQ(wcfFuncFetchCall(wcli_, "a", &h), WCF_NOT_CALLED);
 }
 
-std::function<void(wcfFuncCallHandle *h)> callback_obj = nullptr;
-void callbackFunc(wcfFuncCallHandle *h) { callback_obj(h); }
+std::function<void(wcfFuncCallHandle *h, void *u)> callback_obj = nullptr;
+void callbackFunc(wcfFuncCallHandle *h, void *u) { callback_obj(h, u); }
 TEST_F(CClientTest, funcSet) {
     using namespace std::string_literals;
     EXPECT_EQ(wcfStart(wcli_), WCF_OK);
-
+    int u = 9999;
     int arg_types[3] = {WCF_VAL_INT, WCF_VAL_DOUBLE, WCF_VAL_STRING};
-    callback_obj = [&](wcfFuncCallHandle *h) {
+    callback_obj = [&](wcfFuncCallHandle *h, void *u) {
+        EXPECT_EQ(*static_cast<int *>(u), 9999);
+
         EXPECT_EQ(h->arg_size, 3);
         EXPECT_EQ(h->args[0].as_int, 42);
         EXPECT_EQ(h->args[0].as_double, 42.0);
@@ -393,7 +395,7 @@ TEST_F(CClientTest, funcSet) {
         EXPECT_EQ(wcfFuncRespond(h, &ans), WCF_BAD_HANDLE);
         EXPECT_EQ(wcfFuncRespond(nullptr, &ans), WCF_BAD_HANDLE);
     };
-    wcfFuncSet(wcli_, "a", arg_types, 3, WCF_VAL_INT, callbackFunc);
+    wcfFuncSet(wcli_, "a", arg_types, 3, WCF_VAL_INT, callbackFunc, &u);
     EXPECT_EQ(wcfSync(wcli_), WCF_OK);
     wait();
     dummy_s->recv<Message::FuncInfo>(

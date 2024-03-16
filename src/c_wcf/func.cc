@@ -109,7 +109,8 @@ wcfStatus wcfFuncWaitResult(wcfAsyncFuncResult *async_res,
 }
 
 wcfStatus wcfFuncSet(wcfClient *wcli, const char *field, const int *arg_types,
-                     int arg_size, int return_type, wcfFuncCallback callback) {
+                     int arg_size, int return_type, wcfFuncCallback callback,
+                     void *user_data) {
     auto wcli_ = getWcli(wcli);
     if (!wcli_) {
         return WCF_BAD_WCLI;
@@ -122,9 +123,9 @@ wcfStatus wcfFuncSet(wcfClient *wcli, const char *field, const int *arg_types,
         args[i].type(static_cast<ValType>(arg_types[i]));
     }
     wcli_->func(field).set(args, static_cast<ValType>(return_type),
-                           [callback](FuncCallHandle handle) {
+                           [callback, user_data](FuncCallHandle handle) {
                                wcfFuncCallHandle *whp = createHandle(handle);
-                               callback(whp);
+                               callback(whp, user_data);
                                wcfFuncRespond(whp, nullptr);
                            });
     return WCF_OK;
