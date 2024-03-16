@@ -81,6 +81,16 @@ class WEBCFACE_DLL Func : protected Field {
     }
 
     /*!
+     * \brief 引数にFuncCallHandleを取る関数を登録する
+     * \since ver1.9
+     *
+     * cからの呼び出し用
+     *
+     */
+    Func &set(const std::vector<Arg> &args, ValType return_type,
+              std::function<void(FuncCallHandle)> callback);
+
+    /*!
      * \brief 関数を関数リストで非表示にする
      * (他clientのentryに表示されなくする)
      *

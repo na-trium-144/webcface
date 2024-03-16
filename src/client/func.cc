@@ -38,6 +38,31 @@ Func &Func::free() {
     return *this;
 }
 
+Func &Func::set(const std::vector<Arg> &args, ValType return_type,
+                std::function<void(FuncCallHandle)> callback) {
+    return setRaw({return_type, args,
+                   [args_size = args.size(),
+                    callback](const std::vector<ValAdaptor> &args_vec) {
+                       if (args_size != args_vec.size()) {
+                           throw std::invalid_argument(
+                               "requires " + std::to_string(args_size) +
+                               " arguments, got " +
+                               std::to_string(args_vec.size()));
+                       }
+                       std::promise<ValAdaptor> result;
+                       std::future<ValAdaptor> result_f = result.get_future();
+                       FuncCallHandle handle{args_vec, std::move(result)};
+                       callback(handle);
+                       try {
+                           handle.respond();
+                       } catch (const std::future_error &) {
+                       }
+                       return result_f.get();
+                   },
+                   getDefaultFuncWrapper(), false});
+}
+
+
 void Func::runImpl(std::size_t caller_id,
                    std::vector<ValAdaptor> args_vec) const {
     auto data = dataLock();

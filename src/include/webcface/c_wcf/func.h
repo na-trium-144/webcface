@@ -79,6 +79,31 @@ WEBCFACE_DLL wcfStatus wcfFuncWaitResult(wcfAsyncFuncResult *async_res,
                                          wcfMultiVal **result);
 
 /*!
+ * \brief 関数を登録する
+ * \since 1.9
+ *
+ * 登録した関数は引数でcallhandleを受け取り、
+ * wcfFuncRespond または wcfFuncReject を使って結果を返す。
+ * (何も返さずreturnしても良い)
+ *
+ * \param wcli Clientポインタ
+ * \param field 関数名
+ * \param arg_types 受け取る引数の型をwcfValTypeの配列で指定
+ * \param arg_size 受け取る引数の個数
+ * \param return_type 戻り値の型を指定
+ * \param callback 実行する関数:
+ * wcfFuncCallhandle* 型と void* 型の引数を1つずつ取り、何もreturnしない。
+ * \param user_data 関数に引数として渡す追加のデータ
+ * callbackが呼び出されるときに第2引数にそのまま渡される。
+ * \return wcliが無効ならWCF_BAD_WCLI
+ *
+ */
+WEBCFACE_DLL wcfStatus wcfFuncSet(wcfClient *wcli, const char *field,
+                                  const wcfValType *arg_types, int arg_size,
+                                  wcfValType return_type,
+                                  wcfFuncCallback callback, void *user_data);
+
+/*!
  * \brief 関数呼び出しの待受を開始する
  * \since 1.5
  * \param wcli Clientポインタ
@@ -117,7 +142,7 @@ WEBCFACE_DLL wcfStatus wcfFuncFetchCall(wcfClient *wcli, const char *field,
  *
  * 値を返すとhandleはdeleteされ使えなくなる
  * \param handle 関数呼び出しに対応するhandle
- * \param value 返す値
+ * \param value 返す値 (ver1.9〜 NULLも可)
  * \return handleが無効ならWCF_BAD_HANDLE
  *
  */
@@ -129,7 +154,7 @@ WEBCFACE_DLL wcfStatus wcfFuncRespond(const wcfFuncCallHandle *handle,
  *
  * エラーメッセージを返すとhandleはdeleteされ使えなくなる
  * \param handle 関数呼び出しに対応するhandle
- * \param message 返すメッセージ
+ * \param message 返すメッセージ (空文字列の代わりにNULLも可)
  * \return handleが無効ならWCF_BAD_HANDLE
  *
  */

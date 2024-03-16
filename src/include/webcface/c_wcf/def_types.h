@@ -78,6 +78,9 @@ WEBCFACE_DLL typedef struct wcfFuncCallHandle {
     int arg_size;
 } wcfFuncCallHandle;
 
+typedef void (*wcfFuncCallback)(wcfFuncCallHandle *call_handle,
+                                void *user_data);
+
 #define WCF_VIEW_TEXT 0
 #define WCF_VIEW_NEW_LINE 1
 #define WCF_VIEW_BUTTON 2
