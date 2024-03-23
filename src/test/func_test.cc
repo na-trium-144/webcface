@@ -28,6 +28,39 @@ class FuncTest : public ::testing::Test {
     }
 };
 
+TEST_F(FuncTest, valAdapror) {
+    EXPECT_EQ(static_cast<int>(ValAdaptor(10)), 10);
+    EXPECT_EQ(static_cast<double>(ValAdaptor(10)), 10.0);
+    EXPECT_EQ(static_cast<bool>(ValAdaptor(0)), false);
+    EXPECT_EQ(static_cast<bool>(ValAdaptor(1)), true);
+    EXPECT_EQ(static_cast<bool>(ValAdaptor(2)), true);
+    EXPECT_EQ(static_cast<std::string>(ValAdaptor(10)), "10");
+
+    EXPECT_EQ(static_cast<int>(ValAdaptor(1.5)), 1);
+    EXPECT_EQ(static_cast<double>(ValAdaptor(1.5)), 1.5);
+    EXPECT_EQ(static_cast<bool>(ValAdaptor(0.0)), false);
+    EXPECT_EQ(static_cast<bool>(ValAdaptor(1.0)), true);
+    EXPECT_EQ(static_cast<bool>(ValAdaptor(1.5)), true);
+    EXPECT_EQ(static_cast<std::string>(ValAdaptor(1.5)), "1.500000");
+
+    EXPECT_EQ(static_cast<int>(ValAdaptor(true)), 1);
+    EXPECT_EQ(static_cast<int>(ValAdaptor(false)), 0);
+    EXPECT_EQ(static_cast<double>(ValAdaptor(true)), 1.0);
+    EXPECT_EQ(static_cast<double>(ValAdaptor(false)), 0.0);
+    EXPECT_EQ(static_cast<bool>(ValAdaptor(true)), true);
+    EXPECT_EQ(static_cast<bool>(ValAdaptor(false)), false);
+    EXPECT_EQ(static_cast<std::string>(ValAdaptor(true)), "1");
+
+    EXPECT_EQ(static_cast<int>(ValAdaptor("1.5")), 1);
+    EXPECT_EQ(static_cast<double>(ValAdaptor("1.5")), 1.5);
+    EXPECT_EQ(static_cast<bool>(ValAdaptor("")), false);
+    EXPECT_EQ(static_cast<bool>(ValAdaptor("0")), true);
+    EXPECT_EQ(static_cast<bool>(ValAdaptor("0.0")), true);
+    EXPECT_EQ(static_cast<bool>(ValAdaptor("1.0")), true);
+    EXPECT_EQ(static_cast<bool>(ValAdaptor("1.5")), true);
+    EXPECT_EQ(static_cast<bool>(ValAdaptor("hoge")), true);
+    EXPECT_EQ(static_cast<std::string>(ValAdaptor("1.5")), "1.5");
+}
 TEST_F(FuncTest, field) {
     EXPECT_EQ(func("a", "b").member().name(), "a");
     EXPECT_EQ(func("a", "b").name(), "b");

@@ -118,7 +118,13 @@ class ValAdaptor {
     // cast to function
     operator const std::string &() const { return value; }
     operator double() const { return std::atof(value.c_str()); }
-    operator bool() const { return value == std::to_string(true); }
+    operator bool() const {
+        if (type == ValType::string_) {
+            return !value.empty();
+        } else {
+            return operator double() != 0;
+        }
+    }
     template <typename T>
     requires std::convertible_to<double, T>
     operator T() const { return static_cast<T>(operator double()); }
