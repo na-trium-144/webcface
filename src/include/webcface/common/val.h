@@ -37,24 +37,31 @@ ValType valTypeOf() {
 }
 
 /*!
+ * \brief 型名を文字列で取得
+ * \since ver1.9.1
+ */
+inline std::string valTypeStr(ValType a){
+    switch (a) {
+    case ValType::none_:
+        return "none";
+    case ValType::string_:
+        return "string";
+    case ValType::bool_:
+        return "bool";
+    case ValType::int_:
+        return "int";
+    case ValType::float_:
+        return "float";
+    default:
+        return "unknown";
+    }
+}
+/*!
  * \brief 型名を出力する。
  *
  */
 inline std::ostream &operator<<(std::ostream &os, ValType a) {
-    switch (a) {
-    case ValType::none_:
-        return os << "none";
-    case ValType::string_:
-        return os << "string";
-    case ValType::bool_:
-        return os << "bool";
-    case ValType::int_:
-        return os << "int";
-    case ValType::float_:
-        return os << "float";
-    default:
-        return os << "unknown";
-    }
+    return os << valTypeStr(a);
 }
 
 /*!
@@ -73,6 +80,7 @@ class ValAdaptor {
     // cast from run()
     ValAdaptor(const std::string &value)
         : value(value), type(ValType::string_) {}
+    ValAdaptor(const std::string &value, ValType type): value(value), type(type){}
     ValAdaptor(const char *value) : value(value), type(ValType::string_) {}
     ValAdaptor(bool value)
         : value(std::to_string(value)), type(ValType::bool_) {}

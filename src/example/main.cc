@@ -37,6 +37,11 @@ int main() {
         {Arg("a").min(0).max(10), Arg("b"), Arg("c"),
          Arg("d").option({"hoge", "fuga", "piyo"})});
 
+    c.func("func_bool").set([](bool ) -> bool { return true; });
+    c.func("func_int").set([](int ) -> int { return 1; });
+    c.func("func_double").set([](double ) -> double { return 1.5; });
+    c.func("func_str").set([](std::string ) -> std::string { return "1"; });
+
     // 以下のログはすべてwebcfaceに送られる
     c.logger()->trace("this is trace");
     c.logger()->debug("this is debug");

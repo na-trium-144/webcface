@@ -49,5 +49,11 @@ int main() {
                       << std::endl;
         } catch (...) {
         }
+
+        c.member("example_main").func("func_bool").runAsync(true);
+        c.member("example_main").func("func_int").runAsync(1);
+        c.member("example_main").func("func_double").runAsync(1.0);
+        c.member("example_main").func("func_str").runAsync("1");
+
     }
 }
