@@ -265,7 +265,7 @@ void ClientData::onRecv(const std::string &message) {
             auto v = std::any_cast<WEBCFACE_NS::Message::Call>(obj);
             v.caller_member_id = this->member_id;
             for (auto &a : v.args) {
-                a = utf8::replace_invalid(static_cast<std::string>(a));
+                a = ValAdaptor(utf8::replace_invalid(static_cast<std::string>(a)), a.valType());
             }
             logger->debug(
                 "call caller_id={}, target_id={}, field={}, with {} args",
@@ -305,19 +305,21 @@ void ClientData::onRecv(const std::string &message) {
         }
         case MessageKind::call_result: {
             auto v = std::any_cast<WEBCFACE_NS::Message::CallResult>(obj);
-            v.result =
-                utf8::replace_invalid(static_cast<std::string>(v.result));
-            logger->debug("call_result to (member_id {}, caller_id {}), {}",
+            v.result = ValAdaptor(
+                utf8::replace_invalid(static_cast<std::string>(v.result)), v.result.valType());
+            logger->debug("call_result to (member_id {}, caller_id {}), {} as {}",
                           v.caller_member_id, v.caller_id,
-                          static_cast<std::string>(v.result));
+                          static_cast<std::string>(v.result),
+                          valTypeStr(v.result.valType()));
             this->pending_calls[v.caller_member_id][v.caller_id] = 0;
             // そのままcallerに送る
             store.findAndDo(v.caller_member_id, [&](auto cd) {
                 cd->pack(v);
                 cd->logger->trace(
-                    "send call_result to (member_id {}, caller_id {}), {}",
+                    "send call_result to (member_id {}, caller_id {}), {} as {}",
                     v.caller_member_id, v.caller_id,
-                    static_cast<std::string>(v.result));
+                    static_cast<std::string>(v.result),
+                    valTypeStr(v.result.valType()));
             });
             break;
         }
@@ -580,14 +582,16 @@ void ClientData::onRecv(const std::string &message) {
             for (auto &a : *v.args) {
                 std::vector<Common::ValAdaptor> replaced_opt;
                 for (auto &o : a.option()) {
-                    replaced_opt.push_back(
-                        utf8::replace_invalid(static_cast<std::string>(o)));
+                    replaced_opt.emplace_back(
+                        utf8::replace_invalid(static_cast<std::string>(o)),
+                        o.valType());
                 }
                 a = Common::Arg(
                     utf8::replace_invalid(a.name()), a.type(),
                     a.init() ? std::make_optional<Common::ValAdaptor>(
                                    utf8::replace_invalid(
-                                       static_cast<std::string>(*a.init())))
+                                       static_cast<std::string>(*a.init())),
+                                   a.init()->valType())
                              : std::nullopt,
                     a.min(), a.max(), replaced_opt);
             }

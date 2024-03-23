@@ -37,6 +37,11 @@ int main() {
         {Arg("a").min(0).max(10), Arg("b"), Arg("c"),
          Arg("d").option({"hoge", "fuga", "piyo"})});
 
+    c.func("func_bool").set([](bool ) -> bool { return true; });
+    c.func("func_int").set([](int ) -> int { return 1; });
+    c.func("func_double").set([](double ) -> double { return 1.5; });
+    c.func("func_str").set([](std::string ) -> std::string { return "1"; });
+
     // 以下のログはすべてwebcfaceに送られる
     c.logger()->trace("this is trace");
     c.logger()->debug("this is debug");
@@ -122,7 +127,7 @@ int main() {
                    line({0, 0, 0}, {0.5, 0, 0}), webcface::ViewColor::red}});
     }
 
-    int i = 0;
+    double i = 0;
 
     while (true) {
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
@@ -216,7 +221,7 @@ int main() {
                       .strokeWidth(0);
         }
 
-        ++i;
+        i += 0.5;
 
         // Dictでまとめて値を取得しstructにセット
         [[maybe_unused]] A a = c.value("dict").getRecurse();
