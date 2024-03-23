@@ -274,8 +274,8 @@ var NAVTREE =
         [ "robotmodel res (kind = 66)", "md_90__message.html#autotoc_md184", null ]
       ] ],
       [ "Log", "md_90__message.html#autotoc_md185", [
-        [ "log (kind = 86)", "md_90__message.html#autotoc_md186", null ],
-        [ "log req (kind = 87)", "md_90__message.html#autotoc_md187", null ]
+        [ "log (kind = 85)", "md_90__message.html#autotoc_md186", null ],
+        [ "log req (kind = 86)", "md_90__message.html#autotoc_md187", null ]
       ] ]
     ] ],
     [ "Todo List", "todo.html", null ],
@@ -323,23 +323,23 @@ var NAVTREEINDEX =
 "classwebcface_1_1Canvas3DComponent.html#a1024785cc008a70ae7c2de6042c73aef",
 "classwebcface_1_1Common_1_1Arg.html#a9ba0818ceab914663aa4e326a10ad9f5",
 "classwebcface_1_1Common_1_1ImageWithCV.html#ac4ad623d907d57b62513135dd263b24d",
-"classwebcface_1_1Common_1_1ValAdaptor.html#ae6db5443b47ee479ef0c5f576b0226e1",
-"classwebcface_1_1Image.html#a535d50bfbfa886a7efbbcf68acf2ff2f",
-"classwebcface_1_1Internal_1_1SyncDataStore2.html#a3fef7cbcca7a949aee39af1dede841ca",
-"classwebcface_1_1Member.html#a46e2aa85bc5d8406ccfa3509a9633ff6",
-"classwebcface_1_1TemporalGeometry.html#a7fde7dd577914c91026160fd7d602ea1",
-"classwebcface_1_1View.html#a2458f6b73c40fa34672c00baefe478e2",
-"data__store2_8h_source.html",
-"md_11__text.html#autotoc_md46",
-"namespacewebcface_1_1Common.html#a18133126518e30ea437441c60fa26928a1cb251ec0d568de6a929b520c4aed8d1",
-"s__client__data_8cc.html#a9a924555b08bf13c936e947d39c5b5b0",
-"structwebcface_1_1Common_1_1DictTraits_3_01std_1_1shared__ptr_3_01T_01_4_01_4.html#a0ae7486ac8fce69a73ef68dbeaef581f",
-"structwebcface_1_1Common_1_1RobotJoint.html#a79dea7ed146af26ff4a0ba4bf5c83eee",
-"structwebcface_1_1Components_1_1Geometries_1_1Line.html#a0ce73a68058451ed306d16c522ea3060",
-"structwebcface_1_1Internal_1_1ClientData.html#a34ebb3032bbe99f59443808e9c5d53d0",
-"structwebcface_1_1Message_1_1FuncInfo.html#a2a45d43a18b91791b85fe158bb2102f9",
-"structwebcface_1_1Message_1_1Res_3_01Image_01_4.html#a4a1d9f9c9672697b42b5b22577ea1c13",
-"structwebcface_1_1Server_1_1ClientData.html#a544e9651584e1018b2319ef6364ec236"
+"classwebcface_1_1Common_1_1ValAdaptor.html#ac91ebb8fe9956bbc1dfa3a22c9012235",
+"classwebcface_1_1Image.html#a46e2aa85bc5d8406ccfa3509a9633ff6",
+"classwebcface_1_1Internal_1_1SyncDataStore2.html#a33490e03031fc9d68b57b0a3b39a8f75",
+"classwebcface_1_1Member.html#a45ca97bd85fbb26eefa7b5133f3287f4",
+"classwebcface_1_1TemporalGeometry.html#a78790e6103d6c07dffd3020bbfddf32f",
+"classwebcface_1_1View.html#a226ea1af8ab0d5aa6aeda2a29e0b51df",
+"data__store2_8h.html#aa77c608002e5be9330f91a2dbf5e2ac8",
+"md_10__value.html#autotoc_md42",
+"namespacewebcface_1_1Common.html#a11040d82967b60182816ddc035d07c28a620cf4c6d9756f9ce211c523f16c42a9",
+"queue_8h.html",
+"structwebcface_1_1Common_1_1DictTraits_3_01VectorOpt_3_01T_01_4_01_4.html#abbe746fc1535d3cd565042e3bd51f157",
+"structwebcface_1_1Common_1_1RobotJoint.html#a5b968540fee0dca27dc7c98c6c911983",
+"structwebcface_1_1Components_1_1Geometries_1_1Line.html",
+"structwebcface_1_1Internal_1_1ClientData.html#a2379c61c4c44468309940c18285c50e9",
+"structwebcface_1_1Message_1_1Entry.html#ae9313ec6cb5a526764b6163a3148970b",
+"structwebcface_1_1Message_1_1Res_3_01Image_01_4.html#a407ab8970bfba5734d3fd2410157a006",
+"structwebcface_1_1Server_1_1ClientData.html#a4e79285c61bd619cb904723d694963bf"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

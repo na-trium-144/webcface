@@ -194,6 +194,7 @@ var namespacewebcface =
     [ "sphere", "namespacewebcface_1_1Components_1_1Geometries.html#adc2b1b0fd4ffc4ff31d7e57e9f0a7a78", null ],
     [ "text", "namespacewebcface_1_1Components.html#a005dcb8a17c7ec4d9de115890555d5e8", null ],
     [ "valTypeOf", "namespacewebcface_1_1Common.html#ae0e0d190aa5fc5710b43f55098ad9ecd", null ],
+    [ "valTypeStr", "namespacewebcface_1_1Common.html#a818466a6a9b6abe8c25c93ac959ec0cb", null ],
     [ "fetched_handles", "namespacewebcface_1_1c__wcf.html#ace78d3c61398bd3193ccd4734299a614", null ],
     [ "func_result_list", "namespacewebcface_1_1c__wcf.html#accbeaaf8800ef4256d6ac03f8a607d3e", null ],
     [ "func_val_list", "namespacewebcface_1_1c__wcf.html#a7f38066b54a3b67ca6afef02bb029549", null ],

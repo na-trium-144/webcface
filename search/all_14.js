@@ -36,10 +36,11 @@ var searchData=
   ['kind_2082_33',['call response (kind = 82)',['../md_90__message.html#autotoc_md148',1,'']]],
   ['kind_2083_34',['call result (kind = 83)',['../md_90__message.html#autotoc_md149',1,'']]],
   ['kind_2084_35',['func info (kind = 84)',['../md_90__message.html#autotoc_md146',1,'']]],
-  ['kind_2086_36',['log (kind = 86)',['../md_90__message.html#autotoc_md186',1,'']]],
-  ['kind_2087_37',['kind 87',['../md_90__message.html#autotoc_md187',1,'log req (kind = 87)'],['../md_90__message.html#autotoc_md144',1,'sync (kind = 87)']]],
-  ['kind_2088_38',['svr version (kind = 88)',['../md_90__message.html#autotoc_md140',1,'']]],
-  ['kind_2089_39',['ping (kind = 89)',['../md_90__message.html#autotoc_md141',1,'']]],
-  ['kind_2090_40',['ping status (kind = 90)',['../md_90__message.html#autotoc_md142',1,'']]],
-  ['kind_2091_41',['ping status req (kind = 91)',['../md_90__message.html#autotoc_md143',1,'']]]
+  ['kind_2085_36',['log (kind = 85)',['../md_90__message.html#autotoc_md186',1,'']]],
+  ['kind_2086_37',['log req (kind = 86)',['../md_90__message.html#autotoc_md187',1,'']]],
+  ['kind_2087_38',['sync (kind = 87)',['../md_90__message.html#autotoc_md144',1,'']]],
+  ['kind_2088_39',['svr version (kind = 88)',['../md_90__message.html#autotoc_md140',1,'']]],
+  ['kind_2089_40',['ping (kind = 89)',['../md_90__message.html#autotoc_md141',1,'']]],
+  ['kind_2090_41',['ping status (kind = 90)',['../md_90__message.html#autotoc_md142',1,'']]],
+  ['kind_2091_42',['ping status req (kind = 91)',['../md_90__message.html#autotoc_md143',1,'']]]
 ];

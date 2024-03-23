@@ -118,5 +118,6 @@ var namespacewebcface_1_1Common =
     [ "operator<<", "namespacewebcface_1_1Common.html#acc572ea980d434e6af0ac9f2e80a31cd", null ],
     [ "prismaticJoint", "namespacewebcface_1_1Common_1_1RobotJoints.html#af91d31e4d0b0bfbad874d554d56c74b7", null ],
     [ "rotationalJoint", "namespacewebcface_1_1Common_1_1RobotJoints.html#a6c27f9d2d917bb1e4a35b89070583c67", null ],
-    [ "valTypeOf", "namespacewebcface_1_1Common.html#ae0e0d190aa5fc5710b43f55098ad9ecd", null ]
+    [ "valTypeOf", "namespacewebcface_1_1Common.html#ae0e0d190aa5fc5710b43f55098ad9ecd", null ],
+    [ "valTypeStr", "namespacewebcface_1_1Common.html#a818466a6a9b6abe8c25c93ac959ec0cb", null ]
 ];

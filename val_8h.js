@@ -11,5 +11,6 @@ var val_8h =
     ] ],
     [ "argToTuple", "val_8h.html#a5aeb2e4cecdcd6261d71162f7f918434", null ],
     [ "operator<<", "val_8h.html#acc572ea980d434e6af0ac9f2e80a31cd", null ],
-    [ "valTypeOf", "val_8h.html#ae0e0d190aa5fc5710b43f55098ad9ecd", null ]
+    [ "valTypeOf", "val_8h.html#ae0e0d190aa5fc5710b43f55098ad9ecd", null ],
+    [ "valTypeStr", "val_8h.html#a818466a6a9b6abe8c25c93ac959ec0cb", null ]
 ];
