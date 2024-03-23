@@ -127,7 +127,7 @@ int main() {
                    line({0, 0, 0}, {0.5, 0, 0}), webcface::ViewColor::red}});
     }
 
-    int i = 0;
+    double i = 0;
 
     while (true) {
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
@@ -221,7 +221,7 @@ int main() {
                       .strokeWidth(0);
         }
 
-        ++i;
+        i += 0.5;
 
         // Dictでまとめて値を取得しstructにセット
         [[maybe_unused]] A a = c.value("dict").getRecurse();

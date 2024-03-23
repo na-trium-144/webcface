@@ -440,7 +440,7 @@ data = {
 ```
 
 ## Log
-### log (kind = 86)
+### log (kind = 85)
 ```js
 data = {
 	m: number, // member id
@@ -455,7 +455,7 @@ data = {
 * リクエストがあればサーバー→各クライアントにそのまま送り返します
 * リクエスト直後、サーバーが保持しているログの全履歴を1つのlogメッセージにまとめてクライアントに送ります
 
-### log req (kind = 87)
+### log req (kind = 86)
 ```js
 data = {
 	M: string // member name

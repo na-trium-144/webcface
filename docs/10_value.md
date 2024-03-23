@@ -69,6 +69,9 @@ Client::value からValueオブジェクトを作り、 Value::set() でデー�
 
 </div>
 
+\note
+webcfaceのvalueは浮動小数型のみを扱いますが、値が整数だった場合シリアライズ時に自動的に整数型として送受信されるようなので通信量を気にする必要はありません。([msgpack/msgpack-c#1017](https://github.com/msgpack/msgpack-c/issues/1017))
+
 ### グループ化
 
 Valueの名前に半角ピリオドを含めると、WebUI上ではフォルダアイコンで表示されグループ化されて表示されます。
