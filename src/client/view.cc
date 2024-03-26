@@ -18,6 +18,14 @@ ViewComponent::lockTmp(const std::weak_ptr<Internal::ClientData> &data_w,
         on_click.hidden(true);
         onClick(on_click);
     }
+    if(text_ref_tmp){
+        if(text_ref_tmp->expired()){
+            auto data = data_w.lock();
+            Text disp_value{Field{data_w, data->self_member_name}, field_id};
+            text_ref_tmp->lockTo(disp_value);
+        }
+        text_ref_ = text_ref_tmp;
+    }
     return *this;
 }
 wcfViewComponent ViewComponent::cData() const {

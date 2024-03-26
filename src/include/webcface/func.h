@@ -79,6 +79,20 @@ class WEBCFACE_DLL Func : protected Field {
     Func &operator=(const T &func) {
         return this->set(func);
     }
+    /*!
+     * \brief セットした関数を置き換える
+     * \since ver1.10
+     *
+     * 他のプロパティ(wrapper, argsなど)は元のまま
+     *
+     */
+    Func &replaceImpl(FuncType func);
+    /*!
+     * \brief セットされている関数オブジェクトを取得
+     * \since ver1.10
+     *
+     */
+    FuncType getImpl() const;
 
     /*!
      * \brief 引数にFuncCallHandleを取る関数を登録する

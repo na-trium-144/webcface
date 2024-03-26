@@ -10,6 +10,7 @@ enum class ViewComponentType {
     text = 0,
     new_line = 1,
     button = 2,
+    input = 3,
 };
 enum class ViewColor {
     inherit = 0,
@@ -42,16 +43,20 @@ struct ViewComponentBase {
     ViewComponentType type_ = ViewComponentType::text;
     std::string text_;
     std::optional<FieldBase> on_click_func_;
+    std::optional<FieldBase> text_ref_;
     ViewColor text_color_ = ViewColor::inherit;
     ViewColor bg_color_ = ViewColor::inherit;
 
     bool operator==(const ViewComponentBase &rhs) const {
         return type_ == rhs.type_ && text_ == rhs.text_ &&
-               ((on_click_func_ == std::nullopt &&
-                 rhs.on_click_func_ == std::nullopt) ||
+               ((!on_click_func_ && !rhs.on_click_func_) ||
                 (on_click_func_ && rhs.on_click_func_ &&
                  on_click_func_->member_ == rhs.on_click_func_->member_ &&
                  on_click_func_->field_ == rhs.on_click_func_->field_)) &&
+               ((!text_ref_ && !rhs.text_ref_) ||
+                (text_ref_ && rhs.text_ref_ &&
+                 text_ref_->member_ == rhs.text_ref_->member_ &&
+                 text_ref_->field_ == rhs.text_ref_->field_)) &&
                text_color_ == rhs.text_color_ && bg_color_ == rhs.bg_color_;
     }
     bool operator!=(const ViewComponentBase &rhs) const {

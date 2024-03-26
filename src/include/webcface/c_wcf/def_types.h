@@ -117,6 +117,11 @@ WEBCFACE_DLL typedef struct wcfViewComponent {
      */
     const char *on_click_member, *on_click_field;
     /*!
+     * \brief inputが参照するTextのmemberとfield、またはnullptr
+     *
+     */
+    const char *text_ref_member, *text_ref_field;
+    /*!
      * \brief テキストの色
      *
      */

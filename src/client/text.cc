@@ -31,15 +31,15 @@ Text &Text::set(const Text::Dict &v) {
     }
     return *this;
 }
-Text &Text::set(const std::string &v) {
-    setCheck()->text_store.setSend(*this, std::make_shared<std::string>(v));
+Text &Text::set(const ValAdaptor &v) {
+    setCheck()->text_store.setSend(*this, std::make_shared<ValAdaptor>(v));
     this->triggerEvent(*this);
     return *this;
 }
 
 void Text::onAppend() const { request(); }
 
-std::optional<std::string> Text::tryGet() const {
+std::optional<ValAdaptor> Text::tryGet() const {
     auto v = dataLock()->text_store.getRecv(*this);
     request();
     if (v) {

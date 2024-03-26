@@ -7,6 +7,7 @@
 #include "field.h"
 #include "event_target.h"
 #include "common/def.h"
+#include "common/val.h"
 
 namespace WEBCFACE_NS {
 namespace Internal {
@@ -32,6 +33,7 @@ class WEBCFACE_DLL Text : protected Field, public EventTarget<Text> {
     Text(const Field &base, const std::string &field)
         : Text(Field{base, field}) {}
 
+    friend class InputRef;
     using Field::member;
     using Field::name;
 
@@ -45,7 +47,7 @@ class WEBCFACE_DLL Text : protected Field, public EventTarget<Text> {
         return Text{*this, this->field_ + "." + field};
     }
 
-    using Dict = Common::Dict<std::shared_ptr<std::string>>;
+    using Dict = Common::Dict<std::shared_ptr<Common::ValAdaptor>>;
     /*!
      * \brief Dictの値を再帰的にセットする
      *
@@ -54,8 +56,11 @@ class WEBCFACE_DLL Text : protected Field, public EventTarget<Text> {
     /*!
      * \brief 文字列をセットする
      *
+     * (ver1.10〜 文字列以外の型も扱うためValAdaptor型に変更)
+     *
      */
-    Text &set(const std::string &v);
+    Text &set(const ValAdaptor &v);
+
     /*!
      * \brief Dictの値を再帰的にセットする
      *
@@ -82,18 +87,23 @@ class WEBCFACE_DLL Text : protected Field, public EventTarget<Text> {
     /*!
      * \brief 文字列を返す
      *
+     * (ver1.10〜 文字列以外の型も扱うためValAdaptor型に変更)
+     *
      */
-    std::optional<std::string> tryGet() const;
+    std::optional<ValAdaptor> tryGet() const;
     /*!
      * \brief 文字列を再帰的に取得しDictで返す
      *
      */
     std::optional<Dict> tryGetRecurse() const;
     /*!
-     * \brief 値を返す
+     * \brief 文字列を返す
+     *
+     * (ver1.10〜 文字列以外の型も扱うためValAdaptor型に変更)
      *
      */
-    std::string get() const { return tryGet().value_or(""); }
+    ValAdaptor get() const { return tryGet().value_or(""); }
+
     /*!
      * \brief 値を再帰的に取得しDictで返す
      *
@@ -105,8 +115,7 @@ class WEBCFACE_DLL Text : protected Field, public EventTarget<Text> {
      * \brief syncの時刻を返す
      * \deprecated 1.7でMember::syncTime()に変更
      */
-    [[deprecated]] std::chrono::system_clock::time_point
-    time() const;
+    [[deprecated]] std::chrono::system_clock::time_point time() const;
 
     /*!
      * \brief 値やリクエスト状態をクリア
@@ -114,8 +123,12 @@ class WEBCFACE_DLL Text : protected Field, public EventTarget<Text> {
      */
     Text &free();
 
-    bool operator==(const std::string &rhs) const { return this->get() == rhs; }
-    bool operator!=(const std::string &rhs) const { return this->get() != rhs; }
+    bool operator==(const std::string &rhs) const {
+        return static_cast<std::string>(this->get()) == rhs;
+    }
+    bool operator!=(const std::string &rhs) const {
+        return static_cast<std::string>(this->get()) != rhs;
+    }
 };
 
 /*!
@@ -124,4 +137,59 @@ class WEBCFACE_DLL Text : protected Field, public EventTarget<Text> {
  */
 WEBCFACE_DLL std::ostream &operator<<(std::ostream &os, const Text &data);
 
+/*!
+ * \brief 名前を指定しないText
+ *
+ * viewでinputの値の管理に使う。
+ * 数値型で用いることもあるが内部データ型としては常にTextを使用する。
+ *
+ * lockTo() であとから名前を決めることができ、
+ * InputRefオブジェクトのコピーは名前が決まる前後でつねに同じTextを参照する
+ *
+ */
+class WEBCFACE_DLL InputRef {
+    std::shared_ptr<Text> field;
+
+  public:
+    InputRef() : field(std::make_shared<Text>()) {}
+    InputRef(const InputRef &) = default;
+    InputRef &operator=(const InputRef &) = default;
+    /*!
+     * moveするとfieldがnullptrになってしまうがそれはまずいのでコピーをしろ。
+     *
+     */
+    InputRef(InputRef &&) = delete;
+    InputRef &operator=(InputRef &&) = delete;
+
+    void lockTo(const Text &target) { *field = target; }
+    bool expired() const { return field->expired(); }
+
+    /*!
+     * \brief 値をセットする
+     *
+     */
+    const InputRef &set(const ValAdaptor &v) const {
+        field->set(v);
+        return *this;
+    }
+    /*!
+     * \brief 値を返す
+     *
+     */
+    ValAdaptor get() const { return field->get(); }
+
+    /*!
+     * \brief 値を返す
+     *
+     */
+    template <typename T>
+        requires std::convertible_to<ValAdaptor, T>
+    operator T() const {
+        return static_cast<T>(get());
+    }
+};
+
+inline std::ostream &operator<<(std::ostream &os, const InputRef &ref) {
+    return os << ref.get();
+}
 } // namespace WEBCFACE_NS

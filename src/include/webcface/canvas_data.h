@@ -2,6 +2,7 @@
 #include "common/canvas2d.h"
 #include "common/canvas3d.h"
 #include "func.h"
+#include "text.h"
 #include <memory>
 
 namespace WEBCFACE_NS {
@@ -18,6 +19,7 @@ class WEBCFACE_DLL ViewComponent : protected Common::ViewComponentBase {
     std::weak_ptr<Internal::ClientData> data_w;
 
     std::shared_ptr<AnonymousFunc> on_click_func_tmp;
+    std::optional<InputRef> text_ref_tmp;
 
   public:
     ViewComponent() = default;
@@ -83,6 +85,61 @@ class WEBCFACE_DLL ViewComponent : protected Common::ViewComponentBase {
      */
     ViewComponent &onClick(AnonymousFunc &&func) {
         on_click_func_tmp = std::make_shared<AnonymousFunc>(std::move(func));
+        return *this;
+    }
+    /*!
+     * \brief 値の変化時に実行される関数を取得
+     * \since ver1.10
+     *
+     * 内部データはonClickと共通
+     *
+     */
+    std::optional<Func> onChange() const;
+    /*!
+     * \brief 変更した値を格納するRef
+     *
+     */
+    ViewComponent &bind(const InputRef &ref) {
+        on_click_func_tmp = std::make_shared<AnonymousFunc>(
+            [ref](ValAdaptor val) { ref.set(val); });
+        text_ref_tmp = ref;
+        return *this;
+    }
+    /*!
+     * \brief 値が変化した時に実行される関数を設定
+     * \since ver1.10
+     * \param func
+     * 引数を1つ取る任意の関数(std::functionにキャスト可能ならなんでもok)
+     *
+     */
+    template <typename Ret, typename Arg>
+        requires std::convertible_to<ValAdaptor, Arg>
+    ViewComponent &onChange(std::function<Ret(Arg)> func) {
+        InputRef ref;
+        on_click_func_tmp =
+            std::make_shared<AnonymousFunc>([ref, func](ValAdaptor val) {
+                ref.set(val);
+                return func(val);
+            });
+        text_ref_tmp = ref;
+        return *this;
+    }
+    /*!
+     * \brief 値が変化した時に実行される関数を設定
+     * \since ver1.10
+     *
+     */
+    ViewComponent &onChange(AnonymousFunc &&func) {
+        InputRef ref;
+        auto func_impl = func.getImpl();
+        func.replaceImpl([ref, func_impl](const std::vector<ValAdaptor> &args) {
+            if (args.size() >= 1) {
+                ref.set(args[0]);
+            }
+            return func_impl(args);
+        });
+        on_click_func_tmp = std::make_shared<AnonymousFunc>(std::move(func));
+        text_ref_tmp = ref;
         return *this;
     }
     /*!
@@ -449,9 +506,10 @@ class TemporalComponent {
     }
     /*!
      * \brief クリック時に実行される関数を設定 (Viewまたは2D)
-     * 
-     * 引数については ViewComponent::onClick(), Canvas2DComponent::onClick() を参照
-     * 
+     *
+     * 引数については ViewComponent::onClick(), Canvas2DComponent::onClick()
+     * を参照
+     *
      */
     template <typename T>
     TemporalComponent &onClick(T &&func)
@@ -799,6 +857,7 @@ inline ViewComponent button(const std::string &text, const T &func) {
     return ViewComponent(ViewComponentType::button).text(text).onClick(func);
 }
 
+inline ViewComponent input() { return ViewComponent(ViewComponentType::input); }
 } // namespace Components
 namespace ViewComponents = Components;
 

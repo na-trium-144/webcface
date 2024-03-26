@@ -265,7 +265,9 @@ void ClientData::onRecv(const std::string &message) {
             auto v = std::any_cast<WEBCFACE_NS::Message::Call>(obj);
             v.caller_member_id = this->member_id;
             for (auto &a : v.args) {
-                a = ValAdaptor(utf8::replace_invalid(static_cast<std::string>(a)), a.valType());
+                a = ValAdaptor(
+                    utf8::replace_invalid(static_cast<std::string>(a)),
+                    a.valType());
             }
             logger->debug(
                 "call caller_id={}, target_id={}, field={}, with {} args",
@@ -306,20 +308,22 @@ void ClientData::onRecv(const std::string &message) {
         case MessageKind::call_result: {
             auto v = std::any_cast<WEBCFACE_NS::Message::CallResult>(obj);
             v.result = ValAdaptor(
-                utf8::replace_invalid(static_cast<std::string>(v.result)), v.result.valType());
-            logger->debug("call_result to (member_id {}, caller_id {}), {} as {}",
-                          v.caller_member_id, v.caller_id,
-                          static_cast<std::string>(v.result),
-                          valTypeStr(v.result.valType()));
+                utf8::replace_invalid(static_cast<std::string>(v.result)),
+                v.result.valType());
+            logger->debug(
+                "call_result to (member_id {}, caller_id {}), {} as {}",
+                v.caller_member_id, v.caller_id,
+                static_cast<std::string>(v.result),
+                valTypeStr(v.result.valType()));
             this->pending_calls[v.caller_member_id][v.caller_id] = 0;
             // そのままcallerに送る
             store.findAndDo(v.caller_member_id, [&](auto cd) {
                 cd->pack(v);
-                cd->logger->trace(
-                    "send call_result to (member_id {}, caller_id {}), {} as {}",
-                    v.caller_member_id, v.caller_id,
-                    static_cast<std::string>(v.result),
-                    valTypeStr(v.result.valType()));
+                cd->logger->trace("send call_result to (member_id {}, "
+                                  "caller_id {}), {} as {}",
+                                  v.caller_member_id, v.caller_id,
+                                  static_cast<std::string>(v.result),
+                                  valTypeStr(v.result.valType()));
             });
             break;
         }
@@ -359,7 +363,9 @@ void ClientData::onRecv(const std::string &message) {
         }
         case MessageKind::text: {
             auto v = std::any_cast<WEBCFACE_NS::Message::Text>(obj);
-            *v.data = utf8::replace_invalid(*v.data);
+            *v.data = ValAdaptor(
+                utf8::replace_invalid(static_cast<std::string>(*v.data)),
+                v.data->valType());
             logger->debug("text {} = {}", v.field, *v.data);
             if (!this->text.count(v.field)) {
                 store.forEach([&](auto cd) {

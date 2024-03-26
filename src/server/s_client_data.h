@@ -40,7 +40,7 @@ struct ClientData {
     Message::SyncInit init_data;
     //! 最新の値
     std::unordered_map<std::string, std::shared_ptr<std::vector<double>>> value;
-    std::unordered_map<std::string, std::shared_ptr<std::string>> text;
+    std::unordered_map<std::string, std::shared_ptr<Common::ValAdaptor>> text;
     std::unordered_map<std::string, std::shared_ptr<Message::FuncInfo>> func;
     std::unordered_map<std::string, std::vector<Common::ViewComponentBase>>
         view;
