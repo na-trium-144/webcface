@@ -1,8 +1,10 @@
 #pragma once
 #include <string>
 #include <optional>
+#include <vector>
 #include "field_base.h"
 #include "def.h"
+#include "val.h"
 
 namespace WEBCFACE_NS {
 inline namespace Common {
@@ -10,7 +12,12 @@ enum class ViewComponentType {
     text = 0,
     new_line = 1,
     button = 2,
-    input = 3,
+    input_text = 3,
+    input_num = 4,
+    input_int = 5,
+    input_toggle = 6,
+    input_slider = 7,
+    input_check = 8,
 };
 enum class ViewColor {
     inherit = 0,
@@ -46,6 +53,9 @@ struct ViewComponentBase {
     std::optional<FieldBase> text_ref_;
     ViewColor text_color_ = ViewColor::inherit;
     ViewColor bg_color_ = ViewColor::inherit;
+    std::optional<ValAdaptor> init_ = std::nullopt;
+    std::optional<double> min_ = std::nullopt, max_ = std::nullopt;
+    std::vector<ValAdaptor> option_ = {};
 
     bool operator==(const ViewComponentBase &rhs) const {
         return type_ == rhs.type_ && text_ == rhs.text_ &&
@@ -57,7 +67,9 @@ struct ViewComponentBase {
                 (text_ref_ && rhs.text_ref_ &&
                  text_ref_->member_ == rhs.text_ref_->member_ &&
                  text_ref_->field_ == rhs.text_ref_->field_)) &&
-               text_color_ == rhs.text_color_ && bg_color_ == rhs.bg_color_;
+               text_color_ == rhs.text_color_ && bg_color_ == rhs.bg_color_ &&
+               init_ == rhs.init_ && min_ == rhs.min_ && max_ == rhs.max_ &&
+               option_ == rhs.option_;
     }
     bool operator!=(const ViewComponentBase &rhs) const {
         return !(*this == rhs);

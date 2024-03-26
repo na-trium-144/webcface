@@ -168,6 +168,79 @@ class WEBCFACE_DLL ViewComponent : protected Common::ViewComponentBase {
         bg_color_ = c;
         return *this;
     }
+    /*!
+     * \brief デフォルト値を取得する。
+     *
+     */
+    std::optional<ValAdaptor> init() const { return init_; }
+    /*!
+     * \brief デフォルト値を設定する。
+     *
+     */
+    template <typename T>
+        requires std::constructible_from<ValAdaptor, T>
+    ViewComponent &init(const T &init) {
+        init_ = ValAdaptor(init);
+        return *this;
+    }
+    /*!
+     * \brief 最小値を取得する。
+     *
+     */
+    std::optional<double> min() const { return min_; }
+    /*!
+     * \brief 最小値を設定する。
+     *
+     * * string型引数の場合最小の文字数を表す。
+     * * bool型引数の場合効果がない。
+     * * option() はクリアされる。
+     *
+     */
+    ViewComponent &min(double min) {
+        min_ = min;
+        option_.clear();
+        return *this;
+    }
+    /*!
+     * \brief 最大値を取得する。
+     *
+     */
+    std::optional<double> max() const { return max_; }
+    /*!
+     * \brief 最大値を設定する。
+     *
+     * * string型引数の場合最大の文字数を表す。
+     * * bool型引数の場合効果がない。
+     * * option() はクリアされる。
+     *
+     */
+    ViewComponent &max(double max) {
+        max_ = max;
+        option_.clear();
+        return *this;
+    }
+    /*!
+     * \brief 引数の選択肢を取得する。
+     *
+     */
+    std::vector<ValAdaptor> option() const { return option_; }
+    ViewComponent &option(const std::vector<ValAdaptor> &option) {
+        option_ = option;
+        min_ = max_ = std::nullopt;
+        return *this;
+    }
+    /*!
+     * \brief 引数の選択肢を設定する。
+     *
+     * * min(), max() はクリアされる。
+     *
+     */
+    template <typename T>
+        requires std::constructible_from<ValAdaptor, T>
+    ViewComponent &option(std::initializer_list<T> option) {
+        return this->option(
+            std::vector<ValAdaptor>(option.begin(), option.end()));
+    }
 };
 
 /*!
@@ -857,7 +930,24 @@ inline ViewComponent button(const std::string &text, const T &func) {
     return ViewComponent(ViewComponentType::button).text(text).onClick(func);
 }
 
-inline ViewComponent input() { return ViewComponent(ViewComponentType::input); }
+inline ViewComponent textInput(const std::string &text = "") {
+    return ViewComponent(ViewComponentType::input_text).text(text);
+}
+inline ViewComponent numInput(const std::string &text = "") {
+    return ViewComponent(ViewComponentType::input_num).text(text);
+}
+inline ViewComponent intInput(const std::string &text = "") {
+    return ViewComponent(ViewComponentType::input_int).text(text);
+}
+inline ViewComponent toggleInput(const std::string &text = "") {
+    return ViewComponent(ViewComponentType::input_toggle).text(text);
+}
+inline ViewComponent sliderInput(const std::string &text = "") {
+    return ViewComponent(ViewComponentType::input_slider).text(text);
+}
+inline ViewComponent checkInput(const std::string &text = "") {
+    return ViewComponent(ViewComponentType::input_check).text(text);
+}
 } // namespace Components
 namespace ViewComponents = Components;
 

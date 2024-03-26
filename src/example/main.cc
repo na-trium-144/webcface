@@ -21,7 +21,7 @@ int main() {
         v << "hello, world" << std::endl;
         webcface::InputRef input_val;
         v << webcface::button("aaaa", [=] { std::cout << input_val << std::endl; })
-          << webcface::input().bind(input_val);
+          << webcface::textInput().bind(input_val);
 
         v.sync();
         wcli.sync();
