@@ -931,22 +931,25 @@ inline ViewComponent button(const std::string &text, const T &func) {
 }
 
 inline ViewComponent textInput(const std::string &text = "") {
-    return ViewComponent(ViewComponentType::input_text).text(text);
+    return ViewComponent(ViewComponentType::text_input).text(text);
 }
 inline ViewComponent numInput(const std::string &text = "") {
-    return ViewComponent(ViewComponentType::input_num).text(text);
+    return ViewComponent(ViewComponentType::num_input).text(text);
 }
 inline ViewComponent intInput(const std::string &text = "") {
-    return ViewComponent(ViewComponentType::input_int).text(text);
+    return ViewComponent(ViewComponentType::text_input).text(text);
 }
 inline ViewComponent toggleInput(const std::string &text = "") {
-    return ViewComponent(ViewComponentType::input_toggle).text(text);
+    return ViewComponent(ViewComponentType::toggle_input).text(text);
+}
+inline ViewComponent selectInput(const std::string &text = "") {
+    return ViewComponent(ViewComponentType::select_input).text(text);
 }
 inline ViewComponent sliderInput(const std::string &text = "") {
-    return ViewComponent(ViewComponentType::input_slider).text(text);
+    return ViewComponent(ViewComponentType::slider_input).text(text);
 }
 inline ViewComponent checkInput(const std::string &text = "") {
-    return ViewComponent(ViewComponentType::input_check).text(text);
+    return ViewComponent(ViewComponentType::check_input).text(text);
 }
 } // namespace Components
 namespace ViewComponents = Components;
