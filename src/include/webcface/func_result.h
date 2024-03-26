@@ -144,14 +144,24 @@ class FuncCallHandle {
      * * このHandleがデフォルト構築されていた場合 std::runtime_error を投げる
      *
      */
-    void respond(ValAdaptor value = "") {
+    template <typename T>
+        requires std::constructible_from<ValAdaptor, T>
+    void respond(T value) {
         if (handle_data_) {
-            handle_data_->result_.set_value(value);
+            handle_data_->result_.set_value(ValAdaptor(value));
         } else {
             throw std::runtime_error("FuncCallHandle does not have valid "
                                      "pointer to function call");
         }
     }
+    /*!
+     * \brief 空の値を関数の結果として送信する
+     *
+     * * 2回呼ぶと std::future_error を投げる
+     * * このHandleがデフォルト構築されていた場合 std::runtime_error を投げる
+     *
+     */
+    void respond() { respond(ValAdaptor()); }
     /*!
      * \brief 関数の結果を例外として送信する
      *

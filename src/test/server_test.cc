@@ -128,7 +128,7 @@ TEST_F(ServerTest, entry) {
     dummy_c1->send(Message::SyncInit{{}, "c1", 0, "", "", ""});
     dummy_c1->send(
         Message::Value{{}, "a", std::make_shared<std::vector<double>>(1)});
-    dummy_c1->send(Message::Text{{}, "a", std::make_shared<std::string>("")});
+    dummy_c1->send(Message::Text{{}, "a", std::make_shared<ValAdaptor>("")});
     dummy_c1->send(Message::RobotModel{
         "a", std::make_shared<std::vector<Common::RobotLink>>()});
     dummy_c1->send(Message::Canvas3D{
@@ -225,7 +225,7 @@ TEST_F(ServerTest, entry) {
             EXPECT_EQ(obj.field, "b");
         },
         [&] { ADD_FAILURE() << "Value Entry recv failed"; });
-    dummy_c1->send(Message::Text{{}, "b", std::make_shared<std::string>("")});
+    dummy_c1->send(Message::Text{{}, "b", std::make_shared<ValAdaptor>("")});
     wait();
     dummy_c2->recv<Message::Entry<Message::Text>>(
         [&](const auto &obj) {
@@ -348,8 +348,7 @@ TEST_F(ServerTest, value) {
 TEST_F(ServerTest, text) {
     dummy_c1->send(Message::SyncInit{{}, "c1", 0, "", "", ""});
     dummy_c1->send(Message::Sync{});
-    dummy_c1->send(
-        Message::Text{{}, "a", std::make_shared<std::string>("zzz")});
+    dummy_c1->send(Message::Text{{}, "a", std::make_shared<ValAdaptor>("zzz")});
     wait();
     dummy_c2->send(Message::SyncInit{{}, "", 0, "", "", ""});
     dummy_c2->send(Message::Req<Message::Text>{{}, "c1", "a", 1});
@@ -369,7 +368,7 @@ TEST_F(ServerTest, text) {
     // 変化後の値
     dummy_c1->send(Message::Sync{});
     dummy_c1->send(
-        Message::Text{{}, "a", std::make_shared<std::string>("zzzzz")});
+        Message::Text{{}, "a", std::make_shared<ValAdaptor>("zzzzz")});
     wait();
     dummy_c2->recv<Message::Sync>([&](auto) {},
                                   [&] { ADD_FAILURE() << "Sync recv failed"; });
@@ -758,7 +757,8 @@ TEST_F(ServerTest, call) {
     dummy_c2->send(Message::SyncInit{{}, "c2", 0, "", "", ""});
     wait();
     // c2がc1にcallを送る (caller_id=1)
-    dummy_c2->send(Message::Call{FuncCall{1, 0, 1, "a", {0, 0, 0}}});
+    dummy_c2->send(Message::Call{
+        FuncCall{1, 0, 1, "a", {ValAdaptor(0), ValAdaptor(0), ValAdaptor(0)}}});
     wait();
     dummy_c1->recv<Message::Call>(
         [&](const auto &obj) {
@@ -782,7 +782,7 @@ TEST_F(ServerTest, call) {
         [&] { ADD_FAILURE() << "Call Response recv failed"; });
     dummy_c2->recvClear();
 
-    dummy_c1->send(Message::CallResult{{}, 1, 2, false, "aaa"});
+    dummy_c1->send(Message::CallResult{{}, 1, 2, false, ValAdaptor("aaa")});
     wait();
     dummy_c2->recv<Message::CallResult>(
         [&](const auto &obj) {

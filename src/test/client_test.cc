@@ -309,7 +309,7 @@ TEST_F(ClientTest, valueReq) {
 }
 TEST_F(ClientTest, textSend) {
     wcli_->waitConnection();
-    data_->text_store.setSend("a", std::make_shared<std::string>("b"));
+    data_->text_store.setSend("a", std::make_shared<ValAdaptor>("b"));
     wcli_->sync();
     wait();
     dummy_s->recv<Message::Text>(
@@ -320,7 +320,7 @@ TEST_F(ClientTest, textSend) {
         [&] { ADD_FAILURE() << "Text recv error"; });
     dummy_s->recvClear();
 
-    data_->text_store.setSend("a", std::make_shared<std::string>("b"));
+    data_->text_store.setSend("a", std::make_shared<ValAdaptor>("b"));
     wcli_->sync();
     wait();
     dummy_s->recv<Message::Text>(
@@ -328,7 +328,7 @@ TEST_F(ClientTest, textSend) {
         [&] {});
     dummy_s->recvClear();
 
-    data_->text_store.setSend("a", std::make_shared<std::string>("c"));
+    data_->text_store.setSend("a", std::make_shared<ValAdaptor>("c"));
     wcli_->sync();
     wait();
     dummy_s->recv<Message::Text>(
@@ -351,9 +351,9 @@ TEST_F(ClientTest, textReq) {
         },
         [&] { ADD_FAILURE() << "Text Req recv error"; });
     dummy_s->send(
-        Message::Res<Message::Text>{1, "", std::make_shared<std::string>("z")});
-    dummy_s->send(Message::Res<Message::Text>{
-        1, "c", std::make_shared<std::string>("z")});
+        Message::Res<Message::Text>{1, "", std::make_shared<ValAdaptor>("z")});
+    dummy_s->send(
+        Message::Res<Message::Text>{1, "c", std::make_shared<ValAdaptor>("z")});
     wait();
     EXPECT_EQ(callback_called, 1);
     EXPECT_TRUE(data_->text_store.getRecv("a", "b").has_value());
@@ -1115,7 +1115,7 @@ TEST_F(ClientTest, funcCall) {
     wait();
     EXPECT_TRUE(r.started.get());
     // return error
-    dummy_s->send(Message::CallResult{{}, 1, 0, true, "a"});
+    dummy_s->send(Message::CallResult{{}, 1, 0, true, ValAdaptor("a")});
     wait();
     EXPECT_THROW(r.result.get(), std::runtime_error);
     try {
@@ -1141,7 +1141,7 @@ TEST_F(ClientTest, funcCall) {
     dummy_s->send(Message::CallResponse{{}, 2, 0, true});
     wait();
     // return
-    dummy_s->send(Message::CallResult{{}, 2, 0, false, "b"});
+    dummy_s->send(Message::CallResult{{}, 2, 0, false, ValAdaptor("b")});
     wait();
     EXPECT_EQ(static_cast<std::string>(r.result.get()), "b");
 }
@@ -1167,7 +1167,8 @@ TEST_F(ClientTest, funcResponse) {
     dummy_s->recvClear();
 
     // arg error
-    dummy_s->send(Message::Call{FuncCall{8, 100, 0, "a", {1, "zzz"}}});
+    dummy_s->send(Message::Call{
+        FuncCall{8, 100, 0, "a", {ValAdaptor(1), ValAdaptor("zzz")}}});
     wait();
     dummy_s->recv<Message::CallResponse>(
         [&](const auto &obj) {
@@ -1188,7 +1189,7 @@ TEST_F(ClientTest, funcResponse) {
     dummy_s->recvClear();
 
     // throw
-    dummy_s->send(Message::Call{FuncCall{9, 100, 0, "a", {0}}});
+    dummy_s->send(Message::Call{FuncCall{9, 100, 0, "a", {ValAdaptor(0)}}});
     wait();
     dummy_s->recv<Message::CallResponse>(
         [&](const auto &obj) {
@@ -1209,7 +1210,7 @@ TEST_F(ClientTest, funcResponse) {
     dummy_s->recvClear();
 
     // success
-    dummy_s->send(Message::Call{FuncCall{19, 100, 0, "a", {123}}});
+    dummy_s->send(Message::Call{FuncCall{19, 100, 0, "a", {ValAdaptor(123)}}});
     wait();
     dummy_s->recv<Message::CallResponse>(
         [&](const auto &obj) {

@@ -38,7 +38,7 @@ void ClientData::onClose() {
                         pi.first,
                         pm.first,
                         true,
-                        "member(\"" + this->name + "\") Disconnected"}));
+                        ValAdaptor{"member(\"" + this->name + "\") Disconnected"}}));
                     cd->logger->debug("pending call aborted, sending "
                                       "call_result (caller_id {})",
                                       pi.first);

@@ -40,7 +40,7 @@ ValType valTypeOf() {
  * \brief 型名を文字列で取得
  * \since ver1.9.1
  */
-inline std::string valTypeStr(ValType a){
+inline std::string valTypeStr(ValType a) {
     switch (a) {
     case ValType::none_:
         return "none";
@@ -78,18 +78,22 @@ class ValAdaptor {
     ValAdaptor() : value(""), type(ValType::none_) {}
 
     // cast from run()
-    ValAdaptor(const std::string &value)
+    explicit ValAdaptor(const std::string &value)
         : value(value), type(ValType::string_) {}
-    ValAdaptor(const std::string &value, ValType type): value(value), type(type){}
-    ValAdaptor(const char *value) : value(value), type(ValType::string_) {}
-    ValAdaptor(bool value)
+    explicit ValAdaptor(const std::string &value, ValType type)
+        : value(value), type(type) {}
+    explicit ValAdaptor(const char *value)
+        : value(value), type(ValType::string_) {}
+    explicit ValAdaptor(bool value)
         : value(std::to_string(value)), type(ValType::bool_) {}
     template <typename T>
         requires std::integral<T>
-    ValAdaptor(T value) : value(std::to_string(value)), type(ValType::int_) {}
+    explicit ValAdaptor(T value)
+        : value(std::to_string(value)), type(ValType::int_) {}
     template <typename T>
         requires std::floating_point<T>
-    ValAdaptor(T value) : value(std::to_string(value)), type(ValType::float_) {}
+    explicit ValAdaptor(T value)
+        : value(std::to_string(value)), type(ValType::float_) {}
 
     /*!
      * \brief wcfMultiValから変換
@@ -181,6 +185,9 @@ class ValAdaptor {
         }
     }
     bool operator!=(const ValAdaptor &other) const { return !(*this == other); }
+
+    bool operator==(const char *other) const { return value == other; }
+    bool operator!=(const char *other) const { return value != other; }
 };
 
 inline std::ostream &operator<<(std::ostream &os, const ValAdaptor &a) {

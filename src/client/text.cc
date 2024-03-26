@@ -20,17 +20,17 @@ void Text::request() const {
     }
 }
 
-Text &Text::set(const Text::Dict &v) {
-    if (v.hasValue()) {
-        setCheck()->text_store.setSend(*this, v.getRaw());
-        this->triggerEvent(*this);
-    } else {
-        for (const auto &it : v.getChildren()) {
-            child(it.first).set(it.second);
-        }
-    }
-    return *this;
-}
+// Text &Text::set(const Text::Dict &v) {
+//     if (v.hasValue()) {
+//         setCheck()->text_store.setSend(*this, v.getRaw());
+//         this->triggerEvent(*this);
+//     } else {
+//         for (const auto &it : v.getChildren()) {
+//             child(it.first).set(it.second);
+//         }
+//     }
+//     return *this;
+// }
 Text &Text::set(const ValAdaptor &v) {
     setCheck()->text_store.setSend(*this, std::make_shared<ValAdaptor>(v));
     this->triggerEvent(*this);
@@ -48,12 +48,12 @@ std::optional<ValAdaptor> Text::tryGet() const {
         return std::nullopt;
     }
 }
-std::optional<Text::Dict> Text::tryGetRecurse() const {
-    request();
-    return dataLock()->text_store.getRecvRecurse(
-        *this,
-        [this](const std::string &subfield) { child(subfield).request(); });
-}
+// std::optional<Text::Dict> Text::tryGetRecurse() const {
+//     request();
+//     return dataLock()->text_store.getRecvRecurse(
+//         *this,
+//         [this](const std::string &subfield) { child(subfield).request(); });
+// }
 std::chrono::system_clock::time_point Text::time() const {
     return member().syncTime();
 }

@@ -47,28 +47,35 @@ class WEBCFACE_DLL Text : protected Field, public EventTarget<Text> {
         return Text{*this, this->field_ + "." + field};
     }
 
-    using Dict = Common::Dict<std::shared_ptr<Common::ValAdaptor>>;
-    /*!
-     * \brief Dictの値を再帰的にセットする
-     *
-     */
-    Text &set(const Dict &v);
+    // 1.10でstd::stringをValAdaptorに変更したら使えなくなった
+    // using Dict = Common::Dict<std::shared_ptr<Common::ValAdaptor>>;
+    // /*!
+    //  * \brief Dictの値を再帰的にセットする
+    //  *
+    //  */
+    // Text &set(const Dict &v);
+
     /*!
      * \brief 文字列をセットする
      *
-     * (ver1.10〜 文字列以外の型も扱うためValAdaptor型に変更)
+     */
+    Text &set(const std::string &v) { return set(ValAdaptor{v}); }
+    /*!
+     * \brief 文字列をセットする
+     *
+     * \since ver1.10〜 文字列以外の型も扱う
      *
      */
     Text &set(const ValAdaptor &v);
 
-    /*!
-     * \brief Dictの値を再帰的にセットする
-     *
-     */
-    Text &operator=(const Dict &v) {
-        this->set(v);
-        return *this;
-    }
+    // /*!
+    //  * \brief Dictの値を再帰的にセットする
+    //  *
+    //  */
+    // Text &operator=(const Dict &v) {
+    //     this->set(v);
+    //     return *this;
+    // }
     /*!
      * \brief 文字列をセットする
      *
@@ -91,26 +98,27 @@ class WEBCFACE_DLL Text : protected Field, public EventTarget<Text> {
      *
      */
     std::optional<ValAdaptor> tryGet() const;
-    /*!
-     * \brief 文字列を再帰的に取得しDictで返す
-     *
-     */
-    std::optional<Dict> tryGetRecurse() const;
+    // /*!
+    //  * \brief 文字列を再帰的に取得しDictで返す
+    //  *
+    //  */
+    // std::optional<Dict> tryGetRecurse() const;
     /*!
      * \brief 文字列を返す
      *
      * (ver1.10〜 文字列以外の型も扱うためValAdaptor型に変更)
      *
      */
-    ValAdaptor get() const { return tryGet().value_or(""); }
+    ValAdaptor get() const { return tryGet().value_or(ValAdaptor()); }
 
-    /*!
-     * \brief 値を再帰的に取得しDictで返す
-     *
-     */
-    Dict getRecurse() const { return tryGetRecurse().value_or(Dict{}); }
+    // /*!
+    //  * \brief 値を再帰的に取得しDictで返す
+    //  *
+    //  */
+    // Dict getRecurse() const { return tryGetRecurse().value_or(Dict{}); }
     operator std::string() const { return get(); }
-    operator Dict() const { return getRecurse(); }
+    // operator Dict() const { return getRecurse(); }
+    
     /*!
      * \brief syncの時刻を返す
      * \deprecated 1.7でMember::syncTime()に変更

@@ -104,8 +104,10 @@ class Arg {
      * \brief デフォルト値を設定する。
      *
      */
-    Arg &init(const ValAdaptor &init) {
-        init_ = init;
+    template <typename T>
+        requires std::constructible_from<ValAdaptor, T>
+    Arg &init(const T &init) {
+        init_ = ValAdaptor(init);
         return *this;
     }
     /*!
@@ -161,6 +163,7 @@ class Arg {
      *
      */
     template <typename T>
+        requires std::constructible_from<ValAdaptor, T>
     Arg &option(std::initializer_list<T> option) {
         return this->option(
             std::vector<ValAdaptor>(option.begin(), option.end()));
