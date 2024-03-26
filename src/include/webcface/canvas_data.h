@@ -937,7 +937,7 @@ inline ViewComponent numInput(const std::string &text = "") {
     return ViewComponent(ViewComponentType::num_input).text(text);
 }
 inline ViewComponent intInput(const std::string &text = "") {
-    return ViewComponent(ViewComponentType::text_input).text(text);
+    return ViewComponent(ViewComponentType::int_input).text(text);
 }
 inline ViewComponent toggleInput(const std::string &text = "") {
     return ViewComponent(ViewComponentType::toggle_input).text(text);

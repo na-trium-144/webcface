@@ -19,9 +19,19 @@ int main() {
 
         auto v = wcli.view("a");
         v << "hello, world" << std::endl;
-        webcface::InputRef input_val;
-        v << webcface::button("aaaa", [=] { std::cout << input_val << std::endl; })
-          << webcface::textInput().bind(input_val);
+        static webcface::InputRef input_val;
+        v << webcface::button("cout ",
+                              [=] { std::cout << input_val << std::endl; })
+          << webcface::textInput("text").bind(input_val) << " => " << input_val
+          << std::endl;
+
+        static webcface::InputRef input_num;
+        v << webcface::numInput("num").bind(input_num) << " => " << input_num
+          << std::endl;
+
+        static webcface::InputRef input_int;
+        v << webcface::intInput("int").bind(input_int) << " => " << input_int
+          << std::endl;
 
         v.sync();
         wcli.sync();

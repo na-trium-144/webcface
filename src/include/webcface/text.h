@@ -185,7 +185,13 @@ class WEBCFACE_DLL InputRef {
      * \brief 値を返す
      *
      */
-    ValAdaptor get() const { return field->get(); }
+    ValAdaptor get() const {
+        if (expired()) {
+            return ValAdaptor();
+        } else {
+            return field->get();
+        }
+    }
 
     /*!
      * \brief 値を返す
