@@ -38,7 +38,8 @@ void ClientData::onClose() {
                         pi.first,
                         pm.first,
                         true,
-                        ValAdaptor{"member(\"" + this->name + "\") Disconnected"}}));
+                        ValAdaptor{"member(\"" + this->name +
+                                   "\") Disconnected"}}));
                     cd->logger->debug("pending call aborted, sending "
                                       "call_result (caller_id {})",
                                       pi.first);
@@ -366,7 +367,8 @@ void ClientData::onRecv(const std::string &message) {
             *v.data = ValAdaptor(
                 utf8::replace_invalid(static_cast<std::string>(*v.data)),
                 v.data->valType());
-            logger->debug("text {} = {}", v.field, *v.data);
+            logger->debug("text {} = {}", v.field,
+                          static_cast<std::string>(*v.data));
             if (!this->text.count(v.field)) {
                 store.forEach([&](auto cd) {
                     if (cd->name != this->name) {
@@ -388,7 +390,8 @@ void ClientData::onRecv(const std::string &message) {
                         WEBCFACE_NS::Message::Res<WEBCFACE_NS::Message::Text>(
                             req_id, sub_field, v.data));
                     cd->logger->trace("send text_res {}, req_id={} + '{}'",
-                                      *v.data, req_id, sub_field);
+                                      static_cast<std::string>(*v.data), req_id,
+                                      sub_field);
                 }
             });
             break;
@@ -671,7 +674,8 @@ void ClientData::onRecv(const std::string &message) {
                                    WEBCFACE_NS::Message::Text>{
                             s.req_id, sub_field, it.second});
                         logger->trace("send text_res {}, req_id={} + '{}'",
-                                      *it.second, s.req_id, sub_field);
+                                      static_cast<std::string>(*it.second),
+                                      s.req_id, sub_field);
                     }
                 }
             });

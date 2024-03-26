@@ -118,7 +118,7 @@ class WEBCFACE_DLL Text : protected Field, public EventTarget<Text> {
     // Dict getRecurse() const { return tryGetRecurse().value_or(Dict{}); }
     operator std::string() const { return get(); }
     // operator Dict() const { return getRecurse(); }
-    
+
     /*!
      * \brief syncの時刻を返す
      * \deprecated 1.7でMember::syncTime()に変更
@@ -171,6 +171,7 @@ class WEBCFACE_DLL InputRef {
 
     void lockTo(const Text &target) { *field = target; }
     bool expired() const { return field->expired(); }
+    Text &lockedField() { return *field; }
 
     /*!
      * \brief 値をセットする
