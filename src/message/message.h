@@ -351,14 +351,13 @@ struct View : public MessageBase<MessageKind::view> {
         std::optional<std::string> text_ref_member, text_ref_field;
         Common::ViewColor text_color = Common::ViewColor::inherit,
                           bg_color = Common::ViewColor::inherit;
-        std::optional<ValAdaptor> init_ = std::nullopt;
         std::optional<double> min_ = std::nullopt, max_ = std::nullopt;
         std::vector<ValAdaptor> option_;
         ViewComponent() = default;
         ViewComponent(const Common::ViewComponentBase &vc)
             : type(vc.type_), text(vc.text_), text_color(vc.text_color_),
-              bg_color(vc.bg_color_), init_(vc.init_), min_(vc.min_),
-              max_(vc.max_), option_(vc.option_) {
+              bg_color(vc.bg_color_), min_(vc.min_), max_(vc.max_),
+              option_(vc.option_) {
             if (vc.on_click_func_) {
                 on_click_member = vc.on_click_func_->member_;
                 on_click_field = vc.on_click_func_->field_;
@@ -382,7 +381,6 @@ struct View : public MessageBase<MessageKind::view> {
             }
             vc.text_color_ = text_color;
             vc.bg_color_ = bg_color;
-            vc.init_ = init_;
             vc.min_ = min_;
             vc.max_ = max_;
             vc.option_ = option_;
@@ -394,9 +392,8 @@ struct View : public MessageBase<MessageKind::view> {
                            MSGPACK_NVP("R", text_ref_member),
                            MSGPACK_NVP("r", text_ref_field),
                            MSGPACK_NVP("c", text_color),
-                           MSGPACK_NVP("b", bg_color), MSGPACK_NVP("ii", init_),
-                           MSGPACK_NVP("im", min_), MSGPACK_NVP("ix", max_),
-                           MSGPACK_NVP("io", option_))
+                           MSGPACK_NVP("b", bg_color), MSGPACK_NVP("im", min_),
+                           MSGPACK_NVP("ix", max_), MSGPACK_NVP("io", option_))
     };
     std::shared_ptr<std::unordered_map<std::string, ViewComponent>> data_diff;
     std::size_t length;

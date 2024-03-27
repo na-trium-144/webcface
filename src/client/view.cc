@@ -23,6 +23,9 @@ ViewComponent::lockTmp(const std::weak_ptr<Internal::ClientData> &data_w,
             auto data = data_w.lock();
             Text disp_value{Field{data_w, data->self_member_name}, field_id};
             text_ref_tmp->lockTo(disp_value);
+            if (init_) {
+                text_ref_tmp->set(*init_);
+            }
         }
         auto &text = text_ref_tmp->lockedField();
         text_ref_.emplace(text.member().name(), text.name());

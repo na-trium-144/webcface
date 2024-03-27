@@ -20,6 +20,7 @@ class WEBCFACE_DLL ViewComponent : protected Common::ViewComponentBase {
 
     std::shared_ptr<AnonymousFunc> on_click_func_tmp;
     std::optional<InputRef> text_ref_tmp;
+    std::optional<ValAdaptor> init_;
 
   public:
     ViewComponent() = default;
@@ -180,7 +181,7 @@ class WEBCFACE_DLL ViewComponent : protected Common::ViewComponentBase {
     template <typename T>
         requires std::constructible_from<ValAdaptor, T>
     ViewComponent &init(const T &init) {
-        init_ = ValAdaptor(init);
+        init_.emplace(init);
         return *this;
     }
     /*!
@@ -934,10 +935,10 @@ inline ViewComponent textInput(const std::string &text = "") {
     return ViewComponent(ViewComponentType::text_input).text(text);
 }
 inline ViewComponent numInput(const std::string &text = "") {
-    return ViewComponent(ViewComponentType::num_input).text(text);
+    return ViewComponent(ViewComponentType::num_input).text(text).init(0);
 }
 inline ViewComponent intInput(const std::string &text = "") {
-    return ViewComponent(ViewComponentType::int_input).text(text);
+    return ViewComponent(ViewComponentType::int_input).text(text).init(0);
 }
 inline ViewComponent toggleInput(const std::string &text = "") {
     return ViewComponent(ViewComponentType::toggle_input).text(text);
@@ -946,10 +947,10 @@ inline ViewComponent selectInput(const std::string &text = "") {
     return ViewComponent(ViewComponentType::select_input).text(text);
 }
 inline ViewComponent sliderInput(const std::string &text = "") {
-    return ViewComponent(ViewComponentType::slider_input).text(text);
+    return ViewComponent(ViewComponentType::slider_input).text(text).init(0);
 }
 inline ViewComponent checkInput(const std::string &text = "") {
-    return ViewComponent(ViewComponentType::check_input).text(text);
+    return ViewComponent(ViewComponentType::check_input).text(text).init(false);
 }
 } // namespace Components
 namespace ViewComponents = Components;
