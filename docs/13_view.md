@@ -360,6 +360,24 @@ Viewに追加する各種要素をViewComponentといいます。
 
 </div>
 
+\warning
+次の例のようにview内にbuttonが出現したり消滅したりする実装は非推奨です。
+その切り替わりのタイミングでbuttonから呼び出される関数の設定が前後のbuttonとずれる場合があります。
+```cpp
+while (true){
+    auto v = wcli.view("a");
+    if(some_condition){
+        // some_conditionによって、button1が表示されたりされなかったりする
+        v << webcface::button("button1", ...);
+    }
+    v << webcface::button("button2", ...);
+    v.sync();
+    wcli.sync();
+}
+```
+この後説明するinput要素についても同様です。  
+インタラクティブな動作を伴わないtextやnewLineに関しては追加・削除しても問題ありません。
+
 ### input
 \since <span class="since-c">1.10</span>
 
