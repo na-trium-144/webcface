@@ -38,7 +38,12 @@ struct ClientData {
     std::string name;
     unsigned int member_id;
     Message::SyncInit init_data;
-    //! 最新の値
+    /*!
+     * \brief 最新の値
+     *
+     * entry非表示のものも含む。
+     *
+     */
     std::unordered_map<std::string, std::shared_ptr<std::vector<double>>> value;
     std::unordered_map<std::string, std::shared_ptr<Common::ValAdaptor>> text;
     std::unordered_map<std::string, std::shared_ptr<Message::FuncInfo>> func;

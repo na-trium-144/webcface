@@ -105,13 +105,6 @@ class WEBCFACE_DLL Func : protected Field {
               std::function<void(FuncCallHandle)> callback);
 
     /*!
-     * \brief 関数を関数リストで非表示にする
-     * (他clientのentryに表示されなくする)
-     *
-     */
-    Func &hidden(bool hidden);
-
-    /*!
      * \brief 関数の設定を削除
      *
      */
@@ -241,7 +234,6 @@ class WEBCFACE_DLL AnonymousFunc : public Func {
     AnonymousFunc(const Field &base, const T &func)
         : Func(base, fieldNameTmp()), base_init(true) {
         this->set(func);
-        this->hidden(true);
     }
     /*!
      * コンストラクタでdataが渡されなかった場合は関数を内部で保持し(func_setter)、
@@ -252,7 +244,6 @@ class WEBCFACE_DLL AnonymousFunc : public Func {
     AnonymousFunc(const T &func) {
         func_setter = [func](AnonymousFunc &a) {
             a.set(func);
-            a.hidden(true);
         };
     }
     AnonymousFunc(const AnonymousFunc &) = delete;

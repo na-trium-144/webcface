@@ -192,58 +192,75 @@ void ClientData::onRecv(const std::string &message) {
                                   cd->member_id);
 
                     for (const auto &f : cd->value) {
-                        this->pack(WEBCFACE_NS::Message::Entry<
-                                   WEBCFACE_NS::Message::Value>{
-                            {}, cd->member_id, f.first});
-                        logger->trace("send value_entry {} of member {}",
-                                      f.first, cd->member_id);
+                        if (!f.first.starts_with(".")) {
+                            this->pack(WEBCFACE_NS::Message::Entry<
+                                       WEBCFACE_NS::Message::Value>{
+                                {}, cd->member_id, f.first});
+                            logger->trace("send value_entry {} of member {}",
+                                          f.first, cd->member_id);
+                        }
                     }
                     for (const auto &f : cd->text) {
-                        this->pack(WEBCFACE_NS::Message::Entry<
-                                   WEBCFACE_NS::Message::Text>{
-                            {}, cd->member_id, f.first});
-                        logger->trace("send text_entry {} of member {}",
-                                      f.first, cd->member_id);
+                        if (!f.first.starts_with(".")) {
+                            this->pack(WEBCFACE_NS::Message::Entry<
+                                       WEBCFACE_NS::Message::Text>{
+                                {}, cd->member_id, f.first});
+                            logger->trace("send text_entry {} of member {}",
+                                          f.first, cd->member_id);
+                        }
                     }
                     for (const auto &f : cd->robot_model) {
-                        this->pack(WEBCFACE_NS::Message::Entry<
-                                   WEBCFACE_NS::Message::RobotModel>{
-                            {}, cd->member_id, f.first});
-                        logger->trace("send robot_model_entry {} of member {}",
-                                      f.first, cd->member_id);
+                        if (!f.first.starts_with(".")) {
+                            this->pack(WEBCFACE_NS::Message::Entry<
+                                       WEBCFACE_NS::Message::RobotModel>{
+                                {}, cd->member_id, f.first});
+                            logger->trace(
+                                "send robot_model_entry {} of member {}",
+                                f.first, cd->member_id);
+                        }
                     }
                     for (const auto &f : cd->canvas3d) {
-                        this->pack(WEBCFACE_NS::Message::Entry<
-                                   WEBCFACE_NS::Message::Canvas3D>{
-                            {}, cd->member_id, f.first});
-                        logger->trace("send canvas3d_entry {} of member {}",
-                                      f.first, cd->member_id);
+                        if (!f.first.starts_with(".")) {
+                            this->pack(WEBCFACE_NS::Message::Entry<
+                                       WEBCFACE_NS::Message::Canvas3D>{
+                                {}, cd->member_id, f.first});
+                            logger->trace("send canvas3d_entry {} of member {}",
+                                          f.first, cd->member_id);
+                        }
                     }
                     for (const auto &f : cd->canvas2d) {
-                        this->pack(WEBCFACE_NS::Message::Entry<
-                                   WEBCFACE_NS::Message::Canvas2D>{
-                            {}, cd->member_id, f.first});
-                        logger->trace("send canvas2d_entry {} of member {}",
-                                      f.first, cd->member_id);
+                        if (!f.first.starts_with(".")) {
+                            this->pack(WEBCFACE_NS::Message::Entry<
+                                       WEBCFACE_NS::Message::Canvas2D>{
+                                {}, cd->member_id, f.first});
+                            logger->trace("send canvas2d_entry {} of member {}",
+                                          f.first, cd->member_id);
+                        }
                     }
                     for (const auto &f : cd->view) {
-                        this->pack(WEBCFACE_NS::Message::Entry<
-                                   WEBCFACE_NS::Message::View>{
-                            {}, cd->member_id, f.first});
-                        logger->trace("send view_entry {} of member {}",
-                                      f.first, cd->member_id);
+                        if (!f.first.starts_with(".")) {
+                            this->pack(WEBCFACE_NS::Message::Entry<
+                                       WEBCFACE_NS::Message::View>{
+                                {}, cd->member_id, f.first});
+                            logger->trace("send view_entry {} of member {}",
+                                          f.first, cd->member_id);
+                        }
                     }
                     for (const auto &f : cd->image) {
-                        this->pack(WEBCFACE_NS::Message::Entry<
-                                   WEBCFACE_NS::Message::Image>{
-                            {}, cd->member_id, f.first});
-                        logger->trace("send image_entry {} of member {}",
-                                      f.first, cd->member_id);
+                        if (!f.first.starts_with(".")) {
+                            this->pack(WEBCFACE_NS::Message::Entry<
+                                       WEBCFACE_NS::Message::Image>{
+                                {}, cd->member_id, f.first});
+                            logger->trace("send image_entry {} of member {}",
+                                          f.first, cd->member_id);
+                        }
                     }
                     for (const auto &f : cd->func) {
-                        this->pack(*f.second);
-                        logger->trace("send func_info {} of member {}",
-                                      f.second->field, cd->member_id);
+                        if (!f.first.starts_with(".")) {
+                            this->pack(*f.second);
+                            logger->trace("send func_info {} of member {}",
+                                          f.second->field, cd->member_id);
+                        }
                     }
                 }
             });
@@ -336,7 +353,7 @@ void ClientData::onRecv(const std::string &message) {
                 logger->debug("value {} = (array length = {})", v.field,
                               v.data->size());
             }
-            if (!this->value.count(v.field)) {
+            if (!this->value.count(v.field) && !v.field.starts_with(".")) {
                 store.forEach([&](auto cd) {
                     if (cd->name != this->name) {
                         cd->pack(WEBCFACE_NS::Message::Entry<
@@ -369,7 +386,7 @@ void ClientData::onRecv(const std::string &message) {
                 v.data->valType());
             logger->debug("text {} = {}", v.field,
                           static_cast<std::string>(*v.data));
-            if (!this->text.count(v.field)) {
+            if (!this->text.count(v.field) && !v.field.starts_with(".")) {
                 store.forEach([&](auto cd) {
                     if (cd->name != this->name) {
                         cd->pack(WEBCFACE_NS::Message::Entry<
@@ -399,7 +416,8 @@ void ClientData::onRecv(const std::string &message) {
         case MessageKind::robot_model: {
             auto v = std::any_cast<WEBCFACE_NS::Message::RobotModel>(obj);
             logger->debug("robot model {}", v.field);
-            if (!this->robot_model.count(v.field)) {
+            if (!this->robot_model.count(v.field) &&
+                !v.field.starts_with(".")) {
                 store.forEach([&](auto cd) {
                     if (cd->name != this->name) {
                         cd->pack(WEBCFACE_NS::Message::Entry<
@@ -430,7 +448,7 @@ void ClientData::onRecv(const std::string &message) {
             auto v = std::any_cast<WEBCFACE_NS::Message::View>(obj);
             logger->debug("view {} diff={}, length={}", v.field,
                           v.data_diff->size(), v.length);
-            if (!this->view.count(v.field)) {
+            if (!this->view.count(v.field) && !v.field.starts_with(".")) {
                 store.forEach([&](auto cd) {
                     if (cd->name != this->name) {
                         cd->pack(WEBCFACE_NS::Message::Entry<
@@ -464,7 +482,7 @@ void ClientData::onRecv(const std::string &message) {
             auto v = std::any_cast<WEBCFACE_NS::Message::Canvas3D>(obj);
             logger->debug("canvas3d {} diff={}, length={}", v.field,
                           v.data_diff->size(), v.length);
-            if (!this->canvas3d.count(v.field)) {
+            if (!this->canvas3d.count(v.field) && !v.field.starts_with(".")) {
                 store.forEach([&](auto cd) {
                     if (cd->name != this->name) {
                         cd->pack(WEBCFACE_NS::Message::Entry<
@@ -497,7 +515,7 @@ void ClientData::onRecv(const std::string &message) {
             auto v = std::any_cast<WEBCFACE_NS::Message::Canvas2D>(obj);
             logger->debug("canvas2d {} diff={}, length={}", v.field,
                           v.data_diff->size(), v.length);
-            if (!this->canvas2d.count(v.field)) {
+            if (!this->canvas2d.count(v.field) && !v.field.starts_with(".")) {
                 store.forEach([&](auto cd) {
                     if (cd->name != this->name) {
                         cd->pack(WEBCFACE_NS::Message::Entry<
@@ -535,7 +553,7 @@ void ClientData::onRecv(const std::string &message) {
             auto v = std::any_cast<WEBCFACE_NS::Message::Image>(obj);
             logger->debug("image {} ({} x {} x {})", v.field, v.rows(),
                           v.cols(), v.channels());
-            if (!this->image.count(v.field)) {
+            if (!this->image.count(v.field) && !v.field.starts_with(".")) {
                 store.forEach([&](auto cd) {
                     if (cd->name != this->name) {
                         cd->pack(WEBCFACE_NS::Message::Entry<
@@ -605,7 +623,7 @@ void ClientData::onRecv(const std::string &message) {
                     a.min(), a.max(), replaced_opt);
             }
             logger->debug("func_info {}", v.field);
-            if (!this->func.count(v.field)) {
+            if (!this->func.count(v.field) && !v.field.starts_with(".")) {
                 store.forEach([&](auto cd) {
                     if (cd->member_id != this->member_id) {
                         cd->pack(v);

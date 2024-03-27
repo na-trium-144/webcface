@@ -200,7 +200,6 @@ struct FuncInfo {
     std::vector<Arg> args;
     FuncType func_impl;
     FuncWrapperType func_wrapper;
-    bool hidden;
     auto run(const std::vector<ValAdaptor> &args) {
         if (func_wrapper) {
             return func_wrapper(func_impl, args);
@@ -210,12 +209,11 @@ struct FuncInfo {
     }
 
     FuncInfo()
-        : return_type(ValType::none_), args(), func_impl(), func_wrapper(),
-          hidden(false) {}
+        : return_type(ValType::none_), args(), func_impl(), func_wrapper() {}
     FuncInfo(ValType return_type, const std::vector<Arg> &args,
-             FuncType func_impl, FuncWrapperType func_wrapper, bool hidden)
+             FuncType func_impl, FuncWrapperType func_wrapper)
         : return_type(return_type), args(args), func_impl(func_impl),
-          func_wrapper(func_wrapper), hidden(hidden) {}
+          func_wrapper(func_wrapper) {}
 
     /*!
      * \brief 任意の関数を受け取り、引数と戻り値をキャストして実行する関数を保存
@@ -241,7 +239,7 @@ struct FuncInfo {
                   return static_cast<ValAdaptor>(ret);
               }
           }),
-          func_wrapper(wrapper), hidden(false) {}
+          func_wrapper(wrapper) {}
 };
 
 /*!

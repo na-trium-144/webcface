@@ -59,7 +59,7 @@ Func &Func::set(const std::vector<Arg> &args, ValType return_type,
                        }
                        return result_f.get();
                    },
-                   getDefaultFuncWrapper(), false});
+                   getDefaultFuncWrapper()});
 }
 Func &Func::replaceImpl(FuncType func) {
     auto func_info = setCheck()->func_store.getRecv(*this);
@@ -158,14 +158,6 @@ Func &Func::setArgs(const std::vector<Arg> &args) {
     }
     return *this;
 }
-Func &Func::hidden(bool hidden) {
-    auto func_info = setCheck()->func_store.getRecv(*this);
-    if (func_info == std::nullopt) {
-        throw std::invalid_argument("setArgs failed: Func not set");
-    }
-    (*func_info)->hidden = hidden;
-    return *this;
-}
 
 FuncWrapperType Func::getDefaultFuncWrapper() const {
     return dataLock()->default_func_wrapper;
@@ -209,7 +201,7 @@ FuncWrapper::runCondOnSync(const std::weak_ptr<Internal::ClientData> &data) {
 
 std::string AnonymousFunc::fieldNameTmp() {
     static int id = 0;
-    return ".tmp" + std::to_string(id++);
+    return "..tmp" + std::to_string(id++);
 }
 AnonymousFunc &AnonymousFunc::operator=(AnonymousFunc &&other) {
     this->func_setter = std::move(other.func_setter);
