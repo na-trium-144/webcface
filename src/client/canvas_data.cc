@@ -57,10 +57,11 @@ Canvas3DComponent &Canvas3DComponent::angle(const std::string &joint_name,
 
 Canvas2DComponentBase &
 Canvas2DComponent::lockTmp(const std::weak_ptr<Internal::ClientData> &data_w,
-                           const std::string &field_id) {
+                           const std::string &view_name, int &func_next) {
     if (on_click_func_tmp != nullptr) {
         auto data = data_w.lock();
-        Func on_click{Field{data_w, data->self_member_name}, field_id};
+        Func on_click{Field{data_w, data->self_member_name},
+                      ".c2" + view_name + "." + std::to_string(func_next++)};
         on_click_func_tmp->lockTo(on_click);
         on_click.hidden(true);
         onClick(on_click);

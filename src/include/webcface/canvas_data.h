@@ -30,12 +30,12 @@ class WEBCFACE_DLL ViewComponent : protected Common::ViewComponentBase {
     explicit ViewComponent(ViewComponentType type) { type_ = type; }
 
     /*!
-     * \brief AnonymousFuncをFuncオブジェクトにlockします
+     * \brief AnonymousFuncとInputRefの名前を確定
      *
      */
     ViewComponentBase &
     lockTmp(const std::weak_ptr<Internal::ClientData> &data_w,
-            const std::string &field_id);
+            const std::string &view_name, int &func_next, int &inputref_next);
 
     wcfViewComponent cData() const;
 
@@ -102,7 +102,7 @@ class WEBCFACE_DLL ViewComponent : protected Common::ViewComponentBase {
      */
     ViewComponent &bind(const InputRef &ref) {
         on_click_func_tmp = std::make_shared<AnonymousFunc>(
-            [ref](ValAdaptor val) { ref.set(val); });
+            [ref](ValAdaptor val) { ref.lockedField().set(val); });
         text_ref_tmp = ref;
         return *this;
     }
@@ -119,7 +119,7 @@ class WEBCFACE_DLL ViewComponent : protected Common::ViewComponentBase {
         InputRef ref;
         on_click_func_tmp =
             std::make_shared<AnonymousFunc>([ref, func](ValAdaptor val) {
-                ref.set(val);
+                ref.lockedField().set(val);
                 return func(val);
             });
         text_ref_tmp = ref;
@@ -135,7 +135,7 @@ class WEBCFACE_DLL ViewComponent : protected Common::ViewComponentBase {
         auto func_impl = func.getImpl();
         func.replaceImpl([ref, func_impl](const std::vector<ValAdaptor> &args) {
             if (args.size() >= 1) {
-                ref.set(args[0]);
+                ref.lockedField().set(args[0]);
             }
             return func_impl(args);
         });
@@ -380,12 +380,12 @@ class WEBCFACE_DLL Canvas2DComponent : protected Common::Canvas2DComponentBase {
     }
 
     /*!
-     * \brief AnonymousFuncをFuncオブジェクトにlock
+     * \brief AnonymousFuncの名前を確定
      *
      */
     Canvas2DComponentBase &
     lockTmp(const std::weak_ptr<Internal::ClientData> &data_w,
-            const std::string &field_id);
+            const std::string &view_name, int &func_next);
 
     /*!
      * \brief 要素の種類

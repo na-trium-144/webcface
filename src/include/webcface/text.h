@@ -34,6 +34,7 @@ class WEBCFACE_DLL Text : protected Field, public EventTarget<Text> {
         : Text(Field{base, field}) {}
 
     friend class InputRef;
+    friend class InputRefState;
     using Field::member;
     using Field::name;
 
@@ -145,21 +146,29 @@ class WEBCFACE_DLL Text : protected Field, public EventTarget<Text> {
  */
 WEBCFACE_DLL std::ostream &operator<<(std::ostream &os, const Text &data);
 
+struct WEBCFACE_DLL InputRefState {
+    Text field;
+    InputRefState() = default;
+};
 /*!
  * \brief 名前を指定しないText
  *
  * viewでinputの値の管理に使う。
  * 数値型で用いることもあるが内部データ型としては常にTextを使用する。
  *
- * lockTo() であとから名前を決めることができ、
- * InputRefオブジェクトのコピーは名前が決まる前後でつねに同じTextを参照する
+ * bindしたviewをsync()するときに名前が決定される(lock)。
+ * InputRefオブジェクトのコピーは名前が決まる前後でつねに同じTextを参照し、
+ * その後も同じInputRefオブジェクトを使用することで同じ値を参照することができる
+ *
+ * lockされた後にInputRefを破棄し、その後新しいInputRefを同じviewにbindした場合、
+ * sync()時にその新しいInputRefには前のInputRefと同じ名前が割り当てられることで同じ値になる
  *
  */
 class WEBCFACE_DLL InputRef {
-    std::shared_ptr<Text> field;
+    std::shared_ptr<InputRefState> state;
 
   public:
-    InputRef() : field(std::make_shared<Text>()) {}
+    InputRef() : state(std::make_shared<InputRefState>()) {}
     InputRef(const InputRef &) = default;
     InputRef &operator=(const InputRef &) = default;
     /*!
@@ -168,19 +177,12 @@ class WEBCFACE_DLL InputRef {
      */
     InputRef(InputRef &&) = delete;
     InputRef &operator=(InputRef &&) = delete;
+    ~InputRef() = default;
 
-    void lockTo(const Text &target) { *field = target; }
-    bool expired() const { return field->expired(); }
-    Text &lockedField() { return *field; }
+    void lockTo(const Text &target) { state->field = target; }
+    bool expired() const { return state->field.expired(); }
+    Text &lockedField() const { return state->field; }
 
-    /*!
-     * \brief 値をセットする
-     *
-     */
-    const InputRef &set(const ValAdaptor &v) const {
-        field->set(v);
-        return *this;
-    }
     /*!
      * \brief 値を返す
      *
@@ -189,7 +191,7 @@ class WEBCFACE_DLL InputRef {
         if (expired()) {
             return ValAdaptor();
         } else {
-            return field->get();
+            return state->field.get();
         }
     }
 

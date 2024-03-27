@@ -10,25 +10,27 @@ template class WEBCFACE_DLL EventTarget<View>;
 
 ViewComponentBase &
 ViewComponent::lockTmp(const std::weak_ptr<Internal::ClientData> &data_w,
-                       const std::string &field_id) {
+                       const std::string &view_name, int &func_next,
+                       int &inputref_next) {
+    auto data = data_w.lock();
     if (on_click_func_tmp != nullptr) {
-        auto data = data_w.lock();
-        Func on_click{Field{data_w, data->self_member_name}, field_id};
+        Func on_click{Field{data_w, data->self_member_name},
+                      ".v" + view_name + "." + std::to_string(func_next++)};
         on_click_func_tmp->lockTo(on_click);
         on_click.hidden(true);
         onClick(on_click);
     }
     if (text_ref_tmp) {
-        if (text_ref_tmp->expired()) {
-            auto data = data_w.lock();
-            Text disp_value{Field{data_w, data->self_member_name}, field_id};
-            text_ref_tmp->lockTo(disp_value);
-            if (init_) {
-                text_ref_tmp->set(*init_);
-            }
+        // if (text_ref_tmp->expired()) {
+        Text text_ref{Field{data_w, data->self_member_name},
+                      ".ir" + view_name + "." +
+                          std::to_string(inputref_next++)};
+        text_ref_tmp->lockTo(text_ref);
+        if (init_ && !text_ref.tryGet()) {
+            text_ref.set(*init_);
         }
-        auto &text = text_ref_tmp->lockedField();
-        text_ref_.emplace(text.member().name(), text.name());
+        // }
+        text_ref_.emplace(text_ref.member().name(), text_ref.name());
     }
     return *this;
 }
@@ -95,9 +97,10 @@ template <>
 void Internal::DataSetBuffer<ViewComponent>::onSync() {
     auto vb = std::make_shared<std::vector<ViewComponentBase>>();
     vb->reserve(components_.size());
+    int func_next = 0, inputref_next = 0;
     for (std::size_t i = 0; i < components_.size(); i++) {
         vb->push_back(std::move(components_[i].lockTmp(
-            target_.data_w, target_.name() + "_" + std::to_string(i))));
+            target_.data_w, target_.name(), func_next, inputref_next)));
     }
     target_.setCheck()->view_store.setSend(target_, vb);
     static_cast<View>(target_).triggerEvent(target_);

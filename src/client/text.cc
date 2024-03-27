@@ -68,5 +68,4 @@ Text &Text::free() {
 std::ostream &operator<<(std::ostream &os, const Text &data) {
     return os << data.get();
 }
-
 } // namespace WEBCFACE_NS
