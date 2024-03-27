@@ -34,7 +34,7 @@ class WEBCFACE_DLL Text : protected Field, public EventTarget<Text> {
         : Text(Field{base, field}) {}
 
     friend class InputRef;
-    friend class InputRefState;
+    friend struct InputRefState;
     using Field::member;
     using Field::name;
 
