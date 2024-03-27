@@ -35,7 +35,7 @@ class WEBCFACE_DLL ViewComponent : protected Common::ViewComponentBase {
      */
     ViewComponentBase &
     lockTmp(const std::weak_ptr<Internal::ClientData> &data_w,
-            const std::string &view_name, int &func_next, int &inputref_next);
+            const std::string &view_name, int *func_next, int *inputref_next);
 
     wcfViewComponent cData() const;
 
@@ -385,7 +385,7 @@ class WEBCFACE_DLL Canvas2DComponent : protected Common::Canvas2DComponentBase {
      */
     Canvas2DComponentBase &
     lockTmp(const std::weak_ptr<Internal::ClientData> &data_w,
-            const std::string &view_name, int &func_next);
+            const std::string &view_name, int *func_next);
 
     /*!
      * \brief 要素の種類

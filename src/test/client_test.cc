@@ -364,17 +364,18 @@ TEST_F(ClientTest, textReq) {
 TEST_F(ClientTest, viewSend) {
     wcli_->waitConnection();
     data_->view_store.setSend(
-        "a", std::make_shared<std::vector<ViewComponentBase>>(
-                 std::vector<ViewComponentBase>{
-                     ViewComponents::text("a")
-                         .textColor(ViewColor::yellow)
-                         .bgColor(ViewColor::green)
-                         .toV()
-                         .lockTmp(data_, ""),
-                     ViewComponents::newLine().lockTmp(data_, ""),
-                     ViewComponents::button("a", Func{Field{data_, "x", "y"}})
-                         .lockTmp(data_, ""),
-                 }));
+        "a",
+        std::make_shared<std::vector<ViewComponentBase>>(
+            std::vector<ViewComponentBase>{
+                ViewComponents::text("a")
+                    .textColor(ViewColor::yellow)
+                    .bgColor(ViewColor::green)
+                    .toV()
+                    .lockTmp(data_, "", nullptr, nullptr),
+                ViewComponents::newLine().lockTmp(data_, "", nullptr, nullptr),
+                ViewComponents::button("a", Func{Field{data_, "x", "y"}})
+                    .lockTmp(data_, "", nullptr, nullptr),
+            }));
     wcli_->sync();
     wait();
     dummy_s->recv<Message::View>(
@@ -396,17 +397,18 @@ TEST_F(ClientTest, viewSend) {
     dummy_s->recvClear();
 
     data_->view_store.setSend(
-        "a", std::make_shared<std::vector<ViewComponentBase>>(
-                 std::vector<ViewComponentBase>{
-                     ViewComponents::text("b")
-                         .textColor(ViewColor::red)
-                         .bgColor(ViewColor::green)
-                         .toV()
-                         .lockTmp(data_, ""),
-                     ViewComponents::newLine().lockTmp(data_, ""),
-                     ViewComponents::button("a", Func{Field{data_, "x", "y"}})
-                         .lockTmp(data_, ""),
-                 }));
+        "a",
+        std::make_shared<std::vector<ViewComponentBase>>(
+            std::vector<ViewComponentBase>{
+                ViewComponents::text("b")
+                    .textColor(ViewColor::red)
+                    .bgColor(ViewColor::green)
+                    .toV()
+                    .lockTmp(data_, "", nullptr, nullptr),
+                ViewComponents::newLine().lockTmp(data_, "", nullptr, nullptr),
+                ViewComponents::button("a", Func{Field{data_, "x", "y"}})
+                    .lockTmp(data_, "", nullptr, nullptr),
+            }));
     wcli_->sync();
     wait();
     dummy_s->recv<Message::View>(
@@ -441,10 +443,11 @@ TEST_F(ClientTest, viewReq) {
                       .textColor(ViewColor::yellow)
                       .bgColor(ViewColor::green)
                       .toV()
-                      .lockTmp(data_, "")},
-            {"1", ViewComponents::newLine().lockTmp(data_, "")},
+                      .lockTmp(data_, "", nullptr, nullptr)},
+            {"1",
+             ViewComponents::newLine().lockTmp(data_, "", nullptr, nullptr)},
             {"2", ViewComponents::button("a", Func{Field{data_, "x", "y"}})
-                      .lockTmp(data_, "")},
+                      .lockTmp(data_, "", nullptr, nullptr)},
         });
     dummy_s->send(Message::Res<Message::View>{1, "", v, 3});
     dummy_s->send(Message::Res<Message::View>{1, "c", v, 3});
@@ -471,7 +474,7 @@ TEST_F(ClientTest, viewReq) {
                       .textColor(ViewColor::red)
                       .bgColor(ViewColor::green)
                       .toV()
-                      .lockTmp(data_, "")},
+                      .lockTmp(data_, "", nullptr, nullptr)},
         });
     dummy_s->send(Message::Res<Message::View>{1, "", v2, 3});
     wait();
@@ -499,21 +502,21 @@ TEST_F(ClientTest, canvas2DSend) {
                          .strokeWidth(5)
                          .onClick(Func{Field{data_, self_name, "f"}})
                          .to2()
-                         .lockTmp(data_, ""),
+                         .lockTmp(data_, "", nullptr),
                      Geometries::rect({0, 0}, {30, 30})
                          .color(ViewColor::black)
                          .fillColor(ViewColor::white)
                          .strokeWidth(5)
                          .onClick(Func{Field{data_, self_name, "f"}})
                          .to2()
-                         .lockTmp(data_, ""),
+                         .lockTmp(data_, "", nullptr),
                      Geometries::polygon({{0, 0}, {30, 30}, {50, 20}})
                          .color(ViewColor::black)
                          .fillColor(ViewColor::white)
                          .strokeWidth(5)
                          .onClick(Func{Field{data_, self_name, "f"}})
                          .to2()
-                         .lockTmp(data_, ""),
+                         .lockTmp(data_, "", nullptr),
                  }));
     wcli_->sync();
     wait();
@@ -550,21 +553,21 @@ TEST_F(ClientTest, canvas2DSend) {
                          .strokeWidth(5)
                          .onClick(Func{Field{data_, self_name, "f"}})
                          .to2()
-                         .lockTmp(data_, ""),
+                         .lockTmp(data_, "", nullptr),
                      Geometries::rect({0, 0}, {30, 30})
                          .color(ViewColor::black)
                          .fillColor(ViewColor::white)
                          .strokeWidth(5)
                          .onClick(Func{Field{data_, self_name, "f"}})
                          .to2()
-                         .lockTmp(data_, ""),
+                         .lockTmp(data_, "", nullptr),
                      Geometries::polygon({{0, 0}, {30, 30}, {50, 20}})
                          .color(ViewColor::black)
                          .fillColor(ViewColor::white)
                          .strokeWidth(5)
                          .onClick(Func{Field{data_, self_name, "f"}})
                          .to2()
-                         .lockTmp(data_, ""),
+                         .lockTmp(data_, "", nullptr),
                  }));
     wcli_->sync();
     wait();
@@ -604,21 +607,21 @@ TEST_F(ClientTest, canvas2DReq) {
                       .strokeWidth(5)
                       .onClick(Func{Field{data_, self_name, "f"}})
                       .to2()
-                      .lockTmp(data_, "")},
+                      .lockTmp(data_, "", nullptr)},
             {"1", Geometries::rect({0, 0}, {30, 30})
                       .color(ViewColor::black)
                       .fillColor(ViewColor::white)
                       .strokeWidth(5)
                       .onClick(Func{Field{data_, self_name, "f"}})
                       .to2()
-                      .lockTmp(data_, "")},
+                      .lockTmp(data_, "", nullptr)},
             {"2", Geometries::polygon({{0, 0}, {30, 30}, {50, 20}})
                       .color(ViewColor::black)
                       .fillColor(ViewColor::white)
                       .strokeWidth(5)
                       .onClick(Func{Field{data_, self_name, "f"}})
                       .to2()
-                      .lockTmp(data_, "")},
+                      .lockTmp(data_, "", nullptr)},
         });
     dummy_s->send(Message::Res<Message::Canvas2D>{1, "", 200, 200, v, 3});
     dummy_s->send(Message::Res<Message::Canvas2D>{1, "c", 200, 200, v, 3});
@@ -680,7 +683,7 @@ TEST_F(ClientTest, canvas2DReq) {
                       .strokeWidth(5)
                       .onClick(Func{Field{data_, self_name, "f"}})
                       .to2()
-                      .lockTmp(data_, "")},
+                      .lockTmp(data_, "", nullptr)},
         });
     dummy_s->send(Message::Res<Message::Canvas2D>{1, "", 100, 100, v2, 3});
     wait();

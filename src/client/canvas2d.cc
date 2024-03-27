@@ -45,7 +45,7 @@ void Internal::DataSetBuffer<Canvas2DComponent>::onSync() {
     int func_next = 0;
     for (std::size_t i = 0; i < this->components_.size(); i++) {
         cb->components.emplace_back(std::move(this->components_[i].lockTmp(
-            target_.data_w, target_.name(), func_next)));
+            target_.data_w, target_.name(), &func_next)));
     }
     target_.setCheck()->canvas2d_store.setSend(target_, cb);
     static_cast<Canvas2D>(target_).triggerEvent(target_);

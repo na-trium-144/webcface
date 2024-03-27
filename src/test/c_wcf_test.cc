@@ -497,10 +497,10 @@ TEST_F(CClientTest, viewReq) {
                       .textColor(ViewColor::yellow)
                       .bgColor(ViewColor::green)
                       .toV()
-                      .lockTmp({}, "")},
-            {"1", ViewComponents::newLine().lockTmp({}, "")},
+                      .lockTmp({}, "", nullptr, nullptr)},
+            {"1", ViewComponents::newLine().lockTmp({}, "", nullptr, nullptr)},
             {"2", ViewComponents::button("a", Func{Field{{}, "x", "y"}})
-                      .lockTmp({}, "")},
+                      .lockTmp({}, "", nullptr, nullptr)},
         });
     dummy_s->send(Message::Res<Message::View>{1, "", v, 3});
     dummy_s->send(Message::Res<Message::View>{1, "c", v, 3});

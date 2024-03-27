@@ -10,12 +10,12 @@ template class WEBCFACE_DLL EventTarget<View>;
 
 ViewComponentBase &
 ViewComponent::lockTmp(const std::weak_ptr<Internal::ClientData> &data_w,
-                       const std::string &view_name, int &func_next,
-                       int &inputref_next) {
+                       const std::string &view_name, int *func_next,
+                       int *inputref_next) {
     auto data = data_w.lock();
     if (on_click_func_tmp != nullptr) {
         Func on_click{Field{data_w, data->self_member_name},
-                      ".v" + view_name + "." + std::to_string(func_next++)};
+                      ".v" + view_name + "." + std::to_string((*func_next)++)};
         on_click_func_tmp->lockTo(on_click);
         on_click.hidden(true);
         onClick(on_click);
@@ -24,7 +24,7 @@ ViewComponent::lockTmp(const std::weak_ptr<Internal::ClientData> &data_w,
         // if (text_ref_tmp->expired()) {
         Text text_ref{Field{data_w, data->self_member_name},
                       ".ir" + view_name + "." +
-                          std::to_string(inputref_next++)};
+                          std::to_string((*inputref_next)++)};
         text_ref_tmp->lockTo(text_ref);
         if (init_ && !text_ref.tryGet()) {
             text_ref.set(*init_);
@@ -100,7 +100,7 @@ void Internal::DataSetBuffer<ViewComponent>::onSync() {
     int func_next = 0, inputref_next = 0;
     for (std::size_t i = 0; i < components_.size(); i++) {
         vb->push_back(std::move(components_[i].lockTmp(
-            target_.data_w, target_.name(), func_next, inputref_next)));
+            target_.data_w, target_.name(), &func_next, &inputref_next)));
     }
     target_.setCheck()->view_store.setSend(target_, vb);
     static_cast<View>(target_).triggerEvent(target_);

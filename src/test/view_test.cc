@@ -111,17 +111,16 @@ TEST_F(ViewTest, viewSet) {
     } // v3のデストラクタでsyncされる
     EXPECT_EQ(callback_called, 4);
 
-    {
-        View v5{};
-    } // エラーやセグフォしない
-    
+    { View v5{}; } // エラーやセグフォしない
+
     View v6{};
     v6 << "a";
     EXPECT_THROW(v6.sync(), std::runtime_error);
 }
 TEST_F(ViewTest, viewGet) {
     auto vd = std::make_shared<std::vector<ViewComponentBase>>(
-        std::vector<ViewComponentBase>{text("a").toV().lockTmp(data_, "")});
+        std::vector<ViewComponentBase>{
+            text("a").toV().lockTmp(data_, "", nullptr, nullptr)});
     data_->view_store.setRecv("a", "b", vd);
     EXPECT_EQ(view("a", "b").tryGet().value().size(), 1);
     EXPECT_EQ(view("a", "b").get().size(), 1);
