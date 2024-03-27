@@ -22,7 +22,7 @@ int main() {
         static webcface::InputRef input_val;
         v << webcface::button("cout ",
                               [=] { std::cout << input_val << std::endl; })
-          << webcface::textInput("text").bind(input_val).init("hello") << " => "
+          << webcface::textInput().bind(input_val).init("hello") << " => "
           << input_val << std::endl;
 
         static webcface::InputRef input_num;
@@ -41,6 +41,14 @@ int main() {
                  .bind(input_select)
                  .option({"hoge", "fuga", "piyo"})
           << " => " << input_select << std::endl;
+
+        static webcface::InputRef input_slider;
+        v << webcface::sliderInput().bind(input_slider).min(0).max(100)
+          << " => " << input_slider << std::endl;
+
+        static webcface::InputRef input_check;
+        v << webcface::checkInput("check").bind(input_check)
+          << " => " << input_check << std::endl;
 
         v.sync();
         wcli.sync();
