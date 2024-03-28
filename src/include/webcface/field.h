@@ -30,6 +30,8 @@ struct WEBCFACE_DLL Field : public Common::FieldBase {
     //! data_wをlockし、memberがselfではなければinvalid_argumentを投げる
     std::shared_ptr<Internal::ClientData> setCheck() const;
 
+    bool expired() const;
+
     //! Memberを返す
     Member member() const;
     //! field名を返す

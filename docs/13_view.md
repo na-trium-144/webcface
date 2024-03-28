@@ -166,13 +166,14 @@ Viewに追加する各種要素をViewComponentといいます。
     v.add("hello").add(123);
     v << "hello" << 123;
     ```
-    `text(文字列)`を使うとテキストの色を変更することができます。
+    `text(文字列)`とし、さらにtextColorを指定することでテキストの色を変更することができます。
     ```cpp
-    v.add(webcface::ViewComponents::text("hello").textColor(webcface::ViewColor::red));
-    v << webcface::ViewComponents::text("hello").textColor(webcface::ViewColor::red);
+    v.add(webcface::text("hello").textColor(webcface::ViewColor::red));
+    v << webcface::text("hello").textColor(webcface::ViewColor::red);
     ```
 
 - <b class="tab-title">C</b>
+    wcfText でテキストを指定します。
     text_color でテキストの色を変更することができます。
     ```c
     vc[0] = wcfText("hello");
@@ -187,7 +188,7 @@ Viewに追加する各種要素をViewComponentといいます。
         123,
     ]);
     ```
-    `text(文字列)`を使うとテキストの色を変更することができます。
+    `text(文字列)`を使ってtextColorを指定するとテキストの色を変更することができます。
     ```ts
     import { viewComponents, viewColor } from "webcface";
     wcli.view("hoge").set([
@@ -197,11 +198,11 @@ Viewに追加する各種要素をViewComponentといいます。
     ```
 
 - <b class="tab-title">Python</b>
-    str, int, float, bool は文字列に変換されます。
+    str, int, float, bool はaddの引数に直接指定すると文字列に変換されます。
     ```cpp
     v.add("hello").add(123)
     ```
-    `text(文字列)`を使うとテキストの色を変更することができます。
+    `text(文字列)`を使ってtext_colorを指定するとテキストの色を変更することができます。
     ```cpp
     v.add(webcface.view_components.text("hello", text_color=webcface.view_components.view_color.RED))
     ```
@@ -214,23 +215,24 @@ Viewに追加する各種要素をViewComponentといいます。
 <div class="tabbed">
 
 - <b class="tab-title">C++</b>
-    `webcface::ViewComponents::newLine()` の他、`std::endl`や`"\n"`でも改行できます。
+    `webcface::newLine()` の他、`std::endl`や`"\n"`でも改行できます。
     `\n`は単体でなく文字列中にあってもそこで改行されます。
     ```cpp
     v.add("hello\nhello");
     v.add("hello").add("\n").add("hello");
     v << "hello\nhello";
     v << "hello" << std::endl << "hello";
-    using namespace webcface::ViewComponents;
+    using namespace webcface::Components;
     v.add(text("hello")).add(newLine()).add(text("hello"));
     v << text("hello") << newLine() << text("hello");
     ```
 - <b class="tab-title">C</b>
+    wcfText に`\n`を渡すか、 wcfNewLine で指定できます。
+    wcfTextの文字列の途中に`\n`がある場合もそこで改行されます
     ```c
     vc[0] = wcfText("\n");
     vc[0] = wcfNewLine();
     ```
-    wcfTextの文字列の途中に`\n`がある場合もそこで改行されます
 
 - <b class="tab-title">JavaScript</b>
     `newLine()`の他`"\n"`でも改行できます。
@@ -269,19 +271,20 @@ Viewに追加する各種要素をViewComponentといいます。
     Funcオブジェクトの場合
     ```cpp
     wcli.func("hoge").set(/*...*/);
-    v << webcface::ViewComponents.button("表示する文字列", wcli.func("hoge"));
+    v << webcface::button("表示する文字列", wcli.func("hoge"));
     // v.add(...) でも同様
     ```
     関数を直接渡す場合
-    (WebUIや他MemberからはFuncの存在は見えません)
+    (非表示のFuncとして登録され、他のFuncと同様に扱われます。
+    WebUIや他MemberからはFuncの存在は見えません)
     ```cpp
-    v << webcface::ViewComponents.button("表示する文字列", [](){ /* ... */ });
+    v << webcface::button("表示する文字列", [](){ /* ... */ });
     ```
     <span class="since-c">1.6</span> AnonymousFunc  
     関数を直接渡す場合と同様Funcの存在は見えません  
     Funcオブジェクトと同様実行条件などのオプションを設定することができます。
     ```cpp
-    v << webcface::ViewComponents.button(
+    v << webcface::button(
         "表示する文字列",
         wcli.func([](){ /* ... */ })/*.setRunCond...*/
     );
@@ -289,14 +292,14 @@ Viewに追加する各種要素をViewComponentといいます。
     文字の色、背景色を設定できます
     (デフォルトではどちらも `ViewColor::inherit` で、その場合WebUI上では文字色=black、背景色=greenになります)
     ```cpp
-    v << webcface::ViewComponents::button(/* ... */)
+    v << webcface::button(/* ... */)
             .textColor(webcface::ViewColor::red)
             .bgColor(webcface::ViewColor::yellow);
     ```
 
 - <b class="tab-title">C</b>
     関数の登録方法は [Func](./30_func.md) を参照してください。
-    登録したFuncのmember名と名前をbuttonに指定します。
+    表示する文字列に加え登録したFuncのmember名と名前をwcfButtonに指定します。
     member名をNULLまたは空文字列にすると自分自身が登録した関数を指します。
     ```c
     vc[0] = wcfButton("表示する文字列", NULL, "hoge");
@@ -354,6 +357,94 @@ Viewに追加する各種要素をViewComponentといいます。
         bg_color=webcface.view_components.view_color.YELLOW,
     ))
     ```
+
+</div>
+
+\warning
+次の例のようにview内にbuttonが出現したり消滅したりする実装は非推奨です。
+その切り替わりのタイミングでbuttonから呼び出される関数の設定が前後のbuttonとずれる場合があります。
+```cpp
+while (true){
+    auto v = wcli.view("a");
+    if(some_condition){
+        // some_conditionによって、button1が表示されたりされなかったりする
+        v << webcface::button("button1", ...);
+    }
+    v << webcface::button("button2", ...);
+    v.sync();
+    wcli.sync();
+}
+```
+この後説明するinput要素についても同様です。  
+インタラクティブな動作を伴わないtextやnewLineに関しては追加・削除しても問題ありません。
+
+### input
+\since <span class="since-c">1.10</span>
+
+viewに入力欄を表示します。
+
+- textInput: 文字列入力
+- numInput: 数値入力
+- intInput: 整数の入力
+- selectInput: リストから値を選択させる
+- toggleInput: クリックするたびに値が切り替わる
+- sliderInput: 数値を指定するスライダー
+- checkInput: チェックボックス
+
+<div class="tabbed">
+
+- <b class="tab-title">C++</b>
+    InputRef  
+    入力された値にアクセスするため webcface::InputRef オブジェクトを作成し、inputにbindします。
+    そのInputRefオブジェクトをコピーまたは参照で別の関数などに渡すと、あとから値を取得することができます。
+    ```cpp
+    static webcface::InputRef input_val;
+    v << webcface::button("cout ",
+                          [=] { std::cout << input_val << std::endl; })
+      << webcface::textInput("表示する文字列").bind(input_val)
+      << std::endl;
+    ```
+
+    \warning
+    上の例ではinput_valをstatic変数にし寿命が切れないようにしていますが、
+    次の例のようにviewの生成ごとにInputRefオブジェクトを生成・破棄しても動作はします。
+    ```cpp
+    while (true){
+        auto v = wcli.view("a");
+        webcface::InputRef input_val;
+        v << webcface::button("cout ",
+                              [=] { std::cout << input_val << std::endl; })
+          << webcface::textInput("表示する文字列").bind(input_val)
+          << std::endl;
+        // std::cout << "input_val = " << input_val.get(); この場合ここでは使えない
+        v.sync();
+        wcli.sync();
+    }
+    ```
+    この場合はv.sync()の時に前周期のinput_valの内容が復元されるという挙動になります。
+    (したがってv.sync()より前では値が未初期化になります)
+
+    \note
+    内部の実装では入力値を受け取りInputRefに値をセットする関数をonChangeにセットしています。
+    また、InputRefの値は[Text](./11_text.md)の1つとしてviewを表示しているクライアントに送信されます。
+
+    onChange  
+    onChange() で値が入力されたときに実行する関数を設定でき、こちらでも値が取得できます。
+    buttonに渡す関数と同様、関数オブジェクト、Funcオブジェクト、AnonymousFuncオブジェクトが使用できます。
+    ```cpp
+    v << webcface::textInput("表示する文字列").onChange([](std::string val) {
+        std::cout << "input changed: " << val << std::endl;
+    });
+    ```
+
+    その他各種inputに指定できるオプションには以下のものがあります。
+    ([Func](./30_func.md)のArgオプションと同様です。)
+
+    `.init(初期値)`  
+    `.min(最小値)`, `.max(最大値)`: numInput, intInput, sliderInputのみ  
+    `.min(最小文字数)`, `.max(最大文字数)`: textInputのみ  
+    `.option({ 選択肢, ... })`: selectInput, toggleInput  
+
 
 </div>
 

@@ -22,7 +22,6 @@ FuncListener &FuncListener::listen() {
             return result_f.get();
         },
         nullptr,
-        this->hidden_,
     });
     return *this;
 }

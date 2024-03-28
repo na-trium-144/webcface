@@ -121,8 +121,7 @@ class WEBCFACE_DLL Value : protected Field, public EventTarget<Value> {
      * \brief syncの時刻を返す
      * \deprecated 1.7で Member::syncTime() に変更
      */
-    [[deprecated]] std::chrono::system_clock::time_point
-    time() const;
+    [[deprecated]] std::chrono::system_clock::time_point time() const;
 
     /*!
      * \brief 値やリクエスト状態をクリア

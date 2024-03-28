@@ -9,7 +9,6 @@ namespace WEBCFACE_NS {
 class WEBCFACE_DLL FuncListener : protected Func {
     ValType return_type_ = ValType::none_;
     std::vector<Arg> args_{};
-    bool hidden_ = false;
 
   public:
     FuncListener() = default;
@@ -57,17 +56,6 @@ class WEBCFACE_DLL FuncListener : protected Func {
      */
     FuncListener &setReturnType(ValType type) {
         this->return_type_ = type;
-        return *this;
-    }
-    /*!
-     * \brief 関数を関数リストで非表示にする
-     * (他clientのentryに表示されなくする)
-     *
-     * listen() の前に呼ばなければならない。
-     *
-     */
-    FuncListener &hidden(bool hidden) {
-        this->hidden_ = hidden;
         return *this;
     }
 

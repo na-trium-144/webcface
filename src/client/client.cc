@@ -286,7 +286,7 @@ void Internal::ClientData::syncData(bool is_first) {
         Message::pack(buffer, len, Message::Log{begin, end});
     }
     for (const auto &v : func_store.transferSend(is_first)) {
-        if (!v.second->hidden) {
+        if (!v.first.starts_with(".")) {
             Message::pack(buffer, len, Message::FuncInfo{v.first, *v.second});
         }
     }

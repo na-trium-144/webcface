@@ -260,7 +260,7 @@ struct Value : public MessageBase<MessageKind::value> {
 };
 struct Text : public MessageBase<MessageKind::text> {
     std::string field;
-    std::shared_ptr<std::string> data;
+    std::shared_ptr<Common::ValAdaptor> data;
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", field), MSGPACK_NVP("d", data))
 };
 struct RobotModel : public MessageBase<MessageKind::robot_model> {
@@ -348,34 +348,52 @@ struct View : public MessageBase<MessageKind::view> {
         Common::ViewComponentType type = Common::ViewComponentType::text;
         std::string text;
         std::optional<std::string> on_click_member, on_click_field;
+        std::optional<std::string> text_ref_member, text_ref_field;
         Common::ViewColor text_color = Common::ViewColor::inherit,
                           bg_color = Common::ViewColor::inherit;
+        std::optional<double> min_ = std::nullopt, max_ = std::nullopt;
+        std::vector<ValAdaptor> option_;
         ViewComponent() = default;
         ViewComponent(const Common::ViewComponentBase &vc)
             : type(vc.type_), text(vc.text_), text_color(vc.text_color_),
-              bg_color(vc.bg_color_) {
-            if (vc.on_click_func_ != std::nullopt) {
+              bg_color(vc.bg_color_), min_(vc.min_), max_(vc.max_),
+              option_(vc.option_) {
+            if (vc.on_click_func_) {
                 on_click_member = vc.on_click_func_->member_;
                 on_click_field = vc.on_click_func_->field_;
+            }
+            if (vc.text_ref_) {
+                text_ref_member = vc.text_ref_->member_;
+                text_ref_field = vc.text_ref_->field_;
             }
         }
         operator Common::ViewComponentBase() const {
             Common::ViewComponentBase vc;
             vc.type_ = type;
             vc.text_ = text;
-            if (on_click_member != std::nullopt) {
+            if (on_click_member) {
                 vc.on_click_func_ =
                     Common::FieldBase{*on_click_member, *on_click_field};
             }
+            if (text_ref_member) {
+                vc.text_ref_ =
+                    Common::FieldBase{*text_ref_member, *text_ref_field};
+            }
             vc.text_color_ = text_color;
             vc.bg_color_ = bg_color;
+            vc.min_ = min_;
+            vc.max_ = max_;
+            vc.option_ = option_;
             return vc;
         }
         MSGPACK_DEFINE_MAP(MSGPACK_NVP("t", type), MSGPACK_NVP("x", text),
                            MSGPACK_NVP("L", on_click_member),
                            MSGPACK_NVP("l", on_click_field),
+                           MSGPACK_NVP("R", text_ref_member),
+                           MSGPACK_NVP("r", text_ref_field),
                            MSGPACK_NVP("c", text_color),
-                           MSGPACK_NVP("b", bg_color))
+                           MSGPACK_NVP("b", bg_color), MSGPACK_NVP("im", min_),
+                           MSGPACK_NVP("ix", max_), MSGPACK_NVP("io", option_))
     };
     std::shared_ptr<std::unordered_map<std::string, ViewComponent>> data_diff;
     std::size_t length;
@@ -734,10 +752,10 @@ template <>
 struct Res<Text> : public MessageBase<MessageKind::text + MessageKind::res> {
     unsigned int req_id;
     std::string sub_field;
-    std::shared_ptr<std::string> data;
+    std::shared_ptr<Common::ValAdaptor> data;
     Res() = default;
     Res(unsigned int req_id, const std::string &sub_field,
-        const std::shared_ptr<std::string> &data)
+        const std::shared_ptr<Common::ValAdaptor> &data)
         : req_id(req_id), sub_field(sub_field), data(data) {}
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", req_id), MSGPACK_NVP("f", sub_field),
                        MSGPACK_NVP("d", data))

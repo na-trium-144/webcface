@@ -142,10 +142,19 @@ Client::func からFuncオブジェクトを作り、 Func::set() で関数を�
 
 </div>
 
-### hidden属性
+### 関数をWebUIから隠す
 
-関数の設定後 Client::sync() することで他のクライアントからその関数の情報を見ることができるようになります。
+\since <span class="since-c">1.10</span>
 
+関数の名前を半角ピリオドから始めると、Entryが他クライアントに送信されなくなり、
+他のMemberやWebUIから関数の存在を隠すことができます。
+(Valueなど他のデータ型についても同様です。)
+
+なお半角ピリオド2つから始まる名前はwebcface内部の処理で利用する場合があるので使用しないでください。
+
+以前のバージョンでは名前に関係なく関数を非表示にするオプションがありましたが、削除しました。
+
+<details><summary>以前のバージョン</summary>
 hidden属性をつけると他のMemberやWebUIから関数の存在を隠すことができます。
 Client::funcEntries()でその関数の存在を確認したりFunc::args()などでの情報の取得ができなくなります。
 ただし関数の名前がわかっていれば他Memberからでも実行は可能です。
@@ -153,7 +162,6 @@ Client::funcEntries()でその関数の存在を確認したりFunc::args()な�
 <div class="tabbed">
 
 - <b class="tab-title">C++</b>
-    C++では
     ```cpp
     func.hidden(true)
     ```
@@ -173,6 +181,7 @@ Client::funcEntries()でその関数の存在を確認したりFunc::args()な�
     ```
 
 </div>
+</details>
 
 ### 実行条件
 

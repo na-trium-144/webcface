@@ -182,10 +182,11 @@ data = {
 ```js
 data = {
 	f: string, // name
-	d: string, // data
+	d: string | number | boolean, // data
 }
 ```
 * value と同様
+* <span class="since-c">1.10</span> dのデータ型をstringのみからnumberとbooleanも含むように変更
 
 ### text entry (kind = 21)
 * value entryと同様
@@ -210,12 +211,17 @@ data = {
 	f: string, // name
 	d: {
 		index: {
-			t: number,
-			x: string,
-			L: string | null,
-			l: string | null,
-			c: number,
-			b: number,
+			t: number, // type
+			x: string, // text
+			L: string | null, // onClick Func.member
+			l: string | null, // onClick Func.name
+			c: number, // textColor
+			b: number, // bgColor
+			R?: string | null, // Bind Text.member
+			r?: string | null, // Bind Text.name
+			im?: number | null, // min
+			ix?: number | null, // max
+			io?: string[] | number[], // option
 		},
 		index: {},
 		...
@@ -229,6 +235,7 @@ data = {
 * dのindexはstring型で、要素のindexを10進数で文字列にしたものです
 	* 例えば `[text("aaa"), text("bbb"), text("ccc")]` が `[text("aaa"), text("ccc"), text("bbb")]` に変更された場合のメッセージは `{"d": {"1": {"t": 0, "x": "ccc"}, "2": {"t": 0, "x": "bbb"}}}`
 * <span class="since-c">1.1</span> dのindexをnumber型からstring型に変更
+* <span class="since-c">1.10</span> data内の bind,min,max,option 追加
 
 ### view entry (kind = 23)
 * value entryと同様
@@ -315,9 +322,9 @@ data = {
 			s: number, // stroke width / font size
 			gt: number | null, // geometry type
 			gp: number[], // geometry properties
-			L: string | null, // onclick member
-			l: string | null, // onclick field
-			x: string, // text
+			L?: string | null, // onclick Func.member
+			l?: string | null, // onclick Func.name
+			x?: string, // text
 		},
 		index: {},
 		...
