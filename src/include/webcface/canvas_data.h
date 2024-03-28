@@ -125,24 +125,24 @@ class WEBCFACE_DLL ViewComponent : protected Common::ViewComponentBase {
         text_ref_tmp = ref;
         return *this;
     }
-    /*!
-     * \brief 値が変化した時に実行される関数を設定
-     * \since ver1.10
-     *
-     */
-    ViewComponent &onChange(AnonymousFunc &&func) {
-        InputRef ref;
-        auto func_impl = func.getImpl();
-        func.replaceImpl([ref, func_impl](const std::vector<ValAdaptor> &args) {
-            if (args.size() >= 1) {
-                ref.lockedField().set(args[0]);
-            }
-            return func_impl(args);
-        });
-        on_click_func_tmp = std::make_shared<AnonymousFunc>(std::move(func));
-        text_ref_tmp = ref;
-        return *this;
-    }
+    // /*!
+    //  * \brief 値が変化した時に実行される関数を設定
+    //  * \since ver1.10
+    //  *
+    //  */
+    // ViewComponent &onChange(AnonymousFunc &&func) {
+    //     InputRef ref;
+    //     auto func_impl = func.getImpl();
+    //     func.replaceImpl([ref, func_impl](const std::vector<ValAdaptor> &args) {
+    //         if (args.size() >= 1) {
+    //             ref.lockedField().set(args[0]);
+    //         }
+    //         return func_impl(args);
+    //     });
+    //     on_click_func_tmp = std::make_shared<AnonymousFunc>(std::move(func));
+    //     text_ref_tmp = ref;
+    //     return *this;
+    // }
     /*!
      * \brief 文字色を取得
      *
