@@ -3,6 +3,7 @@
 #include <webcface/member.h>
 #include <webcface/view.h>
 #include <webcface/func.h>
+#include <webcface/text.h>
 #include <stdexcept>
 #include <chrono>
 
@@ -17,6 +18,9 @@ class ViewTest : public ::testing::Test {
     std::shared_ptr<Internal::ClientData> data_;
     View view(const std::string &member, const std::string &field) {
         return View{Field{data_, member, field}};
+    }
+    Text text(const std::string &member, const std::string &field) {
+        return Text{Field{data_, member, field}};
     }
     Func func(const std::string &member, const std::string &field) {
         return Func{Field{data_, member, field}};
@@ -52,15 +56,25 @@ TEST_F(ViewTest, viewSet) {
     using namespace WEBCFACE_NS::ViewComponents;
     auto v = view(self_name, "b");
     v << "a\n" << 1;
-    v << text("aaa").textColor(ViewColor::yellow).bgColor(ViewColor::green)
+    v << Components::text("aaa")
+             .textColor(ViewColor::yellow)
+             .bgColor(ViewColor::green)
       << newLine();
     v << button("f", func(self_name, "f"));
     v << button("a", afunc1([]() {}));
     v << button("a2", []() {});
+    WEBCFACE_NS::InputRef ref1, ref2;
+    v << numInput("i").bind(ref1).init(123).min(1).max(1000);
+    v << selectInput("i2").bind(ref2).option({"a", "b", "c"});
+    int called_ref3 = 0;
+    v << textInput("i3").onChange([&](const std::string &val) {
+        called_ref3++;
+        EXPECT_EQ(val, "aaa");
+    });
     v.sync();
     EXPECT_EQ(callback_called, 1);
     auto &view_data = **data_->view_store.getRecv(self_name, "b");
-    EXPECT_EQ(view_data.size(), 8);
+    EXPECT_EQ(view_data.size(), 11);
     EXPECT_EQ(view_data[0].type_, ViewComponentType::text);
     EXPECT_EQ(view_data[0].text_, "a");
     EXPECT_EQ(view_data[1].type_, ViewComponentType::new_line);
@@ -87,6 +101,49 @@ TEST_F(ViewTest, viewSet) {
     EXPECT_EQ(view_data[7].text_, "a2");
     EXPECT_EQ(view_data[7].on_click_func_->member_, self_name);
     EXPECT_FALSE(view_data[7].on_click_func_->field_.empty());
+
+    EXPECT_EQ(view_data[8].type_, ViewComponentType::num_input);
+    EXPECT_EQ(view_data[8].text_, "i");
+    EXPECT_EQ(view_data[8].on_click_func_->member_, self_name);
+    EXPECT_FALSE(view_data[8].on_click_func_->field_.empty());
+    EXPECT_EQ(view_data[8].text_ref_->member_, self_name);
+    EXPECT_FALSE(view_data[8].text_ref_->field_.empty());
+    EXPECT_EQ(static_cast<int>(ref1.get()), 123);
+    EXPECT_EQ(
+        static_cast<int>(text(self_name, view_data[8].text_ref_->field_).get()),
+        123);
+    func(self_name, view_data[8].on_click_func_->field_).run(10);
+    EXPECT_EQ(static_cast<int>(ref1.get()), 10);
+    EXPECT_EQ(
+        static_cast<int>(text(self_name, view_data[8].text_ref_->field_).get()),
+        10);
+    EXPECT_EQ(view_data[8].min_, 1);
+    EXPECT_EQ(view_data[8].max_, 1000);
+
+    EXPECT_EQ(view_data[9].type_, ViewComponentType::select_input);
+    EXPECT_EQ(view_data[9].text_, "i2");
+    EXPECT_EQ(view_data[9].on_click_func_->member_, self_name);
+    EXPECT_FALSE(view_data[9].on_click_func_->field_.empty());
+    EXPECT_EQ(view_data[9].text_ref_->member_, self_name);
+    EXPECT_FALSE(view_data[9].text_ref_->field_.empty());
+    EXPECT_EQ(view_data[9].option_.size(), 3);
+    func(self_name, view_data[9].on_click_func_->field_).run("a");
+    EXPECT_EQ(static_cast<std::string>(ref2.get()), "a");
+    EXPECT_EQ(static_cast<std::string>(
+                  text(self_name, view_data[9].text_ref_->field_).get()),
+              "a");
+
+    EXPECT_EQ(view_data[10].type_, ViewComponentType::text_input);
+    EXPECT_EQ(view_data[10].text_, "i3");
+    EXPECT_EQ(view_data[10].on_click_func_->member_, self_name);
+    EXPECT_FALSE(view_data[10].on_click_func_->field_.empty());
+    EXPECT_EQ(view_data[10].text_ref_->member_, self_name);
+    EXPECT_FALSE(view_data[10].text_ref_->field_.empty());
+    func(self_name, view_data[10].on_click_func_->field_).run("aaa");
+    EXPECT_EQ(called_ref3, 1);
+    EXPECT_EQ(static_cast<std::string>(
+                  text(self_name, view_data[10].text_ref_->field_).get()),
+              "aaa");
 
     v.init();
     v.sync();
@@ -120,7 +177,7 @@ TEST_F(ViewTest, viewSet) {
 TEST_F(ViewTest, viewGet) {
     auto vd = std::make_shared<std::vector<ViewComponentBase>>(
         std::vector<ViewComponentBase>{
-            text("a").toV().lockTmp(data_, "", nullptr, nullptr)});
+            Components::text("a").toV().lockTmp(data_, "", nullptr, nullptr)});
     data_->view_store.setRecv("a", "b", vd);
     EXPECT_EQ(view("a", "b").tryGet().value().size(), 1);
     EXPECT_EQ(view("a", "b").get().size(), 1);

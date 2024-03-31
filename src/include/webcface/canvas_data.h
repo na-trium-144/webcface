@@ -73,8 +73,8 @@ class WEBCFACE_DLL ViewComponent : protected Common::ViewComponentBase {
      * \param func 実行する任意の関数(std::functionにキャスト可能ならなんでもok)
      *
      */
-    template <typename Ret>
-    ViewComponent &onClick(std::function<Ret()> func) {
+    template <typename T>
+    ViewComponent &onClick(T func) {
         on_click_func_tmp = std::make_shared<AnonymousFunc>(func);
         return *this;
     }
@@ -113,9 +113,8 @@ class WEBCFACE_DLL ViewComponent : protected Common::ViewComponentBase {
      * 引数を1つ取る任意の関数(std::functionにキャスト可能ならなんでもok)
      *
      */
-    template <typename Ret, typename Arg>
-        requires std::convertible_to<ValAdaptor, Arg>
-    ViewComponent &onChange(std::function<Ret(Arg)> func) {
+    template <typename T>
+    ViewComponent &onChange(T func) {
         InputRef ref;
         on_click_func_tmp =
             std::make_shared<AnonymousFunc>([ref, func](ValAdaptor val) {
@@ -133,7 +132,8 @@ class WEBCFACE_DLL ViewComponent : protected Common::ViewComponentBase {
     // ViewComponent &onChange(AnonymousFunc &&func) {
     //     InputRef ref;
     //     auto func_impl = func.getImpl();
-    //     func.replaceImpl([ref, func_impl](const std::vector<ValAdaptor> &args) {
+    //     func.replaceImpl([ref, func_impl](const std::vector<ValAdaptor>
+    //     &args) {
     //         if (args.size() >= 1) {
     //             ref.lockedField().set(args[0]);
     //         }
@@ -927,8 +927,10 @@ inline ViewComponent newLine() {
  *
  */
 template <typename T>
-inline ViewComponent button(const std::string &text, const T &func) {
-    return ViewComponent(ViewComponentType::button).text(text).onClick(func);
+inline ViewComponent button(const std::string &text, T &&func) {
+    return ViewComponent(ViewComponentType::button)
+        .text(text)
+        .onClick(std::forward<T>(func));
 }
 
 inline ViewComponent textInput(const std::string &text = "") {
