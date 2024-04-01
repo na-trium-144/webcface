@@ -89,15 +89,21 @@ class WEBCFACE_DLL ViewComponent : protected Common::ViewComponentBase {
         return *this;
     }
     /*!
-     * \brief 値の変化時に実行される関数を取得
+     * \brief inputの値の変化時に実行される関数を取得
      * \since ver1.10
+     *
+     * onChange()に新しい値を渡して呼び出すことで値を変更させる
+     * (onChange()->runAsync(value) など)
      *
      * 内部データはonClickと共通
      *
      */
-    std::optional<Func> onChange() const;
+    std::optional<Func> onChange() const { return onClick(); }
     /*!
-     * \brief 変更した値を格納するRef
+     * \brief 変更した値を格納するInputRefを設定
+     * \since ver1.10
+     *
+     * refの値を変更する処理が自動的にonChangeに登録される
      *
      */
     ViewComponent &bind(const InputRef &ref) {
@@ -107,8 +113,19 @@ class WEBCFACE_DLL ViewComponent : protected Common::ViewComponentBase {
         return *this;
     }
     /*!
+     * \brief inputの現在の値を取得
+     * \since ver1.10
+     *
+*     * 値の変更はonChange()に新しい値を渡して呼び出す
+     * (onChange()->runAsync(value) など)
+     *
+     */
+    std::optional<Text> bind() const;
+    /*!
      * \brief 値が変化した時に実行される関数を設定
      * \since ver1.10
+     *
+     * 現在値を保持するInputRefは自動で生成されbindされる
      * \param func
      * 引数を1つ取る任意の関数(std::functionにキャスト可能ならなんでもok)
      *
@@ -170,12 +187,12 @@ class WEBCFACE_DLL ViewComponent : protected Common::ViewComponentBase {
         return *this;
     }
     /*!
-     * \brief デフォルト値を取得する。
-     *
-     */
-    std::optional<ValAdaptor> init() const { return init_; }
-    /*!
      * \brief デフォルト値を設定する。
+     * \since ver1.10
+     *
+     * デフォルト値はviewのメッセージには含まれるのではなく、
+     * bindしたInputRefの初期化に使われる
+     * (そのため component.init() では取得できない)
      *
      */
     template <typename T>
@@ -186,11 +203,13 @@ class WEBCFACE_DLL ViewComponent : protected Common::ViewComponentBase {
     }
     /*!
      * \brief 最小値を取得する。
+     * \since ver1.10
      *
      */
     std::optional<double> min() const { return min_; }
     /*!
      * \brief 最小値を設定する。
+     * \since ver1.10
      *
      * * string型引数の場合最小の文字数を表す。
      * * bool型引数の場合効果がない。
@@ -204,11 +223,13 @@ class WEBCFACE_DLL ViewComponent : protected Common::ViewComponentBase {
     }
     /*!
      * \brief 最大値を取得する。
+     * \since ver1.10
      *
      */
     std::optional<double> max() const { return max_; }
     /*!
      * \brief 最大値を設定する。
+     * \since ver1.10
      *
      * * string型引数の場合最大の文字数を表す。
      * * bool型引数の場合効果がない。
@@ -222,6 +243,7 @@ class WEBCFACE_DLL ViewComponent : protected Common::ViewComponentBase {
     }
     /*!
      * \brief 引数の選択肢を取得する。
+     * \since ver1.10
      *
      */
     std::vector<ValAdaptor> option() const { return option_; }
@@ -232,6 +254,7 @@ class WEBCFACE_DLL ViewComponent : protected Common::ViewComponentBase {
     }
     /*!
      * \brief 引数の選択肢を設定する。
+     * \since ver1.10
      *
      * * min(), max() はクリアされる。
      *

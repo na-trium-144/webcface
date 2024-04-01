@@ -47,7 +47,7 @@ wcfViewComponent ViewComponent::cData() const {
 }
 
 std::optional<Func> ViewComponent::onClick() const {
-    if (on_click_func_ != std::nullopt) {
+    if (on_click_func_) {
         // Fieldの中でnullptrは処理してくれるからいいかな
         // assert(data_w.lock() != nullptr && "ClientData not set");
         return Field{data_w, on_click_func_->member_, on_click_func_->field_};
@@ -56,8 +56,16 @@ std::optional<Func> ViewComponent::onClick() const {
     }
 }
 ViewComponent &ViewComponent::onClick(const Func &func) {
-    on_click_func_ = FieldBase{func.member().name(), func.name()};
+    on_click_func_.emplace(func.member().name(), func.name());
     return *this;
+}
+
+std::optional<Text> ViewComponent::bind() const {
+    if (text_ref_) {
+        return Field{data_w, text_ref_->member_, text_ref_->field_};
+    } else {
+        return std::nullopt;
+    }
 }
 
 std::optional<RobotModel> Canvas3DComponent::robotModel() const {
