@@ -104,8 +104,8 @@ target_link_libraries(target PRIVATE webcface::webcface)
     * インクルードディレクトリ: `C:\Program Files\WebCFace\include`, `C:\Program Files\WebCFace\opencv\include`
     * ライブラリディレクトリ: `C:\Program Files\WebCFace\lib`, `C:\Program Files\WebCFace\opencv\x64\vc16\lib`
     * リンクするライブラリは
-        * Releaseの場合 webcface6.lib, spdlog.lib, opencv_world490.lib
-        * Debugの場合 webcface6d.lib, spdlogd.lib, opencv_world490d.lib
+        * Releaseの場合 webcface10.lib, spdlog.lib, opencv_world490.lib
+        * Debugの場合 webcface10d.lib, spdlogd.lib, opencv_world490d.lib
     * また、`C:\Program Files\WebCFace\bin` を環境変数のPathに追加するか、その中にあるdllファイルを実行ファイルのディレクトリにコピーして読み込ませてください
 * Linux
     * pkgconfigを使用してコンパイル時の引数に `$(pkg-config --cflags webcface)` 、リンク時に `$(pkg-config --libs webcface)` を渡せばよいです

@@ -1,3 +1,18 @@
+## [1.10.0] - 2024-04-01
+### Added
+* viewにinput要素を追加 (#219)
+	* ViewComponentType::text_input, num_input, int_input, select_input, toggle_input, slider_input, check_input
+	* Components::textInput, numInput, intInput, selectInput, toggleInput, sliderInput, checkInput
+	* ViewComponentBase::text_ref_, ViewComponent::bind(), ViewComponent::onChange()
+	* InputRefクラス
+### Changed
+* Textの内部データ形式をstd::stringからValAdaptorに変更
+* ValAdaptorのコンストラクタをexplicitにした
+* Text::Dict削除
+* ピリオドではじまるfieldのentryを送信しない仕様に変更
+	* FuncInfo::hidden削除
+	* AnonymousFunc, Viewなど内部で使用する名前はピリオド2つで始まるようにした
+
 ## [1.9.1] - 2024-03-23
 ### Changed
 * Func引数で文字列→bool型の変換の仕様を変更 (#217)
