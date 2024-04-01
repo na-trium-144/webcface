@@ -175,9 +175,9 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a2d2e8deed4a763f9294446f7636e8df8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1a2e8067dec81163d12feb112a27c2bf" id="r_a1a2e8067dec81163d12feb112a27c2bf"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Canvas2DComponent.html#a1a2e8067dec81163d12feb112a27c2bf">Canvas2DComponent</a> (<a class="el" href="namespacewebcface_1_1Common.html#a18133126518e30ea437441c60fa26928">Canvas2DComponentType</a> <a class="el" href="classwebcface_1_1Canvas2DComponent.html#a2dc4a131c0ec494b084fc86466d23484">type</a>)</td></tr>
 <tr class="separator:a1a2e8067dec81163d12feb112a27c2bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abed8c5c5321902e56e491dd29960d355" id="r_abed8c5c5321902e56e491dd29960d355"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structwebcface_1_1Common_1_1Canvas2DComponentBase.html">Canvas2DComponentBase</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Canvas2DComponent.html#abed8c5c5321902e56e491dd29960d355">lockTmp</a> (const std::weak_ptr&lt; <a class="el" href="structwebcface_1_1Internal_1_1ClientData.html">Internal::ClientData</a> &gt; &amp;<a class="el" href="classwebcface_1_1Canvas2DComponent.html#acf420a0ba1ce5e817feac0f51c9056dc">data_w</a>, const std::string &amp;field_id)</td></tr>
-<tr class="memdesc:abed8c5c5321902e56e491dd29960d355"><td class="mdescLeft">&#160;</td><td class="mdescRight">AnonymousFuncをFuncオブジェクトにlock.  <br /></td></tr>
-<tr class="separator:abed8c5c5321902e56e491dd29960d355"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa0965e74f26650fa0b2beb5ee2ece167" id="r_aa0965e74f26650fa0b2beb5ee2ece167"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structwebcface_1_1Common_1_1Canvas2DComponentBase.html">Canvas2DComponentBase</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Canvas2DComponent.html#aa0965e74f26650fa0b2beb5ee2ece167">lockTmp</a> (const std::weak_ptr&lt; <a class="el" href="structwebcface_1_1Internal_1_1ClientData.html">Internal::ClientData</a> &gt; &amp;<a class="el" href="classwebcface_1_1Canvas2DComponent.html#acf420a0ba1ce5e817feac0f51c9056dc">data_w</a>, const std::string &amp;view_name, int *func_next)</td></tr>
+<tr class="memdesc:aa0965e74f26650fa0b2beb5ee2ece167"><td class="mdescLeft">&#160;</td><td class="mdescRight">AnonymousFuncの名前を確定  <br /></td></tr>
+<tr class="separator:aa0965e74f26650fa0b2beb5ee2ece167"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2dc4a131c0ec494b084fc86466d23484" id="r_a2dc4a131c0ec494b084fc86466d23484"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacewebcface_1_1Common.html#a18133126518e30ea437441c60fa26928">Canvas2DComponentType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Canvas2DComponent.html#a2dc4a131c0ec494b084fc86466d23484">type</a> () const</td></tr>
 <tr class="memdesc:a2dc4a131c0ec494b084fc86466d23484"><td class="mdescLeft">&#160;</td><td class="mdescRight">要素の種類  <br /></td></tr>
 <tr class="separator:a2dc4a131c0ec494b084fc86466d23484"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -582,8 +582,8 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="abed8c5c5321902e56e491dd29960d355" name="abed8c5c5321902e56e491dd29960d355"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abed8c5c5321902e56e491dd29960d355">&#9670;&#160;</a></span>lockTmp()</h2>
+<a id="aa0965e74f26650fa0b2beb5ee2ece167" name="aa0965e74f26650fa0b2beb5ee2ece167"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa0965e74f26650fa0b2beb5ee2ece167">&#9670;&#160;</a></span>lockTmp()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -598,7 +598,13 @@ Private Attributes</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>field_id</em>&#160;</td>
+          <td class="paramname"><em>view_name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>func_next</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -608,7 +614,7 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>AnonymousFuncをFuncオブジェクトにlock. </p>
+<p>AnonymousFuncの名前を確定 </p>
 
 </div>
 </div>
@@ -1263,7 +1269,7 @@ template&lt;typename Ret &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="classwebcface_1_1Canvas2DComponent.html">Canvas2DComponent</a></li>
-    <li class="footer">Generated on Mon Apr 1 2024 11:13:07 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Mon Apr 1 2024 11:28:45 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

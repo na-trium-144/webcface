@@ -5,7 +5,8 @@ var searchData=
   ['_7eclientdata_2',['~ClientData',['../structwebcface_1_1Server_1_1ClientData.html#ac8ad1cac97096793572e6b25080ab32c',1,'webcface::Server::ClientData']]],
   ['_7edatasetbuffer_3',['~DataSetBuffer',['../classwebcface_1_1Internal_1_1DataSetBuffer.html#af23b0c9df9ef750a06379c65d61f0fbe',1,'webcface::Internal::DataSetBuffer']]],
   ['_7eeventtarget_4',['~EventTarget',['../classwebcface_1_1EventTarget.html#a78a3268cf5f451797861f68c731e2895',1,'webcface::EventTarget']]],
-  ['_7estore_5',['~Store',['../structwebcface_1_1Server_1_1Store.html#a27078c8f020fc9dc62f3149179df9bb6',1,'webcface::Server::Store']]],
-  ['_7eview_6',['~View',['../classwebcface_1_1View.html#a7616dabeca3d304198ec449094a7792f',1,'webcface::View']]],
-  ['_7eviewbuf_7',['~ViewBuf',['../classwebcface_1_1Internal_1_1ViewBuf.html#a4cd684d5b377b6e839b2316677677ec0',1,'webcface::Internal::ViewBuf']]]
+  ['_7einputref_5',['~InputRef',['../classwebcface_1_1InputRef.html#a426a9bb66a0d861cf5fa495c2be6892d',1,'webcface::InputRef']]],
+  ['_7estore_6',['~Store',['../structwebcface_1_1Server_1_1Store.html#a27078c8f020fc9dc62f3149179df9bb6',1,'webcface::Server::Store']]],
+  ['_7eview_7',['~View',['../classwebcface_1_1View.html#a7616dabeca3d304198ec449094a7792f',1,'webcface::View']]],
+  ['_7eviewbuf_8',['~ViewBuf',['../classwebcface_1_1Internal_1_1ViewBuf.html#a4cd684d5b377b6e839b2316677677ec0',1,'webcface::Internal::ViewBuf']]]
 ];

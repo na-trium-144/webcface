@@ -8,6 +8,7 @@ var classwebcface_1_1Member =
     [ "canvas3D", "classwebcface_1_1Member.html#a0754c19390f54b3f2c8ee81456ecc1b8", null ],
     [ "canvas3DEntries", "classwebcface_1_1Member.html#a485655bf8c0e1066c3ea1c4f3220940d", null ],
     [ "dataLock", "classwebcface_1_1Member.html#ac2a701aed117691b0af187b9f029c83c", null ],
+    [ "expired", "classwebcface_1_1Member.html#aab9d1bda10b0c1b79c4f48f3ebcf1d29", null ],
     [ "func", "classwebcface_1_1Member.html#a6bea9517f461ddc114dfbc663f1dcd3b", null ],
     [ "func", "classwebcface_1_1Member.html#a3259867d99bef76d98f8ec862482ed78", null ],
     [ "funcEntries", "classwebcface_1_1Member.html#a09225396c72929b26144848529b88c02", null ],

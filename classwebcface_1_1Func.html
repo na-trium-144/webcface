@@ -180,11 +180,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a89be493662cbfed9e1703b515fa2665b"><td class="mdescLeft">&#160;</td><td class="mdescRight">関数からFuncInfoを構築しセットする  <br /></td></tr>
 <tr class="separator:a89be493662cbfed9e1703b515fa2665b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7427c0d5b0fb0ac70dc126a980216b4c" id="r_a7427c0d5b0fb0ac70dc126a980216b4c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Func.html">Func</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Func.html#a7427c0d5b0fb0ac70dc126a980216b4c">set</a> (const std::vector&lt; <a class="el" href="classwebcface_1_1Common_1_1Arg.html">Arg</a> &gt; &amp;<a class="el" href="classwebcface_1_1Func.html#a909f29d9c95a7bb90dec90183fd955fc">args</a>, <a class="el" href="namespacewebcface_1_1Common.html#acd1dd9e2d5f885ad3f73197cfa6b0185">ValType</a> return_type, std::function&lt; void(<a class="el" href="classwebcface_1_1FuncCallHandle.html">FuncCallHandle</a>)&gt; callback)</td></tr>
-<tr class="memdesc:a7427c0d5b0fb0ac70dc126a980216b4c"><td class="mdescLeft">&#160;</td><td class="mdescRight">引数にFuncCallHandleを取る関数を登録する  <br /></td></tr>
+<tr class="memdesc:a7427c0d5b0fb0ac70dc126a980216b4c"><td class="mdescLeft">&#160;</td><td class="mdescRight">セットされている関数オブジェクトを取得  <br /></td></tr>
 <tr class="separator:a7427c0d5b0fb0ac70dc126a980216b4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a070c5fe3f3cb1c8b51de82f77110c282" id="r_a070c5fe3f3cb1c8b51de82f77110c282"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Func.html">Func</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Func.html#a070c5fe3f3cb1c8b51de82f77110c282">hidden</a> (bool hidden)</td></tr>
-<tr class="memdesc:a070c5fe3f3cb1c8b51de82f77110c282"><td class="mdescLeft">&#160;</td><td class="mdescRight">関数を関数リストで非表示にする (他clientのentryに表示されなくする)  <br /></td></tr>
-<tr class="separator:a070c5fe3f3cb1c8b51de82f77110c282"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2ab7cc09912b8dd1ab69e918f3a11f97" id="r_a2ab7cc09912b8dd1ab69e918f3a11f97"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Func.html">Func</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Func.html#a2ab7cc09912b8dd1ab69e918f3a11f97">free</a> ()</td></tr>
 <tr class="memdesc:a2ab7cc09912b8dd1ab69e918f3a11f97"><td class="mdescLeft">&#160;</td><td class="mdescRight">関数の設定を削除  <br /></td></tr>
 <tr class="separator:a2ab7cc09912b8dd1ab69e918f3a11f97"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -256,6 +253,8 @@ Protected Member Functions</h2></td></tr>
 <tr class="memitem:a46ba439f46fffe25a1fe549c380fcd3b" id="r_a46ba439f46fffe25a1fe549c380fcd3b"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="structwebcface_1_1Internal_1_1ClientData.html">Internal::ClientData</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#a46ba439f46fffe25a1fe549c380fcd3b">setCheck</a> () const</td></tr>
 <tr class="memdesc:a46ba439f46fffe25a1fe549c380fcd3b"><td class="mdescLeft">&#160;</td><td class="mdescRight">data_wをlockし、memberがselfではなければinvalid_argumentを投げる  <br /></td></tr>
 <tr class="separator:a46ba439f46fffe25a1fe549c380fcd3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aab9d1bda10b0c1b79c4f48f3ebcf1d29" id="r_aab9d1bda10b0c1b79c4f48f3ebcf1d29"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#aab9d1bda10b0c1b79c4f48f3ebcf1d29">expired</a> () const</td></tr>
+<tr class="separator:aab9d1bda10b0c1b79c4f48f3ebcf1d29"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0522a651826ba6fcbb9ce86258e8fa30" id="r_a0522a651826ba6fcbb9ce86258e8fa30"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#a0522a651826ba6fcbb9ce86258e8fa30">isSelf</a> () const</td></tr>
 <tr class="memdesc:a0522a651826ba6fcbb9ce86258e8fa30"><td class="mdescLeft">&#160;</td><td class="mdescRight">memberがselfならtrue  <br /></td></tr>
 <tr class="separator:a0522a651826ba6fcbb9ce86258e8fa30"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -427,6 +426,31 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="aab9d1bda10b0c1b79c4f48f3ebcf1d29" name="aab9d1bda10b0c1b79c4f48f3ebcf1d29"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aab9d1bda10b0c1b79c4f48f3ebcf1d29">&#9670;&#160;</a></span>expired()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool expired </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a2ab7cc09912b8dd1ab69e918f3a11f97" name="a2ab7cc09912b8dd1ab69e918f3a11f97"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2ab7cc09912b8dd1ab69e918f3a11f97">&#9670;&#160;</a></span>free()</h2>
 
@@ -468,26 +492,6 @@ Protected Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-
-</div>
-</div>
-<a id="a070c5fe3f3cb1c8b51de82f77110c282" name="a070c5fe3f3cb1c8b51de82f77110c282"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a070c5fe3f3cb1c8b51de82f77110c282">&#9670;&#160;</a></span>hidden()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classwebcface_1_1Func.html">Func</a> &amp; hidden </td>
-          <td>(</td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>hidden</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>関数を関数リストで非表示にする (他clientのentryに表示されなくする) </p>
 
 </div>
 </div>
@@ -811,10 +815,20 @@ template&lt;typename... Args&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>引数にFuncCallHandleを取る関数を登録する </p>
-<dl class="section since"><dt>Since</dt><dd>ver1.9</dd></dl>
-<p>cからの呼び出し用 </p>
+<p>セットされている関数オブジェクトを取得 </p>
+<pre class="fragment">      \brief セットした関数を置き換える
+      \since ver1.10
 
+      他のプロパティ(wrapper, argsなど)は元のまま
+
+     &amp;zwj;/
+</pre><p> <a class="el" href="classwebcface_1_1Func.html" title="関数1つを表すクラス">Func</a> &amp;replaceImpl(FuncType func); /*! </p><dl class="section since"><dt>Since</dt><dd>ver1.10</dd></dl>
+<p>&zwj;/ FuncType getImpl() const; </p><pre class="fragment">/*!
+   \brief 引数にFuncCallHandleを取る関数を登録する
+   \since ver1.9
+
+   cからの呼び出し用
+</pre> 
 </div>
 </div>
 <a id="aa55156bf6486cd2b0c74394634474062" name="aa55156bf6486cd2b0c74394634474062"></a>
@@ -1150,7 +1164,7 @@ template&lt;typename ScopeGuard &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="classwebcface_1_1Func.html">Func</a></li>
-    <li class="footer">Generated on Mon Apr 1 2024 11:13:07 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Mon Apr 1 2024 11:28:45 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

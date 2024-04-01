@@ -3,6 +3,7 @@ var structwebcface_1_1AsyncFuncResultSetter =
     [ "AsyncFuncResultSetter", "structwebcface_1_1AsyncFuncResultSetter.html#ac8927ba5ad6ba26bea02abcceee41693", null ],
     [ "AsyncFuncResultSetter", "structwebcface_1_1AsyncFuncResultSetter.html#a6da60a8755f327bb10e80acf868f08c2", null ],
     [ "dataLock", "structwebcface_1_1AsyncFuncResultSetter.html#ac2a701aed117691b0af187b9f029c83c", null ],
+    [ "expired", "structwebcface_1_1AsyncFuncResultSetter.html#aab9d1bda10b0c1b79c4f48f3ebcf1d29", null ],
     [ "isSelf", "structwebcface_1_1AsyncFuncResultSetter.html#a0522a651826ba6fcbb9ce86258e8fa30", null ],
     [ "member", "structwebcface_1_1AsyncFuncResultSetter.html#aa8fab40ead35fa8e761986d5f4000a5c", null ],
     [ "name", "structwebcface_1_1AsyncFuncResultSetter.html#a1d89c28bd42ba9a52da008bb69367171", null ],

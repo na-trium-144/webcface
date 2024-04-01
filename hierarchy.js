@@ -148,6 +148,8 @@ var hierarchy =
     [ "ImageReq", "structwebcface_1_1Common_1_1ImageReq.html", [
       [ "Req< Image >", "structwebcface_1_1Message_1_1Req_3_01Image_01_4.html", null ]
     ] ],
+    [ "InputRef", "classwebcface_1_1InputRef.html", null ],
+    [ "InputRefState", "structwebcface_1_1InputRefState.html", null ],
     [ "Line", "structwebcface_1_1Components_1_1Geometries_1_1Line.html", null ],
     [ "Line", "structwebcface_1_1Components_1_1Geometries_1_1Line.html", null ],
     [ "Line", "structwebcface_1_1Components_1_1Geometries_1_1Line.html", null ],

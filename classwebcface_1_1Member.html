@@ -292,6 +292,8 @@ Protected Member Functions</h2></td></tr>
 <tr class="memitem:a46ba439f46fffe25a1fe549c380fcd3b" id="r_a46ba439f46fffe25a1fe549c380fcd3b"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="structwebcface_1_1Internal_1_1ClientData.html">Internal::ClientData</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#a46ba439f46fffe25a1fe549c380fcd3b">setCheck</a> () const</td></tr>
 <tr class="memdesc:a46ba439f46fffe25a1fe549c380fcd3b"><td class="mdescLeft">&#160;</td><td class="mdescRight">data_wをlockし、memberがselfではなければinvalid_argumentを投げる  <br /></td></tr>
 <tr class="separator:a46ba439f46fffe25a1fe549c380fcd3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aab9d1bda10b0c1b79c4f48f3ebcf1d29" id="r_aab9d1bda10b0c1b79c4f48f3ebcf1d29"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#aab9d1bda10b0c1b79c4f48f3ebcf1d29">expired</a> () const</td></tr>
+<tr class="separator:aab9d1bda10b0c1b79c4f48f3ebcf1d29"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa8fab40ead35fa8e761986d5f4000a5c" id="r_aa8fab40ead35fa8e761986d5f4000a5c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Member.html">Member</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#aa8fab40ead35fa8e761986d5f4000a5c">member</a> () const</td></tr>
 <tr class="memdesc:aa8fab40ead35fa8e761986d5f4000a5c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Memberを返す  <br /></td></tr>
 <tr class="separator:aa8fab40ead35fa8e761986d5f4000a5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -516,6 +518,31 @@ Protected Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>data_wをlockし、失敗したらruntime_errorを投げる </p>
+
+</div>
+</div>
+<a id="aab9d1bda10b0c1b79c4f48f3ebcf1d29" name="aab9d1bda10b0c1b79c4f48f3ebcf1d29"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aab9d1bda10b0c1b79c4f48f3ebcf1d29">&#9670;&#160;</a></span>expired()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool expired </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -1198,7 +1225,7 @@ requires (!std::convertible_to&lt;T, std::string&gt;)</div>
 </div><div class="memdoc">
 
 <p>最後のsync()の時刻を返す </p>
-<dl class="section since"><dt>Since</dt><dd>ver1.7 (<a class="el" href="classwebcface_1_1Value.html#a3799c65797b21f35329dc284df16a65d" title="syncの時刻を返す">Value::time()</a>, <a class="el" href="classwebcface_1_1Text.html#a3799c65797b21f35329dc284df16a65d" title="syncの時刻を返す">Text::time()</a> 等から変更) </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>ver1.7 (<a class="el" href="classwebcface_1_1Value.html#a3799c65797b21f35329dc284df16a65d" title="syncの時刻を返す">Value::time()</a>, <a class="el" href="classwebcface_1_1Text.html#a3799c65797b21f35329dc284df16a65d">Text::time()</a> 等から変更) </dd></dl>
 
 </div>
 </div>
@@ -1504,7 +1531,7 @@ requires (!std::convertible_to&lt;T, std::string&gt;)</div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="classwebcface_1_1Member.html">Member</a></li>
-    <li class="footer">Generated on Mon Apr 1 2024 11:13:07 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Mon Apr 1 2024 11:28:45 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

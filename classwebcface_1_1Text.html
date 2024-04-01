@@ -146,6 +146,7 @@ $(document).ready(function(){initNavTree('classwebcface_1_1Text.html',''); initR
 <a href="#pri-types">Private Types</a> &#124;
 <a href="#pri-methods">Private Member Functions</a> &#124;
 <a href="#pri-attribs">Private Attributes</a> &#124;
+<a href="#friends">Friends</a> &#124;
 <a href="classwebcface_1_1Text-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">Text Class Reference</div></div>
 </div><!--header-->
@@ -168,8 +169,6 @@ Collaboration diagram for Text:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:ab33d2da9febb5e4c801e1ccee1dee594" id="r_ab33d2da9febb5e4c801e1ccee1dee594"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Text.html#ab33d2da9febb5e4c801e1ccee1dee594">Dict</a> = <a class="el" href="classwebcface_1_1Common_1_1Dict.html">Common::Dict</a>&lt; std::shared_ptr&lt; std::string &gt; &gt;</td></tr>
-<tr class="separator:ab33d2da9febb5e4c801e1ccee1dee594"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a81e0ac19d99a43bbb9cd276e81dee44f" id="r_a81e0ac19d99a43bbb9cd276e81dee44f"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1EventTarget.html#a81e0ac19d99a43bbb9cd276e81dee44f">EventCallback</a> = std::function&lt; void(<a class="el" href="classwebcface_1_1Text.html">Text</a>)&gt;</td></tr>
 <tr class="memdesc:a81e0ac19d99a43bbb9cd276e81dee44f"><td class="mdescLeft">&#160;</td><td class="mdescRight">イベントのコールバックの型  <br /></td></tr>
 <tr class="separator:a81e0ac19d99a43bbb9cd276e81dee44f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -188,39 +187,24 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a30f24d8f9ed683083daa26f64fa35875" id="r_a30f24d8f9ed683083daa26f64fa35875"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Text.html">Text</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Text.html#a30f24d8f9ed683083daa26f64fa35875">child</a> (const std::string &amp;field) const</td></tr>
 <tr class="memdesc:a30f24d8f9ed683083daa26f64fa35875"><td class="mdescLeft">&#160;</td><td class="mdescRight">子フィールドを返す  <br /></td></tr>
 <tr class="separator:a30f24d8f9ed683083daa26f64fa35875"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a52d15c0d2945a4f9da5dae2c0d3a7291" id="r_a52d15c0d2945a4f9da5dae2c0d3a7291"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Text.html">Text</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Text.html#a52d15c0d2945a4f9da5dae2c0d3a7291">set</a> (const <a class="el" href="classwebcface_1_1Text.html#ab33d2da9febb5e4c801e1ccee1dee594">Dict</a> &amp;v)</td></tr>
-<tr class="memdesc:a52d15c0d2945a4f9da5dae2c0d3a7291"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dictの値を再帰的にセットする  <br /></td></tr>
-<tr class="separator:a52d15c0d2945a4f9da5dae2c0d3a7291"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a51fb13a52e5dfe0507acd5e16b6f4963" id="r_a51fb13a52e5dfe0507acd5e16b6f4963"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Text.html">Text</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Text.html#a51fb13a52e5dfe0507acd5e16b6f4963">set</a> (const std::string &amp;v)</td></tr>
-<tr class="memdesc:a51fb13a52e5dfe0507acd5e16b6f4963"><td class="mdescLeft">&#160;</td><td class="mdescRight">文字列をセットする  <br /></td></tr>
 <tr class="separator:a51fb13a52e5dfe0507acd5e16b6f4963"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae805386ab9832ae8d35b3385898ff672" id="r_ae805386ab9832ae8d35b3385898ff672"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Text.html">Text</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Text.html#ae805386ab9832ae8d35b3385898ff672">operator=</a> (const <a class="el" href="classwebcface_1_1Text.html#ab33d2da9febb5e4c801e1ccee1dee594">Dict</a> &amp;v)</td></tr>
-<tr class="memdesc:ae805386ab9832ae8d35b3385898ff672"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dictの値を再帰的にセットする  <br /></td></tr>
-<tr class="separator:ae805386ab9832ae8d35b3385898ff672"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6abe81a900e30486308dce2e1f027401" id="r_a6abe81a900e30486308dce2e1f027401"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Text.html">Text</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Text.html#a6abe81a900e30486308dce2e1f027401">set</a> (const <a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html">ValAdaptor</a> &amp;v)</td></tr>
+<tr class="memdesc:a6abe81a900e30486308dce2e1f027401"><td class="mdescLeft">&#160;</td><td class="mdescRight">文字列をセットする  <br /></td></tr>
+<tr class="separator:a6abe81a900e30486308dce2e1f027401"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afe4264508390434c26aaab8af9b8de3e" id="r_afe4264508390434c26aaab8af9b8de3e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Text.html">Text</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Text.html#afe4264508390434c26aaab8af9b8de3e">operator=</a> (const std::string &amp;v)</td></tr>
 <tr class="memdesc:afe4264508390434c26aaab8af9b8de3e"><td class="mdescLeft">&#160;</td><td class="mdescRight">文字列をセットする  <br /></td></tr>
 <tr class="separator:afe4264508390434c26aaab8af9b8de3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6280a6d4043b545baa5008f76a229e14" id="r_a6280a6d4043b545baa5008f76a229e14"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Text.html#a6280a6d4043b545baa5008f76a229e14">request</a> () const</td></tr>
 <tr class="memdesc:a6280a6d4043b545baa5008f76a229e14"><td class="mdescLeft">&#160;</td><td class="mdescRight">文字列をリクエストする  <br /></td></tr>
 <tr class="separator:a6280a6d4043b545baa5008f76a229e14"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a66ed92c16137416044c7c07d2f6076d6" id="r_a66ed92c16137416044c7c07d2f6076d6"><td class="memItemLeft" align="right" valign="top">std::optional&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Text.html#a66ed92c16137416044c7c07d2f6076d6">tryGet</a> () const</td></tr>
-<tr class="memdesc:a66ed92c16137416044c7c07d2f6076d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">文字列を返す  <br /></td></tr>
-<tr class="separator:a66ed92c16137416044c7c07d2f6076d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0c9b7f2d5c002221c766d9f8928a0f70" id="r_a0c9b7f2d5c002221c766d9f8928a0f70"><td class="memItemLeft" align="right" valign="top">std::optional&lt; <a class="el" href="classwebcface_1_1Text.html#ab33d2da9febb5e4c801e1ccee1dee594">Dict</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Text.html#a0c9b7f2d5c002221c766d9f8928a0f70">tryGetRecurse</a> () const</td></tr>
-<tr class="memdesc:a0c9b7f2d5c002221c766d9f8928a0f70"><td class="mdescLeft">&#160;</td><td class="mdescRight">文字列を再帰的に取得しDictで返す  <br /></td></tr>
-<tr class="separator:a0c9b7f2d5c002221c766d9f8928a0f70"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6269c0946f8016322b84c015972d83c1" id="r_a6269c0946f8016322b84c015972d83c1"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Text.html#a6269c0946f8016322b84c015972d83c1">get</a> () const</td></tr>
-<tr class="memdesc:a6269c0946f8016322b84c015972d83c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">値を返す  <br /></td></tr>
-<tr class="separator:a6269c0946f8016322b84c015972d83c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a03601719286c2b6db4d35485ff631af4" id="r_a03601719286c2b6db4d35485ff631af4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Text.html#ab33d2da9febb5e4c801e1ccee1dee594">Dict</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Text.html#a03601719286c2b6db4d35485ff631af4">getRecurse</a> () const</td></tr>
-<tr class="memdesc:a03601719286c2b6db4d35485ff631af4"><td class="mdescLeft">&#160;</td><td class="mdescRight">値を再帰的に取得しDictで返す  <br /></td></tr>
-<tr class="separator:a03601719286c2b6db4d35485ff631af4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3888dcd59dd5acd1ca5b9bee4c2e252a" id="r_a3888dcd59dd5acd1ca5b9bee4c2e252a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Text.html#a3888dcd59dd5acd1ca5b9bee4c2e252a">operator std::string</a> () const</td></tr>
-<tr class="separator:a3888dcd59dd5acd1ca5b9bee4c2e252a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aebca02e943f1034d9d0dbc4713ffb159" id="r_aebca02e943f1034d9d0dbc4713ffb159"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Text.html#aebca02e943f1034d9d0dbc4713ffb159">operator Dict</a> () const</td></tr>
-<tr class="separator:aebca02e943f1034d9d0dbc4713ffb159"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa5e8200c8fc1e679194e080a2894b994" id="r_aa5e8200c8fc1e679194e080a2894b994"><td class="memItemLeft" align="right" valign="top">std::optional&lt; <a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html">ValAdaptor</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Text.html#aa5e8200c8fc1e679194e080a2894b994">tryGet</a> () const</td></tr>
+<tr class="memdesc:aa5e8200c8fc1e679194e080a2894b994"><td class="mdescLeft">&#160;</td><td class="mdescRight">文字列を返す  <br /></td></tr>
+<tr class="separator:aa5e8200c8fc1e679194e080a2894b994"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a465d461bf6771b5bf2f85e568b2e32d9" id="r_a465d461bf6771b5bf2f85e568b2e32d9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html">ValAdaptor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Text.html#a465d461bf6771b5bf2f85e568b2e32d9">get</a> () const</td></tr>
+<tr class="memdesc:a465d461bf6771b5bf2f85e568b2e32d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">文字列を返す  <br /></td></tr>
+<tr class="separator:a465d461bf6771b5bf2f85e568b2e32d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3799c65797b21f35329dc284df16a65d" id="r_a3799c65797b21f35329dc284df16a65d"><td class="memItemLeft" align="right" valign="top">std::chrono::system_clock::time_point&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Text.html#a3799c65797b21f35329dc284df16a65d">time</a> () const</td></tr>
-<tr class="memdesc:a3799c65797b21f35329dc284df16a65d"><td class="mdescLeft">&#160;</td><td class="mdescRight">syncの時刻を返す  <br /></td></tr>
 <tr class="separator:a3799c65797b21f35329dc284df16a65d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2e6607c15d7ad8122cfaa0093e190bda" id="r_a2e6607c15d7ad8122cfaa0093e190bda"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Text.html">Text</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Text.html#a2e6607c15d7ad8122cfaa0093e190bda">free</a> ()</td></tr>
 <tr class="memdesc:a2e6607c15d7ad8122cfaa0093e190bda"><td class="mdescLeft">&#160;</td><td class="mdescRight">値やリクエスト状態をクリア  <br /></td></tr>
@@ -271,6 +255,8 @@ Protected Member Functions</h2></td></tr>
 <tr class="memitem:a46ba439f46fffe25a1fe549c380fcd3b" id="r_a46ba439f46fffe25a1fe549c380fcd3b"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="structwebcface_1_1Internal_1_1ClientData.html">Internal::ClientData</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#a46ba439f46fffe25a1fe549c380fcd3b">setCheck</a> () const</td></tr>
 <tr class="memdesc:a46ba439f46fffe25a1fe549c380fcd3b"><td class="mdescLeft">&#160;</td><td class="mdescRight">data_wをlockし、memberがselfではなければinvalid_argumentを投げる  <br /></td></tr>
 <tr class="separator:a46ba439f46fffe25a1fe549c380fcd3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aab9d1bda10b0c1b79c4f48f3ebcf1d29" id="r_aab9d1bda10b0c1b79c4f48f3ebcf1d29"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#aab9d1bda10b0c1b79c4f48f3ebcf1d29">expired</a> () const</td></tr>
+<tr class="separator:aab9d1bda10b0c1b79c4f48f3ebcf1d29"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0522a651826ba6fcbb9ce86258e8fa30" id="r_a0522a651826ba6fcbb9ce86258e8fa30"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#a0522a651826ba6fcbb9ce86258e8fa30">isSelf</a> () const</td></tr>
 <tr class="memdesc:a0522a651826ba6fcbb9ce86258e8fa30"><td class="mdescLeft">&#160;</td><td class="mdescRight">memberがselfならtrue  <br /></td></tr>
 <tr class="separator:a0522a651826ba6fcbb9ce86258e8fa30"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -306,25 +292,18 @@ Private Attributes</h2></td></tr>
 <tr class="separator:a93504a6646cc5bd2be1d2b5e7c87cedc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a96313403719d705d2df812e3ba166772" id="r_a96313403719d705d2df812e3ba166772"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structwebcface_1_1Common_1_1FieldBaseComparable.html">FieldBaseComparable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1EventTarget.html#a96313403719d705d2df812e3ba166772">key</a></td></tr>
 <tr class="separator:a96313403719d705d2df812e3ba166772"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="friends" name="friends"></a>
+Friends</h2></td></tr>
+<tr class="memitem:abe720add040bc99bf0481c34012dc283" id="r_abe720add040bc99bf0481c34012dc283"><td class="memItemLeft" align="right" valign="top">class&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Text.html#abe720add040bc99bf0481c34012dc283">InputRef</a></td></tr>
+<tr class="separator:abe720add040bc99bf0481c34012dc283"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8e39680654378ad851127e7a8fc2bb93" id="r_a8e39680654378ad851127e7a8fc2bb93"><td class="memItemLeft" align="right" valign="top">struct&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Text.html#a8e39680654378ad851127e7a8fc2bb93">InputRefState</a></td></tr>
+<tr class="separator:a8e39680654378ad851127e7a8fc2bb93"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>文字列の送受信データを表すクラス </p>
 <p>コンストラクタではなく <a class="el" href="classwebcface_1_1Member.html#ab13e75a9d487a0253300ade34a498791">Member::text()</a> を使って取得してください </p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
-<a id="ab33d2da9febb5e4c801e1ccee1dee594" name="ab33d2da9febb5e4c801e1ccee1dee594"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab33d2da9febb5e4c801e1ccee1dee594">&#9670;&#160;</a></span>Dict</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="classwebcface_1_1Text.html#ab33d2da9febb5e4c801e1ccee1dee594">Dict</a> =  <a class="el" href="classwebcface_1_1Common_1_1Dict.html">Common::Dict</a>&lt;std::shared_ptr&lt;std::string&gt; &gt;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a id="aa7d77f4004dea8559345bbfc3d915181" name="aa7d77f4004dea8559345bbfc3d915181"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa7d77f4004dea8559345bbfc3d915181">&#9670;&#160;</a></span>Dispatcher</h2>
 
@@ -589,6 +568,31 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="aab9d1bda10b0c1b79c4f48f3ebcf1d29" name="aab9d1bda10b0c1b79c4f48f3ebcf1d29"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aab9d1bda10b0c1b79c4f48f3ebcf1d29">&#9670;&#160;</a></span>expired()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool expired </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a2e6607c15d7ad8122cfaa0093e190bda" name="a2e6607c15d7ad8122cfaa0093e190bda"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2e6607c15d7ad8122cfaa0093e190bda">&#9670;&#160;</a></span>free()</h2>
 
@@ -608,8 +612,8 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a6269c0946f8016322b84c015972d83c1" name="a6269c0946f8016322b84c015972d83c1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6269c0946f8016322b84c015972d83c1">&#9670;&#160;</a></span>get()</h2>
+<a id="a465d461bf6771b5bf2f85e568b2e32d9" name="a465d461bf6771b5bf2f85e568b2e32d9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a465d461bf6771b5bf2f85e568b2e32d9">&#9670;&#160;</a></span>get()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -618,7 +622,7 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::string get </td>
+          <td class="memname"><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html">ValAdaptor</a> get </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -631,34 +635,12 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>値を返す </p>
+<p>文字列を返す </p>
+<pre class="fragment">      \brief 文字列を再帰的に取得しDictで返す
 
-</div>
-</div>
-<a id="a03601719286c2b6db4d35485ff631af4" name="a03601719286c2b6db4d35485ff631af4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a03601719286c2b6db4d35485ff631af4">&#9670;&#160;</a></span>getRecurse()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classwebcface_1_1Text.html#ab33d2da9febb5e4c801e1ccee1dee594">Dict</a> getRecurse </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>値を再帰的に取得しDictで返す </p>
+     &amp;zwj;/
+</pre><p> std::optional&lt;Dict&gt; tryGetRecurse() const; /*! </p>
+<p>(ver1.10〜 文字列以外の型も扱うためValAdaptor型に変更) </p>
 
 </div>
 </div>
@@ -869,56 +851,6 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="aebca02e943f1034d9d0dbc4713ffb159" name="aebca02e943f1034d9d0dbc4713ffb159"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aebca02e943f1034d9d0dbc4713ffb159">&#9670;&#160;</a></span>operator Dict()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">operator <a class="el" href="classwebcface_1_1Text.html#ab33d2da9febb5e4c801e1ccee1dee594">Dict</a> </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a3888dcd59dd5acd1ca5b9bee4c2e252a" name="a3888dcd59dd5acd1ca5b9bee4c2e252a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3888dcd59dd5acd1ca5b9bee4c2e252a">&#9670;&#160;</a></span>operator std::string()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">operator std::string </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a id="a88907764135e8147b2bef01ca311a5e6" name="a88907764135e8147b2bef01ca311a5e6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a88907764135e8147b2bef01ca311a5e6">&#9670;&#160;</a></span>operator!=()</h2>
 
@@ -945,36 +877,8 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="ae805386ab9832ae8d35b3385898ff672" name="ae805386ab9832ae8d35b3385898ff672"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae805386ab9832ae8d35b3385898ff672">&#9670;&#160;</a></span>operator=() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classwebcface_1_1Text.html">Text</a> &amp; operator= </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="classwebcface_1_1Text.html#ab33d2da9febb5e4c801e1ccee1dee594">Dict</a> &amp;&#160;</td>
-          <td class="paramname"><em>v</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Dictの値を再帰的にセットする </p>
-
-</div>
-</div>
 <a id="afe4264508390434c26aaab8af9b8de3e" name="afe4264508390434c26aaab8af9b8de3e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afe4264508390434c26aaab8af9b8de3e">&#9670;&#160;</a></span>operator=() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#afe4264508390434c26aaab8af9b8de3e">&#9670;&#160;</a></span>operator=()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -998,6 +902,10 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>文字列をセットする </p>
+<pre class="fragment">      \brief Dictの値を再帰的にセットする
+
+     &amp;zwj;/
+</pre><p> <a class="el" href="classwebcface_1_1Text.html" title="文字列の送受信データを表すクラス">Text</a> &amp;operator=(const Dict &amp;v) { this-&gt;set(v); return <em>this; } /</em>!  </p>
 
 </div>
 </div>
@@ -1160,31 +1068,14 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a52d15c0d2945a4f9da5dae2c0d3a7291" name="a52d15c0d2945a4f9da5dae2c0d3a7291"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a52d15c0d2945a4f9da5dae2c0d3a7291">&#9670;&#160;</a></span>set() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classwebcface_1_1Text.html">Text</a> &amp; set </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="classwebcface_1_1Text.html#ab33d2da9febb5e4c801e1ccee1dee594">Dict</a> &amp;&#160;</td>
-          <td class="paramname"><em>v</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Dictの値を再帰的にセットする </p>
-
-</div>
-</div>
 <a id="a51fb13a52e5dfe0507acd5e16b6f4963" name="a51fb13a52e5dfe0507acd5e16b6f4963"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a51fb13a52e5dfe0507acd5e16b6f4963">&#9670;&#160;</a></span>set() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a51fb13a52e5dfe0507acd5e16b6f4963">&#9670;&#160;</a></span>set() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="classwebcface_1_1Text.html">Text</a> &amp; set </td>
@@ -1194,9 +1085,38 @@ Private Attributes</h2></td></tr>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<pre class="fragment">      \brief Dictの値を再帰的にセットする
+
+     &amp;zwj;/
+</pre><p> <a class="el" href="classwebcface_1_1Text.html" title="文字列の送受信データを表すクラス">Text</a> &amp;set(const Dict &amp;v); </p><pre class="fragment">/*!
+   \brief 文字列をセットする
+</pre> 
+</div>
+</div>
+<a id="a6abe81a900e30486308dce2e1f027401" name="a6abe81a900e30486308dce2e1f027401"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6abe81a900e30486308dce2e1f027401">&#9670;&#160;</a></span>set() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1Text.html">Text</a> &amp; set </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html">ValAdaptor</a> &amp;&#160;</td>
+          <td class="paramname"><em>v</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
 </div><div class="memdoc">
 
 <p>文字列をセットする </p>
+<dl class="section since"><dt>Since</dt><dd>ver1.10〜 文字列以外の型も扱う </dd></dl>
 
 </div>
 </div>
@@ -1241,10 +1161,13 @@ Private Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<pre class="fragment">      \brief 値を再帰的に取得しDictで返す
 
-<p>syncの時刻を返す </p>
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000018">Deprecated:</a></b></dt><dd>1.7でMember::syncTime()に変更 </dd></dl>
-
+     &amp;zwj;/
+</pre><p> <a class="el" href="classwebcface_1_1Common_1_1Dict.html" title="値の型をTに制限した、連想配列もどき">Dict</a> getRecurse() const { return tryGetRecurse().value_or(<a class="el" href="classwebcface_1_1Common_1_1Dict.html" title="値の型をTに制限した、連想配列もどき">Dict</a>{}); } operator std::string() const { return <a class="el" href="classwebcface_1_1Text.html#a465d461bf6771b5bf2f85e568b2e32d9" title="文字列を返す">get()</a>; } operator Dict() const { return getRecurse(); } </p><pre class="fragment">/*!
+   \brief syncの時刻を返す
+   \deprecated 1.7でMember::syncTime()に変更
+</pre> 
 </div>
 </div>
 <a id="a9a4e01a36d38e9e2adfaf3e12b65ee61" name="a9a4e01a36d38e9e2adfaf3e12b65ee61"></a>
@@ -1275,14 +1198,14 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a66ed92c16137416044c7c07d2f6076d6" name="a66ed92c16137416044c7c07d2f6076d6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a66ed92c16137416044c7c07d2f6076d6">&#9670;&#160;</a></span>tryGet()</h2>
+<a id="aa5e8200c8fc1e679194e080a2894b994" name="aa5e8200c8fc1e679194e080a2894b994"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa5e8200c8fc1e679194e080a2894b994">&#9670;&#160;</a></span>tryGet()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::optional&lt; std::string &gt; tryGet </td>
+          <td class="memname">std::optional&lt; <a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html">ValAdaptor</a> &gt; tryGet </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -1291,25 +1214,52 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>文字列を返す </p>
+<p>(ver1.10〜 文字列以外の型も扱うためValAdaptor型に変更) </p>
 
 </div>
 </div>
-<a id="a0c9b7f2d5c002221c766d9f8928a0f70" name="a0c9b7f2d5c002221c766d9f8928a0f70"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0c9b7f2d5c002221c766d9f8928a0f70">&#9670;&#160;</a></span>tryGetRecurse()</h2>
+<h2 class="groupheader">Friends And Related Symbol Documentation</h2>
+<a id="abe720add040bc99bf0481c34012dc283" name="abe720add040bc99bf0481c34012dc283"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abe720add040bc99bf0481c34012dc283">&#9670;&#160;</a></span>InputRef</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::optional&lt; <a class="el" href="classwebcface_1_1Text.html#ab33d2da9febb5e4c801e1ccee1dee594">Text::Dict</a> &gt; tryGetRecurse </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
+          <td class="memname">friend class <a class="el" href="classwebcface_1_1InputRef.html">InputRef</a></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p>文字列を再帰的に取得しDictで返す </p>
+</div>
+</div>
+<a id="a8e39680654378ad851127e7a8fc2bb93" name="a8e39680654378ad851127e7a8fc2bb93"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8e39680654378ad851127e7a8fc2bb93">&#9670;&#160;</a></span>InputRefState</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">friend struct <a class="el" href="structwebcface_1_1InputRefState.html">InputRefState</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -1440,7 +1390,7 @@ Private Attributes</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="classwebcface_1_1Text.html">Text</a></li>
-    <li class="footer">Generated on Mon Apr 1 2024 11:13:07 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Mon Apr 1 2024 11:28:45 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

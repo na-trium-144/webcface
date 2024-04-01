@@ -143,9 +143,7 @@ $(document).ready(function(){initNavTree('md_11__text.html',''); initResizable()
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
 <ul><li class="level1"><a href="#autotoc_md45">コマンドライン</a></li>
-<li class="level1"><a href="#autotoc_md46">送信</a><ul><li class="level2"><a href="#autotoc_md47">複数の値をまとめて送る</a></li>
-</ul>
-</li>
+<li class="level1"><a href="#autotoc_md46">送信</a></li>
 <li class="level1"><a href="#autotoc_md48">受信</a><ul><li class="level2"><a href="#autotoc_md49">時刻</a></li>
 <li class="level2"><a href="#autotoc_md50">Entry</a></li>
 <li class="level2"><a href="#autotoc_md51">Event</a></li>
@@ -185,32 +183,10 @@ null終端の文字列はwcfTextSetで送信できます <div class="fragment"><
 <li><b class="tab-title">Python</b> <div class="fragment"><div class="line">wcli.text(<span class="stringliteral">&quot;hoge&quot;</span>).set(<span class="stringliteral">&quot;hello&quot;</span>)</div>
 </div><!-- fragment --></li>
 </ul>
-</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md47"></a>
-複数の値をまとめて送る</h2>
-<div class="tabbed"></div><div class="tabbed"><ul>
-<li><b class="tab-title">C++</b> <a class="el" href="classwebcface_1_1Text.html#ab33d2da9febb5e4c801e1ccee1dee594">webcface::Text::Dict</a> オブジェクトを使うと複数の値をまとめて送ることができます。 <div class="fragment"><div class="line"><span class="keyword">struct </span>A {</div>
-<div class="line">    std::string x, y;</div>
-<div class="line">    <span class="keyword">operator</span> <a class="code hl_typedef" href="classwebcface_1_1Text.html#ab33d2da9febb5e4c801e1ccee1dee594">webcface::Text::Dict</a>()<span class="keyword"> const </span>{</div>
-<div class="line">        <span class="keywordflow">return</span> {</div>
-<div class="line">            {<span class="stringliteral">&quot;x&quot;</span>, x},</div>
-<div class="line">            {<span class="stringliteral">&quot;y&quot;</span>, y},</div>
-<div class="line">            <span class="comment">// Value::Dictと同様、入れ子にもできます</span></div>
-<div class="line">        }</div>
-<div class="line">    }</div>
-<div class="line">};</div>
-<div class="line"> </div>
-<div class="line">A a_instance;</div>
-<div class="line">wcli.text(<span class="stringliteral">&quot;a&quot;</span>).set(a_instance); <span class="comment">// Dictにキャストされる</span></div>
-<div class="ttc" id="aclasswebcface_1_1Text_html_ab33d2da9febb5e4c801e1ccee1dee594"><div class="ttname"><a href="classwebcface_1_1Text.html#ab33d2da9febb5e4c801e1ccee1dee594">webcface::Text::Dict</a></div><div class="ttdeci">Common::Dict&lt; std::shared_ptr&lt; std::string &gt; &gt; Dict</div><div class="ttdef"><b>Definition</b> text.h:48</div></div>
-</div><!-- fragment --></li>
-<li><b class="tab-title">JavaScript</b> オブジェクトを渡すことができます。 <div class="fragment"><div class="line">wcli.text(&quot;a&quot;).set({</div>
-<div class="line">    x: &quot;aaa&quot;,</div>
-<div class="line">    y: &quot;bbb&quot;,</div>
-<div class="line">    // Value::Dictと同様、入れ子にもできます</div>
-<div class="line">});</div>
-</div><!-- fragment --></li>
-</ul>
-</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md48"></a>
+</div><div class="tabbed"></div><dl class="section note"><dt>Note</dt><dd><span class="since-c">1.10</span> <span class="since-js">1.6</span> Textの内部データは文字列だけでなく数値やbool値も型を保持して扱えるようになっています。 (<a class="el" href="md_13__view.html">View</a>のInputRefで内部的に使用するため) <br  />
+ C++はset,getで文字列と同様に送信、受信できます。 <br  />
+ JavaScriptではsetAny, getAny関数を使うと文字列以外のデータを処理できます。</dd></dl>
+<h1><a class="anchor" id="autotoc_md48"></a>
 受信</h1>
 <p>Member::text() でTextクラスのオブジェクトが得られ、 Text::tryGet(), Text::tryGetRecurse() で値のリクエストをするとともに受信した値を取得できます。 (Dict はC++のみ)</p>
 <p>例えば<code>foo</code>というクライアントの<code>hoge</code>という名前のデータを取得したい場合は次のようにします。</p>
@@ -273,7 +249,7 @@ Event</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon Apr 1 2024 11:13:07 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Mon Apr 1 2024 11:28:45 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

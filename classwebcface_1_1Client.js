@@ -12,6 +12,7 @@ var classwebcface_1_1Client =
     [ "close", "classwebcface_1_1Client.html#a5ae591df94fc66ccb85cbb6565368bca", null ],
     [ "connected", "classwebcface_1_1Client.html#aa0fd96bc25e3d509fb54028c2e4b91f6", null ],
     [ "dataLock", "classwebcface_1_1Client.html#ac2a701aed117691b0af187b9f029c83c", null ],
+    [ "expired", "classwebcface_1_1Client.html#aab9d1bda10b0c1b79c4f48f3ebcf1d29", null ],
     [ "func", "classwebcface_1_1Client.html#a6bea9517f461ddc114dfbc663f1dcd3b", null ],
     [ "func", "classwebcface_1_1Client.html#a3259867d99bef76d98f8ec862482ed78", null ],
     [ "funcEntries", "classwebcface_1_1Client.html#a09225396c72929b26144848529b88c02", null ],

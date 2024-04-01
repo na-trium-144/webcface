@@ -6,6 +6,7 @@ var classwebcface_1_1FuncCallHandle =
     [ "args", "classwebcface_1_1FuncCallHandle.html#a3979151cfc301302d1de7ada00323024", null ],
     [ "cArgs", "classwebcface_1_1FuncCallHandle.html#acbac1e273bdb47a1212c2afc4ddb1ab6", null ],
     [ "reject", "classwebcface_1_1FuncCallHandle.html#a9c44fa4730a1728608b9e4f2da82bbef", null ],
-    [ "respond", "classwebcface_1_1FuncCallHandle.html#a6b3a690c1bc9cbcf918f67e3968eeb61", null ],
+    [ "respond", "classwebcface_1_1FuncCallHandle.html#ad7e00ed106e1a629dd97424e7eb4cf44", null ],
+    [ "respond", "classwebcface_1_1FuncCallHandle.html#a7ada0a81ce898b66f12a1cd7a26cd52c", null ],
     [ "handle_data_", "classwebcface_1_1FuncCallHandle.html#a761dae0435f1ee4e470c6d525aacae5a", null ]
 ];

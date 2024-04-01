@@ -14,6 +14,7 @@ var classwebcface_1_1RobotModel =
     [ "color", "classwebcface_1_1RobotModel.html#a1dfd6ed2bdbea0e2a2fa0fcbe2ecc609", null ],
     [ "color", "classwebcface_1_1RobotModel.html#a9b4cc21988d579f5f7f97b39d3cd7cdf", null ],
     [ "dataLock", "classwebcface_1_1RobotModel.html#ac2a701aed117691b0af187b9f029c83c", null ],
+    [ "expired", "classwebcface_1_1RobotModel.html#aab9d1bda10b0c1b79c4f48f3ebcf1d29", null ],
     [ "free", "classwebcface_1_1RobotModel.html#a3c5b1b4d464063f38b9290c7ad02ab93", null ],
     [ "geometry", "classwebcface_1_1RobotModel.html#a1024785cc008a70ae7c2de6042c73aef", null ],
     [ "geometry", "classwebcface_1_1RobotModel.html#a2825b1d8821d30cae199a2423c3fc776", null ],

@@ -1,5 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
 <area shape="rect" id="Node000000" href="$structwebcface_1_1Message_1_1MessageBase.html" title=" " alt="" coords="5,5,220,45"/>
-<area shape="rect" id="Node000001" href="$structwebcface_1_1Message_1_1Ping.html" title="ping(server&#45;&gt;client&#45;&gt;server)" alt="" coords="268,13,319,38"/>
-<area shape="poly" id="edge67_Node000000_Node000001" title=" " alt="" coords="234,23,268,23,268,28,234,28"/>
+<area shape="rect" id="Node000001" href="$structwebcface_1_1Message_1_1Log.html" title="client(member)&#45;&gt;server&#45;&gt;client logを追加" alt="" coords="268,13,313,38"/>
+<area shape="poly" id="edge65_Node000000_Node000001" title=" " alt="" coords="233,23,268,23,268,28,233,28"/>
 </map>

@@ -14,6 +14,7 @@ var classwebcface_1_1View =
     [ "appendListener", "classwebcface_1_1View.html#a226ea1af8ab0d5aa6aeda2a29e0b51df", null ],
     [ "child", "classwebcface_1_1View.html#a0ea68ec0788d11e0007e91016bb2ee98", null ],
     [ "dataLock", "classwebcface_1_1View.html#ac2a701aed117691b0af187b9f029c83c", null ],
+    [ "expired", "classwebcface_1_1View.html#aab9d1bda10b0c1b79c4f48f3ebcf1d29", null ],
     [ "free", "classwebcface_1_1View.html#a1f7ae0967ad8f645a577950db724ffdb", null ],
     [ "get", "classwebcface_1_1View.html#a9b724c2d1ab5fa7806d58ed8e4d9b9a9", null ],
     [ "hasAnyListener", "classwebcface_1_1View.html#a2703198fd7fd6f72b1a89786870f8a39", null ],

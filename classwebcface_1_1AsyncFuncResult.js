@@ -2,6 +2,7 @@ var classwebcface_1_1AsyncFuncResult =
 [
     [ "AsyncFuncResult", "classwebcface_1_1AsyncFuncResult.html#ab2e9d02ce37c266d18bdf45b19655c86", null ],
     [ "dataLock", "classwebcface_1_1AsyncFuncResult.html#ac2a701aed117691b0af187b9f029c83c", null ],
+    [ "expired", "classwebcface_1_1AsyncFuncResult.html#aab9d1bda10b0c1b79c4f48f3ebcf1d29", null ],
     [ "isSelf", "classwebcface_1_1AsyncFuncResult.html#a0522a651826ba6fcbb9ce86258e8fa30", null ],
     [ "member", "classwebcface_1_1AsyncFuncResult.html#aa8fab40ead35fa8e761986d5f4000a5c", null ],
     [ "name", "classwebcface_1_1AsyncFuncResult.html#a1d89c28bd42ba9a52da008bb69367171", null ],

@@ -106,7 +106,14 @@ var namespacewebcface_1_1Common =
     [ "ViewComponentType", "namespacewebcface_1_1Common.html#a11040d82967b60182816ddc035d07c28", [
       [ "text", "namespacewebcface_1_1Common.html#a11040d82967b60182816ddc035d07c28a1cb251ec0d568de6a929b520c4aed8d1", null ],
       [ "new_line", "namespacewebcface_1_1Common.html#a11040d82967b60182816ddc035d07c28a620cf4c6d9756f9ce211c523f16c42a9", null ],
-      [ "button", "namespacewebcface_1_1Common.html#a11040d82967b60182816ddc035d07c28ace50a09343724eb82df11390e2c1de18", null ]
+      [ "button", "namespacewebcface_1_1Common.html#a11040d82967b60182816ddc035d07c28ace50a09343724eb82df11390e2c1de18", null ],
+      [ "text_input", "namespacewebcface_1_1Common.html#a11040d82967b60182816ddc035d07c28ae1ba83437c55caa1b29b1d3228f2591a", null ],
+      [ "num_input", "namespacewebcface_1_1Common.html#a11040d82967b60182816ddc035d07c28a863a71d47d3944749b5a90d143abb3c2", null ],
+      [ "int_input", "namespacewebcface_1_1Common.html#a11040d82967b60182816ddc035d07c28a71811878f5a17f166aef222bca11c204", null ],
+      [ "toggle_input", "namespacewebcface_1_1Common.html#a11040d82967b60182816ddc035d07c28ac31df31a0eed8c8f9bf0c1b99ad1798d", null ],
+      [ "select_input", "namespacewebcface_1_1Common.html#a11040d82967b60182816ddc035d07c28a89f781ccef3f98e802fafa7b5deb87c5", null ],
+      [ "slider_input", "namespacewebcface_1_1Common.html#a11040d82967b60182816ddc035d07c28a21f62314e8bff96c523fbcb2eaf79cd6", null ],
+      [ "check_input", "namespacewebcface_1_1Common.html#a11040d82967b60182816ddc035d07c28a89abf6ccb8784d1648947d65ca7cde77", null ]
     ] ],
     [ "argToTuple", "namespacewebcface_1_1Common.html#a5aeb2e4cecdcd6261d71162f7f918434", null ],
     [ "fixedAbsolute", "namespacewebcface_1_1Common_1_1RobotJoints.html#a49aea1f6f84c49764c0abea6b81e0956", null ],
@@ -115,6 +122,7 @@ var namespacewebcface_1_1Common =
     [ "fixedJoint", "namespacewebcface_1_1Common_1_1RobotJoints.html#a2a6e15a4be95eaa5b1b45f7eb5c39f83", null ],
     [ "identity", "namespacewebcface_1_1Common.html#a9cc7119f63c09d929d8218008d2bb386", null ],
     [ "operator<<", "namespacewebcface_1_1Common.html#a22a1de50b886c3b43b60369169be8be9", null ],
+    [ "operator<<", "namespacewebcface_1_1Common.html#a7772b6098dac5df4d543a786d2415f46", null ],
     [ "operator<<", "namespacewebcface_1_1Common.html#acc572ea980d434e6af0ac9f2e80a31cd", null ],
     [ "prismaticJoint", "namespacewebcface_1_1Common_1_1RobotJoints.html#af91d31e4d0b0bfbad874d554d56c74b7", null ],
     [ "rotationalJoint", "namespacewebcface_1_1Common_1_1RobotJoints.html#a6c27f9d2d917bb1e4a35b89070583c67", null ],

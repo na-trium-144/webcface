@@ -142,21 +142,21 @@ $(document).ready(function(){initNavTree('md_30__func.html',''); initResizable()
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md109">関数の登録</a><ul><li class="level2"><a href="#autotoc_md110">引数と戻り値型</a></li>
-<li class="level2"><a href="#autotoc_md111">hidden属性</a></li>
-<li class="level2"><a href="#autotoc_md112">実行条件</a></li>
+<ul><li class="level1"><a href="#autotoc_md110">関数の登録</a><ul><li class="level2"><a href="#autotoc_md111">引数と戻り値型</a></li>
+<li class="level2"><a href="#autotoc_md112">関数をWebUIから隠す</a></li>
+<li class="level2"><a href="#autotoc_md113">実行条件</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md113">FuncListener</a></li>
-<li class="level1"><a href="#autotoc_md114">関数の情報の取得</a><ul><li class="level2"><a href="#autotoc_md115">Entry</a></li>
+<li class="level1"><a href="#autotoc_md114">FuncListener</a></li>
+<li class="level1"><a href="#autotoc_md115">関数の情報の取得</a><ul><li class="level2"><a href="#autotoc_md116">Entry</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md116">関数の実行</a><ul><li class="level2"><a href="#autotoc_md117">runAsync</a></li>
+<li class="level1"><a href="#autotoc_md117">関数の実行</a><ul><li class="level2"><a href="#autotoc_md118">runAsync</a></li>
 </ul>
 </li>
 </ul>
 </div>
-<div class="textblock"><p><a class="anchor" id="autotoc_md108"></a></p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md109"></a></p>
 <dl class="section since"><dt>Since</dt><dd><span class="since-c"></span> <span class="since-js"></span> <span class="since-py"></span> </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><ul>
 <li>C++ <a class="el" href="classwebcface_1_1Func.html" title="関数1つを表すクラス">webcface::Func</a></li>
@@ -165,7 +165,7 @@ $(document).ready(function(){initNavTree('md_30__func.html',''); initResizable()
 </ul>
 </dd></dl>
 <p>他Memberから呼び出せる関数の登録、 また他Memberの関数の呼び出しができます。</p>
-<h1><a class="anchor" id="autotoc_md109"></a>
+<h1><a class="anchor" id="autotoc_md110"></a>
 関数の登録</h1>
 <p>Client::func からFuncオブジェクトを作り、 Func::set() で関数を登録し、Client::sync()することで送信されます</p>
 <div class="tabbed"></div><div class="tabbed"><ul>
@@ -217,7 +217,7 @@ $(document).ready(function(){initNavTree('md_30__func.html',''); initResizable()
 </div><!-- fragment --></li>
 </ul>
 </div><div class="tabbed"></div><dl class="section note"><dt>Note</dt><dd>同じ名前のFuncに複数回関数をセットすると上書きされ、後に登録した関数のみが呼び出されます。 ただし引数や戻り値の型などの情報は更新されず、最初の関数のものと同じになります。</dd></dl>
-<h2><a class="anchor" id="autotoc_md110"></a>
+<h2><a class="anchor" id="autotoc_md111"></a>
 引数と戻り値型</h2>
 <div class="tabbed"></div><div class="tabbed"><ul>
 <li><p class="startli"><b class="tab-title">C++</b> Func::setArgs() で引数名などの情報や、引数に設定する条件をセットすることができます。 設定可能な情報の一覧は <a class="el" href="classwebcface_1_1Common_1_1Arg.html" title="引数の情報を表す。">webcface::Arg</a> を参照</p>
@@ -227,7 +227,7 @@ $(document).ready(function(){initNavTree('md_30__func.html',''); initResizable()
 <div class="line">});</div>
 <div class="ttc" id="aclasswebcface_1_1Common_1_1Arg_html"><div class="ttname"><a href="classwebcface_1_1Common_1_1Arg.html">webcface::Arg</a></div><div class="ttdoc">引数の情報を表す。</div><div class="ttdef"><b>Definition</b> func.h:33</div></div>
 <div class="ttc" id="aclasswebcface_1_1Common_1_1Arg_html_a2e31ddffe3f62572d218e8e028423cfa"><div class="ttname"><a href="classwebcface_1_1Common_1_1Arg.html#a2e31ddffe3f62572d218e8e028423cfa">webcface::Common::Arg::init</a></div><div class="ttdeci">std::optional&lt; ValAdaptor &gt; init() const</div><div class="ttdoc">デフォルト値を取得する。</div><div class="ttdef"><b>Definition</b> func.h:102</div></div>
-<div class="ttc" id="aclasswebcface_1_1Common_1_1Arg_html_af705bc9b6f2e309a2ecbabf78abdc919"><div class="ttname"><a href="classwebcface_1_1Common_1_1Arg.html#af705bc9b6f2e309a2ecbabf78abdc919">webcface::Common::Arg::option</a></div><div class="ttdeci">std::vector&lt; ValAdaptor &gt; option() const</div><div class="ttdoc">引数の選択肢を取得する。</div><div class="ttdef"><b>Definition</b> func.h:151</div></div>
+<div class="ttc" id="aclasswebcface_1_1Common_1_1Arg_html_af705bc9b6f2e309a2ecbabf78abdc919"><div class="ttname"><a href="classwebcface_1_1Common_1_1Arg.html#af705bc9b6f2e309a2ecbabf78abdc919">webcface::Common::Arg::option</a></div><div class="ttdeci">std::vector&lt; ValAdaptor &gt; option() const</div><div class="ttdoc">引数の選択肢を取得する。</div><div class="ttdef"><b>Definition</b> func.h:153</div></div>
 </div><!-- fragment --></li>
 <li><b class="tab-title">JavaScript</b> set関数の引数で指定します。 型情報を取得できないJavaScript, TypeScriptではここで型情報も指定する必要があります。 引数のオプションに関しては <a href="https://na-trium-144.github.io/webcface-js/interfaces/Arg.html">Arg</a> を参照 <div class="fragment"><div class="line">wcli.func(&quot;hoge&quot;).set(hoge, valType.float_, [</div>
 <div class="line">    { name: &quot;a&quot;, type: valType.int_, init: 100 },</div>
@@ -242,19 +242,26 @@ $(document).ready(function(){initNavTree('md_30__func.html',''); initResizable()
 <div class="line">])</div>
 </div><!-- fragment --></li>
 </ul>
-</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md111"></a>
-hidden属性</h2>
-<p>関数の設定後 Client::sync() することで他のクライアントからその関数の情報を見ることができるようになります。</p>
+</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md112"></a>
+関数をWebUIから隠す</h2>
+<dl class="section since"><dt>Since</dt><dd><span class="since-c">1.10</span></dd></dl>
+<p>関数の名前を半角ピリオドから始めると、Entryが他クライアントに送信されなくなり、 他のMemberやWebUIから関数の存在を隠すことができます。 (Valueなど他のデータ型についても同様です。)</p>
+<p>なお半角ピリオド2つから始まる名前はwebcface内部の処理で利用する場合があるので使用しないでください。</p>
+<p>以前のバージョンでは名前に関係なく関数を非表示にするオプションがありましたが、削除しました。</p>
+<details >
+<summary >
+以前のバージョン</summary>
 <p>hidden属性をつけると他のMemberやWebUIから関数の存在を隠すことができます。 Client::funcEntries()でその関数の存在を確認したりFunc::args()などでの情報の取得ができなくなります。 ただし関数の名前がわかっていれば他Memberからでも実行は可能です。</p>
 <div class="tabbed"></div><div class="tabbed"><ul>
-<li><b class="tab-title">C++</b> C++では <div class="fragment"><div class="line">func.hidden(<span class="keyword">true</span>)</div>
+<li><b class="tab-title">C++</b> <div class="fragment"><div class="line">func.hidden(<span class="keyword">true</span>)</div>
 </div><!-- fragment --> で設定できます。</li>
 <li><b class="tab-title">JavaScript</b> <span class="since-js">1.0.4</span> set()関数の4番目の引数にtrueを指定することでできます。 <div class="fragment"><div class="line">wcli.func(&quot;hoge&quot;).set(hoge, valType.float_, [ ... ], true);</div>
 </div><!-- fragment --></li>
 <li><b class="tab-title">Python</b> set()関数(デコレータの場合はfunc())の引数に指定することで設定できます。 <div class="fragment"><div class="line">wcli.func(<span class="stringliteral">&quot;hoge&quot;</span>).set(hoge, return_type=float, args=[...], hidden=<span class="keyword">True</span>)</div>
 </div><!-- fragment --></li>
 </ul>
-</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md112"></a>
+</div><div class="tabbed"></div> </details>
+<h2><a class="anchor" id="autotoc_md113"></a>
 実行条件</h2>
 <div class="tabbed"></div><div class="tabbed"><ul>
 <li><p class="startli"><b class="tab-title">C++</b> C++では呼び出された関数は別スレッドで非同期に実行されます。 これをメインスレッドと同期させたい場合は実行条件を設定することができます。 </p><div class="fragment"><div class="line">wcli.func(<span class="stringliteral">&quot;fuga&quot;</span>).setRunCondOnSync();</div>
@@ -272,7 +279,7 @@ hidden属性</h2>
 </div><!-- fragment --><p> で条件を何も課さないようにできます。</p>
 </li>
 </ul>
-</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md113"></a>
+</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md114"></a>
 FuncListener</h1>
 <p>呼び出されたとき実行する関数を登録する代わりに、呼び出されたかどうかを監視し任意のタイミングで値を返すということもできます。</p>
 <div class="tabbed"></div><div class="tabbed"><ul>
@@ -300,17 +307,17 @@ FuncListener</h1>
 </div><!-- fragment --><p> でエラーメッセージを返すことができます(呼び出し元にはruntime_errorを投げたものとして返ります) (<code>wcfFuncReject(handle, NULL);</code> も可)</p>
 </li>
 </ul>
-</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md114"></a>
+</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md115"></a>
 関数の情報の取得</h1>
 <p>Member::func() でFuncクラスのオブジェクトが得られ、 Func::returnType() や Func::args() で関数の引数や戻り値の情報を取得できます。</p>
 <p>他のデータ型と違ってデータをリクエストする機能はなく、 関数の情報はクライアントが関数を登録してsync()した時点で送られてきます。</p>
-<h2><a class="anchor" id="autotoc_md115"></a>
+<h2><a class="anchor" id="autotoc_md116"></a>
 Entry</h2>
 <p><strike>Member::funcs() で</strike> そのMemberが送信している関数のリストが得られます <br  />
  <span class="since-c">1.6</span> <span class="since-py">1.1</span> Member::funcEntries() に変更</p>
 <p>また、Member::onFuncEntry() で新しく関数が追加されたときのコールバックを設定できます</p>
 <p>いずれも使い方は <a class="el" href="md_10__value.html">Value</a> と同様なのでそちらを参照してください</p>
-<h1><a class="anchor" id="autotoc_md116"></a>
+<h1><a class="anchor" id="autotoc_md117"></a>
 関数の実行</h1>
 <p>Func::run() で関数を実行できます。引数を渡すこともでき、戻り値もそのまま返ってきます。 他クライアントの関数も同様にrun()で実行させることができます。</p>
 <p>実行した関数が例外を投げた場合、また引数の個数が一致しない場合などはrun()が例外を投げます。</p>
@@ -336,7 +343,7 @@ Entry</h2>
 <li><b class="tab-title">Python</b> <div class="fragment"><div class="line">ans = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).func(<span class="stringliteral">&quot;hoge&quot;</span>).run(1, <span class="stringliteral">&quot;aa&quot;</span>)</div>
 </div><!-- fragment --> Funcオブジェクトに()と引数をつけて直接呼び出すことでも同様に実行できます。 (<code>Func::__call__</code>)</li>
 </ul>
-</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md117"></a>
+</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md118"></a>
 runAsync</h2>
 <p>Func::runAsync() は関数の実行を開始し、終了を待たずに続行します。 戻り値として AsyncFuncResult クラスのオブジェクトが返り、後から関数の戻り値や例外を取得できます。</p>
 <p>AsyncFuncResultからは started と result が取得できます。</p><ul>
@@ -396,7 +403,7 @@ runAsync</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon Apr 1 2024 11:13:07 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Mon Apr 1 2024 11:28:45 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

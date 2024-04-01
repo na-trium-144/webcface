@@ -191,9 +191,12 @@ $(document).ready(function(){initNavTree('md_10__value.html',''); initResizable(
 </div><!-- fragment --></li>
 </ul>
 </div><div class="tabbed"></div><dl class="section note"><dt>Note</dt><dd>webcfaceのvalueは浮動小数型のみを扱いますが、値が整数だった場合シリアライズ時に自動的に整数型として送受信されるようなので通信量を気にする必要はありません。(<a href="https://github.com/msgpack/msgpack-c/issues/1017">msgpack/msgpack-c#1017</a>)</dd></dl>
+<dl class="section warning"><dt>Warning</dt><dd><span class="since-c">1.10</span> データの名前を半角ピリオドから始めると、Entryが他クライアントに送信されなくなります。 (WebUI上に表示することなくデータを送ることができます) <br  />
+ 半角ピリオド2つから始まる名前はwebcface内部の処理で利用する場合があるので使用しないでください。 <br  />
+ Text、Funcなど他のデータ型についても同様です。</dd></dl>
 <h2><a class="anchor" id="autotoc_md38"></a>
 グループ化</h2>
-<p>Valueの名前に半角ピリオドを含めると、WebUI上ではフォルダアイコンで表示されグループ化されて表示されます。</p>
+<p>Valueの名前を半角ピリオドで区切ると、WebUI上ではフォルダアイコンで表示されグループ化されて表示されます。</p>
 <dl class="section note"><dt>Note</dt><dd>Valueに限らず他のデータ型 (<a class="el" href="md_13__view.html">View</a>, <a class="el" href="md_14__canvas2d.html">Canvas2D</a>, <a class="el" href="md_15__image.html">Image</a>, <a class="el" href="md_20__canvas3d.html">Canvas3D</a>, <a class="el" href="md_21__robot__model.html">RobotModel</a>) でも同様です。</dd></dl>
 <div class="tabbed"></div><div class="tabbed"><ul>
 <li><b class="tab-title">C++</b> <div class="fragment"><div class="line">wcli.value(<span class="stringliteral">&quot;pos.x&quot;</span>) = 1;</div>
@@ -229,7 +232,7 @@ $(document).ready(function(){initNavTree('md_10__value.html',''); initResizable(
 </ul>
 </div><div class="tabbed"></div><p><img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/value_child.png" alt="value_child" class="inline"/></p>
 <p>ROSのTopicではPointやTransformなど目的に応じてさまざまな型が用意されていますが、 WebCFaceではそういう場合はValueを複数用意して送信することを想定しています。</p>
-<dl class="section note"><dt>Note</dt><dd><span class="since-c">1.8</span> 同じデータを繰り返しsetした場合は、通信量を削減するため実際には最初の1度しか送信されないようになっています。 (<a class="el" href="md_11__text.html">Text</a> についても同様)</dd></dl>
+<dl class="section note"><dt>Note</dt><dd><span class="since-c">1.8</span> <span class="since-js">1.4.1</span> <span class="since-py">1.1.2</span> 同じデータを繰り返しsetした場合は、通信量を削減するため実際には最初の1度しか送信されないようになっています。 (<a class="el" href="md_11__text.html">Text</a> についても同様)</dd></dl>
 <h2><a class="anchor" id="autotoc_md39"></a>
 複数の値をまとめて送る</h2>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000001">Todo:</a></b></dt><dd>Pythonの辞書型への対応は未実装</dd></dl>
@@ -433,7 +436,7 @@ Event</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon Apr 1 2024 11:13:07 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Mon Apr 1 2024 11:28:44 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

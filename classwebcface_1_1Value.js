@@ -11,6 +11,7 @@ var classwebcface_1_1Value =
     [ "appendListener", "classwebcface_1_1Value.html#a226ea1af8ab0d5aa6aeda2a29e0b51df", null ],
     [ "child", "classwebcface_1_1Value.html#a23ab6a3438603c775c14caf310134022", null ],
     [ "dataLock", "classwebcface_1_1Value.html#ac2a701aed117691b0af187b9f029c83c", null ],
+    [ "expired", "classwebcface_1_1Value.html#aab9d1bda10b0c1b79c4f48f3ebcf1d29", null ],
     [ "free", "classwebcface_1_1Value.html#a488d6f8eae1f3af5431a298c68b65ffe", null ],
     [ "get", "classwebcface_1_1Value.html#af53ec2e557ea14cce1373e0f77954c82", null ],
     [ "getRecurse", "classwebcface_1_1Value.html#a03601719286c2b6db4d35485ff631af4", null ],

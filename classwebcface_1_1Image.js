@@ -11,6 +11,7 @@ var classwebcface_1_1Image =
     [ "child", "classwebcface_1_1Image.html#a535d50bfbfa886a7efbbcf68acf2ff2f", null ],
     [ "clear", "classwebcface_1_1Image.html#abd1c54d5b7a366b11a1bdf3bc030add1", null ],
     [ "dataLock", "classwebcface_1_1Image.html#ac2a701aed117691b0af187b9f029c83c", null ],
+    [ "expired", "classwebcface_1_1Image.html#aab9d1bda10b0c1b79c4f48f3ebcf1d29", null ],
     [ "free", "classwebcface_1_1Image.html#a98a22f6aa22241adcf40db2724891a8a", null ],
     [ "get", "classwebcface_1_1Image.html#ad414b0ad03b3ba6e4538973e932bcadb", null ],
     [ "hasAnyListener", "classwebcface_1_1Image.html#a2703198fd7fd6f72b1a89786870f8a39", null ],

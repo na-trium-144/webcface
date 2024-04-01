@@ -144,6 +144,8 @@ var annotated_dup =
       [ "ImageBase", "classwebcface_1_1Common_1_1ImageBase.html", "classwebcface_1_1Common_1_1ImageBase" ],
       [ "ImageReq", "structwebcface_1_1Common_1_1ImageReq.html", "structwebcface_1_1Common_1_1ImageReq" ],
       [ "ImageWithCV", "classwebcface_1_1Common_1_1ImageWithCV.html", "classwebcface_1_1Common_1_1ImageWithCV" ],
+      [ "InputRef", "classwebcface_1_1InputRef.html", "classwebcface_1_1InputRef" ],
+      [ "InputRefState", "structwebcface_1_1InputRefState.html", "structwebcface_1_1InputRefState" ],
       [ "Line", "structwebcface_1_1Components_1_1Geometries_1_1Line.html", "structwebcface_1_1Components_1_1Geometries_1_1Line" ],
       [ "Log", "classwebcface_1_1Log.html", "classwebcface_1_1Log" ],
       [ "LoggerBuf", "classwebcface_1_1LoggerBuf.html", "classwebcface_1_1LoggerBuf" ],
