@@ -33,18 +33,19 @@ Canvas2D &Canvas2D::operator<<(Canvas2DComponent &&cc) {
 }
 
 template <>
-void Internal::DataSetBuffer<Canvas2DComponent>::onSync(){
+void Internal::DataSetBuffer<Canvas2DComponent>::onSync() {
     auto c2buf = dynamic_cast<Canvas2DDataBuf *>(this);
-    if(!c2buf){
+    if (!c2buf) {
         throw std::runtime_error("Failed to access Canvas2DDataBuf");
     }
     c2buf->checkSize();
 
     auto cb = std::make_shared<Canvas2DDataBase>(c2buf->width_, c2buf->height_);
     cb->components.reserve(this->components_.size());
+    int func_next = 0;
     for (std::size_t i = 0; i < this->components_.size(); i++) {
         cb->components.emplace_back(std::move(this->components_[i].lockTmp(
-            target_.data_w, target_.name() + "_" + std::to_string(i))));
+            target_.data_w, target_.name(), &func_next)));
     }
     target_.setCheck()->canvas2d_store.setSend(target_, cb);
     static_cast<Canvas2D>(target_).triggerEvent(target_);

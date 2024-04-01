@@ -205,8 +205,13 @@ TEST_F(FuncTest, funcRunRemote) {
     func("a", "b").runAsync(1.23, true, "abc");
     bool call_msg_found = false;
     while (auto msg = data_->message_queue->pop()) {
-        if (*msg == Message::packSingle(Message::Call{
-                        FuncCall{0, 0, 0, "b", {1.23, true, "abc"}}})) {
+        if (*msg ==
+            Message::packSingle(Message::Call{FuncCall{
+                0,
+                0,
+                0,
+                "b",
+                {ValAdaptor(1.23), ValAdaptor(true), ValAdaptor("abc")}}})) {
             call_msg_found = true;
         }
     }

@@ -40,7 +40,7 @@ ValType valTypeOf() {
  * \brief 型名を文字列で取得
  * \since ver1.9.1
  */
-inline std::string valTypeStr(ValType a){
+inline std::string valTypeStr(ValType a) {
     switch (a) {
     case ValType::none_:
         return "none";
@@ -78,17 +78,21 @@ class ValAdaptor {
     ValAdaptor() : value(""), type(ValType::none_) {}
 
     // cast from run()
-    ValAdaptor(const std::string &value)
+    explicit ValAdaptor(const std::string &value)
         : value(value), type(ValType::string_) {}
-    ValAdaptor(const std::string &value, ValType type): value(value), type(type){}
-    ValAdaptor(const char *value) : value(value), type(ValType::string_) {}
-    ValAdaptor(bool value)
+    explicit ValAdaptor(const std::string &value, ValType type)
+        : value(value), type(type) {}
+    explicit ValAdaptor(const char *value)
+        : value(value), type(ValType::string_) {}
+    explicit ValAdaptor(bool value)
         : value(std::to_string(value)), type(ValType::bool_) {}
     template <typename T>
-    requires std::integral<T> ValAdaptor(T value)
+        requires std::integral<T>
+    explicit ValAdaptor(T value)
         : value(std::to_string(value)), type(ValType::int_) {}
     template <typename T>
-    requires std::floating_point<T> ValAdaptor(T value)
+        requires std::floating_point<T>
+    explicit ValAdaptor(T value)
         : value(std::to_string(value)), type(ValType::float_) {}
 
     /*!
@@ -126,10 +130,12 @@ class ValAdaptor {
         }
     }
     template <typename T>
-    requires std::convertible_to<double, T>
-    operator T() const { return static_cast<T>(operator double()); }
+        requires std::convertible_to<double, T>
+    operator T() const {
+        return static_cast<T>(operator double());
+    }
     template <typename T>
-    requires std::convertible_to<std::string, T>
+        requires std::convertible_to<std::string, T>
     operator T() const {
         return static_cast<T>(operator const std::string &());
     }
@@ -141,13 +147,15 @@ class ValAdaptor {
         return *this;
     }
     template <typename T>
-    requires std::integral<T> ValAdaptor &operator=(T v) {
+        requires std::integral<T>
+    ValAdaptor &operator=(T v) {
         value = std::to_string(v);
         type = ValType::int_;
         return *this;
     }
     template <typename T>
-    requires std::floating_point<T> ValAdaptor &operator=(T v) {
+        requires std::floating_point<T>
+    ValAdaptor &operator=(T v) {
         value = std::to_string(v);
         type = ValType::float_;
         return *this;
@@ -162,12 +170,29 @@ class ValAdaptor {
         type = ValType::string_;
         return *this;
     }
+
+    bool operator==(const ValAdaptor &other) const {
+        if (type == ValType::string_ || other.type == ValType::string_) {
+            return value == other.value;
+        } else if (type == ValType::double_ || other.type == ValType::double_) {
+            return static_cast<double>(*this) == static_cast<double>(other);
+        } else if (type == ValType::int_ || other.type == ValType::int_) {
+            return static_cast<int>(*this) == static_cast<int>(other);
+        } else if (type == ValType::bool_ || other.type == ValType::bool_) {
+            return static_cast<int>(*this) == static_cast<int>(other);
+        } else {
+            return value == other.value;
+        }
+    }
+    bool operator!=(const ValAdaptor &other) const { return !(*this == other); }
+
+    bool operator==(const char *other) const { return value == other; }
+    bool operator!=(const char *other) const { return value != other; }
 };
 
-// inline std::ostream &operator<<(std::ostream &os, const ValAdaptor &a) {
-//     return os << static_cast<std::string>(a) << "(type=" << a.valType() <<
-//     ")";
-// }
+inline std::ostream &operator<<(std::ostream &os, const ValAdaptor &a) {
+    return os << static_cast<std::string>(a);
+}
 
 //! ValAdaptorのリストから任意の型のタプルに変換する
 template <int n = 0, typename T>

@@ -72,9 +72,16 @@ Client::value からValueオブジェクトを作り、 Value::set() でデー�
 \note
 webcfaceのvalueは浮動小数型のみを扱いますが、値が整数だった場合シリアライズ時に自動的に整数型として送受信されるようなので通信量を気にする必要はありません。([msgpack/msgpack-c#1017](https://github.com/msgpack/msgpack-c/issues/1017))
 
+\warning
+<span class="since-c">1.10</span>
+データの名前を半角ピリオドから始めると、Entryが他クライアントに送信されなくなります。
+(WebUI上に表示することなくデータを送ることができます)  
+半角ピリオド2つから始まる名前はwebcface内部の処理で利用する場合があるので使用しないでください。  
+Text、Funcなど他のデータ型についても同様です。
+
 ### グループ化
 
-Valueの名前に半角ピリオドを含めると、WebUI上ではフォルダアイコンで表示されグループ化されて表示されます。
+Valueの名前を半角ピリオドで区切ると、WebUI上ではフォルダアイコンで表示されグループ化されて表示されます。
 
 \note
 Valueに限らず他のデータ型 ([View](./13_view.md), [Canvas2D](./14_canvas2d.md), [Image](./15_image.md), [Canvas3D](./20_canvas3d.md), [RobotModel](./21_robot_model.md)) でも同様です。
@@ -139,6 +146,8 @@ WebCFaceではそういう場合はValueを複数用意して送信すること�
 
 \note
 <span class="since-c">1.8</span>
+<span class="since-js">1.4.1</span>
+<span class="since-py">1.1.2</span>
 同じデータを繰り返しsetした場合は、通信量を削減するため実際には最初の1度しか送信されないようになっています。
 ([Text](./11_text.md) についても同様)
 

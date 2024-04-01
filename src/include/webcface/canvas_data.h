@@ -2,6 +2,7 @@
 #include "common/canvas2d.h"
 #include "common/canvas3d.h"
 #include "func.h"
+#include "text.h"
 #include <memory>
 
 namespace WEBCFACE_NS {
@@ -18,6 +19,8 @@ class WEBCFACE_DLL ViewComponent : protected Common::ViewComponentBase {
     std::weak_ptr<Internal::ClientData> data_w;
 
     std::shared_ptr<AnonymousFunc> on_click_func_tmp;
+    std::optional<InputRef> text_ref_tmp;
+    std::optional<ValAdaptor> init_;
 
   public:
     ViewComponent() = default;
@@ -27,12 +30,12 @@ class WEBCFACE_DLL ViewComponent : protected Common::ViewComponentBase {
     explicit ViewComponent(ViewComponentType type) { type_ = type; }
 
     /*!
-     * \brief AnonymousFuncをFuncオブジェクトにlockします
+     * \brief AnonymousFuncとInputRefの名前を確定
      *
      */
     ViewComponentBase &
     lockTmp(const std::weak_ptr<Internal::ClientData> &data_w,
-            const std::string &field_id);
+            const std::string &view_name, int *func_next, int *inputref_next);
 
     wcfViewComponent cData() const;
 
@@ -70,8 +73,8 @@ class WEBCFACE_DLL ViewComponent : protected Common::ViewComponentBase {
      * \param func 実行する任意の関数(std::functionにキャスト可能ならなんでもok)
      *
      */
-    template <typename Ret>
-    ViewComponent &onClick(std::function<Ret()> func) {
+    template <typename T>
+    ViewComponent &onClick(T func) {
         on_click_func_tmp = std::make_shared<AnonymousFunc>(func);
         return *this;
     }
@@ -85,6 +88,78 @@ class WEBCFACE_DLL ViewComponent : protected Common::ViewComponentBase {
         on_click_func_tmp = std::make_shared<AnonymousFunc>(std::move(func));
         return *this;
     }
+    /*!
+     * \brief inputの値の変化時に実行される関数を取得
+     * \since ver1.10
+     *
+     * onChange()に新しい値を渡して呼び出すことで値を変更させる
+     * (onChange()->runAsync(value) など)
+     *
+     * 内部データはonClickと共通
+     *
+     */
+    std::optional<Func> onChange() const { return onClick(); }
+    /*!
+     * \brief 変更した値を格納するInputRefを設定
+     * \since ver1.10
+     *
+     * refの値を変更する処理が自動的にonChangeに登録される
+     *
+     */
+    ViewComponent &bind(const InputRef &ref) {
+        on_click_func_tmp = std::make_shared<AnonymousFunc>(
+            [ref](ValAdaptor val) { ref.lockedField().set(val); });
+        text_ref_tmp = ref;
+        return *this;
+    }
+    /*!
+     * \brief inputの現在の値を取得
+     * \since ver1.10
+     *
+*     * 値の変更はonChange()に新しい値を渡して呼び出す
+     * (onChange()->runAsync(value) など)
+     *
+     */
+    std::optional<Text> bind() const;
+    /*!
+     * \brief 値が変化した時に実行される関数を設定
+     * \since ver1.10
+     *
+     * 現在値を保持するInputRefは自動で生成されbindされる
+     * \param func
+     * 引数を1つ取る任意の関数(std::functionにキャスト可能ならなんでもok)
+     *
+     */
+    template <typename T>
+    ViewComponent &onChange(T func) {
+        InputRef ref;
+        on_click_func_tmp =
+            std::make_shared<AnonymousFunc>([ref, func](ValAdaptor val) {
+                ref.lockedField().set(val);
+                return func(val);
+            });
+        text_ref_tmp = ref;
+        return *this;
+    }
+    // /*!
+    //  * \brief 値が変化した時に実行される関数を設定
+    //  * \since ver1.10
+    //  *
+    //  */
+    // ViewComponent &onChange(AnonymousFunc &&func) {
+    //     InputRef ref;
+    //     auto func_impl = func.getImpl();
+    //     func.replaceImpl([ref, func_impl](const std::vector<ValAdaptor>
+    //     &args) {
+    //         if (args.size() >= 1) {
+    //             ref.lockedField().set(args[0]);
+    //         }
+    //         return func_impl(args);
+    //     });
+    //     on_click_func_tmp = std::make_shared<AnonymousFunc>(std::move(func));
+    //     text_ref_tmp = ref;
+    //     return *this;
+    // }
     /*!
      * \brief 文字色を取得
      *
@@ -110,6 +185,85 @@ class WEBCFACE_DLL ViewComponent : protected Common::ViewComponentBase {
     ViewComponent &bgColor(ViewColor c) {
         bg_color_ = c;
         return *this;
+    }
+    /*!
+     * \brief デフォルト値を設定する。
+     * \since ver1.10
+     *
+     * デフォルト値はviewのメッセージには含まれるのではなく、
+     * bindしたInputRefの初期化に使われる
+     * (そのため component.init() では取得できない)
+     *
+     */
+    template <typename T>
+        requires std::constructible_from<ValAdaptor, T>
+    ViewComponent &init(const T &init) {
+        init_.emplace(init);
+        return *this;
+    }
+    /*!
+     * \brief 最小値を取得する。
+     * \since ver1.10
+     *
+     */
+    std::optional<double> min() const { return min_; }
+    /*!
+     * \brief 最小値を設定する。
+     * \since ver1.10
+     *
+     * * string型引数の場合最小の文字数を表す。
+     * * bool型引数の場合効果がない。
+     * * option() はクリアされる。
+     *
+     */
+    ViewComponent &min(double min) {
+        min_ = min;
+        option_.clear();
+        return *this;
+    }
+    /*!
+     * \brief 最大値を取得する。
+     * \since ver1.10
+     *
+     */
+    std::optional<double> max() const { return max_; }
+    /*!
+     * \brief 最大値を設定する。
+     * \since ver1.10
+     *
+     * * string型引数の場合最大の文字数を表す。
+     * * bool型引数の場合効果がない。
+     * * option() はクリアされる。
+     *
+     */
+    ViewComponent &max(double max) {
+        max_ = max;
+        option_.clear();
+        return *this;
+    }
+    /*!
+     * \brief 引数の選択肢を取得する。
+     * \since ver1.10
+     *
+     */
+    std::vector<ValAdaptor> option() const { return option_; }
+    ViewComponent &option(const std::vector<ValAdaptor> &option) {
+        option_ = option;
+        min_ = max_ = std::nullopt;
+        return *this;
+    }
+    /*!
+     * \brief 引数の選択肢を設定する。
+     * \since ver1.10
+     *
+     * * min(), max() はクリアされる。
+     *
+     */
+    template <typename T>
+        requires std::constructible_from<ValAdaptor, T>
+    ViewComponent &option(std::initializer_list<T> option) {
+        return this->option(
+            std::vector<ValAdaptor>(option.begin(), option.end()));
     }
 };
 
@@ -249,12 +403,12 @@ class WEBCFACE_DLL Canvas2DComponent : protected Common::Canvas2DComponentBase {
     }
 
     /*!
-     * \brief AnonymousFuncをFuncオブジェクトにlock
+     * \brief AnonymousFuncの名前を確定
      *
      */
     Canvas2DComponentBase &
     lockTmp(const std::weak_ptr<Internal::ClientData> &data_w,
-            const std::string &field_id);
+            const std::string &view_name, int *func_next);
 
     /*!
      * \brief 要素の種類
@@ -449,9 +603,10 @@ class TemporalComponent {
     }
     /*!
      * \brief クリック時に実行される関数を設定 (Viewまたは2D)
-     * 
-     * 引数については ViewComponent::onClick(), Canvas2DComponent::onClick() を参照
-     * 
+     *
+     * 引数については ViewComponent::onClick(), Canvas2DComponent::onClick()
+     * を参照
+     *
      */
     template <typename T>
     TemporalComponent &onClick(T &&func)
@@ -795,10 +950,33 @@ inline ViewComponent newLine() {
  *
  */
 template <typename T>
-inline ViewComponent button(const std::string &text, const T &func) {
-    return ViewComponent(ViewComponentType::button).text(text).onClick(func);
+inline ViewComponent button(const std::string &text, T &&func) {
+    return ViewComponent(ViewComponentType::button)
+        .text(text)
+        .onClick(std::forward<T>(func));
 }
 
+inline ViewComponent textInput(const std::string &text = "") {
+    return ViewComponent(ViewComponentType::text_input).text(text);
+}
+inline ViewComponent numInput(const std::string &text = "") {
+    return ViewComponent(ViewComponentType::num_input).text(text).init(0);
+}
+inline ViewComponent intInput(const std::string &text = "") {
+    return ViewComponent(ViewComponentType::int_input).text(text).init(0);
+}
+inline ViewComponent toggleInput(const std::string &text = "") {
+    return ViewComponent(ViewComponentType::toggle_input).text(text);
+}
+inline ViewComponent selectInput(const std::string &text = "") {
+    return ViewComponent(ViewComponentType::select_input).text(text);
+}
+inline ViewComponent sliderInput(const std::string &text = "") {
+    return ViewComponent(ViewComponentType::slider_input).text(text).init(0);
+}
+inline ViewComponent checkInput(const std::string &text = "") {
+    return ViewComponent(ViewComponentType::check_input).text(text).init(false);
+}
 } // namespace Components
 namespace ViewComponents = Components;
 

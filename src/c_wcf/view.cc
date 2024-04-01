@@ -8,6 +8,8 @@ wcfViewComponent wcfText(const char *text) {
         .text = text,
         .on_click_member = nullptr,
         .on_click_field = nullptr,
+        .text_ref_member = nullptr,
+        .text_ref_field = nullptr,
         .text_color = WCF_COLOR_INHERIT,
         .bg_color = WCF_COLOR_INHERIT,
     };
@@ -18,6 +20,8 @@ wcfViewComponent wcfNewLine() {
         .text = nullptr,
         .on_click_member = nullptr,
         .on_click_field = nullptr,
+        .text_ref_member = nullptr,
+        .text_ref_field = nullptr,
         .text_color = WCF_COLOR_INHERIT,
         .bg_color = WCF_COLOR_INHERIT,
     };
@@ -29,6 +33,8 @@ wcfViewComponent wcfButton(const char *text, const char *on_click_member,
         .text = text,
         .on_click_member = on_click_member,
         .on_click_field = on_click_field,
+        .text_ref_member = nullptr,
+        .text_ref_field = nullptr,
         .text_color = WCF_COLOR_INHERIT,
         .bg_color = WCF_COLOR_INHERIT,
     };
@@ -54,8 +60,14 @@ wcfStatus wcfViewSet(wcfClient *wcli, const char *field,
                       p->on_click_member ? p->on_click_member : wcli_->name(),
                       p->on_click_field ? p->on_click_field : "")
                 : std::nullopt,
+            p->text_ref_field
+                ? std::make_optional<FieldBase>(
+                      p->text_ref_member ? p->text_ref_member : wcli_->name(),
+                      p->text_ref_field ? p->text_ref_field : "")
+                : std::nullopt,
             static_cast<ViewColor>(p->text_color),
             static_cast<ViewColor>(p->bg_color),
+            // todo
         });
     }
     v.sync();

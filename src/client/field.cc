@@ -7,6 +7,8 @@
 namespace WEBCFACE_NS {
 Member Field::member() const { return *this; }
 
+bool Field::expired() const { return data_w.expired(); }
+
 std::shared_ptr<Internal::ClientData> Field::dataLock() const {
     if (auto data = data_w.lock()) {
         return data;

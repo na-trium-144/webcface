@@ -5,6 +5,69 @@
 
 namespace WEBCFACE_NS {
 
+ViewComponentBase &
+ViewComponent::lockTmp(const std::weak_ptr<Internal::ClientData> &data_w,
+                       const std::string &view_name, int *func_next,
+                       int *inputref_next) {
+    auto data = data_w.lock();
+    if (on_click_func_tmp != nullptr) {
+        Func on_click{Field{data_w, data->self_member_name},
+                      "..v" + view_name + "." + std::to_string((*func_next)++)};
+        on_click_func_tmp->lockTo(on_click);
+        onClick(on_click);
+    }
+    if (text_ref_tmp) {
+        // if (text_ref_tmp->expired()) {
+        Text text_ref{Field{data_w, data->self_member_name},
+                      "..ir" + view_name + "." +
+                          std::to_string((*inputref_next)++)};
+        text_ref_tmp->lockTo(text_ref);
+        if (init_ && !text_ref.tryGet()) {
+            text_ref.set(*init_);
+        }
+        // }
+        text_ref_.emplace(text_ref.member().name(), text_ref.name());
+    }
+    return *this;
+}
+wcfViewComponent ViewComponent::cData() const {
+    wcfViewComponent vcc;
+    vcc.type = static_cast<int>(this->type());
+    vcc.text = this->text_.empty() ? nullptr : this->text_.c_str();
+    if (this->on_click_func_) {
+        vcc.on_click_member = this->on_click_func_->member_.c_str();
+        vcc.on_click_field = this->on_click_func_->field_.c_str();
+    } else {
+        vcc.on_click_member = nullptr;
+        vcc.on_click_field = nullptr;
+    }
+    vcc.text_color = static_cast<int>(this->text_color_);
+    vcc.bg_color = static_cast<int>(this->bg_color_);
+    return vcc;
+}
+
+std::optional<Func> ViewComponent::onClick() const {
+    if (on_click_func_) {
+        // Fieldの中でnullptrは処理してくれるからいいかな
+        // assert(data_w.lock() != nullptr && "ClientData not set");
+        return Field{data_w, on_click_func_->member_, on_click_func_->field_};
+    } else {
+        return std::nullopt;
+    }
+}
+ViewComponent &ViewComponent::onClick(const Func &func) {
+    on_click_func_.emplace(func.member().name(), func.name());
+    return *this;
+}
+
+std::optional<Text> ViewComponent::bind() const {
+    if (text_ref_) {
+        return Field{data_w, text_ref_->member_, text_ref_->field_};
+    } else {
+        return std::nullopt;
+    }
+}
+
 std::optional<RobotModel> Canvas3DComponent::robotModel() const {
     if (field_base_ != std::nullopt &&
         type_ == Canvas3DComponentType::robot_model) {
@@ -57,12 +120,13 @@ Canvas3DComponent &Canvas3DComponent::angle(const std::string &joint_name,
 
 Canvas2DComponentBase &
 Canvas2DComponent::lockTmp(const std::weak_ptr<Internal::ClientData> &data_w,
-                           const std::string &field_id) {
+                           const std::string &view_name, int *func_next) {
     if (on_click_func_tmp != nullptr) {
         auto data = data_w.lock();
-        Func on_click{Field{data_w, data->self_member_name}, field_id};
+        Func on_click{Field{data_w, data->self_member_name},
+                      "..c2" + view_name + "." +
+                          std::to_string((*func_next)++)};
         on_click_func_tmp->lockTo(on_click);
-        on_click.hidden(true);
         onClick(on_click);
     }
     return *this;

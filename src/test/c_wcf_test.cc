@@ -187,9 +187,9 @@ TEST_F(CClientTest, textReq) {
         },
         [&] { ADD_FAILURE() << "Text Req recv error"; });
     dummy_s->send(Message::Res<Message::Text>{
-        1, "", std::make_shared<std::string>("hello")});
+        1, "", std::make_shared<ValAdaptor>("hello")});
     dummy_s->send(Message::Res<Message::Text>{
-        1, "c", std::make_shared<std::string>("hello")});
+        1, "c", std::make_shared<ValAdaptor>("hello")});
     wait();
     EXPECT_EQ(wcfTextGet(wcli_, "a", "b", text, 5, &size), WCF_OK);
     EXPECT_EQ(size, 5);
@@ -289,7 +289,8 @@ TEST_F(CClientTest, funcRun) {
             [&]() { ADD_FAILURE() << "Call recv error"; });
         dummy_s->recvClear();
         dummy_s->send(Message::CallResponse{{}, caller_id, 1, true});
-        dummy_s->send(Message::CallResult{{}, caller_id, 1, false, "123.45"});
+        dummy_s->send(
+            Message::CallResult{{}, caller_id, 1, false, ValAdaptor("123.45")});
         caller_id++;
     }
 
@@ -306,7 +307,8 @@ TEST_F(CClientTest, funcRun) {
             [&]() { ADD_FAILURE() << "Call recv error"; });
         dummy_s->recvClear();
         dummy_s->send(Message::CallResponse{{}, caller_id, 1, true});
-        dummy_s->send(Message::CallResult{{}, caller_id, 1, true, "error"});
+        dummy_s->send(
+            Message::CallResult{{}, caller_id, 1, true, ValAdaptor("error")});
         caller_id++;
     }
 
@@ -336,7 +338,8 @@ TEST_F(CClientTest, funcListen) {
     wcfFuncCallHandle *h;
     EXPECT_EQ(wcfFuncFetchCall(wcli_, "a", &h), WCF_NOT_CALLED);
     EXPECT_EQ(wcfFuncFetchCall(wcli_, "b", &h), WCF_NOT_CALLED);
-    dummy_s->send(Message::Call{{0, 1, 1, "a", {42, 1.5, "aaa"}}});
+    dummy_s->send(Message::Call{
+        {0, 1, 1, "a", {ValAdaptor(42), ValAdaptor(1.5), ValAdaptor("aaa")}}});
     wait();
 
     dummy_s->recv<Message::CallResponse>(
@@ -410,7 +413,8 @@ TEST_F(CClientTest, funcSet) {
         [&] { ADD_FAILURE() << "FuncInfo recv error"; });
     dummy_s->recvClear();
 
-    dummy_s->send(Message::Call{{0, 1, 1, "a", {42, 1.5, "aaa"}}});
+    dummy_s->send(Message::Call{
+        {0, 1, 1, "a", {ValAdaptor(42), ValAdaptor(1.5), ValAdaptor("aaa")}}});
     wait();
 
     dummy_s->recv<Message::CallResponse>(
@@ -493,10 +497,10 @@ TEST_F(CClientTest, viewReq) {
                       .textColor(ViewColor::yellow)
                       .bgColor(ViewColor::green)
                       .toV()
-                      .lockTmp({}, "")},
-            {"1", ViewComponents::newLine().lockTmp({}, "")},
+                      .lockTmp({}, "", nullptr, nullptr)},
+            {"1", ViewComponents::newLine().lockTmp({}, "", nullptr, nullptr)},
             {"2", ViewComponents::button("a", Func{Field{{}, "x", "y"}})
-                      .lockTmp({}, "")},
+                      .lockTmp({}, "", nullptr, nullptr)},
         });
     dummy_s->send(Message::Res<Message::View>{1, "", v, 3});
     dummy_s->send(Message::Res<Message::View>{1, "c", v, 3});
