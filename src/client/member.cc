@@ -3,7 +3,7 @@
 #include "../message/message.h"
 #include "client_internal.h"
 
-namespace WEBCFACE_NS {
+WEBCFACE_NS_BEGIN
 
 EventTarget<Value, std::string> Member::onValueEntry() const {
     return EventTarget<Value, std::string>{&dataLock()->value_entry_event,
@@ -155,4 +155,4 @@ EventTarget<Member, std::string> Member::onPing() const {
     dataLock()->pingStatusReq();
     return EventTarget<Member, std::string>{&dataLock()->ping_event, member_};
 }
-} // namespace WEBCFACE_NS
+WEBCFACE_NS_END

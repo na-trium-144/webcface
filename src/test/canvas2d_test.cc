@@ -6,7 +6,7 @@
 #include <stdexcept>
 #include <chrono>
 
-using namespace WEBCFACE_NS;
+using namespace webcface;
 class Canvas2DTest : public ::testing::Test {
   protected:
     void SetUp() override {
@@ -49,7 +49,7 @@ TEST_F(Canvas2DTest, eventTarget) {
 TEST_F(Canvas2DTest, set) {
     data_->canvas2d_change_event.appendListener(FieldBase{self_name, "b"},
                                                 callback());
-    using namespace WEBCFACE_NS::Geometries;
+    using namespace webcface::Geometries;
 
     auto v = canvas(self_name, "b").init(100, 150);
     v.add(line({0, 0}, {3, 3}).color(ViewColor::red).onClick(func(self_name, "f")));

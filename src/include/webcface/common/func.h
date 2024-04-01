@@ -16,7 +16,7 @@
 #undef max
 #endif
 
-namespace WEBCFACE_NS {
+WEBCFACE_NS_BEGIN
 inline namespace Common {
 
 using FuncType = std::function<ValAdaptor(const std::vector<ValAdaptor> &)>;
@@ -253,8 +253,8 @@ struct FuncCall {
     unsigned int caller_member_id;
     unsigned int target_member_id;
     std::string field;
-    std::vector<WEBCFACE_NS::ValAdaptor> args;
+    std::vector<webcface::ValAdaptor> args;
 };
 
 } // namespace Common
-} // namespace WEBCFACE_NS
+WEBCFACE_NS_END

@@ -10,7 +10,7 @@
 #include "logger.h"
 #include "common/def.h"
 
-namespace WEBCFACE_NS {
+WEBCFACE_NS_BEGIN
 
 /*!
  * \brief サーバーに接続するクライアント。
@@ -213,4 +213,4 @@ class WEBCFACE_DLL Client : public Member {
     std::string serverName() const;
 };
 
-} // namespace WEBCFACE_NS
+WEBCFACE_NS_END

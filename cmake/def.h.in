@@ -1,4 +1,5 @@
 #pragma once
+#include "macros.h"
 #define WEBCFACE_STR(v) #v
 #define WEBCFACE_DEFAULT_PORT 7530
 #define WEBCFACE_DEFAULT_PORT_SI(port) WEBCFACE_STR(port)
@@ -15,23 +16,3 @@
 #endif
 #cmakedefine WEBCFACE_VERSION "@WEBCFACE_VERSION@"
 #cmakedefine01 WEBCFACE_USE_OPENCV
-
-#ifdef _MSC_VER
-#ifdef webcface_EXPORTS
-#define WEBCFACE_DLL __declspec(dllexport)
-#define WEBCFACE_IMPORT
-#else
-#define WEBCFACE_DLL __declspec(dllimport)
-#define WEBCFACE_IMPORT __declspec(dllimport)
-#endif
-#ifdef _DEBUG
-#define WEBCFACE_NS webcfaced
-#else
-#define WEBCFACE_NS webcface
-#endif
-#else
-#define WEBCFACE_DLL
-#define WEBCFACE_IMPORT
-#define WEBCFACE_NS webcface
-#endif
-

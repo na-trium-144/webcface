@@ -9,7 +9,7 @@
 #include "common/def.h"
 #include "common/val.h"
 
-namespace WEBCFACE_NS {
+WEBCFACE_NS_BEGIN
 namespace Internal {
 struct ClientData;
 }
@@ -209,4 +209,4 @@ class WEBCFACE_DLL InputRef {
 inline std::ostream &operator<<(std::ostream &os, const InputRef &ref) {
     return os << ref.get();
 }
-} // namespace WEBCFACE_NS
+WEBCFACE_NS_END

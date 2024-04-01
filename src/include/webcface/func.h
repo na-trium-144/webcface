@@ -5,7 +5,7 @@
 #include "func_result.h"
 #include "common/def.h"
 
-namespace WEBCFACE_NS {
+WEBCFACE_NS_BEGIN
 namespace Internal {
 struct ClientData;
 }
@@ -267,4 +267,4 @@ class WEBCFACE_DLL AnonymousFunc : public Func {
      */
     void lockTo(Func &target);
 };
-} // namespace WEBCFACE_NS
+WEBCFACE_NS_END

@@ -2,7 +2,7 @@
 #include "client_internal.h"
 #include "../message/message.h"
 
-namespace WEBCFACE_NS {
+WEBCFACE_NS_BEGIN
 
 template class WEBCFACE_DLL EventTarget<Log, std::string>;
 
@@ -38,4 +38,4 @@ Log &Log::clear() {
     return *this;
 }
 
-} // namespace WEBCFACE_NS
+WEBCFACE_NS_END

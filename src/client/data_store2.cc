@@ -1,7 +1,8 @@
 #include "data_store2.h"
 #include <type_traits>
 
-namespace WEBCFACE_NS::Internal {
+WEBCFACE_NS_BEGIN
+namespace Internal {
 
 /*!
  * \brief setSend時にこれを実際に送信すべきかどうか
@@ -243,4 +244,5 @@ template class WEBCFACE_DLL SyncDataStore2<RobotModelData, int>;
 template class WEBCFACE_DLL SyncDataStore2<Canvas3DData, int>;
 template class WEBCFACE_DLL SyncDataStore2<Canvas2DData, int>;
 template class WEBCFACE_DLL SyncDataStore2<ImageData, Common::ImageReq>;
-} // namespace WEBCFACE_NS::Internal
+} // namespace Internal
+WEBCFACE_NS_END

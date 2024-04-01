@@ -8,7 +8,7 @@
 #include "event_target.h"
 #include "common/def.h"
 
-namespace WEBCFACE_NS {
+WEBCFACE_NS_BEGIN
 namespace Internal {
 struct ClientData;
 }
@@ -137,4 +137,4 @@ class WEBCFACE_DLL Image : protected Field, public EventTarget<Image> {
     Image &clear();
 };
 
-} // namespace WEBCFACE_NS
+WEBCFACE_NS_END

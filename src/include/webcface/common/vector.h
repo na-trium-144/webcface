@@ -6,7 +6,7 @@
 #include <concepts>
 #include "def.h"
 
-namespace WEBCFACE_NS {
+WEBCFACE_NS_BEGIN
 inline namespace Common {
 
 template <typename R>
@@ -70,4 +70,4 @@ struct VectorOpt : public std::vector<T> {
     operator T() const { return (*this)[0]; }
 };
 } // namespace Common
-} // namespace WEBCFACE_NS
+WEBCFACE_NS_END

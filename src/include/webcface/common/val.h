@@ -9,7 +9,7 @@
 #include "../c_wcf/def_types.h"
 #include "def.h"
 
-namespace WEBCFACE_NS {
+WEBCFACE_NS_BEGIN
 inline namespace Common {
 //! 引数や戻り値の型を表すenum
 enum class ValType {
@@ -205,4 +205,4 @@ void argToTuple(const std::vector<ValAdaptor> &args, T &tuple) {
     }
 }
 } // namespace Common
-} // namespace WEBCFACE_NS
+WEBCFACE_NS_END

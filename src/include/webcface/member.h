@@ -16,7 +16,7 @@
 #include "canvas3d.h"
 #include "canvas2d.h"
 
-namespace WEBCFACE_NS {
+WEBCFACE_NS_BEGIN
 
 namespace Internal {
 struct ClientData;
@@ -254,4 +254,4 @@ class WEBCFACE_DLL Member : protected Field {
     EventTarget<Member, std::string> onPing() const;
 };
 
-} // namespace WEBCFACE_NS
+WEBCFACE_NS_END

@@ -2,7 +2,7 @@
 #include <string>
 #include "def.h"
 
-namespace WEBCFACE_NS {
+WEBCFACE_NS_BEGIN
 inline namespace Common {
 /*!
  * \brief メンバ名とデータ名を持つクラス
@@ -42,4 +42,4 @@ struct FieldBaseComparable : public FieldBase {
     }
 };
 } // namespace Common
-} // namespace WEBCFACE_NS
+WEBCFACE_NS_END

@@ -4,7 +4,7 @@
 #include "../message/message.h"
 #include "data_buffer.h"
 
-namespace WEBCFACE_NS {
+WEBCFACE_NS_BEGIN
 
 template class WEBCFACE_DLL EventTarget<RobotModel>;
 
@@ -80,4 +80,4 @@ RobotModel &RobotModel::free() {
     return *this;
 }
 
-} // namespace WEBCFACE_NS
+WEBCFACE_NS_END

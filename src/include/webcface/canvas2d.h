@@ -8,7 +8,7 @@
 #include "func.h"
 #include "canvas_data.h"
 
-namespace WEBCFACE_NS {
+WEBCFACE_NS_BEGIN
 namespace Internal {
 template <typename Component>
 class DataSetBuffer;
@@ -225,4 +225,4 @@ class WEBCFACE_DLL Canvas2D : protected Field, public EventTarget<Canvas2D> {
      */
     Canvas2D &sync();
 };
-} // namespace WEBCFACE_NS
+WEBCFACE_NS_END

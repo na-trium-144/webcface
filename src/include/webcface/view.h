@@ -9,7 +9,7 @@
 #include "common/def.h"
 #include "canvas_data.h"
 
-namespace WEBCFACE_NS {
+WEBCFACE_NS_BEGIN
 namespace Internal {
 struct ClientData;
 template <typename Component>
@@ -187,4 +187,4 @@ class WEBCFACE_DLL View : protected Field,
      */
     View &sync();
 };
-} // namespace WEBCFACE_NS
+WEBCFACE_NS_END

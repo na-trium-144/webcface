@@ -6,7 +6,7 @@
 #include "def.h"
 #include "val.h"
 
-namespace WEBCFACE_NS {
+WEBCFACE_NS_BEGIN
 inline namespace Common {
 enum class ViewComponentType {
     text = 0,
@@ -77,4 +77,4 @@ struct ViewComponentBase {
 };
 
 } // namespace Common
-} // namespace WEBCFACE_NS
+WEBCFACE_NS_END

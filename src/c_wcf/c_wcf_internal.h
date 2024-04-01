@@ -5,7 +5,7 @@
 #include <webcface/client.h>
 #include <webcface/common/val.h>
 
-namespace WEBCFACE_NS {
+WEBCFACE_NS_BEGIN
 inline namespace c_wcf {
 /*!
  * \brief wcfInitで作られたクライアントのリスト
@@ -73,6 +73,6 @@ inline AsyncFuncResult *getAsyncFuncResult(wcfAsyncFuncResult *res) {
 }
 
 } // namespace c_wcf
-} // namespace WEBCFACE_NS
+WEBCFACE_NS_END
 
-using namespace WEBCFACE_NS;
+using namespace webcface;

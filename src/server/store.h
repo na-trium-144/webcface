@@ -6,7 +6,8 @@
 #include <spdlog/common.h>
 #include <webcface/common/def.h>
 
-namespace WEBCFACE_NS::Server {
+WEBCFACE_NS_BEGIN
+namespace Server {
 using ClientDataPtr = std::shared_ptr<ClientData>;
 inline struct Store {
 
@@ -78,4 +79,5 @@ inline struct Store {
     void forEachWithName(const std::function<void(ClientDataPtr)> &func);
 } store;
 
-} // namespace WEBCFACE_NS::Server
+} // namespace Server
+WEBCFACE_NS_END
