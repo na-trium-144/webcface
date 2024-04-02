@@ -1,4 +1,5 @@
 #include "c_wcf_internal.h"
+#include <webcface/func.h>
 
 static std::pair<wcfStatus, wcfMultiVal *>
 resultToCVal(AsyncFuncResult async_res) {

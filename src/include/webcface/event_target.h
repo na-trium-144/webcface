@@ -4,7 +4,7 @@
 #include "field.h"
 #include "common/def.h"
 
-namespace WEBCFACE_NS {
+WEBCFACE_NS_BEGIN
 
 /*!
  * \brief イベントを表し、コールバックの追加や削除ができるクラス。
@@ -131,4 +131,4 @@ class EventTarget {
     }
 };
 
-} // namespace WEBCFACE_NS
+WEBCFACE_NS_END

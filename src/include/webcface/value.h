@@ -9,7 +9,7 @@
 #include "event_target.h"
 #include "common/def.h"
 
-namespace WEBCFACE_NS {
+WEBCFACE_NS_BEGIN
 namespace Internal {
 struct ClientData;
 }
@@ -216,4 +216,4 @@ class WEBCFACE_DLL Value : protected Field, public EventTarget<Value> {
  */
 WEBCFACE_DLL std::ostream &operator<<(std::ostream &os, const Value &data);
 
-} // namespace WEBCFACE_NS
+WEBCFACE_NS_END

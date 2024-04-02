@@ -1,4 +1,6 @@
 #include "c_wcf_internal.h"
+#include <webcface/value.h>
+#include <cstring>
 
 extern "C" {
 wcfStatus wcfValueSet(wcfClient *wcli, const char *field, double value) {

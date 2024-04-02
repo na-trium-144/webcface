@@ -5,7 +5,7 @@
 #include <stdexcept>
 #include <chrono>
 
-using namespace WEBCFACE_NS;
+using namespace webcface;
 class RobotModelTest : public ::testing::Test {
   protected:
     void SetUp() override {

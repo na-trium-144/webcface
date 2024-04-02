@@ -7,7 +7,7 @@
 #include <stdexcept>
 #include <chrono>
 
-using namespace WEBCFACE_NS;
+using namespace webcface;
 class ViewTest : public ::testing::Test {
   protected:
     void SetUp() override {
@@ -53,7 +53,7 @@ TEST_F(ViewTest, eventTarget) {
 TEST_F(ViewTest, viewSet) {
     data_->view_change_event.appendListener(FieldBase{self_name, "b"},
                                             callback());
-    using namespace WEBCFACE_NS::ViewComponents;
+    using namespace webcface::ViewComponents;
     auto v = view(self_name, "b");
     v << "a\n" << 1;
     v << Components::text("aaa")
@@ -63,7 +63,7 @@ TEST_F(ViewTest, viewSet) {
     v << button("f", func(self_name, "f"));
     v << button("a", afunc1([]() {}));
     v << button("a2", []() {});
-    WEBCFACE_NS::InputRef ref1, ref2;
+    webcface::InputRef ref1, ref2;
     v << numInput("i").bind(ref1).init(123).min(1).max(1000);
     v << selectInput("i2").bind(ref2).option({"a", "b", "c"});
     int called_ref3 = 0;

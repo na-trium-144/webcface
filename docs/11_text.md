@@ -6,7 +6,7 @@
 <span class="since-js"></span>
 <span class="since-py"></span>
 \sa
-* C++ webcface::Text
+* C++ webcface::Text  (`webcface/text.h`)
 * JavaScript [Text](https://na-trium-144.github.io/webcface-js/classes/Text.html)
 * Python [webcface.Text](https://na-trium-144.github.io/webcface-python/webcface.text.html#webcface.text.Text)
 

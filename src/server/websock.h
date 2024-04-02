@@ -6,7 +6,7 @@
 #include <unordered_map>
 #include <webcface/common/def.h>
 
-namespace WEBCFACE_NS {
+WEBCFACE_NS_BEGIN
 namespace Server {
 inline std::condition_variable server_ping_wait;
 inline std::mutex server_mtx;
@@ -17,4 +17,4 @@ void serverStop();
 void serverRun(int port, const spdlog::sink_ptr &sink,
                spdlog::level::level_enum level);
 } // namespace Server
-} // namespace WEBCFACE_NS
+WEBCFACE_NS_END

@@ -6,7 +6,7 @@
 <span class="since-js"></span>
 <span class="since-py"></span>
 \sa
-* C++ webcface::View
+* C++ webcface::View (`webcface/view.h`)
 * JavaScript [View](https://na-trium-144.github.io/webcface-js/classes/View.html)
 * Python [webcface.View](https://na-trium-144.github.io/webcface-python/webcface.view.html#webcface.view.View)
 

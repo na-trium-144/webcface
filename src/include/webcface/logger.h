@@ -9,7 +9,7 @@
 #include "common/log.h"
 #include "common/def.h"
 
-namespace WEBCFACE_NS {
+WEBCFACE_NS_BEGIN
 namespace Internal {
 struct ClientData;
 }
@@ -55,4 +55,4 @@ class WEBCFACE_DLL LoggerSink : public spdlog::sinks::base_sink<std::mutex> {
     void set_formatter_(std::unique_ptr<spdlog::formatter>) override {}
 };
 
-} // namespace WEBCFACE_NS
+WEBCFACE_NS_END

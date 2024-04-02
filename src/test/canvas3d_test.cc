@@ -6,7 +6,7 @@
 #include <stdexcept>
 #include <chrono>
 
-using namespace WEBCFACE_NS;
+using namespace webcface;
 class Canvas3DTest : public ::testing::Test {
   protected:
     void SetUp() override {
@@ -46,8 +46,8 @@ TEST_F(Canvas3DTest, eventTarget) {
 TEST_F(Canvas3DTest, set) {
     data_->canvas3d_change_event.appendListener(FieldBase{self_name, "b"},
                                                 callback());
-    using namespace WEBCFACE_NS::Geometries;
-    using namespace WEBCFACE_NS::RobotJoints;
+    using namespace webcface::Geometries;
+    using namespace webcface::RobotJoints;
     robot_model(self_name, "b")
         .set({
             RobotLink{"l0", Geometry{}, ViewColor::black},

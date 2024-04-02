@@ -3,7 +3,7 @@
 #include "client_internal.h"
 #include "../message/message.h"
 
-namespace WEBCFACE_NS {
+WEBCFACE_NS_BEGIN
 
 template class WEBCFACE_DLL EventTarget<Text>;
 
@@ -68,4 +68,4 @@ Text &Text::free() {
 std::ostream &operator<<(std::ostream &os, const Text &data) {
     return os << data.get();
 }
-} // namespace WEBCFACE_NS
+WEBCFACE_NS_END

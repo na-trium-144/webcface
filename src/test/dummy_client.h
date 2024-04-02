@@ -5,7 +5,7 @@
 #include <thread>
 #include <webcface/common/queue.h>
 
-using namespace WEBCFACE_NS;
+using namespace webcface;
 struct DummyClient {
     std::vector<std::pair<int, std::any>> recv_data;
 

@@ -6,7 +6,7 @@
 <span class="since-js"></span>
 <span class="since-py"></span>
 \sa
-* C++ webcface::Func
+* C++ webcface::Func (`webcface/func.h`)
 * JavaScript [Func](https://na-trium-144.github.io/webcface-js/classes/Func.html)
 * Python [webcface.Func](https://na-trium-144.github.io/webcface-python/webcface.func.html#webcface.func.Func)
 

@@ -6,7 +6,7 @@
 <span class="since-js">1.4</span>
 <span class="since-py">1.1</span>
 \sa
-* C++ webcface::Canvas2D
+* C++ webcface::Canvas2D (`webcface/canvas2d.h`)
 * JavaScript [Canvas2D](https://na-trium-144.github.io/webcface-js/classes/Canvas2D.html)
 * Python [webcface.Canvas2D](https://na-trium-144.github.io/webcface-python/webcface.canvas2d.html#webcface.canvas2d.Canvas2D)
 

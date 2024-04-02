@@ -6,7 +6,7 @@
 #include <optional>
 #include "def.h"
 
-namespace WEBCFACE_NS {
+WEBCFACE_NS_BEGIN
 inline namespace Common {
 //! 排他制御をしたただのキュー
 template <typename T>
@@ -35,4 +35,4 @@ class Queue {
     }
 };
 } // namespace Common
-} // namespace WEBCFACE_NS
+WEBCFACE_NS_END

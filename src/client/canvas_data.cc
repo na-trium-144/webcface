@@ -3,7 +3,7 @@
 #include <webcface/robot_model.h>
 #include "client_internal.h"
 
-namespace WEBCFACE_NS {
+WEBCFACE_NS_BEGIN
 
 ViewComponentBase &
 ViewComponent::lockTmp(const std::weak_ptr<Internal::ClientData> &data_w,
@@ -145,4 +145,4 @@ Canvas2DComponent &Canvas2DComponent::onClick(const Func &func) {
 }
 
 
-} // namespace WEBCFACE_NS
+WEBCFACE_NS_END
