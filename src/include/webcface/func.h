@@ -105,6 +105,19 @@ class WEBCFACE_DLL Func : protected Field {
               std::function<void(FuncCallHandle)> callback);
 
     /*!
+     * \brief 関数を関数リストで非表示にする
+     * (他clientのentryに表示されなくする)
+     * \deprecated
+     * ver1.10から、名前が半角ピリオドで始まるかどうかで判断されるように仕様変更したため、
+     * hiddenの指定は無効 (この関数は効果がない)
+     *
+     */
+    [[deprecated("Func::hidden() does nothing since ver1.10")]] Func &
+    hidden(bool) {
+        return *this;
+    }
+
+    /*!
      * \brief 関数の設定を削除
      *
      */
@@ -241,11 +254,9 @@ class WEBCFACE_DLL AnonymousFunc : public Func {
      *
      */
     template <typename T>
-    AnonymousFunc(const T &func) {
-        func_setter = [func](AnonymousFunc &a) {
-            a.set(func);
-        };
-    }
+    explicit AnonymousFunc(const T &func)
+        : func_setter([func](AnonymousFunc &a) { a.set(func); }) {}
+
     AnonymousFunc(const AnonymousFunc &) = delete;
     AnonymousFunc &operator=(const AnonymousFunc &) = delete;
     AnonymousFunc(AnonymousFunc &&other) { *this = std::move(other); }
@@ -321,6 +332,19 @@ class WEBCFACE_DLL FuncListener : protected Func {
         return *this;
     }
 
+    /*!
+     * \brief 関数を関数リストで非表示にする
+     * (他clientのentryに表示されなくする)
+     * \deprecated
+     * ver1.10から、名前が半角ピリオドで始まるかどうかで判断されるように仕様変更したため、
+     * hiddenの指定は無効 (この関数は効果がない)
+     *
+     */
+    [[deprecated(
+        "FuncListener::hidden() does nothing since ver1.10")]] FuncListener &
+    hidden(bool) {
+        return *this;
+    }
     /*!
      * \brief 関数が呼び出されたかどうかを確認
      *
