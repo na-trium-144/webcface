@@ -254,9 +254,9 @@ class WEBCFACE_DLL AnonymousFunc : public Func {
      *
      */
     template <typename T>
-    AnonymousFunc(const T &func) {
-        func_setter = [func](AnonymousFunc &a) { a.set(func); };
-    }
+    explicit AnonymousFunc(const T &func)
+        : func_setter([func](AnonymousFunc &a) { a.set(func); }) {}
+
     AnonymousFunc(const AnonymousFunc &) = delete;
     AnonymousFunc &operator=(const AnonymousFunc &) = delete;
     AnonymousFunc(AnonymousFunc &&other) { *this = std::move(other); }

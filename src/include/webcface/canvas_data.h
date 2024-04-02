@@ -522,8 +522,8 @@ class WEBCFACE_DLL Canvas2DComponent : protected Common::Canvas2DComponentBase {
      * \param func 実行する任意の関数(std::functionにキャスト可能ならなんでもok)
      *
      */
-    template <typename Ret>
-    Canvas2DComponent &onClick(std::function<Ret()> func) {
+    template <typename T>
+    Canvas2DComponent &onClick(T func) {
         on_click_func_tmp = std::make_shared<AnonymousFunc>(func);
         return *this;
     }
