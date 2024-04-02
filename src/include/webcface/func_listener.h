@@ -60,6 +60,20 @@ class WEBCFACE_DLL FuncListener : protected Func {
     }
 
     /*!
+     * \brief 関数を関数リストで非表示にする
+     * (他clientのentryに表示されなくする)
+     * \deprecated
+     * ver1.10から、名前が半角ピリオドで始まるかどうかで判断されるように仕様変更したため、
+     * hiddenの指定は無効 (この関数は効果がない)
+     *
+     */
+    [[deprecated(
+        "FuncListener::hidden() does nothing since ver1.10")]] FuncListener &
+    hidden(bool) {
+        return *this;
+    }
+
+    /*!
      * \brief 関数が呼び出されたかどうかを確認
      *
      * 1回の関数呼び出しに対してfetchCallは1回だけhandleを返す
