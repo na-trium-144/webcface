@@ -12,6 +12,7 @@ var classwebcface_1_1AnonymousFunc =
     [ "fieldNameTmp", "classwebcface_1_1AnonymousFunc.html#aef514b41c774e84409145e157e84e3bc", null ],
     [ "free", "classwebcface_1_1AnonymousFunc.html#a2ab7cc09912b8dd1ab69e918f3a11f97", null ],
     [ "getDefaultFuncWrapper", "classwebcface_1_1AnonymousFunc.html#a97ecd85f8105c2a1f85bbe354ec9b33c", null ],
+    [ "hidden", "classwebcface_1_1AnonymousFunc.html#ab48d613b786f979c8f9250f2f92ac300", null ],
     [ "isSelf", "classwebcface_1_1AnonymousFunc.html#a0522a651826ba6fcbb9ce86258e8fa30", null ],
     [ "lockTo", "classwebcface_1_1AnonymousFunc.html#a6b1341b3301a0eff9355eae557939f94", null ],
     [ "member", "classwebcface_1_1AnonymousFunc.html#aa8fab40ead35fa8e761986d5f4000a5c", null ],

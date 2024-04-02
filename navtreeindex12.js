@@ -1,5 +1,11 @@
 var NAVTREEINDEX12 =
 {
+"functions_r.html":[24,3,0,17],
+"functions_rela.html":[24,3,4],
+"functions_s.html":[24,3,0,18],
+"functions_t.html":[24,3,0,19],
+"functions_type.html":[24,3,3],
+"functions_u.html":[24,3,0,20],
 "functions_v.html":[24,3,0,21],
 "functions_vars.html":[24,3,2],
 "functions_vars.html":[24,3,2,0],
@@ -243,11 +249,5 @@ var NAVTREEINDEX12 =
 "md_90__message.html#autotoc_md174":[19,6,1],
 "md_90__message.html#autotoc_md175":[19,6,2],
 "md_90__message.html#autotoc_md176":[19,6,3],
-"md_90__message.html#autotoc_md177":[19,7],
-"md_90__message.html#autotoc_md178":[19,7,0],
-"md_90__message.html#autotoc_md179":[19,7,1],
-"md_90__message.html#autotoc_md180":[19,7,2],
-"md_90__message.html#autotoc_md181":[19,7,3],
-"md_90__message.html#autotoc_md182":[19,8],
-"md_90__message.html#autotoc_md183":[19,8,0]
+"md_90__message.html#autotoc_md177":[19,7]
 };

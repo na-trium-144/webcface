@@ -224,10 +224,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a73502e201128c9e38daf749557da32f4" id="r_a73502e201128c9e38daf749557da32f4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Canvas2DComponent.html">Canvas2DComponent</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Canvas2DComponent.html#a73502e201128c9e38daf749557da32f4">onClick</a> (const <a class="el" href="classwebcface_1_1Func.html">Func</a> &amp;func)</td></tr>
 <tr class="memdesc:a73502e201128c9e38daf749557da32f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">クリック時に実行される関数を設定  <br /></td></tr>
 <tr class="separator:a73502e201128c9e38daf749557da32f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4bd6e775cd04c039909a2022664f72c2" id="r_a4bd6e775cd04c039909a2022664f72c2"><td class="memTemplParams" colspan="2">template&lt;typename Ret &gt; </td></tr>
-<tr class="memitem:a4bd6e775cd04c039909a2022664f72c2"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Canvas2DComponent.html">Canvas2DComponent</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Canvas2DComponent.html#a4bd6e775cd04c039909a2022664f72c2">onClick</a> (std::function&lt; Ret()&gt; func)</td></tr>
-<tr class="memdesc:a4bd6e775cd04c039909a2022664f72c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">クリック時に実行される関数を設定  <br /></td></tr>
-<tr class="separator:a4bd6e775cd04c039909a2022664f72c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0cf4be95691bbf85931a723fe2c942b2" id="r_a0cf4be95691bbf85931a723fe2c942b2"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a0cf4be95691bbf85931a723fe2c942b2"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Canvas2DComponent.html">Canvas2DComponent</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Canvas2DComponent.html#a0cf4be95691bbf85931a723fe2c942b2">onClick</a> (T func)</td></tr>
+<tr class="memdesc:a0cf4be95691bbf85931a723fe2c942b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">クリック時に実行される関数を設定  <br /></td></tr>
+<tr class="separator:a0cf4be95691bbf85931a723fe2c942b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abe35a3114027d8ff2a66d81ad843650f" id="r_abe35a3114027d8ff2a66d81ad843650f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Canvas2DComponent.html">Canvas2DComponent</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Canvas2DComponent.html#abe35a3114027d8ff2a66d81ad843650f">onClick</a> (<a class="el" href="classwebcface_1_1AnonymousFunc.html">AnonymousFunc</a> &amp;&amp;func)</td></tr>
 <tr class="memdesc:abe35a3114027d8ff2a66d81ad843650f"><td class="mdescLeft">&#160;</td><td class="mdescRight">クリック時に実行される関数を設定  <br /></td></tr>
 <tr class="separator:abe35a3114027d8ff2a66d81ad843650f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -700,13 +700,13 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a4bd6e775cd04c039909a2022664f72c2" name="a4bd6e775cd04c039909a2022664f72c2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4bd6e775cd04c039909a2022664f72c2">&#9670;&#160;</a></span>onClick() <span class="overload">[4/4]</span></h2>
+<a id="a0cf4be95691bbf85931a723fe2c942b2" name="a0cf4be95691bbf85931a723fe2c942b2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0cf4be95691bbf85931a723fe2c942b2">&#9670;&#160;</a></span>onClick() <span class="overload">[4/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Ret &gt; </div>
+template&lt;typename T &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -714,7 +714,7 @@ template&lt;typename Ret &gt; </div>
         <tr>
           <td class="memname"><a class="el" href="classwebcface_1_1Canvas2DComponent.html">Canvas2DComponent</a> &amp; onClick </td>
           <td>(</td>
-          <td class="paramtype">std::function&lt; Ret()&gt;&#160;</td>
+          <td class="paramtype">T&#160;</td>
           <td class="paramname"><em>func</em></td><td>)</td>
           <td></td>
         </tr>
@@ -1269,7 +1269,7 @@ template&lt;typename Ret &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="classwebcface_1_1Canvas2DComponent.html">Canvas2DComponent</a></li>
-    <li class="footer">Generated on Tue Apr 2 2024 10:24:54 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Tue Apr 2 2024 11:13:44 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

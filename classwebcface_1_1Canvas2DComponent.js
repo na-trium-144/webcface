@@ -15,7 +15,7 @@ var classwebcface_1_1Canvas2DComponent =
     [ "onClick", "classwebcface_1_1Canvas2DComponent.html#a376cacc3cf036d47178c1dea1fa94cd0", null ],
     [ "onClick", "classwebcface_1_1Canvas2DComponent.html#abe35a3114027d8ff2a66d81ad843650f", null ],
     [ "onClick", "classwebcface_1_1Canvas2DComponent.html#a73502e201128c9e38daf749557da32f4", null ],
-    [ "onClick", "classwebcface_1_1Canvas2DComponent.html#a4bd6e775cd04c039909a2022664f72c2", null ],
+    [ "onClick", "classwebcface_1_1Canvas2DComponent.html#a0cf4be95691bbf85931a723fe2c942b2", null ],
     [ "operator!=", "classwebcface_1_1Canvas2DComponent.html#a2e1cc44bfe291931975b616fd8019eb6", null ],
     [ "operator==", "classwebcface_1_1Canvas2DComponent.html#a310bf14898fe8ace0dc180a5d482c790", null ],
     [ "origin", "classwebcface_1_1Canvas2DComponent.html#ab06166d764882e2648ea38f617c9bc15", null ],

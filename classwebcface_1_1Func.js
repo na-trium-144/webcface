@@ -9,6 +9,7 @@ var classwebcface_1_1Func =
     [ "expired", "classwebcface_1_1Func.html#aab9d1bda10b0c1b79c4f48f3ebcf1d29", null ],
     [ "free", "classwebcface_1_1Func.html#a2ab7cc09912b8dd1ab69e918f3a11f97", null ],
     [ "getDefaultFuncWrapper", "classwebcface_1_1Func.html#a97ecd85f8105c2a1f85bbe354ec9b33c", null ],
+    [ "hidden", "classwebcface_1_1Func.html#ab48d613b786f979c8f9250f2f92ac300", null ],
     [ "isSelf", "classwebcface_1_1Func.html#a0522a651826ba6fcbb9ce86258e8fa30", null ],
     [ "member", "classwebcface_1_1Func.html#aa8fab40ead35fa8e761986d5f4000a5c", null ],
     [ "name", "classwebcface_1_1Func.html#a1d89c28bd42ba9a52da008bb69367171", null ],
