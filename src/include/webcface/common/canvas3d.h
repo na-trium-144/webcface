@@ -7,7 +7,7 @@
 #include <optional>
 #include <unordered_map>
 
-namespace WEBCFACE_NS {
+WEBCFACE_NS_BEGIN
 inline namespace Common {
 
 /*!
@@ -76,4 +76,4 @@ struct Canvas3DComponentBase {
 };
 
 } // namespace Common
-} // namespace WEBCFACE_NS
+WEBCFACE_NS_END

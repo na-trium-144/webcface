@@ -3,7 +3,7 @@
 #include <webcface/member.h>
 #include "../message/message.h"
 
-namespace WEBCFACE_NS {
+WEBCFACE_NS_BEGIN
 
 template class WEBCFACE_DLL EventTarget<Value>;
 
@@ -88,4 +88,4 @@ std::ostream &operator<<(std::ostream &os, const Value &data) {
     return os;
 }
 
-} // namespace WEBCFACE_NS
+WEBCFACE_NS_END

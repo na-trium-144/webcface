@@ -5,7 +5,7 @@
 #include "text.h"
 #include <memory>
 
-namespace WEBCFACE_NS {
+WEBCFACE_NS_BEGIN
 namespace Internal {
 struct ClientData;
 }
@@ -980,4 +980,4 @@ inline ViewComponent checkInput(const std::string &text = "") {
 } // namespace Components
 namespace ViewComponents = Components;
 
-} // namespace WEBCFACE_NS
+WEBCFACE_NS_END

@@ -6,7 +6,8 @@
 #include <spdlog/common.h>
 #include <webcface/common/def.h>
 
-namespace WEBCFACE_NS::Server {
+WEBCFACE_NS_BEGIN
+namespace Server {
 
 class CustomLogger : public crow::ILogHandler {
     std::shared_ptr<spdlog::logger> logger;
@@ -32,4 +33,5 @@ class CustomLogger : public crow::ILogHandler {
         }
     }
 };
-} // namespace WEBCFACE_NS::Server
+} // namespace Server
+WEBCFACE_NS_END

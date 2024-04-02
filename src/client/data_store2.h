@@ -17,7 +17,8 @@
 #include <webcface/common/canvas2d.h>
 #include "../message/message.h"
 
-namespace WEBCFACE_NS::Internal {
+WEBCFACE_NS_BEGIN
+namespace Internal {
 /*!
  * \brief 送受信するデータを保持するクラス
  *
@@ -256,4 +257,5 @@ extern template class SyncDataStore2<Canvas3DData, int>;
 extern template class SyncDataStore2<Canvas2DData, int>;
 extern template class SyncDataStore2<ImageData, Common::ImageReq>;
 
-} // namespace WEBCFACE_NS::Internal
+} // namespace Internal
+WEBCFACE_NS_END

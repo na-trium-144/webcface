@@ -17,17 +17,18 @@
 #include <webcface/common/def.h>
 #include "val_adaptor.h"
 
-MSGPACK_ADD_ENUM(WEBCFACE_NS::Common::ValType)
-MSGPACK_ADD_ENUM(WEBCFACE_NS::Common::ViewComponentType)
-MSGPACK_ADD_ENUM(WEBCFACE_NS::Common::ViewColor)
-MSGPACK_ADD_ENUM(WEBCFACE_NS::Common::ImageCompressMode)
-MSGPACK_ADD_ENUM(WEBCFACE_NS::Common::ImageColorMode)
-MSGPACK_ADD_ENUM(WEBCFACE_NS::Common::RobotJointType)
-MSGPACK_ADD_ENUM(WEBCFACE_NS::Common::GeometryType)
-MSGPACK_ADD_ENUM(WEBCFACE_NS::Common::Canvas3DComponentType)
-MSGPACK_ADD_ENUM(WEBCFACE_NS::Common::Canvas2DComponentType)
+MSGPACK_ADD_ENUM(webcface::Common::ValType)
+MSGPACK_ADD_ENUM(webcface::Common::ViewComponentType)
+MSGPACK_ADD_ENUM(webcface::Common::ViewColor)
+MSGPACK_ADD_ENUM(webcface::Common::ImageCompressMode)
+MSGPACK_ADD_ENUM(webcface::Common::ImageColorMode)
+MSGPACK_ADD_ENUM(webcface::Common::RobotJointType)
+MSGPACK_ADD_ENUM(webcface::Common::GeometryType)
+MSGPACK_ADD_ENUM(webcface::Common::Canvas3DComponentType)
+MSGPACK_ADD_ENUM(webcface::Common::Canvas2DComponentType)
 
-namespace WEBCFACE_NS::Message {
+WEBCFACE_NS_BEGIN
+namespace Message {
 // 新しいメッセージの定義は
 // kind追記→struct作成→message.ccに追記→s_client_data.ccに追記→client.ccに追記
 
@@ -911,7 +912,8 @@ inline std::string packDone(std::stringstream &buffer, int len) {
     return buffer2.str();
 }
 
-} // namespace WEBCFACE_NS::Message
+} // namespace Message
+WEBCFACE_NS_END
 
 namespace msgpack {
 MSGPACK_API_VERSION_NAMESPACE(MSGPACK_DEFAULT_API_NS) {
@@ -932,17 +934,17 @@ MSGPACK_API_VERSION_NAMESPACE(MSGPACK_DEFAULT_API_NS) {
         }
     };
     template <>
-    struct convert<WEBCFACE_NS::Message::Ping>
-        : public EmptyConvert<WEBCFACE_NS::Message::Ping> {};
+    struct convert<webcface::Message::Ping>
+        : public EmptyConvert<webcface::Message::Ping> {};
     template <>
-    struct convert<WEBCFACE_NS::Message::PingStatusReq>
-        : public EmptyConvert<WEBCFACE_NS::Message::PingStatusReq> {};
+    struct convert<webcface::Message::PingStatusReq>
+        : public EmptyConvert<webcface::Message::PingStatusReq> {};
     template <>
-    struct pack<WEBCFACE_NS::Message::Ping>
-        : public EmptyPack<WEBCFACE_NS::Message::Ping> {};
+    struct pack<webcface::Message::Ping>
+        : public EmptyPack<webcface::Message::Ping> {};
     template <>
-    struct pack<WEBCFACE_NS::Message::PingStatusReq>
-        : public EmptyPack<WEBCFACE_NS::Message::PingStatusReq> {};
+    struct pack<webcface::Message::PingStatusReq>
+        : public EmptyPack<webcface::Message::PingStatusReq> {};
     } // namespace adaptor
 }
 } // namespace msgpack

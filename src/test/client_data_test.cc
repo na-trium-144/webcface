@@ -3,8 +3,8 @@
 #include <webcface/member.h>
 #include <string>
 
-using namespace WEBCFACE_NS;
-using namespace WEBCFACE_NS::Internal;
+using namespace webcface;
+using namespace webcface::Internal;
 
 class SyncDataStore2Test : public ::testing::Test {
   protected:

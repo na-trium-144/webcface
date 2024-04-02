@@ -28,7 +28,8 @@
 #include "func_internal.h"
 #include <webcface/common/def.h>
 
-namespace WEBCFACE_NS::Internal {
+WEBCFACE_NS_BEGIN
+namespace Internal {
 
 WEBCFACE_DLL void messageThreadMain(std::shared_ptr<ClientData> data,
                                     std::string host, int port);
@@ -198,4 +199,5 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
      */
     WEBCFACE_DLL void pingStatusReq();
 };
-} // namespace WEBCFACE_NS::Internal
+} // namespace Internal
+WEBCFACE_NS_END

@@ -8,7 +8,7 @@
 #include "canvas3d.h"
 #include "field_base.h"
 
-namespace WEBCFACE_NS {
+WEBCFACE_NS_BEGIN
 inline namespace Common {
 
 enum class Canvas2DComponentType {
@@ -57,4 +57,4 @@ struct Canvas2DDataBase {
 };
 
 } // namespace Common
-} // namespace WEBCFACE_NS
+WEBCFACE_NS_END

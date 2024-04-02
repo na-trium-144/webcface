@@ -5,7 +5,7 @@
 <span class="since-c">1.4</span>
 <span class="since-js">1.3</span>
 \sa
-* C++ webcface::RobotModel
+* C++ webcface::RobotModel (`webcface/robot_model.h`)
 * JavaScript [RobotModel](https://na-trium-144.github.io/webcface-js/classes/RobotModel.html)
 (受信機能のみ)
 * Python 未実装 <!--[webcface.Canvas3D](https://na-trium-144.github.io/webcface-python/webcface.canvas3d.html#webcface.canvas3d.Canvas3D)-->

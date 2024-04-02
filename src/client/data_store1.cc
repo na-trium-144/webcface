@@ -1,6 +1,7 @@
 #include "data_store1.h"
 
-namespace WEBCFACE_NS::Internal {
+WEBCFACE_NS_BEGIN
+namespace Internal {
 template <typename T>
 void SyncDataStore1<T>::setRecv(const std::string &member, const T &data) {
     std::lock_guard lock(mtx);
@@ -52,4 +53,5 @@ template class WEBCFACE_DLL
 template class WEBCFACE_DLL
     SyncDataStore1<std::chrono::system_clock::time_point>;
 
-} // namespace WEBCFACE_NS::Internal
+} // namespace Internal
+WEBCFACE_NS_END

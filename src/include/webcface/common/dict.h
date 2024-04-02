@@ -10,7 +10,7 @@
 #include "vector.h"
 #include "def.h"
 
-namespace WEBCFACE_NS {
+WEBCFACE_NS_BEGIN
 inline namespace Common {
 
 struct VecTypeDisabled {};
@@ -210,4 +210,4 @@ class Dict {
 };
 
 } // namespace Common
-} // namespace WEBCFACE_NS
+WEBCFACE_NS_END

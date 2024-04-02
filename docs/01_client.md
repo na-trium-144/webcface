@@ -2,7 +2,7 @@
 
 \tableofcontents
 \sa
-* C++ webcface::Client
+* C++ webcface::Client (`webcface/client.h`)
 * JavaScript [Client](https://na-trium-144.github.io/webcface-js/classes/Client.html)
 * Python [webcface.Client](https://na-trium-144.github.io/webcface-python/webcface.client.html#webcface.client.Client)
 
@@ -25,7 +25,8 @@ Client オブジェクトを作り、start() を呼ぶことでサーバーへ�
 
 - <b class="tab-title">C++</b>
     ```cpp
-    #include <webcface/webcface.h>
+    #include <webcface/client.h>
+    // または #include <webcface/webcface.h> (すべての機能をinclude)
 
     webcface::Client wcli("sample");
     // アドレスを指定する場合

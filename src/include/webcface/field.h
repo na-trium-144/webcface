@@ -4,7 +4,7 @@
 #include "common/field_base.h"
 #include "common/def.h"
 
-namespace WEBCFACE_NS {
+WEBCFACE_NS_BEGIN
 
 namespace Internal {
 struct ClientData;
@@ -45,4 +45,4 @@ struct WEBCFACE_DLL Field : public Common::FieldBase {
      */
     bool isSelf() const;
 };
-} // namespace WEBCFACE_NS
+WEBCFACE_NS_END

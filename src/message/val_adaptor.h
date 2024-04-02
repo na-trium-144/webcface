@@ -10,9 +10,9 @@ MSGPACK_API_VERSION_NAMESPACE(MSGPACK_DEFAULT_API_NS) {
     namespace adaptor {
 
     template <>
-    struct convert<WEBCFACE_NS::ValAdaptor> {
+    struct convert<webcface::ValAdaptor> {
         msgpack::object const &operator()(msgpack::object const &o,
-                                          WEBCFACE_NS::ValAdaptor &v) const {
+                                          webcface::ValAdaptor &v) const {
             switch (o.type) {
             case msgpack::type::FLOAT32:
             case msgpack::type::FLOAT64:
@@ -40,21 +40,21 @@ MSGPACK_API_VERSION_NAMESPACE(MSGPACK_DEFAULT_API_NS) {
         }
     };
     template <>
-    struct pack<WEBCFACE_NS::ValAdaptor> {
+    struct pack<webcface::ValAdaptor> {
         template <typename Stream>
         msgpack::packer<Stream> &operator()(msgpack::packer<Stream> &o,
-                                            const WEBCFACE_NS::ValAdaptor &v) {
+                                            const webcface::ValAdaptor &v) {
             switch (v.valType()) {
-            case WEBCFACE_NS::ValType::bool_ :
+            case webcface::ValType::bool_:
                 o.pack(static_cast<bool>(v));
                 break;
-            case WEBCFACE_NS::ValType::int_:
+            case webcface::ValType::int_:
                 o.pack(static_cast<std::int64_t>(v));
                 break;
-            case WEBCFACE_NS::ValType::float_:
+            case webcface::ValType::float_:
                 o.pack(static_cast<double>(v));
                 break;
-            case WEBCFACE_NS::ValType::string_:
+            case webcface::ValType::string_:
             default:
                 o.pack(static_cast<std::string>(v));
                 break;

@@ -6,7 +6,6 @@
 #include <utility>
 #include <stdexcept>
 #include <concepts>
-#include "func.h"
 #include "event_target.h"
 #include "common/def.h"
 #include "common/canvas3d.h"
@@ -14,7 +13,7 @@
 #include "robot_model.h"
 #include "canvas_data.h"
 
-namespace WEBCFACE_NS {
+WEBCFACE_NS_BEGIN
 namespace Internal {
 template <typename Component>
 class DataSetBuffer;
@@ -213,4 +212,4 @@ class WEBCFACE_DLL Canvas3D : protected Field, public EventTarget<Canvas3D> {
      */
     Canvas3D &sync();
 };
-} // namespace WEBCFACE_NS
+WEBCFACE_NS_END

@@ -2,7 +2,8 @@
 #include "s_client_data.h"
 #include <algorithm>
 
-namespace WEBCFACE_NS::Server {
+WEBCFACE_NS_BEGIN
+namespace Server {
 void Store::clear() {
     clients.clear();
     clients_by_id.clear();
@@ -95,4 +96,5 @@ void Store::forEachWithName(const std::function<void(ClientDataPtr)> &func) {
         }
     }
 }
-} // namespace WEBCFACE_NS::Server
+} // namespace Server
+WEBCFACE_NS_END

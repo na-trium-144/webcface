@@ -11,7 +11,7 @@
 #include <opencv2/imgcodecs.hpp>
 #endif
 
-namespace WEBCFACE_NS {
+WEBCFACE_NS_BEGIN
 inline namespace Common {
 
 enum class ImageColorMode {
@@ -298,4 +298,4 @@ struct ImageReq {
     bool operator!=(const ImageReq &rhs) const { return !(*this == rhs); }
 };
 } // namespace Common
-} // namespace WEBCFACE_NS
+WEBCFACE_NS_END

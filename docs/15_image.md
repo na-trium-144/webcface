@@ -5,7 +5,7 @@
 <span class="since-c">1.3</span>
 <span class="since-js">1.2</span>
 \sa
-* C++ webcface::Image
+* C++ webcface::Image (`webcface/image.h`)
 * JavaScript [Image](https://na-trium-144.github.io/webcface-js/classes/Image.html)
 * Python 未実装 <!--[webcface.Image](https://na-trium-144.github.io/webcface-python/webcface.image.html#webcface.image.Image)-->
 

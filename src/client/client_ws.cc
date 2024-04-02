@@ -7,7 +7,7 @@
 #include <cstdint>
 #include <cstdlib>
 
-namespace WEBCFACE_NS {
+WEBCFACE_NS_BEGIN
 
 void Internal::messageThreadMain(std::shared_ptr<Internal::ClientData> data,
                                  std::string host, int port) {
@@ -105,4 +105,4 @@ void Internal::messageThreadMain(std::shared_ptr<Internal::ClientData> data,
     }
 }
 
-} // namespace WEBCFACE_NS
+WEBCFACE_NS_END

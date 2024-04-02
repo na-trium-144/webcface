@@ -6,7 +6,7 @@
 <span class="since-js"></span>
 <span class="since-py"></span>
 \sa
-* C++ webcface::Log
+* C++ webcface::Log (`webcface/log.h`: 受信時, `webcface/logger.h`: 送信時)
 * JavaScript [Log](https://na-trium-144.github.io/webcface-js/classes/Log.html)
 * Python [webcface.Log](https://na-trium-144.github.io/webcface-python/webcface.log.html#webcface.log.Log)
 
