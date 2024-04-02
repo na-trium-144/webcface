@@ -2,7 +2,7 @@
 
 \tableofcontents
 \sa
-* C++ webcface::Member
+* C++ webcface::Member (`webcface/member.h`)
 * JavaScript [Member](https://na-trium-144.github.io/webcface-js/classes/Member.html)
 * Python [webcface.Member](https://na-trium-144.github.io/webcface-python/webcface.member.html#webcface.member.Member)
 
