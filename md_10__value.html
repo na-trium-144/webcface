@@ -143,13 +143,14 @@ $(document).ready(function(){initNavTree('md_10__value.html',''); initResizable(
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
 <ul><li class="level1"><a href="#autotoc_md36">コマンドライン</a></li>
-<li class="level1"><a href="#autotoc_md37">送信</a><ul><li class="level2"><a href="#autotoc_md38">グループ化</a></li>
-<li class="level2"><a href="#autotoc_md39">複数の値をまとめて送る</a></li>
+<li class="level1"><a href="#autotoc_md37">送信</a><ul><li class="level2"><a href="#autotoc_md38">通信データについて</a></li>
+<li class="level2"><a href="#autotoc_md39">グループ化</a></li>
+<li class="level2"><a href="#autotoc_md40">複数の値をまとめて送る</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md40">受信</a><ul><li class="level2"><a href="#autotoc_md41">時刻</a></li>
-<li class="level2"><a href="#autotoc_md42">Entry</a></li>
-<li class="level2"><a href="#autotoc_md43">Event</a></li>
+<li class="level1"><a href="#autotoc_md41">受信</a><ul><li class="level2"><a href="#autotoc_md42">時刻</a></li>
+<li class="level2"><a href="#autotoc_md43">Entry</a></li>
+<li class="level2"><a href="#autotoc_md44">Event</a></li>
 </ul>
 </li>
 </ul>
@@ -157,7 +158,7 @@ $(document).ready(function(){initNavTree('md_10__value.html',''); initResizable(
 <div class="textblock"><p><a class="anchor" id="autotoc_md35"></a></p>
 <dl class="section since"><dt>Since</dt><dd><span class="since-c"></span> <span class="since-js"></span> <span class="since-py"></span> </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><ul>
-<li>C++ <a class="el" href="classwebcface_1_1Value.html" title="実数値またはその配列の送受信データを表すクラス">webcface::Value</a></li>
+<li>C++ <a class="el" href="classwebcface_1_1Value.html" title="実数値またはその配列の送受信データを表すクラス">webcface::Value</a> (<code><a class="el" href="value_8h.html">webcface/value.h</a></code>)</li>
 <li>JavaScript <a href="https://na-trium-144.github.io/webcface-js/classes/Value.html">Value</a></li>
 <li>Python <a href="https://na-trium-144.github.io/webcface-python/webcface.value.html#webcface.value.Value">webcface.Value</a></li>
 </ul>
@@ -178,10 +179,10 @@ $(document).ready(function(){initNavTree('md_10__value.html',''); initResizable(
 (C++のみ) set() の代わりに代入演算子(Value::operator=)でも同様のことができます。 また、 operator+= など、doubleやintの変数で使える各種演算子も使えます <div class="fragment"><div class="line">wcli.value(<span class="stringliteral">&quot;hoge&quot;</span>) = 5;</div>
 </div><!-- fragment --></li>
 <li><b class="tab-title">C</b> double型の単一の値は <div class="fragment"><div class="line"><a class="code hl_function" href="c__wcf_2value_8cc.html#aa11a6ea52672771139a39b354bd78346">wcfValueSet</a>(wcli, <span class="stringliteral">&quot;hoge&quot;</span>, 123.45);</div>
-<div class="ttc" id="ac__wcf_2value_8cc_html_aa11a6ea52672771139a39b354bd78346"><div class="ttname"><a href="c__wcf_2value_8cc.html#aa11a6ea52672771139a39b354bd78346">wcfValueSet</a></div><div class="ttdeci">wcfStatus wcfValueSet(wcfClient *wcli, const char *field, double value)</div><div class="ttdoc">単一の値を送信する</div><div class="ttdef"><b>Definition</b> value.cc:4</div></div>
+<div class="ttc" id="ac__wcf_2value_8cc_html_aa11a6ea52672771139a39b354bd78346"><div class="ttname"><a href="c__wcf_2value_8cc.html#aa11a6ea52672771139a39b354bd78346">wcfValueSet</a></div><div class="ttdeci">wcfStatus wcfValueSet(wcfClient *wcli, const char *field, double value)</div><div class="ttdoc">単一の値を送信する</div><div class="ttdef"><b>Definition</b> value.cc:6</div></div>
 </div><!-- fragment --> 配列データは <div class="fragment"><div class="line"><span class="keywordtype">double</span> value[5] = {1, 2, 3, 4, 5};</div>
 <div class="line"><a class="code hl_function" href="c__wcf_2value_8cc.html#ae6cfcc4723595c7428e5c832853b15d6">wcfValueSetVecD</a>(wcli, <span class="stringliteral">&quot;fuga&quot;</span>, value, 5);</div>
-<div class="ttc" id="ac__wcf_2value_8cc_html_ae6cfcc4723595c7428e5c832853b15d6"><div class="ttname"><a href="c__wcf_2value_8cc.html#ae6cfcc4723595c7428e5c832853b15d6">wcfValueSetVecD</a></div><div class="ttdeci">wcfStatus wcfValueSetVecD(wcfClient *wcli, const char *field, const double *value, int size)</div><div class="ttdoc">複数の値を送信する(doubleの配列)</div><div class="ttdef"><b>Definition</b> value.cc:15</div></div>
+<div class="ttc" id="ac__wcf_2value_8cc_html_ae6cfcc4723595c7428e5c832853b15d6"><div class="ttname"><a href="c__wcf_2value_8cc.html#ae6cfcc4723595c7428e5c832853b15d6">wcfValueSetVecD</a></div><div class="ttdeci">wcfStatus wcfValueSetVecD(wcfClient *wcli, const char *field, const double *value, int size)</div><div class="ttdoc">複数の値を送信する(doubleの配列)</div><div class="ttdef"><b>Definition</b> value.cc:17</div></div>
 </div><!-- fragment --> のように送信できます。</li>
 <li><b class="tab-title">JavaScript</b> <div class="fragment"><div class="line">wcli.value(&quot;hoge&quot;).set(5);</div>
 <div class="line">wcli.value(&quot;fuga&quot;).set([1, 2, 3, 4, 5]);</div>
@@ -190,14 +191,21 @@ $(document).ready(function(){initNavTree('md_10__value.html',''); initResizable(
 <div class="line">wcli.value(<span class="stringliteral">&quot;fuga&quot;</span>).set([1, 2, 3, 4, 5])</div>
 </div><!-- fragment --></li>
 </ul>
-</div><div class="tabbed"></div><dl class="section note"><dt>Note</dt><dd>webcfaceのvalueは浮動小数型のみを扱いますが、値が整数だった場合シリアライズ時に自動的に整数型として送受信されるようなので通信量を気にする必要はありません。(<a href="https://github.com/msgpack/msgpack-c/issues/1017">msgpack/msgpack-c#1017</a>)</dd></dl>
-<dl class="section warning"><dt>Warning</dt><dd><span class="since-c">1.10</span> データの名前を半角ピリオドから始めると、Entryが他クライアントに送信されなくなります。 (WebUI上に表示することなくデータを送ることができます) <br  />
+</div><div class="tabbed"></div><dl class="section warning"><dt>Warning</dt><dd><span class="since-c">1.10</span> データの名前を半角ピリオドから始めると、Entryが他クライアントに送信されなくなります。 (WebUI上に表示することなくデータを送ることができます) <br  />
  半角ピリオド2つから始まる名前はwebcface内部の処理で利用する場合があるので使用しないでください。 <br  />
  Text、Funcなど他のデータ型についても同様です。</dd></dl>
 <h2><a class="anchor" id="autotoc_md38"></a>
+通信データについて</h2>
+<p>クライアントが送信したデータは、サーバーを経由して別のクライアントに送られます。 (Valueに限らず、これ以降説明する他のデータ型のfieldについても同様です。)</p>
+<p><img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/pub-sub.png" alt="pub-sub" class="inline"/></p>
+<p>サーバー→クライアント間では、初期状態ではデータは送信されず、 クライアントがリクエストを送って初めてサーバーからデータが順次送られてくるようになります。</p>
+<p><span class="since-c">1.8</span> <span class="since-js">1.4.1</span> <span class="since-py">1.1.2</span> クライアント→サーバー間では、同じデータを繰り返しsetした場合は2回目以降はデータを送信しないことで通信量を削減しています。</p>
+<p>基本的にクライアント→サーバーの方向にはすべてのデータが送信されるのに対し、サーバー→クライアントの方向には必要なデータのみを送信する設計になっていますが、これは前者はlocalhost(サーバーとクライアントが同じPC)のみで、後者はWi-FiやLANでも通信することを想定したものです。 (通信量は増えますがクライアント→サーバーのデータ送信をWi-FiやLAN経由で行うことも可能です)</p>
+<dl class="section note"><dt>Note</dt><dd>webcfaceのvalueは浮動小数型のみを扱いますが、値が整数だった場合シリアライズ時に自動的に整数型として送受信されるようなので、整数値やbool値を送りたい場合でも通信量を気にする必要はありません。(<a href="https://github.com/msgpack/msgpack-c/issues/1017">msgpack/msgpack-c#1017</a>)</dd></dl>
+<h2><a class="anchor" id="autotoc_md39"></a>
 グループ化</h2>
 <p>Valueの名前を半角ピリオドで区切ると、WebUI上ではフォルダアイコンで表示されグループ化されて表示されます。</p>
-<dl class="section note"><dt>Note</dt><dd>Valueに限らず他のデータ型 (<a class="el" href="md_13__view.html">View</a>, <a class="el" href="md_14__canvas2d.html">Canvas2D</a>, <a class="el" href="md_15__image.html">Image</a>, <a class="el" href="md_20__canvas3d.html">Canvas3D</a>, <a class="el" href="md_21__robot__model.html">RobotModel</a>) でも同様です。</dd></dl>
+<p>Valueに限らず他のデータ型 (<a class="el" href="md_13__view.html">View</a>, <a class="el" href="md_14__canvas2d.html">Canvas2D</a>, <a class="el" href="md_15__image.html">Image</a>, <a class="el" href="md_20__canvas3d.html">Canvas3D</a>, <a class="el" href="md_21__robot__model.html">RobotModel</a>) でも同様です。</p>
 <div class="tabbed"></div><div class="tabbed"><ul>
 <li><b class="tab-title">C++</b> <div class="fragment"><div class="line">wcli.value(<span class="stringliteral">&quot;pos.x&quot;</span>) = 1;</div>
 <div class="line">wcli.value(<span class="stringliteral">&quot;pos.y&quot;</span>) = 2;</div>
@@ -232,8 +240,7 @@ $(document).ready(function(){initNavTree('md_10__value.html',''); initResizable(
 </ul>
 </div><div class="tabbed"></div><p><img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/value_child.png" alt="value_child" class="inline"/></p>
 <p>ROSのTopicではPointやTransformなど目的に応じてさまざまな型が用意されていますが、 WebCFaceではそういう場合はValueを複数用意して送信することを想定しています。</p>
-<dl class="section note"><dt>Note</dt><dd><span class="since-c">1.8</span> <span class="since-js">1.4.1</span> <span class="since-py">1.1.2</span> 同じデータを繰り返しsetした場合は、通信量を削減するため実際には最初の1度しか送信されないようになっています。 (<a class="el" href="md_11__text.html">Text</a> についても同様)</dd></dl>
-<h2><a class="anchor" id="autotoc_md39"></a>
+<h2><a class="anchor" id="autotoc_md40"></a>
 複数の値をまとめて送る</h2>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000001">Todo:</a></b></dt><dd>Pythonの辞書型への対応は未実装</dd></dl>
 <div class="tabbed"></div><div class="tabbed"><ul>
@@ -282,10 +289,8 @@ $(document).ready(function(){initNavTree('md_10__value.html',''); initResizable(
 <div class="line">*/</div>
 </div><!-- fragment --></li>
 </ul>
-</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md40"></a>
+</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md41"></a>
 受信</h1>
-<p>WebCFaceのクライアントは初期状態ではデータを受信しません。 リクエストを送って初めてサーバーからデータが順次送られてくるようになります。 これはValueに限らず、これ以降説明する他のデータ型のfieldについても同様です。</p>
-<p><img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/pub-sub.png" alt="pub-sub" class="inline"/></p>
 <p>Member::value() でValueクラスのオブジェクトが得られ、 Value::tryGet(), Value::tryGetVec() などで値のリクエストをするとともに受信した値を取得できます。</p>
 <p>例えば<code>foo</code>というクライアントの<code>hoge</code>という名前のデータを取得したい場合は次のようにします。</p>
 <div class="tabbed"></div><div class="tabbed"><ul>
@@ -305,12 +310,12 @@ $(document).ready(function(){initNavTree('md_10__value.html',''); initResizable(
 <div class="line"><span class="comment">// few moments later,</span></div>
 <div class="line">ret = <a class="code hl_function" href="c__wcf_2value_8cc.html#a0f854340c16f01ef95424003d1ae84ca">wcfValueGetVecD</a>(wcli, <span class="stringliteral">&quot;a&quot;</span>, <span class="stringliteral">&quot;hoge&quot;</span>, value, 5, &amp;size);</div>
 <div class="line"><span class="comment">// ex.) ret = WCF_OK, value = {123.45, 0, 0, 0, 0}, size = 1</span></div>
-<div class="ttc" id="ac__wcf_2value_8cc_html_a0f854340c16f01ef95424003d1ae84ca"><div class="ttname"><a href="c__wcf_2value_8cc.html#a0f854340c16f01ef95424003d1ae84ca">wcfValueGetVecD</a></div><div class="ttdeci">wcfStatus wcfValueGetVecD(wcfClient *wcli, const char *member, const char *field, double *values, int size, int *recv_size)</div><div class="ttdoc">値を受信する</div><div class="ttdef"><b>Definition</b> value.cc:27</div></div>
+<div class="ttc" id="ac__wcf_2value_8cc_html_a0f854340c16f01ef95424003d1ae84ca"><div class="ttname"><a href="c__wcf_2value_8cc.html#a0f854340c16f01ef95424003d1ae84ca">wcfValueGetVecD</a></div><div class="ttdeci">wcfStatus wcfValueGetVecD(wcfClient *wcli, const char *member, const char *field, double *values, int size, int *recv_size)</div><div class="ttdoc">値を受信する</div><div class="ttdef"><b>Definition</b> value.cc:29</div></div>
 </div><!-- fragment --><p> sizeに受信した値の個数、valueに受信した値が入ります。</p>
 <p class="startli">初回の呼び出しでは<code>WCF_NOT_FOUND</code>を返し、別スレッドでリクエストが送信されます。</p>
 <p class="startli"><span class="since-c">1.7</span> 1つの値のみを受信する場合はwcfValueGetも使えます。 </p><div class="fragment"><div class="line"><span class="keywordtype">double</span> value;</div>
 <div class="line">ret = <a class="code hl_function" href="c__wcf_2value_8cc.html#a6b8bc18477f9e8bca7a5b1965f4905a0">wcfValueGet</a>(wcli, <span class="stringliteral">&quot;a&quot;</span>, <span class="stringliteral">&quot;hoge&quot;</span>, &amp;value);</div>
-<div class="ttc" id="ac__wcf_2value_8cc_html_a6b8bc18477f9e8bca7a5b1965f4905a0"><div class="ttname"><a href="c__wcf_2value_8cc.html#a6b8bc18477f9e8bca7a5b1965f4905a0">wcfValueGet</a></div><div class="ttdeci">wcfStatus wcfValueGet(wcfClient *wcli, const char *member, const char *field, double *value)</div><div class="ttdoc">値を受信する</div><div class="ttdef"><b>Definition</b> value.cc:51</div></div>
+<div class="ttc" id="ac__wcf_2value_8cc_html_a6b8bc18477f9e8bca7a5b1965f4905a0"><div class="ttname"><a href="c__wcf_2value_8cc.html#a6b8bc18477f9e8bca7a5b1965f4905a0">wcfValueGet</a></div><div class="ttdeci">wcfStatus wcfValueGet(wcfClient *wcli, const char *member, const char *field, double *value)</div><div class="ttdoc">値を受信する</div><div class="ttdef"><b>Definition</b> value.cc:53</div></div>
 </div><!-- fragment --><dl class="section note"><dt>Note</dt><dd><span class="since-c">1.7</span> member名に空文字列またはNULLを指定すると自分自身を指します。</dd></dl>
 </li>
 <li><b class="tab-title">JavaScript</b> <div class="fragment"><div class="line">const hoge: double | null = wcli.member(&quot;foo&quot;).value(&quot;hoge&quot;).tryGet();</div>
@@ -348,12 +353,12 @@ $(document).ready(function(){initNavTree('md_10__value.html',''); initResizable(
 </div><!-- fragment --></li>
 </ul>
 </div><div class="tabbed"></div><dl class="section note"><dt>Note</dt><dd><span class="since-c">1.7</span> <span class="since-js">1.1</span> <span class="since-py"></span> Value::request()で明示的にリクエストを送信することもできます。</dd></dl>
-<h2><a class="anchor" id="autotoc_md41"></a>
+<h2><a class="anchor" id="autotoc_md42"></a>
 時刻</h2>
 <p><strike>Value::time()</strike> でその値が送信されたとき(そのMemberがsync()したとき)の時刻が得られます。 <br  />
  <span class="since-c">1.7</span> <span class="since-py"></span> Member::syncTime() に変更 (Textなど他のデータの送信時刻と共通です)</p>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000002">Todo:</a></b></dt><dd>JavaScriptでもMember.syncTimeに統一する</dd></dl>
-<h2><a class="anchor" id="autotoc_md42"></a>
+<h2><a class="anchor" id="autotoc_md43"></a>
 Entry</h2>
 <p><strike>Member::values() で</strike> そのMemberが送信しているvalueのリストが得られます <br  />
  <span class="since-c">1.6</span> <span class="since-py">1.1</span> Member::valueEntries() に変更</p>
@@ -383,14 +388,14 @@ Entry</h2>
 </div><!-- fragment --></li>
 </ul>
 </div><div class="tabbed"></div><p>ただし、コールバックを設定する前から存在したデータについてはコールバックは呼び出されません。 Member名がわかっていれば初回のClient::sync()前に設定すればよいです。 そうでなければClient::onMemberEntry()イベントのコールバックの中で各種イベントを設定すればよいです。</p>
-<h2><a class="anchor" id="autotoc_md43"></a>
+<h2><a class="anchor" id="autotoc_md44"></a>
 Event</h2>
 <p>受信したデータが変化したときにコールバックを呼び出すことができます。 コールバックを設定することでもその値はリクエストされます。</p>
 <p>また、データが変化したどうかに関わらずそのMemberがsync()したときにコールバックを呼び出したい場合は Member::onSync() が使えます</p>
 <div class="tabbed"></div><div class="tabbed"><ul>
 <li><p class="startli"><b class="tab-title">C++</b> </p><div class="fragment"><div class="line">wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).value(<span class="stringliteral">&quot;hoge&quot;</span>).appendListener([](<a class="code hl_class" href="classwebcface_1_1Value.html">webcface::Value</a> v){ <span class="comment">/* ... */</span> });</div>
 <div class="line">wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).onSync().appendListener([](<a class="code hl_class" href="classwebcface_1_1Member.html">webcface::Member</a> m){ <span class="comment">/* ... */</span> });</div>
-<div class="ttc" id="aclasswebcface_1_1Member_html"><div class="ttname"><a href="classwebcface_1_1Member.html">webcface::Member</a></div><div class="ttdoc">Memberを指すクラス</div><div class="ttdef"><b>Definition</b> member.h:32</div></div>
+<div class="ttc" id="aclasswebcface_1_1Member_html"><div class="ttname"><a href="classwebcface_1_1Member.html">webcface::Member</a></div><div class="ttdoc">Memberを指すクラス</div><div class="ttdef"><b>Definition</b> member.h:33</div></div>
 </div><!-- fragment --><p> 例えば全Memberの全Valueデータを受信するには </p><div class="fragment"><div class="line">wcli.onMemberEntry().appendListener([](<a class="code hl_class" href="classwebcface_1_1Member.html">webcface::Member</a> m){</div>
 <div class="line">    m.<a class="code hl_function" href="classwebcface_1_1Member.html#aaccaea3b4d225bc85fc186d3c4f94e82">onValueEntry</a>().appendListener([](<a class="code hl_class" href="classwebcface_1_1Value.html">webcface::Value</a> v){</div>
 <div class="line">        v.<a class="code hl_function" href="classwebcface_1_1EventTarget.html#a7f12a03e22df0d00f39027dd3697f48d">appendListener</a>([](<a class="code hl_class" href="classwebcface_1_1Value.html">webcface::Value</a> v){</div>
@@ -399,7 +404,7 @@ Event</h2>
 <div class="line">    });</div>
 <div class="line">});</div>
 <div class="ttc" id="aclasswebcface_1_1EventTarget_html_a7f12a03e22df0d00f39027dd3697f48d"><div class="ttname"><a href="classwebcface_1_1EventTarget.html#a7f12a03e22df0d00f39027dd3697f48d">webcface::EventTarget::appendListener</a></div><div class="ttdeci">EventHandle appendListener(const EventCallback &amp;callback) const</div><div class="ttdoc">イベントのコールバックをリストの最後に追加する。</div><div class="ttdef"><b>Definition</b> event_target.h:58</div></div>
-<div class="ttc" id="aclasswebcface_1_1Member_html_aaccaea3b4d225bc85fc186d3c4f94e82"><div class="ttname"><a href="classwebcface_1_1Member.html#aaccaea3b4d225bc85fc186d3c4f94e82">webcface::Member::onValueEntry</a></div><div class="ttdeci">EventTarget&lt; Value, std::string &gt; onValueEntry() const</div><div class="ttdoc">valueが追加された時のイベント</div><div class="ttdef"><b>Definition</b> member.cc:8</div></div>
+<div class="ttc" id="aclasswebcface_1_1Member_html_aaccaea3b4d225bc85fc186d3c4f94e82"><div class="ttname"><a href="classwebcface_1_1Member.html#aaccaea3b4d225bc85fc186d3c4f94e82">webcface::Member::onValueEntry</a></div><div class="ttdeci">EventTarget&lt; Value, std::string &gt; onValueEntry() const</div><div class="ttdoc">valueが追加された時のイベント</div><div class="ttdef"><b>Definition</b> member.cc:36</div></div>
 </div><!-- fragment --><p> のようにすると可能です。</p>
 <p class="startli"><span class="since-c">1.7</span> 引数を持たない関数もイベントのコールバックに設定可能です。 </p><div class="fragment"><div class="line">wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).value(<span class="stringliteral">&quot;hoge&quot;</span>).appendListener([]() {</div>
 <div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;foo.hoge changed&quot;</span> &lt;&lt; std::endl;</div>
@@ -436,7 +441,7 @@ Event</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon Apr 1 2024 11:28:44 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Tue Apr 2 2024 10:24:54 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

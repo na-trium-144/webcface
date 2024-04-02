@@ -159,7 +159,7 @@ $(document).ready(function(){initNavTree('common_2image_8h_source.html',''); ini
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &lt;opencv2/imgcodecs.hpp&gt;</span></div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#endif</span></div>
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="keyword">namespace </span><a class="code hl_define" href="def_8h.html#ac7a8c78cf90e9e699574316ba855f40c">WEBCFACE_NS</a> {</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><a class="code hl_define" href="macros_8h.html#abe991b8f291782627a31118c688e123a">WEBCFACE_NS_BEGIN</a></div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="keyword">inline</span> <span class="keyword">namespace </span>Common {</div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
 <div class="foldopen" id="foldopen00017" data-start="{" data-end="};">
@@ -371,7 +371,7 @@ $(document).ready(function(){initNavTree('common_2image_8h_source.html',''); ini
 <div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span>};</div>
 </div>
 <div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span>} <span class="comment">// namespace Common</span></div>
-<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>} <span class="comment">// namespace WEBCFACE_NS</span></div>
+<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span><a class="code hl_define" href="macros_8h.html#ab3f2570d5b8231ddbe0e57fc8ab629eb">WEBCFACE_NS_END</a></div>
 <div class="ttc" id="aclasswebcface_1_1Common_1_1ImageBase_html"><div class="ttname"><a href="classwebcface_1_1Common_1_1ImageBase.html">webcface::Common::ImageBase</a></div><div class="ttdoc">(ver1.3から追加) 画像データ</div><div class="ttdef"><b>Definition</b> image.h:39</div></div>
 <div class="ttc" id="aclasswebcface_1_1Common_1_1ImageBase_html_a242f6b0ee066e79c281d265da33613bd"><div class="ttname"><a href="classwebcface_1_1Common_1_1ImageBase.html#a242f6b0ee066e79c281d265da33613bd">webcface::Common::ImageBase::data</a></div><div class="ttdeci">const std::vector&lt; unsigned char &gt; &amp; data() const</div><div class="ttdoc">画像データ</div><div class="ttdef"><b>Definition</b> image.h:148</div></div>
 <div class="ttc" id="aclasswebcface_1_1Common_1_1ImageBase_html_a3ed263948bec664485f0f05bbeab5ced"><div class="ttname"><a href="classwebcface_1_1Common_1_1ImageBase.html#a3ed263948bec664485f0f05bbeab5ced">webcface::Common::ImageBase::compress_mode</a></div><div class="ttdeci">ImageCompressMode compress_mode() const</div><div class="ttdoc">画像の圧縮モード</div><div class="ttdef"><b>Definition</b> image.h:137</div></div>
@@ -399,7 +399,8 @@ $(document).ready(function(){initNavTree('common_2image_8h_source.html',''); ini
 <div class="ttc" id="aclasswebcface_1_1Common_1_1ImageWithCV_html_ae2dc633e1f4accbd560728266d37146d"><div class="ttname"><a href="classwebcface_1_1Common_1_1ImageWithCV.html#ae2dc633e1f4accbd560728266d37146d">webcface::Common::ImageWithCV::mat</a></div><div class="ttdeci">cv::Mat &amp; mat() &amp;</div><div class="ttdoc">cv::Matに変換した画像を返す</div><div class="ttdef"><b>Definition</b> image.h:277</div></div>
 <div class="ttc" id="aclasswebcface_1_1Common_1_1ImageWithCV_html_afc20335307270bfb2ea0265c596e2b1f"><div class="ttname"><a href="classwebcface_1_1Common_1_1ImageWithCV.html#afc20335307270bfb2ea0265c596e2b1f">webcface::Common::ImageWithCV::ImageWithCV</a></div><div class="ttdeci">ImageWithCV(int rows, int cols, const void *data, ImageColorMode color_mode=ImageColorMode::bgr)</div><div class="ttdoc">生画像データの配列からImageを取得</div><div class="ttdef"><b>Definition</b> image.h:227</div></div>
 <div class="ttc" id="adef_8h_html"><div class="ttname"><a href="def_8h.html">def.h</a></div></div>
-<div class="ttc" id="adef_8h_html_ac7a8c78cf90e9e699574316ba855f40c"><div class="ttname"><a href="def_8h.html#ac7a8c78cf90e9e699574316ba855f40c">WEBCFACE_NS</a></div><div class="ttdeci">#define WEBCFACE_NS</div><div class="ttdef"><b>Definition</b> def.h:35</div></div>
+<div class="ttc" id="amacros_8h_html_ab3f2570d5b8231ddbe0e57fc8ab629eb"><div class="ttname"><a href="macros_8h.html#ab3f2570d5b8231ddbe0e57fc8ab629eb">WEBCFACE_NS_END</a></div><div class="ttdeci">#define WEBCFACE_NS_END</div><div class="ttdef"><b>Definition</b> macros.h:30</div></div>
+<div class="ttc" id="amacros_8h_html_abe991b8f291782627a31118c688e123a"><div class="ttname"><a href="macros_8h.html#abe991b8f291782627a31118c688e123a">WEBCFACE_NS_BEGIN</a></div><div class="ttdeci">#define WEBCFACE_NS_BEGIN</div><div class="ttdef"><b>Definition</b> macros.h:29</div></div>
 <div class="ttc" id="anamespacewebcface_1_1Common_html_ab72e620a597e5f750b2c9b3391e84ded"><div class="ttname"><a href="namespacewebcface_1_1Common.html#ab72e620a597e5f750b2c9b3391e84ded">webcface::Common::ImageCompressMode</a></div><div class="ttdeci">ImageCompressMode</div><div class="ttdef"><b>Definition</b> image.h:24</div></div>
 <div class="ttc" id="anamespacewebcface_1_1Common_html_ab72e620a597e5f750b2c9b3391e84dedabdd166af3a63f7be696dd17a218a6ffb"><div class="ttname"><a href="namespacewebcface_1_1Common.html#ab72e620a597e5f750b2c9b3391e84dedabdd166af3a63f7be696dd17a218a6ffb">webcface::Common::ImageCompressMode::raw</a></div><div class="ttdeci">@ raw</div></div>
 <div class="ttc" id="anamespacewebcface_1_1Common_html_abcfd96b0be942012c2f4641b4741a31e"><div class="ttname"><a href="namespacewebcface_1_1Common.html#abcfd96b0be942012c2f4641b4741a31e">webcface::Common::ImageColorMode</a></div><div class="ttdeci">ImageColorMode</div><div class="ttdef"><b>Definition</b> image.h:17</div></div>
@@ -418,7 +419,7 @@ $(document).ready(function(){initNavTree('common_2image_8h_source.html',''); ini
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_e6fac88a17509a9ad709623cf2c100d8.html">webcface</a></li><li class="navelem"><a class="el" href="dir_502efb1c08dde917a621a833db2b93e2.html">common</a></li><li class="navelem"><a class="el" href="common_2image_8h.html">image.h</a></li>
-    <li class="footer">Generated on Mon Apr 1 2024 11:28:44 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Tue Apr 2 2024 10:24:54 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

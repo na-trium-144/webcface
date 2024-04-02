@@ -158,7 +158,7 @@ $(document).ready(function(){initNavTree('dict_8h_source.html',''); initResizabl
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &quot;<a class="code" href="vector_8h.html">vector.h</a>&quot;</span></div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &quot;<a class="code" href="def_8h.html">def.h</a>&quot;</span></div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="keyword">namespace </span><a class="code hl_define" href="def_8h.html#ac7a8c78cf90e9e699574316ba855f40c">WEBCFACE_NS</a> {</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><a class="code hl_define" href="macros_8h.html#abe991b8f291782627a31118c688e123a">WEBCFACE_NS_BEGIN</a></div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="keyword">inline</span> <span class="keyword">namespace </span>Common {</div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span> </div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno"><a class="line" href="structwebcface_1_1Common_1_1VecTypeDisabled.html">   16</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structwebcface_1_1Common_1_1VecTypeDisabled.html">VecTypeDisabled</a> {};</div>
@@ -374,7 +374,7 @@ $(document).ready(function(){initNavTree('dict_8h_source.html',''); initResizabl
 </div>
 <div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span> </div>
 <div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>} <span class="comment">// namespace Common</span></div>
-<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>} <span class="comment">// namespace WEBCFACE_NS</span></div>
+<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span><a class="code hl_define" href="macros_8h.html#ab3f2570d5b8231ddbe0e57fc8ab629eb">WEBCFACE_NS_END</a></div>
 <div class="ttc" id="aclasswebcface_1_1Common_1_1Dict_html"><div class="ttname"><a href="classwebcface_1_1Common_1_1Dict.html">webcface::Common::Dict</a></div><div class="ttdoc">値の型をTに制限した、連想配列もどき</div><div class="ttdef"><b>Definition</b> dict.h:97</div></div>
 <div class="ttc" id="aclasswebcface_1_1Common_1_1Dict_html_a07567bbc8e510aba3375658716370365"><div class="ttname"><a href="classwebcface_1_1Common_1_1Dict.html#a07567bbc8e510aba3375658716370365">webcface::Common::Dict::operator=</a></div><div class="ttdeci">Dict &amp; operator=(const U &amp;val)</div><div class="ttdef"><b>Definition</b> dict.h:206</div></div>
 <div class="ttc" id="aclasswebcface_1_1Common_1_1Dict_html_a0ec61740d729e7da0b9c0f4b20b0c227"><div class="ttname"><a href="classwebcface_1_1Common_1_1Dict.html#a0ec61740d729e7da0b9c0f4b20b0c227">webcface::Common::Dict::getVec</a></div><div class="ttdeci">DictTraits&lt; U &gt;::VecType getVec() const</div><div class="ttdoc">値を配列で返す</div><div class="ttdef"><b>Definition</b> dict.h:177</div></div>
@@ -394,7 +394,8 @@ $(document).ready(function(){initNavTree('dict_8h_source.html',''); initResizabl
 <div class="ttc" id="aclasswebcface_1_1Common_1_1Dict_html_ae7c90ff7a7bd6cb504b18646c9d860f2"><div class="ttname"><a href="classwebcface_1_1Common_1_1Dict.html#ae7c90ff7a7bd6cb504b18646c9d860f2">webcface::Common::Dict::getRaw</a></div><div class="ttdeci">T getRaw() const</div><div class="ttdoc">内部のデータ型のまま値を返す</div><div class="ttdef"><b>Definition</b> dict.h:166</div></div>
 <div class="ttc" id="aclasswebcface_1_1Common_1_1Dict_html_af236b4f0a7cbfd823979ca197e124adb"><div class="ttname"><a href="classwebcface_1_1Common_1_1Dict.html#af236b4f0a7cbfd823979ca197e124adb">webcface::Common::Dict::hasValue</a></div><div class="ttdeci">bool hasValue() const</div><div class="ttdoc">この要素が値を持っているかどうかを返す</div><div class="ttdef"><b>Definition</b> dict.h:164</div></div>
 <div class="ttc" id="adef_8h_html"><div class="ttname"><a href="def_8h.html">def.h</a></div></div>
-<div class="ttc" id="adef_8h_html_ac7a8c78cf90e9e699574316ba855f40c"><div class="ttname"><a href="def_8h.html#ac7a8c78cf90e9e699574316ba855f40c">WEBCFACE_NS</a></div><div class="ttdeci">#define WEBCFACE_NS</div><div class="ttdef"><b>Definition</b> def.h:35</div></div>
+<div class="ttc" id="amacros_8h_html_ab3f2570d5b8231ddbe0e57fc8ab629eb"><div class="ttname"><a href="macros_8h.html#ab3f2570d5b8231ddbe0e57fc8ab629eb">WEBCFACE_NS_END</a></div><div class="ttdeci">#define WEBCFACE_NS_END</div><div class="ttdef"><b>Definition</b> macros.h:30</div></div>
+<div class="ttc" id="amacros_8h_html_abe991b8f291782627a31118c688e123a"><div class="ttname"><a href="macros_8h.html#abe991b8f291782627a31118c688e123a">WEBCFACE_NS_BEGIN</a></div><div class="ttdeci">#define WEBCFACE_NS_BEGIN</div><div class="ttdef"><b>Definition</b> macros.h:29</div></div>
 <div class="ttc" id="astructwebcface_1_1Common_1_1DictElement_html"><div class="ttname"><a href="structwebcface_1_1Common_1_1DictElement.html">webcface::Common::DictElement</a></div><div class="ttdoc">keyとvalueの1ペア</div><div class="ttdef"><b>Definition</b> dict.h:66</div></div>
 <div class="ttc" id="astructwebcface_1_1Common_1_1DictElement_html_a016452bcef737ce9f1929ceec874af00"><div class="ttname"><a href="structwebcface_1_1Common_1_1DictElement.html#a016452bcef737ce9f1929ceec874af00">webcface::Common::DictElement::value</a></div><div class="ttdeci">std::optional&lt; T &gt; value</div><div class="ttdef"><b>Definition</b> dict.h:68</div></div>
 <div class="ttc" id="astructwebcface_1_1Common_1_1DictElement_html_a2ada23b2402db7b44933a00198d5ede8"><div class="ttname"><a href="structwebcface_1_1Common_1_1DictElement.html#a2ada23b2402db7b44933a00198d5ede8">webcface::Common::DictElement::DictElement</a></div><div class="ttdeci">DictElement()=default</div></div>
@@ -428,7 +429,7 @@ $(document).ready(function(){initNavTree('dict_8h_source.html',''); initResizabl
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_e6fac88a17509a9ad709623cf2c100d8.html">webcface</a></li><li class="navelem"><a class="el" href="dir_502efb1c08dde917a621a833db2b93e2.html">common</a></li><li class="navelem"><a class="el" href="dict_8h.html">dict.h</a></li>
-    <li class="footer">Generated on Mon Apr 1 2024 11:28:44 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Tue Apr 2 2024 10:24:54 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

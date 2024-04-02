@@ -8,6 +8,7 @@ var dir_502efb1c08dde917a621a833db2b93e2 =
     [ "func.h", "common_2func_8h.html", "common_2func_8h" ],
     [ "image.h", "common_2image_8h.html", "common_2image_8h" ],
     [ "log.h", "common_2log_8h.html", "common_2log_8h" ],
+    [ "macros.h", "macros_8h.html", "macros_8h" ],
     [ "queue.h", "queue_8h.html", "queue_8h" ],
     [ "robot_model.h", "common_2robot__model_8h.html", "common_2robot__model_8h" ],
     [ "transform.h", "transform_8h.html", "transform_8h" ],
