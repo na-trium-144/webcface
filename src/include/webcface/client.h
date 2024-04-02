@@ -2,15 +2,19 @@
 #include <string>
 #include <memory>
 #include <vector>
-#include <spdlog/logger.h>
 #include "member.h"
 #include "event_target.h"
-#include "func.h"
-#include "func_listener.h"
-#include "logger.h"
 #include "common/def.h"
 
-namespace WEBCFACE_NS {
+namespace spdlog {
+class logger;
+}
+
+WEBCFACE_NS_BEGIN
+
+class FuncListener;
+class LoggerSink;
+class LoggerBuf;
 
 /*!
  * \brief サーバーに接続するクライアント。
@@ -41,11 +45,11 @@ class WEBCFACE_DLL Client : public Member {
      *
      */
     explicit Client(const std::string &name,
-                                 const std::string &host = "127.0.0.1",
-                                 int port = WEBCFACE_DEFAULT_PORT);
+                    const std::string &host = "127.0.0.1",
+                    int port = WEBCFACE_DEFAULT_PORT);
 
     explicit Client(const std::string &name,
-                                 std::shared_ptr<Internal::ClientData> data);
+                    std::shared_ptr<Internal::ClientData> data);
 
     /*!
      * \brief サーバーに接続できているときtrueを返す
@@ -123,9 +127,7 @@ class WEBCFACE_DLL Client : public Member {
      * \brief FuncListenerを作成する
      *
      */
-    FuncListener funcListener(const std::string &field) {
-        return FuncListener{*this, field};
-    }
+    FuncListener funcListener(const std::string &field) const;
 
     /*!
      * \brief
@@ -213,4 +215,4 @@ class WEBCFACE_DLL Client : public Member {
     std::string serverName() const;
 };
 
-} // namespace WEBCFACE_NS
+WEBCFACE_NS_END

@@ -5,12 +5,12 @@
 #include "event_target.h"
 #include "canvas_data.h"
 
-namespace WEBCFACE_NS {
+WEBCFACE_NS_BEGIN
 namespace Internal {
 struct ClientData;
 template <typename Component>
 class DataSetBuffer;
-}
+} // namespace Internal
 class Member;
 
 class RobotModel;
@@ -26,10 +26,10 @@ extern template class WEBCFACE_IMPORT EventTarget<RobotModel>;
  *
  */
 class WEBCFACE_DLL RobotModel : protected Field,
-                   public EventTarget<RobotModel>,
-                   public Canvas3DComponent {
+                                public EventTarget<RobotModel>,
+                                public Canvas3DComponent {
     std::shared_ptr<Internal::DataSetBuffer<RobotLink>> sb;
-    
+
     void onAppend() const override;
 
   public:
@@ -109,8 +109,7 @@ class WEBCFACE_DLL RobotModel : protected Field,
      * \brief syncの時刻を返す
      * \deprecated 1.7でMember::syncTime() に変更
      */
-    [[deprecated]] std::chrono::system_clock::time_point
-    time() const;
+    [[deprecated]] std::chrono::system_clock::time_point time() const;
 
     /*!
      * \brief 値やリクエスト状態をクリア
@@ -119,4 +118,4 @@ class WEBCFACE_DLL RobotModel : protected Field,
     RobotModel &free();
 };
 
-} // namespace WEBCFACE_NS
+WEBCFACE_NS_END

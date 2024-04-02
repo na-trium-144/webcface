@@ -39,6 +39,6 @@ int main(int argc, char **argv) {
         stderr_sink->set_level(spdlog::level::info);
     }
 
-    WEBCFACE_NS::Server::store.keep_log = keep_log;
-    WEBCFACE_NS::Server::serverRun(port, stderr_sink, spdlog::level::trace);
+    webcface::Server::store.keep_log = keep_log;
+    webcface::Server::serverRun(port, stderr_sink, spdlog::level::trace);
 }

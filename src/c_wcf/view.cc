@@ -1,4 +1,5 @@
 #include "c_wcf_internal.h"
+#include <webcface/view.h>
 
 extern "C" {
 

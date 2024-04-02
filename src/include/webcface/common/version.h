@@ -2,7 +2,7 @@
 #include <array>
 #include "def.h"
 
-namespace WEBCFACE_NS {
+WEBCFACE_NS_BEGIN
 inline namespace Version {
 //! (ver1.2で追加) クライアントのバージョン
 /*!
@@ -19,4 +19,4 @@ WEBCFACE_DLL extern const std::array<int, 3> version;
  */
 WEBCFACE_DLL extern const char *version_s;
 } // namespace Version
-} // namespace WebCFace
+WEBCFACE_NS_END

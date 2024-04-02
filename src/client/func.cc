@@ -6,7 +6,7 @@
 #include "client_internal.h"
 #include <webcface/common/def.h>
 
-namespace WEBCFACE_NS {
+WEBCFACE_NS_BEGIN
 
 auto &operator<<(std::basic_ostream<char> &os, const AsyncFuncResult &r) {
     os << "Func(\"" << r.name() << "\"): ";
@@ -226,4 +226,4 @@ void AnonymousFunc::lockTo(Func &target) {
     base_init = false;
 }
 
-} // namespace WEBCFACE_NS
+WEBCFACE_NS_END

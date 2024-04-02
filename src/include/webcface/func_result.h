@@ -9,7 +9,7 @@
 #include "common/val.h"
 #include "common/def.h"
 
-namespace WEBCFACE_NS {
+WEBCFACE_NS_BEGIN
 
 class Member;
 
@@ -182,4 +182,4 @@ class FuncCallHandle {
         }
     }
 };
-} // namespace WEBCFACE_NS
+WEBCFACE_NS_END

@@ -3,7 +3,7 @@
 #include <chrono>
 #include "def.h"
 
-namespace WEBCFACE_NS {
+WEBCFACE_NS_BEGIN
 inline namespace Common {
 struct LogLine {
     int level = 0;
@@ -15,4 +15,4 @@ struct LogLine {
         : level(level), time(time), message(message) {}
 };
 } // namespace Common
-} // namespace WEBCFACE_NS
+WEBCFACE_NS_END

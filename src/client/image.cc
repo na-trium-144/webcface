@@ -3,7 +3,7 @@
 #include "client_internal.h"
 #include "../message/message.h"
 
-namespace WEBCFACE_NS {
+WEBCFACE_NS_BEGIN
 
 template class WEBCFACE_DLL EventTarget<Image>;
 
@@ -84,4 +84,4 @@ Image &Image::free() {
     return *this;
 }
 
-} // namespace WEBCFACE_NS
+WEBCFACE_NS_END

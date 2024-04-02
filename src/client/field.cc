@@ -4,7 +4,7 @@
 #include <stdexcept>
 #include <webcface/common/def.h>
 
-namespace WEBCFACE_NS {
+WEBCFACE_NS_BEGIN
 Member Field::member() const { return *this; }
 
 bool Field::expired() const { return data_w.expired(); }
@@ -28,4 +28,4 @@ std::shared_ptr<Internal::ClientData> Field::setCheck() const {
 bool Field::isSelf() const { return dataLock()->isSelf(*this); }
 
 
-} // namespace WEBCFACE_NS
+WEBCFACE_NS_END

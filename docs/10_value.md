@@ -6,7 +6,7 @@
 <span class="since-js"></span>
 <span class="since-py"></span>
 \sa
-* C++ webcface::Value
+* C++ webcface::Value (`webcface/value.h`)
 * JavaScript [Value](https://na-trium-144.github.io/webcface-js/classes/Value.html)
 * Python [webcface.Value](https://na-trium-144.github.io/webcface-python/webcface.value.html#webcface.value.Value)
 
@@ -69,9 +69,6 @@ Client::value からValueオブジェクトを作り、 Value::set() でデー�
 
 </div>
 
-\note
-webcfaceのvalueは浮動小数型のみを扱いますが、値が整数だった場合シリアライズ時に自動的に整数型として送受信されるようなので通信量を気にする必要はありません。([msgpack/msgpack-c#1017](https://github.com/msgpack/msgpack-c/issues/1017))
-
 \warning
 <span class="since-c">1.10</span>
 データの名前を半角ピリオドから始めると、Entryが他クライアントに送信されなくなります。
@@ -79,11 +76,31 @@ webcfaceのvalueは浮動小数型のみを扱いますが、値が整数だっ�
 半角ピリオド2つから始まる名前はwebcface内部の処理で利用する場合があるので使用しないでください。  
 Text、Funcなど他のデータ型についても同様です。
 
+### 通信データについて
+
+クライアントが送信したデータは、サーバーを経由して別のクライアントに送られます。
+(Valueに限らず、これ以降説明する他のデータ型のfieldについても同様です。)
+
+![pub-sub](https://github.com/na-trium-144/webcface/raw/main/docs/images/pub-sub.png)
+
+サーバー→クライアント間では、初期状態ではデータは送信されず、
+クライアントがリクエストを送って初めてサーバーからデータが順次送られてくるようになります。
+
+<span class="since-c">1.8</span>
+<span class="since-js">1.4.1</span>
+<span class="since-py">1.1.2</span>
+クライアント→サーバー間では、同じデータを繰り返しsetした場合は2回目以降はデータを送信しないことで通信量を削減しています。
+
+基本的にクライアント→サーバーの方向にはすべてのデータが送信されるのに対し、サーバー→クライアントの方向には必要なデータのみを送信する設計になっていますが、これは前者はlocalhost(サーバーとクライアントが同じPC)のみで、後者はWi-FiやLANでも通信することを想定したものです。
+(通信量は増えますがクライアント→サーバーのデータ送信をWi-FiやLAN経由で行うことも可能です)
+
+\note
+webcfaceのvalueは浮動小数型のみを扱いますが、値が整数だった場合シリアライズ時に自動的に整数型として送受信されるようなので、整数値やbool値を送りたい場合でも通信量を気にする必要はありません。([msgpack/msgpack-c#1017](https://github.com/msgpack/msgpack-c/issues/1017))
+
 ### グループ化
 
 Valueの名前を半角ピリオドで区切ると、WebUI上ではフォルダアイコンで表示されグループ化されて表示されます。
 
-\note
 Valueに限らず他のデータ型 ([View](./13_view.md), [Canvas2D](./14_canvas2d.md), [Image](./15_image.md), [Canvas3D](./20_canvas3d.md), [RobotModel](./21_robot_model.md)) でも同様です。
 
 <div class="tabbed">
@@ -143,13 +160,6 @@ Valueに限らず他のデータ型 ([View](./13_view.md), [Canvas2D](./14_canva
 
 ROSのTopicではPointやTransformなど目的に応じてさまざまな型が用意されていますが、
 WebCFaceではそういう場合はValueを複数用意して送信することを想定しています。
-
-\note
-<span class="since-c">1.8</span>
-<span class="since-js">1.4.1</span>
-<span class="since-py">1.1.2</span>
-同じデータを繰り返しsetした場合は、通信量を削減するため実際には最初の1度しか送信されないようになっています。
-([Text](./11_text.md) についても同様)
 
 ### 複数の値をまとめて送る
 
@@ -213,12 +223,6 @@ Pythonの辞書型への対応は未実装
 </div>
 
 ## 受信
-
-WebCFaceのクライアントは初期状態ではデータを受信しません。
-リクエストを送って初めてサーバーからデータが順次送られてくるようになります。
-これはValueに限らず、これ以降説明する他のデータ型のfieldについても同様です。
-
-![pub-sub](https://github.com/na-trium-144/webcface/raw/main/docs/images/pub-sub.png)
 
 Member::value() でValueクラスのオブジェクトが得られ、
 Value::tryGet(), Value::tryGetVec() などで値のリクエストをするとともに受信した値を取得できます。

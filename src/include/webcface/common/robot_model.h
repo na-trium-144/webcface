@@ -5,7 +5,7 @@
 #include <string>
 #include <concepts>
 
-namespace WEBCFACE_NS {
+WEBCFACE_NS_BEGIN
 inline namespace Common {
 
 enum class RobotJointType {
@@ -124,4 +124,4 @@ struct RobotLink {
         : RobotLink(name, fixedAbsolute({0, 0, 0}), geometry, color) {}
 };
 } // namespace Common
-} // namespace WEBCFACE_NS
+WEBCFACE_NS_END

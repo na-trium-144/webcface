@@ -34,21 +34,15 @@
 #include "text.h"
 #include "log.h"
 #include "func.h"
-#include "func_listener.h"
 #include "canvas_data.h"
 #include "view.h"
+#include "image.h"
 #include "robot_model.h"
 #include "canvas3d.h"
 #include "canvas2d.h"
 
 #include "member.h"
 #include "client.h"
-
-#ifdef _MSC_VER
-#ifdef _DEBUG
-namespace webcface = webcfaced;
-#endif
-#endif
 
 // 〜v1.1 との互換性のため
 namespace WebCFace = webcface;

@@ -116,8 +116,11 @@ target_link_libraries(target PRIVATE webcface::webcface)
 
 </details>
 
-C++のソースコードでは`<webcface/webcface.h>`をincludeしてください。
+C++のソースコードでは`<webcface/webcface.h>`をincludeするとwebcfaceのすべての機能が使用できます。
 次ページ以降でC++での使い方を解説します。
+
+<span class="since-c">1.10</span>
+`<webcface/client.h>`, `<webcface/value.h>`など必要なヘッダファイルだけincludeして使うこともでき、コンパイル時間を短縮できます。
 
 ### C
 

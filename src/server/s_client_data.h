@@ -13,7 +13,8 @@
 #include <spdlog/logger.h>
 #include <webcface/common/def.h>
 
-namespace WEBCFACE_NS::Server {
+WEBCFACE_NS_BEGIN
+namespace Server {
 struct ClientData {
     using wsConnPtr = void *;
     spdlog::sink_ptr sink;
@@ -137,4 +138,5 @@ struct ClientData {
         Message::pack(send_buffer, send_len, data);
     }
 };
-} // namespace WEBCFACE_NS::Server
+} // namespace Server
+WEBCFACE_NS_END

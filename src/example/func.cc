@@ -1,9 +1,10 @@
+#include <webcface/client.h>
+#include <webcface/func.h>
 #include <chrono>
 #include <cmath>
 #include <iostream>
 #include <numbers>
 #include <thread>
-#include <webcface/webcface.h>
 
 void hello() { std::cout << "hello, world!" << std::endl; }
 double hello2(int a, double b, bool c, const std::string &d) {

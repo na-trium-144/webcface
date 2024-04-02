@@ -1,4 +1,5 @@
-#include <webcface/webcface.h>
+#include <webcface/client.h>
+#include <webcface/view.h>
 #include <thread>
 #include <iostream>
 #include <chrono>

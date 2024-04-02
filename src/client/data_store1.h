@@ -8,7 +8,8 @@
 #include <webcface/common/def.h>
 #include <webcface/common/log.h>
 
-namespace WEBCFACE_NS::Internal {
+WEBCFACE_NS_BEGIN
+namespace Internal {
 template <typename T>
 class SyncDataStore1 {
     std::unordered_map<std::string, T> data_recv;
@@ -51,4 +52,5 @@ extern template class SyncDataStore1<
 extern template class SyncDataStore1<std::chrono::system_clock::time_point>;
 #endif
 
-} // namespace WEBCFACE_NS::Internal
+} // namespace Internal
+WEBCFACE_NS_END

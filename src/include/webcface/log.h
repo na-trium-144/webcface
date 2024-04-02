@@ -7,7 +7,7 @@
 #include "common/log.h"
 #include "common/def.h"
 
-namespace WEBCFACE_NS {
+WEBCFACE_NS_BEGIN
 
 class Log;
 extern template class WEBCFACE_IMPORT EventTarget<Log, std::string>;
@@ -53,4 +53,4 @@ class WEBCFACE_DLL Log : protected Field, public EventTarget<Log, std::string> {
      */
     Log &clear();
 };
-} // namespace WEBCFACE_NS
+WEBCFACE_NS_END

@@ -6,10 +6,11 @@
 #include <sstream>
 #include <memory>
 
-namespace WEBCFACE_NS::Internal{
+WEBCFACE_NS_BEGIN
+namespace Internal {
 /*!
  * \brief View,Canvasなどで送信用にaddされたデータを管理する
- * 
+ *
  * Field側ではこれをshared_ptrで構築し適宜 init(), add(), sync() する
  *
  */
@@ -56,7 +57,7 @@ class DataSetBuffer {
 
     /*!
      * \brief add時のチェック
-     * 
+     *
      */
     virtual void onAdd() {}
     void add(const Component &cp) {
@@ -71,9 +72,9 @@ class DataSetBuffer {
     }
     /*!
      * \brief まとめてセット
-     * 
+     *
      * initしてcomponentsを置き換えてsyncする
-     * 
+     *
      */
     void set(const std::vector<Component> &cv) {
         onAdd();
@@ -130,7 +131,7 @@ class ViewBuf : public std::stringbuf, public DataSetBuffer<ViewComponent> {
 class Canvas2DDataBuf : public DataSetBuffer<Canvas2DComponent> {
     double width_ = 0, height_ = 0;
 
-public:
+  public:
     friend DataSetBuffer<Canvas2DComponent>;
     Canvas2DDataBuf() = default;
     Canvas2DDataBuf(const Field &base)
@@ -155,4 +156,5 @@ public:
     ~Canvas2DDataBuf() override { onDestroy(); }
 };
 
-}
+} // namespace Internal
+WEBCFACE_NS_END

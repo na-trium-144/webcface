@@ -2,13 +2,12 @@
 #include "../client/client_internal.h"
 #include <webcface/member.h>
 #include <webcface/func.h>
-#include <webcface/func_listener.h>
 #include <stdexcept>
 #include <thread>
 #include <chrono>
 #include "../message/message.h"
 
-using namespace WEBCFACE_NS;
+using namespace webcface;
 
 #ifndef WEBCFACE_TEST_TIMEOUT
 #define WEBCFACE_TEST_TIMEOUT 10
