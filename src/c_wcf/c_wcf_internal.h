@@ -3,6 +3,8 @@
 #include <vector>
 #include <webcface/wcf.h>
 #include <webcface/client.h>
+#include <webcface/func.h>
+#include <webcface/canvas_data.h>
 #include <webcface/common/val.h>
 
 WEBCFACE_NS_BEGIN

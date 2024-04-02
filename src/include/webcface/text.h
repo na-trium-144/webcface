@@ -3,7 +3,6 @@
 #include <optional>
 #include <chrono>
 #include <memory>
-#include "common/dict.h"
 #include "field.h"
 #include "event_target.h"
 #include "common/def.h"

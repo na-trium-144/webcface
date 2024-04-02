@@ -5,7 +5,6 @@
 #include "common/canvas2d.h"
 #include "event_target.h"
 #include "field.h"
-#include "func.h"
 #include "canvas_data.h"
 
 WEBCFACE_NS_BEGIN

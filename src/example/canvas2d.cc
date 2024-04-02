@@ -1,4 +1,5 @@
-#include <webcface/webcface.h>
+#include <webcface/client.h>
+#include <webcface/canvas2d.h>
 #include <thread>
 #include <iostream>
 #include <chrono>

@@ -1,4 +1,6 @@
 #include "c_wcf_internal.h"
+#include <webcface/text.h>
+#include <cstring>
 
 extern "C" {
 wcfStatus wcfTextSet(wcfClient *wcli, const char *field, const char *text) {

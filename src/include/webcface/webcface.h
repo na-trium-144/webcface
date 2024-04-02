@@ -34,7 +34,6 @@
 #include "text.h"
 #include "log.h"
 #include "func.h"
-#include "func_listener.h"
 #include "canvas_data.h"
 #include "view.h"
 #include "robot_model.h"

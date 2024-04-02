@@ -6,21 +6,22 @@
 #include "field.h"
 #include "event_target.h"
 #include "common/def.h"
-#include "value.h"
-#include "text.h"
-#include "log.h"
 #include "func.h"
-#include "view.h"
-#include "image.h"
-#include "robot_model.h"
-#include "canvas3d.h"
-#include "canvas2d.h"
 
 WEBCFACE_NS_BEGIN
 
 namespace Internal {
 struct ClientData;
 }
+
+class Value;
+class Text;
+class Log;
+class View;
+class Image;
+class RobotModel;
+class Canvas2D;
+class Canvas3D;
 
 /*!
  * \brief Memberを指すクラス
@@ -43,13 +44,11 @@ class WEBCFACE_DLL Member : protected Field {
      */
     std::string name() const { return member_; }
 
-    Value value(const std::string &field) const { return Value{*this, field}; }
-    Text text(const std::string &field) const { return Text{*this, field}; }
-    RobotModel robotModel(const std::string &field) const {
-        return RobotModel{*this, field};
-    }
-    Image image(const std::string &field) const { return Image{*this, field}; }
-    Func func(const std::string &field) const { return Func{*this, field}; }
+    Value value(const std::string &field) const;
+    Text text(const std::string &field) const;
+    RobotModel robotModel(const std::string &field) const;
+    Image image(const std::string &field) const;
+    Func func(const std::string &field) const;
     /*!
      * \brief AnonymousFuncオブジェクトを作成しfuncをsetする
      *
@@ -59,14 +58,10 @@ class WEBCFACE_DLL Member : protected Field {
     AnonymousFunc func(const T &func) const {
         return AnonymousFunc{*this, func};
     }
-    View view(const std::string &field) const { return View{*this, field}; }
-    Canvas3D canvas3D(const std::string &field) const {
-        return Canvas3D{*this, field};
-    }
-    Canvas2D canvas2D(const std::string &field) const {
-        return Canvas2D{*this, field};
-    }
-    Log log() const { return Log{*this}; }
+    View view(const std::string &field) const;
+    Canvas3D canvas3D(const std::string &field) const;
+    Canvas2D canvas2D(const std::string &field) const;
+    Log log() const;
 
     /*!
      * \brief このmemberが公開しているvalueのリストを返す。
@@ -78,7 +73,7 @@ class WEBCFACE_DLL Member : protected Field {
      * \deprecated 1.6で valueEntries() に変更
      *
      */
-    [[deprecated]] std::vector<Value> values() const { return valueEntries(); }
+    [[deprecated]] std::vector<Value> values() const;
     /*!
      * \brief このmemberが公開しているtextのリストを返す。
      *
@@ -88,7 +83,7 @@ class WEBCFACE_DLL Member : protected Field {
      * \brief このmemberが公開しているtextのリストを返す。
      * \deprecated 1.6で textEntries() に変更
      */
-    [[deprecated]] std::vector<Text> texts() const { return textEntries(); }
+    [[deprecated]] std::vector<Text> texts() const;
     /*!
      * \brief このmemberが公開しているrobotModelのリストを返す。
      *
@@ -99,9 +94,7 @@ class WEBCFACE_DLL Member : protected Field {
      * \deprecated 1.6で robotModelEntries() に変更
      *
      */
-    [[deprecated]] std::vector<RobotModel> robotModels() const {
-        return robotModelEntries();
-    }
+    [[deprecated]] std::vector<RobotModel> robotModels() const;
     /*!
      * \brief このmemberが公開しているfuncのリストを返す。
      *
@@ -112,7 +105,7 @@ class WEBCFACE_DLL Member : protected Field {
      * \deprecated 1.6で funcEntries() に変更
      *
      */
-    [[deprecated]] std::vector<Func> funcs() const { return funcEntries(); }
+    [[deprecated]] std::vector<Func> funcs() const;
     /*!
      * \brief このmemberが公開しているviewのリストを返す。
      *
@@ -122,7 +115,7 @@ class WEBCFACE_DLL Member : protected Field {
      * \brief このmemberが公開しているviewのリストを返す。
      * \deprecated 1.6で viewEntries() に変更
      */
-    [[deprecated]] std::vector<View> views() const { return viewEntries(); }
+    [[deprecated]] std::vector<View> views() const;
     /*!
      * \brief このmemberが公開しているcanvas3dのリストを返す。
      *
@@ -142,7 +135,7 @@ class WEBCFACE_DLL Member : protected Field {
      * \brief このmemberが公開しているimageのリストを返す。
      * \deprecated 1.6で imageEntries() に変更
      */
-    [[deprecated]] std::vector<Image> images() const { return imageEntries(); }
+    [[deprecated]] std::vector<Image> images() const;
 
     /*!
      * \brief valueが追加された時のイベント

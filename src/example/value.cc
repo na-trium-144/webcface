@@ -1,4 +1,6 @@
-#include <webcface/webcface.h>
+#include <webcface/client.h>
+#include <webcface/value.h>
+#include <webcface/text.h>
 #include <thread>
 #include <chrono>
 

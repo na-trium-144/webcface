@@ -6,7 +6,6 @@
 #include <utility>
 #include <stdexcept>
 #include <concepts>
-#include "func.h"
 #include "event_target.h"
 #include "common/def.h"
 #include "common/canvas3d.h"

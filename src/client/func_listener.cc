@@ -1,4 +1,3 @@
-#include <webcface/func_listener.h>
 #include <webcface/func.h>
 #include "client_internal.h"
 

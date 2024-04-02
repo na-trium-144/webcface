@@ -4,7 +4,6 @@
 #include <memory>
 #include <utility>
 #include "common/view.h"
-#include "func.h"
 #include "event_target.h"
 #include "common/def.h"
 #include "canvas_data.h"
