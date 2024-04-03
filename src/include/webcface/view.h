@@ -117,15 +117,15 @@ class WEBCFACE_DLL View : protected Field,
         return *this;
     }
     View &operator<<(Common::ViewComponentBase &vc) {
-        *this << ViewComponent{vc, this->data_w};
+        *this << ViewComponent{vc, this->data_w, 0};
         return *this;
     }
     View &operator<<(const Common::ViewComponentBase &vc) {
-        *this << ViewComponent{vc, this->data_w};
+        *this << ViewComponent{vc, this->data_w, 0};
         return *this;
     }
     View &operator<<(Common::ViewComponentBase &&vc) {
-        *this << ViewComponent{vc, this->data_w};
+        *this << ViewComponent{vc, this->data_w, 0};
         return *this;
     }
     template <bool C2, bool C3>

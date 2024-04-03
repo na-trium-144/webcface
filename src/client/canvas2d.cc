@@ -12,8 +12,8 @@ Canvas2D::Canvas2D()
     : Field(), EventTarget<Canvas2D>(),
       sb(std::make_shared<Internal::Canvas2DDataBuf>()) {}
 Canvas2D::Canvas2D(const Field &base)
-    : Field(base), EventTarget<Canvas2D>(
-                       &this->dataLock()->canvas2d_change_event, *this),
+    : Field(base),
+      EventTarget<Canvas2D>(&this->dataLock()->canvas2d_change_event, *this),
       sb(std::make_shared<Internal::Canvas2DDataBuf>(base)) {}
 Canvas2D &Canvas2D::init(double width, double height) {
     sb->init(width, height);
@@ -42,10 +42,10 @@ void Internal::DataSetBuffer<Canvas2DComponent>::onSync() {
 
     auto cb = std::make_shared<Canvas2DDataBase>(c2buf->width_, c2buf->height_);
     cb->components.reserve(this->components_.size());
-    int func_next = 0;
+    std::unordered_map<int, int> idx_next;
     for (std::size_t i = 0; i < this->components_.size(); i++) {
         cb->components.emplace_back(std::move(this->components_[i].lockTmp(
-            target_.data_w, target_.name(), &func_next)));
+            target_.data_w, target_.name(), &idx_next)));
     }
     target_.setCheck()->canvas2d_store.setSend(target_, cb);
     static_cast<Canvas2D>(target_).triggerEvent(target_);
@@ -65,8 +65,10 @@ std::optional<std::vector<Canvas2DComponent>> Canvas2D::tryGet() const {
     auto vb = dataLock()->canvas2d_store.getRecv(*this);
     if (vb) {
         std::vector<Canvas2DComponent> v((*vb)->components.size());
+        std::unordered_map<int, int> idx_next;
         for (std::size_t i = 0; i < (*vb)->components.size(); i++) {
-            v[i] = Canvas2DComponent{(*vb)->components[i], this->data_w};
+            v[i] = Canvas2DComponent{(*vb)->components[i], this->data_w,
+                                     &idx_next};
         }
         return v;
     } else {
