@@ -7,6 +7,7 @@
 <span class="since-py"></span>
 \sa
 * C++ webcface::Value (`webcface/value.h`)
+* C Reference: c_wcf/value.h
 * JavaScript [Value](https://na-trium-144.github.io/webcface-js/classes/Value.html)
 * Python [webcface.Value](https://na-trium-144.github.io/webcface-python/webcface.value.html#webcface.value.Value)
 

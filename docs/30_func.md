@@ -7,6 +7,7 @@
 <span class="since-py"></span>
 \sa
 * C++ webcface::Func (`webcface/func.h`)
+* C Reference: c_wcf/func.h
 * JavaScript [Func](https://na-trium-144.github.io/webcface-js/classes/Func.html)
 * Python [webcface.Func](https://na-trium-144.github.io/webcface-python/webcface.func.html#webcface.func.Func)
 
@@ -223,6 +224,7 @@ Client::funcEntries()でその関数の存在を確認したりFunc::args()な�
 ## FuncListener
 
 呼び出されたとき実行する関数を登録する代わりに、呼び出されたかどうかを監視し任意のタイミングで値を返すということもできます。
+特にCのFFIで関数ポインタが利用できない場合に代わりに使えます。
 
 <div class="tabbed">
 
