@@ -31,7 +31,7 @@ extern template class WEBCFACE_IMPORT EventTarget<Canvas3D>;
 class WEBCFACE_DLL Canvas3D : protected Field, public EventTarget<Canvas3D> {
     std::shared_ptr<Internal::DataSetBuffer<Canvas3DComponent>> sb;
 
-    void onAppend() const override;
+    void onAppend() const override final;
 
   public:
     Canvas3D();

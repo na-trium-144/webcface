@@ -26,7 +26,7 @@ extern template class WEBCFACE_IMPORT EventTarget<Canvas2D>;
 class WEBCFACE_DLL Canvas2D : protected Field, public EventTarget<Canvas2D> {
     std::shared_ptr<Internal::Canvas2DDataBuf> sb;
 
-    void onAppend() const override;
+    void onAppend() const override final;
 
   public:
     Canvas2D();
