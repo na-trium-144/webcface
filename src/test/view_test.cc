@@ -175,14 +175,33 @@ TEST_F(ViewTest, viewSet) {
     EXPECT_THROW(v6.sync(), std::runtime_error);
 }
 TEST_F(ViewTest, viewGet) {
+    std::unordered_map<int, int> idx_next;
     auto vd = std::make_shared<std::vector<ViewComponentBase>>(
         std::vector<ViewComponentBase>{
-            Components::text("a").toV().lockTmp(data_, "")});
+            Components::text("a").toV().lockTmp(data_, "b", &idx_next),
+            Components::button("a", [] {}).lockTmp(data_, "b", &idx_next),
+            Components::text("a").toV().lockTmp(data_, "b", &idx_next),
+        });
     data_->view_store.setRecv("a", "b", vd);
-    EXPECT_EQ(view("a", "b").tryGet().value().size(), 1);
-    EXPECT_EQ(view("a", "b").get().size(), 1);
+    EXPECT_EQ(view("a", "b").tryGet().value().size(), 3);
+    EXPECT_EQ(view("a", "b").get().size(), 3);
+    auto components = view("a", "b").get();
+    EXPECT_EQ(components.at(0).type(), ViewComponentType::text);
+    EXPECT_EQ(components.at(0).text(), "a");
+    EXPECT_EQ(components.at(0).id(), "..0.0"); // type0, idx0
+    EXPECT_EQ(components.at(1).type(), ViewComponentType::button);
+    EXPECT_EQ(components.at(1).text(), "a");
+    EXPECT_EQ(components.at(1).id(), "..2.0"); // type2, idx0
+    ASSERT_TRUE(components.at(1).onClick().has_value());
+    EXPECT_EQ(components.at(1).onClick()->member().name(), self_name);
+    EXPECT_EQ(components.at(1).onClick()->name(), "..vb/..2.0");
+    EXPECT_EQ(components.at(2).type(), ViewComponentType::text);
+    EXPECT_EQ(components.at(2).text(), "a");
+    EXPECT_EQ(components.at(2).id(), "..0.1"); // type0, idx1
+
     EXPECT_EQ(view("a", "c").tryGet(), std::nullopt);
     EXPECT_EQ(view("a", "c").get().size(), 0);
+
     EXPECT_EQ(data_->view_store.transferReq().at("a").at("b"), 1);
     EXPECT_EQ(data_->view_store.transferReq().at("a").at("c"), 2);
     EXPECT_EQ(view(self_name, "b").tryGet(), std::nullopt);
