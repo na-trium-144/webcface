@@ -104,7 +104,8 @@ void DataSetBuffer<Canvas3DComponent>::onSync();
  * \brief Viewの送信用データを保持する
  *
  */
-class ViewBuf : public std::stringbuf, public DataSetBuffer<ViewComponent> {
+class ViewBuf final : public std::stringbuf,
+                      public DataSetBuffer<ViewComponent> {
     /*!
      * こっちはstreambufのsync
      *
@@ -128,7 +129,7 @@ class ViewBuf : public std::stringbuf, public DataSetBuffer<ViewComponent> {
     ~ViewBuf() override;
 };
 
-class Canvas2DDataBuf : public DataSetBuffer<Canvas2DComponent> {
+class Canvas2DDataBuf final : public DataSetBuffer<Canvas2DComponent> {
     double width_ = 0, height_ = 0;
 
   public:

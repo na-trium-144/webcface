@@ -30,7 +30,7 @@ class WEBCFACE_DLL View : protected Field,
                           public std::ostream {
     std::shared_ptr<Internal::ViewBuf> sb;
 
-    void onAppend() const override;
+    void onAppend() const override final;
 
   public:
     View();

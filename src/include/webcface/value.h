@@ -26,7 +26,7 @@ extern template class WEBCFACE_IMPORT EventTarget<Value>;
  *
  */
 class WEBCFACE_DLL Value : protected Field, public EventTarget<Value> {
-    void onAppend() const override;
+    void onAppend() const override final;
 
   public:
     Value() = default;
