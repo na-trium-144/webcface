@@ -460,11 +460,34 @@ webcface::ViewComponent
 Python [webcface.ViewComponent](https://na-trium-144.github.io/webcface-python/webcface.view.html#webcface.view.ViewComponent))
 のリストとして得られ、
 ViewComponentオブジェクトから各種プロパティを取得できます。
-onClick()で得られるFuncオブジェクトは`runAsync()`などでそのまま実行させることができます。
 
 <span class="since-c">1.7</span>
 Cの場合は wcfViewGet で wcfViewComponent の配列が得られます。
 取得した配列は不要になったら wcfDestroy で破棄してください。
+
+### onClick
+
+ViewComponent::onClick() でボタン要素のクリック時に実行するべき関数が[Func](./30_func.md)オブジェクトとして取得できます。
+したがって、ボタンを表示し、クリックされたときに`onClick().runAsync()`などとすることでそのボタンを動作させられます。
+
+### onChangeとbind
+<span class="since-c">1.10</span>
+
+各種Input要素の現在の値は ViewComponent::bind() で[Text](./11_text.md)オブジェクトとして取得できます。
+したがって`bind().get()`をInputの初期値として使用すればよいです。
+
+Inputの値を変更する際は、(view送信側がbindを設定したかonChangeを設定したかに関わらず)
+ViewComponent::onChange() を使います。
+引数に変化後の値を渡して`onChange().runAsync("変化後の値")`などとすることで
+onChangeに設定された関数を実行すると同時にbindの値も変更されます。
+
+### id
+<span class="since-c">1.10</span>
+
+ViewComponent::id() で各要素に割り振られたid(文字列)を取得できます。
+このidはそのview内で一意で、(buttonやInputの総数や順序が変わらなければ)
+同じbutton、同じinputには常に同じidが振られます。
+(実際はそのview内で種類ごとに分けて要素に連番を振っているだけです)
 
 ### 時刻
 
