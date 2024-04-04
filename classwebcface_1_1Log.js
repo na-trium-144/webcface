@@ -17,7 +17,7 @@ var classwebcface_1_1Log =
     [ "isSelf", "classwebcface_1_1Log.html#a0522a651826ba6fcbb9ce86258e8fa30", null ],
     [ "member", "classwebcface_1_1Log.html#aa8fab40ead35fa8e761986d5f4000a5c", null ],
     [ "name", "classwebcface_1_1Log.html#a1d89c28bd42ba9a52da008bb69367171", null ],
-    [ "onAppend", "classwebcface_1_1Log.html#a80580c25783f70a8654f924b26c61703", null ],
+    [ "onAppend", "classwebcface_1_1Log.html#a5741907f34189b0f5ee7c5632b27cb8b", null ],
     [ "ownsHandle", "classwebcface_1_1Log.html#a806e787436bfc88228cfd93ae7d8a0b8", null ],
     [ "prependListener", "classwebcface_1_1Log.html#a9406117fe96b34fa4af36e39c5ec5f52", null ],
     [ "prependListener", "classwebcface_1_1Log.html#a56c0ab8771726d88e63638631e11a445", null ],

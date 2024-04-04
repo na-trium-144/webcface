@@ -173,13 +173,13 @@ $(document).ready(function(){initNavTree('view_8h_source.html',''); initResizabl
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>                          <span class="keyword">public</span> std::ostream {</div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="classwebcface_1_1View.html#a1136aca6f4719f3833a1c901832789de">   31</a></span>    std::shared_ptr&lt;Internal::ViewBuf&gt; <a class="code hl_variable" href="classwebcface_1_1View.html#a1136aca6f4719f3833a1c901832789de">sb</a>;</div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    <span class="keywordtype">void</span> onAppend() <span class="keyword">const override</span>;</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    <span class="keywordtype">void</span> onAppend() const override final;</div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  public:</div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    <a class="code hl_class" href="classwebcface_1_1View.html">View</a>();</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    <a class="code hl_class" href="classwebcface_1_1View.html">View</a>(<span class="keyword">const</span> <a class="code hl_struct" href="structwebcface_1_1Field.html">Field</a> &amp;base);</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    <a class="code hl_class" href="classwebcface_1_1View.html">View</a>(const <a class="code hl_struct" href="structwebcface_1_1Field.html">Field</a> &amp;base);</div>
 <div class="foldopen" id="foldopen00038" data-start="{" data-end="}">
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno"><a class="line" href="classwebcface_1_1View.html#adbf11a3b0440be08a8fd44768bb707b9">   38</a></span>    <a class="code hl_function" href="classwebcface_1_1View.html#adbf11a3b0440be08a8fd44768bb707b9">View</a>(<span class="keyword">const</span> <a class="code hl_struct" href="structwebcface_1_1Field.html">Field</a> &amp;base, <span class="keyword">const</span> std::string &amp;field)</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno"><a class="line" href="classwebcface_1_1View.html#adbf11a3b0440be08a8fd44768bb707b9">   38</a></span>    <a class="code hl_class" href="classwebcface_1_1View.html">View</a>(const <a class="code hl_struct" href="structwebcface_1_1Field.html">Field</a> &amp;base, const std::<span class="keywordtype">string</span> &amp;field)</div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>        : <a class="code hl_class" href="classwebcface_1_1View.html">View</a>(<a class="code hl_struct" href="structwebcface_1_1Field.html">Field</a>{base, field}) {}</div>
 </div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno"><a class="line" href="classwebcface_1_1View.html#a7391eaadd66fadd481cb387822d1baca">   40</a></span>    <a class="code hl_function" href="classwebcface_1_1View.html#a7391eaadd66fadd481cb387822d1baca">View</a>(<span class="keyword">const</span> <a class="code hl_class" href="classwebcface_1_1View.html">View</a> &amp;rhs) : <a class="code hl_class" href="classwebcface_1_1View.html">View</a>() { *<span class="keyword">this</span> = rhs; }</div>
@@ -304,7 +304,6 @@ $(document).ready(function(){initNavTree('view_8h_source.html',''); initResizabl
 <div class="ttc" id="aclasswebcface_1_1View_html_a9b724c2d1ab5fa7806d58ed8e4d9b9a9"><div class="ttname"><a href="classwebcface_1_1View.html#a9b724c2d1ab5fa7806d58ed8e4d9b9a9">webcface::View::get</a></div><div class="ttdeci">std::vector&lt; ViewComponent &gt; get() const</div><div class="ttdoc">Viewを取得する</div><div class="ttdef"><b>Definition</b> view.h:75</div></div>
 <div class="ttc" id="aclasswebcface_1_1View_html_aaa234e9c4eb3737375d11e738194b54c"><div class="ttname"><a href="classwebcface_1_1View.html#aaa234e9c4eb3737375d11e738194b54c">webcface::View::add</a></div><div class="ttdeci">View &amp; add(T &amp;&amp;rhs)</div><div class="ttdoc">コンポーネントなどを追加</div><div class="ttdef"><b>Definition</b> view.h:175</div></div>
 <div class="ttc" id="aclasswebcface_1_1View_html_ab9c07c3553b887792ed3b0436afcd264"><div class="ttname"><a href="classwebcface_1_1View.html#ab9c07c3553b887792ed3b0436afcd264">webcface::View::operator&lt;&lt;</a></div><div class="ttdeci">View &amp; operator&lt;&lt;(TemporalComponent&lt; true, C2, C3 &gt; &amp;vc)</div><div class="ttdef"><b>Definition</b> view.h:132</div></div>
-<div class="ttc" id="aclasswebcface_1_1View_html_adbf11a3b0440be08a8fd44768bb707b9"><div class="ttname"><a href="classwebcface_1_1View.html#adbf11a3b0440be08a8fd44768bb707b9">webcface::View::View</a></div><div class="ttdeci">View(const Field &amp;base, const std::string &amp;field)</div><div class="ttdef"><b>Definition</b> view.h:38</div></div>
 <div class="ttc" id="aclasswebcface_1_1View_html_ae81b531dde5c992ff5f6fb0754415a44"><div class="ttname"><a href="classwebcface_1_1View.html#ae81b531dde5c992ff5f6fb0754415a44">webcface::View::operator&lt;&lt;</a></div><div class="ttdeci">View &amp; operator&lt;&lt;(const TemporalComponent&lt; true, C2, C3 &gt; &amp;vc)</div><div class="ttdef"><b>Definition</b> view.h:137</div></div>
 <div class="ttc" id="acommon_2view_8h_html"><div class="ttname"><a href="common_2view_8h.html">view.h</a></div></div>
 <div class="ttc" id="adef_8h_html"><div class="ttname"><a href="def_8h.html">def.h</a></div></div>
@@ -322,7 +321,7 @@ $(document).ready(function(){initNavTree('view_8h_source.html',''); initResizabl
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_e6fac88a17509a9ad709623cf2c100d8.html">webcface</a></li><li class="navelem"><a class="el" href="view_8h.html">view.h</a></li>
-    <li class="footer">Generated on Tue Apr 2 2024 11:13:44 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Thu Apr 4 2024 03:50:11 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>
