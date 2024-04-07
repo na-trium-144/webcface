@@ -37,11 +37,12 @@ int main() {
               << " => " << input_dec << std::endl;
 
             static webcface::InputRef input_num;
-            v << webcface::numberInput("int")
+            v << webcface::numberInput("number")
                      .bind(input_num)
                      .init(5)
-                     .min(1)
+                     .min(2)
                      .max(10)
+                     .step(2)
               << " => " << input_num << std::endl;
 
             static webcface::InputRef input_select, input_toggle;
@@ -56,7 +57,11 @@ int main() {
               << " => " << input_toggle << std::endl;
 
             static webcface::InputRef input_slider;
-            v << webcface::sliderInput().bind(input_slider).min(0).max(100)
+            v << webcface::sliderInput()
+                     .bind(input_slider)
+                     .min(0)
+                     .max(100)
+                     .step(10)
               << " => " << input_slider << std::endl;
 
             static webcface::InputRef input_check;

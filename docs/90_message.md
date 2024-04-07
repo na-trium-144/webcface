@@ -221,6 +221,7 @@ data = {
 			r?: string | null, // Bind Text.name
 			im?: number | null, // min
 			ix?: number | null, // max
+			is?: number | null, // step
 			io?: string[] | number[], // option
 		},
 		index: {},
@@ -235,7 +236,7 @@ data = {
 * dのindexはstring型で、要素のindexを10進数で文字列にしたものです
 	* 例えば `[text("aaa"), text("bbb"), text("ccc")]` が `[text("aaa"), text("ccc"), text("bbb")]` に変更された場合のメッセージは `{"d": {"1": {"t": 0, "x": "ccc"}, "2": {"t": 0, "x": "bbb"}}}`
 * <span class="since-c">1.1</span> dのindexをnumber型からstring型に変更
-* <span class="since-c">1.10</span> data内の bind,min,max,option 追加
+* <span class="since-c">1.10</span> data内の bind,min,max,step,option 追加
 
 ### view entry (kind = 23)
 * value entryと同様

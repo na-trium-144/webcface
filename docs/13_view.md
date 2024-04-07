@@ -443,6 +443,7 @@ viewに入力欄を表示します。
     `.init(初期値)`  
     `.min(最小値)`, `.max(最大値)`: decimalInput, numberInput, sliderInputのみ  
     `.min(最小文字数)`, `.max(最大文字数)`: textInputのみ  
+    `.step(刻み幅)`: numberInput, sliderInputのみ  
     `.option({ 選択肢, ... })`: selectInput, toggleInput  
 
 

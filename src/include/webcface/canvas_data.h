@@ -248,8 +248,8 @@ class WEBCFACE_DLL ViewComponent : protected Common::ViewComponentBase,
      * \brief 最小値を設定する。
      * \since ver1.10
      *
-     * * string型引数の場合最小の文字数を表す。
-     * * bool型引数の場合効果がない。
+     * * 文字列入力の場合最小の文字数を表す。
+     * * 文字列・数値入力でない場合効果がない。
      * * option() はクリアされる。
      *
      */
@@ -268,14 +268,31 @@ class WEBCFACE_DLL ViewComponent : protected Common::ViewComponentBase,
      * \brief 最大値を設定する。
      * \since ver1.10
      *
-     * * string型引数の場合最大の文字数を表す。
-     * * bool型引数の場合効果がない。
+     * * 文字列入力の場合最大の文字数を表す。
+     * * 文字列・数値入力でない場合効果がない。
      * * option() はクリアされる。
      *
      */
     ViewComponent &max(double max) {
         max_ = max;
         option_.clear();
+        return *this;
+    }
+    /*!
+     * \brief 数値の刻み幅を取得する。
+     * \since ver1.10
+     *
+     */
+    std::optional<double> step() const { return step_; }
+    /*!
+     * \brief 数値の刻み幅を設定する。
+     * \since ver1.10
+     *
+     * * 整数入力、スライダーなど以外効果がない。
+     *
+     */
+    ViewComponent &step(double step) {
+        step_ = step;
         return *this;
     }
     /*!

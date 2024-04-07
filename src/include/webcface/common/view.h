@@ -54,7 +54,8 @@ struct ViewComponentBase {
     std::optional<FieldBase> text_ref_;
     ViewColor text_color_ = ViewColor::inherit;
     ViewColor bg_color_ = ViewColor::inherit;
-    std::optional<double> min_ = std::nullopt, max_ = std::nullopt;
+    std::optional<double> min_ = std::nullopt, max_ = std::nullopt,
+                          step_ = std::nullopt;
     std::vector<ValAdaptor> option_ = {};
 
     bool operator==(const ViewComponentBase &rhs) const {
@@ -68,7 +69,7 @@ struct ViewComponentBase {
                  text_ref_->member_ == rhs.text_ref_->member_ &&
                  text_ref_->field_ == rhs.text_ref_->field_)) &&
                text_color_ == rhs.text_color_ && bg_color_ == rhs.bg_color_ &&
-               min_ == rhs.min_ && max_ == rhs.max_ &&
+               min_ == rhs.min_ && max_ == rhs.max_ && step_ == rhs.step_ &&
                option_ == rhs.option_;
     }
     bool operator!=(const ViewComponentBase &rhs) const {
