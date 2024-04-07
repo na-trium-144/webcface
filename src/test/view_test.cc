@@ -64,7 +64,7 @@ TEST_F(ViewTest, viewSet) {
     v << button("a", afunc1([]() {}));
     v << button("a2", []() {});
     webcface::InputRef ref1, ref2;
-    v << numInput("i").bind(ref1).init(123).min(1).max(1000);
+    v << decimalInput("i").bind(ref1).init(123).min(1).max(1000);
     v << selectInput("i2").bind(ref2).option({"a", "b", "c"});
     int called_ref3 = 0;
     v << textInput("i3").onChange([&](const std::string &val) {
@@ -102,7 +102,7 @@ TEST_F(ViewTest, viewSet) {
     EXPECT_EQ(view_data[7].on_click_func_->member_, self_name);
     EXPECT_FALSE(view_data[7].on_click_func_->field_.empty());
 
-    EXPECT_EQ(view_data[8].type_, ViewComponentType::num_input);
+    EXPECT_EQ(view_data[8].type_, ViewComponentType::decimal_input);
     EXPECT_EQ(view_data[8].text_, "i");
     EXPECT_EQ(view_data[8].on_click_func_->member_, self_name);
     EXPECT_FALSE(view_data[8].on_click_func_->field_.empty());

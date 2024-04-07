@@ -384,8 +384,8 @@ while (true){
 viewに入力欄を表示します。
 
 - textInput: 文字列入力
-- numInput: 数値入力
-- intInput: 整数の入力
+- decimalInput: 小数入力
+- numberInput: 整数の入力
 - selectInput: リストから値を選択させる
 - toggleInput: クリックするたびに値が切り替わる
 - sliderInput: 数値を指定するスライダー
@@ -441,7 +441,7 @@ viewに入力欄を表示します。
     ([Func](./30_func.md)のArgオプションと同様です。)
 
     `.init(初期値)`  
-    `.min(最小値)`, `.max(最大値)`: numInput, intInput, sliderInputのみ  
+    `.min(最小値)`, `.max(最大値)`: decimalInput, numberInput, sliderInputのみ  
     `.min(最小文字数)`, `.max(最大文字数)`: textInputのみ  
     `.option({ 選択肢, ... })`: selectInput, toggleInput  
 

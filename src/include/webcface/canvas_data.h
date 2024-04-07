@@ -1001,11 +1001,11 @@ inline ViewComponent button(const std::string &text, T &&func) {
 inline ViewComponent textInput(const std::string &text = "") {
     return ViewComponent(ViewComponentType::text_input).text(text);
 }
-inline ViewComponent numInput(const std::string &text = "") {
-    return ViewComponent(ViewComponentType::num_input).text(text).init(0);
+inline ViewComponent decimalInput(const std::string &text = "") {
+    return ViewComponent(ViewComponentType::decimal_input).text(text).init(0);
 }
-inline ViewComponent intInput(const std::string &text = "") {
-    return ViewComponent(ViewComponentType::int_input).text(text).init(0);
+inline ViewComponent numberInput(const std::string &text = "") {
+    return ViewComponent(ViewComponentType::number_input).text(text).init(0);
 }
 inline ViewComponent toggleInput(const std::string &text = "") {
     return ViewComponent(ViewComponentType::toggle_input).text(text);
