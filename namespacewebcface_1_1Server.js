@@ -11,6 +11,7 @@ var namespacewebcface_1_1Server =
     [ "getStaticDir", "namespacewebcface_1_1Server.html#a190126a8b357424080243a1c04ee9afc", null ],
     [ "getTempDir", "namespacewebcface_1_1Server.html#af75cf09eeecbcfd458c033ac2972eb47", null ],
     [ "pingThreadMain", "namespacewebcface_1_1Server.html#a33df3bc6f542e57bb6b239b084301718", null ],
+    [ "replaceInvalidVal", "namespacewebcface_1_1Server.html#a260a5b4ff2a51da2104fbd24fc78ee12", null ],
     [ "serverRun", "namespacewebcface_1_1Server.html#a55d5c53c73f66be16623a85d1c4f1e97", null ],
     [ "serverSend", "namespacewebcface_1_1Server.html#a61c2320b1fc2122f40c399f95f7f2d42", null ],
     [ "serverStop", "namespacewebcface_1_1Server.html#a324e1a70e006e8434fa711dd7e646727", null ],

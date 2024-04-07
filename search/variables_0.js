@@ -11,5 +11,6 @@ var searchData=
   ['args_5f_8',['args_',['../classwebcface_1_1FuncListener.html#a931353c281ffd3335b0d53efdfb75f31',1,'webcface::FuncListener::args_'],['../structwebcface_1_1FuncCallHandle_1_1HandleData.html#a915a1b53db39a451f787dc8a00c370bd',1,'webcface::FuncCallHandle::HandleData::args_']]],
   ['as_5fdouble_9',['as_double',['../structwcfMultiVal.html#ab2cd60e83ec44e797cd2063a6b0b0316',1,'wcfMultiVal']]],
   ['as_5fint_10',['as_int',['../structwcfMultiVal.html#ac3e90c63965e684981a9ca1ec8ab8e29',1,'wcfMultiVal']]],
-  ['as_5fstr_11',['as_str',['../structwcfMultiVal.html#a4046ea58e0499a381d40ca485df5d218',1,'wcfMultiVal']]]
+  ['as_5fstr_11',['as_str',['../structwcfMultiVal.html#a4046ea58e0499a381d40ca485df5d218',1,'wcfMultiVal::as_str'],['../classwebcface_1_1Common_1_1ValAdaptor.html#a7e49e1033f7d89c341c4c155ef689879',1,'webcface::Common::ValAdaptor::as_str']]],
+  ['as_5fval_12',['as_val',['../classwebcface_1_1Common_1_1ValAdaptor.html#aade1e2e8377b65365c5c0d70d37b773e',1,'webcface::Common::ValAdaptor']]]
 ];
