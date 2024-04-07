@@ -1,5 +1,6 @@
 var canvas__data_8h =
 [
+    [ "IdBase< TypeEnum >", "classwebcface_1_1IdBase.html", "classwebcface_1_1IdBase" ],
     [ "ViewComponent", "classwebcface_1_1ViewComponent.html", "classwebcface_1_1ViewComponent" ],
     [ "Canvas3DComponent", "classwebcface_1_1Canvas3DComponent.html", "classwebcface_1_1Canvas3DComponent" ],
     [ "Canvas2DComponent", "classwebcface_1_1Canvas2DComponent.html", "classwebcface_1_1Canvas2DComponent" ],
@@ -19,10 +20,10 @@ var canvas__data_8h =
     [ "circle", "canvas__data_8h.html#a0e4b7fa26dcacfaa76d6c83b60a6cfb1", null ],
     [ "circle", "canvas__data_8h.html#a8054b6a17f6efeeeff18590a7b38f8e2", null ],
     [ "cylinder", "canvas__data_8h.html#a9becab844e46d2f91429a606c2d65cc9", null ],
-    [ "intInput", "canvas__data_8h.html#a7c768d37ba4b080b30e24e2911baecf0", null ],
+    [ "decimalInput", "canvas__data_8h.html#a8fbc3c10e0a58bccced62318a494e113", null ],
     [ "line", "canvas__data_8h.html#a589bd246994070f5faffe56a90a3b6f2", null ],
     [ "newLine", "canvas__data_8h.html#ab72da582724c98c1e879cadbacc78663", null ],
-    [ "numInput", "canvas__data_8h.html#a1d521cfc3e8428c007e82ba13e89eaef", null ],
+    [ "numberInput", "canvas__data_8h.html#ab96c59afa74726abf7fdf3344197de7c", null ],
     [ "plane", "canvas__data_8h.html#aa25707cc05d2efb06fc117f36986ecb6", null ],
     [ "polygon", "canvas__data_8h.html#ab71462a4b3c7f94d111654688068b64f", null ],
     [ "rect", "canvas__data_8h.html#a70a6a0aadee31b74968201a0eee0bf5f", null ],

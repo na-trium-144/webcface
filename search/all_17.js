@@ -8,6 +8,6 @@ var searchData=
   ['next_5fcaller_5fid_5',['next_caller_id',['../classwebcface_1_1Internal_1_1FuncResultStore.html#ad9420448994757ee4ac10d0428747c56',1,'webcface::Internal::FuncResultStore']]],
   ['none_6',['none',['../namespacewebcface_1_1Common.html#a1b753fd9c2659910ca1a042a05b56be6a334c4a4c42fdb79d7ebc3e73b517e6f8',1,'webcface::Common']]],
   ['none_5f_7',['none_',['../namespacewebcface_1_1Common.html#acd1dd9e2d5f885ad3f73197cfa6b0185a1e5a9491a4d910a08d95f675ca7226be',1,'webcface::Common']]],
-  ['num_5finput_8',['num_input',['../namespacewebcface_1_1Common.html#a11040d82967b60182816ddc035d07c28a863a71d47d3944749b5a90d143abb3c2',1,'webcface::Common']]],
-  ['numinput_9',['numinput',['../namespacewebcface_1_1Components.html#a1d521cfc3e8428c007e82ba13e89eaef',1,'webcface::numInput()'],['../namespacewebcface_1_1Components.html#a1d521cfc3e8428c007e82ba13e89eaef',1,'webcface::Components::numInput()']]]
+  ['number_5finput_8',['number_input',['../namespacewebcface_1_1Common.html#a11040d82967b60182816ddc035d07c28a8070a95e1f8e0d271dfc7a06127d8bad',1,'webcface::Common']]],
+  ['numberinput_9',['numberinput',['../namespacewebcface_1_1Components.html#ab96c59afa74726abf7fdf3344197de7c',1,'webcface::numberInput()'],['../namespacewebcface_1_1Components.html#ab96c59afa74726abf7fdf3344197de7c',1,'webcface::Components::numberInput()']]]
 ];

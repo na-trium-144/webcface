@@ -140,6 +140,7 @@ var annotated_dup =
       [ "Geometry", "structwebcface_1_1Common_1_1Geometry.html", "structwebcface_1_1Common_1_1Geometry" ],
       [ "Geometry2D", "structwebcface_1_1Common_1_1Geometry2D.html", null ],
       [ "Geometry3D", "structwebcface_1_1Common_1_1Geometry3D.html", null ],
+      [ "IdBase", "classwebcface_1_1IdBase.html", "classwebcface_1_1IdBase" ],
       [ "Image", "classwebcface_1_1Image.html", "classwebcface_1_1Image" ],
       [ "ImageBase", "classwebcface_1_1Common_1_1ImageBase.html", "classwebcface_1_1Common_1_1ImageBase" ],
       [ "ImageReq", "structwebcface_1_1Common_1_1ImageReq.html", "structwebcface_1_1Common_1_1ImageReq" ],

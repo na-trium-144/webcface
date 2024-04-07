@@ -179,6 +179,14 @@ requires std::convertible_to&lt;<a class="el" href="classwebcface_1_1Common_1_1V
 <tr class="memitem:a59937c9e38f31378738fb406655222f9"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1InputRef.html#a59937c9e38f31378738fb406655222f9">operator T</a> () const</td></tr>
 <tr class="memdesc:a59937c9e38f31378738fb406655222f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">値を返す  <br /></td></tr>
 <tr class="separator:a59937c9e38f31378738fb406655222f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae3d39cd4e2617bbbc07932cb8a6b7ccf" id="r_ae3d39cd4e2617bbbc07932cb8a6b7ccf"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; <br />
+requires std::constructible_from&lt;<a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html">ValAdaptor</a>, T&gt;</td></tr>
+<tr class="memitem:ae3d39cd4e2617bbbc07932cb8a6b7ccf"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1InputRef.html#ae3d39cd4e2617bbbc07932cb8a6b7ccf">operator==</a> (const T &amp;other) const</td></tr>
+<tr class="separator:ae3d39cd4e2617bbbc07932cb8a6b7ccf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a56df64afe7e062d234009cc901daf988" id="r_a56df64afe7e062d234009cc901daf988"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; <br />
+requires std::constructible_from&lt;<a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html">ValAdaptor</a>, T&gt;</td></tr>
+<tr class="memitem:a56df64afe7e062d234009cc901daf988"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1InputRef.html#a56df64afe7e062d234009cc901daf988">operator!=</a> (const T &amp;other) const</td></tr>
+<tr class="separator:a56df64afe7e062d234009cc901daf988"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
@@ -428,6 +436,35 @@ requires std::convertible_to&lt;<a class="el" href="classwebcface_1_1Common_1_1V
 
 </div>
 </div>
+<a id="a56df64afe7e062d234009cc901daf988" name="a56df64afe7e062d234009cc901daf988"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a56df64afe7e062d234009cc901daf988">&#9670;&#160;</a></span>operator!=()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; <br />
+requires std::constructible_from&lt;<a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html">ValAdaptor</a>, T&gt;</div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool operator!= </td>
+          <td>(</td>
+          <td class="paramtype">const T &amp;&#160;</td>
+          <td class="paramname"><em>other</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a02b4bbfd8ba1aaadefd2d4f136a31511" name="a02b4bbfd8ba1aaadefd2d4f136a31511"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a02b4bbfd8ba1aaadefd2d4f136a31511">&#9670;&#160;</a></span>operator=() <span class="overload">[1/2]</span></h2>
 
@@ -480,6 +517,35 @@ requires std::convertible_to&lt;<a class="el" href="classwebcface_1_1Common_1_1V
 
 </div>
 </div>
+<a id="ae3d39cd4e2617bbbc07932cb8a6b7ccf" name="ae3d39cd4e2617bbbc07932cb8a6b7ccf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae3d39cd4e2617bbbc07932cb8a6b7ccf">&#9670;&#160;</a></span>operator==()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; <br />
+requires std::constructible_from&lt;<a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html">ValAdaptor</a>, T&gt;</div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool operator== </td>
+          <td>(</td>
+          <td class="paramtype">const T &amp;&#160;</td>
+          <td class="paramname"><em>other</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <h2 class="groupheader">Member Data Documentation</h2>
 <a id="a941bd0c09721e68ece2a5dfa838fe171" name="a941bd0c09721e68ece2a5dfa838fe171"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a941bd0c09721e68ece2a5dfa838fe171">&#9670;&#160;</a></span>state</h2>
@@ -512,7 +578,7 @@ requires std::convertible_to&lt;<a class="el" href="classwebcface_1_1Common_1_1V
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="classwebcface_1_1InputRef.html">InputRef</a></li>
-    <li class="footer">Generated on Sun Apr 7 2024 14:20:04 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Sun Apr 7 2024 14:32:53 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

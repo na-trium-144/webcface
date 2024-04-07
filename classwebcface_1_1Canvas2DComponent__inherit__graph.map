@@ -1,5 +1,9 @@
 <map id="Canvas2DComponent" name="Canvas2DComponent">
-<area shape="rect" id="Node000001" title="Canvas2Dの各要素を表すクラス。" alt="" coords="21,79,184,104"/>
-<area shape="rect" id="Node000002" href="$structwebcface_1_1Common_1_1Canvas2DComponentBase.html" title=" " alt="" coords="5,5,200,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="105,44,105,79,100,79,100,44"/>
+<area shape="rect" id="Node000001" title="Canvas2Dの各要素を表すクラス。" alt="" coords="37,183,200,208"/>
+<area shape="rect" id="Node000002" href="$structwebcface_1_1Common_1_1Canvas2DComponentBase.html" title=" " alt="" coords="5,101,200,126"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="110,139,119,182,114,183,105,140"/>
+<area shape="rect" id="Node000003" href="$classwebcface_1_1IdBase.html" title=" " alt="" coords="225,93,447,133"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="273,141,151,185,149,180,271,136"/>
+<area shape="rect" id="Node000004" href="$classwebcface_1_1IdBase.html" title=" " alt="" coords="255,5,417,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="339,44,339,93,333,93,333,44"/>
 </map>

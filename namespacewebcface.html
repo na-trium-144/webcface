@@ -260,6 +260,8 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Common_1_1Geometry3D.html">Geometry3D</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1IdBase.html">IdBase</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Image.html">Image</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">(ver1.3から追加) 画像の送受信データを表すクラス  <a href="classwebcface_1_1Image.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -417,8 +419,8 @@ Enumerations</h2></td></tr>
 , <a class="el" href="namespacewebcface_1_1Common.html#a11040d82967b60182816ddc035d07c28ace50a09343724eb82df11390e2c1de18">button</a> = 2
 , <a class="el" href="namespacewebcface_1_1Common.html#a11040d82967b60182816ddc035d07c28ae1ba83437c55caa1b29b1d3228f2591a">text_input</a> = 3
 , <br />
-&#160;&#160;<a class="el" href="namespacewebcface_1_1Common.html#a11040d82967b60182816ddc035d07c28a863a71d47d3944749b5a90d143abb3c2">num_input</a> = 4
-, <a class="el" href="namespacewebcface_1_1Common.html#a11040d82967b60182816ddc035d07c28a71811878f5a17f166aef222bca11c204">int_input</a> = 5
+&#160;&#160;<a class="el" href="namespacewebcface_1_1Common.html#a11040d82967b60182816ddc035d07c28a29e02fcff6a4cb52e04414d454774759">decimal_input</a> = 4
+, <a class="el" href="namespacewebcface_1_1Common.html#a11040d82967b60182816ddc035d07c28a8070a95e1f8e0d271dfc7a06127d8bad">number_input</a> = 5
 , <a class="el" href="namespacewebcface_1_1Common.html#a11040d82967b60182816ddc035d07c28ac31df31a0eed8c8f9bf0c1b99ad1798d">toggle_input</a> = 6
 , <a class="el" href="namespacewebcface_1_1Common.html#a11040d82967b60182816ddc035d07c28a89f781ccef3f98e802fafa7b5deb87c5">select_input</a> = 7
 , <br />
@@ -498,10 +500,10 @@ Functions</h2></td></tr>
 <tr class="separator:a40051931b2d91b7073898a1710cf762f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af8bd21a025d27b11d61717955c151052" id="r_af8bd21a025d27b11d61717955c151052"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1ViewComponent.html">ViewComponent</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Components.html#af8bd21a025d27b11d61717955c151052">textInput</a> (const std::string &amp;<a class="el" href="namespacewebcface_1_1Components.html#a005dcb8a17c7ec4d9de115890555d5e8">text</a>=&quot;&quot;)</td></tr>
 <tr class="separator:af8bd21a025d27b11d61717955c151052"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1d521cfc3e8428c007e82ba13e89eaef" id="r_a1d521cfc3e8428c007e82ba13e89eaef"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1ViewComponent.html">ViewComponent</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Components.html#a1d521cfc3e8428c007e82ba13e89eaef">numInput</a> (const std::string &amp;<a class="el" href="namespacewebcface_1_1Components.html#a005dcb8a17c7ec4d9de115890555d5e8">text</a>=&quot;&quot;)</td></tr>
-<tr class="separator:a1d521cfc3e8428c007e82ba13e89eaef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7c768d37ba4b080b30e24e2911baecf0" id="r_a7c768d37ba4b080b30e24e2911baecf0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1ViewComponent.html">ViewComponent</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Components.html#a7c768d37ba4b080b30e24e2911baecf0">intInput</a> (const std::string &amp;<a class="el" href="namespacewebcface_1_1Components.html#a005dcb8a17c7ec4d9de115890555d5e8">text</a>=&quot;&quot;)</td></tr>
-<tr class="separator:a7c768d37ba4b080b30e24e2911baecf0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8fbc3c10e0a58bccced62318a494e113" id="r_a8fbc3c10e0a58bccced62318a494e113"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1ViewComponent.html">ViewComponent</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Components.html#a8fbc3c10e0a58bccced62318a494e113">decimalInput</a> (const std::string &amp;<a class="el" href="namespacewebcface_1_1Components.html#a005dcb8a17c7ec4d9de115890555d5e8">text</a>=&quot;&quot;)</td></tr>
+<tr class="separator:a8fbc3c10e0a58bccced62318a494e113"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab96c59afa74726abf7fdf3344197de7c" id="r_ab96c59afa74726abf7fdf3344197de7c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1ViewComponent.html">ViewComponent</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Components.html#ab96c59afa74726abf7fdf3344197de7c">numberInput</a> (const std::string &amp;<a class="el" href="namespacewebcface_1_1Components.html#a005dcb8a17c7ec4d9de115890555d5e8">text</a>=&quot;&quot;)</td></tr>
+<tr class="separator:ab96c59afa74726abf7fdf3344197de7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6d441060d9d6a0a4bb7866c00e3007e7" id="r_a6d441060d9d6a0a4bb7866c00e3007e7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1ViewComponent.html">ViewComponent</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Components.html#a6d441060d9d6a0a4bb7866c00e3007e7">toggleInput</a> (const std::string &amp;<a class="el" href="namespacewebcface_1_1Components.html#a005dcb8a17c7ec4d9de115890555d5e8">text</a>=&quot;&quot;)</td></tr>
 <tr class="separator:a6d441060d9d6a0a4bb7866c00e3007e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aad3b73526b0beba28b18498440e0acf6" id="r_aad3b73526b0beba28b18498440e0acf6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1ViewComponent.html">ViewComponent</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Components.html#aad3b73526b0beba28b18498440e0acf6">selectInput</a> (const std::string &amp;<a class="el" href="namespacewebcface_1_1Components.html#a005dcb8a17c7ec4d9de115890555d5e8">text</a>=&quot;&quot;)</td></tr>
@@ -749,7 +751,7 @@ Variables</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li>
-    <li class="footer">Generated on Sun Apr 7 2024 14:20:04 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Sun Apr 7 2024 14:32:53 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

@@ -142,16 +142,16 @@ $(document).ready(function(){initNavTree('md_70__launcher.html',''); initResizab
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md126">サービスとして (Linuxのみ)</a></li>
-<li class="level1"><a href="#autotoc_md127">コマンドライン引数</a></li>
-<li class="level1"><a href="#autotoc_md128">設定ファイル</a><ul><li class="level2"><a href="#autotoc_md129">init</a></li>
-<li class="level2"><a href="#autotoc_md130">command</a></li>
+<ul><li class="level1"><a href="#autotoc_md129">サービスとして (Linuxのみ)</a></li>
+<li class="level1"><a href="#autotoc_md130">コマンドライン引数</a></li>
+<li class="level1"><a href="#autotoc_md131">設定ファイル</a><ul><li class="level2"><a href="#autotoc_md132">init</a></li>
+<li class="level2"><a href="#autotoc_md133">command</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md131">WebUIからの設定</a></li>
+<li class="level1"><a href="#autotoc_md134">WebUIからの設定</a></li>
 </ul>
 </div>
-<div class="textblock"><p><a class="anchor" id="autotoc_md125"></a></p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md128"></a></p>
 <dl class="section since"><dt>Since</dt><dd>tools ver1.0</dd></dl>
 <p>設定ファイルにしたがってコマンドの実行、停止をするボタンをWebUIに表示します。 serverとlauncherだけを常時起動しておき、webcfaceでプログラムをリモートに操作するという使い方ができます。</p>
 <p>tomlファイルに設定を記述し、 </p><div class="fragment"><div class="line">webcface-launcher ./webcface-launcher.toml</div>
@@ -164,12 +164,12 @@ $(document).ready(function(){initNavTree('md_70__launcher.html',''); initResizab
 <li>(tools ver1.4.2から、Linux,MacOS) webcface-launcherを停止すると、実行中のコマンドにもシグナルが送られます。 SIGINT(Ctrl+C)で停止しない場合は、複数回Ctrl+Cを押すとSIGTERM、SIGKILLに移行して強制的に停止します。</li>
 </ul>
 </dd></dl>
-<h1><a class="anchor" id="autotoc_md126"></a>
+<h1><a class="anchor" id="autotoc_md129"></a>
 サービスとして (Linuxのみ)</h1>
 <p>配布しているdebパッケージからインストールした場合は、serverと同様に </p><div class="fragment"><div class="line">sudo systemctl enable webcface-launcher</div>
 <div class="line">sudo systemctl start webcface-launcher</div>
 </div><!-- fragment --><p> でwebcface-launcherをサービスとして自動起動することができます。 ただしその場合は設定ファイルを /etc/webcface/webcface-launcher.toml として置いてください。</p>
-<h1><a class="anchor" id="autotoc_md127"></a>
+<h1><a class="anchor" id="autotoc_md130"></a>
 コマンドライン引数</h1>
 <div class="fragment"><div class="line">Usage: webcface-launcher [OPTIONS] [config_path]</div>
 </div><!-- fragment --><ul>
@@ -180,7 +180,7 @@ $(document).ready(function(){initNavTree('md_70__launcher.html',''); initResizab
 <li><code>-m name</code>: (tools ver1.1から) WebCFaceでのメンバー名(WebUIで表示される名前)です。省略時は設定ファイル内の記述を参照し、それもなければ webcface-launcher になります。</li>
 <li><code>-s</code>: (tools ver1.2から) 設定ファイルを読み込む代わりに、標準入力から入力された文字列をtomlとしてパースします。</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md128"></a>
+<h1><a class="anchor" id="autotoc_md131"></a>
 設定ファイル</h1>
 <p>tomlファイルの例</p>
 <div class="fragment"><div class="line">[init]</div>
@@ -199,7 +199,7 @@ $(document).ready(function(){initNavTree('md_70__launcher.html',''); initResizab
 <div class="line">stdout_capture = &quot;never&quot;</div>
 <div class="line">stdout_utf8 = true</div>
 <div class="line">env = { FOO = &quot;foo&quot;, BAR = &quot;bar&quot; }</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md129"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md132"></a>
 init</h2>
 <p>initセクションは省略できます。</p>
 <ul>
@@ -214,7 +214,7 @@ init</h2>
 </ul>
 </li>
 </ul>
-<h2><a class="anchor" id="autotoc_md130"></a>
+<h2><a class="anchor" id="autotoc_md133"></a>
 command</h2>
 <ul>
 <li>name (必須)<ul>
@@ -247,7 +247,7 @@ command</h2>
 </ul>
 </li>
 </ul>
-<h1><a class="anchor" id="autotoc_md131"></a>
+<h1><a class="anchor" id="autotoc_md134"></a>
 WebUIからの設定</h1>
 <p>WebUI Server Mode ではGUIから設定ファイルを記述することができます。</p>
 <ul>
@@ -266,7 +266,7 @@ WebUIからの設定</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sun Apr 7 2024 14:20:04 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Sun Apr 7 2024 14:32:53 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

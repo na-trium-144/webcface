@@ -14,23 +14,23 @@
 <g id="a_Node000000"><a xlink:href="structwebcface_1_1Message_1_1MessageBase.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="161,-30 0,-30 0,0 161,0 161,-30"/>
 <text text-anchor="start" x="8" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">MessageBase&lt; MessageKind</text>
-<text text-anchor="middle" x="80.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">::canvas3d &gt;</text>
+<text text-anchor="middle" x="80.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">::canvas2d &gt;</text>
 </a>
 </g>
 </g>
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:href="structwebcface_1_1Message_1_1Canvas3D.html" target="_top" xlink:title=" ">
+<g id="a_Node000001"><a xlink:href="structwebcface_1_1Message_1_1Canvas2D.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="263,-24.5 197,-24.5 197,-5.5 263,-5.5 263,-24.5"/>
-<text text-anchor="middle" x="230" y="-12.5" font-family="Helvetica,sans-Serif" font-size="10.00">Canvas3D</text>
+<text text-anchor="middle" x="230" y="-12.5" font-family="Helvetica,sans-Serif" font-size="10.00">Canvas2D</text>
 </a>
 </g>
 </g>
 <!-- Node0&#45;&gt;Node1 -->
-<g id="edge62_Node000000_Node000001" class="edge">
+<g id="edge64_Node000000_Node000001" class="edge">
 <title>Node0&#45;&gt;Node1</title>
-<g id="a_edge62_Node000000_Node000001"><a xlink:title=" ">
+<g id="a_edge64_Node000000_Node000001"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M171.57,-15C180.56,-15 189.22,-15 196.96,-15"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="171.29,-11.5 161.29,-15 171.29,-18.5 171.29,-11.5"/>
 </a>

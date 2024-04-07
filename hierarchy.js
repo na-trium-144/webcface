@@ -129,6 +129,13 @@ var hierarchy =
     [ "Geometry3D", "structwebcface_1_1Common_1_1Geometry3D.html", null ],
     [ "Geometry3D", "structwebcface_1_1Common_1_1Geometry3D.html", null ],
     [ "HandleData", "structwebcface_1_1FuncCallHandle_1_1HandleData.html", null ],
+    [ "IdBase< TypeEnum >", "classwebcface_1_1IdBase.html", null ],
+    [ "IdBase< Canvas2DComponentType >", "classwebcface_1_1IdBase.html", [
+      [ "Canvas2DComponent", "classwebcface_1_1Canvas2DComponent.html", null ]
+    ] ],
+    [ "IdBase< ViewComponentType >", "classwebcface_1_1IdBase.html", [
+      [ "ViewComponent", "classwebcface_1_1ViewComponent.html", null ]
+    ] ],
     [ "ILogHandler", null, [
       [ "CustomLogger", "classwebcface_1_1Server_1_1CustomLogger.html", null ]
     ] ],

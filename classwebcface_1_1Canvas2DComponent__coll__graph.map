@@ -1,9 +1,13 @@
 <map id="Canvas2DComponent" name="Canvas2DComponent">
-<area shape="rect" id="Node000001" title="Canvas2Dの各要素を表すクラス。" alt="" coords="21,243,184,268"/>
-<area shape="rect" id="Node000002" href="$structwebcface_1_1Common_1_1Canvas2DComponentBase.html" title=" " alt="" coords="5,168,200,193"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="105,208,105,242,100,242,100,208"/>
+<area shape="rect" id="Node000001" title="Canvas2Dの各要素を表すクラス。" alt="" coords="137,257,300,283"/>
+<area shape="rect" id="Node000002" href="$structwebcface_1_1Common_1_1Canvas2DComponentBase.html" title=" " alt="" coords="5,175,200,201"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="132,206,204,255,201,260,129,211"/>
 <area shape="rect" id="Node000003" href="$classwebcface_1_1Common_1_1Transform.html" title="3次元の座標と回転" alt="" coords="59,80,146,105"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="105,119,105,167,100,167,100,119"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="105,119,105,175,100,175,100,119"/>
 <area shape="rect" id="Node000004" href="$classwebcface_1_1Common_1_1Point.html" title="3次元 or 2次元の座標" alt="" coords="75,5,130,31"/>
 <area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="105,45,105,80,100,80,100,45"/>
+<area shape="rect" id="Node000005" href="$classwebcface_1_1IdBase.html" title=" " alt="" coords="225,168,447,208"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="299,218,237,259,234,255,296,213"/>
+<area shape="rect" id="Node000006" href="$classwebcface_1_1IdBase.html" title=" " alt="" coords="255,80,417,105"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="339,119,339,168,333,168,333,119"/>
 </map>
