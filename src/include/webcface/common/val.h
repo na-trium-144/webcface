@@ -186,8 +186,18 @@ class ValAdaptor {
     }
     bool operator!=(const ValAdaptor &other) const { return !(*this == other); }
 
-    bool operator==(const char *other) const { return value == other; }
-    bool operator!=(const char *other) const { return value != other; }
+    template <typename T>
+        requires(std::constructible_from<ValAdaptor, T> &&
+                 !std::same_as<ValAdaptor, T>) bool
+    operator==(const T &other) const {
+        return *this == ValAdaptor(other);
+    }
+    template <typename T>
+        requires(std::constructible_from<ValAdaptor, T> &&
+                 !std::same_as<ValAdaptor, T>) bool
+    operator!=(const T &other) const {
+        return !(*this == other);
+    }
 };
 
 inline std::ostream &operator<<(std::ostream &os, const ValAdaptor &a) {

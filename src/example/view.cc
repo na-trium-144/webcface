@@ -23,6 +23,17 @@ int main() {
                                   [] { std::cout << "hello" << std::endl; });
             v << std::endl;
 
+            static webcface::InputRef input_toggle;
+            v << webcface::toggleInput("toggle")
+                     .bind(input_toggle)
+                     .option({"visible", "hidden"})
+              << " => ";
+            if (input_toggle == "visible") {
+                // テキストの表示、非表示
+                v << "hello!";
+            }
+            v << std::endl;
+
             webcface::InputRef input_val;
             v << webcface::button("cout ",
                                   [=] { std::cout << input_val << std::endl; })
@@ -45,16 +56,11 @@ int main() {
                      .step(2)
               << " => " << input_num << std::endl;
 
-            static webcface::InputRef input_select, input_toggle;
+            static webcface::InputRef input_select;
             v << webcface::selectInput("select")
                      .bind(input_select)
                      .option({"hoge", "fuga", "piyo"})
               << " => " << input_select << std::endl;
-
-            v << webcface::toggleInput("toggle")
-                     .bind(input_toggle)
-                     .option({"hoge", "fuga", "piyo"})
-              << " => " << input_toggle << std::endl;
 
             static webcface::InputRef input_slider;
             v << webcface::sliderInput()

@@ -203,6 +203,17 @@ class WEBCFACE_DLL InputRef {
     operator T() const {
         return static_cast<T>(get());
     }
+
+    template <typename T>
+        requires std::constructible_from<ValAdaptor, T> bool
+    operator==(const T &other) const {
+        return get() == other;
+    }
+    template <typename T>
+        requires std::constructible_from<ValAdaptor, T> bool
+    operator!=(const T &other) const {
+        return get() != other;
+    }
 };
 
 inline std::ostream &operator<<(std::ostream &os, const InputRef &ref) {
