@@ -117,6 +117,12 @@ std::pair<unsigned int, std::string> findReqField(
     return std::make_pair<unsigned int, std::string>(0, "");
 }
 
+void replaceInvalidVal(ValAdaptor &val) {
+    if (val.valType() == Common::ValType::string_) {
+        val = utf8::replace_invalid(static_cast<std::string>(val));
+    }
+}
+
 void ClientData::sendPing() {
     last_send_ping = std::chrono::system_clock::now();
     last_ping_duration = std::nullopt;
@@ -284,9 +290,7 @@ void ClientData::onRecv(const std::string &message) {
             auto v = std::any_cast<webcface::Message::Call>(obj);
             v.caller_member_id = this->member_id;
             for (auto &a : v.args) {
-                a = ValAdaptor(
-                    utf8::replace_invalid(static_cast<std::string>(a)),
-                    a.valType());
+                replaceInvalidVal(a);
             }
             logger->debug(
                 "call caller_id={}, target_id={}, field={}, with {} args",
@@ -326,9 +330,7 @@ void ClientData::onRecv(const std::string &message) {
         }
         case MessageKind::call_result: {
             auto v = std::any_cast<webcface::Message::CallResult>(obj);
-            v.result = ValAdaptor(
-                utf8::replace_invalid(static_cast<std::string>(v.result)),
-                v.result.valType());
+            replaceInvalidVal(v.result);
             logger->debug(
                 "call_result to (member_id {}, caller_id {}), {} as {}",
                 v.caller_member_id, v.caller_id,
@@ -381,9 +383,7 @@ void ClientData::onRecv(const std::string &message) {
         }
         case MessageKind::text: {
             auto v = std::any_cast<webcface::Message::Text>(obj);
-            *v.data = ValAdaptor(
-                utf8::replace_invalid(static_cast<std::string>(*v.data)),
-                v.data->valType());
+            replaceInvalidVal(*v.data);
             logger->debug("text {} = {}", v.field,
                           static_cast<std::string>(*v.data));
             if (!this->text.count(v.field) && !v.field.starts_with(".")) {
@@ -607,18 +607,15 @@ void ClientData::onRecv(const std::string &message) {
             for (auto &a : *v.args) {
                 std::vector<Common::ValAdaptor> replaced_opt;
                 for (auto &o : a.option()) {
-                    replaced_opt.emplace_back(
-                        utf8::replace_invalid(static_cast<std::string>(o)),
-                        o.valType());
+                    replaceInvalidVal(o);
+                    replaced_opt.push_back(std::move(o));
                 }
-                a = Common::Arg(
-                    utf8::replace_invalid(a.name()), a.type(),
-                    a.init() ? std::make_optional<Common::ValAdaptor>(
-                                   utf8::replace_invalid(
-                                       static_cast<std::string>(*a.init())),
-                                   a.init()->valType())
-                             : std::nullopt,
-                    a.min(), a.max(), replaced_opt);
+                std::optional<ValAdaptor> replaced_init = a.init();
+                if (replaced_init) {
+                    replaceInvalidVal(*replaced_init);
+                }
+                a = Common::Arg(utf8::replace_invalid(a.name()), a.type(),
+                                replaced_init, a.min(), a.max(), replaced_opt);
             }
             logger->debug("func_info {}", v.field);
             if (!this->func.count(v.field) && !v.field.starts_with(".")) {

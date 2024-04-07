@@ -105,7 +105,9 @@ TEST_F(DataTest, textSet) {
     data_->text_change_event.appendListener(FieldBase{self_name, "b"},
                                             callback());
     text(self_name, "b").set("c");
-    EXPECT_EQ(**data_->text_store.getRecv(self_name, "b"), "c");
+    EXPECT_EQ(
+        static_cast<std::string>(**data_->text_store.getRecv(self_name, "b")),
+        "c");
     EXPECT_EQ(callback_called, 1);
     EXPECT_THROW(text("a", "b").set("c"), std::invalid_argument);
 }
@@ -217,10 +219,11 @@ TEST_F(DataTest, valueGetDict) {
 }
 TEST_F(DataTest, textGet) {
     data_->text_store.setRecv("a", "b", std::make_shared<ValAdaptor>("hoge"));
-    EXPECT_EQ(text("a", "b").tryGet().value(), "hoge");
-    EXPECT_EQ(text("a", "b").get(), "hoge");
+    EXPECT_EQ(static_cast<std::string>(text("a", "b").tryGet().value()),
+              "hoge");
+    EXPECT_EQ(static_cast<std::string>(text("a", "b").get()), "hoge");
     EXPECT_EQ(text("a", "c").tryGet(), std::nullopt);
-    EXPECT_EQ(text("a", "c").get(), "");
+    EXPECT_EQ(static_cast<std::string>(text("a", "c").get()), "");
     EXPECT_EQ(data_->text_store.transferReq().at("a").at("b"), 1);
     EXPECT_EQ(data_->text_store.transferReq().at("a").at("c"), 2);
     EXPECT_EQ(text(self_name, "b").tryGet(), std::nullopt);

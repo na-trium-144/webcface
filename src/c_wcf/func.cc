@@ -47,9 +47,10 @@ wcfStatus wcfFuncRun(wcfClient *wcli, const char *member, const char *field,
     if (!field || arg_size < 0) {
         return WCF_INVALID_ARGUMENT;
     }
-    std::vector<ValAdaptor> args_v(arg_size);
+    std::vector<ValAdaptor> args_v;
+    args_v.reserve(arg_size);
     for (int i = 0; i < arg_size; i++) {
-        args_v[i] = args[i];
+        args_v.emplace_back(args[i]);
     }
     auto [status, result_p] = resultToCVal(
         wcli_->member(member ? member : "").func(field).runAsync(args_v));
@@ -67,9 +68,10 @@ wcfStatus wcfFuncRunAsync(wcfClient *wcli, const char *member,
     if (!field || arg_size < 0) {
         return WCF_INVALID_ARGUMENT;
     }
-    std::vector<ValAdaptor> args_v(arg_size);
+    std::vector<ValAdaptor> args_v;
+    args_v.reserve(arg_size);
     for (int i = 0; i < arg_size; i++) {
-        args_v[i] = args[i];
+        args_v.emplace_back(args[i]);
     }
     AsyncFuncResult *a_res = new AsyncFuncResult(
         wcli_->member(member ? member : "").func(field).runAsync(args_v));

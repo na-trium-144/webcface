@@ -25,7 +25,7 @@ extern template class WEBCFACE_IMPORT EventTarget<Image>;
 class WEBCFACE_DLL Image : protected Field, public EventTarget<Image> {
     std::optional<Common::ImageFrame> img = std::nullopt;
 
-    void onAppend() const override;
+    void onAppend() const override final;
 
     Image &
     request(std::optional<int> rows, std::optional<int> cols,

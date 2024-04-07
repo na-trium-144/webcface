@@ -6,6 +6,8 @@
 #include <stdexcept>
 #include <cstdint>
 #include <ostream>
+#include <variant>
+#include <optional>
 #include "../c_wcf/def_types.h"
 #include "def.h"
 
@@ -67,33 +69,36 @@ inline std::ostream &operator<<(std::ostream &os, ValType a) {
 /*!
  * \brief 数値、文字列などの値を相互変換するクラス
  *
- * Funcの引数、戻り値などに使う
+ * 数値の場合doubleまたはint64_tで保持する
+ *
+ * 数値型であっても文字列のインスタンスを内部に保持し、
+ * ValAdaptorが破棄されるまでの間char*やstring_viewから参照できる
+ *
+ * 空の状態=空文字列
  *
  */
 class ValAdaptor {
-    std::string value;
+    mutable std::optional<std::string> as_str;
+    std::variant<double, std::int64_t> as_val;
     ValType type;
 
   public:
-    ValAdaptor() : value(""), type(ValType::none_) {}
+    ValAdaptor() : type(ValType::none_) {}
 
-    // cast from run()
     explicit ValAdaptor(const std::string &value)
-        : value(value), type(ValType::string_) {}
-    explicit ValAdaptor(const std::string &value, ValType type)
-        : value(value), type(type) {}
+        : as_str(value), type(ValType::string_) {}
     explicit ValAdaptor(const char *value)
-        : value(value), type(ValType::string_) {}
+        : as_str(value), type(ValType::string_) {}
     explicit ValAdaptor(bool value)
-        : value(std::to_string(value)), type(ValType::bool_) {}
+        : as_val(static_cast<std::int64_t>(value)), type(ValType::bool_) {}
     template <typename T>
         requires std::integral<T>
     explicit ValAdaptor(T value)
-        : value(std::to_string(value)), type(ValType::int_) {}
+        : as_val(static_cast<std::int64_t>(value)), type(ValType::int_) {}
     template <typename T>
         requires std::floating_point<T>
     explicit ValAdaptor(T value)
-        : value(std::to_string(value)), type(ValType::float_) {}
+        : as_val(static_cast<double>(value)), type(ValType::float_) {}
 
     /*!
      * \brief wcfMultiValから変換
@@ -104,84 +109,153 @@ class ValAdaptor {
      * as_strの文字列はコピーして保持する
      *
      */
-    ValAdaptor(const wcfMultiVal &val) {
+    explicit ValAdaptor(const wcfMultiVal &val) {
         if (val.as_str != nullptr) {
-            value = val.as_str;
+            this->as_str.emplace(val.as_str);
             type = ValType::string_;
         } else if (val.as_double != 0) {
-            value = std::to_string(val.as_double);
+            this->as_val.emplace<0>(val.as_double);
             type = ValType::float_;
         } else {
-            value = std::to_string(val.as_int);
+            this->as_val.emplace<1>(val.as_int);
             type = ValType::int_;
         }
     }
 
     ValType valType() const { return type; }
 
-    // cast to function
-    operator const std::string &() const { return value; }
-    operator double() const { return std::atof(value.c_str()); }
-    operator bool() const {
-        if (type == ValType::string_) {
-            return !value.empty();
-        } else {
-            return operator double() != 0;
+    /*!
+     * \brief 文字列として返す
+     *
+     * std::stringのconst参照を返す。
+     * 参照はこのValAdaptorが破棄されるまで有効
+     *
+     */
+    const std::string &asStringRef() const {
+        if (!as_str) {
+            if (valType() == ValType::none_) {
+                as_str.emplace("");
+            } else {
+                switch (as_val.index()) {
+                case 0:
+                    as_str.emplace(std::to_string(std::get<0>(as_val)));
+                    break;
+                default:
+                    as_str.emplace(std::to_string(std::get<1>(as_val)));
+                    break;
+                }
+            }
         }
+        return *as_str;
     }
-    template <typename T>
-        requires std::convertible_to<double, T>
-    operator T() const {
-        return static_cast<T>(operator double());
-    }
+    /*!
+     * \brief 文字列として返す(コピー)
+     *
+     */
+    std::string asString() const { return asStringRef(); }
+    operator const std::string &() const { return asStringRef(); }
     template <typename T>
         requires std::convertible_to<std::string, T>
     operator T() const {
-        return static_cast<T>(operator const std::string &());
+        return static_cast<T>(asStringRef());
     }
 
-    // cast from msgpack
+    /*!
+     * \brief 数値として返す
+     *
+     * as<T>(), Tはdoubleなどの実数型、intなどの整数型
+     *
+     */
+    template <typename T>
+        requires(std::convertible_to<double, T> && !std::same_as<T, bool>)
+    double as() const {
+        if (type == ValType::string_) {
+            if (as_str) {
+                return std::atof(as_str->c_str());
+            } else {
+                return 0;
+            }
+        } else {
+            switch (as_val.index()) {
+            case 0:
+                return std::get<0>(as_val);
+            default:
+                return std::get<1>(as_val);
+            }
+        }
+    }
+    template <typename T>
+        requires(std::convertible_to<double, T> && !std::same_as<T, bool>)
+    operator T() const {
+        return as<T>();
+    }
+
+    /*!
+     * \brief bool値を返す
+     *
+     * * 文字列型が入っていた場合、空文字列でなければtrueを返す
+     * * 数値型が入っていた場合、0でなければtrueを返す
+     *
+     */
+    bool asBool() const {
+        if (type == ValType::string_) {
+            if (as_str) {
+                return !as_str->empty();
+            } else {
+                return false;
+            }
+        } else {
+            switch (as_val.index()) {
+            case 0:
+                return std::get<0>(as_val) != 0;
+            default:
+                return std::get<1>(as_val) != 0;
+            }
+        }
+    }
+    operator bool() const { return asBool(); }
+
     ValAdaptor &operator=(bool v) {
-        value = std::to_string(v);
+        as_val.emplace<1>(v);
         type = ValType::bool_;
         return *this;
     }
     template <typename T>
         requires std::integral<T>
     ValAdaptor &operator=(T v) {
-        value = std::to_string(v);
+        as_val.emplace<1>(v);
         type = ValType::int_;
         return *this;
     }
     template <typename T>
         requires std::floating_point<T>
     ValAdaptor &operator=(T v) {
-        value = std::to_string(v);
+        as_val.emplace<0>(v);
         type = ValType::float_;
         return *this;
     }
     ValAdaptor &operator=(const std::string &v) {
-        value = v;
+        as_str.emplace(v);
         type = ValType::string_;
         return *this;
     }
     ValAdaptor &operator=(const char *v) {
-        value = v;
+        as_str.emplace(v);
         type = ValType::string_;
         return *this;
     }
 
     bool operator==(const ValAdaptor &other) const {
         if (type == ValType::string_ || other.type == ValType::string_) {
-            return value == other.value;
+            return this->asStringRef() == other.asStringRef();
         } else if (type == ValType::double_ || other.type == ValType::double_) {
-            return static_cast<double>(*this) == static_cast<double>(other);
+            return this->as<double>() == other.as<double>();
         } else if (type == ValType::int_ || other.type == ValType::int_) {
-            return static_cast<int>(*this) == static_cast<int>(other);
+            return this->as<std::int64_t>() == other.as<std::int64_t>();
         } else if (type == ValType::bool_ || other.type == ValType::bool_) {
-            return static_cast<int>(*this) == static_cast<int>(other);
+            return this->asBool() == other.asBool();
         } else {
-            return value == other.value;
+            return this->asStringRef() == other.asStringRef();
         }
     }
     bool operator!=(const ValAdaptor &other) const { return !(*this == other); }
