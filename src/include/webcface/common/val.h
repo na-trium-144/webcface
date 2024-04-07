@@ -7,6 +7,7 @@
 #include <cstdint>
 #include <ostream>
 #include <variant>
+#include <optional>
 #include "../c_wcf/def_types.h"
 #include "def.h"
 
