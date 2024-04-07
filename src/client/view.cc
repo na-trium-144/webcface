@@ -14,8 +14,8 @@ View::View()
     this->std::ostream::init(sb.get());
 }
 View::View(const Field &base)
-    : Field(base), EventTarget<View>(&this->dataLock()->view_change_event,
-                                     *this),
+    : Field(base),
+      EventTarget<View>(&this->dataLock()->view_change_event, *this),
       std::ostream(nullptr), sb(std::make_shared<Internal::ViewBuf>(base)) {
     this->std::ostream::init(sb.get());
 }
@@ -40,10 +40,10 @@ template <>
 void Internal::DataSetBuffer<ViewComponent>::onSync() {
     auto vb = std::make_shared<std::vector<ViewComponentBase>>();
     vb->reserve(components_.size());
-    int func_next = 0, inputref_next = 0;
+    std::unordered_map<int, int> idx_next;
     for (std::size_t i = 0; i < components_.size(); i++) {
-        vb->push_back(std::move(components_[i].lockTmp(
-            target_.data_w, target_.name(), &func_next, &inputref_next)));
+        vb->push_back(std::move(
+            components_[i].lockTmp(target_.data_w, target_.name(), &idx_next)));
     }
     target_.setCheck()->view_store.setSend(target_, vb);
     static_cast<View>(target_).triggerEvent(target_);
@@ -132,8 +132,9 @@ std::optional<std::vector<ViewComponent>> View::tryGet() const {
     auto vb = dataLock()->view_store.getRecv(*this);
     if (vb) {
         std::vector<ViewComponent> v((*vb)->size());
+        std::unordered_map<int, int> idx_next;
         for (std::size_t i = 0; i < (*vb)->size(); i++) {
-            v[i] = ViewComponent{(**vb)[i], this->data_w};
+            v[i] = ViewComponent{(**vb)[i], this->data_w, &idx_next};
         }
         return v;
     } else {
