@@ -28,7 +28,7 @@ class FuncTest : public ::testing::Test {
     }
 };
 
-TEST_F(FuncTest, valAdapror) {
+TEST_F(FuncTest, valAdaptor) {
     EXPECT_EQ(static_cast<int>(ValAdaptor(10)), 10);
     EXPECT_EQ(static_cast<double>(ValAdaptor(10)), 10.0);
     EXPECT_EQ(static_cast<bool>(ValAdaptor(0)), false);
