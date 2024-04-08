@@ -7,6 +7,7 @@
 <span class="since-py"></span>
 \sa
 * C++ webcface::Value (`webcface/value.h`)
+* C Reference: c_wcf/value.h
 * JavaScript [Value](https://na-trium-144.github.io/webcface-js/classes/Value.html)
 * Python [webcface.Value](https://na-trium-144.github.io/webcface-python/webcface.value.html#webcface.value.Value)
 
@@ -344,6 +345,7 @@ Value::request()で明示的にリクエストを送信することもできま�
 
 ~~Value::time()~~ でその値が送信されたとき(そのMemberがsync()したとき)の時刻が得られます。  
 <span class="since-c">1.7</span>
+<span class="since-js">1.6</span>
 <span class="since-py"></span>
 Member::syncTime() に変更
 (Textなど他のデータの送信時刻と共通です)
@@ -379,7 +381,14 @@ Member::valueEntries() に変更
 
 </div>
 
-Member::onValueEntry() で新しくデータが追加されたときのコールバックを設定できます
+Member::onValueEntry() で新しくデータが追加されたときのコールバックを設定できます。
+
+ただし、コールバックを設定する前から存在したデータについてはコールバックは呼び出されません。
+すべてのデータに対してコールバックが呼ばれるようにしたい場合は、
+Member名がわかっていれば初回の Client::sync() 前に、
+そうでなければ Client::onMemberEntry() イベントのコールバックの中で各種イベントを設定すればよいです。
+
+イベントの詳細な使い方は [Member](./02_member.md) のページを参照してください。
 
 <div class="tabbed">
 
@@ -401,16 +410,14 @@ Member::onValueEntry() で新しくデータが追加されたときのコール
 
 </div>
 
-ただし、コールバックを設定する前から存在したデータについてはコールバックは呼び出されません。
-Member名がわかっていれば初回のClient::sync()前に設定すればよいです。
-そうでなければClient::onMemberEntry()イベントのコールバックの中で各種イベントを設定すればよいです。
-
 ### Event
 
 受信したデータが変化したときにコールバックを呼び出すことができます。
 コールバックを設定することでもその値はリクエストされます。
 
-また、データが変化したどうかに関わらずそのMemberがsync()したときにコールバックを呼び出したい場合は Member::onSync() が使えます
+また、データが変化したどうかに関わらずそのMemberがsync()したときにコールバックを呼び出したい場合は Member::onSync() が使えます。
+
+イベントの詳細な使い方は [Member](./02_member.md) のページを参照してください。
 
 <div class="tabbed">
 

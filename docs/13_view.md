@@ -7,6 +7,7 @@
 <span class="since-py"></span>
 \sa
 * C++ webcface::View (`webcface/view.h`)
+* C Reference: c_wcf/view.h
 * JavaScript [View](https://na-trium-144.github.io/webcface-js/classes/View.html)
 * Python [webcface.View](https://na-trium-144.github.io/webcface-python/webcface.view.html#webcface.view.View)
 
@@ -379,7 +380,7 @@ while (true){
 インタラクティブな動作を伴わないtextやnewLineに関しては追加・削除しても問題ありません。
 
 ### input
-\since <span class="since-c">1.10</span>
+\since <span class="since-c">1.10</span><span class="since-js">1.6</span>
 
 viewに入力欄を表示します。
 
@@ -446,6 +447,61 @@ viewに入力欄を表示します。
     `.step(刻み幅)`: numberInput, sliderInputのみ  
     `.option({ 選択肢, ... })`: selectInput, toggleInput  
 
+- <b class="tab-title">JavaScript</b>
+    InputRef  
+    入力された値にアクセスするため [InputRef](https://na-trium-144.github.io/webcface-js/classes/InputRef.html) オブジェクトを作成し、inputにbindします。
+    そのInputRefオブジェクトを別の関数などに渡すと、あとから値を取得することができます。
+    ```ts
+    import { InputRef, viewComponents } from "webcface";
+    const inputVal = new InputRef();
+    setInterval(() => {
+        wcli.view("hoge").set([
+            viewComponents.button("cout", () => console.log(inputVal.get())),
+            viewComponents.textInput("表示する文字列", { bind: inputVal }),
+        ]);
+        wcli.sync();
+    }, 100);
+    ```
+    \warning
+    viewを繰り返し送信するときInputRefオブジェクトは同じものを使いまわすのでも、
+    毎回新しいInputRefオブジェクトを生成するのでも、どちらでも動作します。
+    ```cpp
+    import { InputRef, viewComponents } from "webcface";
+    setInterval(() => {
+        const inputVal = new InputRef(); // 毎回新しいInputRef
+        wcli.view("hoge").set([
+            viewComponents.button("cout", () => console.log(inputVal.get())), // ok
+            viewComponents.textInput("表示する文字列", { bind: inputVal }),
+            // inputVal.get(), // ここでは使えない
+        ]);
+        wcli.sync();
+    }, 100);
+    ```
+    この場合はview.set()が実行される時に前周期のinputValの内容が復元されるという挙動になります。
+    (したがってv.set()の引数内ではinputValの値は未初期化になります)
+
+    \note
+    内部の実装では入力値を受け取りInputRefに値をセットする関数をonChangeにセットしています。
+    また、InputRefの値は[Text](./11_text.md)の1つとしてviewを表示しているクライアントに送信されます。
+
+    onChange  
+    onChange で値が入力されたときに実行する関数を設定でき、こちらでも値が取得できます。
+    buttonに渡す関数と同様、関数オブジェクト、Funcオブジェクト、AnonymousFuncオブジェクトが使用できます。
+    ```ts
+    viewComponents.textInput("表示する文字列", {
+        onChange: (val: string | number | boolean) => console.log(val),
+    })
+    ```
+
+    その他各種inputに指定できるオプションには以下のものがあります。
+    ([Func](./30_func.md)のArgオプションと同様です。)
+
+    `init: 初期値`  
+    `min: 最小値, max: 最大値`: decimalInput, numberInput, sliderInputのみ  
+    `min: 最小文字数, max: 最大文字数`: textInputのみ  
+    `step: 刻み幅`: numberInput, sliderInputのみ  
+    `option: [選択肢, ... ]`: selectInput, toggleInput  
+
 
 </div>
 
@@ -473,6 +529,7 @@ ViewComponent::onClick() でボタン要素のクリック時に実行するべ�
 
 ### onChangeとbind
 <span class="since-c">1.10</span>
+<span class="since-js">1.6</span>
 
 各種Input要素の現在の値は ViewComponent::bind() で[Text](./11_text.md)オブジェクトとして取得できます。
 したがって`bind().get()`をInputの初期値として使用すればよいです。
@@ -484,6 +541,7 @@ onChangeに設定された関数を実行すると同時にbindの値も変更�
 
 ### id
 <span class="since-c">1.10</span>
+<span class="since-js">1.6</span>
 
 ViewComponent::id() で各要素に割り振られたid(文字列)を取得できます。
 このidはそのview内で一意で、(buttonやInputの総数や順序が変わらなければ)
@@ -494,6 +552,7 @@ ViewComponent::id() で各要素に割り振られたid(文字列)を取得で�
 
 ~~View::time()~~ でその値が送信されたとき(そのMemberがsync()したとき)の時刻が得られます。  
 <span class="since-c">1.7</span>
+<span class="since-js">1.6</span>
 <span class="since-py"></span>
 Member::syncTime() に変更
 

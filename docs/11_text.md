@@ -7,6 +7,7 @@
 <span class="since-py"></span>
 \sa
 * C++ webcface::Text  (`webcface/text.h`)
+* C Reference: c_wcf/text.h
 * JavaScript [Text](https://na-trium-144.github.io/webcface-js/classes/Text.html)
 * Python [webcface.Text](https://na-trium-144.github.io/webcface-python/webcface.text.html#webcface.text.Text)
 
@@ -185,6 +186,7 @@ Text::request()で明示的にリクエストを送信することもできま�
 
 ~~Text::time()~~ でその値が送信されたとき(そのMemberがsync()したとき)の時刻が得られます。  
 <span class="since-c">1.7</span>
+<span class="since-js">1.6</span>
 <span class="since-py"></span>
 Member::syncTime() に変更
 

@@ -90,16 +90,30 @@ Client::onMemberEntry() で新しいメンバーが接続されたときのイ�
     wcli.onMemberEntry().appendListener([](webcface::Member m){/* ... */});
     ```
     C++では EventTarget クラスのオブジェクトを返します。
-    内部ではイベントの管理に [eventpp](https://github.com/wqking/eventpp) ライブラリを使用しており、EventTargetは eventpp::EventDispatcher のラッパーとなっています。  
-    `appendListener()` でコールバックを設定し、 `removeListener()` で解除したりできます。
+    内部ではイベントの管理に [eventpp](https://github.com/wqking/eventpp) ライブラリを使用しており、EventTargetは eventpp::EventDispatcher のラッパーとなっています。
+
+    `appendListener()`, `prependListener()` でコールバックを追加できます。
+    また`insertListener()`でこれまでに追加されたコールバックのリストの途中にコールバックを挿入したり、
+    `removeListener()` でコールバックを削除したりできます。
+    より詳細な使い方はeventppのドキュメントを参照してください。
+
+    \note eventppのEventDispatcherやCallbackListクラスにそのままアクセスできるようにはしていないため、
+    eventppのユーティリティ機能はwebcfaceのイベントに対しては使用できなくなっています
+    (todo?)
+
 - <b class="tab-title">JavaScript</b>
     ```ts
     import { Member } from "webcface";
 
     wcli.onMemberEntry.on((m: Member) => { /* ... */ });
     ```
-    JavaScriptでは Client.onMemberEntry プロパティが返す EventTarget クラスのオブジェクトがEventEmitterのラッパーになっています。  
-    `on(関数)` でコールバックを設定し、 `off(関数)` で解除したりできます。
+    イベントの管理には [eventemitter3](https://www.npmjs.com/package/eventemitter3) ライブラリを使用しており、
+    Client.onMemberEntry プロパティが返す [EventTarget](https://na-trium-144.github.io/webcface-js/classes/EventTarget.html) クラスのオブジェクトがEventEmitterのラッパーになっています。
+
+    `on(関数)` または `addListener(関数)` でコールバックを設定し、
+    `off(関数)` または `removeListener(関数)` で解除したりできます。
+    また `once(関数)` で1回だけ実行されるコールバックを設定できます。
+    
 - <b class="tab-title">Python</b>
     ```python
     def member_entry(m: webcface.Member):

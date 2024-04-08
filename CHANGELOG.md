@@ -1,3 +1,23 @@
+## [1.10.0] - 2024-04-01
+### Added
+* viewにinput要素を追加 (#219)
+	* ViewComponentType::text_input, decimal_input, number_input, select_input, toggle_input, slider_input, check_input
+	* Components::textInput, decimalInput, numberInput, selectInput, toggleInput, sliderInput, checkInput
+	* ViewComponent::bind(), onChange(), init(), min(), max(), step(), option()
+	* InputRefクラス
+* ViewComponent::id() (#227)
+### Changed
+* Textの内部データ形式をstd::stringからValAdaptorに変更 (#219)
+* ValAdaptorのコンストラクタをexplicitにした
+* Text::Dict削除
+* ピリオドではじまるfieldのentryを送信しない仕様に変更
+	* AnonymousFunc, Viewなど内部で使用する名前はピリオド2つで始まるようにした
+* windowsのDebugでのnamespaceをwebcfacedからwebcface::debugに変更 (#221)
+	* webcface.hをincludeすることなく一部のファイル(client.hとvalue.hだけ、など)のincludeだけでも使えるようになる
+* AnonymousFuncのコンストラクタをexplicitにした (#222)
+* ViewBufクラスにfinal追加、EventTarget::onAppendのoverrideにfinal追加 (#228)
+* ValAdaptorの内部でデータをすべてstringに変換するのをやめた (#229)
+
 ## [1.9.1] - 2024-03-23
 ### Changed
 * Func引数で文字列→bool型の変換の仕様を変更 (#217)

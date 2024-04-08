@@ -3,6 +3,7 @@
 \tableofcontents
 \sa
 * C++ webcface::Client (`webcface/client.h`)
+* C Reference: c_wcf/client.h
 * JavaScript [Client](https://na-trium-144.github.io/webcface-js/classes/Client.html)
 * Python [webcface.Client](https://na-trium-144.github.io/webcface-python/webcface.client.html#webcface.client.Client)
 
@@ -39,7 +40,7 @@ Client オブジェクトを作り、start() を呼ぶことでサーバーへ�
 
 - <b class="tab-title">C</b>
     ```c
-    #include <webcface/c_wcf.h>
+    #include <webcface/wcf.h>
 
     wcfClient *wcli = wcfInitDefault("sample");
     wcfStart(wcli);
@@ -50,7 +51,7 @@ Client オブジェクトを作り、start() を呼ぶことでサーバーへ�
 
     サーバーのアドレスとポートを指定したい場合`wcfInit()`を使います
     ```c
-    #include <webcface/c_wcf.h>
+    #include <webcface/wcf.h>
 
     wcfClient *wcli = wcfInit("sample", "192.168.1.1", 7530);
     wcfStart(wcli);
