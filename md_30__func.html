@@ -73,7 +73,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">WebCFace<span id="projectnumber">&#160;1.9.1</span>
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;1.10.0</span>
    </div>
    <div id="projectbrief">Web-based RPC &amp; UI Library</div>
   </td>
@@ -160,6 +160,7 @@ $(document).ready(function(){initNavTree('md_30__func.html',''); initResizable()
 <dl class="section since"><dt>Since</dt><dd><span class="since-c"></span> <span class="since-js"></span> <span class="since-py"></span> </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><ul>
 <li>C++ <a class="el" href="classwebcface_1_1Func.html" title="関数1つを表すクラス">webcface::Func</a> (<code><a class="el" href="func_8h.html">webcface/func.h</a></code>)</li>
+<li>C Reference: <a class="el" href="c__wcf_2func_8h.html">c_wcf/func.h</a></li>
 <li>JavaScript <a href="https://na-trium-144.github.io/webcface-js/classes/Func.html">Func</a></li>
 <li>Python <a href="https://na-trium-144.github.io/webcface-python/webcface.func.html#webcface.func.Func">webcface.Func</a></li>
 </ul>
@@ -281,7 +282,7 @@ $(document).ready(function(){initNavTree('md_30__func.html',''); initResizable()
 </ul>
 </div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md118"></a>
 FuncListener</h1>
-<p>呼び出されたとき実行する関数を登録する代わりに、呼び出されたかどうかを監視し任意のタイミングで値を返すということもできます。</p>
+<p>呼び出されたとき実行する関数を登録する代わりに、呼び出されたかどうかを監視し任意のタイミングで値を返すということもできます。 特にCのFFIで関数ポインタが利用できない場合に代わりに使えます。</p>
 <div class="tabbed"></div><div class="tabbed"><ul>
 <li><p class="startli"><b class="tab-title">C++</b> <span class="since-c">1.5</span> </p><div class="fragment"><div class="line">wcli.funcListener(<span class="stringliteral">&quot;hoge&quot;</span>).listen();</div>
 </div><!-- fragment --><p> で待ち受けを開始し、func.set()と同様関数が登録され他クライアントから見られるようになります。 (listen()ではブロックはしません)</p>
@@ -403,7 +404,7 @@ runAsync</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sun Apr 7 2024 14:32:53 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Mon Apr 8 2024 09:42:21 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>
