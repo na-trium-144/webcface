@@ -364,18 +364,17 @@ TEST_F(ClientTest, textReq) {
 TEST_F(ClientTest, viewSend) {
     wcli_->waitConnection();
     data_->view_store.setSend(
-        "a",
-        std::make_shared<std::vector<ViewComponentBase>>(
-            std::vector<ViewComponentBase>{
-                ViewComponents::text("a")
-                    .textColor(ViewColor::yellow)
-                    .bgColor(ViewColor::green)
-                    .toV()
-                    .lockTmp(data_, "", nullptr, nullptr),
-                ViewComponents::newLine().lockTmp(data_, "", nullptr, nullptr),
-                ViewComponents::button("a", Func{Field{data_, "x", "y"}})
-                    .lockTmp(data_, "", nullptr, nullptr),
-            }));
+        "a", std::make_shared<std::vector<ViewComponentBase>>(
+                 std::vector<ViewComponentBase>{
+                     ViewComponents::text("a")
+                         .textColor(ViewColor::yellow)
+                         .bgColor(ViewColor::green)
+                         .toV()
+                         .lockTmp(data_, ""),
+                     ViewComponents::newLine().lockTmp(data_, ""),
+                     ViewComponents::button("a", Func{Field{data_, "x", "y"}})
+                         .lockTmp(data_, ""),
+                 }));
     wcli_->sync();
     wait();
     dummy_s->recv<Message::View>(
@@ -397,18 +396,17 @@ TEST_F(ClientTest, viewSend) {
     dummy_s->recvClear();
 
     data_->view_store.setSend(
-        "a",
-        std::make_shared<std::vector<ViewComponentBase>>(
-            std::vector<ViewComponentBase>{
-                ViewComponents::text("b")
-                    .textColor(ViewColor::red)
-                    .bgColor(ViewColor::green)
-                    .toV()
-                    .lockTmp(data_, "", nullptr, nullptr),
-                ViewComponents::newLine().lockTmp(data_, "", nullptr, nullptr),
-                ViewComponents::button("a", Func{Field{data_, "x", "y"}})
-                    .lockTmp(data_, "", nullptr, nullptr),
-            }));
+        "a", std::make_shared<std::vector<ViewComponentBase>>(
+                 std::vector<ViewComponentBase>{
+                     ViewComponents::text("b")
+                         .textColor(ViewColor::red)
+                         .bgColor(ViewColor::green)
+                         .toV()
+                         .lockTmp(data_, ""),
+                     ViewComponents::newLine().lockTmp(data_, ""),
+                     ViewComponents::button("a", Func{Field{data_, "x", "y"}})
+                         .lockTmp(data_, ""),
+                 }));
     wcli_->sync();
     wait();
     dummy_s->recv<Message::View>(
@@ -443,11 +441,10 @@ TEST_F(ClientTest, viewReq) {
                       .textColor(ViewColor::yellow)
                       .bgColor(ViewColor::green)
                       .toV()
-                      .lockTmp(data_, "", nullptr, nullptr)},
-            {"1",
-             ViewComponents::newLine().lockTmp(data_, "", nullptr, nullptr)},
+                      .lockTmp(data_, "")},
+            {"1", ViewComponents::newLine().lockTmp(data_, "")},
             {"2", ViewComponents::button("a", Func{Field{data_, "x", "y"}})
-                      .lockTmp(data_, "", nullptr, nullptr)},
+                      .lockTmp(data_, "")},
         });
     dummy_s->send(Message::Res<Message::View>{1, "", v, 3});
     dummy_s->send(Message::Res<Message::View>{1, "c", v, 3});
@@ -474,7 +471,7 @@ TEST_F(ClientTest, viewReq) {
                       .textColor(ViewColor::red)
                       .bgColor(ViewColor::green)
                       .toV()
-                      .lockTmp(data_, "", nullptr, nullptr)},
+                      .lockTmp(data_, "")},
         });
     dummy_s->send(Message::Res<Message::View>{1, "", v2, 3});
     wait();

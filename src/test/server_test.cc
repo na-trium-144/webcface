@@ -435,14 +435,12 @@ TEST_F(ServerTest, view) {
         std::make_shared<
             std::unordered_map<std::string, Message::View::ViewComponent>>(
             std::unordered_map<std::string, Message::View::ViewComponent>{
-                {"0", ViewComponents::text("a").toV().lockTmp(
-                          data_, "", nullptr, nullptr)},
-                {"1", ViewComponents::newLine().lockTmp(data_, "", nullptr,
-                                                        nullptr)},
+                {"0", ViewComponents::text("a").toV().lockTmp(data_, "")},
+                {"1", ViewComponents::newLine().lockTmp(data_, "")},
                 {"2", ViewComponents::button(
                           "f", Func{Field{std::weak_ptr<Internal::ClientData>(),
                                           "p", "q"}})
-                          .lockTmp(data_, "", nullptr, nullptr)}}),
+                          .lockTmp(data_, "")}}),
         3});
     wait();
     dummy_c2->send(Message::SyncInit{{}, "", 0, "", "", ""});
@@ -469,8 +467,7 @@ TEST_F(ServerTest, view) {
         std::make_shared<
             std::unordered_map<std::string, Message::View::ViewComponent>>(
             std::unordered_map<std::string, Message::View::ViewComponent>{
-                {"0", ViewComponents::text("b").toV().lockTmp(
-                          data_, "", nullptr, nullptr)},
+                {"0", ViewComponents::text("b").toV().lockTmp(data_, "")},
             }),
         3});
     wait();

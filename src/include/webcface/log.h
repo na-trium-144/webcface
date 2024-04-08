@@ -19,7 +19,7 @@ extern template class WEBCFACE_IMPORT EventTarget<Log, std::string>;
  *
  */
 class WEBCFACE_DLL Log : protected Field, public EventTarget<Log, std::string> {
-    void onAppend() const override;
+    void onAppend() const override final;
 
   public:
     Log() = default;

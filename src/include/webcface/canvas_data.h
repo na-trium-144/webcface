@@ -11,11 +11,40 @@ struct ClientData;
 }
 class RobotModel;
 
+template <typename TypeEnum>
+class IdBase {
+  protected:
+    int idx_for_type_ = 0;
+    void initIdx(std::unordered_map<int, int> *idx_next, TypeEnum type) {
+        if (idx_next) {
+            idx_for_type_ = (*idx_next)[static_cast<int>(type)]++;
+        }
+    }
+
+  public:
+    IdBase() = default;
+    virtual ~IdBase() = default;
+    virtual TypeEnum type() const = 0;
+    /*!
+     * \brief そのview(またはcanvas)内で一意のid
+     * \since ver1.10
+     *
+     * 要素が増減したり順序が変わったりしなければ、
+     * 同じ要素には常に同じidが振られる。
+     *
+     */
+    std::string id() const {
+        return ".." + std::to_string(static_cast<int>(type())) + "." +
+               std::to_string(idx_for_type_);
+    }
+};
+
 /*!
  * \brief Viewに表示する要素です
  *
  */
-class WEBCFACE_DLL ViewComponent : protected Common::ViewComponentBase {
+class WEBCFACE_DLL ViewComponent : protected Common::ViewComponentBase,
+                                   public IdBase<ViewComponentType> {
     std::weak_ptr<Internal::ClientData> data_w;
 
     std::shared_ptr<AnonymousFunc> on_click_func_tmp;
@@ -25,9 +54,16 @@ class WEBCFACE_DLL ViewComponent : protected Common::ViewComponentBase {
   public:
     ViewComponent() = default;
     ViewComponent(const Common::ViewComponentBase &vc,
-                  const std::weak_ptr<Internal::ClientData> &data_w)
-        : Common::ViewComponentBase(vc), data_w(data_w) {}
-    explicit ViewComponent(ViewComponentType type) { type_ = type; }
+                  const std::weak_ptr<Internal::ClientData> &data_w,
+                  std::unordered_map<int, int> *idx_next)
+        : Common::ViewComponentBase(vc), IdBase<ViewComponentType>(),
+          data_w(data_w) {
+        initIdx(idx_next, type_);
+    }
+    explicit ViewComponent(ViewComponentType type)
+        : Common::ViewComponentBase(), IdBase<ViewComponentType>() {
+        type_ = type;
+    }
 
     /*!
      * \brief AnonymousFuncとInputRefの名前を確定
@@ -35,7 +71,8 @@ class WEBCFACE_DLL ViewComponent : protected Common::ViewComponentBase {
      */
     ViewComponentBase &
     lockTmp(const std::weak_ptr<Internal::ClientData> &data_w,
-            const std::string &view_name, int *func_next, int *inputref_next);
+            const std::string &view_name,
+            std::unordered_map<int, int> *idx_next = nullptr);
 
     wcfViewComponent cData() const;
 
@@ -43,7 +80,7 @@ class WEBCFACE_DLL ViewComponent : protected Common::ViewComponentBase {
      * \brief 要素の種類
      *
      */
-    ViewComponentType type() const { return type_; }
+    ViewComponentType type() const override { return type_; }
     /*!
      * \brief 表示する文字列を取得
      *
@@ -116,7 +153,7 @@ class WEBCFACE_DLL ViewComponent : protected Common::ViewComponentBase {
      * \brief inputの現在の値を取得
      * \since ver1.10
      *
-*     * 値の変更はonChange()に新しい値を渡して呼び出す
+     *     * 値の変更はonChange()に新しい値を渡して呼び出す
      * (onChange()->runAsync(value) など)
      *
      */
@@ -211,8 +248,8 @@ class WEBCFACE_DLL ViewComponent : protected Common::ViewComponentBase {
      * \brief 最小値を設定する。
      * \since ver1.10
      *
-     * * string型引数の場合最小の文字数を表す。
-     * * bool型引数の場合効果がない。
+     * * 文字列入力の場合最小の文字数を表す。
+     * * 文字列・数値入力でない場合効果がない。
      * * option() はクリアされる。
      *
      */
@@ -231,14 +268,31 @@ class WEBCFACE_DLL ViewComponent : protected Common::ViewComponentBase {
      * \brief 最大値を設定する。
      * \since ver1.10
      *
-     * * string型引数の場合最大の文字数を表す。
-     * * bool型引数の場合効果がない。
+     * * 文字列入力の場合最大の文字数を表す。
+     * * 文字列・数値入力でない場合効果がない。
      * * option() はクリアされる。
      *
      */
     ViewComponent &max(double max) {
         max_ = max;
         option_.clear();
+        return *this;
+    }
+    /*!
+     * \brief 数値の刻み幅を取得する。
+     * \since ver1.10
+     *
+     */
+    std::optional<double> step() const { return step_; }
+    /*!
+     * \brief 数値の刻み幅を設定する。
+     * \since ver1.10
+     *
+     * * 整数入力、スライダーなど以外効果がない。
+     *
+     */
+    ViewComponent &step(double step) {
+        step_ = step;
         return *this;
     }
     /*!
@@ -377,28 +431,32 @@ class WEBCFACE_DLL Canvas3DComponent : protected Common::Canvas3DComponentBase {
  * 今のところこのクラスのオブジェクトのデータを変更する用途はない。
  *
  */
-class WEBCFACE_DLL Canvas2DComponent : protected Common::Canvas2DComponentBase {
+class WEBCFACE_DLL Canvas2DComponent : protected Common::Canvas2DComponentBase,
+                                       public IdBase<Canvas2DComponentType> {
     std::weak_ptr<Internal::ClientData> data_w;
     std::shared_ptr<AnonymousFunc> on_click_func_tmp;
 
   public:
     Canvas2DComponent() = default;
     Canvas2DComponent(const Common::Canvas2DComponentBase &vc,
-                      const std::weak_ptr<Internal::ClientData> &data_w)
-        : Common::Canvas2DComponentBase(vc), data_w(data_w),
-          on_click_func_tmp(nullptr) {}
+                      const std::weak_ptr<Internal::ClientData> &data_w,
+                      std::unordered_map<int, int> *idx_next)
+        : Common::Canvas2DComponentBase(vc), IdBase<Canvas2DComponentType>(),
+          data_w(data_w), on_click_func_tmp(nullptr) {
+        initIdx(idx_next, type_);
+    }
     explicit Canvas2DComponent(const Common::Canvas2DComponentBase &vc)
-        : Common::Canvas2DComponentBase(vc), data_w(),
-          on_click_func_tmp(nullptr) {}
+        : Common::Canvas2DComponentBase(vc), IdBase<Canvas2DComponentType>(),
+          data_w(), on_click_func_tmp(nullptr) {}
     Canvas2DComponent(Canvas2DComponentType type,
                       const std::weak_ptr<Internal::ClientData> &data_w)
-        : Common::Canvas2DComponentBase(), data_w(data_w),
-          on_click_func_tmp(nullptr) {
+        : Common::Canvas2DComponentBase(), IdBase<Canvas2DComponentType>(),
+          data_w(data_w), on_click_func_tmp(nullptr) {
         type_ = type;
     }
     explicit Canvas2DComponent(Canvas2DComponentType type)
-        : Common::Canvas2DComponentBase(), data_w(),
-          on_click_func_tmp(nullptr) {
+        : Common::Canvas2DComponentBase(), IdBase<Canvas2DComponentType>(),
+          data_w(), on_click_func_tmp(nullptr) {
         type_ = type;
     }
 
@@ -408,13 +466,14 @@ class WEBCFACE_DLL Canvas2DComponent : protected Common::Canvas2DComponentBase {
      */
     Canvas2DComponentBase &
     lockTmp(const std::weak_ptr<Internal::ClientData> &data_w,
-            const std::string &view_name, int *func_next);
+            const std::string &view_name,
+            std::unordered_map<int, int> *idx_next = nullptr);
 
     /*!
      * \brief 要素の種類
      *
      */
-    Canvas2DComponentType type() const { return type_; }
+    Canvas2DComponentType type() const override { return type_; }
     /*!
      * \brief 要素の移動
      *
@@ -959,11 +1018,11 @@ inline ViewComponent button(const std::string &text, T &&func) {
 inline ViewComponent textInput(const std::string &text = "") {
     return ViewComponent(ViewComponentType::text_input).text(text);
 }
-inline ViewComponent numInput(const std::string &text = "") {
-    return ViewComponent(ViewComponentType::num_input).text(text).init(0);
+inline ViewComponent decimalInput(const std::string &text = "") {
+    return ViewComponent(ViewComponentType::decimal_input).text(text).init(0);
 }
-inline ViewComponent intInput(const std::string &text = "") {
-    return ViewComponent(ViewComponentType::int_input).text(text).init(0);
+inline ViewComponent numberInput(const std::string &text = "") {
+    return ViewComponent(ViewComponentType::number_input).text(text).init(0);
 }
 inline ViewComponent toggleInput(const std::string &text = "") {
     return ViewComponent(ViewComponentType::toggle_input).text(text);

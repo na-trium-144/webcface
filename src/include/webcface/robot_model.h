@@ -30,7 +30,7 @@ class WEBCFACE_DLL RobotModel : protected Field,
                                 public Canvas3DComponent {
     std::shared_ptr<Internal::DataSetBuffer<RobotLink>> sb;
 
-    void onAppend() const override;
+    void onAppend() const override final;
 
   public:
     RobotModel();

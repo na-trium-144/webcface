@@ -7,20 +7,20 @@ WEBCFACE_NS_BEGIN
 
 ViewComponentBase &
 ViewComponent::lockTmp(const std::weak_ptr<Internal::ClientData> &data_w,
-                       const std::string &view_name, int *func_next,
-                       int *inputref_next) {
+                       const std::string &view_name,
+                       std::unordered_map<int, int> *idx_next) {
     auto data = data_w.lock();
-    if (on_click_func_tmp != nullptr) {
+    initIdx(idx_next, type_);
+    if (on_click_func_tmp) {
         Func on_click{Field{data_w, data->self_member_name},
-                      "..v" + view_name + "." + std::to_string((*func_next)++)};
+                      "..v" + view_name + "/" + id()};
         on_click_func_tmp->lockTo(on_click);
         onClick(on_click);
     }
     if (text_ref_tmp) {
         // if (text_ref_tmp->expired()) {
         Text text_ref{Field{data_w, data->self_member_name},
-                      "..ir" + view_name + "." +
-                          std::to_string((*inputref_next)++)};
+                      "..ir" + view_name + "/" + id()};
         text_ref_tmp->lockTo(text_ref);
         if (init_ && !text_ref.tryGet()) {
             text_ref.set(*init_);
@@ -120,12 +120,13 @@ Canvas3DComponent &Canvas3DComponent::angle(const std::string &joint_name,
 
 Canvas2DComponentBase &
 Canvas2DComponent::lockTmp(const std::weak_ptr<Internal::ClientData> &data_w,
-                           const std::string &view_name, int *func_next) {
+                           const std::string &view_name,
+                           std::unordered_map<int, int> *idx_next) {
+    initIdx(idx_next, type_);
     if (on_click_func_tmp != nullptr) {
         auto data = data_w.lock();
         Func on_click{Field{data_w, data->self_member_name},
-                      "..c2" + view_name + "." +
-                          std::to_string((*func_next)++)};
+                      "..c2" + view_name + "/" + id()};
         on_click_func_tmp->lockTo(on_click);
         onClick(on_click);
     }
