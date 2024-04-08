@@ -178,6 +178,7 @@ Wi-Fi経由で受信する場合に通信量を減らすことができます。
 
 ~~Image::time()~~ でその値が送信されたとき(そのMemberがsync()したとき)の時刻が得られます。  
 <span class="since-c">1.7</span>
+<span class="since-js">1.6</span>
 <span class="since-py"></span>
 Member::syncTime() に変更
 

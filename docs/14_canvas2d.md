@@ -306,6 +306,7 @@ Canvas2DComponentオブジェクトから各種プロパティを取得できま
 
 ~~Canvas2D::time()~~ でその値が送信されたとき(そのMemberがsync()したとき)の時刻が得られます。  
 <span class="since-c">1.7</span>
+<span class="since-js">1.6</span>
 <span class="since-py"></span>
 Member::syncTime() に変更
 

@@ -345,6 +345,7 @@ Value::request()で明示的にリクエストを送信することもできま�
 
 ~~Value::time()~~ でその値が送信されたとき(そのMemberがsync()したとき)の時刻が得られます。  
 <span class="since-c">1.7</span>
+<span class="since-js">1.6</span>
 <span class="since-py"></span>
 Member::syncTime() に変更
 (Textなど他のデータの送信時刻と共通です)
