@@ -4,9 +4,13 @@
 #include "dir.h"
 #include "ip.h"
 #include <webcface/common/def.h>
+#include <webcface/common/unix_path.h>
 #include "../message/message.h"
 #include <memory>
 #include <thread>
+#include <filesystem>
+#include <unistd.h>
+#include <sys/stat.h>
 
 WEBCFACE_NS_BEGIN
 namespace Server {
@@ -82,6 +86,8 @@ void serverRun(int port, const spdlog::sink_ptr &sink,
         for (const auto &addr : getIpAddresses(logger)) {
             logger->info("http://{}:{}/index.html", addr, port);
         }
+        logger->info("unix domain socket at {}",
+                     Common::unixSocketPath(port).native());
     }).detach();
 
     auto crow_logger = std::make_shared<spdlog::logger>("crow_server", sink);
@@ -97,41 +103,57 @@ void serverRun(int port, const spdlog::sink_ptr &sink,
     logger->debug("static dir = {}", static_dir);
     logger->debug("temp dir = {}", temp_dir);
 
-    app = std::make_unique<crow::SimpleApp>();
-    // app->loglevel(crow::LogLevel::Warning);
-    app->unix_path("/tmp/webcface.sock");
+    std::array<std::unique_ptr<crow::SimpleApp>, 2> apps;
+    for (auto &app : apps) {
+        app = std::make_unique<crow::SimpleApp>();
+        // app->loglevel(crow::LogLevel::Warning);
 
-    /*
-    / にアクセスしたときindex.htmlへリダイレクトさせようとしたが、
-    windowsでなんかうまくいかなかったので諦めた
+        /*
+        / にアクセスしたときindex.htmlへリダイレクトさせようとしたが、
+        windowsでなんかうまくいかなかったので諦めた
 
-    auto &route = CROW_ROUTE((*app), "/");
-    route([](crow::response &res) {
-        res.redirect("index.html");
-        res.end();
-    });
-    route.websocket<std::remove_reference<decltype(*app)>::type>(app.get())
-    */
-    CROW_WEBSOCKET_ROUTE((*app), "/")
-        .onopen([&](crow::websocket::connection &conn) {
-            std::lock_guard lock(server_mtx);
-            store.newClient(&conn, conn.get_remote_ip(), sink, level);
-        })
-        .onclose([&](crow::websocket::connection &conn,
-                     const std::string & /*reason*/) {
-            std::lock_guard lock(server_mtx);
-            store.removeClient(&conn);
-        })
-        .onmessage([&](crow::websocket::connection &conn,
-                       const std::string &data, bool /*is_binary*/) {
-            std::lock_guard lock(server_mtx);
-            auto cli = store.getClient(&conn);
-            if (cli) {
-                cli->onRecv(data);
-            }
+        auto &route = CROW_ROUTE((*app), "/");
+        route([](crow::response &res) {
+            res.redirect("index.html");
+            res.end();
         });
+        route.websocket<std::remove_reference<decltype(*app)>::type>(app.get())
+        */
+        CROW_WEBSOCKET_ROUTE((*app), "/")
+            .onopen([&](crow::websocket::connection &conn) {
+                std::lock_guard lock(server_mtx);
+                store.newClient(&conn, conn.get_remote_ip(), sink, level);
+            })
+            .onclose([&](crow::websocket::connection &conn,
+                         const std::string & /*reason*/) {
+                std::lock_guard lock(server_mtx);
+                store.removeClient(&conn);
+            })
+            .onmessage([&](crow::websocket::connection &conn,
+                           const std::string &data, bool /*is_binary*/) {
+                std::lock_guard lock(server_mtx);
+                auto cli = store.getClient(&conn);
+                if (cli) {
+                    cli->onRecv(data);
+                }
+            });
+    }
 
-    app->port(port).run();
+    std::array<std::future<void>, 2> apps_f;
+
+    auto unix_path = Common::unixSocketPath(port);
+    mkdir(unix_path.parent_path().c_str(), 0777);
+    unlink(unix_path.c_str());
+    apps_f[0] = apps[0]->unix_path(unix_path.native()).run_async();
+    apps[0]->wait_for_server_start();
+    chmod(unix_path.c_str(), 0666);
+
+    apps_f[1] = apps[1]->port(port).run_async();
+    
+    for (auto &f : apps_f) {
+        f.get();
+    }
+
     serverStop();
 }
 } // namespace Server

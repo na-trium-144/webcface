@@ -17,6 +17,7 @@ int main(int argc, char **argv) {
     int port = WEBCFACE_DEFAULT_PORT;
     int verbosity = 0;
     int keep_log = 1000;
+
     app.add_option("-p,--port", port,
                    "Server port (default: " WEBCFACE_DEFAULT_PORT_S ")");
     app.add_flag("-v,--verbose", verbosity,
