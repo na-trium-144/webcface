@@ -26,7 +26,7 @@ WEBCFACE_NS_END
 WEBCFACE_NS_BEGIN
 namespace Server {
 
-std::unique_ptr<crow::SimpleApp> app;
+std::array<std::unique_ptr<crow::SimpleApp>, 2> apps;
 std::unique_ptr<std::thread> ping_thread;
 std::unique_ptr<CustomLogger> crow_custom_logger;
 std::atomic<bool> server_stop;
@@ -72,7 +72,11 @@ void serverStop() {
             server_stop.store(true);
         }
         server_ping_wait.notify_one();
-        app->stop();
+        for (auto &app : apps) {
+            if (app) {
+                app->stop();
+            }
+        }
         ping_thread->join();
     }
 }
@@ -103,7 +107,6 @@ void serverRun(int port, const spdlog::sink_ptr &sink,
     logger->debug("static dir = {}", static_dir);
     logger->debug("temp dir = {}", temp_dir);
 
-    std::array<std::unique_ptr<crow::SimpleApp>, 2> apps;
     for (auto &app : apps) {
         app = std::make_unique<crow::SimpleApp>();
         // app->loglevel(crow::LogLevel::Warning);
@@ -149,7 +152,7 @@ void serverRun(int port, const spdlog::sink_ptr &sink,
     chmod(unix_path.c_str(), 0666);
 
     apps_f[1] = apps[1]->port(port).run_async();
-    
+
     for (auto &f : apps_f) {
         f.get();
     }
