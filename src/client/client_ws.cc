@@ -16,7 +16,8 @@ void Internal::messageThreadMain(std::shared_ptr<Internal::ClientData> data,
         if (std::getenv("WEBCFACE_TRACE") != nullptr) {
             curl_easy_setopt(handle, CURLOPT_VERBOSE, 1L);
         }
-        curl_easy_setopt(handle, CURLOPT_URL, ("ws://" + host).c_str());
+        curl_easy_setopt(handle, CURLOPT_UNIX_SOCKET_PATH, "/tmp/webcface.sock");
+        curl_easy_setopt(handle, CURLOPT_URL, ("ws://" + host + "/").c_str());
         curl_easy_setopt(handle, CURLOPT_PORT, static_cast<long>(port));
         curl_easy_setopt(handle, CURLOPT_CONNECT_ONLY, 2L);
         CURLcode ret = curl_easy_perform(handle);

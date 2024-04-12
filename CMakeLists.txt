@@ -268,8 +268,10 @@ message(STATUS "Fetching crow Source...")
 # asioがない場合find_packageしないようにするため、
 # add_subdirectoryではなくinterfaceライブラリを定義する
 FetchContent_Declare(crow
-    GIT_REPOSITORY https://github.com/CrowCpp/Crow.git
-    GIT_TAG 921ce6f
+    # GIT_REPOSITORY https://github.com/CrowCpp/Crow.git
+    # GIT_TAG 921ce6f
+    GIT_REPOSITORY https://github.com/na-trium-144/Crow.git
+    GIT_TAG unix_socket
     CONFIGURE_COMMAND ""
 )
 FetchContent_GetProperties(crow)
