@@ -77,7 +77,14 @@ class WEBCFACE_DLL ViewComponent : protected Common::ViewComponentBase,
     wcfViewComponent cData() const;
 
     /*!
+     * \brief 要素の比較
      * \since ver1.11
+     *
+     * 要素のプロパティが完全一致すればtrue
+     *
+     * 例外としてbindの中身は別のTextオブジェクトで管理されるので、
+     * ここでは比較の対象ではない
+     *
      */
     bool operator==(const ViewComponent &other) const {
         return id() == other.id() && static_cast<ViewComponentBase>(*this) ==
