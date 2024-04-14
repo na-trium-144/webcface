@@ -331,6 +331,10 @@ c++ではstring→boolの変換は文字列が"1"のみtrueだったが <span cl
     Funcオブジェクトに()と引数をつけて直接呼び出すことでも同様に実行できます。
     (`Func::operator()`)
 
+    戻り値は webcface::ValAdaptor 型で返ります。
+    整数、実数、bool、stringにキャストできます。  
+    <span class="since-c">1.10</span> また、明示的にキャストするなら `asStringRef()`(const参照), `asString()`, `asBool()`, `as<整数or実数型>()` も使えます。
+
 - <b class="tab-title">C</b>
     ```c
     wcfMultiVal args[3] = {
