@@ -27,5 +27,11 @@ std::shared_ptr<Internal::ClientData> Field::setCheck() const {
 
 bool Field::isSelf() const { return dataLock()->isSelf(*this); }
 
+bool Field::operator==(const Field &other) const {
+    return !expired() && !other.expired() &&
+           data_w.lock().get() == other.data_w.lock().get() &&
+           member_ == other.member_ && field_ == other.field_;
+}
+
 
 WEBCFACE_NS_END
