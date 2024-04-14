@@ -38,6 +38,11 @@ struct Geometry {
     GeometryDerived as() const {
         return GeometryDerived{*this};
     }
+
+    bool operator==(const Geometry &other) const {
+        return type == other.type && properties == other.properties;
+    }
+    bool operator!=(const Geometry &other) const { return !(*this == other); }
 };
 struct Geometry3D {};
 struct Geometry2D {};
@@ -58,17 +63,8 @@ struct Canvas3DComponentBase {
 
     bool operator==(const Canvas3DComponentBase &rhs) const {
         return type_ == rhs.type_ && origin_ == rhs.origin_ &&
-               color_ == rhs.color_ &&
-               ((geometry_ == std::nullopt && rhs.geometry_ == std::nullopt) ||
-                (geometry_ && rhs.geometry_ &&
-                 geometry_->type == rhs.geometry_->type &&
-                 geometry_->properties == rhs.geometry_->properties)) &&
-               ((field_base_ == std::nullopt &&
-                 rhs.field_base_ == std::nullopt) ||
-                (field_base_ && rhs.field_base_ &&
-                 field_base_->member_ == rhs.field_base_->member_ &&
-                 field_base_->field_ == rhs.field_base_->field_)) &&
-               angles_ == rhs.angles_;
+               color_ == rhs.color_ && geometry_ == rhs.geometry_ &&
+               field_base_ == rhs.field_base_ && angles_ == rhs.angles_;
     }
     bool operator!=(const Canvas3DComponentBase &rhs) const {
         return !(*this == rhs);

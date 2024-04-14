@@ -29,16 +29,8 @@ struct Canvas2DComponentBase {
         return type_ == rhs.type_ && origin_ == rhs.origin_ &&
                color_ == rhs.color_ && fill_ == rhs.fill_ &&
                stroke_width_ == rhs.stroke_width_ &&
-               ((geometry_ == std::nullopt && rhs.geometry_ == std::nullopt) ||
-                (geometry_ && rhs.geometry_ &&
-                 geometry_->type == rhs.geometry_->type &&
-                 geometry_->properties == rhs.geometry_->properties)) &&
-               ((on_click_func_ == std::nullopt &&
-                 rhs.on_click_func_ == std::nullopt) ||
-                (on_click_func_ && rhs.on_click_func_ &&
-                 on_click_func_->member_ == rhs.on_click_func_->member_ &&
-                 on_click_func_->field_ == rhs.on_click_func_->field_)) &&
-               text_ == rhs.text_;
+               geometry_ == rhs.geometry_ &&
+               on_click_func_ == rhs.on_click_func_ && text_ == rhs.text_;
     }
     bool operator!=(const Canvas2DComponentBase &rhs) const {
         return !(*this == rhs);
