@@ -34,15 +34,10 @@ class ClientTest : public ::testing::Test {
   protected:
     void SetUp() override {
         std::cout << "SetUp begin" << std::endl;
-        dummy_s = std::make_shared<DummyServer>();
-        wait();
         data_ = std::make_shared<Internal::ClientData>(self_name, "127.0.0.1",
                                                        17530);
         wcli_ = std::make_shared<Client>(self_name, data_);
         callback_called = 0;
-        dummy_s->recvClear();
-        // 接続を待機する (todo: 接続完了まで待機する関数があると良い)
-        wait();
         std::cout << "SetUp end" << std::endl;
     }
     void TearDown() override {
@@ -64,7 +59,19 @@ class ClientTest : public ::testing::Test {
     }
 };
 
+TEST_F(ClientTest, unixSocketConnection) {
+    dummy_s = std::make_shared<DummyServer>(true);
+    wait();
+    EXPECT_FALSE(dummy_s->connected());
+    EXPECT_FALSE(wcli_->connected());
+    wcli_->start();
+    wait();
+    EXPECT_TRUE(dummy_s->connected());
+    EXPECT_TRUE(wcli_->connected());
+}
 TEST_F(ClientTest, connectionByStart) {
+    dummy_s = std::make_shared<DummyServer>(false);
+    wait();
     EXPECT_FALSE(dummy_s->connected());
     EXPECT_FALSE(wcli_->connected());
     wcli_->start();
@@ -73,6 +80,8 @@ TEST_F(ClientTest, connectionByStart) {
     EXPECT_TRUE(wcli_->connected());
 }
 TEST_F(ClientTest, connectionByWait) {
+    dummy_s = std::make_shared<DummyServer>(false);
+    wait();
     EXPECT_FALSE(dummy_s->connected());
     EXPECT_FALSE(wcli_->connected());
     wcli_->waitConnection();
@@ -80,6 +89,8 @@ TEST_F(ClientTest, connectionByWait) {
     EXPECT_TRUE(wcli_->connected());
 }
 TEST_F(ClientTest, connectionBySync) {
+    dummy_s = std::make_shared<DummyServer>(false);
+    wait();
     EXPECT_FALSE(dummy_s->connected());
     EXPECT_FALSE(wcli_->connected());
     wcli_->sync();
@@ -88,6 +99,8 @@ TEST_F(ClientTest, connectionBySync) {
     EXPECT_TRUE(wcli_->connected());
 }
 TEST_F(ClientTest, close) {
+    dummy_s = std::make_shared<DummyServer>(false);
+    wait();
     wcli_->waitConnection();
     wcli_.reset();
     wait();
@@ -95,12 +108,16 @@ TEST_F(ClientTest, close) {
 }
 TEST_F(ClientTest, name) { EXPECT_EQ(wcli_->name(), self_name); }
 TEST_F(ClientTest, memoryLeak) {
+    dummy_s = std::make_shared<DummyServer>(false);
+    wait();
     wcli_->waitConnection();
     wcli_.reset();
     wait();
     EXPECT_EQ(data_.use_count(), 1);
 }
 TEST_F(ClientTest, sync) {
+    dummy_s = std::make_shared<DummyServer>(false);
+    wait();
     wcli_->sync();
     wait();
     using namespace webcface::Message;
@@ -127,6 +144,8 @@ TEST_F(ClientTest, sync) {
                         [&] { ADD_FAILURE() << "Sync recv error"; });
 }
 TEST_F(ClientTest, serverVersion) {
+    dummy_s = std::make_shared<DummyServer>(false);
+    wait();
     wcli_->waitConnection();
     dummy_s->send(Message::SvrVersion{{}, "a", "1"});
     wait();
@@ -134,6 +153,8 @@ TEST_F(ClientTest, serverVersion) {
     EXPECT_EQ(wcli_->serverVersion(), "1");
 }
 TEST_F(ClientTest, ping) {
+    dummy_s = std::make_shared<DummyServer>(false);
+    wait();
     wcli_->waitConnection();
     dummy_s->send(Message::Ping{});
     wait();
@@ -154,6 +175,8 @@ TEST_F(ClientTest, ping) {
     EXPECT_EQ(wcli_->member("a").pingStatus().value(), 15);
 }
 TEST_F(ClientTest, entry) {
+    dummy_s = std::make_shared<DummyServer>(false);
+    wait();
     wcli_->waitConnection();
     wcli_->onMemberEntry().appendListener(callback<Member>());
     dummy_s->send(Message::SyncInit{{}, "a", 10, "b", "1", "12345"});
@@ -242,6 +265,8 @@ TEST_F(ClientTest, entry) {
     callback_called = 0;
 }
 TEST_F(ClientTest, valueSend) {
+    dummy_s = std::make_shared<DummyServer>(false);
+    wait();
     wcli_->waitConnection();
     data_->value_store.setSend("a", std::make_shared<VectorOpt<double>>(5));
     wcli_->sync();
@@ -277,6 +302,8 @@ TEST_F(ClientTest, valueSend) {
         [&] { ADD_FAILURE() << "Value recv error"; });
 }
 TEST_F(ClientTest, valueReq) {
+    dummy_s = std::make_shared<DummyServer>(false);
+    wait();
     wcli_->waitConnection();
     wcli_->member("a").value("b").tryGet();
     wait();
@@ -308,6 +335,8 @@ TEST_F(ClientTest, valueReq) {
               3);
 }
 TEST_F(ClientTest, textSend) {
+    dummy_s = std::make_shared<DummyServer>(false);
+    wait();
     wcli_->waitConnection();
     data_->text_store.setSend("a", std::make_shared<ValAdaptor>("b"));
     wcli_->sync();
@@ -339,6 +368,8 @@ TEST_F(ClientTest, textSend) {
         [&] { ADD_FAILURE() << "Text recv error"; });
 }
 TEST_F(ClientTest, textReq) {
+    dummy_s = std::make_shared<DummyServer>(false);
+    wait();
     wcli_->waitConnection();
     wcli_->member("a").text("b").tryGet();
     wait();
@@ -362,6 +393,8 @@ TEST_F(ClientTest, textReq) {
     EXPECT_EQ(*data_->text_store.getRecv("a", "b.c").value(), "z");
 }
 TEST_F(ClientTest, viewSend) {
+    dummy_s = std::make_shared<DummyServer>(false);
+    wait();
     wcli_->waitConnection();
     data_->view_store.setSend(
         "a", std::make_shared<std::vector<ViewComponentBase>>(
@@ -422,6 +455,8 @@ TEST_F(ClientTest, viewSend) {
         [&] { ADD_FAILURE() << "View recv error"; });
 }
 TEST_F(ClientTest, viewReq) {
+    dummy_s = std::make_shared<DummyServer>(false);
+    wait();
     wcli_->waitConnection();
     wcli_->member("a").view("b").tryGet();
     wait();
@@ -488,6 +523,8 @@ TEST_F(ClientTest, viewReq) {
               ViewComponentType::new_line);
 }
 TEST_F(ClientTest, canvas2DSend) {
+    dummy_s = std::make_shared<DummyServer>(false);
+    wait();
     wcli_->waitConnection();
     data_->canvas2d_store.setSend(
         "a", std::make_shared<Canvas2DDataBase>(
@@ -583,6 +620,8 @@ TEST_F(ClientTest, canvas2DSend) {
         [&] { ADD_FAILURE() << "Canvas2D recv error"; });
 }
 TEST_F(ClientTest, canvas2DReq) {
+    dummy_s = std::make_shared<DummyServer>(false);
+    wait();
     wcli_->waitConnection();
     wcli_->member("a").canvas2D("b").tryGet();
     wait();
@@ -718,6 +757,8 @@ TEST_F(ClientTest, canvas2DReq) {
               GeometryType::rect);
 }
 TEST_F(ClientTest, canvas3DSend) {
+    dummy_s = std::make_shared<DummyServer>(false);
+    wait();
     wcli_->waitConnection();
     data_->canvas3d_store.setSend(
         "a",
@@ -806,6 +847,8 @@ TEST_F(ClientTest, canvas3DSend) {
         [&] { ADD_FAILURE() << "Canvas3D recv error"; });
 }
 TEST_F(ClientTest, canvas3DReq) {
+    dummy_s = std::make_shared<DummyServer>(false);
+    wait();
     wcli_->waitConnection();
     wcli_->member("a").canvas3D("b").tryGet();
     wait();
@@ -905,6 +948,8 @@ TEST_F(ClientTest, canvas3DReq) {
         GeometryType::rect);
 }
 TEST_F(ClientTest, robotModelSend) {
+    dummy_s = std::make_shared<DummyServer>(false);
+    wait();
     wcli_->waitConnection();
     data_->robot_model_store.setSend(
         "a", std::make_shared<std::vector<RobotLink>>(
@@ -919,6 +964,8 @@ TEST_F(ClientTest, robotModelSend) {
         [&] { ADD_FAILURE() << "RobotModel recv error"; });
 }
 TEST_F(ClientTest, robotModelReq) {
+    dummy_s = std::make_shared<DummyServer>(false);
+    wait();
     wcli_->waitConnection();
     wcli_->member("a").robotModel("b").tryGet();
     wait();
@@ -946,6 +993,8 @@ TEST_F(ClientTest, robotModelReq) {
     EXPECT_EQ(data_->robot_model_store.getRecv("a", "b.c").value()->size(), 1);
 }
 TEST_F(ClientTest, imageSend) {
+    dummy_s = std::make_shared<DummyServer>(false);
+    wait();
     wcli_->waitConnection();
     data_->image_store.setSend(
         "a", ImageFrame{
@@ -961,6 +1010,8 @@ TEST_F(ClientTest, imageSend) {
         [&] { ADD_FAILURE() << "Image recv error"; });
 }
 TEST_F(ClientTest, imageReq) {
+    dummy_s = std::make_shared<DummyServer>(false);
+    wait();
     wcli_->waitConnection();
     wcli_->member("a").image("b").tryGet();
     wait();
@@ -989,6 +1040,8 @@ TEST_F(ClientTest, imageReq) {
               img.data().size());
 }
 TEST_F(ClientTest, logSend) {
+    dummy_s = std::make_shared<DummyServer>(false);
+    wait();
     wcli_->waitConnection();
     auto ls = std::make_shared<std::vector<Common::LogLine>>(
         std::vector<Common::LogLine>{
@@ -1021,6 +1074,8 @@ TEST_F(ClientTest, logSend) {
         [&] { ADD_FAILURE() << "Log recv error"; });
 }
 TEST_F(ClientTest, logReq) {
+    dummy_s = std::make_shared<DummyServer>(false);
+    wait();
     wcli_->waitConnection();
     wcli_->member("a").log().tryGet();
     wait();
@@ -1056,6 +1111,8 @@ TEST_F(ClientTest, logReq) {
     EXPECT_EQ(data_->log_store->getRecv("a").value()->size(), 3);
 }
 TEST_F(ClientTest, funcInfo) {
+    dummy_s = std::make_shared<DummyServer>(false);
+    wait();
     wcli_->waitConnection();
     auto f =
         wcli_->func("a").set([](int) { return 1; }).setArgs({Arg("a").init(3)});
@@ -1071,6 +1128,8 @@ TEST_F(ClientTest, funcInfo) {
         [&] { ADD_FAILURE() << "FuncInfo recv error"; });
 }
 TEST_F(ClientTest, funcCall) {
+    dummy_s = std::make_shared<DummyServer>(false);
+    wait();
     wcli_->waitConnection();
     // call
     dummy_s->send(Message::SyncInit{{}, "a", 10, "", "", ""});
@@ -1146,6 +1205,8 @@ TEST_F(ClientTest, funcCall) {
     EXPECT_EQ(static_cast<std::string>(r.result.get()), "b");
 }
 TEST_F(ClientTest, funcResponse) {
+    dummy_s = std::make_shared<DummyServer>(false);
+    wait();
     wcli_->waitConnection();
     wcli_->func("a").set([](int a) {
         if (a == 0) {

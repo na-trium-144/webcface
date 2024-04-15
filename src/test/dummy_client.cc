@@ -4,17 +4,22 @@
 #include <spdlog/sinks/stdout_color_sinks.h>
 #include <thread>
 #include "dummy_client.h"
+#include <webcface/common/unix_path.h>
 
 using namespace webcface;
 DummyClient::~DummyClient() {
     closing.store(true);
     t.join();
 }
-DummyClient::DummyClient()
-    : t([this] {
+DummyClient::DummyClient(bool unix)
+    : t([this, unix] {
           static int sn = 1;
           CURL *handle = curl_easy_init();
           curl_easy_setopt(handle, CURLOPT_VERBOSE, 1L);
+          if (unix) {
+              curl_easy_setopt(handle, CURLOPT_UNIX_SOCKET_PATH,
+                               Common::unixSocketPath(27530).c_str());
+          }
           curl_easy_setopt(handle, CURLOPT_URL, "ws://127.0.0.1");
           curl_easy_setopt(handle, CURLOPT_PORT, 27530L);
           curl_easy_setopt(handle, CURLOPT_CONNECT_ONLY, 2L);

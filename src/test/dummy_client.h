@@ -34,6 +34,6 @@ struct DummyClient {
     std::atomic<bool> closing = false;
     Common::Queue<std::string> msg_queue;
     std::thread t;
-    DummyClient();
+    explicit DummyClient(bool unix = false);
     ~DummyClient();
 };

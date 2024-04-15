@@ -36,10 +36,6 @@ class ServerTest : public ::testing::Test {
         server_thread = std::make_shared<std::thread>(
             Server::serverRun, 27530, stderr_sink, spdlog::level::trace);
         wait();
-        dummy_c1 = std::make_shared<DummyClient>();
-        wait();
-        dummy_c2 = std::make_shared<DummyClient>();
-        wait();
         std::cout << "SetUp end" << std::endl;
     }
     void TearDown() override {
@@ -58,8 +54,25 @@ class ServerTest : public ::testing::Test {
     int callback_called;
 };
 
-TEST_F(ServerTest, connection) { EXPECT_EQ(Server::store.clients.size(), 2); }
+TEST_F(ServerTest, connection) {
+    dummy_c1 = std::make_shared<DummyClient>();
+    wait();
+    dummy_c2 = std::make_shared<DummyClient>();
+    wait();
+    EXPECT_EQ(Server::store.clients.size(), 2);
+}
+TEST_F(ServerTest, unixSocketConnection) {
+    dummy_c1 = std::make_shared<DummyClient>(true);
+    wait();
+    dummy_c2 = std::make_shared<DummyClient>(true);
+    wait();
+    EXPECT_EQ(Server::store.clients.size(), 2);
+}
 TEST_F(ServerTest, sync) {
+    dummy_c1 = std::make_shared<DummyClient>();
+    wait();
+    dummy_c2 = std::make_shared<DummyClient>();
+    wait();
     dummy_c1->send(Message::SyncInit{{}, "", 0, "", "", ""});
     wait();
     dummy_c2->send(Message::SyncInit{{}, "c2", 0, "a", "1", ""});
@@ -87,6 +100,10 @@ TEST_F(ServerTest, sync) {
     // wait();
 }
 TEST_F(ServerTest, ping) {
+    dummy_c1 = std::make_shared<DummyClient>();
+    wait();
+    dummy_c2 = std::make_shared<DummyClient>();
+    wait();
     dummy_c1->send(Message::SyncInit{{}, "", 0, "", "", ""});
     wait();
     auto start = std::chrono::steady_clock::now();
@@ -125,6 +142,10 @@ TEST_F(ServerTest, ping) {
         [&] { ADD_FAILURE() << "Ping Status recv failed"; });
 }
 TEST_F(ServerTest, entry) {
+    dummy_c1 = std::make_shared<DummyClient>();
+    wait();
+    dummy_c2 = std::make_shared<DummyClient>();
+    wait();
     dummy_c1->send(Message::SyncInit{{}, "c1", 0, "", "", ""});
     dummy_c1->send(
         Message::Value{{}, "a", std::make_shared<std::vector<double>>(1)});
@@ -304,6 +325,10 @@ TEST_F(ServerTest, entry) {
         [&] { ADD_FAILURE() << "Func Info recv failed"; });
 }
 TEST_F(ServerTest, value) {
+    dummy_c1 = std::make_shared<DummyClient>();
+    wait();
+    dummy_c2 = std::make_shared<DummyClient>();
+    wait();
     dummy_c1->send(Message::SyncInit{{}, "c1", 0, "", "", ""});
     dummy_c1->send(Message::Sync{});
     dummy_c1->send(Message::Value{
@@ -346,6 +371,10 @@ TEST_F(ServerTest, value) {
         [&] { ADD_FAILURE() << "Value Res recv failed"; });
 }
 TEST_F(ServerTest, text) {
+    dummy_c1 = std::make_shared<DummyClient>();
+    wait();
+    dummy_c2 = std::make_shared<DummyClient>();
+    wait();
     dummy_c1->send(Message::SyncInit{{}, "c1", 0, "", "", ""});
     dummy_c1->send(Message::Sync{});
     dummy_c1->send(Message::Text{{}, "a", std::make_shared<ValAdaptor>("zzz")});
@@ -381,6 +410,10 @@ TEST_F(ServerTest, text) {
         [&] { ADD_FAILURE() << "Text Res recv failed"; });
 }
 TEST_F(ServerTest, robotModel) {
+    dummy_c1 = std::make_shared<DummyClient>();
+    wait();
+    dummy_c2 = std::make_shared<DummyClient>();
+    wait();
     dummy_c1->send(Message::SyncInit{{}, "c1", 0, "", "", ""});
     dummy_c1->send(Message::Sync{});
     dummy_c1->send(Message::RobotModel{
@@ -428,6 +461,10 @@ TEST_F(ServerTest, robotModel) {
         [&] { ADD_FAILURE() << "RobotModel Res recv failed"; });
 }
 TEST_F(ServerTest, view) {
+    dummy_c1 = std::make_shared<DummyClient>();
+    wait();
+    dummy_c2 = std::make_shared<DummyClient>();
+    wait();
     dummy_c1->send(Message::SyncInit{{}, "c1", 0, "", "", ""});
     dummy_c1->send(Message::Sync{});
     dummy_c1->send(Message::View{
@@ -484,6 +521,10 @@ TEST_F(ServerTest, view) {
         [&] { ADD_FAILURE() << "View Res recv failed"; });
 }
 TEST_F(ServerTest, canvas3d) {
+    dummy_c1 = std::make_shared<DummyClient>();
+    wait();
+    dummy_c2 = std::make_shared<DummyClient>();
+    wait();
     dummy_c1->send(Message::SyncInit{{}, "c1", 0, "", "", ""});
     dummy_c1->send(Message::Sync{});
     dummy_c1->send(Message::Canvas3D{
@@ -535,6 +576,10 @@ TEST_F(ServerTest, canvas3d) {
         [&] { ADD_FAILURE() << "Canvas3D Res recv failed"; });
 }
 TEST_F(ServerTest, canvas2d) {
+    dummy_c1 = std::make_shared<DummyClient>();
+    wait();
+    dummy_c2 = std::make_shared<DummyClient>();
+    wait();
     dummy_c1->send(Message::SyncInit{{}, "c1", 0, "", "", ""});
     dummy_c1->send(Message::Sync{});
     dummy_c1->send(Message::Canvas2D{
@@ -586,6 +631,10 @@ TEST_F(ServerTest, canvas2d) {
         [&] { ADD_FAILURE() << "Canvas2D Res recv failed"; });
 }
 TEST_F(ServerTest, image) {
+    dummy_c1 = std::make_shared<DummyClient>();
+    wait();
+    dummy_c2 = std::make_shared<DummyClient>();
+    wait();
     dummy_c1->send(Message::SyncInit{{}, "c1", 0, "", "", ""});
     auto sendImage = [&] {
         dummy_c1->send(Message::Sync{});
@@ -706,6 +755,10 @@ TEST_F(ServerTest, image) {
 #endif
 }
 TEST_F(ServerTest, log) {
+    dummy_c1 = std::make_shared<DummyClient>();
+    wait();
+    dummy_c2 = std::make_shared<DummyClient>();
+    wait();
     Server::store.keep_log = 3;
     dummy_c1->send(Message::SyncInit{{}, "c1", 0, "", "", ""});
     dummy_c1->send(Message::Log{
@@ -753,6 +806,10 @@ TEST_F(ServerTest, log) {
         [&] { ADD_FAILURE() << "Log recv failed"; });
 }
 TEST_F(ServerTest, call) {
+    dummy_c1 = std::make_shared<DummyClient>();
+    wait();
+    dummy_c2 = std::make_shared<DummyClient>();
+    wait();
     dummy_c1->send(Message::SyncInit{{}, "c1", 0, "", "", ""});
     dummy_c2->send(Message::SyncInit{{}, "c2", 0, "", "", ""});
     wait();

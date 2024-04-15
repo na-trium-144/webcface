@@ -5,14 +5,15 @@
 #include "dummy_server.h"
 #include <crow.h>
 #include "../server/custom_logger.h"
+#include <webcface/common/unix_path.h>
 
 using namespace webcface;
 DummyServer::~DummyServer() {
     std::static_pointer_cast<crow::SimpleApp>(server_)->stop();
     t.join();
 }
-DummyServer::DummyServer()
-    : t([this] {
+DummyServer::DummyServer(bool unix)
+    : t([this, unix] {
           static int sn = 0;
           dummy_logger =
               spdlog::stdout_color_mt("dummy_server_" + std::to_string(sn++));
@@ -50,7 +51,14 @@ DummyServer::DummyServer()
                   }
               });
 
-          server->port(17530).run();
+          if (unix) {
+              auto unix_path = Common::unixSocketPath(17530);
+              mkdir(unix_path.parent_path().c_str(), 0777);
+              unlink(unix_path.c_str());
+              server->unix_path(unix_path.native()).run();
+          } else {
+              server->port(17530).run();
+          }
           std::this_thread::sleep_for(std::chrono::milliseconds(10));
       }) {}
 
