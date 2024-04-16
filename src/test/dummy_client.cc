@@ -18,7 +18,7 @@ DummyClient::DummyClient(bool use_unix)
           curl_easy_setopt(handle, CURLOPT_VERBOSE, 1L);
           if (use_unix) {
               curl_easy_setopt(handle, CURLOPT_UNIX_SOCKET_PATH,
-                               Common::unixSocketPath(27530).c_str());
+                               Common::unixSocketPath(27530).string().c_str());
           }
           curl_easy_setopt(handle, CURLOPT_URL, "ws://127.0.0.1");
           curl_easy_setopt(handle, CURLOPT_PORT, 27530L);

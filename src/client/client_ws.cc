@@ -20,7 +20,7 @@ void Internal::messageThreadMain(std::shared_ptr<Internal::ClientData> data,
             }
             if (attempt == 0) {
                 curl_easy_setopt(handle, CURLOPT_UNIX_SOCKET_PATH,
-                                 Common::unixSocketPath(port).c_str());
+                                 Common::unixSocketPath(port).string().c_str());
             }
             curl_easy_setopt(handle, CURLOPT_URL,
                              ("ws://" + host + "/").c_str());
