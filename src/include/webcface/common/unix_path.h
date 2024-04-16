@@ -4,7 +4,11 @@
 WEBCFACE_NS_BEGIN
 inline namespace Common {
 inline std::filesystem::path unixSocketPath(int port) {
-  return "/tmp/webcface/" + std::to_string(port) + ".sock";
+#ifdef _WIN32
+    return "C:\\ProgramData\\webcface\\" + std::to_string(port) + ".sock";
+#else
+    return "/tmp/webcface/" + std::to_string(port) + ".sock";
+#endif
 }
 } // namespace Common
 WEBCFACE_NS_END

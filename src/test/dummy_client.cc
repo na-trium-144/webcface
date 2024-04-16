@@ -11,12 +11,12 @@ DummyClient::~DummyClient() {
     closing.store(true);
     t.join();
 }
-DummyClient::DummyClient(bool unix)
-    : t([this, unix] {
+DummyClient::DummyClient(bool use_unix)
+    : t([this, use_unix] {
           static int sn = 1;
           CURL *handle = curl_easy_init();
           curl_easy_setopt(handle, CURLOPT_VERBOSE, 1L);
-          if (unix) {
+          if (use_unix) {
               curl_easy_setopt(handle, CURLOPT_UNIX_SOCKET_PATH,
                                Common::unixSocketPath(27530).c_str());
           }

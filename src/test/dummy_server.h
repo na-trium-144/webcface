@@ -36,6 +36,6 @@ struct DummyServer {
     std::shared_ptr<spdlog::logger> dummy_logger;
 
     std::thread t;
-    explicit DummyServer(bool unix = false);
+    explicit DummyServer(bool use_unix = false);
     ~DummyServer();
 };

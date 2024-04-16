@@ -9,8 +9,12 @@
 #include <memory>
 #include <thread>
 #include <filesystem>
+#ifdef _WIN32
+#include <fileapi.h>
+#else
 #include <unistd.h>
 #include <sys/stat.h>
+#endif
 
 WEBCFACE_NS_BEGIN
 namespace Server {
@@ -91,7 +95,7 @@ void serverRun(int port, const spdlog::sink_ptr &sink,
             logger->info("http://{}:{}/index.html", addr, port);
         }
         logger->info("unix domain socket at {}",
-                     Common::unixSocketPath(port).native());
+                     Common::unixSocketPath(port).string());
     }).detach();
 
     auto crow_logger = std::make_shared<spdlog::logger>("crow_server", sink);
@@ -145,11 +149,19 @@ void serverRun(int port, const spdlog::sink_ptr &sink,
     std::array<std::future<void>, 2> apps_f;
 
     auto unix_path = Common::unixSocketPath(port);
+#ifdef _WIN32
+    CreateDirectoryW(unix_path.parent_path().c_str(), nullptr);
+    DeleteFileW(unix_path.c_str());
+#else
     mkdir(unix_path.parent_path().c_str(), 0777);
     unlink(unix_path.c_str());
-    apps_f[0] = apps[0]->unix_path(unix_path.native()).run_async();
+#endif
+    apps_f[0] = apps[0]->unix_path(unix_path.string()).run_async();
     apps[0]->wait_for_server_start();
+#ifdef _WIN32
+#else
     chmod(unix_path.c_str(), 0666);
+#endif
 
     apps_f[1] = apps[1]->port(port).run_async();
 
