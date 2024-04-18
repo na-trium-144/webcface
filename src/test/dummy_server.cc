@@ -5,7 +5,7 @@
 #include "dummy_server.h"
 #include <crow.h>
 #include "../server/custom_logger.h"
-#include <webcface/common/unix_path.h>
+#include "../message/unix_path.h"
 #ifdef _WIN32
 #include <fileapi.h>
 #else
@@ -58,7 +58,7 @@ DummyServer::DummyServer(bool use_unix)
               });
 
           if (use_unix) {
-              auto unix_path = Common::unixSocketPath(17530);
+              auto unix_path = Message::unixSocketPath(17530);
 #ifdef _WIN32
               CreateDirectoryW(unix_path.parent_path().c_str(), nullptr);
               DeleteFileW(unix_path.c_str());

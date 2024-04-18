@@ -356,7 +356,8 @@ set(CPP_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 list(APPEND SVR_MAIN_SRC ${CPP_DIR}/server_main.cc)
 list(APPEND WEBCFACE_SRC
     ${CPP_DIR}/message/message.cc
-    ${CPP_DIR}/server/s_client_data.cc
+    ${CPP_DIR}/message/unix_path.cc
+    ${CPP_DIR}/server/member_data.cc
     ${CPP_DIR}/server/store.cc
     ${CPP_DIR}/server/websock.cc
     ${CPP_DIR}/server/dir.cc

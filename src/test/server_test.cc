@@ -1,8 +1,8 @@
 #include <gtest/gtest.h>
 #include "../client/client_internal.h"
-#include "../server/websock.h"
+#include <webcface/server.h>
 #include "../server/store.h"
-#include "../server/s_client_data.h"
+#include "../server/member_data.h"
 #include "../message/message.h"
 #include <webcface/common/def.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
@@ -30,11 +30,10 @@ class ServerTest : public ::testing::Test {
   protected:
     void SetUp() override {
         std::cout << "SetUp begin" << std::endl;
-        Server::store.clear();
         auto stderr_sink =
             std::make_shared<spdlog::sinks::stderr_color_sink_mt>();
-        server_thread = std::make_shared<std::thread>(
-            Server::serverRun, 27530, stderr_sink, spdlog::level::trace);
+        server = std::make_unique<Server::Server>(27530, stderr_sink,
+                                                  spdlog::level::trace);
         wait();
         std::cout << "SetUp end" << std::endl;
     }
@@ -42,12 +41,10 @@ class ServerTest : public ::testing::Test {
         std::cout << "TearDown begin" << std::endl;
         dummy_c1.reset();
         dummy_c2.reset();
-        Server::serverStop();
-        server_thread->join();
-        server_thread.reset();
+        server.reset();
         std::cout << "TearDown end" << std::endl;
     }
-    std::shared_ptr<std::thread> server_thread;
+    std::unique_ptr<Server::Server> server;
     std::shared_ptr<Internal::ClientData> data_ =
         std::make_shared<Internal::ClientData>("a");
     std::shared_ptr<DummyClient> dummy_c1, dummy_c2;
@@ -59,14 +56,14 @@ TEST_F(ServerTest, connection) {
     wait();
     dummy_c2 = std::make_shared<DummyClient>();
     wait();
-    EXPECT_EQ(Server::store.clients.size(), 2);
+    EXPECT_EQ(server->store->clients.size(), 2);
 }
 TEST_F(ServerTest, unixSocketConnection) {
     dummy_c1 = std::make_shared<DummyClient>(true);
     wait();
     dummy_c2 = std::make_shared<DummyClient>(true);
     wait();
-    EXPECT_EQ(Server::store.clients.size(), 2);
+    EXPECT_EQ(server->store->clients.size(), 2);
 }
 TEST_F(ServerTest, sync) {
     dummy_c1 = std::make_shared<DummyClient>();
@@ -92,8 +89,8 @@ TEST_F(ServerTest, sync) {
             EXPECT_EQ(obj.ver, WEBCFACE_VERSION);
         },
         [&] { ADD_FAILURE() << "SvrVersion recv failed"; });
-    EXPECT_EQ(Server::store.clients_by_id.at(1)->name, "");
-    EXPECT_EQ(Server::store.clients_by_id.at(2)->name, "c2");
+    EXPECT_EQ(server->store->clients_by_id.at(1)->name, "");
+    EXPECT_EQ(server->store->clients_by_id.at(2)->name, "c2");
     dummy_c1->recvClear();
 
     // dummy_c2->send(Message::Sync{});
@@ -107,8 +104,8 @@ TEST_F(ServerTest, ping) {
     dummy_c1->send(Message::SyncInit{{}, "", 0, "", "", ""});
     wait();
     auto start = std::chrono::steady_clock::now();
-    Server::server_ping_wait.notify_one(); // これで無理やりpingさせる
-    auto s_c1 = Server::store.clients_by_id.at(1);
+    server->server_ping_wait.notify_one(); // これで無理やりpingさせる
+    auto s_c1 = server->store->clients_by_id.at(1);
     wait();
     dummy_c1->recv<Message::Ping>([&](const auto &) {},
                                   [&] { ADD_FAILURE() << "Ping recv failed"; });
@@ -131,7 +128,7 @@ TEST_F(ServerTest, ping) {
         [&] { ADD_FAILURE() << "Ping Status recv failed"; });
 
     dummy_c1->recvClear();
-    Server::server_ping_wait.notify_one(); // これで無理やりpingさせる
+    server->server_ping_wait.notify_one(); // これで無理やりpingさせる
     wait();
     dummy_c1->recv<Message::PingStatus>(
         [&](const auto &obj) {
@@ -759,7 +756,7 @@ TEST_F(ServerTest, log) {
     wait();
     dummy_c2 = std::make_shared<DummyClient>();
     wait();
-    Server::store.keep_log = 3;
+    server->store->keep_log = 3;
     dummy_c1->send(Message::SyncInit{{}, "c1", 0, "", "", ""});
     dummy_c1->send(Message::Log{
         0, std::make_shared<std::deque<Message::Log::LogLine>>(

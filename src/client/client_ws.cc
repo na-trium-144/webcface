@@ -1,5 +1,5 @@
 #include <webcface/client.h>
-#include <webcface/common/unix_path.h>
+#include "../message/unix_path.h"
 #include "client_internal.h"
 #include <curl/curl.h>
 #include <string>
@@ -19,9 +19,11 @@ void Internal::messageThreadMain(std::shared_ptr<Internal::ClientData> data,
                 curl_easy_setopt(handle, CURLOPT_VERBOSE, 1L);
             }
             if (attempt == 0) {
-                curl_easy_setopt(handle, CURLOPT_UNIX_SOCKET_PATH,
-                                 Common::unixSocketPath(port).string().c_str());
+                curl_easy_setopt(
+                    handle, CURLOPT_UNIX_SOCKET_PATH,
+                    Message::unixSocketPath(port).string().c_str());
             }
+            // todo: WSLInterop
             curl_easy_setopt(handle, CURLOPT_URL,
                              ("ws://" + host + "/").c_str());
             curl_easy_setopt(handle, CURLOPT_PORT, static_cast<long>(port));

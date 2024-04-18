@@ -1,21 +1,22 @@
 #pragma once
-#include "s_client_data.h"
 #include <unordered_map>
 #include <memory>
 #include <functional>
 #include <spdlog/common.h>
 #include <webcface/common/def.h>
+#include <webcface/server.h>
 
 WEBCFACE_NS_BEGIN
 namespace Server {
-using ClientDataPtr = std::shared_ptr<ClientData>;
-inline struct Store {
+struct MemberData;
+using MemberDataPtr = std::shared_ptr<MemberData>;
 
+struct WEBCFACE_DLL ServerStorage {
     /*!
      * \brief 現在接続されているクライアントの一覧
      *
      */
-    std::unordered_map<ClientData::wsConnPtr, ClientDataPtr> clients;
+    std::unordered_map<wsConnPtr, MemberDataPtr> clients;
     /*!
      * \brief すべてのクライアントのデータ
      * 切断されてもデータは残り、valueやlogなどあとで参照できる
@@ -23,21 +24,28 @@ inline struct Store {
      * * (ver1.2.2から) 名前がないクライアントは切断時に削除
      *
      */
-    std::unordered_map<unsigned int, ClientDataPtr> clients_by_id;
+    std::unordered_map<unsigned int, MemberDataPtr> clients_by_id;
 
-    int keep_log = 1000; // server_mainで上書きされる
+    std::shared_ptr<std::unordered_map<unsigned int, int>> ping_status;
+    Server *server;
 
-    Store() : clients(), clients_by_id() {}
-    ~Store() { clear(); }
+    int keep_log;
 
-    //! テスト用
+    explicit ServerStorage(Server *server, int keep_log = 1000)
+        : clients(), clients_by_id(), ping_status(), server(server),
+          keep_log(keep_log) {}
+    ~ServerStorage() { clear(); }
+
+    /*!
+     * テスト用
+     */
     void clear();
 
-    void newClient(const ClientData::wsConnPtr &con,
-                   const std::string &remote_addr, const spdlog::sink_ptr &sink,
+    void newClient(const wsConnPtr &con, const std::string &remote_addr,
+                   const spdlog::sink_ptr &sink,
                    spdlog::level::level_enum level);
-    void removeClient(const ClientData::wsConnPtr &con);
-    ClientDataPtr getClient(const ClientData::wsConnPtr &con);
+    void removeClient(const wsConnPtr &con);
+    MemberDataPtr getClient(const wsConnPtr &con);
 
     void clientSendAll();
 
@@ -46,14 +54,14 @@ inline struct Store {
      *
      */
     void findAndDo(const std::string &name,
-                   const std::function<void(ClientDataPtr)> &func,
+                   const std::function<void(MemberDataPtr)> &func,
                    const std::function<void()> &func_else = nullptr);
     /*!
      * \brief 指定したidのclientがあればfuncを、そうでなければfunc_elseを実行
      *
      */
     void findAndDo(unsigned int id,
-                   const std::function<void(ClientDataPtr)> &func,
+                   const std::function<void(MemberDataPtr)> &func,
                    const std::function<void()> &func_else = nullptr);
     /*!
      * \brief
@@ -61,7 +69,7 @@ inline struct Store {
      *
      */
     void findConnectedAndDo(unsigned int id,
-                            const std::function<void(ClientDataPtr)> &func,
+                            const std::function<void(MemberDataPtr)> &func,
                             const std::function<void()> &func_else = nullptr);
     /*!
      * \brief 各ClientDataに対して処理をする
@@ -69,15 +77,15 @@ inline struct Store {
      * 切断後も含む
      *
      */
-    void forEach(const std::function<void(ClientDataPtr)> &func);
+    void forEach(const std::function<void(MemberDataPtr)> &func);
     /*!
      * \brief 名前のある各ClientDataに対して処理をする
      *
      * 切断後も含む
      *
      */
-    void forEachWithName(const std::function<void(ClientDataPtr)> &func);
-} store;
+    void forEachWithName(const std::function<void(MemberDataPtr)> &func);
+};
 
 } // namespace Server
 WEBCFACE_NS_END

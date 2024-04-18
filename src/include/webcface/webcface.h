@@ -44,5 +44,7 @@
 #include "member.h"
 #include "client.h"
 
+#include "server.h"
+
 // 〜v1.1 との互換性のため
 namespace WebCFace = webcface;
