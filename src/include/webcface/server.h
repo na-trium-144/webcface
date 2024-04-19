@@ -7,6 +7,7 @@
 #include <thread>
 #include <atomic>
 #include <future>
+#include <vector>
 
 WEBCFACE_NS_BEGIN
 namespace Server {

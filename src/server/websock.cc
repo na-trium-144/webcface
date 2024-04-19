@@ -113,14 +113,14 @@ Server::Server(int port, const spdlog::sink_ptr &sink,
 
     crow::SimpleApp *app_unix = new crow::SimpleApp();
     Message::Path::initUnixSocket(unix_path, logger);
-    app_unix->unix_path(unix_path);
+    app_unix->unix_path(unix_path.string());
     apps.push_back(app_unix);
 
     crow::SimpleApp *app_wsl = nullptr;
     if (wsl_path) {
         app_wsl = new crow::SimpleApp();
         Message::Path::initUnixSocket(*wsl_path, logger);
-        app_wsl->unix_path(*wsl_path);
+        app_wsl->unix_path(wsl_path->string());
         apps.push_back(app_wsl);
     }
 

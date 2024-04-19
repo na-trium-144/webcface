@@ -9,7 +9,8 @@ std::filesystem::path unixSocketPath(int port) {
     return "/tmp/webcface/" + std::to_string(port) + ".sock";
 #endif
 }
-std::optional<std::filesystem::path> unixSocketPathWSLInterop(int port) {
+std::optional<std::filesystem::path>
+unixSocketPathWSLInterop([[maybe_unused]] int port) {
 #ifdef _WIN32
 #else
     if (std::filesystem::exists("/proc/sys/fs/binfmt_misc/WSLInterop") &&
