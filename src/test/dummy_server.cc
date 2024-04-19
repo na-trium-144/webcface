@@ -58,14 +58,8 @@ DummyServer::DummyServer(bool use_unix)
               });
 
           if (use_unix) {
-              auto unix_path = Message::unixSocketPath(17530);
-#ifdef _WIN32
-              CreateDirectoryW(unix_path.parent_path().c_str(), nullptr);
-              DeleteFileW(unix_path.c_str());
-#else
-              mkdir(unix_path.parent_path().c_str(), 0777);
-              unlink(unix_path.c_str());
-#endif
+              auto unix_path = Message::Path::unixSocketPath(17530);
+              Message::Path::initUnixSocket(unix_path, dummy_logger);
               server->unix_path(unix_path.string()).run();
           } else {
               server->port(17530).run();

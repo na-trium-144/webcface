@@ -20,7 +20,6 @@ class WEBCFACE_DLL Server {
     std::mutex server_mtx;
     std::vector<void *> apps;
     std::vector<std::shared_future<void>> apps_running;
-    std::thread ping_thread;
 
     void pingThreadMain();
 
@@ -31,6 +30,10 @@ class WEBCFACE_DLL Server {
     std::condition_variable server_ping_wait;
     std::unique_ptr<ServerStorage> store;
 
+  private:
+    std::thread ping_thread; // storeよりも後ろ
+
+  public:
     Server(int port, const spdlog::sink_ptr &sink,
            spdlog::level::level_enum level, int keep_log = 1000);
     ~Server();

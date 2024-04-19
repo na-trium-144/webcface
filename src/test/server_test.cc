@@ -89,6 +89,8 @@ TEST_F(ServerTest, sync) {
             EXPECT_EQ(obj.ver, WEBCFACE_VERSION);
         },
         [&] { ADD_FAILURE() << "SvrVersion recv failed"; });
+    ASSERT_TRUE(server->store->clients_by_id.count(1));
+    ASSERT_TRUE(server->store->clients_by_id.count(2));
     EXPECT_EQ(server->store->clients_by_id.at(1)->name, "");
     EXPECT_EQ(server->store->clients_by_id.at(2)->name, "c2");
     dummy_c1->recvClear();

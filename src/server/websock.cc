@@ -9,12 +9,6 @@
 #include <memory>
 #include <thread>
 #include <filesystem>
-#ifdef _WIN32
-#include <fileapi.h>
-#else
-#include <unistd.h>
-#include <sys/stat.h>
-#endif
 
 WEBCFACE_NS_BEGIN
 namespace Server {
@@ -70,7 +64,7 @@ void Server::send(wsConnPtr conn, const std::string &msg) {
 }
 void Server::join() {
     for (auto &running_f : apps_running) {
-        running_f.get();
+        running_f.wait();
     }
 }
 Server::~Server() {
@@ -85,14 +79,14 @@ Server::~Server() {
     store.reset();
     ping_thread.join();
     for (auto &running_f : apps_running) {
-        running_f.get();
+        running_f.wait();
     }
 }
 Server::Server(int port, const spdlog::sink_ptr &sink,
                spdlog::level::level_enum level, int keep_log)
-    : server_stop(false), apps(), apps_running(),
-      ping_thread([this] { pingThreadMain(); }), server_ping_wait(),
-      store(std::make_unique<ServerStorage>(this, keep_log)) {
+    : server_stop(false), apps(), apps_running(), server_ping_wait(),
+      store(std::make_unique<ServerStorage>(this, keep_log)),
+      ping_thread([this] { pingThreadMain(); }) {
     auto logger = std::make_shared<spdlog::logger>("webcface_server", sink);
     logger->set_level(spdlog::level::trace);
     logger->info("WebCFace Server {}", WEBCFACE_VERSION);
@@ -110,49 +104,23 @@ Server::Server(int port, const spdlog::sink_ptr &sink,
     logger->debug("static dir = {}", static_dir);
     logger->debug("temp dir = {}", temp_dir);
 
-    auto unix_path = Message::unixSocketPath(port);
-    auto wsl_path = Message::unixSocketPathWSLInterop(port);
-
-    std::thread([port, unix_path, wsl_path, logger] {
-        for (const auto &addr : getIpAddresses(logger)) {
-            logger->info("http://{}:{}/index.html", addr, port);
-        }
-        logger->info("unix domain socket at {}", unix_path.string());
-        if (wsl_path) {
-            logger->info("win32 socket at {}", wsl_path->string());
-        }
-    }).detach();
+    auto unix_path = Message::Path::unixSocketPath(port);
+    auto wsl_path = Message::Path::unixSocketPathWSLInterop(port);
 
     crow::SimpleApp *app_tcp = new crow::SimpleApp();
     app_tcp->port(port);
     apps.push_back(app_tcp);
 
     crow::SimpleApp *app_unix = new crow::SimpleApp();
-#ifdef _WIN32
-    CreateDirectoryW(unix_path.parent_path().c_str(), nullptr);
-    DeleteFileW(unix_path.c_str());
+    Message::Path::initUnixSocket(unix_path, logger);
     app_unix->unix_path(unix_path);
-#else
-    mkdir(unix_path.parent_path().c_str(), 0777);
-    unlink(unix_path.c_str());
-    app_unix->unix_path(unix_path);
-    std::thread([app_unix, unix_path] {
-        app_unix->wait_for_server_start();
-        chmod(unix_path.c_str(), 0666);
-    }).detach();
-#endif
     apps.push_back(app_unix);
 
-    crow::SimpleApp *app_wsl;
+    crow::SimpleApp *app_wsl = nullptr;
     if (wsl_path) {
         app_wsl = new crow::SimpleApp();
-        mkdir(wsl_path->parent_path().c_str(), 0777);
-        unlink(wsl_path->c_str());
+        Message::Path::initUnixSocket(*wsl_path, logger);
         app_wsl->unix_path(*wsl_path);
-        std::thread([app_wsl, wsl_path] {
-            app_wsl->wait_for_server_start();
-            chmod(wsl_path->c_str(), 0666);
-        }).detach();
         apps.push_back(app_wsl);
     }
 
@@ -172,17 +140,17 @@ Server::Server(int port, const spdlog::sink_ptr &sink,
         route.websocket<std::remove_reference<decltype(*app)>::type>(app.get())
         */
         CROW_WEBSOCKET_ROUTE((*app), "/")
-            .onopen([&](crow::websocket::connection &conn) {
+            .onopen([this, sink, level](crow::websocket::connection &conn) {
                 std::lock_guard lock(server_mtx);
                 store->newClient(&conn, conn.get_remote_ip(), sink, level);
             })
-            .onclose([&](crow::websocket::connection &conn,
-                         const std::string & /*reason*/) {
+            .onclose([this](crow::websocket::connection &conn,
+                            const std::string & /*reason*/) {
                 std::lock_guard lock(server_mtx);
                 store->removeClient(&conn);
             })
-            .onmessage([&](crow::websocket::connection &conn,
-                           const std::string &data, bool /*is_binary*/) {
+            .onmessage([this](crow::websocket::connection &conn,
+                              const std::string &data, bool /*is_binary*/) {
                 std::lock_guard lock(server_mtx);
                 auto cli = store->getClient(&conn);
                 if (cli) {
@@ -190,7 +158,34 @@ Server::Server(int port, const spdlog::sink_ptr &sink,
                 }
             });
 
-        apps_running.push_back(app->run_async().share());
+        auto f = app->run_async().share();
+        apps_running.push_back(f);
+        std::thread([f, logger] {
+            try {
+                f.get();
+            } catch (const std::exception &e) {
+                logger->error("{}", e.what());
+            }
+        }).detach();
+    }
+
+    std::thread([app_tcp, logger, port] {
+        app_tcp->wait_for_server_start();
+        for (const auto &addr : getIpAddresses(logger)) {
+            logger->info("http://{}:{}/index.html", addr, port);
+        }
+    }).detach();
+    std::thread([app_unix, unix_path, logger] {
+        app_unix->wait_for_server_start();
+        Message::Path::updateUnixSocketPerms(unix_path, logger);
+        logger->info("unix domain socket at {}", unix_path.string());
+    }).detach();
+    if (wsl_path) {
+        std::thread([app_wsl, wsl_path, logger] {
+            app_wsl->wait_for_server_start();
+            Message::Path::updateUnixSocketPerms(*wsl_path, logger);
+            logger->info("win32 socket at {}", wsl_path->string());
+        }).detach();
     }
 }
 } // namespace Server

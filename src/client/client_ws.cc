@@ -21,7 +21,7 @@ void Internal::messageThreadMain(std::shared_ptr<Internal::ClientData> data,
             if (attempt == 0) {
                 curl_easy_setopt(
                     handle, CURLOPT_UNIX_SOCKET_PATH,
-                    Message::unixSocketPath(port).string().c_str());
+                    Message::Path::unixSocketPath(port).string().c_str());
             }
             // todo: WSLInterop
             curl_easy_setopt(handle, CURLOPT_URL,
