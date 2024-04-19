@@ -30,14 +30,14 @@ class WEBCFACE_DLL Client : public Member {
     /*!
      * \brief 名前を指定せずサーバーに接続する
      *
-     * サーバーのホストとポートはlocalhost:7530になる
+     * サーバーのホストとポートは127.0.0.1:7530になる
      *
      */
     Client() : Client("") {}
     /*!
      * \brief 名前を指定しサーバーに接続する
      *
-     * サーバーのホストとポートを省略した場合localhost:7530になる
+     * サーバーのホストとポートを省略した場合127.0.0.1:7530になる
      *
      * \arg name 名前
      * \arg host サーバーのアドレス
@@ -47,7 +47,23 @@ class WEBCFACE_DLL Client : public Member {
     explicit Client(const std::string &name,
                     const std::string &host = "127.0.0.1",
                     int port = WEBCFACE_DEFAULT_PORT);
+    /*!
+     * \brief 名前を指定しサーバーに接続する (wstring)
+     * \since ver1.11
+     *
+     * \arg name 名前
+     * \arg host サーバーのアドレス
+     * \arg port サーバーのポート
+     *
+     */
+    explicit Client(const std::wstring &name,
+                    const std::wstring &host = L"127.0.0.1",
+                    int port = WEBCFACE_DEFAULT_PORT);
 
+    /*!
+     * テストで使用
+     *
+     */
     explicit Client(const std::string &name,
                     std::shared_ptr<Internal::ClientData> data);
 
@@ -105,6 +121,20 @@ class WEBCFACE_DLL Client : public Member {
         } else {
             return Member{data, name};
         }
+    } /*!
+       * \brief 他のmemberにアクセスする (wstring)
+       * \since ver1.11
+       *
+       * nameが空の場合 *this を返す
+       * \sa members(), onMemberEntry()
+       *
+       */
+    Member member(const std::wstring &name) {
+        if (name.empty()) {
+            return *this;
+        } else {
+            return Member{data, name};
+        }
     }
     /*!
      * \brief サーバーに接続されている他のmemberのリストを得る。
@@ -128,6 +158,11 @@ class WEBCFACE_DLL Client : public Member {
      *
      */
     FuncListener funcListener(const std::string &field) const;
+    /*!
+     * \brief FuncListenerを作成する (wstring)
+     * \since ver1.11
+     */
+    FuncListener funcListener(const std::wstring &field) const;
 
     /*!
      * \brief

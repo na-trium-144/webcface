@@ -379,6 +379,7 @@ set(CLI_SRC
     ${CPP_DIR}/client/view.cc
     ${CPP_DIR}/client/image.cc
     ${CPP_DIR}/client/version.cc
+    ${CPP_DIR}/client/encoding.cc
     ${CPP_DIR}/c_wcf/client.cc
     ${CPP_DIR}/c_wcf/value.cc
     ${CPP_DIR}/c_wcf/text.cc

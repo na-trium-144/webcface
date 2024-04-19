@@ -18,30 +18,36 @@ WEBCFACE_NS_BEGIN
 
 Client::Client(const std::string &name, const std::string &host, int port)
     : Client(name, std::make_shared<Internal::ClientData>(name, host, port)) {}
+Client::Client(const std::wstring &name, const std::string &host, int port)
+    : Client(name, std::make_shared<Internal::ClientData>(name, host, port)) {}
 
 Client::Client(const std::string &name,
                std::shared_ptr<Internal::ClientData> data)
     : Member(data, name), data(data) {}
 
-Internal::ClientData::ClientData(const std::string &name,
+Internal::ClientData::ClientData(std::vector<const char> &&name,
                                  const std::string &host, int port)
-    : std::enable_shared_from_this<ClientData>(), self_member_name(name),
-      host(host), port(port),
-      message_queue(std::make_shared<Common::Queue<std::string>>()),
-      value_store(name), text_store(name), func_store(name), view_store(name),
-      image_store(name), robot_model_store(name), canvas3d_store(name),
-      canvas2d_store(name),
+    : std::enable_shared_from_this<ClientData>(), members({std::move(name)}),
+      fields(), name_mtx(), self_member_name(members[0].data()), host(host),
+      port(port), message_queue(std::make_shared<Common::Queue<std::string>>()),
+      value_store(self_member_name), text_store(self_member_name),
+      func_store(self_member_name), view_store(self_member_name),
+      image_store(self_member_name), robot_model_store(self_member_name),
+      canvas3d_store(self_member_name), canvas2d_store(self_member_name),
       log_store(std::make_shared<
-                SyncDataStore1<std::shared_ptr<std::vector<LogLine>>>>(name)),
-      sync_time_store(name),
+                SyncDataStore1<std::shared_ptr<std::vector<LogLine>>>>(
+          self_member_name)),
+      sync_time_store(self_member_name),
       logger_sink(std::make_shared<LoggerSink>(log_store)) {
+    std::string name_str = name.data();
     static auto stderr_sink =
         std::make_shared<spdlog::sinks::stderr_color_sink_mt>();
     std::vector<spdlog::sink_ptr> sinks = {logger_sink, stderr_sink};
-    logger = std::make_shared<spdlog::logger>(name, sinks.begin(), sinks.end());
+    logger =
+        std::make_shared<spdlog::logger>(name_str, sinks.begin(), sinks.end());
     logger->set_level(spdlog::level::trace);
     logger_internal = std::make_shared<spdlog::logger>(
-        "webcface_internal(" + name + ")", stderr_sink);
+        "webcface_internal(" + name_str + ")", stderr_sink);
     if (std::getenv("WEBCFACE_TRACE") != nullptr) {
         logger_internal->set_level(spdlog::level::trace);
     } else if (getenv("WEBCFACE_VERBOSE") != nullptr) {
@@ -51,7 +57,8 @@ Internal::ClientData::ClientData(const std::string &name,
     }
     logger_buf = std::make_unique<LoggerBuf>(logger);
     logger_os = std::make_unique<std::ostream>(logger_buf.get());
-    log_store->setRecv(name, std::make_shared<std::vector<LogLine>>());
+    log_store->setRecv(self_member_name,
+                       std::make_shared<std::vector<LogLine>>());
     syncDataFirst();
 }
 void Internal::ClientData::start() {
@@ -64,7 +71,6 @@ void Internal::ClientData::start() {
                                                     shared_from_this());
     }
 }
-
 
 Client::~Client() {
     close();
@@ -80,6 +86,28 @@ void Internal::ClientData::join() {
         recv_thread->join();
     }
 }
+
+Common::MemberNameRef getMemberRef(std::vector<char> &&name) {
+    std::lock_guard lock(name_m);
+    for (const auto &m : members) {
+        if (m == name) {
+            return m.data();
+        }
+    }
+    members.push_back(std::move(name));
+    return members.back().data();
+}
+Common::FieldNameRef getFieldRef(std::vector<char> &&name) {
+    std::lock_guard lock(name_m);
+    for (const auto &m : fields) {
+        if (m == name) {
+            return m.data();
+        }
+    }
+    fields.push_back(name);
+    return fields.back().data();
+}
+
 std::vector<Member> Client::members() {
     auto keys = data->value_store.getMembers();
     std::vector<Member> ret(keys.size());

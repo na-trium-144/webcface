@@ -27,6 +27,8 @@
 #include "data_store2.h"
 #include "func_internal.h"
 #include <webcface/common/def.h>
+#include <webcface/encoding.h>
+
 
 WEBCFACE_NS_BEGIN
 namespace Internal {
@@ -37,7 +39,14 @@ WEBCFACE_DLL void messageThreadMain(std::shared_ptr<ClientData> data,
 WEBCFACE_DLL void recvThreadMain(std::shared_ptr<ClientData> data);
 
 struct ClientData : std::enable_shared_from_this<ClientData> {
-    WEBCFACE_DLL explicit ClientData(std::string_view name,
+    explicit ClientData(std::string &name, const std::string &host = "",
+                        int port = -1)
+        : ClientData(Encoding::initName(name), host, port) {}
+    explicit ClientData(std::wstring &name, const std::wstring &host = "",
+                        int port = -1)
+        : ClientData(Encoding::initNameW(name), Encoding::toUTF8(host), port) {}
+
+    WEBCFACE_DLL explicit ClientData(std::vector<const char> &&name,
                                      const std::string &host = "",
                                      int port = -1);
 
@@ -47,9 +56,22 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
      * null終端にすること
      *
      */
-    std::vector<std::vector<const char>> members, fields;
-    WEBCFACE_DLL Common::MemberNameRef getMemberRef(std::string_view name);
-    WEBCFACE_DLL Common::FieldNameRef getFieldRef(std::string_view name);
+    std::vector<std::vector<char>> members, fields;
+    WEBCFACE_DLL Common::MemberNameRef getMemberRef(std::vector<char> &&name);
+    Common::MemberNameRef getMemberRef(std::string_view name) {
+        return getMemberRef(Encoding::initName(name));
+    }
+    Common::MemberNameRef getMemberRef(std::wstring_view name) {
+        return getMemberRef(Encoding::initNameW(name));
+    }
+    WEBCFACE_DLL Common::FieldNameRef getFieldRef(std::vector<char> &&name);
+    Common::FieldNameRef getFieldRef(std::string_view name) {
+        return getFieldRef(Encoding::initName(name));
+    }
+    Common::FieldNameRef getFieldRef(std::wstring_view name) {
+        return getFieldRef(Encoding::initNameW(name));
+    }
+    std::mutex name_m;
 
     /*!
      * \brief Client自身の名前

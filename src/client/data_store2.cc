@@ -23,7 +23,7 @@ static bool shouldSend(const T &prev, const T &current) {
 }
 
 template <typename T, typename ReqT>
-void SyncDataStore2<T, ReqT>::setSend(const std::string &name, const T &data) {
+void SyncDataStore2<T, ReqT>::setSend(MemberNameRef name, const T &data) {
     std::lock_guard lock(mtx);
     auto &recv_self = data_recv[self_member_name];
     if (!recv_self.count(name) || shouldSend(recv_self[name], data)) {
@@ -33,24 +33,14 @@ void SyncDataStore2<T, ReqT>::setSend(const std::string &name, const T &data) {
 }
 
 template <typename T, typename ReqT>
-void SyncDataStore2<T, ReqT>::setRecv(const std::string &from,
-                                      const std::string &name, const T &data) {
+void SyncDataStore2<T, ReqT>::setRecv(MemberNameRef from, FieldNameRef name,
+                                      const T &data) {
     std::lock_guard lock(mtx);
     data_recv[from][name] = data;
 }
 
 template <typename T, typename ReqT>
-std::vector<std::string> SyncDataStore2<T, ReqT>::getMembers() {
-    std::lock_guard lock(mtx);
-    std::vector<std::string> k;
-    for (const auto &r : entry) {
-        k.push_back(r.first);
-    }
-    return k;
-}
-template <typename T, typename ReqT>
-std::vector<std::string>
-SyncDataStore2<T, ReqT>::getEntry(const std::string &name) {
+std::vector<std::string> SyncDataStore2<T, ReqT>::getEntry(MemberNameRef name) {
     std::lock_guard lock(mtx);
     auto e = entry.find(name);
     if (e != entry.end()) {
@@ -60,20 +50,14 @@ SyncDataStore2<T, ReqT>::getEntry(const std::string &name) {
     }
 }
 template <typename T, typename ReqT>
-void SyncDataStore2<T, ReqT>::setEntry(const std::string &from) {
-    std::lock_guard lock(mtx);
-    entry.emplace(std::make_pair(from, std::vector<std::string>{}));
-}
-template <typename T, typename ReqT>
-void SyncDataStore2<T, ReqT>::setEntry(const std::string &from,
-                                       const std::string &e) {
+void SyncDataStore2<T, ReqT>::setEntry(MemberNameRef from, FieldNameRef e) {
     std::lock_guard lock(mtx);
     entry[from].push_back(e);
 }
 
 template <typename T, typename ReqT>
-unsigned int SyncDataStore2<T, ReqT>::addReq(const std::string &member,
-                                             const std::string &field) {
+unsigned int SyncDataStore2<T, ReqT>::addReq(MemberNameRef member,
+                                             FieldNameRef field) {
     std::lock_guard lock(mtx);
     if (!isSelf(member) && req[member][field] == 0) {
         unsigned int max_req = 0;
@@ -90,8 +74,8 @@ unsigned int SyncDataStore2<T, ReqT>::addReq(const std::string &member,
     return 0;
 }
 template <typename T, typename ReqT>
-unsigned int SyncDataStore2<T, ReqT>::addReq(const std::string &member,
-                                             const std::string &field,
+unsigned int SyncDataStore2<T, ReqT>::addReq(MemberNameRef member,
+                                             FieldNameRef field,
                                              const ReqT &req_info) {
     std::lock_guard lock(mtx);
     if (!isSelf(member) && (req[member][field] == 0 ||
@@ -112,15 +96,15 @@ unsigned int SyncDataStore2<T, ReqT>::addReq(const std::string &member,
 }
 
 template <typename T, typename ReqT>
-const ReqT &SyncDataStore2<T, ReqT>::getReqInfo(const std::string &member,
-                                                const std::string &field) {
+const ReqT &SyncDataStore2<T, ReqT>::getReqInfo(MemberNameRef member,
+                                                FieldNameRef field) {
     return req_info[member][field];
 }
 
 
 template <typename T, typename ReqT>
-std::optional<T> SyncDataStore2<T, ReqT>::getRecv(const std::string &from,
-                                                  const std::string &name) {
+std::optional<T> SyncDataStore2<T, ReqT>::getRecv(MemberNameRef from,
+                                                  FieldNameRef name) {
     std::lock_guard lock(mtx);
     // addReq(from, name);
     auto s_it = data_recv.find(from);
@@ -134,8 +118,8 @@ std::optional<T> SyncDataStore2<T, ReqT>::getRecv(const std::string &from,
 }
 template <typename T, typename ReqT>
 std::optional<Dict<T>> SyncDataStore2<T, ReqT>::getRecvRecurse(
-    const std::string &member, const std::string &field,
-    const std::function<void(const std::string &)> &cb) {
+    MemberNameRef member, FieldNameRef field,
+    const std::function<void(FieldNameRef)> &cb) {
     std::lock_guard lock(mtx);
     // addReq(member, field);
     auto s_it = data_recv.find(member);
@@ -159,8 +143,7 @@ std::optional<Dict<T>> SyncDataStore2<T, ReqT>::getRecvRecurse(
     return std::nullopt;
 }
 template <typename T, typename ReqT>
-bool SyncDataStore2<T, ReqT>::unsetRecv(const std::string &from,
-                                        const std::string &name) {
+bool SyncDataStore2<T, ReqT>::unsetRecv(MemberNameRef from, FieldNameRef name) {
     std::lock_guard lock(mtx);
     if (data_recv.count(from) && data_recv.at(from).count(name)) {
         data_recv.at(from).erase(name);
@@ -172,8 +155,7 @@ bool SyncDataStore2<T, ReqT>::unsetRecv(const std::string &from,
     return false;
 }
 template <typename T, typename ReqT>
-void SyncDataStore2<T, ReqT>::clearRecv(const std::string &from,
-                                        const std::string &name) {
+void SyncDataStore2<T, ReqT>::clearRecv(MemberNameRef from, FieldNameRef name) {
     std::lock_guard lock(mtx);
     if (data_recv.count(from) && data_recv.at(from).count(name)) {
         data_recv.at(from).erase(name);
@@ -200,7 +182,7 @@ SyncDataStore2<T, ReqT>::getReq(unsigned int req_id,
 }
 
 template <typename T, typename ReqT>
-std::unordered_map<std::string, T>
+std::unordered_map<MemberNameRef, T>
 SyncDataStore2<T, ReqT>::transferSend(bool is_first) {
     std::lock_guard lock(mtx);
     if (is_first) {
@@ -212,7 +194,7 @@ SyncDataStore2<T, ReqT>::transferSend(bool is_first) {
     }
 }
 template <typename T, typename ReqT>
-std::unordered_map<std::string, T>
+std::unordered_map<MemberNameRef, T>
 SyncDataStore2<T, ReqT>::getSendPrev(bool is_first) {
     std::lock_guard lock(mtx);
     if (is_first) {
@@ -223,7 +205,8 @@ SyncDataStore2<T, ReqT>::getSendPrev(bool is_first) {
 }
 
 template <typename T, typename ReqT>
-std::unordered_map<std::string, std::unordered_map<std::string, unsigned int>>
+std::unordered_map<MemberNameRef,
+                   std::unordered_map<FieldNameRef, unsigned int>>
 SyncDataStore2<T, ReqT>::transferReq() {
     std::lock_guard lock(mtx);
     // if (is_first) {
