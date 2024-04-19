@@ -53,10 +53,10 @@ std::vector<char> initNameW(const std::wstring &name) {
 #endif
 }
 
-std::wstring getNameW(const char *name_ref) {
-    int len = static_cast<int>(std::strlen(name_ref));
+std::wstring getNameW(const void *name_ref) {
+    int len = static_cast<int>(std::strlen(static_cast<const char *>(name_ref)));
 #ifdef _WIN32
-    auto length = MultiByteToWideChar(CP_UTF8, 0, name_ref, len, nullptr, 0);
+    auto length = MultiByteToWideChar(CP_UTF8, 0, static_cast<const char *>(name_ref), len, nullptr, 0);
     std::wstring result_utf16(length, '\0');
     MultiByteToWideChar(CP_UTF8, 0, name_ref, len, result_utf16.data(),
                         static_cast<int>(result_utf16.length()));
@@ -64,15 +64,15 @@ std::wstring getNameW(const char *name_ref) {
 #else
     static_assert(sizeof(wchar_t) == 4, "Assuming wchar_t is utf-32 on Unix");
     std::wstring result_utf32;
-    utf8::utf8to32(name_ref, name_ref + len, std::back_inserter(result_utf32));
+    utf8::utf8to32(static_cast<const char *>(name_ref), static_cast<const char *>(name_ref) + len, std::back_inserter(result_utf32));
     return result_utf32;
 #endif
 }
 
-std::string getName(const char *name_ref) {
+std::string getName(const void *name_ref) {
 #ifdef _WIN32
     if (!using_utf8) {
-        auto result_utf16 = getNameW(name_ref);
+        auto result_utf16 = getNameW(static_cast<const char *>(name_ref));
         auto length_acp =
             WideCharToMultiByte(CP_ACP, 0, result_utf16.data(),
                                 static_cast<int>(result_utf16.length()),
@@ -86,7 +86,7 @@ std::string getName(const char *name_ref) {
     }
 #endif
     // そのままコピー
-    return std::string(name_ref);
+    return std::string(static_cast<const char *>(name_ref));
 }
 
 } // namespace Encoding

@@ -3,6 +3,7 @@
 #include "client_internal.h"
 #include <stdexcept>
 #include <webcface/common/def.h>
+#include <webcface/encoding.h>
 
 WEBCFACE_NS_BEGIN
 Field::Field(const std::weak_ptr<Internal::ClientData> &data_w,
@@ -18,8 +19,38 @@ Field::Field(const std::weak_ptr<Internal::ClientData> &data_w,
     auto data = dataLock();
     member_ = data->getMemberRef(member);
 }
+Field::Field(const std::weak_ptr<Internal::ClientData> &data_w,
+             std::wstring_view member, std::wstring_view field)
+    : Common::FieldBase(), data_w(data_w) {
+    auto data = dataLock();
+    member_ = data->getMemberRef(member);
+    field_ = data->getFieldRef(field);
+}
+Field::Field(const std::weak_ptr<Internal::ClientData> &data_w,
+             std::wstring_view member)
+    : Common::FieldBase(), data_w(data_w) {
+    auto data = dataLock();
+    member_ = data->getMemberRef(member);
+}
 
-Member Field::member() const { return *this; }
+Member Field::member() const {
+    if (!memberPtr()) {
+        throw std::invalid_argument("member name is null");
+    }
+    return *this;
+}
+std::string name() const {
+    if (!fieldPtr()) {
+        throw std::invalid_argument("field name is null");
+    }
+    return Encoding::getName(fieldPtr());
+}
+std::wstring nameW() const {
+    if (!fieldPtr()) {
+        throw std::invalid_argument("field name is null");
+    }
+    return Encoding::getNameW(fieldPtr());
+}
 
 bool Field::expired() const { return data_w.expired(); }
 

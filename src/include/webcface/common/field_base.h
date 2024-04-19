@@ -1,6 +1,4 @@
 #pragma once
-#include <string_view>
-#include <stdexcept>
 #include "def.h"
 
 WEBCFACE_NS_BEGIN
@@ -22,31 +20,22 @@ class FieldBase {
     MemberNameRef member_;
     FieldNameRef field_;
     FieldBase(MemberNameRef member, FieldNameRef field)
-        : FieldBase(member, field) {}
+        : member_(member), field_(field) {}
 
   public:
     FieldBase() : FieldBase(nullptr, nullptr) {}
 
     bool operator==(const FieldBase &other) const {
-        return this->member_ptr() == rhs.member_ptr() &&
-               this->field_ptr() == rhs.field_ptr();
+        return this->memberPtr() == other.memberPtr() &&
+               this->fieldPtr() == other.fieldPtr();
+    }
+    bool memberValid() const { return memberPtr() != nullptr; }
+    bool fieldValid() const {
+        return memberPtr() != nullptr && fieldPtr() != nullptr;
     }
 
-    MemberNameRef member_ptr() const { return member_; }
-    FieldNameRef field_ptr() const { return field_; }
-
-    std::string_view member_sv() const {
-        if (member_) {
-            return std::string_view(static_cast<const char *>(member_));
-        }
-        throw std::runtime_error("member name is null");
-    }
-    std::string_view field_sv() const {
-        if (field_) {
-            return std::string_view(static_cast<const char *>(field_));
-        }
-        throw std::runtime_error("field name is null");
-    }
+    MemberNameRef memberPtr() const { return member_; }
+    FieldNameRef fieldPtr() const { return field_; }
 };
 
 struct FieldBaseComparable : public FieldBase {
@@ -54,13 +43,13 @@ struct FieldBaseComparable : public FieldBase {
     FieldBaseComparable(const FieldBase &base) : FieldBase(base) {}
 
     bool operator==(const FieldBaseComparable &rhs) const {
-        return this->member_ptr() == rhs.member_ptr() &&
-               this->field_ptr() == rhs.field_ptr();
+        return this->memberPtr() == rhs.memberPtr() &&
+               this->fieldPtr() == rhs.fieldPtr();
     }
     bool operator<(const FieldBaseComparable &rhs) const {
-        return this->member_ptr() < rhs.member_ptr() ||
-               (this->member_ptr() == rhs.member_ptr() &&
-                this->field_ptr() < rhs.field_ptr());
+        return this->memberPtr() < rhs.memberPtr() ||
+               (this->memberPtr() == rhs.memberPtr() &&
+                this->fieldPtr() < rhs.fieldPtr());
     }
 };
 } // namespace Common

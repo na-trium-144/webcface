@@ -360,13 +360,15 @@ struct View : public MessageBase<MessageKind::view> {
             : type(vc.type_), text(vc.text_), text_color(vc.text_color_),
               bg_color(vc.bg_color_), min_(vc.min_), max_(vc.max_),
               step_(vc.step_), option_(vc.option_) {
-            if (vc.on_click_func_) {
-                on_click_member = vc.on_click_func_->member_;
-                on_click_field = vc.on_click_func_->field_;
+            if (vc.on_click_func_ && vc.on_click_func_->fieldValid()) {
+                on_click_member =
+                    static_cast<const char *>(vc.on_click_func_->memberPtr());
+                on_click_field =
+                    static_cast<const char *>(vc.on_click_func_->fieldPtr());
             }
-            if (vc.text_ref_) {
-                text_ref_member = vc.text_ref_->member_;
-                text_ref_field = vc.text_ref_->field_;
+            if (vc.text_ref_ && vc.text_ref_->fieldValid()) {
+                text_ref_member = static_cast<const char *>(vc.text_ref_->memberPtr());
+                text_ref_field = static_cast<const char *>(vc.text_ref_->fieldPtr());
             }
         }
         operator Common::ViewComponentBase() const {

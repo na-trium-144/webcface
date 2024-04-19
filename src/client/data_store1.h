@@ -7,42 +7,43 @@
 #include <memory>
 #include <webcface/common/def.h>
 #include <webcface/common/log.h>
+#include <webcface/common/field_base.h>
 
 WEBCFACE_NS_BEGIN
 namespace Internal {
 template <typename T>
 class SyncDataStore1 {
-    std::unordered_map<std::string, T> data_recv;
-    std::unordered_map<std::string, bool> req;
-    std::unordered_map<std::string, bool> req_send;
+    std::unordered_map<MemberNameRef, T> data_recv;
+    std::unordered_map<MemberNameRef, bool> req;
+    std::unordered_map<MemberNameRef, bool> req_send;
 
   public:
     std::string self_member_name;
     std::recursive_mutex mtx;
 
-    explicit SyncDataStore1(const std::string &name) : self_member_name(name) {}
+    explicit SyncDataStore1(MemberNameRef name) : self_member_name(name) {}
 
     //! リクエストを追加
     /*!
      * \return 追加した場合trueを返し、すでにリクエストされていた場合falseを返す
      */
-    bool addReq(const std::string &member);
+    bool addReq(MemberNameRef member);
 
     //! リクエストを削除
     /*!
      * \return 削除した場合trueを返し、すでに削除されていた場合falseを返す
      */
-    bool clearReq(const std::string &member);
+    bool clearReq(MemberNameRef member);
 
-    bool isSelf(const std::string &member) const {
+    bool isSelf(MemberNameRef member) const {
         return member == self_member_name;
     }
 
-    void setRecv(const std::string &member, const T &data);
+    void setRecv(MemberNameRef member, const T &data);
 
-    std::optional<T> getRecv(const std::string &member);
+    std::optional<T> getRecv(MemberNameRef member);
     //! req_sendを返し、req_sendをクリア
-    std::unordered_map<std::string, bool> transferReq();
+    std::unordered_map<MemberNameRef, bool> transferReq();
 };
 
 #ifdef _MSC_VER

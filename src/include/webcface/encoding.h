@@ -55,13 +55,13 @@ WEBCFACE_DLL std::vector<char> initNameW(const std::wstring &name);
  * \since ver1.11
  *
  */
-WEBCFACE_DLL std::string getName(const char *name_ref);
+WEBCFACE_DLL std::string getName(const void *name_ref);
 /*!
  * \brief utf8のchar配列をwstringに変換する
  * \since ver1.11
  *
  */
-WEBCFACE_DLL std::wstring getNameW(const char *name_ref);
+WEBCFACE_DLL std::wstring getNameW(const void *name_ref);
 
 /*!
  * \brief wstringをstringに変換する

@@ -34,21 +34,35 @@ class WEBCFACE_DLL Member : protected Field {
   public:
     Member() = default;
     Member(const std::weak_ptr<Internal::ClientData> &data_w,
-           const std::string &member)
+           std::string_view member)
         : Field(data_w, member) {}
-    Member(const Field &base) : Field(base) {}
+    Member(const std::weak_ptr<Internal::ClientData> &data_w,
+           std::wstring_view member)
+        : Field(data_w, member) {}
+    Member(const Field &base) : Field(base.data_w, base.member_) {}
 
     /*!
      * \brief Member名
      *
      */
-    std::string name() const { return member_; }
+    std::string name() const;
+    /*!
+     * \brief Member名 (wstring)
+     *
+     */
+    std::wstring nameW() const;
 
     Value value(const std::string &field) const;
     Text text(const std::string &field) const;
     RobotModel robotModel(const std::string &field) const;
     Image image(const std::string &field) const;
     Func func(const std::string &field) const;
+
+    Value value(const std::wstring &field) const;
+    Text text(const std::wstring &field) const;
+    RobotModel robotModel(const std::wstring &field) const;
+    Image image(const std::wstring &field) const;
+    Func func(const std::wstring &field) const;
     /*!
      * \brief AnonymousFuncオブジェクトを作成しfuncをsetする
      *
@@ -61,6 +75,11 @@ class WEBCFACE_DLL Member : protected Field {
     View view(const std::string &field) const;
     Canvas3D canvas3D(const std::string &field) const;
     Canvas2D canvas2D(const std::string &field) const;
+
+    View view(const std::wstring &field) const;
+    Canvas3D canvas3D(const std::wstring &field) const;
+    Canvas2D canvas2D(const std::wstring &field) const;
+
     Log log() const;
 
     /*!
@@ -143,61 +162,61 @@ class WEBCFACE_DLL Member : protected Field {
      * コールバックの型は void(Value)
      *
      */
-    EventTarget<Value, std::string> onValueEntry() const;
+    EventTarget<Value, MemberNamePtr> onValueEntry() const;
     /*!
      * \brief textが追加された時のイベント
      *
      * コールバックの型は void(Text)
      *
      */
-    EventTarget<Text, std::string> onTextEntry() const;
+    EventTarget<Text, MemberNamePtr> onTextEntry() const;
     /*!
      * \brief robotModelが追加された時のイベント
      *
      * コールバックの型は void(RobotModel)
      *
      */
-    EventTarget<RobotModel, std::string> onRobotModelEntry() const;
+    EventTarget<RobotModel, MemberNamePtr> onRobotModelEntry() const;
     /*!
      * \brief funcが追加された時のイベント
      *
      * コールバックの型は void(Func)
      *
      */
-    EventTarget<Func, std::string> onFuncEntry() const;
+    EventTarget<Func, MemberNamePtr> onFuncEntry() const;
     /*!
      * \brief imageが追加されたときのイベント
      *
      * コールバックの型は void(Image)
      *
      */
-    EventTarget<Image, std::string> onImageEntry() const;
+    EventTarget<Image, MemberNamePtr> onImageEntry() const;
     /*!
      * \brief viewが追加されたときのイベント
      *
      * コールバックの型は void(View)
      *
      */
-    EventTarget<View, std::string> onViewEntry() const;
+    EventTarget<View, MemberNamePtr> onViewEntry() const;
     /*!
      * \brief canvas3dが追加されたときのイベント
      *
      * コールバックの型は void(Canvas3D)
      *
      */
-    EventTarget<Canvas3D, std::string> onCanvas3DEntry() const;
+    EventTarget<Canvas3D, MemberNamePtr> onCanvas3DEntry() const;
     /*!
      * \brief canvas2dが追加されたときのイベント
      *
      * コールバックの型は void(Canvas2D)
      *
      */
-    EventTarget<Canvas2D, std::string> onCanvas2DEntry() const;
+    EventTarget<Canvas2D, MemberNamePtr> onCanvas2DEntry() const;
     /*!
      * \brief Memberがsync()したときのイベント
      * コールバックの型は void(Member)
      */
-    EventTarget<Member, std::string> onSync() const;
+    EventTarget<Member, MemberNamePtr> onSync() const;
 
     /*!
      * \brief 最後のsync()の時刻を返す
@@ -244,7 +263,7 @@ class WEBCFACE_DLL Member : protected Field {
      * \sa pingStatus()
      *
      */
-    EventTarget<Member, std::string> onPing() const;
+    EventTarget<Member, MemberNamePtr> onPing() const;
 
     /*!
      * \brief Memberを比較

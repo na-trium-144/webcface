@@ -8,10 +8,24 @@
 #include <webcface/canvas2d.h>
 #include <webcface/canvas3d.h>
 #include <webcface/event_target.h>
+#include <webcface/encoding.h>
 #include "../message/message.h"
 #include "client_internal.h"
 
 WEBCFACE_NS_BEGIN
+
+std::string Member::name() const {
+    if (!memberPtr()) {
+        throw std::invalid_argument("member name is null");
+    }
+    return Encoding::getName(memberPtr());
+}
+std::wstring Member::nameW() const {
+    if (!memberPtr()) {
+        throw std::invalid_argument("member name is null");
+    }
+    return Encoding::getNameW(memberPtr());
+}
 
 Value Member::value(const std::string &field) const {
     return Value{*this, field};
@@ -31,42 +45,66 @@ Canvas3D Member::canvas3D(const std::string &field) const {
 Canvas2D Member::canvas2D(const std::string &field) const {
     return Canvas2D{*this, field};
 }
+Value Member::value(const std::wstring &field) const {
+    return Value{*this, field};
+}
+Text Member::text(const std::wstring &field) const {
+    return Text{*this, field};
+}
+RobotModel Member::robotModel(const std::wstring &field) const {
+    return RobotModel{*this, field};
+}
+Image Member::image(const std::wstring &field) const {
+    return Image{*this, field};
+}
+Func Member::func(const std::wstring &field) const {
+    return Func{*this, field};
+}
+View Member::view(const std::wstring &field) const {
+    return View{*this, field};
+}
+Canvas3D Member::canvas3D(const std::wstring &field) const {
+    return Canvas3D{*this, field};
+}
+Canvas2D Member::canvas2D(const std::wstring &field) const {
+    return Canvas2D{*this, field};
+}
 Log Member::log() const { return Log{*this}; }
 
-EventTarget<Value, std::string> Member::onValueEntry() const {
-    return EventTarget<Value, std::string>{&dataLock()->value_entry_event,
-                                           member_};
+EventTarget<Value, MemberNamePtr> Member::onValueEntry() const {
+    return EventTarget<Value, MemberNamePtr>{&dataLock()->value_entry_event,
+                                             member_};
 }
-EventTarget<Text, std::string> Member::onTextEntry() const {
-    return EventTarget<Text, std::string>{&dataLock()->text_entry_event,
-                                          member_};
+EventTarget<Text, MemberNamePtr> Member::onTextEntry() const {
+    return EventTarget<Text, MemberNamePtr>{&dataLock()->text_entry_event,
+                                            member_};
 }
-EventTarget<RobotModel, std::string> Member::onRobotModelEntry() const {
-    return EventTarget<RobotModel, std::string>{
+EventTarget<RobotModel, MemberNamePtr> Member::onRobotModelEntry() const {
+    return EventTarget<RobotModel, MemberNamePtr>{
         &dataLock()->robot_model_entry_event, member_};
 }
-EventTarget<Func, std::string> Member::onFuncEntry() const {
-    return EventTarget<Func, std::string>{&dataLock()->func_entry_event,
-                                          member_};
+EventTarget<Func, MemberNamePtr> Member::onFuncEntry() const {
+    return EventTarget<Func, MemberNamePtr>{&dataLock()->func_entry_event,
+                                            member_};
 }
-EventTarget<View, std::string> Member::onViewEntry() const {
-    return EventTarget<View, std::string>{&dataLock()->view_entry_event,
-                                          member_};
+EventTarget<View, MemberNamePtr> Member::onViewEntry() const {
+    return EventTarget<View, MemberNamePtr>{&dataLock()->view_entry_event,
+                                            member_};
 }
-EventTarget<Canvas3D, std::string> Member::onCanvas3DEntry() const {
-    return EventTarget<Canvas3D, std::string>{&dataLock()->canvas3d_entry_event,
-                                              member_};
+EventTarget<Canvas3D, MemberNamePtr> Member::onCanvas3DEntry() const {
+    return EventTarget<Canvas3D, MemberNamePtr>{
+        &dataLock()->canvas3d_entry_event, member_};
 }
-EventTarget<Canvas2D, std::string> Member::onCanvas2DEntry() const {
-    return EventTarget<Canvas2D, std::string>{&dataLock()->canvas2d_entry_event,
-                                              member_};
+EventTarget<Canvas2D, MemberNamePtr> Member::onCanvas2DEntry() const {
+    return EventTarget<Canvas2D, MemberNamePtr>{
+        &dataLock()->canvas2d_entry_event, member_};
 }
-EventTarget<Image, std::string> Member::onImageEntry() const {
-    return EventTarget<Image, std::string>{&dataLock()->image_entry_event,
-                                           member_};
+EventTarget<Image, MemberNamePtr> Member::onImageEntry() const {
+    return EventTarget<Image, MemberNamePtr>{&dataLock()->image_entry_event,
+                                             member_};
 }
-EventTarget<Member, std::string> Member::onSync() const {
-    return EventTarget<Member, std::string>{&dataLock()->sync_event, member_};
+EventTarget<Member, MemberNamePtr> Member::onSync() const {
+    return EventTarget<Member, MemberNamePtr>{&dataLock()->sync_event, member_};
 }
 
 std::vector<Value> Member::valueEntries() const {
@@ -188,9 +226,9 @@ std::optional<int> Member::pingStatus() const {
         return std::nullopt;
     }
 }
-EventTarget<Member, std::string> Member::onPing() const {
+EventTarget<Member, MemberNamePtr> Member::onPing() const {
     // ほんとはonAppendに追加したかったけど面倒なのでここでリクエストをtrueにしちゃう
     dataLock()->pingStatusReq();
-    return EventTarget<Member, std::string>{&dataLock()->ping_event, member_};
+    return EventTarget<Member, MemberNamePtr>{&dataLock()->ping_event, member_};
 }
 WEBCFACE_NS_END

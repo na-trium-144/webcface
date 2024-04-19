@@ -26,6 +26,10 @@ struct WEBCFACE_DLL Field : public Common::FieldBase {
                        std::string_view member);
     WEBCFACE_DLL Field(const std::weak_ptr<Internal::ClientData> &data_w,
                        std::string_view member, std::string_view field);
+    WEBCFACE_DLL Field(const std::weak_ptr<Internal::ClientData> &data_w,
+                       std::wstring_view member);
+    WEBCFACE_DLL Field(const std::weak_ptr<Internal::ClientData> &data_w,
+                       std::wstring_view member, std::wstring_view field);
     Field(const Field &base, std::string_view field)
         : Field(base.data_w, base.member_, field) {}
 
@@ -36,10 +40,21 @@ struct WEBCFACE_DLL Field : public Common::FieldBase {
 
     bool expired() const;
 
-    //! Memberを返す
+    /*!
+     * \brief Memberを返す
+     *
+     */
     Member member() const;
-    //! field名を返す
-    std::string_view name() const { return field_sv(); }
+    /*!
+     * \brief field名を返す
+     *
+     */
+    std::string name() const;
+    /*!
+     * \brief field名を返す (wstring)
+     * \since ver1.11
+     */
+    std::wstring nameW() const;
 
     /*!
      * \brief memberがselfならtrue
