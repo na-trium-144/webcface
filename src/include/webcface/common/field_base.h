@@ -1,34 +1,52 @@
 #pragma once
-#include <string>
+#include <string_view>
+#include <stdexcept>
 #include "def.h"
 
 WEBCFACE_NS_BEGIN
 inline namespace Common {
+
+using MemberNameRef = const void *;
+using FieldNameRef = const void *;
+
 /*!
  * \brief メンバ名とデータ名を持つクラス
  *
+ * (ver1.11〜)メンバ名とデータ名は別の場所で保持した文字列(char配列)へのポインタとして持つ。
+ *
+ * fieldを使用しない場合nullptr
+ *
  */
-struct FieldBase {
-    std::string member_; //!< メンバー名
+class FieldBase {
+  protected:
+    MemberNameRef member_;
+    FieldNameRef field_;
+    FieldBase(MemberNameRef member, FieldNameRef field)
+        : FieldBase(member, field) {}
 
-    /*!
-     * \brief フィールド名
-     *
-     * Memberなどフィールド名が不要なクラスでは使用しない
-     *
-     */
-    std::string field_;
+  public:
+    FieldBase() : FieldBase(nullptr, nullptr) {}
 
-    FieldBase() = default;
-    FieldBase(const std::string &member, const std::string &field = "")
-        : member_(member), field_(field) {}
-    FieldBase(const FieldBase &base, const std::string &field)
-        : FieldBase(base.member_, field) {}
-
-    bool operator==(const FieldBase &rhs) const {
-        return this->member_ == rhs.member_ && this->field_ == rhs.field_;
+    bool operator==(const FieldBase &other) const {
+        return this->member_ptr() == rhs.member_ptr() &&
+               this->field_ptr() == rhs.field_ptr();
     }
-    bool operator!=(const FieldBase &rhs) const { return !(*this == rhs); }
+
+    MemberNameRef member_ptr() const { return member_; }
+    FieldNameRef field_ptr() const { return field_; }
+
+    std::string_view member_sv() const {
+        if (member_) {
+            return std::string_view(static_cast<const char *>(member_));
+        }
+        throw std::runtime_error("member name is null");
+    }
+    std::string_view field_sv() const {
+        if (field_) {
+            return std::string_view(static_cast<const char *>(field_));
+        }
+        throw std::runtime_error("field name is null");
+    }
 };
 
 struct FieldBaseComparable : public FieldBase {
@@ -36,14 +54,13 @@ struct FieldBaseComparable : public FieldBase {
     FieldBaseComparable(const FieldBase &base) : FieldBase(base) {}
 
     bool operator==(const FieldBaseComparable &rhs) const {
-        return this->member_ == rhs.member_ && this->field_ == rhs.field_;
-    }
-    bool operator!=(const FieldBaseComparable &rhs) const {
-        return !(*this == rhs);
+        return this->member_ptr() == rhs.member_ptr() &&
+               this->field_ptr() == rhs.field_ptr();
     }
     bool operator<(const FieldBaseComparable &rhs) const {
-        return this->member_ < rhs.member_ ||
-               (this->member_ == rhs.member_ && this->field_ < rhs.field_);
+        return this->member_ptr() < rhs.member_ptr() ||
+               (this->member_ptr() == rhs.member_ptr() &&
+                this->field_ptr() < rhs.field_ptr());
     }
 };
 } // namespace Common

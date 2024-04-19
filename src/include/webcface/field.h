@@ -1,6 +1,6 @@
 #pragma once
 #include <memory>
-#include <string>
+#include <string_view>
 #include "common/field_base.h"
 #include "common/def.h"
 
@@ -20,9 +20,13 @@ struct WEBCFACE_DLL Field : public Common::FieldBase {
 
     Field() = default;
     Field(const std::weak_ptr<Internal::ClientData> &data_w,
-          const std::string &member, const std::string &field = "")
-        : Common::FieldBase(member, field), data_w(data_w) {}
-    Field(const Field &base, const std::string &field)
+          Common::MemberNameRef member, Common::FieldNameRef field = nullptr)
+        : Common::FieldBase(member, field), data_w(data_w);
+    WEBCFACE_DLL Field(const std::weak_ptr<Internal::ClientData> &data_w,
+                       std::string_view member);
+    WEBCFACE_DLL Field(const std::weak_ptr<Internal::ClientData> &data_w,
+                       std::string_view member, std::string_view field);
+    Field(const Field &base, std::string_view field)
         : Field(base.data_w, base.member_, field) {}
 
     //! data_wをlockし、失敗したらruntime_errorを投げる
@@ -35,7 +39,7 @@ struct WEBCFACE_DLL Field : public Common::FieldBase {
     //! Memberを返す
     Member member() const;
     //! field名を返す
-    std::string name() const { return field_; }
+    std::string_view name() const { return field_sv(); }
 
     /*!
      * \brief memberがselfならtrue
@@ -46,8 +50,5 @@ struct WEBCFACE_DLL Field : public Common::FieldBase {
     bool isSelf() const;
 
     WEBCFACE_DLL bool operator==(const Field &other) const;
-    bool operator!=(const Field &other) const {
-        return !(*this == other);
-    }
 };
 WEBCFACE_NS_END

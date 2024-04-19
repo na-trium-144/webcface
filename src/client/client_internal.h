@@ -37,17 +37,27 @@ WEBCFACE_DLL void messageThreadMain(std::shared_ptr<ClientData> data,
 WEBCFACE_DLL void recvThreadMain(std::shared_ptr<ClientData> data);
 
 struct ClientData : std::enable_shared_from_this<ClientData> {
-    WEBCFACE_DLL explicit ClientData(const std::string &name,
+    WEBCFACE_DLL explicit ClientData(std::string_view name,
                                      const std::string &host = "",
                                      int port = -1);
+
+    /*!
+     * \brief 1回以上参照されたメンバー名とフィールド名の文字列本体を保持する
+     *
+     * null終端にすること
+     *
+     */
+    std::vector<std::vector<const char>> members, fields;
+    WEBCFACE_DLL Common::MemberNameRef getMemberRef(std::string_view name);
+    WEBCFACE_DLL Common::FieldNameRef getFieldRef(std::string_view name);
 
     /*!
      * \brief Client自身の名前
      *
      */
-    std::string self_member_name;
+    const char *self_member_name;
     bool isSelf(const FieldBase &base) const {
-        return base.member_ == self_member_name;
+        return base.member_ptr() == self_member_name;
     }
 
     std::string host;
@@ -124,6 +134,7 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
      */
     WEBCFACE_DLL void onRecv(const std::string &message);
 
+    std::vector<MemberNameRef> entries;
     SyncDataStore2<ValueData> value_store;
     SyncDataStore2<TextData> text_store;
     SyncDataStore2<FuncData> func_store;

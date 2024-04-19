@@ -34,15 +34,15 @@ class SyncDataStore2 {
      * \brief 次のsend時に送信するデータ。
      *
      */
-    std::unordered_map<std::string, T> data_send;
-    std::unordered_map<std::string, T> data_send_prev;
+    std::unordered_map<FieldNameRef, T> data_send;
+    std::unordered_map<FieldNameRef, T> data_send_prev;
     /*!
      * \brief 送信済みデータ&受信済みデータ
      *
      * data_recv[member名][データ名] = 値
      *
      */
-    std::unordered_map<std::string, std::unordered_map<std::string, T>>
+    std::unordered_map<MemberNameRef, std::unordered_map<FieldNameRef, T>>
         data_recv;
     /*!
      * \brief 受信済みのentry
@@ -50,7 +50,7 @@ class SyncDataStore2 {
      * entry[member名] = {データ名のリスト}
      *
      */
-    std::unordered_map<std::string, std::vector<std::string>> entry;
+    std::unordered_map<MemberNameRef, std::vector<FieldNameRef>> entry;
     /*!
      * \brief データ受信リクエスト
      *
@@ -58,25 +58,24 @@ class SyncDataStore2 {
      * 0または未定義ならリクエストしてない
      *
      */
-    std::unordered_map<std::string,
-                       std::unordered_map<std::string, unsigned int>>
+    std::unordered_map<MemberNameRef,
+                       std::unordered_map<FieldNameRef, unsigned int>>
         req;
     /*!
      * \brief リクエストに必要なデータ
      *
      */
-    std::unordered_map<std::string, std::unordered_map<std::string, ReqT>>
+    std::unordered_map<MemberNameRef, std::unordered_map<FieldNameRef, ReqT>>
         req_info;
 
-    std::string self_member_name;
-
+    MemberNameRef self_member_name;
 
   public:
-    explicit SyncDataStore2(const std::string &name) : self_member_name(name) {}
+    explicit SyncDataStore2(MemberNameRef name) : self_member_name(name) {}
 
     std::recursive_mutex mtx;
 
-    bool isSelf(const std::string &member) const {
+    bool isSelf(MemberNameRef member) const {
         return member == self_member_name;
     }
 
@@ -89,7 +88,7 @@ class SyncDataStore2 {
      * selfの場合 0を返す
      *
      */
-    unsigned int addReq(const std::string &member, const std::string &field);
+    unsigned int addReq(MemberNameRef member, FieldNameRef field);
     /*!
      * \brief リクエストを追加
      *
@@ -101,7 +100,7 @@ class SyncDataStore2 {
      * selfの場合 0を返す
      *
      */
-    unsigned int addReq(const std::string &member, const std::string &field,
+    unsigned int addReq(MemberNameRef member, FieldNameRef field,
                         const ReqT &req_info);
 
     /*!
@@ -111,36 +110,35 @@ class SyncDataStore2 {
      * has_sendをtrueにする
      *
      */
-    void setSend(const std::string &name, const T &data);
+    void setSend(FieldNameRef name, const T &data);
     void setSend(const FieldBase &base, const T &data) {
-        setSend(base.field_, data);
+        setSend(base.field_ptr(), data);
     }
 
     /*!
      * \brief 受信したデータをdata_recvにセット
      *
      */
-    void setRecv(const std::string &from, const std::string &name,
-                 const T &data);
+    void setRecv(MemberNameRef from, FieldNameRef name, const T &data);
     void setRecv(const FieldBase &base, const T &data) {
-        setRecv(base.member_, base.field_, data);
+        setRecv(base.member_ptr(), base.field_ptr(), data);
     }
     /*!
      * \brief 受信したデータを削除
      *
      */
-    void clearRecv(const std::string &from, const std::string &name);
+    void clearRecv(MemberNameRef from, FieldNameRef name);
     void clearRecv(const FieldBase &base) {
-        clearRecv(base.member_, base.field_);
+        clearRecv(base.member_ptr(), base.field_ptr());
     }
 
     /*!
      * \brief data_recvからデータを返す
      *
      */
-    std::optional<T> getRecv(const std::string &from, const std::string &name);
+    std::optional<T> getRecv(MemberNameRef from, FieldNameRef name);
     std::optional<T> getRecv(const FieldBase &base) {
-        return getRecv(base.member_, base.field_);
+        return getRecv(base.member_ptr(), base.field_ptr());
     }
     /*!
      * \brief data_recvから指定したfield以下のデータを返す
@@ -152,13 +150,13 @@ class SyncDataStore2 {
      * \param cb 再帰的に呼び出す
      *
      */
-    std::optional<Dict<T>> getRecvRecurse(
-        const std::string &member, const std::string &field,
-        const std::function<void(const std::string &)> &cb = nullptr);
-    std::optional<Dict<T>> getRecvRecurse(
-        const FieldBase &base,
-        const std::function<void(const std::string &)> &cb = nullptr) {
-        return getRecvRecurse(base.member_, base.field_, cb);
+    std::optional<Dict<T>>
+    getRecvRecurse(MemberNameRef member, FieldNameRef field,
+                   const std::function<void(FieldNameRef)> &cb = nullptr);
+    std::optional<Dict<T>>
+    getRecvRecurse(const FieldBase &base,
+                   const std::function<void(FieldNameRef)> &cb = nullptr) {
+        return getRecvRecurse(base.member_ptr(), base.field_ptr(), cb);
     }
     /*!
      * \brief data_recvからデータを削除, reqを消す
@@ -166,62 +164,51 @@ class SyncDataStore2 {
      * \return reqを削除したらtrue, reqがすでに削除されてればfalse
      *
      */
-    bool unsetRecv(const std::string &from, const std::string &name);
+    bool unsetRecv(MemberNameRef from, FieldNameRef name);
     bool unsetRecv(const FieldBase &base) {
-        return unsetRecv(base.member_, base.field_);
+        return unsetRecv(base.member_ptr(), base.field_ptr());
     }
 
-    /*!
-     * \brief entryにmember名のみ追加
-     *
-     *  ambiguousなので引数にFieldBaseは使わない (そもそも必要ない)
-     */
-    void setEntry(const std::string &from);
     /*!
      * \brief 受信したentryを追加
      *
      */
-    void setEntry(const std::string &from, const std::string &e);
+    void setEntry(MemberNameRef from, FieldNameRef e);
 
     /*!
      * \brief entryを取得
      *
      */
-    std::vector<std::string> getEntry(const std::string &from);
-    std::vector<std::string> getEntry(const FieldBase &base) {
-        return getEntry(base.member_);
+    std::vector<FieldNameRef> getEntry(MemberNameRef from);
+    std::vector<FieldNameRef> getEntry(const FieldBase &base) {
+        return getEntry(base.member_ptr());
     }
-    /*!
-     * \brief member名のりすとを取得(entryから)
-     *
-     */
-    std::vector<std::string> getMembers();
 
     /*!
      * \brief req_idに対応するmember名とフィールド名を返す
      *
      */
-    std::pair<std::string, std::string> getReq(unsigned int req_id,
-                                               const std::string &sub_field);
+    std::pair<MemberNameRef, FieldNameRef> getReq(unsigned int req_id,
+                                                  FieldNameRef sub_field);
     /*!
      * \brief member名とフィールド名に対応するreq_infoを返す
      *
      */
-    const ReqT &getReqInfo(const std::string &member, const std::string &field);
+    const ReqT &getReqInfo(MemberNameRef member, FieldNameRef field);
 
     /*!
      * \brief data_sendを返し、data_sendをクリア
      *
      */
-    std::unordered_map<std::string, T> transferSend(bool is_first);
-    std::unordered_map<std::string, T> getSendPrev(bool is_first);
+    std::unordered_map<FieldNameRef, T> transferSend(bool is_first);
+    std::unordered_map<FieldNameRef, T> getSendPrev(bool is_first);
 
     /*!
      * \brief req_sendを返し、req_sendをクリア
      *
      */
-    std::unordered_map<std::string,
-                       std::unordered_map<std::string, unsigned int>>
+    std::unordered_map<MemberNameRef,
+                       std::unordered_map<FieldNameRef, unsigned int>>
     transferReq();
 
     template <typename ElemT>

@@ -5,6 +5,20 @@
 #include <webcface/common/def.h>
 
 WEBCFACE_NS_BEGIN
+Field::Field(const std::weak_ptr<Internal::ClientData> &data_w,
+             std::string_view member, std::string_view field)
+    : Common::FieldBase(), data_w(data_w) {
+    auto data = dataLock();
+    member_ = data->getMemberRef(member);
+    field_ = data->getFieldRef(field);
+}
+Field::Field(const std::weak_ptr<Internal::ClientData> &data_w,
+             std::string_view member)
+    : Common::FieldBase(), data_w(data_w) {
+    auto data = dataLock();
+    member_ = data->getMemberRef(member);
+}
+
 Member Field::member() const { return *this; }
 
 bool Field::expired() const { return data_w.expired(); }
