@@ -118,7 +118,7 @@ TEST_F(ServerTest, ping) {
         std::chrono::duration_cast<std::chrono::milliseconds>(end - start)
             .count();
     EXPECT_TRUE(s_c1->last_ping_duration.has_value());
-    EXPECT_GE(s_c1->last_ping_duration->count(), 10);
+    EXPECT_GE(s_c1->last_ping_duration->count(), WEBCFACE_TEST_TIMEOUT - 1);
     EXPECT_LE(s_c1->last_ping_duration->count(), dur_max);
 
     // serverがping statusを集計するのは次のping時なのでこの場合0
@@ -135,7 +135,7 @@ TEST_F(ServerTest, ping) {
     dummy_c1->recv<Message::PingStatus>(
         [&](const auto &obj) {
             EXPECT_TRUE(obj.status->count(1));
-            EXPECT_GE(obj.status->at(1), 10);
+            EXPECT_GE(obj.status->at(1), WEBCFACE_TEST_TIMEOUT - 1);
             EXPECT_LE(obj.status->at(1), dur_max);
         },
         [&] { ADD_FAILURE() << "Ping Status recv failed"; });
@@ -729,6 +729,7 @@ TEST_F(ServerTest, image) {
         1,
         {std::nullopt, std::nullopt, std::nullopt, ImageCompressMode::png, 5,
          std::nullopt}});
+    wait();
     wait();
     wait();
     wait();

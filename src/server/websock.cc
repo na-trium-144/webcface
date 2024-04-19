@@ -76,11 +76,11 @@ Server::~Server() {
     for (auto &app : apps) {
         static_cast<crow::SimpleApp *>(app)->stop();
     }
-    store.reset();
     ping_thread.join();
     for (auto &running_f : apps_running) {
         running_f.wait();
     }
+    store.reset();
 }
 Server::Server(int port, const spdlog::sink_ptr &sink,
                spdlog::level::level_enum level, int keep_log)
