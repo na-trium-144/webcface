@@ -880,7 +880,7 @@ struct Res<Image> : public MessageBase<MessageKind::image + MessageKind::res>,
  * \brief msgpackのメッセージをパースしstd::anyで返す
  *
  */
-std::vector<std::pair<int, std::any>>
+WEBCFACE_DLL std::vector<std::pair<int, std::any>>
 unpack(const std::string &message,
        const std::shared_ptr<spdlog::logger> &logger);
 
