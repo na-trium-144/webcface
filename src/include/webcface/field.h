@@ -45,9 +45,6 @@ struct WEBCFACE_DLL Field : public Common::FieldBase {
      */
     bool isSelf() const;
 
-    WEBCFACE_DLL bool operator==(const Field &other) const;
-    bool operator!=(const Field &other) const {
-        return !(*this == other);
-    }
+    bool operator==(const Field &other) const;
 };
 WEBCFACE_NS_END
