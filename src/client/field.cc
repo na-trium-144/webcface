@@ -6,44 +6,29 @@
 #include <webcface/encoding.h>
 
 WEBCFACE_NS_BEGIN
-Field::Field(const std::weak_ptr<Internal::ClientData> &data_w,
-             std::string_view member, std::string_view field)
-    : Common::FieldBase(), data_w(data_w) {
-    auto data = dataLock();
-    member_ = data->getMemberRef(member);
-    field_ = data->getFieldRef(field);
+
+MemberNameRef Field::getMemberRef(std::weak_ptr<Internal::ClientData> data_w,
+                                  std::u8string_view member) {
+    auto data = dataLock(data_w);
+    return data->getMemberRef(member);
 }
-Field::Field(const std::weak_ptr<Internal::ClientData> &data_w,
-             std::string_view member)
-    : Common::FieldBase(), data_w(data_w) {
-    auto data = dataLock();
-    member_ = data->getMemberRef(member);
-}
-Field::Field(const std::weak_ptr<Internal::ClientData> &data_w,
-             std::wstring_view member, std::wstring_view field)
-    : Common::FieldBase(), data_w(data_w) {
-    auto data = dataLock();
-    member_ = data->getMemberRef(member);
-    field_ = data->getFieldRef(field);
-}
-Field::Field(const std::weak_ptr<Internal::ClientData> &data_w,
-             std::wstring_view member)
-    : Common::FieldBase(), data_w(data_w) {
-    auto data = dataLock();
-    member_ = data->getMemberRef(member);
+FieldNameRef Field::getFieldRef(std::weak_ptr<Internal::ClientData> data_w,
+                                std::u8string_view field) {
+    auto data = dataLock(data_w);
+    return data->getFieldRef(field);
 }
 
 Member Field::member() const {
-    if (!memberPtr()) {
+    if (!memberValid()) {
         throw std::invalid_argument("member name is null");
     }
     return *this;
 }
 std::string name() const {
-    if (!fieldPtr()) {
+    if (!fieldValid()) {
         throw std::invalid_argument("field name is null");
     }
-    return Encoding::getName(fieldPtr());
+    return Encoding::getName(field_);
 }
 std::wstring nameW() const {
     if (!fieldPtr()) {
@@ -54,7 +39,8 @@ std::wstring nameW() const {
 
 bool Field::expired() const { return data_w.expired(); }
 
-std::shared_ptr<Internal::ClientData> Field::dataLock() const {
+std::shared_ptr<Internal::ClientData>
+Field::dataLock(std::weak_ptr<Internal::ClientData> data_w) {
     if (auto data = data_w.lock()) {
         return data;
     }
@@ -75,7 +61,7 @@ bool Field::isSelf() const { return dataLock()->isSelf(*this); }
 bool Field::operator==(const Field &other) const {
     return !expired() && !other.expired() &&
            data_w.lock().get() == other.data_w.lock().get() &&
-           static_cast<FieldBase>(*this) == static_cast<FieldBase>(other);
+           member_ == other.member_ && field_ == other.field_;
 }
 
 

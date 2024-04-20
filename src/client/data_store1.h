@@ -18,7 +18,7 @@ class SyncDataStore1 {
     std::unordered_map<MemberNameRef, bool> req_send;
 
   public:
-    std::string self_member_name;
+    MemberNameRef self_member_name;
     std::recursive_mutex mtx;
 
     explicit SyncDataStore1(MemberNameRef name) : self_member_name(name) {}

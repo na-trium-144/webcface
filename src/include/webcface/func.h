@@ -46,7 +46,7 @@ class WEBCFACE_DLL Func : protected Field {
 
     Func() = default;
     Func(const Field &base);
-    Func(const Field &base, const std::string &field)
+    Func(const Field &base, std::u8string_view field)
         : Func(Field{base, field}) {}
 
     using Field::member;
@@ -307,7 +307,7 @@ class WEBCFACE_DLL FuncListener : protected Func {
   public:
     FuncListener() = default;
     FuncListener(const Field &base);
-    FuncListener(const Field &base, const std::string &field)
+    FuncListener(const Field &base, std::u8string_view field)
         : FuncListener(Field{base, field}) {}
 
     using Field::member;

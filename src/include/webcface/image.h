@@ -36,19 +36,23 @@ class WEBCFACE_DLL Image : protected Field, public EventTarget<Image> {
   public:
     Image() = default;
     Image(const Field &base);
-    Image(const Field &base, const std::string &field)
+    Image(const Field &base, std::u8string_view field)
         : Image(Field{base, field}) {}
 
     using Field::member;
     using Field::name;
 
-    /*!
-     * \return「(thisのフィールド名).(子フィールド名)」をフィールド名とするImage
+     /*!
+     * \return「(thisの名前).(追加の名前)」を新しい名前とするImage
      *
      */
-    Image child(const std::string &field) {
-        return Image{*this, this->field_ + "." + field};
-    }
+    Image child(std::string_view field) const { return child<Image>(field); }
+    /*!
+     * \since ver1.11
+     * \return「(thisの名前).(追加の名前)」を新しい名前とするImage
+     *
+     */
+    Image child(std::wstring_view field) const { return child<Image>(field); }
 
     /*!
      * \brief 画像をセットする

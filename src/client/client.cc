@@ -11,24 +11,37 @@
 #include <webcface/common/def.h>
 #include <string>
 #include <chrono>
+#include <algorithm>
+#include <memory>
 #include "../message/message.h"
 #include "client_internal.h"
 
 WEBCFACE_NS_BEGIN
 
-Client::Client(const std::string &name, const std::string &host, int port)
-    : Client(name, std::make_shared<Internal::ClientData>(name, host, port)) {}
-Client::Client(const std::wstring &name, const std::string &host, int port)
-    : Client(name, std::make_shared<Internal::ClientData>(name, host, port)) {}
+Client::Client(std::string_view name, std::string_view host, int port)
+    : Client(Encoding::initName(name),
+             std::make_shared<Internal::ClientData>(
+                 Encoding::initName(name), Encoding::initName(host), port)) {}
+Client::Client(std::wstring_view name, std::wstring_view host, int port)
+    : Client(Encoding::initNameW(name),
+             std::make_shared<Internal::ClientData>(
+                 Encoding::initNameW(name), Encoding::initNameW(host), port)) {}
 
-Client::Client(const std::string &name,
+Client::Client(std::u8string_view name,
                std::shared_ptr<Internal::ClientData> data)
     : Member(data, name), data(data) {}
 
-Internal::ClientData::ClientData(std::vector<const char> &&name,
-                                 const std::string &host, int port)
-    : std::enable_shared_from_this<ClientData>(), members({std::move(name)}),
-      fields(), name_mtx(), self_member_name(members[0].data()), host(host),
+static std::unique_ptr<char8_t[]> initNamePtr(std::u8string_view name) {
+    auto u8name = std::make_unique<char8_t[]>(name.size() + 1);
+    std::copy(name.cbegin(), name.cend(), u8name.get());
+    u8name[name.size()] = 0;
+    return u8name;
+}
+
+Internal::ClientData::ClientData(const std::u8string &name,
+                                 const std::u8string &host, int port)
+    : std::enable_shared_from_this<ClientData>(), members({initNamePtr(name)}),
+      fields(), name_mtx(), self_member_name(members[0].get()), host(host),
       port(port), message_queue(std::make_shared<Common::Queue<std::string>>()),
       value_store(self_member_name), text_store(self_member_name),
       func_store(self_member_name), view_store(self_member_name),
@@ -37,9 +50,9 @@ Internal::ClientData::ClientData(std::vector<const char> &&name,
       log_store(std::make_shared<
                 SyncDataStore1<std::shared_ptr<std::vector<LogLine>>>>(
           self_member_name)),
-      sync_time_store(self_member_name),
+      sync_time_store(self_member_name), entries_mtx(),
       logger_sink(std::make_shared<LoggerSink>(log_store)) {
-    std::string name_str = name.data();
+    std::string name_str = Encoding::getName(name);
     static auto stderr_sink =
         std::make_shared<spdlog::sinks::stderr_color_sink_mt>();
     std::vector<spdlog::sink_ptr> sinks = {logger_sink, stderr_sink};
@@ -86,33 +99,32 @@ void Internal::ClientData::join() {
         recv_thread->join();
     }
 }
-
-Common::MemberNameRef getMemberRef(std::vector<char> &&name) {
-    std::lock_guard lock(name_m);
+MemberNameRef Internal::ClientData::getMemberRef(std::u8string_view name) {
+    std::lock_guard lock(name_mtx);
     for (const auto &m : members) {
-        if (m == name) {
-            return m.data();
+        if (std::u8string_view(m.get()) == name) {
+            return m.get();
         }
     }
-    members.push_back(std::move(name));
-    return members.back().data();
+    members.push_back(initNamePtr(name));
+    return members.back().get();
 }
-Common::FieldNameRef getFieldRef(std::vector<char> &&name) {
-    std::lock_guard lock(name_m);
+FieldNameRef Internal::ClientData::getFieldRef(std::u8string_view name) {
+    std::lock_guard lock(name_mtx);
     for (const auto &m : fields) {
-        if (m == name) {
-            return m.data();
+        if (std::u8string_view(m.get()) == name) {
+            return m.get();
         }
     }
-    fields.push_back(name);
+    fields.push_back(initNamePtr(name));
     return fields.back().data();
 }
 
 std::vector<Member> Client::members() {
-    auto keys = data->value_store.getMembers();
-    std::vector<Member> ret(keys.size());
-    for (std::size_t i = 0; i < keys.size(); i++) {
-        ret[i] = member(keys[i]);
+    std::lock_guard lock(data->entries_mtx);
+    std::vector<Member> ret;
+    for (const auto &m : data->member_ids) {
+        ret.push_back(Member{Field{data_w, m.first}});
     }
     return ret;
 }
@@ -586,15 +598,14 @@ void Internal::ClientData::onRecv(const std::string &message) {
         }
         case MessageKind::sync_init: {
             auto r = std::any_cast<webcface::Message::SyncInit>(obj);
-            this->value_store.setEntry(r.member_name);
-            this->text_store.setEntry(r.member_name);
-            this->func_store.setEntry(r.member_name);
-            this->member_ids[r.member_name] = r.member_id;
+            auto name_ref = getMemberNameRef(r.member_name);
+            std::lock_guard lock(entries_mtx)
+            this->member_ids[name_ref] = r.member_id;
             this->member_lib_name[r.member_id] = r.lib_name;
             this->member_lib_ver[r.member_id] = r.lib_ver;
             this->member_addr[r.member_id] = r.addr;
             this->member_entry_event.dispatch(
-                0, Field{shared_from_this(), r.member_name});
+                0, Field{shared_from_this(), name_ref});
             break;
         }
         case MessageKind::entry + MessageKind::value: {

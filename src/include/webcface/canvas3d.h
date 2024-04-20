@@ -36,22 +36,25 @@ class WEBCFACE_DLL Canvas3D : protected Field, public EventTarget<Canvas3D> {
   public:
     Canvas3D();
     Canvas3D(const Field &base);
-    Canvas3D(const Field &base, const std::string &field)
+    Canvas3D(const Field &base, std::u8string_view field)
         : Canvas3D(Field{base, field}) {}
 
     using Field::member;
     using Field::name;
     friend Internal::DataSetBuffer<Canvas3DComponent>;
 
-    /*!
-     * \brief 子フィールドを返す
-     *
-     * \return「(thisのフィールド名).(子フィールド名)」をフィールド名とするCanvas3D
+     /*!
+     * \return「(thisの名前).(追加の名前)」を新しい名前とするCanvas3D
      *
      */
-    Canvas3D child(const std::string &field) const {
-        return Canvas3D{*this, this->field_ + "." + field};
-    }
+    Canvas3D child(std::string_view field) const { return child<Canvas3D>(field); }
+    /*!
+     * \since ver1.11
+     * \return「(thisの名前).(追加の名前)」を新しい名前とするCanvas3D
+     *
+     */
+    Canvas3D child(std::wstring_view field) const { return child<Canvas3D>(field); }
+
     /*!
      * \brief canvasの内容をリクエストする
      * \since ver1.7
@@ -199,7 +202,7 @@ class WEBCFACE_DLL Canvas3D : protected Field, public EventTarget<Canvas3D> {
         }
         add(Canvas3DComponent{{Canvas3DComponentType::robot_model, origin,
                                ViewColor::inherit, std::nullopt,
-                               static_cast<FieldBase>(model_field), angles_i}});
+                               model_field.toBase(), angles_i}});
         return *this;
     }
 

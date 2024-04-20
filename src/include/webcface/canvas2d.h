@@ -31,9 +31,9 @@ class WEBCFACE_DLL Canvas2D : protected Field, public EventTarget<Canvas2D> {
   public:
     Canvas2D();
     Canvas2D(const Field &base);
-    Canvas2D(const Field &base, const std::string &field)
+    Canvas2D(const Field &base, std::u8string_view field)
         : Canvas2D(Field{base, field}) {}
-    Canvas2D(const Field &base, const std::string &field, double width,
+    Canvas2D(const Field &base, std::u8string_view field, double width,
              double height)
         : Canvas2D(Field{base, field}) {
         init(width, height);
@@ -43,15 +43,18 @@ class WEBCFACE_DLL Canvas2D : protected Field, public EventTarget<Canvas2D> {
     using Field::name;
     friend Internal::DataSetBuffer<Canvas2DComponent>;
 
-    /*!
-     * \brief 子フィールドを返す
-     *
-     * \return「(thisのフィールド名).(子フィールド名)」をフィールド名とするCanvas3D
+     /*!
+     * \return「(thisの名前).(追加の名前)」を新しい名前とするCanvas2D
      *
      */
-    Canvas2D child(const std::string &field) const {
-        return Canvas2D{*this, this->field_ + "." + field};
-    }
+    Canvas2D child(std::string_view field) const { return child<Canvas2D>(field); }
+    /*!
+     * \since ver1.11
+     * \return「(thisの名前).(追加の名前)」を新しい名前とするCanvas2D
+     *
+     */
+    Canvas2D child(std::wstring_view field) const { return child<Canvas2D>(field); }
+
     /*!
      * \brief Canvasの内容をリクエストする
      * \since ver1.7

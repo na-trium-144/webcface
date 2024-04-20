@@ -24,6 +24,7 @@
 #include "common/canvas2d.h"
 #include "common/robot_model.h"
 
+#include "encoding.h"
 #include "field.h"
 #include "event_target.h"
 

@@ -3,6 +3,7 @@
 #include <memory>
 #include <vector>
 #include "member.h"
+#include "encoding.h"
 #include "event_target.h"
 #include "common/def.h"
 
@@ -44,8 +45,7 @@ class WEBCFACE_DLL Client : public Member {
      * \arg port サーバーのポート
      *
      */
-    explicit Client(const std::string &name,
-                    const std::string &host = "127.0.0.1",
+    explicit Client(std::string_view name, std::string_view host = "127.0.0.1",
                     int port = WEBCFACE_DEFAULT_PORT);
     /*!
      * \brief 名前を指定しサーバーに接続する (wstring)
@@ -56,15 +56,15 @@ class WEBCFACE_DLL Client : public Member {
      * \arg port サーバーのポート
      *
      */
-    explicit Client(const std::wstring &name,
-                    const std::wstring &host = L"127.0.0.1",
+    explicit Client(std::wstring_view name,
+                    std::wstring_view host = L"127.0.0.1",
                     int port = WEBCFACE_DEFAULT_PORT);
 
     /*!
      * テストで使用
      *
      */
-    explicit Client(const std::string &name,
+    explicit Client(std::string_view name,
                     std::shared_ptr<Internal::ClientData> data);
 
     /*!
@@ -108,6 +108,13 @@ class WEBCFACE_DLL Client : public Member {
      */
     void sync();
 
+    Member member(std::u8string_view name) {
+        if (name.empty()) {
+            return *this;
+        } else {
+            return Member{data, name};
+        }
+    }
     /*!
      * \brief 他のmemberにアクセスする
      *
@@ -115,26 +122,19 @@ class WEBCFACE_DLL Client : public Member {
      * \sa members(), onMemberEntry()
      *
      */
-    Member member(const std::string &name) {
-        if (name.empty()) {
-            return *this;
-        } else {
-            return Member{data, name};
-        }
-    } /*!
-       * \brief 他のmemberにアクセスする (wstring)
-       * \since ver1.11
-       *
-       * nameが空の場合 *this を返す
-       * \sa members(), onMemberEntry()
-       *
-       */
-    Member member(const std::wstring &name) {
-        if (name.empty()) {
-            return *this;
-        } else {
-            return Member{data, name};
-        }
+    Member member(std::string_view name) {
+        return member(Encoding::initName(name));
+    }
+    /*!
+     * \brief 他のmemberにアクセスする (wstring)
+     * \since ver1.11
+     *
+     * nameが空の場合 *this を返す
+     * \sa members(), onMemberEntry()
+     *
+     */
+    Member member(std::wstring_view name) {
+        return member(Encoding::initNameW(name));
     }
     /*!
      * \brief サーバーに接続されている他のmemberのリストを得る。
@@ -153,16 +153,21 @@ class WEBCFACE_DLL Client : public Member {
      */
     EventTarget<Member, int> onMemberEntry();
 
+    FuncListener funcListener(std::u8string_view field) const;
     /*!
      * \brief FuncListenerを作成する
      *
      */
-    FuncListener funcListener(const std::string &field) const;
+    FuncListener funcListener(std::string_view field) const {
+        return funcListener(Encoding::initName(field));
+    }
     /*!
      * \brief FuncListenerを作成する (wstring)
      * \since ver1.11
      */
-    FuncListener funcListener(const std::wstring &field) const;
+    FuncListener funcListener(const std::wstring &field) const {
+        return funcListener(Encoding::initNameW(field));
+    }
 
     /*!
      * \brief

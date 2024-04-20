@@ -35,7 +35,7 @@ class WEBCFACE_DLL RobotModel : protected Field,
   public:
     RobotModel();
     RobotModel(const Field &base);
-    RobotModel(const Field &base, const std::string &field)
+    RobotModel(const Field &base, std::u8string_view field)
         : RobotModel(Field{base, field}) {}
 
     friend class Canvas3D;

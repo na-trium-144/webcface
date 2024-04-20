@@ -1,41 +1,38 @@
 #pragma once
+#include <string>
 #include "def.h"
 
 WEBCFACE_NS_BEGIN
 inline namespace Common {
 
-using MemberNameRef = const void *;
-using FieldNameRef = const void *;
 
 /*!
  * \brief メンバ名とデータ名を持つクラス
  *
- * (ver1.11〜)メンバ名とデータ名は別の場所で保持した文字列(char配列)へのポインタとして持つ。
+ * (ver1.11〜) Fieldと分離、FieldBaseは従来と同様stringで保持するが、
+ * 型をu8stringに変更
  *
- * fieldを使用しない場合nullptr
+ * fieldを使用しない場合空文字列
  *
  */
 class FieldBase {
   protected:
-    MemberNameRef member_;
-    FieldNameRef field_;
-    FieldBase(MemberNameRef member, FieldNameRef field)
-        : member_(member), field_(field) {}
+    std::u8string member_;
+    std::u8string field_;
 
   public:
-    FieldBase() : FieldBase(nullptr, nullptr) {}
+    FieldBase() = default;
+    explicit FieldBase(std::u8string &&member)
+        : member_(std::move(member)), field_() {}
+    explicit FieldBase(std::u8string &&member, std::u8string &&field)
+        : member_(std::move(member)), field_(std::move(field)) {}
 
     bool operator==(const FieldBase &other) const {
-        return this->memberPtr() == other.memberPtr() &&
-               this->fieldPtr() == other.fieldPtr();
-    }
-    bool memberValid() const { return memberPtr() != nullptr; }
-    bool fieldValid() const {
-        return memberPtr() != nullptr && fieldPtr() != nullptr;
+        return this->member_ == other.member_ && this->field_ == other.field_;
     }
 
-    MemberNameRef memberPtr() const { return member_; }
-    FieldNameRef fieldPtr() const { return field_; }
+    const std::u8string &memberName() const { return member_; }
+    const std::u8string &fieldName() const { return field_; }
 };
 
 struct FieldBaseComparable : public FieldBase {
@@ -43,13 +40,13 @@ struct FieldBaseComparable : public FieldBase {
     FieldBaseComparable(const FieldBase &base) : FieldBase(base) {}
 
     bool operator==(const FieldBaseComparable &rhs) const {
-        return this->memberPtr() == rhs.memberPtr() &&
-               this->fieldPtr() == rhs.fieldPtr();
+        return this->memberName() == rhs.memberName() &&
+               this->fieldName() == rhs.fieldName();
     }
     bool operator<(const FieldBaseComparable &rhs) const {
-        return this->memberPtr() < rhs.memberPtr() ||
-               (this->memberPtr() == rhs.memberPtr() &&
-                this->fieldPtr() < rhs.fieldPtr());
+        return this->memberName() < rhs.memberName() ||
+               (this->memberName() == rhs.memberName() &&
+                this->fieldName() < rhs.fieldName());
     }
 };
 } // namespace Common

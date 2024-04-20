@@ -1,11 +1,14 @@
 #pragma once
 #include <string>
-#include <vector>
+#include <string_view>
 #include "common/def.h"
 #include "common/field_base.h"
 
 WEBCFACE_NS_BEGIN
 namespace Encoding {
+
+using NameRef = const void *;
+
 /*!
  * \brief webcfaceが使用するエンコーディングを設定する
  * \since ver1.11
@@ -34,10 +37,10 @@ WEBCFACE_DLL bool usingUTF8();
  * windowsではエンコーディングの変換を行うが、
  * unixではなにもせずそのままコピーする。
  *
- * 必ずnull終端のデータとして返る
+ * utf8であることを明確にするために戻り値型をu8stringにしている
  *
  */
-WEBCFACE_DLL std::vector<char> initName(const std::string &name);
+WEBCFACE_DLL std::u8string initName(std::string_view name);
 
 /*!
  * \brief wstringをutf8のchar配列に変換する
@@ -45,31 +48,35 @@ WEBCFACE_DLL std::vector<char> initName(const std::string &name);
  *
  * (unixではたぶん必要ないが、#ifで分岐するのがめんどいので作ってしまう)
  *
- * 必ずnull終端のデータとして返る
+ * utf8であることを明確にするために戻り値型をu8stringにしている
  *
  */
-WEBCFACE_DLL std::vector<char> initNameW(const std::wstring &name);
+WEBCFACE_DLL std::u8string initNameW(std::wstring_view name);
 
+std::u8string_view getNameU8(NameRef name_ref) {
+    return static_cast<const char8_t *>(name_ref);
+}
 /*!
- * \brief utf8のchar配列をstringに変換する
+ * \brief utf8の文字列をstringに変換する
  * \since ver1.11
- *
  */
-WEBCFACE_DLL std::string getName(const void *name_ref);
+WEBCFACE_DLL std::string getName(std::u8string_view name_ref);
 /*!
- * \brief utf8のchar配列をwstringに変換する
+ * \brief utf8のchar配列(null終端)をstringに変換する
  * \since ver1.11
- *
  */
-WEBCFACE_DLL std::wstring getNameW(const void *name_ref);
-
+std::string getName(NameRef name_ref) { return getName(getNameU8(name_ref)); }
 /*!
- * \brief wstringをstringに変換する
+ * \brief utf8の文字列をwstringに変換する
  * \since ver1.11
- *
  */
-inline std::string toUTF8(const std::wstring &wstr) {
-    return getName(initNameW(wstr).data());
+WEBCFACE_DLL std::wstring getNameW(std::u8string_view name_ref);
+/*!
+ * \brief utf8のchar配列(null終端)をwstringに変換する
+ * \since ver1.11
+ */
+std::wstring getNameW(NameRef name_ref) {
+    return getNameW(getNameU8(name_ref));
 }
 
 } // namespace Encoding

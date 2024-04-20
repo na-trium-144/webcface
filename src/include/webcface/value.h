@@ -31,21 +31,24 @@ class WEBCFACE_DLL Value : protected Field, public EventTarget<Value> {
   public:
     Value() = default;
     Value(const Field &base);
-    Value(const Field &base, const std::string &field)
+    Value(const Field &base, std::u8string_view field)
         : Value(Field{base, field}) {}
 
     using Field::member;
     using Field::name;
+    using Field::nameW;
 
     /*!
-     * \brief 子フィールドを返す
-     *
-     * \return「(thisのフィールド名).(子フィールド名)」をフィールド名とするValue
+     * \return「(thisの名前).(追加の名前)」を新しい名前とするValue
      *
      */
-    Value child(const std::string &field) const {
-        return Value{*this, this->field_ + "." + field};
-    }
+    Value child(std::string_view field) const { return child<Value>(field); }
+    /*!
+     * \since ver1.11
+     * \return「(thisの名前).(追加の名前)」を新しい名前とするValue
+     *
+     */
+    Value child(std::wstring_view field) const { return child<Value>(field); }
 
     using Dict = Common::Dict<std::shared_ptr<Common::VectorOpt<double>>>;
     /*!

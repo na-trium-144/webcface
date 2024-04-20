@@ -1,4 +1,5 @@
 #include <webcface/func.h>
+#include <webcface/member.h>
 #include <thread>
 #include <chrono>
 #include <stdexcept>
@@ -7,6 +8,10 @@
 #include <webcface/common/def.h>
 
 WEBCFACE_NS_BEGIN
+
+FuncNotFound::FuncNotFound(const Field &base)
+    : std::runtime_error("member(\"" + base.member().name() + "\")" +
+                         ".func(\"" + base.name() + "\") is not set") {}
 
 auto &operator<<(std::basic_ostream<char> &os, const AsyncFuncResult &r) {
     os << "Func(\"" << r.name() << "\"): ";

@@ -41,13 +41,13 @@ WEBCFACE_DLL void recvThreadMain(std::shared_ptr<ClientData> data);
 struct ClientData : std::enable_shared_from_this<ClientData> {
     explicit ClientData(std::string &name, const std::string &host = "",
                         int port = -1)
-        : ClientData(Encoding::initName(name), host, port) {}
-    explicit ClientData(std::wstring &name, const std::wstring &host = "",
+        : ClientData(Encoding::initName(name), Encoding::initName(host), port) {}
+    explicit ClientData(std::wstring &name, const std::wstring &host = L"",
                         int port = -1)
-        : ClientData(Encoding::initNameW(name), Encoding::toUTF8(host), port) {}
+        : ClientData(Encoding::initNameW(name), Encoding::initNameW(host), port) {}
 
-    WEBCFACE_DLL explicit ClientData(std::vector<const char> &&name,
-                                     const std::string &host = "",
+    WEBCFACE_DLL explicit ClientData(const std::u8string &name,
+                                     const std::u8string &host = u8"",
                                      int port = -1);
 
     /*!
@@ -56,33 +56,33 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
      * null終端にすること
      *
      */
-    std::vector<std::vector<char>> members, fields;
-    WEBCFACE_DLL Common::MemberNameRef getMemberRef(std::vector<char> &&name);
-    Common::MemberNameRef getMemberRef(std::string_view name) {
+    std::vector<std::unique_ptr<char8_t[]>> members, fields;
+    WEBCFACE_DLL MemberNameRef getMemberRef(std::u8string_view name);
+    MemberNameRef getMemberRef(std::string_view name) {
         return getMemberRef(Encoding::initName(name));
     }
-    Common::MemberNameRef getMemberRef(std::wstring_view name) {
+    MemberNameRef getMemberRef(std::wstring_view name) {
         return getMemberRef(Encoding::initNameW(name));
     }
-    WEBCFACE_DLL Common::FieldNameRef getFieldRef(std::vector<char> &&name);
-    Common::FieldNameRef getFieldRef(std::string_view name) {
+    WEBCFACE_DLL FieldNameRef getFieldRef(std::u8string_view name);
+    FieldNameRef getFieldRef(std::string_view name) {
         return getFieldRef(Encoding::initName(name));
     }
-    Common::FieldNameRef getFieldRef(std::wstring_view name) {
+    FieldNameRef getFieldRef(std::wstring_view name) {
         return getFieldRef(Encoding::initNameW(name));
     }
-    std::mutex name_m;
+    std::mutex name_mtx;
 
     /*!
      * \brief Client自身の名前
      *
      */
-    const char *self_member_name;
-    bool isSelf(const FieldBase &base) const {
-        return base.member_ptr() == self_member_name;
+    MemberNameRef self_member_name;
+    bool isSelf(const Field &base) const {
+        return base.member_ == self_member_name;
     }
 
-    std::string host;
+    std::u8string host;
     int port;
 
     /*!
@@ -156,7 +156,6 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
      */
     WEBCFACE_DLL void onRecv(const std::string &message);
 
-    std::vector<MemberNameRef> entries;
     SyncDataStore2<ValueData> value_store;
     SyncDataStore2<TextData> text_store;
     SyncDataStore2<FuncData> func_store;
@@ -175,13 +174,15 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
      * \brief listenerがfetchするの待ちの関数呼び出しをためておく
      *
      */
-    std::unordered_map<std::string, Common::Queue<FuncCallHandle>>
+    std::unordered_map<MemberNameRef, Common::Queue<FuncCallHandle>>
         func_listener_handlers;
 
-    std::unordered_map<std::string, unsigned int> member_ids;
+    std::mutex entries_mtx;
+    std::unordered_map<MemberNameRef, unsigned int> member_ids;
     std::unordered_map<unsigned int, std::string> member_lib_name,
         member_lib_ver, member_addr;
-    std::string getMemberNameFromId(unsigned int id) const {
+    MemberNameRef getMemberNameFromId(unsigned int id) const {
+        std::lock_guard lock(entries_mtx);
         for (const auto &it : member_ids) {
             if (it.second == id) {
                 return it.first;
@@ -189,7 +190,8 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
         }
         return "";
     }
-    unsigned int getMemberIdFromName(const std::string &name) const {
+    unsigned int getMemberIdFromName(MemberNameRef name) const {
+        std::lock_guard lock(entries_mtx);
         auto it = member_ids.find(name);
         if (it != member_ids.end()) {
             return it->second;

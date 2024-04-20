@@ -360,15 +360,18 @@ struct View : public MessageBase<MessageKind::view> {
             : type(vc.type_), text(vc.text_), text_color(vc.text_color_),
               bg_color(vc.bg_color_), min_(vc.min_), max_(vc.max_),
               step_(vc.step_), option_(vc.option_) {
-            if (vc.on_click_func_ && vc.on_click_func_->fieldValid()) {
-                on_click_member =
-                    static_cast<const char *>(vc.on_click_func_->memberPtr());
-                on_click_field =
-                    static_cast<const char *>(vc.on_click_func_->fieldPtr());
+            if (vc.on_click_func_) {
+                on_click_member.emplace(
+                    vc.on_click_func_->memberName().cbegin(),
+                    vc.on_click_func_->memberName().cend());
+                on_click_field.emplace(vc.on_click_func_->fieldName().cbegin(),
+                                       vc.on_click_func_->fieldName().cend());
             }
-            if (vc.text_ref_ && vc.text_ref_->fieldValid()) {
-                text_ref_member = static_cast<const char *>(vc.text_ref_->memberPtr());
-                text_ref_field = static_cast<const char *>(vc.text_ref_->fieldPtr());
+            if (vc.text_ref_) {
+                text_ref_member.emplace(vc.text_ref_->memberName().cbegin(),
+                                        vc.text_ref_->memberName().cend());
+                text_ref_field.emplace(vc.text_ref_->fieldName().cbegin(),
+                                       vc.text_ref_->fieldName().cend());
             }
         }
         operator Common::ViewComponentBase() const {
@@ -376,12 +379,17 @@ struct View : public MessageBase<MessageKind::view> {
             vc.type_ = type;
             vc.text_ = text;
             if (on_click_member) {
-                vc.on_click_func_ =
-                    Common::FieldBase{*on_click_member, *on_click_field};
+                vc.on_click_func_.emplace(
+                    std::u8string(on_click_member->cbegin(),
+                                  on_click_member->cend()),
+                    std::u8string(on_click_field->cbegin(),
+                                  on_click_field->cend()));
             }
             if (text_ref_member) {
-                vc.text_ref_ =
-                    Common::FieldBase{*text_ref_member, *text_ref_field};
+                vc.text_ref_.emplace(std::u8string(text_ref_member->cbegin(),
+                                                   text_ref_member->cend()),
+                                     std::u8string(text_ref_field->cbegin(),
+                                                   text_ref_field->cend()));
             }
             vc.text_color_ = text_color;
             vc.bg_color_ = bg_color;
@@ -444,8 +452,10 @@ struct Canvas3D : public MessageBase<MessageKind::canvas3d> {
                 geometry_properties = vc.geometry_->properties;
             }
             if (vc.field_base_ != std::nullopt) {
-                field_member = vc.field_base_->member_;
-                field_field = vc.field_base_->field_;
+                field_member.emplace(vc.field_base_->memberName().cbegin(),
+                                     vc.field_base_->memberName().cend());
+                field_field.emplace(vc.field_base_->fieldName().cbegin(),
+                                    vc.field_base_->fieldName().cend());
             }
             for (const auto &a : vc.angles_) {
                 angles.emplace(std::to_string(a.first), a.second);
@@ -457,10 +467,12 @@ struct Canvas3D : public MessageBase<MessageKind::canvas3d> {
             vc.origin_ = {origin_pos, origin_rot};
             vc.color_ = color;
             if (geometry_type != std::nullopt) {
-                vc.geometry_ = {*geometry_type, geometry_properties};
+                vc.geometry_.emplace(*geometry_type, geometry_properties);
             }
             if (field_member != std::nullopt) {
-                vc.field_base_ = {*field_member, *field_field};
+                vc.field_base_.emplace(
+                    std::u8string(field_member->cbegin(), field_member->cend()),
+                    std::u8string(field_field->cbegin(), field_field->cend()));
             }
             for (const auto &a : angles) {
                 vc.angles_.emplace(std::stoi(a.first), a.second);
@@ -526,8 +538,11 @@ struct Canvas2D : public MessageBase<MessageKind::canvas2d> {
                 properties = vc.geometry_->properties;
             }
             if (vc.on_click_func_) {
-                on_click_member = vc.on_click_func_->member_;
-                on_click_field = vc.on_click_func_->field_;
+                on_click_member.emplace(
+                    vc.on_click_func_->memberName().cbegin(),
+                    vc.on_click_func_->memberName().cend());
+                on_click_field.emplace(vc.on_click_func_->fieldName().cbegin(),
+                                       vc.on_click_func_->fieldName().cend());
             }
         }
         operator Common::Canvas2DComponentBase() const {
@@ -539,8 +554,11 @@ struct Canvas2D : public MessageBase<MessageKind::canvas2d> {
             vc.stroke_width_ = stroke_width;
             vc.geometry_ = {geometry_type, properties};
             if (on_click_member && on_click_field) {
-                vc.on_click_func_ = std::make_optional<FieldBase>(
-                    *on_click_member, *on_click_field);
+                vc.on_click_func_.emplace(
+                    std::u8string(on_click_member->cbegin(),
+                                  on_click_member->cend()),
+                    std::u8string(on_click_field->cbegin(),
+                                  on_click_field->cend()));
             }
             vc.text_ = text;
             return vc;

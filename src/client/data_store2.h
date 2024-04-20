@@ -111,8 +111,8 @@ class SyncDataStore2 {
      *
      */
     void setSend(FieldNameRef name, const T &data);
-    void setSend(const FieldBase &base, const T &data) {
-        setSend(base.field_ptr(), data);
+    void setSend(const Field &base, const T &data) {
+        setSend(base.field_, data);
     }
 
     /*!
@@ -120,16 +120,16 @@ class SyncDataStore2 {
      *
      */
     void setRecv(MemberNameRef from, FieldNameRef name, const T &data);
-    void setRecv(const FieldBase &base, const T &data) {
-        setRecv(base.member_ptr(), base.field_ptr(), data);
+    void setRecv(const Field &base, const T &data) {
+        setRecv(base.member_, base.field_, data);
     }
     /*!
      * \brief 受信したデータを削除
      *
      */
     void clearRecv(MemberNameRef from, FieldNameRef name);
-    void clearRecv(const FieldBase &base) {
-        clearRecv(base.member_ptr(), base.field_ptr());
+    void clearRecv(const Field &base) {
+        clearRecv(base.member_, base.field_);
     }
 
     /*!
@@ -137,8 +137,8 @@ class SyncDataStore2 {
      *
      */
     std::optional<T> getRecv(MemberNameRef from, FieldNameRef name);
-    std::optional<T> getRecv(const FieldBase &base) {
-        return getRecv(base.member_ptr(), base.field_ptr());
+    std::optional<T> getRecv(const Field &base) {
+        return getRecv(base.member_, base.field_);
     }
     /*!
      * \brief data_recvから指定したfield以下のデータを返す
@@ -154,9 +154,9 @@ class SyncDataStore2 {
     getRecvRecurse(MemberNameRef member, FieldNameRef field,
                    const std::function<void(FieldNameRef)> &cb = nullptr);
     std::optional<Dict<T>>
-    getRecvRecurse(const FieldBase &base,
+    getRecvRecurse(const Field &base,
                    const std::function<void(FieldNameRef)> &cb = nullptr) {
-        return getRecvRecurse(base.member_ptr(), base.field_ptr(), cb);
+        return getRecvRecurse(base.member_, base.field_, cb);
     }
     /*!
      * \brief data_recvからデータを削除, reqを消す
@@ -165,8 +165,8 @@ class SyncDataStore2 {
      *
      */
     bool unsetRecv(MemberNameRef from, FieldNameRef name);
-    bool unsetRecv(const FieldBase &base) {
-        return unsetRecv(base.member_ptr(), base.field_ptr());
+    bool unsetRecv(const Field &base) {
+        return unsetRecv(base.member_, base.field_);
     }
 
     /*!
@@ -180,8 +180,8 @@ class SyncDataStore2 {
      *
      */
     std::vector<FieldNameRef> getEntry(MemberNameRef from);
-    std::vector<FieldNameRef> getEntry(const FieldBase &base) {
-        return getEntry(base.member_ptr());
+    std::vector<FieldNameRef> getEntry(const Field &base) {
+        return getEntry(base.member_);
     }
 
     /*!

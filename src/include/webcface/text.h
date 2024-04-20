@@ -29,7 +29,7 @@ class WEBCFACE_DLL Text : protected Field, public EventTarget<Text> {
   public:
     Text() = default;
     Text(const Field &base);
-    Text(const Field &base, const std::string &field)
+    Text(const Field &base, std::u8string_view field)
         : Text(Field{base, field}) {}
 
     friend class InputRef;
@@ -38,14 +38,16 @@ class WEBCFACE_DLL Text : protected Field, public EventTarget<Text> {
     using Field::name;
 
     /*!
-     * \brief 子フィールドを返す
-     *
-     * \return「(thisのフィールド名).(子フィールド名)」をフィールド名とするText
+     * \return「(thisの名前).(追加の名前)」を新しい名前とするText
      *
      */
-    Text child(const std::string &field) const {
-        return Text{*this, this->field_ + "." + field};
-    }
+    Text child(std::string_view field) const { return child<Text>(field); }
+    /*!
+     * \since ver1.11
+     * \return「(thisの名前).(追加の名前)」を新しい名前とするText
+     *
+     */
+    Text child(std::wstring_view field) const { return child<Text>(field); }
 
     // 1.10でstd::stringをValAdaptorに変更したら使えなくなった
     // using Dict = Common::Dict<std::shared_ptr<Common::ValAdaptor>>;
