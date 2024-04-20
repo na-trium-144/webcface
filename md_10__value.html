@@ -302,7 +302,9 @@ $(document).ready(function(){initNavTree('md_10__value.html',''); initResizable(
  get(), getVec(), getRecurse() はstd::nulloptの代わりにデフォルト値を返します。 <br  />
  また、doubleやstd::vector&lt;double&gt;, Value::Dict などの型にキャストすることでも同様に値が得られます。</p>
 <p class="startli"><span class="since-c">1.8</span> std::ostreamにValueを直接渡して表示することもできます。 まだ受信していない場合nullと表示されます。 </p><div class="fragment"><div class="line">std::cout &lt;&lt; <span class="stringliteral">&quot;hoge = &quot;</span> &lt;&lt; wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).value(<span class="stringliteral">&quot;hoge&quot;</span>) &lt;&lt; std::endl;</div>
-</div><!-- fragment --></li>
+</div><!-- fragment --><dl class="section warning"><dt>Warning</dt><dd><span class="since-c">1.11</span> Valueオブジェクト同士を比較するとValueが参照するデータの名前が一致するかどうかで判定されます。(Textなど他のデータ型でも同様です。) <br  />
+ ver1.10まではdoubleにキャストされた上で値を比較していたので、異なる挙動になります。 値を比較したい場合は明示的にキャストするか<code>get()</code>などを呼んでください。</dd></dl>
+</li>
 <li><p class="startli"><b class="tab-title">C</b> </p><div class="fragment"><div class="line"><span class="keywordtype">double</span> value[5];</div>
 <div class="line"><span class="keywordtype">int</span> size;</div>
 <div class="line"><span class="keywordtype">int</span> ret = <a class="code hl_function" href="c__wcf_2value_8cc.html#a0f854340c16f01ef95424003d1ae84ca">wcfValueGetVecD</a>(wcli, <span class="stringliteral">&quot;a&quot;</span>, <span class="stringliteral">&quot;hoge&quot;</span>, value, 5, &amp;size);</div>
@@ -444,7 +446,7 @@ Event</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon Apr 8 2024 09:42:21 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Sat Apr 20 2024 13:58:30 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

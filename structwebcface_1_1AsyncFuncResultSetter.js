@@ -7,6 +7,8 @@ var structwebcface_1_1AsyncFuncResultSetter =
     [ "isSelf", "structwebcface_1_1AsyncFuncResultSetter.html#a0522a651826ba6fcbb9ce86258e8fa30", null ],
     [ "member", "structwebcface_1_1AsyncFuncResultSetter.html#aa8fab40ead35fa8e761986d5f4000a5c", null ],
     [ "name", "structwebcface_1_1AsyncFuncResultSetter.html#a1d89c28bd42ba9a52da008bb69367171", null ],
+    [ "operator==", "structwebcface_1_1AsyncFuncResultSetter.html#ab2f63920a9d0c274c8627c54d7e00d0f", null ],
+    [ "operator==", "structwebcface_1_1AsyncFuncResultSetter.html#a2c810e304a62d36f287f198498e5bfa9", null ],
     [ "setCheck", "structwebcface_1_1AsyncFuncResultSetter.html#a46ba439f46fffe25a1fe549c380fcd3b", null ],
     [ "setResult", "structwebcface_1_1AsyncFuncResultSetter.html#a1bb3cffbe3d1eb4ae67843a7120a115c", null ],
     [ "setResultException", "structwebcface_1_1AsyncFuncResultSetter.html#adb0f25579bca0f9678806b855752c1ef", null ],

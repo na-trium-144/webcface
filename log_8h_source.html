@@ -179,12 +179,29 @@ $(document).ready(function(){initNavTree('log_8h_source.html',''); initResizable
 </div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    <a class="code hl_class" href="classwebcface_1_1Log.html">Log</a> &amp;clear();</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>};</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>        <span class="keyword">requires</span> std::same_as&lt;T, Log&gt;</div>
+<div class="foldopen" id="foldopen00063" data-start="{" data-end="}">
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno"><a class="line" href="classwebcface_1_1Log.html#aa407649955bb90315d4d8349e01750d8">   63</a></span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classwebcface_1_1Log.html#aa407649955bb90315d4d8349e01750d8">operator==</a>(<span class="keyword">const</span> T &amp;other)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>        <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><a class="code hl_struct" href="structwebcface_1_1Field.html">Field</a><span class="keyword">&gt;</span>(*this) == <span class="keyword">static_cast&lt;</span><a class="code hl_struct" href="structwebcface_1_1Field.html">Field</a><span class="keyword">&gt;</span>(other);</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    }</div>
 </div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><a class="code hl_define" href="macros_8h.html#ab3f2570d5b8231ddbe0e57fc8ab629eb">WEBCFACE_NS_END</a></div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>        <span class="keyword">requires</span> std::same_as&lt;T, Log&gt;</div>
+<div class="foldopen" id="foldopen00073" data-start="{" data-end="}">
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno"><a class="line" href="classwebcface_1_1Log.html#a5f5c73a74b6c59d2c5abb9d7121f14a5">   73</a></span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classwebcface_1_1Log.html#a5f5c73a74b6c59d2c5abb9d7121f14a5">operator!=</a>(<span class="keyword">const</span> T &amp;other)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>        <span class="keywordflow">return</span> !(*<span class="keyword">this</span> == other);</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    }</div>
+</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>};</div>
+</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span><a class="code hl_define" href="macros_8h.html#ab3f2570d5b8231ddbe0e57fc8ab629eb">WEBCFACE_NS_END</a></div>
 <div class="ttc" id="aclasswebcface_1_1EventTarget_html"><div class="ttname"><a href="classwebcface_1_1EventTarget.html">webcface::EventTarget</a></div><div class="ttdoc">イベントを表し、コールバックの追加や削除ができるクラス。</div><div class="ttdef"><b>Definition</b> event_target.h:15</div></div>
 <div class="ttc" id="aclasswebcface_1_1Log_html"><div class="ttname"><a href="classwebcface_1_1Log.html">webcface::Log</a></div><div class="ttdoc">ログの送受信データを表すクラス</div><div class="ttdef"><b>Definition</b> log.h:21</div></div>
+<div class="ttc" id="aclasswebcface_1_1Log_html_a5f5c73a74b6c59d2c5abb9d7121f14a5"><div class="ttname"><a href="classwebcface_1_1Log.html#a5f5c73a74b6c59d2c5abb9d7121f14a5">webcface::Log::operator!=</a></div><div class="ttdeci">bool operator!=(const T &amp;other) const</div><div class="ttdoc">Logの参照先を比較</div><div class="ttdef"><b>Definition</b> log.h:73</div></div>
 <div class="ttc" id="aclasswebcface_1_1Log_html_a907ca32e5dd84f5166dd5cd8e59984e6"><div class="ttname"><a href="classwebcface_1_1Log.html#a907ca32e5dd84f5166dd5cd8e59984e6">webcface::Log::Log</a></div><div class="ttdeci">Log()=default</div></div>
+<div class="ttc" id="aclasswebcface_1_1Log_html_aa407649955bb90315d4d8349e01750d8"><div class="ttname"><a href="classwebcface_1_1Log.html#aa407649955bb90315d4d8349e01750d8">webcface::Log::operator==</a></div><div class="ttdeci">bool operator==(const T &amp;other) const</div><div class="ttdoc">Logの参照先を比較</div><div class="ttdef"><b>Definition</b> log.h:63</div></div>
 <div class="ttc" id="aclasswebcface_1_1Log_html_ab2b35e1b920b6b4ab87b96ee259b1ffb"><div class="ttname"><a href="classwebcface_1_1Log.html#ab2b35e1b920b6b4ab87b96ee259b1ffb">webcface::Log::get</a></div><div class="ttdeci">std::vector&lt; LogLine &gt; get() const</div><div class="ttdoc">ログを取得する</div><div class="ttdef"><b>Definition</b> log.h:45</div></div>
 <div class="ttc" id="acommon_2log_8h_html"><div class="ttname"><a href="common_2log_8h.html">log.h</a></div></div>
 <div class="ttc" id="adef_8h_html"><div class="ttname"><a href="def_8h.html">def.h</a></div></div>
@@ -201,7 +218,7 @@ $(document).ready(function(){initNavTree('log_8h_source.html',''); initResizable
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_e6fac88a17509a9ad709623cf2c100d8.html">webcface</a></li><li class="navelem"><a class="el" href="log_8h.html">log.h</a></li>
-    <li class="footer">Generated on Mon Apr 8 2024 09:42:21 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Sat Apr 20 2024 13:58:30 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

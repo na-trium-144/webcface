@@ -233,18 +233,35 @@ $(document).ready(function(){initNavTree('image_8h_source.html',''); initResizab
 <div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>    <a class="code hl_class" href="classwebcface_1_1Image.html">Image</a> &amp;free();</div>
 <div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span> </div>
 <div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>    <a class="code hl_class" href="classwebcface_1_1Image.html">Image</a> &amp;clear();</div>
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>};</div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span> </div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>        <span class="keyword">requires</span> std::same_as&lt;T, Image&gt;</div>
+<div class="foldopen" id="foldopen00146" data-start="{" data-end="}">
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno"><a class="line" href="classwebcface_1_1Image.html#a5ec0b618511c78cc89f9e9857a9382aa">  146</a></span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classwebcface_1_1Image.html#a5ec0b618511c78cc89f9e9857a9382aa">operator==</a>(<span class="keyword">const</span> T &amp;other)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>        <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><a class="code hl_struct" href="structwebcface_1_1Field.html">Field</a><span class="keyword">&gt;</span>(*this) == <span class="keyword">static_cast&lt;</span><a class="code hl_struct" href="structwebcface_1_1Field.html">Field</a><span class="keyword">&gt;</span>(other);</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>    }</div>
 </div>
-<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span> </div>
-<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span><a class="code hl_define" href="macros_8h.html#ab3f2570d5b8231ddbe0e57fc8ab629eb">WEBCFACE_NS_END</a></div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>        <span class="keyword">requires</span> std::same_as&lt;T, Image&gt;</div>
+<div class="foldopen" id="foldopen00156" data-start="{" data-end="}">
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno"><a class="line" href="classwebcface_1_1Image.html#af2537a5c9a2f00ec6bd90b3a85afdd2a">  156</a></span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classwebcface_1_1Image.html#af2537a5c9a2f00ec6bd90b3a85afdd2a">operator!=</a>(<span class="keyword">const</span> T &amp;other)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>        <span class="keywordflow">return</span> !(*<span class="keyword">this</span> == other);</div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>    }</div>
+</div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>};</div>
+</div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span> </div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span><a class="code hl_define" href="macros_8h.html#ab3f2570d5b8231ddbe0e57fc8ab629eb">WEBCFACE_NS_END</a></div>
 <div class="ttc" id="aclasswebcface_1_1Common_1_1ImageWithCV_html"><div class="ttname"><a href="classwebcface_1_1Common_1_1ImageWithCV.html">webcface::Common::ImageWithCV</a></div><div class="ttdoc">(ver1.3から追加) 画像データ</div><div class="ttdef"><b>Definition</b> image.h:166</div></div>
 <div class="ttc" id="aclasswebcface_1_1EventTarget_html"><div class="ttname"><a href="classwebcface_1_1EventTarget.html">webcface::EventTarget</a></div><div class="ttdoc">イベントを表し、コールバックの追加や削除ができるクラス。</div><div class="ttdef"><b>Definition</b> event_target.h:15</div></div>
 <div class="ttc" id="aclasswebcface_1_1Image_html"><div class="ttname"><a href="classwebcface_1_1Image.html">webcface::Image</a></div><div class="ttdoc">(ver1.3から追加) 画像の送受信データを表すクラス</div><div class="ttdef"><b>Definition</b> image.h:25</div></div>
 <div class="ttc" id="aclasswebcface_1_1Image_html_a08d99c88953550dd093f5ed2c8064a39"><div class="ttname"><a href="classwebcface_1_1Image.html#a08d99c88953550dd093f5ed2c8064a39">webcface::Image::request</a></div><div class="ttdeci">Image &amp; request(std::optional&lt; int &gt; rows=std::nullopt, std::optional&lt; int &gt; cols=std::nullopt, std::optional&lt; Common::ImageColorMode &gt; color_mode=std::nullopt, std::optional&lt; double &gt; frame_rate=std::nullopt)</div><div class="ttdoc">画像を生画像のフォーマットでリクエストする</div><div class="ttdef"><b>Definition</b> image.h:79</div></div>
 <div class="ttc" id="aclasswebcface_1_1Image_html_a535d50bfbfa886a7efbbcf68acf2ff2f"><div class="ttname"><a href="classwebcface_1_1Image.html#a535d50bfbfa886a7efbbcf68acf2ff2f">webcface::Image::child</a></div><div class="ttdeci">Image child(const std::string &amp;field)</div><div class="ttdef"><b>Definition</b> image.h:49</div></div>
+<div class="ttc" id="aclasswebcface_1_1Image_html_a5ec0b618511c78cc89f9e9857a9382aa"><div class="ttname"><a href="classwebcface_1_1Image.html#a5ec0b618511c78cc89f9e9857a9382aa">webcface::Image::operator==</a></div><div class="ttdeci">bool operator==(const T &amp;other) const</div><div class="ttdoc">Imageの参照先を比較</div><div class="ttdef"><b>Definition</b> image.h:146</div></div>
 <div class="ttc" id="aclasswebcface_1_1Image_html_a78688000894f1ba902bdb458c5de9d6c"><div class="ttname"><a href="classwebcface_1_1Image.html#a78688000894f1ba902bdb458c5de9d6c">webcface::Image::request</a></div><div class="ttdeci">Image &amp; request(std::optional&lt; int &gt; rows, std::optional&lt; int &gt; cols, Common::ImageCompressMode cmp_mode, int quality, std::optional&lt; double &gt; frame_rate=std::nullopt)</div><div class="ttdoc">画像を圧縮されたフォーマットでリクエストする</div><div class="ttdef"><b>Definition</b> image.h:100</div></div>
 <div class="ttc" id="aclasswebcface_1_1Image_html_abce96b6d79ae4c996315206f0a32e944"><div class="ttname"><a href="classwebcface_1_1Image.html#abce96b6d79ae4c996315206f0a32e944">webcface::Image::operator=</a></div><div class="ttdeci">Image &amp; operator=(const ImageFrame &amp;img)</div><div class="ttdoc">画像をセットする</div><div class="ttdef"><b>Definition</b> image.h:62</div></div>
 <div class="ttc" id="aclasswebcface_1_1Image_html_ad414b0ad03b3ba6e4538973e932bcadb"><div class="ttname"><a href="classwebcface_1_1Image.html#ad414b0ad03b3ba6e4538973e932bcadb">webcface::Image::get</a></div><div class="ttdeci">ImageFrame get()</div><div class="ttdoc">画像を返す (データがない場合0x0の画像が返る)</div><div class="ttdef"><b>Definition</b> image.h:118</div></div>
+<div class="ttc" id="aclasswebcface_1_1Image_html_af2537a5c9a2f00ec6bd90b3a85afdd2a"><div class="ttname"><a href="classwebcface_1_1Image.html#af2537a5c9a2f00ec6bd90b3a85afdd2a">webcface::Image::operator!=</a></div><div class="ttdeci">bool operator!=(const T &amp;other) const</div><div class="ttdoc">Imageの参照先を比較</div><div class="ttdef"><b>Definition</b> image.h:156</div></div>
 <div class="ttc" id="acommon_2image_8h_html"><div class="ttname"><a href="common_2image_8h.html">image.h</a></div></div>
 <div class="ttc" id="adef_8h_html"><div class="ttname"><a href="def_8h.html">def.h</a></div></div>
 <div class="ttc" id="aevent__target_8h_html"><div class="ttname"><a href="event__target_8h.html">event_target.h</a></div></div>
@@ -262,7 +279,7 @@ $(document).ready(function(){initNavTree('image_8h_source.html',''); initResizab
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_e6fac88a17509a9ad709623cf2c100d8.html">webcface</a></li><li class="navelem"><a class="el" href="image_8h.html">image.h</a></li>
-    <li class="footer">Generated on Mon Apr 8 2024 09:42:21 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Sat Apr 20 2024 13:58:30 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

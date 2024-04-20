@@ -6,6 +6,8 @@ var classwebcface_1_1AsyncFuncResult =
     [ "isSelf", "classwebcface_1_1AsyncFuncResult.html#a0522a651826ba6fcbb9ce86258e8fa30", null ],
     [ "member", "classwebcface_1_1AsyncFuncResult.html#aa8fab40ead35fa8e761986d5f4000a5c", null ],
     [ "name", "classwebcface_1_1AsyncFuncResult.html#a1d89c28bd42ba9a52da008bb69367171", null ],
+    [ "operator==", "classwebcface_1_1AsyncFuncResult.html#ab2f63920a9d0c274c8627c54d7e00d0f", null ],
+    [ "operator==", "classwebcface_1_1AsyncFuncResult.html#a2c810e304a62d36f287f198498e5bfa9", null ],
     [ "setCheck", "classwebcface_1_1AsyncFuncResult.html#a46ba439f46fffe25a1fe549c380fcd3b", null ],
     [ "Func", "classwebcface_1_1AsyncFuncResult.html#a87c6c86ed0896880400f89c8c88c3927", null ],
     [ "caller_id", "classwebcface_1_1AsyncFuncResult.html#a1857b0e2073dee1ce8b4c840768c14fc", null ],
