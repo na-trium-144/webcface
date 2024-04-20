@@ -60,17 +60,10 @@ struct ViewComponentBase {
 
     bool operator==(const ViewComponentBase &rhs) const {
         return type_ == rhs.type_ && text_ == rhs.text_ &&
-               ((!on_click_func_ && !rhs.on_click_func_) ||
-                (on_click_func_ && rhs.on_click_func_ &&
-                 on_click_func_->member_ == rhs.on_click_func_->member_ &&
-                 on_click_func_->field_ == rhs.on_click_func_->field_)) &&
-               ((!text_ref_ && !rhs.text_ref_) ||
-                (text_ref_ && rhs.text_ref_ &&
-                 text_ref_->member_ == rhs.text_ref_->member_ &&
-                 text_ref_->field_ == rhs.text_ref_->field_)) &&
-               text_color_ == rhs.text_color_ && bg_color_ == rhs.bg_color_ &&
-               min_ == rhs.min_ && max_ == rhs.max_ && step_ == rhs.step_ &&
-               option_ == rhs.option_;
+               on_click_func_ == rhs.on_click_func_ &&
+               text_ref_ == rhs.text_ref_ && text_color_ == rhs.text_color_ &&
+               bg_color_ == rhs.bg_color_ && min_ == rhs.min_ &&
+               max_ == rhs.max_ && step_ == rhs.step_ && option_ == rhs.option_;
     }
     bool operator!=(const ViewComponentBase &rhs) const {
         return !(*this == rhs);

@@ -205,7 +205,33 @@ class WEBCFACE_DLL Value : protected Field, public EventTarget<Value> {
         return v;
     }
 
-    // 比較演算子の定義は不要
+    /*!
+     * \brief Valueの参照先を比較
+     * \since ver1.11
+     *
+     * 1.10まではValue同士を比較すると中の値が比較されていた。
+     * 大小の比較も同様に中の値で比較されると非自明な挙動になるのでdeleteしている。
+     *
+     */
+    template <typename T>
+        requires std::same_as<T, Value>
+    bool operator==(const T &other) const {
+        return static_cast<Field>(*this) == static_cast<Field>(other);
+    }
+    /*!
+     * \brief Valueの参照先を比較
+     * \since ver1.11
+     *
+     */
+    template <typename T>
+        requires std::same_as<T, Value>
+    bool operator!=(const T &other) const {
+        return !(*this == other);
+    }
+    bool operator<(const Value &) const = delete;
+    bool operator<=(const Value &) const = delete;
+    bool operator>(const Value &) const = delete;
+    bool operator>=(const Value &) const = delete;
 };
 
 /*!

@@ -135,6 +135,27 @@ class WEBCFACE_DLL Image : protected Field, public EventTarget<Image> {
 
     //! 画像をクリア (リクエスト状態は解除しない)
     Image &clear();
+
+    /*!
+     * \brief Imageの参照先を比較
+     * \since ver1.11
+     *
+     */
+    template <typename T>
+        requires std::same_as<T, Image>
+    bool operator==(const T &other) const {
+        return static_cast<Field>(*this) == static_cast<Field>(other);
+    }
+    /*!
+     * \brief Imageの参照先を比較
+     * \since ver1.11
+     *
+     */
+    template <typename T>
+        requires std::same_as<T, Image>
+    bool operator!=(const T &other) const {
+        return !(*this == other);
+    }
 };
 
 WEBCFACE_NS_END
