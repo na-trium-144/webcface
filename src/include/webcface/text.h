@@ -41,13 +41,17 @@ class WEBCFACE_DLL Text : protected Field, public EventTarget<Text> {
      * \return「(thisの名前).(追加の名前)」を新しい名前とするText
      *
      */
-    Text child(std::string_view field) const { return child<Text>(field); }
+    Text child(std::string_view field) const {
+        return Field::child<Text>(field);
+    }
     /*!
      * \since ver1.11
      * \return「(thisの名前).(追加の名前)」を新しい名前とするText
      *
      */
-    Text child(std::wstring_view field) const { return child<Text>(field); }
+    Text child(std::wstring_view field) const {
+        return Field::child<Text>(field);
+    }
 
     // 1.10でstd::stringをValAdaptorに変更したら使えなくなった
     // using Dict = Common::Dict<std::shared_ptr<Common::ValAdaptor>>;

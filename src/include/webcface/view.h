@@ -52,13 +52,17 @@ class WEBCFACE_DLL View : protected Field,
      * \return「(thisの名前).(追加の名前)」を新しい名前とするView
      *
      */
-    View child(std::string_view field) const { return child<View>(field); }
+    View child(std::string_view field) const {
+        return Field::child<View>(field);
+    }
     /*!
      * \since ver1.11
      * \return「(thisの名前).(追加の名前)」を新しい名前とするView
      *
      */
-    View child(std::wstring_view field) const { return child<View>(field); }
+    View child(std::wstring_view field) const {
+        return Field::child<View>(field);
+    }
 
 
     /*!

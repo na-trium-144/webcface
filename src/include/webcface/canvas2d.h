@@ -43,17 +43,21 @@ class WEBCFACE_DLL Canvas2D : protected Field, public EventTarget<Canvas2D> {
     using Field::name;
     friend Internal::DataSetBuffer<Canvas2DComponent>;
 
-     /*!
+    /*!
      * \return「(thisの名前).(追加の名前)」を新しい名前とするCanvas2D
      *
      */
-    Canvas2D child(std::string_view field) const { return child<Canvas2D>(field); }
+    Canvas2D child(std::string_view field) const {
+        return Field::child<Canvas2D>(field);
+    }
     /*!
      * \since ver1.11
      * \return「(thisの名前).(追加の名前)」を新しい名前とするCanvas2D
      *
      */
-    Canvas2D child(std::wstring_view field) const { return child<Canvas2D>(field); }
+    Canvas2D child(std::wstring_view field) const {
+        return Field::child<Canvas2D>(field);
+    }
 
     /*!
      * \brief Canvasの内容をリクエストする

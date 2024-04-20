@@ -45,7 +45,7 @@ inline struct Store {
      * \brief 指定したnameのclientがあればfuncを、そうでなければfunc_elseを実行
      *
      */
-    void findAndDo(const std::string &name,
+    void findAndDo(const std::u8string &name,
                    const std::function<void(ClientDataPtr)> &func,
                    const std::function<void()> &func_else = nullptr);
     /*!

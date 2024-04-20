@@ -43,7 +43,7 @@ void Store::clientSendAll() {
     }
 }
 
-void Store::findAndDo(const std::string &name,
+void Store::findAndDo(const std::u8string &name,
                       const std::function<void(ClientDataPtr)> &func,
                       const std::function<void()> &func_else) {
     auto cd =

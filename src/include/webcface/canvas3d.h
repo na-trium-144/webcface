@@ -43,17 +43,21 @@ class WEBCFACE_DLL Canvas3D : protected Field, public EventTarget<Canvas3D> {
     using Field::name;
     friend Internal::DataSetBuffer<Canvas3DComponent>;
 
-     /*!
+    /*!
      * \return「(thisの名前).(追加の名前)」を新しい名前とするCanvas3D
      *
      */
-    Canvas3D child(std::string_view field) const { return child<Canvas3D>(field); }
+    Canvas3D child(std::string_view field) const {
+        return Field::child<Canvas3D>(field);
+    }
     /*!
      * \since ver1.11
      * \return「(thisの名前).(追加の名前)」を新しい名前とするCanvas3D
      *
      */
-    Canvas3D child(std::wstring_view field) const { return child<Canvas3D>(field); }
+    Canvas3D child(std::wstring_view field) const {
+        return Field::child<Canvas3D>(field);
+    }
 
     /*!
      * \brief canvasの内容をリクエストする
@@ -77,8 +81,7 @@ class WEBCFACE_DLL Canvas3D : protected Field, public EventTarget<Canvas3D> {
      * \brief syncの時刻を返す
      * \deprecated 1.7でMember::syncTime()に変更
      */
-    [[deprecated]] std::chrono::system_clock::time_point
-    time() const;
+    [[deprecated]] std::chrono::system_clock::time_point time() const;
 
     /*!
      * \brief 値やリクエスト状態をクリア
@@ -116,7 +119,7 @@ class WEBCFACE_DLL Canvas3D : protected Field, public EventTarget<Canvas3D> {
      *
      */
     template <typename T>
-    Canvas3D &add(T &&cc){
+    Canvas3D &add(T &&cc) {
         *this << std::forward<T>(cc);
         return *this;
     }

@@ -16,6 +16,7 @@
 #include <webcface/common/canvas2d.h>
 #include <webcface/common/def.h>
 #include "val_adaptor.h"
+#include "u8string.h"
 
 MSGPACK_ADD_ENUM(webcface::Common::ValType)
 MSGPACK_ADD_ENUM(webcface::Common::ViewComponentType)
@@ -90,7 +91,7 @@ struct SyncInit : public MessageBase<MessageKind::sync_init> {
      * \brief member名
      *
      */
-    std::string member_name;
+    std::u8string member_name;
     /*!
      * \brief member id (1以上)
      *
@@ -255,17 +256,17 @@ struct CallResult : public MessageBase<MessageKind::call_result> {
                        MSGPACK_NVP("e", is_error), MSGPACK_NVP("r", result))
 };
 struct Value : public MessageBase<MessageKind::value> {
-    std::string field;
+    std::u8string field;
     std::shared_ptr<std::vector<double>> data;
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", field), MSGPACK_NVP("d", data))
 };
 struct Text : public MessageBase<MessageKind::text> {
-    std::string field;
+    std::u8string field;
     std::shared_ptr<Common::ValAdaptor> data;
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", field), MSGPACK_NVP("d", data))
 };
 struct RobotModel : public MessageBase<MessageKind::robot_model> {
-    std::string field;
+    std::u8string field;
     struct RobotLink {
         std::string name;
         std::string joint_name;
@@ -314,11 +315,11 @@ struct RobotModel : public MessageBase<MessageKind::robot_model> {
     };
     std::shared_ptr<std::vector<RobotLink>> data;
     RobotModel() = default;
-    RobotModel(const std::string &field,
+    RobotModel(const std::u8string &field,
                const std::shared_ptr<std::vector<RobotLink>> &data)
         : field(field), data(data) {}
     RobotModel(
-        const std::string &field,
+        const std::u8string &field,
         const std::shared_ptr<std::vector<Common::RobotLink>> &common_links)
         : field(field), data(std::make_shared<std::vector<RobotLink>>()) {
         data->reserve(common_links->size());
@@ -344,7 +345,7 @@ struct RobotModel : public MessageBase<MessageKind::robot_model> {
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", field), MSGPACK_NVP("d", data))
 };
 struct View : public MessageBase<MessageKind::view> {
-    std::string field;
+    std::u8string field;
     struct ViewComponent {
         Common::ViewComponentType type = Common::ViewComponentType::text;
         std::string text;
@@ -412,7 +413,7 @@ struct View : public MessageBase<MessageKind::view> {
     std::shared_ptr<std::unordered_map<std::string, ViewComponent>> data_diff;
     std::size_t length;
     View() = default;
-    View(const std::string &field,
+    View(const std::u8string &field,
          const std::shared_ptr<
              std::unordered_map<int, Common::ViewComponentBase>> &data_diff,
          std::size_t length)
@@ -424,7 +425,7 @@ struct View : public MessageBase<MessageKind::view> {
             this->data_diff->emplace(std::to_string(vc.first), vc.second);
         }
     }
-    View(const std::string &field,
+    View(const std::u8string &field,
          const std::shared_ptr<std::unordered_map<std::string, ViewComponent>>
              &data_diff,
          std::size_t length)
@@ -433,7 +434,7 @@ struct View : public MessageBase<MessageKind::view> {
                        MSGPACK_NVP("l", length))
 };
 struct Canvas3D : public MessageBase<MessageKind::canvas3d> {
-    std::string field;
+    std::u8string field;
     struct Canvas3DComponent {
         Common::Canvas3DComponentType type =
             Common::Canvas3DComponentType::geometry;
@@ -494,7 +495,7 @@ struct Canvas3D : public MessageBase<MessageKind::canvas3d> {
     std::size_t length;
     Canvas3D() = default;
     Canvas3D(
-        const std::string &field,
+        const std::u8string &field,
         const std::shared_ptr<
             std::unordered_map<int, Common::Canvas3DComponentBase>> &data_diff,
         std::size_t length)
@@ -506,7 +507,7 @@ struct Canvas3D : public MessageBase<MessageKind::canvas3d> {
             this->data_diff->emplace(std::to_string(vc.first), vc.second);
         }
     }
-    Canvas3D(const std::string &field,
+    Canvas3D(const std::u8string &field,
              const std::shared_ptr<
                  std::unordered_map<std::string, Canvas3DComponent>> &data_diff,
              std::size_t length)
@@ -515,7 +516,7 @@ struct Canvas3D : public MessageBase<MessageKind::canvas3d> {
                        MSGPACK_NVP("l", length))
 };
 struct Canvas2D : public MessageBase<MessageKind::canvas2d> {
-    std::string field;
+    std::u8string field;
     double width, height;
     struct Canvas2DComponent {
         Common::Canvas2DComponentType type;
@@ -576,7 +577,7 @@ struct Canvas2D : public MessageBase<MessageKind::canvas2d> {
     std::size_t length;
     Canvas2D() = default;
     Canvas2D(
-        const std::string &field, double width, double height,
+        const std::u8string &field, double width, double height,
         const std::shared_ptr<
             std::unordered_map<int, Common::Canvas2DComponentBase>> &data_diff,
         std::size_t length)
@@ -588,7 +589,7 @@ struct Canvas2D : public MessageBase<MessageKind::canvas2d> {
             this->data_diff->emplace(std::to_string(vc.first), vc.second);
         }
     }
-    Canvas2D(const std::string &field, double width, double height,
+    Canvas2D(const std::u8string &field, double width, double height,
              const std::shared_ptr<
                  std::unordered_map<std::string, Canvas2DComponent>> &data_diff,
              std::size_t length)
@@ -600,9 +601,9 @@ struct Canvas2D : public MessageBase<MessageKind::canvas2d> {
 };
 struct Image : public MessageBase<MessageKind::image>,
                public Common::ImageBase {
-    std::string field;
+    std::u8string field;
     Image() = default;
-    Image(const std::string &field, const Common::ImageBase &img)
+    Image(const std::u8string &field, const Common::ImageBase &img)
         : ImageBase(img), field(field) {}
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", field), MSGPACK_NVP("d", data_),
                        MSGPACK_NVP("h", rows_), MSGPACK_NVP("w", cols_),
@@ -624,7 +625,7 @@ struct Log : public MessageBase<MessageKind::log> {
          *
          */
         std::uint64_t time = 0;
-        std::string message;
+        std::u8string message;
         LogLine() = default;
         LogLine(const Common::LogLine &l)
             : level(l.level),
@@ -659,7 +660,7 @@ struct Log : public MessageBase<MessageKind::log> {
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("m", member_id), MSGPACK_NVP("l", log))
 };
 struct LogReq : public MessageBase<MessageKind::log_req> {
-    std::string member;
+    std::u8string member;
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("M", member))
 };
 /*!
@@ -670,7 +671,7 @@ struct LogReq : public MessageBase<MessageKind::log_req> {
  */
 struct FuncInfo : public MessageBase<MessageKind::func_info> {
     unsigned int member_id = 0;
-    std::string field;
+    std::u8string field;
     Common::ValType return_type;
     struct Arg : public Common::Arg {
         Arg() = default;
@@ -681,12 +682,12 @@ struct FuncInfo : public MessageBase<MessageKind::func_info> {
     };
     std::shared_ptr<std::vector<Arg>> args;
     FuncInfo() = default;
-    FuncInfo(unsigned int member_id, const std::string &field,
+    FuncInfo(unsigned int member_id, const std::u8string &field,
              Common::ValType return_type,
              std::shared_ptr<std::vector<Arg>> args)
         : member_id(member_id), field(field), return_type(return_type),
           args(args) {}
-    explicit FuncInfo(const std::string &field, const Common::FuncInfo &info)
+    explicit FuncInfo(const std::u8string &field, const Common::FuncInfo &info)
         : MessageBase<MessageKind::func_info>(), field(field),
           return_type(info.return_type),
           args(std::make_shared<std::vector<Arg>>(info.args.size())) {
@@ -714,8 +715,8 @@ struct FuncInfo : public MessageBase<MessageKind::func_info> {
  */
 template <typename T>
 struct Req : public MessageBase<T::kind + MessageKind::req> {
-    std::string member;
-    std::string field;
+    std::u8string member;
+    std::u8string field;
     unsigned int req_id;
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", req_id), MSGPACK_NVP("M", member),
                        MSGPACK_NVP("f", field))
@@ -723,12 +724,12 @@ struct Req : public MessageBase<T::kind + MessageKind::req> {
 template <>
 struct Req<Image> : public MessageBase<MessageKind::image + MessageKind::req>,
                     public Common::ImageReq {
-    std::string member;
-    std::string field;
+    std::u8string member;
+    std::u8string field;
     unsigned int req_id;
 
     Req() = default;
-    Req(const std::string &member, const std::string &field,
+    Req(const std::u8string &member, const std::u8string &field,
         unsigned int req_id, const Common::ImageReq &ireq)
         : Common::ImageReq(ireq), member(member), field(field), req_id(req_id) {
     }
@@ -748,7 +749,7 @@ struct Req<Image> : public MessageBase<MessageKind::image + MessageKind::req>,
 template <typename T>
 struct Entry : public MessageBase<T::kind + MessageKind::entry> {
     unsigned int member_id;
-    std::string field;
+    std::u8string field;
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("m", member_id), MSGPACK_NVP("f", field))
 };
 template <typename T>
@@ -763,10 +764,10 @@ struct Res {};
 template <>
 struct Res<Value> : public MessageBase<MessageKind::value + MessageKind::res> {
     unsigned int req_id;
-    std::string sub_field;
+    std::u8string sub_field;
     std::shared_ptr<std::vector<double>> data;
     Res() = default;
-    Res(unsigned int req_id, const std::string &sub_field,
+    Res(unsigned int req_id, const std::u8string &sub_field,
         const std::shared_ptr<std::vector<double>> &data)
         : req_id(req_id), sub_field(sub_field), data(data) {}
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", req_id), MSGPACK_NVP("f", sub_field),
@@ -775,10 +776,10 @@ struct Res<Value> : public MessageBase<MessageKind::value + MessageKind::res> {
 template <>
 struct Res<Text> : public MessageBase<MessageKind::text + MessageKind::res> {
     unsigned int req_id;
-    std::string sub_field;
+    std::u8string sub_field;
     std::shared_ptr<Common::ValAdaptor> data;
     Res() = default;
-    Res(unsigned int req_id, const std::string &sub_field,
+    Res(unsigned int req_id, const std::u8string &sub_field,
         const std::shared_ptr<Common::ValAdaptor> &data)
         : req_id(req_id), sub_field(sub_field), data(data) {}
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", req_id), MSGPACK_NVP("f", sub_field),
@@ -788,13 +789,13 @@ template <>
 struct Res<RobotModel>
     : public MessageBase<MessageKind::robot_model + MessageKind::res> {
     unsigned int req_id;
-    std::string sub_field;
+    std::u8string sub_field;
     std::shared_ptr<std::vector<RobotModel::RobotLink>> data;
     Res() = default;
-    Res(unsigned int req_id, const std::string &sub_field,
+    Res(unsigned int req_id, const std::u8string &sub_field,
         const std::shared_ptr<std::vector<RobotModel::RobotLink>> &data)
         : req_id(req_id), sub_field(sub_field), data(data) {}
-    Res(unsigned int req_id, const std::string &sub_field,
+    Res(unsigned int req_id, const std::u8string &sub_field,
         const std::shared_ptr<std::vector<Common::RobotLink>> &common_links)
         : req_id(req_id), sub_field(sub_field),
           data(std::make_shared<std::vector<RobotModel::RobotLink>>()) {
@@ -824,12 +825,12 @@ struct Res<RobotModel>
 template <>
 struct Res<View> : public MessageBase<MessageKind::view + MessageKind::res> {
     unsigned int req_id;
-    std::string sub_field;
+    std::u8string sub_field;
     std::shared_ptr<std::unordered_map<std::string, View::ViewComponent>>
         data_diff;
     std::size_t length;
     Res() = default;
-    Res(unsigned int req_id, const std::string &sub_field,
+    Res(unsigned int req_id, const std::u8string &sub_field,
         const std::shared_ptr<
             std::unordered_map<std::string, View::ViewComponent>> &data_diff,
         std::size_t length)
@@ -842,13 +843,13 @@ template <>
 struct Res<Canvas3D>
     : public MessageBase<MessageKind::canvas3d + MessageKind::res> {
     unsigned int req_id;
-    std::string sub_field;
+    std::u8string sub_field;
     std::shared_ptr<
         std::unordered_map<std::string, Canvas3D::Canvas3DComponent>>
         data_diff;
     std::size_t length;
     Res() = default;
-    Res(unsigned int req_id, const std::string &sub_field,
+    Res(unsigned int req_id, const std::u8string &sub_field,
         const std::shared_ptr<
             std::unordered_map<std::string, Canvas3D::Canvas3DComponent>>
             &data_diff,
@@ -862,14 +863,14 @@ template <>
 struct Res<Canvas2D>
     : public MessageBase<MessageKind::canvas2d + MessageKind::res> {
     unsigned int req_id;
-    std::string sub_field;
+    std::u8string sub_field;
     double width, height;
     std::shared_ptr<
         std::unordered_map<std::string, Canvas2D::Canvas2DComponent>>
         data_diff;
     std::size_t length;
     Res() = default;
-    Res(unsigned int req_id, const std::string &sub_field, double width,
+    Res(unsigned int req_id, const std::u8string &sub_field, double width,
         double height,
         const std::shared_ptr<
             std::unordered_map<std::string, Canvas2D::Canvas2DComponent>>
@@ -886,9 +887,9 @@ template <>
 struct Res<Image> : public MessageBase<MessageKind::image + MessageKind::res>,
                     public Common::ImageBase {
     unsigned int req_id;
-    std::string sub_field;
+    std::u8string sub_field;
     Res() = default;
-    Res(unsigned int req_id, const std::string &sub_field,
+    Res(unsigned int req_id, const std::u8string &sub_field,
         const Common::ImageBase &img)
         : ImageBase(img), req_id(req_id), sub_field(sub_field) {}
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", req_id), MSGPACK_NVP("f", sub_field),

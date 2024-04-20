@@ -252,7 +252,7 @@ struct FuncCall {
     std::size_t caller_id;
     unsigned int caller_member_id;
     unsigned int target_member_id;
-    std::string field;
+    std::u8string field;
     std::vector<webcface::ValAdaptor> args;
 };
 

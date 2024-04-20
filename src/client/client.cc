@@ -117,7 +117,7 @@ FieldNameRef Internal::ClientData::getFieldRef(std::u8string_view name) {
         }
     }
     fields.push_back(initNamePtr(name));
-    return fields.back().data();
+    return fields.back().get();
 }
 
 std::vector<Member> Client::members() {
@@ -140,7 +140,7 @@ LoggerBuf *Client::loggerStreamBuf() { return data->logger_buf.get(); }
 std::ostream &Client::loggerOStream() { return *data->logger_os.get(); }
 std::string Client::serverVersion() const { return data->svr_version; }
 std::string Client::serverName() const { return data->svr_name; }
-FuncListener Client::funcListener(const std::string &field) const {
+FuncListener Client::funcListener(std::u8string_view field) const {
     return FuncListener{*this, field};
 }
 
@@ -187,8 +187,8 @@ void Internal::ClientData::syncDataFirst() {
     int len = 0;
 
     Message::pack(buffer, len,
-                  Message::SyncInit{
-                      {}, self_member_name, 0, "cpp", WEBCFACE_VERSION, ""});
+                  Message::SyncInit{Encoding::getNameU8(self_member_name),
+                                    "cpp", WEBCFACE_VERSION});
 
     for (const auto &v : value_store.transferReq()) {
         for (const auto &v2 : v.second) {
@@ -599,8 +599,8 @@ void Internal::ClientData::onRecv(const std::string &message) {
         case MessageKind::sync_init: {
             auto r = std::any_cast<webcface::Message::SyncInit>(obj);
             auto name_ref = getMemberNameRef(r.member_name);
-            std::lock_guard lock(entries_mtx)
-            this->member_ids[name_ref] = r.member_id;
+            std::lock_guard lock(entries_mtx) this->member_ids[name_ref] =
+                r.member_id;
             this->member_lib_name[r.member_id] = r.lib_name;
             this->member_lib_ver[r.member_id] = r.lib_ver;
             this->member_addr[r.member_id] = r.addr;

@@ -42,13 +42,17 @@ class WEBCFACE_DLL Value : protected Field, public EventTarget<Value> {
      * \return「(thisの名前).(追加の名前)」を新しい名前とするValue
      *
      */
-    Value child(std::string_view field) const { return child<Value>(field); }
+    Value child(std::string_view field) const {
+        return Field::child<Value>(field);
+    }
     /*!
      * \since ver1.11
      * \return「(thisの名前).(追加の名前)」を新しい名前とするValue
      *
      */
-    Value child(std::wstring_view field) const { return child<Value>(field); }
+    Value child(std::wstring_view field) const {
+        return Field::child<Value>(field);
+    }
 
     using Dict = Common::Dict<std::shared_ptr<Common::VectorOpt<double>>>;
     /*!

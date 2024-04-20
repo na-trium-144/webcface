@@ -27,11 +27,10 @@ class WEBCFACE_DLL Image : protected Field, public EventTarget<Image> {
 
     void onAppend() const override final;
 
-    Image &
-    request(std::optional<int> rows, std::optional<int> cols,
-            Common::ImageCompressMode cmp_mode, int quality,
-            std::optional<Common::ImageColorMode> color_mode,
-            std::optional<double> frame_rate);
+    Image &request(std::optional<int> rows, std::optional<int> cols,
+                   Common::ImageCompressMode cmp_mode, int quality,
+                   std::optional<Common::ImageColorMode> color_mode,
+                   std::optional<double> frame_rate);
 
   public:
     Image() = default;
@@ -42,17 +41,21 @@ class WEBCFACE_DLL Image : protected Field, public EventTarget<Image> {
     using Field::member;
     using Field::name;
 
-     /*!
+    /*!
      * \return「(thisの名前).(追加の名前)」を新しい名前とするImage
      *
      */
-    Image child(std::string_view field) const { return child<Image>(field); }
+    Image child(std::string_view field) const {
+        return Field::child<Image>(field);
+    }
     /*!
      * \since ver1.11
      * \return「(thisの名前).(追加の名前)」を新しい名前とするImage
      *
      */
-    Image child(std::wstring_view field) const { return child<Image>(field); }
+    Image child(std::wstring_view field) const {
+        return Field::child<Image>(field);
+    }
 
     /*!
      * \brief 画像をセットする
@@ -131,8 +134,7 @@ class WEBCFACE_DLL Image : protected Field, public EventTarget<Image> {
      * \deprecated 1.7でMember::syncTime()に変更
      *
      */
-    [[deprecated]] std::chrono::system_clock::time_point
-    time() const;
+    [[deprecated]] std::chrono::system_clock::time_point time() const;
 
     //! 値やリクエスト状態をクリア
     Image &free();

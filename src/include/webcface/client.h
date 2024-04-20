@@ -64,7 +64,7 @@ class WEBCFACE_DLL Client : public Member {
      * テストで使用
      *
      */
-    explicit Client(std::string_view name,
+    explicit Client(std::u8string_view name,
                     std::shared_ptr<Internal::ClientData> data);
 
     /*!
@@ -165,7 +165,7 @@ class WEBCFACE_DLL Client : public Member {
      * \brief FuncListenerを作成する (wstring)
      * \since ver1.11
      */
-    FuncListener funcListener(const std::wstring &field) const {
+    FuncListener funcListener(std::wstring_view field) const {
         return funcListener(Encoding::initNameW(field));
     }
 
