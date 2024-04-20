@@ -48,6 +48,7 @@ class WEBCFACE_DLL Func : protected Field {
     Func(const Field &base);
     Func(const Field &base, std::u8string_view field)
         : Func(Field{base, field}) {}
+    Func(const Field &base, FieldNameRef field) : Func(Field{base, field}) {}
 
     using Field::member;
     using Field::name;
@@ -252,7 +253,7 @@ class WEBCFACE_DLL Func : protected Field {
  *
  */
 class WEBCFACE_DLL AnonymousFunc : public Func {
-    static std::string fieldNameTmp();
+    static std::u8string fieldNameTmp();
 
     std::function<void(AnonymousFunc &)> func_setter = nullptr;
     bool base_init = false;

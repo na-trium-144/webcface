@@ -35,19 +35,5 @@ class FieldBase {
     const std::u8string &fieldName() const { return field_; }
 };
 
-struct FieldBaseComparable : public FieldBase {
-    FieldBaseComparable() = default;
-    FieldBaseComparable(const FieldBase &base) : FieldBase(base) {}
-
-    bool operator==(const FieldBaseComparable &rhs) const {
-        return this->memberName() == rhs.memberName() &&
-               this->fieldName() == rhs.fieldName();
-    }
-    bool operator<(const FieldBaseComparable &rhs) const {
-        return this->memberName() < rhs.memberName() ||
-               (this->memberName() == rhs.memberName() &&
-                this->fieldName() < rhs.fieldName());
-    }
-};
 } // namespace Common
 WEBCFACE_NS_END

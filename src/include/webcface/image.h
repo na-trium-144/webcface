@@ -37,6 +37,7 @@ class WEBCFACE_DLL Image : protected Field, public EventTarget<Image> {
     Image(const Field &base);
     Image(const Field &base, std::u8string_view field)
         : Image(Field{base, field}) {}
+    Image(const Field &base, FieldNameRef field) : Image(Field{base, field}) {}
 
     using Field::member;
     using Field::name;

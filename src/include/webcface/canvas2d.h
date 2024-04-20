@@ -33,6 +33,8 @@ class WEBCFACE_DLL Canvas2D : protected Field, public EventTarget<Canvas2D> {
     Canvas2D(const Field &base);
     Canvas2D(const Field &base, std::u8string_view field)
         : Canvas2D(Field{base, field}) {}
+    Canvas2D(const Field &base, FieldNameRef field)
+        : Canvas2D(Field{base, field}) {}
     Canvas2D(const Field &base, std::u8string_view field, double width,
              double height)
         : Canvas2D(Field{base, field}) {

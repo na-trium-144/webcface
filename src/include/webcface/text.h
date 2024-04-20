@@ -31,6 +31,7 @@ class WEBCFACE_DLL Text : protected Field, public EventTarget<Text> {
     Text(const Field &base);
     Text(const Field &base, std::u8string_view field)
         : Text(Field{base, field}) {}
+    Text(const Field &base, FieldNameRef field) : Text(Field{base, field}) {}
 
     friend class InputRef;
     friend struct InputRefState;

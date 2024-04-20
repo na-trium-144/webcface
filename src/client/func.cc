@@ -125,8 +125,8 @@ AsyncFuncResult Func::runAsync(const std::vector<ValAdaptor> &args_vec) const {
     } else {
         // リモートの場合cli.sync()を待たずに呼び出しメッセージを送る
         data->message_queue->push(Message::packSingle(Message::Call{
-            FuncCall{r.caller_id, 0, data->getMemberIdFromName(member_), field_,
-                     args_vec}}));
+            FuncCall{r.caller_id, 0, data->getMemberIdFromName(member_),
+                     std::u8string(Encoding::getNameU8(field_)), args_vec}}));
         // resultはcli.onRecv内でセットされる。
     }
     return r;
@@ -204,9 +204,10 @@ FuncWrapper::runCondOnSync(const std::weak_ptr<Internal::ClientData> &data) {
     };
 }
 
-std::string AnonymousFunc::fieldNameTmp() {
+std::u8string AnonymousFunc::fieldNameTmp() {
     static int id = 0;
-    return "..tmp" + std::to_string(id++);
+    std::string name = "..tmp" + std::to_string(id++);
+    return std::u8string(name.cbegin(), name.cend());
 }
 AnonymousFunc &AnonymousFunc::operator=(AnonymousFunc &&other) {
     this->func_setter = std::move(other.func_setter);
@@ -222,7 +223,7 @@ void AnonymousFunc::lockTo(Func &target) {
         }
         this->data_w = target.data_w;
         this->member_ = target.member_;
-        this->field_ = fieldNameTmp();
+        this->field_ = dataLock()->getFieldRef(fieldNameTmp());
         func_setter(*this);
     }
     target.setRaw(dataLock()->func_store.getRecv(*this).value());

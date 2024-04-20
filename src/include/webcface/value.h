@@ -33,6 +33,7 @@ class WEBCFACE_DLL Value : protected Field, public EventTarget<Value> {
     Value(const Field &base);
     Value(const Field &base, std::u8string_view field)
         : Value(Field{base, field}) {}
+    Value(const Field &base, FieldNameRef field) : Value(Field{base, field}) {}
 
     using Field::member;
     using Field::name;

@@ -8,15 +8,19 @@ WEBCFACE_NS_BEGIN
 template class WEBCFACE_DLL EventTarget<Value>;
 
 Value::Value(const Field &base)
-    : Field(base), EventTarget<Value>(&this->dataLock()->value_change_event,
-                                      *this) {}
+    : Field(base),
+      EventTarget<Value>(&this->dataLock()->value_change_event, *this) {}
 
 void Value::request() const {
     auto data = dataLock();
     auto req = data->value_store.addReq(member_, field_);
     if (req) {
-        data->message_queue->push(Message::packSingle(
-            Message::Req<Message::Value>{{}, member_, field_, req}));
+        data->message_queue->push(
+            Message::packSingle(Message::Req<Message::Value>{
+                {},
+                std::u8string(Encoding::getNameU8(member_)),
+                std::u8string(Encoding::getNameU8(field_)),
+                req}));
     }
 }
 

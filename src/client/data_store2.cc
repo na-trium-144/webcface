@@ -40,13 +40,14 @@ void SyncDataStore2<T, ReqT>::setRecv(MemberNameRef from, FieldNameRef name,
 }
 
 template <typename T, typename ReqT>
-std::vector<std::string> SyncDataStore2<T, ReqT>::getEntry(MemberNameRef name) {
+std::vector<FieldNameRef>
+SyncDataStore2<T, ReqT>::getEntry(MemberNameRef name) {
     std::lock_guard lock(mtx);
     auto e = entry.find(name);
     if (e != entry.end()) {
         return e->second;
     } else {
-        return std::vector<std::string>{};
+        return std::vector<FieldNameRef>{};
     }
 }
 template <typename T, typename ReqT>
@@ -127,8 +128,11 @@ std::optional<Dict<T>> SyncDataStore2<T, ReqT>::getRecvRecurse(
         Dict<T> d;
         bool found = false;
         for (const auto &it : s_it->second) {
-            if (it.first.starts_with(field + ".")) {
-                d[it.first.substr(field.size() + 1)] = it.second;
+            if (Encoding::getNameU8(it.first).starts_with(
+                    std::u8string(Encoding::getNameU8(field)) + u8".")) {
+#pragma message("still using string for Dict index")
+                d[Encoding::getName(Encoding::getNameU8(it.first).substr(
+                    Encoding::getNameU8(field).size() + 1))] = it.second;
                 // addReq(member, it.first);
                 found = true;
                 if (cb) {
@@ -163,22 +167,26 @@ void SyncDataStore2<T, ReqT>::clearRecv(MemberNameRef from, FieldNameRef name) {
     return;
 }
 template <typename T, typename ReqT>
-std::pair<std::string, std::string>
+std::pair<MemberNameRef, std::u8string>
 SyncDataStore2<T, ReqT>::getReq(unsigned int req_id,
-                                const std::string &sub_field) {
+                                const std::u8string &sub_field) {
     std::lock_guard lock(mtx);
     for (const auto &r : req) {
         for (const auto &r2 : r.second) {
             if (r2.second == req_id) {
-                if (!sub_field.empty() && sub_field[0] != '.') {
-                    return std::make_pair(r.first, r2.first + "." + sub_field);
+                if (!sub_field.empty() && !sub_field.starts_with(u8'.')) {
+                    return std::make_pair(
+                        r.first, std::u8string(Encoding::getNameU8(r2.first)) +
+                                     u8"." + sub_field);
                 } else {
-                    return std::make_pair(r.first, r2.first + sub_field);
+                    return std::make_pair(
+                        r.first, std::u8string(Encoding::getNameU8(r2.first)) +
+                                     sub_field);
                 }
             }
         }
     }
-    return std::make_pair("", "");
+    return std::make_pair(nullptr, u8"");
 }
 
 template <typename T, typename ReqT>
@@ -198,7 +206,7 @@ std::unordered_map<MemberNameRef, T>
 SyncDataStore2<T, ReqT>::getSendPrev(bool is_first) {
     std::lock_guard lock(mtx);
     if (is_first) {
-        return std::unordered_map<std::string, T>{};
+        return std::unordered_map<MemberNameRef, T>{};
     } else {
         return data_send_prev;
     }

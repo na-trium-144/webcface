@@ -12,8 +12,8 @@ Canvas3D::Canvas3D()
     : Field(), EventTarget<Canvas3D>(),
       sb(std::make_shared<Internal::DataSetBuffer<Canvas3DComponent>>()) {}
 Canvas3D::Canvas3D(const Field &base)
-    : Field(base), EventTarget<Canvas3D>(
-                       &this->dataLock()->canvas3d_change_event, *this),
+    : Field(base),
+      EventTarget<Canvas3D>(&this->dataLock()->canvas3d_change_event, *this),
       sb(std::make_shared<Internal::DataSetBuffer<Canvas3DComponent>>(base)) {}
 Canvas3D &Canvas3D::init() {
     sb->init();
@@ -33,7 +33,7 @@ Canvas3D &Canvas3D::operator<<(Canvas3DComponent &&cc) {
 }
 
 template <>
-void Internal::DataSetBuffer<Canvas3DComponent>::onSync(){
+void Internal::DataSetBuffer<Canvas3DComponent>::onSync() {
     auto cb = std::make_shared<std::vector<Canvas3DComponentBase>>();
     cb->reserve(components_.size());
     for (std::size_t i = 0; i < components_.size(); i++) {
@@ -48,8 +48,12 @@ void Canvas3D::request() const {
     auto data = dataLock();
     auto req = data->canvas3d_store.addReq(member_, field_);
     if (req) {
-        data->message_queue->push(Message::packSingle(
-            Message::Req<Message::Canvas3D>{{}, member_, field_, req}));
+        data->message_queue->push(
+            Message::packSingle(Message::Req<Message::Canvas3D>{
+                {},
+                std::u8string(Encoding::getNameU8(member_)),
+                std::u8string(Encoding::getNameU8(field_)),
+                req}));
     }
 }
 void Canvas3D::onAppend() const { request(); }

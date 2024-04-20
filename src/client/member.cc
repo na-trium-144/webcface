@@ -15,103 +15,109 @@
 WEBCFACE_NS_BEGIN
 
 std::string Member::name() const {
-    if (!memberPtr()) {
+    if (!member_) {
         throw std::invalid_argument("member name is null");
     }
-    return Encoding::getName(memberPtr());
+    return Encoding::getName(member_);
 }
 std::wstring Member::nameW() const {
-    if (!memberPtr()) {
+    if (!member_) {
         throw std::invalid_argument("member name is null");
     }
-    return Encoding::getNameW(memberPtr());
+    return Encoding::getNameW(member_);
 }
 
-Value Member::value(const std::string &field) const {
-    return Value{*this, field};
+Value Member::value(std::string_view field) const {
+    return Value{*this, Encoding::initName(field)};
 }
-Text Member::text(const std::string &field) const { return Text{*this, field}; }
-RobotModel Member::robotModel(const std::string &field) const {
-    return RobotModel{*this, field};
+Value Member::value(std::wstring_view field) const {
+    return Value{*this, Encoding::initNameW(field)};
 }
-Image Member::image(const std::string &field) const {
-    return Image{*this, field};
+Text Member::text(std::string_view field) const {
+    return Text{*this, Encoding::initName(field)};
 }
-Func Member::func(const std::string &field) const { return Func{*this, field}; }
-View Member::view(const std::string &field) const { return View{*this, field}; }
-Canvas3D Member::canvas3D(const std::string &field) const {
-    return Canvas3D{*this, field};
+Text Member::text(std::wstring_view field) const {
+    return Text{*this, Encoding::initNameW(field)};
 }
-Canvas2D Member::canvas2D(const std::string &field) const {
-    return Canvas2D{*this, field};
+RobotModel Member::robotModel(std::string_view field) const {
+    return RobotModel{*this, Encoding::initName(field)};
 }
-Value Member::value(const std::wstring &field) const {
-    return Value{*this, field};
+RobotModel Member::robotModel(std::wstring_view field) const {
+    return RobotModel{*this, Encoding::initNameW(field)};
 }
-Text Member::text(const std::wstring &field) const {
-    return Text{*this, field};
+Image Member::image(std::string_view field) const {
+    return Image{*this, Encoding::initName(field)};
 }
-RobotModel Member::robotModel(const std::wstring &field) const {
-    return RobotModel{*this, field};
+Image Member::image(std::wstring_view field) const {
+    return Image{*this, Encoding::initNameW(field)};
 }
-Image Member::image(const std::wstring &field) const {
-    return Image{*this, field};
+Func Member::func(std::string_view field) const {
+    return Func{*this, Encoding::initName(field)};
 }
-Func Member::func(const std::wstring &field) const {
-    return Func{*this, field};
+Func Member::func(std::wstring_view field) const {
+    return Func{*this, Encoding::initNameW(field)};
 }
-View Member::view(const std::wstring &field) const {
-    return View{*this, field};
+View Member::view(std::string_view field) const {
+    return View{*this, Encoding::initName(field)};
 }
-Canvas3D Member::canvas3D(const std::wstring &field) const {
-    return Canvas3D{*this, field};
+View Member::view(std::wstring_view field) const {
+    return View{*this, Encoding::initNameW(field)};
 }
-Canvas2D Member::canvas2D(const std::wstring &field) const {
-    return Canvas2D{*this, field};
+Canvas3D Member::canvas3D(std::string_view field) const {
+    return Canvas3D{*this, Encoding::initName(field)};
+}
+Canvas3D Member::canvas3D(std::wstring_view field) const {
+    return Canvas3D{*this, Encoding::initNameW(field)};
+}
+Canvas2D Member::canvas2D(std::string_view field) const {
+    return Canvas2D{*this, Encoding::initName(field)};
+}
+Canvas2D Member::canvas2D(std::wstring_view field) const {
+    return Canvas2D{*this, Encoding::initNameW(field)};
 }
 Log Member::log() const { return Log{*this}; }
 
-EventTarget<Value, MemberNamePtr> Member::onValueEntry() const {
-    return EventTarget<Value, MemberNamePtr>{&dataLock()->value_entry_event,
+EventTarget<Value, MemberNameRef> Member::onValueEntry() const {
+    return EventTarget<Value, MemberNameRef>{&dataLock()->value_entry_event,
                                              member_};
 }
-EventTarget<Text, MemberNamePtr> Member::onTextEntry() const {
-    return EventTarget<Text, MemberNamePtr>{&dataLock()->text_entry_event,
+EventTarget<Text, MemberNameRef> Member::onTextEntry() const {
+    return EventTarget<Text, MemberNameRef>{&dataLock()->text_entry_event,
                                             member_};
 }
-EventTarget<RobotModel, MemberNamePtr> Member::onRobotModelEntry() const {
-    return EventTarget<RobotModel, MemberNamePtr>{
+EventTarget<RobotModel, MemberNameRef> Member::onRobotModelEntry() const {
+    return EventTarget<RobotModel, MemberNameRef>{
         &dataLock()->robot_model_entry_event, member_};
 }
-EventTarget<Func, MemberNamePtr> Member::onFuncEntry() const {
-    return EventTarget<Func, MemberNamePtr>{&dataLock()->func_entry_event,
+EventTarget<Func, MemberNameRef> Member::onFuncEntry() const {
+    return EventTarget<Func, MemberNameRef>{&dataLock()->func_entry_event,
                                             member_};
 }
-EventTarget<View, MemberNamePtr> Member::onViewEntry() const {
-    return EventTarget<View, MemberNamePtr>{&dataLock()->view_entry_event,
+EventTarget<View, MemberNameRef> Member::onViewEntry() const {
+    return EventTarget<View, MemberNameRef>{&dataLock()->view_entry_event,
                                             member_};
 }
-EventTarget<Canvas3D, MemberNamePtr> Member::onCanvas3DEntry() const {
-    return EventTarget<Canvas3D, MemberNamePtr>{
+EventTarget<Canvas3D, MemberNameRef> Member::onCanvas3DEntry() const {
+    return EventTarget<Canvas3D, MemberNameRef>{
         &dataLock()->canvas3d_entry_event, member_};
 }
-EventTarget<Canvas2D, MemberNamePtr> Member::onCanvas2DEntry() const {
-    return EventTarget<Canvas2D, MemberNamePtr>{
+EventTarget<Canvas2D, MemberNameRef> Member::onCanvas2DEntry() const {
+    return EventTarget<Canvas2D, MemberNameRef>{
         &dataLock()->canvas2d_entry_event, member_};
 }
-EventTarget<Image, MemberNamePtr> Member::onImageEntry() const {
-    return EventTarget<Image, MemberNamePtr>{&dataLock()->image_entry_event,
+EventTarget<Image, MemberNameRef> Member::onImageEntry() const {
+    return EventTarget<Image, MemberNameRef>{&dataLock()->image_entry_event,
                                              member_};
 }
-EventTarget<Member, MemberNamePtr> Member::onSync() const {
-    return EventTarget<Member, MemberNamePtr>{&dataLock()->sync_event, member_};
+EventTarget<Member, MemberNameRef> Member::onSync() const {
+    return EventTarget<Member, MemberNameRef>{&dataLock()->sync_event, member_};
 }
 
 std::vector<Value> Member::valueEntries() const {
     auto keys = dataLock()->value_store.getEntry(*this);
     std::vector<Value> ret(keys.size());
     for (std::size_t i = 0; i < keys.size(); i++) {
-        ret[i] = value(keys[i]);
+        ret[i] = Value(*this, keys[i]);
     }
     return ret;
 }
@@ -119,7 +125,7 @@ std::vector<Text> Member::textEntries() const {
     auto keys = dataLock()->text_store.getEntry(*this);
     std::vector<Text> ret(keys.size());
     for (std::size_t i = 0; i < keys.size(); i++) {
-        ret[i] = text(keys[i]);
+        ret[i] = Text(*this, keys[i]);
     }
     return ret;
 }
@@ -127,7 +133,7 @@ std::vector<RobotModel> Member::robotModelEntries() const {
     auto keys = dataLock()->robot_model_store.getEntry(*this);
     std::vector<RobotModel> ret(keys.size());
     for (std::size_t i = 0; i < keys.size(); i++) {
-        ret[i] = robotModel(keys[i]);
+        ret[i] = RobotModel(*this, keys[i]);
     }
     return ret;
 }
@@ -135,7 +141,7 @@ std::vector<Func> Member::funcEntries() const {
     auto keys = dataLock()->func_store.getEntry(*this);
     std::vector<Func> ret(keys.size());
     for (std::size_t i = 0; i < keys.size(); i++) {
-        ret[i] = func(keys[i]);
+        ret[i] = Func(*this, keys[i]);
     }
     return ret;
 }
@@ -143,7 +149,7 @@ std::vector<View> Member::viewEntries() const {
     auto keys = dataLock()->view_store.getEntry(*this);
     std::vector<View> ret(keys.size());
     for (std::size_t i = 0; i < keys.size(); i++) {
-        ret[i] = view(keys[i]);
+        ret[i] = View(*this, keys[i]);
     }
     return ret;
 }
@@ -151,7 +157,7 @@ std::vector<Canvas3D> Member::canvas3DEntries() const {
     auto keys = dataLock()->canvas3d_store.getEntry(*this);
     std::vector<Canvas3D> ret(keys.size());
     for (std::size_t i = 0; i < keys.size(); i++) {
-        ret[i] = canvas3D(keys[i]);
+        ret[i] = Canvas3D(*this, keys[i]);
     }
     return ret;
 }
@@ -159,7 +165,7 @@ std::vector<Canvas2D> Member::canvas2DEntries() const {
     auto keys = dataLock()->canvas2d_store.getEntry(*this);
     std::vector<Canvas2D> ret(keys.size());
     for (std::size_t i = 0; i < keys.size(); i++) {
-        ret[i] = canvas2D(keys[i]);
+        ret[i] = Canvas2D(*this, keys[i]);
     }
     return ret;
 }
@@ -167,7 +173,7 @@ std::vector<Image> Member::imageEntries() const {
     auto keys = dataLock()->image_store.getEntry(*this);
     std::vector<Image> ret(keys.size());
     for (std::size_t i = 0; i < keys.size(); i++) {
-        ret[i] = image(keys[i]);
+        ret[i] = Image(*this, keys[i]);
     }
     return ret;
 }
@@ -226,9 +232,9 @@ std::optional<int> Member::pingStatus() const {
         return std::nullopt;
     }
 }
-EventTarget<Member, MemberNamePtr> Member::onPing() const {
+EventTarget<Member, MemberNameRef> Member::onPing() const {
     // ほんとはonAppendに追加したかったけど面倒なのでここでリクエストをtrueにしちゃう
     dataLock()->pingStatusReq();
-    return EventTarget<Member, MemberNamePtr>{&dataLock()->ping_event, member_};
+    return EventTarget<Member, MemberNameRef>{&dataLock()->ping_event, member_};
 }
 WEBCFACE_NS_END

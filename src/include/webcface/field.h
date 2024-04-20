@@ -60,6 +60,8 @@ class WEBCFACE_DLL Field {
                 getFieldRef(data_w, field)) {}
     Field(const Field &base, std::u8string_view field)
         : Field(base.data_w, base.member_, getFieldRef(data_w, field)) {}
+    Field(const Field &base, FieldNameRef field)
+        : Field(base.data_w, base.member_, field) {}
 
     FieldBase toBase() const {
         return FieldBase{std::u8string(Encoding::getNameU8(member_)),
@@ -121,4 +123,22 @@ class WEBCFACE_DLL Field {
 
     bool operator==(const Field &other) const;
 };
+
+struct FieldComparable : public Field {
+    FieldComparable() = default;
+    FieldComparable(const Field &base) : Field(base) {}
+    FieldComparable(MemberNameRef member, FieldNameRef field) : Field() {
+        member_ = member;
+        field_ = field;
+    }
+
+    bool operator==(const FieldComparable &rhs) const {
+        return this->member_ == rhs.member_ && this->field_ == rhs.field_;
+    }
+    bool operator<(const FieldComparable &rhs) const {
+        return this->member_ < rhs.member_ ||
+               (this->member_ == rhs.member_ && this->field_ < rhs.field_);
+    }
+};
+
 WEBCFACE_NS_END

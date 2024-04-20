@@ -55,8 +55,12 @@ void Canvas2D::request() const {
     auto data = dataLock();
     auto req = data->canvas2d_store.addReq(member_, field_);
     if (req) {
-        data->message_queue->push(Message::packSingle(
-            Message::Req<Message::Canvas2D>{{}, member_, field_, req}));
+        data->message_queue->push(
+            Message::packSingle(Message::Req<Message::Canvas2D>{
+                {},
+                std::u8string(Encoding::getNameU8(member_)),
+                std::u8string(Encoding::getNameU8(field_)),
+                req}));
     }
 }
 void Canvas2D::onAppend() const { request(); }

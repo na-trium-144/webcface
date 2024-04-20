@@ -38,6 +38,8 @@ class WEBCFACE_DLL Canvas3D : protected Field, public EventTarget<Canvas3D> {
     Canvas3D(const Field &base);
     Canvas3D(const Field &base, std::u8string_view field)
         : Canvas3D(Field{base, field}) {}
+    Canvas3D(const Field &base, FieldNameRef field)
+        : Canvas3D(Field{base, field}) {}
 
     using Field::member;
     using Field::name;

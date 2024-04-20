@@ -37,6 +37,7 @@ class WEBCFACE_DLL View : protected Field,
     View(const Field &base);
     View(const Field &base, std::u8string_view field)
         : View(Field{base, field}) {}
+    View(const Field &base, FieldNameRef field) : View(Field{base, field}) {}
     View(const View &rhs) : View() { *this = rhs; }
     View(View &&rhs) : View() { *this = std::move(rhs); }
     View &operator=(const View &rhs);

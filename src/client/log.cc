@@ -4,10 +4,10 @@
 
 WEBCFACE_NS_BEGIN
 
-template class WEBCFACE_DLL EventTarget<Log, std::string>;
+template class WEBCFACE_DLL EventTarget<Log, MemberNameRef>;
 
 Log::Log(const Field &base)
-    : Field(base), EventTarget<Log, std::string>(
+    : Field(base), EventTarget<Log, MemberNameRef>(
                        &this->dataLock()->log_append_event, this->member_) {}
 
 
@@ -15,8 +15,8 @@ void Log::request() const {
     auto data = dataLock();
     auto req = data->log_store->addReq(member_);
     if (req) {
-        data->message_queue->push(
-            Message::packSingle(Message::LogReq{{}, member_}));
+        data->message_queue->push(Message::packSingle(
+            Message::LogReq{{}, std::u8string(Encoding::getNameU8(member_))}));
     }
 }
 

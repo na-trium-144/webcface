@@ -128,9 +128,7 @@ class SyncDataStore2 {
      *
      */
     void clearRecv(MemberNameRef from, FieldNameRef name);
-    void clearRecv(const Field &base) {
-        clearRecv(base.member_, base.field_);
-    }
+    void clearRecv(const Field &base) { clearRecv(base.member_, base.field_); }
 
     /*!
      * \brief data_recvからデータを返す
@@ -188,8 +186,8 @@ class SyncDataStore2 {
      * \brief req_idに対応するmember名とフィールド名を返す
      *
      */
-    std::pair<MemberNameRef, FieldNameRef> getReq(unsigned int req_id,
-                                                  FieldNameRef sub_field);
+    std::pair<MemberNameRef, std::u8string>
+    getReq(unsigned int req_id, const std::u8string &sub_field);
     /*!
      * \brief member名とフィールド名に対応するreq_infoを返す
      *

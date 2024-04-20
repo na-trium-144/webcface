@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <string_view>
 #include <vector>
 #include <optional>
 #include <concepts>
@@ -49,11 +50,16 @@ class WEBCFACE_DLL Member : protected Field {
      */
     std::wstring nameW() const;
 
-    Value value(const std::string &field) const;
-    Text text(const std::string &field) const;
-    RobotModel robotModel(const std::string &field) const;
-    Image image(const std::string &field) const;
-    Func func(const std::string &field) const;
+    Value value(std::string_view field) const;
+    Value value(std::wstring_view field) const;
+    Text text(std::string_view field) const;
+    Text text(std::wstring_view field) const;
+    RobotModel robotModel(std::string_view field) const;
+    RobotModel robotModel(std::wstring_view field) const;
+    Image image(std::string_view field) const;
+    Image image(std::wstring_view field) const;
+    Func func(std::string_view field) const;
+    Func func(std::wstring_view field) const;
 
     /*!
      * \brief AnonymousFuncオブジェクトを作成しfuncをsetする
@@ -64,9 +70,12 @@ class WEBCFACE_DLL Member : protected Field {
     AnonymousFunc func(const T &func) const {
         return AnonymousFunc{*this, func};
     }
-    View view(const std::string &field) const;
-    Canvas3D canvas3D(const std::string &field) const;
-    Canvas2D canvas2D(const std::string &field) const;
+    View view(std::string_view field) const;
+    View view(std::wstring_view field) const;
+    Canvas3D canvas3D(std::string_view field) const;
+    Canvas3D canvas3D(std::wstring_view field) const;
+    Canvas2D canvas2D(std::string_view field) const;
+    Canvas2D canvas2D(std::wstring_view field) const;
     Log log() const;
 
     /*!

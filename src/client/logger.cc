@@ -44,11 +44,13 @@ void LoggerSink::sink_it_(const spdlog::details::log_msg &msg) {
         if (log_text.size() > 0 && log_text.back() == '\r') {
             log_text.pop_back();
         }
+        std::u8string log_u8 = Encoding::initName(log_text);
+
         {
             std::lock_guard lock(log_store->mtx);
             auto v = log_store->getRecv(log_store->self_member_name);
             // log_storeにはClientDataのコンストラクタで空vectorを入れてある
-            (*v)->emplace_back(msg.level, msg.time, log_text);
+            (*v)->emplace_back(msg.level, msg.time, log_u8);
         }
     }
 }

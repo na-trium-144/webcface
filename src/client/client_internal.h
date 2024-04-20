@@ -34,7 +34,7 @@ WEBCFACE_NS_BEGIN
 namespace Internal {
 
 WEBCFACE_DLL void messageThreadMain(std::shared_ptr<ClientData> data,
-                                    std::string host, int port);
+                                    std::u8string host, int port);
 
 WEBCFACE_DLL void recvThreadMain(std::shared_ptr<ClientData> data);
 
@@ -181,7 +181,7 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
     std::unordered_map<MemberNameRef, unsigned int> member_ids;
     std::unordered_map<unsigned int, std::string> member_lib_name,
         member_lib_ver, member_addr;
-    MemberNameRef getMemberNameFromId(unsigned int id) const {
+    MemberNameRef getMemberNameFromId(unsigned int id) {
         std::lock_guard lock(entries_mtx);
         for (const auto &it : member_ids) {
             if (it.second == id) {
@@ -190,7 +190,7 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
         }
         return "";
     }
-    unsigned int getMemberIdFromName(MemberNameRef name) const {
+    unsigned int getMemberIdFromName(MemberNameRef name) {
         std::lock_guard lock(entries_mtx);
         auto it = member_ids.find(name);
         if (it != member_ids.end()) {
@@ -199,13 +199,13 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
         return 0;
     }
 
-    eventpp::EventDispatcher<FieldBaseComparable, void(Field)>
+    eventpp::EventDispatcher<FieldComparable, void(Field)>
         value_change_event, text_change_event, view_change_event,
         image_change_event, robot_model_change_event, canvas3d_change_event,
         canvas2d_change_event;
-    eventpp::EventDispatcher<std::string, void(Field)> log_append_event;
+    eventpp::EventDispatcher<MemberNameRef, void(Field)> log_append_event;
     eventpp::EventDispatcher<int, void(Field)> member_entry_event;
-    eventpp::EventDispatcher<std::string, void(Field)> sync_event,
+    eventpp::EventDispatcher<MemberNameRef, void(Field)> sync_event,
         value_entry_event, text_entry_event, func_entry_event, view_entry_event,
         robot_model_entry_event, image_entry_event, canvas3d_entry_event,
         canvas2d_entry_event, ping_event;

@@ -10,7 +10,7 @@ WEBCFACE_NS_BEGIN
  * \brief イベントを表し、コールバックの追加や削除ができるクラス。
  *
  */
-template <typename V, typename Key = FieldBaseComparable,
+template <typename V, typename Key = FieldComparable,
           typename VBase = Field>
 class EventTarget {
     using Dispatcher = eventpp::EventDispatcher<Key, void(VBase)>;

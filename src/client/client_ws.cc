@@ -10,13 +10,13 @@
 WEBCFACE_NS_BEGIN
 
 void Internal::messageThreadMain(std::shared_ptr<Internal::ClientData> data,
-                                 std::string host, int port) {
+                                 std::u8string host, int port) {
     while (!data->closing.load() && port > 0) {
         CURL *handle = curl_easy_init();
         if (std::getenv("WEBCFACE_TRACE") != nullptr) {
             curl_easy_setopt(handle, CURLOPT_VERBOSE, 1L);
         }
-        curl_easy_setopt(handle, CURLOPT_URL, ("ws://" + host).c_str());
+        curl_easy_setopt(handle, CURLOPT_URL, (u8"ws://" + host).c_str());
         curl_easy_setopt(handle, CURLOPT_PORT, static_cast<long>(port));
         curl_easy_setopt(handle, CURLOPT_CONNECT_ONLY, 2L);
         CURLcode ret = curl_easy_perform(handle);

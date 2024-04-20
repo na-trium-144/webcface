@@ -18,7 +18,7 @@ extern template class WEBCFACE_IMPORT EventTarget<Log, std::string>;
  * fieldを継承しているがfield名は使用していない
  *
  */
-class WEBCFACE_DLL Log : protected Field, public EventTarget<Log, std::string> {
+class WEBCFACE_DLL Log : protected Field, public EventTarget<Log, MemberNameRef> {
     void onAppend() const override final;
 
   public:

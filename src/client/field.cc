@@ -19,22 +19,22 @@ FieldNameRef Field::getFieldRef(std::weak_ptr<Internal::ClientData> data_w,
 }
 
 Member Field::member() const {
-    if (!memberValid()) {
+    if (!member_) {
         throw std::invalid_argument("member name is null");
     }
     return *this;
 }
-std::string name() const {
-    if (!fieldValid()) {
+std::string Field::name() const {
+    if (!field_) {
         throw std::invalid_argument("field name is null");
     }
     return Encoding::getName(field_);
 }
-std::wstring nameW() const {
-    if (!fieldPtr()) {
+std::wstring Field::nameW() const {
+    if (!field_) {
         throw std::invalid_argument("field name is null");
     }
-    return Encoding::getNameW(fieldPtr());
+    return Encoding::getNameW(field_);
 }
 
 bool Field::expired() const { return data_w.expired(); }

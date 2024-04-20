@@ -8,6 +8,7 @@
 #include <webcface/common/def.h>
 #include <webcface/common/log.h>
 #include <webcface/common/field_base.h>
+#include <webcface/field.h>
 
 WEBCFACE_NS_BEGIN
 namespace Internal {
