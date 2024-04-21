@@ -7,111 +7,148 @@
 #include <thread>
 #include <cstdint>
 #include <cstdlib>
+#include <array>
 
 WEBCFACE_NS_BEGIN
 
 void Internal::messageThreadMain(std::shared_ptr<Internal::ClientData> data,
                                  std::string host, int port) {
     while (!data->closing.load() && port > 0) {
-        for (int attempt = 0; attempt < 2 && !data->closing.load(); attempt++) {
-            CURL *handle = curl_easy_init();
+        // try TCP, unixSocketPathWSLInterop and unixSocketPath
+        // use latter if multiple connections were available
+        std::array<CURL *, 3> handles;
+        std::array<std::optional<CURLcode>, 3> curl_result;
+        std::array<std::string, 3> paths;
+        for (std::size_t attempt = 0;
+             attempt < handles.size() && !data->closing.load(); attempt++) {
+            CURL *handle = handles[attempt] = curl_easy_init();
+            curl_result[attempt] = std::nullopt;
             if (std::getenv("WEBCFACE_TRACE") != nullptr) {
                 curl_easy_setopt(handle, CURLOPT_VERBOSE, 1L);
             }
-            if (attempt == 0) {
-                curl_easy_setopt(
-                    handle, CURLOPT_UNIX_SOCKET_PATH,
-                    Message::Path::unixSocketPath(port).string().c_str());
+            switch (attempt) {
+            case 0:
+                paths[attempt] = host + ":" + std::to_string(port);
+                break;
+            case 1: {
+                paths[attempt] = Message::Path::unixSocketPath(port).string();
+                curl_easy_setopt(handle, CURLOPT_UNIX_SOCKET_PATH,
+                                 paths[attempt].c_str());
+                break;
             }
-            // todo: WSLInterop
+            default: {
+                auto path_opt = Message::Path::unixSocketPathWSLInterop(port);
+                if (path_opt) {
+                    paths[attempt] = path_opt->string();
+                    curl_easy_setopt(handle, CURLOPT_UNIX_SOCKET_PATH,
+                                     paths[attempt].c_str());
+                    break;
+                } else {
+                    data->logger_internal->trace("skipping WSLInterop socket");
+                    continue;
+                }
+            }
+            }
+            data->logger_internal->trace("trying {}...", paths[attempt]);
             curl_easy_setopt(handle, CURLOPT_URL,
                              ("ws://" + host + "/").c_str());
             curl_easy_setopt(handle, CURLOPT_PORT, static_cast<long>(port));
             curl_easy_setopt(handle, CURLOPT_CONNECT_ONLY, 2L);
-            CURLcode ret = curl_easy_perform(handle);
-            if (ret != CURLE_OK) {
-                data->logger_internal->trace("connection failed {}",
-                                             static_cast<int>(ret));
-            } else {
-                {
-                    std::lock_guard lock(data->connect_state_m);
-                    data->connected.store(true);
-                }
-                data->connect_state_cond.notify_all();
-                data->logger_internal->debug("connected");
-                std::string buf_s;
-                do {
-                    bool closed = false;
-                    // 受信ループ
-                    while (true) {
-                        std::size_t rlen = 0;
-                        const curl_ws_frame *meta = nullptr;
-                        char buffer[1024];
-                        do {
-                            ret = curl_ws_recv(handle, buffer, sizeof(buffer),
-                                               &rlen, &meta);
-                            if (meta && meta->flags & CURLWS_CLOSE) {
-                                data->logger_internal->debug(
-                                    "connection closed");
-                                closed = true;
-                                break;
-                            } else if (meta &&
-                                       static_cast<std::size_t>(meta->offset) >
-                                           buf_s.size()) {
-                                buf_s.append(
-                                    static_cast<std::size_t>(meta->offset) -
-                                        buf_s.size(),
-                                    '\0');
-                                buf_s.append(buffer, rlen);
-                            } else if (meta &&
-                                       static_cast<std::size_t>(meta->offset) <
-                                           buf_s.size()) {
-                                buf_s.replace(
-                                    static_cast<std::size_t>(meta->offset),
-                                    rlen, buffer, rlen);
-                            } else {
-                                buf_s.append(buffer, rlen);
-                            }
-                        } while (meta && meta->bytesleft > 0);
-                        if (buf_s.empty()) {
+            curl_result[attempt] = curl_easy_perform(handle);
+            if (*curl_result[attempt] != CURLE_OK) {
+                data->logger_internal->trace(
+                    "connection failed {}",
+                    static_cast<int>(*curl_result[attempt]));
+            }
+        }
+        CURL *handle = nullptr;
+        std::string path;
+        for (int attempt = static_cast<int>(handles.size() - 1); attempt >= 0;
+             attempt--) {
+            if (curl_result[attempt] && *curl_result[attempt] == CURLE_OK) {
+                handle = handles[attempt];
+                path = std::move(paths[attempt]);
+                break;
+            }
+        }
+        if (handle != nullptr) {
+            {
+                std::lock_guard lock(data->connect_state_m);
+                data->connected.store(true);
+            }
+            data->connect_state_cond.notify_all();
+            data->logger_internal->debug("connected to {}", path);
+            std::string buf_s;
+            do {
+                bool closed = false;
+                CURLcode ret;
+                // 受信ループ
+                while (true) {
+                    std::size_t rlen = 0;
+                    const curl_ws_frame *meta = nullptr;
+                    char buffer[1024];
+                    do {
+                        ret = curl_ws_recv(handle, buffer, sizeof(buffer),
+                                           &rlen, &meta);
+                        if (meta && meta->flags & CURLWS_CLOSE) {
+                            data->logger_internal->debug("connection closed");
+                            closed = true;
                             break;
+                        } else if (meta && static_cast<std::size_t>(
+                                               meta->offset) > buf_s.size()) {
+                            buf_s.append(
+                                static_cast<std::size_t>(meta->offset) -
+                                    buf_s.size(),
+                                '\0');
+                            buf_s.append(buffer, rlen);
+                        } else if (meta && static_cast<std::size_t>(
+                                               meta->offset) < buf_s.size()) {
+                            buf_s.replace(
+                                static_cast<std::size_t>(meta->offset), rlen,
+                                buffer, rlen);
+                        } else {
+                            buf_s.append(buffer, rlen);
                         }
-                        if (ret == CURLE_OK && meta && meta->bytesleft == 0) {
-                            data->logger_internal->trace(
-                                "message received len={}", buf_s.size());
-                            data->recv_queue.push(buf_s);
-                            std::size_t sent;
-                            curl_ws_send(handle, nullptr, 0, &sent, 0,
-                                         CURLWS_PONG);
-                            buf_s.clear();
-                        }
-                    }
-                    if (ret != CURLE_AGAIN && ret != CURLE_OK) {
-                        data->logger_internal->debug("connection closed {}",
-                                                     static_cast<int>(ret));
-                        closed = true;
-                    }
-                    if (closed) {
+                    } while (meta && meta->bytesleft > 0);
+                    if (buf_s.empty()) {
                         break;
                     }
-                    // 最低一回はqueueが空になるまで送信する。
-                    while (auto msg = data->message_queue->pop()) {
-                        data->logger_internal->trace("sending message");
+                    if (ret == CURLE_OK && meta && meta->bytesleft == 0) {
+                        data->logger_internal->trace("message received len={}",
+                                                     buf_s.size());
+                        data->recv_queue.push(buf_s);
                         std::size_t sent;
-                        curl_ws_send(handle, msg->c_str(), msg->size(), &sent,
-                                     0, CURLWS_BINARY);
+                        curl_ws_send(handle, nullptr, 0, &sent, 0, CURLWS_PONG);
+                        buf_s.clear();
                     }
-                    std::this_thread::yield();
-                } while (!data->closing.load());
-                {
-                    std::lock_guard lock(data->connect_state_m);
-                    data->connected.store(false);
                 }
-                data->connect_state_cond.notify_all();
-                while (data->message_queue->pop())
-                    ;
-                data->syncDataFirst(); // 次の接続時の最初のメッセージ
+                if (ret != CURLE_AGAIN && ret != CURLE_OK) {
+                    data->logger_internal->debug("connection closed {}",
+                                                 static_cast<int>(ret));
+                    closed = true;
+                }
+                if (closed) {
+                    break;
+                }
+                // 最低一回はqueueが空になるまで送信する。
+                while (auto msg = data->message_queue->pop()) {
+                    data->logger_internal->trace("sending message");
+                    std::size_t sent;
+                    curl_ws_send(handle, msg->c_str(), msg->size(), &sent, 0,
+                                 CURLWS_BINARY);
+                }
+                std::this_thread::yield();
+            } while (!data->closing.load());
+            {
+                std::lock_guard lock(data->connect_state_m);
+                data->connected.store(false);
             }
+            data->connect_state_cond.notify_all();
+            while (data->message_queue->pop())
+                ;
+            data->syncDataFirst(); // 次の接続時の最初のメッセージ
+        }
+        for (auto &handle : handles) {
             curl_easy_cleanup(handle);
         }
         if (!data->closing.load()) {
