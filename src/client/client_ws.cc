@@ -17,7 +17,9 @@ void Internal::messageThreadMain(std::shared_ptr<Internal::ClientData> data,
         // try TCP, unixSocketPathWSLInterop and unixSocketPath
         // use latter if multiple connections were available
         std::array<CURL *, 3> handles;
+        handles.fill(nullptr);
         std::array<std::optional<CURLcode>, 3> curl_result;
+        curl_result.fill(std::nullopt);
         std::array<std::string, 3> paths;
         for (std::size_t attempt = 0;
              attempt < handles.size() && !data->closing.load(); attempt++) {
@@ -71,7 +73,7 @@ void Internal::messageThreadMain(std::shared_ptr<Internal::ClientData> data,
                 break;
             }
         }
-        if (handle != nullptr) {
+        if (handle != nullptr && !data->closing.load()) {
             {
                 std::lock_guard lock(data->connect_state_m);
                 data->connected.store(true);
@@ -149,7 +151,9 @@ void Internal::messageThreadMain(std::shared_ptr<Internal::ClientData> data,
             data->syncDataFirst(); // 次の接続時の最初のメッセージ
         }
         for (auto &handle : handles) {
-            curl_easy_cleanup(handle);
+            if (handle) {
+                curl_easy_cleanup(handle);
+            }
         }
         if (!data->closing.load()) {
             std::this_thread::sleep_for(std::chrono::milliseconds(10));

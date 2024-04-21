@@ -60,11 +60,14 @@ class ClientTest : public ::testing::Test {
 };
 
 TEST_F(ClientTest, unixSocketConnection) {
+    auto dummy_tcp_s = std::make_shared<DummyServer>(false);
     dummy_s = std::make_shared<DummyServer>(true);
     wait();
     EXPECT_FALSE(dummy_s->connected());
     EXPECT_FALSE(wcli_->connected());
     wcli_->start();
+    wait();
+    dummy_tcp_s.reset();
     wait();
     EXPECT_TRUE(dummy_s->connected());
     EXPECT_TRUE(wcli_->connected());
