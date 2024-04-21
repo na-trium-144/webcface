@@ -117,10 +117,10 @@ Server::Server(int port, const spdlog::sink_ptr &sink,
     apps.push_back(app_unix);
 
     crow::SimpleApp *app_wsl = nullptr;
-    if (wsl_path) {
+    if (Message::Path::detectWSL1()) {
         app_wsl = new crow::SimpleApp();
-        Message::Path::initUnixSocket(*wsl_path, logger);
-        app_wsl->unix_path(wsl_path->string());
+        Message::Path::initUnixSocket(wsl_path, logger);
+        app_wsl->unix_path(wsl_path.string());
         apps.push_back(app_wsl);
     }
 
@@ -180,11 +180,11 @@ Server::Server(int port, const spdlog::sink_ptr &sink,
         Message::Path::updateUnixSocketPerms(unix_path, logger);
         logger->info("unix domain socket at {}", unix_path.string());
     }).detach();
-    if (wsl_path) {
+    if (app_wsl) {
         std::thread([app_wsl, wsl_path, logger] {
             app_wsl->wait_for_server_start();
-            Message::Path::updateUnixSocketPerms(*wsl_path, logger);
-            logger->info("win32 socket at {}", wsl_path->string());
+            Message::Path::updateUnixSocketPerms(wsl_path, logger);
+            logger->info("win32 socket at {}", wsl_path.string());
         }).detach();
     }
 }

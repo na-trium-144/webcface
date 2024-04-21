@@ -32,24 +32,21 @@ void Internal::messageThreadMain(std::shared_ptr<Internal::ClientData> data,
             case 0:
                 paths[attempt] = host + ":" + std::to_string(port);
                 break;
-            case 1: {
+            case 1:
                 paths[attempt] = Message::Path::unixSocketPath(port).string();
                 curl_easy_setopt(handle, CURLOPT_UNIX_SOCKET_PATH,
                                  paths[attempt].c_str());
                 break;
-            }
-            default: {
-                auto path_opt = Message::Path::unixSocketPathWSLInterop(port);
-                if (path_opt) {
-                    paths[attempt] = path_opt->string();
-                    curl_easy_setopt(handle, CURLOPT_UNIX_SOCKET_PATH,
-                                     paths[attempt].c_str());
-                    break;
-                } else {
+            default:
+                if (!Message::Path::detectWSL1()) {
                     data->logger_internal->trace("skipping WSLInterop socket");
                     continue;
                 }
-            }
+                paths[attempt] =
+                    Message::Path::unixSocketPathWSLInterop(port).string();
+                curl_easy_setopt(handle, CURLOPT_UNIX_SOCKET_PATH,
+                                 paths[attempt].c_str());
+                break;
             }
             data->logger_internal->trace("trying {}...", paths[attempt]);
             curl_easy_setopt(handle, CURLOPT_URL,

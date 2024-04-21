@@ -1,4 +1,5 @@
 #include "unix_path.h"
+#include <cstdlib>
 #ifdef _WIN32
 #include <bit>
 #include <windows.h>
@@ -17,16 +18,15 @@ std::filesystem::path unixSocketPath(int port) {
     return "/tmp/webcface/" + std::to_string(port) + ".sock";
 #endif
 }
-std::optional<std::filesystem::path>
-unixSocketPathWSLInterop([[maybe_unused]] int port) {
-#ifdef _WIN32
-#else
-    if (std::filesystem::exists("/proc/sys/fs/binfmt_misc/WSLInterop") &&
-        std::filesystem::exists("/mnt/c/ProgramData")) {
-        return "/mnt/c/ProgramData/webcface/" + std::to_string(port) + ".sock";
-    }
-#endif
-    return std::nullopt;
+
+std::filesystem::path unixSocketPathWSLInterop(int port) {
+    return "/mnt/c/ProgramData/webcface/" + std::to_string(port) + ".sock";
+}
+
+bool detectWSL1() {
+    return std::filesystem::exists("/proc/sys/fs/binfmt_misc/WSLInterop") &&
+           !std::getenv("WSL_INTEROP");
+    // https://github.com/microsoft/WSL/issues/4555
 }
 
 void initUnixSocket(const std::filesystem::path &path,

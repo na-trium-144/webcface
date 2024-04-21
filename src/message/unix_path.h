@@ -10,8 +10,8 @@ namespace Message::Path {
 // (clientでもserverでも使う)
 
 WEBCFACE_DLL std::filesystem::path unixSocketPath(int port);
-WEBCFACE_DLL std::optional<std::filesystem::path>
-unixSocketPathWSLInterop(int port);
+WEBCFACE_DLL std::filesystem::path unixSocketPathWSLInterop(int port);
+WEBCFACE_DLL bool detectWSL1();
 
 WEBCFACE_DLL void initUnixSocket(const std::filesystem::path &path,
                                  std::shared_ptr<spdlog::logger> logger);
