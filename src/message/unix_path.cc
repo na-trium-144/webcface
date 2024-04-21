@@ -1,10 +1,16 @@
 #include "unix_path.h"
+#ifdef _WIN32
+#include <shlobj_core.h>
+#endif
 
 WEBCFACE_NS_BEGIN
 namespace Message::Path {
 std::filesystem::path unixSocketPath(int port) {
 #ifdef _WIN32
-    return "C:\\ProgramData\\webcface\\" + std::to_string(port) + ".sock";
+    wchar_t *fpath;
+    SHGetKnownFolderPath(FOLDERID_ProgramData, 0, nullptr, &fpath);
+    return std::filesystem::path(fpath) / "webcface" /
+           (std::to_string(port) + ".sock");
 #else
     return "/tmp/webcface/" + std::to_string(port) + ".sock";
 #endif
