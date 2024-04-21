@@ -1,6 +1,8 @@
 #include "unix_path.h"
 #ifdef _WIN32
-#include <shlobj_core.h>
+#include <bit>
+#include <windows.h>
+#include <shlobj.h>
 #endif
 
 WEBCFACE_NS_BEGIN
@@ -34,11 +36,27 @@ void initUnixSocket(const std::filesystem::path &path,
     } catch (const std::filesystem::filesystem_error &e) {
         logger->warn("{}", e.what());
     }
+#ifdef _WIN32
+    // std::filesystem does not work on socket file somehow on mingw
+    DeleteFileW(path.wstring().c_str());
+    auto dw = GetLastError();
+    if (dw != 0 && dw != ERROR_FILE_NOT_FOUND) {
+        char *lpMsgBuf = nullptr;
+        FormatMessageA(FORMAT_MESSAGE_ALLOCATE_BUFFER |
+                           FORMAT_MESSAGE_FROM_SYSTEM |
+                           FORMAT_MESSAGE_IGNORE_INSERTS,
+                       nullptr, dw, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+                       std::bit_cast<LPSTR>(&lpMsgBuf), 0, nullptr);
+        logger->warn("DeleteFile ({}) failed: {}", path.string(), lpMsgBuf);
+        LocalFree(lpMsgBuf);
+    }
+#else
     try {
         std::filesystem::remove(path);
     } catch (const std::filesystem::filesystem_error &e) {
         logger->warn("{}", e.what());
     }
+#endif
 }
 void updateUnixSocketPerms(const std::filesystem::path &path,
                            std::shared_ptr<spdlog::logger> logger) {
