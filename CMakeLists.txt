@@ -111,6 +111,14 @@ configure_file(
     @ONLY
 )
 
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+include(CheckIncludeFileCXX)
+check_include_file_cxx(concepts CONCEPTS_FOUND)
+if (NOT CONCEPTS_FOUND)
+    message(FATAL_ERROR "<concepts> header file not found")
+endif()
+
 ###############################################################################
 
 include(FetchContent)
