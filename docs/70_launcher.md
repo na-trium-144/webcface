@@ -23,6 +23,11 @@ WindowsではTerminateProcessでプロセスツリー全体を停止します。
 * launcherから `cmd /c` などを使って別のプロセスを起動した場合、停止ボタンを押してcmdは停止してもその内側で起動したプロセスは停止しない場合があります。その場合はtaskkillなどで停止するコマンドを別途登録しておくとよいかも
 * (tools ver1.4.2から、Linux,MacOS) webcface-launcherを停止すると、実行中のコマンドにもシグナルが送られます。
 SIGINT(Ctrl+C)で停止しない場合は、複数回Ctrl+Cを押すとSIGTERM、SIGKILLに移行して強制的に停止します。
+* (tools ver1.4.3から) Startボタン、Stopボタンの動作はViewを経由せずにFuncで呼び出すこともできます。
+(WebUIのFunctionsの画面からも確認できます)
+    * Startボタンは member("webcface-launcher").func("コマンド名/start").runAsync()
+    * Stopボタンは member("webcface-launcher").func("コマンド名/terminate").runAsync()  
+    などとすると呼び出すことができます。
 
 ## サービスとして (Linuxのみ)
 配布しているdebパッケージからインストールした場合は、serverと同様に
