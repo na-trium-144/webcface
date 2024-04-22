@@ -471,7 +471,7 @@ onClick</h2>
 <h2><a class="anchor" id="autotoc_md62"></a>
 onChangeとbind</h2>
 <p><span class="since-c">1.10</span> <span class="since-js">1.6</span></p>
-<p>各種Input要素の現在の値は ViewComponent::bind() で<a class="el" href="md_11__text.html">Text</a>オブジェクトとして取得できます。 したがって<code>bind().get()</code>をInputの初期値として使用すればよいです。</p>
+<p>各種Input要素の現在の値は ViewComponent::bind() で<a class="el" href="md_11__text.html">Text</a>オブジェクトとして取得できます。 したがって<code>bind()</code>の値をInputの初期値として使用すればよいです。 bind().get()で得られる <a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html" title="数値、文字列などの値を相互変換するクラス">webcface::ValAdaptor</a> の値を整数、実数、bool、stringにキャストすることができます。</p>
 <p>Inputの値を変更する際は、(view送信側がbindを設定したかonChangeを設定したかに関わらず) ViewComponent::onChange() を使います。 引数に変化後の値を渡して<code>onChange().runAsync("変化後の値")</code>などとすることで onChangeに設定された関数を実行すると同時にbindの値も変更されます。</p>
 <h2><a class="anchor" id="autotoc_md63"></a>
 id</h2>
@@ -504,7 +504,7 @@ Event</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sat Apr 20 2024 13:58:30 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Mon Apr 22 2024 00:12:43 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

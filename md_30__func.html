@@ -326,8 +326,11 @@ Entry</h2>
  変換は受信側のライブラリで行われ、基本的にその言語仕様に従って変換します <br  />
  c++ではstring→boolの変換は文字列が"1"のみtrueだったが <span class="since-c">1.9.1</span> 空文字列でないときtrueに変更</dd></dl>
 <div class="tabbed"></div><div class="tabbed"><ul>
-<li><b class="tab-title">C++</b> <div class="fragment"><div class="line"><span class="keywordtype">double</span> ans = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).func(<span class="stringliteral">&quot;hoge&quot;</span>).run(1, <span class="stringliteral">&quot;aa&quot;</span>);</div>
-</div><!-- fragment --> Funcオブジェクトに()と引数をつけて直接呼び出すことでも同様に実行できます。 (<code>Func::operator()</code>)</li>
+<li><p class="startli"><b class="tab-title">C++</b> </p><div class="fragment"><div class="line"><span class="keywordtype">double</span> ans = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).func(<span class="stringliteral">&quot;hoge&quot;</span>).run(1, <span class="stringliteral">&quot;aa&quot;</span>);</div>
+</div><!-- fragment --><p> Funcオブジェクトに()と引数をつけて直接呼び出すことでも同様に実行できます。 (<code>Func::operator()</code>)</p>
+<p class="startli">戻り値は <a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html" title="数値、文字列などの値を相互変換するクラス">webcface::ValAdaptor</a> 型で返ります。 整数、実数、bool、stringにキャストできます。 <br  />
+ <span class="since-c">1.10</span> また、明示的にキャストするなら <code>asStringRef()</code>(const参照), <code>asString()</code>, <code>asBool()</code>, <code>as&lt;整数or実数型&gt;()</code> も使えます。</p>
+</li>
 <li><p class="startli"><b class="tab-title">C</b> </p><div class="fragment"><div class="line"><a class="code hl_struct" href="structwcfMultiVal.html">wcfMultiVal</a> args[3] = {</div>
 <div class="line">    <a class="code hl_function" href="c__wcf_2client_8cc.html#aa371cd469c55d58b0332f2261a120533">wcfValI</a>(42), <span class="comment">// int</span></div>
 <div class="line">    <a class="code hl_function" href="c__wcf_2client_8cc.html#aee7f0f53dcb913e408f3032f7c9f796b">wcfValD</a>(1.5), <span class="comment">// double</span></div>
@@ -404,7 +407,7 @@ runAsync</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sat Apr 20 2024 13:58:30 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Mon Apr 22 2024 00:12:43 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

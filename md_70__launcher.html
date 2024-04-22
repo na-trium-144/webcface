@@ -162,6 +162,12 @@ $(document).ready(function(){initNavTree('md_70__launcher.html',''); initResizab
 <li>Stopボタンを押すと、Linux,MacOSではSIGINT(Ctrl+C)が送られます。 WindowsではTerminateProcessでプロセスツリー全体を停止します。 (外部ライブラリの <a href="https://gitlab.com/eidheim/tiny-process-library/">tiny-process-library</a> を使用しています)</li>
 <li>launcherから <code>cmd /c</code> などを使って別のプロセスを起動した場合、停止ボタンを押してcmdは停止してもその内側で起動したプロセスは停止しない場合があります。その場合はtaskkillなどで停止するコマンドを別途登録しておくとよいかも</li>
 <li>(tools ver1.4.2から、Linux,MacOS) webcface-launcherを停止すると、実行中のコマンドにもシグナルが送られます。 SIGINT(Ctrl+C)で停止しない場合は、複数回Ctrl+Cを押すとSIGTERM、SIGKILLに移行して強制的に停止します。</li>
+<li>(tools ver1.4.3から) Startボタン、Stopボタンの動作はViewを経由せずにFuncで呼び出すこともできます。 (WebUIのFunctionsの画面からも確認できます)<ul>
+<li>Startボタンは member("webcface-launcher").func("コマンド名/start").runAsync()</li>
+<li>Stopボタンは member("webcface-launcher").func("コマンド名/terminate").runAsync() <br  />
+ などとすると呼び出すことができます。</li>
+</ul>
+</li>
 </ul>
 </dd></dl>
 <h1><a class="anchor" id="autotoc_md129"></a>
@@ -266,7 +272,7 @@ WebUIからの設定</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sat Apr 20 2024 13:58:30 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Mon Apr 22 2024 00:12:43 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>
