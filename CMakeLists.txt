@@ -8,7 +8,7 @@ project(webcface
 )
 set(WEBCFACE_CONTACT "na-trium-144@users.noreply.github.com")
 set(WEBCFACE_VERSION ${PROJECT_VERSION})
-set(WEBCFACE_SOVERSION 10)
+set(WEBCFACE_SOVERSION 11)
 set(WEBUI_VERSION 1.6.0)
 
 set(WEBCFACE_VERSION_MAJOR ${PROJECT_VERSION_MAJOR})
@@ -110,6 +110,14 @@ configure_file(
     ${CMAKE_CURRENT_SOURCE_DIR}/src/version.rc
     @ONLY
 )
+
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+include(CheckIncludeFileCXX)
+check_include_file_cxx(concepts CONCEPTS_FOUND)
+if (NOT CONCEPTS_FOUND)
+    message(FATAL_ERROR "<concepts> header file not found")
+endif()
 
 ###############################################################################
 
@@ -351,15 +359,14 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
 endif()
 
 set(CPP_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
-set(SVR_MAIN_SRC ${CPP_DIR}/server_main.cc)
-set(SVR_SRC
+list(APPEND SVR_MAIN_SRC ${CPP_DIR}/server_main.cc)
+list(APPEND WEBCFACE_SRC
+    ${CPP_DIR}/message/message.cc
     ${CPP_DIR}/server/s_client_data.cc
     ${CPP_DIR}/server/store.cc
     ${CPP_DIR}/server/websock.cc
     ${CPP_DIR}/server/dir.cc
     ${CPP_DIR}/server/ip.cc
-)
-set(CLI_SRC
     ${CPP_DIR}/client/client.cc
     ${CPP_DIR}/client/client_ws.cc
     ${CPP_DIR}/client/data_store1.cc
@@ -385,7 +392,7 @@ set(CLI_SRC
     ${CPP_DIR}/c_wcf/func.cc
     ${CPP_DIR}/c_wcf/view.cc
 )
-set(EXAMPLE_SRC
+list(APPEND EXAMPLE_SRC
     ${CPP_DIR}/example/value.cc
     ${CPP_DIR}/example/func.cc
     ${CPP_DIR}/example/log.cc
@@ -396,12 +403,12 @@ set(EXAMPLE_SRC
     ${CPP_DIR}/example/c_example.c
 )
 if(WEBCFACE_USE_OPENCV)
-    set(EXAMPLE_SRC ${EXAMPLE_SRC}
+    list(APPEND EXAMPLE_SRC
         ${CPP_DIR}/example/image_send.cc
         ${CPP_DIR}/example/image_recv.cc
     )
 endif()
-set(TEST_SRC
+list(APPEND TEST_SRC
     ${CPP_DIR}/test/client_data_test.cc
     ${CPP_DIR}/test/data_test.cc
     ${CPP_DIR}/test/func_test.cc
@@ -419,9 +426,6 @@ set(TEST_SRC
     ${CPP_DIR}/test/server_test.cc
     ${CPP_DIR}/test/c_wcf_test.cc
 )
-set(MSG_SRC
-    ${CPP_DIR}/message/message.cc
-)
 if(WIN32)
     set(VERSION_RC ${CPP_DIR}/version.rc)
 else()
@@ -435,90 +439,43 @@ set(INCLUDE_DIR
 
 ###############################################################################
 
-add_library(${PROJECT_NAME}-headers INTERFACE)
-target_include_directories(${PROJECT_NAME}-headers INTERFACE
-    ${INCLUDE_DIR}
-)
-target_compile_features(${PROJECT_NAME}-headers INTERFACE cxx_std_20)
-if(WEBCFACE_USE_OPENCV)
-    target_link_libraries(${PROJECT_NAME}-headers INTERFACE ${OpenCV_LIBS})
-endif()
-
-add_library(${PROJECT_NAME}-message STATIC ${MSG_SRC})
-if(NOT CMAKE_CXX_COMPILER_ID STREQUAL "MSVC" AND WEBCFACE_PIC)
-    target_compile_options(${PROJECT_NAME}-message PRIVATE -fPIC)
-endif()
-target_compile_features(${PROJECT_NAME}-message PUBLIC cxx_std_20)
-target_link_libraries(${PROJECT_NAME}-message PUBLIC
-    ${PROJECT_NAME}-headers
-    msgpack-cxx
-    spdlog::spdlog
-)
-if(MINGW)
-    target_link_libraries(${PROJECT_NAME}-message PUBLIC ws2_32)
-endif()
-if(WIN32)
-    set_target_properties(${PROJECT_NAME}-message PROPERTIES
-        DEBUG_POSTFIX d
-    )
-endif()
-
-add_library(${PROJECT_NAME}-server-impl STATIC ${SVR_SRC})
-target_link_libraries(${PROJECT_NAME}-server-impl PUBLIC
-    ${PROJECT_NAME}-message
-    Crow
-    utfcpp
-)
-if(WIN32)
-    target_link_libraries(${PROJECT_NAME}-server-impl PRIVATE
-        IPHLPAPI.lib
-    )
-endif()
-
-add_executable(${PROJECT_NAME}-server ${SVR_MAIN_SRC} ${VERSION_RC})
-target_link_libraries(${PROJECT_NAME}-server PRIVATE
-    ${PROJECT_NAME}-server-impl
-    CLI11
-)
-set_target_properties(${PROJECT_NAME}-server PROPERTIES
-    INSTALL_RPATH "$ORIGIN/../lib/;$ORIGIN/;@loader_path/../lib/;@loader_path/"
-    INSTALL_RPATH_USE_LINK_PATH TRUE
-)
-target_compile_definitions(${PROJECT_NAME}-server PRIVATE
-    FILE_DESCRIPTION="WebCFace Server"
-    FILE_IS_APP
-)
-
 if(WEBCFACE_SHARED)
-    add_library(${PROJECT_NAME} SHARED ${CLI_SRC} ${VERSION_RC})
+    add_library(${PROJECT_NAME} SHARED ${WEBCFACE_SRC} ${VERSION_RC})
 else()
-    add_library(${PROJECT_NAME} STATIC ${CLI_SRC})
+    add_library(${PROJECT_NAME} STATIC ${WEBCFACE_SRC})
 endif()
 if(NOT CMAKE_CXX_COMPILER_ID STREQUAL "MSVC" AND WEBCFACE_PIC)
     target_compile_options(${PROJECT_NAME} PRIVATE -fPIC)
 endif()
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_20)
+target_include_directories(${PROJECT_NAME} PUBLIC ${INCLUDE_DIR})
 target_link_libraries(${PROJECT_NAME} PRIVATE
-    ${PROJECT_NAME}-message
     libcurl_static
+    msgpack-cxx
+    Crow
+    utfcpp
 )
 target_link_libraries(${PROJECT_NAME} PUBLIC
-    ${PROJECT_NAME}-headers
     eventpp::eventpp
     spdlog::spdlog
+    ${OpenCV_LIBS}
 )
+if(MINGW)
+    target_link_libraries(${PROJECT_NAME} PUBLIC ws2_32)
+endif()
+if(WIN32)
+    target_link_libraries(${PROJECT_NAME} PRIVATE IPHLPAPI.lib)
+    set_target_properties(${PROJECT_NAME} PROPERTIES
+        DEBUG_POSTFIX "${WEBCFACE_SOVERSION}d"
+        RELEASE_POSTFIX "${WEBCFACE_SOVERSION}"
+    )
+endif()
 set_target_properties(${PROJECT_NAME} PROPERTIES
     INSTALL_RPATH "$ORIGIN/;@loader_path/"
     INSTALL_RPATH_USE_LINK_PATH TRUE
     VERSION ${PROJECT_VERSION}
     SOVERSION ${WEBCFACE_SOVERSION}
 )
-if(WIN32)
-    set_target_properties(${PROJECT_NAME} PROPERTIES
-        DEBUG_POSTFIX "${WEBCFACE_SOVERSION}d"
-        RELEASE_POSTFIX "${WEBCFACE_SOVERSION}"
-    )
-endif()
 add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 
 add_library(wcf INTERFACE)
@@ -532,6 +489,21 @@ if(WEBCFACE_USE_OPENCV)
     target_link_libraries(wcf INTERFACE ${OpenCV_LIBS})
 endif()
 add_library(${PROJECT_NAME}::wcf ALIAS wcf)
+
+add_executable(${PROJECT_NAME}-server ${SVR_MAIN_SRC} ${VERSION_RC})
+target_link_libraries(${PROJECT_NAME}-server PRIVATE
+    ${PROJECT_NAME}
+    CLI11
+    msgpack-cxx
+)
+set_target_properties(${PROJECT_NAME}-server PROPERTIES
+    INSTALL_RPATH "$ORIGIN/../lib/;$ORIGIN/;@loader_path/../lib/;@loader_path/"
+    INSTALL_RPATH_USE_LINK_PATH TRUE
+)
+target_compile_definitions(${PROJECT_NAME}-server PRIVATE
+    FILE_DESCRIPTION="WebCFace Server"
+    FILE_IS_APP
+)
 
 if(WEBCFACE_EXAMPLE)
     foreach(SRC IN LISTS EXAMPLE_SRC)
@@ -562,10 +534,9 @@ if(WEBCFACE_TEST)
     add_executable(${PROJECT_NAME}-test ${TEST_SRC})
     target_link_libraries(${PROJECT_NAME}-test PRIVATE
         ${PROJECT_NAME}
-        ${PROJECT_NAME}-message
-        ${PROJECT_NAME}-server-impl
         libcurl_static
         Crow
+        msgpack-cxx
         GTest::gtest_main
     )
     target_compile_definitions(${PROJECT_NAME}-test PRIVATE
@@ -587,9 +558,9 @@ if(WEBCFACE_INSTALL)
         RUNTIME DESTINATION bin
     )
 
-    set(WEBCFACE_EXPORTS ${PROJECT_NAME} ${PROJECT_NAME}-headers wcf)
+    set(WEBCFACE_EXPORTS ${PROJECT_NAME} wcf)
     if(NOT WEBCFACE_SHARED)
-        set(WEBCFACE_EXPORTS ${WEBCFACE_EXPORTS} ${PROJECT_NAME}-message libcurl_static)
+        set(WEBCFACE_EXPORTS ${WEBCFACE_EXPORTS} libcurl_static)
         if(NOT msgpack-cxx_FOUND)
             set(WEBCFACE_EXPORTS ${WEBCFACE_EXPORTS} msgpack-cxx)
         endif()

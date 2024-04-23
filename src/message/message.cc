@@ -3,7 +3,7 @@
 
 WEBCFACE_NS_BEGIN
 namespace Message {
-void printMsg(const std::shared_ptr<spdlog::logger> &logger,
+static void printMsg(const std::shared_ptr<spdlog::logger> &logger,
               const std::string &message) {
     std::stringstream ss;
     ss << "message: " << std::hex;
