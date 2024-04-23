@@ -62,7 +62,7 @@ var searchData=
   ['status_20req_20kind_2091_59',['ping status req (kind = 91)',['../md_90__message.html#autotoc_md148',1,'']]],
   ['step_60',['step',['../classwebcface_1_1ViewComponent.html#acf795d891b1023d42de731604146b1f1',1,'webcface::ViewComponent::step(double step)'],['../classwebcface_1_1ViewComponent.html#a1f158911dbf8bb3f1090a684eceb3589',1,'webcface::ViewComponent::step() const']]],
   ['step_5f_61',['step_',['../structwebcface_1_1Common_1_1ViewComponentBase.html#a2d14883a3773331c69a13daba8f1483b',1,'webcface::Common::ViewComponentBase::step_'],['../structwebcface_1_1Message_1_1View_1_1ViewComponent.html#a2d14883a3773331c69a13daba8f1483b',1,'webcface::Message::View::ViewComponent::step_']]],
-  ['store_62',['store',['../structwebcface_1_1Server_1_1Store.html#a9a4249b34504484d8738c818d7e08889',1,'webcface::Server::Store::Store()'],['../structwebcface_1_1Server_1_1Store.html',1,'Store'],['../namespacewebcface_1_1Server.html#abfd5e14f43b41c0ffa015177dcc9c084',1,'webcface::Server::store']]],
+  ['store_62',['store',['../structwebcface_1_1Server_1_1Store.html#a9a4249b34504484d8738c818d7e08889',1,'webcface::Server::Store::Store()'],['../structwebcface_1_1Server_1_1Store.html',1,'Store'],['../namespacewebcface_1_1Server.html#a7a1bb6b0027107872a673bf61a239881',1,'webcface::Server::store']]],
   ['store_2ecc_63',['store.cc',['../store_8cc.html',1,'']]],
   ['store_2eh_64',['store.h',['../store_8h.html',1,'']]],
   ['string_5f_65',['string_',['../namespacewebcface_1_1Common.html#acd1dd9e2d5f885ad3f73197cfa6b0185ab83ea326a525123719676faab2944093',1,'webcface::Common']]],

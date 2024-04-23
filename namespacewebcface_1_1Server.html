@@ -188,10 +188,16 @@ Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:abfd5e14f43b41c0ffa015177dcc9c084" id="r_abfd5e14f43b41c0ffa015177dcc9c084"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structwebcface_1_1Server_1_1Store.html">webcface::Server::Store</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Server.html#abfd5e14f43b41c0ffa015177dcc9c084">store</a></td></tr>
-<tr class="separator:abfd5e14f43b41c0ffa015177dcc9c084"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7a1bb6b0027107872a673bf61a239881" id="r_a7a1bb6b0027107872a673bf61a239881"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structwebcface_1_1Server_1_1Store.html">Store</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Server.html#a7a1bb6b0027107872a673bf61a239881">store</a></td></tr>
+<tr class="separator:a7a1bb6b0027107872a673bf61a239881"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0efb18b27d4a48629287b4b8790fbdf7" id="r_a0efb18b27d4a48629287b4b8790fbdf7"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Server.html#a0efb18b27d4a48629287b4b8790fbdf7">static_dir</a></td></tr>
 <tr class="separator:a0efb18b27d4a48629287b4b8790fbdf7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4898db8d9fe1cf7bf83e4c7ac242a245" id="r_a4898db8d9fe1cf7bf83e4c7ac242a245"><td class="memItemLeft" align="right" valign="top">std::condition_variable&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Server.html#a4898db8d9fe1cf7bf83e4c7ac242a245">server_ping_wait</a></td></tr>
+<tr class="separator:a4898db8d9fe1cf7bf83e4c7ac242a245"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a229b454d156fec6ab3e561a195813199" id="r_a229b454d156fec6ab3e561a195813199"><td class="memItemLeft" align="right" valign="top">std::mutex&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Server.html#a229b454d156fec6ab3e561a195813199">server_mtx</a></td></tr>
+<tr class="separator:a229b454d156fec6ab3e561a195813199"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af7f280f2d2d0f6f0d076c7c36c317695" id="r_af7f280f2d2d0f6f0d076c7c36c317695"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; std::unordered_map&lt; unsigned int, int &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Server.html#af7f280f2d2d0f6f0d076c7c36c317695">ping_status</a></td></tr>
+<tr class="separator:af7f280f2d2d0f6f0d076c7c36c317695"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afb6151bd8ad60e86df1861dce46a0d18" id="r_afb6151bd8ad60e86df1861dce46a0d18"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; crow::SimpleApp &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Server.html#afb6151bd8ad60e86df1861dce46a0d18">app</a></td></tr>
 <tr class="separator:afb6151bd8ad60e86df1861dce46a0d18"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afea6e095e49b6ac795ddc5a7bf69acdc" id="r_afea6e095e49b6ac795ddc5a7bf69acdc"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; std::thread &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Server.html#afea6e095e49b6ac795ddc5a7bf69acdc">ping_thread</a></td></tr>
@@ -200,12 +206,6 @@ Variables</h2></td></tr>
 <tr class="separator:af04c40d65b7df8a8bbf0c6298240eb7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae1c86e419a05625de482e50f342733db" id="r_ae1c86e419a05625de482e50f342733db"><td class="memItemLeft" align="right" valign="top">std::atomic&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Server.html#ae1c86e419a05625de482e50f342733db">server_stop</a></td></tr>
 <tr class="separator:ae1c86e419a05625de482e50f342733db"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4898db8d9fe1cf7bf83e4c7ac242a245" id="r_a4898db8d9fe1cf7bf83e4c7ac242a245"><td class="memItemLeft" align="right" valign="top">std::condition_variable&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Server.html#a4898db8d9fe1cf7bf83e4c7ac242a245">server_ping_wait</a></td></tr>
-<tr class="separator:a4898db8d9fe1cf7bf83e4c7ac242a245"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a229b454d156fec6ab3e561a195813199" id="r_a229b454d156fec6ab3e561a195813199"><td class="memItemLeft" align="right" valign="top">std::mutex&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Server.html#a229b454d156fec6ab3e561a195813199">server_mtx</a></td></tr>
-<tr class="separator:a229b454d156fec6ab3e561a195813199"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2284a2138f45992873563f8b5e95eaac" id="r_a2284a2138f45992873563f8b5e95eaac"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; std::unordered_map&lt; unsigned int, int &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Server.html#a2284a2138f45992873563f8b5e95eaac">ping_status</a></td></tr>
-<tr class="separator:a2284a2138f45992873563f8b5e95eaac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Typedef Documentation</h2>
 <a id="ac49d764f17dea1515f5a737b042031c6" name="ac49d764f17dea1515f5a737b042031c6"></a>
@@ -508,24 +508,16 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="a2284a2138f45992873563f8b5e95eaac" name="a2284a2138f45992873563f8b5e95eaac"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2284a2138f45992873563f8b5e95eaac">&#9670;&#160;</a></span>ping_status</h2>
+<a id="af7f280f2d2d0f6f0d076c7c36c317695" name="af7f280f2d2d0f6f0d076c7c36c317695"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af7f280f2d2d0f6f0d076c7c36c317695">&#9670;&#160;</a></span>ping_status</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::shared_ptr&lt;std::unordered_map&lt;unsigned int, int&gt; &gt; ping_status</td>
+          <td class="memname">std::shared_ptr&lt; std::unordered_map&lt; unsigned int, int &gt; &gt; ping_status</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 </div>
@@ -549,19 +541,11 @@ Variables</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">std::mutex server_mtx</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 </div>
@@ -571,19 +555,11 @@ Variables</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">std::condition_variable server_ping_wait</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 </div>
@@ -616,14 +592,14 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="abfd5e14f43b41c0ffa015177dcc9c084" name="abfd5e14f43b41c0ffa015177dcc9c084"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abfd5e14f43b41c0ffa015177dcc9c084">&#9670;&#160;</a></span>store</h2>
+<a id="a7a1bb6b0027107872a673bf61a239881" name="a7a1bb6b0027107872a673bf61a239881"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7a1bb6b0027107872a673bf61a239881">&#9670;&#160;</a></span>store</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">struct <a class="el" href="structwebcface_1_1Server_1_1Store.html">webcface::Server::Store</a> store</td>
+          <td class="memname"><a class="el" href="structwebcface_1_1Server_1_1Store.html">Store</a> store</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -636,7 +612,7 @@ Variables</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="namespacewebcface_1_1Server.html">Server</a></li>
-    <li class="footer">Generated on Mon Apr 22 2024 00:12:43 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Tue Apr 23 2024 06:24:02 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

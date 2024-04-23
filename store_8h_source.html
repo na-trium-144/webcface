@@ -158,7 +158,7 @@ $(document).ready(function(){initNavTree('store_8h_source.html',''); initResizab
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="keyword">namespace </span>Server {</div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno"><a class="line" href="namespacewebcface_1_1Server.html#ac49d764f17dea1515f5a737b042031c6">   11</a></span><span class="keyword">using </span><a class="code hl_typedef" href="namespacewebcface_1_1Server.html#ac49d764f17dea1515f5a737b042031c6">ClientDataPtr</a> = std::shared_ptr&lt;ClientData&gt;;</div>
 <div class="foldopen" id="foldopen00012" data-start="{" data-end="};">
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno"><a class="line" href="structwebcface_1_1Server_1_1Store.html">   12</a></span><span class="keyword">inline</span> <span class="keyword">struct </span><a class="code hl_struct" href="structwebcface_1_1Server_1_1Store.html">Store</a> {</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno"><a class="line" href="structwebcface_1_1Server_1_1Store.html">   12</a></span><span class="keyword">struct </span><a class="code hl_define" href="macros_8h.html#a47af057bda855b54c212e97ffccdca01">WEBCFACE_DLL</a> <a class="code hl_struct" href="structwebcface_1_1Server_1_1Store.html">Store</a> {</div>
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno"><a class="line" href="structwebcface_1_1Server_1_1Store.html#a0084afefcf248f95ce9f5c199854b2f2">   18</a></span>    std::unordered_map&lt;ClientData::wsConnPtr, ClientDataPtr&gt; <a class="code hl_variable" href="structwebcface_1_1Server_1_1Store.html#a0084afefcf248f95ce9f5c199854b2f2">clients</a>;</div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno"><a class="line" href="structwebcface_1_1Server_1_1Store.html#a55df7ec131eec2bbb1a2f84518f906aa">   26</a></span>    std::unordered_map&lt;unsigned int, ClientDataPtr&gt; <a class="code hl_variable" href="structwebcface_1_1Server_1_1Store.html#a55df7ec131eec2bbb1a2f84518f906aa">clients_by_id</a>;</div>
@@ -189,12 +189,15 @@ $(document).ready(function(){initNavTree('store_8h_source.html',''); initResizab
 <div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>                            <span class="keyword">const</span> std::function&lt;<span class="keywordtype">void</span>()&gt; &amp;func_else = <span class="keyword">nullptr</span>);</div>
 <div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    <span class="keywordtype">void</span> forEach(<span class="keyword">const</span> std::function&lt;<span class="keywordtype">void</span>(<a class="code hl_typedef" href="namespacewebcface_1_1Server.html#ac49d764f17dea1515f5a737b042031c6">ClientDataPtr</a>)&gt; &amp;func);</div>
 <div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    <span class="keywordtype">void</span> forEachWithName(<span class="keyword">const</span> std::function&lt;<span class="keywordtype">void</span>(<a class="code hl_typedef" href="namespacewebcface_1_1Server.html#ac49d764f17dea1515f5a737b042031c6">ClientDataPtr</a>)&gt; &amp;func);</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno"><a class="line" href="namespacewebcface_1_1Server.html#abfd5e14f43b41c0ffa015177dcc9c084">   80</a></span>} store;</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>};</div>
 </div>
 <div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span> </div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>} <span class="comment">// namespace Server</span></div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span><a class="code hl_define" href="macros_8h.html#ab3f2570d5b8231ddbe0e57fc8ab629eb">WEBCFACE_NS_END</a></div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span><span class="keyword">extern</span> <a class="code hl_define" href="macros_8h.html#a47af057bda855b54c212e97ffccdca01">WEBCFACE_DLL</a> Store store;</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span> </div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>} <span class="comment">// namespace Server</span></div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span><a class="code hl_define" href="macros_8h.html#ab3f2570d5b8231ddbe0e57fc8ab629eb">WEBCFACE_NS_END</a></div>
 <div class="ttc" id="adef_8h_html"><div class="ttname"><a href="def_8h.html">def.h</a></div></div>
+<div class="ttc" id="amacros_8h_html_a47af057bda855b54c212e97ffccdca01"><div class="ttname"><a href="macros_8h.html#a47af057bda855b54c212e97ffccdca01">WEBCFACE_DLL</a></div><div class="ttdeci">#define WEBCFACE_DLL</div><div class="ttdef"><b>Definition</b> macros.h:23</div></div>
 <div class="ttc" id="amacros_8h_html_ab3f2570d5b8231ddbe0e57fc8ab629eb"><div class="ttname"><a href="macros_8h.html#ab3f2570d5b8231ddbe0e57fc8ab629eb">WEBCFACE_NS_END</a></div><div class="ttdeci">#define WEBCFACE_NS_END</div><div class="ttdef"><b>Definition</b> macros.h:30</div></div>
 <div class="ttc" id="amacros_8h_html_abe991b8f291782627a31118c688e123a"><div class="ttname"><a href="macros_8h.html#abe991b8f291782627a31118c688e123a">WEBCFACE_NS_BEGIN</a></div><div class="ttdeci">#define WEBCFACE_NS_BEGIN</div><div class="ttdef"><b>Definition</b> macros.h:29</div></div>
 <div class="ttc" id="anamespacewebcface_1_1Server_html_ac49d764f17dea1515f5a737b042031c6"><div class="ttname"><a href="namespacewebcface_1_1Server.html#ac49d764f17dea1515f5a737b042031c6">webcface::Server::ClientDataPtr</a></div><div class="ttdeci">std::shared_ptr&lt; ClientData &gt; ClientDataPtr</div><div class="ttdef"><b>Definition</b> store.h:11</div></div>
@@ -211,7 +214,7 @@ $(document).ready(function(){initNavTree('store_8h_source.html',''); initResizab
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_41e1742e44e2de38b3bc91f993fed282.html">server</a></li><li class="navelem"><a class="el" href="store_8h.html">store.h</a></li>
-    <li class="footer">Generated on Mon Apr 22 2024 00:12:43 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Tue Apr 23 2024 06:24:02 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>
