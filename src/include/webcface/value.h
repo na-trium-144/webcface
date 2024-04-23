@@ -42,6 +42,10 @@ class WEBCFACE_DLL Value : protected Field, public EventTarget<Value> {
     }
     Value child(int index) const { return this->Field::child(index); }
     Value operator[](std::string_view field) const { return child(field); }
+    /*!
+     * operator[](long, const char *)と解釈されるのを防ぐため
+     */
+    Value operator[](const char *field) const { return child(field); }
     Value operator[](int index) const { return child(index); }
     Value parent() const { return this->Field::parent(); }
 
