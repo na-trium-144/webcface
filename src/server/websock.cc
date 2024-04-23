@@ -22,6 +22,10 @@ WEBCFACE_NS_END
 WEBCFACE_NS_BEGIN
 namespace Server {
 
+std::condition_variable server_ping_wait;
+std::mutex server_mtx;
+std::shared_ptr<std::unordered_map<unsigned int, int>> ping_status;
+
 std::unique_ptr<crow::SimpleApp> app;
 std::unique_ptr<std::thread> ping_thread;
 std::unique_ptr<CustomLogger> crow_custom_logger;
