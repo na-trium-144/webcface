@@ -532,7 +532,8 @@ ViewComponent::onClick() でボタン要素のクリック時に実行するべ�
 <span class="since-js">1.6</span>
 
 各種Input要素の現在の値は ViewComponent::bind() で[Text](./11_text.md)オブジェクトとして取得できます。
-したがって`bind().get()`をInputの初期値として使用すればよいです。
+したがって`bind()`の値をInputの初期値として使用すればよいです。
+bind().get()で得られる webcface::ValAdaptor の値を整数、実数、bool、stringにキャストすることができます。
 
 Inputの値を変更する際は、(view送信側がbindを設定したかonChangeを設定したかに関わらず)
 ViewComponent::onChange() を使います。

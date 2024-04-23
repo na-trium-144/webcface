@@ -250,6 +250,12 @@ Value::tryGet(), Value::tryGetVec() などで値のリクエストをすると�
     std::cout << "hoge = " << wcli.member("foo").value("hoge") << std::endl;
     ```
 
+    \warning
+    <span class="since-c">1.11</span>
+    Valueオブジェクト同士を比較するとValueが参照するデータの名前が一致するかどうかで判定されます。(Textなど他のデータ型でも同様です。)  
+    ver1.10まではdoubleにキャストされた上で値を比較していたので、異なる挙動になります。
+    値を比較したい場合は明示的にキャストするか`get()`などを呼んでください。
+
 - <b class="tab-title">C</b>
     ```c
     double value[5];

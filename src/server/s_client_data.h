@@ -15,7 +15,7 @@
 
 WEBCFACE_NS_BEGIN
 namespace Server {
-struct ClientData {
+struct WEBCFACE_DLL ClientData {
     using wsConnPtr = void *;
     spdlog::sink_ptr sink;
     std::shared_ptr<spdlog::logger> logger;

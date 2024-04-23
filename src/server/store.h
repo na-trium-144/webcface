@@ -9,7 +9,7 @@
 WEBCFACE_NS_BEGIN
 namespace Server {
 using ClientDataPtr = std::shared_ptr<ClientData>;
-inline struct Store {
+struct WEBCFACE_DLL Store {
 
     /*!
      * \brief 現在接続されているクライアントの一覧
@@ -77,7 +77,9 @@ inline struct Store {
      *
      */
     void forEachWithName(const std::function<void(ClientDataPtr)> &func);
-} store;
+};
+
+extern WEBCFACE_DLL Store store;
 
 } // namespace Server
 WEBCFACE_NS_END

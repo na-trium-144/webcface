@@ -4,6 +4,8 @@
 
 WEBCFACE_NS_BEGIN
 namespace Server {
+Store store;
+
 void Store::clear() {
     clients.clear();
     clients_by_id.clear();
