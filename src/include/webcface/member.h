@@ -14,15 +14,6 @@ namespace Internal {
 struct ClientData;
 }
 
-class Value;
-class Text;
-class Log;
-class View;
-class Image;
-class RobotModel;
-class Canvas2D;
-class Canvas3D;
-
 /*!
  * \brief Memberを指すクラス
  *
@@ -34,7 +25,7 @@ class WEBCFACE_DLL Member : protected Field {
   public:
     Member() = default;
     Member(const std::weak_ptr<Internal::ClientData> &data_w,
-           const std::string &member)
+           std::string_view member)
         : Field(data_w, member) {}
     Member(const Field &base) : Field(base.data_w, base.member_) {}
 
@@ -46,14 +37,18 @@ class WEBCFACE_DLL Member : protected Field {
 
     using Field::child;
     using Field::operator[];
-    Field field(const std::string &field) const { return child(field); }
+    Field field(std::string_view field) const { return child(field); }
     Field field(int index) const { return child(index); }
 
-    Value value(const std::string &field) const;
-    Text text(const std::string &field) const;
-    RobotModel robotModel(const std::string &field) const;
-    Image image(const std::string &field) const;
-    Func func(const std::string &field) const;
+    using Field::canvas2D;
+    using Field::canvas3D;
+    using Field::func;
+    using Field::image;
+    using Field::robotModel;
+    using Field::text;
+    using Field::value;
+    using Field::view;
+    Log log() const;
     /*!
      * \brief AnonymousFuncオブジェクトを作成しfuncをsetする
      *
@@ -63,16 +58,15 @@ class WEBCFACE_DLL Member : protected Field {
     AnonymousFunc func(const T &func) const {
         return AnonymousFunc{*this, func};
     }
-    View view(const std::string &field) const;
-    Canvas3D canvas3D(const std::string &field) const;
-    Canvas2D canvas2D(const std::string &field) const;
-    Log log() const;
 
-    /*!
-     * \brief このmemberが公開しているvalueのリストを返す。
-     *
-     */
-    std::vector<Value> valueEntries() const;
+    using Field::canvas2DEntries;
+    using Field::canvas3DEntries;
+    using Field::funcEntries;
+    using Field::imageEntries;
+    using Field::robotModelEntries;
+    using Field::textEntries;
+    using Field::valueEntries;
+    using Field::viewEntries;
     /*!
      * \brief このmemberが公開しているvalueのリストを返す。
      * \deprecated 1.6で valueEntries() に変更
@@ -81,19 +75,9 @@ class WEBCFACE_DLL Member : protected Field {
     [[deprecated]] std::vector<Value> values() const;
     /*!
      * \brief このmemberが公開しているtextのリストを返す。
-     *
-     */
-    std::vector<Text> textEntries() const;
-    /*!
-     * \brief このmemberが公開しているtextのリストを返す。
      * \deprecated 1.6で textEntries() に変更
      */
     [[deprecated]] std::vector<Text> texts() const;
-    /*!
-     * \brief このmemberが公開しているrobotModelのリストを返す。
-     *
-     */
-    std::vector<RobotModel> robotModelEntries() const;
     /*!
      * \brief このmemberが公開しているrobotModelのリストを返す。
      * \deprecated 1.6で robotModelEntries() に変更
@@ -102,40 +86,15 @@ class WEBCFACE_DLL Member : protected Field {
     [[deprecated]] std::vector<RobotModel> robotModels() const;
     /*!
      * \brief このmemberが公開しているfuncのリストを返す。
-     *
-     */
-    std::vector<Func> funcEntries() const;
-    /*!
-     * \brief このmemberが公開しているfuncのリストを返す。
      * \deprecated 1.6で funcEntries() に変更
      *
      */
     [[deprecated]] std::vector<Func> funcs() const;
     /*!
      * \brief このmemberが公開しているviewのリストを返す。
-     *
-     */
-    std::vector<View> viewEntries() const;
-    /*!
-     * \brief このmemberが公開しているviewのリストを返す。
      * \deprecated 1.6で viewEntries() に変更
      */
     [[deprecated]] std::vector<View> views() const;
-    /*!
-     * \brief このmemberが公開しているcanvas3dのリストを返す。
-     *
-     */
-    std::vector<Canvas3D> canvas3DEntries() const;
-    /*!
-     * \brief このmemberが公開しているcanvas2dのリストを返す。
-     *
-     */
-    std::vector<Canvas2D> canvas2DEntries() const;
-    /*!
-     * \brief このmemberが公開しているimageのリストを返す。
-     *
-     */
-    std::vector<Image> imageEntries() const;
     /*!
      * \brief このmemberが公開しているimageのリストを返す。
      * \deprecated 1.6で imageEntries() に変更

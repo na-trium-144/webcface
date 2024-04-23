@@ -48,10 +48,10 @@ struct WEBCFACE_DLL Field : public Common::FieldBase {
     //! field名を返す
     std::string name() const { return field_; }
 
-    Field child(std::string_view field = "") const {
+    Field child(std::string_view field) const {
         if (this->field_.empty()) {
             return Field{*this, field};
-        } else if(field.empty()){
+        } else if (field.empty()) {
             return *this;
         } else {
             return Field{*this, this->field_ + "." + std::string(field)};
@@ -60,6 +60,14 @@ struct WEBCFACE_DLL Field : public Common::FieldBase {
     Field child(int index) const { return child(std::to_string(index)); }
     Field operator[](std::string_view field) const { return child(field); }
     Field operator[](int index) const { return child(index); }
+    Field parent() const {
+        auto i = this->field_.rfind('.');
+        if (i != std::string::npos) {
+            return Field{*this, this->field_.substr(0, i)};
+        } else {
+            return Field{*this, ""};
+        }
+    }
 
     Value value(std::string_view field = "") const;
     Text text(std::string_view field = "") const;
@@ -69,7 +77,7 @@ struct WEBCFACE_DLL Field : public Common::FieldBase {
     View view(std::string_view field = "") const;
     Canvas3D canvas3D(std::string_view field = "") const;
     Canvas2D canvas2D(std::string_view field = "") const;
-    
+
     std::vector<Value> valueEntries() const;
     std::vector<Text> textEntries() const;
     std::vector<RobotModel> robotModelEntries() const;
