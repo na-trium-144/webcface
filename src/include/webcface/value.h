@@ -34,9 +34,9 @@ class WEBCFACE_DLL Value : protected Field, public EventTarget<Value> {
     Value(const Field &base, std::string_view field)
         : Value(Field{base, field}) {}
 
+    using Field::lastName;
     using Field::member;
     using Field::name;
-
     Value child(std::string_view field) const {
         return this->Field::child(field);
     }
@@ -52,10 +52,32 @@ class WEBCFACE_DLL Value : protected Field, public EventTarget<Value> {
      */
     [[deprecated]] Value &set(const Dict &v);
     /*!
+     * \brief 値をまとめてセットする
+     * \since ver1.11
+     */
+    template <typename F>
+        requires std::invocable<F, Value>
+    Value &set(const F &setter) {
+        setter(*this);
+        return *this;
+    }
+    /*!
      * \brief 数値または配列をセットする
+     *
+     * ver1.11〜
+     * vが配列でなく、parent()の配列データが利用可能ならその要素をセットする
      *
      */
     Value &set(const VectorOpt<double> &v);
+    /*!
+     * \brief 配列をセット、またはすでにsetされていればリサイズする
+     * \since ver1.11
+     */
+    Value &resize(std::size_t size);
+    /*!
+     * \brief 値をセット、またはすでに配列がsetされていれば末尾に追加
+     */
+    Value &push_back(double v);
 
     /*!
      * \brief Dictの値を再帰的にセットする
@@ -66,14 +88,26 @@ class WEBCFACE_DLL Value : protected Field, public EventTarget<Value> {
         return *this;
     }
     /*!
+     * \brief 値をまとめてセットする
+     * \since ver1.11
+     */
+    template <typename F>
+        requires std::invocable<F, Value>
+    Value &operator=(const F &setter) {
+        this->set(setter);
+        return *this;
+    }
+    /*!
      * \brief 数値または配列をセットする
+     *
+     * ver1.11〜
+     * vが配列でなく、parent()の配列データが利用可能ならその要素をセットする
      *
      */
     Value &operator=(const VectorOpt<double> &v) {
         this->set(v);
         return *this;
     }
-
     /*!
      * \brief 値をリクエストする
      * \since ver1.7
@@ -82,6 +116,8 @@ class WEBCFACE_DLL Value : protected Field, public EventTarget<Value> {
     void request() const;
     /*!
      * \brief 値を返す
+     *
+     * ver1.11〜 parent()の配列データが利用可能ならその要素を返す
      *
      */
     std::optional<double> tryGet() const;

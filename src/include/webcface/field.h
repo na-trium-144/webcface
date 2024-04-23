@@ -23,6 +23,8 @@ class RobotModel;
 class Canvas2D;
 class Canvas3D;
 
+constexpr char field_separator = '.';
+
 //! ClientDataの参照とメンバ名とデータ名を持つクラス
 struct WEBCFACE_DLL Field : public Common::FieldBase {
     //! ClientDataの参照
@@ -43,31 +45,47 @@ struct WEBCFACE_DLL Field : public Common::FieldBase {
 
     bool expired() const;
 
-    //! Memberを返す
+    /*!
+     * \brief Memberを返す
+     *
+     */
     Member member() const;
-    //! field名を返す
+    /*!
+     * \brief field名を返す
+     *
+     */
     std::string name() const { return field_; }
 
-    Field child(std::string_view field) const {
-        if (this->field_.empty()) {
-            return Field{*this, field};
-        } else if (field.empty()) {
-            return *this;
-        } else {
-            return Field{*this, this->field_ + "." + std::string(field)};
-        }
-    }
+    /*!
+     * \brief nameのうちピリオドで区切られた最後の部分を取り出す
+     * \since ver1.11
+     */
+    std::string_view lastName() const;
+    /*!
+     * \brief nameの最後のピリオドの前までを新しい名前とするField
+     * \since ver1.11
+     */
+    Field parent() const;
+    /*!
+     * \brief 「(thisの名前).(追加の名前)」を新しい名前とするField
+     * \since ver1.11
+     */
+    Field child(std::string_view field) const;
+    /*!
+     * \brief 「(thisの名前).(index)」を新しい名前とするField
+     * \since ver1.11
+     */
     Field child(int index) const { return child(std::to_string(index)); }
+    /*!
+     * \brief 「(thisの名前).(追加の名前)」を新しい名前とするField
+     * \since ver1.11
+     */
     Field operator[](std::string_view field) const { return child(field); }
+    /*!
+     * \brief 「(thisの名前).(index)」を新しい名前とするField
+     * \since ver1.11
+     */
     Field operator[](int index) const { return child(index); }
-    Field parent() const {
-        auto i = this->field_.rfind('.');
-        if (i != std::string::npos) {
-            return Field{*this, this->field_.substr(0, i)};
-        } else {
-            return Field{*this, ""};
-        }
-    }
 
     Value value(std::string_view field = "") const;
     Text text(std::string_view field = "") const;

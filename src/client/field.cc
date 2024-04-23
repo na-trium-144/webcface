@@ -14,6 +14,32 @@
 
 WEBCFACE_NS_BEGIN
 Member Field::member() const { return *this; }
+std::string_view Field::lastName() const {
+    auto i = this->field_.rfind(field_separator);
+    if (i != std::string::npos && i != 0 &&
+        !(i == 1 && this->field_[0] == field_separator)) {
+        return std::string_view(this->field_).substr(i + 1);
+    } else {
+        return this->field_;
+    }
+}
+Field Field::parent() const {
+    int l = this->field_.size() - lastName().size() - 1;
+    if (l < 0) {
+        l = 0;
+    }
+    return Field{*this, this->field_.substr(0, l)};
+}
+Field Field::child(std::string_view field) const {
+    if (this->field_.empty()) {
+        return Field{*this, field};
+    } else if (field.empty()) {
+        return *this;
+    } else {
+        return Field{*this,
+                     this->field_ + field_separator + std::string(field)};
+    }
+}
 
 Value Field::value(std::string_view field) const { return child(field); }
 Text Field::text(std::string_view field) const { return child(field); }

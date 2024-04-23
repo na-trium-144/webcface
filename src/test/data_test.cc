@@ -37,6 +37,7 @@ TEST_F(DataTest, field) {
     EXPECT_EQ(value("a", "b").member().name(), "a");
     EXPECT_EQ(value("a", "b").name(), "b");
     EXPECT_EQ(value("a", "b").child("c").name(), "b.c");
+    EXPECT_EQ(value("a", "b.c").parent().name(), "b");
     EXPECT_EQ(text("a", "b").member().name(), "a");
     EXPECT_EQ(text("a", "b").name(), "b");
     EXPECT_EQ(text("a", "b").child("c").name(), "b.c");
@@ -89,6 +90,13 @@ TEST_F(DataTest, valueSetVec) {
     value(self_name, "d4").set(std::array<int, 5>{1, 2, 3, 4, 5});
     int a[5] = {1, 2, 3, 4, 5};
     value(self_name, "d5").set(a);
+    auto d6 = value(self_name, "d6");
+    d6.set(1);
+    d6.push_back(2);
+    d6.push_back(3);
+    d6[3].set(4);
+    d6[4].set(5);
+    value(self_name, "d7").resize(5);
     EXPECT_EQ(callback_called, 1);
     EXPECT_EQ(**data_->value_store.getRecv(self_name, "d"), 1);
     EXPECT_EQ((**data_->value_store.getRecv(self_name, "d")).size(), 5);
@@ -100,6 +108,13 @@ TEST_F(DataTest, valueSetVec) {
     EXPECT_EQ((**data_->value_store.getRecv(self_name, "d3")).size(), 5);
     EXPECT_EQ((**data_->value_store.getRecv(self_name, "d4")).size(), 5);
     EXPECT_EQ((**data_->value_store.getRecv(self_name, "d5")).size(), 5);
+    EXPECT_EQ((**data_->value_store.getRecv(self_name, "d6")).size(), 5);
+    EXPECT_EQ((**data_->value_store.getRecv(self_name, "d6")).at(0), 1);
+    EXPECT_EQ((**data_->value_store.getRecv(self_name, "d6")).at(1), 2);
+    EXPECT_EQ((**data_->value_store.getRecv(self_name, "d6")).at(2), 3);
+    EXPECT_EQ((**data_->value_store.getRecv(self_name, "d6")).at(3), 4);
+    EXPECT_EQ((**data_->value_store.getRecv(self_name, "d6")).at(4), 5);
+    EXPECT_EQ((**data_->value_store.getRecv(self_name, "d7")).size(), 5);
 }
 TEST_F(DataTest, textSet) {
     data_->text_change_event.appendListener(FieldBase{self_name, "b"},
@@ -110,6 +125,39 @@ TEST_F(DataTest, textSet) {
         "c");
     EXPECT_EQ(callback_called, 1);
     EXPECT_THROW(text("a", "b").set("c"), std::invalid_argument);
+}
+
+TEST_F(DataTest, valueSetter) {
+    data_->value_change_event.appendListener(FieldBase{self_name, "d"},
+                                             callback());
+    auto setter = [](Value v) { v["a"] = 100; };
+    value(self_name, "d").set(setter);
+    // dにはセットしてないのでeventは発動しない
+    EXPECT_EQ(callback_called, 0);
+
+    data_->value_change_event.appendListener(FieldBase{self_name, "d.a"},
+                                             callback());
+    value(self_name, "d") = [](Value v) {
+        v["a"] = 1;
+        v["b"] = 2;
+        v["c"]["a"] = 1;
+        v["c"]["b"] = 2;
+        v["v"] = {1, 2, 3, 4, 5};
+    };
+
+    // d.aではevent発動する
+    EXPECT_EQ(callback_called, 1);
+    // 値がセットされている
+    EXPECT_EQ(**data_->value_store.getRecv(self_name, "d.a"), 1);
+    EXPECT_EQ(**data_->value_store.getRecv(self_name, "d.b"), 2);
+    EXPECT_EQ(**data_->value_store.getRecv(self_name, "d.c.a"), 1);
+    EXPECT_EQ(**data_->value_store.getRecv(self_name, "d.c.b"), 2);
+    // 1つの値として取得した場合1つ目の要素
+    EXPECT_EQ(**data_->value_store.getRecv(self_name, "d.v"), 1);
+    EXPECT_EQ(static_cast<std::vector<double>>(
+                  **data_->value_store.getRecv(self_name, "d.v"))
+                  .size(),
+              5);
 }
 
 TEST_F(DataTest, dict) {
