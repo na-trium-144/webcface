@@ -77,6 +77,27 @@ class WEBCFACE_DLL ViewComponent : protected Common::ViewComponentBase,
     wcfViewComponent cData() const;
 
     /*!
+     * \brief 要素の比較
+     * \since ver1.11
+     *
+     * 要素のプロパティが完全一致すればtrue
+     *
+     * 例外としてbindの中身は別のTextオブジェクトで管理されるので、
+     * ここでは比較の対象ではない
+     *
+     */
+    bool operator==(const ViewComponent &other) const {
+        return id() == other.id() && static_cast<ViewComponentBase>(*this) ==
+                                         static_cast<ViewComponentBase>(other);
+    }
+    /*!
+     * \since ver1.11
+     */
+    bool operator!=(const ViewComponent &other) const {
+        return !(*this == other);
+    }
+
+    /*!
      * \brief 要素の種類
      *
      */
@@ -357,6 +378,19 @@ class WEBCFACE_DLL Canvas3DComponent : protected Common::Canvas3DComponentBase {
         return *this;
     }
 
+    /*!
+     * \since ver1.11
+     */
+    bool operator==(const Canvas3DComponent &other) const {
+        return /*id() == other.id() && */ static_cast<Canvas3DComponentBase>(
+                   *this) == static_cast<Canvas3DComponentBase>(other);
+    }
+    /*!
+     * \since ver1.11
+     */
+    bool operator!=(const Canvas3DComponent &other) const {
+        return !(*this == other);
+    }
 
     /*!
      * \brief 要素の種類
@@ -468,6 +502,21 @@ class WEBCFACE_DLL Canvas2DComponent : protected Common::Canvas2DComponentBase,
     lockTmp(const std::weak_ptr<Internal::ClientData> &data_w,
             const std::string &view_name,
             std::unordered_map<int, int> *idx_next = nullptr);
+
+    /*!
+     * \since ver1.11
+     */
+    bool operator==(const Canvas2DComponent &other) const {
+        return id() == other.id() &&
+               static_cast<Canvas2DComponentBase>(*this) ==
+                   static_cast<Canvas2DComponentBase>(other);
+    }
+    /*!
+     * \since ver1.11
+     */
+    bool operator!=(const Canvas2DComponent &other) const {
+        return !(*this == other);
+    }
 
     /*!
      * \brief 要素の種類

@@ -211,5 +211,26 @@ class WEBCFACE_DLL Canvas3D : protected Field, public EventTarget<Canvas3D> {
      *
      */
     Canvas3D &sync();
+
+    /*!
+     * \brief Canvas3Dの参照先を比較
+     * \since ver1.11
+     *
+     */
+    template <typename T>
+        requires std::same_as<T, Canvas3D>
+    bool operator==(const T &other) const {
+        return static_cast<Field>(*this) == static_cast<Field>(other);
+    }
+    /*!
+     * \brief Canvas3Dの参照先を比較
+     * \since ver1.11
+     *
+     */
+    template <typename T>
+        requires std::same_as<T, Canvas3D>
+    bool operator!=(const T &other) const {
+        return !(*this == other);
+    }
 };
 WEBCFACE_NS_END

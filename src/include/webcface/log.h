@@ -52,5 +52,26 @@ class WEBCFACE_DLL Log : protected Field, public EventTarget<Log, std::string> {
      * リクエスト状態は解除しない
      */
     Log &clear();
+
+    /*!
+     * \brief Logの参照先を比較
+     * \since ver1.11
+     *
+     */
+    template <typename T>
+        requires std::same_as<T, Log>
+    bool operator==(const T &other) const {
+        return static_cast<Field>(*this) == static_cast<Field>(other);
+    }
+    /*!
+     * \brief Logの参照先を比較
+     * \since ver1.11
+     *
+     */
+    template <typename T>
+        requires std::same_as<T, Log>
+    bool operator!=(const T &other) const {
+        return !(*this == other);
+    }
 };
 WEBCFACE_NS_END

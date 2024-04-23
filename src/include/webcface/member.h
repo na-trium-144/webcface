@@ -245,6 +245,27 @@ class WEBCFACE_DLL Member : protected Field {
      *
      */
     EventTarget<Member, std::string> onPing() const;
+
+    /*!
+     * \brief Memberを比較
+     * \since ver1.11
+     *
+     */
+    template <typename T>
+        requires std::same_as<T, Member>
+    bool operator==(const T &other) const {
+        return static_cast<Field>(*this) == static_cast<Field>(other);
+    }
+    /*!
+     * \brief Memberを比較
+     * \since ver1.11
+     *
+     */
+    template <typename T>
+        requires std::same_as<T, Member>
+    bool operator!=(const T &other) const {
+        return !(*this == other);
+    }
 };
 
 WEBCFACE_NS_END

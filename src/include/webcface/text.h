@@ -137,6 +137,34 @@ class WEBCFACE_DLL Text : protected Field, public EventTarget<Text> {
     bool operator!=(const std::string &rhs) const {
         return static_cast<std::string>(this->get()) != rhs;
     }
+
+    /*!
+     * \brief Textの参照先を比較
+     * \since ver1.11
+     *
+     * 1.10まではText同士を比較すると中の値が比較されていた。
+     * 大小の比較も同様に中の値で比較されると非自明な挙動になるのでdeleteしている。
+     *
+     */
+    template <typename T>
+        requires std::same_as<T, Text>
+    bool operator==(const T &other) const {
+        return static_cast<Field>(*this) == static_cast<Field>(other);
+    }
+    /*!
+     * \brief Textの参照先を比較
+     * \since ver1.11
+     *
+     */
+    template <typename T>
+        requires std::same_as<T, Text>
+    bool operator!=(const T &other) const {
+        return !(*this == other);
+    }
+    bool operator<(const Text &) const = delete;
+    bool operator<=(const Text &) const = delete;
+    bool operator>(const Text &) const = delete;
+    bool operator>=(const Text &) const = delete;
 };
 
 /*!
@@ -205,13 +233,13 @@ class WEBCFACE_DLL InputRef {
     }
 
     template <typename T>
-        requires std::constructible_from<ValAdaptor, T> bool
-    operator==(const T &other) const {
+        requires std::constructible_from<ValAdaptor, T>
+    bool operator==(const T &other) const {
         return get() == other;
     }
     template <typename T>
-        requires std::constructible_from<ValAdaptor, T> bool
-    operator!=(const T &other) const {
+        requires std::constructible_from<ValAdaptor, T>
+    bool operator!=(const T &other) const {
         return get() != other;
     }
 };

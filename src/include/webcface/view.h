@@ -185,5 +185,26 @@ class WEBCFACE_DLL View : protected Field,
      *
      */
     View &sync();
+
+    /*!
+     * \brief Viewの参照先を比較
+     * \since ver1.11
+     *
+     */
+    template <typename T>
+        requires std::same_as<T, View>
+    bool operator==(const T &other) const {
+        return static_cast<Field>(*this) == static_cast<Field>(other);
+    }
+    /*!
+     * \brief Viewの参照先を比較
+     * \since ver1.11
+     *
+     */
+    template <typename T>
+        requires std::same_as<T, View>
+    bool operator!=(const T &other) const {
+        return !(*this == other);
+    }
 };
 WEBCFACE_NS_END

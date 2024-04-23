@@ -42,6 +42,7 @@ int main() {
         // example_mainのtestの値を取得する
         std::cout << "example_main.test = "
                   << c.member("example_main").value("test") << std::endl;
+
         // example_mainのfunc1を実行する
         c.member("example_main").func("func1").runAsync();
         // example_mainのfunc2を実行し結果を取得
@@ -58,6 +59,5 @@ int main() {
         c.member("example_main").func("func_int").runAsync(1);
         c.member("example_main").func("func_double").runAsync(1.0);
         c.member("example_main").func("func_str").runAsync("1");
-
     }
 }

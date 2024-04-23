@@ -131,6 +131,11 @@ Text::tryGet(), Text::tryGetRecurse() で値のリクエストをするととも
     std::cout << "hoge = " << wcli.member("foo").text("hoge") << std::endl;
     ```
 
+    \warning
+    <span class="since-c">1.11</span>
+    Textオブジェクト同士を比較するとTextが参照するデータの名前が一致するかどうかで判定されます。(Valueなど他のデータ型でも同様です。)  
+    値を比較したい場合は明示的にキャストするか`get()`などを呼んでください。
+
 - <b class="tab-title">C</b>
     \since <span class="since-c">1.7</span>
 

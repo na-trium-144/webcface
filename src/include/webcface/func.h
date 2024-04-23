@@ -224,6 +224,27 @@ class WEBCFACE_DLL Func : protected Field {
     Func &setRunCondScopeGuard() {
         return setRunCond(FuncWrapper::runCondScopeGuard<ScopeGuard>());
     }
+
+    /*!
+     * \brief Funcの参照先を比較
+     * \since ver1.11
+     *
+     */
+    template <typename T>
+        requires std::same_as<T, Func>
+    bool operator==(const T &other) const {
+        return static_cast<Field>(*this) == static_cast<Field>(other);
+    }
+    /*!
+     * \brief Funcの参照先を比較
+     * \since ver1.11
+     *
+     */
+    template <typename T>
+        requires std::same_as<T, Func>
+    bool operator!=(const T &other) const {
+        return !(*this == other);
+    }
 };
 
 /*!

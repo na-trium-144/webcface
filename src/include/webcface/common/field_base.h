@@ -24,6 +24,10 @@ struct FieldBase {
         : member_(member), field_(field) {}
     FieldBase(const FieldBase &base, const std::string &field)
         : FieldBase(base.member_, field) {}
+
+    bool operator==(const FieldBase &rhs) const {
+        return this->member_ == rhs.member_ && this->field_ == rhs.field_;
+    }
 };
 
 struct FieldBaseComparable : public FieldBase {
@@ -32,9 +36,6 @@ struct FieldBaseComparable : public FieldBase {
 
     bool operator==(const FieldBaseComparable &rhs) const {
         return this->member_ == rhs.member_ && this->field_ == rhs.field_;
-    }
-    bool operator!=(const FieldBaseComparable &rhs) const {
-        return !(*this == rhs);
     }
     bool operator<(const FieldBaseComparable &rhs) const {
         return this->member_ < rhs.member_ ||
