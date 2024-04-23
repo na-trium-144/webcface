@@ -1,4 +1,4 @@
-#include <webcface/char.h>
+#include <webcface/encoding.h>
 #include <webcface/common/def.h>
 #include <utf8.h>
 #include <cstring>
