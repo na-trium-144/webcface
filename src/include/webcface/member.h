@@ -36,13 +36,18 @@ class WEBCFACE_DLL Member : protected Field {
     Member(const std::weak_ptr<Internal::ClientData> &data_w,
            const std::string &member)
         : Field(data_w, member) {}
-    Member(const Field &base) : Field(base) {}
+    Member(const Field &base) : Field(base.data_w, base.member_) {}
 
     /*!
      * \brief Member名
      *
      */
     std::string name() const { return member_; }
+
+    using Field::child;
+    using Field::operator[];
+    Field field(const std::string &field) const { return child(field); }
+    Field field(int index) const { return child(index); }
 
     Value value(const std::string &field) const;
     Text text(const std::string &field) const;
@@ -252,8 +257,8 @@ class WEBCFACE_DLL Member : protected Field {
      *
      */
     template <typename T>
-        requires std::same_as<T, Member>
-    bool operator==(const T &other) const {
+        requires std::same_as<T, Member> bool
+    operator==(const T &other) const {
         return static_cast<Field>(*this) == static_cast<Field>(other);
     }
     /*!
@@ -262,8 +267,8 @@ class WEBCFACE_DLL Member : protected Field {
      *
      */
     template <typename T>
-        requires std::same_as<T, Member>
-    bool operator!=(const T &other) const {
+        requires std::same_as<T, Member> bool
+    operator!=(const T &other) const {
         return !(*this == other);
     }
 };

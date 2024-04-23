@@ -20,9 +20,9 @@ struct FieldBase {
     std::string field_;
 
     FieldBase() = default;
-    FieldBase(const std::string &member, const std::string &field = "")
+    FieldBase(std::string_view member, std::string_view field = "")
         : member_(member), field_(field) {}
-    FieldBase(const FieldBase &base, const std::string &field)
+    FieldBase(const FieldBase &base, std::string_view field)
         : FieldBase(base.member_, field) {}
 
     bool operator==(const FieldBase &rhs) const {
