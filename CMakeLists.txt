@@ -458,8 +458,14 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
 target_link_libraries(${PROJECT_NAME} PUBLIC
     eventpp::eventpp
     spdlog::spdlog
-    ${OpenCV_LIBS}
 )
+if(WEBCFACE_USE_OPENCV)
+    target_link_libraries(${PROJECT_NAME} PUBLIC
+        opencv_core
+        opencv_imgcodecs
+        opencv_imgproc
+    )
+endif()
 if(MINGW)
     target_link_libraries(${PROJECT_NAME} PUBLIC ws2_32)
 endif()
@@ -483,11 +489,7 @@ target_include_directories(wcf INTERFACE ${INCLUDE_DIR})
 target_compile_features(wcf INTERFACE c_std_99)
 target_link_libraries(wcf INTERFACE
     $<TARGET_LINKER_FILE:${PROJECT_NAME}::${PROJECT_NAME}>
-    $<TARGET_LINKER_FILE:spdlog::spdlog>
 )
-if(WEBCFACE_USE_OPENCV)
-    target_link_libraries(wcf INTERFACE ${OpenCV_LIBS})
-endif()
 add_library(${PROJECT_NAME}::wcf ALIAS wcf)
 
 add_executable(${PROJECT_NAME}-server ${SVR_MAIN_SRC} ${VERSION_RC})
@@ -527,6 +529,10 @@ if(WEBCFACE_EXAMPLE)
             FILE_IS_APP
         )
     endforeach()
+    if(WEBCFACE_USE_OPENCV)
+        target_link_libraries(${PROJECT_NAME}-example-image_recv PRIVATE opencv_highgui)
+        target_link_libraries(${PROJECT_NAME}-example-image_send PRIVATE opencv_highgui)
+    endif()
 endif()
 
 if(WEBCFACE_TEST)
