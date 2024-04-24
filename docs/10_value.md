@@ -424,6 +424,15 @@ Member::valueEntries() に変更
         // ...
     }
     ```
+
+    <span class="since-c">1.11</span>
+    Field::valueEntries() でそのfield以下のvalueのみが得られます
+    (Textなど他の型についても同様)
+    ```cpp
+    std::vector<webcface::Value> values = wcli.member("foo").field("pos").valueEntries();
+    // pos.x, pos.y などのvalueが得られる
+    ```
+
 - <b class="tab-title">JavaScript</b>
     ```js
     for(const v of wcli.member("foo").values()){
