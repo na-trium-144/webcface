@@ -1,7 +1,7 @@
 #pragma once
 #include <functional>
 #include <stdexcept>
-#include <eventpp/eventdispatcher.h>
+#include <eventpp/callbacklist.h>
 #include "field.h"
 #include "common/def.h"
 
@@ -79,7 +79,7 @@ class EventTarget {
      */
     EventHandle appendListener(const EventCallback &callback) const {
         onAppend();
-        return checkCl().appendListener(callback);
+        return checkCl().append(callback);
     }
     /*!
      * \brief イベントのコールバックをリストの最後に追加する。
@@ -98,7 +98,7 @@ class EventTarget {
      */
     EventHandle prependListener(const EventCallback &callback) const {
         onAppend();
-        return checkCl().prependListener(callback);
+        return checkCl().prepend(callback);
     }
     /*!
      * \brief イベントのコールバックをリストの最初に追加する。
@@ -118,7 +118,7 @@ class EventTarget {
     EventHandle insertListener(const EventCallback &callback,
                                const EventHandle &before) const {
         onAppend();
-        return checkCl().insertListener(callback, before);
+        return checkCl().insert(callback, before);
     }
     /*!
      * \brief イベントのコールバックを間に挿入する。
@@ -137,13 +137,13 @@ class EventTarget {
      *
      */
     bool removeListener(const EventHandle &handle) const {
-        return checkCl().removeListener(handle);
+        return checkCl().remove(handle);
     }
     /*!
      * \brief コールバックが登録されているかを調べる。
      *
      */
-    bool hasAnyListener() const { return checkCl().hasAnyListener(); }
+    bool hasAnyListener() const { return !checkCl().empty(); }
     /*!
      * \brief handleがこのイベントのものかを調べる。
      *
