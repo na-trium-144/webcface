@@ -8,6 +8,7 @@
 #include <chrono>
 #include <atomic>
 #include <unordered_map>
+#include <map>
 #include <cstdlib>
 #include <eventpp/eventdispatcher.h>
 #include <spdlog/logger.h>
@@ -164,14 +165,15 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
         return 0;
     }
 
-    eventpp::EventDispatcher<FieldBaseComparable, void(Field)>
-        value_change_event, text_change_event, view_change_event,
-        image_change_event, robot_model_change_event, canvas3d_change_event,
-        canvas2d_change_event;
-    eventpp::EventDispatcher<std::string, void(Field)> log_append_event;
-    eventpp::EventDispatcher<int, void(Field)> member_entry_event;
-    eventpp::EventDispatcher<std::string, void(Field)> sync_event,
-        value_entry_event, text_entry_event, func_entry_event, view_entry_event,
+    std::mutex event_m;
+    using CallbackList = eventpp::CallbackList<void(Field)>;
+    std::map<FieldBaseComparable, CallbackList> value_change_event,
+        text_change_event, view_change_event, image_change_event,
+        robot_model_change_event, canvas3d_change_event, canvas2d_change_event;
+    std::unordered_map<std::string, CallbackList> log_append_event;
+    CallbackList member_entry_event;
+    std::unordered_map<std::string, CallbackList> sync_event, value_entry_event,
+        text_entry_event, func_entry_event, view_entry_event,
         robot_model_entry_event, image_entry_event, canvas3d_entry_event,
         canvas2d_entry_event, ping_event;
 

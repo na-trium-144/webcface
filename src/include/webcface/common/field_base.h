@@ -33,6 +33,8 @@ struct FieldBase {
 struct FieldBaseComparable : public FieldBase {
     FieldBaseComparable() = default;
     FieldBaseComparable(const FieldBase &base) : FieldBase(base) {}
+    FieldBaseComparable(std::string_view member, std::string_view field)
+        : FieldBase(member, field) {}
 
     bool operator==(const FieldBaseComparable &rhs) const {
         return this->member_ == rhs.member_ && this->field_ == rhs.field_;
