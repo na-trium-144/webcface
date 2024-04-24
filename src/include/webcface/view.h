@@ -131,6 +131,7 @@ class WEBCFACE_DLL View : protected Field,
      *
      */
     template <typename T>
+        requires requires(T rhs) { std::ostream(nullptr) << rhs; }
     View &operator<<(T &&rhs) {
         static_cast<std::ostream &>(*this) << std::forward<T>(rhs);
         return *this;
@@ -228,8 +229,8 @@ class WEBCFACE_DLL View : protected Field,
      *
      */
     template <typename T>
-        requires std::same_as<T, View> bool
-    operator==(const T &other) const {
+        requires std::same_as<T, View>
+    bool operator==(const T &other) const {
         return static_cast<Field>(*this) == static_cast<Field>(other);
     }
     /*!
@@ -238,8 +239,8 @@ class WEBCFACE_DLL View : protected Field,
      *
      */
     template <typename T>
-        requires std::same_as<T, View> bool
-    operator!=(const T &other) const {
+        requires std::same_as<T, View>
+    bool operator!=(const T &other) const {
         return !(*this == other);
     }
 };
