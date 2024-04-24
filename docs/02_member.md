@@ -96,14 +96,21 @@ Client::onMemberEntry() で新しいメンバーが接続されたときのイ�
     また`insertListener()`でこれまでに追加されたコールバックのリストの途中にコールバックを挿入したり、
     `removeListener()` でコールバックを削除したりできます。
 
+    <span class="since-c">1.7</span>
+    appendListener, prependListener ではコールバックの引数が不要な場合は引数のない関数も渡すことができます。
+
     <span class="since-c">1.11</span>
     `wcli.onMemberEntry().callbackList()` で[eventpp::CallbaskList](https://github.com/wqking/eventpp/blob/master/doc/callbacklist.md)のインスタンスが得られ、
     CounterRemover, ConditionalRemover などeventppに用意されているさまざまなユーティリティ機能を使用できます。
     より詳細な使い方はeventppのドキュメントを参照してください。
+    (この場合コールバックの引数は省略できません)
+    ```cpp
+    wcli.onMemberEntry().callbackList().append([](webcface::Member m){/* ... */});
+    ```
 
     \note
     ver1.10以前は eventpp::EventDispatcher を使用していたため、
-    関数名はCallbackListではなくEventDispatcherのものに従っている
+    EventTargetでの関数名(appendListenerなど)はCallbackListではなくEventDispatcherのものに従っている
 
 - <b class="tab-title">JavaScript</b>
     ```ts
@@ -151,6 +158,9 @@ Member::pingStatus() でそのクライアントの通信速度を取得でき�
         std::cout << m.name() << ": " << m.pingStatus() << " ms" << std::endl;
     });
     ```
+    
+    <span class="since-c">1.7</span>
+    appendListener, prependListener ではコールバックの引数が不要な場合は引数のない関数も渡すことができます。
 
     <span class="since-c">1.11</span>
     onMemberEntry() と同様、 callbackList() でCallbackListにアクセスできます。

@@ -26,7 +26,7 @@ class Canvas2DTest : public ::testing::Test {
         return AnonymousFunc{Field{data_, self_name, ""}, func};
     }
     int callback_called;
-    template <typename V = FieldBase>
+    template <typename V = Canvas2D>
     auto callback() {
         return [&](const V &) { ++callback_called; };
     }

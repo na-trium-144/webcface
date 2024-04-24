@@ -18,7 +18,7 @@ class RobotModelTest : public ::testing::Test {
         return RobotModel{Field{data_, member, field}};
     }
     int callback_called;
-    template <typename V = FieldBase>
+    template <typename V = RobotModel>
     auto callback() {
         return [&](const V &) { ++callback_called; };
     }

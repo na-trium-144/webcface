@@ -11,11 +11,10 @@ WEBCFACE_NS_BEGIN
  * \brief イベントを表し、コールバックの追加や削除ができるクラス。
  *
  */
-template <typename V, typename Key = FieldBaseComparable,
-          typename VBase = Field>
+template <typename ArgType>
 class EventTarget {
   public:
-    using CallbackList = eventpp::CallbackList<void(VBase)>;
+    using CallbackList = eventpp::CallbackList<void(ArgType)>;
 
   protected:
     CallbackList *cl = nullptr;
@@ -32,7 +31,7 @@ class EventTarget {
      * \brief イベントのコールバックの型
      *
      */
-    using EventCallback = std::function<void(V)>;
+    using EventCallback = std::function<void(ArgType)>;
     /*!
      * \brief コールバックのHandle
      *
@@ -44,7 +43,7 @@ class EventTarget {
      * \brief イベントを発生させる。
      *
      */
-    void triggerEvent(const VBase &arg) const { checkCl()(arg); }
+    void triggerEvent(const ArgType &arg) const { checkCl()(arg); }
 
     /*!
      * \brief listenerを追加する際に行わなければならない処理があればoverrideする

@@ -166,16 +166,41 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
     }
 
     std::mutex event_m;
-    using CallbackList = eventpp::CallbackList<void(Field)>;
-    std::map<FieldBaseComparable, CallbackList> value_change_event,
-        text_change_event, view_change_event, image_change_event,
-        robot_model_change_event, canvas3d_change_event, canvas2d_change_event;
-    std::unordered_map<std::string, CallbackList> log_append_event;
-    CallbackList member_entry_event;
-    std::unordered_map<std::string, CallbackList> sync_event, value_entry_event,
-        text_entry_event, func_entry_event, view_entry_event,
-        robot_model_entry_event, image_entry_event, canvas3d_entry_event,
-        canvas2d_entry_event, ping_event;
+    std::map<FieldBaseComparable, eventpp::CallbackList<void(Value)>>
+        value_change_event;
+    std::map<FieldBaseComparable, eventpp::CallbackList<void(Text)>>
+        text_change_event;
+    std::map<FieldBaseComparable, eventpp::CallbackList<void(Image)>>
+        image_change_event;
+    std::map<FieldBaseComparable, eventpp::CallbackList<void(RobotModel)>>
+        robot_model_change_event;
+    std::map<FieldBaseComparable, eventpp::CallbackList<void(View)>>
+        view_change_event;
+    std::map<FieldBaseComparable, eventpp::CallbackList<void(Canvas3D)>>
+        canvas3d_change_event;
+    std::map<FieldBaseComparable, eventpp::CallbackList<void(Canvas2D)>>
+        canvas2d_change_event;
+    std::unordered_map<std::string, eventpp::CallbackList<void(Log)>>
+        log_append_event;
+    eventpp::CallbackList<void(Member)> member_entry_event;
+    std::unordered_map<std::string, eventpp::CallbackList<void(Member)>>
+        sync_event, ping_event;
+    std::unordered_map<std::string, eventpp::CallbackList<void(Value)>>
+        value_entry_event;
+    std::unordered_map<std::string, eventpp::CallbackList<void(Text)>>
+        text_entry_event;
+    std::unordered_map<std::string, eventpp::CallbackList<void(Func)>>
+        func_entry_event;
+    std::unordered_map<std::string, eventpp::CallbackList<void(View)>>
+        view_entry_event;
+    std::unordered_map<std::string, eventpp::CallbackList<void(Image)>>
+        image_entry_event;
+    std::unordered_map<std::string, eventpp::CallbackList<void(RobotModel)>>
+        robot_model_entry_event;
+    std::unordered_map<std::string, eventpp::CallbackList<void(Canvas3D)>>
+        canvas3d_entry_event;
+    std::unordered_map<std::string, eventpp::CallbackList<void(Canvas2D)>>
+        canvas2d_entry_event;
 
     /*!
      * \brief sync()のタイミングで実行を同期する関数のcondition_variable

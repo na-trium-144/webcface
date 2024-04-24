@@ -4,29 +4,22 @@
 #include <thread>
 #include <chrono>
 
-struct A {
-    int x = 1, y = 2;
-    A() = default;
-    // Dict → A に変換
-    A(const webcface::Value::Dict &d) : x(d["x"]), y(d["y"]) {}
-    // A → Dictに変換
-    operator webcface::Value::Dict() const {
-        return {{"x", x}, {"y", y}, {"nest", {{"a", 3}, {"b", 4}}}};
-    }
-};
 int main() {
     webcface::Client wcli("example_value");
 
     // wcli.value("test").set(0);
     wcli.value("test") = 0;
 
-    // structをDictに変換するとまとめて送信することができる
-    wcli.value("dict") = A();
-
     webcface::Field field = wcli.child("sub_field");
-    field.value("a") = 1; // wcli.value("sub_field.a")
+    field.value("a") = 1;         // wcli.value("sub_field.a")
     field.child("b").value() = 2; // wcli.value("sub_field.b")
-    field["c"].value() = 3; // wcli.value("sub_field.c")
+    field["c"].value() = 3;       // wcli.value("sub_field.c")
+
+    // wcli.value("vec") = {1, 2, 3};
+    webcface::Value vec = wcli.value("vec");
+    for (int i = 0; i < 3; i++) {
+        vec.push_back(i);
+    }
 
     // 文字列送信
     wcli.text("str") = "hello";

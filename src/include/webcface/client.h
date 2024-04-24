@@ -121,7 +121,7 @@ class WEBCFACE_DLL Client : public Member {
      *
      * \sa member(), members()
      */
-    EventTarget<Member, int> onMemberEntry();
+    EventTarget<Member> onMemberEntry();
 
     /*!
      * \brief FuncListenerを作成する

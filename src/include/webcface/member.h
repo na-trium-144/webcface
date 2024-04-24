@@ -105,61 +105,61 @@ class WEBCFACE_DLL Member : protected Field {
      * コールバックの型は void(Value)
      *
      */
-    EventTarget<Value, std::string> onValueEntry() const;
+    EventTarget<Value> onValueEntry() const;
     /*!
      * \brief textが追加された時のイベント
      *
      * コールバックの型は void(Text)
      *
      */
-    EventTarget<Text, std::string> onTextEntry() const;
+    EventTarget<Text> onTextEntry() const;
     /*!
      * \brief robotModelが追加された時のイベント
      *
      * コールバックの型は void(RobotModel)
      *
      */
-    EventTarget<RobotModel, std::string> onRobotModelEntry() const;
+    EventTarget<RobotModel> onRobotModelEntry() const;
     /*!
      * \brief funcが追加された時のイベント
      *
      * コールバックの型は void(Func)
      *
      */
-    EventTarget<Func, std::string> onFuncEntry() const;
+    EventTarget<Func> onFuncEntry() const;
     /*!
      * \brief imageが追加されたときのイベント
      *
      * コールバックの型は void(Image)
      *
      */
-    EventTarget<Image, std::string> onImageEntry() const;
+    EventTarget<Image> onImageEntry() const;
     /*!
      * \brief viewが追加されたときのイベント
      *
      * コールバックの型は void(View)
      *
      */
-    EventTarget<View, std::string> onViewEntry() const;
+    EventTarget<View> onViewEntry() const;
     /*!
      * \brief canvas3dが追加されたときのイベント
      *
      * コールバックの型は void(Canvas3D)
      *
      */
-    EventTarget<Canvas3D, std::string> onCanvas3DEntry() const;
+    EventTarget<Canvas3D> onCanvas3DEntry() const;
     /*!
      * \brief canvas2dが追加されたときのイベント
      *
      * コールバックの型は void(Canvas2D)
      *
      */
-    EventTarget<Canvas2D, std::string> onCanvas2DEntry() const;
+    EventTarget<Canvas2D> onCanvas2DEntry() const;
     /*!
      * \brief Memberがsync()したときのイベント
      * コールバックの型は void(Member)
      */
-    EventTarget<Member, std::string> onSync() const;
+    EventTarget<Member> onSync() const;
 
     /*!
      * \brief 最後のsync()の時刻を返す
@@ -206,7 +206,7 @@ class WEBCFACE_DLL Member : protected Field {
      * \sa pingStatus()
      *
      */
-    EventTarget<Member, std::string> onPing() const;
+    EventTarget<Member> onPing() const;
 
     /*!
      * \brief Memberを比較

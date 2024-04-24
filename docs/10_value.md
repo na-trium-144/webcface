@@ -142,6 +142,7 @@ Valueに限らず他のデータ型 ([View](./13_view.md), [Canvas2D](./14_canva
     pos["y"].value() = 2;       // = "pos.y"
     pos.value("z") = 3;         // = "pos.z"
     ```
+    FieldとValue(とTextなどその他の型)は相互にキャストすることもできます。
 
     \note <span class="since-c">1.11</span>
     child() (または`[]`)の引数が数値(または`"1"`のような文字列でも同じ)の場合、

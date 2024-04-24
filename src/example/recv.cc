@@ -37,27 +37,26 @@ int main() {
         });
     });
     c.start();
+    auto func_m = c.member("example_func");
     while (true) {
         std::this_thread::sleep_for(std::chrono::milliseconds(1000));
         // example_mainのtestの値を取得する
         std::cout << "example_main.test = "
-                  << c.member("example_main").value("test") << std::endl;
+                  << c.member("example_value").value("test") << std::endl;
 
         // example_mainのfunc1を実行する
-        c.member("example_main").func("func1").runAsync();
+        func_m.func("func1").runAsync();
         // example_mainのfunc2を実行し結果を取得
-        auto result =
-            c.member("example_main").func("func2").runAsync(9, 7.1, false, "");
-        try {
-            std::cout << "func2(9, 7.1, false, \"\") = "
-                      << static_cast<std::string>(result.result.get())
-                      << std::endl;
-        } catch (...) {
-        }
+        auto result = func_m.func("func2").runAsync(9, 7.1, false, "");
+        result.onResult().append(
+            [](std::shared_future<webcface::ValAdaptor> result) {
+                std::cout << "func2(9, 7.1, false, \"\") = "
+                          << result.get().asStringRef() << std::endl;
+            });
 
-        c.member("example_main").func("func_bool").runAsync(true);
-        c.member("example_main").func("func_int").runAsync(1);
-        c.member("example_main").func("func_double").runAsync(1.0);
-        c.member("example_main").func("func_str").runAsync("1");
+        func_m.func("func_bool").runAsync(true);
+        func_m.func("func_int").runAsync(1);
+        func_m.func("func_double").runAsync(1.0);
+        func_m.func("func_str").runAsync("1");
     }
 }

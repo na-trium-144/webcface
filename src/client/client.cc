@@ -88,9 +88,9 @@ std::vector<Member> Client::members() {
     }
     return ret;
 }
-EventTarget<Member, int> Client::onMemberEntry() {
+EventTarget<Member> Client::onMemberEntry() {
     std::lock_guard lock(data->event_m);
-    return EventTarget<Member, int>{&data->member_entry_event};
+    return EventTarget<Member>{&data->member_entry_event};
 }
 void Client::setDefaultRunCond(FuncWrapperType wrapper) {
     data->default_func_wrapper = wrapper;
@@ -331,7 +331,7 @@ void Internal::ClientData::onRecv(const std::string &message) {
             auto r = std::any_cast<webcface::Message::PingStatus>(obj);
             this->ping_status = r.status;
             for (const auto &member_name : value_store.getMembers()) {
-                CallbackList *cl = nullptr;
+                eventpp::CallbackList<void(Member)> *cl = nullptr;
                 {
                     std::lock_guard lock(event_m);
                     if (this->ping_event.count(member_name)) {
@@ -360,7 +360,7 @@ void Internal::ClientData::onRecv(const std::string &message) {
             this->value_store.setRecv(
                 member, field,
                 std::static_pointer_cast<VectorOpt<double>>(r.data));
-            CallbackList *cl = nullptr;
+            eventpp::CallbackList<void(Value)> *cl = nullptr;
             FieldBaseComparable key{member, field};
             {
                 std::lock_guard lock(event_m);
@@ -380,7 +380,7 @@ void Internal::ClientData::onRecv(const std::string &message) {
             auto [member, field] =
                 this->text_store.getReq(r.req_id, r.sub_field);
             this->text_store.setRecv(member, field, r.data);
-            CallbackList *cl = nullptr;
+            eventpp::CallbackList<void(Text)> *cl = nullptr;
             FieldBaseComparable key{member, field};
             {
                 std::lock_guard lock(event_m);
@@ -399,7 +399,7 @@ void Internal::ClientData::onRecv(const std::string &message) {
             auto [member, field] =
                 this->robot_model_store.getReq(r.req_id, r.sub_field);
             this->robot_model_store.setRecv(member, field, r.commonLinks());
-            CallbackList *cl = nullptr;
+            eventpp::CallbackList<void(RobotModel)> *cl = nullptr;
             FieldBaseComparable key{member, field};
             {
                 std::lock_guard lock(event_m);
@@ -429,7 +429,7 @@ void Internal::ClientData::onRecv(const std::string &message) {
             for (const auto &d : *r.data_diff) {
                 (**v_prev)[std::stoi(d.first)] = d.second;
             }
-            CallbackList *cl = nullptr;
+            eventpp::CallbackList<void(View)> *cl = nullptr;
             FieldBaseComparable key{member, field};
             {
                 std::lock_guard lock(event_m);
@@ -458,7 +458,7 @@ void Internal::ClientData::onRecv(const std::string &message) {
             for (const auto &d : *r.data_diff) {
                 (**v_prev)[std::stoi(d.first)] = d.second;
             }
-            CallbackList *cl = nullptr;
+            eventpp::CallbackList<void(Canvas3D)> *cl = nullptr;
             FieldBaseComparable key{member, field};
             {
                 std::lock_guard lock(event_m);
@@ -488,7 +488,7 @@ void Internal::ClientData::onRecv(const std::string &message) {
             for (const auto &d : *r.data_diff) {
                 (*v_prev)->components[std::stoi(d.first)] = d.second;
             }
-            CallbackList *cl = nullptr;
+            eventpp::CallbackList<void(Canvas2D)> *cl = nullptr;
             FieldBaseComparable key{member, field};
             {
                 std::lock_guard lock(event_m);
@@ -508,7 +508,7 @@ void Internal::ClientData::onRecv(const std::string &message) {
             auto [member, field] =
                 this->image_store.getReq(r.req_id, r.sub_field);
             this->image_store.setRecv(member, field, r);
-            CallbackList *cl = nullptr;
+            eventpp::CallbackList<void(Image)> *cl = nullptr;
             FieldBaseComparable key{member, field};
             {
                 std::lock_guard lock(event_m);
@@ -533,7 +533,7 @@ void Internal::ClientData::onRecv(const std::string &message) {
             for (const auto &lm : *r.log) {
                 (*log_s)->push_back(lm);
             }
-            CallbackList *cl = nullptr;
+            eventpp::CallbackList<void(Log)> *cl = nullptr;
             {
                 std::lock_guard lock(event_m);
                 if (this->log_append_event.count(member)) {
@@ -646,7 +646,7 @@ void Internal::ClientData::onRecv(const std::string &message) {
                 webcface::Message::Entry<webcface::Message::Value>>(obj);
             auto member = this->getMemberNameFromId(r.member_id);
             this->value_store.setEntry(member, r.field);
-            CallbackList *cl = nullptr;
+            eventpp::CallbackList<void(Value)> *cl = nullptr;
             {
                 std::lock_guard lock(event_m);
                 if (this->value_entry_event.count(member)) {
@@ -663,7 +663,7 @@ void Internal::ClientData::onRecv(const std::string &message) {
                 webcface::Message::Entry<webcface::Message::Text>>(obj);
             auto member = this->getMemberNameFromId(r.member_id);
             this->text_store.setEntry(member, r.field);
-            CallbackList *cl = nullptr;
+            eventpp::CallbackList<void(Text)> *cl = nullptr;
             {
                 std::lock_guard lock(event_m);
                 if (this->text_entry_event.count(member)) {
@@ -680,7 +680,7 @@ void Internal::ClientData::onRecv(const std::string &message) {
                 webcface::Message::Entry<webcface::Message::View>>(obj);
             auto member = this->getMemberNameFromId(r.member_id);
             this->view_store.setEntry(member, r.field);
-            CallbackList *cl = nullptr;
+            eventpp::CallbackList<void(View)> *cl = nullptr;
             {
                 std::lock_guard lock(event_m);
                 if (this->view_entry_event.count(member)) {
@@ -697,7 +697,7 @@ void Internal::ClientData::onRecv(const std::string &message) {
                 webcface::Message::Entry<webcface::Message::Canvas3D>>(obj);
             auto member = this->getMemberNameFromId(r.member_id);
             this->canvas3d_store.setEntry(member, r.field);
-            CallbackList *cl = nullptr;
+            eventpp::CallbackList<void(Canvas3D)> *cl = nullptr;
             {
                 std::lock_guard lock(event_m);
                 if (this->canvas3d_entry_event.count(member)) {
@@ -714,7 +714,7 @@ void Internal::ClientData::onRecv(const std::string &message) {
                 webcface::Message::Entry<webcface::Message::Canvas2D>>(obj);
             auto member = this->getMemberNameFromId(r.member_id);
             this->canvas2d_store.setEntry(member, r.field);
-            CallbackList *cl = nullptr;
+            eventpp::CallbackList<void(Canvas2D)> *cl = nullptr;
             {
                 std::lock_guard lock(event_m);
                 if (this->canvas2d_entry_event.count(member)) {
@@ -731,7 +731,7 @@ void Internal::ClientData::onRecv(const std::string &message) {
                 webcface::Message::Entry<webcface::Message::RobotModel>>(obj);
             auto member = this->getMemberNameFromId(r.member_id);
             this->robot_model_store.setEntry(member, r.field);
-            CallbackList *cl = nullptr;
+            eventpp::CallbackList<void(RobotModel)> *cl = nullptr;
             {
                 std::lock_guard lock(event_m);
                 if (this->robot_model_entry_event.count(member)) {
@@ -748,7 +748,7 @@ void Internal::ClientData::onRecv(const std::string &message) {
                 webcface::Message::Entry<webcface::Message::Image>>(obj);
             auto member = this->getMemberNameFromId(r.member_id);
             this->image_store.setEntry(member, r.field);
-            CallbackList *cl = nullptr;
+            eventpp::CallbackList<void(Image)> *cl = nullptr;
             {
                 std::lock_guard lock(event_m);
                 if (this->image_entry_event.count(member)) {
@@ -766,7 +766,7 @@ void Internal::ClientData::onRecv(const std::string &message) {
             this->func_store.setEntry(member, r.field);
             this->func_store.setRecv(member, r.field,
                                      std::make_shared<FuncInfo>(r));
-            CallbackList *cl = nullptr;
+            eventpp::CallbackList<void(Func)> *cl = nullptr;
             {
                 std::lock_guard lock(event_m);
                 if (this->func_entry_event.count(member)) {
@@ -810,7 +810,7 @@ void Internal::ClientData::onRecv(const std::string &message) {
         }
     }
     for (const auto &m : sync_members) {
-        CallbackList *cl = nullptr;
+        eventpp::CallbackList<void(Member)> *cl = nullptr;
         {
             std::lock_guard lock(event_m);
             if (this->sync_event.count(m)) {
