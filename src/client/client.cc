@@ -646,7 +646,7 @@ void Internal::ClientData::onRecv(const std::string &message) {
                 webcface::Message::Entry<webcface::Message::Value>>(obj);
             auto member = this->getMemberNameFromId(r.member_id);
             this->value_store.setEntry(member, r.field);
-            CallbackList *cl;
+            CallbackList *cl = nullptr;
             {
                 std::lock_guard lock(event_m);
                 if (this->value_entry_event.count(member)) {
@@ -663,7 +663,7 @@ void Internal::ClientData::onRecv(const std::string &message) {
                 webcface::Message::Entry<webcface::Message::Text>>(obj);
             auto member = this->getMemberNameFromId(r.member_id);
             this->text_store.setEntry(member, r.field);
-            CallbackList *cl;
+            CallbackList *cl = nullptr;
             {
                 std::lock_guard lock(event_m);
                 if (this->text_entry_event.count(member)) {
@@ -680,7 +680,7 @@ void Internal::ClientData::onRecv(const std::string &message) {
                 webcface::Message::Entry<webcface::Message::View>>(obj);
             auto member = this->getMemberNameFromId(r.member_id);
             this->view_store.setEntry(member, r.field);
-            CallbackList *cl;
+            CallbackList *cl = nullptr;
             {
                 std::lock_guard lock(event_m);
                 if (this->view_entry_event.count(member)) {
@@ -697,7 +697,7 @@ void Internal::ClientData::onRecv(const std::string &message) {
                 webcface::Message::Entry<webcface::Message::Canvas3D>>(obj);
             auto member = this->getMemberNameFromId(r.member_id);
             this->canvas3d_store.setEntry(member, r.field);
-            CallbackList *cl;
+            CallbackList *cl = nullptr;
             {
                 std::lock_guard lock(event_m);
                 if (this->canvas3d_entry_event.count(member)) {
@@ -714,7 +714,7 @@ void Internal::ClientData::onRecv(const std::string &message) {
                 webcface::Message::Entry<webcface::Message::Canvas2D>>(obj);
             auto member = this->getMemberNameFromId(r.member_id);
             this->canvas2d_store.setEntry(member, r.field);
-            CallbackList *cl;
+            CallbackList *cl = nullptr;
             {
                 std::lock_guard lock(event_m);
                 if (this->canvas2d_entry_event.count(member)) {
@@ -731,7 +731,7 @@ void Internal::ClientData::onRecv(const std::string &message) {
                 webcface::Message::Entry<webcface::Message::RobotModel>>(obj);
             auto member = this->getMemberNameFromId(r.member_id);
             this->robot_model_store.setEntry(member, r.field);
-            CallbackList *cl;
+            CallbackList *cl = nullptr;
             {
                 std::lock_guard lock(event_m);
                 if (this->robot_model_entry_event.count(member)) {
@@ -748,7 +748,7 @@ void Internal::ClientData::onRecv(const std::string &message) {
                 webcface::Message::Entry<webcface::Message::Image>>(obj);
             auto member = this->getMemberNameFromId(r.member_id);
             this->image_store.setEntry(member, r.field);
-            CallbackList *cl;
+            CallbackList *cl = nullptr;
             {
                 std::lock_guard lock(event_m);
                 if (this->image_entry_event.count(member)) {
@@ -766,7 +766,7 @@ void Internal::ClientData::onRecv(const std::string &message) {
             this->func_store.setEntry(member, r.field);
             this->func_store.setRecv(member, r.field,
                                      std::make_shared<FuncInfo>(r));
-            CallbackList *cl;
+            CallbackList *cl = nullptr;
             {
                 std::lock_guard lock(event_m);
                 if (this->func_entry_event.count(member)) {
@@ -810,7 +810,7 @@ void Internal::ClientData::onRecv(const std::string &message) {
         }
     }
     for (const auto &m : sync_members) {
-        CallbackList *cl;
+        CallbackList *cl = nullptr;
         {
             std::lock_guard lock(event_m);
             if (this->sync_event.count(m)) {
