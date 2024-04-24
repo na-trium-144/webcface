@@ -30,10 +30,13 @@ class FuncResultStore {
         std::lock_guard lock(mtx);
         std::size_t caller_id = next_caller_id++;
         result_setter.emplace(caller_id, AsyncFuncResultSetter{base});
-        return AsyncFuncResult{
-            base, caller_id,
-            result_setter.at(caller_id).started.get_future().share(),
-            result_setter.at(caller_id).result.get_future().share()};
+        auto &setter = result_setter.at(caller_id);
+        return AsyncFuncResult{base,
+                               caller_id,
+                               setter.started_f,
+                               setter.result_f,
+                               setter.started_event,
+                               setter.result_event};
     }
     /*!
      * \brief promiseを取得
@@ -51,7 +54,7 @@ class FuncResultStore {
     /*!
      * \brief resultを設定し終わったpromiseを削除
      *
-     * 
+     *
      */
     void removeResultSetter(std::size_t caller_id) {
         std::lock_guard lock(mtx);

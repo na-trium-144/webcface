@@ -49,8 +49,40 @@ class WEBCFACE_DLL Func : protected Field {
     Func(const Field &base, const std::string &field)
         : Func(Field{base, field}) {}
 
+    using Field::lastName;
     using Field::member;
     using Field::name;
+    /*!
+     * \brief 「(thisの名前).(追加の名前)」を新しい名前とするField
+     *
+     */
+    Func child(std::string_view field) const {
+        return this->Field::child(field);
+    }
+    /*!
+     * \since ver1.11
+     */
+    Func child(int index) const { return this->Field::child(index); }
+    /*!
+     * child()と同じ
+     * \since ver1.11
+     */
+    Func operator[](std::string_view field) const { return child(field); }
+    /*!
+     * operator[](long, const char *)と解釈されるのを防ぐための定義
+     * \since ver1.11
+     */
+    Func operator[](const char *field) const { return child(field); }
+    /*!
+     * child()と同じ
+     * \since ver1.11
+     */
+    Func operator[](int index) const { return child(index); }
+    /*!
+     * \brief nameの最後のピリオドの前までを新しい名前とするField
+     * \since ver1.11
+     */
+    Func parent() const { return this->Field::parent(); }
 
   protected:
     Func &setRaw(const std::shared_ptr<FuncInfo> &v);
@@ -79,20 +111,6 @@ class WEBCFACE_DLL Func : protected Field {
     Func &operator=(const T &func) {
         return this->set(func);
     }
-    // /*!
-    //  * \brief セットした関数を置き換える
-    //  * \since ver1.10
-    //  *
-    //  * 他のプロパティ(wrapper, argsなど)は元のまま
-    //  *
-    //  */
-    // Func &replaceImpl(FuncType func);
-    // /*!
-    //  * \brief セットされている関数オブジェクトを取得
-    //  * \since ver1.10
-    //  *
-    //  */
-    // FuncType getImpl() const;
 
     /*!
      * \brief 引数にFuncCallHandleを取る関数を登録する
