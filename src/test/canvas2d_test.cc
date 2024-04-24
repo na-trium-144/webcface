@@ -41,19 +41,20 @@ TEST_F(Canvas2DTest, field) {
 }
 TEST_F(Canvas2DTest, eventTarget) {
     canvas("a", "b").appendListener(callback<Canvas2D>());
-    data_->canvas2d_change_event.dispatch(FieldBase{"a", "b"},
-                                          Field{data_, "a", "b"});
+    data_->canvas2d_change_event[FieldBase{"a", "b"}](Field{data_, "a", "b"});
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
 }
 TEST_F(Canvas2DTest, set) {
-    data_->canvas2d_change_event.appendListener(FieldBase{self_name, "b"},
-                                                callback());
+    data_->canvas2d_change_event[FieldBase{self_name, "b"}].append(callback());
     using namespace webcface::Geometries;
 
     auto v = canvas(self_name, "b").init(100, 150);
-    v.add(line({0, 0}, {3, 3}).color(ViewColor::red).onClick(func(self_name, "f")));
-    v.add(plane({0, 0}, 10, 10).color(ViewColor::yellow).onClick(afunc1([]{})));
+    v.add(line({0, 0}, {3, 3})
+              .color(ViewColor::red)
+              .onClick(func(self_name, "f")));
+    v.add(
+        plane({0, 0}, 10, 10).color(ViewColor::yellow).onClick(afunc1([] {})));
     v.sync();
     EXPECT_EQ(callback_called, 1);
     auto &canvas2d_data = **data_->canvas2d_store.getRecv(self_name, "b");

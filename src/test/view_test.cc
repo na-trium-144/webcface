@@ -45,14 +45,12 @@ TEST_F(ViewTest, field) {
 }
 TEST_F(ViewTest, eventTarget) {
     view("a", "b").appendListener(callback<View>());
-    data_->view_change_event.dispatch(FieldBase{"a", "b"},
-                                      Field{data_, "a", "b"});
+    data_->view_change_event[FieldBase{"a", "b"}](Field{data_, "a", "b"});
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
 }
 TEST_F(ViewTest, viewSet) {
-    data_->view_change_event.appendListener(FieldBase{self_name, "b"},
-                                            callback());
+    data_->view_change_event[FieldBase{self_name, "b"}].append(callback());
     using namespace webcface::ViewComponents;
     auto v = view(self_name, "b");
     v << "a\n" << 1;

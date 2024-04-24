@@ -33,7 +33,7 @@ TEST_F(ImageFrameTest, baseRawPtrCtor) {
     EXPECT_EQ(img.cols(), 100);
     ASSERT_NE(img.dataPtr(), nullptr);
     EXPECT_NE(img.dataPtr()->data(), dp->data());
-    EXPECT_EQ(img.dataPtr()->size(), 100*100*3);
+    EXPECT_EQ(img.dataPtr()->size(), 100 * 100 * 3);
     EXPECT_EQ(img.channels(), 3);
     EXPECT_EQ(img.color_mode(), ImageColorMode::bgr);
     EXPECT_EQ(img.compress_mode(), ImageCompressMode::raw);
@@ -127,18 +127,16 @@ TEST_F(ImageTest, field) {
 }
 TEST_F(ImageTest, eventTarget) {
     image("a", "b").appendListener(callback<Image>());
-    data_->image_change_event.dispatch(FieldBase{"a", "b"},
-                                       Field{data_, "a", "b"});
+    data_->image_change_event[FieldBase{"a", "b"}](Field{data_, "a", "b"});
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
 }
 TEST_F(ImageTest, imageSet) {
-    data_->image_change_event.appendListener(FieldBase{self_name, "b"},
-                                             callback());
+    data_->image_change_event[FieldBase{self_name, "b"}].append(callback());
     auto dp = std::make_shared<std::vector<unsigned char>>(100 * 100 * 3);
     image(self_name, "b").set(ImageFrame{100, 100, dp});
-    EXPECT_EQ(data_->image_store.getRecv(self_name, "b")->rows() , 100);
-    EXPECT_EQ(data_->image_store.getRecv(self_name, "b")->cols() , 100);
+    EXPECT_EQ(data_->image_store.getRecv(self_name, "b")->rows(), 100);
+    EXPECT_EQ(data_->image_store.getRecv(self_name, "b")->cols(), 100);
     EXPECT_EQ(data_->image_store.getRecv(self_name, "b")->dataPtr(), dp);
     EXPECT_EQ(callback_called, 1);
     EXPECT_THROW(image("a", "b").set(ImageFrame{}), std::invalid_argument);

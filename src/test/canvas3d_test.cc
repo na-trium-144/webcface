@@ -38,14 +38,12 @@ TEST_F(Canvas3DTest, field) {
 }
 TEST_F(Canvas3DTest, eventTarget) {
     canvas("a", "b").appendListener(callback<Canvas3D>());
-    data_->canvas3d_change_event.dispatch(FieldBase{"a", "b"},
-                                          Field{data_, "a", "b"});
+    data_->canvas3d_change_event[FieldBase{"a", "b"}](Field{data_, "a", "b"});
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
 }
 TEST_F(Canvas3DTest, set) {
-    data_->canvas3d_change_event.appendListener(FieldBase{self_name, "b"},
-                                                callback());
+    data_->canvas3d_change_event[FieldBase{self_name, "b"}].append(callback());
     using namespace webcface::Geometries;
     using namespace webcface::RobotJoints;
     robot_model(self_name, "b")

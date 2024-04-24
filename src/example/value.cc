@@ -23,7 +23,7 @@ int main() {
     // structをDictに変換するとまとめて送信することができる
     wcli.value("dict") = A();
 
-    webcface::Field field = wcli.field("sub_field");
+    webcface::Field field = wcli.child("sub_field");
     field.value("a") = 1; // wcli.value("sub_field.a")
     field.child("b").value() = 2; // wcli.value("sub_field.b")
     field["c"].value() = 3; // wcli.value("sub_field.c")

@@ -61,28 +61,28 @@ TEST_F(MemberTest, getEntry) {
 }
 TEST_F(MemberTest, eventTarget) {
     member("a").onValueEntry().appendListener(callback<Value>());
-    data_->value_entry_event.dispatch("a", Field{data_, "a", "a"});
+    data_->value_entry_event["a"](Field{data_, "a", "a"});
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
     member("a").onTextEntry().appendListener(callback<Text>());
-    data_->text_entry_event.dispatch("a", Field{data_, "a", "a"});
+    data_->text_entry_event["a"](Field{data_, "a", "a"});
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
     member("a").onFuncEntry().appendListener(callback<Func>());
-    data_->func_entry_event.dispatch("a", Field{data_, "a", "a"});
+    data_->func_entry_event["a"](Field{data_, "a", "a"});
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
     member("a").onViewEntry().appendListener(callback<View>());
-    data_->view_entry_event.dispatch("a", Field{data_, "a", "a"});
+    data_->view_entry_event["a"](Field{data_, "a", "a"});
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
     member("a").onSync().appendListener(callback<Member>());
-    data_->sync_event.dispatch("a", Field{data_, "a"});
+    data_->sync_event["a"](Field{data_, "a"});
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
 
     member("a").onPing().appendListener(callback<Member>());
-    data_->ping_event.dispatch("a", Field{data_, "a"});
+    data_->ping_event["a"](Field{data_, "a"});
     EXPECT_EQ(callback_called, 1);
     EXPECT_TRUE(data_->ping_status_req);
     callback_called = 0;
