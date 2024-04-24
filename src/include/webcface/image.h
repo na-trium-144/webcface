@@ -27,11 +27,10 @@ class WEBCFACE_DLL Image : protected Field, public EventTarget<Image> {
 
     void onAppend() const override final;
 
-    Image &
-    request(std::optional<int> rows, std::optional<int> cols,
-            Common::ImageCompressMode cmp_mode, int quality,
-            std::optional<Common::ImageColorMode> color_mode,
-            std::optional<double> frame_rate);
+    Image &request(std::optional<int> rows, std::optional<int> cols,
+                   Common::ImageCompressMode cmp_mode, int quality,
+                   std::optional<Common::ImageColorMode> color_mode,
+                   std::optional<double> frame_rate);
 
   public:
     Image() = default;
@@ -39,16 +38,40 @@ class WEBCFACE_DLL Image : protected Field, public EventTarget<Image> {
     Image(const Field &base, const std::string &field)
         : Image(Field{base, field}) {}
 
+    using Field::lastName;
     using Field::member;
     using Field::name;
-
     /*!
-     * \return「(thisのフィールド名).(子フィールド名)」をフィールド名とするImage
+     * \brief 「(thisの名前).(追加の名前)」を新しい名前とするField
      *
      */
-    Image child(const std::string &field) {
-        return Image{*this, this->field_ + "." + field};
+    Image child(std::string_view field) const {
+        return this->Field::child(field);
     }
+    /*!
+     * \since ver1.11
+     */
+    Image child(int index) const { return this->Field::child(index); }
+    /*!
+     * child()と同じ
+     * \since ver1.11
+     */
+    Image operator[](std::string_view field) const { return child(field); }
+    /*!
+     * operator[](long, const char *)と解釈されるのを防ぐための定義
+     * \since ver1.11
+     */
+    Image operator[](const char *field) const { return child(field); }
+    /*!
+     * child()と同じ
+     * \since ver1.11
+     */
+    Image operator[](int index) const { return child(index); }
+    /*!
+     * \brief nameの最後のピリオドの前までを新しい名前とするField
+     * \since ver1.11
+     */
+    Image parent() const { return this->Field::parent(); }
 
     /*!
      * \brief 画像をセットする
@@ -127,8 +150,7 @@ class WEBCFACE_DLL Image : protected Field, public EventTarget<Image> {
      * \deprecated 1.7でMember::syncTime()に変更
      *
      */
-    [[deprecated]] std::chrono::system_clock::time_point
-    time() const;
+    [[deprecated]] std::chrono::system_clock::time_point time() const;
 
     //! 値やリクエスト状態をクリア
     Image &free();
@@ -142,8 +164,8 @@ class WEBCFACE_DLL Image : protected Field, public EventTarget<Image> {
      *
      */
     template <typename T>
-        requires std::same_as<T, Image>
-    bool operator==(const T &other) const {
+        requires std::same_as<T, Image> bool
+    operator==(const T &other) const {
         return static_cast<Field>(*this) == static_cast<Field>(other);
     }
     /*!
@@ -152,8 +174,8 @@ class WEBCFACE_DLL Image : protected Field, public EventTarget<Image> {
      *
      */
     template <typename T>
-        requires std::same_as<T, Image>
-    bool operator!=(const T &other) const {
+        requires std::same_as<T, Image> bool
+    operator!=(const T &other) const {
         return !(*this == other);
     }
 };

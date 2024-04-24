@@ -12,9 +12,11 @@ Canvas2D::Canvas2D()
     : Field(), EventTarget<Canvas2D>(),
       sb(std::make_shared<Internal::Canvas2DDataBuf>()) {}
 Canvas2D::Canvas2D(const Field &base)
-    : Field(base),
-      EventTarget<Canvas2D>(&this->dataLock()->canvas2d_change_event, *this),
-      sb(std::make_shared<Internal::Canvas2DDataBuf>(base)) {}
+    : Field(base), EventTarget<Canvas2D>(),
+      sb(std::make_shared<Internal::Canvas2DDataBuf>(base)) {
+    std::lock_guard lock(this->dataLock()->event_m);
+    this->cl = &this->dataLock()->canvas2d_change_event[*this];
+}
 Canvas2D &Canvas2D::init(double width, double height) {
     sb->init(width, height);
     return *this;
