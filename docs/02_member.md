@@ -38,7 +38,7 @@ Memberクラスから実際にそれぞれのデータにアクセスする方�
 このクライアント自身もMemberの1つですが、Client自体がMemberを継承したクラスになっているので、直接Clientのオブジェクト(wcli)に対して操作すればよいです。
 
 \note
-`member()` の引数に自身の名前を入れると、Clientオブジェクトに直接アクセスする場合と同様です。  
+`member()` の引数に自身の名前を入れると、Clientオブジェクトに直接アクセスする場合と同様そのクライアント自身を指します。  
 <span class="since-c">1.7</span> 引数に空文字列を入れても同様です。
 
 ## members
@@ -90,16 +90,20 @@ Client::onMemberEntry() で新しいメンバーが接続されたときのイ�
     wcli.onMemberEntry().appendListener([](webcface::Member m){/* ... */});
     ```
     C++では EventTarget クラスのオブジェクトを返します。
-    内部ではイベントの管理に [eventpp](https://github.com/wqking/eventpp) ライブラリを使用しており、EventTargetは eventpp::EventDispatcher のラッパーとなっています。
+    内部ではイベントの管理に [eventpp](https://github.com/wqking/eventpp) ライブラリを使用しており、EventTargetは eventpp::CallbackList のラッパーとなっています。
 
     `appendListener()`, `prependListener()` でコールバックを追加できます。
     また`insertListener()`でこれまでに追加されたコールバックのリストの途中にコールバックを挿入したり、
     `removeListener()` でコールバックを削除したりできます。
+
+    <span class="since-c">1.11</span>
+    `wcli.onMemberEntry().callbackList()` で[eventpp::CallbaskList](https://github.com/wqking/eventpp/blob/master/doc/callbacklist.md)のインスタンスが得られ、
+    CounterRemover, ConditionalRemover などeventppに用意されているさまざまなユーティリティ機能を使用できます。
     より詳細な使い方はeventppのドキュメントを参照してください。
 
-    \note eventppのEventDispatcherやCallbackListクラスにそのままアクセスできるようにはしていないため、
-    eventppのユーティリティ機能はwebcfaceのイベントに対しては使用できなくなっています
-    (todo?)
+    \note
+    ver1.10以前は eventpp::EventDispatcher を使用していたため、
+    関数名はCallbackListではなくEventDispatcherのものに従っている
 
 - <b class="tab-title">JavaScript</b>
     ```ts
@@ -147,6 +151,10 @@ Member::pingStatus() でそのクライアントの通信速度を取得でき�
         std::cout << m.name() << ": " << m.pingStatus() << " ms" << std::endl;
     });
     ```
+
+    <span class="since-c">1.11</span>
+    onMemberEntry() と同様、 callbackList() でCallbackListにアクセスできます。
+
 - <b class="tab-title">JavaScript</b>
     ```ts
     import { Member } from "webcface";

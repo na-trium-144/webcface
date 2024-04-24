@@ -136,6 +136,20 @@ Viewに追加する各種要素をViewComponentといいます。
     各要素はそれぞれの関数から webcface::ViewComponent または webcface::TemporalComponent のオブジェクトとして得られます。
     `button(...).textColor(...)` などのようにメソッドチェーンすることで各要素にオプションを設定できます。
 
+    <span class="since-c">1.11</span>
+    引数にViewを取る関数オブジェクトをViewに渡すと、その場でその関数が呼び出されます。
+    複数のViewComponentを出力する処理をまとめて使いまわしたい場合に便利です。
+    ```cpp
+    auto showNameAndValue(const std::string &name, int value) {
+        return [=](webcface::View &view) {
+            view << name << " = " << value;
+        };
+    }
+
+    webcface::View v = wcli.view("a");
+    v << showNameAndValue("foo", 123) << std::endl; // v << "foo = 123";
+    v.sync();
+    ```
 
 - <b class="tab-title">JavaScript</b>
     JavaScriptでは [`viewComponents`](https://na-trium-144.github.io/webcface-js/variables/viewComponents.html) オブジェクト内にそれぞれの要素を表す関数があります
@@ -425,6 +439,11 @@ viewに入力欄を表示します。
     この場合はv.sync()の時に前周期のinput_valの内容が復元されるという挙動になります。
     (したがってv.sync()より前では値が未初期化になります)
 
+    InputRefの値は`get()`で webcface::ValAdaptor 型として取得できます。
+    また std::string, double, bool などの型にキャストすることでも値を得られます。  
+    <span class="since-c">1.11</span>
+    `asStringRef()`, `asString()`, `as<double>()`, `asBool()` でも型変換ができます。
+
     \note
     内部の実装では入力値を受け取りInputRefに値をセットする関数をonChangeにセットしています。
     また、InputRefの値は[Text](./11_text.md)の1つとしてviewを表示しているクライアントに送信されます。
@@ -437,6 +456,8 @@ viewに入力欄を表示します。
         std::cout << "input changed: " << val << std::endl;
     });
     ```
+
+    \note bindとonChangeを両方設定することはできません。
 
     その他各種inputに指定できるオプションには以下のものがあります。
     ([Func](./30_func.md)のArgオプションと同様です。)

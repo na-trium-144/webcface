@@ -380,6 +380,16 @@ AsyncFuncResultからは started と result が取得できます。
     ```
     startedとresultはstd::shared_futureです。取得できるまで待機するならget(), ブロックせず完了したか確認したければwait_for()などが使えます。例外はresult.get()が投げます。
 
+    <span class="since-c">1.11</span>
+    `onStarted()`, `onResult()` で値が返ってきたときに実行されるイベントが取得でき、コールバックを設定することができます。
+    ([eventpp::CallbackList 型](https://github.com/wqking/eventpp/blob/master/doc/callbacklist.md)で返ります)
+    ```cpp
+    AsyncFuncResult res = wcli.member("foo").func("hoge").runAsync(1, "aa");
+    res.onResult().append([](std::shared_future<webcface::ValAdaptor> result){
+        double ans = result.get();
+    });
+    ```
+
     詳細は webcface::AsyncFuncResult を参照してください。
 
 - <b class="tab-title">C</b>
