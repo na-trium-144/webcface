@@ -100,12 +100,16 @@ Client::onMemberEntry() で新しいメンバーが接続されたときのイ�
     appendListener, prependListener ではコールバックの引数が不要な場合は引数のない関数も渡すことができます。
 
     <span class="since-c">1.11</span>
-    `wcli.onMemberEntry().callbackList()` で[eventpp::CallbaskList](https://github.com/wqking/eventpp/blob/master/doc/callbacklist.md)のインスタンスが得られ、
+    `wcli.onMemberEntry().callbackList()` で[eventpp::CallbackList](https://github.com/wqking/eventpp/blob/master/doc/callbacklist.md)のインスタンスが得られ、
     CounterRemover, ConditionalRemover などeventppに用意されているさまざまなユーティリティ機能を使用できます。
     より詳細な使い方はeventppのドキュメントを参照してください。
     (この場合コールバックの引数は省略できません)
     ```cpp
     wcli.onMemberEntry().callbackList().append([](webcface::Member m){/* ... */});
+    
+    // CounterRemoverを使って1回呼び出されたらコールバックを削除する:
+    eventpp::counterRemover(wcli.onMemberEntry().callbackList())
+        .append([](webcface::Member m){/* ... */}, 1);
     ```
 
     \note
