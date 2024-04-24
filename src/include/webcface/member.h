@@ -37,8 +37,6 @@ class WEBCFACE_DLL Member : protected Field {
 
     using Field::child;
     using Field::operator[];
-    Field field(std::string_view field) const { return child(field); }
-    Field field(int index) const { return child(index); }
 
     using Field::canvas2D;
     using Field::canvas3D;

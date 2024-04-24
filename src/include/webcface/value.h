@@ -37,16 +37,36 @@ class WEBCFACE_DLL Value : protected Field, public EventTarget<Value> {
     using Field::lastName;
     using Field::member;
     using Field::name;
+    /*!
+     * \brief 「(thisの名前).(追加の名前)」を新しい名前とするField
+     *
+     */
     Value child(std::string_view field) const {
         return this->Field::child(field);
     }
+    /*!
+     * \since ver1.11
+     */
     Value child(int index) const { return this->Field::child(index); }
+    /*!
+     * child()と同じ
+     * \since ver1.11
+     */
     Value operator[](std::string_view field) const { return child(field); }
     /*!
-     * operator[](long, const char *)と解釈されるのを防ぐため
+     * operator[](long, const char *)と解釈されるのを防ぐための定義
+     * \since ver1.11
      */
     Value operator[](const char *field) const { return child(field); }
+    /*!
+     * child()と同じ
+     * \since ver1.11
+     */
     Value operator[](int index) const { return child(index); }
+    /*!
+     * \brief nameの最後のピリオドの前までを新しい名前とするField
+     * \since ver1.11
+     */
     Value parent() const { return this->Field::parent(); }
 
     using Dict = Common::Dict<std::shared_ptr<Common::VectorOpt<double>>>;
@@ -55,16 +75,6 @@ class WEBCFACE_DLL Value : protected Field, public EventTarget<Value> {
      * \deprecated ver1.11〜
      */
     [[deprecated]] Value &set(const Dict &v);
-    /*!
-     * \brief 値をまとめてセットする
-     * \since ver1.11
-     */
-    template <typename F>
-        requires std::invocable<F, Value>
-    Value &set(const F &setter) {
-        setter(*this);
-        return *this;
-    }
     /*!
      * \brief 数値または配列をセットする
      *
@@ -89,16 +99,6 @@ class WEBCFACE_DLL Value : protected Field, public EventTarget<Value> {
      */
     [[deprecated]] Value &operator=(const Dict &v) {
         this->set(v);
-        return *this;
-    }
-    /*!
-     * \brief 値をまとめてセットする
-     * \since ver1.11
-     */
-    template <typename F>
-        requires std::invocable<F, Value>
-    Value &operator=(const F &setter) {
-        this->set(setter);
         return *this;
     }
     /*!
