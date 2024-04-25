@@ -248,8 +248,8 @@ class WEBCFACE_DLL InputRef {
             }
         } else {
             auto new_val = state->field.get();
-            if (*state->val != new_val) {
-                *state->val = new_val;
+            if (!state->val || *state->val != new_val) {
+                state->val = new_val;
             }
         }
         return *state->val;
