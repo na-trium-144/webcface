@@ -406,6 +406,7 @@ list(APPEND EXAMPLE_SRC
     ${CPP_DIR}/example/canvas3d.cc
     ${CPP_DIR}/example/recv.cc
     ${CPP_DIR}/example/c_example.c
+    ${CPP_DIR}/example/benchmark.cc
 )
 if(WEBCFACE_USE_OPENCV)
     list(APPEND EXAMPLE_SRC
