@@ -8,6 +8,7 @@
 #include <chrono>
 #include <atomic>
 #include <unordered_map>
+#include <unordered_set>
 #include <map>
 #include <cstdlib>
 #include <eventpp/eventdispatcher.h>
@@ -125,6 +126,8 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
      */
     WEBCFACE_DLL void onRecv(const std::string &message);
 
+    std::mutex entry_m;
+    std::unordered_set<std::string> member_entry;
     SyncDataStore2<ValueData> value_store;
     SyncDataStore2<TextData> text_store;
     SyncDataStore2<FuncData> func_store;

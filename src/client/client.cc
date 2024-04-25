@@ -81,10 +81,10 @@ void Internal::ClientData::join() {
     }
 }
 std::vector<Member> Client::members() {
-    auto keys = data->value_store.getMembers();
-    std::vector<Member> ret(keys.size());
-    for (std::size_t i = 0; i < keys.size(); i++) {
-        ret[i] = member(keys[i]);
+    std::lock_guard lock(data->entry_m);
+    std::vector<Member> ret;
+    for (const auto &m : data->member_entry) {
+        ret.push_back(member(m));
     }
     return ret;
 }
@@ -330,7 +330,12 @@ void Internal::ClientData::onRecv(const std::string &message) {
         case MessageKind::ping_status: {
             auto r = std::any_cast<webcface::Message::PingStatus>(obj);
             this->ping_status = r.status;
-            for (const auto &member_name : value_store.getMembers()) {
+            std::unordered_set<std::string> members;
+            {
+                std::lock_guard lock(entry_m);
+                members = this->member_entry;
+            }
+            for (const auto &member_name : members) {
                 eventpp::CallbackList<void(Member)> *cl = nullptr;
                 {
                     std::lock_guard lock(event_m);
@@ -631,9 +636,18 @@ void Internal::ClientData::onRecv(const std::string &message) {
         }
         case MessageKind::sync_init: {
             auto r = std::any_cast<webcface::Message::SyncInit>(obj);
-            this->value_store.setEntry(r.member_name);
-            this->text_store.setEntry(r.member_name);
-            this->func_store.setEntry(r.member_name);
+            {
+                std::lock_guard lock(this->entry_m);
+                this->member_entry.emplace(r.member_name);
+            }
+            this->value_store.clearEntry(r.member_name);
+            this->text_store.clearEntry(r.member_name);
+            this->func_store.clearEntry(r.member_name);
+            this->view_store.clearEntry(r.member_name);
+            this->image_store.clearEntry(r.member_name);
+            this->robot_model_store.clearEntry(r.member_name);
+            this->canvas3d_store.clearEntry(r.member_name);
+            this->canvas2d_store.clearEntry(r.member_name);
             this->member_ids[r.member_name] = r.member_id;
             this->member_lib_name[r.member_id] = r.lib_name;
             this->member_lib_ver[r.member_id] = r.lib_ver;

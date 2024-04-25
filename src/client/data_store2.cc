@@ -38,35 +38,26 @@ void SyncDataStore2<T, ReqT>::setRecv(const std::string &from,
 }
 
 template <typename T, typename ReqT>
-std::vector<std::string> SyncDataStore2<T, ReqT>::getMembers() {
-    std::lock_guard lock(mtx);
-    std::vector<std::string> k;
-    for (const auto &r : entry) {
-        k.push_back(r.first);
-    }
-    return k;
-}
-template <typename T, typename ReqT>
-std::vector<std::string>
+std::unordered_set<std::string>
 SyncDataStore2<T, ReqT>::getEntry(const std::string &name) {
     std::lock_guard lock(mtx);
     auto e = entry.find(name);
     if (e != entry.end()) {
         return e->second;
     } else {
-        return std::vector<std::string>{};
+        return std::unordered_set<std::string>{};
     }
 }
 template <typename T, typename ReqT>
-void SyncDataStore2<T, ReqT>::setEntry(const std::string &from) {
+void SyncDataStore2<T, ReqT>::clearEntry(const std::string &from) {
     std::lock_guard lock(mtx);
-    entry.emplace(std::make_pair(from, std::vector<std::string>{}));
+    entry[from].clear();
 }
 template <typename T, typename ReqT>
 void SyncDataStore2<T, ReqT>::setEntry(const std::string &from,
                                        const std::string &e) {
     std::lock_guard lock(mtx);
-    entry[from].push_back(e);
+    entry[from].emplace(e);
 }
 
 template <typename T, typename ReqT>

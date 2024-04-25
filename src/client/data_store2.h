@@ -1,6 +1,7 @@
 #pragma once
 #include <mutex>
 #include <unordered_map>
+#include <unordered_set>
 #include <string>
 #include <optional>
 #include <functional>
@@ -53,7 +54,7 @@ class SyncDataStore2 {
      * entry[member名] = {データ名のリスト}
      *
      */
-    std::unordered_map<std::string, std::vector<std::string>> entry;
+    std::unordered_map<std::string, std::unordered_set<std::string>> entry;
     /*!
      * \brief データ受信リクエスト
      *
@@ -175,11 +176,11 @@ class SyncDataStore2 {
     }
 
     /*!
-     * \brief entryにmember名のみ追加
+     * \brief memberのentryをクリア
      *
-     *  ambiguousなので引数にFieldBaseは使わない (そもそも必要ない)
+     * ambiguousなので引数にFieldBaseは使わない (そもそも必要ない)
      */
-    void setEntry(const std::string &from);
+    void clearEntry(const std::string &from);
     /*!
      * \brief 受信したentryを追加
      *
@@ -190,15 +191,10 @@ class SyncDataStore2 {
      * \brief entryを取得
      *
      */
-    std::vector<std::string> getEntry(const std::string &from);
-    std::vector<std::string> getEntry(const FieldBase &base) {
+    std::unordered_set<std::string> getEntry(const std::string &from);
+    std::unordered_set<std::string> getEntry(const FieldBase &base) {
         return getEntry(base.member_);
     }
-    /*!
-     * \brief member名のりすとを取得(entryから)
-     *
-     */
-    std::vector<std::string> getMembers();
 
     /*!
      * \brief req_idに対応するmember名とフィールド名を返す

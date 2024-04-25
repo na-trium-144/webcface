@@ -17,13 +17,11 @@ Log Member::log() const { return Log{*this}; }
 
 EventTarget<Value> Member::onValueEntry() const {
     std::lock_guard lock(dataLock()->event_m);
-    return EventTarget<Value>{
-        &dataLock()->value_entry_event[member_]};
+    return EventTarget<Value>{&dataLock()->value_entry_event[member_]};
 }
 EventTarget<Text> Member::onTextEntry() const {
     std::lock_guard lock(dataLock()->event_m);
-    return EventTarget<Text>{
-        &dataLock()->text_entry_event[member_]};
+    return EventTarget<Text>{&dataLock()->text_entry_event[member_]};
 }
 EventTarget<RobotModel> Member::onRobotModelEntry() const {
     std::lock_guard lock(dataLock()->event_m);
@@ -32,28 +30,23 @@ EventTarget<RobotModel> Member::onRobotModelEntry() const {
 }
 EventTarget<Func> Member::onFuncEntry() const {
     std::lock_guard lock(dataLock()->event_m);
-    return EventTarget<Func>{
-        &dataLock()->func_entry_event[member_]};
+    return EventTarget<Func>{&dataLock()->func_entry_event[member_]};
 }
 EventTarget<View> Member::onViewEntry() const {
     std::lock_guard lock(dataLock()->event_m);
-    return EventTarget<View>{
-        &dataLock()->view_entry_event[member_]};
+    return EventTarget<View>{&dataLock()->view_entry_event[member_]};
 }
 EventTarget<Canvas3D> Member::onCanvas3DEntry() const {
     std::lock_guard lock(dataLock()->event_m);
-    return EventTarget<Canvas3D>{
-        &dataLock()->canvas3d_entry_event[member_]};
+    return EventTarget<Canvas3D>{&dataLock()->canvas3d_entry_event[member_]};
 }
 EventTarget<Canvas2D> Member::onCanvas2DEntry() const {
     std::lock_guard lock(dataLock()->event_m);
-    return EventTarget<Canvas2D>{
-        &dataLock()->canvas2d_entry_event[member_]};
+    return EventTarget<Canvas2D>{&dataLock()->canvas2d_entry_event[member_]};
 }
 EventTarget<Image> Member::onImageEntry() const {
     std::lock_guard lock(dataLock()->event_m);
-    return EventTarget<Image>{
-        &dataLock()->image_entry_event[member_]};
+    return EventTarget<Image>{&dataLock()->image_entry_event[member_]};
 }
 EventTarget<Member> Member::onSync() const {
     std::lock_guard lock(dataLock()->event_m);

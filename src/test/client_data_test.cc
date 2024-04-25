@@ -47,7 +47,6 @@ TEST_F(SyncDataStore2Test, setSend) {
     EXPECT_EQ(send.at("a"), "c");
     EXPECT_EQ(send.size(), 1);
     EXPECT_EQ(s2.transferSend(true).size(), 1);
-
 }
 // TEST_F(SyncDataStore2Test, setRecv) {}
 TEST_F(SyncDataStore2Test, addReq) {
@@ -117,12 +116,9 @@ TEST_F(SyncDataStore2Test, clearRecv) {
     EXPECT_EQ(s2.getRecv("a", "b"), std::nullopt);
 }
 TEST_F(SyncDataStore2Test, setEntry) {
-    s2.setEntry("a");
-    EXPECT_EQ(s2.getMembers().size(), 1);
-    EXPECT_EQ(s2.getMembers().at(0), "a");
     s2.setEntry("a", "b");
     EXPECT_EQ(s2.getEntry("a").size(), 1);
-    EXPECT_EQ(s2.getEntry("a").at(0), "b");
+    EXPECT_EQ(s2.getEntry("a").count("b"), 1);
 }
 
 class SyncDataStore1Test : public ::testing::Test {
