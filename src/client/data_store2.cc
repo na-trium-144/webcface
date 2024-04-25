@@ -212,7 +212,7 @@ SyncDataStore2<T, ReqT>::transferSend(bool is_first) {
         return data_send_prev = recv_self;
     } else {
         data_send_prev = send_changed;
-        return std::move(send_changed);
+        return send_changed;
     }
 }
 template <typename T, typename ReqT>
