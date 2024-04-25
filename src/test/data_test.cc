@@ -24,7 +24,7 @@ class DataTest : public ::testing::Test {
     }
     Log log(const std::string &member) { return Log{Field{data_, member}}; }
     int callback_called;
-    template <typename V = FieldBase>
+    template <typename V>
     auto callback() {
         return [&](const V &) { ++callback_called; };
     }
@@ -37,6 +37,7 @@ TEST_F(DataTest, field) {
     EXPECT_EQ(value("a", "b").member().name(), "a");
     EXPECT_EQ(value("a", "b").name(), "b");
     EXPECT_EQ(value("a", "b").child("c").name(), "b.c");
+    EXPECT_EQ(value("a", "b.c").parent().name(), "b");
     EXPECT_EQ(text("a", "b").member().name(), "a");
     EXPECT_EQ(text("a", "b").name(), "b");
     EXPECT_EQ(text("a", "b").child("c").name(), "b.c");
@@ -48,47 +49,50 @@ TEST_F(DataTest, field) {
 }
 TEST_F(DataTest, eventTarget) {
     auto handle = value("a", "b").appendListener(callback<Value>());
-    data_->value_change_event.dispatch(FieldBase{"a", "b"},
-                                       Field{data_, "a", "b"});
+    data_->value_change_event[FieldBase{"a", "b"}](Field{data_, "a", "b"});
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
     value("a", "b").removeListener(handle);
-    data_->value_change_event.dispatch(FieldBase{"a", "b"},
-                                       Field{data_, "a", "b"});
+    data_->value_change_event[FieldBase{"a", "b"}](Field{data_, "a", "b"});
     EXPECT_EQ(callback_called, 0);
     value("a", "b").appendListener(callbackVoid());
-    data_->value_change_event.dispatch(FieldBase{"a", "b"},
-                                       Field{data_, "a", "b"});
+    data_->value_change_event[FieldBase{"a", "b"}](Field{data_, "a", "b"});
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
 
     text("a", "b").appendListener(callback<Text>());
-    data_->text_change_event.dispatch(FieldBase{"a", "b"},
-                                      Field{data_, "a", "b"});
+    data_->text_change_event[FieldBase{"a", "b"}](Field{data_, "a", "b"});
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
     log("a").appendListener(callback<Log>());
-    data_->log_append_event.dispatch("a", Field{data_, "a"});
+    data_->log_append_event["a"](Field{data_, "a"});
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
 }
 TEST_F(DataTest, valueSet) {
-    data_->value_change_event.appendListener(FieldBase{self_name, "b"},
-                                             callback());
+    data_->value_change_event[FieldBase{self_name, "b"}].append(
+        callback<Value>());
     value(self_name, "b").set(123);
     EXPECT_EQ(**data_->value_store.getRecv(self_name, "b"), 123);
     EXPECT_EQ(callback_called, 1);
     EXPECT_THROW(value("a", "b").set(123), std::invalid_argument);
 }
 TEST_F(DataTest, valueSetVec) {
-    data_->value_change_event.appendListener(FieldBase{self_name, "d"},
-                                             callback());
+    data_->value_change_event[FieldBase{self_name, "d"}].append(
+        callback<Value>());
     value(self_name, "d").set({1, 2, 3, 4, 5});
     value(self_name, "d2").set(std::vector<double>{1, 2, 3, 4, 5});
     value(self_name, "d3").set(std::vector<int>{1, 2, 3, 4, 5});
     value(self_name, "d4").set(std::array<int, 5>{1, 2, 3, 4, 5});
     int a[5] = {1, 2, 3, 4, 5};
     value(self_name, "d5").set(a);
+    auto d6 = value(self_name, "d6");
+    d6.set(1);
+    d6.push_back(2);
+    d6.push_back(3);
+    d6[3].set(4);
+    d6[4].set(5);
+    value(self_name, "d7").resize(5);
     EXPECT_EQ(callback_called, 1);
     EXPECT_EQ(**data_->value_store.getRecv(self_name, "d"), 1);
     EXPECT_EQ((**data_->value_store.getRecv(self_name, "d")).size(), 5);
@@ -100,10 +104,17 @@ TEST_F(DataTest, valueSetVec) {
     EXPECT_EQ((**data_->value_store.getRecv(self_name, "d3")).size(), 5);
     EXPECT_EQ((**data_->value_store.getRecv(self_name, "d4")).size(), 5);
     EXPECT_EQ((**data_->value_store.getRecv(self_name, "d5")).size(), 5);
+    EXPECT_EQ((**data_->value_store.getRecv(self_name, "d6")).size(), 5);
+    EXPECT_EQ((**data_->value_store.getRecv(self_name, "d6")).at(0), 1);
+    EXPECT_EQ((**data_->value_store.getRecv(self_name, "d6")).at(1), 2);
+    EXPECT_EQ((**data_->value_store.getRecv(self_name, "d6")).at(2), 3);
+    EXPECT_EQ((**data_->value_store.getRecv(self_name, "d6")).at(3), 4);
+    EXPECT_EQ((**data_->value_store.getRecv(self_name, "d6")).at(4), 5);
+    EXPECT_EQ((**data_->value_store.getRecv(self_name, "d7")).size(), 5);
 }
 TEST_F(DataTest, textSet) {
-    data_->text_change_event.appendListener(FieldBase{self_name, "b"},
-                                            callback());
+    data_->text_change_event[FieldBase{self_name, "b"}].append(
+        callback<Text>());
     text(self_name, "b").set("c");
     EXPECT_EQ(
         static_cast<std::string>(**data_->text_store.getRecv(self_name, "b")),
@@ -129,14 +140,14 @@ TEST_F(DataTest, dict) {
     EXPECT_EQ(a["v"].getVec().at(0), 1);
 }
 TEST_F(DataTest, valueSetDict) {
-    data_->value_change_event.appendListener(FieldBase{self_name, "d"},
-                                             callback());
+    data_->value_change_event[FieldBase{self_name, "d"}].append(
+        callback<Value>());
     value(self_name, "d").set({{"a", 100}});
     // dにはセットしてないのでeventは発動しない
     EXPECT_EQ(callback_called, 0);
 
-    data_->value_change_event.appendListener(FieldBase{self_name, "d.a"},
-                                             callback());
+    data_->value_change_event[FieldBase{self_name, "d.a"}].append(
+        callback<Value>());
     value(self_name, "d")
         .set({{"a", 1},
               {"b", 2},

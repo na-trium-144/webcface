@@ -44,6 +44,18 @@ Client::value からValueオブジェクトを作り、 Value::set() でデー�
     wcli.value("hoge") = 5;
     ```
 
+    <span class="since-c">1.11</span>
+    valueに直接`[]`(または`child()`)で要素アクセスが可能です。
+    また、resize()で配列を初期化しpush_back()で追加する使い方もできます。
+    ```cpp
+    wcli.value("fuga").resize(5);
+    for(int i = 0; i < 5; i++){
+        wcli.value("fuga").push_back(i);
+    }
+    wcli.value("fuga")[3] = 100; // 上書き
+    // wcli.value("fuga").child(3) = 100; としても同じ
+    ```
+
 - <b class="tab-title">C</b>
     double型の単一の値は
     ```c
@@ -115,9 +127,30 @@ Valueに限らず他のデータ型 ([View](./13_view.md), [Canvas2D](./14_canva
     Value::child() でも同じ結果になります。
     ```cpp
     webcface::Value pos = wcli.value("pos");
-    pos.child("x") = 1;
-    pos.child("y") = 2;
-    pos.child("z") = 3;
+    pos.child("x") = 1; // = "pos.x"
+    pos.child("y") = 2; // = "pos.y"
+    pos.child("z") = 3; // = "pos.z"
+    ```
+
+    <span class="since-c">1.11</span>
+    Member::child() で webcface::Field 型としてオブジェクトが得られ、そこからvalue()でValue型に変換することもできます。
+    (この場合はValue以外の型に変換することもでき汎用性が高いです)
+    また、`[]`を使ってもchild()と同じ結果になります。
+    ```cpp
+    webcface::Field pos = wcli.child("pos");
+    pos.child("x").value() = 1; // = "pos.x"
+    pos["y"].value() = 2;       // = "pos.y"
+    pos.value("z") = 3;         // = "pos.z"
+    ```
+    FieldとValue(とTextなどその他の型)は相互にキャストすることもできます。
+
+    \note <span class="since-c">1.11</span>
+    child() (または`[]`)の引数が数値(または`"1"`のような文字列でも同じ)の場合、
+    グループ化ではなく配列としての値代入が優先されます。
+    (これはValue型のみの特別な処理です。)
+    ただし以下のような場合は通常の文字列と同様に処理します。
+    ```cpp
+    wcli.value("data")[0]["a"] = 1; // value("data.0.a") = 1
     ```
 
 - <b class="tab-title">C</b>
@@ -169,37 +202,6 @@ Pythonの辞書型への対応は未実装
 
 <div class="tabbed">
 
-- <b class="tab-title">C++</b>
-    webcface::Value::Dict オブジェクトを使うと複数の値をまとめて送ることができます。
-    これは構造体などのデータを送るときに使えます
-    ```cpp
-    struct A {
-        double x, y;
-        operator webcface::Value::Dict() const {
-            return {
-                {"x", x},
-                {"y", y},
-                {"vec", {1, 2, 3}}, // vectorも入れられます
-                {"a", {             // 入れ子にもできます
-                    {"a", 1},
-                    {"b", 1},
-                }}
-            }
-        }
-    };
-
-    A a_instance;
-    wcli.value("a").set(a_instance); // Dictにキャストされる
-
-    /* 結果は以下のようになる
-      value("a.x") -> a_instance.x
-      value("a.y") -> a_instance.y
-      value("a.vec") -> {1, 2, 3}
-      value("a.a.a") -> 1
-      value("a.a.b") -> 1
-    */
-    ```
-
 - <b class="tab-title">JavaScript</b>
     オブジェクトを渡すことができます。
     ```ts
@@ -223,6 +225,40 @@ Pythonの辞書型への対応は未実装
 
 </div>
 
+<details><summary>(deprecated) C++でwebcface::Value::Dictを使った値のセット</summary>
+
+webcface::Value::Dict オブジェクトを使うと複数の値をまとめて送ることができます。
+これは構造体などのデータを送るときに使えます
+```cpp
+struct A {
+    double x, y;
+    operator webcface::Value::Dict() const {
+        return {
+            {"x", x},
+            {"y", y},
+            {"vec", {1, 2, 3}}, // vectorも入れられます
+            {"a", {             // 入れ子にもできます
+                {"a", 1},
+                {"b", 1},
+            }}
+        }
+    }
+};
+
+A a_instance;
+wcli.value("a").set(a_instance); // Dictにキャストされる
+
+/* 結果は以下のようになる
+  value("a.x") -> a_instance.x
+  value("a.y") -> a_instance.y
+  value("a.vec") -> {1, 2, 3}
+  value("a.a.a") -> 1
+  value("a.a.b") -> 1
+*/
+```
+
+</details>
+
 ## 受信
 
 Member::value() でValueクラスのオブジェクトが得られ、
@@ -236,18 +272,36 @@ Value::tryGet(), Value::tryGetVec() などで値のリクエストをすると�
     ```cpp
     std::optional<double> hoge = wcli.member("foo").value("hoge").tryGet();
     std::optional<std::vector<double>> hoge = wcli.member("foo").value("hoge").tryGetVec();
-    std::optional<webcface::Value::Dict> hoge = wcli.member("foo").value("hoge").tryGetRecurse();
     ```
-    初回の呼び出しではまだ受信していないため、
-    tryGet(), tryGetVec(), tryGetRecurse() はstd::nulloptを返します。  
-    get(), getVec(), getRecurse() はstd::nulloptの代わりにデフォルト値を返します。  
-    また、doubleやstd::vector<double>, Value::Dict などの型にキャストすることでも同様に値が得られます。
+    値を受信していない場合 tryGet(), tryGetVec() はstd::nulloptを返します。  
+    get(), getVec() はstd::nulloptの代わりにデフォルト値を返します。  
+    また、doubleやstd::vector<double> などの型にキャストすることでも同様に値が得られます。
 
     <span class="since-c">1.8</span>
     std::ostreamにValueを直接渡して表示することもできます。
     まだ受信していない場合nullと表示されます。
     ```cpp
     std::cout << "hoge = " << wcli.member("foo").value("hoge") << std::endl;
+    ```
+
+    グループ化したデータは送信時と同様child()を使って要素を参照できます。
+    ```cpp
+    webcface::Value pos = wcli.member("foo").value("pos");
+    double x = pos.child("x").get(); // = "pos.x"
+    double y = pos.child("y").get(); // = "pos.y"
+    double z = pos.child("z").get(); // = "pos.z"
+    ```
+    ```cpp
+    webcface::Field pos = wcli.member("foo").child("pos");
+    double x = pos.child("x").value().get(); // = "pos.x"
+    double y = pos["y"].value().get();       // = "pos.y"
+    double z = pos.value("z").get();         // = "pos.z"
+    ```
+
+    <span class="since-c">1.11</span>
+    送信時と同様、配列データはchild()または`[]`を使ってもアクセスできます。
+    ```cpp
+    double hoge = wcli.member("foo").value("hoge")[3].get();
     ```
 
     \warning
@@ -269,7 +323,7 @@ Value::tryGet(), Value::tryGetVec() などで値のリクエストをすると�
     ```
     sizeに受信した値の個数、valueに受信した値が入ります。
 
-    初回の呼び出しでは`WCF_NOT_FOUND`を返し、別スレッドでリクエストが送信されます。
+    値を受信していない場合`WCF_NOT_FOUND`を返し、別スレッドでリクエストが送信されます。
     
     <span class="since-c">1.7</span>
     1つの値のみを受信する場合はwcfValueGetも使えます。
@@ -285,25 +339,25 @@ Value::tryGet(), Value::tryGetVec() などで値のリクエストをすると�
     const hoge: double | null = wcli.member("foo").value("hoge").tryGet();
     const hoge: double[] | null = wcli.member("foo").value("hoge").tryGetVec();
     ```
-    初回の呼び出しではまだ受信していないため、
-    tryGet(), tryGetVec() はnullを返します。  
+    値を受信していない場合 tryGet(), tryGetVec() はnullを返します。  
     get(), getVec() はnullの代わりにデフォルト値を返します。
 - <b class="tab-title">Python</b>
     ```python
     hoge = wcli.member("foo").value("hoge").try_get()
     hoge = wcli.member("foo").value("hoge").try_get_vec()
     ```
-    初回の呼び出しではまだ受信していないため、
-    try_get(), try_get_vec() はNoneを返します。  
+    値を受信していない場合 try_get(), try_get_vec() はNoneを返します。  
     get(), getVec() はNoneの代わりにデフォルト値を返します。
 
 </div>
 
-~~その後Client::sync()したときに実際にリクエストが送信され、~~  
+### リクエスト
+get()などの初回の呼び出しではまだ値を受信していないためnullなどを返しますが、  
+~~Client::sync()したときに実際にリクエストが送信され、~~  
 <span class="since-c">1.2</span>
 <span class="since-js">1.1</span>
 <span class="since-py"></span>
-自動的に別スレッドでリクエストが送信され、それ以降は値が得られるようになります。
+自動的に別スレッドでリクエストが送信され、サーバーから値が返ってきたら値が得られるようになります。
 そのため、次の例のように繰り返し取得して使ってください。
 
 <div class="tabbed">
@@ -356,8 +410,6 @@ Value::request()で明示的にリクエストを送信することもできま�
 Member::syncTime() に変更
 (Textなど他のデータの送信時刻と共通です)
 
-\todo JavaScriptでもMember.syncTimeに統一する
-
 ### Entry
 
 ~~Member::values() で~~ そのMemberが送信しているvalueのリストが得られます  
@@ -373,6 +425,15 @@ Member::valueEntries() に変更
         // ...
     }
     ```
+
+    <span class="since-c">1.11</span>
+    Field::valueEntries() でそのfield以下のvalueのみが得られます
+    (Textなど他の型についても同様)
+    ```cpp
+    std::vector<webcface::Value> values = wcli.member("foo").field("pos").valueEntries();
+    // pos.x, pos.y などのvalueが得られる
+    ```
+
 - <b class="tab-title">JavaScript</b>
     ```js
     for(const v of wcli.member("foo").values()){
@@ -394,7 +455,7 @@ Member::onValueEntry() で新しくデータが追加されたときのコール
 Member名がわかっていれば初回の Client::sync() 前に、
 そうでなければ Client::onMemberEntry() イベントのコールバックの中で各種イベントを設定すればよいです。
 
-イベントの詳細な使い方は [Member](./02_member.md) のページを参照してください。
+イベントの詳細な使い方はonMemberEntryと同様です([Member](./02_member.md) のページを参照してください)。
 
 <div class="tabbed">
 
@@ -423,7 +484,7 @@ Member名がわかっていれば初回の Client::sync() 前に、
 
 また、データが変化したどうかに関わらずそのMemberがsync()したときにコールバックを呼び出したい場合は Member::onSync() が使えます。
 
-イベントの詳細な使い方は [Member](./02_member.md) のページを参照してください。
+イベントの詳細な使い方はonMemberEntryと同様です([Member](./02_member.md) のページを参照してください)。
 
 <div class="tabbed">
 

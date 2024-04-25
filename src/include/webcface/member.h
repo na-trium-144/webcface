@@ -14,15 +14,6 @@ namespace Internal {
 struct ClientData;
 }
 
-class Value;
-class Text;
-class Log;
-class View;
-class Image;
-class RobotModel;
-class Canvas2D;
-class Canvas3D;
-
 /*!
  * \brief Memberを指すクラス
  *
@@ -34,9 +25,9 @@ class WEBCFACE_DLL Member : protected Field {
   public:
     Member() = default;
     Member(const std::weak_ptr<Internal::ClientData> &data_w,
-           const std::string &member)
+           std::string_view member)
         : Field(data_w, member) {}
-    Member(const Field &base) : Field(base) {}
+    Member(const Field &base) : Field(base.data_w, base.member_) {}
 
     /*!
      * \brief Member名
@@ -44,11 +35,18 @@ class WEBCFACE_DLL Member : protected Field {
      */
     std::string name() const { return member_; }
 
-    Value value(const std::string &field) const;
-    Text text(const std::string &field) const;
-    RobotModel robotModel(const std::string &field) const;
-    Image image(const std::string &field) const;
-    Func func(const std::string &field) const;
+    using Field::child;
+    using Field::operator[];
+
+    using Field::canvas2D;
+    using Field::canvas3D;
+    using Field::func;
+    using Field::image;
+    using Field::robotModel;
+    using Field::text;
+    using Field::value;
+    using Field::view;
+    Log log() const;
     /*!
      * \brief AnonymousFuncオブジェクトを作成しfuncをsetする
      *
@@ -58,16 +56,15 @@ class WEBCFACE_DLL Member : protected Field {
     AnonymousFunc func(const T &func) const {
         return AnonymousFunc{*this, func};
     }
-    View view(const std::string &field) const;
-    Canvas3D canvas3D(const std::string &field) const;
-    Canvas2D canvas2D(const std::string &field) const;
-    Log log() const;
 
-    /*!
-     * \brief このmemberが公開しているvalueのリストを返す。
-     *
-     */
-    std::vector<Value> valueEntries() const;
+    using Field::canvas2DEntries;
+    using Field::canvas3DEntries;
+    using Field::funcEntries;
+    using Field::imageEntries;
+    using Field::robotModelEntries;
+    using Field::textEntries;
+    using Field::valueEntries;
+    using Field::viewEntries;
     /*!
      * \brief このmemberが公開しているvalueのリストを返す。
      * \deprecated 1.6で valueEntries() に変更
@@ -76,19 +73,9 @@ class WEBCFACE_DLL Member : protected Field {
     [[deprecated]] std::vector<Value> values() const;
     /*!
      * \brief このmemberが公開しているtextのリストを返す。
-     *
-     */
-    std::vector<Text> textEntries() const;
-    /*!
-     * \brief このmemberが公開しているtextのリストを返す。
      * \deprecated 1.6で textEntries() に変更
      */
     [[deprecated]] std::vector<Text> texts() const;
-    /*!
-     * \brief このmemberが公開しているrobotModelのリストを返す。
-     *
-     */
-    std::vector<RobotModel> robotModelEntries() const;
     /*!
      * \brief このmemberが公開しているrobotModelのリストを返す。
      * \deprecated 1.6で robotModelEntries() に変更
@@ -97,40 +84,15 @@ class WEBCFACE_DLL Member : protected Field {
     [[deprecated]] std::vector<RobotModel> robotModels() const;
     /*!
      * \brief このmemberが公開しているfuncのリストを返す。
-     *
-     */
-    std::vector<Func> funcEntries() const;
-    /*!
-     * \brief このmemberが公開しているfuncのリストを返す。
      * \deprecated 1.6で funcEntries() に変更
      *
      */
     [[deprecated]] std::vector<Func> funcs() const;
     /*!
      * \brief このmemberが公開しているviewのリストを返す。
-     *
-     */
-    std::vector<View> viewEntries() const;
-    /*!
-     * \brief このmemberが公開しているviewのリストを返す。
      * \deprecated 1.6で viewEntries() に変更
      */
     [[deprecated]] std::vector<View> views() const;
-    /*!
-     * \brief このmemberが公開しているcanvas3dのリストを返す。
-     *
-     */
-    std::vector<Canvas3D> canvas3DEntries() const;
-    /*!
-     * \brief このmemberが公開しているcanvas2dのリストを返す。
-     *
-     */
-    std::vector<Canvas2D> canvas2DEntries() const;
-    /*!
-     * \brief このmemberが公開しているimageのリストを返す。
-     *
-     */
-    std::vector<Image> imageEntries() const;
     /*!
      * \brief このmemberが公開しているimageのリストを返す。
      * \deprecated 1.6で imageEntries() に変更
@@ -143,61 +105,61 @@ class WEBCFACE_DLL Member : protected Field {
      * コールバックの型は void(Value)
      *
      */
-    EventTarget<Value, std::string> onValueEntry() const;
+    EventTarget<Value> onValueEntry() const;
     /*!
      * \brief textが追加された時のイベント
      *
      * コールバックの型は void(Text)
      *
      */
-    EventTarget<Text, std::string> onTextEntry() const;
+    EventTarget<Text> onTextEntry() const;
     /*!
      * \brief robotModelが追加された時のイベント
      *
      * コールバックの型は void(RobotModel)
      *
      */
-    EventTarget<RobotModel, std::string> onRobotModelEntry() const;
+    EventTarget<RobotModel> onRobotModelEntry() const;
     /*!
      * \brief funcが追加された時のイベント
      *
      * コールバックの型は void(Func)
      *
      */
-    EventTarget<Func, std::string> onFuncEntry() const;
+    EventTarget<Func> onFuncEntry() const;
     /*!
      * \brief imageが追加されたときのイベント
      *
      * コールバックの型は void(Image)
      *
      */
-    EventTarget<Image, std::string> onImageEntry() const;
+    EventTarget<Image> onImageEntry() const;
     /*!
      * \brief viewが追加されたときのイベント
      *
      * コールバックの型は void(View)
      *
      */
-    EventTarget<View, std::string> onViewEntry() const;
+    EventTarget<View> onViewEntry() const;
     /*!
      * \brief canvas3dが追加されたときのイベント
      *
      * コールバックの型は void(Canvas3D)
      *
      */
-    EventTarget<Canvas3D, std::string> onCanvas3DEntry() const;
+    EventTarget<Canvas3D> onCanvas3DEntry() const;
     /*!
      * \brief canvas2dが追加されたときのイベント
      *
      * コールバックの型は void(Canvas2D)
      *
      */
-    EventTarget<Canvas2D, std::string> onCanvas2DEntry() const;
+    EventTarget<Canvas2D> onCanvas2DEntry() const;
     /*!
      * \brief Memberがsync()したときのイベント
      * コールバックの型は void(Member)
      */
-    EventTarget<Member, std::string> onSync() const;
+    EventTarget<Member> onSync() const;
 
     /*!
      * \brief 最後のsync()の時刻を返す
@@ -244,7 +206,7 @@ class WEBCFACE_DLL Member : protected Field {
      * \sa pingStatus()
      *
      */
-    EventTarget<Member, std::string> onPing() const;
+    EventTarget<Member> onPing() const;
 
     /*!
      * \brief Memberを比較
@@ -252,8 +214,8 @@ class WEBCFACE_DLL Member : protected Field {
      *
      */
     template <typename T>
-        requires std::same_as<T, Member>
-    bool operator==(const T &other) const {
+        requires std::same_as<T, Member> bool
+    operator==(const T &other) const {
         return static_cast<Field>(*this) == static_cast<Field>(other);
     }
     /*!
@@ -262,8 +224,8 @@ class WEBCFACE_DLL Member : protected Field {
      *
      */
     template <typename T>
-        requires std::same_as<T, Member>
-    bool operator!=(const T &other) const {
+        requires std::same_as<T, Member> bool
+    operator!=(const T &other) const {
         return !(*this == other);
     }
 };

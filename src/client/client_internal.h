@@ -8,6 +8,8 @@
 #include <chrono>
 #include <atomic>
 #include <unordered_map>
+#include <unordered_set>
+#include <map>
 #include <cstdlib>
 #include <eventpp/eventdispatcher.h>
 #include <spdlog/logger.h>
@@ -124,6 +126,8 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
      */
     WEBCFACE_DLL void onRecv(const std::string &message);
 
+    std::mutex entry_m;
+    std::unordered_set<std::string> member_entry;
     SyncDataStore2<ValueData> value_store;
     SyncDataStore2<TextData> text_store;
     SyncDataStore2<FuncData> func_store;
@@ -164,16 +168,42 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
         return 0;
     }
 
-    eventpp::EventDispatcher<FieldBaseComparable, void(Field)>
-        value_change_event, text_change_event, view_change_event,
-        image_change_event, robot_model_change_event, canvas3d_change_event,
+    std::mutex event_m;
+    std::map<FieldBaseComparable, eventpp::CallbackList<void(Value)>>
+        value_change_event;
+    std::map<FieldBaseComparable, eventpp::CallbackList<void(Text)>>
+        text_change_event;
+    std::map<FieldBaseComparable, eventpp::CallbackList<void(Image)>>
+        image_change_event;
+    std::map<FieldBaseComparable, eventpp::CallbackList<void(RobotModel)>>
+        robot_model_change_event;
+    std::map<FieldBaseComparable, eventpp::CallbackList<void(View)>>
+        view_change_event;
+    std::map<FieldBaseComparable, eventpp::CallbackList<void(Canvas3D)>>
+        canvas3d_change_event;
+    std::map<FieldBaseComparable, eventpp::CallbackList<void(Canvas2D)>>
         canvas2d_change_event;
-    eventpp::EventDispatcher<std::string, void(Field)> log_append_event;
-    eventpp::EventDispatcher<int, void(Field)> member_entry_event;
-    eventpp::EventDispatcher<std::string, void(Field)> sync_event,
-        value_entry_event, text_entry_event, func_entry_event, view_entry_event,
-        robot_model_entry_event, image_entry_event, canvas3d_entry_event,
-        canvas2d_entry_event, ping_event;
+    std::unordered_map<std::string, eventpp::CallbackList<void(Log)>>
+        log_append_event;
+    eventpp::CallbackList<void(Member)> member_entry_event;
+    std::unordered_map<std::string, eventpp::CallbackList<void(Member)>>
+        sync_event, ping_event;
+    std::unordered_map<std::string, eventpp::CallbackList<void(Value)>>
+        value_entry_event;
+    std::unordered_map<std::string, eventpp::CallbackList<void(Text)>>
+        text_entry_event;
+    std::unordered_map<std::string, eventpp::CallbackList<void(Func)>>
+        func_entry_event;
+    std::unordered_map<std::string, eventpp::CallbackList<void(View)>>
+        view_entry_event;
+    std::unordered_map<std::string, eventpp::CallbackList<void(Image)>>
+        image_entry_event;
+    std::unordered_map<std::string, eventpp::CallbackList<void(RobotModel)>>
+        robot_model_entry_event;
+    std::unordered_map<std::string, eventpp::CallbackList<void(Canvas3D)>>
+        canvas3d_entry_event;
+    std::unordered_map<std::string, eventpp::CallbackList<void(Canvas2D)>>
+        canvas2d_entry_event;
 
     /*!
      * \brief sync()のタイミングで実行を同期する関数のcondition_variable

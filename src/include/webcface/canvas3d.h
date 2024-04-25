@@ -39,19 +39,42 @@ class WEBCFACE_DLL Canvas3D : protected Field, public EventTarget<Canvas3D> {
     Canvas3D(const Field &base, const std::string &field)
         : Canvas3D(Field{base, field}) {}
 
+    friend Internal::DataSetBuffer<Canvas3DComponent>;
+    using Field::lastName;
     using Field::member;
     using Field::name;
-    friend Internal::DataSetBuffer<Canvas3DComponent>;
-
     /*!
-     * \brief 子フィールドを返す
-     *
-     * \return「(thisのフィールド名).(子フィールド名)」をフィールド名とするCanvas3D
+     * \brief 「(thisの名前).(追加の名前)」を新しい名前とするField
      *
      */
-    Canvas3D child(const std::string &field) const {
-        return Canvas3D{*this, this->field_ + "." + field};
+    Canvas3D child(std::string_view field) const {
+        return this->Field::child(field);
     }
+    /*!
+     * \since ver1.11
+     */
+    Canvas3D child(int index) const { return this->Field::child(index); }
+    /*!
+     * child()と同じ
+     * \since ver1.11
+     */
+    Canvas3D operator[](std::string_view field) const { return child(field); }
+    /*!
+     * operator[](long, const char *)と解釈されるのを防ぐための定義
+     * \since ver1.11
+     */
+    Canvas3D operator[](const char *field) const { return child(field); }
+    /*!
+     * child()と同じ
+     * \since ver1.11
+     */
+    Canvas3D operator[](int index) const { return child(index); }
+    /*!
+     * \brief nameの最後のピリオドの前までを新しい名前とするField
+     * \since ver1.11
+     */
+    Canvas3D parent() const { return this->Field::parent(); }
+
     /*!
      * \brief canvasの内容をリクエストする
      * \since ver1.7
