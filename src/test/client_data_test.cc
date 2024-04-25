@@ -24,18 +24,30 @@ TEST_F(SyncDataStore2Test, setSend) {
     EXPECT_EQ(send.size(), 1);
     EXPECT_EQ(s2.transferSend(false).size(), 0);
     EXPECT_EQ(s2.transferSend(true).size(), 1);
+
     s2.setSend("a", "b"); // 同じデータ
     EXPECT_EQ(s2.getRecv(self_name, "a"), "b");
     send = s2.transferSend(false);
     EXPECT_FALSE(send.count("a"));
     EXPECT_EQ(send.size(), 0);
     EXPECT_EQ(s2.transferSend(true).size(), 1);
+
+    s2.setSend("a", "zzzzzz");
+    EXPECT_EQ(s2.getRecv(self_name, "a"), "zzzzzz");
+    s2.setSend("a", "b"); // 一度違うデータを送ってから同じデータ
+    EXPECT_EQ(s2.getRecv(self_name, "a"), "b");
+    send = s2.transferSend(false);
+    EXPECT_FALSE(send.count("a"));
+    EXPECT_EQ(send.size(), 0);
+    EXPECT_EQ(s2.transferSend(true).size(), 1);
+
     s2.setSend("a", "c"); // 違うデータ
     EXPECT_EQ(s2.getRecv(self_name, "a"), "c");
     send = s2.transferSend(false);
     EXPECT_EQ(send.at("a"), "c");
     EXPECT_EQ(send.size(), 1);
     EXPECT_EQ(s2.transferSend(true).size(), 1);
+
 }
 // TEST_F(SyncDataStore2Test, setRecv) {}
 TEST_F(SyncDataStore2Test, addReq) {

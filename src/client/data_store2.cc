@@ -25,11 +25,9 @@ static bool shouldSend(const T &prev, const T &current) {
 template <typename T, typename ReqT>
 void SyncDataStore2<T, ReqT>::setSend(const std::string &name, const T &data) {
     std::lock_guard lock(mtx);
-    auto &recv_self = data_recv[self_member_name];
-    if (!recv_self.count(name) || shouldSend(recv_self[name], data)) {
-        data_send[name] = data;
-    }
-    recv_self[name] = data; // 送信後に自分の値を参照する用
+    data_send[name] = data;
+    // auto &recv_self = data_recv[self_member_name];
+    // recv_self[name] = data; // 送信後に自分の値を参照する用
 }
 
 template <typename T, typename ReqT>
@@ -122,6 +120,12 @@ template <typename T, typename ReqT>
 std::optional<T> SyncDataStore2<T, ReqT>::getRecv(const std::string &from,
                                                   const std::string &name) {
     std::lock_guard lock(mtx);
+    if (from == self_member_name) {
+        auto it = data_send.find(name);
+        if (it != data_send.end()) {
+            return it->second;
+        }
+    }
     // addReq(from, name);
     auto s_it = data_recv.find(from);
     if (s_it != data_recv.end()) {
@@ -203,12 +207,21 @@ template <typename T, typename ReqT>
 std::unordered_map<std::string, T>
 SyncDataStore2<T, ReqT>::transferSend(bool is_first) {
     std::lock_guard lock(mtx);
+    std::unordered_map<std::string, T> send_changed;
+    auto &recv_self = data_recv[self_member_name];
+    for (auto &[name, data] : data_send) {
+        auto r_it = recv_self.find(name);
+        if (r_it == recv_self.end() || shouldSend(r_it->second, data)) {
+            send_changed[name] = data;
+            recv_self[name] = std::move(data);
+        }
+    }
+    data_send.clear();
     if (is_first) {
-        data_send.clear();
-        return data_send_prev = data_recv[self_member_name];
+        return data_send_prev = recv_self;
     } else {
-        data_send_prev = data_send;
-        return std::move(data_send);
+        data_send_prev = send_changed;
+        return std::move(send_changed);
     }
 }
 template <typename T, typename ReqT>

@@ -41,6 +41,9 @@ class SyncDataStore2 {
      *
      * data_recv[member名][データ名] = 値
      *
+     * ver1.11〜 setSend時には上書きされず、transferSendで上書きされる
+     * それまでの間はgetRecvはdata_recvではなくdata_sendを優先的に読むようにする
+     *
      */
     std::unordered_map<std::string, std::unordered_map<std::string, T>>
         data_recv;
