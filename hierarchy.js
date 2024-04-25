@@ -33,7 +33,6 @@ var hierarchy =
     [ "Circle", "structwebcface_1_1Components_1_1Geometries_1_1Circle.html", null ],
     [ "Circle", "structwebcface_1_1Components_1_1Geometries_1_1Circle.html", null ],
     [ "Circle", "structwebcface_1_1Components_1_1Geometries_1_1Circle.html", null ],
-    [ "ClientData", "structwebcface_1_1Server_1_1ClientData.html", null ],
     [ "Cylinder", "structwebcface_1_1Components_1_1Geometries_1_1Cylinder.html", null ],
     [ "Cylinder", "structwebcface_1_1Components_1_1Geometries_1_1Cylinder.html", null ],
     [ "Cylinder", "structwebcface_1_1Components_1_1Geometries_1_1Cylinder.html", null ],
@@ -163,6 +162,7 @@ var hierarchy =
     [ "LogLine", "structwebcface_1_1Common_1_1LogLine.html", null ],
     [ "LogLine", "structwebcface_1_1Common_1_1LogLine.html", null ],
     [ "LogLine", "structwebcface_1_1Message_1_1Log_1_1LogLine.html", null ],
+    [ "MemberData", "structwebcface_1_1Server_1_1MemberData.html", null ],
     [ "MessageBase< k >", "structwebcface_1_1Message_1_1MessageBase.html", null ],
     [ "MessageBase< MessageKind::call >", "structwebcface_1_1Message_1_1MessageBase.html", [
       [ "Call", "structwebcface_1_1Message_1_1Call.html", null ]
@@ -279,10 +279,11 @@ var hierarchy =
     [ "runtime_error", null, [
       [ "FuncNotFound", "structwebcface_1_1FuncNotFound.html", null ]
     ] ],
+    [ "Server", "classwebcface_1_1Server_1_1Server.html", null ],
+    [ "ServerStorage", "structwebcface_1_1Server_1_1ServerStorage.html", null ],
     [ "Sphere", "structwebcface_1_1Components_1_1Geometries_1_1Sphere.html", null ],
     [ "Sphere", "structwebcface_1_1Components_1_1Geometries_1_1Sphere.html", null ],
     [ "Sphere", "structwebcface_1_1Components_1_1Geometries_1_1Sphere.html", null ],
-    [ "Store", "structwebcface_1_1Server_1_1Store.html", null ],
     [ "streambuf", null, [
       [ "LoggerBuf", "classwebcface_1_1LoggerBuf.html", null ]
     ] ],

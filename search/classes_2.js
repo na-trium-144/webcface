@@ -8,12 +8,12 @@ var searchData=
   ['canvas2dcomponentbase_5',['canvas2dcomponentbase',['../structwebcface_1_1Common_1_1Canvas2DComponentBase.html',1,'Canvas2DComponentBase'],['../structwebcface_1_1Common_1_1Canvas2DComponentBase.html',1,'Canvas2DComponentBase']]],
   ['canvas2ddatabase_6',['canvas2ddatabase',['../structwebcface_1_1Common_1_1Canvas2DDataBase.html',1,'Canvas2DDataBase'],['../structwebcface_1_1Common_1_1Canvas2DDataBase.html',1,'Canvas2DDataBase']]],
   ['canvas2ddatabuf_7',['Canvas2DDataBuf',['../classwebcface_1_1Internal_1_1Canvas2DDataBuf.html',1,'webcface::Internal']]],
-  ['canvas3d_8',['canvas3d',['../classwebcface_1_1Canvas3D.html',1,'Canvas3D'],['../structwebcface_1_1Message_1_1Canvas3D.html',1,'Canvas3D']]],
+  ['canvas3d_8',['canvas3d',['../structwebcface_1_1Message_1_1Canvas3D.html',1,'Canvas3D'],['../classwebcface_1_1Canvas3D.html',1,'Canvas3D']]],
   ['canvas3dcomponent_9',['canvas3dcomponent',['../classwebcface_1_1Canvas3DComponent.html',1,'Canvas3DComponent'],['../structwebcface_1_1Message_1_1Canvas3D_1_1Canvas3DComponent.html',1,'Canvas3D::Canvas3DComponent']]],
   ['canvas3dcomponentbase_10',['canvas3dcomponentbase',['../structwebcface_1_1Common_1_1Canvas3DComponentBase.html',1,'Canvas3DComponentBase'],['../structwebcface_1_1Common_1_1Canvas3DComponentBase.html',1,'Canvas3DComponentBase']]],
   ['circle_11',['circle',['../structwebcface_1_1Components_1_1Geometries_1_1Circle.html',1,'Circle'],['../structwebcface_1_1Components_1_1Geometries_1_1Circle.html',1,'Circle'],['../structwebcface_1_1Components_1_1Geometries_1_1Circle.html',1,'Circle']]],
   ['client_12',['Client',['../classwebcface_1_1Client.html',1,'webcface']]],
-  ['clientdata_13',['clientdata',['../structwebcface_1_1Internal_1_1ClientData.html',1,'ClientData'],['../structwebcface_1_1Server_1_1ClientData.html',1,'ClientData']]],
+  ['clientdata_13',['ClientData',['../structwebcface_1_1Internal_1_1ClientData.html',1,'webcface::Internal']]],
   ['customlogger_14',['CustomLogger',['../classwebcface_1_1Server_1_1CustomLogger.html',1,'webcface::Server']]],
   ['cylinder_15',['cylinder',['../structwebcface_1_1Components_1_1Geometries_1_1Cylinder.html',1,'Cylinder'],['../structwebcface_1_1Components_1_1Geometries_1_1Cylinder.html',1,'Cylinder'],['../structwebcface_1_1Components_1_1Geometries_1_1Cylinder.html',1,'Cylinder']]]
 ];

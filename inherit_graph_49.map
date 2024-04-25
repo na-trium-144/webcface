@@ -1,5 +1,17 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" title=" " alt="" coords="5,5,105,31"/>
-<area shape="rect" id="Node000001" href="$classwebcface_1_1Server_1_1CustomLogger.html" title=" " alt="" coords="153,5,269,31"/>
-<area shape="poly" id="edge50_Node000000_Node000001" title=" " alt="" coords="119,15,153,15,153,21,119,21"/>
+<area shape="rect" id="Node000000" href="$classwebcface_1_1Common_1_1ImageBase.html" title="(ver1.3から追加) 画像データ" alt="" coords="65,70,160,95"/>
+<area shape="rect" id="Node000001" href="$classwebcface_1_1Common_1_1ImageWithCV.html" title="(ver1.3から追加) 画像データ" alt="" coords="271,95,382,121"/>
+<area shape="poly" id="edge51_Node000000_Node000001" title=" " alt="" coords="174,87,272,99,271,104,174,93"/>
+<area shape="rect" id="Node000003" href="$structwebcface_1_1Message_1_1Image.html" title=" " alt="" coords="295,145,358,170"/>
+<area shape="poly" id="edge52_Node000000_Node000003" title=" " alt="" coords="174,91,221,104,246,116,269,130,297,142,294,147,267,134,243,121,219,109,173,96"/>
+<area shape="rect" id="Node000005" href="$structwebcface_1_1Message_1_1Res_3_01Image_01_4.html" title=" " alt="" coords="268,46,385,71"/>
+<area shape="poly" id="edge53_Node000000_Node000005" title=" " alt="" coords="174,73,267,63,268,68,174,79"/>
+<area shape="rect" id="Node000002" href="$classwebcface_1_1Common_1_1ImageBase.html" title="(ver1.3から追加) 画像データ" alt="" coords="65,119,160,145"/>
+<area shape="poly" id="edge54_Node000002_Node000001" title=" " alt="" coords="174,123,271,111,272,117,174,128"/>
+<area shape="poly" id="edge55_Node000002_Node000003" title=" " alt="" coords="174,137,295,151,294,156,174,142"/>
+<area shape="poly" id="edge56_Node000002_Node000005" title=" " alt="" coords="173,118,219,104,243,93,267,80,293,69,295,74,269,85,245,98,221,109,174,123"/>
+<area shape="rect" id="Node000004" href="$structwebcface_1_1Message_1_1MessageBase.html" title=" " alt="" coords="5,169,220,209"/>
+<area shape="poly" id="edge57_Node000004_Node000003" title=" " alt="" coords="233,169,295,159,296,165,234,174"/>
+<area shape="rect" id="Node000006" href="$structwebcface_1_1Message_1_1MessageBase.html" title=" " alt="" coords="5,5,220,45"/>
+<area shape="poly" id="edge58_Node000006_Node000005" title=" " alt="" coords="234,42,268,47,268,52,233,47"/>
 </map>

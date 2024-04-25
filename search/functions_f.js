@@ -5,7 +5,7 @@ var searchData=
   ['recvthreadmain_2',['recvThreadMain',['../namespacewebcface_1_1Internal.html#ab7dcb25feb9553f343aec62dfe9bbbd2',1,'webcface::Internal']]],
   ['reject_3',['reject',['../classwebcface_1_1FuncCallHandle.html#a9c44fa4730a1728608b9e4f2da82bbef',1,'webcface::FuncCallHandle']]],
   ['remoteaddr_4',['remoteAddr',['../classwebcface_1_1Member.html#a786b7cda7f3dbf6635ac2a56f2b94ca4',1,'webcface::Member']]],
-  ['removeclient_5',['removeClient',['../structwebcface_1_1Server_1_1Store.html#ab220140080b3a22eadbe31a1e989622d',1,'webcface::Server::Store']]],
+  ['removeclient_5',['removeClient',['../structwebcface_1_1Server_1_1ServerStorage.html#aec6064f5c25334bfaa5d4f268c83daf6',1,'webcface::Server::ServerStorage']]],
   ['removelistener_6',['removeListener',['../classwebcface_1_1EventTarget.html#a712fd6f68c578f292096fde93c5501bb',1,'webcface::EventTarget']]],
   ['removeresultsetter_7',['removeResultSetter',['../classwebcface_1_1Internal_1_1FuncResultStore.html#ac49e5f547c6e832a91b736a9252847e7',1,'webcface::Internal::FuncResultStore']]],
   ['replaceinvalidval_8',['replaceInvalidVal',['../namespacewebcface_1_1Server.html#a260a5b4ff2a51da2104fbd24fc78ee12',1,'webcface::Server']]],

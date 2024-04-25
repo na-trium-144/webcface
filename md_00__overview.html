@@ -183,10 +183,12 @@ Server</h1>
 <h2><a class="anchor" id="autotoc_md3"></a>
 コマンドラインから</h2>
 <div class="fragment"><div class="line">webcface-server</div>
-</div><!-- fragment --><p> でサーバーを起動します</p>
+</div><!-- fragment --><p> でサーバーを起動します。 デフォルトでは7530番ポートを開きクライアントの接続を待ちます。</p>
 <ul>
 <li>コマンドラインオプションで起動するポートを変更できたりします。詳細は<code>webcface-server -h</code>で確認してください</li>
 </ul>
+<p><span class="since-c">1.11</span> TCPポートだけでなく、Unixドメインソケットも開くようになりました。 Linux,Macでは <code>/tmp/webcface/ポート番号.sock</code> Windowsでは <code>C:\ProgramData\webcface\ポート番号.sock</code> が自動的に作成されます。</p>
+<p>さらに、WSL1上で起動した場合は <code>/mnt/c/ProgramData/webcface/ポート番号.sock</code> も追加で開きます。 これによりWindows側のクライアントがWSL1側のサーバーに接続することができます。</p>
 <dl class="section note"><dt>Note</dt><dd>標準エラー出力にログが出力されます。 デフォルトではクライアントの接続と切断がログに表示されます。 <br  />
  <span class="since-c">1.1.7</span> コマンドライン引数で <code>-v</code> を渡すとクライアントから送られてきたメッセージ、 <code>-vv</code> を渡すと送受信したメッセージすべてをログに表示します。 (ログが長く見づらくなります)</dd></dl>
 <h2><a class="anchor" id="autotoc_md4"></a>
@@ -354,7 +356,7 @@ Log</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Apr 25 2024 11:56:16 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Thu Apr 25 2024 16:23:11 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

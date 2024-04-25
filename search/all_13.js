@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['join_0',['join',['../structwebcface_1_1Internal_1_1ClientData.html#a6c7abfff648dad193674fc432ad4840d',1,'webcface::Internal::ClientData']]],
+  ['join_0',['join',['../structwebcface_1_1Internal_1_1ClientData.html#a6c7abfff648dad193674fc432ad4840d',1,'webcface::Internal::ClientData::join()'],['../classwebcface_1_1Server_1_1Server.html#a6c7abfff648dad193674fc432ad4840d',1,'webcface::Server::Server::join()']]],
   ['joint_1',['joint',['../structwebcface_1_1Common_1_1RobotLink.html#a2c3f77c9acaa0f8c43395295b21a7608',1,'webcface::Common::RobotLink']]],
   ['joint_5fangle_2',['joint_angle',['../structwebcface_1_1Message_1_1RobotModel_1_1RobotLink.html#a0d1d3c258be36be01381b2ccf7b3cbe6',1,'webcface::Message::RobotModel::RobotLink']]],
   ['joint_5fname_3',['joint_name',['../structwebcface_1_1Message_1_1RobotModel_1_1RobotLink.html#a0864bd115fa1d8bf473e1412ee46dc8c',1,'webcface::Message::RobotModel::RobotLink']]],

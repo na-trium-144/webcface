@@ -10,7 +10,7 @@ var searchData=
   ['fill_7',['fill',['../structwebcface_1_1Message_1_1Canvas2D_1_1Canvas2DComponent.html#a3ca80ac5c5c04e79325bb3216aef94c7',1,'webcface::Message::Canvas2D::Canvas2DComponent']]],
   ['fill_5f_8',['fill_',['../structwebcface_1_1Common_1_1Canvas2DComponentBase.html#ac7b37626ed2c4a3d06caa351f8233a33',1,'webcface::Common::Canvas2DComponentBase']]],
   ['frame_5frate_9',['frame_rate',['../structwebcface_1_1Common_1_1ImageReq.html#abe0db23ce7f19f5dfd27436efea2e30d',1,'webcface::Common::ImageReq']]],
-  ['func_10',['func',['../structwebcface_1_1Server_1_1ClientData.html#a51eebe93c62cc25bd332c820cbbb6d3c',1,'webcface::Server::ClientData']]],
+  ['func_10',['func',['../structwebcface_1_1Server_1_1MemberData.html#a51eebe93c62cc25bd332c820cbbb6d3c',1,'webcface::Server::MemberData']]],
   ['func_5fentry_5fevent_11',['func_entry_event',['../structwebcface_1_1Internal_1_1ClientData.html#a95046f0e91453991291f715efad7a123',1,'webcface::Internal::ClientData']]],
   ['func_5fimpl_12',['func_impl',['../structwebcface_1_1Common_1_1FuncInfo.html#ac9d6d95a4e2e215436396f43d83b0880',1,'webcface::Common::FuncInfo']]],
   ['func_5flistener_5fhandlers_13',['func_listener_handlers',['../structwebcface_1_1Internal_1_1ClientData.html#acc9b7543917838eef1ad9d744e1cc613',1,'webcface::Internal::ClientData']]],

@@ -149,17 +149,21 @@ $(document).ready(function(){initNavTree('namespacewebcface_1_1Server.html','');
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Server_1_1ClientData.html">ClientData</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Server_1_1CustomLogger.html">CustomLogger</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Server_1_1Store.html">Store</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Server_1_1MemberData.html">MemberData</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Server_1_1Server.html">Server</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Server_1_1ServerStorage.html">ServerStorage</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:ac49d764f17dea1515f5a737b042031c6" id="r_ac49d764f17dea1515f5a737b042031c6"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Server.html#ac49d764f17dea1515f5a737b042031c6">ClientDataPtr</a> = std::shared_ptr&lt; <a class="el" href="structwebcface_1_1Server_1_1ClientData.html">ClientData</a> &gt;</td></tr>
-<tr class="separator:ac49d764f17dea1515f5a737b042031c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af92eef764fed4a1512658233c54020bf" id="r_af92eef764fed4a1512658233c54020bf"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Server.html#af92eef764fed4a1512658233c54020bf">wsConnPtr</a> = void *</td></tr>
+<tr class="separator:af92eef764fed4a1512658233c54020bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad019b4eb6d72c43cff3b61c599e4476d" id="r_ad019b4eb6d72c43cff3b61c599e4476d"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Server.html#ad019b4eb6d72c43cff3b61c599e4476d">MemberDataPtr</a> = std::shared_ptr&lt; <a class="el" href="structwebcface_1_1Server_1_1MemberData.html">MemberData</a> &gt;</td></tr>
+<tr class="separator:ad019b4eb6d72c43cff3b61c599e4476d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
@@ -177,45 +181,37 @@ Functions</h2></td></tr>
 <tr class="separator:a260a5b4ff2a51da2104fbd24fc78ee12"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9a924555b08bf13c936e947d39c5b5b0" id="r_a9a924555b08bf13c936e947d39c5b5b0"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Server.html#a9a924555b08bf13c936e947d39c5b5b0">colorConvert</a> (<a class="el" href="namespacewebcface_1_1Common.html#abcfd96b0be942012c2f4641b4741a31e">Common::ImageColorMode</a> src_mode, <a class="el" href="namespacewebcface_1_1Common.html#abcfd96b0be942012c2f4641b4741a31e">Common::ImageColorMode</a> dst_mode)</td></tr>
 <tr class="separator:a9a924555b08bf13c936e947d39c5b5b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a33df3bc6f542e57bb6b239b084301718" id="r_a33df3bc6f542e57bb6b239b084301718"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Server.html#a33df3bc6f542e57bb6b239b084301718">pingThreadMain</a> ()</td></tr>
-<tr class="separator:a33df3bc6f542e57bb6b239b084301718"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a61c2320b1fc2122f40c399f95f7f2d42" id="r_a61c2320b1fc2122f40c399f95f7f2d42"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Server.html#a61c2320b1fc2122f40c399f95f7f2d42">serverSend</a> (void *conn, const std::string &amp;msg)</td></tr>
-<tr class="separator:a61c2320b1fc2122f40c399f95f7f2d42"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a324e1a70e006e8434fa711dd7e646727" id="r_a324e1a70e006e8434fa711dd7e646727"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Server.html#a324e1a70e006e8434fa711dd7e646727">serverStop</a> ()</td></tr>
-<tr class="separator:a324e1a70e006e8434fa711dd7e646727"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a55d5c53c73f66be16623a85d1c4f1e97" id="r_a55d5c53c73f66be16623a85d1c4f1e97"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Server.html#a55d5c53c73f66be16623a85d1c4f1e97">serverRun</a> (int port, const spdlog::sink_ptr &amp;sink, spdlog::level::level_enum level)</td></tr>
-<tr class="separator:a55d5c53c73f66be16623a85d1c4f1e97"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:a7a1bb6b0027107872a673bf61a239881" id="r_a7a1bb6b0027107872a673bf61a239881"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structwebcface_1_1Server_1_1Store.html">Store</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Server.html#a7a1bb6b0027107872a673bf61a239881">store</a></td></tr>
-<tr class="separator:a7a1bb6b0027107872a673bf61a239881"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0efb18b27d4a48629287b4b8790fbdf7" id="r_a0efb18b27d4a48629287b4b8790fbdf7"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Server.html#a0efb18b27d4a48629287b4b8790fbdf7">static_dir</a></td></tr>
+<tr class="memitem:a0efb18b27d4a48629287b4b8790fbdf7" id="r_a0efb18b27d4a48629287b4b8790fbdf7"><td class="memItemLeft" align="right" valign="top">static std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Server.html#a0efb18b27d4a48629287b4b8790fbdf7">static_dir</a></td></tr>
 <tr class="separator:a0efb18b27d4a48629287b4b8790fbdf7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4898db8d9fe1cf7bf83e4c7ac242a245" id="r_a4898db8d9fe1cf7bf83e4c7ac242a245"><td class="memItemLeft" align="right" valign="top">std::condition_variable&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Server.html#a4898db8d9fe1cf7bf83e4c7ac242a245">server_ping_wait</a></td></tr>
-<tr class="separator:a4898db8d9fe1cf7bf83e4c7ac242a245"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a229b454d156fec6ab3e561a195813199" id="r_a229b454d156fec6ab3e561a195813199"><td class="memItemLeft" align="right" valign="top">std::mutex&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Server.html#a229b454d156fec6ab3e561a195813199">server_mtx</a></td></tr>
-<tr class="separator:a229b454d156fec6ab3e561a195813199"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af7f280f2d2d0f6f0d076c7c36c317695" id="r_af7f280f2d2d0f6f0d076c7c36c317695"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; std::unordered_map&lt; unsigned int, int &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Server.html#af7f280f2d2d0f6f0d076c7c36c317695">ping_status</a></td></tr>
-<tr class="separator:af7f280f2d2d0f6f0d076c7c36c317695"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afb6151bd8ad60e86df1861dce46a0d18" id="r_afb6151bd8ad60e86df1861dce46a0d18"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; crow::SimpleApp &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Server.html#afb6151bd8ad60e86df1861dce46a0d18">app</a></td></tr>
-<tr class="separator:afb6151bd8ad60e86df1861dce46a0d18"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afea6e095e49b6ac795ddc5a7bf69acdc" id="r_afea6e095e49b6ac795ddc5a7bf69acdc"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; std::thread &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Server.html#afea6e095e49b6ac795ddc5a7bf69acdc">ping_thread</a></td></tr>
-<tr class="separator:afea6e095e49b6ac795ddc5a7bf69acdc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af04c40d65b7df8a8bbf0c6298240eb7e" id="r_af04c40d65b7df8a8bbf0c6298240eb7e"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classwebcface_1_1Server_1_1CustomLogger.html">CustomLogger</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Server.html#af04c40d65b7df8a8bbf0c6298240eb7e">crow_custom_logger</a></td></tr>
+<tr class="memitem:af04c40d65b7df8a8bbf0c6298240eb7e" id="r_af04c40d65b7df8a8bbf0c6298240eb7e"><td class="memItemLeft" align="right" valign="top">static std::unique_ptr&lt; <a class="el" href="classwebcface_1_1Server_1_1CustomLogger.html">CustomLogger</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Server.html#af04c40d65b7df8a8bbf0c6298240eb7e">crow_custom_logger</a></td></tr>
 <tr class="separator:af04c40d65b7df8a8bbf0c6298240eb7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae1c86e419a05625de482e50f342733db" id="r_ae1c86e419a05625de482e50f342733db"><td class="memItemLeft" align="right" valign="top">std::atomic&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Server.html#ae1c86e419a05625de482e50f342733db">server_stop</a></td></tr>
-<tr class="separator:ae1c86e419a05625de482e50f342733db"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Typedef Documentation</h2>
-<a id="ac49d764f17dea1515f5a737b042031c6" name="ac49d764f17dea1515f5a737b042031c6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac49d764f17dea1515f5a737b042031c6">&#9670;&#160;</a></span>ClientDataPtr</h2>
+<a id="ad019b4eb6d72c43cff3b61c599e4476d" name="ad019b4eb6d72c43cff3b61c599e4476d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad019b4eb6d72c43cff3b61c599e4476d">&#9670;&#160;</a></span>MemberDataPtr</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="namespacewebcface_1_1Server.html#ac49d764f17dea1515f5a737b042031c6">ClientDataPtr</a> =  std::shared_ptr&lt;<a class="el" href="structwebcface_1_1Server_1_1ClientData.html">ClientData</a>&gt;</td>
+          <td class="memname">using <a class="el" href="namespacewebcface_1_1Server.html#ad019b4eb6d72c43cff3b61c599e4476d">MemberDataPtr</a> =  std::shared_ptr&lt;<a class="el" href="structwebcface_1_1Server_1_1MemberData.html">MemberData</a>&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="af92eef764fed4a1512658233c54020bf" name="af92eef764fed4a1512658233c54020bf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af92eef764fed4a1512658233c54020bf">&#9670;&#160;</a></span>wsConnPtr</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespacewebcface_1_1Server.html#af92eef764fed4a1512658233c54020bf">wsConnPtr</a> =  void *</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -365,23 +361,6 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="a33df3bc6f542e57bb6b239b084301718" name="a33df3bc6f542e57bb6b239b084301718"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a33df3bc6f542e57bb6b239b084301718">&#9670;&#160;</a></span>pingThreadMain()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void pingThreadMain </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a id="a260a5b4ff2a51da2104fbd24fc78ee12" name="a260a5b4ff2a51da2104fbd24fc78ee12"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a260a5b4ff2a51da2104fbd24fc78ee12">&#9670;&#160;</a></span>replaceInvalidVal()</h2>
 
@@ -400,180 +379,25 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="a55d5c53c73f66be16623a85d1c4f1e97" name="a55d5c53c73f66be16623a85d1c4f1e97"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a55d5c53c73f66be16623a85d1c4f1e97">&#9670;&#160;</a></span>serverRun()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void serverRun </td>
-          <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>port</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const spdlog::sink_ptr &amp;&#160;</td>
-          <td class="paramname"><em>sink</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">spdlog::level::level_enum&#160;</td>
-          <td class="paramname"><em>level</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a61c2320b1fc2122f40c399f95f7f2d42" name="a61c2320b1fc2122f40c399f95f7f2d42"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a61c2320b1fc2122f40c399f95f7f2d42">&#9670;&#160;</a></span>serverSend()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void serverSend </td>
-          <td>(</td>
-          <td class="paramtype">void *&#160;</td>
-          <td class="paramname"><em>conn</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>msg</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a324e1a70e006e8434fa711dd7e646727" name="a324e1a70e006e8434fa711dd7e646727"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a324e1a70e006e8434fa711dd7e646727">&#9670;&#160;</a></span>serverStop()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void serverStop </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <h2 class="groupheader">Variable Documentation</h2>
-<a id="afb6151bd8ad60e86df1861dce46a0d18" name="afb6151bd8ad60e86df1861dce46a0d18"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afb6151bd8ad60e86df1861dce46a0d18">&#9670;&#160;</a></span>app</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::unique_ptr&lt;crow::SimpleApp&gt; app</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a id="af04c40d65b7df8a8bbf0c6298240eb7e" name="af04c40d65b7df8a8bbf0c6298240eb7e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af04c40d65b7df8a8bbf0c6298240eb7e">&#9670;&#160;</a></span>crow_custom_logger</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">std::unique_ptr&lt;<a class="el" href="classwebcface_1_1Server_1_1CustomLogger.html">CustomLogger</a>&gt; crow_custom_logger</td>
         </tr>
       </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="af7f280f2d2d0f6f0d076c7c36c317695" name="af7f280f2d2d0f6f0d076c7c36c317695"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af7f280f2d2d0f6f0d076c7c36c317695">&#9670;&#160;</a></span>ping_status</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::shared_ptr&lt; std::unordered_map&lt; unsigned int, int &gt; &gt; ping_status</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="afea6e095e49b6ac795ddc5a7bf69acdc" name="afea6e095e49b6ac795ddc5a7bf69acdc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afea6e095e49b6ac795ddc5a7bf69acdc">&#9670;&#160;</a></span>ping_thread</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::unique_ptr&lt;std::thread&gt; ping_thread</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a229b454d156fec6ab3e561a195813199" name="a229b454d156fec6ab3e561a195813199"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a229b454d156fec6ab3e561a195813199">&#9670;&#160;</a></span>server_mtx</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::mutex server_mtx</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a4898db8d9fe1cf7bf83e4c7ac242a245" name="a4898db8d9fe1cf7bf83e4c7ac242a245"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4898db8d9fe1cf7bf83e4c7ac242a245">&#9670;&#160;</a></span>server_ping_wait</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::condition_variable server_ping_wait</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="ae1c86e419a05625de482e50f342733db" name="ae1c86e419a05625de482e50f342733db"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae1c86e419a05625de482e50f342733db">&#9670;&#160;</a></span>server_stop</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::atomic&lt;bool&gt; server_stop</td>
-        </tr>
-      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
@@ -583,25 +407,19 @@ Variables</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">std::string static_dir</td>
         </tr>
       </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a7a1bb6b0027107872a673bf61a239881" name="a7a1bb6b0027107872a673bf61a239881"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7a1bb6b0027107872a673bf61a239881">&#9670;&#160;</a></span>store</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structwebcface_1_1Server_1_1Store.html">Store</a> store</td>
-        </tr>
-      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
@@ -612,7 +430,7 @@ Variables</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="namespacewebcface_1_1Server.html">Server</a></li>
-    <li class="footer">Generated on Thu Apr 25 2024 11:56:16 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Thu Apr 25 2024 16:23:12 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

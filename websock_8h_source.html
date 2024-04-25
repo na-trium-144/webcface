@@ -146,43 +146,13 @@ $(document).ready(function(){initNavTree('websock_8h_source.html',''); initResiz
   <div class="headertitle"><div class="title">websock.h</div></div>
 </div><!--header-->
 <div class="contents">
-<a href="websock_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#include &lt;spdlog/common.h&gt;</span></div>
-<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &lt;mutex&gt;</span></div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &lt;condition_variable&gt;</span></div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &lt;memory&gt;</span></div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &lt;unordered_map&gt;</span></div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &lt;<a class="code" href="def_8h.html">webcface/common/def.h</a>&gt;</span></div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><a class="code hl_define" href="macros_8h.html#abe991b8f291782627a31118c688e123a">WEBCFACE_NS_BEGIN</a></div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="keyword">namespace </span>Server {</div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="keyword">extern</span> <a class="code hl_define" href="macros_8h.html#a47af057bda855b54c212e97ffccdca01">WEBCFACE_DLL</a> std::condition_variable <a class="code hl_variable" href="namespacewebcface_1_1Server.html#a4898db8d9fe1cf7bf83e4c7ac242a245">server_ping_wait</a>;</div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="keyword">extern</span> <a class="code hl_define" href="macros_8h.html#a47af057bda855b54c212e97ffccdca01">WEBCFACE_DLL</a> std::mutex <a class="code hl_variable" href="namespacewebcface_1_1Server.html#a229b454d156fec6ab3e561a195813199">server_mtx</a>;</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="keyword">extern</span> <a class="code hl_define" href="macros_8h.html#a47af057bda855b54c212e97ffccdca01">WEBCFACE_DLL</a> std::shared_ptr&lt;std::unordered_map&lt;unsigned int, int&gt;&gt; <a class="code hl_enumvalue" href="namespacewebcface_1_1Message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a0cb8db73d08e6f71fe9d47fb44fdc9a5">ping_status</a>;</div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><a class="code hl_define" href="macros_8h.html#a47af057bda855b54c212e97ffccdca01">WEBCFACE_DLL</a> <span class="keywordtype">void</span> <a class="code hl_function" href="namespacewebcface_1_1Server.html#a61c2320b1fc2122f40c399f95f7f2d42">serverSend</a>(<span class="keywordtype">void</span> *conn, <span class="keyword">const</span> std::string &amp;msg);</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><a class="code hl_define" href="macros_8h.html#a47af057bda855b54c212e97ffccdca01">WEBCFACE_DLL</a> <span class="keywordtype">void</span> <a class="code hl_function" href="namespacewebcface_1_1Server.html#a324e1a70e006e8434fa711dd7e646727">serverStop</a>();</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><a class="code hl_define" href="macros_8h.html#a47af057bda855b54c212e97ffccdca01">WEBCFACE_DLL</a> <span class="keywordtype">void</span> <a class="code hl_function" href="namespacewebcface_1_1Server.html#a55d5c53c73f66be16623a85d1c4f1e97">serverRun</a>(<span class="keywordtype">int</span> port, <span class="keyword">const</span> spdlog::sink_ptr &amp;sink,</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>               spdlog::level::level_enum level);</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>} <span class="comment">// namespace Server</span></div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><a class="code hl_define" href="macros_8h.html#ab3f2570d5b8231ddbe0e57fc8ab629eb">WEBCFACE_NS_END</a></div>
-<div class="ttc" id="adef_8h_html"><div class="ttname"><a href="def_8h.html">def.h</a></div></div>
-<div class="ttc" id="amacros_8h_html_a47af057bda855b54c212e97ffccdca01"><div class="ttname"><a href="macros_8h.html#a47af057bda855b54c212e97ffccdca01">WEBCFACE_DLL</a></div><div class="ttdeci">#define WEBCFACE_DLL</div><div class="ttdef"><b>Definition</b> macros.h:23</div></div>
-<div class="ttc" id="amacros_8h_html_ab3f2570d5b8231ddbe0e57fc8ab629eb"><div class="ttname"><a href="macros_8h.html#ab3f2570d5b8231ddbe0e57fc8ab629eb">WEBCFACE_NS_END</a></div><div class="ttdeci">#define WEBCFACE_NS_END</div><div class="ttdef"><b>Definition</b> macros.h:30</div></div>
-<div class="ttc" id="amacros_8h_html_abe991b8f291782627a31118c688e123a"><div class="ttname"><a href="macros_8h.html#abe991b8f291782627a31118c688e123a">WEBCFACE_NS_BEGIN</a></div><div class="ttdeci">#define WEBCFACE_NS_BEGIN</div><div class="ttdef"><b>Definition</b> macros.h:29</div></div>
-<div class="ttc" id="anamespacewebcface_1_1Message_1_1MessageKind_html_a1432d06fc2e2d1f6da93d1c04dec4484a0cb8db73d08e6f71fe9d47fb44fdc9a5"><div class="ttname"><a href="namespacewebcface_1_1Message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a0cb8db73d08e6f71fe9d47fb44fdc9a5">webcface::Message::MessageKind::ping_status</a></div><div class="ttdeci">@ ping_status</div><div class="ttdef"><b>Definition</b> message.h:59</div></div>
-<div class="ttc" id="anamespacewebcface_1_1Server_html_a229b454d156fec6ab3e561a195813199"><div class="ttname"><a href="namespacewebcface_1_1Server.html#a229b454d156fec6ab3e561a195813199">webcface::Server::server_mtx</a></div><div class="ttdeci">std::mutex server_mtx</div><div class="ttdef"><b>Definition</b> websock.cc:26</div></div>
-<div class="ttc" id="anamespacewebcface_1_1Server_html_a324e1a70e006e8434fa711dd7e646727"><div class="ttname"><a href="namespacewebcface_1_1Server.html#a324e1a70e006e8434fa711dd7e646727">webcface::Server::serverStop</a></div><div class="ttdeci">void serverStop()</div><div class="ttdef"><b>Definition</b> websock.cc:68</div></div>
-<div class="ttc" id="anamespacewebcface_1_1Server_html_a4898db8d9fe1cf7bf83e4c7ac242a245"><div class="ttname"><a href="namespacewebcface_1_1Server.html#a4898db8d9fe1cf7bf83e4c7ac242a245">webcface::Server::server_ping_wait</a></div><div class="ttdeci">std::condition_variable server_ping_wait</div><div class="ttdef"><b>Definition</b> websock.cc:25</div></div>
-<div class="ttc" id="anamespacewebcface_1_1Server_html_a55d5c53c73f66be16623a85d1c4f1e97"><div class="ttname"><a href="namespacewebcface_1_1Server.html#a55d5c53c73f66be16623a85d1c4f1e97">webcface::Server::serverRun</a></div><div class="ttdeci">void serverRun(int port, const spdlog::sink_ptr &amp;sink, spdlog::level::level_enum level)</div><div class="ttdef"><b>Definition</b> websock.cc:79</div></div>
-<div class="ttc" id="anamespacewebcface_1_1Server_html_a61c2320b1fc2122f40c399f95f7f2d42"><div class="ttname"><a href="namespacewebcface_1_1Server.html#a61c2320b1fc2122f40c399f95f7f2d42">webcface::Server::serverSend</a></div><div class="ttdeci">void serverSend(void *conn, const std::string &amp;msg)</div><div class="ttdef"><b>Definition</b> websock.cc:63</div></div>
-</div><!-- fragment --></div><!-- contents -->
+<a href="websock_8h.html">Go to the documentation of this file.</a><div class="fragment"></div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_41e1742e44e2de38b3bc91f993fed282.html">server</a></li><li class="navelem"><a class="el" href="websock_8h.html">websock.h</a></li>
-    <li class="footer">Generated on Thu Apr 25 2024 11:56:16 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Thu Apr 25 2024 16:23:11 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

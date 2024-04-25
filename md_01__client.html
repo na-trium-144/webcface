@@ -172,8 +172,13 @@ $(document).ready(function(){initNavTree('md_01__client.html',''); initResizable
 <li>同時に接続している他のクライアントと名前が被らないようにしてください。同じ名前で複数のクライアントが接続した場合正常に通信できない場合があります。</li>
 </ul>
 </li>
-<li>デフォルトではlocalhostの7530ポートに接続を試みますが、サーバーのポートを変更していたり別のpcに接続する場合はコンストラクタの引数でサーバーのアドレスとポートを指定できます。<ul>
+<li>デフォルトでは<code>127.0.0.1</code>(そのpc自身)の7530ポートに接続を試みますが、サーバーのポートを変更していたり別のpcに接続する場合はコンストラクタの引数でサーバーのアドレスとポートを指定できます。<ul>
 <li>特にwebブラウザ上でJavaScriptから接続しようとする場合、サーバー側からみたlocalhostではなくブラウザ側からみたlocalhostへ接続しようとするので注意してください (<a href="https://developer.mozilla.org/ja/docs/Web/API/Location/host">location.host</a> などを接続先アドレスに指定する必要があります)</li>
+</ul>
+</li>
+<li><span class="since-c">1.11</span> 接続先のアドレスが<code>127.0.0.1</code>の場合はTCPポートと別にUnixドメインソケットへの接続も試行し、 接続できた場合はUnixドメインソケットの接続を優先して使用します。<ul>
+<li>WSL1上のクライアントは /mnt/c/ProgramData/webcface/ポート番号.sock への接続も試行します。これによりWSL1とWindowsの間ではどちらでサーバーを建ててもどちらのクライアントからも相互に接続できます。</li>
+<li>WSL2ではUnixドメインソケットを使った相互接続はできませんが、WSL2のクライアントは接続先のアドレスが<code>127.0.0.1</code>の場合に限りホストのWindowsのIPアドレスのTCPポートへも接続を試行します。これによりWSL2とWindowsの間でも相互に通信が可能です。</li>
 </ul>
 </li>
 </ul>
@@ -331,7 +336,7 @@ sync</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Apr 25 2024 11:56:16 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Thu Apr 25 2024 16:23:11 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>
