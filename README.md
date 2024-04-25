@@ -25,6 +25,8 @@ WebUIでは簡易なUIを作成したり2D、3Dの図形の描画をさせるこ
 
 src/example/benchmark.cc で通信速度をチェックしてみました。
 以下の表は クライアント→サーバー→クライアント でさまざまなサイズの文字列データの送受信にかかった時間です。
+なおこれはサーバーとクライアントが同一マシン上の場合の結果です。
+Wi-FiやEthernetを経由する場合はその環境次第ですが遅くなると思います。
 
 使用したPCのCPUは、MacOSは Apple M1 、それ以外は Intel Core i5-13500 です。
 
@@ -39,6 +41,8 @@ src/example/benchmark.cc で通信速度をチェックしてみました。
 | Server=MinGW + Client=WSL2 | 406 μs | 442 μs | 477 μs | 639 μs | 2.12 ms | 15.9 ms |
 | Server=WSL1 + Client=MSVC | 703 μs | 750 μs | 769 μs | 1.01 ms | 4.61 ms | 38.7 ms |
 | Server=WSL2 + Client=MSVC | 946 μs | 915 μs | 1.08 ms | 1.32 ms | 4.79 ms | 42.2 ms |
+| Linux (Native) | 491 μs | 439 μs | 519 μs | 1.01 ms | 4.78 ms | 27.8 ms |
+| MacOS | 130 μs | 136 μs | 165 μs | 439 μs | 2.98 ms | 28.3 ms |
 
 ## Links
 
