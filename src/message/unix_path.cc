@@ -1,5 +1,8 @@
 #include "unix_path.h"
 #include <cstdlib>
+#include <fstream>
+#include <sstream>
+#include <string>
 #ifdef _WIN32
 #include <bit>
 #include <windows.h>
@@ -27,6 +30,36 @@ bool detectWSL1() {
     return std::filesystem::exists("/proc/sys/fs/binfmt_misc/WSLInterop") &&
            !std::getenv("WSL_INTEROP");
     // https://github.com/microsoft/WSL/issues/4555
+}
+bool detectWSL2() {
+    return std::filesystem::exists("/proc/sys/fs/binfmt_misc/WSLInterop") &&
+           std::getenv("WSL_INTEROP");
+}
+std::string wsl2Host() {
+#ifdef _WIN32
+    return "";
+#else
+    std::ifstream ifs("/proc/net/route");
+    std::string ln;
+    while (!ifs.eof()) {
+        std::getline(ifs, ln);
+        std::stringstream ln_ss(ln);
+        std::string iface, dest, gateway;
+        ln_ss >> iface >> dest >> gateway;
+        if (dest == "00000000" && gateway.size() == 8) {
+            std::string host_addr = "";
+            for (int i = 3; i >= 0; i--) {
+                host_addr += std::to_string(
+                    std::stoi(gateway.substr(i * 2, 2), nullptr, 16));
+                if (i != 0) {
+                    host_addr += '.';
+                }
+            }
+            return host_addr;
+        }
+    }
+    return "";
+#endif
 }
 
 void initUnixSocket(const std::filesystem::path &path,

@@ -13,6 +13,9 @@ WEBCFACE_NS_BEGIN
 
 void Internal::messageThreadMain(std::shared_ptr<Internal::ClientData> data,
                                  std::string host, int port) {
+    if (host.empty()) {
+        host = "127.0.0.1";
+    }
     while (!data->closing.load() && port > 0) {
         // try TCP, unixSocketPathWSLInterop and unixSocketPath
         // use latter if multiple connections were available
@@ -30,27 +33,46 @@ void Internal::messageThreadMain(std::shared_ptr<Internal::ClientData> data,
             }
             switch (attempt) {
             case 0:
-                paths[attempt] = host + ":" + std::to_string(port);
+                paths[attempt] = host + ':' + std::to_string(port);
+                curl_easy_setopt(handle, CURLOPT_URL,
+                                 ("ws://" + host + "/").c_str());
                 break;
             case 1:
+                if (host != "127.0.0.1") {
+                    continue;
+                }
                 paths[attempt] = Message::Path::unixSocketPath(port).string();
                 curl_easy_setopt(handle, CURLOPT_UNIX_SOCKET_PATH,
                                  paths[attempt].c_str());
+                curl_easy_setopt(handle, CURLOPT_URL,
+                                 ("ws://" + host + "/").c_str());
                 break;
             default:
-                if (!Message::Path::detectWSL1()) {
-                    data->logger_internal->trace("skipping WSLInterop socket");
+                if (host != "127.0.0.1") {
                     continue;
                 }
-                paths[attempt] =
-                    Message::Path::unixSocketPathWSLInterop(port).string();
-                curl_easy_setopt(handle, CURLOPT_UNIX_SOCKET_PATH,
-                                 paths[attempt].c_str());
-                break;
+                if (Message::Path::detectWSL1()) {
+                    paths[attempt] =
+                        Message::Path::unixSocketPathWSLInterop(port).string();
+                    curl_easy_setopt(handle, CURLOPT_UNIX_SOCKET_PATH,
+                                     paths[attempt].c_str());
+                    curl_easy_setopt(handle, CURLOPT_URL,
+                                     ("ws://" + host + "/").c_str());
+                    break;
+                }
+                if (Message::Path::detectWSL2() &&
+                    !(curl_result[0] && curl_result[0] == CURLE_OK)) {
+                    std::string win_host = Message::Path::wsl2Host();
+                    if (!win_host.empty()) {
+                        paths[attempt] = win_host + ':' + std::to_string(port);
+                        curl_easy_setopt(handle, CURLOPT_URL,
+                                         ("ws://" + win_host + "/").c_str());
+                        break;
+                    }
+                }
+                continue;
             }
             data->logger_internal->trace("trying {}...", paths[attempt]);
-            curl_easy_setopt(handle, CURLOPT_URL,
-                             ("ws://" + host + "/").c_str());
             curl_easy_setopt(handle, CURLOPT_PORT, static_cast<long>(port));
             curl_easy_setopt(handle, CURLOPT_CONNECT_ONLY, 2L);
             curl_result[attempt] = curl_easy_perform(handle);
