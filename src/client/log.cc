@@ -4,12 +4,12 @@
 
 WEBCFACE_NS_BEGIN
 
-template class WEBCFACE_DLL EventTarget<Log, std::string>;
+template class WEBCFACE_DLL EventTarget<Log>;
 
-Log::Log(const Field &base)
-    : Field(base), EventTarget<Log, std::string>(
-                       &this->dataLock()->log_append_event, this->member_) {}
-
+Log::Log(const Field &base) : Field(base), EventTarget<Log>() {
+    std::lock_guard lock(this->dataLock()->event_m);
+    this->cl = &this->dataLock()->log_append_event[this->member_];
+}
 
 void Log::request() const {
     auto data = dataLock();

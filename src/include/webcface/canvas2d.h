@@ -39,19 +39,43 @@ class WEBCFACE_DLL Canvas2D : protected Field, public EventTarget<Canvas2D> {
         init(width, height);
     }
 
-    using Field::member;
-    using Field::name;
     friend Internal::DataSetBuffer<Canvas2DComponent>;
 
+    using Field::lastName;
+    using Field::member;
+    using Field::name;
     /*!
-     * \brief 子フィールドを返す
-     *
-     * \return「(thisのフィールド名).(子フィールド名)」をフィールド名とするCanvas3D
+     * \brief 「(thisの名前).(追加の名前)」を新しい名前とするField
      *
      */
-    Canvas2D child(const std::string &field) const {
-        return Canvas2D{*this, this->field_ + "." + field};
+    Canvas2D child(std::string_view field) const {
+        return this->Field::child(field);
     }
+    /*!
+     * \since ver1.11
+     */
+    Canvas2D child(int index) const { return this->Field::child(index); }
+    /*!
+     * child()と同じ
+     * \since ver1.11
+     */
+    Canvas2D operator[](std::string_view field) const { return child(field); }
+    /*!
+     * operator[](long, const char *)と解釈されるのを防ぐための定義
+     * \since ver1.11
+     */
+    Canvas2D operator[](const char *field) const { return child(field); }
+    /*!
+     * child()と同じ
+     * \since ver1.11
+     */
+    Canvas2D operator[](int index) const { return child(index); }
+    /*!
+     * \brief nameの最後のピリオドの前までを新しい名前とするField
+     * \since ver1.11
+     */
+    Canvas2D parent() const { return this->Field::parent(); }
+
     /*!
      * \brief Canvasの内容をリクエストする
      * \since ver1.7
@@ -230,8 +254,8 @@ class WEBCFACE_DLL Canvas2D : protected Field, public EventTarget<Canvas2D> {
      *
      */
     template <typename T>
-        requires std::same_as<T, Canvas2D>
-    bool operator==(const T &other) const {
+        requires std::same_as<T, Canvas2D> bool
+    operator==(const T &other) const {
         return static_cast<Field>(*this) == static_cast<Field>(other);
     }
     /*!
@@ -240,8 +264,8 @@ class WEBCFACE_DLL Canvas2D : protected Field, public EventTarget<Canvas2D> {
      *
      */
     template <typename T>
-        requires std::same_as<T, Canvas2D>
-    bool operator!=(const T &other) const {
+        requires std::same_as<T, Canvas2D> bool
+    operator!=(const T &other) const {
         return !(*this == other);
     }
 };

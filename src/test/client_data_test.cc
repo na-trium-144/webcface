@@ -24,12 +24,23 @@ TEST_F(SyncDataStore2Test, setSend) {
     EXPECT_EQ(send.size(), 1);
     EXPECT_EQ(s2.transferSend(false).size(), 0);
     EXPECT_EQ(s2.transferSend(true).size(), 1);
+
     s2.setSend("a", "b"); // 同じデータ
     EXPECT_EQ(s2.getRecv(self_name, "a"), "b");
     send = s2.transferSend(false);
     EXPECT_FALSE(send.count("a"));
     EXPECT_EQ(send.size(), 0);
     EXPECT_EQ(s2.transferSend(true).size(), 1);
+
+    s2.setSend("a", "zzzzzz");
+    EXPECT_EQ(s2.getRecv(self_name, "a"), "zzzzzz");
+    s2.setSend("a", "b"); // 一度違うデータを送ってから同じデータ
+    EXPECT_EQ(s2.getRecv(self_name, "a"), "b");
+    send = s2.transferSend(false);
+    EXPECT_FALSE(send.count("a"));
+    EXPECT_EQ(send.size(), 0);
+    EXPECT_EQ(s2.transferSend(true).size(), 1);
+
     s2.setSend("a", "c"); // 違うデータ
     EXPECT_EQ(s2.getRecv(self_name, "a"), "c");
     send = s2.transferSend(false);
@@ -105,12 +116,9 @@ TEST_F(SyncDataStore2Test, clearRecv) {
     EXPECT_EQ(s2.getRecv("a", "b"), std::nullopt);
 }
 TEST_F(SyncDataStore2Test, setEntry) {
-    s2.setEntry("a");
-    EXPECT_EQ(s2.getMembers().size(), 1);
-    EXPECT_EQ(s2.getMembers().at(0), "a");
     s2.setEntry("a", "b");
     EXPECT_EQ(s2.getEntry("a").size(), 1);
-    EXPECT_EQ(s2.getEntry("a").at(0), "b");
+    EXPECT_EQ(s2.getEntry("a").count("b"), 1);
 }
 
 class SyncDataStore1Test : public ::testing::Test {

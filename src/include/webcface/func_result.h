@@ -5,6 +5,7 @@
 #include <memory>
 #include <stdexcept>
 #include <cstdint>
+#include <eventpp/callbacklist.h>
 #include "field.h"
 #include "common/val.h"
 #include "common/def.h"
@@ -35,15 +36,20 @@ struct WEBCFACE_DLL FuncNotFound : public std::runtime_error {
  */
 class WEBCFACE_DLL AsyncFuncResult : Field {
     std::size_t caller_id;
+    std::shared_ptr<eventpp::CallbackList<void(bool)>> started_event;
+    std::shared_ptr<eventpp::CallbackList<void(std::shared_future<ValAdaptor>)>>
+        result_event;
 
   public:
     friend class Func;
-
+    AsyncFuncResult() = default;
     AsyncFuncResult(const Field &base, std::size_t caller_id,
                     const std::shared_future<bool> &started_f,
-                    const std::shared_future<ValAdaptor> &result_f)
-        : Field(base), caller_id(caller_id), started(started_f),
-          result(result_f) {}
+                    const std::shared_future<ValAdaptor> &result_f,
+                    const decltype(started_event) &started_event,
+                    const decltype(result_event) &result_event)
+        : Field(base), caller_id(caller_id), started_event(started_event),
+          result_event(result_event), started(started_f), result(result_f) {}
 
     /*!
      * \brief リモートに呼び出しメッセージが到達したときに値が入る
@@ -61,6 +67,27 @@ class WEBCFACE_DLL AsyncFuncResult : Field {
      */
     std::shared_future<ValAdaptor> result;
 
+    /*!
+     * \brief リモートに呼び出しメッセージが到達したときに発生するイベント
+     * \since ver1.11
+     */
+    eventpp::CallbackList<void(bool)> &onStarted() const {
+        if (!started_event) {
+            throw std::runtime_error("started event is null");
+        }
+        return *started_event;
+    }
+    /*!
+     * \brief 関数の実行が完了した時発生するイベント
+     * \since ver1.11
+     */
+    eventpp::CallbackList<void(std::shared_future<ValAdaptor>)> &
+    onResult() const {
+        if (!result_event) {
+            throw std::runtime_error("result event is null");
+        }
+        return *result_event;
+    }
     using Field::member;
     using Field::name;
 };
@@ -70,23 +97,44 @@ auto &operator<<(std::basic_ostream<char> &os, const AsyncFuncResult &data);
  * \brief AsyncFuncResultの結果をセットする
  */
 struct AsyncFuncResultSetter : Field {
+  private:
     std::promise<bool> started;
     std::promise<ValAdaptor> result;
+
+  public:
+    std::shared_future<bool> started_f;
+    std::shared_future<ValAdaptor> result_f;
+    std::shared_ptr<eventpp::CallbackList<void(bool)>> started_event;
+    std::shared_ptr<eventpp::CallbackList<void(std::shared_future<ValAdaptor>)>>
+        result_event;
     AsyncFuncResultSetter() = default;
     explicit AsyncFuncResultSetter(const Field &base)
-        : Field(base), started(), result() {}
+        : Field(base), started(), result(),
+          started_f(started.get_future().share()),
+          result_f(result.get_future().share()),
+          started_event(
+              std::make_shared<decltype(started_event)::element_type>()),
+          result_event(
+              std::make_shared<decltype(result_event)::element_type>()) {}
     void setStarted(bool is_started) {
         started.set_value(is_started);
+        started_event->operator()(is_started);
         if (!is_started) {
             try {
                 throw FuncNotFound(*this);
             } catch (...) {
-                result.set_exception(std::current_exception());
+                setResultException(std::current_exception());
             }
         }
     }
-    void setResult(ValAdaptor result_val) { result.set_value(result_val); }
-    void setResultException(std::exception_ptr e) { result.set_exception(e); }
+    void setResult(ValAdaptor result_val) {
+        result.set_value(result_val);
+        result_event->operator()(result_f);
+    }
+    void setResultException(std::exception_ptr e) {
+        result.set_exception(e);
+        result_event->operator()(result_f);
+    }
 };
 
 class FuncCallHandle {

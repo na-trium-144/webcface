@@ -317,6 +317,8 @@ Func::run() で関数を実行できます。引数を渡すこともでき、�
 
 実行した関数が例外を投げた場合、また引数の個数が一致しない場合などはrun()が例外を投げます。
 
+対象のクライアントと通信できない場合、また指定した関数が存在しない場合は webcface::FuncNotFoundError を投げます。
+
 \note 引数の型が違う場合、関数登録時に指定した型に自動的に変換されてから呼び出されます。
 (ver1.5.3〜1.9.0のserverではすべて文字列型に置き換えられてしまうバグあり、ver1.9.1で修正)  
 変換は受信側のライブラリで行われ、基本的にその言語仕様に従って変換します  
@@ -379,6 +381,29 @@ AsyncFuncResultからは started と result が取得できます。
     double ans = res.result.get();
     ```
     startedとresultはstd::shared_futureです。取得できるまで待機するならget(), ブロックせず完了したか確認したければwait_for()などが使えます。例外はresult.get()が投げます。
+
+    <span class="since-c">1.11</span>
+    `onStarted()`, `onResult()` で値が返ってきたときに実行されるイベントが取得でき、コールバックを設定することができます。
+    ([eventpp::CallbackList 型](https://github.com/wqking/eventpp/blob/master/doc/callbacklist.md)の参照で返ります)  
+    ```cpp
+    AsyncFuncResult res = wcli.member("foo").func("hoge").runAsync(1, "aa");
+    res.onStarted().append([](bool started){
+        std::cout << "func hoge() " << started ? "started" : "not started" << std::endl;
+    });
+    res.onResult().append([](std::shared_future<webcface::ValAdaptor> result){
+        try{
+            double ans = result.get();
+        }catch(const std::exception &e){
+            std::cout << e.what() << std::endl;
+        }
+    });
+    ```
+    \warning
+    onStartedではコールバックの引数は`bool`,
+    onResultではコールバックの引数は`std::shared_future<webcface::ValAdaptor>`です。
+    関数の呼び出しに失敗した場合や呼び出した関数の結果がエラーだった場合resultのshared_futureは例外を投げるので、
+    上の例のように必ずtry〜catchを使用してください。
+    (例外がcatchされなかった場合terminateしてしまいます)
 
     詳細は webcface::AsyncFuncResult を参照してください。
 

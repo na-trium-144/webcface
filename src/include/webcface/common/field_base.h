@@ -20,9 +20,9 @@ struct FieldBase {
     std::string field_;
 
     FieldBase() = default;
-    FieldBase(const std::string &member, const std::string &field = "")
+    FieldBase(std::string_view member, std::string_view field = "")
         : member_(member), field_(field) {}
-    FieldBase(const FieldBase &base, const std::string &field)
+    FieldBase(const FieldBase &base, std::string_view field)
         : FieldBase(base.member_, field) {}
 
     bool operator==(const FieldBase &rhs) const {
@@ -33,6 +33,8 @@ struct FieldBase {
 struct FieldBaseComparable : public FieldBase {
     FieldBaseComparable() = default;
     FieldBaseComparable(const FieldBase &base) : FieldBase(base) {}
+    FieldBaseComparable(std::string_view member, std::string_view field)
+        : FieldBase(member, field) {}
 
     bool operator==(const FieldBaseComparable &rhs) const {
         return this->member_ == rhs.member_ && this->field_ == rhs.field_;

@@ -12,9 +12,11 @@ Canvas3D::Canvas3D()
     : Field(), EventTarget<Canvas3D>(),
       sb(std::make_shared<Internal::DataSetBuffer<Canvas3DComponent>>()) {}
 Canvas3D::Canvas3D(const Field &base)
-    : Field(base), EventTarget<Canvas3D>(
-                       &this->dataLock()->canvas3d_change_event, *this),
-      sb(std::make_shared<Internal::DataSetBuffer<Canvas3DComponent>>(base)) {}
+    : Field(base), EventTarget<Canvas3D>(),
+      sb(std::make_shared<Internal::DataSetBuffer<Canvas3DComponent>>(base)) {
+    std::lock_guard lock(this->dataLock()->event_m);
+    this->cl = &this->dataLock()->canvas3d_change_event[*this];
+}
 Canvas3D &Canvas3D::init() {
     sb->init();
     return *this;
@@ -33,7 +35,7 @@ Canvas3D &Canvas3D::operator<<(Canvas3DComponent &&cc) {
 }
 
 template <>
-void Internal::DataSetBuffer<Canvas3DComponent>::onSync(){
+void Internal::DataSetBuffer<Canvas3DComponent>::onSync() {
     auto cb = std::make_shared<std::vector<Canvas3DComponentBase>>();
     cb->reserve(components_.size());
     for (std::size_t i = 0; i < components_.size(); i++) {

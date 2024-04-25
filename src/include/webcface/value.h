@@ -31,51 +31,87 @@ class WEBCFACE_DLL Value : protected Field, public EventTarget<Value> {
   public:
     Value() = default;
     Value(const Field &base);
-    Value(const Field &base, const std::string &field)
+    Value(const Field &base, std::string_view field)
         : Value(Field{base, field}) {}
 
+    using Field::lastName;
     using Field::member;
     using Field::name;
-
     /*!
-     * \brief 子フィールドを返す
-     *
-     * \return「(thisのフィールド名).(子フィールド名)」をフィールド名とするValue
+     * \brief 「(thisの名前).(追加の名前)」を新しい名前とするField
      *
      */
-    Value child(const std::string &field) const {
-        return Value{*this, this->field_ + "." + field};
+    Value child(std::string_view field) const {
+        return this->Field::child(field);
     }
+    /*!
+     * \since ver1.11
+     */
+    Value child(int index) const { return this->Field::child(index); }
+    /*!
+     * child()と同じ
+     * \since ver1.11
+     */
+    Value operator[](std::string_view field) const { return child(field); }
+    /*!
+     * operator[](long, const char *)と解釈されるのを防ぐための定義
+     * \since ver1.11
+     */
+    Value operator[](const char *field) const { return child(field); }
+    /*!
+     * child()と同じ
+     * \since ver1.11
+     */
+    Value operator[](int index) const { return child(index); }
+    /*!
+     * \brief nameの最後のピリオドの前までを新しい名前とするField
+     * \since ver1.11
+     */
+    Value parent() const { return this->Field::parent(); }
 
     using Dict = Common::Dict<std::shared_ptr<Common::VectorOpt<double>>>;
     /*!
      * \brief Dictの値を再帰的にセットする
-     *
+     * \deprecated ver1.11〜
      */
-    Value &set(const Dict &v);
+    [[deprecated]] Value &set(const Dict &v);
     /*!
      * \brief 数値または配列をセットする
      *
+     * ver1.11〜
+     * vが配列でなく、parent()の配列データが利用可能ならその要素をセットする
+     *
      */
     Value &set(const VectorOpt<double> &v);
+    /*!
+     * \brief 配列をセット、またはすでにsetされていればリサイズする
+     * \since ver1.11
+     */
+    Value &resize(std::size_t size);
+    /*!
+     * \brief 値をセット、またはすでに配列がsetされていれば末尾に追加
+     */
+    Value &push_back(double v);
 
     /*!
      * \brief Dictの値を再帰的にセットする
-     *
+     * \deprecated ver1.11〜
      */
-    Value &operator=(const Dict &v) {
+    [[deprecated]] Value &operator=(const Dict &v) {
         this->set(v);
         return *this;
     }
     /*!
      * \brief 数値または配列をセットする
+     *
+     * ver1.11〜
+     * vが配列でなく、parent()の配列データが利用可能ならその要素をセットする
      *
      */
     Value &operator=(const VectorOpt<double> &v) {
         this->set(v);
         return *this;
     }
-
     /*!
      * \brief 値をリクエストする
      * \since ver1.7
@@ -84,6 +120,8 @@ class WEBCFACE_DLL Value : protected Field, public EventTarget<Value> {
     void request() const;
     /*!
      * \brief 値を返す
+     *
+     * ver1.11〜 parent()の配列データが利用可能ならその要素を返す
      *
      */
     std::optional<double> tryGet() const;
@@ -94,9 +132,9 @@ class WEBCFACE_DLL Value : protected Field, public EventTarget<Value> {
     std::optional<std::vector<double>> tryGetVec() const;
     /*!
      * \brief 値を再帰的に取得しDictで返す
-     *
+     * \deprecated ver1.11〜
      */
-    std::optional<Dict> tryGetRecurse() const;
+    [[deprecated]] std::optional<Dict> tryGetRecurse() const;
     /*!
      * \brief 値を返す
      *
@@ -111,12 +149,14 @@ class WEBCFACE_DLL Value : protected Field, public EventTarget<Value> {
     }
     /*!
      * \brief 値を再帰的に取得しDictで返す
-     *
+     * \deprecated ver1.11〜
      */
-    Dict getRecurse() const { return tryGetRecurse().value_or(Dict{}); }
+    [[deprecated]] Dict getRecurse() const {
+        return tryGetRecurse().value_or(Dict{});
+    }
     operator double() const { return get(); }
     operator std::vector<double>() const { return getVec(); }
-    operator Dict() const { return getRecurse(); }
+    [[deprecated]] operator Dict() const { return getRecurse(); }
     /*!
      * \brief syncの時刻を返す
      * \deprecated 1.7で Member::syncTime() に変更
@@ -214,8 +254,8 @@ class WEBCFACE_DLL Value : protected Field, public EventTarget<Value> {
      *
      */
     template <typename T>
-        requires std::same_as<T, Value>
-    bool operator==(const T &other) const {
+        requires std::same_as<T, Value> bool
+    operator==(const T &other) const {
         return static_cast<Field>(*this) == static_cast<Field>(other);
     }
     /*!
@@ -224,8 +264,8 @@ class WEBCFACE_DLL Value : protected Field, public EventTarget<Value> {
      *
      */
     template <typename T>
-        requires std::same_as<T, Value>
-    bool operator!=(const T &other) const {
+        requires std::same_as<T, Value> bool
+    operator!=(const T &other) const {
         return !(*this == other);
     }
     bool operator<(const Value &) const = delete;

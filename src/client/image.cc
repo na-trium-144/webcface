@@ -7,9 +7,10 @@ WEBCFACE_NS_BEGIN
 
 template class WEBCFACE_DLL EventTarget<Image>;
 
-Image::Image(const Field &base)
-    : Field(base), EventTarget<Image>(&this->dataLock()->image_change_event,
-                                      *this) {}
+Image::Image(const Field &base) : Field(base), EventTarget<Image>() {
+    std::lock_guard lock(this->dataLock()->event_m);
+    this->cl = &this->dataLock()->image_change_event[*this];
+}
 
 Image &Image::request(std::optional<int> rows, std::optional<int> cols,
                       Common::ImageCompressMode cmp_mode, int quality,
