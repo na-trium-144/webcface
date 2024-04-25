@@ -1,11 +1,11 @@
 <map id="Log" name="Log">
-<area shape="rect" id="Node000001" title="ログの送受信データを表すクラス" alt="" coords="95,197,140,223"/>
-<area shape="rect" id="Node000002" href="$structwebcface_1_1Field.html" title="ClientDataの参照とメンバ名とデータ名を持つクラス" alt="" coords="25,115,79,141"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="72,149,110,196,106,199,68,153"/>
-<area shape="rect" id="Node000003" href="$structwebcface_1_1Common_1_1FieldBase.html" title="メンバ名とデータ名を持つクラス" alt="" coords="5,13,91,38"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="52,52,54,115,49,115,46,52"/>
-<area shape="rect" id="Node000004" href="$classwebcface_1_1EventTarget.html" title=" " alt="" coords="109,108,275,148"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="167,160,130,199,126,195,163,156"/>
-<area shape="rect" id="Node000005" href="$classwebcface_1_1EventTarget.html" title="イベントを表し、コールバックの追加や削除ができるクラス。" alt="" coords="115,5,274,45"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="196,59,195,108,190,108,191,59"/>
+<area shape="rect" id="Node000001" title="ログの送受信データを表すクラス" alt="" coords="96,168,141,193"/>
+<area shape="rect" id="Node000002" href="$structwebcface_1_1Field.html" title="ClientDataの参照とメンバ名とデータ名を持つクラス" alt="" coords="29,93,83,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="77,128,111,166,106,169,73,131"/>
+<area shape="rect" id="Node000003" href="$structwebcface_1_1Common_1_1FieldBase.html" title="メンバ名とデータ名を持つクラス" alt="" coords="5,5,91,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="53,44,58,93,52,93,48,45"/>
+<area shape="rect" id="Node000004" href="$classwebcface_1_1EventTarget.html" title=" " alt="" coords="121,93,273,119"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="177,130,133,170,130,166,173,126"/>
+<area shape="rect" id="Node000005" href="$classwebcface_1_1EventTarget.html" title="イベントを表し、コールバックの追加や削除ができるクラス。" alt="" coords="115,5,296,31"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="206,45,201,93,196,93,200,44"/>
 </map>

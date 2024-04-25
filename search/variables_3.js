@@ -8,6 +8,5 @@ var searchData=
   ['data_5fsend_5fprev_5',['data_send_prev',['../classwebcface_1_1Internal_1_1SyncDataStore2.html#a4777734f90e3e6606522f4034e6e834b',1,'webcface::Internal::SyncDataStore2']]],
   ['data_5fw_6',['data_w',['../classwebcface_1_1ViewComponent.html#acf420a0ba1ce5e817feac0f51c9056dc',1,'webcface::ViewComponent::data_w'],['../classwebcface_1_1Canvas3DComponent.html#acf420a0ba1ce5e817feac0f51c9056dc',1,'webcface::Canvas3DComponent::data_w'],['../classwebcface_1_1Canvas2DComponent.html#acf420a0ba1ce5e817feac0f51c9056dc',1,'webcface::Canvas2DComponent::data_w'],['../structwebcface_1_1Field.html#acf420a0ba1ce5e817feac0f51c9056dc',1,'webcface::Field::data_w']]],
   ['datasetbuffer_3c_20canvas2dcomponent_20_3e_7',['DataSetBuffer&lt; Canvas2DComponent &gt;',['../classwebcface_1_1Internal_1_1Canvas2DDataBuf.html#ab05ccab212d8152ff81e2f86f893b596',1,'webcface::Internal::Canvas2DDataBuf']]],
-  ['default_5ffunc_5fwrapper_8',['default_func_wrapper',['../structwebcface_1_1Internal_1_1ClientData.html#a16b1a4633690c8ffc0e408ed79ffac23',1,'webcface::Internal::ClientData']]],
-  ['dispatcher_9',['dispatcher',['../classwebcface_1_1EventTarget.html#a93504a6646cc5bd2be1d2b5e7c87cedc',1,'webcface::EventTarget']]]
+  ['default_5ffunc_5fwrapper_8',['default_func_wrapper',['../structwebcface_1_1Internal_1_1ClientData.html#a16b1a4633690c8ffc0e408ed79ffac23',1,'webcface::Internal::ClientData']]]
 ];

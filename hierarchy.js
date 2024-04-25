@@ -57,7 +57,7 @@ var hierarchy =
     [ "enable_shared_from_this", null, [
       [ "ClientData", "structwebcface_1_1Internal_1_1ClientData.html", null ]
     ] ],
-    [ "EventTarget< V, Key, VBase >", "classwebcface_1_1EventTarget.html", null ],
+    [ "EventTarget< ArgType >", "classwebcface_1_1EventTarget.html", null ],
     [ "EventTarget< Canvas2D >", "classwebcface_1_1EventTarget.html", [
       [ "Canvas2D", "classwebcface_1_1Canvas2D.html", null ]
     ] ],
@@ -67,7 +67,7 @@ var hierarchy =
     [ "EventTarget< Image >", "classwebcface_1_1EventTarget.html", [
       [ "Image", "classwebcface_1_1Image.html", null ]
     ] ],
-    [ "EventTarget< Log, std::string >", "classwebcface_1_1EventTarget.html", [
+    [ "EventTarget< Log >", "classwebcface_1_1EventTarget.html", [
       [ "Log", "classwebcface_1_1Log.html", null ]
     ] ],
     [ "EventTarget< RobotModel >", "classwebcface_1_1EventTarget.html", [

@@ -217,6 +217,10 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:aad5c69b02b93a6f928dfdeb4bcdc737b" id="r_aad5c69b02b93a6f928dfdeb4bcdc737b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Common_1_1Queue.html">Common::Queue</a>&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#aad5c69b02b93a6f928dfdeb4bcdc737b">recv_queue</a></td></tr>
 <tr class="memdesc:aad5c69b02b93a6f928dfdeb4bcdc737b"><td class="mdescLeft">&#160;</td><td class="mdescRight">wsが受信したメッセージを入れるキュ  <br /></td></tr>
 <tr class="separator:aad5c69b02b93a6f928dfdeb4bcdc737b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa0de54f364a8b0de0eb081c1c44329ff" id="r_aa0de54f364a8b0de0eb081c1c44329ff"><td class="memItemLeft" align="right" valign="top">std::mutex&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#aa0de54f364a8b0de0eb081c1c44329ff">entry_m</a></td></tr>
+<tr class="separator:aa0de54f364a8b0de0eb081c1c44329ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a099dbff2ba5615fd25bed0e58db7d737" id="r_a099dbff2ba5615fd25bed0e58db7d737"><td class="memItemLeft" align="right" valign="top">std::unordered_set&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#a099dbff2ba5615fd25bed0e58db7d737">member_entry</a></td></tr>
+<tr class="separator:a099dbff2ba5615fd25bed0e58db7d737"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adfcd5d2cf6cd85f495ad76f69542d1ff" id="r_adfcd5d2cf6cd85f495ad76f69542d1ff"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore2.html">SyncDataStore2</a>&lt; <a class="el" href="namespacewebcface_1_1Internal.html#aa77c608002e5be9330f91a2dbf5e2ac8">ValueData</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#adfcd5d2cf6cd85f495ad76f69542d1ff">value_store</a></td></tr>
 <tr class="separator:adfcd5d2cf6cd85f495ad76f69542d1ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8e8a141c945e2a27fd5de3aac8738fd9" id="r_a8e8a141c945e2a27fd5de3aac8738fd9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore2.html">SyncDataStore2</a>&lt; <a class="el" href="namespacewebcface_1_1Internal.html#a112c04e1cb185887034814f635d4ac5f">TextData</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#a8e8a141c945e2a27fd5de3aac8738fd9">text_store</a></td></tr>
@@ -252,44 +256,46 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a2379c61c4c44468309940c18285c50e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7d3129cf10a92bd12cf4d967fa12edcc" id="r_a7d3129cf10a92bd12cf4d967fa12edcc"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; unsigned int, std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#a7d3129cf10a92bd12cf4d967fa12edcc">member_addr</a></td></tr>
 <tr class="separator:a7d3129cf10a92bd12cf4d967fa12edcc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a519596fa89d77a8d02d9e52d807e536a" id="r_a519596fa89d77a8d02d9e52d807e536a"><td class="memItemLeft" align="right" valign="top">eventpp::EventDispatcher&lt; <a class="el" href="structwebcface_1_1Common_1_1FieldBaseComparable.html">FieldBaseComparable</a>, void(<a class="el" href="structwebcface_1_1Field.html">Field</a>)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#a519596fa89d77a8d02d9e52d807e536a">value_change_event</a></td></tr>
-<tr class="separator:a519596fa89d77a8d02d9e52d807e536a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a965c5fd6b635dcdb8c9342035f3a7a29" id="r_a965c5fd6b635dcdb8c9342035f3a7a29"><td class="memItemLeft" align="right" valign="top">eventpp::EventDispatcher&lt; <a class="el" href="structwebcface_1_1Common_1_1FieldBaseComparable.html">FieldBaseComparable</a>, void(<a class="el" href="structwebcface_1_1Field.html">Field</a>)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#a965c5fd6b635dcdb8c9342035f3a7a29">text_change_event</a></td></tr>
-<tr class="separator:a965c5fd6b635dcdb8c9342035f3a7a29"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a700e22120dae85e1ec98c5f5b608b59f" id="r_a700e22120dae85e1ec98c5f5b608b59f"><td class="memItemLeft" align="right" valign="top">eventpp::EventDispatcher&lt; <a class="el" href="structwebcface_1_1Common_1_1FieldBaseComparable.html">FieldBaseComparable</a>, void(<a class="el" href="structwebcface_1_1Field.html">Field</a>)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#a700e22120dae85e1ec98c5f5b608b59f">view_change_event</a></td></tr>
-<tr class="separator:a700e22120dae85e1ec98c5f5b608b59f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7f5faa9b4b73388066137894a366af9d" id="r_a7f5faa9b4b73388066137894a366af9d"><td class="memItemLeft" align="right" valign="top">eventpp::EventDispatcher&lt; <a class="el" href="structwebcface_1_1Common_1_1FieldBaseComparable.html">FieldBaseComparable</a>, void(<a class="el" href="structwebcface_1_1Field.html">Field</a>)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#a7f5faa9b4b73388066137894a366af9d">image_change_event</a></td></tr>
-<tr class="separator:a7f5faa9b4b73388066137894a366af9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4bfef4bb71713b947a6feeb0c3f42c35" id="r_a4bfef4bb71713b947a6feeb0c3f42c35"><td class="memItemLeft" align="right" valign="top">eventpp::EventDispatcher&lt; <a class="el" href="structwebcface_1_1Common_1_1FieldBaseComparable.html">FieldBaseComparable</a>, void(<a class="el" href="structwebcface_1_1Field.html">Field</a>)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#a4bfef4bb71713b947a6feeb0c3f42c35">robot_model_change_event</a></td></tr>
-<tr class="separator:a4bfef4bb71713b947a6feeb0c3f42c35"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a39a60fe03a6454b7de49dd3d37d95d28" id="r_a39a60fe03a6454b7de49dd3d37d95d28"><td class="memItemLeft" align="right" valign="top">eventpp::EventDispatcher&lt; <a class="el" href="structwebcface_1_1Common_1_1FieldBaseComparable.html">FieldBaseComparable</a>, void(<a class="el" href="structwebcface_1_1Field.html">Field</a>)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#a39a60fe03a6454b7de49dd3d37d95d28">canvas3d_change_event</a></td></tr>
-<tr class="separator:a39a60fe03a6454b7de49dd3d37d95d28"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7648f551323a5b0041c4ac0fd7add068" id="r_a7648f551323a5b0041c4ac0fd7add068"><td class="memItemLeft" align="right" valign="top">eventpp::EventDispatcher&lt; <a class="el" href="structwebcface_1_1Common_1_1FieldBaseComparable.html">FieldBaseComparable</a>, void(<a class="el" href="structwebcface_1_1Field.html">Field</a>)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#a7648f551323a5b0041c4ac0fd7add068">canvas2d_change_event</a></td></tr>
-<tr class="separator:a7648f551323a5b0041c4ac0fd7add068"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab9beb12c09f6aac1f7987f3d34e7eb42" id="r_ab9beb12c09f6aac1f7987f3d34e7eb42"><td class="memItemLeft" align="right" valign="top">eventpp::EventDispatcher&lt; std::string, void(<a class="el" href="structwebcface_1_1Field.html">Field</a>)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#ab9beb12c09f6aac1f7987f3d34e7eb42">log_append_event</a></td></tr>
-<tr class="separator:ab9beb12c09f6aac1f7987f3d34e7eb42"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5fc5bf885dda6d4a7b5d51d507b3be05" id="r_a5fc5bf885dda6d4a7b5d51d507b3be05"><td class="memItemLeft" align="right" valign="top">eventpp::EventDispatcher&lt; int, void(<a class="el" href="structwebcface_1_1Field.html">Field</a>)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#a5fc5bf885dda6d4a7b5d51d507b3be05">member_entry_event</a></td></tr>
-<tr class="separator:a5fc5bf885dda6d4a7b5d51d507b3be05"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1688a6c78fef31539bcd373b8dd81f43" id="r_a1688a6c78fef31539bcd373b8dd81f43"><td class="memItemLeft" align="right" valign="top">eventpp::EventDispatcher&lt; std::string, void(<a class="el" href="structwebcface_1_1Field.html">Field</a>)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#a1688a6c78fef31539bcd373b8dd81f43">sync_event</a></td></tr>
-<tr class="separator:a1688a6c78fef31539bcd373b8dd81f43"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a995eacf51faee5cd34a86d5b16b36ae3" id="r_a995eacf51faee5cd34a86d5b16b36ae3"><td class="memItemLeft" align="right" valign="top">eventpp::EventDispatcher&lt; std::string, void(<a class="el" href="structwebcface_1_1Field.html">Field</a>)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#a995eacf51faee5cd34a86d5b16b36ae3">value_entry_event</a></td></tr>
-<tr class="separator:a995eacf51faee5cd34a86d5b16b36ae3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2565f1cb718c388a462b127500bd3b7d" id="r_a2565f1cb718c388a462b127500bd3b7d"><td class="memItemLeft" align="right" valign="top">eventpp::EventDispatcher&lt; std::string, void(<a class="el" href="structwebcface_1_1Field.html">Field</a>)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#a2565f1cb718c388a462b127500bd3b7d">text_entry_event</a></td></tr>
-<tr class="separator:a2565f1cb718c388a462b127500bd3b7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a34ebb3032bbe99f59443808e9c5d53d0" id="r_a34ebb3032bbe99f59443808e9c5d53d0"><td class="memItemLeft" align="right" valign="top">eventpp::EventDispatcher&lt; std::string, void(<a class="el" href="structwebcface_1_1Field.html">Field</a>)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#a34ebb3032bbe99f59443808e9c5d53d0">func_entry_event</a></td></tr>
-<tr class="separator:a34ebb3032bbe99f59443808e9c5d53d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a108c030a8e9e5cdae706deeeb7dc7057" id="r_a108c030a8e9e5cdae706deeeb7dc7057"><td class="memItemLeft" align="right" valign="top">eventpp::EventDispatcher&lt; std::string, void(<a class="el" href="structwebcface_1_1Field.html">Field</a>)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#a108c030a8e9e5cdae706deeeb7dc7057">view_entry_event</a></td></tr>
-<tr class="separator:a108c030a8e9e5cdae706deeeb7dc7057"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4be4c0685db930b4172ad9ff13cf1000" id="r_a4be4c0685db930b4172ad9ff13cf1000"><td class="memItemLeft" align="right" valign="top">eventpp::EventDispatcher&lt; std::string, void(<a class="el" href="structwebcface_1_1Field.html">Field</a>)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#a4be4c0685db930b4172ad9ff13cf1000">robot_model_entry_event</a></td></tr>
-<tr class="separator:a4be4c0685db930b4172ad9ff13cf1000"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a16c65f69a60e6061ac66035f005d681c" id="r_a16c65f69a60e6061ac66035f005d681c"><td class="memItemLeft" align="right" valign="top">eventpp::EventDispatcher&lt; std::string, void(<a class="el" href="structwebcface_1_1Field.html">Field</a>)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#a16c65f69a60e6061ac66035f005d681c">image_entry_event</a></td></tr>
-<tr class="separator:a16c65f69a60e6061ac66035f005d681c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af24f251eff384edfe943145ca410ac91" id="r_af24f251eff384edfe943145ca410ac91"><td class="memItemLeft" align="right" valign="top">eventpp::EventDispatcher&lt; std::string, void(<a class="el" href="structwebcface_1_1Field.html">Field</a>)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#af24f251eff384edfe943145ca410ac91">canvas3d_entry_event</a></td></tr>
-<tr class="separator:af24f251eff384edfe943145ca410ac91"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a611d686db4af3b0b037416e9c29c5708" id="r_a611d686db4af3b0b037416e9c29c5708"><td class="memItemLeft" align="right" valign="top">eventpp::EventDispatcher&lt; std::string, void(<a class="el" href="structwebcface_1_1Field.html">Field</a>)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#a611d686db4af3b0b037416e9c29c5708">canvas2d_entry_event</a></td></tr>
-<tr class="separator:a611d686db4af3b0b037416e9c29c5708"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a81f542ca0255d1ec55c63e1e05ea1b8b" id="r_a81f542ca0255d1ec55c63e1e05ea1b8b"><td class="memItemLeft" align="right" valign="top">eventpp::EventDispatcher&lt; std::string, void(<a class="el" href="structwebcface_1_1Field.html">Field</a>)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#a81f542ca0255d1ec55c63e1e05ea1b8b">ping_event</a></td></tr>
-<tr class="separator:a81f542ca0255d1ec55c63e1e05ea1b8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab6e537c63a54c56474bf3b5516e9c818" id="r_ab6e537c63a54c56474bf3b5516e9c818"><td class="memItemLeft" align="right" valign="top">std::mutex&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#ab6e537c63a54c56474bf3b5516e9c818">event_m</a></td></tr>
+<tr class="separator:ab6e537c63a54c56474bf3b5516e9c818"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6c1f473563adba8789c4ba7fc5cf6de3" id="r_a6c1f473563adba8789c4ba7fc5cf6de3"><td class="memItemLeft" align="right" valign="top">std::map&lt; <a class="el" href="structwebcface_1_1Common_1_1FieldBaseComparable.html">FieldBaseComparable</a>, eventpp::CallbackList&lt; void(<a class="el" href="classwebcface_1_1Value.html">Value</a>)&gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#a6c1f473563adba8789c4ba7fc5cf6de3">value_change_event</a></td></tr>
+<tr class="separator:a6c1f473563adba8789c4ba7fc5cf6de3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af23aa9bb99cba0dc4811b928cd28e555" id="r_af23aa9bb99cba0dc4811b928cd28e555"><td class="memItemLeft" align="right" valign="top">std::map&lt; <a class="el" href="structwebcface_1_1Common_1_1FieldBaseComparable.html">FieldBaseComparable</a>, eventpp::CallbackList&lt; void(<a class="el" href="classwebcface_1_1Text.html">Text</a>)&gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#af23aa9bb99cba0dc4811b928cd28e555">text_change_event</a></td></tr>
+<tr class="separator:af23aa9bb99cba0dc4811b928cd28e555"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7650b39caabbf08d408beb231815dd9c" id="r_a7650b39caabbf08d408beb231815dd9c"><td class="memItemLeft" align="right" valign="top">std::map&lt; <a class="el" href="structwebcface_1_1Common_1_1FieldBaseComparable.html">FieldBaseComparable</a>, eventpp::CallbackList&lt; void(<a class="el" href="classwebcface_1_1Image.html">Image</a>)&gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#a7650b39caabbf08d408beb231815dd9c">image_change_event</a></td></tr>
+<tr class="separator:a7650b39caabbf08d408beb231815dd9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acf11416f574984fc01f82f634df79c5f" id="r_acf11416f574984fc01f82f634df79c5f"><td class="memItemLeft" align="right" valign="top">std::map&lt; <a class="el" href="structwebcface_1_1Common_1_1FieldBaseComparable.html">FieldBaseComparable</a>, eventpp::CallbackList&lt; void(<a class="el" href="classwebcface_1_1RobotModel.html">RobotModel</a>)&gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#acf11416f574984fc01f82f634df79c5f">robot_model_change_event</a></td></tr>
+<tr class="separator:acf11416f574984fc01f82f634df79c5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac3d67328465ca45c6786c0c4ea153ef1" id="r_ac3d67328465ca45c6786c0c4ea153ef1"><td class="memItemLeft" align="right" valign="top">std::map&lt; <a class="el" href="structwebcface_1_1Common_1_1FieldBaseComparable.html">FieldBaseComparable</a>, eventpp::CallbackList&lt; void(<a class="el" href="classwebcface_1_1View.html">View</a>)&gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#ac3d67328465ca45c6786c0c4ea153ef1">view_change_event</a></td></tr>
+<tr class="separator:ac3d67328465ca45c6786c0c4ea153ef1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac45487cc5ea8ec28dc5bd50183c33e52" id="r_ac45487cc5ea8ec28dc5bd50183c33e52"><td class="memItemLeft" align="right" valign="top">std::map&lt; <a class="el" href="structwebcface_1_1Common_1_1FieldBaseComparable.html">FieldBaseComparable</a>, eventpp::CallbackList&lt; void(<a class="el" href="classwebcface_1_1Canvas3D.html">Canvas3D</a>)&gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#ac45487cc5ea8ec28dc5bd50183c33e52">canvas3d_change_event</a></td></tr>
+<tr class="separator:ac45487cc5ea8ec28dc5bd50183c33e52"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a06cb983c28db79200d1defeb9ceb7ce6" id="r_a06cb983c28db79200d1defeb9ceb7ce6"><td class="memItemLeft" align="right" valign="top">std::map&lt; <a class="el" href="structwebcface_1_1Common_1_1FieldBaseComparable.html">FieldBaseComparable</a>, eventpp::CallbackList&lt; void(<a class="el" href="classwebcface_1_1Canvas2D.html">Canvas2D</a>)&gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#a06cb983c28db79200d1defeb9ceb7ce6">canvas2d_change_event</a></td></tr>
+<tr class="separator:a06cb983c28db79200d1defeb9ceb7ce6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acb2dd4a9790a7565c5441236585ca32b" id="r_acb2dd4a9790a7565c5441236585ca32b"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; std::string, eventpp::CallbackList&lt; void(<a class="el" href="classwebcface_1_1Log.html">Log</a>)&gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#acb2dd4a9790a7565c5441236585ca32b">log_append_event</a></td></tr>
+<tr class="separator:acb2dd4a9790a7565c5441236585ca32b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa93eef23d89103f7fb64f83839ebd11b" id="r_aa93eef23d89103f7fb64f83839ebd11b"><td class="memItemLeft" align="right" valign="top">eventpp::CallbackList&lt; void(<a class="el" href="classwebcface_1_1Member.html">Member</a>)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#aa93eef23d89103f7fb64f83839ebd11b">member_entry_event</a></td></tr>
+<tr class="separator:aa93eef23d89103f7fb64f83839ebd11b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a48b1c42e5c3c336bdf74de5d1c6d124b" id="r_a48b1c42e5c3c336bdf74de5d1c6d124b"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; std::string, eventpp::CallbackList&lt; void(<a class="el" href="classwebcface_1_1Member.html">Member</a>)&gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#a48b1c42e5c3c336bdf74de5d1c6d124b">sync_event</a></td></tr>
+<tr class="separator:a48b1c42e5c3c336bdf74de5d1c6d124b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a78892a1b355aa2592ca31be6cb597c78" id="r_a78892a1b355aa2592ca31be6cb597c78"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; std::string, eventpp::CallbackList&lt; void(<a class="el" href="classwebcface_1_1Member.html">Member</a>)&gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#a78892a1b355aa2592ca31be6cb597c78">ping_event</a></td></tr>
+<tr class="separator:a78892a1b355aa2592ca31be6cb597c78"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab4b150f5eb31b3c7e00163cc724e5a9d" id="r_ab4b150f5eb31b3c7e00163cc724e5a9d"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; std::string, eventpp::CallbackList&lt; void(<a class="el" href="classwebcface_1_1Value.html">Value</a>)&gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#ab4b150f5eb31b3c7e00163cc724e5a9d">value_entry_event</a></td></tr>
+<tr class="separator:ab4b150f5eb31b3c7e00163cc724e5a9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa1d61d7aba7886b9eaeebcb5d8a5f5e2" id="r_aa1d61d7aba7886b9eaeebcb5d8a5f5e2"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; std::string, eventpp::CallbackList&lt; void(<a class="el" href="classwebcface_1_1Text.html">Text</a>)&gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#aa1d61d7aba7886b9eaeebcb5d8a5f5e2">text_entry_event</a></td></tr>
+<tr class="separator:aa1d61d7aba7886b9eaeebcb5d8a5f5e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a95046f0e91453991291f715efad7a123" id="r_a95046f0e91453991291f715efad7a123"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; std::string, eventpp::CallbackList&lt; void(<a class="el" href="classwebcface_1_1Func.html">Func</a>)&gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#a95046f0e91453991291f715efad7a123">func_entry_event</a></td></tr>
+<tr class="separator:a95046f0e91453991291f715efad7a123"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a21d37f86d03b607481182248821dcc48" id="r_a21d37f86d03b607481182248821dcc48"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; std::string, eventpp::CallbackList&lt; void(<a class="el" href="classwebcface_1_1View.html">View</a>)&gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#a21d37f86d03b607481182248821dcc48">view_entry_event</a></td></tr>
+<tr class="separator:a21d37f86d03b607481182248821dcc48"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a663d454129b2bd3b3e7edab9652212af" id="r_a663d454129b2bd3b3e7edab9652212af"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; std::string, eventpp::CallbackList&lt; void(<a class="el" href="classwebcface_1_1Image.html">Image</a>)&gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#a663d454129b2bd3b3e7edab9652212af">image_entry_event</a></td></tr>
+<tr class="separator:a663d454129b2bd3b3e7edab9652212af"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa437f0a29631de8d18a87a20bfb5391a" id="r_aa437f0a29631de8d18a87a20bfb5391a"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; std::string, eventpp::CallbackList&lt; void(<a class="el" href="classwebcface_1_1RobotModel.html">RobotModel</a>)&gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#aa437f0a29631de8d18a87a20bfb5391a">robot_model_entry_event</a></td></tr>
+<tr class="separator:aa437f0a29631de8d18a87a20bfb5391a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abfd54942a523f517aa4509876e41d4ab" id="r_abfd54942a523f517aa4509876e41d4ab"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; std::string, eventpp::CallbackList&lt; void(<a class="el" href="classwebcface_1_1Canvas3D.html">Canvas3D</a>)&gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#abfd54942a523f517aa4509876e41d4ab">canvas3d_entry_event</a></td></tr>
+<tr class="separator:abfd54942a523f517aa4509876e41d4ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa1cdbc18200ac2925244fdb0c449809d" id="r_aa1cdbc18200ac2925244fdb0c449809d"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; std::string, eventpp::CallbackList&lt; void(<a class="el" href="classwebcface_1_1Canvas2D.html">Canvas2D</a>)&gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#aa1cdbc18200ac2925244fdb0c449809d">canvas2d_entry_event</a></td></tr>
+<tr class="separator:aa1cdbc18200ac2925244fdb0c449809d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a42215014610973eb53bbbcc9d435d887" id="r_a42215014610973eb53bbbcc9d435d887"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Common_1_1Queue.html">Common::Queue</a>&lt; std::shared_ptr&lt; <a class="el" href="classwebcface_1_1Internal_1_1FuncOnSync.html">FuncOnSync</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#a42215014610973eb53bbbcc9d435d887">func_sync_queue</a></td></tr>
 <tr class="memdesc:a42215014610973eb53bbbcc9d435d887"><td class="mdescLeft">&#160;</td><td class="mdescRight">sync()のタイミングで実行を同期する関数のcondition_variable  <br /></td></tr>
 <tr class="separator:a42215014610973eb53bbbcc9d435d887"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -562,28 +568,28 @@ Public Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="a7648f551323a5b0041c4ac0fd7add068" name="a7648f551323a5b0041c4ac0fd7add068"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7648f551323a5b0041c4ac0fd7add068">&#9670;&#160;</a></span>canvas2d_change_event</h2>
+<a id="a06cb983c28db79200d1defeb9ceb7ce6" name="a06cb983c28db79200d1defeb9ceb7ce6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a06cb983c28db79200d1defeb9ceb7ce6">&#9670;&#160;</a></span>canvas2d_change_event</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">eventpp::EventDispatcher&lt;<a class="el" href="structwebcface_1_1Common_1_1FieldBaseComparable.html">FieldBaseComparable</a>, void(<a class="el" href="structwebcface_1_1Field.html">Field</a>)&gt; canvas2d_change_event</td>
+          <td class="memname">std::map&lt;<a class="el" href="structwebcface_1_1Common_1_1FieldBaseComparable.html">FieldBaseComparable</a>, eventpp::CallbackList&lt;void(<a class="el" href="classwebcface_1_1Canvas2D.html">Canvas2D</a>)&gt; &gt; canvas2d_change_event</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="a611d686db4af3b0b037416e9c29c5708" name="a611d686db4af3b0b037416e9c29c5708"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a611d686db4af3b0b037416e9c29c5708">&#9670;&#160;</a></span>canvas2d_entry_event</h2>
+<a id="aa1cdbc18200ac2925244fdb0c449809d" name="aa1cdbc18200ac2925244fdb0c449809d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa1cdbc18200ac2925244fdb0c449809d">&#9670;&#160;</a></span>canvas2d_entry_event</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">eventpp::EventDispatcher&lt;std::string, void(<a class="el" href="structwebcface_1_1Field.html">Field</a>)&gt; canvas2d_entry_event</td>
+          <td class="memname">std::unordered_map&lt;std::string, eventpp::CallbackList&lt;void(<a class="el" href="classwebcface_1_1Canvas2D.html">Canvas2D</a>)&gt; &gt; canvas2d_entry_event</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -604,28 +610,28 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a39a60fe03a6454b7de49dd3d37d95d28" name="a39a60fe03a6454b7de49dd3d37d95d28"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a39a60fe03a6454b7de49dd3d37d95d28">&#9670;&#160;</a></span>canvas3d_change_event</h2>
+<a id="ac45487cc5ea8ec28dc5bd50183c33e52" name="ac45487cc5ea8ec28dc5bd50183c33e52"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac45487cc5ea8ec28dc5bd50183c33e52">&#9670;&#160;</a></span>canvas3d_change_event</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">eventpp::EventDispatcher&lt;<a class="el" href="structwebcface_1_1Common_1_1FieldBaseComparable.html">FieldBaseComparable</a>, void(<a class="el" href="structwebcface_1_1Field.html">Field</a>)&gt; canvas3d_change_event</td>
+          <td class="memname">std::map&lt;<a class="el" href="structwebcface_1_1Common_1_1FieldBaseComparable.html">FieldBaseComparable</a>, eventpp::CallbackList&lt;void(<a class="el" href="classwebcface_1_1Canvas3D.html">Canvas3D</a>)&gt; &gt; canvas3d_change_event</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="af24f251eff384edfe943145ca410ac91" name="af24f251eff384edfe943145ca410ac91"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af24f251eff384edfe943145ca410ac91">&#9670;&#160;</a></span>canvas3d_entry_event</h2>
+<a id="abfd54942a523f517aa4509876e41d4ab" name="abfd54942a523f517aa4509876e41d4ab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abfd54942a523f517aa4509876e41d4ab">&#9670;&#160;</a></span>canvas3d_entry_event</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">eventpp::EventDispatcher&lt;std::string, void(<a class="el" href="structwebcface_1_1Field.html">Field</a>)&gt; canvas3d_entry_event</td>
+          <td class="memname">std::unordered_map&lt;std::string, eventpp::CallbackList&lt;void(<a class="el" href="classwebcface_1_1Canvas3D.html">Canvas3D</a>)&gt; &gt; canvas3d_entry_event</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -718,14 +724,42 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a34ebb3032bbe99f59443808e9c5d53d0" name="a34ebb3032bbe99f59443808e9c5d53d0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a34ebb3032bbe99f59443808e9c5d53d0">&#9670;&#160;</a></span>func_entry_event</h2>
+<a id="aa0de54f364a8b0de0eb081c1c44329ff" name="aa0de54f364a8b0de0eb081c1c44329ff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa0de54f364a8b0de0eb081c1c44329ff">&#9670;&#160;</a></span>entry_m</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">eventpp::EventDispatcher&lt;std::string, void(<a class="el" href="structwebcface_1_1Field.html">Field</a>)&gt; func_entry_event</td>
+          <td class="memname">std::mutex entry_m</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ab6e537c63a54c56474bf3b5516e9c818" name="ab6e537c63a54c56474bf3b5516e9c818"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab6e537c63a54c56474bf3b5516e9c818">&#9670;&#160;</a></span>event_m</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::mutex event_m</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a95046f0e91453991291f715efad7a123" name="a95046f0e91453991291f715efad7a123"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a95046f0e91453991291f715efad7a123">&#9670;&#160;</a></span>func_entry_event</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::unordered_map&lt;std::string, eventpp::CallbackList&lt;void(<a class="el" href="classwebcface_1_1Func.html">Func</a>)&gt; &gt; func_entry_event</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -806,28 +840,28 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a7f5faa9b4b73388066137894a366af9d" name="a7f5faa9b4b73388066137894a366af9d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7f5faa9b4b73388066137894a366af9d">&#9670;&#160;</a></span>image_change_event</h2>
+<a id="a7650b39caabbf08d408beb231815dd9c" name="a7650b39caabbf08d408beb231815dd9c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7650b39caabbf08d408beb231815dd9c">&#9670;&#160;</a></span>image_change_event</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">eventpp::EventDispatcher&lt;<a class="el" href="structwebcface_1_1Common_1_1FieldBaseComparable.html">FieldBaseComparable</a>, void(<a class="el" href="structwebcface_1_1Field.html">Field</a>)&gt; image_change_event</td>
+          <td class="memname">std::map&lt;<a class="el" href="structwebcface_1_1Common_1_1FieldBaseComparable.html">FieldBaseComparable</a>, eventpp::CallbackList&lt;void(<a class="el" href="classwebcface_1_1Image.html">Image</a>)&gt; &gt; image_change_event</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="a16c65f69a60e6061ac66035f005d681c" name="a16c65f69a60e6061ac66035f005d681c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a16c65f69a60e6061ac66035f005d681c">&#9670;&#160;</a></span>image_entry_event</h2>
+<a id="a663d454129b2bd3b3e7edab9652212af" name="a663d454129b2bd3b3e7edab9652212af"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a663d454129b2bd3b3e7edab9652212af">&#9670;&#160;</a></span>image_entry_event</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">eventpp::EventDispatcher&lt;std::string, void(<a class="el" href="structwebcface_1_1Field.html">Field</a>)&gt; image_entry_event</td>
+          <td class="memname">std::unordered_map&lt;std::string, eventpp::CallbackList&lt;void(<a class="el" href="classwebcface_1_1Image.html">Image</a>)&gt; &gt; image_entry_event</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -848,14 +882,14 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="ab9beb12c09f6aac1f7987f3d34e7eb42" name="ab9beb12c09f6aac1f7987f3d34e7eb42"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab9beb12c09f6aac1f7987f3d34e7eb42">&#9670;&#160;</a></span>log_append_event</h2>
+<a id="acb2dd4a9790a7565c5441236585ca32b" name="acb2dd4a9790a7565c5441236585ca32b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acb2dd4a9790a7565c5441236585ca32b">&#9670;&#160;</a></span>log_append_event</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">eventpp::EventDispatcher&lt;std::string, void(<a class="el" href="structwebcface_1_1Field.html">Field</a>)&gt; log_append_event</td>
+          <td class="memname">std::unordered_map&lt;std::string, eventpp::CallbackList&lt;void(<a class="el" href="classwebcface_1_1Log.html">Log</a>)&gt; &gt; log_append_event</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -974,14 +1008,28 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a5fc5bf885dda6d4a7b5d51d507b3be05" name="a5fc5bf885dda6d4a7b5d51d507b3be05"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5fc5bf885dda6d4a7b5d51d507b3be05">&#9670;&#160;</a></span>member_entry_event</h2>
+<a id="a099dbff2ba5615fd25bed0e58db7d737" name="a099dbff2ba5615fd25bed0e58db7d737"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a099dbff2ba5615fd25bed0e58db7d737">&#9670;&#160;</a></span>member_entry</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">eventpp::EventDispatcher&lt;int, void(<a class="el" href="structwebcface_1_1Field.html">Field</a>)&gt; member_entry_event</td>
+          <td class="memname">std::unordered_set&lt;std::string&gt; member_entry</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa93eef23d89103f7fb64f83839ebd11b" name="aa93eef23d89103f7fb64f83839ebd11b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa93eef23d89103f7fb64f83839ebd11b">&#9670;&#160;</a></span>member_entry_event</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">eventpp::CallbackList&lt;void(<a class="el" href="classwebcface_1_1Member.html">Member</a>)&gt; member_entry_event</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -1063,14 +1111,14 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a81f542ca0255d1ec55c63e1e05ea1b8b" name="a81f542ca0255d1ec55c63e1e05ea1b8b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a81f542ca0255d1ec55c63e1e05ea1b8b">&#9670;&#160;</a></span>ping_event</h2>
+<a id="a78892a1b355aa2592ca31be6cb597c78" name="a78892a1b355aa2592ca31be6cb597c78"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a78892a1b355aa2592ca31be6cb597c78">&#9670;&#160;</a></span>ping_event</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">eventpp::EventDispatcher&lt;std::string, void(<a class="el" href="structwebcface_1_1Field.html">Field</a>)&gt; ping_event</td>
+          <td class="memname">std::unordered_map&lt;std::string, eventpp::CallbackList&lt;void(<a class="el" href="classwebcface_1_1Member.html">Member</a>)&gt; &gt; ping_event</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -1153,28 +1201,28 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a4bfef4bb71713b947a6feeb0c3f42c35" name="a4bfef4bb71713b947a6feeb0c3f42c35"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4bfef4bb71713b947a6feeb0c3f42c35">&#9670;&#160;</a></span>robot_model_change_event</h2>
+<a id="acf11416f574984fc01f82f634df79c5f" name="acf11416f574984fc01f82f634df79c5f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acf11416f574984fc01f82f634df79c5f">&#9670;&#160;</a></span>robot_model_change_event</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">eventpp::EventDispatcher&lt;<a class="el" href="structwebcface_1_1Common_1_1FieldBaseComparable.html">FieldBaseComparable</a>, void(<a class="el" href="structwebcface_1_1Field.html">Field</a>)&gt; robot_model_change_event</td>
+          <td class="memname">std::map&lt;<a class="el" href="structwebcface_1_1Common_1_1FieldBaseComparable.html">FieldBaseComparable</a>, eventpp::CallbackList&lt;void(<a class="el" href="classwebcface_1_1RobotModel.html">RobotModel</a>)&gt; &gt; robot_model_change_event</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="a4be4c0685db930b4172ad9ff13cf1000" name="a4be4c0685db930b4172ad9ff13cf1000"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4be4c0685db930b4172ad9ff13cf1000">&#9670;&#160;</a></span>robot_model_entry_event</h2>
+<a id="aa437f0a29631de8d18a87a20bfb5391a" name="aa437f0a29631de8d18a87a20bfb5391a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa437f0a29631de8d18a87a20bfb5391a">&#9670;&#160;</a></span>robot_model_entry_event</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">eventpp::EventDispatcher&lt;std::string, void(<a class="el" href="structwebcface_1_1Field.html">Field</a>)&gt; robot_model_entry_event</td>
+          <td class="memname">std::unordered_map&lt;std::string, eventpp::CallbackList&lt;void(<a class="el" href="classwebcface_1_1RobotModel.html">RobotModel</a>)&gt; &gt; robot_model_entry_event</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -1239,14 +1287,14 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a1688a6c78fef31539bcd373b8dd81f43" name="a1688a6c78fef31539bcd373b8dd81f43"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1688a6c78fef31539bcd373b8dd81f43">&#9670;&#160;</a></span>sync_event</h2>
+<a id="a48b1c42e5c3c336bdf74de5d1c6d124b" name="a48b1c42e5c3c336bdf74de5d1c6d124b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a48b1c42e5c3c336bdf74de5d1c6d124b">&#9670;&#160;</a></span>sync_event</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">eventpp::EventDispatcher&lt;std::string, void(<a class="el" href="structwebcface_1_1Field.html">Field</a>)&gt; sync_event</td>
+          <td class="memname">std::unordered_map&lt;std::string, eventpp::CallbackList&lt;void(<a class="el" href="classwebcface_1_1Member.html">Member</a>)&gt; &gt; sync_event</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -1267,28 +1315,28 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a965c5fd6b635dcdb8c9342035f3a7a29" name="a965c5fd6b635dcdb8c9342035f3a7a29"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a965c5fd6b635dcdb8c9342035f3a7a29">&#9670;&#160;</a></span>text_change_event</h2>
+<a id="af23aa9bb99cba0dc4811b928cd28e555" name="af23aa9bb99cba0dc4811b928cd28e555"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af23aa9bb99cba0dc4811b928cd28e555">&#9670;&#160;</a></span>text_change_event</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">eventpp::EventDispatcher&lt;<a class="el" href="structwebcface_1_1Common_1_1FieldBaseComparable.html">FieldBaseComparable</a>, void(<a class="el" href="structwebcface_1_1Field.html">Field</a>)&gt; text_change_event</td>
+          <td class="memname">std::map&lt;<a class="el" href="structwebcface_1_1Common_1_1FieldBaseComparable.html">FieldBaseComparable</a>, eventpp::CallbackList&lt;void(<a class="el" href="classwebcface_1_1Text.html">Text</a>)&gt; &gt; text_change_event</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="a2565f1cb718c388a462b127500bd3b7d" name="a2565f1cb718c388a462b127500bd3b7d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2565f1cb718c388a462b127500bd3b7d">&#9670;&#160;</a></span>text_entry_event</h2>
+<a id="aa1d61d7aba7886b9eaeebcb5d8a5f5e2" name="aa1d61d7aba7886b9eaeebcb5d8a5f5e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa1d61d7aba7886b9eaeebcb5d8a5f5e2">&#9670;&#160;</a></span>text_entry_event</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">eventpp::EventDispatcher&lt;std::string, void(<a class="el" href="structwebcface_1_1Field.html">Field</a>)&gt; text_entry_event</td>
+          <td class="memname">std::unordered_map&lt;std::string, eventpp::CallbackList&lt;void(<a class="el" href="classwebcface_1_1Text.html">Text</a>)&gt; &gt; text_entry_event</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -1309,28 +1357,28 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a519596fa89d77a8d02d9e52d807e536a" name="a519596fa89d77a8d02d9e52d807e536a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a519596fa89d77a8d02d9e52d807e536a">&#9670;&#160;</a></span>value_change_event</h2>
+<a id="a6c1f473563adba8789c4ba7fc5cf6de3" name="a6c1f473563adba8789c4ba7fc5cf6de3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6c1f473563adba8789c4ba7fc5cf6de3">&#9670;&#160;</a></span>value_change_event</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">eventpp::EventDispatcher&lt;<a class="el" href="structwebcface_1_1Common_1_1FieldBaseComparable.html">FieldBaseComparable</a>, void(<a class="el" href="structwebcface_1_1Field.html">Field</a>)&gt; value_change_event</td>
+          <td class="memname">std::map&lt;<a class="el" href="structwebcface_1_1Common_1_1FieldBaseComparable.html">FieldBaseComparable</a>, eventpp::CallbackList&lt;void(<a class="el" href="classwebcface_1_1Value.html">Value</a>)&gt; &gt; value_change_event</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="a995eacf51faee5cd34a86d5b16b36ae3" name="a995eacf51faee5cd34a86d5b16b36ae3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a995eacf51faee5cd34a86d5b16b36ae3">&#9670;&#160;</a></span>value_entry_event</h2>
+<a id="ab4b150f5eb31b3c7e00163cc724e5a9d" name="ab4b150f5eb31b3c7e00163cc724e5a9d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab4b150f5eb31b3c7e00163cc724e5a9d">&#9670;&#160;</a></span>value_entry_event</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">eventpp::EventDispatcher&lt;std::string, void(<a class="el" href="structwebcface_1_1Field.html">Field</a>)&gt; value_entry_event</td>
+          <td class="memname">std::unordered_map&lt;std::string, eventpp::CallbackList&lt;void(<a class="el" href="classwebcface_1_1Value.html">Value</a>)&gt; &gt; value_entry_event</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -1351,28 +1399,28 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a700e22120dae85e1ec98c5f5b608b59f" name="a700e22120dae85e1ec98c5f5b608b59f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a700e22120dae85e1ec98c5f5b608b59f">&#9670;&#160;</a></span>view_change_event</h2>
+<a id="ac3d67328465ca45c6786c0c4ea153ef1" name="ac3d67328465ca45c6786c0c4ea153ef1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac3d67328465ca45c6786c0c4ea153ef1">&#9670;&#160;</a></span>view_change_event</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">eventpp::EventDispatcher&lt;<a class="el" href="structwebcface_1_1Common_1_1FieldBaseComparable.html">FieldBaseComparable</a>, void(<a class="el" href="structwebcface_1_1Field.html">Field</a>)&gt; view_change_event</td>
+          <td class="memname">std::map&lt;<a class="el" href="structwebcface_1_1Common_1_1FieldBaseComparable.html">FieldBaseComparable</a>, eventpp::CallbackList&lt;void(<a class="el" href="classwebcface_1_1View.html">View</a>)&gt; &gt; view_change_event</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="a108c030a8e9e5cdae706deeeb7dc7057" name="a108c030a8e9e5cdae706deeeb7dc7057"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a108c030a8e9e5cdae706deeeb7dc7057">&#9670;&#160;</a></span>view_entry_event</h2>
+<a id="a21d37f86d03b607481182248821dcc48" name="a21d37f86d03b607481182248821dcc48"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a21d37f86d03b607481182248821dcc48">&#9670;&#160;</a></span>view_entry_event</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">eventpp::EventDispatcher&lt;std::string, void(<a class="el" href="structwebcface_1_1Field.html">Field</a>)&gt; view_entry_event</td>
+          <td class="memname">std::unordered_map&lt;std::string, eventpp::CallbackList&lt;void(<a class="el" href="classwebcface_1_1View.html">View</a>)&gt; &gt; view_entry_event</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -1403,7 +1451,7 @@ Public Attributes</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="namespacewebcface_1_1Internal.html">Internal</a></li><li class="navelem"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html">ClientData</a></li>
-    <li class="footer">Generated on Wed Apr 24 2024 17:54:40 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Thu Apr 25 2024 08:05:49 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

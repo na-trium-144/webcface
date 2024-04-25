@@ -31,8 +31,7 @@ var searchData=
   ['dicttraits_3c_20vectoropt_3c_20t_20_3e_20_3e_28',['dicttraits&lt; vectoropt&lt; t &gt; &gt;',['../structwebcface_1_1Common_1_1DictTraits_3_01VectorOpt_3_01T_01_4_01_4.html',1,'DictTraits&lt; VectorOpt&lt; T &gt; &gt;'],['../structwebcface_1_1Common_1_1DictTraits_3_01VectorOpt_3_01T_01_4_01_4.html',1,'DictTraits&lt; VectorOpt&lt; T &gt; &gt;']]],
   ['dir_2ecc_29',['dir.cc',['../dir_8cc.html',1,'']]],
   ['dir_2eh_30',['dir.h',['../dir_8h.html',1,'']]],
-  ['dispatcher_31',['dispatcher',['../classwebcface_1_1EventTarget.html#a93504a6646cc5bd2be1d2b5e7c87cedc',1,'webcface::EventTarget::dispatcher'],['../classwebcface_1_1EventTarget.html#aa7d77f4004dea8559345bbfc3d915181',1,'webcface::EventTarget::Dispatcher']]],
-  ['documentation_32',['Documentation',['../index.html#autotoc_md206',1,'']]],
-  ['done_33',['done',['../classwebcface_1_1Internal_1_1FuncOnSync.html#ab650651e4cda2869f73100c6fd2c821a',1,'webcface::Internal::FuncOnSync']]],
-  ['double_5f_34',['double_',['../namespacewebcface_1_1Common.html#acd1dd9e2d5f885ad3f73197cfa6b0185a9ff848d203d671e297c98886f9fc0bd9',1,'webcface::Common']]]
+  ['documentation_31',['Documentation',['../index.html#autotoc_md207',1,'']]],
+  ['done_32',['done',['../classwebcface_1_1Internal_1_1FuncOnSync.html#ab650651e4cda2869f73100c6fd2c821a',1,'webcface::Internal::FuncOnSync']]],
+  ['double_5f_33',['double_',['../namespacewebcface_1_1Common.html#acd1dd9e2d5f885ad3f73197cfa6b0185a9ff848d203d671e297c98886f9fc0bd9',1,'webcface::Common']]]
 ];

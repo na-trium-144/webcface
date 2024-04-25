@@ -1,17 +1,19 @@
 <map id="include/webcface/view.h" name="include/webcface/view.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="385,5,566,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="441,5,622,31"/>
 <area shape="rect" id="Node000002" href="$c__wcf_2view_8cc.html" title=" " alt="" coords="72,79,183,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="406,36,184,81,183,76,405,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="454,36,183,83,183,78,453,30"/>
 <area shape="rect" id="Node000003" href="$client_2client_8cc.html" title=" " alt="" coords="207,79,323,104"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="430,37,300,81,298,76,428,32"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="476,37,309,81,307,76,474,32"/>
 <area shape="rect" id="Node000004" href="$data__buffer_8h.html" title=" " alt="" coords="347,79,494,104"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="460,43,432,80,427,77,456,40"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="503,40,440,81,437,76,501,36"/>
 <area shape="rect" id="Node000008" href="$client_2view_8cc.html" title=" " alt="" coords="527,152,637,177"/>
-<area shape="poly" id="edge9_Node000001_Node000008" title=" " alt="" coords="494,41,576,150,571,153,490,44"/>
-<area shape="rect" id="Node000009" href="$member_8cc.html" title=" " alt="" coords="569,79,704,104"/>
-<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="515,34,611,76,609,81,513,39"/>
-<area shape="rect" id="Node000010" href="$webcface_8h.html" title=" " alt="" coords="729,79,942,104"/>
-<area shape="poly" id="edge10_Node000001_Node000010" title=" " alt="" coords="547,31,778,76,777,81,546,36"/>
+<area shape="poly" id="edge10_Node000001_Node000008" title=" " alt="" coords="541,43,561,103,579,151,574,153,555,105,536,45"/>
+<area shape="rect" id="Node000009" href="$field_8cc.html" title=" " alt="" coords="569,79,677,104"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="558,37,610,76,607,81,555,41"/>
+<area shape="rect" id="Node000010" href="$member_8cc.html" title=" " alt="" coords="701,79,836,104"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="583,32,731,76,729,81,582,37"/>
+<area shape="rect" id="Node000011" href="$webcface_8h.html" title=" " alt="" coords="861,79,1074,104"/>
+<area shape="poly" id="edge11_Node000001_Node000011" title=" " alt="" coords="615,30,898,76,897,81,614,35"/>
 <area shape="rect" id="Node000005" href="$canvas2d_8cc.html" title=" " alt="" coords="5,152,148,177"/>
 <area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="353,109,133,155,132,149,352,104"/>
 <area shape="rect" id="Node000006" href="$canvas3d_8cc.html" title=" " alt="" coords="172,152,315,177"/>

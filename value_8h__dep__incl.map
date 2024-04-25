@@ -1,13 +1,15 @@
 <map id="include/webcface/value.h" name="include/webcface/value.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="261,5,448,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="320,5,507,31"/>
 <area shape="rect" id="Node000002" href="$c__wcf_2value_8cc.html" title=" " alt="" coords="5,79,123,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="295,37,112,81,110,76,294,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="344,36,121,81,120,76,343,31"/>
 <area shape="rect" id="Node000003" href="$client_2client_8cc.html" title=" " alt="" coords="147,79,263,104"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="320,39,231,81,229,76,317,34"/>
-<area shape="rect" id="Node000004" href="$member_8cc.html" title=" " alt="" coords="287,79,422,104"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="357,44,357,79,352,79,352,44"/>
-<area shape="rect" id="Node000005" href="$client_2value_8cc.html" title=" " alt="" coords="446,79,562,104"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="392,34,481,76,478,81,390,39"/>
-<area shape="rect" id="Node000006" href="$webcface_8h.html" title=" " alt="" coords="587,79,800,104"/>
-<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="423,31,639,76,638,81,422,36"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="368,38,240,81,238,76,366,33"/>
+<area shape="rect" id="Node000004" href="$field_8cc.html" title=" " alt="" coords="287,79,395,104"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="393,43,355,80,351,77,390,39"/>
+<area shape="rect" id="Node000005" href="$member_8cc.html" title=" " alt="" coords="419,79,554,104"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="437,38,477,77,473,80,433,42"/>
+<area shape="rect" id="Node000006" href="$client_2value_8cc.html" title=" " alt="" coords="578,79,694,104"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="463,32,601,76,599,81,461,37"/>
+<area shape="rect" id="Node000007" href="$webcface_8h.html" title=" " alt="" coords="719,79,932,104"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="493,30,759,76,759,81,493,36"/>
 </map>

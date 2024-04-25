@@ -142,16 +142,16 @@ $(document).ready(function(){initNavTree('md_11__text.html',''); initResizable()
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md46">コマンドライン</a></li>
-<li class="level1"><a href="#autotoc_md47">送信</a></li>
-<li class="level1"><a href="#autotoc_md49">受信</a><ul><li class="level2"><a href="#autotoc_md50">時刻</a></li>
-<li class="level2"><a href="#autotoc_md51">Entry</a></li>
-<li class="level2"><a href="#autotoc_md52">Event</a></li>
+<ul><li class="level1"><a href="#autotoc_md47">コマンドライン</a></li>
+<li class="level1"><a href="#autotoc_md48">送信</a></li>
+<li class="level1"><a href="#autotoc_md50">受信</a><ul><li class="level2"><a href="#autotoc_md51">時刻</a></li>
+<li class="level2"><a href="#autotoc_md52">Entry</a></li>
+<li class="level2"><a href="#autotoc_md53">Event</a></li>
 </ul>
 </li>
 </ul>
 </div>
-<div class="textblock"><p><a class="anchor" id="autotoc_md45"></a></p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md46"></a></p>
 <dl class="section since"><dt>Since</dt><dd><span class="since-c"></span> <span class="since-js"></span> <span class="since-py"></span> </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><ul>
 <li>C++ <a class="el" href="classwebcface_1_1Text.html" title="文字列の送受信データを表すクラス">webcface::Text</a> (<code><a class="el" href="text_8h.html">webcface/text.h</a></code>)</li>
@@ -162,11 +162,11 @@ $(document).ready(function(){initNavTree('md_11__text.html',''); initResizable()
 </dd></dl>
 <p>文字列データを送受信します。</p>
 <p>使い方は<a class="el" href="md_10__value.html">Value</a>とほぼ同じです。</p>
-<h1><a class="anchor" id="autotoc_md46"></a>
+<h1><a class="anchor" id="autotoc_md47"></a>
 コマンドライン</h1>
 <div class="fragment"><div class="line">webcface-send -t text</div>
 </div><!-- fragment --><p> を実行し、文字列を入力すると送信されます。(1つ入力するごとに改行してください)</p>
-<h1><a class="anchor" id="autotoc_md47"></a>
+<h1><a class="anchor" id="autotoc_md48"></a>
 送信</h1>
 <p>Client::text からTextオブジェクトを作り、 Text::set() でデータを代入し、Client::sync()することで送信されます</p>
 <div class="tabbed"></div><div class="tabbed"><ul>
@@ -187,7 +187,7 @@ null終端の文字列はwcfTextSetで送信できます <div class="fragment"><
 </div><div class="tabbed"></div><dl class="section note"><dt>Note</dt><dd><span class="since-c">1.10</span> <span class="since-js">1.6</span> Textの内部データは文字列だけでなく数値やbool値も型を保持して扱えるようになっています。 (<a class="el" href="md_13__view.html">View</a>のInputRefで内部的に使用するため) <br  />
  C++はset,getで文字列と同様に送信、受信できます。 <br  />
  JavaScriptではsetAny, getAny関数を使うと文字列以外のデータを処理できます。</dd></dl>
-<h1><a class="anchor" id="autotoc_md49"></a>
+<h1><a class="anchor" id="autotoc_md50"></a>
 受信</h1>
 <p>Member::text() でTextクラスのオブジェクトが得られ、 Text::tryGet(), Text::tryGetRecurse() で値のリクエストをするとともに受信した値を取得できます。 (Dict はC++のみ)</p>
 <p>例えば<code>foo</code>というクライアントの<code>hoge</code>という名前のデータを取得したい場合は次のようにします。</p>
@@ -225,17 +225,17 @@ null終端の文字列はwcfTextSetで送信できます <div class="fragment"><
 </div><div class="tabbed"></div><p><strike>その後Client::sync()したときに実際にリクエストが送信され、</strike> <br  />
  <span class="since-c">1.2</span> <span class="since-js">1.1</span> <span class="since-py"></span> 別スレッドでリクエストが送信され、それ以降は値が得られるようになります。</p>
 <dl class="section note"><dt>Note</dt><dd><span class="since-c">1.7</span> <span class="since-js">1.1</span> <span class="since-py"></span> Text::request()で明示的にリクエストを送信することもできます。</dd></dl>
-<h2><a class="anchor" id="autotoc_md50"></a>
+<h2><a class="anchor" id="autotoc_md51"></a>
 時刻</h2>
 <p><strike>Text::time()</strike> でその値が送信されたとき(そのMemberがsync()したとき)の時刻が得られます。 <br  />
  <span class="since-c">1.7</span> <span class="since-js">1.6</span> <span class="since-py"></span> Member::syncTime() に変更</p>
-<h2><a class="anchor" id="autotoc_md51"></a>
+<h2><a class="anchor" id="autotoc_md52"></a>
 Entry</h2>
 <p><strike>Member::texts() で</strike> そのMemberが送信しているtextのリストが得られます <br  />
  <span class="since-c">1.6</span> <span class="since-py">1.1</span> Member::textEntries() に変更</p>
 <p>また、Member::onTextEntry() で新しくデータが追加されたときのコールバックを設定できます</p>
 <p>いずれも使い方は <a class="el" href="md_10__value.html">Value</a> と同様なのでそちらを参照してください</p>
-<h2><a class="anchor" id="autotoc_md52"></a>
+<h2><a class="anchor" id="autotoc_md53"></a>
 Event</h2>
 <p>受信したデータが変化したときにコールバックを呼び出すことができます。 コールバックを設定することでもその値はリクエストされます。</p>
 <p>また、データが変化したどうかに関わらずそのMemberがsync()したときにコールバックを呼び出したい場合は Member::onSync() が使えます</p>
@@ -252,7 +252,7 @@ Event</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Apr 24 2024 17:54:40 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Thu Apr 25 2024 08:05:49 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

@@ -11,6 +11,7 @@ var classwebcface_1_1Common_1_1ValAdaptor =
     [ "asBool", "classwebcface_1_1Common_1_1ValAdaptor.html#aa89e0884952cab63a940c6626ed9a5d6", null ],
     [ "asString", "classwebcface_1_1Common_1_1ValAdaptor.html#a21aed6732ef1c8a17601d42e53959781", null ],
     [ "asStringRef", "classwebcface_1_1Common_1_1ValAdaptor.html#a67ffc387e9b4058d4b3f7f7bf8d8a829", null ],
+    [ "empty", "classwebcface_1_1Common_1_1ValAdaptor.html#a644718bb2fb240de962dc3c9a1fdf0dc", null ],
     [ "operator bool", "classwebcface_1_1Common_1_1ValAdaptor.html#a67b76affb3b5d35fa419ac234144038b", null ],
     [ "string &", "classwebcface_1_1Common_1_1ValAdaptor.html#ac91ebb8fe9956bbc1dfa3a22c9012235", null ],
     [ "operator T", "classwebcface_1_1Common_1_1ValAdaptor.html#a896fa1c6f48e52917906214f28c8ac47", null ],

@@ -199,20 +199,17 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a08082289da26ceddc7c1795aa65aa298"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5fb25a7dd4f1d58c9e17d2e1c49abfa0" id="r_a5fb25a7dd4f1d58c9e17d2e1c49abfa0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore2.html#a5fb25a7dd4f1d58c9e17d2e1c49abfa0">unsetRecv</a> (const <a class="el" href="structwebcface_1_1Common_1_1FieldBase.html">FieldBase</a> &amp;base)</td></tr>
 <tr class="separator:a5fb25a7dd4f1d58c9e17d2e1c49abfa0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae5159998b2f3c3ffd0e5348849de4a82" id="r_ae5159998b2f3c3ffd0e5348849de4a82"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore2.html#ae5159998b2f3c3ffd0e5348849de4a82">setEntry</a> (const std::string &amp;from)</td></tr>
-<tr class="memdesc:ae5159998b2f3c3ffd0e5348849de4a82"><td class="mdescLeft">&#160;</td><td class="mdescRight">entryにmember名のみ追加  <br /></td></tr>
-<tr class="separator:ae5159998b2f3c3ffd0e5348849de4a82"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1d90d9d71d60801d41bca557b8ce6794" id="r_a1d90d9d71d60801d41bca557b8ce6794"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore2.html#a1d90d9d71d60801d41bca557b8ce6794">clearEntry</a> (const std::string &amp;from)</td></tr>
+<tr class="memdesc:a1d90d9d71d60801d41bca557b8ce6794"><td class="mdescLeft">&#160;</td><td class="mdescRight">memberのentryをクリア  <br /></td></tr>
+<tr class="separator:a1d90d9d71d60801d41bca557b8ce6794"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af7f7796677cbffbf00b64bbd4282d2d3" id="r_af7f7796677cbffbf00b64bbd4282d2d3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore2.html#af7f7796677cbffbf00b64bbd4282d2d3">setEntry</a> (const std::string &amp;from, const std::string &amp;e)</td></tr>
 <tr class="memdesc:af7f7796677cbffbf00b64bbd4282d2d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">受信したentryを追加  <br /></td></tr>
 <tr class="separator:af7f7796677cbffbf00b64bbd4282d2d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a088e2cb338270b97057730d61965f795" id="r_a088e2cb338270b97057730d61965f795"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore2.html#a088e2cb338270b97057730d61965f795">getEntry</a> (const std::string &amp;from)</td></tr>
-<tr class="memdesc:a088e2cb338270b97057730d61965f795"><td class="mdescLeft">&#160;</td><td class="mdescRight">entryを取得  <br /></td></tr>
-<tr class="separator:a088e2cb338270b97057730d61965f795"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2ad0dd04bc4bd458476f4d1aba9f40ec" id="r_a2ad0dd04bc4bd458476f4d1aba9f40ec"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore2.html#a2ad0dd04bc4bd458476f4d1aba9f40ec">getEntry</a> (const <a class="el" href="structwebcface_1_1Common_1_1FieldBase.html">FieldBase</a> &amp;base)</td></tr>
-<tr class="separator:a2ad0dd04bc4bd458476f4d1aba9f40ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6b6088e559bad5cecb111a06f5ee7ee9" id="r_a6b6088e559bad5cecb111a06f5ee7ee9"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore2.html#a6b6088e559bad5cecb111a06f5ee7ee9">getMembers</a> ()</td></tr>
-<tr class="memdesc:a6b6088e559bad5cecb111a06f5ee7ee9"><td class="mdescLeft">&#160;</td><td class="mdescRight">member名のりすとを取得(entryから)  <br /></td></tr>
-<tr class="separator:a6b6088e559bad5cecb111a06f5ee7ee9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a646f5c560856339dbe16fdc5467407fe" id="r_a646f5c560856339dbe16fdc5467407fe"><td class="memItemLeft" align="right" valign="top">std::unordered_set&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore2.html#a646f5c560856339dbe16fdc5467407fe">getEntry</a> (const std::string &amp;from)</td></tr>
+<tr class="memdesc:a646f5c560856339dbe16fdc5467407fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">entryを取得  <br /></td></tr>
+<tr class="separator:a646f5c560856339dbe16fdc5467407fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7dbb82a2a2c24bd594732ff12f14f923" id="r_a7dbb82a2a2c24bd594732ff12f14f923"><td class="memItemLeft" align="right" valign="top">std::unordered_set&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore2.html#a7dbb82a2a2c24bd594732ff12f14f923">getEntry</a> (const <a class="el" href="structwebcface_1_1Common_1_1FieldBase.html">FieldBase</a> &amp;base)</td></tr>
+<tr class="separator:a7dbb82a2a2c24bd594732ff12f14f923"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a53606af2d0565361cfddb73eed4041ce" id="r_a53606af2d0565361cfddb73eed4041ce"><td class="memItemLeft" align="right" valign="top">std::pair&lt; std::string, std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore2.html#a53606af2d0565361cfddb73eed4041ce">getReq</a> (unsigned int req_id, const std::string &amp;sub_field)</td></tr>
 <tr class="memdesc:a53606af2d0565361cfddb73eed4041ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">req_idに対応するmember名とフィールド名を返す  <br /></td></tr>
 <tr class="separator:a53606af2d0565361cfddb73eed4041ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -246,9 +243,9 @@ Private Attributes</h2></td></tr>
 <tr class="memitem:a2298a42f89fb1ff4e0b7cec606b978b1" id="r_a2298a42f89fb1ff4e0b7cec606b978b1"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; std::string, std::unordered_map&lt; std::string, T &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore2.html#a2298a42f89fb1ff4e0b7cec606b978b1">data_recv</a></td></tr>
 <tr class="memdesc:a2298a42f89fb1ff4e0b7cec606b978b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">送信済みデータ&amp;受信済みデータ  <br /></td></tr>
 <tr class="separator:a2298a42f89fb1ff4e0b7cec606b978b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9c4e53be3f8989f0b338fd4e119a578a" id="r_a9c4e53be3f8989f0b338fd4e119a578a"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; std::string, std::vector&lt; std::string &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore2.html#a9c4e53be3f8989f0b338fd4e119a578a">entry</a></td></tr>
-<tr class="memdesc:a9c4e53be3f8989f0b338fd4e119a578a"><td class="mdescLeft">&#160;</td><td class="mdescRight">受信済みのentry  <br /></td></tr>
-<tr class="separator:a9c4e53be3f8989f0b338fd4e119a578a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a11dcafdf89eb8a9334ba09bd0ec3924a" id="r_a11dcafdf89eb8a9334ba09bd0ec3924a"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; std::string, std::unordered_set&lt; std::string &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore2.html#a11dcafdf89eb8a9334ba09bd0ec3924a">entry</a></td></tr>
+<tr class="memdesc:a11dcafdf89eb8a9334ba09bd0ec3924a"><td class="mdescLeft">&#160;</td><td class="mdescRight">受信済みのentry  <br /></td></tr>
+<tr class="separator:a11dcafdf89eb8a9334ba09bd0ec3924a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afca755b21ac7115dc8879a33ec8a7f6a" id="r_afca755b21ac7115dc8879a33ec8a7f6a"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; std::string, std::unordered_map&lt; std::string, unsigned int &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore2.html#afca755b21ac7115dc8879a33ec8a7f6a">req</a></td></tr>
 <tr class="memdesc:afca755b21ac7115dc8879a33ec8a7f6a"><td class="mdescLeft">&#160;</td><td class="mdescRight">データ受信リクエスト  <br /></td></tr>
 <tr class="separator:afca755b21ac7115dc8879a33ec8a7f6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -368,6 +365,29 @@ template&lt;typename T , typename ReqT &gt; </div>
 
 </div>
 </div>
+<a id="a1d90d9d71d60801d41bca557b8ce6794" name="a1d90d9d71d60801d41bca557b8ce6794"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1d90d9d71d60801d41bca557b8ce6794">&#9670;&#160;</a></span>clearEntry()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename ReqT &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void clearEntry </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>from</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>memberのentryをクリア </p>
+<p>ambiguousなので引数にFieldBaseは使わない (そもそも必要ない) </p>
+
+</div>
+</div>
 <a id="ab20bd31a39c1a6b8e25b0ef88661b05b" name="ab20bd31a39c1a6b8e25b0ef88661b05b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab20bd31a39c1a6b8e25b0ef88661b05b">&#9670;&#160;</a></span>clearRecv() <span class="overload">[1/2]</span></h2>
 
@@ -468,8 +488,8 @@ template&lt;typename ElemT &gt; </div>
 
 </div>
 </div>
-<a id="a2ad0dd04bc4bd458476f4d1aba9f40ec" name="a2ad0dd04bc4bd458476f4d1aba9f40ec"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2ad0dd04bc4bd458476f4d1aba9f40ec">&#9670;&#160;</a></span>getEntry() <span class="overload">[1/2]</span></h2>
+<a id="a7dbb82a2a2c24bd594732ff12f14f923" name="a7dbb82a2a2c24bd594732ff12f14f923"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7dbb82a2a2c24bd594732ff12f14f923">&#9670;&#160;</a></span>getEntry() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -480,7 +500,7 @@ template&lt;typename T , typename ReqT  = int&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt; std::string &gt; getEntry </td>
+          <td class="memname">std::unordered_set&lt; std::string &gt; getEntry </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="structwebcface_1_1Common_1_1FieldBase.html">FieldBase</a> &amp;&#160;</td>
           <td class="paramname"><em>base</em></td><td>)</td>
@@ -496,8 +516,8 @@ template&lt;typename T , typename ReqT  = int&gt; </div>
 
 </div>
 </div>
-<a id="a088e2cb338270b97057730d61965f795" name="a088e2cb338270b97057730d61965f795"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a088e2cb338270b97057730d61965f795">&#9670;&#160;</a></span>getEntry() <span class="overload">[2/2]</span></h2>
+<a id="a646f5c560856339dbe16fdc5467407fe" name="a646f5c560856339dbe16fdc5467407fe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a646f5c560856339dbe16fdc5467407fe">&#9670;&#160;</a></span>getEntry() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -505,7 +525,7 @@ template&lt;typename T , typename ReqT  = int&gt; </div>
 template&lt;typename T , typename ReqT &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt; std::string &gt; getEntry </td>
+          <td class="memname">std::unordered_set&lt; std::string &gt; getEntry </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;&#160;</td>
           <td class="paramname"><em>from</em></td><td>)</td>
@@ -515,27 +535,6 @@ template&lt;typename T , typename ReqT &gt; </div>
 </div><div class="memdoc">
 
 <p>entryを取得 </p>
-
-</div>
-</div>
-<a id="a6b6088e559bad5cecb111a06f5ee7ee9" name="a6b6088e559bad5cecb111a06f5ee7ee9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6b6088e559bad5cecb111a06f5ee7ee9">&#9670;&#160;</a></span>getMembers()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T , typename ReqT &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">std::vector&lt; std::string &gt; getMembers </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>member名のりすとを取得(entryから) </p>
 
 </div>
 </div>
@@ -794,31 +793,8 @@ template&lt;typename T , typename ReqT  = int&gt; </div>
 
 </div>
 </div>
-<a id="ae5159998b2f3c3ffd0e5348849de4a82" name="ae5159998b2f3c3ffd0e5348849de4a82"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae5159998b2f3c3ffd0e5348849de4a82">&#9670;&#160;</a></span>setEntry() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T , typename ReqT &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">void setEntry </td>
-          <td>(</td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>from</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>entryにmember名のみ追加 </p>
-<p>ambiguousなので引数にFieldBaseは使わない (そもそも必要ない) </p>
-
-</div>
-</div>
 <a id="af7f7796677cbffbf00b64bbd4282d2d3" name="af7f7796677cbffbf00b64bbd4282d2d3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af7f7796677cbffbf00b64bbd4282d2d3">&#9670;&#160;</a></span>setEntry() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#af7f7796677cbffbf00b64bbd4282d2d3">&#9670;&#160;</a></span>setEntry()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1124,7 +1100,8 @@ template&lt;typename T , typename ReqT  = int&gt; </div>
 </div><div class="memdoc">
 
 <p>送信済みデータ&amp;受信済みデータ </p>
-<p>data_recv[member名][データ名] = 値 </p>
+<p>data_recv[member名][データ名] = 値</p>
+<p>ver1.11〜 setSend時には上書きされず、transferSendで上書きされる それまでの間はgetRecvはdata_recvではなくdata_sendを優先的に読むようにする </p>
 
 </div>
 </div>
@@ -1178,8 +1155,8 @@ template&lt;typename T , typename ReqT  = int&gt; </div>
 
 </div>
 </div>
-<a id="a9c4e53be3f8989f0b338fd4e119a578a" name="a9c4e53be3f8989f0b338fd4e119a578a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9c4e53be3f8989f0b338fd4e119a578a">&#9670;&#160;</a></span>entry</h2>
+<a id="a11dcafdf89eb8a9334ba09bd0ec3924a" name="a11dcafdf89eb8a9334ba09bd0ec3924a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a11dcafdf89eb8a9334ba09bd0ec3924a">&#9670;&#160;</a></span>entry</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1190,7 +1167,7 @@ template&lt;typename T , typename ReqT  = int&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::unordered_map&lt;std::string, std::vector&lt;std::string&gt; &gt; entry</td>
+          <td class="memname">std::unordered_map&lt;std::string, std::unordered_set&lt;std::string&gt; &gt; entry</td>
         </tr>
       </table>
   </td>
@@ -1308,7 +1285,7 @@ template&lt;typename T , typename ReqT  = int&gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="namespacewebcface_1_1Internal.html">Internal</a></li><li class="navelem"><a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore2.html">SyncDataStore2</a></li>
-    <li class="footer">Generated on Wed Apr 24 2024 17:54:40 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Thu Apr 25 2024 08:05:49 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

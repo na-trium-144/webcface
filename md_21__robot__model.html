@@ -142,22 +142,22 @@ $(document).ready(function(){initNavTree('md_21__robot__model.html',''); initRes
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md102">送信</a></li>
-<li class="level1"><a href="#autotoc_md103">RobotJoint</a><ul><li class="level2"><a href="#autotoc_md104">fixedAbsolute</a></li>
-<li class="level2"><a href="#autotoc_md105">fixedJoint</a></li>
-<li class="level2"><a href="#autotoc_md106">rotationalJoint</a></li>
-<li class="level2"><a href="#autotoc_md107">prismaticJoint</a></li>
+<ul><li class="level1"><a href="#autotoc_md103">送信</a></li>
+<li class="level1"><a href="#autotoc_md104">RobotJoint</a><ul><li class="level2"><a href="#autotoc_md105">fixedAbsolute</a></li>
+<li class="level2"><a href="#autotoc_md106">fixedJoint</a></li>
+<li class="level2"><a href="#autotoc_md107">rotationalJoint</a></li>
+<li class="level2"><a href="#autotoc_md108">prismaticJoint</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md108">Canvas3Dに表示する</a></li>
-<li class="level1"><a href="#autotoc_md109">受信</a><ul><li class="level2"><a href="#autotoc_md110">時刻</a></li>
-<li class="level2"><a href="#autotoc_md111">Entry</a></li>
-<li class="level2"><a href="#autotoc_md112">Event</a></li>
+<li class="level1"><a href="#autotoc_md109">Canvas3Dに表示する</a></li>
+<li class="level1"><a href="#autotoc_md110">受信</a><ul><li class="level2"><a href="#autotoc_md111">時刻</a></li>
+<li class="level2"><a href="#autotoc_md112">Entry</a></li>
+<li class="level2"><a href="#autotoc_md113">Event</a></li>
 </ul>
 </li>
 </ul>
 </div>
-<div class="textblock"><p><a class="anchor" id="autotoc_md101"></a></p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md102"></a></p>
 <dl class="section since"><dt>Since</dt><dd><span class="since-c">1.4</span> <span class="since-js">1.3</span> </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><ul>
 <li>C++ <a class="el" href="classwebcface_1_1RobotModel.html" title="RobotModelの送受信データを表すクラス">webcface::RobotModel</a> (<code><a class="el" href="robot__model_8h.html">webcface/robot_model.h</a></code>)</li>
@@ -166,7 +166,7 @@ $(document).ready(function(){initNavTree('md_21__robot__model.html',''); initRes
 </ul>
 </dd></dl>
 <p>RobotModelはリンク(link)と関節(joint)の構造を定義します。 <a class="el" href="md_20__canvas3d.html">Canvas3D</a> 上に表示して関節を動かすことができます。</p>
-<h1><a class="anchor" id="autotoc_md102"></a>
+<h1><a class="anchor" id="autotoc_md103"></a>
 送信</h1>
 <p>モデルはRobotLinkのリストで表されます。 Client::robotModel からRobotModelオブジェクトを作り、 RobotModel::set() でリンクのリストをセットすることでモデルを定義し送信できます。</p>
 <div class="tabbed"></div><div class="tabbed"><ul>
@@ -213,11 +213,11 @@ $(document).ready(function(){initNavTree('md_21__robot__model.html',''); initRes
 </ul>
 <p>を指定する必要があります。</p>
 <p>Geometryについては<a class="el" href="md_20__canvas3d.html">Canvas3D</a>、ViewColorについては<a class="el" href="md_13__view.html">View</a>のページを参照してください。</p>
-<h1><a class="anchor" id="autotoc_md103"></a>
+<h1><a class="anchor" id="autotoc_md104"></a>
 RobotJoint</h1>
 <p>RobotJointには以下の4種類があります。</p>
 <p>C++では <code><a class="el" href="namespacewebcface_1_1Common_1_1RobotJoints.html">webcface::RobotJoints</a></code> 名前空間に定義されていますが、<code>webcface::</code> の名前空間でもアクセス可能です。</p>
-<h2><a class="anchor" id="autotoc_md104"></a>
+<h2><a class="anchor" id="autotoc_md105"></a>
 fixedAbsolute</h2>
 <ul>
 <li>親リンクを指定せず、絶対座標を指定して固定します。</li>
@@ -225,13 +225,13 @@ fixedAbsolute</h2>
 <div class="ttc" id="aclasswebcface_1_1Common_1_1Transform_html"><div class="ttname"><a href="classwebcface_1_1Common_1_1Transform.html">webcface::Transform</a></div><div class="ttdoc">3次元の座標と回転</div><div class="ttdef"><b>Definition</b> transform.h:53</div></div>
 </div><!-- fragment --> </li>
 </ul>
-<h2><a class="anchor" id="autotoc_md105"></a>
+<h2><a class="anchor" id="autotoc_md106"></a>
 fixedJoint</h2>
 <ul>
 <li>固定された関節です。親リンクの名前と、親リンクからの相対座標を指定します。 <div class="fragment"><div class="line">fixedJoint(std::string parent, <a class="code hl_class" href="classwebcface_1_1Common_1_1Transform.html">Transform</a> origin)</div>
 </div><!-- fragment --> </li>
 </ul>
-<h2><a class="anchor" id="autotoc_md106"></a>
+<h2><a class="anchor" id="autotoc_md107"></a>
 rotationalJoint</h2>
 <ul>
 <li>回転する関節です。</li>
@@ -243,14 +243,14 @@ rotationalJoint</h2>
 </ul>
 </li>
 </ul>
-<h2><a class="anchor" id="autotoc_md107"></a>
+<h2><a class="anchor" id="autotoc_md108"></a>
 prismaticJoint</h2>
 <ul>
 <li>直線運動する関節です。</li>
 <li>originのz軸が運動方向です。 <div class="fragment"><div class="line">prismaticJoint(std::string joint_name, std::string parent, <a class="code hl_class" href="classwebcface_1_1Common_1_1Transform.html">Transform</a> origin, <span class="keywordtype">double</span> default_angle)</div>
 </div><!-- fragment --></li>
 </ul>
-<h1><a class="anchor" id="autotoc_md108"></a>
+<h1><a class="anchor" id="autotoc_md109"></a>
 Canvas3Dに表示する</h1>
 <div class="tabbed"></div><div class="tabbed"><ul>
 <li><b class="tab-title">C++</b> 例 (src/example/main.cc を参照) <div class="fragment"><div class="line">world.add(wcli.robotModel(<span class="stringliteral">&quot;omniwheel&quot;</span>),  <span class="comment">// RobotModel のドキュメントを参照</span></div>
@@ -261,22 +261,22 @@ Canvas3Dに表示する</h1>
 </div><!-- fragment --> Canvas3D::addの第1引数にRobotModel、第2引数にモデルの位置、第3引数にjointの回転角を指定してCanvas3Dにモデルを表示することができます。 jointの回転角は {"joint_name", angle} のリストで渡します。 <dl class="section note"><dt>Note</dt><dd>RobotModelはこのプログラム内で定義したものではなく別Memberのものを指定することもできます。</dd></dl>
 <img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_wheel.png" alt="tutorial_wheel.png" class="inline"/></li>
 </ul>
-</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md109"></a>
+</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md110"></a>
 受信</h1>
 <p>Member::robotModel() でRobotModelクラスのオブジェクトが得られ、 Text::tryGet(), Text::tryGetRecurse() で値のリクエストをするとともに受信した値を取得できます。</p>
 <p>RobotModelデータは <a class="el" href="structwebcface_1_1Common_1_1RobotLink.html">webcface::RobotLink</a> (JavaScript <a href="https://na-trium-144.github.io/webcface-js/classes/RobotLink.html">RobotLink</a>)</p>
 <p>のリストとして得られ、 RobotLinkオブジェクトから各種プロパティを取得できます。</p>
-<h2><a class="anchor" id="autotoc_md110"></a>
+<h2><a class="anchor" id="autotoc_md111"></a>
 時刻</h2>
 <p><strike>RobotModel::time()</strike> でその値が送信されたとき(そのMemberがsync()したとき)の時刻が得られます。 <br  />
  <span class="since-c">1.7</span> <span class="since-js">1.6</span> <span class="since-py"></span> Member::syncTime() に変更</p>
-<h2><a class="anchor" id="autotoc_md111"></a>
+<h2><a class="anchor" id="autotoc_md112"></a>
 Entry</h2>
 <p><strike>Member::robotModels() で</strike> そのMemberが送信しているRobotModelのリストが得られます <br  />
  <span class="since-c">1.6</span> Member::robotModelEntries() に変更</p>
 <p>また、Member::onRobotModelEntry() で新しくデータが追加されたときのコールバックを設定できます</p>
 <p>いずれも使い方は <a class="el" href="md_10__value.html">Value</a> と同様なのでそちらを参照してください</p>
-<h2><a class="anchor" id="autotoc_md112"></a>
+<h2><a class="anchor" id="autotoc_md113"></a>
 Event</h2>
 <p>受信したデータが変化したときにコールバックを呼び出すことができます。 コールバックを設定することでもその値はリクエストされます。</p>
 <p>また、データが変化したどうかに関わらずそのMemberがsync()したときにコールバックを呼び出したい場合は Member::onSync() が使えます</p>
@@ -293,7 +293,7 @@ Event</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Apr 24 2024 17:54:40 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Thu Apr 25 2024 08:05:49 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

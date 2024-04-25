@@ -4,7 +4,7 @@ var searchData=
   ['name_5f_1',['name_',['../classwebcface_1_1Common_1_1Arg.html#a4d739cc5d335052eb9f5b2ca559b81d1',1,'webcface::Common::Arg']]],
   ['new_5fline_2',['new_line',['../namespacewebcface_1_1Common.html#a11040d82967b60182816ddc035d07c28a620cf4c6d9756f9ce211c523f16c42a9',1,'webcface::Common']]],
   ['newclient_3',['newClient',['../structwebcface_1_1Server_1_1Store.html#ab66e8fa116f1af0f50a383d780da3191',1,'webcface::Server::Store']]],
-  ['newline_4',['newline',['../md_13__view.html#autotoc_md57',1,'newLine'],['../namespacewebcface_1_1Components.html#ab72da582724c98c1e879cadbacc78663',1,'webcface::Components::newLine()'],['../namespacewebcface_1_1Components.html#ab72da582724c98c1e879cadbacc78663',1,'webcface::newLine()']]],
+  ['newline_4',['newline',['../md_13__view.html#autotoc_md58',1,'newLine'],['../namespacewebcface_1_1Components.html#ab72da582724c98c1e879cadbacc78663',1,'webcface::Components::newLine()'],['../namespacewebcface_1_1Components.html#ab72da582724c98c1e879cadbacc78663',1,'webcface::newLine()']]],
   ['next_5fcaller_5fid_5',['next_caller_id',['../classwebcface_1_1Internal_1_1FuncResultStore.html#ad9420448994757ee4ac10d0428747c56',1,'webcface::Internal::FuncResultStore']]],
   ['none_6',['none',['../namespacewebcface_1_1Common.html#a1b753fd9c2659910ca1a042a05b56be6a334c4a4c42fdb79d7ebc3e73b517e6f8',1,'webcface::Common']]],
   ['none_5f_7',['none_',['../namespacewebcface_1_1Common.html#acd1dd9e2d5f885ad3f73197cfa6b0185a1e5a9491a4d910a08d95f675ca7226be',1,'webcface::Common']]],

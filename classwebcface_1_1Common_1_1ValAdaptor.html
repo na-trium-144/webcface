@@ -174,6 +174,9 @@ requires std::floating_point&lt;T&gt;</td></tr>
 <tr class="separator:a8306c5c4236744c1ac2507fa4d94c33c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abbfeeae645abbaf39aeb6fb0c8b00007" id="r_abbfeeae645abbaf39aeb6fb0c8b00007"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacewebcface_1_1Common.html#acd1dd9e2d5f885ad3f73197cfa6b0185">ValType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html#abbfeeae645abbaf39aeb6fb0c8b00007">valType</a> () const</td></tr>
 <tr class="separator:abbfeeae645abbaf39aeb6fb0c8b00007"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a644718bb2fb240de962dc3c9a1fdf0dc" id="r_a644718bb2fb240de962dc3c9a1fdf0dc"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html#a644718bb2fb240de962dc3c9a1fdf0dc">empty</a> () const</td></tr>
+<tr class="memdesc:a644718bb2fb240de962dc3c9a1fdf0dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">値が空かどうか調べる  <br /></td></tr>
+<tr class="separator:a644718bb2fb240de962dc3c9a1fdf0dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a67ffc387e9b4058d4b3f7f7bf8d8a829" id="r_a67ffc387e9b4058d4b3f7f7bf8d8a829"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html#a67ffc387e9b4058d4b3f7f7bf8d8a829">asStringRef</a> () const</td></tr>
 <tr class="memdesc:a67ffc387e9b4058d4b3f7f7bf8d8a829"><td class="mdescLeft">&#160;</td><td class="mdescRight">文字列として返す  <br /></td></tr>
 <tr class="separator:a67ffc387e9b4058d4b3f7f7bf8d8a829"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -461,6 +464,7 @@ requires (std::convertible_to&lt;double, T&gt; &amp;&amp; !std::same_as&lt;T, bo
 </div><div class="memdoc">
 
 <p>数値として返す </p>
+<dl class="section since"><dt>Since</dt><dd>ver1.10</dd></dl>
 <p><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html#ae30a38ec215c7dc29368fedb325e7ec9" title="数値として返す">as&lt;T&gt;()</a>, Tはdoubleなどの実数型、intなどの整数型 </p>
 
 </div>
@@ -489,6 +493,7 @@ requires (std::convertible_to&lt;double, T&gt; &amp;&amp; !std::same_as&lt;T, bo
 </div><div class="memdoc">
 
 <p>bool値を返す </p>
+<dl class="section since"><dt>Since</dt><dd>ver1.10</dd></dl>
 <ul>
 <li>文字列型が入っていた場合、空文字列でなければtrueを返す</li>
 <li>数値型が入っていた場合、0でなければtrueを返す </li>
@@ -520,6 +525,7 @@ requires (std::convertible_to&lt;double, T&gt; &amp;&amp; !std::same_as&lt;T, bo
 </div><div class="memdoc">
 
 <p>文字列として返す(コピー) </p>
+<dl class="section since"><dt>Since</dt><dd>ver1.10 </dd></dl>
 
 </div>
 </div>
@@ -547,7 +553,36 @@ requires (std::convertible_to&lt;double, T&gt; &amp;&amp; !std::same_as&lt;T, bo
 </div><div class="memdoc">
 
 <p>文字列として返す </p>
+<dl class="section since"><dt>Since</dt><dd>ver1.10</dd></dl>
 <p>std::stringのconst参照を返す。 参照はこのValAdaptorが破棄されるまで有効 </p>
+
+</div>
+</div>
+<a id="a644718bb2fb240de962dc3c9a1fdf0dc" name="a644718bb2fb240de962dc3c9a1fdf0dc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a644718bb2fb240de962dc3c9a1fdf0dc">&#9670;&#160;</a></span>empty()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool empty </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>値が空かどうか調べる </p>
+<dl class="section since"><dt>Since</dt><dd>ver1.11 </dd></dl>
 
 </div>
 </div>
@@ -1004,7 +1039,7 @@ requires (std::constructible_from&lt;<a class="el" href="classwebcface_1_1Common
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="namespacewebcface_1_1Common.html">Common</a></li><li class="navelem"><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html">ValAdaptor</a></li>
-    <li class="footer">Generated on Wed Apr 24 2024 17:54:40 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Thu Apr 25 2024 08:05:49 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>
