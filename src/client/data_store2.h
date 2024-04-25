@@ -1,6 +1,7 @@
 #pragma once
 #include <mutex>
 #include <unordered_map>
+#include <unordered_set>
 #include <string>
 #include <optional>
 #include <functional>
@@ -41,6 +42,9 @@ class SyncDataStore2 {
      *
      * data_recv[member名][データ名] = 値
      *
+     * ver1.11〜 setSend時には上書きされず、transferSendで上書きされる
+     * それまでの間はgetRecvはdata_recvではなくdata_sendを優先的に読むようにする
+     *
      */
     std::unordered_map<MemberNameRef, std::unordered_map<FieldNameRef, T>>
         data_recv;
@@ -50,7 +54,7 @@ class SyncDataStore2 {
      * entry[member名] = {データ名のリスト}
      *
      */
-    std::unordered_map<MemberNameRef, std::vector<FieldNameRef>> entry;
+    std::unordered_map<std::string, std::unordered_set<std::string>> entry;
     /*!
      * \brief データ受信リクエスト
      *
@@ -168,6 +172,12 @@ class SyncDataStore2 {
     }
 
     /*!
+     * \brief memberのentryをクリア
+     *
+     * ambiguousなので引数にFieldBaseは使わない (そもそも必要ない)
+     */
+    void clearEntry(const std::string &from);
+    /*!
      * \brief 受信したentryを追加
      *
      */
@@ -177,8 +187,8 @@ class SyncDataStore2 {
      * \brief entryを取得
      *
      */
-    std::vector<FieldNameRef> getEntry(MemberNameRef from);
-    std::vector<FieldNameRef> getEntry(const Field &base) {
+    std::unordered_set<FieldNameRef> getEntry(const std::string &from);
+    std::unordered_set<FieldNameRef> getEntry(const FieldBase &base) {
         return getEntry(base.member_);
     }
 

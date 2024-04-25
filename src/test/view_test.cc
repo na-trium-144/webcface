@@ -30,7 +30,7 @@ class ViewTest : public ::testing::Test {
         return AnonymousFunc{Field{data_, self_name, ""}, func};
     }
     int callback_called;
-    template <typename V = FieldBase>
+    template <typename V = View>
     auto callback() {
         return [&](const V &) { ++callback_called; };
     }
@@ -45,14 +45,12 @@ TEST_F(ViewTest, field) {
 }
 TEST_F(ViewTest, eventTarget) {
     view("a", "b").appendListener(callback<View>());
-    data_->view_change_event.dispatch(FieldBase{"a", "b"},
-                                      Field{data_, "a", "b"});
+    data_->view_change_event[FieldBase{"a", "b"}](Field{data_, "a", "b"});
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
 }
 TEST_F(ViewTest, viewSet) {
-    data_->view_change_event.appendListener(FieldBase{self_name, "b"},
-                                            callback());
+    data_->view_change_event[FieldBase{self_name, "b"}].append(callback());
     using namespace webcface::ViewComponents;
     auto v = view(self_name, "b");
     v << "a\n" << 1;
@@ -71,6 +69,17 @@ TEST_F(ViewTest, viewSet) {
         called_ref3++;
         EXPECT_EQ(val, "aaa");
     });
+    int manip_called = 0;
+    auto manip = [&](webcface::View &v2) {
+        manip_called++;
+        EXPECT_EQ(&v, &v2);
+    };
+    auto manip2 = [&](webcface::View v2) {
+        manip_called++;
+        EXPECT_EQ(v, v2);
+    };
+    v << manip << manip2;
+    EXPECT_EQ(manip_called, 2);
     v.sync();
     EXPECT_EQ(callback_called, 1);
     auto &view_data = **data_->view_store.getRecv(self_name, "b");

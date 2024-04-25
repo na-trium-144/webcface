@@ -1,6 +1,7 @@
 #pragma once
 #include <functional>
-#include <eventpp/eventdispatcher.h>
+#include <stdexcept>
+#include <eventpp/callbacklist.h>
 #include "field.h"
 #include "common/def.h"
 
@@ -10,33 +11,39 @@ WEBCFACE_NS_BEGIN
  * \brief イベントを表し、コールバックの追加や削除ができるクラス。
  *
  */
-template <typename V, typename Key = FieldComparable,
-          typename VBase = Field>
+template <typename ArgType>
 class EventTarget {
-    using Dispatcher = eventpp::EventDispatcher<Key, void(VBase)>;
-    Dispatcher *dispatcher = nullptr;
-    Key key;
+  public:
+    using CallbackList = eventpp::CallbackList<void(ArgType)>;
+
+  protected:
+    CallbackList *cl = nullptr;
+
+    CallbackList &checkCl() const {
+        if (!cl) {
+            throw std::runtime_error("CallbackList is null");
+        }
+        return *cl;
+    }
 
   public:
     /*!
      * \brief イベントのコールバックの型
      *
      */
-    using EventCallback = std::function<void(V)>;
+    using EventCallback = std::function<void(ArgType)>;
     /*!
      * \brief コールバックのHandle
      *
      */
-    using EventHandle = typename Dispatcher::Handle;
+    using EventHandle = typename CallbackList::Handle;
 
   protected:
     /*!
      * \brief イベントを発生させる。
      *
      */
-    void triggerEvent(const VBase &arg) const {
-        dispatcher->dispatch(key, arg);
-    }
+    void triggerEvent(const ArgType &arg) const { checkCl()(arg); }
 
     /*!
      * \brief listenerを追加する際に行わなければならない処理があればoverrideする
@@ -46,10 +53,24 @@ class EventTarget {
 
   public:
     EventTarget() = default;
-    EventTarget(Dispatcher *dispatcher, const Key &key)
-        : dispatcher(dispatcher), key(key) {}
+    explicit EventTarget(CallbackList *cl) : cl(cl) {}
 
     virtual ~EventTarget() {}
+
+    /*!
+     * \brief CallbackListを参照する。
+     * \since ver1.11
+     *
+     * eventppのユーティリティ関数を利用する場合に使える。
+     *
+     * callbackListにappendListerされるかどうかを判断できないため、
+     * onAppend()はこの時点で呼び出される。
+     *
+     */
+    CallbackList &callbackList() const {
+        onAppend();
+        return checkCl();
+    }
 
     /*!
      * \brief イベントのコールバックをリストの最後に追加する。
@@ -57,7 +78,7 @@ class EventTarget {
      */
     EventHandle appendListener(const EventCallback &callback) const {
         onAppend();
-        return dispatcher->appendListener(key, callback);
+        return checkCl().append(callback);
     }
     /*!
      * \brief イベントのコールバックをリストの最後に追加する。
@@ -76,7 +97,7 @@ class EventTarget {
      */
     EventHandle prependListener(const EventCallback &callback) const {
         onAppend();
-        return dispatcher->prependListener(key, callback);
+        return checkCl().prepend(callback);
     }
     /*!
      * \brief イベントのコールバックをリストの最初に追加する。
@@ -96,7 +117,7 @@ class EventTarget {
     EventHandle insertListener(const EventCallback &callback,
                                const EventHandle &before) const {
         onAppend();
-        return dispatcher->insertListener(key, callback, before);
+        return checkCl().insert(callback, before);
     }
     /*!
      * \brief イベントのコールバックを間に挿入する。
@@ -115,19 +136,19 @@ class EventTarget {
      *
      */
     bool removeListener(const EventHandle &handle) const {
-        return dispatcher->removeListener(key, handle);
+        return checkCl().remove(handle);
     }
     /*!
      * \brief コールバックが登録されているかを調べる。
      *
      */
-    bool hasAnyListener() const { return dispatcher->hasAnyListener(key); }
+    bool hasAnyListener() const { return !checkCl().empty(); }
     /*!
      * \brief handleがこのイベントのものかを調べる。
      *
      */
     bool ownsHandle(const EventHandle &handle) const {
-        return dispatcher->ownsHandle(key, handle);
+        return checkCl().ownsHandle(handle);
     }
 };
 

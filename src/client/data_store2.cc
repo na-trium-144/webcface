@@ -25,11 +25,9 @@ static bool shouldSend(const T &prev, const T &current) {
 template <typename T, typename ReqT>
 void SyncDataStore2<T, ReqT>::setSend(MemberNameRef name, const T &data) {
     std::lock_guard lock(mtx);
-    auto &recv_self = data_recv[self_member_name];
-    if (!recv_self.count(name) || shouldSend(recv_self[name], data)) {
-        data_send[name] = data;
-    }
-    recv_self[name] = data; // 送信後に自分の値を参照する用
+    data_send[name] = data;
+    // auto &recv_self = data_recv[self_member_name];
+    // recv_self[name] = data; // 送信後に自分の値を参照する用
 }
 
 template <typename T, typename ReqT>
@@ -40,20 +38,26 @@ void SyncDataStore2<T, ReqT>::setRecv(MemberNameRef from, FieldNameRef name,
 }
 
 template <typename T, typename ReqT>
-std::vector<FieldNameRef>
-SyncDataStore2<T, ReqT>::getEntry(MemberNameRef name) {
+std::unordered_set<std::string>
+SyncDataStore2<T, ReqT>::getEntry(const std::string &name) {
     std::lock_guard lock(mtx);
     auto e = entry.find(name);
     if (e != entry.end()) {
         return e->second;
     } else {
-        return std::vector<FieldNameRef>{};
+        return std::unordered_set<std::string>{};
     }
 }
 template <typename T, typename ReqT>
-void SyncDataStore2<T, ReqT>::setEntry(MemberNameRef from, FieldNameRef e) {
+void SyncDataStore2<T, ReqT>::clearEntry(const std::string &from) {
     std::lock_guard lock(mtx);
-    entry[from].push_back(e);
+    entry[from].clear();
+}
+template <typename T, typename ReqT>
+void SyncDataStore2<T, ReqT>::setEntry(const std::string &from,
+                                       const std::string &e) {
+    std::lock_guard lock(mtx);
+    entry[from].emplace(e);
 }
 
 template <typename T, typename ReqT>
@@ -107,6 +111,12 @@ template <typename T, typename ReqT>
 std::optional<T> SyncDataStore2<T, ReqT>::getRecv(MemberNameRef from,
                                                   FieldNameRef name) {
     std::lock_guard lock(mtx);
+    if (from == self_member_name) {
+        auto it = data_send.find(name);
+        if (it != data_send.end()) {
+            return it->second;
+        }
+    }
     // addReq(from, name);
     auto s_it = data_recv.find(from);
     if (s_it != data_recv.end()) {
@@ -193,12 +203,21 @@ template <typename T, typename ReqT>
 std::unordered_map<MemberNameRef, T>
 SyncDataStore2<T, ReqT>::transferSend(bool is_first) {
     std::lock_guard lock(mtx);
+    std::unordered_map<std::string, T> send_changed;
+    auto &recv_self = data_recv[self_member_name];
+    for (auto &[name, data] : data_send) {
+        auto r_it = recv_self.find(name);
+        if (r_it == recv_self.end() || shouldSend(r_it->second, data)) {
+            send_changed[name] = data;
+            recv_self[name] = std::move(data);
+        }
+    }
+    data_send.clear();
     if (is_first) {
-        data_send.clear();
-        return data_send_prev = data_recv[self_member_name];
+        return data_send_prev = recv_self;
     } else {
-        data_send_prev = data_send;
-        return std::move(data_send);
+        data_send_prev = send_changed;
+        return send_changed;
     }
 }
 template <typename T, typename ReqT>

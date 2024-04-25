@@ -7,9 +7,10 @@ WEBCFACE_NS_BEGIN
 
 template class WEBCFACE_DLL EventTarget<Text>;
 
-Text::Text(const Field &base)
-    : Field(base),
-      EventTarget<Text>(&this->dataLock()->text_change_event, *this) {}
+Text::Text(const Field &base) : Field(base), EventTarget<Text>() {
+    std::lock_guard lock(this->dataLock()->event_m);
+    this->cl = &this->dataLock()->text_change_event[*this];
+}
 
 void Text::request() const {
     auto data = dataLock();

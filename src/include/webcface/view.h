@@ -44,27 +44,44 @@ class WEBCFACE_DLL View : protected Field,
     View &operator=(View &&rhs);
     ~View() override;
 
-    using Field::member;
-    using Field::name;
-
     friend Internal::DataSetBuffer<ViewComponent>;
 
+    using Field::lastName;
+    using Field::member;
+    using Field::name;
     /*!
-     * \return「(thisの名前).(追加の名前)」を新しい名前とするView
+     * \brief 「(thisの名前).(追加の名前)」を新しい名前とするField
      *
      */
     View child(std::string_view field) const {
-        return Field::child<View>(field);
-    }
-    /*!
-     * \since ver1.11
-     * \return「(thisの名前).(追加の名前)」を新しい名前とするView
-     *
-     */
-    View child(std::wstring_view field) const {
-        return Field::child<View>(field);
+        return this->Field::child(field);
     }
 
+
+    /*!
+     * \since ver1.11
+     */
+    View child(int index) const { return this->Field::child(index); }
+    /*!
+     * child()と同じ
+     * \since ver1.11
+     */
+    View operator[](std::string_view field) const { return child(field); }
+    /*!
+     * operator[](long, const char *)と解釈されるのを防ぐための定義
+     * \since ver1.11
+     */
+    View operator[](const char *field) const { return child(field); }
+    /*!
+     * child()と同じ
+     * \since ver1.11
+     */
+    View operator[](int index) const { return child(index); }
+    /*!
+     * \brief nameの最後のピリオドの前までを新しい名前とするField
+     * \since ver1.11
+     */
+    View parent() const { return this->Field::parent(); }
 
     /*!
      * \brief viewをリクエストする
@@ -117,6 +134,7 @@ class WEBCFACE_DLL View : protected Field,
      *
      */
     template <typename T>
+        requires requires(T rhs) { std::ostream(nullptr) << rhs; }
     View &operator<<(T &&rhs) {
         static_cast<std::ostream &>(*this) << std::forward<T>(rhs);
         return *this;
@@ -171,6 +189,19 @@ class WEBCFACE_DLL View : protected Field,
      *
      */
     View &operator<<(ViewComponent &&vc);
+    /*!
+     * \brief コンポーネントを追加
+     * \since ver1.11
+     *
+     * カスタムコンポーネントとして引数にViewをとる関数を渡すことができる
+     *
+     */
+    template <typename F>
+        requires std::invocable<F, View &>
+    View &operator<<(const F &manip) {
+        manip(*this);
+        return *this;
+    }
 
     /*!
      * \brief コンポーネントなどを追加

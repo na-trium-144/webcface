@@ -2,14 +2,17 @@
 #include <webcface/value.h>
 #include <webcface/member.h>
 #include "../message/message.h"
+#include <algorithm>
+#include <cctype>
 
 WEBCFACE_NS_BEGIN
 
 template class WEBCFACE_DLL EventTarget<Value>;
 
-Value::Value(const Field &base)
-    : Field(base),
-      EventTarget<Value>(&this->dataLock()->value_change_event, *this) {}
+Value::Value(const Field &base) : Field(base), EventTarget<Value>() {
+    std::lock_guard lock(this->dataLock()->event_m);
+    this->cl = &this->dataLock()->value_change_event[*this];
+}
 
 void Value::request() const {
     auto data = dataLock();
@@ -36,9 +39,45 @@ Value &Value::set(const Value::Dict &v) {
     return *this;
 }
 Value &Value::set(const VectorOpt<double> &v) {
+    auto last_name = this->lastName();
+    auto parent = this->parent();
+    if (std::all_of(last_name.cbegin(), last_name.cend(),
+                    [](unsigned char c) { return std::isdigit(c); }) &&
+        v.size() == 1) {
+        std::size_t index = std::stoi(std::string(last_name));
+        auto pv = parent.tryGetVec();
+        if (pv && index < pv->size() + 10) { // てきとう
+            while (pv->size() <= index) {
+                pv->push_back(0);
+            }
+            pv->at(index) = v;
+            parent.set(*pv);
+            return *this;
+        }
+    }
     setCheck()->value_store.setSend(*this,
                                     std::make_shared<VectorOpt<double>>(v));
     this->triggerEvent(*this);
+    return *this;
+}
+Value &Value::resize(std::size_t size) {
+    auto pv = this->tryGetVec();
+    if (pv) {
+        pv->resize(size);
+    } else {
+        pv.emplace(size);
+    }
+    this->set(*pv);
+    return *this;
+}
+Value &Value::push_back(double v) {
+    auto pv = this->tryGetVec();
+    if (pv) {
+        pv->push_back(v);
+    } else {
+        pv.emplace({v});
+    }
+    this->set(*pv);
     return *this;
 }
 
@@ -49,9 +88,17 @@ std::optional<double> Value::tryGet() const {
     request();
     if (v) {
         return **v;
-    } else {
-        return std::nullopt;
     }
+    auto last_name = lastName();
+    if (std::all_of(last_name.cbegin(), last_name.cend(),
+                    [](unsigned char c) { return std::isdigit(c); })) {
+        std::size_t index = std::stoi(std::string(last_name));
+        auto pv = parent().tryGetVec();
+        if (pv && index < pv->size()) {
+            return pv->at(index);
+        }
+    }
+    return std::nullopt;
 }
 std::optional<std::vector<double>> Value::tryGetVec() const {
     auto v = dataLock()->value_store.getRecv(*this);

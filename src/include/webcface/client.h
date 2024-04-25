@@ -151,7 +151,7 @@ class WEBCFACE_DLL Client : public Member {
      *
      * \sa member(), members()
      */
-    EventTarget<Member, int> onMemberEntry();
+    EventTarget<Member> onMemberEntry();
 
     FuncListener funcListener(std::u8string_view field) const;
     /*!

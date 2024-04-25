@@ -35,24 +35,40 @@ class WEBCFACE_DLL Text : protected Field, public EventTarget<Text> {
 
     friend class InputRef;
     friend struct InputRefState;
+    using Field::lastName;
     using Field::member;
     using Field::name;
-
     /*!
-     * \return「(thisの名前).(追加の名前)」を新しい名前とするText
+     * \brief 「(thisの名前).(追加の名前)」を新しい名前とするField
      *
      */
     Text child(std::string_view field) const {
-        return Field::child<Text>(field);
+        return this->Field::child(field);
     }
     /*!
      * \since ver1.11
-     * \return「(thisの名前).(追加の名前)」を新しい名前とするText
-     *
      */
-    Text child(std::wstring_view field) const {
-        return Field::child<Text>(field);
-    }
+    Text child(int index) const { return this->Field::child(index); }
+    /*!
+     * child()と同じ
+     * \since ver1.11
+     */
+    Text operator[](std::string_view field) const { return child(field); }
+    /*!
+     * operator[](long, const char *)と解釈されるのを防ぐための定義
+     * \since ver1.11
+     */
+    Text operator[](const char *field) const { return child(field); }
+    /*!
+     * child()と同じ
+     * \since ver1.11
+     */
+    Text operator[](int index) const { return child(index); }
+    /*!
+     * \brief nameの最後のピリオドの前までを新しい名前とするField
+     * \since ver1.11
+     */
+    Text parent() const { return this->Field::parent(); }
 
     // 1.10でstd::stringをValAdaptorに変更したら使えなくなった
     // using Dict = Common::Dict<std::shared_ptr<Common::ValAdaptor>>;
@@ -154,8 +170,8 @@ class WEBCFACE_DLL Text : protected Field, public EventTarget<Text> {
      *
      */
     template <typename T>
-        requires std::same_as<T, Text>
-    bool operator==(const T &other) const {
+        requires std::same_as<T, Text> bool
+    operator==(const T &other) const {
         return static_cast<Field>(*this) == static_cast<Field>(other);
     }
     /*!
@@ -164,8 +180,8 @@ class WEBCFACE_DLL Text : protected Field, public EventTarget<Text> {
      *
      */
     template <typename T>
-        requires std::same_as<T, Text>
-    bool operator!=(const T &other) const {
+        requires std::same_as<T, Text> bool
+    operator!=(const T &other) const {
         return !(*this == other);
     }
     bool operator<(const Text &) const = delete;
@@ -182,6 +198,7 @@ WEBCFACE_DLL std::ostream &operator<<(std::ostream &os, const Text &data);
 
 struct WEBCFACE_DLL InputRefState {
     Text field;
+    std::optional<ValAdaptor> val = std::nullopt;
     InputRefState() = default;
 };
 /*!
@@ -220,13 +237,23 @@ class WEBCFACE_DLL InputRef {
     /*!
      * \brief 値を返す
      *
+     * ver1.11からconst参照 (次に値を取得して別の値が返ったときまで有効)
+     *
      */
-    ValAdaptor get() const {
+    const ValAdaptor &get() const {
         if (expired()) {
-            return ValAdaptor();
+            if (!state->val) {
+                state->val.emplace();
+            } else if (!state->val->empty()) {
+                state->val.emplace();
+            }
         } else {
-            return state->field.get();
+            auto new_val = state->field.get();
+            if (!state->val || *state->val != new_val) {
+                state->val = new_val;
+            }
         }
+        return *state->val;
     }
 
     /*!
@@ -239,14 +266,53 @@ class WEBCFACE_DLL InputRef {
         return static_cast<T>(get());
     }
 
+    /*!
+     * \brief 値が空かどうか調べる
+     * \since ver1.11
+     */
+    bool empty() const { return get().empty(); }
+
+    /*!
+     * \brief 文字列として返す
+     * \since ver1.11
+     *
+     * std::stringのconst参照を返す。
+     * 参照は次に値を取得して別の値が返ったときまで有効
+     *
+     */
+    const std::string &asStringRef() const { return get().asStringRef(); }
+    /*!
+     * \brief 文字列として返す(コピー)
+     * \since ver1.11
+     */
+    std::string asString() const { return get().asString(); }
+    /*!
+     * \brief 数値として返す
+     * \since ver1.11
+     *
+     * as<T>(), Tはdoubleなどの実数型、intなどの整数型
+     *
+     */
     template <typename T>
-        requires std::constructible_from<ValAdaptor, T>
-    bool operator==(const T &other) const {
+        requires(std::convertible_to<double, T> && !std::same_as<T, bool>)
+    double as() const {
+        return get().as<T>();
+    }
+
+    /*!
+     * \brief bool値を返す
+     * \since ver1.11
+     */
+    bool asBool() const { return get().asBool(); }
+
+    template <typename T>
+        requires std::constructible_from<ValAdaptor, T> bool
+    operator==(const T &other) const {
         return get() == other;
     }
     template <typename T>
-        requires std::constructible_from<ValAdaptor, T>
-    bool operator!=(const T &other) const {
+        requires std::constructible_from<ValAdaptor, T> bool
+    operator!=(const T &other) const {
         return get() != other;
     }
 };

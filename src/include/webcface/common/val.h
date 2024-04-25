@@ -125,7 +125,17 @@ class ValAdaptor {
     ValType valType() const { return type; }
 
     /*!
+     * \brief 値が空かどうか調べる
+     * \since ver1.11
+     */
+    bool empty() const {
+        return (type == ValType::none_ || type == ValType::string_) &&
+               (!as_str || as_str->empty());
+    }
+
+    /*!
      * \brief 文字列として返す
+     * \since ver1.10
      *
      * std::stringのconst参照を返す。
      * 参照はこのValAdaptorが破棄されるまで有効
@@ -150,7 +160,7 @@ class ValAdaptor {
     }
     /*!
      * \brief 文字列として返す(コピー)
-     *
+     * \since ver1.10
      */
     std::string asString() const { return asStringRef(); }
     operator const std::string &() const { return asStringRef(); }
@@ -162,6 +172,7 @@ class ValAdaptor {
 
     /*!
      * \brief 数値として返す
+     * \since ver1.10
      *
      * as<T>(), Tはdoubleなどの実数型、intなどの整数型
      *
@@ -192,6 +203,7 @@ class ValAdaptor {
 
     /*!
      * \brief bool値を返す
+     * \since ver1.10
      *
      * * 文字列型が入っていた場合、空文字列でなければtrueを返す
      * * 数値型が入っていた場合、0でなければtrueを返す

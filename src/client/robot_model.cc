@@ -14,11 +14,12 @@ RobotModel::RobotModel()
       sb(std::make_shared<Internal::DataSetBuffer<RobotLink>>()) {}
 
 RobotModel::RobotModel(const Field &base)
-    : Field(base), EventTarget<RobotModel>(
-                       &this->dataLock()->robot_model_change_event, *this),
+    : Field(base), EventTarget<RobotModel>(),
       Canvas3DComponent(Canvas3DComponentType::robot_model, this->dataLock()),
       sb(std::make_shared<Internal::DataSetBuffer<RobotLink>>(base)) {
     this->Canvas3DComponent::robotModel(*this);
+    std::lock_guard lock(this->dataLock()->event_m);
+    this->cl = &this->dataLock()->robot_model_change_event[*this];
 }
 
 RobotModel &RobotModel::init() {
