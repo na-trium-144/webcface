@@ -1,5 +1,4 @@
-#include "../server/websock.h"
-#include "../server/store.h"
+#include <webcface/server.h>
 #include <webcface/common/def.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
 #include <CLI/CLI.hpp>
@@ -17,6 +16,7 @@ int main(int argc, char **argv) {
     int port = WEBCFACE_DEFAULT_PORT;
     int verbosity = 0;
     int keep_log = 1000;
+
     app.add_option("-p,--port", port,
                    "Server port (default: " WEBCFACE_DEFAULT_PORT_S ")");
     app.add_flag("-v,--verbose", verbosity,
@@ -39,6 +39,6 @@ int main(int argc, char **argv) {
         stderr_sink->set_level(spdlog::level::info);
     }
 
-    webcface::Server::store.keep_log = keep_log;
-    webcface::Server::serverRun(port, stderr_sink, spdlog::level::trace);
+    webcface::Server::Server(port, stderr_sink, spdlog::level::trace, keep_log)
+        .join();
 }

@@ -1,25 +1,24 @@
 #include "store.h"
-#include "s_client_data.h"
+#include "member_data.h"
 #include <algorithm>
 
 WEBCFACE_NS_BEGIN
 namespace Server {
-Store store;
-
-void Store::clear() {
+void ServerStorage::clear() {
     clients.clear();
     clients_by_id.clear();
-    ClientData::last_member_id = 0;
+    MemberData::last_member_id = 0;
 }
-void Store::newClient(const ClientData::wsConnPtr &con,
-                      const std::string &remote_addr,
-                      const spdlog::sink_ptr &sink,
-                      spdlog::level::level_enum level) {
-    auto cli = std::make_shared<ClientData>(con, remote_addr, sink, level);
+void ServerStorage::newClient(const wsConnPtr &con,
+                              const std::string &remote_addr,
+                              const spdlog::sink_ptr &sink,
+                              spdlog::level::level_enum level) {
+    auto cli =
+        std::make_shared<MemberData>(this, con, remote_addr, sink, level);
     clients.emplace(con, cli);
     cli->onConnect();
 }
-void Store::removeClient(const ClientData::wsConnPtr &con) {
+void ServerStorage::removeClient(const wsConnPtr &con) {
     auto it = clients.find(con);
     if (it != clients.end()) {
         it->second->onClose();
@@ -30,7 +29,7 @@ void Store::removeClient(const ClientData::wsConnPtr &con) {
         clients.erase(con);
     }
 }
-ClientDataPtr Store::getClient(const ClientData::wsConnPtr &con) {
+MemberDataPtr ServerStorage::getClient(const wsConnPtr &con) {
     auto it = clients.find(con);
     if (it != clients.end()) {
         return it->second;
@@ -39,15 +38,15 @@ ClientDataPtr Store::getClient(const ClientData::wsConnPtr &con) {
     }
 }
 
-void Store::clientSendAll() {
+void ServerStorage::clientSendAll() {
     for (const auto &cli : clients) {
         cli.second->send();
     }
 }
 
-void Store::findAndDo(const std::string &name,
-                      const std::function<void(ClientDataPtr)> &func,
-                      const std::function<void()> &func_else) {
+void ServerStorage::findAndDo(const std::string &name,
+                              const std::function<void(MemberDataPtr)> &func,
+                              const std::function<void()> &func_else) {
     auto cd =
         std::find_if(clients_by_id.begin(), clients_by_id.end(),
                      [&](const auto &cd) { return cd.second->name == name; });
@@ -59,9 +58,9 @@ void Store::findAndDo(const std::string &name,
         }
     }
 }
-void Store::findAndDo(unsigned int id,
-                      const std::function<void(ClientDataPtr)> &func,
-                      const std::function<void()> &func_else) {
+void ServerStorage::findAndDo(unsigned int id,
+                              const std::function<void(MemberDataPtr)> &func,
+                              const std::function<void()> &func_else) {
     auto cd = clients_by_id.find(id);
     if (cd != clients_by_id.end() && cd->second->sync_init) {
         func(cd->second);
@@ -71,9 +70,9 @@ void Store::findAndDo(unsigned int id,
         }
     }
 }
-void Store::findConnectedAndDo(unsigned int id,
-                               const std::function<void(ClientDataPtr)> &func,
-                               const std::function<void()> &func_else) {
+void ServerStorage::findConnectedAndDo(
+    unsigned int id, const std::function<void(MemberDataPtr)> &func,
+    const std::function<void()> &func_else) {
     auto cd = clients_by_id.find(id);
     if (cd != clients_by_id.end() && cd->second->sync_init &&
         cd->second->connected()) {
@@ -84,14 +83,15 @@ void Store::findConnectedAndDo(unsigned int id,
         }
     }
 }
-void Store::forEach(const std::function<void(ClientDataPtr)> &func) {
+void ServerStorage::forEach(const std::function<void(MemberDataPtr)> &func) {
     for (const auto &cd : clients) {
         if (cd.second->sync_init) {
             func(cd.second);
         }
     }
 }
-void Store::forEachWithName(const std::function<void(ClientDataPtr)> &func) {
+void ServerStorage::forEachWithName(
+    const std::function<void(MemberDataPtr)> &func) {
     for (const auto &cd : clients_by_id) {
         if (cd.second->sync_init) {
             func(cd.second);

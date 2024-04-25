@@ -12,14 +12,16 @@
 #include <spdlog/common.h>
 #include <spdlog/logger.h>
 #include <webcface/common/def.h>
+#include <webcface/server.h>
 
 WEBCFACE_NS_BEGIN
 namespace Server {
-struct WEBCFACE_DLL ClientData {
-    using wsConnPtr = void *;
+struct WEBCFACE_DLL MemberData {
     spdlog::sink_ptr sink;
     std::shared_ptr<spdlog::logger> logger;
     spdlog::level::level_enum logger_level;
+
+    ServerStorage *store;
 
     /*!
      * \brief ws接続のポインタ、切断後(onClose後)nullptrになる
@@ -102,20 +104,20 @@ struct WEBCFACE_DLL ClientData {
 
     inline static unsigned int last_member_id = 0;
 
-    ClientData() = delete;
-    ClientData(const ClientData &) = delete;
-    ClientData &operator=(const ClientData &) = delete;
-    explicit ClientData(const wsConnPtr &con, const std::string &remote_addr,
+    MemberData() = delete;
+    MemberData(const MemberData &) = delete;
+    MemberData &operator=(const MemberData &) = delete;
+    explicit MemberData(ServerStorage *store, const wsConnPtr &con, const std::string &remote_addr,
                         const spdlog::sink_ptr &sink,
                         spdlog::level::level_enum level)
-        : sink(sink), logger_level(level), con(con), remote_addr(remote_addr),
+        : sink(sink), logger_level(level), store(store), con(con), remote_addr(remote_addr),
           log(std::make_shared<std::deque<Message::Log::LogLine>>()) {
         this->member_id = ++last_member_id;
         logger = std::make_shared<spdlog::logger>(
             std::to_string(member_id) + "_(unknown client)", this->sink);
         logger->set_level(this->logger_level);
     }
-    ~ClientData() { onClose(); }
+    ~MemberData() { onClose(); }
 
     void onConnect();
     void onRecv(const std::string &msg);
