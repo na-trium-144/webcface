@@ -81,7 +81,7 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
      */
     MemberNameRef self_member_name;
     bool isSelf(const Field &base) const {
-        return base.member_ == self_member_name;
+        return base.memberPtr() == self_member_name;
     }
 
     std::u8string host;
@@ -181,12 +181,11 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
     std::unordered_map<MemberNameRef, Common::Queue<FuncCallHandle>>
         func_listener_handlers;
 
-    std::mutex entries_mtx;
     std::unordered_map<MemberNameRef, unsigned int> member_ids;
     std::unordered_map<unsigned int, std::string> member_lib_name,
         member_lib_ver, member_addr;
     MemberNameRef getMemberNameFromId(unsigned int id) {
-        std::lock_guard lock(entries_mtx);
+        std::lock_guard lock(entry_m);
         for (const auto &it : member_ids) {
             if (it.second == id) {
                 return it.first;
@@ -195,7 +194,7 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
         return "";
     }
     unsigned int getMemberIdFromName(MemberNameRef name) {
-        std::lock_guard lock(entries_mtx);
+        std::lock_guard lock(entry_m);
         auto it = member_ids.find(name);
         if (it != member_ids.end()) {
             return it->second;
@@ -204,40 +203,40 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
     }
 
     std::mutex event_m;
-    std::map<FieldBaseComparable, eventpp::CallbackList<void(Value)>>
+    std::map<FieldComparable, eventpp::CallbackList<void(Value)>>
         value_change_event;
-    std::map<FieldBaseComparable, eventpp::CallbackList<void(Text)>>
+    std::map<FieldComparable, eventpp::CallbackList<void(Text)>>
         text_change_event;
-    std::map<FieldBaseComparable, eventpp::CallbackList<void(Image)>>
+    std::map<FieldComparable, eventpp::CallbackList<void(Image)>>
         image_change_event;
-    std::map<FieldBaseComparable, eventpp::CallbackList<void(RobotModel)>>
+    std::map<FieldComparable, eventpp::CallbackList<void(RobotModel)>>
         robot_model_change_event;
-    std::map<FieldBaseComparable, eventpp::CallbackList<void(View)>>
+    std::map<FieldComparable, eventpp::CallbackList<void(View)>>
         view_change_event;
-    std::map<FieldBaseComparable, eventpp::CallbackList<void(Canvas3D)>>
+    std::map<FieldComparable, eventpp::CallbackList<void(Canvas3D)>>
         canvas3d_change_event;
-    std::map<FieldBaseComparable, eventpp::CallbackList<void(Canvas2D)>>
+    std::map<FieldComparable, eventpp::CallbackList<void(Canvas2D)>>
         canvas2d_change_event;
-    std::unordered_map<std::string, eventpp::CallbackList<void(Log)>>
+    std::unordered_map<MemberNameRef, eventpp::CallbackList<void(Log)>>
         log_append_event;
     eventpp::CallbackList<void(Member)> member_entry_event;
-    std::unordered_map<std::string, eventpp::CallbackList<void(Member)>>
+    std::unordered_map<MemberNameRef, eventpp::CallbackList<void(Member)>>
         sync_event, ping_event;
-    std::unordered_map<std::string, eventpp::CallbackList<void(Value)>>
+    std::unordered_map<MemberNameRef, eventpp::CallbackList<void(Value)>>
         value_entry_event;
-    std::unordered_map<std::string, eventpp::CallbackList<void(Text)>>
+    std::unordered_map<MemberNameRef, eventpp::CallbackList<void(Text)>>
         text_entry_event;
-    std::unordered_map<std::string, eventpp::CallbackList<void(Func)>>
+    std::unordered_map<MemberNameRef, eventpp::CallbackList<void(Func)>>
         func_entry_event;
-    std::unordered_map<std::string, eventpp::CallbackList<void(View)>>
+    std::unordered_map<MemberNameRef, eventpp::CallbackList<void(View)>>
         view_entry_event;
-    std::unordered_map<std::string, eventpp::CallbackList<void(Image)>>
+    std::unordered_map<MemberNameRef, eventpp::CallbackList<void(Image)>>
         image_entry_event;
-    std::unordered_map<std::string, eventpp::CallbackList<void(RobotModel)>>
+    std::unordered_map<MemberNameRef, eventpp::CallbackList<void(RobotModel)>>
         robot_model_entry_event;
-    std::unordered_map<std::string, eventpp::CallbackList<void(Canvas3D)>>
+    std::unordered_map<MemberNameRef, eventpp::CallbackList<void(Canvas3D)>>
         canvas3d_entry_event;
-    std::unordered_map<std::string, eventpp::CallbackList<void(Canvas2D)>>
+    std::unordered_map<MemberNameRef, eventpp::CallbackList<void(Canvas2D)>>
         canvas2d_entry_event;
 
     /*!

@@ -187,9 +187,9 @@ class SyncDataStore2 {
      * \brief entryを取得
      *
      */
-    std::unordered_set<FieldNameRef> getEntry(const std::string &from);
-    std::unordered_set<FieldNameRef> getEntry(const FieldBase &base) {
-        return getEntry(base.member_);
+    std::unordered_set<FieldNameRef> getEntry(MemberNameRef from);
+    std::unordered_set<FieldNameRef> getEntry(const Field &base) {
+        return getEntry(base.memberPtr());
     }
 
     /*!

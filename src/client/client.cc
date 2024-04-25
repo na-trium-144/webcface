@@ -50,7 +50,7 @@ Internal::ClientData::ClientData(const std::u8string &name,
       log_store(std::make_shared<
                 SyncDataStore1<std::shared_ptr<std::vector<LogLine>>>>(
           self_member_name)),
-      sync_time_store(self_member_name), entries_mtx(),
+      sync_time_store(self_member_name), 
       logger_sink(std::make_shared<LoggerSink>(log_store)) {
     std::string name_str = Encoding::getName(name);
     static auto stderr_sink =

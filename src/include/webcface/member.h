@@ -28,13 +28,21 @@ class WEBCFACE_DLL Member : protected Field {
     Member(const std::weak_ptr<Internal::ClientData> &data_w,
            std::u8string_view member)
         : Field(data_w, member) {}
-    Member(const Field &base) : Field(base.data_w, base.member_) {}
+    Member(const std::weak_ptr<Internal::ClientData> &data_w,
+           MemberNameRef member)
+        : Field(data_w, member) {}
+    Member(const Field &base) : Field(base) { field_ = nullptr; }
 
     /*!
      * \brief Member名
      *
      */
-    std::string name() const { return member_; }
+    std::string name() const { return Encoding::getName(memberRef()); }
+    /*!
+     * \brief Member名 (wstring)
+     * \since ver1.11
+     */
+    std::wstring nameW() const { return Encoding::getNameW(memberRef()); }
 
     using Field::child;
     using Field::operator[];
