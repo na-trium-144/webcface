@@ -11,29 +11,34 @@
 Web-based RPC &amp; UI Library
 
 WebSocketとMessagePackを使った、ROSのような分散型の通信ライブラリです。
-クロスプラットフォームかつ複数の言語間で通信ができます。
+クロスプラットフォームかつ異なる言語間で数値、文字列、画像などのデータを送受信したり、関数(手続き)を呼び出したりすることができます。
 
-WebブラウザーでアクセスできるUI(webcface-webui)が付属しており、ネットワーク上のPCやタブレットなどからアクセスしてWebCFaceで通信されているデータを可視化したり関数を呼び出したりできます。
-また、webuiからのアクセスを想定して簡易なUIを作成したり、3D空間のオブジェクトの描画をさせることができます。
+WebCFaceはプログラム間の通信のライブラリとして使うことができるだけでなく、
+WebブラウザーでアクセスできるUI(WebUI)を使うことでWebCFaceで通信されているデータを可視化したり関数を呼び出したりできます。
+WebUIでは簡易なUIを作成したり2D、3Dの図形の描画をさせることもできます。
 
 ![webcface-webui](https://raw.githubusercontent.com/na-trium-144/webcface/main/docs/images/webcface-webui.png)
 
-データ型を任意に定義できるROSとは違って、通信できるデータの種類が以下のように限定されています
+* [plotjuggler-webcface-plugin](https://github.com/na-trium-144/plotjuggler-webcface-plugin) を使うと、WebCFaceで通信されているデータを [PlotJuggler](https://github.com/facontidavide/PlotJuggler) を使って見ることもできます。
 
-* Value 実数 or 実数の配列
-* Text: utf-8文字列
-* Log: 時刻とログレベルつきの文字列ストリーム
-* Image: 画像
-* Func: 関数(他クライアントから引数とともに呼び出し、値を返す)
+## Benchmark
 
-主にUI用に送信できるデータ (他のプログラムでの受信も可能)
+src/example/benchmark.cc で通信速度をチェックしてみました。
+以下の表は クライアント→サーバー→クライアント でさまざまなサイズの文字列データの送受信にかかった時間です。
 
-* View: UIレイアウト
-* Canvas2D: 2D図形描画
-* Canvas3D: 3D空間内のオブジェクト描画
-* RobotModel: リンクやジョイントの定義
+使用したPCのCPUは、MacOSは Apple M1 、それ以外は Intel Core i5-13500 です。
 
-[plotjuggler-webcface-plugin](https://github.com/na-trium-144/plotjuggler-webcface-plugin) を使うと、WebCFaceで通信されているデータを [PlotJuggler](https://github.com/facontidavide/PlotJuggler) を使って見ることもできます。
+| OS | 10Byte | 100Byte | 1kByte | 10kByte | 100kByte | 1MByte |
+| ---- | ---- | ---- | ---- | ---- | ---- | ---- |
+| Windows (MSVC build) | 806 μs | 706 μs | 1.21 ms | 5.45 ms | 49.6 ms | 492 ms |
+| Windows (MinGW build) | 15.6 ms | 15.5 ms | 15.5 ms | 15.6 ms | 15.6 ms | 28.4 ms |
+| Server=MinGW + Client=MSVC | 620 μs | 576 μs | 619 μs | 908 μs | 4.73 ms | 42.0 ms |
+| Server=MSVC + Client=MinGW | 15.6 ms | 15.0 ms | 15.3 ms | 16.1 ms | 55.5 ms | 432 ms |
+| Linux (on WSL1) | 187 μs | 202 μs | 200 μs | 281 μs | 1.28 ms | 12.3 ms |
+| Server=MinGW + Client=WSL1 | 207 μs | 207 μs | 273 μs | 399 μs | 1.73 ms | 17.3 ms |
+| Server=MinGW + Client=WSL2 | 406 μs | 442 μs | 477 μs | 639 μs | 2.12 ms | 15.9 ms |
+| Server=WSL1 + Client=MSVC | 703 μs | 750 μs | 769 μs | 1.01 ms | 4.61 ms | 38.7 ms |
+| Server=WSL2 + Client=MSVC | 946 μs | 915 μs | 1.08 ms | 1.32 ms | 4.79 ms | 42.2 ms |
 
 ## Links
 
