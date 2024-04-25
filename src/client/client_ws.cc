@@ -41,16 +41,6 @@ void Internal::messageThreadMain(std::shared_ptr<Internal::ClientData> data,
                 if (host != "127.0.0.1") {
                     continue;
                 }
-                paths[attempt] = Message::Path::unixSocketPath(port).string();
-                curl_easy_setopt(handle, CURLOPT_UNIX_SOCKET_PATH,
-                                 paths[attempt].c_str());
-                curl_easy_setopt(handle, CURLOPT_URL,
-                                 ("ws://" + host + "/").c_str());
-                break;
-            default:
-                if (host != "127.0.0.1") {
-                    continue;
-                }
                 if (Message::Path::detectWSL1()) {
                     paths[attempt] =
                         Message::Path::unixSocketPathWSLInterop(port).string();
@@ -71,6 +61,16 @@ void Internal::messageThreadMain(std::shared_ptr<Internal::ClientData> data,
                     }
                 }
                 continue;
+            case 2:
+                if (host != "127.0.0.1") {
+                    continue;
+                }
+                paths[attempt] = Message::Path::unixSocketPath(port).string();
+                curl_easy_setopt(handle, CURLOPT_UNIX_SOCKET_PATH,
+                                 paths[attempt].c_str());
+                curl_easy_setopt(handle, CURLOPT_URL,
+                                 ("ws://" + host + "/").c_str());
+                break;
             }
             data->logger_internal->trace("trying {}...", paths[attempt]);
             curl_easy_setopt(handle, CURLOPT_PORT, static_cast<long>(port));
