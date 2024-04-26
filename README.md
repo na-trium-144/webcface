@@ -57,64 +57,94 @@ Wi-FiやEthernetを経由する場合はその環境次第ですが遅くなる�
 以下の手順で webcface, webcface-webui, webcface-tools をインストールできます。
 (webcface-toolsの内容と使い方についてはwebcface-toolsのReadmeを参照してください)
 
-### Ubuntu 20.04, 22.04 (x86_64, arm64, armhf)
+### Ubuntu (x86_64, arm64, armhf)
 [WebCFaceのReleases](https://github.com/na-trium-144/webcface/releases) と [webuiのReleases](https://github.com/na-trium-144/webcface-webui/releases) 、[toolsのReleases](https://github.com/na-trium-144/webcface-tools/releases) からそれぞれ最新のdebパッケージをダウンロードしてインストールできます。
 
-debパッケージはubuntu20.04と22.04でビルドしています。
+debパッケージはubuntu20.04,22.04,24.04でビルドしています。
 それぞれ依存するパッケージのバージョンが違います。
 Debianなど他のディストリビューションで動作するかはわかりません。
 
 コマンドからダウンロードするなら以下のようにします。
 
-<details open><summary>Ubuntu 22.04, x86_64</summary>
+#### Ubuntu 24.04 Noble
+<details open><summary>x86_64</summary>
 
 ```sh
-curl -fLO https://github.com/na-trium-144/webcface/releases/download/v1.10.0/webcface_1.10.0-ubuntu22.04_amd64.deb
+curl -fLO https://github.com/na-trium-144/webcface/releases/download/v1.11.0/webcface_1.11.0-ubuntu24.04_amd64.deb
+curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.6.0/webcface-webui_1.6.0-s_amd64.deb
+curl -fLO https://github.com/na-trium-144/webcface-tools/releases/download/v1.4.3/webcface-tools_1.4.3-ubuntu24.04_amd64.deb
+```
+</details>
+
+<details><summary>arm64</summary>
+
+```sh
+curl -fLO https://github.com/na-trium-144/webcface/releases/download/v1.11.0/webcface_1.11.0-ubuntu24.04_arm64.deb
+curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.6.0/webcface-webui_1.6.0-s_arm64.deb
+curl -fLO https://github.com/na-trium-144/webcface-tools/releases/download/v1.4.3/webcface-tools_1.4.3-ubuntu24.04_arm64.deb
+```
+</details>
+
+<details><summary>armhf</summary>
+
+```sh
+curl -fLO https://github.com/na-trium-144/webcface/releases/download/v1.11.0/webcface_1.11.0-ubuntu24.04_armhf.deb
+curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.6.0/webcface-webui_1.6.0-s_armhf.deb
+curl -fLO https://github.com/na-trium-144/webcface-tools/releases/download/v1.4.3/webcface-tools_1.4.3-ubuntu24.04_armhf.deb
+```
+</details>
+
+#### Ubuntu 22.04 Jammy
+<details open><summary>x86_64</summary>
+
+```sh
+curl -fLO https://github.com/na-trium-144/webcface/releases/download/v1.11.0/webcface_1.11.0-ubuntu22.04_amd64.deb
 curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.6.0/webcface-webui_1.6.0-s_amd64.deb
 curl -fLO https://github.com/na-trium-144/webcface-tools/releases/download/v1.4.3/webcface-tools_1.4.3-ubuntu22.04_amd64.deb
 ```
 </details>
 
-<details><summary>Ubuntu 22.04, arm64</summary>
+<details><summary>arm64</summary>
 
 ```sh
-curl -fLO https://github.com/na-trium-144/webcface/releases/download/v1.10.0/webcface_1.10.0-ubuntu22.04_arm64.deb
+curl -fLO https://github.com/na-trium-144/webcface/releases/download/v1.11.0/webcface_1.11.0-ubuntu22.04_arm64.deb
 curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.6.0/webcface-webui_1.6.0-s_arm64.deb
 curl -fLO https://github.com/na-trium-144/webcface-tools/releases/download/v1.4.3/webcface-tools_1.4.3-ubuntu22.04_arm64.deb
 ```
 </details>
 
-<details><summary>Ubuntu 22.04, armhf</summary>
+<details><summary>armhf</summary>
 
 ```sh
-curl -fLO https://github.com/na-trium-144/webcface/releases/download/v1.10.0/webcface_1.10.0-ubuntu22.04_armhf.deb
+curl -fLO https://github.com/na-trium-144/webcface/releases/download/v1.11.0/webcface_1.11.0-ubuntu22.04_armhf.deb
 curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.6.0/webcface-webui_1.6.0-s_armhf.deb
 curl -fLO https://github.com/na-trium-144/webcface-tools/releases/download/v1.4.3/webcface-tools_1.4.3-ubuntu22.04_armhf.deb
 ```
 </details>
 
-<details><summary>Ubuntu 20.04, x86_64</summary>
+#### Ubuntu 20.04 Focal
+<details><summary>x86_64</summary>
 
 ```sh
-curl -fLO https://github.com/na-trium-144/webcface/releases/download/v1.10.0/webcface_1.10.0-ubuntu20.04_amd64.deb
+curl -fLO https://github.com/na-trium-144/webcface/releases/download/v1.11.0/webcface_1.11.0-ubuntu20.04_amd64.deb
 curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.6.0/webcface-webui_1.6.0-s_amd64.deb
 curl -fLO https://github.com/na-trium-144/webcface-tools/releases/download/v1.4.3/webcface-tools_1.4.3-ubuntu20.04_amd64.deb
 ```
 </details>
 
-<details><summary>Ubuntu 20.04, arm64</summary>
+<details><summary>arm64</summary>
 
 ```sh
-curl -fLO https://github.com/na-trium-144/webcface/releases/download/v1.10.0/webcface_1.10.0-ubuntu20.04_arm64.deb
+curl -fLO https://github.com/na-trium-144/webcface/releases/download/v1.11.0/webcface_1.11.0-ubuntu20.04_arm64.deb
 curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.6.0/webcface-webui_1.6.0-s_arm64.deb
 curl -fLO https://github.com/na-trium-144/webcface-tools/releases/download/v1.4.3/webcface-tools_1.4.3-ubuntu20.04_arm64.deb
 ```
 </details>
 
-<details><summary>Ubuntu 20.04, armhf</summary>
+<details><summary>armhf</summary>
 
 ```sh
-curl -fLO https://github.com/na-trium-144/webcface/releases/download/v1.10.0/webcface_1.10.0-ubuntu20.04_armhf.deb
+curl -fLO https://github.com/na-trium-144/webcface/releases/download/v1.11.0/webcface_1.11.0-ubuntu20.04_armhf.deb
 curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.6.0/webcface-webui_1.6.0-s_armhf.deb
 curl -fLO https://github.com/na-trium-144/webcface-tools/releases/download/v1.4.3/webcface-tools_1.4.3-ubuntu20.04_armhf.deb
 ```

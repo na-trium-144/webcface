@@ -12,44 +12,6 @@ env:
   BUILD_TYPE: Release
 
 jobs:
-  build-amd64:
-    strategy:
-      matrix:
-        distro: [ubuntu22.04, ubuntu20.04]
-        include:
-          - distro: ubuntu22.04
-            distro2: ubuntu-22.04
-            cc: gcc-11
-            cxx: g++-11
-          - distro: ubuntu20.04
-            distro2: ubuntu-20.04
-            cc: gcc-10
-            cxx: g++-10
-    runs-on: ${{matrix.distro2}}
-    steps:
-    - uses: actions/checkout@v4
-    - name: Install dependencies
-      run: sudo apt-get update && sudo apt-get install -y libopencv-dev libspdlog-dev gcc-10 g++-10
-    - name: Configure CMake
-      env:
-        CC: ${{matrix.cc}}
-        CXX: ${{matrix.cxx}}
-      run: >
-        cmake -B ${{github.workspace}}/build
-        -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
-        -DWEBCFACE_VERSION_SUFFIX=${{matrix.distro}}
-        -DWEBCFACE_DOWNLOAD_WEBUI=off
-        -DWEBCFACE_INSTALL_SERVICE=on
-    - name: Build
-      run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
-    - name: Create Deb Package
-      working-directory: ${{github.workspace}}/build
-      run: cpack -G DEB
-    - uses: actions/upload-artifact@v3
-      with:
-        name: deb-${{matrix.distro}}-amd64
-        path: ${{github.workspace}}/build/*.deb
-  
   build-multiarch:
     # The host should always be linux
     runs-on: ubuntu-22.04
@@ -58,23 +20,24 @@ jobs:
     # Run steps on a matrix of 4 arch/distro combinations
     strategy:
       matrix:
-        arch: [aarch64, armv7]
-        distro: [ubuntu22.04, ubuntu20.04]
+        arch: [amd64, aarch64, armv7]
+        distro: ["24.04", "22.04", "20.04"]
         include:
-          - distro: ubuntu22.04
-            cc: gcc-11
-            cxx: g++-11
-          - distro: ubuntu20.04
-            cc: gcc-10
-            cxx: g++-10
+          - arch: amd64
+            base: ubuntu
+          - arch: aarch64
+            base: arm64v8/ubuntu
+          - arch: armv7
+            base: arm32v7/ubuntu
     steps:
       - uses: actions/checkout@v4
       - uses: uraimo/run-on-arch-action@v2
         name: Build artifact
         id: build
         with:
-          arch: ${{ matrix.arch }}
-          distro: ${{ matrix.distro }}
+          arch: none
+          distro: none
+          base_image: ${{matrix.base}}:${{matrix:distro}}
 
           # Not required, but speeds up builds
           githubToken: ${{ github.token }}
@@ -92,8 +55,8 @@ jobs:
           #   artifact_name: git-${{ matrix.distro }}_${{ matrix.arch }}
           env: |
             distro: ${{matrix.distro}}
-            CC: ${{matrix.cc}}
-            CXX: ${{matrix.cxx}}
+            CC: gcc-10
+            CXX: g++-10
 
           # The shell to run commands with in the container
           shell: /bin/sh
@@ -117,14 +80,14 @@ jobs:
             cd /workspace
             apt-get update -q -y
             apt-get install -q -y libopencv-dev libspdlog-dev
-            cmake -B build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DWEBCFACE_VERSION_SUFFIX=${distro} -DWEBCFACE_DOWNLOAD_WEBUI=off -DWEBCFACE_INSTALL_SERVICE=on
+            cmake -B build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DWEBCFACE_VERSION_SUFFIX=ubuntu${distro} -DWEBCFACE_DOWNLOAD_WEBUI=off -DWEBCFACE_INSTALL_SERVICE=on
             cmake --build build --config ${{env.BUILD_TYPE}}
             cd build
             cpack -G DEB
             
       - uses: actions/upload-artifact@v3
         with:
-          name: deb-${{matrix.distro}}-${{ matrix.arch }}
+          name: deb-ubuntu${{matrix.distro}}-${{ matrix.arch }}
           path: ${{github.workspace}}/build/*.deb
 
   release:
@@ -132,6 +95,18 @@ jobs:
     needs: [build-amd64, build-multiarch]
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v3
+        with:
+          name: deb-ubuntu24.04-amd64
+          path: ${{github.workspace}}/artifact
+      - uses: actions/download-artifact@v3
+        with:
+          name: deb-ubuntu24.04-aarch64
+          path: ${{github.workspace}}/artifact
+      - uses: actions/download-artifact@v3
+        with:
+          name: deb-ubuntu24.04-armv7
+          path: ${{github.workspace}}/artifact
       - uses: actions/download-artifact@v3
         with:
           name: deb-ubuntu22.04-amd64
