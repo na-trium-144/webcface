@@ -1,5 +1,13 @@
 var NAVTREEINDEX26 =
 {
+"structwebcface_1_1Server_1_1MemberData.html#af9b4d9963a3a0d4d813f3c49041b6ba7":[25,0,0,5,1,56],
+"structwebcface_1_1Server_1_1MemberData.html#af9b4d9963a3a0d4d813f3c49041b6ba7":[23,0,1,8,1,56],
+"structwebcface_1_1Server_1_1MemberData.html#afcdd13508706db48bc93139923ae5a3a":[23,0,1,8,1,25],
+"structwebcface_1_1Server_1_1MemberData.html#afcdd13508706db48bc93139923ae5a3a":[25,0,0,5,1,25],
+"structwebcface_1_1Server_1_1ServerStorage.html":[23,0,1,8,3],
+"structwebcface_1_1Server_1_1ServerStorage.html":[25,0,0,5,3],
+"structwebcface_1_1Server_1_1ServerStorage.html#a2284a2138f45992873563f8b5e95eaac":[25,0,0,5,3,15],
+"structwebcface_1_1Server_1_1ServerStorage.html#a2284a2138f45992873563f8b5e95eaac":[23,0,1,8,3,15],
 "structwebcface_1_1Server_1_1ServerStorage.html#a251dad409f9e95706c46495528eed393":[25,0,0,5,3,13],
 "structwebcface_1_1Server_1_1ServerStorage.html#a251dad409f9e95706c46495528eed393":[23,0,1,8,3,13],
 "structwebcface_1_1Server_1_1ServerStorage.html#a4a3520533434e6f352d586c9092aac56":[23,0,1,8,3,9],

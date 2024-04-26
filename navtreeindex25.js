@@ -1,5 +1,13 @@
 var NAVTREEINDEX25 =
 {
+"structwebcface_1_1Message_1_1RobotModel.html#aaf8dd6ae53d92d2124bfd03264bd0e57":[25,0,0,4,24,5],
+"structwebcface_1_1Message_1_1RobotModel.html#aaf8dd6ae53d92d2124bfd03264bd0e57":[23,0,1,6,26,5],
+"structwebcface_1_1Message_1_1RobotModel.html#ac7815ce3cfcedbacb8e2c83667ccba0a":[25,0,0,4,24,2],
+"structwebcface_1_1Message_1_1RobotModel.html#ac7815ce3cfcedbacb8e2c83667ccba0a":[23,0,1,6,26,2],
+"structwebcface_1_1Message_1_1RobotModel.html#ad5a4760db27f8fcd5c4028bb15f80ad9":[25,0,0,4,24,7],
+"structwebcface_1_1Message_1_1RobotModel.html#ad5a4760db27f8fcd5c4028bb15f80ad9":[23,0,1,6,26,7],
+"structwebcface_1_1Message_1_1RobotModel.html#aecba8e16b574a8a9f59ae492d364a7c0":[25,0,0,4,24,3],
+"structwebcface_1_1Message_1_1RobotModel.html#aecba8e16b574a8a9f59ae492d364a7c0":[23,0,1,6,26,3],
 "structwebcface_1_1Message_1_1RobotModel_1_1RobotLink.html":[25,0,0,4,24,0],
 "structwebcface_1_1Message_1_1RobotModel_1_1RobotLink.html":[23,0,1,6,26,0],
 "structwebcface_1_1Message_1_1RobotModel_1_1RobotLink.html#a05bea2596085d23863874d654e236af5":[25,0,0,4,24,0,1],
@@ -241,13 +249,5 @@ var NAVTREEINDEX25 =
 "structwebcface_1_1Server_1_1MemberData.html#aeaede8e9fa35099287d112189aac9e3a":[25,0,0,5,1,44],
 "structwebcface_1_1Server_1_1MemberData.html#aeaede8e9fa35099287d112189aac9e3a":[23,0,1,8,1,44],
 "structwebcface_1_1Server_1_1MemberData.html#aeb6cfe926c5110a4f3708eaf32590031":[25,0,0,5,1,9],
-"structwebcface_1_1Server_1_1MemberData.html#aeb6cfe926c5110a4f3708eaf32590031":[23,0,1,8,1,9],
-"structwebcface_1_1Server_1_1MemberData.html#af9b4d9963a3a0d4d813f3c49041b6ba7":[25,0,0,5,1,56],
-"structwebcface_1_1Server_1_1MemberData.html#af9b4d9963a3a0d4d813f3c49041b6ba7":[23,0,1,8,1,56],
-"structwebcface_1_1Server_1_1MemberData.html#afcdd13508706db48bc93139923ae5a3a":[23,0,1,8,1,25],
-"structwebcface_1_1Server_1_1MemberData.html#afcdd13508706db48bc93139923ae5a3a":[25,0,0,5,1,25],
-"structwebcface_1_1Server_1_1ServerStorage.html":[23,0,1,8,3],
-"structwebcface_1_1Server_1_1ServerStorage.html":[25,0,0,5,3],
-"structwebcface_1_1Server_1_1ServerStorage.html#a2284a2138f45992873563f8b5e95eaac":[25,0,0,5,3,15],
-"structwebcface_1_1Server_1_1ServerStorage.html#a2284a2138f45992873563f8b5e95eaac":[23,0,1,8,3,15]
+"structwebcface_1_1Server_1_1MemberData.html#aeb6cfe926c5110a4f3708eaf32590031":[23,0,1,8,1,9]
 };

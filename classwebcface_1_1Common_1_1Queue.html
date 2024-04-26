@@ -160,9 +160,12 @@ Inheritance diagram for Queue&lt; T &gt;:</div>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a28ee7920d4166b13750f0958a72aba96" id="r_a28ee7920d4166b13750f0958a72aba96"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Common_1_1Queue.html#a28ee7920d4166b13750f0958a72aba96">push</a> (const T &amp;f)</td></tr>
 <tr class="separator:a28ee7920d4166b13750f0958a72aba96"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa168f4e708abc9d119958b708f107601" id="r_aa168f4e708abc9d119958b708f107601"><td class="memTemplParams" colspan="2">template&lt;typename Dur  = std::chrono::milliseconds&gt; </td></tr>
-<tr class="memitem:aa168f4e708abc9d119958b708f107601"><td class="memTemplItemLeft" align="right" valign="top">std::optional&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Common_1_1Queue.html#aa168f4e708abc9d119958b708f107601">pop</a> (const Dur &amp;d=std::chrono::milliseconds(0))</td></tr>
-<tr class="separator:aa168f4e708abc9d119958b708f107601"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a44a53147d4b3600ec200300ea16e3707" id="r_a44a53147d4b3600ec200300ea16e3707"><td class="memItemLeft" align="right" valign="top">std::optional&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Common_1_1Queue.html#a44a53147d4b3600ec200300ea16e3707">pop</a> ()</td></tr>
+<tr class="separator:a44a53147d4b3600ec200300ea16e3707"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af460c9debb26e8822e3a564affc542c6" id="r_af460c9debb26e8822e3a564affc542c6"><td class="memItemLeft" align="right" valign="top">std::optional&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Common_1_1Queue.html#af460c9debb26e8822e3a564affc542c6">pop</a> (std::chrono::milliseconds d)</td></tr>
+<tr class="separator:af460c9debb26e8822e3a564affc542c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac8bb3912a3ce86b15842e79d0b421204" id="r_ac8bb3912a3ce86b15842e79d0b421204"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Common_1_1Queue.html#ac8bb3912a3ce86b15842e79d0b421204">clear</a> ()</td></tr>
+<tr class="separator:ac8bb3912a3ce86b15842e79d0b421204"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
@@ -177,15 +180,40 @@ Private Attributes</h2></td></tr>
 <div class="textblock"><div class="compoundTemplParams">template&lt;typename T&gt;<br />
 class webcface::Common::Queue&lt; T &gt;</div><p>排他制御をしたただのキュー </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="aa168f4e708abc9d119958b708f107601" name="aa168f4e708abc9d119958b708f107601"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa168f4e708abc9d119958b708f107601">&#9670;&#160;</a></span>pop()</h2>
+<a id="ac8bb3912a3ce86b15842e79d0b421204" name="ac8bb3912a3ce86b15842e79d0b421204"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac8bb3912a3ce86b15842e79d0b421204">&#9670;&#160;</a></span>clear()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void clear </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a44a53147d4b3600ec200300ea16e3707" name="a44a53147d4b3600ec200300ea16e3707"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a44a53147d4b3600ec200300ea16e3707">&#9670;&#160;</a></span>pop() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
 <div class="memtemplate">
-template&lt;typename Dur  = std::chrono::milliseconds&gt; </div>
+template&lt;typename T &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -193,8 +221,35 @@ template&lt;typename Dur  = std::chrono::milliseconds&gt; </div>
         <tr>
           <td class="memname">std::optional&lt; T &gt; pop </td>
           <td>(</td>
-          <td class="paramtype">const Dur &amp;&#160;</td>
-          <td class="paramname"><em>d</em> = <code>std::chrono::milliseconds(0)</code></td><td>)</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="af460c9debb26e8822e3a564affc542c6" name="af460c9debb26e8822e3a564affc542c6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af460c9debb26e8822e3a564affc542c6">&#9670;&#160;</a></span>pop() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::optional&lt; T &gt; pop </td>
+          <td>(</td>
+          <td class="paramtype">std::chrono::milliseconds&#160;</td>
+          <td class="paramname"><em>d</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -317,7 +372,7 @@ template&lt;typename T &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="namespacewebcface_1_1Common.html">Common</a></li><li class="navelem"><a class="el" href="classwebcface_1_1Common_1_1Queue.html">Queue</a></li>
-    <li class="footer">Generated on Thu Apr 25 2024 16:23:11 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Fri Apr 26 2024 04:43:09 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

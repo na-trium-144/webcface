@@ -153,15 +153,19 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 </ul>
 <h1><a class="anchor" id="autotoc_md195"></a>
 Benchmark</h1>
-<p>Releaseビルドの src/example/benchmark.cc で通信速度をチェックしてみました。 以下の表は クライアント→サーバー→クライアント でさまざまなサイズの文字列データの送受信にかかった時間です。 なおこれはサーバーとクライアントが同一マシン上の場合の結果です。 Wi-FiやEthernetを経由する場合はその環境次第ですが遅くなると思います。</p>
+<p>ver1.11時点のReleaseビルドの src/example/benchmark.cc で通信速度をチェックしてみました。 以下の表は クライアント→サーバー→クライアント でさまざまなサイズの文字列データの送受信にかかった時間です。 なおこれはサーバーとクライアントが同一マシン上の場合の結果なので、Wi-FiやEthernetを経由する場合はその環境次第ですがこれより遅くなると思います。</p>
 <p>使用したPCのCPUは、MacOSは Apple M1 、それ以外は Intel Core i5-13500 です。</p>
+<details >
+<summary >
+表</summary>
+<p></p>
 <table class="markdownTable">
 <tr class="markdownTableHead">
 <th class="markdownTableHeadNone">OS   </th><th class="markdownTableHeadNone">10Byte   </th><th class="markdownTableHeadNone">100Byte   </th><th class="markdownTableHeadNone">1kByte   </th><th class="markdownTableHeadNone">10kByte   </th><th class="markdownTableHeadNone">100kByte   </th><th class="markdownTableHeadNone">1MByte    </th></tr>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">Windows (MSVC build)   </td><td class="markdownTableBodyNone">244 μs   </td><td class="markdownTableBodyNone">301 μs   </td><td class="markdownTableBodyNone">381 μs   </td><td class="markdownTableBodyNone">428 μs   </td><td class="markdownTableBodyNone">2.82 ms   </td><td class="markdownTableBodyNone">22.5 ms    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">Windows (MinGW build)   </td><td class="markdownTableBodyNone">15.6 ms   </td><td class="markdownTableBodyNone">15.1 ms   </td><td class="markdownTableBodyNone">15.2 ms   </td><td class="markdownTableBodyNone">15.4 ms   </td><td class="markdownTableBodyNone">15.6 ms   </td><td class="markdownTableBodyNone">27.1 ms    </td></tr>
+<td class="markdownTableBodyNone">Windows (MinGW build)   </td><td class="markdownTableBodyNone">219 μs   </td><td class="markdownTableBodyNone">218 μs   </td><td class="markdownTableBodyNone">262 μs   </td><td class="markdownTableBodyNone">411 μs   </td><td class="markdownTableBodyNone">1.93 ms   </td><td class="markdownTableBodyNone">17.0 ms    </td></tr>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">Linux (on WSL1)   </td><td class="markdownTableBodyNone">177 μs   </td><td class="markdownTableBodyNone">213 μs   </td><td class="markdownTableBodyNone">195 μs   </td><td class="markdownTableBodyNone">272 μs   </td><td class="markdownTableBodyNone">1.26 ms   </td><td class="markdownTableBodyNone">12.3 ms    </td></tr>
 <tr class="markdownTableRowEven">
@@ -171,12 +175,14 @@ Benchmark</h1>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">Server=WSL1 + Client=MSVC   </td><td class="markdownTableBodyNone">335 μs   </td><td class="markdownTableBodyNone">287 μs   </td><td class="markdownTableBodyNone">252 μs   </td><td class="markdownTableBodyNone">504 μs   </td><td class="markdownTableBodyNone">2.02 ms   </td><td class="markdownTableBodyNone">16.3 ms    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">Server=WSL2 + Client=MSVC   </td><td class="markdownTableBodyNone">553 μs   </td><td class="markdownTableBodyNone">637 μs   </td><td class="markdownTableBodyNone">622 ms   </td><td class="markdownTableBodyNone">810 μs   </td><td class="markdownTableBodyNone">2.28 ms   </td><td class="markdownTableBodyNone">29.5 ms    </td></tr>
+<td class="markdownTableBodyNone">Server=WSL2 + Client=MSVC   </td><td class="markdownTableBodyNone">553 μs   </td><td class="markdownTableBodyNone">637 μs   </td><td class="markdownTableBodyNone">622 μs   </td><td class="markdownTableBodyNone">810 μs   </td><td class="markdownTableBodyNone">2.28 ms   </td><td class="markdownTableBodyNone">29.5 ms    </td></tr>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">Linux (Native)   </td><td class="markdownTableBodyNone">491 μs   </td><td class="markdownTableBodyNone">439 μs   </td><td class="markdownTableBodyNone">519 μs   </td><td class="markdownTableBodyNone">1.01 ms   </td><td class="markdownTableBodyNone">4.78 ms   </td><td class="markdownTableBodyNone">27.8 ms    </td></tr>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">MacOS   </td><td class="markdownTableBodyNone">130 μs   </td><td class="markdownTableBodyNone">136 μs   </td><td class="markdownTableBodyNone">165 μs   </td><td class="markdownTableBodyNone">439 μs   </td><td class="markdownTableBodyNone">2.98 ms   </td><td class="markdownTableBodyNone">28.3 ms   </td></tr>
 </table>
+<p></p>
+</details>
 <h1><a class="anchor" id="autotoc_md196"></a>
 Links</h1>
 <ul>
@@ -409,7 +415,7 @@ License</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Apr 25 2024 16:23:12 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Fri Apr 26 2024 04:43:09 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>
