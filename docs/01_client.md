@@ -43,6 +43,13 @@ Client オブジェクトを作り、start() を呼ぶことでサーバーへ�
     ```
     接続できているかどうかは `wcli.connected()` で取得できます。
 
+    \note
+    Clientはstart()時に2つのスレッド(std::thread)を建てます。
+    1つはWebSocketの送受信処理用で、送信用キューにあるメッセージを送信し、受信したら受信用キューに入れます。
+    もう1つは受信したメッセージをパースしてコールバックを呼んだりといった処理をします。  
+    またCallメッセージ(Func呼び出しのメッセージ)を受信したときと、自分自身のFuncに対してrunAsync()を呼び出したときは、その呼び出し1回ごとに新しいスレッドを建てその中で関数を実行します。
+
+
 - <b class="tab-title">C</b>
     ```c
     #include <webcface/wcf.h>
@@ -63,6 +70,12 @@ Client オブジェクトを作り、start() を呼ぶことでサーバーへ�
     ```
     接続できているかどうかは `wcfIsConnected(wcli)` で取得できます。
     
+    \note
+    ClientはwcfStart()時に2つのスレッド(std::thread)を建てます。
+    1つはWebSocketの送受信処理用で、送信用キューにあるメッセージを送信し、受信したら受信用キューに入れます。
+    もう1つは受信したメッセージをパースしてコールバックを呼んだりといった処理をします。  
+    またCallメッセージ(Func呼び出しのメッセージ)を受信したときと、自分自身のFuncに対してwcfFuncRunAsync()を呼び出したときは、その呼び出し1回ごとに新しいスレッドを建てその中で関数を実行します。
+
 - <b class="tab-title">JavaScript</b>
     ```ts
     import { Client } from "webcface";
