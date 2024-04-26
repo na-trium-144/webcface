@@ -28,20 +28,24 @@ var NAVTREE =
     [ "Benchmark", "index.html#autotoc_md195", null ],
     [ "Links", "index.html#autotoc_md196", null ],
     [ "Installation", "index.html#autotoc_md197", [
-      [ "Ubuntu 20.04, 22.04 (x86_64, arm64, armhf)", "index.html#autotoc_md198", null ],
-      [ "Homebrew (MacOS, Linux)", "index.html#autotoc_md199", null ],
-      [ "App Bundle for MacOS", "index.html#autotoc_md200", null ],
-      [ "Windows (MSVC)", "index.html#autotoc_md201", null ],
-      [ "Build from source", "index.html#autotoc_md202", [
-        [ "Requirements", "index.html#autotoc_md203", null ],
-        [ "Build (with Pure CMake)", "index.html#autotoc_md204", null ],
-        [ "Build (with colcon, ROS2)", "index.html#autotoc_md205", null ],
-        [ "WebUI", "index.html#autotoc_md206", null ],
-        [ "tools", "index.html#autotoc_md207", null ]
+      [ "Ubuntu (x86_64, arm64, armhf)", "index.html#autotoc_md198", [
+        [ "Ubuntu 24.04 Noble", "index.html#autotoc_md199", null ],
+        [ "Ubuntu 22.04 Jammy", "index.html#autotoc_md200", null ],
+        [ "Ubuntu 20.04 Focal", "index.html#autotoc_md201", null ]
+      ] ],
+      [ "Homebrew (MacOS, Linux)", "index.html#autotoc_md202", null ],
+      [ "App Bundle for MacOS", "index.html#autotoc_md203", null ],
+      [ "Windows (MSVC)", "index.html#autotoc_md204", null ],
+      [ "Build from source", "index.html#autotoc_md205", [
+        [ "Requirements", "index.html#autotoc_md206", null ],
+        [ "Build (with Pure CMake)", "index.html#autotoc_md207", null ],
+        [ "Build (with colcon, ROS2)", "index.html#autotoc_md208", null ],
+        [ "WebUI", "index.html#autotoc_md209", null ],
+        [ "tools", "index.html#autotoc_md210", null ]
       ] ]
     ] ],
-    [ "Documentation", "index.html#autotoc_md208", null ],
-    [ "License", "index.html#autotoc_md209", null ],
+    [ "Documentation", "index.html#autotoc_md211", null ],
+    [ "License", "index.html#autotoc_md212", null ],
     [ "Overview", "md_00__overview.html", [
       [ "環境構築", "md_00__overview.html#autotoc_md1", null ],
       [ "Server", "md_00__overview.html#autotoc_md2", [
@@ -339,17 +343,17 @@ var NAVTREEINDEX =
 "classwebcface_1_1Value.html#aa38d9a0692868778c99722ff153a501f",
 "classwebcface_1_1ViewComponent.html#a29db01528df533026a60f8bbdfeb5443",
 "def__types_8h.html#abd2a76bd13d2f46adc50b37dab5aea82",
-"md_20__canvas3d.html",
-"namespacewebcface_1_1Common.html#a1f914f5d15fb32aa05ca882cff7f2cd4",
-"robot__model_8cc.html",
-"structwebcface_1_1Common_1_1DictElement.html#adc086dc849c07799cc17df5cee93bcbb",
-"structwebcface_1_1Common_1_1Geometry3D.html",
-"structwebcface_1_1Components_1_1Geometries_1_1Circle.html#a0ce73a68058451ed306d16c522ea3060",
-"structwebcface_1_1Components_1_1Geometries_1_1Sphere.html#a3abcf0571d81409b4c8043ae979fdab1",
-"structwebcface_1_1Internal_1_1ClientData.html#aed4841dd8eacd5ab7f3b925c6c9475ff",
-"structwebcface_1_1Message_1_1Image.html#afa890d51e2d68d6824208fee67b23628",
-"structwebcface_1_1Message_1_1RobotModel.html#aaf8dd6ae53d92d2124bfd03264bd0e57",
-"structwebcface_1_1Server_1_1MemberData.html#af9b4d9963a3a0d4d813f3c49041b6ba7"
+"md_15__image.html#autotoc_md85",
+"namespacewebcface_1_1Common.html#a1b753fd9c2659910ca1a042a05b56be6a9c7cd9fc9aa15fae1e37885314637c36",
+"pages.html",
+"structwebcface_1_1Common_1_1DictElement.html#aa4cdb693ee7f3d1d131bb328468184b7",
+"structwebcface_1_1Common_1_1Geometry2D.html",
+"structwebcface_1_1Components_1_1Geometries_1_1Circle.html",
+"structwebcface_1_1Components_1_1Geometries_1_1Sphere.html#a0ce73a68058451ed306d16c522ea3060",
+"structwebcface_1_1Internal_1_1ClientData.html#ae7bdc5a9588d9977fd43d9b2e3cd511a",
+"structwebcface_1_1Message_1_1Image.html#ae3eed0786f0f6cfa610ece7f39dce7d2",
+"structwebcface_1_1Message_1_1RobotModel.html#a8446c961b3429e13fd10146e783ecdc8",
+"structwebcface_1_1Server_1_1MemberData.html#aeaede8e9fa35099287d112189aac9e3a"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
