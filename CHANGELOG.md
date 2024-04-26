@@ -1,3 +1,30 @@
+## [1.11.0] - 2024-04-26
+### Added
+* Ubuntu24.04ビルドのReleaseを追加 (#246)
+* 利用可能な場合Unixドメインソケットで通信するようにした (#233)
+* WSL2とWindowsの相互接続が可能 (WSL2ではlocalhostの代わりにWindowsホストにも接続を試行するようにした) (#233)
+* Value,Textなど各種Fieldを==で比較する機能、ViewComponent,Canvas2DComponentなどを==で比較する機能 (#234)
+* Clientのインタフェース改良 (#241)
+	* Field::child, operator[], parent, lastName 追加
+	* Value,Textなど各種Fieldに対しても child, operator[], parent, lastName 追加
+	* Member::value, text, valueEntries, textEntries ...etcをField::に移動
+	* Value::set, get でparentの配列の要素を参照する機能追加
+	* Value::resize, push_back 追加
+	* EventTarget::callbackList() 追加
+	* InputRef::asStringRef, asString, as<>, asBool 追加
+	* ValAdaptor::empty, InputRef::empty 追加
+	* View::operator<<(function) 追加
+	* AsyncFuncResult::onStarted, onResult 追加
+### Changed
+* OpenCVのライブラリすべてではなく必要なもの(core,imgcodecs,imgproc)だけをリンクするようにした (#243)
+* message, server-implをlibwebcfaceに統合 (#242)
+* cmake時にconceptsヘッダーが存在するか確認するのを追加 (#242)
+* Value::Dictをdeprecatedにした (#241)
+* イベントのコールバックの引数型変更 (#241)
+* InputRef::get の戻り値をconst参照にした (#241)
+### Fixed
+* MinGWでメッセージの受信に15msかかっていたのを修正 (#245)
+
 ## [1.10.0] - 2024-04-01
 ### Added
 * viewにinput要素を追加 (#219)
