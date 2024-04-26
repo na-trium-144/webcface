@@ -23,24 +23,27 @@ WebUIでは簡易なUIを作成したり2D、3Dの図形の描画をさせるこ
 
 ## Benchmark
 
-Releaseビルドの src/example/benchmark.cc で通信速度をチェックしてみました。
+ver1.11時点のReleaseビルドの src/example/benchmark.cc で通信速度をチェックしてみました。
 以下の表は クライアント→サーバー→クライアント でさまざまなサイズの文字列データの送受信にかかった時間です。
-なおこれはサーバーとクライアントが同一マシン上の場合の結果です。
-Wi-FiやEthernetを経由する場合はその環境次第ですが遅くなると思います。
+なおこれはサーバーとクライアントが同一マシン上の場合の結果なので、Wi-FiやEthernetを経由する場合はその環境次第ですがこれより遅くなると思います。
 
 使用したPCのCPUは、MacOSは Apple M1 、それ以外は Intel Core i5-13500 です。
+
+<details><summary>表</summary>
 
 | OS | 10Byte | 100Byte | 1kByte | 10kByte | 100kByte | 1MByte |
 | ---- | ---- | ---- | ---- | ---- | ---- | ---- |
 | Windows (MSVC build) | 244 μs | 301 μs | 381 μs | 428 μs | 2.82 ms | 22.5 ms |
-| Windows (MinGW build) | 15.6 ms | 15.1 ms | 15.2 ms | 15.4 ms | 15.6 ms | 27.1 ms |
+| Windows (MinGW build) | 219 μs | 218 μs | 262 μs | 411 μs | 1.93 ms | 17.0 ms |
 | Linux (on WSL1) | 177 μs | 213 μs | 195 μs | 272 μs | 1.26 ms | 12.3 ms |
 | Server=MSVC + Client=WSL1 | 323 μs | 258 μs | 401 μs | 420 μs | 2.34 ms | 18.2 ms |
 | Server=MSVC + Client=WSL2 | 379 μs | 369 μs | 488 μs | 656 μs | 2.47 ms | 17.6 ms |
 | Server=WSL1 + Client=MSVC | 335 μs | 287 μs | 252 μs | 504 μs | 2.02 ms | 16.3 ms |
-| Server=WSL2 + Client=MSVC | 553 μs | 637 μs | 622 ms | 810 μs | 2.28 ms | 29.5 ms |
+| Server=WSL2 + Client=MSVC | 553 μs | 637 μs | 622 μs | 810 μs | 2.28 ms | 29.5 ms |
 | Linux (Native) | 491 μs | 439 μs | 519 μs | 1.01 ms | 4.78 ms | 27.8 ms |
 | MacOS | 130 μs | 136 μs | 165 μs | 439 μs | 2.98 ms | 28.3 ms |
+
+</details>
 
 ## Links
 
