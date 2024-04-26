@@ -83,8 +83,7 @@ DummyClient::DummyClient(bool use_unix)
                                           static_cast<int>(ret));
                       break;
                   }
-                  auto msg = msg_queue.pop(std::chrono::milliseconds(0));
-                  if (msg) {
+                  if (auto msg = msg_queue.pop()) {
                       dummy_logger->trace("sending message");
                       std::size_t sent;
                       curl_ws_send(handle, msg->c_str(), msg->size(), &sent, 0,

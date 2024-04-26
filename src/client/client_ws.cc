@@ -96,16 +96,18 @@ void Internal::messageThreadMain(std::shared_ptr<Internal::ClientData> data,
             {
                 std::lock_guard lock(data->connect_state_m);
                 data->connected.store(true);
+                data->connect_state_cond.notify_all();
             }
-            data->connect_state_cond.notify_all();
             data->logger_internal->debug("connected to {}", path);
             std::string buf_s;
             do {
+                // data->logger_internal->trace("loop");
                 bool closed = false;
                 CURLcode ret;
                 // 受信ループ
                 while (true) {
                     std::size_t rlen = 0;
+                    // data->logger_internal->trace("recv");
                     const curl_ws_frame *meta = nullptr;
                     char buffer[1024];
                     do {
@@ -157,16 +159,17 @@ void Internal::messageThreadMain(std::shared_ptr<Internal::ClientData> data,
                     std::size_t sent;
                     curl_ws_send(handle, msg->c_str(), msg->size(), &sent, 0,
                                  CURLWS_BINARY);
+                    // data->logger_internal->trace("sending done");
                 }
+                // data->logger_internal->trace("yield");
                 std::this_thread::yield();
             } while (!data->closing.load());
             {
                 std::lock_guard lock(data->connect_state_m);
                 data->connected.store(false);
+                data->connect_state_cond.notify_all();
             }
-            data->connect_state_cond.notify_all();
-            while (data->message_queue->pop())
-                ;
+            data->message_queue->clear();
             data->syncDataFirst(); // 次の接続時の最初のメッセージ
         }
         for (auto &handle : handles) {
