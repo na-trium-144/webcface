@@ -159,14 +159,16 @@ void recvFrame(Internal::ClientData *data, char *buffer, std::size_t rlen,
     } else {
         data->current_ws_buf.append(buffer, rlen);
     }
-    if (meta && meta->bytesleft == 0 && !data->current_ws_buf.empty()) {
+    if (meta && meta->bytesleft == 0) {
         data->logger_internal->trace("message received len={}",
                                      data->current_ws_buf.size());
         std::size_t sent;
         curl_ws_send(handle, nullptr, 0, &sent, 0, CURLWS_PONG);
-        // data->recv_queue.push(data->current_ws_buf);
-        data->onRecv(data->current_ws_buf);
-        data->current_ws_buf.clear();
+        if (!data->current_ws_buf.empty()) {
+            // data->recv_queue.push(data->current_ws_buf);
+            data->onRecv(data->current_ws_buf);
+            data->current_ws_buf.clear();
+        }
     }
 }
 void recv(std::shared_ptr<Internal::ClientData> data) {
