@@ -120,6 +120,8 @@ void Internal::recvThreadMain(std::shared_ptr<ClientData> data) {
         while (data->current_curl_handle && !data->current_curl_closed &&
                !data->closing.load()) {
             Internal::WebSocket::recv(data);
+            std::this_thread::sleep_for(std::chrono::microseconds(100));
+            // std::this_thread::yield();
         }
         Internal::WebSocket::close(data);
         if (!data->closing.load()) {
