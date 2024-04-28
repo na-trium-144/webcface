@@ -158,10 +158,16 @@ void recv(std::shared_ptr<Internal::ClientData> data) {
 }
 void send(std::shared_ptr<Internal::ClientData> data, const std::string &msg) {
     std::lock_guard ws_lock(data->ws_m);
-    data->logger_internal->trace("sending message");
+    data->logger_internal->trace("sending message {} bytes", msg.size());
     std::size_t sent;
     CURL *handle = static_cast<CURL *>(data->current_curl_handle);
-    curl_ws_send(handle, msg.c_str(), msg.size(), &sent, 0, CURLWS_BINARY);
+    auto ret = curl_ws_send(handle, msg.c_str(), msg.size(), &sent, 0, CURLWS_BINARY);
+    if(ret != CURLE_OK){
+        data->logger_internal->error("error sending message {}", static_cast<int>(ret));
+    }
+    if(sent != msg.size()){
+        data->logger_internal->error("failed to send message (sent = {} bytes)", sent);
+    }
     // data->logger_internal->trace("sending done");
 }
 
