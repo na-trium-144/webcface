@@ -62,6 +62,7 @@ void Internal::ClientData::start() {
     }
     if (recv_thread && !recv_thread_running.load()) {
         recv_thread->join();
+        recv_thread = nullptr;
     }
     if (!recv_thread) {
         recv_thread_running.store(true);
