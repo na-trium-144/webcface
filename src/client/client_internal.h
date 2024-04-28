@@ -2,6 +2,7 @@
 #include <mutex>
 #include <condition_variable>
 #include <queue>
+#include <array>
 #include <vector>
 #include <string>
 #include <memory>
@@ -33,9 +34,7 @@
 WEBCFACE_NS_BEGIN
 namespace Internal {
 
-WEBCFACE_DLL void messageThreadMain(std::shared_ptr<ClientData> data,
-                                    std::string host, int port);
-
+WEBCFACE_DLL void messageThreadMain(std::shared_ptr<ClientData> data);
 WEBCFACE_DLL void recvThreadMain(std::shared_ptr<ClientData> data);
 
 struct ClientData : std::enable_shared_from_this<ClientData> {
@@ -54,14 +53,18 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
 
     std::string host;
     int port;
+    std::array<void *, 3> curl_handles;
+    void *current_curl_handle;
+    bool current_curl_closed;
+    std::string current_ws_buf;
 
     /*!
-     * \brief websocket通信するスレッド
+     * \brief message_queueにたまったメッセージを送信するスレッド
      *
      */
     std::unique_ptr<std::thread> message_thread;
     /*!
-     * \brief recv_queueを処理するスレッド
+     * \brief websocket接続と受信処理をするスレッド
      *
      */
     std::unique_ptr<std::thread> recv_thread;
@@ -87,14 +90,14 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
     WEBCFACE_DLL void join();
 
     /*!
-     * \brief 初期化時に送信するメッセージをキューに入れる
+     * \brief 初期化時に送信するメッセージ
      *
      * 各種req と syncData(true) の全データが含まれる。
      *
-     * コンストラクタ直後start()前と、切断直後に生成してキューの最初に入れる
+     * ws接続直後に送信される
      *
      */
-    WEBCFACE_DLL void syncDataFirst();
+    WEBCFACE_DLL std::string syncDataFirst();
     /*!
      * \brief sync() 1回分のメッセージをキューに入れる
      *
@@ -114,11 +117,6 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
      *
      */
     std::shared_ptr<Common::Queue<std::string>> message_queue;
-    /*!
-     * \brief wsが受信したメッセージを入れるキュ
-     *
-     */
-    Common::Queue<std::string> recv_queue;
 
     /*!
      * \brief 受信時の処理

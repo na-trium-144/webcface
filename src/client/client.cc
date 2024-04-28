@@ -13,6 +13,7 @@
 #include <chrono>
 #include "../message/message.h"
 #include "client_internal.h"
+#include "client_ws.h"
 
 WEBCFACE_NS_BEGIN
 
@@ -26,7 +27,9 @@ Client::Client(const std::string &name,
 Internal::ClientData::ClientData(const std::string &name,
                                  const std::string &host, int port)
     : std::enable_shared_from_this<ClientData>(), self_member_name(name),
-      host(host), port(port),
+      host(host), port(port), curl_handles({nullptr, nullptr, nullptr}),
+      current_curl_handle(nullptr), current_curl_closed(false),
+      current_ws_buf(),
       message_queue(std::make_shared<Common::Queue<std::string>>()),
       value_store(name), text_store(name), func_store(name), view_store(name),
       image_store(name), robot_model_store(name), canvas3d_store(name),
@@ -52,12 +55,11 @@ Internal::ClientData::ClientData(const std::string &name,
     logger_buf = std::make_unique<LoggerBuf>(logger);
     logger_os = std::make_unique<std::ostream>(logger_buf.get());
     log_store->setRecv(name, std::make_shared<std::vector<LogLine>>());
-    syncDataFirst();
 }
 void Internal::ClientData::start() {
     if (message_thread == nullptr) {
         message_thread = std::make_unique<std::thread>(
-            Internal::messageThreadMain, shared_from_this(), host, port);
+            Internal::messageThreadMain, shared_from_this());
     }
     if (recv_thread == nullptr) {
         recv_thread = std::make_unique<std::thread>(Internal::recvThreadMain,
@@ -113,10 +115,30 @@ void Internal::ClientData::pingStatusReq() {
 }
 
 void Internal::recvThreadMain(std::shared_ptr<ClientData> data) {
+    while (!data->closing.load() && data->port > 0) {
+        Internal::WebSocket::init(data);
+        while (data->current_curl_handle && !data->current_curl_closed &&
+               !data->closing.load()) {
+            Internal::WebSocket::recv(data);
+        }
+        Internal::WebSocket::close(data);
+        if (!data->closing.load()) {
+            std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        }
+    }
+}
+void Internal::messageThreadMain(std::shared_ptr<Internal::ClientData> data) {
     while (!data->closing.load()) {
-        auto msg = data->recv_queue.pop(std::chrono::milliseconds(10));
-        if (msg) {
-            data->onRecv(*msg);
+        auto msg = data->message_queue->pop(std::chrono::milliseconds(10));
+        while (msg && !data->closing.load()) {
+            std::unique_lock lock(data->connect_state_m);
+            data->connect_state_cond.wait_for(
+                lock, std::chrono::milliseconds(10),
+                [&] { return data->connected.load() || data->closing.load(); });
+            if (data->connected.load()) {
+                Internal::WebSocket::send(data, *msg);
+                break;
+            }
         }
     }
 }
@@ -133,7 +155,7 @@ void Client::waitConnection() {
         data->connect_state_cond.wait(lock, [this] { return connected(); });
     }
 }
-void Internal::ClientData::syncDataFirst() {
+std::string Internal::ClientData::syncDataFirst() {
     std::lock_guard value_lock(value_store.mtx);
     std::lock_guard text_lock(text_store.mtx);
     std::lock_guard view_lock(view_store.mtx);
@@ -211,7 +233,7 @@ void Internal::ClientData::syncDataFirst() {
         Message::pack(buffer, len, Message::PingStatusReq{});
     }
 
-    message_queue->push(Message::packDone(buffer, len));
+    return Message::packDone(buffer, len);
 }
 void Internal::ClientData::syncData(bool is_first) {
     std::lock_guard value_lock(value_store.mtx);
