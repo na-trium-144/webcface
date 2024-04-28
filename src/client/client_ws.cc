@@ -19,21 +19,18 @@ void init(std::shared_ptr<Internal::ClientData> data) {
     }
     // try TCP, unixSocketPathWSLInterop and unixSocketPath
     // use latter if multiple connections were available
-    data->curl_handles.fill(nullptr);
-    std::array<std::optional<CURLcode>, 3> curl_result;
-    curl_result.fill(std::nullopt);
-    std::array<std::string, 3> paths;
-    for (std::size_t attempt = 0;
-         attempt < data->curl_handles.size() && !data->closing.load();
+    for (std::size_t attempt = 0; attempt < 3 && !data->closing.load();
          attempt++) {
-        CURL *handle = data->curl_handles[attempt] = curl_easy_init();
-        curl_result[attempt] = std::nullopt;
+        CURL *handle = data->current_curl_handle = curl_easy_init();
+        data->current_curl_closed = false;
+        data->current_ws_buf.clear();
         if (std::getenv("WEBCFACE_TRACE") != nullptr) {
             curl_easy_setopt(handle, CURLOPT_VERBOSE, 1L);
         }
         switch (attempt) {
-        case 0:
-            paths[attempt] = data->host + ':' + std::to_string(data->port);
+        case 2:
+            data->current_curl_path =
+                data->host + ':' + std::to_string(data->port);
             curl_easy_setopt(handle, CURLOPT_URL,
                              ("ws://" + data->host + "/").c_str());
             break;
@@ -42,20 +39,19 @@ void init(std::shared_ptr<Internal::ClientData> data) {
                 continue;
             }
             if (Message::Path::detectWSL1()) {
-                paths[attempt] =
+                data->current_curl_path =
                     Message::Path::unixSocketPathWSLInterop(data->port)
                         .string();
                 curl_easy_setopt(handle, CURLOPT_UNIX_SOCKET_PATH,
-                                 paths[attempt].c_str());
+                                 data->current_curl_path.c_str());
                 curl_easy_setopt(handle, CURLOPT_URL,
                                  ("ws://" + data->host + "/").c_str());
                 break;
             }
-            if (Message::Path::detectWSL2() &&
-                !(curl_result[0] && curl_result[0] == CURLE_OK)) {
+            if (Message::Path::detectWSL2()) {
                 std::string win_host = Message::Path::wsl2Host();
                 if (!win_host.empty()) {
-                    paths[attempt] =
+                    data->current_curl_path =
                         win_host + ':' + std::to_string(data->port);
                     curl_easy_setopt(handle, CURLOPT_URL,
                                      ("ws://" + win_host + "/").c_str());
@@ -63,47 +59,38 @@ void init(std::shared_ptr<Internal::ClientData> data) {
                 }
             }
             continue;
-        case 2:
+        case 0:
             if (data->host != "127.0.0.1") {
                 continue;
             }
-            paths[attempt] = Message::Path::unixSocketPath(data->port).string();
+            data->current_curl_path =
+                Message::Path::unixSocketPath(data->port).string();
             curl_easy_setopt(handle, CURLOPT_UNIX_SOCKET_PATH,
-                             paths[attempt].c_str());
+                             data->current_curl_path.c_str());
             curl_easy_setopt(handle, CURLOPT_URL,
                              ("ws://" + data->host + "/").c_str());
             break;
         }
-        data->logger_internal->trace("trying {}...", paths[attempt]);
+        data->logger_internal->trace("trying {}...", data->current_curl_path);
         curl_easy_setopt(handle, CURLOPT_PORT, static_cast<long>(data->port));
         curl_easy_setopt(handle, CURLOPT_CONNECT_ONLY, 2L);
-        curl_result[attempt] = curl_easy_perform(handle);
-        if (*curl_result[attempt] != CURLE_OK) {
-            data->logger_internal->trace(
-                "connection failed {}",
-                static_cast<int>(*curl_result[attempt]));
+        auto ret = curl_easy_perform(handle);
+        if (ret == CURLE_OK) {
+            send(data, data->syncDataFirst());
+            {
+                std::lock_guard lock(data->connect_state_m);
+                data->connected.store(true);
+                data->connect_state_cond.notify_all();
+            }
+            data->logger_internal->debug("connected to {}",
+                                         data->current_curl_path);
+            return;
+        } else {
+            data->logger_internal->trace("connection failed {}",
+                                         static_cast<int>(ret));
+            curl_easy_cleanup(handle);
+            data->current_curl_handle = nullptr;
         }
-    }
-    CURL *handle = nullptr;
-    std::string path;
-    for (int attempt = static_cast<int>(data->curl_handles.size() - 1);
-         attempt >= 0; attempt--) {
-        if (curl_result[attempt] && *curl_result[attempt] == CURLE_OK) {
-            handle = static_cast<CURL *>(data->curl_handles[attempt]);
-            path = std::move(paths[attempt]);
-            break;
-        }
-    }
-    data->current_curl_handle = handle;
-    if (handle) {
-        send(data, data->syncDataFirst());
-        {
-            std::lock_guard lock(data->connect_state_m);
-            data->connected.store(true);
-            data->connect_state_cond.notify_all();
-        }
-        data->logger_internal->debug("connected to {}", path);
-        data->current_curl_closed = false;
     }
 }
 void close(std::shared_ptr<Internal::ClientData> data) {
@@ -112,13 +99,9 @@ void close(std::shared_ptr<Internal::ClientData> data) {
         data->connected.store(false);
         data->connect_state_cond.notify_all();
     }
-    data->message_queue->clear();
-    data->syncDataFirst(); // 次の接続時の最初のメッセージ
-
-    for (auto &handle : data->curl_handles) {
-        if (handle) {
-            curl_easy_cleanup(static_cast<CURL *>(handle));
-        }
+    if (data->current_curl_handle) {
+        curl_easy_cleanup(static_cast<CURL *>(data->current_curl_handle));
+        data->current_curl_handle = nullptr;
     }
 }
 void recv(std::shared_ptr<Internal::ClientData> data) {
