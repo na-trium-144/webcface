@@ -3,6 +3,7 @@
 #include <vector>
 #include <utility>
 #include <thread>
+#include <mutex>
 
 using namespace webcface;
 struct DummyServer {
@@ -34,6 +35,7 @@ struct DummyServer {
     void *connPtr = nullptr;
     std::shared_ptr<void> server_;
     std::shared_ptr<spdlog::logger> dummy_logger;
+    std::mutex server_m;
 
     std::thread t;
     explicit DummyServer(bool use_unix = false);

@@ -53,6 +53,7 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
 
     std::string host;
     int port;
+    std::mutex ws_m;
     void *current_curl_handle;
     bool current_curl_closed;
     std::string current_curl_path;

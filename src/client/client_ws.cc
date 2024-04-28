@@ -105,52 +105,59 @@ void close(std::shared_ptr<Internal::ClientData> data) {
     }
 }
 void recv(std::shared_ptr<Internal::ClientData> data) {
-    // data->logger_internal->trace("loop");
     CURL *handle = static_cast<CURL *>(data->current_curl_handle);
     CURLcode ret;
-
-    std::size_t rlen = 0;
     // data->logger_internal->trace("recv");
-    const curl_ws_frame *meta = nullptr;
-    char buffer[1024];
     do {
-        ret = curl_ws_recv(handle, buffer, sizeof(buffer), &rlen, &meta);
-        if (meta && meta->flags & CURLWS_CLOSE) {
-            data->logger_internal->debug("connection closed");
-            data->current_curl_closed = true;
-            break;
-        } else if (meta && static_cast<std::size_t>(meta->offset) >
-                               data->current_ws_buf.size()) {
-            data->current_ws_buf.append(static_cast<std::size_t>(meta->offset) -
-                                            data->current_ws_buf.size(),
-                                        '\0');
-            data->current_ws_buf.append(buffer, rlen);
-        } else if (meta && static_cast<std::size_t>(meta->offset) <
-                               data->current_ws_buf.size()) {
-            data->current_ws_buf.replace(static_cast<std::size_t>(meta->offset),
-                                         rlen, buffer, rlen);
-        } else {
-            data->current_ws_buf.append(buffer, rlen);
+        std::size_t rlen = 0;
+        const curl_ws_frame *meta = nullptr;
+        char buffer[1024];
+        bool recv_ok = false;
+        {
+            std::lock_guard ws_lock(data->ws_m);
+            ret = curl_ws_recv(handle, buffer, sizeof(buffer), &rlen, &meta);
+            if (meta && meta->flags & CURLWS_CLOSE) {
+                data->logger_internal->debug("connection closed");
+                data->current_curl_closed = true;
+                break;
+            } else if (meta && static_cast<std::size_t>(meta->offset) >
+                                   data->current_ws_buf.size()) {
+                data->current_ws_buf.append(
+                    static_cast<std::size_t>(meta->offset) -
+                        data->current_ws_buf.size(),
+                    '\0');
+                data->current_ws_buf.append(buffer, rlen);
+            } else if (meta && static_cast<std::size_t>(meta->offset) <
+                                   data->current_ws_buf.size()) {
+                data->current_ws_buf.replace(
+                    static_cast<std::size_t>(meta->offset), rlen, buffer, rlen);
+            } else {
+                data->current_ws_buf.append(buffer, rlen);
+            }
+            if (ret != CURLE_AGAIN && ret != CURLE_OK) {
+                data->logger_internal->debug("connection closed {}",
+                                             static_cast<int>(ret));
+                data->current_curl_closed = true;
+                break;
+            }
+            if (ret == CURLE_OK && meta && meta->bytesleft == 0 &&
+                !data->current_ws_buf.empty()) {
+                data->logger_internal->trace("message received len={}",
+                                             data->current_ws_buf.size());
+                std::size_t sent;
+                curl_ws_send(handle, nullptr, 0, &sent, 0, CURLWS_PONG);
+                recv_ok = true;
+            }
         }
-        if (ret != CURLE_AGAIN && ret != CURLE_OK) {
-            data->logger_internal->debug("connection closed {}",
-                                         static_cast<int>(ret));
-            data->current_curl_closed = true;
-            break;
+        if (recv_ok) { // ここにはmutexかからない
+            // data->recv_queue.push(data->current_ws_buf);
+            data->onRecv(data->current_ws_buf);
+            data->current_ws_buf.clear();
         }
-    } while (meta && meta->bytesleft > 0 && ret != CURLE_AGAIN);
-    if (ret == CURLE_OK && meta && meta->bytesleft == 0 &&
-        !data->current_ws_buf.empty()) {
-        data->logger_internal->trace("message received len={}",
-                                     data->current_ws_buf.size());
-        std::size_t sent;
-        curl_ws_send(handle, nullptr, 0, &sent, 0, CURLWS_PONG);
-        // data->recv_queue.push(data->current_ws_buf);
-        data->onRecv(data->current_ws_buf);
-        data->current_ws_buf.clear();
-    }
+    } while (ret != CURLE_AGAIN);
 }
 void send(std::shared_ptr<Internal::ClientData> data, const std::string &msg) {
+    std::lock_guard ws_lock(data->ws_m);
     data->logger_internal->trace("sending message");
     std::size_t sent;
     CURL *handle = static_cast<CURL *>(data->current_curl_handle);

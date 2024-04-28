@@ -40,15 +40,18 @@ DummyServer::DummyServer(bool use_unix)
           CROW_WEBSOCKET_ROUTE((*server), "/")
               // route.websocket<std::remove_reference<decltype(*app)>::type>(app.get())
               .onopen([&](crow::websocket::connection &conn) {
+                  std::lock_guard lock(server_m);
                   connPtr = &conn;
                   dummy_logger->info("ws_open");
               })
               .onclose([&](crow::websocket::connection &, const std::string &) {
+                  std::lock_guard lock(server_m);
                   connPtr = nullptr;
                   dummy_logger->info("ws_close");
               })
               .onmessage([&](crow::websocket::connection &,
                              const std::string &data, bool) {
+                  std::lock_guard lock(server_m);
                   dummy_logger->info("ws_message");
                   auto unpacked = Message::unpack(data, dummy_logger);
                   for (const auto &m : unpacked) {
@@ -68,6 +71,7 @@ DummyServer::DummyServer(bool use_unix)
       }) {}
 
 void DummyServer::send(std::string msg) {
+    std::lock_guard lock(server_m);
     if (connPtr) {
         dummy_logger->info("send {} bytes", msg.size());
         reinterpret_cast<crow::websocket::connection *>(connPtr)->send_binary(
