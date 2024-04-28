@@ -34,6 +34,7 @@ struct DummyServer {
     void *connPtr = nullptr;
     std::shared_ptr<void> server_;
     std::shared_ptr<spdlog::logger> dummy_logger;
+    std::mutex m;
 
     std::thread t;
     explicit DummyServer(bool use_unix = false);

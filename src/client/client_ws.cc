@@ -115,12 +115,13 @@ void deinit(std::shared_ptr<Internal::ClientData> data) {
     {
         std::lock_guard lock(data->connect_state_m);
         data->connected.store(false);
-        data->connect_state_cond.notify_all();
-    }
 
-    if (data->current_curl_handle) {
-        curl_easy_cleanup(static_cast<CURL *>(data->current_curl_handle));
-        data->current_curl_handle = nullptr;
+        if (data->current_curl_handle) {
+            curl_easy_cleanup(static_cast<CURL *>(data->current_curl_handle));
+            data->current_curl_handle = nullptr;
+        }
+
+        data->connect_state_cond.notify_all();
     }
 }
 
@@ -160,7 +161,7 @@ void recvFrame(Internal::ClientData *data, char *buffer, std::size_t rlen,
         data->current_ws_buf.append(buffer, rlen);
     }
     if (meta && meta->bytesleft == 0) {
-        data->logger_internal->trace("message received len={}",
+        data->logger_internal->trace("message received {} bytes",
                                      data->current_ws_buf.size());
         std::size_t sent;
         curl_ws_send(handle, nullptr, 0, &sent, 0, CURLWS_PONG);
@@ -187,10 +188,16 @@ void recv(std::shared_ptr<Internal::ClientData> data) {
 }
 
 void send(Internal::ClientData *data, const std::string &msg) {
-    data->logger_internal->trace("sending message");
+    data->logger_internal->trace("sending message {} bytes", msg.size());
     std::size_t sent;
     CURL *handle = static_cast<CURL *>(data->current_curl_handle);
-    curl_ws_send(handle, msg.c_str(), msg.size(), &sent, 0, CURLWS_BINARY);
+    auto ret = curl_ws_send(handle, msg.c_str(), msg.size(), &sent, 0, CURLWS_BINARY);
+    if(ret != CURLE_OK){
+        data->logger_internal->error("error sending message {}", static_cast<int>(ret));
+    }
+    if(sent != msg.size()){
+        data->logger_internal->error("failed to send message (sent = {} bytes)", sent);
+    }
     // data->logger_internal->trace("sending done");
 }
 void close(Internal::ClientData *data) {

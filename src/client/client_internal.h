@@ -75,6 +75,8 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
      */
     std::atomic<bool> closing = false;
     std::atomic<bool> connected = false;
+    std::atomic<bool> recv_thread_running = false;
+    std::atomic<bool> auto_reconnect = true;
     std::mutex connect_state_m;
     std::condition_variable connect_state_cond;
 
@@ -99,7 +101,7 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
      */
     WEBCFACE_DLL std::string syncDataFirst();
     /*!
-     * \brief sync() 1回分のメッセージをキューに入れる
+     * \brief sync() 1回分のメッセージ
      *
      * value, text, view, log, funcの送信データの前回からの差分が含まれる。
      * 各種reqはsyncとは無関係に送信される
@@ -108,7 +110,8 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
      * (syncDataFirst()内から呼ばれる)
      *
      */
-    WEBCFACE_DLL void syncData(bool is_first);
+    WEBCFACE_DLL std::string syncData(bool is_first);
+    WEBCFACE_DLL std::string syncData(bool is_first, std::stringstream &buffer, int &len);
 
     /*!
      * \brief 送信したいメッセージを入れるキュー

@@ -57,16 +57,19 @@ Internal::ClientData::ClientData(const std::string &name,
     log_store->setRecv(name, std::make_shared<std::vector<LogLine>>());
 }
 void Internal::ClientData::start() {
-    if (message_thread == nullptr) {
+    if (!message_thread) {
         message_thread = std::make_unique<std::thread>(
             Internal::messageThreadMain, shared_from_this());
     }
-    if (recv_thread == nullptr) {
+    if (recv_thread && !recv_thread_running.load()) {
+        recv_thread->join();
+    }
+    if (!recv_thread) {
+        recv_thread_running.store(true);
         recv_thread = std::make_unique<std::thread>(Internal::recvThreadMain,
                                                     shared_from_this());
     }
 }
-
 
 Client::~Client() {
     close();
@@ -75,10 +78,10 @@ Client::~Client() {
 void Client::close() { data->closing.store(true); }
 bool Client::connected() const { return data->connected.load(); }
 void Internal::ClientData::join() {
-    if (message_thread != nullptr && message_thread->joinable()) {
+    if (message_thread && message_thread->joinable()) {
         message_thread->join();
     }
-    if (recv_thread != nullptr && recv_thread->joinable()) {
+    if (recv_thread && recv_thread->joinable()) {
         recv_thread->join();
     }
 }
@@ -122,9 +125,17 @@ void Internal::recvThreadMain(std::shared_ptr<ClientData> data) {
         //     Internal::WebSocket::recv(data);
         // }
         // Internal::WebSocket::close(data);
+        if (!data->auto_reconnect.load()) {
+            break;
+        }
         if (!data->closing.load()) {
             std::this_thread::sleep_for(std::chrono::milliseconds(10));
         }
+    }
+    {
+        std::lock_guard lock(data->connect_state_m);
+        data->recv_thread_running.store(false);
+        data->connect_state_cond.notify_all();
     }
 }
 void Internal::messageThreadMain(std::shared_ptr<Internal::ClientData> data) {
@@ -153,13 +164,21 @@ void Client::start() {
         data->start();
     }
 }
-void Client::waitConnection() {
+bool Client::waitConnection() {
     if (!connected()) {
         data->start();
         std::unique_lock lock(data->connect_state_m);
-        data->connect_state_cond.wait(lock, [this] { return connected(); });
+        data->connect_state_cond.wait(lock, [this] {
+            return connected() || !data->recv_thread_running.load();
+        });
     }
+    return connected();
 }
+void Client::autoReconnect(bool enabled) {
+    data->auto_reconnect.store(enabled);
+}
+bool Client::autoReconnect() const { return data->auto_reconnect.load(); }
+
 std::string Internal::ClientData::syncDataFirst() {
     std::lock_guard value_lock(value_store.mtx);
     std::lock_guard text_lock(text_store.mtx);
@@ -232,15 +251,20 @@ std::string Internal::ClientData::syncDataFirst() {
         Message::pack(buffer, len, Message::LogReq{{}, v.first});
     }
 
-    syncData(true);
-
     if (ping_status_req) {
         Message::pack(buffer, len, Message::PingStatusReq{});
     }
 
-    return Message::packDone(buffer, len);
+    return syncData(true, buffer, len);
 }
-void Internal::ClientData::syncData(bool is_first) {
+std::string Internal::ClientData::syncData(bool is_first) {
+    std::stringstream buffer;
+    int len = 0;
+    return syncData(is_first, buffer, len);
+}
+std::string Internal::ClientData::syncData(bool is_first,
+                                           std::stringstream &buffer,
+                                           int &len) {
     std::lock_guard value_lock(value_store.mtx);
     std::lock_guard text_lock(text_store.mtx);
     std::lock_guard view_lock(view_store.mtx);
@@ -250,9 +274,6 @@ void Internal::ClientData::syncData(bool is_first) {
     std::lock_guard canvas3d_lock(canvas3d_store.mtx);
     std::lock_guard canvas2d_lock(canvas2d_store.mtx);
     std::lock_guard log_lock(log_store->mtx);
-
-    std::stringstream buffer;
-    int len = 0;
 
     Message::pack(buffer, len, Message::Sync{});
 
@@ -326,11 +347,11 @@ void Internal::ClientData::syncData(bool is_first) {
         }
     }
 
-    message_queue->push(Message::packDone(buffer, len));
+    return Message::packDone(buffer, len);
 }
 void Client::sync() {
     start();
-    data->syncData(false);
+    data->message_queue->push(data->syncData(false));
     while (auto func_sync = data->func_sync_queue.pop()) {
         (*func_sync)->sync();
     }
