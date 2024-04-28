@@ -89,12 +89,12 @@ class WEBCFACE_DLL Client : public Member {
     /*!
      * \brief サーバーへの接続を開始し、成功するまで待機する。
      * \since ver1.2
-     * ver1.12以降: 接続が成功したかどうか(connected()の値)を返す。
-     * autoReconnect がfalseの場合は接続失敗でfalseを返すこともある。
+     * ver1.12以降: autoReconnect が false
+     * の場合は1回目の接続のみ待機し、失敗しても再接続せずreturnする。
      *
      * \sa start()
      */
-    bool waitConnection();
+    void waitConnection();
 
     /*!
      * \brief 送信用にセットしたデータをすべて送信キューに入れる。

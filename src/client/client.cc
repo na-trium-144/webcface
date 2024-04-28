@@ -161,7 +161,7 @@ void Client::start() {
         data->start();
     }
 }
-bool Client::waitConnection() {
+void Client::waitConnection() {
     if (!connected()) {
         data->start();
         std::unique_lock lock(data->connect_state_m);
@@ -169,7 +169,6 @@ bool Client::waitConnection() {
             return connected() || !data->recv_thread_running.load();
         });
     }
-    return connected();
 }
 void Client::autoReconnect(bool enabled) {
     data->auto_reconnect.store(enabled);
