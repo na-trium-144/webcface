@@ -27,9 +27,9 @@ Client::Client(const std::string &name,
 Internal::ClientData::ClientData(const std::string &name,
                                  const std::string &host, int port)
     : std::enable_shared_from_this<ClientData>(), self_member_name(name),
-      host(host), port(port), curl_handles({nullptr, nullptr, nullptr}),
-      current_curl_handle(nullptr), current_curl_closed(false),
-      current_ws_buf(),
+      host(host), port(port), current_curl_handle(nullptr),
+      current_curl_success(false), current_curl_closed(false),
+      current_curl_path(), current_ws_buf(),
       message_queue(std::make_shared<Common::Queue<std::string>>()),
       value_store(name), text_store(name), func_store(name), view_store(name),
       image_store(name), robot_model_store(name), canvas3d_store(name),
@@ -116,12 +116,12 @@ void Internal::ClientData::pingStatusReq() {
 
 void Internal::recvThreadMain(std::shared_ptr<ClientData> data) {
     while (!data->closing.load() && data->port > 0) {
-        Internal::WebSocket::init(data);
-        while (data->current_curl_handle && !data->current_curl_closed &&
-               !data->closing.load()) {
-            Internal::WebSocket::recv(data);
-        }
-        Internal::WebSocket::close(data);
+        Internal::WebSocket::init(data, true);
+        // while (data->current_curl_handle && !data->current_curl_closed &&
+        //        !data->closing.load()) {
+        //     Internal::WebSocket::recv(data);
+        // }
+        // Internal::WebSocket::close(data);
         if (!data->closing.load()) {
             std::this_thread::sleep_for(std::chrono::milliseconds(10));
         }
@@ -136,13 +136,18 @@ void Internal::messageThreadMain(std::shared_ptr<Internal::ClientData> data) {
                 lock, std::chrono::milliseconds(10),
                 [&] { return data->connected.load() || data->closing.load(); });
             if (data->connected.load()) {
-                Internal::WebSocket::send(data, *msg);
+                Internal::WebSocket::send(data.get(), *msg);
                 break;
             }
         }
     }
+    {
+        std::unique_lock lock(data->connect_state_m);
+        if (data->connected.load()) {
+            Internal::WebSocket::close(data.get());
+        }
+    }
 }
-
 void Client::start() {
     if (!connected()) {
         data->start();

@@ -42,6 +42,7 @@ DummyServer::DummyServer(bool use_unix)
               .onopen([&](crow::websocket::connection &conn) {
                   connPtr = &conn;
                   dummy_logger->info("ws_open");
+                  conn.send_binary("");
               })
               .onclose([&](crow::websocket::connection &, const std::string &) {
                   connPtr = nullptr;

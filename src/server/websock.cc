@@ -143,6 +143,7 @@ Server::Server(int port, const spdlog::sink_ptr &sink,
             .onopen([this, sink, level](crow::websocket::connection &conn) {
                 std::lock_guard lock(server_mtx);
                 store->newClient(&conn, conn.get_remote_ip(), sink, level);
+                conn.send_binary("");
             })
             .onclose([this](crow::websocket::connection &conn,
                             const std::string & /*reason*/) {

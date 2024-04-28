@@ -78,7 +78,7 @@ DummyClient::DummyClient(bool use_unix)
                           buf_s.clear();
                       }
                   }
-                  if (ret != CURLE_AGAIN) {
+                  if (ret != CURLE_AGAIN && ret != CURLE_OK) {
                       dummy_logger->debug("connection closed {}",
                                           static_cast<int>(ret));
                       break;
