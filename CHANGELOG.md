@@ -1,3 +1,9 @@
+## [1.11.1] - 2024-04-30
+### Added
+* Client::autoReconnect() (#254)
+### Fixed
+* clientがwebsocket通信をするスレッドがCPUを100%使っていた問題を改善 (#254)
+
 ## [1.11.0] - 2024-04-26
 ### Added
 * Ubuntu24.04ビルドのReleaseを追加 (#246)
