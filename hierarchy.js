@@ -269,7 +269,6 @@ var hierarchy =
     [ "Queue< T >", "classwebcface_1_1Common_1_1Queue.html", null ],
     [ "Queue< T >", "classwebcface_1_1Common_1_1Queue.html", null ],
     [ "Queue< std::shared_ptr< webcface::Internal::FuncOnSync > >", "classwebcface_1_1Common_1_1Queue.html", null ],
-    [ "Queue< std::string >", "classwebcface_1_1Common_1_1Queue.html", null ],
     [ "Res< T >", "structwebcface_1_1Message_1_1Res.html", null ],
     [ "RobotJoint", "structwebcface_1_1Common_1_1RobotJoint.html", null ],
     [ "RobotJoint", "structwebcface_1_1Common_1_1RobotJoint.html", null ],

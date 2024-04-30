@@ -12,5 +12,6 @@ var searchData=
   ['client_2eh_9',['client.h',['../c__wcf_2client_8h.html',1,'(Global Namespace)'],['../client_8h.html',1,'(Global Namespace)']]],
   ['client_5finternal_2eh_10',['client_internal.h',['../client__internal_8h.html',1,'']]],
   ['client_5fws_2ecc_11',['client_ws.cc',['../client__ws_8cc.html',1,'']]],
-  ['custom_5flogger_2eh_12',['custom_logger.h',['../custom__logger_8h.html',1,'']]]
+  ['client_5fws_2eh_12',['client_ws.h',['../client__ws_8h.html',1,'']]],
+  ['custom_5flogger_2eh_13',['custom_logger.h',['../custom__logger_8h.html',1,'']]]
 ];

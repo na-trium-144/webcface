@@ -38,5 +38,9 @@ var searchData=
   ['connect_5fstate_5fcond_35',['connect_state_cond',['../structwebcface_1_1Internal_1_1ClientData.html#a64bebc0346ac6b3bf5ca2e2e4dab79af',1,'webcface::Internal::ClientData']]],
   ['connect_5fstate_5fm_36',['connect_state_m',['../structwebcface_1_1Internal_1_1ClientData.html#ad9bcffaf5d29c74433df8e8c9f7f531c',1,'webcface::Internal::ClientData']]],
   ['connected_37',['connected',['../structwebcface_1_1Internal_1_1ClientData.html#a195c6b7fd85d54552d2b1223c2003516',1,'webcface::Internal::ClientData']]],
-  ['crow_5fcustom_5flogger_38',['crow_custom_logger',['../namespacewebcface_1_1Server.html#af04c40d65b7df8a8bbf0c6298240eb7e',1,'webcface::Server']]]
+  ['crow_5fcustom_5flogger_38',['crow_custom_logger',['../namespacewebcface_1_1Server.html#af04c40d65b7df8a8bbf0c6298240eb7e',1,'webcface::Server']]],
+  ['current_5fcurl_5fclosed_39',['current_curl_closed',['../structwebcface_1_1Internal_1_1ClientData.html#ac1c445f25053371cdc50a66b36ef8a55',1,'webcface::Internal::ClientData']]],
+  ['current_5fcurl_5fhandle_40',['current_curl_handle',['../structwebcface_1_1Internal_1_1ClientData.html#a43fca706caab179cb5698e001d3ce3d1',1,'webcface::Internal::ClientData']]],
+  ['current_5fcurl_5fpath_41',['current_curl_path',['../structwebcface_1_1Internal_1_1ClientData.html#a591e347c290dd1030675c7f56a13ed98',1,'webcface::Internal::ClientData']]],
+  ['current_5fws_5fbuf_42',['current_ws_buf',['../structwebcface_1_1Internal_1_1ClientData.html#a2405d3888727e8b9d81e466db15fa725',1,'webcface::Internal::ClientData']]]
 ];

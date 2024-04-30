@@ -9,10 +9,11 @@ var searchData=
   ['webcface_3a_3afuncwrapper_6',['FuncWrapper',['../namespacewebcface_1_1FuncWrapper.html',1,'webcface']]],
   ['webcface_3a_3ageometries_7',['Geometries',['../namespacewebcface_1_1Components_1_1Geometries.html',1,'webcface']]],
   ['webcface_3a_3ainternal_8',['Internal',['../namespacewebcface_1_1Internal.html',1,'webcface']]],
-  ['webcface_3a_3amessage_9',['Message',['../namespacewebcface_1_1Message.html',1,'webcface']]],
-  ['webcface_3a_3amessage_3a_3amessagekind_10',['MessageKind',['../namespacewebcface_1_1Message_1_1MessageKind.html',1,'webcface::Message']]],
-  ['webcface_3a_3amessage_3a_3apath_11',['Path',['../namespacewebcface_1_1Message_1_1Path.html',1,'webcface::Message']]],
-  ['webcface_3a_3arobotjoints_12',['RobotJoints',['../namespacewebcface_1_1Common_1_1RobotJoints.html',1,'webcface']]],
-  ['webcface_3a_3aserver_13',['Server',['../namespacewebcface_1_1Server.html',1,'webcface']]],
-  ['webcface_3a_3aversion_14',['Version',['../namespacewebcface_1_1Version.html',1,'webcface']]]
+  ['webcface_3a_3ainternal_3a_3awebsocket_9',['WebSocket',['../namespacewebcface_1_1Internal_1_1WebSocket.html',1,'webcface::Internal']]],
+  ['webcface_3a_3amessage_10',['Message',['../namespacewebcface_1_1Message.html',1,'webcface']]],
+  ['webcface_3a_3amessage_3a_3amessagekind_11',['MessageKind',['../namespacewebcface_1_1Message_1_1MessageKind.html',1,'webcface::Message']]],
+  ['webcface_3a_3amessage_3a_3apath_12',['Path',['../namespacewebcface_1_1Message_1_1Path.html',1,'webcface::Message']]],
+  ['webcface_3a_3arobotjoints_13',['RobotJoints',['../namespacewebcface_1_1Common_1_1RobotJoints.html',1,'webcface']]],
+  ['webcface_3a_3aserver_14',['Server',['../namespacewebcface_1_1Server.html',1,'webcface']]],
+  ['webcface_3a_3aversion_15',['Version',['../namespacewebcface_1_1Version.html',1,'webcface']]]
 ];

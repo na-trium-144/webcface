@@ -73,7 +73,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">WebCFace<span id="projectnumber">&#160;1.11.0</span>
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;1.11.1</span>
    </div>
    <div id="projectbrief">Web-based RPC &amp; UI Library</div>
   </td>
@@ -158,30 +158,13 @@ $(document).ready(function(){initNavTree('md_01__client.html',''); initResizable
 </ul>
 </dd></dl>
 <p>WebCFaceのメインとなるクラスです。</p>
-<ul>
-<li><strike>Client オブジェクトを作ると別スレッドでサーバーへの接続を開始します。</strike><ul>
-<li><span class="since-c">1.2</span> <span class="since-js">1.1</span> <span class="since-py"></span> Client オブジェクトを作り、start() を呼ぶことでサーバーへの接続を開始します。<ul>
-<li>(C++, Python のみ) start() の代わりに waitConnection() を使うと接続が完了するまで待機することができます。</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>バックグラウンド(別スレッド)で接続が完了するまでの間はデータの受信などはできません。</li>
-<li>通信が切断された場合は自動で再接続します。</li>
-<li>コンストラクタに指定するのはこのクライアントの名前(Memberの名前)です。<ul>
-<li>同時に接続している他のクライアントと名前が被らないようにしてください。同じ名前で複数のクライアントが接続した場合正常に通信できない場合があります。</li>
-</ul>
-</li>
-<li>デフォルトでは<code>127.0.0.1</code>(そのpc自身)の7530ポートに接続を試みますが、サーバーのポートを変更していたり別のpcに接続する場合はコンストラクタの引数でサーバーのアドレスとポートを指定できます。<ul>
-<li>特にwebブラウザ上でJavaScriptから接続しようとする場合、サーバー側からみたlocalhostではなくブラウザ側からみたlocalhostへ接続しようとするので注意してください (<a href="https://developer.mozilla.org/ja/docs/Web/API/Location/host">location.host</a> などを接続先アドレスに指定する必要があります)</li>
-</ul>
-</li>
-<li><span class="since-c">1.11</span> 接続先のアドレスが<code>127.0.0.1</code>の場合はTCPポートと別にUnixドメインソケットへの接続も試行し、 接続できた場合はUnixドメインソケットの接続を優先して使用します。<ul>
-<li>WSL1上のクライアントは /mnt/c/ProgramData/webcface/ポート番号.sock への接続も試行します。これによりWSL1とWindowsの間ではどちらでサーバーを建ててもどちらのクライアントからも相互に接続できます。</li>
-<li>WSL2ではUnixドメインソケットを使った相互接続はできませんが、WSL2のクライアントは接続先のアドレスが<code>127.0.0.1</code>の場合に限りホストのWindowsのIPアドレスのTCPポートへも接続を試行します。これによりWSL2とWindowsの間でも相互に通信が可能です。</li>
-</ul>
-</li>
-</ul>
+<p><strike>Client オブジェクトを作るとサーバーへの接続を開始します。</strike> <br  />
+ <span class="since-c">1.2</span> <span class="since-js">1.1</span> <span class="since-py"></span> Client オブジェクトを作り、start() を呼ぶことでサーバーへの接続を開始します。</p>
+<p>バックグラウンド(別スレッド)で接続が完了するまでの間はデータの受信などはできません。</p>
+<p>デフォルトでは<code>127.0.0.1</code>(そのpc自身)の7530ポートに接続を試みますが、サーバーのポートを変更していたり別のpcに接続する場合はサーバーのアドレスとポートを指定できます。</p>
+<p>コンストラクタに指定するのはこのクライアントの名前(Memberの名前)です。 同時に接続している他のクライアントと名前が被らないようにしてください。同じ名前で複数のクライアントが接続した場合正常に通信できない場合があります。 (おそらく後に接続したクライアントが優先される?)</p>
+<dl class="section note"><dt>Note</dt><dd>コンストラクタに名前を指定しない、または空文字列の場合、読み取り専用モードになります。 <br  />
+ この場合データを送信することができなくなりますが、名前が被っても正常に通信できるため、同じプログラムを複数起動することができます (WebUIではこの仕様を使っています)</dd></dl>
 <div class="tabbed"></div><div class="tabbed"><ul>
 <li><p class="startli"><b class="tab-title">C++</b> </p><div class="fragment"><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="client_8h.html">webcface/client.h</a>&gt;</span></div>
 <div class="line"><span class="comment">// または #include &lt;webcface/webcface.h&gt; (すべての機能をinclude)</span></div>
@@ -194,9 +177,24 @@ $(document).ready(function(){initNavTree('md_01__client.html',''); initResizable
 <div class="line"><span class="comment">// または wcli.waitConnection();</span></div>
 <div class="ttc" id="aclasswebcface_1_1Client_html"><div class="ttname"><a href="classwebcface_1_1Client.html">webcface::Client</a></div><div class="ttdoc">サーバーに接続するクライアント。</div><div class="ttdef"><b>Definition</b> client.h:23</div></div>
 <div class="ttc" id="aclient_8h_html"><div class="ttname"><a href="client_8h.html">client.h</a></div></div>
-</div><!-- fragment --><p> 接続できているかどうかは <code>wcli.connected()</code> で取得できます。</p>
-<dl class="section note"><dt>Note</dt><dd>Clientはstart()時に2つのスレッド(std::thread)を建てます。 1つはWebSocketの送受信処理用で、送信用キューにあるメッセージを送信し、受信したら受信用キューに入れます。 もう1つは受信したメッセージをパースしてコールバックを呼んだりといった処理をします。 <br  />
- またCallメッセージ(Func呼び出しのメッセージ)を受信したときと、自分自身のFuncに対してrunAsync()を呼び出したときは、その呼び出し1回ごとに新しいスレッドを建てその中で関数を実行します。</dd></dl>
+</div><!-- fragment --><dl class="section note"><dt>Note</dt><dd><ul>
+<li><code>start()</code> の代わりに <code>waitConnection()</code> を使うと接続が完了するまで待機することができます。</li>
+<li>接続できているかどうかは <code>wcli.connected()</code> で取得できます。</li>
+<li>通信が切断された場合は自動で再接続します。<ul>
+<li><span class="since-c">1.11.1</span> <code>autoReconnect(false)</code>をすると自動で再接続しなくなります。 その場合<code>waitConnection()</code>は1度だけ接続を試行し失敗してもreturnするという挙動になります。</li>
+</ul>
+</li>
+<li><span class="since-c">1.11</span> 接続先のアドレスが<code>127.0.0.1</code>の場合はTCPポートと別にUnixドメインソケットへの接続も試行し、 接続できた場合はUnixドメインソケットの接続を優先して使用します。<ul>
+<li>WSL1上のクライアントは <code>/mnt/c/ProgramData/webcface/ポート番号.sock</code> への接続も試行します。これによりWSL1とWindowsの間ではどちらでサーバーを建ててもどちらのクライアントからも相互に接続できます。</li>
+</ul>
+</li>
+<li><span class="since-c">1.11</span> WSL2ではUnixドメインソケットを使った相互接続はできませんが、WSL2のクライアントは接続先のアドレスが<code>127.0.0.1</code>の場合に限りホストのWindowsのIPアドレスのTCPポートへも接続を試行します。これによりWSL2とWindowsの間でも相互に通信が可能です。</li>
+<li>Clientはstart()時に2つのスレッド(std::thread)を建てます。 1つはWebSocketの送受信処理用で、送信用キューにあるメッセージを送信し、受信したら受信用キューに入れます。 もう1つは受信したメッセージをパースしてコールバックを呼んだりといった処理をします。<ul>
+<li>Callメッセージ(Func呼び出しのメッセージ)を受信したときと、自分自身のFuncに対してrunAsync()を呼び出したときは、その呼び出し1回ごとに新しいスレッドを建てその中で関数を実行します。</li>
+</ul>
+</li>
+</ul>
+</dd></dl>
 </li>
 <li><p class="startli"><b class="tab-title">C</b> </p><div class="fragment"><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="wcf_8h.html">webcface/wcf.h</a>&gt;</span></div>
 <div class="line"> </div>
@@ -206,26 +204,46 @@ $(document).ready(function(){initNavTree('md_01__client.html',''); initResizable
 <div class="ttc" id="ac__wcf_2client_8cc_html_ad84e50d3482bedb7ccfa278bfc00120c"><div class="ttname"><a href="c__wcf_2client_8cc.html#ad84e50d3482bedb7ccfa278bfc00120c">wcfStart</a></div><div class="ttdeci">wcfStatus wcfStart(wcfClient *wcli)</div><div class="ttdoc">接続を開始する</div><div class="ttdef"><b>Definition</b> client.cc:37</div></div>
 <div class="ttc" id="adef__types_8h_html_a11e35bfe0822747dfabcce7f5220016a"><div class="ttname"><a href="def__types_8h.html#a11e35bfe0822747dfabcce7f5220016a">wcfClient</a></div><div class="ttdeci">void wcfClient</div><div class="ttdef"><b>Definition</b> def_types.h:8</div></div>
 <div class="ttc" id="awcf_8h_html"><div class="ttname"><a href="wcf_8h.html">wcf.h</a></div></div>
-</div><!-- fragment --><p> でclientを生成し、接続します。</p>
-<dl class="section note"><dt>Note</dt><dd><span class="since-c">1.7</span> 引数にnullptrを渡した場合空文字列(後述)と同様になります</dd></dl>
-<p>サーバーのアドレスとポートを指定したい場合<code><a class="el" href="c__wcf_2client_8cc.html#a91204ffa8e81e5821926147321aaf101" title="クライアントを初期化する">wcfInit()</a></code>を使います </p><div class="fragment"><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="wcf_8h.html">webcface/wcf.h</a>&gt;</span></div>
+</div><!-- fragment --><p> でclientを生成し、接続します。 <br  />
+ <span class="since-c">1.7</span> 引数にNULLを渡した場合空文字列と同様になります</p>
+<p class="startli">サーバーのアドレスとポートを指定したい場合<code><a class="el" href="c__wcf_2client_8cc.html#a91204ffa8e81e5821926147321aaf101" title="クライアントを初期化する">wcfInit()</a></code>を使います </p><div class="fragment"><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="wcf_8h.html">webcface/wcf.h</a>&gt;</span></div>
 <div class="line"> </div>
 <div class="line"><a class="code hl_typedef" href="def__types_8h.html#a11e35bfe0822747dfabcce7f5220016a">wcfClient</a> *wcli = <a class="code hl_function" href="c__wcf_2client_8cc.html#a91204ffa8e81e5821926147321aaf101">wcfInit</a>(<span class="stringliteral">&quot;sample&quot;</span>, <span class="stringliteral">&quot;192.168.1.1&quot;</span>, 7530);</div>
 <div class="line"><a class="code hl_function" href="c__wcf_2client_8cc.html#ad84e50d3482bedb7ccfa278bfc00120c">wcfStart</a>(wcli);</div>
 <div class="ttc" id="ac__wcf_2client_8cc_html_a91204ffa8e81e5821926147321aaf101"><div class="ttname"><a href="c__wcf_2client_8cc.html#a91204ffa8e81e5821926147321aaf101">wcfInit</a></div><div class="ttdeci">wcfClient * wcfInit(const char *name, const char *host, int port)</div><div class="ttdoc">クライアントを初期化する</div><div class="ttdef"><b>Definition</b> client.cc:4</div></div>
-</div><!-- fragment --><p> 接続できているかどうかは <code>wcfIsConnected(wcli)</code> で取得できます。</p>
-<dl class="section note"><dt>Note</dt><dd>ClientはwcfStart()時に2つのスレッド(std::thread)を建てます。 1つはWebSocketの送受信処理用で、送信用キューにあるメッセージを送信し、受信したら受信用キューに入れます。 もう1つは受信したメッセージをパースしてコールバックを呼んだりといった処理をします。 <br  />
- またCallメッセージ(Func呼び出しのメッセージ)を受信したときと、自分自身のFuncに対してwcfFuncRunAsync()を呼び出したときは、その呼び出し1回ごとに新しいスレッドを建てその中で関数を実行します。</dd></dl>
+</div><!-- fragment --><dl class="section note"><dt>Note</dt><dd><ul>
+<li>接続できているかどうかは <code>wcfIsConnected(wcli)</code> で取得できます。</li>
+<li>通信が切断された場合は自動で再接続します。</li>
+<li><span class="since-c">1.11</span> 接続先のアドレスが<code>127.0.0.1</code>の場合(wcfInitDefaultを使用した場合も含む)はTCPポートと別にUnixドメインソケットへの接続も試行し、 接続できた場合はUnixドメインソケットの接続を優先して使用します。<ul>
+<li>WSL1上のクライアントは /mnt/c/ProgramData/webcface/ポート番号.sock への接続も試行します。これによりWSL1とWindowsの間ではどちらでサーバーを建ててもどちらのクライアントからも相互に接続できます。</li>
+</ul>
 </li>
-<li><b class="tab-title">JavaScript</b> <div class="fragment"><div class="line">import { Client } from &quot;webcface&quot;;</div>
+<li><span class="since-c">1.11</span> WSL2ではUnixドメインソケットを使った相互接続はできませんが、WSL2のクライアントは接続先のアドレスが<code>127.0.0.1</code>の場合に限りホストのWindowsのIPアドレスのTCPポートへも接続を試行します。これによりWSL2とWindowsの間でも相互に通信が可能です。</li>
+<li>ClientはwcfStart()時に2つのスレッド(std::thread)を建てます。 1つはWebSocketの送受信処理用で、送信用キューにあるメッセージを送信し、受信したら受信用キューに入れます。 もう1つは受信したメッセージをパースしてコールバックを呼んだりといった処理をします。<ul>
+<li>Callメッセージ(Func呼び出しのメッセージ)を受信したときと、自分自身のFuncに対してwcfFuncRunAsync()を呼び出したときは、その呼び出し1回ごとに新しいスレッドを建てその中で関数を実行します。</li>
+</ul>
+</li>
+</ul>
+</dd></dl>
+</li>
+<li><p class="startli"><b class="tab-title">JavaScript</b> </p><div class="fragment"><div class="line">import { Client } from &quot;webcface&quot;;</div>
 <div class="line"> </div>
 <div class="line">const wcli = Client(&quot;sample&quot;);</div>
 <div class="line">// アドレスを指定する場合</div>
 <div class="line">// const wcli = Client(&quot;sample&quot;, &quot;192.168.1.1&quot;, 7530);</div>
 <div class="line"> </div>
 <div class="line">wcli.start();</div>
-</div><!-- fragment --> 接続できているかどうかは <code>wcli.connected</code> で取得できます。</li>
-<li><b class="tab-title">Python</b> <div class="fragment"><div class="line"><span class="keyword">import</span> webcface</div>
+</div><!-- fragment --><dl class="section note"><dt>Note</dt><dd><ul>
+<li>接続できているかどうかは <code>wcli.connected</code> で取得できます。</li>
+<li>通信が切断された場合は自動で再接続します。</li>
+</ul>
+</dd></dl>
+<dl class="section warning"><dt>Warning</dt><dd><ul>
+<li>webブラウザ上でJavaScriptから接続しようとする場合、サーバー側からみたlocalhostではなくブラウザ側からみたlocalhostへ接続しようとするので注意してください (<a href="https://developer.mozilla.org/ja/docs/Web/API/Location/host">location.host</a> などを接続先アドレスに指定する必要があります)</li>
+</ul>
+</dd></dl>
+</li>
+<li><p class="startli"><b class="tab-title">Python</b> </p><div class="fragment"><div class="line"><span class="keyword">import</span> webcface</div>
 <div class="line"> </div>
 <div class="line">wcli = <a class="code hl_class" href="classwebcface_1_1Client.html">webcface.Client</a>(<span class="stringliteral">&quot;sample&quot;</span>)</div>
 <div class="line"><span class="comment"># アドレスを指定する場合</span></div>
@@ -233,11 +251,16 @@ $(document).ready(function(){initNavTree('md_01__client.html',''); initResizable
 <div class="line"> </div>
 <div class="line">wcli.start()</div>
 <div class="line"><span class="comment"># または wcli.wait_connection()</span></div>
-</div><!-- fragment --> 接続できているかどうかは <code>wcli.connected</code> で取得できます。</li>
+</div><!-- fragment --><dl class="section note"><dt>Note</dt><dd><ul>
+<li>接続できているかどうかは <code>wcli.connected</code> で取得できます。</li>
+<li><code>start()</code> の代わりに <code>wait_connection()</code> を使うと接続が完了するまで待機することができます。</li>
+<li>通信が切断された場合は自動で再接続します。</li>
 </ul>
-</div><div class="tabbed"></div><dl class="section note"><dt>Note</dt><dd>コンストラクタに名前を指定しない、または空文字列の場合、読み取り専用モードになります。 <br  />
- この場合データを送信することができなくなりますが、同じプログラムを複数起動することができます (WebUIではこの仕様を使っています)</dd></dl>
-<p>クライアントが正常に接続できると、サーバーのログに </p><div class="fragment"><div class="line">[info] Successfully connected and initialized.</div>
+</dd></dl>
+<p><span></span></p>
+</li>
+</ul>
+</div><div class="tabbed"></div><p>クライアントが正常に接続できると、サーバーのログに </p><div class="fragment"><div class="line">[info] Successfully connected and initialized.</div>
 </div><!-- fragment --><p> などと表示されます。 (クライアントの名前を指定しなかった場合は表示されません)</p>
 <p>プログラムを起動できたら、WebUIを開いてみましょう。 そして右上のメニューを開き、Clientの初期化時に指定した名前がそこに表示されていれば正しく通信できています。</p>
 <h1><a class="anchor" id="autotoc_md24"></a>
@@ -268,17 +291,10 @@ sync</h1>
 </div><!-- fragment --></li>
 </ul>
 </div><div class="tabbed"></div><p>sync() をすることでこれ以降の章で扱う各種データを実際に送信します。</p>
-<ul>
-<li>sync()自体は送信処理はせずキューに入れるだけであり、ノンブロッキングです。 メインプログラムの周期実行される場所などで繰り返し呼ぶようにしてください。</li>
-<li><strike>データを受信するだけの場合もサーバーにデータのリクエストをするためsync()が必要になります。</strike><ul>
-<li><span class="since-c">1.2</span> <span class="since-js">1.1</span> <span class="since-py"></span> Funcの呼び出しとデータ受信リクエストの送信は sync() とは非同期に行われるので sync() は不要です。</li>
-</ul>
-</li>
-<li>1msに1回程度の頻度までは動作確認しています。<ul>
-<li>それ以上短い周期で sync() を呼ぶとサーバーの処理が間に合わなくなるかもしれません(未検証)</li>
-</ul>
-</li>
-</ul>
+<p>sync()自体は送信処理はせずキューに入れるだけであり、ノンブロッキングです。 メインプログラムの周期実行される場所などで繰り返し呼ぶようにしてください。</p>
+<p><strike>データを受信するだけの場合もサーバーにデータのリクエストをするためsync()が必要になります。</strike> <br  />
+ <span class="since-c">1.2</span> <span class="since-js">1.1</span> <span class="since-py"></span> Funcの呼び出しとデータ受信リクエストの送信は sync() とは非同期に行われるので sync() は不要です。</p>
+<dl class="section warning"><dt>Warning</dt><dd>1msに1回程度の頻度までは動作確認していますが、 それ以上短い周期で sync() を呼ぶとサーバーの処理が間に合わなくなるかもしれません(未検証)</dd></dl>
 <h1><a class="anchor" id="autotoc_md25"></a>
 切断する</h1>
 <div class="tabbed"></div><div class="tabbed"><ul>
@@ -341,7 +357,7 @@ sync</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Apr 26 2024 06:53:30 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Tue Apr 30 2024 09:31:35 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

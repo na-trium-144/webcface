@@ -1,5 +1,11 @@
 var namespacewebcface_1_1Internal =
 [
+    [ "WebSocket", "namespacewebcface_1_1Internal_1_1WebSocket.html", [
+      [ "close", "namespacewebcface_1_1Internal_1_1WebSocket.html#ad3737c69794443fc89b776a4046ed01a", null ],
+      [ "init", "namespacewebcface_1_1Internal_1_1WebSocket.html#a42b6818b5ca3b18f21327256ea07745f", null ],
+      [ "recv", "namespacewebcface_1_1Internal_1_1WebSocket.html#a03b54eec38f4eb9b7bcd2a534595b089", null ],
+      [ "send", "namespacewebcface_1_1Internal_1_1WebSocket.html#aa3a027c06e8d63f8dd0ec8ca96738704", null ]
+    ] ],
     [ "Canvas2DDataBuf", "classwebcface_1_1Internal_1_1Canvas2DDataBuf.html", "classwebcface_1_1Internal_1_1Canvas2DDataBuf" ],
     [ "ClientData", "structwebcface_1_1Internal_1_1ClientData.html", "structwebcface_1_1Internal_1_1ClientData" ],
     [ "DataSetBuffer", "classwebcface_1_1Internal_1_1DataSetBuffer.html", "classwebcface_1_1Internal_1_1DataSetBuffer" ],
@@ -16,7 +22,7 @@ var namespacewebcface_1_1Internal =
     [ "TextData", "namespacewebcface_1_1Internal.html#a112c04e1cb185887034814f635d4ac5f", null ],
     [ "ValueData", "namespacewebcface_1_1Internal.html#aa77c608002e5be9330f91a2dbf5e2ac8", null ],
     [ "ViewData", "namespacewebcface_1_1Internal.html#a82ba3dfe2c2f8fdc2661559f821cc37f", null ],
-    [ "messageThreadMain", "namespacewebcface_1_1Internal.html#abea0ebf8029d1b375bea48dca57b9fa7", null ],
+    [ "messageThreadMain", "namespacewebcface_1_1Internal.html#a39245f8a98495e60216c3c8a1c0e4928", null ],
     [ "recvThreadMain", "namespacewebcface_1_1Internal.html#ab7dcb25feb9553f343aec62dfe9bbbd2", null ],
     [ "shouldSend", "namespacewebcface_1_1Internal.html#aa75afe668d3595431d5d644f1213cba6", null ]
 ];

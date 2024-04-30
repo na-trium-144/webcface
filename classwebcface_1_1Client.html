@@ -73,7 +73,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">WebCFace<span id="projectnumber">&#160;1.11.0</span>
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;1.11.1</span>
    </div>
    <div id="projectbrief">Web-based RPC &amp; UI Library</div>
   </td>
@@ -186,11 +186,17 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a5ae591df94fc66ccb85cbb6565368bca" id="r_a5ae591df94fc66ccb85cbb6565368bca"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Client.html#a5ae591df94fc66ccb85cbb6565368bca">close</a> ()</td></tr>
 <tr class="memdesc:a5ae591df94fc66ccb85cbb6565368bca"><td class="mdescLeft">&#160;</td><td class="mdescRight">接続を切り、今後再接続しない  <br /></td></tr>
 <tr class="separator:a5ae591df94fc66ccb85cbb6565368bca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acd307ea4b7bbb4a8f54b2b14efa04557" id="r_acd307ea4b7bbb4a8f54b2b14efa04557"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Client.html#acd307ea4b7bbb4a8f54b2b14efa04557">autoReconnect</a> (bool enabled)</td></tr>
+<tr class="memdesc:acd307ea4b7bbb4a8f54b2b14efa04557"><td class="mdescLeft">&#160;</td><td class="mdescRight">通信が切断されたときに自動で再試行するかどうかを設定する。  <br /></td></tr>
+<tr class="separator:acd307ea4b7bbb4a8f54b2b14efa04557"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0a814ebcc536bc201002103aaefbe502" id="r_a0a814ebcc536bc201002103aaefbe502"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Client.html#a0a814ebcc536bc201002103aaefbe502">autoReconnect</a> () const</td></tr>
+<tr class="memdesc:a0a814ebcc536bc201002103aaefbe502"><td class="mdescLeft">&#160;</td><td class="mdescRight">通信が切断されたときに自動で再試行するかどうかを取得する。  <br /></td></tr>
+<tr class="separator:a0a814ebcc536bc201002103aaefbe502"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a60de64d75454385b23995437f1d72669" id="r_a60de64d75454385b23995437f1d72669"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Client.html#a60de64d75454385b23995437f1d72669">start</a> ()</td></tr>
-<tr class="memdesc:a60de64d75454385b23995437f1d72669"><td class="mdescLeft">&#160;</td><td class="mdescRight">(ver1.2で追加) サーバーに接続を開始する。  <br /></td></tr>
+<tr class="memdesc:a60de64d75454385b23995437f1d72669"><td class="mdescLeft">&#160;</td><td class="mdescRight">サーバーへの接続を開始する。  <br /></td></tr>
 <tr class="separator:a60de64d75454385b23995437f1d72669"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a806d469a09f6c432330ae1adfdda52a7" id="r_a806d469a09f6c432330ae1adfdda52a7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Client.html#a806d469a09f6c432330ae1adfdda52a7">waitConnection</a> ()</td></tr>
-<tr class="memdesc:a806d469a09f6c432330ae1adfdda52a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">(ver1.2で追加) サーバーに接続が成功するまで待機する。  <br /></td></tr>
+<tr class="memdesc:a806d469a09f6c432330ae1adfdda52a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">サーバーへの接続を開始し、成功するまで待機する。  <br /></td></tr>
 <tr class="separator:a806d469a09f6c432330ae1adfdda52a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad55f80ed3cd8b6c4f247763b747016af" id="r_ad55f80ed3cd8b6c4f247763b747016af"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Client.html#ad55f80ed3cd8b6c4f247763b747016af">sync</a> ()</td></tr>
 <tr class="memdesc:ad55f80ed3cd8b6c4f247763b747016af"><td class="mdescLeft">&#160;</td><td class="mdescRight">送信用にセットしたデータをすべて送信キューに入れる。  <br /></td></tr>
@@ -572,6 +578,48 @@ Private Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a0a814ebcc536bc201002103aaefbe502" name="a0a814ebcc536bc201002103aaefbe502"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0a814ebcc536bc201002103aaefbe502">&#9670;&#160;</a></span>autoReconnect() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool autoReconnect </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>通信が切断されたときに自動で再試行するかどうかを取得する。 </p>
+<dl class="section since"><dt>Since</dt><dd>ver1.12 </dd></dl>
+
+</div>
+</div>
+<a id="acd307ea4b7bbb4a8f54b2b14efa04557" name="acd307ea4b7bbb4a8f54b2b14efa04557"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acd307ea4b7bbb4a8f54b2b14efa04557">&#9670;&#160;</a></span>autoReconnect() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void autoReconnect </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>enabled</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>通信が切断されたときに自動で再試行するかどうかを設定する。 </p>
+<dl class="section since"><dt>Since</dt><dd>ver1.12</dd></dl>
+<p>デフォルトはtrue </p>
+
+</div>
+</div>
 <a id="af9bd15e71b656e996127c88145c582ad" name="af9bd15e71b656e996127c88145c582ad"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af9bd15e71b656e996127c88145c582ad">&#9670;&#160;</a></span>canvas2D()</h2>
 
@@ -1302,7 +1350,8 @@ requires (!std::convertible_to&lt;T, std::string&gt;)</div>
 </div><div class="memdoc">
 
 <p>他のmemberにアクセスする </p>
-<p>(ver1.7から)nameが空の場合 *this を返す </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="classwebcface_1_1Client.html#a2bd9c445e89ab8b794a2430dfc9a2b69" title="サーバーに接続されている他のmemberのリストを得る。">members()</a>, <a class="el" href="classwebcface_1_1Client.html#a006e7ddf32fda5cd9dff47d094a3b621" title="Memberが追加された時のイベント">onMemberEntry()</a> </dd></dl>
+<p>(ver1.7から)nameが空の場合 *this を返す</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classwebcface_1_1Client.html#a2bd9c445e89ab8b794a2430dfc9a2b69" title="サーバーに接続されている他のmemberのリストを得る。">members()</a>, <a class="el" href="classwebcface_1_1Client.html#a006e7ddf32fda5cd9dff47d094a3b621" title="Memberが追加された時のイベント">onMemberEntry()</a> </dd></dl>
 
 </div>
 </div>
@@ -2203,7 +2252,8 @@ template&lt;typename ScopeGuard &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>(ver1.2で追加) サーバーに接続を開始する。 </p>
+<p>サーバーへの接続を開始する。 </p>
+<dl class="section since"><dt>Since</dt><dd>ver1.2 </dd></dl>
 
 </div>
 </div>
@@ -2224,7 +2274,8 @@ template&lt;typename ScopeGuard &gt; </div>
 
 <p>送信用にセットしたデータをすべて送信キューに入れる。 </p>
 <p>実際に送信をするのは別スレッドであり、この関数はブロックしない。</p>
-<p>ver1.2以降: サーバーに接続していない場合、start()を呼び出す。 </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="classwebcface_1_1Client.html#a60de64d75454385b23995437f1d72669" title="(ver1.2で追加) サーバーに接続を開始する。">start()</a> </dd></dl>
+<p>ver1.2以降: サーバーに接続していない場合、start()を呼び出す。</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classwebcface_1_1Client.html#a60de64d75454385b23995437f1d72669" title="サーバーへの接続を開始する。">start()</a> </dd></dl>
 
 </div>
 </div>
@@ -2508,8 +2559,9 @@ template&lt;typename ScopeGuard &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>(ver1.2で追加) サーバーに接続が成功するまで待機する。 </p>
-<p>接続していない場合、start()を呼び出す。 </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="classwebcface_1_1Client.html#a60de64d75454385b23995437f1d72669" title="(ver1.2で追加) サーバーに接続を開始する。">start()</a> </dd></dl>
+<p>サーバーへの接続を開始し、成功するまで待機する。 </p>
+<dl class="section since"><dt>Since</dt><dd>ver1.2 ver1.12以降: autoReconnect が false の場合は1回目の接続のみ待機し、失敗しても再接続せずreturnする。</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classwebcface_1_1Client.html#a60de64d75454385b23995437f1d72669" title="サーバーへの接続を開始する。">start()</a> </dd></dl>
 
 </div>
 </div>
@@ -2618,7 +2670,7 @@ template&lt;typename ScopeGuard &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="classwebcface_1_1Client.html">Client</a></li>
-    <li class="footer">Generated on Fri Apr 26 2024 06:53:30 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Tue Apr 30 2024 09:31:35 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

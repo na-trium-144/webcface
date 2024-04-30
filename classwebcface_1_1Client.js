@@ -5,6 +5,8 @@ var classwebcface_1_1Client =
     [ "Client", "classwebcface_1_1Client.html#ad5267143fbd5195e90399e2fd8d91721", null ],
     [ "Client", "classwebcface_1_1Client.html#ae9552a142c48a931d7874552dc4f138e", null ],
     [ "~Client", "classwebcface_1_1Client.html#a37731a8f5dd5caca4cc2ddb8b556cd6c", null ],
+    [ "autoReconnect", "classwebcface_1_1Client.html#a0a814ebcc536bc201002103aaefbe502", null ],
+    [ "autoReconnect", "classwebcface_1_1Client.html#acd307ea4b7bbb4a8f54b2b14efa04557", null ],
     [ "canvas2D", "classwebcface_1_1Client.html#af9bd15e71b656e996127c88145c582ad", null ],
     [ "canvas2DEntries", "classwebcface_1_1Client.html#a99c1e26ea1fce7fbdbd4f1cb6771141b", null ],
     [ "canvas3D", "classwebcface_1_1Client.html#a5cafb1e36981dec5ffd26873b1b0fa2e", null ],
