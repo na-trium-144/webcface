@@ -309,6 +309,11 @@ class WEBCFACE_DLL InputRef {
     bool operator==(const T &other) const {
         return get() == other;
     }
+    template <typename T>
+        requires std::constructible_from<ValAdaptor, T>
+    bool operator!=(const T &other) const {
+        return get() != other;
+    }
 };
 
 template <typename T>

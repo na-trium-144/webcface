@@ -270,12 +270,19 @@ class ValAdaptor {
             return this->asStringRef() == other.asStringRef();
         }
     }
+    bool operator!=(const ValAdaptor &other) const { return !(*this == other); }
 
     template <typename T>
         requires(std::constructible_from<ValAdaptor, T> &&
                  !std::same_as<ValAdaptor, T>)
     bool operator==(const T &other) const {
         return *this == ValAdaptor(other);
+    }
+    template <typename T>
+        requires(std::constructible_from<ValAdaptor, T> &&
+                 !std::same_as<ValAdaptor, T>)
+    bool operator!=(const T &other) const {
+        return !(*this == other);
     }
 };
 
