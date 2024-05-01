@@ -314,7 +314,7 @@ class WEBCFACE_DLL InputRef {
 template <typename T>
     requires std::constructible_from<ValAdaptor, T>
 bool operator==(const T &other, const InputRef &ref) {
-    return ref == other;
+    return ref.get() == other;
 }
 inline std::ostream &operator<<(std::ostream &os, const InputRef &ref) {
     return os << ref.get();
