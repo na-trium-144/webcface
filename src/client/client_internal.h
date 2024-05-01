@@ -2,6 +2,7 @@
 #include <mutex>
 #include <condition_variable>
 #include <queue>
+#include <array>
 #include <vector>
 #include <string>
 #include <memory>
@@ -35,9 +36,7 @@
 WEBCFACE_NS_BEGIN
 namespace Internal {
 
-WEBCFACE_DLL void messageThreadMain(std::shared_ptr<ClientData> data,
-                                    std::u8string host, int port);
-
+WEBCFACE_DLL void messageThreadMain(std::shared_ptr<ClientData> data);
 WEBCFACE_DLL void recvThreadMain(std::shared_ptr<ClientData> data);
 
 struct ClientData : std::enable_shared_from_this<ClientData> {
@@ -86,14 +85,19 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
 
     std::u8string host;
     int port;
+    std::mutex ws_m;
+    void *current_curl_handle;
+    bool current_curl_closed;
+    std::string current_curl_path;
+    std::string current_ws_buf;
 
     /*!
-     * \brief websocket通信するスレッド
+     * \brief message_queueにたまったメッセージを送信するスレッド
      *
      */
     std::unique_ptr<std::thread> message_thread;
     /*!
-     * \brief recv_queueを処理するスレッド
+     * \brief websocket接続と受信処理をするスレッド
      *
      */
     std::unique_ptr<std::thread> recv_thread;
@@ -104,6 +108,8 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
      */
     std::atomic<bool> closing = false;
     std::atomic<bool> connected = false;
+    std::atomic<bool> recv_thread_running = false;
+    std::atomic<bool> auto_reconnect = true;
     std::mutex connect_state_m;
     std::condition_variable connect_state_cond;
 
@@ -119,16 +125,16 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
     WEBCFACE_DLL void join();
 
     /*!
-     * \brief 初期化時に送信するメッセージをキューに入れる
+     * \brief 初期化時に送信するメッセージ
      *
      * 各種req と syncData(true) の全データが含まれる。
      *
-     * コンストラクタ直後start()前と、切断直後に生成してキューの最初に入れる
+     * ws接続直後に送信される
      *
      */
-    WEBCFACE_DLL void syncDataFirst();
+    WEBCFACE_DLL std::string syncDataFirst();
     /*!
-     * \brief sync() 1回分のメッセージをキューに入れる
+     * \brief sync() 1回分のメッセージ
      *
      * value, text, view, log, funcの送信データの前回からの差分が含まれる。
      * 各種reqはsyncとは無関係に送信される
@@ -137,7 +143,8 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
      * (syncDataFirst()内から呼ばれる)
      *
      */
-    WEBCFACE_DLL void syncData(bool is_first);
+    WEBCFACE_DLL std::string syncData(bool is_first);
+    WEBCFACE_DLL std::string syncData(bool is_first, std::stringstream &buffer, int &len);
 
     /*!
      * \brief 送信したいメッセージを入れるキュー
@@ -146,11 +153,6 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
      *
      */
     std::shared_ptr<Common::Queue<std::string>> message_queue;
-    /*!
-     * \brief wsが受信したメッセージを入れるキュ
-     *
-     */
-    Common::Queue<std::string> recv_queue;
 
     /*!
      * \brief 受信時の処理

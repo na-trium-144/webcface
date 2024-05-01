@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.12)
 
 project(webcface
     LANGUAGES CXX C
-    VERSION 1.10.0
+    VERSION 1.11.1
     HOMEPAGE_URL "https://github.com/na-trium-144/webcface"
     DESCRIPTION "Web-based RPC & UI Library"
 )
@@ -276,8 +276,10 @@ message(STATUS "Fetching crow Source...")
 # asioがない場合find_packageしないようにするため、
 # add_subdirectoryではなくinterfaceライブラリを定義する
 FetchContent_Declare(crow
-    GIT_REPOSITORY https://github.com/CrowCpp/Crow.git
-    GIT_TAG 921ce6f
+    # GIT_REPOSITORY https://github.com/CrowCpp/Crow.git
+    # GIT_TAG 921ce6f
+    GIT_REPOSITORY https://github.com/na-trium-144/Crow.git
+    GIT_TAG unix_socket
     CONFIGURE_COMMAND ""
 )
 FetchContent_GetProperties(crow)
@@ -364,7 +366,8 @@ set(CPP_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 list(APPEND SVR_MAIN_SRC ${CPP_DIR}/server_main.cc)
 list(APPEND WEBCFACE_SRC
     ${CPP_DIR}/message/message.cc
-    ${CPP_DIR}/server/s_client_data.cc
+    ${CPP_DIR}/message/unix_path.cc
+    ${CPP_DIR}/server/member_data.cc
     ${CPP_DIR}/server/store.cc
     ${CPP_DIR}/server/websock.cc
     ${CPP_DIR}/server/dir.cc
@@ -404,6 +407,7 @@ list(APPEND EXAMPLE_SRC
     ${CPP_DIR}/example/canvas3d.cc
     ${CPP_DIR}/example/recv.cc
     ${CPP_DIR}/example/c_example.c
+    ${CPP_DIR}/example/benchmark.cc
 )
 if(WEBCFACE_USE_OPENCV)
     list(APPEND EXAMPLE_SRC

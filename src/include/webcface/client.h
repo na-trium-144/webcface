@@ -84,16 +84,31 @@ class WEBCFACE_DLL Client : public Member {
     void close();
 
     /*!
-     * \brief (ver1.2で追加) サーバーに接続を開始する。
+     * \brief 通信が切断されたときに自動で再試行するかどうかを設定する。
+     * \since ver1.12
      *
+     * デフォルトはtrue
+     *
+     */
+    void autoReconnect(bool enabled);
+    /*!
+     * \brief 通信が切断されたときに自動で再試行するかどうかを取得する。
+     * \since ver1.12
+     */
+    bool autoReconnect() const;
+
+    /*!
+     * \brief サーバーへの接続を開始する。
+     * \since ver1.2
      */
     void start();
     /*!
-     * \brief (ver1.2で追加) サーバーに接続が成功するまで待機する。
+     * \brief サーバーへの接続を開始し、成功するまで待機する。
+     * \since ver1.2
+     * ver1.12以降: autoReconnect が false
+     * の場合は1回目の接続のみ待機し、失敗しても再接続せずreturnする。
      *
-     * 接続していない場合、start()を呼び出す。
      * \sa start()
-     *
      */
     void waitConnection();
 
@@ -103,8 +118,8 @@ class WEBCFACE_DLL Client : public Member {
      * 実際に送信をするのは別スレッドであり、この関数はブロックしない。
      *
      * ver1.2以降: サーバーに接続していない場合、start()を呼び出す。
-     * \sa start()
      *
+     * \sa start()
      */
     void sync();
 
@@ -119,8 +134,8 @@ class WEBCFACE_DLL Client : public Member {
      * \brief 他のmemberにアクセスする
      *
      * (ver1.7から)nameが空の場合 *this を返す
-     * \sa members(), onMemberEntry()
      *
+     * \sa members(), onMemberEntry()
      */
     Member member(std::string_view name) {
         return member(Encoding::initName(name));

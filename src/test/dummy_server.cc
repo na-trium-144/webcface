@@ -5,14 +5,21 @@
 #include "dummy_server.h"
 #include <crow.h>
 #include "../server/custom_logger.h"
+#include "../message/unix_path.h"
+#ifdef _WIN32
+#include <fileapi.h>
+#else
+#include <unistd.h>
+#include <sys/stat.h>
+#endif
 
 using namespace webcface;
 DummyServer::~DummyServer() {
     std::static_pointer_cast<crow::SimpleApp>(server_)->stop();
     t.join();
 }
-DummyServer::DummyServer()
-    : t([this] {
+DummyServer::DummyServer(bool use_unix)
+    : t([this, use_unix] {
           static int sn = 0;
           dummy_logger =
               spdlog::stdout_color_mt("dummy_server_" + std::to_string(sn++));
@@ -33,15 +40,18 @@ DummyServer::DummyServer()
           CROW_WEBSOCKET_ROUTE((*server), "/")
               // route.websocket<std::remove_reference<decltype(*app)>::type>(app.get())
               .onopen([&](crow::websocket::connection &conn) {
+                  std::lock_guard lock(server_m);
                   connPtr = &conn;
                   dummy_logger->info("ws_open");
               })
               .onclose([&](crow::websocket::connection &, const std::string &) {
+                  std::lock_guard lock(server_m);
                   connPtr = nullptr;
                   dummy_logger->info("ws_close");
               })
               .onmessage([&](crow::websocket::connection &,
                              const std::string &data, bool) {
+                  std::lock_guard lock(server_m);
                   dummy_logger->info("ws_message");
                   auto unpacked = Message::unpack(data, dummy_logger);
                   for (const auto &m : unpacked) {
@@ -50,11 +60,18 @@ DummyServer::DummyServer()
                   }
               });
 
-          server->port(17530).run();
+          if (use_unix) {
+              auto unix_path = Message::Path::unixSocketPath(17530);
+              Message::Path::initUnixSocket(unix_path, dummy_logger);
+              server->unix_path(unix_path.string()).run();
+          } else {
+              server->port(17530).run();
+          }
           std::this_thread::sleep_for(std::chrono::milliseconds(10));
       }) {}
 
 void DummyServer::send(std::string msg) {
+    std::lock_guard lock(server_m);
     if (connPtr) {
         dummy_logger->info("send {} bytes", msg.size());
         reinterpret_cast<crow::websocket::connection *>(connPtr)->send_binary(

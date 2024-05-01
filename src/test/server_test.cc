@@ -1,8 +1,8 @@
 #include <gtest/gtest.h>
 #include "../client/client_internal.h"
-#include "../server/websock.h"
+#include <webcface/server.h>
 #include "../server/store.h"
-#include "../server/s_client_data.h"
+#include "../server/member_data.h"
 #include "../message/message.h"
 #include <webcface/common/def.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
@@ -30,15 +30,10 @@ class ServerTest : public ::testing::Test {
   protected:
     void SetUp() override {
         std::cout << "SetUp begin" << std::endl;
-        Server::store.clear();
         auto stderr_sink =
             std::make_shared<spdlog::sinks::stderr_color_sink_mt>();
-        server_thread = std::make_shared<std::thread>(
-            Server::serverRun, 27530, stderr_sink, spdlog::level::trace);
-        wait();
-        dummy_c1 = std::make_shared<DummyClient>();
-        wait();
-        dummy_c2 = std::make_shared<DummyClient>();
+        server = std::make_unique<Server::Server>(27530, stderr_sink,
+                                                  spdlog::level::trace);
         wait();
         std::cout << "SetUp end" << std::endl;
     }
@@ -46,20 +41,35 @@ class ServerTest : public ::testing::Test {
         std::cout << "TearDown begin" << std::endl;
         dummy_c1.reset();
         dummy_c2.reset();
-        Server::serverStop();
-        server_thread->join();
-        server_thread.reset();
+        server.reset();
         std::cout << "TearDown end" << std::endl;
     }
-    std::shared_ptr<std::thread> server_thread;
+    std::unique_ptr<Server::Server> server;
     std::shared_ptr<Internal::ClientData> data_ =
         std::make_shared<Internal::ClientData>("a");
     std::shared_ptr<DummyClient> dummy_c1, dummy_c2;
     int callback_called;
 };
 
-TEST_F(ServerTest, connection) { EXPECT_EQ(Server::store.clients.size(), 2); }
+TEST_F(ServerTest, connection) {
+    dummy_c1 = std::make_shared<DummyClient>();
+    wait();
+    dummy_c2 = std::make_shared<DummyClient>();
+    wait();
+    EXPECT_EQ(server->store->clients.size(), 2);
+}
+TEST_F(ServerTest, unixSocketConnection) {
+    dummy_c1 = std::make_shared<DummyClient>(true);
+    wait();
+    dummy_c2 = std::make_shared<DummyClient>(true);
+    wait();
+    EXPECT_EQ(server->store->clients.size(), 2);
+}
 TEST_F(ServerTest, sync) {
+    dummy_c1 = std::make_shared<DummyClient>();
+    wait();
+    dummy_c2 = std::make_shared<DummyClient>();
+    wait();
     dummy_c1->send(Message::SyncInit{{}, "", 0, "", "", ""});
     wait();
     dummy_c2->send(Message::SyncInit{{}, "c2", 0, "a", "1", ""});
@@ -79,19 +89,25 @@ TEST_F(ServerTest, sync) {
             EXPECT_EQ(obj.ver, WEBCFACE_VERSION);
         },
         [&] { ADD_FAILURE() << "SvrVersion recv failed"; });
-    EXPECT_EQ(Server::store.clients_by_id.at(1)->name, "");
-    EXPECT_EQ(Server::store.clients_by_id.at(2)->name, "c2");
+    ASSERT_TRUE(server->store->clients_by_id.count(1));
+    ASSERT_TRUE(server->store->clients_by_id.count(2));
+    EXPECT_EQ(server->store->clients_by_id.at(1)->name, "");
+    EXPECT_EQ(server->store->clients_by_id.at(2)->name, "c2");
     dummy_c1->recvClear();
 
     // dummy_c2->send(Message::Sync{});
     // wait();
 }
 TEST_F(ServerTest, ping) {
+    dummy_c1 = std::make_shared<DummyClient>();
+    wait();
+    dummy_c2 = std::make_shared<DummyClient>();
+    wait();
     dummy_c1->send(Message::SyncInit{{}, "", 0, "", "", ""});
     wait();
     auto start = std::chrono::steady_clock::now();
-    Server::server_ping_wait.notify_one(); // これで無理やりpingさせる
-    auto s_c1 = Server::store.clients_by_id.at(1);
+    server->server_ping_wait.notify_one(); // これで無理やりpingさせる
+    auto s_c1 = server->store->clients_by_id.at(1);
     wait();
     dummy_c1->recv<Message::Ping>([&](const auto &) {},
                                   [&] { ADD_FAILURE() << "Ping recv failed"; });
@@ -102,7 +118,7 @@ TEST_F(ServerTest, ping) {
         std::chrono::duration_cast<std::chrono::milliseconds>(end - start)
             .count();
     EXPECT_TRUE(s_c1->last_ping_duration.has_value());
-    EXPECT_GE(s_c1->last_ping_duration->count(), 10);
+    EXPECT_GE(s_c1->last_ping_duration->count(), WEBCFACE_TEST_TIMEOUT - 1);
     EXPECT_LE(s_c1->last_ping_duration->count(), dur_max);
 
     // serverがping statusを集計するのは次のping時なのでこの場合0
@@ -114,17 +130,21 @@ TEST_F(ServerTest, ping) {
         [&] { ADD_FAILURE() << "Ping Status recv failed"; });
 
     dummy_c1->recvClear();
-    Server::server_ping_wait.notify_one(); // これで無理やりpingさせる
+    server->server_ping_wait.notify_one(); // これで無理やりpingさせる
     wait();
     dummy_c1->recv<Message::PingStatus>(
         [&](const auto &obj) {
             EXPECT_TRUE(obj.status->count(1));
-            EXPECT_GE(obj.status->at(1), 10);
+            EXPECT_GE(obj.status->at(1), WEBCFACE_TEST_TIMEOUT - 1);
             EXPECT_LE(obj.status->at(1), dur_max);
         },
         [&] { ADD_FAILURE() << "Ping Status recv failed"; });
 }
 TEST_F(ServerTest, entry) {
+    dummy_c1 = std::make_shared<DummyClient>();
+    wait();
+    dummy_c2 = std::make_shared<DummyClient>();
+    wait();
     dummy_c1->send(Message::SyncInit{{}, "c1", 0, "", "", ""});
     dummy_c1->send(
         Message::Value{{}, "a", std::make_shared<std::vector<double>>(1)});
@@ -304,6 +324,10 @@ TEST_F(ServerTest, entry) {
         [&] { ADD_FAILURE() << "Func Info recv failed"; });
 }
 TEST_F(ServerTest, value) {
+    dummy_c1 = std::make_shared<DummyClient>();
+    wait();
+    dummy_c2 = std::make_shared<DummyClient>();
+    wait();
     dummy_c1->send(Message::SyncInit{{}, "c1", 0, "", "", ""});
     dummy_c1->send(Message::Sync{});
     dummy_c1->send(Message::Value{
@@ -346,6 +370,10 @@ TEST_F(ServerTest, value) {
         [&] { ADD_FAILURE() << "Value Res recv failed"; });
 }
 TEST_F(ServerTest, text) {
+    dummy_c1 = std::make_shared<DummyClient>();
+    wait();
+    dummy_c2 = std::make_shared<DummyClient>();
+    wait();
     dummy_c1->send(Message::SyncInit{{}, "c1", 0, "", "", ""});
     dummy_c1->send(Message::Sync{});
     dummy_c1->send(Message::Text{{}, "a", std::make_shared<ValAdaptor>("zzz")});
@@ -381,6 +409,10 @@ TEST_F(ServerTest, text) {
         [&] { ADD_FAILURE() << "Text Res recv failed"; });
 }
 TEST_F(ServerTest, robotModel) {
+    dummy_c1 = std::make_shared<DummyClient>();
+    wait();
+    dummy_c2 = std::make_shared<DummyClient>();
+    wait();
     dummy_c1->send(Message::SyncInit{{}, "c1", 0, "", "", ""});
     dummy_c1->send(Message::Sync{});
     dummy_c1->send(Message::RobotModel{
@@ -428,6 +460,10 @@ TEST_F(ServerTest, robotModel) {
         [&] { ADD_FAILURE() << "RobotModel Res recv failed"; });
 }
 TEST_F(ServerTest, view) {
+    dummy_c1 = std::make_shared<DummyClient>();
+    wait();
+    dummy_c2 = std::make_shared<DummyClient>();
+    wait();
     dummy_c1->send(Message::SyncInit{{}, "c1", 0, "", "", ""});
     dummy_c1->send(Message::Sync{});
     dummy_c1->send(Message::View{
@@ -484,6 +520,10 @@ TEST_F(ServerTest, view) {
         [&] { ADD_FAILURE() << "View Res recv failed"; });
 }
 TEST_F(ServerTest, canvas3d) {
+    dummy_c1 = std::make_shared<DummyClient>();
+    wait();
+    dummy_c2 = std::make_shared<DummyClient>();
+    wait();
     dummy_c1->send(Message::SyncInit{{}, "c1", 0, "", "", ""});
     dummy_c1->send(Message::Sync{});
     dummy_c1->send(Message::Canvas3D{
@@ -535,6 +575,10 @@ TEST_F(ServerTest, canvas3d) {
         [&] { ADD_FAILURE() << "Canvas3D Res recv failed"; });
 }
 TEST_F(ServerTest, canvas2d) {
+    dummy_c1 = std::make_shared<DummyClient>();
+    wait();
+    dummy_c2 = std::make_shared<DummyClient>();
+    wait();
     dummy_c1->send(Message::SyncInit{{}, "c1", 0, "", "", ""});
     dummy_c1->send(Message::Sync{});
     dummy_c1->send(Message::Canvas2D{
@@ -586,6 +630,10 @@ TEST_F(ServerTest, canvas2d) {
         [&] { ADD_FAILURE() << "Canvas2D Res recv failed"; });
 }
 TEST_F(ServerTest, image) {
+    dummy_c1 = std::make_shared<DummyClient>();
+    wait();
+    dummy_c2 = std::make_shared<DummyClient>();
+    wait();
     dummy_c1->send(Message::SyncInit{{}, "c1", 0, "", "", ""});
     auto sendImage = [&] {
         dummy_c1->send(Message::Sync{});
@@ -684,6 +732,7 @@ TEST_F(ServerTest, image) {
     wait();
     wait();
     wait();
+    wait();
     dummy_c2->recv<Message::Sync>([&](auto) {},
                                   [&] { ADD_FAILURE() << "Sync recv failed"; });
     dummy_c2->recv<Message::Res<Message::Image>>(
@@ -706,7 +755,11 @@ TEST_F(ServerTest, image) {
 #endif
 }
 TEST_F(ServerTest, log) {
-    Server::store.keep_log = 3;
+    dummy_c1 = std::make_shared<DummyClient>();
+    wait();
+    dummy_c2 = std::make_shared<DummyClient>();
+    wait();
+    server->store->keep_log = 3;
     dummy_c1->send(Message::SyncInit{{}, "c1", 0, "", "", ""});
     dummy_c1->send(Message::Log{
         0, std::make_shared<std::deque<Message::Log::LogLine>>(
@@ -753,6 +806,10 @@ TEST_F(ServerTest, log) {
         [&] { ADD_FAILURE() << "Log recv failed"; });
 }
 TEST_F(ServerTest, call) {
+    dummy_c1 = std::make_shared<DummyClient>();
+    wait();
+    dummy_c2 = std::make_shared<DummyClient>();
+    wait();
     dummy_c1->send(Message::SyncInit{{}, "c1", 0, "", "", ""});
     dummy_c2->send(Message::SyncInit{{}, "c2", 0, "", "", ""});
     wait();

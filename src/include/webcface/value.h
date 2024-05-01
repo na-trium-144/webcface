@@ -98,6 +98,7 @@ class WEBCFACE_DLL Value : protected Field, public EventTarget<Value> {
      * \brief Dictの値を再帰的にセットする
      * \deprecated ver1.11〜
      */
+    template <typename = void>
     [[deprecated]] Value &operator=(const Dict &v) {
         this->set(v);
         return *this;
@@ -152,12 +153,16 @@ class WEBCFACE_DLL Value : protected Field, public EventTarget<Value> {
      * \brief 値を再帰的に取得しDictで返す
      * \deprecated ver1.11〜
      */
+    template <typename = void>
     [[deprecated]] Dict getRecurse() const {
         return tryGetRecurse().value_or(Dict{});
     }
     operator double() const { return get(); }
     operator std::vector<double>() const { return getVec(); }
-    [[deprecated]] operator Dict() const { return getRecurse(); }
+    template <typename = void>
+    [[deprecated]] operator Dict() const {
+        return getRecurse();
+    }
     /*!
      * \brief syncの時刻を返す
      * \deprecated 1.7で Member::syncTime() に変更
@@ -255,8 +260,8 @@ class WEBCFACE_DLL Value : protected Field, public EventTarget<Value> {
      *
      */
     template <typename T>
-        requires std::same_as<T, Value> bool
-    operator==(const T &other) const {
+        requires std::same_as<T, Value>
+    bool operator==(const T &other) const {
         return static_cast<Field>(*this) == static_cast<Field>(other);
     }
     /*!
@@ -265,8 +270,8 @@ class WEBCFACE_DLL Value : protected Field, public EventTarget<Value> {
      *
      */
     template <typename T>
-        requires std::same_as<T, Value> bool
-    operator!=(const T &other) const {
+        requires std::same_as<T, Value>
+    bool operator!=(const T &other) const {
         return !(*this == other);
     }
     bool operator<(const Value &) const = delete;
