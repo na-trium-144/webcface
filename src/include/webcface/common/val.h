@@ -270,21 +270,21 @@ class ValAdaptor {
             return this->asStringRef() == other.asStringRef();
         }
     }
-    bool operator!=(const ValAdaptor &other) const { return !(*this == other); }
 
     template <typename T>
         requires(std::constructible_from<ValAdaptor, T> &&
-                 !std::same_as<ValAdaptor, T>) bool
-    operator==(const T &other) const {
+                 !std::same_as<ValAdaptor, T>)
+    bool operator==(const T &other) const {
         return *this == ValAdaptor(other);
     }
-    template <typename T>
-        requires(std::constructible_from<ValAdaptor, T> &&
-                 !std::same_as<ValAdaptor, T>) bool
-    operator!=(const T &other) const {
-        return !(*this == other);
-    }
 };
+
+template <typename T>
+    requires(std::constructible_from<ValAdaptor, T> &&
+             !std::same_as<ValAdaptor, T>)
+bool operator==(const T &other, const ValAdaptor &val) {
+    return val == ValAdaptor(other);
+}
 
 inline std::ostream &operator<<(std::ostream &os, const ValAdaptor &a) {
     return os << static_cast<std::string>(a);

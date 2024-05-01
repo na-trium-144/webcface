@@ -169,8 +169,8 @@ class WEBCFACE_DLL Text : protected Field, public EventTarget<Text> {
      *
      */
     template <typename T>
-        requires std::same_as<T, Text> bool
-    operator==(const T &other) const {
+        requires std::same_as<T, Text>
+    bool operator==(const T &other) const {
         return static_cast<Field>(*this) == static_cast<Field>(other);
     }
     /*!
@@ -179,8 +179,8 @@ class WEBCFACE_DLL Text : protected Field, public EventTarget<Text> {
      *
      */
     template <typename T>
-        requires std::same_as<T, Text> bool
-    operator!=(const T &other) const {
+        requires std::same_as<T, Text>
+    bool operator!=(const T &other) const {
         return !(*this == other);
     }
     bool operator<(const Text &) const = delete;
@@ -305,17 +305,17 @@ class WEBCFACE_DLL InputRef {
     bool asBool() const { return get().asBool(); }
 
     template <typename T>
-        requires std::constructible_from<ValAdaptor, T> bool
-    operator==(const T &other) const {
+        requires std::constructible_from<ValAdaptor, T>
+    bool operator==(const T &other) const {
         return get() == other;
-    }
-    template <typename T>
-        requires std::constructible_from<ValAdaptor, T> bool
-    operator!=(const T &other) const {
-        return get() != other;
     }
 };
 
+template <typename T>
+    requires std::constructible_from<ValAdaptor, T>
+bool operator==(const T &other, const InputRef &ref) {
+    return ref == other;
+}
 inline std::ostream &operator<<(std::ostream &os, const InputRef &ref) {
     return os << ref.get();
 }
