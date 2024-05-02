@@ -200,6 +200,8 @@ var namespacewebcface =
     [ "operator<<", "namespacewebcface_1_1Common.html#a7772b6098dac5df4d543a786d2415f46", null ],
     [ "operator<<", "namespacewebcface.html#adee3d68a70be59fb6cfc97480b935199", null ],
     [ "operator<<", "namespacewebcface_1_1Common.html#acc572ea980d434e6af0ac9f2e80a31cd", null ],
+    [ "operator==", "namespacewebcface.html#a1b8f4f2c7b1ea1149c68523ef2d131e3", null ],
+    [ "operator==", "namespacewebcface_1_1Common.html#add2ce5a4caadd3dd38f09b4e79c636eb", null ],
     [ "plane", "namespacewebcface_1_1Components_1_1Geometries.html#aa25707cc05d2efb06fc117f36986ecb6", null ],
     [ "polygon", "namespacewebcface_1_1Components_1_1Geometries.html#ab71462a4b3c7f94d111654688068b64f", null ],
     [ "prismaticJoint", "namespacewebcface_1_1Common_1_1RobotJoints.html#af91d31e4d0b0bfbad874d554d56c74b7", null ],
