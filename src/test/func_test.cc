@@ -68,6 +68,13 @@ TEST_F(FuncTest, valAdaptor) {
     EXPECT_TRUE(ValAdaptor().empty());
     EXPECT_TRUE(ValAdaptor("").empty());
     EXPECT_TRUE(ValAdaptor(std::string("")).empty());
+
+    EXPECT_TRUE(ValAdaptor(1) == ValAdaptor(1.0));
+    EXPECT_TRUE(ValAdaptor(1) == 1);
+    EXPECT_TRUE(1 == ValAdaptor(1));
+    EXPECT_TRUE(ValAdaptor(1) == "1");
+    EXPECT_TRUE("1" == ValAdaptor(1));
+
 }
 TEST_F(FuncTest, field) {
     EXPECT_EQ(func("a", "b").member().name(), "a");
