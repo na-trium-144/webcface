@@ -1,6 +1,6 @@
 var data__store2_8h =
 [
-    [ "SyncDataStore2< T, ReqT >", "classwebcface_1_1Internal_1_1SyncDataStore2.html", "classwebcface_1_1Internal_1_1SyncDataStore2" ],
+    [ "SyncDataStore2< T, ReqT >", "classInternal_1_1SyncDataStore2.html", "classInternal_1_1SyncDataStore2" ],
     [ "Canvas2DData", "data__store2_8h.html#a19bd08458eaa080b9fb782422e2f907d", null ],
     [ "Canvas3DData", "data__store2_8h.html#a4ca4d08bfc016620de495c6d2a8805cf", null ],
     [ "FuncData", "data__store2_8h.html#ac0d89cc32a3164abf18e9dfafcf15532", null ],

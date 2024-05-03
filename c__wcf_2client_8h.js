@@ -1,11 +1,11 @@
 var c__wcf_2client_8h =
 [
-    [ "wcfClose", "c__wcf_2client_8h.html#a2acd40666e16668cbf282b9aae4dceab", null ],
-    [ "wcfDestroy", "c__wcf_2client_8h.html#a93f58103344d8d304c88e6fa28a92eb6", null ],
-    [ "wcfInit", "c__wcf_2client_8h.html#a91204ffa8e81e5821926147321aaf101", null ],
-    [ "wcfInitDefault", "c__wcf_2client_8h.html#a4ea5df14c6f1a58b4590f9269abf82bb", null ],
-    [ "wcfIsConnected", "c__wcf_2client_8h.html#a4cc00dcdf452ec749e5e8f0e73158b57", null ],
-    [ "wcfIsValid", "c__wcf_2client_8h.html#ab9d51c692b17a6d3376494d8da0dbf40", null ],
-    [ "wcfStart", "c__wcf_2client_8h.html#ad84e50d3482bedb7ccfa278bfc00120c", null ],
-    [ "wcfSync", "c__wcf_2client_8h.html#ad675449898eb92ab9461d31fe88b4896", null ]
+    [ "wcfClose", "c__wcf_2client_8h.html#a71fe2442a1430e186c5472bb7fd1c777", null ],
+    [ "wcfDestroy", "c__wcf_2client_8h.html#ad718e39b24d164ac546f62d2ba8cc8c7", null ],
+    [ "wcfInit", "c__wcf_2client_8h.html#a1e432da0ef768173c76eb0626bd9fe22", null ],
+    [ "wcfInitDefault", "c__wcf_2client_8h.html#a5f0d2862646d9f80f9869cafbae54548", null ],
+    [ "wcfIsConnected", "c__wcf_2client_8h.html#aebf9fd327b85ed976ba901091913d7da", null ],
+    [ "wcfIsValid", "c__wcf_2client_8h.html#ac340676cdaa0f7f922275afe96ac601b", null ],
+    [ "wcfStart", "c__wcf_2client_8h.html#ae794b3a6c4cd9c429809a652df71181f", null ],
+    [ "wcfSync", "c__wcf_2client_8h.html#ac2acd5b061255bf6a2f9ff3d2d0b4567", null ]
 ];

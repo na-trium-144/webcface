@@ -11,7 +11,7 @@
 <!-- Node0 -->
 <g id="Node000000" class="node">
 <title>Node0</title>
-<g id="a_Node000000"><a xlink:href="structwebcface_1_1Common_1_1FuncCall.html" target="_top" xlink:title="関数を呼び出すのに必要なデータ。">
+<g id="a_Node000000"><a xlink:href="structCommon_1_1FuncCall.html" target="_top" xlink:title="関数を呼び出すのに必要なデータ。">
 <polygon fill="white" stroke="#666666" points="109.5,-104.5 51.5,-104.5 51.5,-85.5 109.5,-85.5 109.5,-104.5"/>
 <text text-anchor="middle" x="80.5" y="-92.5" font-family="Helvetica,sans-Serif" font-size="10.00">FuncCall</text>
 </a>
@@ -20,7 +20,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:href="structwebcface_1_1Message_1_1Call.html" target="_top" xlink:title="関数呼び出し (client(caller)&#45;&gt;server&#45;&gt;client(receiver))">
+<g id="a_Node000001"><a xlink:href="structMessage_1_1Call.html" target="_top" xlink:title="関数呼び出し (client(caller)&#45;&gt;server&#45;&gt;client(receiver))">
 <polygon fill="white" stroke="#666666" points="232,-67.5 197,-67.5 197,-48.5 232,-48.5 232,-67.5"/>
 <text text-anchor="middle" x="214.5" y="-55.5" font-family="Helvetica,sans-Serif" font-size="10.00">Call</text>
 </a>
@@ -38,7 +38,7 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="structwebcface_1_1Common_1_1FuncCall.html" target="_top" xlink:title="関数を呼び出すのに必要なデータ。">
+<g id="a_Node000002"><a xlink:href="structCommon_1_1FuncCall.html" target="_top" xlink:title="関数を呼び出すのに必要なデータ。">
 <polygon fill="white" stroke="#666666" points="109.5,-67.5 51.5,-67.5 51.5,-48.5 109.5,-48.5 109.5,-67.5"/>
 <text text-anchor="middle" x="80.5" y="-55.5" font-family="Helvetica,sans-Serif" font-size="10.00">FuncCall</text>
 </a>
@@ -56,7 +56,7 @@
 <!-- Node3 -->
 <g id="Node000003" class="node">
 <title>Node3</title>
-<g id="a_Node000003"><a xlink:href="structwebcface_1_1Message_1_1MessageBase.html" target="_top" xlink:title=" ">
+<g id="a_Node000003"><a xlink:href="structMessage_1_1MessageBase.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="161,-30 0,-30 0,0 161,0 161,-30"/>
 <text text-anchor="start" x="8" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">MessageBase&lt; MessageKind</text>
 <text text-anchor="middle" x="80.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">::call &gt;</text>

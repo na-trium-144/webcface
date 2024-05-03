@@ -73,7 +73,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">WebCFace<span id="projectnumber">&#160;1.11.2</span>
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;1.11.3</span>
    </div>
    <div id="projectbrief">Web-based RPC &amp; UI Library</div>
   </td>
@@ -154,7 +154,7 @@ $(document).ready(function(){initNavTree('md_15__image.html',''); initResizable(
 <div class="textblock"><p><a class="anchor" id="autotoc_md81"></a></p>
 <dl class="section since"><dt>Since</dt><dd><span class="since-c">1.3</span> <span class="since-js">1.2</span> </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><ul>
-<li>C++ <a class="el" href="classwebcface_1_1Image.html" title="(ver1.3から追加) 画像の送受信データを表すクラス">webcface::Image</a> (<code><a class="el" href="image_8h.html">webcface/image.h</a></code>)</li>
+<li>C++ webcface::Image (<code><a class="el" href="image_8h.html">webcface/image.h</a></code>)</li>
 <li>JavaScript <a href="https://na-trium-144.github.io/webcface-js/classes/Image.html">Image</a></li>
 <li>Python 未実装</li>
 </ul>
@@ -166,25 +166,24 @@ $(document).ready(function(){initNavTree('md_15__image.html',''); initResizable(
 </div><!-- fragment --><p> などとするとOpenCVのVideoCaptureでキャプチャできるWebカメラなどの画像をwebcfaceに送信することができます。</p>
 <h1><a class="anchor" id="autotoc_md83"></a>
 送信</h1>
-<p>Client::image からImageオブジェクトを作り、 Image::set() で画像データを代入し、Client::sync()することで送信されます</p>
+<p><a class="el" href="structField.html#ac43a5d0cff75fa531889289e62c023ca">Client::image</a> からImageオブジェクトを作り、 <a class="el" href="classImage.html#a2aaab70a5ff96dbbf004f0952a276dce" title="画像をセットする">Image::set()</a> で画像データを代入し、Client::sync()することで送信されます</p>
 <div class="tabbed"></div><div class="tabbed"><ul>
-<li><b class="tab-title">C++ (with OpenCV)</b> 画像データを表す型として <a class="el" href="namespacewebcface_1_1Common.html#af7ff7d8593c083aca2355bc561bf8804">webcface::ImageFrame</a> があります。 cv::Mat形式 (<code>CV_8UC1</code>,<code>CV_8UC3</code>,<code>CV_8UC4</code> フォーマットのみ) の画像データをImageFrameのコンストラクタに渡すことができます。 <div class="fragment"><div class="line">cv::Mat data;</div>
-<div class="line"><a class="code hl_class" href="classwebcface_1_1Common_1_1ImageWithCV.html">webcface::ImageFrame</a> frame(data, webcface::ImageColorMode::rgb);</div>
-<div class="ttc" id="aclasswebcface_1_1Common_1_1ImageWithCV_html"><div class="ttname"><a href="classwebcface_1_1Common_1_1ImageWithCV.html">webcface::Common::ImageWithCV</a></div><div class="ttdoc">(ver1.3から追加) 画像データ</div><div class="ttdef"><b>Definition</b> image.h:166</div></div>
+<li><b class="tab-title">C++ (with OpenCV)</b> 画像データを表す型として webcface::ImageFrame があります。 cv::Mat形式 (<code>CV_8UC1</code>,<code>CV_8UC3</code>,<code>CV_8UC4</code> フォーマットのみ) の画像データをImageFrameのコンストラクタに渡すことができます。 <div class="fragment"><div class="line">cv::Mat data;</div>
+<div class="line">webcface::ImageFrame frame(data, webcface::ImageColorMode::rgb);</div>
 </div><!-- fragment --> ImageColorModeとしては <code>gray</code>(8bitグレースケール)、<code>rgb</code>(8bit×3)、<code>bgr</code>(8bit×3)、<code>rgba</code>(8bit×4)、<code>bgra</code>(8bit×4) から元の画像データのフォーマットを指定してください。 <dl class="section note"><dt>Note</dt><dd>ImageFrameオブジェクト内部では画像データは<code>shared_ptr&lt;vector&lt;unsigned char&gt;&gt;</code>で保持されます。 <br  />
  ImageFrameのコンストラクタでcv::Mat内部の画像データがすべてコピーされます。 <br  />
  ImageFrameをコピーした場合は画像データが共有されます(コピーされません)。</dd></dl>
 ImageFrameをImageにsetして送信します。 <div class="fragment"><div class="line">wcli.image(<span class="stringliteral">&quot;hoge&quot;</span>).set(frame);</div>
-</div><!-- fragment --> (C++のみ) set() の代わりに代入演算子(Image::operator=)でも同様のことができます。 <div class="fragment"><div class="line">wcli.image(<span class="stringliteral">&quot;hoge&quot;</span>) = frame;</div>
+</div><!-- fragment --> (C++のみ) set() の代わりに代入演算子(<a class="el" href="classImage.html#abce96b6d79ae4c996315206f0a32e944" title="画像をセットする">Image::operator=</a>)でも同様のことができます。 <div class="fragment"><div class="line">wcli.image(<span class="stringliteral">&quot;hoge&quot;</span>) = frame;</div>
 </div><!-- fragment --></li>
-<li><p class="startli"><b class="tab-title">C++</b> 画像データを表す型として <a class="el" href="namespacewebcface_1_1Common.html#af7ff7d8593c083aca2355bc561bf8804">webcface::ImageFrame</a> があります。 生の画像データがあればImageFrameのコンストラクタに渡すことができます。 </p><div class="fragment"><div class="line"><span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> data[640 * 480 * 3]; <span class="comment">/* = {...}; */</span></div>
-<div class="line"><a class="code hl_class" href="classwebcface_1_1Common_1_1ImageWithCV.html">webcface::ImageFrame</a> frame(480, 640, data, webcface::ImageColorMode::rgb); <span class="comment">// 画像サイズは 縦, 横 で指定</span></div>
+<li><p class="startli"><b class="tab-title">C++</b> 画像データを表す型として webcface::ImageFrame があります。 生の画像データがあればImageFrameのコンストラクタに渡すことができます。 </p><div class="fragment"><div class="line"><span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> data[640 * 480 * 3]; <span class="comment">/* = {...}; */</span></div>
+<div class="line">webcface::ImageFrame frame(480, 640, data, webcface::ImageColorMode::rgb); <span class="comment">// 画像サイズは 縦, 横 で指定</span></div>
 </div><!-- fragment --><p> ImageColorModeとしては <code>gray</code>(8bitグレースケール)、<code>rgb</code>(8bit×3)、<code>bgr</code>(8bit×3)、<code>rgba</code>(8bit×4)、<code>bgra</code>(8bit×4) が扱えます。 </p><dl class="section note"><dt>Note</dt><dd>ImageFrameオブジェクト内部では画像データは<code>shared_ptr&lt;vector&lt;unsigned char&gt;&gt;</code>で保持されます。 <br  />
  ImageFrameのコンストラクタでdataの内容がすべてコピーされます。 <br  />
  ImageFrameをコピーした場合は画像データが共有されます(コピーされません)。 </dd></dl>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000002">Todo:</a></b></dt><dd>C++とJavaScriptでImageFrameのコンストラクタのサイズ指定が違うので、そのうち仕様変更をして統一する必要がある</dd></dl>
 <p class="startli">ImageFrameをImageにsetして送信します。 </p><div class="fragment"><div class="line">wcli.image(<span class="stringliteral">&quot;hoge&quot;</span>).set(frame);</div>
-</div><!-- fragment --><p> (C++のみ) set() の代わりに代入演算子(Image::operator=)でも同様のことができます。 </p><div class="fragment"><div class="line">wcli.image(<span class="stringliteral">&quot;hoge&quot;</span>) = frame;</div>
+</div><!-- fragment --><p> (C++のみ) set() の代わりに代入演算子(<a class="el" href="classImage.html#abce96b6d79ae4c996315206f0a32e944" title="画像をセットする">Image::operator=</a>)でも同様のことができます。 </p><div class="fragment"><div class="line">wcli.image(<span class="stringliteral">&quot;hoge&quot;</span>) = frame;</div>
 </div><!-- fragment --></li>
 <li><p class="startli"><b class="tab-title">JavaScript</b> 画像データを表す型として <a href="https://na-trium-144.github.io/webcface-js/classes/ImageFrame.html">ImageFrame</a> があります。 生の画像データがあればImageFrameのコンストラクタに渡すことができます。 </p><div class="fragment"><div class="line">import { ImageFrame, imageColorMode } from &quot;webcface&quot;;</div>
 <div class="line">const data: ArrayBuffer = /* ... */;</div>
@@ -195,10 +194,10 @@ ImageFrameをImageにsetして送信します。 <div class="fragment"><div clas
 </ul>
 </div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md84"></a>
 受信</h1>
-<p>Member::image() でImageクラスのオブジェクトが得られ、 Image::request() で画像のリクエストをした後 Image::tryGet() で受信した画像を取得できます。</p>
+<p><a class="el" href="classMember.html#ac43a5d0cff75fa531889289e62c023ca">Member::image()</a> でImageクラスのオブジェクトが得られ、 <a class="el" href="classImage.html#a07aeebfdc5af719a2f4c15e59d858363">Image::request()</a> で画像のリクエストをした後 <a class="el" href="classImage.html#a87d6c4a499ddf28177d807794b59939e" title="画像を返す">Image::tryGet()</a> で受信した画像を取得できます。</p>
 <p>リクエスト時の引数で画像のサイズとフォーマットを指定でき、その場合サーバー側で変換してから送られます。 <br  />
  また jpeg, png, webp に圧縮した画像をリクエストしたり、フレームレートを指定して画像を受信する頻度を下げることで、 Wi-Fi経由で受信する場合に通信量を減らすことができます。 <br  />
- 詳細は <a class="el" href="classwebcface_1_1Image.html#a07aeebfdc5af719a2f4c15e59d858363">webcface::Image::request()</a> を参照</p>
+ 詳細は webcface::Image::request() を参照</p>
 <p>例えば<code>foo</code>というクライアントの<code>hoge</code>という名前のデータを取得したい場合は次のようにします。</p>
 <div class="tabbed"></div><div class="tabbed"><ul>
 <li><p class="startli"><b class="tab-title">C++ (with OpenCV)</b> </p><div class="fragment"><div class="line">wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).image(<span class="stringliteral">&quot;hoge&quot;</span>).request(); <span class="comment">// 何も指定しない→元画像をそのまま受信</span></div>
@@ -209,18 +208,17 @@ ImageFrameをImageにsetして送信します。 <div class="fragment"><div clas
 <div class="line">        <span class="comment">// ...</span></div>
 <div class="line">    }</div>
 <div class="line">}</div>
-</div><!-- fragment --><p> Image::get() はまだ受信できていない場合std::nulloptの代わりに空のImageFrameを返します。 (ImageFrame::empty() で空かどうかを判別できます) <br  />
+</div><!-- fragment --><p> <a class="el" href="classImage.html#ad414b0ad03b3ba6e4538973e932bcadb" title="画像を返す (データがない場合0x0の画像が返る)">Image::get()</a> はまだ受信できていない場合std::nulloptの代わりに空のImageFrameを返します。 (<a class="el" href="classCommon_1_1ImageBase.html#a644718bb2fb240de962dc3c9a1fdf0dc" title="画像が空かどうかを返す">ImageFrame::empty()</a> で空かどうかを判別できます) <br  />
  ImageをImageFrameにキャストすることでも get() と同様に画像が得られます。 <br  />
  request() を呼ばずに tryGet() や get() した場合、デフォルトのオプションで(元画像のフォーマットで)リクエストされます。</p>
 <p class="startli">受信した画像は cv::Mat に変換して使うことができます。 <br  />
- 圧縮された画像の場合は ImageFrame::data() からバイナリデータを取得できます。</p>
+ 圧縮された画像の場合は <a class="el" href="classCommon_1_1ImageBase.html#a242f6b0ee066e79c281d265da33613bd" title="画像データ">ImageFrame::data()</a> からバイナリデータを取得できます。</p>
 <dl class="section warning"><dt>Warning</dt><dd>ImageFrame::mat() でcv::Mat形式に変換できますが、その場合画像データ本体はImageFrameが保持しているためcv::Mat画像を使う間ImageFrameオブジェクトが破棄されないようにしてください。 (例えば <code>wcli.member("foo").image("hoge").get().mat()</code> はできません) <br  />
- また、Imageを一度変数に入れて使うと、 Image::mat() で直接cv::Matに変換することもできます (この場合データ本体はImageが保持しています) <div class="fragment"><div class="line"><a class="code hl_class" href="classwebcface_1_1Image.html">webcface::Image</a> image = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).image(<span class="stringliteral">&quot;hoge&quot;</span>);</div>
+ また、Imageを一度変数に入れて使うと、 Image::mat() で直接cv::Matに変換することもできます (この場合データ本体はImageが保持しています) <div class="fragment"><div class="line">webcface::Image image = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).image(<span class="stringliteral">&quot;hoge&quot;</span>);</div>
 <div class="line"><span class="keywordflow">while</span>(<span class="keyword">true</span>){</div>
 <div class="line">    cv::Mat data = image.mat(); <span class="comment">// 内部で get() → mat() が呼ばれる</span></div>
 <div class="line">    <span class="comment">// ...</span></div>
 <div class="line">}</div>
-<div class="ttc" id="aclasswebcface_1_1Image_html"><div class="ttname"><a href="classwebcface_1_1Image.html">webcface::Image</a></div><div class="ttdoc">(ver1.3から追加) 画像の送受信データを表すクラス</div><div class="ttdef"><b>Definition</b> image.h:25</div></div>
 </div><!-- fragment --> </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>圧縮された画像が入ったImageFrameをcv::Matに変換すると画像をデコードして返します。</dd></dl>
 </li>
@@ -231,11 +229,11 @@ ImageFrameをImageにsetして送信します。 <div class="fragment"><div clas
 <div class="line">        <span class="comment">//...</span></div>
 <div class="line">    }</div>
 <div class="line">}</div>
-</div><!-- fragment --><p> Image::get() はまだ受信できていない場合std::nulloptの代わりに空のImageFrameを返します。 (ImageFrame::empty() で空かどうかを判別できます) <br  />
+</div><!-- fragment --><p> <a class="el" href="classImage.html#ad414b0ad03b3ba6e4538973e932bcadb" title="画像を返す (データがない場合0x0の画像が返る)">Image::get()</a> はまだ受信できていない場合std::nulloptの代わりに空のImageFrameを返します。 (<a class="el" href="classCommon_1_1ImageBase.html#a644718bb2fb240de962dc3c9a1fdf0dc" title="画像が空かどうかを返す">ImageFrame::empty()</a> で空かどうかを判別できます) <br  />
  ImageをImageFrameにキャストすることでも get() と同様に画像が得られます。 <br  />
  request() を呼ばずに tryGet() や get() した場合、デフォルトのオプションで(元画像のフォーマットで)リクエストされます。</p>
-<p class="startli">受信した画像は ImageFrame::data() から取得できます。また、 <code>ImageFrame::at(y, x, channel)</code> で要素にアクセスすることもできます。 <br  />
- 圧縮された画像の場合 ImageFrame::data() からバイナリデータとして取得できますが、<code>at()</code>での要素アクセスはできません。</p>
+<p class="startli">受信した画像は <a class="el" href="classCommon_1_1ImageBase.html#a242f6b0ee066e79c281d265da33613bd" title="画像データ">ImageFrame::data()</a> から取得できます。また、 <code>ImageFrame::at(y, x, channel)</code> で要素にアクセスすることもできます。 <br  />
+ 圧縮された画像の場合 <a class="el" href="classCommon_1_1ImageBase.html#a242f6b0ee066e79c281d265da33613bd" title="画像データ">ImageFrame::data()</a> からバイナリデータとして取得できますが、<code>at()</code>での要素アクセスはできません。</p>
 </li>
 <li><p class="startli"><b class="tab-title">JavaScript</b> requestのオプションは <a href="https://na-trium-144.github.io/webcface-js/interfaces/ImageReq.html">ImageReq</a> で指定します。 </p><div class="fragment"><div class="line">wcli.member(&quot;foo&quot;).image(&quot;hoge&quot;).request({}); // 何も指定しない→元画像をそのまま受信</div>
 <div class="line">while(true){</div>
@@ -244,26 +242,26 @@ ImageFrameをImageにsetして送信します。 <div class="fragment"><div clas
 <div class="line">        //...</div>
 <div class="line">    }</div>
 <div class="line">}</div>
-</div><!-- fragment --><p> Image::get() はまだ受信できていない場合nullの代わりに空のImageFrameを返します。 <br  />
+</div><!-- fragment --><p> <a class="el" href="classImage.html#ad414b0ad03b3ba6e4538973e932bcadb" title="画像を返す (データがない場合0x0の画像が返る)">Image::get()</a> はまだ受信できていない場合nullの代わりに空のImageFrameを返します。 <br  />
  request() を呼ばずに tryGet() や get() した場合、デフォルトのオプションで(元画像のフォーマットで)リクエストされます。</p>
-<p class="startli">受信した画像は ImageFrame.data から取得できます。 圧縮された画像の場合も ImageFrame.data からバイナリデータとして取得できます。 <br  />
+<p class="startli">受信した画像は <a class="el" href="classCommon_1_1ImageBase.html#a242f6b0ee066e79c281d265da33613bd" title="画像データ">ImageFrame.data</a> から取得できます。 圧縮された画像の場合も <a class="el" href="classCommon_1_1ImageBase.html#a242f6b0ee066e79c281d265da33613bd" title="画像データ">ImageFrame.data</a> からバイナリデータとして取得できます。 <br  />
  また、 ImageFrame.toBase64() でbase64にエンコードすることができます。</p>
 </li>
 </ul>
 </div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md85"></a>
 時刻</h2>
-<p><strike>Image::time()</strike> でその値が送信されたとき(そのMemberがsync()したとき)の時刻が得られます。 <br  />
- <span class="since-c">1.7</span> <span class="since-js">1.6</span> <span class="since-py"></span> Member::syncTime() に変更</p>
+<p><strike><a class="el" href="classImage.html#a3799c65797b21f35329dc284df16a65d" title="syncの時刻を返す">Image::time()</a></strike> でその値が送信されたとき(そのMemberがsync()したとき)の時刻が得られます。 <br  />
+ <span class="since-c">1.7</span> <span class="since-js">1.6</span> <span class="since-py"></span> <a class="el" href="classMember.html#aaace8ffd82d2eb79c72f3411d3311b9b" title="最後のsync()の時刻を返す">Member::syncTime()</a> に変更</p>
 <h2><a class="anchor" id="autotoc_md86"></a>
 Entry</h2>
-<p><strike>Member::images() で</strike> そのMemberが送信しているimageのリストが得られます <br  />
- <span class="since-c">1.6</span> Member::imageEntries() に変更</p>
+<p><strike><a class="el" href="classMember.html#a45ca97bd85fbb26eefa7b5133f3287f4" title="このmemberが公開しているimageのリストを返す。">Member::images()</a> で</strike> そのMemberが送信しているimageのリストが得られます <br  />
+ <span class="since-c">1.6</span> <a class="el" href="classMember.html#aa71834447f8b14aa597bf6add6a33749">Member::imageEntries()</a> に変更</p>
 <p>また、Member::onImageEntry() で新しくデータが追加されたときのコールバックを設定できます</p>
 <p>いずれも使い方は <a class="el" href="md_10__value.html">Value</a> と同様なのでそちらを参照してください</p>
 <h2><a class="anchor" id="autotoc_md87"></a>
 Event</h2>
 <p>受信したデータが変化したときにコールバックを呼び出すことができます。 コールバックを設定することでもその値はリクエストされます。</p>
-<p>また、データが変化したどうかに関わらずそのMemberがsync()したときにコールバックを呼び出したい場合は Member::onSync() が使えます</p>
+<p>また、データが変化したどうかに関わらずそのMemberがsync()したときにコールバックを呼び出したい場合は <a class="el" href="classMember.html#a42807895a59ee6a80ed33d118ce79061" title="Memberがsync()したときのイベント コールバックの型は void(Member)">Member::onSync()</a> が使えます</p>
 <p>使い方は <a class="el" href="md_10__value.html">Value</a> と同様なのでそちらを参照してください</p>
 <div class="section_buttons"></div><div class="section_buttons"><table class="markdownTable">
 <tr class="markdownTableHead">
@@ -277,7 +275,7 @@ Event</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri May 3 2024 10:48:15 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Fri May 3 2024 15:23:11 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

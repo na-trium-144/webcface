@@ -73,7 +73,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">WebCFace<span id="projectnumber">&#160;1.11.2</span>
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;1.11.3</span>
    </div>
    <div id="projectbrief">Web-based RPC &amp; UI Library</div>
   </td>
@@ -151,16 +151,16 @@ $(document).ready(function(){initNavTree('val__adaptor_8h_source.html',''); init
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &lt;msgpack.hpp&gt;</span></div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &lt;string&gt;</span></div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &lt;cstdint&gt;</span></div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &lt;<a class="code" href="def_8h.html">webcface/common/def.h</a>&gt;</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &lt;webcface/common/def.h&gt;</span></div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="keyword">namespace </span>msgpack {</div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>MSGPACK_API_VERSION_NAMESPACE(MSGPACK_DEFAULT_API_NS) {</div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>    <span class="keyword">namespace </span>adaptor {</div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>    <span class="keyword">template</span> &lt;&gt;</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>    <span class="keyword">struct </span>convert&lt;<a class="code hl_namespace" href="namespacewebcface.html">webcface</a>::ValAdaptor&gt; {</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>    <span class="keyword">struct </span>convert&lt;webcface::<a class="code hl_class" href="classCommon_1_1ValAdaptor.html">ValAdaptor</a>&gt; {</div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>        msgpack::object <span class="keyword">const</span> &amp;operator()(msgpack::object <span class="keyword">const</span> &amp;o,</div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>                                          <a class="code hl_class" href="classwebcface_1_1Common_1_1ValAdaptor.html">webcface::ValAdaptor</a> &amp;v)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>                                          webcface::ValAdaptor &amp;v)<span class="keyword"> const </span>{</div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>            <span class="keywordflow">switch</span> (o.type) {</div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>            <span class="keywordflow">case</span> msgpack::type::FLOAT32:</div>
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>            <span class="keywordflow">case</span> msgpack::type::FLOAT64:</div>
@@ -188,11 +188,11 @@ $(document).ready(function(){initNavTree('val__adaptor_8h_source.html',''); init
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>        }</div>
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    };</div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    <span class="keyword">template</span> &lt;&gt;</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    <span class="keyword">struct </span><a class="code hl_function" href="namespacewebcface_1_1Message.html#a36879effdf16e6acdd563b41fb630f35">pack</a>&lt;<a class="code hl_namespace" href="namespacewebcface.html">webcface</a>::ValAdaptor&gt; {</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    <span class="keyword">struct </span><a class="code hl_function" href="namespaceMessage.html#a36879effdf16e6acdd563b41fb630f35">pack</a>&lt;webcface::<a class="code hl_class" href="classCommon_1_1ValAdaptor.html">ValAdaptor</a>&gt; {</div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>        <span class="keyword">template</span> &lt;<span class="keyword">typename</span> Stream&gt;</div>
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>        msgpack::packer&lt;Stream&gt; &amp;operator()(msgpack::packer&lt;Stream&gt; &amp;o,</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>                                            <span class="keyword">const</span> <a class="code hl_class" href="classwebcface_1_1Common_1_1ValAdaptor.html">webcface::ValAdaptor</a> &amp;v) {</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>            <span class="keywordflow">switch</span> (v.<a class="code hl_function" href="classwebcface_1_1Common_1_1ValAdaptor.html#abbfeeae645abbaf39aeb6fb0c8b00007">valType</a>()) {</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>                                            <span class="keyword">const</span> webcface::ValAdaptor &amp;v) {</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>            <span class="keywordflow">switch</span> (v.valType()) {</div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>            <span class="keywordflow">case</span> webcface::ValType::bool_:</div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>                o.pack(<span class="keyword">static_cast&lt;</span><span class="keywordtype">bool</span><span class="keyword">&gt;</span>(v));</div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>                <span class="keywordflow">break</span>;</div>
@@ -213,11 +213,8 @@ $(document).ready(function(){initNavTree('val__adaptor_8h_source.html',''); init
 <div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    } <span class="comment">// namespace adaptor</span></div>
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>}</div>
 <div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>} <span class="comment">// namespace msgpack</span></div>
-<div class="ttc" id="aclasswebcface_1_1Common_1_1ValAdaptor_html"><div class="ttname"><a href="classwebcface_1_1Common_1_1ValAdaptor.html">webcface::ValAdaptor</a></div><div class="ttdoc">数値、文字列などの値を相互変換するクラス</div><div class="ttdef"><b>Definition</b> val.h:80</div></div>
-<div class="ttc" id="aclasswebcface_1_1Common_1_1ValAdaptor_html_abbfeeae645abbaf39aeb6fb0c8b00007"><div class="ttname"><a href="classwebcface_1_1Common_1_1ValAdaptor.html#abbfeeae645abbaf39aeb6fb0c8b00007">webcface::Common::ValAdaptor::valType</a></div><div class="ttdeci">ValType valType() const</div><div class="ttdef"><b>Definition</b> val.h:125</div></div>
-<div class="ttc" id="adef_8h_html"><div class="ttname"><a href="def_8h.html">def.h</a></div></div>
-<div class="ttc" id="anamespacewebcface_1_1Message_html_a36879effdf16e6acdd563b41fb630f35"><div class="ttname"><a href="namespacewebcface_1_1Message.html#a36879effdf16e6acdd563b41fb630f35">webcface::Message::pack</a></div><div class="ttdeci">void pack(std::stringstream &amp;buffer, int &amp;len, const T &amp;obj)</div><div class="ttdoc">メッセージをシリアル化しbufferに追加</div><div class="ttdef"><b>Definition</b> message.h:904</div></div>
-<div class="ttc" id="anamespacewebcface_html"><div class="ttname"><a href="namespacewebcface.html">webcface</a></div><div class="ttdef"><b>Definition</b> c_wcf_internal.h:10</div></div>
+<div class="ttc" id="aclassCommon_1_1ValAdaptor_html"><div class="ttname"><a href="classCommon_1_1ValAdaptor.html">::ValAdaptor</a></div><div class="ttdoc">数値、文字列などの値を相互変換するクラス</div><div class="ttdef"><b>Definition</b> val.h:80</div></div>
+<div class="ttc" id="anamespaceMessage_html_a36879effdf16e6acdd563b41fb630f35"><div class="ttname"><a href="namespaceMessage.html#a36879effdf16e6acdd563b41fb630f35">Message::pack</a></div><div class="ttdeci">void pack(std::stringstream &amp;buffer, int &amp;len, const T &amp;obj)</div><div class="ttdoc">メッセージをシリアル化しbufferに追加</div><div class="ttdef"><b>Definition</b> message.h:904</div></div>
 <div class="ttc" id="aval_8h_html"><div class="ttname"><a href="val_8h.html">val.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
@@ -225,7 +222,7 @@ $(document).ready(function(){initNavTree('val__adaptor_8h_source.html',''); init
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d06cd19e7b0a7bd71ca3f88af4ac0d59.html">message</a></li><li class="navelem"><a class="el" href="val__adaptor_8h.html">val_adaptor.h</a></li>
-    <li class="footer">Generated on Fri May 3 2024 10:48:15 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Fri May 3 2024 15:23:11 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

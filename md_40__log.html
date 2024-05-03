@@ -73,7 +73,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">WebCFace<span id="projectnumber">&#160;1.11.2</span>
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;1.11.3</span>
    </div>
    <div id="projectbrief">Web-based RPC &amp; UI Library</div>
   </td>
@@ -152,7 +152,7 @@ $(document).ready(function(){initNavTree('md_40__log.html',''); initResizable();
 <div class="textblock"><p><a class="anchor" id="autotoc_md124"></a></p>
 <dl class="section since"><dt>Since</dt><dd><span class="since-c"></span> <span class="since-js"></span> <span class="since-py"></span> </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><ul>
-<li>C++ <a class="el" href="classwebcface_1_1Log.html" title="ログの送受信データを表すクラス">webcface::Log</a> (<code><a class="el" href="log_8h.html">webcface/log.h</a></code>: 受信時, <code><a class="el" href="logger_8h.html">webcface/logger.h</a></code>: 送信時)</li>
+<li>C++ webcface::Log (<code><a class="el" href="log_8h.html">webcface/log.h</a></code>: 受信時, <code><a class="el" href="logger_8h.html">webcface/logger.h</a></code>: 送信時)</li>
 <li>JavaScript <a href="https://na-trium-144.github.io/webcface-js/classes/Log.html">Log</a></li>
 <li>Python <a href="https://na-trium-144.github.io/webcface-python/webcface.log.html#webcface.log.Log">webcface.Log</a></li>
 </ul>
@@ -167,11 +167,11 @@ $(document).ready(function(){initNavTree('md_40__log.html',''); initResizable();
 送信</h1>
 <div class="tabbed"></div><div class="tabbed"><ul>
 <li><p class="startli"><b class="tab-title">C++</b> <a href="https://github.com/gabime/spdlog">spdlog</a> ライブラリを利用しています。</p>
-<p class="startli">Client::logger() はwebcfaceとstderrに出力するloggerです。 これを使ってログを出力できます </p><div class="fragment"><div class="line">wcli.logger()-&gt;info(<span class="stringliteral">&quot;this is info&quot;</span>);</div>
+<p class="startli"><a class="el" href="classClient.html#ab8677cf817f7c6112efe1a52f34f53b4" title="webcfaceとstderr_sinkに出力するlogger">Client::logger()</a> はwebcfaceとstderrに出力するloggerです。 これを使ってログを出力できます </p><div class="fragment"><div class="line">wcli.logger()-&gt;info(<span class="stringliteral">&quot;this is info&quot;</span>);</div>
 <div class="line">wcli.logger()-&gt;error(<span class="stringliteral">&quot;this is error, error no = {}&quot;</span>, 123);</div>
 </div><!-- fragment --><p> これと同様に<code>trace</code>, <code>debug</code>, <code>info</code>, <code>warn</code>, <code>error</code>, <code>critical</code>の6段階のログレベルを使うことができます。</p>
 <p class="startli">上の例のようにspdlogではfmtライブラリを使用しており数値などをフォーマットして出力することができます。 詳細は<a href="https://github.com/gabime/spdlog">spdlog</a>, <a href="https://github.com/fmtlib/fmt">fmt</a>を参照してください</p>
-<p class="startli">Client::loggerSink()でログをwebcfaceに送信するsinkを取得できるので、これを他のloggerにセットして使うこともできます。 または Client.logger() の出力先のsinkを変更することもできます。 (詳細はspdlogのドキュメントを読んでください。)</p>
+<p class="startli"><a class="el" href="classClient.html#a1a6b50ffa0e2d23b81e74533ffacc1e7" title="webcfaceに出力するsink">Client::loggerSink()</a>でログをwebcfaceに送信するsinkを取得できるので、これを他のloggerにセットして使うこともできます。 または <a class="el" href="classClient.html#ab8677cf817f7c6112efe1a52f34f53b4" title="webcfaceとstderr_sinkに出力するlogger">Client.logger()</a> の出力先のsinkを変更することもできます。 (詳細はspdlogのドキュメントを読んでください。)</p>
 <p class="startli">spdlogではなくostreamを使いたい場合は </p><div class="fragment"><div class="line">wcli.loggerOStream() &lt;&lt; <span class="stringliteral">&quot;hello&quot;</span> &lt;&lt; std::endl;</div>
 </div><!-- fragment --><p> のように出力したり、 </p><div class="fragment"><div class="line">std::cout.rdbuf(&amp;wcli.loggerStreamBuf());</div>
 <div class="line">std::cout &lt;&lt; <span class="stringliteral">&quot;hello&quot;</span> &lt;&lt; std::endl;</div>
@@ -211,14 +211,14 @@ $(document).ready(function(){initNavTree('md_40__log.html',''); initResizable();
 </ul>
 </div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md127"></a>
 受信</h1>
-<p>Member::log() でLogクラスのオブジェクトが得られ、 Log::tryGet() でデータのリクエストをするとともにログが得られます。</p>
-<p>ログデータは <a class="el" href="structwebcface_1_1Common_1_1LogLine.html">webcface::LogLine</a> (JavaScript <a href="https://na-trium-144.github.io/webcface-js/interfaces/LogLine.html">LogLine</a>, Python <a href="https://na-trium-144.github.io/webcface-python/webcface.log_handler.html#webcface.log_handler.LogLine">webcface.LogLine</a>) のリストとして得られ、 メッセージ、ログレベル、時刻を取得できます。</p>
-<p><span class="since-c">1.1.5</span> <span class="since-js">1.0.4</span> <span class="since-py"></span> Logオブジェクトにはこれまで受信したログデータがすべて含まれますが、 前回からの差分だけが必要な場合は、データの処理後に Log::clear() で受信したログデータをすべて削除することもできます。</p>
+<p><a class="el" href="classMember.html#aa128a053dea8bd032f4fad4a3c051568">Member::log()</a> でLogクラスのオブジェクトが得られ、 <a class="el" href="classLog.html#aadb158fa20765e342d4669e2c69dbc9e" title="ログを取得する">Log::tryGet()</a> でデータのリクエストをするとともにログが得られます。</p>
+<p>ログデータは webcface::LogLine (JavaScript <a href="https://na-trium-144.github.io/webcface-js/interfaces/LogLine.html">LogLine</a>, Python <a href="https://na-trium-144.github.io/webcface-python/webcface.log_handler.html#webcface.log_handler.LogLine">webcface.LogLine</a>) のリストとして得られ、 メッセージ、ログレベル、時刻を取得できます。</p>
+<p><span class="since-c">1.1.5</span> <span class="since-js">1.0.4</span> <span class="since-py"></span> Logオブジェクトにはこれまで受信したログデータがすべて含まれますが、 前回からの差分だけが必要な場合は、データの処理後に <a class="el" href="classLog.html#a90e67f24cf6a9fc1eda7ab5a7fbaa1a6" title="(ver1.1.5で追加) 受信したログをクリアする">Log::clear()</a> で受信したログデータをすべて削除することもできます。</p>
 <dl class="section note"><dt>Note</dt><dd><span class="since-c">1.1.9</span> サーバーは各クライアントのログを1000行まで保持しています。 logの受信リクエストを送った時点から1000行より前のログは取得できません。 serverの起動時のオプションでこの行数は変更できます。(<code>webcface-server -h</code>を参照)</dd></dl>
 <h2><a class="anchor" id="autotoc_md128"></a>
 Event</h2>
 <p>受信したデータが変化したときにコールバックを呼び出すことができます。 コールバックを設定することでもその値はリクエストされます。</p>
-<p>また、データが変化したどうかに関わらずそのMemberがsync()したときにコールバックを呼び出したい場合は Member::onSync() が使えます</p>
+<p>また、データが変化したどうかに関わらずそのMemberがsync()したときにコールバックを呼び出したい場合は <a class="el" href="classMember.html#a42807895a59ee6a80ed33d118ce79061" title="Memberがsync()したときのイベント コールバックの型は void(Member)">Member::onSync()</a> が使えます</p>
 <p>使い方は <a class="el" href="md_10__value.html">Value</a> と同様なのでそちらを参照してください</p>
 <div class="section_buttons"></div><div class="section_buttons"><table class="markdownTable">
 <tr class="markdownTableHead">
@@ -232,7 +232,7 @@ Event</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri May 3 2024 10:48:15 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Fri May 3 2024 15:23:11 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

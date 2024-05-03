@@ -1,38 +1,38 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$structwebcface_1_1Common_1_1Canvas3DComponentBase.html" title=" " alt="" coords="5,5,200,31"/>
-<area shape="rect" id="Node000001" href="$classwebcface_1_1Canvas3DComponent.html" title="Canvas3Dに表示する要素" alt="" coords="270,29,433,55"/>
+<area shape="rect" id="Node000000" href="$structCommon_1_1Canvas3DComponentBase.html" title=" " alt="" coords="5,5,200,31"/>
+<area shape="rect" id="Node000001" href="$classCanvas3DComponent.html" title="Canvas3Dに表示する要素" alt="" coords="270,29,433,55"/>
 <area shape="poly" id="edge7_Node000000_Node000001" title=" " alt="" coords="214,26,270,32,270,37,214,31"/>
-<area shape="rect" id="Node000002" href="$classwebcface_1_1RobotModel.html" title="RobotModelの送受信データを表すクラス" alt="" coords="538,79,638,104"/>
+<area shape="rect" id="Node000002" href="$classRobotModel.html" title="RobotModelの送受信データを表すクラス" alt="" coords="538,79,638,104"/>
 <area shape="poly" id="edge8_Node000001_Node000002" title=" " alt="" coords="427,55,538,78,537,84,425,60"/>
-<area shape="rect" id="Node000030" href="$structwebcface_1_1Common_1_1Canvas3DComponentBase.html" title=" " alt="" coords="5,55,200,80"/>
+<area shape="rect" id="Node000030" href="$structCommon_1_1Canvas3DComponentBase.html" title=" " alt="" coords="5,55,200,80"/>
 <area shape="poly" id="edge9_Node000030_Node000001" title=" " alt="" coords="214,53,270,48,270,53,214,59"/>
-<area shape="rect" id="Node000008" href="$classwebcface_1_1EventTarget.html" title=" " alt="" coords="254,128,449,153"/>
-<area shape="rect" id="Node000007" href="$classwebcface_1_1Canvas2D.html" title="Canvas2Dの送受信データを表すクラス" alt="" coords="544,128,632,153"/>
+<area shape="rect" id="Node000008" href="$classEventTarget.html" title=" " alt="" coords="254,128,449,153"/>
+<area shape="rect" id="Node000007" href="$classCanvas2D.html" title="Canvas2Dの送受信データを表すクラス" alt="" coords="544,128,632,153"/>
 <area shape="poly" id="edge10_Node000008_Node000007" title=" " alt="" coords="463,138,544,138,544,143,463,143"/>
-<area shape="rect" id="Node000010" href="$classwebcface_1_1EventTarget.html" title=" " alt="" coords="254,177,449,203"/>
-<area shape="rect" id="Node000009" href="$classwebcface_1_1Canvas3D.html" title="Canvas3Dの送受信データを表すクラス" alt="" coords="544,177,632,203"/>
+<area shape="rect" id="Node000010" href="$classEventTarget.html" title=" " alt="" coords="254,177,449,203"/>
+<area shape="rect" id="Node000009" href="$classCanvas3D.html" title="Canvas3Dの送受信データを表すクラス" alt="" coords="544,177,632,203"/>
 <area shape="poly" id="edge11_Node000010_Node000009" title=" " alt="" coords="463,187,544,187,544,193,463,193"/>
-<area shape="rect" id="Node000015" href="$classwebcface_1_1EventTarget.html" title=" " alt="" coords="266,227,437,252"/>
-<area shape="rect" id="Node000014" href="$classwebcface_1_1Image.html" title="(ver1.3から追加) 画像の送受信データを表すクラス" alt="" coords="557,227,619,252"/>
+<area shape="rect" id="Node000015" href="$classEventTarget.html" title=" " alt="" coords="266,227,437,252"/>
+<area shape="rect" id="Node000014" href="$classImage.html" title="(ver1.3から追加) 画像の送受信データを表すクラス" alt="" coords="557,227,619,252"/>
 <area shape="poly" id="edge12_Node000015_Node000014" title=" " alt="" coords="450,237,556,237,556,242,450,242"/>
-<area shape="rect" id="Node000017" href="$classwebcface_1_1EventTarget.html" title=" " alt="" coords="275,473,427,499"/>
-<area shape="rect" id="Node000016" href="$classwebcface_1_1Log.html" title="ログの送受信データを表すクラス" alt="" coords="565,473,611,499"/>
+<area shape="rect" id="Node000017" href="$classEventTarget.html" title=" " alt="" coords="275,473,427,499"/>
+<area shape="rect" id="Node000016" href="$classLog.html" title="ログの送受信データを表すクラス" alt="" coords="565,473,611,499"/>
 <area shape="poly" id="edge13_Node000017_Node000016" title=" " alt="" coords="441,483,565,483,565,489,441,489"/>
-<area shape="rect" id="Node000003" href="$classwebcface_1_1EventTarget.html" title=" " alt="" coords="248,79,455,104"/>
+<area shape="rect" id="Node000003" href="$classEventTarget.html" title=" " alt="" coords="248,79,455,104"/>
 <area shape="poly" id="edge14_Node000003_Node000002" title=" " alt="" coords="469,89,538,89,538,94,469,94"/>
-<area shape="rect" id="Node000021" href="$classwebcface_1_1EventTarget.html" title=" " alt="" coords="273,523,429,548"/>
-<area shape="rect" id="Node000020" href="$classwebcface_1_1Text.html" title="文字列の送受信データを表すクラス" alt="" coords="563,523,613,548"/>
+<area shape="rect" id="Node000021" href="$classEventTarget.html" title=" " alt="" coords="273,523,429,548"/>
+<area shape="rect" id="Node000020" href="$classText.html" title="文字列の送受信データを表すクラス" alt="" coords="563,523,613,548"/>
 <area shape="poly" id="edge15_Node000021_Node000020" title=" " alt="" coords="444,533,563,533,563,538,444,538"/>
-<area shape="rect" id="Node000023" href="$classwebcface_1_1EventTarget.html" title=" " alt="" coords="269,572,434,597"/>
-<area shape="rect" id="Node000022" href="$classwebcface_1_1Value.html" title="実数値またはその配列の送受信データを表すクラス" alt="" coords="559,572,617,597"/>
+<area shape="rect" id="Node000023" href="$classEventTarget.html" title=" " alt="" coords="269,572,434,597"/>
+<area shape="rect" id="Node000022" href="$classValue.html" title="実数値またはその配列の送受信データを表すクラス" alt="" coords="559,572,617,597"/>
 <area shape="poly" id="edge16_Node000023_Node000022" title=" " alt="" coords="448,582,559,582,559,587,448,587"/>
-<area shape="rect" id="Node000025" href="$classwebcface_1_1EventTarget.html" title=" " alt="" coords="271,621,432,647"/>
-<area shape="rect" id="Node000024" href="$classwebcface_1_1View.html" title="Viewの送受信データを表すクラス" alt="" coords="561,621,615,647"/>
+<area shape="rect" id="Node000025" href="$classEventTarget.html" title=" " alt="" coords="271,621,432,647"/>
+<area shape="rect" id="Node000024" href="$classView.html" title="Viewの送受信データを表すクラス" alt="" coords="561,621,615,647"/>
 <area shape="poly" id="edge17_Node000025_Node000024" title=" " alt="" coords="446,631,560,631,560,637,446,637"/>
-<area shape="rect" id="Node000027" href="$structwebcface_1_1Common_1_1FieldBase.html" title="メンバ名とデータ名を持つクラス" alt="" coords="60,449,145,475"/>
-<area shape="rect" id="Node000028" href="$structwebcface_1_1Common_1_1FieldBaseComparable.html" title=" " alt="" coords="269,720,433,745"/>
+<area shape="rect" id="Node000027" href="$structCommon_1_1FieldBase.html" title="メンバ名とデータ名を持つクラス" alt="" coords="60,449,145,475"/>
+<area shape="rect" id="Node000028" href="$structCommon_1_1FieldBaseComparable.html" title=" " alt="" coords="269,720,433,745"/>
 <area shape="poly" id="edge18_Node000027_Node000028" title=" " alt="" coords="120,485,194,616,250,707,271,718,268,723,246,711,189,619,115,488"/>
-<area shape="rect" id="Node000004" href="$structwebcface_1_1Field.html" title="ClientDataの参照とメンバ名とデータ名を持つクラス" alt="" coords="325,399,378,424"/>
+<area shape="rect" id="Node000004" href="$structField.html" title="ClientDataの参照とメンバ名とデータ名を持つクラス" alt="" coords="325,399,378,424"/>
 <area shape="poly" id="edge19_Node000027_Node000004" title=" " alt="" coords="158,448,324,414,325,419,160,453"/>
 <area shape="poly" id="edge31_Node000004_Node000002" title=" " alt="" coords="370,386,411,332,452,264,466,222,469,185,476,151,485,133,501,115,518,103,537,95,539,100,520,107,504,119,490,136,481,152,474,186,471,223,457,266,415,335,374,389"/>
 <area shape="poly" id="edge22_Node000004_Node000007" title=" " alt="" coords="369,386,409,331,452,263,465,235,471,211,481,187,501,164,521,152,543,144,544,149,523,156,504,168,485,190,477,212,470,237,457,266,413,334,373,389"/>
@@ -42,21 +42,21 @@
 <area shape="poly" id="edge32_Node000004_Node000020" title=" " alt="" coords="392,424,424,440,456,460,471,473,480,486,489,498,504,509,534,522,564,529,563,535,533,527,501,514,486,501,476,489,467,477,453,464,422,445,390,429"/>
 <area shape="poly" id="edge33_Node000004_Node000022" title=" " alt="" coords="392,421,426,437,457,460,474,487,480,512,487,536,504,559,531,573,559,580,558,585,529,578,501,563,482,538,475,513,469,489,453,464,423,441,390,426"/>
 <area shape="poly" id="edge34_Node000004_Node000024" title=" " alt="" coords="392,420,426,436,457,460,470,480,477,500,480,537,483,573,490,591,504,608,531,624,561,630,560,635,529,629,501,612,486,593,478,575,474,538,472,501,465,483,453,464,423,440,390,425"/>
-<area shape="rect" id="Node000005" href="$classwebcface_1_1AsyncFuncResult.html" title="非同期で実行した関数の実行結果を表す。" alt="" coords="522,276,654,301"/>
+<area shape="rect" id="Node000005" href="$classAsyncFuncResult.html" title="非同期で実行した関数の実行結果を表す。" alt="" coords="522,276,654,301"/>
 <area shape="poly" id="edge20_Node000004_Node000005" title=" " alt="" coords="378,388,433,350,502,312,535,299,537,304,504,316,436,354,381,393"/>
-<area shape="rect" id="Node000006" href="$structwebcface_1_1AsyncFuncResultSetter.html" title="AsyncFuncResultの結果をセットする" alt="" coords="503,325,673,351"/>
+<area shape="rect" id="Node000006" href="$structAsyncFuncResultSetter.html" title="AsyncFuncResultの結果をセットする" alt="" coords="503,325,673,351"/>
 <area shape="poly" id="edge21_Node000004_Node000006" title=" " alt="" coords="390,396,502,361,543,348,545,353,503,366,392,401"/>
-<area shape="rect" id="Node000011" href="$classwebcface_1_1Func.html" title="関数1つを表すクラス" alt="" coords="562,375,614,400"/>
+<area shape="rect" id="Node000011" href="$classFunc.html" title="関数1つを表すクラス" alt="" coords="562,375,614,400"/>
 <area shape="poly" id="edge24_Node000004_Node000011" title=" " alt="" coords="391,405,562,387,562,393,392,410"/>
-<area shape="rect" id="Node000018" href="$classwebcface_1_1Member.html" title="Memberを指すクラス" alt="" coords="550,424,626,449"/>
+<area shape="rect" id="Node000018" href="$classMember.html" title="Memberを指すクラス" alt="" coords="550,424,626,449"/>
 <area shape="poly" id="edge29_Node000004_Node000018" title=" " alt="" coords="392,413,550,430,549,435,392,418"/>
-<area shape="rect" id="Node000012" href="$classwebcface_1_1AnonymousFunc.html" title="名前を指定せず先に関数を登録するFunc" alt="" coords="721,375,851,400"/>
+<area shape="rect" id="Node000012" href="$classAnonymousFunc.html" title="名前を指定せず先に関数を登録するFunc" alt="" coords="721,375,851,400"/>
 <area shape="poly" id="edge25_Node000011_Node000012" title=" " alt="" coords="627,385,721,385,721,390,627,390"/>
-<area shape="rect" id="Node000013" href="$classwebcface_1_1FuncListener.html" title=" " alt="" coords="734,325,838,351"/>
+<area shape="rect" id="Node000013" href="$classFuncListener.html" title=" " alt="" coords="734,325,838,351"/>
 <area shape="poly" id="edge26_Node000011_Node000013" title=" " alt="" coords="626,375,734,348,735,353,628,380"/>
-<area shape="rect" id="Node000019" href="$classwebcface_1_1Client.html" title="サーバーに接続するクライアント。" alt="" coords="756,424,816,449"/>
+<area shape="rect" id="Node000019" href="$classClient.html" title="サーバーに接続するクライアント。" alt="" coords="756,424,816,449"/>
 <area shape="poly" id="edge30_Node000018_Node000019" title=" " alt="" coords="640,434,756,434,756,439,640,439"/>
-<area shape="rect" id="Node000029" href="$structwebcface_1_1Common_1_1FieldBase.html" title="メンバ名とデータ名を持つクラス" alt="" coords="60,647,145,672"/>
+<area shape="rect" id="Node000029" href="$structCommon_1_1FieldBase.html" title="メンバ名とデータ名を持つクラス" alt="" coords="60,647,145,672"/>
 <area shape="poly" id="edge35_Node000029_Node000028" title=" " alt="" coords="151,674,249,706,292,717,291,723,247,711,150,679"/>
 <area shape="poly" id="edge36_Node000029_Node000004" title=" " alt="" coords="115,633,166,551,203,503,246,460,285,435,323,418,326,422,288,439,250,464,207,506,170,554,119,636"/>
 <area shape="rect" id="Node000026" title=" " alt="" coords="313,671,389,696"/>

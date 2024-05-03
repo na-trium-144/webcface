@@ -11,7 +11,7 @@
 <!-- Node0 -->
 <g id="Node000000" class="node">
 <title>Node0</title>
-<g id="a_Node000000"><a xlink:href="classwebcface_1_1Common_1_1ImageBase.html" target="_top" xlink:title="(ver1.3から追加) 画像データ">
+<g id="a_Node000000"><a xlink:href="classCommon_1_1ImageBase.html" target="_top" xlink:title="(ver1.3から追加) 画像データ">
 <polygon fill="white" stroke="#666666" points="116,-104.5 45,-104.5 45,-85.5 116,-85.5 116,-104.5"/>
 <text text-anchor="middle" x="80.5" y="-92.5" font-family="Helvetica,sans-Serif" font-size="10.00">ImageBase</text>
 </a>
@@ -20,9 +20,9 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:href="classwebcface_1_1Common_1_1ImageWithCV.html" target="_top" xlink:title="(ver1.3から追加) 画像データ">
-<polygon fill="white" stroke="#666666" points="282.5,-85.5 199.5,-85.5 199.5,-66.5 282.5,-66.5 282.5,-85.5"/>
-<text text-anchor="middle" x="241" y="-73.5" font-family="Helvetica,sans-Serif" font-size="10.00">ImageWithCV</text>
+<g id="a_Node000001"><a xlink:href="structMessage_1_1Image.html" target="_top" xlink:title=" ">
+<polygon fill="white" stroke="#666666" points="264.5,-104.5 217.5,-104.5 217.5,-85.5 264.5,-85.5 264.5,-104.5"/>
+<text text-anchor="middle" x="241" y="-92.5" font-family="Helvetica,sans-Serif" font-size="10.00">Image</text>
 </a>
 </g>
 </g>
@@ -30,17 +30,17 @@
 <g id="edge51_Node000000_Node000001" class="edge">
 <title>Node0&#45;&gt;Node1</title>
 <g id="a_edge51_Node000000_Node000001"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M126.46,-89.61C149.41,-86.86 177.12,-83.54 199.41,-80.87"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="125.8,-86.16 116.28,-90.83 126.63,-93.12 125.8,-86.16"/>
+<path fill="none" stroke="#63b8ff" d="M126.37,-95C155.93,-95 193.4,-95 217.05,-95"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="126.28,-91.5 116.28,-95 126.28,-98.5 126.28,-91.5"/>
 </a>
 </g>
 </g>
 <!-- Node3 -->
 <g id="Node000003" class="node">
 <title>Node3</title>
-<g id="a_Node000003"><a xlink:href="structwebcface_1_1Message_1_1Image.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="#666666" points="264.5,-48.5 217.5,-48.5 217.5,-29.5 264.5,-29.5 264.5,-48.5"/>
-<text text-anchor="middle" x="241" y="-36.5" font-family="Helvetica,sans-Serif" font-size="10.00">Image</text>
+<g id="a_Node000003"><a xlink:href="structMessage_1_1Res_3_01Image_01_4.html" target="_top" xlink:title=" ">
+<polygon fill="white" stroke="#666666" points="285,-67.5 197,-67.5 197,-48.5 285,-48.5 285,-67.5"/>
+<text text-anchor="middle" x="241" y="-55.5" font-family="Helvetica,sans-Serif" font-size="10.00">Res&lt; Image &gt;</text>
 </a>
 </g>
 </g>
@@ -48,100 +48,73 @@
 <g id="edge52_Node000000_Node000003" class="edge">
 <title>Node0&#45;&gt;Node3</title>
 <g id="a_edge52_Node000000_Node000003"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M126.03,-87.08C137.6,-84.44 149.91,-81.1 161,-77 177.97,-70.73 180.72,-65.88 197,-58 203.61,-54.8 210.89,-51.5 217.55,-48.57"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="125.15,-83.69 116.12,-89.22 126.63,-90.53 125.15,-83.69"/>
-</a>
-</g>
-</g>
-<!-- Node5 -->
-<g id="Node000005" class="node">
-<title>Node5</title>
-<g id="a_Node000005"><a xlink:href="structwebcface_1_1Message_1_1Res_3_01Image_01_4.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="#666666" points="285,-122.5 197,-122.5 197,-103.5 285,-103.5 285,-122.5"/>
-<text text-anchor="middle" x="241" y="-110.5" font-family="Helvetica,sans-Serif" font-size="10.00">Res&lt; Image &gt;</text>
-</a>
-</g>
-</g>
-<!-- Node0&#45;&gt;Node5 -->
-<g id="edge53_Node000000_Node000005" class="edge">
-<title>Node0&#45;&gt;Node5</title>
-<g id="a_edge53_Node000000_Node000005"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M126.41,-100.1C148.48,-102.61 174.97,-105.61 196.81,-108.1"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="126.61,-96.6 116.28,-98.95 125.82,-103.56 126.61,-96.6"/>
+<path fill="none" stroke="#63b8ff" d="M126.45,-84.93C137.73,-82.38 149.82,-79.61 161,-77 173.91,-73.99 187.99,-70.62 200.64,-67.57"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="125.33,-81.6 116.35,-87.21 126.88,-88.42 125.33,-81.6"/>
 </a>
 </g>
 </g>
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="classwebcface_1_1Common_1_1ImageBase.html" target="_top" xlink:title="(ver1.3から追加) 画像データ">
+<g id="a_Node000002"><a xlink:href="classCommon_1_1ImageBase.html" target="_top" xlink:title="(ver1.3から追加) 画像データ">
 <polygon fill="white" stroke="#666666" points="116,-67.5 45,-67.5 45,-48.5 116,-48.5 116,-67.5"/>
 <text text-anchor="middle" x="80.5" y="-55.5" font-family="Helvetica,sans-Serif" font-size="10.00">ImageBase</text>
 </a>
 </g>
 </g>
 <!-- Node2&#45;&gt;Node1 -->
-<g id="edge54_Node000002_Node000001" class="edge">
+<g id="edge53_Node000002_Node000001" class="edge">
 <title>Node2&#45;&gt;Node1</title>
-<g id="a_edge54_Node000002_Node000001"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M126.46,-63.11C149.41,-65.71 177.12,-68.86 199.41,-71.39"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="126.61,-59.6 116.28,-61.95 125.82,-66.56 126.61,-59.6"/>
+<g id="a_edge53_Node000002_Node000001"><a xlink:title=" ">
+<path fill="none" stroke="#63b8ff" d="M126.37,-68.48C155.93,-75.37 193.4,-84.12 217.05,-89.64"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="126.82,-64.98 116.28,-66.12 125.23,-71.8 126.82,-64.98"/>
 </a>
 </g>
 </g>
 <!-- Node2&#45;&gt;Node3 -->
-<g id="edge55_Node000002_Node000003" class="edge">
+<g id="edge54_Node000002_Node000003" class="edge">
 <title>Node2&#45;&gt;Node3</title>
-<g id="a_edge55_Node000002_Node000003"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M126.37,-52.62C155.93,-49.08 193.4,-44.59 217.05,-41.75"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="125.8,-49.16 116.28,-53.83 126.63,-56.12 125.8,-49.16"/>
+<g id="a_edge54_Node000002_Node000003"><a xlink:title=" ">
+<path fill="none" stroke="#63b8ff" d="M126.41,-58C148.48,-58 174.97,-58 196.81,-58"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="126.28,-54.5 116.28,-58 126.28,-61.5 126.28,-54.5"/>
 </a>
 </g>
 </g>
-<!-- Node2&#45;&gt;Node5 -->
-<g id="edge56_Node000002_Node000005" class="edge">
-<title>Node2&#45;&gt;Node5</title>
-<g id="a_edge56_Node000002_Node000005"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M125.96,-66.73C137.53,-69.51 149.86,-72.95 161,-77 177.81,-83.12 180.74,-87.54 197,-95 203.18,-97.83 209.93,-100.75 216.22,-103.38"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="126.58,-63.28 116.05,-64.45 125.01,-70.1 126.58,-63.28"/>
+<!-- Node5 -->
+<g id="Node000005" class="node">
+<title>Node5</title>
+<g id="a_Node000005"><a xlink:href="structMessage_1_1MessageBase.html" target="_top" xlink:title=" ">
+<polygon fill="white" stroke="#666666" points="161,-153 0,-153 0,-123 161,-123 161,-153"/>
+<text text-anchor="start" x="8" y="-141" font-family="Helvetica,sans-Serif" font-size="10.00">MessageBase&lt; MessageKind</text>
+<text text-anchor="middle" x="80.5" y="-130" font-family="Helvetica,sans-Serif" font-size="10.00">::image &gt;</text>
+</a>
+</g>
+</g>
+<!-- Node5&#45;&gt;Node1 -->
+<g id="edge55_Node000005_Node000001" class="edge">
+<title>Node5&#45;&gt;Node1</title>
+<g id="a_edge55_Node000005_Node000001"><a xlink:title=" ">
+<path fill="none" stroke="#63b8ff" d="M146.82,-120.28C171.95,-113.46 199,-106.12 217.45,-101.12"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="145.67,-116.96 136.94,-122.96 147.5,-123.72 145.67,-116.96"/>
 </a>
 </g>
 </g>
 <!-- Node4 -->
 <g id="Node000004" class="node">
 <title>Node4</title>
-<g id="a_Node000004"><a xlink:href="structwebcface_1_1Message_1_1MessageBase.html" target="_top" xlink:title=" ">
+<g id="a_Node000004"><a xlink:href="structMessage_1_1MessageBase.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="161,-30 0,-30 0,0 161,0 161,-30"/>
 <text text-anchor="start" x="8" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">MessageBase&lt; MessageKind</text>
-<text text-anchor="middle" x="80.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">::image &gt;</text>
+<text text-anchor="middle" x="80.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">::image+MessageKind::res &gt;</text>
 </a>
 </g>
 </g>
 <!-- Node4&#45;&gt;Node3 -->
-<g id="edge57_Node000004_Node000003" class="edge">
+<g id="edge56_Node000004_Node000003" class="edge">
 <title>Node4&#45;&gt;Node3</title>
-<g id="a_edge57_Node000004_Node000003"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M171.35,-28.61C188.49,-31.2 204.95,-33.69 217.45,-35.59"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="171.63,-25.11 161.21,-27.07 170.58,-32.03 171.63,-25.11"/>
-</a>
-</g>
-</g>
-<!-- Node6 -->
-<g id="Node000006" class="node">
-<title>Node6</title>
-<g id="a_Node000006"><a xlink:href="structwebcface_1_1Message_1_1MessageBase.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="#666666" points="161,-153 0,-153 0,-123 161,-123 161,-153"/>
-<text text-anchor="start" x="8" y="-141" font-family="Helvetica,sans-Serif" font-size="10.00">MessageBase&lt; MessageKind</text>
-<text text-anchor="middle" x="80.5" y="-130" font-family="Helvetica,sans-Serif" font-size="10.00">::image+MessageKind::res &gt;</text>
-</a>
-</g>
-</g>
-<!-- Node6&#45;&gt;Node5 -->
-<g id="edge58_Node000006_Node000005" class="edge">
-<title>Node6&#45;&gt;Node5</title>
-<g id="a_edge58_Node000006_Node000005"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M171.3,-123.84C180.2,-122.43 188.91,-121.06 196.98,-119.79"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="170.55,-120.41 161.21,-125.43 171.64,-127.33 170.55,-120.41"/>
+<g id="a_edge56_Node000004_Node000003"><a xlink:title=" ">
+<path fill="none" stroke="#63b8ff" d="M146.84,-32.73C166.64,-38.1 187.63,-43.79 204.66,-48.41"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="147.5,-29.28 136.94,-30.04 145.67,-36.04 147.5,-29.28"/>
 </a>
 </g>
 </g>

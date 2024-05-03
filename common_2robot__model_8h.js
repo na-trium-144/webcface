@@ -1,7 +1,7 @@
 var common_2robot__model_8h =
 [
-    [ "RobotJoint", "structwebcface_1_1Common_1_1RobotJoint.html", "structwebcface_1_1Common_1_1RobotJoint" ],
-    [ "RobotLink", "structwebcface_1_1Common_1_1RobotLink.html", "structwebcface_1_1Common_1_1RobotLink" ],
+    [ "RobotJoint", "structCommon_1_1RobotJoint.html", "structCommon_1_1RobotJoint" ],
+    [ "RobotLink", "structCommon_1_1RobotLink.html", "structCommon_1_1RobotLink" ],
     [ "RobotJointType", "common_2robot__model_8h.html#af888dd203afb5bdf79dc950d618bcad9", [
       [ "fixed_absolute", "common_2robot__model_8h.html#af888dd203afb5bdf79dc950d618bcad9ac225ecbe8e23dc2daa03b4028ac5c961", null ],
       [ "fixed", "common_2robot__model_8h.html#af888dd203afb5bdf79dc950d618bcad9acec315e3d0975e5cc2811d5d8725f149", null ],

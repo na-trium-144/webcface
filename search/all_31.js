@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['文字列の表示_0',['文字列の表示',['../md_14__canvas2d.html#autotoc_md76',1,'']]]
+  ['引数と戻り値型_0',['引数と戻り値型',['../md_30__func.html#autotoc_md116',1,'']]]
 ];

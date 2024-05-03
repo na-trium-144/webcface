@@ -73,7 +73,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">WebCFace<span id="projectnumber">&#160;1.11.2</span>
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;1.11.3</span>
    </div>
    <div id="projectbrief">Web-based RPC &amp; UI Library</div>
   </td>
@@ -159,7 +159,7 @@ $(document).ready(function(){initNavTree('md_10__value.html',''); initResizable(
 <div class="textblock"><p><a class="anchor" id="autotoc_md35"></a></p>
 <dl class="section since"><dt>Since</dt><dd><span class="since-c"></span> <span class="since-js"></span> <span class="since-py"></span> </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><ul>
-<li>C++ <a class="el" href="classwebcface_1_1Value.html" title="実数値またはその配列の送受信データを表すクラス">webcface::Value</a> (<code><a class="el" href="value_8h.html">webcface/value.h</a></code>)</li>
+<li>C++ webcface::Value (<code><a class="el" href="value_8h.html">webcface/value.h</a></code>)</li>
 <li>C Reference: <a class="el" href="c__wcf_2value_8h.html">c_wcf/value.h</a></li>
 <li>JavaScript <a href="https://na-trium-144.github.io/webcface-js/classes/Value.html">Value</a></li>
 <li>Python <a href="https://na-trium-144.github.io/webcface-python/webcface.value.html#webcface.value.Value">webcface.Value</a></li>
@@ -173,12 +173,12 @@ $(document).ready(function(){initNavTree('md_10__value.html',''); initResizable(
 <p>オプションでclientやデータの名前を変更できます。詳細は <code>webcface-send -h</code> を参照</p>
 <h1><a class="anchor" id="autotoc_md37"></a>
 送信</h1>
-<p>Client::value からValueオブジェクトを作り、 Value::set() でデータを代入し、Client::sync()することで送信されます。</p>
+<p><a class="el" href="structField.html#a8954365ff9e8954832517ed39349fafe">Client::value</a> からValueオブジェクトを作り、 <a class="el" href="classValue.html#afc0e03fe8ca23f56bf9822e0c566939a" title="Dictの値を再帰的にセットする">Value::set()</a> でデータを代入し、Client::sync()することで送信されます。</p>
 <div class="tabbed"></div><div class="tabbed"><ul>
 <li><p class="startli"><b class="tab-title">C++</b> </p><div class="fragment"><div class="line">wcli.value(<span class="stringliteral">&quot;hoge&quot;</span>).set(5);</div>
 <div class="line">wcli.value(<span class="stringliteral">&quot;fuga&quot;</span>).set({1, 2, 3, 4, 5});</div>
 </div><!-- fragment --> <dl class="section note"><dt>Note</dt><dd><span class="since-c">1.7</span> 配列データは<code>std::vector&lt;double&gt;</code>だけでなく、std::arrayや生配列などstd::ranges::rangeに合うものならなんでも使えます。 要素の型はdoubleに変換可能ならなんでもokです。</dd></dl>
-<p>(C++のみ) set() の代わりに代入演算子(Value::operator=)でも同様のことができます。 また、 operator+= など、doubleやintの変数で使える各種演算子も使えます </p><div class="fragment"><div class="line">wcli.value(<span class="stringliteral">&quot;hoge&quot;</span>) = 5;</div>
+<p>(C++のみ) set() の代わりに代入演算子(<a class="el" href="classValue.html#aef47b295d5443d818a4bd044d4f148d7" title="Dictの値を再帰的にセットする">Value::operator=</a>)でも同様のことができます。 また、 operator+= など、doubleやintの変数で使える各種演算子も使えます </p><div class="fragment"><div class="line">wcli.value(<span class="stringliteral">&quot;hoge&quot;</span>) = 5;</div>
 </div><!-- fragment --><p class="startli"><span class="since-c">1.11</span> valueに直接<code>[]</code>(または<code>child()</code>)で要素アクセスが可能です。 また、resize()で配列を初期化しpush_back()で追加する使い方もできます。 </p><div class="fragment"><div class="line">wcli.value(<span class="stringliteral">&quot;fuga&quot;</span>).resize(5);</div>
 <div class="line"><span class="keywordflow">for</span>(<span class="keywordtype">int</span> i = 0; i &lt; 5; i++){</div>
 <div class="line">    wcli.value(<span class="stringliteral">&quot;fuga&quot;</span>).push_back(i);</div>
@@ -218,19 +218,14 @@ $(document).ready(function(){initNavTree('md_10__value.html',''); initResizable(
 <li><p class="startli"><b class="tab-title">C++</b> </p><div class="fragment"><div class="line">wcli.value(<span class="stringliteral">&quot;pos.x&quot;</span>) = 1;</div>
 <div class="line">wcli.value(<span class="stringliteral">&quot;pos.y&quot;</span>) = 2;</div>
 <div class="line">wcli.value(<span class="stringliteral">&quot;pos.z&quot;</span>) = 3;</div>
-</div><!-- fragment --><p> Value::child() でも同じ結果になります。 </p><div class="fragment"><div class="line"><a class="code hl_class" href="classwebcface_1_1Value.html">webcface::Value</a> pos = wcli.<a class="code hl_function" href="structwebcface_1_1Field.html#a8954365ff9e8954832517ed39349fafe">value</a>(<span class="stringliteral">&quot;pos&quot;</span>);</div>
-<div class="line">pos.<a class="code hl_function" href="classwebcface_1_1Value.html#a674a58b1300ca229bdb0729000c60f0a">child</a>(<span class="stringliteral">&quot;x&quot;</span>) = 1; <span class="comment">// = &quot;pos.x&quot;</span></div>
-<div class="line">pos.<a class="code hl_function" href="classwebcface_1_1Value.html#a674a58b1300ca229bdb0729000c60f0a">child</a>(<span class="stringliteral">&quot;y&quot;</span>) = 2; <span class="comment">// = &quot;pos.y&quot;</span></div>
-<div class="line">pos.<a class="code hl_function" href="classwebcface_1_1Value.html#a674a58b1300ca229bdb0729000c60f0a">child</a>(<span class="stringliteral">&quot;z&quot;</span>) = 3; <span class="comment">// = &quot;pos.z&quot;</span></div>
-<div class="ttc" id="aclasswebcface_1_1Value_html"><div class="ttname"><a href="classwebcface_1_1Value.html">webcface::Value</a></div><div class="ttdoc">実数値またはその配列の送受信データを表すクラス</div><div class="ttdef"><b>Definition</b> value.h:28</div></div>
-<div class="ttc" id="aclasswebcface_1_1Value_html_a674a58b1300ca229bdb0729000c60f0a"><div class="ttname"><a href="classwebcface_1_1Value.html#a674a58b1300ca229bdb0729000c60f0a">webcface::Value::child</a></div><div class="ttdeci">Value child(std::string_view field) const</div><div class="ttdoc">「(thisの名前).(追加の名前)」を新しい名前とするField</div><div class="ttdef"><b>Definition</b> value.h:44</div></div>
-<div class="ttc" id="astructwebcface_1_1Field_html_a8954365ff9e8954832517ed39349fafe"><div class="ttname"><a href="structwebcface_1_1Field.html#a8954365ff9e8954832517ed39349fafe">webcface::Field::value</a></div><div class="ttdeci">Value value(std::string_view field=&quot;&quot;) const</div><div class="ttdef"><b>Definition</b> field.cc:44</div></div>
-</div><!-- fragment --><p class="startli"><span class="since-c">1.11</span> Member::child() で <a class="el" href="structwebcface_1_1Field.html" title="ClientDataの参照とメンバ名とデータ名を持つクラス">webcface::Field</a> 型としてオブジェクトが得られ、そこからvalue()でValue型に変換することもできます。 (この場合はValue以外の型に変換することもでき汎用性が高いです) また、<code>[]</code>を使ってもchild()と同じ結果になります。 </p><div class="fragment"><div class="line"><a class="code hl_struct" href="structwebcface_1_1Field.html">webcface::Field</a> pos = wcli.<a class="code hl_function" href="classwebcface_1_1Value.html#a674a58b1300ca229bdb0729000c60f0a">child</a>(<span class="stringliteral">&quot;pos&quot;</span>);</div>
-<div class="line">pos.<a class="code hl_function" href="structwebcface_1_1Field.html#a6bf5695e81e7867bf17ca940f7d9d958">child</a>(<span class="stringliteral">&quot;x&quot;</span>).<a class="code hl_function" href="structwebcface_1_1Field.html#a8954365ff9e8954832517ed39349fafe">value</a>() = 1; <span class="comment">// = &quot;pos.x&quot;</span></div>
-<div class="line">pos[<span class="stringliteral">&quot;y&quot;</span>].<a class="code hl_function" href="structwebcface_1_1Field.html#a8954365ff9e8954832517ed39349fafe">value</a>() = 2;       <span class="comment">// = &quot;pos.y&quot;</span></div>
-<div class="line">pos.<a class="code hl_function" href="structwebcface_1_1Field.html#a8954365ff9e8954832517ed39349fafe">value</a>(<span class="stringliteral">&quot;z&quot;</span>) = 3;         <span class="comment">// = &quot;pos.z&quot;</span></div>
-<div class="ttc" id="astructwebcface_1_1Field_html"><div class="ttname"><a href="structwebcface_1_1Field.html">webcface::Field</a></div><div class="ttdoc">ClientDataの参照とメンバ名とデータ名を持つクラス</div><div class="ttdef"><b>Definition</b> field.h:29</div></div>
-<div class="ttc" id="astructwebcface_1_1Field_html_a6bf5695e81e7867bf17ca940f7d9d958"><div class="ttname"><a href="structwebcface_1_1Field.html#a6bf5695e81e7867bf17ca940f7d9d958">webcface::Field::child</a></div><div class="ttdeci">Field child(std::string_view field) const</div><div class="ttdoc">「(thisの名前).(追加の名前)」を新しい名前とするField</div><div class="ttdef"><b>Definition</b> field.cc:33</div></div>
+</div><!-- fragment --><p> <a class="el" href="classValue.html#a674a58b1300ca229bdb0729000c60f0a" title="「(thisの名前).(追加の名前)」を新しい名前とするField">Value::child()</a> でも同じ結果になります。 </p><div class="fragment"><div class="line">webcface::Value pos = wcli.value(<span class="stringliteral">&quot;pos&quot;</span>);</div>
+<div class="line">pos.child(<span class="stringliteral">&quot;x&quot;</span>) = 1; <span class="comment">// = &quot;pos.x&quot;</span></div>
+<div class="line">pos.child(<span class="stringliteral">&quot;y&quot;</span>) = 2; <span class="comment">// = &quot;pos.y&quot;</span></div>
+<div class="line">pos.child(<span class="stringliteral">&quot;z&quot;</span>) = 3; <span class="comment">// = &quot;pos.z&quot;</span></div>
+</div><!-- fragment --><p class="startli"><span class="since-c">1.11</span> <a class="el" href="classMember.html#a6bf5695e81e7867bf17ca940f7d9d958" title="「(thisの名前).(追加の名前)」を新しい名前とするField">Member::child()</a> で webcface::Field 型としてオブジェクトが得られ、そこからvalue()でValue型に変換することもできます。 (この場合はValue以外の型に変換することもでき汎用性が高いです) また、<code>[]</code>を使ってもchild()と同じ結果になります。 </p><div class="fragment"><div class="line">webcface::Field pos = wcli.child(<span class="stringliteral">&quot;pos&quot;</span>);</div>
+<div class="line">pos.child(<span class="stringliteral">&quot;x&quot;</span>).value() = 1; <span class="comment">// = &quot;pos.x&quot;</span></div>
+<div class="line">pos[<span class="stringliteral">&quot;y&quot;</span>].value() = 2;       <span class="comment">// = &quot;pos.y&quot;</span></div>
+<div class="line">pos.value(<span class="stringliteral">&quot;z&quot;</span>) = 3;         <span class="comment">// = &quot;pos.z&quot;</span></div>
 </div><!-- fragment --><p> FieldとValue(とTextなどその他の型)は相互にキャストすることもできます。</p>
 <dl class="section note"><dt>Note</dt><dd><span class="since-c">1.11</span> child() (または<code>[]</code>)の引数が数値(または<code>"1"</code>のような文字列でも同じ)の場合、 グループ化ではなく配列としての値代入が優先されます。 (これはValue型のみの特別な処理です。) ただし以下のような場合は通常の文字列と同様に処理します。 <div class="fragment"><div class="line">wcli.value(<span class="stringliteral">&quot;data&quot;</span>)[0][<span class="stringliteral">&quot;a&quot;</span>] = 1; <span class="comment">// value(&quot;data.0.a&quot;) = 1</span></div>
 </div><!-- fragment --></dd></dl>
@@ -242,7 +237,7 @@ $(document).ready(function(){initNavTree('md_10__value.html',''); initResizable(
 <li><b class="tab-title">JavaScript</b> <div class="fragment"><div class="line">wcli.value(&quot;pos.x&quot;).set(1);</div>
 <div class="line">wcli.value(&quot;pos.y&quot;).set(2);</div>
 <div class="line">wcli.value(&quot;pos.z&quot;).set(3);</div>
-</div><!-- fragment --> Value.child() でも同じ結果になります。 <div class="fragment"><div class="line">const pos: Value = wcli.value(&quot;pos&quot;);</div>
+</div><!-- fragment --> <a class="el" href="classValue.html#a674a58b1300ca229bdb0729000c60f0a" title="「(thisの名前).(追加の名前)」を新しい名前とするField">Value.child()</a> でも同じ結果になります。 <div class="fragment"><div class="line">const pos: Value = wcli.value(&quot;pos&quot;);</div>
 <div class="line">pos.child(&quot;x&quot;).set(1);</div>
 <div class="line">pos.child(&quot;y&quot;).set(2);</div>
 <div class="line">pos.child(&quot;z&quot;).set(3);</div>
@@ -250,7 +245,7 @@ $(document).ready(function(){initNavTree('md_10__value.html',''); initResizable(
 <li><b class="tab-title">Python</b> <div class="fragment"><div class="line">wcli.value(<span class="stringliteral">&quot;pos.x&quot;</span>).set(1)</div>
 <div class="line">wcli.value(<span class="stringliteral">&quot;pos.y&quot;</span>).set(2)</div>
 <div class="line">wcli.value(<span class="stringliteral">&quot;pos.z&quot;</span>).set(3)</div>
-</div><!-- fragment --> Value.child() でも同じ結果になります。 <div class="fragment"><div class="line">pos = wcli.value(<span class="stringliteral">&quot;pos&quot;</span>)</div>
+</div><!-- fragment --> <a class="el" href="classValue.html#a674a58b1300ca229bdb0729000c60f0a" title="「(thisの名前).(追加の名前)」を新しい名前とするField">Value.child()</a> でも同じ結果になります。 <div class="fragment"><div class="line">pos = wcli.value(<span class="stringliteral">&quot;pos&quot;</span>)</div>
 <div class="line">pos.child(<span class="stringliteral">&quot;x&quot;</span>).set(1)</div>
 <div class="line">pos.child(<span class="stringliteral">&quot;y&quot;</span>).set(2)</div>
 <div class="line">pos.child(<span class="stringliteral">&quot;z&quot;</span>).set(3)</div>
@@ -284,9 +279,9 @@ $(document).ready(function(){initNavTree('md_10__value.html',''); initResizable(
 <summary >
 (deprecated) C++でwebcface::Value::Dictを使った値のセット</summary>
 <p></p>
-<p><a class="el" href="classwebcface_1_1Value.html#abd060664db33cb59cfcd689bf58c5870">webcface::Value::Dict</a> オブジェクトを使うと複数の値をまとめて送ることができます。 これは構造体などのデータを送るときに使えます </p><div class="fragment"><div class="line"><span class="keyword">struct </span>A {</div>
+<p>webcface::Value::Dict オブジェクトを使うと複数の値をまとめて送ることができます。 これは構造体などのデータを送るときに使えます </p><div class="fragment"><div class="line"><span class="keyword">struct </span>A {</div>
 <div class="line">    <span class="keywordtype">double</span> x, y;</div>
-<div class="line">    <span class="keyword">operator</span> <a class="code hl_typedef" href="classwebcface_1_1Value.html#abd060664db33cb59cfcd689bf58c5870">webcface::Value::Dict</a>()<span class="keyword"> const </span>{</div>
+<div class="line">    <span class="keyword">operator</span> webcface::Value::Dict()<span class="keyword"> const </span>{</div>
 <div class="line">        <span class="keywordflow">return</span> {</div>
 <div class="line">            {<span class="stringliteral">&quot;x&quot;</span>, x},</div>
 <div class="line">            {<span class="stringliteral">&quot;y&quot;</span>, y},</div>
@@ -309,12 +304,11 @@ $(document).ready(function(){initNavTree('md_10__value.html',''); initResizable(
 <div class="line"><span class="comment">  value(&quot;a.a.a&quot;) -&gt; 1</span></div>
 <div class="line"><span class="comment">  value(&quot;a.a.b&quot;) -&gt; 1</span></div>
 <div class="line"><span class="comment">*/</span></div>
-<div class="ttc" id="aclasswebcface_1_1Value_html_abd060664db33cb59cfcd689bf58c5870"><div class="ttname"><a href="classwebcface_1_1Value.html#abd060664db33cb59cfcd689bf58c5870">webcface::Value::Dict</a></div><div class="ttdeci">Common::Dict&lt; std::shared_ptr&lt; Common::VectorOpt&lt; double &gt; &gt; &gt; Dict</div><div class="ttdef"><b>Definition</b> value.h:72</div></div>
 </div><!-- fragment --><p></p>
 </details>
 <h1><a class="anchor" id="autotoc_md41"></a>
 受信</h1>
-<p>Member::value() でValueクラスのオブジェクトが得られ、 Value::tryGet(), Value::tryGetVec() などで値のリクエストをするとともに受信した値を取得できます。</p>
+<p><a class="el" href="classMember.html#a8954365ff9e8954832517ed39349fafe">Member::value()</a> でValueクラスのオブジェクトが得られ、 <a class="el" href="classValue.html#ae5bef3971255d46007752bd07c18803f" title="値を返す">Value::tryGet()</a>, <a class="el" href="classValue.html#a4eaa6a34a8b08eecb3fc180c18505747" title="値をvectorで返す">Value::tryGetVec()</a> などで値のリクエストをするとともに受信した値を取得できます。</p>
 <p>例えば<code>foo</code>というクライアントの<code>hoge</code>という名前のデータを取得したい場合は次のようにします。</p>
 <div class="tabbed"></div><div class="tabbed"><ul>
 <li><p class="startli"><b class="tab-title">C++</b> </p><div class="fragment"><div class="line">std::optional&lt;double&gt; hoge = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).value(<span class="stringliteral">&quot;hoge&quot;</span>).tryGet();</div>
@@ -323,19 +317,14 @@ $(document).ready(function(){initNavTree('md_10__value.html',''); initResizable(
  get(), getVec() はstd::nulloptの代わりにデフォルト値を返します。 <br  />
  また、doubleやstd::vector&lt;double&gt; などの型にキャストすることでも同様に値が得られます。</p>
 <p class="startli"><span class="since-c">1.8</span> std::ostreamにValueを直接渡して表示することもできます。 まだ受信していない場合nullと表示されます。 </p><div class="fragment"><div class="line">std::cout &lt;&lt; <span class="stringliteral">&quot;hoge = &quot;</span> &lt;&lt; wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).value(<span class="stringliteral">&quot;hoge&quot;</span>) &lt;&lt; std::endl;</div>
-</div><!-- fragment --><p class="startli">グループ化したデータは送信時と同様child()を使って要素を参照できます。 </p><div class="fragment"><div class="line"><a class="code hl_class" href="classwebcface_1_1Value.html">webcface::Value</a> pos = wcli.<a class="code hl_function" href="structwebcface_1_1Field.html#aa8fab40ead35fa8e761986d5f4000a5c">member</a>(<span class="stringliteral">&quot;foo&quot;</span>).<a class="code hl_function" href="classwebcface_1_1Member.html#a8954365ff9e8954832517ed39349fafe">value</a>(<span class="stringliteral">&quot;pos&quot;</span>);</div>
-<div class="line"><span class="keywordtype">double</span> x = pos.<a class="code hl_function" href="classwebcface_1_1Value.html#a674a58b1300ca229bdb0729000c60f0a">child</a>(<span class="stringliteral">&quot;x&quot;</span>).<a class="code hl_function" href="classwebcface_1_1Value.html#af53ec2e557ea14cce1373e0f77954c82">get</a>(); <span class="comment">// = &quot;pos.x&quot;</span></div>
-<div class="line"><span class="keywordtype">double</span> y = pos.<a class="code hl_function" href="classwebcface_1_1Value.html#a674a58b1300ca229bdb0729000c60f0a">child</a>(<span class="stringliteral">&quot;y&quot;</span>).<a class="code hl_function" href="classwebcface_1_1Value.html#af53ec2e557ea14cce1373e0f77954c82">get</a>(); <span class="comment">// = &quot;pos.y&quot;</span></div>
-<div class="line"><span class="keywordtype">double</span> z = pos.<a class="code hl_function" href="classwebcface_1_1Value.html#a674a58b1300ca229bdb0729000c60f0a">child</a>(<span class="stringliteral">&quot;z&quot;</span>).<a class="code hl_function" href="classwebcface_1_1Value.html#af53ec2e557ea14cce1373e0f77954c82">get</a>(); <span class="comment">// = &quot;pos.z&quot;</span></div>
-<div class="ttc" id="aclasswebcface_1_1Member_html_a8954365ff9e8954832517ed39349fafe"><div class="ttname"><a href="classwebcface_1_1Member.html#a8954365ff9e8954832517ed39349fafe">webcface::Member::value</a></div><div class="ttdeci">Value value(std::string_view field=&quot;&quot;) const</div><div class="ttdef"><b>Definition</b> field.cc:44</div></div>
-<div class="ttc" id="aclasswebcface_1_1Value_html_af53ec2e557ea14cce1373e0f77954c82"><div class="ttname"><a href="classwebcface_1_1Value.html#af53ec2e557ea14cce1373e0f77954c82">webcface::Value::get</a></div><div class="ttdeci">double get() const</div><div class="ttdoc">値を返す</div><div class="ttdef"><b>Definition</b> value.h:143</div></div>
-<div class="ttc" id="astructwebcface_1_1Field_html_aa8fab40ead35fa8e761986d5f4000a5c"><div class="ttname"><a href="structwebcface_1_1Field.html#aa8fab40ead35fa8e761986d5f4000a5c">webcface::Field::member</a></div><div class="ttdeci">Member member() const</div><div class="ttdoc">Memberを返す</div><div class="ttdef"><b>Definition</b> field.cc:16</div></div>
-</div><!-- fragment --> <div class="fragment"><div class="line"><a class="code hl_struct" href="structwebcface_1_1Field.html">webcface::Field</a> pos = wcli.<a class="code hl_function" href="classwebcface_1_1Value.html#aa8fab40ead35fa8e761986d5f4000a5c">member</a>(<span class="stringliteral">&quot;foo&quot;</span>).<a class="code hl_function" href="classwebcface_1_1Member.html#a6bf5695e81e7867bf17ca940f7d9d958">child</a>(<span class="stringliteral">&quot;pos&quot;</span>);</div>
-<div class="line"><span class="keywordtype">double</span> x = pos.<a class="code hl_function" href="structwebcface_1_1Field.html#a6bf5695e81e7867bf17ca940f7d9d958">child</a>(<span class="stringliteral">&quot;x&quot;</span>).<a class="code hl_function" href="structwebcface_1_1Field.html#a8954365ff9e8954832517ed39349fafe">value</a>().<a class="code hl_function" href="classwebcface_1_1Value.html#af53ec2e557ea14cce1373e0f77954c82">get</a>(); <span class="comment">// = &quot;pos.x&quot;</span></div>
-<div class="line"><span class="keywordtype">double</span> y = pos[<span class="stringliteral">&quot;y&quot;</span>].<a class="code hl_function" href="structwebcface_1_1Field.html#a8954365ff9e8954832517ed39349fafe">value</a>().<a class="code hl_function" href="classwebcface_1_1Value.html#af53ec2e557ea14cce1373e0f77954c82">get</a>();       <span class="comment">// = &quot;pos.y&quot;</span></div>
-<div class="line"><span class="keywordtype">double</span> z = pos.<a class="code hl_function" href="structwebcface_1_1Field.html#a8954365ff9e8954832517ed39349fafe">value</a>(<span class="stringliteral">&quot;z&quot;</span>).<a class="code hl_function" href="classwebcface_1_1Value.html#af53ec2e557ea14cce1373e0f77954c82">get</a>();         <span class="comment">// = &quot;pos.z&quot;</span></div>
-<div class="ttc" id="aclasswebcface_1_1Member_html_a6bf5695e81e7867bf17ca940f7d9d958"><div class="ttname"><a href="classwebcface_1_1Member.html#a6bf5695e81e7867bf17ca940f7d9d958">webcface::Member::child</a></div><div class="ttdeci">Field child(std::string_view field) const</div><div class="ttdoc">「(thisの名前).(追加の名前)」を新しい名前とするField</div><div class="ttdef"><b>Definition</b> field.cc:33</div></div>
-<div class="ttc" id="aclasswebcface_1_1Value_html_aa8fab40ead35fa8e761986d5f4000a5c"><div class="ttname"><a href="classwebcface_1_1Value.html#aa8fab40ead35fa8e761986d5f4000a5c">webcface::Value::member</a></div><div class="ttdeci">Member member() const</div><div class="ttdoc">Memberを返す</div><div class="ttdef"><b>Definition</b> field.cc:16</div></div>
+</div><!-- fragment --><p class="startli">グループ化したデータは送信時と同様child()を使って要素を参照できます。 </p><div class="fragment"><div class="line">webcface::Value pos = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).value(<span class="stringliteral">&quot;pos&quot;</span>);</div>
+<div class="line"><span class="keywordtype">double</span> x = pos.child(<span class="stringliteral">&quot;x&quot;</span>).get(); <span class="comment">// = &quot;pos.x&quot;</span></div>
+<div class="line"><span class="keywordtype">double</span> y = pos.child(<span class="stringliteral">&quot;y&quot;</span>).get(); <span class="comment">// = &quot;pos.y&quot;</span></div>
+<div class="line"><span class="keywordtype">double</span> z = pos.child(<span class="stringliteral">&quot;z&quot;</span>).get(); <span class="comment">// = &quot;pos.z&quot;</span></div>
+</div><!-- fragment --> <div class="fragment"><div class="line">webcface::Field pos = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).child(<span class="stringliteral">&quot;pos&quot;</span>);</div>
+<div class="line"><span class="keywordtype">double</span> x = pos.child(<span class="stringliteral">&quot;x&quot;</span>).value().get(); <span class="comment">// = &quot;pos.x&quot;</span></div>
+<div class="line"><span class="keywordtype">double</span> y = pos[<span class="stringliteral">&quot;y&quot;</span>].value().get();       <span class="comment">// = &quot;pos.y&quot;</span></div>
+<div class="line"><span class="keywordtype">double</span> z = pos.value(<span class="stringliteral">&quot;z&quot;</span>).get();         <span class="comment">// = &quot;pos.z&quot;</span></div>
 </div><!-- fragment --><p class="startli"><span class="since-c">1.11</span> 送信時と同様、配列データはchild()または<code>[]</code>を使ってもアクセスできます。 <code>cpp double hoge = wcli.member("foo").value("hoge")[3].get(); </code></p>
 <dl class="section warning"><dt>Warning</dt><dd><span class="since-c">1.11</span> Valueオブジェクト同士を比較するとValueが参照するデータの名前が一致するかどうかで判定されます。(Textなど他のデータ型でも同様です。) <br  />
  ver1.10まではdoubleにキャストされた上で値を比較していたので、異なる挙動になります。 値を比較したい場合は明示的にキャストするか<code>get()</code>などを呼んでください。</dd></dl>
@@ -368,7 +357,7 @@ $(document).ready(function(){initNavTree('md_10__value.html',''); initResizable(
 </div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md42"></a>
 リクエスト</h2>
 <p>get()などの初回の呼び出しではまだ値を受信していないためnullなどを返しますが、 <br  />
- <strike>Client::sync()したときに実際にリクエストが送信され、</strike> <br  />
+ <strike><a class="el" href="classClient.html#ad55f80ed3cd8b6c4f247763b747016af" title="送信用にセットしたデータをすべて送信キューに入れる。">Client::sync()</a>したときに実際にリクエストが送信され、</strike> <br  />
  <span class="since-c">1.2</span> <span class="since-js">1.1</span> <span class="since-py"></span> 自動的に別スレッドでリクエストが送信され、サーバーから値が返ってきたら値が得られるようになります。 そのため、次の例のように繰り返し取得して使ってください。</p>
 <div class="tabbed"></div><div class="tabbed"><ul>
 <li><b class="tab-title">C++</b> <div class="fragment"><div class="line"><span class="keywordflow">while</span>(<span class="keyword">true</span>) {</div>
@@ -393,20 +382,20 @@ $(document).ready(function(){initNavTree('md_10__value.html',''); initResizable(
 <div class="line">    time.sleep(0.1)</div>
 </div><!-- fragment --></li>
 </ul>
-</div><div class="tabbed"></div><dl class="section note"><dt>Note</dt><dd><span class="since-c">1.7</span> <span class="since-js">1.1</span> <span class="since-py"></span> Value::request()で明示的にリクエストを送信することもできます。</dd></dl>
+</div><div class="tabbed"></div><dl class="section note"><dt>Note</dt><dd><span class="since-c">1.7</span> <span class="since-js">1.1</span> <span class="since-py"></span> <a class="el" href="classValue.html#a6280a6d4043b545baa5008f76a229e14" title="値をリクエストする">Value::request()</a>で明示的にリクエストを送信することもできます。</dd></dl>
 <h2><a class="anchor" id="autotoc_md43"></a>
 時刻</h2>
-<p><strike>Value::time()</strike> でその値が送信されたとき(そのMemberがsync()したとき)の時刻が得られます。 <br  />
- <span class="since-c">1.7</span> <span class="since-js">1.6</span> <span class="since-py"></span> Member::syncTime() に変更 (Textなど他のデータの送信時刻と共通です)</p>
+<p><strike><a class="el" href="classValue.html#a3799c65797b21f35329dc284df16a65d" title="syncの時刻を返す">Value::time()</a></strike> でその値が送信されたとき(そのMemberがsync()したとき)の時刻が得られます。 <br  />
+ <span class="since-c">1.7</span> <span class="since-js">1.6</span> <span class="since-py"></span> <a class="el" href="classMember.html#aaace8ffd82d2eb79c72f3411d3311b9b" title="最後のsync()の時刻を返す">Member::syncTime()</a> に変更 (Textなど他のデータの送信時刻と共通です)</p>
 <h2><a class="anchor" id="autotoc_md44"></a>
 Entry</h2>
-<p><strike>Member::values() で</strike> そのMemberが送信しているvalueのリストが得られます <br  />
- <span class="since-c">1.6</span> <span class="since-py">1.1</span> Member::valueEntries() に変更</p>
+<p><strike><a class="el" href="classMember.html#a79db1efde6ce9c6db23757da84f030a2" title="このmemberが公開しているvalueのリストを返す。">Member::values()</a> で</strike> そのMemberが送信しているvalueのリストが得られます <br  />
+ <span class="since-c">1.6</span> <span class="since-py">1.1</span> <a class="el" href="classMember.html#a3070ccf86f5a60632aee40ebc01b2b8c">Member::valueEntries()</a> に変更</p>
 <div class="tabbed"></div><div class="tabbed"><ul>
-<li><p class="startli"><b class="tab-title">C++</b> </p><div class="fragment"><div class="line"><span class="keywordflow">for</span>(<span class="keyword">const</span> <a class="code hl_class" href="classwebcface_1_1Value.html">webcface::Value</a> &amp;v: wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).valueEntries()){</div>
+<li><p class="startli"><b class="tab-title">C++</b> </p><div class="fragment"><div class="line"><span class="keywordflow">for</span>(<span class="keyword">const</span> webcface::Value &amp;v: wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).valueEntries()){</div>
 <div class="line">    <span class="comment">// ...</span></div>
 <div class="line">}</div>
-</div><!-- fragment --><p class="startli"><span class="since-c">1.11</span> Field::valueEntries() でそのfield以下のvalueのみが得られます (Textなど他の型についても同様) </p><div class="fragment"><div class="line">std::vector&lt;webcface::Value&gt; values = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).field(<span class="stringliteral">&quot;pos&quot;</span>).valueEntries();</div>
+</div><!-- fragment --><p class="startli"><span class="since-c">1.11</span> <a class="el" href="structField.html#a3070ccf86f5a60632aee40ebc01b2b8c">Field::valueEntries()</a> でそのfield以下のvalueのみが得られます (Textなど他の型についても同様) </p><div class="fragment"><div class="line">std::vector&lt;webcface::Value&gt; values = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).field(<span class="stringliteral">&quot;pos&quot;</span>).valueEntries();</div>
 <div class="line"><span class="comment">// pos.x, pos.y などのvalueが得られる</span></div>
 </div><!-- fragment --></li>
 <li><b class="tab-title">JavaScript</b> <div class="fragment"><div class="line">for(const v of wcli.member(&quot;foo&quot;).values()){</div>
@@ -417,11 +406,11 @@ Entry</h2>
 <div class="line">    <span class="comment"># ...</span></div>
 </div><!-- fragment --></li>
 </ul>
-</div><div class="tabbed"></div><p>Member::onValueEntry() で新しくデータが追加されたときのコールバックを設定できます。</p>
-<p>ただし、コールバックを設定する前から存在したデータについてはコールバックは呼び出されません。 すべてのデータに対してコールバックが呼ばれるようにしたい場合は、 Member名がわかっていれば初回の Client::sync() 前に、 そうでなければ Client::onMemberEntry() イベントのコールバックの中で各種イベントを設定すればよいです。</p>
+</div><div class="tabbed"></div><p><a class="el" href="classMember.html#a27a3a1f713b2c11f4411d7ea02b98628" title="valueが追加された時のイベント">Member::onValueEntry()</a> で新しくデータが追加されたときのコールバックを設定できます。</p>
+<p>ただし、コールバックを設定する前から存在したデータについてはコールバックは呼び出されません。 すべてのデータに対してコールバックが呼ばれるようにしたい場合は、 Member名がわかっていれば初回の <a class="el" href="classClient.html#ad55f80ed3cd8b6c4f247763b747016af" title="送信用にセットしたデータをすべて送信キューに入れる。">Client::sync()</a> 前に、 そうでなければ <a class="el" href="classClient.html#a006e7ddf32fda5cd9dff47d094a3b621" title="Memberが追加された時のイベント">Client::onMemberEntry()</a> イベントのコールバックの中で各種イベントを設定すればよいです。</p>
 <p>イベントの詳細な使い方はonMemberEntryと同様です(<a class="el" href="md_02__member.html">Member</a> のページを参照してください)。</p>
 <div class="tabbed"></div><div class="tabbed"><ul>
-<li><b class="tab-title">C++</b> <div class="fragment"><div class="line">wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).onValueEntry().appendListener([](<a class="code hl_class" href="classwebcface_1_1Value.html">webcface::Value</a> v){ <span class="comment">/* ... */</span> });</div>
+<li><b class="tab-title">C++</b> <div class="fragment"><div class="line">wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).onValueEntry().appendListener([](webcface::Value v){ <span class="comment">/* ... */</span> });</div>
 </div><!-- fragment --></li>
 <li><b class="tab-title">JavaScript</b> <div class="fragment"><div class="line">import { Value } from &quot;webcface&quot;;</div>
 <div class="line">wcli.member(&quot;foo&quot;).onValueEntry.on((v: Value) =&gt; { /* ... */ });</div>
@@ -434,21 +423,18 @@ Entry</h2>
 </div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md45"></a>
 Event</h2>
 <p>受信したデータが変化したときにコールバックを呼び出すことができます。 コールバックを設定することでもその値はリクエストされます。</p>
-<p>また、データが変化したどうかに関わらずそのMemberがsync()したときにコールバックを呼び出したい場合は Member::onSync() が使えます。</p>
+<p>また、データが変化したどうかに関わらずそのMemberがsync()したときにコールバックを呼び出したい場合は <a class="el" href="classMember.html#a42807895a59ee6a80ed33d118ce79061" title="Memberがsync()したときのイベント コールバックの型は void(Member)">Member::onSync()</a> が使えます。</p>
 <p>イベントの詳細な使い方はonMemberEntryと同様です(<a class="el" href="md_02__member.html">Member</a> のページを参照してください)。</p>
 <div class="tabbed"></div><div class="tabbed"><ul>
-<li><p class="startli"><b class="tab-title">C++</b> </p><div class="fragment"><div class="line">wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).value(<span class="stringliteral">&quot;hoge&quot;</span>).appendListener([](<a class="code hl_class" href="classwebcface_1_1Value.html">webcface::Value</a> v){ <span class="comment">/* ... */</span> });</div>
-<div class="line">wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).onSync().appendListener([](<a class="code hl_class" href="classwebcface_1_1Member.html">webcface::Member</a> m){ <span class="comment">/* ... */</span> });</div>
-<div class="ttc" id="aclasswebcface_1_1Member_html"><div class="ttname"><a href="classwebcface_1_1Member.html">webcface::Member</a></div><div class="ttdoc">Memberを指すクラス</div><div class="ttdef"><b>Definition</b> member.h:24</div></div>
-</div><!-- fragment --><p> 例えば全Memberの全Valueデータを受信するには </p><div class="fragment"><div class="line">wcli.onMemberEntry().appendListener([](<a class="code hl_class" href="classwebcface_1_1Member.html">webcface::Member</a> m){</div>
-<div class="line">    m.<a class="code hl_function" href="classwebcface_1_1Member.html#a27a3a1f713b2c11f4411d7ea02b98628">onValueEntry</a>().appendListener([](<a class="code hl_class" href="classwebcface_1_1Value.html">webcface::Value</a> v){</div>
-<div class="line">        v.<a class="code hl_function" href="classwebcface_1_1EventTarget.html#a7f12a03e22df0d00f39027dd3697f48d">appendListener</a>([](<a class="code hl_class" href="classwebcface_1_1Value.html">webcface::Value</a> v){</div>
+<li><p class="startli"><b class="tab-title">C++</b> </p><div class="fragment"><div class="line">wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).value(<span class="stringliteral">&quot;hoge&quot;</span>).appendListener([](webcface::Value v){ <span class="comment">/* ... */</span> });</div>
+<div class="line">wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).onSync().appendListener([](webcface::Member m){ <span class="comment">/* ... */</span> });</div>
+</div><!-- fragment --><p> 例えば全Memberの全Valueデータを受信するには </p><div class="fragment"><div class="line">wcli.onMemberEntry().appendListener([](webcface::Member m){</div>
+<div class="line">    m.onValueEntry().appendListener([](webcface::Value v){</div>
+<div class="line">        v.appendListener([](webcface::Value v){</div>
 <div class="line">            <span class="comment">// ...</span></div>
 <div class="line">        });</div>
 <div class="line">    });</div>
 <div class="line">});</div>
-<div class="ttc" id="aclasswebcface_1_1EventTarget_html_a7f12a03e22df0d00f39027dd3697f48d"><div class="ttname"><a href="classwebcface_1_1EventTarget.html#a7f12a03e22df0d00f39027dd3697f48d">webcface::EventTarget::appendListener</a></div><div class="ttdeci">EventHandle appendListener(const EventCallback &amp;callback) const</div><div class="ttdoc">イベントのコールバックをリストの最後に追加する。</div><div class="ttdef"><b>Definition</b> event_target.h:79</div></div>
-<div class="ttc" id="aclasswebcface_1_1Member_html_a27a3a1f713b2c11f4411d7ea02b98628"><div class="ttname"><a href="classwebcface_1_1Member.html#a27a3a1f713b2c11f4411d7ea02b98628">webcface::Member::onValueEntry</a></div><div class="ttdeci">EventTarget&lt; Value &gt; onValueEntry() const</div><div class="ttdoc">valueが追加された時のイベント</div><div class="ttdef"><b>Definition</b> member.cc:18</div></div>
 </div><!-- fragment --><p> のようにすると可能です。</p>
 <p class="startli"><span class="since-c">1.7</span> 引数を持たない関数もイベントのコールバックに設定可能です。 </p><div class="fragment"><div class="line">wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).value(<span class="stringliteral">&quot;hoge&quot;</span>).appendListener([]() {</div>
 <div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;foo.hoge changed&quot;</span> &lt;&lt; std::endl;</div>
@@ -485,7 +471,7 @@ Event</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri May 3 2024 10:48:15 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Fri May 3 2024 15:23:11 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

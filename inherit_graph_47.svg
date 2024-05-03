@@ -11,7 +11,7 @@
 <!-- Node0 -->
 <g id="Node000000" class="node">
 <title>Node0</title>
-<g id="a_Node000000"><a xlink:href="classwebcface_1_1IdBase.html" target="_top" xlink:title=" ">
+<g id="a_Node000000"><a xlink:href="classIdBase.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="175,-93 0,-93 0,-74 175,-74 175,-93"/>
 <text text-anchor="middle" x="87.5" y="-81" font-family="Helvetica,sans-Serif" font-size="10.00">IdBase&lt; ViewComponentType &gt;</text>
 </a>
@@ -20,7 +20,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:href="classwebcface_1_1ViewComponent.html" target="_top" xlink:title="Viewに表示する要素です">
+<g id="a_Node000001"><a xlink:href="classViewComponent.html" target="_top" xlink:title="Viewに表示する要素です">
 <polygon fill="white" stroke="#666666" points="308,-56 211,-56 211,-37 308,-37 308,-56"/>
 <text text-anchor="middle" x="259.5" y="-44" font-family="Helvetica,sans-Serif" font-size="10.00">ViewComponent</text>
 </a>
@@ -38,7 +38,7 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="structwebcface_1_1Common_1_1ViewComponentBase.html" target="_top" xlink:title=" ">
+<g id="a_Node000002"><a xlink:href="structCommon_1_1ViewComponentBase.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="148,-56 27,-56 27,-37 148,-37 148,-56"/>
 <text text-anchor="middle" x="87.5" y="-44" font-family="Helvetica,sans-Serif" font-size="10.00">ViewComponentBase</text>
 </a>
@@ -56,7 +56,7 @@
 <!-- Node3 -->
 <g id="Node000003" class="node">
 <title>Node3</title>
-<g id="a_Node000003"><a xlink:href="structwebcface_1_1Common_1_1ViewComponentBase.html" target="_top" xlink:title=" ">
+<g id="a_Node000003"><a xlink:href="structCommon_1_1ViewComponentBase.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="148,-19 27,-19 27,0 148,0 148,-19"/>
 <text text-anchor="middle" x="87.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">ViewComponentBase</text>
 </a>

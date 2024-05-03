@@ -2,7 +2,6 @@ var dir_502efb1c08dde917a621a833db2b93e2 =
 [
     [ "canvas2d.h", "common_2canvas2d_8h.html", "common_2canvas2d_8h" ],
     [ "canvas3d.h", "common_2canvas3d_8h.html", "common_2canvas3d_8h" ],
-    [ "def.h", "def_8h.html", "def_8h" ],
     [ "dict.h", "dict_8h.html", "dict_8h" ],
     [ "field_base.h", "field__base_8h.html", "field__base_8h" ],
     [ "func.h", "common_2func_8h.html", "common_2func_8h" ],

@@ -73,7 +73,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">WebCFace<span id="projectnumber">&#160;1.11.2</span>
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;1.11.3</span>
    </div>
    <div id="projectbrief">Web-based RPC &amp; UI Library</div>
   </td>
@@ -153,72 +153,77 @@ $(document).ready(function(){initNavTree('log_8h_source.html',''); initResizable
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &quot;<a class="code" href="event__target_8h.html">event_target.h</a>&quot;</span></div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &quot;<a class="code" href="field_8h.html">field.h</a>&quot;</span></div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &quot;<a class="code" href="common_2log_8h.html">common/log.h</a>&quot;</span></div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &quot;<a class="code" href="def_8h.html">common/def.h</a>&quot;</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;webcface/common/def.h&gt;</span></div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><a class="code hl_define" href="macros_8h.html#abe991b8f291782627a31118c688e123a">WEBCFACE_NS_BEGIN</a></div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="keyword">class </span>Log;</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="keyword">extern</span> <span class="keyword">template</span> <span class="keyword">class </span><a class="code hl_define" href="macros_8h.html#a0c2b2b9ef0ccf8db12f940291bea9246">WEBCFACE_IMPORT</a> EventTarget&lt;Log&gt;;</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="keyword">class </span><a class="code hl_class" href="classLog.html">Log</a>;</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="keyword">extern</span> <span class="keyword">template</span> <span class="keyword">class </span><a class="code hl_define" href="macros_8h.html#a0c2b2b9ef0ccf8db12f940291bea9246">WEBCFACE_IMPORT</a> <a class="code hl_class" href="classEventTarget.html">EventTarget&lt;Log&gt;</a>;</div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
 <div class="foldopen" id="foldopen00021" data-start="{" data-end="};">
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno"><a class="line" href="classwebcface_1_1Log.html">   21</a></span><span class="keyword">class </span><a class="code hl_define" href="macros_8h.html#a47af057bda855b54c212e97ffccdca01">WEBCFACE_DLL</a> <a class="code hl_class" href="classwebcface_1_1Log.html">Log</a> : <span class="keyword">protected</span> <a class="code hl_struct" href="structwebcface_1_1Field.html">Field</a>, <span class="keyword">public</span> <a class="code hl_class" href="classwebcface_1_1EventTarget.html">EventTarget&lt;Log&gt;</a> {</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    <span class="keywordtype">void</span> onAppend() <span class="keyword">const</span> <span class="keyword">override</span> <span class="keyword">final</span>;</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno"><a class="line" href="classLog.html">   21</a></span><span class="keyword">class </span><a class="code hl_define" href="macros_8h.html#a47af057bda855b54c212e97ffccdca01">WEBCFACE_DLL</a> <a class="code hl_function" href="classLog.html#a907ca32e5dd84f5166dd5cd8e59984e6">Log</a> : <span class="keyword">protected</span> <a class="code hl_function" href="structField.html#ab615d982a59b65cb084b6593fc0cece4">Field</a>, <span class="keyword">public</span> <a class="code hl_class" href="classEventTarget.html">EventTarget&lt;Log&gt;</a> {</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classLog.html#a5741907f34189b0f5ee7c5632b27cb8b">onAppend</a>() <span class="keyword">const</span> <span class="keyword">override</span> <span class="keyword">final</span>;</div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>  <span class="keyword">public</span>:</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno"><a class="line" href="classwebcface_1_1Log.html#a907ca32e5dd84f5166dd5cd8e59984e6">   25</a></span>    <a class="code hl_function" href="classwebcface_1_1Log.html#a907ca32e5dd84f5166dd5cd8e59984e6">Log</a>() = <span class="keywordflow">default</span>;</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    <a class="code hl_class" href="classwebcface_1_1Log.html">Log</a>(<span class="keyword">const</span> <a class="code hl_struct" href="structwebcface_1_1Field.html">Field</a> &amp;base);</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno"><a class="line" href="classLog.html#a907ca32e5dd84f5166dd5cd8e59984e6">   25</a></span>    <a class="code hl_function" href="classLog.html#a907ca32e5dd84f5166dd5cd8e59984e6">Log</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    <a class="code hl_function" href="classLog.html#a907ca32e5dd84f5166dd5cd8e59984e6">Log</a>(<span class="keyword">const</span> <a class="code hl_struct" href="structField.html">Field</a> &amp;base);</div>
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    <span class="keyword">using </span>Field::member;</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    <span class="keyword">using </span><a class="code hl_function" href="structField.html#a0d5a5a4ed3407e62e3ee1b6bad845423">Field::member</a>;</div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    <span class="keywordtype">void</span> request() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    std::optional&lt;std::vector&lt;LogLine&gt;&gt; tryGet() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classLog.html#a6280a6d4043b545baa5008f76a229e14">request</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    std::optional&lt;std::vector&lt;LogLine&gt;&gt; <a class="code hl_function" href="classLog.html#aadb158fa20765e342d4669e2c69dbc9e">tryGet</a>() <span class="keyword">const</span>;</div>
 <div class="foldopen" id="foldopen00045" data-start="{" data-end="}">
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno"><a class="line" href="classwebcface_1_1Log.html#ab2b35e1b920b6b4ab87b96ee259b1ffb">   45</a></span>    std::vector&lt;LogLine&gt; <a class="code hl_function" href="classwebcface_1_1Log.html#ab2b35e1b920b6b4ab87b96ee259b1ffb">get</a>()<span class="keyword"> const </span>{</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>        <span class="keywordflow">return</span> tryGet().value_or(std::vector&lt;LogLine&gt;{});</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno"><a class="line" href="classLog.html#ab2b35e1b920b6b4ab87b96ee259b1ffb">   45</a></span>    std::vector&lt;LogLine&gt; <a class="code hl_function" href="classLog.html#ab2b35e1b920b6b4ab87b96ee259b1ffb">get</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>        <span class="keywordflow">return</span> <a class="code hl_function" href="classLog.html#aadb158fa20765e342d4669e2c69dbc9e">tryGet</a>().value_or(std::vector&lt;LogLine&gt;{});</div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    }</div>
 </div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    <a class="code hl_class" href="classwebcface_1_1Log.html">Log</a> &amp;clear();</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    <a class="code hl_class" href="classLog.html">Log</a> &amp;<a class="code hl_function" href="classLog.html#a90e67f24cf6a9fc1eda7ab5a7fbaa1a6">clear</a>();</div>
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
 <div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>        <span class="keyword">requires</span> std::same_as&lt;T, Log&gt;</div>
 <div class="foldopen" id="foldopen00063" data-start="{" data-end="}">
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno"><a class="line" href="classwebcface_1_1Log.html#aa407649955bb90315d4d8349e01750d8">   63</a></span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classwebcface_1_1Log.html#aa407649955bb90315d4d8349e01750d8">operator==</a>(<span class="keyword">const</span> T &amp;other)<span class="keyword"> const </span>{</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>        <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><a class="code hl_struct" href="structwebcface_1_1Field.html">Field</a><span class="keyword">&gt;</span>(*this) == <span class="keyword">static_cast&lt;</span><a class="code hl_struct" href="structwebcface_1_1Field.html">Field</a><span class="keyword">&gt;</span>(other);</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno"><a class="line" href="classLog.html#aa407649955bb90315d4d8349e01750d8">   63</a></span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classLog.html#aa407649955bb90315d4d8349e01750d8">operator==</a>(<span class="keyword">const</span> T &amp;other)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>        <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><a class="code hl_struct" href="structField.html">Field</a><span class="keyword">&gt;</span>(*this) == <span class="keyword">static_cast&lt;</span><a class="code hl_struct" href="structField.html">Field</a><span class="keyword">&gt;</span>(other);</div>
 <div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    }</div>
 </div>
 <div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
 <div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>        <span class="keyword">requires</span> std::same_as&lt;T, Log&gt;</div>
 <div class="foldopen" id="foldopen00073" data-start="{" data-end="}">
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno"><a class="line" href="classwebcface_1_1Log.html#a5f5c73a74b6c59d2c5abb9d7121f14a5">   73</a></span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classwebcface_1_1Log.html#a5f5c73a74b6c59d2c5abb9d7121f14a5">operator!=</a>(<span class="keyword">const</span> T &amp;other)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno"><a class="line" href="classLog.html#a5f5c73a74b6c59d2c5abb9d7121f14a5">   73</a></span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classLog.html#a5f5c73a74b6c59d2c5abb9d7121f14a5">operator!=</a>(<span class="keyword">const</span> T &amp;other)<span class="keyword"> const </span>{</div>
 <div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>        <span class="keywordflow">return</span> !(*<span class="keyword">this</span> == other);</div>
 <div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    }</div>
 </div>
 <div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>};</div>
 </div>
 <div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span><a class="code hl_define" href="macros_8h.html#ab3f2570d5b8231ddbe0e57fc8ab629eb">WEBCFACE_NS_END</a></div>
-<div class="ttc" id="aclasswebcface_1_1EventTarget_html"><div class="ttname"><a href="classwebcface_1_1EventTarget.html">webcface::EventTarget</a></div><div class="ttdoc">イベントを表し、コールバックの追加や削除ができるクラス。</div><div class="ttdef"><b>Definition</b> event_target.h:15</div></div>
-<div class="ttc" id="aclasswebcface_1_1Log_html"><div class="ttname"><a href="classwebcface_1_1Log.html">webcface::Log</a></div><div class="ttdoc">ログの送受信データを表すクラス</div><div class="ttdef"><b>Definition</b> log.h:21</div></div>
-<div class="ttc" id="aclasswebcface_1_1Log_html_a5f5c73a74b6c59d2c5abb9d7121f14a5"><div class="ttname"><a href="classwebcface_1_1Log.html#a5f5c73a74b6c59d2c5abb9d7121f14a5">webcface::Log::operator!=</a></div><div class="ttdeci">bool operator!=(const T &amp;other) const</div><div class="ttdoc">Logの参照先を比較</div><div class="ttdef"><b>Definition</b> log.h:73</div></div>
-<div class="ttc" id="aclasswebcface_1_1Log_html_a907ca32e5dd84f5166dd5cd8e59984e6"><div class="ttname"><a href="classwebcface_1_1Log.html#a907ca32e5dd84f5166dd5cd8e59984e6">webcface::Log::Log</a></div><div class="ttdeci">Log()=default</div></div>
-<div class="ttc" id="aclasswebcface_1_1Log_html_aa407649955bb90315d4d8349e01750d8"><div class="ttname"><a href="classwebcface_1_1Log.html#aa407649955bb90315d4d8349e01750d8">webcface::Log::operator==</a></div><div class="ttdeci">bool operator==(const T &amp;other) const</div><div class="ttdoc">Logの参照先を比較</div><div class="ttdef"><b>Definition</b> log.h:63</div></div>
-<div class="ttc" id="aclasswebcface_1_1Log_html_ab2b35e1b920b6b4ab87b96ee259b1ffb"><div class="ttname"><a href="classwebcface_1_1Log.html#ab2b35e1b920b6b4ab87b96ee259b1ffb">webcface::Log::get</a></div><div class="ttdeci">std::vector&lt; LogLine &gt; get() const</div><div class="ttdoc">ログを取得する</div><div class="ttdef"><b>Definition</b> log.h:45</div></div>
+<div class="ttc" id="aclassEventTarget_html"><div class="ttname"><a href="classEventTarget.html">EventTarget</a></div><div class="ttdoc">イベントを表し、コールバックの追加や削除ができるクラス。</div><div class="ttdef"><b>Definition</b> event_target.h:15</div></div>
+<div class="ttc" id="aclassLog_html"><div class="ttname"><a href="classLog.html">Log</a></div><div class="ttdoc">ログの送受信データを表すクラス</div><div class="ttdef"><b>Definition</b> log.h:21</div></div>
+<div class="ttc" id="aclassLog_html_a5741907f34189b0f5ee7c5632b27cb8b"><div class="ttname"><a href="classLog.html#a5741907f34189b0f5ee7c5632b27cb8b">Log::onAppend</a></div><div class="ttdeci">void onAppend() const override final</div><div class="ttdoc">listenerを追加する際に行わなければならない処理があればoverrideする</div><div class="ttdef"><b>Definition</b> log.cc:23</div></div>
+<div class="ttc" id="aclassLog_html_a5f5c73a74b6c59d2c5abb9d7121f14a5"><div class="ttname"><a href="classLog.html#a5f5c73a74b6c59d2c5abb9d7121f14a5">Log::operator!=</a></div><div class="ttdeci">bool operator!=(const T &amp;other) const</div><div class="ttdoc">Logの参照先を比較</div><div class="ttdef"><b>Definition</b> log.h:73</div></div>
+<div class="ttc" id="aclassLog_html_a6280a6d4043b545baa5008f76a229e14"><div class="ttname"><a href="classLog.html#a6280a6d4043b545baa5008f76a229e14">Log::request</a></div><div class="ttdeci">void request() const</div><div class="ttdoc">ログをリクエストする</div><div class="ttdef"><b>Definition</b> log.cc:14</div></div>
+<div class="ttc" id="aclassLog_html_a907ca32e5dd84f5166dd5cd8e59984e6"><div class="ttname"><a href="classLog.html#a907ca32e5dd84f5166dd5cd8e59984e6">Log::Log</a></div><div class="ttdeci">Log()=default</div></div>
+<div class="ttc" id="aclassLog_html_a90e67f24cf6a9fc1eda7ab5a7fbaa1a6"><div class="ttname"><a href="classLog.html#a90e67f24cf6a9fc1eda7ab5a7fbaa1a6">Log::clear</a></div><div class="ttdeci">Log &amp; clear()</div><div class="ttdoc">(ver1.1.5で追加) 受信したログをクリアする</div><div class="ttdef"><b>Definition</b> log.cc:35</div></div>
+<div class="ttc" id="aclassLog_html_aa407649955bb90315d4d8349e01750d8"><div class="ttname"><a href="classLog.html#aa407649955bb90315d4d8349e01750d8">Log::operator==</a></div><div class="ttdeci">bool operator==(const T &amp;other) const</div><div class="ttdoc">Logの参照先を比較</div><div class="ttdef"><b>Definition</b> log.h:63</div></div>
+<div class="ttc" id="aclassLog_html_aadb158fa20765e342d4669e2c69dbc9e"><div class="ttname"><a href="classLog.html#aadb158fa20765e342d4669e2c69dbc9e">Log::tryGet</a></div><div class="ttdeci">std::optional&lt; std::vector&lt; LogLine &gt; &gt; tryGet() const</div><div class="ttdoc">ログを取得する</div><div class="ttdef"><b>Definition</b> log.cc:25</div></div>
+<div class="ttc" id="aclassLog_html_ab2b35e1b920b6b4ab87b96ee259b1ffb"><div class="ttname"><a href="classLog.html#ab2b35e1b920b6b4ab87b96ee259b1ffb">Log::get</a></div><div class="ttdeci">std::vector&lt; LogLine &gt; get() const</div><div class="ttdoc">ログを取得する</div><div class="ttdef"><b>Definition</b> log.h:45</div></div>
 <div class="ttc" id="acommon_2log_8h_html"><div class="ttname"><a href="common_2log_8h.html">log.h</a></div></div>
-<div class="ttc" id="adef_8h_html"><div class="ttname"><a href="def_8h.html">def.h</a></div></div>
 <div class="ttc" id="aevent__target_8h_html"><div class="ttname"><a href="event__target_8h.html">event_target.h</a></div></div>
 <div class="ttc" id="afield_8h_html"><div class="ttname"><a href="field_8h.html">field.h</a></div></div>
 <div class="ttc" id="amacros_8h_html_a0c2b2b9ef0ccf8db12f940291bea9246"><div class="ttname"><a href="macros_8h.html#a0c2b2b9ef0ccf8db12f940291bea9246">WEBCFACE_IMPORT</a></div><div class="ttdeci">#define WEBCFACE_IMPORT</div><div class="ttdef"><b>Definition</b> macros.h:24</div></div>
 <div class="ttc" id="amacros_8h_html_a47af057bda855b54c212e97ffccdca01"><div class="ttname"><a href="macros_8h.html#a47af057bda855b54c212e97ffccdca01">WEBCFACE_DLL</a></div><div class="ttdeci">#define WEBCFACE_DLL</div><div class="ttdef"><b>Definition</b> macros.h:23</div></div>
 <div class="ttc" id="amacros_8h_html_ab3f2570d5b8231ddbe0e57fc8ab629eb"><div class="ttname"><a href="macros_8h.html#ab3f2570d5b8231ddbe0e57fc8ab629eb">WEBCFACE_NS_END</a></div><div class="ttdeci">#define WEBCFACE_NS_END</div><div class="ttdef"><b>Definition</b> macros.h:30</div></div>
 <div class="ttc" id="amacros_8h_html_abe991b8f291782627a31118c688e123a"><div class="ttname"><a href="macros_8h.html#abe991b8f291782627a31118c688e123a">WEBCFACE_NS_BEGIN</a></div><div class="ttdeci">#define WEBCFACE_NS_BEGIN</div><div class="ttdef"><b>Definition</b> macros.h:29</div></div>
-<div class="ttc" id="astructwebcface_1_1Field_html"><div class="ttname"><a href="structwebcface_1_1Field.html">webcface::Field</a></div><div class="ttdoc">ClientDataの参照とメンバ名とデータ名を持つクラス</div><div class="ttdef"><b>Definition</b> field.h:29</div></div>
+<div class="ttc" id="astructField_html"><div class="ttname"><a href="structField.html">Field</a></div><div class="ttdoc">ClientDataの参照とメンバ名とデータ名を持つクラス</div><div class="ttdef"><b>Definition</b> field.h:29</div></div>
+<div class="ttc" id="astructField_html_a0d5a5a4ed3407e62e3ee1b6bad845423"><div class="ttname"><a href="structField.html#a0d5a5a4ed3407e62e3ee1b6bad845423">Field::member</a></div><div class="ttdeci">Member member() const</div><div class="ttdoc">Memberを返す</div><div class="ttdef"><b>Definition</b> field.cc:16</div></div>
+<div class="ttc" id="astructField_html_ab615d982a59b65cb084b6593fc0cece4"><div class="ttname"><a href="structField.html#ab615d982a59b65cb084b6593fc0cece4">Field::Field</a></div><div class="ttdeci">Field()=default</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_e6fac88a17509a9ad709623cf2c100d8.html">webcface</a></li><li class="navelem"><a class="el" href="log_8h.html">log.h</a></li>
-    <li class="footer">Generated on Fri May 3 2024 10:48:15 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Fri May 3 2024 15:23:11 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

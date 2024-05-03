@@ -1,9 +1,8 @@
 var common_2image_8h =
 [
-    [ "ImageBase", "classwebcface_1_1Common_1_1ImageBase.html", "classwebcface_1_1Common_1_1ImageBase" ],
-    [ "ImageWithCV", "classwebcface_1_1Common_1_1ImageWithCV.html", "classwebcface_1_1Common_1_1ImageWithCV" ],
-    [ "ImageReq", "structwebcface_1_1Common_1_1ImageReq.html", "structwebcface_1_1Common_1_1ImageReq" ],
-    [ "ImageFrame", "common_2image_8h.html#af7ff7d8593c083aca2355bc561bf8804", null ],
+    [ "ImageBase", "classCommon_1_1ImageBase.html", "classCommon_1_1ImageBase" ],
+    [ "ImageReq", "structCommon_1_1ImageReq.html", "structCommon_1_1ImageReq" ],
+    [ "ImageFrame", "common_2image_8h.html#a0087821f758e8bee52c23fab5ac188ef", null ],
     [ "ImageColorMode", "common_2image_8h.html#abcfd96b0be942012c2f4641b4741a31e", [
       [ "gray", "common_2image_8h.html#abcfd96b0be942012c2f4641b4741a31eacda7a650c5856cf2f6738072447d7825", null ],
       [ "bgr", "common_2image_8h.html#abcfd96b0be942012c2f4641b4741a31ea84746ad530563de3445efec60aa7ff59", null ],

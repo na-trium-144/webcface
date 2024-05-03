@@ -1,9 +1,7 @@
 <map id="include/webcface/common/field_base.h" name="include/webcface/common/field_base.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,201,45"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="34,93,93,119"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="96,47,78,82,73,80,91,44"/>
-<area shape="rect" id="Node000003" href="$def_8h.html" title=" " alt="" coords="117,93,172,119"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="116,44,134,80,130,82,111,47"/>
-<area shape="rect" id="Node000004" href="$macros_8h.html" title=" " alt="" coords="103,167,186,192"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="147,119,147,153,142,153,142,119"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="9,5,205,45"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,93,64,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="91,47,57,85,53,81,87,44"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="88,93,269,119"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="126,44,161,81,157,85,122,47"/>
 </map>

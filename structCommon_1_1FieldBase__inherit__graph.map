@@ -1,0 +1,37 @@
+<map id="FieldBase" name="FieldBase">
+<area shape="rect" id="Node000001" title="メンバ名とデータ名を持つクラス" alt="" coords="5,253,91,279"/>
+<area shape="rect" id="Node000002" href="$structCommon_1_1FieldBaseComparable.html" title=" " alt="" coords="139,228,303,253"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="104,255,138,250,139,255,105,260"/>
+<area shape="rect" id="Node000003" href="$structField.html" title="ClientDataの参照とメンバ名とデータ名を持つクラス" alt="" coords="194,277,247,303"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="105,271,194,284,194,289,104,276"/>
+<area shape="rect" id="Node000004" href="$classAsyncFuncResult.html" title="非同期で実行した関数の実行結果を表す。" alt="" coords="370,5,502,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="260,284,282,276,301,263,319,236,327,208,327,181,324,153,320,125,321,97,329,69,349,40,368,26,371,31,353,44,334,71,326,98,326,125,329,153,332,181,332,209,324,238,305,267,285,281,262,289"/>
+<area shape="rect" id="Node000005" href="$structAsyncFuncResultSetter.html" title="AsyncFuncResultの結果をセットする" alt="" coords="351,55,521,80"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="260,283,282,276,301,263,316,242,323,221,324,178,325,134,332,111,349,89,365,78,368,82,353,93,337,114,330,135,329,178,328,222,321,244,305,267,284,281,262,288"/>
+<area shape="rect" id="Node000006" href="$classCanvas2D.html" title="Canvas2Dの送受信データを表すクラス" alt="" coords="392,104,480,129"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="260,283,282,275,301,263,313,248,320,233,324,202,328,170,336,154,349,139,369,126,391,119,392,124,371,131,352,143,340,157,333,172,329,203,325,235,318,251,304,267,284,280,262,288"/>
+<area shape="rect" id="Node000007" href="$classCanvas3D.html" title="Canvas3Dの送受信データを表すクラス" alt="" coords="392,153,480,179"/>
+<area shape="poly" id="edge6_Node000003_Node000007" title=" " alt="" coords="260,281,281,274,301,263,317,245,324,226,332,207,349,188,369,177,391,169,393,175,371,181,352,192,336,210,329,228,321,248,304,267,283,279,261,286"/>
+<area shape="rect" id="Node000008" href="$classFunc.html" title="関数1つを表すクラス" alt="" coords="410,203,462,228"/>
+<area shape="poly" id="edge7_Node000003_Node000008" title=" " alt="" coords="259,277,302,262,350,237,409,218,411,224,352,242,304,267,261,282"/>
+<area shape="rect" id="Node000011" href="$classImage.html" title="(ver1.3から追加) 画像の送受信データを表すクラス" alt="" coords="405,252,467,277"/>
+<area shape="poly" id="edge10_Node000003_Node000011" title=" " alt="" coords="261,283,404,266,405,271,262,288"/>
+<area shape="rect" id="Node000012" href="$classLog.html" title="ログの送受信データを表すクラス" alt="" coords="413,301,459,327"/>
+<area shape="poly" id="edge11_Node000003_Node000012" title=" " alt="" coords="261,292,413,309,412,314,261,297"/>
+<area shape="rect" id="Node000013" href="$classMember.html" title="Memberを指すクラス" alt="" coords="398,351,474,376"/>
+<area shape="poly" id="edge12_Node000003_Node000013" title=" " alt="" coords="261,302,352,335,399,350,397,355,350,341,259,307"/>
+<area shape="rect" id="Node000015" href="$classRobotModel.html" title="RobotModelの送受信データを表すクラス" alt="" coords="386,400,486,425"/>
+<area shape="poly" id="edge14_Node000003_Node000015" title=" " alt="" coords="247,310,294,348,352,385,387,399,385,404,349,390,291,352,244,314"/>
+<area shape="rect" id="Node000016" href="$classText.html" title="文字列の送受信データを表すクラス" alt="" coords="411,449,461,475"/>
+<area shape="poly" id="edge15_Node000003_Node000016" title=" " alt="" coords="239,313,285,374,316,406,352,434,382,448,412,456,410,461,380,453,349,439,313,410,281,377,235,316"/>
+<area shape="rect" id="Node000017" href="$classValue.html" title="実数値またはその配列の送受信データを表すクラス" alt="" coords="407,499,465,524"/>
+<area shape="poly" id="edge16_Node000003_Node000017" title=" " alt="" coords="234,314,251,352,277,398,311,444,352,484,379,498,407,505,406,510,377,503,349,488,307,448,273,401,247,354,229,316"/>
+<area shape="rect" id="Node000018" href="$classView.html" title="Viewの送受信データを表すクラス" alt="" coords="409,548,463,573"/>
+<area shape="poly" id="edge17_Node000003_Node000018" title=" " alt="" coords="231,315,246,362,270,421,305,482,327,509,352,533,380,548,409,555,408,561,378,553,349,537,323,513,301,485,265,423,241,364,226,317"/>
+<area shape="rect" id="Node000009" href="$classAnonymousFunc.html" title="名前を指定せず先に関数を登録するFunc" alt="" coords="569,179,699,204"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="475,208,569,196,570,202,476,213"/>
+<area shape="rect" id="Node000010" href="$classFuncListener.html" title=" " alt="" coords="582,228,686,253"/>
+<area shape="poly" id="edge9_Node000008_Node000010" title=" " alt="" coords="476,218,582,231,582,237,475,223"/>
+<area shape="rect" id="Node000014" href="$classClient.html" title="サーバーに接続するクライアント。" alt="" coords="604,351,664,376"/>
+<area shape="poly" id="edge13_Node000013_Node000014" title=" " alt="" coords="488,361,604,361,604,366,488,366"/>
+</map>

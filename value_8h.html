@@ -73,7 +73,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">WebCFace<span id="projectnumber">&#160;1.11.2</span>
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;1.11.3</span>
    </div>
    <div id="projectbrief">Web-based RPC &amp; UI Library</div>
   </td>
@@ -141,7 +141,8 @@ $(document).ready(function(){initNavTree('value_8h.html',''); initResizable(); }
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#namespaces">Namespaces</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#func-members">Functions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">value.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -153,11 +154,11 @@ $(document).ready(function(){initNavTree('value_8h.html',''); initResizable(); }
 <code>#include &quot;<a class="el" href="vector_8h_source.html">common/vector.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="field_8h_source.html">field.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="event__target_8h_source.html">event_target.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="def_8h_source.html">common/def.h</a>&quot;</code><br />
+<code>#include &lt;webcface/common/def.h&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for value.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="value_8h__incl.svg" width="1783" height="403"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="value_8h__incl.svg" width="1783" height="330"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
@@ -169,30 +170,88 @@ This graph shows which files directly or indirectly include this file:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Value.html">Value</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">実数値またはその配列の送受信データを表すクラス  <a href="classwebcface_1_1Value.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classValue.html">Value</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">実数値またはその配列の送受信データを表すクラス  <a href="classValue.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
 Namespaces</h2></td></tr>
-<tr class="memitem:namespacewebcface" id="r_namespacewebcface"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface.html">webcface</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespacewebcface_1_1Internal" id="r_namespacewebcface_1_1Internal"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Internal.html">webcface::Internal</a></td></tr>
+<tr class="memitem:namespaceInternal" id="r_namespaceInternal"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceInternal.html">Internal</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:adee3d68a70be59fb6cfc97480b935199" id="r_adee3d68a70be59fb6cfc97480b935199"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface.html#adee3d68a70be59fb6cfc97480b935199">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="classwebcface_1_1Value.html">Value</a> &amp;data)</td></tr>
-<tr class="memdesc:adee3d68a70be59fb6cfc97480b935199"><td class="mdescLeft">&#160;</td><td class="mdescRight">Valueをostreamに渡すとValueの中身を表示  <br /></td></tr>
-<tr class="separator:adee3d68a70be59fb6cfc97480b935199"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aae99adfc828ae4ed2b16b65c432d20d1" id="r_aae99adfc828ae4ed2b16b65c432d20d1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="macros_8h.html#a47af057bda855b54c212e97ffccdca01">WEBCFACE_DLL</a> std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="value_8h.html#aae99adfc828ae4ed2b16b65c432d20d1">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="classValue.html">Value</a> &amp;data)</td></tr>
+<tr class="memdesc:aae99adfc828ae4ed2b16b65c432d20d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Valueをostreamに渡すとValueの中身を表示  <br /></td></tr>
+<tr class="separator:aae99adfc828ae4ed2b16b65c432d20d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:a0059852b01ab4b6ed69777cfc7c75937" id="r_a0059852b01ab4b6ed69777cfc7c75937"><td class="memItemLeft" align="right" valign="top">template class <a class="el" href="macros_8h.html#a0c2b2b9ef0ccf8db12f940291bea9246">WEBCFACE_IMPORT</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="value_8h.html#a0059852b01ab4b6ed69777cfc7c75937">EventTarget&lt; Value &gt;</a></td></tr>
+<tr class="separator:a0059852b01ab4b6ed69777cfc7c75937"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Function Documentation</h2>
+<a id="aae99adfc828ae4ed2b16b65c432d20d1" name="aae99adfc828ae4ed2b16b65c432d20d1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aae99adfc828ae4ed2b16b65c432d20d1">&#9670;&#160;</a></span>operator&lt;&lt;()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="macros_8h.html#a47af057bda855b54c212e97ffccdca01">WEBCFACE_DLL</a> std::ostream &amp; operator&lt;&lt; </td>
+          <td>(</td>
+          <td class="paramtype">std::ostream &amp;&#160;</td>
+          <td class="paramname"><em>os</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classValue.html">Value</a> &amp;&#160;</td>
+          <td class="paramname"><em>data</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Valueをostreamに渡すとValueの中身を表示 </p>
+<p>1.8〜 複数の値に対応 &amp; 受信してない時nullと表示するようにした </p>
+
+</div>
+</div>
+<h2 class="groupheader">Variable Documentation</h2>
+<a id="a0059852b01ab4b6ed69777cfc7c75937" name="a0059852b01ab4b6ed69777cfc7c75937"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0059852b01ab4b6ed69777cfc7c75937">&#9670;&#160;</a></span>EventTarget&lt; Value &gt;</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">template class <a class="el" href="macros_8h.html#a0c2b2b9ef0ccf8db12f940291bea9246">WEBCFACE_IMPORT</a> <a class="el" href="classEventTarget.html">EventTarget</a>&lt; <a class="el" href="classValue.html">Value</a> &gt;</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">extern</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_e6fac88a17509a9ad709623cf2c100d8.html">webcface</a></li><li class="navelem"><a class="el" href="value_8h.html">value.h</a></li>
-    <li class="footer">Generated on Fri May 3 2024 10:48:15 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Fri May 3 2024 15:23:11 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

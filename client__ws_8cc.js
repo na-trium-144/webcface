@@ -1,7 +1,7 @@
 var client__ws_8cc =
 [
-    [ "close", "client__ws_8cc.html#ad3737c69794443fc89b776a4046ed01a", null ],
-    [ "init", "client__ws_8cc.html#a42b6818b5ca3b18f21327256ea07745f", null ],
-    [ "recv", "client__ws_8cc.html#a03b54eec38f4eb9b7bcd2a534595b089", null ],
-    [ "send", "client__ws_8cc.html#aa3a027c06e8d63f8dd0ec8ca96738704", null ]
+    [ "close", "client__ws_8cc.html#aabe4b5aafd0f51a45162ac1b335a9d56", null ],
+    [ "init", "client__ws_8cc.html#a75763237634a906fe2019fb2b2d8910c", null ],
+    [ "recv", "client__ws_8cc.html#a870976e815da9087cba66798173d1709", null ],
+    [ "send", "client__ws_8cc.html#a48d99d7d245c0f085c4052fe0a9794cf", null ]
 ];

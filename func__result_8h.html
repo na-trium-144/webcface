@@ -73,7 +73,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">WebCFace<span id="projectnumber">&#160;1.11.2</span>
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;1.11.3</span>
    </div>
    <div id="projectbrief">Web-based RPC &amp; UI Library</div>
   </td>
@@ -140,7 +140,6 @@ $(document).ready(function(){initNavTree('func__result_8h.html',''); initResizab
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#namespaces">Namespaces</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">func_result.h File Reference</div></div>
 </div><!--header-->
@@ -154,11 +153,11 @@ $(document).ready(function(){initNavTree('func__result_8h.html',''); initResizab
 <code>#include &lt;eventpp/callbacklist.h&gt;</code><br />
 <code>#include &quot;<a class="el" href="field_8h_source.html">field.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="val_8h_source.html">common/val.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="def_8h_source.html">common/def.h</a>&quot;</code><br />
+<code>#include &lt;webcface/common/def.h&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for func_result.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="func__result_8h__incl.svg" width="1886" height="344"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="func__result_8h__incl.svg" width="1886" height="271"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
@@ -170,37 +169,61 @@ This graph shows which files directly or indirectly include this file:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1FuncNotFound.html">FuncNotFound</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Funcの実行ができなかった場合発生する例外  <a href="structwebcface_1_1FuncNotFound.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structFuncNotFound.html">FuncNotFound</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Funcの実行ができなかった場合発生する例外  <a href="structFuncNotFound.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1AsyncFuncResult.html">AsyncFuncResult</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">非同期で実行した関数の実行結果を表す。  <a href="classwebcface_1_1AsyncFuncResult.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAsyncFuncResult.html">AsyncFuncResult</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">非同期で実行した関数の実行結果を表す。  <a href="classAsyncFuncResult.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1AsyncFuncResultSetter.html">AsyncFuncResultSetter</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">AsyncFuncResultの結果をセットする  <a href="structwebcface_1_1AsyncFuncResultSetter.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structAsyncFuncResultSetter.html">AsyncFuncResultSetter</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">AsyncFuncResultの結果をセットする  <a href="structAsyncFuncResultSetter.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1FuncCallHandle.html">FuncCallHandle</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFuncCallHandle.html">FuncCallHandle</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1FuncCallHandle_1_1HandleData.html">FuncCallHandle::HandleData</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
-Namespaces</h2></td></tr>
-<tr class="memitem:namespacewebcface" id="r_namespacewebcface"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface.html">webcface</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structFuncCallHandle_1_1HandleData.html">FuncCallHandle::HandleData</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a3b45f7bce732ee80d9a1346fa7fef32a" id="r_a3b45f7bce732ee80d9a1346fa7fef32a"><td class="memItemLeft" align="right" valign="top">auto &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface.html#a3b45f7bce732ee80d9a1346fa7fef32a">operator&lt;&lt;</a> (std::basic_ostream&lt; char &gt; &amp;os, const <a class="el" href="classwebcface_1_1AsyncFuncResult.html">AsyncFuncResult</a> &amp;r)</td></tr>
-<tr class="separator:a3b45f7bce732ee80d9a1346fa7fef32a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a65bb5f56a1829b52c49b3e96eb1ea09a" id="r_a65bb5f56a1829b52c49b3e96eb1ea09a"><td class="memItemLeft" align="right" valign="top">auto &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="func__result_8h.html#a65bb5f56a1829b52c49b3e96eb1ea09a">operator&lt;&lt;</a> (std::basic_ostream&lt; char &gt; &amp;os, const <a class="el" href="classAsyncFuncResult.html">AsyncFuncResult</a> &amp;data)</td></tr>
+<tr class="separator:a65bb5f56a1829b52c49b3e96eb1ea09a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Function Documentation</h2>
+<a id="a65bb5f56a1829b52c49b3e96eb1ea09a" name="a65bb5f56a1829b52c49b3e96eb1ea09a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a65bb5f56a1829b52c49b3e96eb1ea09a">&#9670;&#160;</a></span>operator&lt;&lt;()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto &amp; operator&lt;&lt; </td>
+          <td>(</td>
+          <td class="paramtype">std::basic_ostream&lt; char &gt; &amp;&#160;</td>
+          <td class="paramname"><em>os</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classAsyncFuncResult.html">AsyncFuncResult</a> &amp;&#160;</td>
+          <td class="paramname"><em>data</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_e6fac88a17509a9ad709623cf2c100d8.html">webcface</a></li><li class="navelem"><a class="el" href="func__result_8h.html">func_result.h</a></li>
-    <li class="footer">Generated on Fri May 3 2024 10:48:15 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Fri May 3 2024 15:23:11 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

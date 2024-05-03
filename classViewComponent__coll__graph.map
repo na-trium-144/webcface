@@ -1,0 +1,9 @@
+<map id="ViewComponent" name="ViewComponent">
+<area shape="rect" id="Node000001" title="Viewに表示する要素です" alt="" coords="84,168,213,193"/>
+<area shape="rect" id="Node000002" href="$structCommon_1_1ViewComponentBase.html" title=" " alt="" coords="5,93,167,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="107,128,141,166,136,169,103,131"/>
+<area shape="rect" id="Node000003" href="$classIdBase.html" title=" " alt="" coords="191,93,424,119"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="271,127,175,170,173,166,269,122"/>
+<area shape="rect" id="Node000004" href="$classIdBase.html" title=" " alt="" coords="226,5,389,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="310,45,310,93,305,93,305,45"/>
+</map>

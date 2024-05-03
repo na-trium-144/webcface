@@ -1,8 +1,8 @@
 var indexSectionsWithContent =
 {
-  0: "0123456789abcdefghijklmnopqrstuvwxy~そクグコサデバリロ切受実引文時環複設送通関",
+  0: "0123456789:abcdefghijklmnopqrstuvwxy~そクグコサデバリロ切受実引文時環複設送通関",
   1: "abcdefghilmpqrstvw",
-  2: "sw",
+  2: ":cfimsv",
   3: "0123479cdefilmqrstuvw",
   4: "abcdefghijlmnoprstuvw~",
   5: "abcdefghijklmnopqrstvw",
@@ -12,7 +12,7 @@ var indexSectionsWithContent =
   9: "cfi",
   10: "cmw",
   11: "cdfilmorstvw",
-  12: "w"
+  12: "c"
 };
 
 var indexSectionNames =

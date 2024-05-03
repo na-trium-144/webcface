@@ -11,7 +11,7 @@
 <!-- Node0 -->
 <g id="Node000000" class="node">
 <title>Node0</title>
-<g id="a_Node000000"><a xlink:href="structwebcface_1_1Common_1_1Canvas2DComponentBase.html" target="_top" xlink:title=" ">
+<g id="a_Node000000"><a xlink:href="structCommon_1_1Canvas2DComponentBase.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="156.5,-104.5 10.5,-104.5 10.5,-85.5 156.5,-85.5 156.5,-104.5"/>
 <text text-anchor="middle" x="83.5" y="-92.5" font-family="Helvetica,sans-Serif" font-size="10.00">Canvas2DComponentBase</text>
 </a>
@@ -20,7 +20,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:href="classwebcface_1_1Canvas2DComponent.html" target="_top" xlink:title="Canvas2Dの各要素を表すクラス。">
+<g id="a_Node000001"><a xlink:href="classCanvas2DComponent.html" target="_top" xlink:title="Canvas2Dの各要素を表すクラス。">
 <polygon fill="white" stroke="#666666" points="325,-67.5 203,-67.5 203,-48.5 325,-48.5 325,-67.5"/>
 <text text-anchor="middle" x="264" y="-55.5" font-family="Helvetica,sans-Serif" font-size="10.00">Canvas2DComponent</text>
 </a>
@@ -38,7 +38,7 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="structwebcface_1_1Common_1_1Canvas2DComponentBase.html" target="_top" xlink:title=" ">
+<g id="a_Node000002"><a xlink:href="structCommon_1_1Canvas2DComponentBase.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="156.5,-67.5 10.5,-67.5 10.5,-48.5 156.5,-48.5 156.5,-67.5"/>
 <text text-anchor="middle" x="83.5" y="-55.5" font-family="Helvetica,sans-Serif" font-size="10.00">Canvas2DComponentBase</text>
 </a>
@@ -56,7 +56,7 @@
 <!-- Node3 -->
 <g id="Node000003" class="node">
 <title>Node3</title>
-<g id="a_Node000003"><a xlink:href="classwebcface_1_1IdBase.html" target="_top" xlink:title=" ">
+<g id="a_Node000003"><a xlink:href="classIdBase.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="167,-30 0,-30 0,0 167,0 167,-30"/>
 <text text-anchor="start" x="8" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">IdBase&lt; Canvas2DComponent</text>
 <text text-anchor="middle" x="83.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">Type &gt;</text>

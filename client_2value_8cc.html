@@ -73,7 +73,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">WebCFace<span id="projectnumber">&#160;1.11.2</span>
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;1.11.3</span>
    </div>
    <div id="projectbrief">Web-based RPC &amp; UI Library</div>
   </td>
@@ -139,8 +139,8 @@ $(document).ready(function(){initNavTree('client_2value_8cc.html',''); initResiz
 
 <div class="header">
   <div class="summary">
-<a href="#namespaces">Namespaces</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#func-members">Functions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">value.cc File Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -156,24 +156,71 @@ Include dependency graph for value.cc:</div>
 <div class="center"><iframe scrolling="no" frameborder="0" src="client_2value_8cc__incl.svg" width="5306" height="564"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
-Namespaces</h2></td></tr>
-<tr class="memitem:namespacewebcface" id="r_namespacewebcface"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface.html">webcface</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:adee3d68a70be59fb6cfc97480b935199" id="r_adee3d68a70be59fb6cfc97480b935199"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface.html#adee3d68a70be59fb6cfc97480b935199">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="classwebcface_1_1Value.html">Value</a> &amp;data)</td></tr>
+<tr class="memitem:adee3d68a70be59fb6cfc97480b935199" id="r_adee3d68a70be59fb6cfc97480b935199"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="client_2value_8cc.html#adee3d68a70be59fb6cfc97480b935199">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="classValue.html">Value</a> &amp;data)</td></tr>
 <tr class="memdesc:adee3d68a70be59fb6cfc97480b935199"><td class="mdescLeft">&#160;</td><td class="mdescRight">Valueをostreamに渡すとValueの中身を表示  <br /></td></tr>
 <tr class="separator:adee3d68a70be59fb6cfc97480b935199"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:aa40b9d57375a4e1d62f5e5009b1946de" id="r_aa40b9d57375a4e1d62f5e5009b1946de"><td class="memItemLeft" align="right" valign="top"><a class="el" href="macros_8h.html#abe991b8f291782627a31118c688e123a">WEBCFACE_NS_BEGIN</a> template class <a class="el" href="macros_8h.html#a47af057bda855b54c212e97ffccdca01">WEBCFACE_DLL</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="client_2value_8cc.html#aa40b9d57375a4e1d62f5e5009b1946de">EventTarget&lt; Value &gt;</a></td></tr>
+<tr class="separator:aa40b9d57375a4e1d62f5e5009b1946de"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Function Documentation</h2>
+<a id="adee3d68a70be59fb6cfc97480b935199" name="adee3d68a70be59fb6cfc97480b935199"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adee3d68a70be59fb6cfc97480b935199">&#9670;&#160;</a></span>operator&lt;&lt;()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::ostream &amp; operator&lt;&lt; </td>
+          <td>(</td>
+          <td class="paramtype">std::ostream &amp;&#160;</td>
+          <td class="paramname"><em>os</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classValue.html">Value</a> &amp;&#160;</td>
+          <td class="paramname"><em>data</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Valueをostreamに渡すとValueの中身を表示 </p>
+<p>1.8〜 複数の値に対応 &amp; 受信してない時nullと表示するようにした </p>
+
+</div>
+</div>
+<h2 class="groupheader">Variable Documentation</h2>
+<a id="aa40b9d57375a4e1d62f5e5009b1946de" name="aa40b9d57375a4e1d62f5e5009b1946de"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa40b9d57375a4e1d62f5e5009b1946de">&#9670;&#160;</a></span>EventTarget&lt; Value &gt;</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="macros_8h.html#abe991b8f291782627a31118c688e123a">WEBCFACE_NS_BEGIN</a> template class <a class="el" href="macros_8h.html#a47af057bda855b54c212e97ffccdca01">WEBCFACE_DLL</a> <a class="el" href="classEventTarget.html">EventTarget</a>&lt; <a class="el" href="classValue.html">Value</a> &gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_db3a54907829b36871118d03417739cd.html">client</a></li><li class="navelem"><a class="el" href="client_2value_8cc.html">value.cc</a></li>
-    <li class="footer">Generated on Fri May 3 2024 10:48:15 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Fri May 3 2024 15:23:11 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

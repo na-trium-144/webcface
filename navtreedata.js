@@ -292,7 +292,7 @@ var NAVTREE =
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
       [ "Namespace Members", "namespacemembers.html", [
-        [ "All", "namespacemembers.html", "namespacemembers_dup" ],
+        [ "All", "namespacemembers.html", null ],
         [ "Functions", "namespacemembers_func.html", null ],
         [ "Variables", "namespacemembers_vars.html", null ],
         [ "Typedefs", "namespacemembers_type.html", null ],
@@ -318,6 +318,7 @@ var NAVTREE =
       [ "File Members", "globals.html", [
         [ "All", "globals.html", null ],
         [ "Functions", "globals_func.html", null ],
+        [ "Variables", "globals_vars.html", null ],
         [ "Typedefs", "globals_type.html", null ],
         [ "Macros", "globals_defs.html", null ]
       ] ]
@@ -328,32 +329,25 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"classwebcface_1_1AnonymousFunc.html#ae76af49a75f2e8e46aea1d4d1d7e9e5a",
-"classwebcface_1_1Canvas2DComponent.html",
-"classwebcface_1_1Canvas3DComponent.html#a2825b1d8821d30cae199a2423c3fc776",
-"classwebcface_1_1Common_1_1Arg.html#a45fb6de0b5002feb0203ac9f32f536c2",
-"classwebcface_1_1Common_1_1ImageWithCV.html#a4a1d9f9c9672697b42b5b22577ea1c13",
-"classwebcface_1_1Common_1_1ValAdaptor.html#a67ffc387e9b4058d4b3f7f7bf8d8a829",
-"classwebcface_1_1FuncCallHandle.html#a2c472ef405a65b5f7302be7bda3ab9ea",
-"classwebcface_1_1Image.html#a8954365ff9e8954832517ed39349fafe",
-"classwebcface_1_1Internal_1_1SyncDataStore1.html#a0f0971461fbd4ef7a1ccc6f9fedb554a",
-"classwebcface_1_1Log.html#ac2a701aed117691b0af187b9f029c83c",
-"classwebcface_1_1RobotModel.html#a5741907f34189b0f5ee7c5632b27cb8b",
-"classwebcface_1_1Text.html#a2703198fd7fd6f72b1a89786870f8a39",
-"classwebcface_1_1Value.html#a9c88743408969b1a351263596bd91a07",
-"classwebcface_1_1ViewComponent.html#a237b2153601b38352bfec5cbd156378f",
-"def__types_8h.html#a6c4a540976cc7e22e63548f378a588dc",
-"md_14__canvas2d.html#autotoc_md71",
-"namespacewebcface.html#acd1dd9e2d5f885ad3f73197cfa6b0185ad7488204e92ed01986284bef5650eb53",
-"namespacewebcface_1_1Message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484af898abe3b8c22f47ff430d58cbc09a80",
-"structwebcface_1_1Common_1_1Canvas3DComponentBase.html#a5b7790f6f999db195b4cb4a0b436bfc4",
-"structwebcface_1_1Common_1_1FuncInfo.html#af5ecd8dd216953fd75a23aef05f88630",
-"structwebcface_1_1Components_1_1Geometries_1_1Box.html",
-"structwebcface_1_1Components_1_1Geometries_1_1Polygon.html#a0d3f44541a8b177359992dfb19d9ccaa",
-"structwebcface_1_1Internal_1_1ClientData.html#aa4d0490f94c85fcb4e1d41b615f02f0c",
-"structwebcface_1_1Message_1_1FuncInfo_1_1Arg.html#a4d739cc5d335052eb9f5b2ca559b81d1",
-"structwebcface_1_1Message_1_1Res_3_01RobotModel_01_4.html#ad5a4760db27f8fcd5c4028bb15f80ad9",
-"structwebcface_1_1Server_1_1MemberData.html#a87a99f62a98bec91542c1bc1d1a18ba5"
+"classCanvas2D.html#a1d89c28bd42ba9a52da008bb69367171",
+"classClient.html#a5d1a2302b68ea7f1246b85979f15a5bd",
+"classCommon_1_1Point.html#ab014b6d294b9bc55f5b53f09e27647db",
+"classFunc.html#a99c1e26ea1fce7fbdbd4f1cb6771141b",
+"classInternal_1_1Canvas2DDataBuf.html#af7f30faf9f8fbfdaa320ce8a23300215",
+"classLog.html#a0522a651826ba6fcbb9ce86258e8fa30",
+"classServer_1_1Server.html#a1f54e5748653ec5b7e98b106713144fe",
+"classView.html#a3070ccf86f5a60632aee40ebc01b2b8c",
+"data__store2_8h.html#a19bd08458eaa080b9fb782422e2f907d",
+"md_10__value.html#autotoc_md38",
+"namespaceCommon.html#ab72e620a597e5f750b2c9b3391e84dedabdd166af3a63f7be696dd17a218a6ffb",
+"structAsyncFuncResultSetter.html#afc2fc06c9730225a1c2803ad722cac9c",
+"structCommon_1_1FuncInfo.html#ac9d6d95a4e2e215436396f43d83b0880",
+"structComponents_1_1Geometries_1_1Circle.html#a3abcf0571d81409b4c8043ae979fdab1",
+"structField.html#ab615d982a59b65cb084b6593fc0cece4",
+"structMessage_1_1Canvas2D_1_1Canvas2DComponent.html#aacb7b2f8e24a3ab13847d4b40584d20f",
+"structMessage_1_1Req_3_01Image_01_4.html#aad2f641d45be5c29d1ce11a6dbdac449",
+"structMessage_1_1Value.html#ad5a4760db27f8fcd5c4028bb15f80ad9",
+"val_8h.html#acc572ea980d434e6af0ac9f2e80a31cd"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
