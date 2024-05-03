@@ -4,7 +4,7 @@
 #include <vector>
 #include "member.h"
 #include "event_target.h"
-#include "common/def.h"
+#include <webcface/common/def.h>
 
 namespace spdlog {
 class logger;

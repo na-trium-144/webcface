@@ -3,7 +3,7 @@
 #include <memory>
 #include <cstdint>
 #include <stdexcept>
-#include "def.h"
+#include <webcface/common/def.h>
 
 // todo: cmakeなしでヘッダー読んだときにopencvの有無を判別する
 #if WEBCFACE_USE_OPENCV

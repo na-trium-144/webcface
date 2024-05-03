@@ -5,7 +5,7 @@
 #include <utility>
 #include "common/view.h"
 #include "event_target.h"
-#include "common/def.h"
+#include <webcface/common/def.h>
 #include "canvas_data.h"
 
 WEBCFACE_NS_BEGIN

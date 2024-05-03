@@ -8,7 +8,7 @@
 #include <type_traits>
 #include <concepts>
 #include "vector.h"
-#include "def.h"
+#include <webcface/common/def.h>
 
 WEBCFACE_NS_BEGIN
 inline namespace Common {

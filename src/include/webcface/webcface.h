@@ -7,7 +7,7 @@
 
 // ヘッダーの上下関係はここに書かれた順
 
-#include "common/def.h"
+#include <webcface/common/def.h>
 #include "wcf.h"
 
 #include "common/version.h"

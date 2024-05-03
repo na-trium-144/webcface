@@ -1,5 +1,5 @@
 #pragma once
-#include "common/def.h"
+#include <webcface/common/def.h>
 #include "common/robot_model.h"
 #include "field.h"
 #include "event_target.h"

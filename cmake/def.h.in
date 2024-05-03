@@ -1,5 +1,5 @@
 #pragma once
-#include "macros.h"
+#include <webcface/common/macros.h>
 #define WEBCFACE_STR(v) #v
 #define WEBCFACE_DEFAULT_PORT 7530
 #define WEBCFACE_DEFAULT_PORT_SI(port) WEBCFACE_STR(port)

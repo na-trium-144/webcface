@@ -2,7 +2,7 @@
 #include <vector>
 #include <optional>
 #include <stdexcept>
-#include "def.h"
+#include <webcface/common/def.h>
 #include "transform.h"
 #include "view.h"
 #include "canvas3d.h"

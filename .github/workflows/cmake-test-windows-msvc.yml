@@ -88,6 +88,8 @@ jobs:
         -DWEBCFACE_USE_OPENCV=${{matrix.use_opencv}}
         -DCMAKE_PREFIX_PATH=c:\tools\opencv\build\x64\vc16\lib
 
+    - run: Copy-Item build\include\webcface\common\def.h src\include\webcface\common\def.h
+    
     - name: Write test.cpp
       run: |
         Set-Content test.cpp "#include<webcface/webcface.h>"

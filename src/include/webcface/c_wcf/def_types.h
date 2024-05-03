@@ -1,5 +1,5 @@
 #pragma once
-#include "../common/def.h"
+#include <webcface/common/def.h>
 
 #ifdef __cplusplus
 extern "C" {

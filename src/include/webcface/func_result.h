@@ -8,7 +8,7 @@
 #include <eventpp/callbacklist.h>
 #include "field.h"
 #include "common/val.h"
-#include "common/def.h"
+#include <webcface/common/def.h>
 
 WEBCFACE_NS_BEGIN
 

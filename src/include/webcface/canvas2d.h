@@ -1,7 +1,7 @@
 #pragma once
 #include <concepts>
 #include <memory>
-#include "common/def.h"
+#include <webcface/common/def.h>
 #include "common/canvas2d.h"
 #include "event_target.h"
 #include "field.h"
