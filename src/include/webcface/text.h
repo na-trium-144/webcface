@@ -5,7 +5,7 @@
 #include <memory>
 #include "field.h"
 #include "event_target.h"
-#include "common/def.h"
+#include <webcface/common/def.h>
 #include "common/val.h"
 
 WEBCFACE_NS_BEGIN

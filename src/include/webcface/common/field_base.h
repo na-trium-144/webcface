@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-#include "def.h"
+#include <webcface/common/def.h>
 
 WEBCFACE_NS_BEGIN
 inline namespace Common {

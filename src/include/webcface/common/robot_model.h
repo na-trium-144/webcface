@@ -1,5 +1,5 @@
 #pragma once
-#include "def.h"
+#include <webcface/common/def.h>
 #include "view.h"
 #include "canvas3d.h"
 #include <string>

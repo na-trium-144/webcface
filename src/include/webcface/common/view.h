@@ -3,7 +3,7 @@
 #include <optional>
 #include <vector>
 #include "field_base.h"
-#include "def.h"
+#include <webcface/common/def.h>
 #include "val.h"
 
 WEBCFACE_NS_BEGIN

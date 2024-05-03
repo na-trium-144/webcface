@@ -100,14 +100,23 @@ if(MINGW)
     add_link_options(-Wl,--default-image-base-low)
 endif()
 
+# ver1.11.2以前はwebcface/common/def.hとversion.rcをsrcに書き込んでいたがそれを消す
+set(WEBCFACE_DEF_H_PATH include/webcface/common/def.h)
+set(WEBCFACE_VERSION_RC_PATH version.rc)
+if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/src/${WEBCFACE_DEF_H_PATH})
+    file(REMOVE ${CMAKE_CURRENT_SOURCE_DIR}/src/${WEBCFACE_DEF_H_PATH})
+endif()
 configure_file(
     cmake/def.h.in
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/include/webcface/common/def.h
+    ${CMAKE_CURRENT_BINARY_DIR}/${WEBCFACE_DEF_H_PATH}
     @ONLY
 )
+if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/src/${WEBCFACE_VERSION_RC_PATH})
+    file(REMOVE ${CMAKE_CURRENT_SOURCE_DIR}/src/${WEBCFACE_VERSION_RC_PATH})
+endif()
 configure_file(
     cmake/version.rc.in
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/version.rc
+    ${CMAKE_CURRENT_BINARY_DIR}/${WEBCFACE_VERSION_RC_PATH}
     @ONLY
 )
 
@@ -433,13 +442,14 @@ list(APPEND TEST_SRC
     ${CPP_DIR}/test/c_wcf_test.cc
 )
 if(WIN32)
-    set(VERSION_RC ${CPP_DIR}/version.rc)
+    set(VERSION_RC ${CMAKE_CURRENT_BINARY_DIR}/${WEBCFACE_VERSION_RC_PATH})
 else()
     set(VERSION_RC "")
 endif()
 
 set(INCLUDE_DIR
     $<BUILD_INTERFACE:${CPP_DIR}/include>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>
     $<INSTALL_INTERFACE:include>
 )
 
@@ -596,6 +606,9 @@ if(WEBCFACE_INSTALL)
         DESTINATION lib/cmake/${PROJECT_NAME}
     )
     install(DIRECTORY ${CPP_DIR}/include/
+        DESTINATION include
+    )
+    install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/include/
         DESTINATION include
     )
     if(WEBCFACE_USE_OPENCV)

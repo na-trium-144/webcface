@@ -7,7 +7,7 @@
 #include <stdexcept>
 #include <concepts>
 #include "event_target.h"
-#include "common/def.h"
+#include <webcface/common/def.h>
 #include "common/canvas3d.h"
 #include "common/robot_model.h"
 #include "robot_model.h"

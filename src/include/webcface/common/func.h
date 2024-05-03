@@ -7,7 +7,7 @@
 #include <ostream>
 #include <cstdint>
 #include "val.h"
-#include "def.h"
+#include <webcface/common/def.h>
 
 #ifdef min
 #pragma message(                                                               \

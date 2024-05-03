@@ -7,7 +7,7 @@
 #include "common/vector.h"
 #include "field.h"
 #include "event_target.h"
-#include "common/def.h"
+#include <webcface/common/def.h>
 
 WEBCFACE_NS_BEGIN
 namespace Internal {

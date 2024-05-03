@@ -3,7 +3,7 @@
 #include "common/func.h"
 #include "common/val.h"
 #include "func_result.h"
-#include "common/def.h"
+#include <webcface/common/def.h>
 
 WEBCFACE_NS_BEGIN
 namespace Internal {

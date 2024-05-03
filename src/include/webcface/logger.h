@@ -7,7 +7,7 @@
 #include <spdlog/sinks/stdout_color_sinks.h>
 #include "common/queue.h"
 #include "common/log.h"
-#include "common/def.h"
+#include <webcface/common/def.h>
 
 WEBCFACE_NS_BEGIN
 namespace Internal {
