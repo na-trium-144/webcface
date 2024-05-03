@@ -1,3 +1,8 @@
+## [1.11.2] - 2024-05-03
+### Fixed
+* MacOSでValAdaptorのコンパイルエラー修正 (#255)
+* Windowsでcanvas_dataのコンパイルエラー修正 (#257)
+
 ## [1.11.1] - 2024-04-30
 ### Added
 * Client::autoReconnect() (#254)
