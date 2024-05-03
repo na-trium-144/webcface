@@ -5,6 +5,13 @@
 #include "text.h"
 #include <memory>
 
+#ifdef min
+#pragma message(                                                               \
+    "warning: Disabling macro definition of 'min' and 'max', since they conflicts in webcface/canvas_data.h.")
+#undef min
+#undef max
+#endif
+
 WEBCFACE_NS_BEGIN
 namespace Internal {
 struct ClientData;
