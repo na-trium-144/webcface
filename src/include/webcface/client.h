@@ -49,7 +49,7 @@ class WEBCFACE_DLL Client : public Member {
                     int port = WEBCFACE_DEFAULT_PORT);
 
     explicit Client(const std::string &name,
-                    std::shared_ptr<Internal::ClientData> data);
+                    const std::shared_ptr<Internal::ClientData> &data);
 
     /*!
      * \brief サーバーに接続できているときtrueを返す

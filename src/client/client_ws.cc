@@ -13,7 +13,7 @@ WEBCFACE_NS_BEGIN
 namespace Internal {
 namespace WebSocket {
 
-void init(std::shared_ptr<Internal::ClientData> data) {
+void init(const std::shared_ptr<Internal::ClientData> &data) {
     if (data->host.empty()) {
         data->host = "127.0.0.1";
     }
@@ -93,7 +93,7 @@ void init(std::shared_ptr<Internal::ClientData> data) {
         }
     }
 }
-void close(std::shared_ptr<Internal::ClientData> data) {
+void close(const std::shared_ptr<Internal::ClientData> &data) {
     {
         std::lock_guard lock(data->connect_state_m);
         data->connected.store(false);
@@ -104,7 +104,7 @@ void close(std::shared_ptr<Internal::ClientData> data) {
         data->current_curl_handle = nullptr;
     }
 }
-void recv(std::shared_ptr<Internal::ClientData> data) {
+void recv(const std::shared_ptr<Internal::ClientData> &data) {
     CURL *handle = static_cast<CURL *>(data->current_curl_handle);
     CURLcode ret;
     // data->logger_internal->trace("recv");
@@ -156,17 +156,21 @@ void recv(std::shared_ptr<Internal::ClientData> data) {
         }
     } while (ret != CURLE_AGAIN);
 }
-void send(std::shared_ptr<Internal::ClientData> data, const std::string &msg) {
+void send(const std::shared_ptr<Internal::ClientData> &data,
+          const std::string &msg) {
     std::lock_guard ws_lock(data->ws_m);
     data->logger_internal->trace("sending message {} bytes", msg.size());
     std::size_t sent;
     CURL *handle = static_cast<CURL *>(data->current_curl_handle);
-    auto ret = curl_ws_send(handle, msg.c_str(), msg.size(), &sent, 0, CURLWS_BINARY);
-    if(ret != CURLE_OK){
-        data->logger_internal->error("error sending message {}", static_cast<int>(ret));
+    auto ret =
+        curl_ws_send(handle, msg.c_str(), msg.size(), &sent, 0, CURLWS_BINARY);
+    if (ret != CURLE_OK) {
+        data->logger_internal->error("error sending message {}",
+                                     static_cast<int>(ret));
     }
-    if(sent != msg.size()){
-        data->logger_internal->error("failed to send message (sent = {} bytes)", sent);
+    if (sent != msg.size()) {
+        data->logger_internal->error("failed to send message (sent = {} bytes)",
+                                     sent);
     }
     // data->logger_internal->trace("sending done");
 }
