@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <webcface/common/def.h>
+#include <webcface/encoding.h>
 
 WEBCFACE_NS_BEGIN
 inline namespace Common {
@@ -9,7 +10,7 @@ inline namespace Common {
  *
  */
 struct FieldBase {
-    std::string member_; //!< メンバー名
+    std::u8string member_; //!< メンバー名
 
     /*!
      * \brief フィールド名
@@ -17,13 +18,21 @@ struct FieldBase {
      * Memberなどフィールド名が不要なクラスでは使用しない
      *
      */
-    std::string field_;
+    std::u8string field_;
 
     FieldBase() = default;
-    FieldBase(std::string_view member, std::string_view field = "")
+    FieldBase(std::u8string_view member, std::u8string_view field = u8"")
         : member_(member), field_(field) {}
+    FieldBase(std::string_view member, std::string_view field = "")
+        : member_(Encoding::encode(member)), field_(Encoding::encode(field)) {}
+    FieldBase(std::wstring_view member, std::wstring_view field = L"")
+        : member_(Encoding::encodeW(member)), field_(Encoding::encodeW(field)) {}
+    FieldBase(const FieldBase &base, std::u8string_view field)
+        : member_(base.member_), field_(field) {}
     FieldBase(const FieldBase &base, std::string_view field)
-        : FieldBase(base.member_, field) {}
+        : member_(base.member_), field_(Encoding::encode(field)) {}
+    FieldBase(const FieldBase &base, std::wstring_view field)
+        : member_(base.member_), field_(Encoding::encodeW(field)) {}
 
     bool operator==(const FieldBase &rhs) const {
         return this->member_ == rhs.member_ && this->field_ == rhs.field_;
@@ -33,8 +42,6 @@ struct FieldBase {
 struct FieldBaseComparable : public FieldBase {
     FieldBaseComparable() = default;
     FieldBaseComparable(const FieldBase &base) : FieldBase(base) {}
-    FieldBaseComparable(std::string_view member, std::string_view field)
-        : FieldBase(member, field) {}
 
     bool operator==(const FieldBaseComparable &rhs) const {
         return this->member_ == rhs.member_ && this->field_ == rhs.field_;

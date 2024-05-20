@@ -397,6 +397,7 @@ list(APPEND WEBCFACE_SRC
     ${CPP_DIR}/client/client_ws.cc
     ${CPP_DIR}/client/data_store1.cc
     ${CPP_DIR}/client/data_store2.cc
+    ${CPP_DIR}/client/encoding.cc
     ${CPP_DIR}/client/field.cc
     ${CPP_DIR}/client/func.cc
     ${CPP_DIR}/client/func_listener.cc
