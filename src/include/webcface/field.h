@@ -15,7 +15,6 @@ struct ClientData;
 class Member;
 class Value;
 class Text;
-class Log;
 class View;
 class Image;
 class Func;

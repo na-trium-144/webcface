@@ -97,8 +97,8 @@ EventTarget<Member> Client::onMemberEntry() {
     std::lock_guard lock(data->event_m);
     return EventTarget<Member>{&data->member_entry_event};
 }
-void Client::setDefaultRunCond(FuncWrapperType wrapper) {
-    data->default_func_wrapper = std::move(wrapper);
+void Client::setDefaultRunCond(const FuncWrapperType &wrapper) {
+    data->default_func_wrapper = wrapper;
 }
 std::shared_ptr<LoggerSink> Client::loggerSink() { return data->logger_sink; }
 std::shared_ptr<spdlog::logger> Client::logger() { return data->logger; }
@@ -329,15 +329,21 @@ std::string Internal::ClientData::syncData(bool is_first,
     }
 
     if (log_store) {
-        auto log_s = *log_store->getRecv(self_member_name);
-        if ((log_s->size() > 0 && is_first) || log_s->size() > log_sent_lines) {
-            auto begin = log_s->begin();
-            auto end = log_s->end();
-            if (!is_first) {
-                begin += static_cast<int>(log_sent_lines);
+        auto log_self_opt = log_store->getRecv(self_member_name);
+        if (!log_self_opt) [[unlikely]] {
+            throw std::runtime_error("self log data is null");
+        } else {
+            auto &log_s = *log_self_opt;
+            if ((log_s->size() > 0 && is_first) ||
+                log_s->size() > log_sent_lines) {
+                auto begin = log_s->begin();
+                auto end = log_s->end();
+                if (!is_first) {
+                    begin += static_cast<int>(log_sent_lines);
+                }
+                log_sent_lines = log_s->size();
+                Message::pack(buffer, len, Message::Log{begin, end});
             }
-            log_sent_lines = log_s->size();
-            Message::pack(buffer, len, Message::Log{begin, end});
         }
     }
     for (const auto &v : func_store.transferSend(is_first)) {

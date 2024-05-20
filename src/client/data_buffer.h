@@ -29,7 +29,12 @@ class DataSetBuffer {
     DataSetBuffer &operator=(const DataSetBuffer &) = delete;
     DataSetBuffer &operator=(DataSetBuffer &&) = delete;
 
-    virtual ~DataSetBuffer() { onDestroy(); }
+    virtual ~DataSetBuffer() noexcept {
+        try {
+            onDestroy();
+        } catch (...) {
+        }
+    }
     void onDestroy() {
         if (!target_.data_w.expired() && target_.isSelf()) {
             sync();
@@ -154,7 +159,12 @@ class Canvas2DDataBuf final : public DataSetBuffer<Canvas2DComponent> {
      * ~DataSetBuffer() の時点ではすでにCanvas2DDataBufが破棄されているので、
      * その前にonDestroyを呼ぶ
      */
-    ~Canvas2DDataBuf() override { onDestroy(); }
+    ~Canvas2DDataBuf() noexcept override {
+        try {
+            onDestroy();
+        } catch (...) {
+        }
+    }
 };
 
 } // namespace Internal

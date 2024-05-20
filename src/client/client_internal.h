@@ -32,6 +32,9 @@
 #include <webcface/common/def.h>
 
 WEBCFACE_NS_BEGIN
+
+class Log;
+
 namespace Internal {
 
 WEBCFACE_DLL void messageThreadMain(const std::shared_ptr<ClientData> &data);

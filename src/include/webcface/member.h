@@ -14,6 +14,8 @@ namespace Internal {
 struct ClientData;
 }
 
+class Log;
+
 /*!
  * \brief Memberを指すクラス
  *

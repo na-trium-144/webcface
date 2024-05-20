@@ -24,7 +24,8 @@ std::string_view Field::lastName() const {
     }
 }
 Field Field::parent() const {
-    int l = this->field_.size() - lastName().size() - 1;
+    int l = static_cast<int>(this->field_.size()) -
+            static_cast<int>(lastName().size()) - 1;
     if (l < 0) {
         l = 0;
     }

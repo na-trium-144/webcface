@@ -42,10 +42,10 @@ wcfStatus wcfTextGet(wcfClient *wcli, const char *member, const char *field,
         const std::string &str2 = *str;
         int copy_size = (size - 1) < static_cast<int>(str2.size())
                             ? (size - 1)
-                            : str2.size();
+                            : static_cast<int>(str2.size());
         std::memcpy(text, str2.c_str(), copy_size * sizeof(char));
         text[copy_size] = 0;
-        *recv_size = str2.size();
+        *recv_size = static_cast<int>(str2.size());
         return WCF_OK;
     } else {
         return WCF_NOT_FOUND;

@@ -69,8 +69,7 @@ std::optional<Text> ViewComponent::bind() const {
 }
 
 std::optional<RobotModel> Canvas3DComponent::robotModel() const {
-    if (field_base_ != std::nullopt &&
-        type_ == Canvas3DComponentType::robot_model) {
+    if (field_base_ && type_ == Canvas3DComponentType::robot_model) {
         return Field{data_w, field_base_->member_, field_base_->field_};
     } else {
         return std::nullopt;
@@ -134,7 +133,7 @@ Canvas2DComponent::lockTmp(const std::weak_ptr<Internal::ClientData> &data_w,
 }
 
 std::optional<Func> Canvas2DComponent::onClick() const {
-    if (on_click_func_ != std::nullopt) {
+    if (on_click_func_) {
         return Field{data_w, on_click_func_->member_, on_click_func_->field_};
     } else {
         return std::nullopt;

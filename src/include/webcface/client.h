@@ -152,7 +152,7 @@ class WEBCFACE_DLL Client : public Member {
      * FuncWrapperがnullptrなら何もせずsetした関数を実行する
      *
      */
-    void setDefaultRunCond(FuncWrapperType wrapper);
+    void setDefaultRunCond(const FuncWrapperType &wrapper);
 
     /*!
      * \brief デフォルトのFuncWrapperを nullptr にする

@@ -3,6 +3,7 @@
 #include "common/canvas3d.h"
 #include "func.h"
 #include "text.h"
+#include "webcface/common/view.h"
 #include <memory>
 
 WEBCFACE_NS_BEGIN
@@ -166,7 +167,7 @@ class WEBCFACE_DLL ViewComponent : protected Common::ViewComponentBase,
      */
     ViewComponent &bind(const InputRef &ref) {
         on_click_func_tmp = std::make_shared<AnonymousFunc>(
-            [ref](ValAdaptor val) { ref.lockedField().set(val); });
+            [ref](const ValAdaptor &val) { ref.lockedField().set(val); });
         text_ref_tmp = ref;
         return *this;
     }
@@ -660,54 +661,38 @@ class WEBCFACE_DLL Canvas2DComponent : protected Common::Canvas2DComponentBase,
 template <bool V, bool C2, bool C3>
 class TemporalComponent {
   protected:
-    std::optional<std::conditional_t<V, ViewComponent, int>> component_v;
-    std::optional<std::conditional_t<C2, Canvas2DComponent, int>> component_2d;
-    std::optional<std::conditional_t<C3, Canvas3DComponent, int>> component_3d;
+    std::conditional_t<V, ViewComponent, int> component_v;
+    std::conditional_t<C2, Canvas2DComponent, int> component_2d;
+    std::conditional_t<C3, Canvas3DComponent, int> component_3d;
 
   public:
     TemporalComponent() = default;
+    template <typename VT, typename C2T, typename C3T>
+    TemporalComponent(VT v_type, C2T c2_type, C3T c3_type)
+        : component_v(v_type), component_2d(c2_type), component_3d(c3_type) {}
     explicit TemporalComponent(const std::string &text)
         requires(V && C2 && !C3)
-    {
-        initV(ViewComponentType::text);
-        component_v->text(text);
-        init2(Canvas2DComponentType::text);
-        component_2d->text(text);
-    }
-    TemporalComponent &initV(ViewComponentType type)
-        requires V
-    {
-        component_v.emplace(type);
-        return *this;
-    }
-    TemporalComponent &init2(Canvas2DComponentType type)
-        requires C2
-    {
-        component_2d.emplace(type);
-        return *this;
-    }
-    TemporalComponent &init3(Canvas3DComponentType type)
-        requires C3
-    {
-        component_3d.emplace(type);
-        return *this;
+        : TemporalComponent(ViewComponentType::text,
+                            Canvas2DComponentType::text, 0) {
+        component_v.text(text);
+        component_2d.text(text);
     }
     ViewComponent &toV()
         requires V
     {
-        return *component_v;
+        return component_v;
     }
     Canvas2DComponent &to2()
         requires C2
     {
         // component_2d->geometry(std::move(static_cast<Geometry &>(*this)));
-        return *component_2d;
+        return component_2d;
     }
     Canvas3DComponent &to3()
         requires C3
     {
         // component_3d->geometry(std::move(static_cast<Geometry &>(*this)));
-        return *component_3d;
+        return component_3d;
     }
     /*!
      * \brief クリック時に実行される関数を設定 (Viewまたは2D)
@@ -721,10 +706,10 @@ class TemporalComponent {
         requires(V || C2)
     {
         if constexpr (V) {
-            component_v->onClick(std::forward<T>(func));
+            component_v.onClick(std::forward<T>(func));
         }
         if constexpr (C2) {
-            component_2d->onClick(std::forward<T>(func));
+            component_2d.onClick(std::forward<T>(func));
         }
         return *this;
     }
@@ -736,10 +721,10 @@ class TemporalComponent {
         requires(C2 || C3)
     {
         if constexpr (C2) {
-            component_2d->origin(origin);
+            component_2d.origin(origin);
         }
         if constexpr (C3) {
-            component_3d->origin(origin);
+            component_3d.origin(origin);
         }
         return *this;
     }
@@ -752,13 +737,13 @@ class TemporalComponent {
         requires(V || C2 || C3)
     {
         if constexpr (V) {
-            component_v->textColor(c);
+            component_v.textColor(c);
         }
         if constexpr (C2) {
-            component_2d->color(c);
+            component_2d.color(c);
         }
         if constexpr (C3) {
-            component_3d->color(c);
+            component_3d.color(c);
         }
         return *this;
     }
@@ -771,10 +756,10 @@ class TemporalComponent {
         requires(V || C2)
     {
         if constexpr (V) {
-            component_v->textColor(c);
+            component_v.textColor(c);
         }
         if constexpr (C2) {
-            component_2d->fillColor(c);
+            component_2d.fillColor(c);
         }
         return *this;
     }
@@ -786,10 +771,10 @@ class TemporalComponent {
         requires(V || C2)
     {
         if constexpr (V) {
-            component_v->bgColor(c);
+            component_v.bgColor(c);
         }
         if constexpr (C2) {
-            component_2d->fillColor(c);
+            component_2d.fillColor(c);
         }
         return *this;
     }
@@ -811,7 +796,7 @@ class TemporalComponent {
         requires(C2)
     {
         if constexpr (C2) {
-            component_2d->strokeWidth(s);
+            component_2d.strokeWidth(s);
         }
         return *this;
     }
@@ -823,7 +808,7 @@ class TemporalComponent {
         requires(C2)
     {
         if constexpr (C2) {
-            component_2d->textSize(s);
+            component_2d.textSize(s);
         }
         return *this;
     }
@@ -832,11 +817,11 @@ class TemporalGeometry : public TemporalComponent<false, true, true>,
                          public Geometry {
   public:
     TemporalGeometry(GeometryType type, std::vector<double> &&properties)
-        : TemporalComponent(), Geometry(type, std::move(properties)) {
-        this->init2(Canvas2DComponentType::geometry);
-        this->init3(Canvas3DComponentType::geometry);
-        this->component_2d->geometry(static_cast<Geometry &>(*this));
-        this->component_3d->geometry(static_cast<Geometry &>(*this));
+        : TemporalComponent(0, Canvas2DComponentType::geometry,
+                            Canvas3DComponentType::geometry),
+          Geometry(type, std::move(properties)) {
+        this->component_2d.geometry(static_cast<Geometry &>(*this));
+        this->component_3d.geometry(static_cast<Geometry &>(*this));
     }
 };
 

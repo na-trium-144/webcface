@@ -39,7 +39,7 @@ Func &Func::free() {
 }
 
 Func &Func::set(const std::vector<Arg> &args, ValType return_type,
-                std::function<void(FuncCallHandle)> callback) {
+                const std::function<void(FuncCallHandle)> &callback) {
     return setRaw({return_type, args,
                    [args_size = args.size(),
                     callback](const std::vector<ValAdaptor> &args_vec) {
@@ -78,7 +78,7 @@ Func &Func::set(const std::vector<Arg> &args, ValType return_type,
 // }
 
 void Func::runImpl(std::size_t caller_id,
-                   std::vector<ValAdaptor> args_vec) const {
+                   const std::vector<ValAdaptor> &args_vec) const {
     auto data = dataLock();
     auto func_info = data->func_store.getRecv(*this);
     if (func_info) {
@@ -144,66 +144,69 @@ std::vector<Arg> Func::args() const {
 
 Func &Func::setArgs(const std::vector<Arg> &args) {
     auto func_info = setCheck()->func_store.getRecv(*this);
-    if (func_info == std::nullopt) {
+    if (!func_info) {
         throw std::invalid_argument("setArgs failed: Func not set");
+    } else {
+        if ((*func_info)->args.size() != args.size()) {
+            throw std::invalid_argument(
+                "setArgs failed: Number of args does not match, size: " +
+                std::to_string(args.size()) +
+                " actual: " + std::to_string((*func_info)->args.size()));
+        }
+        for (std::size_t i = 0; i < args.size(); i++) {
+            (*func_info)->args[i].mergeConfig(args[i]);
+        }
+        return *this;
     }
-    if ((*func_info)->args.size() != args.size()) {
-        throw std::invalid_argument(
-            "setArgs failed: Number of args does not match, size: " +
-            std::to_string(args.size()) +
-            " actual: " + std::to_string((*func_info)->args.size()));
-    }
-    for (std::size_t i = 0; i < args.size(); i++) {
-        (*func_info)->args[i].mergeConfig(args[i]);
-    }
-    return *this;
 }
 
 FuncWrapperType Func::getDefaultFuncWrapper() const {
     return dataLock()->default_func_wrapper;
 }
 
-Func &Func::setRunCond(FuncWrapperType wrapper) {
+Func &Func::setRunCond(const FuncWrapperType &wrapper) {
     auto func_info = setCheck()->func_store.getRecv(*this);
-    if (func_info == std::nullopt) {
+    if (!func_info) {
         throw std::invalid_argument("setRunCond failed: Func not set");
+    } else {
+        (*func_info)->func_wrapper = wrapper;
+        return *this;
     }
-    (*func_info)->func_wrapper = wrapper;
-    return *this;
 }
 
 FuncWrapperType
 FuncWrapper::runCondOnSync(const std::weak_ptr<Internal::ClientData> &data) {
-    return [data](FuncType callback, const std::vector<ValAdaptor> &args) {
-        auto data_s = data.lock();
-        if (data_s) {
-            auto sync = std::make_shared<Internal::FuncOnSync>();
-            data_s->func_sync_queue.push(sync);
-            struct ScopeGuard {
-                std::shared_ptr<Internal::FuncOnSync> sync;
-                explicit ScopeGuard(
-                    const std::shared_ptr<Internal::FuncOnSync> &sync)
-                    : sync(sync) {
-                    sync->wait();
+    return
+        [data](const FuncType &callback, const std::vector<ValAdaptor> &args) {
+            auto data_s = data.lock();
+            if (data_s) {
+                auto sync = std::make_shared<Internal::FuncOnSync>();
+                data_s->func_sync_queue.push(sync);
+                struct ScopeGuard {
+                    std::shared_ptr<Internal::FuncOnSync> sync;
+                    explicit ScopeGuard(
+                        const std::shared_ptr<Internal::FuncOnSync> &sync)
+                        : sync(sync) {
+                        sync->wait();
+                    }
+                    ~ScopeGuard() { sync->done(); }
+                };
+                {
+                    ScopeGuard scope_guard{sync};
+                    return callback(args);
                 }
-                ~ScopeGuard() { sync->done(); }
-            };
-            {
-                ScopeGuard scope_guard{sync};
-                return callback(args);
+            } else {
+                throw std::runtime_error("cannot access client data");
             }
-        } else {
-            throw std::runtime_error("cannot access client data");
-        }
-        return ValAdaptor{};
-    };
+            return ValAdaptor{};
+        };
 }
 
 std::string AnonymousFunc::fieldNameTmp() {
     static int id = 0;
     return "..tmp" + std::to_string(id++);
 }
-AnonymousFunc &AnonymousFunc::operator=(AnonymousFunc &&other) {
+AnonymousFunc &AnonymousFunc::operator=(AnonymousFunc &&other) noexcept {
     this->func_setter = std::move(other.func_setter);
     this->base_init = other.base_init;
     this->Func::operator=(std::move(static_cast<Func &>(other)));
@@ -220,10 +223,15 @@ void AnonymousFunc::lockTo(Func &target) {
         this->field_ = fieldNameTmp();
         func_setter(*this);
     }
-    target.setRaw(dataLock()->func_store.getRecv(*this).value());
-    this->free();
-    func_setter = nullptr;
-    base_init = false;
+    auto func_info = dataLock()->func_store.getRecv(*this);
+    if (!func_info) [[unlikely]] {
+        throw std::runtime_error("AnonymousFunc not set");
+    } else {
+        target.setRaw(*func_info);
+        this->free();
+        func_setter = nullptr;
+        base_init = false;
+    }
 }
 
 WEBCFACE_NS_END

@@ -191,7 +191,7 @@ class ValAdaptor {
             case 0:
                 return std::get<0>(as_val);
             default:
-                return std::get<1>(as_val);
+                return static_cast<double>(std::get<1>(as_val));
             }
         }
     }
@@ -258,9 +258,7 @@ class ValAdaptor {
     }
 
     bool operator==(const ValAdaptor &other) const {
-        if (type == ValType::string_ || other.type == ValType::string_) {
-            return this->asStringRef() == other.asStringRef();
-        } else if (type == ValType::double_ || other.type == ValType::double_) {
+        if (type == ValType::double_ || other.type == ValType::double_) {
             return this->as<double>() == other.as<double>();
         } else if (type == ValType::int_ || other.type == ValType::int_) {
             return this->as<std::int64_t>() == other.as<std::int64_t>();
@@ -274,14 +272,14 @@ class ValAdaptor {
 
     template <typename T>
         requires(std::constructible_from<ValAdaptor, T> &&
-                 !std::same_as<ValAdaptor, T>) bool
-    operator==(const T &other) const {
+                 !std::same_as<ValAdaptor, T>)
+    bool operator==(const T &other) const {
         return *this == ValAdaptor(other);
     }
     template <typename T>
         requires(std::constructible_from<ValAdaptor, T> &&
-                 !std::same_as<ValAdaptor, T>) bool
-    operator!=(const T &other) const {
+                 !std::same_as<ValAdaptor, T>)
+    bool operator!=(const T &other) const {
         return !(*this == other);
     }
 };

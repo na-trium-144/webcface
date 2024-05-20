@@ -171,11 +171,13 @@ class Arg {
 };
 inline auto &operator<<(std::basic_ostream<char> &os, const Arg &arg) {
     os << arg.name() << "(type=" << arg.type();
-    if (arg.min()) {
-        os << ", min=" << *arg.min();
+    auto min_ = arg.min();
+    if (min_) {
+        os << ", min=" << *min_;
     }
-    if (arg.max()) {
-        os << ", max=" << *arg.max();
+    auto max_ = arg.max();
+    if (max_) {
+        os << ", max=" << *max_;
     }
     if (arg.option().size() > 0) {
         os << ", option={";
@@ -211,7 +213,7 @@ struct FuncInfo {
     FuncInfo()
         : return_type(ValType::none_), args(), func_impl(), func_wrapper() {}
     FuncInfo(ValType return_type, const std::vector<Arg> &args,
-             FuncType func_impl, FuncWrapperType func_wrapper)
+             const FuncType &func_impl, const FuncWrapperType &func_wrapper)
         : return_type(return_type), args(args), func_impl(func_impl),
           func_wrapper(func_wrapper) {}
 
@@ -220,7 +222,8 @@ struct FuncInfo {
      *
      */
     template <typename... Args, typename Ret>
-    explicit FuncInfo(std::function<Ret(Args...)> func, FuncWrapperType wrapper)
+    explicit FuncInfo(std::function<Ret(Args...)> func,
+                      const FuncWrapperType &wrapper)
         : return_type(valTypeOf<Ret>()), args({Arg{valTypeOf<Args>()}...}),
           func_impl([func](const std::vector<ValAdaptor> &args_vec) {
               std::tuple<std::remove_const_t<std::remove_reference_t<Args>>...>
