@@ -30,9 +30,8 @@ set(WEBCFACE_TEST_TIMEOUT 10 CACHE STRING "connection timeout in test")
 option(WEBCFACE_SHARED "build shared library" ON)
 option(WEBCFACE_PIC "enable PIC for shared library" ${WEBCFACE_SHARED})
 option(WEBCFACE_USE_OPENCV "use opencv to enable image processing feature" ON)
-set(WEBCFACE_VERSION_SUFFIX "git" CACHE STRING
-    "version suffix ('git' to get automatically from git describe command)"
-)
+set(WEBCFACE_VERSION_SUFFIX "git" CACHE STRING "version suffix ('git' to get automatically from git describe command)")
+set(WEBCFACE_CLANG_TIDY "" CACHE STRING "clang-tidy path (or empty to disable clang-tidy)")
 option(WEBCFACE_DOWNLOAD_WEBUI "download and install webui" ON)
 option(WEBCFACE_FIND_LIBS "find and use msgpack-cxx, eventpp and spdlog installation" ON)
 option(WEBCFACE_FIND_AMENT "find and use ament_cmake installation" ON)
@@ -501,6 +500,10 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
     VERSION ${PROJECT_VERSION}
     SOVERSION ${WEBCFACE_SOVERSION}
 )
+if(NOT "${WEBCFACE_CLANG_TIDY}" STREQUAL "")
+    set(CLANG_TIDY_CMD "${WEBCFACE_CLANG_TIDY}" "--header-filter=${CMAKE_CURRENT_SOURCE_DIR}/src")
+    set_target_properties(${PROJECT_NAME} PROPERTIES CXX_CLANG_TIDY "${CLANG_TIDY_CMD}")
+endif()
 add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 
 add_library(wcf INTERFACE)
