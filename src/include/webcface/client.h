@@ -49,7 +49,7 @@ class WEBCFACE_DLL Client : public Member {
                     int port = WEBCFACE_DEFAULT_PORT);
 
     explicit Client(const std::string &name,
-                    std::shared_ptr<Internal::ClientData> data);
+                    const std::shared_ptr<Internal::ClientData> &data);
 
     /*!
      * \brief サーバーに接続できているときtrueを返す
@@ -152,7 +152,7 @@ class WEBCFACE_DLL Client : public Member {
      * FuncWrapperがnullptrなら何もせずsetした関数を実行する
      *
      */
-    void setDefaultRunCond(FuncWrapperType wrapper);
+    void setDefaultRunCond(const FuncWrapperType &wrapper);
 
     /*!
      * \brief デフォルトのFuncWrapperを nullptr にする

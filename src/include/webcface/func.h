@@ -24,7 +24,7 @@ runCondOnSync(const std::weak_ptr<Internal::ClientData> &data);
  */
 template <typename ScopeGuard>
 inline FuncWrapperType runCondScopeGuard() {
-    static auto wrapper = [](FuncType callback,
+    static auto wrapper = [](const FuncType &callback,
                              const std::vector<ValAdaptor> &args) {
         ScopeGuard scope_guard;
         return callback(args);
@@ -91,7 +91,8 @@ class WEBCFACE_DLL Func : protected Field {
     }
     FuncWrapperType getDefaultFuncWrapper() const;
 
-    void runImpl(std::size_t caller_id, std::vector<ValAdaptor> args_vec) const;
+    void runImpl(std::size_t caller_id,
+                 const std::vector<ValAdaptor> &args_vec) const;
 
   public:
     /*!
@@ -120,7 +121,7 @@ class WEBCFACE_DLL Func : protected Field {
      *
      */
     Func &set(const std::vector<Arg> &args, ValType return_type,
-              std::function<void(FuncCallHandle)> callback);
+              const std::function<void(FuncCallHandle)> &callback);
 
     /*!
      * \brief 関数を関数リストで非表示にする
@@ -221,7 +222,7 @@ class WEBCFACE_DLL Func : protected Field {
      * std::invalid_argument)
      *
      */
-    Func &setRunCond(FuncWrapperType wrapper);
+    Func &setRunCond(const FuncWrapperType &wrapper);
     /*!
      * \brief FuncWrapperを nullptr にする
      *
@@ -298,7 +299,7 @@ class WEBCFACE_DLL AnonymousFunc : public Func {
 
     AnonymousFunc(const AnonymousFunc &) = delete;
     AnonymousFunc &operator=(const AnonymousFunc &) = delete;
-    AnonymousFunc(AnonymousFunc &&other) { *this = std::move(other); }
+    AnonymousFunc(AnonymousFunc &&other) noexcept { *this = std::move(other); }
     /*!
      * \brief otherの中身を移動し、otherは未初期化にする
      * \since ver1.9
@@ -306,7 +307,7 @@ class WEBCFACE_DLL AnonymousFunc : public Func {
      * 未初期化 == func_setterが空でbase_initがfalse
      *
      */
-    AnonymousFunc &operator=(AnonymousFunc &&other);
+    AnonymousFunc &operator=(AnonymousFunc &&other) noexcept;
     /*!
      * \brief targetに関数を移動
      *

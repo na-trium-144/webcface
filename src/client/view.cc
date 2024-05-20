@@ -105,15 +105,21 @@ int Internal::ViewBuf::sync() {
 }
 
 View &View::operator=(const View &rhs) {
+    if (this == &rhs) {
+        return *this;
+    }
     this->Field::operator=(rhs);
     this->EventTarget<View>::operator=(rhs);
     this->sb = rhs.sb;
     this->rdbuf(sb.get());
     return *this;
 }
-View &View::operator=(View &&rhs) {
-    this->Field::operator=(std::move(rhs));
-    this->EventTarget<View>::operator=(std::move(rhs));
+View &View::operator=(View &&rhs) noexcept {
+    if (this == &rhs) {
+        return *this;
+    }
+    this->Field::operator=(std::move(static_cast<Field &>(rhs)));
+    this->EventTarget<View>::operator=(rhs);
     this->sb = std::move(rhs.sb);
     this->rdbuf(sb.get());
     return *this;

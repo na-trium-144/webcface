@@ -2,7 +2,7 @@
 #include <webcface/func.h>
 
 static std::pair<wcfStatus, wcfMultiVal *>
-resultToCVal(AsyncFuncResult async_res) {
+resultToCVal(const AsyncFuncResult &async_res) {
     ValAdaptor result_val;
     wcfStatus status;
     try {
@@ -126,7 +126,7 @@ wcfStatus wcfFuncSet(wcfClient *wcli, const char *field, const int *arg_types,
         args[i].type(static_cast<ValType>(arg_types[i]));
     }
     wcli_->func(field).set(args, static_cast<ValType>(return_type),
-                           [callback, user_data](FuncCallHandle handle) {
+                           [callback, user_data](const FuncCallHandle &handle) {
                                wcfFuncCallHandle *whp = createHandle(handle);
                                callback(whp, user_data);
                                wcfFuncRespond(whp, nullptr);

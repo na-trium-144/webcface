@@ -240,19 +240,29 @@ class WEBCFACE_DLL InputRef {
      *
      */
     const ValAdaptor &get() const {
+        auto &val = state->val;
         if (expired()) {
-            if (!state->val) {
-                state->val.emplace();
-            } else if (!state->val->empty()) {
-                state->val.emplace();
+            if (val) {
+                if (val->empty()) {
+                    val.emplace();
+                }
+                return *val;
+            } else {
+                val.emplace();
+                return *val;
             }
         } else {
             auto new_val = state->field.get();
-            if (!state->val || *state->val != new_val) {
-                state->val = new_val;
+            if (val) {
+                if (*val != new_val) {
+                    val = new_val;
+                }
+                return *val;
+            } else {
+                val = new_val;
+                return *val;
             }
         }
-        return *state->val;
     }
 
     /*!

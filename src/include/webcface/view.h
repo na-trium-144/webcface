@@ -38,9 +38,9 @@ class WEBCFACE_DLL View : protected Field,
     View(const Field &base, const std::string &field)
         : View(Field{base, field}) {}
     View(const View &rhs) : View() { *this = rhs; }
-    View(View &&rhs) : View() { *this = std::move(rhs); }
+    View(View &&rhs) noexcept : View() { *this = std::move(rhs); }
     View &operator=(const View &rhs);
-    View &operator=(View &&rhs);
+    View &operator=(View &&rhs) noexcept;
     ~View() override;
 
     friend Internal::DataSetBuffer<ViewComponent>;

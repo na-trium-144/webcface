@@ -21,7 +21,7 @@ Client::Client(const std::string &name, const std::string &host, int port)
     : Client(name, std::make_shared<Internal::ClientData>(name, host, port)) {}
 
 Client::Client(const std::string &name,
-               std::shared_ptr<Internal::ClientData> data)
+               const std::shared_ptr<Internal::ClientData> &data)
     : Member(data, name), data(data) {}
 
 Internal::ClientData::ClientData(const std::string &name,
@@ -97,7 +97,7 @@ EventTarget<Member> Client::onMemberEntry() {
     std::lock_guard lock(data->event_m);
     return EventTarget<Member>{&data->member_entry_event};
 }
-void Client::setDefaultRunCond(FuncWrapperType wrapper) {
+void Client::setDefaultRunCond(const FuncWrapperType &wrapper) {
     data->default_func_wrapper = wrapper;
 }
 std::shared_ptr<LoggerSink> Client::loggerSink() { return data->logger_sink; }
@@ -117,7 +117,7 @@ void Internal::ClientData::pingStatusReq() {
     ping_status_req = true;
 }
 
-void Internal::recvThreadMain(std::shared_ptr<ClientData> data) {
+void Internal::recvThreadMain(const std::shared_ptr<ClientData> &data) {
     while (!data->closing.load() && data->port > 0) {
         Internal::WebSocket::init(data);
         while (data->connected.load() && !data->current_curl_closed &&
@@ -140,7 +140,8 @@ void Internal::recvThreadMain(std::shared_ptr<ClientData> data) {
         data->connect_state_cond.notify_all();
     }
 }
-void Internal::messageThreadMain(std::shared_ptr<Internal::ClientData> data) {
+void Internal::messageThreadMain(
+    const std::shared_ptr<Internal::ClientData> &data) {
     while (!data->closing.load()) {
         auto msg = data->message_queue->pop(std::chrono::milliseconds(10));
         while (msg && !data->closing.load()) {
@@ -327,15 +328,23 @@ std::string Internal::ClientData::syncData(bool is_first,
         Message::pack(buffer, len, Message::Image{v.first, v.second});
     }
 
-    auto log_s = *log_store->getRecv(self_member_name);
-    if ((log_s->size() > 0 && is_first) || log_s->size() > log_sent_lines) {
-        auto begin = log_s->begin();
-        auto end = log_s->end();
-        if (!is_first) {
-            begin += log_sent_lines;
+    if (log_store) {
+        auto log_self_opt = log_store->getRecv(self_member_name);
+        if (!log_self_opt) [[unlikely]] {
+            throw std::runtime_error("self log data is null");
+        } else {
+            auto &log_s = *log_self_opt;
+            if ((log_s->size() > 0 && is_first) ||
+                log_s->size() > log_sent_lines) {
+                auto begin = log_s->begin();
+                auto end = log_s->end();
+                if (!is_first) {
+                    begin += static_cast<int>(log_sent_lines);
+                }
+                log_sent_lines = log_s->size();
+                Message::pack(buffer, len, Message::Log{begin, end});
+            }
         }
-        log_sent_lines = log_s->size();
-        Message::pack(buffer, len, Message::Log{begin, end});
     }
     for (const auto &v : func_store.transferSend(is_first)) {
         if (!v.first.starts_with(".")) {
@@ -469,14 +478,18 @@ void Internal::ClientData::onRecv(const std::string &message) {
             auto [member, field] =
                 this->view_store.getReq(r.req_id, r.sub_field);
             auto v_prev = this->view_store.getRecv(member, field);
-            if (v_prev == std::nullopt) {
-                v_prev =
+            std::shared_ptr<std::vector<ViewComponentBase>> vv_prev;
+            if (v_prev) {
+                vv_prev = *v_prev;
+            } else {
+                vv_prev =
                     std::make_shared<std::vector<ViewComponentBase>>(r.length);
-                this->view_store.setRecv(member, field, *v_prev);
+                v_prev.emplace(vv_prev);
+                this->view_store.setRecv(member, field, vv_prev);
             }
-            (*v_prev)->resize(r.length);
+            vv_prev->resize(r.length);
             for (const auto &d : *r.data_diff) {
-                (**v_prev)[std::stoi(d.first)] = d.second;
+                (*vv_prev)[std::stoi(d.first)] = d.second;
             }
             eventpp::CallbackList<void(View)> *cl = nullptr;
             FieldBaseComparable key{member, field};
@@ -498,14 +511,18 @@ void Internal::ClientData::onRecv(const std::string &message) {
             auto [member, field] =
                 this->canvas3d_store.getReq(r.req_id, r.sub_field);
             auto v_prev = this->canvas3d_store.getRecv(member, field);
-            if (v_prev == std::nullopt) {
-                v_prev = std::make_shared<std::vector<Canvas3DComponentBase>>(
+            std::shared_ptr<std::vector<Canvas3DComponentBase>> vv_prev;
+            if (v_prev) {
+                vv_prev = *v_prev;
+            } else {
+                vv_prev = std::make_shared<std::vector<Canvas3DComponentBase>>(
                     r.length);
-                this->canvas3d_store.setRecv(member, field, *v_prev);
+                v_prev.emplace(vv_prev);
+                this->canvas3d_store.setRecv(member, field, vv_prev);
             }
-            (*v_prev)->resize(r.length);
+            vv_prev->resize(r.length);
             for (const auto &d : *r.data_diff) {
-                (**v_prev)[std::stoi(d.first)] = d.second;
+                (*vv_prev)[std::stoi(d.first)] = d.second;
             }
             eventpp::CallbackList<void(Canvas3D)> *cl = nullptr;
             FieldBaseComparable key{member, field};
@@ -527,15 +544,19 @@ void Internal::ClientData::onRecv(const std::string &message) {
             auto [member, field] =
                 this->canvas2d_store.getReq(r.req_id, r.sub_field);
             auto v_prev = this->canvas2d_store.getRecv(member, field);
-            if (v_prev == std::nullopt) {
-                v_prev = std::make_shared<Canvas2DDataBase>();
-                this->canvas2d_store.setRecv(member, field, *v_prev);
+            std::shared_ptr<Canvas2DDataBase> vv_prev;
+            if (v_prev) {
+                vv_prev = *v_prev;
+            } else {
+                vv_prev = std::make_shared<Canvas2DDataBase>();
+                v_prev.emplace(vv_prev);
+                this->canvas2d_store.setRecv(member, field, vv_prev);
             }
-            (*v_prev)->width = r.width;
-            (*v_prev)->height = r.height;
-            (*v_prev)->components.resize(r.length);
+            vv_prev->width = r.width;
+            vv_prev->height = r.height;
+            vv_prev->components.resize(r.length);
             for (const auto &d : *r.data_diff) {
-                (*v_prev)->components[std::stoi(d.first)] = d.second;
+                vv_prev->components[std::stoi(d.first)] = d.second;
             }
             eventpp::CallbackList<void(Canvas2D)> *cl = nullptr;
             FieldBaseComparable key{member, field};

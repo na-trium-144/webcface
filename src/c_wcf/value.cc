@@ -39,11 +39,12 @@ wcfStatus wcfValueGetVecD(wcfClient *wcli, const char *member,
     }
     auto vec = wcli_->member(member ? member : "").value(field).tryGetVec();
     if (vec) {
-        int copy_size =
-            size < static_cast<int>(vec->size()) ? size : vec->size();
+        int copy_size = size < static_cast<int>(vec->size())
+                            ? size
+                            : static_cast<int>(vec->size());
         std::memcpy(values, vec->data(), copy_size * sizeof(double));
         std::memset(values + copy_size, 0, (size - copy_size) * sizeof(double));
-        *recv_size = vec->size();
+        *recv_size = static_cast<int>(vec->size());
         return WCF_OK;
     } else {
         std::memset(values, 0, size * sizeof(double));

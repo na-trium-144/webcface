@@ -127,11 +127,11 @@ struct AsyncFuncResultSetter : Field {
             }
         }
     }
-    void setResult(ValAdaptor result_val) {
+    void setResult(const ValAdaptor &result_val) {
         result.set_value(result_val);
         result_event->operator()(result_f);
     }
-    void setResultException(std::exception_ptr e) {
+    void setResultException(const std::exception_ptr &e) {
         result.set_exception(e);
         result_event->operator()(result_f);
     }

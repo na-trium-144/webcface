@@ -1,0 +1,10 @@
+Checks: >
+  -*,
+  bugprone-*,
+  clang-analyzer-*,
+  concurrency-*,
+  performance-*,
+  -concurrency-mt-unsafe,
+  -bugprone-easily-swappable-parameters,
+  -clang-analyzer-optin.performance.Padding
+WarningsAsErrors: '*'

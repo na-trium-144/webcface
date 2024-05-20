@@ -54,13 +54,14 @@ class ImageBase {
           color_mode_(ImageColorMode::gray), cmp_mode_(ImageCompressMode::raw) {
     }
     ImageBase(int rows, int cols,
-              std::shared_ptr<std::vector<unsigned char>> data,
+              const std::shared_ptr<std::vector<unsigned char>> &data,
               ImageColorMode color_mode = ImageColorMode::bgr,
               ImageCompressMode cmp_mode = ImageCompressMode::raw)
         : rows_(rows), cols_(cols), data_(data), color_mode_(color_mode),
           cmp_mode_(cmp_mode) {
         if (cmp_mode == ImageCompressMode::raw &&
-            rows * cols * channels() != data->size()) {
+            static_cast<std::size_t>(rows * cols) * channels() !=
+                data->size()) {
             throw std::invalid_argument("data size does not match");
         }
     }
@@ -83,7 +84,7 @@ class ImageBase {
         data_ = std::make_shared<std::vector<unsigned char>>(
             static_cast<const unsigned char *>(data),
             static_cast<const unsigned char *>(data) +
-                rows * cols * channels());
+                static_cast<std::size_t>(rows * cols) * channels());
     }
 
     /*!
@@ -207,7 +208,7 @@ class ImageWithCV : public ImageBase {
         }
     }
     ImageWithCV(int rows, int cols,
-                std::shared_ptr<std::vector<unsigned char>> data,
+                const std::shared_ptr<std::vector<unsigned char>> &data,
                 ImageColorMode color_mode = ImageColorMode::bgr,
                 ImageCompressMode cmp_mode = ImageCompressMode::raw)
         : ImageWithCV(ImageBase(rows, cols, data, color_mode, cmp_mode)) {}
@@ -259,9 +260,10 @@ class ImageWithCV : public ImageBase {
                               mat.total() * mat.channels());
         } else {
             for (int i = 0; i < mat.rows; ++i) {
-                data_->insert(data_->end(), mat.ptr<unsigned char>(i),
-                              mat.ptr<unsigned char>(i) +
-                                  mat.cols * mat.channels());
+                data_->insert(
+                    data_->end(), mat.ptr<unsigned char>(i),
+                    mat.ptr<unsigned char>(i) +
+                        static_cast<ptrdiff_t>(mat.cols * mat.channels()));
             }
         }
     }

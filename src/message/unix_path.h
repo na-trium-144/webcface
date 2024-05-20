@@ -40,13 +40,13 @@ WEBCFACE_DLL std::string wsl2Host();
  *
  */
 WEBCFACE_DLL void initUnixSocket(const std::filesystem::path &path,
-                                 std::shared_ptr<spdlog::logger> logger);
+                                 const std::shared_ptr<spdlog::logger> &logger);
 /*!
  * \brief socketファイルのパーミッション設定
  *
  */
 WEBCFACE_DLL void updateUnixSocketPerms(const std::filesystem::path &path,
-                                        std::shared_ptr<spdlog::logger> logger);
+                                        const std::shared_ptr<spdlog::logger> &logger);
 
 } // namespace Message::Path
 WEBCFACE_NS_END

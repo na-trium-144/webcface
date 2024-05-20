@@ -54,8 +54,7 @@ wcfStatus wcfViewSet(wcfClient *wcli, const char *field,
     v.init();
     for (auto p = components; p < components + size; p++) {
         v.add(ViewComponentBase{
-            static_cast<ViewComponentType>(p->type),
-            p->text ? p->text : "",
+            static_cast<ViewComponentType>(p->type), p->text ? p->text : "",
             p->on_click_field
                 ? std::make_optional<FieldBase>(
                       p->on_click_member ? p->on_click_member : wcli_->name(),
@@ -89,7 +88,7 @@ wcfStatus wcfViewGet(wcfClient *wcli, const char *member, const char *field,
     if (vc) {
         if (!vc->empty()) {
             auto vcc_p = new wcfViewComponent[vc->size()];
-            *recv_size = vc->size();
+            *recv_size = static_cast<int>(vc->size());
             view_list.emplace(vcc_p, std::move(*vc));
             auto &vc_ref = view_list.at(vcc_p);
             for (std::size_t i = 0; i < vc_ref.size(); i++) {

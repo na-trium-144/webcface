@@ -373,11 +373,11 @@ struct View : public MessageBase<MessageKind::view> {
             Common::ViewComponentBase vc;
             vc.type_ = type;
             vc.text_ = text;
-            if (on_click_member) {
+            if (on_click_member && on_click_field) {
                 vc.on_click_func_ =
                     Common::FieldBase{*on_click_member, *on_click_field};
             }
-            if (text_ref_member) {
+            if (text_ref_member && text_ref_field) {
                 vc.text_ref_ =
                     Common::FieldBase{*text_ref_member, *text_ref_field};
             }
@@ -437,11 +437,11 @@ struct Canvas3D : public MessageBase<MessageKind::canvas3d> {
         Canvas3DComponent(const Common::Canvas3DComponentBase &vc)
             : type(vc.type_), origin_pos(vc.origin_.pos()),
               origin_rot(vc.origin_.rot()), color(vc.color_), angles() {
-            if (vc.geometry_ != std::nullopt) {
+            if (vc.geometry_) {
                 geometry_type = vc.geometry_->type;
                 geometry_properties = vc.geometry_->properties;
             }
-            if (vc.field_base_ != std::nullopt) {
+            if (vc.field_base_) {
                 field_member = vc.field_base_->member_;
                 field_field = vc.field_base_->field_;
             }
@@ -454,10 +454,10 @@ struct Canvas3D : public MessageBase<MessageKind::canvas3d> {
             vc.type_ = type;
             vc.origin_ = {origin_pos, origin_rot};
             vc.color_ = color;
-            if (geometry_type != std::nullopt) {
+            if (geometry_type) {
                 vc.geometry_ = {*geometry_type, geometry_properties};
             }
-            if (field_member != std::nullopt) {
+            if (field_member && field_field) {
                 vc.field_base_ = {*field_member, *field_field};
             }
             for (const auto &a : angles) {
@@ -663,7 +663,7 @@ struct FuncInfo : public MessageBase<MessageKind::func_info> {
     FuncInfo() = default;
     FuncInfo(unsigned int member_id, const std::string &field,
              Common::ValType return_type,
-             std::shared_ptr<std::vector<Arg>> args)
+             const std::shared_ptr<std::vector<Arg>> &args)
         : member_id(member_id), field(field), return_type(return_type),
           args(args) {}
     explicit FuncInfo(const std::string &field, const Common::FuncInfo &info)

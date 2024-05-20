@@ -8,7 +8,7 @@ project(webcface
 )
 set(WEBCFACE_CONTACT "na-trium-144@users.noreply.github.com")
 set(WEBCFACE_VERSION ${PROJECT_VERSION})
-set(WEBCFACE_SOVERSION 11)
+set(WEBCFACE_SOVERSION 12)
 set(WEBUI_VERSION 1.6.0)
 
 set(WEBCFACE_VERSION_MAJOR ${PROJECT_VERSION_MAJOR})
@@ -30,9 +30,8 @@ set(WEBCFACE_TEST_TIMEOUT 10 CACHE STRING "connection timeout in test")
 option(WEBCFACE_SHARED "build shared library" ON)
 option(WEBCFACE_PIC "enable PIC for shared library" ${WEBCFACE_SHARED})
 option(WEBCFACE_USE_OPENCV "use opencv to enable image processing feature" ON)
-set(WEBCFACE_VERSION_SUFFIX "git" CACHE STRING
-    "version suffix ('git' to get automatically from git describe command)"
-)
+set(WEBCFACE_VERSION_SUFFIX "git" CACHE STRING "version suffix ('git' to get automatically from git describe command)")
+set(WEBCFACE_CLANG_TIDY "" CACHE STRING "clang-tidy path (or empty to disable clang-tidy)")
 option(WEBCFACE_DOWNLOAD_WEBUI "download and install webui" ON)
 option(WEBCFACE_FIND_LIBS "find and use msgpack-cxx, eventpp and spdlog installation" ON)
 option(WEBCFACE_FIND_AMENT "find and use ament_cmake installation" ON)
@@ -346,24 +345,37 @@ if(WEBCFACE_TEST)
 endif()
 
 ###############################################################################
+include(CheckCXXCompilerFlag)
+function(add_cxx_compile_options_if FLAG NAME)
+    check_cxx_compiler_flag(${FLAG} FLAG_${NAME}_EXISTS)
+    if(FLAG_${NAME}_EXISTS)
+        add_compile_options($<$<COMPILE_LANGUAGE:CXX>:${FLAG}>)
+    endif()
+endfunction()
+
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     add_compile_options(-Wall -Wextra -Wpedantic -Werror)
     add_compile_options(-Wno-error=deprecated-declarations)
-    add_compile_options(-Wno-psabi) # refer to PR#9
-    add_compile_options( # inside opencv
-        $<$<COMPILE_LANGUAGE:CXX>:-Wno-deprecated-enum-enum-conversion>
-    )
-    add_compile_options( # inside fmt (fmtlib/fmt#3354)
-        -Wno-array-bounds
-        -Wno-stringop-overflow
-    )
+    add_compile_options(-Wno-error=psabi) # refer to PR#9
+    # inside opencv
+    add_cxx_compile_options_if(-Wno-error=deprecated-enum-enum-conversion DEPRECATED_ENUM)
+    # inside fmt (fmtlib/fmt#3354)
+    add_compile_options(-Wno-error=array-bounds -Wno-error=stringop-overflow)
+    # (fmtlib/fmt#3415)
+    add_cxx_compile_options_if(-Wno-error=dangling-reference DANGLING_REFERENCE)
 endif()
 if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     add_compile_options(-Wall -Wextra -Wpedantic -Werror)
     add_compile_options(-Wno-error=deprecated-declarations)
-    add_compile_options( # inside opencv
-        -Wno-c11-extensions
-        $<$<COMPILE_LANGUAGE:CXX>:-Wno-deprecated-enum-enum-conversion>
+    add_compile_options(
+        --system-header-prefix=msgpack.hpp
+        --system-header-prefix=eventpp/
+        --system-header-prefix=spdlog/
+        --system-header-prefix=curl/
+        --system-header-prefix=crow.h
+        --system-header-prefix=opencv2/
+        --system-header-prefix=utf8.h
+        --system-header-prefix=CLI/
     )
 endif()
 
@@ -498,6 +510,10 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
     VERSION ${PROJECT_VERSION}
     SOVERSION ${WEBCFACE_SOVERSION}
 )
+if(NOT "${WEBCFACE_CLANG_TIDY}" STREQUAL "")
+    set(CLANG_TIDY_CMD "${WEBCFACE_CLANG_TIDY}" "--header-filter=${CMAKE_CURRENT_SOURCE_DIR}/src")
+    set_target_properties(${PROJECT_NAME} PROPERTIES CXX_CLANG_TIDY "${CLANG_TIDY_CMD}")
+endif()
 add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 
 add_library(wcf INTERFACE)

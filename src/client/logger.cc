@@ -1,3 +1,4 @@
+#include <stdexcept>
 #include <webcface/logger.h>
 #include "client_internal.h"
 
@@ -9,8 +10,10 @@ LoggerBuf::LoggerBuf(const std::shared_ptr<spdlog::logger> &logger)
 int LoggerBuf::overflow(int c) {
     overflow_buf += std::string(buf, this->pptr() - this->pbase());
     this->setp(buf, buf + sizeof(buf));
-    this->sputc(c);
-    return 0;
+    if (c != traits_type::eof()) {
+        this->sputc(static_cast<char_type>(c));
+    }
+    return !traits_type::eof();
 }
 int LoggerBuf::sync() {
     overflow_buf += std::string(buf, this->pptr() - this->pbase());
@@ -47,8 +50,12 @@ void LoggerSink::sink_it_(const spdlog::details::log_msg &msg) {
         {
             std::lock_guard lock(log_store->mtx);
             auto v = log_store->getRecv(log_store->self_member_name);
-            // log_storeにはClientDataのコンストラクタで空vectorを入れてある
-            (*v)->emplace_back(msg.level, msg.time, log_text);
+            if (!v) [[unlikely]] {
+                throw std::runtime_error("self log data is null");
+            } else {
+                // log_storeにはClientDataのコンストラクタで空vectorを入れてある
+                (*v)->emplace_back(msg.level, msg.time, log_text);
+            }
         }
     }
 }

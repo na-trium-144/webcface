@@ -32,10 +32,13 @@
 #include <webcface/common/def.h>
 
 WEBCFACE_NS_BEGIN
+
+class Log;
+
 namespace Internal {
 
-WEBCFACE_DLL void messageThreadMain(std::shared_ptr<ClientData> data);
-WEBCFACE_DLL void recvThreadMain(std::shared_ptr<ClientData> data);
+WEBCFACE_DLL void messageThreadMain(const std::shared_ptr<ClientData> &data);
+WEBCFACE_DLL void recvThreadMain(const std::shared_ptr<ClientData> &data);
 
 struct ClientData : std::enable_shared_from_this<ClientData> {
     WEBCFACE_DLL explicit ClientData(const std::string &name,
