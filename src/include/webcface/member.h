@@ -27,7 +27,7 @@ class WEBCFACE_DLL Member : protected Field {
   public:
     Member() = default;
     Member(const std::weak_ptr<Internal::ClientData> &data_w,
-           std::string_view member)
+           std::u8string_view member)
         : Field(data_w, member) {}
     Member(const Field &base) : Field(base.data_w, base.member_) {}
 
@@ -35,7 +35,12 @@ class WEBCFACE_DLL Member : protected Field {
      * \brief Member名
      *
      */
-    std::string name() const { return member_; }
+    std::string name() const { return Encoding::decode(member_); }
+    /*!
+     * \brief Member名 (wstring)
+     * \since ver1.12
+     */
+    std::wstring nameW() const { return Encoding::decodeW(member_); }
 
     using Field::child;
     using Field::operator[];

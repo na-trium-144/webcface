@@ -36,17 +36,7 @@ struct WEBCFACE_DLL Field : public Common::FieldBase {
     Field(const std::weak_ptr<Internal::ClientData> &data_w,
           std::u8string_view member, std::u8string_view field = u8"")
         : Common::FieldBase(member, field), data_w(data_w) {}
-    Field(const std::weak_ptr<Internal::ClientData> &data_w,
-          std::string_view member, std::string_view field = "")
-        : Common::FieldBase(member, field), data_w(data_w) {}
-    Field(const std::weak_ptr<Internal::ClientData> &data_w,
-          std::wstring_view member, std::wstring_view field = L"")
-        : Common::FieldBase(member, field), data_w(data_w) {}
     Field(const Field &base, std::u8string_view field)
-        : Common::FieldBase(base, field), data_w(base.data_w) {}
-    Field(const Field &base, std::string_view field)
-        : Common::FieldBase(base, field), data_w(base.data_w) {}
-    Field(const Field &base, std::wstring_view field)
         : Common::FieldBase(base, field), data_w(base.data_w) {}
 
     //! data_wをlockし、失敗したらruntime_errorを投げる

@@ -17,15 +17,15 @@
 
 WEBCFACE_NS_BEGIN
 
-Client::Client(const std::string &name, const std::string &host, int port)
+Client::Client(const std::u8string &name, const std::u8string &host, int port)
     : Client(name, std::make_shared<Internal::ClientData>(name, host, port)) {}
 
-Client::Client(const std::string &name,
+Client::Client(const std::u8string &name,
                const std::shared_ptr<Internal::ClientData> &data)
     : Member(data, name), data(data) {}
 
-Internal::ClientData::ClientData(const std::string &name,
-                                 const std::string &host, int port)
+Internal::ClientData::ClientData(const std::u8string &name,
+                                 const std::u8string &host, int port)
     : std::enable_shared_from_this<ClientData>(), self_member_name(name),
       host(host), port(port), current_curl_handle(nullptr),
       current_curl_closed(false), current_curl_path(), current_ws_buf(),
@@ -42,11 +42,12 @@ Internal::ClientData::ClientData(const std::string &name,
     std::vector<spdlog::sink_ptr> sinks = {logger_sink, stderr_sink};
     logger = std::make_shared<spdlog::logger>(name, sinks.begin(), sinks.end());
     logger->set_level(spdlog::level::trace);
+    std::string name_s = Encoding::decode(name);
     logger_internal = std::make_shared<spdlog::logger>(
-        "webcface_internal(" + name + ")", stderr_sink);
+        "webcface_internal(" + name_s + ")", stderr_sink);
     if (std::getenv("WEBCFACE_TRACE") != nullptr) {
         logger_internal->set_level(spdlog::level::trace);
-    } else if (getenv("WEBCFACE_VERBOSE") != nullptr) {
+    } else if (std::getenv("WEBCFACE_VERBOSE") != nullptr) {
         logger_internal->set_level(spdlog::level::debug);
     } else {
         logger_internal->set_level(spdlog::level::off);
@@ -107,7 +108,10 @@ std::ostream &Client::loggerOStream() { return *data->logger_os.get(); }
 std::string Client::serverVersion() const { return data->svr_version; }
 std::string Client::serverName() const { return data->svr_name; }
 FuncListener Client::funcListener(const std::string &field) const {
-    return FuncListener{*this, field};
+    return FuncListener{*this, Encoding::encode(field)};
+}
+FuncListener Client::funcListener(const std::wstring &field) const {
+    return FuncListener{*this, Encoding::encodeW(field)};
 }
 
 void Internal::ClientData::pingStatusReq() {

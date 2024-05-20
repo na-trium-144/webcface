@@ -41,20 +41,20 @@ WEBCFACE_DLL void messageThreadMain(const std::shared_ptr<ClientData> &data);
 WEBCFACE_DLL void recvThreadMain(const std::shared_ptr<ClientData> &data);
 
 struct ClientData : std::enable_shared_from_this<ClientData> {
-    WEBCFACE_DLL explicit ClientData(const std::string &name,
-                                     const std::string &host = "",
+    WEBCFACE_DLL explicit ClientData(const std::u8string &name,
+                                     const std::u8string &host = u8"",
                                      int port = -1);
 
     /*!
      * \brief Client自身の名前
      *
      */
-    std::string self_member_name;
+    std::u8string self_member_name;
     bool isSelf(const FieldBase &base) const {
         return base.member_ == self_member_name;
     }
 
-    std::string host;
+    std::u8string host;
     int port;
     std::mutex ws_m;
     void *current_curl_handle;
