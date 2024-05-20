@@ -4,10 +4,10 @@ var searchData=
   ['raw_1',['raw',['../namespaceCommon.html#ab72e620a597e5f750b2c9b3391e84dedabdd166af3a63f7be696dd17a218a6ffb',1,'Common']]],
   ['readme_2emd_2',['README.md',['../README_8md.html',1,'']]],
   ['rect_3',['rect',['../namespaceComponents_1_1Geometries.html#ad5b21590cf3bc82830bee21b3a459bc4',1,'Components::Rect'],['../md_14__canvas2d.html#autotoc_md73',1,'Rect'],['../namespaceCommon.html#a1b753fd9c2659910ca1a042a05b56be6a2676d7b68ff2c97c5776c6e5da218c01',1,'Common::rect'],['../namespaceComponents_1_1Geometries.html#aae9d00982ff2cec9e96aec5b057c0453',1,'Components::Geometries::rect()'],['../namespaceComponents_1_1Geometries.html#aae9d00982ff2cec9e96aec5b057c0453',1,'rect():&#160;canvas_data.h'],['../namespaceComponents_1_1Geometries.html#aae9d00982ff2cec9e96aec5b057c0453',1,'Components::rect()'],['../namespaceComponents_1_1Geometries.html#a70a6a0aadee31b74968201a0eee0bf5f',1,'Components::Geometries::rect()'],['../namespaceComponents_1_1Geometries.html#a70a6a0aadee31b74968201a0eee0bf5f',1,'Components::rect()'],['../namespaceComponents_1_1Geometries.html#ad5b21590cf3bc82830bee21b3a459bc4',1,'Rect:&#160;canvas_data.h'],['../namespaceComponents_1_1Geometries.html#ad5b21590cf3bc82830bee21b3a459bc4',1,'Components::Geometries::Rect'],['../namespaceComponents_1_1Geometries.html#a70a6a0aadee31b74968201a0eee0bf5f',1,'rect():&#160;canvas_data.h']]],
-  ['recv_4',['recv',['../namespaceInternal_1_1WebSocket.html#a870976e815da9087cba66798173d1709',1,'Internal::WebSocket']]],
+  ['recv_4',['recv',['../namespaceInternal_1_1WebSocket.html#a811976b1be3492506ed4cb72699e7a8c',1,'Internal::WebSocket']]],
   ['recv_5fthread_5',['recv_thread',['../structInternal_1_1ClientData.html#ad77cef7602475ef8dbf95c660bd293d0',1,'Internal::ClientData']]],
   ['recv_5fthread_5frunning_6',['recv_thread_running',['../structInternal_1_1ClientData.html#ab367d5a09673024831db095885099ea9',1,'Internal::ClientData']]],
-  ['recvthreadmain_7',['recvThreadMain',['../namespaceInternal.html#ab7dcb25feb9553f343aec62dfe9bbbd2',1,'Internal']]],
+  ['recvthreadmain_7',['recvThreadMain',['../namespaceInternal.html#a2b27c16cfd032c3033553a115aabc9e8',1,'Internal']]],
   ['red_8',['red',['../namespaceCommon.html#a5dcc1f15d6a60ca34207565aeb74124aabda9643ac6601722a28f238714274da4',1,'Common']]],
   ['reject_9',['reject',['../classFuncCallHandle.html#a9c44fa4730a1728608b9e4f2da82bbef',1,'FuncCallHandle']]],
   ['remote_5faddr_10',['remote_addr',['../structServer_1_1MemberData.html#aeaede8e9fa35099287d112189aac9e3a',1,'Server::MemberData']]],
@@ -16,7 +16,7 @@ var searchData=
   ['removelistener_13',['removeListener',['../classEventTarget.html#a712fd6f68c578f292096fde93c5501bb',1,'EventTarget']]],
   ['removeresultsetter_14',['removeResultSetter',['../classInternal_1_1FuncResultStore.html#ac49e5f547c6e832a91b736a9252847e7',1,'Internal::FuncResultStore']]],
   ['replaceinvalidval_15',['replaceInvalidVal',['../namespaceServer.html#a260a5b4ff2a51da2104fbd24fc78ee12',1,'Server']]],
-  ['req_16',['req',['../structMessage_1_1Req.html',1,'Req&lt; T &gt;'],['../namespaceMessage_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a1cbc123f91f6737e5506973f4493e91c',1,'Message::MessageKind::req'],['../structMessage_1_1Req_3_01Image_01_4.html#a769cd854366d0e7514183c7a9a681f16',1,'Message::Req&lt; Image &gt;::Req(const std::string &amp;member, const std::string &amp;field, unsigned int req_id, const Common::ImageReq &amp;ireq)'],['../structMessage_1_1Req_3_01Image_01_4.html#a3c883b0c9122439dcdc3dcbfef460c2f',1,'Message::Req&lt; Image &gt;::Req()=default'],['../classInternal_1_1SyncDataStore2.html#afca755b21ac7115dc8879a33ec8a7f6a',1,'Internal::SyncDataStore2::req'],['../classInternal_1_1SyncDataStore1.html#a34dc49a8ea330e6001b4d799ebe5df0f',1,'Internal::SyncDataStore1::req']]],
+  ['req_16',['req',['../structMessage_1_1Req.html',1,'Req&lt; T &gt;'],['../namespaceMessage_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a1cbc123f91f6737e5506973f4493e91c',1,'Message::MessageKind::req'],['../classInternal_1_1SyncDataStore2.html#afca755b21ac7115dc8879a33ec8a7f6a',1,'Internal::SyncDataStore2::req'],['../classInternal_1_1SyncDataStore1.html#a34dc49a8ea330e6001b4d799ebe5df0f',1,'Internal::SyncDataStore1::req'],['../structMessage_1_1Req_3_01Image_01_4.html#a769cd854366d0e7514183c7a9a681f16',1,'Message::Req&lt; Image &gt;::Req(const std::string &amp;member, const std::string &amp;field, unsigned int req_id, const Common::ImageReq &amp;ireq)'],['../structMessage_1_1Req_3_01Image_01_4.html#a3c883b0c9122439dcdc3dcbfef460c2f',1,'Message::Req&lt; Image &gt;::Req()=default']]],
   ['req_20kind_2040_17',['value req (kind = 40)',['../md_90__message.html#autotoc_md159',1,'']]],
   ['req_20kind_2041_18',['text req (kind = 41)',['../md_90__message.html#autotoc_md164',1,'']]],
   ['req_20kind_2043_19',['view req (kind = 43)',['../md_90__message.html#autotoc_md169',1,'']]],
@@ -57,7 +57,7 @@ var searchData=
   ['result_5ff_54',['result_f',['../structAsyncFuncResultSetter.html#a711806feade01f150856c329e8aefcec',1,'AsyncFuncResultSetter']]],
   ['result_5fsetter_55',['result_setter',['../classInternal_1_1FuncResultStore.html#a000588e714e272d7f0e2dd01d7eafe72',1,'Internal::FuncResultStore']]],
   ['resultsetter_56',['resultSetter',['../classInternal_1_1FuncResultStore.html#a180171480b3b5abe976b3b68e407ff80',1,'Internal::FuncResultStore']]],
-  ['resulttocval_57',['resultToCVal',['../c__wcf_2func_8cc.html#abc7da60e11d72d30c5e0014745ce8f02',1,'func.cc']]],
+  ['resulttocval_57',['resultToCVal',['../c__wcf_2func_8cc.html#a78e7a89ef27a1dc00f3ee456d47eb60b',1,'func.cc']]],
   ['return_5fcond_58',['return_cond',['../classInternal_1_1FuncOnSync.html#afb095724bac43896cb681be9fe203d87',1,'Internal::FuncOnSync']]],
   ['return_5fmtx_59',['return_mtx',['../classInternal_1_1FuncOnSync.html#a0b12c3377507f6827363bcfe1eaa9e3f',1,'Internal::FuncOnSync']]],
   ['return_5ftype_60',['return_type',['../structMessage_1_1FuncInfo.html#af689d9ddbc0b75c7f5d485cae3016c05',1,'Message::FuncInfo::return_type'],['../structCommon_1_1FuncInfo.html#a59831879dda782e0bd774cc70e0e6ca6',1,'Common::FuncInfo::return_type']]],
@@ -94,5 +94,5 @@ var searchData=
   ['runasync_91',['runasync',['../md_30__func.html#autotoc_md123',1,'runAsync'],['../classFunc.html#a6c7d2134b3d2c7a2fc8ad11999b9c30e',1,'Func::runAsync(Args... args) const'],['../classFunc.html#a53f34fc1054b91f7a9fa4f795d9c70e2',1,'Func::runAsync(const std::vector&lt; ValAdaptor &gt; &amp;args_vec) const']]],
   ['runcondonsync_92',['runCondOnSync',['../namespaceFuncWrapper.html#a70393bdcf733bbe5047c263f8c774d4b',1,'FuncWrapper']]],
   ['runcondscopeguard_93',['runCondScopeGuard',['../namespaceFuncWrapper.html#a8915696ebd012d8da17d70b5d9f05a87',1,'FuncWrapper']]],
-  ['runimpl_94',['runImpl',['../classFunc.html#a98a31b69dc44f2cd36853631872cf95e',1,'Func']]]
+  ['runimpl_94',['runImpl',['../classFunc.html#a682493eaf4ce8aefc290b64fca21630f',1,'Func']]]
 ];

@@ -160,14 +160,11 @@ Inheritance diagram for TemporalComponent&lt; V, C2, C3 &gt;:</div>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a86ef0b383de91011a8a4ea466957d838" id="r_a86ef0b383de91011a8a4ea466957d838"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">TemporalComponent</a> ()=default</td></tr>
 <tr class="separator:a86ef0b383de91011a8a4ea466957d838"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afad0f148bae89cab2b4acb916f5c62fb" id="r_afad0f148bae89cab2b4acb916f5c62fb"><td class="memTemplParams" colspan="2">template&lt;typename VT , typename C2T , typename C3T &gt; </td></tr>
+<tr class="memitem:afad0f148bae89cab2b4acb916f5c62fb"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classTemporalComponent.html#afad0f148bae89cab2b4acb916f5c62fb">TemporalComponent</a> (VT v_type, C2T c2_type, C3T c3_type)</td></tr>
+<tr class="separator:afad0f148bae89cab2b4acb916f5c62fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3a91eb4d559b7dfda55ab21f341a3b0a" id="r_a3a91eb4d559b7dfda55ab21f341a3b0a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTemporalComponent.html#a3a91eb4d559b7dfda55ab21f341a3b0a">TemporalComponent</a> (const std::string &amp;<a class="el" href="namespaceComponents.html#a005dcb8a17c7ec4d9de115890555d5e8">text</a>)</td></tr>
 <tr class="separator:a3a91eb4d559b7dfda55ab21f341a3b0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab6b84c541eff10d150203b3c838d25f5" id="r_ab6b84c541eff10d150203b3c838d25f5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classTemporalComponent.html">TemporalComponent</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTemporalComponent.html#ab6b84c541eff10d150203b3c838d25f5">initV</a> (<a class="el" href="namespaceCommon.html#a11040d82967b60182816ddc035d07c28">ViewComponentType</a> type)</td></tr>
-<tr class="separator:ab6b84c541eff10d150203b3c838d25f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7fde7dd577914c91026160fd7d602ea1" id="r_a7fde7dd577914c91026160fd7d602ea1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classTemporalComponent.html">TemporalComponent</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTemporalComponent.html#a7fde7dd577914c91026160fd7d602ea1">init2</a> (<a class="el" href="namespaceCommon.html#a18133126518e30ea437441c60fa26928">Canvas2DComponentType</a> type)</td></tr>
-<tr class="separator:a7fde7dd577914c91026160fd7d602ea1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afc115479678c65ceeda4d253f95c634c" id="r_afc115479678c65ceeda4d253f95c634c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classTemporalComponent.html">TemporalComponent</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTemporalComponent.html#afc115479678c65ceeda4d253f95c634c">init3</a> (<a class="el" href="namespaceCommon.html#ae4f79363f6fbf146d1a71f07a2e42155">Canvas3DComponentType</a> type)</td></tr>
-<tr class="separator:afc115479678c65ceeda4d253f95c634c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7a0a1e3265c06ed25b0f45b397b75191" id="r_a7a0a1e3265c06ed25b0f45b397b75191"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classViewComponent.html">ViewComponent</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTemporalComponent.html#a7a0a1e3265c06ed25b0f45b397b75191">toV</a> ()</td></tr>
 <tr class="separator:a7a0a1e3265c06ed25b0f45b397b75191"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ade85f6671661072ee9e052ae86609123" id="r_ade85f6671661072ee9e052ae86609123"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classCanvas2DComponent.html">Canvas2DComponent</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTemporalComponent.html#ade85f6671661072ee9e052ae86609123">to2</a> ()</td></tr>
@@ -203,12 +200,12 @@ requires (V || C2)</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
-<tr class="memitem:a4f5294537660604c8dcd6cfc2cf03067" id="r_a4f5294537660604c8dcd6cfc2cf03067"><td class="memItemLeft" align="right" valign="top">std::optional&lt; std::conditional_t&lt; V, <a class="el" href="classViewComponent.html">ViewComponent</a>, int &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTemporalComponent.html#a4f5294537660604c8dcd6cfc2cf03067">component_v</a></td></tr>
-<tr class="separator:a4f5294537660604c8dcd6cfc2cf03067"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5fd961caec0eb8161d957503626a6e49" id="r_a5fd961caec0eb8161d957503626a6e49"><td class="memItemLeft" align="right" valign="top">std::optional&lt; std::conditional_t&lt; C2, <a class="el" href="classCanvas2DComponent.html">Canvas2DComponent</a>, int &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTemporalComponent.html#a5fd961caec0eb8161d957503626a6e49">component_2d</a></td></tr>
-<tr class="separator:a5fd961caec0eb8161d957503626a6e49"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acd94980412bbdd630625cfada412e7ea" id="r_acd94980412bbdd630625cfada412e7ea"><td class="memItemLeft" align="right" valign="top">std::optional&lt; std::conditional_t&lt; C3, <a class="el" href="classCanvas3DComponent.html">Canvas3DComponent</a>, int &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTemporalComponent.html#acd94980412bbdd630625cfada412e7ea">component_3d</a></td></tr>
-<tr class="separator:acd94980412bbdd630625cfada412e7ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afb413f7f0a038adac65847053e7c8427" id="r_afb413f7f0a038adac65847053e7c8427"><td class="memItemLeft" align="right" valign="top">std::conditional_t&lt; V, <a class="el" href="classViewComponent.html">ViewComponent</a>, int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTemporalComponent.html#afb413f7f0a038adac65847053e7c8427">component_v</a></td></tr>
+<tr class="separator:afb413f7f0a038adac65847053e7c8427"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a66096d0adeb613df43d3b21da8ddc99a" id="r_a66096d0adeb613df43d3b21da8ddc99a"><td class="memItemLeft" align="right" valign="top">std::conditional_t&lt; C2, <a class="el" href="classCanvas2DComponent.html">Canvas2DComponent</a>, int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTemporalComponent.html#a66096d0adeb613df43d3b21da8ddc99a">component_2d</a></td></tr>
+<tr class="separator:a66096d0adeb613df43d3b21da8ddc99a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a745569fee08e779f3fbdc680faedb295" id="r_a745569fee08e779f3fbdc680faedb295"><td class="memItemLeft" align="right" valign="top">std::conditional_t&lt; C3, <a class="el" href="classCanvas3DComponent.html">Canvas3DComponent</a>, int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTemporalComponent.html#a745569fee08e779f3fbdc680faedb295">component_3d</a></td></tr>
+<tr class="separator:a745569fee08e779f3fbdc680faedb295"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;bool V, bool C2, bool C3&gt;<br />
@@ -217,7 +214,7 @@ class TemporalComponent&lt; V, C2, C3 &gt;</div><p><a class="el" href="classCanv
 <p>各オプションの詳細な説明は <a class="el" href="classViewComponent.html" title="Viewに表示する要素です">ViewComponent</a>, <a class="el" href="classCanvas2DComponent.html" title="Canvas2Dの各要素を表すクラス。">Canvas2DComponent</a>, <a class="el" href="classCanvas3DComponent.html" title="Canvas3Dに表示する要素">Canvas3DComponent</a> を参照 </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a86ef0b383de91011a8a4ea466957d838" name="a86ef0b383de91011a8a4ea466957d838"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a86ef0b383de91011a8a4ea466957d838">&#9670;&#160;</a></span>TemporalComponent() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a86ef0b383de91011a8a4ea466957d838">&#9670;&#160;</a></span>TemporalComponent() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -243,8 +240,54 @@ template&lt;bool V, bool C2, bool C3&gt; </div>
 
 </div>
 </div>
+<a id="afad0f148bae89cab2b4acb916f5c62fb" name="afad0f148bae89cab2b4acb916f5c62fb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afad0f148bae89cab2b4acb916f5c62fb">&#9670;&#160;</a></span>TemporalComponent() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;bool V, bool C2, bool C3&gt; </div>
+<div class="memtemplate">
+template&lt;typename VT , typename C2T , typename C3T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classTemporalComponent.html">TemporalComponent</a> </td>
+          <td>(</td>
+          <td class="paramtype">VT&#160;</td>
+          <td class="paramname"><em>v_type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">C2T&#160;</td>
+          <td class="paramname"><em>c2_type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">C3T&#160;</td>
+          <td class="paramname"><em>c3_type</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a3a91eb4d559b7dfda55ab21f341a3b0a" name="a3a91eb4d559b7dfda55ab21f341a3b0a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3a91eb4d559b7dfda55ab21f341a3b0a">&#9670;&#160;</a></span>TemporalComponent() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a3a91eb4d559b7dfda55ab21f341a3b0a">&#9670;&#160;</a></span>TemporalComponent() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -360,90 +403,6 @@ template&lt;bool V, bool C2, bool C3&gt; </div>
 </div><div class="memdoc">
 
 <p>背景色 (Viewまたは2D) </p>
-
-</div>
-</div>
-<a id="a7fde7dd577914c91026160fd7d602ea1" name="a7fde7dd577914c91026160fd7d602ea1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7fde7dd577914c91026160fd7d602ea1">&#9670;&#160;</a></span>init2()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;bool V, bool C2, bool C3&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classTemporalComponent.html">TemporalComponent</a> &amp; init2 </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="namespaceCommon.html#a18133126518e30ea437441c60fa26928">Canvas2DComponentType</a>&#160;</td>
-          <td class="paramname"><em>type</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="afc115479678c65ceeda4d253f95c634c" name="afc115479678c65ceeda4d253f95c634c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afc115479678c65ceeda4d253f95c634c">&#9670;&#160;</a></span>init3()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;bool V, bool C2, bool C3&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classTemporalComponent.html">TemporalComponent</a> &amp; init3 </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="namespaceCommon.html#ae4f79363f6fbf146d1a71f07a2e42155">Canvas3DComponentType</a>&#160;</td>
-          <td class="paramname"><em>type</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="ab6b84c541eff10d150203b3c838d25f5" name="ab6b84c541eff10d150203b3c838d25f5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab6b84c541eff10d150203b3c838d25f5">&#9670;&#160;</a></span>initV()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;bool V, bool C2, bool C3&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classTemporalComponent.html">TemporalComponent</a> &amp; initV </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="namespaceCommon.html#a11040d82967b60182816ddc035d07c28">ViewComponentType</a>&#160;</td>
-          <td class="paramname"><em>type</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
 
 </div>
 </div>
@@ -685,8 +644,8 @@ template&lt;bool V, bool C2, bool C3&gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="a5fd961caec0eb8161d957503626a6e49" name="a5fd961caec0eb8161d957503626a6e49"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5fd961caec0eb8161d957503626a6e49">&#9670;&#160;</a></span>component_2d</h2>
+<a id="a66096d0adeb613df43d3b21da8ddc99a" name="a66096d0adeb613df43d3b21da8ddc99a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a66096d0adeb613df43d3b21da8ddc99a">&#9670;&#160;</a></span>component_2d</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -697,7 +656,7 @@ template&lt;bool V, bool C2, bool C3&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::optional&lt;std::conditional_t&lt;C2, <a class="el" href="classCanvas2DComponent.html">Canvas2DComponent</a>, int&gt; &gt; component_2d</td>
+          <td class="memname">std::conditional_t&lt;C2, <a class="el" href="classCanvas2DComponent.html">Canvas2DComponent</a>, int&gt; component_2d</td>
         </tr>
       </table>
   </td>
@@ -709,8 +668,8 @@ template&lt;bool V, bool C2, bool C3&gt; </div>
 
 </div>
 </div>
-<a id="acd94980412bbdd630625cfada412e7ea" name="acd94980412bbdd630625cfada412e7ea"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acd94980412bbdd630625cfada412e7ea">&#9670;&#160;</a></span>component_3d</h2>
+<a id="a745569fee08e779f3fbdc680faedb295" name="a745569fee08e779f3fbdc680faedb295"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a745569fee08e779f3fbdc680faedb295">&#9670;&#160;</a></span>component_3d</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -721,7 +680,7 @@ template&lt;bool V, bool C2, bool C3&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::optional&lt;std::conditional_t&lt;C3, <a class="el" href="classCanvas3DComponent.html">Canvas3DComponent</a>, int&gt; &gt; component_3d</td>
+          <td class="memname">std::conditional_t&lt;C3, <a class="el" href="classCanvas3DComponent.html">Canvas3DComponent</a>, int&gt; component_3d</td>
         </tr>
       </table>
   </td>
@@ -733,8 +692,8 @@ template&lt;bool V, bool C2, bool C3&gt; </div>
 
 </div>
 </div>
-<a id="a4f5294537660604c8dcd6cfc2cf03067" name="a4f5294537660604c8dcd6cfc2cf03067"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4f5294537660604c8dcd6cfc2cf03067">&#9670;&#160;</a></span>component_v</h2>
+<a id="afb413f7f0a038adac65847053e7c8427" name="afb413f7f0a038adac65847053e7c8427"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afb413f7f0a038adac65847053e7c8427">&#9670;&#160;</a></span>component_v</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -745,7 +704,7 @@ template&lt;bool V, bool C2, bool C3&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::optional&lt;std::conditional_t&lt;V, <a class="el" href="classViewComponent.html">ViewComponent</a>, int&gt; &gt; component_v</td>
+          <td class="memname">std::conditional_t&lt;V, <a class="el" href="classViewComponent.html">ViewComponent</a>, int&gt; component_v</td>
         </tr>
       </table>
   </td>
@@ -766,7 +725,7 @@ template&lt;bool V, bool C2, bool C3&gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="classTemporalComponent.html">TemporalComponent</a></li>
-    <li class="footer">Generated on Fri May 3 2024 15:23:11 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Mon May 20 2024 16:35:49 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

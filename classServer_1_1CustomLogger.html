@@ -160,10 +160,10 @@ Collaboration diagram for CustomLogger:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a2fe37cb6bcef0d39ad284af3aaf078ad" id="r_a2fe37cb6bcef0d39ad284af3aaf078ad"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classServer_1_1CustomLogger.html#a2fe37cb6bcef0d39ad284af3aaf078ad">CustomLogger</a> (std::shared_ptr&lt; spdlog::logger &gt; <a class="el" href="classServer_1_1CustomLogger.html#accdc73450b7a41e30a69fca53a8f2232">logger</a>)</td></tr>
-<tr class="separator:a2fe37cb6bcef0d39ad284af3aaf078ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a207b8f2eefe9f9fdf8b08c5e4166f5f5" id="r_a207b8f2eefe9f9fdf8b08c5e4166f5f5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classServer_1_1CustomLogger.html#a207b8f2eefe9f9fdf8b08c5e4166f5f5">log</a> (std::string message, crow::LogLevel level)</td></tr>
-<tr class="separator:a207b8f2eefe9f9fdf8b08c5e4166f5f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2a11dedfab6f1b178b925089c4333994" id="r_a2a11dedfab6f1b178b925089c4333994"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classServer_1_1CustomLogger.html#a2a11dedfab6f1b178b925089c4333994">CustomLogger</a> (const std::shared_ptr&lt; spdlog::logger &gt; &amp;<a class="el" href="classServer_1_1CustomLogger.html#accdc73450b7a41e30a69fca53a8f2232">logger</a>)</td></tr>
+<tr class="separator:a2a11dedfab6f1b178b925089c4333994"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a00cd2f28d09aa4c6be5d7ae83e1dd6b2" id="r_a00cd2f28d09aa4c6be5d7ae83e1dd6b2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classServer_1_1CustomLogger.html#a00cd2f28d09aa4c6be5d7ae83e1dd6b2">log</a> (std::string message, crow::LogLevel level) override</td></tr>
+<tr class="separator:a00cd2f28d09aa4c6be5d7ae83e1dd6b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7bf01c06bfaf05f36157a34969a43be4" id="r_a7bf01c06bfaf05f36157a34969a43be4"><td class="memItemLeft" align="right" valign="top">spdlog::level::level_enum&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classServer_1_1CustomLogger.html#a7bf01c06bfaf05f36157a34969a43be4">convertLevel</a> (crow::LogLevel level)</td></tr>
 <tr class="separator:a7bf01c06bfaf05f36157a34969a43be4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -173,8 +173,8 @@ Private Attributes</h2></td></tr>
 <tr class="separator:accdc73450b7a41e30a69fca53a8f2232"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a2fe37cb6bcef0d39ad284af3aaf078ad" name="a2fe37cb6bcef0d39ad284af3aaf078ad"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2fe37cb6bcef0d39ad284af3aaf078ad">&#9670;&#160;</a></span>CustomLogger()</h2>
+<a id="a2a11dedfab6f1b178b925089c4333994" name="a2a11dedfab6f1b178b925089c4333994"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2a11dedfab6f1b178b925089c4333994">&#9670;&#160;</a></span>CustomLogger()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -185,7 +185,7 @@ Private Attributes</h2></td></tr>
         <tr>
           <td class="memname"><a class="el" href="classServer_1_1CustomLogger.html">CustomLogger</a> </td>
           <td>(</td>
-          <td class="paramtype">std::shared_ptr&lt; spdlog::logger &gt;&#160;</td>
+          <td class="paramtype">const std::shared_ptr&lt; spdlog::logger &gt; &amp;&#160;</td>
           <td class="paramname"><em>logger</em></td><td>)</td>
           <td></td>
         </tr>
@@ -226,8 +226,8 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a207b8f2eefe9f9fdf8b08c5e4166f5f5" name="a207b8f2eefe9f9fdf8b08c5e4166f5f5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a207b8f2eefe9f9fdf8b08c5e4166f5f5">&#9670;&#160;</a></span>log()</h2>
+<a id="a00cd2f28d09aa4c6be5d7ae83e1dd6b2" name="a00cd2f28d09aa4c6be5d7ae83e1dd6b2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a00cd2f28d09aa4c6be5d7ae83e1dd6b2">&#9670;&#160;</a></span>log()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -255,7 +255,7 @@ Private Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -294,7 +294,7 @@ Private Attributes</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceServer.html">Server</a></li><li class="navelem"><a class="el" href="classServer_1_1CustomLogger.html">CustomLogger</a></li>
-    <li class="footer">Generated on Fri May 3 2024 15:23:11 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Mon May 20 2024 16:35:49 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

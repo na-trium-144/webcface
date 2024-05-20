@@ -1,10 +1,10 @@
 var namespaceInternal =
 [
     [ "WebSocket", "namespaceInternal_1_1WebSocket.html", [
-      [ "close", "namespaceInternal_1_1WebSocket.html#aabe4b5aafd0f51a45162ac1b335a9d56", null ],
-      [ "init", "namespaceInternal_1_1WebSocket.html#a75763237634a906fe2019fb2b2d8910c", null ],
-      [ "recv", "namespaceInternal_1_1WebSocket.html#a870976e815da9087cba66798173d1709", null ],
-      [ "send", "namespaceInternal_1_1WebSocket.html#a48d99d7d245c0f085c4052fe0a9794cf", null ]
+      [ "close", "namespaceInternal_1_1WebSocket.html#a6937a119a82302709fe664e08d3f1f9d", null ],
+      [ "init", "namespaceInternal_1_1WebSocket.html#aa4e950cd83262c256f19ca338e216ad2", null ],
+      [ "recv", "namespaceInternal_1_1WebSocket.html#a811976b1be3492506ed4cb72699e7a8c", null ],
+      [ "send", "namespaceInternal_1_1WebSocket.html#aa5824a72023afd75ba0d9a0f8cf67ab5", null ]
     ] ],
     [ "Canvas2DDataBuf", "classInternal_1_1Canvas2DDataBuf.html", "classInternal_1_1Canvas2DDataBuf" ],
     [ "ClientData", "structInternal_1_1ClientData.html", "structInternal_1_1ClientData" ],
@@ -22,8 +22,8 @@ var namespaceInternal =
     [ "TextData", "namespaceInternal.html#a112c04e1cb185887034814f635d4ac5f", null ],
     [ "ValueData", "namespaceInternal.html#aa77c608002e5be9330f91a2dbf5e2ac8", null ],
     [ "ViewData", "namespaceInternal.html#a82ba3dfe2c2f8fdc2661559f821cc37f", null ],
-    [ "messageThreadMain", "namespaceInternal.html#a5b391c2b6d6863bbd555c535eceb0928", null ],
-    [ "recvThreadMain", "namespaceInternal.html#ab7dcb25feb9553f343aec62dfe9bbbd2", null ],
+    [ "messageThreadMain", "namespaceInternal.html#a7f06a7b95440436df3f7574bc04cb540", null ],
+    [ "recvThreadMain", "namespaceInternal.html#a2b27c16cfd032c3033553a115aabc9e8", null ],
     [ "shouldSend", "namespaceInternal.html#aa75afe668d3595431d5d644f1213cba6", null ],
     [ "SyncDataStore2< Canvas2DData, int >", "namespaceInternal.html#a7962ee030c473f2dc952bec9bdfff0ba", null ],
     [ "SyncDataStore2< Canvas3DData, int >", "namespaceInternal.html#ac083bd86dd53e66a3279580c5866fdab", null ],

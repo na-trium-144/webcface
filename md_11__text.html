@@ -210,7 +210,7 @@ null終端の文字列はwcfTextSetで送信できます <div class="fragment"><
 <div class="line">ret = <a class="code hl_function" href="c__wcf_2text_8cc.html#abf4899fe704f996d49ee477cfb8002dd">wcfTextGet</a>(wcli, <span class="stringliteral">&quot;a&quot;</span>, <span class="stringliteral">&quot;hoge&quot;</span>, <a class="code hl_function" href="namespaceComponents.html#a005dcb8a17c7ec4d9de115890555d5e8">text</a>, 6, &amp;size);</div>
 <div class="line"><span class="comment">// ex.) ret = WCF_OK, text = &quot;hello\0&quot;, size = 5</span></div>
 <div class="ttc" id="ac__wcf_2text_8cc_html_abf4899fe704f996d49ee477cfb8002dd"><div class="ttname"><a href="c__wcf_2text_8cc.html#abf4899fe704f996d49ee477cfb8002dd">wcfTextGet</a></div><div class="ttdeci">wcfStatus wcfTextGet(wcfClient *wcli, const char *member, const char *field, char *text, int size, int *recv_size)</div><div class="ttdoc">文字列を受信する</div><div class="ttdef"><b>Definition</b> text.cc:29</div></div>
-<div class="ttc" id="anamespaceComponents_html_a005dcb8a17c7ec4d9de115890555d5e8"><div class="ttname"><a href="namespaceComponents.html#a005dcb8a17c7ec4d9de115890555d5e8">Components::text</a></div><div class="ttdeci">TemporalComponent&lt; true, true, false &gt; text(const std::string &amp;text)</div><div class="ttdoc">textコンポーネント</div><div class="ttdef"><b>Definition</b> canvas_data.h:1052</div></div>
+<div class="ttc" id="anamespaceComponents_html_a005dcb8a17c7ec4d9de115890555d5e8"><div class="ttname"><a href="namespaceComponents.html#a005dcb8a17c7ec4d9de115890555d5e8">Components::text</a></div><div class="ttdeci">TemporalComponent&lt; true, true, false &gt; text(const std::string &amp;text)</div><div class="ttdoc">textコンポーネント</div><div class="ttdef"><b>Definition</b> canvas_data.h:1037</div></div>
 </div><!-- fragment --><p> 受信した文字列を格納するバッファとそのサイズ(null終端を含む)を指定します。</p>
 <p class="startli">sizeに受信した文字列の長さ、バッファに受信した文字列が入ります。 文字列がバッファの長さを超える場合は、バッファのサイズ - 1 の文字列とnullが格納されます。</p>
 <p class="startli">初回の呼び出しでは<code>WCF_NOT_FOUND</code>を返し、別スレッドでリクエストが送信されます。</p>
@@ -253,7 +253,7 @@ Event</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri May 3 2024 15:23:11 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Mon May 20 2024 16:35:48 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

@@ -4,7 +4,7 @@ var classInternal_1_1DataSetBuffer =
     [ "DataSetBuffer", "classInternal_1_1DataSetBuffer.html#aa8db383ace00609993fc2d4ffe1934b8", null ],
     [ "DataSetBuffer", "classInternal_1_1DataSetBuffer.html#afd95deb619c2a132b97432b6940bc4b1", null ],
     [ "DataSetBuffer", "classInternal_1_1DataSetBuffer.html#ac0b5ac919b90a54056a4ba6df79a424c", null ],
-    [ "~DataSetBuffer", "classInternal_1_1DataSetBuffer.html#af23b0c9df9ef750a06379c65d61f0fbe", null ],
+    [ "~DataSetBuffer", "classInternal_1_1DataSetBuffer.html#a64eb3a88092fd95c321fee2920554882", null ],
     [ "add", "classInternal_1_1DataSetBuffer.html#a91a8bfc950223c69a6186c79afeaf7bd", null ],
     [ "add", "classInternal_1_1DataSetBuffer.html#ab57a9fc24871f40c4cfcbbb46d3d3b82", null ],
     [ "components", "classInternal_1_1DataSetBuffer.html#a801b79b51634906e9532c23626534067", null ],

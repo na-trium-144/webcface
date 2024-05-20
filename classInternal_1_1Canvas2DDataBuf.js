@@ -2,7 +2,7 @@ var classInternal_1_1Canvas2DDataBuf =
 [
     [ "Canvas2DDataBuf", "classInternal_1_1Canvas2DDataBuf.html#a0afda5bc9c23a8c2d72bfdfdee0ca52f", null ],
     [ "Canvas2DDataBuf", "classInternal_1_1Canvas2DDataBuf.html#a2a7dcc406944a61ee7e3c0e37346234c", null ],
-    [ "~Canvas2DDataBuf", "classInternal_1_1Canvas2DDataBuf.html#a405e78f350d95f95589e3a3c97ee3ed4", null ],
+    [ "~Canvas2DDataBuf", "classInternal_1_1Canvas2DDataBuf.html#a6c999465b513a938a0d7834c0253c851", null ],
     [ "add", "classInternal_1_1Canvas2DDataBuf.html#a91a8bfc950223c69a6186c79afeaf7bd", null ],
     [ "add", "classInternal_1_1Canvas2DDataBuf.html#ab57a9fc24871f40c4cfcbbb46d3d3b82", null ],
     [ "checkSize", "classInternal_1_1Canvas2DDataBuf.html#a85fe16c552b3bc11750ac6b73e611696", null ],

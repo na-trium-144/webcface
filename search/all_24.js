@@ -1,8 +1,8 @@
 var searchData=
 [
-  ['_7ecanvas2ddatabuf_0',['~Canvas2DDataBuf',['../classInternal_1_1Canvas2DDataBuf.html#a405e78f350d95f95589e3a3c97ee3ed4',1,'Internal::Canvas2DDataBuf']]],
+  ['_7ecanvas2ddatabuf_0',['~Canvas2DDataBuf',['../classInternal_1_1Canvas2DDataBuf.html#a6c999465b513a938a0d7834c0253c851',1,'Internal::Canvas2DDataBuf']]],
   ['_7eclient_1',['~Client',['../classClient.html#a37731a8f5dd5caca4cc2ddb8b556cd6c',1,'Client']]],
-  ['_7edatasetbuffer_2',['~DataSetBuffer',['../classInternal_1_1DataSetBuffer.html#af23b0c9df9ef750a06379c65d61f0fbe',1,'Internal::DataSetBuffer']]],
+  ['_7edatasetbuffer_2',['~DataSetBuffer',['../classInternal_1_1DataSetBuffer.html#a64eb3a88092fd95c321fee2920554882',1,'Internal::DataSetBuffer']]],
   ['_7eeventtarget_3',['~EventTarget',['../classEventTarget.html#a78a3268cf5f451797861f68c731e2895',1,'EventTarget']]],
   ['_7eidbase_4',['~IdBase',['../classIdBase.html#acf5b9b0919b5b58327da7f16b9fc5a84',1,'IdBase']]],
   ['_7einputref_5',['~InputRef',['../classInputRef.html#a426a9bb66a0d861cf5fa495c2be6892d',1,'InputRef']]],

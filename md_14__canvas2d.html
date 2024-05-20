@@ -301,7 +301,7 @@ ver1.8以前のC++</summary>
 <div class="line">    webcface::ViewColor::white,</div>
 <div class="line">    1</div>
 <div class="line">);</div>
-<div class="ttc" id="anamespaceComponents_1_1Geometries_html_a70a6a0aadee31b74968201a0eee0bf5f"><div class="ttname"><a href="namespaceComponents_1_1Geometries.html#a70a6a0aadee31b74968201a0eee0bf5f">Components::Geometries::rect</a></div><div class="ttdeci">TemporalGeometry rect(const Point &amp;origin, double width, double height)</div><div class="ttdef"><b>Definition</b> canvas_data.h:936</div></div>
+<div class="ttc" id="anamespaceComponents_1_1Geometries_html_a70a6a0aadee31b74968201a0eee0bf5f"><div class="ttname"><a href="namespaceComponents_1_1Geometries.html#a70a6a0aadee31b74968201a0eee0bf5f">Components::Geometries::rect</a></div><div class="ttdeci">TemporalGeometry rect(const Point &amp;origin, double width, double height)</div><div class="ttdef"><b>Definition</b> canvas_data.h:921</div></div>
 </div><!-- fragment --><p> addの引数に表示したいgeometryと、表示する位置の平行移動or回転、枠線の色、塗りつぶしの色、枠線の太さを指定します。 詳細は webcface::Canvas2D::add を参照してください</p>
 <p></p>
 </details>
@@ -311,7 +311,7 @@ ver1.8以前のC++</summary>
 <h3><a class="anchor" id="autotoc_md72"></a>
 Line</h3>
 <p>指定した2点間に直線を引きます </p><div class="fragment"><div class="line"><a class="code hl_function" href="namespaceComponents_1_1Geometries.html#a589bd246994070f5faffe56a90a3b6f2">line</a>(<a class="code hl_class" href="classCommon_1_1Point.html">Point</a> begin, <a class="code hl_class" href="classCommon_1_1Point.html">Point</a> end)</div>
-<div class="ttc" id="anamespaceComponents_1_1Geometries_html_a589bd246994070f5faffe56a90a3b6f2"><div class="ttname"><a href="namespaceComponents_1_1Geometries.html#a589bd246994070f5faffe56a90a3b6f2">Components::Geometries::line</a></div><div class="ttdeci">TemporalGeometry line(const Point &amp;begin, const Point &amp;end)</div><div class="ttdef"><b>Definition</b> canvas_data.h:868</div></div>
+<div class="ttc" id="anamespaceComponents_1_1Geometries_html_a589bd246994070f5faffe56a90a3b6f2"><div class="ttname"><a href="namespaceComponents_1_1Geometries.html#a589bd246994070f5faffe56a90a3b6f2">Components::Geometries::line</a></div><div class="ttdeci">TemporalGeometry line(const Point &amp;begin, const Point &amp;end)</div><div class="ttdef"><b>Definition</b> canvas_data.h:853</div></div>
 </div><!-- fragment --><h3><a class="anchor" id="autotoc_md73"></a>
 Rect</h3>
 <p>指定した2点を頂点としx軸,y軸に平行な辺をもつ長方形を描画します </p><div class="fragment"><div class="line"><a class="code hl_function" href="namespaceComponents_1_1Geometries.html#a70a6a0aadee31b74968201a0eee0bf5f">rect</a>(<a class="code hl_class" href="classCommon_1_1Point.html">Point</a> vertex1, <a class="code hl_class" href="classCommon_1_1Point.html">Point</a> vertex2)</div>
@@ -319,12 +319,12 @@ Rect</h3>
 </div><!-- fragment --><h3><a class="anchor" id="autotoc_md74"></a>
 Circle</h3>
 <p>originを中心として半径radiusの円を描画します </p><div class="fragment"><div class="line"><a class="code hl_function" href="namespaceComponents_1_1Geometries.html#a8054b6a17f6efeeeff18590a7b38f8e2">circle</a>(<a class="code hl_class" href="classCommon_1_1Point.html">Point</a> origin, <span class="keywordtype">double</span> radius)</div>
-<div class="ttc" id="anamespaceComponents_1_1Geometries_html_a8054b6a17f6efeeeff18590a7b38f8e2"><div class="ttname"><a href="namespaceComponents_1_1Geometries.html#a8054b6a17f6efeeeff18590a7b38f8e2">Components::Geometries::circle</a></div><div class="ttdeci">TemporalGeometry circle(const Transform &amp;origin, double radius)</div><div class="ttdef"><b>Definition</b> canvas_data.h:991</div></div>
+<div class="ttc" id="anamespaceComponents_1_1Geometries_html_a8054b6a17f6efeeeff18590a7b38f8e2"><div class="ttname"><a href="namespaceComponents_1_1Geometries.html#a8054b6a17f6efeeeff18590a7b38f8e2">Components::Geometries::circle</a></div><div class="ttdeci">TemporalGeometry circle(const Transform &amp;origin, double radius)</div><div class="ttdef"><b>Definition</b> canvas_data.h:976</div></div>
 </div><!-- fragment --><dl class="section warning"><dt>Warning</dt><dd>PythonではCanvas3Dとの兼ね合いで第1引数はTransform (使いにくいのでなんとかならないか?)</dd></dl>
 <h3><a class="anchor" id="autotoc_md75"></a>
 Polygon</h3>
 <p>指定した点をつなげた図形を描画します </p><div class="fragment"><div class="line"><a class="code hl_function" href="namespaceComponents_1_1Geometries.html#ab71462a4b3c7f94d111654688068b64f">polygon</a>(std::vector&lt;Point&gt; points)</div>
-<div class="ttc" id="anamespaceComponents_1_1Geometries_html_ab71462a4b3c7f94d111654688068b64f"><div class="ttname"><a href="namespaceComponents_1_1Geometries.html#ab71462a4b3c7f94d111654688068b64f">Components::Geometries::polygon</a></div><div class="ttdeci">TemporalGeometry polygon(const std::vector&lt; Point &gt; &amp;points)</div><div class="ttdef"><b>Definition</b> canvas_data.h:891</div></div>
+<div class="ttc" id="anamespaceComponents_1_1Geometries_html_ab71462a4b3c7f94d111654688068b64f"><div class="ttname"><a href="namespaceComponents_1_1Geometries.html#ab71462a4b3c7f94d111654688068b64f">Components::Geometries::polygon</a></div><div class="ttdeci">TemporalGeometry polygon(const std::vector&lt; Point &gt; &amp;points)</div><div class="ttdef"><b>Definition</b> canvas_data.h:876</div></div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md76"></a>
 文字列の表示</h2>
 <div class="tabbed"></div><div class="tabbed"><ul>
@@ -366,7 +366,7 @@ Event</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri May 3 2024 15:23:11 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Mon May 20 2024 16:35:48 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

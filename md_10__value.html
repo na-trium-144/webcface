@@ -342,7 +342,7 @@ $(document).ready(function(){initNavTree('md_10__value.html',''); initResizable(
 <p class="startli">値を受信していない場合<code>WCF_NOT_FOUND</code>を返し、別スレッドでリクエストが送信されます。</p>
 <p class="startli"><span class="since-c">1.7</span> 1つの値のみを受信する場合はwcfValueGetも使えます。 </p><div class="fragment"><div class="line"><span class="keywordtype">double</span> value;</div>
 <div class="line">ret = <a class="code hl_function" href="c__wcf_2value_8cc.html#a6b8bc18477f9e8bca7a5b1965f4905a0">wcfValueGet</a>(wcli, <span class="stringliteral">&quot;a&quot;</span>, <span class="stringliteral">&quot;hoge&quot;</span>, &amp;value);</div>
-<div class="ttc" id="ac__wcf_2value_8cc_html_a6b8bc18477f9e8bca7a5b1965f4905a0"><div class="ttname"><a href="c__wcf_2value_8cc.html#a6b8bc18477f9e8bca7a5b1965f4905a0">wcfValueGet</a></div><div class="ttdeci">wcfStatus wcfValueGet(wcfClient *wcli, const char *member, const char *field, double *value)</div><div class="ttdoc">値を受信する</div><div class="ttdef"><b>Definition</b> value.cc:53</div></div>
+<div class="ttc" id="ac__wcf_2value_8cc_html_a6b8bc18477f9e8bca7a5b1965f4905a0"><div class="ttname"><a href="c__wcf_2value_8cc.html#a6b8bc18477f9e8bca7a5b1965f4905a0">wcfValueGet</a></div><div class="ttdeci">wcfStatus wcfValueGet(wcfClient *wcli, const char *member, const char *field, double *value)</div><div class="ttdoc">値を受信する</div><div class="ttdef"><b>Definition</b> value.cc:54</div></div>
 </div><!-- fragment --><dl class="section note"><dt>Note</dt><dd><span class="since-c">1.7</span> member名に空文字列またはNULLを指定すると自分自身を指します。</dd></dl>
 </li>
 <li><b class="tab-title">JavaScript</b> <div class="fragment"><div class="line">const hoge: double | null = wcli.member(&quot;foo&quot;).value(&quot;hoge&quot;).tryGet();</div>
@@ -471,7 +471,7 @@ Event</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri May 3 2024 15:23:11 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Mon May 20 2024 16:35:48 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>
