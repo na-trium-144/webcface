@@ -337,24 +337,37 @@ if(WEBCFACE_TEST)
 endif()
 
 ###############################################################################
+include(CheckCXXCompilerFlag)
+function(add_cxx_compile_options_if FLAG NAME)
+    check_cxx_compiler_flag(${FLAG} FLAG_${NAME}_EXISTS)
+    if(FLAG_${NAME}_EXISTS)
+        add_compile_options($<$<COMPILE_LANGUAGE:CXX>:${FLAG}>)
+    endif()
+endfunction()
+
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     add_compile_options(-Wall -Wextra -Wpedantic -Werror)
     add_compile_options(-Wno-error=deprecated-declarations)
-    add_compile_options(-Wno-psabi) # refer to PR#9
-    add_compile_options( # inside opencv
-        $<$<COMPILE_LANGUAGE:CXX>:-Wno-deprecated-enum-enum-conversion>
-    )
-    add_compile_options( # inside fmt (fmtlib/fmt#3354)
-        -Wno-array-bounds
-        -Wno-stringop-overflow
-    )
+    add_compile_options(-Wno-error=psabi) # refer to PR#9
+    # inside opencv
+    add_cxx_compile_options_if(-Wno-error=deprecated-enum-enum-conversion DEPRECATED_ENUM)
+    # inside fmt (fmtlib/fmt#3354)
+    add_compile_options(-Wno-error=array-bounds -Wno-error=stringop-overflow)
+    # (fmtlib/fmt#3415)
+    add_cxx_compile_options_if(-Wno-error=dangling-reference DANGLING_REFERENCE)
 endif()
 if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     add_compile_options(-Wall -Wextra -Wpedantic -Werror)
     add_compile_options(-Wno-error=deprecated-declarations)
-    add_compile_options( # inside opencv
-        -Wno-c11-extensions
-        $<$<COMPILE_LANGUAGE:CXX>:-Wno-deprecated-enum-enum-conversion>
+    add_compile_options(
+        --system-header-prefix=msgpack.hpp
+        --system-header-prefix=eventpp/
+        --system-header-prefix=spdlog/
+        --system-header-prefix=curl/
+        --system-header-prefix=crow.h
+        --system-header-prefix=opencv2/
+        --system-header-prefix=utf8.h
+        --system-header-prefix=CLI/
     )
 endif()
 
