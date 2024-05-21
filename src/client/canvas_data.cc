@@ -2,31 +2,32 @@
 #include <webcface/member.h>
 #include <webcface/robot_model.h>
 #include "client_internal.h"
+#include "webcface/common/field_base.h"
 
 WEBCFACE_NS_BEGIN
 
 ViewComponentBase &
 ViewComponent::lockTmp(const std::weak_ptr<Internal::ClientData> &data_w,
-                       const std::string &view_name,
+                       const std::u8string &view_name,
                        std::unordered_map<int, int> *idx_next) {
     auto data = data_w.lock();
     initIdx(idx_next, type_);
     if (on_click_func_tmp) {
         Func on_click{Field{data_w, data->self_member_name},
-                      "..v" + view_name + "/" + id()};
+                      u8"..v" + view_name + u8"/" + id()};
         on_click_func_tmp->lockTo(on_click);
         onClick(on_click);
     }
     if (text_ref_tmp) {
         // if (text_ref_tmp->expired()) {
         Text text_ref{Field{data_w, data->self_member_name},
-                      "..ir" + view_name + "/" + id()};
+                      u8"..ir" + view_name + u8"/" + id()};
         text_ref_tmp->lockTo(text_ref);
         if (init_ && !text_ref.tryGet()) {
             text_ref.set(*init_);
         }
         // }
-        text_ref_.emplace(text_ref.member().name(), text_ref.name());
+        text_ref_.emplace(static_cast<FieldBase>(text_ref));
     }
     return *this;
 }
@@ -56,7 +57,7 @@ std::optional<Func> ViewComponent::onClick() const {
     }
 }
 ViewComponent &ViewComponent::onClick(const Func &func) {
-    on_click_func_.emplace(func.member().name(), func.name());
+    on_click_func_.emplace(static_cast<FieldBase>(func));
     return *this;
 }
 
@@ -76,13 +77,31 @@ std::optional<RobotModel> Canvas3DComponent::robotModel() const {
     }
 }
 Canvas3DComponent &Canvas3DComponent::robotModel(const RobotModel &field) {
-    field_base_.emplace(field.member().name(), field.name());
+    field_base_.emplace(static_cast<FieldBase>(field));
     return *this;
 }
 
 
 Canvas3DComponent &Canvas3DComponent::angles(
     const std::unordered_map<std::string, double> &angles) {
+    auto rm = robotModel();
+    if (rm) {
+        angles_.clear();
+        auto model = rm->get();
+        for (std::size_t ji = 0; ji < model.size(); ji++) {
+            const auto &j = model[ji].joint;
+            if (angles.count(j.name)) {
+                angles_[ji] = angles.at(j.name);
+            }
+        }
+        return *this;
+    } else {
+        throw std::invalid_argument("Tried to set Canvas3DComponent::angles "
+                                    "but robotModel not defined");
+    }
+}
+Canvas3DComponent &Canvas3DComponent::angles(
+    const std::unordered_map<std::wstring, double> &angles) {
     auto rm = robotModel();
     if (rm) {
         angles_.clear();
@@ -116,16 +135,33 @@ Canvas3DComponent &Canvas3DComponent::angle(const std::string &joint_name,
                                     "but robotModel not defined");
     }
 }
+Canvas3DComponent &Canvas3DComponent::angle(const std::wstring &joint_name,
+                                            double angle) {
+    auto rm = robotModel();
+    if (rm) {
+        auto model = rm->get();
+        for (std::size_t ji = 0; ji < model.size(); ji++) {
+            const auto &j = model[ji].joint;
+            if (joint_name == j.name) {
+                angles_[ji] = angle;
+            }
+        }
+        return *this;
+    } else {
+        throw std::invalid_argument("Tried to set Canvas3DComponent::angles "
+                                    "but robotModel not defined");
+    }
+}
 
 Canvas2DComponentBase &
 Canvas2DComponent::lockTmp(const std::weak_ptr<Internal::ClientData> &data_w,
-                           const std::string &view_name,
+                           const std::u8string &view_name,
                            std::unordered_map<int, int> *idx_next) {
     initIdx(idx_next, type_);
     if (on_click_func_tmp != nullptr) {
         auto data = data_w.lock();
         Func on_click{Field{data_w, data->self_member_name},
-                      "..c2" + view_name + "/" + id()};
+                      u8"..c2" + view_name + u8"/" + id()};
         on_click_func_tmp->lockTo(on_click);
         onClick(on_click);
     }
@@ -140,7 +176,7 @@ std::optional<Func> Canvas2DComponent::onClick() const {
     }
 }
 Canvas2DComponent &Canvas2DComponent::onClick(const Func &func) {
-    on_click_func_.emplace(func.member().name(), func.name());
+    on_click_func_.emplace(static_cast<FieldBase>(func));
     return *this;
 }
 

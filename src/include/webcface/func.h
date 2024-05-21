@@ -34,15 +34,15 @@ inline FuncWrapperType runCondScopeGuard() {
 
 } // namespace FuncWrapper
 
-class AnonymousFunc;
-
 /*!
  * \brief 関数1つを表すクラス
  *
  */
 class WEBCFACE_DLL Func : protected Field {
   public:
-    friend AnonymousFunc;
+    friend class AnonymousFunc;
+    friend class ViewComponent;
+    friend class Canvas2DComponent;
 
     Func() = default;
     Func(const Field &base);

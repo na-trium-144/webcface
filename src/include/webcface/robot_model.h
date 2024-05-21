@@ -39,6 +39,7 @@ class WEBCFACE_DLL RobotModel : protected Field,
         : RobotModel(Field{base, field}) {}
 
     friend class Canvas3D;
+    friend class Canvas3DComponent;
     friend Internal::DataSetBuffer<RobotLink>;
 
     using Field::lastName;
