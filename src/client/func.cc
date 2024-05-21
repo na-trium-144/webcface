@@ -202,9 +202,9 @@ FuncWrapper::runCondOnSync(const std::weak_ptr<Internal::ClientData> &data) {
         };
 }
 
-std::string AnonymousFunc::fieldNameTmp() {
+std::u8string AnonymousFunc::fieldNameTmp() {
     static int id = 0;
-    return "..tmp" + std::to_string(id++);
+    return Encoding::encode("..tmp" + std::to_string(id++));
 }
 AnonymousFunc &AnonymousFunc::operator=(AnonymousFunc &&other) noexcept {
     this->func_setter = std::move(other.func_setter);

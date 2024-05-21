@@ -22,8 +22,10 @@ class Member;
  */
 struct WEBCFACE_DLL FuncNotFound : public std::runtime_error {
     explicit FuncNotFound(const Common::FieldBase &base)
-        : std::runtime_error("member(\"" + base.member_ + "\")" + ".func(\"" +
-                             base.field_ + "\") is not set") {}
+        : std::runtime_error("member(\"" + Encoding::decode(base.member_) +
+                             "\")" + ".func(\"" +
+                             Encoding::decode(base.field_) + "\") is not set") {
+    }
 };
 
 /*!

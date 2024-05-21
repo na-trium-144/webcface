@@ -29,7 +29,7 @@ class WEBCFACE_DLL Text : protected Field, public EventTarget<Text> {
   public:
     Text() = default;
     Text(const Field &base);
-    Text(const Field &base, const std::string &field)
+    Text(const Field &base, std::u8string_view field)
         : Text(Field{base, field}) {}
 
     friend class InputRef;
@@ -45,6 +45,13 @@ class WEBCFACE_DLL Text : protected Field, public EventTarget<Text> {
         return this->Field::child(field);
     }
     /*!
+     * \brief 「(thisの名前).(追加の名前)」を新しい名前とするField (wstring)
+     * \since ver1.12
+     */
+    Text child(std::wstring_view field) const {
+        return this->Field::child(field);
+    }
+    /*!
      * \since ver1.11
      */
     Text child(int index) const { return this->Field::child(index); }
@@ -54,10 +61,19 @@ class WEBCFACE_DLL Text : protected Field, public EventTarget<Text> {
      */
     Text operator[](std::string_view field) const { return child(field); }
     /*!
+     * child()と同じ
+     * \since ver1.12
+     */
+    Text operator[](std::wstring_view field) const { return child(field); }
+    /*!
      * operator[](long, const char *)と解釈されるのを防ぐための定義
      * \since ver1.11
      */
     Text operator[](const char *field) const { return child(field); }
+    /*!
+     * \since ver1.12
+     */
+    Text operator[](const wchar_t *field) const { return child(field); }
     /*!
      * child()と同じ
      * \since ver1.11
@@ -80,8 +96,15 @@ class WEBCFACE_DLL Text : protected Field, public EventTarget<Text> {
     /*!
      * \brief 文字列をセットする
      *
+     * (ver1.12からstd::stringをstd::string_viewに変更)
+     *
      */
-    Text &set(const std::string &v) { return set(ValAdaptor{v}); }
+    Text &set(std::string_view v) { return set(ValAdaptor{v}); }
+    /*!
+     * \brief 文字列をセットする (wstring)
+     * \since ver1.12
+     */
+    Text &set(std::wstring_view v) { return set(ValAdaptor{v}); }
     /*!
      * \brief 文字列をセットする
      *
@@ -102,7 +125,15 @@ class WEBCFACE_DLL Text : protected Field, public EventTarget<Text> {
      * \brief 文字列をセットする
      *
      */
-    Text &operator=(const std::string &v) {
+    Text &operator=(std::string_view v) {
+        this->set(v);
+        return *this;
+    }
+    /*!
+     * \brief 文字列をセットする (wstring)
+     * \since ver1.12
+     */
+    Text &operator=(std::wstring_view v) {
         this->set(v);
         return *this;
     }
@@ -139,6 +170,7 @@ class WEBCFACE_DLL Text : protected Field, public EventTarget<Text> {
     //  */
     // Dict getRecurse() const { return tryGetRecurse().value_or(Dict{}); }
     operator std::string() const { return get(); }
+    operator std::wstring() const { return get(); }
     // operator Dict() const { return getRecurse(); }
 
     /*!
@@ -153,11 +185,11 @@ class WEBCFACE_DLL Text : protected Field, public EventTarget<Text> {
      */
     Text &free();
 
-    bool operator==(const std::string &rhs) const {
-        return static_cast<std::string>(this->get()) == rhs;
+    bool operator==(std::string_view rhs) const {
+        return this->get().asStringRef() == rhs;
     }
-    bool operator!=(const std::string &rhs) const {
-        return static_cast<std::string>(this->get()) != rhs;
+    bool operator==(std::wstring_view rhs) const {
+        return this->get().asWStringRef() == rhs;
     }
 
     /*!
@@ -172,16 +204,6 @@ class WEBCFACE_DLL Text : protected Field, public EventTarget<Text> {
         requires std::same_as<T, Text>
     bool operator==(const T &other) const {
         return static_cast<Field>(*this) == static_cast<Field>(other);
-    }
-    /*!
-     * \brief Textの参照先を比較
-     * \since ver1.11
-     *
-     */
-    template <typename T>
-        requires std::same_as<T, Text>
-    bool operator!=(const T &other) const {
-        return !(*this == other);
     }
     bool operator<(const Text &) const = delete;
     bool operator<=(const Text &) const = delete;
@@ -291,10 +313,21 @@ class WEBCFACE_DLL InputRef {
      */
     const std::string &asStringRef() const { return get().asStringRef(); }
     /*!
+     * \brief 文字列として返す (wstring)
+     * \since ver1.12
+     * \sa asStringRef()
+     */
+    const std::wstring &asWStringRef() const { return get().asWStringRef(); }
+    /*!
      * \brief 文字列として返す(コピー)
      * \since ver1.11
      */
     std::string asString() const { return get().asString(); }
+    /*!
+     * \brief 文字列として返す(コピー) (wstring)
+     * \since ver1.12
+     */
+    std::wstring asWString() const { return get().asWString(); }
     /*!
      * \brief 数値として返す
      * \since ver1.11
@@ -318,11 +351,6 @@ class WEBCFACE_DLL InputRef {
         requires std::constructible_from<ValAdaptor, T>
     bool operator==(const T &other) const {
         return get() == other;
-    }
-    template <typename T>
-        requires std::constructible_from<ValAdaptor, T>
-    bool operator!=(const T &other) const {
-        return get() != other;
     }
 };
 

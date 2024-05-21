@@ -35,7 +35,7 @@ class WEBCFACE_DLL View : protected Field,
   public:
     View();
     View(const Field &base);
-    View(const Field &base, const std::string &field)
+    View(const Field &base, std::u8string_view field)
         : View(Field{base, field}) {}
     View(const View &rhs) : View() { *this = rhs; }
     View(View &&rhs) noexcept : View() { *this = std::move(rhs); }
@@ -56,6 +56,13 @@ class WEBCFACE_DLL View : protected Field,
         return this->Field::child(field);
     }
     /*!
+     * \brief 「(thisの名前).(追加の名前)」を新しい名前とするField (wstring)
+     * \since ver1.12
+     */
+    View child(std::wstring_view field) const {
+        return this->Field::child(field);
+    }
+    /*!
      * \since ver1.11
      */
     View child(int index) const { return this->Field::child(index); }
@@ -65,10 +72,19 @@ class WEBCFACE_DLL View : protected Field,
      */
     View operator[](std::string_view field) const { return child(field); }
     /*!
+     * child()と同じ
+     * \since ver1.12
+     */
+    View operator[](std::wstring_view field) const { return child(field); }
+    /*!
      * operator[](long, const char *)と解釈されるのを防ぐための定義
      * \since ver1.11
      */
     View operator[](const char *field) const { return child(field); }
+    /*!
+     * \since ver1.12
+     */
+    View operator[](const wchar_t *field) const { return child(field); }
     /*!
      * child()と同じ
      * \since ver1.11
@@ -232,16 +248,6 @@ class WEBCFACE_DLL View : protected Field,
         requires std::same_as<T, View>
     bool operator==(const T &other) const {
         return static_cast<Field>(*this) == static_cast<Field>(other);
-    }
-    /*!
-     * \brief Viewの参照先を比較
-     * \since ver1.11
-     *
-     */
-    template <typename T>
-        requires std::same_as<T, View>
-    bool operator!=(const T &other) const {
-        return !(*this == other);
     }
 };
 WEBCFACE_NS_END
