@@ -80,7 +80,12 @@ inline std::ostream &operator<<(std::ostream &os, ValType a) {
  *
  */
 class ValAdaptor {
+    /*!
+     * 文字列に変換したものを保存
+     * デフォルトでu8strの空文字列
+     */
     mutable std::variant<std::u8string, std::string, std::wstring> as_str;
+
     std::variant<double, std::int64_t> as_val;
     ValType type;
 
@@ -214,6 +219,36 @@ class ValAdaptor {
         return std::get<WSTR>(as_str);
     }
     /*!
+     * \since ver1.12
+     */
+    std::u8string asU8String() const {
+        if (as_str.index() == U8STR && !std::get<U8STR>(as_str).empty()) {
+            return std::get<U8STR>(as_str);
+        } else {
+            if (valType() == ValType::none_) {
+                // empty
+                return std::u8string();
+            } else if (valType() == ValType::string_) {
+                if (as_str.index() == STR) {
+                    return Encoding::encode(std::get<STR>(as_str));
+                } else if (as_str.index() == WSTR) {
+                    return Encoding::encodeW(std::get<WSTR>(as_str));
+                } else {
+                    return std::get<U8STR>(as_str);
+                }
+            } else {
+                if (as_val.index() == DOUBLEV) {
+                    return Encoding::encode(
+                        std::to_string(std::get<DOUBLEV>(as_val)));
+                } else {
+                    return Encoding::encode(
+                        std::to_string(std::get<INT64V>(as_val)));
+                }
+            }
+        }
+    }
+
+    /*!
      * \brief 文字列として返す(コピー)
      * \since ver1.10
      */
@@ -313,6 +348,11 @@ class ValAdaptor {
     ValAdaptor &operator=(T v) {
         as_val.emplace<DOUBLEV>(v);
         type = ValType::float_;
+        return *this;
+    }
+    ValAdaptor &operator=(std::u8string_view v) {
+        as_str.emplace<U8STR>(v);
+        type = ValType::string_;
         return *this;
     }
     ValAdaptor &operator=(std::string_view v) {

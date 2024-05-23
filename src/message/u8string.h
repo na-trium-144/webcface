@@ -1,4 +1,5 @@
 #pragma once
+#include "utf8/cpp20.h"
 #include <msgpack.hpp>
 #include <string>
 #include <webcface/common/def.h>
@@ -13,6 +14,7 @@ MSGPACK_API_VERSION_NAMESPACE(MSGPACK_DEFAULT_API_NS) {
                                           std::u8string &v) const {
             v.assign(std::bit_cast<const char8_t *>(o.via.str.ptr),
                      o.via.str.size);
+            v = utf8::replace_invalid(v);
             return o;
         }
     };
