@@ -6,5 +6,6 @@ Checks: >
   performance-*,
   -concurrency-mt-unsafe,
   -bugprone-easily-swappable-parameters,
-  -clang-analyzer-optin.performance.Padding
+  -clang-analyzer-optin.performance.Padding,
+  -performance-enum-size
 WarningsAsErrors: '*'
