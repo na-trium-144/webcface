@@ -8,7 +8,7 @@ template class WEBCFACE_DLL EventTarget<Log>;
 
 Log::Log(const Field &base) : Field(base), EventTarget<Log>() {
     std::lock_guard lock(this->dataLock()->event_m);
-    this->cl = &this->dataLock()->log_append_event[this->member_];
+    this->setCL(this->dataLock()->log_append_event[this->member_]);
 }
 
 void Log::request() const {

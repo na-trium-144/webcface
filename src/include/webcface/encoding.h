@@ -1,4 +1,5 @@
 #pragma once
+#include <__fwd/string.h>
 #include <string>
 #include <string_view>
 #include <webcface/common/def.h>
@@ -61,6 +62,25 @@ WEBCFACE_DLL std::string decode(std::u8string_view name_ref);
  * \since ver1.12
  */
 WEBCFACE_DLL std::wstring decodeW(std::u8string_view name_ref);
+
+
+/*!
+ * \brief stringをu8stringにキャストする
+ * \since ver1.12
+ */
+WEBCFACE_DLL std::u8string_view castToU8(std::string_view name);
+/*!
+ * \since ver1.12
+ */
+std::u8string_view castToU8(const char *data, std::size_t size){
+    return castToU8(std::string_view(data, size));
+}
+
+/*!
+ * \brief u8stringをstringにキャストする
+ * \since ver1.12
+ */
+WEBCFACE_DLL std::string_view castFromU8(std::u8string_view name);
 
 } // namespace Encoding
 WEBCFACE_NS_END

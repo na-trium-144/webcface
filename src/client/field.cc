@@ -70,7 +70,7 @@ std::vector<Value> Field::valueEntries() const {
     for (const auto &f : keys) {
         if (this->field_.empty() ||
             f.starts_with(this->field_ + field_separator)) {
-            ret.push_back(value(f));
+            ret.emplace_back(child(f));
         }
     }
     return ret;
@@ -81,7 +81,7 @@ std::vector<Text> Field::textEntries() const {
     for (const auto &f : keys) {
         if (this->field_.empty() ||
             f.starts_with(this->field_ + field_separator)) {
-            ret.push_back(text(f));
+            ret.emplace_back(child(f));
         }
     }
     return ret;
@@ -92,7 +92,7 @@ std::vector<RobotModel> Field::robotModelEntries() const {
     for (const auto &f : keys) {
         if (this->field_.empty() ||
             f.starts_with(this->field_ + field_separator)) {
-            ret.push_back(robotModel(f));
+            ret.emplace_back(child(f));
         }
     }
     return ret;
@@ -103,7 +103,7 @@ std::vector<Func> Field::funcEntries() const {
     for (const auto &f : keys) {
         if (this->field_.empty() ||
             f.starts_with(this->field_ + field_separator)) {
-            ret.push_back(func(f));
+            ret.emplace_back(child(f));
         }
     }
     return ret;
@@ -114,7 +114,7 @@ std::vector<View> Field::viewEntries() const {
     for (const auto &f : keys) {
         if (this->field_.empty() ||
             f.starts_with(this->field_ + field_separator)) {
-            ret.push_back(view(f));
+            ret.emplace_back(child(f));
         }
     }
     return ret;
@@ -125,7 +125,7 @@ std::vector<Canvas3D> Field::canvas3DEntries() const {
     for (const auto &f : keys) {
         if (this->field_.empty() ||
             f.starts_with(this->field_ + field_separator)) {
-            ret.push_back(canvas3D(f));
+            ret.emplace_back(child(f));
         }
     }
     return ret;
@@ -136,7 +136,7 @@ std::vector<Canvas2D> Field::canvas2DEntries() const {
     for (const auto &f : keys) {
         if (this->field_.empty() ||
             f.starts_with(this->field_ + field_separator)) {
-            ret.push_back(canvas2D(f));
+            ret.emplace_back(child(f));
         }
     }
     return ret;
@@ -147,7 +147,7 @@ std::vector<Image> Field::imageEntries() const {
     for (const auto &f : keys) {
         if (this->field_.empty() ||
             f.starts_with(this->field_ + field_separator)) {
-            ret.push_back(image(f));
+            ret.emplace_back(child(f));
         }
     }
     return ret;

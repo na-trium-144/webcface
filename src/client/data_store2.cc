@@ -1,4 +1,5 @@
 #include "data_store2.h"
+#include "webcface/field.h"
 #include <type_traits>
 
 WEBCFACE_NS_BEGIN
@@ -132,7 +133,7 @@ std::optional<T> SyncDataStore2<T, ReqT>::getRecv(const std::u8string &from,
 template <typename T, typename ReqT>
 std::optional<Dict<T>> SyncDataStore2<T, ReqT>::getRecvRecurse(
     const std::u8string &member, const std::u8string &field,
-    const std::function<void(const std::string &)> &cb) {
+    const std::function<void(const std::u8string &)> &cb) {
     std::lock_guard lock(mtx);
     // addReq(member, field);
     auto s_it = data_recv.find(member);
@@ -140,8 +141,9 @@ std::optional<Dict<T>> SyncDataStore2<T, ReqT>::getRecvRecurse(
         Dict<T> d;
         bool found = false;
         for (const auto &it : s_it->second) {
-            if (it.first.starts_with(field + u8'.')) {
-                d[it.first.substr(field.size() + 1)] = it.second;
+            if (it.first.starts_with(field + field_separator)) {
+                d[Encoding::decode(it.first.substr(field.size() + 1))] =
+                    it.second;
                 // addReq(member, it.first);
                 found = true;
                 if (cb) {

@@ -198,7 +198,7 @@ class WEBCFACE_DLL Canvas2D : protected Field, public EventTarget<Canvas2D> {
                                  double stroke_width = 1) {
         add(Canvas2DComponent{{Canvas2DComponentType::geometry, origin, color,
                                fill, stroke_width, geometry, std::nullopt,
-                               ""}});
+                               u8""}});
         return *this;
     }
     /*!
@@ -217,7 +217,7 @@ class WEBCFACE_DLL Canvas2D : protected Field, public EventTarget<Canvas2D> {
                                  double stroke_width = 1) {
         add(Canvas2DComponent{{Canvas2DComponentType::geometry, identity(),
                                color, fill, stroke_width, geometry,
-                               std::nullopt, ""}});
+                               std::nullopt, u8""}});
         return *this;
     }
     /*!
@@ -235,7 +235,7 @@ class WEBCFACE_DLL Canvas2D : protected Field, public EventTarget<Canvas2D> {
                                  const ViewColor &color, double stroke_width) {
         add(Canvas2DComponent{{Canvas2DComponentType::geometry, origin, color,
                                ViewColor::inherit, stroke_width, geometry,
-                               std::nullopt, ""}});
+                               std::nullopt, u8""}});
         return *this;
     }
     /*!
@@ -252,7 +252,7 @@ class WEBCFACE_DLL Canvas2D : protected Field, public EventTarget<Canvas2D> {
                                  const ViewColor &color, double stroke_width) {
         add(Canvas2DComponent{{Canvas2DComponentType::geometry, identity(),
                                color, ViewColor::inherit, stroke_width,
-                               geometry, std::nullopt, ""}});
+                               geometry, std::nullopt, u8""}});
         return *this;
     }
     /*!

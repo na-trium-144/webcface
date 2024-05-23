@@ -1,5 +1,6 @@
 #pragma once
 #include "utf8/cpp20.h"
+#include "webcface/encoding.h"
 #include <msgpack.hpp>
 #include <string>
 #include <webcface/common/def.h>
@@ -12,9 +13,8 @@ MSGPACK_API_VERSION_NAMESPACE(MSGPACK_DEFAULT_API_NS) {
     struct convert<std::u8string> {
         msgpack::object const &operator()(msgpack::object const &o,
                                           std::u8string &v) const {
-            v.assign(std::bit_cast<const char8_t *>(o.via.str.ptr),
-                     o.via.str.size);
-            v = utf8::replace_invalid(v);
+            v = utf8::replace_invalid(std::u8string(
+                webcface::Encoding::castToU8(o.via.bin.ptr, o.via.bin.size)));
             return o;
         }
     };
@@ -23,8 +23,7 @@ MSGPACK_API_VERSION_NAMESPACE(MSGPACK_DEFAULT_API_NS) {
         template <typename Stream>
         msgpack::packer<Stream> &operator()(msgpack::packer<Stream> &o,
                                             const std::u8string &v) {
-            o.pack(std::string_view(std::bit_cast<const char *>(v.data()),
-                                    v.size()));
+            o.pack(webcface::Encoding::castFromU8(v));
             return o;
         }
     };

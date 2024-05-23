@@ -1,3 +1,5 @@
+#include <__fwd/string_view.h>
+#include <bit>
 #include <webcface/encoding.h>
 #include <webcface/common/def.h>
 #include <utf8.h>
@@ -86,6 +88,15 @@ std::string decode(std::u8string_view name_ref) {
 #endif
     // そのままコピー
     return std::string(name_ref.cbegin(), name_ref.cend());
+}
+
+std::u8string_view castToU8(std::string_view name) {
+    return std::u8string_view(std::bit_cast<const char8_t *>(name.data()),
+                              name.size());
+}
+std::string_view castFromU8(std::u8string_view name) {
+    return std::string_view(std::bit_cast<const char *>(name.data()),
+                            name.size());
 }
 
 } // namespace Encoding

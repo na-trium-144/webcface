@@ -11,7 +11,7 @@ template class WEBCFACE_DLL EventTarget<Value>;
 
 Value::Value(const Field &base) : Field(base), EventTarget<Value>() {
     std::lock_guard lock(this->dataLock()->event_m);
-    this->cl = &this->dataLock()->value_change_event[*this];
+    this->setCL(this->dataLock()->value_change_event[*this]);
 }
 
 void Value::request() const {

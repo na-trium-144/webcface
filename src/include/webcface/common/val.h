@@ -237,11 +237,11 @@ class ValAdaptor {
                 }
             } else {
                 if (as_val.index() == DOUBLEV) {
-                    return Encoding::encode(
-                        std::to_string(std::get<DOUBLEV>(as_val)));
+                    return std::u8string(Encoding::castToU8(
+                        std::to_string(std::get<DOUBLEV>(as_val))));
                 } else {
-                    return Encoding::encode(
-                        std::to_string(std::get<INT64V>(as_val)));
+                    return std::u8string(Encoding::castToU8(
+                        std::to_string(std::get<INT64V>(as_val))));
                 }
             }
         }

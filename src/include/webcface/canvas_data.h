@@ -42,9 +42,9 @@ class IdBase {
      *
      */
     std::u8string id() const {
-        return Encoding::encode(".." +
-                                std::to_string(static_cast<int>(type())) + "." +
-                                std::to_string(idx_for_type_));
+        return std::u8string(
+            Encoding::castToU8(".." + std::to_string(static_cast<int>(type())) +
+                               "." + std::to_string(idx_for_type_)));
     }
 };
 
@@ -398,7 +398,7 @@ class WEBCFACE_DLL Canvas3DComponent : protected Common::Canvas3DComponentBase {
      */
     Canvas3DComponentBase &
     lockTmp(const std::weak_ptr<Internal::ClientData> & /*data_w*/,
-            const std::u8string &/*field_id*/) {
+            const std::u8string & /*field_id*/) {
         return *this;
     }
 

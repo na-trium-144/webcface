@@ -9,7 +9,7 @@ template class WEBCFACE_DLL EventTarget<Image>;
 
 Image::Image(const Field &base) : Field(base), EventTarget<Image>() {
     std::lock_guard lock(this->dataLock()->event_m);
-    this->cl = &this->dataLock()->image_change_event[*this];
+    this->setCL(this->dataLock()->image_change_event[*this]);
 }
 
 Image &Image::request(std::optional<int> rows, std::optional<int> cols,

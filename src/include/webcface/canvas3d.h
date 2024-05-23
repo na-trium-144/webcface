@@ -231,8 +231,9 @@ class WEBCFACE_DLL Canvas3D : protected Field, public EventTarget<Canvas3D> {
         auto model = model_field.get();
         for (std::size_t ji = 0; ji < model.size(); ji++) {
             const auto &j = model[ji].joint;
-            if (angles.count(j.name)) {
-                angles_i[ji] = angles[j.name];
+            auto j_name_s = Encoding::decode(j.name);
+            if (angles.count(j_name_s)) {
+                angles_i[ji] = angles[j_name_s];
             }
         }
         add(Canvas3DComponent{{Canvas3DComponentType::robot_model, origin,
