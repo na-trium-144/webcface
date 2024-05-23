@@ -32,7 +32,7 @@ Image &Image::request(std::optional<int> rows, std::optional<int> cols,
 }
 
 inline void addImageReq(const std::shared_ptr<Internal::ClientData> &data,
-                        const std::string &member_, const std::string &field_) {
+                        const std::u8string &member_, const std::u8string &field_) {
     auto req = data->image_store.addReq(member_, field_);
     if (req) {
         data->message_queue->push(Message::packSingle(

@@ -108,8 +108,9 @@ std::optional<std::vector<double>> Value::tryGetVec() const {
 std::optional<Value::Dict> Value::tryGetRecurse() const {
     request();
     return dataLock()->value_store.getRecvRecurse(
-        *this,
-        [this](const std::string &subfield) { child(subfield).request(); });
+        *this, [this](const std::u8string &subfield) {
+            Value(this->Field::child(subfield)).request();
+        });
 }
 std::chrono::system_clock::time_point Value::time() const {
     return member().syncTime();

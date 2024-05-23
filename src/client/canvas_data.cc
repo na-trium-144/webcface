@@ -90,8 +90,9 @@ Canvas3DComponent &Canvas3DComponent::angles(
         auto model = rm->get();
         for (std::size_t ji = 0; ji < model.size(); ji++) {
             const auto &j = model[ji].joint;
-            if (angles.count(j.name)) {
-                angles_[ji] = angles.at(j.name);
+            auto j_name_s = Encoding::decode(j.name);
+            if (angles.count(j_name_s)) {
+                angles_[ji] = angles.at(j_name_s);
             }
         }
         return *this;
@@ -108,8 +109,9 @@ Canvas3DComponent &Canvas3DComponent::angles(
         auto model = rm->get();
         for (std::size_t ji = 0; ji < model.size(); ji++) {
             const auto &j = model[ji].joint;
-            if (angles.count(j.name)) {
-                angles_[ji] = angles.at(j.name);
+            auto j_name_s = Encoding::decodeW(j.name);
+            if (angles.count(j_name_s)) {
+                angles_[ji] = angles.at(j_name_s);
             }
         }
         return *this;
@@ -125,7 +127,8 @@ Canvas3DComponent &Canvas3DComponent::angle(const std::string &joint_name,
         auto model = rm->get();
         for (std::size_t ji = 0; ji < model.size(); ji++) {
             const auto &j = model[ji].joint;
-            if (joint_name == j.name) {
+            auto j_name_s = Encoding::decode(j.name);
+            if (joint_name == j_name_s) {
                 angles_[ji] = angle;
             }
         }
@@ -142,7 +145,8 @@ Canvas3DComponent &Canvas3DComponent::angle(const std::wstring &joint_name,
         auto model = rm->get();
         for (std::size_t ji = 0; ji < model.size(); ji++) {
             const auto &j = model[ji].joint;
-            if (joint_name == j.name) {
+            auto j_name_s = Encoding::decodeW(j.name);
+            if (joint_name == j_name_s) {
                 angles_[ji] = angle;
             }
         }

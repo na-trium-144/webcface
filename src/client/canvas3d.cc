@@ -3,6 +3,7 @@
 #include <webcface/member.h>
 #include "../message/message.h"
 #include "data_buffer.h"
+#include "webcface/encoding.h"
 
 WEBCFACE_NS_BEGIN
 
@@ -40,7 +41,9 @@ void Internal::DataSetBuffer<Canvas3DComponent>::onSync() {
     cb->reserve(components_.size());
     for (std::size_t i = 0; i < components_.size(); i++) {
         cb->push_back(std::move(components_.at(i).lockTmp(
-            target_.data_w, target_.name() + "_" + std::to_string(i))));
+            target_.data_w,
+            target_.field_ + u8"_" +
+                std::u8string(Encoding::castToU8(std::to_string(i))))));
     }
     target_.setCheck()->canvas3d_store.setSend(target_, cb);
     static_cast<Canvas3D>(target_).triggerEvent(target_);
