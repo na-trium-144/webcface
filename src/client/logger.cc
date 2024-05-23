@@ -54,7 +54,8 @@ void LoggerSink::sink_it_(const spdlog::details::log_msg &msg) {
                 throw std::runtime_error("self log data is null");
             } else {
                 // log_storeにはClientDataのコンストラクタで空vectorを入れてある
-                (*v)->emplace_back(msg.level, msg.time, log_text);
+                (*v)->emplace_back(msg.level, msg.time,
+                                   Encoding::encode(log_text));
             }
         }
     }
