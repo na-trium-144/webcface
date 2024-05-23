@@ -159,6 +159,13 @@ struct RobotLink {
     ViewColor color;
     RobotLink() = default;
     /*!
+     * \since ver1.12
+     */
+    RobotLink(std::u8string_view name, const RobotJoint &joint,
+              const Geometry &geometry, ViewColor color)
+        : name(name), joint(joint), geometry(geometry),
+          color(color) {}
+    /*!
      * \param name リンクの名前
      * \param joint 親リンクとの接続方法
      * \param geometry リンクの形状 (表示用)
@@ -167,8 +174,7 @@ struct RobotLink {
      */
     RobotLink(std::string_view name, const RobotJoint &joint,
               const Geometry &geometry, ViewColor color = ViewColor::inherit)
-        : name(Encoding::encode(name)), joint(joint), geometry(geometry),
-          color(color) {}
+        : RobotLink(Encoding::encode(name), joint, geometry, color) {}
     /*!
      * \since ver1.12
      * \param name リンクの名前
@@ -179,8 +185,7 @@ struct RobotLink {
      */
     RobotLink(std::wstring_view name, const RobotJoint &joint,
               const Geometry &geometry, ViewColor color = ViewColor::inherit)
-        : name(Encoding::encodeW(name)), joint(joint), geometry(geometry),
-          color(color) {}
+        : RobotLink(Encoding::encodeW(name), joint, geometry, color) {}
     /*!
      * ベースのリンクではjointを省略可能
      * (fixedAbsolute({0, 0, 0})になる)

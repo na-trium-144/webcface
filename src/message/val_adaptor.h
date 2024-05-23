@@ -28,10 +28,10 @@ MSGPACK_API_VERSION_NAMESPACE(MSGPACK_DEFAULT_API_NS) {
                 v = o.via.boolean;
                 break;
             case msgpack::type::BIN:
-                v = std::string(o.via.bin.ptr, o.via.bin.size);
+                v = std::string_view(o.via.bin.ptr, o.via.bin.size);
                 break;
             case msgpack::type::STR:
-                v = std::string(o.via.str.ptr, o.via.str.size);
+                v = std::string_view(o.via.str.ptr, o.via.str.size);
                 break;
             default:
                 throw msgpack::type_error();
