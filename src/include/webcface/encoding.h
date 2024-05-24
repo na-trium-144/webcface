@@ -1,5 +1,4 @@
 #pragma once
-#include <__fwd/string.h>
 #include <string>
 #include <string_view>
 #include <webcface/common/def.h>
@@ -7,7 +6,6 @@
 
 WEBCFACE_NS_BEGIN
 namespace Encoding {
-
 /*!
  * \brief webcfaceが使用するエンコーディングを設定する
  * \since ver1.12

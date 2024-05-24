@@ -1,4 +1,3 @@
-#include <__fwd/string_view.h>
 #include <bit>
 #include <webcface/encoding.h>
 #include <webcface/common/def.h>
