@@ -90,16 +90,18 @@ TEST_F(DataTest, eventTarget) {
     callback_called = 0;
 }
 TEST_F(DataTest, valueSet) {
-    data_->value_change_event[fieldBase(self_name, "b")]->append(
-        callback<Value>());
+    (data_->value_change_event[fieldBase(self_name, "b")] =
+         std::make_shared<eventpp::CallbackList<void(Value)>>())
+        ->append(callback<Value>());
     value(self_name, "b").set(123);
     EXPECT_EQ(**data_->value_store.getRecv(self_name, u8"b"), 123);
     EXPECT_EQ(callback_called, 1);
     EXPECT_THROW(value("a", "b").set(123), std::invalid_argument);
 }
 TEST_F(DataTest, valueSetVec) {
-    data_->value_change_event[fieldBase(self_name, "d")]->append(
-        callback<Value>());
+    (data_->value_change_event[fieldBase(self_name, "d")] =
+         std::make_shared<eventpp::CallbackList<void(Value)>>())
+        ->append(callback<Value>());
     value(self_name, "d").set({1, 2, 3, 4, 5});
     value(self_name, "d2").set(std::vector<double>{1, 2, 3, 4, 5});
     value(self_name, "d3").set(std::vector<int>{1, 2, 3, 4, 5});
@@ -133,8 +135,9 @@ TEST_F(DataTest, valueSetVec) {
     EXPECT_EQ((**data_->value_store.getRecv(self_name, u8"d7")).size(), 5);
 }
 TEST_F(DataTest, textSet) {
-    data_->text_change_event[fieldBase(self_name, "b")]->append(
-        callback<Text>());
+    (data_->text_change_event[fieldBase(self_name, "b")] =
+         std::make_shared<eventpp::CallbackList<void(Text)>>())
+        ->append(callback<Text>());
     text(self_name, "b").set("c");
     EXPECT_EQ(
         static_cast<std::string>(**data_->text_store.getRecv(self_name, u8"b")),
@@ -160,14 +163,16 @@ TEST_F(DataTest, dict) {
     EXPECT_EQ(a["v"].getVec().at(0), 1);
 }
 TEST_F(DataTest, valueSetDict) {
-    data_->value_change_event[fieldBase(self_name, "d")]->append(
-        callback<Value>());
+    (data_->value_change_event[fieldBase(self_name, "d")] =
+         std::make_shared<eventpp::CallbackList<void(Value)>>())
+        ->append(callback<Value>());
     value(self_name, "d").set({{"a", 100}});
     // dにはセットしてないのでeventは発動しない
     EXPECT_EQ(callback_called, 0);
 
-    data_->value_change_event[fieldBase(self_name, "d.a")]->append(
-        callback<Value>());
+    (data_->value_change_event[fieldBase(self_name, "d.a")] =
+         std::make_shared<eventpp::CallbackList<void(Value)>>())
+        ->append(callback<Value>());
     value(self_name, "d")
         .set({{"a", 1},
               {"b", 2},

@@ -148,7 +148,9 @@ TEST_F(ImageTest, eventTarget) {
     callback_called = 0;
 }
 TEST_F(ImageTest, imageSet) {
-    data_->image_change_event[fieldBase(self_name, "b")]->append(callback());
+    (data_->image_change_event[fieldBase(self_name, "b")] =
+         std::make_shared<eventpp::CallbackList<void(Image)>>())
+        ->append(callback());
     auto dp = std::make_shared<std::vector<unsigned char>>(100 * 100 * 3);
     image(self_name, "b").set(ImageFrame{100, 100, dp});
     EXPECT_EQ(data_->image_store.getRecv(self_name, u8"b")->rows(), 100);

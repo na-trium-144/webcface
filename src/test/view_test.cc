@@ -74,7 +74,9 @@ TEST_F(ViewTest, eventTarget) {
     callback_called = 0;
 }
 TEST_F(ViewTest, viewSet) {
-    data_->view_change_event[fieldBase(self_name, "b")]->append(callback());
+    (data_->view_change_event[fieldBase(self_name, "b")] =
+         std::make_shared<eventpp::CallbackList<void(View)>>())
+        ->append(callback());
     using namespace webcface::ViewComponents;
     auto v = view(self_name, "b");
     v << "a\n" << 1;

@@ -67,7 +67,9 @@ TEST_F(Canvas2DTest, eventTarget) {
     callback_called = 0;
 }
 TEST_F(Canvas2DTest, set) {
-    data_->canvas2d_change_event[fieldBase(self_name, "b")]->append(callback());
+    (data_->canvas2d_change_event[fieldBase(self_name, "b")] =
+         std::make_shared<eventpp::CallbackList<void(Canvas2D)>>())
+        ->append(callback());
     using namespace webcface::Geometries;
 
     auto v = canvas(self_name, "b").init(100, 150);

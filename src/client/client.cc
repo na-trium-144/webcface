@@ -723,8 +723,10 @@ void Internal::ClientData::onRecv(const std::string &message) {
             this->member_lib_name[r.member_id] = r.lib_name;
             this->member_lib_ver[r.member_id] = r.lib_ver;
             this->member_addr[r.member_id] = r.addr;
-            this->member_entry_event->operator()(
-                Field{shared_from_this(), r.member_name});
+            if (this->member_entry_event) {
+                this->member_entry_event->operator()(
+                    Field{shared_from_this(), r.member_name});
+            }
             break;
         }
         case MessageKind::entry + MessageKind::value: {

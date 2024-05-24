@@ -52,16 +52,18 @@ TEST_F(RobotModelTest, eventTarget) {
     EXPECT_EQ(callback_called, 1);
 }
 TEST_F(RobotModelTest, set) {
-    data_->robot_model_change_event[fieldBase(self_name, "b")]->append(
-        callback());
+    (data_->robot_model_change_event[fieldBase(self_name, "b")] =
+         std::make_shared<eventpp::CallbackList<void(RobotModel)>>())
+        ->append(callback());
     model(self_name, "b").set({RobotLink{"a", Geometry{}, ViewColor::black}});
     EXPECT_EQ((*data_->robot_model_store.getRecv(self_name, u8"b"))->size(), 1);
     EXPECT_EQ(callback_called, 1);
     EXPECT_THROW(model("a", "b").set({}), std::invalid_argument);
 }
 TEST_F(RobotModelTest, sync) {
-    data_->robot_model_change_event[fieldBase(self_name, "b")]->append(
-        callback());
+    (data_->robot_model_change_event[fieldBase(self_name, "b")] =
+         std::make_shared<eventpp::CallbackList<void(RobotModel)>>())
+        ->append(callback());
     auto m = model(self_name, "b");
     m << RobotLink{"1", Geometry{}, ViewColor::black};
     m << RobotLink{"2", Geometry{}, ViewColor::black};

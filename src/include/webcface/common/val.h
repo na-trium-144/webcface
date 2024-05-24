@@ -94,11 +94,24 @@ class ValAdaptor {
   public:
     ValAdaptor() : type(ValType::none_) {}
 
+    /*!
+     * \since ver1.12
+     */
     explicit ValAdaptor(std::u8string_view str)
         : as_str(std::u8string(str)), type(ValType::string_) {}
     explicit ValAdaptor(std::string_view str)
         : as_str(std::string(str)), type(ValType::string_) {}
+    explicit ValAdaptor(const char *str)
+        : as_str(std::string(str)), type(ValType::string_) {}
+    /*!
+     * \since ver1.12
+     */
     explicit ValAdaptor(std::wstring_view str)
+        : as_str(std::wstring(str)), type(ValType::string_) {}
+    /*!
+     * \since ver1.12
+     */
+    explicit ValAdaptor(const wchar_t *str)
         : as_str(std::wstring(str)), type(ValType::string_) {}
     explicit ValAdaptor(bool value)
         : as_val(static_cast<std::int64_t>(value)), type(ValType::bool_) {}
@@ -359,7 +372,23 @@ class ValAdaptor {
         type = ValType::string_;
         return *this;
     }
+    ValAdaptor &operator=(const char *v) {
+        as_str.emplace<STR>(v);
+        type = ValType::string_;
+        return *this;
+    }
+    /*!
+     * \since ver1.12
+     */
     ValAdaptor &operator=(std::wstring_view v) {
+        as_str.emplace<WSTR>(v);
+        type = ValType::string_;
+        return *this;
+    }
+    /*!
+     * \since ver1.12
+     */
+    ValAdaptor &operator=(const wchar_t *v) {
         as_str.emplace<WSTR>(v);
         type = ValType::string_;
         return *this;
