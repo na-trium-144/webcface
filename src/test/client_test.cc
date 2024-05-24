@@ -374,7 +374,7 @@ TEST_F(ClientTest, textSend) {
     dummy_s->recv<Message::Text>(
         [&](const auto &obj) {
             EXPECT_EQ(obj.field, u8"a");
-            EXPECT_EQ(*obj.data, u8"b");
+            EXPECT_EQ(*obj.data, "b");
         },
         [&] { ADD_FAILURE() << "Text recv error"; });
     dummy_s->recvClear();

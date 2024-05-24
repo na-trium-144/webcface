@@ -99,6 +99,11 @@ class ValAdaptor {
      */
     explicit ValAdaptor(std::u8string_view str)
         : as_str(std::u8string(str)), type(ValType::string_) {}
+    /*!
+     * \since ver1.12
+     */
+    explicit ValAdaptor(const char8_t *str)
+        : as_str(std::u8string(str)), type(ValType::string_) {}
     explicit ValAdaptor(std::string_view str)
         : as_str(std::string(str)), type(ValType::string_) {}
     explicit ValAdaptor(const char *str)
@@ -362,7 +367,18 @@ class ValAdaptor {
         type = ValType::float_;
         return *this;
     }
+    /*!
+     * \since ver1.12
+     */
     ValAdaptor &operator=(std::u8string_view v) {
+        as_str.emplace<U8STR>(v);
+        type = ValType::string_;
+        return *this;
+    }
+    /*!
+     * \since ver1.12
+     */
+    ValAdaptor &operator=(const char8_t *v) {
         as_str.emplace<U8STR>(v);
         type = ValType::string_;
         return *this;
