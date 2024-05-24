@@ -34,7 +34,7 @@ class ClientTest : public ::testing::Test {
   protected:
     void SetUp() override {
         std::cout << "SetUp begin" << std::endl;
-        data_ = std::make_shared<Internal::ClientData>(self_name, "127.0.0.1",
+        data_ = std::make_shared<Internal::ClientData>(self_name, u8"127.0.0.1",
                                                        17530);
         wcli_ = std::make_shared<Client>(self_name, data_);
         callback_called = 0;
@@ -48,7 +48,7 @@ class ClientTest : public ::testing::Test {
         dummy_s.reset();
         std::cout << "TearDown end" << std::endl;
     }
-    std::string self_name = "test";
+    std::u8string self_name = u8"test";
     std::shared_ptr<Internal::ClientData> data_;
     std::shared_ptr<Client> wcli_;
     std::shared_ptr<DummyServer> dummy_s;
@@ -134,7 +134,9 @@ TEST_F(ClientTest, close) {
     wait();
     EXPECT_FALSE(dummy_s->connected());
 }
-TEST_F(ClientTest, name) { EXPECT_EQ(wcli_->name(), self_name); }
+TEST_F(ClientTest, name) {
+    EXPECT_EQ(wcli_->name(), Encoding::decode(self_name));
+}
 TEST_F(ClientTest, memoryLeak) {
     dummy_s = std::make_shared<DummyServer>(false);
     wait();
@@ -190,7 +192,7 @@ TEST_F(ClientTest, ping) {
                                  [&] { ADD_FAILURE() << "Ping recv error"; });
 
     wcli_->member("a").onPing().appendListener(callback<Member>());
-    dummy_s->send(Message::SyncInit{{}, "a", 10, "", "", ""});
+    dummy_s->send(Message::SyncInit{{}, u8"a", 10, "", "", ""});
     dummy_s->send(Message::PingStatus{
         {},
         std::make_shared<std::unordered_map<unsigned int, int>>(
@@ -207,13 +209,13 @@ TEST_F(ClientTest, entry) {
     wait();
     wcli_->waitConnection();
     wcli_->onMemberEntry().appendListener(callback<Member>());
-    dummy_s->send(Message::SyncInit{{}, "a", 10, "b", "1", "12345"});
+    dummy_s->send(Message::SyncInit{{}, u8"a", 10, "b", "1", "12345"});
     wait();
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
     EXPECT_EQ(wcli_->members().size(), 1);
     EXPECT_EQ(wcli_->members()[0].name(), "a");
-    EXPECT_EQ(data_->member_ids["a"], 10);
+    EXPECT_EQ(data_->member_ids[u8"a"], 10);
 
     auto m = wcli_->member("a");
     EXPECT_EQ(m.libName(), "b");
@@ -221,7 +223,7 @@ TEST_F(ClientTest, entry) {
     EXPECT_EQ(m.remoteAddr(), "12345");
 
     m.onValueEntry().appendListener(callback<Value>());
-    dummy_s->send(Message::Entry<Message::Value>{{}, 10, "b"});
+    dummy_s->send(Message::Entry<Message::Value>{{}, 10, u8"b"});
     wait();
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
@@ -229,7 +231,7 @@ TEST_F(ClientTest, entry) {
     EXPECT_EQ(m.valueEntries()[0].name(), "b");
 
     m.onTextEntry().appendListener(callback<Text>());
-    dummy_s->send(Message::Entry<Message::Text>{{}, 10, "c"});
+    dummy_s->send(Message::Entry<Message::Text>{{}, 10, u8"c"});
     wait();
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
@@ -237,7 +239,7 @@ TEST_F(ClientTest, entry) {
     EXPECT_EQ(m.textEntries()[0].name(), "c");
 
     m.onViewEntry().appendListener(callback<View>());
-    dummy_s->send(Message::Entry<Message::View>{{}, 10, "d"});
+    dummy_s->send(Message::Entry<Message::View>{{}, 10, u8"d"});
     wait();
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
@@ -245,7 +247,7 @@ TEST_F(ClientTest, entry) {
     EXPECT_EQ(m.viewEntries()[0].name(), "d");
 
     m.onCanvas2DEntry().appendListener(callback<Canvas2D>());
-    dummy_s->send(Message::Entry<Message::Canvas2D>{{}, 10, "d"});
+    dummy_s->send(Message::Entry<Message::Canvas2D>{{}, 10, u8"d"});
     wait();
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
@@ -253,7 +255,7 @@ TEST_F(ClientTest, entry) {
     EXPECT_EQ(m.canvas2DEntries()[0].name(), "d");
 
     m.onCanvas3DEntry().appendListener(callback<Canvas3D>());
-    dummy_s->send(Message::Entry<Message::Canvas3D>{{}, 10, "d"});
+    dummy_s->send(Message::Entry<Message::Canvas3D>{{}, 10, u8"d"});
     wait();
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
@@ -261,7 +263,7 @@ TEST_F(ClientTest, entry) {
     EXPECT_EQ(m.canvas3DEntries()[0].name(), "d");
 
     m.onRobotModelEntry().appendListener(callback<RobotModel>());
-    dummy_s->send(Message::Entry<Message::RobotModel>{{}, 10, "d"});
+    dummy_s->send(Message::Entry<Message::RobotModel>{{}, 10, u8"d"});
     wait();
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
@@ -269,7 +271,7 @@ TEST_F(ClientTest, entry) {
     EXPECT_EQ(m.robotModelEntries()[0].name(), "d");
 
     m.onImageEntry().appendListener(callback<Image>());
-    dummy_s->send(Message::Entry<Message::Image>{{}, 10, "d"});
+    dummy_s->send(Message::Entry<Message::Image>{{}, 10, u8"d"});
     wait();
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
@@ -278,7 +280,7 @@ TEST_F(ClientTest, entry) {
 
     m.onFuncEntry().appendListener(callback<Func>());
     dummy_s->send(Message::FuncInfo{
-        10, "a", ValType::int_,
+        10, u8"a", ValType::int_,
         std::make_shared<std::vector<Message::FuncInfo::Arg>>(1)});
     wait();
     EXPECT_EQ(callback_called, 1);
@@ -296,19 +298,19 @@ TEST_F(ClientTest, valueSend) {
     dummy_s = std::make_shared<DummyServer>(false);
     wait();
     wcli_->waitConnection();
-    data_->value_store.setSend("a", std::make_shared<VectorOpt<double>>(5));
+    data_->value_store.setSend(u8"a", std::make_shared<VectorOpt<double>>(5));
     wcli_->sync();
     wait();
     dummy_s->recv<Message::Value>(
         [&](const auto &obj) {
-            EXPECT_EQ(obj.field, "a");
+            EXPECT_EQ(obj.field, u8"a");
             EXPECT_EQ(obj.data->size(), 1);
             EXPECT_EQ(obj.data->at(0), 5);
         },
         [&] { ADD_FAILURE() << "Value recv error"; });
     dummy_s->recvClear();
 
-    data_->value_store.setSend("a", std::make_shared<VectorOpt<double>>(5));
+    data_->value_store.setSend(u8"a", std::make_shared<VectorOpt<double>>(5));
     wcli_->sync();
     wait();
     dummy_s->recv<Message::Value>(
@@ -316,13 +318,13 @@ TEST_F(ClientTest, valueSend) {
         [&] {});
     dummy_s->recvClear();
 
-    data_->value_store.setSend(
-        "a", std::make_shared<VectorOpt<double>>(std::array<double, 2>{5, 2}));
+    data_->value_store.setSend(u8"a", std::make_shared<VectorOpt<double>>(
+                                          std::array<double, 2>{5, 2}));
     wcli_->sync();
     wait();
     dummy_s->recv<Message::Value>(
         [&](const auto &obj) {
-            EXPECT_EQ(obj.field, "a");
+            EXPECT_EQ(obj.field, u8"a");
             ASSERT_EQ(obj.data->size(), 2);
             EXPECT_EQ(obj.data->at(0), 5);
             EXPECT_EQ(obj.data->at(1), 2);
@@ -338,27 +340,27 @@ TEST_F(ClientTest, valueReq) {
     wcli_->member("a").value("b").appendListener(callback<Value>());
     dummy_s->recv<Message::Req<Message::Value>>(
         [&](const auto &obj) {
-            EXPECT_EQ(obj.member, "a");
-            EXPECT_EQ(obj.field, "b");
+            EXPECT_EQ(obj.member, u8"a");
+            EXPECT_EQ(obj.field, u8"b");
             EXPECT_EQ(obj.req_id, 1);
         },
         [&] { ADD_FAILURE() << "Value Req recv error"; });
     dummy_s->send(Message::Res<Message::Value>{
-        1, "",
+        1, u8"",
         std::make_shared<std::vector<double>>(std::vector<double>{1, 2, 3})});
     dummy_s->send(Message::Res<Message::Value>{
-        1, "c",
+        1, u8"c",
         std::make_shared<std::vector<double>>(std::vector<double>{1, 2, 3})});
     wait();
     EXPECT_EQ(callback_called, 1);
-    EXPECT_TRUE(data_->value_store.getRecv("a", "b").has_value());
+    EXPECT_TRUE(data_->value_store.getRecv(u8"a", u8"b").has_value());
     EXPECT_EQ(static_cast<std::vector<double>>(
-                  *data_->value_store.getRecv("a", "b").value())
+                  *data_->value_store.getRecv(u8"a", u8"b").value())
                   .size(),
               3);
-    EXPECT_TRUE(data_->value_store.getRecv("a", "b.c").has_value());
+    EXPECT_TRUE(data_->value_store.getRecv(u8"a", u8"b.c").has_value());
     EXPECT_EQ(static_cast<std::vector<double>>(
-                  *data_->value_store.getRecv("a", "b.c").value())
+                  *data_->value_store.getRecv(u8"a", u8"b.c").value())
                   .size(),
               3);
 }
@@ -366,18 +368,18 @@ TEST_F(ClientTest, textSend) {
     dummy_s = std::make_shared<DummyServer>(false);
     wait();
     wcli_->waitConnection();
-    data_->text_store.setSend("a", std::make_shared<ValAdaptor>("b"));
+    data_->text_store.setSend(u8"a", std::make_shared<ValAdaptor>("b"));
     wcli_->sync();
     wait();
     dummy_s->recv<Message::Text>(
         [&](const auto &obj) {
-            EXPECT_EQ(obj.field, "a");
-            EXPECT_EQ(*obj.data, "b");
+            EXPECT_EQ(obj.field, u8"a");
+            EXPECT_EQ(*obj.data, u8"b");
         },
         [&] { ADD_FAILURE() << "Text recv error"; });
     dummy_s->recvClear();
 
-    data_->text_store.setSend("a", std::make_shared<ValAdaptor>("b"));
+    data_->text_store.setSend(u8"a", std::make_shared<ValAdaptor>("b"));
     wcli_->sync();
     wait();
     dummy_s->recv<Message::Text>(
@@ -385,12 +387,12 @@ TEST_F(ClientTest, textSend) {
         [&] {});
     dummy_s->recvClear();
 
-    data_->text_store.setSend("a", std::make_shared<ValAdaptor>("c"));
+    data_->text_store.setSend(u8"a", std::make_shared<ValAdaptor>("c"));
     wcli_->sync();
     wait();
     dummy_s->recv<Message::Text>(
         [&](const auto &obj) {
-            EXPECT_EQ(obj.field, "a");
+            EXPECT_EQ(obj.field, u8"a");
             EXPECT_EQ(*obj.data, "c");
         },
         [&] { ADD_FAILURE() << "Text recv error"; });
@@ -404,79 +406,81 @@ TEST_F(ClientTest, textReq) {
     wcli_->member("a").text("b").appendListener(callback<Text>());
     dummy_s->recv<Message::Req<Message::Text>>(
         [&](const auto &obj) {
-            EXPECT_EQ(obj.member, "a");
-            EXPECT_EQ(obj.field, "b");
+            EXPECT_EQ(obj.member, u8"a");
+            EXPECT_EQ(obj.field, u8"b");
             EXPECT_EQ(obj.req_id, 1);
         },
         [&] { ADD_FAILURE() << "Text Req recv error"; });
-    dummy_s->send(
-        Message::Res<Message::Text>{1, "", std::make_shared<ValAdaptor>("z")});
-    dummy_s->send(
-        Message::Res<Message::Text>{1, "c", std::make_shared<ValAdaptor>("z")});
+    dummy_s->send(Message::Res<Message::Text>{
+        1, u8"", std::make_shared<ValAdaptor>("z")});
+    dummy_s->send(Message::Res<Message::Text>{
+        1, u8"c", std::make_shared<ValAdaptor>("z")});
     wait();
     EXPECT_EQ(callback_called, 1);
-    EXPECT_TRUE(data_->text_store.getRecv("a", "b").has_value());
-    EXPECT_EQ(*data_->text_store.getRecv("a", "b").value(), "z");
-    EXPECT_TRUE(data_->text_store.getRecv("a", "b.c").has_value());
-    EXPECT_EQ(*data_->text_store.getRecv("a", "b.c").value(), "z");
+    EXPECT_TRUE(data_->text_store.getRecv(u8"a", u8"b").has_value());
+    EXPECT_EQ(*data_->text_store.getRecv(u8"a", u8"b").value(), "z");
+    EXPECT_TRUE(data_->text_store.getRecv(u8"a", u8"b.c").has_value());
+    EXPECT_EQ(*data_->text_store.getRecv(u8"a", u8"b.c").value(), "z");
 }
 TEST_F(ClientTest, viewSend) {
     dummy_s = std::make_shared<DummyServer>(false);
     wait();
     wcli_->waitConnection();
     data_->view_store.setSend(
-        "a", std::make_shared<std::vector<ViewComponentBase>>(
-                 std::vector<ViewComponentBase>{
-                     ViewComponents::text("a")
-                         .textColor(ViewColor::yellow)
-                         .bgColor(ViewColor::green)
-                         .toV()
-                         .lockTmp(data_, ""),
-                     ViewComponents::newLine().lockTmp(data_, ""),
-                     ViewComponents::button("a", Func{Field{data_, "x", "y"}})
-                         .lockTmp(data_, ""),
-                 }));
+        u8"a",
+        std::make_shared<std::vector<ViewComponentBase>>(
+            std::vector<ViewComponentBase>{
+                ViewComponents::text("a")
+                    .textColor(ViewColor::yellow)
+                    .bgColor(ViewColor::green)
+                    .toV()
+                    .lockTmp(data_, u8""),
+                ViewComponents::newLine().lockTmp(data_, u8""),
+                ViewComponents::button("a", Func{Field{data_, u8"x", u8"y"}})
+                    .lockTmp(data_, u8""),
+            }));
     wcli_->sync();
     wait();
     dummy_s->recv<Message::View>(
         [&](const auto &obj) {
-            EXPECT_EQ(obj.field, "a");
+            EXPECT_EQ(obj.field, u8"a");
             EXPECT_EQ(obj.length, 3);
             EXPECT_EQ(obj.data_diff->size(), 3);
             EXPECT_EQ((*obj.data_diff)["0"].type, ViewComponentType::text);
-            EXPECT_EQ((*obj.data_diff)["0"].text, "a");
+            EXPECT_EQ((*obj.data_diff)["0"].text, u8"a");
             EXPECT_EQ((*obj.data_diff)["0"].text_color, ViewColor::yellow);
             EXPECT_EQ((*obj.data_diff)["0"].bg_color, ViewColor::green);
             EXPECT_EQ((*obj.data_diff)["1"].type, ViewComponentType::new_line);
             EXPECT_EQ((*obj.data_diff)["2"].type, ViewComponentType::button);
-            EXPECT_EQ((*obj.data_diff)["2"].text, "a");
-            EXPECT_EQ((*obj.data_diff)["2"].on_click_member, "x");
-            EXPECT_EQ((*obj.data_diff)["2"].on_click_field, "y");
+            EXPECT_EQ((*obj.data_diff)["2"].text, u8"a");
+            EXPECT_EQ((*obj.data_diff)["2"].on_click_member, u8"x");
+            EXPECT_EQ((*obj.data_diff)["2"].on_click_field, u8"y");
         },
         [&] { ADD_FAILURE() << "View recv error"; });
     dummy_s->recvClear();
 
     data_->view_store.setSend(
-        "a", std::make_shared<std::vector<ViewComponentBase>>(
-                 std::vector<ViewComponentBase>{
-                     ViewComponents::text("b")
-                         .textColor(ViewColor::red)
-                         .bgColor(ViewColor::green)
-                         .toV()
-                         .lockTmp(data_, ""),
-                     ViewComponents::newLine().lockTmp(data_, ""),
-                     ViewComponents::button("a", Func{Field{data_, "x", "y"}})
-                         .lockTmp(data_, ""),
-                 }));
+        u8"a",
+        std::make_shared<std::vector<ViewComponentBase>>(
+            std::vector<ViewComponentBase>{
+                ViewComponents::text("b")
+                    .textColor(ViewColor::red)
+                    .bgColor(ViewColor::green)
+                    .toV()
+                    .lockTmp(data_, u8""),
+                ViewComponents::newLine().lockTmp(data_, u8""),
+                ViewComponents::button("a", Func{Field{data_, u8"x", u8"y"}})
+                    .lockTmp(data_, u8""),
+            }));
     wcli_->sync();
     wait();
     dummy_s->recv<Message::View>(
         [&](const auto &obj) {
-            EXPECT_EQ(obj.field, "a");
+            EXPECT_EQ(obj.field, u8"a");
             EXPECT_EQ(obj.length, 3);
             EXPECT_EQ(obj.data_diff->size(), 1);
             EXPECT_EQ((*obj.data_diff)["0"].type, ViewComponentType::text);
-            EXPECT_EQ((*obj.data_diff)["0"].text, "b");
+            EXPECT_EQ((*obj.data_diff)["0"].text, u8"b");
             EXPECT_EQ((*obj.data_diff)["0"].text_color, ViewColor::red);
             EXPECT_EQ((*obj.data_diff)["0"].bg_color, ViewColor::green);
         },
@@ -491,8 +495,8 @@ TEST_F(ClientTest, viewReq) {
     wcli_->member("a").view("b").appendListener(callback<View>());
     dummy_s->recv<Message::Req<Message::View>>(
         [&](const auto &obj) {
-            EXPECT_EQ(obj.member, "a");
-            EXPECT_EQ(obj.field, "b");
+            EXPECT_EQ(obj.member, u8"a");
+            EXPECT_EQ(obj.field, u8"b");
             EXPECT_EQ(obj.req_id, 1);
         },
         [&] { ADD_FAILURE() << "View Req recv error"; });
@@ -504,27 +508,29 @@ TEST_F(ClientTest, viewReq) {
                       .textColor(ViewColor::yellow)
                       .bgColor(ViewColor::green)
                       .toV()
-                      .lockTmp(data_, "")},
-            {"1", ViewComponents::newLine().lockTmp(data_, "")},
-            {"2", ViewComponents::button("a", Func{Field{data_, "x", "y"}})
-                      .lockTmp(data_, "")},
+                      .lockTmp(data_, u8"")},
+            {"1", ViewComponents::newLine().lockTmp(data_, u8"")},
+            {"2", ViewComponents::button("a", Func{Field{data_, u8"x", u8"y"}})
+                      .lockTmp(data_, u8"")},
         });
-    dummy_s->send(Message::Res<Message::View>{1, "", v, 3});
-    dummy_s->send(Message::Res<Message::View>{1, "c", v, 3});
+    dummy_s->send(Message::Res<Message::View>{1, u8"", v, 3});
+    dummy_s->send(Message::Res<Message::View>{1, u8"c", v, 3});
     wait();
     EXPECT_EQ(callback_called, 1);
-    EXPECT_TRUE(data_->view_store.getRecv("a", "b").has_value());
-    EXPECT_EQ(data_->view_store.getRecv("a", "b").value()->size(), 3);
-    EXPECT_EQ(data_->view_store.getRecv("a", "b").value()->at(0).type_,
+    EXPECT_TRUE(data_->view_store.getRecv(u8"a", u8"b").has_value());
+    EXPECT_EQ(data_->view_store.getRecv(u8"a", u8"b").value()->size(), 3);
+    EXPECT_EQ(data_->view_store.getRecv(u8"a", u8"b").value()->at(0).type_,
               ViewComponentType::text);
-    EXPECT_EQ(data_->view_store.getRecv("a", "b").value()->at(0).text_, "a");
-    EXPECT_EQ(data_->view_store.getRecv("a", "b").value()->at(0).text_color_,
-              ViewColor::yellow);
-    EXPECT_EQ(data_->view_store.getRecv("a", "b").value()->at(0).bg_color_,
+    EXPECT_EQ(data_->view_store.getRecv(u8"a", u8"b").value()->at(0).text_,
+              u8"a");
+    EXPECT_EQ(
+        data_->view_store.getRecv(u8"a", u8"b").value()->at(0).text_color_,
+        ViewColor::yellow);
+    EXPECT_EQ(data_->view_store.getRecv(u8"a", u8"b").value()->at(0).bg_color_,
               ViewColor::green);
-    EXPECT_EQ(data_->view_store.getRecv("a", "b").value()->at(1).type_,
+    EXPECT_EQ(data_->view_store.getRecv(u8"a", u8"b").value()->at(1).type_,
               ViewComponentType::new_line);
-    EXPECT_TRUE(data_->view_store.getRecv("a", "b.c").has_value());
+    EXPECT_TRUE(data_->view_store.getRecv(u8"a", u8"b.c").has_value());
 
     // 差分だけ送る
     auto v2 = std::make_shared<
@@ -534,20 +540,22 @@ TEST_F(ClientTest, viewReq) {
                       .textColor(ViewColor::red)
                       .bgColor(ViewColor::green)
                       .toV()
-                      .lockTmp(data_, "")},
+                      .lockTmp(data_, u8"")},
         });
-    dummy_s->send(Message::Res<Message::View>{1, "", v2, 3});
+    dummy_s->send(Message::Res<Message::View>{1, u8"", v2, 3});
     wait();
     EXPECT_EQ(callback_called, 2);
-    EXPECT_EQ(data_->view_store.getRecv("a", "b").value()->size(), 3);
-    EXPECT_EQ(data_->view_store.getRecv("a", "b").value()->at(0).type_,
+    EXPECT_EQ(data_->view_store.getRecv(u8"a", u8"b").value()->size(), 3);
+    EXPECT_EQ(data_->view_store.getRecv(u8"a", u8"b").value()->at(0).type_,
               ViewComponentType::text);
-    EXPECT_EQ(data_->view_store.getRecv("a", "b").value()->at(0).text_, "b");
-    EXPECT_EQ(data_->view_store.getRecv("a", "b").value()->at(0).text_color_,
-              ViewColor::red);
-    EXPECT_EQ(data_->view_store.getRecv("a", "b").value()->at(0).bg_color_,
+    EXPECT_EQ(data_->view_store.getRecv(u8"a", u8"b").value()->at(0).text_,
+              u8"b");
+    EXPECT_EQ(
+        data_->view_store.getRecv(u8"a", u8"b").value()->at(0).text_color_,
+        ViewColor::red);
+    EXPECT_EQ(data_->view_store.getRecv(u8"a", u8"b").value()->at(0).bg_color_,
               ViewColor::green);
-    EXPECT_EQ(data_->view_store.getRecv("a", "b").value()->at(1).type_,
+    EXPECT_EQ(data_->view_store.getRecv(u8"a", u8"b").value()->at(1).type_,
               ViewComponentType::new_line);
 }
 TEST_F(ClientTest, canvas2DSend) {
@@ -555,36 +563,36 @@ TEST_F(ClientTest, canvas2DSend) {
     wait();
     wcli_->waitConnection();
     data_->canvas2d_store.setSend(
-        "a", std::make_shared<Canvas2DDataBase>(
-                 100, 100,
-                 std::vector<Canvas2DComponentBase>{
-                     Geometries::line({0, 0}, {30, 30})
-                         .color(ViewColor::black)
-                         .fillColor(ViewColor::white)
-                         .strokeWidth(5)
-                         .onClick(Func{Field{data_, self_name, "f"}})
-                         .to2()
-                         .lockTmp(data_, "", nullptr),
-                     Geometries::rect({0, 0}, {30, 30})
-                         .color(ViewColor::black)
-                         .fillColor(ViewColor::white)
-                         .strokeWidth(5)
-                         .onClick(Func{Field{data_, self_name, "f"}})
-                         .to2()
-                         .lockTmp(data_, "", nullptr),
-                     Geometries::polygon({{0, 0}, {30, 30}, {50, 20}})
-                         .color(ViewColor::black)
-                         .fillColor(ViewColor::white)
-                         .strokeWidth(5)
-                         .onClick(Func{Field{data_, self_name, "f"}})
-                         .to2()
-                         .lockTmp(data_, "", nullptr),
-                 }));
+        u8"a", std::make_shared<Canvas2DDataBase>(
+                   100, 100,
+                   std::vector<Canvas2DComponentBase>{
+                       Geometries::line({0, 0}, {30, 30})
+                           .color(ViewColor::black)
+                           .fillColor(ViewColor::white)
+                           .strokeWidth(5)
+                           .onClick(Func{Field{data_, self_name, u8"f"}})
+                           .to2()
+                           .lockTmp(data_, u8"", nullptr),
+                       Geometries::rect({0, 0}, {30, 30})
+                           .color(ViewColor::black)
+                           .fillColor(ViewColor::white)
+                           .strokeWidth(5)
+                           .onClick(Func{Field{data_, self_name, u8"f"}})
+                           .to2()
+                           .lockTmp(data_, u8"", nullptr),
+                       Geometries::polygon({{0, 0}, {30, 30}, {50, 20}})
+                           .color(ViewColor::black)
+                           .fillColor(ViewColor::white)
+                           .strokeWidth(5)
+                           .onClick(Func{Field{data_, self_name, u8"f"}})
+                           .to2()
+                           .lockTmp(data_, u8"", nullptr),
+                   }));
     wcli_->sync();
     wait();
     dummy_s->recv<Message::Canvas2D>(
         [&](const auto &obj) {
-            EXPECT_EQ(obj.field, "a");
+            EXPECT_EQ(obj.field, u8"a");
             EXPECT_EQ(obj.length, 3);
             ASSERT_EQ(obj.data_diff->size(), 3);
             EXPECT_EQ(obj.width, 100);
@@ -597,7 +605,7 @@ TEST_F(ClientTest, canvas2DSend) {
                       (std::vector<double>{0, 0, 0, 30, 30, 0}));
             EXPECT_EQ((*obj.data_diff)["0"].geometry_type, GeometryType::line);
             EXPECT_EQ((*obj.data_diff)["0"].on_click_member, self_name);
-            EXPECT_EQ((*obj.data_diff)["0"].on_click_field, "f");
+            EXPECT_EQ((*obj.data_diff)["0"].on_click_field, u8"f");
             EXPECT_EQ((*obj.data_diff)["1"].geometry_type, GeometryType::rect);
             EXPECT_EQ((*obj.data_diff)["2"].geometry_type,
                       GeometryType::polygon);
@@ -606,36 +614,36 @@ TEST_F(ClientTest, canvas2DSend) {
     dummy_s->recvClear();
 
     data_->canvas2d_store.setSend(
-        "a", std::make_shared<Canvas2DDataBase>(
-                 100, 100,
-                 std::vector<Canvas2DComponentBase>{
-                     Geometries::line({0, 0}, {30, 30})
-                         .color(ViewColor::red) // changed
-                         .fillColor(ViewColor::white)
-                         .strokeWidth(5)
-                         .onClick(Func{Field{data_, self_name, "f"}})
-                         .to2()
-                         .lockTmp(data_, "", nullptr),
-                     Geometries::rect({0, 0}, {30, 30})
-                         .color(ViewColor::black)
-                         .fillColor(ViewColor::white)
-                         .strokeWidth(5)
-                         .onClick(Func{Field{data_, self_name, "f"}})
-                         .to2()
-                         .lockTmp(data_, "", nullptr),
-                     Geometries::polygon({{0, 0}, {30, 30}, {50, 20}})
-                         .color(ViewColor::black)
-                         .fillColor(ViewColor::white)
-                         .strokeWidth(5)
-                         .onClick(Func{Field{data_, self_name, "f"}})
-                         .to2()
-                         .lockTmp(data_, "", nullptr),
-                 }));
+        u8"a", std::make_shared<Canvas2DDataBase>(
+                   100, 100,
+                   std::vector<Canvas2DComponentBase>{
+                       Geometries::line({0, 0}, {30, 30})
+                           .color(ViewColor::red) // changed
+                           .fillColor(ViewColor::white)
+                           .strokeWidth(5)
+                           .onClick(Func{Field{data_, self_name, u8"f"}})
+                           .to2()
+                           .lockTmp(data_, u8"", nullptr),
+                       Geometries::rect({0, 0}, {30, 30})
+                           .color(ViewColor::black)
+                           .fillColor(ViewColor::white)
+                           .strokeWidth(5)
+                           .onClick(Func{Field{data_, self_name, u8"f"}})
+                           .to2()
+                           .lockTmp(data_, u8"", nullptr),
+                       Geometries::polygon({{0, 0}, {30, 30}, {50, 20}})
+                           .color(ViewColor::black)
+                           .fillColor(ViewColor::white)
+                           .strokeWidth(5)
+                           .onClick(Func{Field{data_, self_name, u8"f"}})
+                           .to2()
+                           .lockTmp(data_, u8"", nullptr),
+                   }));
     wcli_->sync();
     wait();
     dummy_s->recv<Message::Canvas2D>(
         [&](const auto &obj) {
-            EXPECT_EQ(obj.field, "a");
+            EXPECT_EQ(obj.field, u8"a");
             EXPECT_EQ(obj.length, 3);
             ASSERT_EQ(obj.data_diff->size(), 1);
             EXPECT_EQ((*obj.data_diff)["0"].type,
@@ -656,8 +664,8 @@ TEST_F(ClientTest, canvas2DReq) {
     wcli_->member("a").canvas2D("b").appendListener(callback<Canvas2D>());
     dummy_s->recv<Message::Req<Message::Canvas2D>>(
         [&](const auto &obj) {
-            EXPECT_EQ(obj.member, "a");
-            EXPECT_EQ(obj.field, "b");
+            EXPECT_EQ(obj.member, u8"a");
+            EXPECT_EQ(obj.field, u8"b");
             EXPECT_EQ(obj.req_id, 1);
         },
         [&] { ADD_FAILURE() << "Canvas2D Req recv error"; });
@@ -669,73 +677,80 @@ TEST_F(ClientTest, canvas2DReq) {
                       .color(ViewColor::black)
                       .fillColor(ViewColor::white)
                       .strokeWidth(5)
-                      .onClick(Func{Field{data_, self_name, "f"}})
+                      .onClick(Func{Field{data_, self_name, u8"f"}})
                       .to2()
-                      .lockTmp(data_, "", nullptr)},
+                      .lockTmp(data_, u8"", nullptr)},
             {"1", Geometries::rect({0, 0}, {30, 30})
                       .color(ViewColor::black)
                       .fillColor(ViewColor::white)
                       .strokeWidth(5)
-                      .onClick(Func{Field{data_, self_name, "f"}})
+                      .onClick(Func{Field{data_, self_name, u8"f"}})
                       .to2()
-                      .lockTmp(data_, "", nullptr)},
+                      .lockTmp(data_, u8"", nullptr)},
             {"2", Geometries::polygon({{0, 0}, {30, 30}, {50, 20}})
                       .color(ViewColor::black)
                       .fillColor(ViewColor::white)
                       .strokeWidth(5)
-                      .onClick(Func{Field{data_, self_name, "f"}})
+                      .onClick(Func{Field{data_, self_name, u8"f"}})
                       .to2()
-                      .lockTmp(data_, "", nullptr)},
+                      .lockTmp(data_, u8"", nullptr)},
         });
-    dummy_s->send(Message::Res<Message::Canvas2D>{1, "", 200, 200, v, 3});
-    dummy_s->send(Message::Res<Message::Canvas2D>{1, "c", 200, 200, v, 3});
+    dummy_s->send(Message::Res<Message::Canvas2D>{1, u8"", 200, 200, v, 3});
+    dummy_s->send(Message::Res<Message::Canvas2D>{1, u8"c", 200, 200, v, 3});
     wait();
     EXPECT_EQ(callback_called, 1);
-    EXPECT_TRUE(data_->canvas2d_store.getRecv("a", "b").has_value());
-    EXPECT_EQ(data_->canvas2d_store.getRecv("a", "b").value()->width, 200);
-    EXPECT_EQ(data_->canvas2d_store.getRecv("a", "b").value()->height, 200);
+    EXPECT_TRUE(data_->canvas2d_store.getRecv(u8"a", u8"b").has_value());
+    EXPECT_EQ(data_->canvas2d_store.getRecv(u8"a", u8"b").value()->width, 200);
+    EXPECT_EQ(data_->canvas2d_store.getRecv(u8"a", u8"b").value()->height, 200);
     EXPECT_EQ(
-        data_->canvas2d_store.getRecv("a", "b").value()->components.size(), 3);
-    EXPECT_EQ(
-        data_->canvas2d_store.getRecv("a", "b").value()->components.at(0).type_,
-        Canvas2DComponentType::geometry);
-    EXPECT_EQ(data_->canvas2d_store.getRecv("a", "b")
+        data_->canvas2d_store.getRecv(u8"a", u8"b").value()->components.size(),
+        3);
+    EXPECT_EQ(data_->canvas2d_store.getRecv(u8"a", u8"b")
+                  .value()
+                  ->components.at(0)
+                  .type_,
+              Canvas2DComponentType::geometry);
+    EXPECT_EQ(data_->canvas2d_store.getRecv(u8"a", u8"b")
                   .value()
                   ->components.at(0)
                   .color_,
               ViewColor::black);
-    EXPECT_EQ(
-        data_->canvas2d_store.getRecv("a", "b").value()->components.at(0).fill_,
-        ViewColor::white);
-    EXPECT_EQ(data_->canvas2d_store.getRecv("a", "b")
+    EXPECT_EQ(data_->canvas2d_store.getRecv(u8"a", u8"b")
+                  .value()
+                  ->components.at(0)
+                  .fill_,
+              ViewColor::white);
+    EXPECT_EQ(data_->canvas2d_store.getRecv(u8"a", u8"b")
                   .value()
                   ->components.at(0)
                   .geometry_->type,
               GeometryType::line);
-    EXPECT_EQ(data_->canvas2d_store.getRecv("a", "b")
+    EXPECT_EQ(data_->canvas2d_store.getRecv(u8"a", u8"b")
                   .value()
                   ->components.at(0)
                   .geometry_->properties,
               (std::vector<double>{0, 0, 0, 30, 30, 0}));
-    EXPECT_EQ(data_->canvas2d_store.getRecv("a", "b")
+    EXPECT_EQ(data_->canvas2d_store.getRecv(u8"a", u8"b")
                   .value()
                   ->components.at(0)
                   .on_click_func_->member_,
               self_name);
-    EXPECT_EQ(data_->canvas2d_store.getRecv("a", "b")
+    EXPECT_EQ(data_->canvas2d_store.getRecv(u8"a", u8"b")
                   .value()
                   ->components.at(0)
                   .on_click_func_->field_,
-              "f");
-    EXPECT_EQ(
-        data_->canvas2d_store.getRecv("a", "b").value()->components.at(1).type_,
-        Canvas2DComponentType::geometry);
-    EXPECT_EQ(data_->canvas2d_store.getRecv("a", "b")
+              u8"f");
+    EXPECT_EQ(data_->canvas2d_store.getRecv(u8"a", u8"b")
+                  .value()
+                  ->components.at(1)
+                  .type_,
+              Canvas2DComponentType::geometry);
+    EXPECT_EQ(data_->canvas2d_store.getRecv(u8"a", u8"b")
                   .value()
                   ->components.at(1)
                   .geometry_->type,
               GeometryType::rect);
-    EXPECT_TRUE(data_->canvas2d_store.getRecv("a", "b.c").has_value());
+    EXPECT_TRUE(data_->canvas2d_store.getRecv(u8"a", u8"b.c").has_value());
 
     // 差分だけ送る
     auto v2 = std::make_shared<
@@ -745,40 +760,47 @@ TEST_F(ClientTest, canvas2DReq) {
                       .color(ViewColor::red)
                       .fillColor(ViewColor::white)
                       .strokeWidth(5)
-                      .onClick(Func{Field{data_, self_name, "f"}})
+                      .onClick(Func{Field{data_, self_name, u8"f"}})
                       .to2()
-                      .lockTmp(data_, "", nullptr)},
+                      .lockTmp(data_, u8"", nullptr)},
         });
-    dummy_s->send(Message::Res<Message::Canvas2D>{1, "", 100, 100, v2, 3});
+    dummy_s->send(Message::Res<Message::Canvas2D>{1, u8"", 100, 100, v2, 3});
     wait();
     EXPECT_EQ(callback_called, 2);
     EXPECT_EQ(
-        data_->canvas2d_store.getRecv("a", "b").value()->components.size(), 3);
-    EXPECT_EQ(
-        data_->canvas2d_store.getRecv("a", "b").value()->components.at(0).type_,
-        Canvas2DComponentType::geometry);
-    EXPECT_EQ(data_->canvas2d_store.getRecv("a", "b")
+        data_->canvas2d_store.getRecv(u8"a", u8"b").value()->components.size(),
+        3);
+    EXPECT_EQ(data_->canvas2d_store.getRecv(u8"a", u8"b")
+                  .value()
+                  ->components.at(0)
+                  .type_,
+              Canvas2DComponentType::geometry);
+    EXPECT_EQ(data_->canvas2d_store.getRecv(u8"a", u8"b")
                   .value()
                   ->components.at(0)
                   .color_,
               ViewColor::red);
-    EXPECT_EQ(
-        data_->canvas2d_store.getRecv("a", "b").value()->components.at(0).fill_,
-        ViewColor::white);
-    EXPECT_EQ(data_->canvas2d_store.getRecv("a", "b")
+    EXPECT_EQ(data_->canvas2d_store.getRecv(u8"a", u8"b")
+                  .value()
+                  ->components.at(0)
+                  .fill_,
+              ViewColor::white);
+    EXPECT_EQ(data_->canvas2d_store.getRecv(u8"a", u8"b")
                   .value()
                   ->components.at(0)
                   .geometry_->type,
               GeometryType::line);
-    EXPECT_EQ(data_->canvas2d_store.getRecv("a", "b")
+    EXPECT_EQ(data_->canvas2d_store.getRecv(u8"a", u8"b")
                   .value()
                   ->components.at(0)
                   .geometry_->properties,
               (std::vector<double>{0, 0, 0, 30, 30, 0}));
-    EXPECT_EQ(
-        data_->canvas2d_store.getRecv("a", "b").value()->components.at(1).type_,
-        Canvas2DComponentType::geometry);
-    EXPECT_EQ(data_->canvas2d_store.getRecv("a", "b")
+    EXPECT_EQ(data_->canvas2d_store.getRecv(u8"a", u8"b")
+                  .value()
+                  ->components.at(1)
+                  .type_,
+              Canvas2DComponentType::geometry);
+    EXPECT_EQ(data_->canvas2d_store.getRecv(u8"a", u8"b")
                   .value()
                   ->components.at(1)
                   .geometry_->type,
@@ -789,7 +811,7 @@ TEST_F(ClientTest, canvas3DSend) {
     wait();
     wcli_->waitConnection();
     data_->canvas3d_store.setSend(
-        "a",
+        u8"a",
         std::make_shared<std::vector<Canvas3DComponentBase>>(
             std::vector<Canvas3DComponentBase>{
                 {Canvas3DComponentType::geometry,
@@ -817,7 +839,7 @@ TEST_F(ClientTest, canvas3DSend) {
     wait();
     dummy_s->recv<Message::Canvas3D>(
         [&](const auto &obj) {
-            EXPECT_EQ(obj.field, "a");
+            EXPECT_EQ(obj.field, u8"a");
             EXPECT_EQ(obj.length, 3);
             ASSERT_EQ(obj.data_diff->size(), 3);
             EXPECT_EQ((*obj.data_diff)["0"].type,
@@ -834,7 +856,7 @@ TEST_F(ClientTest, canvas3DSend) {
     dummy_s->recvClear();
 
     data_->canvas3d_store.setSend(
-        "a",
+        u8"a",
         std::make_shared<std::vector<Canvas3DComponentBase>>(
             std::vector<Canvas3DComponentBase>{
                 {Canvas3DComponentType::geometry,
@@ -862,7 +884,7 @@ TEST_F(ClientTest, canvas3DSend) {
     wait();
     dummy_s->recv<Message::Canvas3D>(
         [&](const auto &obj) {
-            EXPECT_EQ(obj.field, "a");
+            EXPECT_EQ(obj.field, u8"a");
             EXPECT_EQ(obj.length, 3);
             ASSERT_EQ(obj.data_diff->size(), 1);
             EXPECT_EQ((*obj.data_diff)["0"].type,
@@ -883,8 +905,8 @@ TEST_F(ClientTest, canvas3DReq) {
     wcli_->member("a").canvas3D("b").appendListener(callback<Canvas3D>());
     dummy_s->recv<Message::Req<Message::Canvas3D>>(
         [&](const auto &obj) {
-            EXPECT_EQ(obj.member, "a");
-            EXPECT_EQ(obj.field, "b");
+            EXPECT_EQ(obj.member, u8"a");
+            EXPECT_EQ(obj.field, u8"b");
             EXPECT_EQ(obj.req_id, 1);
         },
         [&] { ADD_FAILURE() << "Canvas3D Req recv error"; });
@@ -915,30 +937,34 @@ TEST_F(ClientTest, canvas3DReq) {
                                         std::nullopt,
                                         {}}},
         });
-    dummy_s->send(Message::Res<Message::Canvas3D>{1, "", v, 3});
-    dummy_s->send(Message::Res<Message::Canvas3D>{1, "c", v, 3});
+    dummy_s->send(Message::Res<Message::Canvas3D>{1, u8"", v, 3});
+    dummy_s->send(Message::Res<Message::Canvas3D>{1, u8"c", v, 3});
     wait();
     EXPECT_EQ(callback_called, 1);
-    EXPECT_TRUE(data_->canvas3d_store.getRecv("a", "b").has_value());
-    EXPECT_EQ(data_->canvas3d_store.getRecv("a", "b").value()->size(), 3);
-    EXPECT_EQ(data_->canvas3d_store.getRecv("a", "b").value()->at(0).type_,
+    EXPECT_TRUE(data_->canvas3d_store.getRecv(u8"a", u8"b").has_value());
+    EXPECT_EQ(data_->canvas3d_store.getRecv(u8"a", u8"b").value()->size(), 3);
+    EXPECT_EQ(data_->canvas3d_store.getRecv(u8"a", u8"b").value()->at(0).type_,
               Canvas3DComponentType::geometry);
-    EXPECT_EQ(data_->canvas3d_store.getRecv("a", "b").value()->at(0).color_,
+    EXPECT_EQ(data_->canvas3d_store.getRecv(u8"a", u8"b").value()->at(0).color_,
               ViewColor::black);
-    EXPECT_EQ(
-        data_->canvas3d_store.getRecv("a", "b").value()->at(0).geometry_->type,
-        GeometryType::line);
-    EXPECT_EQ(data_->canvas3d_store.getRecv("a", "b")
+    EXPECT_EQ(data_->canvas3d_store.getRecv(u8"a", u8"b")
+                  .value()
+                  ->at(0)
+                  .geometry_->type,
+              GeometryType::line);
+    EXPECT_EQ(data_->canvas3d_store.getRecv(u8"a", u8"b")
                   .value()
                   ->at(0)
                   .geometry_->properties,
               (std::vector<double>{0, 0, 0, 30, 30, 30}));
-    EXPECT_EQ(data_->canvas3d_store.getRecv("a", "b").value()->at(1).type_,
+    EXPECT_EQ(data_->canvas3d_store.getRecv(u8"a", u8"b").value()->at(1).type_,
               Canvas3DComponentType::geometry);
-    EXPECT_EQ(
-        data_->canvas3d_store.getRecv("a", "b").value()->at(1).geometry_->type,
-        GeometryType::rect);
-    EXPECT_TRUE(data_->canvas3d_store.getRecv("a", "b.c").has_value());
+    EXPECT_EQ(data_->canvas3d_store.getRecv(u8"a", u8"b")
+                  .value()
+                  ->at(1)
+                  .geometry_->type,
+              GeometryType::rect);
+    EXPECT_TRUE(data_->canvas3d_store.getRecv(u8"a", u8"b.c").has_value());
 
     // 差分だけ送る
     auto v2 = std::make_shared<
@@ -953,40 +979,44 @@ TEST_F(ClientTest, canvas3DReq) {
                                         std::nullopt,
                                         {}}},
         });
-    dummy_s->send(Message::Res<Message::Canvas3D>{1, "", v2, 3});
+    dummy_s->send(Message::Res<Message::Canvas3D>{1, u8"", v2, 3});
     wait();
     EXPECT_EQ(callback_called, 2);
-    EXPECT_EQ(data_->canvas3d_store.getRecv("a", "b").value()->size(), 3);
-    EXPECT_EQ(data_->canvas3d_store.getRecv("a", "b").value()->at(0).type_,
+    EXPECT_EQ(data_->canvas3d_store.getRecv(u8"a", u8"b").value()->size(), 3);
+    EXPECT_EQ(data_->canvas3d_store.getRecv(u8"a", u8"b").value()->at(0).type_,
               Canvas3DComponentType::geometry);
-    EXPECT_EQ(data_->canvas3d_store.getRecv("a", "b").value()->at(0).color_,
+    EXPECT_EQ(data_->canvas3d_store.getRecv(u8"a", u8"b").value()->at(0).color_,
               ViewColor::red);
-    EXPECT_EQ(
-        data_->canvas3d_store.getRecv("a", "b").value()->at(0).geometry_->type,
-        GeometryType::line);
-    EXPECT_EQ(data_->canvas3d_store.getRecv("a", "b")
+    EXPECT_EQ(data_->canvas3d_store.getRecv(u8"a", u8"b")
+                  .value()
+                  ->at(0)
+                  .geometry_->type,
+              GeometryType::line);
+    EXPECT_EQ(data_->canvas3d_store.getRecv(u8"a", u8"b")
                   .value()
                   ->at(0)
                   .geometry_->properties,
               (std::vector<double>{0, 0, 0, 30, 30, 30}));
-    EXPECT_EQ(data_->canvas3d_store.getRecv("a", "b").value()->at(1).type_,
+    EXPECT_EQ(data_->canvas3d_store.getRecv(u8"a", u8"b").value()->at(1).type_,
               Canvas3DComponentType::geometry);
-    EXPECT_EQ(
-        data_->canvas3d_store.getRecv("a", "b").value()->at(1).geometry_->type,
-        GeometryType::rect);
+    EXPECT_EQ(data_->canvas3d_store.getRecv(u8"a", u8"b")
+                  .value()
+                  ->at(1)
+                  .geometry_->type,
+              GeometryType::rect);
 }
 TEST_F(ClientTest, robotModelSend) {
     dummy_s = std::make_shared<DummyServer>(false);
     wait();
     wcli_->waitConnection();
     data_->robot_model_store.setSend(
-        "a", std::make_shared<std::vector<RobotLink>>(
-                 std::vector<RobotLink>{{"a", Geometry{}, ViewColor::black}}));
+        u8"a", std::make_shared<std::vector<RobotLink>>(std::vector<RobotLink>{
+                   {"a", Geometry{}, ViewColor::black}}));
     wcli_->sync();
     wait();
     dummy_s->recv<Message::RobotModel>(
         [&](const auto &obj) {
-            EXPECT_EQ(obj.field, "a");
+            EXPECT_EQ(obj.field, u8"a");
             EXPECT_EQ(obj.data->size(), 1);
         },
         [&] { ADD_FAILURE() << "RobotModel recv error"; });
@@ -1000,39 +1030,41 @@ TEST_F(ClientTest, robotModelReq) {
     wcli_->member("a").robotModel("b").appendListener(callback<RobotModel>());
     dummy_s->recv<Message::Req<Message::RobotModel>>(
         [&](const auto &obj) {
-            EXPECT_EQ(obj.member, "a");
-            EXPECT_EQ(obj.field, "b");
+            EXPECT_EQ(obj.member, u8"a");
+            EXPECT_EQ(obj.field, u8"b");
             EXPECT_EQ(obj.req_id, 1);
         },
         [&] { ADD_FAILURE() << "RobotModel Req recv error"; });
     dummy_s->send(Message::Res<Message::RobotModel>(
-        1, "",
+        1, u8"",
         std::make_shared<std::vector<RobotLink>>(
             std::vector<RobotLink>{{"a", Geometry{}, ViewColor::black}})));
     dummy_s->send(Message::Res<Message::RobotModel>(
-        1, "c",
+        1, u8"c",
         std::make_shared<std::vector<RobotLink>>(
             std::vector<RobotLink>{{"a", Geometry{}, ViewColor::black}})));
     wait();
     EXPECT_EQ(callback_called, 1);
-    EXPECT_TRUE(data_->robot_model_store.getRecv("a", "b").has_value());
-    EXPECT_EQ(data_->robot_model_store.getRecv("a", "b").value()->size(), 1);
-    EXPECT_TRUE(data_->robot_model_store.getRecv("a", "b.c").has_value());
-    EXPECT_EQ(data_->robot_model_store.getRecv("a", "b.c").value()->size(), 1);
+    EXPECT_TRUE(data_->robot_model_store.getRecv(u8"a", u8"b").has_value());
+    EXPECT_EQ(data_->robot_model_store.getRecv(u8"a", u8"b").value()->size(),
+              1);
+    EXPECT_TRUE(data_->robot_model_store.getRecv(u8"a", u8"b.c").has_value());
+    EXPECT_EQ(data_->robot_model_store.getRecv(u8"a", u8"b.c").value()->size(),
+              1);
 }
 TEST_F(ClientTest, imageSend) {
     dummy_s = std::make_shared<DummyServer>(false);
     wait();
     wcli_->waitConnection();
     data_->image_store.setSend(
-        "a", ImageFrame{
-                 100, 100,
-                 std::make_shared<std::vector<unsigned char>>(100 * 100 * 3)});
+        u8"a", ImageFrame{100, 100,
+                          std::make_shared<std::vector<unsigned char>>(
+                              100 * 100 * 3)});
     wcli_->sync();
     wait();
     dummy_s->recv<Message::Image>(
         [&](const auto &obj) {
-            EXPECT_EQ(obj.field, "a");
+            EXPECT_EQ(obj.field, u8"a");
             EXPECT_EQ(obj.data().size(), 100 * 100 * 3);
         },
         [&] { ADD_FAILURE() << "Image recv error"; });
@@ -1046,8 +1078,8 @@ TEST_F(ClientTest, imageReq) {
     wcli_->member("a").image("b").appendListener(callback<Image>());
     dummy_s->recv<Message::Req<Message::Image>>(
         [&](const auto &obj) {
-            EXPECT_EQ(obj.member, "a");
-            EXPECT_EQ(obj.field, "b");
+            EXPECT_EQ(obj.member, u8"a");
+            EXPECT_EQ(obj.field, u8"b");
             EXPECT_EQ(obj.req_id, 1);
             EXPECT_EQ(static_cast<ImageReq>(obj),
                       (ImageReq{std::nullopt, std::nullopt, std::nullopt,
@@ -1056,25 +1088,25 @@ TEST_F(ClientTest, imageReq) {
         [&] { ADD_FAILURE() << "Image Req recv error"; });
     ImageFrame img(100, 100,
                    std::make_shared<std::vector<unsigned char>>(100 * 100 * 3));
-    dummy_s->send(Message::Res<Message::Image>{1, "", img});
-    dummy_s->send(Message::Res<Message::Image>{1, "c", img});
+    dummy_s->send(Message::Res<Message::Image>{1, u8"", img});
+    dummy_s->send(Message::Res<Message::Image>{1, u8"c", img});
     wait();
     EXPECT_EQ(callback_called, 1);
-    ASSERT_TRUE(data_->image_store.getRecv("a", "b").has_value());
-    EXPECT_EQ(data_->image_store.getRecv("a", "b")->data().size(),
+    ASSERT_TRUE(data_->image_store.getRecv(u8"a", u8"b").has_value());
+    EXPECT_EQ(data_->image_store.getRecv(u8"a", u8"b")->data().size(),
               img.data().size());
-    ASSERT_TRUE(data_->image_store.getRecv("a", "b.c").has_value());
-    EXPECT_EQ(data_->image_store.getRecv("a", "b.c")->data().size(),
+    ASSERT_TRUE(data_->image_store.getRecv(u8"a", u8"b.c").has_value());
+    EXPECT_EQ(data_->image_store.getRecv(u8"a", u8"b.c")->data().size(),
               img.data().size());
 }
 TEST_F(ClientTest, logSend) {
     dummy_s = std::make_shared<DummyServer>(false);
     wait();
     wcli_->waitConnection();
-    auto ls = std::make_shared<std::vector<Common::LogLine>>(
-        std::vector<Common::LogLine>{
-            {0, std::chrono::system_clock::now(), std::string(100000, 'a')},
-            {1, std::chrono::system_clock::now(), "b"},
+    auto ls = std::make_shared<std::vector<Common::LogLineData<>>>(
+        std::vector<Common::LogLineData<>>{
+            {0, std::chrono::system_clock::now(), std::u8string(100000, u8'a')},
+            {1, std::chrono::system_clock::now(), u8"b"},
         });
     data_->log_store->setRecv(self_name, ls);
     wcli_->sync();
@@ -1085,19 +1117,19 @@ TEST_F(ClientTest, logSend) {
             EXPECT_EQ(obj.log->at(0).level, 0);
             EXPECT_EQ(obj.log->at(0).message.size(), 100000);
             EXPECT_EQ(obj.log->at(1).level, 1);
-            EXPECT_EQ(obj.log->at(1).message, "b");
+            EXPECT_EQ(obj.log->at(1).message, u8"b");
         },
         [&] { ADD_FAILURE() << "Log recv error"; });
 
     dummy_s->recvClear();
-    ls->push_back(LogLine{2, std::chrono::system_clock::now(), "c"});
+    ls->push_back(LogLineData<>{2, std::chrono::system_clock::now(), u8"c"});
     wcli_->sync();
     wait();
     dummy_s->recv<Message::Log>(
         [&](const auto &obj) {
             EXPECT_EQ(obj.log->size(), 1);
             EXPECT_EQ(obj.log->at(0).level, 2);
-            EXPECT_EQ(obj.log->at(0).message, "c");
+            EXPECT_EQ(obj.log->at(0).message, u8"c");
         },
         [&] { ADD_FAILURE() << "Log recv error"; });
 }
@@ -1109,34 +1141,34 @@ TEST_F(ClientTest, logReq) {
     wait();
     wcli_->member("a").log().appendListener(callback<Log>());
     dummy_s->recv<Message::LogReq>(
-        [&](const auto &obj) { EXPECT_EQ(obj.member, "a"); },
+        [&](const auto &obj) { EXPECT_EQ(obj.member, u8"a"); },
         [&] { ADD_FAILURE() << "Log Req recv error"; });
 
-    dummy_s->send(Message::SyncInit{{}, "a", 10, "", "", ""});
+    dummy_s->send(Message::SyncInit{{}, u8"a", 10, "", "", ""});
     dummy_s->send(Message::Log{
         10, std::make_shared<std::deque<Message::Log::LogLine>>(
                 std::deque<Message::Log::LogLine>{
-                    LogLine{0, std::chrono::system_clock::now(),
-                            std::string(100000, 'a')},
-                    LogLine{1, std::chrono::system_clock::now(), "b"},
+                    LogLineData<>{0, std::chrono::system_clock::now(),
+                                  std::u8string(100000, u8'a')},
+                    LogLineData<>{1, std::chrono::system_clock::now(), u8"b"},
                 })});
     wait();
     EXPECT_EQ(callback_called, 1);
-    EXPECT_TRUE(data_->log_store->getRecv("a").has_value());
-    EXPECT_EQ(data_->log_store->getRecv("a").value()->size(), 2);
-    EXPECT_EQ(data_->log_store->getRecv("a").value()->at(0).level, 0);
-    EXPECT_EQ(data_->log_store->getRecv("a").value()->at(0).message.size(),
+    EXPECT_TRUE(data_->log_store->getRecv(u8"a").has_value());
+    EXPECT_EQ(data_->log_store->getRecv(u8"a").value()->size(), 2);
+    EXPECT_EQ(data_->log_store->getRecv(u8"a").value()->at(0).level, 0);
+    EXPECT_EQ(data_->log_store->getRecv(u8"a").value()->at(0).message.size(),
               100000);
 
     dummy_s->send(Message::Log{
         10, std::make_shared<std::deque<Message::Log::LogLine>>(
                 std::deque<Message::Log::LogLine>{
-                    LogLine{2, std::chrono::system_clock::now(), "c"},
+                    LogLineData<>{2, std::chrono::system_clock::now(), u8"c"},
                 })});
     wait();
     EXPECT_EQ(callback_called, 2);
-    EXPECT_TRUE(data_->log_store->getRecv("a").has_value());
-    EXPECT_EQ(data_->log_store->getRecv("a").value()->size(), 3);
+    EXPECT_TRUE(data_->log_store->getRecv(u8"a").has_value());
+    EXPECT_EQ(data_->log_store->getRecv(u8"a").value()->size(), 3);
 }
 TEST_F(ClientTest, funcInfo) {
     dummy_s = std::make_shared<DummyServer>(false);
@@ -1148,7 +1180,7 @@ TEST_F(ClientTest, funcInfo) {
     wait();
     dummy_s->recv<Message::FuncInfo>(
         [&](const auto &obj) {
-            EXPECT_EQ(obj.field, "a");
+            EXPECT_EQ(obj.field, u8"a");
             EXPECT_EQ(obj.return_type, ValType::int_);
             EXPECT_EQ(obj.args->size(), 1);
             EXPECT_EQ(obj.args->at(0).name(), "a");
@@ -1160,7 +1192,7 @@ TEST_F(ClientTest, funcCall) {
     wait();
     wcli_->waitConnection();
     // call
-    dummy_s->send(Message::SyncInit{{}, "a", 10, "", "", ""});
+    dummy_s->send(Message::SyncInit{{}, u8"a", 10, "", "", ""});
     wait();
     auto r = wcli_->member("a").func("b").runAsync(1, true, "a");
     wait();
@@ -1168,7 +1200,7 @@ TEST_F(ClientTest, funcCall) {
         [&](const auto &obj) {
             EXPECT_EQ(obj.caller_id, 0);
             EXPECT_EQ(obj.target_member_id, 10);
-            EXPECT_EQ(obj.field, "b");
+            EXPECT_EQ(obj.field, u8"b");
             EXPECT_EQ(obj.args.size(), 3);
             EXPECT_EQ(static_cast<int>(obj.args[0]), 1);
             EXPECT_EQ(obj.args[0].valType(), ValType::int_);
@@ -1193,7 +1225,7 @@ TEST_F(ClientTest, funcCall) {
         [&](const auto &obj) {
             EXPECT_EQ(obj.caller_id, 1);
             EXPECT_EQ(obj.target_member_id, 10);
-            EXPECT_EQ(obj.field, "b");
+            EXPECT_EQ(obj.field, u8"b");
         },
         [&] { ADD_FAILURE() << "FuncInfo recv error"; });
 
@@ -1220,7 +1252,7 @@ TEST_F(ClientTest, funcCall) {
         [&](const auto &obj) {
             EXPECT_EQ(obj.caller_id, 2);
             EXPECT_EQ(obj.target_member_id, 10);
-            EXPECT_EQ(obj.field, "b");
+            EXPECT_EQ(obj.field, u8"b");
         },
         [&] { ADD_FAILURE() << "FuncInfo recv error"; });
 
@@ -1244,7 +1276,7 @@ TEST_F(ClientTest, funcResponse) {
         }
     });
     // not found
-    dummy_s->send(Message::Call{FuncCall{7, 100, 0, "n", {}}});
+    dummy_s->send(Message::Call{FuncCall{7, 100, 0, u8"n", {}}});
     wait();
     dummy_s->recv<Message::CallResponse>(
         [&](const auto &obj) {
@@ -1257,7 +1289,7 @@ TEST_F(ClientTest, funcResponse) {
 
     // arg error
     dummy_s->send(Message::Call{
-        FuncCall{8, 100, 0, "a", {ValAdaptor(1), ValAdaptor("zzz")}}});
+        FuncCall{8, 100, 0, u8"a", {ValAdaptor(1), ValAdaptor("zzz")}}});
     wait();
     dummy_s->recv<Message::CallResponse>(
         [&](const auto &obj) {
@@ -1278,7 +1310,7 @@ TEST_F(ClientTest, funcResponse) {
     dummy_s->recvClear();
 
     // throw
-    dummy_s->send(Message::Call{FuncCall{9, 100, 0, "a", {ValAdaptor(0)}}});
+    dummy_s->send(Message::Call{FuncCall{9, 100, 0, u8"a", {ValAdaptor(0)}}});
     wait();
     dummy_s->recv<Message::CallResponse>(
         [&](const auto &obj) {
@@ -1299,7 +1331,8 @@ TEST_F(ClientTest, funcResponse) {
     dummy_s->recvClear();
 
     // success
-    dummy_s->send(Message::Call{FuncCall{19, 100, 0, "a", {ValAdaptor(123)}}});
+    dummy_s->send(
+        Message::Call{FuncCall{19, 100, 0, u8"a", {ValAdaptor(123)}}});
     wait();
     dummy_s->recv<Message::CallResponse>(
         [&](const auto &obj) {

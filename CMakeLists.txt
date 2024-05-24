@@ -318,20 +318,13 @@ if(WEBCFACE_USE_OPENCV)
 endif()
 
 if(WEBCFACE_TEST)
-    if(WEBCFACE_FIND_LIBS)
-        find_package(GTest QUIET)
-    endif()
-    if(GTest_FOUND)
-        message(STATUS "GTest ${GTest_VERSION} Found: ${GTest_DIR}")
-    else()
-        message(STATUS "GTest Not Found, Fetching Source...")
-        FetchContent_Declare(googletest
-            GIT_REPOSITORY https://github.com/google/googletest.git
-            GIT_TAG v1.14.0
-        )
-        set(INSTALL_GTEST off CACHE INTERNAL "" FORCE)
-        FetchContent_MakeAvailable(googletest)
-    endif()
+    message(STATUS "Fetching GTest Source...")
+    FetchContent_Declare(googletest
+        GIT_REPOSITORY https://github.com/google/googletest.git
+        GIT_TAG v1.14.0
+    )
+    set(INSTALL_GTEST off CACHE INTERNAL "" FORCE)
+    FetchContent_MakeAvailable(googletest)
 endif()
 
 ###############################################################################
@@ -568,6 +561,7 @@ if(WEBCFACE_TEST)
         libcurl_static
         Crow
         msgpack-cxx
+        utfcpp
         GTest::gtest_main
     )
     target_compile_definitions(${PROJECT_NAME}-test PRIVATE

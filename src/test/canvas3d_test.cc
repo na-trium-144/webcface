@@ -13,14 +13,29 @@ class Canvas3DTest : public ::testing::Test {
         data_ = std::make_shared<Internal::ClientData>(self_name);
         callback_called = 0;
     }
-    std::string self_name = "test";
+    std::u8string self_name = u8"test";
     std::shared_ptr<Internal::ClientData> data_;
-    Canvas3D canvas(const std::string &member, const std::string &field) {
-        return Canvas3D{Field{data_, member, field}};
+    FieldBase fieldBase(std::u8string_view member,
+                        std::string_view name) const {
+        return FieldBase{member, Encoding::castToU8(name)};
     }
-    RobotModel robot_model(const std::string &member,
-                           const std::string &field) {
-        return RobotModel{Field{data_, member, field}};
+    FieldBase fieldBase(std::string_view member, std::string_view name) const {
+        return FieldBase{Encoding::castToU8(member), Encoding::castToU8(name)};
+    }
+    Field field(std::u8string_view member, std::string_view name = "") const {
+        return Field{data_, member, Encoding::castToU8(name)};
+    }
+    Field field(std::string_view member, std::string_view name = "") const {
+        return Field{data_, Encoding::castToU8(member),
+                     Encoding::castToU8(name)};
+    }
+    template <typename T1, typename T2>
+    Canvas3D canvas(const T1 &member, const T2 &name) {
+        return Canvas3D{field(member, name)};
+    }
+    template <typename T1, typename T2>
+    RobotModel robot_model(const T1 &member, const T2 &name) {
+        return RobotModel{field(member, name)};
     }
     int callback_called;
     template <typename V = Canvas3D>
@@ -38,12 +53,13 @@ TEST_F(Canvas3DTest, field) {
 }
 TEST_F(Canvas3DTest, eventTarget) {
     canvas("a", "b").appendListener(callback<Canvas3D>());
-    data_->canvas3d_change_event[FieldBase{"a", "b"}](Field{data_, "a", "b"});
+    data_->canvas3d_change_event[fieldBase("a", "b")]->operator()(
+        field("a", "b"));
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
 }
 TEST_F(Canvas3DTest, set) {
-    data_->canvas3d_change_event[FieldBase{self_name, "b"}].append(callback());
+    data_->canvas3d_change_event[fieldBase(self_name, "b")]->append(callback());
     using namespace webcface::Geometries;
     using namespace webcface::RobotJoints;
     robot_model(self_name, "b")
@@ -65,7 +81,7 @@ TEST_F(Canvas3DTest, set) {
               .angle("j0", 123));
     v.sync();
     EXPECT_EQ(callback_called, 1);
-    auto &canvas3d_data = **data_->canvas3d_store.getRecv(self_name, "b");
+    auto &canvas3d_data = **data_->canvas3d_store.getRecv(self_name, u8"b");
     ASSERT_EQ(canvas3d_data.size(), 3);
     EXPECT_EQ(canvas3d_data[0].type_, Canvas3DComponentType::geometry);
     EXPECT_EQ(canvas3d_data[0].origin_, Transform(1, 1, 1, 0, 0, 0));
@@ -93,21 +109,21 @@ TEST_F(Canvas3DTest, set) {
     EXPECT_EQ(canvas3d_data[2].geometry_, std::nullopt);
     ASSERT_NE(canvas3d_data[2].field_base_, std::nullopt);
     EXPECT_EQ(canvas3d_data[2].field_base_->member_, self_name);
-    EXPECT_EQ(canvas3d_data[2].field_base_->field_, "b");
+    EXPECT_EQ(canvas3d_data[2].field_base_->field_, u8"b");
     ASSERT_EQ(canvas3d_data[2].angles_.size(), 1);
     EXPECT_EQ(canvas3d_data[2].angles_.at(1), 123);
 
     v.init();
     v.sync();
     EXPECT_EQ(callback_called, 2);
-    EXPECT_EQ((*data_->canvas3d_store.getRecv(self_name, "b"))->size(), 0);
+    EXPECT_EQ((*data_->canvas3d_store.getRecv(self_name, u8"b"))->size(), 0);
 
     {
         auto v2 = canvas(self_name, "b");
         v2.add(Canvas3DComponent{});
     }
     EXPECT_EQ(callback_called, 3);
-    EXPECT_EQ((*data_->canvas3d_store.getRecv(self_name, "b"))->size(), 1);
+    EXPECT_EQ((*data_->canvas3d_store.getRecv(self_name, u8"b"))->size(), 1);
 
     {
         Canvas3D v3;
@@ -129,17 +145,17 @@ TEST_F(Canvas3DTest, set) {
 }
 TEST_F(Canvas3DTest, get) {
     auto vd = std::make_shared<std::vector<Canvas3DComponentBase>>(1);
-    data_->canvas3d_store.setRecv("a", "b", vd);
+    data_->canvas3d_store.setRecv(u8"a", u8"b", vd);
     EXPECT_EQ(canvas("a", "b").tryGet().value().size(), 1);
     EXPECT_EQ(canvas("a", "b").get().size(), 1);
     EXPECT_EQ(canvas("a", "c").tryGet(), std::nullopt);
     EXPECT_EQ(canvas("a", "c").get().size(), 0);
-    EXPECT_EQ(data_->canvas3d_store.transferReq().at("a").at("b"), 1);
-    EXPECT_EQ(data_->canvas3d_store.transferReq().at("a").at("c"), 2);
+    EXPECT_EQ(data_->canvas3d_store.transferReq().at(u8"a").at(u8"b"), 1);
+    EXPECT_EQ(data_->canvas3d_store.transferReq().at(u8"a").at(u8"c"), 2);
     EXPECT_EQ(canvas(self_name, "b").tryGet(), std::nullopt);
     EXPECT_EQ(data_->canvas3d_store.transferReq().count(self_name), 0);
     canvas("a", "d").appendListener(callback<Canvas3D>());
-    EXPECT_EQ(data_->canvas3d_store.transferReq().at("a").at("d"), 3);
+    EXPECT_EQ(data_->canvas3d_store.transferReq().at(u8"a").at(u8"d"), 3);
 }
 
 // todo: hidden, free

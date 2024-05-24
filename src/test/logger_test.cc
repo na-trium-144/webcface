@@ -13,7 +13,7 @@ class LoggerTest : public ::testing::Test {
         data_ = std::make_shared<Internal::ClientData>(self_name);
         data_->start();
     }
-    std::string self_name = "test";
+    std::u8string self_name = u8"test";
     std::shared_ptr<Internal::ClientData> data_;
 };
 
@@ -28,7 +28,7 @@ TEST_F(LoggerTest, logger) {
     ASSERT_EQ((*ls)->size(), 6);
     for (int i = 0; i <= 5; i++) {
         EXPECT_EQ((**ls)[i].level, i);
-        EXPECT_EQ((**ls)[i].message, std::to_string(i));
+        EXPECT_EQ((**ls)[i].message, Encoding::castToU8(std::to_string(i)));
     }
 }
 TEST_F(LoggerTest, loggerBuf) {
@@ -38,7 +38,7 @@ TEST_F(LoggerTest, loggerBuf) {
     auto ls = data_->log_store->getRecv(self_name);
     ASSERT_EQ((*ls)->size(), 2);
     EXPECT_EQ((**ls)[0].level, 2);
-    EXPECT_EQ((**ls)[0].message, "a");
+    EXPECT_EQ((**ls)[0].message, u8"a");
     EXPECT_EQ((**ls)[1].level, 2);
-    EXPECT_EQ((**ls)[1].message, "b");
+    EXPECT_EQ((**ls)[1].message, u8"b");
 }
