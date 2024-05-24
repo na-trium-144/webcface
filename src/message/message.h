@@ -607,13 +607,13 @@ struct Log : public MessageBase<MessageKind::log> {
         std::uint64_t time = 0;
         std::u8string message;
         LogLine() = default;
-        LogLine(const Common::LogLine &l)
+        LogLine(const Common::LogLineData<> &l)
             : level(l.level),
               time(std::chrono::duration_cast<std::chrono::milliseconds>(
                        l.time.time_since_epoch())
                        .count()),
               message(l.message) {}
-        operator Common::LogLine() const {
+        operator Common::LogLineData<>() const {
             return {level,
                     std::chrono::system_clock::time_point(
                         std::chrono::milliseconds(time)),
@@ -633,7 +633,7 @@ struct Log : public MessageBase<MessageKind::log> {
             this->log->push_back(*it);
         }
     }
-    explicit Log(const Common::LogLine &ll) : member_id(0) {
+    explicit Log(const Common::LogLineData<> &ll) : member_id(0) {
         this->log = std::make_shared<std::deque<LogLine>>(1);
         this->log->front() = ll;
     }

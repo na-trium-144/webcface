@@ -34,7 +34,8 @@ Internal::ClientData::ClientData(const std::u8string &name,
       image_store(name), robot_model_store(name), canvas3d_store(name),
       canvas2d_store(name),
       log_store(std::make_shared<
-                SyncDataStore1<std::shared_ptr<std::vector<LogLine>>>>(name)),
+                SyncDataStore1<std::shared_ptr<std::vector<LogLineData<>>>>>(
+          name)),
       sync_time_store(name),
       logger_sink(std::make_shared<LoggerSink>(log_store)) {
     std::string name_s = Encoding::decode(name);
@@ -55,7 +56,7 @@ Internal::ClientData::ClientData(const std::u8string &name,
     }
     logger_buf = std::make_unique<LoggerBuf>(logger);
     logger_os = std::make_unique<std::ostream>(logger_buf.get());
-    log_store->setRecv(name, std::make_shared<std::vector<LogLine>>());
+    log_store->setRecv(name, std::make_shared<std::vector<LogLineData<>>>());
 }
 void Internal::ClientData::start() {
     if (!message_thread) {
@@ -602,7 +603,7 @@ void Internal::ClientData::onRecv(const std::string &message) {
             std::lock_guard lock(this->log_store->mtx);
             auto log_s = this->log_store->getRecv(member);
             if (!log_s) {
-                log_s = std::make_shared<std::vector<LogLine>>();
+                log_s = std::make_shared<std::vector<LogLineData<>>>();
                 this->log_store->setRecv(member, *log_s);
             }
             for (const auto &lm : *r.log) {

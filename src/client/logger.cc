@@ -33,8 +33,10 @@ int LoggerBuf::sync() {
     return 0;
 }
 
-LoggerSink::LoggerSink(const std::shared_ptr<Internal::SyncDataStore1<
-                           std::shared_ptr<std::vector<LogLine>>>> &log_store)
+LoggerSink::LoggerSink(
+    const std::shared_ptr<
+        Internal::SyncDataStore1<std::shared_ptr<std::vector<LogLineData<>>>>>
+        &log_store)
     : spdlog::sinks::base_sink<std::mutex>(), log_store(log_store) {}
 
 void LoggerSink::sink_it_(const spdlog::details::log_msg &msg) {

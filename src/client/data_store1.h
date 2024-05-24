@@ -49,7 +49,7 @@ class SyncDataStore1 {
 #ifdef _MSC_VER
 extern template class SyncDataStore1<std::string>; // test用
 extern template class SyncDataStore1<
-    std::shared_ptr<std::vector<Common::LogLine>>>;
+    std::shared_ptr<std::vector<Common::LogLineData<>>>>;
 extern template class SyncDataStore1<std::chrono::system_clock::time_point>;
 #endif
 

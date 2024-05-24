@@ -26,15 +26,34 @@ std::optional<std::vector<LogLine>> Log::tryGet() const {
     request();
     auto v = dataLock()->log_store->getRecv(member_);
     if (v) {
-        return **v;
+        std::vector<LogLine> log_s;
+        log_s.reserve((*v)->size());
+        for (const auto &l : **v) {
+            log_s.emplace_back(l);
+        }
+        return log_s;
+    } else {
+        return std::nullopt;
+    }
+}
+std::optional<std::vector<LogLineW>> Log::tryGetW() const {
+    request();
+    auto v = dataLock()->log_store->getRecv(member_);
+    if (v) {
+        std::vector<LogLineW> log_s;
+        log_s.reserve((*v)->size());
+        for (const auto &l : **v) {
+            log_s.emplace_back(l);
+        }
+        return log_s;
     } else {
         return std::nullopt;
     }
 }
 
 Log &Log::clear() {
-    dataLock()->log_store->setRecv(member_,
-                                   std::make_shared<std::vector<LogLine>>());
+    dataLock()->log_store->setRecv(
+        member_, std::make_shared<std::vector<LogLineData<>>>());
     return *this;
 }
 
