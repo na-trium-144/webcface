@@ -70,7 +70,7 @@ WEBCFACE_DLL std::u8string_view castToU8(std::string_view name);
 /*!
  * \since ver1.12
  */
-std::u8string_view castToU8(const char *data, std::size_t size){
+inline std::u8string_view castToU8(const char *data, std::size_t size){
     return castToU8(std::string_view(data, size));
 }
 

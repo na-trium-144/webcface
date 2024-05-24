@@ -1,4 +1,3 @@
-#include <bit>
 #include <webcface/encoding.h>
 #include <webcface/common/def.h>
 #include <utf8.h>
@@ -57,7 +56,8 @@ std::wstring decodeW(std::u8string_view name_ref) {
         MultiByteToWideChar(CP_UTF8, 0, name_ref.data(),
                             static_cast<int>(name_ref.size()), nullptr, 0);
     std::wstring result_utf16(length, '\0');
-    MultiByteToWideChar(CP_UTF8, 0, name_ref, len, result_utf16.data(),
+    MultiByteToWideChar(CP_UTF8, 0, name_ref.data(),
+                        static_cast<int>(name_ref.size()), result_utf16.data(),
                         static_cast<int>(result_utf16.length()));
     return result_utf16;
 #else
@@ -89,13 +89,19 @@ std::string decode(std::u8string_view name_ref) {
     return std::string(name_ref.cbegin(), name_ref.cend());
 }
 
+template <typename To, typename From>
+inline static To bit_cast(const From &from) {
+    To result;
+    std::memcpy(&result, &from, sizeof(To));
+    return result;
+}
+
 std::u8string_view castToU8(std::string_view name) {
-    return std::u8string_view(std::bit_cast<const char8_t *>(name.data()),
+    return std::u8string_view(bit_cast<const char8_t *>(name.data()),
                               name.size());
 }
 std::string_view castFromU8(std::u8string_view name) {
-    return std::string_view(std::bit_cast<const char *>(name.data()),
-                            name.size());
+    return std::string_view(bit_cast<const char *>(name.data()), name.size());
 }
 
 } // namespace Encoding

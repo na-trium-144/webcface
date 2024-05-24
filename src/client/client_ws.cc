@@ -1,6 +1,5 @@
 #include "client_ws.h"
 #include "client_internal.h"
-#include <bit>
 #include <webcface/client.h>
 #include "../message/unix_path.h"
 #include <curl/curl.h>
