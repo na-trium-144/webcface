@@ -34,10 +34,16 @@ ViewComponent::lockTmp(const std::weak_ptr<Internal::ClientData> &data_w,
 wcfViewComponent ViewComponent::cData() const {
     wcfViewComponent vcc;
     vcc.type = static_cast<int>(this->type());
-    vcc.text = this->text_.empty() ? nullptr : this->text_.c_str();
+    this->text_s.emplace<0>(Encoding::decode(this->text_));
+    vcc.text = std::get<0>(this->text_s).empty()
+                   ? nullptr
+                   : std::get<0>(this->text_s).c_str();
     if (this->on_click_func_) {
-        vcc.on_click_member = this->on_click_func_->member_.c_str();
-        vcc.on_click_field = this->on_click_func_->field_.c_str();
+        this->on_click_member_s =
+            Encoding::decode(this->on_click_func_->member_);
+        this->on_click_field_s = Encoding::decode(this->on_click_func_->field_);
+        vcc.on_click_member = this->on_click_member_s.c_str();
+        vcc.on_click_field = this->on_click_field_s.c_str();
     } else {
         vcc.on_click_member = nullptr;
         vcc.on_click_field = nullptr;

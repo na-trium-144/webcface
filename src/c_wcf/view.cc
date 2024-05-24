@@ -54,16 +54,21 @@ wcfStatus wcfViewSet(wcfClient *wcli, const char *field,
     v.init();
     for (auto p = components; p < components + size; p++) {
         v.add(ViewComponentBase{
-            static_cast<ViewComponentType>(p->type), p->text ? p->text : "",
+            static_cast<ViewComponentType>(p->type),
+            Encoding::encode(p->text ? p->text : ""),
             p->on_click_field
                 ? std::make_optional<FieldBase>(
-                      p->on_click_member ? p->on_click_member : wcli_->name(),
-                      p->on_click_field ? p->on_click_field : "")
+                      Encoding::encode(p->on_click_member ? p->on_click_member
+                                                          : wcli_->name()),
+                      Encoding::encode(p->on_click_field ? p->on_click_field
+                                                         : ""))
                 : std::nullopt,
             p->text_ref_field
                 ? std::make_optional<FieldBase>(
-                      p->text_ref_member ? p->text_ref_member : wcli_->name(),
-                      p->text_ref_field ? p->text_ref_field : "")
+                      Encoding::encode(p->text_ref_member ? p->text_ref_member
+                                                          : wcli_->name()),
+                      Encoding::encode(p->text_ref_field ? p->text_ref_field
+                                                         : ""))
                 : std::nullopt,
             static_cast<ViewColor>(p->text_color),
             static_cast<ViewColor>(p->bg_color),

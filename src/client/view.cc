@@ -44,7 +44,7 @@ void Internal::DataSetBuffer<ViewComponent>::onSync() {
     std::unordered_map<int, int> idx_next;
     for (std::size_t i = 0; i < components_.size(); i++) {
         vb->push_back(std::move(
-            components_[i].lockTmp(target_.data_w, target_.name(), &idx_next)));
+            components_[i].lockTmp(target_.data_w, target_.field_, &idx_next)));
     }
     target_.setCheck()->view_store.setSend(target_, vb);
     static_cast<View>(target_).triggerEvent(target_);

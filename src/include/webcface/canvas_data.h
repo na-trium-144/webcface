@@ -60,6 +60,10 @@ class WEBCFACE_DLL ViewComponent : protected Common::ViewComponentBase,
     std::optional<InputRef> text_ref_tmp;
     std::optional<ValAdaptor> init_;
 
+    // for cData()
+    mutable std::variant<std::string, std::wstring> text_s;
+    mutable std::string on_click_member_s, on_click_field_s;
+
   public:
     ViewComponent() = default;
     ViewComponent(const Common::ViewComponentBase &vc,
