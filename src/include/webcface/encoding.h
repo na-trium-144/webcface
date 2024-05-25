@@ -10,7 +10,7 @@ namespace Encoding {
  * \since ver1.12
  *
  * * windowsでは、falseの場合webcfaceの各種クラスのインタフェースで使われる
- * std::string をすべてACPエンコーディングとみなし、
+ * std::string をすべてANSIエンコーディングとみなし、
  * 内部でutf8と相互変換する。
  * * デフォルトは true (以前のバージョンとの互換性のため)
  * * unixでは効果がない。
@@ -30,8 +30,8 @@ WEBCFACE_DLL bool usingUTF8();
  * \brief stringをutf8のchar配列に変換する
  * \since ver1.12
  *
- * windowsではエンコーディングの変換を行うが、
- * unixではなにもせずそのままコピーする。
+ * windowsではusingUTF8(false)の場合ANSIからutf8へエンコーディングの変換を行うが、
+ * usingUTF8(true)の場合なにもせずそのままコピーする。
  *
  * utf8であることを明確にするために戻り値型をu8stringにしている
  *
@@ -52,6 +52,10 @@ WEBCFACE_DLL std::u8string encodeW(std::wstring_view name);
 /*!
  * \brief utf8の文字列をstringに変換する
  * \since ver1.12
+ *
+ * windowsでusingUTF8(false)の場合はANSIに、
+ * それ以外の場合なにもせずそのままコピーする。
+ *
  */
 WEBCFACE_DLL std::string decode(std::u8string_view name_ref);
 /*!
@@ -69,7 +73,7 @@ WEBCFACE_DLL std::u8string_view castToU8(std::string_view name);
 /*!
  * \since ver1.12
  */
-inline std::u8string_view castToU8(const char *data, std::size_t size){
+inline std::u8string_view castToU8(const char *data, std::size_t size) {
     return castToU8(std::string_view(data, size));
 }
 

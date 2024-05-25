@@ -18,7 +18,13 @@ TEST(EncodingTest, encode) {
     EXPECT_EQ(encode(us), u);
     EXPECT_EQ(encodeW(w), u);
     usingUTF8(false);
+#ifdef _WIN32
+    // webcfaceはutf8エンコーディングでビルドしてるのでsはANSIではない
+    EXPECT_NE(encode(s), u);
+#else
+    // linux, macではutf8として扱われる
     EXPECT_EQ(encode(s), u);
+#endif
     EXPECT_EQ(encodeW(w), u);
 }
 TEST(EncodingTest, decode) {
@@ -30,7 +36,13 @@ TEST(EncodingTest, decode) {
     EXPECT_EQ(decode(u), us);
     EXPECT_EQ(decodeW(u), w);
     usingUTF8(false);
+#ifdef _WIN32
+    // webcfaceはutf8エンコーディングでビルドしてるのでsはANSIではない
+    EXPECT_NE(decode(u), s);
+#else
+    // linux, macではutf8として扱われる
     EXPECT_EQ(decode(u), s);
+#endif
     EXPECT_EQ(decodeW(u), w);
 }
 TEST(EncodingTest, cast) {
