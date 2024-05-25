@@ -19,14 +19,6 @@ inline std::basic_string<CharT> strOrEmpty(const CharT *p) {
 }
 
 /*!
- * \brief wcfInitで作られたクライアントのリスト
- *
- * wcfInit時にnewして追加、wcfClose時にdeleteして削除する
- *
- */
-inline std::vector<wcfClient *> wcli_list;
-
-/*!
  * \brief wcfFuncFetchCallで取得されたwcfFuncCallHandleのリスト
  *
  * wcfFuncCallHandleをnewして追加、returnかreject時にdeleteして削除
@@ -34,14 +26,8 @@ inline std::vector<wcfClient *> wcli_list;
  */
 inline std::unordered_map<const wcfFuncCallHandle *, FuncCallHandle>
     fetched_handles;
-
-/*!
- * \brief wcfFuncRunAsyncで取得されたwcfAsyncFuncResultのリスト
- *
- * wcfFuncRunAsyncでnewし、GetResultやWaitResultでdelete
- *
- */
-inline std::vector<AsyncFuncResult *> func_result_list;
+inline std::unordered_map<const wcfFuncCallHandleW *, FuncCallHandle>
+    fetched_handles_w;
 
 /*!
  * \brief wcfFuncRun,
@@ -51,7 +37,43 @@ inline std::vector<AsyncFuncResult *> func_result_list;
  */
 inline std::unordered_map<const wcfMultiVal *, Common::ValAdaptor>
     func_val_list;
+inline std::unordered_map<const wcfMultiValW *, Common::ValAdaptor>
+    func_val_list_w;
 
+template <typename CharT>
+struct CharType {};
+template <>
+struct CharType<char> {
+    using CVal = wcfMultiVal;
+    using CHandle = wcfFuncCallHandle;
+    using CCallback = wcfFuncCallback;
+    static constexpr auto &fetchedHandles() { return fetched_handles; }
+    static constexpr auto &funcValList() { return func_val_list; }
+};
+template <>
+struct CharType<wchar_t> {
+    using CVal = wcfMultiValW;
+    using CHandle = wcfFuncCallHandleW;
+    using CCallback = wcfFuncCallbackW;
+    static constexpr auto &fetchedHandles() { return fetched_handles_w; }
+    static constexpr auto &funcValList() { return func_val_list_w; }
+};
+
+/*!
+ * \brief wcfInitで作られたクライアントのリスト
+ *
+ * wcfInit時にnewして追加、wcfClose時にdeleteして削除する
+ *
+ */
+inline std::vector<wcfClient *> wcli_list;
+
+/*!
+ * \brief wcfFuncRunAsyncで取得されたwcfAsyncFuncResultのリスト
+ *
+ * wcfFuncRunAsyncでnewし、GetResultやWaitResultでdelete
+ *
+ */
+inline std::vector<AsyncFuncResult *> func_result_list;
 
 /*!
  * \brief wcfViewGetで取得されたwcfViewComponentとViewComponentBase

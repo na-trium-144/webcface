@@ -79,6 +79,13 @@ wcfStatus wcfDestroy(const void *ptr) {
         delete f_ptr;
         return WCF_OK;
     }
+    auto fw_ptr = static_cast<const wcfMultiValW *>(ptr);
+    auto fw_it = func_val_list_w.find(fw_ptr);
+    if (fw_it != func_val_list_w.end()) {
+        func_val_list_w.erase(fw_it);
+        delete fw_ptr;
+        return WCF_OK;
+    }
     auto v_ptr = static_cast<const wcfViewComponent *>(ptr);
     auto v_it = view_list.find(v_ptr);
     if (v_it != view_list.end()) {

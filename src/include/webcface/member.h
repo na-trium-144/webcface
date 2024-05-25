@@ -59,7 +59,8 @@ class WEBCFACE_DLL Member : protected Field {
      *
      */
     template <typename T>
-        requires(!std::convertible_to<T, std::string>)
+        requires(!std::convertible_to<T, std::string_view> &&
+                 !std::convertible_to<T, std::wstring_view>)
     AnonymousFunc func(const T &func) const {
         return AnonymousFunc{*this, func};
     }
@@ -221,8 +222,8 @@ class WEBCFACE_DLL Member : protected Field {
      *
      */
     template <typename T>
-        requires std::same_as<T, Member> bool
-    operator==(const T &other) const {
+        requires std::same_as<T, Member>
+    bool operator==(const T &other) const {
         return static_cast<Field>(*this) == static_cast<Field>(other);
     }
 };

@@ -150,6 +150,22 @@ class ValAdaptor {
             type = ValType::int_;
         }
     }
+    /*!
+     * \brief wcfMultiValから変換 (wstring)
+     * \since ver1.12
+     */
+    explicit ValAdaptor(const wcfMultiValW &val) {
+        if (val.as_str != nullptr) {
+            this->as_str.emplace<WSTR>(val.as_str);
+            type = ValType::string_;
+        } else if (val.as_double != 0) {
+            this->as_val.emplace<DOUBLEV>(val.as_double);
+            type = ValType::float_;
+        } else {
+            this->as_val.emplace<INT64V>(val.as_int);
+            type = ValType::int_;
+        }
+    }
 
     ValType valType() const { return type; }
 
@@ -277,6 +293,8 @@ class ValAdaptor {
     std::wstring asWString() const { return asWStringRef(); }
     operator const std::string &() const { return asStringRef(); }
     operator const std::wstring &() const { return asWStringRef(); }
+    operator const char *() const { return asStringRef().c_str(); }
+    operator const wchar_t *() const { return asWStringRef().c_str(); }
     template <typename T>
         requires std::convertible_to<std::string, T>
     operator T() const {

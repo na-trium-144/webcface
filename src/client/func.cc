@@ -27,6 +27,30 @@ auto &operator<<(std::basic_ostream<char> &os, const AsyncFuncResult &r) {
     }
     return os;
 }
+template <std::size_t v_index>
+auto FuncCallHandle::HandleData::initCArgs()
+    -> decltype(std::get<v_index>(this->c_args_)) {
+    using CVal =
+        std::remove_reference_t<decltype(std::get<v_index>(this->c_args_)[0])>;
+    if (this->c_args_.index() != v_index) {
+        std::vector<CVal> c_args;
+        c_args.reserve(this->args_.size());
+        for (const auto &a : this->args_) {
+            c_args.emplace_back(CVal{
+                .as_int = a,
+                .as_double = a,
+                .as_str = a,
+            });
+        }
+        this->c_args_.emplace<v_index>(std::move(c_args));
+    }
+    return std::get<v_index>(this->c_args_);
+}
+template WEBCFACE_DLL auto FuncCallHandle::HandleData::initCArgs<1>()
+    -> decltype(std::get<1>(this->c_args_));
+template WEBCFACE_DLL auto FuncCallHandle::HandleData::initCArgs<2>()
+    -> decltype(std::get<2>(this->c_args_));
+
 
 Func::Func(const Field &base) : Field(base) {}
 Func &Func::setRaw(const std::shared_ptr<FuncInfo> &v) {
