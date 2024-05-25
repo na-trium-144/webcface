@@ -2,7 +2,6 @@
 #include <string>
 #include <string_view>
 #include <webcface/common/def.h>
-#include "common/field_base.h"
 
 WEBCFACE_NS_BEGIN
 namespace Encoding {

@@ -4,7 +4,7 @@
 #include <cstring>
 
 #ifdef _WIN32
-#include <stringapiset.h>
+#include <windows.h>
 #endif
 
 WEBCFACE_NS_BEGIN
@@ -23,7 +23,7 @@ std::u8string encode(std::string_view name) {
         MultiByteToWideChar(CP_ACP, 0, name.data(),
                             static_cast<int>(name.size()), result_utf16.data(),
                             static_cast<int>(result_utf16.length()));
-        return initNameW(result_utf16);
+        return encodeW(result_utf16);
     }
 #endif
     // そのままコピー
@@ -37,10 +37,12 @@ std::u8string encodeW(std::wstring_view name) {
     auto length_utf8 = WideCharToMultiByte(CP_UTF8, 0, name.data(),
                                            static_cast<int>(name.size()),
                                            nullptr, 0, nullptr, nullptr);
-    std::vector<char> result_utf8(length_utf8);
+    std::u8string result_utf8(length_utf8, '\0');
+    auto result_ptr =
+        static_cast<char *>(static_cast<void *>(result_utf8.data()));
     WideCharToMultiByte(CP_UTF8, 0, name.data(), static_cast<int>(name.size()),
-                        result_utf8.data(),
-                        static_cast<int>(result_utf8.size()), nullptr, nullptr);
+                        result_ptr, static_cast<int>(result_utf8.size()),
+                        nullptr, nullptr);
     return result_utf8;
 #else
     static_assert(sizeof(wchar_t) == 4, "Assuming wchar_t is utf-32 on Unix");
@@ -52,12 +54,13 @@ std::u8string encodeW(std::wstring_view name) {
 
 std::wstring decodeW(std::u8string_view name_ref) {
 #ifdef _WIN32
-    auto length =
-        MultiByteToWideChar(CP_UTF8, 0, name_ref.data(),
-                            static_cast<int>(name_ref.size()), nullptr, 0);
+    auto name_ptr =
+        static_cast<const char *>(static_cast<const void *>(name_ref.data()));
+    auto length = MultiByteToWideChar(
+        CP_UTF8, 0, name_ptr, static_cast<int>(name_ref.size()), nullptr, 0);
     std::wstring result_utf16(length, '\0');
-    MultiByteToWideChar(CP_UTF8, 0, name_ref.data(),
-                        static_cast<int>(name_ref.size()), result_utf16.data(),
+    MultiByteToWideChar(CP_UTF8, 0, name_ptr, static_cast<int>(name_ref.size()),
+                        result_utf16.data(),
                         static_cast<int>(result_utf16.length()));
     return result_utf16;
 #else
@@ -72,7 +75,7 @@ std::wstring decodeW(std::u8string_view name_ref) {
 std::string decode(std::u8string_view name_ref) {
 #ifdef _WIN32
     if (!using_utf8) {
-        auto result_utf16 = getNameW(name_ref);
+        auto result_utf16 = decodeW(name_ref);
         auto length_acp =
             WideCharToMultiByte(CP_ACP, 0, result_utf16.data(),
                                 static_cast<int>(result_utf16.length()),
@@ -89,19 +92,15 @@ std::string decode(std::u8string_view name_ref) {
     return std::string(name_ref.cbegin(), name_ref.cend());
 }
 
-template <typename To, typename From>
-inline static To bit_cast(const From &from) {
-    To result;
-    std::memcpy(&result, &from, sizeof(To));
-    return result;
-}
-
 std::u8string_view castToU8(std::string_view name) {
-    return std::u8string_view(bit_cast<const char8_t *>(name.data()),
-                              name.size());
+    return std::u8string_view(
+        static_cast<const char8_t *>(static_cast<const void *>(name.data())),
+        name.size());
 }
 std::string_view castFromU8(std::u8string_view name) {
-    return std::string_view(bit_cast<const char *>(name.data()), name.size());
+    return std::string_view(
+        static_cast<const char *>(static_cast<const void *>(name.data())),
+        name.size());
 }
 
 } // namespace Encoding
