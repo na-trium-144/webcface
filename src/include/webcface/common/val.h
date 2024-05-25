@@ -102,12 +102,40 @@ class ValAdaptor {
     /*!
      * \since ver1.12
      */
+    ValAdaptor &operator=(std::u8string_view str) {
+        as_str.emplace<U8STR>(str);
+        type = ValType::string_;
+        return *this;
+    }
+    /*!
+     * \since ver1.12
+     */
     explicit ValAdaptor(const char8_t *str)
         : as_str(std::u8string(str)), type(ValType::string_) {}
+    /*!
+     * \since ver1.12
+     */
+    ValAdaptor &operator=(const char8_t *str) {
+        as_str.emplace<U8STR>(str);
+        type = ValType::string_;
+        return *this;
+    }
+
     explicit ValAdaptor(std::string_view str)
         : as_str(std::string(str)), type(ValType::string_) {}
+    ValAdaptor &operator=(std::string_view str) {
+        as_str.emplace<STR>(str);
+        type = ValType::string_;
+        return *this;
+    }
     explicit ValAdaptor(const char *str)
         : as_str(std::string(str)), type(ValType::string_) {}
+    ValAdaptor &operator=(const char *str) {
+        as_str.emplace<STR>(str);
+        type = ValType::string_;
+        return *this;
+    }
+
     /*!
      * \since ver1.12
      */
@@ -116,18 +144,56 @@ class ValAdaptor {
     /*!
      * \since ver1.12
      */
+    ValAdaptor &operator=(std::wstring_view str) {
+        as_str.emplace<WSTR>(str);
+        type = ValType::string_;
+        return *this;
+    }
+    /*!
+     * \since ver1.12
+     */
     explicit ValAdaptor(const wchar_t *str)
         : as_str(std::wstring(str)), type(ValType::string_) {}
+    /*!
+     * \since ver1.12
+     */
+    ValAdaptor &operator=(const wchar_t *str) {
+        as_str.emplace<WSTR>(str);
+        type = ValType::string_;
+        return *this;
+    }
+
     explicit ValAdaptor(bool value)
         : as_val(static_cast<std::int64_t>(value)), type(ValType::bool_) {}
+    ValAdaptor &operator=(bool v) {
+        as_val.emplace<INT64V>(v);
+        type = ValType::bool_;
+        return *this;
+    }
+
     template <typename T>
         requires std::integral<T>
     explicit ValAdaptor(T value)
         : as_val(static_cast<std::int64_t>(value)), type(ValType::int_) {}
     template <typename T>
+        requires std::integral<T>
+    ValAdaptor &operator=(T v) {
+        as_val.emplace<INT64V>(v);
+        type = ValType::int_;
+        return *this;
+    }
+
+    template <typename T>
         requires std::floating_point<T>
     explicit ValAdaptor(T value)
         : as_val(static_cast<double>(value)), type(ValType::float_) {}
+    template <typename T>
+        requires std::floating_point<T>
+    ValAdaptor &operator=(T v) {
+        as_val.emplace<DOUBLEV>(v);
+        type = ValType::float_;
+        return *this;
+    }
 
     /*!
      * \brief wcfMultiValから変換
@@ -151,7 +217,7 @@ class ValAdaptor {
         }
     }
     /*!
-     * \brief wcfMultiValから変換 (wstring)
+     * \brief wcfMultiValWから変換
      * \since ver1.12
      */
     explicit ValAdaptor(const wcfMultiValW &val) {
@@ -166,6 +232,7 @@ class ValAdaptor {
             type = ValType::int_;
         }
     }
+
 
     ValType valType() const { return type; }
 
@@ -187,6 +254,7 @@ class ValAdaptor {
             return false;
         }
     }
+
 
     /*!
      * \brief 文字列として返す
@@ -291,15 +359,36 @@ class ValAdaptor {
      * \since ver1.12
      */
     std::wstring asWString() const { return asWStringRef(); }
+
+    /*!
+     * ver1.10〜: const参照
+     */
     operator const std::string &() const { return asStringRef(); }
+    /*!
+     * \since ver1.12
+     */
     operator const std::wstring &() const { return asWStringRef(); }
+    /*!
+     * \since ver1.12
+     */
     operator const char *() const { return asStringRef().c_str(); }
+    /*!
+     * \since ver1.12
+     */
     operator const wchar_t *() const { return asWStringRef().c_str(); }
+
+    /*!
+     * \brief string_viewなどへの変換
+     */
     template <typename T>
         requires std::convertible_to<std::string, T>
     operator T() const {
         return static_cast<T>(asStringRef());
     }
+    /*!
+     * \brief wstring_viewなどへの変換
+     * \since ver1.12
+     */
     template <typename T>
         requires(std::convertible_to<std::wstring, T> &&
                  !std::convertible_to<std::string, T>)
@@ -338,6 +427,9 @@ class ValAdaptor {
             }
         }
     }
+    /*!
+     * \brief 数値型への変換
+     */
     template <typename T>
         requires(std::convertible_to<double, T> && !std::same_as<T, bool>)
     operator T() const {
@@ -364,69 +456,11 @@ class ValAdaptor {
             }
         }
     }
+    /*!
+     * boolへ変換
+     */
     operator bool() const { return asBool(); }
 
-    ValAdaptor &operator=(bool v) {
-        as_val.emplace<INT64V>(v);
-        type = ValType::bool_;
-        return *this;
-    }
-    template <typename T>
-        requires std::integral<T>
-    ValAdaptor &operator=(T v) {
-        as_val.emplace<INT64V>(v);
-        type = ValType::int_;
-        return *this;
-    }
-    template <typename T>
-        requires std::floating_point<T>
-    ValAdaptor &operator=(T v) {
-        as_val.emplace<DOUBLEV>(v);
-        type = ValType::float_;
-        return *this;
-    }
-    /*!
-     * \since ver1.12
-     */
-    ValAdaptor &operator=(std::u8string_view v) {
-        as_str.emplace<U8STR>(v);
-        type = ValType::string_;
-        return *this;
-    }
-    /*!
-     * \since ver1.12
-     */
-    ValAdaptor &operator=(const char8_t *v) {
-        as_str.emplace<U8STR>(v);
-        type = ValType::string_;
-        return *this;
-    }
-    ValAdaptor &operator=(std::string_view v) {
-        as_str.emplace<STR>(v);
-        type = ValType::string_;
-        return *this;
-    }
-    ValAdaptor &operator=(const char *v) {
-        as_str.emplace<STR>(v);
-        type = ValType::string_;
-        return *this;
-    }
-    /*!
-     * \since ver1.12
-     */
-    ValAdaptor &operator=(std::wstring_view v) {
-        as_str.emplace<WSTR>(v);
-        type = ValType::string_;
-        return *this;
-    }
-    /*!
-     * \since ver1.12
-     */
-    ValAdaptor &operator=(const wchar_t *v) {
-        as_str.emplace<WSTR>(v);
-        type = ValType::string_;
-        return *this;
-    }
 
     bool operator==(const ValAdaptor &other) const {
         if (type == ValType::double_ || other.type == ValType::double_) {
