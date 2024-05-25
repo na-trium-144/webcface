@@ -144,13 +144,17 @@ TEST_F(ViewTest, viewSet) {
     EXPECT_EQ(view_data[8].text_ref_->member_, self_name);
     EXPECT_FALSE(view_data[8].text_ref_->field_.empty());
     EXPECT_EQ(static_cast<int>(ref1.get()), 123);
+    EXPECT_EQ(text(self_name, view_data[8].text_ref_->field_).get(), "123");
     EXPECT_EQ(
-        static_cast<int>(text(self_name, view_data[8].text_ref_->field_).get()),
+        static_cast<int>(
+            text(self_name, view_data[8].text_ref_->field_).tryGetV().value()),
         123);
     func(self_name, view_data[8].on_click_func_->field_).run(10);
     EXPECT_EQ(static_cast<int>(ref1.get()), 10);
+    EXPECT_EQ(text(self_name, view_data[8].text_ref_->field_).get(), "10");
     EXPECT_EQ(
-        static_cast<int>(text(self_name, view_data[8].text_ref_->field_).get()),
+        static_cast<int>(
+            text(self_name, view_data[8].text_ref_->field_).tryGetV().value()),
         10);
     EXPECT_EQ(view_data[8].min_, 1);
     EXPECT_EQ(view_data[8].max_, 1000);

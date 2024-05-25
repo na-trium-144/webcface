@@ -148,10 +148,23 @@ class WEBCFACE_DLL Text : protected Field, public EventTarget<Text> {
     /*!
      * \brief 文字列を返す
      *
-     * (ver1.10〜 文字列以外の型も扱うためValAdaptor型に変更)
+     * * <del>ver1.10〜 文字列以外の型も扱うためValAdaptor型に変更</del>
+     * * ver1.12〜 stringに戻した
      *
      */
-    std::optional<ValAdaptor> tryGet() const;
+    std::optional<std::string> tryGet() const;
+    /*!
+     * \brief 文字列を返す (wstring)
+     * \since ver1.12
+     */
+    std::optional<std::wstring> tryGetW() const;
+    /*!
+     * \since ver1.12
+     *
+     * 文字列以外の型のデータが必要な場合
+     *
+     */
+    std::optional<ValAdaptor> tryGetV() const;
     // /*!
     //  * \brief 文字列を再帰的に取得しDictで返す
     //  *
@@ -160,10 +173,16 @@ class WEBCFACE_DLL Text : protected Field, public EventTarget<Text> {
     /*!
      * \brief 文字列を返す
      *
-     * (ver1.10〜 文字列以外の型も扱うためValAdaptor型に変更)
+     * * <del>ver1.10〜 文字列以外の型も扱うためValAdaptor型に変更</del>
+     * * ver1.12〜 stringに戻した
      *
      */
-    ValAdaptor get() const { return tryGet().value_or(ValAdaptor()); }
+    std::string get() const { return tryGet().value_or(""); }
+    /*!
+     * \brief 文字列を返す (wstring)
+     * \since ver1.12
+     */
+    std::wstring getW() const { return tryGetW().value_or(L""); }
 
     // /*!
     //  * \brief 値を再帰的に取得しDictで返す
@@ -171,7 +190,7 @@ class WEBCFACE_DLL Text : protected Field, public EventTarget<Text> {
     //  */
     // Dict getRecurse() const { return tryGetRecurse().value_or(Dict{}); }
     operator std::string() const { return get(); }
-    operator std::wstring() const { return get(); }
+    operator std::wstring() const { return getW(); }
     // operator Dict() const { return getRecurse(); }
 
     /*!
@@ -186,12 +205,8 @@ class WEBCFACE_DLL Text : protected Field, public EventTarget<Text> {
      */
     Text &free();
 
-    bool operator==(std::string_view rhs) const {
-        return this->get().asStringRef() == rhs;
-    }
-    bool operator==(std::wstring_view rhs) const {
-        return this->get().asWStringRef() == rhs;
-    }
+    bool operator==(std::string_view rhs) const { return this->get() == rhs; }
+    bool operator==(std::wstring_view rhs) const { return this->getW() == rhs; }
 
     /*!
      * \brief Textの参照先を比較
@@ -220,7 +235,7 @@ WEBCFACE_DLL std::ostream &operator<<(std::ostream &os, const Text &data);
 
 struct WEBCFACE_DLL InputRefState {
     Text field;
-    std::optional<ValAdaptor> val = std::nullopt;
+    ValAdaptor val;
     InputRefState() = default;
 };
 /*!
@@ -263,29 +278,17 @@ class WEBCFACE_DLL InputRef {
      *
      */
     const ValAdaptor &get() const {
-        auto &val = state->val;
         if (expired()) {
-            if (val) {
-                if (val->empty()) {
-                    val.emplace();
-                }
-                return *val;
-            } else {
-                val.emplace();
-                return *val;
+            if (!state->val.empty()) {
+                state->val = ValAdaptor();
             }
         } else {
-            auto new_val = state->field.get();
-            if (val) {
-                if (*val != new_val) {
-                    val = new_val;
-                }
-                return *val;
-            } else {
-                val = new_val;
-                return *val;
+            auto new_val = state->field.tryGetV().value_or(ValAdaptor());
+            if (state->val != new_val) {
+                state->val = new_val;
             }
         }
+        return state->val;
     }
 
     /*!

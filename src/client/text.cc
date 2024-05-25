@@ -40,7 +40,7 @@ Text &Text::set(const ValAdaptor &v) {
 
 void Text::onAppend() const { request(); }
 
-std::optional<ValAdaptor> Text::tryGet() const {
+std::optional<ValAdaptor> Text::tryGetV() const {
     auto v = dataLock()->text_store.getRecv(*this);
     request();
     if (v) {
@@ -49,6 +49,25 @@ std::optional<ValAdaptor> Text::tryGet() const {
         return std::nullopt;
     }
 }
+std::optional<std::string> Text::tryGet() const {
+    auto v = dataLock()->text_store.getRecv(*this);
+    request();
+    if (v) {
+        return (*v)->asString();
+    } else {
+        return std::nullopt;
+    }
+}
+std::optional<std::wstring> Text::tryGetW() const {
+    auto v = dataLock()->text_store.getRecv(*this);
+    request();
+    if (v) {
+        return (*v)->asWString();
+    } else {
+        return std::nullopt;
+    }
+}
+
 // std::optional<Text::Dict> Text::tryGetRecurse() const {
 //     request();
 //     return dataLock()->text_store.getRecvRecurse(
