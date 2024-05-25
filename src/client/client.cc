@@ -640,6 +640,15 @@ void Internal::ClientData::onRecv(const std::string &message) {
                     } catch (const std::string &e) {
                         is_error = true;
                         result = e;
+                    } catch (const char *e) {
+                        is_error = true;
+                        result = e;
+                    } catch (const std::wstring &e) {
+                        is_error = true;
+                        result = e;
+                    } catch (const wchar_t *e) {
+                        is_error = true;
+                        result = e;
                     } catch (...) {
                         is_error = true;
                         result = "unknown exception";
@@ -682,8 +691,7 @@ void Internal::ClientData::onRecv(const std::string &message) {
             try {
                 if (r.is_error) {
                     try {
-                        throw std::runtime_error(
-                            static_cast<std::string>(r.result));
+                        throw std::runtime_error(r.result.asStringRef());
                     } catch (...) {
                         this->func_result_store.resultSetter(r.caller_id)
                             .setResultException(std::current_exception());

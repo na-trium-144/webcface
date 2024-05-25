@@ -1,5 +1,6 @@
 #pragma once
 #include <webcface/common/def.h>
+#include <wchar.h>
 
 #ifdef __cplusplus
 extern "C" {

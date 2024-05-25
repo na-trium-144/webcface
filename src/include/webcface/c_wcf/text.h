@@ -6,7 +6,7 @@ extern "C" {
 
 /*!
  * \brief 文字列を送信する(null終端)
- * \since 1.7
+ * \since ver1.7
  * \param wcli Clientポインタ
  * \param field textの名前
  * \param text 送信する文字列(null終端)
@@ -16,8 +16,15 @@ extern "C" {
 WEBCFACE_DLL wcfStatus wcfTextSet(wcfClient *wcli, const char *field,
                                   const char *text);
 /*!
+ * \brief 文字列を送信する(null終端, wstring)
+ * \since ver1.12
+ * \sa wcfTextSet
+ */
+WEBCFACE_DLL wcfStatus wcfTextSetW(wcfClient *wcli, const wchar_t *field,
+                                  const wchar_t *text);
+/*!
  * \brief 文字列を送信する
- * \since 1.7
+ * \since ver1.7
  * \param wcli Clientポインタ
  * \param field textの名前
  * \param text 送信する文字列
@@ -27,10 +34,17 @@ WEBCFACE_DLL wcfStatus wcfTextSet(wcfClient *wcli, const char *field,
  */
 WEBCFACE_DLL wcfStatus wcfTextSetN(wcfClient *wcli, const char *field,
                                    const char *text, int size);
+/*!
+ * \brief 文字列を送信する (wstring)
+ * \since ver1.12
+ * \sa wcfTextSetN
+ */
+WEBCFACE_DLL wcfStatus wcfTextSetNW(wcfClient *wcli, const wchar_t *field,
+                                   const wchar_t *text, int size);
 
 /*!
  * \brief 文字列を受信する
- * \since 1.7
+ * \since ver1.7
  *
  * sizeに指定したサイズより実際に受信した文字列の長さのほうが大きいか同じ場合、
  * textには(size-1)文字+null終端を格納しrecv_sizeには本来の長さを返す
@@ -39,7 +53,7 @@ WEBCFACE_DLL wcfStatus wcfTextSetN(wcfClient *wcli, const char *field,
  * null終端より後ろの余った範囲はそのまま
  *
  * \param wcli Clientポインタ
- * \param member memberの名前
+ * \param member memberの名前 (ver1.7〜:NULLまたは空文字列で自分自身を指す)
  * \param field textの名前
  * \param text 受信した文字列を格納するポインタ
  * \param size 配列のサイズ
@@ -50,6 +64,14 @@ WEBCFACE_DLL wcfStatus wcfTextSetN(wcfClient *wcli, const char *field,
  */
 WEBCFACE_DLL wcfStatus wcfTextGet(wcfClient *wcli, const char *member,
                                   const char *field, char *text, int size,
+                                  int *recv_size);
+/*!
+ * \brief 文字列を受信する (wstring)
+ * \since ver1.12
+ * \sa wcfTextGet
+ */
+WEBCFACE_DLL wcfStatus wcfTextGetW(wcfClient *wcli, const wchar_t *member,
+                                  const wchar_t *field, wchar_t *text, int size,
                                   int *recv_size);
 
 #ifdef __cplusplus

@@ -2,12 +2,20 @@
 
 extern "C" {
 wcfClient *wcfInit(const char *name, const char *host, int port) {
-    auto wcli = new Client(name ? name : "", host ? host : "127.0.0.1", port);
+    auto wcli = new Client(strOrEmpty(name), host ? host : "127.0.0.1", port);
+    wcli_list.push_back(wcli);
+    return wcli;
+}
+wcfClient *wcfInitW(const wchar_t *name, const wchar_t *host, int port) {
+    auto wcli = new Client(strOrEmpty(name), host ? host : L"127.0.0.1", port);
     wcli_list.push_back(wcli);
     return wcli;
 }
 wcfClient *wcfInitDefault(const char *name) {
-    return wcfInit(name ? name : "", "127.0.0.1", WEBCFACE_DEFAULT_PORT);
+    return wcfInit(name, "127.0.0.1", WEBCFACE_DEFAULT_PORT);
+}
+wcfClient *wcfInitDefaultW(const wchar_t *name) {
+    return wcfInitW(name, L"127.0.0.1", WEBCFACE_DEFAULT_PORT);
 }
 int wcfIsValid(wcfClient *wcli) {
     if (getWcli(wcli)) {

@@ -56,7 +56,7 @@ class WEBCFACE_DLL AsyncFuncResult : Field {
     /*!
      * \brief リモートに呼び出しメッセージが到達したときに値が入る
      *
-     * \return 実行開始したらtrue, 呼び出しに失敗したらfalseが返る。
+     * 実行開始したらtrue, 呼び出しに失敗したらfalseが返る。
      * falseの場合resultにFuncNotFound例外が入る
      *
      */
@@ -65,6 +65,9 @@ class WEBCFACE_DLL AsyncFuncResult : Field {
      * \brief 関数の実行が完了した時戻り値が入る
      *
      * 例外が発生した場合例外が入る
+     *
+     * ver1.12〜: 例外はresultにexceptionとして格納されるが、
+     * そのエラーメッセージにはutf-8ではないstringが使われる
      *
      */
     std::shared_future<ValAdaptor> result;
@@ -97,6 +100,7 @@ auto &operator<<(std::basic_ostream<char> &os, const AsyncFuncResult &data);
 
 /*!
  * \brief AsyncFuncResultの結果をセットする
+ *
  */
 struct AsyncFuncResultSetter : Field {
   private:
@@ -230,6 +234,17 @@ class FuncCallHandle {
             throw std::runtime_error("FuncCallHandle does not have valid "
                                      "pointer to function call");
         }
+    }
+    /*!
+     * \brief 関数の結果を例外として送信する (wstring)
+     * \since ver1.12
+     *
+     * * 2回呼ぶと std::future_error を投げる
+     * * このHandleがデフォルト構築されていた場合 std::runtime_error を投げる
+     *
+     */
+    void reject(const std::wstring &message) {
+        reject(Encoding::decode(Encoding::encodeW(message)));
     }
 };
 WEBCFACE_NS_END

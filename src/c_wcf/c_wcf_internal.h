@@ -9,6 +9,15 @@
 
 WEBCFACE_NS_BEGIN
 inline namespace c_wcf {
+template <typename CharT>
+inline std::basic_string<CharT> strOrEmpty(const CharT *p) {
+    if (p) {
+        return p;
+    } else {
+        return std::basic_string<CharT>();
+    }
+}
+
 /*!
  * \brief wcfInitで作られたクライアントのリスト
  *
