@@ -18,7 +18,7 @@ static auto resultToCVal(const AsyncFuncResult &async_res) {
         result_val = "unknown exception";
         status = WCF_EXCEPTION;
     }
-    auto result = new CharType<CharT>::CVal();
+    auto result = new typename CharType<CharT>::CVal();
     CharType<CharT>::funcValList().emplace(result, result_val);
     const ValAdaptor &result_val_ref =
         CharType<CharT>::funcValList().at(result);
@@ -30,7 +30,7 @@ static auto resultToCVal(const AsyncFuncResult &async_res) {
 
 template <typename CharT>
 static auto createHandle(const FuncCallHandle &h) {
-    auto whp = new CharType<CharT>::CHandle();
+    auto whp = new typename CharType<CharT>::CHandle();
     CharType<CharT>::fetchedHandles().emplace(whp, h);
     auto &h_ref = CharType<CharT>::fetchedHandles().at(whp);
     whp->args = h_ref.template cArgs<CharT>();
