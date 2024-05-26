@@ -31,26 +31,63 @@ ViewComponent::lockTmp(const std::weak_ptr<Internal::ClientData> &data_w,
     }
     return *this;
 }
-wcfViewComponent ViewComponent::cData() const {
-    wcfViewComponent vcc;
+
+template <typename CComponent, typename CVal, std::size_t v_index,
+          typename DecodeF>
+CComponent ViewComponent::cDataT(DecodeF decode) const {
+    CComponent vcc;
     vcc.type = static_cast<int>(this->type());
-    this->text_s.emplace<0>(Encoding::decode(this->text_));
-    vcc.text = std::get<0>(this->text_s).empty()
-                   ? nullptr
-                   : std::get<0>(this->text_s).c_str();
+    this->text_s.emplace<v_index>(decode(this->text_));
+    vcc.text = std::get<v_index>(this->text_s).c_str();
     if (this->on_click_func_) {
-        this->on_click_member_s =
-            Encoding::decode(this->on_click_func_->member_);
-        this->on_click_field_s = Encoding::decode(this->on_click_func_->field_);
-        vcc.on_click_member = this->on_click_member_s.c_str();
-        vcc.on_click_field = this->on_click_field_s.c_str();
+        this->on_click_member_s.emplace<v_index>(
+            decode(this->on_click_func_->member_));
+        this->on_click_field_s.emplace<v_index>(
+            decode(this->on_click_func_->field_));
+        vcc.on_click_member =
+            std::get<v_index>(this->on_click_member_s).c_str();
+        vcc.on_click_field = std::get<v_index>(this->on_click_field_s).c_str();
     } else {
         vcc.on_click_member = nullptr;
         vcc.on_click_field = nullptr;
     }
+    if (this->text_ref_) {
+        this->text_ref_member_s.emplace<v_index>(
+            decode(this->text_ref_->member_));
+        this->text_ref_field_s.emplace<v_index>(
+            decode(this->text_ref_->field_));
+        vcc.text_ref_member =
+            std::get<v_index>(this->text_ref_member_s).c_str();
+        vcc.text_ref_field = std::get<v_index>(this->text_ref_field_s).c_str();
+    } else {
+        vcc.text_ref_member = nullptr;
+        vcc.text_ref_field = nullptr;
+    }
     vcc.text_color = static_cast<int>(this->text_color_);
     vcc.bg_color = static_cast<int>(this->bg_color_);
+    vcc.min = this->min_.value_or(-DBL_MAX);
+    vcc.max = this->max_.value_or(DBL_MAX);
+    vcc.step = this->step_.value_or(0);
+    std::vector<CVal> options;
+    options.reserve(this->option_.size());
+    for(const auto &o: this->option_){
+        options.push_back(CVal{
+            .as_int = o,
+            .as_double = o,
+            .as_str = o,
+        });
+    }
+    this->options_s.emplace<v_index>(std::move(options));
+    vcc.option = std::get<v_index>(this->options_s).data();
+    vcc.option_num = this->option_.size();
     return vcc;
+}
+
+wcfViewComponent ViewComponent::cData() const {
+    return cDataT<wcfViewComponent, wcfMultiVal, 0>(Encoding::decode);
+}
+wcfViewComponentW ViewComponent::cDataW() const {
+    return cDataT<wcfViewComponentW, wcfMultiValW, 1>(Encoding::decodeW);
 }
 
 std::optional<Func> ViewComponent::onClick() const {

@@ -61,8 +61,14 @@ class WEBCFACE_DLL ViewComponent : protected Common::ViewComponentBase,
     std::optional<ValAdaptor> init_;
 
     // for cData()
-    mutable std::variant<std::string, std::wstring> text_s;
-    mutable std::string on_click_member_s, on_click_field_s;
+    mutable std::variant<std::string, std::wstring> text_s, on_click_member_s,
+        on_click_field_s, text_ref_member_s, text_ref_field_s;
+    mutable std::variant<std::vector<wcfMultiVal>, std::vector<wcfMultiValW>>
+        options_s;
+
+    template <typename CComponent, typename CVal, std::size_t v_index,
+              typename DecodeF>
+    CComponent cDataT(DecodeF decode) const;
 
   public:
     ViewComponent() = default;
@@ -88,6 +94,7 @@ class WEBCFACE_DLL ViewComponent : protected Common::ViewComponentBase,
             std::unordered_map<int, int> *idx_next = nullptr);
 
     wcfViewComponent cData() const;
+    wcfViewComponentW cDataW() const;
 
     /*!
      * \brief 要素の比較

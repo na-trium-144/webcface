@@ -39,16 +39,6 @@ static auto createHandle(const FuncCallHandle &h) {
 }
 
 template <typename CharT>
-static std::vector<ValAdaptor>
-argsFromCVal(const typename CharType<CharT>::CVal *args, int arg_size) {
-    std::vector<ValAdaptor> args_v;
-    args_v.reserve(arg_size);
-    for (int i = 0; i < arg_size; i++) {
-        args_v.emplace_back(args[i]);
-    }
-    return args_v;
-}
-template <typename CharT>
 static wcfStatus
 wcfFuncRunT(wcfClient *wcli, const CharT *member, const CharT *field,
             const typename CharType<CharT>::CVal *args, int arg_size,

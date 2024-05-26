@@ -1,6 +1,7 @@
 #pragma once
 #include <webcface/common/def.h>
 #include <wchar.h>
+#include <float.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -52,7 +53,7 @@ WEBCFACE_DLL typedef struct wcfMultiVal {
     double as_double;
     /*!
      * \brief char*型でのアクセス
-     * 
+     *
      * * as_int, as_double に値をセットして渡す場合は
      * as_str はnullにすること。
      * * 値が返ってくる場合はas_strがnullになっていることはない。
@@ -86,7 +87,7 @@ WEBCFACE_DLL typedef struct wcfMultiValW {
     double as_double;
     /*!
      * \brief wchar_t*型でのアクセス
-     * 
+     *
      * * as_int, as_double に値をセットして渡す場合は
      * as_str はnullにすること。
      * * 値が返ってくる場合はas_strがnullになっていることはない。
@@ -103,9 +104,9 @@ WEBCFACE_DLL typedef struct wcfMultiValW {
 WEBCFACE_DLL typedef struct wcfFuncCallHandle {
     /*!
      * \brief 呼び出された引数
-     * 
+     *
      * arg_size 個のデータの配列の先頭へのポインタ。
-     * 
+     *
      */
     const wcfMultiVal *args;
     /*!
@@ -123,9 +124,9 @@ WEBCFACE_DLL typedef struct wcfFuncCallHandle {
 WEBCFACE_DLL typedef struct wcfFuncCallHandleW {
     /*!
      * \brief 呼び出された引数
-     * 
+     *
      * arg_size 個のデータの配列の先頭へのポインタ。
-     * 
+     *
      */
     const wcfMultiValW *args;
     /*!
@@ -146,7 +147,7 @@ typedef void (*wcfFuncCallback)(wcfFuncCallHandle *call_handle,
  * \brief funcにsetするコールバックの型 (wstring)
  */
 typedef void (*wcfFuncCallbackW)(wcfFuncCallHandleW *call_handle,
-                                void *user_data);
+                                 void *user_data);
 
 #define WCF_VIEW_TEXT 0
 #define WCF_VIEW_NEW_LINE 1
@@ -167,6 +168,10 @@ typedef void (*wcfFuncCallbackW)(wcfFuncCallHandleW *call_handle,
 #define WCF_COLOR_PURPLE 21
 #define WCF_COLOR_PINK 23
 
+/*!
+ * \brief Viewの要素を表すstruct
+ *
+ */
 WEBCFACE_DLL typedef struct wcfViewComponent {
     /*!
      * \brief Componentの種類
@@ -198,7 +203,51 @@ WEBCFACE_DLL typedef struct wcfViewComponent {
      *
      */
     int bg_color;
+    /*!
+     * \brief inputの最小値 (未設定 = -DBL_MAX)
+     * \since ver1.12
+     */
+    double min;
+    /*!
+     * \brief inputの最大値 (未設定 = DBL_MAX)
+     * \since ver1.12
+     */
+    double max;
+    /*!
+     * \brief inputの刻み幅 (未設定 = 0)
+     * \since ver1.12
+     */
+    double step;
+    /*!
+     * \brief inputの選択肢
+     * \since ver1.12
+     */
+    const wcfMultiVal *option;
+    /*!
+     * \brief inputの選択肢の数 (optionの指す配列の要素数)
+     * \since ver1.12
+     */
+    int option_num;
 } wcfViewComponent;
+
+/*!
+ * \brief Viewの要素を表すstruct (wstring)
+ * \since ver1.12
+ * \sa wcfViewComponent
+ */
+WEBCFACE_DLL typedef struct wcfViewComponentW {
+    int type;
+    const wchar_t *text;
+    const wchar_t *on_click_member, *on_click_field;
+    const wchar_t *text_ref_member, *text_ref_field;
+    int text_color;
+    int bg_color;
+    double min;
+    double max;
+    double step;
+    const wcfMultiValW *option;
+    int option_num;
+} wcfViewComponentW;
 
 #ifdef __cplusplus
 }

@@ -40,6 +40,16 @@ inline std::unordered_map<const wcfMultiVal *, Common::ValAdaptor>
 inline std::unordered_map<const wcfMultiValW *, Common::ValAdaptor>
     func_val_list_w;
 
+/*!
+ * \brief wcfViewGetで取得されたwcfViewComponentとViewComponentBase
+ */
+inline std::unordered_map<const wcfViewComponent *,
+                          const std::vector<ViewComponent>>
+    view_list;
+inline std::unordered_map<const wcfViewComponentW *,
+                          const std::vector<ViewComponent>>
+    view_list_w;
+
 template <typename CharT>
 struct CharType {};
 template <>
@@ -47,16 +57,20 @@ struct CharType<char> {
     using CVal = wcfMultiVal;
     using CHandle = wcfFuncCallHandle;
     using CCallback = wcfFuncCallback;
+    using CComponent = wcfViewComponent;
     static constexpr auto &fetchedHandles() { return fetched_handles; }
     static constexpr auto &funcValList() { return func_val_list; }
+    static constexpr auto &viewList() { return view_list; }
 };
 template <>
 struct CharType<wchar_t> {
     using CVal = wcfMultiValW;
     using CHandle = wcfFuncCallHandleW;
     using CCallback = wcfFuncCallbackW;
+    using CComponent = wcfViewComponentW;
     static constexpr auto &fetchedHandles() { return fetched_handles_w; }
     static constexpr auto &funcValList() { return func_val_list_w; }
+    static constexpr auto &viewList() { return view_list_w; }
 };
 
 /*!
@@ -74,13 +88,6 @@ inline std::vector<wcfClient *> wcli_list;
  *
  */
 inline std::vector<AsyncFuncResult *> func_result_list;
-
-/*!
- * \brief wcfViewGetで取得されたwcfViewComponentとViewComponentBase
- */
-inline std::unordered_map<const wcfViewComponent *,
-                          const std::vector<ViewComponent>>
-    view_list;
 
 /*!
  * \brief voidポインタからclientオブジェクトを復元
@@ -103,6 +110,17 @@ inline AsyncFuncResult *getAsyncFuncResult(wcfAsyncFuncResult *res) {
         return nullptr;
     }
     return static_cast<AsyncFuncResult *>(res);
+}
+
+template <typename CharT>
+std::vector<ValAdaptor>
+argsFromCVal(const typename CharType<CharT>::CVal *args, int arg_size) {
+    std::vector<ValAdaptor> args_v;
+    args_v.reserve(arg_size);
+    for (int i = 0; i < arg_size; i++) {
+        args_v.emplace_back(args[i]);
+    }
+    return args_v;
 }
 
 } // namespace c_wcf

@@ -72,26 +72,41 @@ wcfMultiVal wcfValS(const char *value) {
 }
 
 wcfStatus wcfDestroy(const void *ptr) {
-    auto f_ptr = static_cast<const wcfMultiVal *>(ptr);
-    auto f_it = func_val_list.find(f_ptr);
-    if (f_it != func_val_list.end()) {
-        func_val_list.erase(f_it);
-        delete f_ptr;
-        return WCF_OK;
+    {
+        auto f_ptr = static_cast<const wcfMultiVal *>(ptr);
+        auto f_it = func_val_list.find(f_ptr);
+        if (f_it != func_val_list.end()) {
+            func_val_list.erase(f_it);
+            delete f_ptr;
+            return WCF_OK;
+        }
     }
-    auto fw_ptr = static_cast<const wcfMultiValW *>(ptr);
-    auto fw_it = func_val_list_w.find(fw_ptr);
-    if (fw_it != func_val_list_w.end()) {
-        func_val_list_w.erase(fw_it);
-        delete fw_ptr;
-        return WCF_OK;
+    {
+        auto fw_ptr = static_cast<const wcfMultiValW *>(ptr);
+        auto fw_it = func_val_list_w.find(fw_ptr);
+        if (fw_it != func_val_list_w.end()) {
+            func_val_list_w.erase(fw_it);
+            delete fw_ptr;
+            return WCF_OK;
+        }
     }
-    auto v_ptr = static_cast<const wcfViewComponent *>(ptr);
-    auto v_it = view_list.find(v_ptr);
-    if (v_it != view_list.end()) {
-        view_list.erase(v_it);
-        delete[] v_ptr;
-        return WCF_OK;
+    {
+        auto v_ptr = static_cast<const wcfViewComponent *>(ptr);
+        auto v_it = view_list.find(v_ptr);
+        if (v_it != view_list.end()) {
+            view_list.erase(v_it);
+            delete[] v_ptr;
+            return WCF_OK;
+        }
+    }
+    {
+        auto vw_ptr = static_cast<const wcfViewComponentW *>(ptr);
+        auto vw_it = view_list_w.find(vw_ptr);
+        if (vw_it != view_list_w.end()) {
+            view_list_w.erase(vw_it);
+            delete[] vw_ptr;
+            return WCF_OK;
+        }
     }
     return WCF_BAD_HANDLE;
 }
