@@ -178,7 +178,13 @@ brew install --cask webcface-webui-server
 
 
 ### Windows (MSVC)
-[webcface-windows-packageのRelease](https://github.com/na-trium-144/webcface-windows-package/releases)からインストーラーをダウンロードしてください。
+[webcface-windows-packageのRelease](https://github.com/na-trium-144/webcface-windows-package/releases)からダウンロードしてください。
+
+exeファイルは実行するとインストーラーが起動します。
+zipファイルは任意の場所に展開して使用してください。
+
+(ver1.12〜) Windows版WebCFaceのReleaseに含まれるビルド済みのspdlogは
+`SPDLOG_WCHAR_SUPPORT` オプションがオンの状態です
 
 MinGW用バイナリは今のところ配布していません(ソースからビルドしてください)
 
@@ -262,6 +268,9 @@ sudo cmake --build build -t install
 		* `-DWEBCFACE_VERSION_SUFFIX=git` なら `git describe --tags` コマンドを使用して取得した文字列 (1.2.0-x-gxxxxxxx) になります(未指定の場合のデフォルト)
 		* `git`以外の任意の文字列の場合 `-DWEBCFACE_VERSION_SUFFIX=hoge` で 1.2.0-hoge になります
 		* `-DWEBCFACE_VERSION_SUFFIX=` で 1.2.0 だけになります
+	* spdlogのオプション
+		* Windowsでは`SPDLOG_WCHAR_SUPPORT`がデフォルトでONになります
+		* それ以外のオプション(SPDLOG_WCHAR_FILENAMES, SPDLOG_WCHAR_CONSOLE)はWebCFace内では設定しませんがコマンドラインオプションで指定することは可能です
 
 #### Build (with colcon, ROS2)
 * このリポジトリをワークスペースのsrcに追加して、colconでビルドすることができます
