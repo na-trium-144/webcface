@@ -38,6 +38,7 @@ class WEBCFACE_DLL Text : protected Field, public EventTarget<Text> {
     using Field::lastName;
     using Field::member;
     using Field::name;
+    using Field::nameW;
     /*!
      * \brief 「(thisの名前).(追加の名前)」を新しい名前とするField
      *
@@ -107,10 +108,8 @@ class WEBCFACE_DLL Text : protected Field, public EventTarget<Text> {
      */
     Text &set(std::wstring_view v) { return set(ValAdaptor{v}); }
     /*!
-     * \brief 文字列をセットする
-     *
-     * \since ver1.10〜 文字列以外の型も扱う
-     *
+     * \brief 文字列以外の型の値もセットする
+     * \since ver1.10
      */
     Text &set(const ValAdaptor &v);
 

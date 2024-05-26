@@ -42,3 +42,14 @@ TEST_F(LoggerTest, loggerBuf) {
     EXPECT_EQ((**ls)[1].level, 2);
     EXPECT_EQ((**ls)[1].message, u8"b");
 }
+TEST_F(LoggerTest, loggerBufW) {
+    LoggerBufW b(data_->log_store);
+    std::wostream os(&b);
+    os << L"a\nb" << std::endl;
+    auto ls = data_->log_store->getRecv(self_name);
+    ASSERT_EQ((*ls)->size(), 2);
+    EXPECT_EQ((**ls)[0].level, 2);
+    EXPECT_EQ((**ls)[0].message, u8"a");
+    EXPECT_EQ((**ls)[1].level, 2);
+    EXPECT_EQ((**ls)[1].message, u8"b");
+}

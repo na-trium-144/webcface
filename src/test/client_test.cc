@@ -136,6 +136,7 @@ TEST_F(ClientTest, close) {
 }
 TEST_F(ClientTest, name) {
     EXPECT_EQ(wcli_->name(), Encoding::decode(self_name));
+    EXPECT_EQ(wcli_->nameW(), Encoding::decodeW(self_name));
 }
 TEST_F(ClientTest, memoryLeak) {
     dummy_s = std::make_shared<DummyServer>(false);
@@ -215,6 +216,7 @@ TEST_F(ClientTest, entry) {
     callback_called = 0;
     EXPECT_EQ(wcli_->members().size(), 1);
     EXPECT_EQ(wcli_->members()[0].name(), "a");
+    EXPECT_EQ(wcli_->members()[0].nameW(), L"a");
     EXPECT_EQ(data_->member_ids[u8"a"], 10);
 
     auto m = wcli_->member("a");
@@ -229,6 +231,7 @@ TEST_F(ClientTest, entry) {
     callback_called = 0;
     ASSERT_EQ(m.valueEntries().size(), 1);
     EXPECT_EQ(m.valueEntries()[0].name(), "b");
+    EXPECT_EQ(m.valueEntries()[0].nameW(), L"b");
 
     m.onTextEntry().appendListener(callback<Text>());
     dummy_s->send(Message::Entry<Message::Text>{{}, 10, u8"c"});
@@ -237,6 +240,7 @@ TEST_F(ClientTest, entry) {
     callback_called = 0;
     ASSERT_EQ(m.textEntries().size(), 1);
     EXPECT_EQ(m.textEntries()[0].name(), "c");
+    EXPECT_EQ(m.textEntries()[0].nameW(), L"c");
 
     m.onViewEntry().appendListener(callback<View>());
     dummy_s->send(Message::Entry<Message::View>{{}, 10, u8"d"});
@@ -245,6 +249,7 @@ TEST_F(ClientTest, entry) {
     callback_called = 0;
     ASSERT_EQ(m.viewEntries().size(), 1);
     EXPECT_EQ(m.viewEntries()[0].name(), "d");
+    EXPECT_EQ(m.viewEntries()[0].nameW(), L"d");
 
     m.onCanvas2DEntry().appendListener(callback<Canvas2D>());
     dummy_s->send(Message::Entry<Message::Canvas2D>{{}, 10, u8"d"});
@@ -253,6 +258,7 @@ TEST_F(ClientTest, entry) {
     callback_called = 0;
     ASSERT_EQ(m.canvas2DEntries().size(), 1);
     EXPECT_EQ(m.canvas2DEntries()[0].name(), "d");
+    EXPECT_EQ(m.canvas2DEntries()[0].nameW(), L"d");
 
     m.onCanvas3DEntry().appendListener(callback<Canvas3D>());
     dummy_s->send(Message::Entry<Message::Canvas3D>{{}, 10, u8"d"});
@@ -261,6 +267,7 @@ TEST_F(ClientTest, entry) {
     callback_called = 0;
     ASSERT_EQ(m.canvas3DEntries().size(), 1);
     EXPECT_EQ(m.canvas3DEntries()[0].name(), "d");
+    EXPECT_EQ(m.canvas3DEntries()[0].nameW(), L"d");
 
     m.onRobotModelEntry().appendListener(callback<RobotModel>());
     dummy_s->send(Message::Entry<Message::RobotModel>{{}, 10, u8"d"});
@@ -269,6 +276,7 @@ TEST_F(ClientTest, entry) {
     callback_called = 0;
     ASSERT_EQ(m.robotModelEntries().size(), 1);
     EXPECT_EQ(m.robotModelEntries()[0].name(), "d");
+    EXPECT_EQ(m.robotModelEntries()[0].nameW(), L"d");
 
     m.onImageEntry().appendListener(callback<Image>());
     dummy_s->send(Message::Entry<Message::Image>{{}, 10, u8"d"});
@@ -277,6 +285,7 @@ TEST_F(ClientTest, entry) {
     callback_called = 0;
     ASSERT_EQ(m.imageEntries().size(), 1);
     EXPECT_EQ(m.imageEntries()[0].name(), "d");
+    EXPECT_EQ(m.imageEntries()[0].nameW(), L"d");
 
     m.onFuncEntry().appendListener(callback<Func>());
     dummy_s->send(Message::FuncInfo{
@@ -287,6 +296,7 @@ TEST_F(ClientTest, entry) {
     callback_called = 0;
     EXPECT_EQ(m.funcEntries().size(), 1);
     EXPECT_EQ(m.funcEntries()[0].name(), "a");
+    EXPECT_EQ(m.funcEntries()[0].nameW(), L"a");
 
     m.onSync().appendListener(callback<Member>());
     dummy_s->send(Message::Sync{10, std::chrono::system_clock::now()});

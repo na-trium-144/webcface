@@ -52,6 +52,7 @@ class WEBCFACE_DLL Func : protected Field {
     using Field::lastName;
     using Field::member;
     using Field::name;
+    using Field::nameW;
     /*!
      * \brief 「(thisの名前).(追加の名前)」を新しい名前とするField
      *

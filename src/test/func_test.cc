@@ -51,6 +51,9 @@ TEST_F(FuncTest, valAdaptor) {
     EXPECT_EQ(static_cast<bool>(ValAdaptor(1)), true);
     EXPECT_EQ(static_cast<bool>(ValAdaptor(2)), true);
     EXPECT_EQ(static_cast<std::string>(ValAdaptor(10)), "10");
+    EXPECT_STREQ(static_cast<const char *>(ValAdaptor(10)), "10");
+    EXPECT_EQ(static_cast<std::wstring>(ValAdaptor(10)), L"10");
+    EXPECT_STREQ(static_cast<const wchar_t *>(ValAdaptor(10)), L"10");
 
     EXPECT_FALSE(ValAdaptor(1.5).empty());
     EXPECT_EQ(static_cast<int>(ValAdaptor(1.5)), 1);
@@ -59,6 +62,9 @@ TEST_F(FuncTest, valAdaptor) {
     EXPECT_EQ(static_cast<bool>(ValAdaptor(1.0)), true);
     EXPECT_EQ(static_cast<bool>(ValAdaptor(1.5)), true);
     EXPECT_EQ(static_cast<std::string>(ValAdaptor(1.5)), "1.500000");
+    EXPECT_STREQ(static_cast<const char *>(ValAdaptor(1.5)), "1.500000");
+    EXPECT_EQ(static_cast<std::wstring>(ValAdaptor(1.5)), L"1.500000");
+    EXPECT_STREQ(static_cast<const wchar_t *>(ValAdaptor(1.5)), L"1.500000");
 
     EXPECT_FALSE(ValAdaptor(true).empty());
     EXPECT_EQ(static_cast<int>(ValAdaptor(true)), 1);
@@ -68,6 +74,9 @@ TEST_F(FuncTest, valAdaptor) {
     EXPECT_EQ(static_cast<bool>(ValAdaptor(true)), true);
     EXPECT_EQ(static_cast<bool>(ValAdaptor(false)), false);
     EXPECT_EQ(static_cast<std::string>(ValAdaptor(true)), "1");
+    EXPECT_STREQ(static_cast<const char *>(ValAdaptor(true)), "1");
+    EXPECT_EQ(static_cast<std::wstring>(ValAdaptor(true)), L"1");
+    EXPECT_STREQ(static_cast<const wchar_t *>(ValAdaptor(true)), L"1");
 
     EXPECT_FALSE(ValAdaptor("1.5").empty());
     EXPECT_EQ(static_cast<int>(ValAdaptor("1.5")), 1);
@@ -79,16 +88,23 @@ TEST_F(FuncTest, valAdaptor) {
     EXPECT_EQ(static_cast<bool>(ValAdaptor("1.5")), true);
     EXPECT_EQ(static_cast<bool>(ValAdaptor("hoge")), true);
     EXPECT_EQ(static_cast<std::string>(ValAdaptor("1.5")), "1.5");
+    EXPECT_STREQ(static_cast<const char *>(ValAdaptor("1.5")), "1.5");
+    EXPECT_EQ(static_cast<std::wstring>(ValAdaptor("1.5")), L"1.5");
+    EXPECT_STREQ(static_cast<const wchar_t *>(ValAdaptor("1.5")), L"1.5");
 
     EXPECT_TRUE(ValAdaptor().empty());
     EXPECT_TRUE(ValAdaptor("").empty());
+    EXPECT_TRUE(ValAdaptor(L"").empty());
     EXPECT_TRUE(ValAdaptor(std::string("")).empty());
+    EXPECT_TRUE(ValAdaptor(std::wstring(L"")).empty());
 
     EXPECT_TRUE(ValAdaptor(1) == ValAdaptor(1.0));
     EXPECT_TRUE(ValAdaptor(1) == 1);
     EXPECT_TRUE(1 == ValAdaptor(1));
     EXPECT_TRUE(ValAdaptor(1) == "1");
+    EXPECT_TRUE(ValAdaptor(1) == L"1");
     EXPECT_TRUE("1" == ValAdaptor(1));
+    EXPECT_TRUE(L"1" == ValAdaptor(1));
 }
 TEST_F(FuncTest, field) {
     EXPECT_EQ(func("a", "b").member().name(), "a");
@@ -119,18 +135,26 @@ TEST_F(FuncTest, funcSet) {
     EXPECT_EQ(f.args(3).type(), ValType::string_);
 
     // 関数のパラメーター設定
-    f.setArgs({Arg("0").init(1).min(0).max(2), Arg("1"), Arg("2"),
+    f.setArgs({Arg("0").init(1).min(0).max(2), Arg(L"1"),
+               Arg("2").option({L"a", L"b", L"c"}),
                Arg("3").option({"a", "b", "c"})});
     EXPECT_EQ(f.args(0).name(), "0");
+    EXPECT_EQ(f.args(0).nameW(), L"0");
     EXPECT_EQ(f.args(0).type(), ValType::int_);
-    EXPECT_EQ(static_cast<double>(f.args(0).init().value()), 1);
-    EXPECT_EQ(static_cast<double>(f.args(0).min().value()), 0);
-    EXPECT_EQ(static_cast<double>(f.args(0).max().value()), 2);
+    EXPECT_EQ(f.args(0).init().value().as<double>(), 1);
+    EXPECT_EQ(f.args(0).min().value(), 0);
+    EXPECT_EQ(f.args(0).max().value(), 2);
+    EXPECT_EQ(f.args(1).name(), "1");
     EXPECT_EQ(f.args(1).type(), ValType::double_);
     EXPECT_EQ(f.args(1).init(), std::nullopt);
     EXPECT_EQ(f.args(1).min(), std::nullopt);
     EXPECT_EQ(f.args(1).max(), std::nullopt);
-    EXPECT_EQ(f.args(3).option().size(), 3);
+    ASSERT_EQ(f.args(2).option().size(), 3);
+    EXPECT_EQ(f.args(2).option()[2], "c");
+    EXPECT_EQ(f.args(2).option()[2], L"c");
+    ASSERT_EQ(f.args(3).option().size(), 3);
+    EXPECT_EQ(f.args(3).option()[2], "c");
+    EXPECT_EQ(f.args(3).option()[2], L"c");
 
     // 未設定の関数呼び出しでエラー
     EXPECT_THROW(f.setArgs({}), std::invalid_argument);

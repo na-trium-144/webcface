@@ -55,12 +55,17 @@ class DataTest : public ::testing::Test {
 
 TEST_F(DataTest, field) {
     EXPECT_EQ(value("a", "b").member().name(), "a");
+    EXPECT_EQ(value("a", "b").member().nameW(), L"a");
     EXPECT_EQ(value("a", "b").name(), "b");
+    EXPECT_EQ(value("a", "b").nameW(), L"b");
     EXPECT_EQ(value("a", "b").child("c").name(), "b.c");
+    EXPECT_EQ(value("a", "b").child(L"c").name(), "b.c");
     EXPECT_EQ(value("a", "b.c").parent().name(), "b");
     EXPECT_EQ(text("a", "b").member().name(), "a");
     EXPECT_EQ(text("a", "b").name(), "b");
+    EXPECT_EQ(text("a", "b").nameW(), L"b");
     EXPECT_EQ(text("a", "b").child("c").name(), "b.c");
+    EXPECT_EQ(text("a", "b").child(L"c").name(), "b.c");
     EXPECT_EQ(log("a").member().name(), "a");
 
     EXPECT_THROW(Value().tryGet(), std::runtime_error);
@@ -144,6 +149,28 @@ TEST_F(DataTest, textSet) {
         "c");
     EXPECT_EQ(callback_called, 1);
     EXPECT_THROW(text("a", "b").set("c"), std::invalid_argument);
+}
+TEST_F(DataTest, textSetW) {
+    (data_->text_change_event[fieldBase(self_name, "b")] =
+         std::make_shared<eventpp::CallbackList<void(Text)>>())
+        ->append(callback<Text>());
+    text(self_name, "b").set(L"c");
+    EXPECT_EQ(
+        static_cast<std::string>(**data_->text_store.getRecv(self_name, u8"b")),
+        "c");
+    EXPECT_EQ(callback_called, 1);
+    EXPECT_THROW(text("a", "b").set(L"c"), std::invalid_argument);
+}
+TEST_F(DataTest, textSetV) {
+    (data_->text_change_event[fieldBase(self_name, "b")] =
+         std::make_shared<eventpp::CallbackList<void(Text)>>())
+        ->append(callback<Text>());
+    text(self_name, "b").set(ValAdaptor(123));
+    EXPECT_EQ(
+        static_cast<std::string>(**data_->text_store.getRecv(self_name, u8"b")),
+        "123");
+    EXPECT_EQ(callback_called, 1);
+    EXPECT_THROW(text("a", "b").set(ValAdaptor(123)), std::invalid_argument);
 }
 
 TEST_F(DataTest, dict) {
@@ -256,11 +283,17 @@ TEST_F(DataTest, valueGetDict) {
 TEST_F(DataTest, textGet) {
     data_->text_store.setRecv(u8"a", u8"b",
                               std::make_shared<ValAdaptor>("hoge"));
-    EXPECT_EQ(static_cast<std::string>(text("a", "b").tryGet().value()),
-              "hoge");
-    EXPECT_EQ(static_cast<std::string>(text("a", "b").get()), "hoge");
+    ASSERT_NE(text("a", "b").tryGet(), std::nullopt);
+    EXPECT_EQ(text("a", "b").tryGet().value(), "hoge");
+    EXPECT_EQ(text("a", "b").tryGetW().value(), L"hoge");
+    EXPECT_EQ(text("a", "b").tryGetV().value(), ValAdaptor("hoge"));
+    EXPECT_EQ(text("a", "b").get(), "hoge");
+    EXPECT_EQ(text("a", "b").getW(), L"hoge");
     EXPECT_EQ(text("a", "c").tryGet(), std::nullopt);
-    EXPECT_EQ(static_cast<std::string>(text("a", "c").get()), "");
+    EXPECT_EQ(text("a", "c").tryGetW(), std::nullopt);
+    EXPECT_EQ(text("a", "c").tryGetV(), std::nullopt);
+    EXPECT_EQ(text("a", "c").get(), "");
+    EXPECT_EQ(text("a", "c").getW(), L"");
     EXPECT_EQ(data_->text_store.transferReq().at(u8"a").at(u8"b"), 1);
     EXPECT_EQ(data_->text_store.transferReq().at(u8"a").at(u8"c"), 2);
     EXPECT_EQ(text(self_name, "b").tryGet(), std::nullopt);
@@ -295,13 +328,23 @@ TEST_F(DataTest, logGet) {
         });
     data_->log_store->setRecv(u8"a", logs);
     EXPECT_EQ(log("a").tryGet().value().size(), 3);
-    EXPECT_EQ(log("a").get().size(), 3);
+    EXPECT_EQ(log("a").tryGetW().value().size(), 3);
+    ASSERT_EQ(log("a").get().size(), 3);
+    ASSERT_EQ(log("a").getW().size(), 3);
+    EXPECT_EQ(log("a").get()[2].level, 3);
+    EXPECT_EQ(log("a").getW()[2].level, 3);
+    EXPECT_EQ(log("a").get()[2].message, "c");
+    EXPECT_EQ(log("a").getW()[2].message, L"c");
     EXPECT_EQ(log("b").tryGet(), std::nullopt);
+    EXPECT_EQ(log("b").tryGetW(), std::nullopt);
     EXPECT_EQ(log("b").get().size(), 0);
+    EXPECT_EQ(log("b").getW().size(), 0);
     EXPECT_EQ(data_->log_store->transferReq().at(u8"a"), true);
     EXPECT_EQ(data_->log_store->transferReq().at(u8"b"), true);
     ASSERT_TRUE(log(self_name).tryGet().has_value());
+    ASSERT_TRUE(log(self_name).tryGetW().has_value());
     EXPECT_EQ(log(self_name).tryGet()->size(), 0);
+    EXPECT_EQ(log(self_name).tryGetW()->size(), 0);
     EXPECT_EQ(data_->log_store->transferReq().count(self_name), 0);
     log("d").appendListener(callback<Log>());
     EXPECT_EQ(data_->log_store->transferReq().at(u8"d"), true);
@@ -317,5 +360,6 @@ TEST_F(DataTest, logClear) {
     data_->log_store->setRecv(u8"a", logs);
     log("a").clear();
     EXPECT_EQ(log("a").tryGet().value().size(), 0);
+    EXPECT_EQ(log("a").tryGetW().value().size(), 0);
 }
 // todo: hidden, free
