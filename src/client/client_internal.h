@@ -252,6 +252,8 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
     std::shared_ptr<spdlog::logger> logger, logger_internal;
     std::unique_ptr<LoggerBuf> logger_buf;
     std::unique_ptr<std::ostream> logger_os;
+    std::unique_ptr<LoggerBufW> logger_buf_w;
+    std::unique_ptr<std::wostream> logger_os_w;
 
     std::string svr_name, svr_version;
 

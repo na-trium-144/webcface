@@ -14,22 +14,30 @@ namespace Internal {
 struct ClientData;
 }
 
-class WEBCFACE_DLL LoggerBuf : public std::streambuf {
+template <typename CharT>
+class WEBCFACE_DLL BasicLoggerBuf : public std::basic_streambuf<CharT> {
+    using traits_type = std::basic_streambuf<CharT>::traits_type;
+    using char_type = std::basic_streambuf<CharT>::char_type;
+    using int_type = std::basic_streambuf<CharT>::int_type;
+
     static constexpr int buf_size = 1024;
-    char buf[buf_size];
+    CharT buf[buf_size];
     // bufからあふれた分を入れる
-    std::string overflow_buf;
+    std::basic_string<CharT> overflow_buf;
 
     std::shared_ptr<spdlog::logger> logger;
 
     int sync() override;
-    int overflow(int c) override;
+    int overflow(int_type c) override;
 
   public:
-    explicit LoggerBuf(const std::shared_ptr<spdlog::logger> &logger);
-    LoggerBuf(const LoggerBuf &) = delete;
-    LoggerBuf &operator=(const LoggerBuf &) = delete;
+    explicit BasicLoggerBuf(const std::shared_ptr<spdlog::logger> &logger);
+    ~BasicLoggerBuf() = default;
 };
+extern template class WEBCFACE_IMPORT BasicLoggerBuf<char>;
+extern template class WEBCFACE_IMPORT BasicLoggerBuf<wchar_t>;
+using LoggerBuf = BasicLoggerBuf<char>;
+using LoggerBufW = BasicLoggerBuf<wchar_t>;
 
 namespace Internal {
 template <typename T>

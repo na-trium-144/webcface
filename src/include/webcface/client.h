@@ -14,7 +14,10 @@ WEBCFACE_NS_BEGIN
 
 class FuncListener;
 class LoggerSink;
-class LoggerBuf;
+template <typename CharT>
+class BasicLoggerBuf;
+using LoggerBuf = BasicLoggerBuf<char>;
+using LoggerBufW = BasicLoggerBuf<wchar_t>;
 
 /*!
  * \brief サーバーに接続するクライアント。
@@ -260,6 +263,18 @@ class WEBCFACE_DLL Client : public Member {
      * \sa loggerSink(), logger(), loggerStreamBuf()
      */
     std::ostream &loggerOStream();
+    /*!
+     * \brief webcfaceに出力するwstreambuf
+     * \since ver1.12
+     * \sa loggerStreamBuf
+     */
+    LoggerBufW *loggerWStreamBuf();
+    /*!
+     * \brief webcfaceに出力するwostream
+     * \since ver1.12
+     * \sa loggerOStream
+     */
+    std::wostream &loggerWOStream();
 
     /*!
      * \brief WebCFaceサーバーのバージョン情報

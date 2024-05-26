@@ -3,26 +3,29 @@
 #include "client_internal.h"
 
 WEBCFACE_NS_BEGIN
-LoggerBuf::LoggerBuf(const std::shared_ptr<spdlog::logger> &logger)
-    : std::streambuf(), logger(logger) {
+template <typename CharT>
+BasicLoggerBuf<CharT>::BasicLoggerBuf(const std::shared_ptr<spdlog::logger> &logger)
+    : std::basic_streambuf<CharT>(), logger(logger) {
     this->setp(buf, buf + sizeof(buf));
 }
-int LoggerBuf::overflow(int c) {
-    overflow_buf += std::string(buf, this->pptr() - this->pbase());
+template <typename CharT>
+int BasicLoggerBuf<CharT>::overflow(int_type c) {
+    overflow_buf.append(buf, this->pptr() - this->pbase());
     this->setp(buf, buf + sizeof(buf));
     if (c != traits_type::eof()) {
         this->sputc(static_cast<char_type>(c));
     }
     return !traits_type::eof();
 }
-int LoggerBuf::sync() {
-    overflow_buf += std::string(buf, this->pptr() - this->pbase());
+template <typename CharT>
+int BasicLoggerBuf<CharT>::sync() {
+    overflow_buf.append(buf, this->pptr() - this->pbase());
     while (true) {
         std::size_t n = overflow_buf.find_first_of('\n');
-        if (n == std::string::npos) {
+        if (n == std::basic_string<CharT>::npos) {
             break;
         }
-        std::string message = overflow_buf.substr(0, n);
+        auto message = overflow_buf.substr(0, n);
         if (message.size() > 0 && message.back() == '\r') {
             message.pop_back();
         }
@@ -32,6 +35,8 @@ int LoggerBuf::sync() {
     this->setp(buf, buf + sizeof(buf));
     return 0;
 }
+template class WEBCFACE_DLL BasicLoggerBuf<char>;
+template class WEBCFACE_DLL BasicLoggerBuf<wchar_t>;
 
 LoggerSink::LoggerSink(
     const std::shared_ptr<
