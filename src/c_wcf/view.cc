@@ -1,5 +1,6 @@
 #include "c_wcf_internal.h"
 #include <webcface/view.h>
+#include <cstring>
 
 static inline wcfViewComponent wcfViewInit() {
     wcfViewComponent c;
