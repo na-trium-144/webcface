@@ -12,37 +12,38 @@
 WEBCFACE_NS_BEGIN
 namespace Internal {
 struct ClientData;
-}
+template <typename T>
+class SyncDataStore1;
+} // namespace Internal
 
 template <typename CharT>
 class WEBCFACE_DLL BasicLoggerBuf : public std::basic_streambuf<CharT> {
-    using traits_type = std::basic_streambuf<CharT>::traits_type;
-    using char_type = std::basic_streambuf<CharT>::char_type;
-    using int_type = std::basic_streambuf<CharT>::int_type;
+    using traits_type = typename std::basic_streambuf<CharT>::traits_type;
+    using char_type = typename std::basic_streambuf<CharT>::char_type;
+    using int_type = typename std::basic_streambuf<CharT>::int_type;
 
     static constexpr int buf_size = 1024;
     CharT buf[buf_size];
     // bufからあふれた分を入れる
     std::basic_string<CharT> overflow_buf;
 
-    std::shared_ptr<spdlog::logger> logger;
+    std::shared_ptr<
+        Internal::SyncDataStore1<std::shared_ptr<std::vector<LogLineData<>>>>>
+        log_store;
 
     int sync() override;
-    int overflow(int_type c) override;
+    int_type overflow(int_type c) override;
 
   public:
-    explicit BasicLoggerBuf(const std::shared_ptr<spdlog::logger> &logger);
+    explicit BasicLoggerBuf(
+        const std::shared_ptr<Internal::SyncDataStore1<
+            std::shared_ptr<std::vector<LogLineData<>>>>> &log_store);
     ~BasicLoggerBuf() = default;
 };
 extern template class WEBCFACE_IMPORT BasicLoggerBuf<char>;
 extern template class WEBCFACE_IMPORT BasicLoggerBuf<wchar_t>;
 using LoggerBuf = BasicLoggerBuf<char>;
 using LoggerBufW = BasicLoggerBuf<wchar_t>;
-
-namespace Internal {
-template <typename T>
-class SyncDataStore1;
-}
 
 class WEBCFACE_DLL LoggerSink : public spdlog::sinks::base_sink<std::mutex> {
     std::shared_ptr<

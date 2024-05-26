@@ -242,9 +242,12 @@ class WEBCFACE_DLL Client : public Member {
     /*!
      * \brief webcfaceに出力するstreambuf
      *
-     * * std::ostreamの出力先として使用すると、logger()に送られる。
+     * * (ver1.11.xまで:
+     * std::ostreamの出力先として使用すると、logger()に送られる。
      * すなわち、loggerSink (webcfaceに送られる) と stderr_color_sink_mt
-     * (標準エラー出力に送られる) に出力されることになる。
+     * (標準エラー出力に送られる) に出力されることになる。)
+     * * ver1.12〜: std::ostreamの出力先として使用すると、改行が入力されるたびに
+     * webcfaceに送られると同時に std::cerr にも送られる。
      * * levelは常にinfoになる。
      * * std::flushのタイミングとは無関係に、1つの改行ごとに1つのログになる
      * * ver1.0.1で logger_streambuf から名前変更
@@ -255,9 +258,11 @@ class WEBCFACE_DLL Client : public Member {
     /*!
      * \brief webcfaceに出力するostream
      *
-     * * 出力先が loggerStreamBuf() に設定されているostream。
+     * * (ver1.11.xまで: 出力先が loggerStreamBuf() に設定されているostream。
      * すなわち、loggerSink (webcfaceに送られる) と stderr_color_sink_mt
-     * (標準エラー出力に送られる) に出力されることになる。
+     * (標準エラー出力に送られる) に出力されることになる。)
+     * * ver1.12〜: std::ostreamの出力先として使用すると、改行が入力されるたびに
+     * webcfaceに送られると同時に std::cerr にも送られる。
      * * ver1.0.1で logger_ostream から名前変更
      *
      * \sa loggerSink(), logger(), loggerStreamBuf()

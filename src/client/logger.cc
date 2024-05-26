@@ -1,15 +1,38 @@
 #include <stdexcept>
 #include <webcface/logger.h>
 #include "client_internal.h"
+#include <iostream>
 
 WEBCFACE_NS_BEGIN
+
 template <typename CharT>
-BasicLoggerBuf<CharT>::BasicLoggerBuf(const std::shared_ptr<spdlog::logger> &logger)
-    : std::basic_streambuf<CharT>(), logger(logger) {
+static void
+writeLog(const std::shared_ptr<Internal::SyncDataStore1<
+             std::shared_ptr<std::vector<LogLineData<>>>>> &log_store,
+         std::basic_string_view<CharT> message, int level = 2,
+         std::chrono::system_clock::time_point time =
+             std::chrono::system_clock::now()) {
+    std::lock_guard lock(log_store->mtx);
+    auto v = log_store->getRecv(log_store->self_member_name);
+    if (!v) [[unlikely]] {
+        throw std::runtime_error("self log data is null");
+    } else {
+        // log_storeにはClientDataのコンストラクタで空vectorを入れてある
+        (*v)->emplace_back(LogLineData<>{level, time, message});
+    }
+}
+
+template <typename CharT>
+BasicLoggerBuf<CharT>::BasicLoggerBuf(
+    const std::shared_ptr<
+        Internal::SyncDataStore1<std::shared_ptr<std::vector<LogLineData<>>>>>
+        &log_store)
+    : std::basic_streambuf<CharT>(), log_store(log_store) {
     this->setp(buf, buf + sizeof(buf));
 }
 template <typename CharT>
-int BasicLoggerBuf<CharT>::overflow(int_type c) {
+typename BasicLoggerBuf<CharT>::int_type
+BasicLoggerBuf<CharT>::overflow(int_type c) {
     overflow_buf.append(buf, this->pptr() - this->pbase());
     this->setp(buf, buf + sizeof(buf));
     if (c != traits_type::eof()) {
@@ -29,7 +52,12 @@ int BasicLoggerBuf<CharT>::sync() {
         if (message.size() > 0 && message.back() == '\r') {
             message.pop_back();
         }
-        logger->info(message);
+        writeLog<CharT>(log_store, message);
+        if constexpr (std::is_same_v<CharT, char>) {
+            std::cerr << message << std::endl;
+        } else if constexpr (std::is_same_v<CharT, wchar_t>) {
+            std::wcerr << message << std::endl;
+        }
         overflow_buf = overflow_buf.substr(n + 1);
     }
     this->setp(buf, buf + sizeof(buf));
@@ -54,17 +82,7 @@ void LoggerSink::sink_it_(const spdlog::details::log_msg &msg) {
         if (log_text.size() > 0 && log_text.back() == '\r') {
             log_text.pop_back();
         }
-        {
-            std::lock_guard lock(log_store->mtx);
-            auto v = log_store->getRecv(log_store->self_member_name);
-            if (!v) [[unlikely]] {
-                throw std::runtime_error("self log data is null");
-            } else {
-                // log_storeにはClientDataのコンストラクタで空vectorを入れてある
-                (*v)->emplace_back(msg.level, msg.time,
-                                   Encoding::encode(log_text));
-            }
-        }
+        writeLog<char>(log_store, log_text, msg.level, msg.time);
     }
 }
 

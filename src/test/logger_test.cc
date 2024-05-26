@@ -32,7 +32,7 @@ TEST_F(LoggerTest, logger) {
     }
 }
 TEST_F(LoggerTest, loggerBuf) {
-    LoggerBuf b(data_->logger);
+    LoggerBuf b(data_->log_store);
     std::ostream os(&b);
     os << "a\nb" << std::endl;
     auto ls = data_->log_store->getRecv(self_name);

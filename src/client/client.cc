@@ -54,9 +54,9 @@ Internal::ClientData::ClientData(const std::u8string &name,
     } else {
         logger_internal->set_level(spdlog::level::off);
     }
-    logger_buf = std::make_unique<LoggerBuf>(logger);
+    logger_buf = std::make_unique<LoggerBuf>(log_store);
     logger_os = std::make_unique<std::ostream>(logger_buf.get());
-    logger_buf_w = std::make_unique<LoggerBufW>(logger);
+    logger_buf_w = std::make_unique<LoggerBufW>(log_store);
     logger_os_w = std::make_unique<std::wostream>(logger_buf_w.get());
     log_store->setRecv(name, std::make_shared<std::vector<LogLineData<>>>());
 }
