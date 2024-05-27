@@ -178,7 +178,13 @@ brew install --cask webcface-webui-server
 
 
 ### Windows (MSVC)
-[webcface-windows-packageのRelease](https://github.com/na-trium-144/webcface-windows-package/releases)からインストーラーをダウンロードしてください。
+[webcface-windows-packageのRelease](https://github.com/na-trium-144/webcface-windows-package/releases)からダウンロードしてください。
+
+exeファイルは実行するとインストーラーが起動します。
+zipファイルは任意の場所に展開して使用してください。
+
+(ver1.12〜) Windows版WebCFaceのReleaseに含まれるビルド済みのspdlogは
+`SPDLOG_WCHAR_SUPPORT` オプションがオンの状態です
 
 MinGW用バイナリは今のところ配布していません(ソースからビルドしてください)
 
@@ -194,11 +200,12 @@ MinGW用バイナリは今のところ配布していません(ソースから�
 	* [![CMake Test (MacOS Clang)](https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-macos-clang.yml/badge.svg?branch=main)](https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-macos-clang.yml)
 	* [![CMake Test (Windows MSVC)](https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-windows-msvc.yml/badge.svg?branch=main)](https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-windows-msvc.yml)
 	* [![CMake Test (Windows MinGW64 GCC)](https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-windows-gcc.yml/badge.svg?branch=main)](https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-windows-gcc.yml)
-* webcfaceは外部ライブラリとして [crow](https://github.com/CrowCpp/Crow), [asio](https://github.com/chriskohlhoff/asio), [libcurl](https://github.com/curl/curl), [eventpp](https://github.com/wqking/eventpp), [msgpack-cxx](https://github.com/msgpack/msgpack-c), [spdlog](https://github.com/gabime/spdlog), [cli11](https://github.com/CLIUtils/CLI11.git), [UTF8-CPP](https://github.com/nemtrif/utfcpp), [opencv](https://opencv.org/) を使用します。
+* webcfaceは外部ライブラリとして [crow](https://github.com/CrowCpp/Crow), [asio](https://github.com/chriskohlhoff/asio), [libcurl](https://github.com/curl/curl), [eventpp](https://github.com/wqking/eventpp), [msgpack-cxx](https://github.com/msgpack/msgpack-c), [spdlog](https://github.com/gabime/spdlog), [cli11](https://github.com/CLIUtils/CLI11.git), [UTF8-CPP](https://github.com/nemtrif/utfcpp), [opencv](https://opencv.org/), [googletest](https://github.com/google/googletest)(test時) を使用します。
 	* cmake時に自動的にFetchContentでソースコード取得しビルドしますが、eventpp, msgpack, spdlog に関してはシステムにインストールされていてfind_packageで見つけることができればそれを使用します
 	* opencvはソースからビルドしません。別途インストールする必要があります。
 		* またはcmake時のオプションでopencvを使わないようにすることもできます (画像の変換機能が無効になります)
 	* libcurlはwebsocket機能を有効にする必要があるためインストールされている場合でもソースからビルドします
+	* googletestはchar8_tの機能を有効にする必要があるためインストールされている場合でもソースからビルドします
 	
 <details><summary>Ubuntu 20.04, 22.04</summary>
 
@@ -261,6 +268,9 @@ sudo cmake --build build -t install
 		* `-DWEBCFACE_VERSION_SUFFIX=git` なら `git describe --tags` コマンドを使用して取得した文字列 (1.2.0-x-gxxxxxxx) になります(未指定の場合のデフォルト)
 		* `git`以外の任意の文字列の場合 `-DWEBCFACE_VERSION_SUFFIX=hoge` で 1.2.0-hoge になります
 		* `-DWEBCFACE_VERSION_SUFFIX=` で 1.2.0 だけになります
+	* spdlogのオプション
+		* Windowsでは`SPDLOG_WCHAR_SUPPORT`がデフォルトでONになります
+		* それ以外のオプション(SPDLOG_WCHAR_FILENAMES, SPDLOG_WCHAR_CONSOLE)はWebCFace内では設定しませんがコマンドラインオプションで指定することは可能です
 
 #### Build (with colcon, ROS2)
 * このリポジトリをワークスペースのsrcに追加して、colconでビルドすることができます

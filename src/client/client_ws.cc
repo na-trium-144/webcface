@@ -15,8 +15,10 @@ namespace WebSocket {
 
 void init(const std::shared_ptr<Internal::ClientData> &data) {
     if (data->host.empty()) {
-        data->host = "127.0.0.1";
+        data->host = u8"127.0.0.1";
     }
+    std::string host_s = Encoding::decode(data->host);
+
     // try TCP, unixSocketPathWSLInterop and unixSocketPath
     // use latter if multiple connections were available
     for (std::size_t attempt = 0; attempt < 3 && !data->closing.load();
@@ -29,13 +31,12 @@ void init(const std::shared_ptr<Internal::ClientData> &data) {
         }
         switch (attempt) {
         case 2:
-            data->current_curl_path =
-                data->host + ':' + std::to_string(data->port);
+            data->current_curl_path = host_s + ':' + std::to_string(data->port);
             curl_easy_setopt(handle, CURLOPT_URL,
-                             ("ws://" + data->host + "/").c_str());
+                             ("ws://" + host_s + "/").c_str());
             break;
         case 1:
-            if (data->host != "127.0.0.1") {
+            if (host_s != "127.0.0.1") {
                 continue;
             }
             if (Message::Path::detectWSL1()) {
@@ -45,7 +46,7 @@ void init(const std::shared_ptr<Internal::ClientData> &data) {
                 curl_easy_setopt(handle, CURLOPT_UNIX_SOCKET_PATH,
                                  data->current_curl_path.c_str());
                 curl_easy_setopt(handle, CURLOPT_URL,
-                                 ("ws://" + data->host + "/").c_str());
+                                 ("ws://" + host_s + "/").c_str());
                 break;
             }
             if (Message::Path::detectWSL2()) {
@@ -60,7 +61,7 @@ void init(const std::shared_ptr<Internal::ClientData> &data) {
             }
             continue;
         case 0:
-            if (data->host != "127.0.0.1") {
+            if (host_s != "127.0.0.1") {
                 continue;
             }
             data->current_curl_path =
@@ -68,7 +69,7 @@ void init(const std::shared_ptr<Internal::ClientData> &data) {
             curl_easy_setopt(handle, CURLOPT_UNIX_SOCKET_PATH,
                              data->current_curl_path.c_str());
             curl_easy_setopt(handle, CURLOPT_URL,
-                             ("ws://" + data->host + "/").c_str());
+                             ("ws://" + host_s + "/").c_str());
             break;
         }
         data->logger_internal->trace("trying {}...", data->current_curl_path);

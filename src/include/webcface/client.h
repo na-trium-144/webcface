@@ -14,7 +14,10 @@ WEBCFACE_NS_BEGIN
 
 class FuncListener;
 class LoggerSink;
-class LoggerBuf;
+template <typename CharT>
+class BasicLoggerBuf;
+using LoggerBuf = BasicLoggerBuf<char>;
+using LoggerBufW = BasicLoggerBuf<wchar_t>;
 
 /*!
  * \brief サーバーに接続するクライアント。
@@ -37,7 +40,7 @@ class WEBCFACE_DLL Client : public Member {
     /*!
      * \brief 名前を指定しサーバーに接続する
      *
-     * サーバーのホストとポートを省略した場合localhost:7530になる
+     * サーバーのホストとポートを省略した場合 127.0.0.1:7530 になる
      *
      * \arg name 名前
      * \arg host サーバーのアドレス
@@ -46,9 +49,27 @@ class WEBCFACE_DLL Client : public Member {
      */
     explicit Client(const std::string &name,
                     const std::string &host = "127.0.0.1",
-                    int port = WEBCFACE_DEFAULT_PORT);
+                    int port = WEBCFACE_DEFAULT_PORT)
+        : Client(Encoding::encode(name), Encoding::encode(host), port) {}
+    /*!
+     * \brief 名前を指定しサーバーに接続する (wstring)
+     * \since ver1.12
+     *
+     * サーバーのホストとポートを省略した場合 127.0.0.1:7530 になる
+     *
+     * \arg name 名前
+     * \arg host サーバーのアドレス
+     * \arg port サーバーのポート
+     *
+     */
+    explicit Client(const std::wstring &name,
+                    const std::wstring &host = L"127.0.0.1",
+                    int port = WEBCFACE_DEFAULT_PORT)
+        : Client(Encoding::encodeW(name), Encoding::encodeW(host), port) {}
 
-    explicit Client(const std::string &name,
+    explicit Client(const std::u8string &name, const std::u8string &host,
+                    int port);
+    explicit Client(const std::u8string &name,
                     const std::shared_ptr<Internal::ClientData> &data);
 
     /*!
@@ -69,7 +90,7 @@ class WEBCFACE_DLL Client : public Member {
 
     /*!
      * \brief 通信が切断されたときに自動で再試行するかどうかを設定する。
-     * \since ver1.12
+     * \since ver1.11.1
      *
      * デフォルトはtrue
      *
@@ -77,7 +98,7 @@ class WEBCFACE_DLL Client : public Member {
     void autoReconnect(bool enabled);
     /*!
      * \brief 通信が切断されたときに自動で再試行するかどうかを取得する。
-     * \since ver1.12
+     * \since ver1.11.1
      */
     bool autoReconnect() const;
 
@@ -89,7 +110,7 @@ class WEBCFACE_DLL Client : public Member {
     /*!
      * \brief サーバーへの接続を開始し、成功するまで待機する。
      * \since ver1.2
-     * ver1.12以降: autoReconnect が false
+     * ver1.11.1以降: autoReconnect が false
      * の場合は1回目の接続のみ待機し、失敗しても再接続せずreturnする。
      *
      * \sa start()
@@ -107,6 +128,16 @@ class WEBCFACE_DLL Client : public Member {
      */
     void sync();
 
+  protected:
+    Member member(const std::u8string &name) const {
+        if (name.empty()) {
+            return *this;
+        } else {
+            return Member{data, name};
+        }
+    }
+
+  public:
     /*!
      * \brief 他のmemberにアクセスする
      *
@@ -114,12 +145,18 @@ class WEBCFACE_DLL Client : public Member {
      *
      * \sa members(), onMemberEntry()
      */
-    Member member(const std::string &name) {
-        if (name.empty()) {
-            return *this;
-        } else {
-            return Member{data, name};
-        }
+    Member member(const std::string &name) const {
+        return member(Encoding::encode(name));
+    }
+    /*!
+     * \brief 他のmemberにアクセスする (wstring)
+     * \since ver1.12
+     * nameが空の場合 *this を返す
+     *
+     * \sa members(), onMemberEntry()
+     */
+    Member member(const std::wstring &name) const {
+        return member(Encoding::encodeW(name));
     }
     /*!
      * \brief サーバーに接続されている他のmemberのリストを得る。
@@ -143,6 +180,11 @@ class WEBCFACE_DLL Client : public Member {
      *
      */
     FuncListener funcListener(const std::string &field) const;
+    /*!
+     * \brief FuncListenerを作成する (wstring)
+     * \since ver1.12
+     */
+    FuncListener funcListener(const std::wstring &field) const;
 
     /*!
      * \brief
@@ -178,42 +220,66 @@ class WEBCFACE_DLL Client : public Member {
     /*!
      * \brief webcfaceに出力するsink
      *
-     * (v1.0.1で logger_sink から名前変更)
-     * \sa logger(), loggerStreamBuf(), loggerOStream()
+     * * ver1.0.1で logger_sink から名前変更
+     * * ver1.12から、 Encoding::usingUTF8()
+     * がfalseの場合ログに書き込まれたstringはutf-8に変換されてからwebcfaceに送られる
      *
+     * \sa logger(), loggerStreamBuf(), loggerOStream()
      */
     std::shared_ptr<LoggerSink> loggerSink();
     /*!
      * \brief webcfaceとstderr_sinkに出力するlogger
      *
-     * 初期状態では logger()->sinks() = { loggerSink(), stderr_color_sink_mt }
-     * となっている
+     * * 初期状態では logger()->sinks() = { loggerSink(), stderr_color_sink_mt }
+     * となっているためこれを利用すると簡単にログ出力が可能だが、
+     * 必ずしもこれを使う必要はない
+     * (別のloggerのsinkに loggerSink() を追加するのでもよい)
      *
      * \sa loggerSink(), loggerStreamBuf(), loggerOStream()
-     *
      */
     std::shared_ptr<spdlog::logger> logger();
 
     /*!
      * \brief webcfaceに出力するstreambuf
      *
-     * (v1.0.1で logger_streambuf から名前変更)
-     *
-     * levelは常にinfoになる。
-     * std::flushのタイミングとは無関係に、1つの改行ごとに1つのログになる
+     * * (ver1.11.xまで:
+     * std::ostreamの出力先として使用すると、logger()に送られる。
+     * すなわち、loggerSink (webcfaceに送られる) と stderr_color_sink_mt
+     * (標準エラー出力に送られる) に出力されることになる。)
+     * * ver1.12〜: std::ostreamの出力先として使用すると、改行が入力されるたびに
+     * webcfaceに送られると同時に std::cerr にも送られる。
+     * * levelは常にinfoになる。
+     * * std::flushのタイミングとは無関係に、1つの改行ごとに1つのログになる
+     * * ver1.0.1で logger_streambuf から名前変更
      *
      * \sa loggerSink(), logger(), loggerOStream()
-     *
      */
     LoggerBuf *loggerStreamBuf();
     /*!
      * \brief webcfaceに出力するostream
      *
-     * (v1.0.1で logger_ostream から名前変更)
-     * \sa loggerSink(), logger(), loggerStreamBuf()
+     * * (ver1.11.xまで: 出力先が loggerStreamBuf() に設定されているostream。
+     * すなわち、loggerSink (webcfaceに送られる) と stderr_color_sink_mt
+     * (標準エラー出力に送られる) に出力されることになる。)
+     * * ver1.12〜: std::ostreamの出力先として使用すると、改行が入力されるたびに
+     * webcfaceに送られると同時に std::cerr にも送られる。
+     * * ver1.0.1で logger_ostream から名前変更
      *
+     * \sa loggerSink(), logger(), loggerStreamBuf()
      */
     std::ostream &loggerOStream();
+    /*!
+     * \brief webcfaceに出力するwstreambuf
+     * \since ver1.12
+     * \sa loggerStreamBuf
+     */
+    LoggerBufW *loggerWStreamBuf();
+    /*!
+     * \brief webcfaceに出力するwostream
+     * \since ver1.12
+     * \sa loggerOStream
+     */
+    std::wostream &loggerWOStream();
 
     /*!
      * \brief WebCFaceサーバーのバージョン情報

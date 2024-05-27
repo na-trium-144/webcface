@@ -82,10 +82,6 @@ if(WEBCFACE_COVERAGE)
     endif()
 endif()
 
-if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    add_compile_options(-Wno-psabi) # refer to PR#9
-endif()
-
 if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     add_compile_definitions(
         _CRT_SECURE_NO_WARNINGS
@@ -205,6 +201,9 @@ else()
     set(SPDLOG_BUILD_SHARED ${WEBCFACE_SHARED} CACHE INTERNAL "" FORCE)
     set(SPDLOG_BUILD_PIC ${WEBCFACE_PIC} CACHE INTERNAL "" FORCE)
     set(SPDLOG_INSTALL ${WEBCFACE_INSTALL} CACHE INTERNAL "" FORCE)
+    if(WIN32)
+        set(SPDLOG_WCHAR_SUPPORT ON CACHE INTERNAL "" FORCE)
+    endif()
     FetchContent_MakeAvailable(spdlog)
 endif()
 
@@ -272,9 +271,6 @@ if(NOT asio_POPULATED)
         ${asio_SOURCE_DIR}/asio/include
     )
     target_compile_definitions(asio INTERFACE ASIO_STANDALONE)
-    if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-        target_compile_options(asio INTERFACE -Wno-deprecated-declarations)
-    endif()
     if(MINGW)
         target_link_libraries(asio INTERFACE ws2_32 wsock32)
     endif()
@@ -298,9 +294,6 @@ if(NOT crow_POPULATED)
         ${crow_SOURCE_DIR}/include
     )
     target_link_libraries(Crow INTERFACE asio)
-    if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-        target_compile_options(Crow INTERFACE -Wno-type-limits)
-    endif()
 endif()
 
 message(STATUS "Fetching cli11 Source...")
@@ -328,20 +321,13 @@ if(WEBCFACE_USE_OPENCV)
 endif()
 
 if(WEBCFACE_TEST)
-    if(WEBCFACE_FIND_LIBS)
-        find_package(GTest QUIET)
-    endif()
-    if(GTest_FOUND)
-        message(STATUS "GTest ${GTest_VERSION} Found: ${GTest_DIR}")
-    else()
-        message(STATUS "GTest Not Found, Fetching Source...")
-        FetchContent_Declare(googletest
-            GIT_REPOSITORY https://github.com/google/googletest.git
-            GIT_TAG v1.14.0
-        )
-        set(INSTALL_GTEST off CACHE INTERNAL "" FORCE)
-        FetchContent_MakeAvailable(googletest)
-    endif()
+    message(STATUS "Fetching GTest Source...")
+    FetchContent_Declare(googletest
+        GIT_REPOSITORY https://github.com/google/googletest.git
+        GIT_TAG v1.14.0
+    )
+    set(INSTALL_GTEST off CACHE INTERNAL "" FORCE)
+    FetchContent_MakeAvailable(googletest)
 endif()
 
 ###############################################################################
@@ -357,6 +343,8 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     add_compile_options(-Wall -Wextra -Wpedantic -Werror)
     add_compile_options(-Wno-error=deprecated-declarations)
     add_compile_options(-Wno-error=psabi) # refer to PR#9
+    # crow
+    add_compile_options(-Wno-error=type-limits)
     # inside opencv
     add_cxx_compile_options_if(-Wno-error=deprecated-enum-enum-conversion DEPRECATED_ENUM)
     # inside fmt (fmtlib/fmt#3354)
@@ -364,7 +352,7 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     # (fmtlib/fmt#3415)
     add_cxx_compile_options_if(-Wno-error=dangling-reference DANGLING_REFERENCE)
 endif()
-if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
     add_compile_options(-Wall -Wextra -Wpedantic -Werror)
     add_compile_options(-Wno-error=deprecated-declarations)
     add_compile_options(
@@ -397,6 +385,7 @@ list(APPEND WEBCFACE_SRC
     ${CPP_DIR}/client/client_ws.cc
     ${CPP_DIR}/client/data_store1.cc
     ${CPP_DIR}/client/data_store2.cc
+    ${CPP_DIR}/client/encoding.cc
     ${CPP_DIR}/client/field.cc
     ${CPP_DIR}/client/func.cc
     ${CPP_DIR}/client/func_listener.cc
@@ -451,6 +440,7 @@ list(APPEND TEST_SRC
     ${CPP_DIR}/test/dummy_server.cc
     ${CPP_DIR}/test/dummy_client.cc
     ${CPP_DIR}/test/server_test.cc
+    ${CPP_DIR}/test/encoding_test.cc
     ${CPP_DIR}/test/c_wcf_test.cc
 )
 if(WIN32)
@@ -575,6 +565,7 @@ if(WEBCFACE_TEST)
         libcurl_static
         Crow
         msgpack-cxx
+        utfcpp
         GTest::gtest_main
     )
     target_compile_definitions(${PROJECT_NAME}-test PRIVATE

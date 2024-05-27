@@ -13,14 +13,29 @@ class FuncTest : public ::testing::Test {
     void SetUp() override {
         data_ = std::make_shared<Internal::ClientData>(self_name);
     }
-    std::string self_name = "test";
+    std::u8string self_name = u8"test";
     std::shared_ptr<Internal::ClientData> data_;
-    Func func(const std::string &member, const std::string &field) {
-        return Func{Field{data_, member, field}};
+    FieldBase fieldBase(std::u8string_view member,
+                        std::string_view name) const {
+        return FieldBase{member, Encoding::castToU8(name)};
+    }
+    FieldBase fieldBase(std::string_view member, std::string_view name) const {
+        return FieldBase{Encoding::castToU8(member), Encoding::castToU8(name)};
+    }
+    Field field(std::u8string_view member, std::string_view name = "") const {
+        return Field{data_, member, Encoding::castToU8(name)};
+    }
+    Field field(std::string_view member, std::string_view name = "") const {
+        return Field{data_, Encoding::castToU8(member),
+                     Encoding::castToU8(name)};
+    }
+    template <typename T1, typename T2>
+    Func func(const T1 &member, const T2 &name) {
+        return Func{field(member, name)};
     }
     template <typename T>
     AnonymousFunc afunc1(const T &func) {
-        return AnonymousFunc{Field{data_, self_name, ""}, func};
+        return AnonymousFunc{field(self_name, ""), func};
     }
     template <typename T>
     AnonymousFunc afunc2(const T &func) {
@@ -36,6 +51,9 @@ TEST_F(FuncTest, valAdaptor) {
     EXPECT_EQ(static_cast<bool>(ValAdaptor(1)), true);
     EXPECT_EQ(static_cast<bool>(ValAdaptor(2)), true);
     EXPECT_EQ(static_cast<std::string>(ValAdaptor(10)), "10");
+    EXPECT_STREQ(static_cast<const char *>(ValAdaptor(10)), "10");
+    EXPECT_EQ(static_cast<std::wstring>(ValAdaptor(10)), L"10");
+    EXPECT_STREQ(static_cast<const wchar_t *>(ValAdaptor(10)), L"10");
 
     EXPECT_FALSE(ValAdaptor(1.5).empty());
     EXPECT_EQ(static_cast<int>(ValAdaptor(1.5)), 1);
@@ -44,6 +62,9 @@ TEST_F(FuncTest, valAdaptor) {
     EXPECT_EQ(static_cast<bool>(ValAdaptor(1.0)), true);
     EXPECT_EQ(static_cast<bool>(ValAdaptor(1.5)), true);
     EXPECT_EQ(static_cast<std::string>(ValAdaptor(1.5)), "1.500000");
+    EXPECT_STREQ(static_cast<const char *>(ValAdaptor(1.5)), "1.500000");
+    EXPECT_EQ(static_cast<std::wstring>(ValAdaptor(1.5)), L"1.500000");
+    EXPECT_STREQ(static_cast<const wchar_t *>(ValAdaptor(1.5)), L"1.500000");
 
     EXPECT_FALSE(ValAdaptor(true).empty());
     EXPECT_EQ(static_cast<int>(ValAdaptor(true)), 1);
@@ -53,6 +74,9 @@ TEST_F(FuncTest, valAdaptor) {
     EXPECT_EQ(static_cast<bool>(ValAdaptor(true)), true);
     EXPECT_EQ(static_cast<bool>(ValAdaptor(false)), false);
     EXPECT_EQ(static_cast<std::string>(ValAdaptor(true)), "1");
+    EXPECT_STREQ(static_cast<const char *>(ValAdaptor(true)), "1");
+    EXPECT_EQ(static_cast<std::wstring>(ValAdaptor(true)), L"1");
+    EXPECT_STREQ(static_cast<const wchar_t *>(ValAdaptor(true)), L"1");
 
     EXPECT_FALSE(ValAdaptor("1.5").empty());
     EXPECT_EQ(static_cast<int>(ValAdaptor("1.5")), 1);
@@ -64,17 +88,23 @@ TEST_F(FuncTest, valAdaptor) {
     EXPECT_EQ(static_cast<bool>(ValAdaptor("1.5")), true);
     EXPECT_EQ(static_cast<bool>(ValAdaptor("hoge")), true);
     EXPECT_EQ(static_cast<std::string>(ValAdaptor("1.5")), "1.5");
+    EXPECT_STREQ(static_cast<const char *>(ValAdaptor("1.5")), "1.5");
+    EXPECT_EQ(static_cast<std::wstring>(ValAdaptor("1.5")), L"1.5");
+    EXPECT_STREQ(static_cast<const wchar_t *>(ValAdaptor("1.5")), L"1.5");
 
     EXPECT_TRUE(ValAdaptor().empty());
     EXPECT_TRUE(ValAdaptor("").empty());
+    EXPECT_TRUE(ValAdaptor(L"").empty());
     EXPECT_TRUE(ValAdaptor(std::string("")).empty());
+    EXPECT_TRUE(ValAdaptor(std::wstring(L"")).empty());
 
     EXPECT_TRUE(ValAdaptor(1) == ValAdaptor(1.0));
     EXPECT_TRUE(ValAdaptor(1) == 1);
     EXPECT_TRUE(1 == ValAdaptor(1));
     EXPECT_TRUE(ValAdaptor(1) == "1");
+    EXPECT_TRUE(ValAdaptor(1) == L"1");
     EXPECT_TRUE("1" == ValAdaptor(1));
-
+    EXPECT_TRUE(L"1" == ValAdaptor(1));
 }
 TEST_F(FuncTest, field) {
     EXPECT_EQ(func("a", "b").member().name(), "a");
@@ -86,11 +116,11 @@ TEST_F(FuncTest, funcSet) {
     // 関数セットしreturnTypeとargsのチェック
     auto f = func(self_name, "a");
     f.set([]() {});
-    EXPECT_EQ((*data_->func_store.getRecv(self_name, "a"))->return_type,
+    EXPECT_EQ((*data_->func_store.getRecv(self_name, u8"a"))->return_type,
               ValType::none_);
     EXPECT_EQ(f.returnType(), ValType::none_);
     EXPECT_EQ(func(self_name, "a").returnType(), ValType::none_);
-    EXPECT_EQ((*data_->func_store.getRecv(self_name, "a"))->args.size(), 0);
+    EXPECT_EQ((*data_->func_store.getRecv(self_name, u8"a"))->args.size(), 0);
     EXPECT_EQ(f.args().size(), 0);
     EXPECT_EQ(func(self_name, "a").args().size(), 0);
 
@@ -105,18 +135,26 @@ TEST_F(FuncTest, funcSet) {
     EXPECT_EQ(f.args(3).type(), ValType::string_);
 
     // 関数のパラメーター設定
-    f.setArgs({Arg("0").init(1).min(0).max(2), Arg("1"), Arg("2"),
+    f.setArgs({Arg("0").init(1).min(0).max(2), Arg(L"1"),
+               Arg("2").option({L"a", L"b", L"c"}),
                Arg("3").option({"a", "b", "c"})});
     EXPECT_EQ(f.args(0).name(), "0");
+    EXPECT_EQ(f.args(0).nameW(), L"0");
     EXPECT_EQ(f.args(0).type(), ValType::int_);
-    EXPECT_EQ(static_cast<double>(f.args(0).init().value()), 1);
-    EXPECT_EQ(static_cast<double>(f.args(0).min().value()), 0);
-    EXPECT_EQ(static_cast<double>(f.args(0).max().value()), 2);
+    EXPECT_EQ(f.args(0).init().value().as<double>(), 1);
+    EXPECT_EQ(f.args(0).min().value(), 0);
+    EXPECT_EQ(f.args(0).max().value(), 2);
+    EXPECT_EQ(f.args(1).name(), "1");
     EXPECT_EQ(f.args(1).type(), ValType::double_);
     EXPECT_EQ(f.args(1).init(), std::nullopt);
     EXPECT_EQ(f.args(1).min(), std::nullopt);
     EXPECT_EQ(f.args(1).max(), std::nullopt);
-    EXPECT_EQ(f.args(3).option().size(), 3);
+    ASSERT_EQ(f.args(2).option().size(), 3);
+    EXPECT_EQ(f.args(2).option()[2], "c");
+    EXPECT_EQ(f.args(2).option()[2], L"c");
+    ASSERT_EQ(f.args(3).option().size(), 3);
+    EXPECT_EQ(f.args(3).option()[2], "c");
+    EXPECT_EQ(f.args(3).option()[2], L"c");
 
     // 未設定の関数呼び出しでエラー
     EXPECT_THROW(f.setArgs({}), std::invalid_argument);
@@ -142,7 +180,7 @@ TEST_F(FuncTest, funcRun) {
     auto ret_a = func(self_name, "a").runAsync(123, 123.45, "a", true);
     EXPECT_TRUE(ret_a.started.get());
     EXPECT_EQ(static_cast<double>(ret_a.result.get()), 123.45);
-    EXPECT_EQ(ret_a.member().name(), self_name);
+    EXPECT_EQ(ret_a.member().name(), Encoding::decode(self_name));
     EXPECT_EQ(ret_a.name(), "a");
     EXPECT_EQ(called, 1);
     called = 0;
@@ -225,7 +263,7 @@ TEST_F(FuncTest, funcRunRemote) {
                 0,
                 0,
                 0,
-                "b",
+                u8"b",
                 {ValAdaptor(1.23), ValAdaptor(true), ValAdaptor("abc")}}})) {
             call_msg_found = true;
         }

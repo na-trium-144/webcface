@@ -34,29 +34,37 @@ inline FuncWrapperType runCondScopeGuard() {
 
 } // namespace FuncWrapper
 
-class AnonymousFunc;
-
 /*!
  * \brief 関数1つを表すクラス
  *
  */
 class WEBCFACE_DLL Func : protected Field {
   public:
-    friend AnonymousFunc;
+    friend class AnonymousFunc;
+    friend class ViewComponent;
+    friend class Canvas2DComponent;
 
     Func() = default;
     Func(const Field &base);
-    Func(const Field &base, const std::string &field)
+    Func(const Field &base, std::u8string_view field)
         : Func(Field{base, field}) {}
 
     using Field::lastName;
     using Field::member;
     using Field::name;
+    using Field::nameW;
     /*!
      * \brief 「(thisの名前).(追加の名前)」を新しい名前とするField
      *
      */
     Func child(std::string_view field) const {
+        return this->Field::child(field);
+    }
+    /*!
+     * \brief 「(thisの名前).(追加の名前)」を新しい名前とするField (wstring)
+     * \since ver1.12
+     */
+    Func child(std::wstring_view field) const {
         return this->Field::child(field);
     }
     /*!
@@ -69,10 +77,19 @@ class WEBCFACE_DLL Func : protected Field {
      */
     Func operator[](std::string_view field) const { return child(field); }
     /*!
+     * child()と同じ
+     * \since ver1.12
+     */
+    Func operator[](std::wstring_view field) const { return child(field); }
+    /*!
      * operator[](long, const char *)と解釈されるのを防ぐための定義
      * \since ver1.11
      */
     Func operator[](const char *field) const { return child(field); }
+    /*!
+     * \since ver1.12
+     */
+    Func operator[](const wchar_t *field) const { return child(field); }
     /*!
      * child()と同じ
      * \since ver1.11
@@ -254,16 +271,6 @@ class WEBCFACE_DLL Func : protected Field {
     bool operator==(const T &other) const {
         return static_cast<Field>(*this) == static_cast<Field>(other);
     }
-    /*!
-     * \brief Funcの参照先を比較
-     * \since ver1.11
-     *
-     */
-    template <typename T>
-        requires std::same_as<T, Func>
-    bool operator!=(const T &other) const {
-        return !(*this == other);
-    }
 };
 
 /*!
@@ -271,7 +278,7 @@ class WEBCFACE_DLL Func : protected Field {
  *
  */
 class WEBCFACE_DLL AnonymousFunc : public Func {
-    static std::string fieldNameTmp();
+    static std::u8string fieldNameTmp();
 
     std::function<void(AnonymousFunc &)> func_setter = nullptr;
     bool base_init = false;
@@ -326,7 +333,7 @@ class WEBCFACE_DLL FuncListener : protected Func {
   public:
     FuncListener() = default;
     FuncListener(const Field &base);
-    FuncListener(const Field &base, const std::string &field)
+    FuncListener(const Field &base, std::u8string_view field)
         : FuncListener(Field{base, field}) {}
 
     using Field::member;

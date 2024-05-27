@@ -32,7 +32,7 @@ using FuncWrapperType =
  */
 class Arg {
   protected:
-    std::string name_ = "";
+    std::u8string name_;
     ValType type_ = ValType::none_;
     std::optional<ValAdaptor> init_ = std::nullopt;
     std::optional<double> min_ = std::nullopt, max_ = std::nullopt;
@@ -44,7 +44,7 @@ class Arg {
      *
      */
     void mergeConfig(const Arg &rhs) {
-        if (rhs.name_ != "") {
+        if (!rhs.name_.empty()) {
             name_ = rhs.name_;
         }
         if (rhs.type_ != ValType::none_) {
@@ -70,18 +70,19 @@ class Arg {
      * \brief 引数名を設定する。
      *
      */
-    Arg(const std::string &name) : name_(name) {}
-    Arg(const std::string &name, ValType type,
-        const std::optional<ValAdaptor> &init, std::optional<double> min,
-        std::optional<double> max, const std::vector<ValAdaptor> &option)
-        : name_(name), type_(type), init_(init), min_(min), max_(max),
-          option_(option) {}
+    Arg(std::string_view name) : name_(Encoding::encode(name)) {}
+    Arg(std::wstring_view name) : name_(Encoding::encodeW(name)) {}
 
     /*!
      * \brief 引数の名前を取得する。
      *
      */
-    std::string name() const { return name_; }
+    std::string name() const { return Encoding::decode(name_); }
+    /*!
+     * \brief 引数の名前を取得する。(wstring)
+     * \since ver1.12
+     */
+    std::wstring nameW() const { return Encoding::decodeW(name_); }
     /*!
      * \brief 引数の型を取得する。
      *
@@ -150,7 +151,7 @@ class Arg {
      * \brief 引数の選択肢を取得する。
      *
      */
-    std::vector<ValAdaptor> option() const { return option_; }
+    const std::vector<ValAdaptor> &option() const { return option_; }
     Arg &option(const std::vector<ValAdaptor> &option) {
         option_ = option;
         min_ = max_ = std::nullopt;
@@ -255,7 +256,7 @@ struct FuncCall {
     std::size_t caller_id;
     unsigned int caller_member_id;
     unsigned int target_member_id;
-    std::string field;
+    std::u8string field;
     std::vector<webcface::ValAdaptor> args;
 };
 

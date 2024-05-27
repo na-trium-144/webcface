@@ -31,17 +31,25 @@ class WEBCFACE_DLL Value : protected Field, public EventTarget<Value> {
   public:
     Value() = default;
     Value(const Field &base);
-    Value(const Field &base, std::string_view field)
+    Value(const Field &base, std::u8string_view field)
         : Value(Field{base, field}) {}
 
     using Field::lastName;
     using Field::member;
     using Field::name;
+    using Field::nameW;
     /*!
      * \brief 「(thisの名前).(追加の名前)」を新しい名前とするField
      *
      */
     Value child(std::string_view field) const {
+        return this->Field::child(field);
+    }
+    /*!
+     * \brief 「(thisの名前).(追加の名前)」を新しい名前とするField (wstring)
+     * \since ver1.12
+     */
+    Value child(std::wstring_view field) const {
         return this->Field::child(field);
     }
     /*!
@@ -54,10 +62,19 @@ class WEBCFACE_DLL Value : protected Field, public EventTarget<Value> {
      */
     Value operator[](std::string_view field) const { return child(field); }
     /*!
+     * child()と同じ
+     * \since ver1.12
+     */
+    Value operator[](std::wstring_view field) const { return child(field); }
+    /*!
      * operator[](long, const char *)と解釈されるのを防ぐための定義
      * \since ver1.11
      */
     Value operator[](const char *field) const { return child(field); }
+    /*!
+     * \since ver1.12
+     */
+    Value operator[](const wchar_t *field) const { return child(field); }
     /*!
      * child()と同じ
      * \since ver1.11
@@ -262,16 +279,6 @@ class WEBCFACE_DLL Value : protected Field, public EventTarget<Value> {
         requires std::same_as<T, Value>
     bool operator==(const T &other) const {
         return static_cast<Field>(*this) == static_cast<Field>(other);
-    }
-    /*!
-     * \brief Valueの参照先を比較
-     * \since ver1.11
-     *
-     */
-    template <typename T>
-        requires std::same_as<T, Value>
-    bool operator!=(const T &other) const {
-        return !(*this == other);
     }
     bool operator<(const Value &) const = delete;
     bool operator<=(const Value &) const = delete;

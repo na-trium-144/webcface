@@ -13,7 +13,7 @@ class LoggerTest : public ::testing::Test {
         data_ = std::make_shared<Internal::ClientData>(self_name);
         data_->start();
     }
-    std::string self_name = "test";
+    std::u8string self_name = u8"test";
     std::shared_ptr<Internal::ClientData> data_;
 };
 
@@ -28,17 +28,40 @@ TEST_F(LoggerTest, logger) {
     ASSERT_EQ((*ls)->size(), 6);
     for (int i = 0; i <= 5; i++) {
         EXPECT_EQ((**ls)[i].level, i);
-        EXPECT_EQ((**ls)[i].message, std::to_string(i));
+        EXPECT_EQ((**ls)[i].message, Encoding::castToU8(std::to_string(i)));
     }
 }
 TEST_F(LoggerTest, loggerBuf) {
-    LoggerBuf b(data_->logger);
+    LoggerBuf b(data_->log_store);
     std::ostream os(&b);
     os << "a\nb" << std::endl;
+    auto cerr_buf = std::cerr.rdbuf();
+    std::cerr.rdbuf(&b);
+    std::cerr << "c" << std::endl;
     auto ls = data_->log_store->getRecv(self_name);
-    ASSERT_EQ((*ls)->size(), 2);
+    ASSERT_EQ((*ls)->size(), 3);
     EXPECT_EQ((**ls)[0].level, 2);
-    EXPECT_EQ((**ls)[0].message, "a");
+    EXPECT_EQ((**ls)[0].message, u8"a");
     EXPECT_EQ((**ls)[1].level, 2);
-    EXPECT_EQ((**ls)[1].message, "b");
+    EXPECT_EQ((**ls)[1].message, u8"b");
+    EXPECT_EQ((**ls)[2].level, 2);
+    EXPECT_EQ((**ls)[2].message, u8"c");
+    std::cerr.rdbuf(cerr_buf);
+}
+TEST_F(LoggerTest, loggerBufW) {
+    LoggerBufW b(data_->log_store);
+    std::wostream os(&b);
+    os << L"a\nb" << std::endl;
+    auto wcerr_buf = std::wcerr.rdbuf();
+    std::wcerr.rdbuf(&b);
+    std::wcerr << L"c" << std::endl;
+    auto ls = data_->log_store->getRecv(self_name);
+    ASSERT_EQ((*ls)->size(), 3);
+    EXPECT_EQ((**ls)[0].level, 2);
+    EXPECT_EQ((**ls)[0].message, u8"a");
+    EXPECT_EQ((**ls)[1].level, 2);
+    EXPECT_EQ((**ls)[1].message, u8"b");
+    EXPECT_EQ((**ls)[2].level, 2);
+    EXPECT_EQ((**ls)[2].message, u8"c");
+    std::wcerr.rdbuf(wcerr_buf);
 }

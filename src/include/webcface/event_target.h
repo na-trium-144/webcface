@@ -17,13 +17,13 @@ class EventTarget {
     using CallbackList = eventpp::CallbackList<void(ArgType)>;
 
   protected:
-    CallbackList *cl = nullptr;
+    std::weak_ptr<CallbackList> cl;
 
     CallbackList &checkCl() const {
-        if (!cl) {
+        if (cl.expired()) {
             throw std::runtime_error("CallbackList is null");
         }
-        return *cl;
+        return *cl.lock();
     }
 
   public:
@@ -40,6 +40,20 @@ class EventTarget {
 
   protected:
     /*!
+     * \brief 参照するコールバックリストを設定して初期化
+     *
+     * コールバックリストのポインタを参照で渡し、
+     * ポインタが未初期化の場合ここで初期化する
+     *
+     */
+    void setCL(std::shared_ptr<CallbackList> &cl) {
+        if (!cl) {
+            cl = std::make_shared<CallbackList>();
+        }
+        this->cl = cl;
+    }
+
+    /*!
      * \brief イベントを発生させる。
      *
      */
@@ -53,7 +67,14 @@ class EventTarget {
 
   public:
     EventTarget() = default;
-    explicit EventTarget(CallbackList *cl) : cl(cl) {}
+    /*!
+     * \brief 参照するコールバックリストを設定して初期化
+     *
+     * コールバックリストのポインタを参照で渡し、
+     * ポインタが未初期化の場合ここで初期化する
+     *
+     */
+    explicit EventTarget(std::shared_ptr<CallbackList> &cl) { setCL(cl); }
 
     virtual ~EventTarget() {}
 

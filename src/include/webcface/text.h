@@ -29,19 +29,28 @@ class WEBCFACE_DLL Text : protected Field, public EventTarget<Text> {
   public:
     Text() = default;
     Text(const Field &base);
-    Text(const Field &base, const std::string &field)
+    Text(const Field &base, std::u8string_view field)
         : Text(Field{base, field}) {}
 
     friend class InputRef;
     friend struct InputRefState;
+    friend class ViewComponent;
     using Field::lastName;
     using Field::member;
     using Field::name;
+    using Field::nameW;
     /*!
      * \brief 「(thisの名前).(追加の名前)」を新しい名前とするField
      *
      */
     Text child(std::string_view field) const {
+        return this->Field::child(field);
+    }
+    /*!
+     * \brief 「(thisの名前).(追加の名前)」を新しい名前とするField (wstring)
+     * \since ver1.12
+     */
+    Text child(std::wstring_view field) const {
         return this->Field::child(field);
     }
     /*!
@@ -54,10 +63,19 @@ class WEBCFACE_DLL Text : protected Field, public EventTarget<Text> {
      */
     Text operator[](std::string_view field) const { return child(field); }
     /*!
+     * child()と同じ
+     * \since ver1.12
+     */
+    Text operator[](std::wstring_view field) const { return child(field); }
+    /*!
      * operator[](long, const char *)と解釈されるのを防ぐための定義
      * \since ver1.11
      */
     Text operator[](const char *field) const { return child(field); }
+    /*!
+     * \since ver1.12
+     */
+    Text operator[](const wchar_t *field) const { return child(field); }
     /*!
      * child()と同じ
      * \since ver1.11
@@ -80,13 +98,18 @@ class WEBCFACE_DLL Text : protected Field, public EventTarget<Text> {
     /*!
      * \brief 文字列をセットする
      *
+     * (ver1.12からstd::stringをstd::string_viewに変更)
+     *
      */
-    Text &set(const std::string &v) { return set(ValAdaptor{v}); }
+    Text &set(std::string_view v) { return set(ValAdaptor{v}); }
     /*!
-     * \brief 文字列をセットする
-     *
-     * \since ver1.10〜 文字列以外の型も扱う
-     *
+     * \brief 文字列をセットする (wstring)
+     * \since ver1.12
+     */
+    Text &set(std::wstring_view v) { return set(ValAdaptor{v}); }
+    /*!
+     * \brief 文字列以外の型の値もセットする
+     * \since ver1.10
      */
     Text &set(const ValAdaptor &v);
 
@@ -102,7 +125,15 @@ class WEBCFACE_DLL Text : protected Field, public EventTarget<Text> {
      * \brief 文字列をセットする
      *
      */
-    Text &operator=(const std::string &v) {
+    Text &operator=(std::string_view v) {
+        this->set(v);
+        return *this;
+    }
+    /*!
+     * \brief 文字列をセットする (wstring)
+     * \since ver1.12
+     */
+    Text &operator=(std::wstring_view v) {
         this->set(v);
         return *this;
     }
@@ -116,10 +147,23 @@ class WEBCFACE_DLL Text : protected Field, public EventTarget<Text> {
     /*!
      * \brief 文字列を返す
      *
-     * (ver1.10〜 文字列以外の型も扱うためValAdaptor型に変更)
+     * * <del>ver1.10〜 文字列以外の型も扱うためValAdaptor型に変更</del>
+     * * ver1.12〜 stringに戻した
      *
      */
-    std::optional<ValAdaptor> tryGet() const;
+    std::optional<std::string> tryGet() const;
+    /*!
+     * \brief 文字列を返す (wstring)
+     * \since ver1.12
+     */
+    std::optional<std::wstring> tryGetW() const;
+    /*!
+     * \since ver1.12
+     *
+     * 文字列以外の型のデータが必要な場合
+     *
+     */
+    std::optional<ValAdaptor> tryGetV() const;
     // /*!
     //  * \brief 文字列を再帰的に取得しDictで返す
     //  *
@@ -128,10 +172,16 @@ class WEBCFACE_DLL Text : protected Field, public EventTarget<Text> {
     /*!
      * \brief 文字列を返す
      *
-     * (ver1.10〜 文字列以外の型も扱うためValAdaptor型に変更)
+     * * <del>ver1.10〜 文字列以外の型も扱うためValAdaptor型に変更</del>
+     * * ver1.12〜 stringに戻した
      *
      */
-    ValAdaptor get() const { return tryGet().value_or(ValAdaptor()); }
+    std::string get() const { return tryGet().value_or(""); }
+    /*!
+     * \brief 文字列を返す (wstring)
+     * \since ver1.12
+     */
+    std::wstring getW() const { return tryGetW().value_or(L""); }
 
     // /*!
     //  * \brief 値を再帰的に取得しDictで返す
@@ -139,6 +189,7 @@ class WEBCFACE_DLL Text : protected Field, public EventTarget<Text> {
     //  */
     // Dict getRecurse() const { return tryGetRecurse().value_or(Dict{}); }
     operator std::string() const { return get(); }
+    operator std::wstring() const { return getW(); }
     // operator Dict() const { return getRecurse(); }
 
     /*!
@@ -153,12 +204,8 @@ class WEBCFACE_DLL Text : protected Field, public EventTarget<Text> {
      */
     Text &free();
 
-    bool operator==(const std::string &rhs) const {
-        return static_cast<std::string>(this->get()) == rhs;
-    }
-    bool operator!=(const std::string &rhs) const {
-        return static_cast<std::string>(this->get()) != rhs;
-    }
+    bool operator==(std::string_view rhs) const { return this->get() == rhs; }
+    bool operator==(std::wstring_view rhs) const { return this->getW() == rhs; }
 
     /*!
      * \brief Textの参照先を比較
@@ -172,16 +219,6 @@ class WEBCFACE_DLL Text : protected Field, public EventTarget<Text> {
         requires std::same_as<T, Text>
     bool operator==(const T &other) const {
         return static_cast<Field>(*this) == static_cast<Field>(other);
-    }
-    /*!
-     * \brief Textの参照先を比較
-     * \since ver1.11
-     *
-     */
-    template <typename T>
-        requires std::same_as<T, Text>
-    bool operator!=(const T &other) const {
-        return !(*this == other);
     }
     bool operator<(const Text &) const = delete;
     bool operator<=(const Text &) const = delete;
@@ -197,7 +234,7 @@ WEBCFACE_DLL std::ostream &operator<<(std::ostream &os, const Text &data);
 
 struct WEBCFACE_DLL InputRefState {
     Text field;
-    std::optional<ValAdaptor> val = std::nullopt;
+    ValAdaptor val;
     InputRefState() = default;
 };
 /*!
@@ -240,29 +277,17 @@ class WEBCFACE_DLL InputRef {
      *
      */
     const ValAdaptor &get() const {
-        auto &val = state->val;
         if (expired()) {
-            if (val) {
-                if (val->empty()) {
-                    val.emplace();
-                }
-                return *val;
-            } else {
-                val.emplace();
-                return *val;
+            if (!state->val.empty()) {
+                state->val = ValAdaptor();
             }
         } else {
-            auto new_val = state->field.get();
-            if (val) {
-                if (*val != new_val) {
-                    val = new_val;
-                }
-                return *val;
-            } else {
-                val = new_val;
-                return *val;
+            auto new_val = state->field.tryGetV().value_or(ValAdaptor());
+            if (state->val != new_val) {
+                state->val = new_val;
             }
         }
+        return state->val;
     }
 
     /*!
@@ -291,10 +316,21 @@ class WEBCFACE_DLL InputRef {
      */
     const std::string &asStringRef() const { return get().asStringRef(); }
     /*!
+     * \brief 文字列として返す (wstring)
+     * \since ver1.12
+     * \sa asStringRef()
+     */
+    const std::wstring &asWStringRef() const { return get().asWStringRef(); }
+    /*!
      * \brief 文字列として返す(コピー)
      * \since ver1.11
      */
     std::string asString() const { return get().asString(); }
+    /*!
+     * \brief 文字列として返す(コピー) (wstring)
+     * \since ver1.12
+     */
+    std::wstring asWString() const { return get().asWString(); }
     /*!
      * \brief 数値として返す
      * \since ver1.11
@@ -318,11 +354,6 @@ class WEBCFACE_DLL InputRef {
         requires std::constructible_from<ValAdaptor, T>
     bool operator==(const T &other) const {
         return get() == other;
-    }
-    template <typename T>
-        requires std::constructible_from<ValAdaptor, T>
-    bool operator!=(const T &other) const {
-        return get() != other;
     }
 };
 

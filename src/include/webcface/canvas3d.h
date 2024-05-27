@@ -36,18 +36,26 @@ class WEBCFACE_DLL Canvas3D : protected Field, public EventTarget<Canvas3D> {
   public:
     Canvas3D();
     Canvas3D(const Field &base);
-    Canvas3D(const Field &base, const std::string &field)
+    Canvas3D(const Field &base, std::u8string_view &field)
         : Canvas3D(Field{base, field}) {}
 
     friend Internal::DataSetBuffer<Canvas3DComponent>;
     using Field::lastName;
     using Field::member;
     using Field::name;
+    using Field::nameW;
     /*!
      * \brief 「(thisの名前).(追加の名前)」を新しい名前とするField
      *
      */
     Canvas3D child(std::string_view field) const {
+        return this->Field::child(field);
+    }
+    /*!
+     * \brief 「(thisの名前).(追加の名前)」を新しい名前とするField (wstring)
+     * \since ver1.12
+     */
+    Canvas3D child(std::wstring_view field) const {
         return this->Field::child(field);
     }
     /*!
@@ -60,10 +68,19 @@ class WEBCFACE_DLL Canvas3D : protected Field, public EventTarget<Canvas3D> {
      */
     Canvas3D operator[](std::string_view field) const { return child(field); }
     /*!
+     * child()と同じ
+     * \since ver1.12
+     */
+    Canvas3D operator[](std::wstring_view field) const { return child(field); }
+    /*!
      * operator[](long, const char *)と解釈されるのを防ぐための定義
      * \since ver1.11
      */
     Canvas3D operator[](const char *field) const { return child(field); }
+    /*!
+     * \since ver1.12
+     */
+    Canvas3D operator[](const wchar_t *field) const { return child(field); }
     /*!
      * child()と同じ
      * \since ver1.11
@@ -97,8 +114,7 @@ class WEBCFACE_DLL Canvas3D : protected Field, public EventTarget<Canvas3D> {
      * \brief syncの時刻を返す
      * \deprecated 1.7でMember::syncTime()に変更
      */
-    [[deprecated]] std::chrono::system_clock::time_point
-    time() const;
+    [[deprecated]] std::chrono::system_clock::time_point time() const;
 
     /*!
      * \brief 値やリクエスト状態をクリア
@@ -136,7 +152,7 @@ class WEBCFACE_DLL Canvas3D : protected Field, public EventTarget<Canvas3D> {
      *
      */
     template <typename T>
-    Canvas3D &add(T &&cc){
+    Canvas3D &add(T &&cc) {
         *this << std::forward<T>(cc);
         return *this;
     }
@@ -216,8 +232,9 @@ class WEBCFACE_DLL Canvas3D : protected Field, public EventTarget<Canvas3D> {
         auto model = model_field.get();
         for (std::size_t ji = 0; ji < model.size(); ji++) {
             const auto &j = model[ji].joint;
-            if (angles.count(j.name)) {
-                angles_i[ji] = angles[j.name];
+            auto j_name_s = Encoding::decode(j.name);
+            if (angles.count(j_name_s)) {
+                angles_i[ji] = angles[j_name_s];
             }
         }
         add(Canvas3DComponent{{Canvas3DComponentType::robot_model, origin,
@@ -244,16 +261,6 @@ class WEBCFACE_DLL Canvas3D : protected Field, public EventTarget<Canvas3D> {
         requires std::same_as<T, Canvas3D>
     bool operator==(const T &other) const {
         return static_cast<Field>(*this) == static_cast<Field>(other);
-    }
-    /*!
-     * \brief Canvas3Dの参照先を比較
-     * \since ver1.11
-     *
-     */
-    template <typename T>
-        requires std::same_as<T, Canvas3D>
-    bool operator!=(const T &other) const {
-        return !(*this == other);
     }
 };
 WEBCFACE_NS_END

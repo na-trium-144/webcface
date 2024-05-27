@@ -35,17 +35,25 @@ class WEBCFACE_DLL Image : protected Field, public EventTarget<Image> {
   public:
     Image() = default;
     Image(const Field &base);
-    Image(const Field &base, const std::string &field)
+    Image(const Field &base, std::u8string_view field)
         : Image(Field{base, field}) {}
 
     using Field::lastName;
     using Field::member;
     using Field::name;
+    using Field::nameW;
     /*!
      * \brief 「(thisの名前).(追加の名前)」を新しい名前とするField
      *
      */
     Image child(std::string_view field) const {
+        return this->Field::child(field);
+    }
+    /*!
+     * \brief 「(thisの名前).(追加の名前)」を新しい名前とするField (wstring)
+     * \since ver1.12
+     */
+    Image child(std::wstring_view field) const {
         return this->Field::child(field);
     }
     /*!
@@ -58,10 +66,19 @@ class WEBCFACE_DLL Image : protected Field, public EventTarget<Image> {
      */
     Image operator[](std::string_view field) const { return child(field); }
     /*!
+     * child()と同じ
+     * \since ver1.12
+     */
+    Image operator[](std::wstring_view field) const { return child(field); }
+    /*!
      * operator[](long, const char *)と解釈されるのを防ぐための定義
      * \since ver1.11
      */
     Image operator[](const char *field) const { return child(field); }
+    /*!
+     * \since ver1.12
+     */
+    Image operator[](const wchar_t *field) const { return child(field); }
     /*!
      * child()と同じ
      * \since ver1.11
@@ -164,19 +181,9 @@ class WEBCFACE_DLL Image : protected Field, public EventTarget<Image> {
      *
      */
     template <typename T>
-        requires std::same_as<T, Image> bool
-    operator==(const T &other) const {
+        requires std::same_as<T, Image>
+    bool operator==(const T &other) const {
         return static_cast<Field>(*this) == static_cast<Field>(other);
-    }
-    /*!
-     * \brief Imageの参照先を比較
-     * \since ver1.11
-     *
-     */
-    template <typename T>
-        requires std::same_as<T, Image> bool
-    operator!=(const T &other) const {
-        return !(*this == other);
     }
 };
 

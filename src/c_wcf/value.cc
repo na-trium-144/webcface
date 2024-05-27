@@ -2,8 +2,9 @@
 #include <webcface/value.h>
 #include <cstring>
 
-extern "C" {
-wcfStatus wcfValueSet(wcfClient *wcli, const char *field, double value) {
+template <typename CharT>
+static wcfStatus wcfValueSetT(wcfClient *wcli, const CharT *field,
+                              double value) {
     auto wcli_ = getWcli(wcli);
     if (!wcli_) {
         return WCF_BAD_WCLI;
@@ -14,8 +15,9 @@ wcfStatus wcfValueSet(wcfClient *wcli, const char *field, double value) {
     wcli_->value(field).set(value);
     return WCF_OK;
 }
-wcfStatus wcfValueSetVecD(wcfClient *wcli, const char *field,
-                          const double *value, int size) {
+template <typename CharT>
+static wcfStatus wcfValueSetVecDT(wcfClient *wcli, const CharT *field,
+                                  const double *value, int size) {
     auto wcli_ = getWcli(wcli);
     if (!wcli_) {
         return WCF_BAD_WCLI;
@@ -26,9 +28,11 @@ wcfStatus wcfValueSetVecD(wcfClient *wcli, const char *field,
     wcli_->value(field).set(std::vector<double>(value, value + size));
     return WCF_OK;
 }
-wcfStatus wcfValueGetVecD(wcfClient *wcli, const char *member,
-                          const char *field, double *values, int size,
-                          int *recv_size) {
+
+template <typename CharT>
+static wcfStatus wcfValueGetVecDT(wcfClient *wcli, const CharT *member,
+                                  const CharT *field, double *values, int size,
+                                  int *recv_size) {
     *recv_size = 0;
     auto wcli_ = getWcli(wcli);
     if (!wcli_) {
@@ -37,7 +41,7 @@ wcfStatus wcfValueGetVecD(wcfClient *wcli, const char *member,
     if (!field || size < 0) {
         return WCF_INVALID_ARGUMENT;
     }
-    auto vec = wcli_->member(member ? member : "").value(field).tryGetVec();
+    auto vec = wcli_->member(strOrEmpty(member)).value(field).tryGetVec();
     if (vec) {
         int copy_size = size < static_cast<int>(vec->size())
                             ? size
@@ -51,8 +55,9 @@ wcfStatus wcfValueGetVecD(wcfClient *wcli, const char *member,
         return WCF_NOT_FOUND;
     }
 }
-wcfStatus wcfValueGet(wcfClient *wcli, const char *member, const char *field,
-                      double *value) {
+template <typename CharT>
+static wcfStatus wcfValueGetT(wcfClient *wcli, const CharT *member,
+                              const CharT *field, double *value) {
     *value = 0;
     auto wcli_ = getWcli(wcli);
     if (!wcli_) {
@@ -61,12 +66,46 @@ wcfStatus wcfValueGet(wcfClient *wcli, const char *member, const char *field,
     if (!field) {
         return WCF_INVALID_ARGUMENT;
     }
-    auto val = wcli_->member(member ? member : "").value(field).tryGet();
+    auto val = wcli_->member(strOrEmpty(member)).value(field).tryGet();
     if (val) {
         *value = *val;
         return WCF_OK;
     } else {
         return WCF_NOT_FOUND;
     }
+}
+
+extern "C" {
+wcfStatus wcfValueSet(wcfClient *wcli, const char *field, double value) {
+    return wcfValueSetT(wcli, field, value);
+}
+wcfStatus wcfValueSetW(wcfClient *wcli, const wchar_t *field, double value) {
+    return wcfValueSetT(wcli, field, value);
+}
+wcfStatus wcfValueSetVecD(wcfClient *wcli, const char *field,
+                          const double *value, int size) {
+    return wcfValueSetVecDT(wcli, field, value, size);
+}
+wcfStatus wcfValueSetVecDW(wcfClient *wcli, const wchar_t *field,
+                           const double *value, int size) {
+    return wcfValueSetVecDT(wcli, field, value, size);
+}
+wcfStatus wcfValueGetVecD(wcfClient *wcli, const char *member,
+                          const char *field, double *values, int size,
+                          int *recv_size) {
+    return wcfValueGetVecDT(wcli, member, field, values, size, recv_size);
+}
+wcfStatus wcfValueGetVecDW(wcfClient *wcli, const wchar_t *member,
+                           const wchar_t *field, double *values, int size,
+                           int *recv_size) {
+    return wcfValueGetVecDT(wcli, member, field, values, size, recv_size);
+}
+wcfStatus wcfValueGet(wcfClient *wcli, const char *member, const char *field,
+                      double *value) {
+    return wcfValueGetT(wcli, member, field, value);
+}
+wcfStatus wcfValueGetW(wcfClient *wcli, const wchar_t *member,
+                       const wchar_t *field, double *value) {
+    return wcfValueGetT(wcli, member, field, value);
 }
 }

@@ -35,20 +35,29 @@ class WEBCFACE_DLL RobotModel : protected Field,
   public:
     RobotModel();
     RobotModel(const Field &base);
-    RobotModel(const Field &base, const std::string &field)
+    RobotModel(const Field &base, std::u8string_view field)
         : RobotModel(Field{base, field}) {}
 
     friend class Canvas3D;
+    friend class Canvas3DComponent;
     friend Internal::DataSetBuffer<RobotLink>;
 
     using Field::lastName;
     using Field::member;
     using Field::name;
+    using Field::nameW;
     /*!
      * \brief 「(thisの名前).(追加の名前)」を新しい名前とするField
      * \since ver1.11
      */
     RobotModel child(std::string_view field) const {
+        return this->Field::child(field);
+    }
+    /*!
+     * \brief 「(thisの名前).(追加の名前)」を新しい名前とするField (wstring)
+     * \since ver1.12
+     */
+    RobotModel child(std::wstring_view field) const {
         return this->Field::child(field);
     }
     /*!
@@ -61,10 +70,21 @@ class WEBCFACE_DLL RobotModel : protected Field,
      */
     RobotModel operator[](std::string_view field) const { return child(field); }
     /*!
+     * child()と同じ
+     * \since ver1.12
+     */
+    RobotModel operator[](std::wstring_view field) const {
+        return child(field);
+    }
+    /*!
      * operator[](long, const char *)と解釈されるのを防ぐための定義
      * \since ver1.11
      */
     RobotModel operator[](const char *field) const { return child(field); }
+    /*!
+     * \since ver1.12
+     */
+    RobotModel operator[](const wchar_t *field) const { return child(field); }
     /*!
      * child()と同じ
      * \since ver1.11
@@ -159,16 +179,6 @@ class WEBCFACE_DLL RobotModel : protected Field,
         requires std::same_as<T, RobotModel>
     bool operator==(const T &other) const {
         return static_cast<Field>(*this) == static_cast<Field>(other);
-    }
-    /*!
-     * \brief RobotModelの参照先を比較
-     * \since ver1.11
-     *
-     */
-    template <typename T>
-        requires std::same_as<T, RobotModel>
-    bool operator!=(const T &other) const {
-        return !(*this == other);
     }
 };
 
