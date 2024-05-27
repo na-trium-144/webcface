@@ -27,8 +27,8 @@ webcface-send -t log
 - <b class="tab-title">C++</b>
     [spdlog](https://github.com/gabime/spdlog) ライブラリを利用しています。
 
-    Client::logger() はwebcfaceとstderrに出力するloggerです。
-    これを使ってログを出力できます
+    Client::logger() はWebCFaceと標準エラー出力に出力するloggerです。
+    これを使ってログを出力できます。
     ```cpp
     wcli.logger()->info("this is info");
     wcli.logger()->error("this is error, error no = {}", 123);
@@ -42,17 +42,27 @@ webcface-send -t log
     または Client.logger() の出力先のsinkを変更することもできます。
     (詳細はspdlogのドキュメントを読んでください。)
 
+    <span class="since-c">1.12</span>
+    Windowsでは`SPDLOG_WCHAR_SUPPORT`を有効にすることでspdlogのloggerにワイド文字列を渡すことができるようになります。
+    WebCFaceのCMakeLists内で自動的に有効になりますが、別でインストールしたspdlogを使用する場合は有効になっていない可能性があります。
+
     spdlogではなくostreamを使いたい場合は
     ```cpp
     wcli.loggerOStream() << "hello" << std::endl;
     ```
     のように出力したり、
     ```cpp
-    std::cout.rdbuf(&wcli.loggerStreamBuf());
+    std::cout.rdbuf(wcli.loggerStreamBuf());
     std::cout << "hello" << std::endl;
     ```
     のようにcoutやcerrの出力先を置き換えることができます。
-    この場合はログレベルが設定できず、常にinfoになります。
+    これらはWebCFaceに出力すると同時に標準エラー出力にも出力します。
+    (ver1.11以前はspdlogのstderr_sink、ver1.12以降は直接std::cerrに出力されます)
+    またこの場合はログレベルが設定できず、常にinfoになります。
+    
+    <span class="since-c">1.12</span>
+    wostreamを使用したい場合は wcli.loggerWOStream(), wcli.loggerWStreamBuf() を使用するとWebCFaceに出力すると同時にstd::wcerrにも出力されます。
+    ただし環境によってはstd::wcerrに出力するときと同様、ASCII以外の文字を出力するにはstd::wcerrにロケールの設定が必要かもしれません。
 
 - <b class="tab-title">JavaScript</b>
     [log4js](https://www.npmjs.com/package/log4js)を使います。
@@ -107,10 +117,13 @@ webcface-send -t log
 Member::log() でLogクラスのオブジェクトが得られ、
 Log::tryGet() でデータのリクエストをするとともにログが得られます。
 
-ログデータは
-webcface::LogLine
-(JavaScript [LogLine](https://na-trium-144.github.io/webcface-js/interfaces/LogLine.html),
-Python [webcface.LogLine](https://na-trium-144.github.io/webcface-python/webcface.log_handler.html#webcface.log_handler.LogLine))
+<span class="since-c">1.12</span>
+ワイド文字列で取得したい場合は tryGetW() を使います
+
+ログデータは  
+C++: webcface::LogLine, webcface::LogLineW  
+JavaScript: [LogLine](https://na-trium-144.github.io/webcface-js/interfaces/LogLine.html)  
+Python: [webcface.LogLine](https://na-trium-144.github.io/webcface-python/webcface.log_handler.html#webcface.log_handler.LogLine)  
 のリストとして得られ、
 メッセージ、ログレベル、時刻を取得できます。
 
