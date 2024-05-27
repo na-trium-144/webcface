@@ -39,6 +39,10 @@ Client オブジェクトを作り、start() を呼ぶことでサーバーへ�
     // アドレスを指定する場合
     // webcface::Client wcli("sample", "192.168.1.1", 7530);
 
+    // wstringの場合 (ver1.12〜, 詳細はこのページのEncodingの章を参照)
+    // webcface::Client wcli(L"sample");
+    // webcface::Client wcli(L"sample", L"192.168.1.1", 7530);
+
     wcli.start();
     // または wcli.waitConnection();
     ```
@@ -80,6 +84,9 @@ Client オブジェクトを作り、start() を呼ぶことでサーバーへ�
     ```
 
     \note
+    * <span class="since-c">1.12</span>
+    ワイド文字列を使用したい場合はそれぞれ `wcfInitDefaultW()`, `wcfInitW()`
+    (詳細はこのページのEncodingの章を参照)
     * 接続できているかどうかは `wcfIsConnected(wcli)` で取得できます。
     * 通信が切断された場合は自動で再接続します。
     * <span class="since-c">1.11</span>
@@ -141,6 +148,21 @@ Client オブジェクトを作り、start() を呼ぶことでサーバーへ�
 
 プログラムを起動できたら、WebUIを開いてみましょう。
 そして右上のメニューを開き、Clientの初期化時に指定した名前がそこに表示されていれば正しく通信できています。
+
+## Encoding
+
+<span class="since-c">1.12</span>
+
+webcfaceのAPIではほぼすべての関数でマルチバイト文字列(`std::string`, `const char *`)の代わりにワイド文字列(`std::wstring`, `const wchar_t *`)が使用可能です。
+
+マルチバイト文字列はデフォルトではWindows,Linux,MacOSともにUTF-8エンコーディングとして扱われます。
+ただしWindowsでのみClientの初期化前に最初に C++: webcface::Encoding::usingUTF8(), C: wcfUsingUTF8() を false に設定することでANSIエンコーディング(日本語環境ではShiftJIS)として扱われるようにすることもできます。
+(webcface内部でUTF-8との変換が行われます)
+
+ワイド文字列はWindowsではUTF-16、Linux/MacOSではUTF-32でエンコードされていることを想定しています。
+なおワイド文字列を使用する場合は usingUTF8 の設定はtrueのままにしてください。
+
+C++で文字列を返すAPI、およびCのAPI全般ではワイド文字列を使用する関数やstruct名には末尾に`W`が付きます。
 
 ## sync
 

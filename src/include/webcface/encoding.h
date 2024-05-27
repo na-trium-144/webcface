@@ -14,8 +14,8 @@ namespace Encoding {
  * 内部でutf8と相互変換する。
  * * デフォルトは true (以前のバージョンとの互換性のため)
  * * unixでは効果がない。
- * * windows,unixともに std::wstring には影響がない
- * * サーバーではこの設定に関わらず常にutf8を使用する。
+ * * std::wstring を使用する場合、spdlog内部で
+ * wstring→utf-8 の変換がされる場合があるのでtrueにすることを推奨
  *
  */
 WEBCFACE_DLL void usingUTF8(bool flag);
