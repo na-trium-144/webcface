@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['box_0',['box',['../structComponents_1_1Geometries_1_1Box.html',1,'Box'],['../structComponents_1_1Geometries_1_1Box.html',1,'Box'],['../structComponents_1_1Geometries_1_1Box.html',1,'Box']]]
+  ['basicloggerbuf_0',['BasicLoggerBuf',['../classwebcface_1_1BasicLoggerBuf.html',1,'webcface']]],
+  ['box_1',['box',['../structwebcface_1_1Components_1_1Geometries_1_1Box.html',1,'Box'],['../structwebcface_1_1Components_1_1Geometries_1_1Box.html',1,'Box'],['../structwebcface_1_1Components_1_1Geometries_1_1Box.html',1,'Box']]]
 ];

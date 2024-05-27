@@ -1,3 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$structCommon_1_1DictTraits_3_01std_1_1shared__ptr_3_01T_01_4_01_4.html" title="内部データ(std::shared_ptr&lt;T&gt;)とユーザーが取得したいデータ(ValueType)を相互変換するTrait" alt="" coords="5,5,176,45"/>
+<area shape="rect" id="Node000000" href="$classwebcface_1_1Internal_1_1DataSetBuffer.html" title=" " alt="" coords="5,5,289,31"/>
+<area shape="rect" id="Node000001" href="$classwebcface_1_1Internal_1_1Canvas2DDataBuf.html" title=" " alt="" coords="337,5,479,31"/>
+<area shape="poly" id="edge39_Node000000_Node000001" title=" " alt="" coords="303,15,337,15,337,21,303,21"/>
 </map>

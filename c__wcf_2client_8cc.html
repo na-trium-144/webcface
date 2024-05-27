@@ -147,7 +147,7 @@ $(document).ready(function(){initNavTree('c__wcf_2client_8cc.html',''); initResi
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for client.cc:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="c__wcf_2client_8cc__incl.svg" width="3927" height="623"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="c__wcf_2client_8cc__incl.svg" width="3902" height="770"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
@@ -155,9 +155,15 @@ Functions</h2></td></tr>
 <tr class="memitem:a91204ffa8e81e5821926147321aaf101" id="r_a91204ffa8e81e5821926147321aaf101"><td class="memItemLeft" align="right" valign="top"><a class="el" href="def__types_8h.html#a11e35bfe0822747dfabcce7f5220016a">wcfClient</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__wcf_2client_8cc.html#a91204ffa8e81e5821926147321aaf101">wcfInit</a> (const char *name, const char *host, int port)</td></tr>
 <tr class="memdesc:a91204ffa8e81e5821926147321aaf101"><td class="mdescLeft">&#160;</td><td class="mdescRight">クライアントを初期化する  <br /></td></tr>
 <tr class="separator:a91204ffa8e81e5821926147321aaf101"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7087bccb0f309cac0104c179954395a8" id="r_a7087bccb0f309cac0104c179954395a8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="def__types_8h.html#a11e35bfe0822747dfabcce7f5220016a">wcfClient</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__wcf_2client_8cc.html#a7087bccb0f309cac0104c179954395a8">wcfInitW</a> (const wchar_t *name, const wchar_t *host, int port)</td></tr>
+<tr class="memdesc:a7087bccb0f309cac0104c179954395a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">クライアントを初期化する (wstring)  <br /></td></tr>
+<tr class="separator:a7087bccb0f309cac0104c179954395a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4ea5df14c6f1a58b4590f9269abf82bb" id="r_a4ea5df14c6f1a58b4590f9269abf82bb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="def__types_8h.html#a11e35bfe0822747dfabcce7f5220016a">wcfClient</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__wcf_2client_8cc.html#a4ea5df14c6f1a58b4590f9269abf82bb">wcfInitDefault</a> (const char *name)</td></tr>
-<tr class="memdesc:a4ea5df14c6f1a58b4590f9269abf82bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">クライアントを初期化する  <br /></td></tr>
+<tr class="memdesc:a4ea5df14c6f1a58b4590f9269abf82bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">クライアントを初期化する (アドレスとポートはデフォルト)  <br /></td></tr>
 <tr class="separator:a4ea5df14c6f1a58b4590f9269abf82bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2288879b5fc641beba09ec3800cd5a38" id="r_a2288879b5fc641beba09ec3800cd5a38"><td class="memItemLeft" align="right" valign="top"><a class="el" href="def__types_8h.html#a11e35bfe0822747dfabcce7f5220016a">wcfClient</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__wcf_2client_8cc.html#a2288879b5fc641beba09ec3800cd5a38">wcfInitDefaultW</a> (const wchar_t *name)</td></tr>
+<tr class="memdesc:a2288879b5fc641beba09ec3800cd5a38"><td class="mdescLeft">&#160;</td><td class="mdescRight">クライアントを初期化する (アドレスとポートはデフォルト, wstring)  <br /></td></tr>
+<tr class="separator:a2288879b5fc641beba09ec3800cd5a38"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab9d51c692b17a6d3376494d8da0dbf40" id="r_ab9d51c692b17a6d3376494d8da0dbf40"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__wcf_2client_8cc.html#ab9d51c692b17a6d3376494d8da0dbf40">wcfIsValid</a> (<a class="el" href="def__types_8h.html#a11e35bfe0822747dfabcce7f5220016a">wcfClient</a> *wcli)</td></tr>
 <tr class="memdesc:ab9d51c692b17a6d3376494d8da0dbf40"><td class="mdescLeft">&#160;</td><td class="mdescRight">有効なClientのポインタであるかを返す  <br /></td></tr>
 <tr class="separator:ab9d51c692b17a6d3376494d8da0dbf40"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -174,10 +180,13 @@ Functions</h2></td></tr>
 <tr class="memdesc:ad675449898eb92ab9461d31fe88b4896"><td class="mdescLeft">&#160;</td><td class="mdescRight">送信用にセットしたデータをすべて送信キューに入れる。  <br /></td></tr>
 <tr class="separator:ad675449898eb92ab9461d31fe88b4896"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa371cd469c55d58b0332f2261a120533" id="r_aa371cd469c55d58b0332f2261a120533"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structwcfMultiVal.html">wcfMultiVal</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__wcf_2client_8cc.html#aa371cd469c55d58b0332f2261a120533">wcfValI</a> (int value)</td></tr>
+<tr class="memdesc:aa371cd469c55d58b0332f2261a120533"><td class="mdescLeft">&#160;</td><td class="mdescRight">int型のwcfMultiValを構築  <br /></td></tr>
 <tr class="separator:aa371cd469c55d58b0332f2261a120533"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aee7f0f53dcb913e408f3032f7c9f796b" id="r_aee7f0f53dcb913e408f3032f7c9f796b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structwcfMultiVal.html">wcfMultiVal</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__wcf_2client_8cc.html#aee7f0f53dcb913e408f3032f7c9f796b">wcfValD</a> (double value)</td></tr>
+<tr class="memdesc:aee7f0f53dcb913e408f3032f7c9f796b"><td class="mdescLeft">&#160;</td><td class="mdescRight">double型のwcfMultiValを構築  <br /></td></tr>
 <tr class="separator:aee7f0f53dcb913e408f3032f7c9f796b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aef51e8d5db05da0a19a3c4f58a4c5193" id="r_aef51e8d5db05da0a19a3c4f58a4c5193"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structwcfMultiVal.html">wcfMultiVal</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__wcf_2client_8cc.html#aef51e8d5db05da0a19a3c4f58a4c5193">wcfValS</a> (const char *value)</td></tr>
+<tr class="memdesc:aef51e8d5db05da0a19a3c4f58a4c5193"><td class="mdescLeft">&#160;</td><td class="mdescRight">文字列型のwcfMultiValを構築  <br /></td></tr>
 <tr class="separator:aef51e8d5db05da0a19a3c4f58a4c5193"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a93f58103344d8d304c88e6fa28a92eb6" id="r_a93f58103344d8d304c88e6fa28a92eb6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="def__types_8h.html#a3ac4b9c21f837154212676efa87b0b40">wcfStatus</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__wcf_2client_8cc.html#a93f58103344d8d304c88e6fa28a92eb6">wcfDestroy</a> (const void *ptr)</td></tr>
 <tr class="memdesc:a93f58103344d8d304c88e6fa28a92eb6"><td class="mdescLeft">&#160;</td><td class="mdescRight">wcfの関数から取得したポインタのデータを破棄  <br /></td></tr>
@@ -201,7 +210,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>クライアントを閉じる </p>
-<dl class="section since"><dt>Since</dt><dd>1.5 </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>ver1.5 </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>wcliが無効ならWCF_BAD_WCLI </dd></dl>
 
 </div>
@@ -223,7 +232,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>wcfの関数から取得したポインタのデータを破棄 </p>
-<dl class="section since"><dt>Since</dt><dd>1.7</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>ver1.7 </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">ptr</td><td>データを格納したポインタ </td></tr>
@@ -267,7 +276,15 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>クライアントを初期化する </p>
-<dl class="section since"><dt>Since</dt><dd>1.5 </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>ver1.5 </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">name</td><td>名前 (ver1.7〜:NULLも可) </td></tr>
+    <tr><td class="paramname">host</td><td>サーバーのアドレス </td></tr>
+    <tr><td class="paramname">port</td><td>サーバーのポート </td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section return"><dt>Returns</dt><dd>Clientのポインタ </dd></dl>
 
 </div>
@@ -288,9 +305,75 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>クライアントを初期化する </p>
-<dl class="section since"><dt>Since</dt><dd>1.5</dd></dl>
-<p>(サーバーのアドレスとポートはデフォルトになる) </p><dl class="section return"><dt>Returns</dt><dd>Clientのポインタ </dd></dl>
+<p>クライアントを初期化する (アドレスとポートはデフォルト) </p>
+<dl class="section since"><dt>Since</dt><dd>ver1.5 </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">name</td><td>名前 (ver1.7〜:NULLも可) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Clientのポインタ </dd></dl>
+
+</div>
+</div>
+<a id="a2288879b5fc641beba09ec3800cd5a38" name="a2288879b5fc641beba09ec3800cd5a38"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2288879b5fc641beba09ec3800cd5a38">&#9670;&#160;</a></span>wcfInitDefaultW()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="def__types_8h.html#a11e35bfe0822747dfabcce7f5220016a">wcfClient</a> * wcfInitDefaultW </td>
+          <td>(</td>
+          <td class="paramtype">const wchar_t *&#160;</td>
+          <td class="paramname"><em>name</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>クライアントを初期化する (アドレスとポートはデフォルト, wstring) </p>
+<dl class="section since"><dt>Since</dt><dd>ver1.12 </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="c__wcf_2client_8h.html#a4ea5df14c6f1a58b4590f9269abf82bb" title="クライアントを初期化する (アドレスとポートはデフォルト)">wcfInitDefault</a> </dd></dl>
+
+</div>
+</div>
+<a id="a7087bccb0f309cac0104c179954395a8" name="a7087bccb0f309cac0104c179954395a8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7087bccb0f309cac0104c179954395a8">&#9670;&#160;</a></span>wcfInitW()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="def__types_8h.html#a11e35bfe0822747dfabcce7f5220016a">wcfClient</a> * wcfInitW </td>
+          <td>(</td>
+          <td class="paramtype">const wchar_t *&#160;</td>
+          <td class="paramname"><em>name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const wchar_t *&#160;</td>
+          <td class="paramname"><em>host</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>port</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>クライアントを初期化する (wstring) </p>
+<dl class="section since"><dt>Since</dt><dd>ver1.12 </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="c__wcf_2client_8h.html#a91204ffa8e81e5821926147321aaf101" title="クライアントを初期化する">wcfInit</a> </dd></dl>
 
 </div>
 </div>
@@ -311,7 +394,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Clientが接続されているかどうかを返す </p>
-<dl class="section since"><dt>Since</dt><dd>1.5 </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>ver1.5 </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>wcliが正常にwcfInitされサーバーに接続できていれば1、そうでなければ0 </dd></dl>
 
 </div>
@@ -333,7 +416,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>有効なClientのポインタであるかを返す </p>
-<dl class="section since"><dt>Since</dt><dd>1.5 </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>ver1.5 </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>wcliが正常にwcfInitされwcfCloseする前のポインタであれば1、そうでなければ0 </dd></dl>
 
 </div>
@@ -355,7 +438,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>接続を開始する </p>
-<dl class="section since"><dt>Since</dt><dd>1.5 </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>ver1.5 </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>wcliが無効ならWCF_BAD_WCLI </dd></dl>
 
 </div>
@@ -377,7 +460,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>送信用にセットしたデータをすべて送信キューに入れる。 </p>
-<dl class="section since"><dt>Since</dt><dd>1.5</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>ver1.5</dd></dl>
 <p>実際に送信をするのは別スレッドであり、この関数はブロックしない。</p>
 <p>サーバーに接続していない場合、wcfStart()を呼び出す。</p>
 <dl class="section return"><dt>Returns</dt><dd>wcliが無効ならWCF_BAD_WCLI </dd></dl>
@@ -399,7 +482,9 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="section since"><dt>Since</dt><dd>1.5 </dd></dl>
+
+<p>double型のwcfMultiValを構築 </p>
+<dl class="section since"><dt>Since</dt><dd>ver1.5 </dd></dl>
 
 </div>
 </div>
@@ -418,7 +503,9 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="section since"><dt>Since</dt><dd>1.5 </dd></dl>
+
+<p>int型のwcfMultiValを構築 </p>
+<dl class="section since"><dt>Since</dt><dd>ver1.5 </dd></dl>
 
 </div>
 </div>
@@ -437,7 +524,9 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="section since"><dt>Since</dt><dd>1.5 </dd></dl>
+
+<p>文字列型のwcfMultiValを構築 </p>
+<dl class="section since"><dt>Since</dt><dd>ver1.5 </dd></dl>
 
 </div>
 </div>
@@ -446,8 +535,8 @@ Functions</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_e20733c077072a869a8a8de8e75bf9b9.html">c_wcf</a></li><li class="navelem"><a class="el" href="c__wcf_2client_8cc.html">client.cc</a></li>
-    <li class="footer">Generated on Mon May 20 2024 16:35:48 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="navelem"><a class="el" href="dir_d9b8df6581dc8f9b576b8a20e0771d14.html">c_wcf</a></li><li class="navelem"><a class="el" href="c__wcf_2client_8cc.html">client.cc</a></li>
+    <li class="footer">Generated on Mon May 27 2024 16:47:57 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

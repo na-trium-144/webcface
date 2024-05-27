@@ -1,8 +1,20 @@
 var searchData=
 [
-  ['c_5fwcf_0',['c_wcf',['../namespacec__wcf.html',1,'']]],
-  ['common_1',['Common',['../namespaceCommon.html',1,'']]],
-  ['common_3a_3arobotjoints_2',['RobotJoints',['../namespaceCommon_1_1RobotJoints.html',1,'Common']]],
-  ['components_3',['Components',['../namespaceComponents.html',1,'']]],
-  ['components_3a_3ageometries_4',['Geometries',['../namespaceComponents_1_1Geometries.html',1,'Components']]]
+  ['webcface_0',['webcface',['../namespacewebcface.html',1,'']]],
+  ['webcface_3a_3ac_5fwcf_1',['c_wcf',['../namespacewebcface_1_1c__wcf.html',1,'webcface']]],
+  ['webcface_3a_3acommon_2',['Common',['../namespacewebcface_1_1Common.html',1,'webcface']]],
+  ['webcface_3a_3acommon_3a_3arobotjoints_3',['RobotJoints',['../namespacewebcface_1_1Common_1_1RobotJoints.html',1,'webcface::Common']]],
+  ['webcface_3a_3acomponents_4',['Components',['../namespacewebcface_1_1Components.html',1,'webcface']]],
+  ['webcface_3a_3acomponents_3a_3ageometries_5',['Geometries',['../namespacewebcface_1_1Components_1_1Geometries.html',1,'webcface::Components']]],
+  ['webcface_3a_3aencoding_6',['Encoding',['../namespacewebcface_1_1Encoding.html',1,'webcface']]],
+  ['webcface_3a_3afuncwrapper_7',['FuncWrapper',['../namespacewebcface_1_1FuncWrapper.html',1,'webcface']]],
+  ['webcface_3a_3ageometries_8',['Geometries',['../namespacewebcface_1_1Components_1_1Geometries.html',1,'webcface']]],
+  ['webcface_3a_3ainternal_9',['Internal',['../namespacewebcface_1_1Internal.html',1,'webcface']]],
+  ['webcface_3a_3ainternal_3a_3awebsocket_10',['WebSocket',['../namespacewebcface_1_1Internal_1_1WebSocket.html',1,'webcface::Internal']]],
+  ['webcface_3a_3amessage_11',['Message',['../namespacewebcface_1_1Message.html',1,'webcface']]],
+  ['webcface_3a_3amessage_3a_3amessagekind_12',['MessageKind',['../namespacewebcface_1_1Message_1_1MessageKind.html',1,'webcface::Message']]],
+  ['webcface_3a_3amessage_3a_3apath_13',['Path',['../namespacewebcface_1_1Message_1_1Path.html',1,'webcface::Message']]],
+  ['webcface_3a_3arobotjoints_14',['RobotJoints',['../namespacewebcface_1_1Common_1_1RobotJoints.html',1,'webcface']]],
+  ['webcface_3a_3aserver_15',['Server',['../namespacewebcface_1_1Server.html',1,'webcface']]],
+  ['webcface_3a_3aversion_16',['Version',['../namespacewebcface_1_1Version.html',1,'webcface']]]
 ];

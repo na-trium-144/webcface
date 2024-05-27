@@ -1,0 +1,7 @@
+<map id="Res&lt; RobotModel &gt;" name="Res&lt; RobotModel &gt;">
+<area shape="rect" id="Node000001" title=" " alt="" coords="55,197,209,223"/>
+<area shape="rect" id="Node000002" href="$structwebcface_1_1Message_1_1MessageBase.html" title=" " alt="" coords="5,108,259,148"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="135,162,135,197,129,197,129,162"/>
+<area shape="rect" id="Node000003" href="$structwebcface_1_1Message_1_1MessageBase.html" title="型からkindを取得するためだけのベースクラス" alt="" coords="57,5,207,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="135,45,135,108,129,108,129,45"/>
+</map>

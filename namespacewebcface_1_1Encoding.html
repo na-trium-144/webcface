@@ -1,0 +1,480 @@
+<!-- HTML header for doxygen 1.9.8-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>WebCFace: webcface::Encoding Namespace Reference</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen_custom.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeDarkModeToggle.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeParagraphLink.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeTabs.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeInteractiveToc.init()
+</script>
+<script type="text/javascript">
+  function insertBadge(){
+    for(const sp of document.getElementsByClassName('since-c')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-00599c?logo=C%2B%2B" alt="c++ ver${ver}" class="inline">`;
+    }
+    for(const sp of document.getElementsByClassName('since-js')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-f7df1e?logo=JavaScript&amp;logoColor=black" alt="js ver${ver}" class="inline">`;
+    }
+    for(const sp of document.getElementsByClassName('since-py')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-3776ab?logo=python&amp;logoColor=white" alt="python ver${ver}" class="inline">`;
+    }
+  }
+</script>
+</head>
+<body onload="insertBadge();">
+<!-- https://tholman.com/github-corners/ -->
+<a href="https://github.com/na-trium-144/webcface" class="github-corner" aria-label="View source on GitHub">
+  <svg width="80" height="80" viewBox="0 0 250 250" style="fill:#64CEAA; color:#fff; position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path>
+  </svg>
+</a>
+<style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;1.11.3</span>
+   </div>
+   <div id="projectbrief">Web-based RPC &amp; UI Library</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.9.8 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function(){initNavTree('namespacewebcface_1_1Encoding.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#func-members">Functions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
+  <div class="headertitle"><div class="title">webcface::Encoding Namespace Reference</div></div>
+</div><!--header-->
+<div class="contents">
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:a478748a436d45cac26bdb4c4af55f54b" id="r_a478748a436d45cac26bdb4c4af55f54b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Encoding.html#a478748a436d45cac26bdb4c4af55f54b">usingUTF8</a> (bool flag)</td></tr>
+<tr class="memdesc:a478748a436d45cac26bdb4c4af55f54b"><td class="mdescLeft">&#160;</td><td class="mdescRight">webcfaceが使用するエンコーディングを設定する  <br /></td></tr>
+<tr class="separator:a478748a436d45cac26bdb4c4af55f54b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae57423f1244b067999069f20f73eb166" id="r_ae57423f1244b067999069f20f73eb166"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Encoding.html#ae57423f1244b067999069f20f73eb166">usingUTF8</a> ()</td></tr>
+<tr class="memdesc:ae57423f1244b067999069f20f73eb166"><td class="mdescLeft">&#160;</td><td class="mdescRight">webcfaceが使用するエンコーディングを取得する  <br /></td></tr>
+<tr class="separator:ae57423f1244b067999069f20f73eb166"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ade708e0c86c187846e03a6c5af1b2bca" id="r_ade708e0c86c187846e03a6c5af1b2bca"><td class="memItemLeft" align="right" valign="top">std::u8string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Encoding.html#ade708e0c86c187846e03a6c5af1b2bca">encode</a> (std::string_view name)</td></tr>
+<tr class="memdesc:ade708e0c86c187846e03a6c5af1b2bca"><td class="mdescLeft">&#160;</td><td class="mdescRight">stringをutf8のchar配列に変換する  <br /></td></tr>
+<tr class="separator:ade708e0c86c187846e03a6c5af1b2bca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0ed2c41e19ff1f54bb355c0392e8a55d" id="r_a0ed2c41e19ff1f54bb355c0392e8a55d"><td class="memItemLeft" align="right" valign="top">std::u8string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Encoding.html#a0ed2c41e19ff1f54bb355c0392e8a55d">encodeW</a> (std::wstring_view name)</td></tr>
+<tr class="memdesc:a0ed2c41e19ff1f54bb355c0392e8a55d"><td class="mdescLeft">&#160;</td><td class="mdescRight">wstringをutf8のchar配列に変換する  <br /></td></tr>
+<tr class="separator:a0ed2c41e19ff1f54bb355c0392e8a55d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a14b83a27bbb7c55bc9725de209613066" id="r_a14b83a27bbb7c55bc9725de209613066"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Encoding.html#a14b83a27bbb7c55bc9725de209613066">toNarrow</a> (std::wstring_view name_ref)</td></tr>
+<tr class="memdesc:a14b83a27bbb7c55bc9725de209613066"><td class="mdescLeft">&#160;</td><td class="mdescRight">wstringをstringに変換する  <br /></td></tr>
+<tr class="separator:a14b83a27bbb7c55bc9725de209613066"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad6ff63082db5229380ce08d1ab7c92d5" id="r_ad6ff63082db5229380ce08d1ab7c92d5"><td class="memItemLeft" align="right" valign="top">std::wstring&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Encoding.html#ad6ff63082db5229380ce08d1ab7c92d5">decodeW</a> (std::u8string_view name_ref)</td></tr>
+<tr class="memdesc:ad6ff63082db5229380ce08d1ab7c92d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">utf8の文字列をwstringに変換する  <br /></td></tr>
+<tr class="separator:ad6ff63082db5229380ce08d1ab7c92d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a54e0d3d7c5de948abb1cacf599743264" id="r_a54e0d3d7c5de948abb1cacf599743264"><td class="memItemLeft" align="right" valign="top">std::wstring&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Encoding.html#a54e0d3d7c5de948abb1cacf599743264">toWide</a> (std::string_view name_ref)</td></tr>
+<tr class="memdesc:a54e0d3d7c5de948abb1cacf599743264"><td class="mdescLeft">&#160;</td><td class="mdescRight">stringをwstringに変換する  <br /></td></tr>
+<tr class="separator:a54e0d3d7c5de948abb1cacf599743264"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adaf1a7697cd4cf9b6fe1428c7d0cb433" id="r_adaf1a7697cd4cf9b6fe1428c7d0cb433"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Encoding.html#adaf1a7697cd4cf9b6fe1428c7d0cb433">decode</a> (std::u8string_view name_ref)</td></tr>
+<tr class="memdesc:adaf1a7697cd4cf9b6fe1428c7d0cb433"><td class="mdescLeft">&#160;</td><td class="mdescRight">utf8の文字列をstringに変換する  <br /></td></tr>
+<tr class="separator:adaf1a7697cd4cf9b6fe1428c7d0cb433"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afff695d48a8809ef04f048e8ccc730aa" id="r_afff695d48a8809ef04f048e8ccc730aa"><td class="memItemLeft" align="right" valign="top">std::u8string_view&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Encoding.html#afff695d48a8809ef04f048e8ccc730aa">castToU8</a> (std::string_view name)</td></tr>
+<tr class="memdesc:afff695d48a8809ef04f048e8ccc730aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">stringをu8stringにキャストする  <br /></td></tr>
+<tr class="separator:afff695d48a8809ef04f048e8ccc730aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aec962491891b529b93c97668d385ff29" id="r_aec962491891b529b93c97668d385ff29"><td class="memItemLeft" align="right" valign="top">std::string_view&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Encoding.html#aec962491891b529b93c97668d385ff29">castFromU8</a> (std::u8string_view name)</td></tr>
+<tr class="memdesc:aec962491891b529b93c97668d385ff29"><td class="mdescLeft">&#160;</td><td class="mdescRight">u8stringをstringにキャストする  <br /></td></tr>
+<tr class="separator:aec962491891b529b93c97668d385ff29"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a22152d1ee24fb53ef812c9f1e6f4d833" id="r_a22152d1ee24fb53ef812c9f1e6f4d833"><td class="memItemLeft" align="right" valign="top">std::u8string_view&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Encoding.html#a22152d1ee24fb53ef812c9f1e6f4d833">castToU8</a> (const char *data, std::size_t size)</td></tr>
+<tr class="separator:a22152d1ee24fb53ef812c9f1e6f4d833"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:af3606c1f9e63f6fdca78d6ec6226a4ee" id="r_af3606c1f9e63f6fdca78d6ec6226a4ee"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Encoding.html#af3606c1f9e63f6fdca78d6ec6226a4ee">using_utf8</a> = true</td></tr>
+<tr class="separator:af3606c1f9e63f6fdca78d6ec6226a4ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<h2 class="groupheader">Function Documentation</h2>
+<a id="aec962491891b529b93c97668d385ff29" name="aec962491891b529b93c97668d385ff29"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aec962491891b529b93c97668d385ff29">&#9670;&#160;</a></span>castFromU8()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string_view castFromU8 </td>
+          <td>(</td>
+          <td class="paramtype">std::u8string_view&#160;</td>
+          <td class="paramname"><em>name</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>u8stringをstringにキャストする </p>
+<dl class="section since"><dt>Since</dt><dd>ver1.12 </dd></dl>
+
+</div>
+</div>
+<a id="a22152d1ee24fb53ef812c9f1e6f4d833" name="a22152d1ee24fb53ef812c9f1e6f4d833"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a22152d1ee24fb53ef812c9f1e6f4d833">&#9670;&#160;</a></span>castToU8() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::u8string_view castToU8 </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>size</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section since"><dt>Since</dt><dd>ver1.12 </dd></dl>
+
+</div>
+</div>
+<a id="afff695d48a8809ef04f048e8ccc730aa" name="afff695d48a8809ef04f048e8ccc730aa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afff695d48a8809ef04f048e8ccc730aa">&#9670;&#160;</a></span>castToU8() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::u8string_view castToU8 </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>name</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>stringをu8stringにキャストする </p>
+<dl class="section since"><dt>Since</dt><dd>ver1.12 </dd></dl>
+
+</div>
+</div>
+<a id="adaf1a7697cd4cf9b6fe1428c7d0cb433" name="adaf1a7697cd4cf9b6fe1428c7d0cb433"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adaf1a7697cd4cf9b6fe1428c7d0cb433">&#9670;&#160;</a></span>decode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string decode </td>
+          <td>(</td>
+          <td class="paramtype">std::u8string_view&#160;</td>
+          <td class="paramname"><em>name_ref</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>utf8の文字列をstringに変換する </p>
+<dl class="section since"><dt>Since</dt><dd>ver1.12</dd></dl>
+<p>windowsでusingUTF8(false)の場合はANSIに、 それ以外の場合なにもせずそのままコピーする。 </p>
+
+</div>
+</div>
+<a id="ad6ff63082db5229380ce08d1ab7c92d5" name="ad6ff63082db5229380ce08d1ab7c92d5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad6ff63082db5229380ce08d1ab7c92d5">&#9670;&#160;</a></span>decodeW()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::wstring decodeW </td>
+          <td>(</td>
+          <td class="paramtype">std::u8string_view&#160;</td>
+          <td class="paramname"><em>name_ref</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>utf8の文字列をwstringに変換する </p>
+<dl class="section since"><dt>Since</dt><dd>ver1.12 </dd></dl>
+
+</div>
+</div>
+<a id="ade708e0c86c187846e03a6c5af1b2bca" name="ade708e0c86c187846e03a6c5af1b2bca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ade708e0c86c187846e03a6c5af1b2bca">&#9670;&#160;</a></span>encode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::u8string encode </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>name</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>stringをutf8のchar配列に変換する </p>
+<dl class="section since"><dt>Since</dt><dd>ver1.12</dd></dl>
+<p>windowsではusingUTF8(false)の場合ANSIからutf8へエンコーディングの変換を行うが、 usingUTF8(true)の場合なにもせずそのままコピーする。</p>
+<p>utf8であることを明確にするために戻り値型をu8stringにしている </p>
+
+</div>
+</div>
+<a id="a0ed2c41e19ff1f54bb355c0392e8a55d" name="a0ed2c41e19ff1f54bb355c0392e8a55d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0ed2c41e19ff1f54bb355c0392e8a55d">&#9670;&#160;</a></span>encodeW()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::u8string encodeW </td>
+          <td>(</td>
+          <td class="paramtype">std::wstring_view&#160;</td>
+          <td class="paramname"><em>name</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>wstringをutf8のchar配列に変換する </p>
+<dl class="section since"><dt>Since</dt><dd>ver1.12</dd></dl>
+<p>(unixではたぶん必要ないが、::ifで分岐するのがめんどいので作ってしまう)</p>
+<p>utf8であることを明確にするために戻り値型をu8stringにしている </p>
+
+</div>
+</div>
+<a id="a14b83a27bbb7c55bc9725de209613066" name="a14b83a27bbb7c55bc9725de209613066"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a14b83a27bbb7c55bc9725de209613066">&#9670;&#160;</a></span>toNarrow()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string toNarrow </td>
+          <td>(</td>
+          <td class="paramtype">std::wstring_view&#160;</td>
+          <td class="paramname"><em>name_ref</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>wstringをstringに変換する </p>
+<dl class="section since"><dt>Since</dt><dd>ver1.12 </dd></dl>
+
+</div>
+</div>
+<a id="a54e0d3d7c5de948abb1cacf599743264" name="a54e0d3d7c5de948abb1cacf599743264"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a54e0d3d7c5de948abb1cacf599743264">&#9670;&#160;</a></span>toWide()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::wstring toWide </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>name_ref</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>stringをwstringに変換する </p>
+<dl class="section since"><dt>Since</dt><dd>ver1.12 </dd></dl>
+
+</div>
+</div>
+<a id="ae57423f1244b067999069f20f73eb166" name="ae57423f1244b067999069f20f73eb166"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae57423f1244b067999069f20f73eb166">&#9670;&#160;</a></span>usingUTF8() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool usingUTF8 </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>webcfaceが使用するエンコーディングを取得する </p>
+<dl class="section since"><dt>Since</dt><dd>ver1.12 </dd></dl>
+
+</div>
+</div>
+<a id="a478748a436d45cac26bdb4c4af55f54b" name="a478748a436d45cac26bdb4c4af55f54b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a478748a436d45cac26bdb4c4af55f54b">&#9670;&#160;</a></span>usingUTF8() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void usingUTF8 </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>flag</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>webcfaceが使用するエンコーディングを設定する </p>
+<dl class="section since"><dt>Since</dt><dd>ver1.12</dd></dl>
+<ul>
+<li>windowsでは、falseの場合webcfaceの各種クラスのインタフェースで使われる std::string をすべてANSIエンコーディングとみなし、 内部でutf8と相互変換する。</li>
+<li>デフォルトは true (以前のバージョンとの互換性のため)</li>
+<li>unixでは効果がない。</li>
+<li>std::wstring をspdlogに渡して使用する場合、内部で wstring→utf-8 の変換がされる場合があるのでtrueにすることを推奨</li>
+<li>spdlogのloggerではなく <a class="el" href="classwebcface_1_1Client.html#aff39923e2bfe65e0a42c14386a2f9ab5" title="webcfaceに出力するwstreambuf">Client::loggerWStreamBuf()</a> を使用する場合は、 出力するコンソールのコードページに合わせた設定にする必要がある </li>
+</ul>
+
+</div>
+</div>
+<h2 class="groupheader">Variable Documentation</h2>
+<a id="af3606c1f9e63f6fdca78d6ec6226a4ee" name="af3606c1f9e63f6fdca78d6ec6226a4ee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af3606c1f9e63f6fdca78d6ec6226a4ee">&#9670;&#160;</a></span>using_utf8</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool using_utf8 = true</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="namespacewebcface_1_1Encoding.html">Encoding</a></li>
+    <li class="footer">Generated on Mon May 27 2024 16:47:57 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+  </ul>
+</div>
+</body>
+</html>

@@ -1,10 +1,10 @@
 var unix__path_8cc =
 [
-    [ "detectWSL1", "unix__path_8cc.html#ad8a3435fe3920319e155214a9cc5f1a4", null ],
-    [ "detectWSL2", "unix__path_8cc.html#a8d878e91dab83bb87a2ada293ac10e76", null ],
-    [ "initUnixSocket", "unix__path_8cc.html#a89965dc339c6f7ce18644a97de59d624", null ],
-    [ "unixSocketPath", "unix__path_8cc.html#a1378d2ca4b40ebe2c3c98e7620e33b99", null ],
-    [ "unixSocketPathWSLInterop", "unix__path_8cc.html#ae92129fe79e0f97557a400cc2c2051d3", null ],
-    [ "updateUnixSocketPerms", "unix__path_8cc.html#a9a38cadd11dbb61dfcc23fda30cc04ca", null ],
-    [ "wsl2Host", "unix__path_8cc.html#a8a2bde90fd8eb3dfb066c973a99dd60e", null ]
+    [ "detectWSL1", "unix__path_8cc.html#a6e2d4741011d4256173c3fa335809d64", null ],
+    [ "detectWSL2", "unix__path_8cc.html#a133fac0549803267565a9c07f0f45b68", null ],
+    [ "initUnixSocket", "unix__path_8cc.html#a7ca9db6dc4e8859d3ff8e3140ed6c324", null ],
+    [ "unixSocketPath", "unix__path_8cc.html#a33d1440a7fd835f7640aef459f9a2065", null ],
+    [ "unixSocketPathWSLInterop", "unix__path_8cc.html#aedc5de11a53fc1ae4b7708070d743651", null ],
+    [ "updateUnixSocketPerms", "unix__path_8cc.html#abe1e8f490bf607708fc35c06484fca6b", null ],
+    [ "wsl2Host", "unix__path_8cc.html#a6f66b6ebca37cbc0fd22190142e37fb3", null ]
 ];

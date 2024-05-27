@@ -145,26 +145,41 @@ $(document).ready(function(){initNavTree('c__wcf_2view_8cc.html',''); initResiza
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="c__wcf__internal_8h_source.html">c_wcf_internal.h</a>&quot;</code><br />
 <code>#include &lt;<a class="el" href="view_8h_source.html">webcface/view.h</a>&gt;</code><br />
+<code>#include &lt;cstring&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for view.cc:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="c__wcf_2view_8cc__incl.svg" width="4048" height="623"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="c__wcf_2view_8cc__incl.svg" width="4114" height="770"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:aa4da60375e4605b9c85fa1ded4d1c479" id="r_aa4da60375e4605b9c85fa1ded4d1c479"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structwcfViewComponent.html">wcfViewComponent</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__wcf_2view_8cc.html#aa4da60375e4605b9c85fa1ded4d1c479">wcfText</a> (const char *<a class="el" href="namespaceComponents.html#a005dcb8a17c7ec4d9de115890555d5e8">text</a>)</td></tr>
+<tr class="memitem:ac07b9cc0900751a0d4f8bc1cbe0a282d" id="r_ac07b9cc0900751a0d4f8bc1cbe0a282d"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structwcfViewComponent.html">wcfViewComponent</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__wcf_2view_8cc.html#ac07b9cc0900751a0d4f8bc1cbe0a282d">wcfViewInit</a> ()</td></tr>
+<tr class="separator:ac07b9cc0900751a0d4f8bc1cbe0a282d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa4da60375e4605b9c85fa1ded4d1c479" id="r_aa4da60375e4605b9c85fa1ded4d1c479"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structwcfViewComponent.html">wcfViewComponent</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__wcf_2view_8cc.html#aa4da60375e4605b9c85fa1ded4d1c479">wcfText</a> (const char *text)</td></tr>
 <tr class="separator:aa4da60375e4605b9c85fa1ded4d1c479"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a75cb41584bf46920050c9be45f71aa1b" id="r_a75cb41584bf46920050c9be45f71aa1b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structwcfViewComponent.html">wcfViewComponent</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__wcf_2view_8cc.html#a75cb41584bf46920050c9be45f71aa1b">wcfNewLine</a> ()</td></tr>
 <tr class="separator:a75cb41584bf46920050c9be45f71aa1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af6ea4ac458a3dfde614db687447f4cd4" id="r_af6ea4ac458a3dfde614db687447f4cd4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structwcfViewComponent.html">wcfViewComponent</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__wcf_2view_8cc.html#af6ea4ac458a3dfde614db687447f4cd4">wcfButton</a> (const char *<a class="el" href="namespaceComponents.html#a005dcb8a17c7ec4d9de115890555d5e8">text</a>, const char *on_click_member, const char *on_click_field)</td></tr>
+<tr class="memitem:af6ea4ac458a3dfde614db687447f4cd4" id="r_af6ea4ac458a3dfde614db687447f4cd4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structwcfViewComponent.html">wcfViewComponent</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__wcf_2view_8cc.html#af6ea4ac458a3dfde614db687447f4cd4">wcfButton</a> (const char *text, const char *on_click_member, const char *on_click_field)</td></tr>
 <tr class="separator:af6ea4ac458a3dfde614db687447f4cd4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a25562396e4566d791cf904187fc65154" id="r_a25562396e4566d791cf904187fc65154"><td class="memTemplParams" colspan="2">template&lt;typename CharT &gt; </td></tr>
+<tr class="memitem:a25562396e4566d791cf904187fc65154"><td class="memTemplItemLeft" align="right" valign="top">static <a class="el" href="def__types_8h.html#a3ac4b9c21f837154212676efa87b0b40">wcfStatus</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="c__wcf_2view_8cc.html#a25562396e4566d791cf904187fc65154">wcfViewSetT</a> (<a class="el" href="def__types_8h.html#a11e35bfe0822747dfabcce7f5220016a">wcfClient</a> *wcli, const CharT *field, const typename <a class="el" href="structwebcface_1_1c__wcf_1_1CharType.html">CharType</a>&lt; CharT &gt;::CComponent *components, int size)</td></tr>
+<tr class="separator:a25562396e4566d791cf904187fc65154"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a599095a5895f34ef17116d73402bba68" id="r_a599095a5895f34ef17116d73402bba68"><td class="memTemplParams" colspan="2">template&lt;typename CharT &gt; </td></tr>
+<tr class="memitem:a599095a5895f34ef17116d73402bba68"><td class="memTemplItemLeft" align="right" valign="top">static <a class="el" href="def__types_8h.html#a3ac4b9c21f837154212676efa87b0b40">wcfStatus</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="c__wcf_2view_8cc.html#a599095a5895f34ef17116d73402bba68">wcfViewGetT</a> (<a class="el" href="def__types_8h.html#a11e35bfe0822747dfabcce7f5220016a">wcfClient</a> *wcli, const CharT *member, const CharT *field, typename <a class="el" href="structwebcface_1_1c__wcf_1_1CharType.html">CharType</a>&lt; CharT &gt;::CComponent **components, int *recv_size)</td></tr>
+<tr class="separator:a599095a5895f34ef17116d73402bba68"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac4ee7b53b9afcff2d84a138a142ae00d" id="r_ac4ee7b53b9afcff2d84a138a142ae00d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="def__types_8h.html#a3ac4b9c21f837154212676efa87b0b40">wcfStatus</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__wcf_2view_8cc.html#ac4ee7b53b9afcff2d84a138a142ae00d">wcfViewSet</a> (<a class="el" href="def__types_8h.html#a11e35bfe0822747dfabcce7f5220016a">wcfClient</a> *wcli, const char *field, const <a class="el" href="structwcfViewComponent.html">wcfViewComponent</a> *components, int size)</td></tr>
 <tr class="memdesc:ac4ee7b53b9afcff2d84a138a142ae00d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Viewを送信する  <br /></td></tr>
 <tr class="separator:ac4ee7b53b9afcff2d84a138a142ae00d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4a8274762f420df020364ad27fb8c795" id="r_a4a8274762f420df020364ad27fb8c795"><td class="memItemLeft" align="right" valign="top"><a class="el" href="def__types_8h.html#a3ac4b9c21f837154212676efa87b0b40">wcfStatus</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__wcf_2view_8cc.html#a4a8274762f420df020364ad27fb8c795">wcfViewSetW</a> (<a class="el" href="def__types_8h.html#a11e35bfe0822747dfabcce7f5220016a">wcfClient</a> *wcli, const wchar_t *field, const <a class="el" href="structwcfViewComponentW.html">wcfViewComponentW</a> *components, int size)</td></tr>
+<tr class="memdesc:a4a8274762f420df020364ad27fb8c795"><td class="mdescLeft">&#160;</td><td class="mdescRight">Viewを送信する (wstring)  <br /></td></tr>
+<tr class="separator:a4a8274762f420df020364ad27fb8c795"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a497c9ae39d84d9efde5574adc41e2cdf" id="r_a497c9ae39d84d9efde5574adc41e2cdf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="def__types_8h.html#a3ac4b9c21f837154212676efa87b0b40">wcfStatus</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__wcf_2view_8cc.html#a497c9ae39d84d9efde5574adc41e2cdf">wcfViewGet</a> (<a class="el" href="def__types_8h.html#a11e35bfe0822747dfabcce7f5220016a">wcfClient</a> *wcli, const char *member, const char *field, <a class="el" href="structwcfViewComponent.html">wcfViewComponent</a> **components, int *recv_size)</td></tr>
 <tr class="memdesc:a497c9ae39d84d9efde5574adc41e2cdf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Viewを受信する  <br /></td></tr>
 <tr class="separator:a497c9ae39d84d9efde5574adc41e2cdf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a727fd7cf3bd5e725f83038f2e3e1c493" id="r_a727fd7cf3bd5e725f83038f2e3e1c493"><td class="memItemLeft" align="right" valign="top"><a class="el" href="def__types_8h.html#a3ac4b9c21f837154212676efa87b0b40">wcfStatus</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__wcf_2view_8cc.html#a727fd7cf3bd5e725f83038f2e3e1c493">wcfViewGetW</a> (<a class="el" href="def__types_8h.html#a11e35bfe0822747dfabcce7f5220016a">wcfClient</a> *wcli, const wchar_t *member, const wchar_t *field, <a class="el" href="structwcfViewComponentW.html">wcfViewComponentW</a> **components, int *recv_size)</td></tr>
+<tr class="memdesc:a727fd7cf3bd5e725f83038f2e3e1c493"><td class="mdescLeft">&#160;</td><td class="mdescRight">Viewを受信する (wstring)  <br /></td></tr>
+<tr class="separator:a727fd7cf3bd5e725f83038f2e3e1c493"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="af6ea4ac458a3dfde614db687447f4cd4" name="af6ea4ac458a3dfde614db687447f4cd4"></a>
@@ -314,6 +329,137 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a599095a5895f34ef17116d73402bba68" name="a599095a5895f34ef17116d73402bba68"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a599095a5895f34ef17116d73402bba68">&#9670;&#160;</a></span>wcfViewGetT()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CharT &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="def__types_8h.html#a3ac4b9c21f837154212676efa87b0b40">wcfStatus</a> wcfViewGetT </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="def__types_8h.html#a11e35bfe0822747dfabcce7f5220016a">wcfClient</a> *&#160;</td>
+          <td class="paramname"><em>wcli</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const CharT *&#160;</td>
+          <td class="paramname"><em>member</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const CharT *&#160;</td>
+          <td class="paramname"><em>field</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename <a class="el" href="structwebcface_1_1c__wcf_1_1CharType.html">CharType</a>&lt; CharT &gt;::CComponent **&#160;</td>
+          <td class="paramname"><em>components</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>recv_size</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a727fd7cf3bd5e725f83038f2e3e1c493" name="a727fd7cf3bd5e725f83038f2e3e1c493"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a727fd7cf3bd5e725f83038f2e3e1c493">&#9670;&#160;</a></span>wcfViewGetW()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="def__types_8h.html#a3ac4b9c21f837154212676efa87b0b40">wcfStatus</a> wcfViewGetW </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="def__types_8h.html#a11e35bfe0822747dfabcce7f5220016a">wcfClient</a> *&#160;</td>
+          <td class="paramname"><em>wcli</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const wchar_t *&#160;</td>
+          <td class="paramname"><em>member</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const wchar_t *&#160;</td>
+          <td class="paramname"><em>field</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structwcfViewComponentW.html">wcfViewComponentW</a> **&#160;</td>
+          <td class="paramname"><em>components</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>recv_size</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Viewを受信する (wstring) </p>
+<dl class="section since"><dt>Since</dt><dd>1.12 </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="c__wcf_2view_8h.html#a497c9ae39d84d9efde5574adc41e2cdf" title="Viewを受信する">wcfViewGet</a> </dd></dl>
+
+</div>
+</div>
+<a id="ac07b9cc0900751a0d4f8bc1cbe0a282d" name="ac07b9cc0900751a0d4f8bc1cbe0a282d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac07b9cc0900751a0d4f8bc1cbe0a282d">&#9670;&#160;</a></span>wcfViewInit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="structwcfViewComponent.html">wcfViewComponent</a> wcfViewInit </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="ac4ee7b53b9afcff2d84a138a142ae00d" name="ac4ee7b53b9afcff2d84a138a142ae00d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac4ee7b53b9afcff2d84a138a142ae00d">&#9670;&#160;</a></span>wcfViewSet()</h2>
 
@@ -367,13 +513,107 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a25562396e4566d791cf904187fc65154" name="a25562396e4566d791cf904187fc65154"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a25562396e4566d791cf904187fc65154">&#9670;&#160;</a></span>wcfViewSetT()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CharT &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="def__types_8h.html#a3ac4b9c21f837154212676efa87b0b40">wcfStatus</a> wcfViewSetT </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="def__types_8h.html#a11e35bfe0822747dfabcce7f5220016a">wcfClient</a> *&#160;</td>
+          <td class="paramname"><em>wcli</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const CharT *&#160;</td>
+          <td class="paramname"><em>field</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const typename <a class="el" href="structwebcface_1_1c__wcf_1_1CharType.html">CharType</a>&lt; CharT &gt;::CComponent *&#160;</td>
+          <td class="paramname"><em>components</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>size</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a4a8274762f420df020364ad27fb8c795" name="a4a8274762f420df020364ad27fb8c795"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4a8274762f420df020364ad27fb8c795">&#9670;&#160;</a></span>wcfViewSetW()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="def__types_8h.html#a3ac4b9c21f837154212676efa87b0b40">wcfStatus</a> wcfViewSetW </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="def__types_8h.html#a11e35bfe0822747dfabcce7f5220016a">wcfClient</a> *&#160;</td>
+          <td class="paramname"><em>wcli</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const wchar_t *&#160;</td>
+          <td class="paramname"><em>field</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structwcfViewComponentW.html">wcfViewComponentW</a> *&#160;</td>
+          <td class="paramname"><em>components</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>size</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Viewを送信する (wstring) </p>
+<dl class="section since"><dt>Since</dt><dd>1.12 </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="c__wcf_2view_8h.html#ac4ee7b53b9afcff2d84a138a142ae00d" title="Viewを送信する">wcfViewSet</a> </dd></dl>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_e20733c077072a869a8a8de8e75bf9b9.html">c_wcf</a></li><li class="navelem"><a class="el" href="c__wcf_2view_8cc.html">view.cc</a></li>
-    <li class="footer">Generated on Mon May 20 2024 16:35:48 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="navelem"><a class="el" href="dir_d9b8df6581dc8f9b576b8a20e0771d14.html">c_wcf</a></li><li class="navelem"><a class="el" href="c__wcf_2view_8cc.html">view.cc</a></li>
+    <li class="footer">Generated on Mon May 27 2024 16:47:57 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

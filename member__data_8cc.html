@@ -148,35 +148,40 @@ $(document).ready(function(){initNavTree('member__data_8cc.html',''); initResiza
 <code>#include &quot;<a class="el" href="store_8h_source.html">store.h</a>&quot;</code><br />
 <code>#include &lt;<a class="el" href="server_8h_source.html">webcface/server.h</a>&gt;</code><br />
 <code>#include &quot;<a class="el" href="message_8h_source.html">../message/message.h</a>&quot;</code><br />
-<code>#include &lt;webcface/common/def.h&gt;</code><br />
+<code>#include &quot;<a class="el" href="field_8h_source.html">webcface/field.h</a>&quot;</code><br />
+<code>#include &lt;<a class="el" href="def_8h_source.html">webcface/common/def.h</a>&gt;</code><br />
 <code>#include &lt;algorithm&gt;</code><br />
 <code>#include &lt;iterator&gt;</code><br />
-<code>#include &lt;utf8.h&gt;</code><br />
+<code>#include &lt;opencv2/core.hpp&gt;</code><br />
+<code>#include &lt;opencv2/imgcodecs.hpp&gt;</code><br />
+<code>#include &lt;opencv2/imgproc.hpp&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for member_data.cc:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="member__data_8cc__incl.svg" width="3240" height="638"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="member__data_8cc__incl.svg" width="3998" height="711"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
 Namespaces</h2></td></tr>
-<tr class="memitem:namespaceServer" id="r_namespaceServer"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceServer.html">Server</a></td></tr>
+<tr class="memitem:namespacewebcface" id="r_namespacewebcface"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface.html">webcface</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespacewebcface_1_1Server" id="r_namespacewebcface_1_1Server"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Server.html">webcface::Server</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:acbbf602b630a7d78f782ccd88ee2f8b8" id="r_acbbf602b630a7d78f782ccd88ee2f8b8"><td class="memItemLeft" align="right" valign="top">std::pair&lt; unsigned int, std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceServer.html#acbbf602b630a7d78f782ccd88ee2f8b8">findReqField</a> (std::unordered_map&lt; std::string, std::unordered_map&lt; std::string, unsigned int &gt; &gt; &amp;req, const std::string &amp;member, const std::string &amp;field)</td></tr>
-<tr class="separator:acbbf602b630a7d78f782ccd88ee2f8b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a260a5b4ff2a51da2104fbd24fc78ee12" id="r_a260a5b4ff2a51da2104fbd24fc78ee12"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceServer.html#a260a5b4ff2a51da2104fbd24fc78ee12">replaceInvalidVal</a> (<a class="el" href="classCommon_1_1ValAdaptor.html">ValAdaptor</a> &amp;val)</td></tr>
-<tr class="separator:a260a5b4ff2a51da2104fbd24fc78ee12"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a596fe1d8b1e70a7d8085980717606c47" id="r_a596fe1d8b1e70a7d8085980717606c47"><td class="memItemLeft" align="right" valign="top">std::pair&lt; unsigned int, std::u8string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Server.html#a596fe1d8b1e70a7d8085980717606c47">findReqField</a> (std::unordered_map&lt; std::u8string, std::unordered_map&lt; std::u8string, unsigned int &gt; &gt; &amp;req, const std::u8string &amp;member, const std::u8string &amp;field)</td></tr>
+<tr class="separator:a596fe1d8b1e70a7d8085980717606c47"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9a924555b08bf13c936e947d39c5b5b0" id="r_a9a924555b08bf13c936e947d39c5b5b0"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Server.html#a9a924555b08bf13c936e947d39c5b5b0">colorConvert</a> (<a class="el" href="namespacewebcface_1_1Common.html#abcfd96b0be942012c2f4641b4741a31e">Common::ImageColorMode</a> src_mode, <a class="el" href="namespacewebcface_1_1Common.html#abcfd96b0be942012c2f4641b4741a31e">Common::ImageColorMode</a> dst_mode)</td></tr>
+<tr class="separator:a9a924555b08bf13c936e947d39c5b5b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_41e1742e44e2de38b3bc91f993fed282.html">server</a></li><li class="navelem"><a class="el" href="member__data_8cc.html">member_data.cc</a></li>
-    <li class="footer">Generated on Mon May 20 2024 16:35:48 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="navelem"><a class="el" href="dir_075bb3ff235063c77951cd176d15a741.html">server</a></li><li class="navelem"><a class="el" href="member__data_8cc.html">member_data.cc</a></li>
+    <li class="footer">Generated on Mon May 27 2024 16:47:57 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

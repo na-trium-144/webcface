@@ -31,8 +31,18 @@ var searchData=
   ['wcf_5fview_5fbutton_28',['WCF_VIEW_BUTTON',['../def__types_8h.html#a73f6cddf8e61afde3cfe38d38ff31025',1,'def_types.h']]],
   ['wcf_5fview_5fnew_5fline_29',['WCF_VIEW_NEW_LINE',['../def__types_8h.html#a35d0584c92b04623b38788a064a11df0',1,'def_types.h']]],
   ['wcf_5fview_5ftext_30',['WCF_VIEW_TEXT',['../def__types_8h.html#a6d08503dc22e7b52807308f52ecf306e',1,'def_types.h']]],
-  ['webcface_5fdll_31',['WEBCFACE_DLL',['../macros_8h.html#a47af057bda855b54c212e97ffccdca01',1,'macros.h']]],
-  ['webcface_5fimport_32',['WEBCFACE_IMPORT',['../macros_8h.html#a0c2b2b9ef0ccf8db12f940291bea9246',1,'macros.h']]],
-  ['webcface_5fns_5fbegin_33',['WEBCFACE_NS_BEGIN',['../macros_8h.html#abe991b8f291782627a31118c688e123a',1,'macros.h']]],
-  ['webcface_5fns_5fend_34',['WEBCFACE_NS_END',['../macros_8h.html#ab3f2570d5b8231ddbe0e57fc8ab629eb',1,'macros.h']]]
+  ['webcface_5fdefault_5fport_31',['WEBCFACE_DEFAULT_PORT',['../def_8h.html#ac2db178dd291a312ca3f696e69c9af55',1,'def.h']]],
+  ['webcface_5fdefault_5fport_5fs_32',['WEBCFACE_DEFAULT_PORT_S',['../def_8h.html#afbc9c6287f9dc55d9ba2f40b887deb87',1,'def.h']]],
+  ['webcface_5fdefault_5fport_5fsi_33',['WEBCFACE_DEFAULT_PORT_SI',['../def_8h.html#acdb831b5c453fa84fb4c58285d39858b',1,'def.h']]],
+  ['webcface_5fdll_34',['WEBCFACE_DLL',['../macros_8h.html#a47af057bda855b54c212e97ffccdca01',1,'macros.h']]],
+  ['webcface_5fimport_35',['WEBCFACE_IMPORT',['../macros_8h.html#a0c2b2b9ef0ccf8db12f940291bea9246',1,'macros.h']]],
+  ['webcface_5fns_5fbegin_36',['WEBCFACE_NS_BEGIN',['../macros_8h.html#abe991b8f291782627a31118c688e123a',1,'macros.h']]],
+  ['webcface_5fns_5fend_37',['WEBCFACE_NS_END',['../macros_8h.html#ab3f2570d5b8231ddbe0e57fc8ab629eb',1,'macros.h']]],
+  ['webcface_5fserver_5fname_38',['WEBCFACE_SERVER_NAME',['../def_8h.html#a4298b547b461c5709eb54d5171cf3b81',1,'def.h']]],
+  ['webcface_5fstr_39',['WEBCFACE_STR',['../def_8h.html#a5856f8c4dbb31d15a29a3abb4ebc01f7',1,'def.h']]],
+  ['webcface_5fuse_5fopencv_40',['WEBCFACE_USE_OPENCV',['../def_8h.html#a7e7a04e368596701b285f139d5328a75',1,'def.h']]],
+  ['webcface_5fversion_41',['WEBCFACE_VERSION',['../def_8h.html#a9373ced4210d2f436da678a29364095b',1,'def.h']]],
+  ['webcface_5fversion_5fmajor_42',['WEBCFACE_VERSION_MAJOR',['../def_8h.html#a1bc206868c13e523a5484af2deaf2c98',1,'def.h']]],
+  ['webcface_5fversion_5fminor_43',['WEBCFACE_VERSION_MINOR',['../def_8h.html#aa83206e52f1b52bbf9c7e2399c8add41',1,'def.h']]],
+  ['webcface_5fversion_5frevision_44',['WEBCFACE_VERSION_REVISION',['../def_8h.html#a4b25565a130978dd7b2b132b89b5776b',1,'def.h']]]
 ];

@@ -1,0 +1,5 @@
+<map id="wcfFuncCallHandleW" name="wcfFuncCallHandleW">
+<area shape="rect" id="Node000001" title="受信した関数呼び出しの情報を保持するstruct (wstring)" alt="" coords="5,93,164,119"/>
+<area shape="rect" id="Node000002" href="$structwcfMultiValW.html" title="数値と文字列をまとめて扱うためのstruct (wstring)" alt="" coords="29,5,140,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="87,45,87,93,82,93,82,45"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="wcfViewComponent" name="wcfViewComponent">
+<area shape="rect" id="Node000001" title="Viewの要素を表すstruct." alt="" coords="5,93,157,119"/>
+<area shape="rect" id="Node000002" href="$structwcfMultiVal.html" title="数値と文字列をまとめて扱うためのstruct" alt="" coords="32,5,131,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="84,45,84,93,79,93,79,45"/>
+</map>

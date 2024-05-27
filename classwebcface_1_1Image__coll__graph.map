@@ -1,0 +1,11 @@
+<map id="Image" name="Image">
+<area shape="rect" id="Node000001" title="(ver1.3から追加) 画像の送受信データを表すクラス" alt="" coords="89,168,151,193"/>
+<area shape="rect" id="Node000002" href="$structwebcface_1_1Field.html" title="ClientDataの参照とメンバ名とデータ名を持つクラス" alt="" coords="27,93,80,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="75,127,111,166,107,169,71,131"/>
+<area shape="rect" id="Node000003" href="$structwebcface_1_1Common_1_1FieldBase.html" title="メンバ名とデータ名を持つクラス" alt="" coords="5,5,91,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="52,44,55,93,50,93,47,45"/>
+<area shape="rect" id="Node000004" href="$classwebcface_1_1EventTarget.html" title=" " alt="" coords="115,93,285,119"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="179,130,135,170,131,166,175,126"/>
+<area shape="rect" id="Node000005" href="$classwebcface_1_1EventTarget.html" title="イベントを表し、コールバックの追加や削除ができるクラス。" alt="" coords="115,5,296,31"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="206,45,203,93,198,93,201,44"/>
+</map>

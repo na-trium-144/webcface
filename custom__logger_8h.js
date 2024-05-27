@@ -1,4 +1,4 @@
 var custom__logger_8h =
 [
-    [ "CustomLogger", "classServer_1_1CustomLogger.html", "classServer_1_1CustomLogger" ]
+    [ "CustomLogger", "classwebcface_1_1Server_1_1CustomLogger.html", "classwebcface_1_1Server_1_1CustomLogger" ]
 ];

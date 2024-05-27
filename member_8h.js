@@ -1,4 +1,4 @@
 var member_8h =
 [
-    [ "Member", "classMember.html", "classMember" ]
+    [ "Member", "classwebcface_1_1Member.html", "classwebcface_1_1Member" ]
 ];

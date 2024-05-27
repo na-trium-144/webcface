@@ -1,0 +1,1320 @@
+<!-- HTML header for doxygen 1.9.8-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>WebCFace: MemberData Struct Reference</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen_custom.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeDarkModeToggle.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeParagraphLink.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeTabs.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeInteractiveToc.init()
+</script>
+<script type="text/javascript">
+  function insertBadge(){
+    for(const sp of document.getElementsByClassName('since-c')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-00599c?logo=C%2B%2B" alt="c++ ver${ver}" class="inline">`;
+    }
+    for(const sp of document.getElementsByClassName('since-js')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-f7df1e?logo=JavaScript&amp;logoColor=black" alt="js ver${ver}" class="inline">`;
+    }
+    for(const sp of document.getElementsByClassName('since-py')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-3776ab?logo=python&amp;logoColor=white" alt="python ver${ver}" class="inline">`;
+    }
+  }
+</script>
+</head>
+<body onload="insertBadge();">
+<!-- https://tholman.com/github-corners/ -->
+<a href="https://github.com/na-trium-144/webcface" class="github-corner" aria-label="View source on GitHub">
+  <svg width="80" height="80" viewBox="0 0 250 250" style="fill:#64CEAA; color:#fff; position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path>
+  </svg>
+</a>
+<style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;1.11.3</span>
+   </div>
+   <div id="projectbrief">Web-based RPC &amp; UI Library</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.9.8 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function(){initNavTree('structwebcface_1_1Server_1_1MemberData.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
+<a href="structwebcface_1_1Server_1_1MemberData-members.html">List of all members</a>  </div>
+  <div class="headertitle"><div class="title">MemberData Struct Reference</div></div>
+</div><!--header-->
+<div class="contents">
+
+<p><code>#include &lt;<a class="el" href="member__data_8h_source.html">/home/runner/work/webcface/webcface/src/server/member_data.h</a>&gt;</code></p>
+<div class="dynheader">
+Collaboration diagram for MemberData:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="structwebcface_1_1Server_1_1MemberData__coll__graph.svg" width="355" height="330"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:aa0fd96bc25e3d509fb54028c2e4b91f6" id="r_aa0fd96bc25e3d509fb54028c2e4b91f6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Server_1_1MemberData.html#aa0fd96bc25e3d509fb54028c2e4b91f6">connected</a> () const</td></tr>
+<tr class="separator:aa0fd96bc25e3d509fb54028c2e4b91f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0ae47eb8bf0269486dde3decb79c2c22" id="r_a0ae47eb8bf0269486dde3decb79c2c22"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Server_1_1MemberData.html#a0ae47eb8bf0269486dde3decb79c2c22">imageConvertThreadMain</a> (const std::u8string &amp;member, const std::u8string &amp;field)</td></tr>
+<tr class="memdesc:a0ae47eb8bf0269486dde3decb79c2c22"><td class="mdescLeft">&#160;</td><td class="mdescRight">cdの画像を変換しthisに送信  <br /></td></tr>
+<tr class="separator:a0ae47eb8bf0269486dde3decb79c2c22"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5642a8720d0db5ac370876d866875128" id="r_a5642a8720d0db5ac370876d866875128"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Server_1_1MemberData.html#a5642a8720d0db5ac370876d866875128">hasReq</a> (const std::u8string &amp;member)</td></tr>
+<tr class="separator:a5642a8720d0db5ac370876d866875128"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a03f774632e8283a743da71c812af60bb" id="r_a03f774632e8283a743da71c812af60bb"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Server_1_1MemberData.html#a03f774632e8283a743da71c812af60bb">MemberData</a> ()=delete</td></tr>
+<tr class="separator:a03f774632e8283a743da71c812af60bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd0e075158fd9aabf2ef5043bf5b7083" id="r_abd0e075158fd9aabf2ef5043bf5b7083"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Server_1_1MemberData.html#abd0e075158fd9aabf2ef5043bf5b7083">MemberData</a> (const <a class="el" href="structwebcface_1_1Server_1_1MemberData.html">MemberData</a> &amp;)=delete</td></tr>
+<tr class="separator:abd0e075158fd9aabf2ef5043bf5b7083"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:addfac988368eb5902d0c165a066672c6" id="r_addfac988368eb5902d0c165a066672c6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structwebcface_1_1Server_1_1MemberData.html">MemberData</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Server_1_1MemberData.html#addfac988368eb5902d0c165a066672c6">operator=</a> (const <a class="el" href="structwebcface_1_1Server_1_1MemberData.html">MemberData</a> &amp;)=delete</td></tr>
+<tr class="separator:addfac988368eb5902d0c165a066672c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5b00d64ba4b54f8ff34f47606e21fd10" id="r_a5b00d64ba4b54f8ff34f47606e21fd10"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Server_1_1MemberData.html#a5b00d64ba4b54f8ff34f47606e21fd10">MemberData</a> (<a class="el" href="structwebcface_1_1Server_1_1ServerStorage.html">ServerStorage</a> *<a class="el" href="structwebcface_1_1Server_1_1MemberData.html#addef74eca96772f4826bbe53a38c2a79">store</a>, const <a class="el" href="namespacewebcface_1_1Server.html#af92eef764fed4a1512658233c54020bf">wsConnPtr</a> &amp;<a class="el" href="structwebcface_1_1Server_1_1MemberData.html#a967dcc3eba8ae3ca17c1c79580894d67">con</a>, std::string_view <a class="el" href="structwebcface_1_1Server_1_1MemberData.html#aeaede8e9fa35099287d112189aac9e3a">remote_addr</a>, const spdlog::sink_ptr &amp;<a class="el" href="structwebcface_1_1Server_1_1MemberData.html#a11573073f52fb4b379c28b67a1a9799c">sink</a>, spdlog::level::level_enum level)</td></tr>
+<tr class="separator:a5b00d64ba4b54f8ff34f47606e21fd10"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa0e9e0f882a054ce8cd951bd53b745c7" id="r_aa0e9e0f882a054ce8cd951bd53b745c7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Server_1_1MemberData.html#aa0e9e0f882a054ce8cd951bd53b745c7">~MemberData</a> ()</td></tr>
+<tr class="separator:aa0e9e0f882a054ce8cd951bd53b745c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2812fd0bf18bb3a8e9f38f1045062ff7" id="r_a2812fd0bf18bb3a8e9f38f1045062ff7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Server_1_1MemberData.html#a2812fd0bf18bb3a8e9f38f1045062ff7">onConnect</a> ()</td></tr>
+<tr class="separator:a2812fd0bf18bb3a8e9f38f1045062ff7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeb6cfe926c5110a4f3708eaf32590031" id="r_aeb6cfe926c5110a4f3708eaf32590031"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Server_1_1MemberData.html#aeb6cfe926c5110a4f3708eaf32590031">onRecv</a> (const std::string &amp;msg)</td></tr>
+<tr class="separator:aeb6cfe926c5110a4f3708eaf32590031"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7866099ce9484523a19157ed15952103" id="r_a7866099ce9484523a19157ed15952103"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Server_1_1MemberData.html#a7866099ce9484523a19157ed15952103">onClose</a> ()</td></tr>
+<tr class="separator:a7866099ce9484523a19157ed15952103"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae1340d1280818fa14b61e2bf6e637366" id="r_ae1340d1280818fa14b61e2bf6e637366"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Server_1_1MemberData.html#ae1340d1280818fa14b61e2bf6e637366">sendPing</a> ()</td></tr>
+<tr class="separator:ae1340d1280818fa14b61e2bf6e637366"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae9399f5ec7881c5d18173def8068108e" id="r_ae9399f5ec7881c5d18173def8068108e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Server_1_1MemberData.html#ae9399f5ec7881c5d18173def8068108e">send</a> ()</td></tr>
+<tr class="separator:ae9399f5ec7881c5d18173def8068108e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7edd1c1b67fdc8afad49429555458822" id="r_a7edd1c1b67fdc8afad49429555458822"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Server_1_1MemberData.html#a7edd1c1b67fdc8afad49429555458822">send</a> (const std::string &amp;msg)</td></tr>
+<tr class="separator:a7edd1c1b67fdc8afad49429555458822"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a674aa02a171b62f4293782c529915504" id="r_a674aa02a171b62f4293782c529915504"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a674aa02a171b62f4293782c529915504"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Server_1_1MemberData.html#a674aa02a171b62f4293782c529915504">pack</a> (const T &amp;data)</td></tr>
+<tr class="separator:a674aa02a171b62f4293782c529915504"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
+Public Attributes</h2></td></tr>
+<tr class="memitem:a11573073f52fb4b379c28b67a1a9799c" id="r_a11573073f52fb4b379c28b67a1a9799c"><td class="memItemLeft" align="right" valign="top">spdlog::sink_ptr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Server_1_1MemberData.html#a11573073f52fb4b379c28b67a1a9799c">sink</a></td></tr>
+<tr class="separator:a11573073f52fb4b379c28b67a1a9799c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:accdc73450b7a41e30a69fca53a8f2232" id="r_accdc73450b7a41e30a69fca53a8f2232"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; spdlog::logger &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Server_1_1MemberData.html#accdc73450b7a41e30a69fca53a8f2232">logger</a></td></tr>
+<tr class="separator:accdc73450b7a41e30a69fca53a8f2232"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad0189c65be4ee081f1fa3183a901bbb5" id="r_ad0189c65be4ee081f1fa3183a901bbb5"><td class="memItemLeft" align="right" valign="top">spdlog::level::level_enum&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Server_1_1MemberData.html#ad0189c65be4ee081f1fa3183a901bbb5">logger_level</a></td></tr>
+<tr class="separator:ad0189c65be4ee081f1fa3183a901bbb5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:addef74eca96772f4826bbe53a38c2a79" id="r_addef74eca96772f4826bbe53a38c2a79"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structwebcface_1_1Server_1_1ServerStorage.html">ServerStorage</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Server_1_1MemberData.html#addef74eca96772f4826bbe53a38c2a79">store</a></td></tr>
+<tr class="separator:addef74eca96772f4826bbe53a38c2a79"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a967dcc3eba8ae3ca17c1c79580894d67" id="r_a967dcc3eba8ae3ca17c1c79580894d67"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacewebcface_1_1Server.html#af92eef764fed4a1512658233c54020bf">wsConnPtr</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Server_1_1MemberData.html#a967dcc3eba8ae3ca17c1c79580894d67">con</a></td></tr>
+<tr class="memdesc:a967dcc3eba8ae3ca17c1c79580894d67"><td class="mdescLeft">&#160;</td><td class="mdescRight">ws接続のポインタ、切断後(onClose後)nullptrになる  <br /></td></tr>
+<tr class="separator:a967dcc3eba8ae3ca17c1c79580894d67"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeaede8e9fa35099287d112189aac9e3a" id="r_aeaede8e9fa35099287d112189aac9e3a"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Server_1_1MemberData.html#aeaede8e9fa35099287d112189aac9e3a">remote_addr</a></td></tr>
+<tr class="separator:aeaede8e9fa35099287d112189aac9e3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aabf3a5ce7b508dec8b9c197b0af1d8c8" id="r_aabf3a5ce7b508dec8b9c197b0af1d8c8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Server_1_1MemberData.html#aabf3a5ce7b508dec8b9c197b0af1d8c8">sync_init</a> = false</td></tr>
+<tr class="memdesc:aabf3a5ce7b508dec8b9c197b0af1d8c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">初回のsync() が終わったか  <br /></td></tr>
+<tr class="separator:aabf3a5ce7b508dec8b9c197b0af1d8c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8987f3a02ae65bfbcd0fe64444acbec5" id="r_a8987f3a02ae65bfbcd0fe64444acbec5"><td class="memItemLeft" align="right" valign="top">std::u8string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Server_1_1MemberData.html#a8987f3a02ae65bfbcd0fe64444acbec5">name</a></td></tr>
+<tr class="separator:a8987f3a02ae65bfbcd0fe64444acbec5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad8084f6663a08de8cb8eb1060bf8775a" id="r_ad8084f6663a08de8cb8eb1060bf8775a"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Server_1_1MemberData.html#ad8084f6663a08de8cb8eb1060bf8775a">name_s</a></td></tr>
+<tr class="separator:ad8084f6663a08de8cb8eb1060bf8775a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae9313ec6cb5a526764b6163a3148970b" id="r_ae9313ec6cb5a526764b6163a3148970b"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Server_1_1MemberData.html#ae9313ec6cb5a526764b6163a3148970b">member_id</a></td></tr>
+<tr class="separator:ae9313ec6cb5a526764b6163a3148970b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7bb470c0b02ef7660fe6bd15e036eaa5" id="r_a7bb470c0b02ef7660fe6bd15e036eaa5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structwebcface_1_1Message_1_1SyncInit.html">Message::SyncInit</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Server_1_1MemberData.html#a7bb470c0b02ef7660fe6bd15e036eaa5">init_data</a></td></tr>
+<tr class="separator:a7bb470c0b02ef7660fe6bd15e036eaa5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a329f075210ec0892f18bb3e986c0cfe5" id="r_a329f075210ec0892f18bb3e986c0cfe5"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; std::u8string, std::shared_ptr&lt; std::vector&lt; double &gt; &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Server_1_1MemberData.html#a329f075210ec0892f18bb3e986c0cfe5">value</a></td></tr>
+<tr class="memdesc:a329f075210ec0892f18bb3e986c0cfe5"><td class="mdescLeft">&#160;</td><td class="mdescRight">最新の値  <br /></td></tr>
+<tr class="separator:a329f075210ec0892f18bb3e986c0cfe5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7be19e1dbc3d3ceaf82df80667106cb7" id="r_a7be19e1dbc3d3ceaf82df80667106cb7"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; std::u8string, std::shared_ptr&lt; <a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html">Common::ValAdaptor</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Server_1_1MemberData.html#a7be19e1dbc3d3ceaf82df80667106cb7">text</a></td></tr>
+<tr class="separator:a7be19e1dbc3d3ceaf82df80667106cb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a11eeeac9eb00fc466d958443edf6c9fe" id="r_a11eeeac9eb00fc466d958443edf6c9fe"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; std::u8string, std::shared_ptr&lt; <a class="el" href="structwebcface_1_1Message_1_1FuncInfo.html">Message::FuncInfo</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Server_1_1MemberData.html#a11eeeac9eb00fc466d958443edf6c9fe">func</a></td></tr>
+<tr class="separator:a11eeeac9eb00fc466d958443edf6c9fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3deb32456752b604272ccc014077d934" id="r_a3deb32456752b604272ccc014077d934"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; std::u8string, std::vector&lt; <a class="el" href="structwebcface_1_1Common_1_1ViewComponentBase.html">Common::ViewComponentBase</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Server_1_1MemberData.html#a3deb32456752b604272ccc014077d934">view</a></td></tr>
+<tr class="separator:a3deb32456752b604272ccc014077d934"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af6e32ac41a8a238dc70508a8417943a6" id="r_af6e32ac41a8a238dc70508a8417943a6"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; std::u8string, std::vector&lt; <a class="el" href="structwebcface_1_1Common_1_1Canvas3DComponentBase.html">Common::Canvas3DComponentBase</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Server_1_1MemberData.html#af6e32ac41a8a238dc70508a8417943a6">canvas3d</a></td></tr>
+<tr class="separator:af6e32ac41a8a238dc70508a8417943a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a734c32c60e5628f93a174d2c3ba7a1d0" id="r_a734c32c60e5628f93a174d2c3ba7a1d0"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; std::u8string, <a class="el" href="structwebcface_1_1Common_1_1Canvas2DDataBase.html">Common::Canvas2DDataBase</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Server_1_1MemberData.html#a734c32c60e5628f93a174d2c3ba7a1d0">canvas2d</a></td></tr>
+<tr class="separator:a734c32c60e5628f93a174d2c3ba7a1d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6e7e38bd8111738a786bafeaa0d5fda2" id="r_a6e7e38bd8111738a786bafeaa0d5fda2"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; std::u8string, <a class="el" href="classwebcface_1_1Common_1_1ImageBase.html">Common::ImageBase</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Server_1_1MemberData.html#a6e7e38bd8111738a786bafeaa0d5fda2">image</a></td></tr>
+<tr class="separator:a6e7e38bd8111738a786bafeaa0d5fda2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac93cf1beb3dc9fc489a473ce94a520df" id="r_ac93cf1beb3dc9fc489a473ce94a520df"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; std::u8string, int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Server_1_1MemberData.html#ac93cf1beb3dc9fc489a473ce94a520df">image_changed</a></td></tr>
+<tr class="separator:ac93cf1beb3dc9fc489a473ce94a520df"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a21a95990617a939523a627a3f34d8f4a" id="r_a21a95990617a939523a627a3f34d8f4a"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; std::u8string, std::mutex &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Server_1_1MemberData.html#a21a95990617a939523a627a3f34d8f4a">image_m</a></td></tr>
+<tr class="separator:a21a95990617a939523a627a3f34d8f4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2d6461e2d7ac7b4633baac2dc73de95e" id="r_a2d6461e2d7ac7b4633baac2dc73de95e"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; std::u8string, std::condition_variable &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Server_1_1MemberData.html#a2d6461e2d7ac7b4633baac2dc73de95e">image_cv</a></td></tr>
+<tr class="separator:a2d6461e2d7ac7b4633baac2dc73de95e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4ea12c2c54723b4bbb8a256623edb6c0" id="r_a4ea12c2c54723b4bbb8a256623edb6c0"><td class="memItemLeft" align="right" valign="top">std::chrono::system_clock::time_point&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Server_1_1MemberData.html#a4ea12c2c54723b4bbb8a256623edb6c0">last_sync_time</a></td></tr>
+<tr class="separator:a4ea12c2c54723b4bbb8a256623edb6c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a172eac8ec2824b6bac928a7f3adf0447" id="r_a172eac8ec2824b6bac928a7f3adf0447"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; std::u8string, std::unordered_map&lt; std::u8string, unsigned int &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Server_1_1MemberData.html#a172eac8ec2824b6bac928a7f3adf0447">value_req</a></td></tr>
+<tr class="memdesc:a172eac8ec2824b6bac928a7f3adf0447"><td class="mdescLeft">&#160;</td><td class="mdescRight">リクエストしているmember,nameのペア  <br /></td></tr>
+<tr class="separator:a172eac8ec2824b6bac928a7f3adf0447"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa562d96e4182453c1c239be031285158" id="r_aa562d96e4182453c1c239be031285158"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; std::u8string, std::unordered_map&lt; std::u8string, unsigned int &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Server_1_1MemberData.html#aa562d96e4182453c1c239be031285158">text_req</a></td></tr>
+<tr class="separator:aa562d96e4182453c1c239be031285158"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4122e06690e525b820c5b76ad4ebeba0" id="r_a4122e06690e525b820c5b76ad4ebeba0"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; std::u8string, std::unordered_map&lt; std::u8string, unsigned int &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Server_1_1MemberData.html#a4122e06690e525b820c5b76ad4ebeba0">view_req</a></td></tr>
+<tr class="separator:a4122e06690e525b820c5b76ad4ebeba0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab79c10cbce8c18d5779216a745232fa4" id="r_ab79c10cbce8c18d5779216a745232fa4"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; std::u8string, std::unordered_map&lt; std::u8string, unsigned int &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Server_1_1MemberData.html#ab79c10cbce8c18d5779216a745232fa4">image_req</a></td></tr>
+<tr class="separator:ab79c10cbce8c18d5779216a745232fa4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af06d3db574be26b034c4be5c60b3434d" id="r_af06d3db574be26b034c4be5c60b3434d"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; std::u8string, std::unordered_map&lt; std::u8string, unsigned int &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Server_1_1MemberData.html#af06d3db574be26b034c4be5c60b3434d">robot_model_req</a></td></tr>
+<tr class="separator:af06d3db574be26b034c4be5c60b3434d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afff2e592cd2f2be1b2096bdcad3f8a59" id="r_afff2e592cd2f2be1b2096bdcad3f8a59"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; std::u8string, std::unordered_map&lt; std::u8string, unsigned int &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Server_1_1MemberData.html#afff2e592cd2f2be1b2096bdcad3f8a59">canvas3d_req</a></td></tr>
+<tr class="separator:afff2e592cd2f2be1b2096bdcad3f8a59"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae164e538dabed7e7c9555ecd00b93466" id="r_ae164e538dabed7e7c9555ecd00b93466"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; std::u8string, std::unordered_map&lt; std::u8string, unsigned int &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Server_1_1MemberData.html#ae164e538dabed7e7c9555ecd00b93466">canvas2d_req</a></td></tr>
+<tr class="separator:ae164e538dabed7e7c9555ecd00b93466"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afc9861526cf1d158f1bd58489f28ec89" id="r_afc9861526cf1d158f1bd58489f28ec89"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; std::u8string, std::unordered_map&lt; std::u8string, int &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Server_1_1MemberData.html#afc9861526cf1d158f1bd58489f28ec89">image_req_changed</a></td></tr>
+<tr class="separator:afc9861526cf1d158f1bd58489f28ec89"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a18dfa9e237b9146cbf0e39fadd28128c" id="r_a18dfa9e237b9146cbf0e39fadd28128c"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; std::u8string, std::unordered_map&lt; std::u8string, <a class="el" href="structwebcface_1_1Common_1_1ImageReq.html">Common::ImageReq</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Server_1_1MemberData.html#a18dfa9e237b9146cbf0e39fadd28128c">image_req_info</a></td></tr>
+<tr class="separator:a18dfa9e237b9146cbf0e39fadd28128c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2976cf5b4c23451b726ce2105bb004e6" id="r_a2976cf5b4c23451b726ce2105bb004e6"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; std::u8string, std::unordered_map&lt; std::u8string, std::optional&lt; std::thread &gt; &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Server_1_1MemberData.html#a2976cf5b4c23451b726ce2105bb004e6">image_convert_thread</a></td></tr>
+<tr class="separator:a2976cf5b4c23451b726ce2105bb004e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4f5c4e5a73b55171196c272012f3d457" id="r_a4f5c4e5a73b55171196c272012f3d457"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; std::u8string, std::shared_ptr&lt; std::vector&lt; <a class="el" href="structwebcface_1_1Message_1_1RobotModel_1_1RobotLink.html">Message::RobotModel::RobotLink</a> &gt; &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Server_1_1MemberData.html#a4f5c4e5a73b55171196c272012f3d457">robot_model</a></td></tr>
+<tr class="separator:a4f5c4e5a73b55171196c272012f3d457"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa1f00b277e22c4b033c5ef1634891c94" id="r_aa1f00b277e22c4b033c5ef1634891c94"><td class="memItemLeft" align="right" valign="top">std::set&lt; std::u8string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Server_1_1MemberData.html#aa1f00b277e22c4b033c5ef1634891c94">log_req</a></td></tr>
+<tr class="separator:aa1f00b277e22c4b033c5ef1634891c94"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4e79285c61bd619cb904723d694963bf" id="r_a4e79285c61bd619cb904723d694963bf"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; std::deque&lt; <a class="el" href="structwebcface_1_1Message_1_1Log_1_1LogLine.html">Message::Log::LogLine</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Server_1_1MemberData.html#a4e79285c61bd619cb904723d694963bf">log</a></td></tr>
+<tr class="memdesc:a4e79285c61bd619cb904723d694963bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">ログ全履歴  <br /></td></tr>
+<tr class="separator:a4e79285c61bd619cb904723d694963bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6754409c137fc411ce6b10016d2d8718" id="r_a6754409c137fc411ce6b10016d2d8718"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; unsigned int, std::unordered_map&lt; std::size_t, int &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Server_1_1MemberData.html#a6754409c137fc411ce6b10016d2d8718">pending_calls</a></td></tr>
+<tr class="memdesc:a6754409c137fc411ce6b10016d2d8718"><td class="mdescLeft">&#160;</td><td class="mdescRight">まだ完了していない自分へのcall呼び出しのリスト  <br /></td></tr>
+<tr class="separator:a6754409c137fc411ce6b10016d2d8718"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac12c0189fb9871dca59ac653ce95b4cf" id="r_ac12c0189fb9871dca59ac653ce95b4cf"><td class="memItemLeft" align="right" valign="top">std::atomic&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Server_1_1MemberData.html#ac12c0189fb9871dca59ac653ce95b4cf">closing</a> = false</td></tr>
+<tr class="separator:ac12c0189fb9871dca59ac653ce95b4cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8117ad8603d3cf802ac28675a0d446f8" id="r_a8117ad8603d3cf802ac28675a0d446f8"><td class="memItemLeft" align="right" valign="top">std::chrono::system_clock::time_point&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Server_1_1MemberData.html#a8117ad8603d3cf802ac28675a0d446f8">last_send_ping</a></td></tr>
+<tr class="separator:a8117ad8603d3cf802ac28675a0d446f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2aaa954beac272b1c230d2bec97be1c9" id="r_a2aaa954beac272b1c230d2bec97be1c9"><td class="memItemLeft" align="right" valign="top">std::optional&lt; std::chrono::milliseconds &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Server_1_1MemberData.html#a2aaa954beac272b1c230d2bec97be1c9">last_ping_duration</a></td></tr>
+<tr class="separator:a2aaa954beac272b1c230d2bec97be1c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa4d0490f94c85fcb4e1d41b615f02f0c" id="r_aa4d0490f94c85fcb4e1d41b615f02f0c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Server_1_1MemberData.html#aa4d0490f94c85fcb4e1d41b615f02f0c">ping_status_req</a> = false</td></tr>
+<tr class="separator:aa4d0490f94c85fcb4e1d41b615f02f0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a28beb71e3568e218778f423fd95ed391" id="r_a28beb71e3568e218778f423fd95ed391"><td class="memItemLeft" align="right" valign="top">std::stringstream&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Server_1_1MemberData.html#a28beb71e3568e218778f423fd95ed391">send_buffer</a></td></tr>
+<tr class="separator:a28beb71e3568e218778f423fd95ed391"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a87a99f62a98bec91542c1bc1d1a18ba5" id="r_a87a99f62a98bec91542c1bc1d1a18ba5"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Server_1_1MemberData.html#a87a99f62a98bec91542c1bc1d1a18ba5">send_len</a> = 0</td></tr>
+<tr class="separator:a87a99f62a98bec91542c1bc1d1a18ba5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
+Static Public Attributes</h2></td></tr>
+<tr class="memitem:a0081b80badb945836f0baaa9ac22ba71" id="r_a0081b80badb945836f0baaa9ac22ba71"><td class="memItemLeft" align="right" valign="top">static unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Server_1_1MemberData.html#a0081b80badb945836f0baaa9ac22ba71">last_member_id</a> = 0</td></tr>
+<tr class="separator:a0081b80badb945836f0baaa9ac22ba71"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab513349dee41e5e85be9aaca1baa402c" id="r_ab513349dee41e5e85be9aaca1baa402c"><td class="memItemLeft" align="right" valign="top">static constexpr std::chrono::milliseconds&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Server_1_1MemberData.html#ab513349dee41e5e85be9aaca1baa402c">ping_interval</a> {5000}</td></tr>
+<tr class="separator:ab513349dee41e5e85be9aaca1baa402c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a03f774632e8283a743da71c812af60bb" name="a03f774632e8283a743da71c812af60bb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a03f774632e8283a743da71c812af60bb">&#9670;&#160;</a></span>MemberData() <span class="overload">[1/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structwebcface_1_1Server_1_1MemberData.html">MemberData</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">delete</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="abd0e075158fd9aabf2ef5043bf5b7083" name="abd0e075158fd9aabf2ef5043bf5b7083"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abd0e075158fd9aabf2ef5043bf5b7083">&#9670;&#160;</a></span>MemberData() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structwebcface_1_1Server_1_1MemberData.html">MemberData</a> </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structwebcface_1_1Server_1_1MemberData.html">MemberData</a> &amp;&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">delete</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a5b00d64ba4b54f8ff34f47606e21fd10" name="a5b00d64ba4b54f8ff34f47606e21fd10"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5b00d64ba4b54f8ff34f47606e21fd10">&#9670;&#160;</a></span>MemberData() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structwebcface_1_1Server_1_1MemberData.html">MemberData</a> </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structwebcface_1_1Server_1_1ServerStorage.html">ServerStorage</a> *&#160;</td>
+          <td class="paramname"><em>store</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="namespacewebcface_1_1Server.html#af92eef764fed4a1512658233c54020bf">wsConnPtr</a> &amp;&#160;</td>
+          <td class="paramname"><em>con</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>remote_addr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const spdlog::sink_ptr &amp;&#160;</td>
+          <td class="paramname"><em>sink</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">spdlog::level::level_enum&#160;</td>
+          <td class="paramname"><em>level</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa0e9e0f882a054ce8cd951bd53b745c7" name="aa0e9e0f882a054ce8cd951bd53b745c7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa0e9e0f882a054ce8cd951bd53b745c7">&#9670;&#160;</a></span>~MemberData()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">~<a class="el" href="structwebcface_1_1Server_1_1MemberData.html">MemberData</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="aa0fd96bc25e3d509fb54028c2e4b91f6" name="aa0fd96bc25e3d509fb54028c2e4b91f6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa0fd96bc25e3d509fb54028c2e4b91f6">&#9670;&#160;</a></span>connected()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool connected </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a5642a8720d0db5ac370876d866875128" name="a5642a8720d0db5ac370876d866875128"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5642a8720d0db5ac370876d866875128">&#9670;&#160;</a></span>hasReq()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool hasReq </td>
+          <td>(</td>
+          <td class="paramtype">const std::u8string &amp;&#160;</td>
+          <td class="paramname"><em>member</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a0ae47eb8bf0269486dde3decb79c2c22" name="a0ae47eb8bf0269486dde3decb79c2c22"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0ae47eb8bf0269486dde3decb79c2c22">&#9670;&#160;</a></span>imageConvertThreadMain()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void imageConvertThreadMain </td>
+          <td>(</td>
+          <td class="paramtype">const std::u8string &amp;&#160;</td>
+          <td class="paramname"><em>member</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::u8string &amp;&#160;</td>
+          <td class="paramname"><em>field</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>cdの画像を変換しthisに送信 </p>
+<p>cd.image[field]が更新されるかリクエストが更新されたときに変換を行う。 </p>
+
+</div>
+</div>
+<a id="a7866099ce9484523a19157ed15952103" name="a7866099ce9484523a19157ed15952103"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7866099ce9484523a19157ed15952103">&#9670;&#160;</a></span>onClose()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void onClose </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a2812fd0bf18bb3a8e9f38f1045062ff7" name="a2812fd0bf18bb3a8e9f38f1045062ff7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2812fd0bf18bb3a8e9f38f1045062ff7">&#9670;&#160;</a></span>onConnect()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void onConnect </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aeb6cfe926c5110a4f3708eaf32590031" name="aeb6cfe926c5110a4f3708eaf32590031"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeb6cfe926c5110a4f3708eaf32590031">&#9670;&#160;</a></span>onRecv()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void onRecv </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>msg</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="addfac988368eb5902d0c165a066672c6" name="addfac988368eb5902d0c165a066672c6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#addfac988368eb5902d0c165a066672c6">&#9670;&#160;</a></span>operator=()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structwebcface_1_1Server_1_1MemberData.html">MemberData</a> &amp; operator= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structwebcface_1_1Server_1_1MemberData.html">MemberData</a> &amp;&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">delete</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a674aa02a171b62f4293782c529915504" name="a674aa02a171b62f4293782c529915504"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a674aa02a171b62f4293782c529915504">&#9670;&#160;</a></span>pack()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pack </td>
+          <td>(</td>
+          <td class="paramtype">const T &amp;&#160;</td>
+          <td class="paramname"><em>data</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ae9399f5ec7881c5d18173def8068108e" name="ae9399f5ec7881c5d18173def8068108e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae9399f5ec7881c5d18173def8068108e">&#9670;&#160;</a></span>send() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void send </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a7edd1c1b67fdc8afad49429555458822" name="a7edd1c1b67fdc8afad49429555458822"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7edd1c1b67fdc8afad49429555458822">&#9670;&#160;</a></span>send() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void send </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>msg</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ae1340d1280818fa14b61e2bf6e637366" name="ae1340d1280818fa14b61e2bf6e637366"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae1340d1280818fa14b61e2bf6e637366">&#9670;&#160;</a></span>sendPing()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void sendPing </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a734c32c60e5628f93a174d2c3ba7a1d0" name="a734c32c60e5628f93a174d2c3ba7a1d0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a734c32c60e5628f93a174d2c3ba7a1d0">&#9670;&#160;</a></span>canvas2d</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::unordered_map&lt;std::u8string, <a class="el" href="structwebcface_1_1Common_1_1Canvas2DDataBase.html">Common::Canvas2DDataBase</a>&gt; canvas2d</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ae164e538dabed7e7c9555ecd00b93466" name="ae164e538dabed7e7c9555ecd00b93466"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae164e538dabed7e7c9555ecd00b93466">&#9670;&#160;</a></span>canvas2d_req</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::unordered_map&lt;std::u8string, std::unordered_map&lt;std::u8string, unsigned int&gt; &gt; canvas2d_req</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="af6e32ac41a8a238dc70508a8417943a6" name="af6e32ac41a8a238dc70508a8417943a6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af6e32ac41a8a238dc70508a8417943a6">&#9670;&#160;</a></span>canvas3d</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::unordered_map&lt;std::u8string, std::vector&lt;<a class="el" href="structwebcface_1_1Common_1_1Canvas3DComponentBase.html">Common::Canvas3DComponentBase</a>&gt; &gt; canvas3d</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="afff2e592cd2f2be1b2096bdcad3f8a59" name="afff2e592cd2f2be1b2096bdcad3f8a59"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afff2e592cd2f2be1b2096bdcad3f8a59">&#9670;&#160;</a></span>canvas3d_req</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::unordered_map&lt;std::u8string, std::unordered_map&lt;std::u8string, unsigned int&gt; &gt; canvas3d_req</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ac12c0189fb9871dca59ac653ce95b4cf" name="ac12c0189fb9871dca59ac653ce95b4cf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac12c0189fb9871dca59ac653ce95b4cf">&#9670;&#160;</a></span>closing</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::atomic&lt;bool&gt; closing = false</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a967dcc3eba8ae3ca17c1c79580894d67" name="a967dcc3eba8ae3ca17c1c79580894d67"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a967dcc3eba8ae3ca17c1c79580894d67">&#9670;&#160;</a></span>con</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacewebcface_1_1Server.html#af92eef764fed4a1512658233c54020bf">wsConnPtr</a> con</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>ws接続のポインタ、切断後(onClose後)nullptrになる </p>
+
+</div>
+</div>
+<a id="a11eeeac9eb00fc466d958443edf6c9fe" name="a11eeeac9eb00fc466d958443edf6c9fe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a11eeeac9eb00fc466d958443edf6c9fe">&#9670;&#160;</a></span>func</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::unordered_map&lt;std::u8string, std::shared_ptr&lt;<a class="el" href="structwebcface_1_1Message_1_1FuncInfo.html">Message::FuncInfo</a>&gt; &gt; func</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a6e7e38bd8111738a786bafeaa0d5fda2" name="a6e7e38bd8111738a786bafeaa0d5fda2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6e7e38bd8111738a786bafeaa0d5fda2">&#9670;&#160;</a></span>image</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::unordered_map&lt;std::u8string, <a class="el" href="classwebcface_1_1Common_1_1ImageBase.html">Common::ImageBase</a>&gt; image</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ac93cf1beb3dc9fc489a473ce94a520df" name="ac93cf1beb3dc9fc489a473ce94a520df"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac93cf1beb3dc9fc489a473ce94a520df">&#9670;&#160;</a></span>image_changed</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::unordered_map&lt;std::u8string, int&gt; image_changed</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a2976cf5b4c23451b726ce2105bb004e6" name="a2976cf5b4c23451b726ce2105bb004e6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2976cf5b4c23451b726ce2105bb004e6">&#9670;&#160;</a></span>image_convert_thread</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::unordered_map&lt; std::u8string, std::unordered_map&lt;std::u8string, std::optional&lt;std::thread&gt; &gt; &gt; image_convert_thread</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a2d6461e2d7ac7b4633baac2dc73de95e" name="a2d6461e2d7ac7b4633baac2dc73de95e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2d6461e2d7ac7b4633baac2dc73de95e">&#9670;&#160;</a></span>image_cv</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::unordered_map&lt;std::u8string, std::condition_variable&gt; image_cv</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a21a95990617a939523a627a3f34d8f4a" name="a21a95990617a939523a627a3f34d8f4a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a21a95990617a939523a627a3f34d8f4a">&#9670;&#160;</a></span>image_m</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::unordered_map&lt;std::u8string, std::mutex&gt; image_m</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ab79c10cbce8c18d5779216a745232fa4" name="ab79c10cbce8c18d5779216a745232fa4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab79c10cbce8c18d5779216a745232fa4">&#9670;&#160;</a></span>image_req</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::unordered_map&lt;std::u8string, std::unordered_map&lt;std::u8string, unsigned int&gt; &gt; image_req</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="afc9861526cf1d158f1bd58489f28ec89" name="afc9861526cf1d158f1bd58489f28ec89"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afc9861526cf1d158f1bd58489f28ec89">&#9670;&#160;</a></span>image_req_changed</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::unordered_map&lt;std::u8string, std::unordered_map&lt;std::u8string, int&gt; &gt; image_req_changed</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a18dfa9e237b9146cbf0e39fadd28128c" name="a18dfa9e237b9146cbf0e39fadd28128c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a18dfa9e237b9146cbf0e39fadd28128c">&#9670;&#160;</a></span>image_req_info</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::unordered_map&lt;std::u8string, std::unordered_map&lt;std::u8string, <a class="el" href="structwebcface_1_1Common_1_1ImageReq.html">Common::ImageReq</a>&gt; &gt; image_req_info</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a7bb470c0b02ef7660fe6bd15e036eaa5" name="a7bb470c0b02ef7660fe6bd15e036eaa5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7bb470c0b02ef7660fe6bd15e036eaa5">&#9670;&#160;</a></span>init_data</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structwebcface_1_1Message_1_1SyncInit.html">Message::SyncInit</a> init_data</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a0081b80badb945836f0baaa9ac22ba71" name="a0081b80badb945836f0baaa9ac22ba71"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0081b80badb945836f0baaa9ac22ba71">&#9670;&#160;</a></span>last_member_id</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int last_member_id = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a2aaa954beac272b1c230d2bec97be1c9" name="a2aaa954beac272b1c230d2bec97be1c9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2aaa954beac272b1c230d2bec97be1c9">&#9670;&#160;</a></span>last_ping_duration</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::optional&lt;std::chrono::milliseconds&gt; last_ping_duration</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a8117ad8603d3cf802ac28675a0d446f8" name="a8117ad8603d3cf802ac28675a0d446f8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8117ad8603d3cf802ac28675a0d446f8">&#9670;&#160;</a></span>last_send_ping</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::chrono::system_clock::time_point last_send_ping</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a4ea12c2c54723b4bbb8a256623edb6c0" name="a4ea12c2c54723b4bbb8a256623edb6c0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4ea12c2c54723b4bbb8a256623edb6c0">&#9670;&#160;</a></span>last_sync_time</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::chrono::system_clock::time_point last_sync_time</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a4e79285c61bd619cb904723d694963bf" name="a4e79285c61bd619cb904723d694963bf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4e79285c61bd619cb904723d694963bf">&#9670;&#160;</a></span>log</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::shared_ptr&lt;std::deque&lt;<a class="el" href="structwebcface_1_1Message_1_1Log_1_1LogLine.html">Message::Log::LogLine</a>&gt; &gt; log</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>ログ全履歴 </p>
+
+</div>
+</div>
+<a id="aa1f00b277e22c4b033c5ef1634891c94" name="aa1f00b277e22c4b033c5ef1634891c94"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa1f00b277e22c4b033c5ef1634891c94">&#9670;&#160;</a></span>log_req</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::set&lt;std::u8string&gt; log_req</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="accdc73450b7a41e30a69fca53a8f2232" name="accdc73450b7a41e30a69fca53a8f2232"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#accdc73450b7a41e30a69fca53a8f2232">&#9670;&#160;</a></span>logger</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::shared_ptr&lt;spdlog::logger&gt; logger</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad0189c65be4ee081f1fa3183a901bbb5" name="ad0189c65be4ee081f1fa3183a901bbb5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad0189c65be4ee081f1fa3183a901bbb5">&#9670;&#160;</a></span>logger_level</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">spdlog::level::level_enum logger_level</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ae9313ec6cb5a526764b6163a3148970b" name="ae9313ec6cb5a526764b6163a3148970b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae9313ec6cb5a526764b6163a3148970b">&#9670;&#160;</a></span>member_id</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int member_id</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a8987f3a02ae65bfbcd0fe64444acbec5" name="a8987f3a02ae65bfbcd0fe64444acbec5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8987f3a02ae65bfbcd0fe64444acbec5">&#9670;&#160;</a></span>name</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::u8string name</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad8084f6663a08de8cb8eb1060bf8775a" name="ad8084f6663a08de8cb8eb1060bf8775a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad8084f6663a08de8cb8eb1060bf8775a">&#9670;&#160;</a></span>name_s</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string name_s</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a6754409c137fc411ce6b10016d2d8718" name="a6754409c137fc411ce6b10016d2d8718"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6754409c137fc411ce6b10016d2d8718">&#9670;&#160;</a></span>pending_calls</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::unordered_map&lt;unsigned int, std::unordered_map&lt;std::size_t, int&gt; &gt; pending_calls</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>まだ完了していない自分へのcall呼び出しのリスト </p>
+<p>[caller_member_id][caller_id]</p>
+<p>呼び出し開始で2, response返したら1, result返したら0</p>
+<p>切断時にそれぞれにresponseを返す必要がある。 </p>
+
+</div>
+</div>
+<a id="ab513349dee41e5e85be9aaca1baa402c" name="ab513349dee41e5e85be9aaca1baa402c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab513349dee41e5e85be9aaca1baa402c">&#9670;&#160;</a></span>ping_interval</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr std::chrono::milliseconds ping_interval {5000}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa4d0490f94c85fcb4e1d41b615f02f0c" name="aa4d0490f94c85fcb4e1d41b615f02f0c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa4d0490f94c85fcb4e1d41b615f02f0c">&#9670;&#160;</a></span>ping_status_req</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool ping_status_req = false</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aeaede8e9fa35099287d112189aac9e3a" name="aeaede8e9fa35099287d112189aac9e3a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeaede8e9fa35099287d112189aac9e3a">&#9670;&#160;</a></span>remote_addr</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string remote_addr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a4f5c4e5a73b55171196c272012f3d457" name="a4f5c4e5a73b55171196c272012f3d457"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4f5c4e5a73b55171196c272012f3d457">&#9670;&#160;</a></span>robot_model</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::unordered_map&lt; std::u8string, std::shared_ptr&lt;std::vector&lt;<a class="el" href="structwebcface_1_1Message_1_1RobotModel_1_1RobotLink.html">Message::RobotModel::RobotLink</a>&gt; &gt; &gt; robot_model</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="af06d3db574be26b034c4be5c60b3434d" name="af06d3db574be26b034c4be5c60b3434d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af06d3db574be26b034c4be5c60b3434d">&#9670;&#160;</a></span>robot_model_req</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::unordered_map&lt;std::u8string, std::unordered_map&lt;std::u8string, unsigned int&gt; &gt; robot_model_req</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a28beb71e3568e218778f423fd95ed391" name="a28beb71e3568e218778f423fd95ed391"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a28beb71e3568e218778f423fd95ed391">&#9670;&#160;</a></span>send_buffer</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::stringstream send_buffer</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a87a99f62a98bec91542c1bc1d1a18ba5" name="a87a99f62a98bec91542c1bc1d1a18ba5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a87a99f62a98bec91542c1bc1d1a18ba5">&#9670;&#160;</a></span>send_len</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int send_len = 0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a11573073f52fb4b379c28b67a1a9799c" name="a11573073f52fb4b379c28b67a1a9799c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a11573073f52fb4b379c28b67a1a9799c">&#9670;&#160;</a></span>sink</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">spdlog::sink_ptr sink</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="addef74eca96772f4826bbe53a38c2a79" name="addef74eca96772f4826bbe53a38c2a79"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#addef74eca96772f4826bbe53a38c2a79">&#9670;&#160;</a></span>store</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structwebcface_1_1Server_1_1ServerStorage.html">ServerStorage</a>* store</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aabf3a5ce7b508dec8b9c197b0af1d8c8" name="aabf3a5ce7b508dec8b9c197b0af1d8c8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aabf3a5ce7b508dec8b9c197b0af1d8c8">&#9670;&#160;</a></span>sync_init</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool sync_init = false</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>初回のsync() が終わったか </p>
+<p>falseならentryの通知などはしない </p>
+
+</div>
+</div>
+<a id="a7be19e1dbc3d3ceaf82df80667106cb7" name="a7be19e1dbc3d3ceaf82df80667106cb7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7be19e1dbc3d3ceaf82df80667106cb7">&#9670;&#160;</a></span>text</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::unordered_map&lt;std::u8string, std::shared_ptr&lt;<a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html">Common::ValAdaptor</a>&gt; &gt; text</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa562d96e4182453c1c239be031285158" name="aa562d96e4182453c1c239be031285158"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa562d96e4182453c1c239be031285158">&#9670;&#160;</a></span>text_req</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::unordered_map&lt;std::u8string, std::unordered_map&lt;std::u8string, unsigned int&gt; &gt; text_req</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a329f075210ec0892f18bb3e986c0cfe5" name="a329f075210ec0892f18bb3e986c0cfe5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a329f075210ec0892f18bb3e986c0cfe5">&#9670;&#160;</a></span>value</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::unordered_map&lt;std::u8string, std::shared_ptr&lt;std::vector&lt;double&gt; &gt; &gt; value</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>最新の値 </p>
+<p>entry非表示のものも含む。 </p>
+
+</div>
+</div>
+<a id="a172eac8ec2824b6bac928a7f3adf0447" name="a172eac8ec2824b6bac928a7f3adf0447"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a172eac8ec2824b6bac928a7f3adf0447">&#9670;&#160;</a></span>value_req</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::unordered_map&lt;std::u8string, std::unordered_map&lt;std::u8string, unsigned int&gt; &gt; value_req</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>リクエストしているmember,nameのペア </p>
+
+</div>
+</div>
+<a id="a3deb32456752b604272ccc014077d934" name="a3deb32456752b604272ccc014077d934"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3deb32456752b604272ccc014077d934">&#9670;&#160;</a></span>view</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::unordered_map&lt;std::u8string, std::vector&lt;<a class="el" href="structwebcface_1_1Common_1_1ViewComponentBase.html">Common::ViewComponentBase</a>&gt; &gt; view</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a4122e06690e525b820c5b76ad4ebeba0" name="a4122e06690e525b820c5b76ad4ebeba0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4122e06690e525b820c5b76ad4ebeba0">&#9670;&#160;</a></span>view_req</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::unordered_map&lt;std::u8string, std::unordered_map&lt;std::u8string, unsigned int&gt; &gt; view_req</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following files:<ul>
+<li>server/<a class="el" href="member__data_8h_source.html">member_data.h</a></li>
+<li>server/<a class="el" href="member__data_8cc.html">member_data.cc</a></li>
+</ul>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="namespacewebcface_1_1Server.html">Server</a></li><li class="navelem"><a class="el" href="structwebcface_1_1Server_1_1MemberData.html">MemberData</a></li>
+    <li class="footer">Generated on Mon May 27 2024 16:47:57 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+  </ul>
+</div>
+</body>
+</html>

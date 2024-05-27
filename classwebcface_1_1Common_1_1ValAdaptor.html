@@ -1,0 +1,1537 @@
+<!-- HTML header for doxygen 1.9.8-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>WebCFace: ValAdaptor Class Reference</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen_custom.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeDarkModeToggle.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeParagraphLink.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeTabs.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeInteractiveToc.init()
+</script>
+<script type="text/javascript">
+  function insertBadge(){
+    for(const sp of document.getElementsByClassName('since-c')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-00599c?logo=C%2B%2B" alt="c++ ver${ver}" class="inline">`;
+    }
+    for(const sp of document.getElementsByClassName('since-js')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-f7df1e?logo=JavaScript&amp;logoColor=black" alt="js ver${ver}" class="inline">`;
+    }
+    for(const sp of document.getElementsByClassName('since-py')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-3776ab?logo=python&amp;logoColor=white" alt="python ver${ver}" class="inline">`;
+    }
+  }
+</script>
+</head>
+<body onload="insertBadge();">
+<!-- https://tholman.com/github-corners/ -->
+<a href="https://github.com/na-trium-144/webcface" class="github-corner" aria-label="View source on GitHub">
+  <svg width="80" height="80" viewBox="0 0 250 250" style="fill:#64CEAA; color:#fff; position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path>
+  </svg>
+</a>
+<style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;1.11.3</span>
+   </div>
+   <div id="projectbrief">Web-based RPC &amp; UI Library</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.9.8 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function(){initNavTree('classwebcface_1_1Common_1_1ValAdaptor.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-types">Private Types</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
+<a href="classwebcface_1_1Common_1_1ValAdaptor-members.html">List of all members</a>  </div>
+  <div class="headertitle"><div class="title">ValAdaptor Class Reference</div></div>
+</div><!--header-->
+<div class="contents">
+
+<p>数値、文字列などの値を相互変換するクラス  
+ <a href="classwebcface_1_1Common_1_1ValAdaptor.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="val_8h_source.html">webcface/common/val.h</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:ae6db5443b47ee479ef0c5f576b0226e1" id="r_ae6db5443b47ee479ef0c5f576b0226e1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html#ae6db5443b47ee479ef0c5f576b0226e1">ValAdaptor</a> ()</td></tr>
+<tr class="separator:ae6db5443b47ee479ef0c5f576b0226e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a23e287439ae75a34cba40466c6fc0c7b" id="r_a23e287439ae75a34cba40466c6fc0c7b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html#a23e287439ae75a34cba40466c6fc0c7b">ValAdaptor</a> (std::u8string_view str)</td></tr>
+<tr class="separator:a23e287439ae75a34cba40466c6fc0c7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abe26014a147ff14ac50326d509401ff9" id="r_abe26014a147ff14ac50326d509401ff9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html">ValAdaptor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html#abe26014a147ff14ac50326d509401ff9">operator=</a> (std::u8string_view str)</td></tr>
+<tr class="separator:abe26014a147ff14ac50326d509401ff9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a883c72daf04042849b2664f05b811113" id="r_a883c72daf04042849b2664f05b811113"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html#a883c72daf04042849b2664f05b811113">ValAdaptor</a> (const char8_t *str)</td></tr>
+<tr class="separator:a883c72daf04042849b2664f05b811113"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0aad345a8e5d219c51ed4087690f53d9" id="r_a0aad345a8e5d219c51ed4087690f53d9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html">ValAdaptor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html#a0aad345a8e5d219c51ed4087690f53d9">operator=</a> (const char8_t *str)</td></tr>
+<tr class="separator:a0aad345a8e5d219c51ed4087690f53d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abbf1980ca1fddaf61c99abd79f4f796e" id="r_abbf1980ca1fddaf61c99abd79f4f796e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html#abbf1980ca1fddaf61c99abd79f4f796e">ValAdaptor</a> (std::string_view str)</td></tr>
+<tr class="separator:abbf1980ca1fddaf61c99abd79f4f796e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a63191a9f9f85a940ce7ec8f03bc2b6cb" id="r_a63191a9f9f85a940ce7ec8f03bc2b6cb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html">ValAdaptor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html#a63191a9f9f85a940ce7ec8f03bc2b6cb">operator=</a> (std::string_view str)</td></tr>
+<tr class="separator:a63191a9f9f85a940ce7ec8f03bc2b6cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae5bde46650cd127fb6cd727dc6764b01" id="r_ae5bde46650cd127fb6cd727dc6764b01"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html#ae5bde46650cd127fb6cd727dc6764b01">ValAdaptor</a> (const char *str)</td></tr>
+<tr class="separator:ae5bde46650cd127fb6cd727dc6764b01"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afcf723c110f75c2adb13479c358b3ac5" id="r_afcf723c110f75c2adb13479c358b3ac5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html">ValAdaptor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html#afcf723c110f75c2adb13479c358b3ac5">operator=</a> (const char *str)</td></tr>
+<tr class="separator:afcf723c110f75c2adb13479c358b3ac5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a144988dc73f4bb0cdf671b6aecc37f14" id="r_a144988dc73f4bb0cdf671b6aecc37f14"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html#a144988dc73f4bb0cdf671b6aecc37f14">ValAdaptor</a> (std::wstring_view str)</td></tr>
+<tr class="separator:a144988dc73f4bb0cdf671b6aecc37f14"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9ee249fad60d4909c5c6ecad6e3ed35e" id="r_a9ee249fad60d4909c5c6ecad6e3ed35e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html">ValAdaptor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html#a9ee249fad60d4909c5c6ecad6e3ed35e">operator=</a> (std::wstring_view str)</td></tr>
+<tr class="separator:a9ee249fad60d4909c5c6ecad6e3ed35e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe11941ee562ddba583ab8cc56a5124f" id="r_afe11941ee562ddba583ab8cc56a5124f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html#afe11941ee562ddba583ab8cc56a5124f">ValAdaptor</a> (const wchar_t *str)</td></tr>
+<tr class="separator:afe11941ee562ddba583ab8cc56a5124f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a76e31441bd9b55c512c96f7787a383a5" id="r_a76e31441bd9b55c512c96f7787a383a5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html">ValAdaptor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html#a76e31441bd9b55c512c96f7787a383a5">operator=</a> (const wchar_t *str)</td></tr>
+<tr class="separator:a76e31441bd9b55c512c96f7787a383a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9f1785647f8051f6cf2fc0655d7d8f9a" id="r_a9f1785647f8051f6cf2fc0655d7d8f9a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html#a9f1785647f8051f6cf2fc0655d7d8f9a">ValAdaptor</a> (bool value)</td></tr>
+<tr class="separator:a9f1785647f8051f6cf2fc0655d7d8f9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac60afd84e97bd85d274bd96387a98c35" id="r_ac60afd84e97bd85d274bd96387a98c35"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html">ValAdaptor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html#ac60afd84e97bd85d274bd96387a98c35">operator=</a> (bool v)</td></tr>
+<tr class="separator:ac60afd84e97bd85d274bd96387a98c35"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae9b64c6375b05419d09e760bad2d03b3" id="r_ae9b64c6375b05419d09e760bad2d03b3"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; <br />
+requires std::integral&lt;T&gt;</td></tr>
+<tr class="memitem:ae9b64c6375b05419d09e760bad2d03b3"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html#ae9b64c6375b05419d09e760bad2d03b3">ValAdaptor</a> (T value)</td></tr>
+<tr class="separator:ae9b64c6375b05419d09e760bad2d03b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0b65614fbd497669b4803dbecf4981e4" id="r_a0b65614fbd497669b4803dbecf4981e4"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; <br />
+requires std::integral&lt;T&gt;</td></tr>
+<tr class="memitem:a0b65614fbd497669b4803dbecf4981e4"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html">ValAdaptor</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html#a0b65614fbd497669b4803dbecf4981e4">operator=</a> (T v)</td></tr>
+<tr class="separator:a0b65614fbd497669b4803dbecf4981e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a52b37d81a8646f1b51d40fcb13523209" id="r_a52b37d81a8646f1b51d40fcb13523209"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; <br />
+requires std::floating_point&lt;T&gt;</td></tr>
+<tr class="memitem:a52b37d81a8646f1b51d40fcb13523209"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html#a52b37d81a8646f1b51d40fcb13523209">ValAdaptor</a> (T value)</td></tr>
+<tr class="separator:a52b37d81a8646f1b51d40fcb13523209"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a81c7473bad3061f0a26bab58da6f3f40" id="r_a81c7473bad3061f0a26bab58da6f3f40"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; <br />
+requires std::floating_point&lt;T&gt;</td></tr>
+<tr class="memitem:a81c7473bad3061f0a26bab58da6f3f40"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html">ValAdaptor</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html#a81c7473bad3061f0a26bab58da6f3f40">operator=</a> (T v)</td></tr>
+<tr class="separator:a81c7473bad3061f0a26bab58da6f3f40"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8306c5c4236744c1ac2507fa4d94c33c" id="r_a8306c5c4236744c1ac2507fa4d94c33c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html#a8306c5c4236744c1ac2507fa4d94c33c">ValAdaptor</a> (const <a class="el" href="structwcfMultiVal.html">wcfMultiVal</a> &amp;val)</td></tr>
+<tr class="memdesc:a8306c5c4236744c1ac2507fa4d94c33c"><td class="mdescLeft">&#160;</td><td class="mdescRight">wcfMultiValから変換  <br /></td></tr>
+<tr class="separator:a8306c5c4236744c1ac2507fa4d94c33c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae2fc59ee943a6edc729b9ae7e9656907" id="r_ae2fc59ee943a6edc729b9ae7e9656907"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html#ae2fc59ee943a6edc729b9ae7e9656907">ValAdaptor</a> (const <a class="el" href="structwcfMultiValW.html">wcfMultiValW</a> &amp;val)</td></tr>
+<tr class="memdesc:ae2fc59ee943a6edc729b9ae7e9656907"><td class="mdescLeft">&#160;</td><td class="mdescRight">wcfMultiValWから変換  <br /></td></tr>
+<tr class="separator:ae2fc59ee943a6edc729b9ae7e9656907"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abbfeeae645abbaf39aeb6fb0c8b00007" id="r_abbfeeae645abbaf39aeb6fb0c8b00007"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacewebcface_1_1Common.html#acd1dd9e2d5f885ad3f73197cfa6b0185">ValType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html#abbfeeae645abbaf39aeb6fb0c8b00007">valType</a> () const</td></tr>
+<tr class="separator:abbfeeae645abbaf39aeb6fb0c8b00007"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a644718bb2fb240de962dc3c9a1fdf0dc" id="r_a644718bb2fb240de962dc3c9a1fdf0dc"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html#a644718bb2fb240de962dc3c9a1fdf0dc">empty</a> () const</td></tr>
+<tr class="memdesc:a644718bb2fb240de962dc3c9a1fdf0dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">値が空かどうか調べる  <br /></td></tr>
+<tr class="separator:a644718bb2fb240de962dc3c9a1fdf0dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a67ffc387e9b4058d4b3f7f7bf8d8a829" id="r_a67ffc387e9b4058d4b3f7f7bf8d8a829"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html#a67ffc387e9b4058d4b3f7f7bf8d8a829">asStringRef</a> () const</td></tr>
+<tr class="memdesc:a67ffc387e9b4058d4b3f7f7bf8d8a829"><td class="mdescLeft">&#160;</td><td class="mdescRight">文字列として返す  <br /></td></tr>
+<tr class="separator:a67ffc387e9b4058d4b3f7f7bf8d8a829"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a429afb50b056147d1f030dd4fc86e5fc" id="r_a429afb50b056147d1f030dd4fc86e5fc"><td class="memItemLeft" align="right" valign="top">const std::wstring &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html#a429afb50b056147d1f030dd4fc86e5fc">asWStringRef</a> () const</td></tr>
+<tr class="memdesc:a429afb50b056147d1f030dd4fc86e5fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">文字列として返す (wstring)  <br /></td></tr>
+<tr class="separator:a429afb50b056147d1f030dd4fc86e5fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac3b3ea15c8a86f79b3e04a4817d27c06" id="r_ac3b3ea15c8a86f79b3e04a4817d27c06"><td class="memItemLeft" align="right" valign="top">std::u8string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html#ac3b3ea15c8a86f79b3e04a4817d27c06">asU8String</a> () const</td></tr>
+<tr class="separator:ac3b3ea15c8a86f79b3e04a4817d27c06"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a21aed6732ef1c8a17601d42e53959781" id="r_a21aed6732ef1c8a17601d42e53959781"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html#a21aed6732ef1c8a17601d42e53959781">asString</a> () const</td></tr>
+<tr class="memdesc:a21aed6732ef1c8a17601d42e53959781"><td class="mdescLeft">&#160;</td><td class="mdescRight">文字列として返す(コピー)  <br /></td></tr>
+<tr class="separator:a21aed6732ef1c8a17601d42e53959781"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adca2b815ee62f1981b2e11e98740c8ab" id="r_adca2b815ee62f1981b2e11e98740c8ab"><td class="memItemLeft" align="right" valign="top">std::wstring&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html#adca2b815ee62f1981b2e11e98740c8ab">asWString</a> () const</td></tr>
+<tr class="memdesc:adca2b815ee62f1981b2e11e98740c8ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">文字列として返す(コピー) (wstring)  <br /></td></tr>
+<tr class="separator:adca2b815ee62f1981b2e11e98740c8ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac91ebb8fe9956bbc1dfa3a22c9012235" id="r_ac91ebb8fe9956bbc1dfa3a22c9012235"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html#ac91ebb8fe9956bbc1dfa3a22c9012235">operator const std::string &amp;</a> () const</td></tr>
+<tr class="separator:ac91ebb8fe9956bbc1dfa3a22c9012235"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8f2fe561ed71123caa764bb17088bb1d" id="r_a8f2fe561ed71123caa764bb17088bb1d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html#a8f2fe561ed71123caa764bb17088bb1d">operator const std::wstring &amp;</a> () const</td></tr>
+<tr class="separator:a8f2fe561ed71123caa764bb17088bb1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af4e65277e4f9ecbe4f7cd87ab63be71e" id="r_af4e65277e4f9ecbe4f7cd87ab63be71e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html#af4e65277e4f9ecbe4f7cd87ab63be71e">operator const char *</a> () const</td></tr>
+<tr class="separator:af4e65277e4f9ecbe4f7cd87ab63be71e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2aa908f94f43015f22c4f756a118a96f" id="r_a2aa908f94f43015f22c4f756a118a96f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html#a2aa908f94f43015f22c4f756a118a96f">operator const wchar_t *</a> () const</td></tr>
+<tr class="separator:a2aa908f94f43015f22c4f756a118a96f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a896fa1c6f48e52917906214f28c8ac47" id="r_a896fa1c6f48e52917906214f28c8ac47"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; <br />
+requires std::convertible_to&lt;std::string, T&gt;</td></tr>
+<tr class="memitem:a896fa1c6f48e52917906214f28c8ac47"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html#a896fa1c6f48e52917906214f28c8ac47">operator T</a> () const</td></tr>
+<tr class="memdesc:a896fa1c6f48e52917906214f28c8ac47"><td class="mdescLeft">&#160;</td><td class="mdescRight">string_viewなどへの変換  <br /></td></tr>
+<tr class="separator:a896fa1c6f48e52917906214f28c8ac47"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af13c4ecacd613ad1c53397ef8d04e3e2" id="r_af13c4ecacd613ad1c53397ef8d04e3e2"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; <br />
+requires (std::convertible_to&lt;std::wstring, T&gt; &amp;&amp; !std::convertible_to&lt;std::string, T&gt;)</td></tr>
+<tr class="memitem:af13c4ecacd613ad1c53397ef8d04e3e2"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html#af13c4ecacd613ad1c53397ef8d04e3e2">operator T</a> () const</td></tr>
+<tr class="memdesc:af13c4ecacd613ad1c53397ef8d04e3e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">wstring_viewなどへの変換  <br /></td></tr>
+<tr class="separator:af13c4ecacd613ad1c53397ef8d04e3e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae30a38ec215c7dc29368fedb325e7ec9" id="r_ae30a38ec215c7dc29368fedb325e7ec9"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; <br />
+requires (std::convertible_to&lt;double, T&gt; &amp;&amp; !std::same_as&lt;T, bool&gt;)</td></tr>
+<tr class="memitem:ae30a38ec215c7dc29368fedb325e7ec9"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html#ae30a38ec215c7dc29368fedb325e7ec9">as</a> () const</td></tr>
+<tr class="memdesc:ae30a38ec215c7dc29368fedb325e7ec9"><td class="mdescLeft">&#160;</td><td class="mdescRight">数値として返す  <br /></td></tr>
+<tr class="separator:ae30a38ec215c7dc29368fedb325e7ec9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae720108aa50d1e20030013ca199565d1" id="r_ae720108aa50d1e20030013ca199565d1"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; <br />
+requires (std::convertible_to&lt;double, T&gt; &amp;&amp; !std::same_as&lt;T, bool&gt;)</td></tr>
+<tr class="memitem:ae720108aa50d1e20030013ca199565d1"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html#ae720108aa50d1e20030013ca199565d1">operator T</a> () const</td></tr>
+<tr class="memdesc:ae720108aa50d1e20030013ca199565d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">数値型への変換  <br /></td></tr>
+<tr class="separator:ae720108aa50d1e20030013ca199565d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa89e0884952cab63a940c6626ed9a5d6" id="r_aa89e0884952cab63a940c6626ed9a5d6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html#aa89e0884952cab63a940c6626ed9a5d6">asBool</a> () const</td></tr>
+<tr class="memdesc:aa89e0884952cab63a940c6626ed9a5d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">bool値を返す  <br /></td></tr>
+<tr class="separator:aa89e0884952cab63a940c6626ed9a5d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a67b76affb3b5d35fa419ac234144038b" id="r_a67b76affb3b5d35fa419ac234144038b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html#a67b76affb3b5d35fa419ac234144038b">operator bool</a> () const</td></tr>
+<tr class="separator:a67b76affb3b5d35fa419ac234144038b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7a7383a6c7642d96aa72fef85e1def15" id="r_a7a7383a6c7642d96aa72fef85e1def15"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html#a7a7383a6c7642d96aa72fef85e1def15">operator==</a> (const <a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html">ValAdaptor</a> &amp;other) const</td></tr>
+<tr class="separator:a7a7383a6c7642d96aa72fef85e1def15"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d1c4e1b2559deca7d0dfdd7cd26c7b8" id="r_a5d1c4e1b2559deca7d0dfdd7cd26c7b8"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; <br />
+requires (std::constructible_from&lt;<a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html">ValAdaptor</a>, T&gt; &amp;&amp; !std::same_as&lt;<a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html">ValAdaptor</a>, T&gt;)</td></tr>
+<tr class="memitem:a5d1c4e1b2559deca7d0dfdd7cd26c7b8"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html#a5d1c4e1b2559deca7d0dfdd7cd26c7b8">operator==</a> (const T &amp;other) const</td></tr>
+<tr class="separator:a5d1c4e1b2559deca7d0dfdd7cd26c7b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-types" name="pri-types"></a>
+Private Types</h2></td></tr>
+<tr class="memitem:a25d2107501ca0ee495ae612d64c0c2f2" id="r_a25d2107501ca0ee495ae612d64c0c2f2"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html#a25d2107501ca0ee495ae612d64c0c2f2">StrVariant</a> { <a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html#a25d2107501ca0ee495ae612d64c0c2f2aa0a4f6b6b0a6385cd7d9b0625550eafe">U8STR</a> = 0
+, <a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html#a25d2107501ca0ee495ae612d64c0c2f2aec41e801b43cfbec49d343c900360bf9">STR</a> = 1
+, <a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html#a25d2107501ca0ee495ae612d64c0c2f2ae92f9a9b931aa9936621ecf681c897dd">WSTR</a> = 2
+ }</td></tr>
+<tr class="separator:a25d2107501ca0ee495ae612d64c0c2f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab1fc347c8dab24ea630b07eefc5f81b1" id="r_ab1fc347c8dab24ea630b07eefc5f81b1"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html#ab1fc347c8dab24ea630b07eefc5f81b1">ValVariant</a> { <a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html#ab1fc347c8dab24ea630b07eefc5f81b1a82415e6a4dd3ea15c13484032c2ae7b5">DOUBLEV</a> = 0
+, <a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html#ab1fc347c8dab24ea630b07eefc5f81b1ae1da5f2e4757f309483763f280f89ea2">INT64V</a> = 1
+ }</td></tr>
+<tr class="separator:ab1fc347c8dab24ea630b07eefc5f81b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a9aa354c2a2b4ad0cc7c400d770503027" id="r_a9aa354c2a2b4ad0cc7c400d770503027"><td class="memItemLeft" align="right" valign="top">std::variant&lt; std::u8string, std::string, std::wstring &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html#a9aa354c2a2b4ad0cc7c400d770503027">as_str</a></td></tr>
+<tr class="separator:a9aa354c2a2b4ad0cc7c400d770503027"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aade1e2e8377b65365c5c0d70d37b773e" id="r_aade1e2e8377b65365c5c0d70d37b773e"><td class="memItemLeft" align="right" valign="top">std::variant&lt; double, std::int64_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html#aade1e2e8377b65365c5c0d70d37b773e">as_val</a></td></tr>
+<tr class="separator:aade1e2e8377b65365c5c0d70d37b773e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2013c6c2a968a8954cef0f06289d4166" id="r_a2013c6c2a968a8954cef0f06289d4166"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacewebcface_1_1Common.html#acd1dd9e2d5f885ad3f73197cfa6b0185">ValType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html#a2013c6c2a968a8954cef0f06289d4166">type</a></td></tr>
+<tr class="separator:a2013c6c2a968a8954cef0f06289d4166"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>数値、文字列などの値を相互変換するクラス </p>
+<p>数値の場合doubleまたはint64_tで保持する</p>
+<p>数値型であっても文字列のインスタンスを内部に保持し、 ValAdaptorが破棄されるまでの間char*やstring_viewから参照できる</p>
+<p>空の状態=空文字列 </p>
+</div><h2 class="groupheader">Member Enumeration Documentation</h2>
+<a id="a25d2107501ca0ee495ae612d64c0c2f2" name="a25d2107501ca0ee495ae612d64c0c2f2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a25d2107501ca0ee495ae612d64c0c2f2">&#9670;&#160;</a></span>StrVariant</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html#a25d2107501ca0ee495ae612d64c0c2f2">StrVariant</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a25d2107501ca0ee495ae612d64c0c2f2aa0a4f6b6b0a6385cd7d9b0625550eafe" name="a25d2107501ca0ee495ae612d64c0c2f2aa0a4f6b6b0a6385cd7d9b0625550eafe"></a>U8STR&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a25d2107501ca0ee495ae612d64c0c2f2aec41e801b43cfbec49d343c900360bf9" name="a25d2107501ca0ee495ae612d64c0c2f2aec41e801b43cfbec49d343c900360bf9"></a>STR&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a25d2107501ca0ee495ae612d64c0c2f2ae92f9a9b931aa9936621ecf681c897dd" name="a25d2107501ca0ee495ae612d64c0c2f2ae92f9a9b931aa9936621ecf681c897dd"></a>WSTR&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+</div>
+</div>
+<a id="ab1fc347c8dab24ea630b07eefc5f81b1" name="ab1fc347c8dab24ea630b07eefc5f81b1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab1fc347c8dab24ea630b07eefc5f81b1">&#9670;&#160;</a></span>ValVariant</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html#ab1fc347c8dab24ea630b07eefc5f81b1">ValVariant</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ab1fc347c8dab24ea630b07eefc5f81b1a82415e6a4dd3ea15c13484032c2ae7b5" name="ab1fc347c8dab24ea630b07eefc5f81b1a82415e6a4dd3ea15c13484032c2ae7b5"></a>DOUBLEV&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ab1fc347c8dab24ea630b07eefc5f81b1ae1da5f2e4757f309483763f280f89ea2" name="ab1fc347c8dab24ea630b07eefc5f81b1ae1da5f2e4757f309483763f280f89ea2"></a>INT64V&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+</div>
+</div>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="ae6db5443b47ee479ef0c5f576b0226e1" name="ae6db5443b47ee479ef0c5f576b0226e1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae6db5443b47ee479ef0c5f576b0226e1">&#9670;&#160;</a></span>ValAdaptor() <span class="overload">[1/12]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html">ValAdaptor</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a23e287439ae75a34cba40466c6fc0c7b" name="a23e287439ae75a34cba40466c6fc0c7b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a23e287439ae75a34cba40466c6fc0c7b">&#9670;&#160;</a></span>ValAdaptor() <span class="overload">[2/12]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html">ValAdaptor</a> </td>
+          <td>(</td>
+          <td class="paramtype">std::u8string_view&#160;</td>
+          <td class="paramname"><em>str</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section since"><dt>Since</dt><dd>ver1.12 </dd></dl>
+
+</div>
+</div>
+<a id="a883c72daf04042849b2664f05b811113" name="a883c72daf04042849b2664f05b811113"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a883c72daf04042849b2664f05b811113">&#9670;&#160;</a></span>ValAdaptor() <span class="overload">[3/12]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html">ValAdaptor</a> </td>
+          <td>(</td>
+          <td class="paramtype">const char8_t *&#160;</td>
+          <td class="paramname"><em>str</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section since"><dt>Since</dt><dd>ver1.12 </dd></dl>
+
+</div>
+</div>
+<a id="abbf1980ca1fddaf61c99abd79f4f796e" name="abbf1980ca1fddaf61c99abd79f4f796e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abbf1980ca1fddaf61c99abd79f4f796e">&#9670;&#160;</a></span>ValAdaptor() <span class="overload">[4/12]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html">ValAdaptor</a> </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>str</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ae5bde46650cd127fb6cd727dc6764b01" name="ae5bde46650cd127fb6cd727dc6764b01"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae5bde46650cd127fb6cd727dc6764b01">&#9670;&#160;</a></span>ValAdaptor() <span class="overload">[5/12]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html">ValAdaptor</a> </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>str</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a144988dc73f4bb0cdf671b6aecc37f14" name="a144988dc73f4bb0cdf671b6aecc37f14"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a144988dc73f4bb0cdf671b6aecc37f14">&#9670;&#160;</a></span>ValAdaptor() <span class="overload">[6/12]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html">ValAdaptor</a> </td>
+          <td>(</td>
+          <td class="paramtype">std::wstring_view&#160;</td>
+          <td class="paramname"><em>str</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section since"><dt>Since</dt><dd>ver1.12 </dd></dl>
+
+</div>
+</div>
+<a id="afe11941ee562ddba583ab8cc56a5124f" name="afe11941ee562ddba583ab8cc56a5124f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afe11941ee562ddba583ab8cc56a5124f">&#9670;&#160;</a></span>ValAdaptor() <span class="overload">[7/12]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html">ValAdaptor</a> </td>
+          <td>(</td>
+          <td class="paramtype">const wchar_t *&#160;</td>
+          <td class="paramname"><em>str</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section since"><dt>Since</dt><dd>ver1.12 </dd></dl>
+
+</div>
+</div>
+<a id="a9f1785647f8051f6cf2fc0655d7d8f9a" name="a9f1785647f8051f6cf2fc0655d7d8f9a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9f1785647f8051f6cf2fc0655d7d8f9a">&#9670;&#160;</a></span>ValAdaptor() <span class="overload">[8/12]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html">ValAdaptor</a> </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ae9b64c6375b05419d09e760bad2d03b3" name="ae9b64c6375b05419d09e760bad2d03b3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae9b64c6375b05419d09e760bad2d03b3">&#9670;&#160;</a></span>ValAdaptor() <span class="overload">[9/12]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; <br />
+requires std::integral&lt;T&gt;</div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html">ValAdaptor</a> </td>
+          <td>(</td>
+          <td class="paramtype">T&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a52b37d81a8646f1b51d40fcb13523209" name="a52b37d81a8646f1b51d40fcb13523209"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a52b37d81a8646f1b51d40fcb13523209">&#9670;&#160;</a></span>ValAdaptor() <span class="overload">[10/12]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; <br />
+requires std::floating_point&lt;T&gt;</div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html">ValAdaptor</a> </td>
+          <td>(</td>
+          <td class="paramtype">T&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a8306c5c4236744c1ac2507fa4d94c33c" name="a8306c5c4236744c1ac2507fa4d94c33c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8306c5c4236744c1ac2507fa4d94c33c">&#9670;&#160;</a></span>ValAdaptor() <span class="overload">[11/12]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html">ValAdaptor</a> </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structwcfMultiVal.html">wcfMultiVal</a> &amp;&#160;</td>
+          <td class="paramname"><em>val</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>wcfMultiValから変換 </p>
+<p>valのint, double, strのいずれか1つに値をセットして渡すと、 データ型を判別する</p>
+<p>as_strの文字列はコピーして保持する </p>
+
+</div>
+</div>
+<a id="ae2fc59ee943a6edc729b9ae7e9656907" name="ae2fc59ee943a6edc729b9ae7e9656907"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae2fc59ee943a6edc729b9ae7e9656907">&#9670;&#160;</a></span>ValAdaptor() <span class="overload">[12/12]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html">ValAdaptor</a> </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structwcfMultiValW.html">wcfMultiValW</a> &amp;&#160;</td>
+          <td class="paramname"><em>val</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>wcfMultiValWから変換 </p>
+<dl class="section since"><dt>Since</dt><dd>ver1.12 </dd></dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="ae30a38ec215c7dc29368fedb325e7ec9" name="ae30a38ec215c7dc29368fedb325e7ec9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae30a38ec215c7dc29368fedb325e7ec9">&#9670;&#160;</a></span>as()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; <br />
+requires (std::convertible_to&lt;double, T&gt; &amp;&amp; !std::same_as&lt;T, bool&gt;)</div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double as </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>数値として返す </p>
+<dl class="section since"><dt>Since</dt><dd>ver1.10</dd></dl>
+<p><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html#ae30a38ec215c7dc29368fedb325e7ec9" title="数値として返す">as&lt;T&gt;()</a>, Tはdoubleなどの実数型、intなどの整数型 </p>
+
+</div>
+</div>
+<a id="aa89e0884952cab63a940c6626ed9a5d6" name="aa89e0884952cab63a940c6626ed9a5d6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa89e0884952cab63a940c6626ed9a5d6">&#9670;&#160;</a></span>asBool()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool asBool </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>bool値を返す </p>
+<dl class="section since"><dt>Since</dt><dd>ver1.10</dd></dl>
+<ul>
+<li>文字列型が入っていた場合、空文字列でなければtrueを返す</li>
+<li>数値型が入っていた場合、0でなければtrueを返す </li>
+</ul>
+
+</div>
+</div>
+<a id="a21aed6732ef1c8a17601d42e53959781" name="a21aed6732ef1c8a17601d42e53959781"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a21aed6732ef1c8a17601d42e53959781">&#9670;&#160;</a></span>asString()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string asString </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>文字列として返す(コピー) </p>
+<dl class="section since"><dt>Since</dt><dd>ver1.10 </dd></dl>
+
+</div>
+</div>
+<a id="a67ffc387e9b4058d4b3f7f7bf8d8a829" name="a67ffc387e9b4058d4b3f7f7bf8d8a829"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a67ffc387e9b4058d4b3f7f7bf8d8a829">&#9670;&#160;</a></span>asStringRef()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::string &amp; asStringRef </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>文字列として返す </p>
+<dl class="section since"><dt>Since</dt><dd>ver1.10</dd></dl>
+<p>std::stringのconst参照を返す。 参照はこのValAdaptorが破棄されるまで有効</p>
+<p>as_strにstringが格納されていた場合はそれをそのまま返す。 そうでない場合(u8string, wstring, double, int64が格納されている場合) はそれをstringに変換したうえでその参照を返す。 </p>
+
+</div>
+</div>
+<a id="ac3b3ea15c8a86f79b3e04a4817d27c06" name="ac3b3ea15c8a86f79b3e04a4817d27c06"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac3b3ea15c8a86f79b3e04a4817d27c06">&#9670;&#160;</a></span>asU8String()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::u8string asU8String </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section since"><dt>Since</dt><dd>ver1.12 </dd></dl>
+
+</div>
+</div>
+<a id="adca2b815ee62f1981b2e11e98740c8ab" name="adca2b815ee62f1981b2e11e98740c8ab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adca2b815ee62f1981b2e11e98740c8ab">&#9670;&#160;</a></span>asWString()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::wstring asWString </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>文字列として返す(コピー) (wstring) </p>
+<dl class="section since"><dt>Since</dt><dd>ver1.12 </dd></dl>
+
+</div>
+</div>
+<a id="a429afb50b056147d1f030dd4fc86e5fc" name="a429afb50b056147d1f030dd4fc86e5fc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a429afb50b056147d1f030dd4fc86e5fc">&#9670;&#160;</a></span>asWStringRef()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::wstring &amp; asWStringRef </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>文字列として返す (wstring) </p>
+<dl class="section since"><dt>Since</dt><dd>ver1.12 </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html#a67ffc387e9b4058d4b3f7f7bf8d8a829" title="文字列として返す">asStringRef()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a644718bb2fb240de962dc3c9a1fdf0dc" name="a644718bb2fb240de962dc3c9a1fdf0dc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a644718bb2fb240de962dc3c9a1fdf0dc">&#9670;&#160;</a></span>empty()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool empty </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>値が空かどうか調べる </p>
+<dl class="section since"><dt>Since</dt><dd>ver1.11 </dd></dl>
+
+</div>
+</div>
+<a id="a67b76affb3b5d35fa419ac234144038b" name="a67b76affb3b5d35fa419ac234144038b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a67b76affb3b5d35fa419ac234144038b">&#9670;&#160;</a></span>operator bool()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">operator bool </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>boolへ変換 </p>
+
+</div>
+</div>
+<a id="af4e65277e4f9ecbe4f7cd87ab63be71e" name="af4e65277e4f9ecbe4f7cd87ab63be71e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af4e65277e4f9ecbe4f7cd87ab63be71e">&#9670;&#160;</a></span>operator const char *()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">operator const char * </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section since"><dt>Since</dt><dd>ver1.12 </dd></dl>
+
+</div>
+</div>
+<a id="ac91ebb8fe9956bbc1dfa3a22c9012235" name="ac91ebb8fe9956bbc1dfa3a22c9012235"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac91ebb8fe9956bbc1dfa3a22c9012235">&#9670;&#160;</a></span>operator const std::string &amp;()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">operator const std::string &amp; </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>ver1.10〜: const参照 </p>
+
+</div>
+</div>
+<a id="a8f2fe561ed71123caa764bb17088bb1d" name="a8f2fe561ed71123caa764bb17088bb1d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8f2fe561ed71123caa764bb17088bb1d">&#9670;&#160;</a></span>operator const std::wstring &amp;()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">operator const std::wstring &amp; </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section since"><dt>Since</dt><dd>ver1.12 </dd></dl>
+
+</div>
+</div>
+<a id="a2aa908f94f43015f22c4f756a118a96f" name="a2aa908f94f43015f22c4f756a118a96f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2aa908f94f43015f22c4f756a118a96f">&#9670;&#160;</a></span>operator const wchar_t *()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">operator const wchar_t * </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section since"><dt>Since</dt><dd>ver1.12 </dd></dl>
+
+</div>
+</div>
+<a id="a896fa1c6f48e52917906214f28c8ac47" name="a896fa1c6f48e52917906214f28c8ac47"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a896fa1c6f48e52917906214f28c8ac47">&#9670;&#160;</a></span>operator T() <span class="overload">[1/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; <br />
+requires std::convertible_to&lt;std::string, T&gt;</div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">operator T </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>string_viewなどへの変換 </p>
+
+</div>
+</div>
+<a id="af13c4ecacd613ad1c53397ef8d04e3e2" name="af13c4ecacd613ad1c53397ef8d04e3e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af13c4ecacd613ad1c53397ef8d04e3e2">&#9670;&#160;</a></span>operator T() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; <br />
+requires (std::convertible_to&lt;std::wstring, T&gt; &amp;&amp; !std::convertible_to&lt;std::string, T&gt;)</div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">operator T </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>wstring_viewなどへの変換 </p>
+<dl class="section since"><dt>Since</dt><dd>ver1.12 </dd></dl>
+
+</div>
+</div>
+<a id="ae720108aa50d1e20030013ca199565d1" name="ae720108aa50d1e20030013ca199565d1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae720108aa50d1e20030013ca199565d1">&#9670;&#160;</a></span>operator T() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; <br />
+requires (std::convertible_to&lt;double, T&gt; &amp;&amp; !std::same_as&lt;T, bool&gt;)</div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">operator T </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>数値型への変換 </p>
+
+</div>
+</div>
+<a id="ac60afd84e97bd85d274bd96387a98c35" name="ac60afd84e97bd85d274bd96387a98c35"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac60afd84e97bd85d274bd96387a98c35">&#9670;&#160;</a></span>operator=() <span class="overload">[1/9]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html">ValAdaptor</a> &amp; operator= </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>v</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="afcf723c110f75c2adb13479c358b3ac5" name="afcf723c110f75c2adb13479c358b3ac5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afcf723c110f75c2adb13479c358b3ac5">&#9670;&#160;</a></span>operator=() <span class="overload">[2/9]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html">ValAdaptor</a> &amp; operator= </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>str</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a0aad345a8e5d219c51ed4087690f53d9" name="a0aad345a8e5d219c51ed4087690f53d9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0aad345a8e5d219c51ed4087690f53d9">&#9670;&#160;</a></span>operator=() <span class="overload">[3/9]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html">ValAdaptor</a> &amp; operator= </td>
+          <td>(</td>
+          <td class="paramtype">const char8_t *&#160;</td>
+          <td class="paramname"><em>str</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section since"><dt>Since</dt><dd>ver1.12 </dd></dl>
+
+</div>
+</div>
+<a id="a76e31441bd9b55c512c96f7787a383a5" name="a76e31441bd9b55c512c96f7787a383a5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a76e31441bd9b55c512c96f7787a383a5">&#9670;&#160;</a></span>operator=() <span class="overload">[4/9]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html">ValAdaptor</a> &amp; operator= </td>
+          <td>(</td>
+          <td class="paramtype">const wchar_t *&#160;</td>
+          <td class="paramname"><em>str</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section since"><dt>Since</dt><dd>ver1.12 </dd></dl>
+
+</div>
+</div>
+<a id="a63191a9f9f85a940ce7ec8f03bc2b6cb" name="a63191a9f9f85a940ce7ec8f03bc2b6cb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a63191a9f9f85a940ce7ec8f03bc2b6cb">&#9670;&#160;</a></span>operator=() <span class="overload">[5/9]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html">ValAdaptor</a> &amp; operator= </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>str</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="abe26014a147ff14ac50326d509401ff9" name="abe26014a147ff14ac50326d509401ff9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abe26014a147ff14ac50326d509401ff9">&#9670;&#160;</a></span>operator=() <span class="overload">[6/9]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html">ValAdaptor</a> &amp; operator= </td>
+          <td>(</td>
+          <td class="paramtype">std::u8string_view&#160;</td>
+          <td class="paramname"><em>str</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section since"><dt>Since</dt><dd>ver1.12 </dd></dl>
+
+</div>
+</div>
+<a id="a9ee249fad60d4909c5c6ecad6e3ed35e" name="a9ee249fad60d4909c5c6ecad6e3ed35e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9ee249fad60d4909c5c6ecad6e3ed35e">&#9670;&#160;</a></span>operator=() <span class="overload">[7/9]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html">ValAdaptor</a> &amp; operator= </td>
+          <td>(</td>
+          <td class="paramtype">std::wstring_view&#160;</td>
+          <td class="paramname"><em>str</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section since"><dt>Since</dt><dd>ver1.12 </dd></dl>
+
+</div>
+</div>
+<a id="a0b65614fbd497669b4803dbecf4981e4" name="a0b65614fbd497669b4803dbecf4981e4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0b65614fbd497669b4803dbecf4981e4">&#9670;&#160;</a></span>operator=() <span class="overload">[8/9]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; <br />
+requires std::integral&lt;T&gt;</div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html">ValAdaptor</a> &amp; operator= </td>
+          <td>(</td>
+          <td class="paramtype">T&#160;</td>
+          <td class="paramname"><em>v</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a81c7473bad3061f0a26bab58da6f3f40" name="a81c7473bad3061f0a26bab58da6f3f40"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a81c7473bad3061f0a26bab58da6f3f40">&#9670;&#160;</a></span>operator=() <span class="overload">[9/9]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; <br />
+requires std::floating_point&lt;T&gt;</div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html">ValAdaptor</a> &amp; operator= </td>
+          <td>(</td>
+          <td class="paramtype">T&#160;</td>
+          <td class="paramname"><em>v</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a5d1c4e1b2559deca7d0dfdd7cd26c7b8" name="a5d1c4e1b2559deca7d0dfdd7cd26c7b8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5d1c4e1b2559deca7d0dfdd7cd26c7b8">&#9670;&#160;</a></span>operator==() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; <br />
+requires (std::constructible_from&lt;<a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html">ValAdaptor</a>, T&gt; &amp;&amp; !std::same_as&lt;<a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html">ValAdaptor</a>, T&gt;)</div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool operator== </td>
+          <td>(</td>
+          <td class="paramtype">const T &amp;&#160;</td>
+          <td class="paramname"><em>other</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a7a7383a6c7642d96aa72fef85e1def15" name="a7a7383a6c7642d96aa72fef85e1def15"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7a7383a6c7642d96aa72fef85e1def15">&#9670;&#160;</a></span>operator==() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool operator== </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html">ValAdaptor</a> &amp;&#160;</td>
+          <td class="paramname"><em>other</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="abbfeeae645abbaf39aeb6fb0c8b00007" name="abbfeeae645abbaf39aeb6fb0c8b00007"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abbfeeae645abbaf39aeb6fb0c8b00007">&#9670;&#160;</a></span>valType()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacewebcface_1_1Common.html#acd1dd9e2d5f885ad3f73197cfa6b0185">ValType</a> valType </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a9aa354c2a2b4ad0cc7c400d770503027" name="a9aa354c2a2b4ad0cc7c400d770503027"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9aa354c2a2b4ad0cc7c400d770503027">&#9670;&#160;</a></span>as_str</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::variant&lt;std::u8string, std::string, std::wstring&gt; as_str</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">mutable</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>文字列に変換したものを保存 デフォルトでu8strの空文字列 </p>
+
+</div>
+</div>
+<a id="aade1e2e8377b65365c5c0d70d37b773e" name="aade1e2e8377b65365c5c0d70d37b773e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aade1e2e8377b65365c5c0d70d37b773e">&#9670;&#160;</a></span>as_val</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::variant&lt;double, std::int64_t&gt; as_val</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a2013c6c2a968a8954cef0f06289d4166" name="a2013c6c2a968a8954cef0f06289d4166"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2013c6c2a968a8954cef0f06289d4166">&#9670;&#160;</a></span>type</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacewebcface_1_1Common.html#acd1dd9e2d5f885ad3f73197cfa6b0185">ValType</a> type</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following file:<ul>
+<li>include/webcface/common/<a class="el" href="val_8h_source.html">val.h</a></li>
+</ul>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="namespacewebcface_1_1Common.html">Common</a></li><li class="navelem"><a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html">ValAdaptor</a></li>
+    <li class="footer">Generated on Mon May 27 2024 16:47:57 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+  </ul>
+</div>
+</body>
+</html>

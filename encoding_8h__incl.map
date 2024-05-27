@@ -1,0 +1,11 @@
+<map id="include/webcface/encoding.h" name="include/webcface/encoding.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="32,5,243,31"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,79,64,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="122,33,64,73,61,68,119,28"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="89,79,186,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="140,31,140,65,135,65,135,31"/>
+<area shape="rect" id="Node000004" href="$def_8h.html" title=" " alt="" coords="211,79,392,104"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="165,28,263,71,261,76,163,33"/>
+<area shape="rect" id="Node000005" href="$macros_8h.html" title=" " alt="" coords="197,152,406,177"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="304,104,304,138,299,138,299,104"/>
+</map>

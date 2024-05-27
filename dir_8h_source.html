@@ -149,29 +149,29 @@ $(document).ready(function(){initNavTree('dir_8h_source.html',''); initResizable
 <a href="dir_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#include &lt;string&gt;</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &lt;spdlog/logger.h&gt;</span></div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &lt;webcface/common/def.h&gt;</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &lt;<a class="code" href="def_8h.html">webcface/common/def.h</a>&gt;</span></div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><a class="code hl_define" href="macros_8h.html#abe991b8f291782627a31118c688e123a">WEBCFACE_NS_BEGIN</a></div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceServer.html">Server</a> {</div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="keyword">namespace </span>Server {</div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><a class="code hl_define" href="macros_8h.html#a47af057bda855b54c212e97ffccdca01">WEBCFACE_DLL</a> std::string</div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><a class="code hl_function" href="namespaceServer.html#af1a237eaae83a2c2a3202ce6108e46f9">getStaticDir</a>(<span class="keyword">const</span> std::shared_ptr&lt;spdlog::logger&gt; &amp;logger);</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><a class="code hl_function" href="namespacewebcface_1_1Server.html#a190126a8b357424080243a1c04ee9afc">getStaticDir</a>(<span class="keyword">const</span> std::shared_ptr&lt;spdlog::logger&gt; &amp;logger);</div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><a class="code hl_define" href="macros_8h.html#a47af057bda855b54c212e97ffccdca01">WEBCFACE_DLL</a> std::string</div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><a class="code hl_function" href="namespaceServer.html#a0f47c4abb0b8f705851bfe84709f37b1">getTempDir</a>(<span class="keyword">const</span> std::shared_ptr&lt;spdlog::logger&gt; &amp;logger);</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><a class="code hl_function" href="namespacewebcface_1_1Server.html#af75cf09eeecbcfd458c033ac2972eb47">getTempDir</a>(<span class="keyword">const</span> std::shared_ptr&lt;spdlog::logger&gt; &amp;logger);</div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>} <span class="comment">// namespace Server</span></div>
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><a class="code hl_define" href="macros_8h.html#ab3f2570d5b8231ddbe0e57fc8ab629eb">WEBCFACE_NS_END</a></div>
+<div class="ttc" id="adef_8h_html"><div class="ttname"><a href="def_8h.html">def.h</a></div></div>
 <div class="ttc" id="amacros_8h_html_a47af057bda855b54c212e97ffccdca01"><div class="ttname"><a href="macros_8h.html#a47af057bda855b54c212e97ffccdca01">WEBCFACE_DLL</a></div><div class="ttdeci">#define WEBCFACE_DLL</div><div class="ttdef"><b>Definition</b> macros.h:23</div></div>
 <div class="ttc" id="amacros_8h_html_ab3f2570d5b8231ddbe0e57fc8ab629eb"><div class="ttname"><a href="macros_8h.html#ab3f2570d5b8231ddbe0e57fc8ab629eb">WEBCFACE_NS_END</a></div><div class="ttdeci">#define WEBCFACE_NS_END</div><div class="ttdef"><b>Definition</b> macros.h:30</div></div>
 <div class="ttc" id="amacros_8h_html_abe991b8f291782627a31118c688e123a"><div class="ttname"><a href="macros_8h.html#abe991b8f291782627a31118c688e123a">WEBCFACE_NS_BEGIN</a></div><div class="ttdeci">#define WEBCFACE_NS_BEGIN</div><div class="ttdef"><b>Definition</b> macros.h:29</div></div>
-<div class="ttc" id="anamespaceServer_html"><div class="ttname"><a href="namespaceServer.html">Server</a></div><div class="ttdef"><b>Definition</b> server.h:13</div></div>
-<div class="ttc" id="anamespaceServer_html_a0f47c4abb0b8f705851bfe84709f37b1"><div class="ttname"><a href="namespaceServer.html#a0f47c4abb0b8f705851bfe84709f37b1">Server::getTempDir</a></div><div class="ttdeci">std::string getTempDir(const std::shared_ptr&lt; spdlog::logger &gt; &amp;logger)</div><div class="ttdef"><b>Definition</b> dir.cc:73</div></div>
-<div class="ttc" id="anamespaceServer_html_af1a237eaae83a2c2a3202ce6108e46f9"><div class="ttname"><a href="namespaceServer.html#af1a237eaae83a2c2a3202ce6108e46f9">Server::getStaticDir</a></div><div class="ttdeci">std::string getStaticDir(const std::shared_ptr&lt; spdlog::logger &gt; &amp;logger)</div><div class="ttdef"><b>Definition</b> dir.cc:47</div></div>
+<div class="ttc" id="anamespacewebcface_1_1Server_html_a190126a8b357424080243a1c04ee9afc"><div class="ttname"><a href="namespacewebcface_1_1Server.html#a190126a8b357424080243a1c04ee9afc">webcface::Server::getStaticDir</a></div><div class="ttdeci">std::string getStaticDir(const std::shared_ptr&lt; spdlog::logger &gt; &amp;logger)</div><div class="ttdef"><b>Definition</b> dir.cc:47</div></div>
+<div class="ttc" id="anamespacewebcface_1_1Server_html_af75cf09eeecbcfd458c033ac2972eb47"><div class="ttname"><a href="namespacewebcface_1_1Server.html#af75cf09eeecbcfd458c033ac2972eb47">webcface::Server::getTempDir</a></div><div class="ttdeci">std::string getTempDir(const std::shared_ptr&lt; spdlog::logger &gt; &amp;logger)</div><div class="ttdef"><b>Definition</b> dir.cc:73</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_41e1742e44e2de38b3bc91f993fed282.html">server</a></li><li class="navelem"><a class="el" href="dir_8h.html">dir.h</a></li>
-    <li class="footer">Generated on Mon May 20 2024 16:35:48 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="navelem"><a class="el" href="dir_075bb3ff235063c77951cd176d15a741.html">server</a></li><li class="navelem"><a class="el" href="dir_8h.html">dir.h</a></li>
+    <li class="footer">Generated on Mon May 27 2024 16:47:57 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

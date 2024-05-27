@@ -142,24 +142,26 @@ $(document).ready(function(){initNavTree('md_02__member.html',''); initResizable
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md30">members</a></li>
-<li class="level1"><a href="#autotoc_md31">Field系クラスの扱いについて</a></li>
-<li class="level1"><a href="#autotoc_md32">Event</a></li>
-<li class="level1"><a href="#autotoc_md33">クライアントの情報</a></li>
-<li class="level1"><a href="#autotoc_md34">ping</a></li>
+<ul><li class="level1"><a href="#autotoc_md31">members</a></li>
+<li class="level1"><a href="#autotoc_md32">Field系クラスの扱いについて</a></li>
+<li class="level1"><a href="#autotoc_md33">Event</a></li>
+<li class="level1"><a href="#autotoc_md34">クライアントの情報</a></li>
+<li class="level1"><a href="#autotoc_md35">ping</a></li>
 </ul>
 </div>
-<div class="textblock"><p><a class="anchor" id="autotoc_md29"></a></p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md30"></a></p>
 <dl class="section see"><dt>See also</dt><dd><ul>
-<li>C++ webcface::Member (<code><a class="el" href="member_8h.html">webcface/member.h</a></code>)</li>
+<li>C++ <a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">webcface::Member</a> (<code><a class="el" href="member_8h.html">webcface/member.h</a></code>)</li>
 <li>JavaScript <a href="https://na-trium-144.github.io/webcface-js/classes/Member.html">Member</a></li>
 <li>Python <a href="https://na-trium-144.github.io/webcface-python/webcface.member.html#webcface.member.Member">webcface.Member</a></li>
 </ul>
 </dd></dl>
-<p>WebCFaceではサーバーに接続されたそれぞれのクライアントを <a class="el" href="classMember.html" title="Memberを指すクラス">Member</a> と呼びます。 (たぶんROSでいうと Node に相当します)</p>
-<p>データを受信する時など、Memberを指すために使用するのがMemberクラスです。 <a class="el" href="classClient.html#ac2b717c14b3e16f91f0cf753e8bd3b7f" title="他のmemberにアクセスする">Client::member()</a> で取得できます。</p>
+<p>WebCFaceではサーバーに接続されたそれぞれのクライアントを Member と呼びます。 (たぶんROSでいうと Node に相当します)</p>
+<p>データを受信する時など、Memberを指すために使用するのがMemberクラスです。 Client::member() で取得できます。</p>
 <div class="tabbed"></div><div class="tabbed"><ul>
-<li><b class="tab-title">C++</b> <div class="fragment"><div class="line">webcface::Member member_foo = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>);</div>
+<li><b class="tab-title">C++</b> <div class="fragment"><div class="line"><a class="code hl_class" href="classwebcface_1_1Member.html">webcface::Member</a> member_foo = wcli.<a class="code hl_function" href="structwebcface_1_1Field.html#aa8fab40ead35fa8e761986d5f4000a5c">member</a>(<span class="stringliteral">&quot;foo&quot;</span>);</div>
+<div class="ttc" id="aclasswebcface_1_1Member_html"><div class="ttname"><a href="classwebcface_1_1Member.html">webcface::Member</a></div><div class="ttdoc">Memberを指すクラス</div><div class="ttdef"><b>Definition</b> member.h:26</div></div>
+<div class="ttc" id="astructwebcface_1_1Field_html_aa8fab40ead35fa8e761986d5f4000a5c"><div class="ttname"><a href="structwebcface_1_1Field.html#aa8fab40ead35fa8e761986d5f4000a5c">webcface::Field::member</a></div><div class="ttdeci">Member member() const</div><div class="ttdoc">Memberを返す</div><div class="ttdef"><b>Definition</b> field.cc:16</div></div>
 </div><!-- fragment --></li>
 <li><b class="tab-title">JavaScript</b> <div class="fragment"><div class="line">import { Member } from &quot;webcface&quot;;</div>
 <div class="line"> </div>
@@ -173,11 +175,11 @@ $(document).ready(function(){initNavTree('md_02__member.html',''); initResizable
 <p>このクライアント自身もMemberの1つですが、Client自体がMemberを継承したクラスになっているので、直接Clientのオブジェクト(wcli)に対して操作すればよいです。</p>
 <dl class="section note"><dt>Note</dt><dd><code>member()</code> の引数に自身の名前を入れると、Clientオブジェクトに直接アクセスする場合と同様そのクライアント自身を指します。 <br  />
  <span class="since-c">1.7</span> 引数に空文字列を入れても同様です。</dd></dl>
-<h1><a class="anchor" id="autotoc_md30"></a>
+<h1><a class="anchor" id="autotoc_md31"></a>
 members</h1>
-<p><a class="el" href="classClient.html#a2bd9c445e89ab8b794a2430dfc9a2b69" title="サーバーに接続されている他のmemberのリストを得る。">Client::members()</a> で現在接続されているメンバーのリストが得られます (無名のものと、自分自身を除く)</p>
+<p>Client::members() で現在接続されているメンバーのリストが得られます (無名のものと、自分自身を除く)</p>
 <div class="tabbed"></div><div class="tabbed"><ul>
-<li><b class="tab-title">C++</b> <div class="fragment"><div class="line"><span class="keywordflow">for</span>(<span class="keyword">const</span> webcface::Member &amp;m: wcli.members()){</div>
+<li><b class="tab-title">C++</b> <div class="fragment"><div class="line"><span class="keywordflow">for</span>(<span class="keyword">const</span> <a class="code hl_class" href="classwebcface_1_1Member.html">webcface::Member</a> &amp;m: wcli.members()){</div>
 <div class="line">    <span class="comment">// ...</span></div>
 <div class="line">}</div>
 </div><!-- fragment --></li>
@@ -189,34 +191,34 @@ members</h1>
 <div class="line">    <span class="comment"># ...</span></div>
 </div><!-- fragment --></li>
 </ul>
-</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md31"></a>
+</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md32"></a>
 Field系クラスの扱いについて</h1>
-<p>Memberクラスおよびこれ以降説明する各種データ型のクラス (いずれも webcface::Field を継承している) について、</p>
+<p>Memberクラスおよびこれ以降説明する各種データ型のクラス (いずれも <a class="el" href="structwebcface_1_1Field.html" title="ClientDataの参照とメンバ名とデータ名を持つクラス">webcface::Field</a> を継承している) について、</p>
 <ul>
 <li>それぞれコンストラクタが用意されていますが、正しくClientクラスから生成したオブジェクトでないと内部のデータにアクセスしようとするときに std::runtime_error (pythonでは RuntimeError) を投げます。</li>
 <li>構築元のClientの寿命が切れた後に操作しようとすると同様にstd::runtime_errorを投げます。</li>
 <li>オブジェクトのコピー、ムーブは可能です。</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md32"></a>
+<h1><a class="anchor" id="autotoc_md33"></a>
 Event</h1>
-<p><a class="el" href="classClient.html#a006e7ddf32fda5cd9dff47d094a3b621" title="Memberが追加された時のイベント">Client::onMemberEntry()</a> で新しいメンバーが接続されたときのイベントにコールバックを設定できます</p>
+<p>Client::onMemberEntry() で新しいメンバーが接続されたときのイベントにコールバックを設定できます</p>
 <p>このクライアントが接続する前から存在したメンバーについては start() 後に一度に送られるので、 コールバックの設定はstart()より前に行うと良いです。</p>
 <div class="tabbed"></div><div class="tabbed"><ul>
-<li><p class="startli"><b class="tab-title">C++</b> </p><div class="fragment"><div class="line">wcli.onMemberEntry().appendListener([](webcface::Member m){<span class="comment">/* ... */</span>});</div>
-</div><!-- fragment --><p> C++では <a class="el" href="classEventTarget.html" title="イベントを表し、コールバックの追加や削除ができるクラス。">EventTarget</a> クラスのオブジェクトを返します。 内部ではイベントの管理に <a href="https://github.com/wqking/eventpp">eventpp</a> ライブラリを使用しており、EventTargetは eventpp::CallbackList のラッパーとなっています。</p>
+<li><p class="startli"><b class="tab-title">C++</b> </p><div class="fragment"><div class="line">wcli.onMemberEntry().appendListener([](<a class="code hl_class" href="classwebcface_1_1Member.html">webcface::Member</a> m){<span class="comment">/* ... */</span>});</div>
+</div><!-- fragment --><p> C++では EventTarget クラスのオブジェクトを返します。 内部ではイベントの管理に <a href="https://github.com/wqking/eventpp">eventpp</a> ライブラリを使用しており、EventTargetは eventpp::CallbackList のラッパーとなっています。</p>
 <p class="startli"><code>appendListener()</code>, <code>prependListener()</code> でコールバックを追加できます。 また<code>insertListener()</code>でこれまでに追加されたコールバックのリストの途中にコールバックを挿入したり、 <code>removeListener()</code> でコールバックを削除したりできます。</p>
 <p class="startli"><span class="since-c">1.7</span> appendListener, prependListener ではコールバックの引数が不要な場合は引数のない関数も渡すことができます。</p>
-<p class="startli"><span class="since-c">1.11</span> <code>wcli.onMemberEntry().callbackList()</code> で<a href="https://github.com/wqking/eventpp/blob/master/doc/callbacklist.md">eventpp::CallbackList</a>のインスタンスが得られ、 CounterRemover, ConditionalRemover などeventppに用意されているさまざまなユーティリティ機能を使用できます。 より詳細な使い方はeventppのドキュメントを参照してください。 (この場合コールバックの引数は省略できません) </p><div class="fragment"><div class="line">wcli.onMemberEntry().callbackList().append([](webcface::Member m){<span class="comment">/* ... */</span>});</div>
+<p class="startli"><span class="since-c">1.11</span> <code>wcli.onMemberEntry().callbackList()</code> で<a href="https://github.com/wqking/eventpp/blob/master/doc/callbacklist.md">eventpp::CallbackList</a>のインスタンスが得られ、 CounterRemover, ConditionalRemover などeventppに用意されているさまざまなユーティリティ機能を使用できます。 より詳細な使い方はeventppのドキュメントを参照してください。 (この場合コールバックの引数は省略できません) </p><div class="fragment"><div class="line">wcli.onMemberEntry().callbackList().append([](<a class="code hl_class" href="classwebcface_1_1Member.html">webcface::Member</a> m){<span class="comment">/* ... */</span>});</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// CounterRemoverを使って1回呼び出されたらコールバックを削除する:</span></div>
 <div class="line">eventpp::counterRemover(wcli.onMemberEntry().callbackList())</div>
-<div class="line">    .append([](webcface::Member m){<span class="comment">/* ... */</span>}, 1);</div>
+<div class="line">    .append([](<a class="code hl_class" href="classwebcface_1_1Member.html">webcface::Member</a> m){<span class="comment">/* ... */</span>}, 1);</div>
 </div><!-- fragment --><dl class="section note"><dt>Note</dt><dd>ver1.10以前は eventpp::EventDispatcher を使用していたため、 EventTargetでの関数名(appendListenerなど)はCallbackListではなくEventDispatcherのものに従っている</dd></dl>
 </li>
 <li><p class="startli"><b class="tab-title">JavaScript</b> </p><div class="fragment"><div class="line">import { Member } from &quot;webcface&quot;;</div>
 <div class="line"> </div>
 <div class="line">wcli.onMemberEntry.on((m: Member) =&gt; { /* ... */ });</div>
-</div><!-- fragment --><p> イベントの管理には <a href="https://www.npmjs.com/package/eventemitter3">eventemitter3</a> ライブラリを使用しており、 <a class="el" href="classClient.html#a006e7ddf32fda5cd9dff47d094a3b621" title="Memberが追加された時のイベント">Client.onMemberEntry</a> プロパティが返す <a href="https://na-trium-144.github.io/webcface-js/classes/EventTarget.html">EventTarget</a> クラスのオブジェクトがEventEmitterのラッパーになっています。</p>
+</div><!-- fragment --><p> イベントの管理には <a href="https://www.npmjs.com/package/eventemitter3">eventemitter3</a> ライブラリを使用しており、 Client.onMemberEntry プロパティが返す <a href="https://na-trium-144.github.io/webcface-js/classes/EventTarget.html">EventTarget</a> クラスのオブジェクトがEventEmitterのラッパーになっています。</p>
 <p class="startli"><code>on(関数)</code> または <code>addListener(関数)</code> でコールバックを設定し、 <code>off(関数)</code> または <code>removeListener(関数)</code> で解除したりできます。 また <code>once(関数)</code> で1回だけ実行されるコールバックを設定できます。</p>
 </li>
 <li><b class="tab-title">Python</b> <div class="fragment"><div class="line"><span class="keyword">def </span>member_entry(m: webcface.Member):</div>
@@ -227,16 +229,18 @@ Event</h1>
  <code>connect(関数)</code> でコールバックを設定できます。</li>
 </ul>
 </div><div class="tabbed"></div><p>これ以降の章でもいくつかイベントが登場しますが、いずれもこれと同様の実装、使い方になっています。</p>
-<h1><a class="anchor" id="autotoc_md33"></a>
-クライアントの情報</h1>
-<p><a class="el" href="classMember.html#a064ab96bd8007139693d43a4c0efa8e0" title="このMemberが使っているWebCFaceのバージョン">Member::libVersion()</a>, <a class="el" href="classMember.html#a12c305af32dafb2a49e9e68bc3b6be4c" title="このMemberが使っているWebCFaceライブラリの識別情報">Member::libName()</a>, <a class="el" href="classMember.html#a786b7cda7f3dbf6635ac2a56f2b94ca4" title="このMemberのIPアドレス">Member::remoteAddr()</a> でクライアントの情報を取得できます。 (WebUI の Connection Info に表示されているのと同じ情報が取得できます)</p>
 <h1><a class="anchor" id="autotoc_md34"></a>
+クライアントの情報</h1>
+<p>Member::libVersion(), Member::libName(), Member::remoteAddr() でクライアントの情報を取得できます。 (WebUI の Connection Info に表示されているのと同じ情報が取得できます)</p>
+<h1><a class="anchor" id="autotoc_md35"></a>
 ping</h1>
-<p><a class="el" href="classMember.html#a4b2f7dcfbdbf338436db24cb765465ed" title="通信速度を調べる">Member::pingStatus()</a> でそのクライアントの通信速度を取得できます。(int型で、単位はms) 通信速度の情報は5秒に1回更新され、更新されたときにonPingイベントが発生します</p>
+<p>Member::pingStatus() でそのクライアントの通信速度を取得できます。(int型で、単位はms) 通信速度の情報は5秒に1回更新され、更新されたときにonPingイベントが発生します</p>
 <div class="tabbed"></div><div class="tabbed"><ul>
-<li><p class="startli"><b class="tab-title">C++</b> </p><div class="fragment"><div class="line">wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).onPing().appendListener([](webcface::Member m){</div>
-<div class="line">    std::cout &lt;&lt; m.name() &lt;&lt; <span class="stringliteral">&quot;: &quot;</span> &lt;&lt; m.pingStatus() &lt;&lt; <span class="stringliteral">&quot; ms&quot;</span> &lt;&lt; std::endl;</div>
+<li><p class="startli"><b class="tab-title">C++</b> </p><div class="fragment"><div class="line">wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).onPing().appendListener([](<a class="code hl_class" href="classwebcface_1_1Member.html">webcface::Member</a> m){</div>
+<div class="line">    std::cout &lt;&lt; m.<a class="code hl_function" href="classwebcface_1_1Member.html#a1d89c28bd42ba9a52da008bb69367171">name</a>() &lt;&lt; <span class="stringliteral">&quot;: &quot;</span> &lt;&lt; m.<a class="code hl_function" href="classwebcface_1_1Member.html#a4b2f7dcfbdbf338436db24cb765465ed">pingStatus</a>() &lt;&lt; <span class="stringliteral">&quot; ms&quot;</span> &lt;&lt; std::endl;</div>
 <div class="line">});</div>
+<div class="ttc" id="aclasswebcface_1_1Member_html_a1d89c28bd42ba9a52da008bb69367171"><div class="ttname"><a href="classwebcface_1_1Member.html#a1d89c28bd42ba9a52da008bb69367171">webcface::Member::name</a></div><div class="ttdeci">std::string name() const</div><div class="ttdoc">Member名</div><div class="ttdef"><b>Definition</b> member.h:38</div></div>
+<div class="ttc" id="aclasswebcface_1_1Member_html_a4b2f7dcfbdbf338436db24cb765465ed"><div class="ttname"><a href="classwebcface_1_1Member.html#a4b2f7dcfbdbf338436db24cb765465ed">webcface::Member::pingStatus</a></div><div class="ttdeci">std::optional&lt; int &gt; pingStatus() const</div><div class="ttdoc">通信速度を調べる</div><div class="ttdef"><b>Definition</b> member.cc:100</div></div>
 </div><!-- fragment --><p class="startli"><span class="since-c">1.7</span> appendListener, prependListener ではコールバックの引数が不要な場合は引数のない関数も渡すことができます。</p>
 <p class="startli"><span class="since-c">1.11</span> onMemberEntry() と同様、 callbackList() でCallbackListにアクセスできます。</p>
 </li>
@@ -262,7 +266,7 @@ ping</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon May 20 2024 16:35:48 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Mon May 27 2024 16:47:57 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

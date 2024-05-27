@@ -164,7 +164,7 @@ Public Attributes</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>数値と文字列をまとめて扱うためのstruct </p>
-<p>wcfMultiValを引数に渡す場合は、 as_int, as_double, as_str のいずれか1つのみに値を入れて使う。 <a class="el" href="c__wcf_2client_8cc.html#aa371cd469c55d58b0332f2261a120533">wcfValI()</a>, <a class="el" href="c__wcf_2client_8cc.html#aee7f0f53dcb913e408f3032f7c9f796b">wcfValD()</a>, <a class="el" href="c__wcf_2client_8cc.html#aef51e8d5db05da0a19a3c4f58a4c5193">wcfValS()</a> 関数で値をセットできる。</p>
+<p>wcfMultiValを引数に渡す場合は、 as_int, as_double, as_str のいずれか1つのみに値を入れて使う。 手動で初期化するのではなく、wcfValI(), <a class="el" href="c__wcf_2client_8cc.html#aee7f0f53dcb913e408f3032f7c9f796b" title="double型のwcfMultiValを構築">wcfValD()</a>, <a class="el" href="c__wcf_2client_8cc.html#aef51e8d5db05da0a19a3c4f58a4c5193" title="文字列型のwcfMultiValを構築">wcfValS()</a> 関数を使うと値を適切にセットしたwcfMultiValを構築できる。</p>
 <p>wcfMultiValが関数から返ってくる場合は、as_int, as_double, as_strがすべて埋まった状態で返ってくる。 </p>
 </div><h2 class="groupheader">Member Data Documentation</h2>
 <a id="ab2cd60e83ec44e797cd2063a6b0b0316" name="ab2cd60e83ec44e797cd2063a6b0b0316"></a>
@@ -180,6 +180,7 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>double型でのアクセス </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="c__wcf_2client_8cc.html#aee7f0f53dcb913e408f3032f7c9f796b" title="double型のwcfMultiValを構築">wcfValD</a> </dd></dl>
 
 </div>
 </div>
@@ -196,6 +197,7 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>int型でのアクセス </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="c__wcf_2client_8cc.html#aa371cd469c55d58b0332f2261a120533" title="int型のwcfMultiValを構築">wcfValI</a> </dd></dl>
 
 </div>
 </div>
@@ -212,8 +214,11 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>char*型でのアクセス </p>
-<p>as_intまたはas_doubleに値をセットして渡す場合はas_strはnullにすること。</p>
-<p>値が返ってくる場合はas_strがnullになっていることはない。(何も返さない場合でも空文字列が入る) </p>
+<ul>
+<li>as_int, as_double に値をセットして渡す場合は as_str はnullにすること。</li>
+<li>値が返ってくる場合はas_strがnullになっていることはない。 (何も返さない場合でも空文字列が入る) <dl class="section see"><dt>See also</dt><dd><a class="el" href="c__wcf_2client_8cc.html#aef51e8d5db05da0a19a3c4f58a4c5193" title="文字列型のwcfMultiValを構築">wcfValS</a> </dd></dl>
+</li>
+</ul>
 
 </div>
 </div>
@@ -226,7 +231,7 @@ Public Attributes</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="structwcfMultiVal.html">wcfMultiVal</a></li>
-    <li class="footer">Generated on Mon May 20 2024 16:35:49 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Mon May 27 2024 16:47:57 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

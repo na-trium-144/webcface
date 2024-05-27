@@ -1,8 +1,11 @@
 var def__types_8h =
 [
     [ "wcfMultiVal", "structwcfMultiVal.html", "structwcfMultiVal" ],
+    [ "wcfMultiValW", "structwcfMultiValW.html", "structwcfMultiValW" ],
     [ "wcfFuncCallHandle", "structwcfFuncCallHandle.html", "structwcfFuncCallHandle" ],
+    [ "wcfFuncCallHandleW", "structwcfFuncCallHandleW.html", "structwcfFuncCallHandleW" ],
     [ "wcfViewComponent", "structwcfViewComponent.html", "structwcfViewComponent" ],
+    [ "wcfViewComponentW", "structwcfViewComponentW.html", "structwcfViewComponentW" ],
     [ "WCF_BAD_HANDLE", "def__types_8h.html#afee23941e4c1d2509222e83cd68a2b53", null ],
     [ "WCF_BAD_WCLI", "def__types_8h.html#a6c4a540976cc7e22e63548f378a588dc", null ],
     [ "WCF_COLOR_BLACK", "def__types_8h.html#a95c83a2ee43b80ac3a21dceab7fb4569", null ],
@@ -37,9 +40,13 @@ var def__types_8h =
     [ "wcfAsyncFuncResult", "def__types_8h.html#adde5cf85e4e5d0d5e980329221d1fac3", null ],
     [ "wcfClient", "def__types_8h.html#a11e35bfe0822747dfabcce7f5220016a", null ],
     [ "wcfFuncCallback", "def__types_8h.html#a36819ce6e20b1c9c117f59f903955d64", null ],
-    [ "wcfFuncCallHandle", "def__types_8h.html#a99df2ec5d00b3fe01faabbee14781781", null ],
-    [ "wcfMultiVal", "def__types_8h.html#a1fdbd4850f1f877a7ce7466bb97d89aa", null ],
+    [ "wcfFuncCallbackW", "def__types_8h.html#ab6b3dc74af3172f4eb499efb42fda1b7", null ],
+    [ "wcfFuncCallHandle", "def__types_8h.html#a6f52e8c4748a8e6f2aaa124c7f76767a", null ],
+    [ "wcfFuncCallHandleW", "def__types_8h.html#ac172866b248b6f386b9c44f0ca56a728", null ],
+    [ "wcfMultiVal", "def__types_8h.html#a568ed45b4dde95e33d4c9ea3bbbdfdd9", null ],
+    [ "wcfMultiValW", "def__types_8h.html#a16bae331da81a80681dd8a7977afd478", null ],
     [ "wcfStatus", "def__types_8h.html#a3ac4b9c21f837154212676efa87b0b40", null ],
     [ "wcfValType", "def__types_8h.html#a591e95597f03b0187640d6e065e0ebf9", null ],
-    [ "wcfViewComponent", "def__types_8h.html#abfd388020c408b744f2ccf4fb9ceee1d", null ]
+    [ "wcfViewComponent", "def__types_8h.html#a8605c7530fcff7a67cbb1906bb696de4", null ],
+    [ "wcfViewComponentW", "def__types_8h.html#a37d71b5bff6faa035dc11a6398fc0e5c", null ]
 ];

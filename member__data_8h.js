@@ -1,4 +1,4 @@
 var member__data_8h =
 [
-    [ "MemberData", "structServer_1_1MemberData.html", "structServer_1_1MemberData" ]
+    [ "MemberData", "structwebcface_1_1Server_1_1MemberData.html", "structwebcface_1_1Server_1_1MemberData" ]
 ];

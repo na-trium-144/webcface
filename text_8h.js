@@ -1,10 +1,9 @@
 var text_8h =
 [
-    [ "Text", "classText.html", "classText" ],
-    [ "InputRefState", "structInputRefState.html", "structInputRefState" ],
-    [ "InputRef", "classInputRef.html", "classInputRef" ],
+    [ "Text", "classwebcface_1_1Text.html", "classwebcface_1_1Text" ],
+    [ "InputRefState", "structwebcface_1_1InputRefState.html", "structwebcface_1_1InputRefState" ],
+    [ "InputRef", "classwebcface_1_1InputRef.html", "classwebcface_1_1InputRef" ],
     [ "operator<<", "text_8h.html#a855f77f959f713e660e3ff08b6b9b43f", null ],
-    [ "operator<<", "text_8h.html#aa7323a485e008743e3169c53ea94e785", null ],
-    [ "operator==", "text_8h.html#a1b8f4f2c7b1ea1149c68523ef2d131e3", null ],
-    [ "EventTarget< Text >", "text_8h.html#a825825297d5b8abc63fba6346f551f9c", null ]
+    [ "operator<<", "text_8h.html#a7528ca9b8be7cf3baf4a1371085a5d87", null ],
+    [ "operator==", "text_8h.html#a1b8f4f2c7b1ea1149c68523ef2d131e3", null ]
 ];
