@@ -27,11 +27,8 @@ auto &operator<<(std::basic_ostream<char> &os, const AsyncFuncResult &r) {
     }
     return os;
 }
-template <std::size_t v_index>
-auto FuncCallHandle::HandleData::initCArgs()
-    -> decltype(std::get<v_index>(this->c_args_)) {
-    using CVal =
-        std::remove_reference_t<decltype(std::get<v_index>(this->c_args_)[0])>;
+template <std::size_t v_index, typename CVal>
+std::vector<CVal> &FuncCallHandle::HandleData::initCArgs() {
     if (this->c_args_.index() != v_index) {
         std::vector<CVal> c_args;
         c_args.reserve(this->args_.size());
@@ -46,10 +43,10 @@ auto FuncCallHandle::HandleData::initCArgs()
     }
     return std::get<v_index>(this->c_args_);
 }
-template WEBCFACE_DLL auto FuncCallHandle::HandleData::initCArgs<1>()
-    -> decltype(std::get<1>(this->c_args_));
-template WEBCFACE_DLL auto FuncCallHandle::HandleData::initCArgs<2>()
-    -> decltype(std::get<2>(this->c_args_));
+template WEBCFACE_DLL std::vector<wcfMultiVal> &
+FuncCallHandle::HandleData::initCArgs<1, wcfMultiVal>();
+template WEBCFACE_DLL std::vector<wcfMultiValW> &
+FuncCallHandle::HandleData::initCArgs<2, wcfMultiValW>();
 
 
 Func::Func(const Field &base) : Field(base) {}
