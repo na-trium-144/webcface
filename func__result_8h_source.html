@@ -285,8 +285,8 @@ $(document).ready(function(){initNavTree('func__result_8h_source.html',''); init
 <div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>            : args_(args), c_args_(0), result_(std::move(result)) {}</div>
 </div>
 <div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span> </div>
-<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>        <span class="keyword">template</span> &lt;std::<span class="keywordtype">size_t</span> v_index&gt;</div>
-<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>        <span class="keyword">auto</span> initCArgs() -&gt; <span class="keyword">decltype</span>(std::get&lt;v_index&gt;(this-&gt;c_args_));</div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>        <span class="keyword">template</span> &lt;std::<span class="keywordtype">size_t</span> v_index, <span class="keyword">typename</span> CVal&gt;</div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>        std::vector&lt;CVal&gt; &amp;initCArgs();</div>
 <div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>    };</div>
 </div>
 <div class="line"><a id="l00163" name="l00163"></a><span class="lineno"><a class="line" href="classwebcface_1_1FuncCallHandle.html#a761dae0435f1ee4e470c6d525aacae5a">  163</a></span>    std::shared_ptr&lt;HandleData&gt; <a class="code hl_variable" href="classwebcface_1_1FuncCallHandle.html#a761dae0435f1ee4e470c6d525aacae5a">handle_data_</a>;</div>
@@ -313,10 +313,10 @@ $(document).ready(function(){initNavTree('func__result_8h_source.html',''); init
 <div class="line"><a id="l00187" name="l00187"></a><span class="lineno"><a class="line" href="classwebcface_1_1FuncCallHandle.html#a4ec7d932d8808c9523f1550c95ab5568">  187</a></span>    <span class="keyword">const</span> <span class="keyword">auto</span> *<a class="code hl_function" href="classwebcface_1_1FuncCallHandle.html#a4ec7d932d8808c9523f1550c95ab5568">cArgs</a>()<span class="keyword"> const </span>{</div>
 <div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>        <span class="keywordflow">if</span> (handle_data_) {</div>
 <div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>            <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (std::is_same_v&lt;CharT, char&gt;) {</div>
-<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>                <span class="keyword">auto</span> &amp;c_args = handle_data_-&gt;initCArgs&lt;1&gt;();</div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>                <span class="keyword">auto</span> &amp;c_args = handle_data_-&gt;initCArgs&lt;1, <a class="code hl_struct" href="structwcfMultiVal.html">wcfMultiVal</a>&gt;();</div>
 <div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>                <span class="keywordflow">return</span> c_args.data();</div>
 <div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>            } <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>                <span class="keyword">auto</span> &amp;c_args = handle_data_-&gt;initCArgs&lt;2&gt;();</div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>                <span class="keyword">auto</span> &amp;c_args = handle_data_-&gt;initCArgs&lt;2, <a class="code hl_struct" href="structwcfMultiValW.html">wcfMultiValW</a>&gt;();</div>
 <div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>                <span class="keywordflow">return</span> c_args.data();</div>
 <div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>            }</div>
 <div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>        } <span class="keywordflow">else</span> {</div>
@@ -360,10 +360,10 @@ $(document).ready(function(){initNavTree('func__result_8h_source.html',''); init
 <div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>};</div>
 </div>
 <div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span> </div>
-<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span><span class="keyword">extern</span> <span class="keyword">template</span> <span class="keyword">auto</span> FuncCallHandle::HandleData::initCArgs&lt;1&gt;()</div>
-<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>    -&gt; <span class="keyword">decltype</span>(std::get&lt;1&gt;(this-&gt;c_args_));</div>
-<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span><span class="keyword">extern</span> <span class="keyword">template</span> <span class="keyword">auto</span> FuncCallHandle::HandleData::initCArgs&lt;2&gt;()</div>
-<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>    -&gt; <span class="keyword">decltype</span>(std::get&lt;2&gt;(this-&gt;c_args_));</div>
+<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span><span class="keyword">extern</span> <span class="keyword">template</span> std::vector&lt;wcfMultiVal&gt; &amp;</div>
+<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>FuncCallHandle::HandleData::initCArgs&lt;1, wcfMultiVal&gt;();</div>
+<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span><span class="keyword">extern</span> <span class="keyword">template</span> std::vector&lt;wcfMultiValW&gt; &amp;</div>
+<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>FuncCallHandle::HandleData::initCArgs&lt;2, wcfMultiValW&gt;();</div>
 <div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span> </div>
 <div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span><a class="code hl_define" href="macros_8h.html#ab3f2570d5b8231ddbe0e57fc8ab629eb">WEBCFACE_NS_END</a></div>
 <div class="ttc" id="aclasswebcface_1_1AsyncFuncResult_html"><div class="ttname"><a href="classwebcface_1_1AsyncFuncResult.html">webcface::AsyncFuncResult</a></div><div class="ttdoc">非同期で実行した関数の実行結果を表す。</div><div class="ttdef"><b>Definition</b> func_result.h:39</div></div>
@@ -393,6 +393,8 @@ $(document).ready(function(){initNavTree('func__result_8h_source.html',''); init
 <div class="ttc" id="amacros_8h_html_a47af057bda855b54c212e97ffccdca01"><div class="ttname"><a href="macros_8h.html#a47af057bda855b54c212e97ffccdca01">WEBCFACE_DLL</a></div><div class="ttdeci">#define WEBCFACE_DLL</div><div class="ttdef"><b>Definition</b> macros.h:23</div></div>
 <div class="ttc" id="amacros_8h_html_ab3f2570d5b8231ddbe0e57fc8ab629eb"><div class="ttname"><a href="macros_8h.html#ab3f2570d5b8231ddbe0e57fc8ab629eb">WEBCFACE_NS_END</a></div><div class="ttdeci">#define WEBCFACE_NS_END</div><div class="ttdef"><b>Definition</b> macros.h:30</div></div>
 <div class="ttc" id="amacros_8h_html_abe991b8f291782627a31118c688e123a"><div class="ttname"><a href="macros_8h.html#abe991b8f291782627a31118c688e123a">WEBCFACE_NS_BEGIN</a></div><div class="ttdeci">#define WEBCFACE_NS_BEGIN</div><div class="ttdef"><b>Definition</b> macros.h:29</div></div>
+<div class="ttc" id="astructwcfMultiValW_html"><div class="ttname"><a href="structwcfMultiValW.html">wcfMultiValW</a></div><div class="ttdoc">数値と文字列をまとめて扱うためのstruct (wstring)</div><div class="ttdef"><b>Definition</b> def_types.h:77</div></div>
+<div class="ttc" id="astructwcfMultiVal_html"><div class="ttname"><a href="structwcfMultiVal.html">wcfMultiVal</a></div><div class="ttdoc">数値と文字列をまとめて扱うためのstruct</div><div class="ttdef"><b>Definition</b> def_types.h:43</div></div>
 <div class="ttc" id="astructwebcface_1_1AsyncFuncResultSetter_html"><div class="ttname"><a href="structwebcface_1_1AsyncFuncResultSetter.html">webcface::AsyncFuncResultSetter</a></div><div class="ttdoc">AsyncFuncResultの結果をセットする</div><div class="ttdef"><b>Definition</b> func_result.h:105</div></div>
 <div class="ttc" id="astructwebcface_1_1AsyncFuncResultSetter_html_a0121fbd9dbe251d5517a67667a81cd1f"><div class="ttname"><a href="structwebcface_1_1AsyncFuncResultSetter.html#a0121fbd9dbe251d5517a67667a81cd1f">webcface::AsyncFuncResultSetter::result</a></div><div class="ttdeci">std::promise&lt; ValAdaptor &gt; result</div><div class="ttdef"><b>Definition</b> func_result.h:108</div></div>
 <div class="ttc" id="astructwebcface_1_1AsyncFuncResultSetter_html_a1878aeb9555c01a065712b2a788766ad"><div class="ttname"><a href="structwebcface_1_1AsyncFuncResultSetter.html#a1878aeb9555c01a065712b2a788766ad">webcface::AsyncFuncResultSetter::started</a></div><div class="ttdeci">std::promise&lt; bool &gt; started</div><div class="ttdef"><b>Definition</b> func_result.h:107</div></div>
@@ -421,7 +423,7 @@ $(document).ready(function(){initNavTree('func__result_8h_source.html',''); init
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b0856f6b0d80ccb263b2f415c91f9e17.html">include</a></li><li class="navelem"><a class="el" href="dir_8d62fccb2e2b3a59b553b5322fe886d6.html">webcface</a></li><li class="navelem"><a class="el" href="func__result_8h.html">func_result.h</a></li>
-    <li class="footer">Generated on Mon May 27 2024 16:47:57 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Mon May 27 2024 17:46:05 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>
