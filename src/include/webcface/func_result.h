@@ -157,8 +157,8 @@ class FuncCallHandle {
          * c_args_ をwcfMultiValの配列またはwcfMultiValWの配列で初期化
          *
          */
-        template <std::size_t v_index>
-        auto initCArgs() -> decltype(std::get<v_index>(this->c_args_));
+        template <std::size_t v_index, typename CVal>
+        std::vector<CVal> &initCArgs();
     };
     std::shared_ptr<HandleData> handle_data_;
 
@@ -187,10 +187,10 @@ class FuncCallHandle {
     const auto *cArgs() const {
         if (handle_data_) {
             if constexpr (std::is_same_v<CharT, char>) {
-                auto &c_args = handle_data_->initCArgs<1>();
+                auto &c_args = handle_data_->initCArgs<1, wcfMultiVal>();
                 return c_args.data();
             } else {
-                auto &c_args = handle_data_->initCArgs<2>();
+                auto &c_args = handle_data_->initCArgs<2, wcfMultiValW>();
                 return c_args.data();
             }
         } else {
@@ -255,9 +255,9 @@ class FuncCallHandle {
     }
 };
 
-extern template auto FuncCallHandle::HandleData::initCArgs<1>()
-    -> decltype(std::get<1>(this->c_args_));
-extern template auto FuncCallHandle::HandleData::initCArgs<2>()
-    -> decltype(std::get<2>(this->c_args_));
+extern template std::vector<wcfMultiVal> &
+FuncCallHandle::HandleData::initCArgs<1, wcfMultiVal>();
+extern template std::vector<wcfMultiValW> &
+FuncCallHandle::HandleData::initCArgs<2, wcfMultiValW>();
 
 WEBCFACE_NS_END
