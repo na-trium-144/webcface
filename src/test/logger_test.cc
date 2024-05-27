@@ -35,21 +35,33 @@ TEST_F(LoggerTest, loggerBuf) {
     LoggerBuf b(data_->log_store);
     std::ostream os(&b);
     os << "a\nb" << std::endl;
+    auto cerr_buf = std::cerr.rdbuf();
+    std::cerr.rdbuf(&b);
+    std::cerr << "c" << std::endl;
     auto ls = data_->log_store->getRecv(self_name);
-    ASSERT_EQ((*ls)->size(), 2);
+    ASSERT_EQ((*ls)->size(), 3);
     EXPECT_EQ((**ls)[0].level, 2);
     EXPECT_EQ((**ls)[0].message, u8"a");
     EXPECT_EQ((**ls)[1].level, 2);
     EXPECT_EQ((**ls)[1].message, u8"b");
+    EXPECT_EQ((**ls)[2].level, 2);
+    EXPECT_EQ((**ls)[2].message, u8"c");
+    std::cerr.rdbuf(cerr_buf);
 }
 TEST_F(LoggerTest, loggerBufW) {
     LoggerBufW b(data_->log_store);
     std::wostream os(&b);
     os << L"a\nb" << std::endl;
+    auto wcerr_buf = std::wcerr.rdbuf();
+    std::wcerr.rdbuf(&b);
+    std::wcerr << L"c" << std::endl;
     auto ls = data_->log_store->getRecv(self_name);
-    ASSERT_EQ((*ls)->size(), 2);
+    ASSERT_EQ((*ls)->size(), 3);
     EXPECT_EQ((**ls)[0].level, 2);
     EXPECT_EQ((**ls)[0].message, u8"a");
     EXPECT_EQ((**ls)[1].level, 2);
     EXPECT_EQ((**ls)[1].message, u8"b");
+    EXPECT_EQ((**ls)[2].level, 2);
+    EXPECT_EQ((**ls)[2].message, u8"c");
+    std::wcerr.rdbuf(wcerr_buf);
 }

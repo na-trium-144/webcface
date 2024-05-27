@@ -277,8 +277,7 @@ class ValAdaptor {
                 if (as_str.index() == U8STR) [[likely]] {
                     str = Encoding::decode(std::get<U8STR>(as_str));
                 } else if (as_str.index() == WSTR) {
-                    str = Encoding::decode(
-                        Encoding::encodeW(std::get<WSTR>(as_str)));
+                    str = Encoding::toNarrow(std::get<WSTR>(as_str));
                 }
             } else {
                 if (as_val.index() == DOUBLEV) {
@@ -305,8 +304,7 @@ class ValAdaptor {
                 if (as_str.index() == U8STR) [[likely]] {
                     str = Encoding::decodeW(std::get<U8STR>(as_str));
                 } else if (as_str.index() == STR) {
-                    str = Encoding::decodeW(
-                        Encoding::encode(std::get<STR>(as_str)));
+                    str = Encoding::toWide(std::get<STR>(as_str));
                 }
             } else {
                 if (as_val.index() == DOUBLEV) {

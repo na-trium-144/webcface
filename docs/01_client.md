@@ -160,7 +160,10 @@ webcfaceのAPIではほぼすべての関数でマルチバイト文字列(`std:
 (webcface内部でUTF-8との変換が行われます)
 
 ワイド文字列はWindowsではUTF-16、Linux/MacOSではUTF-32でエンコードされていることを想定しています。
-なおワイド文字列を使用する場合は usingUTF8 の設定はtrueのままにしてください。
+Windowsでは、ワイド文字列を使用する場合の usingUTF8 の設定は
+Client::loggerSink(), logger() を使用する場合はtrueに、
+Client::loggerWStreamBuf(), loggerWOStream() を使用する場合は出力するコンソールのコードページに合わせてください。
+(詳細は[log](./40_log.md)のページを参照)
 
 C++で文字列を返すAPI、およびCのAPI全般ではワイド文字列を使用する関数やstruct名には末尾に`W`が付きます。
 

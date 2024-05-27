@@ -14,8 +14,10 @@ namespace Encoding {
  * 内部でutf8と相互変換する。
  * * デフォルトは true (以前のバージョンとの互換性のため)
  * * unixでは効果がない。
- * * std::wstring を使用する場合、spdlog内部で
+ * * std::wstring をspdlogに渡して使用する場合、内部で
  * wstring→utf-8 の変換がされる場合があるのでtrueにすることを推奨
+ * * spdlogのloggerではなく Client::loggerWStreamBuf() を使用する場合は、
+ * 出力するコンソールのコードページに合わせた設定にする必要がある
  *
  */
 WEBCFACE_DLL void usingUTF8(bool flag);
@@ -64,6 +66,16 @@ WEBCFACE_DLL std::string decode(std::u8string_view name_ref);
  */
 WEBCFACE_DLL std::wstring decodeW(std::u8string_view name_ref);
 
+/*!
+ * \brief stringをwstringに変換する
+ * \since ver1.12
+ */
+WEBCFACE_DLL std::wstring toWide(std::string_view name_ref);
+/*!
+ * \brief wstringをstringに変換する
+ * \since ver1.12
+ */
+WEBCFACE_DLL std::string toNarrow(std::wstring_view name_ref);
 
 /*!
  * \brief stringをu8stringにキャストする

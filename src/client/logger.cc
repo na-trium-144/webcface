@@ -1,7 +1,7 @@
 #include <stdexcept>
 #include <webcface/logger.h>
 #include "client_internal.h"
-#include <iostream>
+#include <cstdio>
 
 WEBCFACE_NS_BEGIN
 
@@ -54,10 +54,11 @@ int BasicLoggerBuf<CharT>::sync() {
         }
         writeLog<CharT>(log_store, message);
         if constexpr (std::is_same_v<CharT, char>) {
-            std::cerr << message << std::endl;
+            std::fputs(message.c_str(), stderr);
         } else if constexpr (std::is_same_v<CharT, wchar_t>) {
-            std::wcerr << message << std::endl;
+            std::fputs(Encoding::toNarrow(message).c_str(), stderr);
         }
+        std::fputc('\n', stderr);
         overflow_buf = overflow_buf.substr(n + 1);
     }
     this->setp(buf, buf + sizeof(buf));
