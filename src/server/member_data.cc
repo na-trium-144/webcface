@@ -6,12 +6,7 @@
 #include <webcface/common/def.h>
 #include <algorithm>
 #include <iterator>
-
-#if WEBCFACE_USE_OPENCV
-#include <opencv2/core.hpp>
-#include <opencv2/imgcodecs.hpp>
-#include <opencv2/imgproc.hpp>
-#endif
+#include <Magick++.h>
 
 WEBCFACE_NS_BEGIN
 namespace Server {
@@ -916,85 +911,21 @@ void MemberData::onRecv(const std::string &message) {
     store->clientSendAll();
 }
 
-#if WEBCFACE_USE_OPENCV
-static int colorConvert(Common::ImageColorMode src_mode,
-                        Common::ImageColorMode dst_mode) {
-    switch (src_mode) {
-    case Common::ImageColorMode::gray:
-        switch (dst_mode) {
-        case Common::ImageColorMode::bgr:
-            return cv::COLOR_GRAY2BGR;
-        case Common::ImageColorMode::bgra:
-            return cv::COLOR_GRAY2BGRA;
-        case Common::ImageColorMode::rgb:
-            return cv::COLOR_GRAY2RGB;
-        case Common::ImageColorMode::rgba:
-            return cv::COLOR_GRAY2RGBA;
-        case Common::ImageColorMode::gray:
-            break;
-        }
-        break;
-    case Common::ImageColorMode::bgr:
-        switch (dst_mode) {
-        case Common::ImageColorMode::gray:
-            return cv::COLOR_BGR2GRAY;
-        case Common::ImageColorMode::bgra:
-            return cv::COLOR_BGR2BGRA;
-        case Common::ImageColorMode::rgb:
-            return cv::COLOR_BGR2RGB;
-        case Common::ImageColorMode::rgba:
-            return cv::COLOR_BGR2RGBA;
-        case Common::ImageColorMode::bgr:
-            break;
-        }
-        break;
-    case Common::ImageColorMode::bgra:
-        switch (dst_mode) {
-        case Common::ImageColorMode::gray:
-            return cv::COLOR_BGRA2GRAY;
-        case Common::ImageColorMode::bgr:
-            return cv::COLOR_BGRA2BGR;
-        case Common::ImageColorMode::rgb:
-            return cv::COLOR_BGRA2RGB;
-        case Common::ImageColorMode::rgba:
-            return cv::COLOR_BGRA2RGBA;
-        case Common::ImageColorMode::bgra:
-            break;
-        }
-        break;
-    case Common::ImageColorMode::rgb:
-        switch (dst_mode) {
-        case Common::ImageColorMode::gray:
-            return cv::COLOR_RGB2GRAY;
-        case Common::ImageColorMode::bgr:
-            return cv::COLOR_RGB2BGR;
-        case Common::ImageColorMode::bgra:
-            return cv::COLOR_RGB2BGRA;
-        case Common::ImageColorMode::rgba:
-            return cv::COLOR_RGB2RGBA;
-        case Common::ImageColorMode::rgb:
-            break;
-        }
-        break;
-    case Common::ImageColorMode::rgba:
-        switch (dst_mode) {
-        case Common::ImageColorMode::gray:
-            return cv::COLOR_RGBA2GRAY;
-        case Common::ImageColorMode::bgr:
-            return cv::COLOR_RGBA2BGR;
-        case Common::ImageColorMode::bgra:
-            return cv::COLOR_RGBA2BGRA;
-        case Common::ImageColorMode::rgb:
-            return cv::COLOR_RGBA2RGB;
-        case Common::ImageColorMode::rgba:
-            break;
-        }
-        break;
+static std::string magickColorMap(ImageColorMode mode) {
+    switch (mode) {
+    case ImageColorMode::gray:
+        return "K";
+    case ImageColorMode::bgr:
+        return "BGR";
+    case ImageColorMode::rgb:
+        return "RGB";
+    case ImageColorMode::bgra:
+        return "BGRA";
+    case ImageColorMode::rgba:
+        return "RGBA";
     }
-    return -1;
+    return "";
 }
-#endif
-
 /*!
  * \brief cdの画像を変換しthisに送信
  *
@@ -1003,9 +934,6 @@ static int colorConvert(Common::ImageColorMode src_mode,
  */
 void MemberData::imageConvertThreadMain(const std::u8string &member,
                                         const std::u8string &field) {
-#if !WEBCFACE_USE_OPENCV
-    static bool opencv_warned = false;
-#endif
     auto member_s = Encoding::decode(member);
     auto field_s = Encoding::decode(field);
     int last_image_flag = -1, last_req_flag = -1;
@@ -1036,9 +964,10 @@ void MemberData::imageConvertThreadMain(const std::u8string &member,
                 if (img.empty()) {
                     break;
                 }
-#if WEBCFACE_USE_OPENCV
-                cv::Mat m = img.mat();
-#endif
+                Magick::Image m(img.cols(), img.rows(),
+                                magickColorMap(img.color_mode()),
+                                Magick::CharPixel, img.data().data());
+
                 auto last_frame = std::chrono::steady_clock::now();
                 // 変換処理
                 auto info = this->image_req_info[member][field];
@@ -1051,18 +980,19 @@ void MemberData::imageConvertThreadMain(const std::u8string &member,
                     cols = static_cast<int>(img.cols());
 
                 if (info.rows || info.cols) {
-#if WEBCFACE_USE_OPENCV
                     if (info.rows) {
                         rows = *info.rows;
                     } else {
-                        rows = static_cast<int>(
-                            static_cast<double>(*info.cols) * m.rows / m.cols);
+                        rows =
+                            static_cast<int>(static_cast<double>(*info.cols) *
+                                             img.rows() / img.cols());
                     }
                     if (info.cols) {
                         cols = *info.cols;
                     } else {
-                        cols = static_cast<int>(
-                            static_cast<double>(*info.rows) * m.cols / m.rows);
+                        cols =
+                            static_cast<int>(static_cast<double>(*info.rows) *
+                                             img.cols() / img.rows());
                     }
 
                     if (rows <= 0 || cols <= 0) {
@@ -1071,80 +1001,85 @@ void MemberData::imageConvertThreadMain(const std::u8string &member,
                                             rows, cols);
                         return;
                     }
-                    cv::resize(m, m, cv::Size(cols, rows));
-#else
-                    if(!opencv_warned){
-                        this->logger->warn("Cannot convert image since OpenCV is disabled.");
-                        opencv_warned = true;
-                    }
-                    return;
-#endif
+                    m.resize(Magick::Geometry(cols, rows));
                 }
-                if (info.color_mode && *info.color_mode != img.color_mode()) {
-#if WEBCFACE_USE_OPENCV
-                    cv::cvtColor(
-                        m, m, colorConvert(img.color_mode(), *info.color_mode));
-#else
-                    if(!opencv_warned){
-                        this->logger->warn("Cannot convert image since OpenCV is disabled.");
-                        opencv_warned = true;
-                    }
-                    return;
-#endif
-                }
+                auto color_mode = info.color_mode.value_or(img.color_mode());
                 auto encoded = std::make_shared<std::vector<unsigned char>>();
                 switch (info.cmp_mode) {
-#if WEBCFACE_USE_OPENCV
-                case Common::ImageCompressMode::raw:
-                    encoded->assign(reinterpret_cast<unsigned char *>(m.data),
-                                    reinterpret_cast<unsigned char *>(m.data) +
-                                        m.total() * m.channels());
+                case Common::ImageCompressMode::raw: {
+                    int channels = 1;
+                    switch (color_mode) {
+                    case ImageColorMode::gray:
+                        channels = 1;
+                        break;
+                    case ImageColorMode::bgr:
+                    case ImageColorMode::rgb:
+                        channels = 3;
+                        break;
+                    case ImageColorMode::bgra:
+                    case ImageColorMode::rgba:
+                        channels = 4;
+                        break;
+                    }
+                    encoded->resize(cols * rows * channels);
+                    m.write(0, 0, cols, rows, magickColorMap(color_mode),
+                            Magick::CharPixel, encoded->data());
                     break;
-                case Common::ImageCompressMode::jpeg:
+                }
+                case Common::ImageCompressMode::jpeg: {
                     if (info.quality < 0 || info.quality > 100) {
                         this->logger->error("Invalid image conversion request "
                                             "(jpeg, quality={})",
                                             info.quality);
                         return;
                     }
-                    cv::imencode(".jpg", m, *encoded,
-                                 {cv::IMWRITE_JPEG_QUALITY, info.quality});
+                    m.magick("JPEG");
+                    m.quality(info.quality);
+                    Magick::Blob b;
+                    m.write(&b);
+                    encoded->assign(
+                        static_cast<const unsigned char *>(b.data()),
+                        static_cast<const unsigned char *>(b.data()) +
+                            b.length());
                     break;
-                case Common::ImageCompressMode::webp:
+                }
+                case Common::ImageCompressMode::webp: {
                     if (info.quality < 1 || info.quality > 100) {
                         this->logger->error("Invalid image conversion request "
                                             "(webp, quality={})",
                                             info.quality);
                         return;
                     }
-                    cv::imencode(".webp", m, *encoded,
-                                 {cv::IMWRITE_WEBP_QUALITY, info.quality});
+                    m.magick("WEBP");
+                    m.quality(info.quality);
+                    Magick::Blob b;
+                    m.write(&b);
+                    encoded->assign(
+                        static_cast<const unsigned char *>(b.data()),
+                        static_cast<const unsigned char *>(b.data()) +
+                            b.length());
                     break;
-                case Common::ImageCompressMode::png:
-                    if (info.quality < 0 || info.quality > 9) {
+                }
+                case Common::ImageCompressMode::png: {
+                    if (info.quality < 0 || info.quality > 100) {
                         this->logger->error("Invalid image conversion request "
                                             "(png, compression={})",
                                             info.quality);
                         return;
                     }
-                    cv::imencode(".png", m, *encoded,
-                                 {cv::IMWRITE_PNG_COMPRESSION, info.quality});
+                    m.magick("PNG");
+                    m.quality(info.quality);
+                    Magick::Blob b;
+                    m.write(&b);
+                    encoded->assign(
+                        static_cast<const unsigned char *>(b.data()),
+                        static_cast<const unsigned char *>(b.data()) +
+                            b.length());
                     break;
-#else
-                case Common::ImageCompressMode::raw:
-                    encoded = img.dataPtr();
-                    break;
-                default:
-                    if(!opencv_warned){
-                        this->logger->warn("Cannot convert image since OpenCV is disabled.");
-                        opencv_warned = true;
-                    }
-                    return;
-#endif
                 }
-                Common::ImageBase img_send{
-                    rows, cols, encoded,
-                    info.color_mode.value_or(img.color_mode()), info.cmp_mode};
+                }
+                Common::ImageBase img_send{rows, cols, encoded, color_mode,
+                                           info.cmp_mode};
 
                 while (!cd->closing.load() && !this->closing.load()) {
                     if (store->server->server_mtx.try_lock()) {

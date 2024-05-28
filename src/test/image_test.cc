@@ -51,7 +51,7 @@ TEST_F(ImageFrameTest, baseCopyCtor) {
     EXPECT_EQ(img2.color_mode(), ImageColorMode::bgr);
     EXPECT_EQ(img2.compress_mode(), ImageCompressMode::raw);
 }
-#if WEBCFACE_USE_OPENCV
+#ifdef WEBCFACE_USE_OPENCV
 TEST_F(ImageFrameTest, cvDefaultCtor) {
     ImageWithCV img;
     EXPECT_TRUE(img.empty());

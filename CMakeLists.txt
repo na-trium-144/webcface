@@ -126,6 +126,7 @@ endif()
 ###############################################################################
 
 include(FetchContent)
+include(FindPkgConfig)
 
 if(WEBCFACE_DOWNLOAD_WEBUI)
     message(STATUS "Downloading webcface-webui ${WEBUI_VERSION}")
@@ -320,6 +321,14 @@ if(WEBCFACE_USE_OPENCV)
     find_package(OpenCV REQUIRED)
 endif()
 
+pkg_check_modules(Magickpp REQUIRED Magick++)
+message(STATUS "Magick++ ${Magickpp_VERSION} Found: ${Magickpp_PREFIX}")
+add_library(magickpp INTERFACE)
+target_include_directories(magickpp INTERFACE ${Magickpp_INCLUDE_DIRS})
+target_link_libraries(magickpp INTERFACE ${Magickpp_LIBRARIES})
+target_link_directories(magickpp INTERFACE ${Magickpp_LIBRARY_DIRS})
+target_compile_options(magickpp INTERFACE ${Magickpp_CFLAGS_OTHER})
+
 if(WEBCFACE_TEST)
     message(STATUS "Fetching GTest Source...")
     FetchContent_Declare(googletest
@@ -472,18 +481,12 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
     msgpack-cxx
     Crow
     utfcpp
+    magickpp
 )
 target_link_libraries(${PROJECT_NAME} PUBLIC
     eventpp::eventpp
     spdlog::spdlog
 )
-if(WEBCFACE_USE_OPENCV)
-    target_link_libraries(${PROJECT_NAME} PUBLIC
-        opencv_core
-        opencv_imgcodecs
-        opencv_imgproc
-    )
-endif()
 if(MINGW)
     target_link_libraries(${PROJECT_NAME} PUBLIC ws2_32)
 endif()
@@ -552,8 +555,14 @@ if(WEBCFACE_EXAMPLE)
         )
     endforeach()
     if(WEBCFACE_USE_OPENCV)
-        target_link_libraries(${PROJECT_NAME}-example-image_recv PRIVATE opencv_highgui)
-        target_link_libraries(${PROJECT_NAME}-example-image_send PRIVATE opencv_highgui)
+        foreach(TARGET image_recv image_send)
+            target_link_libraries(${PROJECT_NAME}-example-${TARGET} PRIVATE
+                opencv_core
+                opencv_imgcodecs
+                opencv_imgproc
+                opencv_highgui
+            )
+        endforeach()
     endif()
 endif()
 
@@ -567,7 +576,18 @@ if(WEBCFACE_TEST)
         msgpack-cxx
         utfcpp
         GTest::gtest_main
+
     )
+    if(WEBCFACE_USE_OPENCV)
+        target_link_libraries(${PROJECT_NAME}-test PRIVATE
+            opencv_core
+            opencv_imgcodecs
+            opencv_imgproc
+        )
+        target_compile_definitions(${PROJECT_NAME}-test PRIVATE
+            WEBCFACE_USE_OPENCV
+        )
+    endif()
     target_compile_definitions(${PROJECT_NAME}-test PRIVATE
         WEBCFACE_TEST_TIMEOUT=${WEBCFACE_TEST_TIMEOUT}
     )
@@ -618,19 +638,11 @@ if(WEBCFACE_INSTALL)
     install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/include/
         DESTINATION include
     )
-    if(WEBCFACE_USE_OPENCV)
-        configure_package_config_file(
-            ${CMAKE_CURRENT_SOURCE_DIR}/cmake/${PROJECT_NAME}-config.opencv.cmake.in
-            ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config.cmake
-            INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
-        )
-    else()
-        configure_package_config_file(
-            ${CMAKE_CURRENT_SOURCE_DIR}/cmake/${PROJECT_NAME}-config.no-opencv.cmake.in
-            ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config.cmake
-            INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
-        )
-    endif()
+    configure_package_config_file(
+        ${CMAKE_CURRENT_SOURCE_DIR}/cmake/${PROJECT_NAME}-config.no-opencv.cmake.in
+        ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config.cmake
+        INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
+    )
 
     write_basic_package_version_file(
         ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config-version.cmake
@@ -642,11 +654,7 @@ if(WEBCFACE_INSTALL)
         ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config-version.cmake
         DESTINATION lib/cmake/${PROJECT_NAME}
     )
-    if(WEBCFACE_USE_OPENCV)
-        set(WEBCFACE_PKGCONFIG_REQUIRES "spdlog opencv4")
-    else()
-        set(WEBCFACE_PKGCONFIG_REQUIRES "spdlog")
-    endif()
+    set(WEBCFACE_PKGCONFIG_REQUIRES "spdlog")
     configure_file(
         ${CMAKE_CURRENT_SOURCE_DIR}/cmake/${PROJECT_NAME}.pc.in
         ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.pc
@@ -721,9 +729,6 @@ if(WEBCFACE_INSTALL)
     set(CPACK_DEBIAN_PACKAGE_SHLIBDEPS yes)
     if(${spdlog_FOUND})
         set(CPACK_DEBIAN_PACKAGE_DEPENDS ${CPACK_DEBIAN_PACKAGE_DEPENDS} libspdlog-dev)
-    endif()
-    if(${OpenCV_FOUND})
-        set(CPACK_DEBIAN_PACKAGE_DEPENDS ${CPACK_DEBIAN_PACKAGE_DEPENDS} libopencv-dev)
     endif()
     # https://gitlab.kitware.com/cmake/cmake/-/issues/21834
     set(CPACK_DEBIAN_PACKAGE_CONTROL_EXTRA "${CMAKE_CURRENT_LIST_DIR}/cmake/triggers")

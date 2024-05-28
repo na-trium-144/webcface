@@ -59,16 +59,6 @@ std::optional<ImageFrame> Image::tryGet() {
     }
 }
 
-#if WEBCFACE_USE_OPENCV
-cv::Mat Image::mat() & {
-    this->img = dataLock()->image_store.getRecv(*this);
-    if (this->img) {
-        return this->img->mat();
-    }
-    return cv::Mat();
-}
-#endif
-
 std::chrono::system_clock::time_point Image::time() const {
     return member().syncTime();
 }

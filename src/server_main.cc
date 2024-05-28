@@ -4,13 +4,7 @@
 #include <CLI/CLI.hpp>
 
 int main(int argc, char **argv) {
-    std::string server_ver = "WebCFace Server " WEBCFACE_VERSION ", OpenCV ";
-    if constexpr (WEBCFACE_USE_OPENCV) {
-        server_ver += "Enabled";
-    } else {
-        server_ver += "Disabled";
-    }
-    CLI::App app{server_ver};
+    CLI::App app{"WebCFace Server " WEBCFACE_VERSION};
     app.allow_windows_style_options();
 
     int port = WEBCFACE_DEFAULT_PORT;

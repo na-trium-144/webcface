@@ -5,12 +5,6 @@
 #include <stdexcept>
 #include <webcface/common/def.h>
 
-// todo: cmakeなしでヘッダー読んだときにopencvの有無を判別する
-#if WEBCFACE_USE_OPENCV
-#include <opencv2/core.hpp>
-#include <opencv2/imgcodecs.hpp>
-#endif
-
 WEBCFACE_NS_BEGIN
 inline namespace Common {
 
@@ -36,7 +30,7 @@ enum class ImageCompressMode {
  * * データはshared_ptrで保持され、Imageをコピーしてもコピーされない
  *
  */
-class ImageBase {
+class ImageFrame {
   protected:
     std::size_t rows_, cols_;
     std::shared_ptr<std::vector<unsigned char>> data_;
@@ -48,15 +42,15 @@ class ImageBase {
      * \brief 空のImageを作成
      *
      */
-    ImageBase()
+    ImageFrame()
         : rows_(0), cols_(0),
           data_(std::make_shared<std::vector<unsigned char>>()),
           color_mode_(ImageColorMode::gray), cmp_mode_(ImageCompressMode::raw) {
     }
-    ImageBase(int rows, int cols,
-              const std::shared_ptr<std::vector<unsigned char>> &data,
-              ImageColorMode color_mode = ImageColorMode::bgr,
-              ImageCompressMode cmp_mode = ImageCompressMode::raw)
+    ImageFrame(int rows, int cols,
+               const std::shared_ptr<std::vector<unsigned char>> &data,
+               ImageColorMode color_mode = ImageColorMode::bgr,
+               ImageCompressMode cmp_mode = ImageCompressMode::raw)
         : rows_(rows), cols_(cols), data_(data), color_mode_(color_mode),
           cmp_mode_(cmp_mode) {
         if (cmp_mode == ImageCompressMode::raw &&
@@ -77,8 +71,8 @@ class ImageBase {
      * (デフォルトはOpenCVのBGR, uint8*3バイト)
      *
      */
-    ImageBase(int rows, int cols, const void *data,
-              ImageColorMode color_mode = ImageColorMode::bgr)
+    ImageFrame(int rows, int cols, const void *data,
+               ImageColorMode color_mode = ImageColorMode::bgr)
         : rows_(rows), cols_(cols), color_mode_(color_mode),
           cmp_mode_(ImageCompressMode::raw) {
         data_ = std::make_shared<std::vector<unsigned char>>(
@@ -158,7 +152,7 @@ class ImageBase {
     }
 };
 
-#if WEBCFACE_USE_OPENCV
+#if 0 // todo
 /*!
  * \brief (ver1.3から追加) 画像データ
  *
@@ -278,12 +272,9 @@ class ImageWithCV : public ImageBase {
      */
     cv::Mat &mat() & { return mat_; }
 };
-
-using ImageFrame = ImageWithCV;
-
-#else
-using ImageFrame = ImageBase;
 #endif
+
+using ImageBase = ImageFrame;
 
 struct ImageReq {
     std::optional<int> rows = std::nullopt, cols = std::nullopt;

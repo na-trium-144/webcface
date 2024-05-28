@@ -159,9 +159,6 @@ class WEBCFACE_DLL Image : protected Field, public EventTarget<Image> {
 
     operator ImageFrame() { return get(); }
 
-#if WEBCFACE_USE_OPENCV
-    cv::Mat mat() &;
-#endif
     /*!
      * \brief syncの時刻を返す
      * \deprecated 1.7でMember::syncTime()に変更
