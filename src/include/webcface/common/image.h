@@ -138,9 +138,10 @@ class ImageFrame {
      *
      * \return compress_modeがrawの場合、rows * cols * channels
      * 要素の画像データ。 それ以外の場合、圧縮された画像のデータ
+     * (ver1.12〜非const)
      *
      */
-    const std::vector<unsigned char> &data() const { return *data_; }
+    std::vector<unsigned char> &data() const { return *data_; }
     /*!
      * \brief 画像の要素にアクセス
      *

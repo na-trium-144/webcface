@@ -19,13 +19,14 @@ int main() {
         // NG
         // auto mat2 = img.mat(); // OK
         auto img_frame = img.get();
-        assert(img_frame.channels() == 3);
-        assert(img_frame.color_mode() == webcface::ImageColorMode::bgr);
-        cv::Mat mat2(img_frame.rows(), img_frame.cols(), CV_8UC3, img_frame.data().data());
-        if (!mat2.empty()) {
-            cv::imshow("Display window (image_recv)", img.mat());
+        if (!img_frame.empty()) {
+            assert(img_frame.channels() == 3);
+            assert(img_frame.color_mode() == webcface::ImageColorMode::bgr);
+            cv::Mat mat2(img_frame.rows(), img_frame.cols(), CV_8UC3,
+                         img_frame.data().data());
+            cv::imshow("Display window (image_recv)", mat2);
             cv::waitKey(1); // Wait for a keystroke in the window
-            cv::imwrite("recv_image.png", img.mat());
+            cv::imwrite("recv_image.png", mat2);
             break;
         }
         std::this_thread::yield();
@@ -34,48 +35,55 @@ int main() {
     while (true) {
         // auto mat2 = img.mat(); // OK
         auto img_frame = img.get();
-        assert(img_frame.channels() == 3);
-        assert(img_frame.color_mode() == webcface::ImageColorMode::bgr);
-        assert(img_frame.rows() == 300);
-        assert(img_frame.cols() == 300);
-        cv::Mat mat2(img_frame.rows(), img_frame.cols(), CV_8UC3, img_frame.data().data());
-        if (!mat2.empty()) {
-            cv::imshow("Display window (image_recv, 300x300)", img.mat());
+        if (!img_frame.empty()) {
+            cv::Mat mat2(img_frame.rows(), img_frame.cols(), CV_8UC3,
+                         img_frame.data().data());
+            assert(img_frame.channels() == 3);
+            assert(img_frame.color_mode() == webcface::ImageColorMode::bgr);
+            assert(img_frame.rows() == 300);
+            assert(img_frame.cols() == 300);
+            cv::imshow("Display window (image_recv, 300x300)", mat2);
             cv::waitKey(1); // Wait for a keystroke in the window
             break;
         }
         std::this_thread::yield();
     }
     img.request(std::nullopt, std::nullopt, webcface::ImageColorMode::gray);
-    while(true){
+    while (true) {
         // auto mat2 = img.mat(); // OK
-        assert(img_frame.channels() == 1);
-        assert(img_frame.color_mode() == webcface::ImageColorMode::gray);
-        cv::Mat mat2(img_frame.rows(), img_frame.cols(), CV_8UC1, img_frame.data().data());
-        if (!mat2.empty()) {
-            cv::imshow("Display window (image_recv, gray)", img.mat());
+        auto img_frame = img.get();
+        if (!img_frame.empty()) {
+            assert(img_frame.channels() == 1);
+            assert(img_frame.color_mode() == webcface::ImageColorMode::gray);
+            cv::Mat mat2(img_frame.rows(), img_frame.cols(), CV_8UC1,
+                         img_frame.data().data());
+            cv::imshow("Display window (image_recv, gray)", mat2);
             cv::waitKey(1); // Wait for a keystroke in the window
             break;
         }
         std::this_thread::yield();
     }
-    img.request(std::nullopt, std::nullopt, webcface::ImageCompressMode::jpeg, 20);
-    while(true){
+    img.request(std::nullopt, std::nullopt, webcface::ImageCompressMode::jpeg,
+                20);
+    while (true) {
         // auto mat2 = img.mat(); // OK
-        cv::Mat mat2 = cv::imdecode(img.data().data(), cv::IMREAD_COLOR);
-        if (!mat2.empty()) {
-            cv::imshow("Display window (image_recv, jpeg)", img.mat());
+        auto img_frame = img.get();
+        if (!img_frame.empty()) {
+            cv::Mat mat2 = cv::imdecode(img_frame.data(), cv::IMREAD_COLOR);
+            cv::imshow("Display window (image_recv, jpeg)", mat2);
             cv::waitKey(1); // Wait for a keystroke in the window
             break;
         }
         std::this_thread::yield();
     }
-    img.request(std::nullopt, std::nullopt, webcface::ImageCompressMode::png, 1);
-    while(true){
+    img.request(std::nullopt, std::nullopt, webcface::ImageCompressMode::png,
+                1);
+    while (true) {
         // auto mat2 = img.mat(); // OK
-        cv::Mat mat2 = cv::imdecode(img.data().data(), cv::IMREAD_COLOR);
-        if (!mat2.empty()) {
-            cv::imshow("Display window (image_recv, png)", img.mat());
+        auto img_frame = img.get();
+        if (!img_frame.empty()) {
+            cv::Mat mat2 = cv::imdecode(img_frame.data(), cv::IMREAD_COLOR);
+            cv::imshow("Display window (image_recv, png)", mat2);
             cv::waitKey(0); // Wait for a keystroke in the window
             break;
         }
