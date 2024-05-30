@@ -14,6 +14,7 @@
 #include <thread>
 #include <iostream>
 #include "dummy_client.h"
+#include "webcface/common/image.h"
 
 using namespace webcface;
 
@@ -754,10 +755,7 @@ TEST_F(ServerTest, image) {
             dummy_c1->send(Message::Image{
                 Encoding::castToU8("a" + std::to_string(f_type) +
                                    std::to_string(t_type)),
-                ImageFrame{
-                    10, 10,
-                    std::make_shared<std::vector<unsigned char>>(10 * 10 * 3),
-                    static_cast<ImageColorMode>(f_type)}});
+                ImageFrame{10, 10, static_cast<ImageColorMode>(f_type)}});
             wait();
             dummy_c2->send(Message::Req<Message::Image>{
                 u8"c1",
@@ -772,8 +770,8 @@ TEST_F(ServerTest, image) {
                 [&](const auto &obj) {
                     EXPECT_EQ(obj.req_id, 1);
                     EXPECT_EQ(obj.sub_field, u8"");
-                    EXPECT_EQ(obj.rows(), 5);
-                    EXPECT_EQ(obj.cols(), 5);
+                    EXPECT_EQ(obj.rows(), 10);
+                    EXPECT_EQ(obj.cols(), 10);
                     EXPECT_EQ(obj.color_mode(),
                               static_cast<ImageColorMode>(t_type));
                 },

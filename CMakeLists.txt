@@ -359,8 +359,8 @@ else()
                     --without-xml --without-zlib --without-zstd --without-x
                 WORKING_DIRECTORY ${magickpp_SOURCE_DIR}
             )
+            file(REMOVE_RECURSE ${magickpp_BINARY_DIR})
         endif()
-        file(REMOVE_RECURSE ${magickpp_BINARY_DIR})
         execute_process(
             COMMAND make -j${N} install
             WORKING_DIRECTORY ${magickpp_SOURCE_DIR}
