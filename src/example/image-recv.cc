@@ -54,7 +54,7 @@ int main() {
             assert(img_frame.color_mode() == webcface::ImageColorMode::gray);
             Magick::Image m(img_frame.rows(), img_frame.cols(), "K",
                             Magick::CharPixel, img_frame.data().data());
-            m.type(Magick::TrueColorAlphaType);
+            m.type(Magick::TrueColorType);
             m.negate(true);
             // m.display();
             m.write("webcface-example-image-recv-3.jpg");

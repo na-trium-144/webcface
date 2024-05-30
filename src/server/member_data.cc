@@ -968,7 +968,12 @@ void MemberData::imageConvertThreadMain(const std::u8string &member,
                 Magick::Image m(img.cols(), img.rows(),
                                 magickColorMap(img.color_mode()),
                                 Magick::CharPixel, img.data().data());
+#ifdef WEBCFACE_MAGICK_VER7
+                // ImageMagick6と7で名前が異なる
                 m.type(Magick::TrueColorAlphaType);
+#else
+                m.type(Magick::TrueColorMatteType);
+#endif
                 if (img.color_mode() == ImageColorMode::gray) {
                     // K -> RGB
                     m.negate(true);
