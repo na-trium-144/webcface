@@ -1,4 +1,6 @@
 cmake_minimum_required(VERSION 3.12)
+set(ORIGINAL_ENV_CC "$ENV{CC}" CACHE STRING "")
+set(ORIGINAL_ENV_CXX "$ENV{CXX}" CACHE STRING "")
 
 project(webcface
     LANGUAGES CXX C
@@ -356,14 +358,14 @@ else()
     if(WIN32)
     else()
         if(NOT EXISTS ${magickpp_SOURCE_DIR}/Makefile OR ${CMAKE_CURRENT_LIST_FILE} IS_NEWER_THAN ${magickpp_SOURCE_DIR}/Makefile)
+            set(MAGICKPP_FLAGS "-O3")
             if(WEBCFACE_PIC)
-                set(MAGICKPP_FLAGS "CFLAGS=-fPIC -O3" "CXXFLAGS=-fPIC -O3")
-            else()
-                set(MAGICKPP_FLAGS "CFLAGS=-O3" "CXXFLAGS=-O3")
+                set(MAGICKPP_FLAGS "${MAGICKPP_FLAGS} -fPIC")
             endif()
             execute_process(
                 COMMAND ./configure
-                    ${MAGICKPP_FLAGS}
+                    "CC=${ORIGINAL_ENV_CC}" "CXX=${ORIGINAL_ENV_CXX}"
+                    "CFLAGS=${MAGICKPP_FLAGS}" "CXXFLAGS=${MAGICKPP_FLAGS}"
                     --prefix=${magickpp_BINARY_DIR} --disable-shared --enable-static
                     --without-utilities --disable-hdri --with-quantum-depth=8
                     --without-modules --without-perl --without-bzlib --without-djvu --without-dps
