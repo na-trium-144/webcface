@@ -14,9 +14,9 @@ jobs:
   test-linux-clang:
     strategy:
       matrix:
-        dep: ["apt-opencv", "apt", "source"]
+        dep: ["apt", "source"]
         include:
-        - dep: apt-opencv
+        - dep: apt
           use_opencv: on
     runs-on: ubuntu-20.04
     steps:
@@ -25,8 +25,7 @@ jobs:
     - name: Install dependencies
       run: |
         sudo apt-get update
-        if [ ${{matrix.dep}} = apt ]; then sudo apt-get install -y libspdlog-dev; fi
-        if [ ${{matrix.dep}} = apt-opencv ]; then sudo apt-get install -y libspdlog-dev libopencv-dev; fi
+        if [ ${{matrix.dep}} = apt ]; then sudo apt-get install -y libspdlog-dev libmagick++-dev libopencv-dev; fi
     - name: Install clang-13
       uses: KyleMayes/install-llvm-action@v1
       with:

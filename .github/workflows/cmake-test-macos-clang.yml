@@ -14,9 +14,9 @@ jobs:
   test-macos-clang:
     strategy:
       matrix:
-        dep: ["brew-opencv", "brew", "source"]
+        dep: ["brew", "source"]
         include:
-        - dep: brew-opencv
+        - dep: brew
           use_opencv: on
     runs-on: macos-latest
     steps:
@@ -26,8 +26,7 @@ jobs:
         HOMEBREW_NO_AUTO_UPDATE: 1
       run: |
         brew update --preinstall
-        if [ ${{matrix.dep}} = brew ]; then brew install spdlog msgpack-cxx || true; fi
-        if [ ${{matrix.dep}} = brew-opencv ]; then brew install spdlog msgpack-cxx opencv || true; fi
+        if [ ${{matrix.dep}} = brew ]; then brew install spdlog msgpack-cxx imagemagick opencv || true; fi
 
     - name: Configure CMake
       run: >
