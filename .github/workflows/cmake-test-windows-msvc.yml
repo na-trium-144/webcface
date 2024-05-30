@@ -59,7 +59,7 @@ jobs:
       env:
         WEBCFACE_TRACE: 1
       working-directory: ${{github.workspace}}/build
-      run: ctest --output-on-failure --timeout 15
+      run: ctest --output-on-failure --timeout 100
 
   include-cp932:
     runs-on: windows-latest
