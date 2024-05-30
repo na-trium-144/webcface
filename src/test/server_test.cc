@@ -14,6 +14,9 @@
 #include <thread>
 #include <iostream>
 #include "dummy_client.h"
+#include <opencv2/core.hpp>
+#include <opencv2/imgcodecs.hpp>
+#include <opencv2/imgproc.hpp>
 
 using namespace webcface;
 

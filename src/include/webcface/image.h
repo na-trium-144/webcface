@@ -23,8 +23,6 @@ extern template class WEBCFACE_IMPORT EventTarget<Image>;
  * コンストラクタではなく Member::image() を使って取得してください
  */
 class WEBCFACE_DLL Image : protected Field, public EventTarget<Image> {
-    std::optional<Common::ImageFrame> img = std::nullopt;
-
     void onAppend() const override final;
 
     Image &request(std::optional<int> rows, std::optional<int> cols,

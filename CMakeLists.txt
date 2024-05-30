@@ -426,11 +426,13 @@ list(APPEND EXAMPLE_SRC
     ${CPP_DIR}/example/recv.cc
     ${CPP_DIR}/example/c_example.c
     ${CPP_DIR}/example/benchmark.cc
+    ${CPP_DIR}/example/image-send.cc
+    ${CPP_DIR}/example/image-recv.cc
 )
 if(WEBCFACE_USE_OPENCV)
     list(APPEND EXAMPLE_SRC
-        ${CPP_DIR}/example/image_send.cc
-        ${CPP_DIR}/example/image_recv.cc
+        ${CPP_DIR}/example/cv-send.cc
+        ${CPP_DIR}/example/cv-recv.cc
     )
 endif()
 list(APPEND TEST_SRC
@@ -554,8 +556,13 @@ if(WEBCFACE_EXAMPLE)
             FILE_IS_APP
         )
     endforeach()
+    foreach(TARGET image-recv image-send)
+        target_link_libraries(${PROJECT_NAME}-example-${TARGET} PRIVATE
+            magickpp
+        )
+    endforeach()
     if(WEBCFACE_USE_OPENCV)
-        foreach(TARGET image_recv image_send)
+        foreach(TARGET cv-recv cv-send)
             target_link_libraries(${PROJECT_NAME}-example-${TARGET} PRIVATE
                 opencv_core
                 opencv_imgcodecs

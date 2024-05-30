@@ -51,54 +51,6 @@ TEST_F(ImageFrameTest, baseCopyCtor) {
     EXPECT_EQ(img2.color_mode(), ImageColorMode::bgr);
     EXPECT_EQ(img2.compress_mode(), ImageCompressMode::raw);
 }
-#ifdef WEBCFACE_USE_OPENCV
-TEST_F(ImageFrameTest, cvDefaultCtor) {
-    ImageWithCV img;
-    EXPECT_TRUE(img.empty());
-    EXPECT_EQ(img.rows(), 0);
-    EXPECT_EQ(img.cols(), 0);
-    ASSERT_NE(img.dataPtr(), nullptr);
-    EXPECT_EQ(img.dataPtr()->size(), 0);
-    EXPECT_EQ(img.channels(), 1);
-    EXPECT_EQ(img.color_mode(), ImageColorMode::gray);
-    EXPECT_EQ(img.compress_mode(), ImageCompressMode::raw);
-    EXPECT_EQ(img.data().size(), 0);
-    EXPECT_TRUE(img.mat().empty());
-}
-TEST_F(ImageFrameTest, cvRawPtrCtor) {
-    ImageWithCV img(100, 100, dp->data());
-    EXPECT_FALSE(img.empty());
-    EXPECT_EQ(img.rows(), 100);
-    EXPECT_EQ(img.cols(), 100);
-    ASSERT_NE(img.dataPtr(), nullptr);
-    EXPECT_NE(img.dataPtr()->data(), dp->data());
-    EXPECT_EQ(img.dataPtr()->size(), 100 * 100 * 3);
-    EXPECT_EQ(img.channels(), 3);
-    EXPECT_EQ(img.color_mode(), ImageColorMode::bgr);
-    EXPECT_EQ(img.compress_mode(), ImageCompressMode::raw);
-    EXPECT_FALSE(img.mat().empty());
-    EXPECT_EQ(img.mat().rows, 100);
-    EXPECT_EQ(img.mat().cols, 100);
-    EXPECT_EQ(img.mat().channels(), 3);
-}
-TEST_F(ImageFrameTest, cvCopyCtor) {
-    ImageBase img(100, 100, dp);
-    ImageWithCV img2 = img;
-    EXPECT_FALSE(img2.empty());
-    EXPECT_EQ(img2.rows(), 100);
-    EXPECT_EQ(img2.cols(), 100);
-    ASSERT_NE(img2.dataPtr(), nullptr);
-    EXPECT_EQ(img2.dataPtr(), img.dataPtr());
-    EXPECT_EQ(img2.dataPtr(), dp);
-    EXPECT_EQ(img2.channels(), 3);
-    EXPECT_EQ(img2.color_mode(), ImageColorMode::bgr);
-    EXPECT_EQ(img2.compress_mode(), ImageCompressMode::raw);
-    EXPECT_EQ(img2.mat().rows, 100);
-    EXPECT_EQ(img2.mat().cols, 100);
-    EXPECT_EQ(img2.mat().channels(), 3);
-}
-
-#endif
 
 class ImageTest : public ::testing::Test {
   protected:

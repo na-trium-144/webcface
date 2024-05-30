@@ -1,4 +1,5 @@
 #pragma once
+#include <optional>
 #include <vector>
 #include <memory>
 #include <cstdint>
@@ -39,7 +40,7 @@ class ImageFrame {
 
   public:
     /*!
-     * \brief 空のImageを作成
+     * \brief 空の(0x0の) ImageFrameを作成
      *
      */
     ImageFrame()
@@ -60,7 +61,7 @@ class ImageFrame {
         }
     }
     /*!
-     * \brief 生画像データの配列からImageを取得
+     * \brief 生画像データの配列からImageFrameを作成
      *
      * dataから rows * cols * channels バイトがコピーされる
      *
@@ -79,6 +80,26 @@ class ImageFrame {
             static_cast<const unsigned char *>(data),
             static_cast<const unsigned char *>(data) +
                 static_cast<std::size_t>(rows * cols) * channels());
+    }
+    /*!
+     * \brief 空のImageFrameを作成
+     * \since ver1.12
+     *
+     * rows * cols * channels バイトのバッファが生成されるので、
+     * 作成後にdata()またはat()でデータを書き込んで使う
+     *
+     * \param rows 画像の高さ
+     * \param cols 画像の幅
+     * \param color_mode データの構造を指定
+     * (デフォルトはOpenCVのBGR, uint8*3バイト)
+     *
+     */
+    ImageFrame(int rows, int cols,
+               ImageColorMode color_mode = ImageColorMode::bgr)
+        : rows_(rows), cols_(cols), color_mode_(color_mode),
+          cmp_mode_(ImageCompressMode::raw) {
+        data_ = std::make_shared<std::vector<unsigned char>>(
+            static_cast<std::size_t>(rows * cols) * channels());
     }
 
     /*!
@@ -141,14 +162,33 @@ class ImageFrame {
      * (ver1.12〜非const)
      *
      */
-    std::vector<unsigned char> &data() const { return *data_; }
+    const std::vector<unsigned char> &data() const { return *data_; }
+    /*!
+     * \brief 画像データ (非const)
+     * \since ver1.12
+     * \return compress_modeがrawの場合、rows * cols * channels
+     * 要素の画像データ。 それ以外の場合、圧縮された画像のデータ
+     *
+     */
+    std::vector<unsigned char> &data() { return *data_; }
     /*!
      * \brief 画像の要素にアクセス
      *
      * compress_modeがrawでない場合は正常にアクセスできない。
+     *
      */
-    unsigned char at(std::size_t row, std::size_t col,
-                     std::size_t ch = 0) const {
+    const unsigned char &at(std::size_t row, std::size_t col,
+                            std::size_t ch = 0) const {
+        return dataPtr()->at((row * cols() + col) * channels() + ch);
+    }
+    /*!
+     * \brief 画像の要素にアクセス
+     * \since ver1.12
+     *
+     * compress_modeがrawでない場合は正常にアクセスできない。
+     *
+     */
+    unsigned char &at(std::size_t row, std::size_t col, std::size_t ch = 0) {
         return dataPtr()->at((row * cols() + col) * channels() + ch);
     }
 };

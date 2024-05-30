@@ -964,9 +964,15 @@ void MemberData::imageConvertThreadMain(const std::u8string &member,
                 if (img.empty()) {
                     break;
                 }
+
                 Magick::Image m(img.cols(), img.rows(),
                                 magickColorMap(img.color_mode()),
                                 Magick::CharPixel, img.data().data());
+                m.type(Magick::TrueColorAlphaType);
+                if (img.color_mode() == ImageColorMode::gray) {
+                    // K -> RGB
+                    m.negate(true);
+                }
 
                 auto last_frame = std::chrono::steady_clock::now();
                 // 変換処理
@@ -1003,13 +1009,17 @@ void MemberData::imageConvertThreadMain(const std::u8string &member,
                     }
                     m.resize(Magick::Geometry(cols, rows));
                 }
+
                 auto color_mode = info.color_mode.value_or(img.color_mode());
                 auto encoded = std::make_shared<std::vector<unsigned char>>();
                 switch (info.cmp_mode) {
                 case Common::ImageCompressMode::raw: {
                     int channels = 1;
+                    std::string color_map = magickColorMap(color_mode);
                     switch (color_mode) {
                     case ImageColorMode::gray:
+                        m.type(Magick::GrayscaleType);
+                        color_map = "R";
                         channels = 1;
                         break;
                     case ImageColorMode::bgr:
@@ -1022,8 +1032,8 @@ void MemberData::imageConvertThreadMain(const std::u8string &member,
                         break;
                     }
                     encoded->resize(cols * rows * channels);
-                    m.write(0, 0, cols, rows, magickColorMap(color_mode),
-                            Magick::CharPixel, encoded->data());
+                    m.write(0, 0, cols, rows, color_map, Magick::CharPixel,
+                            encoded->data());
                     break;
                 }
                 case Common::ImageCompressMode::jpeg: {

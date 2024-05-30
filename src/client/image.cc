@@ -41,7 +41,6 @@ inline void addImageReq(const std::shared_ptr<Internal::ClientData> &data,
 }
 
 Image &Image::set(const ImageFrame &img) {
-    this->img = img;
     setCheck()->image_store.setSend(*this, img);
     this->triggerEvent(*this);
     return *this;
@@ -51,12 +50,7 @@ void Image::onAppend() const { addImageReq(dataLock(), member_, field_); }
 
 std::optional<ImageFrame> Image::tryGet() {
     addImageReq(dataLock(), member_, field_);
-    if (this->img) {
-        return this->img;
-    } else {
-        this->img = dataLock()->image_store.getRecv(*this);
-        return this->img;
-    }
+    return dataLock()->image_store.getRecv(*this);
 }
 
 std::chrono::system_clock::time_point Image::time() const {
@@ -68,7 +62,6 @@ Image &Image::clear() {
 }
 Image &Image::free() {
     auto req = dataLock()->image_store.unsetRecv(*this);
-    this->img = std::nullopt;
     if (req) {
         // todo: リクエスト解除
     }
