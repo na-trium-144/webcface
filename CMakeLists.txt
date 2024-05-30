@@ -29,12 +29,16 @@ option(WEBCFACE_COVERAGE "enable generating test coverage" OFF)
 set(WEBCFACE_TEST_TIMEOUT 10 CACHE STRING "connection timeout in test")
 option(WEBCFACE_SHARED "build shared library" ON)
 option(WEBCFACE_PIC "enable PIC for shared library" ${WEBCFACE_SHARED})
-option(WEBCFACE_USE_OPENCV "use opencv to enable image processing feature" ON)
 set(WEBCFACE_VERSION_SUFFIX "git" CACHE STRING "version suffix ('git' to get automatically from git describe command)")
 set(WEBCFACE_CLANG_TIDY "" CACHE STRING "clang-tidy path (or empty to disable clang-tidy)")
 option(WEBCFACE_DOWNLOAD_WEBUI "download and install webui" ON)
-option(WEBCFACE_FIND_LIBS "find and use msgpack-cxx, eventpp and spdlog installation" ON)
-option(WEBCFACE_FIND_AMENT "find and use ament_cmake installation" ON)
+option(WEBCFACE_FIND_LIBS "(deprecated) if false, disables find_package for msgpack, spdlog and eventpp" ON)
+option(WEBCFACE_FIND_MSGPACK "try find_package(msgpack-cxx)" ${WEBCFACE_FIND_LIBS})
+option(WEBCFACE_FIND_SPDLOG "try find_package(spdlog)" ${WEBCFACE_FIND_LIBS})
+option(WEBCFACE_FIND_EVENTPP "try find_package(eventpp)" ${WEBCFACE_FIND_LIBS})
+option(WEBCFACE_FIND_MAGICK "try pkg_check_modules(Magick++)" ON)
+option(WEBCFACE_FIND_AMENT "try find_package(ament_cmake)" ON)
+option(WEBCFACE_FIND_OPENCV "try find_package(OpenCV) (only for example)" OFF)
 
 if(WEBCFACE_VERSION_SUFFIX STREQUAL "git")
     execute_process(
@@ -62,9 +66,12 @@ message(STATUS "webcface_coverage = ${WEBCFACE_COVERAGE}")
 message(STATUS "webcface_install = ${WEBCFACE_INSTALL}")
 message(STATUS "webcface_install_service = ${WEBCFACE_INSTALL_SERVICE}")
 message(STATUS "webcface_shared = ${WEBCFACE_SHARED} (pic = ${WEBCFACE_PIC})")
-message(STATUS "webcface_use_opencv = ${WEBCFACE_USE_OPENCV}")
-message(STATUS "webcface_find_libs = ${WEBCFACE_FIND_LIBS}")
+message(STATUS "webcface_find_msgpack = ${WEBCFACE_FIND_MSGPACK}")
+message(STATUS "webcface_find_spdlog = ${WEBCFACE_FIND_SPDLOG}")
+message(STATUS "webcface_find_eventpp = ${WEBCFACE_FIND_EVENTPP}")
+message(STATUS "webcface_find_magick = ${WEBCFACE_FIND_MAGICK}")
 message(STATUS "webcface_find_ament = ${WEBCFACE_FIND_AMENT}")
+message(STATUS "webcface_find_opencv = ${WEBCFACE_FIND_OPENCV}")
 
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Release")
@@ -144,7 +151,7 @@ if(ament_cmake_FOUND)
     message(STATUS "ament_cmake Found")
 endif()
 
-if(WEBCFACE_FIND_LIBS)
+if(WEBCFACE_FIND_MSGPACK)
     find_package(msgpack-cxx QUIET)
 endif()
 if(msgpack-cxx_FOUND)
@@ -171,7 +178,7 @@ else()
     endif()
 endif()
 
-if(WEBCFACE_FIND_LIBS)
+if(WEBCFACE_FIND_EVENTPP)
     find_package(eventpp QUIET)
 endif()
 if(eventpp_FOUND)
@@ -186,7 +193,7 @@ else()
     FetchContent_MakeAvailable(eventpp)
 endif()
 
-if(WEBCFACE_FIND_LIBS)
+if(WEBCFACE_FIND_SPDLOG)
     find_package(spdlog QUIET)
 endif()
 if(spdlog_FOUND)
@@ -313,11 +320,19 @@ if(NOT utfcpp_POPULATED)
     )
 endif()
 
-if(WEBCFACE_USE_OPENCV)
-    find_package(OpenCV REQUIRED)
+if(WEBCFACE_FIND_OPENCV)
+    find_package(OpenCV QUIET)
+endif()
+if(OpenCV_FOUND)
+    message(STATUS "OpenCV ${OpenCV_VERSION} Found: ${OpenCV_PREFIX}")
+else()
+    message(STATUS "OpenCV Not Found")
 endif()
 
-pkg_check_modules(Magickpp Magick++)
+set(Magickpp_FOUND false)
+if(WEBCFACE_FIND_MAGICK)
+    pkg_check_modules(Magickpp Magick++)
+endif()
 if(Magickpp_FOUND)
     message(STATUS "Magick++ ${Magickpp_VERSION} Found: ${Magickpp_PREFIX}")
     add_library(magickpp INTERFACE)
@@ -419,6 +434,7 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "App
         --system-header-prefix=spdlog/
         --system-header-prefix=curl/
         --system-header-prefix=crow.h
+        --system-header-prefix=Magick++.h
         --system-header-prefix=opencv2/
         --system-header-prefix=utf8.h
         --system-header-prefix=CLI/
@@ -478,7 +494,7 @@ list(APPEND EXAMPLE_SRC
     ${CPP_DIR}/example/image-send.cc
     ${CPP_DIR}/example/image-recv.cc
 )
-if(WEBCFACE_USE_OPENCV)
+if(OpenCV_FOUND)
     list(APPEND EXAMPLE_SRC
         ${CPP_DIR}/example/cv-send.cc
         ${CPP_DIR}/example/cv-recv.cc
@@ -610,7 +626,7 @@ if(WEBCFACE_EXAMPLE)
             magickpp
         )
     endforeach()
-    if(WEBCFACE_USE_OPENCV)
+    if(OpenCV_FOUND)
         foreach(TARGET cv-recv cv-send)
             target_link_libraries(${PROJECT_NAME}-example-${TARGET} PRIVATE
                 opencv_core
@@ -685,7 +701,7 @@ if(WEBCFACE_INSTALL)
         DESTINATION include
     )
     configure_package_config_file(
-        ${CMAKE_CURRENT_SOURCE_DIR}/cmake/${PROJECT_NAME}-config.no-opencv.cmake.in
+        ${CMAKE_CURRENT_SOURCE_DIR}/cmake/${PROJECT_NAME}-config.cmake.in
         ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config.cmake
         INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
     )

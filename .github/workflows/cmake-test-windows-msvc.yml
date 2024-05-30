@@ -14,10 +14,7 @@ jobs:
   test-windows-msvc:
     strategy:
       matrix:
-        dep: ["with-opencv", "source"]
-        include:
-        - dep: with-opencv
-          use_opencv: on
+        dep: [source"]
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v4
@@ -32,15 +29,6 @@ jobs:
     # - name: Add vcpkg Path
     #   run: echo "${{github.workspace}}\vcpkg\installed\x64-windows\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
 
-    - name: Install dependencies
-      if: matrix.dep == 'with-opencv'
-      uses: crazy-max/ghaction-chocolatey@v3
-      with:
-        args: install -y opencv
-    - name: Add opencv to path
-      if: matrix.dep == 'with-opencv'
-      run: echo "c:\tools\opencv\build\x64\vc16\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
-    
     - name: Configure CMake
       run: >
         cmake -B build
@@ -48,8 +36,6 @@ jobs:
         -DWEBCFACE_TEST=on
         -DWEBCFACE_EXAMPLE=on
         -DWEBCFACE_TEST_TIMEOUT=1000
-        -DWEBCFACE_USE_OPENCV=${{matrix.use_opencv}}
-        -DCMAKE_PREFIX_PATH=c:\tools\opencv\build\x64\vc16\lib
     # ${{ steps.vcpkg.outputs.vcpkg-cmake-config }}
 
     - name: Build
@@ -65,28 +51,15 @@ jobs:
     runs-on: windows-latest
     strategy:
       matrix:
-        dep: ["with-opencv", "source"]
-        include:
-        - dep: with-opencv
-          use_opencv: on
+        dep: [source"]
     steps:
     - uses: actions/checkout@v4
-    - name: Install dependencies
-      if: matrix.dep == 'with-opencv'
-      uses: crazy-max/ghaction-chocolatey@v3
-      with:
-        args: install -y opencv
-    - name: Add opencv to path
-      if: matrix.dep == 'with-opencv'
-      run: echo "c:\tools\opencv\build\x64\vc16\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
     
     - name: Configure CMake
       run: >
         cmake -B build
         -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
         -DWEBCFACE_DOWNLOAD_WEBUI=off
-        -DWEBCFACE_USE_OPENCV=${{matrix.use_opencv}}
-        -DCMAKE_PREFIX_PATH=c:\tools\opencv\build\x64\vc16\lib
 
     - run: Copy-Item build\include\webcface\common\def.h src\include\webcface\common\def.h
     

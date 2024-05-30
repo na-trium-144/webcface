@@ -15,9 +15,6 @@ jobs:
     strategy:
       matrix:
         dep: ["apt", "source"]
-        include:
-        - dep: apt
-          use_opencv: on
     runs-on: ubuntu-20.04
     steps:
     - uses: actions/checkout@v4
@@ -25,7 +22,7 @@ jobs:
     - name: Install dependencies
       run: |
         sudo apt-get update
-        if [ ${{matrix.dep}} = apt ]; then sudo apt-get install -y libspdlog-dev libmagick++-dev libopencv-dev; fi
+        if [ ${{matrix.dep}} = apt ]; then sudo apt-get install -y libspdlog-dev libmagick++-dev; fi
     - name: Install clang-13
       uses: KyleMayes/install-llvm-action@v1
       with:
@@ -40,7 +37,6 @@ jobs:
         -DWEBCFACE_TEST=on
         -DWEBCFACE_EXAMPLE=on
         -DWEBCFACE_TEST_TIMEOUT=50
-        -DWEBCFACE_USE_OPENCV=${{matrix.use_opencv}}
         -DWEBCFACE_CLANG_TIDY=${{env.LLVM_PATH}}/bin/clang-tidy
 
     - name: Build
