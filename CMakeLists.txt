@@ -154,8 +154,6 @@ else()
     FetchContent_Declare(msgpack-cxx
         GIT_REPOSITORY https://github.com/msgpack/msgpack-c.git
         GIT_TAG cpp-6.1.0
-        CONFIGURE_COMMAND ""
-        BUILD_COMMAND ""
     )
     # msgpackのcmakelistsを使うとmsgpackをインストールしてしまうので、includeするだけ
     FetchContent_GetProperties(msgpack-cxx)
@@ -262,7 +260,6 @@ message(STATUS "Fetching asio Source...")
 FetchContent_Declare(asio
     GIT_REPOSITORY https://github.com/chriskohlhoff/asio.git
     GIT_TAG asio-1-29-0
-    CONFIGURE_COMMAND ""
 )
 FetchContent_GetProperties(asio)
 if(NOT asio_POPULATED)
@@ -285,7 +282,6 @@ FetchContent_Declare(crow
     # GIT_TAG 921ce6f
     GIT_REPOSITORY https://github.com/na-trium-144/Crow.git
     GIT_TAG unix_socket
-    CONFIGURE_COMMAND ""
 )
 FetchContent_GetProperties(crow)
 if(NOT crow_POPULATED)
@@ -321,13 +317,63 @@ if(WEBCFACE_USE_OPENCV)
     find_package(OpenCV REQUIRED)
 endif()
 
-pkg_check_modules(Magickpp REQUIRED Magick++)
-message(STATUS "Magick++ ${Magickpp_VERSION} Found: ${Magickpp_PREFIX}")
-add_library(magickpp INTERFACE)
-target_include_directories(magickpp INTERFACE ${Magickpp_INCLUDE_DIRS})
-target_link_libraries(magickpp INTERFACE ${Magickpp_LIBRARIES})
-target_link_directories(magickpp INTERFACE ${Magickpp_LIBRARY_DIRS})
-target_compile_options(magickpp INTERFACE ${Magickpp_CFLAGS_OTHER})
+pkg_check_modules(Magickpp Magick++)
+if(Magickpp_FOUND)
+    message(STATUS "Magick++ ${Magickpp_VERSION} Found: ${Magickpp_PREFIX}")
+    add_library(magickpp INTERFACE)
+    target_include_directories(magickpp INTERFACE ${Magickpp_INCLUDE_DIRS})
+    target_link_libraries(magickpp INTERFACE ${Magickpp_LIBRARIES})
+    target_link_directories(magickpp INTERFACE ${Magickpp_LIBRARY_DIRS})
+    target_compile_options(magickpp INTERFACE ${Magickpp_CFLAGS_OTHER})
+else()
+    message(STATUS "Magick++ Not Found, Fetching source...")
+    FetchContent_Declare(magickpp
+        GIT_REPOSITORY https://github.com/ImageMagick/ImageMagick.git
+        GIT_TAG 7.1.1-33
+    )
+    FetchContent_Populate(magickpp)
+    include(ProcessorCount)
+    ProcessorCount(N)
+    if(N EQUAL 0)
+        set(N 1)
+    endif()
+    message(STATUS "Building Magick++...")
+    if(WIN32)
+    else()
+        if(NOT EXISTS ${magickpp_SOURCE_DIR}/Makefile OR ${CMAKE_CURRENT_LIST_FILE} IS_NEWER_THAN ${magickpp_SOURCE_DIR}/Makefile)
+            if(WEBCFACE_PIC)
+                set(MAGICKPP_FLAGS "CFLAGS=-fPIC -O3" "CXXFLAGS=-fPIC -O3")
+            else()
+                set(MAGICKPP_FLAGS "CFLAGS=-O3" "CXXFLAGS=-O3")
+            endif()
+            execute_process(
+                COMMAND ./configure
+                    ${MAGICKPP_FLAGS}
+                    --prefix=${magickpp_BINARY_DIR} --disable-shared --enable-static
+                    --without-utilities --disable-hdri --with-quantum-depth=8
+                    --without-modules --without-perl --without-bzlib --without-djvu --without-dps
+                    --without-fontconfig --without-freetype --without-gvc --without-heic
+                    --without-jbig --without-jxl --without-dmr --without-lqr --without-lcms
+                    --without-lzma --without-openexr --without-openjp2 --without-pango
+                    --without-raqm --without-raw --without-tiff --without-wmf
+                    --without-xml --without-zlib --without-zstd --without-x
+                WORKING_DIRECTORY ${magickpp_SOURCE_DIR}
+            )
+        endif()
+        file(REMOVE_RECURSE ${magickpp_BINARY_DIR})
+        execute_process(
+            COMMAND make -j${N} install
+            WORKING_DIRECTORY ${magickpp_SOURCE_DIR}
+        )
+        set(CMAKE_PREFIX_PATH ${magickpp_BINARY_DIR})
+        pkg_check_modules(Magickpp REQUIRED Magick++)
+        add_library(magickpp INTERFACE)
+        target_include_directories(magickpp INTERFACE ${Magickpp_STATIC_INCLUDE_DIRS})
+        target_link_libraries(magickpp INTERFACE ${Magickpp_STATIC_LIBRARIES})
+        target_link_directories(magickpp INTERFACE ${Magickpp_STATIC_LIBRARY_DIRS})
+        target_compile_options(magickpp INTERFACE ${Magickpp_STATIC_CFLAGS_OTHER})
+    endif()
+endif()
 
 if(WEBCFACE_TEST)
     message(STATUS "Fetching GTest Source...")
