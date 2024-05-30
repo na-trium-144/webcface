@@ -631,16 +631,6 @@ if(WEBCFACE_TEST)
         GTest::gtest_main
 
     )
-    if(WEBCFACE_USE_OPENCV)
-        target_link_libraries(${PROJECT_NAME}-test PRIVATE
-            opencv_core
-            opencv_imgcodecs
-            opencv_imgproc
-        )
-        target_compile_definitions(${PROJECT_NAME}-test PRIVATE
-            WEBCFACE_USE_OPENCV
-        )
-    endif()
     target_compile_definitions(${PROJECT_NAME}-test PRIVATE
         WEBCFACE_TEST_TIMEOUT=${WEBCFACE_TEST_TIMEOUT}
     )

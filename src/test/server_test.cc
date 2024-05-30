@@ -14,9 +14,6 @@
 #include <thread>
 #include <iostream>
 #include "dummy_client.h"
-#include <opencv2/core.hpp>
-#include <opencv2/imgcodecs.hpp>
-#include <opencv2/imgproc.hpp>
 
 using namespace webcface;
 
@@ -681,7 +678,6 @@ TEST_F(ServerTest, image) {
         [&] { ADD_FAILURE() << "Image Res recv failed 1"; });
     dummy_c2->recvClear();
 
-#if WEBCFACE_USE_OPENCV
     // resize, convert color, frame rate
     dummy_c2->send(Message::Req<Message::Image>{
         u8"c1",
@@ -743,20 +739,51 @@ TEST_F(ServerTest, image) {
         [&](const auto &obj) {
             EXPECT_EQ(obj.req_id, 1);
             EXPECT_EQ(obj.sub_field, u8"");
-            ImageFrame img{
-                10, 10,
-                std::make_shared<std::vector<unsigned char>>(10 * 10 * 3)};
-            std::vector<unsigned char> dst;
-            cv::imencode(".png", img.mat(), dst,
-                         {cv::IMWRITE_PNG_COMPRESSION, 5});
-            EXPECT_EQ(obj.data().size(), dst.size());
             EXPECT_EQ(obj.rows(), 10);
             EXPECT_EQ(obj.cols(), 10);
+            EXPECT_GT(obj.data().size(), 0);
             EXPECT_EQ(obj.compress_mode(), ImageCompressMode::png);
         },
         [&] { ADD_FAILURE() << "Image Res recv failed 4"; });
     dummy_c2->recvClear();
-#endif
+
+    // convert color pattern
+    for (int f_type = 0; f_type < 5; f_type++) {
+        for (int t_type = 0; t_type < 5; t_type++) {
+            dummy_c1->send(Message::Sync{});
+            dummy_c1->send(Message::Image{
+                Encoding::castToU8("a" + std::to_string(f_type) +
+                                   std::to_string(t_type)),
+                ImageFrame{
+                    10, 10,
+                    std::make_shared<std::vector<unsigned char>>(10 * 10 * 3),
+                    static_cast<ImageColorMode>(f_type)}});
+            wait();
+            dummy_c2->send(Message::Req<Message::Image>{
+                u8"c1",
+                Encoding::castToU8("a" + std::to_string(f_type) +
+                                   std::to_string(t_type)),
+                1,
+                {std::nullopt, std::nullopt,
+                 static_cast<ImageColorMode>(t_type), ImageCompressMode::raw, 0,
+                 std::nullopt}});
+            wait();
+            dummy_c2->recv<Message::Res<Message::Image>>(
+                [&](const auto &obj) {
+                    EXPECT_EQ(obj.req_id, 1);
+                    EXPECT_EQ(obj.sub_field, u8"");
+                    EXPECT_EQ(obj.rows(), 5);
+                    EXPECT_EQ(obj.cols(), 5);
+                    EXPECT_EQ(obj.color_mode(),
+                              static_cast<ImageColorMode>(t_type));
+                },
+                [&] {
+                    ADD_FAILURE() << "Image Res recv failed from=" << f_type
+                                  << ", to=" << t_type;
+                });
+            dummy_c2->recvClear();
+        }
+    }
 }
 TEST_F(ServerTest, log) {
     dummy_c1 = std::make_shared<DummyClient>();
