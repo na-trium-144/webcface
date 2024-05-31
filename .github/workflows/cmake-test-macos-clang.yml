@@ -19,11 +19,12 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Install Homebrew dependencies
+      if: matrix.dep == 'brew'
       env:
         HOMEBREW_NO_AUTO_UPDATE: 1
       run: |
         brew update --preinstall
-        if [ ${{matrix.dep}} = brew ]; then brew install spdlog msgpack-cxx imagemagick || true; fi
+        brew install spdlog msgpack-cxx imagemagick || true
 
     - name: Configure CMake
       run: >
