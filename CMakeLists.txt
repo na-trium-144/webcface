@@ -39,6 +39,10 @@ option(WEBCFACE_FIND_MSGPACK "try find_package(msgpack-cxx)" ${WEBCFACE_FIND_LIB
 option(WEBCFACE_FIND_SPDLOG "try find_package(spdlog)" ${WEBCFACE_FIND_LIBS})
 option(WEBCFACE_FIND_EVENTPP "try find_package(eventpp)" ${WEBCFACE_FIND_LIBS})
 option(WEBCFACE_FIND_MAGICK "try pkg_check_modules(Magick++)" ON)
+option(WEBCFACE_FIND_JPEG "try pkg_check_modules(libjpeg) (while building Magick++)" ON)
+option(WEBCFACE_FIND_PNG "try pkg_check_modules(libpng) (while building Magick++)" ON)
+option(WEBCFACE_FIND_ZLIB "try find_package(zlib) (while building libpng)" ON)
+option(WEBCFACE_FIND_WEBP "try pkg_check_modules(libwebp) (while building Magick++)" ON)
 option(WEBCFACE_FIND_AMENT "try find_package(ament_cmake)" ON)
 option(WEBCFACE_FIND_OPENCV "try find_package(OpenCV) (only for example)" OFF)
 
@@ -60,6 +64,11 @@ elseif(NOT WEBCFACE_VERSION_SUFFIX STREQUAL "")
     set(WEBCFACE_VERSION "${PROJECT_VERSION}-${WEBCFACE_VERSION_SUFFIX}")
 endif()
 
+if(WEBCFACE_PIC OR CMAKE_POSITION_INDEPENDENT_CODE)
+    set(WEBCFACE_PIC ON)
+    set(CMAKE_POSITION_INDEPENDENT_CODE ON CACHE BOOL "")
+endif()
+
 message(STATUS "WebCFace ${WEBCFACE_VERSION} (soversion ${WEBCFACE_SOVERSION})")
 
 message(STATUS "webcface_example = ${WEBCFACE_EXAMPLE}")
@@ -72,6 +81,10 @@ message(STATUS "webcface_find_msgpack = ${WEBCFACE_FIND_MSGPACK}")
 message(STATUS "webcface_find_spdlog = ${WEBCFACE_FIND_SPDLOG}")
 message(STATUS "webcface_find_eventpp = ${WEBCFACE_FIND_EVENTPP}")
 message(STATUS "webcface_find_magick = ${WEBCFACE_FIND_MAGICK}")
+message(STATUS "webcface_find_jpeg = ${WEBCFACE_FIND_JPEG}")
+message(STATUS "webcface_find_png = ${WEBCFACE_FIND_PNG}")
+message(STATUS "webcface_find_zlib = ${WEBCFACE_FIND_ZLIB}")
+message(STATUS "webcface_find_webp = ${WEBCFACE_FIND_WEBP}")
 message(STATUS "webcface_find_ament = ${WEBCFACE_FIND_AMENT}")
 message(STATUS "webcface_find_opencv = ${WEBCFACE_FIND_OPENCV}")
 
@@ -259,7 +272,7 @@ set(BUILD_CURL_EXE off CACHE INTERNAL "" FORCE)
     # libcurlはだいたいインストールされているが使えないのでsharedにする意味がない
 set(BUILD_SHARED_LIBS off CACHE INTERNAL "" FORCE)
 set(BUILD_STATIC_LIBS on CACHE INTERNAL "" FORCE)
-SET(SHARE_LIB_OBJECT ${WEBCFACE_PIC} CACHE INTERNAL "" FORCE)
+set(SHARE_LIB_OBJECT ${WEBCFACE_PIC} CACHE INTERNAL "" FORCE)
 set(ENABLE_WEBSOCKETS on CACHE INTERNAL "" FORCE)
 set(CURL_DISABLE_INSTALL on CACHE INTERNAL "" FORCE)
 set(CURL_ENABLE_EXPORT_TARGET off CACHE INTERNAL "" FORCE)
@@ -333,63 +346,180 @@ endif()
 
 set(Magickpp_FOUND false)
 if(WEBCFACE_FIND_MAGICK)
-    pkg_check_modules(Magickpp Magick++)
+    pkg_check_modules(Magickpp QUIET Magick++)
 endif()
 if(Magickpp_FOUND)
     message(STATUS "Magick++ ${Magickpp_VERSION} Found: ${Magickpp_PREFIX}")
     add_library(magickpp INTERFACE)
     target_include_directories(magickpp INTERFACE ${Magickpp_INCLUDE_DIRS})
+    target_compile_options(magickpp INTERFACE ${Magickpp_CFLAGS_OTHER})
     target_link_libraries(magickpp INTERFACE ${Magickpp_LIBRARIES})
     target_link_directories(magickpp INTERFACE ${Magickpp_LIBRARY_DIRS})
-    target_compile_options(magickpp INTERFACE ${Magickpp_CFLAGS_OTHER})
 else()
-    message(STATUS "Magick++ Not Found, Fetching source...")
-    FetchContent_Declare(magickpp
-        GIT_REPOSITORY https://github.com/ImageMagick/ImageMagick.git
-        GIT_TAG 7.1.1-33
-    )
-    FetchContent_Populate(magickpp)
+    message(STATUS "Magick++ Not Found")
     include(ProcessorCount)
     ProcessorCount(N)
     if(N EQUAL 0)
         set(N 1)
     endif()
-    message(STATUS "Building Magick++...")
     if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
         # todo
     else()
+        set(MAGICKPP_PREFIX ${CMAKE_CURRENT_BINARY_DIR}/_deps/prefix)
+        set(MAGICKPP_FLAGS "-O3")
+        if(WEBCFACE_PIC)
+            set(MAGICKPP_FLAGS "${MAGICKPP_FLAGS} -fPIC")
+        endif()
         if(NOT EXISTS ${magickpp_SOURCE_DIR}/Makefile OR ${CMAKE_CURRENT_LIST_FILE} IS_NEWER_THAN ${magickpp_SOURCE_DIR}/Makefile)
-            set(MAGICKPP_FLAGS "-O3")
-            if(WEBCFACE_PIC)
-                set(MAGICKPP_FLAGS "${MAGICKPP_FLAGS} -fPIC")
+            file(REMOVE_RECURSE ${MAGICKPP_PREFIX})
+            unset(libjpeg_FOUND CACHE)
+            unset(libpng_FOUND CACHE)
+            unset(zlib_FOUND CACHE)
+        endif()
+        if(WEBCFACE_FIND_JPEG)
+            pkg_check_modules(libjpeg QUIET libjpeg)
+        endif()
+        if(libjpeg_FOUND)
+            message(STATUS "libjpeg Found")
+        else()
+            message(STATUS "libjpeg Not Found, Fetching source...")
+            FetchContent_Declare(libjpeg-turbo
+                GIT_REPOSITORY https://github.com/libjpeg-turbo/libjpeg-turbo.git
+                GIT_TAG 3.0.3
+            )
+            FetchContent_Populate(libjpeg-turbo)
+            message(STATUS "Building libjpeg-turbo...")
+            execute_process(
+                COMMAND ${CMAKE_COMMAND} ${libjpeg-turbo_SOURCE_DIR} -B${libjpeg-turbo_BINARY_DIR}
+                    -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=${MAGICKPP_PREFIX}
+                    -DENABLE_SHARED=OFF -DWITH_TURBOJPEG=OFF -DCMAKE_POSITION_INDEPENDENT_CODE=${WEBCFACE_PIC}
+            )
+            execute_process(COMMAND ${CMAKE_COMMAND} --build ${libjpeg-turbo_BINARY_DIR} -t install -j${N})
+        endif()
+
+        if(WEBCFACE_FIND_PNG)
+            pkg_check_modules(libpng QUIET libpng)
+        endif()
+        if(libpng_FOUND)
+            message(STATUS "libpng Found")
+        else()
+            message(STATUS "libpng Not Found")
+            if(WEBCFACE_FIND_ZLIB)
+                find_package(ZLIB QUIET)
             endif()
+            if(ZLIB_FOUND)
+                message(STATUS "zlib Found")
+            else()
+                message(STATUS "zlib Not Found, Fetching source...")
+                FetchContent_Declare(zlib
+                    URL https://www.zlib.net/current/zlib.tar.gz
+                )
+                FetchContent_Populate(zlib)
+                message(STATUS "Building zlib...")
+                if(NOT EXISTS ${zlib_SOURCE_DIR}/Makefile OR ${CMAKE_CURRENT_LIST_FILE} IS_NEWER_THAN ${zlib_SOURCE_DIR}/Makefile)
+                    execute_process(
+                        COMMAND ./configure
+                            "CC=${ORIGINAL_ENV_CC}" "CFLAGS=${MAGICKPP_FLAGS}"
+                            --static --prefix=${MAGICKPP_PREFIX}
+                        WORKING_DIRECTORY ${zlib_SOURCE_DIR}
+                    )
+                endif()
+                execute_process(
+                    COMMAND make -j${N} install
+                    WORKING_DIRECTORY ${zlib_SOURCE_DIR}
+                )
+            endif()
+            message(STATUS "Fetching libpng source...")
+            FetchContent_Declare(libpng
+                URL https://download.sourceforge.net/libpng/libpng-1.6.43.tar.xz
+            )
+            FetchContent_Populate(libpng)
+            message(STATUS "Building libpng...")
+            execute_process(
+                COMMAND ${CMAKE_COMMAND} ${libpng_SOURCE_DIR} -B${libpng_BINARY_DIR}
+                    -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=${MAGICKPP_PREFIX}
+                    -DPNG_SHARED=OFF -DPNG_FRAMEWORK=OFF -DPNG_TESTS=OFF -DPNG_TOOLS=OFF
+                    -DCMAKE_POSITION_INDEPENDENT_CODE=${WEBCFACE_PIC}
+            )
+            execute_process(COMMAND ${CMAKE_COMMAND} --build ${libpng_BINARY_DIR} -t install -j${N})
+        endif()
+
+        if(WEBCFACE_FIND_WEBP)
+            pkg_check_modules(libwebp QUIET libwebp)
+        endif()
+        if(WebP_FOUND)
+            message(STATUS "libwebp Found")
+        else()
+            message(STATUS "libwebp Not Found, Fetching source...")
+            FetchContent_Declare(libwebp
+                GIT_REPOSITORY https://chromium.googlesource.com/webm/libwebp
+                GIT_TAG v1.4.0
+            )
+            FetchContent_Populate(libwebp)
+            message(STATUS "Building libwebp...")
+            execute_process(
+                COMMAND ${CMAKE_COMMAND} ${libwebp_SOURCE_DIR} -B${libwebp_BINARY_DIR}
+                    -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=${MAGICKPP_PREFIX}
+                    -DBUILD_SHARED_LIBS=OFF -DWEBP_LINK_STATIC=ON
+                    -DWEBP_BUILD_ANIM_UTILS=OFF -DWEBP_BUILD_CWEBP=OFF -DWEBP_BUILD_DWEBP=OFF
+                    -DWEBP_BUILD_GIF2WEBP=OFF -DWEBP_BUILD_IMG2WEBP=OFF -DWEBP_BUILD_VWEBP=OFF
+                    -DWEBP_BUILD_WEBPINFO=OFF -DWEBP_BUILD_WEBPMUX=OFF -DWEBP_BUILD_EXTRAS=OFF
+                    -DCMAKE_POSITION_INDEPENDENT_CODE=${WEBCFACE_PIC}
+            )
+            execute_process(COMMAND ${CMAKE_COMMAND} --build ${libwebp_BINARY_DIR} -t install -j${N})
+        endif()
+
+        list(APPEND CMAKE_PREFIX_PATH ${MAGICKPP_PREFIX})
+        pkg_check_modules(libjpeg REQUIRED QUIET libjpeg)
+        pkg_check_modules(libpng REQUIRED QUIET libpng)
+        find_package(ZLIB REQUIRED QUIET)
+        pkg_check_modules(libwebp REQUIRED QUIET libwebp)
+
+        message(STATUS "Fetching Magick++ source...")
+        FetchContent_Declare(magickpp
+            GIT_REPOSITORY https://github.com/ImageMagick/ImageMagick.git
+            GIT_TAG 7.1.1-33
+        )
+        FetchContent_Populate(magickpp)
+        message(STATUS "Building Magick++...")
+        if(NOT EXISTS ${magickpp_SOURCE_DIR}/Makefile OR ${CMAKE_CURRENT_LIST_FILE} IS_NEWER_THAN ${magickpp_SOURCE_DIR}/Makefile)
             execute_process(
                 COMMAND ./configure
                     "CC=${ORIGINAL_ENV_CC}" "CXX=${ORIGINAL_ENV_CXX}"
                     "CFLAGS=${MAGICKPP_FLAGS}" "CXXFLAGS=${MAGICKPP_FLAGS}"
-                    --prefix=${magickpp_BINARY_DIR} --disable-shared --enable-static
+                    "PKG_CONFIG_PATH=${MAGICKPP_PREFIX}/lib/pkgconfig:$ENV{PKG_CONFIG_PATH}"
+                    --prefix=${MAGICKPP_PREFIX} --disable-shared --enable-static
                     --without-utilities --disable-hdri --with-quantum-depth=8
                     --without-modules --without-perl --without-bzlib --without-djvu --without-dps
                     --without-fontconfig --without-freetype --without-gvc --without-heic
                     --without-jbig --without-jxl --without-dmr --without-lqr --without-lcms
                     --without-lzma --without-openexr --without-openjp2 --without-pango
                     --without-raqm --without-raw --without-tiff --without-wmf
-                    --without-xml --without-zlib --without-zstd --without-x
+                    --without-xml --without-zlib --without-zstd --without-x --without-zip
                 WORKING_DIRECTORY ${magickpp_SOURCE_DIR}
             )
-            file(REMOVE_RECURSE ${magickpp_BINARY_DIR})
         endif()
         execute_process(
             COMMAND make -j${N} install
             WORKING_DIRECTORY ${magickpp_SOURCE_DIR}
         )
-        set(CMAKE_PREFIX_PATH ${magickpp_BINARY_DIR})
-        pkg_check_modules(Magickpp REQUIRED Magick++)
+        pkg_check_modules(Magickpp REQUIRED QUIET Magick++)
         add_library(magickpp INTERFACE)
         target_include_directories(magickpp INTERFACE ${Magickpp_STATIC_INCLUDE_DIRS})
-        target_link_libraries(magickpp INTERFACE ${Magickpp_STATIC_LIBRARIES})
-        target_link_directories(magickpp INTERFACE ${Magickpp_STATIC_LIBRARY_DIRS})
         target_compile_options(magickpp INTERFACE ${Magickpp_STATIC_CFLAGS_OTHER})
+        target_link_libraries(magickpp INTERFACE
+            ${Magickpp_STATIC_LIBRARIES}
+            ${libjpeg_STATIC_LIBRARIES}
+            ${libpng_STATIC_LIBRARIES}
+            ZLIB::ZLIB
+            ${libwebp_STATIC_LIBRARIES}
+        )
+        target_link_directories(magickpp INTERFACE
+            ${Magickpp_STATIC_LIBRARY_DIRS}
+            ${libjpeg_STATIC_LIBRARY_DIRS}
+            ${libpng_STATIC_LIBRARY_DIRS}
+            ${libwebp_STATIC_LIBRARY_DIRS}
+        )
     endif()
 endif()
 if(Magickpp_VERSION MATCHES "^7\.")
@@ -540,9 +670,6 @@ if(WEBCFACE_SHARED)
     add_library(${PROJECT_NAME} SHARED ${WEBCFACE_SRC} ${VERSION_RC})
 else()
     add_library(${PROJECT_NAME} STATIC ${WEBCFACE_SRC})
-endif()
-if(NOT CMAKE_CXX_COMPILER_ID STREQUAL "MSVC" AND WEBCFACE_PIC)
-    target_compile_options(${PROJECT_NAME} PRIVATE -fPIC)
 endif()
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_20)
 target_include_directories(${PROJECT_NAME} PUBLIC ${INCLUDE_DIR})
