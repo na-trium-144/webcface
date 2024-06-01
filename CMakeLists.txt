@@ -294,7 +294,7 @@ if(NOT asio_POPULATED)
     )
     target_compile_definitions(asio INTERFACE ASIO_STANDALONE)
     if(MINGW)
-        target_link_libraries(asio INTERFACE ws2_32 wsock32)
+        target_link_libraries(asio INTERFACE ws2_32.lib wsock32.lib)
     endif()
 endif()
 
@@ -553,6 +553,9 @@ else()
             ${libpng_STATIC_LIBRARY_DIRS}
             ${libwebp_STATIC_LIBRARY_DIRS}
         )
+        if(WIN32)
+            target_link_libraries(magickpp INTERFACE urlmon.lib)
+        endif()
     endif()
 endif()
 if(Magickpp_VERSION MATCHES "^7\.")
@@ -717,11 +720,8 @@ target_link_libraries(${PROJECT_NAME} PUBLIC
     eventpp::eventpp
     spdlog::spdlog
 )
-if(MINGW)
-    target_link_libraries(${PROJECT_NAME} PUBLIC ws2_32)
-endif()
 if(WIN32)
-    target_link_libraries(${PROJECT_NAME} PRIVATE IPHLPAPI.lib)
+    target_link_libraries(${PROJECT_NAME} PRIVATE iphlpapi.lib)
     set_target_properties(${PROJECT_NAME} PROPERTIES
         DEBUG_POSTFIX "${WEBCFACE_SOVERSION}d"
         RELEASE_POSTFIX "${WEBCFACE_SOVERSION}"
