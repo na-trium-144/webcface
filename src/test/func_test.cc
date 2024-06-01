@@ -7,6 +7,15 @@
 #include <chrono>
 #include "../message/message.h"
 
+#ifndef WEBCFACE_TEST_TIMEOUT
+#define WEBCFACE_TEST_TIMEOUT 10
+#endif
+
+static void wait() {
+    std::this_thread::sleep_for(
+        std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
+}
+
 using namespace webcface;
 class FuncTest : public ::testing::Test {
   protected:
@@ -244,7 +253,7 @@ TEST_F(FuncTest, funcRunCond) {
     called = 0;
     std::cout << "run (cond=OnSync) started" << std::endl;
     f.setRunCondOnSync().runAsync();
-    std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    wait();
     EXPECT_EQ(called, 0);
     auto fs = data_->func_sync_queue.pop();
     ASSERT_TRUE(fs.has_value());
