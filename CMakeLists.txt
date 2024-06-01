@@ -1,4 +1,6 @@
 cmake_minimum_required(VERSION 3.12)
+# ubuntu20.04: cmake 3.16.3
+
 set(ORIGINAL_ENV_CC "$ENV{CC}" CACHE STRING "")
 set(ORIGINAL_ENV_CXX "$ENV{CXX}" CACHE STRING "")
 
@@ -366,6 +368,19 @@ else()
         # todo
     else()
         set(MAGICKPP_PREFIX ${CMAKE_CURRENT_BINARY_DIR}/_deps/prefix)
+        find_program(SH_COMMAND sh)
+        find_program(ENV_COMMAND env)
+        find_program(MAKE_COMMAND make)
+        find_program(CHMOD_COMMAND chmod)
+        find_program(CYGPATH_COMMAND cygpath)
+        if(MINGW AND NOT CYGPATH_COMMAND STREQUAL "CYGPATH_COMMAND-NOTFOUND")
+            execute_process(
+                COMMAND ${CYGPATH_COMMAND} -u "${MAGICKPP_PREFIX}"
+                OUTPUT_VARIABLE MAGICKPP_PREFIX_UNIX
+            )
+        else()
+            set(MAGICKPP_PREFIX_UNIX "${MAGICKPP_PREFIX}")
+        endif()
         set(MAGICKPP_FLAGS "-O3")
         if(WEBCFACE_PIC)
             set(MAGICKPP_FLAGS "${MAGICKPP_FLAGS} -fPIC")
@@ -376,11 +391,12 @@ else()
             unset(libpng_FOUND CACHE)
             unset(zlib_FOUND CACHE)
         endif()
+        set(libjpeg_FOUND false)
         if(WEBCFACE_FIND_JPEG)
             pkg_check_modules(libjpeg QUIET libjpeg)
         endif()
         if(libjpeg_FOUND)
-            message(STATUS "libjpeg Found")
+            message(STATUS "libjpeg ${libjpeg_VERSION} Found: ${libjpeg_PREFIX}")
         else()
             message(STATUS "libjpeg Not Found, Fetching source...")
             FetchContent_Declare(libjpeg-turbo
@@ -397,18 +413,20 @@ else()
             execute_process(COMMAND ${CMAKE_COMMAND} --build ${libjpeg-turbo_BINARY_DIR} -t install -j${N})
         endif()
 
+        set(libpng_FOUND false)
         if(WEBCFACE_FIND_PNG)
             pkg_check_modules(libpng QUIET libpng)
         endif()
         if(libpng_FOUND)
-            message(STATUS "libpng Found")
+            message(STATUS "libpng ${libpng_VERSION} Found: ${libpng_PREFIX}")
         else()
             message(STATUS "libpng Not Found")
+            set(ZLIB_FOUND false)
             if(WEBCFACE_FIND_ZLIB)
                 find_package(ZLIB QUIET)
             endif()
             if(ZLIB_FOUND)
-                message(STATUS "zlib Found")
+                message(STATUS "zlib ${ZLIB_VERSION} Found: ${ZLIB_DIR}")
             else()
                 message(STATUS "zlib Not Found, Fetching source...")
                 FetchContent_Declare(zlib
@@ -418,14 +436,16 @@ else()
                 message(STATUS "Building zlib...")
                 if(NOT EXISTS ${zlib_SOURCE_DIR}/Makefile OR ${CMAKE_CURRENT_LIST_FILE} IS_NEWER_THAN ${zlib_SOURCE_DIR}/Makefile)
                     execute_process(
-                        COMMAND ./configure
+                        COMMAND ${ENV_COMMAND}
                             "CC=${ORIGINAL_ENV_CC}" "CFLAGS=${MAGICKPP_FLAGS}"
+                            "MAKE=${MAKE_COMMAND}"
+                            ${SH_COMMAND} configure
                             --static --prefix=${MAGICKPP_PREFIX}
                         WORKING_DIRECTORY ${zlib_SOURCE_DIR}
                     )
                 endif()
                 execute_process(
-                    COMMAND make -j${N} install
+                    COMMAND ${MAKE_COMMAND} -j${N} install
                     WORKING_DIRECTORY ${zlib_SOURCE_DIR}
                 )
             endif()
@@ -444,11 +464,12 @@ else()
             execute_process(COMMAND ${CMAKE_COMMAND} --build ${libpng_BINARY_DIR} -t install -j${N})
         endif()
 
+        set(libwebp_FOUND false)
         if(WEBCFACE_FIND_WEBP)
             pkg_check_modules(libwebp QUIET libwebp)
         endif()
-        if(WebP_FOUND)
-            message(STATUS "libwebp Found")
+        if(libwebp_FOUND)
+            message(STATUS "libwebp ${libwebp_VERSION} Found: ${libwebp_PREFIX}")
         else()
             message(STATUS "libwebp Not Found, Fetching source...")
             FetchContent_Declare(libwebp
@@ -470,6 +491,11 @@ else()
         endif()
 
         list(APPEND CMAKE_PREFIX_PATH ${MAGICKPP_PREFIX})
+        if(MINGW)
+            set(ENV{PKG_CONFIG_PATH} "${MAGICKPP_PREFIX}/lib/pkgconfig;$ENV{PKG_CONFIG_PATH}")
+        else()
+            set(ENV{PKG_CONFIG_PATH} "${MAGICKPP_PREFIX}/lib/pkgconfig:$ENV{PKG_CONFIG_PATH}")
+        endif()
         pkg_check_modules(libjpeg REQUIRED QUIET libjpeg)
         pkg_check_modules(libpng REQUIRED QUIET libpng)
         find_package(ZLIB REQUIRED QUIET)
@@ -483,12 +509,19 @@ else()
         FetchContent_Populate(magickpp)
         message(STATUS "Building Magick++...")
         if(NOT EXISTS ${magickpp_SOURCE_DIR}/Makefile OR ${CMAKE_CURRENT_LIST_FILE} IS_NEWER_THAN ${magickpp_SOURCE_DIR}/Makefile)
+            if(MINGW)
+                execute_process(
+                    COMMAND ${CHMOD_COMMAND} +x winpath.sh # バグ?
+                    WORKING_DIRECTORY ${magickpp_SOURCE_DIR}
+                )
+            endif()
             execute_process(
-                COMMAND ./configure
+                # mingwでは ./configure はつかえない
+                COMMAND ${SH_COMMAND} configure
                     "CC=${ORIGINAL_ENV_CC}" "CXX=${ORIGINAL_ENV_CXX}"
                     "CFLAGS=${MAGICKPP_FLAGS}" "CXXFLAGS=${MAGICKPP_FLAGS}"
-                    "PKG_CONFIG_PATH=${MAGICKPP_PREFIX}/lib/pkgconfig:$ENV{PKG_CONFIG_PATH}"
-                    --prefix=${MAGICKPP_PREFIX} --disable-shared --enable-static
+                    "MAKE=${MAKE_COMMAND}"
+                    --prefix=${MAGICKPP_PREFIX_UNIX} --disable-shared --enable-static
                     --without-utilities --disable-hdri --with-quantum-depth=8
                     --without-modules --without-perl --without-bzlib --without-djvu --without-dps
                     --without-fontconfig --without-freetype --without-gvc --without-heic
@@ -500,7 +533,7 @@ else()
             )
         endif()
         execute_process(
-            COMMAND make -j${N} install
+            COMMAND ${MAKE_COMMAND} -j${N} install
             WORKING_DIRECTORY ${magickpp_SOURCE_DIR}
         )
         pkg_check_modules(Magickpp REQUIRED QUIET Magick++)
