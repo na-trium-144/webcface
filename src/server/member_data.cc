@@ -997,15 +997,17 @@ void MemberData::imageConvertThreadMain(const std::u8string &member,
                             rows = *info.rows;
                         } else {
                             rows = static_cast<int>(
-                                static_cast<double>(*info.cols) * img.rows() /
-                                img.cols());
+                                static_cast<double>(*info.cols) *
+                                static_cast<double>(img.rows()) /
+                                static_cast<double>(img.cols()));
                         }
                         if (info.cols) {
                             cols = *info.cols;
                         } else {
                             cols = static_cast<int>(
-                                static_cast<double>(*info.rows) * img.cols() /
-                                img.rows());
+                                static_cast<double>(*info.rows) *
+                                static_cast<double>(img.cols()) /
+                                static_cast<double>(img.rows()));
                         }
 
                         if (rows <= 0 || cols <= 0) {
@@ -1024,7 +1026,7 @@ void MemberData::imageConvertThreadMain(const std::u8string &member,
                         std::make_shared<std::vector<unsigned char>>();
                     switch (info.cmp_mode) {
                     case Common::ImageCompressMode::raw: {
-                        int channels = 1;
+                        std::size_t channels = 1;
                         std::string color_map = magickColorMap(color_mode);
                         switch (color_mode) {
                         case ImageColorMode::gray:
@@ -1041,7 +1043,8 @@ void MemberData::imageConvertThreadMain(const std::u8string &member,
                             channels = 4;
                             break;
                         }
-                        encoded->resize(cols * rows * channels);
+                        encoded->resize(static_cast<std::size_t>(cols * rows) *
+                                        channels);
                         m.write(0, 0, cols, rows, color_map, Magick::CharPixel,
                                 encoded->data());
                         break;
