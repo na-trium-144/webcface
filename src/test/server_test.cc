@@ -639,10 +639,7 @@ TEST_F(ServerTest, image) {
     dummy_c1->send(Message::SyncInit{{}, u8"c1", 0, "", "", ""});
     auto sendImage = [&] {
         dummy_c1->send(Message::Sync{});
-        dummy_c1->send(Message::Image{
-            u8"a", ImageFrame{10, 10,
-                              std::make_shared<std::vector<unsigned char>>(
-                                  10 * 10 * 3)}});
+        dummy_c1->send(Message::Image{u8"a", ImageFrame{10, 10}});
     };
     sendImage();
     wait();
