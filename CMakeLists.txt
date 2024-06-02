@@ -364,8 +364,82 @@ else()
     if(N EQUAL 0)
         set(N 1)
     endif()
+
     if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-        # todo
+        find_program(DEVENV_COMMAND devenv)
+        if(DEVENV_COMMAND STREQUAL "DEVENV_COMMAND-NOTFOUND")
+            message(FATAL_ERROR "devenv.exe not found")
+        endif()
+        find_program(MSBUILD_COMMAND msbuild)
+        if(MSBUILD_COMMAND STREQUAL "MSBUILD_COMMAND-NOTFOUND")
+            message(FATAL_ERROR "msbuild.exe not found")
+        endif()
+        message(STATUS "Fetching ImageMagick-Windows source...")
+        FetchContent_Declare(magick-windows
+            GIT_REPOSITORY https://github.com/ImageMagick/ImageMagick-Windows.git
+            GIT_TAG main
+        )
+        if(NOT EXISTS ${magick-windows_SOURCE_DIR}/IM7.StaticDLL.sln OR ${CMAKE_CURRENT_LIST_FILE} IS_NEWER_THAN ${magick-windows_SOURCE_DIR}/IM7.StaticDLL.sln)
+            if(NOT EXISTS ${magick-windows_SOURCE_DIR}/Configure/Configure.2017.sln OR ${CMAKE_CURRENT_LIST_FILE} IS_NEWER_THAN ${magick-windows_SOURCE_DIR}/Configure/Configure.2017.sln)
+                message(STATUS "Fetching dependencies...")
+                FetchContent_Populate(magick-windows)
+                execute_process(
+                    COMMAND CloneRepositories.IM7.cmd
+                    WORKING_DIRECTORY ${magick-windows_SOURCE_DIR}
+                )
+                message(STATUS "Building Configure...")
+                execute_process(
+                    COMMAND ${DEVENV_COMMAND} /upgrade Configure.2017.sln
+                    WORKING_DIRECTORY ${magick-windows_SOURCE_DIR}/Configure
+                )
+                execute_process(
+                    COMMAND ${MSBUILD_COMMAND} Configure.2017.sln /m
+                    WORKING_DIRECTORY ${magick-windows_SOURCE_DIR}/Configure
+                )
+            endif()
+            message(STATUS "Executing Configure...")
+            execute_process(
+                COMMAND Configure.exe /noWizard /noAliases /noDpc /noHdri /Q8 /${CMAKE_C_COMPILER_ARCHITECTURE_ID} /VS2017 /smtd
+                WORKING_DIRECTORY ${magick-windows_SOURCE_DIR}/Configure
+            )
+            execute_process(
+                COMMAND ${DEVENV_COMMAND} /upgrade IM7.StaticDLL.sln
+                WORKING_DIRECTORY ${magick-windows_SOURCE_DIR}
+            )
+        endif()
+        message(STATUS "Building ImageMagick...")
+        execute_process(
+            COMMAND ${MSBUILD_COMMAND} /m /p:Configuration=Release,Platform=${CMAKE_C_COMPILER_ARCHITECTURE_ID}
+            WORKING_DIRECTORY ${magick-windows_SOURCE_DIR}
+        )
+        execute_process(
+            COMMAND ${MSBUILD_COMMAND} /m /p:Configuration=Debug,Platform=${CMAKE_C_COMPILER_ARCHITECTURE_ID}
+            WORKING_DIRECTORY ${magick-windows_SOURCE_DIR}
+        )
+        add_library(magickpp INTERFACE)
+        target_include_directories(magickpp INTERFACE
+            ${magick-windows_SOURCE_DIR}/ImageMagick/Magick++/lib
+            ${magick-windows_SOURCE_DIR}/ImageMagick
+        )
+        set(MAGICKPP_LIB_DIR "${magick-windows_SOURCE_DIR}/Output/lib")
+        file(GLOB MAGICKPP_RL_LIBS
+            RELATIVE ${MAGICKPP_LIB_DIR}
+            ${MAGICKPP_LIB_DIR}/*_RL_*.lib
+        )
+        file(GLOB MAGICKPP_DB_LIBS
+            RELATIVE ${MAGICKPP_LIB_DIR}
+            ${MAGICKPP_LIB_DIR}/*_DB_*.lib
+        )
+        foreach(lib IN LISTS MAGICKPP_RL_LIBS)
+            list(APPEND MAGICKPP_LIBS optimized ${lib})
+        endforeach()
+        foreach(lib IN LISTS MAGICKPP_DB_LIBS)
+            list(APPEND MAGICKPP_LIBS debug ${lib})
+        endforeach()
+        target_link_libraries(magickpp INTERFACE ${MAGICKPP_LIBS})
+        target_link_directories(magickpp INTERFACE ${MAGICKPP_LIB_DIR})
+        add_compile_definitions(WEBCFACE_MAGICK_VER7)
+
     else()
         set(MAGICKPP_PREFIX ${CMAKE_CURRENT_BINARY_DIR}/_deps/prefix)
         find_program(SH_COMMAND sh)
