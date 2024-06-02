@@ -422,14 +422,8 @@ else()
             ${magick-windows_SOURCE_DIR}/ImageMagick
         )
         set(MAGICKPP_LIB_DIR "${magick-windows_SOURCE_DIR}/Output/lib")
-        file(GLOB MAGICKPP_RL_LIBS
-            RELATIVE ${MAGICKPP_LIB_DIR}
-            ${MAGICKPP_LIB_DIR}/*_RL_*.lib
-        )
-        file(GLOB MAGICKPP_DB_LIBS
-            RELATIVE ${MAGICKPP_LIB_DIR}
-            ${MAGICKPP_LIB_DIR}/*_DB_*.lib
-        )
+        file(GLOB MAGICKPP_RL_LIBS ${MAGICKPP_LIB_DIR}/CORE_RL_*.lib)
+        file(GLOB MAGICKPP_DB_LIBS ${MAGICKPP_LIB_DIR}/CORE_DB_*.lib)
         foreach(lib IN LISTS MAGICKPP_RL_LIBS)
             list(APPEND MAGICKPP_LIBS optimized ${lib})
         endforeach()
@@ -437,7 +431,7 @@ else()
             list(APPEND MAGICKPP_LIBS debug ${lib})
         endforeach()
         target_link_libraries(magickpp INTERFACE ${MAGICKPP_LIBS})
-        target_link_directories(magickpp INTERFACE ${MAGICKPP_LIB_DIR})
+        target_compile_definitions(magickpp INTERFACE STATIC_MAGICK)
         add_compile_definitions(WEBCFACE_MAGICK_VER7)
 
     else()
