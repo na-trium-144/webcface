@@ -13,6 +13,7 @@ Web-based RPC &amp; UI Library
 WebSocketとMessagePackを使った、ROSのような分散型の通信ライブラリです。
 
 C++ (C++20以上), C (C99), Python (3.8以上), JavaScript/TypeScript で相互に数値、文字列、画像などのデータを送受信したり、関数(手続き)を呼び出したりすることができます。
+少し難易度は上がりますがCのAPIを経由することで他の言語からも使用できると思います。
 
 Linux, Windows, MacOS で動作します。
 WebSocketを使用しているため、Wi-FiやEtherNet経由で複数のPC間(OS問わず)で通信することも可能です。
