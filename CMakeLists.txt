@@ -999,6 +999,19 @@ if(WEBCFACE_INSTALL)
         ${utfcpp_SOURCE_DIR}/LICENSE
         DESTINATION share/webcface/3rd_party/utfcpp
     )
+    if(NOT Magickpp_FOUND)
+        if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+            install(FILES
+                ${magick-windows_SOURCE_DIR}/ImageMagick/LICENSE
+                DESTINATION share/webcface/3rd_party/ImageMagick
+            )
+        else()
+            install(FILES
+                ${magickpp_SOURCE_DIR}/LICENSE
+                DESTINATION share/webcface/3rd_party/ImageMagick
+            )
+        endif()
+    endif()
 
     # https://decovar.dev/blog/2021/09/23/cmake-cpack-package-deb-apt/
     set(CPACK_VERBATIM_VARIABLES yes)
