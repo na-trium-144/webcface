@@ -310,6 +310,8 @@ sudo cmake --build build -t install
 			* Magickをソースビルドする場合のみ: `JPEG`, `PNG`, `ZLIB`, `WEBP`
 		* `-DWEBCFACE_FIND_LIBS=off` とすると上記設定をすべてoffにします
 			* WebCFaceをstaticライブラリにする場合必要かも
+		* Windows(MSVC)でImageMagickをソースからビルドする場合、デフォルトでは`CMAKE_BUILD_TYPE`に指定したconfigurationのみビルドされます
+			* DebugとReleaseの両方をビルドしたい場合は `-DWEBCFACE_CONFIG_ALL=on` を指定してください
 		* spdlogのオプション
 			* Windowsでは`SPDLOG_WCHAR_SUPPORT`がデフォルトでONになります
 			* それ以外のオプション(SPDLOG_WCHAR_FILENAMES, SPDLOG_WCHAR_CONSOLE)はWebCFace内では設定しませんがコマンドラインオプションで指定することは可能です

@@ -36,6 +36,7 @@ option(WEBCFACE_PIC "enable PIC for shared library" ${WEBCFACE_SHARED})
 set(WEBCFACE_VERSION_SUFFIX "git" CACHE STRING "version suffix ('git' to get automatically from git describe command)")
 set(WEBCFACE_CLANG_TIDY "" CACHE STRING "clang-tidy path (or empty to disable clang-tidy)")
 option(WEBCFACE_DOWNLOAD_WEBUI "download and install webui" ON)
+option(WEBCFACE_CONFIG_ALL "configure both debug and release build on windows" OFF)
 option(WEBCFACE_FIND_LIBS "if false, disables every find_package and pkg_check_modules" ON)
 option(WEBCFACE_FIND_MSGPACK "try find_package(msgpack-cxx)" ${WEBCFACE_FIND_LIBS})
 option(WEBCFACE_FIND_SPDLOG "try find_package(spdlog)" ${WEBCFACE_FIND_LIBS})
@@ -79,6 +80,7 @@ message(STATUS "webcface_coverage = ${WEBCFACE_COVERAGE}")
 message(STATUS "webcface_install = ${WEBCFACE_INSTALL}")
 message(STATUS "webcface_install_service = ${WEBCFACE_INSTALL_SERVICE}")
 message(STATUS "webcface_shared = ${WEBCFACE_SHARED} (pic = ${WEBCFACE_PIC})")
+message(STATUS "webcface_config_all = ${WEBCFACE_CONFIG_ALL}")
 message(STATUS "webcface_find_msgpack = ${WEBCFACE_FIND_MSGPACK}")
 message(STATUS "webcface_find_spdlog = ${WEBCFACE_FIND_SPDLOG}")
 message(STATUS "webcface_find_eventpp = ${WEBCFACE_FIND_EVENTPP}")
@@ -93,6 +95,7 @@ message(STATUS "webcface_find_opencv = ${WEBCFACE_FIND_OPENCV}")
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Release")
 endif()
+message(STATUS "cmake_build_type = ${CMAKE_BUILD_TYPE}")
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
@@ -408,28 +411,33 @@ else()
             )
         endif()
         message(STATUS "Building ImageMagick...")
-        execute_process(
-            COMMAND ${MSBUILD_COMMAND} /m /p:Configuration=Release,Platform=${CMAKE_C_COMPILER_ARCHITECTURE_ID}
-            WORKING_DIRECTORY ${magick-windows_SOURCE_DIR}
-        )
-        execute_process(
-            COMMAND ${MSBUILD_COMMAND} /m /p:Configuration=Debug,Platform=${CMAKE_C_COMPILER_ARCHITECTURE_ID}
-            WORKING_DIRECTORY ${magick-windows_SOURCE_DIR}
-        )
+        set(MAGICKPP_LIB_DIR "${magick-windows_SOURCE_DIR}/Output/lib")
+        if(NOT CMAKE_BUILD_TYPE STREQUAL "Debug" OR WEBCFACE_CONFIG_ALL)
+            execute_process(
+                COMMAND ${MSBUILD_COMMAND} /m /p:Configuration=Release,Platform=${CMAKE_C_COMPILER_ARCHITECTURE_ID}
+                WORKING_DIRECTORY ${magick-windows_SOURCE_DIR}
+            )
+            file(GLOB MAGICKPP_RL_LIBS ${MAGICKPP_LIB_DIR}/CORE_RL_*.lib)
+            foreach(lib IN LISTS MAGICKPP_RL_LIBS)
+                list(APPEND MAGICKPP_LIBS optimized ${lib})
+            endforeach()
+        endif()
+        if(CMAKE_BUILD_TYPE STREQUAL "Debug" OR WEBCFACE_CONFIG_ALL)
+            execute_process(
+                COMMAND ${MSBUILD_COMMAND} /m /p:Configuration=Debug,Platform=${CMAKE_C_COMPILER_ARCHITECTURE_ID}
+                WORKING_DIRECTORY ${magick-windows_SOURCE_DIR}
+            )
+            file(GLOB MAGICKPP_DB_LIBS ${MAGICKPP_LIB_DIR}/CORE_DB_*.lib)
+            foreach(lib IN LISTS MAGICKPP_DB_LIBS)
+                list(APPEND MAGICKPP_LIBS debug ${lib})
+            endforeach()
+        endif()
+        
         add_library(magickpp INTERFACE)
         target_include_directories(magickpp INTERFACE
             ${magick-windows_SOURCE_DIR}/ImageMagick/Magick++/lib
             ${magick-windows_SOURCE_DIR}/ImageMagick
         )
-        set(MAGICKPP_LIB_DIR "${magick-windows_SOURCE_DIR}/Output/lib")
-        file(GLOB MAGICKPP_RL_LIBS ${MAGICKPP_LIB_DIR}/CORE_RL_*.lib)
-        file(GLOB MAGICKPP_DB_LIBS ${MAGICKPP_LIB_DIR}/CORE_DB_*.lib)
-        foreach(lib IN LISTS MAGICKPP_RL_LIBS)
-            list(APPEND MAGICKPP_LIBS optimized ${lib})
-        endforeach()
-        foreach(lib IN LISTS MAGICKPP_DB_LIBS)
-            list(APPEND MAGICKPP_LIBS debug ${lib})
-        endforeach()
         target_link_libraries(magickpp INTERFACE ${MAGICKPP_LIBS})
         target_compile_definitions(magickpp INTERFACE STATIC_MAGICK)
         add_compile_definitions(WEBCFACE_MAGICK_VER7)
