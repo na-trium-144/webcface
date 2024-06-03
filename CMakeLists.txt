@@ -661,6 +661,8 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     add_compile_options(-Wno-error=array-bounds -Wno-error=stringop-overflow)
     # (fmtlib/fmt#3415)
     add_cxx_compile_options_if(-Wno-error=dangling-reference DANGLING_REFERENCE)
+    # inside magick
+    add_compile_options(-Wno-error=ignored-qualifiers)
 endif()
 if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
     add_compile_options(-Wall -Wextra -Wpedantic -Werror)
