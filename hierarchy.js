@@ -147,16 +147,8 @@ var hierarchy =
     [ "ILogHandler", null, [
       [ "CustomLogger", "classwebcface_1_1Server_1_1CustomLogger.html", null ]
     ] ],
-    [ "ImageBase", "classwebcface_1_1Common_1_1ImageBase.html", [
-      [ "ImageWithCV", "classwebcface_1_1Common_1_1ImageWithCV.html", null ],
-      [ "Image", "structwebcface_1_1Message_1_1Image.html", null ],
-      [ "Res< Image >", "structwebcface_1_1Message_1_1Res_3_01Image_01_4.html", null ]
-    ] ],
-    [ "ImageBase", "classwebcface_1_1Common_1_1ImageBase.html", [
-      [ "ImageWithCV", "classwebcface_1_1Common_1_1ImageWithCV.html", null ],
-      [ "Image", "structwebcface_1_1Message_1_1Image.html", null ],
-      [ "Res< Image >", "structwebcface_1_1Message_1_1Res_3_01Image_01_4.html", null ]
-    ] ],
+    [ "ImageFrame", "classwebcface_1_1Common_1_1ImageFrame.html", null ],
+    [ "ImageFrame", "classwebcface_1_1Common_1_1ImageFrame.html", null ],
     [ "ImageReq", "structwebcface_1_1Common_1_1ImageReq.html", [
       [ "Req< Image >", "structwebcface_1_1Message_1_1Req_3_01Image_01_4.html", null ]
     ] ],
@@ -289,6 +281,10 @@ var hierarchy =
     ] ],
     [ "Server", "classwebcface_1_1Server_1_1Server.html", null ],
     [ "ServerStorage", "structwebcface_1_1Server_1_1ServerStorage.html", null ],
+    [ "Size", "classwebcface_1_1Common_1_1Size.html", null ],
+    [ "Size", "classwebcface_1_1Common_1_1Size.html", null ],
+    [ "SizeOption", "classwebcface_1_1Common_1_1SizeOption.html", null ],
+    [ "SizeOption", "classwebcface_1_1Common_1_1SizeOption.html", null ],
     [ "Sphere", "structwebcface_1_1Components_1_1Geometries_1_1Sphere.html", null ],
     [ "Sphere", "structwebcface_1_1Components_1_1Geometries_1_1Sphere.html", null ],
     [ "Sphere", "structwebcface_1_1Components_1_1Geometries_1_1Sphere.html", null ],
@@ -305,7 +301,7 @@ var hierarchy =
     [ "SyncDataStore2< TextData >", "classwebcface_1_1Internal_1_1SyncDataStore2.html", null ],
     [ "SyncDataStore2< ValueData >", "classwebcface_1_1Internal_1_1SyncDataStore2.html", null ],
     [ "SyncDataStore2< ViewData >", "classwebcface_1_1Internal_1_1SyncDataStore2.html", null ],
-    [ "SyncDataStore2< webcface::Common::ImageBase, webcface::Common::ImageReq >", "classwebcface_1_1Internal_1_1SyncDataStore2.html", null ],
+    [ "SyncDataStore2< webcface::Common::ImageFrame, webcface::Common::ImageReq >", "classwebcface_1_1Internal_1_1SyncDataStore2.html", null ],
     [ "TemporalComponent< V, C2, C3 >", "classwebcface_1_1TemporalComponent.html", null ],
     [ "TemporalComponent< false, true, true >", "classwebcface_1_1TemporalComponent.html", [
       [ "TemporalGeometry", "classwebcface_1_1TemporalGeometry.html", null ]

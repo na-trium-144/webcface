@@ -145,14 +145,24 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
  <a href="https://github.com/na-trium-144/webcface-python"><img src="https://img.shields.io/pypi/pyversions/webcface?logo=Python&amp;logoColor=white" alt="PyPI - Python Version" class="inline"/></a> <a href="https://pypi.org/project/webcface/"><img src="https://img.shields.io/pypi/v/webcface" alt="PyPI - Version" class="inline"/></a> <br  />
  <a href="https://github.com/na-trium-144/webcface-js"><img src="https://img.shields.io/badge/JavaScript%2C%20TypeScript-gray?logo=JavaScript&amp;logoColor=white" alt="javascript" class="inline"/></a> <a href="https://www.npmjs.com/package/webcface"><img src="https://img.shields.io/npm/v/webcface" alt="npm" class="inline"/></a></p>
 <p>Web-based RPC &amp; UI Library</p>
-<p>WebSocketとMessagePackを使った、ROSのような分散型の通信ライブラリです。 クロスプラットフォームかつ異なる言語間で数値、文字列、画像などのデータを送受信したり、関数(手続き)を呼び出したりすることができます。</p>
-<p>WebCFaceはプログラム間の通信のライブラリとして使うことができるだけでなく、 WebブラウザーでアクセスできるUI(WebUI)を使うことでWebCFaceで通信されているデータを可視化したり関数を呼び出したりできます。 WebUIでは簡易なUIを作成したり2D、3Dの図形の描画をさせることもできます。</p>
+<p>WebSocketとMessagePackを使った、ROSのような分散型の通信ライブラリです。</p>
+<p>C++ (C++20以上), C (C99), Python (3.8以上), JavaScript/TypeScript で相互に数値、文字列、画像などのデータを送受信したり、関数(手続き)を呼び出したりすることができます。 少し難易度は上がりますがCのAPIを経由することで他の言語からも使用できると思います。</p>
+<p>Linux, Windows, MacOS で動作します。 WebSocketを使用しているため、Wi-FiやEtherNet経由で複数のPC間(OS問わず)で通信することも可能です。 WindowsとWSL1/2の間の相互通信も自動的に接続されます。</p>
+<p>さらに同一マシン上やDocker,WSL経由など使用可能な場合はTCPの代わりにUnixドメインソケットを使用するようにし、パフォーマンスが改善しました。</p>
+<h1><a class="anchor" id="autotoc_md197"></a>
+Features</h1>
+<h2><a class="anchor" id="autotoc_md198"></a>
+WebUI</h2>
+<p>WebCFaceではプログラム間でデータの送受信ができるAPIだけでなく、 WebブラウザーからWebCFaceで通信されているデータを可視化したり関数を呼び出したりできるUI(WebUI)を提供します。</p>
+<p>さらにボタンや入力欄などの並べ方(View)をWebCFaceを使ったC++などのプログラムの側で定義してそれをWebUIに表示させることができ、 これによりHTMLやCSSの知識がなくても簡易なUIを作成することができます。</p>
+<p>また、同様に2D、3Dの図形もWebCFaceを使ったプログラム側の記述のみでWebUIに描画させることができます。</p>
 <p><img src="https://raw.githubusercontent.com/na-trium-144/webcface/main/docs/images/webcface-webui.png" alt="webcface-webui" class="inline"/></p>
-<ul>
-<li><a href="https://github.com/na-trium-144/plotjuggler-webcface-plugin">plotjuggler-webcface-plugin</a> を使うと、WebCFaceで通信されているデータを <a href="https://github.com/facontidavide/PlotJuggler">PlotJuggler</a> を使って見ることもできます。</li>
-</ul>
-<h1><a class="anchor" id="autotoc_md196"></a>
-Benchmark</h1>
+<p>なお、これらの描画データは View, Canvas2D, Canvas3D として他のデータ型(数値や文字列など)と同様にWebCFace内の通信データとして存在しており、 WebUI以外でもこれらのデータを受信して表示するアプリを作成することは可能です。</p>
+<h2><a class="anchor" id="autotoc_md199"></a>
+PlotJuggler</h2>
+<p><a href="https://github.com/na-trium-144/plotjuggler-webcface-plugin">plotjuggler-webcface-plugin</a> を使うと、WebCFaceで通信されているデータを <a href="https://github.com/facontidavide/PlotJuggler">PlotJuggler</a> を使って見ることもできます。</p>
+<h2><a class="anchor" id="autotoc_md200"></a>
+Benchmark</h2>
 <p>ver1.11時点のReleaseビルドの src/example/benchmark.cc で通信速度をチェックしてみました。 以下の表は クライアント→サーバー→クライアント でさまざまなサイズの文字列データの送受信にかかった時間です。 なおこれはサーバーとクライアントが同一マシン上の場合の結果なので、Wi-FiやEthernetを経由する場合はその環境次第ですがこれより遅くなると思います。</p>
 <p>使用したPCのCPUは、MacOSは Apple M1 、それ以外は Intel Core i5-13500 です。</p>
 <details >
@@ -183,7 +193,7 @@ Benchmark</h1>
 </table>
 <p></p>
 </details>
-<h1><a class="anchor" id="autotoc_md197"></a>
+<h1><a class="anchor" id="autotoc_md201"></a>
 Links</h1>
 <ul>
 <li><a href="https://github.com/na-trium-144/webcface">webcface</a>: サーバー &amp; C/C++クライアントライブラリ (このリポジトリ)</li>
@@ -195,15 +205,15 @@ Links</h1>
 <li><a href="https://github.com/na-trium-144/webcface-windows-package">webcface-windows-package</a>: Windows用ビルドをリリースする場所</li>
 <li><a href="https://github.com/na-trium-144/plotjuggler-webcface-plugin">plogjuggler-webcface-plugin</a>: PlotJuggler プラグイン</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md198"></a>
+<h1><a class="anchor" id="autotoc_md202"></a>
 Installation</h1>
 <p>以下の手順で webcface, webcface-webui, webcface-tools をインストールできます。 (webcface-toolsの内容と使い方についてはwebcface-toolsのReadmeを参照してください)</p>
-<h2><a class="anchor" id="autotoc_md199"></a>
+<h2><a class="anchor" id="autotoc_md203"></a>
 Ubuntu (x86_64, arm64, armhf)</h2>
 <p><a href="https://github.com/na-trium-144/webcface/releases">WebCFaceのReleases</a> と <a href="https://github.com/na-trium-144/webcface-webui/releases">webuiのReleases</a> 、<a href="https://github.com/na-trium-144/webcface-tools/releases">toolsのReleases</a> からそれぞれ最新のdebパッケージをダウンロードしてインストールできます。</p>
 <p>debパッケージはubuntu20.04,22.04,24.04でビルドしています。 それぞれ依存するパッケージのバージョンが違います。 Debianなど他のディストリビューションで動作するかはわかりません。</p>
 <p>コマンドからダウンロードするなら以下のようにします。</p>
-<h3><a class="anchor" id="autotoc_md200"></a>
+<h3><a class="anchor" id="autotoc_md204"></a>
 Ubuntu 24.04 Noble</h3>
 <details  open="true">
 <summary >
@@ -229,7 +239,7 @@ armhf</summary>
 <div class="line">curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.6.0/webcface-webui_1.6.0-s_armhf.deb</div>
 <div class="line">curl -fLO https://github.com/na-trium-144/webcface-tools/releases/download/v1.4.4/webcface-tools_1.4.4-ubuntu24.04_armhf.deb</div>
 </div><!-- fragment --> </details>
-<h3><a class="anchor" id="autotoc_md201"></a>
+<h3><a class="anchor" id="autotoc_md205"></a>
 Ubuntu 22.04 Jammy</h3>
 <details  open="true">
 <summary >
@@ -255,7 +265,7 @@ armhf</summary>
 <div class="line">curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.6.0/webcface-webui_1.6.0-s_armhf.deb</div>
 <div class="line">curl -fLO https://github.com/na-trium-144/webcface-tools/releases/download/v1.4.4/webcface-tools_1.4.4-ubuntu22.04_armhf.deb</div>
 </div><!-- fragment --> </details>
-<h3><a class="anchor" id="autotoc_md202"></a>
+<h3><a class="anchor" id="autotoc_md206"></a>
 Ubuntu 20.04 Focal</h3>
 <details >
 <summary >
@@ -284,43 +294,40 @@ armhf</summary>
 <p>ダウンロードできたら </p><div class="fragment"><div class="line">sudo apt install ./webcface*.deb</div>
 <div class="line">rm ./webcface*.deb</div>
 </div><!-- fragment --><p> でインストールできます</p>
-<h2><a class="anchor" id="autotoc_md203"></a>
+<h2><a class="anchor" id="autotoc_md207"></a>
 Homebrew (MacOS, Linux)</h2>
 <div class="fragment"><div class="line">brew tap na-trium-144/webcface</div>
 <div class="line">brew install webcface webcface-webui webcface-tools</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md204"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md208"></a>
 App Bundle for MacOS</h2>
 <p><a href="https://github.com/na-trium-144/homebrew-webcface/releases">homebrew-webcfaceのRelease</a> から .app.zip ファイルをダウンロードするか、 </p><div class="fragment"><div class="line">brew tap na-trium-144/webcface</div>
 <div class="line">brew install --cask webcface-webui-server</div>
 </div><!-- fragment --><p> でインストールできます。</p>
 <p>インストールしたappを起動するとWebUIのウィンドウとwebcface-serverが起動します。(詳細はドキュメントの <a href="https://na-trium-144.github.io/webcface/md_00__overview.html">Overview</a> を参照)</p>
-<h2><a class="anchor" id="autotoc_md205"></a>
+<h2><a class="anchor" id="autotoc_md209"></a>
 Windows (MSVC)</h2>
 <p><a href="https://github.com/na-trium-144/webcface-windows-package/releases">webcface-windows-packageのRelease</a>からダウンロードしてください。</p>
 <p>exeファイルは実行するとインストーラーが起動します。 zipファイルは任意の場所に展開して使用してください。</p>
 <p>(ver1.12〜) Windows版WebCFaceのReleaseに含まれるビルド済みのspdlogは <code>SPDLOG_WCHAR_SUPPORT</code> オプションがオンの状態です</p>
 <p>MinGW用バイナリは今のところ配布していません(ソースからビルドしてください)</p>
-<h2><a class="anchor" id="autotoc_md206"></a>
+<h2><a class="anchor" id="autotoc_md210"></a>
 Build from source</h2>
 <p>以下はwebcfaceをソースからビルドする場合の説明です。(webcfaceをインストールした場合は不要です。)</p>
-<h3><a class="anchor" id="autotoc_md207"></a>
+<h3><a class="anchor" id="autotoc_md211"></a>
 Requirements</h3>
 <ul>
-<li>c++20に対応したコンパイラが必要です</li>
-<li>テスト済みの環境<ul>
-<li><a href="https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-linux-gcc.yml"><img src="https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-linux-gcc.yml/badge.svg?branch=main" alt="CMake Test (Linux GCC)" style="pointer-events: none;" class="inline"/></a> (gcc-10以上)</li>
-<li><a href="https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-linux-clang.yml"><img src="https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-linux-clang.yml/badge.svg?branch=main" alt="CMake Test (Linux Clang)" style="pointer-events: none;" class="inline"/></a> (clang-13以上)</li>
-<li><a href="https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-macos-clang.yml"><img src="https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-macos-clang.yml/badge.svg?branch=main" alt="CMake Test (MacOS Clang)" style="pointer-events: none;" class="inline"/></a></li>
-<li><a href="https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-windows-msvc.yml"><img src="https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-windows-msvc.yml/badge.svg?branch=main" alt="CMake Test (Windows MSVC)" style="pointer-events: none;" class="inline"/></a></li>
-<li><a href="https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-windows-gcc.yml"><img src="https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-windows-gcc.yml/badge.svg?branch=main" alt="CMake Test (Windows MinGW64 GCC)" style="pointer-events: none;" class="inline"/></a></li>
+<li>C++20に対応したコンパイラが必要です<ul>
+<li>GCCはgcc-10以上が必要です。</li>
+<li>Clangはclang-13以上が必要です。</li>
+<li>MacOSではMacOS12(Monterey)以上でビルドできることを確認済みです。</li>
+<li>Visual Studio は2019以上でビルドできるはずです。</li>
+<li>MinGWでもビルドできます。MSYS2のMINGW64環境でテストしていますがUCRT64やCLANG64環境でもビルドできると思います。</li>
 </ul>
 </li>
-<li>webcfaceは外部ライブラリとして <a href="https://github.com/CrowCpp/Crow">crow</a>, <a href="https://github.com/chriskohlhoff/asio">asio</a>, <a href="https://github.com/curl/curl">libcurl</a>, <a href="https://github.com/wqking/eventpp">eventpp</a>, <a href="https://github.com/msgpack/msgpack-c">msgpack-cxx</a>, <a href="https://github.com/gabime/spdlog">spdlog</a>, <a href="https://github.com/CLIUtils/CLI11.git">cli11</a>, <a href="https://github.com/nemtrif/utfcpp">UTF8-CPP</a>, <a href="https://opencv.org/">opencv</a>, <a href="https://github.com/google/googletest">googletest</a>(test時) を使用します。<ul>
-<li>cmake時に自動的にFetchContentでソースコード取得しビルドしますが、eventpp, msgpack, spdlog に関してはシステムにインストールされていてfind_packageで見つけることができればそれを使用します</li>
-<li>opencvはソースからビルドしません。別途インストールする必要があります。<ul>
-<li>またはcmake時のオプションでopencvを使わないようにすることもできます (画像の変換機能が無効になります)</li>
-</ul>
-</li>
+<li>webcfaceは外部ライブラリとして <a href="https://github.com/CrowCpp/Crow">crow</a>, <a href="https://github.com/chriskohlhoff/asio">asio</a>, <a href="https://github.com/curl/curl">libcurl</a>, <a href="https://github.com/wqking/eventpp">eventpp</a>, <a href="https://github.com/msgpack/msgpack-c">msgpack-cxx</a>, <a href="https://github.com/gabime/spdlog">spdlog</a>, <a href="https://github.com/CLIUtils/CLI11.git">cli11</a>, <a href="https://github.com/nemtrif/utfcpp">UTF8-CPP</a>, <a href="https://github.com/ImageMagick/ImageMagick">Magick++</a>, <a href="https://opencv.org/">OpenCV</a>(exampleのみ), <a href="https://github.com/google/googletest">GoogleTest</a>(testのみ) を使用します。<ul>
+<li>いずれもCMake時に自動的にFetchContentでソースコードを取得してビルドするので、必ずしもこれらをインストールする必要はありません。</li>
+<li>eventpp, msgpack, spdlog, ImageMagick に関してはシステムにインストールされていてfind_packageで見つけることができればそれを使用します</li>
+<li>OpenCVはソースからビルドしません。OpenCVを使ったexampleをビルドしたい場合は別途インストールする必要がありますが、example以外では使用しないのでほぼ必要ないと思います。</li>
 <li>libcurlはwebsocket機能を有効にする必要があるためインストールされている場合でもソースからビルドします</li>
 <li>googletestはchar8_tの機能を有効にする必要があるためインストールされている場合でもソースからビルドします</li>
 </ul>
@@ -331,7 +338,7 @@ Requirements</h3>
 Ubuntu 20.04, 22.04</summary>
 <p></p>
 <div class="fragment"><div class="line">sudo apt install build-essential git cmake</div>
-<div class="line">sudo apt install libopencv-dev libspdlog-dev  # optional</div>
+<div class="line">sudo apt install libspdlog-dev libmagick++-dev # optional</div>
 </div><!-- fragment --><p>ubuntu20.04の場合デフォルトのコンパイラ(gcc-9)ではビルドできないのでgcc-10にする必要があります </p><div class="fragment"><div class="line">sudo apt install gcc-10 g++-10</div>
 <div class="line">export CC=gcc-10</div>
 <div class="line">export CXX=g++-10</div>
@@ -341,40 +348,37 @@ Ubuntu 20.04, 22.04</summary>
 Homebrew (MacOS, Linux)</summary>
 <p></p>
 <div class="fragment"><div class="line">brew install cmake</div>
-<div class="line">brew install opencv spdlog msgpack-cxx  # optional</div>
+<div class="line">brew install spdlog msgpack-cxx imagemagick # optional</div>
 </div><!-- fragment --> </details>
 <details >
 <summary >
 Visual Studio</summary>
 <p></p>
-<ul>
-<li>Visual Studio 2019, 2022 でcloneしたwebcfaceのフォルダーを開くとビルドできます</li>
-<li>Developer Command Promptからcmakeコマンドを使ってもビルドできます</li>
-<li>OpenCVを使う場合は<a href="https://opencv.org/releases/">公式サイト</a>からダウンロードしてください<ul>
-<li>またはchocolateyで<code>choco install opencv</code>など</li>
-</ul>
-</li>
-</ul>
+<p>Visual Studio 2019, 2022 でcloneしたwebcfaceのフォルダーを開くか、 Developer Command Promptからcmakeコマンドを使ってもビルドできます</p>
 <p></p>
 </details>
 <details >
 <summary >
 MSYS2</summary>
 <p></p>
-<div class="fragment"><div class="line">pacman -S git mingw-w64-x86_64-gcc mingw-w64-x86_64-cmake mingw-w64-x86_64-ninja</div>
-<div class="line">pacman -S mingw-w64-x86_64-opencv mingw-w64-x86_64-spdlog  # optional</div>
-</div><!-- fragment --> </details>
-<h3><a class="anchor" id="autotoc_md208"></a>
+<div class="fragment"><div class="line">pacman -S pactoys</div>
+<div class="line">pacboy -S git make gcc:p cmake:p ninja:p</div>
+<div class="line">pacboy -S spdlog:p imagemagick:p  # optional</div>
+</div><!-- fragment --><p> imagemagickをソースからビルドする際にninjaではなくmakeが必要になります</p>
+<p></p>
+</details>
+<h3><a class="anchor" id="autotoc_md212"></a>
 Build (with Pure CMake)</h3>
 <div class="fragment"><div class="line">cmake -Bbuild</div>
 <div class="line">cmake --build build</div>
 <div class="line">sudo cmake --build build -t install</div>
 </div><!-- fragment --><ul>
 <li>CMakeのオプション<ul>
-<li><code>-DWEBCFACE_USE_OPENCV=off</code>にするとOpenCVを使用しないようになります</li>
-<li><code>-DWEBCFACE_FIND_LIBS=off</code>にするとmsgpack, eventpp, spdlogをfind_packageせずソースからビルドします</li>
-<li><code>-DWEBCFACE_SHARED=off</code>にすると共有ライブラリではなくすべて静的ライブラリになります</li>
-<li><code>-DWEBCFACE_EXAMPLE=on</code>でtestをビルドします(submoduleの場合デフォルトでoff)</li>
+<li><code>-DWEBCFACE_SHARED=off</code>にすると共有ライブラリではなくすべて静的ライブラリになります<ul>
+<li><code>-DWEBCFACE_PIC=on</code>または<code>-DCMAKE_POSITION_INDEPENDENT_CODE=on</code>にすると-fPICフラグが有効になります (Linux,Macのみ、WEBCFACE_SHAREDがonの場合on)</li>
+</ul>
+</li>
+<li><code>-DWEBCFACE_EXAMPLE=on</code>でexampleをビルドします(submoduleの場合デフォルトでoff)</li>
 <li><code>-DWEBCFACE_INSTALL=on</code>でtargetをinstallします(submoduleの場合デフォルトでoff)<ul>
 <li>さらに<code>-DWEBCFACE_INSTALL_SERVICE=on</code>で <a href="cmake/webcafce-server.service">webcface-server.service</a> を lib/systemd/system にインストールします (デフォルトでoff)</li>
 </ul>
@@ -390,6 +394,20 @@ Build (with Pure CMake)</h3>
 <li><code>-DWEBCFACE_VERSION_SUFFIX=</code> で 1.2.0 だけになります</li>
 </ul>
 </li>
+<li><code>-DWEBCFACE_DOWNLOAD_WEBUI=off</code>を指定するとWebUIをダウンロードしません。</li>
+<li>依存ライブラリ<ul>
+<li>デフォルトではfind_packageやpkg_check_modulesなどで依存ライブラリがインストールされているか確認し、見つかればそれを使い見つからなければソースコードをダウンロードします。</li>
+<li><code>-DWEBCFACE_FIND_(ライブラリ)=off</code> にするとインストールしたものは使わず常にソースからダウンロードするようになります。</li>
+<li>設定可能なライブラリ名は以下<ul>
+<li><code>MSGPACK</code>, <code>SPDLOG</code>, <code>EVENTPP</code>, <code>MAGICK</code></li>
+<li><code>OPENCV</code> (デフォルトでoff、見つからなかった場合ソースからのビルドもしません)</li>
+<li>Magickをソースビルドする場合のみ: <code>JPEG</code>, <code>PNG</code>, <code>ZLIB</code>, <code>WEBP</code></li>
+</ul>
+</li>
+<li><code>-DWEBCFACE_FIND_LIBS=off</code> とすると上記設定をすべてoffにします<ul>
+<li>WebCFaceをstaticライブラリにする場合必要かも</li>
+</ul>
+</li>
 <li>spdlogのオプション<ul>
 <li>Windowsでは<code>SPDLOG_WCHAR_SUPPORT</code>がデフォルトでONになります</li>
 <li>それ以外のオプション(SPDLOG_WCHAR_FILENAMES, SPDLOG_WCHAR_CONSOLE)はWebCFace内では設定しませんがコマンドラインオプションで指定することは可能です</li>
@@ -398,12 +416,14 @@ Build (with Pure CMake)</h3>
 </ul>
 </li>
 </ul>
-<h3><a class="anchor" id="autotoc_md209"></a>
+</li>
+</ul>
+<h3><a class="anchor" id="autotoc_md213"></a>
 Build (with colcon, ROS2)</h3>
 <ul>
 <li>このリポジトリをワークスペースのsrcに追加して、colconでビルドすることができます</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md210"></a>
+<h3><a class="anchor" id="autotoc_md214"></a>
 WebUI</h3>
 <ul>
 <li>デフォルトではビルド済みのものがcmake時にダウンロードされます。</li>
@@ -418,12 +438,12 @@ WebUI</h3>
 </li>
 <li>このリポジトリのReleasesにあるdebパッケージとhomebrewではwebcfaceのパッケージとは別で配布しています</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md211"></a>
+<h3><a class="anchor" id="autotoc_md215"></a>
 tools</h3>
 <ul>
 <li>toolsは別途 <a href="https://github.com/na-trium-144/webcface-tools.git">https://github.com/na-trium-144/webcface-tools.git</a> をcloneしてビルド、インストールしてください</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md212"></a>
+<h1><a class="anchor" id="autotoc_md216"></a>
 Documentation</h1>
 <ul>
 <li>まずはここから→ <a href="https://na-trium-144.github.io/webcface/md_00__overview.html">Overview</a></li>
@@ -431,7 +451,7 @@ Documentation</h1>
 <li><a href="https://na-trium-144.github.io/webcface-python/">webcface-python APIリファレンス</a></li>
 <li><a href="https://na-trium-144.github.io/webcface-js/">webcface-js APIリファレンス</a></li>
 </ul>
-<h1><a class="anchor" id="autotoc_md213"></a>
+<h1><a class="anchor" id="autotoc_md217"></a>
 License</h1>
 <p>WebCFaceと関連するプログラムはすべてMITライセンスで公開しています。詳細は <a href="https://github.com/na-trium-144/webcface/blob/main/LICENSE">LICENSE</a> を参照してください。</p>
 <p>WebCFace本体とtoolsが使用しているサードパーティーのライブラリのライセンスはそれぞれ以下を参照してください。</p><ul>
@@ -443,6 +463,7 @@ License</h1>
 <li>spdlog (MIT) : <a href="https://github.com/gabime/spdlog">https://github.com/gabime/spdlog</a></li>
 <li>CLI11 (BSD 3-Clause) : <a href="https://github.com/CLIUtils/CLI11">https://github.com/CLIUtils/CLI11</a></li>
 <li>UTF8-CPP (BSD 1.0) : <a href="https://github.com/nemtrif/utfcpp">https://github.com/nemtrif/utfcpp</a></li>
+<li>ImageMagick: <a href="https://imagemagick.org/script/license.php">https://imagemagick.org/script/license.php</a></li>
 <li>OpenCV (Apache 2.0) : <a href="https://opencv.org/license/">https://opencv.org/license/</a></li>
 <li>tiny-process-library (MIT) : <a href="https://gitlab.com/eidheim/tiny-process-library">https://gitlab.com/eidheim/tiny-process-library</a> (toolsで使用)</li>
 <li>toml++ (MIT) : <a href="https://github.com/marzer/tomlplusplus">https://github.com/marzer/tomlplusplus</a> (toolsで使用) </li>
@@ -453,7 +474,7 @@ License</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon May 27 2024 17:46:27 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Mon Jun 3 2024 16:45:44 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

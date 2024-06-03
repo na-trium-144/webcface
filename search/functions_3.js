@@ -1,8 +1,8 @@
 var searchData=
 [
-  ['data_0',['data',['../classwebcface_1_1Common_1_1ImageBase.html#a242f6b0ee066e79c281d265da33613bd',1,'webcface::Common::ImageBase']]],
+  ['data_0',['data',['../classwebcface_1_1Common_1_1ImageFrame.html#a7fae30e58f639a6323e0d5048b3fe633',1,'webcface::Common::ImageFrame::data()'],['../classwebcface_1_1Common_1_1ImageFrame.html#a242f6b0ee066e79c281d265da33613bd',1,'webcface::Common::ImageFrame::data() const']]],
   ['datalock_1',['dataLock',['../structwebcface_1_1Field.html#ac2a701aed117691b0af187b9f029c83c',1,'webcface::Field']]],
-  ['dataptr_2',['dataPtr',['../classwebcface_1_1Common_1_1ImageBase.html#aff80d67e46662b15cb76117a05b62976',1,'webcface::Common::ImageBase']]],
+  ['dataptr_2',['dataPtr',['../classwebcface_1_1Common_1_1ImageFrame.html#aff80d67e46662b15cb76117a05b62976',1,'webcface::Common::ImageFrame']]],
   ['datasetbuffer_3',['datasetbuffer',['../classwebcface_1_1Internal_1_1DataSetBuffer.html#a7228ab9feb5f80b6178213f4a7af83ad',1,'webcface::Internal::DataSetBuffer::DataSetBuffer()'],['../classwebcface_1_1Internal_1_1DataSetBuffer.html#aa8db383ace00609993fc2d4ffe1934b8',1,'webcface::Internal::DataSetBuffer::DataSetBuffer(const Field &amp;base)'],['../classwebcface_1_1Internal_1_1DataSetBuffer.html#afd95deb619c2a132b97432b6940bc4b1',1,'webcface::Internal::DataSetBuffer::DataSetBuffer(const DataSetBuffer &amp;)=delete'],['../classwebcface_1_1Internal_1_1DataSetBuffer.html#ac0b5ac919b90a54056a4ba6df79a424c',1,'webcface::Internal::DataSetBuffer::DataSetBuffer(DataSetBuffer &amp;&amp;)=delete']]],
   ['decimalinput_4',['decimalinput',['../namespacewebcface_1_1Components.html#a22e2a9dab29afc49cf24b92d1b208fb9',1,'webcface::Components::decimalInput()'],['../namespacewebcface_1_1Components.html#a22e2a9dab29afc49cf24b92d1b208fb9',1,'webcface::decimalInput()'],['../namespacewebcface_1_1Components.html#a60ad1d822dbcfa8bde1eac90f7a4605f',1,'webcface::Components::decimalInput()'],['../namespacewebcface_1_1Components.html#a60ad1d822dbcfa8bde1eac90f7a4605f',1,'webcface::decimalInput()']]],
   ['decode_5',['decode',['../namespacewebcface_1_1Encoding.html#adaf1a7697cd4cf9b6fe1428c7d0cb433',1,'webcface::Encoding']]],

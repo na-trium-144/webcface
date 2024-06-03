@@ -1,9 +1,0 @@
-<map id="ImageBase" name="ImageBase">
-<area shape="rect" id="Node000001" title="(ver1.3から追加) 画像データ" alt="" coords="124,5,219,31"/>
-<area shape="rect" id="Node000002" href="$classwebcface_1_1Common_1_1ImageWithCV.html" title="(ver1.3から追加) 画像データ" alt="" coords="5,79,116,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="143,40,80,81,77,76,141,36"/>
-<area shape="rect" id="Node000003" href="$structwebcface_1_1Message_1_1Image.html" title=" " alt="" coords="140,79,203,104"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="174,44,174,79,169,79,169,44"/>
-<area shape="rect" id="Node000004" href="$structwebcface_1_1Message_1_1Res_3_01Image_01_4.html" title=" " alt="" coords="227,79,345,104"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="203,35,269,76,266,81,200,40"/>
-</map>

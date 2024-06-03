@@ -143,10 +143,12 @@ $(document).ready(function(){initNavTree('md_15__image.html',''); initResizable(
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
 <ul><li class="level1"><a href="#autotoc_md83">コマンドライン</a></li>
-<li class="level1"><a href="#autotoc_md84">送信</a></li>
-<li class="level1"><a href="#autotoc_md85">受信</a><ul><li class="level2"><a href="#autotoc_md86">時刻</a></li>
-<li class="level2"><a href="#autotoc_md87">Entry</a></li>
-<li class="level2"><a href="#autotoc_md88">Event</a></li>
+<li class="level1"><a href="#autotoc_md84">送信</a><ul><li class="level2"><a href="#autotoc_md85">OpenCV</a></li>
+</ul>
+</li>
+<li class="level1"><a href="#autotoc_md86">受信</a><ul><li class="level2"><a href="#autotoc_md87">時刻</a></li>
+<li class="level2"><a href="#autotoc_md88">Entry</a></li>
+<li class="level2"><a href="#autotoc_md89">Event</a></li>
 </ul>
 </li>
 </ul>
@@ -164,66 +166,83 @@ $(document).ready(function(){initNavTree('md_15__image.html',''); initResizable(
 コマンドライン</h1>
 <div class="fragment"><div class="line">webcface-cv-capture 0</div>
 </div><!-- fragment --><p> などとするとOpenCVのVideoCaptureでキャプチャできるWebカメラなどの画像をwebcfaceに送信することができます。</p>
+<p>詳細は <a class="el" href="md_72__cv__capture.html">webcface-cv-capture</a> のページを参照</p>
 <h1><a class="anchor" id="autotoc_md84"></a>
 送信</h1>
 <p>Client::image からImageオブジェクトを作り、 Image::set() で画像データを代入し、Client::sync()することで送信されます</p>
 <div class="tabbed"></div><div class="tabbed"><ul>
-<li><b class="tab-title">C++ (with OpenCV)</b> 画像データを表す型として <a class="el" href="namespacewebcface_1_1Common.html#af7ff7d8593c083aca2355bc561bf8804">webcface::ImageFrame</a> があります。 cv::Mat形式 (<code>CV_8UC1</code>,<code>CV_8UC3</code>,<code>CV_8UC4</code> フォーマットのみ) の画像データをImageFrameのコンストラクタに渡すことができます。 <div class="fragment"><div class="line">cv::Mat data;</div>
-<div class="line"><a class="code hl_class" href="classwebcface_1_1Common_1_1ImageWithCV.html">webcface::ImageFrame</a> frame(data, webcface::ImageColorMode::rgb);</div>
-<div class="ttc" id="aclasswebcface_1_1Common_1_1ImageWithCV_html"><div class="ttname"><a href="classwebcface_1_1Common_1_1ImageWithCV.html">webcface::Common::ImageWithCV</a></div><div class="ttdoc">(ver1.3から追加) 画像データ</div><div class="ttdef"><b>Definition</b> image.h:167</div></div>
-</div><!-- fragment --> ImageColorModeとしては <code>gray</code>(8bitグレースケール)、<code>rgb</code>(8bit×3)、<code>bgr</code>(8bit×3)、<code>rgba</code>(8bit×4)、<code>bgra</code>(8bit×4) から元の画像データのフォーマットを指定してください。 <dl class="section note"><dt>Note</dt><dd>ImageFrameオブジェクト内部では画像データは<code>shared_ptr&lt;vector&lt;unsigned char&gt;&gt;</code>で保持されます。 <br  />
- ImageFrameのコンストラクタでcv::Mat内部の画像データがすべてコピーされます。 <br  />
- ImageFrameをコピーした場合は画像データが共有されます(コピーされません)。</dd></dl>
-ImageFrameをImageにsetして送信します。 <div class="fragment"><div class="line">wcli.image(<span class="stringliteral">&quot;hoge&quot;</span>).set(frame);</div>
-</div><!-- fragment --> (C++のみ) set() の代わりに代入演算子(Image::operator=)でも同様のことができます。 <div class="fragment"><div class="line">wcli.image(<span class="stringliteral">&quot;hoge&quot;</span>) = frame;</div>
-</div><!-- fragment --></li>
-<li><p class="startli"><b class="tab-title">C++</b> 画像データを表す型として <a class="el" href="namespacewebcface_1_1Common.html#af7ff7d8593c083aca2355bc561bf8804">webcface::ImageFrame</a> があります。 生の画像データがあればImageFrameのコンストラクタに渡すことができます。 </p><div class="fragment"><div class="line"><span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> data[640 * 480 * 3]; <span class="comment">/* = {...}; */</span></div>
-<div class="line"><a class="code hl_class" href="classwebcface_1_1Common_1_1ImageWithCV.html">webcface::ImageFrame</a> frame(480, 640, data, webcface::ImageColorMode::rgb); <span class="comment">// 画像サイズは 縦, 横 で指定</span></div>
-</div><!-- fragment --><p> ImageColorModeとしては <code>gray</code>(8bitグレースケール)、<code>rgb</code>(8bit×3)、<code>bgr</code>(8bit×3)、<code>rgba</code>(8bit×4)、<code>bgra</code>(8bit×4) が扱えます。 </p><dl class="section note"><dt>Note</dt><dd>ImageFrameオブジェクト内部では画像データは<code>shared_ptr&lt;vector&lt;unsigned char&gt;&gt;</code>で保持されます。 <br  />
+<li><p class="startli"><b class="tab-title">C++</b> 画像データを表す型として <a class="el" href="classwebcface_1_1Common_1_1ImageFrame.html" title="(ver1.3から追加) 画像データ">webcface::ImageFrame</a> があります。 生の画像データがあればImageFrameのコンストラクタに渡すことができます。 </p><div class="fragment"><div class="line"><span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> data[640 * 480 * 3]; <span class="comment">/* = {...}; */</span></div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// dataの中身がImageFrameにコピーされる</span></div>
+<div class="line"><span class="comment">// sizeWH で幅と高さを指定、または sizeHW で高さと幅を指定</span></div>
+<div class="line"><a class="code hl_class" href="classwebcface_1_1Common_1_1ImageFrame.html">webcface::ImageFrame</a> frame(<a class="code hl_function" href="namespacewebcface_1_1Common.html#aad567272661344b3f8d82a09abc85049">webcface::sizeWH</a>(640, 480), data, webcface::ImageColorMode::rgb);</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// ver1.11以前: サイズは高さ,幅の順で指定</span></div>
+<div class="line"><span class="comment">// webcface::ImageFrame frame(480, 640, data, webcface::ImageColorMode::rgb);</span></div>
+<div class="ttc" id="aclasswebcface_1_1Common_1_1ImageFrame_html"><div class="ttname"><a href="classwebcface_1_1Common_1_1ImageFrame.html">webcface::ImageFrame</a></div><div class="ttdoc">(ver1.3から追加) 画像データ</div><div class="ttdef"><b>Definition</b> image.h:102</div></div>
+<div class="ttc" id="anamespacewebcface_1_1Common_html_aad567272661344b3f8d82a09abc85049"><div class="ttname"><a href="namespacewebcface_1_1Common.html#aad567272661344b3f8d82a09abc85049">webcface::Common::sizeWH</a></div><div class="ttdeci">Size sizeWH(std::size_t width, std::size_t height)</div><div class="ttdoc">幅 × 高さ でサイズを指定</div><div class="ttdef"><b>Definition</b> image.h:45</div></div>
+</div><!-- fragment --><p> ImageColorModeとしては <code>gray</code>(8bitグレースケール)、<code>rgb</code>(8bit×3)、<code>bgr</code>(8bit×3)、<code>rgba</code>(8bit×4)、<code>bgra</code>(8bit×4) が扱えます。</p>
+<dl class="section note"><dt>Note</dt><dd>ImageFrameオブジェクト内部では画像データは<code>shared_ptr&lt;vector&lt;unsigned char&gt;&gt;</code>で保持されます。 <br  />
  ImageFrameのコンストラクタでdataの内容がすべてコピーされます。 <br  />
- ImageFrameをコピーした場合は画像データが共有されます(コピーされません)。 </dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000002">Todo:</a></b></dt><dd>C++とJavaScriptでImageFrameのコンストラクタのサイズ指定が違うので、そのうち仕様変更をして統一する必要がある</dd></dl>
-<p class="startli">ImageFrameをImageにsetして送信します。 </p><div class="fragment"><div class="line">wcli.image(<span class="stringliteral">&quot;hoge&quot;</span>).set(frame);</div>
-</div><!-- fragment --><p> (C++のみ) set() の代わりに代入演算子(Image::operator=)でも同様のことができます。 </p><div class="fragment"><div class="line">wcli.image(<span class="stringliteral">&quot;hoge&quot;</span>) = frame;</div>
-</div><!-- fragment --></li>
+ ImageFrameをコピーした場合は画像データが共有されます(コピーされません)。</dd></dl>
+<p>ImageFrameをImageにsetして送信します。 set() の代わりに代入演算子(Image::operator=)でも同様のことができます。 </p><div class="fragment"><div class="line">wcli.image(<span class="stringliteral">&quot;hoge&quot;</span>).set(frame);</div>
+<div class="line">wcli.image(<span class="stringliteral">&quot;hoge&quot;</span>) = frame;</div>
+</div><!-- fragment --><p class="startli">ImageFrameの中のデータには dataPtr() (<code>shared_ptr&lt;vector&lt;unsigned char&gt;&gt;</code>型)、 data() (<code>vector&lt;unsigned char&gt;&amp;</code> 型)、at(y, x, ch) (<code>unsigned char &amp;</code>型) でアクセスできます。</p>
+</li>
 <li><p class="startli"><b class="tab-title">JavaScript</b> 画像データを表す型として <a href="https://na-trium-144.github.io/webcface-js/classes/ImageFrame.html">ImageFrame</a> があります。 生の画像データがあればImageFrameのコンストラクタに渡すことができます。 </p><div class="fragment"><div class="line">import { ImageFrame, imageColorMode } from &quot;webcface&quot;;</div>
 <div class="line">const data: ArrayBuffer = /* ... */;</div>
 <div class="line">const frame: ImageFrame = new ImageFrame(640, 480, data, imageColorMode.rgb); // 画像サイズは 横, 縦 で指定</div>
-</div><!-- fragment --><p> imageColorModeとしては <code>gray</code>(8bitグレースケール)、<code>rgb</code>(8bit×3)、<code>bgr</code>(8bit✕3)、<code>rgba</code>(8bit✕4)、<code>bgra</code>(8bit✕4) が扱えます。 </p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000003">Todo:</a></b></dt><dd>C++とJavaScriptでImageFrameのコンストラクタのサイズ指定が違うので、そのうち仕様変更をして統一する必要がある</dd></dl>
+</div><!-- fragment --><p> imageColorModeとしては <code>gray</code>(8bitグレースケール)、<code>rgb</code>(8bit×3)、<code>bgr</code>(8bit✕3)、<code>rgba</code>(8bit✕4)、<code>bgra</code>(8bit✕4) が扱えます。 </p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000002">Todo:</a></b></dt><dd>C++とJavaScriptでImageFrameのコンストラクタのサイズ指定が違うので、そのうち仕様変更をして統一する必要がある</dd></dl>
 <p class="startli">ImageFrameをImageにsetして送信します。 </p><div class="fragment"><div class="line">wcli.image(<span class="stringliteral">&quot;hoge&quot;</span>).set(frame);</div>
 </div><!-- fragment --></li>
 </ul>
-</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md85"></a>
-受信</h1>
-<p>Member::image() でImageクラスのオブジェクトが得られ、 Image::request() で画像のリクエストをした後 Image::tryGet() で受信した画像を取得できます。</p>
-<p>リクエスト時の引数で画像のサイズとフォーマットを指定でき、その場合サーバー側で変換してから送られます。 <br  />
- また jpeg, png, webp に圧縮した画像をリクエストしたり、フレームレートを指定して画像を受信する頻度を下げることで、 Wi-Fi経由で受信する場合に通信量を減らすことができます。 <br  />
- 詳細は <a class="el" href="classwebcface_1_1Image.html#a07aeebfdc5af719a2f4c15e59d858363">webcface::Image::request()</a> を参照</p>
-<p>例えば<code>foo</code>というクライアントの<code>hoge</code>という名前のデータを取得したい場合は次のようにします。</p>
+</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md85"></a>
+OpenCV</h2>
 <div class="tabbed"></div><div class="tabbed"><ul>
-<li><p class="startli"><b class="tab-title">C++ (with OpenCV)</b> </p><div class="fragment"><div class="line">wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).image(<span class="stringliteral">&quot;hoge&quot;</span>).request(); <span class="comment">// 何も指定しない→元画像をそのまま受信</span></div>
-<div class="line"><span class="keywordflow">while</span>(<span class="keyword">true</span>){</div>
-<div class="line">    std::optional&lt;webcface::ImageFrame&gt; frame = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).image(<span class="stringliteral">&quot;hoge&quot;</span>).tryGet();</div>
-<div class="line">    <span class="keywordflow">if</span>(frame){</div>
-<div class="line">        cv::Mat data = frame.mat();</div>
-<div class="line">        <span class="comment">// ...</span></div>
+<li><b class="tab-title">C++</b> ImageFrame → cv::Mat <div class="fragment"><div class="line">cv::Mat img_mat(img_frame.rows(), img_frame.cols(), CV_8UC3, img_frame.data().data());</div>
+</div><!-- fragment --> cv::Mat → ImageFrame <div class="fragment"><div class="line">assert(img_mat.depth() == CV_8U);</div>
+<div class="line"><a class="code hl_class" href="classwebcface_1_1Common_1_1ImageFrame.html">webcface::ImageFrame</a> img_frame;</div>
+<div class="line"><span class="comment">// https://stackoverflow.com/questions/26681713/convert-mat-to-array-vector-in-opencv</span></div>
+<div class="line"><span class="keywordflow">if</span> (img_mat.isContinuous()) {</div>
+<div class="line">    img_frame = <a class="code hl_class" href="classwebcface_1_1Common_1_1ImageFrame.html">webcface::ImageFrame</a>(<a class="code hl_function" href="namespacewebcface_1_1Common.html#af86798df2fbf5f4c32747c0f237d0928">webcface::sizeHW</a>(img_mat.rows, img_mat.cols),</div>
+<div class="line">                                     img_mat.data, webcface::ImageColorMode::bgr);</div>
+<div class="line">} <span class="keywordflow">else</span> {</div>
+<div class="line">    img_frame = <a class="code hl_class" href="classwebcface_1_1Common_1_1ImageFrame.html">webcface::ImageFrame</a>(<a class="code hl_function" href="namespacewebcface_1_1Common.html#af86798df2fbf5f4c32747c0f237d0928">webcface::sizeHW</a>(img_mat.rows, img_mat.cols),</div>
+<div class="line">                                     webcface::ImageColorMode::bgr);</div>
+<div class="line">    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; mat.rows; ++i) {</div>
+<div class="line">        std::memcpy(&amp;img_frame.<a class="code hl_function" href="classwebcface_1_1Common_1_1ImageFrame.html#a3bb44bffd89ae016c0bf0569b48730b6">at</a>(i, 0, 0), mat.ptr&lt;<span class="keywordtype">unsigned</span> <span class="keywordtype">char</span>&gt;(i),</div>
+<div class="line">                    mat.cols * mat.channels());</div>
 <div class="line">    }</div>
 <div class="line">}</div>
-</div><!-- fragment --><p> Image::get() はまだ受信できていない場合std::nulloptの代わりに空のImageFrameを返します。 (ImageFrame::empty() で空かどうかを判別できます) <br  />
- ImageをImageFrameにキャストすることでも get() と同様に画像が得られます。 <br  />
- request() を呼ばずに tryGet() や get() した場合、デフォルトのオプションで(元画像のフォーマットで)リクエストされます。</p>
-<p class="startli">受信した画像は cv::Mat に変換して使うことができます。 <br  />
- 圧縮された画像の場合は ImageFrame::data() からバイナリデータを取得できます。</p>
-<dl class="section warning"><dt>Warning</dt><dd>ImageFrame::mat() でcv::Mat形式に変換できますが、その場合画像データ本体はImageFrameが保持しているためcv::Mat画像を使う間ImageFrameオブジェクトが破棄されないようにしてください。 (例えば <code>wcli.member("foo").image("hoge").get().mat()</code> はできません) <br  />
- また、Imageを一度変数に入れて使うと、 Image::mat() で直接cv::Matに変換することもできます (この場合データ本体はImageが保持しています) <div class="fragment"><div class="line"><a class="code hl_class" href="classwebcface_1_1Image.html">webcface::Image</a> image = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).image(<span class="stringliteral">&quot;hoge&quot;</span>);</div>
+<div class="ttc" id="aclasswebcface_1_1Common_1_1ImageFrame_html_a3bb44bffd89ae016c0bf0569b48730b6"><div class="ttname"><a href="classwebcface_1_1Common_1_1ImageFrame.html#a3bb44bffd89ae016c0bf0569b48730b6">webcface::Common::ImageFrame::at</a></div><div class="ttdeci">const unsigned char &amp; at(std::size_t row, std::size_t col, std::size_t ch=0) const</div><div class="ttdoc">画像の要素にアクセス</div><div class="ttdef"><b>Definition</b> image.h:287</div></div>
+<div class="ttc" id="anamespacewebcface_1_1Common_html_af86798df2fbf5f4c32747c0f237d0928"><div class="ttname"><a href="namespacewebcface_1_1Common.html#af86798df2fbf5f4c32747c0f237d0928">webcface::Common::sizeHW</a></div><div class="ttdeci">Size sizeHW(std::size_t height, std::size_t width)</div><div class="ttdoc">高さ × 幅 でサイズを指定</div><div class="ttdef"><b>Definition</b> image.h:52</div></div>
+</div><!-- fragment --></li>
+</ul>
+</div><div class="tabbed"></div><details >
+<summary >
+C++ OpenCVと相互変換できるImageFrame (〜ver1.11まで)</summary>
+<p></p>
+<p>画像データを表す型として <a class="el" href="classwebcface_1_1Common_1_1ImageFrame.html" title="(ver1.3から追加) 画像データ">webcface::ImageFrame</a> があります。 cv::Mat形式 (<code>CV_8UC1</code>,<code>CV_8UC3</code>,<code>CV_8UC4</code> フォーマットのみ) の画像データをImageFrameのコンストラクタに渡すことができます。 </p><div class="fragment"><div class="line">cv::Mat data;</div>
+<div class="line"><a class="code hl_class" href="classwebcface_1_1Common_1_1ImageFrame.html">webcface::ImageFrame</a> frame(data, webcface::ImageColorMode::rgb);</div>
+</div><!-- fragment --><p> ImageColorModeとしては <code>gray</code>(8bitグレースケール)、<code>rgb</code>(8bit×3)、<code>bgr</code>(8bit×3)、<code>rgba</code>(8bit×4)、<code>bgra</code>(8bit×4) から元の画像データのフォーマットを指定してください。 </p><dl class="section note"><dt>Note</dt><dd>ImageFrameオブジェクト内部では画像データは<code>shared_ptr&lt;vector&lt;unsigned char&gt;&gt;</code>で保持されます。 <br  />
+ ImageFrameのコンストラクタでcv::Mat内部の画像データがすべてコピーされます。 <br  />
+ ImageFrameをコピーした場合は画像データが共有されます(コピーされません)。</dd></dl>
+<p>ImageFrameをImageにsetして送信します。 </p><div class="fragment"><div class="line">wcli.image(<span class="stringliteral">&quot;hoge&quot;</span>).set(frame);</div>
+</div><!-- fragment --><p> (C++のみ) set() の代わりに代入演算子(Image::operator=)でも同様のことができます。 </p><div class="fragment"><div class="line">wcli.image(<span class="stringliteral">&quot;hoge&quot;</span>) = frame;</div>
+</div><!-- fragment --><p>ImageFrame::mat() でcv::Mat形式に変換できますが、その場合画像データ本体はImageFrameが保持しているためcv::Mat画像を使う間ImageFrameオブジェクトが破棄されないようにしてください。 (例えば <code>wcli.member("foo").image("hoge").get().mat()</code> はできません) <br  />
+ また、Imageを一度変数に入れて使うと、 Image::mat() で直接cv::Matに変換することもできます (この場合データ本体はImageが保持しています) </p><div class="fragment"><div class="line"><a class="code hl_class" href="classwebcface_1_1Image.html">webcface::Image</a> image = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).image(<span class="stringliteral">&quot;hoge&quot;</span>);</div>
 <div class="line"><span class="keywordflow">while</span>(<span class="keyword">true</span>){</div>
 <div class="line">    cv::Mat data = image.mat(); <span class="comment">// 内部で get() → mat() が呼ばれる</span></div>
 <div class="line">    <span class="comment">// ...</span></div>
 <div class="line">}</div>
 <div class="ttc" id="aclasswebcface_1_1Image_html"><div class="ttname"><a href="classwebcface_1_1Image.html">webcface::Image</a></div><div class="ttdoc">(ver1.3から追加) 画像の送受信データを表すクラス</div><div class="ttdef"><b>Definition</b> image.h:25</div></div>
-</div><!-- fragment --> </dd></dl>
-<dl class="section note"><dt>Note</dt><dd>圧縮された画像が入ったImageFrameをcv::Matに変換すると画像をデコードして返します。</dd></dl>
-</li>
+</div><!-- fragment --> <dl class="section note"><dt>Note</dt><dd>圧縮された画像が入ったImageFrameをcv::Matに変換すると画像をデコードして返します。</dd></dl>
+</details>
+<h1><a class="anchor" id="autotoc_md86"></a>
+受信</h1>
+<p>Member::image() でImageクラスのオブジェクトが得られ、 Image::request() で画像のリクエストをした後 Image::tryGet() で受信した画像を取得できます。</p>
+<p>例えば<code>foo</code>というクライアントの<code>hoge</code>という名前のデータを取得したい場合は次のようにします。</p>
+<div class="tabbed"></div><div class="tabbed"><ul>
 <li><p class="startli"><b class="tab-title">C++</b> </p><div class="fragment"><div class="line">wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).image(<span class="stringliteral">&quot;hoge&quot;</span>).request(); <span class="comment">// 何も指定しない→元画像をそのまま受信</span></div>
 <div class="line"><span class="keywordflow">while</span>(<span class="keyword">true</span>){</div>
 <div class="line">    std::optional&lt;webcface::ImageFrame&gt; frame = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).image(<span class="stringliteral">&quot;hoge&quot;</span>).tryGet();</div>
@@ -231,36 +250,49 @@ ImageFrameをImageにsetして送信します。 <div class="fragment"><div clas
 <div class="line">        <span class="comment">//...</span></div>
 <div class="line">    }</div>
 <div class="line">}</div>
-</div><!-- fragment --><p> Image::get() はまだ受信できていない場合std::nulloptの代わりに空のImageFrameを返します。 (ImageFrame::empty() で空かどうかを判別できます) <br  />
+</div><!-- fragment --><p> request()で画像をリクエストし、画像を受信するまでの間tryGet()はstd::nulloptを返します。 get() を使うとstd::nulloptの代わりに空のImageFrameを返します。 (ImageFrame::empty() で空かどうかを判別できます) <br  />
  ImageをImageFrameにキャストすることでも get() と同様に画像が得られます。 <br  />
- request() を呼ばずに tryGet() や get() した場合、デフォルトのオプションで(元画像のフォーマットで)リクエストされます。</p>
-<p class="startli">受信した画像は ImageFrame::data() から取得できます。また、 <code>ImageFrame::at(y, x, channel)</code> で要素にアクセスすることもできます。 <br  />
- 圧縮された画像の場合 ImageFrame::data() からバイナリデータとして取得できますが、<code>at()</code>での要素アクセスはできません。</p>
+ request() を1度も呼ばずに tryGet() や get() した場合、デフォルトのオプションで(元画像のフォーマットで)リクエストされます。</p>
+<p class="startli">受信した画像は ImageFrame::dataPtr(), ImageFrame::data() から取得できます。また、 <code>ImageFrame::at(y, x, channel)</code> で要素にアクセスすることもできます。</p>
+<p class="startli">request() の引数に画像のサイズと色モードを指定すると、サーバー側で指定したフォーマットに変換されたものが取得できます。 <br  />
+ また送信側が高頻度で画像を更新する場合、フレームレートを指定するとそれより遅い頻度で受信させることもできます。 </p><div class="fragment"><div class="line"><span class="comment">// 64x48にリサイズ、さらに要素をRGBの順にし、1秒に5枚まで受信する</span></div>
+<div class="line">wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).image(<span class="stringliteral">&quot;hoge&quot;</span>).request(sizeWH(64, 48),</div>
+<div class="line">                                         webcface::ImageColorMode::rgb, 5);</div>
+<div class="line"><span class="comment">// 幅が64になるようリサイズ(縦横比を維持)</span></div>
+<div class="line">wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).image(<span class="stringliteral">&quot;hoge&quot;</span>).request(sizeWH(64, std::nullopt),</div>
+<div class="line">                                         webcface::ImageColorMode::rgb);</div>
+<div class="line"><span class="comment">// サイズは元画像のままグレースケール</span></div>
+<div class="line">wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).image(<span class="stringliteral">&quot;hoge&quot;</span>).request(std::nullopt, webcface::ImageColorMode::gray);</div>
+</div><!-- fragment --><p> また jpeg, png, webp に圧縮した画像をリクエストすることでも通信量を減らすことができます。 詳細は <a class="el" href="classwebcface_1_1Image.html#a07aeebfdc5af719a2f4c15e59d858363">webcface::Image::request()</a> を参照 </p><div class="fragment"><div class="line"><span class="comment">// 64x48にリサイズ、さらにjpeg圧縮、1秒に5枚まで受信する</span></div>
+<div class="line">wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).image(<span class="stringliteral">&quot;hoge&quot;</span>).request(sizeWH(64, 48),</div>
+<div class="line">                                         webcface::ImageCompressMode::jpeg, 50,</div>
+<div class="line">                                         5);</div>
+</div><!-- fragment --><p> 圧縮された画像の場合 tryGet() や get() で得られるImageFrameに対して dataPtr() または data() を使ってバイナリデータとして取得できますが、 at() での要素アクセスはできません。</p>
 </li>
-<li><p class="startli"><b class="tab-title">JavaScript</b> requestのオプションは <a href="https://na-trium-144.github.io/webcface-js/interfaces/ImageReq.html">ImageReq</a> で指定します。 </p><div class="fragment"><div class="line">wcli.member(&quot;foo&quot;).image(&quot;hoge&quot;).request({}); // 何も指定しない→元画像をそのまま受信</div>
+<li><p class="startli"><b class="tab-title">JavaScript</b> C++の場合と同様、requestの引数で画像のサイズや色モード、圧縮モードなどを指定することができます。 詳細は <a href="https://na-trium-144.github.io/webcface-js/interfaces/ImageReq.html">ImageReq</a> を参照 </p><div class="fragment"><div class="line">wcli.member(&quot;foo&quot;).image(&quot;hoge&quot;).request({}); // 何も指定しない→元画像をそのまま受信</div>
 <div class="line">while(true){</div>
 <div class="line">    const frame: ImageFrame | null = wcli.member(&quot;foo&quot;).image(&quot;hoge&quot;).tryGet();</div>
 <div class="line">    if(frame){</div>
 <div class="line">        //...</div>
 <div class="line">    }</div>
 <div class="line">}</div>
-</div><!-- fragment --><p> Image::get() はまだ受信できていない場合nullの代わりに空のImageFrameを返します。 <br  />
+</div><!-- fragment --><p> Image.get() はまだ受信できていない場合nullの代わりに空のImageFrameを返します。 <br  />
  request() を呼ばずに tryGet() や get() した場合、デフォルトのオプションで(元画像のフォーマットで)リクエストされます。</p>
 <p class="startli">受信した画像は ImageFrame.data から取得できます。 圧縮された画像の場合も ImageFrame.data からバイナリデータとして取得できます。 <br  />
  また、 ImageFrame.toBase64() でbase64にエンコードすることができます。</p>
 </li>
 </ul>
-</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md86"></a>
+</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md87"></a>
 時刻</h2>
 <p><strike>Image::time()</strike> でその値が送信されたとき(そのMemberがsync()したとき)の時刻が得られます。 <br  />
  <span class="since-c">1.7</span> <span class="since-js">1.6</span> <span class="since-py"></span> Member::syncTime() に変更</p>
-<h2><a class="anchor" id="autotoc_md87"></a>
+<h2><a class="anchor" id="autotoc_md88"></a>
 Entry</h2>
 <p><strike>Member::images() で</strike> そのMemberが送信しているimageのリストが得られます <br  />
  <span class="since-c">1.6</span> Member::imageEntries() に変更</p>
 <p>また、Member::onImageEntry() で新しくデータが追加されたときのコールバックを設定できます</p>
 <p>いずれも使い方は <a class="el" href="md_10__value.html">Value</a> と同様なのでそちらを参照してください</p>
-<h2><a class="anchor" id="autotoc_md88"></a>
+<h2><a class="anchor" id="autotoc_md89"></a>
 Event</h2>
 <p>受信したデータが変化したときにコールバックを呼び出すことができます。 コールバックを設定することでもその値はリクエストされます。</p>
 <p>また、データが変化したどうかに関わらずそのMemberがsync()したときにコールバックを呼び出したい場合は Member::onSync() が使えます</p>
@@ -277,7 +309,7 @@ Event</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon May 27 2024 17:46:27 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Mon Jun 3 2024 16:45:44 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

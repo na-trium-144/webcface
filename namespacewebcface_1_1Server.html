@@ -177,8 +177,8 @@ Functions</h2></td></tr>
 <tr class="separator:a5de683dfd44e54076715d47c2bcaa851"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a596fe1d8b1e70a7d8085980717606c47" id="r_a596fe1d8b1e70a7d8085980717606c47"><td class="memItemLeft" align="right" valign="top">std::pair&lt; unsigned int, std::u8string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Server.html#a596fe1d8b1e70a7d8085980717606c47">findReqField</a> (std::unordered_map&lt; std::u8string, std::unordered_map&lt; std::u8string, unsigned int &gt; &gt; &amp;req, const std::u8string &amp;member, const std::u8string &amp;field)</td></tr>
 <tr class="separator:a596fe1d8b1e70a7d8085980717606c47"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9a924555b08bf13c936e947d39c5b5b0" id="r_a9a924555b08bf13c936e947d39c5b5b0"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Server.html#a9a924555b08bf13c936e947d39c5b5b0">colorConvert</a> (<a class="el" href="namespacewebcface_1_1Common.html#abcfd96b0be942012c2f4641b4741a31e">Common::ImageColorMode</a> src_mode, <a class="el" href="namespacewebcface_1_1Common.html#abcfd96b0be942012c2f4641b4741a31e">Common::ImageColorMode</a> dst_mode)</td></tr>
-<tr class="separator:a9a924555b08bf13c936e947d39c5b5b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1c11029f7716ca09f4a69d2ef2ead4b5" id="r_a1c11029f7716ca09f4a69d2ef2ead4b5"><td class="memItemLeft" align="right" valign="top">static std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Server.html#a1c11029f7716ca09f4a69d2ef2ead4b5">magickColorMap</a> (<a class="el" href="namespacewebcface_1_1Common.html#abcfd96b0be942012c2f4641b4741a31e">ImageColorMode</a> mode)</td></tr>
+<tr class="separator:a1c11029f7716ca09f4a69d2ef2ead4b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
@@ -217,42 +217,6 @@ Variables</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="a9a924555b08bf13c936e947d39c5b5b0" name="a9a924555b08bf13c936e947d39c5b5b0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9a924555b08bf13c936e947d39c5b5b0">&#9670;&#160;</a></span>colorConvert()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static int colorConvert </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="namespacewebcface_1_1Common.html#abcfd96b0be942012c2f4641b4741a31e">Common::ImageColorMode</a>&#160;</td>
-          <td class="paramname"><em>src_mode</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="namespacewebcface_1_1Common.html#abcfd96b0be942012c2f4641b4741a31e">Common::ImageColorMode</a>&#160;</td>
-          <td class="paramname"><em>dst_mode</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a id="a596fe1d8b1e70a7d8085980717606c47" name="a596fe1d8b1e70a7d8085980717606c47"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a596fe1d8b1e70a7d8085980717606c47">&#9670;&#160;</a></span>findReqField()</h2>
 
@@ -359,6 +323,32 @@ Variables</h2></td></tr>
 
 </div>
 </div>
+<a id="a1c11029f7716ca09f4a69d2ef2ead4b5" name="a1c11029f7716ca09f4a69d2ef2ead4b5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1c11029f7716ca09f4a69d2ef2ead4b5">&#9670;&#160;</a></span>magickColorMap()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static std::string magickColorMap </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespacewebcface_1_1Common.html#abcfd96b0be942012c2f4641b4741a31e">ImageColorMode</a>&#160;</td>
+          <td class="paramname"><em>mode</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <h2 class="groupheader">Variable Documentation</h2>
 <a id="af04c40d65b7df8a8bbf0c6298240eb7e" name="af04c40d65b7df8a8bbf0c6298240eb7e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af04c40d65b7df8a8bbf0c6298240eb7e">&#9670;&#160;</a></span>crow_custom_logger</h2>
@@ -410,7 +400,7 @@ Variables</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="namespacewebcface_1_1Server.html">Server</a></li>
-    <li class="footer">Generated on Mon May 27 2024 17:46:27 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Mon Jun 3 2024 16:45:44 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

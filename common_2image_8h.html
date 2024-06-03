@@ -142,21 +142,22 @@ $(document).ready(function(){initNavTree('common_2image_8h.html',''); initResiza
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#namespaces">Namespaces</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
-<a href="#enum-members">Enumerations</a>  </div>
+<a href="#enum-members">Enumerations</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">image.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;vector&gt;</code><br />
+<div class="textblock"><code>#include &lt;optional&gt;</code><br />
+<code>#include &lt;vector&gt;</code><br />
 <code>#include &lt;memory&gt;</code><br />
-<code>#include &lt;cstdint&gt;</code><br />
+<code>#include &lt;cstddef&gt;</code><br />
 <code>#include &lt;stdexcept&gt;</code><br />
+<code>#include &lt;concepts&gt;</code><br />
 <code>#include &lt;<a class="el" href="def_8h_source.html">webcface/common/def.h</a>&gt;</code><br />
-<code>#include &lt;opencv2/core.hpp&gt;</code><br />
-<code>#include &lt;opencv2/imgcodecs.hpp&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for image.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="common_2image_8h__incl.svg" width="950" height="198"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="common_2image_8h__incl.svg" width="806" height="198"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
@@ -168,11 +169,12 @@ This graph shows which files directly or indirectly include this file:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Common_1_1ImageBase.html">ImageBase</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">(ver1.3から追加) 画像データ  <a href="classwebcface_1_1Common_1_1ImageBase.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Common_1_1Size.html">Size</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Common_1_1ImageWithCV.html">ImageWithCV</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">(ver1.3から追加) 画像データ  <a href="classwebcface_1_1Common_1_1ImageWithCV.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Common_1_1SizeOption.html">SizeOption</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Common_1_1ImageFrame.html">ImageFrame</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">(ver1.3から追加) 画像データ  <a href="classwebcface_1_1Common_1_1ImageFrame.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Common_1_1ImageReq.html">ImageReq</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -186,8 +188,8 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:af7ff7d8593c083aca2355bc561bf8804" id="r_af7ff7d8593c083aca2355bc561bf8804"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Common.html#af7ff7d8593c083aca2355bc561bf8804">ImageFrame</a> = <a class="el" href="classwebcface_1_1Common_1_1ImageWithCV.html">ImageWithCV</a></td></tr>
-<tr class="separator:af7ff7d8593c083aca2355bc561bf8804"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab04304b2017cf40223df2bfb82dd175e" id="r_ab04304b2017cf40223df2bfb82dd175e"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Common.html#ab04304b2017cf40223df2bfb82dd175e">ImageBase</a> = <a class="el" href="classwebcface_1_1Common_1_1ImageFrame.html">ImageFrame</a></td></tr>
+<tr class="separator:ab04304b2017cf40223df2bfb82dd175e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
@@ -207,6 +209,25 @@ Enumerations</h2></td></tr>
 , <a class="el" href="namespacewebcface_1_1Common.html#ab72e620a597e5f750b2c9b3391e84dedabff139fa05ac583f685a523ab3d110a0">png</a> = 3
  }</td></tr>
 <tr class="separator:ab72e620a597e5f750b2c9b3391e84ded"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:aad567272661344b3f8d82a09abc85049" id="r_aad567272661344b3f8d82a09abc85049"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Common_1_1Size.html">Size</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Common.html#aad567272661344b3f8d82a09abc85049">sizeWH</a> (std::size_t width, std::size_t height)</td></tr>
+<tr class="memdesc:aad567272661344b3f8d82a09abc85049"><td class="mdescLeft">&#160;</td><td class="mdescRight">幅 × 高さ でサイズを指定  <br /></td></tr>
+<tr class="separator:aad567272661344b3f8d82a09abc85049"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af86798df2fbf5f4c32747c0f237d0928" id="r_af86798df2fbf5f4c32747c0f237d0928"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Common_1_1Size.html">Size</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Common.html#af86798df2fbf5f4c32747c0f237d0928">sizeHW</a> (std::size_t height, std::size_t width)</td></tr>
+<tr class="memdesc:af86798df2fbf5f4c32747c0f237d0928"><td class="mdescLeft">&#160;</td><td class="mdescRight">高さ × 幅 でサイズを指定  <br /></td></tr>
+<tr class="separator:af86798df2fbf5f4c32747c0f237d0928"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac7315692aadad8122b792861e16a15c9" id="r_ac7315692aadad8122b792861e16a15c9"><td class="memTemplParams" colspan="2">template&lt;typename T1 , typename T2 &gt; <br />
+requires (std::same_as&lt;T1, std::nullopt_t&gt; || std::same_as&lt;T2, std::nullopt_t&gt;)</td></tr>
+<tr class="memitem:ac7315692aadad8122b792861e16a15c9"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Common_1_1SizeOption.html">SizeOption</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Common.html#ac7315692aadad8122b792861e16a15c9">sizeWH</a> (T1 width, T2 height)</td></tr>
+<tr class="memdesc:ac7315692aadad8122b792861e16a15c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">幅 × 高さ でサイズを指定  <br /></td></tr>
+<tr class="separator:ac7315692aadad8122b792861e16a15c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab813913120ce983cc41926ff2c9a4bae" id="r_ab813913120ce983cc41926ff2c9a4bae"><td class="memTemplParams" colspan="2">template&lt;typename T1 , typename T2 &gt; <br />
+requires (std::same_as&lt;T1, std::nullopt_t&gt; || std::same_as&lt;T2, std::nullopt_t&gt;)</td></tr>
+<tr class="memitem:ab813913120ce983cc41926ff2c9a4bae"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Common_1_1SizeOption.html">SizeOption</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Common.html#ab813913120ce983cc41926ff2c9a4bae">sizeHW</a> (T1 height, T2 width)</td></tr>
+<tr class="memdesc:ab813913120ce983cc41926ff2c9a4bae"><td class="mdescLeft">&#160;</td><td class="mdescRight">高さ × 幅 でサイズを指定  <br /></td></tr>
+<tr class="separator:ab813913120ce983cc41926ff2c9a4bae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -214,7 +235,7 @@ Enumerations</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b0856f6b0d80ccb263b2f415c91f9e17.html">include</a></li><li class="navelem"><a class="el" href="dir_8d62fccb2e2b3a59b553b5322fe886d6.html">webcface</a></li><li class="navelem"><a class="el" href="dir_d5ef00bbd1c0824bfdd2fd0865855cf4.html">common</a></li><li class="navelem"><a class="el" href="common_2image_8h.html">image.h</a></li>
-    <li class="footer">Generated on Mon May 27 2024 17:46:27 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Mon Jun 3 2024 16:45:44 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

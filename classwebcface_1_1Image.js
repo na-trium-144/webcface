@@ -38,7 +38,6 @@ var classwebcface_1_1Image =
     [ "lastName", "classwebcface_1_1Image.html#ab53487c64d4c15b7a2f16a968197003c", null ],
     [ "lastName8", "classwebcface_1_1Image.html#aeff935f6ef195cdd003033381211a2ae", null ],
     [ "lastNameW", "classwebcface_1_1Image.html#af4e3ae9c11a8760127d92e61cdd9e03f", null ],
-    [ "mat", "classwebcface_1_1Image.html#a152191e2fee25e947ec6b91752a9cd86", null ],
     [ "member", "classwebcface_1_1Image.html#aa8fab40ead35fa8e761986d5f4000a5c", null ],
     [ "name", "classwebcface_1_1Image.html#a1d89c28bd42ba9a52da008bb69367171", null ],
     [ "nameW", "classwebcface_1_1Image.html#ae290d7b82d62952c224baa4c60e93860", null ],
@@ -60,7 +59,9 @@ var classwebcface_1_1Image =
     [ "removeListener", "classwebcface_1_1Image.html#a712fd6f68c578f292096fde93c5501bb", null ],
     [ "request", "classwebcface_1_1Image.html#a07aeebfdc5af719a2f4c15e59d858363", null ],
     [ "request", "classwebcface_1_1Image.html#a78688000894f1ba902bdb458c5de9d6c", null ],
-    [ "request", "classwebcface_1_1Image.html#a08d99c88953550dd093f5ed2c8064a39", null ],
+    [ "request", "classwebcface_1_1Image.html#a8d4286b3fc8dcf2aacb9397c2d9e12ce", null ],
+    [ "request", "classwebcface_1_1Image.html#a7b2f26c7640d9081818e7b8df3eaac27", null ],
+    [ "request", "classwebcface_1_1Image.html#a4f398f2e7dce382c43e5d0aadb1efb27", null ],
     [ "robotModel", "classwebcface_1_1Image.html#a07ac3b6c6f004dfeed3cc3ca8616d98b", null ],
     [ "robotModel", "classwebcface_1_1Image.html#acd0f17c72d77ab150d2ebcfb09dacd6b", null ],
     [ "robotModelEntries", "classwebcface_1_1Image.html#ab37e532eaf47e650c828f9484dee08b8", null ],
@@ -82,6 +83,5 @@ var classwebcface_1_1Image =
     [ "cl", "classwebcface_1_1Image.html#a2fca098676c92281b373b81d13709362", null ],
     [ "data_w", "classwebcface_1_1Image.html#acf420a0ba1ce5e817feac0f51c9056dc", null ],
     [ "field_", "classwebcface_1_1Image.html#a1e59608e87206ab4e8fc18344a2d1183", null ],
-    [ "img", "classwebcface_1_1Image.html#acb37824a3444617c9ae9839f515c67ac", null ],
     [ "member_", "classwebcface_1_1Image.html#ad6acdb6994e027b9708650fd6d8076a2", null ]
 ];
