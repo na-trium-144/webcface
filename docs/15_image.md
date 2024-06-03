@@ -33,9 +33,10 @@ Client::image からImageオブジェクトを作り、 Image::set() で画像�
     unsigned char data[640 * 480 * 3]; /* = {...}; */
 
     // dataの中身がImageFrameにコピーされる
+    // sizeWH で幅と高さを指定、または sizeHW で高さと幅を指定
     webcface::ImageFrame frame(webcface::sizeWH(640, 480), data, webcface::ImageColorMode::rgb);
 
-    // ver1.11以前: サイズは縦, 横で指定
+    // ver1.11以前: サイズは高さ,幅の順で指定
     // webcface::ImageFrame frame(480, 640, data, webcface::ImageColorMode::rgb);
     ```
     ImageColorModeとしては `gray`(8bitグレースケール)、`rgb`(8bit×3)、`bgr`(8bit×3)、`rgba`(8bit×4)、`bgra`(8bit×4) が扱えます。
@@ -52,7 +53,7 @@ Client::image からImageオブジェクトを作り、 Image::set() で画像�
     wcli.image("hoge") = frame;
     ```
 
-    ImageFrameの中のデータには dataPtr() (`shared_ptr<vector<unsigned char>>`型)、 data() (`vector<unsigned char>&` 型)、at(row, col, ch) (`unsigned char &`型) でアクセスできます。
+    ImageFrameの中のデータには dataPtr() (`shared_ptr<vector<unsigned char>>`型)、 data() (`vector<unsigned char>&` 型)、at(y, x, ch) (`unsigned char &`型) でアクセスできます。
 
 - <b class="tab-title">JavaScript</b>
     画像データを表す型として [ImageFrame](https://na-trium-144.github.io/webcface-js/classes/ImageFrame.html) があります。
@@ -102,7 +103,7 @@ Client::image からImageオブジェクトを作り、 Image::set() で画像�
 
 </div>
 
-<details><summary>C++ with OpenCV (〜ver1.11まで)</summary>
+<details><summary>C++ OpenCVと相互変換できるImageFrame (〜ver1.11まで)</summary>
 
 画像データを表す型として webcface::ImageFrame があります。
 cv::Mat形式 (`CV_8UC1`,`CV_8UC3`,`CV_8UC4` フォーマットのみ) の画像データをImageFrameのコンストラクタに渡すことができます。
@@ -125,6 +126,19 @@ wcli.image("hoge").set(frame);
 wcli.image("hoge") = frame;
 ```
 
+ImageFrame::mat() でcv::Mat形式に変換できますが、その場合画像データ本体はImageFrameが保持しているためcv::Mat画像を使う間ImageFrameオブジェクトが破棄されないようにしてください。
+(例えば `wcli.member("foo").image("hoge").get().mat()` はできません)  
+また、Imageを一度変数に入れて使うと、 Image::mat() で直接cv::Matに変換することもできます (この場合データ本体はImageが保持しています)
+```cpp
+webcface::Image image = wcli.member("foo").image("hoge");
+while(true){
+    cv::Mat data = image.mat(); // 内部で get() → mat() が呼ばれる
+    // ...
+}
+```
+\note
+圧縮された画像が入ったImageFrameをcv::Matに変換すると画像をデコードして返します。
+
 </details>
 
 ## 受信
@@ -133,47 +147,9 @@ Member::image() でImageクラスのオブジェクトが得られ、
 Image::request() で画像のリクエストをした後
 Image::tryGet() で受信した画像を取得できます。
 
-リクエスト時の引数で画像のサイズとフォーマットを指定でき、その場合サーバー側で変換してから送られます。  
-また jpeg, png, webp に圧縮した画像をリクエストしたり、フレームレートを指定して画像を受信する頻度を下げることで、
-Wi-Fi経由で受信する場合に通信量を減らすことができます。  
-詳細は webcface::Image::request() を参照
-
 例えば`foo`というクライアントの`hoge`という名前のデータを取得したい場合は次のようにします。
 
 <div class="tabbed">
-
-- <b class="tab-title">C++ (with OpenCV)</b>
-    ```cpp
-    wcli.member("foo").image("hoge").request(); // 何も指定しない→元画像をそのまま受信
-    while(true){
-        std::optional<webcface::ImageFrame> frame = wcli.member("foo").image("hoge").tryGet();
-        if(frame){
-            cv::Mat data = frame.mat();
-            // ...
-        }
-    }
-    ```
-    Image::get() はまだ受信できていない場合std::nulloptの代わりに空のImageFrameを返します。
-    (ImageFrame::empty() で空かどうかを判別できます)  
-    ImageをImageFrameにキャストすることでも get() と同様に画像が得られます。  
-    request() を呼ばずに tryGet() や get() した場合、デフォルトのオプションで(元画像のフォーマットで)リクエストされます。
-
-    受信した画像は cv::Mat に変換して使うことができます。  
-    圧縮された画像の場合は ImageFrame::data() からバイナリデータを取得できます。
-
-    \warning
-    ImageFrame::mat() でcv::Mat形式に変換できますが、その場合画像データ本体はImageFrameが保持しているためcv::Mat画像を使う間ImageFrameオブジェクトが破棄されないようにしてください。
-    (例えば `wcli.member("foo").image("hoge").get().mat()` はできません)  
-    また、Imageを一度変数に入れて使うと、 Image::mat() で直接cv::Matに変換することもできます (この場合データ本体はImageが保持しています)
-    ```cpp
-    webcface::Image image = wcli.member("foo").image("hoge");
-    while(true){
-        cv::Mat data = image.mat(); // 内部で get() → mat() が呼ばれる
-        // ...
-    }
-    ```
-    \note
-    圧縮された画像が入ったImageFrameをcv::Matに変換すると画像をデコードして返します。
 
 - <b class="tab-title">C++</b>
     ```cpp
@@ -185,16 +161,39 @@ Wi-Fi経由で受信する場合に通信量を減らすことができます。
         }
     }
     ```
-    Image::get() はまだ受信できていない場合std::nulloptの代わりに空のImageFrameを返します。
+    request()で画像をリクエストし、画像を受信するまでの間tryGet()はstd::nulloptを返します。
+    get() を使うとstd::nulloptの代わりに空のImageFrameを返します。
     (ImageFrame::empty() で空かどうかを判別できます)  
     ImageをImageFrameにキャストすることでも get() と同様に画像が得られます。  
-    request() を呼ばずに tryGet() や get() した場合、デフォルトのオプションで(元画像のフォーマットで)リクエストされます。
+    request() を1度も呼ばずに tryGet() や get() した場合、デフォルトのオプションで(元画像のフォーマットで)リクエストされます。
 
-    受信した画像は ImageFrame::data() から取得できます。また、 `ImageFrame::at(y, x, channel)` で要素にアクセスすることもできます。  
-    圧縮された画像の場合 ImageFrame::data() からバイナリデータとして取得できますが、`at()`での要素アクセスはできません。
+    受信した画像は ImageFrame::dataPtr(), ImageFrame::data() から取得できます。また、 `ImageFrame::at(y, x, channel)` で要素にアクセスすることもできます。
+
+    request() の引数に画像のサイズと色モードを指定すると、サーバー側で指定したフォーマットに変換されたものが取得できます。  
+    また送信側が高頻度で画像を更新する場合、フレームレートを指定するとそれより遅い頻度で受信させることもできます。
+    ```cpp
+    // 64x48にリサイズ、さらに要素をRGBの順にし、1秒に5枚まで受信する
+    wcli.member("foo").image("hoge").request(sizeWH(64, 48),
+                                             webcface::ImageColorMode::rgb, 5);
+    // 幅が64になるようリサイズ(縦横比を維持)
+    wcli.member("foo").image("hoge").request(sizeWH(64, std::nullopt),
+                                             webcface::ImageColorMode::rgb);
+    // サイズは元画像のままグレースケール
+    wcli.member("foo").image("hoge").request(std::nullopt, webcface::ImageColorMode::gray);
+    ```
+    また jpeg, png, webp に圧縮した画像をリクエストすることでも通信量を減らすことができます。
+    詳細は webcface::Image::request() を参照
+    ```cpp
+    // 64x48にリサイズ、さらにjpeg圧縮、1秒に5枚まで受信する
+    wcli.member("foo").image("hoge").request(sizeWH(64, 48),
+                                             webcface::ImageCompressMode::jpeg, 50,
+                                             5);
+    ```
+    圧縮された画像の場合 tryGet() や get() で得られるImageFrameに対して dataPtr() または data() を使ってバイナリデータとして取得できますが、 at() での要素アクセスはできません。
 
 - <b class="tab-title">JavaScript</b>
-    requestのオプションは [ImageReq](https://na-trium-144.github.io/webcface-js/interfaces/ImageReq.html) で指定します。
+    C++の場合と同様、requestの引数で画像のサイズや色モード、圧縮モードなどを指定することができます。
+    詳細は [ImageReq](https://na-trium-144.github.io/webcface-js/interfaces/ImageReq.html) を参照
     ```ts
     wcli.member("foo").image("hoge").request({}); // 何も指定しない→元画像をそのまま受信
     while(true){
@@ -204,7 +203,7 @@ Wi-Fi経由で受信する場合に通信量を減らすことができます。
         }
     }
     ```
-    Image::get() はまだ受信できていない場合nullの代わりに空のImageFrameを返します。  
+    Image.get() はまだ受信できていない場合nullの代わりに空のImageFrameを返します。  
     request() を呼ばずに tryGet() や get() した場合、デフォルトのオプションで(元画像のフォーマットで)リクエストされます。
 
     受信した画像は ImageFrame.data から取得できます。
