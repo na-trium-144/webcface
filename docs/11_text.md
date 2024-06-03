@@ -22,6 +22,8 @@ webcface-send -t text
 ```
 を実行し、文字列を入力すると送信されます。(1つ入力するごとに改行してください)
 
+詳細は [webcface-send](./71_send.md) のページを参照
+
 ## 送信
 
 Client::text からTextオブジェクトを作り、 Text::set() でデータを代入し、Client::sync()することで送信されます

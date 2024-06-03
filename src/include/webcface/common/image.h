@@ -1,15 +1,11 @@
 #pragma once
+#include <optional>
 #include <vector>
 #include <memory>
-#include <cstdint>
+#include <cstddef>
 #include <stdexcept>
+#include <concepts>
 #include <webcface/common/def.h>
-
-// todo: cmakeなしでヘッダー読んだときにopencvの有無を判別する
-#if WEBCFACE_USE_OPENCV
-#include <opencv2/core.hpp>
-#include <opencv2/imgcodecs.hpp>
-#endif
 
 WEBCFACE_NS_BEGIN
 inline namespace Common {
@@ -28,6 +24,73 @@ enum class ImageCompressMode {
     png = 3,
 };
 
+class Size {
+    std::size_t w_, h_;
+    Size(std::size_t width, std::size_t height) : w_(width), h_(height) {}
+
+  public:
+    Size() = default;
+    friend Size sizeWH(std::size_t width, std::size_t height);
+    friend Size sizeHW(std::size_t height, std::size_t width);
+    std::size_t width() const { return w_; }
+    std::size_t height() const { return h_; }
+    std::size_t rows() const { return h_; }
+    std::size_t cols() const { return w_; }
+};
+
+/*!
+ * \brief 幅 × 高さ でサイズを指定
+ * \since ver1.12
+ */
+inline Size sizeWH(std::size_t width, std::size_t height) {
+    return Size{width, height};
+}
+/*!
+ * \brief 高さ × 幅 でサイズを指定
+ * \since ver1.12
+ */
+inline Size sizeHW(std::size_t height, std::size_t width) {
+    return Size{width, height};
+}
+
+class SizeOption {
+    std::optional<std::size_t> w_, h_;
+    SizeOption(std::optional<std::size_t> width,
+               std::optional<std::size_t> height)
+        : w_(width), h_(height) {}
+
+  public:
+    SizeOption() = default;
+    SizeOption(const Size &s) : w_(s.width()), h_(s.height()) {}
+    template <typename T1, typename T2>
+    friend Size sizeWH(T1 width, T2 height);
+    template <typename T1, typename T2>
+    friend Size sizeHW(T1 height, T2 width);
+    std::optional<std::size_t> rows() const { return h_; }
+    std::optional<std::size_t> cols() const { return w_; }
+};
+
+/*!
+ * \brief 幅 × 高さ でサイズを指定
+ * \since ver1.12
+ */
+template <typename T1, typename T2>
+    requires(std::same_as<T1, std::nullopt_t> ||
+             std::same_as<T2, std::nullopt_t>)
+inline SizeOption sizeWH(T1 width, T2 height) {
+    return SizeOption{width, height};
+}
+/*!
+ * \brief 高さ × 幅 でサイズを指定
+ * \since ver1.12
+ */
+template <typename T1, typename T2>
+    requires(std::same_as<T1, std::nullopt_t> ||
+             std::same_as<T2, std::nullopt_t>)
+inline SizeOption sizeHW(T1 height, T2 width) {
+    return SizeOption{width, height};
+}
+
 /*!
  * \brief (ver1.3から追加) 画像データ
  *
@@ -36,37 +99,35 @@ enum class ImageCompressMode {
  * * データはshared_ptrで保持され、Imageをコピーしてもコピーされない
  *
  */
-class ImageBase {
+class ImageFrame {
   protected:
-    std::size_t rows_, cols_;
+    Size size_;
     std::shared_ptr<std::vector<unsigned char>> data_;
     ImageColorMode color_mode_;
     ImageCompressMode cmp_mode_;
 
   public:
     /*!
-     * \brief 空のImageを作成
+     * \brief 空の(0x0の) ImageFrameを作成
      *
      */
-    ImageBase()
-        : rows_(0), cols_(0),
-          data_(std::make_shared<std::vector<unsigned char>>()),
+    ImageFrame()
+        : size_(), data_(std::make_shared<std::vector<unsigned char>>()),
           color_mode_(ImageColorMode::gray), cmp_mode_(ImageCompressMode::raw) {
     }
-    ImageBase(int rows, int cols,
-              const std::shared_ptr<std::vector<unsigned char>> &data,
-              ImageColorMode color_mode = ImageColorMode::bgr,
-              ImageCompressMode cmp_mode = ImageCompressMode::raw)
-        : rows_(rows), cols_(cols), data_(data), color_mode_(color_mode),
+    ImageFrame(const Size &size,
+               const std::shared_ptr<std::vector<unsigned char>> &data,
+               ImageColorMode color_mode = ImageColorMode::bgr,
+               ImageCompressMode cmp_mode = ImageCompressMode::raw)
+        : size_(size), data_(data), color_mode_(color_mode),
           cmp_mode_(cmp_mode) {
         if (cmp_mode == ImageCompressMode::raw &&
-            static_cast<std::size_t>(rows * cols) * channels() !=
-                data->size()) {
+            rows() * cols() * channels() != data->size()) {
             throw std::invalid_argument("data size does not match");
         }
     }
     /*!
-     * \brief 生画像データの配列からImageを取得
+     * \brief 生画像データの配列からImageFrameを作成
      *
      * dataから rows * cols * channels バイトがコピーされる
      *
@@ -75,16 +136,53 @@ class ImageBase {
      * \param data 画像データ
      * \param color_mode データの構造を指定
      * (デフォルトはOpenCVのBGR, uint8*3バイト)
+     * \deprecated ver1.12〜 rows, colsの順番がややこしいので sizeHW()
+     * を使ってサイズ指定
      *
      */
-    ImageBase(int rows, int cols, const void *data,
-              ImageColorMode color_mode = ImageColorMode::bgr)
-        : rows_(rows), cols_(cols), color_mode_(color_mode),
+    [[deprecated("Ambiguous image size")]] ImageFrame(
+        int rows, int cols, const void *data,
+        ImageColorMode color_mode = ImageColorMode::bgr)
+        : ImageFrame(sizeHW(static_cast<std::size_t>(rows),
+                            static_cast<std::size_t>(cols)),
+                     data, color_mode) {}
+    /*!
+     * \brief 生画像データの配列からImageFrameを作成
+     * \since ver1.12
+     *
+     * dataから width * height * channels バイトがコピーされる
+     *
+     * \param size 画像のサイズ (sizeHW または sizeWH)
+     * \param cols 画像の幅
+     * \param data 画像データ
+     * \param color_mode データの構造を指定
+     *
+     */
+    ImageFrame(const Size &size, const void *data, ImageColorMode color_mode)
+        : size_(size), color_mode_(color_mode),
           cmp_mode_(ImageCompressMode::raw) {
         data_ = std::make_shared<std::vector<unsigned char>>(
             static_cast<const unsigned char *>(data),
             static_cast<const unsigned char *>(data) +
-                static_cast<std::size_t>(rows * cols) * channels());
+                rows() * cols() * channels());
+    }
+    /*!
+     * \brief 空のImageFrameを作成
+     * \since ver1.12
+     *
+     * width * height * channels バイトのバッファが生成されるので、
+     * 作成後にdata()またはat()でデータを書き込んで使う
+     *
+     * \param size 画像のサイズ (sizeHW または sizeWH)
+     * \param cols 画像の幅
+     * \param color_mode データの構造を指定
+     *
+     */
+    ImageFrame(const Size &size, ImageColorMode color_mode)
+        : size_(size), color_mode_(color_mode),
+          cmp_mode_(ImageCompressMode::raw) {
+        data_ = std::make_shared<std::vector<unsigned char>>(rows() * cols() *
+                                                             channels());
     }
 
     /*!
@@ -95,15 +193,30 @@ class ImageBase {
      */
     bool empty() const { return data_->size() == 0; }
     /*!
-     * \brief 画像の幅
-     *
+     * \brief 画像のサイズ
+     * \since ver1.12
      */
-    std::size_t rows() const { return rows_; }
+    const Size &size() const { return size_; }
+    /*!
+     * \brief 画像の幅
+     * \since ver1.12
+     */
+    std::size_t width() const { return size_.width(); }
+    /*!
+     * \brief 画像の高さ
+     * \since ver1.12
+     */
+    std::size_t height() const { return size_.height(); }
     /*!
      * \brief 画像の高さ
      *
      */
-    std::size_t cols() const { return cols_; }
+    std::size_t rows() const { return size_.rows(); }
+    /*!
+     * \brief 画像の幅
+     *
+     */
+    std::size_t cols() const { return size_.cols(); }
     /*!
      * \brief 1ピクセル当たりのデータサイズ(byte数)を取得
      *
@@ -125,17 +238,26 @@ class ImageBase {
         }
     }
     /*!
-     * \brief 色の並び順 (生画像データの場合)
-     *
-     * compress_modeがrawでない場合意味を持たない。
-     *
+     * \sa colorMode()
      */
     ImageColorMode color_mode() const { return color_mode_; }
+    /*!
+     * \brief 色の並び順 (生画像データの場合)
+     *
+     * compressModeがrawでない場合意味を持たない。
+     *
+     */
+    ImageColorMode colorMode() const { return color_mode_; }
+    /*!
+     * \sa compressMode()
+     */
+    ImageCompressMode compress_mode() const { return cmp_mode_; }
     /*!
      * \brief 画像の圧縮モード
      *
      */
-    ImageCompressMode compress_mode() const { return cmp_mode_; }
+    ImageCompressMode compressMode() const { return cmp_mode_; }
+
     std::shared_ptr<std::vector<unsigned char>> dataPtr() const {
         return data_;
     }
@@ -144,146 +266,41 @@ class ImageBase {
      *
      * \return compress_modeがrawの場合、rows * cols * channels
      * 要素の画像データ。 それ以外の場合、圧縮された画像のデータ
+     * (ver1.12〜非const)
      *
      */
     const std::vector<unsigned char> &data() const { return *data_; }
     /*!
+     * \brief 画像データ (非const)
+     * \since ver1.12
+     * \return compress_modeがrawの場合、rows * cols * channels
+     * 要素の画像データ。 それ以外の場合、圧縮された画像のデータ
+     *
+     */
+    std::vector<unsigned char> &data() { return *data_; }
+    /*!
      * \brief 画像の要素にアクセス
      *
      * compress_modeがrawでない場合は正常にアクセスできない。
+     *
      */
-    unsigned char at(std::size_t row, std::size_t col,
-                     std::size_t ch = 0) const {
+    const unsigned char &at(std::size_t row, std::size_t col,
+                            std::size_t ch = 0) const {
+        return dataPtr()->at((row * cols() + col) * channels() + ch);
+    }
+    /*!
+     * \brief 画像の要素にアクセス
+     * \since ver1.12
+     *
+     * compress_modeがrawでない場合は正常にアクセスできない。
+     *
+     */
+    unsigned char &at(std::size_t row, std::size_t col, std::size_t ch = 0) {
         return dataPtr()->at((row * cols() + col) * channels() + ch);
     }
 };
 
-#if WEBCFACE_USE_OPENCV
-/*!
- * \brief (ver1.3から追加) 画像データ
- *
- * 自身の持つデータを参照するcv::Matを生成、保持する。
- */
-class ImageWithCV : public ImageBase {
-    cv::Mat mat_;
-
-    int CvType() {
-        switch (channels()) {
-        case 3:
-            return CV_8UC3;
-        case 4:
-            return CV_8UC4;
-        case 1:
-            return CV_8UC1;
-        default:
-            throw std::invalid_argument(
-                "Number of channels must be 1, 3 or 4.");
-        }
-    }
-
-  public:
-    /*!
-     * \brief 空のImageを作成
-     *
-     */
-    ImageWithCV() = default;
-    /*!
-     * \brief 画像データからcv::Matを生成
-     *
-     * ほかのコンストラクタからもこれが呼ばれる
-     *
-     */
-    ImageWithCV(const ImageBase &base) : ImageBase(base), mat_() {
-        if (empty()) {
-            // mat_ = empty
-        } else if (cmp_mode_ == ImageCompressMode::raw) {
-            mat_ = cv::Mat{static_cast<int>(rows_), static_cast<int>(cols_),
-                           CvType(), &data_->at(0)};
-        } else {
-            mat_ = cv::imdecode(*data_, cv::IMREAD_COLOR);
-            if (static_cast<int>(rows_) != mat_.rows ||
-                static_cast<int>(cols_) != mat_.cols) {
-                throw std::invalid_argument("data size does not match");
-            }
-        }
-    }
-    ImageWithCV(int rows, int cols,
-                const std::shared_ptr<std::vector<unsigned char>> &data,
-                ImageColorMode color_mode = ImageColorMode::bgr,
-                ImageCompressMode cmp_mode = ImageCompressMode::raw)
-        : ImageWithCV(ImageBase(rows, cols, data, color_mode, cmp_mode)) {}
-
-    /*!
-     * \brief 生画像データの配列からImageを取得
-     *
-     * dataから rows * cols * channels バイトがコピーされる
-     *
-     * \param rows 画像の高さ
-     * \param cols 画像の幅
-     * \param data 画像データ
-     * \param color_mode データの構造を指定
-     * (デフォルトはOpenCVのBGR, uint8*3バイト)
-     *
-     */
-    ImageWithCV(int rows, int cols, const void *data,
-                ImageColorMode color_mode = ImageColorMode::bgr)
-        : ImageWithCV(ImageBase(rows, cols, data, color_mode)) {}
-
-    /*!
-     * \brief cv::MatからImageを取得
-     *
-     * matのコピーを内部に保持し、またmatの中身のデータもコピーする
-     *
-     * \param mat 画像データ フォーマットはCV_8UC1, CV_8UC3, CV_8UC4のみ対応
-     * \param color_mode 色のモードを指定 (デフォルトはBGRA)
-     */
-    ImageWithCV(const cv::Mat &mat,
-                ImageColorMode color_mode = ImageColorMode::bgr)
-        : ImageBase(), mat_(mat) {
-        rows_ = mat.rows;
-        cols_ = mat.cols;
-        color_mode_ = color_mode;
-        cmp_mode_ = ImageCompressMode::raw;
-        if (mat.depth() != CV_8U) {
-            throw std::invalid_argument(
-                "webcface::ImageData supports CV_8UC1 (grayscale), CV_8UC3 "
-                "(BGR) or CV_8UC4 (BGRA) format only.");
-        }
-        if (mat.channels() != static_cast<int>(channels())) {
-            throw std::invalid_argument("color_mode does not match");
-        }
-        data_ = std::make_shared<std::vector<unsigned char>>();
-        // https://stackoverflow.com/questions/26681713/convert-mat-to-array-vector-in-opencv
-        if (mat.isContinuous()) {
-            data_->assign(static_cast<unsigned char *>(mat.data),
-                          static_cast<unsigned char *>(mat.data) +
-                              mat.total() * mat.channels());
-        } else {
-            for (int i = 0; i < mat.rows; ++i) {
-                data_->insert(
-                    data_->end(), mat.ptr<unsigned char>(i),
-                    mat.ptr<unsigned char>(i) +
-                        static_cast<ptrdiff_t>(mat.cols * mat.channels()));
-            }
-        }
-    }
-    // operator cv::Mat &() { return mat_; }
-    /*!
-     * \brief cv::Matに変換した画像を返す
-     *
-     * 生画像の場合cv::Matの内部のデータは
-     * ImageWithCV (=ImageFrame)が保持しているので、
-     * ImageWithCVの一時オブジェクトからmatを取り出すことはできない。
-     *
-     */
-    cv::Mat &mat() & { return mat_; }
-};
-
-using ImageFrame = ImageWithCV;
-
-#else
-using ImageFrame = ImageBase;
-#endif
+using ImageBase = ImageFrame;
 
 struct ImageReq {
     std::optional<int> rows = std::nullopt, cols = std::nullopt;
@@ -299,5 +316,6 @@ struct ImageReq {
     }
     bool operator!=(const ImageReq &rhs) const { return !(*this == rhs); }
 };
+
 } // namespace Common
 WEBCFACE_NS_END

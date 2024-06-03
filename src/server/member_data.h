@@ -77,6 +77,9 @@ struct WEBCFACE_DLL MemberData {
     std::unordered_map<std::u8string,
                        std::unordered_map<std::u8string, Common::ImageReq>>
         image_req_info;
+
+    // image_convert_thread[imageのmember][imageのfield] =
+    // imageを変換してthisに送るスレッド
     std::unordered_map<
         std::u8string,
         std::unordered_map<std::u8string, std::optional<std::thread>>>

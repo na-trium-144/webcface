@@ -17,7 +17,7 @@ jobs:
       with:
         version: "1.9.8"
     - name: Install dependencies
-      run: sudo apt-get update && sudo apt-get install -y libopencv-dev libspdlog-dev
+      run: sudo apt-get update && sudo apt-get install -y libspdlog-dev libmagick++-dev
     - name: Configure CMake
       run: >
         cmake -B ${{github.workspace}}/build

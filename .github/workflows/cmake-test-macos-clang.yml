@@ -14,20 +14,17 @@ jobs:
   test-macos-clang:
     strategy:
       matrix:
-        dep: ["brew-opencv", "brew", "source"]
-        include:
-        - dep: brew-opencv
-          use_opencv: on
+        dep: ["brew", "source"]
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v4
     - name: Install Homebrew dependencies
+      if: matrix.dep == 'brew'
       env:
         HOMEBREW_NO_AUTO_UPDATE: 1
       run: |
         brew update --preinstall
-        if [ ${{matrix.dep}} = brew ]; then brew install spdlog msgpack-cxx || true; fi
-        if [ ${{matrix.dep}} = brew-opencv ]; then brew install spdlog msgpack-cxx opencv || true; fi
+        brew install spdlog msgpack-cxx imagemagick || true
 
     - name: Configure CMake
       run: >
@@ -36,7 +33,6 @@ jobs:
         -DWEBCFACE_TEST=on
         -DWEBCFACE_EXAMPLE=on
         -DWEBCFACE_TEST_TIMEOUT=1000
-        -DWEBCFACE_USE_OPENCV=${{matrix.use_opencv}}
 
     - name: Build
       run: cmake --build build
@@ -45,4 +41,4 @@ jobs:
       env:
         WEBCFACE_TRACE: 1
       working-directory: ${{github.workspace}}/build
-      run: ctest --output-on-failure --timeout 30
+      run: ctest --output-on-failure --timeout 100

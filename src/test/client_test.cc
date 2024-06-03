@@ -1067,15 +1067,16 @@ TEST_F(ClientTest, imageSend) {
     wait();
     wcli_->waitConnection();
     data_->image_store.setSend(
-        u8"a", ImageFrame{100, 100,
-                          std::make_shared<std::vector<unsigned char>>(
-                              100 * 100 * 3)});
+        u8"a",
+        ImageFrame{sizeWH(100, 100),
+                   std::make_shared<std::vector<unsigned char>>(100 * 100 * 3),
+                   ImageColorMode::bgr});
     wcli_->sync();
     wait();
     dummy_s->recv<Message::Image>(
         [&](const auto &obj) {
             EXPECT_EQ(obj.field, u8"a");
-            EXPECT_EQ(obj.data().size(), 100 * 100 * 3);
+            EXPECT_EQ(obj.data_->size(), 100 * 100 * 3);
         },
         [&] { ADD_FAILURE() << "Image recv error"; });
 }
@@ -1096,8 +1097,9 @@ TEST_F(ClientTest, imageReq) {
                                 ImageCompressMode::raw, 0, std::nullopt}));
         },
         [&] { ADD_FAILURE() << "Image Req recv error"; });
-    ImageFrame img(100, 100,
-                   std::make_shared<std::vector<unsigned char>>(100 * 100 * 3));
+    ImageFrame img(sizeWH(100, 100),
+                   std::make_shared<std::vector<unsigned char>>(100 * 100 * 3),
+                   ImageColorMode::bgr);
     dummy_s->send(Message::Res<Message::Image>{1, u8"", img});
     dummy_s->send(Message::Res<Message::Image>{1, u8"c", img});
     wait();

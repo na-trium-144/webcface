@@ -11,17 +11,38 @@
 Web-based RPC &amp; UI Library
 
 WebSocketとMessagePackを使った、ROSのような分散型の通信ライブラリです。
-クロスプラットフォームかつ異なる言語間で数値、文字列、画像などのデータを送受信したり、関数(手続き)を呼び出したりすることができます。
 
-WebCFaceはプログラム間の通信のライブラリとして使うことができるだけでなく、
-WebブラウザーでアクセスできるUI(WebUI)を使うことでWebCFaceで通信されているデータを可視化したり関数を呼び出したりできます。
-WebUIでは簡易なUIを作成したり2D、3Dの図形の描画をさせることもできます。
+C++ (C++20以上), C (C99), Python (3.8以上), JavaScript/TypeScript で相互に数値、文字列、画像などのデータを送受信したり、関数(手続き)を呼び出したりすることができます。
+少し難易度は上がりますがCのAPIを経由することで他の言語からも使用できると思います。
+
+Linux, Windows, MacOS で動作します。
+WebSocketを使用しているため、Wi-FiやEtherNet経由で複数のPC間(OS問わず)で通信することも可能です。
+WindowsとWSL1/2の間の相互通信も自動的に接続されます。
+
+さらに同一マシン上やDocker,WSL経由など使用可能な場合はTCPの代わりにUnixドメインソケットを使用するようにし、パフォーマンスが改善しました。
+
+## Features
+
+### WebUI
+
+WebCFaceではプログラム間でデータの送受信ができるAPIだけでなく、
+WebブラウザーからWebCFaceで通信されているデータを可視化したり関数を呼び出したりできるUI(WebUI)を提供します。
+
+さらにボタンや入力欄などの並べ方(View)をWebCFaceを使ったC++などのプログラムの側で定義してそれをWebUIに表示させることができ、
+これによりHTMLやCSSの知識がなくても簡易なUIを作成することができます。
+
+また、同様に2D、3Dの図形もWebCFaceを使ったプログラム側の記述のみでWebUIに描画させることができます。
 
 ![webcface-webui](https://raw.githubusercontent.com/na-trium-144/webcface/main/docs/images/webcface-webui.png)
 
-* [plotjuggler-webcface-plugin](https://github.com/na-trium-144/plotjuggler-webcface-plugin) を使うと、WebCFaceで通信されているデータを [PlotJuggler](https://github.com/facontidavide/PlotJuggler) を使って見ることもできます。
+なお、これらの描画データは View, Canvas2D, Canvas3D として他のデータ型(数値や文字列など)と同様にWebCFace内の通信データとして存在しており、
+WebUI以外でもこれらのデータを受信して表示するアプリを作成することは可能です。
 
-## Benchmark
+### PlotJuggler
+
+[plotjuggler-webcface-plugin](https://github.com/na-trium-144/plotjuggler-webcface-plugin) を使うと、WebCFaceで通信されているデータを [PlotJuggler](https://github.com/facontidavide/PlotJuggler) を使って見ることもできます。
+
+### Benchmark
 
 ver1.11時点のReleaseビルドの src/example/benchmark.cc で通信速度をチェックしてみました。
 以下の表は クライアント→サーバー→クライアント でさまざまなサイズの文字列データの送受信にかかった時間です。
@@ -193,17 +214,28 @@ MinGW用バイナリは今のところ配布していません(ソースから�
 以下はwebcfaceをソースからビルドする場合の説明です。(webcfaceをインストールした場合は不要です。)
 
 #### Requirements
-* c++20に対応したコンパイラが必要です
-* テスト済みの環境
-	* [![CMake Test (Linux GCC)](https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-linux-gcc.yml/badge.svg?branch=main)](https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-linux-gcc.yml) (gcc-10以上)
-	* [![CMake Test (Linux Clang)](https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-linux-clang.yml/badge.svg?branch=main)](https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-linux-clang.yml) (clang-13以上)
-	* [![CMake Test (MacOS Clang)](https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-macos-clang.yml/badge.svg?branch=main)](https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-macos-clang.yml)
-	* [![CMake Test (Windows MSVC)](https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-windows-msvc.yml/badge.svg?branch=main)](https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-windows-msvc.yml)
-	* [![CMake Test (Windows MinGW64 GCC)](https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-windows-gcc.yml/badge.svg?branch=main)](https://github.com/na-trium-144/webcface/actions/workflows/cmake-test-windows-gcc.yml)
-* webcfaceは外部ライブラリとして [crow](https://github.com/CrowCpp/Crow), [asio](https://github.com/chriskohlhoff/asio), [libcurl](https://github.com/curl/curl), [eventpp](https://github.com/wqking/eventpp), [msgpack-cxx](https://github.com/msgpack/msgpack-c), [spdlog](https://github.com/gabime/spdlog), [cli11](https://github.com/CLIUtils/CLI11.git), [UTF8-CPP](https://github.com/nemtrif/utfcpp), [opencv](https://opencv.org/), [googletest](https://github.com/google/googletest)(test時) を使用します。
-	* cmake時に自動的にFetchContentでソースコード取得しビルドしますが、eventpp, msgpack, spdlog に関してはシステムにインストールされていてfind_packageで見つけることができればそれを使用します
-	* opencvはソースからビルドしません。別途インストールする必要があります。
-		* またはcmake時のオプションでopencvを使わないようにすることもできます (画像の変換機能が無効になります)
+* C++20に対応したコンパイラが必要です
+	* GCCはgcc-10以上が必要です。
+	* Clangはclang-13以上が必要です。
+	* MacOSではMacOS12(Monterey)以上でビルドできることを確認済みです。
+	* Visual Studio は2019以上でビルドできるはずです。
+	* MinGWでもビルドできます。MSYS2のMINGW64環境でテストしていますがUCRT64やCLANG64環境でもビルドできると思います。
+* webcfaceは外部ライブラリとして
+[crow](https://github.com/CrowCpp/Crow),
+[asio](https://github.com/chriskohlhoff/asio),
+[libcurl](https://github.com/curl/curl),
+[eventpp](https://github.com/wqking/eventpp),
+[msgpack-cxx](https://github.com/msgpack/msgpack-c),
+[spdlog](https://github.com/gabime/spdlog),
+[cli11](https://github.com/CLIUtils/CLI11.git),
+[UTF8-CPP](https://github.com/nemtrif/utfcpp),
+[Magick++](https://github.com/ImageMagick/ImageMagick),
+[OpenCV](https://opencv.org/)(exampleのみ),
+[GoogleTest](https://github.com/google/googletest)(testのみ)
+を使用します。
+	* いずれもCMake時に自動的にFetchContentでソースコードを取得してビルドするので、必ずしもこれらをインストールする必要はありません。
+	* eventpp, msgpack, spdlog, ImageMagick に関してはシステムにインストールされていてfind_packageで見つけることができればそれを使用します
+	* OpenCVはソースからビルドしません。OpenCVを使ったexampleをビルドしたい場合は別途インストールする必要がありますが、example以外では使用しないのでほぼ必要ないと思います。
 	* libcurlはwebsocket機能を有効にする必要があるためインストールされている場合でもソースからビルドします
 	* googletestはchar8_tの機能を有効にする必要があるためインストールされている場合でもソースからビルドします
 	
@@ -211,7 +243,7 @@ MinGW用バイナリは今のところ配布していません(ソースから�
 
 ```sh
 sudo apt install build-essential git cmake
-sudo apt install libopencv-dev libspdlog-dev  # optional
+sudo apt install libspdlog-dev libmagick++-dev # optional
 ```
 
 ubuntu20.04の場合デフォルトのコンパイラ(gcc-9)ではビルドできないのでgcc-10にする必要があります
@@ -226,25 +258,26 @@ export CXX=g++-10
 
 ```sh
 brew install cmake
-brew install opencv spdlog msgpack-cxx  # optional
+brew install spdlog msgpack-cxx imagemagick # optional
 ```
 </details>
 
 <details><summary>Visual Studio</summary>
 
-* Visual Studio 2019, 2022 でcloneしたwebcfaceのフォルダーを開くとビルドできます
-* Developer Command Promptからcmakeコマンドを使ってもビルドできます
-* OpenCVを使う場合は[公式サイト](https://opencv.org/releases/)からダウンロードしてください
-	* またはchocolateyで`choco install opencv`など
+Visual Studio 2019, 2022 でcloneしたwebcfaceのフォルダーを開くか、
+Developer Command Promptからcmakeコマンドを使ってもビルドできます
 
 </details>
 
 <details><summary>MSYS2</summary>
 
 ```sh
-pacman -S git mingw-w64-x86_64-gcc mingw-w64-x86_64-cmake mingw-w64-x86_64-ninja
-pacman -S mingw-w64-x86_64-opencv mingw-w64-x86_64-spdlog  # optional
+pacman -S pactoys
+pacboy -S git make gcc:p cmake:p ninja:p
+pacboy -S spdlog:p imagemagick:p  # optional
 ```
+imagemagickをソースからビルドする際にninjaではなくmakeが必要になります
+
 </details>
 
 #### Build (with Pure CMake)
@@ -255,10 +288,9 @@ cmake --build build
 sudo cmake --build build -t install
 ```
 * CMakeのオプション
-	* `-DWEBCFACE_USE_OPENCV=off`にするとOpenCVを使用しないようになります
-	* `-DWEBCFACE_FIND_LIBS=off`にするとmsgpack, eventpp, spdlogをfind_packageせずソースからビルドします
 	* `-DWEBCFACE_SHARED=off`にすると共有ライブラリではなくすべて静的ライブラリになります
-	* `-DWEBCFACE_EXAMPLE=on`でtestをビルドします(submoduleの場合デフォルトでoff)
+		* `-DWEBCFACE_PIC=on`または`-DCMAKE_POSITION_INDEPENDENT_CODE=on`にすると-fPICフラグが有効になります (Linux,Macのみ、WEBCFACE_SHAREDがonの場合on)
+	* `-DWEBCFACE_EXAMPLE=on`でexampleをビルドします(submoduleの場合デフォルトでoff)
 	* `-DWEBCFACE_INSTALL=on`でtargetをinstallします(submoduleの場合デフォルトでoff)
 		* さらに`-DWEBCFACE_INSTALL_SERVICE=on`で [webcface-server.service](cmake/webcafce-server.service) を lib/systemd/system にインストールします (デフォルトでoff)
 	* `-DWEBCFACE_TEST=on`でtestをビルドします(デフォルトでoff)
@@ -268,9 +300,19 @@ sudo cmake --build build -t install
 		* `-DWEBCFACE_VERSION_SUFFIX=git` なら `git describe --tags` コマンドを使用して取得した文字列 (1.2.0-x-gxxxxxxx) になります(未指定の場合のデフォルト)
 		* `git`以外の任意の文字列の場合 `-DWEBCFACE_VERSION_SUFFIX=hoge` で 1.2.0-hoge になります
 		* `-DWEBCFACE_VERSION_SUFFIX=` で 1.2.0 だけになります
-	* spdlogのオプション
-		* Windowsでは`SPDLOG_WCHAR_SUPPORT`がデフォルトでONになります
-		* それ以外のオプション(SPDLOG_WCHAR_FILENAMES, SPDLOG_WCHAR_CONSOLE)はWebCFace内では設定しませんがコマンドラインオプションで指定することは可能です
+	* `-DWEBCFACE_DOWNLOAD_WEBUI=off`を指定するとWebUIをダウンロードしません。
+	* 依存ライブラリ
+		* デフォルトではfind_packageやpkg_check_modulesなどで依存ライブラリがインストールされているか確認し、見つかればそれを使い見つからなければソースコードをダウンロードします。
+		* `-DWEBCFACE_FIND_(ライブラリ)=off` にするとインストールしたものは使わず常にソースからダウンロードするようになります。
+		* 設定可能なライブラリ名は以下
+			* `MSGPACK`, `SPDLOG`, `EVENTPP`, `MAGICK`
+			* `OPENCV` (デフォルトでoff、見つからなかった場合ソースからのビルドもしません)
+			* Magickをソースビルドする場合のみ: `JPEG`, `PNG`, `ZLIB`, `WEBP`
+		* `-DWEBCFACE_FIND_LIBS=off` とすると上記設定をすべてoffにします
+			* WebCFaceをstaticライブラリにする場合必要かも
+		* spdlogのオプション
+			* Windowsでは`SPDLOG_WCHAR_SUPPORT`がデフォルトでONになります
+			* それ以外のオプション(SPDLOG_WCHAR_FILENAMES, SPDLOG_WCHAR_CONSOLE)はWebCFace内では設定しませんがコマンドラインオプションで指定することは可能です
 
 #### Build (with colcon, ROS2)
 * このリポジトリをワークスペースのsrcに追加して、colconでビルドすることができます
@@ -306,6 +348,7 @@ WebCFace本体とtoolsが使用しているサードパーティーのライブ�
 * spdlog (MIT) : https://github.com/gabime/spdlog
 * CLI11 (BSD 3-Clause) : https://github.com/CLIUtils/CLI11
 * UTF8-CPP (BSD 1.0) : https://github.com/nemtrif/utfcpp
+* ImageMagick: https://imagemagick.org/script/license.php
 * OpenCV (Apache 2.0) : https://opencv.org/license/
 * tiny-process-library (MIT) : https://gitlab.com/eidheim/tiny-process-library (toolsで使用)
 * toml++ (MIT) : https://github.com/marzer/tomlplusplus (toolsで使用)
