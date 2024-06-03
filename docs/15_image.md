@@ -18,6 +18,8 @@ webcface-cv-capture 0
 ```
 などとするとOpenCVのVideoCaptureでキャプチャできるWebカメラなどの画像をwebcfaceに送信することができます。
 
+詳細は [webcface-cv-capture](./72_cv_capture.md) のページを参照
+
 ## 送信
 
 Client::image からImageオブジェクトを作り、 Image::set() で画像データを代入し、Client::sync()することで送信されます

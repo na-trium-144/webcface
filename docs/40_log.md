@@ -19,6 +19,7 @@ webcface-send -t log
 を実行し、文字列を入力すると送信されます。
 
 他のコマンドからpipeしてWebCFaceに送信するという使い方ができます。
+詳細は [webcface-send](./71_send.md) のページを参照
 
 ## 送信
 
