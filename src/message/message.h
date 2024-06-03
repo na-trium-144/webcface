@@ -579,14 +579,23 @@ struct Canvas2D : public MessageBase<MessageKind::canvas2d> {
                        MSGPACK_NVP("h", height), MSGPACK_NVP("d", data_diff),
                        MSGPACK_NVP("l", length))
 };
-struct Image : public MessageBase<MessageKind::image>,
-               public Common::ImageBase {
+struct Image : public MessageBase<MessageKind::image> {
     std::u8string field;
+    std::size_t width_, height_;
+    std::shared_ptr<std::vector<unsigned char>> data_;
+    ImageColorMode color_mode_;
+    ImageCompressMode cmp_mode_;
     Image() = default;
     Image(std::u8string_view field, const Common::ImageBase &img)
-        : ImageBase(img), field(field) {}
+        : field(field), width_(img.width()), height_(img.height()),
+          data_(img.dataPtr()), color_mode_(img.colorMode()),
+          cmp_mode_(img.compressMode()) {}
+    operator Common::ImageFrame() const {
+        return ImageFrame{Common::sizeWH(width_, height_), data_, color_mode_,
+                          cmp_mode_};
+    }
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", field), MSGPACK_NVP("d", data_),
-                       MSGPACK_NVP("h", rows_), MSGPACK_NVP("w", cols_),
+                       MSGPACK_NVP("h", height_), MSGPACK_NVP("w", width_),
                        MSGPACK_NVP("l", color_mode_),
                        MSGPACK_NVP("p", cmp_mode_))
 };
@@ -864,17 +873,26 @@ struct Res<Canvas2D>
 };
 
 template <>
-struct Res<Image> : public MessageBase<MessageKind::image + MessageKind::res>,
-                    public Common::ImageBase {
+struct Res<Image> : public MessageBase<MessageKind::image + MessageKind::res> {
     unsigned int req_id;
     std::u8string sub_field;
+    std::size_t width_, height_;
+    std::shared_ptr<std::vector<unsigned char>> data_;
+    ImageColorMode color_mode_;
+    ImageCompressMode cmp_mode_;
     Res() = default;
     Res(unsigned int req_id, std::u8string_view sub_field,
         const Common::ImageBase &img)
-        : ImageBase(img), req_id(req_id), sub_field(sub_field) {}
+        : req_id(req_id), sub_field(sub_field), width_(img.width()),
+          height_(img.height()), data_(img.dataPtr()),
+          color_mode_(img.colorMode()), cmp_mode_(img.compressMode()) {}
+    operator Common::ImageFrame() const {
+        return ImageFrame{Common::sizeWH(width_, height_), data_, color_mode_,
+                          cmp_mode_};
+    }
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", req_id), MSGPACK_NVP("f", sub_field),
-                       MSGPACK_NVP("d", data_), MSGPACK_NVP("w", cols_),
-                       MSGPACK_NVP("h", rows_), MSGPACK_NVP("l", color_mode_),
+                       MSGPACK_NVP("d", data_), MSGPACK_NVP("w", width_),
+                       MSGPACK_NVP("h", height_), MSGPACK_NVP("l", color_mode_),
                        MSGPACK_NVP("p", cmp_mode_))
 };
 /*!

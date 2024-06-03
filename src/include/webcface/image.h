@@ -111,15 +111,36 @@ class WEBCFACE_DLL Image : protected Field, public EventTarget<Image> {
      * (nulloptの場合元画像のフォーマット)
      * \param frame_rate 画像を受信する頻度
      * (指定しない場合元画像が更新されるたびに受信する)
+     * \deprecated ver1.12〜 rows, colsの順番がややこしいので sizeHW()
+     * を使ってサイズ指定
      *
      */
-    Image &
-    request(std::optional<int> rows = std::nullopt,
-            std::optional<int> cols = std::nullopt,
+    [[deprecated("Ambiguous image size")]] Image &
+    request(std::optional<int> rows, std::optional<int> cols = std::nullopt,
             std::optional<Common::ImageColorMode> color_mode = std::nullopt,
             std::optional<double> frame_rate = std::nullopt) {
         return request(rows, cols, Common::ImageCompressMode::raw, 0,
                        color_mode, frame_rate);
+    }
+    /*!
+     * \brief 画像を生画像のフォーマットでリクエストする
+     * \since ver1.12
+     * \param sizeOption 画像のサイズ (sizeWH() または sizeHW(), std::nullopt可)
+     * rows,colsのどちらかのみがnulloptの場合縦横比を保ってリサイズ
+     * \param color_mode 画像の色フォーマット
+     * (nulloptの場合元画像のフォーマット)
+     * \param frame_rate 画像を受信する頻度
+     * (指定しない場合元画像が更新されるたびに受信する)
+     *
+     */
+    Image &
+    request(std::optional<SizeOption> size = std::nullopt,
+            std::optional<Common::ImageColorMode> color_mode = std::nullopt,
+            std::optional<double> frame_rate = std::nullopt) {
+        return request(size.value_or(SizeOption{}).rows(),
+                       size.value_or(SizeOption{}).cols(),
+                       Common::ImageCompressMode::raw, 0, color_mode,
+                       frame_rate);
     }
     /*!
      * \brief 画像を圧縮されたフォーマットでリクエストする
@@ -133,12 +154,36 @@ class WEBCFACE_DLL Image : protected Field, public EventTarget<Image> {
      * * webp → 1〜100 (大きいほうが高品質)
      * \param frame_rate 画像を受信する頻度
      * (指定しない場合元画像が更新されるたびに受信する)
+     * \deprecated ver1.12〜 rows, colsの順番がややこしいので sizeHW()
+     * を使ってサイズ指定
      *
      */
-    Image &request(std::optional<int> rows, std::optional<int> cols,
+    [[deprecated("Ambiguous image size")]] Image &
+    request(std::optional<int> rows, std::optional<int> cols,
+            Common::ImageCompressMode cmp_mode, int quality,
+            std::optional<double> frame_rate = std::nullopt) {
+        return request(rows, cols, cmp_mode, quality, std::nullopt, frame_rate);
+    }
+    /*!
+     * \brief 画像を圧縮されたフォーマットでリクエストする
+     * \since ver1.12
+     * \param sizeOption 画像のサイズ (sizeWH() または sizeHW(), std::nullopt可)
+     * rows,colsのどちらかのみがnulloptの場合縦横比を保ってリサイズ
+     * \param cmp_mode 圧縮モード
+     * \param quality 圧縮のパラメータ
+     * * jpeg → 0〜100 (大きいほうが高品質)
+     * * png → 0〜9 (大きいほうが圧縮後のサイズが小さい)
+     * * webp → 1〜100 (大きいほうが高品質)
+     * \param frame_rate 画像を受信する頻度
+     * (指定しない場合元画像が更新されるたびに受信する)
+     *
+     */
+    Image &request(std::optional<SizeOption> size,
                    Common::ImageCompressMode cmp_mode, int quality,
                    std::optional<double> frame_rate = std::nullopt) {
-        return request(rows, cols, cmp_mode, quality, std::nullopt, frame_rate);
+        return request(size.value_or(SizeOption{}).rows(),
+                       size.value_or(SizeOption{}).cols(), cmp_mode, quality,
+                       std::nullopt, frame_rate);
     }
     /*!
      * \brief 画像を返す
@@ -176,8 +221,8 @@ class WEBCFACE_DLL Image : protected Field, public EventTarget<Image> {
      *
      */
     template <typename T>
-        requires std::same_as<T, Image>
-    bool operator==(const T &other) const {
+        requires std::same_as<T, Image> bool
+    operator==(const T &other) const {
         return static_cast<Field>(*this) == static_cast<Field>(other);
     }
 };

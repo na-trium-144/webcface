@@ -554,8 +554,8 @@ void MemberData::onRecv(const std::string &message) {
         }
         case MessageKind::image: {
             auto v = std::any_cast<webcface::Message::Image>(obj);
-            logger->debug("image {} ({} x {} x {})", Encoding::decode(v.field),
-                          v.rows(), v.cols(), v.channels());
+            logger->debug("image {} ({} x {})", Encoding::decode(v.field),
+                          v.width_, v.height_);
             if (!this->image.count(v.field) &&
                 !v.field.starts_with(field_separator)) {
                 store->forEach([&](auto cd) {
@@ -1104,7 +1104,7 @@ void MemberData::imageConvertThreadMain(const std::u8string &member,
                         break;
                     }
                     }
-                    Common::ImageBase img_send{rows, cols, encoded, color_mode,
+                    Common::ImageBase img_send{Common::sizeHW(rows, cols), encoded, color_mode,
                                                info.cmp_mode};
                     logger->trace("finished converting image of {}, {}",
                                   member_s, field_s);

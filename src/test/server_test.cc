@@ -168,9 +168,10 @@ TEST_F(ServerTest, entry) {
             std::unordered_map<std::string, Message::View::ViewComponent>>(),
         0});
     dummy_c1->send(Message::Image{
-        u8"a", ImageFrame{100, 100,
-                          std::make_shared<std::vector<unsigned char>>(
-                              100 * 100 * 3)}});
+        u8"a",
+        ImageFrame{sizeWH(100, 100),
+                   std::make_shared<std::vector<unsigned char>>(100 * 100 * 3),
+                   ImageColorMode::bgr}});
     dummy_c1->send(Message::FuncInfo{
         0, u8"a", ValType::none_,
         std::make_shared<std::vector<Message::FuncInfo::Arg>>()});
@@ -301,8 +302,9 @@ TEST_F(ServerTest, entry) {
         [&] { ADD_FAILURE() << "Canvas2D Entry recv failed"; });
     dummy_c1->send(Message::Image{
         u8"b",
-        ImageFrame{50, 50,
-                   std::make_shared<std::vector<unsigned char>>(50 * 50 * 3)}});
+        ImageFrame{sizeWH(50, 50),
+                   std::make_shared<std::vector<unsigned char>>(50 * 50 * 3),
+                   ImageColorMode::bgr}});
     wait();
     dummy_c2->recv<Message::Entry<Message::Image>>(
         [&](const auto &obj) {
@@ -639,7 +641,8 @@ TEST_F(ServerTest, image) {
     dummy_c1->send(Message::SyncInit{{}, u8"c1", 0, "", "", ""});
     auto sendImage = [&] {
         dummy_c1->send(Message::Sync{});
-        dummy_c1->send(Message::Image{u8"a", ImageFrame{10, 10}});
+        dummy_c1->send(Message::Image{
+            u8"a", ImageFrame{sizeWH(15, 10), ImageColorMode::bgr}});
     };
     sendImage();
     wait();
@@ -654,7 +657,10 @@ TEST_F(ServerTest, image) {
         [&](const auto &obj) {
             EXPECT_EQ(obj.req_id, 1);
             EXPECT_EQ(obj.sub_field, u8"");
-            EXPECT_EQ(obj.data().size(), 10 * 10 * 3);
+            EXPECT_EQ(obj.data_->size(), 15 * 10 * 3);
+            EXPECT_EQ(obj.width_, 15);
+            EXPECT_EQ(obj.height_, 10);
+            EXPECT_EQ(obj.color_mode_, ImageColorMode::bgr);
         },
         [&] { ADD_FAILURE() << "Image Res recv failed"; });
     dummy_c2->recvClear();
@@ -668,10 +674,10 @@ TEST_F(ServerTest, image) {
         [&](const auto &obj) {
             EXPECT_EQ(obj.req_id, 1);
             EXPECT_EQ(obj.sub_field, u8"");
-            EXPECT_EQ(obj.data().size(), 10 * 10 * 3);
-            EXPECT_EQ(obj.rows(), 10);
-            EXPECT_EQ(obj.cols(), 10);
-            EXPECT_EQ(obj.color_mode(), ImageColorMode::bgr);
+            EXPECT_EQ(obj.data_->size(), 15 * 10 * 3);
+            EXPECT_EQ(obj.height_, 10);
+            EXPECT_EQ(obj.width_, 15);
+            EXPECT_EQ(obj.color_mode_, ImageColorMode::bgr);
         },
         [&] { ADD_FAILURE() << "Image Res recv failed 1"; });
     dummy_c2->recvClear();
@@ -682,7 +688,7 @@ TEST_F(ServerTest, image) {
         u8"a",
         1,
         {
-            5, 5, ImageColorMode::gray, ImageCompressMode::raw, 0,
+            5, 8, ImageColorMode::gray, ImageCompressMode::raw, 0,
             1000.0 / WEBCFACE_TEST_TIMEOUT /
                 3 // wait()のtimeoutに間に合わないようにする
         }});
@@ -693,10 +699,10 @@ TEST_F(ServerTest, image) {
         [&](const auto &obj) {
             EXPECT_EQ(obj.req_id, 1);
             EXPECT_EQ(obj.sub_field, u8"");
-            EXPECT_EQ(obj.data().size(), 5 * 5 * 1);
-            EXPECT_EQ(obj.rows(), 5);
-            EXPECT_EQ(obj.cols(), 5);
-            EXPECT_EQ(obj.color_mode(), ImageColorMode::gray);
+            EXPECT_EQ(obj.data_->size(), 8 * 5 * 1);
+            EXPECT_EQ(obj.height_, 5);
+            EXPECT_EQ(obj.width_, 8);
+            EXPECT_EQ(obj.color_mode_, ImageColorMode::gray);
         },
         [&] { ADD_FAILURE() << "Image Res recv failed 2"; });
     dummy_c2->recvClear();
@@ -712,10 +718,10 @@ TEST_F(ServerTest, image) {
         [&](const auto &obj) {
             EXPECT_EQ(obj.req_id, 1);
             EXPECT_EQ(obj.sub_field, u8"");
-            EXPECT_EQ(obj.data().size(), 5 * 5 * 1);
-            EXPECT_EQ(obj.rows(), 5);
-            EXPECT_EQ(obj.cols(), 5);
-            EXPECT_EQ(obj.color_mode(), ImageColorMode::gray);
+            EXPECT_EQ(obj.data_->size(), 8 * 5 * 1);
+            EXPECT_EQ(obj.height_, 5);
+            EXPECT_EQ(obj.width_, 8);
+            EXPECT_EQ(obj.color_mode_, ImageColorMode::gray);
         },
         [&] { ADD_FAILURE() << "Image Res recv failed 3"; });
     dummy_c2->recvClear();
@@ -737,10 +743,10 @@ TEST_F(ServerTest, image) {
         [&](const auto &obj) {
             EXPECT_EQ(obj.req_id, 1);
             EXPECT_EQ(obj.sub_field, u8"");
-            EXPECT_EQ(obj.rows(), 10);
-            EXPECT_EQ(obj.cols(), 10);
-            EXPECT_GT(obj.data().size(), 0);
-            EXPECT_EQ(obj.compress_mode(), ImageCompressMode::png);
+            EXPECT_EQ(obj.width_, 15);
+            EXPECT_EQ(obj.height_, 10);
+            EXPECT_GT(obj.data_->size(), 0);
+            EXPECT_EQ(obj.cmp_mode_, ImageCompressMode::png);
         },
         [&] { ADD_FAILURE() << "Image Res recv failed 4"; });
     dummy_c2->recvClear();
@@ -752,7 +758,8 @@ TEST_F(ServerTest, image) {
             dummy_c1->send(Message::Image{
                 Encoding::castToU8("a" + std::to_string(f_type) +
                                    std::to_string(t_type)),
-                ImageFrame{10, 10, static_cast<ImageColorMode>(f_type)}});
+                ImageFrame{sizeWH(15, 10),
+                           static_cast<ImageColorMode>(f_type)}});
             wait();
             dummy_c2->send(Message::Req<Message::Image>{
                 u8"c1",
@@ -767,9 +774,9 @@ TEST_F(ServerTest, image) {
                 [&](const auto &obj) {
                     EXPECT_EQ(obj.req_id, 1);
                     EXPECT_EQ(obj.sub_field, u8"");
-                    EXPECT_EQ(obj.rows(), 10);
-                    EXPECT_EQ(obj.cols(), 10);
-                    EXPECT_EQ(obj.color_mode(),
+                    EXPECT_EQ(obj.height_, 10);
+                    EXPECT_EQ(obj.width_, 15);
+                    EXPECT_EQ(obj.color_mode_,
                               static_cast<ImageColorMode>(t_type));
                 },
                 [&] {

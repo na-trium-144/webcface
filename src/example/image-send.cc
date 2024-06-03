@@ -16,7 +16,8 @@ int main() {
         }
     }
 
-    webcface::ImageFrame img_frame(100, 100, webcface::ImageColorMode::rgb);
+    webcface::ImageFrame img_frame(webcface::sizeWH(100, 100),
+                                   webcface::ImageColorMode::rgb);
     image.write(0, 0, 100, 100, "RGB", Magick::CharPixel,
                 img_frame.data().data());
     wcli.image("sample").set(img_frame);

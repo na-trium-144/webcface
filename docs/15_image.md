@@ -24,50 +24,33 @@ Client::image からImageオブジェクトを作り、 Image::set() で画像�
 
 <div class="tabbed">
 
-- <b class="tab-title">C++ (with OpenCV)</b>
-    画像データを表す型として webcface::ImageFrame があります。
-    cv::Mat形式 (`CV_8UC1`,`CV_8UC3`,`CV_8UC4` フォーマットのみ) の画像データをImageFrameのコンストラクタに渡すことができます。
-    ```cpp
-    cv::Mat data;
-    webcface::ImageFrame frame(data, webcface::ImageColorMode::rgb);
-    ```
-    ImageColorModeとしては `gray`(8bitグレースケール)、`rgb`(8bit×3)、`bgr`(8bit×3)、`rgba`(8bit×4)、`bgra`(8bit×4) から元の画像データのフォーマットを指定してください。
-    \note
-    ImageFrameオブジェクト内部では画像データは`shared_ptr<vector<unsigned char>>`で保持されます。  
-    ImageFrameのコンストラクタでcv::Mat内部の画像データがすべてコピーされます。  
-    ImageFrameをコピーした場合は画像データが共有されます(コピーされません)。
-
-    ImageFrameをImageにsetして送信します。
-    ```cpp
-    wcli.image("hoge").set(frame);
-    ```
-     (C++のみ) set() の代わりに代入演算子(Image::operator=)でも同様のことができます。
-    ```cpp
-    wcli.image("hoge") = frame;
-    ```
 - <b class="tab-title">C++</b>
     画像データを表す型として webcface::ImageFrame があります。
     生の画像データがあればImageFrameのコンストラクタに渡すことができます。
     ```cpp
     unsigned char data[640 * 480 * 3]; /* = {...}; */
-    webcface::ImageFrame frame(480, 640, data, webcface::ImageColorMode::rgb); // 画像サイズは 縦, 横 で指定
+
+    // dataの中身がImageFrameにコピーされる
+    webcface::ImageFrame frame(webcface::sizeWH(640, 480), data, webcface::ImageColorMode::rgb);
+
+    // ver1.11以前: サイズは縦, 横で指定
+    // webcface::ImageFrame frame(480, 640, data, webcface::ImageColorMode::rgb);
     ```
     ImageColorModeとしては `gray`(8bitグレースケール)、`rgb`(8bit×3)、`bgr`(8bit×3)、`rgba`(8bit×4)、`bgra`(8bit×4) が扱えます。
+    
     \note
     ImageFrameオブジェクト内部では画像データは`shared_ptr<vector<unsigned char>>`で保持されます。  
     ImageFrameのコンストラクタでdataの内容がすべてコピーされます。  
     ImageFrameをコピーした場合は画像データが共有されます(コピーされません)。
-    \todo
-    C++とJavaScriptでImageFrameのコンストラクタのサイズ指定が違うので、そのうち仕様変更をして統一する必要がある
-
+    
     ImageFrameをImageにsetして送信します。
+    set() の代わりに代入演算子(Image::operator=)でも同様のことができます。
     ```cpp
     wcli.image("hoge").set(frame);
-    ```
-     (C++のみ) set() の代わりに代入演算子(Image::operator=)でも同様のことができます。
-    ```cpp
     wcli.image("hoge") = frame;
     ```
+
+    ImageFrameの中のデータには dataPtr() (`shared_ptr<vector<unsigned char>>`型)、 data() (`vector<unsigned char>&` 型)、at(row, col, ch) (`unsigned char &`型) でアクセスできます。
 
 - <b class="tab-title">JavaScript</b>
     画像データを表す型として [ImageFrame](https://na-trium-144.github.io/webcface-js/classes/ImageFrame.html) があります。
@@ -87,6 +70,60 @@ Client::image からImageオブジェクトを作り、 Image::set() で画像�
     ```
 
 </div>
+
+### OpenCV
+
+<div class="tabbed">
+
+- <b class="tab-title">C++</b>
+    ImageFrame → cv::Mat
+    ```cpp
+    cv::Mat img_mat(img_frame.rows(), img_frame.cols(), CV_8UC3, img_frame.data().data());
+    ```
+    cv::Mat → ImageFrame
+    ```cpp
+    assert(img_mat.depth() == CV_8U);
+    webcface::ImageFrame img_frame;
+    // https://stackoverflow.com/questions/26681713/convert-mat-to-array-vector-in-opencv
+    if (img_mat.isContinuous()) {
+        img_frame = webcface::ImageFrame(webcface::sizeHW(img_mat.rows, img_mat.cols),
+                                         img_mat.data, webcface::ImageColorMode::bgr);
+    } else {
+        img_frame = webcface::ImageFrame(webcface::sizeHW(img_mat.rows, img_mat.cols),
+                                         webcface::ImageColorMode::bgr);
+        for (int i = 0; i < mat.rows; ++i) {
+            std::memcpy(&img_frame.at(i, 0, 0), mat.ptr<unsigned char>(i),
+                        mat.cols * mat.channels());
+        }
+    }
+    ```
+
+</div>
+
+<details><summary>C++ with OpenCV (〜ver1.11まで)</summary>
+
+画像データを表す型として webcface::ImageFrame があります。
+cv::Mat形式 (`CV_8UC1`,`CV_8UC3`,`CV_8UC4` フォーマットのみ) の画像データをImageFrameのコンストラクタに渡すことができます。
+```cpp
+cv::Mat data;
+webcface::ImageFrame frame(data, webcface::ImageColorMode::rgb);
+```
+ImageColorModeとしては `gray`(8bitグレースケール)、`rgb`(8bit×3)、`bgr`(8bit×3)、`rgba`(8bit×4)、`bgra`(8bit×4) から元の画像データのフォーマットを指定してください。
+\note
+ImageFrameオブジェクト内部では画像データは`shared_ptr<vector<unsigned char>>`で保持されます。  
+ImageFrameのコンストラクタでcv::Mat内部の画像データがすべてコピーされます。  
+ImageFrameをコピーした場合は画像データが共有されます(コピーされません)。
+
+ImageFrameをImageにsetして送信します。
+```cpp
+wcli.image("hoge").set(frame);
+```
+ (C++のみ) set() の代わりに代入演算子(Image::operator=)でも同様のことができます。
+```cpp
+wcli.image("hoge") = frame;
+```
+
+</details>
 
 ## 受信
 

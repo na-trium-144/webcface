@@ -31,7 +31,7 @@ int main() {
         }
         std::this_thread::yield();
     }
-    img.request(300, 300);
+    img.request(webcface::sizeWH(300, 300));
     while (true) {
         // auto mat2 = img.mat(); // OK
         auto img_frame = img.get();
@@ -48,7 +48,7 @@ int main() {
         }
         std::this_thread::yield();
     }
-    img.request(std::nullopt, std::nullopt, webcface::ImageColorMode::gray);
+    img.request(std::nullopt, webcface::ImageColorMode::gray);
     while (true) {
         // auto mat2 = img.mat(); // OK
         auto img_frame = img.get();
@@ -63,8 +63,7 @@ int main() {
         }
         std::this_thread::yield();
     }
-    img.request(std::nullopt, std::nullopt, webcface::ImageCompressMode::jpeg,
-                20);
+    img.request(std::nullopt, webcface::ImageCompressMode::jpeg, 20);
     while (true) {
         // auto mat2 = img.mat(); // OK
         auto img_frame = img.get();
@@ -76,8 +75,7 @@ int main() {
         }
         std::this_thread::yield();
     }
-    img.request(std::nullopt, std::nullopt, webcface::ImageCompressMode::png,
-                1);
+    img.request(std::nullopt, webcface::ImageCompressMode::png, 1);
     while (true) {
         // auto mat2 = img.mat(); // OK
         auto img_frame = img.get();

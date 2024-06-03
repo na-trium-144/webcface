@@ -19,7 +19,8 @@ int main(int argc, const char **argv) {
         std::cout << "Could not read the image: " << argv[1] << std::endl;
         return 1;
     }
-    webcface::ImageFrame img_frame(img.rows, img.cols, img.data, webcface::ImageColorMode::bgr);
+    webcface::ImageFrame img_frame(webcface::sizeHW(img.rows, img.cols),
+                                   img.data, webcface::ImageColorMode::bgr);
     wcli.image("sample").set(img_frame);
     wcli.sync();
     cv::imshow("Display window (image_send)", img);
