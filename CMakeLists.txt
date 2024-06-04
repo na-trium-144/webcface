@@ -41,6 +41,10 @@ option(WEBCFACE_FIND_LIBS "if false, disables every find_package and pkg_check_m
 option(WEBCFACE_FIND_MSGPACK "try find_package(msgpack-cxx)" ${WEBCFACE_FIND_LIBS})
 option(WEBCFACE_FIND_SPDLOG "try find_package(spdlog)" ${WEBCFACE_FIND_LIBS})
 option(WEBCFACE_FIND_EVENTPP "try find_package(eventpp)" ${WEBCFACE_FIND_LIBS})
+option(WEBCFACE_FIND_CURL "try find_package(CURL)" ${WEBCFACE_FIND_LIBS})
+option(WEBCFACE_FIND_ASIO "try find_path(asio.hpp)" ${WEBCFACE_FIND_LIBS})
+option(WEBCFACE_FIND_CLI11 "try find_package(CLI11)" ${WEBCFACE_FIND_LIBS})
+option(WEBCFACE_FIND_UTF8CPP "try find_path(utf8.h)" ${WEBCFACE_FIND_LIBS})
 option(WEBCFACE_FIND_MAGICK "try pkg_check_modules(Magick++)" ${WEBCFACE_FIND_LIBS})
 option(WEBCFACE_FIND_JPEG "try pkg_check_modules(libjpeg) (while building Magick++)" ${WEBCFACE_FIND_LIBS})
 option(WEBCFACE_FIND_PNG "try pkg_check_modules(libpng) (while building Magick++)" ${WEBCFACE_FIND_LIBS})
@@ -233,72 +237,106 @@ else()
     FetchContent_MakeAvailable(spdlog)
 endif()
 
-message(STATUS "Fetching curl Source...")
-FetchContent_Declare(curl
-    GIT_REPOSITORY https://github.com/curl/curl.git
-    GIT_TAG curl-8_5_0
-)
-set(CURL_ENABLE_SSL off CACHE INTERNAL "" FORCE)
-set(CURL_DISABLE_ALTSVC on CACHE INTERNAL "" FORCE)
-set(CURL_DISABLE_SRP on CACHE INTERNAL "" FORCE)
-set(CURL_DISABLE_BASIC_AUTH on CACHE INTERNAL "" FORCE)
-set(CURL_DISABLE_BEARER_AUTH on CACHE INTERNAL "" FORCE)
-set(CURL_DISABLE_DIGEST_AUTH on CACHE INTERNAL "" FORCE)
-set(CURL_DISABLE_KERBEROS_AUTH on CACHE INTERNAL "" FORCE)
-set(CURL_DISABLE_NEGOTIATE_AUTH on CACHE INTERNAL "" FORCE)
-set(CURL_DISABLE_AWS on CACHE INTERNAL "" FORCE)
-set(CURL_DISABLE_DICT on CACHE INTERNAL "" FORCE)
-set(CURL_DISABLE_DOH on CACHE INTERNAL "" FORCE)
-set(CURL_DISABLE_FILE on CACHE INTERNAL "" FORCE)
-set(CURL_DISABLE_FORM_API on CACHE INTERNAL "" FORCE)
-set(CURL_DISABLE_FTP on CACHE INTERNAL "" FORCE)
-set(CURL_DISABLE_GETOPTIONS on CACHE INTERNAL "" FORCE)
-set(CURL_DISABLE_GOPHER on CACHE INTERNAL "" FORCE)
-set(CURL_DISABLE_HSTS on CACHE INTERNAL "" FORCE)
-set(CURL_DISABLE_IMAP on CACHE INTERNAL "" FORCE)
-set(CURL_DISABLE_LDAP on CACHE INTERNAL "" FORCE)
-set(CURL_DISABLE_LDAPS on CACHE INTERNAL "" FORCE)
-set(CURL_DISABLE_LIBCURL_OPTION on CACHE INTERNAL "" FORCE)
-set(CURL_DISABLE_MIME on CACHE INTERNAL "" FORCE)
-set(CURL_DISABLE_MQTT on CACHE INTERNAL "" FORCE)
-set(CURL_DISABLE_BINDLOCAL on CACHE INTERNAL "" FORCE)
-set(CURL_DISABLE_NETRC on CACHE INTERNAL "" FORCE)
-set(CURL_DISABLE_NTLM on CACHE INTERNAL "" FORCE)
-set(CURL_DISABLE_PARSEDATE on CACHE INTERNAL "" FORCE)
-set(CURL_DISABLE_POP3 on CACHE INTERNAL "" FORCE)
-set(CURL_DISABLE_PROGRESS_METER on CACHE INTERNAL "" FORCE)
-set(CURL_DISABLE_RTSP on CACHE INTERNAL "" FORCE)
-set(CURL_DISABLE_SMB on CACHE INTERNAL "" FORCE)
-set(CURL_DISABLE_SMTP on CACHE INTERNAL "" FORCE)
-set(CURL_DISABLE_SOCKETPAIR on CACHE INTERNAL "" FORCE)
-set(CURL_DISABLE_TELNET on CACHE INTERNAL "" FORCE)
-set(CURL_DISABLE_TFTP on CACHE INTERNAL "" FORCE)
-set(BUILD_CURL_EXE off CACHE INTERNAL "" FORCE)
-    # libcurlはだいたいインストールされているが使えないのでsharedにする意味がない
-set(BUILD_SHARED_LIBS off CACHE INTERNAL "" FORCE)
-set(BUILD_STATIC_LIBS on CACHE INTERNAL "" FORCE)
-set(SHARE_LIB_OBJECT ${WEBCFACE_PIC} CACHE INTERNAL "" FORCE)
-set(ENABLE_WEBSOCKETS on CACHE INTERNAL "" FORCE)
-set(CURL_DISABLE_INSTALL on CACHE INTERNAL "" FORCE)
-set(CURL_ENABLE_EXPORT_TARGET off CACHE INTERNAL "" FORCE)
-FetchContent_MakeAvailable(curl)
-
-message(STATUS "Fetching asio Source...")
-FetchContent_Declare(asio
-    GIT_REPOSITORY https://github.com/chriskohlhoff/asio.git
-    GIT_TAG asio-1-29-0
-)
-FetchContent_GetProperties(asio)
-if(NOT asio_POPULATED)
-    FetchContent_Populate(asio)
-    add_library(asio INTERFACE)
-    target_include_directories(asio INTERFACE
-        ${asio_SOURCE_DIR}/asio/include
-    )
-    target_compile_definitions(asio INTERFACE ASIO_STANDALONE)
-    if(MINGW)
-        target_link_libraries(asio INTERFACE ws2_32.lib wsock32.lib)
+if(WEBCFACE_FIND_CURL)
+    find_package(CURL QUIET)
+endif()
+if(CURL_FOUND)
+    message(STATUS "CURL ${CURL_VERSION_STRING} Found: ${PC_CURL_LIBDIR}")
+    include(CheckCXXSourceRuns)
+    set(CMAKE_REQUIRED_LIBRARIES CURL::libcurl)
+    check_cxx_source_runs("
+#include <curl/curl.h>
+#include <cassert>
+#include <cstddef>
+int main() {
+    CURL *curl = curl_easy_init();
+    std::size_t s;
+    assert(curl_ws_send(curl, nullptr, 0, &s, 0, 0) != CURLE_NOT_BUILT_IN);
+}" CURL_HAS_WS_SUPPORT)
+    unset(CMAKE_REQUIRED_LIBRARIES)
+    if(NOT CURL_HAS_WS_SUPPORT)
+        message(STATUS "Installed curl has no websockets support")
+        unset(CURL_FOUND)
     endif()
+endif()
+if(CURL_FOUND)
+    set(libcurl CURL::libcurl)
+else()
+    message(STATUS "CURL Not Found, Fetching Source...")
+    FetchContent_Declare(curl
+        GIT_REPOSITORY https://github.com/curl/curl.git
+        GIT_TAG curl-8_5_0
+    )
+    set(CURL_ENABLE_SSL off CACHE INTERNAL "" FORCE)
+    set(CURL_DISABLE_ALTSVC on CACHE INTERNAL "" FORCE)
+    set(CURL_DISABLE_SRP on CACHE INTERNAL "" FORCE)
+    set(CURL_DISABLE_BASIC_AUTH on CACHE INTERNAL "" FORCE)
+    set(CURL_DISABLE_BEARER_AUTH on CACHE INTERNAL "" FORCE)
+    set(CURL_DISABLE_DIGEST_AUTH on CACHE INTERNAL "" FORCE)
+    set(CURL_DISABLE_KERBEROS_AUTH on CACHE INTERNAL "" FORCE)
+    set(CURL_DISABLE_NEGOTIATE_AUTH on CACHE INTERNAL "" FORCE)
+    set(CURL_DISABLE_AWS on CACHE INTERNAL "" FORCE)
+    set(CURL_DISABLE_DICT on CACHE INTERNAL "" FORCE)
+    set(CURL_DISABLE_DOH on CACHE INTERNAL "" FORCE)
+    set(CURL_DISABLE_FILE on CACHE INTERNAL "" FORCE)
+    set(CURL_DISABLE_FORM_API on CACHE INTERNAL "" FORCE)
+    set(CURL_DISABLE_FTP on CACHE INTERNAL "" FORCE)
+    set(CURL_DISABLE_GETOPTIONS on CACHE INTERNAL "" FORCE)
+    set(CURL_DISABLE_GOPHER on CACHE INTERNAL "" FORCE)
+    set(CURL_DISABLE_HSTS on CACHE INTERNAL "" FORCE)
+    set(CURL_DISABLE_IMAP on CACHE INTERNAL "" FORCE)
+    set(CURL_DISABLE_LDAP on CACHE INTERNAL "" FORCE)
+    set(CURL_DISABLE_LDAPS on CACHE INTERNAL "" FORCE)
+    set(CURL_DISABLE_LIBCURL_OPTION on CACHE INTERNAL "" FORCE)
+    set(CURL_DISABLE_MIME on CACHE INTERNAL "" FORCE)
+    set(CURL_DISABLE_MQTT on CACHE INTERNAL "" FORCE)
+    set(CURL_DISABLE_BINDLOCAL on CACHE INTERNAL "" FORCE)
+    set(CURL_DISABLE_NETRC on CACHE INTERNAL "" FORCE)
+    set(CURL_DISABLE_NTLM on CACHE INTERNAL "" FORCE)
+    set(CURL_DISABLE_PARSEDATE on CACHE INTERNAL "" FORCE)
+    set(CURL_DISABLE_POP3 on CACHE INTERNAL "" FORCE)
+    set(CURL_DISABLE_PROGRESS_METER on CACHE INTERNAL "" FORCE)
+    set(CURL_DISABLE_RTSP on CACHE INTERNAL "" FORCE)
+    set(CURL_DISABLE_SMB on CACHE INTERNAL "" FORCE)
+    set(CURL_DISABLE_SMTP on CACHE INTERNAL "" FORCE)
+    set(CURL_DISABLE_SOCKETPAIR on CACHE INTERNAL "" FORCE)
+    set(CURL_DISABLE_TELNET on CACHE INTERNAL "" FORCE)
+    set(CURL_DISABLE_TFTP on CACHE INTERNAL "" FORCE)
+    set(BUILD_CURL_EXE off CACHE INTERNAL "" FORCE)
+    set(BUILD_SHARED_LIBS off CACHE INTERNAL "" FORCE)
+    set(BUILD_STATIC_LIBS on CACHE INTERNAL "" FORCE)
+    set(SHARE_LIB_OBJECT ${WEBCFACE_PIC} CACHE INTERNAL "" FORCE)
+    set(ENABLE_WEBSOCKETS on CACHE INTERNAL "" FORCE)
+    set(CURL_DISABLE_INSTALL on CACHE INTERNAL "" FORCE)
+    set(CURL_ENABLE_EXPORT_TARGET off CACHE INTERNAL "" FORCE)
+    FetchContent_MakeAvailable(curl)
+    set(libcurl libcurl_static)
+endif()
+
+if(WEBCFACE_FIND_ASIO)
+    find_path(ASIO_INCLUDE_DIR asio.hpp)
+endif()
+if(NOT ASIO_INCLUDE_DIR STREQUAL "ASIO_INCLUDE_DIR-NOTFOUND")
+    set(ASIO_FOUND true)
+    message(STATUS "Asio Found: ${ASIO_INCLUDE_DIR}")
+else()
+    set(ASIO_FOUND false)
+    message(STATUS "Asio Not Found, Fetching Source...")
+    FetchContent_Declare(asio
+        GIT_REPOSITORY https://github.com/chriskohlhoff/asio.git
+        GIT_TAG asio-1-29-0
+    )
+    FetchContent_GetProperties(asio)
+    if(NOT asio_POPULATED)
+        FetchContent_Populate(asio)
+        set(ASIO_INCLUDE_DIR ${asio_SOURCE_DIR}/asio/include)
+    endif()
+endif()
+add_library(asio INTERFACE)
+target_include_directories(asio INTERFACE ${ASIO_INCLUDE_DIR})
+target_compile_definitions(asio INTERFACE ASIO_STANDALONE)
+if(MINGW)
+    target_link_libraries(asio INTERFACE ws2_32.lib wsock32.lib)
 endif()
 
 message(STATUS "Fetching crow Source...")
@@ -320,25 +358,40 @@ if(NOT crow_POPULATED)
     target_link_libraries(Crow INTERFACE asio)
 endif()
 
-message(STATUS "Fetching cli11 Source...")
-FetchContent_Declare(cli11
-    GIT_REPOSITORY https://github.com/CLIUtils/CLI11.git
-    GIT_TAG v2.3.2
-)
-FetchContent_MakeAvailable(cli11)
-
-message(STATUS "Fetching utfcpp Source...")
-FetchContent_Declare(utfcpp
-    GIT_REPOSITORY https://github.com/nemtrif/utfcpp.git
-    GIT_TAG v4.0.5
-)
-if(NOT utfcpp_POPULATED)
-    FetchContent_Populate(utfcpp)
-    add_library(utfcpp INTERFACE)
-    target_include_directories(utfcpp INTERFACE
-        ${utfcpp_SOURCE_DIR}/source
-    )
+if(WEBCFACE_FIND_CLI11)
+    find_package(CLI11 QUIET)
 endif()
+if(CLI11_FOUND)
+    message(STATUS "CLI11 ${CLI11_VERSION} Found: ${CLI11_DIR}")
+else()
+    message(STATUS "CLI11 Not Found, Fetching Source...")
+    FetchContent_Declare(cli11
+        GIT_REPOSITORY https://github.com/CLIUtils/CLI11.git
+        GIT_TAG v2.3.2
+    )
+    FetchContent_MakeAvailable(cli11)
+endif()
+
+if(WEBCFACE_FIND_UTF8CPP)
+    find_path(UTF8CPP_INCLUDE_DIR utf8.h PATH_SUFFIXES utf8cpp)
+endif()
+if(NOT UTF8CPP_INCLUDE_DIR STREQUAL "UTF8CPP_INCLUDE_DIR-NOTFOUND")
+    set(UTF8CPP_FOUND true)
+    message(STATUS "utf8cpp Found: ${UTF8CPP_INCLUDE_DIR}")
+else()
+    set(UTF8CPP_FOUND false)
+    message(STATUS "utf8cpp Not Found, Fetching Source...")
+    FetchContent_Declare(utfcpp
+        GIT_REPOSITORY https://github.com/nemtrif/utfcpp.git
+        GIT_TAG v4.0.5
+    )
+    if(NOT utfcpp_POPULATED)
+        FetchContent_Populate(utfcpp)
+        set(UTF8CPP_INCLUDE_DIR ${utfcpp_SOURCE_DIR}/source)
+    endif()
+endif()
+add_library(utfcpp INTERFACE)
+target_include_directories(utfcpp INTERFACE ${UTF8CPP_INCLUDE_DIR})
 
 if(WEBCFACE_FIND_OPENCV)
     find_package(OpenCV QUIET)
@@ -349,7 +402,9 @@ else()
     message(STATUS "OpenCV Not Found")
 endif()
 
-set(Magickpp_FOUND false)
+# あとでbuildしたmagickppをprefixに追加して再度pkg_check_modulesしているため、
+# ここでは毎回cacheをクリアする必要ある
+unset(Magickpp_FOUND CACHE)
 if(WEBCFACE_FIND_MAGICK)
     pkg_check_modules(Magickpp QUIET Magick++)
 endif()
@@ -463,11 +518,8 @@ else()
         endif()
         if(NOT EXISTS ${magickpp_SOURCE_DIR}/Makefile OR ${CMAKE_CURRENT_LIST_FILE} IS_NEWER_THAN ${magickpp_SOURCE_DIR}/Makefile)
             file(REMOVE_RECURSE ${MAGICKPP_PREFIX})
-            unset(libjpeg_FOUND CACHE)
-            unset(libpng_FOUND CACHE)
-            unset(zlib_FOUND CACHE)
         endif()
-        set(libjpeg_FOUND false)
+        unset(libjpeg_FOUND CACHE)
         if(WEBCFACE_FIND_JPEG)
             pkg_check_modules(libjpeg QUIET libjpeg)
         endif()
@@ -489,7 +541,7 @@ else()
             execute_process(COMMAND ${CMAKE_COMMAND} --build ${libjpeg-turbo_BINARY_DIR} -t install -j${N})
         endif()
 
-        set(libpng_FOUND false)
+        unset(libpng_FOUND CACHE)
         if(WEBCFACE_FIND_PNG)
             pkg_check_modules(libpng QUIET libpng)
         endif()
@@ -497,7 +549,7 @@ else()
             message(STATUS "libpng ${libpng_VERSION} Found: ${libpng_PREFIX}")
         else()
             message(STATUS "libpng Not Found")
-            set(ZLIB_FOUND false)
+            unset(ZLIB_FOUND CACHE)
             if(WEBCFACE_FIND_ZLIB)
                 find_package(ZLIB QUIET)
             endif()
@@ -540,7 +592,7 @@ else()
             execute_process(COMMAND ${CMAKE_COMMAND} --build ${libpng_BINARY_DIR} -t install -j${N})
         endif()
 
-        set(libwebp_FOUND false)
+        unset(libwebp_FOUND CACHE)
         if(WEBCFACE_FIND_WEBP)
             pkg_check_modules(libwebp QUIET libwebp)
         endif()
@@ -788,7 +840,7 @@ endif()
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_20)
 target_include_directories(${PROJECT_NAME} PUBLIC ${INCLUDE_DIR})
 target_link_libraries(${PROJECT_NAME} PRIVATE
-    libcurl_static
+    ${libcurl}
     msgpack-cxx
     Crow
     utfcpp
@@ -828,7 +880,7 @@ add_library(${PROJECT_NAME}::wcf ALIAS wcf)
 add_executable(${PROJECT_NAME}-server ${SVR_MAIN_SRC} ${VERSION_RC})
 target_link_libraries(${PROJECT_NAME}-server PRIVATE
     ${PROJECT_NAME}
-    CLI11
+    CLI11::CLI11
     msgpack-cxx
 )
 set_target_properties(${PROJECT_NAME}-server PROPERTIES
@@ -884,7 +936,7 @@ if(WEBCFACE_TEST)
     add_executable(${PROJECT_NAME}-test ${TEST_SRC})
     target_link_libraries(${PROJECT_NAME}-test PRIVATE
         ${PROJECT_NAME}
-        libcurl_static
+        ${libcurl}
         Crow
         msgpack-cxx
         utfcpp
@@ -910,11 +962,13 @@ if(WEBCFACE_INSTALL)
         RUNTIME DESTINATION bin
     )
 
-    set(WEBCFACE_EXPORTS ${PROJECT_NAME} wcf)
+    list(APPEND WEBCFACE_EXPORTS ${PROJECT_NAME} wcf)
     if(NOT WEBCFACE_SHARED)
-        set(WEBCFACE_EXPORTS ${WEBCFACE_EXPORTS} libcurl_static)
+        if(NOT CURL_FOUND)
+            list(APPEND WEBCFACE_EXPORTS ${libcurl})
+        endif()
         if(NOT msgpack-cxx_FOUND)
-            set(WEBCFACE_EXPORTS ${WEBCFACE_EXPORTS} msgpack-cxx)
+            list(APPEND WEBCFACE_EXPORTS msgpack-cxx)
         endif()
     endif()
     install(TARGETS ${WEBCFACE_EXPORTS}
@@ -984,14 +1038,18 @@ if(WEBCFACE_INSTALL)
         ${CMAKE_CURRENT_LIST_DIR}/LICENSE
         DESTINATION share/webcface
     )
-    install(FILES
-        ${asio_SOURCE_DIR}/asio/LICENSE_1_0.txt
-        DESTINATION share/webcface/3rd_party/asio
-    )
-    install(FILES
-        ${cli11_SOURCE_DIR}/LICENSE
-        DESTINATION share/webcface/3rd_party/cli11
-    )
+    if(NOT ASIO_FOUND)
+        install(FILES
+            ${asio_SOURCE_DIR}/asio/LICENSE_1_0.txt
+            DESTINATION share/webcface/3rd_party/asio
+        )
+    endif()
+    if(NOT CLI11_FOUND)
+        install(FILES
+            ${cli11_SOURCE_DIR}/LICENSE
+            DESTINATION share/webcface/3rd_party/cli11
+        )
+    endif()
     # curl: リポジトリ内にないしバイナリ配布に必須ではないのでスキップ
     install(FILES
         ${crow_SOURCE_DIR}/LICENSE
@@ -1005,10 +1063,12 @@ if(WEBCFACE_INSTALL)
             DESTINATION share/webcface/3rd_party/msgpack-c
         )
     endif()
-    install(FILES
-        ${utfcpp_SOURCE_DIR}/LICENSE
-        DESTINATION share/webcface/3rd_party/utfcpp
-    )
+    if(NOT UTF8CPP_FOUND)
+        install(FILES
+            ${utfcpp_SOURCE_DIR}/LICENSE
+            DESTINATION share/webcface/3rd_party/utfcpp
+        )
+    endif()
     if(NOT Magickpp_FOUND)
         if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
             install(FILES

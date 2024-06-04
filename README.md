@@ -305,7 +305,7 @@ sudo cmake --build build -t install
 		* デフォルトではfind_packageやpkg_check_modulesなどで依存ライブラリがインストールされているか確認し、見つかればそれを使い見つからなければソースコードをダウンロードします。
 		* `-DWEBCFACE_FIND_(ライブラリ)=off` にするとインストールしたものは使わず常にソースからダウンロードするようになります。
 		* 設定可能なライブラリ名は以下
-			* `MSGPACK`, `SPDLOG`, `EVENTPP`, `MAGICK`
+			* `MSGPACK`, `SPDLOG`, `EVENTPP`, `CURL`, `ASIO`, `CLI11`, `UTF8CPP`, `MAGICK`
 			* `OPENCV` (デフォルトでoff、見つからなかった場合ソースからのビルドもしません)
 			* Magickをソースビルドする場合のみ: `JPEG`, `PNG`, `ZLIB`, `WEBP`
 		* `-DWEBCFACE_FIND_LIBS=off` とすると上記設定をすべてoffにします
