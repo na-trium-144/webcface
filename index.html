@@ -408,6 +408,10 @@ Build (with Pure CMake)</h3>
 <li>WebCFaceをstaticライブラリにする場合必要かも</li>
 </ul>
 </li>
+<li>Windows(MSVC)でImageMagickをソースからビルドする場合、デフォルトでは<code>CMAKE_BUILD_TYPE</code>に指定したconfigurationのみビルドされます<ul>
+<li>DebugとReleaseの両方をビルドしたい場合は <code>-DWEBCFACE_CONFIG_ALL=on</code> を指定してください</li>
+</ul>
+</li>
 <li>spdlogのオプション<ul>
 <li>Windowsでは<code>SPDLOG_WCHAR_SUPPORT</code>がデフォルトでONになります</li>
 <li>それ以外のオプション(SPDLOG_WCHAR_FILENAMES, SPDLOG_WCHAR_CONSOLE)はWebCFace内では設定しませんがコマンドラインオプションで指定することは可能です</li>
@@ -474,7 +478,7 @@ License</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon Jun 3 2024 16:45:44 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Tue Jun 4 2024 10:41:38 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>
