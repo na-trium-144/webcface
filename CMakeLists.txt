@@ -314,32 +314,6 @@ else()
     set(libcurl libcurl_static)
 endif()
 
-if(WEBCFACE_FIND_ASIO)
-    find_path(ASIO_INCLUDE_DIR asio.hpp)
-endif()
-if(NOT ASIO_INCLUDE_DIR STREQUAL "ASIO_INCLUDE_DIR-NOTFOUND")
-    set(ASIO_FOUND true)
-    message(STATUS "Asio Found: ${ASIO_INCLUDE_DIR}")
-else()
-    set(ASIO_FOUND false)
-    message(STATUS "Asio Not Found, Fetching Source...")
-    FetchContent_Declare(asio
-        GIT_REPOSITORY https://github.com/chriskohlhoff/asio.git
-        GIT_TAG asio-1-29-0
-    )
-    FetchContent_GetProperties(asio)
-    if(NOT asio_POPULATED)
-        FetchContent_Populate(asio)
-        set(ASIO_INCLUDE_DIR ${asio_SOURCE_DIR}/asio/include)
-    endif()
-endif()
-add_library(asio INTERFACE)
-target_include_directories(asio INTERFACE ${ASIO_INCLUDE_DIR})
-target_compile_definitions(asio INTERFACE ASIO_STANDALONE)
-if(MINGW)
-    target_link_libraries(asio INTERFACE ws2_32.lib wsock32.lib)
-endif()
-
 if(WEBCFACE_FIND_CROW)
     find_package(Crow QUIET)
 endif()
@@ -870,6 +844,23 @@ set(INCLUDE_DIR
 
 ###############################################################################
 
+list(APPEND WEBCFACE_PRIVATE_DEPS
+    ${libcurl}
+    msgpack-cxx
+    Crow::Crow
+    utfcpp
+    magickpp
+)
+list(APPEND WEBCFACE_PUBLIC_DEPS
+    eventpp::eventpp
+    spdlog::spdlog
+)
+if(WIN32)
+    list(APPEND WEBCFACE_PRIVATE_DEPS
+        ws2_32.lib wsock32.lib iphlpapi.lib
+    )
+endif()
+
 if(WEBCFACE_SHARED)
     add_library(${PROJECT_NAME} SHARED ${WEBCFACE_SRC} ${VERSION_RC})
 else()
@@ -877,19 +868,9 @@ else()
 endif()
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_20)
 target_include_directories(${PROJECT_NAME} PUBLIC ${INCLUDE_DIR})
-target_link_libraries(${PROJECT_NAME} PRIVATE
-    ${libcurl}
-    msgpack-cxx
-    Crow::Crow
-    utfcpp
-    magickpp
-)
-target_link_libraries(${PROJECT_NAME} PUBLIC
-    eventpp::eventpp
-    spdlog::spdlog
-)
+target_link_libraries(${PROJECT_NAME} PRIVATE ${WEBCFACE_PRIVATE_DEPS})
+target_link_libraries(${PROJECT_NAME} PUBLIC ${WEBCFACE_PUBLIC_DEPS})
 if(WIN32)
-    target_link_libraries(${PROJECT_NAME} PRIVATE iphlpapi.lib)
     set_target_properties(${PROJECT_NAME} PROPERTIES
         DEBUG_POSTFIX "${WEBCFACE_SOVERSION}d"
         RELEASE_POSTFIX "${WEBCFACE_SOVERSION}"
@@ -974,12 +955,8 @@ if(WEBCFACE_TEST)
     add_executable(${PROJECT_NAME}-test ${TEST_SRC})
     target_link_libraries(${PROJECT_NAME}-test PRIVATE
         ${PROJECT_NAME}
-        ${libcurl}
-        Crow::Crow
-        msgpack-cxx
-        utfcpp
         GTest::gtest_main
-
+        ${WEBCFACE_PRIVATE_DEPS}
     )
     target_compile_definitions(${PROJECT_NAME}-test PRIVATE
         WEBCFACE_TEST_TIMEOUT=${WEBCFACE_TEST_TIMEOUT}
