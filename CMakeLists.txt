@@ -43,6 +43,7 @@ option(WEBCFACE_FIND_SPDLOG "try find_package(spdlog)" ${WEBCFACE_FIND_LIBS})
 option(WEBCFACE_FIND_EVENTPP "try find_package(eventpp)" ${WEBCFACE_FIND_LIBS})
 option(WEBCFACE_FIND_CURL "try find_package(CURL)" ${WEBCFACE_FIND_LIBS})
 option(WEBCFACE_FIND_ASIO "try find_path(asio.hpp)" ${WEBCFACE_FIND_LIBS})
+option(WEBCFACE_FIND_CROW "try find_package(Crow)" ${WEBCFACE_FIND_LIBS})
 option(WEBCFACE_FIND_CLI11 "try find_package(CLI11)" ${WEBCFACE_FIND_LIBS})
 option(WEBCFACE_FIND_UTF8CPP "try find_path(utf8.h)" ${WEBCFACE_FIND_LIBS})
 option(WEBCFACE_FIND_MAGICK "try pkg_check_modules(Magick++)" ${WEBCFACE_FIND_LIBS})
@@ -339,23 +340,60 @@ if(MINGW)
     target_link_libraries(asio INTERFACE ws2_32.lib wsock32.lib)
 endif()
 
-message(STATUS "Fetching crow Source...")
-# asioがない場合find_packageしないようにするため、
-# add_subdirectoryではなくinterfaceライブラリを定義する
-FetchContent_Declare(crow
-    # GIT_REPOSITORY https://github.com/CrowCpp/Crow.git
-    # GIT_TAG 921ce6f
-    GIT_REPOSITORY https://github.com/na-trium-144/Crow.git
-    GIT_TAG unix_socket
-)
-FetchContent_GetProperties(crow)
-if(NOT crow_POPULATED)
-    FetchContent_Populate(crow)
-    add_library(Crow INTERFACE)
-    target_include_directories(Crow INTERFACE
-        ${crow_SOURCE_DIR}/include
+if(WEBCFACE_FIND_CROW)
+    find_package(Crow QUIET)
+endif()
+if(Crow_FOUND)
+    message(STATUS "Crow ${Crow_VERSION} Found: ${Crow_DIR}")
+    include(CheckCXXSourceCompiles)
+    set(CMAKE_REQUIRED_LIBRARIES Crow::Crow)
+    check_cxx_source_compiles("
+#include <crow.h>
+int main(){
+    crow::SimpleApp app;
+    CROW_ROUTE(app, \"/\")([](){
+        return \"Hello world\";
+    });
+    app.unix_path(\"/tmp/test.sock\").multithreaded().run();
+}" CROW_HAS_UNIX_SUPPORT)
+    unset(CMAKE_REQUIRED_LIBRARIES)
+    if(NOT CROW_HAS_UNIX_SUPPORT)
+        message(STATUS "Installed crow has no unix socket support")
+        unset(Crow_FOUND)
+    endif()
+endif()
+if(NOT Crow_FOUND)
+    message(STATUS "Crow Not Found")
+    if(WEBCFACE_FIND_ASIO)
+        find_path(ASIO_INCLUDE_DIR asio.hpp)
+    endif()
+    if(NOT ASIO_INCLUDE_DIR STREQUAL "ASIO_INCLUDE_DIR-NOTFOUND")
+        set(ASIO_FOUND true)
+        message(STATUS "Asio Found: ${ASIO_INCLUDE_DIR}")
+    else()
+        set(ASIO_FOUND false)
+        message(STATUS "Asio Not Found, Fetching Source...")
+        FetchContent_Declare(asio
+            GIT_REPOSITORY https://github.com/chriskohlhoff/asio.git
+            GIT_TAG asio-1-29-0
+        )
+        FetchContent_GetProperties(asio)
+        if(NOT asio_POPULATED)
+            FetchContent_Populate(asio)
+            set(ASIO_INCLUDE_DIR ${asio_SOURCE_DIR}/asio/include CACHE INTERNAL "" FORCE)
+        endif()
+    endif()
+
+    message(STATUS "Fetching Crow Source...")
+    # asioがない場合find_packageしないようにするため、
+    # add_subdirectoryではなくinterfaceライブラリを定義する
+    FetchContent_Declare(crow
+        # GIT_REPOSITORY https://github.com/CrowCpp/Crow.git
+        # GIT_TAG 921ce6f
+        GIT_REPOSITORY https://github.com/na-trium-144/Crow.git
+        GIT_TAG 5f5372ed80860dfcef788972bb0fd3972f715842
     )
-    target_link_libraries(Crow INTERFACE asio)
+    FetchContent_MakeAvailable(crow)
 endif()
 
 if(WEBCFACE_FIND_CLI11)
@@ -842,7 +880,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC ${INCLUDE_DIR})
 target_link_libraries(${PROJECT_NAME} PRIVATE
     ${libcurl}
     msgpack-cxx
-    Crow
+    Crow::Crow
     utfcpp
     magickpp
 )
@@ -937,7 +975,7 @@ if(WEBCFACE_TEST)
     target_link_libraries(${PROJECT_NAME}-test PRIVATE
         ${PROJECT_NAME}
         ${libcurl}
-        Crow
+        Crow::Crow
         msgpack-cxx
         utfcpp
         GTest::gtest_main
@@ -1038,7 +1076,7 @@ if(WEBCFACE_INSTALL)
         ${CMAKE_CURRENT_LIST_DIR}/LICENSE
         DESTINATION share/webcface
     )
-    if(NOT ASIO_FOUND)
+    if(NOT CROW_FOUND AND NOT ASIO_FOUND)
         install(FILES
             ${asio_SOURCE_DIR}/asio/LICENSE_1_0.txt
             DESTINATION share/webcface/3rd_party/asio
@@ -1051,12 +1089,14 @@ if(WEBCFACE_INSTALL)
         )
     endif()
     # curl: リポジトリ内にないしバイナリ配布に必須ではないのでスキップ
-    install(FILES
-        ${crow_SOURCE_DIR}/LICENSE
-        ${crow_SOURCE_DIR}/README.md
-        # 3rdpartyのライセンスがREADMEにある
-        DESTINATION share/webcface/3rd_party/crow
-    )
+    if(NOT CROW_FOUND)
+        install(FILES
+            ${crow_SOURCE_DIR}/LICENSE
+            ${crow_SOURCE_DIR}/README.md
+            # 3rdpartyのライセンスがREADMEにある
+            DESTINATION share/webcface/3rd_party/crow
+        )
+    endif()
     if(NOT msgpack-cxx_FOUND)
         install(FILES
             ${msgpack-cxx_SOURCE_DIR}/LICENSE_1_0.txt
