@@ -8,7 +8,7 @@
 [![javascript](https://img.shields.io/badge/JavaScript%2C%20TypeScript-gray?logo=JavaScript&logoColor=white)](https://github.com/na-trium-144/webcface-js)
 [![npm](https://img.shields.io/npm/v/webcface)](https://www.npmjs.com/package/webcface)
 
-Web-based RPC &amp; UI Library
+Web-based IPC &amp; Dashboard-like UI
 
 WebSocketとMessagePackを使った、ROSのような分散型の通信ライブラリです。
 
