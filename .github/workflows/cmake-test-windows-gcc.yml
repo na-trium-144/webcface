@@ -15,7 +15,14 @@ jobs:
   test-windows-gcc:
     strategy:
       matrix:
-        dep: ["pacman", "source"]
+        dep: ["pacman", "source", "static"]
+        include:
+        - dep: pacman
+          shared_flag: on
+        - dep: source
+          shared_flag: on
+        - dep: static
+          shared_flag: off
     runs-on: windows-latest
     defaults:
       run:
@@ -47,6 +54,8 @@ jobs:
         -DWEBCFACE_TEST=on
         -DWEBCFACE_EXAMPLE=on
         -DWEBCFACE_TEST_TIMEOUT=1000
+        -DWEBCFACE_SHARED=${{matrix.shared_flag}}
+        -DCMAKE_INSTALL_PREFIX=${{github.workspace}}/build/install
 
     - name: Build
       run: cmake --build build
@@ -56,3 +65,18 @@ jobs:
         WEBCFACE_TRACE: 1
       working-directory: ${{github.workspace}}/build
       run: ctest --output-on-failure --timeout 100
+
+    - name: Test CMake with installed package
+      working-directory: ${{github.workspace}}/.github/test
+      run: |
+        cmake -B build -DCMAKE_PREFIX_PATH=${{github.workspace}}/build/install
+        cmake --build build
+
+    - name: Test building with pkg-config
+      working-directory: ${{github.workspace}}/.github/test
+      env:
+        PKG_CONFIG_PATH: ${{github.workspace}}/build/install/lib/pkgconfig
+      run: |
+        g++ test.cpp $(pkg-config --cflags --libs webcface)
+        gcc test.c $(pkg-config --cflags --libs webcface) -lstdc++
+
