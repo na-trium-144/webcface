@@ -196,10 +196,7 @@ else()
             MSGPACK_NO_BOOST
             MSGPACK_DEFAULT_API_VERSION=3
         )
-        target_include_directories(msgpack-cxx INTERFACE
-            $<BUILD_INTERFACE:${msgpack-cxx_SOURCE_DIR}/include>
-            $<INSTALL_INTERFACE:include>
-        )
+        target_include_directories(msgpack-cxx INTERFACE $<BUILD_INTERFACE:${msgpack-cxx_SOURCE_DIR}/include>)
     endif()
 endif()
 
@@ -303,6 +300,9 @@ else()
     set(CURL_DISABLE_SOCKETPAIR on CACHE INTERNAL "" FORCE)
     set(CURL_DISABLE_TELNET on CACHE INTERNAL "" FORCE)
     set(CURL_DISABLE_TFTP on CACHE INTERNAL "" FORCE)
+    set(CURL_ZLIB off CACHE INTERNAL "" FORCE)
+    set(CURL_USE_LIBSSH2 off CACHE INTERNAL "" FORCE)
+    set(CURL_USE_LIBSSH off CACHE INTERNAL "" FORCE)
     set(BUILD_CURL_EXE off CACHE INTERNAL "" FORCE)
     set(BUILD_SHARED_LIBS off CACHE INTERNAL "" FORCE)
     set(BUILD_STATIC_LIBS on CACHE INTERNAL "" FORCE)
@@ -334,6 +334,8 @@ int main(){
     if(NOT CROW_HAS_UNIX_SUPPORT)
         message(STATUS "Installed crow has no unix socket support")
         unset(Crow_FOUND)
+    else()
+        set(crow Crow::Crow)
     endif()
 endif()
 if(NOT Crow_FOUND)
@@ -367,8 +369,16 @@ if(NOT Crow_FOUND)
         GIT_REPOSITORY https://github.com/na-trium-144/Crow.git
         GIT_TAG 5f5372ed80860dfcef788972bb0fd3972f715842
     )
-    set(CROW_INSTALL OFF CACHE INTERNAL "" FORCE)
-    FetchContent_MakeAvailable(crow)
+    FetchContent_GetProperties(crow)
+    if(NOT crow_POPULATED)
+        FetchContent_Populate(crow)
+        add_library(Crow INTERFACE)
+        target_include_directories(Crow INTERFACE
+            $<BUILD_INTERFACE:${crow_SOURCE_DIR}/include>
+            $<BUILD_INTERFACE:${ASIO_INCLUDE_DIR}>
+        )
+        set(Crow Crow)
+    endif()
 endif()
 
 if(WEBCFACE_FIND_CLI11)
@@ -404,7 +414,7 @@ else()
     endif()
 endif()
 add_library(utfcpp INTERFACE)
-target_include_directories(utfcpp INTERFACE ${UTF8CPP_INCLUDE_DIR})
+target_include_directories(utfcpp INTERFACE $<BUILD_INTERFACE:${UTF8CPP_INCLUDE_DIR}>)
 
 if(WEBCFACE_FIND_OPENCV)
     find_package(OpenCV QUIET)
@@ -422,6 +432,7 @@ if(WEBCFACE_FIND_MAGICK)
     pkg_check_modules(Magickpp QUIET Magick++)
 endif()
 if(Magickpp_FOUND)
+    set(Magickpp_INSTALLED 1)
     message(STATUS "Magick++ ${Magickpp_VERSION} Found: ${Magickpp_PREFIX}")
     add_library(magickpp INTERFACE)
     target_include_directories(magickpp INTERFACE ${Magickpp_INCLUDE_DIRS})
@@ -429,6 +440,7 @@ if(Magickpp_FOUND)
     target_link_libraries(magickpp INTERFACE ${Magickpp_LIBRARIES})
     target_link_directories(magickpp INTERFACE ${Magickpp_LIBRARY_DIRS})
 else()
+    set(Magickpp_INSTALLED 0)
     message(STATUS "Magick++ Not Found")
     include(ProcessorCount)
     ProcessorCount(N)
@@ -485,7 +497,10 @@ else()
                 COMMAND ${MSBUILD_COMMAND} /m /p:Configuration=Release,Platform=${CMAKE_C_COMPILER_ARCHITECTURE_ID}
                 WORKING_DIRECTORY ${magick-windows_SOURCE_DIR}
             )
-            file(GLOB MAGICKPP_RL_LIBS ${MAGICKPP_LIB_DIR}/CORE_RL_*.lib)
+            file(GLOB MAGICKPP_RL_LIBS
+                RELATIVE ${MAGICKPP_LIB_DIR}
+                ${MAGICKPP_LIB_DIR}/CORE_RL_*.lib
+            )
             foreach(lib IN LISTS MAGICKPP_RL_LIBS)
                 list(APPEND MAGICKPP_LIBS optimized ${lib})
             endforeach()
@@ -495,7 +510,10 @@ else()
                 COMMAND ${MSBUILD_COMMAND} /m /p:Configuration=Debug,Platform=${CMAKE_C_COMPILER_ARCHITECTURE_ID}
                 WORKING_DIRECTORY ${magick-windows_SOURCE_DIR}
             )
-            file(GLOB MAGICKPP_DB_LIBS ${MAGICKPP_LIB_DIR}/CORE_DB_*.lib)
+            file(GLOB MAGICKPP_DB_LIBS
+                RELATIVE ${MAGICKPP_LIB_DIR}
+                ${MAGICKPP_LIB_DIR}/CORE_DB_*.lib
+            )
             foreach(lib IN LISTS MAGICKPP_DB_LIBS)
                 list(APPEND MAGICKPP_LIBS debug ${lib})
             endforeach()
@@ -507,6 +525,10 @@ else()
             ${magick-windows_SOURCE_DIR}/ImageMagick
         )
         target_link_libraries(magickpp INTERFACE ${MAGICKPP_LIBS})
+        target_link_directories(magickpp INTERFACE
+            $<BUILD_INTERFACE:${MAGICKPP_LIB_DIR}>
+            $<INSTALL_INTERFACE:lib>
+        )
         target_compile_definitions(magickpp INTERFACE STATIC_MAGICK)
         add_compile_definitions(WEBCFACE_MAGICK_VER7)
 
@@ -562,12 +584,12 @@ else()
             message(STATUS "libpng ${libpng_VERSION} Found: ${libpng_PREFIX}")
         else()
             message(STATUS "libpng Not Found")
-            unset(ZLIB_FOUND CACHE)
+            unset(zlib_FOUND CACHE)
             if(WEBCFACE_FIND_ZLIB)
-                find_package(ZLIB QUIET)
+                pkg_check_modules(zlib QUIET zlib)
             endif()
-            if(ZLIB_FOUND)
-                message(STATUS "zlib ${ZLIB_VERSION} Found: ${ZLIB_DIR}")
+            if(zlib_FOUND)
+                message(STATUS "zlib ${zlib_VERSION} Found: ${zlib_PREFIX}")
             else()
                 message(STATUS "zlib Not Found, Fetching source...")
                 FetchContent_Declare(zlib
@@ -639,7 +661,7 @@ else()
         endif()
         pkg_check_modules(libjpeg REQUIRED QUIET libjpeg)
         pkg_check_modules(libpng REQUIRED QUIET libpng)
-        find_package(ZLIB REQUIRED QUIET)
+        pkg_check_modules(zlib REQUIRED QUIET zlib)
         pkg_check_modules(libwebp REQUIRED QUIET libwebp)
 
         message(STATUS "Fetching Magick++ source...")
@@ -679,20 +701,22 @@ else()
         )
         pkg_check_modules(Magickpp REQUIRED QUIET Magick++)
         add_library(magickpp INTERFACE)
-        target_include_directories(magickpp INTERFACE ${Magickpp_STATIC_INCLUDE_DIRS})
+        target_include_directories(magickpp INTERFACE $<BUILD_INTERFACE:${Magickpp_STATIC_INCLUDE_DIRS}>)
         target_compile_options(magickpp INTERFACE ${Magickpp_STATIC_CFLAGS_OTHER})
         target_link_libraries(magickpp INTERFACE
             ${Magickpp_STATIC_LIBRARIES}
             ${libjpeg_STATIC_LIBRARIES}
             ${libpng_STATIC_LIBRARIES}
-            ZLIB::ZLIB
+            ${zlib_STATIC_LIBRARIES}
             ${libwebp_STATIC_LIBRARIES}
         )
         target_link_directories(magickpp INTERFACE
-            ${Magickpp_STATIC_LIBRARY_DIRS}
-            ${libjpeg_STATIC_LIBRARY_DIRS}
-            ${libpng_STATIC_LIBRARY_DIRS}
-            ${libwebp_STATIC_LIBRARY_DIRS}
+            $<BUILD_INTERFACE:${Magickpp_STATIC_LIBRARY_DIRS}>
+            $<BUILD_INTERFACE:${libjpeg_STATIC_LIBRARY_DIRS}>
+            $<BUILD_INTERFACE:${libpng_STATIC_LIBRARY_DIRS}>
+            $<BUILD_INTERFACE:${zlib_STATIC_LIBRARY_DIRS}>
+            $<BUILD_INTERFACE:${libwebp_STATIC_LIBRARY_DIRS}>
+            $<INSTALL_INTERFACE:lib>
         )
         if(WIN32)
             target_link_libraries(magickpp INTERFACE urlmon.lib)
@@ -848,7 +872,7 @@ set(INCLUDE_DIR
 list(APPEND WEBCFACE_PRIVATE_DEPS
     ${libcurl}
     msgpack-cxx
-    Crow::Crow
+    ${Crow}
     utfcpp
     magickpp
 )
@@ -866,6 +890,8 @@ if(WEBCFACE_SHARED)
     add_library(${PROJECT_NAME} SHARED ${WEBCFACE_SRC} ${VERSION_RC})
 else()
     add_library(${PROJECT_NAME} STATIC ${WEBCFACE_SRC})
+    get_target_property(MAGICKPP_TARGET_LINK_DIR magickpp INTERFACE_LINK_DIRECTORIES)
+    target_link_directories(${PROJECT_NAME} PUBLIC ${MAGICKPP_TARGET_LINK_DIR})
 endif()
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_20)
 target_include_directories(${PROJECT_NAME} PUBLIC ${INCLUDE_DIR})
@@ -892,9 +918,12 @@ add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 add_library(wcf INTERFACE)
 target_include_directories(wcf INTERFACE ${INCLUDE_DIR})
 target_compile_features(wcf INTERFACE c_std_99)
-target_link_libraries(wcf INTERFACE
-    $<TARGET_LINKER_FILE:${PROJECT_NAME}::${PROJECT_NAME}>
-)
+if(WEBCFACE_SHARED)
+    # sharedの場合はlibc++とリンクする必要もない
+    target_link_libraries(wcf INTERFACE $<TARGET_LINKER_FILE:${PROJECT_NAME}::${PROJECT_NAME}>)
+else()
+    target_link_libraries(wcf INTERFACE ${PROJECT_NAME})
+endif()
 add_library(${PROJECT_NAME}::wcf ALIAS wcf)
 
 add_executable(${PROJECT_NAME}-server ${SVR_MAIN_SRC} ${VERSION_RC})
@@ -980,8 +1009,10 @@ if(WEBCFACE_INSTALL)
 
     # library
     list(APPEND WEBCFACE_EXPORTS ${PROJECT_NAME} wcf)
+    list(APPEND WEBCFACE_PKGCONFIG_LIBS -lwebcface)
     # public dependencies
     if(spdlog_FOUND)
+        list(APPEND WEBCFACE_PKGCONFIG_REQUIRES spdlog)
         set(SPDLOG_INSTALLED 1)
     else()
         list(APPEND WEBCFACE_EXPORTS ${spdlog})
@@ -995,11 +1026,47 @@ if(WEBCFACE_INSTALL)
     endif()
     if(NOT WEBCFACE_SHARED)
         # private static dependencies
-        if(NOT CURL_FOUND)
-            list(APPEND WEBCFACE_EXPORTS ${libcurl})
-        endif()
         if(NOT msgpack-cxx_FOUND)
             list(APPEND WEBCFACE_EXPORTS msgpack-cxx)
+        endif()
+        if(NOT CURL_FOUND)
+            list(APPEND WEBCFACE_EXPORTS ${libcurl})
+            if(NOT WEBCFACE_SHARED)
+                list(APPEND WEBCFACE_PKGCONFIG_LIBS -lcurl)
+            endif()
+        endif()
+        if(NOT Crow_FOUND)
+            list(APPEND WEBCFACE_EXPORTS Crow)
+        endif()
+        if(NOT UTF8CPP_FOUND)
+            list(APPEND WEBCFACE_EXPORTS utfcpp)
+        endif()
+        if(Magickpp_INSTALLED)
+            list(APPEND WEBCFACE_PKGCONFIG_REQUIRES Magickpp)
+        else()
+            list(APPEND WEBCFACE_EXPORTS magickpp)
+            if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+                install(FILES ${MAGICKPP_RL_LIBS} ${MAGICKPP_DB_LIBS}
+                    DESTINATION lib
+                )
+                foreach(lib IN LISTS MAGICKPP_DB_LIBS MAGICKPP_RL_LIBS)
+                    list(APPEND WEBCFACE_PKGCONFIG_LIBS -l${lib})
+                endforeach()
+            else()
+                foreach(lib IN LISTS 
+                    Magickpp_STATIC_LIBRARIES
+                    libjpeg_STATIC_LIBRARIES
+                    libpng_STATIC_LIBRARIES
+                    zlib_STATIC_LIBRARIES
+                    libwebp_STATIC_LIBRARIES
+                )
+                    install(FILES ${MAGICKPP_PREFIX}/lib/lib${lib}.a
+                        DESTINATION lib
+                        OPTIONAL
+                    )
+                    list(APPEND WEBCFACE_PKGCONFIG_LIBS -l${lib})
+                endforeach()
+            endif()
         endif()
     endif()
     install(TARGETS ${WEBCFACE_EXPORTS}
@@ -1042,9 +1109,8 @@ if(WEBCFACE_INSTALL)
     )
 
     # pkg-config
-    if(spdlog_FOUND)
-        set(WEBCFACE_PKGCONFIG_REQUIRES "spdlog")
-    endif()
+    list(JOIN WEBCFACE_PKGCONFIG_LIBS " " WEBCFACE_PKGCONFIG_LIBS)
+    list(JOIN WEBCFACE_PKGCONFIG_REQUIRES " " WEBCFACE_PKGCONFIG_REQUIRES)
     configure_file(
         ${CMAKE_CURRENT_SOURCE_DIR}/cmake/${PROJECT_NAME}.pc.in
         ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.pc
@@ -1138,7 +1204,7 @@ if(WEBCFACE_INSTALL)
             DESTINATION share/webcface/3rd_party/utfcpp
         )
     endif()
-    if(NOT Magickpp_FOUND)
+    if(NOT Magickpp_INSTALLED)
         if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
             install(FILES
                 ${magick-windows_SOURCE_DIR}/ImageMagick/LICENSE
