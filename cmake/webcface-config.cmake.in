@@ -1,16 +1,19 @@
 @PACKAGE_INIT@
 
 include(CMakeFindDependencyMacro)
-find_dependency(eventpp)
-find_dependency(spdlog)
+find_dependency(Threads)
+if(@EVENTPP_INSTALLED@)
+    find_dependency(eventpp)
+endif()
+if(@SPDLOG_INSTALLED@)
+    find_dependency(spdlog)
+endif()
 
 include(${CMAKE_CURRENT_LIST_DIR}/webcface-targets.cmake)
 
 # WindowsでCMAKE_BUILD_TYPEがMinSizeRel,RelWithDebInfoの場合Releaseにリンクするようにする
 # (Releaseのバイナリがインストールされている前提)
-foreach(webcface_target webcface::webcface spdlog::spdlog)
-	set_target_properties(${webcface_target} PROPERTIES
-		MAP_IMPORTED_CONFIG_MINSIZEREL Release
-		MAP_IMPORTED_CONFIG_RELWITHDEBINFO Release
-	)
-endforeach()
+set_target_properties(webcface::webcface PROPERTIES
+    MAP_IMPORTED_CONFIG_MINSIZEREL Release
+    MAP_IMPORTED_CONFIG_RELWITHDEBINFO Release
+)

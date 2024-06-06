@@ -214,7 +214,7 @@ else()
         GIT_REPOSITORY https://github.com/wqking/eventpp.git
         GIT_TAG v0.1.3
     )
-    set(EVENTPP_INSTALL ${WEBCFACE_INSTALL} CACHE INTERNAL "" FORCE)
+    set(EVENTPP_INSTALL OFF CACHE INTERNAL "" FORCE)
     FetchContent_MakeAvailable(eventpp)
 endif()
 
@@ -223,19 +223,19 @@ if(WEBCFACE_FIND_SPDLOG)
 endif()
 if(spdlog_FOUND)
     message(STATUS "spdlog ${spdlog_VERSION} Found: ${spdlog_DIR}")
+    set(spdlog spdlog::spdlog)
 else()
     message(STATUS "spdlog Not Found, Fetching Source...")
     FetchContent_Declare(spdlog
         GIT_REPOSITORY https://github.com/gabime/spdlog.git
         GIT_TAG v1.12.0
     )
-    set(SPDLOG_BUILD_SHARED ${WEBCFACE_SHARED} CACHE INTERNAL "" FORCE)
-    set(SPDLOG_BUILD_PIC ${WEBCFACE_PIC} CACHE INTERNAL "" FORCE)
-    set(SPDLOG_INSTALL ${WEBCFACE_INSTALL} CACHE INTERNAL "" FORCE)
+    set(SPDLOG_INSTALL OFF CACHE INTERNAL "" FORCE)
     if(WIN32)
         set(SPDLOG_WCHAR_SUPPORT ON CACHE INTERNAL "" FORCE)
     endif()
     FetchContent_MakeAvailable(spdlog)
+    set(spdlog spdlog_header_only)
 endif()
 
 if(WEBCFACE_FIND_CURL)
@@ -341,7 +341,7 @@ if(NOT Crow_FOUND)
     if(WEBCFACE_FIND_ASIO)
         find_path(ASIO_INCLUDE_DIR asio.hpp)
     endif()
-    if(NOT ASIO_INCLUDE_DIR STREQUAL "ASIO_INCLUDE_DIR-NOTFOUND")
+    if(WEBCFACE_FIND_ASIO AND NOT ASIO_INCLUDE_DIR STREQUAL "ASIO_INCLUDE_DIR-NOTFOUND")
         set(ASIO_FOUND true)
         message(STATUS "Asio Found: ${ASIO_INCLUDE_DIR}")
     else()
@@ -367,6 +367,7 @@ if(NOT Crow_FOUND)
         GIT_REPOSITORY https://github.com/na-trium-144/Crow.git
         GIT_TAG 5f5372ed80860dfcef788972bb0fd3972f715842
     )
+    set(CROW_INSTALL OFF CACHE INTERNAL "" FORCE)
     FetchContent_MakeAvailable(crow)
 endif()
 
@@ -387,7 +388,7 @@ endif()
 if(WEBCFACE_FIND_UTF8CPP)
     find_path(UTF8CPP_INCLUDE_DIR utf8.h PATH_SUFFIXES utf8cpp)
 endif()
-if(NOT UTF8CPP_INCLUDE_DIR STREQUAL "UTF8CPP_INCLUDE_DIR-NOTFOUND")
+if(WEBCFACE_FIND_UTF8CPP AND NOT UTF8CPP_INCLUDE_DIR STREQUAL "UTF8CPP_INCLUDE_DIR-NOTFOUND")
     set(UTF8CPP_FOUND true)
     message(STATUS "utf8cpp Found: ${UTF8CPP_INCLUDE_DIR}")
 else()
@@ -853,7 +854,7 @@ list(APPEND WEBCFACE_PRIVATE_DEPS
 )
 list(APPEND WEBCFACE_PUBLIC_DEPS
     eventpp::eventpp
-    spdlog::spdlog
+    ${spdlog}
 )
 if(WIN32)
     list(APPEND WEBCFACE_PRIVATE_DEPS
@@ -966,10 +967,10 @@ if(WEBCFACE_TEST)
 endif()
 
 ###############################################################################
-# https://qiita.com/modapone/items/8f97425b6167cffc815c
 if(WEBCFACE_INSTALL)
     include(CMakePackageConfigHelpers)
 
+    # binaries
     install(TARGETS ${PROJECT_NAME}-server
         RUNTIME DESTINATION bin
     )
@@ -977,8 +978,23 @@ if(WEBCFACE_INSTALL)
         RUNTIME DESTINATION bin
     )
 
+    # library
     list(APPEND WEBCFACE_EXPORTS ${PROJECT_NAME} wcf)
+    # public dependencies
+    if(spdlog_FOUND)
+        set(SPDLOG_INSTALLED 1)
+    else()
+        list(APPEND WEBCFACE_EXPORTS ${spdlog})
+        set(SPDLOG_INSTALLED 0)
+    endif()
+    if(eventpp_FOUND)
+        set(EVENTPP_INSTALLED 1)
+    else()
+        list(APPEND WEBCFACE_EXPORTS eventpp)
+        set(EVENTPP_INSTALLED 0)
+    endif()
     if(NOT WEBCFACE_SHARED)
+        # private static dependencies
         if(NOT CURL_FOUND)
             list(APPEND WEBCFACE_EXPORTS ${libcurl})
         endif()
@@ -998,35 +1014,37 @@ if(WEBCFACE_INSTALL)
             OPTIONAL
         )
     endif()
-
     install(EXPORT ${PROJECT_NAME}-targets
         FILE ${PROJECT_NAME}-targets.cmake
         NAMESPACE ${PROJECT_NAME}::
         DESTINATION lib/cmake/${PROJECT_NAME}
     )
-    install(DIRECTORY ${CPP_DIR}/include/
-        DESTINATION include
-    )
-    install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/include/
-        DESTINATION include
-    )
-    configure_package_config_file(
+    set(PACKAGE_INIT "@PACKAGE_INIT@")
+    configure_file(
         ${CMAKE_CURRENT_SOURCE_DIR}/cmake/${PROJECT_NAME}-config.cmake.in
+        ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config.cmake.in
+        @ONLY
+    )
+    unset(PACKAGE_INIT)
+    configure_package_config_file(
+        ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config.cmake.in
         ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config.cmake
         INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
     )
-
     write_basic_package_version_file(
         ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config-version.cmake
         COMPATIBILITY SameMajorVersion
     )
-
     install(FILES
         ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config.cmake
         ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config-version.cmake
         DESTINATION lib/cmake/${PROJECT_NAME}
     )
-    set(WEBCFACE_PKGCONFIG_REQUIRES "spdlog")
+
+    # pkg-config
+    if(spdlog_FOUND)
+        set(WEBCFACE_PKGCONFIG_REQUIRES "spdlog")
+    endif()
     configure_file(
         ${CMAKE_CURRENT_SOURCE_DIR}/cmake/${PROJECT_NAME}.pc.in
         ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.pc
@@ -1036,6 +1054,25 @@ if(WEBCFACE_INSTALL)
         DESTINATION lib/pkgconfig
     )
 
+    # include
+    install(DIRECTORY ${CPP_DIR}/include/
+        DESTINATION include
+    )
+    install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/include/
+        DESTINATION include
+    )
+    if(NOT spdlog_FOUND)
+        install(DIRECTORY ${spdlog_SOURCE_DIR}/include/
+            DESTINATION include
+        )
+    endif()
+    if(NOT eventpp_FOUND)
+        install(DIRECTORY ${eventpp_SOURCE_DIR}/include/
+            DESTINATION include
+        )
+    endif()
+
+    # service
     if(WEBCFACE_INSTALL_SERVICE)
         install(FILES
             ${CMAKE_CURRENT_SOURCE_DIR}/cmake/webcface-server.service
@@ -1043,30 +1080,45 @@ if(WEBCFACE_INSTALL)
         )
     endif()
 
+    # webui
     if(WEBCFACE_DOWNLOAD_WEBUI)
         install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/dist/
             DESTINATION share/webcface/dist
         )
     endif()
+
+    # licenses
     install(FILES
         ${CMAKE_CURRENT_LIST_DIR}/README.md
         ${CMAKE_CURRENT_LIST_DIR}/LICENSE
         DESTINATION share/webcface
     )
-    if(NOT CROW_FOUND AND NOT ASIO_FOUND)
+    if(NOT msgpack-cxx_FOUND)
         install(FILES
-            ${asio_SOURCE_DIR}/asio/LICENSE_1_0.txt
-            DESTINATION share/webcface/3rd_party/asio
+            ${msgpack-cxx_SOURCE_DIR}/LICENSE_1_0.txt
+            DESTINATION share/webcface/3rd_party/msgpack-c
         )
     endif()
-    if(NOT CLI11_FOUND)
+    if(NOT eventpp_FOUND)
         install(FILES
-            ${cli11_SOURCE_DIR}/LICENSE
-            DESTINATION share/webcface/3rd_party/cli11
+            ${eventpp_SOURCE_DIR}/license
+            DESTINATION share/webcface/3rd_party/eventpp
+        )
+    endif()
+    if(NOT spdlog_FOUND)
+        install(FILES
+            ${spdlog_SOURCE_DIR}/LICENSE
+            DESTINATION share/webcface/3rd_party/spdlog
         )
     endif()
     # curl: リポジトリ内にないしバイナリ配布に必須ではないのでスキップ
     if(NOT CROW_FOUND)
+        if(NOT ASIO_FOUND)
+            install(FILES
+                ${asio_SOURCE_DIR}/asio/LICENSE_1_0.txt
+                DESTINATION share/webcface/3rd_party/asio
+            )
+        endif()
         install(FILES
             ${crow_SOURCE_DIR}/LICENSE
             ${crow_SOURCE_DIR}/README.md
@@ -1074,10 +1126,10 @@ if(WEBCFACE_INSTALL)
             DESTINATION share/webcface/3rd_party/crow
         )
     endif()
-    if(NOT msgpack-cxx_FOUND)
+    if(NOT CLI11_FOUND)
         install(FILES
-            ${msgpack-cxx_SOURCE_DIR}/LICENSE_1_0.txt
-            DESTINATION share/webcface/3rd_party/msgpack-c
+            ${cli11_SOURCE_DIR}/LICENSE
+            DESTINATION share/webcface/3rd_party/cli11
         )
     endif()
     if(NOT UTF8CPP_FOUND)
@@ -1100,7 +1152,7 @@ if(WEBCFACE_INSTALL)
         endif()
     endif()
 
-    # https://decovar.dev/blog/2021/09/23/cmake-cpack-package-deb-apt/
+    # cpack
     set(CPACK_VERBATIM_VARIABLES yes)
     set(CPACK_PACKAGE_CONTACT ${WEBCFACE_CONTACT})
     set(CPACK_PACKAGE_VENDOR ${WEBCFACE_CONTACT})
@@ -1120,6 +1172,7 @@ if(WEBCFACE_INSTALL)
     set(CPACK_DEBIAN_PACKAGE_VERSION ${WEBCFACE_VERSION})
     set(CPACK_DEBIAN_PACKAGE_MAINTAINER "na-trium-144 <${CPACK_PACKAGE_CONTACT}>")
     set(CPACK_DEBIAN_PACKAGE_SHLIBDEPS yes)
+    # dev package for public dependencies
     if(${spdlog_FOUND})
         set(CPACK_DEBIAN_PACKAGE_DEPENDS ${CPACK_DEBIAN_PACKAGE_DEPENDS} libspdlog-dev)
     endif()
