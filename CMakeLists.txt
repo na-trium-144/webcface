@@ -719,10 +719,12 @@ else()
             ${libwebp_STATIC_LIBRARY_DIRS}
         )
         list(REMOVE_DUPLICATES Magickpp_STATIC_LIBRARY_DIRS)
+        list(FILTER Magickpp_STATIC_LIBRARY_DIRS EXCLUDE REGEX "${MAGICKPP_PREFIX}/lib")
         target_link_libraries(magickpp INTERFACE ${Magickpp_STATIC_LIBRARIES})
         target_link_directories(magickpp INTERFACE
-            $<BUILD_INTERFACE:${Magickpp_STATIC_LIBRARY_DIRS}>
+            $<BUILD_INTERFACE:${MAGICKPP_PREFIX}/lib>
             $<INSTALL_INTERFACE:lib>
+            ${Magickpp_STATIC_LIBRARY_DIRS}
         )
         if(WIN32)
             target_link_libraries(magickpp INTERFACE urlmon.lib)
@@ -1038,7 +1040,11 @@ if(WEBCFACE_INSTALL)
         if(NOT CURL_FOUND)
             list(APPEND WEBCFACE_EXPORTS ${libcurl})
             if(NOT WEBCFACE_SHARED)
-                list(APPEND WEBCFACE_PKGCONFIG_LIBS -lcurl)
+                if(CMAKE_BUILD_TYPE STREQUAL Debug)
+                    list(APPEND WEBCFACE_PKGCONFIG_LIBS -lcurl-d)
+                else()
+                    list(APPEND WEBCFACE_PKGCONFIG_LIBS -lcurl)
+                endif()
             endif()
         endif()
         if(NOT Crow_FOUND)
@@ -1052,17 +1058,15 @@ if(WEBCFACE_INSTALL)
         else()
             list(APPEND WEBCFACE_EXPORTS magickpp)
             if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-                install(FILES ${MAGICKPP_RL_LIBS} ${MAGICKPP_DB_LIBS}
-                    DESTINATION lib
-                )
                 foreach(lib IN LISTS MAGICKPP_DB_LIBS MAGICKPP_RL_LIBS)
+                    install(FILES ${MAGICKPP_LIB_DIR}/${lib}
+                        DESTINATION lib
+                    )
                     list(APPEND WEBCFACE_PKGCONFIG_LIBS -l${lib})
                 endforeach()
             else()
                 foreach(dir IN LISTS Magickpp_STATIC_LIBRARY_DIRS)
-                    if(NOT dir STREQUAL ${MAGICKPP_PREFIX}/lib)
-                        list(APPEND WEBCFACE_PKGCONFIG_LIBS -L${dir})
-                    endif()
+                    list(APPEND WEBCFACE_PKGCONFIG_LIBS -L${dir})
                 endforeach()
                 foreach(lib IN LISTS Magickpp_STATIC_LIBRARIES)
                     install(FILES ${MAGICKPP_PREFIX}/lib/lib${lib}.a
