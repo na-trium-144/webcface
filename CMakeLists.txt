@@ -692,6 +692,7 @@ else()
                     --without-lzma --without-openexr --without-openjp2 --without-pango
                     --without-raqm --without-raw --without-tiff --without-wmf
                     --without-xml --without-zlib --without-zstd --without-x --without-zip
+                    --disable-gomp
                 WORKING_DIRECTORY ${magickpp_SOURCE_DIR}
             )
         endif()
@@ -703,20 +704,24 @@ else()
         add_library(magickpp INTERFACE)
         target_include_directories(magickpp INTERFACE $<BUILD_INTERFACE:${Magickpp_STATIC_INCLUDE_DIRS}>)
         target_compile_options(magickpp INTERFACE ${Magickpp_STATIC_CFLAGS_OTHER})
-        list(APPEND Magickpp_STATIC_LIBRARIES
-            ${libjpeg_STATIC_LIBRARIES}
+        # 先に書いたものが後に書いたものに依存するらしい
+        set(Magickpp_STATIC_LIBRARIES
+            ${Magickpp_STATIC_LIBRARIES}
+            ${libwebp_STATIC_LIBRARIES}
             ${libpng_STATIC_LIBRARIES}
             ${zlib_STATIC_LIBRARIES}
-            ${libwebp_STATIC_LIBRARIES}
+            ${libjpeg_STATIC_LIBRARIES}
         )
-        list(REMOVE_DUPLICATES Magickpp_STATIC_LIBRARIES)
+        list(APPEND Magickpp_STATIC_LIBRARY_DIRS
+            ${libjpeg_STATIC_LIBRARY_DIRS}
+            ${libpng_STATIC_LIBRARY_DIRS}
+            ${zlib_STATIC_LIBRARY_DIRS}
+            ${libwebp_STATIC_LIBRARY_DIRS}
+        )
+        list(REMOVE_DUPLICATES Magickpp_STATIC_LIBRARY_DIRS)
         target_link_libraries(magickpp INTERFACE ${Magickpp_STATIC_LIBRARIES})
         target_link_directories(magickpp INTERFACE
             $<BUILD_INTERFACE:${Magickpp_STATIC_LIBRARY_DIRS}>
-            $<BUILD_INTERFACE:${libjpeg_STATIC_LIBRARY_DIRS}>
-            $<BUILD_INTERFACE:${libpng_STATIC_LIBRARY_DIRS}>
-            $<BUILD_INTERFACE:${zlib_STATIC_LIBRARY_DIRS}>
-            $<BUILD_INTERFACE:${libwebp_STATIC_LIBRARY_DIRS}>
             $<INSTALL_INTERFACE:lib>
         )
         if(WIN32)
@@ -1054,6 +1059,11 @@ if(WEBCFACE_INSTALL)
                     list(APPEND WEBCFACE_PKGCONFIG_LIBS -l${lib})
                 endforeach()
             else()
+                foreach(dir IN LISTS Magickpp_STATIC_LIBRARY_DIRS)
+                    if(NOT dir STREQUAL ${MAGICKPP_PREFIX}/lib)
+                        list(APPEND WEBCFACE_PKGCONFIG_LIBS -L${dir})
+                    endif()
+                endforeach()
                 foreach(lib IN LISTS Magickpp_STATIC_LIBRARIES)
                     install(FILES ${MAGICKPP_PREFIX}/lib/lib${lib}.a
                         DESTINATION lib
