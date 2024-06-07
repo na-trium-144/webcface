@@ -58,7 +58,7 @@ jobs:
         -DCMAKE_INSTALL_PREFIX=${{github.workspace}}/build/install
 
     - name: Build
-      run: cmake --build build
+      run: cmake --build build -t install
 
     - name: Test
       env:
@@ -77,6 +77,6 @@ jobs:
       env:
         PKG_CONFIG_PATH: ${{github.workspace}}/build/install/lib/pkgconfig
       run: |
-        g++ test.cpp $(pkg-config --cflags --libs webcface)
-        gcc test.c $(pkg-config --cflags --libs webcface) -lstdc++
+        g++ -std=c++20 test.cc $(pkg-config --cflags --libs webcface)
+        gcc -std=c99 test.c $(pkg-config --cflags --libs webcface) -lstdc++
 

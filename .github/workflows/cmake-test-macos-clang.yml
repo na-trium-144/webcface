@@ -41,9 +41,10 @@ jobs:
         -DWEBCFACE_EXAMPLE=on
         -DWEBCFACE_TEST_TIMEOUT=1000
         -DWEBCFACE_SHARED=${{matrix.shared_flag}}
+        -DCMAKE_INSTALL_PREFIX=${{github.workspace}}/build/install
 
     - name: Build
-      run: cmake --build build
+      run: cmake --build build -t install
 
     - name: Test
       env:
@@ -62,6 +63,6 @@ jobs:
       env:
         PKG_CONFIG_PATH: ${{github.workspace}}/build/install/lib/pkgconfig
       run: |
-        clang++ test.cpp $(pkg-config --cflags --libs webcface) -framework CoreFoundation -framework Foundation -framework SystemConfiguration
-        clang test.c $(pkg-config --cflags --libs webcface) -lc++ -framework CoreFoundation -framework Foundation -framework SystemConfiguration
+        clang++ -std=c++20 test.cc $(pkg-config --cflags --libs webcface)
+        clang -std=c99 test.c $(pkg-config --cflags --libs webcface) -lc++
 

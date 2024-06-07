@@ -42,14 +42,14 @@ jobs:
     # ${{ steps.vcpkg.outputs.vcpkg-cmake-config }}
 
     - name: Build
-      run: cmake --build build
+      run: cmake --build build -t install
 
     - name: Test
       env:
         WEBCFACE_TRACE: 1
       working-directory: ${{github.workspace}}/build
       run: ctest --output-on-failure --timeout 100
-      
+
     - name: Test CMake with installed package
       working-directory: ${{github.workspace}}/.github/test
       run: |

@@ -521,8 +521,8 @@ else()
         
         add_library(magickpp INTERFACE)
         target_include_directories(magickpp INTERFACE
-            ${magick-windows_SOURCE_DIR}/ImageMagick/Magick++/lib
-            ${magick-windows_SOURCE_DIR}/ImageMagick
+            $<BUILD_INTERFACE:${magick-windows_SOURCE_DIR}/ImageMagick/Magick++/lib>
+            $<BUILD_INTERFACE:${magick-windows_SOURCE_DIR}/ImageMagick>
         )
         target_link_libraries(magickpp INTERFACE ${MAGICKPP_LIBS})
         target_link_directories(magickpp INTERFACE
@@ -703,13 +703,14 @@ else()
         add_library(magickpp INTERFACE)
         target_include_directories(magickpp INTERFACE $<BUILD_INTERFACE:${Magickpp_STATIC_INCLUDE_DIRS}>)
         target_compile_options(magickpp INTERFACE ${Magickpp_STATIC_CFLAGS_OTHER})
-        target_link_libraries(magickpp INTERFACE
-            ${Magickpp_STATIC_LIBRARIES}
+        list(APPEND Magickpp_STATIC_LIBRARIES
             ${libjpeg_STATIC_LIBRARIES}
             ${libpng_STATIC_LIBRARIES}
             ${zlib_STATIC_LIBRARIES}
             ${libwebp_STATIC_LIBRARIES}
         )
+        list(REMOVE_DUPLICATES Magickpp_STATIC_LIBRARIES)
+        target_link_libraries(magickpp INTERFACE ${Magickpp_STATIC_LIBRARIES})
         target_link_directories(magickpp INTERFACE
             $<BUILD_INTERFACE:${Magickpp_STATIC_LIBRARY_DIRS}>
             $<BUILD_INTERFACE:${libjpeg_STATIC_LIBRARY_DIRS}>
@@ -778,7 +779,7 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "App
 endif()
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-    add_compile_options(/utf-8 /W4)
+    add_compile_options(/utf-8 /W4 /bigobj)
 endif()
 
 set(CPP_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
@@ -1053,13 +1054,7 @@ if(WEBCFACE_INSTALL)
                     list(APPEND WEBCFACE_PKGCONFIG_LIBS -l${lib})
                 endforeach()
             else()
-                foreach(lib IN LISTS 
-                    Magickpp_STATIC_LIBRARIES
-                    libjpeg_STATIC_LIBRARIES
-                    libpng_STATIC_LIBRARIES
-                    zlib_STATIC_LIBRARIES
-                    libwebp_STATIC_LIBRARIES
-                )
+                foreach(lib IN LISTS Magickpp_STATIC_LIBRARIES)
                     install(FILES ${MAGICKPP_PREFIX}/lib/lib${lib}.a
                         DESTINATION lib
                         OPTIONAL
@@ -1076,7 +1071,12 @@ if(WEBCFACE_INSTALL)
         RUNTIME DESTINATION bin
     )
     if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-        install(FILES $<TARGET_PDB_FILE:${PROJECT_NAME}>
+        if(WEBCFACE_SHARED)
+            get_target_property(WEBCFACE_PDB ${PROJECT_NAME} PDB_NAME)
+        else()
+            get_target_property(WEBCFACE_PDB ${PROJECT_NAME} COMPILE_PDB_NAME)
+        endif()
+        install(FILES ${WEBCFACE_PDB}
             DESTINATION bin
             OPTIONAL
         )
