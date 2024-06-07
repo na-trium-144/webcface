@@ -457,9 +457,12 @@ else()
             get_filename_component(MAGICKPP_PREFIX ${MAGICKPP_WIN_INCLUDE_DIR} DIRECTORY)
             message(STATUS "Magick++ Found: ${MAGICKPP_PREFIX}")
             set(MAGICKPP_LIB_DIR "${MAGICKPP_PREFIX}/lib")
-            file(GLOB MAGICKPP_RL_LIBS ${MAGICKPP_LIB_DIR}/CORE_RL_*.lib)
+            file(GLOB MAGICKPP_RL_LIBS
+                RELATIVE ${MAGICKPP_LIB_DIR}
+                ${MAGICKPP_LIB_DIR}/CORE_RL_*.lib
+            )
             foreach(lib IN LISTS MAGICKPP_RL_LIBS)
-                list(APPEND MAGICKPP_LIBS optimized ${lib})
+                list(APPEND MAGICKPP_LIBS optimized ${MAGICKPP_LIB_DIR}/${lib})
             endforeach()
             add_library(magickpp INTERFACE)
             target_include_directories(magickpp INTERFACE ${MAGICKPP_WIN_INCLUDE_DIR})
@@ -520,7 +523,7 @@ else()
                     ${MAGICKPP_LIB_DIR}/CORE_RL_*.lib
                 )
                 foreach(lib IN LISTS MAGICKPP_RL_LIBS)
-                    list(APPEND MAGICKPP_LIBS optimized ${lib})
+                    list(APPEND MAGICKPP_LIBS optimized ${MAGICKPP_LIB_DIR}/${lib})
                 endforeach()
             endif()
             if(CMAKE_BUILD_TYPE STREQUAL "Debug" OR WEBCFACE_CONFIG_ALL)
@@ -533,7 +536,7 @@ else()
                     ${MAGICKPP_LIB_DIR}/CORE_DB_*.lib
                 )
                 foreach(lib IN LISTS MAGICKPP_DB_LIBS)
-                    list(APPEND MAGICKPP_LIBS debug ${lib})
+                    list(APPEND MAGICKPP_LIBS debug ${MAGICKPP_LIB_DIR}/${lib})
                 endforeach()
             endif()
             
@@ -543,10 +546,6 @@ else()
                 $<BUILD_INTERFACE:${magick-windows_SOURCE_DIR}/ImageMagick>
             )
             target_link_libraries(magickpp INTERFACE ${MAGICKPP_LIBS})
-            target_link_directories(magickpp INTERFACE
-                $<BUILD_INTERFACE:${MAGICKPP_LIB_DIR}>
-                $<INSTALL_INTERFACE:lib>
-            )
             target_compile_definitions(magickpp INTERFACE STATIC_MAGICK)
             add_compile_definitions(WEBCFACE_MAGICK_VER7)
         endif()
