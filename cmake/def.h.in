@@ -1,5 +1,4 @@
 #pragma once
-#include <webcface/common/macros.h>
 #define WEBCFACE_STR(v) #v
 #define WEBCFACE_DEFAULT_PORT 7530
 #define WEBCFACE_DEFAULT_PORT_SI(port) WEBCFACE_STR(port)
@@ -15,3 +14,6 @@
 #define WEBCFACE_VERSION_REVISION 0
 #endif
 #cmakedefine WEBCFACE_VERSION "@WEBCFACE_VERSION@"
+#cmakedefine01 WEBCFACE_SHARED
+
+#include <webcface/common/macros.h>

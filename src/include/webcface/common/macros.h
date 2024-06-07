@@ -1,12 +1,14 @@
 #pragma once
 #ifdef _MSC_VER
 
+#if WEBCFACE_SHARED
 #ifdef webcface_EXPORTS
 #define WEBCFACE_DLL __declspec(dllexport)
 #define WEBCFACE_IMPORT
 #else
 #define WEBCFACE_DLL __declspec(dllimport)
 #define WEBCFACE_IMPORT __declspec(dllimport)
+#endif
 #endif
 
 #ifdef _DEBUG
@@ -18,11 +20,11 @@
     }
 #endif
 
-#else
+#endif
 
+#ifndef WEBCFACE_DLL
 #define WEBCFACE_DLL
 #define WEBCFACE_IMPORT
-
 #endif
 
 #ifndef WEBCFACE_NS_BEGIN
