@@ -481,7 +481,7 @@ else()
             message(STATUS "Fetching ImageMagick-Windows source...")
             FetchContent_Declare(magick-windows
                 GIT_REPOSITORY https://github.com/ImageMagick/ImageMagick-Windows.git
-                GIT_TAG main
+                GIT_TAG 35dbf227258caec73fbe4a0a10ea10f2c2c1051d
             )
             if(NOT EXISTS ${magick-windows_SOURCE_DIR}/IM7.StaticDLL.sln OR ${CMAKE_CURRENT_LIST_FILE} IS_NEWER_THAN ${magick-windows_SOURCE_DIR}/IM7.StaticDLL.sln)
                 if(NOT EXISTS ${magick-windows_SOURCE_DIR}/Configure/Configure.2017.sln OR ${CMAKE_CURRENT_LIST_FILE} IS_NEWER_THAN ${magick-windows_SOURCE_DIR}/Configure/Configure.2017.sln)
@@ -507,7 +507,7 @@ else()
                     WORKING_DIRECTORY ${magick-windows_SOURCE_DIR}/Configure
                 )
                 execute_process(
-                    COMMAND ${DEVENV_COMMAND} /upgrade IM7.StaticDLL.sln
+                    COMMAND ${DEVENV_COMMAND} /upgrade IM7.StaticDLL.${CMAKE_C_COMPILER_ARCHITECTURE_ID}.sln
                     WORKING_DIRECTORY ${magick-windows_SOURCE_DIR}
                 )
             endif()
@@ -515,7 +515,8 @@ else()
             set(MAGICKPP_LIB_DIR "${magick-windows_SOURCE_DIR}/Output/lib")
             if(NOT CMAKE_BUILD_TYPE STREQUAL "Debug" OR WEBCFACE_CONFIG_ALL)
                 execute_process(
-                    COMMAND ${MSBUILD_COMMAND} /m /p:Configuration=Release,Platform=${CMAKE_C_COMPILER_ARCHITECTURE_ID}
+                    COMMAND ${MSBUILD_COMMAND} IM7.StaticDLL.${CMAKE_C_COMPILER_ARCHITECTURE_ID}.sln
+                        /m /p:Configuration=Release,Platform=${CMAKE_C_COMPILER_ARCHITECTURE_ID}
                     WORKING_DIRECTORY ${magick-windows_SOURCE_DIR}
                 )
                 file(GLOB MAGICKPP_RL_LIBS
@@ -528,7 +529,8 @@ else()
             endif()
             if(CMAKE_BUILD_TYPE STREQUAL "Debug" OR WEBCFACE_CONFIG_ALL)
                 execute_process(
-                    COMMAND ${MSBUILD_COMMAND} /m /p:Configuration=Debug,Platform=${CMAKE_C_COMPILER_ARCHITECTURE_ID}
+                    COMMAND ${MSBUILD_COMMAND} IM7.StaticDLL.${CMAKE_C_COMPILER_ARCHITECTURE_ID}.sln
+                        /m /p:Configuration=Debug,Platform=${CMAKE_C_COMPILER_ARCHITECTURE_ID}
                     WORKING_DIRECTORY ${magick-windows_SOURCE_DIR}
                 )
                 file(GLOB MAGICKPP_DB_LIBS
