@@ -450,89 +450,108 @@ else()
     endif()
 
     if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-        find_program(DEVENV_COMMAND devenv)
-        if(DEVENV_COMMAND STREQUAL "DEVENV_COMMAND-NOTFOUND")
-            message(FATAL_ERROR "devenv.exe not found")
-        endif()
-        find_program(MSBUILD_COMMAND msbuild)
-        if(MSBUILD_COMMAND STREQUAL "MSBUILD_COMMAND-NOTFOUND")
-            message(FATAL_ERROR "msbuild.exe not found")
-        endif()
-        message(STATUS "Fetching ImageMagick-Windows source...")
-        FetchContent_Declare(magick-windows
-            GIT_REPOSITORY https://github.com/ImageMagick/ImageMagick-Windows.git
-            GIT_TAG main
+        find_path(MAGICKPP_WIN_INCLUDE_DIR Magick++.h
+            PATH_SUFFIXES include
         )
-        if(NOT EXISTS ${magick-windows_SOURCE_DIR}/IM7.StaticDLL.sln OR ${CMAKE_CURRENT_LIST_FILE} IS_NEWER_THAN ${magick-windows_SOURCE_DIR}/IM7.StaticDLL.sln)
-            if(NOT EXISTS ${magick-windows_SOURCE_DIR}/Configure/Configure.2017.sln OR ${CMAKE_CURRENT_LIST_FILE} IS_NEWER_THAN ${magick-windows_SOURCE_DIR}/Configure/Configure.2017.sln)
-                message(STATUS "Fetching dependencies...")
-                FetchContent_Populate(magick-windows)
-                execute_process(
-                    COMMAND CloneRepositories.IM7.cmd
-                    WORKING_DIRECTORY ${magick-windows_SOURCE_DIR}
-                )
-                message(STATUS "Building Configure...")
-                execute_process(
-                    COMMAND ${DEVENV_COMMAND} /upgrade Configure.2017.sln
-                    WORKING_DIRECTORY ${magick-windows_SOURCE_DIR}/Configure
-                )
-                execute_process(
-                    COMMAND ${MSBUILD_COMMAND} Configure.2017.sln /m
-                    WORKING_DIRECTORY ${magick-windows_SOURCE_DIR}/Configure
-                )
-            endif()
-            message(STATUS "Executing Configure...")
-            execute_process(
-                COMMAND Configure.exe /noWizard /noAliases /noDpc /noHdri /Q8 /${CMAKE_C_COMPILER_ARCHITECTURE_ID} /VS2017 /smtd
-                WORKING_DIRECTORY ${magick-windows_SOURCE_DIR}/Configure
-            )
-            execute_process(
-                COMMAND ${DEVENV_COMMAND} /upgrade IM7.StaticDLL.sln
-                WORKING_DIRECTORY ${magick-windows_SOURCE_DIR}
-            )
-        endif()
-        message(STATUS "Building ImageMagick...")
-        set(MAGICKPP_LIB_DIR "${magick-windows_SOURCE_DIR}/Output/lib")
-        if(NOT CMAKE_BUILD_TYPE STREQUAL "Debug" OR WEBCFACE_CONFIG_ALL)
-            execute_process(
-                COMMAND ${MSBUILD_COMMAND} /m /p:Configuration=Release,Platform=${CMAKE_C_COMPILER_ARCHITECTURE_ID}
-                WORKING_DIRECTORY ${magick-windows_SOURCE_DIR}
-            )
+        if(NOT MAGICKPP_WIN_INCLUDE_DIR STREQUAL "MAGICKPP_WIN_INCLUDE_DIR-NOTFOUND")
+            set(Magickpp_INSTALLED 1)
+            get_filename_component(MAGICKPP_PREFIX ${MAGICKPP_WIN_INCLUDE_DIR} DIRECTORY)
+            message(STATUS "Magick++ Found: ${MAGICKPP_PREFIX}")
+            set(MAGICKPP_LIB_DIR "${MAGICKPP_PREFIX}/lib")
             file(GLOB MAGICKPP_RL_LIBS
                 RELATIVE ${MAGICKPP_LIB_DIR}
                 ${MAGICKPP_LIB_DIR}/CORE_RL_*.lib
             )
             foreach(lib IN LISTS MAGICKPP_RL_LIBS)
-                list(APPEND MAGICKPP_LIBS optimized ${lib})
+                list(APPEND MAGICKPP_LIBS optimized ${MAGICKPP_LIB_DIR}/${lib})
             endforeach()
-        endif()
-        if(CMAKE_BUILD_TYPE STREQUAL "Debug" OR WEBCFACE_CONFIG_ALL)
-            execute_process(
-                COMMAND ${MSBUILD_COMMAND} /m /p:Configuration=Debug,Platform=${CMAKE_C_COMPILER_ARCHITECTURE_ID}
-                WORKING_DIRECTORY ${magick-windows_SOURCE_DIR}
-            )
-            file(GLOB MAGICKPP_DB_LIBS
-                RELATIVE ${MAGICKPP_LIB_DIR}
-                ${MAGICKPP_LIB_DIR}/CORE_DB_*.lib
-            )
-            foreach(lib IN LISTS MAGICKPP_DB_LIBS)
-                list(APPEND MAGICKPP_LIBS debug ${lib})
-            endforeach()
-        endif()
-        
-        add_library(magickpp INTERFACE)
-        target_include_directories(magickpp INTERFACE
-            $<BUILD_INTERFACE:${magick-windows_SOURCE_DIR}/ImageMagick/Magick++/lib>
-            $<BUILD_INTERFACE:${magick-windows_SOURCE_DIR}/ImageMagick>
-        )
-        target_link_libraries(magickpp INTERFACE ${MAGICKPP_LIBS})
-        target_link_directories(magickpp INTERFACE
-            $<BUILD_INTERFACE:${MAGICKPP_LIB_DIR}>
-            $<INSTALL_INTERFACE:lib>
-        )
-        target_compile_definitions(magickpp INTERFACE STATIC_MAGICK)
-        add_compile_definitions(WEBCFACE_MAGICK_VER7)
+            add_library(magickpp INTERFACE)
+            target_include_directories(magickpp INTERFACE ${MAGICKPP_WIN_INCLUDE_DIR})
+            target_link_libraries(magickpp INTERFACE ${MAGICKPP_LIBS})
+            add_compile_definitions(WEBCFACE_MAGICK_VER7)
 
+        else()
+            find_program(DEVENV_COMMAND devenv)
+            if(DEVENV_COMMAND STREQUAL "DEVENV_COMMAND-NOTFOUND")
+                message(FATAL_ERROR "devenv.exe not found")
+            endif()
+            find_program(MSBUILD_COMMAND msbuild)
+            if(MSBUILD_COMMAND STREQUAL "MSBUILD_COMMAND-NOTFOUND")
+                message(FATAL_ERROR "msbuild.exe not found")
+            endif()
+            message(STATUS "Fetching ImageMagick-Windows source...")
+            FetchContent_Declare(magick-windows
+                GIT_REPOSITORY https://github.com/ImageMagick/ImageMagick-Windows.git
+                GIT_TAG 35dbf227258caec73fbe4a0a10ea10f2c2c1051d
+            )
+            if(NOT EXISTS ${magick-windows_SOURCE_DIR}/IM7.StaticDLL.sln OR ${CMAKE_CURRENT_LIST_FILE} IS_NEWER_THAN ${magick-windows_SOURCE_DIR}/IM7.StaticDLL.sln)
+                if(NOT EXISTS ${magick-windows_SOURCE_DIR}/Configure/Configure.2017.sln OR ${CMAKE_CURRENT_LIST_FILE} IS_NEWER_THAN ${magick-windows_SOURCE_DIR}/Configure/Configure.2017.sln)
+                    message(STATUS "Fetching dependencies...")
+                    FetchContent_Populate(magick-windows)
+                    execute_process(
+                        COMMAND CloneRepositories.IM7.cmd
+                        WORKING_DIRECTORY ${magick-windows_SOURCE_DIR}
+                    )
+                    message(STATUS "Building Configure...")
+                    execute_process(
+                        COMMAND ${DEVENV_COMMAND} /upgrade Configure.2017.sln
+                        WORKING_DIRECTORY ${magick-windows_SOURCE_DIR}/Configure
+                    )
+                    execute_process(
+                        COMMAND ${MSBUILD_COMMAND} Configure.2017.sln /m
+                        WORKING_DIRECTORY ${magick-windows_SOURCE_DIR}/Configure
+                    )
+                endif()
+                message(STATUS "Executing Configure...")
+                execute_process(
+                    COMMAND Configure.exe /noWizard /noAliases /noDpc /noHdri /Q8 /${CMAKE_C_COMPILER_ARCHITECTURE_ID} /VS2017 /smtd
+                    WORKING_DIRECTORY ${magick-windows_SOURCE_DIR}/Configure
+                )
+                execute_process(
+                    COMMAND ${DEVENV_COMMAND} /upgrade IM7.StaticDLL.${CMAKE_C_COMPILER_ARCHITECTURE_ID}.sln
+                    WORKING_DIRECTORY ${magick-windows_SOURCE_DIR}
+                )
+            endif()
+            message(STATUS "Building ImageMagick...")
+            set(MAGICKPP_LIB_DIR "${magick-windows_SOURCE_DIR}/Output/lib")
+            if(NOT CMAKE_BUILD_TYPE STREQUAL "Debug" OR WEBCFACE_CONFIG_ALL)
+                execute_process(
+                    COMMAND ${MSBUILD_COMMAND} IM7.StaticDLL.${CMAKE_C_COMPILER_ARCHITECTURE_ID}.sln
+                        /m /p:Configuration=Release,Platform=${CMAKE_C_COMPILER_ARCHITECTURE_ID}
+                    WORKING_DIRECTORY ${magick-windows_SOURCE_DIR}
+                )
+                file(GLOB MAGICKPP_RL_LIBS
+                    RELATIVE ${MAGICKPP_LIB_DIR}
+                    ${MAGICKPP_LIB_DIR}/CORE_RL_*.lib
+                )
+                foreach(lib IN LISTS MAGICKPP_RL_LIBS)
+                    list(APPEND MAGICKPP_LIBS optimized ${MAGICKPP_LIB_DIR}/${lib})
+                endforeach()
+            endif()
+            if(CMAKE_BUILD_TYPE STREQUAL "Debug" OR WEBCFACE_CONFIG_ALL)
+                execute_process(
+                    COMMAND ${MSBUILD_COMMAND} IM7.StaticDLL.${CMAKE_C_COMPILER_ARCHITECTURE_ID}.sln
+                        /m /p:Configuration=Debug,Platform=${CMAKE_C_COMPILER_ARCHITECTURE_ID}
+                    WORKING_DIRECTORY ${magick-windows_SOURCE_DIR}
+                )
+                file(GLOB MAGICKPP_DB_LIBS
+                    RELATIVE ${MAGICKPP_LIB_DIR}
+                    ${MAGICKPP_LIB_DIR}/CORE_DB_*.lib
+                )
+                foreach(lib IN LISTS MAGICKPP_DB_LIBS)
+                    list(APPEND MAGICKPP_LIBS debug ${MAGICKPP_LIB_DIR}/${lib})
+                endforeach()
+            endif()
+            
+            add_library(magickpp INTERFACE)
+            target_include_directories(magickpp INTERFACE
+                $<BUILD_INTERFACE:${magick-windows_SOURCE_DIR}/ImageMagick/Magick++/lib>
+                $<BUILD_INTERFACE:${magick-windows_SOURCE_DIR}/ImageMagick>
+            )
+            target_link_libraries(magickpp INTERFACE ${MAGICKPP_LIBS})
+            target_compile_definitions(magickpp INTERFACE STATIC_MAGICK)
+            add_compile_definitions(WEBCFACE_MAGICK_VER7)
+        endif()
     else()
         set(MAGICKPP_PREFIX ${CMAKE_CURRENT_BINARY_DIR}/_deps/prefix)
         find_program(SH_COMMAND sh)
@@ -1104,7 +1123,14 @@ if(WEBCFACE_INSTALL)
             list(APPEND WEBCFACE_EXPORTS utfcpp)
         endif()
         if(Magickpp_INSTALLED)
-            list(APPEND WEBCFACE_PKGCONFIG_REQUIRES Magickpp)
+            if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+                list(APPEND WEBCFACE_PKGCONFIG_LIBS -L${MAGICKPP_LIB_DIR})
+                foreach(lib IN LISTS MAGICKPP_DB_LIBS MAGICKPP_RL_LIBS)
+                    list(APPEND WEBCFACE_PKGCONFIG_LIBS -l${lib})
+                endforeach()
+            else()
+                list(APPEND WEBCFACE_PKGCONFIG_REQUIRES Magickpp)
+            endif()
         else()
             list(APPEND WEBCFACE_EXPORTS magickpp)
             if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
