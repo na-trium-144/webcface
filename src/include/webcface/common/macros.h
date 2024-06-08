@@ -4,7 +4,7 @@
 WEBCFACE_DLL: 関数の宣言 (msvc, mingw, unix)
 WEBCFACE_DLL_TEMPLATE: テンプレートクラスの定義 (unix)
 WEBCFACE_DLL_INSTANCE_DECL: 明示的実体化の宣言 (msvc_import, mingw) (unixでは消す:gcc-10でエラー)
-WEBCFACE_DLL_INSTANCE_DEF: 明示的実体化の定義 (msvc_export)
+WEBCFACE_DLL_INSTANCE_DEF: 明示的実体化の定義 (msvc_export, unix)
 */
 // clang-format on
 
@@ -33,7 +33,7 @@ WEBCFACE_DLL_INSTANCE_DEF: 明示的実体化の定義 (msvc_export)
 #define WEBCFACE_DLL __attribute__((visibility("default")))
 #define WEBCFACE_DLL_TEMPLATE WEBCFACE_DLL
 #undef WEBCFACE_DLL_INSTANCE_DECL
-#define WEBCFACE_DLL_INSTANCE_DEF
+#define WEBCFACE_DLL_INSTANCE_DEF WEBCFACE_DLL
 #else // !webcface_EXPORTS
 #define WEBCFACE_DLL
 #define WEBCFACE_DLL_TEMPLATE
