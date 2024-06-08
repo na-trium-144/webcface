@@ -1,5 +1,5 @@
 #pragma once
-#ifdef _MSC_VER
+#ifdef _WIN32
 
 #if WEBCFACE_SHARED
 #ifdef webcface_EXPORTS
@@ -11,6 +11,18 @@
 #endif
 #endif
 
+#else
+
+#if WEBCFACE_SHARED
+#ifdef webcface_EXPORTS
+#define WEBCFACE_DLL __attribute__((visibility("default")))
+#define WEBCFACE_IMPORT
+#endif
+#endif
+
+#endif
+
+#ifdef _MSC_VER
 #ifdef _DEBUG
 #define WEBCFACE_NS_BEGIN                                                      \
     namespace webcface {                                                       \
@@ -19,7 +31,6 @@
     }                                                                          \
     }
 #endif
-
 #endif
 
 #ifndef WEBCFACE_DLL

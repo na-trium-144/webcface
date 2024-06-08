@@ -12,7 +12,7 @@ WEBCFACE_NS_BEGIN
  *
  */
 template <typename ArgType>
-class EventTarget {
+class WEBCFACE_DLL EventTarget {
   public:
     using CallbackList = eventpp::CallbackList<void(ArgType)>;
 

@@ -11,7 +11,7 @@
 WEBCFACE_NS_BEGIN
 namespace Internal {
 template <typename T>
-class SyncDataStore1 {
+class WEBCFACE_DLL SyncDataStore1 {
     std::unordered_map<std::u8string, T> data_recv;
     std::unordered_map<std::u8string, bool> req;
     std::unordered_map<std::u8string, bool> req_send;
@@ -46,7 +46,7 @@ class SyncDataStore1 {
     std::unordered_map<std::u8string, bool> transferReq();
 };
 
-#ifdef _MSC_VER
+#ifdef _WIN32
 extern template class SyncDataStore1<std::string>; // test用
 extern template class SyncDataStore1<
     std::shared_ptr<std::vector<Common::LogLineData<>>>>;

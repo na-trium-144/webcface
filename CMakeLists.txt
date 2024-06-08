@@ -380,6 +380,7 @@ if(NOT Crow_FOUND)
         set(Crow Crow)
     endif()
 endif()
+add_compile_definitions(ASIO_DISABLE_VISIBILITY)
 
 if(WEBCFACE_FIND_CLI11)
     find_package(CLI11 QUIET)
@@ -756,6 +757,7 @@ endfunction()
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     add_compile_options(-Wall -Wextra -Wpedantic -Werror)
+    add_compile_options(-Wno-error=ignored-attributes)
     add_compile_options(-Wno-error=deprecated-declarations)
     add_compile_options(-Wno-error=psabi) # refer to PR#9
     # crow
@@ -771,6 +773,7 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
 endif()
 if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
     add_compile_options(-Wall -Wextra -Wpedantic -Werror)
+    add_compile_options(-Wno-error=ignored-attributes)
     add_compile_options(-Wno-error=deprecated-declarations)
     add_compile_options(
         --system-header-prefix=msgpack.hpp
@@ -905,6 +908,9 @@ target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_20)
 target_include_directories(${PROJECT_NAME} PUBLIC ${INCLUDE_DIR})
 target_link_libraries(${PROJECT_NAME} PRIVATE ${WEBCFACE_PRIVATE_DEPS})
 target_link_libraries(${PROJECT_NAME} PUBLIC ${WEBCFACE_PUBLIC_DEPS})
+if(WEBCFACE_SHARED AND NOT CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+    target_compile_options(${PROJECT_NAME} PRIVATE -fvisibility=hidden)
+endif()
 if(WIN32)
     set_target_properties(${PROJECT_NAME} PROPERTIES
         DEBUG_POSTFIX "${WEBCFACE_SOVERSION}d"
