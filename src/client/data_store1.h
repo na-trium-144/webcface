@@ -11,7 +11,11 @@
 WEBCFACE_NS_BEGIN
 namespace Internal {
 template <typename T>
+#ifdef _WIN32
+class SyncDataStore1 {
+#else
 class WEBCFACE_DLL SyncDataStore1 {
+#endif
     std::unordered_map<std::u8string, T> data_recv;
     std::unordered_map<std::u8string, bool> req;
     std::unordered_map<std::u8string, bool> req_send;

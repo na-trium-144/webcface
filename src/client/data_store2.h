@@ -30,7 +30,11 @@ namespace Internal {
  *
  */
 template <typename T, typename ReqT = int>
+#ifdef _WIN32
+class SyncDataStore2 {
+#else
 class WEBCFACE_DLL SyncDataStore2 {
+#endif
     /*!
      * \brief 次のsend時に送信するデータ。
      *
