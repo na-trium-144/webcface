@@ -5,7 +5,7 @@
 
 WEBCFACE_NS_BEGIN
 
-template class WEBCFACE_DLL EventTarget<Image>;
+template class WEBCFACE_DLL_INSTANCE_DEF EventTarget<Image>;
 
 Image::Image(const Field &base) : Field(base), EventTarget<Image>() {
     std::lock_guard lock(this->dataLock()->event_m);

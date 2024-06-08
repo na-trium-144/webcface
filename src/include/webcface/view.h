@@ -18,7 +18,7 @@ class ViewBuf;
 
 class View;
 #ifdef _WIN32
-extern template class WEBCFACE_IMPORT EventTarget<View>;
+extern template class WEBCFACE_DLL_INSTANCE_DECL EventTarget<View>;
 #endif
 
 /*!

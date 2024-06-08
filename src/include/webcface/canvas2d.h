@@ -16,7 +16,7 @@ class Canvas2DDataBuf;
 
 class Canvas2D;
 #ifdef _WIN32
-extern template class WEBCFACE_IMPORT EventTarget<Canvas2D>;
+extern template class WEBCFACE_DLL_INSTANCE_DECL EventTarget<Canvas2D>;
 #endif
 
 /*!

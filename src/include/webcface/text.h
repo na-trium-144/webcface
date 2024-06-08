@@ -16,7 +16,7 @@ class Member;
 
 class Text;
 #ifdef _WIN32
-extern template class WEBCFACE_IMPORT EventTarget<Text>;
+extern template class WEBCFACE_DLL_INSTANCE_DECL EventTarget<Text>;
 #endif
 
 /*!

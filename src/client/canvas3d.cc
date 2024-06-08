@@ -7,7 +7,7 @@
 
 WEBCFACE_NS_BEGIN
 
-template class WEBCFACE_DLL EventTarget<Canvas3D>;
+template class WEBCFACE_DLL_INSTANCE_DEF EventTarget<Canvas3D>;
 
 Canvas3D::Canvas3D()
     : Field(), EventTarget<Canvas3D>(),

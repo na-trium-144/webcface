@@ -16,7 +16,7 @@ class Member;
 
 class Image;
 #ifdef _WIN32
-extern template class WEBCFACE_IMPORT EventTarget<Image>;
+extern template class WEBCFACE_DLL_INSTANCE_DECL EventTarget<Image>;
 #endif
 
 /*!

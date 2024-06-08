@@ -21,7 +21,7 @@ class DataSetBuffer;
 
 class Canvas3D;
 #ifdef _WIN32
-extern template class WEBCFACE_IMPORT EventTarget<Canvas3D>;
+extern template class WEBCFACE_DLL_INSTANCE_DECL EventTarget<Canvas3D>;
 #endif
 
 /*!

@@ -17,7 +17,7 @@ class Member;
 
 class Value;
 #ifdef _WIN32
-extern template class WEBCFACE_IMPORT EventTarget<Value>;
+extern template class WEBCFACE_DLL_INSTANCE_DECL EventTarget<Value>;
 #endif
 
 /*!

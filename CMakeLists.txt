@@ -908,11 +908,11 @@ else()
 endif()
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_20)
 target_include_directories(${PROJECT_NAME} PUBLIC ${INCLUDE_DIR})
-if(WEBCFACE_SHARED)
+if(WEBCFACE_SHARED AND NOT WIN32)
     # webcfaceのAPI以外をexportしない。
     # MSVCではデフォルトでdllexportしたもの以外exportされないので問題なし
     set_target_properties(${PROJECT_NAME} PROPERTIES CXX_VISIBILITY_PRESET hidden)
-    if(NOT APPLE AND NOT CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+    if(NOT APPLE)
         target_link_options(${PROJECT_NAME} PRIVATE -Wl,--exclude-libs,ALL)
     endif()
 endif()

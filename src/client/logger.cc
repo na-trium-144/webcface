@@ -64,8 +64,8 @@ int BasicLoggerBuf<CharT>::sync() {
     this->setp(buf, buf + sizeof(buf));
     return 0;
 }
-template class WEBCFACE_DLL BasicLoggerBuf<char>;
-template class WEBCFACE_DLL BasicLoggerBuf<wchar_t>;
+template class WEBCFACE_DLL_INSTANCE_DEF BasicLoggerBuf<char>;
+template class WEBCFACE_DLL_INSTANCE_DEF BasicLoggerBuf<wchar_t>;
 
 LoggerSink::LoggerSink(
     const std::shared_ptr<

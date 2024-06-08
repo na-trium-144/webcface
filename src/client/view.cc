@@ -6,7 +6,7 @@
 
 WEBCFACE_NS_BEGIN
 
-template class WEBCFACE_DLL EventTarget<View>;
+template class WEBCFACE_DLL_INSTANCE_DEF EventTarget<View>;
 
 View::View()
     : Field(), EventTarget<View>(), std::ostream(nullptr),

@@ -4,7 +4,7 @@
 
 WEBCFACE_NS_BEGIN
 
-template class WEBCFACE_DLL EventTarget<Log>;
+template class WEBCFACE_DLL_INSTANCE_DEF EventTarget<Log>;
 
 Log::Log(const Field &base) : Field(base), EventTarget<Log>() {
     std::lock_guard lock(this->dataLock()->event_m);

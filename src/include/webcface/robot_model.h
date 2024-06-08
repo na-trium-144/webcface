@@ -15,7 +15,7 @@ class Member;
 
 class RobotModel;
 #ifdef _WIN32
-extern template class WEBCFACE_IMPORT EventTarget<RobotModel>;
+extern template class WEBCFACE_DLL_INSTANCE_DECL EventTarget<RobotModel>;
 #endif
 
 /*!

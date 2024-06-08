@@ -6,7 +6,7 @@
 
 WEBCFACE_NS_BEGIN
 
-template class WEBCFACE_DLL EventTarget<Canvas2D>;
+template class WEBCFACE_DLL_INSTANCE_DEF EventTarget<Canvas2D>;
 
 Canvas2D::Canvas2D()
     : Field(), EventTarget<Canvas2D>(),

@@ -47,10 +47,10 @@ std::unordered_map<std::u8string, bool> SyncDataStore1<T>::transferReq() {
     // }
 }
 
-template class WEBCFACE_DLL SyncDataStore1<std::string>; // test用
-template class WEBCFACE_DLL
+template class WEBCFACE_DLL_INSTANCE_DEF SyncDataStore1<std::string>; // test用
+template class WEBCFACE_DLL_INSTANCE_DEF
     SyncDataStore1<std::shared_ptr<std::vector<Common::LogLineData<>>>>;
-template class WEBCFACE_DLL
+template class WEBCFACE_DLL_INSTANCE_DEF
     SyncDataStore1<std::chrono::system_clock::time_point>;
 
 } // namespace Internal

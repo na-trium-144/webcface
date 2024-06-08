@@ -11,7 +11,7 @@ WEBCFACE_NS_BEGIN
 
 class Log;
 #ifdef _WIN32
-extern template class WEBCFACE_IMPORT EventTarget<Log>;
+extern template class WEBCFACE_DLL_INSTANCE_DECL EventTarget<Log>;
 #endif
 
 /*!

@@ -30,11 +30,7 @@ namespace Internal {
  *
  */
 template <typename T, typename ReqT = int>
-#ifdef _WIN32
-class SyncDataStore2 {
-#else
-class WEBCFACE_DLL SyncDataStore2 {
-#endif
+class WEBCFACE_DLL_TEMPLATE SyncDataStore2 {
     /*!
      * \brief 次のsend時に送信するデータ。
      *
@@ -255,15 +251,20 @@ using Canvas2DData = std::shared_ptr<Common::Canvas2DDataBase>;
 using ImageData = Common::ImageBase;
 
 #ifdef _WIN32
-extern template class SyncDataStore2<std::string, int>; // test用
-extern template class SyncDataStore2<ValueData, int>;
-extern template class SyncDataStore2<TextData, int>;
-extern template class SyncDataStore2<FuncData, int>;
-extern template class SyncDataStore2<ViewData, int>;
-extern template class SyncDataStore2<RobotModelData, int>;
-extern template class SyncDataStore2<Canvas3DData, int>;
-extern template class SyncDataStore2<Canvas2DData, int>;
-extern template class SyncDataStore2<ImageData, Common::ImageReq>;
+extern template class WEBCFACE_DLL_INSTANCE_DECL
+    SyncDataStore2<std::string, int>; // test用
+extern template class WEBCFACE_DLL_INSTANCE_DECL SyncDataStore2<ValueData, int>;
+extern template class WEBCFACE_DLL_INSTANCE_DECL SyncDataStore2<TextData, int>;
+extern template class WEBCFACE_DLL_INSTANCE_DECL SyncDataStore2<FuncData, int>;
+extern template class WEBCFACE_DLL_INSTANCE_DECL SyncDataStore2<ViewData, int>;
+extern template class WEBCFACE_DLL_INSTANCE_DECL
+    SyncDataStore2<RobotModelData, int>;
+extern template class WEBCFACE_DLL_INSTANCE_DECL
+    SyncDataStore2<Canvas3DData, int>;
+extern template class WEBCFACE_DLL_INSTANCE_DECL
+    SyncDataStore2<Canvas2DData, int>;
+extern template class WEBCFACE_DLL_INSTANCE_DECL
+    SyncDataStore2<ImageData, Common::ImageReq>;
 #endif
 
 } // namespace Internal

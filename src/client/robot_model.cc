@@ -6,7 +6,7 @@
 
 WEBCFACE_NS_BEGIN
 
-template class WEBCFACE_DLL EventTarget<RobotModel>;
+template class WEBCFACE_DLL_INSTANCE_DEF EventTarget<RobotModel>;
 
 RobotModel::RobotModel()
     : Field(), EventTarget<RobotModel>(),

@@ -11,11 +11,7 @@
 WEBCFACE_NS_BEGIN
 namespace Internal {
 template <typename T>
-#ifdef _WIN32
-class SyncDataStore1 {
-#else
-class WEBCFACE_DLL SyncDataStore1 {
-#endif
+class WEBCFACE_DLL_TEMPLATE SyncDataStore1 {
     std::unordered_map<std::u8string, T> data_recv;
     std::unordered_map<std::u8string, bool> req;
     std::unordered_map<std::u8string, bool> req_send;
@@ -51,10 +47,12 @@ class WEBCFACE_DLL SyncDataStore1 {
 };
 
 #ifdef _WIN32
-extern template class SyncDataStore1<std::string>; // test用
-extern template class SyncDataStore1<
-    std::shared_ptr<std::vector<Common::LogLineData<>>>>;
-extern template class SyncDataStore1<std::chrono::system_clock::time_point>;
+extern template class WEBCFACE_DLL_INSTANCE_DECL
+    SyncDataStore1<std::string>; // test用
+extern template class WEBCFACE_DLL_INSTANCE_DECL
+    SyncDataStore1<std::shared_ptr<std::vector<Common::LogLineData<>>>>;
+extern template class WEBCFACE_DLL_INSTANCE_DECL
+    SyncDataStore1<std::chrono::system_clock::time_point>;
 #endif
 
 } // namespace Internal
