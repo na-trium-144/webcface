@@ -17,7 +17,9 @@ class ViewBuf;
 } // namespace Internal
 
 class View;
+#ifdef _WIN32
 extern template class WEBCFACE_IMPORT EventTarget<View>;
+#endif
 
 /*!
  * \brief Viewの送受信データを表すクラス

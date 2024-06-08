@@ -20,7 +20,9 @@ class DataSetBuffer;
 }
 
 class Canvas3D;
+#ifdef _WIN32
 extern template class WEBCFACE_IMPORT EventTarget<Canvas3D>;
+#endif
 
 /*!
  * \brief Canvas3Dの送受信データを表すクラス

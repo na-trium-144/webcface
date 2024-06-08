@@ -14,7 +14,9 @@ class DataSetBuffer;
 class Member;
 
 class RobotModel;
+#ifdef _WIN32
 extern template class WEBCFACE_IMPORT EventTarget<RobotModel>;
+#endif
 
 /*!
  * \brief RobotModelの送受信データを表すクラス

@@ -15,7 +15,9 @@ struct ClientData;
 class Member;
 
 class Image;
+#ifdef _WIN32
 extern template class WEBCFACE_IMPORT EventTarget<Image>;
+#endif
 
 /*!
  * \brief (ver1.3から追加) 画像の送受信データを表すクラス

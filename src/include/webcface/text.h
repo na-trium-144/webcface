@@ -15,7 +15,9 @@ struct ClientData;
 class Member;
 
 class Text;
+#ifdef _WIN32
 extern template class WEBCFACE_IMPORT EventTarget<Text>;
+#endif
 
 /*!
  * \brief 文字列の送受信データを表すクラス
