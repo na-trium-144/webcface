@@ -880,37 +880,55 @@ set(INCLUDE_DIR
 
 ###############################################################################
 
-list(APPEND WEBCFACE_PRIVATE_DEPS
-    ${libcurl}
-    msgpack-cxx
-    ${Crow}
-    utfcpp
-    magickpp
-)
-list(APPEND WEBCFACE_PUBLIC_DEPS
-    eventpp::eventpp
-    ${spdlog}
-)
-if(WIN32)
-    list(APPEND WEBCFACE_PRIVATE_DEPS
-        ws2_32.lib wsock32.lib iphlpapi.lib
-    )
-endif()
-
 if(WEBCFACE_SHARED)
     add_library(${PROJECT_NAME} SHARED ${WEBCFACE_SRC} ${VERSION_RC})
 else()
     add_library(${PROJECT_NAME} STATIC ${WEBCFACE_SRC})
-    get_target_property(MAGICKPP_TARGET_LINK_DIR magickpp INTERFACE_LINK_DIRECTORIES)
-    target_link_directories(${PROJECT_NAME} PUBLIC ${MAGICKPP_TARGET_LINK_DIR})
+    target_link_directories(${PROJECT_NAME} PUBLIC $<TARGET_PROPERTY:magickpp,INTERFACE_LINK_DIRECTORIES>)
 endif()
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_20)
 target_include_directories(${PROJECT_NAME} PUBLIC ${INCLUDE_DIR})
+if(WEBCFACE_SHARED)
+    # webcfaceのAPI以外をexportしない。
+    # MSVCではデフォルトでdllexportしたもの以外exportされないので問題なし
+    set_target_properties(${PROJECT_NAME} PROPERTIES CXX_VISIBILITY_PRESET hidden)
+    if(NOT APPLE AND NOT CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+        target_link_options(${PROJECT_NAME} PRIVATE -Wl,--exclude-libs,ALL)
+    endif()
+endif()
+
+list(APPEND WEBCFACE_PRIVATE_DEPS msgpack-cxx ${Crow} utfcpp)
+if(WEBCFACE_SHARED AND APPLE)
+    # MacOSでは--exclude-libsが使えず、その代わり-hidden-lでライブラリを渡す必要がある
+    target_link_directories(${PROJECT_NAME} PRIVATE $<TARGET_LINKER_FILE_DIR:${libcurl}>)
+    if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+        # なぜかTARGET_LINKER_FILE_BASE_NAMEすると"libcurl"になってしまう
+        list(APPEND WEBCFACE_PRIVATE_DEPS -Wl,-hidden-lcurl-d)
+    else()
+        list(APPEND WEBCFACE_PRIVATE_DEPS -Wl,-hidden-lcurl)
+    endif()
+    list(APPEND WEBCFACE_PRIVATE_DEPS $<TARGET_PROPERTY:${libcurl},LINK_LIBRARIES>)
+    if(Magickpp_INSTALLED)
+        foreach(lib IN LISTS Magickpp_LIBRARIES)
+            list(APPEND WEBCFACE_PRIVATE_DEPS -Wl,-hidden-l${lib})
+        endforeach()
+    else()
+        foreach(lib IN LISTS Magickpp_STATIC_LIBRARIES)
+            list(APPEND WEBCFACE_PRIVATE_DEPS -Wl,-hidden-l${lib})
+        endforeach()
+    endif()
+    add_dependencies(${PROJECT_NAME} ${libcurl})
+    list(APPEND WEBCFACE_PRIVATE_DEPS magickpp)
+else()
+    list(APPEND WEBCFACE_PRIVATE_DEPS ${libcurl} magickpp)
+endif()
+list(APPEND WEBCFACE_PUBLIC_DEPS eventpp::eventpp ${spdlog})
+if(WIN32)
+    list(APPEND WEBCFACE_PRIVATE_DEPS ws2_32.lib wsock32.lib iphlpapi.lib)
+endif()
 target_link_libraries(${PROJECT_NAME} PRIVATE ${WEBCFACE_PRIVATE_DEPS})
 target_link_libraries(${PROJECT_NAME} PUBLIC ${WEBCFACE_PUBLIC_DEPS})
-if(WEBCFACE_SHARED AND NOT CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-    target_compile_options(${PROJECT_NAME} PRIVATE -fvisibility=hidden)
-endif()
+
 if(WIN32)
     set_target_properties(${PROJECT_NAME} PROPERTIES
         DEBUG_POSTFIX "${WEBCFACE_SOVERSION}d"
@@ -1046,11 +1064,37 @@ if(WEBCFACE_INSTALL)
         if(NOT CURL_FOUND)
             list(APPEND WEBCFACE_EXPORTS ${libcurl})
             if(NOT WEBCFACE_SHARED)
-                if(CMAKE_BUILD_TYPE STREQUAL Debug)
+                if(CMAKE_BUILD_TYPE STREQUAL "Debug")
                     list(APPEND WEBCFACE_PKGCONFIG_LIBS -lcurl-d)
                 else()
                     list(APPEND WEBCFACE_PKGCONFIG_LIBS -lcurl)
                 endif()
+                get_directory_property(CURL_LIBS
+                    DIRECTORY ${curl_SOURCE_DIR}
+                    DEFINITION CURL_LIBS
+                )
+                # curlのCMakeListsからコピペ
+                foreach(_lib IN LISTS CURL_LIBS)
+                    if(TARGET "${_lib}")
+                        set(_libname "${_lib}")
+                        get_target_property(_imported "${_libname}" IMPORTED)
+                        if(NOT _imported)
+                            # Reading the LOCATION property on non-imported target will error out.
+                            # Assume the user won't need this information in the .pc file.
+                            continue()
+                        endif()
+                        get_target_property(_lib "${_libname}" LOCATION)
+                        if(NOT _lib)
+                            # message(WARNING "Bad lib in library list: ${_libname}")
+                            continue()
+                        endif()
+                    endif()
+                    if(_lib MATCHES ".*/.*" OR _lib MATCHES "^-")
+                        list(APPEND WEBCFACE_PKGCONFIG_LIBS ${_lib})
+                    else()
+                        list(APPEND WEBCFACE_PKGCONFIG_LIBS -l${_lib})
+                    endif()
+                endforeach()
             endif()
         endif()
         if(NOT Crow_FOUND)
