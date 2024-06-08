@@ -4,7 +4,6 @@
 
 WEBCFACE_NS_BEGIN
 namespace Internal {
-
 /*!
  * \brief setSend時にこれを実際に送信すべきかどうか
  *
@@ -24,12 +23,31 @@ static bool shouldSend(const T &prev, const T &current) {
 }
 
 template <typename T, typename ReqT>
+SyncDataStore2<T, ReqT>::SyncDataStore2(const std::u8string &name)
+    : self_member_name(name) {}
+
+template <typename T, typename ReqT>
+bool SyncDataStore2<T, ReqT>::isSelf(std::u8string_view member) const {
+    return member == self_member_name;
+}
+
+template <typename T, typename ReqT>
+void SyncDataStore2<T, ReqT>::setSend(const FieldBase &base, const T &data) {
+    setSend(base.field_, data);
+}
+
+template <typename T, typename ReqT>
 void SyncDataStore2<T, ReqT>::setSend(const std::u8string &name,
                                       const T &data) {
     std::lock_guard lock(mtx);
     data_send[name] = data;
     // auto &recv_self = data_recv[self_member_name];
     // recv_self[name] = data; // 送信後に自分の値を参照する用
+}
+
+template <typename T, typename ReqT>
+void SyncDataStore2<T, ReqT>::setRecv(const FieldBase &base, const T &data) {
+    setRecv(base.member_, base.field_, data);
 }
 
 template <typename T, typename ReqT>
@@ -40,6 +58,11 @@ void SyncDataStore2<T, ReqT>::setRecv(const std::u8string &from,
     data_recv[from][name] = data;
 }
 
+template <typename T, typename ReqT>
+std::unordered_set<std::u8string>
+SyncDataStore2<T, ReqT>::getEntry(const FieldBase &base) {
+    return getEntry(base.member_);
+}
 template <typename T, typename ReqT>
 std::unordered_set<std::u8string>
 SyncDataStore2<T, ReqT>::getEntry(const std::u8string &name) {
@@ -111,6 +134,10 @@ const ReqT &SyncDataStore2<T, ReqT>::getReqInfo(const std::u8string &member,
 
 
 template <typename T, typename ReqT>
+std::optional<T> SyncDataStore2<T, ReqT>::getRecv(const FieldBase &base) {
+    return getRecv(base.member_, base.field_);
+}
+template <typename T, typename ReqT>
 std::optional<T> SyncDataStore2<T, ReqT>::getRecv(const std::u8string &from,
                                                   const std::u8string &name) {
     std::lock_guard lock(mtx);
@@ -129,6 +156,12 @@ std::optional<T> SyncDataStore2<T, ReqT>::getRecv(const std::u8string &from,
         }
     }
     return std::nullopt;
+}
+template <typename T, typename ReqT>
+std::optional<Dict<T>> SyncDataStore2<T, ReqT>::getRecvRecurse(
+    const FieldBase &base,
+    const std::function<void(const std::u8string &)> &cb) {
+    return getRecvRecurse(base.member_, base.field_, cb);
 }
 template <typename T, typename ReqT>
 std::optional<Dict<T>> SyncDataStore2<T, ReqT>::getRecvRecurse(
@@ -158,6 +191,10 @@ std::optional<Dict<T>> SyncDataStore2<T, ReqT>::getRecvRecurse(
     return std::nullopt;
 }
 template <typename T, typename ReqT>
+bool SyncDataStore2<T, ReqT>::unsetRecv(const FieldBase &base) {
+    return unsetRecv(base.member_, base.field_);
+}
+template <typename T, typename ReqT>
 bool SyncDataStore2<T, ReqT>::unsetRecv(const std::u8string &from,
                                         const std::u8string &name) {
     std::lock_guard lock(mtx);
@@ -169,6 +206,10 @@ bool SyncDataStore2<T, ReqT>::unsetRecv(const std::u8string &from,
         return true;
     }
     return false;
+}
+template <typename T, typename ReqT>
+void SyncDataStore2<T, ReqT>::clearRecv(const FieldBase &base) {
+    clearRecv(base.member_, base.field_);
 }
 template <typename T, typename ReqT>
 void SyncDataStore2<T, ReqT>::clearRecv(const std::u8string &from,

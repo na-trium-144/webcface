@@ -9,15 +9,6 @@
 #include <webcface/common/def.h>
 
 WEBCFACE_NS_BEGIN
-namespace Internal {
-struct ClientData;
-}
-class Member;
-
-class Image;
-#ifdef _WIN32
-extern template class WEBCFACE_DLL_INSTANCE_DECL EventTarget<Image>;
-#endif
 
 /*!
  * \brief (ver1.3から追加) 画像の送受信データを表すクラス

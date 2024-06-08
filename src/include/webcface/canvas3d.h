@@ -19,11 +19,6 @@ template <typename Component>
 class DataSetBuffer;
 }
 
-class Canvas3D;
-#ifdef _WIN32
-extern template class WEBCFACE_DLL_INSTANCE_DECL EventTarget<Canvas3D>;
-#endif
-
 /*!
  * \brief Canvas3Dの送受信データを表すクラス
  *

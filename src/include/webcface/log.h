@@ -9,11 +9,6 @@
 
 WEBCFACE_NS_BEGIN
 
-class Log;
-#ifdef _WIN32
-extern template class WEBCFACE_DLL_INSTANCE_DECL EventTarget<Log>;
-#endif
-
 /*!
  * \brief ログの送受信データを表すクラス
  *

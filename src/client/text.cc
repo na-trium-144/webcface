@@ -2,6 +2,7 @@
 #include <webcface/member.h>
 #include "client_internal.h"
 #include "../message/message.h"
+#include "event_target_impl.h"
 
 WEBCFACE_NS_BEGIN
 

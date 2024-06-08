@@ -9,15 +9,6 @@
 #include "common/val.h"
 
 WEBCFACE_NS_BEGIN
-namespace Internal {
-struct ClientData;
-}
-class Member;
-
-class Text;
-#ifdef _WIN32
-extern template class WEBCFACE_DLL_INSTANCE_DECL EventTarget<Text>;
-#endif
 
 /*!
  * \brief 文字列の送受信データを表すクラス

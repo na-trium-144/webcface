@@ -3,6 +3,16 @@
 WEBCFACE_NS_BEGIN
 namespace Internal {
 template <typename T>
+SyncDataStore1<T>::SyncDataStore1(const std::u8string &name)
+    : self_member_name(name) {}
+
+template <typename T>
+bool SyncDataStore1<T>::isSelf(std::u8string_view member) const {
+    return member == self_member_name;
+}
+
+
+template <typename T>
 void SyncDataStore1<T>::setRecv(const std::u8string &member, const T &data) {
     std::lock_guard lock(mtx);
     data_recv[member] = data;

@@ -10,15 +10,6 @@
 #include <webcface/common/def.h>
 
 WEBCFACE_NS_BEGIN
-namespace Internal {
-struct ClientData;
-}
-class Member;
-
-class Value;
-#ifdef _WIN32
-extern template class WEBCFACE_DLL_INSTANCE_DECL EventTarget<Value>;
-#endif
 
 /*!
  * \brief 実数値またはその配列の送受信データを表すクラス

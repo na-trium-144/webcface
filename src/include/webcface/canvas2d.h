@@ -14,11 +14,6 @@ class DataSetBuffer;
 class Canvas2DDataBuf;
 } // namespace Internal
 
-class Canvas2D;
-#ifdef _WIN32
-extern template class WEBCFACE_DLL_INSTANCE_DECL EventTarget<Canvas2D>;
-#endif
-
 /*!
  * \brief Canvas2Dの送受信データを表すクラス
  *

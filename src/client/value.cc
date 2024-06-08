@@ -4,6 +4,7 @@
 #include "../message/message.h"
 #include <algorithm>
 #include <cctype>
+#include "event_target_impl.h"
 
 WEBCFACE_NS_BEGIN
 

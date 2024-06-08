@@ -4,6 +4,7 @@
 #include "../message/message.h"
 #include "data_buffer.h"
 #include "webcface/encoding.h"
+#include "event_target_impl.h"
 
 WEBCFACE_NS_BEGIN
 

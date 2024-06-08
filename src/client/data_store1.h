@@ -20,8 +20,7 @@ class WEBCFACE_DLL_TEMPLATE SyncDataStore1 {
     std::u8string self_member_name;
     std::recursive_mutex mtx;
 
-    explicit SyncDataStore1(const std::u8string &name)
-        : self_member_name(name) {}
+    explicit SyncDataStore1(const std::u8string &name);
 
     //! リクエストを追加
     /*!
@@ -35,9 +34,7 @@ class WEBCFACE_DLL_TEMPLATE SyncDataStore1 {
      */
     bool clearReq(const std::u8string &member);
 
-    bool isSelf(std::u8string_view member) const {
-        return member == self_member_name;
-    }
+    bool isSelf(std::u8string_view member) const;
 
     void setRecv(const std::u8string &member, const T &data);
 

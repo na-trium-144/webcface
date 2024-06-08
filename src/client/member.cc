@@ -10,8 +10,11 @@
 #include <webcface/event_target.h>
 #include "../message/message.h"
 #include "client_internal.h"
+#include "event_target_impl.h"
 
 WEBCFACE_NS_BEGIN
+
+template class WEBCFACE_DLL_INSTANCE_DEF EventTarget<Member>;
 
 Log Member::log() const { return Log{*this}; }
 

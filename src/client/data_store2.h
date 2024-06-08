@@ -76,14 +76,11 @@ class WEBCFACE_DLL_TEMPLATE SyncDataStore2 {
 
 
   public:
-    explicit SyncDataStore2(const std::u8string &name)
-        : self_member_name(name) {}
+    explicit SyncDataStore2(const std::u8string &name);
 
     std::recursive_mutex mtx;
 
-    bool isSelf(std::u8string_view member) const {
-        return member == self_member_name;
-    }
+    bool isSelf(std::u8string_view member) const;
 
     /*!
      * \brief リクエストを追加
@@ -118,9 +115,7 @@ class WEBCFACE_DLL_TEMPLATE SyncDataStore2 {
      *
      */
     void setSend(const std::u8string &name, const T &data);
-    void setSend(const FieldBase &base, const T &data) {
-        setSend(base.field_, data);
-    }
+    void setSend(const FieldBase &base, const T &data);
 
     /*!
      * \brief 受信したデータをdata_recvにセット
@@ -128,17 +123,13 @@ class WEBCFACE_DLL_TEMPLATE SyncDataStore2 {
      */
     void setRecv(const std::u8string &from, const std::u8string &name,
                  const T &data);
-    void setRecv(const FieldBase &base, const T &data) {
-        setRecv(base.member_, base.field_, data);
-    }
+    void setRecv(const FieldBase &base, const T &data);
     /*!
      * \brief 受信したデータを削除
      *
      */
     void clearRecv(const std::u8string &from, const std::u8string &name);
-    void clearRecv(const FieldBase &base) {
-        clearRecv(base.member_, base.field_);
-    }
+    void clearRecv(const FieldBase &base);
 
     /*!
      * \brief data_recvからデータを返す
@@ -146,9 +137,7 @@ class WEBCFACE_DLL_TEMPLATE SyncDataStore2 {
      */
     std::optional<T> getRecv(const std::u8string &from,
                              const std::u8string &name);
-    std::optional<T> getRecv(const FieldBase &base) {
-        return getRecv(base.member_, base.field_);
-    }
+    std::optional<T> getRecv(const FieldBase &base);
     /*!
      * \brief data_recvから指定したfield以下のデータを返す
      *
@@ -164,9 +153,7 @@ class WEBCFACE_DLL_TEMPLATE SyncDataStore2 {
         const std::function<void(const std::u8string &)> &cb = nullptr);
     std::optional<Dict<T>> getRecvRecurse(
         const FieldBase &base,
-        const std::function<void(const std::u8string &)> &cb = nullptr) {
-        return getRecvRecurse(base.member_, base.field_, cb);
-    }
+        const std::function<void(const std::u8string &)> &cb = nullptr);
     /*!
      * \brief data_recvからデータを削除, reqを消す
      *
@@ -174,9 +161,7 @@ class WEBCFACE_DLL_TEMPLATE SyncDataStore2 {
      *
      */
     bool unsetRecv(const std::u8string &from, const std::u8string &name);
-    bool unsetRecv(const FieldBase &base) {
-        return unsetRecv(base.member_, base.field_);
-    }
+    bool unsetRecv(const FieldBase &base);
 
     /*!
      * \brief memberのentryをクリア
@@ -195,9 +180,7 @@ class WEBCFACE_DLL_TEMPLATE SyncDataStore2 {
      *
      */
     std::unordered_set<std::u8string> getEntry(const std::u8string &from);
-    std::unordered_set<std::u8string> getEntry(const FieldBase &base) {
-        return getEntry(base.member_);
-    }
+    std::unordered_set<std::u8string> getEntry(const FieldBase &base);
 
     /*!
      * \brief req_idに対応するmember名とフィールド名を返す

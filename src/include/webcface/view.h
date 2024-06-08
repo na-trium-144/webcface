@@ -10,16 +10,10 @@
 
 WEBCFACE_NS_BEGIN
 namespace Internal {
-struct ClientData;
 template <typename Component>
 class DataSetBuffer;
 class ViewBuf;
 } // namespace Internal
-
-class View;
-#ifdef _WIN32
-extern template class WEBCFACE_DLL_INSTANCE_DECL EventTarget<View>;
-#endif
 
 /*!
  * \brief Viewの送受信データを表すクラス
