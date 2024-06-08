@@ -777,6 +777,7 @@ endfunction()
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     add_compile_options(-Wall -Wextra -Wpedantic -Werror)
     add_compile_options(-Wno-error=ignored-attributes)
+    add_compile_options(-Wno-error=attributes)
     add_compile_options(-Wno-error=deprecated-declarations)
     add_compile_options(-Wno-error=psabi) # refer to PR#9
     # crow
@@ -919,6 +920,7 @@ endif()
 list(APPEND WEBCFACE_PRIVATE_DEPS msgpack-cxx ${Crow} utfcpp)
 if(WEBCFACE_SHARED AND APPLE)
     # MacOSでは--exclude-libsが使えず、その代わり-hidden-lでライブラリを渡す必要がある
+    target_include_directories(${PROJECT_NAME} PRIVATE $<TARGET_PROPERTY:${libcurl},INCLUDE_DIRECTORIES>)
     target_link_directories(${PROJECT_NAME} PRIVATE $<TARGET_LINKER_FILE_DIR:${libcurl}>)
     if(CMAKE_BUILD_TYPE STREQUAL "Debug")
         # なぜかTARGET_LINKER_FILE_BASE_NAMEすると"libcurl"になってしまう
