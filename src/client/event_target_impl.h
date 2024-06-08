@@ -10,27 +10,29 @@ template <typename ArgType>
 EventTarget<ArgType>::~EventTarget() {}
 
 template <typename ArgType>
-EventTarget<ArgType>::CallbackList &EventTarget<ArgType>::callbackList() const {
+typename EventTarget<ArgType>::CallbackList &
+EventTarget<ArgType>::callbackList() const {
     onAppend();
     return checkCl();
 }
 
 template <typename ArgType>
-EventTarget<ArgType>::EventHandle EventTarget<ArgType>::appendListener(
-    const EventTarget<ArgType>::EventCallback &callback) const {
+typename EventTarget<ArgType>::EventHandle EventTarget<ArgType>::appendListener(
+    const typename EventTarget<ArgType>::EventCallback &callback) const {
     onAppend();
     return checkCl().append(callback);
 }
 
 template <typename ArgType>
-EventTarget<ArgType>::EventHandle EventTarget<ArgType>::prependListener(
-    const EventTarget<ArgType>::EventCallback &callback) const {
+typename EventTarget<ArgType>::EventHandle
+EventTarget<ArgType>::prependListener(
+    const typename EventTarget<ArgType>::EventCallback &callback) const {
     onAppend();
     return checkCl().prepend(callback);
 }
 template <typename ArgType>
-EventTarget<ArgType>::EventHandle EventTarget<ArgType>::insertListener(
-    const EventTarget<ArgType>::EventCallback &callback,
+typename EventTarget<ArgType>::EventHandle EventTarget<ArgType>::insertListener(
+    const typename EventTarget<ArgType>::EventCallback &callback,
     const EventHandle &before) const {
     onAppend();
     return checkCl().insert(callback, before);
@@ -38,7 +40,7 @@ EventTarget<ArgType>::EventHandle EventTarget<ArgType>::insertListener(
 
 template <typename ArgType>
 bool EventTarget<ArgType>::removeListener(
-    const EventTarget<ArgType>::EventHandle &handle) const {
+    const typename EventTarget<ArgType>::EventHandle &handle) const {
     return checkCl().remove(handle);
 }
 
@@ -48,7 +50,7 @@ bool EventTarget<ArgType>::hasAnyListener() const {
 }
 template <typename ArgType>
 bool EventTarget<ArgType>::ownsHandle(
-    const EventTarget<ArgType>::EventHandle &handle) const {
+    const typename EventTarget<ArgType>::EventHandle &handle) const {
     return checkCl().ownsHandle(handle);
 }
 
