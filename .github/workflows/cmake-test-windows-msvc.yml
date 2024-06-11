@@ -22,7 +22,7 @@ jobs:
           shared_flag: on
         - dep: static
           shared_flag: off
-    runs-on: windows-latest
+    runs-on: windows-2019
     steps:
     - uses: actions/checkout@v4
     # - name: vcpkg build
@@ -51,10 +51,12 @@ jobs:
       run: echo "c:\Program Files\ImageMagick-7.1.1-Q16-HDRI" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
         
     - name: Configure CMake
-      shell: cmd
       run: |
-        call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\Tools\VsDevCmd.bat"
-        cmake -B build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DWEBCFACE_TEST=on -DWEBCFACE_EXAMPLE=on -DWEBCFACE_TEST_TIMEOUT=1000 -DWEBCFACE_SHARED=${{matrix.shared_flag}} -DCMAKE_INSTALL_PREFIX=${{github.workspace}}/build/install -DCMAKE_CXX_FLAGS=/D_DISABLE_CONSTEXPR_MUTEX_CONSTRUCTOR
+        ${VS_INST_PATH} = & "${env:ProgramFiles(x86)}/Microsoft Visual Studio/Installer/vswhere.exe" -latest -property installationPath
+        Write-Output "  <-> VS Install Path: ${VS_INST_PATH}"
+        Import-Module ${VS_INST_PATH}/Common7/Tools/Microsoft.VisualStudio.DevShell.dll
+        Enter-VsDevShell -VsInstallPath ${VS_INST_PATH} -SkipAutomaticLocation -DevCmdArguments '-arch=${{matrix.config.arch}} -no_logo'
+        cmake -B build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DWEBCFACE_TEST=on -DWEBCFACE_EXAMPLE=on -DWEBCFACE_TEST_TIMEOUT=1000 -DWEBCFACE_SHARED=${{matrix.shared_flag}} -DCMAKE_INSTALL_PREFIX=${{github.workspace}}/build/install
     # ${{ steps.vcpkg.outputs.vcpkg-cmake-config }}
 
     - name: Build
@@ -79,6 +81,17 @@ jobs:
         dep: ["source"]
     steps:
     - uses: actions/checkout@v4
+    
+    - name: Uninstall ImageMagick
+      uses: crazy-max/ghaction-chocolatey@v3
+      with:
+        args: uninstall -y imagemagick imagemagick.app
+    - name: Install ImageMagick
+      uses: crazy-max/ghaction-chocolatey@v3
+      with:
+        args: install -y imagemagick -PackageParameters InstallDevelopmentHeaders=true
+    - name: Add imagemagick to path
+      run: echo "c:\Program Files\ImageMagick-7.1.1-Q16-HDRI" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
     
     - name: Configure CMake
       shell: cmd
