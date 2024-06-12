@@ -83,10 +83,6 @@ if(WEBCFACE_COVERAGE)
     endif()
 endif()
 
-if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    add_compile_options(-Wno-psabi) # refer to PR#9
-endif()
-
 if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     add_compile_definitions(
         _CRT_SECURE_NO_WARNINGS
@@ -273,9 +269,6 @@ if(NOT asio_POPULATED)
         ${asio_SOURCE_DIR}/asio/include
     )
     target_compile_definitions(asio INTERFACE ASIO_STANDALONE)
-    if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-        target_compile_options(asio INTERFACE -Wno-deprecated-declarations)
-    endif()
     if(MINGW)
         target_link_libraries(asio INTERFACE ws2_32 wsock32)
     endif()
@@ -298,9 +291,6 @@ if(NOT crow_POPULATED)
         ${crow_SOURCE_DIR}/include
     )
     target_link_libraries(Crow INTERFACE asio)
-    if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-        target_compile_options(Crow INTERFACE -Wno-type-limits)
-    endif()
 endif()
 
 message(STATUS "Fetching cli11 Source...")
@@ -345,24 +335,39 @@ if(WEBCFACE_TEST)
 endif()
 
 ###############################################################################
+include(CheckCXXCompilerFlag)
+function(add_cxx_compile_options_if FLAG NAME)
+    check_cxx_compiler_flag(${FLAG} FLAG_${NAME}_EXISTS)
+    if(FLAG_${NAME}_EXISTS)
+        add_compile_options($<$<COMPILE_LANGUAGE:CXX>:${FLAG}>)
+    endif()
+endfunction()
+
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     add_compile_options(-Wall -Wextra -Wpedantic -Werror)
     add_compile_options(-Wno-error=deprecated-declarations)
-    add_compile_options(-Wno-psabi) # refer to PR#9
-    add_compile_options( # inside opencv
-        $<$<COMPILE_LANGUAGE:CXX>:-Wno-deprecated-enum-enum-conversion>
-    )
-    add_compile_options( # inside fmt (fmtlib/fmt#3354)
-        -Wno-array-bounds
-        -Wno-stringop-overflow
-    )
+    add_compile_options(-Wno-error=psabi) # refer to PR#9
+    # crow
+    add_compile_options(-Wno-error=type-limits)
+    # inside opencv
+    add_cxx_compile_options_if(-Wno-error=deprecated-enum-enum-conversion DEPRECATED_ENUM)
+    # inside fmt (fmtlib/fmt#3354)
+    add_compile_options(-Wno-error=array-bounds -Wno-error=stringop-overflow)
+    # (fmtlib/fmt#3415)
+    add_cxx_compile_options_if(-Wno-error=dangling-reference DANGLING_REFERENCE)
 endif()
-if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
     add_compile_options(-Wall -Wextra -Wpedantic -Werror)
     add_compile_options(-Wno-error=deprecated-declarations)
-    add_compile_options( # inside opencv
-        -Wno-c11-extensions
-        $<$<COMPILE_LANGUAGE:CXX>:-Wno-deprecated-enum-enum-conversion>
+    add_compile_options(
+        --system-header-prefix=msgpack.hpp
+        --system-header-prefix=eventpp/
+        --system-header-prefix=spdlog/
+        --system-header-prefix=curl/
+        --system-header-prefix=crow.h
+        --system-header-prefix=opencv2/
+        --system-header-prefix=utf8.h
+        --system-header-prefix=CLI/
     )
 endif()
 
