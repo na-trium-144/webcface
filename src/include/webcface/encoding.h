@@ -5,7 +5,7 @@
 #include <webcface/common/def.h>
 
 WEBCFACE_NS_BEGIN
-namespace Encoding {
+inline namespace Encoding {
 /*!
  * \brief webcfaceが使用するエンコーディングを設定する
  * \since ver1.12
@@ -122,6 +122,7 @@ class WEBCFACE_DLL SharedString {
 
   public:
     SharedString() : data() {}
+    SharedString(std::nullptr_t) : data() {}
     explicit SharedString(std::u8string_view u8)
         : data(std::make_shared<Data>(u8)) {}
     explicit SharedString(std::string_view s)
@@ -132,6 +133,9 @@ class WEBCFACE_DLL SharedString {
     const std::u8string &u8String() const;
     const std::string &decode() const;
     const std::wstring &decodeW() const;
+
+    bool empty() const;
+
     bool operator==(const SharedString &other) const {
         return this->u8String() == other.u8String();
     }
@@ -142,7 +146,7 @@ class WEBCFACE_DLL SharedString {
     struct Hash : std::hash<std::u8string> {
         Hash() = default;
         auto operator()(const SharedString &ss) const {
-            return this->operator()(ss.u8String());
+            return this->std::hash<std::u8string>::operator()(ss.u8String());
         }
     };
 };

@@ -8,7 +8,7 @@
 #endif
 
 WEBCFACE_NS_BEGIN
-namespace Encoding {
+inline namespace Encoding {
 static bool using_utf8 = true;
 
 void usingUTF8(bool flag) { using_utf8 = flag; }
@@ -151,6 +151,8 @@ const std::u8string &SharedString::u8String() const {
         return data->u8s;
     }
 }
+bool SharedString::empty() const { return !data || data->u8s.empty(); }
+
 const std::string &SharedString::decode() const {
     if (!data || data->u8s.empty()) {
         static std::string empty;

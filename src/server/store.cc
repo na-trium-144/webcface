@@ -44,7 +44,7 @@ void ServerStorage::clientSendAll() {
     }
 }
 
-void ServerStorage::findAndDo(std::u8string_view name,
+void ServerStorage::findAndDo(const SharedString &name,
                               const std::function<void(MemberDataPtr)> &func,
                               const std::function<void()> &func_else) {
     auto cd =

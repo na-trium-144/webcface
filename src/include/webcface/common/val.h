@@ -83,7 +83,7 @@ class ValAdaptor {
      * 文字列に変換したものを保存
      * デフォルトでu8strの空文字列
      */
-    mutable std::variant<std::u8string, std::string, std::wstring> as_str;
+    mutable SharedString as_str;
 
     std::variant<double, std::int64_t> as_val;
     ValType type;
@@ -97,41 +97,41 @@ class ValAdaptor {
     /*!
      * \since ver1.12
      */
-    explicit ValAdaptor(std::u8string_view str)
-        : as_str(std::u8string(str)), type(ValType::string_) {}
+    explicit ValAdaptor(const SharedString &str)
+        : as_str(str), type(ValType::string_) {}
     /*!
      * \since ver1.12
      */
-    ValAdaptor &operator=(std::u8string_view str) {
-        as_str.emplace<U8STR>(str);
+    ValAdaptor &operator=(const SharedString &str) {
+        as_str = str;
         type = ValType::string_;
         return *this;
     }
     /*!
      * \since ver1.12
      */
-    explicit ValAdaptor(const char8_t *str)
-        : as_str(std::u8string(str)), type(ValType::string_) {}
+    explicit ValAdaptor(std::u8string_view str)
+        : as_str(str), type(ValType::string_) {}
     /*!
      * \since ver1.12
      */
-    ValAdaptor &operator=(const char8_t *str) {
-        as_str.emplace<U8STR>(str);
+    ValAdaptor &operator=(std::u8string_view str) {
+        as_str = SharedString(str);
         type = ValType::string_;
         return *this;
     }
 
     explicit ValAdaptor(std::string_view str)
-        : as_str(std::string(str)), type(ValType::string_) {}
+        : as_str(str), type(ValType::string_) {}
     ValAdaptor &operator=(std::string_view str) {
-        as_str.emplace<STR>(str);
+        as_str = SharedString(str);
         type = ValType::string_;
         return *this;
     }
     explicit ValAdaptor(const char *str)
-        : as_str(std::string(str)), type(ValType::string_) {}
+        : as_str(str), type(ValType::string_) {}
     ValAdaptor &operator=(const char *str) {
-        as_str.emplace<STR>(str);
+        as_str = SharedString(str);
         type = ValType::string_;
         return *this;
     }
@@ -140,12 +140,12 @@ class ValAdaptor {
      * \since ver1.12
      */
     explicit ValAdaptor(std::wstring_view str)
-        : as_str(std::wstring(str)), type(ValType::string_) {}
+        : as_str(str), type(ValType::string_) {}
     /*!
      * \since ver1.12
      */
     ValAdaptor &operator=(std::wstring_view str) {
-        as_str.emplace<WSTR>(str);
+        as_str = SharedString(str);
         type = ValType::string_;
         return *this;
     }
@@ -153,12 +153,12 @@ class ValAdaptor {
      * \since ver1.12
      */
     explicit ValAdaptor(const wchar_t *str)
-        : as_str(std::wstring(str)), type(ValType::string_) {}
+        : as_str(str), type(ValType::string_) {}
     /*!
      * \since ver1.12
      */
     ValAdaptor &operator=(const wchar_t *str) {
-        as_str.emplace<WSTR>(str);
+        as_str = SharedString(str);
         type = ValType::string_;
         return *this;
     }
@@ -206,7 +206,7 @@ class ValAdaptor {
      */
     explicit ValAdaptor(const wcfMultiVal &val) {
         if (val.as_str != nullptr) {
-            this->as_str.emplace<STR>(val.as_str);
+            this->as_str = SharedString(val.as_str);
             type = ValType::string_;
         } else if (val.as_double != 0) {
             this->as_val.emplace<DOUBLEV>(val.as_double);
@@ -222,7 +222,7 @@ class ValAdaptor {
      */
     explicit ValAdaptor(const wcfMultiValW &val) {
         if (val.as_str != nullptr) {
-            this->as_str.emplace<WSTR>(val.as_str);
+            this->as_str = SharedString(val.as_str);
             type = ValType::string_;
         } else if (val.as_double != 0) {
             this->as_val.emplace<DOUBLEV>(val.as_double);
@@ -242,14 +242,7 @@ class ValAdaptor {
      */
     bool empty() const {
         if (type == ValType::none_ || type == ValType::string_) {
-            switch (as_str.index()) {
-            case U8STR:
-                return std::get<U8STR>(as_str).empty();
-            case STR:
-                return std::get<STR>(as_str).empty();
-            default:
-                return std::get<WSTR>(as_str).empty();
-            }
+            return as_str.empty();
         } else {
             return false;
         }
@@ -269,26 +262,16 @@ class ValAdaptor {
      *
      */
     const std::string &asStringRef() const {
-        if (as_str.index() != STR) {
-            std::string str;
-            if (valType() == ValType::none_) {
-                // empty
-            } else if (valType() == ValType::string_) {
-                if (as_str.index() == U8STR) [[likely]] {
-                    str = Encoding::decode(std::get<U8STR>(as_str));
-                } else if (as_str.index() == WSTR) {
-                    str = Encoding::toNarrow(std::get<WSTR>(as_str));
-                }
+        if (as_str.empty() && valType() != ValType::none_ &&
+            valType() != ValType::string_) {
+            if (as_val.index() == DOUBLEV) {
+                as_str =
+                    SharedString(std::to_string(std::get<DOUBLEV>(as_val)));
             } else {
-                if (as_val.index() == DOUBLEV) {
-                    str = std::to_string(std::get<DOUBLEV>(as_val));
-                } else {
-                    str = std::to_string(std::get<INT64V>(as_val));
-                }
+                as_str = SharedString(std::to_string(std::get<INT64V>(as_val)));
             }
-            as_str.emplace<STR>(std::move(str));
         }
-        return std::get<STR>(as_str);
+        return as_str.decode();
     }
     /*!
      * \brief 文字列として返す (wstring)
@@ -296,55 +279,32 @@ class ValAdaptor {
      * \sa asStringRef()
      */
     const std::wstring &asWStringRef() const {
-        if (as_str.index() != WSTR) {
-            std::wstring str;
-            if (valType() == ValType::none_) {
-                // empty
-            } else if (valType() == ValType::string_) {
-                if (as_str.index() == U8STR) [[likely]] {
-                    str = Encoding::decodeW(std::get<U8STR>(as_str));
-                } else if (as_str.index() == STR) {
-                    str = Encoding::toWide(std::get<STR>(as_str));
-                }
+        if (as_str.empty() && valType() != ValType::none_ &&
+            valType() != ValType::string_) {
+            if (as_val.index() == DOUBLEV) {
+                as_str =
+                    SharedString(std::to_wstring(std::get<DOUBLEV>(as_val)));
             } else {
-                if (as_val.index() == DOUBLEV) {
-                    str = std::to_wstring(std::get<DOUBLEV>(as_val));
-                } else {
-                    str = std::to_wstring(std::get<INT64V>(as_val));
-                }
+                as_str =
+                    SharedString(std::to_wstring(std::get<INT64V>(as_val)));
             }
-            as_str.emplace<WSTR>(std::move(str));
         }
-        return std::get<WSTR>(as_str);
+        return as_str.decodeW();
     }
     /*!
      * \since ver1.12
      */
-    std::u8string asU8String() const {
-        if (as_str.index() == U8STR && !std::get<U8STR>(as_str).empty()) {
-            return std::get<U8STR>(as_str);
-        } else {
-            if (valType() == ValType::none_) {
-                // empty
-                return std::u8string();
-            } else if (valType() == ValType::string_) {
-                if (as_str.index() == STR) {
-                    return Encoding::encode(std::get<STR>(as_str));
-                } else if (as_str.index() == WSTR) {
-                    return Encoding::encodeW(std::get<WSTR>(as_str));
-                } else {
-                    return std::get<U8STR>(as_str);
-                }
+    const std::u8string &asU8StringRef() const {
+        if (as_str.empty() && valType() != ValType::none_ &&
+            valType() != ValType::string_) {
+            if (as_val.index() == DOUBLEV) {
+                as_str =
+                    SharedString(std::to_string(std::get<DOUBLEV>(as_val)));
             } else {
-                if (as_val.index() == DOUBLEV) {
-                    return std::u8string(Encoding::castToU8(
-                        std::to_string(std::get<DOUBLEV>(as_val))));
-                } else {
-                    return std::u8string(Encoding::castToU8(
-                        std::to_string(std::get<INT64V>(as_val))));
-                }
+                as_str = SharedString(std::to_string(std::get<INT64V>(as_val)));
             }
         }
+        return as_str.u8String();
     }
 
     /*!
@@ -406,13 +366,7 @@ class ValAdaptor {
     double as() const {
         if (type == ValType::string_) {
             try {
-                switch (as_str.index()) {
-                case U8STR:
-                case STR:
-                    return std::stod(asStringRef());
-                default:
-                    return std::stod(asWStringRef());
-                }
+                return std::stod(asStringRef());
             } catch (...) {
                 return 0;
             }
@@ -468,14 +422,7 @@ class ValAdaptor {
         } else if (type == ValType::bool_ || other.type == ValType::bool_) {
             return this->asBool() == other.asBool();
         } else {
-            if (this->as_str.index() == other.as_str.index()) {
-                return this->as_str == other.as_str;
-            } else if (this->as_str.index() == WSTR ||
-                       other.as_str.index() == WSTR) {
-                return this->asWStringRef() == other.asWStringRef();
-            } else {
-                return this->asStringRef() == other.asStringRef();
-            }
+            return this->asU8StringRef() == other.asU8StringRef();
         }
     }
 

@@ -38,7 +38,7 @@ struct WEBCFACE_DLL MemberData {
      */
     bool sync_init = false;
 
-    std::u8string name;
+    SharedString name;
     std::string name_s; // decoded
     unsigned int member_id;
     Message::SyncInit init_data;
@@ -48,51 +48,71 @@ struct WEBCFACE_DLL MemberData {
      * entry非表示のものも含む。
      *
      */
-    std::unordered_map<std::u8string, std::shared_ptr<std::vector<double>>>
+    std::unordered_map<SharedString, std::shared_ptr<std::vector<double>>,
+                       SharedString::Hash>
         value;
-    std::unordered_map<std::u8string, std::shared_ptr<Common::ValAdaptor>> text;
-    std::unordered_map<std::u8string, std::shared_ptr<Message::FuncInfo>> func;
-    std::unordered_map<std::u8string, std::vector<Common::ViewComponentBase>>
+    std::unordered_map<SharedString, std::shared_ptr<Common::ValAdaptor>,
+                       SharedString::Hash>
+        text;
+    std::unordered_map<SharedString, std::shared_ptr<Message::FuncInfo>,
+                       SharedString::Hash>
+        func;
+    std::unordered_map<SharedString, std::vector<Common::ViewComponentBase>,
+                       SharedString::Hash>
         view;
-    std::unordered_map<std::u8string,
-                       std::vector<Common::Canvas3DComponentBase>>
+    std::unordered_map<SharedString, std::vector<Common::Canvas3DComponentBase>,
+                       SharedString::Hash>
         canvas3d;
-    std::unordered_map<std::u8string, Common::Canvas2DDataBase> canvas2d;
-    std::unordered_map<std::u8string, Common::ImageBase> image;
-    std::unordered_map<std::u8string, int> image_changed;
+    std::unordered_map<SharedString, Common::Canvas2DDataBase,
+                       SharedString::Hash>
+        canvas2d;
+    std::unordered_map<SharedString, Common::ImageBase, SharedString::Hash>
+        image;
+    std::unordered_map<SharedString, int, SharedString::Hash> image_changed;
     // 画像が変化したことを知らせるcv
-    std::unordered_map<std::u8string, std::mutex> image_m;
-    std::unordered_map<std::u8string, std::condition_variable> image_cv;
+    std::unordered_map<SharedString, std::mutex, SharedString::Hash> image_m;
+    std::unordered_map<SharedString, std::condition_variable,
+                       SharedString::Hash>
+        image_cv;
 
     std::chrono::system_clock::time_point last_sync_time;
     //! リクエストしているmember,nameのペア
-    std::unordered_map<std::u8string,
-                       std::unordered_map<std::u8string, unsigned int>>
+    std::unordered_map<
+        SharedString,
+        std::unordered_map<SharedString, unsigned int, SharedString::Hash>,
+        SharedString::Hash>
         value_req, text_req, view_req, image_req, robot_model_req, canvas3d_req,
         canvas2d_req;
     // リクエストが変化したことをスレッドに知らせる
-    std::unordered_map<std::u8string, std::unordered_map<std::u8string, int>>
+    std::unordered_map<
+        SharedString, std::unordered_map<SharedString, int, SharedString::Hash>,
+        SharedString::Hash>
         image_req_changed;
     // 画像をそれぞれのリクエストに合わせて変換するスレッド
-    std::unordered_map<std::u8string,
-                       std::unordered_map<std::u8string, Common::ImageReq>>
+    std::unordered_map<
+        SharedString,
+        std::unordered_map<SharedString, Common::ImageReq, SharedString::Hash>,
+        SharedString::Hash>
         image_req_info;
 
     // image_convert_thread[imageのmember][imageのfield] =
     // imageを変換してthisに送るスレッド
     std::unordered_map<
-        std::u8string,
-        std::unordered_map<std::u8string, std::optional<std::thread>>>
+        SharedString,
+        std::unordered_map<SharedString, std::optional<std::thread>,
+                           SharedString::Hash>,
+        SharedString::Hash>
         image_convert_thread;
-    void imageConvertThreadMain(const std::u8string &member,
-                                const std::u8string &field);
+    void imageConvertThreadMain(const SharedString &member,
+                                const SharedString &field);
     std::unordered_map<
-        std::u8string,
-        std::shared_ptr<std::vector<Message::RobotModel::RobotLink>>>
+        SharedString,
+        std::shared_ptr<std::vector<Message::RobotModel::RobotLink>>,
+        SharedString::Hash>
         robot_model;
 
-    std::set<std::u8string> log_req;
-    bool hasReq(const std::u8string &member);
+    std::unordered_set<SharedString, SharedString::Hash> log_req;
+    bool hasReq(const SharedString &member);
     //! ログ全履歴
     std::shared_ptr<std::deque<Message::Log::LogLine>> log;
     /*!

@@ -32,7 +32,7 @@ using FuncWrapperType =
  */
 class Arg {
   protected:
-    std::u8string name_;
+    SharedString name_;
     ValType type_ = ValType::none_;
     std::optional<ValAdaptor> init_ = std::nullopt;
     std::optional<double> min_ = std::nullopt, max_ = std::nullopt;
@@ -77,12 +77,12 @@ class Arg {
      * \brief 引数の名前を取得する。
      *
      */
-    std::string name() const { return Encoding::decode(name_); }
+    std::string name() const { return name_.decode(); }
     /*!
      * \brief 引数の名前を取得する。(wstring)
      * \since ver1.12
      */
-    std::wstring nameW() const { return Encoding::decodeW(name_); }
+    std::wstring nameW() const { return name_.decodeW(); }
     /*!
      * \brief 引数の型を取得する。
      *
@@ -256,7 +256,7 @@ struct FuncCall {
     std::size_t caller_id;
     unsigned int caller_member_id;
     unsigned int target_member_id;
-    std::u8string field;
+    SharedString field;
     std::vector<webcface::ValAdaptor> args;
 };
 
