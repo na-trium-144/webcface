@@ -18,7 +18,7 @@ jobs:
         include:
         - dep: with-opencv
           use_opencv: on
-    runs-on: windows-latest
+    runs-on: windows-2019
     steps:
     - uses: actions/checkout@v4
     # - name: vcpkg build
@@ -42,18 +42,16 @@ jobs:
       run: echo "c:\tools\opencv\build\x64\vc16\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
     
     - name: Configure CMake
-      run: >
-        cmake -B build
-        -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
-        -DWEBCFACE_TEST=on
-        -DWEBCFACE_EXAMPLE=on
-        -DWEBCFACE_TEST_TIMEOUT=1000
-        -DWEBCFACE_USE_OPENCV=${{matrix.use_opencv}}
-        -DCMAKE_PREFIX_PATH=c:\tools\opencv\build\x64\vc16\lib
+      run: |
+          ${VS_INST_PATH} = & "${env:ProgramFiles(x86)}/Microsoft Visual Studio/Installer/vswhere.exe" -latest -property installationPath
+          Write-Output "  <-> VS Install Path: ${VS_INST_PATH}"
+          Import-Module ${VS_INST_PATH}/Common7/Tools/Microsoft.VisualStudio.DevShell.dll
+          Enter-VsDevShell -VsInstallPath ${VS_INST_PATH} -SkipAutomaticLocation -DevCmdArguments '-arch=${{matrix.config.arch}} -no_logo'
+          cmake -B build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DWEBCFACE_TEST=on -DWEBCFACE_EXAMPLE=on -DWEBCFACE_TEST_TIMEOUT=1000 -DWEBCFACE_USE_OPENCV=${{matrix.use_opencv}} -DCMAKE_PREFIX_PATH=c:\tools\opencv\build\x64\vc16\lib
     # ${{ steps.vcpkg.outputs.vcpkg-cmake-config }}
 
     - name: Build
-      run: cmake --build build
+      run: cmake --build build --config ${{env.BUILD_TYPE}}
 
     - name: Test
       env:
