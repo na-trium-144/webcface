@@ -142,5 +142,37 @@ std::string_view castFromU8(std::u8string_view name) {
         name.size());
 }
 
+
+const std::u8string &SharedString::u8String() const {
+    if (!data || data->u8s.empty()) {
+        static std::u8string empty;
+        return empty;
+    } else {
+        return data->u8s;
+    }
+}
+const std::string &SharedString::decode() const {
+    if (!data || data->u8s.empty()) {
+        static std::string empty;
+        return empty;
+    } else if (!data->s.empty()) {
+        return data->s;
+    } else {
+        data->s = Encoding::decode(data->u8s);
+        return data->s;
+    }
+}
+const std::wstring &SharedString::decodeW() const {
+    if (!data || data->u8s.empty()) {
+        static std::wstring empty;
+        return empty;
+    } else if (!data->ws.empty()) {
+        return data->ws;
+    } else {
+        data->ws = Encoding::decodeW(data->u8s);
+        return data->ws;
+    }
+}
+
 } // namespace Encoding
 WEBCFACE_NS_END

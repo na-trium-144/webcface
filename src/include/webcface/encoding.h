@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <string_view>
+#include <memory>
 #include <webcface/common/def.h>
 
 WEBCFACE_NS_BEGIN
@@ -94,6 +95,57 @@ inline std::u8string_view castToU8(const char *data, std::size_t size) {
  * \since ver1.12
  */
 WEBCFACE_DLL std::string_view castFromU8(std::u8string_view name);
+
+/*!
+ * \brief u8stringとstringとwstringをshared_ptrで持ち共有する
+ * \since ver1.12
+ *
+ * 初期状態ではdataがnullptr、またはu8sのみ値を持ちsとwsは空
+ *
+ * decodeやdecodeWが呼ばれたときsとwsに変換後の文字列を保存する。
+ * 一度保存したsやwsを別の値に書き換えることはない
+ * (のでc_strなどの参照は保持される)
+ *
+ */
+class WEBCFACE_DLL SharedString {
+    struct Data {
+        std::u8string u8s;
+        std::string s;
+        std::wstring ws;
+        explicit Data(std::u8string_view u8) : u8s(u8), s(), ws() {}
+        explicit Data(std::string_view s)
+            : u8s(Encoding::encode(s)), s(s), ws() {}
+        explicit Data(std::wstring_view ws)
+            : u8s(Encoding::encodeW(ws)), s(), ws(ws) {}
+    };
+    std::shared_ptr<Data> data;
+
+  public:
+    SharedString() : data() {}
+    explicit SharedString(std::u8string_view u8)
+        : data(std::make_shared<Data>(u8)) {}
+    explicit SharedString(std::string_view s)
+        : data(std::make_shared<Data>(s)) {}
+    explicit SharedString(std::wstring_view ws)
+        : data(std::make_shared<Data>(ws)) {}
+
+    const std::u8string &u8String() const;
+    const std::string &decode() const;
+    const std::wstring &decodeW() const;
+    bool operator==(const SharedString &other) const {
+        return this->u8String() == other.u8String();
+    }
+    bool operator<(const SharedString &other) const {
+        return this->u8String() < other.u8String();
+    }
+
+    struct Hash : std::hash<std::u8string> {
+        Hash() = default;
+        auto operator()(const SharedString &ss) const {
+            return this->operator()(ss.u8String());
+        }
+    };
+};
 
 } // namespace Encoding
 WEBCFACE_NS_END

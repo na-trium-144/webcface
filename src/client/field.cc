@@ -15,31 +15,31 @@
 WEBCFACE_NS_BEGIN
 Member Field::member() const { return *this; }
 std::u8string_view Field::lastName8() const {
-    auto i = this->field_.rfind(field_separator);
+    auto i = this->field_.u8String().rfind(field_separator);
     if (i != std::string::npos && i != 0 &&
-        !(i == 1 && this->field_[0] == field_separator)) {
-        return std::u8string_view(this->field_).substr(i + 1);
+        !(i == 1 && this->field_.u8String()[0] == field_separator)) {
+        return std::u8string_view(this->field_.u8String()).substr(i + 1);
     } else {
-        return this->field_;
+        return this->field_.u8String();
     }
 }
 
 Field Field::parent() const {
-    int l = static_cast<int>(this->field_.size()) -
+    int l = static_cast<int>(this->field_.u8String().size()) -
             static_cast<int>(lastName().size()) - 1;
     if (l < 0) {
         l = 0;
     }
     return Field{*this, this->field_.substr(0, l)};
 }
-Field Field::child(std::u8string_view field) const {
-    if (this->field_.empty()) {
+Field Field::child(const SharedString &field) const {
+    if (this->field_.u8String().empty()) {
         return Field{*this, field};
     } else if (field.empty()) {
         return *this;
     } else {
         return Field{*this,
-                     this->field_ + field_separator + std::u8string(field)};
+                     this->field_.u8String() + field_separator + field.u8String()};
     }
 }
 
@@ -68,8 +68,8 @@ std::vector<Value> Field::valueEntries() const {
     auto keys = dataLock()->value_store.getEntry(*this);
     std::vector<Value> ret;
     for (const auto &f : keys) {
-        if (this->field_.empty() ||
-            f.starts_with(this->field_ + field_separator)) {
+        if (this->field_.u8String().empty() ||
+            f.starts_with(this->field_.u8String() + field_separator)) {
             ret.emplace_back(child(f));
         }
     }
@@ -79,8 +79,8 @@ std::vector<Text> Field::textEntries() const {
     auto keys = dataLock()->text_store.getEntry(*this);
     std::vector<Text> ret;
     for (const auto &f : keys) {
-        if (this->field_.empty() ||
-            f.starts_with(this->field_ + field_separator)) {
+        if (this->field_.u8String().empty() ||
+            f.starts_with(this->field_.u8String() + field_separator)) {
             ret.emplace_back(child(f));
         }
     }
@@ -90,8 +90,8 @@ std::vector<RobotModel> Field::robotModelEntries() const {
     auto keys = dataLock()->robot_model_store.getEntry(*this);
     std::vector<RobotModel> ret;
     for (const auto &f : keys) {
-        if (this->field_.empty() ||
-            f.starts_with(this->field_ + field_separator)) {
+        if (this->field_.u8String().empty() ||
+            f.starts_with(this->field_.u8String() + field_separator)) {
             ret.emplace_back(child(f));
         }
     }
@@ -101,8 +101,8 @@ std::vector<Func> Field::funcEntries() const {
     auto keys = dataLock()->func_store.getEntry(*this);
     std::vector<Func> ret;
     for (const auto &f : keys) {
-        if (this->field_.empty() ||
-            f.starts_with(this->field_ + field_separator)) {
+        if (this->field_.u8String().empty() ||
+            f.starts_with(this->field_.u8String() + field_separator)) {
             ret.emplace_back(child(f));
         }
     }
@@ -112,8 +112,8 @@ std::vector<View> Field::viewEntries() const {
     auto keys = dataLock()->view_store.getEntry(*this);
     std::vector<View> ret;
     for (const auto &f : keys) {
-        if (this->field_.empty() ||
-            f.starts_with(this->field_ + field_separator)) {
+        if (this->field_.u8String().empty() ||
+            f.starts_with(this->field_.u8String() + field_separator)) {
             ret.emplace_back(child(f));
         }
     }
@@ -123,8 +123,8 @@ std::vector<Canvas3D> Field::canvas3DEntries() const {
     auto keys = dataLock()->canvas3d_store.getEntry(*this);
     std::vector<Canvas3D> ret;
     for (const auto &f : keys) {
-        if (this->field_.empty() ||
-            f.starts_with(this->field_ + field_separator)) {
+        if (this->field_.u8String().empty() ||
+            f.starts_with(this->field_.u8String() + field_separator)) {
             ret.emplace_back(child(f));
         }
     }
@@ -134,8 +134,8 @@ std::vector<Canvas2D> Field::canvas2DEntries() const {
     auto keys = dataLock()->canvas2d_store.getEntry(*this);
     std::vector<Canvas2D> ret;
     for (const auto &f : keys) {
-        if (this->field_.empty() ||
-            f.starts_with(this->field_ + field_separator)) {
+        if (this->field_.u8String().empty() ||
+            f.starts_with(this->field_.u8String() + field_separator)) {
             ret.emplace_back(child(f));
         }
     }
@@ -145,8 +145,8 @@ std::vector<Image> Field::imageEntries() const {
     auto keys = dataLock()->image_store.getEntry(*this);
     std::vector<Image> ret;
     for (const auto &f : keys) {
-        if (this->field_.empty() ||
-            f.starts_with(this->field_ + field_separator)) {
+        if (this->field_.u8String().empty() ||
+            f.starts_with(this->field_.u8String() + field_separator)) {
             ret.emplace_back(child(f));
         }
     }
