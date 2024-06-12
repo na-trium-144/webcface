@@ -23,8 +23,6 @@ extern template class WEBCFACE_IMPORT EventTarget<Image>;
  * コンストラクタではなく Member::image() を使って取得してください
  */
 class WEBCFACE_DLL Image : protected Field, public EventTarget<Image> {
-    std::optional<Common::ImageFrame> img = std::nullopt;
-
     void onAppend() const override final;
 
     Image &request(std::optional<int> rows, std::optional<int> cols,
@@ -35,17 +33,25 @@ class WEBCFACE_DLL Image : protected Field, public EventTarget<Image> {
   public:
     Image() = default;
     Image(const Field &base);
-    Image(const Field &base, const std::string &field)
+    Image(const Field &base, std::u8string_view field)
         : Image(Field{base, field}) {}
 
     using Field::lastName;
     using Field::member;
     using Field::name;
+    using Field::nameW;
     /*!
      * \brief 「(thisの名前).(追加の名前)」を新しい名前とするField
      *
      */
     Image child(std::string_view field) const {
+        return this->Field::child(field);
+    }
+    /*!
+     * \brief 「(thisの名前).(追加の名前)」を新しい名前とするField (wstring)
+     * \since ver1.12
+     */
+    Image child(std::wstring_view field) const {
         return this->Field::child(field);
     }
     /*!
@@ -58,10 +64,19 @@ class WEBCFACE_DLL Image : protected Field, public EventTarget<Image> {
      */
     Image operator[](std::string_view field) const { return child(field); }
     /*!
+     * child()と同じ
+     * \since ver1.12
+     */
+    Image operator[](std::wstring_view field) const { return child(field); }
+    /*!
      * operator[](long, const char *)と解釈されるのを防ぐための定義
      * \since ver1.11
      */
     Image operator[](const char *field) const { return child(field); }
+    /*!
+     * \since ver1.12
+     */
+    Image operator[](const wchar_t *field) const { return child(field); }
     /*!
      * child()と同じ
      * \since ver1.11
@@ -96,15 +111,36 @@ class WEBCFACE_DLL Image : protected Field, public EventTarget<Image> {
      * (nulloptの場合元画像のフォーマット)
      * \param frame_rate 画像を受信する頻度
      * (指定しない場合元画像が更新されるたびに受信する)
+     * \deprecated ver1.12〜 rows, colsの順番がややこしいので sizeHW()
+     * を使ってサイズ指定
      *
      */
-    Image &
-    request(std::optional<int> rows = std::nullopt,
-            std::optional<int> cols = std::nullopt,
+    [[deprecated("Ambiguous image size")]] Image &
+    request(std::optional<int> rows, std::optional<int> cols = std::nullopt,
             std::optional<Common::ImageColorMode> color_mode = std::nullopt,
             std::optional<double> frame_rate = std::nullopt) {
         return request(rows, cols, Common::ImageCompressMode::raw, 0,
                        color_mode, frame_rate);
+    }
+    /*!
+     * \brief 画像を生画像のフォーマットでリクエストする
+     * \since ver1.12
+     * \param sizeOption 画像のサイズ (sizeWH() または sizeHW(), std::nullopt可)
+     * rows,colsのどちらかのみがnulloptの場合縦横比を保ってリサイズ
+     * \param color_mode 画像の色フォーマット
+     * (nulloptの場合元画像のフォーマット)
+     * \param frame_rate 画像を受信する頻度
+     * (指定しない場合元画像が更新されるたびに受信する)
+     *
+     */
+    Image &
+    request(std::optional<SizeOption> size = std::nullopt,
+            std::optional<Common::ImageColorMode> color_mode = std::nullopt,
+            std::optional<double> frame_rate = std::nullopt) {
+        return request(size.value_or(SizeOption{}).rows(),
+                       size.value_or(SizeOption{}).cols(),
+                       Common::ImageCompressMode::raw, 0, color_mode,
+                       frame_rate);
     }
     /*!
      * \brief 画像を圧縮されたフォーマットでリクエストする
@@ -118,12 +154,36 @@ class WEBCFACE_DLL Image : protected Field, public EventTarget<Image> {
      * * webp → 1〜100 (大きいほうが高品質)
      * \param frame_rate 画像を受信する頻度
      * (指定しない場合元画像が更新されるたびに受信する)
+     * \deprecated ver1.12〜 rows, colsの順番がややこしいので sizeHW()
+     * を使ってサイズ指定
      *
      */
-    Image &request(std::optional<int> rows, std::optional<int> cols,
+    [[deprecated("Ambiguous image size")]] Image &
+    request(std::optional<int> rows, std::optional<int> cols,
+            Common::ImageCompressMode cmp_mode, int quality,
+            std::optional<double> frame_rate = std::nullopt) {
+        return request(rows, cols, cmp_mode, quality, std::nullopt, frame_rate);
+    }
+    /*!
+     * \brief 画像を圧縮されたフォーマットでリクエストする
+     * \since ver1.12
+     * \param sizeOption 画像のサイズ (sizeWH() または sizeHW(), std::nullopt可)
+     * rows,colsのどちらかのみがnulloptの場合縦横比を保ってリサイズ
+     * \param cmp_mode 圧縮モード
+     * \param quality 圧縮のパラメータ
+     * * jpeg → 0〜100 (大きいほうが高品質)
+     * * png → 0〜9 (大きいほうが圧縮後のサイズが小さい)
+     * * webp → 1〜100 (大きいほうが高品質)
+     * \param frame_rate 画像を受信する頻度
+     * (指定しない場合元画像が更新されるたびに受信する)
+     *
+     */
+    Image &request(std::optional<SizeOption> size,
                    Common::ImageCompressMode cmp_mode, int quality,
                    std::optional<double> frame_rate = std::nullopt) {
-        return request(rows, cols, cmp_mode, quality, std::nullopt, frame_rate);
+        return request(size.value_or(SizeOption{}).rows(),
+                       size.value_or(SizeOption{}).cols(), cmp_mode, quality,
+                       std::nullopt, frame_rate);
     }
     /*!
      * \brief 画像を返す
@@ -142,9 +202,6 @@ class WEBCFACE_DLL Image : protected Field, public EventTarget<Image> {
 
     operator ImageFrame() { return get(); }
 
-#if WEBCFACE_USE_OPENCV
-    cv::Mat mat() &;
-#endif
     /*!
      * \brief syncの時刻を返す
      * \deprecated 1.7でMember::syncTime()に変更
@@ -167,16 +224,6 @@ class WEBCFACE_DLL Image : protected Field, public EventTarget<Image> {
         requires std::same_as<T, Image> bool
     operator==(const T &other) const {
         return static_cast<Field>(*this) == static_cast<Field>(other);
-    }
-    /*!
-     * \brief Imageの参照先を比較
-     * \since ver1.11
-     *
-     */
-    template <typename T>
-        requires std::same_as<T, Image> bool
-    operator!=(const T &other) const {
-        return !(*this == other);
     }
 };
 

@@ -3,6 +3,7 @@
 #include "common/canvas3d.h"
 #include "func.h"
 #include "text.h"
+#include "webcface/common/view.h"
 #include <memory>
 
 #ifdef min
@@ -40,9 +41,10 @@ class IdBase {
      * 同じ要素には常に同じidが振られる。
      *
      */
-    std::string id() const {
-        return ".." + std::to_string(static_cast<int>(type())) + "." +
-               std::to_string(idx_for_type_);
+    std::u8string id() const {
+        return std::u8string(
+            Encoding::castToU8(".." + std::to_string(static_cast<int>(type())) +
+                               "." + std::to_string(idx_for_type_)));
     }
 };
 
@@ -57,6 +59,16 @@ class WEBCFACE_DLL ViewComponent : protected Common::ViewComponentBase,
     std::shared_ptr<AnonymousFunc> on_click_func_tmp;
     std::optional<InputRef> text_ref_tmp;
     std::optional<ValAdaptor> init_;
+
+    // for cData()
+    mutable std::variant<std::string, std::wstring> text_s, on_click_member_s,
+        on_click_field_s, text_ref_member_s, text_ref_field_s;
+    mutable std::variant<std::vector<wcfMultiVal>, std::vector<wcfMultiValW>>
+        options_s;
+
+    template <typename CComponent, typename CVal, std::size_t v_index,
+              typename DecodeF>
+    CComponent cDataT(DecodeF decode) const;
 
   public:
     ViewComponent() = default;
@@ -78,10 +90,11 @@ class WEBCFACE_DLL ViewComponent : protected Common::ViewComponentBase,
      */
     ViewComponentBase &
     lockTmp(const std::weak_ptr<Internal::ClientData> &data_w,
-            const std::string &view_name,
+            const std::u8string &view_name,
             std::unordered_map<int, int> *idx_next = nullptr);
 
     wcfViewComponent cData() const;
+    wcfViewComponentW cDataW() const;
 
     /*!
      * \brief 要素の比較
@@ -113,13 +126,28 @@ class WEBCFACE_DLL ViewComponent : protected Common::ViewComponentBase,
      * \brief 表示する文字列を取得
      *
      */
-    const std::string &text() const { return text_; }
+    std::string text() const { return Encoding::decode(text_); }
+    /*!
+     * \brief 表示する文字列を取得 (wstring)
+     * \since ver1.12
+     */
+    std::wstring textW() const { return Encoding::decodeW(text_); }
     /*!
      * \brief 表示する文字列を設定
      *
+     * (ver1.12からstring_viewに変更)
+     *
      */
-    ViewComponent &text(const std::string &text) {
-        text_ = text;
+    ViewComponent &text(std::string_view text) {
+        text_ = Encoding::encode(text);
+        return *this;
+    }
+    /*!
+     * \brief 表示する文字列を設定 (wstring)
+     * \since ver1.12
+     */
+    ViewComponent &text(std::wstring_view text) {
+        text_ = Encoding::encodeW(text);
         return *this;
     }
     /*!
@@ -173,7 +201,7 @@ class WEBCFACE_DLL ViewComponent : protected Common::ViewComponentBase,
      */
     ViewComponent &bind(const InputRef &ref) {
         on_click_func_tmp = std::make_shared<AnonymousFunc>(
-            [ref](ValAdaptor val) { ref.lockedField().set(val); });
+            [ref](const ValAdaptor &val) { ref.lockedField().set(val); });
         text_ref_tmp = ref;
         return *this;
     }
@@ -381,7 +409,7 @@ class WEBCFACE_DLL Canvas3DComponent : protected Common::Canvas3DComponentBase {
      */
     Canvas3DComponentBase &
     lockTmp(const std::weak_ptr<Internal::ClientData> & /*data_w*/,
-            const std::string & /*field_id*/) {
+            const std::u8string & /*field_id*/) {
         return *this;
     }
 
@@ -457,12 +485,28 @@ class WEBCFACE_DLL Canvas3DComponent : protected Common::Canvas3DComponentBase {
     Canvas3DComponent &
     angles(const std::unordered_map<std::string, double> &angles);
     /*!
+     * \brief RobotModelの関節をまとめて設定 (wstring)
+     * \since ver1.12
+     * \param angles RobotJointの名前と角度のリスト
+     *
+     */
+    Canvas3DComponent &
+    angles(const std::unordered_map<std::wstring, double> &angles);
+    /*!
      * \brief RobotModelの関節を設定
      * \param joint_name RobotJointの名前
      * \param angle 角度
      *
      */
     Canvas3DComponent &angle(const std::string &joint_name, double angle);
+    /*!
+     * \brief RobotModelの関節を設定 (wstring)
+     * \since ver1.12
+     * \param joint_name RobotJointの名前
+     * \param angle 角度
+     *
+     */
+    Canvas3DComponent &angle(const std::wstring &joint_name, double angle);
 };
 
 /*!
@@ -507,7 +551,7 @@ class WEBCFACE_DLL Canvas2DComponent : protected Common::Canvas2DComponentBase,
      */
     Canvas2DComponentBase &
     lockTmp(const std::weak_ptr<Internal::ClientData> &data_w,
-            const std::string &view_name,
+            const std::u8string &view_name,
             std::unordered_map<int, int> *idx_next = nullptr);
 
     /*!
@@ -594,16 +638,30 @@ class WEBCFACE_DLL Canvas2DComponent : protected Common::Canvas2DComponentBase,
     /*!
      * \brief 表示する文字列
      * \since ver1.9
-     *
      */
-    const std::string &text() const { return text_; }
+    std::string text() const { return Encoding::decode(text_); }
+    /*!
+     * \brief 表示する文字列 (wstring)
+     * \since ver1.12
+     */
+    std::wstring textW() const { return Encoding::decodeW(text_); }
     /*!
      * \brief 表示する文字列を設定
      * \since ver1.9
      *
+     * (ver1.12からstring_viewに変更)
+     *
      */
-    Canvas2DComponent &text(const std::string &text) {
-        text_ = text;
+    Canvas2DComponent &text(std::string_view text) {
+        text_ = Encoding::encode(text);
+        return *this;
+    }
+    /*!
+     * \brief 表示する文字列を設定 (wstring)
+     * \since ver1.12
+     */
+    Canvas2DComponent &text(std::wstring_view text) {
+        text_ = Encoding::encodeW(text);
         return *this;
     }
     /*!
@@ -667,54 +725,45 @@ class WEBCFACE_DLL Canvas2DComponent : protected Common::Canvas2DComponentBase,
 template <bool V, bool C2, bool C3>
 class TemporalComponent {
   protected:
-    std::optional<std::conditional_t<V, ViewComponent, int>> component_v;
-    std::optional<std::conditional_t<C2, Canvas2DComponent, int>> component_2d;
-    std::optional<std::conditional_t<C3, Canvas3DComponent, int>> component_3d;
+    std::conditional_t<V, ViewComponent, int> component_v;
+    std::conditional_t<C2, Canvas2DComponent, int> component_2d;
+    std::conditional_t<C3, Canvas3DComponent, int> component_3d;
 
   public:
     TemporalComponent() = default;
-    explicit TemporalComponent(const std::string &text)
+    template <typename VT, typename C2T, typename C3T>
+    TemporalComponent(VT v_type, C2T c2_type, C3T c3_type)
+        : component_v(v_type), component_2d(c2_type), component_3d(c3_type) {}
+    explicit TemporalComponent(std::string_view text)
         requires(V && C2 && !C3)
-    {
-        initV(ViewComponentType::text);
-        component_v->text(text);
-        init2(Canvas2DComponentType::text);
-        component_2d->text(text);
+        : TemporalComponent(ViewComponentType::text,
+                            Canvas2DComponentType::text, 0) {
+        component_v.text(text);
+        component_2d.text(text);
     }
-    TemporalComponent &initV(ViewComponentType type)
-        requires V
-    {
-        component_v.emplace(type);
-        return *this;
-    }
-    TemporalComponent &init2(Canvas2DComponentType type)
-        requires C2
-    {
-        component_2d.emplace(type);
-        return *this;
-    }
-    TemporalComponent &init3(Canvas3DComponentType type)
-        requires C3
-    {
-        component_3d.emplace(type);
-        return *this;
+    explicit TemporalComponent(std::wstring_view text)
+        requires(V && C2 && !C3)
+        : TemporalComponent(ViewComponentType::text,
+                            Canvas2DComponentType::text, 0) {
+        component_v.text(text);
+        component_2d.text(text);
     }
     ViewComponent &toV()
         requires V
     {
-        return *component_v;
+        return component_v;
     }
     Canvas2DComponent &to2()
         requires C2
     {
         // component_2d->geometry(std::move(static_cast<Geometry &>(*this)));
-        return *component_2d;
+        return component_2d;
     }
     Canvas3DComponent &to3()
         requires C3
     {
         // component_3d->geometry(std::move(static_cast<Geometry &>(*this)));
-        return *component_3d;
+        return component_3d;
     }
     /*!
      * \brief クリック時に実行される関数を設定 (Viewまたは2D)
@@ -728,10 +777,10 @@ class TemporalComponent {
         requires(V || C2)
     {
         if constexpr (V) {
-            component_v->onClick(std::forward<T>(func));
+            component_v.onClick(std::forward<T>(func));
         }
         if constexpr (C2) {
-            component_2d->onClick(std::forward<T>(func));
+            component_2d.onClick(std::forward<T>(func));
         }
         return *this;
     }
@@ -743,10 +792,10 @@ class TemporalComponent {
         requires(C2 || C3)
     {
         if constexpr (C2) {
-            component_2d->origin(origin);
+            component_2d.origin(origin);
         }
         if constexpr (C3) {
-            component_3d->origin(origin);
+            component_3d.origin(origin);
         }
         return *this;
     }
@@ -759,13 +808,13 @@ class TemporalComponent {
         requires(V || C2 || C3)
     {
         if constexpr (V) {
-            component_v->textColor(c);
+            component_v.textColor(c);
         }
         if constexpr (C2) {
-            component_2d->color(c);
+            component_2d.color(c);
         }
         if constexpr (C3) {
-            component_3d->color(c);
+            component_3d.color(c);
         }
         return *this;
     }
@@ -778,10 +827,10 @@ class TemporalComponent {
         requires(V || C2)
     {
         if constexpr (V) {
-            component_v->textColor(c);
+            component_v.textColor(c);
         }
         if constexpr (C2) {
-            component_2d->fillColor(c);
+            component_2d.fillColor(c);
         }
         return *this;
     }
@@ -793,10 +842,10 @@ class TemporalComponent {
         requires(V || C2)
     {
         if constexpr (V) {
-            component_v->bgColor(c);
+            component_v.bgColor(c);
         }
         if constexpr (C2) {
-            component_2d->fillColor(c);
+            component_2d.fillColor(c);
         }
         return *this;
     }
@@ -818,7 +867,7 @@ class TemporalComponent {
         requires(C2)
     {
         if constexpr (C2) {
-            component_2d->strokeWidth(s);
+            component_2d.strokeWidth(s);
         }
         return *this;
     }
@@ -830,7 +879,7 @@ class TemporalComponent {
         requires(C2)
     {
         if constexpr (C2) {
-            component_2d->textSize(s);
+            component_2d.textSize(s);
         }
         return *this;
     }
@@ -839,11 +888,11 @@ class TemporalGeometry : public TemporalComponent<false, true, true>,
                          public Geometry {
   public:
     TemporalGeometry(GeometryType type, std::vector<double> &&properties)
-        : TemporalComponent(), Geometry(type, std::move(properties)) {
-        this->init2(Canvas2DComponentType::geometry);
-        this->init3(Canvas3DComponentType::geometry);
-        this->component_2d->geometry(static_cast<Geometry &>(*this));
-        this->component_3d->geometry(static_cast<Geometry &>(*this));
+        : TemporalComponent(0, Canvas2DComponentType::geometry,
+                            Canvas3DComponentType::geometry),
+          Geometry(type, std::move(properties)) {
+        this->component_2d.geometry(static_cast<Geometry &>(*this));
+        this->component_3d.geometry(static_cast<Geometry &>(*this));
     }
 };
 
@@ -1049,7 +1098,14 @@ inline TemporalGeometry sphere(const Point &origin, double radius) {
  * \brief textコンポーネント
  *
  */
-inline TemporalComponent<true, true, false> text(const std::string &text) {
+inline TemporalComponent<true, true, false> text(std::string_view text) {
+    return TemporalComponent<true, true, false>(text);
+}
+/*!
+ * \brief textコンポーネント (wstring)
+ * \since ver1.12
+ */
+inline TemporalComponent<true, true, false> text(std::wstring_view text) {
     return TemporalComponent<true, true, false>(text);
 }
 /*!
@@ -1065,31 +1121,62 @@ inline ViewComponent newLine() {
  *
  */
 template <typename T>
-inline ViewComponent button(const std::string &text, T &&func) {
+inline ViewComponent button(std::string_view text, T &&func) {
+    return ViewComponent(ViewComponentType::button)
+        .text(text)
+        .onClick(std::forward<T>(func));
+}
+/*!
+ * \brief buttonコンポーネント (wstring)
+ * \since ver1.12
+ */
+template <typename T>
+inline ViewComponent button(std::wstring_view text, T &&func) {
     return ViewComponent(ViewComponentType::button)
         .text(text)
         .onClick(std::forward<T>(func));
 }
 
-inline ViewComponent textInput(const std::string &text = "") {
+inline ViewComponent textInput(std::string_view text = "") {
     return ViewComponent(ViewComponentType::text_input).text(text);
 }
-inline ViewComponent decimalInput(const std::string &text = "") {
+inline ViewComponent textInput(std::wstring_view text) {
+    return ViewComponent(ViewComponentType::text_input).text(text);
+}
+inline ViewComponent decimalInput(std::string_view text = "") {
     return ViewComponent(ViewComponentType::decimal_input).text(text).init(0);
 }
-inline ViewComponent numberInput(const std::string &text = "") {
+inline ViewComponent decimalInput(std::wstring_view text) {
+    return ViewComponent(ViewComponentType::decimal_input).text(text).init(0);
+}
+inline ViewComponent numberInput(std::string_view text = "") {
     return ViewComponent(ViewComponentType::number_input).text(text).init(0);
 }
-inline ViewComponent toggleInput(const std::string &text = "") {
+inline ViewComponent numberInput(std::wstring_view text) {
+    return ViewComponent(ViewComponentType::number_input).text(text).init(0);
+}
+inline ViewComponent toggleInput(std::string_view text = "") {
     return ViewComponent(ViewComponentType::toggle_input).text(text);
 }
-inline ViewComponent selectInput(const std::string &text = "") {
+inline ViewComponent toggleInput(std::wstring_view text) {
+    return ViewComponent(ViewComponentType::toggle_input).text(text);
+}
+inline ViewComponent selectInput(std::string_view text = "") {
     return ViewComponent(ViewComponentType::select_input).text(text);
 }
-inline ViewComponent sliderInput(const std::string &text = "") {
+inline ViewComponent selectInput(std::wstring_view text) {
+    return ViewComponent(ViewComponentType::select_input).text(text);
+}
+inline ViewComponent sliderInput(std::string_view text = "") {
     return ViewComponent(ViewComponentType::slider_input).text(text).init(0);
 }
-inline ViewComponent checkInput(const std::string &text = "") {
+inline ViewComponent sliderInput(std::wstring_view text) {
+    return ViewComponent(ViewComponentType::slider_input).text(text).init(0);
+}
+inline ViewComponent checkInput(std::string_view text = "") {
+    return ViewComponent(ViewComponentType::check_input).text(text).init(false);
+}
+inline ViewComponent checkInput(std::wstring_view text) {
     return ViewComponent(ViewComponentType::check_input).text(text).init(false);
 }
 } // namespace Components

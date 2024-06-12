@@ -22,14 +22,29 @@ class FuncListenerTest : public ::testing::Test {
     void SetUp() override {
         data_ = std::make_shared<Internal::ClientData>(self_name);
     }
-    std::string self_name = "test";
+    std::u8string self_name = u8"test";
     std::shared_ptr<Internal::ClientData> data_;
-    Func func(const std::string &member, const std::string &field) {
-        return Func{Field{data_, member, field}};
+    FieldBase fieldBase(std::u8string_view member,
+                        std::string_view name) const {
+        return FieldBase{member, Encoding::castToU8(name)};
     }
-    FuncListener funcListener(const std::string &member,
-                              const std::string &field) {
-        return FuncListener{Field{data_, member, field}};
+    FieldBase fieldBase(std::string_view member, std::string_view name) const {
+        return FieldBase{Encoding::castToU8(member), Encoding::castToU8(name)};
+    }
+    Field field(std::u8string_view member, std::string_view name = "") const {
+        return Field{data_, member, Encoding::castToU8(name)};
+    }
+    Field field(std::string_view member, std::string_view name = "") const {
+        return Field{data_, Encoding::castToU8(member),
+                     Encoding::castToU8(name)};
+    }
+    template <typename T1, typename T2>
+    Func func(const T1 &member, const T2 &name) {
+        return Func{field(member, name)};
+    }
+    template <typename T1, typename T2>
+    FuncListener funcListener(const T1 &member, const T2 &name) {
+        return FuncListener{field(member, name)};
     }
 };
 
@@ -41,11 +56,11 @@ TEST_F(FuncListenerTest, listen) {
     auto f = func(self_name, "a");
     auto fl = funcListener(self_name, "a");
     fl.listen();
-    EXPECT_EQ((*data_->func_store.getRecv(self_name, "a"))->return_type,
+    EXPECT_EQ((*data_->func_store.getRecv(self_name, u8"a"))->return_type,
               ValType::none_);
     EXPECT_EQ(f.returnType(), ValType::none_);
     EXPECT_EQ(func(self_name, "a").returnType(), ValType::none_);
-    EXPECT_EQ((*data_->func_store.getRecv(self_name, "a"))->args.size(), 0);
+    EXPECT_EQ((*data_->func_store.getRecv(self_name, u8"a"))->args.size(), 0);
     EXPECT_EQ(f.args().size(), 0);
     EXPECT_EQ(func(self_name, "a").args().size(), 0);
 

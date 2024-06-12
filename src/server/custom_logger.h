@@ -13,8 +13,8 @@ class CustomLogger : public crow::ILogHandler {
     std::shared_ptr<spdlog::logger> logger;
 
   public:
-    CustomLogger(std::shared_ptr<spdlog::logger> logger) : logger(logger) {}
-    void log(std::string message, crow::LogLevel level) {
+    CustomLogger(const std::shared_ptr<spdlog::logger> &logger) : logger(logger) {}
+    void log(std::string message, crow::LogLevel level) override {
         logger->log(convertLevel(level), message);
     }
     spdlog::level::level_enum convertLevel(crow::LogLevel level) {

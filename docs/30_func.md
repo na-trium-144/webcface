@@ -22,7 +22,7 @@ Client::func からFuncオブジェクトを作り、 Func::set() で関数を�
 
 - <b class="tab-title">C++</b>
     関数はstd::functionに変換できるものであればなんでもokです。
-    引数、戻り値はint, double, bool, std::string型であればいくつでも自由に指定できます。
+    引数、戻り値は整数、実数、bool、文字列型であればいくつでも自由に指定できます。
     ```cpp
     wcli.func("hoge").set([](){ /* ... */ });
     wcli.func("fuga").set([](int a, const std::string &b){ return 3.1415; });
@@ -32,8 +32,8 @@ Client::func からFuncオブジェクトを作り、 Func::set() で関数を�
 - <b class="tab-title">C</b>
     \since <span class="since-c">1.9</span>
 
-    wcfFuncSet で関数ポインタを登録できます。  
-    登録する関数の引数は wcfFuncCallHandle* と void* の2つで、
+    wcfFuncSet, (<span class="since-c">1.12</span> wcfFuncSetW) で関数ポインタを登録できます。  
+    登録する関数の引数は wcfFuncCallHandle*, (<span class="since-c">1.12</span> wcfFuncCallHandleW*) と void* の2つで、
     前者は引数のデータを取得したり結果を返すのに使用します。  
     後者には登録時に任意のデータのポインタを渡すことができます。(使用しない場合はNULLでよいです。)
     ```c

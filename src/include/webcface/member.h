@@ -14,6 +14,8 @@ namespace Internal {
 struct ClientData;
 }
 
+class Log;
+
 /*!
  * \brief Memberを指すクラス
  *
@@ -25,7 +27,7 @@ class WEBCFACE_DLL Member : protected Field {
   public:
     Member() = default;
     Member(const std::weak_ptr<Internal::ClientData> &data_w,
-           std::string_view member)
+           std::u8string_view member)
         : Field(data_w, member) {}
     Member(const Field &base) : Field(base.data_w, base.member_) {}
 
@@ -33,7 +35,12 @@ class WEBCFACE_DLL Member : protected Field {
      * \brief Member名
      *
      */
-    std::string name() const { return member_; }
+    std::string name() const { return Encoding::decode(member_); }
+    /*!
+     * \brief Member名 (wstring)
+     * \since ver1.12
+     */
+    std::wstring nameW() const { return Encoding::decodeW(member_); }
 
     using Field::child;
     using Field::operator[];
@@ -52,7 +59,8 @@ class WEBCFACE_DLL Member : protected Field {
      *
      */
     template <typename T>
-        requires(!std::convertible_to<T, std::string>)
+        requires(!std::convertible_to<T, std::string_view> &&
+                 !std::convertible_to<T, std::wstring_view>)
     AnonymousFunc func(const T &func) const {
         return AnonymousFunc{*this, func};
     }
@@ -214,19 +222,9 @@ class WEBCFACE_DLL Member : protected Field {
      *
      */
     template <typename T>
-        requires std::same_as<T, Member> bool
-    operator==(const T &other) const {
+        requires std::same_as<T, Member>
+    bool operator==(const T &other) const {
         return static_cast<Field>(*this) == static_cast<Field>(other);
-    }
-    /*!
-     * \brief Memberを比較
-     * \since ver1.11
-     *
-     */
-    template <typename T>
-        requires std::same_as<T, Member> bool
-    operator!=(const T &other) const {
-        return !(*this == other);
     }
 };
 

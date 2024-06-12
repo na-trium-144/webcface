@@ -50,7 +50,7 @@ std::string wsl2Host() {
             std::string host_addr = "";
             for (int i = 3; i >= 0; i--) {
                 host_addr += std::to_string(
-                    std::stoi(gateway.substr(i * 2, 2), nullptr, 16));
+                    std::stoi(gateway.substr(static_cast<std::size_t>(i) * 2, 2), nullptr, 16));
                 if (i != 0) {
                     host_addr += '.';
                 }
@@ -63,7 +63,7 @@ std::string wsl2Host() {
 }
 
 void initUnixSocket(const std::filesystem::path &path,
-                    std::shared_ptr<spdlog::logger> logger) {
+                    const std::shared_ptr<spdlog::logger> &logger) {
     try {
         std::filesystem::create_directories(path.parent_path());
     } catch (const std::filesystem::filesystem_error &e) {
@@ -92,7 +92,7 @@ void initUnixSocket(const std::filesystem::path &path,
 #endif
 }
 void updateUnixSocketPerms(const std::filesystem::path &path,
-                           std::shared_ptr<spdlog::logger> logger) {
+                           const std::shared_ptr<spdlog::logger> &logger) {
     try {
         std::filesystem::permissions(path.parent_path(),
                                      std::filesystem::perms::all);

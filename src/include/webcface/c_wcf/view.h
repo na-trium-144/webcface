@@ -1,3 +1,5 @@
+#include "def_types.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -34,6 +36,14 @@ WEBCFACE_DLL wcfViewComponent wcfButton(const char *text,
  */
 WEBCFACE_DLL wcfStatus wcfViewSet(wcfClient *wcli, const char *field,
                                   const wcfViewComponent *components, int size);
+/*!
+ * \brief Viewを送信する (wstring)
+ * \since 1.12
+ * \sa wcfViewSet
+ */
+WEBCFACE_DLL wcfStatus wcfViewSetW(wcfClient *wcli, const wchar_t *field,
+                                   const wcfViewComponentW *components,
+                                   int size);
 
 /*!
  * \brief Viewを受信する
@@ -51,6 +61,15 @@ WEBCFACE_DLL wcfStatus wcfViewGet(wcfClient *wcli, const char *member,
                                   const char *field,
                                   wcfViewComponent **components,
                                   int *recv_size);
+/*!
+ * \brief Viewを受信する (wstring)
+ * \since 1.12
+ * \sa wcfViewGet
+ */
+WEBCFACE_DLL wcfStatus wcfViewGetW(wcfClient *wcli, const wchar_t *member,
+                                   const wchar_t *field,
+                                   wcfViewComponentW **components,
+                                   int *recv_size);
 
 #ifdef __cplusplus
 }

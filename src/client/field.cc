@@ -14,43 +14,55 @@
 
 WEBCFACE_NS_BEGIN
 Member Field::member() const { return *this; }
-std::string_view Field::lastName() const {
+std::u8string_view Field::lastName8() const {
     auto i = this->field_.rfind(field_separator);
     if (i != std::string::npos && i != 0 &&
         !(i == 1 && this->field_[0] == field_separator)) {
-        return std::string_view(this->field_).substr(i + 1);
+        return std::u8string_view(this->field_).substr(i + 1);
     } else {
         return this->field_;
     }
 }
+
 Field Field::parent() const {
-    int l = this->field_.size() - lastName().size() - 1;
+    int l = static_cast<int>(this->field_.size()) -
+            static_cast<int>(lastName().size()) - 1;
     if (l < 0) {
         l = 0;
     }
     return Field{*this, this->field_.substr(0, l)};
 }
-Field Field::child(std::string_view field) const {
+Field Field::child(std::u8string_view field) const {
     if (this->field_.empty()) {
         return Field{*this, field};
     } else if (field.empty()) {
         return *this;
     } else {
         return Field{*this,
-                     this->field_ + field_separator + std::string(field)};
+                     this->field_ + field_separator + std::u8string(field)};
     }
 }
 
 Value Field::value(std::string_view field) const { return child(field); }
+Value Field::value(std::wstring_view field) const { return child(field); }
 Text Field::text(std::string_view field) const { return child(field); }
+Text Field::text(std::wstring_view field) const { return child(field); }
 RobotModel Field::robotModel(std::string_view field) const {
     return child(field);
 }
+RobotModel Field::robotModel(std::wstring_view field) const {
+    return child(field);
+}
 Image Field::image(std::string_view field) const { return child(field); }
+Image Field::image(std::wstring_view field) const { return child(field); }
 Func Field::func(std::string_view field) const { return child(field); }
+Func Field::func(std::wstring_view field) const { return child(field); }
 View Field::view(std::string_view field) const { return child(field); }
+View Field::view(std::wstring_view field) const { return child(field); }
 Canvas3D Field::canvas3D(std::string_view field) const { return child(field); }
+Canvas3D Field::canvas3D(std::wstring_view field) const { return child(field); }
 Canvas2D Field::canvas2D(std::string_view field) const { return child(field); }
+Canvas2D Field::canvas2D(std::wstring_view field) const { return child(field); }
 
 std::vector<Value> Field::valueEntries() const {
     auto keys = dataLock()->value_store.getEntry(*this);
@@ -58,7 +70,7 @@ std::vector<Value> Field::valueEntries() const {
     for (const auto &f : keys) {
         if (this->field_.empty() ||
             f.starts_with(this->field_ + field_separator)) {
-            ret.push_back(value(f));
+            ret.emplace_back(child(f));
         }
     }
     return ret;
@@ -69,7 +81,7 @@ std::vector<Text> Field::textEntries() const {
     for (const auto &f : keys) {
         if (this->field_.empty() ||
             f.starts_with(this->field_ + field_separator)) {
-            ret.push_back(text(f));
+            ret.emplace_back(child(f));
         }
     }
     return ret;
@@ -80,7 +92,7 @@ std::vector<RobotModel> Field::robotModelEntries() const {
     for (const auto &f : keys) {
         if (this->field_.empty() ||
             f.starts_with(this->field_ + field_separator)) {
-            ret.push_back(robotModel(f));
+            ret.emplace_back(child(f));
         }
     }
     return ret;
@@ -91,7 +103,7 @@ std::vector<Func> Field::funcEntries() const {
     for (const auto &f : keys) {
         if (this->field_.empty() ||
             f.starts_with(this->field_ + field_separator)) {
-            ret.push_back(func(f));
+            ret.emplace_back(child(f));
         }
     }
     return ret;
@@ -102,7 +114,7 @@ std::vector<View> Field::viewEntries() const {
     for (const auto &f : keys) {
         if (this->field_.empty() ||
             f.starts_with(this->field_ + field_separator)) {
-            ret.push_back(view(f));
+            ret.emplace_back(child(f));
         }
     }
     return ret;
@@ -113,7 +125,7 @@ std::vector<Canvas3D> Field::canvas3DEntries() const {
     for (const auto &f : keys) {
         if (this->field_.empty() ||
             f.starts_with(this->field_ + field_separator)) {
-            ret.push_back(canvas3D(f));
+            ret.emplace_back(child(f));
         }
     }
     return ret;
@@ -124,7 +136,7 @@ std::vector<Canvas2D> Field::canvas2DEntries() const {
     for (const auto &f : keys) {
         if (this->field_.empty() ||
             f.starts_with(this->field_ + field_separator)) {
-            ret.push_back(canvas2D(f));
+            ret.emplace_back(child(f));
         }
     }
     return ret;
@@ -135,7 +147,7 @@ std::vector<Image> Field::imageEntries() const {
     for (const auto &f : keys) {
         if (this->field_.empty() ||
             f.starts_with(this->field_ + field_separator)) {
-            ret.push_back(image(f));
+            ret.emplace_back(child(f));
         }
     }
     return ret;

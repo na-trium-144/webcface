@@ -20,7 +20,8 @@ webcface-send
 ```
 を実行し、数字を入力すると送信されます。(1つ入力するごとに改行してください)
 
-オプションでclientやデータの名前を変更できます。詳細は `webcface-send -h` を参照
+オプションでclientやデータの名前を変更できます。
+詳細は [webcface-send](./71_send.md) のページを参照
 
 ## 送信
 
@@ -57,16 +58,16 @@ Client::value からValueオブジェクトを作り、 Value::set() でデー�
     ```
 
 - <b class="tab-title">C</b>
-    double型の単一の値は
+    double型の単一の値は wcfValueSet, (<span class="since-c">1.12</span> wcfValueSetW)
     ```c
     wcfValueSet(wcli, "hoge", 123.45);
     ```
-    配列データは
+    配列データは wcfValueSetVecD, (<span class="since-c">1.12</span> wcfValueSetVecDW)
     ```c
     double value[5] = {1, 2, 3, 4, 5};
     wcfValueSetVecD(wcli, "fuga", value, 5);
     ```
-    のように送信できます。
+    で送信できます。
 
 - <b class="tab-title">JavaScript</b>
     ```ts
@@ -311,6 +312,7 @@ Value::tryGet(), Value::tryGetVec() などで値のリクエストをすると�
     値を比較したい場合は明示的にキャストするか`get()`などを呼んでください。
 
 - <b class="tab-title">C</b>
+    wcfValueGetVecD, (<span class="since-c">1.12</span> wcfValueGetVecDW) で受信できます
     ```c
     double value[5];
     int size;
@@ -326,7 +328,7 @@ Value::tryGet(), Value::tryGetVec() などで値のリクエストをすると�
     値を受信していない場合`WCF_NOT_FOUND`を返し、別スレッドでリクエストが送信されます。
     
     <span class="since-c">1.7</span>
-    1つの値のみを受信する場合はwcfValueGetも使えます。
+    1つの値のみを受信する場合は wcfValueGet, (<span class="since-c">1.12</span> wcfValueGetW) も使えます。
     ```c
     double value;
     ret = wcfValueGet(wcli, "a", "hoge", &value);

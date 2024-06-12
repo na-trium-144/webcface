@@ -13,10 +13,12 @@ WEBCFACE_NS_BEGIN
 namespace Internal {
 namespace WebSocket {
 
-void init(std::shared_ptr<Internal::ClientData> data) {
+void init(const std::shared_ptr<Internal::ClientData> &data) {
     if (data->host.empty()) {
-        data->host = "127.0.0.1";
+        data->host = u8"127.0.0.1";
     }
+    std::string host_s = Encoding::decode(data->host);
+
     // try TCP, unixSocketPathWSLInterop and unixSocketPath
     // use latter if multiple connections were available
     for (std::size_t attempt = 0; attempt < 3 && !data->closing.load();
@@ -29,13 +31,12 @@ void init(std::shared_ptr<Internal::ClientData> data) {
         }
         switch (attempt) {
         case 2:
-            data->current_curl_path =
-                data->host + ':' + std::to_string(data->port);
+            data->current_curl_path = host_s + ':' + std::to_string(data->port);
             curl_easy_setopt(handle, CURLOPT_URL,
-                             ("ws://" + data->host + "/").c_str());
+                             ("ws://" + host_s + "/").c_str());
             break;
         case 1:
-            if (data->host != "127.0.0.1") {
+            if (host_s != "127.0.0.1") {
                 continue;
             }
             if (Message::Path::detectWSL1()) {
@@ -45,7 +46,7 @@ void init(std::shared_ptr<Internal::ClientData> data) {
                 curl_easy_setopt(handle, CURLOPT_UNIX_SOCKET_PATH,
                                  data->current_curl_path.c_str());
                 curl_easy_setopt(handle, CURLOPT_URL,
-                                 ("ws://" + data->host + "/").c_str());
+                                 ("ws://" + host_s + "/").c_str());
                 break;
             }
             if (Message::Path::detectWSL2()) {
@@ -60,7 +61,7 @@ void init(std::shared_ptr<Internal::ClientData> data) {
             }
             continue;
         case 0:
-            if (data->host != "127.0.0.1") {
+            if (host_s != "127.0.0.1") {
                 continue;
             }
             data->current_curl_path =
@@ -68,7 +69,7 @@ void init(std::shared_ptr<Internal::ClientData> data) {
             curl_easy_setopt(handle, CURLOPT_UNIX_SOCKET_PATH,
                              data->current_curl_path.c_str());
             curl_easy_setopt(handle, CURLOPT_URL,
-                             ("ws://" + data->host + "/").c_str());
+                             ("ws://" + host_s + "/").c_str());
             break;
         }
         data->logger_internal->trace("trying {}...", data->current_curl_path);
@@ -93,7 +94,7 @@ void init(std::shared_ptr<Internal::ClientData> data) {
         }
     }
 }
-void close(std::shared_ptr<Internal::ClientData> data) {
+void close(const std::shared_ptr<Internal::ClientData> &data) {
     {
         std::lock_guard lock(data->connect_state_m);
         data->connected.store(false);
@@ -104,7 +105,7 @@ void close(std::shared_ptr<Internal::ClientData> data) {
         data->current_curl_handle = nullptr;
     }
 }
-void recv(std::shared_ptr<Internal::ClientData> data) {
+void recv(const std::shared_ptr<Internal::ClientData> &data) {
     CURL *handle = static_cast<CURL *>(data->current_curl_handle);
     CURLcode ret;
     // data->logger_internal->trace("recv");
@@ -156,17 +157,21 @@ void recv(std::shared_ptr<Internal::ClientData> data) {
         }
     } while (ret != CURLE_AGAIN);
 }
-void send(std::shared_ptr<Internal::ClientData> data, const std::string &msg) {
+void send(const std::shared_ptr<Internal::ClientData> &data,
+          const std::string &msg) {
     std::lock_guard ws_lock(data->ws_m);
     data->logger_internal->trace("sending message {} bytes", msg.size());
     std::size_t sent;
     CURL *handle = static_cast<CURL *>(data->current_curl_handle);
-    auto ret = curl_ws_send(handle, msg.c_str(), msg.size(), &sent, 0, CURLWS_BINARY);
-    if(ret != CURLE_OK){
-        data->logger_internal->error("error sending message {}", static_cast<int>(ret));
+    auto ret =
+        curl_ws_send(handle, msg.c_str(), msg.size(), &sent, 0, CURLWS_BINARY);
+    if (ret != CURLE_OK) {
+        data->logger_internal->error("error sending message {}",
+                                     static_cast<int>(ret));
     }
-    if(sent != msg.size()){
-        data->logger_internal->error("failed to send message (sent = {} bytes)", sent);
+    if (sent != msg.size()) {
+        data->logger_internal->error("failed to send message (sent = {} bytes)",
+                                     sent);
     }
     // data->logger_internal->trace("sending done");
 }

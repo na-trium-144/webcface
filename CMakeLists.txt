@@ -1,14 +1,18 @@
 cmake_minimum_required(VERSION 3.12)
+# ubuntu20.04: cmake 3.16.3
+
+set(ORIGINAL_ENV_CC "$ENV{CC}" CACHE STRING "")
+set(ORIGINAL_ENV_CXX "$ENV{CXX}" CACHE STRING "")
 
 project(webcface
     LANGUAGES CXX C
     VERSION 1.11.4
     HOMEPAGE_URL "https://github.com/na-trium-144/webcface"
-    DESCRIPTION "Web-based RPC & UI Library"
+    DESCRIPTION "Web-based IPC & Dashboard-like UI"
 )
 set(WEBCFACE_CONTACT "na-trium-144@users.noreply.github.com")
 set(WEBCFACE_VERSION ${PROJECT_VERSION})
-set(WEBCFACE_SOVERSION 11)
+set(WEBCFACE_SOVERSION 12)
 set(WEBUI_VERSION 1.6.0)
 
 set(WEBCFACE_VERSION_MAJOR ${PROJECT_VERSION_MAJOR})
@@ -29,13 +33,21 @@ option(WEBCFACE_COVERAGE "enable generating test coverage" OFF)
 set(WEBCFACE_TEST_TIMEOUT 10 CACHE STRING "connection timeout in test")
 option(WEBCFACE_SHARED "build shared library" ON)
 option(WEBCFACE_PIC "enable PIC for shared library" ${WEBCFACE_SHARED})
-option(WEBCFACE_USE_OPENCV "use opencv to enable image processing feature" ON)
-set(WEBCFACE_VERSION_SUFFIX "git" CACHE STRING
-    "version suffix ('git' to get automatically from git describe command)"
-)
+set(WEBCFACE_VERSION_SUFFIX "git" CACHE STRING "version suffix ('git' to get automatically from git describe command)")
+set(WEBCFACE_CLANG_TIDY "" CACHE STRING "clang-tidy path (or empty to disable clang-tidy)")
 option(WEBCFACE_DOWNLOAD_WEBUI "download and install webui" ON)
-option(WEBCFACE_FIND_LIBS "find and use msgpack-cxx, eventpp and spdlog installation" ON)
-option(WEBCFACE_FIND_AMENT "find and use ament_cmake installation" ON)
+option(WEBCFACE_CONFIG_ALL "configure both debug and release build on windows" OFF)
+option(WEBCFACE_FIND_LIBS "if false, disables every find_package and pkg_check_modules" ON)
+option(WEBCFACE_FIND_MSGPACK "try find_package(msgpack-cxx)" ${WEBCFACE_FIND_LIBS})
+option(WEBCFACE_FIND_SPDLOG "try find_package(spdlog)" ${WEBCFACE_FIND_LIBS})
+option(WEBCFACE_FIND_EVENTPP "try find_package(eventpp)" ${WEBCFACE_FIND_LIBS})
+option(WEBCFACE_FIND_MAGICK "try pkg_check_modules(Magick++)" ${WEBCFACE_FIND_LIBS})
+option(WEBCFACE_FIND_JPEG "try pkg_check_modules(libjpeg) (while building Magick++)" ${WEBCFACE_FIND_LIBS})
+option(WEBCFACE_FIND_PNG "try pkg_check_modules(libpng) (while building Magick++)" ${WEBCFACE_FIND_LIBS})
+option(WEBCFACE_FIND_ZLIB "try find_package(zlib) (while building libpng)" ${WEBCFACE_FIND_LIBS})
+option(WEBCFACE_FIND_WEBP "try pkg_check_modules(libwebp) (while building Magick++)" ${WEBCFACE_FIND_LIBS})
+option(WEBCFACE_FIND_AMENT "try find_package(ament_cmake)" ON)
+option(WEBCFACE_FIND_OPENCV "try find_package(OpenCV) (only for example)" OFF)
 
 if(WEBCFACE_VERSION_SUFFIX STREQUAL "git")
     execute_process(
@@ -55,6 +67,11 @@ elseif(NOT WEBCFACE_VERSION_SUFFIX STREQUAL "")
     set(WEBCFACE_VERSION "${PROJECT_VERSION}-${WEBCFACE_VERSION_SUFFIX}")
 endif()
 
+if(WEBCFACE_PIC OR CMAKE_POSITION_INDEPENDENT_CODE)
+    set(WEBCFACE_PIC ON)
+    set(CMAKE_POSITION_INDEPENDENT_CODE ON CACHE BOOL "")
+endif()
+
 message(STATUS "WebCFace ${WEBCFACE_VERSION} (soversion ${WEBCFACE_SOVERSION})")
 
 message(STATUS "webcface_example = ${WEBCFACE_EXAMPLE}")
@@ -63,13 +80,22 @@ message(STATUS "webcface_coverage = ${WEBCFACE_COVERAGE}")
 message(STATUS "webcface_install = ${WEBCFACE_INSTALL}")
 message(STATUS "webcface_install_service = ${WEBCFACE_INSTALL_SERVICE}")
 message(STATUS "webcface_shared = ${WEBCFACE_SHARED} (pic = ${WEBCFACE_PIC})")
-message(STATUS "webcface_use_opencv = ${WEBCFACE_USE_OPENCV}")
-message(STATUS "webcface_find_libs = ${WEBCFACE_FIND_LIBS}")
+message(STATUS "webcface_config_all = ${WEBCFACE_CONFIG_ALL}")
+message(STATUS "webcface_find_msgpack = ${WEBCFACE_FIND_MSGPACK}")
+message(STATUS "webcface_find_spdlog = ${WEBCFACE_FIND_SPDLOG}")
+message(STATUS "webcface_find_eventpp = ${WEBCFACE_FIND_EVENTPP}")
+message(STATUS "webcface_find_magick = ${WEBCFACE_FIND_MAGICK}")
+message(STATUS "webcface_find_jpeg = ${WEBCFACE_FIND_JPEG}")
+message(STATUS "webcface_find_png = ${WEBCFACE_FIND_PNG}")
+message(STATUS "webcface_find_zlib = ${WEBCFACE_FIND_ZLIB}")
+message(STATUS "webcface_find_webp = ${WEBCFACE_FIND_WEBP}")
 message(STATUS "webcface_find_ament = ${WEBCFACE_FIND_AMENT}")
+message(STATUS "webcface_find_opencv = ${WEBCFACE_FIND_OPENCV}")
 
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Release")
 endif()
+message(STATUS "cmake_build_type = ${CMAKE_BUILD_TYPE}")
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
@@ -127,6 +153,7 @@ endif()
 ###############################################################################
 
 include(FetchContent)
+include(FindPkgConfig)
 
 if(WEBCFACE_DOWNLOAD_WEBUI)
     message(STATUS "Downloading webcface-webui ${WEBUI_VERSION}")
@@ -144,7 +171,7 @@ if(ament_cmake_FOUND)
     message(STATUS "ament_cmake Found")
 endif()
 
-if(WEBCFACE_FIND_LIBS)
+if(WEBCFACE_FIND_MSGPACK)
     find_package(msgpack-cxx QUIET)
 endif()
 if(msgpack-cxx_FOUND)
@@ -154,8 +181,6 @@ else()
     FetchContent_Declare(msgpack-cxx
         GIT_REPOSITORY https://github.com/msgpack/msgpack-c.git
         GIT_TAG cpp-6.1.0
-        CONFIGURE_COMMAND ""
-        BUILD_COMMAND ""
     )
     # msgpackのcmakelistsを使うとmsgpackをインストールしてしまうので、includeするだけ
     FetchContent_GetProperties(msgpack-cxx)
@@ -173,7 +198,7 @@ else()
     endif()
 endif()
 
-if(WEBCFACE_FIND_LIBS)
+if(WEBCFACE_FIND_EVENTPP)
     find_package(eventpp QUIET)
 endif()
 if(eventpp_FOUND)
@@ -188,7 +213,7 @@ else()
     FetchContent_MakeAvailable(eventpp)
 endif()
 
-if(WEBCFACE_FIND_LIBS)
+if(WEBCFACE_FIND_SPDLOG)
     find_package(spdlog QUIET)
 endif()
 if(spdlog_FOUND)
@@ -202,6 +227,9 @@ else()
     set(SPDLOG_BUILD_SHARED ${WEBCFACE_SHARED} CACHE INTERNAL "" FORCE)
     set(SPDLOG_BUILD_PIC ${WEBCFACE_PIC} CACHE INTERNAL "" FORCE)
     set(SPDLOG_INSTALL ${WEBCFACE_INSTALL} CACHE INTERNAL "" FORCE)
+    if(WIN32)
+        set(SPDLOG_WCHAR_SUPPORT ON CACHE INTERNAL "" FORCE)
+    endif()
     FetchContent_MakeAvailable(spdlog)
 endif()
 
@@ -249,7 +277,7 @@ set(BUILD_CURL_EXE off CACHE INTERNAL "" FORCE)
     # libcurlはだいたいインストールされているが使えないのでsharedにする意味がない
 set(BUILD_SHARED_LIBS off CACHE INTERNAL "" FORCE)
 set(BUILD_STATIC_LIBS on CACHE INTERNAL "" FORCE)
-SET(SHARE_LIB_OBJECT ${WEBCFACE_PIC} CACHE INTERNAL "" FORCE)
+set(SHARE_LIB_OBJECT ${WEBCFACE_PIC} CACHE INTERNAL "" FORCE)
 set(ENABLE_WEBSOCKETS on CACHE INTERNAL "" FORCE)
 set(CURL_DISABLE_INSTALL on CACHE INTERNAL "" FORCE)
 set(CURL_ENABLE_EXPORT_TARGET off CACHE INTERNAL "" FORCE)
@@ -259,7 +287,6 @@ message(STATUS "Fetching asio Source...")
 FetchContent_Declare(asio
     GIT_REPOSITORY https://github.com/chriskohlhoff/asio.git
     GIT_TAG asio-1-29-0
-    CONFIGURE_COMMAND ""
 )
 FetchContent_GetProperties(asio)
 if(NOT asio_POPULATED)
@@ -270,7 +297,7 @@ if(NOT asio_POPULATED)
     )
     target_compile_definitions(asio INTERFACE ASIO_STANDALONE)
     if(MINGW)
-        target_link_libraries(asio INTERFACE ws2_32 wsock32)
+        target_link_libraries(asio INTERFACE ws2_32.lib wsock32.lib)
     endif()
 endif()
 
@@ -313,25 +340,312 @@ if(NOT utfcpp_POPULATED)
     )
 endif()
 
-if(WEBCFACE_USE_OPENCV)
-    find_package(OpenCV REQUIRED)
+if(WEBCFACE_FIND_OPENCV)
+    find_package(OpenCV QUIET)
+endif()
+if(OpenCV_FOUND)
+    message(STATUS "OpenCV ${OpenCV_VERSION} Found: ${OpenCV_PREFIX}")
+else()
+    message(STATUS "OpenCV Not Found")
+endif()
+
+set(Magickpp_FOUND false)
+if(WEBCFACE_FIND_MAGICK)
+    pkg_check_modules(Magickpp QUIET Magick++)
+endif()
+if(Magickpp_FOUND)
+    message(STATUS "Magick++ ${Magickpp_VERSION} Found: ${Magickpp_PREFIX}")
+    add_library(magickpp INTERFACE)
+    target_include_directories(magickpp INTERFACE ${Magickpp_INCLUDE_DIRS})
+    target_compile_options(magickpp INTERFACE ${Magickpp_CFLAGS_OTHER})
+    target_link_libraries(magickpp INTERFACE ${Magickpp_LIBRARIES})
+    target_link_directories(magickpp INTERFACE ${Magickpp_LIBRARY_DIRS})
+else()
+    message(STATUS "Magick++ Not Found")
+    include(ProcessorCount)
+    ProcessorCount(N)
+    if(N EQUAL 0)
+        set(N 1)
+    endif()
+
+    if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+        find_program(DEVENV_COMMAND devenv)
+        if(DEVENV_COMMAND STREQUAL "DEVENV_COMMAND-NOTFOUND")
+            message(FATAL_ERROR "devenv.exe not found")
+        endif()
+        find_program(MSBUILD_COMMAND msbuild)
+        if(MSBUILD_COMMAND STREQUAL "MSBUILD_COMMAND-NOTFOUND")
+            message(FATAL_ERROR "msbuild.exe not found")
+        endif()
+        message(STATUS "Fetching ImageMagick-Windows source...")
+        FetchContent_Declare(magick-windows
+            GIT_REPOSITORY https://github.com/ImageMagick/ImageMagick-Windows.git
+            GIT_TAG main
+        )
+        if(NOT EXISTS ${magick-windows_SOURCE_DIR}/IM7.StaticDLL.sln OR ${CMAKE_CURRENT_LIST_FILE} IS_NEWER_THAN ${magick-windows_SOURCE_DIR}/IM7.StaticDLL.sln)
+            if(NOT EXISTS ${magick-windows_SOURCE_DIR}/Configure/Configure.2017.sln OR ${CMAKE_CURRENT_LIST_FILE} IS_NEWER_THAN ${magick-windows_SOURCE_DIR}/Configure/Configure.2017.sln)
+                message(STATUS "Fetching dependencies...")
+                FetchContent_Populate(magick-windows)
+                execute_process(
+                    COMMAND CloneRepositories.IM7.cmd
+                    WORKING_DIRECTORY ${magick-windows_SOURCE_DIR}
+                )
+                message(STATUS "Building Configure...")
+                execute_process(
+                    COMMAND ${DEVENV_COMMAND} /upgrade Configure.2017.sln
+                    WORKING_DIRECTORY ${magick-windows_SOURCE_DIR}/Configure
+                )
+                execute_process(
+                    COMMAND ${MSBUILD_COMMAND} Configure.2017.sln /m
+                    WORKING_DIRECTORY ${magick-windows_SOURCE_DIR}/Configure
+                )
+            endif()
+            message(STATUS "Executing Configure...")
+            execute_process(
+                COMMAND Configure.exe /noWizard /noAliases /noDpc /noHdri /Q8 /${CMAKE_C_COMPILER_ARCHITECTURE_ID} /VS2017 /smtd
+                WORKING_DIRECTORY ${magick-windows_SOURCE_DIR}/Configure
+            )
+            execute_process(
+                COMMAND ${DEVENV_COMMAND} /upgrade IM7.StaticDLL.sln
+                WORKING_DIRECTORY ${magick-windows_SOURCE_DIR}
+            )
+        endif()
+        message(STATUS "Building ImageMagick...")
+        set(MAGICKPP_LIB_DIR "${magick-windows_SOURCE_DIR}/Output/lib")
+        if(NOT CMAKE_BUILD_TYPE STREQUAL "Debug" OR WEBCFACE_CONFIG_ALL)
+            execute_process(
+                COMMAND ${MSBUILD_COMMAND} /m /p:Configuration=Release,Platform=${CMAKE_C_COMPILER_ARCHITECTURE_ID}
+                WORKING_DIRECTORY ${magick-windows_SOURCE_DIR}
+            )
+            file(GLOB MAGICKPP_RL_LIBS ${MAGICKPP_LIB_DIR}/CORE_RL_*.lib)
+            foreach(lib IN LISTS MAGICKPP_RL_LIBS)
+                list(APPEND MAGICKPP_LIBS optimized ${lib})
+            endforeach()
+        endif()
+        if(CMAKE_BUILD_TYPE STREQUAL "Debug" OR WEBCFACE_CONFIG_ALL)
+            execute_process(
+                COMMAND ${MSBUILD_COMMAND} /m /p:Configuration=Debug,Platform=${CMAKE_C_COMPILER_ARCHITECTURE_ID}
+                WORKING_DIRECTORY ${magick-windows_SOURCE_DIR}
+            )
+            file(GLOB MAGICKPP_DB_LIBS ${MAGICKPP_LIB_DIR}/CORE_DB_*.lib)
+            foreach(lib IN LISTS MAGICKPP_DB_LIBS)
+                list(APPEND MAGICKPP_LIBS debug ${lib})
+            endforeach()
+        endif()
+        
+        add_library(magickpp INTERFACE)
+        target_include_directories(magickpp INTERFACE
+            ${magick-windows_SOURCE_DIR}/ImageMagick/Magick++/lib
+            ${magick-windows_SOURCE_DIR}/ImageMagick
+        )
+        target_link_libraries(magickpp INTERFACE ${MAGICKPP_LIBS})
+        target_compile_definitions(magickpp INTERFACE STATIC_MAGICK)
+        add_compile_definitions(WEBCFACE_MAGICK_VER7)
+
+    else()
+        set(MAGICKPP_PREFIX ${CMAKE_CURRENT_BINARY_DIR}/_deps/prefix)
+        find_program(SH_COMMAND sh)
+        find_program(ENV_COMMAND env)
+        find_program(MAKE_COMMAND make)
+        find_program(CHMOD_COMMAND chmod)
+        find_program(CYGPATH_COMMAND cygpath)
+        if(MINGW AND NOT CYGPATH_COMMAND STREQUAL "CYGPATH_COMMAND-NOTFOUND")
+            execute_process(
+                COMMAND ${CYGPATH_COMMAND} -u "${MAGICKPP_PREFIX}"
+                OUTPUT_VARIABLE MAGICKPP_PREFIX_UNIX
+            )
+        else()
+            set(MAGICKPP_PREFIX_UNIX "${MAGICKPP_PREFIX}")
+        endif()
+        set(MAGICKPP_FLAGS "-O3")
+        if(WEBCFACE_PIC)
+            set(MAGICKPP_FLAGS "${MAGICKPP_FLAGS} -fPIC")
+        endif()
+        if(NOT EXISTS ${magickpp_SOURCE_DIR}/Makefile OR ${CMAKE_CURRENT_LIST_FILE} IS_NEWER_THAN ${magickpp_SOURCE_DIR}/Makefile)
+            file(REMOVE_RECURSE ${MAGICKPP_PREFIX})
+            unset(libjpeg_FOUND CACHE)
+            unset(libpng_FOUND CACHE)
+            unset(zlib_FOUND CACHE)
+        endif()
+        set(libjpeg_FOUND false)
+        if(WEBCFACE_FIND_JPEG)
+            pkg_check_modules(libjpeg QUIET libjpeg)
+        endif()
+        if(libjpeg_FOUND)
+            message(STATUS "libjpeg ${libjpeg_VERSION} Found: ${libjpeg_PREFIX}")
+        else()
+            message(STATUS "libjpeg Not Found, Fetching source...")
+            FetchContent_Declare(libjpeg-turbo
+                GIT_REPOSITORY https://github.com/libjpeg-turbo/libjpeg-turbo.git
+                GIT_TAG 3.0.3
+            )
+            FetchContent_Populate(libjpeg-turbo)
+            message(STATUS "Building libjpeg-turbo...")
+            execute_process(
+                COMMAND ${CMAKE_COMMAND} ${libjpeg-turbo_SOURCE_DIR} -B${libjpeg-turbo_BINARY_DIR}
+                    -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=${MAGICKPP_PREFIX}
+                    -DENABLE_SHARED=OFF -DWITH_TURBOJPEG=OFF -DCMAKE_POSITION_INDEPENDENT_CODE=${WEBCFACE_PIC}
+            )
+            execute_process(COMMAND ${CMAKE_COMMAND} --build ${libjpeg-turbo_BINARY_DIR} -t install -j${N})
+        endif()
+
+        set(libpng_FOUND false)
+        if(WEBCFACE_FIND_PNG)
+            pkg_check_modules(libpng QUIET libpng)
+        endif()
+        if(libpng_FOUND)
+            message(STATUS "libpng ${libpng_VERSION} Found: ${libpng_PREFIX}")
+        else()
+            message(STATUS "libpng Not Found")
+            set(ZLIB_FOUND false)
+            if(WEBCFACE_FIND_ZLIB)
+                find_package(ZLIB QUIET)
+            endif()
+            if(ZLIB_FOUND)
+                message(STATUS "zlib ${ZLIB_VERSION} Found: ${ZLIB_DIR}")
+            else()
+                message(STATUS "zlib Not Found, Fetching source...")
+                FetchContent_Declare(zlib
+                    URL https://www.zlib.net/current/zlib.tar.gz
+                )
+                FetchContent_Populate(zlib)
+                message(STATUS "Building zlib...")
+                if(NOT EXISTS ${zlib_SOURCE_DIR}/Makefile OR ${CMAKE_CURRENT_LIST_FILE} IS_NEWER_THAN ${zlib_SOURCE_DIR}/Makefile)
+                    execute_process(
+                        COMMAND ${ENV_COMMAND}
+                            "CC=${ORIGINAL_ENV_CC}" "CFLAGS=${MAGICKPP_FLAGS}"
+                            "MAKE=${MAKE_COMMAND}"
+                            ${SH_COMMAND} configure
+                            --static --prefix=${MAGICKPP_PREFIX}
+                        WORKING_DIRECTORY ${zlib_SOURCE_DIR}
+                    )
+                endif()
+                execute_process(
+                    COMMAND ${MAKE_COMMAND} -j${N} install
+                    WORKING_DIRECTORY ${zlib_SOURCE_DIR}
+                )
+            endif()
+            message(STATUS "Fetching libpng source...")
+            FetchContent_Declare(libpng
+                URL https://download.sourceforge.net/libpng/libpng-1.6.43.tar.xz
+            )
+            FetchContent_Populate(libpng)
+            message(STATUS "Building libpng...")
+            execute_process(
+                COMMAND ${CMAKE_COMMAND} ${libpng_SOURCE_DIR} -B${libpng_BINARY_DIR}
+                    -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=${MAGICKPP_PREFIX}
+                    -DPNG_SHARED=OFF -DPNG_FRAMEWORK=OFF -DPNG_TESTS=OFF -DPNG_TOOLS=OFF
+                    -DCMAKE_POSITION_INDEPENDENT_CODE=${WEBCFACE_PIC}
+            )
+            execute_process(COMMAND ${CMAKE_COMMAND} --build ${libpng_BINARY_DIR} -t install -j${N})
+        endif()
+
+        set(libwebp_FOUND false)
+        if(WEBCFACE_FIND_WEBP)
+            pkg_check_modules(libwebp QUIET libwebp)
+        endif()
+        if(libwebp_FOUND)
+            message(STATUS "libwebp ${libwebp_VERSION} Found: ${libwebp_PREFIX}")
+        else()
+            message(STATUS "libwebp Not Found, Fetching source...")
+            FetchContent_Declare(libwebp
+                GIT_REPOSITORY https://chromium.googlesource.com/webm/libwebp
+                GIT_TAG v1.4.0
+            )
+            FetchContent_Populate(libwebp)
+            message(STATUS "Building libwebp...")
+            execute_process(
+                COMMAND ${CMAKE_COMMAND} ${libwebp_SOURCE_DIR} -B${libwebp_BINARY_DIR}
+                    -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=${MAGICKPP_PREFIX}
+                    -DBUILD_SHARED_LIBS=OFF -DWEBP_LINK_STATIC=ON
+                    -DWEBP_BUILD_ANIM_UTILS=OFF -DWEBP_BUILD_CWEBP=OFF -DWEBP_BUILD_DWEBP=OFF
+                    -DWEBP_BUILD_GIF2WEBP=OFF -DWEBP_BUILD_IMG2WEBP=OFF -DWEBP_BUILD_VWEBP=OFF
+                    -DWEBP_BUILD_WEBPINFO=OFF -DWEBP_BUILD_WEBPMUX=OFF -DWEBP_BUILD_EXTRAS=OFF
+                    -DCMAKE_POSITION_INDEPENDENT_CODE=${WEBCFACE_PIC}
+            )
+            execute_process(COMMAND ${CMAKE_COMMAND} --build ${libwebp_BINARY_DIR} -t install -j${N})
+        endif()
+
+        list(APPEND CMAKE_PREFIX_PATH ${MAGICKPP_PREFIX})
+        if(MINGW)
+            set(ENV{PKG_CONFIG_PATH} "${MAGICKPP_PREFIX}/lib/pkgconfig;$ENV{PKG_CONFIG_PATH}")
+        else()
+            set(ENV{PKG_CONFIG_PATH} "${MAGICKPP_PREFIX}/lib/pkgconfig:$ENV{PKG_CONFIG_PATH}")
+        endif()
+        pkg_check_modules(libjpeg REQUIRED QUIET libjpeg)
+        pkg_check_modules(libpng REQUIRED QUIET libpng)
+        find_package(ZLIB REQUIRED QUIET)
+        pkg_check_modules(libwebp REQUIRED QUIET libwebp)
+
+        message(STATUS "Fetching Magick++ source...")
+        FetchContent_Declare(magickpp
+            GIT_REPOSITORY https://github.com/ImageMagick/ImageMagick.git
+            GIT_TAG 7.1.1-33
+        )
+        FetchContent_Populate(magickpp)
+        message(STATUS "Building Magick++...")
+        if(NOT EXISTS ${magickpp_SOURCE_DIR}/Makefile OR ${CMAKE_CURRENT_LIST_FILE} IS_NEWER_THAN ${magickpp_SOURCE_DIR}/Makefile)
+            if(MINGW)
+                execute_process(
+                    COMMAND ${CHMOD_COMMAND} +x winpath.sh # バグ?
+                    WORKING_DIRECTORY ${magickpp_SOURCE_DIR}
+                )
+            endif()
+            execute_process(
+                # mingwでは ./configure はつかえない
+                COMMAND ${SH_COMMAND} configure
+                    "CC=${ORIGINAL_ENV_CC}" "CXX=${ORIGINAL_ENV_CXX}"
+                    "CFLAGS=${MAGICKPP_FLAGS}" "CXXFLAGS=${MAGICKPP_FLAGS}"
+                    "MAKE=${MAKE_COMMAND}"
+                    --prefix=${MAGICKPP_PREFIX_UNIX} --disable-shared --enable-static
+                    --without-utilities --disable-hdri --with-quantum-depth=8
+                    --without-modules --without-perl --without-bzlib --without-djvu --without-dps
+                    --without-fontconfig --without-freetype --without-gvc --without-heic
+                    --without-jbig --without-jxl --without-dmr --without-lqr --without-lcms
+                    --without-lzma --without-openexr --without-openjp2 --without-pango
+                    --without-raqm --without-raw --without-tiff --without-wmf
+                    --without-xml --without-zlib --without-zstd --without-x --without-zip
+                WORKING_DIRECTORY ${magickpp_SOURCE_DIR}
+            )
+        endif()
+        execute_process(
+            COMMAND ${MAKE_COMMAND} -j${N} install
+            WORKING_DIRECTORY ${magickpp_SOURCE_DIR}
+        )
+        pkg_check_modules(Magickpp REQUIRED QUIET Magick++)
+        add_library(magickpp INTERFACE)
+        target_include_directories(magickpp INTERFACE ${Magickpp_STATIC_INCLUDE_DIRS})
+        target_compile_options(magickpp INTERFACE ${Magickpp_STATIC_CFLAGS_OTHER})
+        target_link_libraries(magickpp INTERFACE
+            ${Magickpp_STATIC_LIBRARIES}
+            ${libjpeg_STATIC_LIBRARIES}
+            ${libpng_STATIC_LIBRARIES}
+            ZLIB::ZLIB
+            ${libwebp_STATIC_LIBRARIES}
+        )
+        target_link_directories(magickpp INTERFACE
+            ${Magickpp_STATIC_LIBRARY_DIRS}
+            ${libjpeg_STATIC_LIBRARY_DIRS}
+            ${libpng_STATIC_LIBRARY_DIRS}
+            ${libwebp_STATIC_LIBRARY_DIRS}
+        )
+        if(WIN32)
+            target_link_libraries(magickpp INTERFACE urlmon.lib)
+        endif()
+    endif()
+endif()
+if(Magickpp_VERSION MATCHES "^7\.")
+    add_compile_definitions(WEBCFACE_MAGICK_VER7)
 endif()
 
 if(WEBCFACE_TEST)
-    if(WEBCFACE_FIND_LIBS)
-        find_package(GTest QUIET)
-    endif()
-    if(GTest_FOUND)
-        message(STATUS "GTest ${GTest_VERSION} Found: ${GTest_DIR}")
-    else()
-        message(STATUS "GTest Not Found, Fetching Source...")
-        FetchContent_Declare(googletest
-            GIT_REPOSITORY https://github.com/google/googletest.git
-            GIT_TAG v1.14.0
-        )
-        set(INSTALL_GTEST off CACHE INTERNAL "" FORCE)
-        FetchContent_MakeAvailable(googletest)
-    endif()
+    message(STATUS "Fetching GTest Source...")
+    FetchContent_Declare(googletest
+        GIT_REPOSITORY https://github.com/google/googletest.git
+        GIT_TAG v1.14.0
+    )
+    set(INSTALL_GTEST off CACHE INTERNAL "" FORCE)
+    FetchContent_MakeAvailable(googletest)
 endif()
 
 ###############################################################################
@@ -355,6 +669,8 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     add_compile_options(-Wno-error=array-bounds -Wno-error=stringop-overflow)
     # (fmtlib/fmt#3415)
     add_cxx_compile_options_if(-Wno-error=dangling-reference DANGLING_REFERENCE)
+    # inside magick
+    add_compile_options(-Wno-error=ignored-qualifiers)
 endif()
 if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
     add_compile_options(-Wall -Wextra -Wpedantic -Werror)
@@ -365,6 +681,7 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "App
         --system-header-prefix=spdlog/
         --system-header-prefix=curl/
         --system-header-prefix=crow.h
+        --system-header-prefix=Magick++.h
         --system-header-prefix=opencv2/
         --system-header-prefix=utf8.h
         --system-header-prefix=CLI/
@@ -389,6 +706,7 @@ list(APPEND WEBCFACE_SRC
     ${CPP_DIR}/client/client_ws.cc
     ${CPP_DIR}/client/data_store1.cc
     ${CPP_DIR}/client/data_store2.cc
+    ${CPP_DIR}/client/encoding.cc
     ${CPP_DIR}/client/field.cc
     ${CPP_DIR}/client/func.cc
     ${CPP_DIR}/client/func_listener.cc
@@ -420,11 +738,13 @@ list(APPEND EXAMPLE_SRC
     ${CPP_DIR}/example/recv.cc
     ${CPP_DIR}/example/c_example.c
     ${CPP_DIR}/example/benchmark.cc
+    ${CPP_DIR}/example/image-send.cc
+    ${CPP_DIR}/example/image-recv.cc
 )
-if(WEBCFACE_USE_OPENCV)
+if(OpenCV_FOUND)
     list(APPEND EXAMPLE_SRC
-        ${CPP_DIR}/example/image_send.cc
-        ${CPP_DIR}/example/image_recv.cc
+        ${CPP_DIR}/example/cv-send.cc
+        ${CPP_DIR}/example/cv-recv.cc
     )
 endif()
 list(APPEND TEST_SRC
@@ -443,6 +763,7 @@ list(APPEND TEST_SRC
     ${CPP_DIR}/test/dummy_server.cc
     ${CPP_DIR}/test/dummy_client.cc
     ${CPP_DIR}/test/server_test.cc
+    ${CPP_DIR}/test/encoding_test.cc
     ${CPP_DIR}/test/c_wcf_test.cc
 )
 if(WIN32)
@@ -464,9 +785,6 @@ if(WEBCFACE_SHARED)
 else()
     add_library(${PROJECT_NAME} STATIC ${WEBCFACE_SRC})
 endif()
-if(NOT CMAKE_CXX_COMPILER_ID STREQUAL "MSVC" AND WEBCFACE_PIC)
-    target_compile_options(${PROJECT_NAME} PRIVATE -fPIC)
-endif()
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_20)
 target_include_directories(${PROJECT_NAME} PUBLIC ${INCLUDE_DIR})
 target_link_libraries(${PROJECT_NAME} PRIVATE
@@ -474,23 +792,14 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
     msgpack-cxx
     Crow
     utfcpp
+    magickpp
 )
 target_link_libraries(${PROJECT_NAME} PUBLIC
     eventpp::eventpp
     spdlog::spdlog
 )
-if(WEBCFACE_USE_OPENCV)
-    target_link_libraries(${PROJECT_NAME} PUBLIC
-        opencv_core
-        opencv_imgcodecs
-        opencv_imgproc
-    )
-endif()
-if(MINGW)
-    target_link_libraries(${PROJECT_NAME} PUBLIC ws2_32)
-endif()
 if(WIN32)
-    target_link_libraries(${PROJECT_NAME} PRIVATE IPHLPAPI.lib)
+    target_link_libraries(${PROJECT_NAME} PRIVATE iphlpapi.lib)
     set_target_properties(${PROJECT_NAME} PROPERTIES
         DEBUG_POSTFIX "${WEBCFACE_SOVERSION}d"
         RELEASE_POSTFIX "${WEBCFACE_SOVERSION}"
@@ -502,6 +811,10 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
     VERSION ${PROJECT_VERSION}
     SOVERSION ${WEBCFACE_SOVERSION}
 )
+if(NOT "${WEBCFACE_CLANG_TIDY}" STREQUAL "")
+    set(CLANG_TIDY_CMD "${WEBCFACE_CLANG_TIDY}" "--header-filter=${CMAKE_CURRENT_SOURCE_DIR}/src")
+    set_target_properties(${PROJECT_NAME} PROPERTIES CXX_CLANG_TIDY "${CLANG_TIDY_CMD}")
+endif()
 add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 
 add_library(wcf INTERFACE)
@@ -549,9 +862,20 @@ if(WEBCFACE_EXAMPLE)
             FILE_IS_APP
         )
     endforeach()
-    if(WEBCFACE_USE_OPENCV)
-        target_link_libraries(${PROJECT_NAME}-example-image_recv PRIVATE opencv_highgui)
-        target_link_libraries(${PROJECT_NAME}-example-image_send PRIVATE opencv_highgui)
+    foreach(TARGET image-recv image-send)
+        target_link_libraries(${PROJECT_NAME}-example-${TARGET} PRIVATE
+            magickpp
+        )
+    endforeach()
+    if(OpenCV_FOUND)
+        foreach(TARGET cv-recv cv-send)
+            target_link_libraries(${PROJECT_NAME}-example-${TARGET} PRIVATE
+                opencv_core
+                opencv_imgcodecs
+                opencv_imgproc
+                opencv_highgui
+            )
+        endforeach()
     endif()
 endif()
 
@@ -563,7 +887,9 @@ if(WEBCFACE_TEST)
         libcurl_static
         Crow
         msgpack-cxx
+        utfcpp
         GTest::gtest_main
+
     )
     target_compile_definitions(${PROJECT_NAME}-test PRIVATE
         WEBCFACE_TEST_TIMEOUT=${WEBCFACE_TEST_TIMEOUT}
@@ -615,19 +941,11 @@ if(WEBCFACE_INSTALL)
     install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/include/
         DESTINATION include
     )
-    if(WEBCFACE_USE_OPENCV)
-        configure_package_config_file(
-            ${CMAKE_CURRENT_SOURCE_DIR}/cmake/${PROJECT_NAME}-config.opencv.cmake.in
-            ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config.cmake
-            INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
-        )
-    else()
-        configure_package_config_file(
-            ${CMAKE_CURRENT_SOURCE_DIR}/cmake/${PROJECT_NAME}-config.no-opencv.cmake.in
-            ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config.cmake
-            INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
-        )
-    endif()
+    configure_package_config_file(
+        ${CMAKE_CURRENT_SOURCE_DIR}/cmake/${PROJECT_NAME}-config.cmake.in
+        ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config.cmake
+        INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
+    )
 
     write_basic_package_version_file(
         ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config-version.cmake
@@ -639,11 +957,7 @@ if(WEBCFACE_INSTALL)
         ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config-version.cmake
         DESTINATION lib/cmake/${PROJECT_NAME}
     )
-    if(WEBCFACE_USE_OPENCV)
-        set(WEBCFACE_PKGCONFIG_REQUIRES "spdlog opencv4")
-    else()
-        set(WEBCFACE_PKGCONFIG_REQUIRES "spdlog")
-    endif()
+    set(WEBCFACE_PKGCONFIG_REQUIRES "spdlog")
     configure_file(
         ${CMAKE_CURRENT_SOURCE_DIR}/cmake/${PROJECT_NAME}.pc.in
         ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.pc
@@ -695,6 +1009,19 @@ if(WEBCFACE_INSTALL)
         ${utfcpp_SOURCE_DIR}/LICENSE
         DESTINATION share/webcface/3rd_party/utfcpp
     )
+    if(NOT Magickpp_FOUND)
+        if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+            install(FILES
+                ${magick-windows_SOURCE_DIR}/ImageMagick/LICENSE
+                DESTINATION share/webcface/3rd_party/ImageMagick
+            )
+        else()
+            install(FILES
+                ${magickpp_SOURCE_DIR}/LICENSE
+                DESTINATION share/webcface/3rd_party/ImageMagick
+            )
+        endif()
+    endif()
 
     # https://decovar.dev/blog/2021/09/23/cmake-cpack-package-deb-apt/
     set(CPACK_VERBATIM_VARIABLES yes)
@@ -718,9 +1045,6 @@ if(WEBCFACE_INSTALL)
     set(CPACK_DEBIAN_PACKAGE_SHLIBDEPS yes)
     if(${spdlog_FOUND})
         set(CPACK_DEBIAN_PACKAGE_DEPENDS ${CPACK_DEBIAN_PACKAGE_DEPENDS} libspdlog-dev)
-    endif()
-    if(${OpenCV_FOUND})
-        set(CPACK_DEBIAN_PACKAGE_DEPENDS ${CPACK_DEBIAN_PACKAGE_DEPENDS} libopencv-dev)
     endif()
     # https://gitlab.kitware.com/cmake/cmake/-/issues/21834
     set(CPACK_DEBIAN_PACKAGE_CONTROL_EXTRA "${CMAKE_CURRENT_LIST_DIR}/cmake/triggers")

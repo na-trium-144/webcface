@@ -31,9 +31,9 @@ class WEBCFACE_DLL Canvas2D : protected Field, public EventTarget<Canvas2D> {
   public:
     Canvas2D();
     Canvas2D(const Field &base);
-    Canvas2D(const Field &base, const std::string &field)
+    Canvas2D(const Field &base, std::u8string_view field)
         : Canvas2D(Field{base, field}) {}
-    Canvas2D(const Field &base, const std::string &field, double width,
+    Canvas2D(const Field &base, std::u8string_view field, double width,
              double height)
         : Canvas2D(Field{base, field}) {
         init(width, height);
@@ -44,11 +44,19 @@ class WEBCFACE_DLL Canvas2D : protected Field, public EventTarget<Canvas2D> {
     using Field::lastName;
     using Field::member;
     using Field::name;
+    using Field::nameW;
     /*!
      * \brief 「(thisの名前).(追加の名前)」を新しい名前とするField
      *
      */
     Canvas2D child(std::string_view field) const {
+        return this->Field::child(field);
+    }
+    /*!
+     * \brief 「(thisの名前).(追加の名前)」を新しい名前とするField (wstring)
+     * \since ver1.12
+     */
+    Canvas2D child(std::wstring_view field) const {
         return this->Field::child(field);
     }
     /*!
@@ -61,10 +69,19 @@ class WEBCFACE_DLL Canvas2D : protected Field, public EventTarget<Canvas2D> {
      */
     Canvas2D operator[](std::string_view field) const { return child(field); }
     /*!
+     * child()と同じ
+     * \since ver1.12
+     */
+    Canvas2D operator[](std::wstring_view field) const { return child(field); }
+    /*!
      * operator[](long, const char *)と解釈されるのを防ぐための定義
      * \since ver1.11
      */
     Canvas2D operator[](const char *field) const { return child(field); }
+    /*!
+     * \since ver1.12
+     */
+    Canvas2D operator[](const wchar_t *field) const { return child(field); }
     /*!
      * child()と同じ
      * \since ver1.11
@@ -182,7 +199,7 @@ class WEBCFACE_DLL Canvas2D : protected Field, public EventTarget<Canvas2D> {
                                  double stroke_width = 1) {
         add(Canvas2DComponent{{Canvas2DComponentType::geometry, origin, color,
                                fill, stroke_width, geometry, std::nullopt,
-                               ""}});
+                               u8""}});
         return *this;
     }
     /*!
@@ -201,7 +218,7 @@ class WEBCFACE_DLL Canvas2D : protected Field, public EventTarget<Canvas2D> {
                                  double stroke_width = 1) {
         add(Canvas2DComponent{{Canvas2DComponentType::geometry, identity(),
                                color, fill, stroke_width, geometry,
-                               std::nullopt, ""}});
+                               std::nullopt, u8""}});
         return *this;
     }
     /*!
@@ -219,7 +236,7 @@ class WEBCFACE_DLL Canvas2D : protected Field, public EventTarget<Canvas2D> {
                                  const ViewColor &color, double stroke_width) {
         add(Canvas2DComponent{{Canvas2DComponentType::geometry, origin, color,
                                ViewColor::inherit, stroke_width, geometry,
-                               std::nullopt, ""}});
+                               std::nullopt, u8""}});
         return *this;
     }
     /*!
@@ -236,7 +253,7 @@ class WEBCFACE_DLL Canvas2D : protected Field, public EventTarget<Canvas2D> {
                                  const ViewColor &color, double stroke_width) {
         add(Canvas2DComponent{{Canvas2DComponentType::geometry, identity(),
                                color, ViewColor::inherit, stroke_width,
-                               geometry, std::nullopt, ""}});
+                               geometry, std::nullopt, u8""}});
         return *this;
     }
     /*!
@@ -254,19 +271,9 @@ class WEBCFACE_DLL Canvas2D : protected Field, public EventTarget<Canvas2D> {
      *
      */
     template <typename T>
-        requires std::same_as<T, Canvas2D> bool
-    operator==(const T &other) const {
+        requires std::same_as<T, Canvas2D>
+    bool operator==(const T &other) const {
         return static_cast<Field>(*this) == static_cast<Field>(other);
-    }
-    /*!
-     * \brief Canvas2Dの参照先を比較
-     * \since ver1.11
-     *
-     */
-    template <typename T>
-        requires std::same_as<T, Canvas2D> bool
-    operator!=(const T &other) const {
-        return !(*this == other);
     }
 };
 WEBCFACE_NS_END

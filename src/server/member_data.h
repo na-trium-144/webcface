@@ -38,7 +38,8 @@ struct WEBCFACE_DLL MemberData {
      */
     bool sync_init = false;
 
-    std::string name;
+    std::u8string name;
+    std::string name_s; // decoded
     unsigned int member_id;
     Message::SyncInit init_data;
     /*!
@@ -47,46 +48,51 @@ struct WEBCFACE_DLL MemberData {
      * entry非表示のものも含む。
      *
      */
-    std::unordered_map<std::string, std::shared_ptr<std::vector<double>>> value;
-    std::unordered_map<std::string, std::shared_ptr<Common::ValAdaptor>> text;
-    std::unordered_map<std::string, std::shared_ptr<Message::FuncInfo>> func;
-    std::unordered_map<std::string, std::vector<Common::ViewComponentBase>>
+    std::unordered_map<std::u8string, std::shared_ptr<std::vector<double>>>
+        value;
+    std::unordered_map<std::u8string, std::shared_ptr<Common::ValAdaptor>> text;
+    std::unordered_map<std::u8string, std::shared_ptr<Message::FuncInfo>> func;
+    std::unordered_map<std::u8string, std::vector<Common::ViewComponentBase>>
         view;
-    std::unordered_map<std::string, std::vector<Common::Canvas3DComponentBase>>
+    std::unordered_map<std::u8string,
+                       std::vector<Common::Canvas3DComponentBase>>
         canvas3d;
-    std::unordered_map<std::string, Common::Canvas2DDataBase> canvas2d;
-    std::unordered_map<std::string, Common::ImageBase> image;
-    std::unordered_map<std::string, int> image_changed;
+    std::unordered_map<std::u8string, Common::Canvas2DDataBase> canvas2d;
+    std::unordered_map<std::u8string, Common::ImageBase> image;
+    std::unordered_map<std::u8string, int> image_changed;
     // 画像が変化したことを知らせるcv
-    std::unordered_map<std::string, std::mutex> image_m;
-    std::unordered_map<std::string, std::condition_variable> image_cv;
+    std::unordered_map<std::u8string, std::mutex> image_m;
+    std::unordered_map<std::u8string, std::condition_variable> image_cv;
 
     std::chrono::system_clock::time_point last_sync_time;
     //! リクエストしているmember,nameのペア
-    std::unordered_map<std::string,
-                       std::unordered_map<std::string, unsigned int>>
+    std::unordered_map<std::u8string,
+                       std::unordered_map<std::u8string, unsigned int>>
         value_req, text_req, view_req, image_req, robot_model_req, canvas3d_req,
         canvas2d_req;
     // リクエストが変化したことをスレッドに知らせる
-    std::unordered_map<std::string, std::unordered_map<std::string, int>>
+    std::unordered_map<std::u8string, std::unordered_map<std::u8string, int>>
         image_req_changed;
     // 画像をそれぞれのリクエストに合わせて変換するスレッド
-    std::unordered_map<std::string,
-                       std::unordered_map<std::string, Common::ImageReq>>
+    std::unordered_map<std::u8string,
+                       std::unordered_map<std::u8string, Common::ImageReq>>
         image_req_info;
+
+    // image_convert_thread[imageのmember][imageのfield] =
+    // imageを変換してthisに送るスレッド
     std::unordered_map<
-        std::string,
-        std::unordered_map<std::string, std::optional<std::thread>>>
+        std::u8string,
+        std::unordered_map<std::u8string, std::optional<std::thread>>>
         image_convert_thread;
-    void imageConvertThreadMain(const std::string &member,
-                                const std::string &field);
+    void imageConvertThreadMain(const std::u8string &member,
+                                const std::u8string &field);
     std::unordered_map<
-        std::string,
+        std::u8string,
         std::shared_ptr<std::vector<Message::RobotModel::RobotLink>>>
         robot_model;
 
-    std::set<std::string> log_req;
-    bool hasReq(const std::string &member);
+    std::set<std::u8string> log_req;
+    bool hasReq(const std::u8string &member);
     //! ログ全履歴
     std::shared_ptr<std::deque<Message::Log::LogLine>> log;
     /*!
@@ -107,10 +113,12 @@ struct WEBCFACE_DLL MemberData {
     MemberData() = delete;
     MemberData(const MemberData &) = delete;
     MemberData &operator=(const MemberData &) = delete;
-    explicit MemberData(ServerStorage *store, const wsConnPtr &con, const std::string &remote_addr,
+    explicit MemberData(ServerStorage *store, const wsConnPtr &con,
+                        std::string_view remote_addr,
                         const spdlog::sink_ptr &sink,
                         spdlog::level::level_enum level)
-        : sink(sink), logger_level(level), store(store), con(con), remote_addr(remote_addr),
+        : sink(sink), logger_level(level), store(store), con(con),
+          remote_addr(remote_addr),
           log(std::make_shared<std::deque<Message::Log::LogLine>>()) {
         this->member_id = ++last_member_id;
         logger = std::make_shared<spdlog::logger>(

@@ -4,6 +4,8 @@
 #include <string>
 #include <cstdint>
 #include <webcface/common/def.h>
+#include <utf8.h>
+#include "u8string.h"
 
 namespace msgpack {
 MSGPACK_API_VERSION_NAMESPACE(MSGPACK_DEFAULT_API_NS) {
@@ -28,10 +30,10 @@ MSGPACK_API_VERSION_NAMESPACE(MSGPACK_DEFAULT_API_NS) {
                 v = o.via.boolean;
                 break;
             case msgpack::type::BIN:
-                v = std::string(o.via.bin.ptr, o.via.bin.size);
-                break;
             case msgpack::type::STR:
-                v = std::string(o.via.str.ptr, o.via.str.size);
+                v = utf8::replace_invalid(
+                    std::u8string(webcface::Encoding::castToU8(
+                        o.via.bin.ptr, o.via.bin.size)));
                 break;
             default:
                 throw msgpack::type_error();
@@ -56,7 +58,7 @@ MSGPACK_API_VERSION_NAMESPACE(MSGPACK_DEFAULT_API_NS) {
                 break;
             case webcface::ValType::string_:
             default:
-                o.pack(static_cast<std::string>(v));
+                o.pack(v.asU8String());
                 break;
             }
             return o;

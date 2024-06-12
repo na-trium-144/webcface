@@ -14,6 +14,7 @@
 #include <thread>
 #include <iostream>
 #include "dummy_client.h"
+#include "webcface/common/image.h"
 
 using namespace webcface;
 
@@ -46,7 +47,7 @@ class ServerTest : public ::testing::Test {
     }
     std::unique_ptr<Server::Server> server;
     std::shared_ptr<Internal::ClientData> data_ =
-        std::make_shared<Internal::ClientData>("a");
+        std::make_shared<Internal::ClientData>(u8"a");
     std::shared_ptr<DummyClient> dummy_c1, dummy_c2;
     int callback_called;
 };
@@ -70,13 +71,13 @@ TEST_F(ServerTest, sync) {
     wait();
     dummy_c2 = std::make_shared<DummyClient>();
     wait();
-    dummy_c1->send(Message::SyncInit{{}, "", 0, "", "", ""});
+    dummy_c1->send(Message::SyncInit{{}, u8"", 0, "", "", ""});
     wait();
-    dummy_c2->send(Message::SyncInit{{}, "c2", 0, "a", "1", ""});
+    dummy_c2->send(Message::SyncInit{{}, u8"c2", 0, "a", "1", ""});
     wait();
     dummy_c1->recv<Message::SyncInit>(
         [&](const auto &obj) {
-            EXPECT_EQ(obj.member_name, "c2");
+            EXPECT_EQ(obj.member_name, u8"c2");
             EXPECT_EQ(obj.member_id, 2);
             EXPECT_EQ(obj.lib_name, "a");
             EXPECT_EQ(obj.lib_ver, "1");
@@ -91,8 +92,8 @@ TEST_F(ServerTest, sync) {
         [&] { ADD_FAILURE() << "SvrVersion recv failed"; });
     ASSERT_TRUE(server->store->clients_by_id.count(1));
     ASSERT_TRUE(server->store->clients_by_id.count(2));
-    EXPECT_EQ(server->store->clients_by_id.at(1)->name, "");
-    EXPECT_EQ(server->store->clients_by_id.at(2)->name, "c2");
+    EXPECT_EQ(server->store->clients_by_id.at(1)->name, u8"");
+    EXPECT_EQ(server->store->clients_by_id.at(2)->name, u8"c2");
     dummy_c1->recvClear();
 
     // dummy_c2->send(Message::Sync{});
@@ -103,7 +104,7 @@ TEST_F(ServerTest, ping) {
     wait();
     dummy_c2 = std::make_shared<DummyClient>();
     wait();
-    dummy_c1->send(Message::SyncInit{{}, "", 0, "", "", ""});
+    dummy_c1->send(Message::SyncInit{{}, u8"", 0, "", "", ""});
     wait();
     auto start = std::chrono::steady_clock::now();
     server->server_ping_wait.notify_one(); // これで無理やりpingさせる
@@ -145,90 +146,91 @@ TEST_F(ServerTest, entry) {
     wait();
     dummy_c2 = std::make_shared<DummyClient>();
     wait();
-    dummy_c1->send(Message::SyncInit{{}, "c1", 0, "", "", ""});
+    dummy_c1->send(Message::SyncInit{{}, u8"c1", 0, "", "", ""});
     dummy_c1->send(
-        Message::Value{{}, "a", std::make_shared<std::vector<double>>(1)});
-    dummy_c1->send(Message::Text{{}, "a", std::make_shared<ValAdaptor>("")});
+        Message::Value{{}, u8"a", std::make_shared<std::vector<double>>(1)});
+    dummy_c1->send(Message::Text{{}, u8"a", std::make_shared<ValAdaptor>("")});
     dummy_c1->send(Message::RobotModel{
-        "a", std::make_shared<std::vector<Common::RobotLink>>()});
+        u8"a", std::make_shared<std::vector<Common::RobotLink>>()});
     dummy_c1->send(Message::Canvas3D{
-        "a",
+        u8"a",
         std::make_shared<std::unordered_map<
             std::string, Message::Canvas3D::Canvas3DComponent>>(),
         0});
     dummy_c1->send(Message::Canvas2D{
-        "a", 0, 0,
+        u8"a", 0, 0,
         std::make_shared<std::unordered_map<
             std::string, Message::Canvas2D::Canvas2DComponent>>(),
         0});
     dummy_c1->send(Message::View{
-        "a",
+        u8"a",
         std::make_shared<
             std::unordered_map<std::string, Message::View::ViewComponent>>(),
         0});
     dummy_c1->send(Message::Image{
-        "a", ImageFrame{
-                 100, 100,
-                 std::make_shared<std::vector<unsigned char>>(100 * 100 * 3)}});
+        u8"a",
+        ImageFrame{sizeWH(100, 100),
+                   std::make_shared<std::vector<unsigned char>>(100 * 100 * 3),
+                   ImageColorMode::bgr}});
     dummy_c1->send(Message::FuncInfo{
-        0, "a", ValType::none_,
+        0, u8"a", ValType::none_,
         std::make_shared<std::vector<Message::FuncInfo::Arg>>()});
     wait();
     // c2が接続したタイミングでのc1のentryが全部返る
-    dummy_c2->send(Message::SyncInit{{}, "", 0, "", "", ""});
+    dummy_c2->send(Message::SyncInit{{}, u8"", 0, "", "", ""});
     wait();
     dummy_c2->recv<Message::SyncInit>(
         [&](const auto &obj) {
-            EXPECT_EQ(obj.member_name, "c1");
+            EXPECT_EQ(obj.member_name, u8"c1");
             EXPECT_EQ(obj.member_id, 1);
         },
         [&] { ADD_FAILURE() << "SyncInit recv failed"; });
     dummy_c2->recv<Message::Entry<Message::Value>>(
         [&](const auto &obj) {
             EXPECT_EQ(obj.member_id, 1);
-            EXPECT_EQ(obj.field, "a");
+            EXPECT_EQ(obj.field, u8"a");
         },
         [&] { ADD_FAILURE() << "Value Entry recv failed"; });
     dummy_c2->recv<Message::Entry<Message::Text>>(
         [&](const auto &obj) {
             EXPECT_EQ(obj.member_id, 1);
-            EXPECT_EQ(obj.field, "a");
+            EXPECT_EQ(obj.field, u8"a");
         },
         [&] { ADD_FAILURE() << "Text Entry recv failed"; });
     dummy_c2->recv<Message::Entry<Message::RobotModel>>(
         [&](const auto &obj) {
             EXPECT_EQ(obj.member_id, 1);
-            EXPECT_EQ(obj.field, "a");
+            EXPECT_EQ(obj.field, u8"a");
         },
         [&] { ADD_FAILURE() << "RobotModel Entry recv failed"; });
     dummy_c2->recv<Message::Entry<Message::View>>(
         [&](const auto &obj) {
             EXPECT_EQ(obj.member_id, 1);
-            EXPECT_EQ(obj.field, "a");
+            EXPECT_EQ(obj.field, u8"a");
         },
         [&] { ADD_FAILURE() << "View Entry recv failed"; });
     dummy_c2->recv<Message::Entry<Message::Canvas3D>>(
         [&](const auto &obj) {
             EXPECT_EQ(obj.member_id, 1);
-            EXPECT_EQ(obj.field, "a");
+            EXPECT_EQ(obj.field, u8"a");
         },
         [&] { ADD_FAILURE() << "Canvas3D Entry recv failed"; });
     dummy_c2->recv<Message::Entry<Message::Canvas2D>>(
         [&](const auto &obj) {
             EXPECT_EQ(obj.member_id, 1);
-            EXPECT_EQ(obj.field, "a");
+            EXPECT_EQ(obj.field, u8"a");
         },
         [&] { ADD_FAILURE() << "Canvas2D Entry recv failed"; });
     dummy_c2->recv<Message::Entry<Message::Image>>(
         [&](const auto &obj) {
             EXPECT_EQ(obj.member_id, 1);
-            EXPECT_EQ(obj.field, "a");
+            EXPECT_EQ(obj.field, u8"a");
         },
         [&] { ADD_FAILURE() << "Image Entry recv failed"; });
     dummy_c2->recv<Message::FuncInfo>(
         [&](const auto &obj) {
             EXPECT_EQ(obj.member_id, 1);
-            EXPECT_EQ(obj.field, "a");
+            EXPECT_EQ(obj.field, u8"a");
             EXPECT_EQ(obj.return_type, ValType::none_);
             EXPECT_EQ(obj.args->size(), 0);
         },
@@ -237,33 +239,33 @@ TEST_F(ServerTest, entry) {
 
     // c1にentryを追加する
     dummy_c1->send(
-        Message::Value{{}, "b", std::make_shared<std::vector<double>>(1)});
+        Message::Value{{}, u8"b", std::make_shared<std::vector<double>>(1)});
     wait();
     dummy_c2->recv<Message::Entry<Message::Value>>(
         [&](const auto &obj) {
             EXPECT_EQ(obj.member_id, 1);
-            EXPECT_EQ(obj.field, "b");
+            EXPECT_EQ(obj.field, u8"b");
         },
         [&] { ADD_FAILURE() << "Value Entry recv failed"; });
-    dummy_c1->send(Message::Text{{}, "b", std::make_shared<ValAdaptor>("")});
+    dummy_c1->send(Message::Text{{}, u8"b", std::make_shared<ValAdaptor>("")});
     wait();
     dummy_c2->recv<Message::Entry<Message::Text>>(
         [&](const auto &obj) {
             EXPECT_EQ(obj.member_id, 1);
-            EXPECT_EQ(obj.field, "b");
+            EXPECT_EQ(obj.field, u8"b");
         },
         [&] { ADD_FAILURE() << "Text Entry recv failed"; });
     dummy_c1->send(Message::RobotModel{
-        "b", std::make_shared<std::vector<Common::RobotLink>>()});
+        u8"b", std::make_shared<std::vector<Common::RobotLink>>()});
     wait();
     dummy_c2->recv<Message::Entry<Message::RobotModel>>(
         [&](const auto &obj) {
             EXPECT_EQ(obj.member_id, 1);
-            EXPECT_EQ(obj.field, "b");
+            EXPECT_EQ(obj.field, u8"b");
         },
         [&] { ADD_FAILURE() << "RobotModel Entry recv failed"; });
     dummy_c1->send(Message::View{
-        "b",
+        u8"b",
         std::make_shared<
             std::unordered_map<std::string, Message::View::ViewComponent>>(),
         0});
@@ -271,11 +273,11 @@ TEST_F(ServerTest, entry) {
     dummy_c2->recv<Message::Entry<Message::View>>(
         [&](const auto &obj) {
             EXPECT_EQ(obj.member_id, 1);
-            EXPECT_EQ(obj.field, "b");
+            EXPECT_EQ(obj.field, u8"b");
         },
         [&] { ADD_FAILURE() << "View Entry recv failed"; });
     dummy_c1->send(Message::Canvas3D{
-        "b",
+        u8"b",
         std::make_shared<std::unordered_map<
             std::string, Message::Canvas3D::Canvas3DComponent>>(),
         0});
@@ -283,11 +285,11 @@ TEST_F(ServerTest, entry) {
     dummy_c2->recv<Message::Entry<Message::Canvas3D>>(
         [&](const auto &obj) {
             EXPECT_EQ(obj.member_id, 1);
-            EXPECT_EQ(obj.field, "b");
+            EXPECT_EQ(obj.field, u8"b");
         },
         [&] { ADD_FAILURE() << "Canvas3D Entry recv failed"; });
     dummy_c1->send(Message::Canvas2D{
-        "b", 0, 0,
+        u8"b", 0, 0,
         std::make_shared<std::unordered_map<
             std::string, Message::Canvas2D::Canvas2DComponent>>(),
         0});
@@ -295,29 +297,30 @@ TEST_F(ServerTest, entry) {
     dummy_c2->recv<Message::Entry<Message::Canvas2D>>(
         [&](const auto &obj) {
             EXPECT_EQ(obj.member_id, 1);
-            EXPECT_EQ(obj.field, "b");
+            EXPECT_EQ(obj.field, u8"b");
         },
         [&] { ADD_FAILURE() << "Canvas2D Entry recv failed"; });
     dummy_c1->send(Message::Image{
-        "b",
-        ImageFrame{50, 50,
-                   std::make_shared<std::vector<unsigned char>>(50 * 50 * 3)}});
+        u8"b",
+        ImageFrame{sizeWH(50, 50),
+                   std::make_shared<std::vector<unsigned char>>(50 * 50 * 3),
+                   ImageColorMode::bgr}});
     wait();
     dummy_c2->recv<Message::Entry<Message::Image>>(
         [&](const auto &obj) {
             EXPECT_EQ(obj.member_id, 1);
-            EXPECT_EQ(obj.field, "b");
+            EXPECT_EQ(obj.field, u8"b");
         },
         [&] { ADD_FAILURE() << "Image Entry recv failed"; });
 
     dummy_c1->send(Message::FuncInfo{
-        0, "b", ValType::none_,
+        0, u8"b", ValType::none_,
         std::make_shared<std::vector<Message::FuncInfo::Arg>>()});
     wait();
     dummy_c2->recv<Message::FuncInfo>(
         [&](const auto &obj) {
             EXPECT_EQ(obj.member_id, 1);
-            EXPECT_EQ(obj.field, "b");
+            EXPECT_EQ(obj.field, u8"b");
             EXPECT_EQ(obj.return_type, ValType::none_);
             EXPECT_EQ(obj.args->size(), 0);
         },
@@ -328,15 +331,15 @@ TEST_F(ServerTest, value) {
     wait();
     dummy_c2 = std::make_shared<DummyClient>();
     wait();
-    dummy_c1->send(Message::SyncInit{{}, "c1", 0, "", "", ""});
+    dummy_c1->send(Message::SyncInit{{}, u8"c1", 0, "", "", ""});
     dummy_c1->send(Message::Sync{});
     dummy_c1->send(Message::Value{
         {},
-        "a",
+        u8"a",
         std::make_shared<std::vector<double>>(std::vector<double>{3, 4, 5})});
     wait();
-    dummy_c2->send(Message::SyncInit{{}, "", 0, "", "", ""});
-    dummy_c2->send(Message::Req<Message::Value>{{}, "c1", "a", 1});
+    dummy_c2->send(Message::SyncInit{{}, u8"", 0, "", "", ""});
+    dummy_c2->send(Message::Req<Message::Value>{{}, u8"c1", u8"a", 1});
     wait();
     // req時の値
     dummy_c2->recv<Message::Sync>([&](auto) {},
@@ -344,7 +347,7 @@ TEST_F(ServerTest, value) {
     dummy_c2->recv<Message::Res<Message::Value>>(
         [&](const auto &obj) {
             EXPECT_EQ(obj.req_id, 1);
-            EXPECT_EQ(obj.sub_field, "");
+            EXPECT_EQ(obj.sub_field, u8"");
             EXPECT_EQ(obj.data->size(), 3);
             EXPECT_EQ(obj.data->at(0), 3);
         },
@@ -354,7 +357,7 @@ TEST_F(ServerTest, value) {
     // 変化後の値
     dummy_c1->send(Message::Sync{});
     dummy_c1->send(Message::Value{{},
-                                  "a",
+                                  u8"a",
                                   std::make_shared<std::vector<double>>(
                                       std::vector<double>{6, 7, 8, 9})});
     wait();
@@ -363,7 +366,7 @@ TEST_F(ServerTest, value) {
     dummy_c2->recv<Message::Res<Message::Value>>(
         [&](const auto &obj) {
             EXPECT_EQ(obj.req_id, 1);
-            EXPECT_EQ(obj.sub_field, "");
+            EXPECT_EQ(obj.sub_field, u8"");
             EXPECT_EQ(obj.data->size(), 4);
             EXPECT_EQ(obj.data->at(0), 6);
         },
@@ -374,12 +377,13 @@ TEST_F(ServerTest, text) {
     wait();
     dummy_c2 = std::make_shared<DummyClient>();
     wait();
-    dummy_c1->send(Message::SyncInit{{}, "c1", 0, "", "", ""});
+    dummy_c1->send(Message::SyncInit{{}, u8"c1", 0, "", "", ""});
     dummy_c1->send(Message::Sync{});
-    dummy_c1->send(Message::Text{{}, "a", std::make_shared<ValAdaptor>("zzz")});
+    dummy_c1->send(
+        Message::Text{{}, u8"a", std::make_shared<ValAdaptor>("zzz")});
     wait();
-    dummy_c2->send(Message::SyncInit{{}, "", 0, "", "", ""});
-    dummy_c2->send(Message::Req<Message::Text>{{}, "c1", "a", 1});
+    dummy_c2->send(Message::SyncInit{{}, u8"", 0, "", "", ""});
+    dummy_c2->send(Message::Req<Message::Text>{{}, u8"c1", u8"a", 1});
     wait();
     // req時の値
     dummy_c2->recv<Message::Sync>([&](auto) {},
@@ -387,7 +391,7 @@ TEST_F(ServerTest, text) {
     dummy_c2->recv<Message::Res<Message::Text>>(
         [&](const auto &obj) {
             EXPECT_EQ(obj.req_id, 1);
-            EXPECT_EQ(obj.sub_field, "");
+            EXPECT_EQ(obj.sub_field, u8"");
             EXPECT_EQ(*obj.data, "zzz");
         },
         [&] { ADD_FAILURE() << "Text Res recv failed"; });
@@ -396,14 +400,14 @@ TEST_F(ServerTest, text) {
     // 変化後の値
     dummy_c1->send(Message::Sync{});
     dummy_c1->send(
-        Message::Text{{}, "a", std::make_shared<ValAdaptor>("zzzzz")});
+        Message::Text{{}, u8"a", std::make_shared<ValAdaptor>("zzzzz")});
     wait();
     dummy_c2->recv<Message::Sync>([&](auto) {},
                                   [&] { ADD_FAILURE() << "Sync recv failed"; });
     dummy_c2->recv<Message::Res<Message::Text>>(
         [&](const auto &obj) {
             EXPECT_EQ(obj.req_id, 1);
-            EXPECT_EQ(obj.sub_field, "");
+            EXPECT_EQ(obj.sub_field, u8"");
             EXPECT_EQ(*obj.data, "zzzzz");
         },
         [&] { ADD_FAILURE() << "Text Res recv failed"; });
@@ -413,14 +417,14 @@ TEST_F(ServerTest, robotModel) {
     wait();
     dummy_c2 = std::make_shared<DummyClient>();
     wait();
-    dummy_c1->send(Message::SyncInit{{}, "c1", 0, "", "", ""});
+    dummy_c1->send(Message::SyncInit{{}, u8"c1", 0, "", "", ""});
     dummy_c1->send(Message::Sync{});
     dummy_c1->send(Message::RobotModel{
-        "a", std::make_shared<std::vector<RobotLink>>(
-                 std::vector<RobotLink>{{"a", Geometry{}, ViewColor::black}})});
+        u8"a", std::make_shared<std::vector<RobotLink>>(std::vector<RobotLink>{
+                   {"a", Geometry{}, ViewColor::black}})});
     wait();
-    dummy_c2->send(Message::SyncInit{{}, "", 0, "", "", ""});
-    dummy_c2->send(Message::Req<Message::RobotModel>{{}, "c1", "a", 1});
+    dummy_c2->send(Message::SyncInit{{}, u8"", 0, "", "", ""});
+    dummy_c2->send(Message::Req<Message::RobotModel>{{}, u8"c1", u8"a", 1});
     wait();
     // req時の値
     dummy_c2->recv<Message::Sync>([&](auto) {},
@@ -428,7 +432,7 @@ TEST_F(ServerTest, robotModel) {
     dummy_c2->recv<Message::Res<Message::RobotModel>>(
         [&](const auto &obj) {
             EXPECT_EQ(obj.req_id, 1);
-            EXPECT_EQ(obj.sub_field, "");
+            EXPECT_EQ(obj.sub_field, u8"");
             EXPECT_EQ(obj.commonLinks()->size(), 1);
         },
         [&] { ADD_FAILURE() << "RobotModel Res recv failed"; });
@@ -437,25 +441,25 @@ TEST_F(ServerTest, robotModel) {
     // 変化後の値
     dummy_c1->send(Message::Sync{});
     dummy_c1->send(Message::RobotModel{
-        "a", std::make_shared<std::vector<RobotLink>>(std::vector<RobotLink>{
-                 RobotLink{"a", {}, Geometry{}, ViewColor::black},
-                 RobotLink{"b", {}, Geometry{}, ViewColor::black},
-                 RobotLink{"c",
-                           {"j", "a", RobotJointType::fixed, {}, 0},
-                           Geometry{},
-                           ViewColor::black},
-             })});
+        u8"a", std::make_shared<std::vector<RobotLink>>(std::vector<RobotLink>{
+                   RobotLink{"a", {}, Geometry{}, ViewColor::black},
+                   RobotLink{"b", {}, Geometry{}, ViewColor::black},
+                   RobotLink{"c",
+                             {u8"j", u8"a", RobotJointType::fixed, {}, 0},
+                             Geometry{},
+                             ViewColor::black},
+               })});
     wait();
     dummy_c2->recv<Message::Sync>([&](auto) {},
                                   [&] { ADD_FAILURE() << "Sync recv failed"; });
     dummy_c2->recv<Message::Res<Message::RobotModel>>(
         [&](const auto &obj) {
             EXPECT_EQ(obj.req_id, 1);
-            EXPECT_EQ(obj.sub_field, "");
+            EXPECT_EQ(obj.sub_field, u8"");
             ASSERT_EQ(obj.commonLinks()->size(), 3);
-            EXPECT_EQ(obj.commonLinks()->at(0).joint.parent_name, "");
-            EXPECT_EQ(obj.commonLinks()->at(1).joint.parent_name, "");
-            EXPECT_EQ(obj.commonLinks()->at(2).joint.parent_name, "a");
+            EXPECT_EQ(obj.commonLinks()->at(0).joint.parent_name, u8"");
+            EXPECT_EQ(obj.commonLinks()->at(1).joint.parent_name, u8"");
+            EXPECT_EQ(obj.commonLinks()->at(2).joint.parent_name, u8"a");
         },
         [&] { ADD_FAILURE() << "RobotModel Res recv failed"; });
 }
@@ -464,23 +468,23 @@ TEST_F(ServerTest, view) {
     wait();
     dummy_c2 = std::make_shared<DummyClient>();
     wait();
-    dummy_c1->send(Message::SyncInit{{}, "c1", 0, "", "", ""});
+    dummy_c1->send(Message::SyncInit{{}, u8"c1", 0, "", "", ""});
     dummy_c1->send(Message::Sync{});
     dummy_c1->send(Message::View{
-        "a",
+        u8"a",
         std::make_shared<
             std::unordered_map<std::string, Message::View::ViewComponent>>(
             std::unordered_map<std::string, Message::View::ViewComponent>{
-                {"0", ViewComponents::text("a").toV().lockTmp(data_, "")},
-                {"1", ViewComponents::newLine().lockTmp(data_, "")},
+                {"0", ViewComponents::text("a").toV().lockTmp(data_, u8"")},
+                {"1", ViewComponents::newLine().lockTmp(data_, u8"")},
                 {"2", ViewComponents::button(
                           "f", Func{Field{std::weak_ptr<Internal::ClientData>(),
-                                          "p", "q"}})
-                          .lockTmp(data_, "")}}),
+                                          u8"p", u8"q"}})
+                          .lockTmp(data_, u8"")}}),
         3});
     wait();
-    dummy_c2->send(Message::SyncInit{{}, "", 0, "", "", ""});
-    dummy_c2->send(Message::Req<Message::View>{{}, "c1", "a", 1});
+    dummy_c2->send(Message::SyncInit{{}, u8"", 0, "", "", ""});
+    dummy_c2->send(Message::Req<Message::View>{{}, u8"c1", u8"a", 1});
     wait();
     // req時の値
     dummy_c2->recv<Message::Sync>([&](auto) {},
@@ -488,7 +492,7 @@ TEST_F(ServerTest, view) {
     dummy_c2->recv<Message::Res<Message::View>>(
         [&](const auto &obj) {
             EXPECT_EQ(obj.req_id, 1);
-            EXPECT_EQ(obj.sub_field, "");
+            EXPECT_EQ(obj.sub_field, u8"");
             EXPECT_EQ(obj.data_diff->size(), 3);
             EXPECT_EQ(obj.data_diff->at("0").type, ViewComponentType::text);
             EXPECT_EQ(obj.length, 3);
@@ -499,11 +503,11 @@ TEST_F(ServerTest, view) {
     // 変化後の値
     dummy_c1->send(Message::Sync{});
     dummy_c1->send(Message::View{
-        "a",
+        u8"a",
         std::make_shared<
             std::unordered_map<std::string, Message::View::ViewComponent>>(
             std::unordered_map<std::string, Message::View::ViewComponent>{
-                {"0", ViewComponents::text("b").toV().lockTmp(data_, "")},
+                {"0", ViewComponents::text("b").toV().lockTmp(data_, u8"")},
             }),
         3});
     wait();
@@ -512,7 +516,7 @@ TEST_F(ServerTest, view) {
     dummy_c2->recv<Message::Res<Message::View>>(
         [&](const auto &obj) {
             EXPECT_EQ(obj.req_id, 1);
-            EXPECT_EQ(obj.sub_field, "");
+            EXPECT_EQ(obj.sub_field, u8"");
             EXPECT_EQ(obj.data_diff->size(), 1);
             EXPECT_EQ(obj.data_diff->at("0").type, ViewComponentType::text);
             EXPECT_EQ(obj.length, 3);
@@ -524,10 +528,10 @@ TEST_F(ServerTest, canvas3d) {
     wait();
     dummy_c2 = std::make_shared<DummyClient>();
     wait();
-    dummy_c1->send(Message::SyncInit{{}, "c1", 0, "", "", ""});
+    dummy_c1->send(Message::SyncInit{{}, u8"c1", 0, "", "", ""});
     dummy_c1->send(Message::Sync{});
     dummy_c1->send(Message::Canvas3D{
-        "a",
+        u8"a",
         std::make_shared<std::unordered_map<
             std::string, Message::Canvas3D::Canvas3DComponent>>(
             std::unordered_map<std::string,
@@ -535,8 +539,8 @@ TEST_F(ServerTest, canvas3d) {
                 {"0", {}}, {"1", {}}, {"2", {}}}),
         3});
     wait();
-    dummy_c2->send(Message::SyncInit{{}, "", 0, "", "", ""});
-    dummy_c2->send(Message::Req<Message::Canvas3D>{{}, "c1", "a", 1});
+    dummy_c2->send(Message::SyncInit{{}, u8"", 0, "", "", ""});
+    dummy_c2->send(Message::Req<Message::Canvas3D>{{}, u8"c1", u8"a", 1});
     wait();
     // req時の値
     dummy_c2->recv<Message::Sync>([&](auto) {},
@@ -544,7 +548,7 @@ TEST_F(ServerTest, canvas3d) {
     dummy_c2->recv<Message::Res<Message::Canvas3D>>(
         [&](const auto &obj) {
             EXPECT_EQ(obj.req_id, 1);
-            EXPECT_EQ(obj.sub_field, "");
+            EXPECT_EQ(obj.sub_field, u8"");
             EXPECT_EQ(obj.data_diff->size(), 3);
             EXPECT_EQ(obj.length, 3);
         },
@@ -554,7 +558,7 @@ TEST_F(ServerTest, canvas3d) {
     // 変化後の値
     dummy_c1->send(Message::Sync{});
     dummy_c1->send(Message::Canvas3D{
-        "a",
+        u8"a",
         std::make_shared<std::unordered_map<
             std::string, Message::Canvas3D::Canvas3DComponent>>(
             std::unordered_map<std::string,
@@ -568,7 +572,7 @@ TEST_F(ServerTest, canvas3d) {
     dummy_c2->recv<Message::Res<Message::Canvas3D>>(
         [&](const auto &obj) {
             EXPECT_EQ(obj.req_id, 1);
-            EXPECT_EQ(obj.sub_field, "");
+            EXPECT_EQ(obj.sub_field, u8"");
             EXPECT_EQ(obj.data_diff->size(), 1);
             EXPECT_EQ(obj.length, 3);
         },
@@ -579,10 +583,10 @@ TEST_F(ServerTest, canvas2d) {
     wait();
     dummy_c2 = std::make_shared<DummyClient>();
     wait();
-    dummy_c1->send(Message::SyncInit{{}, "c1", 0, "", "", ""});
+    dummy_c1->send(Message::SyncInit{{}, u8"c1", 0, "", "", ""});
     dummy_c1->send(Message::Sync{});
     dummy_c1->send(Message::Canvas2D{
-        "a", 0, 0,
+        u8"a", 0, 0,
         std::make_shared<std::unordered_map<
             std::string, Message::Canvas2D::Canvas2DComponent>>(
             std::unordered_map<std::string,
@@ -590,8 +594,8 @@ TEST_F(ServerTest, canvas2d) {
                 {"0", {}}, {"1", {}}, {"2", {}}}),
         3});
     wait();
-    dummy_c2->send(Message::SyncInit{{}, "", 0, "", "", ""});
-    dummy_c2->send(Message::Req<Message::Canvas2D>{{}, "c1", "a", 1});
+    dummy_c2->send(Message::SyncInit{{}, u8"", 0, "", "", ""});
+    dummy_c2->send(Message::Req<Message::Canvas2D>{{}, u8"c1", u8"a", 1});
     wait();
     // req時の値
     dummy_c2->recv<Message::Sync>([&](auto) {},
@@ -599,7 +603,7 @@ TEST_F(ServerTest, canvas2d) {
     dummy_c2->recv<Message::Res<Message::Canvas2D>>(
         [&](const auto &obj) {
             EXPECT_EQ(obj.req_id, 1);
-            EXPECT_EQ(obj.sub_field, "");
+            EXPECT_EQ(obj.sub_field, u8"");
             EXPECT_EQ(obj.data_diff->size(), 3);
             EXPECT_EQ(obj.length, 3);
         },
@@ -609,7 +613,7 @@ TEST_F(ServerTest, canvas2d) {
     // 変化後の値
     dummy_c1->send(Message::Sync{});
     dummy_c1->send(Message::Canvas2D{
-        "a", 0, 0,
+        u8"a", 0, 0,
         std::make_shared<std::unordered_map<
             std::string, Message::Canvas2D::Canvas2DComponent>>(
             std::unordered_map<std::string,
@@ -623,7 +627,7 @@ TEST_F(ServerTest, canvas2d) {
     dummy_c2->recv<Message::Res<Message::Canvas2D>>(
         [&](const auto &obj) {
             EXPECT_EQ(obj.req_id, 1);
-            EXPECT_EQ(obj.sub_field, "");
+            EXPECT_EQ(obj.sub_field, u8"");
             EXPECT_EQ(obj.data_diff->size(), 1);
             EXPECT_EQ(obj.length, 3);
         },
@@ -634,28 +638,29 @@ TEST_F(ServerTest, image) {
     wait();
     dummy_c2 = std::make_shared<DummyClient>();
     wait();
-    dummy_c1->send(Message::SyncInit{{}, "c1", 0, "", "", ""});
+    dummy_c1->send(Message::SyncInit{{}, u8"c1", 0, "", "", ""});
     auto sendImage = [&] {
         dummy_c1->send(Message::Sync{});
         dummy_c1->send(Message::Image{
-            "a", ImageFrame{10, 10,
-                            std::make_shared<std::vector<unsigned char>>(
-                                10 * 10 * 3)}});
+            u8"a", ImageFrame{sizeWH(15, 10), ImageColorMode::bgr}});
     };
     sendImage();
     wait();
-    dummy_c2->send(Message::SyncInit{{}, "", 0, "", "", ""});
+    dummy_c2->send(Message::SyncInit{{}, u8"", 0, "", "", ""});
 
     // normal request
-    dummy_c2->send(Message::Req<Message::Image>{"c1", "a", 1, {}});
+    dummy_c2->send(Message::Req<Message::Image>{u8"c1", u8"a", 1, {}});
     wait();
     dummy_c2->recv<Message::Sync>([&](auto) {},
                                   [&] { ADD_FAILURE() << "Sync recv failed"; });
     dummy_c2->recv<Message::Res<Message::Image>>(
         [&](const auto &obj) {
             EXPECT_EQ(obj.req_id, 1);
-            EXPECT_EQ(obj.sub_field, "");
-            EXPECT_EQ(obj.data().size(), 10 * 10 * 3);
+            EXPECT_EQ(obj.sub_field, u8"");
+            EXPECT_EQ(obj.data_->size(), 15 * 10 * 3);
+            EXPECT_EQ(obj.width_, 15);
+            EXPECT_EQ(obj.height_, 10);
+            EXPECT_EQ(obj.color_mode_, ImageColorMode::bgr);
         },
         [&] { ADD_FAILURE() << "Image Res recv failed"; });
     dummy_c2->recvClear();
@@ -668,23 +673,22 @@ TEST_F(ServerTest, image) {
     dummy_c2->recv<Message::Res<Message::Image>>(
         [&](const auto &obj) {
             EXPECT_EQ(obj.req_id, 1);
-            EXPECT_EQ(obj.sub_field, "");
-            EXPECT_EQ(obj.data().size(), 10 * 10 * 3);
-            EXPECT_EQ(obj.rows(), 10);
-            EXPECT_EQ(obj.cols(), 10);
-            EXPECT_EQ(obj.color_mode(), ImageColorMode::bgr);
+            EXPECT_EQ(obj.sub_field, u8"");
+            EXPECT_EQ(obj.data_->size(), 15 * 10 * 3);
+            EXPECT_EQ(obj.height_, 10);
+            EXPECT_EQ(obj.width_, 15);
+            EXPECT_EQ(obj.color_mode_, ImageColorMode::bgr);
         },
         [&] { ADD_FAILURE() << "Image Res recv failed 1"; });
     dummy_c2->recvClear();
 
-#if WEBCFACE_USE_OPENCV
     // resize, convert color, frame rate
     dummy_c2->send(Message::Req<Message::Image>{
-        "c1",
-        "a",
+        u8"c1",
+        u8"a",
         1,
         {
-            5, 5, ImageColorMode::gray, ImageCompressMode::raw, 0,
+            5, 8, ImageColorMode::gray, ImageCompressMode::raw, 0,
             1000.0 / WEBCFACE_TEST_TIMEOUT /
                 3 // wait()のtimeoutに間に合わないようにする
         }});
@@ -694,11 +698,11 @@ TEST_F(ServerTest, image) {
     dummy_c2->recv<Message::Res<Message::Image>>(
         [&](const auto &obj) {
             EXPECT_EQ(obj.req_id, 1);
-            EXPECT_EQ(obj.sub_field, "");
-            EXPECT_EQ(obj.data().size(), 5 * 5 * 1);
-            EXPECT_EQ(obj.rows(), 5);
-            EXPECT_EQ(obj.cols(), 5);
-            EXPECT_EQ(obj.color_mode(), ImageColorMode::gray);
+            EXPECT_EQ(obj.sub_field, u8"");
+            EXPECT_EQ(obj.data_->size(), 8 * 5 * 1);
+            EXPECT_EQ(obj.height_, 5);
+            EXPECT_EQ(obj.width_, 8);
+            EXPECT_EQ(obj.color_mode_, ImageColorMode::gray);
         },
         [&] { ADD_FAILURE() << "Image Res recv failed 2"; });
     dummy_c2->recvClear();
@@ -713,19 +717,19 @@ TEST_F(ServerTest, image) {
     dummy_c2->recv<Message::Res<Message::Image>>(
         [&](const auto &obj) {
             EXPECT_EQ(obj.req_id, 1);
-            EXPECT_EQ(obj.sub_field, "");
-            EXPECT_EQ(obj.data().size(), 5 * 5 * 1);
-            EXPECT_EQ(obj.rows(), 5);
-            EXPECT_EQ(obj.cols(), 5);
-            EXPECT_EQ(obj.color_mode(), ImageColorMode::gray);
+            EXPECT_EQ(obj.sub_field, u8"");
+            EXPECT_EQ(obj.data_->size(), 8 * 5 * 1);
+            EXPECT_EQ(obj.height_, 5);
+            EXPECT_EQ(obj.width_, 8);
+            EXPECT_EQ(obj.color_mode_, ImageColorMode::gray);
         },
         [&] { ADD_FAILURE() << "Image Res recv failed 3"; });
     dummy_c2->recvClear();
 
     // compress
     dummy_c2->send(Message::Req<Message::Image>{
-        "c1",
-        "a",
+        u8"c1",
+        u8"a",
         1,
         {std::nullopt, std::nullopt, std::nullopt, ImageCompressMode::png, 5,
          std::nullopt}});
@@ -738,21 +742,50 @@ TEST_F(ServerTest, image) {
     dummy_c2->recv<Message::Res<Message::Image>>(
         [&](const auto &obj) {
             EXPECT_EQ(obj.req_id, 1);
-            EXPECT_EQ(obj.sub_field, "");
-            ImageFrame img{
-                10, 10,
-                std::make_shared<std::vector<unsigned char>>(10 * 10 * 3)};
-            std::vector<unsigned char> dst;
-            cv::imencode(".png", img.mat(), dst,
-                         {cv::IMWRITE_PNG_COMPRESSION, 5});
-            EXPECT_EQ(obj.data().size(), dst.size());
-            EXPECT_EQ(obj.rows(), 10);
-            EXPECT_EQ(obj.cols(), 10);
-            EXPECT_EQ(obj.compress_mode(), ImageCompressMode::png);
+            EXPECT_EQ(obj.sub_field, u8"");
+            EXPECT_EQ(obj.width_, 15);
+            EXPECT_EQ(obj.height_, 10);
+            EXPECT_GT(obj.data_->size(), 0);
+            EXPECT_EQ(obj.cmp_mode_, ImageCompressMode::png);
         },
         [&] { ADD_FAILURE() << "Image Res recv failed 4"; });
     dummy_c2->recvClear();
-#endif
+
+    // convert color pattern
+    for (int f_type = 0; f_type < 5; f_type++) {
+        for (int t_type = 0; t_type < 5; t_type++) {
+            dummy_c1->send(Message::Sync{});
+            dummy_c1->send(Message::Image{
+                Encoding::castToU8("a" + std::to_string(f_type) +
+                                   std::to_string(t_type)),
+                ImageFrame{sizeWH(15, 10),
+                           static_cast<ImageColorMode>(f_type)}});
+            wait();
+            dummy_c2->send(Message::Req<Message::Image>{
+                u8"c1",
+                Encoding::castToU8("a" + std::to_string(f_type) +
+                                   std::to_string(t_type)),
+                1,
+                {std::nullopt, std::nullopt,
+                 static_cast<ImageColorMode>(t_type), ImageCompressMode::raw, 0,
+                 std::nullopt}});
+            wait();
+            dummy_c2->recv<Message::Res<Message::Image>>(
+                [&](const auto &obj) {
+                    EXPECT_EQ(obj.req_id, 1);
+                    EXPECT_EQ(obj.sub_field, u8"");
+                    EXPECT_EQ(obj.height_, 10);
+                    EXPECT_EQ(obj.width_, 15);
+                    EXPECT_EQ(obj.color_mode_,
+                              static_cast<ImageColorMode>(t_type));
+                },
+                [&] {
+                    ADD_FAILURE() << "Image Res recv failed from=" << f_type
+                                  << ", to=" << t_type;
+                });
+            dummy_c2->recvClear();
+        }
+    }
 }
 TEST_F(ServerTest, log) {
     dummy_c1 = std::make_shared<DummyClient>();
@@ -760,18 +793,18 @@ TEST_F(ServerTest, log) {
     dummy_c2 = std::make_shared<DummyClient>();
     wait();
     server->store->keep_log = 3;
-    dummy_c1->send(Message::SyncInit{{}, "c1", 0, "", "", ""});
+    dummy_c1->send(Message::SyncInit{{}, u8"c1", 0, "", "", ""});
     dummy_c1->send(Message::Log{
         0, std::make_shared<std::deque<Message::Log::LogLine>>(
                std::deque<Message::Log::LogLine>{
-                   LogLine{0, std::chrono::system_clock::now(), "0"},
-                   LogLine{1, std::chrono::system_clock::now(), "1"},
-                   LogLine{2, std::chrono::system_clock::now(), "2"},
-                   LogLine{3, std::chrono::system_clock::now(), "3"},
+                   LogLineData<>{0, std::chrono::system_clock::now(), u8"0"},
+                   LogLineData<>{1, std::chrono::system_clock::now(), u8"1"},
+                   LogLineData<>{2, std::chrono::system_clock::now(), u8"2"},
+                   LogLineData<>{3, std::chrono::system_clock::now(), u8"3"},
                })});
     wait();
-    dummy_c2->send(Message::SyncInit{{}, "", 0, "", "", ""});
-    dummy_c2->send(Message::LogReq{{}, "c1"});
+    dummy_c2->send(Message::SyncInit{{}, u8"", 0, "", "", ""});
+    dummy_c2->send(Message::LogReq{{}, u8"c1"});
     wait();
     // req時の値
     // keep_logを超えたので最後の3行だけ送られる
@@ -780,7 +813,7 @@ TEST_F(ServerTest, log) {
             EXPECT_EQ(obj.member_id, 1);
             EXPECT_EQ(obj.log->size(), 3);
             EXPECT_EQ(obj.log->at(0).level, 1);
-            EXPECT_EQ(obj.log->at(0).message, "1");
+            EXPECT_EQ(obj.log->at(0).message, u8"1");
         },
         [&] { ADD_FAILURE() << "Log recv failed"; });
     dummy_c2->recvClear();
@@ -789,11 +822,11 @@ TEST_F(ServerTest, log) {
     dummy_c1->send(Message::Log{
         0, std::make_shared<std::deque<Message::Log::LogLine>>(
                std::deque<Message::Log::LogLine>{
-                   LogLine{4, std::chrono::system_clock::now(), "4"},
-                   LogLine{5, std::chrono::system_clock::now(), "5"},
-                   LogLine{6, std::chrono::system_clock::now(), "6"},
-                   LogLine{7, std::chrono::system_clock::now(), "7"},
-                   LogLine{8, std::chrono::system_clock::now(), "8"},
+                   LogLineData<>{4, std::chrono::system_clock::now(), u8"4"},
+                   LogLineData<>{5, std::chrono::system_clock::now(), u8"5"},
+                   LogLineData<>{6, std::chrono::system_clock::now(), u8"6"},
+                   LogLineData<>{7, std::chrono::system_clock::now(), u8"7"},
+                   LogLineData<>{8, std::chrono::system_clock::now(), u8"8"},
                })});
     wait();
     dummy_c2->recv<Message::Log>(
@@ -801,7 +834,7 @@ TEST_F(ServerTest, log) {
             EXPECT_EQ(obj.member_id, 1);
             EXPECT_EQ(obj.log->size(), 5);
             EXPECT_EQ(obj.log->at(0).level, 4);
-            EXPECT_EQ(obj.log->at(0).message, "4");
+            EXPECT_EQ(obj.log->at(0).message, u8"4");
         },
         [&] { ADD_FAILURE() << "Log recv failed"; });
 }
@@ -810,19 +843,19 @@ TEST_F(ServerTest, call) {
     wait();
     dummy_c2 = std::make_shared<DummyClient>();
     wait();
-    dummy_c1->send(Message::SyncInit{{}, "c1", 0, "", "", ""});
-    dummy_c2->send(Message::SyncInit{{}, "c2", 0, "", "", ""});
+    dummy_c1->send(Message::SyncInit{{}, u8"c1", 0, "", "", ""});
+    dummy_c2->send(Message::SyncInit{{}, u8"c2", 0, "", "", ""});
     wait();
     // c2がc1にcallを送る (caller_id=1)
-    dummy_c2->send(Message::Call{
-        FuncCall{1, 0, 1, "a", {ValAdaptor(0), ValAdaptor(0), ValAdaptor(0)}}});
+    dummy_c2->send(Message::Call{FuncCall{
+        1, 0, 1, u8"a", {ValAdaptor(0), ValAdaptor(0), ValAdaptor(0)}}});
     wait();
     dummy_c1->recv<Message::Call>(
         [&](const auto &obj) {
             EXPECT_EQ(obj.caller_id, 1);
             EXPECT_EQ(obj.caller_member_id, 2);
             EXPECT_EQ(obj.target_member_id, 1);
-            EXPECT_EQ(obj.field, "a");
+            EXPECT_EQ(obj.field, u8"a");
             EXPECT_EQ(obj.args.size(), 3);
         },
         [&] { ADD_FAILURE() << "Call recv failed"; });

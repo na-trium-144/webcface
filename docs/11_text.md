@@ -22,6 +22,8 @@ webcface-send -t text
 ```
 を実行し、文字列を入力すると送信されます。(1つ入力するごとに改行してください)
 
+詳細は [webcface-send](./71_send.md) のページを参照
+
 ## 送信
 
 Client::text からTextオブジェクトを作り、 Text::set() でデータを代入し、Client::sync()することで送信されます
@@ -40,11 +42,11 @@ Client::text からTextオブジェクトを作り、 Text::set() でデータ�
 - <b class="tab-title">C</b>
     \since <span class="since-c">1.7</span>
 
-    null終端の文字列はwcfTextSetで送信できます
+    null終端の文字列は wcfTextSet, (<span class="since-c">1.12</span> wcfTextSetW) で送信できます
     ```c
     wcfTextSet(wcli, "hoge", "hello");
     ```
-    null終端でない場合はwcfTextSetNが使えます
+    null終端でない場合は wcfTextSetN, (<span class="since-c">1.12</span> wcfTextSetNW) が使えます
     ```c
     wcfTextSetN(wcli, "hoge", "hello", 5);
     ```
@@ -122,9 +124,12 @@ Text::tryGet(), Text::tryGetRecurse() で値のリクエストをするととも
     std::optional<std::string> hoge = wcli.member("foo").text("hoge").tryGet();
     ```
     初回の呼び出しではまだ受信していないため、
-    tryGet(), tryGetRecurse() はstd::nulloptを返します。  
-    get(), getRecurse() はstd::nulloptの代わりにデフォルト値を返します。  
-    また、std::string, Text::Dict などの型にキャストすることでも同様に値が得られます。
+    tryGet() はstd::nulloptを返します。  
+    get() はstd::nulloptの代わりにデフォルト値を返します。  
+    また、std::string にキャストすることでも同様に値が得られます。
+
+    <span class="since-c">1.12</span> ワイド文字列は tryGetW(), getW() で得られます。
+    また、std::wstring にキャストすることでも得られます。
 
     std::ostreamにTextを直接渡して表示することもできます。
     ```cpp
@@ -139,6 +144,8 @@ Text::tryGet(), Text::tryGetRecurse() で値のリクエストをするととも
 - <b class="tab-title">C</b>
     \since <span class="since-c">1.7</span>
 
+    wcfTextGet, (<span class="since-c">1.12</span> wcfTextGetW)
+    に受信した文字列を格納するバッファとそのサイズ(null終端を含む)を指定します。
     ```c
     char text[6];
     int size;
@@ -149,10 +156,8 @@ Text::tryGet(), Text::tryGetRecurse() で値のリクエストをするととも
     ret = wcfTextGet(wcli, "a", "hoge", text, 6, &size);
     // ex.) ret = WCF_OK, text = "hello\0", size = 5
     ```
-    受信した文字列を格納するバッファとそのサイズ(null終端を含む)を指定します。
-
     sizeに受信した文字列の長さ、バッファに受信した文字列が入ります。
-    文字列がバッファの長さを超える場合は、バッファのサイズ - 1 の文字列とnullが格納されます。
+    文字列がバッファの長さを超える場合は、(バッファのサイズ - 1) の文字列とnullが格納されます。
 
     初回の呼び出しでは`WCF_NOT_FOUND`を返し、別スレッドでリクエストが送信されます。
 

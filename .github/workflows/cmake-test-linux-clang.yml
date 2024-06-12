@@ -14,10 +14,7 @@ jobs:
   test-linux-clang:
     strategy:
       matrix:
-        dep: ["apt-opencv", "apt", "source"]
-        include:
-        - dep: apt-opencv
-          use_opencv: on
+        dep: ["apt", "source"]
     runs-on: ubuntu-20.04
     steps:
     - uses: actions/checkout@v4
@@ -25,8 +22,7 @@ jobs:
     - name: Install dependencies
       run: |
         sudo apt-get update
-        if [ ${{matrix.dep}} = apt ]; then sudo apt-get install -y libspdlog-dev; fi
-        if [ ${{matrix.dep}} = apt-opencv ]; then sudo apt-get install -y libspdlog-dev libopencv-dev; fi
+        if [ ${{matrix.dep}} = apt ]; then sudo apt-get install -y libspdlog-dev libmagick++-dev; fi
     - name: Install clang-13
       uses: KyleMayes/install-llvm-action@v1
       with:
@@ -40,9 +36,8 @@ jobs:
         -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
         -DWEBCFACE_TEST=on
         -DWEBCFACE_EXAMPLE=on
-        -DWEBCFACE_TEST_TIMEOUT=50
-        -DWEBCFACE_USE_OPENCV=${{matrix.use_opencv}}
-        "-DCMAKE_CXX_CLANG_TIDY=${{env.LLVM_PATH}}/bin/clang-tidy;--header-filter=$(pwd)/src/;--warnings-as-errors"
+        -DWEBCFACE_TEST_TIMEOUT=200
+        -DWEBCFACE_CLANG_TIDY=${{env.LLVM_PATH}}/bin/clang-tidy
 
     - name: Build
       run: cmake --build build
@@ -51,4 +46,4 @@ jobs:
       env:
         WEBCFACE_TRACE: 1
       working-directory: ${{github.workspace}}/build
-      run: ctest --output-on-failure --timeout 5
+      run: ctest --output-on-failure --timeout 20

@@ -9,7 +9,7 @@ template class WEBCFACE_DLL EventTarget<Image>;
 
 Image::Image(const Field &base) : Field(base), EventTarget<Image>() {
     std::lock_guard lock(this->dataLock()->event_m);
-    this->cl = &this->dataLock()->image_change_event[*this];
+    this->setCL(this->dataLock()->image_change_event[*this]);
 }
 
 Image &Image::request(std::optional<int> rows, std::optional<int> cols,
@@ -32,7 +32,7 @@ Image &Image::request(std::optional<int> rows, std::optional<int> cols,
 }
 
 inline void addImageReq(const std::shared_ptr<Internal::ClientData> &data,
-                        const std::string &member_, const std::string &field_) {
+                        const std::u8string &member_, const std::u8string &field_) {
     auto req = data->image_store.addReq(member_, field_);
     if (req) {
         data->message_queue->push(Message::packSingle(
@@ -41,7 +41,6 @@ inline void addImageReq(const std::shared_ptr<Internal::ClientData> &data,
 }
 
 Image &Image::set(const ImageFrame &img) {
-    this->img = img;
     setCheck()->image_store.setSend(*this, img);
     this->triggerEvent(*this);
     return *this;
@@ -51,23 +50,8 @@ void Image::onAppend() const { addImageReq(dataLock(), member_, field_); }
 
 std::optional<ImageFrame> Image::tryGet() {
     addImageReq(dataLock(), member_, field_);
-    if (this->img) {
-        return this->img;
-    } else {
-        this->img = dataLock()->image_store.getRecv(*this);
-        return this->img;
-    }
+    return dataLock()->image_store.getRecv(*this);
 }
-
-#if WEBCFACE_USE_OPENCV
-cv::Mat Image::mat() & {
-    this->img = dataLock()->image_store.getRecv(*this);
-    if (this->img) {
-        return this->img->mat();
-    }
-    return cv::Mat();
-}
-#endif
 
 std::chrono::system_clock::time_point Image::time() const {
     return member().syncTime();
@@ -78,7 +62,6 @@ Image &Image::clear() {
 }
 Image &Image::free() {
     auto req = dataLock()->image_store.unsetRecv(*this);
-    this->img = std::nullopt;
     if (req) {
         // todo: リクエスト解除
     }
