@@ -288,8 +288,7 @@ FetchContent_Declare(crow
     # GIT_REPOSITORY https://github.com/CrowCpp/Crow.git
     # GIT_TAG 921ce6f
     GIT_REPOSITORY https://github.com/na-trium-144/Crow.git
-    GIT_TAG unix_socket
-    CONFIGURE_COMMAND ""
+    GIT_TAG 5f5372ed80860dfcef788972bb0fd3972f715842
 )
 FetchContent_GetProperties(crow)
 if(NOT crow_POPULATED)
