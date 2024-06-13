@@ -31,7 +31,7 @@ class WEBCFACE_DLL Value : protected Field, public EventTarget<Value> {
   public:
     Value() = default;
     Value(const Field &base);
-    Value(const Field &base, std::u8string_view field)
+    Value(const Field &base, const SharedString &field)
         : Value(Field{base, field}) {}
 
     using Field::lastName;

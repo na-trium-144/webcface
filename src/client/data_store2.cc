@@ -41,14 +41,13 @@ void SyncDataStore2<T, ReqT>::setRecv(const std::u8string &from,
 }
 
 template <typename T, typename ReqT>
-std::unordered_set<std::u8string>
-SyncDataStore2<T, ReqT>::getEntry(const std::u8string &name) {
+StrSet1 SyncDataStore2<T, ReqT>::getEntry(const std::u8string &name) {
     std::lock_guard lock(mtx);
     auto e = entry.find(name);
     if (e != entry.end()) {
         return e->second;
     } else {
-        return std::unordered_set<std::u8string>{};
+        return StrSet1{};
     }
 }
 template <typename T, typename ReqT>
@@ -200,10 +199,9 @@ SyncDataStore2<T, ReqT>::getReq(unsigned int req_id,
 }
 
 template <typename T, typename ReqT>
-std::unordered_map<std::u8string, T>
-SyncDataStore2<T, ReqT>::transferSend(bool is_first) {
+StrMap1<T> SyncDataStore2<T, ReqT>::transferSend(bool is_first) {
     std::lock_guard lock(mtx);
-    std::unordered_map<std::u8string, T> send_changed;
+    StrMap1<T> send_changed;
     auto &recv_self = data_recv[self_member_name];
     for (auto &[name, data] : data_send) {
         auto r_it = recv_self.find(name);
@@ -221,20 +219,17 @@ SyncDataStore2<T, ReqT>::transferSend(bool is_first) {
     }
 }
 template <typename T, typename ReqT>
-std::unordered_map<std::u8string, T>
-SyncDataStore2<T, ReqT>::getSendPrev(bool is_first) {
+StrMap1<T> SyncDataStore2<T, ReqT>::getSendPrev(bool is_first) {
     std::lock_guard lock(mtx);
     if (is_first) {
-        return std::unordered_map<std::u8string, T>{};
+        return StrMap1<T>{};
     } else {
         return data_send_prev;
     }
 }
 
 template <typename T, typename ReqT>
-std::unordered_map<std::u8string,
-                   std::unordered_map<std::u8string, unsigned int>>
-SyncDataStore2<T, ReqT>::transferReq() {
+StrMap2<unsigned int> SyncDataStore2<T, ReqT>::transferReq() {
     std::lock_guard lock(mtx);
     // if (is_first) {
     // req_send.clear();

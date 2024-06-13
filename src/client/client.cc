@@ -17,7 +17,7 @@
 
 WEBCFACE_NS_BEGIN
 
-Client::Client(const SharedString &name, const std::u8string &host, int port)
+Client::Client(const SharedString &name, const SharedString &host, int port)
     : Client(name, std::make_shared<Internal::ClientData>(name, host, port)) {}
 
 Client::Client(const SharedString &name,
@@ -349,7 +349,7 @@ std::string Internal::ClientData::syncData(bool is_first,
         }
     }
     for (const auto &v : func_store.transferSend(is_first)) {
-        if (!v.first.starts_with(field_separator)) {
+        if (!v.first.u8String().starts_with(field_separator)) {
             Message::pack(buffer, len, Message::FuncInfo{v.first, *v.second});
         }
     }
@@ -367,7 +367,7 @@ void Internal::ClientData::onRecv(const std::string &message) {
     static std::unordered_map<int, bool> message_kind_warned;
     namespace MessageKind = webcface::Message::MessageKind;
     auto messages = webcface::Message::unpack(message, this->logger_internal);
-    std::vector<std::u8string> sync_members;
+    std::vector<SharedString> sync_members;
     for (const auto &m : messages) {
         const auto &[kind, obj] = m;
         switch (kind) {
@@ -385,7 +385,7 @@ void Internal::ClientData::onRecv(const std::string &message) {
         case MessageKind::ping_status: {
             auto r = std::any_cast<webcface::Message::PingStatus>(obj);
             this->ping_status = r.status;
-            std::unordered_set<std::u8string> members;
+            StrSet1 members;
             {
                 std::lock_guard lock(entry_m);
                 members = this->member_entry;

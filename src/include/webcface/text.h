@@ -29,7 +29,7 @@ class WEBCFACE_DLL Text : protected Field, public EventTarget<Text> {
   public:
     Text() = default;
     Text(const Field &base);
-    Text(const Field &base, std::u8string_view field)
+    Text(const Field &base, const SharedString &field)
         : Text(Field{base, field}) {}
 
     friend class InputRef;

@@ -37,7 +37,7 @@ std::optional<T> SyncDataStore1<T>::getRecv(const SharedString &member) {
     return std::nullopt;
 }
 template <typename T>
-std::unordered_map<SharedString, bool, SharedString::Hash> SyncDataStore1<T>::transferReq() {
+StrMap1<bool> SyncDataStore1<T>::transferReq() {
     std::lock_guard lock(mtx);
     // if (is_first) {
     req_send.clear();

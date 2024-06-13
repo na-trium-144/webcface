@@ -126,12 +126,12 @@ class WEBCFACE_DLL ViewComponent : protected Common::ViewComponentBase,
      * \brief 表示する文字列を取得
      *
      */
-    std::string text() const { return Encoding::decode(text_); }
+    std::string text() const { return text_.decode(); }
     /*!
      * \brief 表示する文字列を取得 (wstring)
      * \since ver1.12
      */
-    std::wstring textW() const { return Encoding::decodeW(text_); }
+    std::wstring textW() const { return text_.decodeW(); }
     /*!
      * \brief 表示する文字列を設定
      *
@@ -139,7 +139,7 @@ class WEBCFACE_DLL ViewComponent : protected Common::ViewComponentBase,
      *
      */
     ViewComponent &text(std::string_view text) {
-        text_ = Encoding::encode(text);
+        text_ = SharedString(text);
         return *this;
     }
     /*!
@@ -147,7 +147,7 @@ class WEBCFACE_DLL ViewComponent : protected Common::ViewComponentBase,
      * \since ver1.12
      */
     ViewComponent &text(std::wstring_view text) {
-        text_ = Encoding::encodeW(text);
+        text_ = SharedString(text);
         return *this;
     }
     /*!
@@ -639,12 +639,12 @@ class WEBCFACE_DLL Canvas2DComponent : protected Common::Canvas2DComponentBase,
      * \brief 表示する文字列
      * \since ver1.9
      */
-    std::string text() const { return Encoding::decode(text_); }
+    std::string text() const { return text_.decode(); }
     /*!
      * \brief 表示する文字列 (wstring)
      * \since ver1.12
      */
-    std::wstring textW() const { return Encoding::decodeW(text_); }
+    std::wstring textW() const { return text_.decodeW(); }
     /*!
      * \brief 表示する文字列を設定
      * \since ver1.9
@@ -653,7 +653,7 @@ class WEBCFACE_DLL Canvas2DComponent : protected Common::Canvas2DComponentBase,
      *
      */
     Canvas2DComponent &text(std::string_view text) {
-        text_ = Encoding::encode(text);
+        text_ = SharedString(text);
         return *this;
     }
     /*!
@@ -661,7 +661,7 @@ class WEBCFACE_DLL Canvas2DComponent : protected Common::Canvas2DComponentBase,
      * \since ver1.12
      */
     Canvas2DComponent &text(std::wstring_view text) {
-        text_ = Encoding::encodeW(text);
+        text_ = SharedString(text);
         return *this;
     }
     /*!

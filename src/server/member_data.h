@@ -48,70 +48,36 @@ struct WEBCFACE_DLL MemberData {
      * entry非表示のものも含む。
      *
      */
-    std::unordered_map<SharedString, std::shared_ptr<std::vector<double>>,
-                       SharedString::Hash>
-        value;
-    std::unordered_map<SharedString, std::shared_ptr<Common::ValAdaptor>,
-                       SharedString::Hash>
-        text;
-    std::unordered_map<SharedString, std::shared_ptr<Message::FuncInfo>,
-                       SharedString::Hash>
-        func;
-    std::unordered_map<SharedString, std::vector<Common::ViewComponentBase>,
-                       SharedString::Hash>
-        view;
-    std::unordered_map<SharedString, std::vector<Common::Canvas3DComponentBase>,
-                       SharedString::Hash>
-        canvas3d;
-    std::unordered_map<SharedString, Common::Canvas2DDataBase,
-                       SharedString::Hash>
-        canvas2d;
-    std::unordered_map<SharedString, Common::ImageBase, SharedString::Hash>
-        image;
-    std::unordered_map<SharedString, int, SharedString::Hash> image_changed;
+    StrMap1<std::shared_ptr<std::vector<double>>> value;
+    StrMap1<std::shared_ptr<Common::ValAdaptor>> text;
+    StrMap1<std::shared_ptr<Message::FuncInfo>> func;
+    StrMap1<std::vector<Common::ViewComponentBase>> view;
+    StrMap1<std::vector<Common::Canvas3DComponentBase>> canvas3d;
+    StrMap1<Common::Canvas2DDataBase> canvas2d;
+    StrMap1<Common::ImageBase> image;
+    StrMap1<int> image_changed;
     // 画像が変化したことを知らせるcv
-    std::unordered_map<SharedString, std::mutex, SharedString::Hash> image_m;
-    std::unordered_map<SharedString, std::condition_variable,
-                       SharedString::Hash>
-        image_cv;
+    StrMap1<std::mutex> image_m;
+    StrMap1<std::condition_variable> image_cv;
 
     std::chrono::system_clock::time_point last_sync_time;
     //! リクエストしているmember,nameのペア
-    std::unordered_map<
-        SharedString,
-        std::unordered_map<SharedString, unsigned int, SharedString::Hash>,
-        SharedString::Hash>
-        value_req, text_req, view_req, image_req, robot_model_req, canvas3d_req,
-        canvas2d_req;
+    StrMap2<unsigned int> value_req, text_req, view_req, image_req,
+        robot_model_req, canvas3d_req, canvas2d_req;
     // リクエストが変化したことをスレッドに知らせる
-    std::unordered_map<
-        SharedString, std::unordered_map<SharedString, int, SharedString::Hash>,
-        SharedString::Hash>
-        image_req_changed;
+    StrMap2<int> image_req_changed;
     // 画像をそれぞれのリクエストに合わせて変換するスレッド
-    std::unordered_map<
-        SharedString,
-        std::unordered_map<SharedString, Common::ImageReq, SharedString::Hash>,
-        SharedString::Hash>
-        image_req_info;
+    StrMap2<Common::ImageReq> image_req_info;
 
     // image_convert_thread[imageのmember][imageのfield] =
     // imageを変換してthisに送るスレッド
-    std::unordered_map<
-        SharedString,
-        std::unordered_map<SharedString, std::optional<std::thread>,
-                           SharedString::Hash>,
-        SharedString::Hash>
-        image_convert_thread;
+    StrMap2<std::optional<std::thread>> image_convert_thread;
     void imageConvertThreadMain(const SharedString &member,
                                 const SharedString &field);
-    std::unordered_map<
-        SharedString,
-        std::shared_ptr<std::vector<Message::RobotModel::RobotLink>>,
-        SharedString::Hash>
+    StrMap1<std::shared_ptr<std::vector<Message::RobotModel::RobotLink>>>
         robot_model;
 
-    std::unordered_set<SharedString, SharedString::Hash> log_req;
+    StrSet1 log_req;
     bool hasReq(const SharedString &member);
     //! ログ全履歴
     std::shared_ptr<std::deque<Message::Log::LogLine>> log;

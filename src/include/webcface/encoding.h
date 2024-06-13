@@ -2,6 +2,9 @@
 #include <string>
 #include <string_view>
 #include <memory>
+#include <mutex>
+#include <unordered_map>
+#include <unordered_set>
 #include <webcface/common/def.h>
 
 WEBCFACE_NS_BEGIN
@@ -112,11 +115,12 @@ class WEBCFACE_DLL SharedString {
         std::u8string u8s;
         std::string s;
         std::wstring ws;
-        explicit Data(std::u8string_view u8) : u8s(u8), s(), ws() {}
+        std::mutex m;
+        explicit Data(std::u8string_view u8) : u8s(u8), s(), ws(), m() {}
         explicit Data(std::string_view s)
-            : u8s(Encoding::encode(s)), s(s), ws() {}
+            : u8s(Encoding::encode(s)), s(s), ws(), m() {}
         explicit Data(std::wstring_view ws)
-            : u8s(Encoding::encodeW(ws)), s(), ws(ws) {}
+            : u8s(Encoding::encodeW(ws)), s(), ws(ws), m() {}
     };
     std::shared_ptr<Data> data;
 
@@ -150,6 +154,13 @@ class WEBCFACE_DLL SharedString {
         }
     };
 };
+
+template <typename T>
+using StrMap1 = std::unordered_map<SharedString, T, SharedString::Hash>;
+template <typename T>
+using StrMap2 = StrMap1<StrMap1<T>>;
+using StrSet1 = std::unordered_set<SharedString, SharedString::Hash>;
+using StrSet2 = StrMap1<StrSet1>;
 
 } // namespace Encoding
 WEBCFACE_NS_END

@@ -33,7 +33,7 @@ class WEBCFACE_DLL Image : protected Field, public EventTarget<Image> {
   public:
     Image() = default;
     Image(const Field &base);
-    Image(const Field &base, std::u8string_view field)
+    Image(const Field &base, const SharedString &field)
         : Image(Field{base, field}) {}
 
     using Field::lastName;

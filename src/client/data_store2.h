@@ -35,8 +35,8 @@ class SyncDataStore2 {
      * \brief 次のsend時に送信するデータ。
      *
      */
-    std::unordered_map<SharedString, T, SharedString::Hash> data_send;
-    std::unordered_map<SharedString, T, SharedString::Hash> data_send_prev;
+    StrMap1<T> data_send;
+    StrMap1<T> data_send_prev;
     /*!
      * \brief 送信済みデータ&受信済みデータ
      *
@@ -46,15 +46,14 @@ class SyncDataStore2 {
      * それまでの間はgetRecvはdata_recvではなくdata_sendを優先的に読むようにする
      *
      */
-    std::unordered_map<SharedString, std::unordered_map<SharedString, T, SharedString::Hash>, SharedString::Hash>
-        data_recv;
+    StrMap2<T> data_recv;
     /*!
      * \brief 受信済みのentry
      *
      * entry[member名] = {データ名のリスト}
      *
      */
-    std::unordered_map<SharedString, std::unordered_set<SharedString, SharedString::Hash>, SharedString::Hash> entry;
+    StrSet2 entry;
     /*!
      * \brief データ受信リクエスト
      *
@@ -62,15 +61,12 @@ class SyncDataStore2 {
      * 0または未定義ならリクエストしてない
      *
      */
-    std::unordered_map<SharedString,
-                       std::unordered_map<SharedString, unsigned int, SharedString::Hash>, SharedString::Hash>
-        req;
+    StrMap2<unsigned int> req;
     /*!
      * \brief リクエストに必要なデータ
      *
      */
-    std::unordered_map<SharedString, std::unordered_map<SharedString, ReqT, SharedString::Hash>, SharedString::Hash>
-        req_info;
+    StrMap2<ReqT> req_info;
 
     SharedString self_member_name;
 
@@ -94,8 +90,7 @@ class SyncDataStore2 {
      * selfの場合 0を返す
      *
      */
-    unsigned int addReq(const SharedString &member,
-                        const SharedString &field);
+    unsigned int addReq(const SharedString &member, const SharedString &field);
     /*!
      * \brief リクエストを追加
      *
@@ -194,17 +189,15 @@ class SyncDataStore2 {
      * \brief entryを取得
      *
      */
-    std::unordered_set<SharedString, SharedString::Hash> getEntry(const SharedString &from);
-    std::unordered_set<SharedString, SharedString::Hash> getEntry(const FieldBase &base) {
-        return getEntry(base.member_);
-    }
+    StrSet1 getEntry(const SharedString &from);
+    StrSet1 getEntry(const FieldBase &base) { return getEntry(base.member_); }
 
     /*!
      * \brief req_idに対応するmember名とフィールド名を返す
      *
      */
-    std::pair<SharedString, SharedString>
-    getReq(unsigned int req_id, const SharedString &sub_field);
+    std::pair<SharedString, SharedString> getReq(unsigned int req_id,
+                                                 const SharedString &sub_field);
     /*!
      * \brief member名とフィールド名に対応するreq_infoを返す
      *
@@ -216,16 +209,14 @@ class SyncDataStore2 {
      * \brief data_sendを返し、data_sendをクリア
      *
      */
-    std::unordered_map<SharedString, T, SharedString::Hash> transferSend(bool is_first);
-    std::unordered_map<SharedString, T, SharedString::Hash> getSendPrev(bool is_first);
+    StrMap1<T> transferSend(bool is_first);
+    StrMap1<T> getSendPrev(bool is_first);
 
     /*!
      * \brief req_sendを返し、req_sendをクリア
      *
      */
-    std::unordered_map<SharedString,
-                       std::unordered_map<SharedString, unsigned int>, SharedString::Hash>
-    transferReq();
+    StrMap2<unsigned int> transferReq();
 
     template <typename ElemT>
     std::shared_ptr<std::unordered_map<int, ElemT>>

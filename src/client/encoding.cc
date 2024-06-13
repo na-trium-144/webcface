@@ -157,22 +157,28 @@ const std::string &SharedString::decode() const {
     if (!data || data->u8s.empty()) {
         static std::string empty;
         return empty;
-    } else if (!data->s.empty()) {
-        return data->s;
     } else {
-        data->s = Encoding::decode(data->u8s);
-        return data->s;
+        std::lock_guard lock(data->m);
+        if (!data->s.empty()) {
+            return data->s;
+        } else {
+            data->s = Encoding::decode(data->u8s);
+            return data->s;
+        }
     }
 }
 const std::wstring &SharedString::decodeW() const {
     if (!data || data->u8s.empty()) {
         static std::wstring empty;
         return empty;
-    } else if (!data->ws.empty()) {
-        return data->ws;
     } else {
-        data->ws = Encoding::decodeW(data->u8s);
-        return data->ws;
+        std::lock_guard lock(data->m);
+        if (!data->ws.empty()) {
+            return data->ws;
+        } else {
+            data->ws = Encoding::decodeW(data->u8s);
+            return data->ws;
+        }
     }
 }
 

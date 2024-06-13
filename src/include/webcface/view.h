@@ -35,7 +35,7 @@ class WEBCFACE_DLL View : protected Field,
   public:
     View();
     View(const Field &base);
-    View(const Field &base, std::u8string_view field)
+    View(const Field &base, const SharedString &field)
         : View(Field{base, field}) {}
     View(const View &rhs) : View() { *this = rhs; }
     View(View &&rhs) noexcept : View() { *this = std::move(rhs); }

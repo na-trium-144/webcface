@@ -37,25 +37,5 @@ struct FieldBase {
     }
 };
 
-struct FieldBaseComparable : public FieldBase {
-    FieldBaseComparable() = default;
-    FieldBaseComparable(const FieldBase &base) : FieldBase(base) {}
-
-    bool operator==(const FieldBaseComparable &rhs) const {
-        return this->member_ == rhs.member_ && this->field_ == rhs.field_;
-    }
-    bool operator<(const FieldBaseComparable &rhs) const {
-        return this->member_ < rhs.member_ ||
-               (this->member_ == rhs.member_ && this->field_ < rhs.field_);
-    }
-
-    struct Hash {
-        SharedString::Hash h1, h2;
-        Hash() = default;
-        auto operator()(const FieldBaseComparable &base) const {
-            return h1(base.member_) + h2(base.field_);
-        }
-    };
-};
 } // namespace Common
 WEBCFACE_NS_END

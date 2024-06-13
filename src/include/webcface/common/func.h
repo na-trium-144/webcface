@@ -70,8 +70,8 @@ class Arg {
      * \brief 引数名を設定する。
      *
      */
-    Arg(std::string_view name) : name_(Encoding::encode(name)) {}
-    Arg(std::wstring_view name) : name_(Encoding::encodeW(name)) {}
+    Arg(std::string_view name) : name_(name) {}
+    Arg(std::wstring_view name) : name_(name) {}
 
     /*!
      * \brief 引数の名前を取得する。
@@ -246,6 +246,9 @@ struct FuncInfo {
           func_wrapper(wrapper) {}
 };
 
+using CallerId = std::size_t;
+using MemberId = unsigned int;
+
 /*!
  * \brief 関数を呼び出すのに必要なデータ。
  *
@@ -253,9 +256,9 @@ struct FuncInfo {
  *
  */
 struct FuncCall {
-    std::size_t caller_id;
-    unsigned int caller_member_id;
-    unsigned int target_member_id;
+    CallerId caller_id;
+    MemberId caller_member_id;
+    MemberId target_member_id;
     SharedString field;
     std::vector<webcface::ValAdaptor> args;
 };

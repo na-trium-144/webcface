@@ -13,9 +13,9 @@ WEBCFACE_NS_BEGIN
 namespace Internal {
 template <typename T>
 class SyncDataStore1 {
-    std::unordered_map<SharedString, T, SharedString::Hash> data_recv;
-    std::unordered_map<SharedString, bool, SharedString::Hash> req;
-    std::unordered_map<SharedString, bool, SharedString::Hash> req_send;
+    StrMap1<T> data_recv;
+    StrMap1<bool> req;
+    StrMap1<bool> req_send;
 
   public:
     SharedString self_member_name;
@@ -44,7 +44,7 @@ class SyncDataStore1 {
 
     std::optional<T> getRecv(const SharedString &member);
     //! req_sendを返し、req_sendをクリア
-    std::unordered_map<SharedString, bool, SharedString::Hash> transferReq();
+    StrMap1<bool> transferReq();
 };
 
 #ifdef _MSC_VER

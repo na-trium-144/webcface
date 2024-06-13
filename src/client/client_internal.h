@@ -42,7 +42,7 @@ WEBCFACE_DLL void recvThreadMain(const std::shared_ptr<ClientData> &data);
 
 struct ClientData : std::enable_shared_from_this<ClientData> {
     WEBCFACE_DLL explicit ClientData(const SharedString &name,
-                                     const SharedString &host = u8"",
+                                     const SharedString &host = nullptr,
                                      int port = -1);
 
     /*!
@@ -133,7 +133,7 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
     WEBCFACE_DLL void onRecv(const std::string &message);
 
     std::mutex entry_m;
-    std::unordered_set<SharedString> member_entry;
+    StrSet1 member_entry;
     SyncDataStore2<ValueData> value_store;
     SyncDataStore2<TextData> text_store;
     SyncDataStore2<FuncData> func_store;
@@ -152,12 +152,9 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
      * \brief listenerがfetchするの待ちの関数呼び出しをためておく
      *
      */
-    std::unordered_map<SharedString, Common::Queue<FuncCallHandle>,
-                       SharedString::Hash>
-        func_listener_handlers;
+    StrMap1<Common::Queue<FuncCallHandle>> func_listener_handlers;
 
-    std::unordered_map<SharedString, unsigned int, SharedString::Hash>
-        member_ids;
+    StrMap1<unsigned int> member_ids;
     std::unordered_map<unsigned int, std::string> member_lib_name,
         member_lib_ver, member_addr;
     const SharedString &getMemberNameFromId(unsigned int id) const {
@@ -166,7 +163,8 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
                 return it.first;
             }
         }
-        return nullptr;
+        static SharedString empty;
+        return empty;
     }
     unsigned int getMemberIdFromName(const SharedString &name) const {
         auto it = member_ids.find(name);
@@ -189,73 +187,38 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
      */
     std::shared_ptr<eventpp::CallbackList<void(Member)>> member_entry_event;
 
-    std::unordered_map<FieldBaseComparable,
-                       std::shared_ptr<eventpp::CallbackList<void(Value)>>,
-                       FieldBaseComparable::Hash>
+    StrMap2<std::shared_ptr<eventpp::CallbackList<void(Value)>>>
         value_change_event;
-    std::unordered_map<FieldBaseComparable,
-                       std::shared_ptr<eventpp::CallbackList<void(Text)>>,
-                       FieldBaseComparable::Hash>
+    StrMap2<std::shared_ptr<eventpp::CallbackList<void(Text)>>>
         text_change_event;
-    std::unordered_map<FieldBaseComparable,
-                       std::shared_ptr<eventpp::CallbackList<void(Image)>>,
-                       FieldBaseComparable::Hash>
+    StrMap2<std::shared_ptr<eventpp::CallbackList<void(Image)>>>
         image_change_event;
-    std::unordered_map<FieldBaseComparable,
-                       std::shared_ptr<eventpp::CallbackList<void(RobotModel)>>,
-                       FieldBaseComparable::Hash>
+    StrMap2<std::shared_ptr<eventpp::CallbackList<void(RobotModel)>>>
         robot_model_change_event;
-    std::unordered_map<FieldBaseComparable,
-                       std::shared_ptr<eventpp::CallbackList<void(View)>>,
-                       FieldBaseComparable::Hash>
+    StrMap2<std::shared_ptr<eventpp::CallbackList<void(View)>>>
         view_change_event;
-    std::unordered_map<FieldBaseComparable,
-                       std::shared_ptr<eventpp::CallbackList<void(Canvas3D)>>,
-                       FieldBaseComparable::Hash>
+    StrMap2<std::shared_ptr<eventpp::CallbackList<void(Canvas3D)>>>
         canvas3d_change_event;
-    std::unordered_map<FieldBaseComparable,
-                       std::shared_ptr<eventpp::CallbackList<void(Canvas2D)>>,
-                       FieldBaseComparable::Hash>
+    StrMap2<std::shared_ptr<eventpp::CallbackList<void(Canvas2D)>>>
         canvas2d_change_event;
-    std::unordered_map<SharedString,
-                       std::shared_ptr<eventpp::CallbackList<void(Log)>>,
-                       SharedString::Hash>
-        log_append_event;
-    std::unordered_map<SharedString,
-                       std::shared_ptr<eventpp::CallbackList<void(Member)>>,
-                       SharedString::Hash>
-        sync_event, ping_event;
-    std::unordered_map<SharedString,
-                       std::shared_ptr<eventpp::CallbackList<void(Value)>>,
-                       SharedString::Hash>
+    StrMap1<std::shared_ptr<eventpp::CallbackList<void(Log)>>> log_append_event;
+    StrMap1<std::shared_ptr<eventpp::CallbackList<void(Member)>>> sync_event,
+        ping_event;
+    StrMap1<std::shared_ptr<eventpp::CallbackList<void(Value)>>>
         value_entry_event;
-    std::unordered_map<SharedString,
-                       std::shared_ptr<eventpp::CallbackList<void(Text)>>,
-                       SharedString::Hash>
+    StrMap1<std::shared_ptr<eventpp::CallbackList<void(Text)>>>
         text_entry_event;
-    std::unordered_map<SharedString,
-                       std::shared_ptr<eventpp::CallbackList<void(Func)>>,
-                       SharedString::Hash>
+    StrMap1<std::shared_ptr<eventpp::CallbackList<void(Func)>>>
         func_entry_event;
-    std::unordered_map<SharedString,
-                       std::shared_ptr<eventpp::CallbackList<void(View)>>,
-                       SharedString::Hash>
+    StrMap1<std::shared_ptr<eventpp::CallbackList<void(View)>>>
         view_entry_event;
-    std::unordered_map<SharedString,
-                       std::shared_ptr<eventpp::CallbackList<void(Image)>>,
-                       SharedString::Hash>
+    StrMap1<std::shared_ptr<eventpp::CallbackList<void(Image)>>>
         image_entry_event;
-    std::unordered_map<SharedString,
-                       std::shared_ptr<eventpp::CallbackList<void(RobotModel)>>,
-                       SharedString::Hash>
+    StrMap1<std::shared_ptr<eventpp::CallbackList<void(RobotModel)>>>
         robot_model_entry_event;
-    std::unordered_map<SharedString,
-                       std::shared_ptr<eventpp::CallbackList<void(Canvas3D)>>,
-                       SharedString::Hash>
+    StrMap1<std::shared_ptr<eventpp::CallbackList<void(Canvas3D)>>>
         canvas3d_entry_event;
-    std::unordered_map<SharedString,
-                       std::shared_ptr<eventpp::CallbackList<void(Canvas2D)>>,
-                       SharedString::Hash>
+    StrMap1<std::shared_ptr<eventpp::CallbackList<void(Canvas2D)>>>
         canvas2d_entry_event;
 
     /*!
