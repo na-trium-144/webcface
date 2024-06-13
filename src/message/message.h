@@ -401,7 +401,7 @@ struct View : public MessageBase<MessageKind::view> {
                            MSGPACK_NVP("io", option_))
     };
     std::shared_ptr<std::unordered_map<std::string, ViewComponent>> data_diff;
-    std::size_t length;
+    std::size_t length = 0;
     View() = default;
     View(const SharedString &field,
          const std::shared_ptr<
@@ -478,7 +478,7 @@ struct Canvas3D : public MessageBase<MessageKind::canvas3d> {
     };
     std::shared_ptr<std::unordered_map<std::string, Canvas3DComponent>>
         data_diff;
-    std::size_t length;
+    std::size_t length = 0;
     Canvas3D() = default;
     Canvas3D(
         const SharedString &field,
@@ -706,7 +706,7 @@ template <typename T>
 struct Req : public MessageBase<T::kind + MessageKind::req> {
     SharedString member;
     SharedString field;
-    unsigned int req_id;
+    unsigned int req_id = 0;
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", req_id), MSGPACK_NVP("M", member),
                        MSGPACK_NVP("f", field))
 };
@@ -737,7 +737,7 @@ struct Req<Image> : public MessageBase<MessageKind::image + MessageKind::req>,
  */
 template <typename T>
 struct Entry : public MessageBase<T::kind + MessageKind::entry> {
-    unsigned int member_id;
+    unsigned int member_id = 0;
     SharedString field;
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("m", member_id), MSGPACK_NVP("f", field))
 };
@@ -752,7 +752,7 @@ struct Res {};
  */
 template <>
 struct Res<Value> : public MessageBase<MessageKind::value + MessageKind::res> {
-    unsigned int req_id;
+    unsigned int req_id = 0;
     SharedString sub_field;
     std::shared_ptr<std::vector<double>> data;
     Res() = default;
@@ -764,7 +764,7 @@ struct Res<Value> : public MessageBase<MessageKind::value + MessageKind::res> {
 };
 template <>
 struct Res<Text> : public MessageBase<MessageKind::text + MessageKind::res> {
-    unsigned int req_id;
+    unsigned int req_id = 0;
     SharedString sub_field;
     std::shared_ptr<Common::ValAdaptor> data;
     Res() = default;
@@ -777,7 +777,7 @@ struct Res<Text> : public MessageBase<MessageKind::text + MessageKind::res> {
 template <>
 struct Res<RobotModel>
     : public MessageBase<MessageKind::robot_model + MessageKind::res> {
-    unsigned int req_id;
+    unsigned int req_id = 0;
     SharedString sub_field;
     std::shared_ptr<std::vector<RobotModel::RobotLink>> data;
     Res() = default;
@@ -813,11 +813,11 @@ struct Res<RobotModel>
 };
 template <>
 struct Res<View> : public MessageBase<MessageKind::view + MessageKind::res> {
-    unsigned int req_id;
+    unsigned int req_id = 0;
     SharedString sub_field;
     std::shared_ptr<std::unordered_map<std::string, View::ViewComponent>>
         data_diff;
-    std::size_t length;
+    std::size_t length = 0;
     Res() = default;
     Res(unsigned int req_id, const SharedString &sub_field,
         const std::shared_ptr<
@@ -831,12 +831,12 @@ struct Res<View> : public MessageBase<MessageKind::view + MessageKind::res> {
 template <>
 struct Res<Canvas3D>
     : public MessageBase<MessageKind::canvas3d + MessageKind::res> {
-    unsigned int req_id;
+    unsigned int req_id = 0;
     SharedString sub_field;
     std::shared_ptr<
         std::unordered_map<std::string, Canvas3D::Canvas3DComponent>>
         data_diff;
-    std::size_t length;
+    std::size_t length = 0;
     Res() = default;
     Res(unsigned int req_id, const SharedString &sub_field,
         const std::shared_ptr<
@@ -851,9 +851,9 @@ struct Res<Canvas3D>
 template <>
 struct Res<Canvas2D>
     : public MessageBase<MessageKind::canvas2d + MessageKind::res> {
-    unsigned int req_id;
+    unsigned int req_id = 0;
     SharedString sub_field;
-    double width, height;
+    double width = 0, height = 0;
     std::shared_ptr<
         std::unordered_map<std::string, Canvas2D::Canvas2DComponent>>
         data_diff;
@@ -874,9 +874,9 @@ struct Res<Canvas2D>
 
 template <>
 struct Res<Image> : public MessageBase<MessageKind::image + MessageKind::res> {
-    unsigned int req_id;
+    unsigned int req_id = 0;
     SharedString sub_field;
-    std::size_t width_, height_;
+    std::size_t width_ = 0, height_ = 0;
     std::shared_ptr<std::vector<unsigned char>> data_;
     ImageColorMode color_mode_;
     ImageCompressMode cmp_mode_;
