@@ -363,6 +363,57 @@ void Client::sync() {
         (*func_sync)->sync();
     }
 }
+
+template <typename M, typename K1, typename K2>
+static auto findFromMap2(const M &map, const K1 &key1, const K2 &key2)
+    -> std::optional<std::remove_cvref_t<decltype(map.at(key1).at(key2))>> {
+    auto s_it = map.find(key1);
+    if (s_it != map.end()) {
+        auto it = s_it->second.find(key2);
+        if (it != s_it->second.end()) {
+            return it->second;
+        }
+    }
+    return std::nullopt;
+}
+template <typename M, typename K1>
+static auto findFromMap1(const M &map, const K1 &key1)
+    -> std::optional<std::remove_cvref_t<decltype(map.at(key1))>> {
+    auto it = map.find(key1);
+    if (it != map.end()) {
+        return it->second;
+    }
+    return std::nullopt;
+}
+template <typename Msg, typename T, typename S, typename E>
+static void onRecvRes(Internal::ClientData *this_, const Msg &r, const T &data,
+                      S &store, const E &event) {
+    auto [member, field] = store.getReq(r.req_id, r.sub_field);
+    store.setRecv(member, field, data);
+    std::remove_cvref_t<decltype(event.at(member).at(field))> cl;
+    {
+        std::lock_guard lock(this_->event_m);
+        cl = findFromMap2(event, member, field).value_or(nullptr);
+    }
+    if (cl) {
+        cl->operator()(Field{this_->shared_from_this(), member, field});
+    }
+}
+template <typename Msg, typename S, typename E>
+static void onRecvEntry(Internal::ClientData *this_, const Msg &r, S &store,
+                        const E &event) {
+    auto member = this_->getMemberNameFromId(r.member_id);
+    store.setEntry(member, r.field);
+    std::remove_cvref_t<decltype(event.at(member))> cl;
+    {
+        std::lock_guard lock(this_->event_m);
+        cl = findFromMap1(event, member).value_or(nullptr);
+    }
+    if (cl) {
+        cl->operator()(Field{this_->shared_from_this(), member, r.field});
+    }
+}
+
 void Internal::ClientData::onRecv(const std::string &message) {
     static std::unordered_map<int, bool> message_kind_warned;
     namespace MessageKind = webcface::Message::MessageKind;
@@ -394,9 +445,8 @@ void Internal::ClientData::onRecv(const std::string &message) {
                 std::shared_ptr<eventpp::CallbackList<void(Member)>> cl;
                 {
                     std::lock_guard lock(event_m);
-                    if (this->ping_event.count(member_name)) {
-                        cl = this->ping_event.at(member_name);
-                    }
+                    cl = findFromMap1(this->ping_event, member_name)
+                             .value_or(nullptr);
                 }
                 if (cl) {
                     cl->operator()(Field{shared_from_this(), member_name});
@@ -415,61 +465,22 @@ void Internal::ClientData::onRecv(const std::string &message) {
             auto r =
                 std::any_cast<webcface::Message::Res<webcface::Message::Value>>(
                     obj);
-            auto [member, field] =
-                this->value_store.getReq(r.req_id, r.sub_field);
-            this->value_store.setRecv(
-                member, field,
-                std::static_pointer_cast<VectorOpt<double>>(r.data));
-            std::shared_ptr<eventpp::CallbackList<void(Value)>> cl;
-            FieldBaseComparable key{{member, field}};
-            {
-                std::lock_guard lock(event_m);
-                if (this->value_change_event.count(key)) {
-                    cl = this->value_change_event.at(key);
-                }
-            }
-            if (cl) {
-                cl->operator()(Field{shared_from_this(), member, field});
-            }
+            onRecvRes(this, r,
+                      std::static_pointer_cast<VectorOpt<double>>(r.data),
+                      this->value_store, this->value_change_event);
             break;
         }
         case MessageKind::text + MessageKind::res: {
             auto r =
                 std::any_cast<webcface::Message::Res<webcface::Message::Text>>(
                     obj);
-            auto [member, field] =
-                this->text_store.getReq(r.req_id, r.sub_field);
-            this->text_store.setRecv(member, field, r.data);
-            std::shared_ptr<eventpp::CallbackList<void(Text)>> cl;
-            FieldBaseComparable key{{member, field}};
-            {
-                std::lock_guard lock(event_m);
-                if (this->text_change_event.count(key)) {
-                    cl = this->text_change_event.at(key);
-                }
-            }
-            if (cl) {
-                cl->operator()(Field{shared_from_this(), member, field});
-            }
             break;
         }
         case MessageKind::robot_model + MessageKind::res: {
             auto r = std::any_cast<
                 webcface::Message::Res<webcface::Message::RobotModel>>(obj);
-            auto [member, field] =
-                this->robot_model_store.getReq(r.req_id, r.sub_field);
-            this->robot_model_store.setRecv(member, field, r.commonLinks());
-            std::shared_ptr<eventpp::CallbackList<void(RobotModel)>> cl;
-            FieldBaseComparable key{{member, field}};
-            {
-                std::lock_guard lock(event_m);
-                if (this->robot_model_change_event.count(key)) {
-                    cl = this->robot_model_change_event.at(key);
-                }
-            }
-            if (cl) {
-                cl->operator()(Field{shared_from_this(), member, field});
-            }
+            onRecvRes(this, r, r.commonLinks(), this->robot_model_store,
+                      this->robot_model_change_event);
             break;
         }
         case MessageKind::view + MessageKind::res: {
@@ -494,12 +505,10 @@ void Internal::ClientData::onRecv(const std::string &message) {
                 (*vv_prev)[std::stoi(d.first)] = d.second;
             }
             std::shared_ptr<eventpp::CallbackList<void(View)>> cl;
-            FieldBaseComparable key{{member, field}};
             {
                 std::lock_guard lock(event_m);
-                if (this->view_change_event.count(key)) {
-                    cl = this->view_change_event.at(key);
-                }
+                cl = findFromMap2(this->view_change_event, member, field)
+                         .value_or(nullptr);
             }
             if (cl) {
                 cl->operator()(Field{shared_from_this(), member, field});
@@ -527,12 +536,10 @@ void Internal::ClientData::onRecv(const std::string &message) {
                 (*vv_prev)[std::stoi(d.first)] = d.second;
             }
             std::shared_ptr<eventpp::CallbackList<void(Canvas3D)>> cl;
-            FieldBaseComparable key{{member, field}};
             {
                 std::lock_guard lock(event_m);
-                if (this->canvas3d_change_event.count(key)) {
-                    cl = this->canvas3d_change_event.at(key);
-                }
+                cl = findFromMap2(this->canvas3d_change_event, member, field)
+                         .value_or(nullptr);
             }
             if (cl) {
                 cl->operator()(Field{shared_from_this(), member, field});
@@ -561,12 +568,10 @@ void Internal::ClientData::onRecv(const std::string &message) {
                 vv_prev->components[std::stoi(d.first)] = d.second;
             }
             std::shared_ptr<eventpp::CallbackList<void(Canvas2D)>> cl;
-            FieldBaseComparable key{{member, field}};
             {
                 std::lock_guard lock(event_m);
-                if (this->canvas2d_change_event.count(key)) {
-                    cl = this->canvas2d_change_event.at(key);
-                }
+                cl = findFromMap2(this->canvas2d_change_event, member, field)
+                         .value_or(nullptr);
             }
             if (cl) {
                 cl->operator()(Field{shared_from_this(), member, field});
@@ -577,20 +582,7 @@ void Internal::ClientData::onRecv(const std::string &message) {
             auto r =
                 std::any_cast<webcface::Message::Res<webcface::Message::Image>>(
                     obj);
-            auto [member, field] =
-                this->image_store.getReq(r.req_id, r.sub_field);
-            this->image_store.setRecv(member, field, r);
-            std::shared_ptr<eventpp::CallbackList<void(Image)>> cl;
-            FieldBaseComparable key{{member, field}};
-            {
-                std::lock_guard lock(event_m);
-                if (this->image_change_event.count(key)) {
-                    cl = this->image_change_event.at(key);
-                }
-            }
-            if (cl) {
-                cl->operator()(Field{shared_from_this(), member, field});
-            }
+            onRecvRes(this, r, r, this->image_store, this->image_change_event);
             break;
         }
         case MessageKind::log: {
@@ -608,9 +600,8 @@ void Internal::ClientData::onRecv(const std::string &message) {
             std::shared_ptr<eventpp::CallbackList<void(Log)>> cl;
             {
                 std::lock_guard lock(event_m);
-                if (this->log_append_event.count(member)) {
-                    cl = this->log_append_event.at(member);
-                }
+                cl = findFromMap1(this->log_append_event, member)
+                         .value_or(nullptr);
             }
             if (cl) {
                 cl->operator()(Field{shared_from_this(), member});
@@ -736,120 +727,46 @@ void Internal::ClientData::onRecv(const std::string &message) {
         case MessageKind::entry + MessageKind::value: {
             auto r = std::any_cast<
                 webcface::Message::Entry<webcface::Message::Value>>(obj);
-            auto member = this->getMemberNameFromId(r.member_id);
-            this->value_store.setEntry(member, r.field);
-            std::shared_ptr<eventpp::CallbackList<void(Value)>> cl;
-            {
-                std::lock_guard lock(event_m);
-                if (this->value_entry_event.count(member)) {
-                    cl = this->value_entry_event.at(member);
-                }
-            }
-            if (cl) {
-                cl->operator()(Field{shared_from_this(), member, r.field});
-            }
+            onRecvEntry(this, r, this->value_store, this->value_entry_event);
             break;
         }
         case MessageKind::entry + MessageKind::text: {
             auto r = std::any_cast<
                 webcface::Message::Entry<webcface::Message::Text>>(obj);
-            auto member = this->getMemberNameFromId(r.member_id);
-            this->text_store.setEntry(member, r.field);
-            std::shared_ptr<eventpp::CallbackList<void(Text)>> cl;
-            {
-                std::lock_guard lock(event_m);
-                if (this->text_entry_event.count(member)) {
-                    cl = this->text_entry_event.at(member);
-                }
-            }
-            if (cl) {
-                cl->operator()(Field{shared_from_this(), member, r.field});
-            }
+            onRecvEntry(this, r, this->text_store, this->text_entry_event);
             break;
         }
         case MessageKind::entry + MessageKind::view: {
             auto r = std::any_cast<
                 webcface::Message::Entry<webcface::Message::View>>(obj);
-            auto member = this->getMemberNameFromId(r.member_id);
-            this->view_store.setEntry(member, r.field);
-            std::shared_ptr<eventpp::CallbackList<void(View)>> cl;
-            {
-                std::lock_guard lock(event_m);
-                if (this->view_entry_event.count(member)) {
-                    cl = this->view_entry_event.at(member);
-                }
-            }
-            if (cl) {
-                cl->operator()(Field{shared_from_this(), member, r.field});
-            }
+            onRecvEntry(this, r, this->view_store, this->view_entry_event);
             break;
         }
         case MessageKind::entry + MessageKind::canvas3d: {
             auto r = std::any_cast<
                 webcface::Message::Entry<webcface::Message::Canvas3D>>(obj);
-            auto member = this->getMemberNameFromId(r.member_id);
-            this->canvas3d_store.setEntry(member, r.field);
-            std::shared_ptr<eventpp::CallbackList<void(Canvas3D)>> cl;
-            {
-                std::lock_guard lock(event_m);
-                if (this->canvas3d_entry_event.count(member)) {
-                    cl = this->canvas3d_entry_event.at(member);
-                }
-            }
-            if (cl) {
-                cl->operator()(Field{shared_from_this(), member, r.field});
-            }
+            onRecvEntry(this, r, this->canvas3d_store,
+                        this->canvas3d_entry_event);
             break;
         }
         case MessageKind::entry + MessageKind::canvas2d: {
             auto r = std::any_cast<
                 webcface::Message::Entry<webcface::Message::Canvas2D>>(obj);
-            auto member = this->getMemberNameFromId(r.member_id);
-            this->canvas2d_store.setEntry(member, r.field);
-            std::shared_ptr<eventpp::CallbackList<void(Canvas2D)>> cl;
-            {
-                std::lock_guard lock(event_m);
-                if (this->canvas2d_entry_event.count(member)) {
-                    cl = this->canvas2d_entry_event.at(member);
-                }
-            }
-            if (cl) {
-                cl->operator()(Field{shared_from_this(), member, r.field});
-            }
+            onRecvEntry(this, r, this->canvas2d_store,
+                        this->canvas2d_entry_event);
             break;
         }
         case MessageKind::entry + MessageKind::robot_model: {
             auto r = std::any_cast<
                 webcface::Message::Entry<webcface::Message::RobotModel>>(obj);
-            auto member = this->getMemberNameFromId(r.member_id);
-            this->robot_model_store.setEntry(member, r.field);
-            std::shared_ptr<eventpp::CallbackList<void(RobotModel)>> cl;
-            {
-                std::lock_guard lock(event_m);
-                if (this->robot_model_entry_event.count(member)) {
-                    cl = this->robot_model_entry_event.at(member);
-                }
-            }
-            if (cl) {
-                cl->operator()(Field{shared_from_this(), member, r.field});
-            }
+            onRecvEntry(this, r, this->robot_model_store,
+                        this->robot_model_entry_event);
             break;
         }
         case MessageKind::entry + MessageKind::image: {
             auto r = std::any_cast<
                 webcface::Message::Entry<webcface::Message::Image>>(obj);
-            auto member = this->getMemberNameFromId(r.member_id);
-            this->image_store.setEntry(member, r.field);
-            std::shared_ptr<eventpp::CallbackList<void(Image)>> cl;
-            {
-                std::lock_guard lock(event_m);
-                if (this->image_entry_event.count(member)) {
-                    cl = this->image_entry_event.at(member);
-                }
-            }
-            if (cl) {
-                cl->operator()(Field{shared_from_this(), member, r.field});
-            }
+            onRecvEntry(this, r, this->image_store, this->image_entry_event);
             break;
         }
         case MessageKind::func_info: {
@@ -861,9 +778,8 @@ void Internal::ClientData::onRecv(const std::string &message) {
             std::shared_ptr<eventpp::CallbackList<void(Func)>> cl;
             {
                 std::lock_guard lock(event_m);
-                if (this->func_entry_event.count(member)) {
-                    cl = this->func_entry_event.at(member);
-                }
+                cl = findFromMap1(this->func_entry_event, member)
+                         .value_or(nullptr);
             }
             if (cl) {
                 cl->operator()(Field{shared_from_this(), member, r.field});
@@ -905,9 +821,7 @@ void Internal::ClientData::onRecv(const std::string &message) {
         std::shared_ptr<eventpp::CallbackList<void(Member)>> cl;
         {
             std::lock_guard lock(event_m);
-            if (this->sync_event.count(m)) {
-                cl = this->sync_event.at(m);
-            }
+            cl = findFromMap1(this->sync_event, m).value_or(nullptr);
         }
         if (cl) {
             cl->operator()(Field{shared_from_this(), m});
