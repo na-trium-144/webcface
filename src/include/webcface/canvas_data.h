@@ -4,6 +4,7 @@
 #include "func.h"
 #include "text.h"
 #include "webcface/common/view.h"
+#include "webcface/encoding.h"
 #include <memory>
 
 #ifdef min
@@ -41,10 +42,9 @@ class IdBase {
      * 同じ要素には常に同じidが振られる。
      *
      */
-    std::u8string id() const {
-        return std::u8string(
-            Encoding::castToU8(".." + std::to_string(static_cast<int>(type())) +
-                               "." + std::to_string(idx_for_type_)));
+    std::string id() const {
+        return ".." + std::to_string(static_cast<int>(type())) + "." +
+               std::to_string(idx_for_type_);
     }
 };
 
@@ -61,14 +61,11 @@ class WEBCFACE_DLL ViewComponent : protected Common::ViewComponentBase,
     std::optional<ValAdaptor> init_;
 
     // for cData()
-    mutable std::variant<std::string, std::wstring> text_s, on_click_member_s,
-        on_click_field_s, text_ref_member_s, text_ref_field_s;
     mutable std::variant<std::vector<wcfMultiVal>, std::vector<wcfMultiValW>>
         options_s;
 
-    template <typename CComponent, typename CVal, std::size_t v_index,
-              typename DecodeF>
-    CComponent cDataT(DecodeF decode) const;
+    template <typename CComponent, typename CVal, std::size_t v_index>
+    CComponent cDataT() const;
 
   public:
     ViewComponent() = default;
@@ -90,7 +87,7 @@ class WEBCFACE_DLL ViewComponent : protected Common::ViewComponentBase,
      */
     ViewComponentBase &
     lockTmp(const std::weak_ptr<Internal::ClientData> &data_w,
-            const std::u8string &view_name,
+            const SharedString &view_name,
             std::unordered_map<int, int> *idx_next = nullptr);
 
     wcfViewComponent cData() const;
@@ -551,7 +548,7 @@ class WEBCFACE_DLL Canvas2DComponent : protected Common::Canvas2DComponentBase,
      */
     Canvas2DComponentBase &
     lockTmp(const std::weak_ptr<Internal::ClientData> &data_w,
-            const std::u8string &view_name,
+            const SharedString &view_name,
             std::unordered_map<int, int> *idx_next = nullptr);
 
     /*!

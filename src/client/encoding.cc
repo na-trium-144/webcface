@@ -151,6 +151,13 @@ const std::u8string &SharedString::u8String() const {
         return data->u8s;
     }
 }
+std::u8string_view SharedString::u8StringView() const {
+    if (!data || data->u8s.empty()) {
+        return std::u8string_view();
+    } else {
+        return data->u8s;
+    }
+}
 bool SharedString::empty() const { return !data || data->u8s.empty(); }
 
 const std::string &SharedString::decode() const {

@@ -66,9 +66,10 @@ struct WEBCFACE_DLL Field : public Common::FieldBase {
 
   protected:
     std::u8string_view lastName8() const;
-    Field child(const SharedString &field) const;
 
   public:
+    Field child(const SharedString &field) const;
+
     /*!
      * \brief nameのうちピリオドで区切られた最後の部分を取り出す
      * \since ver1.11

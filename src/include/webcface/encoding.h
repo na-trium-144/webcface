@@ -116,6 +116,8 @@ class WEBCFACE_DLL SharedString {
         std::string s;
         std::wstring ws;
         std::mutex m;
+        explicit Data(std::u8string &&u8)
+            : u8s(std::move(u8)), s(), ws(), m() {}
         explicit Data(std::u8string_view u8) : u8s(u8), s(), ws(), m() {}
         explicit Data(std::string_view s)
             : u8s(Encoding::encode(s)), s(s), ws(), m() {}
@@ -127,14 +129,19 @@ class WEBCFACE_DLL SharedString {
   public:
     SharedString() : data() {}
     SharedString(std::nullptr_t) : data() {}
+    explicit SharedString(std::u8string &&u8)
+        : data(std::make_shared<Data>(std::move(u8))) {}
     explicit SharedString(std::u8string_view u8)
         : data(std::make_shared<Data>(u8)) {}
+    explicit SharedString(const char8_t *u8)
+        : data(std::make_shared<Data>(std::u8string_view(u8))) {}
     explicit SharedString(std::string_view s)
         : data(std::make_shared<Data>(s)) {}
     explicit SharedString(std::wstring_view ws)
         : data(std::make_shared<Data>(ws)) {}
 
     const std::u8string &u8String() const;
+    std::u8string_view u8StringView() const;
     const std::string &decode() const;
     const std::wstring &decodeW() const;
 

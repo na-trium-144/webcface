@@ -18,28 +18,28 @@ std::u8string_view Field::lastName8() const {
     auto i = this->field_.u8String().rfind(field_separator);
     if (i != std::string::npos && i != 0 &&
         !(i == 1 && this->field_.u8String()[0] == field_separator)) {
-        return std::u8string_view(this->field_.u8String()).substr(i + 1);
+        return this->field_.u8StringView().substr(i + 1);
     } else {
-        return this->field_.u8String();
+        return this->field_.u8StringView();
     }
 }
 
 Field Field::parent() const {
     int l = static_cast<int>(this->field_.u8String().size()) -
-            static_cast<int>(lastName().size()) - 1;
+            static_cast<int>(lastName8().size()) - 1;
     if (l < 0) {
         l = 0;
     }
-    return Field{*this, this->field_.substr(0, l)};
+    return Field{*this, SharedString(this->field_.u8StringView().substr(0, l))};
 }
 Field Field::child(const SharedString &field) const {
-    if (this->field_.u8String().empty()) {
+    if (this->field_.empty()) {
         return Field{*this, field};
     } else if (field.empty()) {
         return *this;
     } else {
-        return Field{*this,
-                     this->field_.u8String() + field_separator + field.u8String()};
+        return Field{*this, SharedString(this->field_.u8String() +
+                                         field_separator + field.u8String())};
     }
 }
 
@@ -57,8 +57,12 @@ Image Field::image(std::string_view field) const { return child(field); }
 Image Field::image(std::wstring_view field) const { return child(field); }
 Func Field::func(std::string_view field) const { return child(field); }
 Func Field::func(std::wstring_view field) const { return child(field); }
-FuncListener Field::funcListener(std::string_view field) const { return child(field); }
-FuncListener Field::funcListener(std::wstring_view field) const { return child(field); }
+FuncListener Field::funcListener(std::string_view field) const {
+    return child(field);
+}
+FuncListener Field::funcListener(std::wstring_view field) const {
+    return child(field);
+}
 View Field::view(std::string_view field) const { return child(field); }
 View Field::view(std::wstring_view field) const { return child(field); }
 Canvas3D Field::canvas3D(std::string_view field) const { return child(field); }
@@ -66,93 +70,42 @@ Canvas3D Field::canvas3D(std::wstring_view field) const { return child(field); }
 Canvas2D Field::canvas2D(std::string_view field) const { return child(field); }
 Canvas2D Field::canvas2D(std::wstring_view field) const { return child(field); }
 
-std::vector<Value> Field::valueEntries() const {
-    auto keys = dataLock()->value_store.getEntry(*this);
-    std::vector<Value> ret;
+template <typename V, typename S>
+static auto entries(const Field *this_, S &store) {
+    auto keys = store.getEntry(*this_);
+    std::vector<V> ret;
     for (const auto &f : keys) {
-        if (this->field_.u8String().empty() ||
-            f.starts_with(this->field_.u8String() + field_separator)) {
-            ret.emplace_back(child(f));
+        if (this_->field_.empty() ||
+            f.u8String().starts_with(this_->field_.u8String() +
+                                     field_separator)) {
+            ret.emplace_back(this_->child(f));
         }
     }
     return ret;
+}
+std::vector<Value> Field::valueEntries() const {
+    return entries<Value>(this, dataLock()->value_store);
 }
 std::vector<Text> Field::textEntries() const {
-    auto keys = dataLock()->text_store.getEntry(*this);
-    std::vector<Text> ret;
-    for (const auto &f : keys) {
-        if (this->field_.u8String().empty() ||
-            f.starts_with(this->field_.u8String() + field_separator)) {
-            ret.emplace_back(child(f));
-        }
-    }
-    return ret;
+    return entries<Text>(this, dataLock()->text_store);
 }
 std::vector<RobotModel> Field::robotModelEntries() const {
-    auto keys = dataLock()->robot_model_store.getEntry(*this);
-    std::vector<RobotModel> ret;
-    for (const auto &f : keys) {
-        if (this->field_.u8String().empty() ||
-            f.starts_with(this->field_.u8String() + field_separator)) {
-            ret.emplace_back(child(f));
-        }
-    }
-    return ret;
+    return entries<RobotModel>(this, dataLock()->robot_model_store);
 }
 std::vector<Func> Field::funcEntries() const {
-    auto keys = dataLock()->func_store.getEntry(*this);
-    std::vector<Func> ret;
-    for (const auto &f : keys) {
-        if (this->field_.u8String().empty() ||
-            f.starts_with(this->field_.u8String() + field_separator)) {
-            ret.emplace_back(child(f));
-        }
-    }
-    return ret;
+    return entries<Func>(this, dataLock()->func_store);
 }
 std::vector<View> Field::viewEntries() const {
-    auto keys = dataLock()->view_store.getEntry(*this);
-    std::vector<View> ret;
-    for (const auto &f : keys) {
-        if (this->field_.u8String().empty() ||
-            f.starts_with(this->field_.u8String() + field_separator)) {
-            ret.emplace_back(child(f));
-        }
-    }
-    return ret;
+    return entries<View>(this, dataLock()->view_store);
 }
 std::vector<Canvas3D> Field::canvas3DEntries() const {
-    auto keys = dataLock()->canvas3d_store.getEntry(*this);
-    std::vector<Canvas3D> ret;
-    for (const auto &f : keys) {
-        if (this->field_.u8String().empty() ||
-            f.starts_with(this->field_.u8String() + field_separator)) {
-            ret.emplace_back(child(f));
-        }
-    }
-    return ret;
+    return entries<Canvas3D>(this, dataLock()->canvas3d_store);
 }
 std::vector<Canvas2D> Field::canvas2DEntries() const {
-    auto keys = dataLock()->canvas2d_store.getEntry(*this);
-    std::vector<Canvas2D> ret;
-    for (const auto &f : keys) {
-        if (this->field_.u8String().empty() ||
-            f.starts_with(this->field_.u8String() + field_separator)) {
-            ret.emplace_back(child(f));
-        }
-    }
-    return ret;
+    return entries<Canvas2D>(this, dataLock()->canvas2d_store);
 }
 std::vector<Image> Field::imageEntries() const {
-    auto keys = dataLock()->image_store.getEntry(*this);
-    std::vector<Image> ret;
-    for (const auto &f : keys) {
-        if (this->field_.u8String().empty() ||
-            f.starts_with(this->field_.u8String() + field_separator)) {
-            ret.emplace_back(child(f));
-        }
-    }
-    return ret;
+    return entries<Image>(this, dataLock()->image_store);
 }
 
 bool Field::expired() const { return data_w.expired(); }
