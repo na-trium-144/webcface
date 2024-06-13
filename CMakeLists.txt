@@ -390,6 +390,11 @@ else()
                     COMMAND CloneRepositories.IM7.cmd
                     WORKING_DIRECTORY ${magick-windows_SOURCE_DIR}
                 )
+                # patch
+                file(APPEND
+                    ${magick-windows_SOURCE_DIR}/Projects/MagickCore/magick-baseconfig.h.in
+                    "\n#pragma warning(disable: 4201)\n"
+                )
                 message(STATUS "Building Configure...")
                 execute_process(
                     COMMAND ${DEVENV_COMMAND} /upgrade Configure.2017.sln
