@@ -6,27 +6,33 @@
 #include <chrono>
 
 using namespace webcface;
+
+static SharedString operator""_ss(const char *str, std::size_t len) {
+    return SharedString(Encoding::castToU8(std::string_view(str, len)));
+}
+
 class RobotModelTest : public ::testing::Test {
   protected:
     void SetUp() override {
         data_ = std::make_shared<Internal::ClientData>(self_name);
         callback_called = 0;
     }
-    std::u8string self_name = u8"test";
+    SharedString self_name = "test"_ss;
     std::shared_ptr<Internal::ClientData> data_;
-    FieldBase fieldBase(std::u8string_view member,
+    FieldBase fieldBase(const SharedString &member,
                         std::string_view name) const {
-        return FieldBase{member, Encoding::castToU8(name)};
+        return FieldBase{member, SharedString(Encoding::castToU8(name))};
     }
     FieldBase fieldBase(std::string_view member, std::string_view name) const {
-        return FieldBase{Encoding::castToU8(member), Encoding::castToU8(name)};
+        return FieldBase{SharedString(Encoding::castToU8(member)),
+                         SharedString(Encoding::castToU8(name))};
     }
-    Field field(std::u8string_view member, std::string_view name = "") const {
-        return Field{data_, member, Encoding::castToU8(name)};
+    Field field(const SharedString &member, std::string_view name = "") const {
+        return Field{data_, member, SharedString(Encoding::castToU8(name))};
     }
     Field field(std::string_view member, std::string_view name = "") const {
-        return Field{data_, Encoding::castToU8(member),
-                     Encoding::castToU8(name)};
+        return Field{data_, SharedString(Encoding::castToU8(member)),
+                     SharedString(Encoding::castToU8(name))};
     }
     template <typename T1, typename T2>
     RobotModel model(const T1 &member, const T2 &name) {
@@ -47,21 +53,22 @@ TEST_F(RobotModelTest, field) {
 }
 TEST_F(RobotModelTest, eventTarget) {
     model("a", "b").appendListener(callback<RobotModel>());
-    data_->robot_model_change_event[fieldBase("a", "b")]->operator()(
+    data_->robot_model_change_event["a"_ss]["b"_ss]->operator()(
         field("a", "b"));
     EXPECT_EQ(callback_called, 1);
 }
 TEST_F(RobotModelTest, set) {
-    (data_->robot_model_change_event[fieldBase(self_name, "b")] =
+    (data_->robot_model_change_event[self_name]["b"_ss] =
          std::make_shared<eventpp::CallbackList<void(RobotModel)>>())
         ->append(callback());
     model(self_name, "b").set({RobotLink{"a", Geometry{}, ViewColor::black}});
-    EXPECT_EQ((*data_->robot_model_store.getRecv(self_name, u8"b"))->size(), 1);
+    EXPECT_EQ((*data_->robot_model_store.getRecv(self_name, "b"_ss))->size(),
+              1);
     EXPECT_EQ(callback_called, 1);
     EXPECT_THROW(model("a", "b").set({}), std::invalid_argument);
 }
 TEST_F(RobotModelTest, sync) {
-    (data_->robot_model_change_event[fieldBase(self_name, "b")] =
+    (data_->robot_model_change_event[self_name]["b"_ss] =
          std::make_shared<eventpp::CallbackList<void(RobotModel)>>())
         ->append(callback());
     auto m = model(self_name, "b");
@@ -69,13 +76,15 @@ TEST_F(RobotModelTest, sync) {
     m << RobotLink{"2", Geometry{}, ViewColor::black};
     m << RobotLink{"3", Geometry{}, ViewColor::black};
     m.sync();
-    EXPECT_EQ((*data_->robot_model_store.getRecv(self_name, u8"b"))->size(), 3);
+    EXPECT_EQ((*data_->robot_model_store.getRecv(self_name, "b"_ss))->size(),
+              3);
     EXPECT_EQ(callback_called, 1);
 
     auto m3 = model(self_name, "b");
     m3.init();
     m3.sync();
-    EXPECT_EQ((*data_->robot_model_store.getRecv(self_name, u8"b"))->size(), 0);
+    EXPECT_EQ((*data_->robot_model_store.getRecv(self_name, "b"_ss))->size(),
+              0);
 
     {
         auto m2 = model(self_name, "b2");
@@ -83,7 +92,7 @@ TEST_F(RobotModelTest, sync) {
         m2 << RobotLink{"2", Geometry{}, ViewColor::black};
         m2 << RobotLink{"3", Geometry{}, ViewColor::black};
     }
-    EXPECT_EQ((*data_->robot_model_store.getRecv(self_name, u8"b2"))->size(),
+    EXPECT_EQ((*data_->robot_model_store.getRecv(self_name, "b2"_ss))->size(),
               3);
 
     EXPECT_THROW(model("a", "b").init().sync(), std::invalid_argument);
@@ -91,17 +100,17 @@ TEST_F(RobotModelTest, sync) {
 
 TEST_F(RobotModelTest, get) {
     data_->robot_model_store.setRecv(
-        u8"a", u8"b",
+        "a"_ss, "b"_ss,
         std::make_shared<std::vector<RobotLink>>(
             std::vector<RobotLink>{{"a", Geometry{}, ViewColor::black}}));
     EXPECT_EQ(model("a", "b").tryGet()->size(), 1);
     EXPECT_EQ(model("a", "b").get().size(), 1);
     EXPECT_EQ(model("a", "c").tryGet(), std::nullopt);
     EXPECT_EQ(model("a", "c").get().size(), 0);
-    EXPECT_EQ(data_->robot_model_store.transferReq().at(u8"a").at(u8"b"), 1);
-    EXPECT_EQ(data_->robot_model_store.transferReq().at(u8"a").at(u8"c"), 2);
+    EXPECT_EQ(data_->robot_model_store.transferReq().at("a"_ss).at("b"_ss), 1);
+    EXPECT_EQ(data_->robot_model_store.transferReq().at("a"_ss).at("c"_ss), 2);
     EXPECT_EQ(model(self_name, "b").tryGet(), std::nullopt);
     EXPECT_EQ(data_->robot_model_store.transferReq().count(self_name), 0);
     model("a", "d").appendListener(callback<RobotModel>());
-    EXPECT_EQ(data_->robot_model_store.transferReq().at(u8"a").at(u8"d"), 3);
+    EXPECT_EQ(data_->robot_model_store.transferReq().at("a"_ss).at("d"_ss), 3);
 }

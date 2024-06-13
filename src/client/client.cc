@@ -474,6 +474,8 @@ void Internal::ClientData::onRecv(const std::string &message) {
             auto r =
                 std::any_cast<webcface::Message::Res<webcface::Message::Text>>(
                     obj);
+            onRecvRes(this, r, r.data, this->text_store,
+                      this->text_change_event);
             break;
         }
         case MessageKind::robot_model + MessageKind::res: {
