@@ -18,6 +18,7 @@ class Text;
 class View;
 class Image;
 class Func;
+class FuncListener;
 class RobotModel;
 class Canvas2D;
 class Canvas3D;
@@ -128,12 +129,15 @@ struct WEBCFACE_DLL Field : public Common::FieldBase {
     Image image(std::wstring_view field) const;
     Func func(std::string_view field = "") const;
     Func func(std::wstring_view field) const;
+    FuncListener funcListener(std::string_view field) const;
+    FuncListener funcListener(std::wstring_view field) const;
     View view(std::string_view field = "") const;
     View view(std::wstring_view field) const;
     Canvas3D canvas3D(std::string_view field = "") const;
     Canvas3D canvas3D(std::wstring_view field) const;
     Canvas2D canvas2D(std::string_view field = "") const;
     Canvas2D canvas2D(std::wstring_view field) const;
+
 
     std::vector<Value> valueEntries() const;
     std::vector<Text> textEntries() const;

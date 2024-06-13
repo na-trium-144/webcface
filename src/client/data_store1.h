@@ -7,43 +7,44 @@
 #include <memory>
 #include <webcface/common/def.h>
 #include <webcface/common/log.h>
+#include <webcface/encoding.h>
 
 WEBCFACE_NS_BEGIN
 namespace Internal {
 template <typename T>
 class SyncDataStore1 {
-    std::unordered_map<std::u8string, T> data_recv;
-    std::unordered_map<std::u8string, bool> req;
-    std::unordered_map<std::u8string, bool> req_send;
+    std::unordered_map<SharedString, T, SharedString::Hash> data_recv;
+    std::unordered_map<SharedString, bool, SharedString::Hash> req;
+    std::unordered_map<SharedString, bool, SharedString::Hash> req_send;
 
   public:
-    std::u8string self_member_name;
+    SharedString self_member_name;
     std::recursive_mutex mtx;
 
-    explicit SyncDataStore1(const std::u8string &name)
+    explicit SyncDataStore1(const SharedString &name)
         : self_member_name(name) {}
 
     //! リクエストを追加
     /*!
      * \return 追加した場合trueを返し、すでにリクエストされていた場合falseを返す
      */
-    bool addReq(const std::u8string &member);
+    bool addReq(const SharedString &member);
 
     //! リクエストを削除
     /*!
      * \return 削除した場合trueを返し、すでに削除されていた場合falseを返す
      */
-    bool clearReq(const std::u8string &member);
+    bool clearReq(const SharedString &member);
 
-    bool isSelf(std::u8string_view member) const {
+    bool isSelf(const SharedString &member) const {
         return member == self_member_name;
     }
 
-    void setRecv(const std::u8string &member, const T &data);
+    void setRecv(const SharedString &member, const T &data);
 
-    std::optional<T> getRecv(const std::u8string &member);
+    std::optional<T> getRecv(const SharedString &member);
     //! req_sendを返し、req_sendをクリア
-    std::unordered_map<std::u8string, bool> transferReq();
+    std::unordered_map<SharedString, bool, SharedString::Hash> transferReq();
 };
 
 #ifdef _MSC_VER

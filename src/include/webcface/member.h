@@ -27,7 +27,7 @@ class WEBCFACE_DLL Member : protected Field {
   public:
     Member() = default;
     Member(const std::weak_ptr<Internal::ClientData> &data_w,
-           std::u8string_view member)
+           const SharedString &member)
         : Field(data_w, member) {}
     Member(const Field &base) : Field(base.data_w, base.member_) {}
 
@@ -35,12 +35,12 @@ class WEBCFACE_DLL Member : protected Field {
      * \brief Member名
      *
      */
-    std::string name() const { return Encoding::decode(member_); }
+    std::string name() const { return member_.decode(); }
     /*!
      * \brief Member名 (wstring)
      * \since ver1.12
      */
-    std::wstring nameW() const { return Encoding::decodeW(member_); }
+    std::wstring nameW() const { return member_.decodeW(); }
 
     using Field::child;
     using Field::operator[];
@@ -48,6 +48,7 @@ class WEBCFACE_DLL Member : protected Field {
     using Field::canvas2D;
     using Field::canvas3D;
     using Field::func;
+    using Field::funcListener;
     using Field::image;
     using Field::robotModel;
     using Field::text;
@@ -222,8 +223,8 @@ class WEBCFACE_DLL Member : protected Field {
      *
      */
     template <typename T>
-        requires std::same_as<T, Member>
-    bool operator==(const T &other) const {
+        requires std::same_as<T, Member> bool
+    operator==(const T &other) const {
         return static_cast<Field>(*this) == static_cast<Field>(other);
     }
 };

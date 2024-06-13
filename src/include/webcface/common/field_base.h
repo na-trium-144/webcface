@@ -25,7 +25,8 @@ struct FieldBase {
     SharedString field_;
 
     FieldBase() = default;
-    explicit FieldBase(const SharedString &member) : member_(member), field_() {}
+    explicit FieldBase(const SharedString &member)
+        : member_(member), field_() {}
     FieldBase(const SharedString &member, const SharedString &field)
         : member_(member), field_(field) {}
     FieldBase(const FieldBase &base, const SharedString &field)
@@ -47,6 +48,14 @@ struct FieldBaseComparable : public FieldBase {
         return this->member_ < rhs.member_ ||
                (this->member_ == rhs.member_ && this->field_ < rhs.field_);
     }
+
+    struct Hash {
+        SharedString::Hash h1, h2;
+        Hash() = default;
+        auto operator()(const FieldBaseComparable &base) const {
+            return h1(base.member_) + h2(base.field_);
+        }
+    };
 };
 } // namespace Common
 WEBCFACE_NS_END

@@ -57,6 +57,8 @@ Image Field::image(std::string_view field) const { return child(field); }
 Image Field::image(std::wstring_view field) const { return child(field); }
 Func Field::func(std::string_view field) const { return child(field); }
 Func Field::func(std::wstring_view field) const { return child(field); }
+FuncListener Field::funcListener(std::string_view field) const { return child(field); }
+FuncListener Field::funcListener(std::wstring_view field) const { return child(field); }
 View Field::view(std::string_view field) const { return child(field); }
 View Field::view(std::wstring_view field) const { return child(field); }
 Canvas3D Field::canvas3D(std::string_view field) const { return child(field); }

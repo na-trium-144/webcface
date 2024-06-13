@@ -12,7 +12,6 @@ class logger;
 
 WEBCFACE_NS_BEGIN
 
-class FuncListener;
 class LoggerSink;
 template <typename CharT>
 class BasicLoggerBuf;
@@ -50,7 +49,7 @@ class WEBCFACE_DLL Client : public Member {
     explicit Client(const std::string &name,
                     const std::string &host = "127.0.0.1",
                     int port = WEBCFACE_DEFAULT_PORT)
-        : Client(Encoding::encode(name), Encoding::encode(host), port) {}
+        : Client(SharedString(name), SharedString(host), port) {}
     /*!
      * \brief 名前を指定しサーバーに接続する (wstring)
      * \since ver1.12
@@ -65,11 +64,11 @@ class WEBCFACE_DLL Client : public Member {
     explicit Client(const std::wstring &name,
                     const std::wstring &host = L"127.0.0.1",
                     int port = WEBCFACE_DEFAULT_PORT)
-        : Client(Encoding::encodeW(name), Encoding::encodeW(host), port) {}
+        : Client(SharedString(name), SharedString(host), port) {}
 
-    explicit Client(const std::u8string &name, const std::u8string &host,
+    explicit Client(const SharedString &name, const SharedString &host,
                     int port);
-    explicit Client(const std::u8string &name,
+    explicit Client(const SharedString &name,
                     const std::shared_ptr<Internal::ClientData> &data);
 
     /*!
@@ -129,7 +128,7 @@ class WEBCFACE_DLL Client : public Member {
     void sync();
 
   protected:
-    Member member(const std::u8string &name) const {
+    Member member(const SharedString &name) const {
         if (name.empty()) {
             return *this;
         } else {
@@ -145,8 +144,8 @@ class WEBCFACE_DLL Client : public Member {
      *
      * \sa members(), onMemberEntry()
      */
-    Member member(const std::string &name) const {
-        return member(Encoding::encode(name));
+    Member member(std::string_view name) const {
+        return member(SharedString(name));
     }
     /*!
      * \brief 他のmemberにアクセスする (wstring)
@@ -155,8 +154,8 @@ class WEBCFACE_DLL Client : public Member {
      *
      * \sa members(), onMemberEntry()
      */
-    Member member(const std::wstring &name) const {
-        return member(Encoding::encodeW(name));
+    Member member(std::wstring_view name) const {
+        return member(SharedString(name));
     }
     /*!
      * \brief サーバーに接続されている他のmemberのリストを得る。
@@ -174,17 +173,6 @@ class WEBCFACE_DLL Client : public Member {
      * \sa member(), members()
      */
     EventTarget<Member> onMemberEntry();
-
-    /*!
-     * \brief FuncListenerを作成する
-     *
-     */
-    FuncListener funcListener(const std::string &field) const;
-    /*!
-     * \brief FuncListenerを作成する (wstring)
-     * \since ver1.12
-     */
-    FuncListener funcListener(const std::wstring &field) const;
 
     /*!
      * \brief
