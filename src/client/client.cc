@@ -594,8 +594,8 @@ void Internal::ClientData::onRecv(const std::string &message) {
                 log_s = std::make_shared<std::vector<LogLineData<>>>();
                 this->log_store->setRecv(member, *log_s);
             }
-            for (const auto &lm : *r.log) {
-                (*log_s)->push_back(lm);
+            for (auto &lm : *r.log) {
+                (*log_s)->push_back(lm.data());
             }
             std::shared_ptr<eventpp::CallbackList<void(Log)>> cl;
             {

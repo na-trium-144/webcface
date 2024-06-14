@@ -607,29 +607,27 @@ struct Image : public MessageBase<MessageKind::image> {
  */
 struct Log : public MessageBase<MessageKind::log> {
     unsigned int member_id = 0;
-    struct LogLine {
-        int level = 0;
+    struct LogLine : private Common::LogLineData<> {
         /*!
          * \brief 1970/1/1からの経過ミリ秒
          *
+         * コンストラクタで初期化、data()でtime_pointに戻す
+         *
          */
-        std::uint64_t time = 0;
-        SharedString message;
+        std::uint64_t time_ms = 0;
         LogLine() = default;
         LogLine(const Common::LogLineData<> &l)
-            : level(l.level),
-              time(std::chrono::duration_cast<std::chrono::milliseconds>(
-                       l.time.time_since_epoch())
-                       .count()),
-              message(l.message) {}
-        operator Common::LogLineData<>() const {
-            return {level,
-                    std::chrono::system_clock::time_point(
-                        std::chrono::milliseconds(time)),
-                    message.u8String()};
+            : Common::LogLineData<>(l),
+              time_ms(std::chrono::duration_cast<std::chrono::milliseconds>(
+                          time_.time_since_epoch())
+                          .count()) {}
+        Common::LogLineData<> &data() {
+            time_ = std::chrono::system_clock::time_point(
+                std::chrono::milliseconds(time_ms));
+            return *this;
         }
-        MSGPACK_DEFINE_MAP(MSGPACK_NVP("v", level), MSGPACK_NVP("t", time),
-                           MSGPACK_NVP("m", message))
+        MSGPACK_DEFINE_MAP(MSGPACK_NVP("v", level_), MSGPACK_NVP("t", time_ms),
+                           MSGPACK_NVP("m", message_))
     };
     std::shared_ptr<std::deque<LogLine>> log;
     Log() = default;
@@ -639,7 +637,7 @@ struct Log : public MessageBase<MessageKind::log> {
     Log(const It &begin, const It &end) : member_id(0) {
         this->log = std::make_shared<std::deque<LogLine>>();
         for (auto it = begin; it < end; it++) {
-            this->log->push_back(*it);
+            this->log->emplace_back(*it);
         }
     }
     explicit Log(const Common::LogLineData<> &ll) : member_id(0) {

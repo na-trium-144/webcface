@@ -30,7 +30,7 @@ int main() {
         });
         m.log().appendListener([](webcface::Log l) {
             for (const auto &ll : l.get()) {
-                std::cout << "log [" << ll.level << "] " << ll.message
+                std::cout << "log [" << ll.level() << "] " << ll.message()
                           << std::endl;
             }
             l.clear();
