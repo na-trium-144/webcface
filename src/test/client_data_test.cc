@@ -6,130 +6,134 @@
 using namespace webcface;
 using namespace webcface::Internal;
 
+static SharedString operator""_ss(const char *str, std::size_t len) {
+    return SharedString(Encoding::castToU8(std::string_view(str, len)));
+}
+
 class SyncDataStore2Test : public ::testing::Test {
   protected:
-    std::u8string self_name = u8"test";
-    SyncDataStore2<std::string> s2{u8"test"};
+    SharedString self_name = "test"_ss;
+    SyncDataStore2<std::string> s2{"test"_ss};
 };
 TEST_F(SyncDataStore2Test, self) {
     EXPECT_TRUE(s2.isSelf(self_name));
-    EXPECT_FALSE(s2.isSelf(u8"hoge"));
-    EXPECT_FALSE(s2.isSelf(u8""));
+    EXPECT_FALSE(s2.isSelf("hoge"_ss));
+    EXPECT_FALSE(s2.isSelf(""_ss));
 }
 TEST_F(SyncDataStore2Test, setSend) {
-    s2.setSend(u8"a", "b");
-    EXPECT_EQ(s2.getRecv(self_name, u8"a"), "b");
+    s2.setSend("a"_ss, "b");
+    EXPECT_EQ(s2.getRecv(self_name, "a"_ss), "b");
     auto send = s2.transferSend(false);
-    EXPECT_EQ(send.at(u8"a"), "b");
+    EXPECT_EQ(send.at("a"_ss), "b");
     EXPECT_EQ(send.size(), 1);
     EXPECT_EQ(s2.transferSend(false).size(), 0);
     EXPECT_EQ(s2.transferSend(true).size(), 1);
 
-    s2.setSend(u8"a", "b"); // 同じデータ
-    EXPECT_EQ(s2.getRecv(self_name, u8"a"), "b");
+    s2.setSend("a"_ss, "b"); // 同じデータ
+    EXPECT_EQ(s2.getRecv(self_name, "a"_ss), "b");
     send = s2.transferSend(false);
-    EXPECT_FALSE(send.count(u8"a"));
+    EXPECT_FALSE(send.count("a"_ss));
     EXPECT_EQ(send.size(), 0);
     EXPECT_EQ(s2.transferSend(true).size(), 1);
 
-    s2.setSend(u8"a", "zzzzzz");
-    EXPECT_EQ(s2.getRecv(self_name, u8"a"), "zzzzzz");
-    s2.setSend(u8"a", "b"); // 一度違うデータを送ってから同じデータ
-    EXPECT_EQ(s2.getRecv(self_name, u8"a"), "b");
+    s2.setSend("a"_ss, "zzzzzz");
+    EXPECT_EQ(s2.getRecv(self_name, "a"_ss), "zzzzzz");
+    s2.setSend("a"_ss, "b"); // 一度違うデータを送ってから同じデータ
+    EXPECT_EQ(s2.getRecv(self_name, "a"_ss), "b");
     send = s2.transferSend(false);
-    EXPECT_FALSE(send.count(u8"a"));
+    EXPECT_FALSE(send.count("a"_ss));
     EXPECT_EQ(send.size(), 0);
     EXPECT_EQ(s2.transferSend(true).size(), 1);
 
-    s2.setSend(u8"a", "c"); // 違うデータ
-    EXPECT_EQ(s2.getRecv(self_name, u8"a"), "c");
+    s2.setSend("a"_ss, "c"); // 違うデータ
+    EXPECT_EQ(s2.getRecv(self_name, "a"_ss), "c");
     send = s2.transferSend(false);
-    EXPECT_EQ(send.at(u8"a"), "c");
+    EXPECT_EQ(send.at("a"_ss), "c");
     EXPECT_EQ(send.size(), 1);
     EXPECT_EQ(s2.transferSend(true).size(), 1);
 }
 // TEST_F(SyncDataStore2Test, setRecv) {}
 TEST_F(SyncDataStore2Test, addReq) {
-    auto reqi = s2.addReq(self_name, u8"b");
+    auto reqi = s2.addReq(self_name, "b"_ss);
     EXPECT_EQ(reqi, 0);
-    EXPECT_EQ(s2.getReq(1, u8"").first, u8"");
-    EXPECT_EQ(s2.getReq(1, u8"").second, u8"");
+    EXPECT_EQ(s2.getReq(1, ""_ss).first, ""_ss);
+    EXPECT_EQ(s2.getReq(1, ""_ss).second, ""_ss);
     EXPECT_EQ(s2.transferReq().size(), 0);
 
-    reqi = s2.addReq(u8"a", u8"b");
+    reqi = s2.addReq("a"_ss, "b"_ss);
     EXPECT_EQ(reqi, 1);
-    EXPECT_EQ(s2.getReq(1, u8"").first, u8"a");
-    EXPECT_EQ(s2.getReq(1, u8"").second, u8"b");
+    EXPECT_EQ(s2.getReq(1, ""_ss).first, "a"_ss);
+    EXPECT_EQ(s2.getReq(1, ""_ss).second, "b"_ss);
     auto req = s2.transferReq();
     EXPECT_EQ(req.size(), 1);
-    EXPECT_EQ(req.at(u8"a").at(u8"b"), 1);
+    EXPECT_EQ(req.at("a"_ss).at("b"_ss), 1);
     EXPECT_EQ(s2.transferReq().size(), 1);
 }
 TEST_F(SyncDataStore2Test, getRecv) {
-    auto recv_empty = s2.getRecv(self_name, u8"b");
+    auto recv_empty = s2.getRecv(self_name, "b"_ss);
     EXPECT_EQ(recv_empty, std::nullopt);
 
-    recv_empty = s2.getRecv(u8"a", u8"b");
+    recv_empty = s2.getRecv("a"_ss, "b"_ss);
     EXPECT_EQ(recv_empty, std::nullopt);
 
-    s2.setRecv(u8"a", u8"b", "c");
-    EXPECT_EQ(s2.getRecv(u8"a", u8"b"), "c");
+    s2.setRecv("a"_ss, "b"_ss, "c");
+    EXPECT_EQ(s2.getRecv("a"_ss, "b"_ss), "c");
 }
 TEST_F(SyncDataStore2Test, getRecvRecurse) {
-    std::vector<std::u8string> cb_called;
-    auto cb = [&](const std::u8string &f) { cb_called.push_back(f); };
-    auto recv_empty = s2.getRecvRecurse(self_name, u8"b", cb);
+    std::vector<SharedString> cb_called;
+    auto cb = [&](const SharedString &f) { cb_called.push_back(f); };
+    auto recv_empty = s2.getRecvRecurse(self_name, "b"_ss, cb);
     EXPECT_EQ(cb_called.size(), 0);
     EXPECT_EQ(recv_empty, std::nullopt);
 
-    recv_empty = s2.getRecvRecurse(u8"a", u8"b", cb);
+    recv_empty = s2.getRecvRecurse("a"_ss, "b"_ss, cb);
     EXPECT_EQ(cb_called.size(), 0);
     EXPECT_EQ(recv_empty, std::nullopt);
 
-    s2.setRecv(u8"a", u8"b.a", "a");
-    s2.setRecv(u8"a", u8"b.b", "b");
-    recv_empty = s2.getRecvRecurse(u8"a", u8"b", cb);
+    s2.setRecv("a"_ss, "b.a"_ss, "a");
+    s2.setRecv("a"_ss, "b.b"_ss, "b");
+    recv_empty = s2.getRecvRecurse("a"_ss, "b"_ss, cb);
     EXPECT_EQ(cb_called.size(), 2);
-    EXPECT_EQ(std::count(cb_called.begin(), cb_called.end(), u8"b.a"), 1);
-    EXPECT_EQ(std::count(cb_called.begin(), cb_called.end(), u8"b.b"), 1);
+    EXPECT_EQ(std::count(cb_called.begin(), cb_called.end(), "b.a"_ss), 1);
+    EXPECT_EQ(std::count(cb_called.begin(), cb_called.end(), "b.b"_ss), 1);
     EXPECT_EQ(recv_empty.value()["a"].get(), "a");
     EXPECT_EQ(recv_empty.value()["b"].get(), "b");
 }
 TEST_F(SyncDataStore2Test, unsetRecv) {
-    auto reqi0 = s2.unsetRecv(u8"a", u8"b");
+    auto reqi0 = s2.unsetRecv("a"_ss, "b"_ss);
     EXPECT_FALSE(reqi0);
 
-    s2.setRecv(u8"a", u8"b", "c");
-    s2.addReq(u8"d", u8"e");
-    auto reqi1 = s2.unsetRecv(u8"a", u8"b");
-    auto reqi2 = s2.unsetRecv(u8"d", u8"e");
+    s2.setRecv("a"_ss, "b"_ss, "c");
+    s2.addReq("d"_ss, "e"_ss);
+    auto reqi1 = s2.unsetRecv("a"_ss, "b"_ss);
+    auto reqi2 = s2.unsetRecv("d"_ss, "e"_ss);
     EXPECT_FALSE(reqi1);
     EXPECT_TRUE(reqi2);
-    EXPECT_EQ(s2.getReq(1, u8"").first, u8"");
-    EXPECT_EQ(s2.getReq(1, u8"").second, u8"");
-    EXPECT_EQ(s2.getRecv(u8"a", u8"b"), std::nullopt);
+    EXPECT_EQ(s2.getReq(1, ""_ss).first, ""_ss);
+    EXPECT_EQ(s2.getReq(1, ""_ss).second, ""_ss);
+    EXPECT_EQ(s2.getRecv("a"_ss, "b"_ss), std::nullopt);
 }
 TEST_F(SyncDataStore2Test, clearRecv) {
-    s2.setRecv(u8"a", u8"b", "c");
-    s2.clearRecv(u8"a", u8"b");
-    s2.clearRecv(u8"d", u8"e");
-    EXPECT_EQ(s2.getRecv(u8"a", u8"b"), std::nullopt);
+    s2.setRecv("a"_ss, "b"_ss, "c");
+    s2.clearRecv("a"_ss, "b"_ss);
+    s2.clearRecv("d"_ss, "e"_ss);
+    EXPECT_EQ(s2.getRecv("a"_ss, "b"_ss), std::nullopt);
 }
 TEST_F(SyncDataStore2Test, setEntry) {
-    s2.setEntry(u8"a", u8"b");
-    EXPECT_EQ(s2.getEntry(u8"a").size(), 1);
-    EXPECT_EQ(s2.getEntry(u8"a").count(u8"b"), 1);
+    s2.setEntry("a"_ss, "b"_ss);
+    EXPECT_EQ(s2.getEntry("a"_ss).size(), 1);
+    EXPECT_EQ(s2.getEntry("a"_ss).count("b"_ss), 1);
 }
 
 class SyncDataStore1Test : public ::testing::Test {
   protected:
-    std::u8string self_name = u8"test";
-    SyncDataStore1<std::string> s1{u8"test"};
+    SharedString self_name = "test"_ss;
+    SyncDataStore1<std::string> s1{"test"_ss};
 };
 TEST_F(SyncDataStore1Test, self) {
     EXPECT_TRUE(s1.isSelf(self_name));
-    EXPECT_FALSE(s1.isSelf(u8"hoge"));
-    EXPECT_FALSE(s1.isSelf(u8""));
+    EXPECT_FALSE(s1.isSelf("hoge"_ss));
+    EXPECT_FALSE(s1.isSelf(""_ss));
 }
 // TEST_F(SyncDataStore1Test, setRecv) {}
 TEST_F(SyncDataStore1Test, addReq) {
@@ -137,55 +141,55 @@ TEST_F(SyncDataStore1Test, addReq) {
     EXPECT_FALSE(reqi);
     EXPECT_EQ(s1.transferReq().size(), 0);
 
-    reqi = s1.addReq(u8"a");
+    reqi = s1.addReq("a"_ss);
     EXPECT_TRUE(reqi);
     auto req = s1.transferReq();
     EXPECT_EQ(req.size(), 1);
-    EXPECT_EQ(req.at(u8"a"), true);
+    EXPECT_EQ(req.at("a"_ss), true);
 }
 TEST_F(SyncDataStore1Test, clearReq) {
-    auto reqi = s1.clearReq(u8"a");
+    auto reqi = s1.clearReq("a"_ss);
     EXPECT_FALSE(reqi);
 
-    s1.addReq(u8"a");
-    reqi = s1.clearReq(u8"a");
+    s1.addReq("a"_ss);
+    reqi = s1.clearReq("a"_ss);
     EXPECT_TRUE(reqi);
     auto req = s1.transferReq();
     EXPECT_EQ(req.size(), 1);
-    EXPECT_EQ(req.at(u8"a"), false);
+    EXPECT_EQ(req.at("a"_ss), false);
 }
 TEST_F(SyncDataStore1Test, getRecv) {
     auto recv_empty = s1.getRecv(self_name);
     EXPECT_EQ(recv_empty, std::nullopt);
 
-    recv_empty = s1.getRecv(u8"a");
+    recv_empty = s1.getRecv("a"_ss);
     EXPECT_EQ(recv_empty, std::nullopt);
 
-    s1.setRecv(u8"a", "c");
-    EXPECT_EQ(s1.getRecv(u8"a"), "c");
+    s1.setRecv("a"_ss, "c");
+    EXPECT_EQ(s1.getRecv("a"_ss), "c");
 }
 
 TEST(FuncResultStoreTest, addResult) {
-    auto data = std::make_shared<ClientData>(u8"test");
+    auto data = std::make_shared<ClientData>("test"_ss);
     FuncResultStore &s = data->func_result_store;
-    auto r = s.addResult(Field{data, u8"b", u8"c"});
+    auto r = s.addResult(Field{data, "b"_ss, "c"_ss});
     EXPECT_EQ(r.name(), "c");
     EXPECT_EQ(r.member().name(), "b");
 }
 
 TEST(ClientDataTest, self) {
-    ClientData data(u8"test");
-    EXPECT_TRUE(data.isSelf(FieldBase{u8"test"}));
-    EXPECT_FALSE(data.isSelf(FieldBase{u8"a"}));
-    EXPECT_FALSE(data.isSelf(FieldBase{u8""}));
+    ClientData data("test"_ss);
+    EXPECT_TRUE(data.isSelf(FieldBase{"test"_ss}));
+    EXPECT_FALSE(data.isSelf(FieldBase{"a"_ss}));
+    EXPECT_FALSE(data.isSelf(FieldBase{""_ss}));
 }
 TEST(ClientDataTest, memberIds) {
-    ClientData data(u8"test");
-    data.member_ids[u8"a"] = 1;
-    EXPECT_EQ(data.getMemberNameFromId(1), u8"a");
-    EXPECT_EQ(data.getMemberNameFromId(2), u8"");
-    EXPECT_EQ(data.getMemberNameFromId(0), u8"");
-    EXPECT_EQ(data.getMemberIdFromName(u8"a"), 1);
-    EXPECT_EQ(data.getMemberIdFromName(u8"b"), 0);
-    EXPECT_EQ(data.getMemberIdFromName(u8""), 0);
+    ClientData data("test"_ss);
+    data.member_ids["a"_ss] = 1;
+    EXPECT_EQ(data.getMemberNameFromId(1), "a"_ss);
+    EXPECT_EQ(data.getMemberNameFromId(2), ""_ss);
+    EXPECT_EQ(data.getMemberNameFromId(0), ""_ss);
+    EXPECT_EQ(data.getMemberIdFromName("a"_ss), 1);
+    EXPECT_EQ(data.getMemberIdFromName("b"_ss), 0);
+    EXPECT_EQ(data.getMemberIdFromName(""_ss), 0);
 }

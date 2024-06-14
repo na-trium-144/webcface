@@ -7,13 +7,18 @@
 #include "../message/message.h"
 
 using namespace webcface;
+
+static SharedString operator""_ss(const char *str, std::size_t len) {
+    return SharedString(Encoding::castToU8(std::string_view(str, len)));
+}
+
 class LoggerTest : public ::testing::Test {
   protected:
     void SetUp() override {
         data_ = std::make_shared<Internal::ClientData>(self_name);
         data_->start();
     }
-    std::u8string self_name = u8"test";
+    SharedString self_name = "test"_ss;
     std::shared_ptr<Internal::ClientData> data_;
 };
 

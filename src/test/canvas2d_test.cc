@@ -7,27 +7,33 @@
 #include <chrono>
 
 using namespace webcface;
+
+static SharedString operator""_ss(const char *str, std::size_t len) {
+    return SharedString(Encoding::castToU8(std::string_view(str, len)));
+}
+
 class Canvas2DTest : public ::testing::Test {
   protected:
     void SetUp() override {
         data_ = std::make_shared<Internal::ClientData>(self_name);
         callback_called = 0;
     }
-    std::u8string self_name = u8"test";
+    SharedString self_name = "test"_ss;
     std::shared_ptr<Internal::ClientData> data_;
-    FieldBase fieldBase(std::u8string_view member,
+    FieldBase fieldBase(const SharedString &member,
                         std::string_view name) const {
-        return FieldBase{member, Encoding::castToU8(name)};
+        return FieldBase{member, SharedString(Encoding::castToU8(name))};
     }
     FieldBase fieldBase(std::string_view member, std::string_view name) const {
-        return FieldBase{Encoding::castToU8(member), Encoding::castToU8(name)};
+        return FieldBase{SharedString(Encoding::castToU8(member)),
+                         SharedString(Encoding::castToU8(name))};
     }
-    Field field(std::u8string_view member, std::string_view name = "") const {
-        return Field{data_, member, Encoding::castToU8(name)};
+    Field field(const SharedString &member, std::string_view name = "") const {
+        return Field{data_, member, SharedString(Encoding::castToU8(name))};
     }
     Field field(std::string_view member, std::string_view name = "") const {
-        return Field{data_, Encoding::castToU8(member),
-                     Encoding::castToU8(name)};
+        return Field{data_, SharedString(Encoding::castToU8(member)),
+                     SharedString(Encoding::castToU8(name))};
     }
     template <typename T1, typename T2>
     Canvas2D canvas(const T1 &member, const T2 &name) {
@@ -61,13 +67,12 @@ TEST_F(Canvas2DTest, field) {
 }
 TEST_F(Canvas2DTest, eventTarget) {
     canvas("a", "b").appendListener(callback<Canvas2D>());
-    data_->canvas2d_change_event[fieldBase("a", "b")]->operator()(
-        field("a", "b"));
+    data_->canvas2d_change_event["a"_ss]["b"_ss]->operator()(field("a", "b"));
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
 }
 TEST_F(Canvas2DTest, set) {
-    (data_->canvas2d_change_event[fieldBase(self_name, "b")] =
+    (data_->canvas2d_change_event[self_name]["b"_ss] =
          std::make_shared<eventpp::CallbackList<void(Canvas2D)>>())
         ->append(callback());
     using namespace webcface::Geometries;
@@ -80,7 +85,7 @@ TEST_F(Canvas2DTest, set) {
         plane({0, 0}, 10, 10).color(ViewColor::yellow).onClick(afunc1([] {})));
     v.sync();
     EXPECT_EQ(callback_called, 1);
-    auto &canvas2d_data = **data_->canvas2d_store.getRecv(self_name, u8"b");
+    auto &canvas2d_data = **data_->canvas2d_store.getRecv(self_name, "b"_ss);
     EXPECT_EQ(canvas2d_data.width, 100);
     EXPECT_EQ(canvas2d_data.height, 150);
     ASSERT_EQ(canvas2d_data.components.size(), 2);
@@ -93,7 +98,7 @@ TEST_F(Canvas2DTest, set) {
               (std::vector<double>{0, 0, 0, 3, 3, 0}));
     ASSERT_NE(canvas2d_data.components[0].on_click_func_, std::nullopt);
     EXPECT_EQ(canvas2d_data.components[0].on_click_func_->member_, self_name);
-    EXPECT_EQ(canvas2d_data.components[0].on_click_func_->field_, u8"f");
+    EXPECT_EQ(canvas2d_data.components[0].on_click_func_->field_, "f"_ss);
 
     EXPECT_EQ(canvas2d_data.components[1].type_,
               Canvas2DComponentType::geometry);
@@ -104,13 +109,13 @@ TEST_F(Canvas2DTest, set) {
               (std::vector<double>{0, 0, 0, 0, 0, 0, 10, 10}));
     ASSERT_NE(canvas2d_data.components[0].on_click_func_, std::nullopt);
     EXPECT_EQ(canvas2d_data.components[0].on_click_func_->member_, self_name);
-    EXPECT_NE(canvas2d_data.components[0].on_click_func_->field_, u8"");
+    EXPECT_NE(canvas2d_data.components[0].on_click_func_->field_, ""_ss);
 
     v.init(1, 1);
     v.sync();
     EXPECT_EQ(callback_called, 2);
     EXPECT_EQ(
-        (*data_->canvas2d_store.getRecv(self_name, u8"b"))->components.size(),
+        (*data_->canvas2d_store.getRecv(self_name, "b"_ss))->components.size(),
         0);
 
     {
@@ -120,7 +125,7 @@ TEST_F(Canvas2DTest, set) {
     }
     EXPECT_EQ(callback_called, 3);
     EXPECT_EQ(
-        (*data_->canvas2d_store.getRecv(self_name, u8"b"))->components.size(),
+        (*data_->canvas2d_store.getRecv(self_name, "b"_ss))->components.size(),
         1);
 
     {
@@ -148,17 +153,17 @@ TEST_F(Canvas2DTest, set) {
 TEST_F(Canvas2DTest, get) {
     auto vd = std::make_shared<Common::Canvas2DDataBase>();
     vd->components.resize(1);
-    data_->canvas2d_store.setRecv(u8"a", u8"b", vd);
+    data_->canvas2d_store.setRecv("a"_ss, "b"_ss, vd);
     EXPECT_EQ(canvas("a", "b").tryGet().value().size(), 1);
     EXPECT_EQ(canvas("a", "b").get().size(), 1);
     EXPECT_EQ(canvas("a", "c").tryGet(), std::nullopt);
     EXPECT_EQ(canvas("a", "c").get().size(), 0);
-    EXPECT_EQ(data_->canvas2d_store.transferReq().at(u8"a").at(u8"b"), 1);
-    EXPECT_EQ(data_->canvas2d_store.transferReq().at(u8"a").at(u8"c"), 2);
+    EXPECT_EQ(data_->canvas2d_store.transferReq().at("a"_ss).at("b"_ss), 1);
+    EXPECT_EQ(data_->canvas2d_store.transferReq().at("a"_ss).at("c"_ss), 2);
     EXPECT_EQ(canvas(self_name, "b").tryGet(), std::nullopt);
     EXPECT_EQ(data_->canvas2d_store.transferReq().count(self_name), 0);
     canvas("a", "d").appendListener(callback<Canvas2D>());
-    EXPECT_EQ(data_->canvas2d_store.transferReq().at(u8"a").at(u8"d"), 3);
+    EXPECT_EQ(data_->canvas2d_store.transferReq().at("a"_ss).at("d"_ss), 3);
 }
 
 // todo: hidden, free
