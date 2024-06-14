@@ -22,10 +22,9 @@ class Member;
  */
 struct WEBCFACE_DLL FuncNotFound : public std::runtime_error {
     explicit FuncNotFound(const Common::FieldBase &base)
-        : std::runtime_error("member(\"" + Encoding::decode(base.member_) +
-                             "\")" + ".func(\"" +
-                             Encoding::decode(base.field_) + "\") is not set") {
-    }
+        : std::runtime_error("member(\"" + base.member_.decode() + "\")" +
+                             ".func(\"" + base.field_.decode() +
+                             "\") is not set") {}
 };
 
 /*!
@@ -66,7 +65,7 @@ class WEBCFACE_DLL AsyncFuncResult : Field {
      *
      * 例外が発生した場合例外が入る
      *
-     * ver1.12〜: 例外はresultにexceptionとして格納されるが、
+     * ver2.0〜: 例外はresultにexceptionとして格納されるが、
      * そのエラーメッセージにはutf-8ではないstringが使われる
      *
      */
@@ -181,7 +180,7 @@ class FuncCallHandle {
     }
     /*!
      * 引数データを表すwcfMultiValの配列を構築 (createHandle() 用)
-     * \since ver1.7(for char), ver1.12(for wchar_t)
+     * \since ver1.7(for char), ver2.0(for wchar_t)
      */
     template <typename CharT>
     const auto *cArgs() const {
@@ -244,7 +243,7 @@ class FuncCallHandle {
     }
     /*!
      * \brief 関数の結果を例外として送信する (wstring)
-     * \since ver1.12
+     * \since ver2.0
      *
      * * 2回呼ぶと std::future_error を投げる
      * * このHandleがデフォルト構築されていた場合 std::runtime_error を投げる

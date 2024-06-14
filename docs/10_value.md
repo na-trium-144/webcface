@@ -58,11 +58,11 @@ Client::value からValueオブジェクトを作り、 Value::set() でデー�
     ```
 
 - <b class="tab-title">C</b>
-    double型の単一の値は wcfValueSet, (<span class="since-c">1.12</span> wcfValueSetW)
+    double型の単一の値は wcfValueSet, (<span class="since-c">2.0</span> wcfValueSetW)
     ```c
     wcfValueSet(wcli, "hoge", 123.45);
     ```
-    配列データは wcfValueSetVecD, (<span class="since-c">1.12</span> wcfValueSetVecDW)
+    配列データは wcfValueSetVecD, (<span class="since-c">2.0</span> wcfValueSetVecDW)
     ```c
     double value[5] = {1, 2, 3, 4, 5};
     wcfValueSetVecD(wcli, "fuga", value, 5);
@@ -312,7 +312,7 @@ Value::tryGet(), Value::tryGetVec() などで値のリクエストをすると�
     値を比較したい場合は明示的にキャストするか`get()`などを呼んでください。
 
 - <b class="tab-title">C</b>
-    wcfValueGetVecD, (<span class="since-c">1.12</span> wcfValueGetVecDW) で受信できます
+    wcfValueGetVecD, (<span class="since-c">2.0</span> wcfValueGetVecDW) で受信できます
     ```c
     double value[5];
     int size;
@@ -328,7 +328,7 @@ Value::tryGet(), Value::tryGetVec() などで値のリクエストをすると�
     値を受信していない場合`WCF_NOT_FOUND`を返し、別スレッドでリクエストが送信されます。
     
     <span class="since-c">1.7</span>
-    1つの値のみを受信する場合は wcfValueGet, (<span class="since-c">1.12</span> wcfValueGetW) も使えます。
+    1つの値のみを受信する場合は wcfValueGet, (<span class="since-c">2.0</span> wcfValueGetW) も使えます。
     ```c
     double value;
     ret = wcfValueGet(wcli, "a", "hoge", &value);

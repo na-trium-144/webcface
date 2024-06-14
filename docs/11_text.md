@@ -42,11 +42,11 @@ Client::text からTextオブジェクトを作り、 Text::set() でデータ�
 - <b class="tab-title">C</b>
     \since <span class="since-c">1.7</span>
 
-    null終端の文字列は wcfTextSet, (<span class="since-c">1.12</span> wcfTextSetW) で送信できます
+    null終端の文字列は wcfTextSet, (<span class="since-c">2.0</span> wcfTextSetW) で送信できます
     ```c
     wcfTextSet(wcli, "hoge", "hello");
     ```
-    null終端でない場合は wcfTextSetN, (<span class="since-c">1.12</span> wcfTextSetNW) が使えます
+    null終端でない場合は wcfTextSetN, (<span class="since-c">2.0</span> wcfTextSetNW) が使えます
     ```c
     wcfTextSetN(wcli, "hoge", "hello", 5);
     ```
@@ -128,7 +128,7 @@ Text::tryGet(), Text::tryGetRecurse() で値のリクエストをするととも
     get() はstd::nulloptの代わりにデフォルト値を返します。  
     また、std::string にキャストすることでも同様に値が得られます。
 
-    <span class="since-c">1.12</span> ワイド文字列は tryGetW(), getW() で得られます。
+    <span class="since-c">2.0</span> ワイド文字列は tryGetW(), getW() で得られます。
     また、std::wstring にキャストすることでも得られます。
 
     std::ostreamにTextを直接渡して表示することもできます。
@@ -144,7 +144,7 @@ Text::tryGet(), Text::tryGetRecurse() で値のリクエストをするととも
 - <b class="tab-title">C</b>
     \since <span class="since-c">1.7</span>
 
-    wcfTextGet, (<span class="since-c">1.12</span> wcfTextGetW)
+    wcfTextGet, (<span class="since-c">2.0</span> wcfTextGetW)
     に受信した文字列を格納するバッファとそのサイズ(null終端を含む)を指定します。
     ```c
     char text[6];

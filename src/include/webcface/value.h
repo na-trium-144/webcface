@@ -31,7 +31,7 @@ class WEBCFACE_DLL Value : protected Field, public EventTarget<Value> {
   public:
     Value() = default;
     Value(const Field &base);
-    Value(const Field &base, std::u8string_view field)
+    Value(const Field &base, const SharedString &field)
         : Value(Field{base, field}) {}
 
     using Field::lastName;
@@ -47,7 +47,7 @@ class WEBCFACE_DLL Value : protected Field, public EventTarget<Value> {
     }
     /*!
      * \brief 「(thisの名前).(追加の名前)」を新しい名前とするField (wstring)
-     * \since ver1.12
+     * \since ver2.0
      */
     Value child(std::wstring_view field) const {
         return this->Field::child(field);
@@ -63,7 +63,7 @@ class WEBCFACE_DLL Value : protected Field, public EventTarget<Value> {
     Value operator[](std::string_view field) const { return child(field); }
     /*!
      * child()と同じ
-     * \since ver1.12
+     * \since ver2.0
      */
     Value operator[](std::wstring_view field) const { return child(field); }
     /*!
@@ -72,7 +72,7 @@ class WEBCFACE_DLL Value : protected Field, public EventTarget<Value> {
      */
     Value operator[](const char *field) const { return child(field); }
     /*!
-     * \since ver1.12
+     * \since ver2.0
      */
     Value operator[](const wchar_t *field) const { return child(field); }
     /*!

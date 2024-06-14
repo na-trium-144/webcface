@@ -49,7 +49,7 @@ enum class ViewColor {
 };
 struct ViewComponentBase {
     ViewComponentType type_ = ViewComponentType::text;
-    std::u8string text_;
+    SharedString text_;
     std::optional<FieldBase> on_click_func_;
     std::optional<FieldBase> text_ref_;
     ViewColor text_color_ = ViewColor::inherit;

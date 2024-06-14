@@ -8,7 +8,7 @@
 #endif
 
 WEBCFACE_NS_BEGIN
-namespace Encoding {
+inline namespace Encoding {
 static bool using_utf8 = true;
 
 void usingUTF8(bool flag) { using_utf8 = flag; }
@@ -140,6 +140,53 @@ std::string_view castFromU8(std::u8string_view name) {
     return std::string_view(
         static_cast<const char *>(static_cast<const void *>(name.data())),
         name.size());
+}
+
+
+const std::u8string &SharedString::u8String() const {
+    if (!data || data->u8s.empty()) {
+        static std::u8string empty;
+        return empty;
+    } else {
+        return data->u8s;
+    }
+}
+std::u8string_view SharedString::u8StringView() const {
+    if (!data || data->u8s.empty()) {
+        return std::u8string_view();
+    } else {
+        return data->u8s;
+    }
+}
+bool SharedString::empty() const { return !data || data->u8s.empty(); }
+
+const std::string &SharedString::decode() const {
+    if (!data || data->u8s.empty()) {
+        static std::string empty;
+        return empty;
+    } else {
+        std::lock_guard lock(data->m);
+        if (!data->s.empty()) {
+            return data->s;
+        } else {
+            data->s = Encoding::decode(data->u8s);
+            return data->s;
+        }
+    }
+}
+const std::wstring &SharedString::decodeW() const {
+    if (!data || data->u8s.empty()) {
+        static std::wstring empty;
+        return empty;
+    } else {
+        std::lock_guard lock(data->m);
+        if (!data->ws.empty()) {
+            return data->ws;
+        } else {
+            data->ws = Encoding::decodeW(data->u8s);
+            return data->ws;
+        }
+    }
 }
 
 } // namespace Encoding

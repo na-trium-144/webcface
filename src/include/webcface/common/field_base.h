@@ -10,7 +10,11 @@ inline namespace Common {
  *
  */
 struct FieldBase {
-    std::u8string member_; //!< メンバー名
+    /*!
+     * \brief メンバー名
+     *
+     */
+    SharedString member_;
 
     /*!
      * \brief フィールド名
@@ -18,12 +22,14 @@ struct FieldBase {
      * Memberなどフィールド名が不要なクラスでは使用しない
      *
      */
-    std::u8string field_;
+    SharedString field_;
 
     FieldBase() = default;
-    FieldBase(std::u8string_view member, std::u8string_view field = u8"")
+    explicit FieldBase(const SharedString &member)
+        : member_(member), field_() {}
+    FieldBase(const SharedString &member, const SharedString &field)
         : member_(member), field_(field) {}
-    FieldBase(const FieldBase &base, std::u8string_view field)
+    FieldBase(const FieldBase &base, const SharedString &field)
         : member_(base.member_), field_(field) {}
 
     bool operator==(const FieldBase &rhs) const {
@@ -31,17 +37,5 @@ struct FieldBase {
     }
 };
 
-struct FieldBaseComparable : public FieldBase {
-    FieldBaseComparable() = default;
-    FieldBaseComparable(const FieldBase &base) : FieldBase(base) {}
-
-    bool operator==(const FieldBaseComparable &rhs) const {
-        return this->member_ == rhs.member_ && this->field_ == rhs.field_;
-    }
-    bool operator<(const FieldBaseComparable &rhs) const {
-        return this->member_ < rhs.member_ ||
-               (this->member_ == rhs.member_ && this->field_ < rhs.field_);
-    }
-};
 } // namespace Common
 WEBCFACE_NS_END

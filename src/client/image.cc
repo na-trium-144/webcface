@@ -2,6 +2,7 @@
 #include <webcface/member.h>
 #include "client_internal.h"
 #include "../message/message.h"
+#include "webcface/encoding.h"
 
 WEBCFACE_NS_BEGIN
 
@@ -9,7 +10,7 @@ template class WEBCFACE_DLL EventTarget<Image>;
 
 Image::Image(const Field &base) : Field(base), EventTarget<Image>() {
     std::lock_guard lock(this->dataLock()->event_m);
-    this->setCL(this->dataLock()->image_change_event[*this]);
+    this->setCL(this->dataLock()->image_change_event[this->member_][this->field_]);
 }
 
 Image &Image::request(std::optional<int> rows, std::optional<int> cols,
@@ -32,7 +33,7 @@ Image &Image::request(std::optional<int> rows, std::optional<int> cols,
 }
 
 inline void addImageReq(const std::shared_ptr<Internal::ClientData> &data,
-                        const std::u8string &member_, const std::u8string &field_) {
+                        const SharedString &member_, const SharedString &field_) {
     auto req = data->image_store.addReq(member_, field_);
     if (req) {
         data->message_queue->push(Message::packSingle(

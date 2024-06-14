@@ -23,7 +23,7 @@ struct Canvas2DComponentBase {
     double stroke_width_;
     std::optional<Geometry> geometry_;
     std::optional<FieldBase> on_click_func_;
-    std::u8string text_;
+    SharedString text_;
 
     bool operator==(const Canvas2DComponentBase &rhs) const {
         return type_ == rhs.type_ && origin_ == rhs.origin_ &&

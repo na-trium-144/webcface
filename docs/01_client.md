@@ -39,7 +39,7 @@ Client オブジェクトを作り、start() を呼ぶことでサーバーへ�
     // アドレスを指定する場合
     // webcface::Client wcli("sample", "192.168.1.1", 7530);
 
-    // wstringの場合 (ver1.12〜, 詳細はこのページのEncodingの章を参照)
+    // wstringの場合 (ver2.0〜, 詳細はこのページのEncodingの章を参照)
     // webcface::Client wcli(L"sample");
     // webcface::Client wcli(L"sample", L"192.168.1.1", 7530);
 
@@ -84,7 +84,7 @@ Client オブジェクトを作り、start() を呼ぶことでサーバーへ�
     ```
 
     \note
-    * <span class="since-c">1.12</span>
+    * <span class="since-c">2.0</span>
     ワイド文字列を使用したい場合はそれぞれ `wcfInitDefaultW()`, `wcfInitW()`
     (詳細はこのページのEncodingの章を参照)
     * 接続できているかどうかは `wcfIsConnected(wcli)` で取得できます。
@@ -151,7 +151,7 @@ Client オブジェクトを作り、start() を呼ぶことでサーバーへ�
 
 ## Encoding
 
-<span class="since-c">1.12</span>
+<span class="since-c">2.0</span>
 
 webcfaceのAPIではほぼすべての関数でマルチバイト文字列(`std::string`, `const char *`)の代わりにワイド文字列(`std::wstring`, `const wchar_t *`)が使用可能です。
 

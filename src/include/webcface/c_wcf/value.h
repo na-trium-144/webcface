@@ -17,7 +17,7 @@ WEBCFACE_DLL wcfStatus wcfValueSet(wcfClient *wcli, const char *field,
                                    double value);
 /*!
  * \brief 単一の値を送信する (wstring)
- * \since ver1.12
+ * \since ver2.0
  * \sa wcfValueSet
  */
 WEBCFACE_DLL wcfStatus wcfValueSetW(wcfClient *wcli, const wchar_t *field,
@@ -36,7 +36,7 @@ WEBCFACE_DLL wcfStatus wcfValueSetVecD(wcfClient *wcli, const char *field,
                                        const double *values, int size);
 /*!
  * \brief 複数の値を送信する(doubleの配列, wstring)
- * \since ver1.12
+ * \since ver2.0
  * \sa wcfValueSetVecD
  */
 WEBCFACE_DLL wcfStatus wcfValueSetVecDW(wcfClient *wcli, const wchar_t *field,
@@ -61,7 +61,7 @@ WEBCFACE_DLL wcfStatus wcfValueGet(wcfClient *wcli, const char *member,
                                    const char *field, double *value);
 /*!
  * \brief 値を受信する (wstring)
- * \since ver1.12
+ * \since ver2.0
  * \sa wcfValueGet
  */
 WEBCFACE_DLL wcfStatus wcfValueGetW(wcfClient *wcli, const wchar_t *member,
@@ -91,7 +91,7 @@ WEBCFACE_DLL wcfStatus wcfValueGetVecD(wcfClient *wcli, const char *member,
                                        int size, int *recv_size);
 /*!
  * \brief 値を受信する (wstring)
- * \since ver1.12
+ * \since ver2.0
  * \sa wcfValueGetVecD
  */
 WEBCFACE_DLL wcfStatus wcfValueGetVecDW(wcfClient *wcli, const wchar_t *member,

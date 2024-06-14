@@ -35,8 +35,8 @@ class SyncDataStore2 {
      * \brief 次のsend時に送信するデータ。
      *
      */
-    std::unordered_map<std::u8string, T> data_send;
-    std::unordered_map<std::u8string, T> data_send_prev;
+    StrMap1<T> data_send;
+    StrMap1<T> data_send_prev;
     /*!
      * \brief 送信済みデータ&受信済みデータ
      *
@@ -46,15 +46,14 @@ class SyncDataStore2 {
      * それまでの間はgetRecvはdata_recvではなくdata_sendを優先的に読むようにする
      *
      */
-    std::unordered_map<std::u8string, std::unordered_map<std::u8string, T>>
-        data_recv;
+    StrMap2<T> data_recv;
     /*!
      * \brief 受信済みのentry
      *
      * entry[member名] = {データ名のリスト}
      *
      */
-    std::unordered_map<std::u8string, std::unordered_set<std::u8string>> entry;
+    StrSet2 entry;
     /*!
      * \brief データ受信リクエスト
      *
@@ -62,26 +61,23 @@ class SyncDataStore2 {
      * 0または未定義ならリクエストしてない
      *
      */
-    std::unordered_map<std::u8string,
-                       std::unordered_map<std::u8string, unsigned int>>
-        req;
+    StrMap2<unsigned int> req;
     /*!
      * \brief リクエストに必要なデータ
      *
      */
-    std::unordered_map<std::u8string, std::unordered_map<std::u8string, ReqT>>
-        req_info;
+    StrMap2<ReqT> req_info;
 
-    std::u8string self_member_name;
+    SharedString self_member_name;
 
 
   public:
-    explicit SyncDataStore2(const std::u8string &name)
+    explicit SyncDataStore2(const SharedString &name)
         : self_member_name(name) {}
 
     std::recursive_mutex mtx;
 
-    bool isSelf(std::u8string_view member) const {
+    bool isSelf(const SharedString &member) const {
         return member == self_member_name;
     }
 
@@ -94,8 +90,7 @@ class SyncDataStore2 {
      * selfの場合 0を返す
      *
      */
-    unsigned int addReq(const std::u8string &member,
-                        const std::u8string &field);
+    unsigned int addReq(const SharedString &member, const SharedString &field);
     /*!
      * \brief リクエストを追加
      *
@@ -107,7 +102,7 @@ class SyncDataStore2 {
      * selfの場合 0を返す
      *
      */
-    unsigned int addReq(const std::u8string &member, const std::u8string &field,
+    unsigned int addReq(const SharedString &member, const SharedString &field,
                         const ReqT &req_info);
 
     /*!
@@ -117,7 +112,7 @@ class SyncDataStore2 {
      * has_sendをtrueにする
      *
      */
-    void setSend(const std::u8string &name, const T &data);
+    void setSend(const SharedString &name, const T &data);
     void setSend(const FieldBase &base, const T &data) {
         setSend(base.field_, data);
     }
@@ -126,7 +121,7 @@ class SyncDataStore2 {
      * \brief 受信したデータをdata_recvにセット
      *
      */
-    void setRecv(const std::u8string &from, const std::u8string &name,
+    void setRecv(const SharedString &from, const SharedString &name,
                  const T &data);
     void setRecv(const FieldBase &base, const T &data) {
         setRecv(base.member_, base.field_, data);
@@ -135,7 +130,7 @@ class SyncDataStore2 {
      * \brief 受信したデータを削除
      *
      */
-    void clearRecv(const std::u8string &from, const std::u8string &name);
+    void clearRecv(const SharedString &from, const SharedString &name);
     void clearRecv(const FieldBase &base) {
         clearRecv(base.member_, base.field_);
     }
@@ -144,8 +139,8 @@ class SyncDataStore2 {
      * \brief data_recvからデータを返す
      *
      */
-    std::optional<T> getRecv(const std::u8string &from,
-                             const std::u8string &name);
+    std::optional<T> getRecv(const SharedString &from,
+                             const SharedString &name);
     std::optional<T> getRecv(const FieldBase &base) {
         return getRecv(base.member_, base.field_);
     }
@@ -160,11 +155,11 @@ class SyncDataStore2 {
      *
      */
     std::optional<Dict<T>> getRecvRecurse(
-        const std::u8string &member, const std::u8string &field,
-        const std::function<void(const std::u8string &)> &cb = nullptr);
+        const SharedString &member, const SharedString &field,
+        const std::function<void(const SharedString &)> &cb = nullptr);
     std::optional<Dict<T>> getRecvRecurse(
         const FieldBase &base,
-        const std::function<void(const std::u8string &)> &cb = nullptr) {
+        const std::function<void(const SharedString &)> &cb = nullptr) {
         return getRecvRecurse(base.member_, base.field_, cb);
     }
     /*!
@@ -173,7 +168,7 @@ class SyncDataStore2 {
      * \return reqを削除したらtrue, reqがすでに削除されてればfalse
      *
      */
-    bool unsetRecv(const std::u8string &from, const std::u8string &name);
+    bool unsetRecv(const SharedString &from, const SharedString &name);
     bool unsetRecv(const FieldBase &base) {
         return unsetRecv(base.member_, base.field_);
     }
@@ -183,49 +178,45 @@ class SyncDataStore2 {
      *
      * ambiguousなので引数にFieldBaseは使わない (そもそも必要ない)
      */
-    void clearEntry(const std::u8string &from);
+    void clearEntry(const SharedString &from);
     /*!
      * \brief 受信したentryを追加
      *
      */
-    void setEntry(const std::u8string &from, const std::u8string &e);
+    void setEntry(const SharedString &from, const SharedString &e);
 
     /*!
      * \brief entryを取得
      *
      */
-    std::unordered_set<std::u8string> getEntry(const std::u8string &from);
-    std::unordered_set<std::u8string> getEntry(const FieldBase &base) {
-        return getEntry(base.member_);
-    }
+    StrSet1 getEntry(const SharedString &from);
+    StrSet1 getEntry(const FieldBase &base) { return getEntry(base.member_); }
 
     /*!
      * \brief req_idに対応するmember名とフィールド名を返す
      *
      */
-    std::pair<std::u8string, std::u8string>
-    getReq(unsigned int req_id, const std::u8string &sub_field);
+    std::pair<SharedString, SharedString> getReq(unsigned int req_id,
+                                                 const SharedString &sub_field);
     /*!
      * \brief member名とフィールド名に対応するreq_infoを返す
      *
      */
-    const ReqT &getReqInfo(const std::u8string &member,
-                           const std::u8string &field);
+    const ReqT &getReqInfo(const SharedString &member,
+                           const SharedString &field);
 
     /*!
      * \brief data_sendを返し、data_sendをクリア
      *
      */
-    std::unordered_map<std::u8string, T> transferSend(bool is_first);
-    std::unordered_map<std::u8string, T> getSendPrev(bool is_first);
+    StrMap1<T> transferSend(bool is_first);
+    StrMap1<T> getSendPrev(bool is_first);
 
     /*!
      * \brief req_sendを返し、req_sendをクリア
      *
      */
-    std::unordered_map<std::u8string,
-                       std::unordered_map<std::u8string, unsigned int>>
-    transferReq();
+    StrMap2<unsigned int> transferReq();
 
     template <typename ElemT>
     std::shared_ptr<std::unordered_map<int, ElemT>>

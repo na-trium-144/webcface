@@ -35,7 +35,7 @@ class WEBCFACE_DLL RobotModel : protected Field,
   public:
     RobotModel();
     RobotModel(const Field &base);
-    RobotModel(const Field &base, std::u8string_view field)
+    RobotModel(const Field &base, const SharedString &field)
         : RobotModel(Field{base, field}) {}
 
     friend class Canvas3D;
@@ -55,7 +55,7 @@ class WEBCFACE_DLL RobotModel : protected Field,
     }
     /*!
      * \brief 「(thisの名前).(追加の名前)」を新しい名前とするField (wstring)
-     * \since ver1.12
+     * \since ver2.0
      */
     RobotModel child(std::wstring_view field) const {
         return this->Field::child(field);
@@ -71,7 +71,7 @@ class WEBCFACE_DLL RobotModel : protected Field,
     RobotModel operator[](std::string_view field) const { return child(field); }
     /*!
      * child()と同じ
-     * \since ver1.12
+     * \since ver2.0
      */
     RobotModel operator[](std::wstring_view field) const {
         return child(field);
@@ -82,7 +82,7 @@ class WEBCFACE_DLL RobotModel : protected Field,
      */
     RobotModel operator[](const char *field) const { return child(field); }
     /*!
-     * \since ver1.12
+     * \since ver2.0
      */
     RobotModel operator[](const wchar_t *field) const { return child(field); }
     /*!

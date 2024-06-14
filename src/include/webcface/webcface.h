@@ -10,6 +10,7 @@
 #include <webcface/common/def.h>
 #include "wcf.h"
 
+#include "encoding.h"
 #include "common/version.h"
 #include "common/val.h"
 #include "common/func.h"

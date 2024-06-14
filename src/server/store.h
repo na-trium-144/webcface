@@ -5,6 +5,7 @@
 #include <spdlog/common.h>
 #include <webcface/common/def.h>
 #include <webcface/server.h>
+#include <webcface/encoding.h>
 
 WEBCFACE_NS_BEGIN
 namespace Server {
@@ -53,7 +54,7 @@ struct WEBCFACE_DLL ServerStorage {
      * \brief 指定したnameのclientがあればfuncを、そうでなければfunc_elseを実行
      *
      */
-    void findAndDo(std::u8string_view name,
+    void findAndDo(const SharedString &name,
                    const std::function<void(MemberDataPtr)> &func,
                    const std::function<void()> &func_else = nullptr);
     /*!
