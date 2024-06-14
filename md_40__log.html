@@ -172,12 +172,12 @@ $(document).ready(function(){initNavTree('md_40__log.html',''); initResizable();
 </div><!-- fragment --><p> これと同様に<code>trace</code>, <code>debug</code>, <code>info</code>, <code>warn</code>, <code>error</code>, <code>critical</code>の6段階のログレベルを使うことができます。</p>
 <p class="startli">上の例のようにspdlogではfmtライブラリを使用しており数値などをフォーマットして出力することができます。 詳細は<a href="https://github.com/gabime/spdlog">spdlog</a>, <a href="https://github.com/fmtlib/fmt">fmt</a>を参照してください</p>
 <p class="startli">Client::loggerSink()でログをwebcfaceに送信するsinkを取得できるので、これを他のloggerにセットして使うこともできます。 または Client.logger() の出力先のsinkを変更することもできます。 (詳細はspdlogのドキュメントを読んでください。)</p>
-<p class="startli"><span class="since-c">1.12</span> Windowsでは<code>SPDLOG_WCHAR_SUPPORT</code>を有効にすることでspdlogのloggerにワイド文字列を渡すことができるようになります。 (WebCFaceのCMakeLists内で自動的に有効になりますが、別でインストールしたspdlogを使用する場合は有効になっていない可能性があります。) なおこの場合spdlog内部で文字列がUTF-8に変換されるため、 <a class="el" href="namespacewebcface_1_1Encoding.html#ae57423f1244b067999069f20f73eb166" title="webcfaceが使用するエンコーディングを取得する">webcface::Encoding::usingUTF8()</a> はtrueにしてください。</p>
+<p class="startli"><span class="since-c">2.0</span> Windowsでは<code>SPDLOG_WCHAR_SUPPORT</code>を有効にすることでspdlogのloggerにワイド文字列を渡すことができるようになります。 (WebCFaceのCMakeLists内で自動的に有効になりますが、別でインストールしたspdlogを使用する場合は有効になっていない可能性があります。) なおこの場合spdlog内部で文字列がUTF-8に変換されるため、 <a class="el" href="namespacewebcface_1_1Encoding.html#ae57423f1244b067999069f20f73eb166" title="webcfaceが使用するエンコーディングを取得する">webcface::Encoding::usingUTF8()</a> はtrueにしてください。</p>
 <p class="startli">spdlogではなくostreamを使いたい場合は </p><div class="fragment"><div class="line">wcli.loggerOStream() &lt;&lt; <span class="stringliteral">&quot;hello&quot;</span> &lt;&lt; std::endl;</div>
 </div><!-- fragment --><p> のように出力したり、 </p><div class="fragment"><div class="line">std::cout.rdbuf(wcli.loggerStreamBuf());</div>
 <div class="line">std::cout &lt;&lt; <span class="stringliteral">&quot;hello&quot;</span> &lt;&lt; std::endl;</div>
-</div><!-- fragment --><p> のようにcoutやcerrの出力先を置き換えることができます。 これらはWebCFaceに出力すると同時に標準エラー出力にも出力します。 (ver1.11以前はspdlogのstderr_sink、 ver1.12以降はfputs,fputcを使って直接stderrに出力されます) またこの場合はログレベルが設定できず、常にinfoになります。</p>
-<p class="startli"><span class="since-c">1.12</span> wostreamを使用したい場合は wcli.loggerWOStream(), wcli.loggerWStreamBuf() を使用するとWebCFaceに出力すると同時にstderrにも出力されます。 その際Windowsでは出力文字列は Encoding::usingUTF8() の設定に従いUTF-8またはANSIに変換されるため、出力したいコンソールのコードページに設定を合わせてください。</p>
+</div><!-- fragment --><p> のようにcoutやcerrの出力先を置き換えることができます。 これらはWebCFaceに出力すると同時に標準エラー出力にも出力します。 (ver1.11以前はspdlogのstderr_sink、 ver2.0以降はfputs,fputcを使って直接stderrに出力されます) またこの場合はログレベルが設定できず、常にinfoになります。</p>
+<p class="startli"><span class="since-c">2.0</span> wostreamを使用したい場合は wcli.loggerWOStream(), wcli.loggerWStreamBuf() を使用するとWebCFaceに出力すると同時にstderrにも出力されます。 その際Windowsでは出力文字列は Encoding::usingUTF8() の設定に従いUTF-8またはANSIに変換されるため、出力したいコンソールのコードページに設定を合わせてください。</p>
 </li>
 <li><p class="startli"><b class="tab-title">JavaScript</b> <a href="https://www.npmjs.com/package/log4js">log4js</a>を使います。</p>
 <p class="startli">log4jsのappenderにClient.logAppenderを登録すると出力されます。 </p><div class="fragment"><div class="line">import log4js from &quot;log4js&quot;;</div>
@@ -214,7 +214,7 @@ $(document).ready(function(){initNavTree('md_40__log.html',''); initResizable();
 </div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md129"></a>
 受信</h1>
 <p>Member::log() でLogクラスのオブジェクトが得られ、 Log::tryGet() でデータのリクエストをするとともにログが得られます。</p>
-<p><span class="since-c">1.12</span> ワイド文字列で取得したい場合は tryGetW() を使います</p>
+<p><span class="since-c">2.0</span> ワイド文字列で取得したい場合は tryGetW() を使います</p>
 <p>ログデータは <br  />
  C++: <a class="el" href="namespacewebcface_1_1Common.html#a46b5ef797cadc62be5f7a57346029063">webcface::LogLine</a>, <a class="el" href="namespacewebcface_1_1Common.html#a1633a07d91ecf38ba8cfc15b2a4ebd18">webcface::LogLineW</a> <br  />
  JavaScript: <a href="https://na-trium-144.github.io/webcface-js/interfaces/LogLine.html">LogLine</a> <br  />
@@ -239,7 +239,7 @@ Event</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Jun 13 2024 18:19:31 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Fri Jun 14 2024 15:54:53 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

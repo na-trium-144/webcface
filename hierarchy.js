@@ -45,6 +45,7 @@ var hierarchy =
     [ "Cylinder", "structwebcface_1_1Components_1_1Geometries_1_1Cylinder.html", null ],
     [ "Cylinder", "structwebcface_1_1Components_1_1Geometries_1_1Cylinder.html", null ],
     [ "Cylinder", "structwebcface_1_1Components_1_1Geometries_1_1Cylinder.html", null ],
+    [ "Data", "structwebcface_1_1Encoding_1_1SharedString_1_1Data.html", null ],
     [ "DataSetBuffer< Component >", "classwebcface_1_1Internal_1_1DataSetBuffer.html", null ],
     [ "DataSetBuffer< Canvas2DComponent >", "classwebcface_1_1Internal_1_1DataSetBuffer.html", [
       [ "Canvas2DDataBuf", "classwebcface_1_1Internal_1_1Canvas2DDataBuf.html", null ]
@@ -91,7 +92,6 @@ var hierarchy =
       [ "View", "classwebcface_1_1View.html", null ]
     ] ],
     [ "FieldBase", "structwebcface_1_1Common_1_1FieldBase.html", [
-      [ "FieldBaseComparable", "structwebcface_1_1Common_1_1FieldBaseComparable.html", null ],
       [ "Field", "structwebcface_1_1Field.html", [
         [ "AsyncFuncResult", "classwebcface_1_1AsyncFuncResult.html", null ],
         [ "AsyncFuncResultSetter", "structwebcface_1_1AsyncFuncResultSetter.html", null ],
@@ -113,7 +113,6 @@ var hierarchy =
       ] ]
     ] ],
     [ "FieldBase", "structwebcface_1_1Common_1_1FieldBase.html", [
-      [ "FieldBaseComparable", "structwebcface_1_1Common_1_1FieldBaseComparable.html", null ],
       [ "Field", "structwebcface_1_1Field.html", null ]
     ] ],
     [ "FuncCall", "structwebcface_1_1Common_1_1FuncCall.html", [
@@ -137,6 +136,9 @@ var hierarchy =
     [ "Geometry3D", "structwebcface_1_1Common_1_1Geometry3D.html", null ],
     [ "Geometry3D", "structwebcface_1_1Common_1_1Geometry3D.html", null ],
     [ "HandleData", "structwebcface_1_1FuncCallHandle_1_1HandleData.html", null ],
+    [ "hash", null, [
+      [ "Hash", "structwebcface_1_1Encoding_1_1SharedString_1_1Hash.html", null ]
+    ] ],
     [ "IdBase< TypeEnum >", "classwebcface_1_1IdBase.html", null ],
     [ "IdBase< Canvas2DComponentType >", "classwebcface_1_1IdBase.html", [
       [ "Canvas2DComponent", "classwebcface_1_1Canvas2DComponent.html", null ]
@@ -160,9 +162,12 @@ var hierarchy =
     [ "Line", "structwebcface_1_1Components_1_1Geometries_1_1Line.html", null ],
     [ "Line", "structwebcface_1_1Components_1_1Geometries_1_1Line.html", null ],
     [ "Line", "structwebcface_1_1Components_1_1Geometries_1_1Line.html", null ],
-    [ "LogLine", "structwebcface_1_1Message_1_1Log_1_1LogLine.html", null ],
-    [ "LogLineData< CharT >", "structwebcface_1_1Common_1_1LogLineData.html", null ],
-    [ "LogLineData< CharT >", "structwebcface_1_1Common_1_1LogLineData.html", null ],
+    [ "LogLineData< CharT >", "classwebcface_1_1Common_1_1LogLineData.html", [
+      [ "LogLine", "structwebcface_1_1Message_1_1Log_1_1LogLine.html", null ]
+    ] ],
+    [ "LogLineData< CharT >", "classwebcface_1_1Common_1_1LogLineData.html", [
+      [ "LogLine", "structwebcface_1_1Message_1_1Log_1_1LogLine.html", null ]
+    ] ],
     [ "MemberData", "structwebcface_1_1Server_1_1MemberData.html", null ],
     [ "MessageBase< k >", "structwebcface_1_1Message_1_1MessageBase.html", null ],
     [ "MessageBase< MessageKind::call >", "structwebcface_1_1Message_1_1MessageBase.html", [
@@ -281,6 +286,8 @@ var hierarchy =
     ] ],
     [ "Server", "classwebcface_1_1Server_1_1Server.html", null ],
     [ "ServerStorage", "structwebcface_1_1Server_1_1ServerStorage.html", null ],
+    [ "SharedString", "classwebcface_1_1Encoding_1_1SharedString.html", null ],
+    [ "SharedString", "classwebcface_1_1Encoding_1_1SharedString.html", null ],
     [ "Size", "classwebcface_1_1Common_1_1Size.html", null ],
     [ "Size", "classwebcface_1_1Common_1_1Size.html", null ],
     [ "SizeOption", "classwebcface_1_1Common_1_1SizeOption.html", null ],

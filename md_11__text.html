@@ -175,9 +175,9 @@ $(document).ready(function(){initNavTree('md_11__text.html',''); initResizable()
 </div><!-- fragment --> (C++のみ) set() の代わりに代入演算子(Text::operator=)でも同様のことができます。 <div class="fragment"><div class="line">wcli.text(<span class="stringliteral">&quot;hoge&quot;</span>) = <span class="stringliteral">&quot;hello&quot;</span>;</div>
 </div><!-- fragment --></li>
 <li><b class="tab-title">C</b> <dl class="section since"><dt>Since</dt><dd><span class="since-c">1.7</span></dd></dl>
-null終端の文字列は wcfTextSet, (<span class="since-c">1.12</span> wcfTextSetW) で送信できます <div class="fragment"><div class="line"><a class="code hl_function" href="c__wcf_2text_8cc.html#a94470a2a84a02b9af795174cf9d317f9">wcfTextSet</a>(wcli, <span class="stringliteral">&quot;hoge&quot;</span>, <span class="stringliteral">&quot;hello&quot;</span>);</div>
+null終端の文字列は wcfTextSet, (<span class="since-c">2.0</span> wcfTextSetW) で送信できます <div class="fragment"><div class="line"><a class="code hl_function" href="c__wcf_2text_8cc.html#a94470a2a84a02b9af795174cf9d317f9">wcfTextSet</a>(wcli, <span class="stringliteral">&quot;hoge&quot;</span>, <span class="stringliteral">&quot;hello&quot;</span>);</div>
 <div class="ttc" id="ac__wcf_2text_8cc_html_a94470a2a84a02b9af795174cf9d317f9"><div class="ttname"><a href="c__wcf_2text_8cc.html#a94470a2a84a02b9af795174cf9d317f9">wcfTextSet</a></div><div class="ttdeci">wcfStatus wcfTextSet(wcfClient *wcli, const char *field, const char *text)</div><div class="ttdoc">文字列を送信する(null終端)</div><div class="ttdef"><b>Definition</b> text.cc:60</div></div>
-</div><!-- fragment --> null終端でない場合は wcfTextSetN, (<span class="since-c">1.12</span> wcfTextSetNW) が使えます <div class="fragment"><div class="line"><a class="code hl_function" href="c__wcf_2text_8cc.html#a2dbf1b9e940ba3f11d8a61e533ac39b8">wcfTextSetN</a>(wcli, <span class="stringliteral">&quot;hoge&quot;</span>, <span class="stringliteral">&quot;hello&quot;</span>, 5);</div>
+</div><!-- fragment --> null終端でない場合は wcfTextSetN, (<span class="since-c">2.0</span> wcfTextSetNW) が使えます <div class="fragment"><div class="line"><a class="code hl_function" href="c__wcf_2text_8cc.html#a2dbf1b9e940ba3f11d8a61e533ac39b8">wcfTextSetN</a>(wcli, <span class="stringliteral">&quot;hoge&quot;</span>, <span class="stringliteral">&quot;hello&quot;</span>, 5);</div>
 <div class="ttc" id="ac__wcf_2text_8cc_html_a2dbf1b9e940ba3f11d8a61e533ac39b8"><div class="ttname"><a href="c__wcf_2text_8cc.html#a2dbf1b9e940ba3f11d8a61e533ac39b8">wcfTextSetN</a></div><div class="ttdeci">wcfStatus wcfTextSetN(wcfClient *wcli, const char *field, const char *text, int size)</div><div class="ttdoc">文字列を送信する</div><div class="ttdef"><b>Definition</b> text.cc:67</div></div>
 </div><!-- fragment --></li>
 <li><b class="tab-title">JavaScript</b> <div class="fragment"><div class="line">wcli.text(&quot;hoge&quot;).set(&quot;hello&quot;);</div>
@@ -197,13 +197,13 @@ null終端の文字列は wcfTextSet, (<span class="since-c">1.12</span> wcfText
 </div><!-- fragment --><p> 初回の呼び出しではまだ受信していないため、 tryGet() はstd::nulloptを返します。 <br  />
  get() はstd::nulloptの代わりにデフォルト値を返します。 <br  />
  また、std::string にキャストすることでも同様に値が得られます。</p>
-<p class="startli"><span class="since-c">1.12</span> ワイド文字列は tryGetW(), getW() で得られます。 また、std::wstring にキャストすることでも得られます。</p>
+<p class="startli"><span class="since-c">2.0</span> ワイド文字列は tryGetW(), getW() で得られます。 また、std::wstring にキャストすることでも得られます。</p>
 <p class="startli">std::ostreamにTextを直接渡して表示することもできます。 </p><div class="fragment"><div class="line">std::cout &lt;&lt; <span class="stringliteral">&quot;hoge = &quot;</span> &lt;&lt; wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).text(<span class="stringliteral">&quot;hoge&quot;</span>) &lt;&lt; std::endl;</div>
 </div><!-- fragment --><dl class="section warning"><dt>Warning</dt><dd><span class="since-c">1.11</span> Textオブジェクト同士を比較するとTextが参照するデータの名前が一致するかどうかで判定されます。(Valueなど他のデータ型でも同様です。) <br  />
  値を比較したい場合は明示的にキャストするか<code>get()</code>などを呼んでください。</dd></dl>
 </li>
 <li><p class="startli"><b class="tab-title">C</b> </p><dl class="section since"><dt>Since</dt><dd><span class="since-c">1.7</span></dd></dl>
-<p>wcfTextGet, (<span class="since-c">1.12</span> wcfTextGetW) に受信した文字列を格納するバッファとそのサイズ(null終端を含む)を指定します。 </p><div class="fragment"><div class="line"><span class="keywordtype">char</span> text[6];</div>
+<p>wcfTextGet, (<span class="since-c">2.0</span> wcfTextGetW) に受信した文字列を格納するバッファとそのサイズ(null終端を含む)を指定します。 </p><div class="fragment"><div class="line"><span class="keywordtype">char</span> text[6];</div>
 <div class="line"><span class="keywordtype">int</span> size;</div>
 <div class="line"><span class="keywordtype">int</span> ret = <a class="code hl_function" href="c__wcf_2text_8cc.html#abf4899fe704f996d49ee477cfb8002dd">wcfTextGet</a>(wcli, <span class="stringliteral">&quot;a&quot;</span>, <span class="stringliteral">&quot;hoge&quot;</span>, text, 6, &amp;size);</div>
 <div class="line"><span class="comment">// ex.) ret = WCF_NOT_FOUND</span></div>
@@ -253,7 +253,7 @@ Event</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Jun 13 2024 18:19:31 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Fri Jun 14 2024 15:54:53 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

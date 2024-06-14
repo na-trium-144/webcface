@@ -11,9 +11,9 @@ var classwebcface_1_1Canvas2DComponent =
     [ "fillColor", "classwebcface_1_1Canvas2DComponent.html#a3069b6998135f6ffeacb4eb377e22f29", null ],
     [ "geometry", "classwebcface_1_1Canvas2DComponent.html#a1024785cc008a70ae7c2de6042c73aef", null ],
     [ "geometry", "classwebcface_1_1Canvas2DComponent.html#a3fe3db6863309177c8a952f639cd39a4", null ],
-    [ "id", "classwebcface_1_1Canvas2DComponent.html#aad0c66d165899ed364f8c2fca12259d7", null ],
+    [ "id", "classwebcface_1_1Canvas2DComponent.html#a4c5cdd8165762b000c6518db56830677", null ],
     [ "initIdx", "classwebcface_1_1Canvas2DComponent.html#a2fa537b87d448f408ce19c24cfc27d91", null ],
-    [ "lockTmp", "classwebcface_1_1Canvas2DComponent.html#a77ac4459399b1f101ea59ebe52f5f3b9", null ],
+    [ "lockTmp", "classwebcface_1_1Canvas2DComponent.html#a84b507f69138d1a095b9ee119fd9a38b", null ],
     [ "onClick", "classwebcface_1_1Canvas2DComponent.html#a376cacc3cf036d47178c1dea1fa94cd0", null ],
     [ "onClick", "classwebcface_1_1Canvas2DComponent.html#abe35a3114027d8ff2a66d81ad843650f", null ],
     [ "onClick", "classwebcface_1_1Canvas2DComponent.html#a73502e201128c9e38daf749557da32f4", null ],
@@ -42,6 +42,6 @@ var classwebcface_1_1Canvas2DComponent =
     [ "on_click_func_tmp", "classwebcface_1_1Canvas2DComponent.html#a7fe287aa5f80f8b41fe462137a324504", null ],
     [ "origin_", "classwebcface_1_1Canvas2DComponent.html#a05df68f5f0d213367feacfc47d7ac757", null ],
     [ "stroke_width_", "classwebcface_1_1Canvas2DComponent.html#a2b65e2d5b08af22d6d671f77aba1cc41", null ],
-    [ "text_", "classwebcface_1_1Canvas2DComponent.html#abd8115893f33d30d7dbe5572e7a5bfbb", null ],
+    [ "text_", "classwebcface_1_1Canvas2DComponent.html#ae1af4940359c29f642b7a8ffbc57e622", null ],
     [ "type_", "classwebcface_1_1Canvas2DComponent.html#aeebeae276313d63ad1c8b523e9d5ece6", null ]
 ];

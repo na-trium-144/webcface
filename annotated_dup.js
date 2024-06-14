@@ -17,7 +17,6 @@ var annotated_dup =
         [ "DictTraits< std::shared_ptr< T > >", "structwebcface_1_1Common_1_1DictTraits_3_01std_1_1shared__ptr_3_01T_01_4_01_4.html", "structwebcface_1_1Common_1_1DictTraits_3_01std_1_1shared__ptr_3_01T_01_4_01_4" ],
         [ "DictTraits< VectorOpt< T > >", "structwebcface_1_1Common_1_1DictTraits_3_01VectorOpt_3_01T_01_4_01_4.html", "structwebcface_1_1Common_1_1DictTraits_3_01VectorOpt_3_01T_01_4_01_4" ],
         [ "FieldBase", "structwebcface_1_1Common_1_1FieldBase.html", "structwebcface_1_1Common_1_1FieldBase" ],
-        [ "FieldBaseComparable", "structwebcface_1_1Common_1_1FieldBaseComparable.html", "structwebcface_1_1Common_1_1FieldBaseComparable" ],
         [ "FuncCall", "structwebcface_1_1Common_1_1FuncCall.html", "structwebcface_1_1Common_1_1FuncCall" ],
         [ "FuncInfo", "structwebcface_1_1Common_1_1FuncInfo.html", "structwebcface_1_1Common_1_1FuncInfo" ],
         [ "Geometry", "structwebcface_1_1Common_1_1Geometry.html", "structwebcface_1_1Common_1_1Geometry" ],
@@ -25,7 +24,7 @@ var annotated_dup =
         [ "Geometry3D", "structwebcface_1_1Common_1_1Geometry3D.html", null ],
         [ "ImageFrame", "classwebcface_1_1Common_1_1ImageFrame.html", "classwebcface_1_1Common_1_1ImageFrame" ],
         [ "ImageReq", "structwebcface_1_1Common_1_1ImageReq.html", "structwebcface_1_1Common_1_1ImageReq" ],
-        [ "LogLineData", "structwebcface_1_1Common_1_1LogLineData.html", "structwebcface_1_1Common_1_1LogLineData" ],
+        [ "LogLineData", "classwebcface_1_1Common_1_1LogLineData.html", "classwebcface_1_1Common_1_1LogLineData" ],
         [ "Point", "classwebcface_1_1Common_1_1Point.html", "classwebcface_1_1Common_1_1Point" ],
         [ "Queue", "classwebcface_1_1Common_1_1Queue.html", "classwebcface_1_1Common_1_1Queue" ],
         [ "RobotJoint", "structwebcface_1_1Common_1_1RobotJoint.html", "structwebcface_1_1Common_1_1RobotJoint" ],
@@ -55,6 +54,9 @@ var annotated_dup =
         [ "Plane", "structwebcface_1_1Components_1_1Geometries_1_1Plane.html", "structwebcface_1_1Components_1_1Geometries_1_1Plane" ],
         [ "Polygon", "structwebcface_1_1Components_1_1Geometries_1_1Polygon.html", "structwebcface_1_1Components_1_1Geometries_1_1Polygon" ],
         [ "Sphere", "structwebcface_1_1Components_1_1Geometries_1_1Sphere.html", "structwebcface_1_1Components_1_1Geometries_1_1Sphere" ]
+      ] ],
+      [ "Encoding", "namespacewebcface_1_1Encoding.html", [
+        [ "SharedString", "classwebcface_1_1Encoding_1_1SharedString.html", "classwebcface_1_1Encoding_1_1SharedString" ]
       ] ],
       [ "Geometries", "namespacewebcface_1_1Components_1_1Geometries.html", [
         [ "Box", "structwebcface_1_1Components_1_1Geometries_1_1Box.html", "structwebcface_1_1Components_1_1Geometries_1_1Box" ],
@@ -141,7 +143,6 @@ var annotated_dup =
       [ "EventTarget", "classwebcface_1_1EventTarget.html", "classwebcface_1_1EventTarget" ],
       [ "Field", "structwebcface_1_1Field.html", "structwebcface_1_1Field" ],
       [ "FieldBase", "structwebcface_1_1Common_1_1FieldBase.html", "structwebcface_1_1Common_1_1FieldBase" ],
-      [ "FieldBaseComparable", "structwebcface_1_1Common_1_1FieldBaseComparable.html", "structwebcface_1_1Common_1_1FieldBaseComparable" ],
       [ "Func", "classwebcface_1_1Func.html", "classwebcface_1_1Func" ],
       [ "FuncCall", "structwebcface_1_1Common_1_1FuncCall.html", "structwebcface_1_1Common_1_1FuncCall" ],
       [ "FuncCallHandle", "classwebcface_1_1FuncCallHandle.html", "classwebcface_1_1FuncCallHandle" ],
@@ -160,7 +161,7 @@ var annotated_dup =
       [ "Line", "structwebcface_1_1Components_1_1Geometries_1_1Line.html", "structwebcface_1_1Components_1_1Geometries_1_1Line" ],
       [ "Log", "classwebcface_1_1Log.html", "classwebcface_1_1Log" ],
       [ "LoggerSink", "classwebcface_1_1LoggerSink.html", "classwebcface_1_1LoggerSink" ],
-      [ "LogLineData", "structwebcface_1_1Common_1_1LogLineData.html", "structwebcface_1_1Common_1_1LogLineData" ],
+      [ "LogLineData", "classwebcface_1_1Common_1_1LogLineData.html", "classwebcface_1_1Common_1_1LogLineData" ],
       [ "Member", "classwebcface_1_1Member.html", "classwebcface_1_1Member" ],
       [ "Plane", "structwebcface_1_1Components_1_1Geometries_1_1Plane.html", "structwebcface_1_1Components_1_1Geometries_1_1Plane" ],
       [ "Point", "classwebcface_1_1Common_1_1Point.html", "classwebcface_1_1Common_1_1Point" ],
@@ -169,6 +170,7 @@ var annotated_dup =
       [ "RobotJoint", "structwebcface_1_1Common_1_1RobotJoint.html", "structwebcface_1_1Common_1_1RobotJoint" ],
       [ "RobotLink", "structwebcface_1_1Common_1_1RobotLink.html", "structwebcface_1_1Common_1_1RobotLink" ],
       [ "RobotModel", "classwebcface_1_1RobotModel.html", "classwebcface_1_1RobotModel" ],
+      [ "SharedString", "classwebcface_1_1Encoding_1_1SharedString.html", "classwebcface_1_1Encoding_1_1SharedString" ],
       [ "Size", "classwebcface_1_1Common_1_1Size.html", "classwebcface_1_1Common_1_1Size" ],
       [ "SizeOption", "classwebcface_1_1Common_1_1SizeOption.html", "classwebcface_1_1Common_1_1SizeOption" ],
       [ "Sphere", "structwebcface_1_1Components_1_1Geometries_1_1Sphere.html", "structwebcface_1_1Components_1_1Geometries_1_1Sphere" ],

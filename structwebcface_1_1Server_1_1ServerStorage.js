@@ -4,7 +4,7 @@ var structwebcface_1_1Server_1_1ServerStorage =
     [ "~ServerStorage", "structwebcface_1_1Server_1_1ServerStorage.html#a67510a38f587b0abde7b01f8cd7ee8d4", null ],
     [ "clear", "structwebcface_1_1Server_1_1ServerStorage.html#ac8bb3912a3ce86b15842e79d0b421204", null ],
     [ "clientSendAll", "structwebcface_1_1Server_1_1ServerStorage.html#a937b33f9efb3d5d56b0ba71669ed2d96", null ],
-    [ "findAndDo", "structwebcface_1_1Server_1_1ServerStorage.html#a696723f813475789233519b5d2f2d144", null ],
+    [ "findAndDo", "structwebcface_1_1Server_1_1ServerStorage.html#a744eacca6163a75a3e1fc84de5cf3f15", null ],
     [ "findAndDo", "structwebcface_1_1Server_1_1ServerStorage.html#ac96bd2e7f1b0ca48489d84a7a74a19b6", null ],
     [ "findConnectedAndDo", "structwebcface_1_1Server_1_1ServerStorage.html#aa45c4a8d61114752c695184f098bdf7b", null ],
     [ "forEach", "structwebcface_1_1Server_1_1ServerStorage.html#a5971f368591f8566c99413135e0c7801", null ],

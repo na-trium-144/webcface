@@ -165,13 +165,13 @@ $(document).ready(function(){initNavTree('deprecated.html',''); initResizable();
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1FuncListener.html#aac80d390ce7bdfe7df4b7ca2e34fe5e8">FuncListener::hidden</a>  (bool)</dt>
 <dd><a class="anchor" id="_deprecated000012"></a> ver1.10から、名前が半角ピリオドで始まるかどうかで判断されるように仕様変更したため、 hiddenの指定は無効 (この関数は効果がない) </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Image.html#a8d4286b3fc8dcf2aacb9397c2d9e12ce">Image::request</a>  (std::optional&lt; int &gt; rows, std::optional&lt; int &gt; cols=std::nullopt, std::optional&lt; Common::ImageColorMode &gt; color_mode=std::nullopt, std::optional&lt; double &gt; frame_rate=std::nullopt)</dt>
-<dd><a class="anchor" id="_deprecated000013"></a>ver1.12〜 rows, colsの順番がややこしいので <a class="el" href="namespacewebcface_1_1Common.html#af86798df2fbf5f4c32747c0f237d0928" title="高さ × 幅 でサイズを指定">sizeHW()</a> を使ってサイズ指定 </dd>
+<dd><a class="anchor" id="_deprecated000013"></a>ver2.0〜 rows, colsの順番がややこしいので <a class="el" href="namespacewebcface_1_1Common.html#af86798df2fbf5f4c32747c0f237d0928" title="高さ × 幅 でサイズを指定">sizeHW()</a> を使ってサイズ指定 </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Image.html#a78688000894f1ba902bdb458c5de9d6c">Image::request</a>  (std::optional&lt; int &gt; rows, std::optional&lt; int &gt; cols, <a class="el" href="namespacewebcface_1_1Common.html#ab72e620a597e5f750b2c9b3391e84ded">Common::ImageCompressMode</a> cmp_mode, int quality, std::optional&lt; double &gt; frame_rate=std::nullopt)</dt>
-<dd><a class="anchor" id="_deprecated000014"></a>ver1.12〜 rows, colsの順番がややこしいので <a class="el" href="namespacewebcface_1_1Common.html#af86798df2fbf5f4c32747c0f237d0928" title="高さ × 幅 でサイズを指定">sizeHW()</a> を使ってサイズ指定 </dd>
+<dd><a class="anchor" id="_deprecated000014"></a>ver2.0〜 rows, colsの順番がややこしいので <a class="el" href="namespacewebcface_1_1Common.html#af86798df2fbf5f4c32747c0f237d0928" title="高さ × 幅 でサイズを指定">sizeHW()</a> を使ってサイズ指定 </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Image.html#a3799c65797b21f35329dc284df16a65d">Image::time</a>  () const</dt>
 <dd><a class="anchor" id="_deprecated000015"></a>1.7でMember::syncTime()に変更 </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Common_1_1ImageFrame.html#a32a0ee55778ae1e6f2034f955edc098a">ImageFrame::ImageFrame</a>  (int rows, int cols, const void *data, ImageColorMode color_mode=<a class="el" href="namespacewebcface_1_1Common.html#abcfd96b0be942012c2f4641b4741a31ea84746ad530563de3445efec60aa7ff59">ImageColorMode::bgr</a>)</dt>
-<dd><a class="anchor" id="_deprecated000010"></a>ver1.12〜 rows, colsの順番がややこしいので <a class="el" href="namespacewebcface_1_1Common.html#af86798df2fbf5f4c32747c0f237d0928" title="高さ × 幅 でサイズを指定">sizeHW()</a> を使ってサイズ指定 </dd>
+<dd><a class="anchor" id="_deprecated000010"></a>ver2.0〜 rows, colsの順番がややこしいので <a class="el" href="namespacewebcface_1_1Common.html#af86798df2fbf5f4c32747c0f237d0928" title="高さ × 幅 でサイズを指定">sizeHW()</a> を使ってサイズ指定 </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Member.html#a7fd842c99612e3ce7332ea288325cd7b">Member::funcs</a>  () const</dt>
 <dd><a class="anchor" id="_deprecated000019"></a>1.6で <a class="el" href="classwebcface_1_1Member.html#a09225396c72929b26144848529b88c02">funcEntries()</a> に変更 </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Member.html#a45ca97bd85fbb26eefa7b5133f3287f4">Member::images</a>  () const</dt>
@@ -205,7 +205,7 @@ $(document).ready(function(){initNavTree('deprecated.html',''); initResizable();
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Jun 13 2024 18:19:31 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Fri Jun 14 2024 15:54:53 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

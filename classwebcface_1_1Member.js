@@ -1,7 +1,7 @@
 var classwebcface_1_1Member =
 [
     [ "Member", "classwebcface_1_1Member.html#a1a5b3da87c7076e24dee4f7f55604e6c", null ],
-    [ "Member", "classwebcface_1_1Member.html#ae11b91ad479d685ff8b4c2d16180b43d", null ],
+    [ "Member", "classwebcface_1_1Member.html#a4f477d554a7622cb73dd020d2ba3ecd1", null ],
     [ "Member", "classwebcface_1_1Member.html#af9c306505ae358dd2fef77173cebc6c8", null ],
     [ "canvas2D", "classwebcface_1_1Member.html#af9bd15e71b656e996127c88145c582ad", null ],
     [ "canvas2D", "classwebcface_1_1Member.html#afbcbc44742f2180482b05a552f286ddb", null ],
@@ -9,9 +9,9 @@ var classwebcface_1_1Member =
     [ "canvas3D", "classwebcface_1_1Member.html#a5cafb1e36981dec5ffd26873b1b0fa2e", null ],
     [ "canvas3D", "classwebcface_1_1Member.html#aa54a2112084da336e31ae12cfb5cfff5", null ],
     [ "canvas3DEntries", "classwebcface_1_1Member.html#a485655bf8c0e1066c3ea1c4f3220940d", null ],
+    [ "child", "classwebcface_1_1Member.html#ac495d25f6992031499cac9742d799703", null ],
     [ "child", "classwebcface_1_1Member.html#a3f4c5cd0eab27717d89875ffdd67a62f", null ],
     [ "child", "classwebcface_1_1Member.html#a6bf5695e81e7867bf17ca940f7d9d958", null ],
-    [ "child", "classwebcface_1_1Member.html#adf67a128c9fee44baf4f876147ac3ed5", null ],
     [ "child", "classwebcface_1_1Member.html#a5df64f9f1d96814b040c8898fa3faa58", null ],
     [ "dataLock", "classwebcface_1_1Member.html#ac2a701aed117691b0af187b9f029c83c", null ],
     [ "expired", "classwebcface_1_1Member.html#aab9d1bda10b0c1b79c4f48f3ebcf1d29", null ],
@@ -19,6 +19,8 @@ var classwebcface_1_1Member =
     [ "func", "classwebcface_1_1Member.html#a6ae7a23d3e36930f42b466890bd38711", null ],
     [ "func", "classwebcface_1_1Member.html#a925d25447fc38f6db840d3839a2ad295", null ],
     [ "funcEntries", "classwebcface_1_1Member.html#a09225396c72929b26144848529b88c02", null ],
+    [ "funcListener", "classwebcface_1_1Member.html#af9bbb7182c830561a7ec938214d960dc", null ],
+    [ "funcListener", "classwebcface_1_1Member.html#a28615236f8ca038f1f55f9e299a5cb8c", null ],
     [ "funcs", "classwebcface_1_1Member.html#a7fd842c99612e3ce7332ea288325cd7b", null ],
     [ "image", "classwebcface_1_1Member.html#ac43a5d0cff75fa531889289e62c023ca", null ],
     [ "image", "classwebcface_1_1Member.html#abc6a895380d1cd1f3966ca35dbd454cc", null ],
@@ -72,6 +74,6 @@ var classwebcface_1_1Member =
     [ "viewEntries", "classwebcface_1_1Member.html#a8da26fb4e605fea2f481d0bd8a1e8f9a", null ],
     [ "views", "classwebcface_1_1Member.html#a18661fc989eced84d33d56528fcc0b56", null ],
     [ "data_w", "classwebcface_1_1Member.html#acf420a0ba1ce5e817feac0f51c9056dc", null ],
-    [ "field_", "classwebcface_1_1Member.html#a1e59608e87206ab4e8fc18344a2d1183", null ],
-    [ "member_", "classwebcface_1_1Member.html#ad6acdb6994e027b9708650fd6d8076a2", null ]
+    [ "field_", "classwebcface_1_1Member.html#ac6ffd336e43abb201663ab9b064a0607", null ],
+    [ "member_", "classwebcface_1_1Member.html#a3e22aa0aa6e9e9286fd1d3c1ea6c8a32", null ]
 ];

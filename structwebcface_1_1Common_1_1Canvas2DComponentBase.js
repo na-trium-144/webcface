@@ -8,6 +8,6 @@ var structwebcface_1_1Common_1_1Canvas2DComponentBase =
     [ "on_click_func_", "structwebcface_1_1Common_1_1Canvas2DComponentBase.html#a237b2153601b38352bfec5cbd156378f", null ],
     [ "origin_", "structwebcface_1_1Common_1_1Canvas2DComponentBase.html#a05df68f5f0d213367feacfc47d7ac757", null ],
     [ "stroke_width_", "structwebcface_1_1Common_1_1Canvas2DComponentBase.html#a2b65e2d5b08af22d6d671f77aba1cc41", null ],
-    [ "text_", "structwebcface_1_1Common_1_1Canvas2DComponentBase.html#abd8115893f33d30d7dbe5572e7a5bfbb", null ],
+    [ "text_", "structwebcface_1_1Common_1_1Canvas2DComponentBase.html#ae1af4940359c29f642b7a8ffbc57e622", null ],
     [ "type_", "structwebcface_1_1Common_1_1Canvas2DComponentBase.html#aeebeae276313d63ad1c8b523e9d5ece6", null ]
 ];

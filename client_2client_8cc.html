@@ -139,7 +139,8 @@ $(document).ready(function(){initNavTree('client_2client_8cc.html',''); initResi
 
 <div class="header">
   <div class="summary">
-<a href="#namespaces">Namespaces</a>  </div>
+<a href="#namespaces">Namespaces</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">client.cc File Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -162,13 +163,28 @@ $(document).ready(function(){initNavTree('client_2client_8cc.html',''); initResi
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for client.cc:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="client_2client_8cc__incl.svg" width="5366" height="696"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="client_2client_8cc__incl.svg" width="5564" height="696"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
 Namespaces</h2></td></tr>
 <tr class="memitem:namespacewebcface" id="r_namespacewebcface"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface.html">webcface</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:ad3b1066013946e5c38bb3ae4180a321d" id="r_ad3b1066013946e5c38bb3ae4180a321d"><td class="memTemplParams" colspan="2">template&lt;typename M , typename K1 , typename K2 &gt; </td></tr>
+<tr class="memitem:ad3b1066013946e5c38bb3ae4180a321d"><td class="memTemplItemLeft" align="right" valign="top">static auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacewebcface.html#ad3b1066013946e5c38bb3ae4180a321d">findFromMap2</a> (const M &amp;map, const K1 &amp;key1, const K2 &amp;key2) -&gt; std::optional&lt; std::remove_cvref_t&lt; decltype(map.at(key1).at(key2))&gt; &gt;</td></tr>
+<tr class="separator:ad3b1066013946e5c38bb3ae4180a321d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa9c6455dbdc64f7b3f085edd91ffd5f7" id="r_aa9c6455dbdc64f7b3f085edd91ffd5f7"><td class="memTemplParams" colspan="2">template&lt;typename M , typename K1 &gt; </td></tr>
+<tr class="memitem:aa9c6455dbdc64f7b3f085edd91ffd5f7"><td class="memTemplItemLeft" align="right" valign="top">static auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacewebcface.html#aa9c6455dbdc64f7b3f085edd91ffd5f7">findFromMap1</a> (const M &amp;map, const K1 &amp;key1) -&gt; std::optional&lt; std::remove_cvref_t&lt; decltype(map.at(key1))&gt; &gt;</td></tr>
+<tr class="separator:aa9c6455dbdc64f7b3f085edd91ffd5f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8af1f28b88a0c9ebbceb9a2ee8edeaf2" id="r_a8af1f28b88a0c9ebbceb9a2ee8edeaf2"><td class="memTemplParams" colspan="2">template&lt;typename Msg , typename T , typename S , typename E &gt; </td></tr>
+<tr class="memitem:a8af1f28b88a0c9ebbceb9a2ee8edeaf2"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacewebcface.html#a8af1f28b88a0c9ebbceb9a2ee8edeaf2">onRecvRes</a> (<a class="el" href="structwebcface_1_1Internal_1_1ClientData.html">Internal::ClientData</a> *this_, const Msg &amp;r, const T &amp;data, S &amp;store, const E &amp;event)</td></tr>
+<tr class="separator:a8af1f28b88a0c9ebbceb9a2ee8edeaf2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae80e2a107f14c9d258ed4e1f4de395c4" id="r_ae80e2a107f14c9d258ed4e1f4de395c4"><td class="memTemplParams" colspan="2">template&lt;typename Msg , typename S , typename E &gt; </td></tr>
+<tr class="memitem:ae80e2a107f14c9d258ed4e1f4de395c4"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacewebcface.html#ae80e2a107f14c9d258ed4e1f4de395c4">onRecvEntry</a> (<a class="el" href="structwebcface_1_1Internal_1_1ClientData.html">Internal::ClientData</a> *this_, const Msg &amp;r, S &amp;store, const E &amp;event)</td></tr>
+<tr class="separator:ae80e2a107f14c9d258ed4e1f4de395c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -176,7 +192,7 @@ Namespaces</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_6908ff505388a07996d238c763adbdab.html">client</a></li><li class="navelem"><a class="el" href="client_2client_8cc.html">client.cc</a></li>
-    <li class="footer">Generated on Thu Jun 13 2024 18:19:31 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Fri Jun 14 2024 15:54:53 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

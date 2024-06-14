@@ -1,15 +1,18 @@
 <map id="InputRefState" name="InputRefState">
-<area shape="rect" id="Node000001" title=" " alt="" coords="113,256,223,281"/>
-<area shape="rect" id="Node000002" href="$classwebcface_1_1Text.html" title="文字列の送受信データを表すクラス" alt="" coords="95,168,145,193"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="135,204,164,254,159,257,131,207"/>
-<area shape="rect" id="Node000003" href="$structwebcface_1_1Field.html" title="ClientDataの参照とメンバ名とデータ名を持つクラス" alt="" coords="29,93,83,119"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="78,128,112,166,108,169,74,131"/>
-<area shape="rect" id="Node000004" href="$structwebcface_1_1Common_1_1FieldBase.html" title="メンバ名とデータ名を持つクラス" alt="" coords="5,5,91,31"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="53,44,58,93,52,93,48,45"/>
-<area shape="rect" id="Node000005" href="$classwebcface_1_1EventTarget.html" title=" " alt="" coords="121,93,277,119"/>
-<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="178,130,135,170,131,166,174,126"/>
-<area shape="rect" id="Node000006" href="$classwebcface_1_1EventTarget.html" title="イベントを表し、コールバックの追加や削除ができるクラス。" alt="" coords="115,5,296,31"/>
-<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="206,45,202,93,197,93,201,44"/>
-<area shape="rect" id="Node000007" href="$classwebcface_1_1Common_1_1ValAdaptor.html" title="数値、文字列などの値を相互変換するクラス" alt="" coords="169,168,263,193"/>
-<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="205,207,177,257,172,254,201,204"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="214,383,325,408"/>
+<area shape="rect" id="Node000002" href="$classwebcface_1_1Text.html" title="文字列の送受信データを表すクラス" alt="" coords="181,295,230,320"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="224,329,263,381,258,384,220,333"/>
+<area shape="rect" id="Node000003" href="$structwebcface_1_1Field.html" title="ClientDataの参照とメンバ名とデータ名を持つクラス" alt="" coords="43,207,96,232"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="100,237,188,292,185,297,98,242"/>
+<area shape="rect" id="Node000004" href="$structwebcface_1_1Common_1_1FieldBase.html" title="メンバ名とデータ名を持つクラス" alt="" coords="5,108,91,133"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="56,146,69,206,64,207,51,147"/>
+<area shape="rect" id="Node000005" href="$classwebcface_1_1Encoding_1_1SharedString.html" title="u8stringとstringとwstringをshared_ptrで持ち共有する" alt="" coords="138,5,243,31"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="165,41,66,110,63,106,162,36"/>
+<area shape="rect" id="Node000008" href="$classwebcface_1_1Common_1_1ValAdaptor.html" title="数値、文字列などの値を相互変換するクラス" alt="" coords="283,157,376,183"/>
+<area shape="poly" id="edge8_Node000008_Node000005" title=" " alt="" coords="226,35,269,65,291,85,310,107,323,132,330,156,325,158,318,134,306,109,287,88,266,69,223,40"/>
+<area shape="rect" id="Node000006" href="$classwebcface_1_1EventTarget.html" title=" " alt="" coords="127,207,283,232"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="208,246,208,294,203,294,203,246"/>
+<area shape="rect" id="Node000007" href="$classwebcface_1_1EventTarget.html" title="イベントを表し、コールバックの追加や削除ができるクラス。" alt="" coords="115,108,296,133"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="208,147,208,207,203,207,203,147"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="325,197,275,383,270,382,320,195"/>
 </map>

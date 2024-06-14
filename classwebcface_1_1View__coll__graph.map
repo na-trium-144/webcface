@@ -1,13 +1,15 @@
 <map id="View" name="View">
-<area shape="rect" id="Node000001" title="Viewの送受信データを表すクラス" alt="" coords="171,168,226,193"/>
-<area shape="rect" id="Node000002" href="$structwebcface_1_1Field.html" title="ClientDataの参照とメンバ名とデータ名を持つクラス" alt="" coords="28,93,81,119"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="91,123,177,165,174,170,89,127"/>
-<area shape="rect" id="Node000003" href="$structwebcface_1_1Common_1_1FieldBase.html" title="メンバ名とデータ名を持つクラス" alt="" coords="5,5,91,31"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="53,44,56,93,51,93,47,45"/>
-<area shape="rect" id="Node000004" href="$classwebcface_1_1EventTarget.html" title=" " alt="" coords="118,93,279,119"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="201,133,201,168,196,168,196,133"/>
-<area shape="rect" id="Node000005" href="$classwebcface_1_1EventTarget.html" title="イベントを表し、コールバックの追加や削除ができるクラス。" alt="" coords="115,5,296,31"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="206,45,202,93,197,93,201,44"/>
-<area shape="rect" id="Node000006" title=" " alt="" coords="303,93,379,119"/>
-<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="307,127,223,170,220,165,305,123"/>
+<area shape="rect" id="Node000001" title="Viewの送受信データを表すクラス" alt="" coords="185,271,240,296"/>
+<area shape="rect" id="Node000002" href="$structwebcface_1_1Field.html" title="ClientDataの参照とメンバ名とデータ名を持つクラス" alt="" coords="47,196,101,221"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="110,226,192,268,189,273,107,230"/>
+<area shape="rect" id="Node000003" href="$structwebcface_1_1Common_1_1FieldBase.html" title="メンバ名とデータ名を持つクラス" alt="" coords="15,108,101,133"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="65,146,74,195,69,196,60,147"/>
+<area shape="rect" id="Node000004" href="$classwebcface_1_1Encoding_1_1SharedString.html" title="u8stringとstringとwstringをshared_ptrで持ち共有する" alt="" coords="5,5,111,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="61,45,61,108,55,108,55,45"/>
+<area shape="rect" id="Node000005" href="$classwebcface_1_1EventTarget.html" title=" " alt="" coords="132,196,293,221"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="215,236,215,270,210,270,210,236"/>
+<area shape="rect" id="Node000006" href="$classwebcface_1_1EventTarget.html" title="イベントを表し、コールバックの追加や削除ができるクラス。" alt="" coords="125,108,306,133"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="217,147,216,196,210,195,212,147"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="317,196,393,221"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="321,230,237,273,234,268,319,225"/>
 </map>

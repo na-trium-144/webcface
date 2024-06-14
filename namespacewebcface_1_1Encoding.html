@@ -139,12 +139,33 @@ $(document).ready(function(){initNavTree('namespacewebcface_1_1Encoding.html',''
 
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#typedef-members">Typedefs</a> &#124;
 <a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">webcface::Encoding Namespace Reference</div></div>
 </div><!--header-->
 <div class="contents">
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Encoding_1_1SharedString.html">SharedString</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">u8stringとstringとwstringをshared_ptrで持ち共有する  <a href="classwebcface_1_1Encoding_1_1SharedString.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:a56d3269e324a6f481ed288a48e48c759" id="r_a56d3269e324a6f481ed288a48e48c759"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a56d3269e324a6f481ed288a48e48c759"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Encoding.html#a56d3269e324a6f481ed288a48e48c759">StrMap1</a> = std::unordered_map&lt; <a class="el" href="classwebcface_1_1Encoding_1_1SharedString.html">SharedString</a>, T, <a class="el" href="structwebcface_1_1Encoding_1_1SharedString_1_1Hash.html">SharedString::Hash</a> &gt;</td></tr>
+<tr class="separator:a56d3269e324a6f481ed288a48e48c759"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd5eab460a31c187724b48a8773dbb40" id="r_abd5eab460a31c187724b48a8773dbb40"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:abd5eab460a31c187724b48a8773dbb40"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Encoding.html#abd5eab460a31c187724b48a8773dbb40">StrMap2</a> = <a class="el" href="namespacewebcface_1_1Encoding.html#a56d3269e324a6f481ed288a48e48c759">StrMap1</a>&lt; <a class="el" href="namespacewebcface_1_1Encoding.html#a56d3269e324a6f481ed288a48e48c759">StrMap1</a>&lt; T &gt; &gt;</td></tr>
+<tr class="separator:abd5eab460a31c187724b48a8773dbb40"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2cce793d23704d7099f3befdd5203f2e" id="r_a2cce793d23704d7099f3befdd5203f2e"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Encoding.html#a2cce793d23704d7099f3befdd5203f2e">StrSet1</a> = std::unordered_set&lt; <a class="el" href="classwebcface_1_1Encoding_1_1SharedString.html">SharedString</a>, <a class="el" href="structwebcface_1_1Encoding_1_1SharedString_1_1Hash.html">SharedString::Hash</a> &gt;</td></tr>
+<tr class="separator:a2cce793d23704d7099f3befdd5203f2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa211fead709a7546b1b6416379df5449" id="r_aa211fead709a7546b1b6416379df5449"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Encoding.html#aa211fead709a7546b1b6416379df5449">StrSet2</a> = <a class="el" href="namespacewebcface_1_1Encoding.html#a56d3269e324a6f481ed288a48e48c759">StrMap1</a>&lt; <a class="el" href="namespacewebcface_1_1Encoding.html#a2cce793d23704d7099f3befdd5203f2e">StrSet1</a> &gt;</td></tr>
+<tr class="separator:aa211fead709a7546b1b6416379df5449"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a478748a436d45cac26bdb4c4af55f54b" id="r_a478748a436d45cac26bdb4c4af55f54b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Encoding.html#a478748a436d45cac26bdb4c4af55f54b">usingUTF8</a> (bool flag)</td></tr>
@@ -185,6 +206,67 @@ Variables</h2></td></tr>
 <tr class="memitem:af3606c1f9e63f6fdca78d6ec6226a4ee" id="r_af3606c1f9e63f6fdca78d6ec6226a4ee"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Encoding.html#af3606c1f9e63f6fdca78d6ec6226a4ee">using_utf8</a> = true</td></tr>
 <tr class="separator:af3606c1f9e63f6fdca78d6ec6226a4ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Typedef Documentation</h2>
+<a id="a56d3269e324a6f481ed288a48e48c759" name="a56d3269e324a6f481ed288a48e48c759"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a56d3269e324a6f481ed288a48e48c759">&#9670;&#160;</a></span>StrMap1</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespacewebcface_1_1Encoding.html#a56d3269e324a6f481ed288a48e48c759">StrMap1</a> =  std::unordered_map&lt;<a class="el" href="classwebcface_1_1Encoding_1_1SharedString.html">SharedString</a>, T, <a class="el" href="structwebcface_1_1Encoding_1_1SharedString_1_1Hash.html">SharedString::Hash</a>&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="abd5eab460a31c187724b48a8773dbb40" name="abd5eab460a31c187724b48a8773dbb40"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abd5eab460a31c187724b48a8773dbb40">&#9670;&#160;</a></span>StrMap2</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespacewebcface_1_1Encoding.html#abd5eab460a31c187724b48a8773dbb40">StrMap2</a> =  <a class="el" href="namespacewebcface_1_1Encoding.html#a56d3269e324a6f481ed288a48e48c759">StrMap1</a>&lt;<a class="el" href="namespacewebcface_1_1Encoding.html#a56d3269e324a6f481ed288a48e48c759">StrMap1</a>&lt;T&gt; &gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a2cce793d23704d7099f3befdd5203f2e" name="a2cce793d23704d7099f3befdd5203f2e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2cce793d23704d7099f3befdd5203f2e">&#9670;&#160;</a></span>StrSet1</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespacewebcface_1_1Encoding.html#a2cce793d23704d7099f3befdd5203f2e">StrSet1</a> =  std::unordered_set&lt;<a class="el" href="classwebcface_1_1Encoding_1_1SharedString.html">SharedString</a>, <a class="el" href="structwebcface_1_1Encoding_1_1SharedString_1_1Hash.html">SharedString::Hash</a>&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa211fead709a7546b1b6416379df5449" name="aa211fead709a7546b1b6416379df5449"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa211fead709a7546b1b6416379df5449">&#9670;&#160;</a></span>StrSet2</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespacewebcface_1_1Encoding.html#aa211fead709a7546b1b6416379df5449">StrSet2</a> =  <a class="el" href="namespacewebcface_1_1Encoding.html#a56d3269e324a6f481ed288a48e48c759">StrMap1</a>&lt;<a class="el" href="namespacewebcface_1_1Encoding.html#a2cce793d23704d7099f3befdd5203f2e">StrSet1</a>&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="aec962491891b529b93c97668d385ff29" name="aec962491891b529b93c97668d385ff29"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aec962491891b529b93c97668d385ff29">&#9670;&#160;</a></span>castFromU8()</h2>
@@ -203,7 +285,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 
 <p>u8stringをstringにキャストする </p>
-<dl class="section since"><dt>Since</dt><dd>ver1.12 </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>ver2.0 </dd></dl>
 
 </div>
 </div>
@@ -240,7 +322,7 @@ Variables</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<dl class="section since"><dt>Since</dt><dd>ver1.12 </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>ver2.0 </dd></dl>
 
 </div>
 </div>
@@ -261,7 +343,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 
 <p>stringをu8stringにキャストする </p>
-<dl class="section since"><dt>Since</dt><dd>ver1.12 </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>ver2.0 </dd></dl>
 
 </div>
 </div>
@@ -282,7 +364,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 
 <p>utf8の文字列をstringに変換する </p>
-<dl class="section since"><dt>Since</dt><dd>ver1.12</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>ver2.0</dd></dl>
 <p>windowsでusingUTF8(false)の場合はANSIに、 それ以外の場合なにもせずそのままコピーする。 </p>
 
 </div>
@@ -304,7 +386,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 
 <p>utf8の文字列をwstringに変換する </p>
-<dl class="section since"><dt>Since</dt><dd>ver1.12 </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>ver2.0 </dd></dl>
 
 </div>
 </div>
@@ -325,7 +407,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 
 <p>stringをutf8のchar配列に変換する </p>
-<dl class="section since"><dt>Since</dt><dd>ver1.12</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>ver2.0</dd></dl>
 <p>windowsではusingUTF8(false)の場合ANSIからutf8へエンコーディングの変換を行うが、 usingUTF8(true)の場合なにもせずそのままコピーする。</p>
 <p>utf8であることを明確にするために戻り値型をu8stringにしている </p>
 
@@ -348,7 +430,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 
 <p>wstringをutf8のchar配列に変換する </p>
-<dl class="section since"><dt>Since</dt><dd>ver1.12</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>ver2.0</dd></dl>
 <p>(unixではたぶん必要ないが、::ifで分岐するのがめんどいので作ってしまう)</p>
 <p>utf8であることを明確にするために戻り値型をu8stringにしている </p>
 
@@ -371,7 +453,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 
 <p>wstringをstringに変換する </p>
-<dl class="section since"><dt>Since</dt><dd>ver1.12 </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>ver2.0 </dd></dl>
 
 </div>
 </div>
@@ -392,7 +474,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 
 <p>stringをwstringに変換する </p>
-<dl class="section since"><dt>Since</dt><dd>ver1.12 </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>ver2.0 </dd></dl>
 
 </div>
 </div>
@@ -412,7 +494,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 
 <p>webcfaceが使用するエンコーディングを取得する </p>
-<dl class="section since"><dt>Since</dt><dd>ver1.12 </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>ver2.0 </dd></dl>
 
 </div>
 </div>
@@ -433,7 +515,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 
 <p>webcfaceが使用するエンコーディングを設定する </p>
-<dl class="section since"><dt>Since</dt><dd>ver1.12</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>ver2.0</dd></dl>
 <ul>
 <li>windowsでは、falseの場合webcfaceの各種クラスのインタフェースで使われる std::string をすべてANSIエンコーディングとみなし、 内部でutf8と相互変換する。</li>
 <li>デフォルトは true (以前のバージョンとの互換性のため)</li>
@@ -473,7 +555,7 @@ Variables</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="namespacewebcface_1_1Encoding.html">Encoding</a></li>
-    <li class="footer">Generated on Thu Jun 13 2024 18:19:31 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Fri Jun 14 2024 15:54:53 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

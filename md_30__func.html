@@ -174,8 +174,8 @@ $(document).ready(function(){initNavTree('md_30__func.html',''); initResizable()
 <div class="line">wcli.func(<span class="stringliteral">&quot;fuga&quot;</span>).set([](<span class="keywordtype">int</span> a, <span class="keyword">const</span> std::string &amp;b){ <span class="keywordflow">return</span> 3.1415; });</div>
 </div><!-- fragment --> set() の代わりに代入演算子(Value::operator=)でも同様のことができます</li>
 <li><p class="startli"><b class="tab-title">C</b> </p><dl class="section since"><dt>Since</dt><dd><span class="since-c">1.9</span></dd></dl>
-<p>wcfFuncSet, (<span class="since-c">1.12</span> wcfFuncSetW) で関数ポインタを登録できます。 <br  />
- 登録する関数の引数は wcfFuncCallHandle*, (<span class="since-c">1.12</span> wcfFuncCallHandleW*) と void* の2つで、 前者は引数のデータを取得したり結果を返すのに使用します。 <br  />
+<p>wcfFuncSet, (<span class="since-c">2.0</span> wcfFuncSetW) で関数ポインタを登録できます。 <br  />
+ 登録する関数の引数は wcfFuncCallHandle*, (<span class="since-c">2.0</span> wcfFuncCallHandleW*) と void* の2つで、 前者は引数のデータを取得したり結果を返すのに使用します。 <br  />
  後者には登録時に任意のデータのポインタを渡すことができます。(使用しない場合はNULLでよいです。) </p><div class="fragment"><div class="line"><span class="keywordtype">void</span> callback(<a class="code hl_struct" href="structwcfFuncCallHandle.html">wcfFuncCallHandle</a> *handle, <span class="keywordtype">void</span> *user_data_p) {</div>
 <div class="line">    <span class="keyword">struct </span>UserData *user_data = (<span class="keyword">struct </span>UserData *)user_data_p;</div>
 <div class="line">    <span class="comment">// do something</span></div>
@@ -421,7 +421,7 @@ runAsync</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Jun 13 2024 18:19:31 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Fri Jun 14 2024 15:54:53 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

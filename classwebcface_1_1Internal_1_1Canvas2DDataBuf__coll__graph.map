@@ -1,12 +1,14 @@
 <map id="Canvas2DDataBuf" name="Canvas2DDataBuf">
-<area shape="rect" id="Node000001" title=" " alt="" coords="77,331,218,356"/>
-<area shape="rect" id="Node000002" href="$classwebcface_1_1Internal_1_1DataSetBuffer.html" title=" " alt="" coords="5,256,289,281"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="150,296,150,330,145,330,145,296"/>
-<area shape="rect" id="Node000003" href="$structwebcface_1_1Field.html" title="ClientDataの参照とメンバ名とデータ名を持つクラス" alt="" coords="121,80,174,105"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="145,119,141,154,141,193,148,256,143,256,135,193,136,154,140,119"/>
-<area shape="rect" id="Node000005" href="$classwebcface_1_1Internal_1_1DataSetBuffer.html" title="View,Canvasなどで送信用にaddされたデータを管理する" alt="" coords="201,168,419,193"/>
-<area shape="poly" id="edge5_Node000005_Node000003" title=" " alt="" coords="182,109,289,165,287,170,180,114"/>
-<area shape="rect" id="Node000004" href="$structwebcface_1_1Common_1_1FieldBase.html" title="メンバ名とデータ名を持つクラス" alt="" coords="105,5,190,31"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="150,45,150,80,145,80,145,45"/>
-<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="277,202,171,258,168,253,275,197"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="77,433,218,459"/>
+<area shape="rect" id="Node000002" href="$classwebcface_1_1Internal_1_1DataSetBuffer.html" title=" " alt="" coords="5,359,289,384"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="150,398,150,433,145,433,145,398"/>
+<area shape="rect" id="Node000003" href="$structwebcface_1_1Field.html" title="ClientDataの参照とメンバ名とデータ名を持つクラス" alt="" coords="121,183,174,208"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="145,222,141,257,141,296,148,358,143,359,135,296,136,257,140,221"/>
+<area shape="rect" id="Node000006" href="$classwebcface_1_1Internal_1_1DataSetBuffer.html" title="View,Canvasなどで送信用にaddされたデータを管理する" alt="" coords="201,271,419,296"/>
+<area shape="poly" id="edge6_Node000006_Node000003" title=" " alt="" coords="182,212,289,268,287,273,180,217"/>
+<area shape="rect" id="Node000004" href="$structwebcface_1_1Common_1_1FieldBase.html" title="メンバ名とデータ名を持つクラス" alt="" coords="105,108,190,133"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="150,148,150,182,145,182,145,148"/>
+<area shape="rect" id="Node000005" href="$classwebcface_1_1Encoding_1_1SharedString.html" title="u8stringとstringとwstringをshared_ptrで持ち共有する" alt="" coords="95,5,200,31"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="150,45,150,108,145,108,145,45"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="277,305,171,361,168,356,275,300"/>
 </map>
