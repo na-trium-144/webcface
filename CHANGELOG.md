@@ -1,3 +1,7 @@
+## [1.11.4] - 2024-06-12
+### Changed
+* CMakeListsでfetchするcrowのタグを固定 (#277)
+
 ## [1.11.3] - 2024-05-03
 ### Changed
 * def.hとversion.rcの生成をbuildディレクトリ内に変更 (#259)

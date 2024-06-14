@@ -6,9 +6,9 @@ set(ORIGINAL_ENV_CXX "$ENV{CXX}" CACHE STRING "")
 
 project(webcface
     LANGUAGES CXX C
-    VERSION 1.11.3
+    VERSION 1.11.4
     HOMEPAGE_URL "https://github.com/na-trium-144/webcface"
-    DESCRIPTION "Web-based RPC & UI Library"
+    DESCRIPTION "Web-based IPC & Dashboard-like UI"
 )
 set(WEBCFACE_CONTACT "na-trium-144@users.noreply.github.com")
 set(WEBCFACE_VERSION ${PROJECT_VERSION})
@@ -496,6 +496,11 @@ else()
                     execute_process(
                         COMMAND CloneRepositories.IM7.cmd
                         WORKING_DIRECTORY ${magick-windows_SOURCE_DIR}
+                    )
+                    # patch
+                    file(APPEND
+                        ${magick-windows_SOURCE_DIR}/Projects/MagickCore/magick-baseconfig.h.in
+                        "\n#pragma warning(disable: 4201)\n"
                     )
                     message(STATUS "Building Configure...")
                     execute_process(
