@@ -15,8 +15,8 @@ enum class RobotJointType {
     prismatic = 3,
 };
 struct RobotJoint {
-    std::u8string name;
-    std::u8string parent_name;
+    SharedString name;
+    SharedString parent_name;
     RobotJointType type;
     Transform origin;
     double angle = 0;
@@ -30,7 +30,8 @@ inline namespace RobotJoints {
  *
  */
 inline RobotJoint fixedAbsolute(const Transform &origin) {
-    return RobotJoint{u8"", u8"", RobotJointType::fixed_absolute, origin, 0};
+    return RobotJoint{nullptr, nullptr, RobotJointType::fixed_absolute, origin,
+                      0};
 }
 /*!
  * \brief 親リンクをもたず座標を定義する
@@ -50,20 +51,20 @@ inline RobotJoint fixedAbsolute(const Point &origin) {
  */
 inline RobotJoint fixedJoint(std::string_view parent_name,
                              const Transform &origin) {
-    return RobotJoint{u8"", Encoding::encode(parent_name),
-                      RobotJointType::fixed, origin, 0};
+    return RobotJoint{nullptr, SharedString(parent_name), RobotJointType::fixed,
+                      origin, 0};
 }
 /*!
  * \brief 固定された関節 (wstring)
- * \since ver1.12
+ * \since ver2.0
  * \param parent_name 親リンクの名前
  * \param origin 親リンクの座標系で子リンクの原点
  *
  */
 inline RobotJoint fixedJoint(std::wstring_view parent_name,
                              const Transform &origin) {
-    return RobotJoint{u8"", Encoding::encodeW(parent_name),
-                      RobotJointType::fixed, origin, 0};
+    return RobotJoint{nullptr, SharedString(parent_name), RobotJointType::fixed,
+                      origin, 0};
 }
 /*!
  * \brief 固定された関節
@@ -76,7 +77,7 @@ inline RobotJoint fixedJoint(std::string_view parent_name,
 }
 /*!
  * \brief 固定された関節 (wstring)
- * \since ver1.12
+ * \since ver2.0
  * \param parent_name 親リンクの名前
  * \param origin 親リンクの座標系で子リンクの原点
  */
@@ -97,12 +98,12 @@ inline RobotJoint fixedJoint(std::wstring_view parent_name,
 inline RobotJoint rotationalJoint(std::string_view name,
                                   std::string_view parent_name,
                                   const Transform &origin, double angle = 0) {
-    return RobotJoint{Encoding::encode(name), Encoding::encode(parent_name),
+    return RobotJoint{SharedString(name), SharedString(parent_name),
                       RobotJointType::rotational, origin, angle};
 }
 /*!
  * \brief 回転関節 (wstring)
- * \since ver1.12
+ * \since ver2.0
  *
  * originのz軸を中心に回転する関節。
  * \param name 関節の名前
@@ -114,7 +115,7 @@ inline RobotJoint rotationalJoint(std::string_view name,
 inline RobotJoint rotationalJoint(std::wstring_view name,
                                   std::wstring_view parent_name,
                                   const Transform &origin, double angle = 0) {
-    return RobotJoint{Encoding::encodeW(name), Encoding::encodeW(parent_name),
+    return RobotJoint{SharedString(name), SharedString(parent_name),
                       RobotJointType::rotational, origin, angle};
 }
 /*!
@@ -130,12 +131,12 @@ inline RobotJoint rotationalJoint(std::wstring_view name,
 inline RobotJoint prismaticJoint(std::string_view name,
                                  std::string_view parent_name,
                                  const Transform &origin, double angle = 0) {
-    return RobotJoint{Encoding::encode(name), Encoding::encode(parent_name),
+    return RobotJoint{SharedString(name), SharedString(parent_name),
                       RobotJointType::prismatic, origin, angle};
 }
 /*!
  * \brief 直動関節 (wstring)
- * \since ver1.12
+ * \since ver2.0
  *
  * originのz軸方向に直線運動する関節。
  * \param name 関節の名前
@@ -147,24 +148,23 @@ inline RobotJoint prismaticJoint(std::string_view name,
 inline RobotJoint prismaticJoint(std::wstring_view name,
                                  std::wstring_view parent_name,
                                  const Transform &origin, double angle = 0) {
-    return RobotJoint{Encoding::encodeW(name), Encoding::encodeW(parent_name),
+    return RobotJoint{SharedString(name), SharedString(parent_name),
                       RobotJointType::prismatic, origin, angle};
 }
 } // namespace RobotJoints
 
 struct RobotLink {
-    std::u8string name;
+    SharedString name;
     RobotJoint joint;
     Geometry geometry;
     ViewColor color;
     RobotLink() = default;
     /*!
-     * \since ver1.12
+     * \since ver2.0
      */
-    RobotLink(std::u8string_view name, const RobotJoint &joint,
+    RobotLink(const SharedString &name, const RobotJoint &joint,
               const Geometry &geometry, ViewColor color)
-        : name(name), joint(joint), geometry(geometry),
-          color(color) {}
+        : name(name), joint(joint), geometry(geometry), color(color) {}
     /*!
      * \param name リンクの名前
      * \param joint 親リンクとの接続方法
@@ -174,9 +174,9 @@ struct RobotLink {
      */
     RobotLink(std::string_view name, const RobotJoint &joint,
               const Geometry &geometry, ViewColor color = ViewColor::inherit)
-        : RobotLink(Encoding::encode(name), joint, geometry, color) {}
+        : RobotLink(SharedString(name), joint, geometry, color) {}
     /*!
-     * \since ver1.12
+     * \since ver2.0
      * \param name リンクの名前
      * \param joint 親リンクとの接続方法
      * \param geometry リンクの形状 (表示用)
@@ -185,7 +185,7 @@ struct RobotLink {
      */
     RobotLink(std::wstring_view name, const RobotJoint &joint,
               const Geometry &geometry, ViewColor color = ViewColor::inherit)
-        : RobotLink(Encoding::encodeW(name), joint, geometry, color) {}
+        : RobotLink(SharedString(name), joint, geometry, color) {}
     /*!
      * ベースのリンクではjointを省略可能
      * (fixedAbsolute({0, 0, 0})になる)
@@ -200,7 +200,7 @@ struct RobotLink {
     /*!
      * ベースのリンクではjointを省略可能
      * (fixedAbsolute({0, 0, 0})になる)
-     * \since ver1.12
+     * \since ver2.0
      * \param name リンクの名前
      * \param geometry リンクの形状 (表示用)
      * \param color 色 (表示用)

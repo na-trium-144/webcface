@@ -10,27 +10,33 @@
 #include <chrono>
 
 using namespace webcface;
+
+static SharedString operator""_ss(const char *str, std::size_t len) {
+    return SharedString(Encoding::castToU8(std::string_view(str, len)));
+}
+
 class MemberTest : public ::testing::Test {
   protected:
     void SetUp() override {
         data_ = std::make_shared<Internal::ClientData>(self_name);
         callback_called = 0;
     }
-    std::u8string self_name = u8"test";
+    SharedString self_name = "test"_ss;
     std::shared_ptr<Internal::ClientData> data_;
-    FieldBase fieldBase(std::u8string_view member,
+    FieldBase fieldBase(const SharedString &member,
                         std::string_view name) const {
-        return FieldBase{member, Encoding::castToU8(name)};
+        return FieldBase{member, SharedString(Encoding::castToU8(name))};
     }
     FieldBase fieldBase(std::string_view member, std::string_view name) const {
-        return FieldBase{Encoding::castToU8(member), Encoding::castToU8(name)};
+        return FieldBase{SharedString(Encoding::castToU8(member)),
+                         SharedString(Encoding::castToU8(name))};
     }
-    Field field(std::u8string_view member, std::string_view name = "") const {
-        return Field{data_, member, Encoding::castToU8(name)};
+    Field field(const SharedString &member, std::string_view name = "") const {
+        return Field{data_, member, SharedString(Encoding::castToU8(name))};
     }
     Field field(std::string_view member, std::string_view name = "") const {
-        return Field{data_, Encoding::castToU8(member),
-                     Encoding::castToU8(name)};
+        return Field{data_, SharedString(Encoding::castToU8(member)),
+                     SharedString(Encoding::castToU8(name))};
     }
     template <typename T1>
     Member member(const T1 &member) {
@@ -57,49 +63,49 @@ TEST_F(MemberTest, field) {
 }
 
 TEST_F(MemberTest, getEntry) {
-    data_->value_store.setEntry(u8"a", u8"a");
+    data_->value_store.setEntry("a"_ss, "a"_ss);
     EXPECT_EQ(member("a").valueEntries().size(), 1);
     EXPECT_EQ(member("a").valueEntries()[0].name(), "a");
-    data_->text_store.setEntry(u8"a", u8"a");
+    data_->text_store.setEntry("a"_ss, "a"_ss);
     EXPECT_EQ(member("a").textEntries().size(), 1);
     EXPECT_EQ(member("a").textEntries()[0].name(), "a");
-    data_->func_store.setEntry(u8"a", u8"a");
+    data_->func_store.setEntry("a"_ss, "a"_ss);
     EXPECT_EQ(member("a").funcEntries().size(), 1);
     EXPECT_EQ(member("a").funcEntries()[0].name(), "a");
-    data_->view_store.setEntry(u8"a", u8"a");
+    data_->view_store.setEntry("a"_ss, "a"_ss);
     EXPECT_EQ(member("a").viewEntries().size(), 1);
     EXPECT_EQ(member("a").viewEntries()[0].name(), "a");
 }
 TEST_F(MemberTest, eventTarget) {
     member("a").onValueEntry().appendListener(callback<Value>());
-    data_->value_entry_event[u8"a"]->operator()(field("a", "a"));
+    data_->value_entry_event["a"_ss]->operator()(field("a", "a"));
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
     member("a").onTextEntry().appendListener(callback<Text>());
-    data_->text_entry_event[u8"a"]->operator()(field("a", "a"));
+    data_->text_entry_event["a"_ss]->operator()(field("a", "a"));
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
     member("a").onFuncEntry().appendListener(callback<Func>());
-    data_->func_entry_event[u8"a"]->operator()(field("a", "a"));
+    data_->func_entry_event["a"_ss]->operator()(field("a", "a"));
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
     member("a").onViewEntry().appendListener(callback<View>());
-    data_->view_entry_event[u8"a"]->operator()(field("a", "a"));
+    data_->view_entry_event["a"_ss]->operator()(field("a", "a"));
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
     member("a").onSync().appendListener(callback<Member>());
-    data_->sync_event[u8"a"]->operator()(field("a"));
+    data_->sync_event["a"_ss]->operator()(field("a"));
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
 
     member("a").onPing().appendListener(callback<Member>());
-    data_->ping_event[u8"a"]->operator()(field("a"));
+    data_->ping_event["a"_ss]->operator()(field("a"));
     EXPECT_EQ(callback_called, 1);
     EXPECT_TRUE(data_->ping_status_req);
     callback_called = 0;
 }
 TEST_F(MemberTest, libVersion) {
-    data_->member_ids[u8"a"] = 1;
+    data_->member_ids["a"_ss] = 1;
     data_->member_lib_name[1] = "aaa";
     data_->member_lib_ver[1] = "bbb";
     data_->member_addr[1] = "ccc";
@@ -108,7 +114,7 @@ TEST_F(MemberTest, libVersion) {
     EXPECT_EQ(member("a").remoteAddr(), "ccc");
 }
 TEST_F(MemberTest, PingStatus) {
-    data_->member_ids[u8"a"] = 1;
+    data_->member_ids["a"_ss] = 1;
     data_->ping_status =
         std::make_shared<std::unordered_map<unsigned int, int>>(
             std::unordered_map<unsigned int, int>{{1, 10}});
@@ -117,6 +123,6 @@ TEST_F(MemberTest, PingStatus) {
 }
 TEST_F(MemberTest, syncTime) {
     auto t = std::chrono::system_clock::now();
-    data_->sync_time_store.setRecv(u8"a", t);
+    data_->sync_time_store.setRecv("a"_ss, t);
     EXPECT_EQ(member("a").syncTime(), t);
 }

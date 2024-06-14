@@ -43,7 +43,7 @@ webcface-send -t log
     または Client.logger() の出力先のsinkを変更することもできます。
     (詳細はspdlogのドキュメントを読んでください。)
 
-    <span class="since-c">1.12</span>
+    <span class="since-c">2.0</span>
     Windowsでは`SPDLOG_WCHAR_SUPPORT`を有効にすることでspdlogのloggerにワイド文字列を渡すことができるようになります。
     (WebCFaceのCMakeLists内で自動的に有効になりますが、別でインストールしたspdlogを使用する場合は有効になっていない可能性があります。)
     なおこの場合spdlog内部で文字列がUTF-8に変換されるため、
@@ -60,10 +60,10 @@ webcface-send -t log
     ```
     のようにcoutやcerrの出力先を置き換えることができます。
     これらはWebCFaceに出力すると同時に標準エラー出力にも出力します。
-    (ver1.11以前はspdlogのstderr_sink、 ver1.12以降はfputs,fputcを使って直接stderrに出力されます)
+    (ver1.11以前はspdlogのstderr_sink、 ver2.0以降はfputs,fputcを使って直接stderrに出力されます)
     またこの場合はログレベルが設定できず、常にinfoになります。
     
-    <span class="since-c">1.12</span>
+    <span class="since-c">2.0</span>
     wostreamを使用したい場合は wcli.loggerWOStream(), wcli.loggerWStreamBuf() を使用するとWebCFaceに出力すると同時にstderrにも出力されます。
     その際Windowsでは出力文字列は Encoding::usingUTF8() の設定に従いUTF-8またはANSIに変換されるため、出力したいコンソールのコードページに設定を合わせてください。
     
@@ -120,7 +120,7 @@ webcface-send -t log
 Member::log() でLogクラスのオブジェクトが得られ、
 Log::tryGet() でデータのリクエストをするとともにログが得られます。
 
-<span class="since-c">1.12</span>
+<span class="since-c">2.0</span>
 ワイド文字列で取得したい場合は tryGetW() を使います
 
 ログデータは  

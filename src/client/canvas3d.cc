@@ -17,7 +17,8 @@ Canvas3D::Canvas3D(const Field &base)
     : Field(base), EventTarget<Canvas3D>(),
       sb(std::make_shared<Internal::DataSetBuffer<Canvas3DComponent>>(base)) {
     std::lock_guard lock(this->dataLock()->event_m);
-    this->setCL(this->dataLock()->canvas3d_change_event[*this]);
+    this->setCL(
+        this->dataLock()->canvas3d_change_event[this->member_][this->field_]);
 }
 Canvas3D &Canvas3D::init() {
     sb->init();
@@ -43,7 +44,7 @@ void Internal::DataSetBuffer<Canvas3DComponent>::onSync() {
     for (std::size_t i = 0; i < components_.size(); i++) {
         cb->push_back(std::move(components_.at(i).lockTmp(
             target_.data_w,
-            target_.field_ + u8"_" +
+            target_.field_.u8String() + u8"_" +
                 std::u8string(Encoding::castToU8(std::to_string(i))))));
     }
     target_.setCheck()->canvas3d_store.setSend(target_, cb);

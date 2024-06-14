@@ -1,4 +1,5 @@
 #include "c_wcf_internal.h"
+#include "webcface/encoding.h"
 #include <webcface/view.h>
 #include <cstring>
 
@@ -48,15 +49,9 @@ wcfViewSetT(wcfClient *wcli, const CharT *field,
     auto v = wcli_->view(field);
     v.init();
     for (auto p = components; p < components + size; p++) {
-        std::u8string text;
-        if constexpr (std::is_same_v<CharT, char>) {
-            text = Encoding::encode(strOrEmpty(p->text));
-        } else {
-            text = Encoding::encodeW(strOrEmpty(p->text));
-        }
         v.add(ViewComponentBase{
             static_cast<ViewComponentType>(p->type),
-            std::move(text),
+            SharedString(strOrEmpty(p->text)),
             p->on_click_field
                 ? std::make_optional<FieldBase>(
                       wcli_->member(strOrEmpty(p->on_click_member))

@@ -43,7 +43,7 @@ class WEBCFACE_DLL Func : protected Field {
 
     Func() = default;
     Func(const Field &base);
-    Func(const Field &base, std::u8string_view field)
+    Func(const Field &base, const SharedString &field)
         : Func(Field{base, field}) {}
 
     using Field::lastName;
@@ -59,7 +59,7 @@ class WEBCFACE_DLL Func : protected Field {
     }
     /*!
      * \brief 「(thisの名前).(追加の名前)」を新しい名前とするField (wstring)
-     * \since ver1.12
+     * \since ver2.0
      */
     Func child(std::wstring_view field) const {
         return this->Field::child(field);
@@ -75,7 +75,7 @@ class WEBCFACE_DLL Func : protected Field {
     Func operator[](std::string_view field) const { return child(field); }
     /*!
      * child()と同じ
-     * \since ver1.12
+     * \since ver2.0
      */
     Func operator[](std::wstring_view field) const { return child(field); }
     /*!
@@ -84,7 +84,7 @@ class WEBCFACE_DLL Func : protected Field {
      */
     Func operator[](const char *field) const { return child(field); }
     /*!
-     * \since ver1.12
+     * \since ver2.0
      */
     Func operator[](const wchar_t *field) const { return child(field); }
     /*!
@@ -275,7 +275,7 @@ class WEBCFACE_DLL Func : protected Field {
  *
  */
 class WEBCFACE_DLL AnonymousFunc : public Func {
-    static std::u8string fieldNameTmp();
+    static SharedString fieldNameTmp();
 
     std::function<void(AnonymousFunc &)> func_setter = nullptr;
     bool base_init = false;
@@ -330,7 +330,7 @@ class WEBCFACE_DLL FuncListener : protected Func {
   public:
     FuncListener() = default;
     FuncListener(const Field &base);
-    FuncListener(const Field &base, std::u8string_view field)
+    FuncListener(const Field &base, const SharedString &field)
         : FuncListener(Field{base, field}) {}
 
     using Field::member;

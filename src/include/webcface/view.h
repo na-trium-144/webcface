@@ -31,7 +31,7 @@ class WEBCFACE_DLL View : protected Field,
   public:
     View();
     View(const Field &base);
-    View(const Field &base, std::u8string_view field)
+    View(const Field &base, const SharedString &field)
         : View(Field{base, field}) {}
     View(const View &rhs) : View() { *this = rhs; }
     View(View &&rhs) noexcept : View() { *this = std::move(rhs); }
@@ -54,7 +54,7 @@ class WEBCFACE_DLL View : protected Field,
     }
     /*!
      * \brief 「(thisの名前).(追加の名前)」を新しい名前とするField (wstring)
-     * \since ver1.12
+     * \since ver2.0
      */
     View child(std::wstring_view field) const {
         return this->Field::child(field);
@@ -70,7 +70,7 @@ class WEBCFACE_DLL View : protected Field,
     View operator[](std::string_view field) const { return child(field); }
     /*!
      * child()と同じ
-     * \since ver1.12
+     * \since ver2.0
      */
     View operator[](std::wstring_view field) const { return child(field); }
     /*!
@@ -79,7 +79,7 @@ class WEBCFACE_DLL View : protected Field,
      */
     View operator[](const char *field) const { return child(field); }
     /*!
-     * \since ver1.12
+     * \since ver2.0
      */
     View operator[](const wchar_t *field) const { return child(field); }
     /*!

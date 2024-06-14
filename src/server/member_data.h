@@ -38,7 +38,7 @@ struct WEBCFACE_DLL MemberData {
      */
     bool sync_init = false;
 
-    std::u8string name;
+    SharedString name;
     std::string name_s; // decoded
     unsigned int member_id;
     Message::SyncInit init_data;
@@ -48,51 +48,37 @@ struct WEBCFACE_DLL MemberData {
      * entry非表示のものも含む。
      *
      */
-    std::unordered_map<std::u8string, std::shared_ptr<std::vector<double>>>
-        value;
-    std::unordered_map<std::u8string, std::shared_ptr<Common::ValAdaptor>> text;
-    std::unordered_map<std::u8string, std::shared_ptr<Message::FuncInfo>> func;
-    std::unordered_map<std::u8string, std::vector<Common::ViewComponentBase>>
-        view;
-    std::unordered_map<std::u8string,
-                       std::vector<Common::Canvas3DComponentBase>>
-        canvas3d;
-    std::unordered_map<std::u8string, Common::Canvas2DDataBase> canvas2d;
-    std::unordered_map<std::u8string, Common::ImageBase> image;
-    std::unordered_map<std::u8string, int> image_changed;
+    StrMap1<std::shared_ptr<std::vector<double>>> value;
+    StrMap1<std::shared_ptr<Common::ValAdaptor>> text;
+    StrMap1<std::shared_ptr<Message::FuncInfo>> func;
+    StrMap1<std::vector<Common::ViewComponentBase>> view;
+    StrMap1<std::vector<Common::Canvas3DComponentBase>> canvas3d;
+    StrMap1<Common::Canvas2DDataBase> canvas2d;
+    StrMap1<Common::ImageBase> image;
+    StrMap1<int> image_changed;
     // 画像が変化したことを知らせるcv
-    std::unordered_map<std::u8string, std::mutex> image_m;
-    std::unordered_map<std::u8string, std::condition_variable> image_cv;
+    StrMap1<std::mutex> image_m;
+    StrMap1<std::condition_variable> image_cv;
 
     std::chrono::system_clock::time_point last_sync_time;
     //! リクエストしているmember,nameのペア
-    std::unordered_map<std::u8string,
-                       std::unordered_map<std::u8string, unsigned int>>
-        value_req, text_req, view_req, image_req, robot_model_req, canvas3d_req,
-        canvas2d_req;
+    StrMap2<unsigned int> value_req, text_req, view_req, image_req,
+        robot_model_req, canvas3d_req, canvas2d_req;
     // リクエストが変化したことをスレッドに知らせる
-    std::unordered_map<std::u8string, std::unordered_map<std::u8string, int>>
-        image_req_changed;
+    StrMap2<int> image_req_changed;
     // 画像をそれぞれのリクエストに合わせて変換するスレッド
-    std::unordered_map<std::u8string,
-                       std::unordered_map<std::u8string, Common::ImageReq>>
-        image_req_info;
+    StrMap2<Common::ImageReq> image_req_info;
 
     // image_convert_thread[imageのmember][imageのfield] =
     // imageを変換してthisに送るスレッド
-    std::unordered_map<
-        std::u8string,
-        std::unordered_map<std::u8string, std::optional<std::thread>>>
-        image_convert_thread;
-    void imageConvertThreadMain(const std::u8string &member,
-                                const std::u8string &field);
-    std::unordered_map<
-        std::u8string,
-        std::shared_ptr<std::vector<Message::RobotModel::RobotLink>>>
+    StrMap2<std::optional<std::thread>> image_convert_thread;
+    void imageConvertThreadMain(const SharedString &member,
+                                const SharedString &field);
+    StrMap1<std::shared_ptr<std::vector<Message::RobotModel::RobotLink>>>
         robot_model;
 
-    std::set<std::u8string> log_req;
-    bool hasReq(const std::u8string &member);
+    StrSet1 log_req;
+    bool hasReq(const SharedString &member);
     //! ログ全履歴
     std::shared_ptr<std::deque<Message::Log::LogLine>> log;
     /*!

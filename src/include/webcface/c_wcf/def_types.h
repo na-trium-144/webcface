@@ -119,7 +119,7 @@ WEBCFACE_DLL typedef struct wcfFuncCallHandle {
 } wcfFuncCallHandle;
 /*!
  * \brief 受信した関数呼び出しの情報を保持するstruct (wstring)
- * \since ver1.12
+ * \since ver2.0
  */
 WEBCFACE_DLL typedef struct wcfFuncCallHandleW {
     /*!
@@ -205,34 +205,34 @@ WEBCFACE_DLL typedef struct wcfViewComponent {
     int bg_color;
     /*!
      * \brief inputの最小値 (未設定 = -DBL_MAX)
-     * \since ver1.12
+     * \since ver2.0
      */
     double min;
     /*!
      * \brief inputの最大値 (未設定 = DBL_MAX)
-     * \since ver1.12
+     * \since ver2.0
      */
     double max;
     /*!
      * \brief inputの刻み幅 (未設定 = 0)
-     * \since ver1.12
+     * \since ver2.0
      */
     double step;
     /*!
      * \brief inputの選択肢
-     * \since ver1.12
+     * \since ver2.0
      */
     const wcfMultiVal *option;
     /*!
      * \brief inputの選択肢の数 (optionの指す配列の要素数)
-     * \since ver1.12
+     * \since ver2.0
      */
     int option_num;
 } wcfViewComponent;
 
 /*!
  * \brief Viewの要素を表すstruct (wstring)
- * \since ver1.12
+ * \since ver2.0
  * \sa wcfViewComponent
  */
 WEBCFACE_DLL typedef struct wcfViewComponentW {

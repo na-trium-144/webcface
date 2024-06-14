@@ -11,7 +11,7 @@ extern "C" {
 WEBCFACE_DLL wcfMultiVal wcfValI(int value);
 /*!
  * \brief int型のwcfMultiValWを構築
- * \since ver1.12
+ * \since ver2.0
  */
 WEBCFACE_DLL wcfMultiValW wcfValWI(int value);
 /*!
@@ -21,7 +21,7 @@ WEBCFACE_DLL wcfMultiValW wcfValWI(int value);
 WEBCFACE_DLL wcfMultiVal wcfValD(double value);
 /*!
  * \brief double型のwcfMultiValWを構築
- * \since ver1.12
+ * \since ver2.0
  */
 WEBCFACE_DLL wcfMultiValW wcfValWD(double value);
 /*!
@@ -31,7 +31,7 @@ WEBCFACE_DLL wcfMultiValW wcfValWD(double value);
 WEBCFACE_DLL wcfMultiVal wcfValS(const char *value);
 /*!
  * \brief 文字列型のwcfMultiValWを構築 (wstring)
- * \since ver1.12
+ * \since ver2.0
  */
 WEBCFACE_DLL wcfMultiVal wcfValWS(const wchar_t *value);
 
@@ -54,7 +54,7 @@ WEBCFACE_DLL wcfStatus wcfFuncRun(wcfClient *wcli, const char *member,
                                   int arg_size, wcfMultiVal **result);
 /*!
  * \brief 関数を呼び出す (wstring)
- * \since ver1.12
+ * \since ver2.0
  * \sa wcfFuncRun
  */
 WEBCFACE_DLL wcfStatus wcfFuncRunW(wcfClient *wcli, const wchar_t *member,
@@ -80,7 +80,7 @@ WEBCFACE_DLL wcfStatus wcfFuncRunAsync(wcfClient *wcli, const char *member,
                                        wcfAsyncFuncResult **async_res);
 /*!
  * \brief 関数を非同期で呼び出す (wstring)
- * \since ver1.12
+ * \since ver2.0
  * \sa wcfFuncRunAsync
  */
 WEBCFACE_DLL wcfStatus wcfFuncRunAsyncW(wcfClient *wcli, const wchar_t *member,
@@ -103,7 +103,7 @@ WEBCFACE_DLL wcfStatus wcfFuncGetResult(wcfAsyncFuncResult *async_res,
                                         wcfMultiVal **result);
 /*!
  * \brief 非同期で呼び出した関数の実行結果を取得 (wstring)
- * \since ver1.12
+ * \since ver2.0
  * \sa wcfFuncGetResult
  */
 WEBCFACE_DLL wcfStatus wcfFuncGetResultW(wcfAsyncFuncResult *async_res,
@@ -122,7 +122,7 @@ WEBCFACE_DLL wcfStatus wcfFuncWaitResult(wcfAsyncFuncResult *async_res,
                                          wcfMultiVal **result);
 /*!
  * \brief 非同期で呼び出した関数の実行完了まで待機し、結果を取得 (wstring)
- * \since ver1.12
+ * \since ver2.0
  * \sa wcfFuncWaitResult
  */
 WEBCFACE_DLL wcfStatus wcfFuncWaitResultW(wcfAsyncFuncResult *async_res,
@@ -154,7 +154,7 @@ WEBCFACE_DLL wcfStatus wcfFuncSet(wcfClient *wcli, const char *field,
                                   wcfFuncCallback callback, void *user_data);
 /*!
  * \brief 関数を登録する (wstring)
- * \since ver1.12
+ * \since ver2.0
  * \sa wcfFuncSet
  */
 WEBCFACE_DLL wcfStatus wcfFuncSetW(wcfClient *wcli, const wchar_t *field,
@@ -178,7 +178,7 @@ WEBCFACE_DLL wcfStatus wcfFuncListen(wcfClient *wcli, const char *field,
                                      wcfValType return_type);
 /*!
  * \brief 関数呼び出しの待受を開始する (wstring)
- * \since ver1.12
+ * \since ver2.0
  * \sa wcfFuncListen
  */
 WEBCFACE_DLL wcfStatus wcfFuncListenW(wcfClient *wcli, const wchar_t *field,
@@ -204,7 +204,7 @@ WEBCFACE_DLL wcfStatus wcfFuncFetchCall(wcfClient *wcli, const char *field,
                                         wcfFuncCallHandle **handle);
 /*!
  * \brief 関数が呼び出されたかどうかを確認 (wstring)
- * \since ver1.12
+ * \since ver2.0
  * \sa wcfFuncFetchCall
  */
 WEBCFACE_DLL wcfStatus wcfFuncFetchCallW(wcfClient *wcli, const wchar_t *field,
@@ -224,7 +224,7 @@ WEBCFACE_DLL wcfStatus wcfFuncRespond(const wcfFuncCallHandle *handle,
                                       const wcfMultiVal *value);
 /*!
  * \brief 関数呼び出しに対して値を返す (wstring)
- * \since ver1.12
+ * \since ver2.0
  * \sa wcfFuncRespond
  */
 WEBCFACE_DLL wcfStatus wcfFuncRespondW(const wcfFuncCallHandleW *handle,
@@ -243,7 +243,7 @@ WEBCFACE_DLL wcfStatus wcfFuncReject(const wcfFuncCallHandle *handle,
                                      const char *message);
 /*!
  * \brief 関数呼び出しに対してエラーメッセージを返す (wstring)
- * \since ver1.12
+ * \since ver2.0
  * \sa wcfFuncReject
  */
 WEBCFACE_DLL wcfStatus wcfFuncRejectW(const wcfFuncCallHandleW *handle,

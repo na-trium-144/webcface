@@ -4,6 +4,7 @@
 #include "func.h"
 #include "text.h"
 #include "webcface/common/view.h"
+#include "webcface/encoding.h"
 #include <memory>
 
 #ifdef min
@@ -41,10 +42,9 @@ class IdBase {
      * 同じ要素には常に同じidが振られる。
      *
      */
-    std::u8string id() const {
-        return std::u8string(
-            Encoding::castToU8(".." + std::to_string(static_cast<int>(type())) +
-                               "." + std::to_string(idx_for_type_)));
+    std::string id() const {
+        return ".." + std::to_string(static_cast<int>(type())) + "." +
+               std::to_string(idx_for_type_);
     }
 };
 
@@ -61,14 +61,11 @@ class WEBCFACE_DLL ViewComponent : protected Common::ViewComponentBase,
     std::optional<ValAdaptor> init_;
 
     // for cData()
-    mutable std::variant<std::string, std::wstring> text_s, on_click_member_s,
-        on_click_field_s, text_ref_member_s, text_ref_field_s;
     mutable std::variant<std::vector<wcfMultiVal>, std::vector<wcfMultiValW>>
         options_s;
 
-    template <typename CComponent, typename CVal, std::size_t v_index,
-              typename DecodeF>
-    CComponent cDataT(DecodeF decode) const;
+    template <typename CComponent, typename CVal, std::size_t v_index>
+    CComponent cDataT() const;
 
   public:
     ViewComponent() = default;
@@ -90,7 +87,7 @@ class WEBCFACE_DLL ViewComponent : protected Common::ViewComponentBase,
      */
     ViewComponentBase &
     lockTmp(const std::weak_ptr<Internal::ClientData> &data_w,
-            const std::u8string &view_name,
+            const SharedString &view_name,
             std::unordered_map<int, int> *idx_next = nullptr);
 
     wcfViewComponent cData() const;
@@ -126,28 +123,28 @@ class WEBCFACE_DLL ViewComponent : protected Common::ViewComponentBase,
      * \brief 表示する文字列を取得
      *
      */
-    std::string text() const { return Encoding::decode(text_); }
+    std::string text() const { return text_.decode(); }
     /*!
      * \brief 表示する文字列を取得 (wstring)
-     * \since ver1.12
+     * \since ver2.0
      */
-    std::wstring textW() const { return Encoding::decodeW(text_); }
+    std::wstring textW() const { return text_.decodeW(); }
     /*!
      * \brief 表示する文字列を設定
      *
-     * (ver1.12からstring_viewに変更)
+     * (ver2.0からstring_viewに変更)
      *
      */
     ViewComponent &text(std::string_view text) {
-        text_ = Encoding::encode(text);
+        text_ = SharedString(text);
         return *this;
     }
     /*!
      * \brief 表示する文字列を設定 (wstring)
-     * \since ver1.12
+     * \since ver2.0
      */
     ViewComponent &text(std::wstring_view text) {
-        text_ = Encoding::encodeW(text);
+        text_ = SharedString(text);
         return *this;
     }
     /*!
@@ -486,7 +483,7 @@ class WEBCFACE_DLL Canvas3DComponent : protected Common::Canvas3DComponentBase {
     angles(const std::unordered_map<std::string, double> &angles);
     /*!
      * \brief RobotModelの関節をまとめて設定 (wstring)
-     * \since ver1.12
+     * \since ver2.0
      * \param angles RobotJointの名前と角度のリスト
      *
      */
@@ -501,7 +498,7 @@ class WEBCFACE_DLL Canvas3DComponent : protected Common::Canvas3DComponentBase {
     Canvas3DComponent &angle(const std::string &joint_name, double angle);
     /*!
      * \brief RobotModelの関節を設定 (wstring)
-     * \since ver1.12
+     * \since ver2.0
      * \param joint_name RobotJointの名前
      * \param angle 角度
      *
@@ -551,7 +548,7 @@ class WEBCFACE_DLL Canvas2DComponent : protected Common::Canvas2DComponentBase,
      */
     Canvas2DComponentBase &
     lockTmp(const std::weak_ptr<Internal::ClientData> &data_w,
-            const std::u8string &view_name,
+            const SharedString &view_name,
             std::unordered_map<int, int> *idx_next = nullptr);
 
     /*!
@@ -639,29 +636,29 @@ class WEBCFACE_DLL Canvas2DComponent : protected Common::Canvas2DComponentBase,
      * \brief 表示する文字列
      * \since ver1.9
      */
-    std::string text() const { return Encoding::decode(text_); }
+    std::string text() const { return text_.decode(); }
     /*!
      * \brief 表示する文字列 (wstring)
-     * \since ver1.12
+     * \since ver2.0
      */
-    std::wstring textW() const { return Encoding::decodeW(text_); }
+    std::wstring textW() const { return text_.decodeW(); }
     /*!
      * \brief 表示する文字列を設定
      * \since ver1.9
      *
-     * (ver1.12からstring_viewに変更)
+     * (ver2.0からstring_viewに変更)
      *
      */
     Canvas2DComponent &text(std::string_view text) {
-        text_ = Encoding::encode(text);
+        text_ = SharedString(text);
         return *this;
     }
     /*!
      * \brief 表示する文字列を設定 (wstring)
-     * \since ver1.12
+     * \since ver2.0
      */
     Canvas2DComponent &text(std::wstring_view text) {
-        text_ = Encoding::encodeW(text);
+        text_ = SharedString(text);
         return *this;
     }
     /*!
@@ -1103,7 +1100,7 @@ inline TemporalComponent<true, true, false> text(std::string_view text) {
 }
 /*!
  * \brief textコンポーネント (wstring)
- * \since ver1.12
+ * \since ver2.0
  */
 inline TemporalComponent<true, true, false> text(std::wstring_view text) {
     return TemporalComponent<true, true, false>(text);
@@ -1128,7 +1125,7 @@ inline ViewComponent button(std::string_view text, T &&func) {
 }
 /*!
  * \brief buttonコンポーネント (wstring)
- * \since ver1.12
+ * \since ver2.0
  */
 template <typename T>
 inline ViewComponent button(std::wstring_view text, T &&func) {
