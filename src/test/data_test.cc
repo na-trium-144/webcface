@@ -327,19 +327,19 @@ TEST_F(DataTest, logGet) {
     using namespace std::chrono;
     auto logs =
         std::make_shared<std::vector<LogLineData<>>>(std::vector<LogLineData<>>{
-            {1, system_clock::now(), u8"a"},
-            {2, system_clock::now(), u8"b"},
-            {3, system_clock::now(), u8"c"},
+            {1, system_clock::now(), "a"_ss},
+            {2, system_clock::now(), "b"_ss},
+            {3, system_clock::now(), "c"_ss},
         });
     data_->log_store->setRecv("a"_ss, logs);
     EXPECT_EQ(log("a").tryGet().value().size(), 3);
     EXPECT_EQ(log("a").tryGetW().value().size(), 3);
     ASSERT_EQ(log("a").get().size(), 3);
     ASSERT_EQ(log("a").getW().size(), 3);
-    EXPECT_EQ(log("a").get()[2].level, 3);
-    EXPECT_EQ(log("a").getW()[2].level, 3);
-    EXPECT_EQ(log("a").get()[2].message, "c");
-    EXPECT_EQ(log("a").getW()[2].message, L"c");
+    EXPECT_EQ(log("a").get()[2].level(), 3);
+    EXPECT_EQ(log("a").getW()[2].level(), 3);
+    EXPECT_EQ(log("a").get()[2].message(), "c");
+    EXPECT_EQ(log("a").getW()[2].message(), L"c");
     EXPECT_EQ(log("b").tryGet(), std::nullopt);
     EXPECT_EQ(log("b").tryGetW(), std::nullopt);
     EXPECT_EQ(log("b").get().size(), 0);
@@ -358,9 +358,9 @@ TEST_F(DataTest, logClear) {
     using namespace std::chrono;
     auto logs =
         std::make_shared<std::vector<LogLineData<>>>(std::vector<LogLineData<>>{
-            {1, system_clock::now(), u8"a"},
-            {2, system_clock::now(), u8"b"},
-            {3, system_clock::now(), u8"c"},
+            {1, system_clock::now(), "a"_ss},
+            {2, system_clock::now(), "b"_ss},
+            {3, system_clock::now(), "c"_ss},
         });
     data_->log_store->setRecv("a"_ss, logs);
     log("a").clear();

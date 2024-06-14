@@ -800,10 +800,10 @@ TEST_F(ServerTest, log) {
     dummy_c1->send(Message::Log{
         0, std::make_shared<std::deque<Message::Log::LogLine>>(
                std::deque<Message::Log::LogLine>{
-                   LogLineData<>{0, std::chrono::system_clock::now(), u8"0"},
-                   LogLineData<>{1, std::chrono::system_clock::now(), u8"1"},
-                   LogLineData<>{2, std::chrono::system_clock::now(), u8"2"},
-                   LogLineData<>{3, std::chrono::system_clock::now(), u8"3"},
+                   LogLineData<>{0, std::chrono::system_clock::now(), "0"_ss},
+                   LogLineData<>{1, std::chrono::system_clock::now(), "1"_ss},
+                   LogLineData<>{2, std::chrono::system_clock::now(), "2"_ss},
+                   LogLineData<>{3, std::chrono::system_clock::now(), "3"_ss},
                })});
     wait();
     dummy_c2->send(Message::SyncInit{{}, ""_ss, 0, "", "", ""});
@@ -815,8 +815,8 @@ TEST_F(ServerTest, log) {
         [&](const auto &obj) {
             EXPECT_EQ(obj.member_id, 1);
             EXPECT_EQ(obj.log->size(), 3);
-            EXPECT_EQ(obj.log->at(0).level, 1);
-            EXPECT_EQ(obj.log->at(0).message, "1"_ss);
+            EXPECT_EQ(obj.log->at(0).data().level(), 1);
+            EXPECT_EQ(obj.log->at(0).data().message(), u8"1");
         },
         [&] { ADD_FAILURE() << "Log recv failed"; });
     dummy_c2->recvClear();
@@ -825,19 +825,19 @@ TEST_F(ServerTest, log) {
     dummy_c1->send(Message::Log{
         0, std::make_shared<std::deque<Message::Log::LogLine>>(
                std::deque<Message::Log::LogLine>{
-                   LogLineData<>{4, std::chrono::system_clock::now(), u8"4"},
-                   LogLineData<>{5, std::chrono::system_clock::now(), u8"5"},
-                   LogLineData<>{6, std::chrono::system_clock::now(), u8"6"},
-                   LogLineData<>{7, std::chrono::system_clock::now(), u8"7"},
-                   LogLineData<>{8, std::chrono::system_clock::now(), u8"8"},
+                   LogLineData<>{4, std::chrono::system_clock::now(), "4"_ss},
+                   LogLineData<>{5, std::chrono::system_clock::now(), "5"_ss},
+                   LogLineData<>{6, std::chrono::system_clock::now(), "6"_ss},
+                   LogLineData<>{7, std::chrono::system_clock::now(), "7"_ss},
+                   LogLineData<>{8, std::chrono::system_clock::now(), "8"_ss},
                })});
     wait();
     dummy_c2->recv<Message::Log>(
         [&](const auto &obj) {
             EXPECT_EQ(obj.member_id, 1);
             EXPECT_EQ(obj.log->size(), 5);
-            EXPECT_EQ(obj.log->at(0).level, 4);
-            EXPECT_EQ(obj.log->at(0).message, "4"_ss);
+            EXPECT_EQ(obj.log->at(0).data().level(), 4);
+            EXPECT_EQ(obj.log->at(0).data().message(), u8"4");
         },
         [&] { ADD_FAILURE() << "Log recv failed"; });
 }

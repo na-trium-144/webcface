@@ -1133,8 +1133,9 @@ TEST_F(ClientTest, logSend) {
     wcli_->waitConnection();
     auto ls = std::make_shared<std::vector<Common::LogLineData<>>>(
         std::vector<Common::LogLineData<>>{
-            {0, std::chrono::system_clock::now(), std::u8string(100000, u8'a')},
-            {1, std::chrono::system_clock::now(), u8"b"},
+            {0, std::chrono::system_clock::now(),
+             SharedString(std::u8string(100000, u8'a'))},
+            {1, std::chrono::system_clock::now(), "b"_ss},
         });
     data_->log_store->setRecv(self_name, ls);
     wcli_->sync();
@@ -1142,22 +1143,22 @@ TEST_F(ClientTest, logSend) {
     dummy_s->recv<Message::Log>(
         [&](const auto &obj) {
             EXPECT_EQ(obj.log->size(), 2);
-            EXPECT_EQ(obj.log->at(0).level, 0);
-            EXPECT_EQ(obj.log->at(0).message.u8String().size(), 100000);
-            EXPECT_EQ(obj.log->at(1).level, 1);
-            EXPECT_EQ(obj.log->at(1).message.u8String(), u8"b");
+            EXPECT_EQ(obj.log->at(0).data().level(), 0);
+            EXPECT_EQ(obj.log->at(0).data().message().size(), 100000);
+            EXPECT_EQ(obj.log->at(1).data().level(), 1);
+            EXPECT_EQ(obj.log->at(1).data().message(), u8"b");
         },
         [&] { ADD_FAILURE() << "Log recv error"; });
 
     dummy_s->recvClear();
-    ls->push_back(LogLineData<>{2, std::chrono::system_clock::now(), u8"c"});
+    ls->push_back(LogLineData<>{2, std::chrono::system_clock::now(), "c"_ss});
     wcli_->sync();
     wait();
     dummy_s->recv<Message::Log>(
         [&](const auto &obj) {
             EXPECT_EQ(obj.log->size(), 1);
-            EXPECT_EQ(obj.log->at(0).level, 2);
-            EXPECT_EQ(obj.log->at(0).message, "c"_ss);
+            EXPECT_EQ(obj.log->at(0).data().level(), 2);
+            EXPECT_EQ(obj.log->at(0).data().message(), u8"c");
         },
         [&] { ADD_FAILURE() << "Log recv error"; });
 }
@@ -1177,21 +1178,21 @@ TEST_F(ClientTest, logReq) {
         10, std::make_shared<std::deque<Message::Log::LogLine>>(
                 std::deque<Message::Log::LogLine>{
                     LogLineData<>{0, std::chrono::system_clock::now(),
-                                  std::u8string(100000, u8'a')},
-                    LogLineData<>{1, std::chrono::system_clock::now(), u8"b"},
+                                  SharedString(std::u8string(100000, u8'a'))},
+                    LogLineData<>{1, std::chrono::system_clock::now(), "b"_ss},
                 })});
     wait();
     EXPECT_EQ(callback_called, 1);
     EXPECT_TRUE(data_->log_store->getRecv("a"_ss).has_value());
     EXPECT_EQ(data_->log_store->getRecv("a"_ss).value()->size(), 2);
-    EXPECT_EQ(data_->log_store->getRecv("a"_ss).value()->at(0).level, 0);
-    EXPECT_EQ(data_->log_store->getRecv("a"_ss).value()->at(0).message.size(),
+    EXPECT_EQ(data_->log_store->getRecv("a"_ss).value()->at(0).level(), 0);
+    EXPECT_EQ(data_->log_store->getRecv("a"_ss).value()->at(0).message().size(),
               100000);
 
     dummy_s->send(Message::Log{
         10, std::make_shared<std::deque<Message::Log::LogLine>>(
                 std::deque<Message::Log::LogLine>{
-                    LogLineData<>{2, std::chrono::system_clock::now(), u8"c"},
+                    LogLineData<>{2, std::chrono::system_clock::now(), "c"_ss},
                 })});
     wait();
     EXPECT_EQ(callback_called, 2);
