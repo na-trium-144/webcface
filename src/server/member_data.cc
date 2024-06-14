@@ -971,8 +971,10 @@ void MemberData::imageConvertThreadMain(const SharedString &member,
                     auto last_frame = std::chrono::steady_clock::now();
                     // 変換処理
                     auto info = this->image_req_info[member][field];
-                    auto [req_id, sub_field] =
-                        findReqField(this->image_req, member, field);
+                    // clang-tidyの偽陽性への対処のため構造化束縛しない
+                    auto req_field = findReqField(this->image_req, member, field);
+                    auto &req_id = req_field.first;
+                    auto &sub_field = req_field.second;
                     auto sync = webcface::Message::Sync{cd->member_id,
                                                         cd->last_sync_time};
 
