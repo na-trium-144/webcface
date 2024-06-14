@@ -204,7 +204,7 @@ brew install --cask webcface-webui-server
 exeファイルは実行するとインストーラーが起動します。
 zipファイルは任意の場所に展開して使用してください。
 
-(ver1.12〜) Windows版WebCFaceのReleaseに含まれるビルド済みのspdlogは
+(ver2.0〜) Windows版WebCFaceのReleaseに含まれるビルド済みのspdlogは
 `SPDLOG_WCHAR_SUPPORT` オプションがオンの状態です
 
 MinGW用バイナリは今のところ配布していません(ソースからビルドしてください)

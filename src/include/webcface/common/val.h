@@ -95,12 +95,12 @@ class ValAdaptor {
     ValAdaptor() : type(ValType::none_) {}
 
     /*!
-     * \since ver1.12
+     * \since ver2.0
      */
     explicit ValAdaptor(const SharedString &str)
         : as_str(str), type(ValType::string_) {}
     /*!
-     * \since ver1.12
+     * \since ver2.0
      */
     ValAdaptor &operator=(const SharedString &str) {
         as_str = str;
@@ -108,12 +108,12 @@ class ValAdaptor {
         return *this;
     }
     /*!
-     * \since ver1.12
+     * \since ver2.0
      */
     explicit ValAdaptor(std::u8string_view str)
         : as_str(str), type(ValType::string_) {}
     /*!
-     * \since ver1.12
+     * \since ver2.0
      */
     ValAdaptor &operator=(std::u8string_view str) {
         as_str = SharedString(str);
@@ -137,12 +137,12 @@ class ValAdaptor {
     }
 
     /*!
-     * \since ver1.12
+     * \since ver2.0
      */
     explicit ValAdaptor(std::wstring_view str)
         : as_str(str), type(ValType::string_) {}
     /*!
-     * \since ver1.12
+     * \since ver2.0
      */
     ValAdaptor &operator=(std::wstring_view str) {
         as_str = SharedString(str);
@@ -150,12 +150,12 @@ class ValAdaptor {
         return *this;
     }
     /*!
-     * \since ver1.12
+     * \since ver2.0
      */
     explicit ValAdaptor(const wchar_t *str)
         : as_str(str), type(ValType::string_) {}
     /*!
-     * \since ver1.12
+     * \since ver2.0
      */
     ValAdaptor &operator=(const wchar_t *str) {
         as_str = SharedString(str);
@@ -218,7 +218,7 @@ class ValAdaptor {
     }
     /*!
      * \brief wcfMultiValWから変換
-     * \since ver1.12
+     * \since ver2.0
      */
     explicit ValAdaptor(const wcfMultiValW &val) {
         if (val.as_str != nullptr) {
@@ -275,7 +275,7 @@ class ValAdaptor {
     }
     /*!
      * \brief 文字列として返す (wstring)
-     * \since ver1.12
+     * \since ver2.0
      * \sa asStringRef()
      */
     const std::wstring &asWStringRef() const {
@@ -292,7 +292,7 @@ class ValAdaptor {
         return as_str.decodeW();
     }
     /*!
-     * \since ver1.12
+     * \since ver2.0
      */
     const std::u8string &asU8StringRef() const {
         if (as_str.empty() && valType() != ValType::none_ &&
@@ -314,7 +314,7 @@ class ValAdaptor {
     std::string asString() const { return asStringRef(); }
     /*!
      * \brief 文字列として返す(コピー) (wstring)
-     * \since ver1.12
+     * \since ver2.0
      */
     std::wstring asWString() const { return asWStringRef(); }
 
@@ -323,15 +323,15 @@ class ValAdaptor {
      */
     operator const std::string &() const { return asStringRef(); }
     /*!
-     * \since ver1.12
+     * \since ver2.0
      */
     operator const std::wstring &() const { return asWStringRef(); }
     /*!
-     * \since ver1.12
+     * \since ver2.0
      */
     operator const char *() const { return asStringRef().c_str(); }
     /*!
-     * \since ver1.12
+     * \since ver2.0
      */
     operator const wchar_t *() const { return asWStringRef().c_str(); }
 
@@ -345,7 +345,7 @@ class ValAdaptor {
     }
     /*!
      * \brief wstring_viewなどへの変換
-     * \since ver1.12
+     * \since ver2.0
      */
     template <typename T>
         requires(std::convertible_to<std::wstring, T> &&

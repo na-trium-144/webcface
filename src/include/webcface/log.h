@@ -40,7 +40,7 @@ class WEBCFACE_DLL Log : protected Field, public EventTarget<Log> {
     std::optional<std::vector<LogLine>> tryGet() const;
     /*!
      * \brief ログを取得する (wstring)
-     * \since ver1.12
+     * \since ver2.0
      */
     std::optional<std::vector<LogLineW>> tryGetW() const;
     /*!
@@ -52,7 +52,7 @@ class WEBCFACE_DLL Log : protected Field, public EventTarget<Log> {
     }
     /*!
      * \brief ログを取得する (wstring)
-     * \since ver1.12
+     * \since ver2.0
      */
     std::vector<LogLineW> getW() const {
         return tryGetW().value_or(std::vector<LogLineW>{});

@@ -126,13 +126,13 @@ class WEBCFACE_DLL ViewComponent : protected Common::ViewComponentBase,
     std::string text() const { return text_.decode(); }
     /*!
      * \brief 表示する文字列を取得 (wstring)
-     * \since ver1.12
+     * \since ver2.0
      */
     std::wstring textW() const { return text_.decodeW(); }
     /*!
      * \brief 表示する文字列を設定
      *
-     * (ver1.12からstring_viewに変更)
+     * (ver2.0からstring_viewに変更)
      *
      */
     ViewComponent &text(std::string_view text) {
@@ -141,7 +141,7 @@ class WEBCFACE_DLL ViewComponent : protected Common::ViewComponentBase,
     }
     /*!
      * \brief 表示する文字列を設定 (wstring)
-     * \since ver1.12
+     * \since ver2.0
      */
     ViewComponent &text(std::wstring_view text) {
         text_ = SharedString(text);
@@ -483,7 +483,7 @@ class WEBCFACE_DLL Canvas3DComponent : protected Common::Canvas3DComponentBase {
     angles(const std::unordered_map<std::string, double> &angles);
     /*!
      * \brief RobotModelの関節をまとめて設定 (wstring)
-     * \since ver1.12
+     * \since ver2.0
      * \param angles RobotJointの名前と角度のリスト
      *
      */
@@ -498,7 +498,7 @@ class WEBCFACE_DLL Canvas3DComponent : protected Common::Canvas3DComponentBase {
     Canvas3DComponent &angle(const std::string &joint_name, double angle);
     /*!
      * \brief RobotModelの関節を設定 (wstring)
-     * \since ver1.12
+     * \since ver2.0
      * \param joint_name RobotJointの名前
      * \param angle 角度
      *
@@ -639,14 +639,14 @@ class WEBCFACE_DLL Canvas2DComponent : protected Common::Canvas2DComponentBase,
     std::string text() const { return text_.decode(); }
     /*!
      * \brief 表示する文字列 (wstring)
-     * \since ver1.12
+     * \since ver2.0
      */
     std::wstring textW() const { return text_.decodeW(); }
     /*!
      * \brief 表示する文字列を設定
      * \since ver1.9
      *
-     * (ver1.12からstring_viewに変更)
+     * (ver2.0からstring_viewに変更)
      *
      */
     Canvas2DComponent &text(std::string_view text) {
@@ -655,7 +655,7 @@ class WEBCFACE_DLL Canvas2DComponent : protected Common::Canvas2DComponentBase,
     }
     /*!
      * \brief 表示する文字列を設定 (wstring)
-     * \since ver1.12
+     * \since ver2.0
      */
     Canvas2DComponent &text(std::wstring_view text) {
         text_ = SharedString(text);
@@ -1100,7 +1100,7 @@ inline TemporalComponent<true, true, false> text(std::string_view text) {
 }
 /*!
  * \brief textコンポーネント (wstring)
- * \since ver1.12
+ * \since ver2.0
  */
 inline TemporalComponent<true, true, false> text(std::wstring_view text) {
     return TemporalComponent<true, true, false>(text);
@@ -1125,7 +1125,7 @@ inline ViewComponent button(std::string_view text, T &&func) {
 }
 /*!
  * \brief buttonコンポーネント (wstring)
- * \since ver1.12
+ * \since ver2.0
  */
 template <typename T>
 inline ViewComponent button(std::wstring_view text, T &&func) {

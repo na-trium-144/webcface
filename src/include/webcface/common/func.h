@@ -80,7 +80,7 @@ class Arg {
     std::string name() const { return name_.decode(); }
     /*!
      * \brief 引数の名前を取得する。(wstring)
-     * \since ver1.12
+     * \since ver2.0
      */
     std::wstring nameW() const { return name_.decodeW(); }
     /*!

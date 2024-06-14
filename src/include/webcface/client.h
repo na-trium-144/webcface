@@ -52,7 +52,7 @@ class WEBCFACE_DLL Client : public Member {
         : Client(SharedString(name), SharedString(host), port) {}
     /*!
      * \brief 名前を指定しサーバーに接続する (wstring)
-     * \since ver1.12
+     * \since ver2.0
      *
      * サーバーのホストとポートを省略した場合 127.0.0.1:7530 になる
      *
@@ -149,7 +149,7 @@ class WEBCFACE_DLL Client : public Member {
     }
     /*!
      * \brief 他のmemberにアクセスする (wstring)
-     * \since ver1.12
+     * \since ver2.0
      * nameが空の場合 *this を返す
      *
      * \sa members(), onMemberEntry()
@@ -209,7 +209,7 @@ class WEBCFACE_DLL Client : public Member {
      * \brief webcfaceに出力するsink
      *
      * * ver1.0.1で logger_sink から名前変更
-     * * ver1.12から、 Encoding::usingUTF8()
+     * * ver2.0から、 Encoding::usingUTF8()
      * がfalseの場合ログに書き込まれたstringはutf-8に変換されてからwebcfaceに送られる
      *
      * \sa logger(), loggerStreamBuf(), loggerOStream()
@@ -234,7 +234,7 @@ class WEBCFACE_DLL Client : public Member {
      * std::ostreamの出力先として使用すると、logger()に送られる。
      * すなわち、loggerSink (webcfaceに送られる) と stderr_color_sink_mt
      * (標準エラー出力に送られる) に出力されることになる。)
-     * * ver1.12〜: std::ostreamの出力先として使用すると、改行が入力されるたびに
+     * * ver2.0〜: std::ostreamの出力先として使用すると、改行が入力されるたびに
      * webcfaceに送られると同時に std::cerr にも送られる。
      * * levelは常にinfoになる。
      * * std::flushのタイミングとは無関係に、1つの改行ごとに1つのログになる
@@ -249,7 +249,7 @@ class WEBCFACE_DLL Client : public Member {
      * * (ver1.11.xまで: 出力先が loggerStreamBuf() に設定されているostream。
      * すなわち、loggerSink (webcfaceに送られる) と stderr_color_sink_mt
      * (標準エラー出力に送られる) に出力されることになる。)
-     * * ver1.12〜: std::ostreamの出力先として使用すると、改行が入力されるたびに
+     * * ver2.0〜: std::ostreamの出力先として使用すると、改行が入力されるたびに
      * webcfaceに送られると同時に std::cerr にも送られる。
      * * ver1.0.1で logger_ostream から名前変更
      *
@@ -258,13 +258,13 @@ class WEBCFACE_DLL Client : public Member {
     std::ostream &loggerOStream();
     /*!
      * \brief webcfaceに出力するwstreambuf
-     * \since ver1.12
+     * \since ver2.0
      * \sa loggerStreamBuf
      */
     LoggerBufW *loggerWStreamBuf();
     /*!
      * \brief webcfaceに出力するwostream
-     * \since ver1.12
+     * \since ver2.0
      * \sa loggerOStream
      */
     std::wostream &loggerWOStream();

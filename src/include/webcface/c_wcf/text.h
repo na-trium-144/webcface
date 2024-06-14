@@ -17,7 +17,7 @@ WEBCFACE_DLL wcfStatus wcfTextSet(wcfClient *wcli, const char *field,
                                   const char *text);
 /*!
  * \brief 文字列を送信する(null終端, wstring)
- * \since ver1.12
+ * \since ver2.0
  * \sa wcfTextSet
  */
 WEBCFACE_DLL wcfStatus wcfTextSetW(wcfClient *wcli, const wchar_t *field,
@@ -36,7 +36,7 @@ WEBCFACE_DLL wcfStatus wcfTextSetN(wcfClient *wcli, const char *field,
                                    const char *text, int size);
 /*!
  * \brief 文字列を送信する (wstring)
- * \since ver1.12
+ * \since ver2.0
  * \sa wcfTextSetN
  */
 WEBCFACE_DLL wcfStatus wcfTextSetNW(wcfClient *wcli, const wchar_t *field,
@@ -67,7 +67,7 @@ WEBCFACE_DLL wcfStatus wcfTextGet(wcfClient *wcli, const char *member,
                                   int *recv_size);
 /*!
  * \brief 文字列を受信する (wstring)
- * \since ver1.12
+ * \since ver2.0
  * \sa wcfTextGet
  */
 WEBCFACE_DLL wcfStatus wcfTextGetW(wcfClient *wcli, const wchar_t *member,

@@ -11,7 +11,7 @@ WEBCFACE_NS_BEGIN
 inline namespace Encoding {
 /*!
  * \brief webcfaceが使用するエンコーディングを設定する
- * \since ver1.12
+ * \since ver2.0
  *
  * * windowsでは、falseの場合webcfaceの各種クラスのインタフェースで使われる
  * std::string をすべてANSIエンコーディングとみなし、
@@ -27,14 +27,14 @@ inline namespace Encoding {
 WEBCFACE_DLL void usingUTF8(bool flag);
 /*!
  * \brief webcfaceが使用するエンコーディングを取得する
- * \since ver1.12
+ * \since ver2.0
  *
  */
 WEBCFACE_DLL bool usingUTF8();
 
 /*!
  * \brief stringをutf8のchar配列に変換する
- * \since ver1.12
+ * \since ver2.0
  *
  * windowsではusingUTF8(false)の場合ANSIからutf8へエンコーディングの変換を行うが、
  * usingUTF8(true)の場合なにもせずそのままコピーする。
@@ -46,7 +46,7 @@ WEBCFACE_DLL std::u8string encode(std::string_view name);
 
 /*!
  * \brief wstringをutf8のchar配列に変換する
- * \since ver1.12
+ * \since ver2.0
  *
  * (unixではたぶん必要ないが、#ifで分岐するのがめんどいので作ってしまう)
  *
@@ -57,7 +57,7 @@ WEBCFACE_DLL std::u8string encodeW(std::wstring_view name);
 
 /*!
  * \brief utf8の文字列をstringに変換する
- * \since ver1.12
+ * \since ver2.0
  *
  * windowsでusingUTF8(false)の場合はANSIに、
  * それ以外の場合なにもせずそのままコピーする。
@@ -66,28 +66,28 @@ WEBCFACE_DLL std::u8string encodeW(std::wstring_view name);
 WEBCFACE_DLL std::string decode(std::u8string_view name_ref);
 /*!
  * \brief utf8の文字列をwstringに変換する
- * \since ver1.12
+ * \since ver2.0
  */
 WEBCFACE_DLL std::wstring decodeW(std::u8string_view name_ref);
 
 /*!
  * \brief stringをwstringに変換する
- * \since ver1.12
+ * \since ver2.0
  */
 WEBCFACE_DLL std::wstring toWide(std::string_view name_ref);
 /*!
  * \brief wstringをstringに変換する
- * \since ver1.12
+ * \since ver2.0
  */
 WEBCFACE_DLL std::string toNarrow(std::wstring_view name_ref);
 
 /*!
  * \brief stringをu8stringにキャストする
- * \since ver1.12
+ * \since ver2.0
  */
 WEBCFACE_DLL std::u8string_view castToU8(std::string_view name);
 /*!
- * \since ver1.12
+ * \since ver2.0
  */
 inline std::u8string_view castToU8(const char *data, std::size_t size) {
     return castToU8(std::string_view(data, size));
@@ -95,13 +95,13 @@ inline std::u8string_view castToU8(const char *data, std::size_t size) {
 
 /*!
  * \brief u8stringをstringにキャストする
- * \since ver1.12
+ * \since ver2.0
  */
 WEBCFACE_DLL std::string_view castFromU8(std::u8string_view name);
 
 /*!
  * \brief u8stringとstringとwstringをshared_ptrで持ち共有する
- * \since ver1.12
+ * \since ver2.0
  *
  * 初期状態ではdataがnullptr、またはu8sのみ値を持ちsとwsは空
  *

@@ -49,7 +49,7 @@ class WEBCFACE_DLL Image : protected Field, public EventTarget<Image> {
     }
     /*!
      * \brief 「(thisの名前).(追加の名前)」を新しい名前とするField (wstring)
-     * \since ver1.12
+     * \since ver2.0
      */
     Image child(std::wstring_view field) const {
         return this->Field::child(field);
@@ -65,7 +65,7 @@ class WEBCFACE_DLL Image : protected Field, public EventTarget<Image> {
     Image operator[](std::string_view field) const { return child(field); }
     /*!
      * child()と同じ
-     * \since ver1.12
+     * \since ver2.0
      */
     Image operator[](std::wstring_view field) const { return child(field); }
     /*!
@@ -74,7 +74,7 @@ class WEBCFACE_DLL Image : protected Field, public EventTarget<Image> {
      */
     Image operator[](const char *field) const { return child(field); }
     /*!
-     * \since ver1.12
+     * \since ver2.0
      */
     Image operator[](const wchar_t *field) const { return child(field); }
     /*!
@@ -111,7 +111,7 @@ class WEBCFACE_DLL Image : protected Field, public EventTarget<Image> {
      * (nulloptの場合元画像のフォーマット)
      * \param frame_rate 画像を受信する頻度
      * (指定しない場合元画像が更新されるたびに受信する)
-     * \deprecated ver1.12〜 rows, colsの順番がややこしいので sizeHW()
+     * \deprecated ver2.0〜 rows, colsの順番がややこしいので sizeHW()
      * を使ってサイズ指定
      *
      */
@@ -124,7 +124,7 @@ class WEBCFACE_DLL Image : protected Field, public EventTarget<Image> {
     }
     /*!
      * \brief 画像を生画像のフォーマットでリクエストする
-     * \since ver1.12
+     * \since ver2.0
      * \param sizeOption 画像のサイズ (sizeWH() または sizeHW(), std::nullopt可)
      * rows,colsのどちらかのみがnulloptの場合縦横比を保ってリサイズ
      * \param color_mode 画像の色フォーマット
@@ -154,7 +154,7 @@ class WEBCFACE_DLL Image : protected Field, public EventTarget<Image> {
      * * webp → 1〜100 (大きいほうが高品質)
      * \param frame_rate 画像を受信する頻度
      * (指定しない場合元画像が更新されるたびに受信する)
-     * \deprecated ver1.12〜 rows, colsの順番がややこしいので sizeHW()
+     * \deprecated ver2.0〜 rows, colsの順番がややこしいので sizeHW()
      * を使ってサイズ指定
      *
      */
@@ -166,7 +166,7 @@ class WEBCFACE_DLL Image : protected Field, public EventTarget<Image> {
     }
     /*!
      * \brief 画像を圧縮されたフォーマットでリクエストする
-     * \since ver1.12
+     * \since ver2.0
      * \param sizeOption 画像のサイズ (sizeWH() または sizeHW(), std::nullopt可)
      * rows,colsのどちらかのみがnulloptの場合縦横比を保ってリサイズ
      * \param cmp_mode 圧縮モード

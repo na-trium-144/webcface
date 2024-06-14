@@ -56,7 +56,7 @@ inline RobotJoint fixedJoint(std::string_view parent_name,
 }
 /*!
  * \brief 固定された関節 (wstring)
- * \since ver1.12
+ * \since ver2.0
  * \param parent_name 親リンクの名前
  * \param origin 親リンクの座標系で子リンクの原点
  *
@@ -77,7 +77,7 @@ inline RobotJoint fixedJoint(std::string_view parent_name,
 }
 /*!
  * \brief 固定された関節 (wstring)
- * \since ver1.12
+ * \since ver2.0
  * \param parent_name 親リンクの名前
  * \param origin 親リンクの座標系で子リンクの原点
  */
@@ -103,7 +103,7 @@ inline RobotJoint rotationalJoint(std::string_view name,
 }
 /*!
  * \brief 回転関節 (wstring)
- * \since ver1.12
+ * \since ver2.0
  *
  * originのz軸を中心に回転する関節。
  * \param name 関節の名前
@@ -136,7 +136,7 @@ inline RobotJoint prismaticJoint(std::string_view name,
 }
 /*!
  * \brief 直動関節 (wstring)
- * \since ver1.12
+ * \since ver2.0
  *
  * originのz軸方向に直線運動する関節。
  * \param name 関節の名前
@@ -160,7 +160,7 @@ struct RobotLink {
     ViewColor color;
     RobotLink() = default;
     /*!
-     * \since ver1.12
+     * \since ver2.0
      */
     RobotLink(const SharedString &name, const RobotJoint &joint,
               const Geometry &geometry, ViewColor color)
@@ -176,7 +176,7 @@ struct RobotLink {
               const Geometry &geometry, ViewColor color = ViewColor::inherit)
         : RobotLink(SharedString(name), joint, geometry, color) {}
     /*!
-     * \since ver1.12
+     * \since ver2.0
      * \param name リンクの名前
      * \param joint 親リンクとの接続方法
      * \param geometry リンクの形状 (表示用)
@@ -200,7 +200,7 @@ struct RobotLink {
     /*!
      * ベースのリンクではjointを省略可能
      * (fixedAbsolute({0, 0, 0})になる)
-     * \since ver1.12
+     * \since ver2.0
      * \param name リンクの名前
      * \param geometry リンクの形状 (表示用)
      * \param color 色 (表示用)

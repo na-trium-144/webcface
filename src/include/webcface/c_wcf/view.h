@@ -38,7 +38,7 @@ WEBCFACE_DLL wcfStatus wcfViewSet(wcfClient *wcli, const char *field,
                                   const wcfViewComponent *components, int size);
 /*!
  * \brief Viewを送信する (wstring)
- * \since 1.12
+ * \since 2.0
  * \sa wcfViewSet
  */
 WEBCFACE_DLL wcfStatus wcfViewSetW(wcfClient *wcli, const wchar_t *field,
@@ -63,7 +63,7 @@ WEBCFACE_DLL wcfStatus wcfViewGet(wcfClient *wcli, const char *member,
                                   int *recv_size);
 /*!
  * \brief Viewを受信する (wstring)
- * \since 1.12
+ * \since 2.0
  * \sa wcfViewGet
  */
 WEBCFACE_DLL wcfStatus wcfViewGetW(wcfClient *wcli, const wchar_t *member,

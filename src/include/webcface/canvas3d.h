@@ -53,7 +53,7 @@ class WEBCFACE_DLL Canvas3D : protected Field, public EventTarget<Canvas3D> {
     }
     /*!
      * \brief 「(thisの名前).(追加の名前)」を新しい名前とするField (wstring)
-     * \since ver1.12
+     * \since ver2.0
      */
     Canvas3D child(std::wstring_view field) const {
         return this->Field::child(field);
@@ -69,7 +69,7 @@ class WEBCFACE_DLL Canvas3D : protected Field, public EventTarget<Canvas3D> {
     Canvas3D operator[](std::string_view field) const { return child(field); }
     /*!
      * child()と同じ
-     * \since ver1.12
+     * \since ver2.0
      */
     Canvas3D operator[](std::wstring_view field) const { return child(field); }
     /*!
@@ -78,7 +78,7 @@ class WEBCFACE_DLL Canvas3D : protected Field, public EventTarget<Canvas3D> {
      */
     Canvas3D operator[](const char *field) const { return child(field); }
     /*!
-     * \since ver1.12
+     * \since ver2.0
      */
     Canvas3D operator[](const wchar_t *field) const { return child(field); }
     /*!

@@ -40,14 +40,14 @@ class Size {
 
 /*!
  * \brief 幅 × 高さ でサイズを指定
- * \since ver1.12
+ * \since ver2.0
  */
 inline Size sizeWH(std::size_t width, std::size_t height) {
     return Size{width, height};
 }
 /*!
  * \brief 高さ × 幅 でサイズを指定
- * \since ver1.12
+ * \since ver2.0
  */
 inline Size sizeHW(std::size_t height, std::size_t width) {
     return Size{width, height};
@@ -72,7 +72,7 @@ class SizeOption {
 
 /*!
  * \brief 幅 × 高さ でサイズを指定
- * \since ver1.12
+ * \since ver2.0
  */
 template <typename T1, typename T2>
     requires(std::same_as<T1, std::nullopt_t> ||
@@ -82,7 +82,7 @@ inline SizeOption sizeWH(T1 width, T2 height) {
 }
 /*!
  * \brief 高さ × 幅 でサイズを指定
- * \since ver1.12
+ * \since ver2.0
  */
 template <typename T1, typename T2>
     requires(std::same_as<T1, std::nullopt_t> ||
@@ -136,7 +136,7 @@ class ImageFrame {
      * \param data 画像データ
      * \param color_mode データの構造を指定
      * (デフォルトはOpenCVのBGR, uint8*3バイト)
-     * \deprecated ver1.12〜 rows, colsの順番がややこしいので sizeHW()
+     * \deprecated ver2.0〜 rows, colsの順番がややこしいので sizeHW()
      * を使ってサイズ指定
      *
      */
@@ -148,7 +148,7 @@ class ImageFrame {
                      data, color_mode) {}
     /*!
      * \brief 生画像データの配列からImageFrameを作成
-     * \since ver1.12
+     * \since ver2.0
      *
      * dataから width * height * channels バイトがコピーされる
      *
@@ -168,7 +168,7 @@ class ImageFrame {
     }
     /*!
      * \brief 空のImageFrameを作成
-     * \since ver1.12
+     * \since ver2.0
      *
      * width * height * channels バイトのバッファが生成されるので、
      * 作成後にdata()またはat()でデータを書き込んで使う
@@ -194,17 +194,17 @@ class ImageFrame {
     bool empty() const { return data_->size() == 0; }
     /*!
      * \brief 画像のサイズ
-     * \since ver1.12
+     * \since ver2.0
      */
     const Size &size() const { return size_; }
     /*!
      * \brief 画像の幅
-     * \since ver1.12
+     * \since ver2.0
      */
     std::size_t width() const { return size_.width(); }
     /*!
      * \brief 画像の高さ
-     * \since ver1.12
+     * \since ver2.0
      */
     std::size_t height() const { return size_.height(); }
     /*!
@@ -266,13 +266,13 @@ class ImageFrame {
      *
      * \return compress_modeがrawの場合、rows * cols * channels
      * 要素の画像データ。 それ以外の場合、圧縮された画像のデータ
-     * (ver1.12〜非const)
+     * (ver2.0〜非const)
      *
      */
     const std::vector<unsigned char> &data() const { return *data_; }
     /*!
      * \brief 画像データ (非const)
-     * \since ver1.12
+     * \since ver2.0
      * \return compress_modeがrawの場合、rows * cols * channels
      * 要素の画像データ。 それ以外の場合、圧縮された画像のデータ
      *
@@ -290,7 +290,7 @@ class ImageFrame {
     }
     /*!
      * \brief 画像の要素にアクセス
-     * \since ver1.12
+     * \since ver2.0
      *
      * compress_modeがrawでない場合は正常にアクセスできない。
      *

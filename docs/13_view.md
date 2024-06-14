@@ -39,7 +39,7 @@
     ![tutorial_view.png](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_view.png)
 
     \warning
-    <span class="since-c">1.12</span>
+    <span class="since-c">2.0</span>
     ワイド文字列を出力したい場合はostreamに直接渡すのではなく Component::text を使う必要があります。
     (後述)
 
@@ -61,8 +61,8 @@
 - <b class="tab-title">C</b>
     \since <span class="since-c">1.7</span>
 
-    wcfViewComponent, (<span class="since-c">1.12</span> wcfViewComponentW)
-    の配列を wcfViewSet, (<span class="since-c">1.12</span> wcfViewSetW) に指定することで送信されます。
+    wcfViewComponent, (<span class="since-c">2.0</span> wcfViewComponentW)
+    の配列を wcfViewSet, (<span class="since-c">2.0</span> wcfViewSetW) に指定することで送信されます。
 
     例
     ```cpp
@@ -194,11 +194,11 @@ Viewに追加する各種要素をViewComponentといいます。
     v << webcface::text("hello").textColor(webcface::ViewColor::red);
     ```
 
-    <span class="since-c">1.12</span>
+    <span class="since-c">2.0</span>
     Viewに直接ワイド文字列を出力することはできませんが、text()の引数にはワイド文字列も使用可能です。
 
 - <b class="tab-title">C</b>
-    wcfText, (<span class="since-c">1.12</span> wcfTextW) でテキストを指定します。
+    wcfText, (<span class="since-c">2.0</span> wcfTextW) でテキストを指定します。
     text_color でテキストの色を変更することができます。
     ```c
     vc[0] = wcfText("hello");
@@ -252,7 +252,7 @@ Viewに追加する各種要素をViewComponentといいます。
     v << text("hello") << newLine() << text("hello");
     ```
 - <b class="tab-title">C</b>
-    wcfText に`\n`を渡すか、 wcfNewLine, (<span class="since-c">1.12</span> wcfNewLineW) で指定できます。
+    wcfText に`\n`を渡すか、 wcfNewLine, (<span class="since-c">2.0</span> wcfNewLineW) で指定できます。
     wcfTextの文字列の途中に`\n`がある場合もそこで改行されます
     ```c
     vc[0] = wcfText("\n");
@@ -328,7 +328,7 @@ Viewに追加する各種要素をViewComponentといいます。
 - <b class="tab-title">C</b>
     関数の登録方法は [Func](./30_func.md) を参照してください。
     表示する文字列に加え登録したFuncのmember名と名前を
-    wcfButton, (<span class="since-c">1.12</span> wcfButtonW) に指定します。
+    wcfButton, (<span class="since-c">2.0</span> wcfButtonW) に指定します。
     member名をNULLまたは空文字列にすると自分自身が登録した関数を指します。
     ```c
     vc[0] = wcfButton("表示する文字列", NULL, "hoge");
@@ -554,7 +554,7 @@ Python [webcface.ViewComponent](https://na-trium-144.github.io/webcface-python/w
 ViewComponentオブジェクトから各種プロパティを取得できます。
 
 <span class="since-c">1.7</span>
-Cの場合は wcfViewGet, (<span class="since-c">1.12</span> wcfViewGetW) で wcfViewComponent, (<span class="since-c">1.12</span> wcfViewComponentW) の配列が得られます。
+Cの場合は wcfViewGet, (<span class="since-c">2.0</span> wcfViewGetW) で wcfViewComponent, (<span class="since-c">2.0</span> wcfViewComponentW) の配列が得られます。
 取得した配列は不要になったら wcfDestroy で破棄してください。
 
 ### onClick

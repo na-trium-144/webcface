@@ -60,7 +60,7 @@ struct WEBCFACE_DLL Field : public Common::FieldBase {
     const std::string &name() const { return field_.decode(); }
     /*!
      * \brief field名を返す (wstring)
-     * \since ver1.12
+     * \since ver2.0
      */
     const std::wstring &nameW() const { return field_.decodeW(); }
 
@@ -77,7 +77,7 @@ struct WEBCFACE_DLL Field : public Common::FieldBase {
     std::string lastName() const { return Encoding::decode(lastName8()); }
     /*!
      * \brief nameのうちピリオドで区切られた最後の部分を取り出す (wstring)
-     * \since ver1.12
+     * \since ver2.0
      */
     std::wstring lastNameW() const { return Encoding::decodeW(lastName8()); }
     /*!
@@ -94,7 +94,7 @@ struct WEBCFACE_DLL Field : public Common::FieldBase {
     }
     /*!
      * \brief 「(thisの名前).(追加の名前)」を新しい名前とするField (wstring)
-     * \since ver1.12
+     * \since ver2.0
      */
     Field child(std::wstring_view field) const {
         return child(SharedString(field));
@@ -111,7 +111,7 @@ struct WEBCFACE_DLL Field : public Common::FieldBase {
     Field operator[](std::string_view field) const { return child(field); }
     /*!
      * \brief 「(thisの名前).(追加の名前)」を新しい名前とするField (wstring)
-     * \since ver1.12
+     * \since ver2.0
      */
     Field operator[](std::wstring_view field) const { return child(field); }
     /*!

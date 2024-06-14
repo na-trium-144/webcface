@@ -38,7 +38,7 @@ class WEBCFACE_DLL Member : protected Field {
     std::string name() const { return member_.decode(); }
     /*!
      * \brief Member名 (wstring)
-     * \since ver1.12
+     * \since ver2.0
      */
     std::wstring nameW() const { return member_.decodeW(); }
 
