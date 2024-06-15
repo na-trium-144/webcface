@@ -824,6 +824,7 @@ endif()
 
 set(CPP_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 list(APPEND SVR_MAIN_SRC ${CPP_DIR}/server_main.cc)
+list(APPEND WEBCFACE_SERVER_IN_SRC ${CPP_DIR}/server/internal/server_ws.cc)
 list(APPEND WEBCFACE_SRC
     ${CPP_DIR}/message/message.cc
     ${CPP_DIR}/message/unix_path.cc
@@ -910,6 +911,17 @@ set(INCLUDE_DIR
 
 ###############################################################################
 
+# Crowとasioをwebcfaceのインタフェースから隔離するためにライブラリを分ける
+# (こうしないとLinuxでどうしてもasioのシンボルがwebcfaceに残ってセグフォする)
+add_library(${PROJECT_NAME}-server-internal STATIC ${WEBCFACE_SERVER_IN_SRC})
+target_link_libraries(${PROJECT_NAME}-server-internal PRIVATE ${Crow})
+if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+    set_target_properties(${PROJECT_NAME}-server-internal PROPERTIES
+        DEBUG_POSTFIX "${WEBCFACE_SOVERSION}d"
+        RELEASE_POSTFIX "${WEBCFACE_SOVERSION}"
+    )
+endif()
+
 if(WEBCFACE_SHARED)
     add_library(${PROJECT_NAME} SHARED ${WEBCFACE_SRC} ${VERSION_RC})
 else()
@@ -927,7 +939,7 @@ if(WEBCFACE_SHARED AND NOT WIN32)
     endif()
 endif()
 
-list(APPEND WEBCFACE_PRIVATE_DEPS msgpack-cxx ${Crow} utfcpp)
+list(APPEND WEBCFACE_PRIVATE_DEPS ${PROJECT_NAME}-server-internal msgpack-cxx utfcpp)
 if(WEBCFACE_SHARED AND APPLE)
     # MacOSでは--exclude-libsが使えず、その代わり-hidden-lでライブラリを渡す必要がある
     add_library(libcurl-hidden INTERFACE)
@@ -969,7 +981,7 @@ endif()
 target_link_libraries(${PROJECT_NAME} PRIVATE ${WEBCFACE_PRIVATE_DEPS})
 target_link_libraries(${PROJECT_NAME} PUBLIC ${WEBCFACE_PUBLIC_DEPS})
 
-if(WIN32)
+if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     set_target_properties(${PROJECT_NAME} PROPERTIES
         DEBUG_POSTFIX "${WEBCFACE_SOVERSION}d"
         RELEASE_POSTFIX "${WEBCFACE_SOVERSION}"
@@ -1059,6 +1071,7 @@ if(WEBCFACE_TEST)
         ${PROJECT_NAME}
         GTest::gtest_main
         ${WEBCFACE_PRIVATE_DEPS}
+        ${Crow}
     )
     target_compile_definitions(${PROJECT_NAME}-test PRIVATE
         WEBCFACE_TEST_TIMEOUT=${WEBCFACE_TEST_TIMEOUT}
@@ -1098,6 +1111,7 @@ if(WEBCFACE_INSTALL)
     endif()
     if(NOT WEBCFACE_SHARED)
         # private static dependencies
+        list(APPEND WEBCFACE_EXPORTS ${PROJECT_NAME}-server-internal)
         if(NOT msgpack-cxx_FOUND)
             list(APPEND WEBCFACE_EXPORTS msgpack-cxx)
         endif()
