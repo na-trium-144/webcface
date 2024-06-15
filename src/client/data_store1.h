@@ -12,7 +12,7 @@
 WEBCFACE_NS_BEGIN
 namespace Internal {
 template <typename T>
-class WEBCFACE_TEMPLATE SyncDataStore1 {
+class WEBCFACE_DLL_TEMPLATE SyncDataStore1 {
     StrMap1<T> data_recv;
     StrMap1<bool> req;
     StrMap1<bool> req_send;

@@ -2,6 +2,7 @@
 
 WEBCFACE_NS_BEGIN
 namespace Internal {
+template <typename T>
 SyncDataStore1<T>::SyncDataStore1(const SharedString &name)
     : self_member_name(name) {}
 

@@ -37,8 +37,7 @@ void SyncDataStore2<T, ReqT>::setSend(const FieldBase &base, const T &data) {
 }
 
 template <typename T, typename ReqT>
-void SyncDataStore2<T, ReqT>::setSend(const SharedString &name,
-                                      const T &data) {
+void SyncDataStore2<T, ReqT>::setSend(const SharedString &name, const T &data) {
     std::lock_guard lock(mtx);
     data_send[name] = data;
     // auto &recv_self = data_recv[self_member_name];
@@ -52,20 +51,17 @@ void SyncDataStore2<T, ReqT>::setRecv(const FieldBase &base, const T &data) {
 
 template <typename T, typename ReqT>
 void SyncDataStore2<T, ReqT>::setRecv(const SharedString &from,
-                                      const SharedString &name,
-                                      const T &data) {
+                                      const SharedString &name, const T &data) {
     std::lock_guard lock(mtx);
     data_recv[from][name] = data;
 }
 
 template <typename T, typename ReqT>
-std::unordered_set<std::u8string>
-SyncDataStore2<T, ReqT>::getEntry(const FieldBase &base) {
+StrSet1 SyncDataStore2<T, ReqT>::getEntry(const FieldBase &base) {
     return getEntry(base.member_);
 }
 template <typename T, typename ReqT>
-std::unordered_set<std::u8string>
-SyncDataStore2<T, ReqT>::getEntry(const SharedString &name) {
+StrSet1 SyncDataStore2<T, ReqT>::getEntry(const SharedString &name) {
     std::lock_guard lock(mtx);
     auto e = entry.find(name);
     if (e != entry.end()) {
