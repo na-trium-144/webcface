@@ -4,7 +4,6 @@
 #include <string_view>
 #include <vector>
 #include "common/field_base.h"
-#include "encoding.h"
 #include <webcface/common/def.h>
 
 WEBCFACE_NS_BEGIN
@@ -19,6 +18,7 @@ class Text;
 class View;
 class Image;
 class Func;
+class FuncListener;
 class RobotModel;
 class Canvas2D;
 class Canvas3D;
@@ -33,9 +33,12 @@ struct WEBCFACE_DLL Field : public Common::FieldBase {
 
     Field() = default;
     Field(const std::weak_ptr<Internal::ClientData> &data_w,
-          std::u8string_view member, std::u8string_view field = u8"")
+          const SharedString &member)
+        : Common::FieldBase(member), data_w(data_w) {}
+    Field(const std::weak_ptr<Internal::ClientData> &data_w,
+          const SharedString &member, const SharedString &field)
         : Common::FieldBase(member, field), data_w(data_w) {}
-    Field(const Field &base, std::u8string_view field)
+    Field(const Field &base, const SharedString &field)
         : Common::FieldBase(base, field), data_w(base.data_w) {}
 
     //! data_wをlockし、失敗したらruntime_errorを投げる
@@ -54,18 +57,19 @@ struct WEBCFACE_DLL Field : public Common::FieldBase {
      * \brief field名を返す
      *
      */
-    std::string name() const { return Encoding::decode(field_); }
+    const std::string &name() const { return field_.decode(); }
     /*!
      * \brief field名を返す (wstring)
-     * \since ver1.12
+     * \since ver2.0
      */
-    std::wstring nameW() const { return Encoding::decodeW(field_); }
+    const std::wstring &nameW() const { return field_.decodeW(); }
 
   protected:
     std::u8string_view lastName8() const;
-    Field child(std::u8string_view field) const;
 
   public:
+    Field child(const SharedString &field) const;
+
     /*!
      * \brief nameのうちピリオドで区切られた最後の部分を取り出す
      * \since ver1.11
@@ -73,7 +77,7 @@ struct WEBCFACE_DLL Field : public Common::FieldBase {
     std::string lastName() const { return Encoding::decode(lastName8()); }
     /*!
      * \brief nameのうちピリオドで区切られた最後の部分を取り出す (wstring)
-     * \since ver1.12
+     * \since ver2.0
      */
     std::wstring lastNameW() const { return Encoding::decodeW(lastName8()); }
     /*!
@@ -86,14 +90,14 @@ struct WEBCFACE_DLL Field : public Common::FieldBase {
      * \since ver1.11
      */
     Field child(std::string_view field) const {
-        return child(Encoding::encode(field));
+        return child(SharedString(field));
     }
     /*!
      * \brief 「(thisの名前).(追加の名前)」を新しい名前とするField (wstring)
-     * \since ver1.12
+     * \since ver2.0
      */
     Field child(std::wstring_view field) const {
-        return child(Encoding::encodeW(field));
+        return child(SharedString(field));
     }
     /*!
      * \brief 「(thisの名前).(index)」を新しい名前とするField
@@ -107,7 +111,7 @@ struct WEBCFACE_DLL Field : public Common::FieldBase {
     Field operator[](std::string_view field) const { return child(field); }
     /*!
      * \brief 「(thisの名前).(追加の名前)」を新しい名前とするField (wstring)
-     * \since ver1.12
+     * \since ver2.0
      */
     Field operator[](std::wstring_view field) const { return child(field); }
     /*!
@@ -126,12 +130,15 @@ struct WEBCFACE_DLL Field : public Common::FieldBase {
     Image image(std::wstring_view field) const;
     Func func(std::string_view field = "") const;
     Func func(std::wstring_view field) const;
+    FuncListener funcListener(std::string_view field) const;
+    FuncListener funcListener(std::wstring_view field) const;
     View view(std::string_view field = "") const;
     View view(std::wstring_view field) const;
     Canvas3D canvas3D(std::string_view field = "") const;
     Canvas3D canvas3D(std::wstring_view field) const;
     Canvas2D canvas2D(std::string_view field = "") const;
     Canvas2D canvas2D(std::wstring_view field) const;
+
 
     std::vector<Value> valueEntries() const;
     std::vector<Text> textEntries() const;

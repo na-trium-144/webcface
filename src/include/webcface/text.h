@@ -22,7 +22,7 @@ class WEBCFACE_DLL Text : protected Field, public EventTarget<Text> {
   public:
     Text() = default;
     Text(const Field &base);
-    Text(const Field &base, std::u8string_view field)
+    Text(const Field &base, const SharedString &field)
         : Text(Field{base, field}) {}
 
     friend class InputRef;
@@ -41,7 +41,7 @@ class WEBCFACE_DLL Text : protected Field, public EventTarget<Text> {
     }
     /*!
      * \brief 「(thisの名前).(追加の名前)」を新しい名前とするField (wstring)
-     * \since ver1.12
+     * \since ver2.0
      */
     Text child(std::wstring_view field) const {
         return this->Field::child(field);
@@ -57,7 +57,7 @@ class WEBCFACE_DLL Text : protected Field, public EventTarget<Text> {
     Text operator[](std::string_view field) const { return child(field); }
     /*!
      * child()と同じ
-     * \since ver1.12
+     * \since ver2.0
      */
     Text operator[](std::wstring_view field) const { return child(field); }
     /*!
@@ -66,7 +66,7 @@ class WEBCFACE_DLL Text : protected Field, public EventTarget<Text> {
      */
     Text operator[](const char *field) const { return child(field); }
     /*!
-     * \since ver1.12
+     * \since ver2.0
      */
     Text operator[](const wchar_t *field) const { return child(field); }
     /*!
@@ -91,13 +91,13 @@ class WEBCFACE_DLL Text : protected Field, public EventTarget<Text> {
     /*!
      * \brief 文字列をセットする
      *
-     * (ver1.12からstd::stringをstd::string_viewに変更)
+     * (ver2.0からstd::stringをstd::string_viewに変更)
      *
      */
     Text &set(std::string_view v) { return set(ValAdaptor{v}); }
     /*!
      * \brief 文字列をセットする (wstring)
-     * \since ver1.12
+     * \since ver2.0
      */
     Text &set(std::wstring_view v) { return set(ValAdaptor{v}); }
     /*!
@@ -124,7 +124,7 @@ class WEBCFACE_DLL Text : protected Field, public EventTarget<Text> {
     }
     /*!
      * \brief 文字列をセットする (wstring)
-     * \since ver1.12
+     * \since ver2.0
      */
     Text &operator=(std::wstring_view v) {
         this->set(v);
@@ -141,17 +141,17 @@ class WEBCFACE_DLL Text : protected Field, public EventTarget<Text> {
      * \brief 文字列を返す
      *
      * * <del>ver1.10〜 文字列以外の型も扱うためValAdaptor型に変更</del>
-     * * ver1.12〜 stringに戻した
+     * * ver2.0〜 stringに戻した
      *
      */
     std::optional<std::string> tryGet() const;
     /*!
      * \brief 文字列を返す (wstring)
-     * \since ver1.12
+     * \since ver2.0
      */
     std::optional<std::wstring> tryGetW() const;
     /*!
-     * \since ver1.12
+     * \since ver2.0
      *
      * 文字列以外の型のデータが必要な場合
      *
@@ -166,13 +166,13 @@ class WEBCFACE_DLL Text : protected Field, public EventTarget<Text> {
      * \brief 文字列を返す
      *
      * * <del>ver1.10〜 文字列以外の型も扱うためValAdaptor型に変更</del>
-     * * ver1.12〜 stringに戻した
+     * * ver2.0〜 stringに戻した
      *
      */
     std::string get() const { return tryGet().value_or(""); }
     /*!
      * \brief 文字列を返す (wstring)
-     * \since ver1.12
+     * \since ver2.0
      */
     std::wstring getW() const { return tryGetW().value_or(L""); }
 
@@ -310,7 +310,7 @@ class WEBCFACE_DLL InputRef {
     const std::string &asStringRef() const { return get().asStringRef(); }
     /*!
      * \brief 文字列として返す (wstring)
-     * \since ver1.12
+     * \since ver2.0
      * \sa asStringRef()
      */
     const std::wstring &asWStringRef() const { return get().asWStringRef(); }
@@ -321,7 +321,7 @@ class WEBCFACE_DLL InputRef {
     std::string asString() const { return get().asString(); }
     /*!
      * \brief 文字列として返す(コピー) (wstring)
-     * \since ver1.12
+     * \since ver2.0
      */
     std::wstring asWString() const { return get().asWString(); }
     /*!

@@ -3,25 +3,28 @@
 #include <webcface/robot_model.h>
 #include "client_internal.h"
 #include "webcface/common/field_base.h"
+#include "webcface/encoding.h"
 
 WEBCFACE_NS_BEGIN
 
 ViewComponentBase &
 ViewComponent::lockTmp(const std::weak_ptr<Internal::ClientData> &data_w,
-                       const std::u8string &view_name,
+                       const SharedString &view_name,
                        std::unordered_map<int, int> *idx_next) {
     auto data = data_w.lock();
     initIdx(idx_next, type_);
     if (on_click_func_tmp) {
         Func on_click{Field{data_w, data->self_member_name},
-                      u8"..v" + view_name + u8"/" + id()};
+                      SharedString(u8"..v" + view_name.u8String() + u8"/" +
+                                   std::u8string(Encoding::castToU8(id())))};
         on_click_func_tmp->lockTo(on_click);
         onClick(on_click);
     }
     if (text_ref_tmp) {
         // if (text_ref_tmp->expired()) {
         Text text_ref{Field{data_w, data->self_member_name},
-                      u8"..ir" + view_name + u8"/" + id()};
+                      SharedString(u8"..ir" + view_name.u8String() + u8"/" +
+                                   std::u8string(Encoding::castToU8(id())))};
         text_ref_tmp->lockTo(text_ref);
         if (init_ && !text_ref.tryGet()) {
             text_ref.set(*init_);
@@ -32,33 +35,37 @@ ViewComponent::lockTmp(const std::weak_ptr<Internal::ClientData> &data_w,
     return *this;
 }
 
-template <typename CComponent, typename CVal, std::size_t v_index,
-          typename DecodeF>
-CComponent ViewComponent::cDataT(DecodeF decode) const {
+template <typename CComponent, typename CVal, std::size_t v_index>
+CComponent ViewComponent::cDataT() const {
     CComponent vcc;
     vcc.type = static_cast<int>(this->type());
-    this->text_s.emplace<v_index>(decode(this->text_));
-    vcc.text = std::get<v_index>(this->text_s).c_str();
+    if constexpr (v_index == 0) {
+        vcc.text = this->text_.decode().c_str();
+    } else {
+        vcc.text = this->text_.decodeW().c_str();
+    }
     if (this->on_click_func_) {
-        this->on_click_member_s.emplace<v_index>(
-            decode(this->on_click_func_->member_));
-        this->on_click_field_s.emplace<v_index>(
-            decode(this->on_click_func_->field_));
-        vcc.on_click_member =
-            std::get<v_index>(this->on_click_member_s).c_str();
-        vcc.on_click_field = std::get<v_index>(this->on_click_field_s).c_str();
+        if constexpr (v_index == 0) {
+            vcc.on_click_member =
+                this->on_click_func_->member_.decode().c_str();
+            vcc.on_click_field = this->on_click_func_->field_.decode().c_str();
+        } else {
+            vcc.on_click_member =
+                this->on_click_func_->member_.decodeW().c_str();
+            vcc.on_click_field = this->on_click_func_->field_.decodeW().c_str();
+        }
     } else {
         vcc.on_click_member = nullptr;
         vcc.on_click_field = nullptr;
     }
     if (this->text_ref_) {
-        this->text_ref_member_s.emplace<v_index>(
-            decode(this->text_ref_->member_));
-        this->text_ref_field_s.emplace<v_index>(
-            decode(this->text_ref_->field_));
-        vcc.text_ref_member =
-            std::get<v_index>(this->text_ref_member_s).c_str();
-        vcc.text_ref_field = std::get<v_index>(this->text_ref_field_s).c_str();
+        if constexpr (v_index == 0) {
+            vcc.text_ref_member = this->text_ref_->member_.decode().c_str();
+            vcc.text_ref_field = this->text_ref_->field_.decode().c_str();
+        } else {
+            vcc.text_ref_member = this->text_ref_->member_.decodeW().c_str();
+            vcc.text_ref_field = this->text_ref_->field_.decodeW().c_str();
+        }
     } else {
         vcc.text_ref_member = nullptr;
         vcc.text_ref_field = nullptr;
@@ -70,7 +77,7 @@ CComponent ViewComponent::cDataT(DecodeF decode) const {
     vcc.step = this->step_.value_or(0);
     std::vector<CVal> options;
     options.reserve(this->option_.size());
-    for(const auto &o: this->option_){
+    for (const auto &o : this->option_) {
         options.push_back(CVal{
             .as_int = o,
             .as_double = o,
@@ -84,10 +91,10 @@ CComponent ViewComponent::cDataT(DecodeF decode) const {
 }
 
 wcfViewComponent ViewComponent::cData() const {
-    return cDataT<wcfViewComponent, wcfMultiVal, 0>(Encoding::decode);
+    return cDataT<wcfViewComponent, wcfMultiVal, 0>();
 }
 wcfViewComponentW ViewComponent::cDataW() const {
-    return cDataT<wcfViewComponentW, wcfMultiValW, 1>(Encoding::decodeW);
+    return cDataT<wcfViewComponentW, wcfMultiValW, 1>();
 }
 
 std::optional<Func> ViewComponent::onClick() const {
@@ -133,9 +140,8 @@ Canvas3DComponent &Canvas3DComponent::angles(
         auto model = rm->get();
         for (std::size_t ji = 0; ji < model.size(); ji++) {
             const auto &j = model[ji].joint;
-            auto j_name_s = Encoding::decode(j.name);
-            if (angles.count(j_name_s)) {
-                angles_[ji] = angles.at(j_name_s);
+            if (angles.count(j.name.decode())) {
+                angles_[ji] = angles.at(j.name.decode());
             }
         }
         return *this;
@@ -152,9 +158,8 @@ Canvas3DComponent &Canvas3DComponent::angles(
         auto model = rm->get();
         for (std::size_t ji = 0; ji < model.size(); ji++) {
             const auto &j = model[ji].joint;
-            auto j_name_s = Encoding::decodeW(j.name);
-            if (angles.count(j_name_s)) {
-                angles_[ji] = angles.at(j_name_s);
+            if (angles.count(j.name.decodeW())) {
+                angles_[ji] = angles.at(j.name.decodeW());
             }
         }
         return *this;
@@ -170,8 +175,7 @@ Canvas3DComponent &Canvas3DComponent::angle(const std::string &joint_name,
         auto model = rm->get();
         for (std::size_t ji = 0; ji < model.size(); ji++) {
             const auto &j = model[ji].joint;
-            auto j_name_s = Encoding::decode(j.name);
-            if (joint_name == j_name_s) {
+            if (joint_name == j.name.decode()) {
                 angles_[ji] = angle;
             }
         }
@@ -188,8 +192,7 @@ Canvas3DComponent &Canvas3DComponent::angle(const std::wstring &joint_name,
         auto model = rm->get();
         for (std::size_t ji = 0; ji < model.size(); ji++) {
             const auto &j = model[ji].joint;
-            auto j_name_s = Encoding::decodeW(j.name);
-            if (joint_name == j_name_s) {
+            if (joint_name == j.name.decodeW()) {
                 angles_[ji] = angle;
             }
         }
@@ -202,13 +205,14 @@ Canvas3DComponent &Canvas3DComponent::angle(const std::wstring &joint_name,
 
 Canvas2DComponentBase &
 Canvas2DComponent::lockTmp(const std::weak_ptr<Internal::ClientData> &data_w,
-                           const std::u8string &view_name,
+                           const SharedString &view_name,
                            std::unordered_map<int, int> *idx_next) {
     initIdx(idx_next, type_);
     if (on_click_func_tmp != nullptr) {
         auto data = data_w.lock();
         Func on_click{Field{data_w, data->self_member_name},
-                      u8"..c2" + view_name + u8"/" + id()};
+                      SharedString(u8"..c2" + view_name.u8String() + u8"/" +
+                                   std::u8string(Encoding::castToU8(id())))};
         on_click_func_tmp->lockTo(on_click);
         onClick(on_click);
     }

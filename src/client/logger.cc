@@ -18,7 +18,7 @@ writeLog(const std::shared_ptr<Internal::SyncDataStore1<
         throw std::runtime_error("self log data is null");
     } else {
         // log_storeにはClientDataのコンストラクタで空vectorを入れてある
-        (*v)->emplace_back(LogLineData<>{level, time, message});
+        (*v)->emplace_back(LogLineData<>{level, time, SharedString(message)});
     }
 }
 

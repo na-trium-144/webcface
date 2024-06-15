@@ -12,7 +12,6 @@ class logger;
 
 WEBCFACE_NS_BEGIN
 
-class FuncListener;
 class LoggerSink;
 template <typename CharT>
 class BasicLoggerBuf;
@@ -50,10 +49,10 @@ class WEBCFACE_DLL Client : public Member {
     explicit Client(const std::string &name,
                     const std::string &host = "127.0.0.1",
                     int port = WEBCFACE_DEFAULT_PORT)
-        : Client(Encoding::encode(name), Encoding::encode(host), port) {}
+        : Client(SharedString(name), SharedString(host), port) {}
     /*!
      * \brief 名前を指定しサーバーに接続する (wstring)
-     * \since ver1.12
+     * \since ver2.0
      *
      * サーバーのホストとポートを省略した場合 127.0.0.1:7530 になる
      *
@@ -65,11 +64,11 @@ class WEBCFACE_DLL Client : public Member {
     explicit Client(const std::wstring &name,
                     const std::wstring &host = L"127.0.0.1",
                     int port = WEBCFACE_DEFAULT_PORT)
-        : Client(Encoding::encodeW(name), Encoding::encodeW(host), port) {}
+        : Client(SharedString(name), SharedString(host), port) {}
 
-    explicit Client(const std::u8string &name, const std::u8string &host,
+    explicit Client(const SharedString &name, const SharedString &host,
                     int port);
-    explicit Client(const std::u8string &name,
+    explicit Client(const SharedString &name,
                     const std::shared_ptr<Internal::ClientData> &data);
 
     /*!
@@ -129,7 +128,7 @@ class WEBCFACE_DLL Client : public Member {
     void sync();
 
   protected:
-    Member member(const std::u8string &name) const {
+    Member member(const SharedString &name) const {
         if (name.empty()) {
             return *this;
         } else {
@@ -145,18 +144,18 @@ class WEBCFACE_DLL Client : public Member {
      *
      * \sa members(), onMemberEntry()
      */
-    Member member(const std::string &name) const {
-        return member(Encoding::encode(name));
+    Member member(std::string_view name) const {
+        return member(SharedString(name));
     }
     /*!
      * \brief 他のmemberにアクセスする (wstring)
-     * \since ver1.12
+     * \since ver2.0
      * nameが空の場合 *this を返す
      *
      * \sa members(), onMemberEntry()
      */
-    Member member(const std::wstring &name) const {
-        return member(Encoding::encodeW(name));
+    Member member(std::wstring_view name) const {
+        return member(SharedString(name));
     }
     /*!
      * \brief サーバーに接続されている他のmemberのリストを得る。
@@ -174,17 +173,6 @@ class WEBCFACE_DLL Client : public Member {
      * \sa member(), members()
      */
     EventTarget<Member> onMemberEntry();
-
-    /*!
-     * \brief FuncListenerを作成する
-     *
-     */
-    FuncListener funcListener(const std::string &field) const;
-    /*!
-     * \brief FuncListenerを作成する (wstring)
-     * \since ver1.12
-     */
-    FuncListener funcListener(const std::wstring &field) const;
 
     /*!
      * \brief
@@ -221,7 +209,7 @@ class WEBCFACE_DLL Client : public Member {
      * \brief webcfaceに出力するsink
      *
      * * ver1.0.1で logger_sink から名前変更
-     * * ver1.12から、 Encoding::usingUTF8()
+     * * ver2.0から、 Encoding::usingUTF8()
      * がfalseの場合ログに書き込まれたstringはutf-8に変換されてからwebcfaceに送られる
      *
      * \sa logger(), loggerStreamBuf(), loggerOStream()
@@ -246,7 +234,7 @@ class WEBCFACE_DLL Client : public Member {
      * std::ostreamの出力先として使用すると、logger()に送られる。
      * すなわち、loggerSink (webcfaceに送られる) と stderr_color_sink_mt
      * (標準エラー出力に送られる) に出力されることになる。)
-     * * ver1.12〜: std::ostreamの出力先として使用すると、改行が入力されるたびに
+     * * ver2.0〜: std::ostreamの出力先として使用すると、改行が入力されるたびに
      * webcfaceに送られると同時に std::cerr にも送られる。
      * * levelは常にinfoになる。
      * * std::flushのタイミングとは無関係に、1つの改行ごとに1つのログになる
@@ -261,7 +249,7 @@ class WEBCFACE_DLL Client : public Member {
      * * (ver1.11.xまで: 出力先が loggerStreamBuf() に設定されているostream。
      * すなわち、loggerSink (webcfaceに送られる) と stderr_color_sink_mt
      * (標準エラー出力に送られる) に出力されることになる。)
-     * * ver1.12〜: std::ostreamの出力先として使用すると、改行が入力されるたびに
+     * * ver2.0〜: std::ostreamの出力先として使用すると、改行が入力されるたびに
      * webcfaceに送られると同時に std::cerr にも送られる。
      * * ver1.0.1で logger_ostream から名前変更
      *
@@ -270,13 +258,13 @@ class WEBCFACE_DLL Client : public Member {
     std::ostream &loggerOStream();
     /*!
      * \brief webcfaceに出力するwstreambuf
-     * \since ver1.12
+     * \since ver2.0
      * \sa loggerStreamBuf
      */
     LoggerBufW *loggerWStreamBuf();
     /*!
      * \brief webcfaceに出力するwostream
-     * \since ver1.12
+     * \since ver2.0
      * \sa loggerOStream
      */
     std::wostream &loggerWOStream();

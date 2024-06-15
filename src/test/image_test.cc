@@ -7,6 +7,10 @@
 
 using namespace webcface;
 
+static SharedString operator""_ss(const char *str, std::size_t len) {
+    return SharedString(Encoding::castToU8(std::string_view(str, len)));
+}
+
 class ImageFrameTest : public ::testing::Test {
   protected:
     void SetUp() override {
@@ -58,21 +62,22 @@ class ImageTest : public ::testing::Test {
         data_ = std::make_shared<Internal::ClientData>(self_name);
         callback_called = 0;
     }
-    std::u8string self_name = u8"test";
+    SharedString self_name = "test"_ss;
     std::shared_ptr<Internal::ClientData> data_;
-    FieldBase fieldBase(std::u8string_view member,
+    FieldBase fieldBase(const SharedString &member,
                         std::string_view name) const {
-        return FieldBase{member, Encoding::castToU8(name)};
+        return FieldBase{member, SharedString(Encoding::castToU8(name))};
     }
     FieldBase fieldBase(std::string_view member, std::string_view name) const {
-        return FieldBase{Encoding::castToU8(member), Encoding::castToU8(name)};
+        return FieldBase{SharedString(Encoding::castToU8(member)),
+                         SharedString(Encoding::castToU8(name))};
     }
-    Field field(std::u8string_view member, std::string_view name = "") const {
-        return Field{data_, member, Encoding::castToU8(name)};
+    Field field(const SharedString &member, std::string_view name = "") const {
+        return Field{data_, member, SharedString(Encoding::castToU8(name))};
     }
     Field field(std::string_view member, std::string_view name = "") const {
-        return Field{data_, Encoding::castToU8(member),
-                     Encoding::castToU8(name)};
+        return Field{data_, SharedString(Encoding::castToU8(member)),
+                     SharedString(Encoding::castToU8(name))};
     }
     template <typename T1, typename T2>
     Image image(const T1 &member, const T2 &name) {
@@ -95,58 +100,58 @@ TEST_F(ImageTest, field) {
 }
 TEST_F(ImageTest, eventTarget) {
     image("a", "b").appendListener(callback<Image>());
-    data_->image_change_event[fieldBase("a", "b")]->operator()(field("a", "b"));
+    data_->image_change_event["a"_ss]["b"_ss]->operator()(field("a", "b"));
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
 }
 TEST_F(ImageTest, imageSet) {
-    (data_->image_change_event[fieldBase(self_name, "b")] =
+    (data_->image_change_event[self_name]["b"_ss] =
          std::make_shared<eventpp::CallbackList<void(Image)>>())
         ->append(callback());
     auto dp = std::make_shared<std::vector<unsigned char>>(100 * 100 * 3);
     image(self_name, "b")
         .set(ImageFrame{sizeHW(100, 100), dp, ImageColorMode::bgr});
-    EXPECT_EQ(data_->image_store.getRecv(self_name, u8"b")->rows(), 100);
-    EXPECT_EQ(data_->image_store.getRecv(self_name, u8"b")->cols(), 100);
-    EXPECT_EQ(data_->image_store.getRecv(self_name, u8"b")->dataPtr(), dp);
+    EXPECT_EQ(data_->image_store.getRecv(self_name, "b"_ss)->rows(), 100);
+    EXPECT_EQ(data_->image_store.getRecv(self_name, "b"_ss)->cols(), 100);
+    EXPECT_EQ(data_->image_store.getRecv(self_name, "b"_ss)->dataPtr(), dp);
     EXPECT_EQ(callback_called, 1);
     EXPECT_THROW(image("a", "b").set(ImageFrame{}), std::invalid_argument);
 }
 TEST_F(ImageTest, imageRequest) {
     image("a", "1").request();
-    EXPECT_EQ(data_->image_store.getReqInfo(u8"a", u8"1"),
+    EXPECT_EQ(data_->image_store.getReqInfo("a"_ss, "1"_ss),
               (ImageReq{std::nullopt, std::nullopt, std::nullopt,
                         ImageCompressMode::raw, 0, std::nullopt}));
     image("a", "1").request(sizeHW(100, 100), ImageColorMode::rgba, 12.3);
-    EXPECT_EQ(data_->image_store.getReqInfo(u8"a", u8"1"),
+    EXPECT_EQ(data_->image_store.getReqInfo("a"_ss, "1"_ss),
               (ImageReq{100, 100, ImageColorMode::rgba, ImageCompressMode::raw,
                         0, 12.3}));
     image("a", "1").request(sizeHW(100, 100), ImageCompressMode::png, 9, 12.3);
     EXPECT_EQ(
-        data_->image_store.getReqInfo(u8"a", u8"1"),
+        data_->image_store.getReqInfo("a"_ss, "1"_ss),
         (ImageReq{100, 100, std::nullopt, ImageCompressMode::png, 9, 12.3}));
 }
 TEST_F(ImageTest, imageGet) {
     auto dp = std::make_shared<std::vector<unsigned char>>(100 * 100 * 3);
     data_->image_store.setRecv(
-        u8"a", u8"b", ImageFrame{sizeHW(100, 100), dp, ImageColorMode::bgr});
+        "a"_ss, "b"_ss, ImageFrame{sizeHW(100, 100), dp, ImageColorMode::bgr});
     EXPECT_EQ(image("a", "b").tryGet()->dataPtr(), dp);
     EXPECT_EQ(image("a", "b").get().dataPtr(), dp);
     EXPECT_EQ(image("a", "c").tryGet(), std::nullopt);
     EXPECT_TRUE(image("a", "c").get().empty());
-    EXPECT_EQ(data_->image_store.transferReq().at(u8"a").at(u8"b"), 1);
-    EXPECT_EQ(data_->image_store.getReqInfo(u8"a", u8"b"),
+    EXPECT_EQ(data_->image_store.transferReq().at("a"_ss).at("b"_ss), 1);
+    EXPECT_EQ(data_->image_store.getReqInfo("a"_ss, "b"_ss),
               (ImageReq{std::nullopt, std::nullopt, std::nullopt,
                         ImageCompressMode::raw, 0, std::nullopt}));
-    EXPECT_EQ(data_->image_store.transferReq().at(u8"a").at(u8"c"), 2);
-    EXPECT_EQ(data_->image_store.getReqInfo(u8"a", u8"c"),
+    EXPECT_EQ(data_->image_store.transferReq().at("a"_ss).at("c"_ss), 2);
+    EXPECT_EQ(data_->image_store.getReqInfo("a"_ss, "c"_ss),
               (ImageReq{std::nullopt, std::nullopt, std::nullopt,
                         ImageCompressMode::raw, 0, std::nullopt}));
     EXPECT_EQ(image(self_name, "b").tryGet(), std::nullopt);
     EXPECT_EQ(data_->image_store.transferReq().count(self_name), 0);
     image("a", "d").appendListener(callback<Image>());
-    EXPECT_EQ(data_->image_store.transferReq().at(u8"a").at(u8"d"), 3);
-    EXPECT_EQ(data_->image_store.getReqInfo(u8"a", u8"d"),
+    EXPECT_EQ(data_->image_store.transferReq().at("a"_ss).at("d"_ss), 3);
+    EXPECT_EQ(data_->image_store.getReqInfo("a"_ss, "d"_ss),
               (ImageReq{std::nullopt, std::nullopt, std::nullopt,
                         ImageCompressMode::raw, 0, std::nullopt}));
 }

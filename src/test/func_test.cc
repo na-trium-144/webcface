@@ -11,32 +11,37 @@
 #define WEBCFACE_TEST_TIMEOUT 10
 #endif
 
+using namespace webcface;
+
 static void wait() {
     std::this_thread::sleep_for(
         std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
 }
+static SharedString operator""_ss(const char *str, std::size_t len) {
+    return SharedString(Encoding::castToU8(std::string_view(str, len)));
+}
 
-using namespace webcface;
 class FuncTest : public ::testing::Test {
   protected:
     void SetUp() override {
         data_ = std::make_shared<Internal::ClientData>(self_name);
     }
-    std::u8string self_name = u8"test";
+    SharedString self_name = "test"_ss;
     std::shared_ptr<Internal::ClientData> data_;
-    FieldBase fieldBase(std::u8string_view member,
+    FieldBase fieldBase(const SharedString &member,
                         std::string_view name) const {
-        return FieldBase{member, Encoding::castToU8(name)};
+        return FieldBase{member, SharedString(Encoding::castToU8(name))};
     }
     FieldBase fieldBase(std::string_view member, std::string_view name) const {
-        return FieldBase{Encoding::castToU8(member), Encoding::castToU8(name)};
+        return FieldBase{SharedString(Encoding::castToU8(member)),
+                         SharedString(Encoding::castToU8(name))};
     }
-    Field field(std::u8string_view member, std::string_view name = "") const {
-        return Field{data_, member, Encoding::castToU8(name)};
+    Field field(const SharedString &member, std::string_view name = "") const {
+        return Field{data_, member, SharedString(Encoding::castToU8(name))};
     }
     Field field(std::string_view member, std::string_view name = "") const {
-        return Field{data_, Encoding::castToU8(member),
-                     Encoding::castToU8(name)};
+        return Field{data_, SharedString(Encoding::castToU8(member)),
+                     SharedString(Encoding::castToU8(name))};
     }
     template <typename T1, typename T2>
     Func func(const T1 &member, const T2 &name) {
@@ -125,11 +130,11 @@ TEST_F(FuncTest, funcSet) {
     // 関数セットしreturnTypeとargsのチェック
     auto f = func(self_name, "a");
     f.set([]() {});
-    EXPECT_EQ((*data_->func_store.getRecv(self_name, u8"a"))->return_type,
+    EXPECT_EQ((*data_->func_store.getRecv(self_name, "a"_ss))->return_type,
               ValType::none_);
     EXPECT_EQ(f.returnType(), ValType::none_);
     EXPECT_EQ(func(self_name, "a").returnType(), ValType::none_);
-    EXPECT_EQ((*data_->func_store.getRecv(self_name, u8"a"))->args.size(), 0);
+    EXPECT_EQ((*data_->func_store.getRecv(self_name, "a"_ss))->args.size(), 0);
     EXPECT_EQ(f.args().size(), 0);
     EXPECT_EQ(func(self_name, "a").args().size(), 0);
 
@@ -189,7 +194,7 @@ TEST_F(FuncTest, funcRun) {
     auto ret_a = func(self_name, "a").runAsync(123, 123.45, "a", true);
     EXPECT_TRUE(ret_a.started.get());
     EXPECT_EQ(static_cast<double>(ret_a.result.get()), 123.45);
-    EXPECT_EQ(ret_a.member().name(), Encoding::decode(self_name));
+    EXPECT_EQ(ret_a.member().name(), self_name.decode());
     EXPECT_EQ(ret_a.name(), "a");
     EXPECT_EQ(called, 1);
     called = 0;
@@ -272,7 +277,7 @@ TEST_F(FuncTest, funcRunRemote) {
                 0,
                 0,
                 0,
-                u8"b",
+                "b"_ss,
                 {ValAdaptor(1.23), ValAdaptor(true), ValAdaptor("abc")}}})) {
             call_msg_found = true;
         }

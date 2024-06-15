@@ -10,7 +10,7 @@ template class WEBCFACE_DLL_INSTANCE_DEF EventTarget<Text>;
 
 Text::Text(const Field &base) : Field(base), EventTarget<Text>() {
     std::lock_guard lock(this->dataLock()->event_m);
-    this->setCL(this->dataLock()->text_change_event[*this]);
+    this->setCL(this->dataLock()->text_change_event[this->member_][this->field_]);
 }
 
 void Text::request() const {

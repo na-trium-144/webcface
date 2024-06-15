@@ -7,13 +7,18 @@
 #include "../message/message.h"
 
 using namespace webcface;
+
+static SharedString operator""_ss(const char *str, std::size_t len) {
+    return SharedString(Encoding::castToU8(std::string_view(str, len)));
+}
+
 class LoggerTest : public ::testing::Test {
   protected:
     void SetUp() override {
         data_ = std::make_shared<Internal::ClientData>(self_name);
         data_->start();
     }
-    std::u8string self_name = u8"test";
+    SharedString self_name = "test"_ss;
     std::shared_ptr<Internal::ClientData> data_;
 };
 
@@ -27,8 +32,8 @@ TEST_F(LoggerTest, logger) {
     auto ls = data_->log_store->getRecv(self_name);
     ASSERT_EQ((*ls)->size(), 6);
     for (int i = 0; i <= 5; i++) {
-        EXPECT_EQ((**ls)[i].level, i);
-        EXPECT_EQ((**ls)[i].message, Encoding::castToU8(std::to_string(i)));
+        EXPECT_EQ((**ls)[i].level(), i);
+        EXPECT_EQ((**ls)[i].message(), Encoding::castToU8(std::to_string(i)));
     }
 }
 TEST_F(LoggerTest, loggerBuf) {
@@ -40,12 +45,12 @@ TEST_F(LoggerTest, loggerBuf) {
     std::cerr << "c" << std::endl;
     auto ls = data_->log_store->getRecv(self_name);
     ASSERT_EQ((*ls)->size(), 3);
-    EXPECT_EQ((**ls)[0].level, 2);
-    EXPECT_EQ((**ls)[0].message, u8"a");
-    EXPECT_EQ((**ls)[1].level, 2);
-    EXPECT_EQ((**ls)[1].message, u8"b");
-    EXPECT_EQ((**ls)[2].level, 2);
-    EXPECT_EQ((**ls)[2].message, u8"c");
+    EXPECT_EQ((**ls)[0].level(), 2);
+    EXPECT_EQ((**ls)[0].message(), u8"a");
+    EXPECT_EQ((**ls)[1].level(), 2);
+    EXPECT_EQ((**ls)[1].message(), u8"b");
+    EXPECT_EQ((**ls)[2].level(), 2);
+    EXPECT_EQ((**ls)[2].message(), u8"c");
     std::cerr.rdbuf(cerr_buf);
 }
 TEST_F(LoggerTest, loggerBufW) {
@@ -57,11 +62,11 @@ TEST_F(LoggerTest, loggerBufW) {
     std::wcerr << L"c" << std::endl;
     auto ls = data_->log_store->getRecv(self_name);
     ASSERT_EQ((*ls)->size(), 3);
-    EXPECT_EQ((**ls)[0].level, 2);
-    EXPECT_EQ((**ls)[0].message, u8"a");
-    EXPECT_EQ((**ls)[1].level, 2);
-    EXPECT_EQ((**ls)[1].message, u8"b");
-    EXPECT_EQ((**ls)[2].level, 2);
-    EXPECT_EQ((**ls)[2].message, u8"c");
+    EXPECT_EQ((**ls)[0].level(), 2);
+    EXPECT_EQ((**ls)[0].message(), u8"a");
+    EXPECT_EQ((**ls)[1].level(), 2);
+    EXPECT_EQ((**ls)[1].message(), u8"b");
+    EXPECT_EQ((**ls)[2].level(), 2);
+    EXPECT_EQ((**ls)[2].message(), u8"c");
     std::wcerr.rdbuf(wcerr_buf);
 }

@@ -16,7 +16,7 @@ extern "C" {
 WEBCFACE_DLL wcfClient *wcfInit(const char *name, const char *host, int port);
 /*!
  * \brief クライアントを初期化する (wstring)
- * \since ver1.12
+ * \since ver2.0
  * \sa wcfInit
  */
 WEBCFACE_DLL wcfClient *wcfInitW(const wchar_t *name, const wchar_t *host,
@@ -30,7 +30,7 @@ WEBCFACE_DLL wcfClient *wcfInitW(const wchar_t *name, const wchar_t *host,
 WEBCFACE_DLL wcfClient *wcfInitDefault(const char *name);
 /*!
  * \brief クライアントを初期化する (アドレスとポートはデフォルト, wstring)
- * \since ver1.12
+ * \since ver2.0
  * \sa wcfInitDefault
  */
 WEBCFACE_DLL wcfClient *wcfInitDefaultW(const wchar_t *name);

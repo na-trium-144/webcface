@@ -58,7 +58,7 @@ MSGPACK_API_VERSION_NAMESPACE(MSGPACK_DEFAULT_API_NS) {
                 break;
             case webcface::ValType::string_:
             default:
-                o.pack(v.asU8String());
+                o.pack(webcface::Encoding::castFromU8(v.asU8StringRef()));
                 break;
             }
             return o;

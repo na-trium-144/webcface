@@ -26,21 +26,23 @@ static void wait() {
     std::this_thread::sleep_for(
         std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
 }
+static SharedString operator""_ss(const char *str, std::size_t len) {
+    return SharedString(Encoding::castToU8(std::string_view(str, len)));
+}
 
 class CClientTest : public ::testing::Test {
   protected:
     void SetUp() override {
         dummy_s = std::make_shared<DummyServer>();
         wait();
-        wcli_ =
-            wcfInit(Encoding::decode(self_name).c_str(), "127.0.0.1", 17530);
+        wcli_ = wcfInit(self_name.decode().c_str(), "127.0.0.1", 17530);
     }
     void TearDown() override {
         wcfClose(wcli_);
         wait();
         dummy_s.reset();
     }
-    std::u8string self_name = u8"test";
+    SharedString self_name = "test"_ss;
     wcfClient *wcli_;
     std::shared_ptr<DummyServer> dummy_s;
 };
@@ -76,7 +78,7 @@ TEST_F(CClientTest, valueSend) {
     wait();
     dummy_s->recv<Message::Value>(
         [&](const auto &obj) {
-            EXPECT_EQ(obj.field, u8"a");
+            EXPECT_EQ(obj.field, "a"_ss);
             EXPECT_EQ(obj.data->size(), 1);
             EXPECT_EQ(obj.data->at(0), 5);
         },
@@ -89,7 +91,7 @@ TEST_F(CClientTest, valueSend) {
     wait();
     dummy_s->recv<Message::Value>(
         [&](const auto &obj) {
-            EXPECT_EQ(obj.field, u8"b");
+            EXPECT_EQ(obj.field, "b"_ss);
             EXPECT_EQ(obj.data->size(), 3);
             EXPECT_EQ(obj.data->at(0), 1);
             EXPECT_EQ(obj.data->at(1), 1.5);
@@ -116,16 +118,16 @@ TEST_F(CClientTest, valueReq) {
     wait();
     dummy_s->recv<Message::Req<Message::Value>>(
         [&](const auto &obj) {
-            EXPECT_EQ(obj.member, u8"a");
-            EXPECT_EQ(obj.field, u8"b");
+            EXPECT_EQ(obj.member, "a"_ss);
+            EXPECT_EQ(obj.field, "b"_ss);
             EXPECT_EQ(obj.req_id, 1);
         },
         [&] { ADD_FAILURE() << "Value Req recv error"; });
     dummy_s->send(Message::Res<Message::Value>{
-        1, u8"",
+        1, ""_ss,
         std::make_shared<std::vector<double>>(std::vector<double>{1, 1.5, 2})});
     dummy_s->send(Message::Res<Message::Value>{
-        1, u8"c",
+        1, "c"_ss,
         std::make_shared<std::vector<double>>(std::vector<double>{1, 1.5, 2})});
     wait();
     EXPECT_EQ(wcfValueGetVecD(wcli_, "a", "b", value, 5, &size), WCF_OK);
@@ -154,7 +156,7 @@ TEST_F(CClientTest, textSend) {
     wait();
     dummy_s->recv<Message::Text>(
         [&](const auto &obj) {
-            EXPECT_EQ(obj.field, u8"a");
+            EXPECT_EQ(obj.field, "a"_ss);
             EXPECT_EQ(*obj.data, "hello");
         },
         [&] { ADD_FAILURE() << "Text recv error"; });
@@ -165,7 +167,7 @@ TEST_F(CClientTest, textSend) {
     wait();
     dummy_s->recv<Message::Text>(
         [&](const auto &obj) {
-            EXPECT_EQ(obj.field, u8"b");
+            EXPECT_EQ(obj.field, "b"_ss);
             EXPECT_EQ(*obj.data, "hello");
         },
         [&] { ADD_FAILURE() << "Text recv error"; });
@@ -182,15 +184,15 @@ TEST_F(CClientTest, textReq) {
     wait();
     dummy_s->recv<Message::Req<Message::Text>>(
         [&](const auto &obj) {
-            EXPECT_EQ(obj.member, u8"a");
-            EXPECT_EQ(obj.field, u8"b");
+            EXPECT_EQ(obj.member, "a"_ss);
+            EXPECT_EQ(obj.field, "b"_ss);
             EXPECT_EQ(obj.req_id, 1);
         },
         [&] { ADD_FAILURE() << "Text Req recv error"; });
     dummy_s->send(Message::Res<Message::Text>{
-        1, u8"", std::make_shared<ValAdaptor>("hello")});
+        1, ""_ss, std::make_shared<ValAdaptor>("hello")});
     dummy_s->send(Message::Res<Message::Text>{
-        1, u8"c", std::make_shared<ValAdaptor>("hello")});
+        1, "c"_ss, std::make_shared<ValAdaptor>("hello")});
     wait();
     EXPECT_EQ(wcfTextGet(wcli_, "a", "b", text, 5, &size), WCF_OK);
     EXPECT_EQ(size, 5);
@@ -265,7 +267,7 @@ TEST_F(CClientTest, funcRun) {
             [&](const auto &obj) {
                 EXPECT_EQ(obj.caller_id, caller_id);
                 EXPECT_EQ(obj.target_member_id, 0);
-                EXPECT_EQ(obj.field, u8"b");
+                EXPECT_EQ(obj.field, "b"_ss);
                 EXPECT_EQ(obj.args.size(), 3);
                 EXPECT_EQ(static_cast<int>(obj.args.at(0)), 42);
                 EXPECT_EQ(static_cast<double>(obj.args.at(1)), 1.5);
@@ -284,7 +286,7 @@ TEST_F(CClientTest, funcRun) {
             [&](const auto &obj) {
                 EXPECT_EQ(obj.caller_id, caller_id);
                 EXPECT_EQ(obj.target_member_id, 0);
-                EXPECT_EQ(obj.field, u8"b");
+                EXPECT_EQ(obj.field, "b"_ss);
                 EXPECT_EQ(obj.args.size(), 3);
             },
             [&]() { ADD_FAILURE() << "Call recv error"; });
@@ -302,7 +304,7 @@ TEST_F(CClientTest, funcRun) {
             [&](const auto &obj) {
                 EXPECT_EQ(obj.caller_id, caller_id);
                 EXPECT_EQ(obj.target_member_id, 0);
-                EXPECT_EQ(obj.field, u8"b");
+                EXPECT_EQ(obj.field, "b"_ss);
                 EXPECT_EQ(obj.args.size(), 3);
             },
             [&]() { ADD_FAILURE() << "Call recv error"; });
@@ -326,7 +328,7 @@ TEST_F(CClientTest, funcListen) {
     wait();
     dummy_s->recv<Message::FuncInfo>(
         [&](const auto &obj) {
-            EXPECT_EQ(obj.field, u8"a");
+            EXPECT_EQ(obj.field, "a"_ss);
             EXPECT_EQ(obj.return_type, ValType::int_);
             EXPECT_EQ(obj.args->size(), 3);
             EXPECT_EQ(obj.args->at(0).type(), ValType::int_);
@@ -343,7 +345,7 @@ TEST_F(CClientTest, funcListen) {
         Message::Call{{0,
                        1,
                        1,
-                       u8"a",
+                       "a"_ss,
                        {ValAdaptor(42), ValAdaptor(1.5), ValAdaptor("aaa")}}});
     wait();
 
@@ -408,7 +410,7 @@ TEST_F(CClientTest, funcSet) {
     wait();
     dummy_s->recv<Message::FuncInfo>(
         [&](const auto &obj) {
-            EXPECT_EQ(obj.field, u8"a");
+            EXPECT_EQ(obj.field, "a"_ss);
             EXPECT_EQ(obj.return_type, ValType::int_);
             EXPECT_EQ(obj.args->size(), 3);
             EXPECT_EQ(obj.args->at(0).type(), ValType::int_);
@@ -422,7 +424,7 @@ TEST_F(CClientTest, funcSet) {
         Message::Call{{0,
                        1,
                        1,
-                       u8"a",
+                       "a"_ss,
                        {ValAdaptor(42), ValAdaptor(1.5), ValAdaptor("aaa")}}});
     wait();
 
@@ -457,26 +459,26 @@ TEST_F(CClientTest, viewSend) {
     wait();
     dummy_s->recv<Message::View>(
         [&](const auto &obj) {
-            EXPECT_EQ(obj.field, u8"b");
+            EXPECT_EQ(obj.field, "b"_ss);
             EXPECT_EQ(obj.length, 6);
             EXPECT_EQ(obj.data_diff->size(), 6);
             EXPECT_EQ((*obj.data_diff)["0"].type, ViewComponentType::text);
-            EXPECT_EQ((*obj.data_diff)["0"].text, u8"abc");
+            EXPECT_EQ((*obj.data_diff)["0"].text, "abc"_ss);
             EXPECT_EQ((*obj.data_diff)["1"].type, ViewComponentType::new_line);
             EXPECT_EQ((*obj.data_diff)["2"].type, ViewComponentType::text);
-            EXPECT_EQ((*obj.data_diff)["2"].text, u8"123");
+            EXPECT_EQ((*obj.data_diff)["2"].text, "123"_ss);
 
             EXPECT_EQ((*obj.data_diff)["3"].type, ViewComponentType::new_line);
 
             EXPECT_EQ((*obj.data_diff)["4"].type, ViewComponentType::button);
-            EXPECT_EQ((*obj.data_diff)["4"].text, u8"a");
+            EXPECT_EQ((*obj.data_diff)["4"].text, "a"_ss);
             EXPECT_EQ((*obj.data_diff)["4"].on_click_member, self_name);
-            EXPECT_EQ((*obj.data_diff)["4"].on_click_field, u8"c");
+            EXPECT_EQ((*obj.data_diff)["4"].on_click_field, "c"_ss);
 
             EXPECT_EQ((*obj.data_diff)["5"].type, ViewComponentType::button);
-            EXPECT_EQ((*obj.data_diff)["5"].text, u8"a");
-            EXPECT_EQ((*obj.data_diff)["5"].on_click_member, u8"b");
-            EXPECT_EQ((*obj.data_diff)["5"].on_click_field, u8"c");
+            EXPECT_EQ((*obj.data_diff)["5"].text, "a"_ss);
+            EXPECT_EQ((*obj.data_diff)["5"].on_click_member, "b"_ss);
+            EXPECT_EQ((*obj.data_diff)["5"].on_click_field, "c"_ss);
             EXPECT_EQ((*obj.data_diff)["5"].text_color, ViewColor::red);
             EXPECT_EQ((*obj.data_diff)["5"].bg_color, ViewColor::green);
         },
@@ -493,8 +495,8 @@ TEST_F(CClientTest, viewReq) {
     wait();
     dummy_s->recv<Message::Req<Message::View>>(
         [&](const auto &obj) {
-            EXPECT_EQ(obj.member, u8"a");
-            EXPECT_EQ(obj.field, u8"b");
+            EXPECT_EQ(obj.member, "a"_ss);
+            EXPECT_EQ(obj.field, "b"_ss);
             EXPECT_EQ(obj.req_id, 1);
         },
         [&] { ADD_FAILURE() << "View Req recv error"; });
@@ -506,13 +508,13 @@ TEST_F(CClientTest, viewReq) {
                       .textColor(ViewColor::yellow)
                       .bgColor(ViewColor::green)
                       .toV()
-                      .lockTmp({}, u8"")},
-            {"1", ViewComponents::newLine().lockTmp({}, u8"")},
-            {"2", ViewComponents::button("a", Func{Field{{}, u8"x", u8"y"}})
-                      .lockTmp({}, u8"")},
+                      .lockTmp({}, ""_ss)},
+            {"1", ViewComponents::newLine().lockTmp({}, ""_ss)},
+            {"2", ViewComponents::button("a", Func{Field{{}, "x"_ss, "y"_ss}})
+                      .lockTmp({}, ""_ss)},
         });
-    dummy_s->send(Message::Res<Message::View>{1, u8"", v, 3});
-    dummy_s->send(Message::Res<Message::View>{1, u8"c", v, 3});
+    dummy_s->send(Message::Res<Message::View>{1, ""_ss, v, 3});
+    dummy_s->send(Message::Res<Message::View>{1, "c"_ss, v, 3});
     wait();
     EXPECT_EQ(wcfViewGet(wcli_, "a", "b", &vc, &size), WCF_OK);
     EXPECT_EQ(size, 3);

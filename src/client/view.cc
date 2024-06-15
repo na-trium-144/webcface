@@ -19,7 +19,7 @@ View::View(const Field &base)
       sb(std::make_shared<Internal::ViewBuf>(base)) {
     this->std::ostream::init(sb.get());
     std::lock_guard lock(this->dataLock()->event_m);
-    this->setCL(this->dataLock()->view_change_event[*this]);
+    this->setCL(this->dataLock()->view_change_event[this->member_][this->field_]);
 }
 View::~View() { this->rdbuf(nullptr); }
 

@@ -33,7 +33,7 @@ class WEBCFACE_DLL Canvas3D : protected Field, public EventTarget<Canvas3D> {
   public:
     Canvas3D();
     Canvas3D(const Field &base);
-    Canvas3D(const Field &base, std::u8string_view &field)
+    Canvas3D(const Field &base, const SharedString &field)
         : Canvas3D(Field{base, field}) {}
 
     friend Internal::DataSetBuffer<Canvas3DComponent>;
@@ -50,7 +50,7 @@ class WEBCFACE_DLL Canvas3D : protected Field, public EventTarget<Canvas3D> {
     }
     /*!
      * \brief 「(thisの名前).(追加の名前)」を新しい名前とするField (wstring)
-     * \since ver1.12
+     * \since ver2.0
      */
     Canvas3D child(std::wstring_view field) const {
         return this->Field::child(field);
@@ -66,7 +66,7 @@ class WEBCFACE_DLL Canvas3D : protected Field, public EventTarget<Canvas3D> {
     Canvas3D operator[](std::string_view field) const { return child(field); }
     /*!
      * child()と同じ
-     * \since ver1.12
+     * \since ver2.0
      */
     Canvas3D operator[](std::wstring_view field) const { return child(field); }
     /*!
@@ -75,7 +75,7 @@ class WEBCFACE_DLL Canvas3D : protected Field, public EventTarget<Canvas3D> {
      */
     Canvas3D operator[](const char *field) const { return child(field); }
     /*!
-     * \since ver1.12
+     * \since ver2.0
      */
     Canvas3D operator[](const wchar_t *field) const { return child(field); }
     /*!
@@ -229,9 +229,8 @@ class WEBCFACE_DLL Canvas3D : protected Field, public EventTarget<Canvas3D> {
         auto model = model_field.get();
         for (std::size_t ji = 0; ji < model.size(); ji++) {
             const auto &j = model[ji].joint;
-            auto j_name_s = Encoding::decode(j.name);
-            if (angles.count(j_name_s)) {
-                angles_i[ji] = angles[j_name_s];
+            if (angles.count(j.name.decode())) {
+                angles_i[ji] = angles[j.name.decode()];
             }
         }
         add(Canvas3DComponent{{Canvas3DComponentType::robot_model, origin,
