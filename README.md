@@ -320,8 +320,7 @@ sudo cmake --build build -t install
 			* `OPENCV` (デフォルトでoff、見つからなかった場合ソースからのビルドもしません)
 			* Magickをソースビルドする場合のみ: `JPEG`, `PNG`, `ZLIB`, `WEBP`
 		* `-DWEBCFACE_FIND_LIBS=off` とすると上記設定をすべてoffにします
-			* WebCFaceと依存ライブラリをstaticライブラリとしてリンクしたい場合必要かも
-			* すべてoffにしても依存ライブラリの内部でfind_packageが呼ばれるのは止められません (curl内部でopensslを参照するなど)
+			* WEBCFACE_SHAREDがoffの場合デフォルトでoff
 		* Windows(MSVC)でImageMagickをソースからビルドする場合、デフォルトでは`CMAKE_BUILD_TYPE`に指定したconfigurationのみビルドされます
 			* DebugとReleaseの両方をビルドしたい場合は `-DWEBCFACE_CONFIG_ALL=on` を指定してください
 		* spdlogのオプション
