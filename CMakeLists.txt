@@ -181,12 +181,14 @@ if(ament_cmake_FOUND)
     message(STATUS "ament_cmake Found")
 endif()
 
+# FetchContentでは名前はlower caseになるので、それで統一
+# (必ず名前もディレクトリ名もlower caseにすること)
 macro(fetch_cmake DEP_NAME URL TAG)
     if(EXISTS ${CMAKE_CURRENT_LIST_DIR}/external/${DEP_NAME}/CMakeLists.txt)
         message(STATUS "Using Source at external/${DEP_NAME}")
         set(${DEP_NAME}_SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR}/external/${DEP_NAME})
-        set(${DEP_NAME}_BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/_deps/${DEP_NAME}-build)
-        add_subdirectory(external/${DEP_NAME} _deps/${DEP_NAME}-build)
+        set(${DEP_NAME}_BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/_deps/${DEP_LOWER}-build)
+        add_subdirectory(external/${DEP_NAME} _deps/${DEP_LOWER}-build)
     else()
         message(STATUS "Fetching Source from ${URL}...")
         FetchContent_Declare(${DEP_NAME} GIT_REPOSITORY ${URL} GIT_TAG ${TAG})
@@ -382,7 +384,7 @@ if(NOT Crow_FOUND)
 
     # asioがない場合find_packageしないようにするため、
     # add_subdirectoryではなくinterfaceライブラリを定義する
-    fetch_only(Crow
+    fetch_only(crow
         # https://github.com/CrowCpp/Crow.git
         # 921ce6f
         https://github.com/na-trium-144/Crow.git
@@ -391,7 +393,7 @@ if(NOT Crow_FOUND)
     )
     add_library(Crow INTERFACE)
     target_include_directories(Crow INTERFACE
-        $<BUILD_INTERFACE:${Crow_SOURCE_DIR}/include>
+        $<BUILD_INTERFACE:${crow_SOURCE_DIR}/include>
         $<BUILD_INTERFACE:${ASIO_INCLUDE_DIR}>
     )
     set(Crow Crow)
@@ -405,7 +407,7 @@ if(CLI11_FOUND)
     message(STATUS "CLI11 ${CLI11_VERSION} Found: ${CLI11_DIR}")
 else()
     message(STATUS "CLI11 Not Found")
-    fetch_cmake(CLI11
+    fetch_cmake(cli11
         https://github.com/CLIUtils/CLI11.git
         v2.3.2
     )
@@ -492,50 +494,50 @@ else()
             if(MSBUILD_COMMAND STREQUAL "MSBUILD_COMMAND-NOTFOUND")
                 message(FATAL_ERROR "msbuild.exe not found")
             endif()
-            fetch_only(ImageMagick-Windows
+            fetch_only(imagemagick-windows
                 https://github.com/ImageMagick/ImageMagick-Windows.git
                 35dbf227258caec73fbe4a0a10ea10f2c2c1051d
                 Configure
             )
-            if(NOT EXISTS ${ImageMagick-Windows_SOURCE_DIR}/IM7.StaticDLL.sln OR ${CMAKE_CURRENT_LIST_FILE} IS_NEWER_THAN ${ImageMagick-Windows_SOURCE_DIR}/IM7.StaticDLL.sln)
-                if(NOT EXISTS ${ImageMagick-Windows_SOURCE_DIR}/Configure/Configure.2017.sln OR ${CMAKE_CURRENT_LIST_FILE} IS_NEWER_THAN ${ImageMagick-Windows_SOURCE_DIR}/Configure/Configure.2017.sln)
+            if(NOT EXISTS ${imagemagick-windows_SOURCE_DIR}/IM7.StaticDLL.sln OR ${CMAKE_CURRENT_LIST_FILE} IS_NEWER_THAN ${imagemagick-windows_SOURCE_DIR}/IM7.StaticDLL.sln)
+                if(NOT EXISTS ${imagemagick-windows_SOURCE_DIR}/Configure/Configure.2017.sln OR ${CMAKE_CURRENT_LIST_FILE} IS_NEWER_THAN ${imagemagick-windows_SOURCE_DIR}/Configure/Configure.2017.sln)
                     message(STATUS "Fetching dependencies...")
                     execute_process(
                         COMMAND CloneRepositories.IM7.cmd
-                        WORKING_DIRECTORY ${ImageMagick-Windows_SOURCE_DIR}
+                        WORKING_DIRECTORY ${imagemagick-windows_SOURCE_DIR}
                     )
                     # patch
                     file(APPEND
-                        ${ImageMagick-Windows_SOURCE_DIR}/Projects/MagickCore/magick-baseconfig.h.in
+                        ${imagemagick-windows_SOURCE_DIR}/Projects/MagickCore/magick-baseconfig.h.in
                         "\n#pragma warning(disable: 4201)\n"
                     )
                     message(STATUS "Building Configure...")
                     execute_process(
                         COMMAND ${DEVENV_COMMAND} /upgrade Configure.2017.sln
-                        WORKING_DIRECTORY ${ImageMagick-Windows_SOURCE_DIR}/Configure
+                        WORKING_DIRECTORY ${imagemagick-windows_SOURCE_DIR}/Configure
                     )
                     execute_process(
                         COMMAND ${MSBUILD_COMMAND} Configure.2017.sln /m
-                        WORKING_DIRECTORY ${ImageMagick-Windows_SOURCE_DIR}/Configure
+                        WORKING_DIRECTORY ${imagemagick-windows_SOURCE_DIR}/Configure
                     )
                 endif()
                 message(STATUS "Executing Configure...")
                 execute_process(
                     COMMAND Configure.exe /noWizard /noAliases /noDpc /noHdri /Q8 /${CMAKE_C_COMPILER_ARCHITECTURE_ID} /VS2017 /smtd
-                    WORKING_DIRECTORY ${ImageMagick-Windows_SOURCE_DIR}/Configure
+                    WORKING_DIRECTORY ${imagemagick-windows_SOURCE_DIR}/Configure
                 )
                 execute_process(
                     COMMAND ${DEVENV_COMMAND} /upgrade IM7.StaticDLL.${CMAKE_C_COMPILER_ARCHITECTURE_ID}.sln
-                    WORKING_DIRECTORY ${ImageMagick-Windows_SOURCE_DIR}
+                    WORKING_DIRECTORY ${imagemagick-windows_SOURCE_DIR}
                 )
             endif()
             message(STATUS "Building ImageMagick...")
-            set(MAGICKPP_LIB_DIR "${ImageMagick-Windows_SOURCE_DIR}/Output/lib")
+            set(MAGICKPP_LIB_DIR "${imagemagick-windows_SOURCE_DIR}/Output/lib")
             if(NOT CMAKE_BUILD_TYPE STREQUAL "Debug" OR WEBCFACE_CONFIG_ALL)
                 execute_process(
                     COMMAND ${MSBUILD_COMMAND} IM7.StaticDLL.${CMAKE_C_COMPILER_ARCHITECTURE_ID}.sln
                         /m /p:Configuration=Release,Platform=${CMAKE_C_COMPILER_ARCHITECTURE_ID}
-                    WORKING_DIRECTORY ${ImageMagick-Windows_SOURCE_DIR}
+                    WORKING_DIRECTORY ${imagemagick-windows_SOURCE_DIR}
                 )
                 file(GLOB MAGICKPP_RL_LIBS
                     RELATIVE ${MAGICKPP_LIB_DIR}
@@ -549,7 +551,7 @@ else()
                 execute_process(
                     COMMAND ${MSBUILD_COMMAND} IM7.StaticDLL.${CMAKE_C_COMPILER_ARCHITECTURE_ID}.sln
                         /m /p:Configuration=Debug,Platform=${CMAKE_C_COMPILER_ARCHITECTURE_ID}
-                    WORKING_DIRECTORY ${ImageMagick-Windows_SOURCE_DIR}
+                    WORKING_DIRECTORY ${imagemagick-windows_SOURCE_DIR}
                 )
                 file(GLOB MAGICKPP_DB_LIBS
                     RELATIVE ${MAGICKPP_LIB_DIR}
@@ -562,8 +564,8 @@ else()
             
             add_library(magickpp INTERFACE)
             target_include_directories(magickpp INTERFACE
-                $<BUILD_INTERFACE:${ImageMagick-Windows_SOURCE_DIR}/ImageMagick/Magick++/lib>
-                $<BUILD_INTERFACE:${ImageMagick-Windows_SOURCE_DIR}/ImageMagick>
+                $<BUILD_INTERFACE:${imagemagick-windows_SOURCE_DIR}/ImageMagick/Magick++/lib>
+                $<BUILD_INTERFACE:${imagemagick-windows_SOURCE_DIR}/ImageMagick>
             )
             target_link_libraries(magickpp INTERFACE ${MAGICKPP_LIBS})
             target_compile_definitions(magickpp INTERFACE STATIC_MAGICK)
@@ -588,7 +590,7 @@ else()
         if(WEBCFACE_PIC)
             set(MAGICKPP_FLAGS "${MAGICKPP_FLAGS} -fPIC")
         endif()
-        if(NOT EXISTS ${ImageMagick_SOURCE_DIR}/Makefile OR ${CMAKE_CURRENT_LIST_FILE} IS_NEWER_THAN ${ImageMagick_SOURCE_DIR}/Makefile)
+        if(NOT EXISTS ${imagemagick_SOURCE_DIR}/Makefile OR ${CMAKE_CURRENT_LIST_FILE} IS_NEWER_THAN ${imagemagick_SOURCE_DIR}/Makefile)
             file(REMOVE_RECURSE ${MAGICKPP_PREFIX})
         endif()
         unset(libjpeg_FOUND CACHE)
@@ -702,17 +704,17 @@ else()
         pkg_check_modules(zlib REQUIRED QUIET zlib)
         pkg_check_modules(libwebp REQUIRED QUIET libwebp)
 
-        fetch_only(ImageMagick
+        fetch_only(imagemagick
             https://github.com/ImageMagick/ImageMagick.git
             7.1.1-33
             configure
         )
         message(STATUS "Building Magick++...")
-        if(NOT EXISTS ${ImageMagick_SOURCE_DIR}/Makefile OR ${CMAKE_CURRENT_LIST_FILE} IS_NEWER_THAN ${ImageMagick_SOURCE_DIR}/Makefile)
+        if(NOT EXISTS ${imagemagick_SOURCE_DIR}/Makefile OR ${CMAKE_CURRENT_LIST_FILE} IS_NEWER_THAN ${imagemagick_SOURCE_DIR}/Makefile)
             if(MINGW)
                 execute_process(
                     COMMAND ${CHMOD_COMMAND} +x winpath.sh # バグ?
-                    WORKING_DIRECTORY ${ImageMagick_SOURCE_DIR}
+                    WORKING_DIRECTORY ${imagemagick_SOURCE_DIR}
                 )
             endif()
             execute_process(
@@ -730,12 +732,12 @@ else()
                     --without-raqm --without-raw --without-tiff --without-wmf
                     --without-xml --without-zlib --without-zstd --without-x --without-zip
                     --disable-gomp
-                WORKING_DIRECTORY ${ImageMagick_SOURCE_DIR}
+                WORKING_DIRECTORY ${imagemagick_SOURCE_DIR}
             )
         endif()
         execute_process(
             COMMAND ${MAKE_COMMAND} -j${N} install
-            WORKING_DIRECTORY ${ImageMagick_SOURCE_DIR}
+            WORKING_DIRECTORY ${imagemagick_SOURCE_DIR}
         )
         pkg_check_modules(Magickpp REQUIRED QUIET Magick++)
         add_library(magickpp INTERFACE)
@@ -1319,15 +1321,15 @@ if(WEBCFACE_INSTALL)
             )
         endif()
         install(FILES
-            ${Crow_SOURCE_DIR}/LICENSE
-            ${Crow_SOURCE_DIR}/README.md
+            ${crow_SOURCE_DIR}/LICENSE
+            ${crow_SOURCE_DIR}/README.md
             # 3rdpartyのライセンスがREADMEにある
             DESTINATION share/webcface/3rd_party/crow
         )
     endif()
     if(NOT CLI11_FOUND)
         install(FILES
-            ${CLI11_SOURCE_DIR}/LICENSE
+            ${cli11_SOURCE_DIR}/LICENSE
             DESTINATION share/webcface/3rd_party/cli11
         )
     endif()
@@ -1340,12 +1342,12 @@ if(WEBCFACE_INSTALL)
     if(NOT Magickpp_INSTALLED)
         if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
             install(FILES
-                ${ImageMagick-Windows_SOURCE_DIR}/ImageMagick/LICENSE
+                ${imagemagick-windows_SOURCE_DIR}/ImageMagick/LICENSE
                 DESTINATION share/webcface/3rd_party/ImageMagick
             )
         else()
             install(FILES
-                ${ImageMagick_SOURCE_DIR}/LICENSE
+                ${imagemagick_SOURCE_DIR}/LICENSE
                 DESTINATION share/webcface/3rd_party/ImageMagick
             )
         endif()

@@ -18,17 +18,17 @@
 	path = external/asio
 	url = https://github.com/chriskohlhoff/asio.git
 [submodule "external/Crow"]
-	path = external/Crow
+	path = external/crow
 	url = https://github.com/na-trium-144/Crow.git
 	branch = unix_socket
 [submodule "external/CLI11"]
-	path = external/CLI11
+	path = external/cli11
 	url = https://github.com/CLIUtils/CLI11.git
 [submodule "external/utfcpp"]
 	path = external/utfcpp
 	url = https://github.com/nemtrif/utfcpp.git
 [submodule "external/ImageMagick-Windows"]
-	path = external/ImageMagick-Windows
+	path = external/imagemagick-windows
 	url = https://github.com/ImageMagick/ImageMagick-Windows.git
 [submodule "external/libjpeg-turbo"]
 	path = external/libjpeg-turbo
@@ -40,7 +40,7 @@
 	path = external/libpng
 	url = https://github.com/pnggroup/libpng.git
 [submodule "external/ImageMagick"]
-	path = external/ImageMagick
+	path = external/imagemagick
 	url = https://github.com/ImageMagick/ImageMagick.git
 [submodule "external/libwebp"]
 	path = external/libwebp
