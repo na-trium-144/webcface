@@ -1,22 +1,19 @@
 #pragma once
 #include <mutex>
 #include <unordered_map>
-#include <unordered_set>
-#include <string>
 #include <optional>
 #include <functional>
-#include <concepts>
 #include <webcface/field.h>
 #include <webcface/common/dict.h>
 #include <webcface/common/def.h>
 #include <webcface/val_adaptor.h>
 #include <webcface/common/func.h>
-#include <webcface/common/view.h>
 #include <webcface/common/image.h>
-#include <webcface/common/robot_model.h>
-#include <webcface/common/canvas3d.h>
-#include <webcface/common/canvas2d.h>
 #include "../message/message.h"
+#include "webcface/component_canvas2d.h"
+#include "webcface/component_canvas3d.h"
+#include "webcface/component_view.h"
+#include "webcface/robot_link.h"
 
 WEBCFACE_NS_BEGIN
 namespace Internal {
@@ -219,11 +216,10 @@ class WEBCFACE_DLL_TEMPLATE SyncDataStore2 {
 using ValueData = std::shared_ptr<VectorOpt<double>>;
 using TextData = std::shared_ptr<ValAdaptor>;
 using FuncData = std::shared_ptr<FuncInfo>;
-using ViewData = std::shared_ptr<std::vector<Common::ViewComponentBase>>;
-using RobotModelData = std::shared_ptr<std::vector<Common::RobotLink>>;
-using Canvas3DData =
-    std::shared_ptr<std::vector<Common::Canvas3DComponentBase>>;
-using Canvas2DData = std::shared_ptr<Common::Canvas2DDataBase>;
+using ViewData = std::shared_ptr<std::vector<ViewComponent>>;
+using RobotModelData = std::shared_ptr<std::vector<RobotLink>>;
+using Canvas3DData = std::shared_ptr<std::vector<Canvas3DComponent>>;
+using Canvas2DData = std::shared_ptr<Canvas2DDataBase>;
 using ImageData = Common::ImageBase;
 
 #ifdef _WIN32

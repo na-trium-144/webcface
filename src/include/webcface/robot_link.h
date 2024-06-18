@@ -1,9 +1,9 @@
 #pragma once
+#include "webcface/component_view.h"
+#include "webcface/encoding.h"
+#include "webcface/geometry.h"
+#include "webcface/transform.h"
 #include <webcface/common/def.h>
-#include "view.h"
-#include "canvas3d.h"
-#include <string>
-#include <concepts>
 
 WEBCFACE_NS_BEGIN
 inline namespace Common {

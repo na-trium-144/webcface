@@ -9,7 +9,6 @@
 #include <chrono>
 #include <atomic>
 #include <unordered_map>
-#include <unordered_set>
 #include <cstdlib>
 #include <eventpp/eventdispatcher.h>
 #include <spdlog/logger.h>
@@ -17,13 +16,9 @@
 #include <webcface/encoding.h>
 #include <webcface/field.h>
 #include <webcface/common/func.h>
-#include <webcface/common/view.h>
 #include <webcface/common/log.h>
 #include <webcface/common/queue.h>
 #include <webcface/common/image.h>
-#include <webcface/common/robot_model.h>
-#include <webcface/common/canvas3d.h>
-#include <webcface/common/canvas2d.h>
 #include <webcface/func_result.h>
 #include <webcface/logger.h>
 #include "data_store1.h"

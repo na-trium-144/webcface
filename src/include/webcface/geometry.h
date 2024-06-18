@@ -1,15 +1,8 @@
 #pragma once
 #include <webcface/common/def.h>
-#include "transform.h"
-#include "../field.h"
-#include "view.h"
 #include <vector>
-#include <optional>
-#include <unordered_map>
 
 WEBCFACE_NS_BEGIN
-inline namespace Common {
-
 /*!
  * \brief Canvas3Dと2Dで共用、図形の種類を表す
  *
@@ -47,29 +40,4 @@ struct Geometry {
 struct Geometry3D {};
 struct Geometry2D {};
 
-enum class Canvas3DComponentType {
-    geometry = 0,
-    robot_model = 1,
-    // scatter = 2,
-};
-
-struct Canvas3DComponentBase {
-    Canvas3DComponentType type_;
-    Transform origin_;
-    ViewColor color_;
-    std::optional<Geometry> geometry_;
-    std::optional<FieldBase> field_base_;
-    std::unordered_map<std::size_t, double> angles_;
-
-    bool operator==(const Canvas3DComponentBase &rhs) const {
-        return type_ == rhs.type_ && origin_ == rhs.origin_ &&
-               color_ == rhs.color_ && geometry_ == rhs.geometry_ &&
-               field_base_ == rhs.field_base_ && angles_ == rhs.angles_;
-    }
-    bool operator!=(const Canvas3DComponentBase &rhs) const {
-        return !(*this == rhs);
-    }
-};
-
-} // namespace Common
 WEBCFACE_NS_END

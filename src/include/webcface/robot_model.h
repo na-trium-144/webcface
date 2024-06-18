@@ -1,6 +1,6 @@
 #pragma once
 #include <webcface/common/def.h>
-#include "common/robot_model.h"
+#include "robot_link.h"
 #include "field.h"
 #include "event_target.h"
 #include "canvas_data.h"

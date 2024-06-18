@@ -3,7 +3,6 @@
 #include <array>
 
 WEBCFACE_NS_BEGIN
-inline namespace Common {
 /*!
  * \brief 3次元 or 2次元の座標
  *
@@ -107,5 +106,4 @@ class Transform : public Point {
 
 inline Transform identity() { return Transform{}; }
 
-} // namespace Common
 WEBCFACE_NS_END
