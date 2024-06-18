@@ -9,13 +9,6 @@
 #include "common/val.h"
 
 WEBCFACE_NS_BEGIN
-namespace Internal {
-struct ClientData;
-}
-class Member;
-
-class Text;
-extern template class WEBCFACE_IMPORT EventTarget<Text>;
 
 /*!
  * \brief 文字列の送受信データを表すクラス

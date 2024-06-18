@@ -10,13 +10,6 @@
 #include <webcface/common/def.h>
 
 WEBCFACE_NS_BEGIN
-namespace Internal {
-struct ClientData;
-}
-class Member;
-
-class Value;
-extern template class WEBCFACE_IMPORT EventTarget<Value>;
 
 /*!
  * \brief 実数値またはその配列の送受信データを表すクラス

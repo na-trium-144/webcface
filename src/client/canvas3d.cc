@@ -4,10 +4,11 @@
 #include "../message/message.h"
 #include "data_buffer.h"
 #include "webcface/encoding.h"
+#include "event_target_impl.h"
 
 WEBCFACE_NS_BEGIN
 
-template class WEBCFACE_DLL EventTarget<Canvas3D>;
+template class WEBCFACE_DLL_INSTANCE_DEF EventTarget<Canvas3D>;
 
 Canvas3D::Canvas3D()
     : Field(), EventTarget<Canvas3D>(),

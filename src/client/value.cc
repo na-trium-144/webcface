@@ -4,10 +4,11 @@
 #include "../message/message.h"
 #include <algorithm>
 #include <cctype>
+#include "event_target_impl.h"
 
 WEBCFACE_NS_BEGIN
 
-template class WEBCFACE_DLL EventTarget<Value>;
+template class WEBCFACE_DLL_INSTANCE_DEF EventTarget<Value>;
 
 Value::Value(const Field &base) : Field(base), EventTarget<Value>() {
     std::lock_guard lock(this->dataLock()->event_m);

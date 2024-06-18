@@ -9,13 +9,6 @@
 #include <webcface/common/def.h>
 
 WEBCFACE_NS_BEGIN
-namespace Internal {
-struct ClientData;
-}
-class Member;
-
-class Image;
-extern template class WEBCFACE_IMPORT EventTarget<Image>;
 
 /*!
  * \brief (ver1.3から追加) 画像の送受信データを表すクラス

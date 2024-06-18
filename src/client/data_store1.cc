@@ -3,6 +3,15 @@
 WEBCFACE_NS_BEGIN
 namespace Internal {
 template <typename T>
+SyncDataStore1<T>::SyncDataStore1(const SharedString &name)
+    : self_member_name(name) {}
+
+template <typename T>
+bool SyncDataStore1<T>::isSelf(const SharedString &member) const {
+    return member == self_member_name;
+}
+
+template <typename T>
 void SyncDataStore1<T>::setRecv(const SharedString &member, const T &data) {
     std::lock_guard lock(mtx);
     data_recv[member] = data;
@@ -47,10 +56,10 @@ StrMap1<bool> SyncDataStore1<T>::transferReq() {
     // }
 }
 
-template class WEBCFACE_DLL SyncDataStore1<std::string>; // test用
-template class WEBCFACE_DLL
+template class WEBCFACE_DLL_INSTANCE_DEF SyncDataStore1<std::string>; // test用
+template class WEBCFACE_DLL_INSTANCE_DEF
     SyncDataStore1<std::shared_ptr<std::vector<Common::LogLineData<>>>>;
-template class WEBCFACE_DLL
+template class WEBCFACE_DLL_INSTANCE_DEF
     SyncDataStore1<std::chrono::system_clock::time_point>;
 
 } // namespace Internal

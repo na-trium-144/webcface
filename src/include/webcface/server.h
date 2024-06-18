@@ -20,7 +20,7 @@ class WEBCFACE_DLL Server {
     std::atomic<bool> server_stop;
     std::mutex server_mtx;
     std::vector<void *> apps;
-    std::vector<std::shared_future<void>> apps_running;
+    std::vector<std::thread> apps_running;
 
     void pingThreadMain();
 

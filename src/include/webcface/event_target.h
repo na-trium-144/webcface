@@ -12,7 +12,7 @@ WEBCFACE_NS_BEGIN
  *
  */
 template <typename ArgType>
-class EventTarget {
+class WEBCFACE_DLL_TEMPLATE EventTarget {
   public:
     using CallbackList = eventpp::CallbackList<void(ArgType)>;
 
@@ -76,7 +76,7 @@ class EventTarget {
      */
     explicit EventTarget(std::shared_ptr<CallbackList> &cl) { setCL(cl); }
 
-    virtual ~EventTarget() {}
+    virtual ~EventTarget();
 
     /*!
      * \brief CallbackListを参照する。
@@ -88,19 +88,13 @@ class EventTarget {
      * onAppend()はこの時点で呼び出される。
      *
      */
-    CallbackList &callbackList() const {
-        onAppend();
-        return checkCl();
-    }
+    CallbackList &callbackList() const;
 
     /*!
      * \brief イベントのコールバックをリストの最後に追加する。
      *
      */
-    EventHandle appendListener(const EventCallback &callback) const {
-        onAppend();
-        return checkCl().append(callback);
-    }
+    EventHandle appendListener(const EventCallback &callback) const;
     /*!
      * \brief イベントのコールバックをリストの最後に追加する。
      * (引数なしのコールバック)
@@ -116,10 +110,7 @@ class EventTarget {
      * \brief イベントのコールバックをリストの最初に追加する。
      *
      */
-    EventHandle prependListener(const EventCallback &callback) const {
-        onAppend();
-        return checkCl().prepend(callback);
-    }
+    EventHandle prependListener(const EventCallback &callback) const;
     /*!
      * \brief イベントのコールバックをリストの最初に追加する。
      * (引数なしのコールバック)
@@ -128,18 +119,13 @@ class EventTarget {
      */
     template <typename F>
         requires std::invocable<F>
-    EventHandle prependListener(const F &callback) const {
-        return prependListener([callback](const auto &) { callback(); });
-    }
+    EventHandle prependListener(const F &callback) const;
     /*!
      * \brief イベントのコールバックを間に挿入する。
      *
      */
     EventHandle insertListener(const EventCallback &callback,
-                               const EventHandle &before) const {
-        onAppend();
-        return checkCl().insert(callback, before);
-    }
+                               const EventHandle &before) const;
     /*!
      * \brief イベントのコールバックを間に挿入する。
      * (引数なしのコールバック)
@@ -156,21 +142,40 @@ class EventTarget {
      * \brief コールバックを削除する。
      *
      */
-    bool removeListener(const EventHandle &handle) const {
-        return checkCl().remove(handle);
-    }
+    bool removeListener(const EventHandle &handle) const;
     /*!
      * \brief コールバックが登録されているかを調べる。
      *
      */
-    bool hasAnyListener() const { return !checkCl().empty(); }
+    bool hasAnyListener() const;
     /*!
      * \brief handleがこのイベントのものかを調べる。
      *
      */
-    bool ownsHandle(const EventHandle &handle) const {
-        return checkCl().ownsHandle(handle);
-    }
+    bool ownsHandle(const EventHandle &handle) const;
 };
+
+class Member;
+class Value;
+class Text;
+class View;
+class Image;
+class Func;
+class RobotModel;
+class Canvas2D;
+class Canvas3D;
+class Log;
+#ifdef _WIN32
+extern template class WEBCFACE_DLL_INSTANCE_DECL EventTarget<Member>;
+extern template class WEBCFACE_DLL_INSTANCE_DECL EventTarget<Value>;
+extern template class WEBCFACE_DLL_INSTANCE_DECL EventTarget<Text>;
+extern template class WEBCFACE_DLL_INSTANCE_DECL EventTarget<View>;
+extern template class WEBCFACE_DLL_INSTANCE_DECL EventTarget<Image>;
+extern template class WEBCFACE_DLL_INSTANCE_DECL EventTarget<Func>;
+extern template class WEBCFACE_DLL_INSTANCE_DECL EventTarget<RobotModel>;
+extern template class WEBCFACE_DLL_INSTANCE_DECL EventTarget<Canvas2D>;
+extern template class WEBCFACE_DLL_INSTANCE_DECL EventTarget<Canvas3D>;
+extern template class WEBCFACE_DLL_INSTANCE_DECL EventTarget<Log>;
+#endif
 
 WEBCFACE_NS_END

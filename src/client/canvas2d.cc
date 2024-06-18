@@ -3,10 +3,11 @@
 #include <webcface/member.h>
 #include "../message/message.h"
 #include "data_buffer.h"
+#include "event_target_impl.h"
 
 WEBCFACE_NS_BEGIN
 
-template class WEBCFACE_DLL EventTarget<Canvas2D>;
+template class WEBCFACE_DLL_INSTANCE_DEF EventTarget<Canvas2D>;
 
 Canvas2D::Canvas2D()
     : Field(), EventTarget<Canvas2D>(),

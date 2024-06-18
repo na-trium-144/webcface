@@ -3,10 +3,11 @@
 #include "client_internal.h"
 #include "../message/message.h"
 #include "webcface/encoding.h"
+#include "event_target_impl.h"
 
 WEBCFACE_NS_BEGIN
 
-template class WEBCFACE_DLL EventTarget<Image>;
+template class WEBCFACE_DLL_INSTANCE_DEF EventTarget<Image>;
 
 Image::Image(const Field &base) : Field(base), EventTarget<Image>() {
     std::lock_guard lock(this->dataLock()->event_m);

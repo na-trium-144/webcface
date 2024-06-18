@@ -19,9 +19,6 @@ template <typename Component>
 class DataSetBuffer;
 }
 
-class Canvas3D;
-extern template class WEBCFACE_IMPORT EventTarget<Canvas3D>;
-
 /*!
  * \brief Canvas3Dの送受信データを表すクラス
  *

@@ -221,16 +221,16 @@ MinGW用バイナリは今のところ配布していません(ソースから�
 	* Visual Studio は2019以上でビルドできるはずです。
 	* MinGWでもビルドできます。MSYS2のMINGW64環境でテストしていますがUCRT64やCLANG64環境でもビルドできると思います。
 * webcfaceは外部ライブラリとして
+[msgpack-cxx](https://github.com/msgpack/msgpack-c),
+[eventpp](https://github.com/wqking/eventpp),
+[spdlog](https://github.com/gabime/spdlog),
+[curl](https://github.com/curl/curl),
 [crow](https://github.com/CrowCpp/Crow),
 [asio](https://github.com/chriskohlhoff/asio),
-[libcurl](https://github.com/curl/curl),
-[eventpp](https://github.com/wqking/eventpp),
-[msgpack-cxx](https://github.com/msgpack/msgpack-c),
-[spdlog](https://github.com/gabime/spdlog),
 [cli11](https://github.com/CLIUtils/CLI11.git),
 [UTF8-CPP](https://github.com/nemtrif/utfcpp),
-[Magick++](https://github.com/ImageMagick/ImageMagick),
 [OpenCV](https://opencv.org/)(exampleのみ),
+[Magick++](https://github.com/ImageMagick/ImageMagick),
 [GoogleTest](https://github.com/google/googletest)(testのみ)
 を使用します。
 	* いずれもCMake時に自動的にFetchContentでソースコードを取得してビルドするので、必ずしもこれらをインストールする必要はありません。
@@ -239,11 +239,14 @@ MinGW用バイナリは今のところ配布していません(ソースから�
 	* libcurlはwebsocket機能を有効にする必要があるためインストールされている場合でもソースからビルドします
 	* googletestはchar8_tの機能を有効にする必要があるためインストールされている場合でもソースからビルドします
 	
-<details><summary>Ubuntu 20.04, 22.04</summary>
+<details><summary>Ubuntu</summary>
 
 ```sh
 sudo apt install build-essential git cmake
-sudo apt install libspdlog-dev libmagick++-dev # optional
+# optional:
+sudo apt install libspdlog-dev libasio-dev libmagick++-dev
+sudo apt install libcli11-dev # only on 22.04 or later
+sudo apt install libmsgpack-cxx-dev # only on 24.04 or later
 ```
 
 ubuntu20.04の場合デフォルトのコンパイラ(gcc-9)ではビルドできないのでgcc-10にする必要があります
@@ -258,7 +261,8 @@ export CXX=g++-10
 
 ```sh
 brew install cmake
-brew install spdlog msgpack-cxx imagemagick # optional
+# optional:
+brew install msgpack-cxx spdlog asio cli11 utf8cpp imagemagick
 ```
 </details>
 
@@ -267,6 +271,12 @@ brew install spdlog msgpack-cxx imagemagick # optional
 Visual Studio 2019, 2022 でcloneしたwebcfaceのフォルダーを開くか、
 Developer Command Promptからcmakeコマンドを使ってもビルドできます
 
+https://imagemagick.org/script/download.php からImageMagickをダウンロード、インストールしてPATHを通せばそれを使用してビルドすることができます。
+(インストール時に development header もインストールすること)
+インストールしない場合ソースをダウンロードしてビルドするので時間がかかります。
+
+または、chocolateyをインストールしてあれば `choco install imagemagick -PackageParameters InstallDevelopmentHeaders=true` でok
+
 </details>
 
 <details><summary>MSYS2</summary>
@@ -274,7 +284,8 @@ Developer Command Promptからcmakeコマンドを使ってもビルドできま
 ```sh
 pacman -S pactoys
 pacboy -S git make gcc:p cmake:p ninja:p
-pacboy -S spdlog:p imagemagick:p  # optional
+# optional:
+pacboy -S msgpack-cxx:p spdlog:p asio:p cli11:p utf8cpp:p imagemagick:p 
 ```
 imagemagickをソースからビルドする際にninjaではなくmakeが必要になります
 
@@ -305,11 +316,11 @@ sudo cmake --build build -t install
 		* デフォルトではfind_packageやpkg_check_modulesなどで依存ライブラリがインストールされているか確認し、見つかればそれを使い見つからなければソースコードをダウンロードします。
 		* `-DWEBCFACE_FIND_(ライブラリ)=off` にするとインストールしたものは使わず常にソースからダウンロードするようになります。
 		* 設定可能なライブラリ名は以下
-			* `MSGPACK`, `SPDLOG`, `EVENTPP`, `MAGICK`
+			* `MSGPACK`, `SPDLOG`, `EVENTPP`, `CURL`, `CROW`, `ASIO`, `CLI11`, `UTF8CPP`, `MAGICK`
 			* `OPENCV` (デフォルトでoff、見つからなかった場合ソースからのビルドもしません)
 			* Magickをソースビルドする場合のみ: `JPEG`, `PNG`, `ZLIB`, `WEBP`
 		* `-DWEBCFACE_FIND_LIBS=off` とすると上記設定をすべてoffにします
-			* WebCFaceをstaticライブラリにする場合必要かも
+			* WEBCFACE_SHAREDがoffの場合デフォルトでoff
 		* Windows(MSVC)でImageMagickをソースからビルドする場合、デフォルトでは`CMAKE_BUILD_TYPE`に指定したconfigurationのみビルドされます
 			* DebugとReleaseの両方をビルドしたい場合は `-DWEBCFACE_CONFIG_ALL=on` を指定してください
 		* spdlogのオプション
@@ -342,15 +353,15 @@ sudo cmake --build build -t install
 WebCFaceと関連するプログラムはすべてMITライセンスで公開しています。詳細は [LICENSE](https://github.com/na-trium-144/webcface/blob/main/LICENSE) を参照してください。
 
 WebCFace本体とtoolsが使用しているサードパーティーのライブラリのライセンスはそれぞれ以下を参照してください。
-* Crow (BSD 3-Clause) : https://github.com/CrowCpp/Crow
-* Asio (Boost Software License) : http://think-async.com/Asio/
-* curl : https://curl.se/docs/copyright.html
-* eventpp (Apache 2.0) : https://github.com/wqking/eventpp
 * msgpack-c (Boost Software License) : https://github.com/msgpack/msgpack-c
+* eventpp (Apache 2.0) : https://github.com/wqking/eventpp
 * spdlog (MIT) : https://github.com/gabime/spdlog
+* curl : https://curl.se/docs/copyright.html
+* Asio (Boost Software License) : http://think-async.com/Asio/
+* Crow (BSD 3-Clause) : https://github.com/CrowCpp/Crow
 * CLI11 (BSD 3-Clause) : https://github.com/CLIUtils/CLI11
 * UTF8-CPP (BSD 1.0) : https://github.com/nemtrif/utfcpp
-* ImageMagick: https://imagemagick.org/script/license.php
 * OpenCV (Apache 2.0) : https://opencv.org/license/
+* ImageMagick: https://imagemagick.org/script/license.php
 * tiny-process-library (MIT) : https://gitlab.com/eidheim/tiny-process-library (toolsで使用)
 * toml++ (MIT) : https://github.com/marzer/tomlplusplus (toolsで使用)

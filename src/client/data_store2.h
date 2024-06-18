@@ -30,7 +30,7 @@ namespace Internal {
  *
  */
 template <typename T, typename ReqT = int>
-class SyncDataStore2 {
+class WEBCFACE_DLL_TEMPLATE SyncDataStore2 {
     /*!
      * \brief 次のsend時に送信するデータ。
      *
@@ -72,14 +72,11 @@ class SyncDataStore2 {
 
 
   public:
-    explicit SyncDataStore2(const SharedString &name)
-        : self_member_name(name) {}
+    explicit SyncDataStore2(const SharedString &name);
 
     std::recursive_mutex mtx;
 
-    bool isSelf(const SharedString &member) const {
-        return member == self_member_name;
-    }
+    bool isSelf(const SharedString &member) const;
 
     /*!
      * \brief リクエストを追加
@@ -113,9 +110,7 @@ class SyncDataStore2 {
      *
      */
     void setSend(const SharedString &name, const T &data);
-    void setSend(const FieldBase &base, const T &data) {
-        setSend(base.field_, data);
-    }
+    void setSend(const FieldBase &base, const T &data);
 
     /*!
      * \brief 受信したデータをdata_recvにセット
@@ -123,17 +118,13 @@ class SyncDataStore2 {
      */
     void setRecv(const SharedString &from, const SharedString &name,
                  const T &data);
-    void setRecv(const FieldBase &base, const T &data) {
-        setRecv(base.member_, base.field_, data);
-    }
+    void setRecv(const FieldBase &base, const T &data);
     /*!
      * \brief 受信したデータを削除
      *
      */
     void clearRecv(const SharedString &from, const SharedString &name);
-    void clearRecv(const FieldBase &base) {
-        clearRecv(base.member_, base.field_);
-    }
+    void clearRecv(const FieldBase &base);
 
     /*!
      * \brief data_recvからデータを返す
@@ -141,9 +132,7 @@ class SyncDataStore2 {
      */
     std::optional<T> getRecv(const SharedString &from,
                              const SharedString &name);
-    std::optional<T> getRecv(const FieldBase &base) {
-        return getRecv(base.member_, base.field_);
-    }
+    std::optional<T> getRecv(const FieldBase &base);
     /*!
      * \brief data_recvから指定したfield以下のデータを返す
      *
@@ -159,9 +148,7 @@ class SyncDataStore2 {
         const std::function<void(const SharedString &)> &cb = nullptr);
     std::optional<Dict<T>> getRecvRecurse(
         const FieldBase &base,
-        const std::function<void(const SharedString &)> &cb = nullptr) {
-        return getRecvRecurse(base.member_, base.field_, cb);
-    }
+        const std::function<void(const SharedString &)> &cb = nullptr);
     /*!
      * \brief data_recvからデータを削除, reqを消す
      *
@@ -169,9 +156,7 @@ class SyncDataStore2 {
      *
      */
     bool unsetRecv(const SharedString &from, const SharedString &name);
-    bool unsetRecv(const FieldBase &base) {
-        return unsetRecv(base.member_, base.field_);
-    }
+    bool unsetRecv(const FieldBase &base);
 
     /*!
      * \brief memberのentryをクリア
@@ -190,7 +175,7 @@ class SyncDataStore2 {
      *
      */
     StrSet1 getEntry(const SharedString &from);
-    StrSet1 getEntry(const FieldBase &base) { return getEntry(base.member_); }
+    StrSet1 getEntry(const FieldBase &base);
 
     /*!
      * \brief req_idに対応するmember名とフィールド名を返す
@@ -241,15 +226,22 @@ using Canvas3DData =
 using Canvas2DData = std::shared_ptr<Common::Canvas2DDataBase>;
 using ImageData = Common::ImageBase;
 
-extern template class SyncDataStore2<std::string, int>; // test用
-extern template class SyncDataStore2<ValueData, int>;
-extern template class SyncDataStore2<TextData, int>;
-extern template class SyncDataStore2<FuncData, int>;
-extern template class SyncDataStore2<ViewData, int>;
-extern template class SyncDataStore2<RobotModelData, int>;
-extern template class SyncDataStore2<Canvas3DData, int>;
-extern template class SyncDataStore2<Canvas2DData, int>;
-extern template class SyncDataStore2<ImageData, Common::ImageReq>;
+#ifdef _WIN32
+extern template class WEBCFACE_DLL_INSTANCE_DECL
+    SyncDataStore2<std::string, int>; // test用
+extern template class WEBCFACE_DLL_INSTANCE_DECL SyncDataStore2<ValueData, int>;
+extern template class WEBCFACE_DLL_INSTANCE_DECL SyncDataStore2<TextData, int>;
+extern template class WEBCFACE_DLL_INSTANCE_DECL SyncDataStore2<FuncData, int>;
+extern template class WEBCFACE_DLL_INSTANCE_DECL SyncDataStore2<ViewData, int>;
+extern template class WEBCFACE_DLL_INSTANCE_DECL
+    SyncDataStore2<RobotModelData, int>;
+extern template class WEBCFACE_DLL_INSTANCE_DECL
+    SyncDataStore2<Canvas3DData, int>;
+extern template class WEBCFACE_DLL_INSTANCE_DECL
+    SyncDataStore2<Canvas2DData, int>;
+extern template class WEBCFACE_DLL_INSTANCE_DECL
+    SyncDataStore2<ImageData, Common::ImageReq>;
+#endif
 
 } // namespace Internal
 WEBCFACE_NS_END

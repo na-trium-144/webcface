@@ -4,7 +4,6 @@
 
 WEBCFACE_NS_BEGIN
 namespace Internal {
-
 /*!
  * \brief setSend時にこれを実際に送信すべきかどうか
  *
@@ -24,11 +23,30 @@ static bool shouldSend(const T &prev, const T &current) {
 }
 
 template <typename T, typename ReqT>
+SyncDataStore2<T, ReqT>::SyncDataStore2(const SharedString &name)
+    : self_member_name(name) {}
+
+template <typename T, typename ReqT>
+bool SyncDataStore2<T, ReqT>::isSelf(const SharedString &member) const {
+    return member == self_member_name;
+}
+
+template <typename T, typename ReqT>
+void SyncDataStore2<T, ReqT>::setSend(const FieldBase &base, const T &data) {
+    setSend(base.field_, data);
+}
+
+template <typename T, typename ReqT>
 void SyncDataStore2<T, ReqT>::setSend(const SharedString &name, const T &data) {
     std::lock_guard lock(mtx);
     data_send[name] = data;
     // auto &recv_self = data_recv[self_member_name];
     // recv_self[name] = data; // 送信後に自分の値を参照する用
+}
+
+template <typename T, typename ReqT>
+void SyncDataStore2<T, ReqT>::setRecv(const FieldBase &base, const T &data) {
+    setRecv(base.member_, base.field_, data);
 }
 
 template <typename T, typename ReqT>
@@ -38,6 +56,10 @@ void SyncDataStore2<T, ReqT>::setRecv(const SharedString &from,
     data_recv[from][name] = data;
 }
 
+template <typename T, typename ReqT>
+StrSet1 SyncDataStore2<T, ReqT>::getEntry(const FieldBase &base) {
+    return getEntry(base.member_);
+}
 template <typename T, typename ReqT>
 StrSet1 SyncDataStore2<T, ReqT>::getEntry(const SharedString &name) {
     std::lock_guard lock(mtx);
@@ -108,6 +130,10 @@ const ReqT &SyncDataStore2<T, ReqT>::getReqInfo(const SharedString &member,
 
 
 template <typename T, typename ReqT>
+std::optional<T> SyncDataStore2<T, ReqT>::getRecv(const FieldBase &base) {
+    return getRecv(base.member_, base.field_);
+}
+template <typename T, typename ReqT>
 std::optional<T> SyncDataStore2<T, ReqT>::getRecv(const SharedString &from,
                                                   const SharedString &name) {
     std::lock_guard lock(mtx);
@@ -126,6 +152,12 @@ std::optional<T> SyncDataStore2<T, ReqT>::getRecv(const SharedString &from,
         }
     }
     return std::nullopt;
+}
+template <typename T, typename ReqT>
+std::optional<Dict<T>> SyncDataStore2<T, ReqT>::getRecvRecurse(
+    const FieldBase &base,
+    const std::function<void(const SharedString &)> &cb) {
+    return getRecvRecurse(base.member_, base.field_, cb);
 }
 template <typename T, typename ReqT>
 std::optional<Dict<T>> SyncDataStore2<T, ReqT>::getRecvRecurse(
@@ -156,6 +188,10 @@ std::optional<Dict<T>> SyncDataStore2<T, ReqT>::getRecvRecurse(
     return std::nullopt;
 }
 template <typename T, typename ReqT>
+bool SyncDataStore2<T, ReqT>::unsetRecv(const FieldBase &base) {
+    return unsetRecv(base.member_, base.field_);
+}
+template <typename T, typename ReqT>
 bool SyncDataStore2<T, ReqT>::unsetRecv(const SharedString &from,
                                         const SharedString &name) {
     std::lock_guard lock(mtx);
@@ -167,6 +203,10 @@ bool SyncDataStore2<T, ReqT>::unsetRecv(const SharedString &from,
         return true;
     }
     return false;
+}
+template <typename T, typename ReqT>
+void SyncDataStore2<T, ReqT>::clearRecv(const FieldBase &base) {
+    clearRecv(base.member_, base.field_);
 }
 template <typename T, typename ReqT>
 void SyncDataStore2<T, ReqT>::clearRecv(const SharedString &from,
@@ -244,14 +284,16 @@ StrMap2<unsigned int> SyncDataStore2<T, ReqT>::transferReq() {
 }
 
 // ライブラリ外からは参照できないが、testのためにexportしている
-template class WEBCFACE_DLL SyncDataStore2<std::string, int>; // test用
-template class WEBCFACE_DLL SyncDataStore2<ValueData, int>;
-template class WEBCFACE_DLL SyncDataStore2<TextData, int>;
-template class WEBCFACE_DLL SyncDataStore2<FuncData, int>;
-template class WEBCFACE_DLL SyncDataStore2<ViewData, int>;
-template class WEBCFACE_DLL SyncDataStore2<RobotModelData, int>;
-template class WEBCFACE_DLL SyncDataStore2<Canvas3DData, int>;
-template class WEBCFACE_DLL SyncDataStore2<Canvas2DData, int>;
-template class WEBCFACE_DLL SyncDataStore2<ImageData, Common::ImageReq>;
+template class WEBCFACE_DLL_INSTANCE_DEF
+    SyncDataStore2<std::string, int>; // test用
+template class WEBCFACE_DLL_INSTANCE_DEF SyncDataStore2<ValueData, int>;
+template class WEBCFACE_DLL_INSTANCE_DEF SyncDataStore2<TextData, int>;
+template class WEBCFACE_DLL_INSTANCE_DEF SyncDataStore2<FuncData, int>;
+template class WEBCFACE_DLL_INSTANCE_DEF SyncDataStore2<ViewData, int>;
+template class WEBCFACE_DLL_INSTANCE_DEF SyncDataStore2<RobotModelData, int>;
+template class WEBCFACE_DLL_INSTANCE_DEF SyncDataStore2<Canvas3DData, int>;
+template class WEBCFACE_DLL_INSTANCE_DEF SyncDataStore2<Canvas2DData, int>;
+template class WEBCFACE_DLL_INSTANCE_DEF
+    SyncDataStore2<ImageData, Common::ImageReq>;
 } // namespace Internal
 WEBCFACE_NS_END

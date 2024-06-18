@@ -3,8 +3,22 @@
 
 WEBCFACE_NS_BEGIN
 namespace Message {
+template struct WEBCFACE_DLL_INSTANCE_DEF Req<Value>;
+template struct WEBCFACE_DLL_INSTANCE_DEF Req<Text>;
+template struct WEBCFACE_DLL_INSTANCE_DEF Req<View>;
+template struct WEBCFACE_DLL_INSTANCE_DEF Req<Canvas2D>;
+template struct WEBCFACE_DLL_INSTANCE_DEF Req<Canvas3D>;
+template struct WEBCFACE_DLL_INSTANCE_DEF Req<RobotModel>;
+template struct WEBCFACE_DLL_INSTANCE_DEF Entry<Value>;
+template struct WEBCFACE_DLL_INSTANCE_DEF Entry<Text>;
+template struct WEBCFACE_DLL_INSTANCE_DEF Entry<View>;
+template struct WEBCFACE_DLL_INSTANCE_DEF Entry<Canvas2D>;
+template struct WEBCFACE_DLL_INSTANCE_DEF Entry<Image>;
+template struct WEBCFACE_DLL_INSTANCE_DEF Entry<Canvas3D>;
+template struct WEBCFACE_DLL_INSTANCE_DEF Entry<RobotModel>;
+
 static void printMsg(const std::shared_ptr<spdlog::logger> &logger,
-              const std::string &message) {
+                     const std::string &message) {
     std::stringstream ss;
     ss << "message: " << std::hex;
     for (std::size_t i = 0; i < message.size(); i++) {

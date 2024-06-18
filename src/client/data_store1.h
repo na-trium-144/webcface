@@ -12,7 +12,7 @@
 WEBCFACE_NS_BEGIN
 namespace Internal {
 template <typename T>
-class SyncDataStore1 {
+class WEBCFACE_DLL_TEMPLATE SyncDataStore1 {
     StrMap1<T> data_recv;
     StrMap1<bool> req;
     StrMap1<bool> req_send;
@@ -21,8 +21,7 @@ class SyncDataStore1 {
     SharedString self_member_name;
     std::recursive_mutex mtx;
 
-    explicit SyncDataStore1(const SharedString &name)
-        : self_member_name(name) {}
+    explicit SyncDataStore1(const SharedString &name);
 
     //! リクエストを追加
     /*!
@@ -36,9 +35,7 @@ class SyncDataStore1 {
      */
     bool clearReq(const SharedString &member);
 
-    bool isSelf(const SharedString &member) const {
-        return member == self_member_name;
-    }
+    bool isSelf(const SharedString &member) const;
 
     void setRecv(const SharedString &member, const T &data);
 
@@ -47,11 +44,13 @@ class SyncDataStore1 {
     StrMap1<bool> transferReq();
 };
 
-#ifdef _MSC_VER
-extern template class SyncDataStore1<std::string>; // test用
-extern template class SyncDataStore1<
-    std::shared_ptr<std::vector<Common::LogLineData<>>>>;
-extern template class SyncDataStore1<std::chrono::system_clock::time_point>;
+#ifdef _WIN32
+extern template class WEBCFACE_DLL_INSTANCE_DECL
+    SyncDataStore1<std::string>; // test用
+extern template class WEBCFACE_DLL_INSTANCE_DECL
+    SyncDataStore1<std::shared_ptr<std::vector<Common::LogLineData<>>>>;
+extern template class WEBCFACE_DLL_INSTANCE_DECL
+    SyncDataStore1<std::chrono::system_clock::time_point>;
 #endif
 
 } // namespace Internal

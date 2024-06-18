@@ -3,10 +3,11 @@
 #include "client_internal.h"
 #include "../message/message.h"
 #include "data_buffer.h"
+#include "event_target_impl.h"
 
 WEBCFACE_NS_BEGIN
 
-template class WEBCFACE_DLL EventTarget<RobotModel>;
+template class WEBCFACE_DLL_INSTANCE_DEF EventTarget<RobotModel>;
 
 RobotModel::RobotModel()
     : Field(), EventTarget<RobotModel>(),

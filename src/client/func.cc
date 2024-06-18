@@ -5,8 +5,11 @@
 #include "../message/message.h"
 #include "client_internal.h"
 #include <webcface/common/def.h>
+#include "event_target_impl.h"
 
 WEBCFACE_NS_BEGIN
+
+template class WEBCFACE_DLL_INSTANCE_DEF EventTarget<Func>;
 
 auto &operator<<(std::basic_ostream<char> &os, const AsyncFuncResult &r) {
     os << "Func(\"" << r.name() << "\"): ";

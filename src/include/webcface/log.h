@@ -9,9 +9,6 @@
 
 WEBCFACE_NS_BEGIN
 
-class Log;
-extern template class WEBCFACE_IMPORT EventTarget<Log>;
-
 /*!
  * \brief ログの送受信データを表すクラス
  *

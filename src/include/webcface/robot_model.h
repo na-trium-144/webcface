@@ -7,14 +7,9 @@
 
 WEBCFACE_NS_BEGIN
 namespace Internal {
-struct ClientData;
 template <typename Component>
 class DataSetBuffer;
 } // namespace Internal
-class Member;
-
-class RobotModel;
-extern template class WEBCFACE_IMPORT EventTarget<RobotModel>;
 
 /*!
  * \brief RobotModelの送受信データを表すクラス

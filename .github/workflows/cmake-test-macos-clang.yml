@@ -14,7 +14,14 @@ jobs:
   test-macos-clang:
     strategy:
       matrix:
-        dep: ["brew", "source"]
+        dep: ["brew", "source", "static"]
+        include:
+        - dep: brew
+          shared_flag: on
+        - dep: source
+          shared_flag: on
+        - dep: static
+          shared_flag: off
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v4
@@ -33,12 +40,29 @@ jobs:
         -DWEBCFACE_TEST=on
         -DWEBCFACE_EXAMPLE=on
         -DWEBCFACE_TEST_TIMEOUT=1000
+        -DWEBCFACE_SHARED=${{matrix.shared_flag}}
+        -DCMAKE_INSTALL_PREFIX=${{github.workspace}}/build/install
 
     - name: Build
-      run: cmake --build build
+      run: cmake --build build -t install
 
     - name: Test
       env:
         WEBCFACE_TRACE: 1
       working-directory: ${{github.workspace}}/build
       run: ctest --output-on-failure --timeout 100
+
+    - name: Test CMake with installed package
+      working-directory: ${{github.workspace}}/.github/test
+      run: |
+        cmake -B build -DCMAKE_PREFIX_PATH=${{github.workspace}}/build/install
+        cmake --build build
+
+    - name: Test building with pkg-config
+      working-directory: ${{github.workspace}}/.github/test
+      env:
+        PKG_CONFIG_PATH: ${{github.workspace}}/build/install/lib/pkgconfig
+      run: |
+        clang++ -std=c++20 test.cc $(pkg-config --cflags --libs webcface)
+        clang -std=c99 test.c $(pkg-config --cflags --libs webcface) -lc++
+

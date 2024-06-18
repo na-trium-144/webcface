@@ -2,10 +2,11 @@
 #include <webcface/member.h>
 #include "client_internal.h"
 #include "../message/message.h"
+#include "event_target_impl.h"
 
 WEBCFACE_NS_BEGIN
 
-template class WEBCFACE_DLL EventTarget<Text>;
+template class WEBCFACE_DLL_INSTANCE_DEF EventTarget<Text>;
 
 Text::Text(const Field &base) : Field(base), EventTarget<Text>() {
     std::lock_guard lock(this->dataLock()->event_m);

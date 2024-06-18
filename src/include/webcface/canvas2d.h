@@ -14,9 +14,6 @@ class DataSetBuffer;
 class Canvas2DDataBuf;
 } // namespace Internal
 
-class Canvas2D;
-extern template class WEBCFACE_IMPORT EventTarget<Canvas2D>;
-
 /*!
  * \brief Canvas2Dの送受信データを表すクラス
  *
