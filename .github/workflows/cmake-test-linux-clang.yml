@@ -14,11 +14,13 @@ jobs:
   test-linux-clang:
     strategy:
       matrix:
-        dep: ["apt", "source"]
+        dep: ["apt", "source", "submodule"]
     runs-on: ubuntu-20.04
     steps:
     - uses: actions/checkout@v4
-
+    - run: git submodule update --init
+      if: matrix.dep == 'submodule'
+      
     - name: Install dependencies
       run: |
         sudo apt-get update

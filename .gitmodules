@@ -1,3 +1,50 @@
 [submodule "doxygen-awesome-css"]
 	path = docs/doxygen-awesome-css
 	url = https://github.com/jothepro/doxygen-awesome-css.git
+[submodule "external/msgpack-c"]
+	path = external/msgpack-c
+	url = https://github.com/msgpack/msgpack-c.git
+	branch = cpp_master
+[submodule "external/eventpp"]
+	path = external/eventpp
+	url = https://github.com/wqking/eventpp.git
+[submodule "external/spdlog"]
+	path = external/spdlog
+	url = https://github.com/gabime/spdlog.git
+[submodule "external/curl"]
+	path = external/curl
+	url = https://github.com/curl/curl.git
+[submodule "external/asio"]
+	path = external/asio
+	url = https://github.com/chriskohlhoff/asio.git
+[submodule "external/Crow"]
+	path = external/Crow
+	url = https://github.com/na-trium-144/Crow.git
+	branch = unix_socket
+[submodule "external/CLI11"]
+	path = external/CLI11
+	url = https://github.com/CLIUtils/CLI11.git
+[submodule "external/utfcpp"]
+	path = external/utfcpp
+	url = https://github.com/nemtrif/utfcpp.git
+[submodule "external/ImageMagick-Windows"]
+	path = external/ImageMagick-Windows
+	url = https://github.com/ImageMagick/ImageMagick-Windows.git
+[submodule "external/libjpeg-turbo"]
+	path = external/libjpeg-turbo
+	url = https://github.com/libjpeg-turbo/libjpeg-turbo.git
+[submodule "external/zlib"]
+	path = external/zlib
+	url = https://github.com/madler/zlib.git
+[submodule "external/libpng"]
+	path = external/libpng
+	url = https://github.com/pnggroup/libpng.git
+[submodule "external/ImageMagick"]
+	path = external/ImageMagick
+	url = https://github.com/ImageMagick/ImageMagick.git
+[submodule "external/libwebp"]
+	path = external/libwebp
+	url = https://github.com/webmproject/libwebp.git
+[submodule "external/googletest"]
+	path = external/googletest
+	url = https://github.com/google/googletest.git

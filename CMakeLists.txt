@@ -181,28 +181,49 @@ if(ament_cmake_FOUND)
     message(STATUS "ament_cmake Found")
 endif()
 
+macro(fetch_cmake DEP_NAME URL TAG)
+    set(${DEP_NAME}_SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR}/external/${DEP_NAME})
+    set(${DEP_NAME}_BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/_deps/${DEP_NAME}-build)
+    if(EXISTS ${${DEP_NAME}_SOURCE_DIR}/CMakeLists.txt)
+        message(STATUS "Using Source at external/${DEP_NAME}")
+        add_subdirectory(external/${DEP_NAME} _deps/${DEP_NAME}-build)
+    else()
+        message(STATUS "Fetching Source from ${URL}...")
+        FetchContent_Declare(${DEP_NAME} GIT_REPOSITORY ${URL} GIT_TAG ${TAG})
+        FetchContent_MakeAvailable(${DEP_NAME})
+    endif()
+endmacro()
+macro(fetch_only DEP_NAME URL TAG CHECK_FILENAME)
+    set(${DEP_NAME}_SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR}/external/${DEP_NAME})
+    set(${DEP_NAME}_BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/_deps/${DEP_NAME}-build)
+    if(EXISTS ${${DEP_NAME}_SOURCE_DIR}/${CHECK_FILENAME})
+        message(STATUS "Using Source at external/${DEP_NAME}")
+    else()
+        message(STATUS "Fetching Source from ${URL}...")
+        FetchContent_Declare(${DEP_NAME} GIT_REPOSITORY ${URL} GIT_TAG ${TAG})
+        FetchContent_Populate(${DEP_NAME})
+    endif()
+endmacro()
+
 if(WEBCFACE_FIND_MSGPACK)
     find_package(msgpack-cxx QUIET)
 endif()
 if(msgpack-cxx_FOUND)
     message(STATUS "msgpack-cxx ${msgpack-cxx_VERSION} Found: ${msgpack-cxx_DIR}")
 else()
-    message(STATUS "msgpack-cxx Not Found, Fetching Source...")
-    FetchContent_Declare(msgpack-cxx
-        GIT_REPOSITORY https://github.com/msgpack/msgpack-c.git
-        GIT_TAG cpp-6.1.0
-    )
+    message(STATUS "msgpack-cxx Not Found")
     # msgpackのcmakelistsを使うとmsgpackをインストールしてしまうので、includeするだけ
-    FetchContent_GetProperties(msgpack-cxx)
-    if(NOT msgpack-cxx_POPULATED)
-        FetchContent_Populate(msgpack-cxx)
-        add_library(msgpack-cxx INTERFACE)
-        target_compile_definitions(msgpack-cxx INTERFACE
-            MSGPACK_NO_BOOST
-            MSGPACK_DEFAULT_API_VERSION=3
-        )
-        target_include_directories(msgpack-cxx INTERFACE $<BUILD_INTERFACE:${msgpack-cxx_SOURCE_DIR}/include>)
-    endif()
+    fetch_only(msgpack-c
+        https://github.com/msgpack/msgpack-c.git
+        cpp-6.1.0
+        include
+    )
+    add_library(msgpack-cxx INTERFACE)
+    target_compile_definitions(msgpack-cxx INTERFACE
+        MSGPACK_NO_BOOST
+        MSGPACK_DEFAULT_API_VERSION=3
+    )
+    target_include_directories(msgpack-cxx INTERFACE $<BUILD_INTERFACE:${msgpack-c_SOURCE_DIR}/include>)
 endif()
 
 if(WEBCFACE_FIND_EVENTPP)
@@ -211,13 +232,12 @@ endif()
 if(eventpp_FOUND)
     message(STATUS "eventpp ${eventpp_VERSION} Found: ${eventpp_DIR}")
 else()
-    message(STATUS "eventpp Not Found, Fetching Source...")
-    FetchContent_Declare(eventpp
-        GIT_REPOSITORY https://github.com/wqking/eventpp.git
-        GIT_TAG v0.1.3
-    )
+    message(STATUS "eventpp Not Found")
     set(EVENTPP_INSTALL OFF CACHE INTERNAL "" FORCE)
-    FetchContent_MakeAvailable(eventpp)
+    fetch_cmake(eventpp
+        https://github.com/wqking/eventpp.git
+        v0.1.3
+    )
 endif()
 
 if(WEBCFACE_FIND_SPDLOG)
@@ -227,16 +247,15 @@ if(spdlog_FOUND)
     message(STATUS "spdlog ${spdlog_VERSION} Found: ${spdlog_DIR}")
     set(spdlog spdlog::spdlog)
 else()
-    message(STATUS "spdlog Not Found, Fetching Source...")
-    FetchContent_Declare(spdlog
-        GIT_REPOSITORY https://github.com/gabime/spdlog.git
-        GIT_TAG v1.12.0
-    )
+    message(STATUS "spdlog Not Found")
     set(SPDLOG_INSTALL OFF CACHE INTERNAL "" FORCE)
     if(WIN32)
         set(SPDLOG_WCHAR_SUPPORT ON CACHE INTERNAL "" FORCE)
     endif()
-    FetchContent_MakeAvailable(spdlog)
+    fetch_cmake(spdlog
+        https://github.com/gabime/spdlog.git
+        v1.12.0
+    )
     set(spdlog spdlog_header_only)
 endif()
 
@@ -265,11 +284,7 @@ endif()
 if(CURL_FOUND)
     set(libcurl CURL::libcurl)
 else()
-    message(STATUS "CURL Not Found, Fetching Source...")
-    FetchContent_Declare(curl
-        GIT_REPOSITORY https://github.com/curl/curl.git
-        GIT_TAG curl-8_5_0
-    )
+    message(STATUS "CURL Not Found")
     set(CURL_ENABLE_SSL off CACHE INTERNAL "" FORCE)
     set(CURL_DISABLE_ALTSVC on CACHE INTERNAL "" FORCE)
     set(CURL_DISABLE_SRP on CACHE INTERNAL "" FORCE)
@@ -315,7 +330,10 @@ else()
     set(ENABLE_WEBSOCKETS on CACHE INTERNAL "" FORCE)
     set(CURL_DISABLE_INSTALL on CACHE INTERNAL "" FORCE)
     set(CURL_ENABLE_EXPORT_TARGET off CACHE INTERNAL "" FORCE)
-    FetchContent_MakeAvailable(curl)
+    fetch_cmake(curl
+        https://github.com/curl/curl.git
+        curl-8_5_0
+    )
     set(libcurl libcurl_static)
 endif()
 
@@ -353,37 +371,30 @@ if(NOT Crow_FOUND)
         message(STATUS "Asio Found: ${ASIO_INCLUDE_DIR}")
     else()
         set(ASIO_FOUND false)
-        message(STATUS "Asio Not Found, Fetching Source...")
-        FetchContent_Declare(asio
-            GIT_REPOSITORY https://github.com/chriskohlhoff/asio.git
-            GIT_TAG asio-1-29-0
+        message(STATUS "Asio Not Found")
+        fetch_only(asio
+            https://github.com/chriskohlhoff/asio.git
+            asio-1-29-0
+            asio
         )
-        FetchContent_GetProperties(asio)
-        if(NOT asio_POPULATED)
-            FetchContent_Populate(asio)
-            set(ASIO_INCLUDE_DIR ${asio_SOURCE_DIR}/asio/include CACHE INTERNAL "" FORCE)
-        endif()
+        set(ASIO_INCLUDE_DIR ${asio_SOURCE_DIR}/asio/include CACHE INTERNAL "" FORCE)
     endif()
 
-    message(STATUS "Fetching Crow Source...")
     # asioがない場合find_packageしないようにするため、
     # add_subdirectoryではなくinterfaceライブラリを定義する
-    FetchContent_Declare(crow
-        # GIT_REPOSITORY https://github.com/CrowCpp/Crow.git
-        # GIT_TAG 921ce6f
-        GIT_REPOSITORY https://github.com/na-trium-144/Crow.git
-        GIT_TAG 5f5372ed80860dfcef788972bb0fd3972f715842
+    fetch_only(Crow
+        # https://github.com/CrowCpp/Crow.git
+        # 921ce6f
+        https://github.com/na-trium-144/Crow.git
+        5f5372ed80860dfcef788972bb0fd3972f715842
+        CMakeLists.txt
     )
-    FetchContent_GetProperties(crow)
-    if(NOT crow_POPULATED)
-        FetchContent_Populate(crow)
-        add_library(Crow INTERFACE)
-        target_include_directories(Crow INTERFACE
-            $<BUILD_INTERFACE:${crow_SOURCE_DIR}/include>
-            $<BUILD_INTERFACE:${ASIO_INCLUDE_DIR}>
-        )
-        set(Crow Crow)
-    endif()
+    add_library(Crow INTERFACE)
+    target_include_directories(Crow INTERFACE
+        $<BUILD_INTERFACE:${Crow_SOURCE_DIR}/include>
+        $<BUILD_INTERFACE:${ASIO_INCLUDE_DIR}>
+    )
+    set(Crow Crow)
 endif()
 add_compile_definitions(ASIO_DISABLE_VISIBILITY)
 
@@ -393,12 +404,11 @@ endif()
 if(CLI11_FOUND)
     message(STATUS "CLI11 ${CLI11_VERSION} Found: ${CLI11_DIR}")
 else()
-    message(STATUS "CLI11 Not Found, Fetching Source...")
-    FetchContent_Declare(cli11
-        GIT_REPOSITORY https://github.com/CLIUtils/CLI11.git
-        GIT_TAG v2.3.2
+    message(STATUS "CLI11 Not Found")
+    fetch_cmake(CLI11
+        https://github.com/CLIUtils/CLI11.git
+        v2.3.2
     )
-    FetchContent_MakeAvailable(cli11)
 endif()
 
 if(WEBCFACE_FIND_UTF8CPP)
@@ -409,15 +419,13 @@ if(WEBCFACE_FIND_UTF8CPP AND NOT UTF8CPP_INCLUDE_DIR STREQUAL "UTF8CPP_INCLUDE_D
     message(STATUS "utf8cpp Found: ${UTF8CPP_INCLUDE_DIR}")
 else()
     set(UTF8CPP_FOUND false)
-    message(STATUS "utf8cpp Not Found, Fetching Source...")
-    FetchContent_Declare(utfcpp
-        GIT_REPOSITORY https://github.com/nemtrif/utfcpp.git
-        GIT_TAG v4.0.5
+    message(STATUS "utf8cpp Not Found")
+    fetch_only(utfcpp
+        https://github.com/nemtrif/utfcpp.git
+        v4.0.5
+        source
     )
-    if(NOT utfcpp_POPULATED)
-        FetchContent_Populate(utfcpp)
-        set(UTF8CPP_INCLUDE_DIR ${utfcpp_SOURCE_DIR}/source)
-    endif()
+    set(UTF8CPP_INCLUDE_DIR ${utfcpp_SOURCE_DIR}/source)
 endif()
 add_library(utfcpp INTERFACE)
 target_include_directories(utfcpp INTERFACE $<BUILD_INTERFACE:${UTF8CPP_INCLUDE_DIR}>)
@@ -484,51 +492,50 @@ else()
             if(MSBUILD_COMMAND STREQUAL "MSBUILD_COMMAND-NOTFOUND")
                 message(FATAL_ERROR "msbuild.exe not found")
             endif()
-            message(STATUS "Fetching ImageMagick-Windows source...")
-            FetchContent_Declare(magick-windows
-                GIT_REPOSITORY https://github.com/ImageMagick/ImageMagick-Windows.git
-                GIT_TAG 35dbf227258caec73fbe4a0a10ea10f2c2c1051d
+            fetch_only(ImageMagick-Windows
+                https://github.com/ImageMagick/ImageMagick-Windows.git
+                35dbf227258caec73fbe4a0a10ea10f2c2c1051d
+                Configure
             )
-            if(NOT EXISTS ${magick-windows_SOURCE_DIR}/IM7.StaticDLL.sln OR ${CMAKE_CURRENT_LIST_FILE} IS_NEWER_THAN ${magick-windows_SOURCE_DIR}/IM7.StaticDLL.sln)
-                if(NOT EXISTS ${magick-windows_SOURCE_DIR}/Configure/Configure.2017.sln OR ${CMAKE_CURRENT_LIST_FILE} IS_NEWER_THAN ${magick-windows_SOURCE_DIR}/Configure/Configure.2017.sln)
+            if(NOT EXISTS ${ImageMagick-Windows_SOURCE_DIR}/IM7.StaticDLL.sln OR ${CMAKE_CURRENT_LIST_FILE} IS_NEWER_THAN ${ImageMagick-Windows_SOURCE_DIR}/IM7.StaticDLL.sln)
+                if(NOT EXISTS ${ImageMagick-Windows_SOURCE_DIR}/Configure/Configure.2017.sln OR ${CMAKE_CURRENT_LIST_FILE} IS_NEWER_THAN ${ImageMagick-Windows_SOURCE_DIR}/Configure/Configure.2017.sln)
                     message(STATUS "Fetching dependencies...")
-                    FetchContent_Populate(magick-windows)
                     execute_process(
                         COMMAND CloneRepositories.IM7.cmd
-                        WORKING_DIRECTORY ${magick-windows_SOURCE_DIR}
+                        WORKING_DIRECTORY ${ImageMagick-Windows_SOURCE_DIR}
                     )
                     # patch
                     file(APPEND
-                        ${magick-windows_SOURCE_DIR}/Projects/MagickCore/magick-baseconfig.h.in
+                        ${ImageMagick-Windows_SOURCE_DIR}/Projects/MagickCore/magick-baseconfig.h.in
                         "\n#pragma warning(disable: 4201)\n"
                     )
                     message(STATUS "Building Configure...")
                     execute_process(
                         COMMAND ${DEVENV_COMMAND} /upgrade Configure.2017.sln
-                        WORKING_DIRECTORY ${magick-windows_SOURCE_DIR}/Configure
+                        WORKING_DIRECTORY ${ImageMagick-Windows_SOURCE_DIR}/Configure
                     )
                     execute_process(
                         COMMAND ${MSBUILD_COMMAND} Configure.2017.sln /m
-                        WORKING_DIRECTORY ${magick-windows_SOURCE_DIR}/Configure
+                        WORKING_DIRECTORY ${ImageMagick-Windows_SOURCE_DIR}/Configure
                     )
                 endif()
                 message(STATUS "Executing Configure...")
                 execute_process(
                     COMMAND Configure.exe /noWizard /noAliases /noDpc /noHdri /Q8 /${CMAKE_C_COMPILER_ARCHITECTURE_ID} /VS2017 /smtd
-                    WORKING_DIRECTORY ${magick-windows_SOURCE_DIR}/Configure
+                    WORKING_DIRECTORY ${ImageMagick-Windows_SOURCE_DIR}/Configure
                 )
                 execute_process(
                     COMMAND ${DEVENV_COMMAND} /upgrade IM7.StaticDLL.${CMAKE_C_COMPILER_ARCHITECTURE_ID}.sln
-                    WORKING_DIRECTORY ${magick-windows_SOURCE_DIR}
+                    WORKING_DIRECTORY ${ImageMagick-Windows_SOURCE_DIR}
                 )
             endif()
             message(STATUS "Building ImageMagick...")
-            set(MAGICKPP_LIB_DIR "${magick-windows_SOURCE_DIR}/Output/lib")
+            set(MAGICKPP_LIB_DIR "${ImageMagick-Windows_SOURCE_DIR}/Output/lib")
             if(NOT CMAKE_BUILD_TYPE STREQUAL "Debug" OR WEBCFACE_CONFIG_ALL)
                 execute_process(
                     COMMAND ${MSBUILD_COMMAND} IM7.StaticDLL.${CMAKE_C_COMPILER_ARCHITECTURE_ID}.sln
                         /m /p:Configuration=Release,Platform=${CMAKE_C_COMPILER_ARCHITECTURE_ID}
-                    WORKING_DIRECTORY ${magick-windows_SOURCE_DIR}
+                    WORKING_DIRECTORY ${ImageMagick-Windows_SOURCE_DIR}
                 )
                 file(GLOB MAGICKPP_RL_LIBS
                     RELATIVE ${MAGICKPP_LIB_DIR}
@@ -542,7 +549,7 @@ else()
                 execute_process(
                     COMMAND ${MSBUILD_COMMAND} IM7.StaticDLL.${CMAKE_C_COMPILER_ARCHITECTURE_ID}.sln
                         /m /p:Configuration=Debug,Platform=${CMAKE_C_COMPILER_ARCHITECTURE_ID}
-                    WORKING_DIRECTORY ${magick-windows_SOURCE_DIR}
+                    WORKING_DIRECTORY ${ImageMagick-Windows_SOURCE_DIR}
                 )
                 file(GLOB MAGICKPP_DB_LIBS
                     RELATIVE ${MAGICKPP_LIB_DIR}
@@ -555,8 +562,8 @@ else()
             
             add_library(magickpp INTERFACE)
             target_include_directories(magickpp INTERFACE
-                $<BUILD_INTERFACE:${magick-windows_SOURCE_DIR}/ImageMagick/Magick++/lib>
-                $<BUILD_INTERFACE:${magick-windows_SOURCE_DIR}/ImageMagick>
+                $<BUILD_INTERFACE:${ImageMagick-Windows_SOURCE_DIR}/ImageMagick/Magick++/lib>
+                $<BUILD_INTERFACE:${ImageMagick-Windows_SOURCE_DIR}/ImageMagick>
             )
             target_link_libraries(magickpp INTERFACE ${MAGICKPP_LIBS})
             target_compile_definitions(magickpp INTERFACE STATIC_MAGICK)
@@ -581,7 +588,7 @@ else()
         if(WEBCFACE_PIC)
             set(MAGICKPP_FLAGS "${MAGICKPP_FLAGS} -fPIC")
         endif()
-        if(NOT EXISTS ${magickpp_SOURCE_DIR}/Makefile OR ${CMAKE_CURRENT_LIST_FILE} IS_NEWER_THAN ${magickpp_SOURCE_DIR}/Makefile)
+        if(NOT EXISTS ${ImageMagick_SOURCE_DIR}/Makefile OR ${CMAKE_CURRENT_LIST_FILE} IS_NEWER_THAN ${ImageMagick_SOURCE_DIR}/Makefile)
             file(REMOVE_RECURSE ${MAGICKPP_PREFIX})
         endif()
         unset(libjpeg_FOUND CACHE)
@@ -591,12 +598,12 @@ else()
         if(libjpeg_FOUND)
             message(STATUS "libjpeg ${libjpeg_VERSION} Found: ${libjpeg_PREFIX}")
         else()
-            message(STATUS "libjpeg Not Found, Fetching source...")
-            FetchContent_Declare(libjpeg-turbo
-                GIT_REPOSITORY https://github.com/libjpeg-turbo/libjpeg-turbo.git
-                GIT_TAG 3.0.3
+            message(STATUS "libjpeg Not Found")
+            fetch_only(libjpeg-turbo
+                https://github.com/libjpeg-turbo/libjpeg-turbo.git
+                3.0.3
+                CMakeLists.txt
             )
-            FetchContent_Populate(libjpeg-turbo)
             message(STATUS "Building libjpeg-turbo...")
             execute_process(
                 COMMAND ${CMAKE_COMMAND} ${libjpeg-turbo_SOURCE_DIR} -B${libjpeg-turbo_BINARY_DIR}
@@ -621,11 +628,12 @@ else()
             if(zlib_FOUND)
                 message(STATUS "zlib ${zlib_VERSION} Found: ${zlib_PREFIX}")
             else()
-                message(STATUS "zlib Not Found, Fetching source...")
-                FetchContent_Declare(zlib
-                    URL https://www.zlib.net/current/zlib.tar.gz
+                message(STATUS "zlib Not Found")
+                fetch_only(zlib
+                    https://github.com/madler/zlib.git
+                    v1.3.1
+                    configure
                 )
-                FetchContent_Populate(zlib)
                 message(STATUS "Building zlib...")
                 if(NOT EXISTS ${zlib_SOURCE_DIR}/Makefile OR ${CMAKE_CURRENT_LIST_FILE} IS_NEWER_THAN ${zlib_SOURCE_DIR}/Makefile)
                     execute_process(
@@ -642,11 +650,11 @@ else()
                     WORKING_DIRECTORY ${zlib_SOURCE_DIR}
                 )
             endif()
-            message(STATUS "Fetching libpng source...")
-            FetchContent_Declare(libpng
-                URL https://download.sourceforge.net/libpng/libpng-1.6.43.tar.xz
+            fetch_only(libpng
+                https://github.com/pnggroup/libpng.git
+                v1.6.43
+                CMakeLists.txt
             )
-            FetchContent_Populate(libpng)
             message(STATUS "Building libpng...")
             execute_process(
                 COMMAND ${CMAKE_COMMAND} ${libpng_SOURCE_DIR} -B${libpng_BINARY_DIR}
@@ -664,12 +672,12 @@ else()
         if(libwebp_FOUND)
             message(STATUS "libwebp ${libwebp_VERSION} Found: ${libwebp_PREFIX}")
         else()
-            message(STATUS "libwebp Not Found, Fetching source...")
-            FetchContent_Declare(libwebp
-                GIT_REPOSITORY https://chromium.googlesource.com/webm/libwebp
-                GIT_TAG v1.4.0
+            message(STATUS "libwebp Not Found")
+            fetch_only(libwebp
+                https://github.com/webmproject/libwebp.git
+                v1.4.0
+                CMakeLists.txt
             )
-            FetchContent_Populate(libwebp)
             message(STATUS "Building libwebp...")
             execute_process(
                 COMMAND ${CMAKE_COMMAND} ${libwebp_SOURCE_DIR} -B${libwebp_BINARY_DIR}
@@ -694,18 +702,17 @@ else()
         pkg_check_modules(zlib REQUIRED QUIET zlib)
         pkg_check_modules(libwebp REQUIRED QUIET libwebp)
 
-        message(STATUS "Fetching Magick++ source...")
-        FetchContent_Declare(magickpp
-            GIT_REPOSITORY https://github.com/ImageMagick/ImageMagick.git
-            GIT_TAG 7.1.1-33
+        fetch_only(ImageMagick
+            https://github.com/ImageMagick/ImageMagick.git
+            7.1.1-33
+            configure
         )
-        FetchContent_Populate(magickpp)
         message(STATUS "Building Magick++...")
-        if(NOT EXISTS ${magickpp_SOURCE_DIR}/Makefile OR ${CMAKE_CURRENT_LIST_FILE} IS_NEWER_THAN ${magickpp_SOURCE_DIR}/Makefile)
+        if(NOT EXISTS ${ImageMagick_SOURCE_DIR}/Makefile OR ${CMAKE_CURRENT_LIST_FILE} IS_NEWER_THAN ${ImageMagick_SOURCE_DIR}/Makefile)
             if(MINGW)
                 execute_process(
                     COMMAND ${CHMOD_COMMAND} +x winpath.sh # バグ?
-                    WORKING_DIRECTORY ${magickpp_SOURCE_DIR}
+                    WORKING_DIRECTORY ${ImageMagick_SOURCE_DIR}
                 )
             endif()
             execute_process(
@@ -723,12 +730,12 @@ else()
                     --without-raqm --without-raw --without-tiff --without-wmf
                     --without-xml --without-zlib --without-zstd --without-x --without-zip
                     --disable-gomp
-                WORKING_DIRECTORY ${magickpp_SOURCE_DIR}
+                WORKING_DIRECTORY ${ImageMagick_SOURCE_DIR}
             )
         endif()
         execute_process(
             COMMAND ${MAKE_COMMAND} -j${N} install
-            WORKING_DIRECTORY ${magickpp_SOURCE_DIR}
+            WORKING_DIRECTORY ${ImageMagick_SOURCE_DIR}
         )
         pkg_check_modules(Magickpp REQUIRED QUIET Magick++)
         add_library(magickpp INTERFACE)
@@ -766,13 +773,11 @@ if(Magickpp_VERSION MATCHES "^7\.")
 endif()
 
 if(WEBCFACE_TEST)
-    message(STATUS "Fetching GTest Source...")
-    FetchContent_Declare(googletest
-        GIT_REPOSITORY https://github.com/google/googletest.git
-        GIT_TAG v1.14.0
-    )
     set(INSTALL_GTEST off CACHE INTERNAL "" FORCE)
-    FetchContent_MakeAvailable(googletest)
+    fetch_cmake(googletest
+        https://github.com/google/googletest.git
+        v1.14.0
+    )
 endif()
 
 ###############################################################################
@@ -1289,7 +1294,7 @@ if(WEBCFACE_INSTALL)
     )
     if(NOT msgpack-cxx_FOUND)
         install(FILES
-            ${msgpack-cxx_SOURCE_DIR}/LICENSE_1_0.txt
+            ${msgpack-c_SOURCE_DIR}/LICENSE_1_0.txt
             DESTINATION share/webcface/3rd_party/msgpack-c
         )
     endif()
@@ -1314,15 +1319,15 @@ if(WEBCFACE_INSTALL)
             )
         endif()
         install(FILES
-            ${crow_SOURCE_DIR}/LICENSE
-            ${crow_SOURCE_DIR}/README.md
+            ${Crow_SOURCE_DIR}/LICENSE
+            ${Crow_SOURCE_DIR}/README.md
             # 3rdpartyのライセンスがREADMEにある
             DESTINATION share/webcface/3rd_party/crow
         )
     endif()
     if(NOT CLI11_FOUND)
         install(FILES
-            ${cli11_SOURCE_DIR}/LICENSE
+            ${CLI11_SOURCE_DIR}/LICENSE
             DESTINATION share/webcface/3rd_party/cli11
         )
     endif()
@@ -1335,12 +1340,12 @@ if(WEBCFACE_INSTALL)
     if(NOT Magickpp_INSTALLED)
         if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
             install(FILES
-                ${magick-windows_SOURCE_DIR}/ImageMagick/LICENSE
+                ${ImageMagick-Windows_SOURCE_DIR}/ImageMagick/LICENSE
                 DESTINATION share/webcface/3rd_party/ImageMagick
             )
         else()
             install(FILES
-                ${magickpp_SOURCE_DIR}/LICENSE
+                ${ImageMagick_SOURCE_DIR}/LICENSE
                 DESTINATION share/webcface/3rd_party/ImageMagick
             )
         endif()

@@ -15,7 +15,7 @@ jobs:
   test-windows-gcc:
     strategy:
       matrix:
-        dep: ["pacman", "source", "static"]
+        dep: ["pacman", "source", "submodule", "static"]
         include:
         - dep: pacman
           shared_flag: on
@@ -29,7 +29,6 @@ jobs:
         shell: msys2 {0}
     steps:
     - uses: actions/checkout@v4
-
     - uses: msys2/setup-msys2@v2
       with:
         update: true
@@ -39,6 +38,9 @@ jobs:
           mingw-w64-x86_64-cmake
           make
         msystem: MINGW64
+
+    - run: git submodule update --init
+      if: matrix.dep == 'submodule'
 
     - name: Install dependencies
       if: matrix.dep == 'pacman'
