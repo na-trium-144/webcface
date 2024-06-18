@@ -6,7 +6,7 @@
 #include "transform.h"
 #include "view.h"
 #include "canvas3d.h"
-#include "field_base.h"
+#include "../field.h"
 
 WEBCFACE_NS_BEGIN
 inline namespace Common {

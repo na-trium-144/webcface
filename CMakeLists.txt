@@ -851,6 +851,7 @@ list(APPEND WEBCFACE_SRC
     ${CPP_DIR}/client/canvas_data.cc
     ${CPP_DIR}/client/value.cc
     ${CPP_DIR}/client/view.cc
+    ${CPP_DIR}/client/val_adaptor.cc
     ${CPP_DIR}/client/image.cc
     ${CPP_DIR}/client/version.cc
     ${CPP_DIR}/c_wcf/client.cc

@@ -18,7 +18,7 @@
 #include "val_adaptor.h"
 #include "u8string.h"
 
-MSGPACK_ADD_ENUM(webcface::Common::ValType)
+MSGPACK_ADD_ENUM(webcface::ValType)
 MSGPACK_ADD_ENUM(webcface::Common::ViewComponentType)
 MSGPACK_ADD_ENUM(webcface::Common::ViewColor)
 MSGPACK_ADD_ENUM(webcface::Common::ImageCompressMode)
@@ -253,7 +253,7 @@ struct WEBCFACE_DLL CallResult : public MessageBase<MessageKind::call_result> {
     std::size_t caller_id;
     unsigned int caller_member_id;
     bool is_error;
-    Common::ValAdaptor result;
+    ValAdaptor result;
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", caller_id),
                        MSGPACK_NVP("c", caller_member_id),
                        MSGPACK_NVP("e", is_error), MSGPACK_NVP("r", result))
@@ -265,7 +265,7 @@ struct WEBCFACE_DLL Value : public MessageBase<MessageKind::value> {
 };
 struct WEBCFACE_DLL Text : public MessageBase<MessageKind::text> {
     SharedString field;
-    std::shared_ptr<Common::ValAdaptor> data;
+    std::shared_ptr<ValAdaptor> data;
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", field), MSGPACK_NVP("d", data))
 };
 struct WEBCFACE_DLL RobotModel : public MessageBase<MessageKind::robot_model> {
@@ -379,11 +379,11 @@ struct WEBCFACE_DLL View : public MessageBase<MessageKind::view> {
             vc.text_ = text;
             if (on_click_member && on_click_field) {
                 vc.on_click_func_ =
-                    Common::FieldBase{*on_click_member, *on_click_field};
+                    FieldBase{*on_click_member, *on_click_field};
             }
             if (text_ref_member && text_ref_field) {
                 vc.text_ref_ =
-                    Common::FieldBase{*text_ref_member, *text_ref_field};
+                    FieldBase{*text_ref_member, *text_ref_field};
             }
             vc.text_color_ = text_color;
             vc.bg_color_ = bg_color;
@@ -662,7 +662,7 @@ struct WEBCFACE_DLL LogReq : public MessageBase<MessageKind::log_req> {
 struct WEBCFACE_DLL FuncInfo : public MessageBase<MessageKind::func_info> {
     unsigned int member_id = 0;
     SharedString field;
-    Common::ValType return_type;
+    ValType return_type;
     struct WEBCFACE_DLL Arg : public Common::Arg {
         Arg() = default;
         Arg(const Common::Arg &a) : Common::Arg(a) {}
@@ -673,7 +673,7 @@ struct WEBCFACE_DLL FuncInfo : public MessageBase<MessageKind::func_info> {
     std::shared_ptr<std::vector<Arg>> args;
     FuncInfo() = default;
     FuncInfo(unsigned int member_id, const SharedString &field,
-             Common::ValType return_type,
+             ValType return_type,
              const std::shared_ptr<std::vector<Arg>> &args)
         : member_id(member_id), field(field), return_type(return_type),
           args(args) {}
@@ -789,10 +789,10 @@ struct WEBCFACE_DLL Res<Text>
     : public MessageBase<MessageKind::text + MessageKind::res> {
     unsigned int req_id = 0;
     SharedString sub_field;
-    std::shared_ptr<Common::ValAdaptor> data;
+    std::shared_ptr<ValAdaptor> data;
     Res() = default;
     Res(unsigned int req_id, const SharedString &sub_field,
-        const std::shared_ptr<Common::ValAdaptor> &data)
+        const std::shared_ptr<ValAdaptor> &data)
         : req_id(req_id), sub_field(sub_field), data(data) {}
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", req_id), MSGPACK_NVP("f", sub_field),
                        MSGPACK_NVP("d", data))

@@ -7,7 +7,7 @@
 #include <cstdint>
 #include <eventpp/callbacklist.h>
 #include "field.h"
-#include "common/val.h"
+#include "val_adaptor.h"
 #include <webcface/common/def.h>
 
 WEBCFACE_NS_BEGIN
@@ -21,7 +21,7 @@ class Member;
  *
  */
 struct WEBCFACE_DLL FuncNotFound : public std::runtime_error {
-    explicit FuncNotFound(const Common::FieldBase &base)
+    explicit FuncNotFound(const FieldBase &base)
         : std::runtime_error("member(\"" + base.member_.decode() + "\")" +
                              ".func(\"" + base.field_.decode() +
                              "\") is not set") {}

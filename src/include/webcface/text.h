@@ -6,7 +6,7 @@
 #include "field.h"
 #include "event_target.h"
 #include <webcface/common/def.h>
-#include "common/val.h"
+#include "val_adaptor.h"
 
 WEBCFACE_NS_BEGIN
 
@@ -81,7 +81,7 @@ class WEBCFACE_DLL Text : protected Field, public EventTarget<Text> {
     Text parent() const { return this->Field::parent(); }
 
     // 1.10でstd::stringをValAdaptorに変更したら使えなくなった
-    // using Dict = Common::Dict<std::shared_ptr<Common::ValAdaptor>>;
+    // using Dict = Common::Dict<std::shared_ptr<ValAdaptor>>;
     // /*!
     //  * \brief Dictの値を再帰的にセットする
     //  *

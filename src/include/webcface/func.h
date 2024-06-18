@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 #include "common/func.h"
-#include "common/val.h"
+#include "val_adaptor.h"
 #include "func_result.h"
 #include <webcface/common/def.h>
 

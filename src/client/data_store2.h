@@ -9,7 +9,7 @@
 #include <webcface/field.h>
 #include <webcface/common/dict.h>
 #include <webcface/common/def.h>
-#include <webcface/common/val.h>
+#include <webcface/val_adaptor.h>
 #include <webcface/common/func.h>
 #include <webcface/common/view.h>
 #include <webcface/common/image.h>
@@ -217,7 +217,7 @@ class WEBCFACE_DLL_TEMPLATE SyncDataStore2 {
 };
 
 using ValueData = std::shared_ptr<VectorOpt<double>>;
-using TextData = std::shared_ptr<Common::ValAdaptor>;
+using TextData = std::shared_ptr<ValAdaptor>;
 using FuncData = std::shared_ptr<FuncInfo>;
 using ViewData = std::shared_ptr<std::vector<Common::ViewComponentBase>>;
 using RobotModelData = std::shared_ptr<std::vector<Common::RobotLink>>;

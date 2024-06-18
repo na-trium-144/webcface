@@ -12,10 +12,9 @@
 
 #include "encoding.h"
 #include "common/version.h"
-#include "common/val.h"
+#include "val_adaptor.h"
 #include "common/func.h"
 #include "common/queue.h"
-#include "common/field_base.h"
 #include "common/log.h"
 #include "common/view.h"
 #include "common/dict.h"

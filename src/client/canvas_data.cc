@@ -2,7 +2,7 @@
 #include <webcface/member.h>
 #include <webcface/robot_model.h>
 #include "client_internal.h"
-#include "webcface/common/field_base.h"
+#include "webcface/field.h"
 #include "webcface/encoding.h"
 
 WEBCFACE_NS_BEGIN

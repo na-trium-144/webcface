@@ -49,7 +49,7 @@ struct WEBCFACE_DLL MemberData {
      *
      */
     StrMap1<std::shared_ptr<std::vector<double>>> value;
-    StrMap1<std::shared_ptr<Common::ValAdaptor>> text;
+    StrMap1<std::shared_ptr<ValAdaptor>> text;
     StrMap1<std::shared_ptr<Message::FuncInfo>> func;
     StrMap1<std::vector<Common::ViewComponentBase>> view;
     StrMap1<std::vector<Common::Canvas3DComponentBase>> canvas3d;

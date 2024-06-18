@@ -3,8 +3,8 @@
 #include <string>
 #include <string_view>
 #include <vector>
-#include "common/field_base.h"
 #include <webcface/common/def.h>
+#include <webcface/encoding.h>
 
 WEBCFACE_NS_BEGIN
 
@@ -25,25 +25,69 @@ class Canvas3D;
 
 constexpr char8_t field_separator = '.';
 
-//! ClientDataの参照とメンバ名とデータ名を持つクラス
-struct WEBCFACE_DLL Field : public Common::FieldBase {
-    //! ClientDataの参照
-    //! ClientData内に保持するクラスもあるので循環参照を避けるためweak_ptr
+/*!
+ * \brief メンバ名とデータ名を持つクラス
+ *
+ */
+struct WEBCFACE_DLL FieldBase {
+    /*!
+     * \brief メンバー名
+     *
+     */
+    SharedString member_;
+
+    /*!
+     * \brief フィールド名
+     *
+     * Memberなどフィールド名が不要なクラスでは使用しない
+     *
+     */
+    SharedString field_;
+
+    FieldBase() = default;
+    explicit FieldBase(const SharedString &member)
+        : member_(member), field_() {}
+    FieldBase(const SharedString &member, const SharedString &field)
+        : member_(member), field_(field) {}
+    FieldBase(const FieldBase &base, const SharedString &field)
+        : member_(base.member_), field_(field) {}
+
+    bool operator==(const FieldBase &rhs) const {
+        return this->member_ == rhs.member_ && this->field_ == rhs.field_;
+    }
+};
+
+/*!
+ * \brief ClientDataの参照とメンバ名とデータ名を持つクラス
+ *
+ */
+struct WEBCFACE_DLL Field : public FieldBase {
+    /*!
+     * \brief ClientDataの参照
+     *
+     * ClientData内に保持するクラスもあるので循環参照を避けるためweak_ptr
+     */
     std::weak_ptr<Internal::ClientData> data_w;
 
     Field() = default;
     Field(const std::weak_ptr<Internal::ClientData> &data_w,
           const SharedString &member)
-        : Common::FieldBase(member), data_w(data_w) {}
+        : FieldBase(member), data_w(data_w) {}
     Field(const std::weak_ptr<Internal::ClientData> &data_w,
           const SharedString &member, const SharedString &field)
-        : Common::FieldBase(member, field), data_w(data_w) {}
+        : FieldBase(member, field), data_w(data_w) {}
     Field(const Field &base, const SharedString &field)
-        : Common::FieldBase(base, field), data_w(base.data_w) {}
+        : FieldBase(base, field), data_w(base.data_w) {}
 
-    //! data_wをlockし、失敗したらruntime_errorを投げる
+    /*!
+     * \brief data_wをlockし、失敗したらruntime_errorを投げる
+     *
+     */
     std::shared_ptr<Internal::ClientData> dataLock() const;
-    //! data_wをlockし、memberがselfではなければinvalid_argumentを投げる
+    /*!
+     * \brief data_wをlockし、memberがselfではなければinvalid_argumentを投げる
+     *
+     */
     std::shared_ptr<Internal::ClientData> setCheck() const;
 
     bool expired() const;

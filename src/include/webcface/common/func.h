@@ -6,7 +6,7 @@
 #include <string>
 #include <ostream>
 #include <cstdint>
-#include "val.h"
+#include "../val_adaptor.h"
 #include <webcface/common/def.h>
 
 #ifdef min

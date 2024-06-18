@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 #include "../client/client_internal.h"
-#include "webcface/common/field_base.h"
+#include "webcface/field.h"
 #include <webcface/member.h>
 #include <webcface/value.h>
 #include <webcface/text.h>

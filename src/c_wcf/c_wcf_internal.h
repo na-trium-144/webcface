@@ -5,7 +5,7 @@
 #include <webcface/client.h>
 #include <webcface/func.h>
 #include <webcface/canvas_data.h>
-#include <webcface/common/val.h>
+#include <webcface/val_adaptor.h>
 
 WEBCFACE_NS_BEGIN
 inline namespace c_wcf {
@@ -35,9 +35,9 @@ inline std::unordered_map<const wcfFuncCallHandleW *, FuncCallHandle>
  *
  * wcfMultiValをnewし、このリスト内のvalAdapterへのポインタをもつ
  */
-inline std::unordered_map<const wcfMultiVal *, Common::ValAdaptor>
+inline std::unordered_map<const wcfMultiVal *, ValAdaptor>
     func_val_list;
-inline std::unordered_map<const wcfMultiValW *, Common::ValAdaptor>
+inline std::unordered_map<const wcfMultiValW *, ValAdaptor>
     func_val_list_w;
 
 /*!
