@@ -51,9 +51,9 @@ struct WEBCFACE_DLL MemberData {
     StrMap1<std::shared_ptr<std::vector<double>>> value;
     StrMap1<std::shared_ptr<ValAdaptor>> text;
     StrMap1<std::shared_ptr<Message::FuncInfo>> func;
-    StrMap1<std::vector<Common::ViewComponentBase>> view;
-    StrMap1<std::vector<Common::Canvas3DComponentBase>> canvas3d;
-    StrMap1<Common::Canvas2DDataBase> canvas2d;
+    StrMap1<std::vector<ViewComponent>> view;
+    StrMap1<std::vector<Canvas3DComponent>> canvas3d;
+    StrMap1<Canvas2DDataBase> canvas2d;
     StrMap1<Common::ImageBase> image;
     StrMap1<int> image_changed;
     // 画像が変化したことを知らせるcv

@@ -5,7 +5,6 @@
 #include "webcface/field.h"
 #include <webcface/common/def.h>
 #include <algorithm>
-#include <iterator>
 #include <Magick++.h>
 
 WEBCFACE_NS_BEGIN
@@ -730,10 +729,10 @@ void MemberData::onRecv(const std::string &message) {
                         it.first.u8String().starts_with(s.field.u8String() +
                                                         field_separator)) {
                         auto diff = std::make_shared<std::unordered_map<
-                            std::string,
-                            webcface::Message::View::ViewComponent>>();
+                            std::string, webcface::Message::ViewComponent>>();
                         for (std::size_t i = 0; i < it.second.size(); i++) {
-                            diff->emplace(std::to_string(i), it.second[i]);
+                            diff->emplace(std::to_string(i),
+                                          it.second[i].toMessage());
                         }
                         SharedString sub_field;
                         if (it.first == s.field) {
@@ -770,9 +769,10 @@ void MemberData::onRecv(const std::string &message) {
                                                         field_separator)) {
                         auto diff = std::make_shared<std::unordered_map<
                             std::string,
-                            webcface::Message::Canvas3D::Canvas3DComponent>>();
+                            webcface::Message::Canvas3DComponent>>();
                         for (std::size_t i = 0; i < it.second.size(); i++) {
-                            diff->emplace(std::to_string(i), it.second[i]);
+                            diff->emplace(std::to_string(i),
+                                          it.second[i].toMessage());
                         }
                         SharedString sub_field;
                         if (it.first == s.field) {
@@ -809,11 +809,11 @@ void MemberData::onRecv(const std::string &message) {
                                                         field_separator)) {
                         auto diff = std::make_shared<std::unordered_map<
                             std::string,
-                            webcface::Message::Canvas2D::Canvas2DComponent>>();
+                            webcface::Message::Canvas2DComponent>>();
                         for (std::size_t i = 0; i < it.second.components.size();
                              i++) {
                             diff->emplace(std::to_string(i),
-                                          it.second.components[i]);
+                                          it.second.components[i].toMessage());
                         }
                         SharedString sub_field;
                         if (it.first == s.field) {
@@ -972,7 +972,8 @@ void MemberData::imageConvertThreadMain(const SharedString &member,
                     // 変換処理
                     auto info = this->image_req_info[member][field];
                     // clang-tidyの偽陽性への対処のため構造化束縛しない
-                    auto req_field = findReqField(this->image_req, member, field);
+                    auto req_field =
+                        findReqField(this->image_req, member, field);
                     auto &req_id = req_field.first;
                     auto &sub_field = req_field.second;
                     auto sync = webcface::Message::Sync{cd->member_id,

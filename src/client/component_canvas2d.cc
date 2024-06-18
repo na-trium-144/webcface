@@ -1,6 +1,8 @@
 #include <webcface/component_canvas2d.h>
 #include <webcface/member.h>
 #include <webcface/robot_model.h>
+#include "../message/message.h"
+#include "client_internal.h"
 
 WEBCFACE_NS_BEGIN
 
@@ -21,6 +23,35 @@ Canvas2DComponent::lockTmp(const std::weak_ptr<Internal::ClientData> &data_w,
     }
     return *this;
 }
+
+Message::Canvas2DComponent Canvas2DComponent::toMessage() const {
+    Message::Canvas2DComponent cc;
+    cc.type = this->type_;
+    cc.origin_pos = {this->origin_.pos(0), this->origin_.pos(1)};
+    cc.origin_rot = this->origin_.rot(0);
+    cc.color = this->color_;
+    cc.fill = this->fill_;
+    cc.stroke_width = this->stroke_width_;
+    cc.text = this->text_;
+    if (this->geometry_) {
+        cc.geometry_type = this->geometry_->type;
+        cc.properties = this->geometry_->properties;
+    }
+    if (this->on_click_func_) {
+        cc.on_click_member = this->on_click_func_->member_;
+        cc.on_click_field = this->on_click_func_->field_;
+    }
+    return cc;
+}
+Canvas2DComponent::Canvas2DComponent(const Message::Canvas2DComponent &cc)
+    : type_(cc.type), origin_(cc.origin_pos, cc.origin_rot), color_(cc.color),
+      fill_(cc.fill), stroke_width_(cc.stroke_width),
+      geometry_(std::make_optional<Geometry>(cc.geometry_type, cc.properties)),
+      on_click_func_(cc.on_click_member && cc.on_click_field
+                         ? std::make_optional<FieldBase>(*cc.on_click_member,
+                                                         *cc.on_click_field)
+                         : std::nullopt),
+      text_(cc.text) {}
 
 std::optional<Func> Canvas2DComponent::onClick() const {
     if (on_click_func_) {

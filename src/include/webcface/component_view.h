@@ -17,6 +17,9 @@
 #endif
 
 WEBCFACE_NS_BEGIN
+namespace Message {
+struct ViewComponent;
+}
 
 enum class ViewComponentType {
     text = 0,
@@ -115,6 +118,8 @@ class WEBCFACE_DLL ViewComponent : public IdBase<ViewComponentType> {
 
     wcfViewComponent cData() const;
     wcfViewComponentW cDataW() const;
+    Message::ViewComponent toMessage() const;
+    ViewComponent(const Message::ViewComponent &vc);
 
     /*!
      * \brief 要素の比較

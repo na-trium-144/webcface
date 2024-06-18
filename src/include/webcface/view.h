@@ -3,10 +3,9 @@
 #include <ostream>
 #include <memory>
 #include <utility>
-#include "common/view.h"
 #include "event_target.h"
 #include <webcface/common/def.h>
-#include "canvas_data.h"
+#include "components.h"
 
 WEBCFACE_NS_BEGIN
 namespace Internal {
@@ -151,18 +150,6 @@ class WEBCFACE_DLL View : protected Field,
     }
     View &operator<<(std::ostream &(*os_manip)(std::ostream &)) {
         os_manip(*this);
-        return *this;
-    }
-    View &operator<<(Common::ViewComponentBase &vc) {
-        *this << ViewComponent{vc, this->data_w, 0};
-        return *this;
-    }
-    View &operator<<(const Common::ViewComponentBase &vc) {
-        *this << ViewComponent{vc, this->data_w, 0};
-        return *this;
-    }
-    View &operator<<(Common::ViewComponentBase &&vc) {
-        *this << ViewComponent{vc, this->data_w, 0};
         return *this;
     }
     template <bool C2, bool C3>

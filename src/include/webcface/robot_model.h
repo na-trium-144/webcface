@@ -3,7 +3,7 @@
 #include "robot_link.h"
 #include "field.h"
 #include "event_target.h"
-#include "canvas_data.h"
+#include "components.h"
 
 WEBCFACE_NS_BEGIN
 namespace Internal {

@@ -1,6 +1,38 @@
 #include "webcface/robot_model.h"
 #include <webcface/component_canvas3d.h>
+#include "../message/message.h"
+
 WEBCFACE_NS_BEGIN
+
+Message::Canvas3DComponent Canvas3DComponent::toMessage() const {
+    Message::Canvas3DComponent cc;
+    cc.type = this->type_;
+    cc.origin_pos = this->origin_.pos();
+    cc.origin_rot = this->origin_.rot();
+    cc.color = this->color_;
+    if (this->geometry_) {
+        cc.geometry_type = this->geometry_->type;
+        cc.geometry_properties = this->geometry_->properties;
+    }
+    if (this->field_base_) {
+        cc.field_member = this->field_base_->member_;
+        cc.field_field = this->field_base_->field_;
+    }
+    for (const auto &a : this->angles_) {
+        cc.angles.emplace(std::to_string(a.first), a.second);
+    }
+    return cc;
+}
+Canvas3DComponent::Canvas3DComponent(const Message::Canvas3DComponent &cc)
+    : type_(cc.type), origin_(cc.origin_pos, cc.origin_rot), color_(cc.color),
+      geometry_(cc.geometry_type
+                    ? std::make_optional<Geometry>(*cc.geometry_type,
+                                                   cc.geometry_properties)
+                    : std::nullopt) {
+    for (const auto &a : cc.angles) {
+        this->angles_.emplace(std::stoi(a.first), a.second);
+    }
+}
 
 std::optional<RobotModel> Canvas3DComponent::robotModel() const {
     if (field_base_ && type_ == Canvas3DComponentType::robot_model) {

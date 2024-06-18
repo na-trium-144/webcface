@@ -4,7 +4,7 @@
 #include <webcface/wcf.h>
 #include <webcface/client.h>
 #include <webcface/func.h>
-#include <webcface/canvas_data.h>
+#include <webcface/components.h>
 #include <webcface/val_adaptor.h>
 
 WEBCFACE_NS_BEGIN

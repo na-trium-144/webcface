@@ -9,24 +9,24 @@
 #include <spdlog/logger.h>
 #include <webcface/common/func.h>
 #include <webcface/common/log.h>
-#include <webcface/common/view.h>
 #include <webcface/common/image.h>
-#include <webcface/common/robot_model.h>
-#include <webcface/common/canvas3d.h>
-#include <webcface/common/canvas2d.h>
 #include <webcface/common/def.h>
+#include "webcface/component_canvas2d.h"
+#include "webcface/component_canvas3d.h"
+#include "webcface/component_view.h"
+#include "webcface/robot_link.h"
 #include "val_adaptor.h"
 #include "u8string.h"
 
 MSGPACK_ADD_ENUM(webcface::ValType)
-MSGPACK_ADD_ENUM(webcface::Common::ViewComponentType)
-MSGPACK_ADD_ENUM(webcface::Common::ViewColor)
+MSGPACK_ADD_ENUM(webcface::ViewComponentType)
+MSGPACK_ADD_ENUM(webcface::ViewColor)
 MSGPACK_ADD_ENUM(webcface::Common::ImageCompressMode)
 MSGPACK_ADD_ENUM(webcface::Common::ImageColorMode)
-MSGPACK_ADD_ENUM(webcface::Common::RobotJointType)
-MSGPACK_ADD_ENUM(webcface::Common::GeometryType)
-MSGPACK_ADD_ENUM(webcface::Common::Canvas3DComponentType)
-MSGPACK_ADD_ENUM(webcface::Common::Canvas2DComponentType)
+MSGPACK_ADD_ENUM(webcface::RobotJointType)
+MSGPACK_ADD_ENUM(webcface::GeometryType)
+MSGPACK_ADD_ENUM(webcface::Canvas3DComponentType)
+MSGPACK_ADD_ENUM(webcface::Canvas2DComponentType)
 
 WEBCFACE_NS_BEGIN
 namespace Message {
@@ -277,9 +277,9 @@ struct WEBCFACE_DLL RobotModel : public MessageBase<MessageKind::robot_model> {
         Common::RobotJointType joint_type;
         std::array<double, 3> joint_origin_pos, joint_origin_rot;
         double joint_angle = 0;
-        Common::GeometryType geometry_type;
+        GeometryType geometry_type;
         std::vector<double> geometry_properties;
-        Common::ViewColor color;
+        ViewColor color;
         RobotLink() = default;
         RobotLink(const Common::RobotLink &link,
                   const std::vector<SharedString> &link_names)
@@ -304,7 +304,7 @@ struct WEBCFACE_DLL RobotModel : public MessageBase<MessageKind::robot_model> {
                  joint_type,
                  {joint_origin_pos, joint_origin_rot},
                  joint_angle},
-                Common::Geometry{geometry_type, geometry_properties},
+                Geometry{geometry_type, geometry_properties},
                 color,
             };
         }
@@ -347,74 +347,39 @@ struct WEBCFACE_DLL RobotModel : public MessageBase<MessageKind::robot_model> {
 
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", field), MSGPACK_NVP("d", data))
 };
+struct WEBCFACE_DLL ViewComponent {
+    ViewComponentType type = ViewComponentType::text;
+    SharedString text;
+    std::optional<SharedString> on_click_member, on_click_field;
+    std::optional<SharedString> text_ref_member, text_ref_field;
+    ViewColor text_color = ViewColor::inherit, bg_color = ViewColor::inherit;
+    std::optional<double> min_ = std::nullopt, max_ = std::nullopt,
+                          step_ = std::nullopt;
+    std::vector<ValAdaptor> option_;
+    ViewComponent() = default;
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("t", type), MSGPACK_NVP("x", text),
+                       MSGPACK_NVP("L", on_click_member),
+                       MSGPACK_NVP("l", on_click_field),
+                       MSGPACK_NVP("R", text_ref_member),
+                       MSGPACK_NVP("r", text_ref_field),
+                       MSGPACK_NVP("c", text_color), MSGPACK_NVP("b", bg_color),
+                       MSGPACK_NVP("im", min_), MSGPACK_NVP("ix", max_),
+                       MSGPACK_NVP("is", step_), MSGPACK_NVP("io", option_))
+};
 struct WEBCFACE_DLL View : public MessageBase<MessageKind::view> {
     SharedString field;
-    struct WEBCFACE_DLL ViewComponent {
-        Common::ViewComponentType type = Common::ViewComponentType::text;
-        SharedString text;
-        std::optional<SharedString> on_click_member, on_click_field;
-        std::optional<SharedString> text_ref_member, text_ref_field;
-        Common::ViewColor text_color = Common::ViewColor::inherit,
-                          bg_color = Common::ViewColor::inherit;
-        std::optional<double> min_ = std::nullopt, max_ = std::nullopt,
-                              step_ = std::nullopt;
-        std::vector<ValAdaptor> option_;
-        ViewComponent() = default;
-        ViewComponent(const Common::ViewComponentBase &vc)
-            : type(vc.type_), text(vc.text_), text_color(vc.text_color_),
-              bg_color(vc.bg_color_), min_(vc.min_), max_(vc.max_),
-              step_(vc.step_), option_(vc.option_) {
-            if (vc.on_click_func_) {
-                on_click_member = vc.on_click_func_->member_;
-                on_click_field = vc.on_click_func_->field_;
-            }
-            if (vc.text_ref_) {
-                text_ref_member = vc.text_ref_->member_;
-                text_ref_field = vc.text_ref_->field_;
-            }
-        }
-        operator Common::ViewComponentBase() const {
-            Common::ViewComponentBase vc;
-            vc.type_ = type;
-            vc.text_ = text;
-            if (on_click_member && on_click_field) {
-                vc.on_click_func_ =
-                    FieldBase{*on_click_member, *on_click_field};
-            }
-            if (text_ref_member && text_ref_field) {
-                vc.text_ref_ =
-                    FieldBase{*text_ref_member, *text_ref_field};
-            }
-            vc.text_color_ = text_color;
-            vc.bg_color_ = bg_color;
-            vc.min_ = min_;
-            vc.max_ = max_;
-            vc.step_ = step_;
-            vc.option_ = option_;
-            return vc;
-        }
-        MSGPACK_DEFINE_MAP(MSGPACK_NVP("t", type), MSGPACK_NVP("x", text),
-                           MSGPACK_NVP("L", on_click_member),
-                           MSGPACK_NVP("l", on_click_field),
-                           MSGPACK_NVP("R", text_ref_member),
-                           MSGPACK_NVP("r", text_ref_field),
-                           MSGPACK_NVP("c", text_color),
-                           MSGPACK_NVP("b", bg_color), MSGPACK_NVP("im", min_),
-                           MSGPACK_NVP("ix", max_), MSGPACK_NVP("is", step_),
-                           MSGPACK_NVP("io", option_))
-    };
     std::shared_ptr<std::unordered_map<std::string, ViewComponent>> data_diff;
     std::size_t length = 0;
     View() = default;
     View(const SharedString &field,
-         const std::shared_ptr<
-             std::unordered_map<int, Common::ViewComponentBase>> &data_diff,
+         const std::shared_ptr<std::unordered_map<int, ViewComponent>>
+             &data_diff,
          std::size_t length)
         : field(field),
           data_diff(std::make_shared<
                     std::unordered_map<std::string, ViewComponent>>()),
           length(length) {
-        for (const auto &vc : *data_diff) {
+        for (auto &&vc : *data_diff) {
             this->data_diff->emplace(std::to_string(vc.first), vc.second);
         }
     }
@@ -426,68 +391,32 @@ struct WEBCFACE_DLL View : public MessageBase<MessageKind::view> {
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", field), MSGPACK_NVP("d", data_diff),
                        MSGPACK_NVP("l", length))
 };
+struct WEBCFACE_DLL Canvas3DComponent {
+    Canvas3DComponentType type = Canvas3DComponentType::geometry;
+    std::array<double, 3> origin_pos, origin_rot;
+    ViewColor color;
+    std::optional<GeometryType> geometry_type;
+    std::vector<double> geometry_properties;
+    std::optional<SharedString> field_member, field_field;
+    std::unordered_map<std::string, double> angles;
+    Canvas3DComponent() = default;
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("t", type), MSGPACK_NVP("op", origin_pos),
+                       MSGPACK_NVP("or", origin_rot), MSGPACK_NVP("c", color),
+                       MSGPACK_NVP("gt", geometry_type),
+                       MSGPACK_NVP("gp", geometry_properties),
+                       MSGPACK_NVP("fm", field_member),
+                       MSGPACK_NVP("ff", field_field), MSGPACK_NVP("a", angles))
+};
 struct WEBCFACE_DLL Canvas3D : public MessageBase<MessageKind::canvas3d> {
     SharedString field;
-    struct WEBCFACE_DLL Canvas3DComponent {
-        Common::Canvas3DComponentType type =
-            Common::Canvas3DComponentType::geometry;
-        std::array<double, 3> origin_pos, origin_rot;
-        ViewColor color;
-        std::optional<Common::GeometryType> geometry_type;
-        std::vector<double> geometry_properties;
-        std::optional<SharedString> field_member, field_field;
-        std::unordered_map<std::string, double> angles;
-        Canvas3DComponent() = default;
-        Canvas3DComponent(const Common::Canvas3DComponentBase &vc)
-            : type(vc.type_), origin_pos(vc.origin_.pos()),
-              origin_rot(vc.origin_.rot()), color(vc.color_), angles() {
-            if (vc.geometry_) {
-                geometry_type = vc.geometry_->type;
-                geometry_properties = vc.geometry_->properties;
-            }
-            if (vc.field_base_) {
-                field_member = vc.field_base_->member_;
-                field_field = vc.field_base_->field_;
-            }
-            for (const auto &a : vc.angles_) {
-                angles.emplace(std::to_string(a.first), a.second);
-            }
-        }
-        operator Common::Canvas3DComponentBase() const {
-            Common::Canvas3DComponentBase vc;
-            vc.type_ = type;
-            vc.origin_ = {origin_pos, origin_rot};
-            vc.color_ = color;
-            if (geometry_type) {
-                vc.geometry_ = {*geometry_type, geometry_properties};
-            }
-            if (field_member && field_field) {
-                vc.field_base_ = {*field_member, *field_field};
-            }
-            for (const auto &a : angles) {
-                vc.angles_.emplace(std::stoi(a.first), a.second);
-            }
-            return vc;
-        }
-        MSGPACK_DEFINE_MAP(MSGPACK_NVP("t", type),
-                           MSGPACK_NVP("op", origin_pos),
-                           MSGPACK_NVP("or", origin_rot),
-                           MSGPACK_NVP("c", color),
-                           MSGPACK_NVP("gt", geometry_type),
-                           MSGPACK_NVP("gp", geometry_properties),
-                           MSGPACK_NVP("fm", field_member),
-                           MSGPACK_NVP("ff", field_field),
-                           MSGPACK_NVP("a", angles))
-    };
     std::shared_ptr<std::unordered_map<std::string, Canvas3DComponent>>
         data_diff;
     std::size_t length = 0;
     Canvas3D() = default;
-    Canvas3D(
-        const SharedString &field,
-        const std::shared_ptr<
-            std::unordered_map<int, Common::Canvas3DComponentBase>> &data_diff,
-        std::size_t length)
+    Canvas3D(const SharedString &field,
+             const std::shared_ptr<std::unordered_map<int, Canvas3DComponent>>
+                 &data_diff,
+             std::size_t length)
         : field(field),
           data_diff(std::make_shared<
                     std::unordered_map<std::string, Canvas3DComponent>>()),
@@ -504,66 +433,36 @@ struct WEBCFACE_DLL Canvas3D : public MessageBase<MessageKind::canvas3d> {
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", field), MSGPACK_NVP("d", data_diff),
                        MSGPACK_NVP("l", length))
 };
+struct WEBCFACE_DLL Canvas2DComponent {
+    Canvas2DComponentType type;
+    std::array<double, 2> origin_pos;
+    double origin_rot;
+    ViewColor color, fill;
+    double stroke_width;
+    GeometryType geometry_type;
+    std::vector<double> properties;
+    std::optional<SharedString> on_click_member, on_click_field;
+    SharedString text;
+    Canvas2DComponent() = default;
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("t", type), MSGPACK_NVP("op", origin_pos),
+                       MSGPACK_NVP("or", origin_rot), MSGPACK_NVP("c", color),
+                       MSGPACK_NVP("f", fill), MSGPACK_NVP("s", stroke_width),
+                       MSGPACK_NVP("gt", geometry_type),
+                       MSGPACK_NVP("gp", properties),
+                       MSGPACK_NVP("L", on_click_member),
+                       MSGPACK_NVP("l", on_click_field), MSGPACK_NVP("x", text))
+};
 struct WEBCFACE_DLL Canvas2D : public MessageBase<MessageKind::canvas2d> {
     SharedString field;
     double width, height;
-    struct WEBCFACE_DLL Canvas2DComponent {
-        Common::Canvas2DComponentType type;
-        std::array<double, 2> origin_pos;
-        double origin_rot;
-        ViewColor color, fill;
-        double stroke_width;
-        Common::GeometryType geometry_type;
-        std::vector<double> properties;
-        std::optional<SharedString> on_click_member, on_click_field;
-        SharedString text;
-        Canvas2DComponent() = default;
-        Canvas2DComponent(const Common::Canvas2DComponentBase &vc)
-            : type(vc.type_),
-              origin_pos({vc.origin_.pos(0), vc.origin_.pos(1)}),
-              origin_rot(vc.origin_.rot(0)), color(vc.color_), fill(vc.fill_),
-              stroke_width(vc.stroke_width_), properties(), text(vc.text_) {
-            if (vc.geometry_) {
-                geometry_type = vc.geometry_->type;
-                properties = vc.geometry_->properties;
-            }
-            if (vc.on_click_func_) {
-                on_click_member = vc.on_click_func_->member_;
-                on_click_field = vc.on_click_func_->field_;
-            }
-        }
-        operator Common::Canvas2DComponentBase() const {
-            Common::Canvas2DComponentBase vc;
-            vc.type_ = type;
-            vc.origin_ = {origin_pos, origin_rot};
-            vc.color_ = color;
-            vc.fill_ = fill;
-            vc.stroke_width_ = stroke_width;
-            vc.geometry_ = {geometry_type, properties};
-            if (on_click_member && on_click_field) {
-                vc.on_click_func_ = std::make_optional<FieldBase>(
-                    *on_click_member, *on_click_field);
-            }
-            vc.text_ = text;
-            return vc;
-        }
-        MSGPACK_DEFINE_MAP(
-            MSGPACK_NVP("t", type), MSGPACK_NVP("op", origin_pos),
-            MSGPACK_NVP("or", origin_rot), MSGPACK_NVP("c", color),
-            MSGPACK_NVP("f", fill), MSGPACK_NVP("s", stroke_width),
-            MSGPACK_NVP("gt", geometry_type), MSGPACK_NVP("gp", properties),
-            MSGPACK_NVP("L", on_click_member), MSGPACK_NVP("l", on_click_field),
-            MSGPACK_NVP("x", text))
-    };
     std::shared_ptr<std::unordered_map<std::string, Canvas2DComponent>>
         data_diff;
     std::size_t length;
     Canvas2D() = default;
-    Canvas2D(
-        const SharedString &field, double width, double height,
-        const std::shared_ptr<
-            std::unordered_map<int, Common::Canvas2DComponentBase>> &data_diff,
-        std::size_t length)
+    Canvas2D(const SharedString &field, double width, double height,
+             const std::shared_ptr<std::unordered_map<int, Canvas2DComponent>>
+                 &data_diff,
+             std::size_t length)
         : field(field), width(width), height(height),
           data_diff(std::make_shared<
                     std::unordered_map<std::string, Canvas2DComponent>>()),
@@ -673,8 +572,7 @@ struct WEBCFACE_DLL FuncInfo : public MessageBase<MessageKind::func_info> {
     std::shared_ptr<std::vector<Arg>> args;
     FuncInfo() = default;
     FuncInfo(unsigned int member_id, const SharedString &field,
-             ValType return_type,
-             const std::shared_ptr<std::vector<Arg>> &args)
+             ValType return_type, const std::shared_ptr<std::vector<Arg>> &args)
         : member_id(member_id), field(field), return_type(return_type),
           args(args) {}
     explicit FuncInfo(const SharedString &field, const Common::FuncInfo &info)
@@ -839,13 +737,12 @@ struct WEBCFACE_DLL Res<View>
     : public MessageBase<MessageKind::view + MessageKind::res> {
     unsigned int req_id = 0;
     SharedString sub_field;
-    std::shared_ptr<std::unordered_map<std::string, View::ViewComponent>>
-        data_diff;
+    std::shared_ptr<std::unordered_map<std::string, ViewComponent>> data_diff;
     std::size_t length = 0;
     Res() = default;
     Res(unsigned int req_id, const SharedString &sub_field,
-        const std::shared_ptr<
-            std::unordered_map<std::string, View::ViewComponent>> &data_diff,
+        const std::shared_ptr<std::unordered_map<std::string, ViewComponent>>
+            &data_diff,
         std::size_t length)
         : req_id(req_id), sub_field(sub_field), data_diff(data_diff),
           length(length) {}
@@ -857,15 +754,13 @@ struct WEBCFACE_DLL Res<Canvas3D>
     : public MessageBase<MessageKind::canvas3d + MessageKind::res> {
     unsigned int req_id = 0;
     SharedString sub_field;
-    std::shared_ptr<
-        std::unordered_map<std::string, Canvas3D::Canvas3DComponent>>
+    std::shared_ptr<std::unordered_map<std::string, Canvas3DComponent>>
         data_diff;
     std::size_t length = 0;
     Res() = default;
     Res(unsigned int req_id, const SharedString &sub_field,
         const std::shared_ptr<
-            std::unordered_map<std::string, Canvas3D::Canvas3DComponent>>
-            &data_diff,
+            std::unordered_map<std::string, Canvas3DComponent>> &data_diff,
         std::size_t length)
         : req_id(req_id), sub_field(sub_field), data_diff(data_diff),
           length(length) {}
@@ -878,16 +773,14 @@ struct WEBCFACE_DLL Res<Canvas2D>
     unsigned int req_id = 0;
     SharedString sub_field;
     double width = 0, height = 0;
-    std::shared_ptr<
-        std::unordered_map<std::string, Canvas2D::Canvas2DComponent>>
+    std::shared_ptr<std::unordered_map<std::string, Canvas2DComponent>>
         data_diff;
     std::size_t length;
     Res() = default;
     Res(unsigned int req_id, const SharedString &sub_field, double width,
         double height,
         const std::shared_ptr<
-            std::unordered_map<std::string, Canvas2D::Canvas2DComponent>>
-            &data_diff,
+            std::unordered_map<std::string, Canvas2DComponent>> &data_diff,
         std::size_t length)
         : req_id(req_id), sub_field(sub_field), width(width), height(height),
           data_diff(data_diff), length(length) {}

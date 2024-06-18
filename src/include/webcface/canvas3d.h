@@ -8,10 +8,8 @@
 #include <concepts>
 #include "event_target.h"
 #include <webcface/common/def.h>
-#include "common/canvas3d.h"
-#include "common/robot_model.h"
 #include "robot_model.h"
-#include "canvas_data.h"
+#include "components.h"
 
 WEBCFACE_NS_BEGIN
 namespace Internal {

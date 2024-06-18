@@ -3,7 +3,7 @@
 #include <memory>
 #include <webcface/common/def.h>
 #include "field.h"
-#include "canvas_data.h"
+#include "components.h"
 
 WEBCFACE_NS_BEGIN
 namespace Internal {

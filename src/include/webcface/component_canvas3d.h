@@ -5,6 +5,9 @@
 #include <webcface/common/def.h>
 
 WEBCFACE_NS_BEGIN
+namespace Message{
+struct Canvas3DComponent;
+}
 
 enum class Canvas3DComponentType {
     geometry = 0,
@@ -53,6 +56,9 @@ class WEBCFACE_DLL Canvas3DComponent {
             const std::u8string & /*field_id*/) {
         return *this;
     }
+
+    Message::Canvas3DComponent toMessage() const;
+    Canvas3DComponent(const Message::Canvas3DComponent &cc);
 
     /*!
      * \since ver1.11

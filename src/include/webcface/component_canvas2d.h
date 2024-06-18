@@ -8,6 +8,10 @@
 #include "webcface/geometry.h"
 
 WEBCFACE_NS_BEGIN
+namespace Message{
+struct Canvas2DComponent;
+}
+
 enum class Canvas2DComponentType {
     geometry = 0,
     text = 3,
@@ -68,6 +72,9 @@ class WEBCFACE_DLL Canvas2DComponent : public IdBase<Canvas2DComponentType> {
     lockTmp(const std::weak_ptr<Internal::ClientData> &data_w,
             const SharedString &view_name,
             std::unordered_map<int, int> *idx_next = nullptr);
+    
+    Message::Canvas2DComponent toMessage() const;
+    Canvas2DComponent(const Message::Canvas2DComponent &cc);
 
     /*!
      * \since ver1.11
