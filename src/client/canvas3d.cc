@@ -39,15 +39,15 @@ Canvas3D &Canvas3D::operator<<(Canvas3DComponent &&cc) {
 
 template <>
 void Internal::DataSetBuffer<Canvas3DComponent>::onSync() {
-    auto cb = std::make_shared<std::vector<Canvas3DComponentBase>>();
-    cb->reserve(components_.size());
     for (std::size_t i = 0; i < components_.size(); i++) {
-        cb->push_back(std::move(components_.at(i).lockTmp(
+        components_.at(i).lockTmp(
             target_.data_w,
             target_.field_.u8String() + u8"_" +
-                std::u8string(Encoding::castToU8(std::to_string(i))))));
+                std::u8string(Encoding::castToU8(std::to_string(i))));
     }
-    target_.setCheck()->canvas3d_store.setSend(target_, cb);
+    target_.setCheck()->canvas3d_store.setSend(
+        target_, std::make_shared<std::vector<Canvas3DComponent>>(
+                     std::move(components_)));
     static_cast<Canvas3D>(target_).triggerEvent(target_);
 }
 

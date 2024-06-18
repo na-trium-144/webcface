@@ -119,17 +119,17 @@ Message::ViewComponent ViewComponent::toMessage() const {
     return vc;
 }
 ViewComponent::ViewComponent(const Message::ViewComponent &vc)
-    : data_w(), type_(vc.type), text_(vc.text),
-      on_click_func_(vc.on_click_member && vc.on_click_field
+    : ViewComponent(vc.type, vc.text,
+                    (vc.on_click_member && vc.on_click_field
                          ? std::make_optional<FieldBase>(*vc.on_click_member,
                                                          *vc.on_click_field)
                          : std::nullopt),
-      text_ref_(vc.text_ref_member && vc.text_ref_field
-                    ? std::make_optional<FieldBase>(*vc.text_ref_member,
-                                                    *vc.text_ref_field)
-                    : std::nullopt),
-      text_color_(vc.text_color), bg_color_(vc.bg_color), min_(vc.min_),
-      max_(vc.max_), step_(vc.step_), option_(vc.option_) {}
+                    (vc.text_ref_member && vc.text_ref_field
+                         ? std::make_optional<FieldBase>(*vc.text_ref_member,
+                                                         *vc.text_ref_field)
+                         : std::nullopt),
+                    vc.text_color, vc.bg_color, vc.min_, vc.max_, vc.step_,
+                    std::vector(vc.option_)) {}
 
 
 std::optional<Func> ViewComponent::onClick() const {

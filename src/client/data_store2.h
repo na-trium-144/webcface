@@ -201,12 +201,13 @@ class WEBCFACE_DLL_TEMPLATE SyncDataStore2 {
     StrMap2<unsigned int> transferReq();
 
     template <typename ElemT>
-    std::shared_ptr<std::unordered_map<int, ElemT>>
-    getDiff(std::vector<ElemT> *current, std::vector<ElemT> *prev = nullptr) {
-        auto v_diff = std::make_shared<std::unordered_map<int, ElemT>>();
+    auto getDiff(std::vector<ElemT> *current,
+                 std::vector<ElemT> *prev = nullptr) {
+        auto v_diff = std::make_shared<
+            std::unordered_map<int, decltype(ElemT().toMessage())>>();
         for (std::size_t i = 0; i < current->size(); i++) {
             if (!prev || prev->size() <= i || (*prev)[i] != (*current)[i]) {
-                v_diff->emplace(static_cast<int>(i), (*current)[i]);
+                v_diff->emplace(static_cast<int>(i), (*current)[i].toMessage());
             }
         }
         return v_diff;

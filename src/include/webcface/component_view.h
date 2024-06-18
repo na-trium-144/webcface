@@ -95,13 +95,23 @@ class WEBCFACE_DLL ViewComponent : public IdBase<ViewComponentType> {
 
   public:
     ViewComponent() = default;
-    // ViewComponent(const Common::ViewComponentBase &vc,
-    //               const std::weak_ptr<Internal::ClientData> &data_w,
-    //               std::unordered_map<int, int> *idx_next)
-    //     : Common::ViewComponentBase(vc), IdBase<ViewComponentType>(),
-    //       data_w(data_w) {
-    //     initIdx(idx_next, type_);
-    // }
+    ViewComponent(ViewComponentType type, const SharedString &text,
+                  std::optional<FieldBase> &&on_click_func,
+                  std::optional<FieldBase> &&text_ref, ViewColor text_color,
+                  ViewColor bg_color, std::optional<double> min,
+                  std::optional<double> max, std::optional<double> step,
+                  std::vector<ValAdaptor> &&option)
+        : type_(type), text_(text), on_click_func_(std::move(on_click_func)),
+          text_ref_(std::move(text_ref)), text_color_(text_color),
+          bg_color_(bg_color), min_(min), max_(max), step_(step),
+          option_(std::move(option)) {}
+    ViewComponent(const ViewComponent &vc,
+                  const std::weak_ptr<Internal::ClientData> &data_w,
+                  std::unordered_map<int, int> *idx_next)
+        : ViewComponent(vc) {
+        this->data_w = data_w;
+        initIdx(idx_next, type_);
+    }
     explicit ViewComponent(ViewComponentType type)
         : IdBase<ViewComponentType>() {
         type_ = type;
@@ -111,10 +121,9 @@ class WEBCFACE_DLL ViewComponent : public IdBase<ViewComponentType> {
      * \brief AnonymousFuncとInputRefの名前を確定
      *
      */
-    ViewComponent &
-    lockTmp(const std::weak_ptr<Internal::ClientData> &data_w,
-            const SharedString &view_name,
-            std::unordered_map<int, int> *idx_next = nullptr);
+    ViewComponent &lockTmp(const std::weak_ptr<Internal::ClientData> &data_w,
+                           const SharedString &view_name,
+                           std::unordered_map<int, int> *idx_next = nullptr);
 
     wcfViewComponent cData() const;
     wcfViewComponentW cDataW() const;
@@ -132,11 +141,13 @@ class WEBCFACE_DLL ViewComponent : public IdBase<ViewComponentType> {
      *
      */
     bool operator==(const ViewComponent &other) const {
-        return id() == other.id() && type_ == other.type_ && text_ == other.text_ &&
-               on_click_func_ == other.on_click_func_ &&
-               text_ref_ == other.text_ref_ && text_color_ == other.text_color_ &&
+        return id() == other.id() && type_ == other.type_ &&
+               text_ == other.text_ && on_click_func_ == other.on_click_func_ &&
+               text_ref_ == other.text_ref_ &&
+               text_color_ == other.text_color_ &&
                bg_color_ == other.bg_color_ && min_ == other.min_ &&
-               max_ == other.max_ && step_ == other.step_ && option_ == other.option_;
+               max_ == other.max_ && step_ == other.step_ &&
+               option_ == other.option_;
     }
     /*!
      * \since ver1.11

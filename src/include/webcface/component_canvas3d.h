@@ -5,7 +5,7 @@
 #include <webcface/common/def.h>
 
 WEBCFACE_NS_BEGIN
-namespace Message{
+namespace Message {
 struct Canvas3DComponent;
 }
 
@@ -31,9 +31,18 @@ class WEBCFACE_DLL Canvas3DComponent {
 
   public:
     Canvas3DComponent() = default;
-    // Canvas3DComponent(const Common::Canvas3DComponentBase &vc,
-    //                   const std::weak_ptr<Internal::ClientData> &data_w)
-    //     : Common::Canvas3DComponentBase(vc), data_w(data_w) {}
+    Canvas3DComponent(Canvas3DComponentType type, const Transform &origin,
+                      ViewColor color, std::optional<Geometry> &&geometry,
+                      std::optional<FieldBase> &&field_base,
+                      std::unordered_map<std::size_t, double> &&angles)
+        : type_(type), origin_(origin), color_(color),
+          geometry_(std::move(geometry)), field_base_(std::move(field_base)),
+          angles_(std::move(angles)) {}
+    Canvas3DComponent(const Canvas3DComponent &vc,
+                      const std::weak_ptr<Internal::ClientData> &data_w)
+        : Canvas3DComponent(vc) {
+        this->data_w = data_w;
+    }
     // explicit Canvas3DComponent(const Common::Canvas3DComponentBase &vc)
     //     : Common::Canvas3DComponentBase(vc), data_w() {}
     Canvas3DComponent(Canvas3DComponentType type,

@@ -183,12 +183,12 @@ class WEBCFACE_DLL Canvas3D : protected Field, public EventTarget<Canvas3D> {
     [[deprecated]] Canvas3D &add(const Geometry &geometry,
                                  const Transform &origin,
                                  const ViewColor &color = ViewColor::inherit) {
-        add(Canvas3DComponent{{Canvas3DComponentType::geometry,
-                               origin,
-                               color,
-                               geometry,
-                               std::nullopt,
-                               {}}});
+        add(Canvas3DComponent{Canvas3DComponentType::geometry,
+                              origin,
+                              color,
+                              geometry,
+                              std::nullopt,
+                              {}});
         return *this;
     }
     /*!
@@ -202,12 +202,12 @@ class WEBCFACE_DLL Canvas3D : protected Field, public EventTarget<Canvas3D> {
      */
     [[deprecated]] Canvas3D &add(const Geometry &geometry,
                                  const ViewColor &color = ViewColor::inherit) {
-        add(Canvas3DComponent{{Canvas3DComponentType::geometry,
-                               identity(),
-                               color,
-                               geometry,
-                               std::nullopt,
-                               {}}});
+        add(Canvas3DComponent{Canvas3DComponentType::geometry,
+                              identity(),
+                              color,
+                              geometry,
+                              std::nullopt,
+                              {}});
         return *this;
     }
     /*!
@@ -231,9 +231,10 @@ class WEBCFACE_DLL Canvas3D : protected Field, public EventTarget<Canvas3D> {
                 angles_i[ji] = angles[j.name.decode()];
             }
         }
-        add(Canvas3DComponent{{Canvas3DComponentType::robot_model, origin,
-                               ViewColor::inherit, std::nullopt,
-                               static_cast<FieldBase>(model_field), angles_i}});
+        add(Canvas3DComponent{Canvas3DComponentType::robot_model, origin,
+                              ViewColor::inherit, std::nullopt,
+                              static_cast<FieldBase>(model_field),
+                              std::move(angles_i)});
         return *this;
     }
 
@@ -252,8 +253,8 @@ class WEBCFACE_DLL Canvas3D : protected Field, public EventTarget<Canvas3D> {
      *
      */
     template <typename T>
-        requires std::same_as<T, Canvas3D>
-    bool operator==(const T &other) const {
+        requires std::same_as<T, Canvas3D> bool
+    operator==(const T &other) const {
         return static_cast<Field>(*this) == static_cast<Field>(other);
     }
 };

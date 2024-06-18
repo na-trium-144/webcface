@@ -49,7 +49,7 @@ wcfViewSetT(wcfClient *wcli, const CharT *field,
     auto v = wcli_->view(field);
     v.init();
     for (auto p = components; p < components + size; p++) {
-        v.add(ViewComponentBase{
+        v.add(ViewComponent{
             static_cast<ViewComponentType>(p->type),
             SharedString(strOrEmpty(p->text)),
             p->on_click_field

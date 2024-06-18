@@ -192,9 +192,9 @@ class WEBCFACE_DLL Canvas2D : protected Field, public EventTarget<Canvas2D> {
                                  const ViewColor &color = ViewColor::inherit,
                                  const ViewColor &fill = ViewColor::inherit,
                                  double stroke_width = 1) {
-        add(Canvas2DComponent{{Canvas2DComponentType::geometry, origin, color,
-                               fill, stroke_width, geometry, std::nullopt,
-                               nullptr}});
+        add(Canvas2DComponent{Canvas2DComponentType::geometry, origin, color,
+                              fill, stroke_width, geometry, std::nullopt,
+                              nullptr});
         return *this;
     }
     /*!
@@ -211,9 +211,9 @@ class WEBCFACE_DLL Canvas2D : protected Field, public EventTarget<Canvas2D> {
                                  const ViewColor &color = ViewColor::inherit,
                                  const ViewColor &fill = ViewColor::inherit,
                                  double stroke_width = 1) {
-        add(Canvas2DComponent{{Canvas2DComponentType::geometry, identity(),
-                               color, fill, stroke_width, geometry,
-                               std::nullopt, nullptr}});
+        add(Canvas2DComponent{Canvas2DComponentType::geometry, identity(),
+                              color, fill, stroke_width, geometry, std::nullopt,
+                              nullptr});
         return *this;
     }
     /*!
@@ -229,9 +229,9 @@ class WEBCFACE_DLL Canvas2D : protected Field, public EventTarget<Canvas2D> {
     [[deprecated]] Canvas2D &add(const Geometry &geometry,
                                  const Transform &origin,
                                  const ViewColor &color, double stroke_width) {
-        add(Canvas2DComponent{{Canvas2DComponentType::geometry, origin, color,
-                               ViewColor::inherit, stroke_width, geometry,
-                               std::nullopt, nullptr}});
+        add(Canvas2DComponent{Canvas2DComponentType::geometry, origin, color,
+                              ViewColor::inherit, stroke_width, geometry,
+                              std::nullopt, nullptr});
         return *this;
     }
     /*!
@@ -246,9 +246,9 @@ class WEBCFACE_DLL Canvas2D : protected Field, public EventTarget<Canvas2D> {
      */
     [[deprecated]] Canvas2D &add(const Geometry &geometry,
                                  const ViewColor &color, double stroke_width) {
-        add(Canvas2DComponent{{Canvas2DComponentType::geometry, identity(),
-                               color, ViewColor::inherit, stroke_width,
-                               geometry, std::nullopt, nullptr}});
+        add(Canvas2DComponent{Canvas2DComponentType::geometry, identity(),
+                              color, ViewColor::inherit, stroke_width, geometry,
+                              std::nullopt, nullptr});
         return *this;
     }
     /*!
@@ -266,8 +266,8 @@ class WEBCFACE_DLL Canvas2D : protected Field, public EventTarget<Canvas2D> {
      *
      */
     template <typename T>
-        requires std::same_as<T, Canvas2D>
-    bool operator==(const T &other) const {
+        requires std::same_as<T, Canvas2D> bool
+    operator==(const T &other) const {
         return static_cast<Field>(*this) == static_cast<Field>(other);
     }
 };

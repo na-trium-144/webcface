@@ -493,12 +493,12 @@ void Internal::ClientData::onRecv(const std::string &message) {
             auto [member, field] =
                 this->view_store.getReq(r.req_id, r.sub_field);
             auto v_prev = this->view_store.getRecv(member, field);
-            std::shared_ptr<std::vector<ViewComponentBase>> vv_prev;
+            std::shared_ptr<std::vector<ViewComponent>> vv_prev;
             if (v_prev) {
                 vv_prev = *v_prev;
             } else {
                 vv_prev =
-                    std::make_shared<std::vector<ViewComponentBase>>(r.length);
+                    std::make_shared<std::vector<ViewComponent>>(r.length);
                 v_prev.emplace(vv_prev);
                 this->view_store.setRecv(member, field, vv_prev);
             }
@@ -524,12 +524,12 @@ void Internal::ClientData::onRecv(const std::string &message) {
             auto [member, field] =
                 this->canvas3d_store.getReq(r.req_id, r.sub_field);
             auto v_prev = this->canvas3d_store.getRecv(member, field);
-            std::shared_ptr<std::vector<Canvas3DComponentBase>> vv_prev;
+            std::shared_ptr<std::vector<Canvas3DComponent>> vv_prev;
             if (v_prev) {
                 vv_prev = *v_prev;
             } else {
-                vv_prev = std::make_shared<std::vector<Canvas3DComponentBase>>(
-                    r.length);
+                vv_prev =
+                    std::make_shared<std::vector<Canvas3DComponent>>(r.length);
                 v_prev.emplace(vv_prev);
                 this->canvas3d_store.setRecv(member, field, vv_prev);
             }

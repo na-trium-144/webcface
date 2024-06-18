@@ -19,7 +19,8 @@ View::View(const Field &base)
       sb(std::make_shared<Internal::ViewBuf>(base)) {
     this->std::ostream::init(sb.get());
     std::lock_guard lock(this->dataLock()->event_m);
-    this->setCL(this->dataLock()->view_change_event[this->member_][this->field_]);
+    this->setCL(
+        this->dataLock()->view_change_event[this->member_][this->field_]);
 }
 View::~View() { this->rdbuf(nullptr); }
 
@@ -40,14 +41,13 @@ View &View::sync() {
 }
 template <>
 void Internal::DataSetBuffer<ViewComponent>::onSync() {
-    auto vb = std::make_shared<std::vector<ViewComponentBase>>();
-    vb->reserve(components_.size());
     std::unordered_map<int, int> idx_next;
     for (std::size_t i = 0; i < components_.size(); i++) {
-        vb->push_back(std::move(
-            components_[i].lockTmp(target_.data_w, target_.field_, &idx_next)));
+        components_[i].lockTmp(target_.data_w, target_.field_, &idx_next);
     }
-    target_.setCheck()->view_store.setSend(target_, vb);
+    target_.setCheck()->view_store.setSend(
+        target_,
+        std::make_shared<std::vector<ViewComponent>>(std::move(components_)));
     static_cast<View>(target_).triggerEvent(target_);
 }
 

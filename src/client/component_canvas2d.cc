@@ -44,14 +44,15 @@ Message::Canvas2DComponent Canvas2DComponent::toMessage() const {
     return cc;
 }
 Canvas2DComponent::Canvas2DComponent(const Message::Canvas2DComponent &cc)
-    : type_(cc.type), origin_(cc.origin_pos, cc.origin_rot), color_(cc.color),
-      fill_(cc.fill), stroke_width_(cc.stroke_width),
-      geometry_(std::make_optional<Geometry>(cc.geometry_type, cc.properties)),
-      on_click_func_(cc.on_click_member && cc.on_click_field
-                         ? std::make_optional<FieldBase>(*cc.on_click_member,
-                                                         *cc.on_click_field)
-                         : std::nullopt),
-      text_(cc.text) {}
+    : Canvas2DComponent(
+          cc.type, {cc.origin_pos, cc.origin_rot}, cc.color, cc.fill,
+          cc.stroke_width,
+          std::make_optional<Geometry>(cc.geometry_type, cc.properties),
+          (cc.on_click_member && cc.on_click_field
+               ? std::make_optional<FieldBase>(*cc.on_click_member,
+                                               *cc.on_click_field)
+               : std::nullopt),
+          cc.text) {}
 
 std::optional<Func> Canvas2DComponent::onClick() const {
     if (on_click_func_) {

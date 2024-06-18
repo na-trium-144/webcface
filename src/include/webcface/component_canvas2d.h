@@ -8,7 +8,7 @@
 #include "webcface/geometry.h"
 
 WEBCFACE_NS_BEGIN
-namespace Message{
+namespace Message {
 struct Canvas2DComponent;
 }
 
@@ -35,29 +35,34 @@ class WEBCFACE_DLL Canvas2DComponent : public IdBase<Canvas2DComponentType> {
     Canvas2DComponentType type_;
     Transform origin_;
     ViewColor color_, fill_;
-    double stroke_width_;
+    double stroke_width_ = 0;
     std::optional<Geometry> geometry_;
     std::optional<FieldBase> on_click_func_;
     SharedString text_;
 
   public:
     Canvas2DComponent() = default;
-    // Canvas2DComponent(const Common::Canvas2DComponentBase &vc,
-    //                   const std::weak_ptr<Internal::ClientData> &data_w,
-    //                   std::unordered_map<int, int> *idx_next)
-    //     : Common::Canvas2DComponentBase(vc), IdBase<Canvas2DComponentType>(),
-    //       data_w(data_w), on_click_func_tmp(nullptr) {
-    //     initIdx(idx_next, type_);
-    // }
-    // explicit Canvas2DComponent(const Common::Canvas2DComponentBase &vc)
-    //     : Common::Canvas2DComponentBase(vc), IdBase<Canvas2DComponentType>(),
-    //       data_w(), on_click_func_tmp(nullptr) {}
-    Canvas2DComponent(Canvas2DComponentType type,
-                      const std::weak_ptr<Internal::ClientData> &data_w)
-        : IdBase<Canvas2DComponentType>(), data_w(data_w),
-          on_click_func_tmp(nullptr) {
-        type_ = type;
+    Canvas2DComponent(Canvas2DComponentType type, const Transform &origin,
+                      ViewColor color, ViewColor fill, double stroke_width,
+                      std::optional<Geometry> &&geometry,
+                      std::optional<FieldBase> &&on_click_func,
+                      const SharedString &text)
+        : type_(type), origin_(origin), color_(color), fill_(fill),
+          stroke_width_(stroke_width), geometry_(std::move(geometry)),
+          on_click_func_(std::move(on_click_func)), text_(text) {}
+    Canvas2DComponent(const Canvas2DComponent &vc,
+                      const std::weak_ptr<Internal::ClientData> &data_w,
+                      std::unordered_map<int, int> *idx_next)
+        : Canvas2DComponent(vc) {
+        this->data_w = data_w;
+        initIdx(idx_next, type_);
     }
+    // Canvas2DComponent(Canvas2DComponentType type,
+    //                   const std::weak_ptr<Internal::ClientData> &data_w)
+    //     : IdBase<Canvas2DComponentType>(), data_w(data_w),
+    //       on_click_func_tmp(nullptr) {
+    //     type_ = type;
+    // }
     explicit Canvas2DComponent(Canvas2DComponentType type)
         : IdBase<Canvas2DComponentType>(), data_w(),
           on_click_func_tmp(nullptr) {
@@ -72,7 +77,7 @@ class WEBCFACE_DLL Canvas2DComponent : public IdBase<Canvas2DComponentType> {
     lockTmp(const std::weak_ptr<Internal::ClientData> &data_w,
             const SharedString &view_name,
             std::unordered_map<int, int> *idx_next = nullptr);
-    
+
     Message::Canvas2DComponent toMessage() const;
     Canvas2DComponent(const Message::Canvas2DComponent &cc);
 
