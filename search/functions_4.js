@@ -7,5 +7,6 @@ var searchData=
   ['end_4',['end',['../structwebcface_1_1Components_1_1Geometries_1_1Line.html#a131cc23b57022a9d4384d9205eadf18b',1,'webcface::Components::Geometries::Line']]],
   ['entries_5',['entries',['../namespacewebcface.html#a51613253298ff388366396da07d534b8',1,'webcface']]],
   ['eventtarget_6',['eventtarget',['../classwebcface_1_1EventTarget.html#ae37190389ab81b06b4db564735465928',1,'webcface::EventTarget::EventTarget()=default'],['../classwebcface_1_1EventTarget.html#ae0b270448a6bb3a1a82765a5c9c8fe35',1,'webcface::EventTarget::EventTarget(std::shared_ptr&lt; CallbackList &gt; &amp;cl)']]],
-  ['expired_7',['expired',['../structwebcface_1_1Field.html#aab9d1bda10b0c1b79c4f48f3ebcf1d29',1,'webcface::Field::expired()'],['../classwebcface_1_1InputRef.html#aab9d1bda10b0c1b79c4f48f3ebcf1d29',1,'webcface::InputRef::expired()']]]
+  ['exception_7',['exception',['../classwebcfaceServerInternal_1_1AppWrapper.html#a8e12b6ef4dd56c394e5900af538dd989',1,'webcfaceServerInternal::AppWrapper']]],
+  ['expired_8',['expired',['../structwebcface_1_1Field.html#aab9d1bda10b0c1b79c4f48f3ebcf1d29',1,'webcface::Field::expired()'],['../classwebcface_1_1InputRef.html#aab9d1bda10b0c1b79c4f48f3ebcf1d29',1,'webcface::InputRef::expired()']]]
 ];

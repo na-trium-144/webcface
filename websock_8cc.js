@@ -1,7 +1,4 @@
 var websock_8cc =
 [
-    [ "CROW_STATIC_DIRECTORY", "websock_8cc.html#a5c9d709b448b25db7ea3f244748483b9", null ],
-    [ "CROW_STATIC_ENDPOINT", "websock_8cc.html#a0fd760448a0f5fb4a3e36f95c8602a71", null ],
-    [ "crow_custom_logger", "websock_8cc.html#af04c40d65b7df8a8bbf0c6298240eb7e", null ],
-    [ "static_dir", "websock_8cc.html#a0efb18b27d4a48629287b4b8790fbdf7", null ]
+    [ "convertLevel", "websock_8cc.html#aa7132eb6525527e4747e7c8ab7131d09", null ]
 ];

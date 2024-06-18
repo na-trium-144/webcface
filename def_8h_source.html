@@ -147,22 +147,24 @@ $(document).ready(function(){initNavTree('def_8h_source.html',''); initResizable
 </div><!--header-->
 <div class="contents">
 <a href="def_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#include &lt;<a class="code" href="macros_8h.html">webcface/common/macros.h</a>&gt;</span></div>
-<div class="line"><a id="l00003" name="l00003"></a><span class="lineno"><a class="line" href="def_8h.html#a5856f8c4dbb31d15a29a3abb4ebc01f7">    3</a></span><span class="preprocessor">#define WEBCFACE_STR(v) #v</span></div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno"><a class="line" href="def_8h.html#ac2db178dd291a312ca3f696e69c9af55">    4</a></span><span class="preprocessor">#define WEBCFACE_DEFAULT_PORT 7530</span></div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno"><a class="line" href="def_8h.html#acdb831b5c453fa84fb4c58285d39858b">    5</a></span><span class="preprocessor">#define WEBCFACE_DEFAULT_PORT_SI(port) WEBCFACE_STR(port)</span></div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno"><a class="line" href="def_8h.html#afbc9c6287f9dc55d9ba2f40b887deb87">    6</a></span><span class="preprocessor">#define WEBCFACE_DEFAULT_PORT_S WEBCFACE_DEFAULT_PORT_SI(WEBCFACE_DEFAULT_PORT)</span></div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno"><a class="line" href="def_8h.html#a4298b547b461c5709eb54d5171cf3b81">    7</a></span><span class="preprocessor">#define WEBCFACE_SERVER_NAME &quot;webcface&quot;</span></div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno"><a class="line" href="def_8h.html#a1bc206868c13e523a5484af2deaf2c98">    8</a></span><span class="preprocessor">#define WEBCFACE_VERSION_MAJOR 1</span></div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno"><a class="line" href="def_8h.html#aa83206e52f1b52bbf9c7e2399c8add41">    9</a></span><span class="preprocessor">#define WEBCFACE_VERSION_MINOR 11</span></div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#ifndef WEBCFACE_VERSION_MINOR</span></div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#define WEBCFACE_VERSION_MINOR 0</span></div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno"><a class="line" href="def_8h.html#a4b25565a130978dd7b2b132b89b5776b">   13</a></span><span class="preprocessor">#define WEBCFACE_VERSION_REVISION 4</span></div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#ifndef WEBCFACE_VERSION_REVISION</span></div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#define WEBCFACE_VERSION_REVISION 0</span></div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno"><a class="line" href="def_8h.html#a9373ced4210d2f436da678a29364095b">   17</a></span><span class="preprocessor">#define WEBCFACE_VERSION &quot;1.11.4&quot;</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno"><a class="line" href="def_8h.html#a5856f8c4dbb31d15a29a3abb4ebc01f7">    2</a></span><span class="preprocessor">#define WEBCFACE_STR(v) #v</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno"><a class="line" href="def_8h.html#ac2db178dd291a312ca3f696e69c9af55">    3</a></span><span class="preprocessor">#define WEBCFACE_DEFAULT_PORT 7530</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno"><a class="line" href="def_8h.html#acdb831b5c453fa84fb4c58285d39858b">    4</a></span><span class="preprocessor">#define WEBCFACE_DEFAULT_PORT_SI(port) WEBCFACE_STR(port)</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno"><a class="line" href="def_8h.html#afbc9c6287f9dc55d9ba2f40b887deb87">    5</a></span><span class="preprocessor">#define WEBCFACE_DEFAULT_PORT_S WEBCFACE_DEFAULT_PORT_SI(WEBCFACE_DEFAULT_PORT)</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno"><a class="line" href="def_8h.html#a4298b547b461c5709eb54d5171cf3b81">    6</a></span><span class="preprocessor">#define WEBCFACE_SERVER_NAME &quot;webcface&quot;</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno"><a class="line" href="def_8h.html#a1bc206868c13e523a5484af2deaf2c98">    7</a></span><span class="preprocessor">#define WEBCFACE_VERSION_MAJOR 1</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno"><a class="line" href="def_8h.html#aa83206e52f1b52bbf9c7e2399c8add41">    8</a></span><span class="preprocessor">#define WEBCFACE_VERSION_MINOR 11</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#ifndef WEBCFACE_VERSION_MINOR</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#define WEBCFACE_VERSION_MINOR 0</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno"><a class="line" href="def_8h.html#a4b25565a130978dd7b2b132b89b5776b">   12</a></span><span class="preprocessor">#define WEBCFACE_VERSION_REVISION 4</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#ifndef WEBCFACE_VERSION_REVISION</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#define WEBCFACE_VERSION_REVISION 0</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno"><a class="line" href="def_8h.html#a9373ced4210d2f436da678a29364095b">   16</a></span><span class="preprocessor">#define WEBCFACE_VERSION &quot;1.11.4&quot;</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno"><a class="line" href="def_8h.html#ac8ce28cb6b94aebdd792999c5be28375">   17</a></span><span class="preprocessor">#define WEBCFACE_SHARED 1</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#include &lt;<a class="code" href="macros_8h.html">webcface/common/macros.h</a>&gt;</span></div>
 <div class="ttc" id="amacros_8h_html"><div class="ttname"><a href="macros_8h.html">macros.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
@@ -170,7 +172,7 @@ $(document).ready(function(){initNavTree('def_8h_source.html',''); initResizable
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_4fef79e7177ba769987a8da36c892c5f.html">build</a></li><li class="navelem"><a class="el" href="dir_8f2980731aba7ec7b9fcae5764f196e3.html">include</a></li><li class="navelem"><a class="el" href="dir_54ce1f1de0aa0f5abf21f313b2bc669f.html">webcface</a></li><li class="navelem"><a class="el" href="dir_273f7c70a80bc353567ed2c0b7688aa5.html">common</a></li><li class="navelem"><a class="el" href="def_8h.html">def.h</a></li>
-    <li class="footer">Generated on Fri Jun 14 2024 15:54:53 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Tue Jun 18 2024 08:29:27 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

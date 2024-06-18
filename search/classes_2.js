@@ -17,6 +17,6 @@ var searchData=
   ['circle_14',['circle',['../structwebcface_1_1Components_1_1Geometries_1_1Circle.html',1,'Circle'],['../structwebcface_1_1Components_1_1Geometries_1_1Circle.html',1,'Circle'],['../structwebcface_1_1Components_1_1Geometries_1_1Circle.html',1,'Circle']]],
   ['client_15',['Client',['../classwebcface_1_1Client.html',1,'webcface']]],
   ['clientdata_16',['ClientData',['../structwebcface_1_1Internal_1_1ClientData.html',1,'webcface::Internal']]],
-  ['customlogger_17',['CustomLogger',['../classwebcface_1_1Server_1_1CustomLogger.html',1,'webcface::Server']]],
+  ['customlogger_17',['customlogger',['../classwebcface_1_1Server_1_1CustomLogger.html',1,'CustomLogger'],['../classwebcfaceServerInternal_1_1CustomLogger.html',1,'CustomLogger']]],
   ['cylinder_18',['cylinder',['../structwebcface_1_1Components_1_1Geometries_1_1Cylinder.html',1,'Cylinder'],['../structwebcface_1_1Components_1_1Geometries_1_1Cylinder.html',1,'Cylinder'],['../structwebcface_1_1Components_1_1Geometries_1_1Cylinder.html',1,'Cylinder']]]
 ];

@@ -1,5 +1,6 @@
 var hierarchy =
 [
+    [ "AppWrapper", "classwebcfaceServerInternal_1_1AppWrapper.html", null ],
     [ "Arg", "classwebcface_1_1Common_1_1Arg.html", [
       [ "Arg", "structwebcface_1_1Message_1_1FuncInfo_1_1Arg.html", null ]
     ] ],
@@ -147,7 +148,8 @@ var hierarchy =
       [ "ViewComponent", "classwebcface_1_1ViewComponent.html", null ]
     ] ],
     [ "ILogHandler", null, [
-      [ "CustomLogger", "classwebcface_1_1Server_1_1CustomLogger.html", null ]
+      [ "CustomLogger", "classwebcface_1_1Server_1_1CustomLogger.html", null ],
+      [ "CustomLogger", "classwebcfaceServerInternal_1_1CustomLogger.html", null ]
     ] ],
     [ "ImageFrame", "classwebcface_1_1Common_1_1ImageFrame.html", null ],
     [ "ImageFrame", "classwebcface_1_1Common_1_1ImageFrame.html", null ],

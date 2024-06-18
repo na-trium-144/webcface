@@ -324,7 +324,7 @@ Requirements</h3>
 <li>MinGWでもビルドできます。MSYS2のMINGW64環境でテストしていますがUCRT64やCLANG64環境でもビルドできると思います。</li>
 </ul>
 </li>
-<li>webcfaceは外部ライブラリとして <a href="https://github.com/CrowCpp/Crow">crow</a>, <a href="https://github.com/chriskohlhoff/asio">asio</a>, <a href="https://github.com/curl/curl">libcurl</a>, <a href="https://github.com/wqking/eventpp">eventpp</a>, <a href="https://github.com/msgpack/msgpack-c">msgpack-cxx</a>, <a href="https://github.com/gabime/spdlog">spdlog</a>, <a href="https://github.com/CLIUtils/CLI11.git">cli11</a>, <a href="https://github.com/nemtrif/utfcpp">UTF8-CPP</a>, <a href="https://github.com/ImageMagick/ImageMagick">Magick++</a>, <a href="https://opencv.org/">OpenCV</a>(exampleのみ), <a href="https://github.com/google/googletest">GoogleTest</a>(testのみ) を使用します。<ul>
+<li>webcfaceは外部ライブラリとして <a href="https://github.com/msgpack/msgpack-c">msgpack-cxx</a>, <a href="https://github.com/wqking/eventpp">eventpp</a>, <a href="https://github.com/gabime/spdlog">spdlog</a>, <a href="https://github.com/curl/curl">curl</a>, <a href="https://github.com/CrowCpp/Crow">crow</a>, <a href="https://github.com/chriskohlhoff/asio">asio</a>, <a href="https://github.com/CLIUtils/CLI11.git">cli11</a>, <a href="https://github.com/nemtrif/utfcpp">UTF8-CPP</a>, <a href="https://opencv.org/">OpenCV</a>(exampleのみ), <a href="https://github.com/ImageMagick/ImageMagick">Magick++</a>, <a href="https://github.com/google/googletest">GoogleTest</a>(testのみ) を使用します。<ul>
 <li>いずれもCMake時に自動的にFetchContentでソースコードを取得してビルドするので、必ずしもこれらをインストールする必要はありません。</li>
 <li>eventpp, msgpack, spdlog, ImageMagick に関してはシステムにインストールされていてfind_packageで見つけることができればそれを使用します</li>
 <li>OpenCVはソースからビルドしません。OpenCVを使ったexampleをビルドしたい場合は別途インストールする必要がありますが、example以外では使用しないのでほぼ必要ないと思います。</li>
@@ -335,10 +335,13 @@ Requirements</h3>
 </ul>
 <details >
 <summary >
-Ubuntu 20.04, 22.04</summary>
+Ubuntu</summary>
 <p></p>
 <div class="fragment"><div class="line">sudo apt install build-essential git cmake</div>
-<div class="line">sudo apt install libspdlog-dev libmagick++-dev # optional</div>
+<div class="line"># optional:</div>
+<div class="line">sudo apt install libspdlog-dev libasio-dev libmagick++-dev</div>
+<div class="line">sudo apt install libcli11-dev # only on 22.04 or later</div>
+<div class="line">sudo apt install libmsgpack-cxx-dev # only on 24.04 or later</div>
 </div><!-- fragment --><p>ubuntu20.04の場合デフォルトのコンパイラ(gcc-9)ではビルドできないのでgcc-10にする必要があります </p><div class="fragment"><div class="line">sudo apt install gcc-10 g++-10</div>
 <div class="line">export CC=gcc-10</div>
 <div class="line">export CXX=g++-10</div>
@@ -348,13 +351,16 @@ Ubuntu 20.04, 22.04</summary>
 Homebrew (MacOS, Linux)</summary>
 <p></p>
 <div class="fragment"><div class="line">brew install cmake</div>
-<div class="line">brew install spdlog msgpack-cxx imagemagick # optional</div>
+<div class="line"># optional:</div>
+<div class="line">brew install msgpack-cxx spdlog asio cli11 utf8cpp imagemagick</div>
 </div><!-- fragment --> </details>
 <details >
 <summary >
 Visual Studio</summary>
 <p></p>
 <p>Visual Studio 2019, 2022 でcloneしたwebcfaceのフォルダーを開くか、 Developer Command Promptからcmakeコマンドを使ってもビルドできます</p>
+<p><a href="https://imagemagick.org/script/download.php">https://imagemagick.org/script/download.php</a> からImageMagickをダウンロード、インストールしてPATHを通せばそれを使用してビルドすることができます。 (インストール時に development header もインストールすること) インストールしない場合ソースをダウンロードしてビルドするので時間がかかります。</p>
+<p>または、chocolateyをインストールしてあれば <code>choco install imagemagick -PackageParameters InstallDevelopmentHeaders=true</code> でok</p>
 <p></p>
 </details>
 <details >
@@ -363,7 +369,8 @@ MSYS2</summary>
 <p></p>
 <div class="fragment"><div class="line">pacman -S pactoys</div>
 <div class="line">pacboy -S git make gcc:p cmake:p ninja:p</div>
-<div class="line">pacboy -S spdlog:p imagemagick:p  # optional</div>
+<div class="line"># optional:</div>
+<div class="line">pacboy -S msgpack-cxx:p spdlog:p asio:p cli11:p utf8cpp:p imagemagick:p </div>
 </div><!-- fragment --><p> imagemagickをソースからビルドする際にninjaではなくmakeが必要になります</p>
 <p></p>
 </details>
@@ -399,13 +406,13 @@ Build (with Pure CMake)</h3>
 <li>デフォルトではfind_packageやpkg_check_modulesなどで依存ライブラリがインストールされているか確認し、見つかればそれを使い見つからなければソースコードをダウンロードします。</li>
 <li><code>-DWEBCFACE_FIND_(ライブラリ)=off</code> にするとインストールしたものは使わず常にソースからダウンロードするようになります。</li>
 <li>設定可能なライブラリ名は以下<ul>
-<li><code>MSGPACK</code>, <code>SPDLOG</code>, <code>EVENTPP</code>, <code>MAGICK</code></li>
+<li><code>MSGPACK</code>, <code>SPDLOG</code>, <code>EVENTPP</code>, <code>CURL</code>, <code>CROW</code>, <code>ASIO</code>, <code>CLI11</code>, <code>UTF8CPP</code>, <code>MAGICK</code></li>
 <li><code>OPENCV</code> (デフォルトでoff、見つからなかった場合ソースからのビルドもしません)</li>
 <li>Magickをソースビルドする場合のみ: <code>JPEG</code>, <code>PNG</code>, <code>ZLIB</code>, <code>WEBP</code></li>
 </ul>
 </li>
 <li><code>-DWEBCFACE_FIND_LIBS=off</code> とすると上記設定をすべてoffにします<ul>
-<li>WebCFaceをstaticライブラリにする場合必要かも</li>
+<li>WEBCFACE_SHAREDがoffの場合デフォルトでoff</li>
 </ul>
 </li>
 <li>Windows(MSVC)でImageMagickをソースからビルドする場合、デフォルトでは<code>CMAKE_BUILD_TYPE</code>に指定したconfigurationのみビルドされます<ul>
@@ -459,16 +466,16 @@ Documentation</h1>
 License</h1>
 <p>WebCFaceと関連するプログラムはすべてMITライセンスで公開しています。詳細は <a href="https://github.com/na-trium-144/webcface/blob/main/LICENSE">LICENSE</a> を参照してください。</p>
 <p>WebCFace本体とtoolsが使用しているサードパーティーのライブラリのライセンスはそれぞれ以下を参照してください。</p><ul>
-<li>Crow (BSD 3-Clause) : <a href="https://github.com/CrowCpp/Crow">https://github.com/CrowCpp/Crow</a></li>
-<li>Asio (Boost Software License) : <a href="http://think-async.com/Asio/">http://think-async.com/Asio/</a></li>
-<li>curl : <a href="https://curl.se/docs/copyright.html">https://curl.se/docs/copyright.html</a></li>
-<li>eventpp (Apache 2.0) : <a href="https://github.com/wqking/eventpp">https://github.com/wqking/eventpp</a></li>
 <li>msgpack-c (Boost Software License) : <a href="https://github.com/msgpack/msgpack-c">https://github.com/msgpack/msgpack-c</a></li>
+<li>eventpp (Apache 2.0) : <a href="https://github.com/wqking/eventpp">https://github.com/wqking/eventpp</a></li>
 <li>spdlog (MIT) : <a href="https://github.com/gabime/spdlog">https://github.com/gabime/spdlog</a></li>
+<li>curl : <a href="https://curl.se/docs/copyright.html">https://curl.se/docs/copyright.html</a></li>
+<li>Asio (Boost Software License) : <a href="http://think-async.com/Asio/">http://think-async.com/Asio/</a></li>
+<li>Crow (BSD 3-Clause) : <a href="https://github.com/CrowCpp/Crow">https://github.com/CrowCpp/Crow</a></li>
 <li>CLI11 (BSD 3-Clause) : <a href="https://github.com/CLIUtils/CLI11">https://github.com/CLIUtils/CLI11</a></li>
 <li>UTF8-CPP (BSD 1.0) : <a href="https://github.com/nemtrif/utfcpp">https://github.com/nemtrif/utfcpp</a></li>
-<li>ImageMagick: <a href="https://imagemagick.org/script/license.php">https://imagemagick.org/script/license.php</a></li>
 <li>OpenCV (Apache 2.0) : <a href="https://opencv.org/license/">https://opencv.org/license/</a></li>
+<li>ImageMagick: <a href="https://imagemagick.org/script/license.php">https://imagemagick.org/script/license.php</a></li>
 <li>tiny-process-library (MIT) : <a href="https://gitlab.com/eidheim/tiny-process-library">https://gitlab.com/eidheim/tiny-process-library</a> (toolsで使用)</li>
 <li>toml++ (MIT) : <a href="https://github.com/marzer/tomlplusplus">https://github.com/marzer/tomlplusplus</a> (toolsで使用) </li>
 </ul>
@@ -478,7 +485,7 @@ License</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Jun 14 2024 15:54:53 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Tue Jun 18 2024 08:29:28 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

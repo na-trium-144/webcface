@@ -1,5 +1,9 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" title=" " alt="" coords="5,5,105,31"/>
-<area shape="rect" id="Node000001" href="$classwebcface_1_1Server_1_1CustomLogger.html" title=" " alt="" coords="153,5,269,31"/>
-<area shape="poly" id="edge50_Node000000_Node000001" title=" " alt="" coords="119,15,153,15,153,21,119,21"/>
+<area shape="rect" id="Node000000" href="$classwebcface_1_1IdBase.html" title=" " alt="" coords="5,5,239,31"/>
+<area shape="rect" id="Node000001" href="$classwebcface_1_1ViewComponent.html" title="Viewに表示する要素です" alt="" coords="287,55,416,80"/>
+<area shape="poly" id="edge47_Node000000_Node000001" title=" " alt="" coords="199,31,239,39,296,52,295,57,238,45,198,36"/>
+<area shape="rect" id="Node000002" href="$structwebcface_1_1Common_1_1ViewComponentBase.html" title=" " alt="" coords="41,55,203,80"/>
+<area shape="poly" id="edge48_Node000002_Node000001" title=" " alt="" coords="217,65,286,65,286,70,217,70"/>
+<area shape="rect" id="Node000003" href="$structwebcface_1_1Common_1_1ViewComponentBase.html" title=" " alt="" coords="41,104,203,129"/>
+<area shape="poly" id="edge49_Node000003_Node000001" title=" " alt="" coords="195,98,291,77,292,83,196,104"/>
 </map>

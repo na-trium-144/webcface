@@ -186,6 +186,10 @@ var annotated_dup =
       [ "ViewComponent", "classwebcface_1_1ViewComponent.html", "classwebcface_1_1ViewComponent" ],
       [ "ViewComponentBase", "structwebcface_1_1Common_1_1ViewComponentBase.html", "structwebcface_1_1Common_1_1ViewComponentBase" ]
     ] ],
+    [ "webcfaceServerInternal", "namespacewebcfaceServerInternal.html", [
+      [ "AppWrapper", "classwebcfaceServerInternal_1_1AppWrapper.html", "classwebcfaceServerInternal_1_1AppWrapper" ],
+      [ "CustomLogger", "classwebcfaceServerInternal_1_1CustomLogger.html", "classwebcfaceServerInternal_1_1CustomLogger" ]
+    ] ],
     [ "wcfFuncCallHandle", "structwcfFuncCallHandle.html", "structwcfFuncCallHandle" ],
     [ "wcfFuncCallHandleW", "structwcfFuncCallHandleW.html", "structwcfFuncCallHandleW" ],
     [ "wcfMultiVal", "structwcfMultiVal.html", "structwcfMultiVal" ],

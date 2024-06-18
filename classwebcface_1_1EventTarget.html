@@ -176,11 +176,11 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ae0b270448a6bb3a1a82765a5c9c8fe35" id="r_ae0b270448a6bb3a1a82765a5c9c8fe35"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1EventTarget.html#ae0b270448a6bb3a1a82765a5c9c8fe35">EventTarget</a> (std::shared_ptr&lt; <a class="el" href="classwebcface_1_1EventTarget.html#ad9bce60d8d4ae999df3ee694ade7d123">CallbackList</a> &gt; &amp;<a class="el" href="classwebcface_1_1EventTarget.html#a2fca098676c92281b373b81d13709362">cl</a>)</td></tr>
 <tr class="memdesc:ae0b270448a6bb3a1a82765a5c9c8fe35"><td class="mdescLeft">&#160;</td><td class="mdescRight">参照するコールバックリストを設定して初期化  <br /></td></tr>
 <tr class="separator:ae0b270448a6bb3a1a82765a5c9c8fe35"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a78a3268cf5f451797861f68c731e2895" id="r_a78a3268cf5f451797861f68c731e2895"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1EventTarget.html#a78a3268cf5f451797861f68c731e2895">~EventTarget</a> ()</td></tr>
-<tr class="separator:a78a3268cf5f451797861f68c731e2895"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a47c954e914b33ccd017cef53bad424cd" id="r_a47c954e914b33ccd017cef53bad424cd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1EventTarget.html#ad9bce60d8d4ae999df3ee694ade7d123">CallbackList</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1EventTarget.html#a47c954e914b33ccd017cef53bad424cd">callbackList</a> () const</td></tr>
-<tr class="memdesc:a47c954e914b33ccd017cef53bad424cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">CallbackListを参照する。  <br /></td></tr>
-<tr class="separator:a47c954e914b33ccd017cef53bad424cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6ed36bb312ac7f108a88019ac3ad7b71" id="r_a6ed36bb312ac7f108a88019ac3ad7b71"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1EventTarget.html#a6ed36bb312ac7f108a88019ac3ad7b71">~EventTarget</a> ()</td></tr>
+<tr class="separator:a6ed36bb312ac7f108a88019ac3ad7b71"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa9166ed93d26010f2e166dbd1a406f28" id="r_aa9166ed93d26010f2e166dbd1a406f28"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1EventTarget.html#ad9bce60d8d4ae999df3ee694ade7d123">CallbackList</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1EventTarget.html#aa9166ed93d26010f2e166dbd1a406f28">callbackList</a> () const</td></tr>
+<tr class="memdesc:aa9166ed93d26010f2e166dbd1a406f28"><td class="mdescLeft">&#160;</td><td class="mdescRight">CallbackListを参照する。  <br /></td></tr>
+<tr class="separator:aa9166ed93d26010f2e166dbd1a406f28"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7f12a03e22df0d00f39027dd3697f48d" id="r_a7f12a03e22df0d00f39027dd3697f48d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1EventTarget.html#af4f52ed69b7779c62b7b7e28f5ddaee8">EventHandle</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1EventTarget.html#a7f12a03e22df0d00f39027dd3697f48d">appendListener</a> (const <a class="el" href="classwebcface_1_1EventTarget.html#abebe577ac73b2ce77b50b953ed33c1ae">EventCallback</a> &amp;callback) const</td></tr>
 <tr class="memdesc:a7f12a03e22df0d00f39027dd3697f48d"><td class="mdescLeft">&#160;</td><td class="mdescRight">イベントのコールバックをリストの最後に追加する。  <br /></td></tr>
 <tr class="separator:a7f12a03e22df0d00f39027dd3697f48d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -214,6 +214,15 @@ requires std::invocable&lt;F&gt;</td></tr>
 <tr class="memitem:a806e787436bfc88228cfd93ae7d8a0b8" id="r_a806e787436bfc88228cfd93ae7d8a0b8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1EventTarget.html#a806e787436bfc88228cfd93ae7d8a0b8">ownsHandle</a> (const <a class="el" href="classwebcface_1_1EventTarget.html#af4f52ed69b7779c62b7b7e28f5ddaee8">EventHandle</a> &amp;handle) const</td></tr>
 <tr class="memdesc:a806e787436bfc88228cfd93ae7d8a0b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">handleがこのイベントのものかを調べる。  <br /></td></tr>
 <tr class="separator:a806e787436bfc88228cfd93ae7d8a0b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa2311196c15983632646899cf0088024" id="r_aa2311196c15983632646899cf0088024"><td class="memTemplParams" colspan="2">template&lt;typename ArgType &gt; </td></tr>
+<tr class="memitem:aa2311196c15983632646899cf0088024"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1EventTarget.html">EventTarget</a>&lt; ArgType &gt;<a class="el" href="classwebcface_1_1EventTarget.html#af4f52ed69b7779c62b7b7e28f5ddaee8">::EventHandle</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1EventTarget.html#aa2311196c15983632646899cf0088024">appendListener</a> (const typename <a class="el" href="classwebcface_1_1EventTarget.html">EventTarget</a>&lt; ArgType &gt;<a class="el" href="classwebcface_1_1EventTarget.html#abebe577ac73b2ce77b50b953ed33c1ae">::EventCallback</a> &amp;callback) const</td></tr>
+<tr class="separator:aa2311196c15983632646899cf0088024"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af18ddd3efc98d45df6ac4c78e9d22bf5" id="r_af18ddd3efc98d45df6ac4c78e9d22bf5"><td class="memTemplParams" colspan="2">template&lt;typename ArgType &gt; </td></tr>
+<tr class="memitem:af18ddd3efc98d45df6ac4c78e9d22bf5"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1EventTarget.html">EventTarget</a>&lt; ArgType &gt;<a class="el" href="classwebcface_1_1EventTarget.html#af4f52ed69b7779c62b7b7e28f5ddaee8">::EventHandle</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1EventTarget.html#af18ddd3efc98d45df6ac4c78e9d22bf5">prependListener</a> (const typename <a class="el" href="classwebcface_1_1EventTarget.html">EventTarget</a>&lt; ArgType &gt;<a class="el" href="classwebcface_1_1EventTarget.html#abebe577ac73b2ce77b50b953ed33c1ae">::EventCallback</a> &amp;callback) const</td></tr>
+<tr class="separator:af18ddd3efc98d45df6ac4c78e9d22bf5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa662d9e9f6435c114149994aea839b59" id="r_aa662d9e9f6435c114149994aea839b59"><td class="memTemplParams" colspan="2">template&lt;typename ArgType &gt; </td></tr>
+<tr class="memitem:aa662d9e9f6435c114149994aea839b59"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1EventTarget.html">EventTarget</a>&lt; ArgType &gt;<a class="el" href="classwebcface_1_1EventTarget.html#af4f52ed69b7779c62b7b7e28f5ddaee8">::EventHandle</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1EventTarget.html#aa662d9e9f6435c114149994aea839b59">insertListener</a> (const typename <a class="el" href="classwebcface_1_1EventTarget.html">EventTarget</a>&lt; ArgType &gt;<a class="el" href="classwebcface_1_1EventTarget.html#abebe577ac73b2ce77b50b953ed33c1ae">::EventCallback</a> &amp;callback, const <a class="el" href="classwebcface_1_1EventTarget.html#af4f52ed69b7779c62b7b7e28f5ddaee8">EventHandle</a> &amp;before) const</td></tr>
+<tr class="separator:aa662d9e9f6435c114149994aea839b59"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
@@ -349,8 +358,8 @@ template&lt;typename ArgType &gt; </div>
 
 </div>
 </div>
-<a id="a78a3268cf5f451797861f68c731e2895" name="a78a3268cf5f451797861f68c731e2895"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a78a3268cf5f451797861f68c731e2895">&#9670;&#160;</a></span>~EventTarget()</h2>
+<a id="a6ed36bb312ac7f108a88019ac3ad7b71" name="a6ed36bb312ac7f108a88019ac3ad7b71"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6ed36bb312ac7f108a88019ac3ad7b71">&#9670;&#160;</a></span>~EventTarget()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -361,7 +370,7 @@ template&lt;typename ArgType &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual ~<a class="el" href="classwebcface_1_1EventTarget.html">EventTarget</a> </td>
+          <td class="memname">~<a class="el" href="classwebcface_1_1EventTarget.html">EventTarget</a> </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -369,7 +378,7 @@ template&lt;typename ArgType &gt; </div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -378,15 +387,12 @@ template&lt;typename ArgType &gt; </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a id="a7f12a03e22df0d00f39027dd3697f48d" name="a7f12a03e22df0d00f39027dd3697f48d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7f12a03e22df0d00f39027dd3697f48d">&#9670;&#160;</a></span>appendListener() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a7f12a03e22df0d00f39027dd3697f48d">&#9670;&#160;</a></span>appendListener() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;typename ArgType &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="classwebcface_1_1EventTarget.html#af4f52ed69b7779c62b7b7e28f5ddaee8">EventHandle</a> appendListener </td>
@@ -396,11 +402,6 @@ template&lt;typename ArgType &gt; </div>
           <td> const</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>イベントのコールバックをリストの最後に追加する。 </p>
@@ -408,7 +409,7 @@ template&lt;typename ArgType &gt; </div>
 </div>
 </div>
 <a id="a226ea1af8ab0d5aa6aeda2a29e0b51df" name="a226ea1af8ab0d5aa6aeda2a29e0b51df"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a226ea1af8ab0d5aa6aeda2a29e0b51df">&#9670;&#160;</a></span>appendListener() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a226ea1af8ab0d5aa6aeda2a29e0b51df">&#9670;&#160;</a></span>appendListener() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -441,29 +442,43 @@ requires std::invocable&lt;F&gt;</div>
 
 </div>
 </div>
-<a id="a47c954e914b33ccd017cef53bad424cd" name="a47c954e914b33ccd017cef53bad424cd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a47c954e914b33ccd017cef53bad424cd">&#9670;&#160;</a></span>callbackList()</h2>
+<a id="aa2311196c15983632646899cf0088024" name="aa2311196c15983632646899cf0088024"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa2311196c15983632646899cf0088024">&#9670;&#160;</a></span>appendListener() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;typename ArgType &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
+<div class="memtemplate">
+template&lt;typename ArgType &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classwebcface_1_1EventTarget.html#ad9bce60d8d4ae999df3ee694ade7d123">CallbackList</a> &amp; callbackList </td>
+          <td class="memname"><a class="el" href="classwebcface_1_1EventTarget.html">EventTarget</a>&lt; ArgType &gt;<a class="el" href="classwebcface_1_1EventTarget.html#af4f52ed69b7779c62b7b7e28f5ddaee8">::EventHandle</a> appendListener </td>
+          <td>(</td>
+          <td class="paramtype">const typename <a class="el" href="classwebcface_1_1EventTarget.html">EventTarget</a>&lt; ArgType &gt;<a class="el" href="classwebcface_1_1EventTarget.html#abebe577ac73b2ce77b50b953ed33c1ae">::EventCallback</a> &amp;&#160;</td>
+          <td class="paramname"><em>callback</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa9166ed93d26010f2e166dbd1a406f28" name="aa9166ed93d26010f2e166dbd1a406f28"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa9166ed93d26010f2e166dbd1a406f28">&#9670;&#160;</a></span>callbackList()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename ArgType &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1EventTarget.html">EventTarget</a>&lt; ArgType &gt;<a class="el" href="classwebcface_1_1EventTarget.html#ad9bce60d8d4ae999df3ee694ade7d123">::CallbackList</a> &amp; callbackList </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>CallbackListを参照する。 </p>
@@ -507,9 +522,6 @@ template&lt;typename ArgType &gt; </div>
 <div class="memproto">
 <div class="memtemplate">
 template&lt;typename ArgType &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">bool hasAnyListener </td>
@@ -518,11 +530,6 @@ template&lt;typename ArgType &gt; </div>
           <td> const</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>コールバックが登録されているかを調べる。 </p>
@@ -530,15 +537,12 @@ template&lt;typename ArgType &gt; </div>
 </div>
 </div>
 <a id="a73c8c26e96adcb4e9066b9b209efcac9" name="a73c8c26e96adcb4e9066b9b209efcac9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a73c8c26e96adcb4e9066b9b209efcac9">&#9670;&#160;</a></span>insertListener() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a73c8c26e96adcb4e9066b9b209efcac9">&#9670;&#160;</a></span>insertListener() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;typename ArgType &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="classwebcface_1_1EventTarget.html#af4f52ed69b7779c62b7b7e28f5ddaee8">EventHandle</a> insertListener </td>
@@ -558,11 +562,6 @@ template&lt;typename ArgType &gt; </div>
           <td></td><td> const</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>イベントのコールバックを間に挿入する。 </p>
@@ -570,7 +569,7 @@ template&lt;typename ArgType &gt; </div>
 </div>
 </div>
 <a id="ad0ebf1e03f850ab607f5cf308c316399" name="ad0ebf1e03f850ab607f5cf308c316399"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad0ebf1e03f850ab607f5cf308c316399">&#9670;&#160;</a></span>insertListener() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ad0ebf1e03f850ab607f5cf308c316399">&#9670;&#160;</a></span>insertListener() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -613,6 +612,38 @@ requires std::invocable&lt;F&gt;</div>
 
 </div>
 </div>
+<a id="aa662d9e9f6435c114149994aea839b59" name="aa662d9e9f6435c114149994aea839b59"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa662d9e9f6435c114149994aea839b59">&#9670;&#160;</a></span>insertListener() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename ArgType &gt; </div>
+<div class="memtemplate">
+template&lt;typename ArgType &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1EventTarget.html">EventTarget</a>&lt; ArgType &gt;<a class="el" href="classwebcface_1_1EventTarget.html#af4f52ed69b7779c62b7b7e28f5ddaee8">::EventHandle</a> insertListener </td>
+          <td>(</td>
+          <td class="paramtype">const typename <a class="el" href="classwebcface_1_1EventTarget.html">EventTarget</a>&lt; ArgType &gt;<a class="el" href="classwebcface_1_1EventTarget.html#abebe577ac73b2ce77b50b953ed33c1ae">::EventCallback</a> &amp;&#160;</td>
+          <td class="paramname"><em>callback</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classwebcface_1_1EventTarget.html#af4f52ed69b7779c62b7b7e28f5ddaee8">EventHandle</a> &amp;&#160;</td>
+          <td class="paramname"><em>before</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a49d81212b39ba28d18d4d06dcfb463a6" name="a49d81212b39ba28d18d4d06dcfb463a6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a49d81212b39ba28d18d4d06dcfb463a6">&#9670;&#160;</a></span>onAppend()</h2>
 
@@ -651,9 +682,6 @@ template&lt;typename ArgType &gt; </div>
 <div class="memproto">
 <div class="memtemplate">
 template&lt;typename ArgType &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">bool ownsHandle </td>
@@ -663,11 +691,6 @@ template&lt;typename ArgType &gt; </div>
           <td> const</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>handleがこのイベントのものかを調べる。 </p>
@@ -675,15 +698,12 @@ template&lt;typename ArgType &gt; </div>
 </div>
 </div>
 <a id="a9406117fe96b34fa4af36e39c5ec5f52" name="a9406117fe96b34fa4af36e39c5ec5f52"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9406117fe96b34fa4af36e39c5ec5f52">&#9670;&#160;</a></span>prependListener() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a9406117fe96b34fa4af36e39c5ec5f52">&#9670;&#160;</a></span>prependListener() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;typename ArgType &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="classwebcface_1_1EventTarget.html#af4f52ed69b7779c62b7b7e28f5ddaee8">EventHandle</a> prependListener </td>
@@ -693,11 +713,6 @@ template&lt;typename ArgType &gt; </div>
           <td> const</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>イベントのコールバックをリストの最初に追加する。 </p>
@@ -705,7 +720,7 @@ template&lt;typename ArgType &gt; </div>
 </div>
 </div>
 <a id="a56c0ab8771726d88e63638631e11a445" name="a56c0ab8771726d88e63638631e11a445"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a56c0ab8771726d88e63638631e11a445">&#9670;&#160;</a></span>prependListener() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a56c0ab8771726d88e63638631e11a445">&#9670;&#160;</a></span>prependListener() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -714,9 +729,6 @@ template&lt;typename ArgType &gt; </div>
 <div class="memtemplate">
 template&lt;typename F &gt; <br />
 requires std::invocable&lt;F&gt;</div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="classwebcface_1_1EventTarget.html#af4f52ed69b7779c62b7b7e28f5ddaee8">EventHandle</a> prependListener </td>
@@ -726,15 +738,32 @@ requires std::invocable&lt;F&gt;</div>
           <td> const</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>イベントのコールバックをリストの最初に追加する。 (引数なしのコールバック) </p>
 <dl class="section since"><dt>Since</dt><dd>ver1.7 </dd></dl>
+
+</div>
+</div>
+<a id="af18ddd3efc98d45df6ac4c78e9d22bf5" name="af18ddd3efc98d45df6ac4c78e9d22bf5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af18ddd3efc98d45df6ac4c78e9d22bf5">&#9670;&#160;</a></span>prependListener() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename ArgType &gt; </div>
+<div class="memtemplate">
+template&lt;typename ArgType &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1EventTarget.html">EventTarget</a>&lt; ArgType &gt;<a class="el" href="classwebcface_1_1EventTarget.html#af4f52ed69b7779c62b7b7e28f5ddaee8">::EventHandle</a> prependListener </td>
+          <td>(</td>
+          <td class="paramtype">const typename <a class="el" href="classwebcface_1_1EventTarget.html">EventTarget</a>&lt; ArgType &gt;<a class="el" href="classwebcface_1_1EventTarget.html#abebe577ac73b2ce77b50b953ed33c1ae">::EventCallback</a> &amp;&#160;</td>
+          <td class="paramname"><em>callback</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -745,9 +774,6 @@ requires std::invocable&lt;F&gt;</div>
 <div class="memproto">
 <div class="memtemplate">
 template&lt;typename ArgType &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">bool removeListener </td>
@@ -757,11 +783,6 @@ template&lt;typename ArgType &gt; </div>
           <td> const</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>コールバックを削除する。 </p>
@@ -854,8 +875,9 @@ template&lt;typename ArgType &gt; </div>
 
 </div>
 </div>
-<hr/>The documentation for this class was generated from the following file:<ul>
+<hr/>The documentation for this class was generated from the following files:<ul>
 <li>include/webcface/<a class="el" href="event__target_8h_source.html">event_target.h</a></li>
+<li>client/<a class="el" href="event__target__impl_8h_source.html">event_target_impl.h</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -863,7 +885,7 @@ template&lt;typename ArgType &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="classwebcface_1_1EventTarget.html">EventTarget</a></li>
-    <li class="footer">Generated on Fri Jun 14 2024 15:54:53 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Tue Jun 18 2024 08:29:28 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>
