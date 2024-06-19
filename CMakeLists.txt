@@ -500,7 +500,7 @@ else()
                 Configure
             )
             if(NOT EXISTS ${imagemagick-windows_SOURCE_DIR}/IM7.StaticDLL.sln OR ${CMAKE_CURRENT_LIST_FILE} IS_NEWER_THAN ${imagemagick-windows_SOURCE_DIR}/IM7.StaticDLL.sln)
-                if(NOT EXISTS ${imagemagick-windows_SOURCE_DIR}/Configure/Configure.2017.sln OR ${CMAKE_CURRENT_LIST_FILE} IS_NEWER_THAN ${imagemagick-windows_SOURCE_DIR}/Configure/Configure.2017.sln)
+                if(NOT EXISTS ${imagemagick-windows_SOURCE_DIR}/Configure/Configure.exe OR ${CMAKE_CURRENT_LIST_FILE} IS_NEWER_THAN ${imagemagick-windows_SOURCE_DIR}/Configure/Configure.exe)
                     message(STATUS "Fetching dependencies...")
                     execute_process(
                         COMMAND CloneRepositories.IM7.cmd
