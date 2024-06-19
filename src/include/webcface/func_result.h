@@ -21,10 +21,7 @@ class Member;
  *
  */
 struct WEBCFACE_DLL FuncNotFound : public std::runtime_error {
-    explicit FuncNotFound(const FieldBase &base)
-        : std::runtime_error("member(\"" + base.member_.decode() + "\")" +
-                             ".func(\"" + base.field_.decode() +
-                             "\") is not set") {}
+    explicit FuncNotFound(const FieldBase &base);
 };
 
 /*!
@@ -75,33 +72,25 @@ class WEBCFACE_DLL AsyncFuncResult : Field {
      * \brief リモートに呼び出しメッセージが到達したときに発生するイベント
      * \since ver1.11
      */
-    eventpp::CallbackList<void(bool)> &onStarted() const {
-        if (!started_event) {
-            throw std::runtime_error("started event is null");
-        }
-        return *started_event;
-    }
+    eventpp::CallbackList<void(bool)> &onStarted() const;
     /*!
      * \brief 関数の実行が完了した時発生するイベント
      * \since ver1.11
      */
     eventpp::CallbackList<void(std::shared_future<ValAdaptor>)> &
-    onResult() const {
-        if (!result_event) {
-            throw std::runtime_error("result event is null");
-        }
-        return *result_event;
-    }
+    onResult() const;
+
     using Field::member;
     using Field::name;
 };
-auto &operator<<(std::basic_ostream<char> &os, const AsyncFuncResult &data);
+WEBCFACE_DLL std::ostream &operator<<(std::ostream &os,
+                                      const AsyncFuncResult &r);
 
 /*!
  * \brief AsyncFuncResultの結果をセットする
  *
  */
-struct AsyncFuncResultSetter : Field {
+struct WEBCFACE_DLL AsyncFuncResultSetter : Field {
   private:
     std::promise<bool> started;
     std::promise<ValAdaptor> result;
@@ -113,37 +102,14 @@ struct AsyncFuncResultSetter : Field {
     std::shared_ptr<eventpp::CallbackList<void(std::shared_future<ValAdaptor>)>>
         result_event;
     AsyncFuncResultSetter() = default;
-    explicit AsyncFuncResultSetter(const Field &base)
-        : Field(base), started(), result(),
-          started_f(started.get_future().share()),
-          result_f(result.get_future().share()),
-          started_event(
-              std::make_shared<decltype(started_event)::element_type>()),
-          result_event(
-              std::make_shared<decltype(result_event)::element_type>()) {}
-    void setStarted(bool is_started) {
-        started.set_value(is_started);
-        started_event->operator()(is_started);
-        if (!is_started) {
-            try {
-                throw FuncNotFound(*this);
-            } catch (...) {
-                setResultException(std::current_exception());
-            }
-        }
-    }
-    void setResult(const ValAdaptor &result_val) {
-        result.set_value(result_val);
-        result_event->operator()(result_f);
-    }
-    void setResultException(const std::exception_ptr &e) {
-        result.set_exception(e);
-        result_event->operator()(result_f);
-    }
+    explicit AsyncFuncResultSetter(const Field &base);
+    void setStarted(bool is_started);
+    void setResult(const ValAdaptor &result_val);
+    void setResultException(const std::exception_ptr &e);
 };
 
-class FuncCallHandle {
-    struct HandleData {
+class WEBCFACE_DLL FuncCallHandle {
+    struct WEBCFACE_DLL HandleData {
         const std::vector<ValAdaptor> args_;
         std::variant<int, std::vector<wcfMultiVal>, std::vector<wcfMultiValW>>
             c_args_;
@@ -161,6 +127,8 @@ class FuncCallHandle {
     };
     std::shared_ptr<HandleData> handle_data_;
 
+    static std::runtime_error &invalidHandle();
+
   public:
     FuncCallHandle() = default;
     FuncCallHandle(const std::vector<ValAdaptor> &args,
@@ -170,33 +138,17 @@ class FuncCallHandle {
      * \brief 関数の引数を取得する
      *
      */
-    const std::vector<ValAdaptor> &args() const {
-        if (handle_data_) {
-            return handle_data_->args_;
-        } else {
-            throw std::runtime_error("FuncCallHandle does not have valid "
-                                     "pointer to function call");
-        }
-    }
+    const std::vector<ValAdaptor> &args() const;
     /*!
      * 引数データを表すwcfMultiValの配列を構築 (createHandle() 用)
-     * \since ver1.7(for char), ver2.0(for wchar_t)
+     * \since ver1.7
      */
-    template <typename CharT>
-    const auto *cArgs() const {
-        if (handle_data_) {
-            if constexpr (std::is_same_v<CharT, char>) {
-                auto &c_args = handle_data_->initCArgs<1, wcfMultiVal>();
-                return c_args.data();
-            } else {
-                auto &c_args = handle_data_->initCArgs<2, wcfMultiValW>();
-                return c_args.data();
-            }
-        } else {
-            throw std::runtime_error("FuncCallHandle does not have valid "
-                                     "pointer to function call");
-        }
-    }
+    const wcfMultiVal *cArgs() const;
+    /*!
+     * 引数データを表すwcfMultiValの配列を構築 (createHandle() 用)
+     * \since ver2.0
+     */
+    const wcfMultiValW *cWArgs() const;
     /*!
      * \brief 関数の結果を送信する
      *
@@ -210,8 +162,7 @@ class FuncCallHandle {
         if (handle_data_) {
             handle_data_->result_.set_value(ValAdaptor(value));
         } else {
-            throw std::runtime_error("FuncCallHandle does not have valid "
-                                     "pointer to function call");
+            throw invalidHandle();
         }
     }
     /*!
@@ -229,18 +180,7 @@ class FuncCallHandle {
      * * このHandleがデフォルト構築されていた場合 std::runtime_error を投げる
      *
      */
-    void reject(const std::string &message) {
-        if (handle_data_) {
-            try {
-                throw std::runtime_error(message);
-            } catch (const std::runtime_error &) {
-                handle_data_->result_.set_exception(std::current_exception());
-            }
-        } else {
-            throw std::runtime_error("FuncCallHandle does not have valid "
-                                     "pointer to function call");
-        }
-    }
+    void reject(const std::string &message);
     /*!
      * \brief 関数の結果を例外として送信する (wstring)
      * \since ver2.0
@@ -249,14 +189,7 @@ class FuncCallHandle {
      * * このHandleがデフォルト構築されていた場合 std::runtime_error を投げる
      *
      */
-    void reject(const std::wstring &message) {
-        reject(Encoding::decode(Encoding::encodeW(message)));
-    }
+    void reject(const std::wstring &message);
 };
-
-extern template std::vector<wcfMultiVal> &
-FuncCallHandle::HandleData::initCArgs<1, wcfMultiVal>();
-extern template std::vector<wcfMultiValW> &
-FuncCallHandle::HandleData::initCArgs<2, wcfMultiValW>();
 
 WEBCFACE_NS_END

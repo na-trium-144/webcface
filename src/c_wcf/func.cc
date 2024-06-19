@@ -33,7 +33,11 @@ static auto createHandle(const FuncCallHandle &h) {
     auto whp = new typename CharType<CharT>::CHandle();
     CharType<CharT>::fetchedHandles().emplace(whp, h);
     auto &h_ref = CharType<CharT>::fetchedHandles().at(whp);
-    whp->args = h_ref.template cArgs<CharT>();
+    if constexpr (std::is_same_v<CharT, char>) {
+        whp->args = h_ref.cArgs();
+    } else {
+        whp->args = h_ref.cWArgs();
+    }
     whp->arg_size = static_cast<int>(h_ref.args().size());
     return whp;
 }

@@ -931,7 +931,7 @@ void MemberData::imageConvertThreadMain(const SharedString &member,
             member,
             [&](auto cd) {
                 while (!cd->closing.load() && !this->closing.load()) {
-                    Common::ImageFrame img;
+                    ImageFrame img;
                     {
                         std::unique_lock lock(cd->image_m[field]);
                         cd->image_cv[field].wait_for(
@@ -1015,7 +1015,7 @@ void MemberData::imageConvertThreadMain(const SharedString &member,
                     auto encoded =
                         std::make_shared<std::vector<unsigned char>>();
                     switch (info.cmp_mode) {
-                    case Common::ImageCompressMode::raw: {
+                    case ImageCompressMode::raw: {
                         std::size_t channels = 1;
                         std::string color_map = magickColorMap(color_mode);
                         switch (color_mode) {
@@ -1039,7 +1039,7 @@ void MemberData::imageConvertThreadMain(const SharedString &member,
                                 encoded->data());
                         break;
                     }
-                    case Common::ImageCompressMode::jpeg: {
+                    case ImageCompressMode::jpeg: {
                         if (info.quality < 0 || info.quality > 100) {
                             this->logger->error(
                                 "Invalid image conversion request "
@@ -1057,7 +1057,7 @@ void MemberData::imageConvertThreadMain(const SharedString &member,
                                 b.length());
                         break;
                     }
-                    case Common::ImageCompressMode::webp: {
+                    case ImageCompressMode::webp: {
                         if (info.quality < 1 || info.quality > 100) {
                             this->logger->error(
                                 "Invalid image conversion request "
@@ -1075,7 +1075,7 @@ void MemberData::imageConvertThreadMain(const SharedString &member,
                                 b.length());
                         break;
                     }
-                    case Common::ImageCompressMode::png: {
+                    case ImageCompressMode::png: {
                         if (info.quality < 0 || info.quality > 100) {
                             this->logger->error(
                                 "Invalid image conversion request "
@@ -1094,9 +1094,8 @@ void MemberData::imageConvertThreadMain(const SharedString &member,
                         break;
                     }
                     }
-                    Common::ImageBase img_send{Common::sizeHW(rows, cols),
-                                               encoded, color_mode,
-                                               info.cmp_mode};
+                    ImageFrame img_send{sizeHW(rows, cols), encoded, color_mode,
+                                        info.cmp_mode};
                     logger->trace("finished converting image of {}, {}",
                                   member.decode(), field.decode());
                     if (!cd->closing.load() && !this->closing.load()) {

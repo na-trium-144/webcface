@@ -7,9 +7,9 @@
 #include <any>
 #include <cstdint>
 #include <spdlog/logger.h>
-#include <webcface/common/func.h>
+#include <webcface/func_info.h>
 #include <webcface/common/log.h>
-#include <webcface/common/image.h>
+#include <webcface/image_frame.h>
 #include <webcface/common/def.h>
 #include "webcface/component_canvas2d.h"
 #include "webcface/component_canvas3d.h"
@@ -21,8 +21,8 @@
 MSGPACK_ADD_ENUM(webcface::ValType)
 MSGPACK_ADD_ENUM(webcface::ViewComponentType)
 MSGPACK_ADD_ENUM(webcface::ViewColor)
-MSGPACK_ADD_ENUM(webcface::Common::ImageCompressMode)
-MSGPACK_ADD_ENUM(webcface::Common::ImageColorMode)
+MSGPACK_ADD_ENUM(webcface::ImageCompressMode)
+MSGPACK_ADD_ENUM(webcface::ImageColorMode)
 MSGPACK_ADD_ENUM(webcface::RobotJointType)
 MSGPACK_ADD_ENUM(webcface::GeometryType)
 MSGPACK_ADD_ENUM(webcface::Canvas3DComponentType)
@@ -207,11 +207,21 @@ struct WEBCFACE_DLL Sync : public MessageBase<MessageKind::sync> {
  * serverはcaller_member_idをつけてreceiverに送る
  *
  */
-struct WEBCFACE_DLL Call : public MessageBase<MessageKind::call>,
-                           public Common::FuncCall {
+struct WEBCFACE_DLL Call : public MessageBase<MessageKind::call> {
+    CallerId caller_id = 0;
+    MemberId caller_member_id = 0;
+    MemberId target_member_id = 0;
+    SharedString field;
+    std::vector<webcface::ValAdaptor> args;
     Call() = default;
-    Call(const Common::FuncCall &c)
-        : MessageBase<MessageKind::call>(), Common::FuncCall(c) {}
+    Call(const FuncCall &c)
+        : MessageBase<MessageKind::call>(), caller_id(c.caller_id),
+          caller_member_id(c.caller_member_id),
+          target_member_id(c.target_member_id), field(c.field), args(c.args) {}
+    operator FuncCall() const {
+        return FuncCall{caller_id, caller_member_id, target_member_id, field,
+                        args};
+    }
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", caller_id),
                        MSGPACK_NVP("c", caller_member_id),
                        MSGPACK_NVP("r", target_member_id),
@@ -488,12 +498,12 @@ struct WEBCFACE_DLL Image : public MessageBase<MessageKind::image> {
     ImageColorMode color_mode_;
     ImageCompressMode cmp_mode_;
     Image() = default;
-    Image(const SharedString &field, const Common::ImageBase &img)
+    Image(const SharedString &field, const ImageBase &img)
         : field(field), width_(img.width()), height_(img.height()),
           data_(img.dataPtr()), color_mode_(img.colorMode()),
           cmp_mode_(img.compressMode()) {}
-    operator Common::ImageFrame() const {
-        return ImageFrame{Common::sizeWH(width_, height_), data_, color_mode_,
+    operator ImageFrame() const {
+        return ImageFrame{sizeWH(width_, height_), data_, color_mode_,
                           cmp_mode_};
     }
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", field), MSGPACK_NVP("d", data_),
@@ -558,33 +568,36 @@ struct WEBCFACE_DLL LogReq : public MessageBase<MessageKind::log_req> {
  * client->server時はmemberは無視
  *
  */
+struct WEBCFACE_DLL Arg {
+    SharedString name_;
+    ValType type_ = ValType::none_;
+    std::optional<ValAdaptor> init_ = std::nullopt;
+    std::optional<double> min_ = std::nullopt, max_ = std::nullopt;
+    std::vector<ValAdaptor> option_;
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("n", name_), MSGPACK_NVP("t", type_),
+                       MSGPACK_NVP("i", init_), MSGPACK_NVP("m", min_),
+                       MSGPACK_NVP("x", max_), MSGPACK_NVP("o", option_))
+};
 struct WEBCFACE_DLL FuncInfo : public MessageBase<MessageKind::func_info> {
     unsigned int member_id = 0;
     SharedString field;
     ValType return_type;
-    struct WEBCFACE_DLL Arg : public Common::Arg {
-        Arg() = default;
-        Arg(const Common::Arg &a) : Common::Arg(a) {}
-        MSGPACK_DEFINE_MAP(MSGPACK_NVP("n", name_), MSGPACK_NVP("t", type_),
-                           MSGPACK_NVP("i", init_), MSGPACK_NVP("m", min_),
-                           MSGPACK_NVP("x", max_), MSGPACK_NVP("o", option_))
-    };
     std::shared_ptr<std::vector<Arg>> args;
     FuncInfo() = default;
     FuncInfo(unsigned int member_id, const SharedString &field,
              ValType return_type, const std::shared_ptr<std::vector<Arg>> &args)
         : member_id(member_id), field(field), return_type(return_type),
           args(args) {}
-    explicit FuncInfo(const SharedString &field, const Common::FuncInfo &info)
+    explicit FuncInfo(const SharedString &field, const webcface::FuncInfo &info)
         : MessageBase<MessageKind::func_info>(), field(field),
           return_type(info.return_type),
           args(std::make_shared<std::vector<Arg>>(info.args.size())) {
         for (std::size_t i = 0; i < info.args.size(); i++) {
-            (*args)[i] = info.args[i];
+            (*args)[i] = info.args[i].toMessage();
         }
     }
-    operator Common::FuncInfo() const {
-        Common::FuncInfo info;
+    operator webcface::FuncInfo() const {
+        webcface::FuncInfo info;
         info.return_type = return_type;
         info.args.resize(args->size());
         for (std::size_t j = 0; j < args->size(); j++) {
@@ -620,18 +633,26 @@ extern template struct WEBCFACE_DLL_INSTANCE_DECL Req<RobotModel>;
 #endif
 template <>
 struct WEBCFACE_DLL Req<Image>
-    : public MessageBase<MessageKind::image + MessageKind::req>,
-      public Common::ImageReq {
+    : public MessageBase<MessageKind::image + MessageKind::req> {
     SharedString member;
     SharedString field;
     unsigned int req_id;
 
+    std::optional<int> rows = std::nullopt, cols = std::nullopt;
+    std::optional<ImageColorMode> color_mode = std::nullopt;
+    ImageCompressMode cmp_mode = ImageCompressMode::raw;
+    int quality = 0;
+    std::optional<double> frame_rate = std::nullopt;
+
     Req() = default;
     Req(const SharedString &member, const SharedString &field,
-        unsigned int req_id, const Common::ImageReq &ireq)
-        : Common::ImageReq(ireq), member(member), field(field), req_id(req_id) {
+        unsigned int req_id, const ImageReq &ireq)
+        : member(member), field(field), req_id(req_id), rows(ireq.rows),
+          cols(ireq.cols), color_mode(ireq.color_mode), cmp_mode(ireq.cmp_mode),
+          quality(ireq.quality), frame_rate(ireq.frame_rate) {}
+    operator ImageReq() const {
+        return ImageReq{rows, cols, color_mode, cmp_mode, quality, frame_rate};
     }
-
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", req_id), MSGPACK_NVP("M", member),
                        MSGPACK_NVP("f", field), MSGPACK_NVP("w", cols),
                        MSGPACK_NVP("h", rows), MSGPACK_NVP("l", color_mode),
@@ -800,12 +821,12 @@ struct WEBCFACE_DLL Res<Image>
     ImageCompressMode cmp_mode_;
     Res() = default;
     Res(unsigned int req_id, const SharedString &sub_field,
-        const Common::ImageBase &img)
+        const ImageFrame &img)
         : req_id(req_id), sub_field(sub_field), width_(img.width()),
           height_(img.height()), data_(img.dataPtr()),
           color_mode_(img.colorMode()), cmp_mode_(img.compressMode()) {}
-    operator Common::ImageFrame() const {
-        return ImageFrame{Common::sizeWH(width_, height_), data_, color_mode_,
+    operator ImageFrame() const {
+        return ImageFrame{sizeWH(width_, height_), data_, color_mode_,
                           cmp_mode_};
     }
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", req_id), MSGPACK_NVP("f", sub_field),

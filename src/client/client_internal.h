@@ -1,8 +1,6 @@
 #pragma once
 #include <mutex>
 #include <condition_variable>
-#include <queue>
-#include <array>
 #include <vector>
 #include <string>
 #include <memory>
@@ -15,10 +13,10 @@
 #include <webcface/common/vector.h>
 #include <webcface/encoding.h>
 #include <webcface/field.h>
-#include <webcface/common/func.h>
+#include <webcface/func_info.h>
 #include <webcface/common/log.h>
 #include <webcface/common/queue.h>
-#include <webcface/common/image.h>
+#include <webcface/image_frame.h>
 #include <webcface/func_result.h>
 #include <webcface/logger.h>
 #include "data_store1.h"
@@ -133,7 +131,7 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
     SyncDataStore2<TextData> text_store;
     SyncDataStore2<FuncData> func_store;
     SyncDataStore2<ViewData> view_store;
-    SyncDataStore2<ImageData, Common::ImageReq> image_store;
+    SyncDataStore2<ImageData, ImageReq> image_store;
     SyncDataStore2<RobotModelData> robot_model_store;
     SyncDataStore2<Canvas3DData> canvas3d_store;
     SyncDataStore2<Canvas2DData> canvas2d_store;

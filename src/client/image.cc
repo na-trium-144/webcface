@@ -15,8 +15,8 @@ Image::Image(const Field &base) : Field(base), EventTarget<Image>() {
 }
 
 Image &Image::request(std::optional<int> rows, std::optional<int> cols,
-                      Common::ImageCompressMode cmp_mode, int quality,
-                      std::optional<Common::ImageColorMode> color_mode,
+                      ImageCompressMode cmp_mode, int quality,
+                      std::optional<ImageColorMode> color_mode,
                       std::optional<double> frame_rate) {
     auto req = dataLock()->image_store.addReq(
         member_, field_,

@@ -1,9 +1,7 @@
 #pragma once
-#include <ostream>
 #include <optional>
 #include <chrono>
-#include <memory>
-#include "common/image.h"
+#include "image_frame.h"
 #include "field.h"
 #include "event_target.h"
 #include <webcface/common/def.h>
@@ -19,8 +17,8 @@ class WEBCFACE_DLL Image : protected Field, public EventTarget<Image> {
     void onAppend() const override final;
 
     Image &request(std::optional<int> rows, std::optional<int> cols,
-                   Common::ImageCompressMode cmp_mode, int quality,
-                   std::optional<Common::ImageColorMode> color_mode,
+                   ImageCompressMode cmp_mode, int quality,
+                   std::optional<ImageColorMode> color_mode,
                    std::optional<double> frame_rate);
 
   public:
@@ -110,10 +108,10 @@ class WEBCFACE_DLL Image : protected Field, public EventTarget<Image> {
      */
     [[deprecated("Ambiguous image size")]] Image &
     request(std::optional<int> rows, std::optional<int> cols = std::nullopt,
-            std::optional<Common::ImageColorMode> color_mode = std::nullopt,
+            std::optional<ImageColorMode> color_mode = std::nullopt,
             std::optional<double> frame_rate = std::nullopt) {
-        return request(rows, cols, Common::ImageCompressMode::raw, 0,
-                       color_mode, frame_rate);
+        return request(rows, cols, ImageCompressMode::raw, 0, color_mode,
+                       frame_rate);
     }
     /*!
      * \brief 画像を生画像のフォーマットでリクエストする
@@ -126,14 +124,12 @@ class WEBCFACE_DLL Image : protected Field, public EventTarget<Image> {
      * (指定しない場合元画像が更新されるたびに受信する)
      *
      */
-    Image &
-    request(std::optional<SizeOption> size = std::nullopt,
-            std::optional<Common::ImageColorMode> color_mode = std::nullopt,
-            std::optional<double> frame_rate = std::nullopt) {
+    Image &request(std::optional<SizeOption> size = std::nullopt,
+                   std::optional<ImageColorMode> color_mode = std::nullopt,
+                   std::optional<double> frame_rate = std::nullopt) {
         return request(size.value_or(SizeOption{}).rows(),
                        size.value_or(SizeOption{}).cols(),
-                       Common::ImageCompressMode::raw, 0, color_mode,
-                       frame_rate);
+                       ImageCompressMode::raw, 0, color_mode, frame_rate);
     }
     /*!
      * \brief 画像を圧縮されたフォーマットでリクエストする
@@ -153,7 +149,7 @@ class WEBCFACE_DLL Image : protected Field, public EventTarget<Image> {
      */
     [[deprecated("Ambiguous image size")]] Image &
     request(std::optional<int> rows, std::optional<int> cols,
-            Common::ImageCompressMode cmp_mode, int quality,
+            ImageCompressMode cmp_mode, int quality,
             std::optional<double> frame_rate = std::nullopt) {
         return request(rows, cols, cmp_mode, quality, std::nullopt, frame_rate);
     }
@@ -171,8 +167,8 @@ class WEBCFACE_DLL Image : protected Field, public EventTarget<Image> {
      * (指定しない場合元画像が更新されるたびに受信する)
      *
      */
-    Image &request(std::optional<SizeOption> size,
-                   Common::ImageCompressMode cmp_mode, int quality,
+    Image &request(std::optional<SizeOption> size, ImageCompressMode cmp_mode,
+                   int quality,
                    std::optional<double> frame_rate = std::nullopt) {
         return request(size.value_or(SizeOption{}).rows(),
                        size.value_or(SizeOption{}).cols(), cmp_mode, quality,

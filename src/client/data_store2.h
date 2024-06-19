@@ -7,9 +7,8 @@
 #include <webcface/common/dict.h>
 #include <webcface/common/def.h>
 #include <webcface/val_adaptor.h>
-#include <webcface/common/func.h>
-#include <webcface/common/image.h>
-#include "../message/message.h"
+#include <webcface/func_info.h>
+#include <webcface/image_frame.h>
 #include "webcface/component_canvas2d.h"
 #include "webcface/component_canvas3d.h"
 #include "webcface/component_view.h"
@@ -221,7 +220,7 @@ using ViewData = std::shared_ptr<std::vector<ViewComponent>>;
 using RobotModelData = std::shared_ptr<std::vector<RobotLink>>;
 using Canvas3DData = std::shared_ptr<std::vector<Canvas3DComponent>>;
 using Canvas2DData = std::shared_ptr<Canvas2DDataBase>;
-using ImageData = Common::ImageBase;
+using ImageData = ImageFrame;
 
 #ifdef _WIN32
 extern template class WEBCFACE_DLL_INSTANCE_DECL

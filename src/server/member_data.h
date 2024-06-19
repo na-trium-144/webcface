@@ -1,6 +1,5 @@
 #pragma once
 #include <string>
-#include <set>
 #include <unordered_map>
 #include <chrono>
 #include <optional>
@@ -54,7 +53,7 @@ struct WEBCFACE_DLL MemberData {
     StrMap1<std::vector<ViewComponent>> view;
     StrMap1<std::vector<Canvas3DComponent>> canvas3d;
     StrMap1<Canvas2DDataBase> canvas2d;
-    StrMap1<Common::ImageBase> image;
+    StrMap1<ImageFrame> image;
     StrMap1<int> image_changed;
     // 画像が変化したことを知らせるcv
     StrMap1<std::mutex> image_m;
@@ -67,7 +66,7 @@ struct WEBCFACE_DLL MemberData {
     // リクエストが変化したことをスレッドに知らせる
     StrMap2<int> image_req_changed;
     // 画像をそれぞれのリクエストに合わせて変換するスレッド
-    StrMap2<Common::ImageReq> image_req_info;
+    StrMap2<ImageReq> image_req_info;
 
     // image_convert_thread[imageのmember][imageのfield] =
     // imageを変換してthisに送るスレッド

@@ -3,6 +3,7 @@
 #include "client_internal.h"
 #include "webcface/field.h"
 #include "webcface/encoding.h"
+#include "../message/message.h"
 
 WEBCFACE_NS_BEGIN
 

@@ -839,6 +839,8 @@ list(APPEND WEBCFACE_SRC
     ${CPP_DIR}/client/data_store2.cc
     ${CPP_DIR}/client/encoding.cc
     ${CPP_DIR}/client/field.cc
+    ${CPP_DIR}/client/func_info.cc
+    ${CPP_DIR}/client/func_result.cc
     ${CPP_DIR}/client/func.cc
     ${CPP_DIR}/client/func_listener.cc
     ${CPP_DIR}/client/log.cc
@@ -852,6 +854,7 @@ list(APPEND WEBCFACE_SRC
     ${CPP_DIR}/client/view.cc
     ${CPP_DIR}/client/val_adaptor.cc
     ${CPP_DIR}/client/image.cc
+    ${CPP_DIR}/client/image_frame.cc
     ${CPP_DIR}/client/version.cc
     ${CPP_DIR}/client/component_canvas3d.cc
     ${CPP_DIR}/client/component_canvas2d.cc

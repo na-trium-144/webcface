@@ -5,19 +5,22 @@
 #include <optional>
 #include <string>
 #include <ostream>
-#include <cstdint>
-#include "../val_adaptor.h"
+#include <cstddef>
+#include "val_adaptor.h"
 #include <webcface/common/def.h>
 
 #ifdef min
-#pragma message(                                                               \
-    "warning: Disabling macro definition of 'min' and 'max', since they conflicts in webcface/func.h.")
+// clang-format off
+#pragma message("warning: Disabling macro definition of 'min' and 'max', since they conflicts in webcface/func_info.h.")
+// clang-format on
 #undef min
 #undef max
 #endif
 
 WEBCFACE_NS_BEGIN
-inline namespace Common {
+namespace Message {
+struct Arg;
+}
 
 using FuncType = std::function<ValAdaptor(const std::vector<ValAdaptor> &)>;
 using FuncWrapperType =
@@ -30,7 +33,7 @@ using FuncWrapperType =
  * のように使う
  *
  */
-class Arg {
+class WEBCFACE_DLL Arg {
   protected:
     SharedString name_;
     ValType type_ = ValType::none_;
@@ -43,29 +46,13 @@ class Arg {
      * \brief 引数のargが持っている情報でthisを上書きする。
      *
      */
-    void mergeConfig(const Arg &rhs) {
-        if (!rhs.name_.empty()) {
-            name_ = rhs.name_;
-        }
-        if (rhs.type_ != ValType::none_) {
-            type_ = rhs.type_;
-        }
-        if (rhs.init_) {
-            init(*rhs.init_);
-        }
-        if (rhs.min_) {
-            min(*rhs.min_);
-        }
-        if (rhs.max_) {
-            max(*rhs.max_);
-        }
-        if (rhs.option_.size() > 0) {
-            option(rhs.option_);
-        }
-    }
+    void mergeConfig(const Arg &rhs);
     explicit Arg(ValType type) : type_(type) {}
-
     Arg() = default;
+
+    Message::Arg toMessage() const;
+    Arg(const Message::Arg &a);
+
     /*!
      * \brief 引数名を設定する。
      *
@@ -170,29 +157,7 @@ class Arg {
             std::vector<ValAdaptor>(option.begin(), option.end()));
     }
 };
-inline auto &operator<<(std::basic_ostream<char> &os, const Arg &arg) {
-    os << arg.name() << "(type=" << arg.type();
-    auto min_ = arg.min();
-    if (min_) {
-        os << ", min=" << *min_;
-    }
-    auto max_ = arg.max();
-    if (max_) {
-        os << ", max=" << *max_;
-    }
-    if (arg.option().size() > 0) {
-        os << ", option={";
-        for (std::size_t j = 0; j < arg.option().size(); j++) {
-            if (j > 0) {
-                os << ", ";
-            }
-            os << static_cast<std::string>(arg.option()[j]);
-        }
-        os << "}";
-    }
-    os << ")";
-    return os;
-}
+WEBCFACE_DLL std::ostream &operator<<(std::ostream &os, const Arg &arg);
 
 /*!
  * \brief 関数1つの情報を表す。関数の実体も持つ
@@ -256,12 +221,11 @@ using MemberId = unsigned int;
  *
  */
 struct FuncCall {
-    CallerId caller_id;
-    MemberId caller_member_id;
-    MemberId target_member_id;
+    CallerId caller_id = 0;
+    MemberId caller_member_id = 0;
+    MemberId target_member_id = 0;
     SharedString field;
     std::vector<webcface::ValAdaptor> args;
 };
 
-} // namespace Common
 WEBCFACE_NS_END

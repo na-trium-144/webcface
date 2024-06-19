@@ -8,7 +8,6 @@
 #include <webcface/common/def.h>
 
 WEBCFACE_NS_BEGIN
-inline namespace Common {
 
 enum class ImageColorMode {
     gray = 0,
@@ -99,7 +98,7 @@ inline SizeOption sizeHW(T1 height, T2 width) {
  * * データはshared_ptrで保持され、Imageをコピーしてもコピーされない
  *
  */
-class ImageFrame {
+class WEBCFACE_DLL ImageFrame {
   protected:
     Size size_;
     std::shared_ptr<std::vector<unsigned char>> data_;
@@ -111,21 +110,11 @@ class ImageFrame {
      * \brief 空の(0x0の) ImageFrameを作成
      *
      */
-    ImageFrame()
-        : size_(), data_(std::make_shared<std::vector<unsigned char>>()),
-          color_mode_(ImageColorMode::gray), cmp_mode_(ImageCompressMode::raw) {
-    }
+    ImageFrame();
     ImageFrame(const Size &size,
                const std::shared_ptr<std::vector<unsigned char>> &data,
                ImageColorMode color_mode = ImageColorMode::bgr,
-               ImageCompressMode cmp_mode = ImageCompressMode::raw)
-        : size_(size), data_(data), color_mode_(color_mode),
-          cmp_mode_(cmp_mode) {
-        if (cmp_mode == ImageCompressMode::raw &&
-            rows() * cols() * channels() != data->size()) {
-            throw std::invalid_argument("data size does not match");
-        }
-    }
+               ImageCompressMode cmp_mode = ImageCompressMode::raw);
     /*!
      * \brief 生画像データの配列からImageFrameを作成
      *
@@ -158,14 +147,7 @@ class ImageFrame {
      * \param color_mode データの構造を指定
      *
      */
-    ImageFrame(const Size &size, const void *data, ImageColorMode color_mode)
-        : size_(size), color_mode_(color_mode),
-          cmp_mode_(ImageCompressMode::raw) {
-        data_ = std::make_shared<std::vector<unsigned char>>(
-            static_cast<const unsigned char *>(data),
-            static_cast<const unsigned char *>(data) +
-                rows() * cols() * channels());
-    }
+    ImageFrame(const Size &size, const void *data, ImageColorMode color_mode);
     /*!
      * \brief 空のImageFrameを作成
      * \since ver2.0
@@ -178,12 +160,7 @@ class ImageFrame {
      * \param color_mode データの構造を指定
      *
      */
-    ImageFrame(const Size &size, ImageColorMode color_mode)
-        : size_(size), color_mode_(color_mode),
-          cmp_mode_(ImageCompressMode::raw) {
-        data_ = std::make_shared<std::vector<unsigned char>>(rows() * cols() *
-                                                             channels());
-    }
+    ImageFrame(const Size &size, ImageColorMode color_mode);
 
     /*!
      * \brief 画像が空かどうかを返す
@@ -223,20 +200,7 @@ class ImageFrame {
      * \return 1, 3, or 4
      *
      */
-    std::size_t channels() const {
-        switch (color_mode_) {
-        case ImageColorMode::gray:
-            return 1;
-        case ImageColorMode::bgr:
-        case ImageColorMode::rgb:
-            return 3;
-        case ImageColorMode::bgra:
-        case ImageColorMode::rgba:
-            return 4;
-        default:
-            throw std::invalid_argument("unknown color format");
-        }
-    }
+    std::size_t channels() const;
     /*!
      * \sa colorMode()
      */
@@ -300,22 +264,16 @@ class ImageFrame {
     }
 };
 
-using ImageBase = ImageFrame;
+using ImageBase [[deprecated]] = ImageFrame;
 
-struct ImageReq {
+struct WEBCFACE_DLL ImageReq {
     std::optional<int> rows = std::nullopt, cols = std::nullopt;
     std::optional<ImageColorMode> color_mode = std::nullopt;
     ImageCompressMode cmp_mode = ImageCompressMode::raw;
     int quality = 0;
     std::optional<double> frame_rate = std::nullopt;
 
-    bool operator==(const ImageReq &rhs) const {
-        return rows == rhs.rows && cols == rhs.cols &&
-               color_mode == rhs.color_mode && cmp_mode == rhs.cmp_mode &&
-               quality == rhs.quality;
-    }
-    bool operator!=(const ImageReq &rhs) const { return !(*this == rhs); }
+    bool operator==(const ImageReq &rhs) const;
 };
 
-} // namespace Common
 WEBCFACE_NS_END

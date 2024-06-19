@@ -11,47 +11,6 @@ WEBCFACE_NS_BEGIN
 
 template class WEBCFACE_DLL_INSTANCE_DEF EventTarget<Func>;
 
-auto &operator<<(std::basic_ostream<char> &os, const AsyncFuncResult &r) {
-    os << "Func(\"" << r.name() << "\"): ";
-    if (r.started.wait_for(std::chrono::seconds(0)) !=
-        std::future_status::ready) {
-        os << "<Connecting>";
-    } else if (r.started.get() == false) {
-        os << "<Not Found>";
-    } else if (r.result.wait_for(std::chrono::seconds(0)) !=
-               std::future_status::ready) {
-        os << "<Running>";
-    } else {
-        try {
-            os << static_cast<std::string>(r.result.get());
-        } catch (const std::exception &e) {
-            os << "<Error> " << e.what();
-        }
-    }
-    return os;
-}
-template <std::size_t v_index, typename CVal>
-std::vector<CVal> &FuncCallHandle::HandleData::initCArgs() {
-    if (this->c_args_.index() != v_index) {
-        std::vector<CVal> c_args;
-        c_args.reserve(this->args_.size());
-        for (const auto &a : this->args_) {
-            c_args.emplace_back(CVal{
-                .as_int = a,
-                .as_double = a,
-                .as_str = a,
-            });
-        }
-        this->c_args_.emplace<v_index>(std::move(c_args));
-    }
-    return std::get<v_index>(this->c_args_);
-}
-template WEBCFACE_DLL std::vector<wcfMultiVal> &
-FuncCallHandle::HandleData::initCArgs<1, wcfMultiVal>();
-template WEBCFACE_DLL std::vector<wcfMultiValW> &
-FuncCallHandle::HandleData::initCArgs<2, wcfMultiValW>();
-
-
 Func::Func(const Field &base) : Field(base) {}
 Func &Func::setRaw(const std::shared_ptr<FuncInfo> &v) {
     setCheck()->func_store.setSend(*this, v);
