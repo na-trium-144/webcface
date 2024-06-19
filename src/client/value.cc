@@ -25,23 +25,11 @@ void Value::request() const {
     }
 }
 
-Value &Value::set(const Value::Dict &v) {
-    if (v.hasValue()) {
-        setCheck()->value_store.setSend(*this, v.getRaw());
-        this->triggerEvent(*this);
-    } else {
-        for (const auto &it : v.getChildren()) {
-            child(it.first).set(it.second);
-        }
-    }
-    return *this;
-}
-Value &Value::set(const VectorOpt<double> &v) {
+Value &Value::set(double v) {
     auto last_name = this->lastName();
     auto parent = this->parent();
     if (std::all_of(last_name.cbegin(), last_name.cend(),
-                    [](unsigned char c) { return std::isdigit(c); }) &&
-        v.size() == 1) {
+                    [](unsigned char c) { return std::isdigit(c); })) {
         std::size_t index = std::stoi(std::string(last_name));
         auto pv = parent.tryGetVec();
         if (pv && index < pv->size() + 10) { // てきとう
@@ -53,8 +41,12 @@ Value &Value::set(const VectorOpt<double> &v) {
             return *this;
         }
     }
+    set(std::vector<double>{v});
+    return *this;
+}
+Value &Value::set(std::vector<double> &&v) {
     setCheck()->value_store.setSend(*this,
-                                    std::make_shared<VectorOpt<double>>(v));
+                                    std::make_shared<std::vector<double>>(std::move(v)));
     this->triggerEvent(*this);
     return *this;
 }
@@ -85,7 +77,7 @@ std::optional<double> Value::tryGet() const {
     auto v = dataLock()->value_store.getRecv(*this);
     request();
     if (v) {
-        return **v;
+        return (*v)->size() >= 1 ? std::make_optional((**v)[0]) : std::nullopt;
     }
     auto last_name = lastName();
     if (std::all_of(last_name.cbegin(), last_name.cend(),
@@ -106,13 +98,6 @@ std::optional<std::vector<double>> Value::tryGetVec() const {
     } else {
         return std::nullopt;
     }
-}
-std::optional<Value::Dict> Value::tryGetRecurse() const {
-    request();
-    return dataLock()->value_store.getRecvRecurse(
-        *this, [this](const SharedString &subfield) {
-            Value(this->Field::child(subfield)).request();
-        });
 }
 std::chrono::system_clock::time_point Value::time() const {
     return member().syncTime();

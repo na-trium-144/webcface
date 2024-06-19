@@ -154,40 +154,6 @@ std::optional<T> SyncDataStore2<T, ReqT>::getRecv(const SharedString &from,
     return std::nullopt;
 }
 template <typename T, typename ReqT>
-std::optional<Dict<T>> SyncDataStore2<T, ReqT>::getRecvRecurse(
-    const FieldBase &base,
-    const std::function<void(const SharedString &)> &cb) {
-    return getRecvRecurse(base.member_, base.field_, cb);
-}
-template <typename T, typename ReqT>
-std::optional<Dict<T>> SyncDataStore2<T, ReqT>::getRecvRecurse(
-    const SharedString &member, const SharedString &field,
-    const std::function<void(const SharedString &)> &cb) {
-    std::lock_guard lock(mtx);
-    // addReq(member, field);
-    auto s_it = data_recv.find(member);
-    if (s_it != data_recv.end()) {
-        Dict<T> d;
-        bool found = false;
-        for (const auto &it : s_it->second) {
-            if (it.first.u8String().starts_with(field.u8String() +
-                                                field_separator)) {
-                d[Encoding::decode(it.first.u8String().substr(
-                    field.u8String().size() + 1))] = it.second;
-                // addReq(member, it.first);
-                found = true;
-                if (cb) {
-                    cb(it.first);
-                }
-            }
-        }
-        if (found) {
-            return d;
-        }
-    }
-    return std::nullopt;
-}
-template <typename T, typename ReqT>
 bool SyncDataStore2<T, ReqT>::unsetRecv(const FieldBase &base) {
     return unsetRecv(base.member_, base.field_);
 }

@@ -2,14 +2,17 @@
 #include <ostream>
 #include <optional>
 #include <chrono>
-#include <memory>
-#include "common/dict.h"
-#include "common/vector.h"
 #include "field.h"
 #include "event_target.h"
 #include <webcface/common/def.h>
 
 WEBCFACE_NS_BEGIN
+
+template <typename R>
+concept Range = requires(R range) {
+                    begin(range);
+                    end(range);
+                };
 
 /*!
  * \brief 実数値またはその配列の送受信データを表すクラス
@@ -79,20 +82,59 @@ class WEBCFACE_DLL Value : protected Field, public EventTarget<Value> {
      */
     Value parent() const { return this->Field::parent(); }
 
-    using Dict = Common::Dict<std::shared_ptr<Common::VectorOpt<double>>>;
     /*!
-     * \brief Dictの値を再帰的にセットする
-     * \deprecated ver1.11〜
-     */
-    [[deprecated]] Value &set(const Dict &v);
-    /*!
-     * \brief 数値または配列をセットする
+     * \brief 値をセットする
      *
-     * ver1.11〜
+     * ver1.11〜:
      * vが配列でなく、parent()の配列データが利用可能ならその要素をセットする
      *
      */
-    Value &set(const VectorOpt<double> &v);
+    Value &set(double v);
+    /*!
+     * \brief vector型配列をセットする
+     * \since ver2.0 (set(VectorOpt<double>) を置き換え)
+     * 
+     */
+    Value &set(std::vector<double> &&v);
+    /*!
+     * \brief initializer_listで配列として値をセットする
+     *
+     */
+    Value &set(const std::initializer_list<double> &v) { return set(std::vector(v)); }
+    /*!
+     * \brief 配列型の値をセットする
+     * \since ver1.7 (VectorOpt(std::vector<T>) を置き換え)
+     *
+     * appleclang14でstd::ranges::rangeが使えないのでコンセプトを自前で実装している
+     *
+     */
+    template <typename R>
+    // requires std::ranges::range<R> &&
+    //          std::convertible_to<std::ranges::range_value_t<R>, T>
+        requires Range<R> && std::convertible_to<std::iter_value_t<R>, double>
+    Value &set(const R &range){
+        std::vector<double> vec;
+        vec.reserve(std::size(range));
+        for (const auto &v : range) {
+            vec.push_back(static_cast<double>(v));
+        }
+        return set(std::move(vec));
+    }
+    /*!
+     * \brief 生配列の値をセットする
+     * \since ver1.7
+     *
+     */
+    template <typename V, std::size_t N>
+        requires std::convertible_to<V, double>
+    Value &set(const V (&range)[N]) {
+        std::vector<double> vec;
+        vec.reserve(N);
+        for (const auto &v : range) {
+            this->push_back(static_cast<double>(v));
+        }
+        return set(std::move(vec));
+    }
     /*!
      * \brief 配列をセット、またはすでにsetされていればリサイズする
      * \since ver1.11
@@ -104,23 +146,12 @@ class WEBCFACE_DLL Value : protected Field, public EventTarget<Value> {
     Value &push_back(double v);
 
     /*!
-     * \brief Dictの値を再帰的にセットする
-     * \deprecated ver1.11〜
-     */
-    template <typename = void>
-    [[deprecated]] Value &operator=(const Dict &v) {
-        this->set(v);
-        return *this;
-    }
-    /*!
      * \brief 数値または配列をセットする
      *
-     * ver1.11〜
-     * vが配列でなく、parent()の配列データが利用可能ならその要素をセットする
-     *
      */
-    Value &operator=(const VectorOpt<double> &v) {
-        this->set(v);
+    template <typename T>
+    Value &operator=(T &&v) {
+        this->set(std::forward<T>(v));
         return *this;
     }
     /*!
@@ -142,11 +173,6 @@ class WEBCFACE_DLL Value : protected Field, public EventTarget<Value> {
      */
     std::optional<std::vector<double>> tryGetVec() const;
     /*!
-     * \brief 値を再帰的に取得しDictで返す
-     * \deprecated ver1.11〜
-     */
-    [[deprecated]] std::optional<Dict> tryGetRecurse() const;
-    /*!
      * \brief 値を返す
      *
      */
@@ -158,20 +184,8 @@ class WEBCFACE_DLL Value : protected Field, public EventTarget<Value> {
     std::vector<double> getVec() const {
         return tryGetVec().value_or(std::vector<double>{});
     }
-    /*!
-     * \brief 値を再帰的に取得しDictで返す
-     * \deprecated ver1.11〜
-     */
-    template <typename = void>
-    [[deprecated]] Dict getRecurse() const {
-        return tryGetRecurse().value_or(Dict{});
-    }
     operator double() const { return get(); }
     operator std::vector<double>() const { return getVec(); }
-    template <typename = void>
-    [[deprecated]] operator Dict() const {
-        return getRecurse();
-    }
     /*!
      * \brief syncの時刻を返す
      * \deprecated 1.7で Member::syncTime() に変更
@@ -269,8 +283,8 @@ class WEBCFACE_DLL Value : protected Field, public EventTarget<Value> {
      *
      */
     template <typename T>
-        requires std::same_as<T, Value>
-    bool operator==(const T &other) const {
+        requires std::same_as<T, Value> bool
+    operator==(const T &other) const {
         return static_cast<Field>(*this) == static_cast<Field>(other);
     }
     bool operator<(const Value &) const = delete;

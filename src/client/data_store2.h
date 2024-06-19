@@ -4,7 +4,6 @@
 #include <optional>
 #include <functional>
 #include <webcface/field.h>
-#include <webcface/common/dict.h>
 #include <webcface/common/def.h>
 #include <webcface/val_adaptor.h>
 #include <webcface/func_info.h>
@@ -130,22 +129,6 @@ class WEBCFACE_DLL_TEMPLATE SyncDataStore2 {
                              const SharedString &name);
     std::optional<T> getRecv(const FieldBase &base);
     /*!
-     * \brief data_recvから指定したfield以下のデータを返す
-     *
-     * 指定したfieldのreq,req_sendをtrueにセット
-     * さらに、指定したフィールド以下にデータが存在すれば
-     * そのフィールド(sub_field)も同様にreqをセット
-     *
-     * \param cb 再帰的に呼び出す
-     *
-     */
-    std::optional<Dict<T>> getRecvRecurse(
-        const SharedString &member, const SharedString &field,
-        const std::function<void(const SharedString &)> &cb = nullptr);
-    std::optional<Dict<T>> getRecvRecurse(
-        const FieldBase &base,
-        const std::function<void(const SharedString &)> &cb = nullptr);
-    /*!
      * \brief data_recvからデータを削除, reqを消す
      *
      * \return reqを削除したらtrue, reqがすでに削除されてればfalse
@@ -213,7 +196,7 @@ class WEBCFACE_DLL_TEMPLATE SyncDataStore2 {
     }
 };
 
-using ValueData = std::shared_ptr<VectorOpt<double>>;
+using ValueData = std::shared_ptr<std::vector<double>>;
 using TextData = std::shared_ptr<ValAdaptor>;
 using FuncData = std::shared_ptr<FuncInfo>;
 using ViewData = std::shared_ptr<std::vector<ViewComponent>>;

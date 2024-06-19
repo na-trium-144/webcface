@@ -29,10 +29,9 @@ Internal::ClientData::ClientData(const SharedString &name,
     : std::enable_shared_from_this<ClientData>(), self_member_name(name),
       host(host), port(port), current_curl_handle(nullptr),
       current_curl_closed(false), current_curl_path(), current_ws_buf(),
-      message_queue(std::make_shared<Queue<std::string>>()),
-      value_store(name), text_store(name), func_store(name), view_store(name),
-      image_store(name), robot_model_store(name), canvas3d_store(name),
-      canvas2d_store(name),
+      message_queue(std::make_shared<Queue<std::string>>()), value_store(name),
+      text_store(name), func_store(name), view_store(name), image_store(name),
+      robot_model_store(name), canvas3d_store(name), canvas2d_store(name),
       log_store(std::make_shared<
                 SyncDataStore1<std::shared_ptr<std::vector<LogLineData<>>>>>(
           name)),
@@ -465,9 +464,8 @@ void Internal::ClientData::onRecv(const std::string &message) {
             auto r =
                 std::any_cast<webcface::Message::Res<webcface::Message::Value>>(
                     obj);
-            onRecvRes(this, r,
-                      std::static_pointer_cast<VectorOpt<double>>(r.data),
-                      this->value_store, this->value_change_event);
+            onRecvRes(this, r, r.data, this->value_store,
+                      this->value_change_event);
             break;
         }
         case MessageKind::text + MessageKind::res: {

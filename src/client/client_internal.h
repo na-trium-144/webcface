@@ -10,7 +10,6 @@
 #include <cstdlib>
 #include <eventpp/eventdispatcher.h>
 #include <spdlog/logger.h>
-#include <webcface/common/vector.h>
 #include <webcface/encoding.h>
 #include <webcface/field.h>
 #include <webcface/func_info.h>
