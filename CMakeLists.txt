@@ -443,8 +443,14 @@ if(Magickpp_FOUND)
     add_library(magickpp INTERFACE)
     target_include_directories(magickpp INTERFACE ${Magickpp_INCLUDE_DIRS})
     target_compile_options(magickpp INTERFACE ${Magickpp_CFLAGS_OTHER})
-    target_link_libraries(magickpp INTERFACE ${Magickpp_LIBRARIES})
     target_link_directories(magickpp INTERFACE ${Magickpp_LIBRARY_DIRS})
+    if(WEBCFACE_SHARED AND APPLE)
+        foreach(lib IN LISTS Magickpp_LIBRARIES)
+            target_link_libraries(magickpp INTERFACE -Wl,-hidden-l${lib})
+        endforeach()
+    else()
+        target_link_libraries(magickpp INTERFACE ${Magickpp_LIBRARIES})
+    endif()
 else()
     set(Magickpp_INSTALLED 0)
     message(STATUS "Magick++ Not Found")
@@ -750,12 +756,18 @@ else()
         )
         list(REMOVE_DUPLICATES Magickpp_STATIC_LIBRARY_DIRS)
         list(FILTER Magickpp_STATIC_LIBRARY_DIRS EXCLUDE REGEX "${MAGICKPP_PREFIX}/lib")
-        target_link_libraries(magickpp INTERFACE ${Magickpp_STATIC_LIBRARIES})
         target_link_directories(magickpp INTERFACE
             $<BUILD_INTERFACE:${MAGICKPP_PREFIX}/lib>
             $<INSTALL_INTERFACE:lib>
             ${Magickpp_STATIC_LIBRARY_DIRS}
         )
+        if(WEBCFACE_SHARED AND APPLE)
+            foreach(lib IN LISTS Magickpp_STATIC_LIBRARIES)
+                target_link_libraries(magickpp INTERFACE -Wl,-hidden-l${lib})
+            endforeach()
+        else()
+            target_link_libraries(magickpp INTERFACE ${Magickpp_STATIC_LIBRARIES})
+        endif()
         if(WIN32)
             target_link_libraries(magickpp INTERFACE urlmon.lib)
         endif()
@@ -822,86 +834,97 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     add_compile_options(/utf-8 /W4 /bigobj)
 endif()
 
-set(CPP_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
-list(APPEND SVR_MAIN_SRC ${CPP_DIR}/server_main.cc)
-list(APPEND WEBCFACE_SERVER_IN_SRC ${CPP_DIR}/server/internal/server_ws.cc)
-list(APPEND WEBCFACE_SRC
-    ${CPP_DIR}/message/message.cc
-    ${CPP_DIR}/message/unix_path.cc
-    ${CPP_DIR}/server/member_data.cc
-    ${CPP_DIR}/server/store.cc
-    ${CPP_DIR}/server/websock.cc
-    ${CPP_DIR}/server/dir.cc
-    ${CPP_DIR}/server/ip.cc
-    ${CPP_DIR}/client/client.cc
-    ${CPP_DIR}/client/client_ws.cc
-    ${CPP_DIR}/client/data_store1.cc
-    ${CPP_DIR}/client/data_store2.cc
-    ${CPP_DIR}/client/encoding.cc
-    ${CPP_DIR}/client/field.cc
-    ${CPP_DIR}/client/func_info.cc
-    ${CPP_DIR}/client/func_result.cc
-    ${CPP_DIR}/client/func.cc
-    ${CPP_DIR}/client/func_listener.cc
-    ${CPP_DIR}/client/log.cc
-    ${CPP_DIR}/client/logger.cc
-    ${CPP_DIR}/client/member.cc
-    ${CPP_DIR}/client/text.cc
-    ${CPP_DIR}/client/robot_model.cc
-    ${CPP_DIR}/client/canvas3d.cc
-    ${CPP_DIR}/client/canvas2d.cc
-    ${CPP_DIR}/client/value.cc
-    ${CPP_DIR}/client/view.cc
-    ${CPP_DIR}/client/val_adaptor.cc
-    ${CPP_DIR}/client/image.cc
-    ${CPP_DIR}/client/image_frame.cc
-    ${CPP_DIR}/client/version.cc
-    ${CPP_DIR}/client/component_canvas3d.cc
-    ${CPP_DIR}/client/component_canvas2d.cc
-    ${CPP_DIR}/client/component_view.cc
-    ${CPP_DIR}/c_wcf/client.cc
-    ${CPP_DIR}/c_wcf/value.cc
-    ${CPP_DIR}/c_wcf/text.cc
-    ${CPP_DIR}/c_wcf/func.cc
-    ${CPP_DIR}/c_wcf/view.cc
+include_directories(${CMAKE_CURRENT_BINARY_DIR}/include)
+
+list(APPEND WEBCFACE_SERVER_IN_SRC
+    server-internal/src/server_ws.cc
+)
+list(APPEND WEBCFACE_ENCODING_SRC
+    encoding/src/encoding.cc
+    encoding/src/val_adaptor.cc
+)
+list(APPEND WEBCFACE_MESSAGE_SRC
+    message/src/message.cc
+)
+list(APPEND WEBCFACE_SERVER_SRC
+    server-store/src/member_data.cc
+    server-store/src/store.cc
+    server-store/src/websock.cc
+    server-store/src/dir.cc
+    server-store/src/ip.cc
+    server-store/src/unix_path.cc
+)
+list(APPEND WEBCFACE_CLIENT_SRC
+    client/src/client.cc
+    client/src/client_ws.cc
+    client/src/data_store1.cc
+    client/src/data_store2.cc
+    client/src/field.cc
+    client/src/func_info.cc
+    client/src/func_result.cc
+    client/src/func.cc
+    client/src/func_listener.cc
+    client/src/log.cc
+    client/src/logger.cc
+    client/src/member.cc
+    client/src/text.cc
+    client/src/robot_model.cc
+    client/src/canvas3d.cc
+    client/src/canvas2d.cc
+    client/src/value.cc
+    client/src/view.cc
+    client/src/image.cc
+    client/src/image_frame.cc
+    client/src/version.cc
+    client/src/component_canvas3d.cc
+    client/src/component_canvas2d.cc
+    client/src/component_view.cc
+    client/src/c_wcf/client.cc
+    client/src/c_wcf/value.cc
+    client/src/c_wcf/text.cc
+    client/src/c_wcf/func.cc
+    client/src/c_wcf/view.cc
+)
+list(APPEND SVR_MAIN_SRC
+    server/server_main.cc
 )
 list(APPEND EXAMPLE_SRC
-    ${CPP_DIR}/example/value.cc
-    ${CPP_DIR}/example/func.cc
-    ${CPP_DIR}/example/log.cc
-    ${CPP_DIR}/example/view.cc
-    ${CPP_DIR}/example/canvas2d.cc
-    ${CPP_DIR}/example/canvas3d.cc
-    ${CPP_DIR}/example/recv.cc
-    ${CPP_DIR}/example/c_example.c
-    ${CPP_DIR}/example/benchmark.cc
-    ${CPP_DIR}/example/image-send.cc
-    ${CPP_DIR}/example/image-recv.cc
+    examples/value.cc
+    examples/func.cc
+    examples/log.cc
+    examples/view.cc
+    examples/canvas2d.cc
+    examples/canvas3d.cc
+    examples/recv.cc
+    examples/c_example.c
+    examples/benchmark.cc
+    examples/image-send.cc
+    examples/image-recv.cc
 )
 if(OpenCV_FOUND)
     list(APPEND EXAMPLE_SRC
-        ${CPP_DIR}/example/cv-send.cc
-        ${CPP_DIR}/example/cv-recv.cc
+        examples/cv-send.cc
+        examples/cv-recv.cc
     )
 endif()
 list(APPEND TEST_SRC
-    ${CPP_DIR}/test/client_data_test.cc
-    ${CPP_DIR}/test/data_test.cc
-    ${CPP_DIR}/test/func_test.cc
-    ${CPP_DIR}/test/func_listener_test.cc
-    ${CPP_DIR}/test/view_test.cc
-    ${CPP_DIR}/test/robot_model_test.cc
-    ${CPP_DIR}/test/canvas3d_test.cc
-    ${CPP_DIR}/test/canvas2d_test.cc
-    ${CPP_DIR}/test/image_test.cc
-    ${CPP_DIR}/test/member_test.cc
-    ${CPP_DIR}/test/logger_test.cc
-    ${CPP_DIR}/test/client_test.cc
-    ${CPP_DIR}/test/dummy_server.cc
-    ${CPP_DIR}/test/dummy_client.cc
-    ${CPP_DIR}/test/server_test.cc
-    ${CPP_DIR}/test/encoding_test.cc
-    ${CPP_DIR}/test/c_wcf_test.cc
+    tests/client_data_test.cc
+    tests/data_test.cc
+    tests/func_test.cc
+    tests/func_listener_test.cc
+    tests/view_test.cc
+    tests/robot_model_test.cc
+    tests/canvas3d_test.cc
+    tests/canvas2d_test.cc
+    tests/image_test.cc
+    tests/member_test.cc
+    tests/logger_test.cc
+    tests/client_test.cc
+    tests/dummy_server.cc
+    tests/dummy_client.cc
+    tests/server_test.cc
+    tests/encoding_test.cc
+    tests/c_wcf_test.cc
 )
 if(WIN32)
     set(VERSION_RC ${CMAKE_CURRENT_BINARY_DIR}/${WEBCFACE_VERSION_RC_PATH})
@@ -909,93 +932,120 @@ else()
     set(VERSION_RC "")
 endif()
 
-set(INCLUDE_DIR
-    $<BUILD_INTERFACE:${CPP_DIR}/include>
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>
-    $<INSTALL_INTERFACE:include>
-)
+macro(set_target_postfix TARGET)
+    if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+        set_target_properties(${TARGET} PROPERTIES
+            DEBUG_POSTFIX "${WEBCFACE_SOVERSION}d"
+            RELEASE_POSTFIX "${WEBCFACE_SOVERSION}"
+        )
+    endif()
+endmacro()
 
 ###############################################################################
-
+# server-internal: private
 # Crowとasioをwebcfaceのインタフェースから隔離するためにライブラリを分ける
 # (こうしないとLinuxでどうしてもasioのシンボルがwebcfaceに残ってセグフォする)
-add_library(${PROJECT_NAME}-server-internal STATIC ${WEBCFACE_SERVER_IN_SRC})
-target_link_libraries(${PROJECT_NAME}-server-internal PRIVATE ${Crow})
-if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-    set_target_properties(${PROJECT_NAME}-server-internal PROPERTIES
-        DEBUG_POSTFIX "${WEBCFACE_SOVERSION}d"
-        RELEASE_POSTFIX "${WEBCFACE_SOVERSION}"
-    )
-endif()
+add_library(webcface-server-internal STATIC ${WEBCFACE_SERVER_IN_SRC})
+target_include_directories(webcface-server-internal PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/server-internal/include>)
+target_link_libraries(webcface-server-internal PRIVATE ${Crow})
+set_target_postfix(webcface-server-internal)
 
+# encoding: public
+add_library(webcface-encoding OBJECT ${WEBCFACE_ENCODING_SRC})
+target_include_directories(webcface-encoding PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/encoding/include>)
+target_link_libraries(webcface-encoding PRIVATE utfcpp)
+set_target_postfix(webcface-encoding)
+
+# message: APIはprivateだがシンボルは公開
+add_library(webcface-message OBJECT ${WEBCFACE_MESSAGE_SRC})
+target_include_directories(webcface-message PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/message/include>)
+target_link_libraries(webcface-message PUBLIC
+    webcface-encoding
+    msgpack-cxx
+    utfcpp
+)
+set_target_postfix(webcface-message)
+
+# server-store: public
+add_library(webcface-server-store OBJECT ${WEBCFACE_SERVER_SRC})
+target_include_directories(webcface-server-store PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/server-store/include>)
+target_link_libraries(webcface-server-store PRIVATE
+    webcface-encoding
+    webcface-message
+    magickpp
+)
+set_target_postfix(webcface-server-store)
+
+# client: public
 if(WEBCFACE_SHARED)
-    add_library(${PROJECT_NAME} SHARED ${WEBCFACE_SRC} ${VERSION_RC})
+    add_library(webcface SHARED ${WEBCFACE_CLIENT_SRC} ${VERSION_RC})
 else()
-    add_library(${PROJECT_NAME} STATIC ${WEBCFACE_SRC})
-    target_link_directories(${PROJECT_NAME} PUBLIC $<TARGET_PROPERTY:magickpp,INTERFACE_LINK_DIRECTORIES>)
+    add_library(webcface STATIC ${WEBCFACE_CLIENT_SRC})
+    # target_link_directories(webcface PUBLIC $<TARGET_PROPERTY:magickpp,INTERFACE_LINK_DIRECTORIES>)
 endif()
-target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_20)
-target_include_directories(${PROJECT_NAME} PUBLIC ${INCLUDE_DIR})
+target_compile_features(webcface PUBLIC cxx_std_20)
+# webcface-server-storeなどを単純にlinkするとinstallがめんどくさくなるので注意
+target_sources(webcface PRIVATE
+    $<TARGET_OBJECTS:webcface-encoding>
+    $<TARGET_OBJECTS:webcface-message>
+    $<TARGET_OBJECTS:webcface-server-store>
+)
+target_include_directories(webcface PRIVATE
+    $<BUILD_INTERFACE:$<TARGET_PROPERTY:webcface-message,INCLUDE_DIRECTORIES>>
+)
+target_include_directories(webcface PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/client/include>
+    $<BUILD_INTERFACE:$<TARGET_PROPERTY:webcface-encoding,INCLUDE_DIRECTORIES>>
+    $<BUILD_INTERFACE:$<TARGET_PROPERTY:webcface-server-store,INCLUDE_DIRECTORIES>>
+    $<INSTALL_INTERFACE:include>
+)
 if(WEBCFACE_SHARED AND NOT WIN32)
     # webcfaceのAPI以外をexportしない。
     # MSVCではデフォルトでdllexportしたもの以外exportされないので問題なし
-    set_target_properties(${PROJECT_NAME} PROPERTIES CXX_VISIBILITY_PRESET hidden)
+    set_target_properties(webcface-server-internal PROPERTIES CXX_VISIBILITY_PRESET hidden)
+    set_target_properties(webcface-encoding PROPERTIES CXX_VISIBILITY_PRESET hidden)
+    set_target_properties(webcface-message PROPERTIES CXX_VISIBILITY_PRESET hidden)
+    set_target_properties(webcface-server-store PROPERTIES CXX_VISIBILITY_PRESET hidden)
+    set_target_properties(webcface PROPERTIES CXX_VISIBILITY_PRESET hidden)
     if(NOT APPLE)
-        target_link_options(${PROJECT_NAME} PRIVATE -Wl,--exclude-libs,ALL)
+        # object libraryのwebcface-messageなどはexcludeされない
+        target_link_options(webcface PRIVATE -Wl,--exclude-libs,ALL)
     endif()
 endif()
-
-list(APPEND WEBCFACE_PRIVATE_DEPS msgpack-cxx utfcpp)
 if(WEBCFACE_SHARED AND APPLE)
     # MacOSでは--exclude-libsが使えず、その代わり-hidden-lでライブラリを渡す必要がある
-    add_library(${PROJECT_NAME}-hidden INTERFACE)
-    target_link_directories(${PROJECT_NAME}-hidden INTERFACE $<TARGET_LINKER_FILE_DIR:${PROJECT_NAME}-server-internal>)
-    target_link_libraries(${PROJECT_NAME}-hidden INTERFACE -Wl,-hidden-l${PROJECT_NAME}-server-internal)
+    target_link_directories(webcface PRIVATE $<TARGET_LINKER_FILE_DIR:webcface-server-internal>)
+    target_link_libraries(webcface PRIVATE -Wl,-hidden-lwebcface-server-internal)
+    add_dependencies(webcface webcface-server-internal)
+
     if(CURL_FOUND)
-        target_include_directories(${PROJECT_NAME}-hidden INTERFACE ${CURL_INCLUDE_DIRS})
+        target_include_directories(webcface PRIVATE ${CURL_INCLUDE_DIRS})
     else()
-        target_include_directories(${PROJECT_NAME}-hidden INTERFACE $<TARGET_PROPERTY:${libcurl},INCLUDE_DIRECTORIES>)
-        target_compile_definitions(${PROJECT_NAME}-hidden INTERFACE CURL_STATICLIB)
+        target_include_directories(webcface PRIVATE $<TARGET_PROPERTY:${libcurl},INCLUDE_DIRECTORIES>)
+        target_compile_definitions(webcface PRIVATE CURL_STATICLIB)
     endif()
-    target_link_directories(${PROJECT_NAME}-hidden INTERFACE $<TARGET_LINKER_FILE_DIR:${libcurl}>)
+    target_link_directories(webcface PRIVATE $<TARGET_LINKER_FILE_DIR:${libcurl}>)
     if(CMAKE_BUILD_TYPE STREQUAL "Debug")
         # なぜかTARGET_LINKER_FILE_BASE_NAMEすると"libcurl"になってしまう
-        target_link_libraries(${PROJECT_NAME}-hidden INTERFACE -Wl,-hidden-lcurl-d)
+        target_link_libraries(webcface PRIVATE -Wl,-hidden-lcurl-d)
     else()
-        target_link_libraries(${PROJECT_NAME}-hidden INTERFACE -Wl,-hidden-lcurl)
+        target_link_libraries(webcface PRIVATE -Wl,-hidden-lcurl)
     endif()
-    target_link_libraries(${PROJECT_NAME}-hidden INTERFACE $<TARGET_PROPERTY:${libcurl},LINK_LIBRARIES>)
-    add_dependencies(${PROJECT_NAME} ${PROJECT_NAME}-server-internal ${libcurl})
-    list(APPEND WEBCFACE_PRIVATE_DEPS ${PROJECT_NAME}-hidden)
-
-    # magickppはlink_libraryが-l指定なので重ねて-hidden-lすればいい
-    if(Magickpp_INSTALLED)
-        foreach(lib IN LISTS Magickpp_LIBRARIES)
-            list(APPEND WEBCFACE_PRIVATE_DEPS -Wl,-hidden-l${lib})
-        endforeach()
-    else()
-        foreach(lib IN LISTS Magickpp_STATIC_LIBRARIES)
-            list(APPEND WEBCFACE_PRIVATE_DEPS -Wl,-hidden-l${lib})
-        endforeach()
-    endif()
-    list(APPEND WEBCFACE_PRIVATE_DEPS magickpp)
+    target_link_libraries(webcface PRIVATE $<TARGET_PROPERTY:${libcurl},LINK_LIBRARIES>)
+    add_dependencies(webcface ${libcurl})
 else()
-    list(APPEND WEBCFACE_PRIVATE_DEPS ${PROJECT_NAME}-server-internal ${libcurl} magickpp)
-endif()
-list(APPEND WEBCFACE_PUBLIC_DEPS eventpp::eventpp ${spdlog})
-if(WIN32)
-    list(APPEND WEBCFACE_PRIVATE_DEPS ws2_32.lib wsock32.lib iphlpapi.lib)
-endif()
-target_link_libraries(${PROJECT_NAME} PRIVATE ${WEBCFACE_PRIVATE_DEPS})
-target_link_libraries(${PROJECT_NAME} PUBLIC ${WEBCFACE_PUBLIC_DEPS})
-
-if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-    set_target_properties(${PROJECT_NAME} PROPERTIES
-        DEBUG_POSTFIX "${WEBCFACE_SOVERSION}d"
-        RELEASE_POSTFIX "${WEBCFACE_SOVERSION}"
+    target_link_libraries(webcface PRIVATE
+        webcface-server-internal
+        ${libcurl}
     )
 endif()
-set_target_properties(${PROJECT_NAME} PROPERTIES
+target_link_libraries(webcface PRIVATE webcface-message)
+target_link_libraries(webcface PUBLIC eventpp::eventpp ${spdlog})
+if(WIN32)
+    target_link_libraries(webcface PRIVATE ws2_32.lib wsock32.lib iphlpapi.lib)
+endif()
+set_target_postfix(webcface)
+set_target_properties(webcface PROPERTIES
     INSTALL_RPATH "$ORIGIN/;@loader_path/"
     INSTALL_RPATH_USE_LINK_PATH TRUE
     VERSION ${PROJECT_VERSION}
@@ -1003,32 +1053,36 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 )
 if(NOT "${WEBCFACE_CLANG_TIDY}" STREQUAL "")
     set(CLANG_TIDY_CMD "${WEBCFACE_CLANG_TIDY}" "--header-filter=${CMAKE_CURRENT_SOURCE_DIR}/src")
-    set_target_properties(${PROJECT_NAME} PROPERTIES CXX_CLANG_TIDY "${CLANG_TIDY_CMD}")
+    set_target_properties(webcface-server-internal PROPERTIES CXX_CLANG_TIDY "${CLANG_TIDY_CMD}")
+    set_target_properties(webcface-encoding PROPERTIES CXX_CLANG_TIDY "${CLANG_TIDY_CMD}")
+    set_target_properties(webcface-message PROPERTIES CXX_CLANG_TIDY "${CLANG_TIDY_CMD}")
+    set_target_properties(webcface-server-store PROPERTIES CXX_CLANG_TIDY "${CLANG_TIDY_CMD}")
+    set_target_properties(webcface PROPERTIES CXX_CLANG_TIDY "${CLANG_TIDY_CMD}")
 endif()
-add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
+add_library(webcface::webcface ALIAS webcface)
 
 add_library(wcf INTERFACE)
 target_include_directories(wcf INTERFACE ${INCLUDE_DIR})
 target_compile_features(wcf INTERFACE c_std_99)
 if(WEBCFACE_SHARED)
     # sharedの場合はlibc++とリンクする必要もない
-    target_link_libraries(wcf INTERFACE $<TARGET_LINKER_FILE:${PROJECT_NAME}::${PROJECT_NAME}>)
+    target_link_libraries(wcf INTERFACE $<TARGET_LINKER_FILE:webcface::webcface>)
 else()
-    target_link_libraries(wcf INTERFACE ${PROJECT_NAME})
+    target_link_libraries(wcf INTERFACE webcface)
 endif()
-add_library(${PROJECT_NAME}::wcf ALIAS wcf)
+add_library(webcface::wcf ALIAS wcf)
 
-add_executable(${PROJECT_NAME}-server ${SVR_MAIN_SRC} ${VERSION_RC})
-target_link_libraries(${PROJECT_NAME}-server PRIVATE
-    ${PROJECT_NAME}
+add_executable(webcface-server ${SVR_MAIN_SRC} ${VERSION_RC})
+target_link_libraries(webcface-server PRIVATE
+    webcface
     CLI11::CLI11
     msgpack-cxx
 )
-set_target_properties(${PROJECT_NAME}-server PROPERTIES
+set_target_properties(webcface-server PROPERTIES
     INSTALL_RPATH "$ORIGIN/../lib/;$ORIGIN/;@loader_path/../lib/;@loader_path/"
     INSTALL_RPATH_USE_LINK_PATH TRUE
 )
-target_compile_definitions(${PROJECT_NAME}-server PRIVATE
+target_compile_definitions(webcface-server PRIVATE
     FILE_DESCRIPTION="WebCFace Server"
     FILE_IS_APP
 )
@@ -1036,33 +1090,33 @@ target_compile_definitions(${PROJECT_NAME}-server PRIVATE
 if(WEBCFACE_EXAMPLE)
     foreach(SRC IN LISTS EXAMPLE_SRC)
         get_filename_component(TARGET ${SRC} NAME_WE)
-        add_executable(${PROJECT_NAME}-example-${TARGET} ${SRC} ${VERSION_RC})
-        target_link_libraries(${PROJECT_NAME}-example-${TARGET} PRIVATE ${PROJECT_NAME})
+        add_executable(webcface-example-${TARGET} ${SRC} ${VERSION_RC})
+        target_link_libraries(webcface-example-${TARGET} PRIVATE webcface)
         set(WEBCFACE_EXAMPLE_TARGETS
             ${WEBCFACE_EXAMPLE_TARGETS}
-            ${PROJECT_NAME}-example-${TARGET}
+            webcface-example-${TARGET}
         )
         set(WEBCFACE_EXAMPLE_TARGETS_CPACK
             ${WEBCFACE_EXAMPLE_TARGETS_CPACK}
-            ${PROJECT_NAME}-example-${TARGET} "Example ${TARGET}"
+            webcface-example-${TARGET} "Example ${TARGET}"
         )
-        set_target_properties(${PROJECT_NAME}-example-${TARGET} PROPERTIES
+        set_target_properties(webcface-example-${TARGET} PROPERTIES
             INSTALL_RPATH "$ORIGIN/../lib/;$ORIGIN/;@loader_path/../lib/;@loader_path/"
             INSTALL_RPATH_USE_LINK_PATH TRUE
         )
-        target_compile_definitions(${PROJECT_NAME}-example-${TARGET} PRIVATE
+        target_compile_definitions(webcface-example-${TARGET} PRIVATE
             FILE_DESCRIPTION="WebCFace Example ${TARGET}"
             FILE_IS_APP
         )
     endforeach()
     foreach(TARGET image-recv image-send)
-        target_link_libraries(${PROJECT_NAME}-example-${TARGET} PRIVATE
+        target_link_libraries(webcface-example-${TARGET} PRIVATE
             magickpp
         )
     endforeach()
     if(OpenCV_FOUND)
         foreach(TARGET cv-recv cv-send)
-            target_link_libraries(${PROJECT_NAME}-example-${TARGET} PRIVATE
+            target_link_libraries(webcface-example-${TARGET} PRIVATE
                 opencv_core
                 opencv_imgcodecs
                 opencv_imgproc
@@ -1074,18 +1128,25 @@ endif()
 
 if(WEBCFACE_TEST)
     enable_testing()
-    add_executable(${PROJECT_NAME}-test ${TEST_SRC})
-    target_link_libraries(${PROJECT_NAME}-test PRIVATE
-        ${PROJECT_NAME}
+    add_executable(webcface-test ${TEST_SRC})
+    target_link_libraries(webcface-test PRIVATE
+        webcface-encoding
+        webcface-message
+        webcface-server-store
+        webcface
         GTest::gtest_main
-        ${WEBCFACE_PRIVATE_DEPS}
+        msgpack-cxx
+        utfcpp
+        eventpp::eventpp
+        ${spdlog}
+        ${libcurl}
         ${Crow}
     )
-    target_compile_definitions(${PROJECT_NAME}-test PRIVATE
+    target_compile_definitions(webcface-test PRIVATE
         WEBCFACE_TEST_TIMEOUT=${WEBCFACE_TEST_TIMEOUT}
     )
     include(GoogleTest)
-    gtest_discover_tests(${PROJECT_NAME}-test DISCOVERY_TIMEOUT 600)
+    gtest_discover_tests(webcface-test DISCOVERY_TIMEOUT 600)
 endif()
 
 ###############################################################################
@@ -1093,7 +1154,7 @@ if(WEBCFACE_INSTALL)
     include(CMakePackageConfigHelpers)
 
     # binaries
-    install(TARGETS ${PROJECT_NAME}-server
+    install(TARGETS webcface-server
         RUNTIME DESTINATION bin
     )
     install(TARGETS ${WEBCFACE_EXAMPLE_TARGETS}
@@ -1101,8 +1162,8 @@ if(WEBCFACE_INSTALL)
     )
 
     # library
-    list(APPEND WEBCFACE_EXPORTS ${PROJECT_NAME} wcf)
-    list(APPEND WEBCFACE_PKGCONFIG_LIBS -l${PROJECT_NAME})
+    list(APPEND WEBCFACE_EXPORTS webcface wcf)
+    list(APPEND WEBCFACE_PKGCONFIG_LIBS -lwebcface)
     # public dependencies
     if(spdlog_FOUND)
         list(APPEND WEBCFACE_PKGCONFIG_REQUIRES spdlog)
@@ -1119,8 +1180,8 @@ if(WEBCFACE_INSTALL)
     endif()
     if(NOT WEBCFACE_SHARED)
         # private static dependencies
-        list(APPEND WEBCFACE_EXPORTS ${PROJECT_NAME}-server-internal)
-        list(APPEND WEBCFACE_PKGCONFIG_LIBS -l${PROJECT_NAME}-server-internal)
+        list(APPEND WEBCFACE_EXPORTS webcface-server-internal)
+        list(APPEND WEBCFACE_PKGCONFIG_LIBS -lwebcface-server-internal)
         if(NOT msgpack-cxx_FOUND)
             list(APPEND WEBCFACE_EXPORTS msgpack-cxx)
         endif()
@@ -1199,58 +1260,58 @@ if(WEBCFACE_INSTALL)
         endif()
     endif()
     install(TARGETS ${WEBCFACE_EXPORTS}
-        EXPORT ${PROJECT_NAME}-targets
+        EXPORT webcface-targets
         LIBRARY DESTINATION lib
         ARCHIVE DESTINATION lib
         RUNTIME DESTINATION bin
     )
     if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
         if(WEBCFACE_SHARED)
-            get_target_property(WEBCFACE_PDB ${PROJECT_NAME} PDB_NAME)
+            get_target_property(WEBCFACE_PDB webcface PDB_NAME)
         else()
-            get_target_property(WEBCFACE_PDB ${PROJECT_NAME} COMPILE_PDB_NAME)
+            get_target_property(WEBCFACE_PDB webcface COMPILE_PDB_NAME)
         endif()
         install(FILES ${WEBCFACE_PDB}
             DESTINATION bin
             OPTIONAL
         )
     endif()
-    install(EXPORT ${PROJECT_NAME}-targets
-        FILE ${PROJECT_NAME}-targets.cmake
-        NAMESPACE ${PROJECT_NAME}::
-        DESTINATION lib/cmake/${PROJECT_NAME}
+    install(EXPORT webcface-targets
+        FILE webcface-targets.cmake
+        NAMESPACE webcface::
+        DESTINATION lib/cmake/webcface
     )
     set(PACKAGE_INIT "@PACKAGE_INIT@")
     configure_file(
-        ${CMAKE_CURRENT_SOURCE_DIR}/cmake/${PROJECT_NAME}-config.cmake.in
-        ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config.cmake.in
+        ${CMAKE_CURRENT_SOURCE_DIR}/cmake/webcface-config.cmake.in
+        ${CMAKE_CURRENT_BINARY_DIR}/webcface-config.cmake.in
         @ONLY
     )
     unset(PACKAGE_INIT)
     configure_package_config_file(
-        ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config.cmake.in
-        ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config.cmake
-        INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
+        ${CMAKE_CURRENT_BINARY_DIR}/webcface-config.cmake.in
+        ${CMAKE_CURRENT_BINARY_DIR}/webcface-config.cmake
+        INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/webcface
     )
     write_basic_package_version_file(
-        ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config-version.cmake
+        ${CMAKE_CURRENT_BINARY_DIR}/webcface-config-version.cmake
         COMPATIBILITY SameMajorVersion
     )
     install(FILES
-        ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config.cmake
-        ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config-version.cmake
-        DESTINATION lib/cmake/${PROJECT_NAME}
+        ${CMAKE_CURRENT_BINARY_DIR}/webcface-config.cmake
+        ${CMAKE_CURRENT_BINARY_DIR}/webcface-config-version.cmake
+        DESTINATION lib/cmake/webcface
     )
 
     # pkg-config
     list(JOIN WEBCFACE_PKGCONFIG_LIBS " " WEBCFACE_PKGCONFIG_LIBS)
     list(JOIN WEBCFACE_PKGCONFIG_REQUIRES " " WEBCFACE_PKGCONFIG_REQUIRES)
     configure_file(
-        ${CMAKE_CURRENT_SOURCE_DIR}/cmake/${PROJECT_NAME}.pc.in
-        ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.pc
+        ${CMAKE_CURRENT_SOURCE_DIR}/cmake/webcface.pc.in
+        ${CMAKE_CURRENT_BINARY_DIR}/webcface.pc
         @ONLY
     )
-    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.pc
+    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/webcface.pc
         DESTINATION lib/pkgconfig
     )
 
@@ -1387,7 +1448,7 @@ if(WEBCFACE_INSTALL)
     include(CPack)
 
     if(ament_cmake_FOUND)
-        ament_export_targets(${PROJECT_NAME}-targets HAS_LIBRARY_TARGET)
+        ament_export_targets(webcface-targets HAS_LIBRARY_TARGET)
         ament_package()
     endif()
 endif()
