@@ -1,12 +1,8 @@
 #pragma once
 #include <mutex>
-#include <unordered_map>
-#include <string>
 #include <optional>
-#include <vector>
-#include <memory>
 #include <webcface/common/def.h>
-#include <webcface/common/log.h>
+#include <webcface/log.h>
 #include <webcface/encoding.h>
 
 WEBCFACE_NS_BEGIN

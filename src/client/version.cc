@@ -1,5 +1,5 @@
 #include <webcface/common/def.h>
-#include <webcface/common/version.h>
+#include <webcface/version.h>
 WEBCFACE_NS_BEGIN
 inline namespace Version {
 const std::array<int, 3> version = {

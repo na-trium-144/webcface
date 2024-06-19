@@ -3,7 +3,7 @@
 #include <vector>
 #include <utility>
 #include <thread>
-#include <webcface/common/queue.h>
+#include "../client/queue.h"
 
 using namespace webcface;
 struct DummyClient {
@@ -32,7 +32,7 @@ struct DummyClient {
     }
 
     std::atomic<bool> closing = false;
-    Common::Queue<std::string> msg_queue;
+    Queue<std::string> msg_queue;
     std::thread t;
     explicit DummyClient(bool use_unix = false);
     ~DummyClient();

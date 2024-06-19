@@ -8,7 +8,7 @@
 #include <cstdint>
 #include <spdlog/logger.h>
 #include <webcface/func_info.h>
-#include <webcface/common/log.h>
+#include <webcface/log.h>
 #include <webcface/image_frame.h>
 #include <webcface/common/def.h>
 #include "webcface/component_canvas2d.h"
@@ -498,7 +498,7 @@ struct WEBCFACE_DLL Image : public MessageBase<MessageKind::image> {
     ImageColorMode color_mode_;
     ImageCompressMode cmp_mode_;
     Image() = default;
-    Image(const SharedString &field, const ImageBase &img)
+    Image(const SharedString &field, const ImageFrame &img)
         : field(field), width_(img.width()), height_(img.height()),
           data_(img.dataPtr()), color_mode_(img.colorMode()),
           cmp_mode_(img.compressMode()) {}
@@ -519,7 +519,7 @@ struct WEBCFACE_DLL Image : public MessageBase<MessageKind::image> {
  */
 struct WEBCFACE_DLL Log : public MessageBase<MessageKind::log> {
     unsigned int member_id = 0;
-    struct WEBCFACE_DLL LogLine : private Common::LogLineData<> {
+    struct WEBCFACE_DLL LogLine : private LogLineData<> {
         /*!
          * \brief 1970/1/1からの経過ミリ秒
          *
@@ -528,12 +528,12 @@ struct WEBCFACE_DLL Log : public MessageBase<MessageKind::log> {
          */
         std::uint64_t time_ms = 0;
         LogLine() = default;
-        LogLine(const Common::LogLineData<> &l)
-            : Common::LogLineData<>(l),
+        LogLine(const LogLineData<> &l)
+            : LogLineData<>(l),
               time_ms(std::chrono::duration_cast<std::chrono::milliseconds>(
                           time_.time_since_epoch())
                           .count()) {}
-        Common::LogLineData<> &data() {
+        LogLineData<> &data() {
             time_ = std::chrono::system_clock::time_point(
                 std::chrono::milliseconds(time_ms));
             return *this;
@@ -552,7 +552,7 @@ struct WEBCFACE_DLL Log : public MessageBase<MessageKind::log> {
             this->log->emplace_back(*it);
         }
     }
-    explicit Log(const Common::LogLineData<> &ll) : member_id(0) {
+    explicit Log(const LogLineData<> &ll) : member_id(0) {
         this->log = std::make_shared<std::deque<LogLine>>(1);
         this->log->front() = ll;
     }

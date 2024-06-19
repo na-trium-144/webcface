@@ -5,8 +5,7 @@
 #include <spdlog/logger.h>
 #include <spdlog/sinks/base_sink.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
-#include "common/queue.h"
-#include "common/log.h"
+#include "log.h"
 #include <webcface/common/def.h>
 
 WEBCFACE_NS_BEGIN

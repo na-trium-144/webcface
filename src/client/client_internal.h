@@ -14,8 +14,8 @@
 #include <webcface/encoding.h>
 #include <webcface/field.h>
 #include <webcface/func_info.h>
-#include <webcface/common/log.h>
-#include <webcface/common/queue.h>
+#include <webcface/log.h>
+#include "queue.h"
 #include <webcface/image_frame.h>
 #include <webcface/func_result.h>
 #include <webcface/logger.h>
@@ -117,7 +117,7 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
      * 接続できていない場合送信されずキューにたまる
      *
      */
-    std::shared_ptr<Common::Queue<std::string>> message_queue;
+    std::shared_ptr<Queue<std::string>> message_queue;
 
     /*!
      * \brief 受信時の処理
@@ -145,7 +145,7 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
      * \brief listenerがfetchするの待ちの関数呼び出しをためておく
      *
      */
-    StrMap1<Common::Queue<FuncCallHandle>> func_listener_handlers;
+    StrMap1<Queue<FuncCallHandle>> func_listener_handlers;
 
     StrMap1<unsigned int> member_ids;
     std::unordered_map<unsigned int, std::string> member_lib_name,
@@ -218,7 +218,7 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
      * \brief sync()のタイミングで実行を同期する関数のcondition_variable
      *
      */
-    Common::Queue<std::shared_ptr<FuncOnSync>> func_sync_queue;
+    Queue<std::shared_ptr<FuncOnSync>> func_sync_queue;
 
     FuncWrapperType default_func_wrapper;
 

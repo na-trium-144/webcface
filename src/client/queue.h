@@ -7,8 +7,10 @@
 #include <webcface/common/def.h>
 
 WEBCFACE_NS_BEGIN
-inline namespace Common {
-//! 排他制御をしたただのキュー
+/*! 
+ * \brief 排他制御をしたただのキュー
+ * 
+ */
 template <typename T>
 class Queue {
     std::mutex mtx;
@@ -44,5 +46,4 @@ class Queue {
         std::queue<T>().swap(que);
     }
 };
-} // namespace Common
 WEBCFACE_NS_END
