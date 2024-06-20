@@ -1,5 +1,5 @@
 #include "c_wcf_internal.h"
-#include "webcface/encoding.h"
+#include "webcface/encoding/encoding.h"
 #include <webcface/view.h>
 #include <cstring>
 

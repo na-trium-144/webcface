@@ -1,7 +1,7 @@
 #include "client_internal.h"
 #include <webcface/value.h>
 #include <webcface/member.h>
-#include "../message/message.h"
+#include "webcface/message/message.h"
 #include <algorithm>
 #include <cctype>
 #include "event_target_impl.h"

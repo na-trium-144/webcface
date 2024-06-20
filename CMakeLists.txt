@@ -974,6 +974,15 @@ target_link_libraries(webcface-server-store PRIVATE
     webcface-message
     magickpp
 )
+if(WEBCFACE_SHARED AND APPLE)
+    # MacOSでは--exclude-libsが使えず、その代わり-hidden-lでライブラリを渡す必要がある
+    target_include_directories(webcface-server-store PRIVATE $<TARGET_PROPERTY:webcface-server-internal,INTERFACE_INCLUDE_DIRECTORIES>)
+    target_link_directories(webcface-server-store PRIVATE $<TARGET_LINKER_FILE_DIR:webcface-server-internal>)
+    target_link_libraries(webcface-server-store PRIVATE -Wl,-hidden-lwebcface-server-internal)
+    add_dependencies(webcface-server-store webcface-server-internal)
+else()
+    target_link_libraries(webcface-server-store PRIVATE webcface-server-internal)
+endif()
 set_target_postfix(webcface-server-store)
 
 # client: public
@@ -1004,11 +1013,6 @@ if(WEBCFACE_SHARED AND NOT WIN32)
     endif()
 endif()
 if(WEBCFACE_SHARED AND APPLE)
-    # MacOSでは--exclude-libsが使えず、その代わり-hidden-lでライブラリを渡す必要がある
-    target_link_directories(webcface PRIVATE $<TARGET_LINKER_FILE_DIR:webcface-server-internal>)
-    target_link_libraries(webcface PRIVATE -Wl,-hidden-lwebcface-server-internal)
-    add_dependencies(webcface webcface-server-internal)
-
     if(CURL_FOUND)
         target_include_directories(webcface PRIVATE ${CURL_INCLUDE_DIRS})
     else()
@@ -1025,7 +1029,7 @@ if(WEBCFACE_SHARED AND APPLE)
     target_link_libraries(webcface PRIVATE $<TARGET_PROPERTY:${libcurl},LINK_LIBRARIES>)
     add_dependencies(webcface ${libcurl})
 else()
-    target_link_libraries(webcface PRIVATE webcface-server-internal ${libcurl})
+    target_link_libraries(webcface PRIVATE ${libcurl})
 endif()
 target_link_libraries(webcface PUBLIC eventpp::eventpp ${spdlog})
 if(WIN32)

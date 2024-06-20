@@ -1,12 +1,14 @@
 #pragma once
 #include "webcface/component_view.h"
-#include "webcface/encoding.h"
+#include "webcface/encoding/encoding.h"
 #include "webcface/geometry.h"
 #include "webcface/transform.h"
 #include <webcface/common/def.h>
 
 WEBCFACE_NS_BEGIN
-inline namespace Common {
+namespace Message{
+struct RobotLink;
+}
 
 enum class RobotJointType {
     fixed_absolute = 0,
@@ -159,6 +161,8 @@ struct RobotLink {
     Geometry geometry;
     ViewColor color;
     RobotLink() = default;
+    RobotLink(const Message::RobotLink &m, const std::vector<SharedString> &link_names);
+    Message::RobotLink toMessage(const std::vector<SharedString> &link_names) const;
     /*!
      * \since ver2.0
      */
@@ -210,5 +214,4 @@ struct RobotLink {
               ViewColor color = ViewColor::inherit)
         : RobotLink(name, fixedAbsolute({0, 0, 0}), geometry, color) {}
 };
-} // namespace Common
 WEBCFACE_NS_END

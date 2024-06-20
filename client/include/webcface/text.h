@@ -6,7 +6,7 @@
 #include "field.h"
 #include "event_target.h"
 #include <webcface/common/def.h>
-#include "val_adaptor.h"
+#include "webcface/encoding/val_adaptor.h"
 
 WEBCFACE_NS_BEGIN
 

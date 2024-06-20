@@ -6,9 +6,11 @@
 #include <webcface/common/def.h>
 
 WEBCFACE_NS_BEGIN
-
+namespace Message {
+struct LogLine;
+}
 template <typename CharT = char8_t>
-class LogLineData {
+class WEBCFACE_DLL_TEMPLATE LogLineData {
   protected:
     int level_ = 0;
     std::chrono::system_clock::time_point time_;
@@ -28,6 +30,9 @@ class LogLineData {
         return LogLineData<OtherCharT>(level_, time_, message_);
     }
 
+    LogLineData(const Message::LogLine &m);
+    Message::LogLine toMessage() const;
+
     int level() const { return level_; }
     std::chrono::system_clock::time_point time() const { return time_; }
     const std::basic_string<CharT> message() const {
@@ -40,6 +45,13 @@ class LogLineData {
         }
     };
 };
+
+#ifdef _WIN32
+extern template class WEBCFACE_DLL_INSTANCE_DECL LogLineData<char8_t>;
+extern template class WEBCFACE_DLL_INSTANCE_DECL LogLineData<char>;
+extern template class WEBCFACE_DLL_INSTANCE_DECL LogLineData<wchar_t>;
+#endif
+
 using LogLine = LogLineData<char>;
 using LogLineW = LogLineData<wchar_t>;
 

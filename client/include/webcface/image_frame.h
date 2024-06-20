@@ -8,6 +8,9 @@
 #include <webcface/common/def.h>
 
 WEBCFACE_NS_BEGIN
+namespace Message {
+struct ImageFrame;
+} // namespace Message
 
 enum class ImageColorMode {
     gray = 0,
@@ -115,6 +118,8 @@ class WEBCFACE_DLL ImageFrame {
                const std::shared_ptr<std::vector<unsigned char>> &data,
                ImageColorMode color_mode = ImageColorMode::bgr,
                ImageCompressMode cmp_mode = ImageCompressMode::raw);
+    ImageFrame(const Message::ImageFrame &m);
+    Message::ImageFrame toMessage() const;
     /*!
      * \brief 生画像データの配列からImageFrameを作成
      *
@@ -266,14 +271,24 @@ class WEBCFACE_DLL ImageFrame {
 
 using ImageBase [[deprecated]] = ImageFrame;
 
-struct WEBCFACE_DLL ImageReq {
-    std::optional<int> rows = std::nullopt, cols = std::nullopt;
-    std::optional<ImageColorMode> color_mode = std::nullopt;
-    ImageCompressMode cmp_mode = ImageCompressMode::raw;
-    int quality = 0;
-    std::optional<double> frame_rate = std::nullopt;
+// struct WEBCFACE_DLL ImageReq {
+//     std::optional<int> rows = std::nullopt, cols = std::nullopt;
+//     std::optional<ImageColorMode> color_mode = std::nullopt;
+//     ImageCompressMode cmp_mode = ImageCompressMode::raw;
+//     int quality = 0;
+//     std::optional<double> frame_rate = std::nullopt;
 
-    bool operator==(const ImageReq &rhs) const;
-};
+//     ImageReq() = default;
+//     ImageReq(std::optional<int> rows, std::optional<int> cols,
+//              std::optional<ImageColorMode> color_mode,
+//              ImageCompressMode cmp_mode, int quality,
+//              std::optional<double> frame_rate)
+//         : rows(rows), cols(cols), color_mode(color_mode), cmp_mode(cmp_mode),
+//           quality(quality), frame_rate(frame_rate) {}
+//     ImageReq(const Message::ImageReq &m);
+//     Message::ImageReq toMessage() const;
+    
+//     bool operator==(const ImageReq &rhs) const;
+// };
 
 WEBCFACE_NS_END

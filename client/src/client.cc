@@ -11,7 +11,7 @@
 #include <webcface/common/def.h>
 #include <string>
 #include <chrono>
-#include "../message/message.h"
+#include "webcface/message/message.h"
 #include "client_internal.h"
 #include "client_ws.h"
 
@@ -287,7 +287,15 @@ std::string Internal::ClientData::syncData(bool is_first,
         Message::pack(buffer, len, Message::Text{{}, v.first, v.second});
     }
     for (const auto &v : robot_model_store.transferSend(is_first)) {
-        Message::pack(buffer, len, Message::RobotModel{v.first, v.second});
+        auto data = std::make_shared<std::vector<Message::RobotLink>>();
+        data->reserve(v.second->size());
+        std::vector<SharedString> link_names;
+        link_names.reserve(v.second->size());
+        for (std::size_t i = 0; i < v.second->size(); i++) {
+            data->emplace_back(v.second->at(i).toMessage(link_names));
+            link_names.push_back((*data)[i].name);
+        }
+        Message::pack(buffer, len, Message::RobotModel{v.first, data});
     }
     auto view_prev = view_store.getSendPrev(is_first);
     for (const auto &p : view_store.transferSend(is_first)) {
@@ -326,7 +334,8 @@ std::string Internal::ClientData::syncData(bool is_first,
         }
     }
     for (const auto &v : image_store.transferSend(is_first)) {
-        Message::pack(buffer, len, Message::Image{v.first, v.second});
+        Message::pack(buffer, len,
+                      Message::Image{v.first, v.second.toMessage()});
     }
 
     if (log_store) {
@@ -349,7 +358,7 @@ std::string Internal::ClientData::syncData(bool is_first,
     }
     for (const auto &v : func_store.transferSend(is_first)) {
         if (!v.first.u8String().starts_with(field_separator)) {
-            Message::pack(buffer, len, Message::FuncInfo{v.first, *v.second});
+            Message::pack(buffer, len, v.second->toMessage(v.first));
         }
     }
 
@@ -477,9 +486,16 @@ void Internal::ClientData::onRecv(const std::string &message) {
             break;
         }
         case MessageKind::robot_model + MessageKind::res: {
-            auto r = std::any_cast<
-                webcface::Message::Res<webcface::Message::RobotModel>>(obj);
-            onRecvRes(this, r, r.commonLinks(), this->robot_model_store,
+            auto r = std::any_cast<Message::Res<Message::RobotModel>>(obj);
+            auto common_links = std::make_shared<std::vector<RobotLink>>();
+            common_links->reserve(r.data->size());
+            std::vector<SharedString> link_names;
+            link_names.reserve(r.data->size());
+            for (std::size_t i = 0; i < r.data->size(); i++) {
+                common_links->emplace_back((*r.data)[i], link_names);
+                link_names.push_back((*r.data)[i].name);
+            }
+            onRecvRes(this, r, common_links, this->robot_model_store,
                       this->robot_model_change_event);
             break;
         }
@@ -595,7 +611,7 @@ void Internal::ClientData::onRecv(const std::string &message) {
                 this->log_store->setRecv(member, *log_s);
             }
             for (auto &lm : *r.log) {
-                (*log_s)->push_back(lm.data());
+                (*log_s)->emplace_back(lm);
             }
             std::shared_ptr<eventpp::CallbackList<void(Log)>> cl;
             {

@@ -1,4 +1,5 @@
 #include <webcface/image_frame.h>
+#include <webcface/message/message.h>
 
 WEBCFACE_NS_BEGIN
 
@@ -43,10 +44,21 @@ std::size_t ImageFrame::channels() const {
     }
 }
 
-bool ImageReq::operator==(const ImageReq &rhs) const {
-    return rows == rhs.rows && cols == rhs.cols &&
-           color_mode == rhs.color_mode && cmp_mode == rhs.cmp_mode &&
-           quality == rhs.quality;
+// bool ImageReq::operator==(const ImageReq &rhs) const {
+//     return rows == rhs.rows && cols == rhs.cols &&
+//            color_mode == rhs.color_mode && cmp_mode == rhs.cmp_mode &&
+//            quality == rhs.quality;
+// }
+
+ImageFrame::ImageFrame(const Message::ImageFrame &m)
+    : size_(sizeWH(m.width_, m.height_)), data_(m.data_),
+      color_mode_(static_cast<ImageColorMode>(m.color_mode_)),
+      cmp_mode_(static_cast<ImageCompressMode>(m.cmp_mode_)) {}
+
+Message::ImageFrame ImageFrame::toMessage() const {
+    return Message::ImageFrame{width(), height(), data_,
+                               static_cast<int>(color_mode_),
+                               static_cast<int>(cmp_mode_)};
 }
 
 WEBCFACE_NS_END

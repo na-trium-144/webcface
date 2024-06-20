@@ -10,7 +10,7 @@
 #include <cstdlib>
 #include <eventpp/eventdispatcher.h>
 #include <spdlog/logger.h>
-#include <webcface/encoding.h>
+#include <webcface/encoding/encoding.h>
 #include <webcface/field.h>
 #include <webcface/func_info.h>
 #include <webcface/log.h>
@@ -130,7 +130,7 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
     SyncDataStore2<TextData> text_store;
     SyncDataStore2<FuncData> func_store;
     SyncDataStore2<ViewData> view_store;
-    SyncDataStore2<ImageData, ImageReq> image_store;
+    SyncDataStore2<ImageData, Message::ImageReq> image_store;
     SyncDataStore2<RobotModelData> robot_model_store;
     SyncDataStore2<Canvas3DData> canvas3d_store;
     SyncDataStore2<Canvas2DData> canvas2d_store;

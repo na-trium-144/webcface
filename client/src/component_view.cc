@@ -2,8 +2,8 @@
 #include <webcface/member.h>
 #include "client_internal.h"
 #include "webcface/field.h"
-#include "webcface/encoding.h"
-#include "../message/message.h"
+#include "webcface/encoding/encoding.h"
+#include "webcface/message/message.h"
 
 WEBCFACE_NS_BEGIN
 
@@ -101,7 +101,7 @@ wcfViewComponentW ViewComponent::cDataW() const {
 
 Message::ViewComponent ViewComponent::toMessage() const {
     Message::ViewComponent vc;
-    vc.type = this->type_;
+    vc.type = static_cast<int>(this->type_);
     vc.text = this->text_;
     if (this->on_click_func_) {
         vc.on_click_member = this->on_click_func_->member_;
@@ -111,8 +111,8 @@ Message::ViewComponent ViewComponent::toMessage() const {
         vc.text_ref_member = this->text_ref_->member_;
         vc.text_ref_field = this->text_ref_->field_;
     }
-    vc.text_color = this->text_color_;
-    vc.bg_color = this->bg_color_;
+    vc.text_color = static_cast<int>(this->text_color_);
+    vc.bg_color = static_cast<int>(this->bg_color_);
     vc.min_ = this->min_;
     vc.max_ = this->max_;
     vc.step_ = this->step_;
@@ -120,7 +120,7 @@ Message::ViewComponent ViewComponent::toMessage() const {
     return vc;
 }
 ViewComponent::ViewComponent(const Message::ViewComponent &vc)
-    : ViewComponent(vc.type, vc.text,
+    : ViewComponent(static_cast<ViewComponentType>(vc.type), vc.text,
                     (vc.on_click_member && vc.on_click_field
                          ? std::make_optional<FieldBase>(*vc.on_click_member,
                                                          *vc.on_click_field)
@@ -129,8 +129,9 @@ ViewComponent::ViewComponent(const Message::ViewComponent &vc)
                          ? std::make_optional<FieldBase>(*vc.text_ref_member,
                                                          *vc.text_ref_field)
                          : std::nullopt),
-                    vc.text_color, vc.bg_color, vc.min_, vc.max_, vc.step_,
-                    std::vector(vc.option_)) {}
+                    static_cast<ViewColor>(vc.text_color),
+                    static_cast<ViewColor>(vc.bg_color), vc.min_, vc.max_,
+                    vc.step_, std::vector(vc.option_)) {}
 
 
 std::optional<Func> ViewComponent::onClick() const {

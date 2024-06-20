@@ -259,6 +259,6 @@ template class WEBCFACE_DLL_INSTANCE_DEF SyncDataStore2<ViewData, int>;
 template class WEBCFACE_DLL_INSTANCE_DEF SyncDataStore2<RobotModelData, int>;
 template class WEBCFACE_DLL_INSTANCE_DEF SyncDataStore2<Canvas3DData, int>;
 template class WEBCFACE_DLL_INSTANCE_DEF SyncDataStore2<Canvas2DData, int>;
-template class WEBCFACE_DLL_INSTANCE_DEF SyncDataStore2<ImageData, ImageReq>;
+template class WEBCFACE_DLL_INSTANCE_DEF SyncDataStore2<ImageData, Message::ImageReq>;
 } // namespace Internal
 WEBCFACE_NS_END

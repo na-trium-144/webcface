@@ -1,8 +1,8 @@
 #include <webcface/image.h>
 #include <webcface/member.h>
 #include "client_internal.h"
-#include "../message/message.h"
-#include "webcface/encoding.h"
+#include "webcface/message/message.h"
+#include "webcface/encoding/encoding.h"
 #include "event_target_impl.h"
 
 WEBCFACE_NS_BEGIN
@@ -11,30 +11,34 @@ template class WEBCFACE_DLL_INSTANCE_DEF EventTarget<Image>;
 
 Image::Image(const Field &base) : Field(base), EventTarget<Image>() {
     std::lock_guard lock(this->dataLock()->event_m);
-    this->setCL(this->dataLock()->image_change_event[this->member_][this->field_]);
+    this->setCL(
+        this->dataLock()->image_change_event[this->member_][this->field_]);
 }
 
 Image &Image::request(std::optional<int> rows, std::optional<int> cols,
                       ImageCompressMode cmp_mode, int quality,
                       std::optional<ImageColorMode> color_mode,
                       std::optional<double> frame_rate) {
-    auto req = dataLock()->image_store.addReq(
-        member_, field_,
-        {rows, cols, color_mode, cmp_mode, quality, frame_rate});
-    if (req) {
-        dataLock()->message_queue->push(
-            Message::packSingle(Message::Req<Message::Image>{
-                member_,
-                field_,
-                req,
-                {rows, cols, color_mode, cmp_mode, quality, frame_rate}}));
+    Message::ImageReq req{
+        rows,
+        cols,
+        color_mode ? std::make_optional(static_cast<int>(*color_mode))
+                   : std::nullopt,
+        static_cast<int>(cmp_mode),
+        quality,
+        frame_rate};
+    auto req_id = dataLock()->image_store.addReq(member_, field_, req);
+    if (req_id) {
+        dataLock()->message_queue->push(Message::packSingle(
+            Message::Req<Message::Image>{member_, field_, req_id, req}));
         this->clear();
     }
     return *this;
 }
 
 inline void addImageReq(const std::shared_ptr<Internal::ClientData> &data,
-                        const SharedString &member_, const SharedString &field_) {
+                        const SharedString &member_,
+                        const SharedString &field_) {
     auto req = data->image_store.addReq(member_, field_);
     if (req) {
         data->message_queue->push(Message::packSingle(

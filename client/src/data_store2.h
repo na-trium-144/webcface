@@ -5,13 +5,14 @@
 #include <functional>
 #include <webcface/field.h>
 #include <webcface/common/def.h>
-#include <webcface/val_adaptor.h>
+#include <webcface/encoding/val_adaptor.h>
 #include <webcface/func_info.h>
 #include <webcface/image_frame.h>
 #include "webcface/component_canvas2d.h"
 #include "webcface/component_canvas3d.h"
 #include "webcface/component_view.h"
 #include "webcface/robot_link.h"
+#include "webcface/message/message.h"
 
 WEBCFACE_NS_BEGIN
 namespace Internal {
@@ -219,7 +220,7 @@ extern template class WEBCFACE_DLL_INSTANCE_DECL
 extern template class WEBCFACE_DLL_INSTANCE_DECL
     SyncDataStore2<Canvas2DData, int>;
 extern template class WEBCFACE_DLL_INSTANCE_DECL
-    SyncDataStore2<ImageData, Common::ImageReq>;
+    SyncDataStore2<ImageData, Message::ImageReq>;
 #endif
 
 } // namespace Internal

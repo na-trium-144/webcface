@@ -1,7 +1,7 @@
 #include <webcface/component_canvas2d.h>
 #include <webcface/member.h>
 #include <webcface/robot_model.h>
-#include "../message/message.h"
+#include "webcface/message/message.h"
 #include "client_internal.h"
 
 WEBCFACE_NS_BEGIN
@@ -26,15 +26,15 @@ Canvas2DComponent::lockTmp(const std::weak_ptr<Internal::ClientData> &data_w,
 
 Message::Canvas2DComponent Canvas2DComponent::toMessage() const {
     Message::Canvas2DComponent cc;
-    cc.type = this->type_;
+    cc.type = static_cast<int>(this->type_);
     cc.origin_pos = {this->origin_.pos(0), this->origin_.pos(1)};
     cc.origin_rot = this->origin_.rot(0);
-    cc.color = this->color_;
-    cc.fill = this->fill_;
+    cc.color = static_cast<int>(this->color_);
+    cc.fill = static_cast<int>(this->fill_);
     cc.stroke_width = this->stroke_width_;
     cc.text = this->text_;
     if (this->geometry_) {
-        cc.geometry_type = this->geometry_->type;
+        cc.geometry_type = static_cast<int>(this->geometry_->type);
         cc.properties = this->geometry_->properties;
     }
     if (this->on_click_func_) {
@@ -45,9 +45,11 @@ Message::Canvas2DComponent Canvas2DComponent::toMessage() const {
 }
 Canvas2DComponent::Canvas2DComponent(const Message::Canvas2DComponent &cc)
     : Canvas2DComponent(
-          cc.type, {cc.origin_pos, cc.origin_rot}, cc.color, cc.fill,
-          cc.stroke_width,
-          std::make_optional<Geometry>(cc.geometry_type, cc.properties),
+          static_cast<Canvas2DComponentType>(cc.type),
+          {cc.origin_pos, cc.origin_rot}, static_cast<ViewColor>(cc.color),
+          static_cast<ViewColor>(cc.fill), cc.stroke_width,
+          std::make_optional<Geometry>(
+              static_cast<GeometryType>(cc.geometry_type), cc.properties),
           (cc.on_click_member && cc.on_click_field
                ? std::make_optional<FieldBase>(*cc.on_click_member,
                                                *cc.on_click_field)

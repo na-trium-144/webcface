@@ -1,4 +1,4 @@
-#include <webcface/val_adaptor.h>
+#include <webcface/encoding/val_adaptor.h>
 
 WEBCFACE_NS_BEGIN
 ValAdaptor::ValAdaptor() : type(ValType::none_) {}
@@ -56,31 +56,6 @@ ValAdaptor &ValAdaptor::operator=(double v) {
     as_val.emplace<DOUBLEV>(v);
     type = ValType::float_;
     return *this;
-}
-
-ValAdaptor::ValAdaptor(const wcfMultiVal &val) {
-    if (val.as_str != nullptr) {
-        this->as_str = SharedString(val.as_str);
-        type = ValType::string_;
-    } else if (val.as_double != 0) {
-        this->as_val.emplace<DOUBLEV>(val.as_double);
-        type = ValType::float_;
-    } else {
-        this->as_val.emplace<INT64V>(val.as_int);
-        type = ValType::int_;
-    }
-}
-ValAdaptor::ValAdaptor(const wcfMultiValW &val) {
-    if (val.as_str != nullptr) {
-        this->as_str = SharedString(val.as_str);
-        type = ValType::string_;
-    } else if (val.as_double != 0) {
-        this->as_val.emplace<DOUBLEV>(val.as_double);
-        type = ValType::float_;
-    } else {
-        this->as_val.emplace<INT64V>(val.as_int);
-        type = ValType::int_;
-    }
 }
 
 bool ValAdaptor::empty() const {

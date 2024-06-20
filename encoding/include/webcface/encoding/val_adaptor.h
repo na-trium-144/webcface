@@ -6,7 +6,6 @@
 #include <cstdint>
 #include <ostream>
 #include <variant>
-#include "c_wcf/def_types.h"
 #include "encoding.h"
 #include <webcface/common/def.h>
 
@@ -168,22 +167,6 @@ class WEBCFACE_DLL ValAdaptor {
     ValAdaptor &operator=(T v) {
         return *this = static_cast<double>(v);
     }
-
-    /*!
-     * \brief wcfMultiValから変換
-     *
-     * valのint, double, strのいずれか1つに値をセットして渡すと、
-     * データ型を判別する
-     *
-     * as_strの文字列はコピーして保持する
-     *
-     */
-    explicit ValAdaptor(const wcfMultiVal &val);
-    /*!
-     * \brief wcfMultiValWから変換
-     * \since ver2.0
-     */
-    explicit ValAdaptor(const wcfMultiValW &val);
 
     ValType valType() const { return type; }
 

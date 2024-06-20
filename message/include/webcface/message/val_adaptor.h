@@ -1,11 +1,11 @@
 #pragma once
-#include <webcface/val_adaptor.h>
+#include <webcface/encoding/val_adaptor.h>
 #include <msgpack.hpp>
 #include <string>
 #include <cstdint>
 #include <webcface/common/def.h>
 #include <utf8.h>
-#include "u8string.h"
+#include "webcface/message/u8string.h"
 
 namespace msgpack {
 MSGPACK_API_VERSION_NAMESPACE(MSGPACK_DEFAULT_API_NS) {

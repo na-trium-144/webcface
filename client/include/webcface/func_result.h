@@ -7,8 +7,9 @@
 #include <cstdint>
 #include <eventpp/callbacklist.h>
 #include "field.h"
-#include "val_adaptor.h"
+#include "webcface/encoding/val_adaptor.h"
 #include <webcface/common/def.h>
+#include <webcface/c_wcf/def_types.h>
 
 WEBCFACE_NS_BEGIN
 

@@ -6,7 +6,7 @@
 #include <string>
 #include <ostream>
 #include <cstddef>
-#include "val_adaptor.h"
+#include "webcface/encoding/val_adaptor.h"
 #include <webcface/common/def.h>
 
 #ifdef min
@@ -20,7 +20,9 @@
 WEBCFACE_NS_BEGIN
 namespace Message {
 struct Arg;
-}
+struct Call;
+struct FuncInfo;
+} // namespace Message
 
 using FuncType = std::function<ValAdaptor(const std::vector<ValAdaptor> &)>;
 using FuncWrapperType =
@@ -182,6 +184,8 @@ struct FuncInfo {
              const FuncType &func_impl, const FuncWrapperType &func_wrapper)
         : return_type(return_type), args(args), func_impl(func_impl),
           func_wrapper(func_wrapper) {}
+    FuncInfo(const Message::FuncInfo &m);
+    Message::FuncInfo toMessage(const SharedString &field) const;
 
     /*!
      * \brief 任意の関数を受け取り、引数と戻り値をキャストして実行する関数を保存
@@ -225,7 +229,16 @@ struct FuncCall {
     MemberId caller_member_id = 0;
     MemberId target_member_id = 0;
     SharedString field;
-    std::vector<webcface::ValAdaptor> args;
+    std::vector<ValAdaptor> args;
+
+    FuncCall() = default;
+    FuncCall(CallerId caller_id, MemberId caller_member_id,
+             MemberId target_member_id, const SharedString &field,
+             const std::vector<ValAdaptor> &args)
+        : caller_id(caller_id), caller_member_id(caller_member_id),
+          target_member_id(target_member_id), field(field), args(args) {}
+    FuncCall(const Message::Call &m);
+    Message::Call toMessage() const;
 };
 
 WEBCFACE_NS_END

@@ -1,17 +1,17 @@
 #include "webcface/robot_model.h"
 #include <webcface/component_canvas3d.h>
-#include "../message/message.h"
+#include "webcface/message/message.h"
 
 WEBCFACE_NS_BEGIN
 
 Message::Canvas3DComponent Canvas3DComponent::toMessage() const {
     Message::Canvas3DComponent cc;
-    cc.type = this->type_;
+    cc.type = static_cast<int>(this->type_);
     cc.origin_pos = this->origin_.pos();
     cc.origin_rot = this->origin_.rot();
-    cc.color = this->color_;
+    cc.color = static_cast<int>(this->color_);
     if (this->geometry_) {
-        cc.geometry_type = this->geometry_->type;
+        cc.geometry_type = static_cast<int>(this->geometry_->type);
         cc.geometry_properties = this->geometry_->properties;
     }
     if (this->field_base_) {
@@ -24,10 +24,13 @@ Message::Canvas3DComponent Canvas3DComponent::toMessage() const {
     return cc;
 }
 Canvas3DComponent::Canvas3DComponent(const Message::Canvas3DComponent &cc)
-    : type_(cc.type), origin_(cc.origin_pos, cc.origin_rot), color_(cc.color),
+    : type_(static_cast<Canvas3DComponentType>(cc.type)),
+      origin_(cc.origin_pos, cc.origin_rot),
+      color_(static_cast<ViewColor>(cc.color)),
       geometry_(cc.geometry_type
-                    ? std::make_optional<Geometry>(*cc.geometry_type,
-                                                   cc.geometry_properties)
+                    ? std::make_optional<Geometry>(
+                          static_cast<GeometryType>(*cc.geometry_type),
+                          cc.geometry_properties)
                     : std::nullopt) {
     for (const auto &a : cc.angles) {
         this->angles_.emplace(std::stoi(a.first), a.second);

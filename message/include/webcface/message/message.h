@@ -7,26 +7,11 @@
 #include <any>
 #include <cstdint>
 #include <spdlog/logger.h>
-#include <webcface/func_info.h>
-#include <webcface/log.h>
-#include <webcface/image_frame.h>
 #include <webcface/common/def.h>
-#include "webcface/component_canvas2d.h"
-#include "webcface/component_canvas3d.h"
-#include "webcface/component_view.h"
-#include "webcface/robot_link.h"
-#include "val_adaptor.h"
-#include "u8string.h"
+#include "webcface/message/u8string.h"
+#include "webcface/message/val_adaptor.h"
 
 MSGPACK_ADD_ENUM(webcface::ValType)
-MSGPACK_ADD_ENUM(webcface::ViewComponentType)
-MSGPACK_ADD_ENUM(webcface::ViewColor)
-MSGPACK_ADD_ENUM(webcface::ImageCompressMode)
-MSGPACK_ADD_ENUM(webcface::ImageColorMode)
-MSGPACK_ADD_ENUM(webcface::RobotJointType)
-MSGPACK_ADD_ENUM(webcface::GeometryType)
-MSGPACK_ADD_ENUM(webcface::Canvas3DComponentType)
-MSGPACK_ADD_ENUM(webcface::Canvas2DComponentType)
 
 WEBCFACE_NS_BEGIN
 namespace Message {
@@ -208,20 +193,21 @@ struct WEBCFACE_DLL Sync : public MessageBase<MessageKind::sync> {
  *
  */
 struct WEBCFACE_DLL Call : public MessageBase<MessageKind::call> {
+    using CallerId = std::size_t;
+    using MemberId = unsigned int;
+
     CallerId caller_id = 0;
     MemberId caller_member_id = 0;
     MemberId target_member_id = 0;
     SharedString field;
     std::vector<webcface::ValAdaptor> args;
     Call() = default;
-    Call(const FuncCall &c)
-        : MessageBase<MessageKind::call>(), caller_id(c.caller_id),
-          caller_member_id(c.caller_member_id),
-          target_member_id(c.target_member_id), field(c.field), args(c.args) {}
-    operator FuncCall() const {
-        return FuncCall{caller_id, caller_member_id, target_member_id, field,
-                        args};
-    }
+    Call(CallerId caller_id, MemberId caller_member_id,
+         MemberId target_member_id, const SharedString &field,
+         const std::vector<ValAdaptor> &args)
+        : Message::MessageBase<MessageKind::call>(), caller_id(caller_id),
+          caller_member_id(caller_member_id),
+          target_member_id(target_member_id), field(field), args(args) {}
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", caller_id),
                        MSGPACK_NVP("c", caller_member_id),
                        MSGPACK_NVP("r", target_member_id),
@@ -278,91 +264,42 @@ struct WEBCFACE_DLL Text : public MessageBase<MessageKind::text> {
     std::shared_ptr<ValAdaptor> data;
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", field), MSGPACK_NVP("d", data))
 };
+struct WEBCFACE_DLL RobotLink {
+    SharedString name;
+    SharedString joint_name;
+    std::size_t joint_parent;
+    int joint_type;
+    std::array<double, 3> joint_origin_pos, joint_origin_rot;
+    double joint_angle = 0;
+    int geometry_type;
+    std::vector<double> geometry_properties;
+    int color;
+    RobotLink() = default;
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("n", name), MSGPACK_NVP("jn", joint_name),
+                       MSGPACK_NVP("jp", joint_parent),
+                       MSGPACK_NVP("jt", joint_type),
+                       MSGPACK_NVP("js", joint_origin_pos),
+                       MSGPACK_NVP("jr", joint_origin_rot),
+                       MSGPACK_NVP("ja", joint_angle),
+                       MSGPACK_NVP("gt", geometry_type),
+                       MSGPACK_NVP("gp", geometry_properties),
+                       MSGPACK_NVP("c", color))
+};
 struct WEBCFACE_DLL RobotModel : public MessageBase<MessageKind::robot_model> {
     SharedString field;
-    struct WEBCFACE_DLL RobotLink {
-        SharedString name;
-        SharedString joint_name;
-        std::size_t joint_parent;
-        Common::RobotJointType joint_type;
-        std::array<double, 3> joint_origin_pos, joint_origin_rot;
-        double joint_angle = 0;
-        GeometryType geometry_type;
-        std::vector<double> geometry_properties;
-        ViewColor color;
-        RobotLink() = default;
-        RobotLink(const Common::RobotLink &link,
-                  const std::vector<SharedString> &link_names)
-            : name(link.name), joint_name(link.joint.name),
-              joint_parent(
-                  std::distance(link_names.begin(),
-                                std::find(link_names.begin(), link_names.end(),
-                                          link.joint.parent_name))),
-              joint_type(link.joint.type),
-              joint_origin_pos(link.joint.origin.pos()),
-              joint_origin_rot(link.joint.origin.rot()),
-              joint_angle(link.joint.angle), geometry_type(link.geometry.type),
-              geometry_properties(link.geometry.properties), color(link.color) {
-        }
-        Common::RobotLink
-        toCommonLink(const std::vector<SharedString> &link_names) const {
-            return Common::RobotLink{
-                name,
-                {joint_name,
-                 joint_parent < link_names.size() ? link_names.at(joint_parent)
-                                                  : nullptr,
-                 joint_type,
-                 {joint_origin_pos, joint_origin_rot},
-                 joint_angle},
-                Geometry{geometry_type, geometry_properties},
-                color,
-            };
-        }
-        MSGPACK_DEFINE_MAP(
-            MSGPACK_NVP("n", name), MSGPACK_NVP("jn", joint_name),
-            MSGPACK_NVP("jp", joint_parent), MSGPACK_NVP("jt", joint_type),
-            MSGPACK_NVP("js", joint_origin_pos),
-            MSGPACK_NVP("jr", joint_origin_rot), MSGPACK_NVP("ja", joint_angle),
-            MSGPACK_NVP("gt", geometry_type),
-            MSGPACK_NVP("gp", geometry_properties), MSGPACK_NVP("c", color))
-    };
     std::shared_ptr<std::vector<RobotLink>> data;
     RobotModel() = default;
     RobotModel(const SharedString &field,
                const std::shared_ptr<std::vector<RobotLink>> &data)
         : field(field), data(data) {}
-    RobotModel(
-        const SharedString &field,
-        const std::shared_ptr<std::vector<Common::RobotLink>> &common_links)
-        : field(field), data(std::make_shared<std::vector<RobotLink>>()) {
-        data->reserve(common_links->size());
-        std::vector<SharedString> link_names;
-        link_names.reserve(common_links->size());
-        for (std::size_t i = 0; i < common_links->size(); i++) {
-            data->emplace_back(common_links->at(i), link_names);
-            link_names.push_back((*data)[i].name);
-        }
-    }
-    std::shared_ptr<std::vector<Common::RobotLink>> commonLinks() const {
-        auto common_links = std::make_shared<std::vector<Common::RobotLink>>();
-        common_links->reserve(data->size());
-        std::vector<SharedString> link_names;
-        link_names.reserve(data->size());
-        for (std::size_t i = 0; i < data->size(); i++) {
-            common_links->push_back((*data)[i].toCommonLink(link_names));
-            link_names.push_back((*data)[i].name);
-        }
-        return common_links;
-    }
-
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", field), MSGPACK_NVP("d", data))
 };
 struct WEBCFACE_DLL ViewComponent {
-    ViewComponentType type = ViewComponentType::text;
+    int type = 0;
     SharedString text;
     std::optional<SharedString> on_click_member, on_click_field;
     std::optional<SharedString> text_ref_member, text_ref_field;
-    ViewColor text_color = ViewColor::inherit, bg_color = ViewColor::inherit;
+    int text_color = 0, bg_color = 0;
     std::optional<double> min_ = std::nullopt, max_ = std::nullopt,
                           step_ = std::nullopt;
     std::vector<ValAdaptor> option_;
@@ -402,10 +339,10 @@ struct WEBCFACE_DLL View : public MessageBase<MessageKind::view> {
                        MSGPACK_NVP("l", length))
 };
 struct WEBCFACE_DLL Canvas3DComponent {
-    Canvas3DComponentType type = Canvas3DComponentType::geometry;
+    int type = 0;
     std::array<double, 3> origin_pos, origin_rot;
-    ViewColor color;
-    std::optional<GeometryType> geometry_type;
+    int color = 0;
+    std::optional<int> geometry_type;
     std::vector<double> geometry_properties;
     std::optional<SharedString> field_member, field_field;
     std::unordered_map<std::string, double> angles;
@@ -444,12 +381,12 @@ struct WEBCFACE_DLL Canvas3D : public MessageBase<MessageKind::canvas3d> {
                        MSGPACK_NVP("l", length))
 };
 struct WEBCFACE_DLL Canvas2DComponent {
-    Canvas2DComponentType type;
+    int type = 0;
     std::array<double, 2> origin_pos;
     double origin_rot;
-    ViewColor color, fill;
+    int color = 0, fill = 0;
     double stroke_width;
-    GeometryType geometry_type;
+    int geometry_type = 0;
     std::vector<double> properties;
     std::optional<SharedString> on_click_member, on_click_field;
     SharedString text;
@@ -461,6 +398,10 @@ struct WEBCFACE_DLL Canvas2DComponent {
                        MSGPACK_NVP("gp", properties),
                        MSGPACK_NVP("L", on_click_member),
                        MSGPACK_NVP("l", on_click_field), MSGPACK_NVP("x", text))
+};
+struct Canvas2DData {
+    double width = 0, height = 0;
+    std::vector<Canvas2DComponent> components;
 };
 struct WEBCFACE_DLL Canvas2D : public MessageBase<MessageKind::canvas2d> {
     SharedString field;
@@ -491,25 +432,39 @@ struct WEBCFACE_DLL Canvas2D : public MessageBase<MessageKind::canvas2d> {
                        MSGPACK_NVP("h", height), MSGPACK_NVP("d", data_diff),
                        MSGPACK_NVP("l", length))
 };
-struct WEBCFACE_DLL Image : public MessageBase<MessageKind::image> {
-    SharedString field;
+struct WEBCFACE_DLL ImageFrame {
     std::size_t width_, height_;
     std::shared_ptr<std::vector<unsigned char>> data_;
-    ImageColorMode color_mode_;
-    ImageCompressMode cmp_mode_;
+    int color_mode_ = 0;
+    int cmp_mode_ = 0;
+};
+struct WEBCFACE_DLL Image : public MessageBase<MessageKind::image>,
+                            public ImageFrame {
+    SharedString field;
     Image() = default;
     Image(const SharedString &field, const ImageFrame &img)
-        : field(field), width_(img.width()), height_(img.height()),
-          data_(img.dataPtr()), color_mode_(img.colorMode()),
-          cmp_mode_(img.compressMode()) {}
-    operator ImageFrame() const {
-        return ImageFrame{sizeWH(width_, height_), data_, color_mode_,
-                          cmp_mode_};
-    }
+        : Message::MessageBase<MessageKind::image>(), ImageFrame(img),
+          field(field) {}
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", field), MSGPACK_NVP("d", data_),
                        MSGPACK_NVP("h", height_), MSGPACK_NVP("w", width_),
                        MSGPACK_NVP("l", color_mode_),
                        MSGPACK_NVP("p", cmp_mode_))
+};
+struct WEBCFACE_DLL LogLine {
+    int level_ = 0;
+    /*!
+     * \brief 1970/1/1からの経過ミリ秒
+     *
+     * コンストラクタで初期化、data()でtime_pointに戻す
+     *
+     */
+    std::uint64_t time_ms = 0;
+    SharedString message_;
+    LogLine() = default;
+    LogLine(int level, std::uint64_t time_ms, const SharedString &message)
+        : level_(level), time_ms(time_ms), message_(message) {}
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("v", level_), MSGPACK_NVP("t", time_ms),
+                       MSGPACK_NVP("m", message_))
 };
 /*!
  * \brief client(member)->server->client logを追加
@@ -519,28 +474,6 @@ struct WEBCFACE_DLL Image : public MessageBase<MessageKind::image> {
  */
 struct WEBCFACE_DLL Log : public MessageBase<MessageKind::log> {
     unsigned int member_id = 0;
-    struct WEBCFACE_DLL LogLine : private LogLineData<> {
-        /*!
-         * \brief 1970/1/1からの経過ミリ秒
-         *
-         * コンストラクタで初期化、data()でtime_pointに戻す
-         *
-         */
-        std::uint64_t time_ms = 0;
-        LogLine() = default;
-        LogLine(const LogLineData<> &l)
-            : LogLineData<>(l),
-              time_ms(std::chrono::duration_cast<std::chrono::milliseconds>(
-                          time_.time_since_epoch())
-                          .count()) {}
-        LogLineData<> &data() {
-            time_ = std::chrono::system_clock::time_point(
-                std::chrono::milliseconds(time_ms));
-            return *this;
-        }
-        MSGPACK_DEFINE_MAP(MSGPACK_NVP("v", level_), MSGPACK_NVP("t", time_ms),
-                           MSGPACK_NVP("m", message_))
-    };
     std::shared_ptr<std::deque<LogLine>> log;
     Log() = default;
     Log(unsigned int member_id, const std::shared_ptr<std::deque<LogLine>> &log)
@@ -549,10 +482,14 @@ struct WEBCFACE_DLL Log : public MessageBase<MessageKind::log> {
     Log(const It &begin, const It &end) : member_id(0) {
         this->log = std::make_shared<std::deque<LogLine>>();
         for (auto it = begin; it < end; it++) {
-            this->log->emplace_back(*it);
+            if constexpr (std::is_same_v<decltype(*it), LogLine>) {
+                this->log->push_back(*it);
+            } else {
+                this->log->emplace_back(it->toMessage());
+            }
         }
     }
-    explicit Log(const LogLineData<> &ll) : member_id(0) {
+    explicit Log(const LogLine &ll) : member_id(0) {
         this->log = std::make_shared<std::deque<LogLine>>(1);
         this->log->front() = ll;
     }
@@ -588,23 +525,6 @@ struct WEBCFACE_DLL FuncInfo : public MessageBase<MessageKind::func_info> {
              ValType return_type, const std::shared_ptr<std::vector<Arg>> &args)
         : member_id(member_id), field(field), return_type(return_type),
           args(args) {}
-    explicit FuncInfo(const SharedString &field, const webcface::FuncInfo &info)
-        : MessageBase<MessageKind::func_info>(), field(field),
-          return_type(info.return_type),
-          args(std::make_shared<std::vector<Arg>>(info.args.size())) {
-        for (std::size_t i = 0; i < info.args.size(); i++) {
-            (*args)[i] = info.args[i].toMessage();
-        }
-    }
-    operator webcface::FuncInfo() const {
-        webcface::FuncInfo info;
-        info.return_type = return_type;
-        info.args.resize(args->size());
-        for (std::size_t j = 0; j < args->size(); j++) {
-            info.args[j] = (*args)[j];
-        }
-        return info;
-    }
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("m", member_id), MSGPACK_NVP("f", field),
                        MSGPACK_NVP("r", return_type), MSGPACK_NVP("a", args))
 };
@@ -631,28 +551,40 @@ extern template struct WEBCFACE_DLL_INSTANCE_DECL Req<Canvas2D>;
 extern template struct WEBCFACE_DLL_INSTANCE_DECL Req<Canvas3D>;
 extern template struct WEBCFACE_DLL_INSTANCE_DECL Req<RobotModel>;
 #endif
+struct WEBCFACE_DLL ImageReq {
+    std::optional<int> rows = std::nullopt, cols = std::nullopt;
+    std::optional<int> color_mode = std::nullopt;
+    int cmp_mode = 0;
+    int quality = 0;
+    std::optional<double> frame_rate = std::nullopt;
+
+    bool operator==(const ImageReq &rhs) const {
+        return rows == rhs.rows && cols == rhs.cols &&
+               color_mode == rhs.color_mode && cmp_mode == rhs.cmp_mode &&
+               quality == rhs.quality;
+    }
+};
 template <>
 struct WEBCFACE_DLL Req<Image>
-    : public MessageBase<MessageKind::image + MessageKind::req> {
+    : public MessageBase<MessageKind::image + MessageKind::req>,
+      public ImageReq {
     SharedString member;
     SharedString field;
     unsigned int req_id;
 
-    std::optional<int> rows = std::nullopt, cols = std::nullopt;
-    std::optional<ImageColorMode> color_mode = std::nullopt;
-    ImageCompressMode cmp_mode = ImageCompressMode::raw;
-    int quality = 0;
-    std::optional<double> frame_rate = std::nullopt;
-
     Req() = default;
     Req(const SharedString &member, const SharedString &field,
         unsigned int req_id, const ImageReq &ireq)
-        : member(member), field(field), req_id(req_id), rows(ireq.rows),
-          cols(ireq.cols), color_mode(ireq.color_mode), cmp_mode(ireq.cmp_mode),
-          quality(ireq.quality), frame_rate(ireq.frame_rate) {}
-    operator ImageReq() const {
-        return ImageReq{rows, cols, color_mode, cmp_mode, quality, frame_rate};
-    }
+        : MessageBase<MessageKind::image + MessageKind::req>(), ImageReq(ireq),
+          member(member), field(field), req_id(req_id) {}
+    //     : member(member), field(field), req_id(req_id), rows(ireq.rows),
+    //       cols(ireq.cols), color_mode(ireq.color_mode),
+    //       cmp_mode(ireq.cmp_mode), quality(ireq.quality),
+    //       frame_rate(ireq.frame_rate) {}
+    // operator ImageReq() const {
+    //     return ImageReq{rows, cols, color_mode, cmp_mode, quality,
+    //     frame_rate};
+    // }
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", req_id), MSGPACK_NVP("M", member),
                        MSGPACK_NVP("f", field), MSGPACK_NVP("w", cols),
                        MSGPACK_NVP("h", rows), MSGPACK_NVP("l", color_mode),
@@ -721,35 +653,11 @@ struct WEBCFACE_DLL Res<RobotModel>
     : public MessageBase<MessageKind::robot_model + MessageKind::res> {
     unsigned int req_id = 0;
     SharedString sub_field;
-    std::shared_ptr<std::vector<RobotModel::RobotLink>> data;
+    std::shared_ptr<std::vector<RobotLink>> data;
     Res() = default;
     Res(unsigned int req_id, const SharedString &sub_field,
-        const std::shared_ptr<std::vector<RobotModel::RobotLink>> &data)
+        const std::shared_ptr<std::vector<RobotLink>> &data)
         : req_id(req_id), sub_field(sub_field), data(data) {}
-    Res(unsigned int req_id, const SharedString &sub_field,
-        const std::shared_ptr<std::vector<Common::RobotLink>> &common_links)
-        : req_id(req_id), sub_field(sub_field),
-          data(std::make_shared<std::vector<RobotModel::RobotLink>>()) {
-        data->reserve(common_links->size());
-        std::vector<SharedString> link_names;
-        link_names.reserve(common_links->size());
-        for (std::size_t i = 0; i < common_links->size(); i++) {
-            data->emplace_back(common_links->at(i), link_names);
-            link_names.push_back((*data)[i].name);
-        }
-    }
-    std::shared_ptr<std::vector<Common::RobotLink>> commonLinks() const {
-        auto common_links = std::make_shared<std::vector<Common::RobotLink>>();
-        common_links->reserve(data->size());
-        std::vector<SharedString> link_names;
-        link_names.reserve(data->size());
-        for (std::size_t i = 0; i < data->size(); i++) {
-            common_links->push_back((*data)[i].toCommonLink(link_names));
-            link_names.push_back((*data)[i].name);
-        }
-        return common_links;
-    }
-
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", req_id), MSGPACK_NVP("f", sub_field),
                        MSGPACK_NVP("d", data))
 };
@@ -812,23 +720,22 @@ struct WEBCFACE_DLL Res<Canvas2D>
 
 template <>
 struct WEBCFACE_DLL Res<Image>
-    : public MessageBase<MessageKind::image + MessageKind::res> {
+    : public MessageBase<MessageKind::image + MessageKind::res>,
+      public ImageFrame {
     unsigned int req_id = 0;
     SharedString sub_field;
-    std::size_t width_ = 0, height_ = 0;
-    std::shared_ptr<std::vector<unsigned char>> data_;
-    ImageColorMode color_mode_;
-    ImageCompressMode cmp_mode_;
     Res() = default;
     Res(unsigned int req_id, const SharedString &sub_field,
         const ImageFrame &img)
-        : req_id(req_id), sub_field(sub_field), width_(img.width()),
-          height_(img.height()), data_(img.dataPtr()),
-          color_mode_(img.colorMode()), cmp_mode_(img.compressMode()) {}
-    operator ImageFrame() const {
-        return ImageFrame{sizeWH(width_, height_), data_, color_mode_,
-                          cmp_mode_};
-    }
+        : MessageBase<MessageKind::image + MessageKind::res>(), ImageFrame(img),
+          req_id(req_id), sub_field(sub_field) {}
+    //     : req_id(req_id), sub_field(sub_field), width_(img.width()),
+    //       height_(img.height()), data_(img.dataPtr()),
+    //       color_mode_(img.colorMode()), cmp_mode_(img.compressMode()) {}
+    // operator ImageFrame() const {
+    //     return ImageFrame{sizeWH(width_, height_), data_, color_mode_,
+    //                       cmp_mode_};
+    // }
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", req_id), MSGPACK_NVP("f", sub_field),
                        MSGPACK_NVP("d", data_), MSGPACK_NVP("w", width_),
                        MSGPACK_NVP("h", height_), MSGPACK_NVP("l", color_mode_),

@@ -2,14 +2,14 @@
 #include "member_data.h"
 #include "dir.h"
 #include "ip.h"
-#include <webcface/server.h>
+#include <webcface/server/server.h>
 #include <webcface/common/def.h>
-#include "../message/message.h"
-#include "../message/unix_path.h"
+#include "webcface/message/message.h"
+#include "webcface/server/unix_path.h"
 #include <memory>
 #include <thread>
 #include <filesystem>
-#include "internal/server_ws.h"
+#include "webcface/server/internal/server_ws.h"
 
 WEBCFACE_NS_BEGIN
 namespace Server {

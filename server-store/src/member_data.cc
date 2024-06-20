@@ -1,14 +1,16 @@
 #include "member_data.h"
 #include "store.h"
-#include <webcface/server.h>
-#include "../message/message.h"
-#include "webcface/field.h"
+#include <webcface/server/server.h>
+#include "webcface/message/message.h"
 #include <webcface/common/def.h>
 #include <algorithm>
 #include <Magick++.h>
 
 WEBCFACE_NS_BEGIN
 namespace Server {
+
+constexpr char8_t field_separator = u8'.';
+
 void MemberData::onClose() {
     if (con == nullptr) {
         return;
@@ -731,8 +733,7 @@ void MemberData::onRecv(const std::string &message) {
                         auto diff = std::make_shared<std::unordered_map<
                             std::string, webcface::Message::ViewComponent>>();
                         for (std::size_t i = 0; i < it.second.size(); i++) {
-                            diff->emplace(std::to_string(i),
-                                          it.second[i].toMessage());
+                            diff->emplace(std::to_string(i), it.second[i]);
                         }
                         SharedString sub_field;
                         if (it.first == s.field) {
@@ -771,8 +772,7 @@ void MemberData::onRecv(const std::string &message) {
                             std::string,
                             webcface::Message::Canvas3DComponent>>();
                         for (std::size_t i = 0; i < it.second.size(); i++) {
-                            diff->emplace(std::to_string(i),
-                                          it.second[i].toMessage());
+                            diff->emplace(std::to_string(i), it.second[i]);
                         }
                         SharedString sub_field;
                         if (it.first == s.field) {
@@ -813,7 +813,7 @@ void MemberData::onRecv(const std::string &message) {
                         for (std::size_t i = 0; i < it.second.components.size();
                              i++) {
                             diff->emplace(std::to_string(i),
-                                          it.second.components[i].toMessage());
+                                          it.second.components[i]);
                         }
                         SharedString sub_field;
                         if (it.first == s.field) {
@@ -900,17 +900,17 @@ void MemberData::onRecv(const std::string &message) {
     store->clientSendAll();
 }
 
-static std::string magickColorMap(ImageColorMode mode) {
+static std::string magickColorMap(int mode) {
     switch (mode) {
-    case ImageColorMode::gray:
+    case 0: // ImageColorMode::gray:
         return "K";
-    case ImageColorMode::bgr:
+    case 1: // ImageColorMode::bgr:
         return "BGR";
-    case ImageColorMode::rgb:
+    case 2: // ImageColorMode::rgb:
         return "RGB";
-    case ImageColorMode::bgra:
+    case 3: // ImageColorMode::bgra:
         return "BGRA";
-    case ImageColorMode::rgba:
+    case 4: // ImageColorMode::rgba:
         return "RGBA";
     }
     return "";
@@ -931,7 +931,7 @@ void MemberData::imageConvertThreadMain(const SharedString &member,
             member,
             [&](auto cd) {
                 while (!cd->closing.load() && !this->closing.load()) {
-                    ImageFrame img;
+                    Message::ImageFrame img;
                     {
                         std::unique_lock lock(cd->image_m[field]);
                         cd->image_cv[field].wait_for(
@@ -950,20 +950,20 @@ void MemberData::imageConvertThreadMain(const SharedString &member,
                                       member.decode(), field.decode());
                         img = cd->image[field];
                     }
-                    if (img.empty()) {
+                    if (img.data_->size() == 0) {
                         break;
                     }
 
-                    Magick::Image m(img.cols(), img.rows(),
-                                    magickColorMap(img.color_mode()),
-                                    Magick::CharPixel, img.data().data());
+                    Magick::Image m(img.width_, img.height_,
+                                    magickColorMap(img.color_mode_),
+                                    Magick::CharPixel, img.data_->data());
 #ifdef WEBCFACE_MAGICK_VER7
                     // ImageMagick6と7で名前が異なる
                     m.type(Magick::TrueColorAlphaType);
 #else
                     m.type(Magick::TrueColorMatteType);
 #endif
-                    if (img.color_mode() == ImageColorMode::gray) {
+                    if (img.color_mode_ == 0 /* gray */) {
                         // K -> RGB
                         m.negate(true);
                     }
@@ -979,8 +979,8 @@ void MemberData::imageConvertThreadMain(const SharedString &member,
                     auto sync = webcface::Message::Sync{cd->member_id,
                                                         cd->last_sync_time};
 
-                    int rows = static_cast<int>(img.rows()),
-                        cols = static_cast<int>(img.cols());
+                    int rows = static_cast<int>(img.height_);
+                    int cols = static_cast<int>(img.width_);
 
                     if (info.rows || info.cols) {
                         if (info.rows) {
@@ -988,16 +988,16 @@ void MemberData::imageConvertThreadMain(const SharedString &member,
                         } else {
                             rows = static_cast<int>(
                                 static_cast<double>(*info.cols) *
-                                static_cast<double>(img.rows()) /
-                                static_cast<double>(img.cols()));
+                                static_cast<double>(img.height_) /
+                                static_cast<double>(img.width_));
                         }
                         if (info.cols) {
                             cols = *info.cols;
                         } else {
                             cols = static_cast<int>(
                                 static_cast<double>(*info.rows) *
-                                static_cast<double>(img.cols()) /
-                                static_cast<double>(img.rows()));
+                                static_cast<double>(img.width_) /
+                                static_cast<double>(img.height_));
                         }
 
                         if (rows <= 0 || cols <= 0) {
@@ -1010,26 +1010,25 @@ void MemberData::imageConvertThreadMain(const SharedString &member,
                         m.resize(Magick::Geometry(cols, rows));
                     }
 
-                    auto color_mode =
-                        info.color_mode.value_or(img.color_mode());
+                    auto color_mode = info.color_mode.value_or(img.color_mode_);
                     auto encoded =
                         std::make_shared<std::vector<unsigned char>>();
                     switch (info.cmp_mode) {
-                    case ImageCompressMode::raw: {
+                    case 0: { // ImageCompressMode::raw: {
                         std::size_t channels = 1;
                         std::string color_map = magickColorMap(color_mode);
                         switch (color_mode) {
-                        case ImageColorMode::gray:
+                        case 0: // ImageColorMode::gray:
                             m.type(Magick::GrayscaleType);
                             color_map = "R";
                             channels = 1;
                             break;
-                        case ImageColorMode::bgr:
-                        case ImageColorMode::rgb:
+                        case 1: // ImageColorMode::bgr:
+                        case 3: // ImageColorMode::rgb:
                             channels = 3;
                             break;
-                        case ImageColorMode::bgra:
-                        case ImageColorMode::rgba:
+                        case 2: // ImageColorMode::bgra:
+                        case 4: // ImageColorMode::rgba:
                             channels = 4;
                             break;
                         }
@@ -1039,7 +1038,7 @@ void MemberData::imageConvertThreadMain(const SharedString &member,
                                 encoded->data());
                         break;
                     }
-                    case ImageCompressMode::jpeg: {
+                    case 1: { // ImageCompressMode::jpeg: {
                         if (info.quality < 0 || info.quality > 100) {
                             this->logger->error(
                                 "Invalid image conversion request "
@@ -1057,7 +1056,7 @@ void MemberData::imageConvertThreadMain(const SharedString &member,
                                 b.length());
                         break;
                     }
-                    case ImageCompressMode::webp: {
+                    case 2: { // ImageCompressMode::webp: {
                         if (info.quality < 1 || info.quality > 100) {
                             this->logger->error(
                                 "Invalid image conversion request "
@@ -1075,7 +1074,7 @@ void MemberData::imageConvertThreadMain(const SharedString &member,
                                 b.length());
                         break;
                     }
-                    case ImageCompressMode::png: {
+                    case 3: { // ImageCompressMode::png: {
                         if (info.quality < 0 || info.quality > 100) {
                             this->logger->error(
                                 "Invalid image conversion request "
@@ -1094,16 +1093,16 @@ void MemberData::imageConvertThreadMain(const SharedString &member,
                         break;
                     }
                     }
-                    ImageFrame img_send{sizeHW(rows, cols), encoded, color_mode,
-                                        info.cmp_mode};
+                    Message::ImageFrame img_send{
+                        static_cast<size_t>(cols), static_cast<size_t>(rows),
+                        encoded, color_mode, info.cmp_mode};
                     logger->trace("finished converting image of {}, {}",
                                   member.decode(), field.decode());
                     if (!cd->closing.load() && !this->closing.load()) {
                         std::lock_guard lock(store->server->server_mtx);
                         this->pack(sync);
-                        this->pack(
-                            webcface::Message::Res<webcface::Message::Image>{
-                                req_id, sub_field, img_send});
+                        this->pack(Message::Res<webcface::Message::Image>{
+                            req_id, sub_field, img_send});
                         logger->trace("send image_res req_id={} + '{}'", req_id,
                                       sub_field.decode());
                         this->send();

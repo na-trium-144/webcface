@@ -8,7 +8,6 @@
 #include <webcface/canvas2d.h>
 #include <webcface/canvas3d.h>
 #include <webcface/event_target.h>
-#include "../message/message.h"
 #include "client_internal.h"
 #include "event_target_impl.h"
 

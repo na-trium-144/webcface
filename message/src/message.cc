@@ -1,4 +1,4 @@
-#include "message.h"
+#include "webcface/message/message.h"
 #include <sstream>
 
 WEBCFACE_NS_BEGIN

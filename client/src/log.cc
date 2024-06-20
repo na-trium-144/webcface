@@ -1,10 +1,30 @@
 #include <webcface/log.h>
 #include "client_internal.h"
-#include "../message/message.h"
+#include "webcface/message/message.h"
 #include "event_target_impl.h"
 
 WEBCFACE_NS_BEGIN
 
+template <typename CharT>
+LogLineData<CharT>::LogLineData(const Message::LogLine &m)
+    : LogLineData(m.level_,
+                  std::chrono::system_clock::time_point(
+                      std::chrono::milliseconds(m.time_ms)),
+                  m.message_) {}
+template <typename CharT>
+Message::LogLine LogLineData<CharT>::toMessage() const {
+    return Message::LogLine{
+        level_,
+        static_cast<std::uint64_t>(
+            std::chrono::duration_cast<std::chrono::milliseconds>(
+                time_.time_since_epoch())
+                .count()),
+        message_};
+}
+
+template class WEBCFACE_DLL_INSTANCE_DEF LogLineData<char8_t>;
+template class WEBCFACE_DLL_INSTANCE_DEF LogLineData<char>;
+template class WEBCFACE_DLL_INSTANCE_DEF LogLineData<wchar_t>;
 template class WEBCFACE_DLL_INSTANCE_DEF EventTarget<Log>;
 
 Log::Log(const Field &base) : Field(base), EventTarget<Log>() {

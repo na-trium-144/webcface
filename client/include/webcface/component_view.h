@@ -3,7 +3,7 @@
 #include <vector>
 #include "field.h"
 #include <webcface/common/def.h>
-#include "val_adaptor.h"
+#include "webcface/encoding/val_adaptor.h"
 #include "component_id.h"
 #include "webcface/func.h"
 #include "webcface/text.h"
