@@ -314,7 +314,8 @@ sudo cmake --build build -t install
 	* `-DWEBCFACE_DOWNLOAD_WEBUI=off`を指定するとWebUIをダウンロードしません。
 	* 依存ライブラリ
 		* デフォルトではfind_packageやpkg_check_modulesなどで依存ライブラリがインストールされているか確認し、見つかればそれを使い見つからなければソースコードをダウンロードします。
-		* `-DWEBCFACE_FIND_(ライブラリ)=off` にするとインストールしたものは使わず常にソースからダウンロードするようになります。
+		* `git submodule update --init` でsubmoduleとしてexternalディレクトリ以下に依存ライブラリをすべてcloneすることができます。その場合はFetchContentでのダウンロードはされません。(インターネット接続のないところでcmakeをしたい場合などに有用) (MSVCの場合のImageMagick-Windowsリポジトリを除く)
+		* `-DWEBCFACE_FIND_(ライブラリ)=off` にするとインストールしたものは使わず常にソースからビルドするようになります。
 		* 設定可能なライブラリ名は以下
 			* `MSGPACK`, `SPDLOG`, `EVENTPP`, `CURL`, `CROW`, `ASIO`, `CLI11`, `UTF8CPP`, `MAGICK`
 			* `OPENCV` (デフォルトでoff、見つからなかった場合ソースからのビルドもしません)
