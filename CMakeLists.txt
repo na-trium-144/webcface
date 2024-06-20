@@ -984,19 +984,10 @@ else()
     # target_link_directories(webcface PUBLIC $<TARGET_PROPERTY:magickpp,INTERFACE_LINK_DIRECTORIES>)
 endif()
 target_compile_features(webcface PUBLIC cxx_std_20)
-# webcface-server-storeなどを単純にlinkするとinstallがめんどくさくなるので注意
-target_sources(webcface PRIVATE
-    $<TARGET_OBJECTS:webcface-encoding>
-    $<TARGET_OBJECTS:webcface-message>
-    $<TARGET_OBJECTS:webcface-server-store>
-)
-target_include_directories(webcface PRIVATE
-    $<BUILD_INTERFACE:$<TARGET_PROPERTY:webcface-message,INCLUDE_DIRECTORIES>>
-)
+target_link_libraries(webcface PRIVATE webcface-message)
+target_link_libraries(webcface PUBLIC webcface-encoding webcface-server-store)
 target_include_directories(webcface PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/client/include>
-    $<BUILD_INTERFACE:$<TARGET_PROPERTY:webcface-encoding,INCLUDE_DIRECTORIES>>
-    $<BUILD_INTERFACE:$<TARGET_PROPERTY:webcface-server-store,INCLUDE_DIRECTORIES>>
     $<INSTALL_INTERFACE:include>
 )
 if(WEBCFACE_SHARED AND NOT WIN32)
@@ -1034,12 +1025,8 @@ if(WEBCFACE_SHARED AND APPLE)
     target_link_libraries(webcface PRIVATE $<TARGET_PROPERTY:${libcurl},LINK_LIBRARIES>)
     add_dependencies(webcface ${libcurl})
 else()
-    target_link_libraries(webcface PRIVATE
-        webcface-server-internal
-        ${libcurl}
-    )
+    target_link_libraries(webcface PRIVATE webcface-server-internal ${libcurl})
 endif()
-target_link_libraries(webcface PRIVATE webcface-message)
 target_link_libraries(webcface PUBLIC eventpp::eventpp ${spdlog})
 if(WIN32)
     target_link_libraries(webcface PRIVATE ws2_32.lib wsock32.lib iphlpapi.lib)
@@ -1162,7 +1149,13 @@ if(WEBCFACE_INSTALL)
     )
 
     # library
-    list(APPEND WEBCFACE_EXPORTS webcface wcf)
+    list(APPEND WEBCFACE_EXPORTS
+        webcface
+        webcface-encoding
+        webcface-message
+        webcface-server-store
+        wcf
+    )
     list(APPEND WEBCFACE_PKGCONFIG_LIBS -lwebcface)
     # public dependencies
     if(spdlog_FOUND)
@@ -1178,85 +1171,84 @@ if(WEBCFACE_INSTALL)
         list(APPEND WEBCFACE_EXPORTS eventpp)
         set(EVENTPP_INSTALLED 0)
     endif()
-    if(NOT WEBCFACE_SHARED)
-        # private static dependencies
-        list(APPEND WEBCFACE_EXPORTS webcface-server-internal)
-        list(APPEND WEBCFACE_PKGCONFIG_LIBS -lwebcface-server-internal)
-        if(NOT msgpack-cxx_FOUND)
-            list(APPEND WEBCFACE_EXPORTS msgpack-cxx)
-        endif()
-        if(NOT CURL_FOUND)
-            list(APPEND WEBCFACE_EXPORTS ${libcurl})
-            if(NOT WEBCFACE_SHARED)
-                if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-                    list(APPEND WEBCFACE_PKGCONFIG_LIBS -lcurl-d)
-                else()
-                    list(APPEND WEBCFACE_PKGCONFIG_LIBS -lcurl)
+    # private static dependencies
+    list(APPEND WEBCFACE_EXPORTS webcface-server-internal)
+    list(APPEND WEBCFACE_PKGCONFIG_LIBS -lwebcface-server-internal)
+    if(NOT msgpack-cxx_FOUND)
+        list(APPEND WEBCFACE_EXPORTS msgpack-cxx)
+    endif()
+    if(NOT CURL_FOUND)
+        list(APPEND WEBCFACE_EXPORTS ${libcurl})
+        if(NOT WEBCFACE_SHARED)
+            if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+                list(APPEND WEBCFACE_PKGCONFIG_LIBS -lcurl-d)
+            else()
+                list(APPEND WEBCFACE_PKGCONFIG_LIBS -lcurl)
+            endif()
+            get_directory_property(CURL_LIBS
+                DIRECTORY ${curl_SOURCE_DIR}
+                DEFINITION CURL_LIBS
+            )
+            # curlのCMakeListsからコピペ
+            foreach(_lib IN LISTS CURL_LIBS)
+                if(TARGET "${_lib}")
+                    set(_libname "${_lib}")
+                    get_target_property(_imported "${_libname}" IMPORTED)
+                    if(NOT _imported)
+                        # Reading the LOCATION property on non-imported target will error out.
+                        # Assume the user won't need this information in the .pc file.
+                        continue()
+                    endif()
+                    get_target_property(_lib "${_libname}" LOCATION)
+                    if(NOT _lib)
+                        # message(WARNING "Bad lib in library list: ${_libname}")
+                        continue()
+                    endif()
                 endif()
-                get_directory_property(CURL_LIBS
-                    DIRECTORY ${curl_SOURCE_DIR}
-                    DEFINITION CURL_LIBS
-                )
-                # curlのCMakeListsからコピペ
-                foreach(_lib IN LISTS CURL_LIBS)
-                    if(TARGET "${_lib}")
-                        set(_libname "${_lib}")
-                        get_target_property(_imported "${_libname}" IMPORTED)
-                        if(NOT _imported)
-                            # Reading the LOCATION property on non-imported target will error out.
-                            # Assume the user won't need this information in the .pc file.
-                            continue()
-                        endif()
-                        get_target_property(_lib "${_libname}" LOCATION)
-                        if(NOT _lib)
-                            # message(WARNING "Bad lib in library list: ${_libname}")
-                            continue()
-                        endif()
-                    endif()
-                    if(_lib MATCHES ".*/.*" OR _lib MATCHES "^-")
-                        list(APPEND WEBCFACE_PKGCONFIG_LIBS ${_lib})
-                    else()
-                        list(APPEND WEBCFACE_PKGCONFIG_LIBS -l${_lib})
-                    endif()
-                endforeach()
-            endif()
+                if(_lib MATCHES ".*/.*" OR _lib MATCHES "^-")
+                    list(APPEND WEBCFACE_PKGCONFIG_LIBS ${_lib})
+                else()
+                    list(APPEND WEBCFACE_PKGCONFIG_LIBS -l${_lib})
+                endif()
+            endforeach()
         endif()
-        if(NOT Crow_FOUND)
-            list(APPEND WEBCFACE_EXPORTS Crow)
-        endif()
-        if(NOT UTF8CPP_FOUND)
-            list(APPEND WEBCFACE_EXPORTS utfcpp)
-        endif()
-        if(Magickpp_INSTALLED)
-            if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-                list(APPEND WEBCFACE_PKGCONFIG_LIBS -L${MAGICKPP_LIB_DIR})
-                foreach(lib IN LISTS MAGICKPP_DB_LIBS MAGICKPP_RL_LIBS)
-                    list(APPEND WEBCFACE_PKGCONFIG_LIBS -l${lib})
-                endforeach()
-            else()
-                list(APPEND WEBCFACE_PKGCONFIG_REQUIRES Magickpp)
-            endif()
+    endif()
+    if(NOT Crow_FOUND)
+        list(APPEND WEBCFACE_EXPORTS Crow)
+    endif()
+    if(NOT UTF8CPP_FOUND)
+        list(APPEND WEBCFACE_EXPORTS utfcpp)
+    endif()
+    if(Magickpp_INSTALLED)
+        list(APPEND WEBCFACE_EXPORTS magickpp)
+        if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+            list(APPEND WEBCFACE_PKGCONFIG_LIBS -L${MAGICKPP_LIB_DIR})
+            foreach(lib IN LISTS MAGICKPP_DB_LIBS MAGICKPP_RL_LIBS)
+                list(APPEND WEBCFACE_PKGCONFIG_LIBS -l${lib})
+            endforeach()
         else()
-            list(APPEND WEBCFACE_EXPORTS magickpp)
-            if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-                foreach(lib IN LISTS MAGICKPP_DB_LIBS MAGICKPP_RL_LIBS)
-                    install(FILES ${MAGICKPP_LIB_DIR}/${lib}
-                        DESTINATION lib
-                    )
-                    list(APPEND WEBCFACE_PKGCONFIG_LIBS -l${lib})
-                endforeach()
-            else()
-                foreach(dir IN LISTS Magickpp_STATIC_LIBRARY_DIRS)
-                    list(APPEND WEBCFACE_PKGCONFIG_LIBS -L${dir})
-                endforeach()
-                foreach(lib IN LISTS Magickpp_STATIC_LIBRARIES)
-                    install(FILES ${MAGICKPP_PREFIX}/lib/lib${lib}.a
-                        DESTINATION lib
-                        OPTIONAL
-                    )
-                    list(APPEND WEBCFACE_PKGCONFIG_LIBS -l${lib})
-                endforeach()
-            endif()
+            list(APPEND WEBCFACE_PKGCONFIG_REQUIRES Magickpp)
+        endif()
+    else()
+        list(APPEND WEBCFACE_EXPORTS magickpp)
+        if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+            foreach(lib IN LISTS MAGICKPP_DB_LIBS MAGICKPP_RL_LIBS)
+                install(FILES ${MAGICKPP_LIB_DIR}/${lib}
+                    DESTINATION lib
+                )
+                list(APPEND WEBCFACE_PKGCONFIG_LIBS -l${lib})
+            endforeach()
+        else()
+            foreach(dir IN LISTS Magickpp_STATIC_LIBRARY_DIRS)
+                list(APPEND WEBCFACE_PKGCONFIG_LIBS -L${dir})
+            endforeach()
+            foreach(lib IN LISTS Magickpp_STATIC_LIBRARIES)
+                install(FILES ${MAGICKPP_PREFIX}/lib/lib${lib}.a
+                    DESTINATION lib
+                    OPTIONAL
+                )
+                list(APPEND WEBCFACE_PKGCONFIG_LIBS -l${lib})
+            endforeach()
         endif()
     endif()
     install(TARGETS ${WEBCFACE_EXPORTS}
