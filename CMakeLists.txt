@@ -494,11 +494,14 @@ else()
             if(MSBUILD_COMMAND STREQUAL "MSBUILD_COMMAND-NOTFOUND")
                 message(FATAL_ERROR "msbuild.exe not found")
             endif()
-            fetch_only(imagemagick-windows
-                https://github.com/ImageMagick/ImageMagick-Windows.git
-                35dbf227258caec73fbe4a0a10ea10f2c2c1051d
-                Configure
+            message(STATUS "Fetching ImageMagick-Windows source...")
+            # submoduleだとCloneRepositories.cmdがうまくいかない
+            FetchContent_Declare(imagemagick-windows
+                GIT_REPOSITORY https://github.com/ImageMagick/ImageMagick-Windows.git
+                GIT_TAG 35dbf227258caec73fbe4a0a10ea10f2c2c1051d
             )
+            FetchContent_Populate(imagemagick-windows)
+            message(STATUS ${imagemagick-windows_SOURCE_DIR})
             if(NOT EXISTS ${imagemagick-windows_SOURCE_DIR}/IM7.StaticDLL.sln OR ${CMAKE_CURRENT_LIST_FILE} IS_NEWER_THAN ${imagemagick-windows_SOURCE_DIR}/IM7.StaticDLL.sln)
                 if(NOT EXISTS ${imagemagick-windows_SOURCE_DIR}/Configure/Configure.exe OR ${CMAKE_CURRENT_LIST_FILE} IS_NEWER_THAN ${imagemagick-windows_SOURCE_DIR}/Configure/Configure.exe)
                     message(STATUS "Fetching dependencies...")

@@ -27,9 +27,6 @@
 [submodule "external/utfcpp"]
 	path = external/utfcpp
 	url = https://github.com/nemtrif/utfcpp.git
-[submodule "external/ImageMagick-Windows"]
-	path = external/imagemagick-windows
-	url = https://github.com/ImageMagick/ImageMagick-Windows.git
 [submodule "external/libjpeg-turbo"]
 	path = external/libjpeg-turbo
 	url = https://github.com/libjpeg-turbo/libjpeg-turbo.git
