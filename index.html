@@ -404,7 +404,8 @@ Build (with Pure CMake)</h3>
 <li><code>-DWEBCFACE_DOWNLOAD_WEBUI=off</code>を指定するとWebUIをダウンロードしません。</li>
 <li>依存ライブラリ<ul>
 <li>デフォルトではfind_packageやpkg_check_modulesなどで依存ライブラリがインストールされているか確認し、見つかればそれを使い見つからなければソースコードをダウンロードします。</li>
-<li><code>-DWEBCFACE_FIND_(ライブラリ)=off</code> にするとインストールしたものは使わず常にソースからダウンロードするようになります。</li>
+<li><code>git submodule update --init</code> でsubmoduleとしてexternalディレクトリ以下に依存ライブラリをすべてcloneすることができます。その場合はFetchContentでのダウンロードはされません。(インターネット接続のないところでcmakeをしたい場合などに有用) (MSVCの場合のImageMagick-Windowsリポジトリを除く)</li>
+<li><code>-DWEBCFACE_FIND_(ライブラリ)=off</code> にするとインストールしたものは使わず常にソースからビルドするようになります。</li>
 <li>設定可能なライブラリ名は以下<ul>
 <li><code>MSGPACK</code>, <code>SPDLOG</code>, <code>EVENTPP</code>, <code>CURL</code>, <code>CROW</code>, <code>ASIO</code>, <code>CLI11</code>, <code>UTF8CPP</code>, <code>MAGICK</code></li>
 <li><code>OPENCV</code> (デフォルトでoff、見つからなかった場合ソースからのビルドもしません)</li>
@@ -485,7 +486,7 @@ License</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Jun 18 2024 08:29:28 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Thu Jun 20 2024 08:48:48 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>
