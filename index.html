@@ -358,9 +358,10 @@ Homebrew (MacOS, Linux)</summary>
 <summary >
 Visual Studio</summary>
 <p></p>
-<p>Visual Studio 2019, 2022 でcloneしたwebcfaceのフォルダーを開くか、 Developer Command Promptからcmakeコマンドを使ってもビルドできます</p>
-<p><a href="https://imagemagick.org/script/download.php">https://imagemagick.org/script/download.php</a> からImageMagickをダウンロード、インストールしてPATHを通せばそれを使用してビルドすることができます。 (インストール時に development header もインストールすること) インストールしない場合ソースをダウンロードしてビルドするので時間がかかります。</p>
+<p>Visual Studio 2019 または 2022 でcloneしたwebcfaceのフォルダーを開くか、 Developer Command Promptからcmakeコマンドを使ってもビルドできます。</p>
+<p><a href="https://imagemagick.org/script/download.php">https://imagemagick.org/script/download.php</a> からImageMagickをダウンロード、インストールしてPATHを通せばそれを使用してビルドすることができます。 (インストール時に development header もインストールすること)</p>
 <p>または、chocolateyをインストールしてあれば <code>choco install imagemagick -PackageParameters InstallDevelopmentHeaders=true</code> でok</p>
+<p>ImageMagickをインストールしない場合CMake時に自動的にソースをダウンロードしてビルドします。 その場合 Visual C++ ATL と MFC のコンポーネントも必要になります。</p>
 <p></p>
 </details>
 <details >
@@ -486,7 +487,7 @@ License</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Jun 20 2024 08:48:48 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Thu Jun 20 2024 10:51:13 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>
