@@ -268,14 +268,16 @@ brew install msgpack-cxx spdlog asio cli11 utf8cpp imagemagick
 
 <details><summary>Visual Studio</summary>
 
-Visual Studio 2019, 2022 でcloneしたwebcfaceのフォルダーを開くか、
-Developer Command Promptからcmakeコマンドを使ってもビルドできます
+Visual Studio 2019 または 2022 でcloneしたwebcfaceのフォルダーを開くか、
+Developer Command Promptからcmakeコマンドを使ってもビルドできます。
 
 https://imagemagick.org/script/download.php からImageMagickをダウンロード、インストールしてPATHを通せばそれを使用してビルドすることができます。
 (インストール時に development header もインストールすること)
-インストールしない場合ソースをダウンロードしてビルドするので時間がかかります。
 
 または、chocolateyをインストールしてあれば `choco install imagemagick -PackageParameters InstallDevelopmentHeaders=true` でok
+
+ImageMagickをインストールしない場合CMake時に自動的にソースをダウンロードしてビルドします。
+その場合 Visual C++ ATL と MFC のコンポーネントも必要になります。
 
 </details>
 

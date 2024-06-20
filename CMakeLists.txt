@@ -501,7 +501,20 @@ else()
                 GIT_TAG 35dbf227258caec73fbe4a0a10ea10f2c2c1051d
             )
             FetchContent_Populate(imagemagick-windows)
-            message(STATUS ${imagemagick-windows_SOURCE_DIR})
+            # https://learn.microsoft.com/en-us/cpp/overview/compiler-versions?view=msvc-170
+            # https://stackoverflow.com/questions/33380128/visual-studio-2015-command-line-retarget-solution
+            if(CMAKE_CXX_COMPILER_VERSION STRGREATER "19.30")
+                set(VS_TOOLCHAIN v143)
+                set(VS_VERSION 2022)
+            elseif(CMAKE_CXX_COMPILER_VERSION STRGREATER "19.20")
+                set(VS_TOOLCHAIN v142)
+                set(VS_VERSION 2019)
+            elseif(CMAKE_CXX_COMPILER_VERSION STRGREATER "19.10")
+                set(VS_TOOLCHAIN v141)
+                set(VS_VERSION 2017)
+            else()
+                message(FATAL_ERROR "Compiler version ${CMAKE_CXX_COMPILER_VERSION} is older than vs2017(19.10)")
+            endif()
             if(NOT EXISTS ${imagemagick-windows_SOURCE_DIR}/IM7.StaticDLL.sln OR ${CMAKE_CURRENT_LIST_FILE} IS_NEWER_THAN ${imagemagick-windows_SOURCE_DIR}/IM7.StaticDLL.sln)
                 if(NOT EXISTS ${imagemagick-windows_SOURCE_DIR}/Configure/Configure.exe OR ${CMAKE_CURRENT_LIST_FILE} IS_NEWER_THAN ${imagemagick-windows_SOURCE_DIR}/Configure/Configure.exe)
                     message(STATUS "Fetching dependencies...")
@@ -515,51 +528,77 @@ else()
                         "\n#pragma warning(disable: 4201)\n"
                     )
                     message(STATUS "Building Configure...")
+                    set(COMMAND ${DEVENV_COMMAND} /upgrade Configure.2017.sln)
+                    message(STATUS "${COMMAND}")
                     execute_process(
-                        COMMAND ${DEVENV_COMMAND} /upgrade Configure.2017.sln
+                        COMMAND ${COMMAND}
                         WORKING_DIRECTORY ${imagemagick-windows_SOURCE_DIR}/Configure
                     )
+                    set(COMMAND ${MSBUILD_COMMAND} Configure.2017.sln /m /p:PlatformToolset=${VS_TOOLCHAIN})
+                    message(STATUS "${COMMAND}")
                     execute_process(
-                        COMMAND ${MSBUILD_COMMAND} Configure.2017.sln /m
+                        COMMAND ${COMMAND}
                         WORKING_DIRECTORY ${imagemagick-windows_SOURCE_DIR}/Configure
                     )
                 endif()
+                if(NOT EXISTS ${imagemagick-windows_SOURCE_DIR}/Configure/Configure.exe)
+                    message(FATAL_ERROR "Failed to build Configure.exe for ImageMagick")
+                endif()
                 message(STATUS "Executing Configure...")
+                set(COMMAND Configure.exe /noWizard /noAliases /noDpc /noHdri /Q8 /${CMAKE_C_COMPILER_ARCHITECTURE_ID} /VS${VS_VERSION} /smtd)
+                message(STATUS "${COMMAND}")
                 execute_process(
-                    COMMAND Configure.exe /noWizard /noAliases /noDpc /noHdri /Q8 /${CMAKE_C_COMPILER_ARCHITECTURE_ID} /VS2017 /smtd
+                    COMMAND ${COMMAND}
                     WORKING_DIRECTORY ${imagemagick-windows_SOURCE_DIR}/Configure
                 )
+                set(COMMAND ${DEVENV_COMMAND} /upgrade IM7.StaticDLL.${CMAKE_C_COMPILER_ARCHITECTURE_ID}.sln)
+                message(STATUS "${COMMAND}")
                 execute_process(
-                    COMMAND ${DEVENV_COMMAND} /upgrade IM7.StaticDLL.${CMAKE_C_COMPILER_ARCHITECTURE_ID}.sln
+                    COMMAND ${COMMAND}
                     WORKING_DIRECTORY ${imagemagick-windows_SOURCE_DIR}
                 )
+            endif()
+            if(NOT EXISTS ${imagemagick-windows_SOURCE_DIR}/IM7.StaticDLL.sln)
+                message(STATUS "Failed to configure ImageMagick")
             endif()
             message(STATUS "Building ImageMagick...")
             set(MAGICKPP_LIB_DIR "${imagemagick-windows_SOURCE_DIR}/Output/lib")
             if(NOT CMAKE_BUILD_TYPE STREQUAL "Debug" OR WEBCFACE_CONFIG_ALL)
+                set(COMMAND ${MSBUILD_COMMAND} IM7.StaticDLL.${CMAKE_C_COMPILER_ARCHITECTURE_ID}.sln
+                    /m /p:PlatformToolset=${VS_TOOLCHAIN},Configuration=Release,Platform=${CMAKE_C_COMPILER_ARCHITECTURE_ID}
+                )
+                message(STATUS "${COMMAND}")
                 execute_process(
-                    COMMAND ${MSBUILD_COMMAND} IM7.StaticDLL.${CMAKE_C_COMPILER_ARCHITECTURE_ID}.sln
-                        /m /p:Configuration=Release,Platform=${CMAKE_C_COMPILER_ARCHITECTURE_ID}
+                    COMMAND ${COMMAND}
                     WORKING_DIRECTORY ${imagemagick-windows_SOURCE_DIR}
                 )
                 file(GLOB MAGICKPP_RL_LIBS
                     RELATIVE ${MAGICKPP_LIB_DIR}
                     ${MAGICKPP_LIB_DIR}/CORE_RL_*.lib
                 )
+                if(MAGICKPP_RL_LIBS STREQUAL "")
+                    message(FATAL_ERROR "Failed to build ImageMagick")
+                endif()
                 foreach(lib IN LISTS MAGICKPP_RL_LIBS)
                     list(APPEND MAGICKPP_LIBS optimized ${MAGICKPP_LIB_DIR}/${lib})
                 endforeach()
             endif()
             if(CMAKE_BUILD_TYPE STREQUAL "Debug" OR WEBCFACE_CONFIG_ALL)
+                set(COMMAND ${MSBUILD_COMMAND} IM7.StaticDLL.${CMAKE_C_COMPILER_ARCHITECTURE_ID}.sln
+                    /m /p:Configuration=Debug,Platform=${CMAKE_C_COMPILER_ARCHITECTURE_ID}
+                )
+                message(STATUS "${COMMAND}")
                 execute_process(
-                    COMMAND ${MSBUILD_COMMAND} IM7.StaticDLL.${CMAKE_C_COMPILER_ARCHITECTURE_ID}.sln
-                        /m /p:Configuration=Debug,Platform=${CMAKE_C_COMPILER_ARCHITECTURE_ID}
+                    COMMAND ${COMMAND}
                     WORKING_DIRECTORY ${imagemagick-windows_SOURCE_DIR}
                 )
                 file(GLOB MAGICKPP_DB_LIBS
                     RELATIVE ${MAGICKPP_LIB_DIR}
                     ${MAGICKPP_LIB_DIR}/CORE_DB_*.lib
                 )
+                if(MAGICKPP_DB_LIBS STREQUAL "")
+                    message(FATAL_ERROR "Failed to build ImageMagick")
+                endif()
                 foreach(lib IN LISTS MAGICKPP_DB_LIBS)
                     list(APPEND MAGICKPP_LIBS debug ${MAGICKPP_LIB_DIR}/${lib})
                 endforeach()
