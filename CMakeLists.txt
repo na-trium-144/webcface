@@ -318,6 +318,27 @@ else()
     FetchContent_MakeAvailable(curl)
     set(libcurl libcurl_static)
 endif()
+if(WEBCFACE_SHARED AND APPLE)
+    add_library(libcurl-hidden INTERFACE)
+    if(CURL_FOUND)
+        target_include_directories(libcurl-hidden PRIVATE ${CURL_INCLUDE_DIRS})
+    else()
+        target_include_directories(libcurl-hidden PRIVATE $<TARGET_PROPERTY:${libcurl},INCLUDE_DIRECTORIES>)
+        target_compile_definitions(libcurl-hidden PRIVATE CURL_STATICLIB)
+    endif()
+    target_link_directories(libcurl-hidden PRIVATE $<TARGET_LINKER_FILE_DIR:${libcurl}>)
+    if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+        # なぜかTARGET_LINKER_FILE_BASE_NAMEすると"libcurl"になってしまう
+        target_link_libraries(libcurl-hidden PRIVATE -Wl,-hidden-lcurl-d)
+    else()
+        target_link_libraries(libcurl-hidden PRIVATE -Wl,-hidden-lcurl)
+    endif()
+    target_link_libraries(libcurl-hidden PRIVATE $<TARGET_PROPERTY:${libcurl},LINK_LIBRARIES>)
+    add_dependencies(libcurl-hidden ${libcurl})
+    set(libcurl-linker libcurl-hidden)
+else()
+    set(libcurl-linker ${libcurl})
+endif()
 
 if(WEBCFACE_FIND_CROW)
     find_package(Crow QUIET)
@@ -944,9 +965,13 @@ endmacro()
 
 ###############################################################################
 # server-internal: private
-# Crowとasioをwebcfaceのインタフェースから隔離するためにライブラリを分ける
-# (こうしないとLinuxでどうしてもasioのシンボルがwebcfaceに残ってセグフォする)
-add_library(webcface-server-internal STATIC ${WEBCFACE_SERVER_IN_SRC})
+if(WEBCFACE_SHARED)
+    # Crowとasioをwebcfaceのインタフェースから隔離するためにライブラリを分ける
+    # (こうしないとLinuxでどうしてもasioのシンボルがwebcfaceに残ってセグフォする)
+    add_library(webcface-server-internal STATIC ${WEBCFACE_SERVER_IN_SRC})
+else()
+    add_library(webcface-server-internal OBJECT ${WEBCFACE_SERVER_IN_SRC})
+endif()
 target_include_directories(webcface-server-internal PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/server-internal/include>)
 target_link_libraries(webcface-server-internal PRIVATE ${Crow})
 set_target_postfix(webcface-server-internal)
@@ -993,31 +1018,13 @@ target_compile_definitions(webcface-client PRIVATE WEBCFACE_BUILDING)
 target_link_libraries(webcface-client PRIVATE
     webcface-message
     webcface-server-store
+    ${libcurl-linker}
 )
 target_link_libraries(webcface-client PUBLIC
     webcface-encoding
     eventpp::eventpp
     ${spdlog}
 )
-if(WEBCFACE_SHARED AND APPLE)
-    if(CURL_FOUND)
-        target_include_directories(webcface-client PRIVATE ${CURL_INCLUDE_DIRS})
-    else()
-        target_include_directories(webcface-client PRIVATE $<TARGET_PROPERTY:${libcurl},INCLUDE_DIRECTORIES>)
-        target_compile_definitions(webcface-client PRIVATE CURL_STATICLIB)
-    endif()
-    target_link_directories(webcface-client PRIVATE $<TARGET_LINKER_FILE_DIR:${libcurl}>)
-    if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-        # なぜかTARGET_LINKER_FILE_BASE_NAMEすると"libcurl"になってしまう
-        target_link_libraries(webcface-client PRIVATE -Wl,-hidden-lcurl-d)
-    else()
-        target_link_libraries(webcface-client PRIVATE -Wl,-hidden-lcurl)
-    endif()
-    target_link_libraries(webcface-client PRIVATE $<TARGET_PROPERTY:${libcurl},LINK_LIBRARIES>)
-    add_dependencies(webcface-client ${libcurl})
-else()
-    target_link_libraries(webcface-client PRIVATE ${libcurl})
-endif()
 if(WIN32)
     target_link_libraries(webcface-client PRIVATE ws2_32.lib wsock32.lib iphlpapi.lib)
 endif()
@@ -1170,6 +1177,7 @@ if(WEBCFACE_INSTALL)
         webcface-message
         webcface-server-store
         webcface-client
+        webcface-server-internal
         wcf
     )
     list(APPEND WEBCFACE_PKGCONFIG_LIBS -lwebcface)
@@ -1188,10 +1196,11 @@ if(WEBCFACE_INSTALL)
         set(EVENTPP_INSTALLED 0)
     endif()
     # private static dependencies
-    list(APPEND WEBCFACE_EXPORTS webcface-server-internal)
-    list(APPEND WEBCFACE_PKGCONFIG_LIBS -lwebcface-server-internal)
     if(NOT msgpack-cxx_FOUND)
         list(APPEND WEBCFACE_EXPORTS msgpack-cxx)
+    endif()
+    if(WEBCFACE_SHARED AND APPLE)
+        list(APPEND WEBCFACE_EXPORTS libcurl-hidden)
     endif()
     if(NOT CURL_FOUND)
         list(APPEND WEBCFACE_EXPORTS ${libcurl})
