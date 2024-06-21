@@ -275,6 +275,17 @@ struct WEBCFACE_DLL RobotLink {
     std::vector<double> geometry_properties;
     int color;
     RobotLink() = default;
+    RobotLink(const SharedString &name, const SharedString &joint_name,
+              std::size_t joint_parent, int joint_type,
+              const std::array<double, 3> &joint_origin_pos,
+              const std::array<double, 3> &joint_origin_rot, double joint_angle,
+              int geometry_type, const std::vector<double> &geometry_properties,
+              int color)
+        : name(name), joint_name(joint_name), joint_parent(joint_parent),
+          joint_type(joint_type), joint_origin_pos(joint_origin_pos),
+          joint_origin_rot(joint_origin_rot), joint_angle(joint_angle),
+          geometry_type(geometry_type),
+          geometry_properties(geometry_properties), color(color) {}
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("n", name), MSGPACK_NVP("jn", joint_name),
                        MSGPACK_NVP("jp", joint_parent),
                        MSGPACK_NVP("jt", joint_type),
@@ -577,14 +588,6 @@ struct WEBCFACE_DLL Req<Image>
         unsigned int req_id, const ImageReq &ireq)
         : MessageBase<MessageKind::image + MessageKind::req>(), ImageReq(ireq),
           member(member), field(field), req_id(req_id) {}
-    //     : member(member), field(field), req_id(req_id), rows(ireq.rows),
-    //       cols(ireq.cols), color_mode(ireq.color_mode),
-    //       cmp_mode(ireq.cmp_mode), quality(ireq.quality),
-    //       frame_rate(ireq.frame_rate) {}
-    // operator ImageReq() const {
-    //     return ImageReq{rows, cols, color_mode, cmp_mode, quality,
-    //     frame_rate};
-    // }
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", req_id), MSGPACK_NVP("M", member),
                        MSGPACK_NVP("f", field), MSGPACK_NVP("w", cols),
                        MSGPACK_NVP("h", rows), MSGPACK_NVP("l", color_mode),
@@ -729,13 +732,6 @@ struct WEBCFACE_DLL Res<Image>
         const ImageFrame &img)
         : MessageBase<MessageKind::image + MessageKind::res>(), ImageFrame(img),
           req_id(req_id), sub_field(sub_field) {}
-    //     : req_id(req_id), sub_field(sub_field), width_(img.width()),
-    //       height_(img.height()), data_(img.dataPtr()),
-    //       color_mode_(img.colorMode()), cmp_mode_(img.compressMode()) {}
-    // operator ImageFrame() const {
-    //     return ImageFrame{sizeWH(width_, height_), data_, color_mode_,
-    //                       cmp_mode_};
-    // }
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", req_id), MSGPACK_NVP("f", sub_field),
                        MSGPACK_NVP("d", data_), MSGPACK_NVP("w", width_),
                        MSGPACK_NVP("h", height_), MSGPACK_NVP("l", color_mode_),

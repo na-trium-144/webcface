@@ -868,6 +868,7 @@ list(APPEND WEBCFACE_CLIENT_SRC
     client/src/logger.cc
     client/src/member.cc
     client/src/text.cc
+    client/src/robot_link.cc
     client/src/robot_model.cc
     client/src/canvas3d.cc
     client/src/canvas2d.cc
@@ -953,22 +954,23 @@ set_target_postfix(webcface-server-internal)
 # encoding: public
 add_library(webcface-encoding OBJECT ${WEBCFACE_ENCODING_SRC})
 target_include_directories(webcface-encoding PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/encoding/include>)
+target_compile_definitions(webcface-encoding PRIVATE WEBCFACE_BUILDING)
 target_link_libraries(webcface-encoding PRIVATE utfcpp)
-set_target_postfix(webcface-encoding)
 
 # message: APIはprivateだがシンボルは公開
 add_library(webcface-message OBJECT ${WEBCFACE_MESSAGE_SRC})
 target_include_directories(webcface-message PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/message/include>)
+target_compile_definitions(webcface-message PRIVATE WEBCFACE_BUILDING)
 target_link_libraries(webcface-message PUBLIC
     webcface-encoding
     msgpack-cxx
     utfcpp
 )
-set_target_postfix(webcface-message)
 
 # server-store: public
 add_library(webcface-server-store OBJECT ${WEBCFACE_SERVER_SRC})
 target_include_directories(webcface-server-store PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/server-store/include>)
+target_compile_definitions(webcface-server-store PRIVATE WEBCFACE_BUILDING)
 target_link_libraries(webcface-server-store PRIVATE
     webcface-encoding
     webcface-message
@@ -983,22 +985,54 @@ if(WEBCFACE_SHARED AND APPLE)
 else()
     target_link_libraries(webcface-server-store PRIVATE webcface-server-internal)
 endif()
-set_target_postfix(webcface-server-store)
+
+# client: public
+add_library(webcface-client OBJECT ${WEBCFACE_CLIENT_SRC})
+target_include_directories(webcface-client PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/client/include>)
+target_compile_definitions(webcface-client PRIVATE WEBCFACE_BUILDING)
+target_link_libraries(webcface-client PRIVATE
+    webcface-message
+    webcface-server-store
+)
+target_link_libraries(webcface-client PUBLIC
+    webcface-encoding
+    eventpp::eventpp
+    ${spdlog}
+)
+if(WEBCFACE_SHARED AND APPLE)
+    if(CURL_FOUND)
+        target_include_directories(webcface-client PRIVATE ${CURL_INCLUDE_DIRS})
+    else()
+        target_include_directories(webcface-client PRIVATE $<TARGET_PROPERTY:${libcurl},INCLUDE_DIRECTORIES>)
+        target_compile_definitions(webcface-client PRIVATE CURL_STATICLIB)
+    endif()
+    target_link_directories(webcface-client PRIVATE $<TARGET_LINKER_FILE_DIR:${libcurl}>)
+    if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+        # なぜかTARGET_LINKER_FILE_BASE_NAMEすると"libcurl"になってしまう
+        target_link_libraries(webcface-client PRIVATE -Wl,-hidden-lcurl-d)
+    else()
+        target_link_libraries(webcface-client PRIVATE -Wl,-hidden-lcurl)
+    endif()
+    target_link_libraries(webcface-client PRIVATE $<TARGET_PROPERTY:${libcurl},LINK_LIBRARIES>)
+    add_dependencies(webcface-client ${libcurl})
+else()
+    target_link_libraries(webcface-client PRIVATE ${libcurl})
+endif()
+if(WIN32)
+    target_link_libraries(webcface-client PRIVATE ws2_32.lib wsock32.lib iphlpapi.lib)
+endif()
 
 # client: public
 if(WEBCFACE_SHARED)
-    add_library(webcface SHARED ${WEBCFACE_CLIENT_SRC} ${VERSION_RC})
+    add_library(webcface SHARED ${VERSION_RC})
 else()
-    add_library(webcface STATIC ${WEBCFACE_CLIENT_SRC})
+    add_library(webcface STATIC)
     # target_link_directories(webcface PUBLIC $<TARGET_PROPERTY:magickpp,INTERFACE_LINK_DIRECTORIES>)
 endif()
 target_compile_features(webcface PUBLIC cxx_std_20)
 target_link_libraries(webcface PRIVATE webcface-message)
-target_link_libraries(webcface PUBLIC webcface-encoding webcface-server-store)
-target_include_directories(webcface PUBLIC
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/client/include>
-    $<INSTALL_INTERFACE:include>
-)
+target_link_libraries(webcface PUBLIC webcface-encoding webcface-server-store webcface-client)
+target_include_directories(webcface PUBLIC $<INSTALL_INTERFACE:include>)
 if(WEBCFACE_SHARED AND NOT WIN32)
     # webcfaceのAPI以外をexportしない。
     # MSVCではデフォルトでdllexportしたもの以外exportされないので問題なし
@@ -1006,34 +1040,11 @@ if(WEBCFACE_SHARED AND NOT WIN32)
     set_target_properties(webcface-encoding PROPERTIES CXX_VISIBILITY_PRESET hidden)
     set_target_properties(webcface-message PROPERTIES CXX_VISIBILITY_PRESET hidden)
     set_target_properties(webcface-server-store PROPERTIES CXX_VISIBILITY_PRESET hidden)
-    set_target_properties(webcface PROPERTIES CXX_VISIBILITY_PRESET hidden)
+    set_target_properties(webcface-client PROPERTIES CXX_VISIBILITY_PRESET hidden)
     if(NOT APPLE)
         # object libraryのwebcface-messageなどはexcludeされない
         target_link_options(webcface PRIVATE -Wl,--exclude-libs,ALL)
     endif()
-endif()
-if(WEBCFACE_SHARED AND APPLE)
-    if(CURL_FOUND)
-        target_include_directories(webcface PRIVATE ${CURL_INCLUDE_DIRS})
-    else()
-        target_include_directories(webcface PRIVATE $<TARGET_PROPERTY:${libcurl},INCLUDE_DIRECTORIES>)
-        target_compile_definitions(webcface PRIVATE CURL_STATICLIB)
-    endif()
-    target_link_directories(webcface PRIVATE $<TARGET_LINKER_FILE_DIR:${libcurl}>)
-    if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-        # なぜかTARGET_LINKER_FILE_BASE_NAMEすると"libcurl"になってしまう
-        target_link_libraries(webcface PRIVATE -Wl,-hidden-lcurl-d)
-    else()
-        target_link_libraries(webcface PRIVATE -Wl,-hidden-lcurl)
-    endif()
-    target_link_libraries(webcface PRIVATE $<TARGET_PROPERTY:${libcurl},LINK_LIBRARIES>)
-    add_dependencies(webcface ${libcurl})
-else()
-    target_link_libraries(webcface PRIVATE ${libcurl})
-endif()
-target_link_libraries(webcface PUBLIC eventpp::eventpp ${spdlog})
-if(WIN32)
-    target_link_libraries(webcface PRIVATE ws2_32.lib wsock32.lib iphlpapi.lib)
 endif()
 set_target_postfix(webcface)
 set_target_properties(webcface PROPERTIES
@@ -1158,6 +1169,7 @@ if(WEBCFACE_INSTALL)
         webcface-encoding
         webcface-message
         webcface-server-store
+        webcface-client
         wcf
     )
     list(APPEND WEBCFACE_PKGCONFIG_LIBS -lwebcface)
