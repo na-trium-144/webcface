@@ -14,7 +14,7 @@ jobs:
   test-windows-msvc:
     strategy:
       matrix:
-        dep: ["choco", "source", "static"]
+        dep: ["choco", "source", "submodule", "static"]
         include:
         - dep: choco
           shared_flag: on
@@ -25,6 +25,9 @@ jobs:
     runs-on: windows-2019
     steps:
     - uses: actions/checkout@v4
+    - run: git submodule update --init
+      if: matrix.dep == 'submodule'
+
     # - name: vcpkg build
     #   if: matrix.dep == 'vcpkg'
     #   uses: johnwason/vcpkg-action@v5

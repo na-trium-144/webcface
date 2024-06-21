@@ -268,14 +268,16 @@ brew install msgpack-cxx spdlog asio cli11 utf8cpp imagemagick
 
 <details><summary>Visual Studio</summary>
 
-Visual Studio 2019, 2022 でcloneしたwebcfaceのフォルダーを開くか、
-Developer Command Promptからcmakeコマンドを使ってもビルドできます
+Visual Studio 2019 または 2022 でcloneしたwebcfaceのフォルダーを開くか、
+Developer Command Promptからcmakeコマンドを使ってもビルドできます。
 
 https://imagemagick.org/script/download.php からImageMagickをダウンロード、インストールしてPATHを通せばそれを使用してビルドすることができます。
 (インストール時に development header もインストールすること)
-インストールしない場合ソースをダウンロードしてビルドするので時間がかかります。
 
 または、chocolateyをインストールしてあれば `choco install imagemagick -PackageParameters InstallDevelopmentHeaders=true` でok
+
+ImageMagickをインストールしない場合CMake時に自動的にソースをダウンロードしてビルドします。
+その場合 Visual C++ ATL と MFC のコンポーネントも必要になります。
 
 </details>
 
@@ -314,7 +316,8 @@ sudo cmake --build build -t install
 	* `-DWEBCFACE_DOWNLOAD_WEBUI=off`を指定するとWebUIをダウンロードしません。
 	* 依存ライブラリ
 		* デフォルトではfind_packageやpkg_check_modulesなどで依存ライブラリがインストールされているか確認し、見つかればそれを使い見つからなければソースコードをダウンロードします。
-		* `-DWEBCFACE_FIND_(ライブラリ)=off` にするとインストールしたものは使わず常にソースからダウンロードするようになります。
+		* `git submodule update --init` でsubmoduleとしてexternalディレクトリ以下に依存ライブラリをすべてcloneすることができます。その場合はFetchContentでのダウンロードはされません。(インターネット接続のないところでcmakeをしたい場合などに有用) (MSVCの場合のImageMagick-Windowsリポジトリを除く)
+		* `-DWEBCFACE_FIND_(ライブラリ)=off` にするとインストールしたものは使わず常にソースからビルドするようになります。
 		* 設定可能なライブラリ名は以下
 			* `MSGPACK`, `SPDLOG`, `EVENTPP`, `CURL`, `CROW`, `ASIO`, `CLI11`, `UTF8CPP`, `MAGICK`
 			* `OPENCV` (デフォルトでoff、見つからなかった場合ソースからのビルドもしません)

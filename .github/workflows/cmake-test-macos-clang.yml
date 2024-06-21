@@ -14,7 +14,7 @@ jobs:
   test-macos-clang:
     strategy:
       matrix:
-        dep: ["brew", "source", "static"]
+        dep: ["brew", "source", "submodule", "static"]
         include:
         - dep: brew
           shared_flag: on
@@ -25,6 +25,9 @@ jobs:
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v4
+    - run: git submodule update --init
+      if: matrix.dep == 'submodule'
+
     - name: Install Homebrew dependencies
       if: matrix.dep == 'brew'
       env:
