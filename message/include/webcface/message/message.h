@@ -522,6 +522,12 @@ struct WEBCFACE_DLL Arg {
     std::optional<ValAdaptor> init_ = std::nullopt;
     std::optional<double> min_ = std::nullopt, max_ = std::nullopt;
     std::vector<ValAdaptor> option_;
+    Arg() = default;
+    Arg(const SharedString &name, ValType type,
+        const std::optional<ValAdaptor> &init, const std::optional<double> &min,
+        const std::optional<double> &max, const std::vector<ValAdaptor> &option)
+        : name_(name), type_(type), init_(init), min_(min), max_(max),
+          option_(option) {}
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("n", name_), MSGPACK_NVP("t", type_),
                        MSGPACK_NVP("i", init_), MSGPACK_NVP("m", min_),
                        MSGPACK_NVP("x", max_), MSGPACK_NVP("o", option_))
