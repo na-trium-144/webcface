@@ -1,7 +1,7 @@
 include(cmake/fetch.cmake)
 option(WEBCFACE_FIND_CROW "try find_package(Crow)" ${WEBCFACE_FIND_LIBS})
 
-# target = ${crow} -> Crow::Crow or Crow (header only)
+# target = crow-linker (header only)
 
 if(WEBCFACE_FIND_CROW)
     find_package(Crow QUIET)
@@ -24,7 +24,8 @@ int main(){
         message(STATUS "Installed crow has no unix socket support")
         unset(Crow_FOUND)
     else()
-        set(crow Crow::Crow)
+        add_library(crow-linker INTERFACE)
+        target_link_libraries(crow-linker INTERFACE Crow::Crow)
     endif()
 endif()
 if(NOT Crow_FOUND)
@@ -41,10 +42,9 @@ if(NOT Crow_FOUND)
         5f5372ed80860dfcef788972bb0fd3972f715842
         CMakeLists.txt
     )
-    add_library(Crow INTERFACE)
-    target_include_directories(Crow INTERFACE $<BUILD_INTERFACE:${crow_SOURCE_DIR}/include>)
-    target_link_libraries(Crow INTERFACE asio)
-    set(Crow Crow)
+    add_library(crow-linker INTERFACE)
+    target_include_directories(crow-linker INTERFACE $<BUILD_INTERFACE:${crow_SOURCE_DIR}/include>)
+    target_link_libraries(crow-linker INTERFACE asio)
 
     if(WEBCFACE_INSTALL)
         install(FILES

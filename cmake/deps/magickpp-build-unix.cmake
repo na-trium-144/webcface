@@ -70,27 +70,27 @@ pkg_check_modules(Magickpp QUIET Magick++)
 if(NOT Magickpp_FOUND)
     message(FATAL_ERROR "Failed to build Magick++")
 endif()
-add_library(magickpp INTERFACE)
-target_include_directories(magickpp INTERFACE $<BUILD_INTERFACE:${Magickpp_STATIC_INCLUDE_DIRS}>)
-target_compile_options(magickpp INTERFACE ${Magickpp_STATIC_CFLAGS_OTHER})
-target_static_link(magickpp
+add_library(magickpp-linker INTERFACE)
+target_include_directories(magickpp-linker INTERFACE $<BUILD_INTERFACE:${Magickpp_STATIC_INCLUDE_DIRS}>)
+target_compile_options(magickpp-linker INTERFACE ${Magickpp_STATIC_CFLAGS_OTHER})
+target_static_link(magickpp-linker
     LIBRARY_DIRS ${Magickpp_STATIC_LIBRARY_DIRS}
     LIBRARIES ${Magickpp_STATIC_LIBRARIES}
 )
-target_link_libraries(magickpp INTERFACE libjpeg libpng libwebp)
-target_link_directories(magickpp INTERFACE
+target_link_libraries(magickpp-linker INTERFACE libjpeg libpng libwebp)
+target_link_directories(magickpp-linker INTERFACE
     $<BUILD_INTERFACE:${MAGICKPP_PREFIX}/lib>
     $<INSTALL_INTERFACE:lib>
 )
 if(WIN32)
-    target_link_libraries(magickpp INTERFACE urlmon.lib)
+    target_link_libraries(magickpp-linker INTERFACE urlmon.lib)
 endif()
 if(Magickpp_VERSION MATCHES "^7\.")
-    target_compile_definitions(magickpp INTERFACE WEBCFACE_MAGICK_VER7)
+    target_compile_definitions(magickpp-linker INTERFACE WEBCFACE_MAGICK_VER7)
 endif()
 
 if(WEBCFACE_INSTALL)
-    list(APPEND WEBCFACE_EXPORTS magickpp)
+    list(APPEND WEBCFACE_EXPORTS magickpp-linker)
     if(NOT WEBCFACE_SHARED)
         include(cmake/linker.cmake)
         install_prefix_libs(${MAGICKPP_PREFIX}

@@ -38,7 +38,6 @@ set(WEBCFACE_CLANG_TIDY "" CACHE STRING "clang-tidy path (or empty to disable cl
 option(WEBCFACE_DOWNLOAD_WEBUI "download and install webui" ON)
 option(WEBCFACE_CONFIG_ALL "configure both debug and release build on windows" OFF)
 option(WEBCFACE_FIND_LIBS "if false, disables every find_package and pkg_check_modules" ${WEBCFACE_SHARED})
-option(WEBCFACE_FIND_OPENCV "try find_package(OpenCV) (only for example)" OFF)
 option(WEBCFACE_FIND_AMENT "try find_package(ament_cmake)" ON)
 
 if(WEBCFACE_VERSION_SUFFIX STREQUAL "git")
@@ -79,7 +78,12 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 message(STATUS "cmake_build_type = ${CMAKE_BUILD_TYPE}")
 
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
+set(output_types RUNTIME ARCHIVE LIBRARY PDB COMPILE_PDB)
+foreach(type IN LISTS output_types)
+    if("${CMAKE_${type}_OUTPUT_DIRECTORY}" STREQUAL "")
+        set(CMAKE_${type}_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
+    endif()
+endforeach()
 
 if(WEBCFACE_COVERAGE)
     if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
@@ -91,28 +95,14 @@ if(WEBCFACE_COVERAGE)
     endif()
 endif()
 
-if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-    add_compile_definitions(
-        _CRT_SECURE_NO_WARNINGS
-        _SILENCE_STDEXT_ARR_ITERS_DEPRECATION_WARNING
-    )
-endif()
-
-if(MINGW)
-    # https://stackoverflow.com/questions/10486116/what-does-this-gcc-error-relocation-truncated-to-fit-mean
-    add_link_options(-Wl,--default-image-base-low)
-endif()
-
-set(WEBCFACE_DEF_H_PATH include/webcface/common/def.h)
 configure_file(
     cmake/def.h.in
-    ${CMAKE_CURRENT_BINARY_DIR}/${WEBCFACE_DEF_H_PATH}
+    ${CMAKE_CURRENT_BINARY_DIR}/include/webcface/common/def.h
     @ONLY
 )
-set(WEBCFACE_VERSION_RC_PATH version.rc)
 configure_file(
     cmake/version.rc.in
-    ${CMAKE_CURRENT_BINARY_DIR}/${WEBCFACE_VERSION_RC_PATH}
+    ${CMAKE_CURRENT_BINARY_DIR}/version.rc
     @ONLY
 )
 
@@ -152,19 +142,6 @@ include(cmake/deps/crow.cmake)
 include(cmake/deps/cli11.cmake)
 include(cmake/deps/utf8cpp.cmake)
 include(cmake/deps/magickpp.cmake)
-
-if(WEBCFACE_FIND_OPENCV)
-    find_package(OpenCV QUIET)
-endif()
-if(OpenCV_FOUND)
-    message(STATUS "OpenCV ${OpenCV_VERSION} Found: ${OpenCV_PREFIX}")
-else()
-    message(STATUS "OpenCV Not Found")
-endif()
-
-if(WEBCFACE_TEST)
-    include(cmake/deps/googletest.cmake) 
-endif()
 
 ###############################################################################
 include(CheckCXXCompilerFlag)
@@ -211,106 +188,18 @@ endif()
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     add_compile_options(/utf-8 /W4 /bigobj)
+    add_compile_definitions(
+        _CRT_SECURE_NO_WARNINGS
+        _SILENCE_STDEXT_ARR_ITERS_DEPRECATION_WARNING
+    )
+endif()
+
+if(MINGW)
+    # https://stackoverflow.com/questions/10486116/what-does-this-gcc-error-relocation-truncated-to-fit-mean
+    add_link_options(-Wl,--default-image-base-low)
 endif()
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR}/include)
-
-list(APPEND WEBCFACE_SERVER_IN_SRC
-    server-internal/src/server_ws.cc
-)
-list(APPEND WEBCFACE_ENCODING_SRC
-    encoding/src/encoding.cc
-    encoding/src/val_adaptor.cc
-)
-list(APPEND WEBCFACE_MESSAGE_SRC
-    message/src/message.cc
-)
-list(APPEND WEBCFACE_SERVER_SRC
-    server-store/src/member_data.cc
-    server-store/src/store.cc
-    server-store/src/websock.cc
-    server-store/src/dir.cc
-    server-store/src/ip.cc
-    server-store/src/unix_path.cc
-)
-list(APPEND WEBCFACE_CLIENT_SRC
-    client/src/client.cc
-    client/src/client_ws.cc
-    client/src/data_store1.cc
-    client/src/data_store2.cc
-    client/src/field.cc
-    client/src/func_info.cc
-    client/src/func_result.cc
-    client/src/func.cc
-    client/src/func_listener.cc
-    client/src/log.cc
-    client/src/logger.cc
-    client/src/member.cc
-    client/src/text.cc
-    client/src/robot_link.cc
-    client/src/robot_model.cc
-    client/src/canvas3d.cc
-    client/src/canvas2d.cc
-    client/src/value.cc
-    client/src/view.cc
-    client/src/image.cc
-    client/src/image_frame.cc
-    client/src/version.cc
-    client/src/component_canvas3d.cc
-    client/src/component_canvas2d.cc
-    client/src/component_view.cc
-    client/src/c_wcf/client.cc
-    client/src/c_wcf/value.cc
-    client/src/c_wcf/text.cc
-    client/src/c_wcf/func.cc
-    client/src/c_wcf/view.cc
-)
-list(APPEND SVR_MAIN_SRC
-    server/server_main.cc
-)
-list(APPEND EXAMPLE_SRC
-    examples/value.cc
-    examples/func.cc
-    examples/log.cc
-    examples/view.cc
-    examples/canvas2d.cc
-    examples/canvas3d.cc
-    examples/recv.cc
-    examples/c_example.c
-    examples/benchmark.cc
-    examples/image-send.cc
-    examples/image-recv.cc
-)
-if(OpenCV_FOUND)
-    list(APPEND EXAMPLE_SRC
-        examples/cv-send.cc
-        examples/cv-recv.cc
-    )
-endif()
-list(APPEND TEST_SRC
-    tests/client_data_test.cc
-    tests/data_test.cc
-    tests/func_test.cc
-    tests/func_listener_test.cc
-    tests/view_test.cc
-    tests/robot_model_test.cc
-    tests/canvas3d_test.cc
-    tests/canvas2d_test.cc
-    tests/image_test.cc
-    tests/member_test.cc
-    tests/logger_test.cc
-    tests/client_test.cc
-    tests/dummy_server.cc
-    tests/dummy_client.cc
-    tests/server_test.cc
-    tests/encoding_test.cc
-    tests/c_wcf_test.cc
-)
-if(WIN32)
-    set(VERSION_RC ${CMAKE_CURRENT_BINARY_DIR}/${WEBCFACE_VERSION_RC_PATH})
-else()
-    set(VERSION_RC "")
-endif()
 
 macro(set_target_postfix TARGET)
     if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
@@ -322,75 +211,18 @@ macro(set_target_postfix TARGET)
 endmacro()
 
 ###############################################################################
-# server-internal: private
-if(WEBCFACE_SHARED)
-    # Crowとasioをwebcfaceのインタフェースから隔離するためにライブラリを分ける
-    # (こうしないとLinuxでどうしてもasioのシンボルがwebcfaceに残ってセグフォする)
-    add_library(webcface-server-internal STATIC ${WEBCFACE_SERVER_IN_SRC})
-    set_target_postfix(webcface-server-internal)
-else()
-    add_library(webcface-server-internal OBJECT ${WEBCFACE_SERVER_IN_SRC})
-endif()
-target_include_directories(webcface-server-internal PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/server-internal/include>)
-target_link_libraries(webcface-server-internal PRIVATE ${Crow})
+
+add_subdirectory(server-internal)
+add_subdirectory(encoding)
+add_subdirectory(message)
+add_subdirectory(server-store)
+add_subdirectory(client)
 
 if(WEBCFACE_SHARED)
-    add_library(webcface-server-internal-linker INTERFACE)
-    include(cmake/linker.cmake)
-    target_static_link(webcface-server-internal-linker
-        LIBRARY_DIRS $<TARGET_LINKER_FILE_DIR:webcface-server-internal>
-        LIBRARIES webcface-server-internal
-    )
-    add_dependencies(webcface-server-internal-linker webcface-server-internal)
-endif()
-
-# encoding: public
-add_library(webcface-encoding OBJECT ${WEBCFACE_ENCODING_SRC})
-target_include_directories(webcface-encoding PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/encoding/include>)
-target_compile_definitions(webcface-encoding PRIVATE WEBCFACE_BUILDING)
-target_link_libraries(webcface-encoding PRIVATE utf8cpp)
-
-# message: APIはprivateだがシンボルは公開
-add_library(webcface-message OBJECT ${WEBCFACE_MESSAGE_SRC})
-target_include_directories(webcface-message PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/message/include>)
-target_compile_definitions(webcface-message PRIVATE WEBCFACE_BUILDING)
-target_link_libraries(webcface-message PUBLIC
-    webcface-encoding
-    msgpack-cxx
-    utf8cpp
-    ${spdlog}
-)
-
-# server-store: public
-add_library(webcface-server-store OBJECT ${WEBCFACE_SERVER_SRC})
-target_include_directories(webcface-server-store PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/server-store/include>)
-target_compile_definitions(webcface-server-store PRIVATE WEBCFACE_BUILDING)
-target_link_libraries(webcface-server-store PRIVATE
-    webcface-server-internal
-    webcface-encoding
-    webcface-message
-    magickpp
-    ${spdlog}
-)
-
-# client: public
-add_library(webcface-client OBJECT ${WEBCFACE_CLIENT_SRC})
-target_include_directories(webcface-client PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/client/include>)
-target_compile_definitions(webcface-client PRIVATE WEBCFACE_BUILDING)
-target_link_libraries(webcface-client PRIVATE
-    webcface-message
-    webcface-server-store
-    libcurl-linker
-)
-target_link_libraries(webcface-client PUBLIC
-    webcface-encoding
-    eventpp::eventpp
-    ${spdlog}
-)
-
-# client: public
-if(WEBCFACE_SHARED)
-    add_library(webcface SHARED ${VERSION_RC})
+    add_library(webcface SHARED)
+    if(WIN32)
+        target_sources(webcface PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/version.rc)
+    endif()
 else()
     add_library(webcface STATIC)
 endif()
@@ -414,15 +246,15 @@ else()
     target_sources(webcface PRIVATE $<TARGET_OBJECTS:webcface-server-internal>)
 endif()
 # private: リンクが必要なもののみ
-target_link_libraries(webcface PRIVATE magickpp libcurl-linker)
+target_link_libraries(webcface PRIVATE magickpp-linker libcurl-linker)
 if(NOT WEBCFACE_SHARED)
     target_link_directories(webcface PUBLIC
-        $<TARGET_PROPERTY:magickpp,INTERFACE_LINK_DIRECTORIES>
+        $<TARGET_PROPERTY:magickpp-linker,INTERFACE_LINK_DIRECTORIES>
         $<TARGET_PROPERTY:libcurl-linker,INTERFACE_LINK_DIRECTORIES>
     )
 endif()
 # public: header only も含む
-target_link_libraries(webcface PUBLIC eventpp::eventpp ${spdlog})
+target_link_libraries(webcface PUBLIC eventpp::eventpp spdlog-linker)
 if(WIN32)
     target_link_libraries(webcface PRIVATE ws2_32.lib wsock32.lib iphlpapi.lib)
 endif()
@@ -439,6 +271,7 @@ if(WEBCFACE_SHARED AND NOT WIN32)
         target_link_options(webcface PRIVATE -Wl,--exclude-libs,ALL)
     endif()
 endif()
+set_target_postfix(webcface-server-internal)
 set_target_postfix(webcface)
 set_target_properties(webcface PROPERTIES
     INSTALL_RPATH "$ORIGIN/;@loader_path/"
@@ -467,80 +300,17 @@ else()
 endif()
 add_library(webcface::wcf ALIAS wcf)
 
-add_executable(webcface-server ${SVR_MAIN_SRC} ${VERSION_RC})
-target_link_libraries(webcface-server PRIVATE
-    webcface
-    CLI11::CLI11
-)
-set_target_properties(webcface-server PROPERTIES
-    INSTALL_RPATH "$ORIGIN/../lib/;$ORIGIN/;@loader_path/../lib/;@loader_path/"
-    INSTALL_RPATH_USE_LINK_PATH TRUE
-)
-target_compile_definitions(webcface-server PRIVATE
-    FILE_DESCRIPTION="WebCFace Server"
-    FILE_IS_APP
-)
+
+###############################################################################
+
+add_subdirectory(server)
 
 if(WEBCFACE_EXAMPLE)
-    foreach(SRC IN LISTS EXAMPLE_SRC)
-        get_filename_component(TARGET ${SRC} NAME_WE)
-        add_executable(webcface-example-${TARGET} ${SRC} ${VERSION_RC})
-        target_link_libraries(webcface-example-${TARGET} PRIVATE webcface)
-        set(WEBCFACE_EXAMPLE_TARGETS
-            ${WEBCFACE_EXAMPLE_TARGETS}
-            webcface-example-${TARGET}
-        )
-        set(WEBCFACE_EXAMPLE_TARGETS_CPACK
-            ${WEBCFACE_EXAMPLE_TARGETS_CPACK}
-            webcface-example-${TARGET} "Example ${TARGET}"
-        )
-        set_target_properties(webcface-example-${TARGET} PROPERTIES
-            INSTALL_RPATH "$ORIGIN/../lib/;$ORIGIN/;@loader_path/../lib/;@loader_path/"
-            INSTALL_RPATH_USE_LINK_PATH TRUE
-        )
-        target_compile_definitions(webcface-example-${TARGET} PRIVATE
-            FILE_DESCRIPTION="WebCFace Example ${TARGET}"
-            FILE_IS_APP
-        )
-    endforeach()
-    foreach(TARGET image-recv image-send)
-        target_link_libraries(webcface-example-${TARGET} PRIVATE
-            magickpp
-        )
-    endforeach()
-    if(OpenCV_FOUND)
-        foreach(TARGET cv-recv cv-send)
-            target_link_libraries(webcface-example-${TARGET} PRIVATE
-                opencv_core
-                opencv_imgcodecs
-                opencv_imgproc
-                opencv_highgui
-            )
-        endforeach()
-    endif()
+    add_subdirectory(examples)
 endif()
 
 if(WEBCFACE_TEST)
-    enable_testing()
-    add_executable(webcface-test ${TEST_SRC})
-    target_link_libraries(webcface-test PRIVATE
-        webcface-encoding
-        webcface-message
-        webcface-server-store
-        webcface
-        GTest::gtest_main
-        msgpack-cxx
-        utfcpp
-        eventpp::eventpp
-        ${spdlog}
-        libcurl-linker
-        ${Crow}
-    )
-    target_compile_definitions(webcface-test PRIVATE
-        WEBCFACE_TEST_TIMEOUT=${WEBCFACE_TEST_TIMEOUT}
-    )
-    include(GoogleTest)
-    gtest_discover_tests(webcface-test DISCOVERY_TIMEOUT 600)
+    add_subdirectory(tests)
 endif()
 
 ###############################################################################
@@ -549,7 +319,6 @@ if(WEBCFACE_INSTALL)
 
     # binaries
     install(TARGETS webcface-server RUNTIME DESTINATION bin)
-    install(TARGETS ${WEBCFACE_EXAMPLE_TARGETS} RUNTIME DESTINATION bin)
 
     # library
     # dependenciesはそれぞれのcmakeファイルでリストに追加されている
@@ -647,6 +416,10 @@ if(WEBCFACE_INSTALL)
     set(CPACK_VERBATIM_VARIABLES yes)
     set(CPACK_PACKAGE_CONTACT ${WEBCFACE_CONTACT})
     set(CPACK_PACKAGE_VENDOR ${WEBCFACE_CONTACT})
+    get_directory_property(WEBCFACE_EXAMPLE_TARGETS_CPACK
+        DIRECTORY examples
+        DEFINITION WEBCFACE_EXAMPLE_TARGETS_CPACK
+    )
     set(CPACK_PACKAGE_EXECUTABLES
         webcface-server "WebCFace Server"
         ${WEBCFACE_EXAMPLE_TARGETS_CPACK}
