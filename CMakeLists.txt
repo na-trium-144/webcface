@@ -143,6 +143,10 @@ include(cmake/deps/cli11.cmake)
 include(cmake/deps/utf8cpp.cmake)
 include(cmake/deps/magickpp.cmake)
 
+if(WEBCFACE_TEST)
+    include(cmake/deps/googletest.cmake)
+endif()
+
 ###############################################################################
 include(CheckCXXCompilerFlag)
 function(add_cxx_compile_options_if FLAG NAME)

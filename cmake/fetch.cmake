@@ -1,7 +1,13 @@
 include(FetchContent)
 
+# external/名前 ディレクトリがあればそれを使用し、
+# なければFetchContentするマクロ
+
 # FetchContentでは名前はlower caseになるので、それで統一
 # (必ず名前もディレクトリ名もlower caseにすること)
+
+# ルートのCMakeListsからincludeすること
+
 macro(fetch_cmake DEP_NAME URL TAG)
     if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/external/${DEP_NAME}/CMakeLists.txt)
         message(STATUS "Using Source at external/${DEP_NAME}")

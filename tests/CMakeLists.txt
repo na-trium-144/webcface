@@ -1,5 +1,3 @@
-include(../cmake/deps/googletest.cmake)
-
 enable_testing()
 add_executable(webcface-test
     client_data_test.cc
