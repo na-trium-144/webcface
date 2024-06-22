@@ -89,6 +89,7 @@ else()
 
     include(cmake/linker.cmake)
     add_library(libcurl-linker INTERFACE)
+    target_include_directories(libcurl-linker INTERFACE $<TARGET_PROPERTY:libcurl_static,INCLUDE_DIRECTORIES>)
     target_compile_definitions(libcurl-linker INTERFACE CURL_STATICLIB)
     if(CMAKE_BUILD_TYPE STREQUAL "Debug")
         # なぜかTARGET_LINKER_FILE_BASE_NAMEすると"libcurl"になってしまう
