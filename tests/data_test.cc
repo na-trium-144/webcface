@@ -104,7 +104,7 @@ TEST_F(DataTest, valueSet) {
          std::make_shared<eventpp::CallbackList<void(Value)>>())
         ->append(callback<Value>());
     value(self_name, "b").set(123);
-    EXPECT_EQ(**data_->value_store.getRecv(self_name, "b"_ss), 123);
+    EXPECT_EQ((**data_->value_store.getRecv(self_name, "b"_ss)).at(0), 123);
     EXPECT_EQ(callback_called, 1);
     EXPECT_THROW(value("a", "b").set(123), std::invalid_argument);
 }
@@ -126,7 +126,7 @@ TEST_F(DataTest, valueSetVec) {
     d6[4].set(5);
     value(self_name, "d7").resize(5);
     EXPECT_EQ(callback_called, 1);
-    EXPECT_EQ(**data_->value_store.getRecv(self_name, "d"_ss), 1);
+    EXPECT_EQ((**data_->value_store.getRecv(self_name, "d"_ss)).at(0), 1);
     EXPECT_EQ((**data_->value_store.getRecv(self_name, "d"_ss)).size(), 5);
     EXPECT_EQ((**data_->value_store.getRecv(self_name, "d"_ss)).at(0), 1);
     EXPECT_EQ((**data_->value_store.getRecv(self_name, "d"_ss)).at(4), 5);
@@ -178,75 +178,10 @@ TEST_F(DataTest, textSetV) {
     EXPECT_THROW(text("a", "b").set(ValAdaptor(123)), std::invalid_argument);
 }
 
-TEST_F(DataTest, dict) {
-    // DictElement<std::shared_ptr<VectorOpt<double>>> e{"a", {1, 2}};
-    // EXPECT_EQ(e.value, std::nullopt);
-    // EXPECT_EQ(e.children.size(), 2);
-    // EXPECT_EQ(*e.children[0].value.value(), 1);
-    Value::Dict a{{"a", 1},
-                  {"b", 2},
-                  {"c", {{"a", 1}, {"b", 2}}},
-                  {"v", {1, 2, 3, 4, 5}}};
-    EXPECT_FALSE(a.hasValue());
-    EXPECT_TRUE(a["a"].hasValue());
-    EXPECT_EQ(a["a"].get(), 1);
-    EXPECT_EQ(a["c"]["a"].get(), 1);
-    EXPECT_EQ(a["v"].getVec().size(), 5);
-    EXPECT_EQ(a["v"].getVec().at(0), 1);
-}
-TEST_F(DataTest, valueSetDict) {
-    (data_->value_change_event[self_name]["d"_ss] =
-         std::make_shared<eventpp::CallbackList<void(Value)>>())
-        ->append(callback<Value>());
-    value(self_name, "d").set({{"a", 100}});
-    // dにはセットしてないのでeventは発動しない
-    EXPECT_EQ(callback_called, 0);
-
-    (data_->value_change_event[self_name]["d.a"_ss] =
-         std::make_shared<eventpp::CallbackList<void(Value)>>())
-        ->append(callback<Value>());
-    value(self_name, "d")
-        .set({{"a", 1},
-              {"b", 2},
-              {"c", {{"a", 1}, {"b", 2}}},
-              {"v", {1, 2, 3, 4, 5}}});
-    // d.aではevent発動する
-    EXPECT_EQ(callback_called, 1);
-    // 値がセットされている
-    EXPECT_EQ(**data_->value_store.getRecv(self_name, "d.a"_ss), 1);
-    EXPECT_EQ(**data_->value_store.getRecv(self_name, "d.b"_ss), 2);
-    EXPECT_EQ(**data_->value_store.getRecv(self_name, "d.c.a"_ss), 1);
-    EXPECT_EQ(**data_->value_store.getRecv(self_name, "d.c.b"_ss), 2);
-    // 1つの値として取得した場合1つ目の要素
-    EXPECT_EQ(**data_->value_store.getRecv(self_name, "d.v"_ss), 1);
-    EXPECT_EQ(static_cast<std::vector<double>>(
-                  **data_->value_store.getRecv(self_name, "d.v"_ss))
-                  .size(),
-              5);
-}
-/*TEST_F(DataTest, textSetDict) {
-    data_->text_change_event.appendListener(FieldBase{self_name, "d"},
-                                            callback());
-    text(self_name, "d").set({{"a", ""}});
-    // dにはセットしてないのでeventは発動しない
-    EXPECT_EQ(callback_called, 0);
-
-    data_->text_change_event.appendListener(FieldBase{self_name, "d.a"},
-                                            callback());
-    text(self_name, "d")
-        .set({{"a", "1"}, {"b", "2"}, {"c", {{"a", "1"}, {"b", "2"}}}});
-    // d.aではevent発動する
-    EXPECT_EQ(callback_called, 1);
-    // 値がセットされている
-    EXPECT_EQ(**data_->text_store.getRecv(self_name, "d.a"), "1");
-    EXPECT_EQ(**data_->text_store.getRecv(self_name, "d.b"), "2");
-    EXPECT_EQ(**data_->text_store.getRecv(self_name, "d.c.a"), "1");
-    EXPECT_EQ(**data_->text_store.getRecv(self_name, "d.c.b"), "2");
-}
-*/
 TEST_F(DataTest, valueGet) {
-    data_->value_store.setRecv("a"_ss, "b"_ss,
-                               std::make_shared<VectorOpt<double>>(123));
+    data_->value_store.setRecv(
+        "a"_ss, "b"_ss,
+        std::make_shared<std::vector<double>>(std::vector<double>({123})));
     EXPECT_EQ(value("a", "b").tryGet().value(), 123);
     EXPECT_EQ(value("a", "b").get(), 123);
     EXPECT_EQ(value("a", "c").tryGet(), std::nullopt);
@@ -257,33 +192,6 @@ TEST_F(DataTest, valueGet) {
     EXPECT_EQ(data_->value_store.transferReq().count(self_name), 0);
     value("a", "d").appendListener(callback<Value>());
     EXPECT_EQ(data_->value_store.transferReq().at("a"_ss).at("d"_ss), 3);
-}
-TEST_F(DataTest, valueGetDict) {
-    data_->value_store.setRecv("a"_ss, "d.a"_ss,
-                               std::make_shared<VectorOpt<double>>(1));
-    data_->value_store.setRecv("a"_ss, "d.b"_ss,
-                               std::make_shared<VectorOpt<double>>(2));
-    data_->value_store.setRecv("a"_ss, "d.c.a"_ss,
-                               std::make_shared<VectorOpt<double>>(1));
-    data_->value_store.setRecv("a"_ss, "d.c.b"_ss,
-                               std::make_shared<VectorOpt<double>>(2));
-    data_->value_store.setRecv("a"_ss, "d.v"_ss,
-                               std::make_shared<VectorOpt<double>>(
-                                   std::vector<double>{1, 2, 3, 4, 5}));
-    EXPECT_NE(value("a", "d").tryGetRecurse(), std::nullopt);
-    EXPECT_EQ(value("a", "d").tryGet(), std::nullopt);
-    EXPECT_EQ(value("a", "d.a").tryGetRecurse(), std::nullopt);
-    EXPECT_EQ(value("a", "a").tryGetRecurse(), std::nullopt);
-    auto d = value("a", "d").getRecurse();
-    EXPECT_EQ(d["a"].get(), 1);
-    EXPECT_EQ(d["b"].get(), 2);
-    EXPECT_EQ(d["c"]["a"].get(), 1);
-    EXPECT_EQ(d["c"]["b"].get(), 2);
-    EXPECT_EQ(d["c.a"].get(), 1);
-    EXPECT_EQ(d["v"].get(), 1);
-    EXPECT_EQ(d["v"].getVec().size(), 5);
-    EXPECT_EQ(d["v"].getVec().at(0), 1);
-    EXPECT_EQ(d["v"].getVec().at(4), 5);
 }
 TEST_F(DataTest, textGet) {
     data_->text_store.setRecv("a"_ss, "b"_ss,
@@ -306,23 +214,6 @@ TEST_F(DataTest, textGet) {
     text("a", "d").appendListener(callback<Text>());
     EXPECT_EQ(data_->text_store.transferReq().at("a"_ss).at("d"_ss), 3);
 }
-/*TEST_F(DataTest, textGetDict) {
-    data_->text_store.setRecv("a", "d.a", std::make_shared<std::string>("1"));
-    data_->text_store.setRecv("a", "d.b", std::make_shared<std::string>("2"));
-    data_->text_store.setRecv("a", "d.c.a", std::make_shared<std::string>("1"));
-    data_->text_store.setRecv("a", "d.c.b", std::make_shared<std::string>("2"));
-    EXPECT_NE(text("a", "d").tryGetRecurse(), std::nullopt);
-    EXPECT_EQ(text("a", "d").tryGet(), std::nullopt);
-    EXPECT_EQ(text("a", "d.a").tryGetRecurse(), std::nullopt);
-    EXPECT_EQ(text("a", "a").tryGetRecurse(), std::nullopt);
-    auto d = text("a", "d").getRecurse();
-    EXPECT_EQ(d["a"].get(), "1");
-    EXPECT_EQ(d["b"].get(), "2");
-    EXPECT_EQ(d["c"]["a"].get(), "1");
-    EXPECT_EQ(d["c"]["b"].get(), "2");
-    EXPECT_EQ(d["c.a"].get(), "1");
-}
-*/
 TEST_F(DataTest, logGet) {
     using namespace std::chrono;
     auto logs =

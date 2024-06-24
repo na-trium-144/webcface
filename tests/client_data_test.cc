@@ -79,26 +79,6 @@ TEST_F(SyncDataStore2Test, getRecv) {
     s2.setRecv("a"_ss, "b"_ss, "c");
     EXPECT_EQ(s2.getRecv("a"_ss, "b"_ss), "c");
 }
-TEST_F(SyncDataStore2Test, getRecvRecurse) {
-    std::vector<SharedString> cb_called;
-    auto cb = [&](const SharedString &f) { cb_called.push_back(f); };
-    auto recv_empty = s2.getRecvRecurse(self_name, "b"_ss, cb);
-    EXPECT_EQ(cb_called.size(), 0);
-    EXPECT_EQ(recv_empty, std::nullopt);
-
-    recv_empty = s2.getRecvRecurse("a"_ss, "b"_ss, cb);
-    EXPECT_EQ(cb_called.size(), 0);
-    EXPECT_EQ(recv_empty, std::nullopt);
-
-    s2.setRecv("a"_ss, "b.a"_ss, "a");
-    s2.setRecv("a"_ss, "b.b"_ss, "b");
-    recv_empty = s2.getRecvRecurse("a"_ss, "b"_ss, cb);
-    EXPECT_EQ(cb_called.size(), 2);
-    EXPECT_EQ(std::count(cb_called.begin(), cb_called.end(), "b.a"_ss), 1);
-    EXPECT_EQ(std::count(cb_called.begin(), cb_called.end(), "b.b"_ss), 1);
-    EXPECT_EQ(recv_empty.value()["a"].get(), "a");
-    EXPECT_EQ(recv_empty.value()["b"].get(), "b");
-}
 TEST_F(SyncDataStore2Test, unsetRecv) {
     auto reqi0 = s2.unsetRecv("a"_ss, "b"_ss);
     EXPECT_FALSE(reqi0);
