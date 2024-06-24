@@ -7,7 +7,7 @@ if(WEBCFACE_FIND_JPEG)
     pkg_check_modules(libjpeg QUIET libjpeg)
 endif()
 if(libjpeg_FOUND)
-    message(STATUS "libjpeg ${libjpeg_VERSION} Found: ${libjpeg_PREFIX}")
+    list(APPEND WEBCFACE_SUMMARY "libjpeg: ${libjpeg_VERSION} found at ${libjpeg_PREFIX}")
     add_library(libjpeg INTERFACE)
     target_link_directories(libjpeg INTERFACE ${libjpeg_LIBRARY_DIRS})
     target_link_libraries(libjpeg INTERFACE ${libjpeg_LIBRARIES})
@@ -20,7 +20,6 @@ if(libjpeg_FOUND)
     endif()
 
 else()
-    message(STATUS "libjpeg Not Found")
     set(libjpeg_PREFIX ${CMAKE_CURRENT_BINARY_DIR}/_deps/libjpeg-install)
     fetch_only(libjpeg-turbo
         https://github.com/libjpeg-turbo/libjpeg-turbo.git

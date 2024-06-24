@@ -7,7 +7,6 @@ if(WEBCFACE_FIND_CROW)
     find_package(Crow QUIET)
 endif()
 if(Crow_FOUND)
-    message(STATUS "Crow ${Crow_VERSION} Found: ${Crow_DIR}")
     include(CheckCXXSourceCompiles)
     set(CMAKE_REQUIRED_LIBRARIES Crow::Crow)
     check_cxx_source_compiles("
@@ -21,16 +20,15 @@ int main(){
 }" CROW_HAS_UNIX_SUPPORT)
     unset(CMAKE_REQUIRED_LIBRARIES)
     if(NOT CROW_HAS_UNIX_SUPPORT)
-        message(STATUS "Installed crow has no unix socket support")
+        list(APPEND WEBCFACE_SUMMARY "(crow found but it has no unix socket support.)")
         unset(Crow_FOUND)
     else()
+        list(APPEND WEBCFACE_SUMMARY "crow: ${Crow_VERSION} found at ${Crow_DIR}")
         add_library(crow-linker INTERFACE)
         target_link_libraries(crow-linker INTERFACE Crow::Crow)
     endif()
 endif()
 if(NOT Crow_FOUND)
-    message(STATUS "Crow Not Found")
-    
     include(cmake/deps/asio.cmake)
 
     # asioのオプションを変更するため

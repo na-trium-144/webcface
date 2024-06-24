@@ -7,7 +7,7 @@ if(WEBCFACE_FIND_WEBP)
     pkg_check_modules(libwebp QUIET libwebp)
 endif()
 if(libwebp_FOUND)
-    message(STATUS "libwebp ${libwebp_VERSION} Found: ${libwebp_PREFIX}")
+    list(APPEND WEBCFACE_SUMMARY "libwebp: ${libwebp_VERSION} found at ${libwebp_PREFIX}")
     add_library(libwebp INTERFACE)
     target_link_directories(libwebp INTERFACE ${libwebp_LIBRARY_DIRS})
     target_link_libraries(libwebp INTERFACE ${libwebp_LIBRARIES})
@@ -20,7 +20,6 @@ if(libwebp_FOUND)
     endif()
 
 else()
-    message(STATUS "libwebp Not Found")
     set(libwebp_PREFIX ${CMAKE_CURRENT_BINARY_DIR}/_deps/libwebp-install)
     fetch_only(libwebp
         https://github.com/webmproject/libwebp.git

@@ -7,9 +7,8 @@ if(WEBCFACE_FIND_CLI11)
     find_package(CLI11 QUIET)
 endif()
 if(CLI11_FOUND)
-    message(STATUS "CLI11 ${CLI11_VERSION} Found: ${CLI11_DIR}")
+    list(APPEND WEBCFACE_SUMMARY "cli11: ${CLI11_VERSION} found at ${CLI11_DIR}")
 else()
-    message(STATUS "CLI11 Not Found")
     fetch_cmake(cli11
         https://github.com/CLIUtils/CLI11.git
         v2.3.2

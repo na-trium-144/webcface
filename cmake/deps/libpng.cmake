@@ -7,7 +7,7 @@ if(WEBCFACE_FIND_PNG)
     pkg_check_modules(libpng QUIET libpng)
 endif()
 if(libpng_FOUND)
-    message(STATUS "libpng ${libpng_VERSION} Found: ${libpng_PREFIX}")
+    list(APPEND WEBCFACE_SUMMARY "libpng: ${libpng_VERSION} found at ${libpng_PREFIX}")
     add_library(libpng INTERFACE)
     target_link_directories(libpng INTERFACE ${libpng_LIBRARY_DIRS})
     target_link_libraries(libpng INTERFACE ${libpng_LIBRARIES})
@@ -20,8 +20,6 @@ if(libpng_FOUND)
     endif()
 
 else()
-    message(STATUS "libpng Not Found")
-
     include(cmake/deps/zlib.cmake)
 
     set(libpng_PREFIX ${CMAKE_CURRENT_BINARY_DIR}/_deps/libpng-install)

@@ -7,14 +7,13 @@ if(WEBCFACE_FIND_EVENTPP)
     find_package(eventpp QUIET)
 endif()
 if(eventpp_FOUND)
-    message(STATUS "eventpp ${eventpp_VERSION} Found: ${eventpp_DIR}")
+    list(APPEND WEBCFACE_SUMMARY "eventpp: ${eventpp_VERSION} found at ${eventpp_DIR}")
 
     if(WEBCFACE_INSTALL)
         set(EVENTPP_INSTALLED 1)
     endif()
 
 else()
-    message(STATUS "eventpp Not Found")
     set(EVENTPP_INSTALL OFF CACHE INTERNAL "" FORCE)
     fetch_cmake(eventpp
         https://github.com/wqking/eventpp.git

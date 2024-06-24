@@ -1,4 +1,4 @@
-include(FetchContent)
+include(cmake/fetch.cmake)
 
 find_program(DEVENV_COMMAND devenv)
 if(DEVENV_COMMAND STREQUAL "DEVENV_COMMAND-NOTFOUND")
@@ -9,13 +9,12 @@ if(MSBUILD_COMMAND STREQUAL "MSBUILD_COMMAND-NOTFOUND")
     message(FATAL_ERROR "msbuild.exe not found")
 endif()
 
-message(STATUS "Fetching ImageMagick-Windows source...")
 # submoduleだとCloneRepositories.cmdがうまくいかない
-FetchContent_Declare(imagemagick-windows
-    GIT_REPOSITORY https://github.com/ImageMagick/ImageMagick-Windows.git
-    GIT_TAG 35dbf227258caec73fbe4a0a10ea10f2c2c1051d
+fetch_only(imagemagick-windows
+    https://github.com/ImageMagick/ImageMagick-Windows.git
+    35dbf227258caec73fbe4a0a10ea10f2c2c1051d
+    Configure
 )
-FetchContent_Populate(imagemagick-windows)
 # https://learn.microsoft.com/en-us/cpp/overview/compiler-versions?view=msvc-170
 # https://stackoverflow.com/questions/33380128/visual-studio-2015-command-line-retarget-solution
 if(CMAKE_CXX_COMPILER_VERSION STRGREATER "19.30")

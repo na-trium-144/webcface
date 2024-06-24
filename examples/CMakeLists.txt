@@ -1,12 +1,5 @@
-option(WEBCFACE_FIND_OPENCV "try find_package(OpenCV) (only for example)" OFF)
-
-if(WEBCFACE_FIND_OPENCV)
-    find_package(OpenCV QUIET)
-endif()
-if(OpenCV_FOUND)
-    message(STATUS "OpenCV ${OpenCV_VERSION} Found: ${OpenCV_PREFIX}")
-else()
-    message(STATUS "OpenCV Not Found")
+if(TARGET opencv_core)
+    set(OpenCV_FOUND 1)
 endif()
 
 list(APPEND EXAMPLE_SRC

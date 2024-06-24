@@ -7,11 +7,10 @@ if(WEBCFACE_FIND_MSGPACK)
     find_package(msgpack-cxx QUIET)
 endif()
 if(msgpack-cxx_FOUND)
-    message(STATUS "msgpack-cxx ${msgpack-cxx_VERSION} Found: ${msgpack-cxx_DIR}")
+    list(APPEND WEBCFACE_SUMMARY "msgpack-cxx: ${msgpack-cxx_VERSION} found at ${msgpack-cxx_DIR}")
 else()
-    message(STATUS "msgpack-cxx Not Found")
     # msgpackのcmakelistsを使うとmsgpackをインストールしてしまうので、includeするだけ
-    fetch_only(msgpack-c
+    fetch_only(msgpack-cxx
         https://github.com/msgpack/msgpack-c.git
         cpp-6.1.0
         include
@@ -21,7 +20,7 @@ else()
         MSGPACK_NO_BOOST
         MSGPACK_DEFAULT_API_VERSION=3
     )
-    target_include_directories(msgpack-cxx INTERFACE $<BUILD_INTERFACE:${msgpack-c_SOURCE_DIR}/include>)
+    target_include_directories(msgpack-cxx INTERFACE $<BUILD_INTERFACE:${msgpack-cxx_SOURCE_DIR}/include>)
 
     if(WEBCFACE_INSTALL)
         install(FILES

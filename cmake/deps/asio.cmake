@@ -8,10 +8,9 @@ if(WEBCFACE_FIND_ASIO)
 endif()
 if(WEBCFACE_FIND_ASIO AND NOT ASIO_INCLUDE_DIR STREQUAL "ASIO_INCLUDE_DIR-NOTFOUND")
     set(ASIO_FOUND true)
-    message(STATUS "Asio Found: ${ASIO_INCLUDE_DIR}")
+    list(APPEND WEBCFACE_SUMMARY "asio: found at ${ASIO_INCLUDE_DIR}")
 else()
     set(ASIO_FOUND false)
-    message(STATUS "Asio Not Found")
     fetch_only(asio
         https://github.com/chriskohlhoff/asio.git
         asio-1-29-0

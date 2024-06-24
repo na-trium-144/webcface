@@ -8,20 +8,19 @@ if(WEBCFACE_FIND_UTF8CPP)
 endif()
 if(WEBCFACE_FIND_UTF8CPP AND NOT UTF8CPP_INCLUDE_DIR STREQUAL "UTF8CPP_INCLUDE_DIR-NOTFOUND")
     set(UTF8CPP_FOUND true)
-    message(STATUS "utf8cpp Found: ${UTF8CPP_INCLUDE_DIR}")
+    list(APPEND WEBCFACE_SUMMARY "utf8cpp: found at ${UTF8CPP_INCLUDE_DIR}")
 else()
     set(UTF8CPP_FOUND false)
-    message(STATUS "utf8cpp Not Found")
-    fetch_only(utfcpp
+    fetch_only(utf8cpp
         https://github.com/nemtrif/utfcpp.git
         v4.0.5
         source
     )
-    set(UTF8CPP_INCLUDE_DIR ${utfcpp_SOURCE_DIR}/source)
+    set(UTF8CPP_INCLUDE_DIR ${utf8cpp_SOURCE_DIR}/source)
 
     if(WEBCFACE_INSTALL)
         install(FILES
-            ${utfcpp_SOURCE_DIR}/LICENSE
+            ${utf8cpp_SOURCE_DIR}/LICENSE
             DESTINATION share/webcface/3rd_party/utfcpp
         )
     endif()

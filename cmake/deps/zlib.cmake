@@ -7,7 +7,7 @@ if(WEBCFACE_FIND_ZLIB)
     pkg_check_modules(zlib QUIET zlib)
 endif()
 if(zlib_FOUND)
-    message(STATUS "zlib ${zlib_VERSION} Found: ${zlib_PREFIX}")
+    list(APPEND WEBCFACE_SUMMARY "zlib: ${zlib_VERSION} found at ${zlib_PREFIX}")
     add_library(zlib INTERFACE)
     target_link_directories(zlib INTERFACE ${zlib_LIBRARY_DIRS})
     target_link_libraries(zlib INTERFACE ${zlib_LIBRARIES})
@@ -20,8 +20,6 @@ if(zlib_FOUND)
     endif()
     
 else()
-    message(STATUS "zlib Not Found")
-    
     set(zlib_PREFIX ${CMAKE_CURRENT_BINARY_DIR}/_deps/zlib-install)
 
     fetch_only(zlib
