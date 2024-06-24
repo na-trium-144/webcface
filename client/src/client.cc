@@ -9,11 +9,11 @@
 #include <webcface/canvas3d.h>
 #include <webcface/canvas2d.h>
 #include <webcface/common/def.h>
+#include "webcface/message/message.h"
+#include "webcface/internal/client_internal.h"
+#include "webcface/internal/client_ws.h"
 #include <string>
 #include <chrono>
-#include "webcface/message/message.h"
-#include "client_internal.h"
-#include "client_ws.h"
 
 WEBCFACE_NS_BEGIN
 

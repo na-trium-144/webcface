@@ -8,8 +8,8 @@
 #include <webcface/canvas2d.h>
 #include <webcface/canvas3d.h>
 #include <webcface/event_target.h>
-#include "client_internal.h"
-#include "event_target_impl.h"
+#include "webcface/internal/client_internal.h"
+#include "webcface/internal/event_target_impl.h"
 
 WEBCFACE_NS_BEGIN
 

@@ -1,9 +1,9 @@
 #include <webcface/image.h>
 #include <webcface/member.h>
-#include "client_internal.h"
+#include "webcface/internal/client_internal.h"
 #include "webcface/message/message.h"
 #include "webcface/encoding/encoding.h"
-#include "event_target_impl.h"
+#include "webcface/internal/event_target_impl.h"
 
 WEBCFACE_NS_BEGIN
 

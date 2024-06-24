@@ -1,10 +1,10 @@
-#include "client_internal.h"
+#include "webcface/internal/client_internal.h"
 #include <webcface/value.h>
 #include <webcface/member.h>
 #include "webcface/message/message.h"
 #include <algorithm>
 #include <cctype>
-#include "event_target_impl.h"
+#include "webcface/internal/event_target_impl.h"
 
 WEBCFACE_NS_BEGIN
 

@@ -1,5 +1,5 @@
-#include "member_data.h"
-#include "store.h"
+#include "webcface/server/member_data.h"
+#include "webcface/server/store.h"
 #include <webcface/server/server.h>
 #include "webcface/message/message.h"
 #include <webcface/common/def.h>

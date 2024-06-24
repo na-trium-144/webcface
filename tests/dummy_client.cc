@@ -1,10 +1,10 @@
-#include "../message/message.h"
+#include "webcface/message/message.h"
 #include <curl/curl.h>
 #include <spdlog/logger.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
 #include <thread>
 #include "dummy_client.h"
-#include "../message/unix_path.h"
+#include "webcface/server/unix_path.h"
 
 using namespace webcface;
 DummyClient::~DummyClient() {

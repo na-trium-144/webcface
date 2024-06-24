@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "../client/client_internal.h"
+#include "webcface/internal/client_internal.h"
 #include <webcface/member.h>
 #include <webcface/client.h>
 #include <webcface/logger.h>
@@ -10,7 +10,7 @@
 #include <webcface/func.h>
 #include <webcface/common/def.h>
 #include <webcface/wcf.h>
-#include "../message/message.h"
+#include "webcface/message/message.h"
 #include <chrono>
 #include <thread>
 #include <iostream>

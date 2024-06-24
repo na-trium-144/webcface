@@ -1,11 +1,11 @@
 #include <gtest/gtest.h>
-#include "../client/client_internal.h"
+#include "webcface/internal/client_internal.h"
 #include <webcface/member.h>
 #include <webcface/func.h>
 #include <stdexcept>
 #include <thread>
 #include <chrono>
-#include "../message/message.h"
+#include "webcface/message/message.h"
 
 using namespace webcface;
 

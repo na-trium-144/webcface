@@ -1,5 +1,5 @@
 #include <webcface/func.h>
-#include "client_internal.h"
+#include "webcface/internal/client_internal.h"
 
 WEBCFACE_NS_BEGIN
 FuncListener::FuncListener(const Field &base) : Func(base) {}

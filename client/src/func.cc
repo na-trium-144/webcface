@@ -3,9 +3,9 @@
 #include <chrono>
 #include <stdexcept>
 #include "webcface/message/message.h"
-#include "client_internal.h"
+#include "webcface/internal/client_internal.h"
 #include <webcface/common/def.h>
-#include "event_target_impl.h"
+#include "webcface/internal/event_target_impl.h"
 
 WEBCFACE_NS_BEGIN
 

@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "../client/client_internal.h"
+#include "webcface/internal/client_internal.h"
 #include <webcface/member.h>
 #include <webcface/canvas3d.h>
 #include <webcface/func.h>

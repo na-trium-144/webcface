@@ -8,7 +8,7 @@
 #include <webcface/func.h>
 #include <webcface/canvas2d.h>
 #include <webcface/canvas3d.h>
-#include "client_internal.h"
+#include "webcface/internal/client_internal.h"
 #include <stdexcept>
 #include <webcface/common/def.h>
 

@@ -2,7 +2,7 @@
 #include <webcface/member.h>
 #include <webcface/robot_model.h>
 #include "webcface/message/message.h"
-#include "client_internal.h"
+#include "webcface/internal/client_internal.h"
 
 WEBCFACE_NS_BEGIN
 

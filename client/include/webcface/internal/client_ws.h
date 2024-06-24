@@ -1,6 +1,6 @@
 #pragma once
 #include <webcface/common/def.h>
-#include "client_internal.h"
+#include "webcface/internal/client_internal.h"
 
 WEBCFACE_NS_BEGIN
 namespace Internal {

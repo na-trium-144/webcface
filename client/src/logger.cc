@@ -1,6 +1,6 @@
 #include <stdexcept>
 #include <webcface/logger.h>
-#include "client_internal.h"
+#include "webcface/internal/client_internal.h"
 #include <cstdio>
 
 WEBCFACE_NS_BEGIN

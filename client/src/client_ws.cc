@@ -1,12 +1,9 @@
-#include "client_ws.h"
-#include "client_internal.h"
+#include "webcface/internal/client_ws.h"
+#include "webcface/internal/client_internal.h"
 #include <webcface/client.h>
 #include "webcface/server/unix_path.h"
 #include <curl/curl.h>
 #include <string>
-#include <chrono>
-#include <thread>
-#include <cstdint>
 #include <cstdlib>
 
 WEBCFACE_NS_BEGIN

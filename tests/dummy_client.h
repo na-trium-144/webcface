@@ -1,9 +1,9 @@
-#include "../message/message.h"
+#include "webcface/message/message.h"
 #include <any>
 #include <vector>
 #include <utility>
 #include <thread>
-#include "../client/queue.h"
+#include "webcface/internal/queue.h"
 
 using namespace webcface;
 struct DummyClient {

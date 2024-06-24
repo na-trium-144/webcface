@@ -1,9 +1,9 @@
 #include <gtest/gtest.h>
-#include "../client/client_internal.h"
+#include "webcface/internal/client_internal.h"
 #include <webcface/server.h>
 #include "../server/store.h"
 #include "../server/member_data.h"
-#include "../message/message.h"
+#include "webcface/message/message.h"
 #include <webcface/common/def.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
 #include <webcface/view.h>
