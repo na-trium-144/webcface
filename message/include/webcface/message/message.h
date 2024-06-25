@@ -267,7 +267,7 @@ struct WEBCFACE_DLL Text : public MessageBase<MessageKind::text> {
 struct WEBCFACE_DLL RobotLink {
     SharedString name;
     SharedString joint_name;
-    std::size_t joint_parent;
+    int joint_parent;
     int joint_type;
     std::array<double, 3> joint_origin_pos, joint_origin_rot;
     double joint_angle = 0;
@@ -276,7 +276,7 @@ struct WEBCFACE_DLL RobotLink {
     int color;
     RobotLink() = default;
     RobotLink(const SharedString &name, const SharedString &joint_name,
-              std::size_t joint_parent, int joint_type,
+              int joint_parent, int joint_type,
               const std::array<double, 3> &joint_origin_pos,
               const std::array<double, 3> &joint_origin_rot, double joint_angle,
               int geometry_type, const std::vector<double> &geometry_properties,

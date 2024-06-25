@@ -304,6 +304,7 @@ if(WEBCFACE_EXAMPLE)
 endif()
 
 if(WEBCFACE_TEST)
+    enable_testing()
     add_subdirectory(tests)
 endif()
 

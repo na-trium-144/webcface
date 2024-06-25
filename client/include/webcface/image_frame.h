@@ -271,24 +271,4 @@ class WEBCFACE_DLL ImageFrame {
 
 using ImageBase [[deprecated]] = ImageFrame;
 
-// struct WEBCFACE_DLL ImageReq {
-//     std::optional<int> rows = std::nullopt, cols = std::nullopt;
-//     std::optional<ImageColorMode> color_mode = std::nullopt;
-//     ImageCompressMode cmp_mode = ImageCompressMode::raw;
-//     int quality = 0;
-//     std::optional<double> frame_rate = std::nullopt;
-
-//     ImageReq() = default;
-//     ImageReq(std::optional<int> rows, std::optional<int> cols,
-//              std::optional<ImageColorMode> color_mode,
-//              ImageCompressMode cmp_mode, int quality,
-//              std::optional<double> frame_rate)
-//         : rows(rows), cols(cols), color_mode(color_mode), cmp_mode(cmp_mode),
-//           quality(quality), frame_rate(frame_rate) {}
-//     ImageReq(const Message::ImageReq &m);
-//     Message::ImageReq toMessage() const;
-    
-//     bool operator==(const ImageReq &rhs) const;
-// };
-
 WEBCFACE_NS_END

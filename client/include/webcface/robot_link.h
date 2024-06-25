@@ -155,7 +155,7 @@ inline RobotJoint prismaticJoint(std::wstring_view name,
 }
 } // namespace RobotJoints
 
-struct RobotLink {
+struct WEBCFACE_DLL RobotLink {
     SharedString name;
     RobotJoint joint;
     Geometry geometry;

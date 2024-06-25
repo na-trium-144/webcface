@@ -331,9 +331,9 @@ TEST_F(CClientTest, funcListen) {
             EXPECT_EQ(obj.field, "a"_ss);
             EXPECT_EQ(obj.return_type, ValType::int_);
             EXPECT_EQ(obj.args->size(), 3);
-            EXPECT_EQ(obj.args->at(0).type(), ValType::int_);
-            EXPECT_EQ(obj.args->at(1).type(), ValType::double_);
-            EXPECT_EQ(obj.args->at(2).type(), ValType::string_);
+            EXPECT_EQ(obj.args->at(0).type_, ValType::int_);
+            EXPECT_EQ(obj.args->at(1).type_, ValType::double_);
+            EXPECT_EQ(obj.args->at(2).type_, ValType::string_);
         },
         [&] { ADD_FAILURE() << "FuncInfo recv error"; });
     dummy_s->recvClear();
@@ -341,12 +341,9 @@ TEST_F(CClientTest, funcListen) {
     wcfFuncCallHandle *h;
     EXPECT_EQ(wcfFuncFetchCall(wcli_, "a", &h), WCF_NOT_CALLED);
     EXPECT_EQ(wcfFuncFetchCall(wcli_, "b", &h), WCF_NOT_CALLED);
-    dummy_s->send(
-        Message::Call{{0,
-                       1,
-                       1,
-                       "a"_ss,
-                       {ValAdaptor(42), ValAdaptor(1.5), ValAdaptor("aaa")}}});
+    dummy_s->send(FuncCall{
+        0, 1, 1, "a"_ss, {ValAdaptor(42), ValAdaptor(1.5), ValAdaptor("aaa")}}
+                      .toMessage());
     wait();
 
     dummy_s->recv<Message::CallResponse>(
@@ -413,19 +410,16 @@ TEST_F(CClientTest, funcSet) {
             EXPECT_EQ(obj.field, "a"_ss);
             EXPECT_EQ(obj.return_type, ValType::int_);
             EXPECT_EQ(obj.args->size(), 3);
-            EXPECT_EQ(obj.args->at(0).type(), ValType::int_);
-            EXPECT_EQ(obj.args->at(1).type(), ValType::double_);
-            EXPECT_EQ(obj.args->at(2).type(), ValType::string_);
+            EXPECT_EQ(obj.args->at(0).type_, ValType::int_);
+            EXPECT_EQ(obj.args->at(1).type_, ValType::double_);
+            EXPECT_EQ(obj.args->at(2).type_, ValType::string_);
         },
         [&] { ADD_FAILURE() << "FuncInfo recv error"; });
     dummy_s->recvClear();
 
-    dummy_s->send(
-        Message::Call{{0,
-                       1,
-                       1,
-                       "a"_ss,
-                       {ValAdaptor(42), ValAdaptor(1.5), ValAdaptor("aaa")}}});
+    dummy_s->send(FuncCall{
+        0, 1, 1, "a"_ss, {ValAdaptor(42), ValAdaptor(1.5), ValAdaptor("aaa")}}
+                      .toMessage());
     wait();
 
     dummy_s->recv<Message::CallResponse>(
@@ -462,25 +456,33 @@ TEST_F(CClientTest, viewSend) {
             EXPECT_EQ(obj.field, "b"_ss);
             EXPECT_EQ(obj.length, 6);
             EXPECT_EQ(obj.data_diff->size(), 6);
-            EXPECT_EQ((*obj.data_diff)["0"].type, ViewComponentType::text);
+            EXPECT_EQ((*obj.data_diff)["0"].type,
+                      static_cast<int>(ViewComponentType::text));
             EXPECT_EQ((*obj.data_diff)["0"].text, "abc"_ss);
-            EXPECT_EQ((*obj.data_diff)["1"].type, ViewComponentType::new_line);
-            EXPECT_EQ((*obj.data_diff)["2"].type, ViewComponentType::text);
+            EXPECT_EQ((*obj.data_diff)["1"].type,
+                      static_cast<int>(ViewComponentType::new_line));
+            EXPECT_EQ((*obj.data_diff)["2"].type,
+                      static_cast<int>(ViewComponentType::text));
             EXPECT_EQ((*obj.data_diff)["2"].text, "123"_ss);
 
-            EXPECT_EQ((*obj.data_diff)["3"].type, ViewComponentType::new_line);
+            EXPECT_EQ((*obj.data_diff)["3"].type,
+                      static_cast<int>(ViewComponentType::new_line));
 
-            EXPECT_EQ((*obj.data_diff)["4"].type, ViewComponentType::button);
+            EXPECT_EQ((*obj.data_diff)["4"].type,
+                      static_cast<int>(ViewComponentType::button));
             EXPECT_EQ((*obj.data_diff)["4"].text, "a"_ss);
             EXPECT_EQ((*obj.data_diff)["4"].on_click_member, self_name);
             EXPECT_EQ((*obj.data_diff)["4"].on_click_field, "c"_ss);
 
-            EXPECT_EQ((*obj.data_diff)["5"].type, ViewComponentType::button);
+            EXPECT_EQ((*obj.data_diff)["5"].type,
+                      static_cast<int>(ViewComponentType::button));
             EXPECT_EQ((*obj.data_diff)["5"].text, "a"_ss);
             EXPECT_EQ((*obj.data_diff)["5"].on_click_member, "b"_ss);
             EXPECT_EQ((*obj.data_diff)["5"].on_click_field, "c"_ss);
-            EXPECT_EQ((*obj.data_diff)["5"].text_color, ViewColor::red);
-            EXPECT_EQ((*obj.data_diff)["5"].bg_color, ViewColor::green);
+            EXPECT_EQ((*obj.data_diff)["5"].text_color,
+                      static_cast<int>(ViewColor::red));
+            EXPECT_EQ((*obj.data_diff)["5"].bg_color,
+                      static_cast<int>(ViewColor::green));
         },
         [&] { ADD_FAILURE() << "View recv error"; });
     dummy_s->recvClear();
@@ -502,16 +504,18 @@ TEST_F(CClientTest, viewReq) {
         [&] { ADD_FAILURE() << "View Req recv error"; });
 
     auto v = std::make_shared<
-        std::unordered_map<std::string, Message::View::ViewComponent>>(
-        std::unordered_map<std::string, Message::View::ViewComponent>{
+        std::unordered_map<std::string, Message::ViewComponent>>(
+        std::unordered_map<std::string, Message::ViewComponent>{
             {"0", ViewComponents::text("a")
                       .textColor(ViewColor::yellow)
                       .bgColor(ViewColor::green)
                       .toV()
-                      .lockTmp({}, ""_ss)},
-            {"1", ViewComponents::newLine().lockTmp({}, ""_ss)},
+                      .lockTmp({}, ""_ss)
+                      .toMessage()},
+            {"1", ViewComponents::newLine().lockTmp({}, ""_ss).toMessage()},
             {"2", ViewComponents::button("a", Func{Field{{}, "x"_ss, "y"_ss}})
-                      .lockTmp({}, ""_ss)},
+                      .lockTmp({}, ""_ss)
+                      .toMessage()},
         });
     dummy_s->send(Message::Res<Message::View>{1, ""_ss, v, 3});
     dummy_s->send(Message::Res<Message::View>{1, "c"_ss, v, 3});

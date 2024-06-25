@@ -1,4 +1,3 @@
-enable_testing()
 add_executable(webcface-test
     client_data_test.cc
     data_test.cc
@@ -25,7 +24,7 @@ target_link_libraries(webcface-test PRIVATE
     webcface
     GTest::gtest_main
     msgpack-cxx
-    utfcpp
+    utf8cpp
     eventpp::eventpp
     spdlog-linker
     libcurl-linker

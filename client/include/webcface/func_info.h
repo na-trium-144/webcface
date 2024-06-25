@@ -224,7 +224,7 @@ using MemberId = unsigned int;
  * client_data->client->server->clientと送られる
  *
  */
-struct FuncCall {
+struct WEBCFACE_DLL FuncCall {
     CallerId caller_id = 0;
     MemberId caller_member_id = 0;
     MemberId target_member_id = 0;
