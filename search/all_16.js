@@ -1,8 +1,8 @@
 var searchData=
 [
   ['m_0',['m',['../structwebcface_1_1Encoding_1_1SharedString_1_1Data.html#aa73e018b04368e7afaded77ef0ac69db',1,'webcface::Encoding::SharedString::Data']]],
-  ['macos_1',['App Bundle for MacOS',['../index.html#autotoc_md208',1,'']]],
-  ['macos_20linux_2',['Homebrew (MacOS, Linux)',['../index.html#autotoc_md207',1,'']]],
+  ['macos_1',['App Bundle for MacOS',['../index.html#autotoc_md210',1,'']]],
+  ['macos_20linux_2',['Homebrew (MacOS, Linux)',['../index.html#autotoc_md209',1,'']]],
   ['macros_2eh_3',['macros.h',['../macros_8h.html',1,'']]],
   ['magickcolormap_4',['magickColorMap',['../namespacewebcface_1_1Server.html#a1c11029f7716ca09f4a69d2ef2ead4b5',1,'webcface::Server']]],
   ['main_5',['main',['../server__main_8cc.html#a3c04138a5bfe5d72780bb7e82a18e627',1,'server_main.cc']]],
@@ -72,6 +72,6 @@ var searchData=
   ['modified_5f_69',['modified_',['../classwebcface_1_1Internal_1_1DataSetBuffer.html#a6be52bc3ce35ddb41d76d9ad6c0ad05f',1,'webcface::Internal::DataSetBuffer']]],
   ['msg_5fparse_70',['MSG_PARSE',['../message_8cc.html#a04aeb3e9d5d5e8e26d115f8c67d12823',1,'message.cc']]],
   ['msg_5fparse_5fdata_71',['MSG_PARSE_DATA',['../message_8cc.html#a05d4798bb3a2da200dc481d341a092ad',1,'message.cc']]],
-  ['msvc_72',['Windows (MSVC)',['../index.html#autotoc_md209',1,'']]],
+  ['msvc_72',['Windows (MSVC)',['../index.html#autotoc_md211',1,'']]],
   ['mtx_73',['mtx',['../classwebcface_1_1Internal_1_1SyncDataStore1.html#a8e3a00b8e2de7776167cc2c41c29294c',1,'webcface::Internal::SyncDataStore1::mtx'],['../classwebcface_1_1Internal_1_1SyncDataStore2.html#a8e3a00b8e2de7776167cc2c41c29294c',1,'webcface::Internal::SyncDataStore2::mtx'],['../classwebcface_1_1Internal_1_1FuncResultStore.html#ad5e0dbd36f0d71fce9b00b7f991b2f38',1,'webcface::Internal::FuncResultStore::mtx'],['../classwebcface_1_1Common_1_1Queue.html#ad5e0dbd36f0d71fce9b00b7f991b2f38',1,'webcface::Common::Queue::mtx']]]
 ];

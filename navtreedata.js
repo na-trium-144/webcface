@@ -26,30 +26,30 @@ var NAVTREE =
 [
   [ "WebCFace", "index.html", [
     [ "Features", "index.html#autotoc_md197", [
-      [ "WebUI", "index.html#autotoc_md198", null ],
-      [ "PlotJuggler", "index.html#autotoc_md199", null ],
-      [ "Benchmark", "index.html#autotoc_md200", null ]
+      [ "Easy to Setup", "index.html#autotoc_md198", null ],
+      [ "Inter-Process Communication", "index.html#autotoc_md199", null ],
+      [ "WebUI", "index.html#autotoc_md200", null ]
     ] ],
-    [ "Links", "index.html#autotoc_md201", null ],
-    [ "Installation", "index.html#autotoc_md202", [
-      [ "Ubuntu (x86_64, arm64, armhf)", "index.html#autotoc_md203", [
-        [ "Ubuntu 24.04 Noble", "index.html#autotoc_md204", null ],
-        [ "Ubuntu 22.04 Jammy", "index.html#autotoc_md205", null ],
-        [ "Ubuntu 20.04 Focal", "index.html#autotoc_md206", null ]
+    [ "Links", "index.html#autotoc_md203", null ],
+    [ "Installation", "index.html#autotoc_md204", [
+      [ "Ubuntu (x86_64, arm64, armhf)", "index.html#autotoc_md205", [
+        [ "Ubuntu 24.04 Noble", "index.html#autotoc_md206", null ],
+        [ "Ubuntu 22.04 Jammy", "index.html#autotoc_md207", null ],
+        [ "Ubuntu 20.04 Focal", "index.html#autotoc_md208", null ]
       ] ],
-      [ "Homebrew (MacOS, Linux)", "index.html#autotoc_md207", null ],
-      [ "App Bundle for MacOS", "index.html#autotoc_md208", null ],
-      [ "Windows (MSVC)", "index.html#autotoc_md209", null ],
-      [ "Build from source", "index.html#autotoc_md210", [
-        [ "Requirements", "index.html#autotoc_md211", null ],
-        [ "Build (with Pure CMake)", "index.html#autotoc_md212", null ],
-        [ "Build (with colcon, ROS2)", "index.html#autotoc_md213", null ],
-        [ "WebUI", "index.html#autotoc_md214", null ],
-        [ "tools", "index.html#autotoc_md215", null ]
+      [ "Homebrew (MacOS, Linux)", "index.html#autotoc_md209", null ],
+      [ "App Bundle for MacOS", "index.html#autotoc_md210", null ],
+      [ "Windows (MSVC)", "index.html#autotoc_md211", null ],
+      [ "Build from source", "index.html#autotoc_md212", [
+        [ "Requirements", "index.html#autotoc_md213", null ],
+        [ "Build (with Pure CMake)", "index.html#autotoc_md214", null ],
+        [ "Build (with colcon, ROS2)", "index.html#autotoc_md215", null ],
+        [ "WebUI", "index.html#autotoc_md216", null ],
+        [ "tools", "index.html#autotoc_md217", null ]
       ] ]
     ] ],
-    [ "Documentation", "index.html#autotoc_md216", null ],
-    [ "License", "index.html#autotoc_md217", null ],
+    [ "Documentation", "index.html#autotoc_md218", null ],
+    [ "License", "index.html#autotoc_md219", null ],
     [ "Overview", "md_00__overview.html", [
       [ "環境構築", "md_00__overview.html#autotoc_md1", null ],
       [ "Server", "md_00__overview.html#autotoc_md2", [
