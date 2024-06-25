@@ -120,16 +120,19 @@ TEST_F(ImageTest, imageSet) {
 TEST_F(ImageTest, imageRequest) {
     image("a", "1").request();
     EXPECT_EQ(data_->image_store.getReqInfo("a"_ss, "1"_ss),
-              (ImageReq{std::nullopt, std::nullopt, std::nullopt,
-                        ImageCompressMode::raw, 0, std::nullopt}));
+              (Message::ImageReq{std::nullopt, std::nullopt, std::nullopt,
+                                 static_cast<int>(ImageCompressMode::raw), 0,
+                                 std::nullopt}));
     image("a", "1").request(sizeHW(100, 100), ImageColorMode::rgba, 12.3);
-    EXPECT_EQ(data_->image_store.getReqInfo("a"_ss, "1"_ss),
-              (ImageReq{100, 100, ImageColorMode::rgba, ImageCompressMode::raw,
-                        0, 12.3}));
+    EXPECT_EQ(
+        data_->image_store.getReqInfo("a"_ss, "1"_ss),
+        (Message::ImageReq{100, 100, static_cast<int>(ImageColorMode::rgba),
+                           static_cast<int>(ImageCompressMode::raw), 0, 12.3}));
     image("a", "1").request(sizeHW(100, 100), ImageCompressMode::png, 9, 12.3);
     EXPECT_EQ(
         data_->image_store.getReqInfo("a"_ss, "1"_ss),
-        (ImageReq{100, 100, std::nullopt, ImageCompressMode::png, 9, 12.3}));
+        (Message::ImageReq{100, 100, std::nullopt,
+                           static_cast<int>(ImageCompressMode::png), 9, 12.3}));
 }
 TEST_F(ImageTest, imageGet) {
     auto dp = std::make_shared<std::vector<unsigned char>>(100 * 100 * 3);
@@ -141,18 +144,21 @@ TEST_F(ImageTest, imageGet) {
     EXPECT_TRUE(image("a", "c").get().empty());
     EXPECT_EQ(data_->image_store.transferReq().at("a"_ss).at("b"_ss), 1);
     EXPECT_EQ(data_->image_store.getReqInfo("a"_ss, "b"_ss),
-              (ImageReq{std::nullopt, std::nullopt, std::nullopt,
-                        ImageCompressMode::raw, 0, std::nullopt}));
+              (Message::ImageReq{std::nullopt, std::nullopt, std::nullopt,
+                                 static_cast<int>(ImageCompressMode::raw), 0,
+                                 std::nullopt}));
     EXPECT_EQ(data_->image_store.transferReq().at("a"_ss).at("c"_ss), 2);
     EXPECT_EQ(data_->image_store.getReqInfo("a"_ss, "c"_ss),
-              (ImageReq{std::nullopt, std::nullopt, std::nullopt,
-                        ImageCompressMode::raw, 0, std::nullopt}));
+              (Message::ImageReq{std::nullopt, std::nullopt, std::nullopt,
+                                 static_cast<int>(ImageCompressMode::raw), 0,
+                                 std::nullopt}));
     EXPECT_EQ(image(self_name, "b").tryGet(), std::nullopt);
     EXPECT_EQ(data_->image_store.transferReq().count(self_name), 0);
     image("a", "d").appendListener(callback<Image>());
     EXPECT_EQ(data_->image_store.transferReq().at("a"_ss).at("d"_ss), 3);
     EXPECT_EQ(data_->image_store.getReqInfo("a"_ss, "d"_ss),
-              (ImageReq{std::nullopt, std::nullopt, std::nullopt,
-                        ImageCompressMode::raw, 0, std::nullopt}));
+              (Message::ImageReq{std::nullopt, std::nullopt, std::nullopt,
+                                 static_cast<int>(ImageCompressMode::raw), 0,
+                                 std::nullopt}));
 }
 // todo: hidden, free

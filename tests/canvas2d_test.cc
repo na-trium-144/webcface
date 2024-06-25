@@ -89,27 +89,27 @@ TEST_F(Canvas2DTest, set) {
     EXPECT_EQ(canvas2d_data.width, 100);
     EXPECT_EQ(canvas2d_data.height, 150);
     ASSERT_EQ(canvas2d_data.components.size(), 2);
-    EXPECT_EQ(canvas2d_data.components[0].type_,
+    EXPECT_EQ(canvas2d_data.components[0].type(),
               Canvas2DComponentType::geometry);
-    EXPECT_EQ(canvas2d_data.components[0].color_, ViewColor::red);
-    ASSERT_NE(canvas2d_data.components[0].geometry_, std::nullopt);
-    EXPECT_EQ(canvas2d_data.components[0].geometry_->type, GeometryType::line);
-    EXPECT_EQ(canvas2d_data.components[0].geometry_->properties,
+    EXPECT_EQ(canvas2d_data.components[0].color(), ViewColor::red);
+    ASSERT_NE(canvas2d_data.components[0].geometry(), std::nullopt);
+    EXPECT_EQ(canvas2d_data.components[0].geometry()->type, GeometryType::line);
+    EXPECT_EQ(canvas2d_data.components[0].geometry()->properties,
               (std::vector<double>{0, 0, 0, 3, 3, 0}));
-    ASSERT_NE(canvas2d_data.components[0].on_click_func_, std::nullopt);
-    EXPECT_EQ(canvas2d_data.components[0].on_click_func_->member_, self_name);
-    EXPECT_EQ(canvas2d_data.components[0].on_click_func_->field_, "f"_ss);
+    ASSERT_NE(canvas2d_data.components[0].onClick(), std::nullopt);
+    EXPECT_EQ(canvas2d_data.components[0].onClick()->member().name(), self_name.decode());
+    EXPECT_EQ(canvas2d_data.components[0].onClick()->name(), "f");
 
-    EXPECT_EQ(canvas2d_data.components[1].type_,
+    EXPECT_EQ(canvas2d_data.components[1].type(),
               Canvas2DComponentType::geometry);
-    EXPECT_EQ(canvas2d_data.components[1].color_, ViewColor::yellow);
-    ASSERT_NE(canvas2d_data.components[1].geometry_, std::nullopt);
-    EXPECT_EQ(canvas2d_data.components[1].geometry_->type, GeometryType::plane);
-    EXPECT_EQ(canvas2d_data.components[1].geometry_->properties,
+    EXPECT_EQ(canvas2d_data.components[1].color(), ViewColor::yellow);
+    ASSERT_NE(canvas2d_data.components[1].geometry(), std::nullopt);
+    EXPECT_EQ(canvas2d_data.components[1].geometry()->type, GeometryType::plane);
+    EXPECT_EQ(canvas2d_data.components[1].geometry()->properties,
               (std::vector<double>{0, 0, 0, 0, 0, 0, 10, 10}));
-    ASSERT_NE(canvas2d_data.components[0].on_click_func_, std::nullopt);
-    EXPECT_EQ(canvas2d_data.components[0].on_click_func_->member_, self_name);
-    EXPECT_NE(canvas2d_data.components[0].on_click_func_->field_, ""_ss);
+    ASSERT_NE(canvas2d_data.components[0].onClick(), std::nullopt);
+    EXPECT_EQ(canvas2d_data.components[0].onClick()->member().name(), self_name.decode());
+    EXPECT_NE(canvas2d_data.components[0].onClick()->name(), "");
 
     v.init(1, 1);
     v.sync();
@@ -151,7 +151,7 @@ TEST_F(Canvas2DTest, set) {
     EXPECT_THROW(v7.add(Canvas2DComponent{}), std::invalid_argument);
 }
 TEST_F(Canvas2DTest, get) {
-    auto vd = std::make_shared<Common::Canvas2DDataBase>();
+    auto vd = std::make_shared<Canvas2DDataBase>();
     vd->components.resize(1);
     data_->canvas2d_store.setRecv("a"_ss, "b"_ss, vd);
     EXPECT_EQ(canvas("a", "b").tryGet().value().size(), 1);

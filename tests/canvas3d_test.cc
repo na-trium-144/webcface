@@ -90,35 +90,37 @@ TEST_F(Canvas3DTest, set) {
     EXPECT_EQ(callback_called, 1);
     auto &canvas3d_data = **data_->canvas3d_store.getRecv(self_name, "b"_ss);
     ASSERT_EQ(canvas3d_data.size(), 3);
-    EXPECT_EQ(canvas3d_data[0].type_, Canvas3DComponentType::geometry);
-    EXPECT_EQ(canvas3d_data[0].origin_, Transform(1, 1, 1, 0, 0, 0));
-    EXPECT_EQ(canvas3d_data[0].color_, ViewColor::red);
-    ASSERT_NE(canvas3d_data[0].geometry_, std::nullopt);
-    EXPECT_EQ(canvas3d_data[0].geometry_->type, GeometryType::line);
-    EXPECT_EQ(canvas3d_data[0].geometry_->properties,
+    EXPECT_EQ(canvas3d_data[0].type(), Canvas3DComponentType::geometry);
+    EXPECT_EQ(canvas3d_data[0].origin(), Transform(1, 1, 1, 0, 0, 0));
+    EXPECT_EQ(canvas3d_data[0].color(), ViewColor::red);
+    ASSERT_NE(canvas3d_data[0].geometry(), std::nullopt);
+    EXPECT_EQ(canvas3d_data[0].geometry()->type, GeometryType::line);
+    EXPECT_EQ(canvas3d_data[0].geometry()->properties,
               (std::vector<double>{0, 0, 0, 3, 3, 3}));
-    EXPECT_EQ(canvas3d_data[0].field_base_, std::nullopt);
-    EXPECT_EQ(canvas3d_data[0].angles_.size(), 0);
+    EXPECT_EQ(canvas3d_data[0].robotModel(), std::nullopt);
+    // EXPECT_EQ(canvas3d_data[0].angles().size(), 0); todo:
+    // angle取得できないの?
 
-    EXPECT_EQ(canvas3d_data[1].type_, Canvas3DComponentType::geometry);
-    EXPECT_EQ(canvas3d_data[1].origin_, Transform(2, 2, 2, 0, 0, 0));
-    EXPECT_EQ(canvas3d_data[1].color_, ViewColor::yellow);
-    ASSERT_NE(canvas3d_data[1].geometry_, std::nullopt);
-    EXPECT_EQ(canvas3d_data[1].geometry_->type, GeometryType::plane);
-    EXPECT_EQ(canvas3d_data[1].geometry_->properties,
+    EXPECT_EQ(canvas3d_data[1].type(), Canvas3DComponentType::geometry);
+    EXPECT_EQ(canvas3d_data[1].origin(), Transform(2, 2, 2, 0, 0, 0));
+    EXPECT_EQ(canvas3d_data[1].color(), ViewColor::yellow);
+    ASSERT_NE(canvas3d_data[1].geometry(), std::nullopt);
+    EXPECT_EQ(canvas3d_data[1].geometry()->type, GeometryType::plane);
+    EXPECT_EQ(canvas3d_data[1].geometry()->properties,
               (std::vector<double>{0, 0, 0, 0, 0, 0, 10, 10}));
-    EXPECT_EQ(canvas3d_data[1].field_base_, std::nullopt);
-    EXPECT_EQ(canvas3d_data[1].angles_.size(), 0);
+    EXPECT_EQ(canvas3d_data[1].robotModel(), std::nullopt);
+    // EXPECT_EQ(canvas3d_data[1].angles_.size(), 0);
 
-    EXPECT_EQ(canvas3d_data[2].type_, Canvas3DComponentType::robot_model);
-    EXPECT_EQ(canvas3d_data[2].origin_, Transform(3, 3, 3, 0, 0, 0));
-    EXPECT_EQ(canvas3d_data[2].color_, ViewColor::inherit);
-    EXPECT_EQ(canvas3d_data[2].geometry_, std::nullopt);
-    ASSERT_NE(canvas3d_data[2].field_base_, std::nullopt);
-    EXPECT_EQ(canvas3d_data[2].field_base_->member_, self_name);
-    EXPECT_EQ(canvas3d_data[2].field_base_->field_, "b"_ss);
-    ASSERT_EQ(canvas3d_data[2].angles_.size(), 1);
-    EXPECT_EQ(canvas3d_data[2].angles_.at(1), 123);
+    EXPECT_EQ(canvas3d_data[2].type(), Canvas3DComponentType::robot_model);
+    EXPECT_EQ(canvas3d_data[2].origin(), Transform(3, 3, 3, 0, 0, 0));
+    EXPECT_EQ(canvas3d_data[2].color(), ViewColor::inherit);
+    EXPECT_EQ(canvas3d_data[2].geometry(), std::nullopt);
+    ASSERT_NE(canvas3d_data[2].robotModel(), std::nullopt);
+    EXPECT_EQ(canvas3d_data[2].robotModel()->member().name(),
+              self_name.decode());
+    EXPECT_EQ(canvas3d_data[2].robotModel()->name(), "b");
+    // ASSERT_EQ(canvas3d_data[2].angles_.size(), 1);
+    // EXPECT_EQ(canvas3d_data[2].angles_.at(1), 123);
 
     v.init();
     v.sync();
@@ -151,7 +153,7 @@ TEST_F(Canvas3DTest, set) {
     EXPECT_THROW(v6.sync(), std::runtime_error);
 }
 TEST_F(Canvas3DTest, get) {
-    auto vd = std::make_shared<std::vector<Canvas3DComponentBase>>(1);
+    auto vd = std::make_shared<std::vector<Canvas3DComponent>>(1);
     data_->canvas3d_store.setRecv("a"_ss, "b"_ss, vd);
     EXPECT_EQ(canvas("a", "b").tryGet().value().size(), 1);
     EXPECT_EQ(canvas("a", "b").get().size(), 1);

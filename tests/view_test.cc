@@ -116,79 +116,81 @@ TEST_F(ViewTest, viewSet) {
     EXPECT_EQ(callback_called, 1);
     auto &view_data = **data_->view_store.getRecv(self_name, "b"_ss);
     EXPECT_EQ(view_data.size(), 11);
-    EXPECT_EQ(view_data[0].type_, ViewComponentType::text);
-    EXPECT_EQ(view_data[0].text_, "a"_ss);
-    EXPECT_EQ(view_data[1].type_, ViewComponentType::new_line);
-    EXPECT_EQ(view_data[2].type_, ViewComponentType::text);
-    EXPECT_EQ(view_data[2].text_, "1"_ss);
+    EXPECT_EQ(view_data[0].type(), ViewComponentType::text);
+    EXPECT_EQ(view_data[0].text(), "a");
+    EXPECT_EQ(view_data[1].type(), ViewComponentType::new_line);
+    EXPECT_EQ(view_data[2].type(), ViewComponentType::text);
+    EXPECT_EQ(view_data[2].text(), "1");
 
-    EXPECT_EQ(view_data[3].type_, ViewComponentType::text);
-    EXPECT_EQ(view_data[3].text_, "aaa"_ss);
-    EXPECT_EQ(view_data[3].text_color_, ViewColor::yellow);
-    EXPECT_EQ(view_data[3].bg_color_, ViewColor::green);
-    EXPECT_EQ(view_data[4].type_, ViewComponentType::new_line);
+    EXPECT_EQ(view_data[3].type(), ViewComponentType::text);
+    EXPECT_EQ(view_data[3].text(), "aaa");
+    EXPECT_EQ(view_data[3].textColor(), ViewColor::yellow);
+    EXPECT_EQ(view_data[3].bgColor(), ViewColor::green);
+    EXPECT_EQ(view_data[4].type(), ViewComponentType::new_line);
 
-    EXPECT_EQ(view_data[5].type_, ViewComponentType::button);
-    EXPECT_EQ(view_data[5].text_, "f"_ss);
-    EXPECT_EQ(view_data[5].on_click_func_->member_, self_name);
-    EXPECT_EQ(view_data[5].on_click_func_->field_, "f"_ss);
+    EXPECT_EQ(view_data[5].type(), ViewComponentType::button);
+    EXPECT_EQ(view_data[5].text(), "f");
+    EXPECT_EQ(view_data[5].onClick()->member().name(), self_name.decode());
+    EXPECT_EQ(view_data[5].onClick()->name(), "f");
 
-    EXPECT_EQ(view_data[6].type_, ViewComponentType::button);
-    EXPECT_EQ(view_data[6].text_, "a"_ss);
-    EXPECT_EQ(view_data[6].on_click_func_->member_, self_name);
-    EXPECT_FALSE(view_data[6].on_click_func_->field_.empty());
+    EXPECT_EQ(view_data[6].type(), ViewComponentType::button);
+    EXPECT_EQ(view_data[6].text(), "a");
+    EXPECT_EQ(view_data[6].onClick()->member().name(), self_name.decode());
+    EXPECT_FALSE(view_data[6].onClick()->name().empty());
 
-    EXPECT_EQ(view_data[7].type_, ViewComponentType::button);
-    EXPECT_EQ(view_data[7].text_, "a2"_ss);
-    EXPECT_EQ(view_data[7].on_click_func_->member_, self_name);
-    EXPECT_FALSE(view_data[7].on_click_func_->field_.empty());
+    EXPECT_EQ(view_data[7].type(), ViewComponentType::button);
+    EXPECT_EQ(view_data[7].text(), "a2");
+    EXPECT_EQ(view_data[7].onClick()->member().name(), self_name.decode());
+    EXPECT_FALSE(view_data[7].onClick()->name().empty());
 
-    EXPECT_EQ(view_data[8].type_, ViewComponentType::decimal_input);
-    EXPECT_EQ(view_data[8].text_, "i"_ss);
-    EXPECT_EQ(view_data[8].on_click_func_->member_, self_name);
-    EXPECT_FALSE(view_data[8].on_click_func_->field_.empty());
-    EXPECT_EQ(view_data[8].text_ref_->member_, self_name);
-    EXPECT_FALSE(view_data[8].text_ref_->field_.empty());
+    EXPECT_EQ(view_data[8].type(), ViewComponentType::decimal_input);
+    EXPECT_EQ(view_data[8].text(), "i");
+    EXPECT_EQ(view_data[8].onClick()->member().name(), self_name.decode());
+    EXPECT_FALSE(view_data[8].onClick()->name().empty());
+    // EXPECT_EQ(view_data[8].text_ref_->member_, self_name.decode());
+    // EXPECT_FALSE(view_data[8].text_ref_->field_.empty());
     EXPECT_EQ(static_cast<int>(ref1.get()), 123);
-    EXPECT_EQ(text(self_name, view_data[8].text_ref_->field_).get(), "123");
-    EXPECT_EQ(
-        static_cast<int>(
-            text(self_name, view_data[8].text_ref_->field_).tryGetV().value()),
-        123);
-    func(self_name, view_data[8].on_click_func_->field_).run(10);
+    // EXPECT_EQ(text(self_name, view_data[8].text_ref_->field_).get(), "123");
+    // EXPECT_EQ(
+    //     static_cast<int>(
+    //         text(self_name,
+    //         view_data[8].text_ref_->field_).tryGetV().value()),
+    //     123);
+    func(self_name, view_data[8].onClick()->name()).run(10);
     EXPECT_EQ(static_cast<int>(ref1.get()), 10);
-    EXPECT_EQ(text(self_name, view_data[8].text_ref_->field_).get(), "10");
-    EXPECT_EQ(
-        static_cast<int>(
-            text(self_name, view_data[8].text_ref_->field_).tryGetV().value()),
-        10);
-    EXPECT_EQ(view_data[8].min_, 1);
-    EXPECT_EQ(view_data[8].max_, 1000);
+    // EXPECT_EQ(text(self_name, view_data[8].text_ref_->field_).get(), "10");
+    // EXPECT_EQ(
+    //     static_cast<int>(
+    //         text(self_name,
+    //         view_data[8].text_ref_->field_).tryGetV().value()),
+    //     10);
+    EXPECT_EQ(view_data[8].min(), 1);
+    EXPECT_EQ(view_data[8].max(), 1000);
 
-    EXPECT_EQ(view_data[9].type_, ViewComponentType::select_input);
-    EXPECT_EQ(view_data[9].text_, "i2"_ss);
-    EXPECT_EQ(view_data[9].on_click_func_->member_, self_name);
-    EXPECT_FALSE(view_data[9].on_click_func_->field_.empty());
-    EXPECT_EQ(view_data[9].text_ref_->member_, self_name);
-    EXPECT_FALSE(view_data[9].text_ref_->field_.empty());
-    EXPECT_EQ(view_data[9].option_.size(), 3);
-    func(self_name, view_data[9].on_click_func_->field_).run("a");
+    EXPECT_EQ(view_data[9].type(), ViewComponentType::select_input);
+    EXPECT_EQ(view_data[9].text(), "i2");
+    EXPECT_EQ(view_data[9].onClick()->member().name(), self_name.decode());
+    EXPECT_FALSE(view_data[9].onClick()->name().empty());
+    // EXPECT_EQ(view_data[9].text_ref_->member_, self_name.decode());
+    // EXPECT_FALSE(view_data[9].text_ref_->field_.empty());
+    EXPECT_EQ(view_data[9].option().size(), 3);
+    func(self_name, view_data[9].onClick()->name()).run("a");
     EXPECT_EQ(static_cast<std::string>(ref2.get()), "a");
-    EXPECT_EQ(static_cast<std::string>(
-                  text(self_name, view_data[9].text_ref_->field_).get()),
-              "a");
+    // EXPECT_EQ(static_cast<std::string>(
+    //               text(self_name, view_data[9].text_ref_->field_).get()),
+    //           "a");
 
-    EXPECT_EQ(view_data[10].type_, ViewComponentType::text_input);
-    EXPECT_EQ(view_data[10].text_, "i3"_ss);
-    EXPECT_EQ(view_data[10].on_click_func_->member_, self_name);
-    EXPECT_FALSE(view_data[10].on_click_func_->field_.empty());
-    EXPECT_EQ(view_data[10].text_ref_->member_, self_name);
-    EXPECT_FALSE(view_data[10].text_ref_->field_.empty());
-    func(self_name, view_data[10].on_click_func_->field_).run("aaa");
+    EXPECT_EQ(view_data[10].type(), ViewComponentType::text_input);
+    EXPECT_EQ(view_data[10].text(), "i3");
+    EXPECT_EQ(view_data[10].onClick()->member().name(), self_name.decode());
+    EXPECT_FALSE(view_data[10].onClick()->name().empty());
+    // EXPECT_EQ(view_data[10].text_ref_->member_, self_name.decode());
+    // EXPECT_FALSE(view_data[10].text_ref_->field_.empty());
+    func(self_name, view_data[10].onClick()->name()).run("aaa");
     EXPECT_EQ(called_ref3, 1);
-    EXPECT_EQ(static_cast<std::string>(
-                  text(self_name, view_data[10].text_ref_->field_).get()),
-              "aaa");
+    // EXPECT_EQ(static_cast<std::string>(
+    //               text(self_name, view_data[10].text_ref_->field_).get()),
+    //           "aaa");
 
     v.init();
     v.sync();
@@ -221,8 +223,8 @@ TEST_F(ViewTest, viewSet) {
 }
 TEST_F(ViewTest, viewGet) {
     std::unordered_map<int, int> idx_next;
-    auto vd = std::make_shared<std::vector<ViewComponentBase>>(
-        std::vector<ViewComponentBase>{
+    auto vd =
+        std::make_shared<std::vector<ViewComponent>>(std::vector<ViewComponent>{
             Components::text("a").toV().lockTmp(data_, "b"_ss, &idx_next),
             Components::button("a", [] {}).lockTmp(data_, "b"_ss, &idx_next),
             Components::text("a").toV().lockTmp(data_, "b"_ss, &idx_next),

@@ -291,9 +291,9 @@ TEST_F(ClientTest, entry) {
     EXPECT_EQ(m.imageEntries()[0].nameW(), L"d");
 
     m.onFuncEntry().appendListener(callback<Func>());
-    dummy_s->send(Message::FuncInfo{
-        10, "a"_ss, ValType::int_,
-        std::make_shared<std::vector<Message::FuncInfo::Arg>>(1)});
+    dummy_s->send(
+        Message::FuncInfo{10, "a"_ss, ValType::int_,
+                          std::make_shared<std::vector<Message::Arg>>(1)});
     wait();
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
@@ -311,7 +311,8 @@ TEST_F(ClientTest, valueSend) {
     dummy_s = std::make_shared<DummyServer>(false);
     wait();
     wcli_->waitConnection();
-    data_->value_store.setSend("a"_ss, std::make_shared<VectorOpt<double>>(5));
+    data_->value_store.setSend(
+        "a"_ss, std::make_shared<std::vector<double>>(std::vector<double>{5}));
     wcli_->sync();
     wait();
     dummy_s->recv<Message::Value>(
@@ -323,7 +324,8 @@ TEST_F(ClientTest, valueSend) {
         [&] { ADD_FAILURE() << "Value recv error"; });
     dummy_s->recvClear();
 
-    data_->value_store.setSend("a"_ss, std::make_shared<VectorOpt<double>>(5));
+    data_->value_store.setSend(
+        "a"_ss, std::make_shared<std::vector<double>>(std::vector<double>{5}));
     wcli_->sync();
     wait();
     dummy_s->recv<Message::Value>(
@@ -331,8 +333,8 @@ TEST_F(ClientTest, valueSend) {
         [&] {});
     dummy_s->recvClear();
 
-    data_->value_store.setSend("a"_ss, std::make_shared<VectorOpt<double>>(
-                                           std::array<double, 2>{5, 2}));
+    data_->value_store.setSend("a"_ss, std::make_shared<std::vector<double>>(
+                                           std::vector<double>{5, 2}));
     wcli_->sync();
     wait();
     dummy_s->recv<Message::Value>(
@@ -441,17 +443,16 @@ TEST_F(ClientTest, viewSend) {
     wcli_->waitConnection();
     data_->view_store.setSend(
         "a"_ss,
-        std::make_shared<std::vector<ViewComponentBase>>(
-            std::vector<ViewComponentBase>{
-                ViewComponents::text("a")
-                    .textColor(ViewColor::yellow)
-                    .bgColor(ViewColor::green)
-                    .toV()
-                    .lockTmp(data_, ""_ss),
-                ViewComponents::newLine().lockTmp(data_, ""_ss),
-                ViewComponents::button("a", Func{Field{data_, "x"_ss, "y"_ss}})
-                    .lockTmp(data_, ""_ss),
-            }));
+        std::make_shared<std::vector<ViewComponent>>(std::vector<ViewComponent>{
+            ViewComponents::text("a")
+                .textColor(ViewColor::yellow)
+                .bgColor(ViewColor::green)
+                .toV()
+                .lockTmp(data_, ""_ss),
+            ViewComponents::newLine().lockTmp(data_, ""_ss),
+            ViewComponents::button("a", Func{Field{data_, "x"_ss, "y"_ss}})
+                .lockTmp(data_, ""_ss),
+        }));
     wcli_->sync();
     wait();
     dummy_s->recv<Message::View>(
@@ -474,17 +475,16 @@ TEST_F(ClientTest, viewSend) {
 
     data_->view_store.setSend(
         "a"_ss,
-        std::make_shared<std::vector<ViewComponentBase>>(
-            std::vector<ViewComponentBase>{
-                ViewComponents::text("b")
-                    .textColor(ViewColor::red)
-                    .bgColor(ViewColor::green)
-                    .toV()
-                    .lockTmp(data_, ""_ss),
-                ViewComponents::newLine().lockTmp(data_, ""_ss),
-                ViewComponents::button("a", Func{Field{data_, "x"_ss, "y"_ss}})
-                    .lockTmp(data_, ""_ss),
-            }));
+        std::make_shared<std::vector<ViewComponent>>(std::vector<ViewComponent>{
+            ViewComponents::text("b")
+                .textColor(ViewColor::red)
+                .bgColor(ViewColor::green)
+                .toV()
+                .lockTmp(data_, ""_ss),
+            ViewComponents::newLine().lockTmp(data_, ""_ss),
+            ViewComponents::button("a", Func{Field{data_, "x"_ss, "y"_ss}})
+                .lockTmp(data_, ""_ss),
+        }));
     wcli_->sync();
     wait();
     dummy_s->recv<Message::View>(
@@ -515,17 +515,19 @@ TEST_F(ClientTest, viewReq) {
         [&] { ADD_FAILURE() << "View Req recv error"; });
 
     auto v = std::make_shared<
-        std::unordered_map<std::string, Message::View::ViewComponent>>(
-        std::unordered_map<std::string, Message::View::ViewComponent>{
+        std::unordered_map<std::string, Message::ViewComponent>>(
+        std::unordered_map<std::string, Message::ViewComponent>{
             {"0", ViewComponents::text("a")
                       .textColor(ViewColor::yellow)
                       .bgColor(ViewColor::green)
                       .toV()
-                      .lockTmp(data_, ""_ss)},
-            {"1", ViewComponents::newLine().lockTmp(data_, ""_ss)},
+                      .lockTmp(data_, ""_ss)
+                      .toMessage()},
+            {"1", ViewComponents::newLine().lockTmp(data_, ""_ss).toMessage()},
             {"2",
              ViewComponents::button("a", Func{Field{data_, "x"_ss, "y"_ss}})
-                 .lockTmp(data_, ""_ss)},
+                 .lockTmp(data_, ""_ss)
+                 .toMessage()},
         });
     dummy_s->send(Message::Res<Message::View>{1, ""_ss, v, 3});
     dummy_s->send(Message::Res<Message::View>{1, "c"_ss, v, 3});
