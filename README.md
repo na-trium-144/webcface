@@ -10,25 +10,73 @@
 
 Web-based IPC &amp; Dashboard-like UI
 
+> * mainブランチはver2.0.0としてリリース予定の現在開発中のブランチです。
+ver1は [v1](https://github.com/na-trium-144/webcface/tree/v1) ブランチにあります
+
 WebSocketとMessagePackを使った、ROSのような分散型の通信ライブラリです。
 
 C++ (C++20以上), C (C99), Python (3.8以上), JavaScript/TypeScript で相互に数値、文字列、画像などのデータを送受信したり、関数(手続き)を呼び出したりすることができます。
-少し難易度は上がりますがCのAPIを経由することで他の言語からも使用できると思います。
 
 Linux, Windows, MacOS で動作します。
-WebSocketを使用しているため、Wi-FiやEtherNet経由で複数のPC間(OS問わず)で通信することも可能です。
+Wi-FiやEtherNet経由で複数のPC間(OS問わず)で通信することも可能です。
 WindowsとWSL1/2の間の相互通信も自動的に接続されます。
 
 さらに同一マシン上やDocker,WSL経由など使用可能な場合はTCPの代わりにUnixドメインソケットを使用するようにし、パフォーマンスが改善しました。
 
 ## Features
 
+### Easy to Setup
+
+WebCFaceはサーバー側のプログラム `webcface-server` と、
+クライアントライブラリで構成されています。  
+使い方はサーバーを起動し、クライアントライブラリを利用したプログラムを起動するだけです。
+ROSのようなワークスペース管理機能はなく、どんなフレームワークのプロジェクトにも簡単に組み込むことができます。
+
+C / C++ の場合、WebCFaceのライブラリは
+CMake を使っていれば `find_package(webcface)`、
+pkg-config なら`pkg-config --cflags --libs webcface`
+で簡単に利用できます。  
+またライブラリ本体は
+`libwebcface.so.<version>`(Linux),
+`libwebcface.<version>.dylib`(Mac),
+`webcface<version>.dll`(Windows)
+の1つ (と spdlog のライブラリ) のみであり、手動でこのライブラリにリンクして使うこともできます。  
+パブリックな依存ライブラリは [spdlog](https://github.com/gabime/spdlog) のみです。
+WebCFace内部ではその他にもいくつか外部ライブラリを使用していますが、それらはすべてシンボルを非公開にしているのでユーザーが使用するライブラリとは干渉しません。
+(WebCFaceをstaticライブラリとしてビルドした場合を除く)
+
+Python, JavaScript には PyPI / npm に `webcface` パッケージを用意しているのでそれをインストールするだけで使えます。
+通信にWebSocketを使用しているため、Webブラウザ上でもそのまま動作します。
+
+少し難易度は上がりますが、CのAPIを経由することで他の言語からも使用できると思います。
+
+### Inter-Process Communication
+
+WebCFaceで送受信できるデータ型として
+* 数値型・数値配列型(Value)
+* 文字列型(Text)
+* 画像(Image)
+* 関数呼び出し(Func)
+* テキストログ(Log)
+
+などの型が用意されています。
+ユーザーがメッセージ型を定義できるROSやgRPCと比べると自由度は低いかもしれませんが、
+これらのデータ型の組み合わせであれば簡単に送受信させることができます。
+
+Image型データは送受信の過程で画像を縮小したりJPEGやPNGに圧縮したりといった操作をサーバー側で行うことができます。
+表示目的など、圧縮した画像で十分な場合には簡単に通信量を削減できます。
+
+WebCFaceの通信データ形式はOSやライブラリの言語によらず共通で、またバージョン間で後方互換性があります。
+つまり、異なるバージョンのクライアント同士でも、異なるバージョンのOSでも問題なく通信が可能です。
+(C++のver1.1.6以前を除く)  
+ただしそれぞれのクライアントのバージョンよりサーバーの方が新しいバージョンである必要があります。
+
 ### WebUI
 
 WebCFaceではプログラム間でデータの送受信ができるAPIだけでなく、
 WebブラウザーからWebCFaceで通信されているデータを可視化したり関数を呼び出したりできるUI(WebUI)を提供します。
 
-さらにボタンや入力欄などの並べ方(View)をWebCFaceを使ったC++などのプログラムの側で定義してそれをWebUIに表示させることができ、
+さらにボタンや入力欄などの並べ方をWebCFaceを使ったC++などのプログラムの側で定義してそれをWebUIに表示させることができ、
 これによりHTMLやCSSの知識がなくても簡易なUIを作成することができます。
 
 また、同様に2D、3Dの図形もWebCFaceを使ったプログラム側の記述のみでWebUIに描画させることができます。
@@ -38,9 +86,14 @@ WebブラウザーからWebCFaceで通信されているデータを可視化し
 なお、これらの描画データは View, Canvas2D, Canvas3D として他のデータ型(数値や文字列など)と同様にWebCFace内の通信データとして存在しており、
 WebUI以外でもこれらのデータを受信して表示するアプリを作成することは可能です。
 
+<!--
 ### PlotJuggler
 
 [plotjuggler-webcface-plugin](https://github.com/na-trium-144/plotjuggler-webcface-plugin) を使うと、WebCFaceで通信されているデータを [PlotJuggler](https://github.com/facontidavide/PlotJuggler) を使って見ることもできます。
+-->
+
+<!--
+todo: グラフなど使ってわかりやすくする & ほかの通信ライブラリとの比較をする
 
 ### Benchmark
 
@@ -65,6 +118,7 @@ ver1.11時点のReleaseビルドの src/example/benchmark.cc で通信速度を�
 | MacOS | 130 μs | 136 μs | 165 μs | 439 μs | 2.98 ms | 28.3 ms |
 
 </details>
+-->
 
 ## Links
 
