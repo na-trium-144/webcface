@@ -24,7 +24,7 @@ else()
 
     if(WEBCFACE_INSTALL)
         install(FILES
-            ${msgpack-c_SOURCE_DIR}/LICENSE_1_0.txt
+            ${msgpack-cxx_SOURCE_DIR}/LICENSE_1_0.txt
             DESTINATION share/webcface/3rd_party/msgpack-c
         )
     endif()
