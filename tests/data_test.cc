@@ -113,6 +113,7 @@ TEST_F(DataTest, valueSetVec) {
          std::make_shared<eventpp::CallbackList<void(Value)>>())
         ->append(callback<Value>());
     value(self_name, "d").set({1, 2, 3, 4, 5});
+    value(self_name, "d8").set({true, 2, 3, 4, 5.0});
     value(self_name, "d2").set(std::vector<double>{1, 2, 3, 4, 5});
     value(self_name, "d3").set(std::vector<int>{1, 2, 3, 4, 5});
     value(self_name, "d4").set(std::array<int, 5>{1, 2, 3, 4, 5});
@@ -143,6 +144,7 @@ TEST_F(DataTest, valueSetVec) {
     EXPECT_EQ((**data_->value_store.getRecv(self_name, "d6"_ss)).at(3), 4);
     EXPECT_EQ((**data_->value_store.getRecv(self_name, "d6"_ss)).at(4), 5);
     EXPECT_EQ((**data_->value_store.getRecv(self_name, "d7"_ss)).size(), 5);
+    EXPECT_EQ((**data_->value_store.getRecv(self_name, "d8"_ss)).size(), 5);
 }
 TEST_F(DataTest, textSet) {
     (data_->text_change_event[self_name]["b"_ss] =

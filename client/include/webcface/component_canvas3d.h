@@ -22,9 +22,9 @@ enum class Canvas3DComponentType {
 class WEBCFACE_DLL Canvas3DComponent {
     std::weak_ptr<Internal::ClientData> data_w;
 
-    Canvas3DComponentType type_;
+    Canvas3DComponentType type_ = Canvas3DComponentType::geometry;
     Transform origin_;
-    ViewColor color_;
+    ViewColor color_ = ViewColor::inherit;
     std::optional<Geometry> geometry_;
     std::optional<FieldBase> field_base_;
     std::unordered_map<std::size_t, double> angles_;
@@ -47,12 +47,9 @@ class WEBCFACE_DLL Canvas3DComponent {
     //     : Common::Canvas3DComponentBase(vc), data_w() {}
     Canvas3DComponent(Canvas3DComponentType type,
                       const std::weak_ptr<Internal::ClientData> &data_w)
-        : data_w(data_w) {
-        type_ = type;
-    }
-    explicit Canvas3DComponent(Canvas3DComponentType type) : data_w() {
-        type_ = type;
-    }
+        : data_w(data_w), type_(type) {}
+    explicit Canvas3DComponent(Canvas3DComponentType type)
+        : data_w(), type_(type) {}
 
     /*!
      * \brief AnonymousFuncをFuncオブジェクトにlock

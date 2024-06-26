@@ -97,11 +97,6 @@ class WEBCFACE_DLL Value : protected Field, public EventTarget<Value> {
      */
     Value &set(std::vector<double> &&v);
     /*!
-     * \brief initializer_listで配列として値をセットする
-     *
-     */
-    Value &set(const std::initializer_list<double> &v) { return set(std::vector(v)); }
-    /*!
      * \brief 配列型の値をセットする
      * \since ver1.7 (VectorOpt(std::vector<T>) を置き換え)
      *
@@ -131,7 +126,7 @@ class WEBCFACE_DLL Value : protected Field, public EventTarget<Value> {
         std::vector<double> vec;
         vec.reserve(N);
         for (const auto &v : range) {
-            this->push_back(static_cast<double>(v));
+            vec.push_back(static_cast<double>(v));
         }
         return set(std::move(vec));
     }
