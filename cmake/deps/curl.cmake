@@ -88,7 +88,21 @@ else()
 
     include(cmake/linker.cmake)
     add_library(libcurl-linker INTERFACE)
-    target_include_directories(libcurl-linker INTERFACE $<TARGET_PROPERTY:libcurl_static,INCLUDE_DIRECTORIES>)
+    if(WEBCFACE_SHARED)
+        target_include_directories(libcurl-linker INTERFACE
+            $<BUILD_INTERFACE:$<TARGET_PROPERTY:libcurl_static,INCLUDE_DIRECTORIES>>
+        )
+        target_link_libraries(libcurl-linker INTERFACE
+            $<BUILD_INTERFACE:$<TARGET_PROPERTY:libcurl_static,LINK_LIBRARIES>>
+        )
+    else()
+        target_include_directories(libcurl-linker INTERFACE
+            $<TARGET_PROPERTY:libcurl_static,INCLUDE_DIRECTORIES>>
+        )
+        target_link_libraries(libcurl-linker INTERFACE
+            $<TARGET_PROPERTY:libcurl_static,LINK_LIBRARIES>
+        )
+    endif()
     target_compile_definitions(libcurl-linker INTERFACE CURL_STATICLIB)
     if(CMAKE_BUILD_TYPE STREQUAL "Debug")
         # なぜかTARGET_LINKER_FILE_BASE_NAMEすると"libcurl"になってしまう
@@ -100,14 +114,14 @@ else()
         LIBRARY_DIRS $<TARGET_LINKER_FILE_DIR:libcurl_static>
         LIBRARIES ${libcurl-linkname}
     )
-    target_link_libraries(libcurl-linker INTERFACE $<TARGET_PROPERTY:libcurl_static,LINK_LIBRARIES>)
     add_dependencies(libcurl-linker libcurl_static)
 
     if(WEBCFACE_INSTALL)
-        list(APPEND WEBCFACE_EXPORTS libcurl-linker libcurl_static)
+        list(APPEND WEBCFACE_EXPORTS libcurl-linker)
         set(CURL_INSTALLED 0)
         # licenseファイルはリポジトリ内にないしバイナリ配布に必須ではないのでスキップ
         if(NOT WEBCFACE_SHARED)
+            list(APPEND WEBCFACE_EXPORTS libcurl_static)
             if(CMAKE_BUILD_TYPE STREQUAL "Debug")
                 list(APPEND WEBCFACE_PKGCONFIG_LIBS -lcurl-d)
             else()
