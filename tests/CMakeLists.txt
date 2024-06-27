@@ -18,9 +18,6 @@ add_executable(webcface-test
     c_wcf_test.cc
 )
 target_link_libraries(webcface-test PRIVATE
-    webcface-encoding
-    webcface-message
-    webcface-server-store
     webcface
     GTest::gtest_main
     msgpack-cxx
@@ -34,5 +31,12 @@ target_link_libraries(webcface-test PRIVATE
 target_compile_definitions(webcface-test PRIVATE
     WEBCFACE_TEST_TIMEOUT=${WEBCFACE_TEST_TIMEOUT}
 )
+target_include_directories(webcface-test PRIVATE
+    $<TARGET_PROPERTY:webcface-encoding,INTERFACE_INCLUDE_DIRECTORIES>
+    $<TARGET_PROPERTY:webcface-server-store,INTERFACE_INCLUDE_DIRECTORIES>
+    $<TARGET_PROPERTY:webcface-client,INTERFACE_INCLUDE_DIRECTORIES>
+    $<TARGET_PROPERTY:webcface-message,INTERFACE_INCLUDE_DIRECTORIES>
+)
+
 include(GoogleTest)
 gtest_discover_tests(webcface-test DISCOVERY_TIMEOUT 600)
