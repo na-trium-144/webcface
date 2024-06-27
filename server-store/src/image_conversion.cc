@@ -8,9 +8,12 @@
 WEBCFACE_NS_BEGIN
 namespace Server {
 
-static void initMagick() {
+// メインのスレッドで呼ばれるべき (server側でチェック)
+void initMagick() {
+    static std::mutex m;
+    std::lock_guard lock(m);
     static bool initialized = false;
-    if(!initialized){
+    if (!initialized) {
         Magick::InitializeMagick(nullptr);
         initialized = true;
     }
@@ -39,8 +42,6 @@ static std::string magickColorMap(int mode) {
  */
 void MemberData::imageConvertThreadMain(const SharedString &member,
                                         const SharedString &field) {
-    initMagick();
-
     int last_image_flag = -1, last_req_flag = -1;
     logger->trace("imageConvertThreadMain started for {}, {}", member.decode(),
                   field.decode());
@@ -247,5 +248,5 @@ void MemberData::imageConvertThreadMain(const SharedString &member,
     }
 }
 
-}
+} // namespace Server
 WEBCFACE_NS_END

@@ -6,7 +6,6 @@
 #include <memory>
 #include <thread>
 #include <atomic>
-#include <future>
 #include <vector>
 
 WEBCFACE_NS_BEGIN
@@ -15,6 +14,8 @@ struct ServerStorage;
 struct MemberData;
 
 using wsConnPtr = void *;
+
+WEBCFACE_DLL void initMagick();
 
 class WEBCFACE_DLL Server {
     std::atomic<bool> server_stop;

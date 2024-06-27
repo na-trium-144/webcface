@@ -13,6 +13,8 @@
 WEBCFACE_NS_BEGIN
 namespace Server {
 
+static const std::thread::id MAIN_THREAD_ID = std::this_thread::get_id();
+
 static spdlog::level::level_enum convertLevel(int level) {
     switch (level) {
     case 4:
@@ -88,14 +90,22 @@ Server::~Server() {
         delete static_cast<webcfaceServerInternal::AppWrapper *>(app);
     }
 }
+
 Server::Server(int port, const spdlog::sink_ptr &sink,
                spdlog::level::level_enum level, int keep_log)
     : server_stop(false), apps(), apps_running(), server_ping_wait(),
       store(std::make_unique<ServerStorage>(this, keep_log)),
       ping_thread([this] { pingThreadMain(); }) {
+
     auto logger = std::make_shared<spdlog::logger>("webcface_server", sink);
     logger->set_level(spdlog::level::trace);
     logger->info("WebCFace Server {}", WEBCFACE_VERSION);
+
+    if (std::this_thread::get_id() != MAIN_THREAD_ID) {
+        logger->warn("Initialization of webcface::Server::Server should be "
+                     "called in the main thread (to initialize ImageMagick).");
+    }
+    initMagick();
 
     auto crow_logger = std::make_shared<spdlog::logger>("crow_server", sink);
     crow_logger->set_level(spdlog::level::trace);
