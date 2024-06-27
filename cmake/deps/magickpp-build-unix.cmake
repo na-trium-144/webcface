@@ -20,6 +20,7 @@ if(WEBCFACE_PIC)
 endif()
 
 include(cmake/deps/libjpeg.cmake)
+include(cmake/deps/zlib.cmake)
 include(cmake/deps/libpng.cmake)
 include(cmake/deps/libwebp.cmake)
 
@@ -87,7 +88,7 @@ target_static_link(magickpp-linker
     LIBRARY_DIRS ${Magickpp_STATIC_LIBRARY_DIRS}
     LIBRARIES ${Magickpp_STATIC_LIBRARIES}
 )
-target_link_libraries(magickpp-linker INTERFACE libjpeg libpng libwebp)
+target_link_libraries(magickpp-linker INTERFACE libjpeg zlib libpng libwebp)
 target_link_directories(magickpp-linker INTERFACE
     $<BUILD_INTERFACE:${MAGICKPP_PREFIX}/lib>
     $<INSTALL_INTERFACE:lib>
