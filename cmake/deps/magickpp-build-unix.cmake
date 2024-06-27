@@ -29,7 +29,7 @@ fetch_only(imagemagick
     configure
 )
 message(STATUS "Building Magick++...")
-if(NOT EXISTS ${imagemagick_SOURCE_DIR}/Makefile OR ${CMAKE_CURRENT_LIST_FILE} IS_NEWER_THAN ${imagemagick_SOURCE_DIR}/Makefile)
+if(NOT EXISTS ${imagemagick_BINARY_DIR}/Makefile OR ${CMAKE_CURRENT_LIST_FILE} IS_NEWER_THAN ${imagemagick_BINARY_DIR}/Makefile)
     if(MINGW)
         execute_process(
             COMMAND ${CHMOD_COMMAND} +x winpath.sh # バグ?
@@ -38,7 +38,7 @@ if(NOT EXISTS ${imagemagick_SOURCE_DIR}/Makefile OR ${CMAKE_CURRENT_LIST_FILE} I
     endif()
     execute_process(
         # mingwでは ./configure はつかえない
-        COMMAND ${SH_COMMAND} configure
+        COMMAND ${SH_COMMAND} "${imagemagick_SOURCE_DIR}/configure"
             "CC=${ORIGINAL_ENV_CC}" "CXX=${ORIGINAL_ENV_CXX}"
             "CFLAGS=${MAGICKPP_FLAGS}" "CXXFLAGS=${MAGICKPP_FLAGS}"
             "MAKE=${MAKE_COMMAND}"
@@ -51,8 +51,11 @@ if(NOT EXISTS ${imagemagick_SOURCE_DIR}/Makefile OR ${CMAKE_CURRENT_LIST_FILE} I
             --without-raqm --without-raw --without-tiff --without-wmf
             --without-xml --without-zlib --without-zstd --without-x --without-zip
             --disable-gomp
-        WORKING_DIRECTORY ${imagemagick_SOURCE_DIR}
+        WORKING_DIRECTORY ${imagemagick_BINARY_DIR}
     )
+endif()
+if(NOT EXISTS ${imagemagick_BINARY_DIR}/Makefile OR ${CMAKE_CURRENT_LIST_FILE} IS_NEWER_THAN ${imagemagick_BINARY_DIR}/Makefile)
+    message(FATAL_ERROR "Failed to configure ImageMagick")
 endif()
 include(ProcessorCount)
 ProcessorCount(N)
@@ -61,7 +64,7 @@ if(N EQUAL 0)
 endif()
 execute_process(
     COMMAND ${MAKE_COMMAND} -j${N} install
-    WORKING_DIRECTORY ${imagemagick_SOURCE_DIR}
+    WORKING_DIRECTORY ${imagemagick_BINARY_DIR}
 )
 
 include(cmake/linker.cmake)

@@ -33,19 +33,22 @@ else()
     if(N EQUAL 0)
         set(N 1)
     endif()
-    if(NOT EXISTS ${zlib_SOURCE_DIR}/Makefile OR ${CMAKE_CURRENT_LIST_FILE} IS_NEWER_THAN ${zlib_SOURCE_DIR}/Makefile)
+    if(NOT EXISTS ${zlib_BINARY_DIR}/Makefile OR ${CMAKE_CURRENT_LIST_FILE} IS_NEWER_THAN ${zlib_BINARY_DIR}/Makefile)
         execute_process(
             COMMAND ${ENV_COMMAND}
                 "CC=${ORIGINAL_ENV_CC}" "CFLAGS=${MAGICKPP_FLAGS}"
                 "MAKE=${MAKE_COMMAND}"
-                ${SH_COMMAND} configure
+                ${SH_COMMAND} ${zlib_SOURCE_DIR}/configure
                 --static --prefix=${zlib_PREFIX}
-            WORKING_DIRECTORY ${zlib_SOURCE_DIR}
+            WORKING_DIRECTORY ${zlib_BINARY_DIR}
         )
+    endif()
+    if(NOT EXISTS ${zlib_BINARY_DIR}/Makefile OR ${CMAKE_CURRENT_LIST_FILE} IS_NEWER_THAN ${zlib_BINARY_DIR}/Makefile)
+        message(FATAL_ERROR "Failed to configure zlib")
     endif()
     execute_process(
         COMMAND ${MAKE_COMMAND} -j${N} install
-        WORKING_DIRECTORY ${zlib_SOURCE_DIR}
+        WORKING_DIRECTORY ${zlib_BINARY_DIR}
     )
 
     include(cmake/linker.cmake)
