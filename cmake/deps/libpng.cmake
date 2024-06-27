@@ -20,8 +20,6 @@ if(libpng_FOUND)
     endif()
 
 else()
-    include(cmake/deps/zlib.cmake)
-
     set(libpng_PREFIX ${CMAKE_CURRENT_BINARY_DIR}/_deps/libpng-install)
     fetch_only(libpng
         https://github.com/pnggroup/libpng.git
