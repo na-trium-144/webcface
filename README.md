@@ -209,11 +209,11 @@ zipファイルは任意の場所に展開して使用してください。
 
 MinGW用バイナリは今のところ配布していません(ソースからビルドしてください)
 
-### Build from source
+## Build from source
 
 以下はwebcfaceをソースからビルドする場合の説明です。(webcfaceをインストールした場合は不要です。)
 
-#### Requirements
+### Requirements
 * C++20に対応したコンパイラが必要です
 	* GCCはgcc-10以上が必要です。
 	* Clangはclang-13以上が必要です。
@@ -233,18 +233,23 @@ MinGW用バイナリは今のところ配布していません(ソースから�
 [Magick++](https://github.com/ImageMagick/ImageMagick),
 [GoogleTest](https://github.com/google/googletest)(testのみ)
 を使用します。
-	* いずれもCMake時に自動的にFetchContentでソースコードを取得してビルドするので、必ずしもこれらをインストールする必要はありません。
-	* eventpp, msgpack, spdlog, ImageMagick に関してはシステムにインストールされていてfind_packageで見つけることができればそれを使用します
-	* OpenCVはソースからビルドしません。OpenCVを使ったexampleをビルドしたい場合は別途インストールする必要がありますが、example以外では使用しないのでほぼ必要ないと思います。
-	* libcurlはwebsocket機能を有効にする必要があるためインストールされている場合でもソースからビルドします
+	* いずれもシステムにインストールされていてfind_packageなどで使うことができるか確認します。
+		* 見つからない場合は、CMake時に自動的にFetchContentでソースコードを取得してビルドするので、必ずしもこれらをインストールする必要はありません。
+	* また、`git submodule update --init` をしておくとsubmoduleとしてexternalディレクトリ以下に依存ライブラリをすべてcloneすることができます。その場合はFetchContentでのダウンロードはされません。
+		* ダウンロード量は増えますが、インターネット接続のないところでcmakeをしたい場合などに有用です。
+		* ただしMSVCの場合ImageMagick-Windowsリポジトリは例外として常にFetchContentを使います
+	* libcurlはwebsocket機能を有効にする必要があるため、インストールされているlibcurlでwebsocketが使えない場合使用せずソースからビルドします。
+	* crowはunix_socketの機能が実装されている必要があるため、インストールされているcrowでunix_socketが使えない場合使用せずソースからビルドします
+	* Magick++はマルチスレッドで実行するためにOpenMPが無効になっている必要があるため、インストールされているMagick++がOpenMPを使用してビルドされていた場合使用せずソースからビルドします
 	* googletestはchar8_tの機能を有効にする必要があるためインストールされている場合でもソースからビルドします
+	* OpenCVはソースからビルドしません。OpenCVを使ったexampleをビルドしたい場合は別途インストールする必要がありますが、example以外では使用しないのでほぼ必要ないと思います。
 	
 <details><summary>Ubuntu</summary>
 
 ```sh
 sudo apt install build-essential git cmake
 # optional:
-sudo apt install libspdlog-dev libasio-dev libmagick++-dev
+sudo apt install libspdlog-dev libasio-dev
 sudo apt install libcli11-dev # only on 22.04 or later
 sudo apt install libmsgpack-cxx-dev # only on 24.04 or later
 ```
@@ -262,7 +267,7 @@ export CXX=g++-10
 ```sh
 brew install cmake
 # optional:
-brew install msgpack-cxx spdlog asio cli11 utf8cpp imagemagick
+brew install msgpack-cxx spdlog asio cli11 utf8cpp
 ```
 </details>
 
@@ -271,13 +276,17 @@ brew install msgpack-cxx spdlog asio cli11 utf8cpp imagemagick
 Visual Studio 2019 または 2022 でcloneしたwebcfaceのフォルダーを開くか、
 Developer Command Promptからcmakeコマンドを使ってもビルドできます。
 
+<!--
 https://imagemagick.org/script/download.php からImageMagickをダウンロード、インストールしてPATHを通せばそれを使用してビルドすることができます。
 (インストール時に development header もインストールすること)
 
 または、chocolateyをインストールしてあれば `choco install imagemagick -PackageParameters InstallDevelopmentHeaders=true` でok
-
 ImageMagickをインストールしない場合CMake時に自動的にソースをダウンロードしてビルドします。
-その場合 Visual C++ ATL と MFC のコンポーネントも必要になります。
+-->
+ImageMagickをソースからビルドするために Visual C++ ATL と MFC のコンポーネントも必要になります。
+(Visual Studio Installer からインストールしてください)  
+公式サイトからダウンロードできるImageMagickはOpenMPを使ってビルドされているため、インストールされていても使いません。
+(またはImageMagickを別途 /noOpenMP オプション付きでビルドしたものを用意しPATHを通せばそれを使用することは可能です)
 
 </details>
 
@@ -289,61 +298,79 @@ pacboy -S git make gcc:p cmake:p ninja:p
 # optional:
 pacboy -S msgpack-cxx:p spdlog:p asio:p cli11:p utf8cpp:p imagemagick:p 
 ```
-imagemagickをソースからビルドする際にninjaではなくmakeが必要になります
+imagemagickをソースからビルドする際にはninjaではなくmakeが必要になります
 
 </details>
 
-#### Build (with Pure CMake)
+### CMake
 
 ```sh
 cmake -Bbuild
+```
+* ImageMagickなど、CMakeを使わない依存ライブラリのビルドはCMake時に行われます。そのため初回のCMakeで大量のログ出力が流れ時間もかかりますが仕様です。
+* CMakeの最後に `** WebCFace (バージョン番号) Summary**` と指定されているオプション、依存ライブラリの状態がまとめて表示されます。
+* BUILD_TYPEは `-DCMAKE_BUILD_TYPE=Release` または `-DCMAKE_BUILD_TYPE=Debug` を指定してください (デフォルトはRelease)
+	* Windows(MSVC)ではImageMagickをソースからビルドする際デフォルトでは`CMAKE_BUILD_TYPE`に指定したconfigurationのみビルドされますが、DebugとReleaseの両方をビルドしたい場合は `-DWEBCFACE_CONFIG_ALL=ON` を指定してください
+* `-DWEBCFACE_SHARED=OFF`にすると共有ライブラリではなくすべて静的ライブラリになります
+* `-DWEBCFACE_PIC=ON`または`-DCMAKE_POSITION_INDEPENDENT_CODE=ON`にすると-fPICフラグが有効になります (Linux,Macのみ、WEBCFACE_SHAREDがONの場合はデフォルトでON)
+* `-DWEBCFACE_EXAMPLE=ON`でexampleをビルドします(デフォルトでON、subdirectoryの場合デフォルトでOFF)
+* `-DWEBCFACE_INSTALL=ON`でinstallターゲットを生成します(デフォルトでON、subdirectoryの場合デフォルトでOFF)
+	* さらに`-DWEBCFACE_INSTALL_SERVICE=ON`で [webcface-server.service](cmake/webcafce-server.service) を lib/systemd/system にインストールします (デフォルトでOFF)
+	* インストール先はデフォルトで /usr/local ですが、 `-DCMAKE_INSTALL_PREFIX=~/.webcface` などと指定すると変更することができます
+* `-DWEBCFACE_TEST=ON`でtestをビルドします(デフォルトでOFF)
+	* テストが通らない場合テスト中の通信の待機時間を`-DWEBCFACE_TEST_TIMEOUT=100`などと伸ばすとうまく行く場合があります(デフォルト=10(ms))
+* `-DWEBCFACE_VERSION_SUFFIX`でバージョン表記を変更できます
+	* 例えばバージョン(common/def.hに定義されている)が1.2.0のとき
+	* `-DWEBCFACE_VERSION_SUFFIX=git` なら `git describe --tags` コマンドを使用して取得した文字列 (1.2.0-x-gxxxxxxx) になります(未指定の場合のデフォルト)
+	* `git`以外の任意の文字列の場合 `-DWEBCFACE_VERSION_SUFFIX=hoge` で 1.2.0-hoge になります
+	* `-DWEBCFACE_VERSION_SUFFIX=` で 1.2.0 だけになります
+* `-DWEBCFACE_DOWNLOAD_WEBUI=OFF`を指定するとWebUIをダウンロードしません。
+* 依存ライブラリ
+	* `-DWEBCFACE_FIND_(ライブラリ)=OFF` にするとfind_packageなどで依存ライブラリを確認せず、常にソースからビルドするようになります。
+	* 設定可能なライブラリ名は以下
+		* `MSGPACK`, `SPDLOG`, `EVENTPP`, `CURL`, `CROW`, `ASIO`, `CLI11`, `UTF8CPP`, `MAGICK`
+		* `OPENCV` (デフォルトでoff、見つからなかった場合ソースからのビルドもしません)
+		* Magickをソースビルドする場合のみ: `JPEG`, `PNG`, `ZLIB`, `WEBP`
+	* `-DWEBCFACE_FIND_LIBS=OFF` とすると上記設定をすべてOFFにします
+		* WEBCFACE_SHAREDがOFFの場合デフォルトでOFF
+	* spdlogのオプション
+		* Windowsでは`SPDLOG_WCHAR_SUPPORT`がデフォルトでONになります
+		* それ以外のオプション(SPDLOG_WCHAR_FILENAMES, SPDLOG_WCHAR_CONSOLE)はWebCFace内では設定しませんがコマンドラインオプションで指定することは可能です
+
+### Build
+
+```sh
 cmake --build build
+```
+でビルドします
+(Windows(MSVC)の場合は `--config Release` または `--config Debug` を追加してください。)
+
+インストールもしたい場合は
+```sh
 sudo cmake --build build -t install
 ```
-* CMakeのオプション
-	* `-DWEBCFACE_SHARED=off`にすると共有ライブラリではなくすべて静的ライブラリになります
-		* `-DWEBCFACE_PIC=on`または`-DCMAKE_POSITION_INDEPENDENT_CODE=on`にすると-fPICフラグが有効になります (Linux,Macのみ、WEBCFACE_SHAREDがonの場合on)
-	* `-DWEBCFACE_EXAMPLE=on`でexampleをビルドします(submoduleの場合デフォルトでoff)
-	* `-DWEBCFACE_INSTALL=on`でtargetをinstallします(submoduleの場合デフォルトでoff)
-		* さらに`-DWEBCFACE_INSTALL_SERVICE=on`で [webcface-server.service](cmake/webcafce-server.service) を lib/systemd/system にインストールします (デフォルトでoff)
-	* `-DWEBCFACE_TEST=on`でtestをビルドします(デフォルトでoff)
-		* テストが通らない場合テスト中の通信の待機時間を`-DWEBCFACE_TEST_TIMEOUT=100`などと伸ばすとうまく行く場合があります(デフォルト=10(ms))
-	* `-DWEBCFACE_VERSION_SUFFIX`でバージョン表記を変更できます
-		* 例えばバージョン(common/def.hに定義されている)が1.2.0のとき
-		* `-DWEBCFACE_VERSION_SUFFIX=git` なら `git describe --tags` コマンドを使用して取得した文字列 (1.2.0-x-gxxxxxxx) になります(未指定の場合のデフォルト)
-		* `git`以外の任意の文字列の場合 `-DWEBCFACE_VERSION_SUFFIX=hoge` で 1.2.0-hoge になります
-		* `-DWEBCFACE_VERSION_SUFFIX=` で 1.2.0 だけになります
-	* `-DWEBCFACE_DOWNLOAD_WEBUI=off`を指定するとWebUIをダウンロードしません。
-	* 依存ライブラリ
-		* デフォルトではfind_packageやpkg_check_modulesなどで依存ライブラリがインストールされているか確認し、見つかればそれを使い見つからなければソースコードをダウンロードします。
-		* `git submodule update --init` でsubmoduleとしてexternalディレクトリ以下に依存ライブラリをすべてcloneすることができます。その場合はFetchContentでのダウンロードはされません。(インターネット接続のないところでcmakeをしたい場合などに有用) (MSVCの場合のImageMagick-Windowsリポジトリを除く)
-		* `-DWEBCFACE_FIND_(ライブラリ)=off` にするとインストールしたものは使わず常にソースからビルドするようになります。
-		* 設定可能なライブラリ名は以下
-			* `MSGPACK`, `SPDLOG`, `EVENTPP`, `CURL`, `CROW`, `ASIO`, `CLI11`, `UTF8CPP`, `MAGICK`
-			* `OPENCV` (デフォルトでoff、見つからなかった場合ソースからのビルドもしません)
-			* Magickをソースビルドする場合のみ: `JPEG`, `PNG`, `ZLIB`, `WEBP`
-		* `-DWEBCFACE_FIND_LIBS=off` とすると上記設定をすべてoffにします
-			* WEBCFACE_SHAREDがoffの場合デフォルトでoff
-		* Windows(MSVC)でImageMagickをソースからビルドする場合、デフォルトでは`CMAKE_BUILD_TYPE`に指定したconfigurationのみビルドされます
-			* DebugとReleaseの両方をビルドしたい場合は `-DWEBCFACE_CONFIG_ALL=on` を指定してください
-		* spdlogのオプション
-			* Windowsでは`SPDLOG_WCHAR_SUPPORT`がデフォルトでONになります
-			* それ以外のオプション(SPDLOG_WCHAR_FILENAMES, SPDLOG_WCHAR_CONSOLE)はWebCFace内では設定しませんがコマンドラインオプションで指定することは可能です
+でできます
+(Windows(MSVC)の場合は `--config Release` または `--config Debug` を追加してください。)
 
-#### Build (with colcon, ROS2)
-* このリポジトリをワークスペースのsrcに追加して、colconでビルドすることができます
+### WebUI
 
-#### WebUI
-* デフォルトではビルド済みのものがcmake時にダウンロードされます。
-* `-DWEBCFACE_DOWNLOAD_WEBUI=off`を指定するとダウンロードしません。
-	* その場合は [webuiのReleases](https://github.com/na-trium-144/webcface-webui/releases) からビルド済みのtar.gzのアーカイブをダウンロードして /usr/local/share/webcface/dist として展開するのが簡単です。
-		* install先が/usr/localでない場合はprefixを読み替えてください
-		* installせずに実行する場合は webcface-server のバイナリと同じディレクトリか、その1, 2, 3階層上のどこかにdistディレクトリを配置してください
-	* または自分でビルドすることも可能です(node.jsが必要)
-* このリポジトリのReleasesにあるdebパッケージとhomebrewではwebcfaceのパッケージとは別で配布しています
+デフォルトではビルド済みのものがCMake時にダウンロードされますが、
+`-DWEBCFACE_DOWNLOAD_WEBUI=OFF` を指定した場合はダウンロードしません。
+その場合は [webuiのReleases](https://github.com/na-trium-144/webcface-webui/releases) からビルド済みのtar.gzのアーカイブをダウンロードしてください。
 
-#### tools
-* toolsは別途 https://github.com/na-trium-144/webcface-tools.git をcloneしてビルド、インストールしてください
+インストールする場合は (webcfaceのインストール場所)/share/webcface/dist として展開してください。
+(install先が/usr/localでない場合はprefixを読み替えてください)
+
+installせずに実行する場合は webcface-server のバイナリと同じディレクトリか、その1, 2, 3階層上のどこかにdistディレクトリを配置してください。
+
+Ubuntuの場合は[webuiのReleases](https://github.com/na-trium-144/webcface-webui/releases)にあるdebパッケージで、またhomebrewでは `webcface-webui` パッケージとしてWebUIだけを単体でインストールすることもできます。
+
+または自分でビルドすることも可能です。(node.jsが必要)
+[webcface-webui](https://github.com/na-trium-144/webcface-webui) のREADMEを参照してください。
+
+### tools
+
+toolsは別途 https://github.com/na-trium-144/webcface-tools.git をcloneしてビルド、インストールしてください
 
 ## Documentation
 * まずはここから→ [Overview](https://na-trium-144.github.io/webcface/md_00__overview.html)
