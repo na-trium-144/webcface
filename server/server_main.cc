@@ -1,4 +1,4 @@
-#include <webcface/server/server.h>
+#include <webcface/server.h>
 #include <webcface/common/def.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
 #include <CLI/CLI.hpp>
