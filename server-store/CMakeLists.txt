@@ -2,6 +2,7 @@
 add_library(webcface-server-store OBJECT)
 target_sources(webcface-server-store PRIVATE
     src/member_data.cc
+    src/image_conversion.cc
     src/store.cc
     src/websock.cc
     src/dir.cc

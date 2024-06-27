@@ -5,6 +5,7 @@
 #include <Magick++.h>
 
 int main() {
+    Magick::InitializeMagick(nullptr);
     webcface::Client wcli("example_image_send");
 
     Magick::Image image("100x100", "white");

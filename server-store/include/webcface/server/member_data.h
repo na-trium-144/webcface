@@ -15,6 +15,11 @@
 
 WEBCFACE_NS_BEGIN
 namespace Server {
+
+WEBCFACE_DLL std::pair<unsigned int, SharedString>
+findReqField(StrMap2<unsigned int> &req, const SharedString &member,
+             const SharedString &field);
+
 struct WEBCFACE_DLL MemberData {
     spdlog::sink_ptr sink;
     std::shared_ptr<spdlog::logger> logger;

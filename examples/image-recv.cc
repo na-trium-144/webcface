@@ -6,6 +6,7 @@
 #include <fstream>
 
 int main() {
+    Magick::InitializeMagick(nullptr);
     webcface::Client wcli;
     wcli.waitConnection();
 

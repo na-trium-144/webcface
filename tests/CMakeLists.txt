@@ -27,6 +27,7 @@ target_link_libraries(webcface-test PRIVATE
     utf8cpp
     eventpp::eventpp
     spdlog-linker
+    magickpp-linker
     libcurl-linker
     crow-linker
 )
