@@ -34,6 +34,13 @@ else()
         set(N 1)
     endif()
     if(NOT EXISTS ${zlib_BINARY_DIR}/Makefile OR ${CMAKE_CURRENT_LIST_FILE} IS_NEWER_THAN ${zlib_BINARY_DIR}/Makefile)
+        if(EXISTS ${zlib_BINARY_DIR}/Makefile)
+            execute_process(
+                COMMAND ${MAKE_COMMAND} clean
+                WORKING_DIRECTORY ${zlib_BINARY_DIR}
+            )
+        endif()
+        file(REMOVE_RECURSE ${zlib_PREFIX})
         execute_process(
             COMMAND ${ENV_COMMAND}
                 "CC=${ORIGINAL_ENV_CC}" "CFLAGS=${MAGICKPP_FLAGS}"

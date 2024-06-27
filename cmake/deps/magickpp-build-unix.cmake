@@ -36,6 +36,13 @@ if(NOT EXISTS ${imagemagick_BINARY_DIR}/Makefile OR ${CMAKE_CURRENT_LIST_FILE} I
             WORKING_DIRECTORY ${imagemagick_SOURCE_DIR}
         )
     endif()
+    if(EXISTS ${imagemagick_BINARY_DIR}/Makefile)
+        execute_process(
+            COMMAND ${MAKE_COMMAND} clean
+            WORKING_DIRECTORY ${imagemagick_BINARY_DIR}
+        )
+    endif()
+    file(REMOVE_RECURSE ${MAGICKPP_PREFIX})
     execute_process(
         # mingwでは ./configure はつかえない
         COMMAND ${SH_COMMAND} "${imagemagick_SOURCE_DIR}/configure"
@@ -43,6 +50,7 @@ if(NOT EXISTS ${imagemagick_BINARY_DIR}/Makefile OR ${CMAKE_CURRENT_LIST_FILE} I
             "CFLAGS=${MAGICKPP_FLAGS}" "CXXFLAGS=${MAGICKPP_FLAGS}"
             "MAKE=${MAKE_COMMAND}"
             --prefix=${MAGICKPP_PREFIX_UNIX} --disable-shared --enable-static
+            --disable-openmp # <- for multi threading
             --without-utilities --disable-hdri --with-quantum-depth=8
             --without-modules --without-perl --without-bzlib --without-djvu --without-dps
             --without-fontconfig --without-freetype --without-gvc --without-heic
@@ -50,7 +58,6 @@ if(NOT EXISTS ${imagemagick_BINARY_DIR}/Makefile OR ${CMAKE_CURRENT_LIST_FILE} I
             --without-lzma --without-openexr --without-openjp2 --without-pango
             --without-raqm --without-raw --without-tiff --without-wmf
             --without-xml --without-zlib --without-zstd --without-x --without-zip
-            --disable-gomp
         WORKING_DIRECTORY ${imagemagick_BINARY_DIR}
     )
 endif()

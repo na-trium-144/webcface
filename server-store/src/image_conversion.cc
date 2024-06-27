@@ -25,10 +25,10 @@ static std::string magickColorMap(int mode) {
         return "K";
     case 1: // ImageColorMode::bgr:
         return "BGR";
-    case 2: // ImageColorMode::rgb:
-        return "RGB";
-    case 3: // ImageColorMode::bgra:
+    case 2: // ImageColorMode::bgra:
         return "BGRA";
+    case 3: // ImageColorMode::rgb:
+        return "RGB";
     case 4: // ImageColorMode::rgba:
         return "RGBA";
     }
