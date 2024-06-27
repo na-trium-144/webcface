@@ -60,7 +60,7 @@ if(NOT EXISTS ${imagemagick-windows_SOURCE_DIR}/IM7.StaticDLL.sln OR ${CMAKE_CUR
         message(FATAL_ERROR "Failed to build Configure.exe for ImageMagick")
     endif()
     message(STATUS "Executing Configure...")
-    set(COMMAND Configure.exe /noWizard /noAliases /noDpc /noHdri /Q8 /${CMAKE_C_COMPILER_ARCHITECTURE_ID} /VS${VS_VERSION} /smtd)
+    set(COMMAND Configure.exe /noWizard /noAliases /noDpc /noHdri /noOpenMP /Q8 /${CMAKE_C_COMPILER_ARCHITECTURE_ID} /VS${VS_VERSION} /smtd)
     message(STATUS "${COMMAND}")
     execute_process(
         COMMAND ${COMMAND}
