@@ -284,7 +284,7 @@ endif()
 add_library(webcface::webcface ALIAS webcface)
 
 add_library(wcf INTERFACE)
-target_include_directories(wcf INTERFACE ${INCLUDE_DIR})
+target_include_directories(wcf INTERFACE $<TARGET_PROPERTY:webcface,INTERFACE_INCLUDE_DIRECTORIES>)
 target_compile_features(wcf INTERFACE c_std_99)
 if(WEBCFACE_SHARED)
     # sharedの場合はlibc++とリンクする必要もない
@@ -293,7 +293,6 @@ else()
     target_link_libraries(wcf INTERFACE webcface)
 endif()
 add_library(webcface::wcf ALIAS wcf)
-
 
 ###############################################################################
 
