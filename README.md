@@ -247,7 +247,7 @@ MinGW用バイナリは今のところ配布していません(ソースから�
 <details><summary>Ubuntu</summary>
 
 ```sh
-sudo apt install build-essential git cmake
+sudo apt install build-essential git cmake pkg-config
 # optional:
 sudo apt install libspdlog-dev libasio-dev
 sudo apt install libcli11-dev # only on 22.04 or later

@@ -35,7 +35,7 @@ else()
     execute_process(
         COMMAND ${CMAKE_COMMAND} ${libjpeg-turbo_SOURCE_DIR} -B${libjpeg-turbo_BINARY_DIR}
             -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=${libjpeg_PREFIX}
-            -DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}
+            "-DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}"
             -DENABLE_SHARED=OFF -DWITH_TURBOJPEG=OFF
             -DCMAKE_POSITION_INDEPENDENT_CODE=${WEBCFACE_PIC}
     )

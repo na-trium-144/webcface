@@ -3,7 +3,7 @@ option(WEBCFACE_FIND_MAGICK "try pkg_check_modules(Magick++)" ${WEBCFACE_FIND_LI
 
 # target = magickpp-linker
 
-include(FindPkgConfig)
+find_package(PkgConfig REQUIRED)
 # あとでbuildしたmagickppをprefixに追加して再度pkg_check_modulesしているため、
 # ここでは毎回cacheをクリアする必要ある
 unset(Magickpp_FOUND CACHE)
