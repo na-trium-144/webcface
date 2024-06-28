@@ -360,8 +360,10 @@ void MemberData::onRecv(const std::string &message) {
             this->value[v.field] = v.data;
             // このvalueをsubscribeしてるところに送り返す
             store->forEach([&](auto cd) {
-                auto [req_id, sub_field] =
+                auto req_field =
                     findReqField(cd->value_req, this->name, v.field);
+                auto &req_id = req_field.first;
+                auto &sub_field = req_field.second;
                 if (req_id > 0) {
                     cd->pack(webcface::Message::Res<webcface::Message::Value>(
                         req_id, sub_field, v.data));
@@ -390,8 +392,10 @@ void MemberData::onRecv(const std::string &message) {
             this->text[v.field] = v.data;
             // このvalueをsubscribeしてるところに送り返す
             store->forEach([&](auto cd) {
-                auto [req_id, sub_field] =
+                auto req_field =
                     findReqField(cd->text_req, this->name, v.field);
+                auto &req_id = req_field.first;
+                auto &sub_field = req_field.second;
                 if (req_id > 0) {
                     cd->pack(webcface::Message::Res<webcface::Message::Text>(
                         req_id, sub_field, v.data));
@@ -421,8 +425,10 @@ void MemberData::onRecv(const std::string &message) {
             this->robot_model[v.field] = v.data;
             // このvalueをsubscribeしてるところに送り返す
             store->forEach([&](auto cd) {
-                auto [req_id, sub_field] =
+                auto req_field =
                     findReqField(cd->robot_model_req, this->name, v.field);
+                auto &req_id = req_field.first;
+                auto &sub_field = req_field.second;
                 if (req_id > 0) {
                     cd->pack(
                         webcface::Message::Res<webcface::Message::RobotModel>(
@@ -455,8 +461,10 @@ void MemberData::onRecv(const std::string &message) {
             }
             // このvalueをsubscribeしてるところに送り返す
             store->forEach([&](auto cd) {
-                auto [req_id, sub_field] =
+                auto req_field =
                     findReqField(cd->view_req, this->name, v.field);
+                auto &req_id = req_field.first;
+                auto &sub_field = req_field.second;
                 if (req_id > 0) {
                     cd->pack(webcface::Message::Res<webcface::Message::View>(
                         req_id, sub_field, v.data_diff, v.length));
@@ -488,8 +496,10 @@ void MemberData::onRecv(const std::string &message) {
             }
             // このvalueをsubscribeしてるところに送り返す
             store->forEach([&](auto cd) {
-                auto [req_id, sub_field] =
+                auto req_field =
                     findReqField(cd->canvas3d_req, this->name, v.field);
+                auto &req_id = req_field.first;
+                auto &sub_field = req_field.second;
                 if (req_id > 0) {
                     cd->pack(
                         webcface::Message::Res<webcface::Message::Canvas3D>(
@@ -525,8 +535,10 @@ void MemberData::onRecv(const std::string &message) {
             }
             // このvalueをsubscribeしてるところに送り返す
             store->forEach([&](auto cd) {
-                auto [req_id, sub_field] =
+                auto req_field =
                     findReqField(cd->canvas2d_req, this->name, v.field);
+                auto &req_id = req_field.first;
+                auto &sub_field = req_field.second;
                 if (req_id > 0) {
                     cd->pack(
                         webcface::Message::Res<webcface::Message::Canvas2D>(
