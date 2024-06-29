@@ -54,7 +54,7 @@ class Transform : public Point {
     std::array<double, 3> rot_;
 
   public:
-    Transform() = default;
+    Transform() : Point(), rot_({0, 0, 0}) {}
     /**
      * \param pos x, y, z 座標
      * \param rot オイラー角 (z, y, x の順)
@@ -68,8 +68,7 @@ class Transform : public Point {
      * \param rot 回転角(z)
      *
      */
-    Transform(const Point &pos, double rot)
-        : Transform(pos, {rot, 0, 0}){};
+    Transform(const Point &pos, double rot) : Transform(pos, {rot, 0, 0}){};
     Transform(double x, double y, double z, double z_angle, double y_angle,
               double x_angle)
         : Transform(std::array<double, 3>{x, y, z},
