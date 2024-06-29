@@ -93,14 +93,14 @@ else()
             $<BUILD_INTERFACE:$<TARGET_PROPERTY:libcurl_static,INCLUDE_DIRECTORIES>>
         )
         target_link_libraries(libcurl-linker INTERFACE
-            $<BUILD_INTERFACE:$<TARGET_PROPERTY:libcurl_static,LINK_LIBRARIES>>
+            $<BUILD_INTERFACE:$<TARGET_PROPERTY:libcurl_static,INTERFACE_LINK_LIBRARIES>>
         )
     else()
         target_include_directories(libcurl-linker INTERFACE
             $<TARGET_PROPERTY:libcurl_static,INCLUDE_DIRECTORIES>>
         )
         target_link_libraries(libcurl-linker INTERFACE
-            $<TARGET_PROPERTY:libcurl_static,LINK_LIBRARIES>
+            $<TARGET_PROPERTY:libcurl_static,INTERFACE_LINK_LIBRARIES>
         )
     endif()
     target_compile_definitions(libcurl-linker INTERFACE CURL_STATICLIB)
