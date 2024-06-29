@@ -21,6 +21,8 @@ jobs:
           shared_flag: on
         - dep: source
           shared_flag: on
+        - dep: submodule
+          shared_flag: on
         - dep: static
           shared_flag: off
     runs-on: windows-latest

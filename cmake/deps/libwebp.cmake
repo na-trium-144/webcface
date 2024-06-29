@@ -46,13 +46,17 @@ else()
 
     include(cmake/linker.cmake)
     add_prefix(${libwebp_PREFIX})
-    pkg_check_modules(libwebp QUIET libwebp)
-    if(NOT libwebp_FOUND)
-        message(FATAL_ERROR "Failed to build libwebp")
-    endif()
+    set(libwebp_packages libsharpyuv libwebpmux libwebpdemux libwebp)
+    foreach(libwebp_each IN LISTS libwebp_packages)
+        pkg_check_modules(${libwebp_each} QUIET ${libwebp_each})
+        if(NOT ${libwebp_each}_FOUND)
+            message(FATAL_ERROR "Failed to build ${libwebp_each}")
+        endif()
+    endforeach()
     add_library(libwebp INTERFACE)
     target_static_link(libwebp
         LIBRARY_DIRS ${libwebp_STATIC_LIBRARY_DIRS}
+        # ここでlibwebpmuxなども渡すとなぜかリンクエラーになってしまう
         LIBRARIES ${libwebp_STATIC_LIBRARIES}
     )
 
@@ -60,10 +64,12 @@ else()
         list(APPEND WEBCFACE_EXPORTS libwebp)
         if(NOT WEBCFACE_SHARED)
             include(cmake/linker.cmake)
-            install_prefix_libs(${libwebp_PREFIX}
-                LIBRARY_DIRS ${libwebp_STATIC_LIBRARY_DIRS}
-                LIBRARIES ${libwebp_STATIC_LIBRARIES}
-            )
+            foreach(libwebp_each IN LISTS libwebp_packages)
+                install_prefix_libs(${libwebp_PREFIX}
+                    LIBRARY_DIRS ${${libwebp_each}_STATIC_LIBRARY_DIRS}
+                    LIBRARIES ${${libwebp_each}_STATIC_LIBRARIES}
+                )
+            endforeach()
         endif()
     endif()
 endif()
