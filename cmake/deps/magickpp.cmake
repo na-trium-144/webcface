@@ -88,10 +88,11 @@ if(WEBCFACE_FIND_MAGICK AND NOT Magickpp_FOUND AND CMAKE_CXX_COMPILER_ID STREQUA
         if(WEBCFACE_INSTALL)
             list(APPEND WEBCFACE_EXPORTS magickpp-linker)
             if(NOT WEBCFACE_SHARED)
-                list(APPEND WEBCFACE_PKGCONFIG_LIBS -L${MAGICKPP_LIB_DIR})
+                list(APPEND magickpp_PKGCONFIG_LIBS -L${MAGICKPP_LIB_DIR})
                 foreach(lib IN LISTS MAGICKPP_DB_LIBS MAGICKPP_RL_LIBS)
-                    list(APPEND WEBCFACE_PKGCONFIG_LIBS -l${lib})
+                    list(APPEND magickpp_PKGCONFIG_LIBS -l${lib})
                 endforeach()
+                list(INSERT WEBCFACE_PKGCONFIG_LIBS 0 ${magickpp_PKGCONFIG_LIBS})
             endif()
         endif()
 

@@ -316,8 +316,9 @@ if(WEBCFACE_INSTALL)
 
     # library
     # dependenciesはそれぞれのcmakeファイルでリストに追加されている
+    # cmake時は依存ライブラリを先に処理するが、linker flagは逆で依存ライブラリがあと
     list(APPEND WEBCFACE_EXPORTS webcface wcf)
-    list(APPEND WEBCFACE_PKGCONFIG_LIBS -lwebcface)
+    list(INSERT WEBCFACE_PKGCONFIG_LIBS 0 -lwebcface)
     install(TARGETS ${WEBCFACE_EXPORTS}
         EXPORT webcface-targets
         LIBRARY DESTINATION lib

@@ -135,8 +135,9 @@ if(WEBCFACE_INSTALL)
             install(FILES ${MAGICKPP_LIB_DIR}/${lib}
                 DESTINATION lib
             )
-            list(APPEND WEBCFACE_PKGCONFIG_LIBS -l${lib})
+            list(APPEND magickpp_PKGCONFIG_LIBS -l${lib})
         endforeach()
+        list(INSERT WEBCFACE_PKGCONFIG_LIBS 0 ${magickpp_PKGCONFIG_LIBS})
     endif()
     install(FILES
         ${imagemagick-windows_SOURCE_DIR}/ImageMagick/LICENSE
