@@ -8,6 +8,11 @@ endif()
 if(@SPDLOG_INSTALLED@)
     find_dependency(spdlog)
 endif()
+if(NOT @WEBCFACE_SHARED@)
+    if(@CURL_INSTALLED@)
+        find_dependency(CURL)
+    endif()
+endif()
 
 include(${CMAKE_CURRENT_LIST_DIR}/webcface-targets.cmake)
 

@@ -1,0 +1,477 @@
+#pragma once
+#include "component_view.h"
+#include "component_canvas2d.h"
+#include "component_canvas3d.h"
+
+WEBCFACE_NS_BEGIN
+
+/*!
+ * \brief Canvas2D, Canvas3D (, View) に要素をaddするときに使うインタフェース
+ *
+ * add時に各種Componentにキャストする
+ *
+ * 各オプションの詳細な説明は ViewComponent, Canvas2DComponent,
+ * Canvas3DComponent を参照
+ *
+ */
+template <bool V, bool C2, bool C3>
+class TemporalComponent {
+  protected:
+    std::conditional_t<V, ViewComponent, int> component_v;
+    std::conditional_t<C2, Canvas2DComponent, int> component_2d;
+    std::conditional_t<C3, Canvas3DComponent, int> component_3d;
+
+  public:
+    TemporalComponent() = default;
+    template <typename VT, typename C2T, typename C3T>
+    TemporalComponent(VT v_type, C2T c2_type, C3T c3_type)
+        : component_v(v_type), component_2d(c2_type), component_3d(c3_type) {}
+    explicit TemporalComponent(std::string_view text)
+        requires(V && C2 && !C3)
+        : TemporalComponent(ViewComponentType::text,
+                            Canvas2DComponentType::text, 0) {
+        component_v.text(text);
+        component_2d.text(text);
+    }
+    explicit TemporalComponent(std::wstring_view text)
+        requires(V && C2 && !C3)
+        : TemporalComponent(ViewComponentType::text,
+                            Canvas2DComponentType::text, 0) {
+        component_v.text(text);
+        component_2d.text(text);
+    }
+    ViewComponent &toV()
+        requires V
+    {
+        return component_v;
+    }
+    Canvas2DComponent &to2()
+        requires C2
+    {
+        // component_2d->geometry(std::move(static_cast<Geometry &>(*this)));
+        return component_2d;
+    }
+    Canvas3DComponent &to3()
+        requires C3
+    {
+        // component_3d->geometry(std::move(static_cast<Geometry &>(*this)));
+        return component_3d;
+    }
+    /*!
+     * \brief クリック時に実行される関数を設定 (Viewまたは2D)
+     *
+     * 引数については ViewComponent::onClick(), Canvas2DComponent::onClick()
+     * を参照
+     *
+     */
+    template <typename T>
+    TemporalComponent &onClick(T &&func)
+        requires(V || C2)
+    {
+        if constexpr (V) {
+            component_v.onClick(std::forward<T>(func));
+        }
+        if constexpr (C2) {
+            component_2d.onClick(std::forward<T>(func));
+        }
+        return *this;
+    }
+    /*!
+     * \brief 要素の移動 (2Dまたは3D)
+     *
+     */
+    TemporalComponent &origin(const Transform &origin)
+        requires(C2 || C3)
+    {
+        if constexpr (C2) {
+            component_2d.origin(origin);
+        }
+        if constexpr (C3) {
+            component_3d.origin(origin);
+        }
+        return *this;
+    }
+    /*!
+     * \brief 色
+     *
+     * Viewの要素では textColor として設定される
+     */
+    TemporalComponent &color(ViewColor c)
+        requires(V || C2 || C3)
+    {
+        if constexpr (V) {
+            component_v.textColor(c);
+        }
+        if constexpr (C2) {
+            component_2d.color(c);
+        }
+        if constexpr (C3) {
+            component_3d.color(c);
+        }
+        return *this;
+    }
+    /*!
+     * \brief 文字色 (Viewまたは2D)
+     *
+     * Canvas2DのTextでは fillColor が文字色の代わりに使われている
+     */
+    TemporalComponent &textColor(ViewColor c)
+        requires(V || C2)
+    {
+        if constexpr (V) {
+            component_v.textColor(c);
+        }
+        if constexpr (C2) {
+            component_2d.fillColor(c);
+        }
+        return *this;
+    }
+    /*!
+     * \brief 背景色 (Viewまたは2D)
+     *
+     */
+    TemporalComponent &fillColor(ViewColor c)
+        requires(V || C2)
+    {
+        if constexpr (V) {
+            component_v.bgColor(c);
+        }
+        if constexpr (C2) {
+            component_2d.fillColor(c);
+        }
+        return *this;
+    }
+    /*!
+     * \brief 背景色 (Viewまたは2D)
+     *
+     */
+    TemporalComponent &bgColor(ViewColor c)
+        requires(V || C2)
+    {
+        return fillColor(c);
+    }
+    /*!
+     * \brief 線の太さ (2Dのみ)
+     *
+     * 文字の太さではない
+     */
+    TemporalComponent &strokeWidth(double s)
+        requires(C2)
+    {
+        if constexpr (C2) {
+            component_2d.strokeWidth(s);
+        }
+        return *this;
+    }
+    /*!
+     * \brief 文字の大きさ (2Dのみ)
+     *
+     */
+    TemporalComponent &textSize(double s)
+        requires(C2)
+    {
+        if constexpr (C2) {
+            component_2d.textSize(s);
+        }
+        return *this;
+    }
+};
+class TemporalGeometry : public TemporalComponent<false, true, true>,
+                         public Geometry {
+  public:
+    TemporalGeometry(GeometryType type, std::vector<double> &&properties)
+        : TemporalComponent(0, Canvas2DComponentType::geometry,
+                            Canvas3DComponentType::geometry),
+          Geometry(type, std::move(properties)) {
+        this->component_2d.geometry(static_cast<Geometry &>(*this));
+        this->component_3d.geometry(static_cast<Geometry &>(*this));
+    }
+};
+
+inline namespace Components {
+inline namespace Geometries {
+struct Line {
+    const Geometry &base;
+    explicit Line(const Geometry &rg) : base(rg) {
+        if (base.properties.size() != 6) {
+            throw std::invalid_argument("number of properties does not match");
+        }
+    }
+    Point begin() const {
+        return Point{base.properties[0], base.properties[1],
+                     base.properties[2]};
+    }
+    Point end() const {
+        return Point{base.properties[3], base.properties[4],
+                     base.properties[5]};
+    }
+};
+inline TemporalGeometry line(const Point &begin, const Point &end) {
+    return TemporalGeometry(GeometryType::line,
+                            {begin.pos()[0], begin.pos()[1], begin.pos()[2],
+                             end.pos()[0], end.pos()[1], end.pos()[2]});
+}
+struct Polygon {
+    const Geometry &base;
+    explicit Polygon(const Geometry &rg) : base(rg) {
+        if (base.properties.size() % 3 != 0 || size() == 0) {
+            throw std::invalid_argument("number of properties does not match");
+        }
+    }
+    std::size_t size() const { return base.properties.size() / 3; }
+    Point at(std::size_t i) const {
+        if (i >= size()) {
+            throw std::out_of_range("Polygon::at(" + std::to_string(i) +
+                                    "), size = " + std::to_string(size()));
+        }
+        return Point{base.properties[i * 3 + 0], base.properties[i * 3 + 1],
+                     base.properties[i * 3 + 2]};
+    }
+    Point operator[](std::size_t i) const { return at(i); }
+};
+inline TemporalGeometry polygon(const std::vector<Point> &points) {
+    std::vector<double> properties;
+    properties.reserve(points.size() * 3);
+    for (const auto &p : points) {
+        properties.push_back(p.pos(0));
+        properties.push_back(p.pos(1));
+        properties.push_back(p.pos(2));
+    }
+    return TemporalGeometry(GeometryType::polygon, std::move(properties));
+}
+struct Plane {
+    const Geometry &base;
+    explicit Plane(const Geometry &rg) : base(rg) {
+        if (base.properties.size() != 8) {
+            throw std::invalid_argument("number of properties does not match");
+        }
+    }
+    Transform origin() const {
+        return Transform{base.properties[0], base.properties[1],
+                         base.properties[2], base.properties[3],
+                         base.properties[4], base.properties[5]};
+    }
+    double width() const { return base.properties[6]; }
+    double height() const { return base.properties[7]; }
+    /*!
+     * todo: 3次元のplaneの場合正しくない
+     *
+     */
+    Point vertex1() const {
+        return {base.properties[0] - width() / 2,
+                base.properties[1] - height() / 2, base.properties[2]};
+    }
+    Point vertex2() const {
+        return {base.properties[0] + width() / 2,
+                base.properties[1] + height() / 2, base.properties[2]};
+    }
+};
+inline TemporalGeometry plane(const Transform &origin, double width,
+                              double height) {
+    return TemporalGeometry(GeometryType::plane,
+                            {origin.pos()[0], origin.pos()[1], origin.pos()[2],
+                             origin.rot()[0], origin.rot()[1], origin.rot()[2],
+                             width, height});
+}
+using Rect = Plane;
+inline TemporalGeometry rect(const Point &origin, double width, double height) {
+    return TemporalGeometry{GeometryType::plane,
+                            {origin.pos()[0], origin.pos()[1], origin.pos()[2],
+                             0, 0, 0, width, height}};
+}
+inline TemporalGeometry rect(const Point &p1, const Point &p2) {
+    Transform origin = identity();
+    for (int i = 0; i < 2; i++) {
+        origin.pos(i) = (p1.pos(i) + p2.pos(i)) / 2;
+    }
+    double width = std::abs(p1.pos(0) - p2.pos(0));
+    double height = std::abs(p1.pos(0) - p2.pos(0));
+    return TemporalGeometry{GeometryType::plane,
+                            {origin.pos(0), origin.pos(1), origin.pos(2),
+                             origin.rot(0), origin.rot(1), origin.rot(2), width,
+                             height}};
+}
+
+struct Box {
+    const Geometry &base;
+    explicit Box(const Geometry &rg) : base(rg) {
+        if (base.properties.size() != 6) {
+            throw std::invalid_argument("number of properties does not match");
+        }
+    }
+    Point vertex1() const {
+        return Point{base.properties[0], base.properties[1],
+                     base.properties[2]};
+    }
+    Point vertex2() const {
+        return Point{base.properties[3], base.properties[4],
+                     base.properties[5]};
+    }
+};
+inline TemporalGeometry box(const Point &vertex1, const Point &vertex2) {
+    return TemporalGeometry{GeometryType::box,
+                            {vertex1.pos()[0], vertex1.pos()[1],
+                             vertex1.pos()[2], vertex2.pos()[0],
+                             vertex2.pos()[1], vertex2.pos()[2]}};
+}
+
+struct Circle {
+    const Geometry &base;
+    explicit Circle(const Geometry &rg) : base(rg) {
+        if (base.properties.size() != 7) {
+            throw std::invalid_argument("number of properties does not match");
+        }
+    }
+    Transform origin() const {
+        return Transform{base.properties[0], base.properties[1],
+                         base.properties[2], base.properties[3],
+                         base.properties[4], base.properties[5]};
+    }
+    double radius() const { return base.properties[6]; }
+};
+inline TemporalGeometry circle(const Transform &origin, double radius) {
+    return TemporalGeometry{GeometryType::circle,
+                            {origin.pos()[0], origin.pos()[1], origin.pos()[2],
+                             origin.rot()[0], origin.rot()[1], origin.rot()[2],
+                             radius}};
+}
+inline TemporalGeometry circle(const Point &origin, double radius) {
+    return TemporalGeometry{
+        GeometryType::circle,
+        {origin.pos()[0], origin.pos()[1], origin.pos()[2], 0, 0, 0, radius}};
+}
+
+struct Cylinder {
+    const Geometry &base;
+    explicit Cylinder(const Geometry &rg) : base(rg) {
+        if (base.properties.size() != 8) {
+            throw std::invalid_argument("number of properties does not match");
+        }
+    }
+    Transform origin() const {
+        return Transform{base.properties[0], base.properties[1],
+                         base.properties[2], base.properties[3],
+                         base.properties[4], base.properties[5]};
+    }
+    double radius() const { return base.properties[6]; }
+    double length() const { return base.properties[7]; }
+};
+inline TemporalGeometry cylinder(const Transform &origin, double radius,
+                                 double length) {
+    return TemporalGeometry{GeometryType::cylinder,
+                            {origin.pos()[0], origin.pos()[1], origin.pos()[2],
+                             origin.rot()[0], origin.rot()[1], origin.rot()[2],
+                             radius, length}};
+}
+
+struct Sphere {
+    const Geometry &base;
+    explicit Sphere(const Geometry &rg) : base(rg) {
+        if (base.properties.size() != 4) {
+            throw std::invalid_argument("number of properties does not match");
+        }
+    }
+    Point origin() const {
+        return Point{base.properties[0], base.properties[1],
+                     base.properties[2]};
+    }
+    double radius() const { return base.properties[3]; }
+};
+inline TemporalGeometry sphere(const Point &origin, double radius) {
+    return TemporalGeometry{
+        GeometryType::sphere,
+        {origin.pos()[0], origin.pos()[1], origin.pos()[2], radius}};
+}
+
+
+} // namespace Geometries
+
+/*!
+ * \brief textコンポーネント
+ *
+ */
+inline TemporalComponent<true, true, false> text(std::string_view text) {
+    return TemporalComponent<true, true, false>(text);
+}
+/*!
+ * \brief textコンポーネント (wstring)
+ * \since ver2.0
+ */
+inline TemporalComponent<true, true, false> text(std::wstring_view text) {
+    return TemporalComponent<true, true, false>(text);
+}
+/*!
+ * \brief newLineコンポーネント
+ *
+ */
+inline ViewComponent newLine() {
+    return ViewComponent(ViewComponentType::new_line);
+}
+
+/*!
+ * \brief buttonコンポーネント
+ *
+ */
+template <typename T>
+inline ViewComponent button(std::string_view text, T &&func) {
+    return ViewComponent(ViewComponentType::button)
+        .text(text)
+        .onClick(std::forward<T>(func));
+}
+/*!
+ * \brief buttonコンポーネント (wstring)
+ * \since ver2.0
+ */
+template <typename T>
+inline ViewComponent button(std::wstring_view text, T &&func) {
+    return ViewComponent(ViewComponentType::button)
+        .text(text)
+        .onClick(std::forward<T>(func));
+}
+
+inline ViewComponent textInput(std::string_view text = "") {
+    return ViewComponent(ViewComponentType::text_input).text(text);
+}
+inline ViewComponent textInput(std::wstring_view text) {
+    return ViewComponent(ViewComponentType::text_input).text(text);
+}
+inline ViewComponent decimalInput(std::string_view text = "") {
+    return ViewComponent(ViewComponentType::decimal_input).text(text).init(0);
+}
+inline ViewComponent decimalInput(std::wstring_view text) {
+    return ViewComponent(ViewComponentType::decimal_input).text(text).init(0);
+}
+inline ViewComponent numberInput(std::string_view text = "") {
+    return ViewComponent(ViewComponentType::number_input).text(text).init(0);
+}
+inline ViewComponent numberInput(std::wstring_view text) {
+    return ViewComponent(ViewComponentType::number_input).text(text).init(0);
+}
+inline ViewComponent toggleInput(std::string_view text = "") {
+    return ViewComponent(ViewComponentType::toggle_input).text(text);
+}
+inline ViewComponent toggleInput(std::wstring_view text) {
+    return ViewComponent(ViewComponentType::toggle_input).text(text);
+}
+inline ViewComponent selectInput(std::string_view text = "") {
+    return ViewComponent(ViewComponentType::select_input).text(text);
+}
+inline ViewComponent selectInput(std::wstring_view text) {
+    return ViewComponent(ViewComponentType::select_input).text(text);
+}
+inline ViewComponent sliderInput(std::string_view text = "") {
+    return ViewComponent(ViewComponentType::slider_input).text(text).init(0);
+}
+inline ViewComponent sliderInput(std::wstring_view text) {
+    return ViewComponent(ViewComponentType::slider_input).text(text).init(0);
+}
+inline ViewComponent checkInput(std::string_view text = "") {
+    return ViewComponent(ViewComponentType::check_input).text(text).init(false);
+}
+inline ViewComponent checkInput(std::wstring_view text) {
+    return ViewComponent(ViewComponentType::check_input).text(text).init(false);
+}
+} // namespace Components
+namespace ViewComponents = Components;
+
+WEBCFACE_NS_END

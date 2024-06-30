@@ -1,0 +1,12 @@
+option(WEBCFACE_FIND_OPENCV "try find_package(OpenCV) (only for example)" OFF)
+
+if(WEBCFACE_FIND_OPENCV)
+    find_package(OpenCV QUIET)
+    if(OpenCV_FOUND)
+        list(APPEND WEBCFACE_SUMMARY "opencv: ${OpenCV_VERSION} found at ${OpenCV_DIR}")
+    else()
+        list(APPEND WEBCFACE_SUMMARY "opencv: not found, building without opencv")
+    endif()
+else()
+    list(APPEND WEBCFACE_SUMMARY "opencv: WEBCFACE_FIND_OPENCV not enabled, building without opencv")
+endif()
