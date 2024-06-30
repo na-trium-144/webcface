@@ -14,8 +14,15 @@ jobs:
   test-linux-clang:
     strategy:
       matrix:
-        dep: ["apt", "source", "submodule"]
-    runs-on: ubuntu-20.04
+        dep: ["apt", "submodule"]
+        clang: [13, 17]
+        include:
+        - os: ubuntu-20.04
+          clang: 13
+        - os: ubuntu-22.04
+          clang: 17
+
+    runs-on: ${{matrix.os}}
     steps:
     - uses: actions/checkout@v4
     - run: git submodule update --init
@@ -24,11 +31,11 @@ jobs:
     - name: Install dependencies
       run: |
         sudo apt-get update
-        if [ ${{matrix.dep}} = apt ]; then sudo apt-get install -y libspdlog-dev libmagick++-dev; fi
-    - name: Install clang-13
+        if [ ${{matrix.dep}} = apt ]; then sudo apt-get install -y libspdlog-dev libjpeg-dev libpng-dev libwebp-dev; fi
+    - name: Install clang
       uses: KyleMayes/install-llvm-action@v1
       with:
-        version: "13"
+        version: "${{matrix.clang}}"
     - name: Configure CMake
       env:
         CC: ${{ env.LLVM_PATH }}/bin/clang
