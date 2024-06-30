@@ -6,8 +6,6 @@
 
 WEBCFACE_NS_BEGIN
 
-template class WEBCFACE_DLL_INSTANCE_DEF IdBase<Canvas2DComponentType>;
-
 Canvas2DComponent &
 Canvas2DComponent::lockTmp(const std::weak_ptr<Internal::ClientData> &data_w,
                            const SharedString &view_name,

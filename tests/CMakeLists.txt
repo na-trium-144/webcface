@@ -25,8 +25,8 @@ target_link_libraries(webcface-test PRIVATE
     eventpp::eventpp
     spdlog-linker
     magickpp-linker
-    libcurl-linker
     crow-linker
+    libcurl-linker
 )
 target_compile_definitions(webcface-test PRIVATE
     WEBCFACE_TEST_TIMEOUT=${WEBCFACE_TEST_TIMEOUT}

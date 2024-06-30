@@ -88,15 +88,9 @@ else()
 
     include(cmake/linker.cmake)
     add_library(libcurl-linker INTERFACE)
-    get_target_property(libcurl_link_libraries libcurl_static INTERFACE_LINK_LIBRARIES)
     target_include_directories(libcurl-linker INTERFACE
         $<BUILD_INTERFACE:$<TARGET_PROPERTY:libcurl_static,INCLUDE_DIRECTORIES>>
     )
-    if(WEBCFACE_SHARED)
-        target_link_libraries(libcurl-linker INTERFACE $<BUILD_INTERFACE:${libcurl_link_libraries}>)
-    else()
-        target_link_libraries(libcurl-linker INTERFACE ${libcurl_link_libraries})
-    endif()
     target_compile_definitions(libcurl-linker INTERFACE CURL_STATICLIB)
     if(CMAKE_BUILD_TYPE STREQUAL "Debug")
         # なぜかTARGET_LINKER_FILE_BASE_NAMEすると"libcurl"になってしまう
@@ -104,10 +98,22 @@ else()
     else()
         set(libcurl-linkname curl)
     endif()
+    if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+        set(libcurl-linkname "lib${libcurl-linkname}.lib")
+    endif()
     target_static_link(libcurl-linker
         LIBRARY_DIRS $<TARGET_LINKER_FILE_DIR:libcurl_static>
         LIBRARIES ${libcurl-linkname}
     )
+    get_target_property(libcurl_link_libraries libcurl_static INTERFACE_LINK_LIBRARIES)
+    if(WEBCFACE_SHARED)
+        target_link_libraries(libcurl-linker INTERFACE $<BUILD_INTERFACE:${libcurl_link_libraries}>)
+    else()
+        target_link_libraries(libcurl-linker INTERFACE ${libcurl_link_libraries})
+    endif()
+    if(WIN32)
+        target_link_libraries(libcurl-linker INTERFACE ws2_32.lib wsock32.lib)
+    endif()
     add_dependencies(libcurl-linker libcurl_static)
 
     if(WEBCFACE_INSTALL)

@@ -1,4 +1,16 @@
 #pragma once
+
+#ifdef min
+// clang-format off
+// #pragma message("warning: Disabling macro definition of 'min' and 'max', since they conflicts in message.h.")
+// clang-format on
+#undef min
+#undef max
+#endif
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
+
 #include <msgpack.hpp>
 #include <string>
 #include <utility>

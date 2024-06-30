@@ -18,7 +18,7 @@ enum class Canvas2DComponentType {
 };
 
 #ifdef _WIN32
-extern template class WEBCFACE_DLL_INSTANCE_DECL IdBase<ComponentType>;
+extern template class WEBCFACE_DLL_INSTANCE_DECL IdBase<Canvas2DComponentType>;
 #endif
 
 /*!

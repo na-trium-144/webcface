@@ -188,11 +188,6 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     )
 endif()
 
-if(MINGW)
-    # https://stackoverflow.com/questions/10486116/what-does-this-gcc-error-relocation-truncated-to-fit-mean
-    add_link_options(-Wl,--default-image-base-low)
-endif()
-
 include_directories(${CMAKE_CURRENT_BINARY_DIR}/include)
 
 macro(set_target_postfix TARGET)
@@ -250,7 +245,7 @@ endif()
 # public: header only も含む
 target_link_libraries(webcface PUBLIC eventpp::eventpp spdlog-linker)
 if(WIN32)
-    target_link_libraries(webcface PRIVATE ws2_32.lib wsock32.lib iphlpapi.lib)
+    target_link_libraries(webcface PRIVATE iphlpapi.lib)
 endif()
 if(WEBCFACE_SHARED AND NOT WIN32)
     # webcfaceのAPI以外をexportしない。

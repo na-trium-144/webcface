@@ -9,11 +9,7 @@ template <typename TypeEnum>
 class WEBCFACE_DLL_TEMPLATE IdBase {
   protected:
     int idx_for_type_ = 0;
-    void initIdx(std::unordered_map<int, int> *idx_next, TypeEnum type) {
-        if (idx_next) {
-            idx_for_type_ = (*idx_next)[static_cast<int>(type)]++;
-        }
-    }
+    void initIdx(std::unordered_map<int, int> *idx_next, TypeEnum type);
 
   public:
     IdBase() = default;
@@ -27,10 +23,7 @@ class WEBCFACE_DLL_TEMPLATE IdBase {
      * 同じ要素には常に同じidが振られる。
      *
      */
-    std::string id() const {
-        return ".." + std::to_string(static_cast<int>(type())) + "." +
-               std::to_string(idx_for_type_);
-    }
+    std::string id() const;
 };
 
 WEBCFACE_NS_END

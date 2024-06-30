@@ -1,9 +1,19 @@
+#ifdef _WIN32
+// crowの中でincludeしているiostreamのなかでなぜかcurlがincludeされ、
+// statなどがdefineされてしまう。なぜ?
+#include <iostream>
+#ifdef stat
+#undef stat
+#endif
+#endif
+
+#include <crow.h>
+
 #include "webcface/message/message.h"
 #include <spdlog/logger.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
 #include <thread>
 #include "dummy_server.h"
-#include <crow.h>
 #include "webcface/server/unix_path.h"
 #ifdef _WIN32
 #include <fileapi.h>

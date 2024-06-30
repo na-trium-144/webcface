@@ -23,6 +23,11 @@ class WEBCFACE_DLL_TEMPLATE LogLineData {
     LogLineData(int level, std::chrono::system_clock::time_point time,
                 const SharedString &message)
         : level_(level), time_(time), message_(message) {}
+    LogLineData(const LogLineData &) = default;
+    LogLineData &operator=(const LogLineData &) = default;
+    LogLineData(LogLineData &&) = default;
+    LogLineData &operator=(LogLineData &&) = default;
+    ~LogLineData() = default;
 
     template <typename OtherCharT>
         requires(!std::same_as<CharT, OtherCharT>)
