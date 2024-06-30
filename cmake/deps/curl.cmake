@@ -88,20 +88,14 @@ else()
 
     include(cmake/linker.cmake)
     add_library(libcurl-linker INTERFACE)
+    get_target_property(libcurl_link_libraries libcurl_static INTERFACE_LINK_LIBRARIES)
+    target_include_directories(libcurl-linker INTERFACE
+        $<BUILD_INTERFACE:$<TARGET_PROPERTY:libcurl_static,INCLUDE_DIRECTORIES>>
+    )
     if(WEBCFACE_SHARED)
-        target_include_directories(libcurl-linker INTERFACE
-            $<BUILD_INTERFACE:$<TARGET_PROPERTY:libcurl_static,INCLUDE_DIRECTORIES>>
-        )
-        target_link_libraries(libcurl-linker INTERFACE
-            $<BUILD_INTERFACE:$<TARGET_PROPERTY:libcurl_static,INTERFACE_LINK_LIBRARIES>>
-        )
+        target_link_libraries(libcurl-linker INTERFACE $<BUILD_INTERFACE:${libcurl_link_libraries}>)
     else()
-        target_include_directories(libcurl-linker INTERFACE
-            $<TARGET_PROPERTY:libcurl_static,INCLUDE_DIRECTORIES>>
-        )
-        target_link_libraries(libcurl-linker INTERFACE
-            $<TARGET_PROPERTY:libcurl_static,INTERFACE_LINK_LIBRARIES>
-        )
+        target_link_libraries(libcurl-linker INTERFACE ${libcurl_link_libraries})
     endif()
     target_compile_definitions(libcurl-linker INTERFACE CURL_STATICLIB)
     if(CMAKE_BUILD_TYPE STREQUAL "Debug")
