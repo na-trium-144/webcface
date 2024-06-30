@@ -66,7 +66,7 @@ else()
     endif()
     add_library(zlib INTERFACE)
     target_static_link(zlib
-        LIBRARY_DIRS ${zlib_STATIC_LIBRARY_DIRS}
+        BUILD_LIBRARY_DIRS ${zlib_STATIC_LIBRARY_DIRS}
         LIBRARIES ${zlib_STATIC_LIBRARIES}
     )
 

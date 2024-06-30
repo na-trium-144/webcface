@@ -55,7 +55,7 @@ else()
     endforeach()
     add_library(libwebp INTERFACE)
     target_static_link(libwebp
-        LIBRARY_DIRS ${libwebp_STATIC_LIBRARY_DIRS}
+        BUILD_LIBRARY_DIRS ${libwebp_STATIC_LIBRARY_DIRS}
         # ここでlibwebpmuxなども渡すとなぜかリンクエラーになってしまう
         LIBRARIES ${libwebp_STATIC_LIBRARIES}
     )

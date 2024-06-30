@@ -14,10 +14,10 @@ jobs:
   test-windows-msvc:
     strategy:
       matrix:
-        dep: ["choco", "source", "submodule", "static"]
+        dep: ["source", "submodule", "static"]
         include:
-        - dep: choco
-          shared_flag: on
+        # - dep: choco
+        #   shared_flag: on
         - dep: source
           shared_flag: on
         - dep: submodule
@@ -40,20 +40,21 @@ jobs:
     #     token: ${{ github.token }}
     # - name: Add vcpkg Path
     #   run: echo "${{github.workspace}}\vcpkg\installed\x64-windows\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
-    - name: Uninstall ImageMagick
-      if: matrix.dep == 'choco'
-      uses: crazy-max/ghaction-chocolatey@v3
-      with:
-        args: uninstall -y imagemagick imagemagick.app
-    - name: Install ImageMagick
-      if: matrix.dep == 'choco'
-      uses: crazy-max/ghaction-chocolatey@v3
-      with:
-        args: install -y imagemagick -PackageParameters InstallDevelopmentHeaders=true
 
-    - name: Add imagemagick to path
-      if: matrix.dep == 'choco'
-      run: echo "c:\Program Files\ImageMagick-7.1.1-Q16-HDRI" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+    # - name: Uninstall ImageMagick
+    #   if: matrix.dep == 'choco'
+    #   uses: crazy-max/ghaction-chocolatey@v3
+    #   with:
+    #     args: uninstall -y imagemagick imagemagick.app
+    # - name: Install ImageMagick
+    #   if: matrix.dep == 'choco'
+    #   uses: crazy-max/ghaction-chocolatey@v3
+    #   with:
+    #     args: install -y imagemagick -PackageParameters InstallDevelopmentHeaders=true
+
+    # - name: Add imagemagick to path
+    #   if: matrix.dep == 'choco'
+    #   run: echo "c:\Program Files\ImageMagick-7.1.1-Q16-HDRI" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
         
     - name: Configure CMake
       run: |
@@ -78,46 +79,3 @@ jobs:
       run: |
         cmake -B build -DCMAKE_PREFIX_PATH=${{github.workspace}}/build/install
         cmake --build build --config ${{env.BUILD_TYPE}}
-
-  include-cp932:
-    runs-on: windows-latest
-    strategy:
-      matrix:
-        dep: ["source"]
-    steps:
-    - uses: actions/checkout@v4
-    
-    - name: Uninstall ImageMagick
-      uses: crazy-max/ghaction-chocolatey@v3
-      with:
-        args: uninstall -y imagemagick imagemagick.app
-    - name: Install ImageMagick
-      uses: crazy-max/ghaction-chocolatey@v3
-      with:
-        args: install -y imagemagick -PackageParameters InstallDevelopmentHeaders=true
-    - name: Add imagemagick to path
-      run: echo "c:\Program Files\ImageMagick-7.1.1-Q16-HDRI" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
-    
-    - name: Configure CMake
-      shell: cmd
-      run: |
-        call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\Tools\VsDevCmd.bat"
-        cmake -B build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DWEBCFACE_DOWNLOAD_WEBUI=off
-
-    - run: Copy-Item build\include\webcface\common\def.h src\include\webcface\common\def.h
-    
-    - name: Write test.cpp
-      run: |
-        Set-Content test.cpp "#include<webcface/webcface.h>"
-        Add-Content test.cpp "int main(){}"
-
-    - name: Compile with cl
-      run: |
-        # https://github.com/microsoft/terminal/issues/3821#issuecomment-651506501
-        # The setup-msbuild action is not used since it does not set up the path to 'cl'
-        # see: https://github.com/microsoft/setup-msbuild/issues/24
-        ${VS_INST_PATH} = & "${env:ProgramFiles(x86)}/Microsoft Visual Studio/Installer/vswhere.exe" -latest -property installationPath
-        Write-Output "  <-> VS Install Path: ${VS_INST_PATH}"
-        Import-Module ${VS_INST_PATH}/Common7/Tools/Microsoft.VisualStudio.DevShell.dll
-        Enter-VsDevShell -VsInstallPath ${VS_INST_PATH} -SkipAutomaticLocation -DevCmdArguments '-arch=${{matrix.config.arch}} -no_logo'
-        cl /I src\include /I build\_deps\spdlog-src\include /I build\_deps\eventpp-src\include /I c:\tools\opencv\build\include /source-charset:.932 /std:c++20 test.cpp

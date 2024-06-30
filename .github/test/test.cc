@@ -1,7 +1,4 @@
-#include <webcface/client.h>
-#include <webcface/value.h>
-#include <webcface/logger.h>
-#include <webcface/server.h>
+#include <webcface/webcface.h>
 #include "spdlog/sinks/stdout_sinks.h"
 
 int main() {

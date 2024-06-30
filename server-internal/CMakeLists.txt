@@ -17,7 +17,7 @@ if(WEBCFACE_SHARED)
     add_library(webcface-server-internal-linker INTERFACE)
     include(../cmake/linker.cmake)
     target_static_link(webcface-server-internal-linker
-        LIBRARY_DIRS $<TARGET_LINKER_FILE_DIR:webcface-server-internal>
+        BUILD_LIBRARY_DIRS $<TARGET_LINKER_FILE_DIR:webcface-server-internal>
         LIBRARIES webcface-server-internal
     )
     add_dependencies(webcface-server-internal-linker webcface-server-internal)

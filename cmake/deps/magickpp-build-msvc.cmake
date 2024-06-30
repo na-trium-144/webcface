@@ -30,8 +30,10 @@ else()
     message(FATAL_ERROR "Compiler version ${CMAKE_CXX_COMPILER_VERSION} is older than vs2017(19.10)")
 endif()
 
-if(NOT EXISTS ${imagemagick-windows_SOURCE_DIR}/IM7.StaticDLL.sln OR ${CMAKE_CURRENT_LIST_FILE} IS_NEWER_THAN ${imagemagick-windows_SOURCE_DIR}/IM7.StaticDLL.sln)
-    if(NOT EXISTS ${imagemagick-windows_SOURCE_DIR}/Configure/Configure.exe OR ${CMAKE_CURRENT_LIST_FILE} IS_NEWER_THAN ${imagemagick-windows_SOURCE_DIR}/Configure/Configure.exe)
+set(imagemagick_sln IM7.StaticDLL.${CMAKE_C_COMPILER_ARCHITECTURE_ID}.sln)
+set(imagemagick_configure Configure/Configure.exe)
+if(NOT EXISTS ${imagemagick-windows_SOURCE_DIR}/${imagemagick_sln} OR ${CMAKE_CURRENT_LIST_FILE} IS_NEWER_THAN ${imagemagick-windows_SOURCE_DIR}/${imagemagick_sln})
+    if(NOT EXISTS ${imagemagick-windows_SOURCE_DIR}/${imagemagick_configure} OR ${CMAKE_CURRENT_LIST_FILE} IS_NEWER_THAN ${imagemagick-windows_SOURCE_DIR}/${imagemagick_configure})
         message(STATUS "Fetching dependencies...")
         execute_process(
             COMMAND CloneRepositories.IM7.cmd
@@ -56,7 +58,7 @@ if(NOT EXISTS ${imagemagick-windows_SOURCE_DIR}/IM7.StaticDLL.sln OR ${CMAKE_CUR
             WORKING_DIRECTORY ${imagemagick-windows_SOURCE_DIR}/Configure
         )
     endif()
-    if(NOT EXISTS ${imagemagick-windows_SOURCE_DIR}/Configure/Configure.exe)
+    if(NOT EXISTS ${imagemagick-windows_SOURCE_DIR}/${imagemagick_configure})
         message(FATAL_ERROR "Failed to build Configure.exe for ImageMagick")
     endif()
     message(STATUS "Executing Configure...")
@@ -66,20 +68,20 @@ if(NOT EXISTS ${imagemagick-windows_SOURCE_DIR}/IM7.StaticDLL.sln OR ${CMAKE_CUR
         COMMAND ${COMMAND}
         WORKING_DIRECTORY ${imagemagick-windows_SOURCE_DIR}/Configure
     )
-    set(COMMAND ${DEVENV_COMMAND} /upgrade IM7.StaticDLL.${CMAKE_C_COMPILER_ARCHITECTURE_ID}.sln)
+    set(COMMAND ${DEVENV_COMMAND} /upgrade ${imagemagick_sln})
     message(STATUS "${COMMAND}")
     execute_process(
         COMMAND ${COMMAND}
         WORKING_DIRECTORY ${imagemagick-windows_SOURCE_DIR}
     )
 endif()
-if(NOT EXISTS ${imagemagick-windows_SOURCE_DIR}/IM7.StaticDLL.sln)
-    message(STATUS "Failed to configure ImageMagick")
+if(NOT EXISTS ${imagemagick-windows_SOURCE_DIR}/${imagemagick_sln})
+    message(FATAL_ERROR "Failed to configure ImageMagick")
 endif()
 message(STATUS "Building ImageMagick...")
 set(MAGICKPP_LIB_DIR "${imagemagick-windows_SOURCE_DIR}/Output/lib")
 if(NOT CMAKE_BUILD_TYPE STREQUAL "Debug" OR WEBCFACE_CONFIG_ALL)
-    set(COMMAND ${MSBUILD_COMMAND} IM7.StaticDLL.${CMAKE_C_COMPILER_ARCHITECTURE_ID}.sln
+    set(COMMAND ${MSBUILD_COMMAND} ${imagemagick_sln}
         /m /p:PlatformToolset=${VS_TOOLCHAIN},Configuration=Release,Platform=${CMAKE_C_COMPILER_ARCHITECTURE_ID}
     )
     message(STATUS "${COMMAND}")
@@ -99,7 +101,7 @@ if(NOT CMAKE_BUILD_TYPE STREQUAL "Debug" OR WEBCFACE_CONFIG_ALL)
     endforeach()
 endif()
 if(CMAKE_BUILD_TYPE STREQUAL "Debug" OR WEBCFACE_CONFIG_ALL)
-    set(COMMAND ${MSBUILD_COMMAND} IM7.StaticDLL.${CMAKE_C_COMPILER_ARCHITECTURE_ID}.sln
+    set(COMMAND ${MSBUILD_COMMAND} ${imagemagick_sln}
         /m /p:Configuration=Debug,Platform=${CMAKE_C_COMPILER_ARCHITECTURE_ID}
     )
     message(STATUS "${COMMAND}")

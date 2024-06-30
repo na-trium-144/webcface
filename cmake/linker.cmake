@@ -3,15 +3,18 @@ macro(target_static_link LINKER_TARGET)
     cmake_parse_arguments(LINKER
         ""
         ""
-        "LIBRARY_DIRS;LIBRARIES"
+        "BUILD_LIBRARY_DIRS;INSTALL_LIBRARY_DIRS;LIBRARIES"
         ${ARGN}
     )
-    if(NOT "${LINKER_UNPARSED_ARGUMENTS}" STREQUAL "" OR NOT "${LINKER_KEYWORDS_MISSING_VALUES}" STREQUAL "")
-        message(FATAL_ERROR "Invalid argument for target_static_link(${LINKER_TARGET}): ${LINKER_UNPARSED_ARGUMENTS} ${LINKER_KEYWORDS_MISSING_VALUES}")
+    if(NOT "${LINKER_UNPARSED_ARGUMENTS}" STREQUAL "")
+        message(FATAL_ERROR "Invalid argument for target_static_link(${LINKER_TARGET}): ${LINKER_UNPARSED_ARGUMENTS}")
     endif()
-    target_link_directories(${LINKER_TARGET} INTERFACE
-        $<BUILD_INTERFACE:${LINKER_LIBRARY_DIRS}>
-    )
+    foreach(dir IN LISTS LINKER_BUILD_LIBRARY_DIRS)
+        target_link_directories(${LINKER_TARGET} INTERFACE $<BUILD_INTERFACE:${dir}>)
+    endforeach()
+    foreach(dir IN LISTS LINKER_INSTALL_LIBRARY_DIRS)
+        target_link_directories(${LINKER_TARGET} INTERFACE $<INSTALL_INTERFACE:${dir}>)
+    endforeach()
     if(WEBCFACE_SHARED AND APPLE)
         foreach(lib IN LISTS LINKER_LIBRARIES)
             target_link_libraries(${LINKER_TARGET} INTERFACE -Wl,-hidden-l${lib})

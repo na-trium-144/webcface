@@ -102,7 +102,8 @@ else()
         set(libcurl-linkname "lib${libcurl-linkname}.lib")
     endif()
     target_static_link(libcurl-linker
-        LIBRARY_DIRS $<TARGET_LINKER_FILE_DIR:libcurl_static>
+        BUILD_LIBRARY_DIRS $<TARGET_LINKER_FILE_DIR:libcurl_static>
+        INSTALL_LIBRARY_DIRS $<TARGET_LINKER_FILE_DIR:webcface::libcurl_static>
         LIBRARIES ${libcurl-linkname}
     )
     get_target_property(libcurl_link_libraries libcurl_static INTERFACE_LINK_LIBRARIES)

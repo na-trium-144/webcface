@@ -50,7 +50,7 @@ else()
     add_library(libpng INTERFACE)
     target_link_libraries(libpng INTERFACE zlib)
     target_static_link(libpng
-        LIBRARY_DIRS ${libpng_STATIC_LIBRARY_DIRS}
+        BUILD_LIBRARY_DIRS ${libpng_STATIC_LIBRARY_DIRS}
         LIBRARIES ${libpng_STATIC_LIBRARIES}
     )
 

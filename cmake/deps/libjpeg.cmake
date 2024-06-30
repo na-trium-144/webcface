@@ -49,7 +49,7 @@ else()
     endif()
     add_library(libjpeg INTERFACE)
     target_static_link(libjpeg
-        LIBRARY_DIRS ${libjpeg_STATIC_LIBRARY_DIRS}
+        BUILD_LIBRARY_DIRS ${libjpeg_STATIC_LIBRARY_DIRS}
         LIBRARIES ${libjpeg_STATIC_LIBRARIES}
     )
 
