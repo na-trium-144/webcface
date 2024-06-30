@@ -152,7 +152,7 @@ $(document).ready(function(){initNavTree('classwebcface_1_1Value.html',''); init
 <p>実数値またはその配列の送受信データを表すクラス  
  <a href="classwebcface_1_1Value.html#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="value_8h_source.html">webcface/value.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="value_8h_source.html">/home/runner/work/webcface/webcface/client/include/webcface/value.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for Value:</div>
 <div class="dyncontent">
@@ -166,8 +166,6 @@ Collaboration diagram for Value:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:abd060664db33cb59cfcd689bf58c5870" id="r_abd060664db33cb59cfcd689bf58c5870"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Value.html#abd060664db33cb59cfcd689bf58c5870">Dict</a> = <a class="el" href="classwebcface_1_1Common_1_1Dict.html">Common::Dict</a>&lt; std::shared_ptr&lt; <a class="el" href="structwebcface_1_1Common_1_1VectorOpt.html">Common::VectorOpt</a>&lt; double &gt; &gt; &gt;</td></tr>
-<tr class="separator:abd060664db33cb59cfcd689bf58c5870"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad9bce60d8d4ae999df3ee694ade7d123" id="r_ad9bce60d8d4ae999df3ee694ade7d123"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1EventTarget.html#ad9bce60d8d4ae999df3ee694ade7d123">CallbackList</a> = eventpp::CallbackList&lt; void(<a class="el" href="classwebcface_1_1Value.html">Value</a>)&gt;</td></tr>
 <tr class="separator:ad9bce60d8d4ae999df3ee694ade7d123"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abebe577ac73b2ce77b50b953ed33c1ae" id="r_abebe577ac73b2ce77b50b953ed33c1ae"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1EventTarget.html#abebe577ac73b2ce77b50b953ed33c1ae">EventCallback</a> = std::function&lt; void(<a class="el" href="classwebcface_1_1Value.html">Value</a>)&gt;</td></tr>
@@ -206,25 +204,32 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a0b29773f317c3cde6af353302ab9df5a" id="r_a0b29773f317c3cde6af353302ab9df5a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Value.html">Value</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Value.html#a0b29773f317c3cde6af353302ab9df5a">parent</a> () const</td></tr>
 <tr class="memdesc:a0b29773f317c3cde6af353302ab9df5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">nameの最後のピリオドの前までを新しい名前とするField  <br /></td></tr>
 <tr class="separator:a0b29773f317c3cde6af353302ab9df5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afc0e03fe8ca23f56bf9822e0c566939a" id="r_afc0e03fe8ca23f56bf9822e0c566939a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Value.html">Value</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Value.html#afc0e03fe8ca23f56bf9822e0c566939a">set</a> (const <a class="el" href="classwebcface_1_1Value.html#abd060664db33cb59cfcd689bf58c5870">Dict</a> &amp;v)</td></tr>
-<tr class="memdesc:afc0e03fe8ca23f56bf9822e0c566939a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dictの値を再帰的にセットする  <br /></td></tr>
-<tr class="separator:afc0e03fe8ca23f56bf9822e0c566939a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aead1ae56fe2a505c9fb970b8a2042ea6" id="r_aead1ae56fe2a505c9fb970b8a2042ea6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Value.html">Value</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Value.html#aead1ae56fe2a505c9fb970b8a2042ea6">set</a> (const <a class="el" href="structwebcface_1_1Common_1_1VectorOpt.html">VectorOpt</a>&lt; double &gt; &amp;v)</td></tr>
-<tr class="memdesc:aead1ae56fe2a505c9fb970b8a2042ea6"><td class="mdescLeft">&#160;</td><td class="mdescRight">数値または配列をセットする  <br /></td></tr>
-<tr class="separator:aead1ae56fe2a505c9fb970b8a2042ea6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aac6aa9364de575d2b9f196a0b19180e6" id="r_aac6aa9364de575d2b9f196a0b19180e6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Value.html">Value</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Value.html#aac6aa9364de575d2b9f196a0b19180e6">set</a> (double v)</td></tr>
+<tr class="memdesc:aac6aa9364de575d2b9f196a0b19180e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">値をセットする  <br /></td></tr>
+<tr class="separator:aac6aa9364de575d2b9f196a0b19180e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a51b763c5c22b1b7713d660835ae2d5f1" id="r_a51b763c5c22b1b7713d660835ae2d5f1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Value.html">Value</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Value.html#a51b763c5c22b1b7713d660835ae2d5f1">set</a> (std::vector&lt; double &gt; &amp;&amp;v)</td></tr>
+<tr class="memdesc:a51b763c5c22b1b7713d660835ae2d5f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">vector型配列をセットする  <br /></td></tr>
+<tr class="separator:a51b763c5c22b1b7713d660835ae2d5f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0b8fc57e8250913980e44e3c12a9150a" id="r_a0b8fc57e8250913980e44e3c12a9150a"><td class="memTemplParams" colspan="2">template&lt;typename R &gt; <br />
+requires Range&lt;R&gt; &amp;&amp; std::convertible_to&lt;std::iter_value_t&lt;R&gt;, double&gt;</td></tr>
+<tr class="memitem:a0b8fc57e8250913980e44e3c12a9150a"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Value.html">Value</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Value.html#a0b8fc57e8250913980e44e3c12a9150a">set</a> (const R &amp;range)</td></tr>
+<tr class="memdesc:a0b8fc57e8250913980e44e3c12a9150a"><td class="mdescLeft">&#160;</td><td class="mdescRight">配列型の値をセットする  <br /></td></tr>
+<tr class="separator:a0b8fc57e8250913980e44e3c12a9150a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a22a13c3e0062402a62f7aa9e4730fca7" id="r_a22a13c3e0062402a62f7aa9e4730fca7"><td class="memTemplParams" colspan="2">template&lt;typename V , std::size_t N&gt; <br />
+requires std::convertible_to&lt;V, double&gt;</td></tr>
+<tr class="memitem:a22a13c3e0062402a62f7aa9e4730fca7"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Value.html">Value</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Value.html#a22a13c3e0062402a62f7aa9e4730fca7">set</a> (const V(&amp;range)[N])</td></tr>
+<tr class="memdesc:a22a13c3e0062402a62f7aa9e4730fca7"><td class="mdescLeft">&#160;</td><td class="mdescRight">生配列の値をセットする  <br /></td></tr>
+<tr class="separator:a22a13c3e0062402a62f7aa9e4730fca7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0602df9c522a6f41ac5613d488ce4d17" id="r_a0602df9c522a6f41ac5613d488ce4d17"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Value.html">Value</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Value.html#a0602df9c522a6f41ac5613d488ce4d17">resize</a> (std::size_t size)</td></tr>
 <tr class="memdesc:a0602df9c522a6f41ac5613d488ce4d17"><td class="mdescLeft">&#160;</td><td class="mdescRight">配列をセット、またはすでにsetされていればリサイズする  <br /></td></tr>
 <tr class="separator:a0602df9c522a6f41ac5613d488ce4d17"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a87cd63d0f374327d63feeec35a0fc2d9" id="r_a87cd63d0f374327d63feeec35a0fc2d9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Value.html">Value</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Value.html#a87cd63d0f374327d63feeec35a0fc2d9">push_back</a> (double v)</td></tr>
 <tr class="memdesc:a87cd63d0f374327d63feeec35a0fc2d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">値をセット、またはすでに配列がsetされていれば末尾に追加  <br /></td></tr>
 <tr class="separator:a87cd63d0f374327d63feeec35a0fc2d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aef47b295d5443d818a4bd044d4f148d7" id="r_aef47b295d5443d818a4bd044d4f148d7"><td class="memTemplParams" colspan="2">template&lt;typename  = void&gt; </td></tr>
-<tr class="memitem:aef47b295d5443d818a4bd044d4f148d7"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Value.html">Value</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Value.html#aef47b295d5443d818a4bd044d4f148d7">operator=</a> (const <a class="el" href="classwebcface_1_1Value.html#abd060664db33cb59cfcd689bf58c5870">Dict</a> &amp;v)</td></tr>
-<tr class="memdesc:aef47b295d5443d818a4bd044d4f148d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dictの値を再帰的にセットする  <br /></td></tr>
-<tr class="separator:aef47b295d5443d818a4bd044d4f148d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a90283c03a1d244be5fc9a33973a546b7" id="r_a90283c03a1d244be5fc9a33973a546b7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Value.html">Value</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Value.html#a90283c03a1d244be5fc9a33973a546b7">operator=</a> (const <a class="el" href="structwebcface_1_1Common_1_1VectorOpt.html">VectorOpt</a>&lt; double &gt; &amp;v)</td></tr>
-<tr class="memdesc:a90283c03a1d244be5fc9a33973a546b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">数値または配列をセットする  <br /></td></tr>
-<tr class="separator:a90283c03a1d244be5fc9a33973a546b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a12a6b06ef79c5530a1e3ffeb23cb9cf4" id="r_a12a6b06ef79c5530a1e3ffeb23cb9cf4"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a12a6b06ef79c5530a1e3ffeb23cb9cf4"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Value.html">Value</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Value.html#a12a6b06ef79c5530a1e3ffeb23cb9cf4">operator=</a> (T &amp;&amp;v)</td></tr>
+<tr class="memdesc:a12a6b06ef79c5530a1e3ffeb23cb9cf4"><td class="mdescLeft">&#160;</td><td class="mdescRight">数値または配列をセットする  <br /></td></tr>
+<tr class="separator:a12a6b06ef79c5530a1e3ffeb23cb9cf4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6280a6d4043b545baa5008f76a229e14" id="r_a6280a6d4043b545baa5008f76a229e14"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Value.html#a6280a6d4043b545baa5008f76a229e14">request</a> () const</td></tr>
 <tr class="memdesc:a6280a6d4043b545baa5008f76a229e14"><td class="mdescLeft">&#160;</td><td class="mdescRight">値をリクエストする  <br /></td></tr>
 <tr class="separator:a6280a6d4043b545baa5008f76a229e14"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -234,26 +239,16 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a4eaa6a34a8b08eecb3fc180c18505747" id="r_a4eaa6a34a8b08eecb3fc180c18505747"><td class="memItemLeft" align="right" valign="top">std::optional&lt; std::vector&lt; double &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Value.html#a4eaa6a34a8b08eecb3fc180c18505747">tryGetVec</a> () const</td></tr>
 <tr class="memdesc:a4eaa6a34a8b08eecb3fc180c18505747"><td class="mdescLeft">&#160;</td><td class="mdescRight">値をvectorで返す  <br /></td></tr>
 <tr class="separator:a4eaa6a34a8b08eecb3fc180c18505747"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4aa1ac007ffa4b32b2fdb89bd0151672" id="r_a4aa1ac007ffa4b32b2fdb89bd0151672"><td class="memItemLeft" align="right" valign="top">std::optional&lt; <a class="el" href="classwebcface_1_1Value.html#abd060664db33cb59cfcd689bf58c5870">Dict</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Value.html#a4aa1ac007ffa4b32b2fdb89bd0151672">tryGetRecurse</a> () const</td></tr>
-<tr class="memdesc:a4aa1ac007ffa4b32b2fdb89bd0151672"><td class="mdescLeft">&#160;</td><td class="mdescRight">値を再帰的に取得しDictで返す  <br /></td></tr>
-<tr class="separator:a4aa1ac007ffa4b32b2fdb89bd0151672"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af53ec2e557ea14cce1373e0f77954c82" id="r_af53ec2e557ea14cce1373e0f77954c82"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Value.html#af53ec2e557ea14cce1373e0f77954c82">get</a> () const</td></tr>
 <tr class="memdesc:af53ec2e557ea14cce1373e0f77954c82"><td class="mdescLeft">&#160;</td><td class="mdescRight">値を返す  <br /></td></tr>
 <tr class="separator:af53ec2e557ea14cce1373e0f77954c82"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a46b4ed2c2d37bf7c5b9c9450b88fb118" id="r_a46b4ed2c2d37bf7c5b9c9450b88fb118"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Value.html#a46b4ed2c2d37bf7c5b9c9450b88fb118">getVec</a> () const</td></tr>
 <tr class="memdesc:a46b4ed2c2d37bf7c5b9c9450b88fb118"><td class="mdescLeft">&#160;</td><td class="mdescRight">値をvectorで返す  <br /></td></tr>
 <tr class="separator:a46b4ed2c2d37bf7c5b9c9450b88fb118"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a39b3c6d827bd34c949148611f651a412" id="r_a39b3c6d827bd34c949148611f651a412"><td class="memTemplParams" colspan="2">template&lt;typename  = void&gt; </td></tr>
-<tr class="memitem:a39b3c6d827bd34c949148611f651a412"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Value.html#abd060664db33cb59cfcd689bf58c5870">Dict</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Value.html#a39b3c6d827bd34c949148611f651a412">getRecurse</a> () const</td></tr>
-<tr class="memdesc:a39b3c6d827bd34c949148611f651a412"><td class="mdescLeft">&#160;</td><td class="mdescRight">値を再帰的に取得しDictで返す  <br /></td></tr>
-<tr class="separator:a39b3c6d827bd34c949148611f651a412"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3c5a46ebe31a3699f441668931f2978e" id="r_a3c5a46ebe31a3699f441668931f2978e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Value.html#a3c5a46ebe31a3699f441668931f2978e">operator double</a> () const</td></tr>
 <tr class="separator:a3c5a46ebe31a3699f441668931f2978e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aca5e6a70f54aa3e706c8279c640b042a" id="r_aca5e6a70f54aa3e706c8279c640b042a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Value.html#aca5e6a70f54aa3e706c8279c640b042a">operator std::vector&lt; double &gt;</a> () const</td></tr>
 <tr class="separator:aca5e6a70f54aa3e706c8279c640b042a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae9cf2174e4b464421927bdfa704c66b8" id="r_ae9cf2174e4b464421927bdfa704c66b8"><td class="memTemplParams" colspan="2">template&lt;typename  = void&gt; </td></tr>
-<tr class="memitem:ae9cf2174e4b464421927bdfa704c66b8"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Value.html#ae9cf2174e4b464421927bdfa704c66b8">operator Dict</a> () const</td></tr>
-<tr class="separator:ae9cf2174e4b464421927bdfa704c66b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3799c65797b21f35329dc284df16a65d" id="r_a3799c65797b21f35329dc284df16a65d"><td class="memItemLeft" align="right" valign="top">std::chrono::system_clock::time_point&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Value.html#a3799c65797b21f35329dc284df16a65d">time</a> () const</td></tr>
 <tr class="memdesc:a3799c65797b21f35329dc284df16a65d"><td class="mdescLeft">&#160;</td><td class="mdescRight">syncの時刻を返す  <br /></td></tr>
 <tr class="separator:a3799c65797b21f35329dc284df16a65d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -428,7 +423,7 @@ Protected Member Functions</h2></td></tr>
 <tr class="separator:a0522a651826ba6fcbb9ce86258e8fa30"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab2f63920a9d0c274c8627c54d7e00d0f" id="r_ab2f63920a9d0c274c8627c54d7e00d0f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#ab2f63920a9d0c274c8627c54d7e00d0f">operator==</a> (const <a class="el" href="structwebcface_1_1Field.html">Field</a> &amp;other) const</td></tr>
 <tr class="separator:ab2f63920a9d0c274c8627c54d7e00d0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2c810e304a62d36f287f198498e5bfa9" id="r_a2c810e304a62d36f287f198498e5bfa9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Common_1_1FieldBase.html#a2c810e304a62d36f287f198498e5bfa9">operator==</a> (const <a class="el" href="structwebcface_1_1Common_1_1FieldBase.html">FieldBase</a> &amp;rhs) const</td></tr>
+<tr class="memitem:a2c810e304a62d36f287f198498e5bfa9" id="r_a2c810e304a62d36f287f198498e5bfa9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1FieldBase.html#a2c810e304a62d36f287f198498e5bfa9">operator==</a> (const <a class="el" href="structwebcface_1_1FieldBase.html">FieldBase</a> &amp;rhs) const</td></tr>
 <tr class="separator:a2c810e304a62d36f287f198498e5bfa9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a316d939aa28a27475548aafde61ec6af" id="r_a316d939aa28a27475548aafde61ec6af"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1EventTarget.html#ad9bce60d8d4ae999df3ee694ade7d123">CallbackList</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1EventTarget.html#a316d939aa28a27475548aafde61ec6af">checkCl</a> () const</td></tr>
 <tr class="separator:a316d939aa28a27475548aafde61ec6af"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -442,11 +437,12 @@ Protected Member Functions</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
 <tr class="memitem:acf420a0ba1ce5e817feac0f51c9056dc" id="r_acf420a0ba1ce5e817feac0f51c9056dc"><td class="memItemLeft" align="right" valign="top">std::weak_ptr&lt; <a class="el" href="structwebcface_1_1Internal_1_1ClientData.html">Internal::ClientData</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#acf420a0ba1ce5e817feac0f51c9056dc">data_w</a></td></tr>
+<tr class="memdesc:acf420a0ba1ce5e817feac0f51c9056dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">ClientDataの参照  <br /></td></tr>
 <tr class="separator:acf420a0ba1ce5e817feac0f51c9056dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3e22aa0aa6e9e9286fd1d3c1ea6c8a32" id="r_a3e22aa0aa6e9e9286fd1d3c1ea6c8a32"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Encoding_1_1SharedString.html">SharedString</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Common_1_1FieldBase.html#a3e22aa0aa6e9e9286fd1d3c1ea6c8a32">member_</a></td></tr>
+<tr class="memitem:a3e22aa0aa6e9e9286fd1d3c1ea6c8a32" id="r_a3e22aa0aa6e9e9286fd1d3c1ea6c8a32"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Encoding_1_1SharedString.html">SharedString</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1FieldBase.html#a3e22aa0aa6e9e9286fd1d3c1ea6c8a32">member_</a></td></tr>
 <tr class="memdesc:a3e22aa0aa6e9e9286fd1d3c1ea6c8a32"><td class="mdescLeft">&#160;</td><td class="mdescRight">メンバー名  <br /></td></tr>
 <tr class="separator:a3e22aa0aa6e9e9286fd1d3c1ea6c8a32"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac6ffd336e43abb201663ab9b064a0607" id="r_ac6ffd336e43abb201663ab9b064a0607"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Encoding_1_1SharedString.html">SharedString</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Common_1_1FieldBase.html#ac6ffd336e43abb201663ab9b064a0607">field_</a></td></tr>
+<tr class="memitem:ac6ffd336e43abb201663ab9b064a0607" id="r_ac6ffd336e43abb201663ab9b064a0607"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Encoding_1_1SharedString.html">SharedString</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1FieldBase.html#ac6ffd336e43abb201663ab9b064a0607">field_</a></td></tr>
 <tr class="memdesc:ac6ffd336e43abb201663ab9b064a0607"><td class="mdescLeft">&#160;</td><td class="mdescRight">フィールド名  <br /></td></tr>
 <tr class="separator:ac6ffd336e43abb201663ab9b064a0607"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2fca098676c92281b373b81d13709362" id="r_a2fca098676c92281b373b81d13709362"><td class="memItemLeft" align="right" valign="top">std::weak_ptr&lt; <a class="el" href="classwebcface_1_1EventTarget.html#ad9bce60d8d4ae999df3ee694ade7d123">CallbackList</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1EventTarget.html#a2fca098676c92281b373b81d13709362">cl</a></td></tr>
@@ -480,20 +476,6 @@ Private Member Functions</h2></td></tr>
 <span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
   </tr>
 </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="abd060664db33cb59cfcd689bf58c5870" name="abd060664db33cb59cfcd689bf58c5870"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abd060664db33cb59cfcd689bf58c5870">&#9670;&#160;</a></span>Dict</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="classwebcface_1_1Value.html#abd060664db33cb59cfcd689bf58c5870">Dict</a> =  <a class="el" href="classwebcface_1_1Common_1_1Dict.html">Common::Dict</a>&lt;std::shared_ptr&lt;<a class="el" href="structwebcface_1_1Common_1_1VectorOpt.html">Common::VectorOpt</a>&lt;double&gt; &gt;&gt;</td>
-        </tr>
-      </table>
 </div><div class="memdoc">
 
 </div>
@@ -1256,36 +1238,6 @@ Private Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a39b3c6d827bd34c949148611f651a412" name="a39b3c6d827bd34c949148611f651a412"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a39b3c6d827bd34c949148611f651a412">&#9670;&#160;</a></span>getRecurse()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename  = void&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classwebcface_1_1Value.html#abd060664db33cb59cfcd689bf58c5870">Dict</a> getRecurse </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>値を再帰的に取得しDictで返す </p>
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000026">Deprecated:</a></b></dt><dd>ver1.11〜 </dd></dl>
-
-</div>
-</div>
 <a id="a46b4ed2c2d37bf7c5b9c9450b88fb118" name="a46b4ed2c2d37bf7c5b9c9450b88fb118"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a46b4ed2c2d37bf7c5b9c9450b88fb118">&#9670;&#160;</a></span>getVec()</h2>
 
@@ -1742,33 +1694,6 @@ template&lt;typename  = void&gt; </div>
 
 </div>
 </div>
-<a id="ae9cf2174e4b464421927bdfa704c66b8" name="ae9cf2174e4b464421927bdfa704c66b8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae9cf2174e4b464421927bdfa704c66b8">&#9670;&#160;</a></span>operator Dict()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename  = void&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">operator <a class="el" href="classwebcface_1_1Value.html#abd060664db33cb59cfcd689bf58c5870">Dict</a> </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a id="a3c5a46ebe31a3699f441668931f2978e" name="a3c5a46ebe31a3699f441668931f2978e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3c5a46ebe31a3699f441668931f2978e">&#9670;&#160;</a></span>operator double()</h2>
 
@@ -2163,13 +2088,13 @@ template&lt;typename  = void&gt; </div>
 
 </div>
 </div>
-<a id="aef47b295d5443d818a4bd044d4f148d7" name="aef47b295d5443d818a4bd044d4f148d7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aef47b295d5443d818a4bd044d4f148d7">&#9670;&#160;</a></span>operator=() <span class="overload">[1/2]</span></h2>
+<a id="a12a6b06ef79c5530a1e3ffeb23cb9cf4" name="a12a6b06ef79c5530a1e3ffeb23cb9cf4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a12a6b06ef79c5530a1e3ffeb23cb9cf4">&#9670;&#160;</a></span>operator=()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename  = void&gt; </div>
+template&lt;typename T &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -2177,36 +2102,7 @@ template&lt;typename  = void&gt; </div>
         <tr>
           <td class="memname"><a class="el" href="classwebcface_1_1Value.html">Value</a> &amp; operator= </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classwebcface_1_1Value.html#abd060664db33cb59cfcd689bf58c5870">Dict</a> &amp;&#160;</td>
-          <td class="paramname"><em>v</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Dictの値を再帰的にセットする </p>
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000024">Deprecated:</a></b></dt><dd>ver1.11〜 </dd></dl>
-
-</div>
-</div>
-<a id="a90283c03a1d244be5fc9a33973a546b7" name="a90283c03a1d244be5fc9a33973a546b7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a90283c03a1d244be5fc9a33973a546b7">&#9670;&#160;</a></span>operator=() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classwebcface_1_1Value.html">Value</a> &amp; operator= </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="structwebcface_1_1Common_1_1VectorOpt.html">VectorOpt</a>&lt; double &gt; &amp;&#160;</td>
+          <td class="paramtype">T &amp;&amp;&#160;</td>
           <td class="paramname"><em>v</em></td><td>)</td>
           <td></td>
         </tr>
@@ -2219,7 +2115,6 @@ template&lt;typename  = void&gt; </div>
 </div><div class="memdoc">
 
 <p>数値または配列をセットする </p>
-<p>ver1.11〜 vが配列でなく、parent()の配列データが利用可能ならその要素をセットする </p>
 
 </div>
 </div>
@@ -2261,7 +2156,7 @@ template&lt;typename  = void&gt; </div>
         <tr>
           <td class="memname">bool operator== </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="structwebcface_1_1Common_1_1FieldBase.html">FieldBase</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="structwebcface_1_1FieldBase.html">FieldBase</a> &amp;&#160;</td>
           <td class="paramname"><em>rhs</em></td><td>)</td>
           <td> const</td>
         </tr>
@@ -2878,8 +2773,73 @@ requires std::same_as&lt;T, <a class="el" href="classwebcface_1_1Value.html">Val
 
 </div>
 </div>
-<a id="afc0e03fe8ca23f56bf9822e0c566939a" name="afc0e03fe8ca23f56bf9822e0c566939a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afc0e03fe8ca23f56bf9822e0c566939a">&#9670;&#160;</a></span>set() <span class="overload">[1/2]</span></h2>
+<a id="a0b8fc57e8250913980e44e3c12a9150a" name="a0b8fc57e8250913980e44e3c12a9150a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0b8fc57e8250913980e44e3c12a9150a">&#9670;&#160;</a></span>set() <span class="overload">[1/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename R &gt; <br />
+requires Range&lt;R&gt; &amp;&amp; std::convertible_to&lt;std::iter_value_t&lt;R&gt;, double&gt;</div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1Value.html">Value</a> &amp; set </td>
+          <td>(</td>
+          <td class="paramtype">const R &amp;&#160;</td>
+          <td class="paramname"><em>range</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>配列型の値をセットする </p>
+<dl class="section since"><dt>Since</dt><dd>ver1.7 (VectorOpt(std::vector&lt;T&gt;) を置き換え)</dd></dl>
+<p>appleclang14でstd::ranges::rangeが使えないのでコンセプトを自前で実装している </p>
+
+</div>
+</div>
+<a id="a22a13c3e0062402a62f7aa9e4730fca7" name="a22a13c3e0062402a62f7aa9e4730fca7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a22a13c3e0062402a62f7aa9e4730fca7">&#9670;&#160;</a></span>set() <span class="overload">[2/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename V , std::size_t N&gt; <br />
+requires std::convertible_to&lt;V, double&gt;</div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1Value.html">Value</a> &amp; set </td>
+          <td>(</td>
+          <td class="paramtype">const V(&amp;)&#160;</td>
+          <td class="paramname"><em>range</em>[N]</td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>生配列の値をセットする </p>
+<dl class="section since"><dt>Since</dt><dd>ver1.7 </dd></dl>
+
+</div>
+</div>
+<a id="aac6aa9364de575d2b9f196a0b19180e6" name="aac6aa9364de575d2b9f196a0b19180e6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aac6aa9364de575d2b9f196a0b19180e6">&#9670;&#160;</a></span>set() <span class="overload">[3/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2887,20 +2847,20 @@ requires std::same_as&lt;T, <a class="el" href="classwebcface_1_1Value.html">Val
         <tr>
           <td class="memname"><a class="el" href="classwebcface_1_1Value.html">Value</a> &amp; set </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classwebcface_1_1Value.html#abd060664db33cb59cfcd689bf58c5870">Dict</a> &amp;&#160;</td>
+          <td class="paramtype">double&#160;</td>
           <td class="paramname"><em>v</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Dictの値を再帰的にセットする </p>
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000023">Deprecated:</a></b></dt><dd>ver1.11〜 </dd></dl>
+<p>値をセットする </p>
+<p>ver1.11〜: vが配列でなく、parent()の配列データが利用可能ならその要素をセットする </p>
 
 </div>
 </div>
-<a id="aead1ae56fe2a505c9fb970b8a2042ea6" name="aead1ae56fe2a505c9fb970b8a2042ea6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aead1ae56fe2a505c9fb970b8a2042ea6">&#9670;&#160;</a></span>set() <span class="overload">[2/2]</span></h2>
+<a id="a51b763c5c22b1b7713d660835ae2d5f1" name="a51b763c5c22b1b7713d660835ae2d5f1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a51b763c5c22b1b7713d660835ae2d5f1">&#9670;&#160;</a></span>set() <span class="overload">[4/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2908,15 +2868,15 @@ requires std::same_as&lt;T, <a class="el" href="classwebcface_1_1Value.html">Val
         <tr>
           <td class="memname"><a class="el" href="classwebcface_1_1Value.html">Value</a> &amp; set </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="structwebcface_1_1Common_1_1VectorOpt.html">VectorOpt</a>&lt; double &gt; &amp;&#160;</td>
+          <td class="paramtype">std::vector&lt; double &gt; &amp;&amp;&#160;</td>
           <td class="paramname"><em>v</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>数値または配列をセットする </p>
-<p>ver1.11〜 vが配列でなく、parent()の配列データが利用可能ならその要素をセットする </p>
+<p>vector型配列をセットする </p>
+<dl class="section since"><dt>Since</dt><dd>ver2.0 (set(VectorOpt&lt;double&gt;) を置き換え) </dd></dl>
 
 </div>
 </div>
@@ -3069,7 +3029,7 @@ requires std::same_as&lt;T, <a class="el" href="classwebcface_1_1Value.html">Val
 </div><div class="memdoc">
 
 <p>syncの時刻を返す </p>
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000027">Deprecated:</a></b></dt><dd>1.7で <a class="el" href="classwebcface_1_1Member.html#aaace8ffd82d2eb79c72f3411d3311b9b" title="最後のsync()の時刻を返す">Member::syncTime()</a> に変更 </dd></dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000023">Deprecated:</a></b></dt><dd>1.7で <a class="el" href="classwebcface_1_1Member.html#aaace8ffd82d2eb79c72f3411d3311b9b" title="最後のsync()の時刻を返す">Member::syncTime()</a> に変更 </dd></dl>
 
 </div>
 </div>
@@ -3118,26 +3078,6 @@ requires std::same_as&lt;T, <a class="el" href="classwebcface_1_1Value.html">Val
 
 <p>値を返す </p>
 <p>ver1.11〜 <a class="el" href="classwebcface_1_1Value.html#a0b29773f317c3cde6af353302ab9df5a" title="nameの最後のピリオドの前までを新しい名前とするField">parent()</a>の配列データが利用可能ならその要素を返す </p>
-
-</div>
-</div>
-<a id="a4aa1ac007ffa4b32b2fdb89bd0151672" name="a4aa1ac007ffa4b32b2fdb89bd0151672"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4aa1ac007ffa4b32b2fdb89bd0151672">&#9670;&#160;</a></span>tryGetRecurse()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::optional&lt; <a class="el" href="classwebcface_1_1Value.html#abd060664db33cb59cfcd689bf58c5870">Value::Dict</a> &gt; tryGetRecurse </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>値を再帰的に取得しDictで返す </p>
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000025">Deprecated:</a></b></dt><dd>ver1.11〜 </dd></dl>
 
 </div>
 </div>
@@ -3356,7 +3296,9 @@ requires std::same_as&lt;T, <a class="el" href="classwebcface_1_1Value.html">Val
   </tr>
 </table>
 </div><div class="memdoc">
-<p>ClientDataの参照 ClientData内に保持するクラスもあるので循環参照を避けるためweak_ptr </p>
+
+<p>ClientDataの参照 </p>
+<p>ClientData内に保持するクラスもあるので循環参照を避けるためweak_ptr </p>
 
 </div>
 </div>
@@ -3410,8 +3352,8 @@ requires std::same_as&lt;T, <a class="el" href="classwebcface_1_1Value.html">Val
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>include/webcface/<a class="el" href="value_8h_source.html">value.h</a></li>
-<li>client/<a class="el" href="client_2value_8cc.html">value.cc</a></li>
+<li>/home/runner/work/webcface/webcface/client/include/webcface/<a class="el" href="value_8h_source.html">value.h</a></li>
+<li>/home/runner/work/webcface/webcface/client/src/<a class="el" href="client_2src_2value_8cc.html">value.cc</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -3419,7 +3361,7 @@ requires std::same_as&lt;T, <a class="el" href="classwebcface_1_1Value.html">Val
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="classwebcface_1_1Value.html">Value</a></li>
-    <li class="footer">Generated on Tue Jun 25 2024 18:47:45 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Sun Jun 30 2024 10:34:27 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

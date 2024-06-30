@@ -39,14 +39,14 @@ var NAVTREE =
       ] ],
       [ "Homebrew (MacOS, Linux)", "index.html#autotoc_md209", null ],
       [ "App Bundle for MacOS", "index.html#autotoc_md210", null ],
-      [ "Windows (MSVC)", "index.html#autotoc_md211", null ],
-      [ "Build from source", "index.html#autotoc_md212", [
-        [ "Requirements", "index.html#autotoc_md213", null ],
-        [ "Build (with Pure CMake)", "index.html#autotoc_md214", null ],
-        [ "Build (with colcon, ROS2)", "index.html#autotoc_md215", null ],
-        [ "WebUI", "index.html#autotoc_md216", null ],
-        [ "tools", "index.html#autotoc_md217", null ]
-      ] ]
+      [ "Windows (MSVC)", "index.html#autotoc_md211", null ]
+    ] ],
+    [ "Build from source", "index.html#autotoc_md212", [
+      [ "Requirements", "index.html#autotoc_md213", null ],
+      [ "CMake", "index.html#autotoc_md214", null ],
+      [ "Build", "index.html#autotoc_md215", null ],
+      [ "WebUI", "index.html#autotoc_md216", null ],
+      [ "tools", "index.html#autotoc_md217", null ]
     ] ],
     [ "Documentation", "index.html#autotoc_md218", null ],
     [ "License", "index.html#autotoc_md219", null ],
@@ -294,8 +294,8 @@ var NAVTREE =
         [ "log req (kind = 86)", "md_90__message.html#autotoc_md195", null ]
       ] ]
     ] ],
-    [ "Todo List", "todo.html", null ],
     [ "Deprecated List", "deprecated.html", null ],
+    [ "Todo List", "todo.html", null ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
       [ "Namespace Members", "namespacemembers.html", [
@@ -325,8 +325,9 @@ var NAVTREE =
     [ "Files", "files.html", [
       [ "File List", "files.html", "files_dup" ],
       [ "File Members", "globals.html", [
-        [ "All", "globals.html", null ],
-        [ "Functions", "globals_func.html", null ],
+        [ "All", "globals.html", "globals_dup" ],
+        [ "Functions", "globals_func.html", "globals_func" ],
+        [ "Variables", "globals_vars.html", null ],
         [ "Typedefs", "globals_type.html", null ],
         [ "Macros", "globals_defs.html", null ]
       ] ]
@@ -337,37 +338,35 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"classwebcface_1_1AnonymousFunc.html#a2ab7cc09912b8dd1ab69e918f3a11f97",
-"classwebcface_1_1AsyncFuncResult.html#af2f158972c8aa4dd1edce8c127ece18e",
-"classwebcface_1_1Canvas2DComponent.html#a2d2e8deed4a763f9294446f7636e8df8",
-"classwebcface_1_1Canvas3D.html#af9d3f679c4994ae42c92346e1dba3fb8",
-"classwebcface_1_1Client.html#ae0c465d91c1529aacb3af2f8868cab35",
-"classwebcface_1_1Common_1_1ImageFrame.html#a41c67733c8d40dea7b2395d8c5081cb9",
-"classwebcface_1_1Common_1_1SizeOption.html#a9bba23f230e7ab7feb25e837d93701af",
-"classwebcface_1_1Common_1_1ValAdaptor.html#ac91ebb8fe9956bbc1dfa3a22c9012235",
-"classwebcface_1_1Func.html#a99c1e26ea1fce7fbdbd4f1cb6771141b",
-"classwebcface_1_1FuncListener.html#af4e3ae9c11a8760127d92e61cdd9e03f",
-"classwebcface_1_1Internal_1_1Canvas2DDataBuf.html#a02fd73d861ef2e4aabb38c0c9ff82947",
-"classwebcface_1_1Internal_1_1ViewBuf.html#a13ad6d15bee6dc5a1d0c28c27f7fa3f9",
-"classwebcface_1_1Member.html#a1d89c28bd42ba9a52da008bb69367171",
-"classwebcface_1_1RobotModel.html#a891f6e5a473afa69e6dace023a87298a",
-"classwebcface_1_1Text.html#a2beeacf74102e3a61fe2094f332698df",
-"classwebcface_1_1Value.html#a5b9b4151deeb3bfaf7b7b44f2a0b4049",
-"classwebcface_1_1View.html#a806e787436bfc88228cfd93ae7d8a0b8",
-"client__ws_8h.html#a2f93b6a8d4419195deabd4ee24a0f9de",
-"func__listener_8h_source.html",
-"md_30__func.html#autotoc_md120",
-"namespacewebcface_1_1Common.html#a1b753fd9c2659910ca1a042a05b56be6a334c4a4c42fdb79d7ebc3e73b517e6f8",
-"namespacewebcface_1_1Encoding.html#afff695d48a8809ef04f048e8ccc730aa",
-"structwebcface_1_1AsyncFuncResultSetter.html#aab9d1bda10b0c1b79c4f48f3ebcf1d29",
-"structwebcface_1_1Common_1_1DictTraits_3_01std_1_1shared__ptr_3_01T_01_4_01_4.html#a9c75e410037020a27ca297a870e6f55e",
-"structwebcface_1_1Common_1_1VecTypeDisabled.html",
-"structwebcface_1_1Components_1_1Geometries_1_1Line.html#a413d86c5ceeffed9ea942a8768e25f4b",
-"structwebcface_1_1Field.html#a7f0ed33e851f794caa1bf924341fb1a9",
-"structwebcface_1_1Message_1_1Call.html#a19dc12f292cc045ff2f435de052506a7",
-"structwebcface_1_1Message_1_1Log_1_1LogLine.html#a11f50cbcfc678826d50117ffa658f911",
-"structwebcface_1_1Message_1_1SvrVersion.html",
-"structwebcface_1_1Server_1_1ServerStorage.html#aec6064f5c25334bfaa5d4f268c83daf6"
+"classMemberTest.html#a3cd7beb0e9abbb2d080edacb9bc9391c",
+"classwebcface_1_1Arg.html#a0aed672f8abc2efb3dff9708f52896a3",
+"classwebcface_1_1Canvas2D.html#a56c0ab8771726d88e63638631e11a445",
+"classwebcface_1_1Canvas3D.html#a2c810e304a62d36f287f198498e5bfa9",
+"classwebcface_1_1Client.html#a1d89c28bd42ba9a52da008bb69367171",
+"classwebcface_1_1EventTarget.html#a226ea1af8ab0d5aa6aeda2a29e0b51df",
+"classwebcface_1_1FuncListener.html#a15228fc50ac81365d3e1d5756a746519",
+"classwebcface_1_1Image.html#a806e787436bfc88228cfd93ae7d8a0b8",
+"classwebcface_1_1Internal_1_1DataSetBuffer.html#a13ad6d15bee6dc5a1d0c28c27f7fa3f9",
+"classwebcface_1_1Log.html#a46ba439f46fffe25a1fe549c380fcd3b",
+"classwebcface_1_1Member.html#a6f8a5749c0af85b6117dd2bbf61e66c3",
+"classwebcface_1_1RobotModel.html#a99c1e26ea1fce7fbdbd4f1cb6771141b",
+"classwebcface_1_1TemporalGeometry.html#a9d3be117f8601a94b88fcbe462f90c2e",
+"classwebcface_1_1Transform.html#af5e99aef593af120f66172ca1a7a7caa",
+"classwebcface_1_1Value.html#aa8fab40ead35fa8e761986d5f4000a5c",
+"classwebcface_1_1View.html#adc1d79eeb77cbaf9b4b354fef0063bdb",
+"client__test_8cc.html#a39dc4e2fb008f17ac0461e5eba7ffed8",
+"dir_8h.html",
+"globals_type.html",
+"md_90__message.html#autotoc_md164",
+"namespacewebcface.html#ab72e620a597e5f750b2c9b3391e84dedaab4f3ccba74857c5f2ba0d5b7dbf65e1",
+"namespacewebcface_1_1Server.html#aed28322feeecfdd4846624f8235d2719",
+"structwebcface_1_1AsyncFuncResultSetter.html#a6ae7a23d3e36930f42b466890bd38711",
+"structwebcface_1_1Components_1_1Geometries_1_1Line.html#a2f3d6e290fc7b8742e3144f17701f9c4",
+"structwebcface_1_1Field.html#a6ae7a23d3e36930f42b466890bd38711",
+"structwebcface_1_1Internal_1_1ClientData.html#a6c7abfff648dad193674fc432ad4840d",
+"structwebcface_1_1Message_1_1FuncInfo.html#a227b05abb1bc9f7c6a913d6a2fe7cb3b",
+"structwebcface_1_1Message_1_1Res_3_01Value_01_4.html#a96ee7b5c169962a0b98333baa6a7d56f",
+"structwebcface_1_1Server_1_1MemberData.html#a7bb470c0b02ef7660fe6bd15e036eaa5"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

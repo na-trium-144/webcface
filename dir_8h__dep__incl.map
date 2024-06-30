@@ -1,7 +1,7 @@
-<map id="server/dir.h" name="server/dir.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="82,5,177,31"/>
-<area shape="rect" id="Node000002" href="$dir_8cc.html" title=" " alt="" coords="5,79,107,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="109,42,70,80,66,77,106,38"/>
-<area shape="rect" id="Node000003" href="$websock_8cc.html" title=" " alt="" coords="131,79,274,104"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="153,38,193,77,189,80,149,42"/>
+<map id="/home/runner/work/webcface/webcface/server&#45;store/include/webcface/server/dir.h" name="/home/runner/work/webcface/webcface/server&#45;store/include/webcface/server/dir.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="133,5,355,60"/>
+<area shape="rect" id="Node000002" href="$dir_8cc.html" title=" " alt="" coords="5,115,237,155"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="203,71,146,117,143,113,199,67"/>
+<area shape="rect" id="Node000003" href="$websock_8cc.html" title=" " alt="" coords="261,108,472,163"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="288,67,336,106,333,110,285,71"/>
 </map>

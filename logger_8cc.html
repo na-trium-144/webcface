@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>WebCFace: client/logger.cc File Reference</title>
+<title>WebCFace: /home/runner/work/webcface/webcface/client/src/logger.cc File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -139,39 +139,121 @@ $(document).ready(function(){initNavTree('logger_8cc.html',''); initResizable();
 
 <div class="header">
   <div class="summary">
-<a href="#namespaces">Namespaces</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#func-members">Functions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">logger.cc File Reference</div></div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &lt;stdexcept&gt;</code><br />
 <code>#include &lt;<a class="el" href="logger_8h_source.html">webcface/logger.h</a>&gt;</code><br />
-<code>#include &quot;<a class="el" href="client__internal_8h_source.html">client_internal.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="client__internal_8h_source.html">webcface/internal/client_internal.h</a>&quot;</code><br />
 <code>#include &lt;cstdio&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for logger.cc:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="logger_8cc__incl.svg" width="5302" height="726"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="logger_8cc__incl.svg" width="4372" height="638"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
-Namespaces</h2></td></tr>
-<tr class="memitem:namespacewebcface" id="r_namespacewebcface"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface.html">webcface</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ad1aefe14b7d757acb64ba2ed500ed05d" id="r_ad1aefe14b7d757acb64ba2ed500ed05d"><td class="memTemplParams" colspan="2">template&lt;typename CharT &gt; </td></tr>
-<tr class="memitem:ad1aefe14b7d757acb64ba2ed500ed05d"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacewebcface.html#ad1aefe14b7d757acb64ba2ed500ed05d">writeLog</a> (const std::shared_ptr&lt; <a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore1.html">Internal::SyncDataStore1</a>&lt; std::shared_ptr&lt; std::vector&lt; <a class="el" href="classwebcface_1_1Common_1_1LogLineData.html">LogLineData</a>&lt;&gt; &gt; &gt; &gt; &gt; &amp;log_store, std::basic_string_view&lt; CharT &gt; message, int level=2, std::chrono::system_clock::time_point time=std::chrono::system_clock::now())</td></tr>
-<tr class="separator:ad1aefe14b7d757acb64ba2ed500ed05d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5f5636c1b7c8fb0b11ccfe98de12032c" id="r_a5f5636c1b7c8fb0b11ccfe98de12032c"><td class="memTemplParams" colspan="2">template&lt;typename CharT &gt; </td></tr>
+<tr class="memitem:a5f5636c1b7c8fb0b11ccfe98de12032c"><td class="memTemplItemLeft" align="right" valign="top">static <a class="el" href="def_8h.html#abe991b8f291782627a31118c688e123a">WEBCFACE_NS_BEGIN</a> void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="logger_8cc.html#a5f5636c1b7c8fb0b11ccfe98de12032c">writeLog</a> (const std::shared_ptr&lt; Internal::SyncDataStore1&lt; std::shared_ptr&lt; std::vector&lt; LogLineData&lt;&gt; &gt; &gt; &gt; &gt; &amp;log_store, std::basic_string_view&lt; CharT &gt; message, int level=2, std::chrono::system_clock::time_point time=std::chrono::system_clock::now())</td></tr>
+<tr class="separator:a5f5636c1b7c8fb0b11ccfe98de12032c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:a8d4eb1aec216e4eabc72b3c7d17d2a67" id="r_a8d4eb1aec216e4eabc72b3c7d17d2a67"><td class="memItemLeft" align="right" valign="top">template class <a class="el" href="def_8h.html#aff1aa24a4fbb07ca9a6ee45705929237">WEBCFACE_DLL_INSTANCE_DEF</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="logger_8cc.html#a8d4eb1aec216e4eabc72b3c7d17d2a67">BasicLoggerBuf&lt; char &gt;</a></td></tr>
+<tr class="separator:a8d4eb1aec216e4eabc72b3c7d17d2a67"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a383a701ae97fb68ea424af5b97e7d2a3" id="r_a383a701ae97fb68ea424af5b97e7d2a3"><td class="memItemLeft" align="right" valign="top">template class <a class="el" href="def_8h.html#aff1aa24a4fbb07ca9a6ee45705929237">WEBCFACE_DLL_INSTANCE_DEF</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="logger_8cc.html#a383a701ae97fb68ea424af5b97e7d2a3">BasicLoggerBuf&lt; wchar_t &gt;</a></td></tr>
+<tr class="separator:a383a701ae97fb68ea424af5b97e7d2a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Function Documentation</h2>
+<a id="a5f5636c1b7c8fb0b11ccfe98de12032c" name="a5f5636c1b7c8fb0b11ccfe98de12032c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5f5636c1b7c8fb0b11ccfe98de12032c">&#9670;&#160;</a></span>writeLog()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CharT &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="def_8h.html#abe991b8f291782627a31118c688e123a">WEBCFACE_NS_BEGIN</a> void writeLog </td>
+          <td>(</td>
+          <td class="paramtype">const std::shared_ptr&lt; Internal::SyncDataStore1&lt; std::shared_ptr&lt; std::vector&lt; LogLineData&lt;&gt; &gt; &gt; &gt; &gt; &amp;&#160;</td>
+          <td class="paramname"><em>log_store</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::basic_string_view&lt; CharT &gt;&#160;</td>
+          <td class="paramname"><em>message</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>level</em> = <code>2</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::chrono::system_clock::time_point&#160;</td>
+          <td class="paramname"><em>time</em> = <code>std::chrono::system_clock::now()</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Variable Documentation</h2>
+<a id="a8d4eb1aec216e4eabc72b3c7d17d2a67" name="a8d4eb1aec216e4eabc72b3c7d17d2a67"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8d4eb1aec216e4eabc72b3c7d17d2a67">&#9670;&#160;</a></span>BasicLoggerBuf&lt; char &gt;</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">template class <a class="el" href="def_8h.html#aff1aa24a4fbb07ca9a6ee45705929237">WEBCFACE_DLL_INSTANCE_DEF</a> BasicLoggerBuf&lt; char &gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a383a701ae97fb68ea424af5b97e7d2a3" name="a383a701ae97fb68ea424af5b97e7d2a3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a383a701ae97fb68ea424af5b97e7d2a3">&#9670;&#160;</a></span>BasicLoggerBuf&lt; wchar_t &gt;</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">template class <a class="el" href="def_8h.html#aff1aa24a4fbb07ca9a6ee45705929237">WEBCFACE_DLL_INSTANCE_DEF</a> BasicLoggerBuf&lt; wchar_t &gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_6908ff505388a07996d238c763adbdab.html">client</a></li><li class="navelem"><a class="el" href="logger_8cc.html">logger.cc</a></li>
-    <li class="footer">Generated on Tue Jun 25 2024 18:47:45 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="navelem"><a class="el" href="dir_db3a54907829b36871118d03417739cd.html">client</a></li><li class="navelem"><a class="el" href="dir_b565d458ba0ce2faccd0ea2cd60c04eb.html">src</a></li><li class="navelem"><a class="el" href="logger_8cc.html">logger.cc</a></li>
+    <li class="footer">Generated on Sun Jun 30 2024 10:34:27 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

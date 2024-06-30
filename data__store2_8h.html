@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>WebCFace: client/data_store2.h File Reference</title>
+<title>WebCFace: /home/runner/work/webcface/webcface/client/include/webcface/internal/data_store2.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -147,31 +147,27 @@ $(document).ready(function(){initNavTree('data__store2_8h.html',''); initResizab
 <div class="contents">
 <div class="textblock"><code>#include &lt;mutex&gt;</code><br />
 <code>#include &lt;unordered_map&gt;</code><br />
-<code>#include &lt;unordered_set&gt;</code><br />
-<code>#include &lt;string&gt;</code><br />
 <code>#include &lt;optional&gt;</code><br />
 <code>#include &lt;functional&gt;</code><br />
-<code>#include &lt;concepts&gt;</code><br />
 <code>#include &lt;<a class="el" href="field_8h_source.html">webcface/field.h</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="dict_8h_source.html">webcface/common/dict.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="def_8h_source.html">webcface/common/def.h</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="val_8h_source.html">webcface/common/val.h</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="common_2func_8h_source.html">webcface/common/func.h</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="common_2view_8h_source.html">webcface/common/view.h</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="common_2image_8h_source.html">webcface/common/image.h</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="common_2robot__model_8h_source.html">webcface/common/robot_model.h</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="common_2canvas3d_8h_source.html">webcface/common/canvas3d.h</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="common_2canvas2d_8h_source.html">webcface/common/canvas2d.h</a>&gt;</code><br />
-<code>#include &quot;<a class="el" href="message_8h_source.html">../message/message.h</a>&quot;</code><br />
+<code>#include &lt;<a class="el" href="encoding_2include_2webcface_2encoding_2val__adaptor_8h_source.html">webcface/encoding/val_adaptor.h</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="func__info_8h_source.html">webcface/func_info.h</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="image__frame_8h_source.html">webcface/image_frame.h</a>&gt;</code><br />
+<code>#include &quot;<a class="el" href="component__canvas2d_8h_source.html">webcface/component_canvas2d.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="component__canvas3d_8h_source.html">webcface/component_canvas3d.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="component__view_8h_source.html">webcface/component_view.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="robot__link_8h_source.html">webcface/robot_link.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="message_8h_source.html">webcface/message/message.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for data_store2.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="data__store2_8h__incl.svg" width="4164" height="638"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="data__store2_8h__incl.svg" width="3830" height="652"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="data__store2_8h__dep__incl.svg" width="2388" height="256"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="data__store2_8h__dep__incl.svg" width="7372" height="374"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 <p><a href="data__store2_8h_source.html">Go to the source code of this file.</a></p>
@@ -191,30 +187,30 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:aa77c608002e5be9330f91a2dbf5e2ac8" id="r_aa77c608002e5be9330f91a2dbf5e2ac8"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Internal.html#aa77c608002e5be9330f91a2dbf5e2ac8">ValueData</a> = std::shared_ptr&lt; <a class="el" href="structwebcface_1_1Common_1_1VectorOpt.html">VectorOpt</a>&lt; double &gt; &gt;</td></tr>
-<tr class="separator:aa77c608002e5be9330f91a2dbf5e2ac8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a112c04e1cb185887034814f635d4ac5f" id="r_a112c04e1cb185887034814f635d4ac5f"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Internal.html#a112c04e1cb185887034814f635d4ac5f">TextData</a> = std::shared_ptr&lt; <a class="el" href="classwebcface_1_1Common_1_1ValAdaptor.html">Common::ValAdaptor</a> &gt;</td></tr>
-<tr class="separator:a112c04e1cb185887034814f635d4ac5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac0d89cc32a3164abf18e9dfafcf15532" id="r_ac0d89cc32a3164abf18e9dfafcf15532"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Internal.html#ac0d89cc32a3164abf18e9dfafcf15532">FuncData</a> = std::shared_ptr&lt; <a class="el" href="structwebcface_1_1Common_1_1FuncInfo.html">FuncInfo</a> &gt;</td></tr>
+<tr class="memitem:af1d547aa847a04151e23db8aef4a0758" id="r_af1d547aa847a04151e23db8aef4a0758"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Internal.html#af1d547aa847a04151e23db8aef4a0758">ValueData</a> = std::shared_ptr&lt; std::vector&lt; double &gt; &gt;</td></tr>
+<tr class="separator:af1d547aa847a04151e23db8aef4a0758"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad4c053724407a5dff7560771e151a9b0" id="r_ad4c053724407a5dff7560771e151a9b0"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Internal.html#ad4c053724407a5dff7560771e151a9b0">TextData</a> = std::shared_ptr&lt; <a class="el" href="classwebcface_1_1ValAdaptor.html">ValAdaptor</a> &gt;</td></tr>
+<tr class="separator:ad4c053724407a5dff7560771e151a9b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac0d89cc32a3164abf18e9dfafcf15532" id="r_ac0d89cc32a3164abf18e9dfafcf15532"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Internal.html#ac0d89cc32a3164abf18e9dfafcf15532">FuncData</a> = std::shared_ptr&lt; <a class="el" href="structwebcface_1_1FuncInfo.html">FuncInfo</a> &gt;</td></tr>
 <tr class="separator:ac0d89cc32a3164abf18e9dfafcf15532"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a82ba3dfe2c2f8fdc2661559f821cc37f" id="r_a82ba3dfe2c2f8fdc2661559f821cc37f"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Internal.html#a82ba3dfe2c2f8fdc2661559f821cc37f">ViewData</a> = std::shared_ptr&lt; std::vector&lt; <a class="el" href="structwebcface_1_1Common_1_1ViewComponentBase.html">Common::ViewComponentBase</a> &gt; &gt;</td></tr>
-<tr class="separator:a82ba3dfe2c2f8fdc2661559f821cc37f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aca074f5e4bc873cc9d4a8af693fdece1" id="r_aca074f5e4bc873cc9d4a8af693fdece1"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Internal.html#aca074f5e4bc873cc9d4a8af693fdece1">RobotModelData</a> = std::shared_ptr&lt; std::vector&lt; <a class="el" href="structwebcface_1_1Common_1_1RobotLink.html">Common::RobotLink</a> &gt; &gt;</td></tr>
-<tr class="separator:aca074f5e4bc873cc9d4a8af693fdece1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4ca4d08bfc016620de495c6d2a8805cf" id="r_a4ca4d08bfc016620de495c6d2a8805cf"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Internal.html#a4ca4d08bfc016620de495c6d2a8805cf">Canvas3DData</a> = std::shared_ptr&lt; std::vector&lt; <a class="el" href="structwebcface_1_1Common_1_1Canvas3DComponentBase.html">Common::Canvas3DComponentBase</a> &gt; &gt;</td></tr>
-<tr class="separator:a4ca4d08bfc016620de495c6d2a8805cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a19bd08458eaa080b9fb782422e2f907d" id="r_a19bd08458eaa080b9fb782422e2f907d"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Internal.html#a19bd08458eaa080b9fb782422e2f907d">Canvas2DData</a> = std::shared_ptr&lt; <a class="el" href="structwebcface_1_1Common_1_1Canvas2DDataBase.html">Common::Canvas2DDataBase</a> &gt;</td></tr>
-<tr class="separator:a19bd08458eaa080b9fb782422e2f907d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8c6d0a075c8c538242b0759f1c4aa4b8" id="r_a8c6d0a075c8c538242b0759f1c4aa4b8"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Internal.html#a8c6d0a075c8c538242b0759f1c4aa4b8">ImageData</a> = <a class="el" href="namespacewebcface_1_1Common.html#ab04304b2017cf40223df2bfb82dd175e">Common::ImageBase</a></td></tr>
-<tr class="separator:a8c6d0a075c8c538242b0759f1c4aa4b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac01338cae4b904694c52c8582a282ddb" id="r_ac01338cae4b904694c52c8582a282ddb"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Internal.html#ac01338cae4b904694c52c8582a282ddb">ViewData</a> = std::shared_ptr&lt; std::vector&lt; <a class="el" href="classwebcface_1_1ViewComponent.html">ViewComponent</a> &gt; &gt;</td></tr>
+<tr class="separator:ac01338cae4b904694c52c8582a282ddb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa4a19184c5fed0f56ef6137c9e0ed5a1" id="r_aa4a19184c5fed0f56ef6137c9e0ed5a1"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Internal.html#aa4a19184c5fed0f56ef6137c9e0ed5a1">RobotModelData</a> = std::shared_ptr&lt; std::vector&lt; <a class="el" href="structwebcface_1_1RobotLink.html">RobotLink</a> &gt; &gt;</td></tr>
+<tr class="separator:aa4a19184c5fed0f56ef6137c9e0ed5a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae591d9dc11d3ac8b9841b358a94a586e" id="r_ae591d9dc11d3ac8b9841b358a94a586e"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Internal.html#ae591d9dc11d3ac8b9841b358a94a586e">Canvas3DData</a> = std::shared_ptr&lt; std::vector&lt; <a class="el" href="classwebcface_1_1Canvas3DComponent.html">Canvas3DComponent</a> &gt; &gt;</td></tr>
+<tr class="separator:ae591d9dc11d3ac8b9841b358a94a586e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a750a21c7902976b56180bf192115f744" id="r_a750a21c7902976b56180bf192115f744"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Internal.html#a750a21c7902976b56180bf192115f744">Canvas2DData</a> = std::shared_ptr&lt; <a class="el" href="structwebcface_1_1Canvas2DDataBase.html">Canvas2DDataBase</a> &gt;</td></tr>
+<tr class="separator:a750a21c7902976b56180bf192115f744"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acec0de5d5a2a408a7cf843cd3e4e2501" id="r_acec0de5d5a2a408a7cf843cd3e4e2501"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1Internal.html#acec0de5d5a2a408a7cf843cd3e4e2501">ImageData</a> = <a class="el" href="classwebcface_1_1ImageFrame.html">ImageFrame</a></td></tr>
+<tr class="separator:acec0de5d5a2a408a7cf843cd3e4e2501"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_6908ff505388a07996d238c763adbdab.html">client</a></li><li class="navelem"><a class="el" href="data__store2_8h.html">data_store2.h</a></li>
-    <li class="footer">Generated on Tue Jun 25 2024 18:47:45 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="navelem"><a class="el" href="dir_db3a54907829b36871118d03417739cd.html">client</a></li><li class="navelem"><a class="el" href="dir_5c23080e296bbe846f4ed2d01d7b595d.html">include</a></li><li class="navelem"><a class="el" href="dir_8bd58ff883f4686dab3daf23d9479d3b.html">webcface</a></li><li class="navelem"><a class="el" href="dir_96b6547db6ac3cc6aa0de0b99fd274ad.html">internal</a></li><li class="navelem"><a class="el" href="data__store2_8h.html">data_store2.h</a></li>
+    <li class="footer">Generated on Sun Jun 30 2024 10:34:27 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

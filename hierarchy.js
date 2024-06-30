@@ -1,12 +1,8 @@
 var hierarchy =
 [
     [ "AppWrapper", "classwebcfaceServerInternal_1_1AppWrapper.html", null ],
-    [ "Arg", "classwebcface_1_1Common_1_1Arg.html", [
-      [ "Arg", "structwebcface_1_1Message_1_1FuncInfo_1_1Arg.html", null ]
-    ] ],
-    [ "Arg", "classwebcface_1_1Common_1_1Arg.html", [
-      [ "Arg", "structwebcface_1_1Message_1_1FuncInfo_1_1Arg.html", null ]
-    ] ],
+    [ "Arg", "classwebcface_1_1Arg.html", null ],
+    [ "Arg", "structwebcface_1_1Message_1_1Arg.html", null ],
     [ "base_sink", null, [
       [ "LoggerSink", "classwebcface_1_1LoggerSink.html", null ]
     ] ],
@@ -16,30 +12,19 @@ var hierarchy =
     [ "Box", "structwebcface_1_1Components_1_1Geometries_1_1Box.html", null ],
     [ "Box", "structwebcface_1_1Components_1_1Geometries_1_1Box.html", null ],
     [ "Box", "structwebcface_1_1Components_1_1Geometries_1_1Box.html", null ],
-    [ "Canvas2DComponent", "structwebcface_1_1Message_1_1Canvas2D_1_1Canvas2DComponent.html", null ],
-    [ "Canvas2DComponentBase", "structwebcface_1_1Common_1_1Canvas2DComponentBase.html", [
-      [ "Canvas2DComponent", "classwebcface_1_1Canvas2DComponent.html", null ]
+    [ "Canvas2DComponent", "structwebcface_1_1Message_1_1Canvas2DComponent.html", null ],
+    [ "Canvas2DData", "structwebcface_1_1Message_1_1Canvas2DData.html", null ],
+    [ "Canvas2DDataBase", "structwebcface_1_1Canvas2DDataBase.html", null ],
+    [ "Canvas3DComponent", "classwebcface_1_1Canvas3DComponent.html", [
+      [ "RobotModel", "classwebcface_1_1RobotModel.html", null ]
     ] ],
-    [ "Canvas2DComponentBase", "structwebcface_1_1Common_1_1Canvas2DComponentBase.html", [
-      [ "Canvas2DComponent", "classwebcface_1_1Canvas2DComponent.html", null ]
-    ] ],
-    [ "Canvas2DDataBase", "structwebcface_1_1Common_1_1Canvas2DDataBase.html", null ],
-    [ "Canvas2DDataBase", "structwebcface_1_1Common_1_1Canvas2DDataBase.html", null ],
-    [ "Canvas3DComponent", "structwebcface_1_1Message_1_1Canvas3D_1_1Canvas3DComponent.html", null ],
-    [ "Canvas3DComponentBase", "structwebcface_1_1Common_1_1Canvas3DComponentBase.html", [
-      [ "Canvas3DComponent", "classwebcface_1_1Canvas3DComponent.html", [
-        [ "RobotModel", "classwebcface_1_1RobotModel.html", null ]
-      ] ]
-    ] ],
-    [ "Canvas3DComponentBase", "structwebcface_1_1Common_1_1Canvas3DComponentBase.html", [
-      [ "Canvas3DComponent", "classwebcface_1_1Canvas3DComponent.html", null ]
-    ] ],
-    [ "CharType< CharT >", "structwebcface_1_1c__wcf_1_1CharType.html", null ],
-    [ "CharType< CharT >", "structwebcface_1_1c__wcf_1_1CharType.html", null ],
-    [ "CharType< char >", "structwebcface_1_1c__wcf_1_1CharType_3_01char_01_4.html", null ],
-    [ "CharType< char >", "structwebcface_1_1c__wcf_1_1CharType_3_01char_01_4.html", null ],
-    [ "CharType< wchar_t >", "structwebcface_1_1c__wcf_1_1CharType_3_01wchar__t_01_4.html", null ],
-    [ "CharType< wchar_t >", "structwebcface_1_1c__wcf_1_1CharType_3_01wchar__t_01_4.html", null ],
+    [ "Canvas3DComponent", "structwebcface_1_1Message_1_1Canvas3DComponent.html", null ],
+    [ "CharType< CharT >", "structc__wcf_1_1CharType.html", null ],
+    [ "CharType< CharT >", "structc__wcf_1_1CharType.html", null ],
+    [ "CharType< char >", "structc__wcf_1_1CharType_3_01char_01_4.html", null ],
+    [ "CharType< char >", "structc__wcf_1_1CharType_3_01char_01_4.html", null ],
+    [ "CharType< wchar_t >", "structc__wcf_1_1CharType_3_01wchar__t_01_4.html", null ],
+    [ "CharType< wchar_t >", "structc__wcf_1_1CharType_3_01wchar__t_01_4.html", null ],
     [ "Circle", "structwebcface_1_1Components_1_1Geometries_1_1Circle.html", null ],
     [ "Circle", "structwebcface_1_1Components_1_1Geometries_1_1Circle.html", null ],
     [ "Circle", "structwebcface_1_1Components_1_1Geometries_1_1Circle.html", null ],
@@ -54,16 +39,8 @@ var hierarchy =
     [ "DataSetBuffer< ViewComponent >", "classwebcface_1_1Internal_1_1DataSetBuffer.html", [
       [ "ViewBuf", "classwebcface_1_1Internal_1_1ViewBuf.html", null ]
     ] ],
-    [ "Dict< T >", "classwebcface_1_1Common_1_1Dict.html", null ],
-    [ "Dict< T >", "classwebcface_1_1Common_1_1Dict.html", null ],
-    [ "DictElement< T >", "structwebcface_1_1Common_1_1DictElement.html", null ],
-    [ "DictElement< T >", "structwebcface_1_1Common_1_1DictElement.html", null ],
-    [ "DictTraits< T >", "structwebcface_1_1Common_1_1DictTraits.html", null ],
-    [ "DictTraits< T >", "structwebcface_1_1Common_1_1DictTraits.html", null ],
-    [ "DictTraits< std::shared_ptr< T > >", "structwebcface_1_1Common_1_1DictTraits_3_01std_1_1shared__ptr_3_01T_01_4_01_4.html", null ],
-    [ "DictTraits< std::shared_ptr< T > >", "structwebcface_1_1Common_1_1DictTraits_3_01std_1_1shared__ptr_3_01T_01_4_01_4.html", null ],
-    [ "DictTraits< VectorOpt< T > >", "structwebcface_1_1Common_1_1DictTraits_3_01VectorOpt_3_01T_01_4_01_4.html", null ],
-    [ "DictTraits< VectorOpt< T > >", "structwebcface_1_1Common_1_1DictTraits_3_01VectorOpt_3_01T_01_4_01_4.html", null ],
+    [ "DummyClient", "structDummyClient.html", null ],
+    [ "DummyServer", "structDummyServer.html", null ],
     [ "enable_shared_from_this", null, [
       [ "ClientData", "structwebcface_1_1Internal_1_1ClientData.html", null ]
     ] ],
@@ -92,7 +69,7 @@ var hierarchy =
     [ "EventTarget< View >", "classwebcface_1_1EventTarget.html", [
       [ "View", "classwebcface_1_1View.html", null ]
     ] ],
-    [ "FieldBase", "structwebcface_1_1Common_1_1FieldBase.html", [
+    [ "FieldBase", "structwebcface_1_1FieldBase.html", [
       [ "Field", "structwebcface_1_1Field.html", [
         [ "AsyncFuncResult", "classwebcface_1_1AsyncFuncResult.html", null ],
         [ "AsyncFuncResultSetter", "structwebcface_1_1AsyncFuncResultSetter.html", null ],
@@ -113,29 +90,16 @@ var hierarchy =
         [ "View", "classwebcface_1_1View.html", null ]
       ] ]
     ] ],
-    [ "FieldBase", "structwebcface_1_1Common_1_1FieldBase.html", [
-      [ "Field", "structwebcface_1_1Field.html", null ]
-    ] ],
-    [ "FuncCall", "structwebcface_1_1Common_1_1FuncCall.html", [
-      [ "Call", "structwebcface_1_1Message_1_1Call.html", null ]
-    ] ],
-    [ "FuncCall", "structwebcface_1_1Common_1_1FuncCall.html", [
-      [ "Call", "structwebcface_1_1Message_1_1Call.html", null ]
-    ] ],
+    [ "FuncCall", "structwebcface_1_1FuncCall.html", null ],
     [ "FuncCallHandle", "classwebcface_1_1FuncCallHandle.html", null ],
-    [ "FuncInfo", "structwebcface_1_1Common_1_1FuncInfo.html", null ],
-    [ "FuncInfo", "structwebcface_1_1Common_1_1FuncInfo.html", null ],
+    [ "FuncInfo", "structwebcface_1_1FuncInfo.html", null ],
     [ "FuncOnSync", "classwebcface_1_1Internal_1_1FuncOnSync.html", null ],
     [ "FuncResultStore", "classwebcface_1_1Internal_1_1FuncResultStore.html", null ],
-    [ "Geometry", null, [
+    [ "Geometry", "structwebcface_1_1Geometry.html", [
       [ "TemporalGeometry", "classwebcface_1_1TemporalGeometry.html", null ]
     ] ],
-    [ "Geometry", "structwebcface_1_1Common_1_1Geometry.html", null ],
-    [ "Geometry", "structwebcface_1_1Common_1_1Geometry.html", null ],
-    [ "Geometry2D", "structwebcface_1_1Common_1_1Geometry2D.html", null ],
-    [ "Geometry2D", "structwebcface_1_1Common_1_1Geometry2D.html", null ],
-    [ "Geometry3D", "structwebcface_1_1Common_1_1Geometry3D.html", null ],
-    [ "Geometry3D", "structwebcface_1_1Common_1_1Geometry3D.html", null ],
+    [ "Geometry2D", "structwebcface_1_1Geometry2D.html", null ],
+    [ "Geometry3D", "structwebcface_1_1Geometry3D.html", null ],
     [ "HandleData", "structwebcface_1_1FuncCallHandle_1_1HandleData.html", null ],
     [ "hash", null, [
       [ "Hash", "structwebcface_1_1Encoding_1_1SharedString_1_1Hash.html", null ]
@@ -148,15 +112,16 @@ var hierarchy =
       [ "ViewComponent", "classwebcface_1_1ViewComponent.html", null ]
     ] ],
     [ "ILogHandler", null, [
+      [ "CustomLogger", "classCustomLogger.html", null ],
       [ "CustomLogger", "classwebcface_1_1Server_1_1CustomLogger.html", null ],
       [ "CustomLogger", "classwebcfaceServerInternal_1_1CustomLogger.html", null ]
     ] ],
-    [ "ImageFrame", "classwebcface_1_1Common_1_1ImageFrame.html", null ],
-    [ "ImageFrame", "classwebcface_1_1Common_1_1ImageFrame.html", null ],
-    [ "ImageReq", "structwebcface_1_1Common_1_1ImageReq.html", [
-      [ "Req< Image >", "structwebcface_1_1Message_1_1Req_3_01Image_01_4.html", null ]
+    [ "ImageFrame", "classwebcface_1_1ImageFrame.html", null ],
+    [ "ImageFrame", "structwebcface_1_1Message_1_1ImageFrame.html", [
+      [ "Image", "structwebcface_1_1Message_1_1Image.html", null ],
+      [ "Res< Image >", "structwebcface_1_1Message_1_1Res_3_01Image_01_4.html", null ]
     ] ],
-    [ "ImageReq", "structwebcface_1_1Common_1_1ImageReq.html", [
+    [ "ImageReq", "structwebcface_1_1Message_1_1ImageReq.html", [
       [ "Req< Image >", "structwebcface_1_1Message_1_1Req_3_01Image_01_4.html", null ]
     ] ],
     [ "InputRef", "classwebcface_1_1InputRef.html", null ],
@@ -164,12 +129,8 @@ var hierarchy =
     [ "Line", "structwebcface_1_1Components_1_1Geometries_1_1Line.html", null ],
     [ "Line", "structwebcface_1_1Components_1_1Geometries_1_1Line.html", null ],
     [ "Line", "structwebcface_1_1Components_1_1Geometries_1_1Line.html", null ],
-    [ "LogLineData< CharT >", "classwebcface_1_1Common_1_1LogLineData.html", [
-      [ "LogLine", "structwebcface_1_1Message_1_1Log_1_1LogLine.html", null ]
-    ] ],
-    [ "LogLineData< CharT >", "classwebcface_1_1Common_1_1LogLineData.html", [
-      [ "LogLine", "structwebcface_1_1Message_1_1Log_1_1LogLine.html", null ]
-    ] ],
+    [ "LogLine", "structwebcface_1_1Message_1_1LogLine.html", null ],
+    [ "LogLineData< CharT >", "classwebcface_1_1LogLineData.html", null ],
     [ "MemberData", "structwebcface_1_1Server_1_1MemberData.html", null ],
     [ "MessageBase< k >", "structwebcface_1_1Message_1_1MessageBase.html", null ],
     [ "MessageBase< MessageKind::call >", "structwebcface_1_1Message_1_1MessageBase.html", [
@@ -265,24 +226,19 @@ var hierarchy =
     [ "Plane", "structwebcface_1_1Components_1_1Geometries_1_1Plane.html", null ],
     [ "Plane", "structwebcface_1_1Components_1_1Geometries_1_1Plane.html", null ],
     [ "Plane", "structwebcface_1_1Components_1_1Geometries_1_1Plane.html", null ],
-    [ "Point", "classwebcface_1_1Common_1_1Point.html", [
-      [ "Transform", "classwebcface_1_1Common_1_1Transform.html", null ]
-    ] ],
-    [ "Point", "classwebcface_1_1Common_1_1Point.html", [
-      [ "Transform", "classwebcface_1_1Common_1_1Transform.html", null ]
+    [ "Point", "classwebcface_1_1Point.html", [
+      [ "Transform", "classwebcface_1_1Transform.html", null ]
     ] ],
     [ "Polygon", "structwebcface_1_1Components_1_1Geometries_1_1Polygon.html", null ],
     [ "Polygon", "structwebcface_1_1Components_1_1Geometries_1_1Polygon.html", null ],
     [ "Polygon", "structwebcface_1_1Components_1_1Geometries_1_1Polygon.html", null ],
-    [ "Queue< T >", "classwebcface_1_1Common_1_1Queue.html", null ],
-    [ "Queue< T >", "classwebcface_1_1Common_1_1Queue.html", null ],
-    [ "Queue< std::shared_ptr< webcface::Internal::FuncOnSync > >", "classwebcface_1_1Common_1_1Queue.html", null ],
+    [ "Queue< T >", "classwebcface_1_1Queue.html", null ],
+    [ "Queue< std::shared_ptr< webcface::Internal::FuncOnSync > >", "classwebcface_1_1Queue.html", null ],
+    [ "Queue< std::string >", "classwebcface_1_1Queue.html", null ],
     [ "Res< T >", "structwebcface_1_1Message_1_1Res.html", null ],
-    [ "RobotJoint", "structwebcface_1_1Common_1_1RobotJoint.html", null ],
-    [ "RobotJoint", "structwebcface_1_1Common_1_1RobotJoint.html", null ],
-    [ "RobotLink", "structwebcface_1_1Common_1_1RobotLink.html", null ],
-    [ "RobotLink", "structwebcface_1_1Message_1_1RobotModel_1_1RobotLink.html", null ],
-    [ "RobotLink", "structwebcface_1_1Common_1_1RobotLink.html", null ],
+    [ "RobotJoint", "structwebcface_1_1RobotJoint.html", null ],
+    [ "RobotLink", "structwebcface_1_1Message_1_1RobotLink.html", null ],
+    [ "RobotLink", "structwebcface_1_1RobotLink.html", null ],
     [ "runtime_error", null, [
       [ "FuncNotFound", "structwebcface_1_1FuncNotFound.html", null ]
     ] ],
@@ -290,10 +246,8 @@ var hierarchy =
     [ "ServerStorage", "structwebcface_1_1Server_1_1ServerStorage.html", null ],
     [ "SharedString", "classwebcface_1_1Encoding_1_1SharedString.html", null ],
     [ "SharedString", "classwebcface_1_1Encoding_1_1SharedString.html", null ],
-    [ "Size", "classwebcface_1_1Common_1_1Size.html", null ],
-    [ "Size", "classwebcface_1_1Common_1_1Size.html", null ],
-    [ "SizeOption", "classwebcface_1_1Common_1_1SizeOption.html", null ],
-    [ "SizeOption", "classwebcface_1_1Common_1_1SizeOption.html", null ],
+    [ "Size", "classwebcface_1_1Size.html", null ],
+    [ "SizeOption", "classwebcface_1_1SizeOption.html", null ],
     [ "Sphere", "structwebcface_1_1Components_1_1Geometries_1_1Sphere.html", null ],
     [ "Sphere", "structwebcface_1_1Components_1_1Geometries_1_1Sphere.html", null ],
     [ "Sphere", "structwebcface_1_1Components_1_1Geometries_1_1Sphere.html", null ],
@@ -302,33 +256,41 @@ var hierarchy =
     ] ],
     [ "SyncDataStore1< T >", "classwebcface_1_1Internal_1_1SyncDataStore1.html", null ],
     [ "SyncDataStore1< std::chrono::system_clock::time_point >", "classwebcface_1_1Internal_1_1SyncDataStore1.html", null ],
+    [ "SyncDataStore1< std::string >", "classwebcface_1_1Internal_1_1SyncDataStore1.html", null ],
     [ "SyncDataStore2< T, ReqT >", "classwebcface_1_1Internal_1_1SyncDataStore2.html", null ],
     [ "SyncDataStore2< Canvas2DData >", "classwebcface_1_1Internal_1_1SyncDataStore2.html", null ],
     [ "SyncDataStore2< Canvas3DData >", "classwebcface_1_1Internal_1_1SyncDataStore2.html", null ],
     [ "SyncDataStore2< FuncData >", "classwebcface_1_1Internal_1_1SyncDataStore2.html", null ],
     [ "SyncDataStore2< RobotModelData >", "classwebcface_1_1Internal_1_1SyncDataStore2.html", null ],
+    [ "SyncDataStore2< std::string >", "classwebcface_1_1Internal_1_1SyncDataStore2.html", null ],
     [ "SyncDataStore2< TextData >", "classwebcface_1_1Internal_1_1SyncDataStore2.html", null ],
     [ "SyncDataStore2< ValueData >", "classwebcface_1_1Internal_1_1SyncDataStore2.html", null ],
     [ "SyncDataStore2< ViewData >", "classwebcface_1_1Internal_1_1SyncDataStore2.html", null ],
-    [ "SyncDataStore2< webcface::Common::ImageFrame, webcface::Common::ImageReq >", "classwebcface_1_1Internal_1_1SyncDataStore2.html", null ],
+    [ "SyncDataStore2< webcface::ImageFrame, webcface::Message::ImageReq >", "classwebcface_1_1Internal_1_1SyncDataStore2.html", null ],
     [ "TemporalComponent< V, C2, C3 >", "classwebcface_1_1TemporalComponent.html", null ],
     [ "TemporalComponent< false, true, true >", "classwebcface_1_1TemporalComponent.html", [
       [ "TemporalGeometry", "classwebcface_1_1TemporalGeometry.html", null ]
     ] ],
-    [ "ValAdaptor", "classwebcface_1_1Common_1_1ValAdaptor.html", null ],
-    [ "ValAdaptor", "classwebcface_1_1Common_1_1ValAdaptor.html", null ],
-    [ "vector", null, [
-      [ "VectorOpt< T >", "structwebcface_1_1Common_1_1VectorOpt.html", null ]
+    [ "Test", null, [
+      [ "CClientTest", "classCClientTest.html", null ],
+      [ "Canvas2DTest", "classCanvas2DTest.html", null ],
+      [ "Canvas3DTest", "classCanvas3DTest.html", null ],
+      [ "ClientTest", "classClientTest.html", null ],
+      [ "DataTest", "classDataTest.html", null ],
+      [ "FuncListenerTest", "classFuncListenerTest.html", null ],
+      [ "FuncTest", "classFuncTest.html", null ],
+      [ "ImageFrameTest", "classImageFrameTest.html", null ],
+      [ "ImageTest", "classImageTest.html", null ],
+      [ "LoggerTest", "classLoggerTest.html", null ],
+      [ "MemberTest", "classMemberTest.html", null ],
+      [ "RobotModelTest", "classRobotModelTest.html", null ],
+      [ "ServerTest", "classServerTest.html", null ],
+      [ "SyncDataStore1Test", "classSyncDataStore1Test.html", null ],
+      [ "SyncDataStore2Test", "classSyncDataStore2Test.html", null ],
+      [ "ViewTest", "classViewTest.html", null ]
     ] ],
-    [ "VecTypeDisabled", "structwebcface_1_1Common_1_1VecTypeDisabled.html", null ],
-    [ "VecTypeDisabled", "structwebcface_1_1Common_1_1VecTypeDisabled.html", null ],
-    [ "ViewComponent", "structwebcface_1_1Message_1_1View_1_1ViewComponent.html", null ],
-    [ "ViewComponentBase", "structwebcface_1_1Common_1_1ViewComponentBase.html", [
-      [ "ViewComponent", "classwebcface_1_1ViewComponent.html", null ]
-    ] ],
-    [ "ViewComponentBase", "structwebcface_1_1Common_1_1ViewComponentBase.html", [
-      [ "ViewComponent", "classwebcface_1_1ViewComponent.html", null ]
-    ] ],
+    [ "ValAdaptor", "classwebcface_1_1ValAdaptor.html", null ],
+    [ "ViewComponent", "structwebcface_1_1Message_1_1ViewComponent.html", null ],
     [ "wcfFuncCallHandle", "structwcfFuncCallHandle.html", null ],
     [ "wcfFuncCallHandleW", "structwcfFuncCallHandleW.html", null ],
     [ "wcfMultiVal", "structwcfMultiVal.html", null ],

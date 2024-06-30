@@ -1,4 +1,8 @@
 var searchData=
 [
-  ['queue_2eh_0',['queue.h',['../queue_8h.html',1,'']]]
+  ['log_2ecc_0',['log.cc',['../client_2src_2log_8cc.html',1,'(Global Namespace)'],['../examples_2log_8cc.html',1,'(Global Namespace)']]],
+  ['log_2eh_1',['log.h',['../log_8h.html',1,'']]],
+  ['logger_2ecc_2',['logger.cc',['../logger_8cc.html',1,'']]],
+  ['logger_2eh_3',['logger.h',['../logger_8h.html',1,'']]],
+  ['logger_5ftest_2ecc_4',['logger_test.cc',['../logger__test_8cc.html',1,'']]]
 ];

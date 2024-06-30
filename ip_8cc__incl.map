@@ -1,21 +1,19 @@
-<map id="server/ip.cc" name="server/ip.cc">
-<area shape="rect" id="Node000001" title=" " alt="" coords="380,5,477,31"/>
-<area shape="rect" id="Node000002" href="$ip_8h.html" title=" " alt="" coords="319,79,365,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="416,33,368,72,365,68,413,29"/>
-<area shape="rect" id="Node000009" title=" " alt="" coords="389,79,468,104"/>
-<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="431,31,431,65,426,65,426,31"/>
-<area shape="rect" id="Node000010" title=" " alt="" coords="492,79,584,104"/>
-<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="448,28,510,69,507,73,445,33"/>
-<area shape="rect" id="Node000003" href="$def_8h.html" title=" " alt="" coords="19,152,201,177"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="319,102,161,151,160,145,318,97"/>
-<area shape="rect" id="Node000005" title=" " alt="" coords="225,152,288,177"/>
-<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="330,106,283,145,279,141,327,102"/>
-<area shape="rect" id="Node000006" title=" " alt="" coords="313,152,371,177"/>
-<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="345,104,345,138,339,138,339,104"/>
-<area shape="rect" id="Node000007" title=" " alt="" coords="395,152,473,177"/>
-<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="358,102,410,141,407,146,355,106"/>
-<area shape="rect" id="Node000008" title=" " alt="" coords="497,152,619,177"/>
-<area shape="poly" id="edge7_Node000002_Node000008" title=" " alt="" coords="366,98,511,145,509,150,365,103"/>
-<area shape="rect" id="Node000004" href="$macros_8h.html" title=" " alt="" coords="5,225,215,251"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="113,178,113,212,107,212,107,178"/>
+<map id="/home/runner/work/webcface/webcface/server&#45;store/src/ip.cc" name="/home/runner/work/webcface/webcface/server&#45;store/src/ip.cc">
+<area shape="rect" id="Node000001" title=" " alt="" coords="357,5,585,45"/>
+<area shape="rect" id="Node000002" href="$ip_8h.html" title=" " alt="" coords="249,93,407,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="438,48,362,89,360,84,435,43"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="431,93,510,119"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="473,46,473,79,468,79,468,46"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="534,93,626,119"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="499,43,554,83,551,87,496,48"/>
+<area shape="rect" id="Node000003" href="$def_8h.html" title=" " alt="" coords="5,167,187,192"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="292,121,147,165,146,160,290,116"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="211,167,274,192"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="316,121,269,160,265,156,313,117"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="299,167,357,192"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="331,119,331,153,325,153,325,119"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="381,167,459,192"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="344,117,396,156,393,160,341,121"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="483,167,605,192"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="364,116,497,160,495,165,362,121"/>
 </map>

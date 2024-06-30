@@ -146,7 +146,7 @@ $(document).ready(function(){initNavTree('structwebcface_1_1Internal_1_1ClientDa
 </div><!--header-->
 <div class="contents">
 
-<p><code>#include &lt;<a class="el" href="client__internal_8h_source.html">/home/runner/work/webcface/webcface/src/client/client_internal.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="client__internal_8h_source.html">/home/runner/work/webcface/webcface/client/include/webcface/internal/client_internal.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for ClientData:</div>
 <div class="dyncontent">
@@ -155,14 +155,14 @@ Inheritance diagram for ClientData:</div>
 <div class="dynheader">
 Collaboration diagram for ClientData:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structwebcface_1_1Internal_1_1ClientData__coll__graph.svg" width="1191" height="979"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="structwebcface_1_1Internal_1_1ClientData__coll__graph.svg" width="1251" height="964"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a41d7177ed5bf105a2835275fc0c2e4ac" id="r_a41d7177ed5bf105a2835275fc0c2e4ac"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#a41d7177ed5bf105a2835275fc0c2e4ac">ClientData</a> (const <a class="el" href="classwebcface_1_1Encoding_1_1SharedString.html">SharedString</a> &amp;name, const <a class="el" href="classwebcface_1_1Encoding_1_1SharedString.html">SharedString</a> &amp;<a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#a799f0bdf95425c9fc511fedb68bbd37b">host</a>=nullptr, int <a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#a63c89c04d1feae07ca35558055155ffb">port</a>=-1)</td></tr>
 <tr class="separator:a41d7177ed5bf105a2835275fc0c2e4ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a55d582963e9e3bc398aae2d0f5a6fe8c" id="r_a55d582963e9e3bc398aae2d0f5a6fe8c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#a55d582963e9e3bc398aae2d0f5a6fe8c">isSelf</a> (const <a class="el" href="structwebcface_1_1Common_1_1FieldBase.html">FieldBase</a> &amp;base) const</td></tr>
+<tr class="memitem:a55d582963e9e3bc398aae2d0f5a6fe8c" id="r_a55d582963e9e3bc398aae2d0f5a6fe8c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#a55d582963e9e3bc398aae2d0f5a6fe8c">isSelf</a> (const <a class="el" href="structwebcface_1_1FieldBase.html">FieldBase</a> &amp;base) const</td></tr>
 <tr class="separator:a55d582963e9e3bc398aae2d0f5a6fe8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a60de64d75454385b23995437f1d72669" id="r_a60de64d75454385b23995437f1d72669"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#a60de64d75454385b23995437f1d72669">start</a> ()</td></tr>
 <tr class="memdesc:a60de64d75454385b23995437f1d72669"><td class="mdescLeft">&#160;</td><td class="mdescRight">通信関係のスレッドを開始する  <br /></td></tr>
@@ -227,30 +227,30 @@ Public Attributes</h2></td></tr>
 <tr class="separator:ad9bcffaf5d29c74433df8e8c9f7f531c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a64bebc0346ac6b3bf5ca2e2e4dab79af" id="r_a64bebc0346ac6b3bf5ca2e2e4dab79af"><td class="memItemLeft" align="right" valign="top">std::condition_variable&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#a64bebc0346ac6b3bf5ca2e2e4dab79af">connect_state_cond</a></td></tr>
 <tr class="separator:a64bebc0346ac6b3bf5ca2e2e4dab79af"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae634efd684c1b705a5fb2587f45ce235" id="r_ae634efd684c1b705a5fb2587f45ce235"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classwebcface_1_1Common_1_1Queue.html">Common::Queue</a>&lt; std::string &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#ae634efd684c1b705a5fb2587f45ce235">message_queue</a></td></tr>
-<tr class="memdesc:ae634efd684c1b705a5fb2587f45ce235"><td class="mdescLeft">&#160;</td><td class="mdescRight">送信したいメッセージを入れるキュー  <br /></td></tr>
-<tr class="separator:ae634efd684c1b705a5fb2587f45ce235"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9be199c053f68ddd0cd0ba5383a7fdbb" id="r_a9be199c053f68ddd0cd0ba5383a7fdbb"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classwebcface_1_1Queue.html">Queue</a>&lt; std::string &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#a9be199c053f68ddd0cd0ba5383a7fdbb">message_queue</a></td></tr>
+<tr class="memdesc:a9be199c053f68ddd0cd0ba5383a7fdbb"><td class="mdescLeft">&#160;</td><td class="mdescRight">送信したいメッセージを入れるキュー  <br /></td></tr>
+<tr class="separator:a9be199c053f68ddd0cd0ba5383a7fdbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa0de54f364a8b0de0eb081c1c44329ff" id="r_aa0de54f364a8b0de0eb081c1c44329ff"><td class="memItemLeft" align="right" valign="top">std::mutex&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#aa0de54f364a8b0de0eb081c1c44329ff">entry_m</a></td></tr>
 <tr class="separator:aa0de54f364a8b0de0eb081c1c44329ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5a8d2a0a890f0601f5e5fa259940e9cb" id="r_a5a8d2a0a890f0601f5e5fa259940e9cb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacewebcface_1_1Encoding.html#a2cce793d23704d7099f3befdd5203f2e">StrSet1</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#a5a8d2a0a890f0601f5e5fa259940e9cb">member_entry</a></td></tr>
 <tr class="separator:a5a8d2a0a890f0601f5e5fa259940e9cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adfcd5d2cf6cd85f495ad76f69542d1ff" id="r_adfcd5d2cf6cd85f495ad76f69542d1ff"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore2.html">SyncDataStore2</a>&lt; <a class="el" href="namespacewebcface_1_1Internal.html#aa77c608002e5be9330f91a2dbf5e2ac8">ValueData</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#adfcd5d2cf6cd85f495ad76f69542d1ff">value_store</a></td></tr>
+<tr class="memitem:adfcd5d2cf6cd85f495ad76f69542d1ff" id="r_adfcd5d2cf6cd85f495ad76f69542d1ff"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore2.html">SyncDataStore2</a>&lt; <a class="el" href="namespacewebcface_1_1Internal.html#af1d547aa847a04151e23db8aef4a0758">ValueData</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#adfcd5d2cf6cd85f495ad76f69542d1ff">value_store</a></td></tr>
 <tr class="separator:adfcd5d2cf6cd85f495ad76f69542d1ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8e8a141c945e2a27fd5de3aac8738fd9" id="r_a8e8a141c945e2a27fd5de3aac8738fd9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore2.html">SyncDataStore2</a>&lt; <a class="el" href="namespacewebcface_1_1Internal.html#a112c04e1cb185887034814f635d4ac5f">TextData</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#a8e8a141c945e2a27fd5de3aac8738fd9">text_store</a></td></tr>
+<tr class="memitem:a8e8a141c945e2a27fd5de3aac8738fd9" id="r_a8e8a141c945e2a27fd5de3aac8738fd9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore2.html">SyncDataStore2</a>&lt; <a class="el" href="namespacewebcface_1_1Internal.html#ad4c053724407a5dff7560771e151a9b0">TextData</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#a8e8a141c945e2a27fd5de3aac8738fd9">text_store</a></td></tr>
 <tr class="separator:a8e8a141c945e2a27fd5de3aac8738fd9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab2174459e01f585ba92cb06be2b27bbf" id="r_ab2174459e01f585ba92cb06be2b27bbf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore2.html">SyncDataStore2</a>&lt; <a class="el" href="namespacewebcface_1_1Internal.html#ac0d89cc32a3164abf18e9dfafcf15532">FuncData</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#ab2174459e01f585ba92cb06be2b27bbf">func_store</a></td></tr>
 <tr class="separator:ab2174459e01f585ba92cb06be2b27bbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a46328f067d5ff78cb779ea146511ca15" id="r_a46328f067d5ff78cb779ea146511ca15"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore2.html">SyncDataStore2</a>&lt; <a class="el" href="namespacewebcface_1_1Internal.html#a82ba3dfe2c2f8fdc2661559f821cc37f">ViewData</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#a46328f067d5ff78cb779ea146511ca15">view_store</a></td></tr>
+<tr class="memitem:a46328f067d5ff78cb779ea146511ca15" id="r_a46328f067d5ff78cb779ea146511ca15"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore2.html">SyncDataStore2</a>&lt; <a class="el" href="namespacewebcface_1_1Internal.html#ac01338cae4b904694c52c8582a282ddb">ViewData</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#a46328f067d5ff78cb779ea146511ca15">view_store</a></td></tr>
 <tr class="separator:a46328f067d5ff78cb779ea146511ca15"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a048a25f5c198943e1e42ad9c3cedc167" id="r_a048a25f5c198943e1e42ad9c3cedc167"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore2.html">SyncDataStore2</a>&lt; <a class="el" href="namespacewebcface_1_1Internal.html#a8c6d0a075c8c538242b0759f1c4aa4b8">ImageData</a>, <a class="el" href="structwebcface_1_1Common_1_1ImageReq.html">Common::ImageReq</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#a048a25f5c198943e1e42ad9c3cedc167">image_store</a></td></tr>
-<tr class="separator:a048a25f5c198943e1e42ad9c3cedc167"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4cfd52af02318809060a55f4938acda5" id="r_a4cfd52af02318809060a55f4938acda5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore2.html">SyncDataStore2</a>&lt; <a class="el" href="namespacewebcface_1_1Internal.html#aca074f5e4bc873cc9d4a8af693fdece1">RobotModelData</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#a4cfd52af02318809060a55f4938acda5">robot_model_store</a></td></tr>
+<tr class="memitem:a30257c604c7ad652577caee2627971ae" id="r_a30257c604c7ad652577caee2627971ae"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore2.html">SyncDataStore2</a>&lt; <a class="el" href="namespacewebcface_1_1Internal.html#acec0de5d5a2a408a7cf843cd3e4e2501">ImageData</a>, <a class="el" href="structwebcface_1_1Message_1_1ImageReq.html">Message::ImageReq</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#a30257c604c7ad652577caee2627971ae">image_store</a></td></tr>
+<tr class="separator:a30257c604c7ad652577caee2627971ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4cfd52af02318809060a55f4938acda5" id="r_a4cfd52af02318809060a55f4938acda5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore2.html">SyncDataStore2</a>&lt; <a class="el" href="namespacewebcface_1_1Internal.html#aa4a19184c5fed0f56ef6137c9e0ed5a1">RobotModelData</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#a4cfd52af02318809060a55f4938acda5">robot_model_store</a></td></tr>
 <tr class="separator:a4cfd52af02318809060a55f4938acda5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad0de56fbaff139cea691320a9960bc39" id="r_ad0de56fbaff139cea691320a9960bc39"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore2.html">SyncDataStore2</a>&lt; <a class="el" href="namespacewebcface_1_1Internal.html#a4ca4d08bfc016620de495c6d2a8805cf">Canvas3DData</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#ad0de56fbaff139cea691320a9960bc39">canvas3d_store</a></td></tr>
+<tr class="memitem:ad0de56fbaff139cea691320a9960bc39" id="r_ad0de56fbaff139cea691320a9960bc39"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore2.html">SyncDataStore2</a>&lt; <a class="el" href="namespacewebcface_1_1Internal.html#ae591d9dc11d3ac8b9841b358a94a586e">Canvas3DData</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#ad0de56fbaff139cea691320a9960bc39">canvas3d_store</a></td></tr>
 <tr class="separator:ad0de56fbaff139cea691320a9960bc39"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adce4184a0e3ff9412539abb9cfcdd12b" id="r_adce4184a0e3ff9412539abb9cfcdd12b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore2.html">SyncDataStore2</a>&lt; <a class="el" href="namespacewebcface_1_1Internal.html#a19bd08458eaa080b9fb782422e2f907d">Canvas2DData</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#adce4184a0e3ff9412539abb9cfcdd12b">canvas2d_store</a></td></tr>
+<tr class="memitem:adce4184a0e3ff9412539abb9cfcdd12b" id="r_adce4184a0e3ff9412539abb9cfcdd12b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore2.html">SyncDataStore2</a>&lt; <a class="el" href="namespacewebcface_1_1Internal.html#a750a21c7902976b56180bf192115f744">Canvas2DData</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#adce4184a0e3ff9412539abb9cfcdd12b">canvas2d_store</a></td></tr>
 <tr class="separator:adce4184a0e3ff9412539abb9cfcdd12b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6257306c728cba74544106f7962b2ba6" id="r_a6257306c728cba74544106f7962b2ba6"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore1.html">SyncDataStore1</a>&lt; std::shared_ptr&lt; std::vector&lt; <a class="el" href="classwebcface_1_1Common_1_1LogLineData.html">LogLineData</a>&lt;&gt; &gt; &gt; &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#a6257306c728cba74544106f7962b2ba6">log_store</a></td></tr>
+<tr class="memitem:a6257306c728cba74544106f7962b2ba6" id="r_a6257306c728cba74544106f7962b2ba6"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore1.html">SyncDataStore1</a>&lt; std::shared_ptr&lt; std::vector&lt; <a class="el" href="classwebcface_1_1LogLineData.html">LogLineData</a>&lt;&gt; &gt; &gt; &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#a6257306c728cba74544106f7962b2ba6">log_store</a></td></tr>
 <tr class="separator:a6257306c728cba74544106f7962b2ba6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa89dd080f4853bbd8e89ea4815256cce" id="r_aa89dd080f4853bbd8e89ea4815256cce"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore1.html">SyncDataStore1</a>&lt; std::chrono::system_clock::time_point &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#aa89dd080f4853bbd8e89ea4815256cce">sync_time_store</a></td></tr>
 <tr class="separator:aa89dd080f4853bbd8e89ea4815256cce"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -258,9 +258,9 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a00f818e1a82882952d07c59cb3557b2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aba7df97e7d2aed6c1dfce7eef73001e2" id="r_aba7df97e7d2aed6c1dfce7eef73001e2"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#aba7df97e7d2aed6c1dfce7eef73001e2">log_sent_lines</a> = 0</td></tr>
 <tr class="separator:aba7df97e7d2aed6c1dfce7eef73001e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3e7cc00e83911538a89735b7600dd07c" id="r_a3e7cc00e83911538a89735b7600dd07c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacewebcface_1_1Encoding.html#a56d3269e324a6f481ed288a48e48c759">StrMap1</a>&lt; <a class="el" href="classwebcface_1_1Common_1_1Queue.html">Common::Queue</a>&lt; <a class="el" href="classwebcface_1_1FuncCallHandle.html">FuncCallHandle</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#a3e7cc00e83911538a89735b7600dd07c">func_listener_handlers</a></td></tr>
-<tr class="memdesc:a3e7cc00e83911538a89735b7600dd07c"><td class="mdescLeft">&#160;</td><td class="mdescRight">listenerがfetchするの待ちの関数呼び出しをためておく  <br /></td></tr>
-<tr class="separator:a3e7cc00e83911538a89735b7600dd07c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afae3e6fe36d2deca2716a78c3aa98f6b" id="r_afae3e6fe36d2deca2716a78c3aa98f6b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacewebcface_1_1Encoding.html#a56d3269e324a6f481ed288a48e48c759">StrMap1</a>&lt; <a class="el" href="classwebcface_1_1Queue.html">Queue</a>&lt; <a class="el" href="classwebcface_1_1FuncCallHandle.html">FuncCallHandle</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#afae3e6fe36d2deca2716a78c3aa98f6b">func_listener_handlers</a></td></tr>
+<tr class="memdesc:afae3e6fe36d2deca2716a78c3aa98f6b"><td class="mdescLeft">&#160;</td><td class="mdescRight">listenerがfetchするの待ちの関数呼び出しをためておく  <br /></td></tr>
+<tr class="separator:afae3e6fe36d2deca2716a78c3aa98f6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a69080ede63f053a5ae7c4ed0c359a421" id="r_a69080ede63f053a5ae7c4ed0c359a421"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacewebcface_1_1Encoding.html#a56d3269e324a6f481ed288a48e48c759">StrMap1</a>&lt; unsigned int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#a69080ede63f053a5ae7c4ed0c359a421">member_ids</a></td></tr>
 <tr class="separator:a69080ede63f053a5ae7c4ed0c359a421"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a033268534fb70c182c9279306d8b2329" id="r_a033268534fb70c182c9279306d8b2329"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; unsigned int, std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#a033268534fb70c182c9279306d8b2329">member_lib_name</a></td></tr>
@@ -310,10 +310,10 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a5fdd23ff517cca4ee2fbc413650dffb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ace2d872b42467d0bb44c0185dab26b20" id="r_ace2d872b42467d0bb44c0185dab26b20"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacewebcface_1_1Encoding.html#a56d3269e324a6f481ed288a48e48c759">StrMap1</a>&lt; std::shared_ptr&lt; eventpp::CallbackList&lt; void(<a class="el" href="classwebcface_1_1Canvas2D.html">Canvas2D</a>)&gt; &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#ace2d872b42467d0bb44c0185dab26b20">canvas2d_entry_event</a></td></tr>
 <tr class="separator:ace2d872b42467d0bb44c0185dab26b20"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a42215014610973eb53bbbcc9d435d887" id="r_a42215014610973eb53bbbcc9d435d887"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Common_1_1Queue.html">Common::Queue</a>&lt; std::shared_ptr&lt; <a class="el" href="classwebcface_1_1Internal_1_1FuncOnSync.html">FuncOnSync</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#a42215014610973eb53bbbcc9d435d887">func_sync_queue</a></td></tr>
-<tr class="memdesc:a42215014610973eb53bbbcc9d435d887"><td class="mdescLeft">&#160;</td><td class="mdescRight">sync()のタイミングで実行を同期する関数のcondition_variable  <br /></td></tr>
-<tr class="separator:a42215014610973eb53bbbcc9d435d887"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a16b1a4633690c8ffc0e408ed79ffac23" id="r_a16b1a4633690c8ffc0e408ed79ffac23"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacewebcface_1_1Common.html#a1f914f5d15fb32aa05ca882cff7f2cd4">FuncWrapperType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#a16b1a4633690c8ffc0e408ed79ffac23">default_func_wrapper</a></td></tr>
+<tr class="memitem:a9412169a3a2949d6e78557acf1fa7dc5" id="r_a9412169a3a2949d6e78557acf1fa7dc5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Queue.html">Queue</a>&lt; std::shared_ptr&lt; <a class="el" href="classwebcface_1_1Internal_1_1FuncOnSync.html">FuncOnSync</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#a9412169a3a2949d6e78557acf1fa7dc5">func_sync_queue</a></td></tr>
+<tr class="memdesc:a9412169a3a2949d6e78557acf1fa7dc5"><td class="mdescLeft">&#160;</td><td class="mdescRight">sync()のタイミングで実行を同期する関数のcondition_variable  <br /></td></tr>
+<tr class="separator:a9412169a3a2949d6e78557acf1fa7dc5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a16b1a4633690c8ffc0e408ed79ffac23" id="r_a16b1a4633690c8ffc0e408ed79ffac23"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacewebcface.html#a1f914f5d15fb32aa05ca882cff7f2cd4">FuncWrapperType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#a16b1a4633690c8ffc0e408ed79ffac23">default_func_wrapper</a></td></tr>
 <tr class="separator:a16b1a4633690c8ffc0e408ed79ffac23"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa89ac4e0d1c136a997c3688a29577679" id="r_aa89ac4e0d1c136a997c3688a29577679"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classwebcface_1_1LoggerSink.html">LoggerSink</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html#aa89ac4e0d1c136a997c3688a29577679">logger_sink</a></td></tr>
 <tr class="separator:aa89ac4e0d1c136a997c3688a29577679"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -446,7 +446,7 @@ Public Attributes</h2></td></tr>
         <tr>
           <td class="memname">bool isSelf </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="structwebcface_1_1Common_1_1FieldBase.html">FieldBase</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="structwebcface_1_1FieldBase.html">FieldBase</a> &amp;&#160;</td>
           <td class="paramname"><em>base</em></td><td>)</td>
           <td> const</td>
         </tr>
@@ -669,7 +669,7 @@ Public Attributes</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore2.html">SyncDataStore2</a>&lt;<a class="el" href="namespacewebcface_1_1Internal.html#a19bd08458eaa080b9fb782422e2f907d">Canvas2DData</a>&gt; canvas2d_store</td>
+          <td class="memname"><a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore2.html">SyncDataStore2</a>&lt;<a class="el" href="namespacewebcface_1_1Internal.html#a750a21c7902976b56180bf192115f744">Canvas2DData</a>&gt; canvas2d_store</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -711,7 +711,7 @@ Public Attributes</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore2.html">SyncDataStore2</a>&lt;<a class="el" href="namespacewebcface_1_1Internal.html#a4ca4d08bfc016620de495c6d2a8805cf">Canvas3DData</a>&gt; canvas3d_store</td>
+          <td class="memname"><a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore2.html">SyncDataStore2</a>&lt;<a class="el" href="namespacewebcface_1_1Internal.html#ae591d9dc11d3ac8b9841b358a94a586e">Canvas3DData</a>&gt; canvas3d_store</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -839,7 +839,7 @@ Public Attributes</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespacewebcface_1_1Common.html#a1f914f5d15fb32aa05ca882cff7f2cd4">FuncWrapperType</a> default_func_wrapper</td>
+          <td class="memname"><a class="el" href="namespacewebcface.html#a1f914f5d15fb32aa05ca882cff7f2cd4">FuncWrapperType</a> default_func_wrapper</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -890,14 +890,14 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a3e7cc00e83911538a89735b7600dd07c" name="a3e7cc00e83911538a89735b7600dd07c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3e7cc00e83911538a89735b7600dd07c">&#9670;&#160;</a></span>func_listener_handlers</h2>
+<a id="afae3e6fe36d2deca2716a78c3aa98f6b" name="afae3e6fe36d2deca2716a78c3aa98f6b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afae3e6fe36d2deca2716a78c3aa98f6b">&#9670;&#160;</a></span>func_listener_handlers</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespacewebcface_1_1Encoding.html#a56d3269e324a6f481ed288a48e48c759">StrMap1</a>&lt;<a class="el" href="classwebcface_1_1Common_1_1Queue.html">Common::Queue</a>&lt;<a class="el" href="classwebcface_1_1FuncCallHandle.html">FuncCallHandle</a>&gt; &gt; func_listener_handlers</td>
+          <td class="memname"><a class="el" href="namespacewebcface_1_1Encoding.html#a56d3269e324a6f481ed288a48e48c759">StrMap1</a>&lt;<a class="el" href="classwebcface_1_1Queue.html">Queue</a>&lt;<a class="el" href="classwebcface_1_1FuncCallHandle.html">FuncCallHandle</a>&gt; &gt; func_listener_handlers</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -934,14 +934,14 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a42215014610973eb53bbbcc9d435d887" name="a42215014610973eb53bbbcc9d435d887"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a42215014610973eb53bbbcc9d435d887">&#9670;&#160;</a></span>func_sync_queue</h2>
+<a id="a9412169a3a2949d6e78557acf1fa7dc5" name="a9412169a3a2949d6e78557acf1fa7dc5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9412169a3a2949d6e78557acf1fa7dc5">&#9670;&#160;</a></span>func_sync_queue</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classwebcface_1_1Common_1_1Queue.html">Common::Queue</a>&lt;std::shared_ptr&lt;<a class="el" href="classwebcface_1_1Internal_1_1FuncOnSync.html">FuncOnSync</a>&gt; &gt; func_sync_queue</td>
+          <td class="memname"><a class="el" href="classwebcface_1_1Queue.html">Queue</a>&lt;std::shared_ptr&lt;<a class="el" href="classwebcface_1_1Internal_1_1FuncOnSync.html">FuncOnSync</a>&gt; &gt; func_sync_queue</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -992,14 +992,14 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a048a25f5c198943e1e42ad9c3cedc167" name="a048a25f5c198943e1e42ad9c3cedc167"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a048a25f5c198943e1e42ad9c3cedc167">&#9670;&#160;</a></span>image_store</h2>
+<a id="a30257c604c7ad652577caee2627971ae" name="a30257c604c7ad652577caee2627971ae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a30257c604c7ad652577caee2627971ae">&#9670;&#160;</a></span>image_store</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore2.html">SyncDataStore2</a>&lt;<a class="el" href="namespacewebcface_1_1Internal.html#a8c6d0a075c8c538242b0759f1c4aa4b8">ImageData</a>, <a class="el" href="structwebcface_1_1Common_1_1ImageReq.html">Common::ImageReq</a>&gt; image_store</td>
+          <td class="memname"><a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore2.html">SyncDataStore2</a>&lt;<a class="el" href="namespacewebcface_1_1Internal.html#acec0de5d5a2a408a7cf843cd3e4e2501">ImageData</a>, <a class="el" href="structwebcface_1_1Message_1_1ImageReq.html">Message::ImageReq</a>&gt; image_store</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -1041,7 +1041,7 @@ Public Attributes</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::shared_ptr&lt;<a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore1.html">SyncDataStore1</a>&lt;std::shared_ptr&lt;std::vector&lt;<a class="el" href="classwebcface_1_1Common_1_1LogLineData.html">LogLineData</a>&lt;&gt; &gt; &gt; &gt; &gt; log_store</td>
+          <td class="memname">std::shared_ptr&lt;<a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore1.html">SyncDataStore1</a>&lt;std::shared_ptr&lt;std::vector&lt;<a class="el" href="classwebcface_1_1LogLineData.html">LogLineData</a>&lt;&gt; &gt; &gt; &gt; &gt; log_store</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -1232,14 +1232,14 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="ae634efd684c1b705a5fb2587f45ce235" name="ae634efd684c1b705a5fb2587f45ce235"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae634efd684c1b705a5fb2587f45ce235">&#9670;&#160;</a></span>message_queue</h2>
+<a id="a9be199c053f68ddd0cd0ba5383a7fdbb" name="a9be199c053f68ddd0cd0ba5383a7fdbb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9be199c053f68ddd0cd0ba5383a7fdbb">&#9670;&#160;</a></span>message_queue</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::shared_ptr&lt;<a class="el" href="classwebcface_1_1Common_1_1Queue.html">Common::Queue</a>&lt;std::string&gt; &gt; message_queue</td>
+          <td class="memname">std::shared_ptr&lt;<a class="el" href="classwebcface_1_1Queue.html">Queue</a>&lt;std::string&gt; &gt; message_queue</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -1388,7 +1388,7 @@ Public Attributes</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore2.html">SyncDataStore2</a>&lt;<a class="el" href="namespacewebcface_1_1Internal.html#aca074f5e4bc873cc9d4a8af693fdece1">RobotModelData</a>&gt; robot_model_store</td>
+          <td class="memname"><a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore2.html">SyncDataStore2</a>&lt;<a class="el" href="namespacewebcface_1_1Internal.html#aa4a19184c5fed0f56ef6137c9e0ed5a1">RobotModelData</a>&gt; robot_model_store</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -1502,7 +1502,7 @@ Public Attributes</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore2.html">SyncDataStore2</a>&lt;<a class="el" href="namespacewebcface_1_1Internal.html#a112c04e1cb185887034814f635d4ac5f">TextData</a>&gt; text_store</td>
+          <td class="memname"><a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore2.html">SyncDataStore2</a>&lt;<a class="el" href="namespacewebcface_1_1Internal.html#ad4c053724407a5dff7560771e151a9b0">TextData</a>&gt; text_store</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -1544,7 +1544,7 @@ Public Attributes</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore2.html">SyncDataStore2</a>&lt;<a class="el" href="namespacewebcface_1_1Internal.html#aa77c608002e5be9330f91a2dbf5e2ac8">ValueData</a>&gt; value_store</td>
+          <td class="memname"><a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore2.html">SyncDataStore2</a>&lt;<a class="el" href="namespacewebcface_1_1Internal.html#af1d547aa847a04151e23db8aef4a0758">ValueData</a>&gt; value_store</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -1586,7 +1586,7 @@ Public Attributes</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore2.html">SyncDataStore2</a>&lt;<a class="el" href="namespacewebcface_1_1Internal.html#a82ba3dfe2c2f8fdc2661559f821cc37f">ViewData</a>&gt; view_store</td>
+          <td class="memname"><a class="el" href="classwebcface_1_1Internal_1_1SyncDataStore2.html">SyncDataStore2</a>&lt;<a class="el" href="namespacewebcface_1_1Internal.html#ac01338cae4b904694c52c8582a282ddb">ViewData</a>&gt; view_store</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -1608,8 +1608,8 @@ Public Attributes</h2></td></tr>
 </div>
 </div>
 <hr/>The documentation for this struct was generated from the following files:<ul>
-<li>client/<a class="el" href="client__internal_8h_source.html">client_internal.h</a></li>
-<li>client/<a class="el" href="client_2client_8cc.html">client.cc</a></li>
+<li>/home/runner/work/webcface/webcface/client/include/webcface/internal/<a class="el" href="client__internal_8h_source.html">client_internal.h</a></li>
+<li>/home/runner/work/webcface/webcface/client/src/<a class="el" href="client_8cc.html">client.cc</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -1617,7 +1617,7 @@ Public Attributes</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="namespacewebcface_1_1Internal.html">Internal</a></li><li class="navelem"><a class="el" href="structwebcface_1_1Internal_1_1ClientData.html">ClientData</a></li>
-    <li class="footer">Generated on Tue Jun 25 2024 18:47:45 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Sun Jun 30 2024 10:34:27 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

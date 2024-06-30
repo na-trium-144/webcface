@@ -1,8 +1,6 @@
 var searchData=
 [
-  ['loggerbuf_0',['LoggerBuf',['../namespacewebcface.html#ac14437b6295dda3ecebabb35281b452b',1,'webcface']]],
-  ['loggerbufw_1',['LoggerBufW',['../namespacewebcface.html#a1adba1cdaaa06aa271cb09936167a2e5',1,'webcface']]],
-  ['loggercallback_2',['LoggerCallback',['../namespacewebcfaceServerInternal.html#a0f714276a4ae2a223ba9e9ae731a22ba',1,'webcfaceServerInternal']]],
-  ['logline_3',['logline',['../namespacewebcface_1_1Common.html#a46b5ef797cadc62be5f7a57346029063',1,'webcface::LogLine'],['../namespacewebcface_1_1Common.html#a46b5ef797cadc62be5f7a57346029063',1,'webcface::Common::LogLine']]],
-  ['loglinew_4',['loglinew',['../namespacewebcface_1_1Common.html#a1633a07d91ecf38ba8cfc15b2a4ebd18',1,'webcface::LogLineW'],['../namespacewebcface_1_1Common.html#a1633a07d91ecf38ba8cfc15b2a4ebd18',1,'webcface::Common::LogLineW']]]
+  ['memberdataptr_0',['MemberDataPtr',['../namespacewebcface_1_1Server.html#ad019b4eb6d72c43cff3b61c599e4476d',1,'webcface::Server']]],
+  ['memberid_1',['memberid',['../structwebcface_1_1Message_1_1Call.html#ad1edaa1b21d91cb7279cd5d2ffec0bdf',1,'webcface::Message::Call::MemberId'],['../namespacewebcface.html#ad1edaa1b21d91cb7279cd5d2ffec0bdf',1,'webcface::MemberId']]],
+  ['messagecallback_2',['MessageCallback',['../namespacewebcfaceServerInternal.html#a8a2b0d606b909e055b12b99ea69f1ced',1,'webcfaceServerInternal']]]
 ];

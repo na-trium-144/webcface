@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>WebCFace: server/store.h Source File</title>
+<title>WebCFace: /home/runner/work/webcface/webcface/server-store/include/webcface/server/store.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -152,26 +152,26 @@ $(document).ready(function(){initNavTree('store_8h_source.html',''); initResizab
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &lt;functional&gt;</span></div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &lt;spdlog/common.h&gt;</span></div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &lt;<a class="code" href="def_8h.html">webcface/common/def.h</a>&gt;</span></div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &lt;<a class="code" href="server_8h.html">webcface/server.h</a>&gt;</span></div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;<a class="code" href="encoding_8h.html">webcface/encoding.h</a>&gt;</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &lt;<a class="code" href="server_2server_8h.html">webcface/server/server.h</a>&gt;</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;<a class="code" href="encoding_8h.html">webcface/encoding/encoding.h</a>&gt;</span></div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><a class="code hl_define" href="macros_8h.html#abe991b8f291782627a31118c688e123a">WEBCFACE_NS_BEGIN</a></div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="keyword">namespace </span>Server {</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><a class="code hl_define" href="def_8h.html#abe991b8f291782627a31118c688e123a">WEBCFACE_NS_BEGIN</a></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceServer.html">Server</a> {</div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="keyword">struct </span>MemberData;</div>
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno"><a class="line" href="namespacewebcface_1_1Server.html#ad019b4eb6d72c43cff3b61c599e4476d">   13</a></span><span class="keyword">using </span><a class="code hl_typedef" href="namespacewebcface_1_1Server.html#ad019b4eb6d72c43cff3b61c599e4476d">MemberDataPtr</a> = std::shared_ptr&lt;MemberData&gt;;</div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
 <div class="foldopen" id="foldopen00015" data-start="{" data-end="};">
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno"><a class="line" href="structwebcface_1_1Server_1_1ServerStorage.html">   15</a></span><span class="keyword">struct </span><a class="code hl_define" href="macros_8h.html#a47af057bda855b54c212e97ffccdca01">WEBCFACE_DLL</a> <a class="code hl_struct" href="structwebcface_1_1Server_1_1ServerStorage.html">ServerStorage</a> {</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno"><a class="line" href="structwebcface_1_1Server_1_1ServerStorage.html">   15</a></span><span class="keyword">struct </span><a class="code hl_define" href="def_8h.html#a47af057bda855b54c212e97ffccdca01">WEBCFACE_DLL</a> <a class="code hl_struct" href="structwebcface_1_1Server_1_1ServerStorage.html">ServerStorage</a> {</div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno"><a class="line" href="structwebcface_1_1Server_1_1ServerStorage.html#a6e33f9ba87ba9683a9ae161a6fde9cc1">   20</a></span>    std::unordered_map&lt;wsConnPtr, MemberDataPtr&gt; <a class="code hl_variable" href="structwebcface_1_1Server_1_1ServerStorage.html#a6e33f9ba87ba9683a9ae161a6fde9cc1">clients</a>;</div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="structwebcface_1_1Server_1_1ServerStorage.html#a251dad409f9e95706c46495528eed393">   28</a></span>    std::unordered_map&lt;unsigned int, MemberDataPtr&gt; <a class="code hl_variable" href="structwebcface_1_1Server_1_1ServerStorage.html#a251dad409f9e95706c46495528eed393">clients_by_id</a>;</div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="structwebcface_1_1Server_1_1ServerStorage.html#a2284a2138f45992873563f8b5e95eaac">   30</a></span>    std::shared_ptr&lt;std::unordered_map&lt;unsigned int, int&gt;&gt; <a class="code hl_variable" href="structwebcface_1_1Server_1_1ServerStorage.html#a2284a2138f45992873563f8b5e95eaac">ping_status</a>;</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="structwebcface_1_1Server_1_1ServerStorage.html#a5d5d629095a6204c2e04e4150860275c">   31</a></span>    <a class="code hl_class" href="classwebcface_1_1Server_1_1Server.html">Server</a> *<a class="code hl_variable" href="structwebcface_1_1Server_1_1ServerStorage.html#a5d5d629095a6204c2e04e4150860275c">server</a>;</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="structwebcface_1_1Server_1_1ServerStorage.html#a5d5d629095a6204c2e04e4150860275c">   31</a></span>    <a class="code hl_namespace" href="namespaceServer.html">Server</a> *<a class="code hl_variable" href="structwebcface_1_1Server_1_1ServerStorage.html#a5d5d629095a6204c2e04e4150860275c">server</a>;</div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="structwebcface_1_1Server_1_1ServerStorage.html#aac122449fd3bbb64fd0eb7fc567a7a46">   33</a></span>    <span class="keywordtype">int</span> <a class="code hl_variable" href="structwebcface_1_1Server_1_1ServerStorage.html#aac122449fd3bbb64fd0eb7fc567a7a46">keep_log</a>;</div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
 <div class="foldopen" id="foldopen00035" data-start="{" data-end="}">
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="structwebcface_1_1Server_1_1ServerStorage.html#afc802c15d68b61041f7fe08233ea93bf">   35</a></span>    <span class="keyword">explicit</span> <a class="code hl_function" href="structwebcface_1_1Server_1_1ServerStorage.html#afc802c15d68b61041f7fe08233ea93bf">ServerStorage</a>(<a class="code hl_class" href="classwebcface_1_1Server_1_1Server.html">Server</a> *server, <span class="keywordtype">int</span> keep_log = 1000)</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="structwebcface_1_1Server_1_1ServerStorage.html#afc802c15d68b61041f7fe08233ea93bf">   35</a></span>    <span class="keyword">explicit</span> <a class="code hl_function" href="structwebcface_1_1Server_1_1ServerStorage.html#afc802c15d68b61041f7fe08233ea93bf">ServerStorage</a>(<a class="code hl_namespace" href="namespaceServer.html">Server</a> *server, <span class="keywordtype">int</span> keep_log = 1000)</div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>        : clients(), clients_by_id(), ping_status(), server(server),</div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>          keep_log(keep_log) {}</div>
 </div>
@@ -202,17 +202,17 @@ $(document).ready(function(){initNavTree('store_8h_source.html',''); initResizab
 </div>
 <div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span> </div>
 <div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>} <span class="comment">// namespace Server</span></div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span><a class="code hl_define" href="macros_8h.html#ab3f2570d5b8231ddbe0e57fc8ab629eb">WEBCFACE_NS_END</a></div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span><a class="code hl_define" href="def_8h.html#ab3f2570d5b8231ddbe0e57fc8ab629eb">WEBCFACE_NS_END</a></div>
 <div class="ttc" id="aclasswebcface_1_1Encoding_1_1SharedString_html"><div class="ttname"><a href="classwebcface_1_1Encoding_1_1SharedString.html">webcface::SharedString</a></div><div class="ttdoc">u8stringとstringとwstringをshared_ptrで持ち共有する</div><div class="ttdef"><b>Definition</b> encoding.h:113</div></div>
-<div class="ttc" id="aclasswebcface_1_1Server_1_1Server_html"><div class="ttname"><a href="classwebcface_1_1Server_1_1Server.html">webcface::Server::Server</a></div><div class="ttdef"><b>Definition</b> server.h:19</div></div>
 <div class="ttc" id="adef_8h_html"><div class="ttname"><a href="def_8h.html">def.h</a></div></div>
+<div class="ttc" id="adef_8h_html_a47af057bda855b54c212e97ffccdca01"><div class="ttname"><a href="def_8h.html#a47af057bda855b54c212e97ffccdca01">WEBCFACE_DLL</a></div><div class="ttdeci">#define WEBCFACE_DLL</div><div class="ttdef"><b>Definition</b> def.h:55</div></div>
+<div class="ttc" id="adef_8h_html_ab3f2570d5b8231ddbe0e57fc8ab629eb"><div class="ttname"><a href="def_8h.html#ab3f2570d5b8231ddbe0e57fc8ab629eb">WEBCFACE_NS_END</a></div><div class="ttdeci">#define WEBCFACE_NS_END</div><div class="ttdef"><b>Definition</b> def.h:81</div></div>
+<div class="ttc" id="adef_8h_html_abe991b8f291782627a31118c688e123a"><div class="ttname"><a href="def_8h.html#abe991b8f291782627a31118c688e123a">WEBCFACE_NS_BEGIN</a></div><div class="ttdeci">#define WEBCFACE_NS_BEGIN</div><div class="ttdef"><b>Definition</b> def.h:80</div></div>
 <div class="ttc" id="aencoding_8h_html"><div class="ttname"><a href="encoding_8h.html">encoding.h</a></div></div>
-<div class="ttc" id="amacros_8h_html_a47af057bda855b54c212e97ffccdca01"><div class="ttname"><a href="macros_8h.html#a47af057bda855b54c212e97ffccdca01">WEBCFACE_DLL</a></div><div class="ttdeci">#define WEBCFACE_DLL</div><div class="ttdef"><b>Definition</b> macros.h:45</div></div>
-<div class="ttc" id="amacros_8h_html_ab3f2570d5b8231ddbe0e57fc8ab629eb"><div class="ttname"><a href="macros_8h.html#ab3f2570d5b8231ddbe0e57fc8ab629eb">WEBCFACE_NS_END</a></div><div class="ttdeci">#define WEBCFACE_NS_END</div><div class="ttdef"><b>Definition</b> macros.h:64</div></div>
-<div class="ttc" id="amacros_8h_html_abe991b8f291782627a31118c688e123a"><div class="ttname"><a href="macros_8h.html#abe991b8f291782627a31118c688e123a">WEBCFACE_NS_BEGIN</a></div><div class="ttdeci">#define WEBCFACE_NS_BEGIN</div><div class="ttdef"><b>Definition</b> macros.h:63</div></div>
+<div class="ttc" id="anamespaceServer_html"><div class="ttname"><a href="namespaceServer.html">Server</a></div><div class="ttdef"><b>Definition</b> dir.cc:16</div></div>
 <div class="ttc" id="anamespacewebcface_1_1Server_html_ad019b4eb6d72c43cff3b61c599e4476d"><div class="ttname"><a href="namespacewebcface_1_1Server.html#ad019b4eb6d72c43cff3b61c599e4476d">webcface::Server::MemberDataPtr</a></div><div class="ttdeci">std::shared_ptr&lt; MemberData &gt; MemberDataPtr</div><div class="ttdef"><b>Definition</b> store.h:13</div></div>
-<div class="ttc" id="anamespacewebcface_1_1Server_html_af92eef764fed4a1512658233c54020bf"><div class="ttname"><a href="namespacewebcface_1_1Server.html#af92eef764fed4a1512658233c54020bf">webcface::Server::wsConnPtr</a></div><div class="ttdeci">void * wsConnPtr</div><div class="ttdef"><b>Definition</b> server.h:17</div></div>
-<div class="ttc" id="aserver_8h_html"><div class="ttname"><a href="server_8h.html">server.h</a></div></div>
+<div class="ttc" id="anamespacewebcface_1_1Server_html_af92eef764fed4a1512658233c54020bf"><div class="ttname"><a href="namespacewebcface_1_1Server.html#af92eef764fed4a1512658233c54020bf">webcface::Server::wsConnPtr</a></div><div class="ttdeci">void * wsConnPtr</div><div class="ttdef"><b>Definition</b> server.h:16</div></div>
+<div class="ttc" id="aserver_2server_8h_html"><div class="ttname"><a href="server_2server_8h.html">server.h</a></div></div>
 <div class="ttc" id="astructwebcface_1_1Server_1_1ServerStorage_html"><div class="ttname"><a href="structwebcface_1_1Server_1_1ServerStorage.html">webcface::Server::ServerStorage</a></div><div class="ttdef"><b>Definition</b> store.h:15</div></div>
 <div class="ttc" id="astructwebcface_1_1Server_1_1ServerStorage_html_a2284a2138f45992873563f8b5e95eaac"><div class="ttname"><a href="structwebcface_1_1Server_1_1ServerStorage.html#a2284a2138f45992873563f8b5e95eaac">webcface::Server::ServerStorage::ping_status</a></div><div class="ttdeci">std::shared_ptr&lt; std::unordered_map&lt; unsigned int, int &gt; &gt; ping_status</div><div class="ttdef"><b>Definition</b> store.h:30</div></div>
 <div class="ttc" id="astructwebcface_1_1Server_1_1ServerStorage_html_a251dad409f9e95706c46495528eed393"><div class="ttname"><a href="structwebcface_1_1Server_1_1ServerStorage.html#a251dad409f9e95706c46495528eed393">webcface::Server::ServerStorage::clients_by_id</a></div><div class="ttdeci">std::unordered_map&lt; unsigned int, MemberDataPtr &gt; clients_by_id</div><div class="ttdoc">すべてのクライアントのデータ 切断されてもデータは残り、valueやlogなどあとで参照できる</div><div class="ttdef"><b>Definition</b> store.h:28</div></div>
@@ -226,8 +226,8 @@ $(document).ready(function(){initNavTree('store_8h_source.html',''); initResizab
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_075bb3ff235063c77951cd176d15a741.html">server</a></li><li class="navelem"><a class="el" href="store_8h.html">store.h</a></li>
-    <li class="footer">Generated on Tue Jun 25 2024 18:47:45 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="navelem"><a class="el" href="dir_9cb285999b179f8aca5679ee400b878d.html">server-store</a></li><li class="navelem"><a class="el" href="dir_f53cacbf47894fb03ba5cf8a6c70dd7c.html">include</a></li><li class="navelem"><a class="el" href="dir_e7501623f8dfbed316d8be1d8d984954.html">webcface</a></li><li class="navelem"><a class="el" href="dir_769fa1d8bedebba544fb426db8e707df.html">server</a></li><li class="navelem"><a class="el" href="store_8h.html">store.h</a></li>
+    <li class="footer">Generated on Sun Jun 30 2024 10:34:27 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

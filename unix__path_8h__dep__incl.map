@@ -1,9 +1,13 @@
-<map id="message/unix_path.h" name="message/unix_path.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="174,5,335,31"/>
-<area shape="rect" id="Node000002" href="$client__ws_8cc.html" title=" " alt="" coords="5,79,147,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="214,38,106,81,104,76,213,33"/>
-<area shape="rect" id="Node000003" href="$unix__path_8cc.html" title=" " alt="" coords="171,79,338,104"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="257,44,257,79,252,79,252,44"/>
-<area shape="rect" id="Node000004" href="$websock_8cc.html" title=" " alt="" coords="362,79,505,104"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="297,33,405,76,403,81,295,38"/>
+<map id="/home/runner/work/webcface/webcface/server&#45;store/include/webcface/server/unix_path.h" name="/home/runner/work/webcface/webcface/server&#45;store/include/webcface/server/unix_path.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="493,5,715,60"/>
+<area shape="rect" id="Node000002" href="$client__ws_8cc.html" title=" " alt="" coords="5,115,240,155"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="480,63,213,118,212,113,479,57"/>
+<area shape="rect" id="Node000003" href="$unix__path_8cc.html" title=" " alt="" coords="264,108,475,163"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="532,68,432,110,429,105,529,63"/>
+<area shape="rect" id="Node000004" href="$websock_8cc.html" title=" " alt="" coords="499,108,709,163"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="607,74,607,108,601,108,601,74"/>
+<area shape="rect" id="Node000005" href="$dummy__client_8cc.html" title=" " alt="" coords="734,115,973,155"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="682,63,808,113,806,118,680,67"/>
+<area shape="rect" id="Node000006" href="$dummy__server_8cc.html" title=" " alt="" coords="997,115,1240,155"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="729,56,986,105,1023,113,1022,118,985,111,728,61"/>
 </map>

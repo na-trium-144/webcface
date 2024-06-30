@@ -1,8 +1,7 @@
 var structwebcface_1_1Message_1_1View =
 [
-    [ "ViewComponent", "structwebcface_1_1Message_1_1View_1_1ViewComponent.html", "structwebcface_1_1Message_1_1View_1_1ViewComponent" ],
     [ "View", "structwebcface_1_1Message_1_1View.html#a30a9f2e809c26263132b4afd8ea98562", null ],
-    [ "View", "structwebcface_1_1Message_1_1View.html#a2e95db1b1d9dd2f2d0630a7b4b9647f0", null ],
+    [ "View", "structwebcface_1_1Message_1_1View.html#a23ad34a9141cd0226c3d0b647b6d5517", null ],
     [ "View", "structwebcface_1_1Message_1_1View.html#aa9f90858379d08ba78ec8c590cd255cd", null ],
     [ "data_diff", "structwebcface_1_1Message_1_1View.html#a7466443acad8d1091b6bedc2f5dd08bf", null ],
     [ "field", "structwebcface_1_1Message_1_1View.html#a93f7b0e006da417a088ac06725272753", null ],

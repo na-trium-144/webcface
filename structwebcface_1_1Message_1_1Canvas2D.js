@@ -1,8 +1,7 @@
 var structwebcface_1_1Message_1_1Canvas2D =
 [
-    [ "Canvas2DComponent", "structwebcface_1_1Message_1_1Canvas2D_1_1Canvas2DComponent.html", "structwebcface_1_1Message_1_1Canvas2D_1_1Canvas2DComponent" ],
     [ "Canvas2D", "structwebcface_1_1Message_1_1Canvas2D.html#ac156513413b6f63c14f188e404aab8b8", null ],
-    [ "Canvas2D", "structwebcface_1_1Message_1_1Canvas2D.html#a22a7531bdedb297165409f47553dc0c2", null ],
+    [ "Canvas2D", "structwebcface_1_1Message_1_1Canvas2D.html#a7f2a939a8feb859b7823484d1cf90252", null ],
     [ "Canvas2D", "structwebcface_1_1Message_1_1Canvas2D.html#a3cb1999a9235a00e7c2e25a353984d0b", null ],
     [ "data_diff", "structwebcface_1_1Message_1_1Canvas2D.html#ae21adc805b6cc780cb57de67b73df18f", null ],
     [ "field", "structwebcface_1_1Message_1_1Canvas2D.html#a93f7b0e006da417a088ac06725272753", null ],

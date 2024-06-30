@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['spdlog_0',['spdlog',['../namespacespdlog.html',1,'']]]
+  ['c_5fwcf_0',['c_wcf',['../namespacec__wcf.html',1,'']]]
 ];

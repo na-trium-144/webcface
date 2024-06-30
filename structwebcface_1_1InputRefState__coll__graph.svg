@@ -57,7 +57,7 @@
 <!-- Node4 -->
 <g id="Node000004" class="node">
 <title>Node4</title>
-<g id="a_Node000004"><a xlink:href="structwebcface_1_1Common_1_1FieldBase.html" target="_top" xlink:title="メンバ名とデータ名を持つクラス">
+<g id="a_Node000004"><a xlink:href="structwebcface_1_1FieldBase.html" target="_top" xlink:title="メンバ名とデータ名を持つクラス">
 <polygon fill="white" stroke="#666666" points="64,-225 0,-225 0,-206 64,-206 64,-225"/>
 <text text-anchor="middle" x="32" y="-213" font-family="Helvetica,sans-Serif" font-size="10.00">FieldBase</text>
 </a>
@@ -95,7 +95,7 @@
 <!-- Node8 -->
 <g id="Node000008" class="node">
 <title>Node8</title>
-<g id="a_Node000008"><a xlink:href="classwebcface_1_1Common_1_1ValAdaptor.html" target="_top" xlink:title="数値、文字列などの値を相互変換するクラス">
+<g id="a_Node000008"><a xlink:href="classwebcface_1_1ValAdaptor.html" target="_top" xlink:title="数値、文字列などの値を相互変換するクラス">
 <polygon fill="white" stroke="#666666" points="278,-188 208,-188 208,-169 278,-169 278,-188"/>
 <text text-anchor="middle" x="243" y="-176" font-family="Helvetica,sans-Serif" font-size="10.00">ValAdaptor</text>
 </a>

@@ -24,7 +24,7 @@
 <area shape="poly" id="edge15_Node000001_Node000016" title=" " alt="" coords="172,316,178,354,190,400,211,446,225,467,242,485,268,500,297,507,295,512,266,505,238,489,221,470,206,448,185,401,173,355,166,317"/>
 <area shape="rect" id="Node000017" href="$classwebcface_1_1View.html" title="Viewの送受信データを表すクラス" alt="" coords="298,548,353,573"/>
 <area shape="poly" id="edge16_Node000001_Node000017" title=" " alt="" coords="169,316,173,363,183,422,205,483,221,510,242,535,269,551,299,557,297,562,267,556,238,539,217,513,200,485,178,423,167,364,164,317"/>
-<area shape="rect" id="Node000002" href="$structwebcface_1_1Common_1_1FieldBase.html" title="メンバ名とデータ名を持つクラス" alt="" coords="5,277,91,303"/>
+<area shape="rect" id="Node000002" href="$structwebcface_1_1FieldBase.html" title="メンバ名とデータ名を持つクラス" alt="" coords="5,277,91,303"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="104,287,138,287,138,293,104,293"/>
 <area shape="rect" id="Node000008" href="$classwebcface_1_1AnonymousFunc.html" title="名前を指定せず先に関数を登録するFunc" alt="" coords="459,179,588,204"/>
 <area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="364,208,458,196,459,202,365,213"/>

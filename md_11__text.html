@@ -175,10 +175,10 @@ $(document).ready(function(){initNavTree('md_11__text.html',''); initResizable()
 </div><!-- fragment --> (C++のみ) set() の代わりに代入演算子(Text::operator=)でも同様のことができます。 <div class="fragment"><div class="line">wcli.text(<span class="stringliteral">&quot;hoge&quot;</span>) = <span class="stringliteral">&quot;hello&quot;</span>;</div>
 </div><!-- fragment --></li>
 <li><b class="tab-title">C</b> <dl class="section since"><dt>Since</dt><dd><span class="since-c">1.7</span></dd></dl>
-null終端の文字列は wcfTextSet, (<span class="since-c">2.0</span> wcfTextSetW) で送信できます <div class="fragment"><div class="line"><a class="code hl_function" href="c__wcf_2text_8cc.html#a94470a2a84a02b9af795174cf9d317f9">wcfTextSet</a>(wcli, <span class="stringliteral">&quot;hoge&quot;</span>, <span class="stringliteral">&quot;hello&quot;</span>);</div>
-<div class="ttc" id="ac__wcf_2text_8cc_html_a94470a2a84a02b9af795174cf9d317f9"><div class="ttname"><a href="c__wcf_2text_8cc.html#a94470a2a84a02b9af795174cf9d317f9">wcfTextSet</a></div><div class="ttdeci">wcfStatus wcfTextSet(wcfClient *wcli, const char *field, const char *text)</div><div class="ttdoc">文字列を送信する(null終端)</div><div class="ttdef"><b>Definition</b> text.cc:60</div></div>
-</div><!-- fragment --> null終端でない場合は wcfTextSetN, (<span class="since-c">2.0</span> wcfTextSetNW) が使えます <div class="fragment"><div class="line"><a class="code hl_function" href="c__wcf_2text_8cc.html#a2dbf1b9e940ba3f11d8a61e533ac39b8">wcfTextSetN</a>(wcli, <span class="stringliteral">&quot;hoge&quot;</span>, <span class="stringliteral">&quot;hello&quot;</span>, 5);</div>
-<div class="ttc" id="ac__wcf_2text_8cc_html_a2dbf1b9e940ba3f11d8a61e533ac39b8"><div class="ttname"><a href="c__wcf_2text_8cc.html#a2dbf1b9e940ba3f11d8a61e533ac39b8">wcfTextSetN</a></div><div class="ttdeci">wcfStatus wcfTextSetN(wcfClient *wcli, const char *field, const char *text, int size)</div><div class="ttdoc">文字列を送信する</div><div class="ttdef"><b>Definition</b> text.cc:67</div></div>
+null終端の文字列は wcfTextSet, (<span class="since-c">2.0</span> wcfTextSetW) で送信できます <div class="fragment"><div class="line"><a class="code hl_function" href="c__wcf_2text_8h.html#a94470a2a84a02b9af795174cf9d317f9">wcfTextSet</a>(wcli, <span class="stringliteral">&quot;hoge&quot;</span>, <span class="stringliteral">&quot;hello&quot;</span>);</div>
+<div class="ttc" id="ac__wcf_2text_8h_html_a94470a2a84a02b9af795174cf9d317f9"><div class="ttname"><a href="c__wcf_2text_8h.html#a94470a2a84a02b9af795174cf9d317f9">wcfTextSet</a></div><div class="ttdeci">wcfStatus wcfTextSet(wcfClient *wcli, const char *field, const char *text)</div><div class="ttdoc">文字列を送信する(null終端)</div><div class="ttdef"><b>Definition</b> text.cc:60</div></div>
+</div><!-- fragment --> null終端でない場合は wcfTextSetN, (<span class="since-c">2.0</span> wcfTextSetNW) が使えます <div class="fragment"><div class="line"><a class="code hl_function" href="c__wcf_2text_8h.html#a2dbf1b9e940ba3f11d8a61e533ac39b8">wcfTextSetN</a>(wcli, <span class="stringliteral">&quot;hoge&quot;</span>, <span class="stringliteral">&quot;hello&quot;</span>, 5);</div>
+<div class="ttc" id="ac__wcf_2text_8h_html_a2dbf1b9e940ba3f11d8a61e533ac39b8"><div class="ttname"><a href="c__wcf_2text_8h.html#a2dbf1b9e940ba3f11d8a61e533ac39b8">wcfTextSetN</a></div><div class="ttdeci">wcfStatus wcfTextSetN(wcfClient *wcli, const char *field, const char *text, int size)</div><div class="ttdoc">文字列を送信する</div><div class="ttdef"><b>Definition</b> text.cc:67</div></div>
 </div><!-- fragment --></li>
 <li><b class="tab-title">JavaScript</b> <div class="fragment"><div class="line">wcli.text(&quot;hoge&quot;).set(&quot;hello&quot;);</div>
 </div><!-- fragment --></li>
@@ -205,13 +205,13 @@ null終端の文字列は wcfTextSet, (<span class="since-c">2.0</span> wcfTextS
 <li><p class="startli"><b class="tab-title">C</b> </p><dl class="section since"><dt>Since</dt><dd><span class="since-c">1.7</span></dd></dl>
 <p>wcfTextGet, (<span class="since-c">2.0</span> wcfTextGetW) に受信した文字列を格納するバッファとそのサイズ(null終端を含む)を指定します。 </p><div class="fragment"><div class="line"><span class="keywordtype">char</span> text[6];</div>
 <div class="line"><span class="keywordtype">int</span> size;</div>
-<div class="line"><span class="keywordtype">int</span> ret = <a class="code hl_function" href="c__wcf_2text_8cc.html#abf4899fe704f996d49ee477cfb8002dd">wcfTextGet</a>(wcli, <span class="stringliteral">&quot;a&quot;</span>, <span class="stringliteral">&quot;hoge&quot;</span>, text, 6, &amp;size);</div>
+<div class="line"><span class="keywordtype">int</span> ret = <a class="code hl_function" href="c__wcf_2text_8h.html#abf4899fe704f996d49ee477cfb8002dd">wcfTextGet</a>(wcli, <span class="stringliteral">&quot;a&quot;</span>, <span class="stringliteral">&quot;hoge&quot;</span>, text, 6, &amp;size);</div>
 <div class="line"><span class="comment">// ex.) ret = WCF_NOT_FOUND</span></div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// few moments later,</span></div>
-<div class="line">ret = <a class="code hl_function" href="c__wcf_2text_8cc.html#abf4899fe704f996d49ee477cfb8002dd">wcfTextGet</a>(wcli, <span class="stringliteral">&quot;a&quot;</span>, <span class="stringliteral">&quot;hoge&quot;</span>, text, 6, &amp;size);</div>
+<div class="line">ret = <a class="code hl_function" href="c__wcf_2text_8h.html#abf4899fe704f996d49ee477cfb8002dd">wcfTextGet</a>(wcli, <span class="stringliteral">&quot;a&quot;</span>, <span class="stringliteral">&quot;hoge&quot;</span>, text, 6, &amp;size);</div>
 <div class="line"><span class="comment">// ex.) ret = WCF_OK, text = &quot;hello\0&quot;, size = 5</span></div>
-<div class="ttc" id="ac__wcf_2text_8cc_html_abf4899fe704f996d49ee477cfb8002dd"><div class="ttname"><a href="c__wcf_2text_8cc.html#abf4899fe704f996d49ee477cfb8002dd">wcfTextGet</a></div><div class="ttdeci">wcfStatus wcfTextGet(wcfClient *wcli, const char *member, const char *field, char *text, int size, int *recv_size)</div><div class="ttdoc">文字列を受信する</div><div class="ttdef"><b>Definition</b> text.cc:75</div></div>
+<div class="ttc" id="ac__wcf_2text_8h_html_abf4899fe704f996d49ee477cfb8002dd"><div class="ttname"><a href="c__wcf_2text_8h.html#abf4899fe704f996d49ee477cfb8002dd">wcfTextGet</a></div><div class="ttdeci">wcfStatus wcfTextGet(wcfClient *wcli, const char *member, const char *field, char *text, int size, int *recv_size)</div><div class="ttdoc">文字列を受信する</div><div class="ttdef"><b>Definition</b> text.cc:75</div></div>
 </div><!-- fragment --><p> sizeに受信した文字列の長さ、バッファに受信した文字列が入ります。 文字列がバッファの長さを超える場合は、(バッファのサイズ - 1) の文字列とnullが格納されます。</p>
 <p class="startli">初回の呼び出しでは<code>WCF_NOT_FOUND</code>を返し、別スレッドでリクエストが送信されます。</p>
 <dl class="section note"><dt>Note</dt><dd>member名に空文字列またはNULLを指定すると自分自身を指します。</dd></dl>
@@ -253,7 +253,7 @@ Event</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Jun 25 2024 18:47:45 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Sun Jun 30 2024 10:34:27 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

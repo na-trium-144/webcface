@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['funcdata_0',['FuncData',['../namespacewebcface_1_1Internal.html#ac0d89cc32a3164abf18e9dfafcf15532',1,'webcface::Internal']]],
-  ['functype_1',['functype',['../namespacewebcface_1_1Common.html#a25e0cb91e379fadc84cd151ffeb49fea',1,'webcface::FuncType'],['../namespacewebcface_1_1Common.html#a25e0cb91e379fadc84cd151ffeb49fea',1,'webcface::Common::FuncType']]],
-  ['funcwrappertype_2',['funcwrappertype',['../namespacewebcface_1_1Common.html#a1f914f5d15fb32aa05ca882cff7f2cd4',1,'webcface::FuncWrapperType'],['../namespacewebcface_1_1Common.html#a1f914f5d15fb32aa05ca882cff7f2cd4',1,'webcface::Common::FuncWrapperType']]]
+  ['imagebase_0',['ImageBase',['../namespacewebcface.html#ab04304b2017cf40223df2bfb82dd175e',1,'webcface']]],
+  ['imagedata_1',['ImageData',['../namespacewebcface_1_1Internal.html#acec0de5d5a2a408a7cf843cd3e4e2501',1,'webcface::Internal']]],
+  ['int_5ftype_2',['int_type',['../classwebcface_1_1BasicLoggerBuf.html#a853470018b834a78da72cb5168d974a6',1,'webcface::BasicLoggerBuf']]]
 ];

@@ -1,0 +1,229 @@
+<!-- HTML header for doxygen 1.9.8-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>WebCFace: File Members</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen_custom.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeDarkModeToggle.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeParagraphLink.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeTabs.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeInteractiveToc.init()
+</script>
+<script type="text/javascript">
+  function insertBadge(){
+    for(const sp of document.getElementsByClassName('since-c')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-00599c?logo=C%2B%2B" alt="c++ ver${ver}" class="inline">`;
+    }
+    for(const sp of document.getElementsByClassName('since-js')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-f7df1e?logo=JavaScript&amp;logoColor=black" alt="js ver${ver}" class="inline">`;
+    }
+    for(const sp of document.getElementsByClassName('since-py')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-3776ab?logo=python&amp;logoColor=white" alt="python ver${ver}" class="inline">`;
+    }
+  }
+</script>
+</head>
+<body onload="insertBadge();">
+<!-- https://tholman.com/github-corners/ -->
+<a href="https://github.com/na-trium-144/webcface" class="github-corner" aria-label="View source on GitHub">
+  <svg width="80" height="80" viewBox="0 0 250 250" style="fill:#64CEAA; color:#fff; position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path>
+  </svg>
+</a>
+<style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;1.11.4</span>
+   </div>
+   <div id="projectbrief">Web-based IPC &amp; Dashboard-like UI</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.9.8 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function(){initNavTree('globals_func_w.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="contents">
+<div class="textblock">Here is a list of all functions with links to the files they belong to:</div>
+
+<h3><a id="index_w" name="index_w"></a>- w -</h3><ul>
+<li>wait()&#160;:&#160;<a class="el" href="client__test_8cc.html#a6b4d3d4c708b7dfb8f1a3281228c1476">client_test.cc</a>, <a class="el" href="c__wcf__test_8cc.html#a6b4d3d4c708b7dfb8f1a3281228c1476">c_wcf_test.cc</a>, <a class="el" href="server__test_8cc.html#a6b4d3d4c708b7dfb8f1a3281228c1476">server_test.cc</a>, <a class="el" href="func__listener__test_8cc.html#a6b4d3d4c708b7dfb8f1a3281228c1476">func_listener_test.cc</a>, <a class="el" href="func__test_8cc.html#a6b4d3d4c708b7dfb8f1a3281228c1476">func_test.cc</a></li>
+<li>wcfButton()&#160;:&#160;<a class="el" href="client_2src_2c__wcf_2view_8cc.html#af6ea4ac458a3dfde614db687447f4cd4">view.cc</a>, <a class="el" href="c__wcf_2view_8h.html#af6ea4ac458a3dfde614db687447f4cd4">view.h</a></li>
+<li>wcfClose()&#160;:&#160;<a class="el" href="c__wcf_2client_8h.html#a2acd40666e16668cbf282b9aae4dceab">client.h</a>, <a class="el" href="c__wcf_2client_8cc.html#a2acd40666e16668cbf282b9aae4dceab">client.cc</a></li>
+<li>wcfDestroy()&#160;:&#160;<a class="el" href="c__wcf_2client_8h.html#a93f58103344d8d304c88e6fa28a92eb6">client.h</a>, <a class="el" href="c__wcf_2client_8cc.html#a93f58103344d8d304c88e6fa28a92eb6">client.cc</a></li>
+<li>wcfFuncFetchCall()&#160;:&#160;<a class="el" href="c__wcf_2func_8h.html#ab5e31cd0b36abb92a6a6ae74202b1415">func.h</a>, <a class="el" href="client_2src_2c__wcf_2func_8cc.html#ab5e31cd0b36abb92a6a6ae74202b1415">func.cc</a></li>
+<li>wcfFuncFetchCallT()&#160;:&#160;<a class="el" href="client_2src_2c__wcf_2func_8cc.html#aedc06a3d9bceb95723fc2916aae242c5">func.cc</a></li>
+<li>wcfFuncFetchCallW()&#160;:&#160;<a class="el" href="c__wcf_2func_8h.html#a737ad898eaf3daafbe81ff9b67a2975d">func.h</a>, <a class="el" href="client_2src_2c__wcf_2func_8cc.html#a737ad898eaf3daafbe81ff9b67a2975d">func.cc</a></li>
+<li>wcfFuncGetResult()&#160;:&#160;<a class="el" href="c__wcf_2func_8h.html#a394ed677c8419881c1501dc822ca07bf">func.h</a>, <a class="el" href="client_2src_2c__wcf_2func_8cc.html#a394ed677c8419881c1501dc822ca07bf">func.cc</a></li>
+<li>wcfFuncGetResultT()&#160;:&#160;<a class="el" href="client_2src_2c__wcf_2func_8cc.html#a5a532860ead696b79b0e886020c6d5b1">func.cc</a></li>
+<li>wcfFuncGetResultW()&#160;:&#160;<a class="el" href="c__wcf_2func_8h.html#a255af70ea365e06d251ec2c99347d0db">func.h</a></li>
+<li>wcfFuncListen()&#160;:&#160;<a class="el" href="c__wcf_2func_8h.html#a34feb8c3abc607d947e2a433781a51e9">func.h</a>, <a class="el" href="client_2src_2c__wcf_2func_8cc.html#aa1c13b3edf6acd517d23943d2a17c86e">func.cc</a></li>
+<li>wcfFuncListenT()&#160;:&#160;<a class="el" href="client_2src_2c__wcf_2func_8cc.html#a29a68e073de2dfd793798e26dedce7a3">func.cc</a></li>
+<li>wcfFuncListenW()&#160;:&#160;<a class="el" href="c__wcf_2func_8h.html#a5d46a577464d48b4ebf1949fc7f2f197">func.h</a>, <a class="el" href="client_2src_2c__wcf_2func_8cc.html#a6a07ad24eb4e6a676c414ceca9535b55">func.cc</a></li>
+<li>wcfFuncReject()&#160;:&#160;<a class="el" href="c__wcf_2func_8h.html#a31bfc6b700cc627887821b6e7bfb9a81">func.h</a>, <a class="el" href="client_2src_2c__wcf_2func_8cc.html#a31bfc6b700cc627887821b6e7bfb9a81">func.cc</a></li>
+<li>wcfFuncRejectT()&#160;:&#160;<a class="el" href="client_2src_2c__wcf_2func_8cc.html#abaff97dfd390b3338f06e16ab9f439d4">func.cc</a></li>
+<li>wcfFuncRejectW()&#160;:&#160;<a class="el" href="c__wcf_2func_8h.html#a030bb0be3722519b52a753545d531ec6">func.h</a>, <a class="el" href="client_2src_2c__wcf_2func_8cc.html#a030bb0be3722519b52a753545d531ec6">func.cc</a></li>
+<li>wcfFuncRespond()&#160;:&#160;<a class="el" href="c__wcf_2func_8h.html#a0cde58bb43011b9e54fc80881cd19c30">func.h</a>, <a class="el" href="client_2src_2c__wcf_2func_8cc.html#a0cde58bb43011b9e54fc80881cd19c30">func.cc</a></li>
+<li>wcfFuncRespondT()&#160;:&#160;<a class="el" href="client_2src_2c__wcf_2func_8cc.html#a230d8418054a01df864652b6f6bdde02">func.cc</a></li>
+<li>wcfFuncRespondW()&#160;:&#160;<a class="el" href="c__wcf_2func_8h.html#a5257be59fa90f92d2126a73bf1a94364">func.h</a>, <a class="el" href="client_2src_2c__wcf_2func_8cc.html#a5257be59fa90f92d2126a73bf1a94364">func.cc</a></li>
+<li>wcfFuncRun()&#160;:&#160;<a class="el" href="c__wcf_2func_8h.html#a66bdb804a3f7e0b7ef620180fbab9dfe">func.h</a>, <a class="el" href="client_2src_2c__wcf_2func_8cc.html#a66bdb804a3f7e0b7ef620180fbab9dfe">func.cc</a></li>
+<li>wcfFuncRunAsync()&#160;:&#160;<a class="el" href="c__wcf_2func_8h.html#ac39ef7c2929a4cd2d7d65f0343d6cb32">func.h</a>, <a class="el" href="client_2src_2c__wcf_2func_8cc.html#ac39ef7c2929a4cd2d7d65f0343d6cb32">func.cc</a></li>
+<li>wcfFuncRunAsyncT()&#160;:&#160;<a class="el" href="client_2src_2c__wcf_2func_8cc.html#a8e31108b129d57bf59f22d61480e9672">func.cc</a></li>
+<li>wcfFuncRunAsyncW()&#160;:&#160;<a class="el" href="c__wcf_2func_8h.html#a44cbb603120e6474b9b065a07cae4cac">func.h</a>, <a class="el" href="client_2src_2c__wcf_2func_8cc.html#a44cbb603120e6474b9b065a07cae4cac">func.cc</a></li>
+<li>wcfFuncRunT()&#160;:&#160;<a class="el" href="client_2src_2c__wcf_2func_8cc.html#a7dcec95b9332bfd39bf377594d22a39d">func.cc</a></li>
+<li>wcfFuncRunW()&#160;:&#160;<a class="el" href="c__wcf_2func_8h.html#a8f3e54495fa9d7ee3faf4eb303833b79">func.h</a>, <a class="el" href="client_2src_2c__wcf_2func_8cc.html#a8f3e54495fa9d7ee3faf4eb303833b79">func.cc</a></li>
+<li>wcfFuncSet()&#160;:&#160;<a class="el" href="c__wcf_2func_8h.html#aed93a65ce0737907e6bde0ab93aa92b7">func.h</a>, <a class="el" href="client_2src_2c__wcf_2func_8cc.html#a24d2cc4125df231866e6b1e5ef56866e">func.cc</a></li>
+<li>wcfFuncSetT()&#160;:&#160;<a class="el" href="client_2src_2c__wcf_2func_8cc.html#a2852d1ea05337e6f98c0d92d601c3910">func.cc</a></li>
+<li>wcfFuncSetW()&#160;:&#160;<a class="el" href="client_2src_2c__wcf_2func_8cc.html#a9f3e989b24c5cac2ca5efe9d9ad3d331">func.cc</a>, <a class="el" href="c__wcf_2func_8h.html#acc4c8a1710cbecc2520c5c4adfcd5b57">func.h</a></li>
+<li>wcfFuncWaitResult()&#160;:&#160;<a class="el" href="c__wcf_2func_8h.html#a5f1da69de76906baf2254538bede11ad">func.h</a>, <a class="el" href="client_2src_2c__wcf_2func_8cc.html#a5f1da69de76906baf2254538bede11ad">func.cc</a></li>
+<li>wcfFuncWaitResultW()&#160;:&#160;<a class="el" href="c__wcf_2func_8h.html#a3789571f3d452b4ddf72b3b6480687c6">func.h</a></li>
+<li>wcfInit()&#160;:&#160;<a class="el" href="c__wcf_2client_8h.html#a91204ffa8e81e5821926147321aaf101">client.h</a>, <a class="el" href="c__wcf_2client_8cc.html#a91204ffa8e81e5821926147321aaf101">client.cc</a></li>
+<li>wcfInitDefault()&#160;:&#160;<a class="el" href="c__wcf_2client_8h.html#a4ea5df14c6f1a58b4590f9269abf82bb">client.h</a>, <a class="el" href="c__wcf_2client_8cc.html#a4ea5df14c6f1a58b4590f9269abf82bb">client.cc</a></li>
+<li>wcfInitDefaultW()&#160;:&#160;<a class="el" href="c__wcf_2client_8h.html#a2288879b5fc641beba09ec3800cd5a38">client.h</a>, <a class="el" href="c__wcf_2client_8cc.html#a2288879b5fc641beba09ec3800cd5a38">client.cc</a></li>
+<li>wcfInitW()&#160;:&#160;<a class="el" href="c__wcf_2client_8h.html#a7087bccb0f309cac0104c179954395a8">client.h</a>, <a class="el" href="c__wcf_2client_8cc.html#a7087bccb0f309cac0104c179954395a8">client.cc</a></li>
+<li>wcfIsConnected()&#160;:&#160;<a class="el" href="c__wcf_2client_8h.html#a4cc00dcdf452ec749e5e8f0e73158b57">client.h</a>, <a class="el" href="c__wcf_2client_8cc.html#a4cc00dcdf452ec749e5e8f0e73158b57">client.cc</a></li>
+<li>wcfIsValid()&#160;:&#160;<a class="el" href="c__wcf_2client_8cc.html#ab9d51c692b17a6d3376494d8da0dbf40">client.cc</a>, <a class="el" href="c__wcf_2client_8h.html#ab9d51c692b17a6d3376494d8da0dbf40">client.h</a></li>
+<li>wcfNewLine()&#160;:&#160;<a class="el" href="c__wcf_2view_8h.html#a55711caabc1dd11ce91cfe3d2391ff31">view.h</a>, <a class="el" href="client_2src_2c__wcf_2view_8cc.html#a75cb41584bf46920050c9be45f71aa1b">view.cc</a></li>
+<li>wcfStart()&#160;:&#160;<a class="el" href="c__wcf_2client_8h.html#ad84e50d3482bedb7ccfa278bfc00120c">client.h</a>, <a class="el" href="c__wcf_2client_8cc.html#ad84e50d3482bedb7ccfa278bfc00120c">client.cc</a></li>
+<li>wcfSync()&#160;:&#160;<a class="el" href="c__wcf_2client_8h.html#ad675449898eb92ab9461d31fe88b4896">client.h</a>, <a class="el" href="c__wcf_2client_8cc.html#ad675449898eb92ab9461d31fe88b4896">client.cc</a></li>
+<li>wcfText()&#160;:&#160;<a class="el" href="c__wcf_2view_8h.html#aa4da60375e4605b9c85fa1ded4d1c479">view.h</a>, <a class="el" href="client_2src_2c__wcf_2view_8cc.html#aa4da60375e4605b9c85fa1ded4d1c479">view.cc</a></li>
+<li>wcfTextGet()&#160;:&#160;<a class="el" href="c__wcf_2text_8h.html#abf4899fe704f996d49ee477cfb8002dd">text.h</a>, <a class="el" href="c__wcf_2text_8cc.html#abf4899fe704f996d49ee477cfb8002dd">text.cc</a></li>
+<li>wcfTextGetT()&#160;:&#160;<a class="el" href="c__wcf_2text_8cc.html#a2716154bb3cf8dfba13de7a1a82620a4">text.cc</a></li>
+<li>wcfTextGetW()&#160;:&#160;<a class="el" href="c__wcf_2text_8h.html#af90b9c337add2b1fb76aa46c6b4e6fbe">text.h</a>, <a class="el" href="c__wcf_2text_8cc.html#af90b9c337add2b1fb76aa46c6b4e6fbe">text.cc</a></li>
+<li>wcfTextSet()&#160;:&#160;<a class="el" href="c__wcf_2text_8h.html#a94470a2a84a02b9af795174cf9d317f9">text.h</a>, <a class="el" href="c__wcf_2text_8cc.html#a94470a2a84a02b9af795174cf9d317f9">text.cc</a></li>
+<li>wcfTextSetN()&#160;:&#160;<a class="el" href="c__wcf_2text_8cc.html#a2dbf1b9e940ba3f11d8a61e533ac39b8">text.cc</a>, <a class="el" href="c__wcf_2text_8h.html#a2dbf1b9e940ba3f11d8a61e533ac39b8">text.h</a></li>
+<li>wcfTextSetNT()&#160;:&#160;<a class="el" href="c__wcf_2text_8cc.html#aa8fe775151888a4a5125525f275eefd2">text.cc</a></li>
+<li>wcfTextSetNW()&#160;:&#160;<a class="el" href="c__wcf_2text_8h.html#a4d3064523b17a938de05fe25773844ee">text.h</a>, <a class="el" href="c__wcf_2text_8cc.html#a4d3064523b17a938de05fe25773844ee">text.cc</a></li>
+<li>wcfTextSetT()&#160;:&#160;<a class="el" href="c__wcf_2text_8cc.html#ab5f31e04024de3bf1cd0a780cfe8a648">text.cc</a></li>
+<li>wcfTextSetW()&#160;:&#160;<a class="el" href="c__wcf_2text_8h.html#a0d0f4b045581b1c2a0559195cb956d2f">text.h</a>, <a class="el" href="c__wcf_2text_8cc.html#a0d0f4b045581b1c2a0559195cb956d2f">text.cc</a></li>
+<li>wcfValD()&#160;:&#160;<a class="el" href="c__wcf_2func_8h.html#aee7f0f53dcb913e408f3032f7c9f796b">func.h</a>, <a class="el" href="c__wcf_2client_8cc.html#aee7f0f53dcb913e408f3032f7c9f796b">client.cc</a></li>
+<li>wcfValI()&#160;:&#160;<a class="el" href="c__wcf_2func_8h.html#aa371cd469c55d58b0332f2261a120533">func.h</a>, <a class="el" href="c__wcf_2client_8cc.html#aa371cd469c55d58b0332f2261a120533">client.cc</a></li>
+<li>wcfValS()&#160;:&#160;<a class="el" href="c__wcf_2func_8h.html#aef51e8d5db05da0a19a3c4f58a4c5193">func.h</a>, <a class="el" href="c__wcf_2client_8cc.html#aef51e8d5db05da0a19a3c4f58a4c5193">client.cc</a></li>
+<li>wcfValueGet()&#160;:&#160;<a class="el" href="c__wcf_2value_8h.html#a6b8bc18477f9e8bca7a5b1965f4905a0">value.h</a>, <a class="el" href="client_2src_2c__wcf_2value_8cc.html#a6b8bc18477f9e8bca7a5b1965f4905a0">value.cc</a></li>
+<li>wcfValueGetT()&#160;:&#160;<a class="el" href="client_2src_2c__wcf_2value_8cc.html#ac77c71aaac601aa70c5beb0e8a217e6a">value.cc</a></li>
+<li>wcfValueGetVecD()&#160;:&#160;<a class="el" href="client_2src_2c__wcf_2value_8cc.html#a0f854340c16f01ef95424003d1ae84ca">value.cc</a>, <a class="el" href="c__wcf_2value_8h.html#a0f854340c16f01ef95424003d1ae84ca">value.h</a></li>
+<li>wcfValueGetVecDT()&#160;:&#160;<a class="el" href="client_2src_2c__wcf_2value_8cc.html#a8ac9f043b4f0c9efa0e72c24467a06d9">value.cc</a></li>
+<li>wcfValueGetVecDW()&#160;:&#160;<a class="el" href="c__wcf_2value_8h.html#a1983451ac70a3c9a70f7267c81a97834">value.h</a>, <a class="el" href="client_2src_2c__wcf_2value_8cc.html#a1983451ac70a3c9a70f7267c81a97834">value.cc</a></li>
+<li>wcfValueGetW()&#160;:&#160;<a class="el" href="c__wcf_2value_8h.html#a10c435e95fe63e65569c9f4914f02b06">value.h</a>, <a class="el" href="client_2src_2c__wcf_2value_8cc.html#a10c435e95fe63e65569c9f4914f02b06">value.cc</a></li>
+<li>wcfValueSet()&#160;:&#160;<a class="el" href="c__wcf_2value_8h.html#aa11a6ea52672771139a39b354bd78346">value.h</a>, <a class="el" href="client_2src_2c__wcf_2value_8cc.html#aa11a6ea52672771139a39b354bd78346">value.cc</a></li>
+<li>wcfValueSetT()&#160;:&#160;<a class="el" href="client_2src_2c__wcf_2value_8cc.html#ab226c6b45fa04107278889ea115c9410">value.cc</a></li>
+<li>wcfValueSetVecD()&#160;:&#160;<a class="el" href="c__wcf_2value_8h.html#a28bdf7e1102e753766f30043725ec516">value.h</a>, <a class="el" href="client_2src_2c__wcf_2value_8cc.html#ae6cfcc4723595c7428e5c832853b15d6">value.cc</a></li>
+<li>wcfValueSetVecDT()&#160;:&#160;<a class="el" href="client_2src_2c__wcf_2value_8cc.html#a2ead51a3b7759b057cea646ff3f89f82">value.cc</a></li>
+<li>wcfValueSetVecDW()&#160;:&#160;<a class="el" href="c__wcf_2value_8h.html#af91873372e89750926635b2951f912ab">value.h</a>, <a class="el" href="client_2src_2c__wcf_2value_8cc.html#ac0b849d27f33383056507bebf7dad443">value.cc</a></li>
+<li>wcfValueSetW()&#160;:&#160;<a class="el" href="client_2src_2c__wcf_2value_8cc.html#a1f7b0c75a04d7aa7dc99f584648fbba1">value.cc</a>, <a class="el" href="c__wcf_2value_8h.html#a1f7b0c75a04d7aa7dc99f584648fbba1">value.h</a></li>
+<li>wcfValWD()&#160;:&#160;<a class="el" href="c__wcf_2func_8h.html#af334d74b01206c3b3afdc000824e2158">func.h</a></li>
+<li>wcfValWI()&#160;:&#160;<a class="el" href="c__wcf_2func_8h.html#aad61db2dfc28c8bc8515643c8e873680">func.h</a></li>
+<li>wcfValWS()&#160;:&#160;<a class="el" href="c__wcf_2func_8h.html#a677d462cfbdae8e1484c156598df00c6">func.h</a></li>
+<li>wcfViewGet()&#160;:&#160;<a class="el" href="c__wcf_2view_8h.html#a497c9ae39d84d9efde5574adc41e2cdf">view.h</a>, <a class="el" href="client_2src_2c__wcf_2view_8cc.html#a497c9ae39d84d9efde5574adc41e2cdf">view.cc</a></li>
+<li>wcfViewGetT()&#160;:&#160;<a class="el" href="client_2src_2c__wcf_2view_8cc.html#a599095a5895f34ef17116d73402bba68">view.cc</a></li>
+<li>wcfViewGetW()&#160;:&#160;<a class="el" href="c__wcf_2view_8h.html#a727fd7cf3bd5e725f83038f2e3e1c493">view.h</a>, <a class="el" href="client_2src_2c__wcf_2view_8cc.html#a727fd7cf3bd5e725f83038f2e3e1c493">view.cc</a></li>
+<li>wcfViewInit()&#160;:&#160;<a class="el" href="client_2src_2c__wcf_2view_8cc.html#ac07b9cc0900751a0d4f8bc1cbe0a282d">view.cc</a></li>
+<li>wcfViewSet()&#160;:&#160;<a class="el" href="c__wcf_2view_8h.html#ac4ee7b53b9afcff2d84a138a142ae00d">view.h</a>, <a class="el" href="client_2src_2c__wcf_2view_8cc.html#ac4ee7b53b9afcff2d84a138a142ae00d">view.cc</a></li>
+<li>wcfViewSetT()&#160;:&#160;<a class="el" href="client_2src_2c__wcf_2view_8cc.html#a25562396e4566d791cf904187fc65154">view.cc</a></li>
+<li>wcfViewSetW()&#160;:&#160;<a class="el" href="c__wcf_2view_8h.html#a4a8274762f420df020364ad27fb8c795">view.h</a>, <a class="el" href="client_2src_2c__wcf_2view_8cc.html#a4a8274762f420df020364ad27fb8c795">view.cc</a></li>
+<li>writeLog()&#160;:&#160;<a class="el" href="logger_8cc.html#a5f5636c1b7c8fb0b11ccfe98de12032c">logger.cc</a></li>
+</ul>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="footer">Generated on Sun Jun 30 2024 10:34:27 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+  </ul>
+</div>
+</body>
+</html>

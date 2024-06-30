@@ -301,11 +301,11 @@ Windows (MSVC)</h2>
 <p>exeファイルは実行するとインストーラーが起動します。 zipファイルは任意の場所に展開して使用してください。</p>
 <p>(ver2.0〜) Windows版WebCFaceのReleaseに含まれるビルド済みのspdlogは <code>SPDLOG_WCHAR_SUPPORT</code> オプションがオンの状態です</p>
 <p>MinGW用バイナリは今のところ配布していません(ソースからビルドしてください)</p>
-<h2><a class="anchor" id="autotoc_md212"></a>
-Build from source</h2>
+<h1><a class="anchor" id="autotoc_md212"></a>
+Build from source</h1>
 <p>以下はwebcfaceをソースからビルドする場合の説明です。(webcfaceをインストールした場合は不要です。)</p>
-<h3><a class="anchor" id="autotoc_md213"></a>
-Requirements</h3>
+<h2><a class="anchor" id="autotoc_md213"></a>
+Requirements</h2>
 <ul>
 <li>C++20に対応したコンパイラが必要です<ul>
 <li>GCCはgcc-10以上が必要です。</li>
@@ -316,11 +316,20 @@ Requirements</h3>
 </ul>
 </li>
 <li>webcfaceは外部ライブラリとして <a href="https://github.com/msgpack/msgpack-c">msgpack-cxx</a>, <a href="https://github.com/wqking/eventpp">eventpp</a>, <a href="https://github.com/gabime/spdlog">spdlog</a>, <a href="https://github.com/curl/curl">curl</a>, <a href="https://github.com/CrowCpp/Crow">crow</a>, <a href="https://github.com/chriskohlhoff/asio">asio</a>, <a href="https://github.com/CLIUtils/CLI11.git">cli11</a>, <a href="https://github.com/nemtrif/utfcpp">UTF8-CPP</a>, <a href="https://opencv.org/">OpenCV</a>(exampleのみ), <a href="https://github.com/ImageMagick/ImageMagick">Magick++</a>, <a href="https://github.com/google/googletest">GoogleTest</a>(testのみ) を使用します。<ul>
-<li>いずれもCMake時に自動的にFetchContentでソースコードを取得してビルドするので、必ずしもこれらをインストールする必要はありません。</li>
-<li>eventpp, msgpack, spdlog, ImageMagick に関してはシステムにインストールされていてfind_packageで見つけることができればそれを使用します</li>
-<li>OpenCVはソースからビルドしません。OpenCVを使ったexampleをビルドしたい場合は別途インストールする必要がありますが、example以外では使用しないのでほぼ必要ないと思います。</li>
-<li>libcurlはwebsocket機能を有効にする必要があるためインストールされている場合でもソースからビルドします</li>
+<li>いずれもシステムにインストールされていてfind_packageなどで使うことができるか確認します。<ul>
+<li>見つからない場合は、CMake時に自動的にFetchContentでソースコードを取得してビルドするので、必ずしもこれらをインストールする必要はありません。</li>
+</ul>
+</li>
+<li>また、<code>git submodule update --init</code> をしておくとsubmoduleとしてexternalディレクトリ以下に依存ライブラリをすべてcloneすることができます。その場合はFetchContentでのダウンロードはされません。<ul>
+<li>ダウンロード量は増えますが、インターネット接続のないところでcmakeをしたい場合などに有用です。</li>
+<li>ただしMSVCの場合ImageMagick-Windowsリポジトリは例外として常にFetchContentを使います</li>
+</ul>
+</li>
+<li>libcurlはwebsocket機能を有効にする必要があるため、インストールされているlibcurlでwebsocketが使えない場合使用せずソースからビルドします。</li>
+<li>crowはunix_socketの機能が実装されている必要があるため、インストールされているcrowでunix_socketが使えない場合使用せずソースからビルドします</li>
+<li>Magick++はマルチスレッドで実行するためにOpenMPが無効になっている必要があるため、インストールされているMagick++がOpenMPを使用してビルドされていた場合使用せずソースからビルドします</li>
 <li>googletestはchar8_tの機能を有効にする必要があるためインストールされている場合でもソースからビルドします</li>
+<li>OpenCVはソースからビルドしません。OpenCVを使ったexampleをビルドしたい場合は別途インストールする必要がありますが、example以外では使用しないのでほぼ必要ないと思います。</li>
 </ul>
 </li>
 </ul>
@@ -328,9 +337,9 @@ Requirements</h3>
 <summary >
 Ubuntu</summary>
 <p></p>
-<div class="fragment"><div class="line">sudo apt install build-essential git cmake</div>
+<div class="fragment"><div class="line">sudo apt install build-essential git cmake pkg-config</div>
 <div class="line"># optional:</div>
-<div class="line">sudo apt install libspdlog-dev libasio-dev libmagick++-dev</div>
+<div class="line">sudo apt install libspdlog-dev libasio-dev</div>
 <div class="line">sudo apt install libcli11-dev # only on 22.04 or later</div>
 <div class="line">sudo apt install libmsgpack-cxx-dev # only on 24.04 or later</div>
 </div><!-- fragment --><p>ubuntu20.04の場合デフォルトのコンパイラ(gcc-9)ではビルドできないのでgcc-10にする必要があります </p><div class="fragment"><div class="line">sudo apt install gcc-10 g++-10</div>
@@ -343,16 +352,15 @@ Homebrew (MacOS, Linux)</summary>
 <p></p>
 <div class="fragment"><div class="line">brew install cmake</div>
 <div class="line"># optional:</div>
-<div class="line">brew install msgpack-cxx spdlog asio cli11 utf8cpp imagemagick</div>
+<div class="line">brew install msgpack-cxx spdlog asio cli11 utf8cpp</div>
 </div><!-- fragment --> </details>
 <details >
 <summary >
 Visual Studio</summary>
 <p></p>
 <p>Visual Studio 2019 または 2022 でcloneしたwebcfaceのフォルダーを開くか、 Developer Command Promptからcmakeコマンドを使ってもビルドできます。</p>
-<p><a href="https://imagemagick.org/script/download.php">https://imagemagick.org/script/download.php</a> からImageMagickをダウンロード、インストールしてPATHを通せばそれを使用してビルドすることができます。 (インストール時に development header もインストールすること)</p>
-<p>または、chocolateyをインストールしてあれば <code>choco install imagemagick -PackageParameters InstallDevelopmentHeaders=true</code> でok</p>
-<p>ImageMagickをインストールしない場合CMake時に自動的にソースをダウンロードしてビルドします。 その場合 Visual C++ ATL と MFC のコンポーネントも必要になります。</p>
+<p>ImageMagickをソースからビルドするために Visual C++ ATL と MFC のコンポーネントも必要になります。 (Visual Studio Installer からインストールしてください) <br  />
+ 公式サイトからダウンロードできるImageMagickはOpenMPを使ってビルドされているため、インストールされていても使いません。 (またはImageMagickを別途 /noOpenMP オプション付きでビルドしたものを用意しPATHを通せばそれを使用することは可能です)</p>
 <p></p>
 </details>
 <details >
@@ -363,26 +371,28 @@ MSYS2</summary>
 <div class="line">pacboy -S git make gcc:p cmake:p ninja:p</div>
 <div class="line"># optional:</div>
 <div class="line">pacboy -S msgpack-cxx:p spdlog:p asio:p cli11:p utf8cpp:p imagemagick:p </div>
-</div><!-- fragment --><p> imagemagickをソースからビルドする際にninjaではなくmakeが必要になります</p>
+</div><!-- fragment --><p> imagemagickをソースからビルドする際にはninjaではなくmakeが必要になります</p>
 <p></p>
 </details>
-<h3><a class="anchor" id="autotoc_md214"></a>
-Build (with Pure CMake)</h3>
+<h2><a class="anchor" id="autotoc_md214"></a>
+CMake</h2>
 <div class="fragment"><div class="line">cmake -Bbuild</div>
-<div class="line">cmake --build build</div>
-<div class="line">sudo cmake --build build -t install</div>
 </div><!-- fragment --><ul>
-<li>CMakeのオプション<ul>
-<li><code>-DWEBCFACE_SHARED=off</code>にすると共有ライブラリではなくすべて静的ライブラリになります<ul>
-<li><code>-DWEBCFACE_PIC=on</code>または<code>-DCMAKE_POSITION_INDEPENDENT_CODE=on</code>にすると-fPICフラグが有効になります (Linux,Macのみ、WEBCFACE_SHAREDがonの場合on)</li>
+<li>ImageMagickなど、CMakeを使わない依存ライブラリのビルドはCMake時に行われます。そのため初回のCMakeで大量のログ出力が流れ時間もかかりますが仕様です。</li>
+<li>CMakeの最後に <code>** WebCFace (バージョン番号) Summary**</code> と指定されているオプション、依存ライブラリの状態がまとめて表示されます。</li>
+<li>BUILD_TYPEは <code>-DCMAKE_BUILD_TYPE=Release</code> または <code>-DCMAKE_BUILD_TYPE=Debug</code> を指定してください (デフォルトはRelease)<ul>
+<li>Windows(MSVC)ではImageMagickをソースからビルドする際デフォルトでは<code>CMAKE_BUILD_TYPE</code>に指定したconfigurationのみビルドされますが、DebugとReleaseの両方をビルドしたい場合は <code>-DWEBCFACE_CONFIG_ALL=ON</code> を指定してください</li>
 </ul>
 </li>
-<li><code>-DWEBCFACE_EXAMPLE=on</code>でexampleをビルドします(submoduleの場合デフォルトでoff)</li>
-<li><code>-DWEBCFACE_INSTALL=on</code>でtargetをinstallします(submoduleの場合デフォルトでoff)<ul>
-<li>さらに<code>-DWEBCFACE_INSTALL_SERVICE=on</code>で <a href="cmake/webcafce-server.service">webcface-server.service</a> を lib/systemd/system にインストールします (デフォルトでoff)</li>
+<li><code>-DWEBCFACE_SHARED=OFF</code>にすると共有ライブラリではなくすべて静的ライブラリになります</li>
+<li><code>-DWEBCFACE_PIC=ON</code>または<code>-DCMAKE_POSITION_INDEPENDENT_CODE=ON</code>にすると-fPICフラグが有効になります (Linux,Macのみ、WEBCFACE_SHAREDがONの場合はデフォルトでON)</li>
+<li><code>-DWEBCFACE_EXAMPLE=ON</code>でexampleをビルドします(デフォルトでON、subdirectoryの場合デフォルトでOFF)</li>
+<li><code>-DWEBCFACE_INSTALL=ON</code>でinstallターゲットを生成します(デフォルトでON、subdirectoryの場合デフォルトでOFF)<ul>
+<li>さらに<code>-DWEBCFACE_INSTALL_SERVICE=ON</code>で <a href="cmake/webcafce-server.service">webcface-server.service</a> を lib/systemd/system にインストールします (デフォルトでOFF)</li>
+<li>インストール先はデフォルトで /usr/local ですが、 <code>-DCMAKE_INSTALL_PREFIX=~/.webcface</code> などと指定すると変更することができます</li>
 </ul>
 </li>
-<li><code>-DWEBCFACE_TEST=on</code>でtestをビルドします(デフォルトでoff)<ul>
+<li><code>-DWEBCFACE_TEST=ON</code>でtestをビルドします(デフォルトでOFF)<ul>
 <li>テストが通らない場合テスト中の通信の待機時間を<code>-DWEBCFACE_TEST_TIMEOUT=100</code>などと伸ばすとうまく行く場合があります(デフォルト=10(ms))</li>
 </ul>
 </li>
@@ -393,23 +403,17 @@ Build (with Pure CMake)</h3>
 <li><code>-DWEBCFACE_VERSION_SUFFIX=</code> で 1.2.0 だけになります</li>
 </ul>
 </li>
-<li><code>-DWEBCFACE_DOWNLOAD_WEBUI=off</code>を指定するとWebUIをダウンロードしません。</li>
+<li><code>-DWEBCFACE_DOWNLOAD_WEBUI=OFF</code>を指定するとWebUIをダウンロードしません。</li>
 <li>依存ライブラリ<ul>
-<li>デフォルトではfind_packageやpkg_check_modulesなどで依存ライブラリがインストールされているか確認し、見つかればそれを使い見つからなければソースコードをダウンロードします。</li>
-<li><code>git submodule update --init</code> でsubmoduleとしてexternalディレクトリ以下に依存ライブラリをすべてcloneすることができます。その場合はFetchContentでのダウンロードはされません。(インターネット接続のないところでcmakeをしたい場合などに有用) (MSVCの場合のImageMagick-Windowsリポジトリを除く)</li>
-<li><code>-DWEBCFACE_FIND_(ライブラリ)=off</code> にするとインストールしたものは使わず常にソースからビルドするようになります。</li>
+<li><code>-DWEBCFACE_FIND_(ライブラリ)=OFF</code> にするとfind_packageなどで依存ライブラリを確認せず、常にソースからビルドするようになります。</li>
 <li>設定可能なライブラリ名は以下<ul>
 <li><code>MSGPACK</code>, <code>SPDLOG</code>, <code>EVENTPP</code>, <code>CURL</code>, <code>CROW</code>, <code>ASIO</code>, <code>CLI11</code>, <code>UTF8CPP</code>, <code>MAGICK</code></li>
 <li><code>OPENCV</code> (デフォルトでoff、見つからなかった場合ソースからのビルドもしません)</li>
 <li>Magickをソースビルドする場合のみ: <code>JPEG</code>, <code>PNG</code>, <code>ZLIB</code>, <code>WEBP</code></li>
 </ul>
 </li>
-<li><code>-DWEBCFACE_FIND_LIBS=off</code> とすると上記設定をすべてoffにします<ul>
-<li>WEBCFACE_SHAREDがoffの場合デフォルトでoff</li>
-</ul>
-</li>
-<li>Windows(MSVC)でImageMagickをソースからビルドする場合、デフォルトでは<code>CMAKE_BUILD_TYPE</code>に指定したconfigurationのみビルドされます<ul>
-<li>DebugとReleaseの両方をビルドしたい場合は <code>-DWEBCFACE_CONFIG_ALL=on</code> を指定してください</li>
+<li><code>-DWEBCFACE_FIND_LIBS=OFF</code> とすると上記設定をすべてOFFにします<ul>
+<li>WEBCFACE_SHAREDがOFFの場合デフォルトでOFF</li>
 </ul>
 </li>
 <li>spdlogのオプション<ul>
@@ -420,33 +424,22 @@ Build (with Pure CMake)</h3>
 </ul>
 </li>
 </ul>
-</li>
-</ul>
-<h3><a class="anchor" id="autotoc_md215"></a>
-Build (with colcon, ROS2)</h3>
-<ul>
-<li>このリポジトリをワークスペースのsrcに追加して、colconでビルドすることができます</li>
-</ul>
-<h3><a class="anchor" id="autotoc_md216"></a>
-WebUI</h3>
-<ul>
-<li>デフォルトではビルド済みのものがcmake時にダウンロードされます。</li>
-<li><code>-DWEBCFACE_DOWNLOAD_WEBUI=off</code>を指定するとダウンロードしません。<ul>
-<li>その場合は <a href="https://github.com/na-trium-144/webcface-webui/releases">webuiのReleases</a> からビルド済みのtar.gzのアーカイブをダウンロードして /usr/local/share/webcface/dist として展開するのが簡単です。<ul>
-<li>install先が/usr/localでない場合はprefixを読み替えてください</li>
-<li>installせずに実行する場合は webcface-server のバイナリと同じディレクトリか、その1, 2, 3階層上のどこかにdistディレクトリを配置してください</li>
-</ul>
-</li>
-<li>または自分でビルドすることも可能です(node.jsが必要)</li>
-</ul>
-</li>
-<li>このリポジトリのReleasesにあるdebパッケージとhomebrewではwebcfaceのパッケージとは別で配布しています</li>
-</ul>
-<h3><a class="anchor" id="autotoc_md217"></a>
-tools</h3>
-<ul>
-<li>toolsは別途 <a href="https://github.com/na-trium-144/webcface-tools.git">https://github.com/na-trium-144/webcface-tools.git</a> をcloneしてビルド、インストールしてください</li>
-</ul>
+<h2><a class="anchor" id="autotoc_md215"></a>
+Build</h2>
+<div class="fragment"><div class="line">cmake --build build</div>
+</div><!-- fragment --><p> でビルドします (Windows(MSVC)の場合は <code>--config Release</code> または <code>--config Debug</code> を追加してください。)</p>
+<p>インストールもしたい場合は </p><div class="fragment"><div class="line">sudo cmake --build build -t install</div>
+</div><!-- fragment --><p> でできます (Windows(MSVC)の場合は <code>--config Release</code> または <code>--config Debug</code> を追加してください。)</p>
+<h2><a class="anchor" id="autotoc_md216"></a>
+WebUI</h2>
+<p>デフォルトではビルド済みのものがCMake時にダウンロードされますが、 <code>-DWEBCFACE_DOWNLOAD_WEBUI=OFF</code> を指定した場合はダウンロードしません。 その場合は <a href="https://github.com/na-trium-144/webcface-webui/releases">webuiのReleases</a> からビルド済みのtar.gzのアーカイブをダウンロードしてください。</p>
+<p>インストールする場合は (webcfaceのインストール場所)/share/webcface/dist として展開してください。 (install先が/usr/localでない場合はprefixを読み替えてください)</p>
+<p>installせずに実行する場合は webcface-server のバイナリと同じディレクトリか、その1, 2, 3階層上のどこかにdistディレクトリを配置してください。</p>
+<p>Ubuntuの場合は<a href="https://github.com/na-trium-144/webcface-webui/releases">webuiのReleases</a>にあるdebパッケージで、またhomebrewでは <code>webcface-webui</code> パッケージとしてWebUIだけを単体でインストールすることもできます。</p>
+<p>または自分でビルドすることも可能です。(node.jsが必要) <a href="https://github.com/na-trium-144/webcface-webui">webcface-webui</a> のREADMEを参照してください。</p>
+<h2><a class="anchor" id="autotoc_md217"></a>
+tools</h2>
+<p>toolsは別途 <a href="https://github.com/na-trium-144/webcface-tools.git">https://github.com/na-trium-144/webcface-tools.git</a> をcloneしてビルド、インストールしてください</p>
 <h1><a class="anchor" id="autotoc_md218"></a>
 Documentation</h1>
 <ul>
@@ -478,7 +471,7 @@ License</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Jun 25 2024 18:47:45 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Sun Jun 30 2024 10:34:27 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

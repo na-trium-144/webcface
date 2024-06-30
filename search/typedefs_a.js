@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['textdata_0',['TextData',['../namespacewebcface_1_1Internal.html#a112c04e1cb185887034814f635d4ac5f',1,'webcface::Internal']]],
-  ['traits_5ftype_1',['traits_type',['../classwebcface_1_1BasicLoggerBuf.html#afc0caee22c745024441f2fe4eaeb3310',1,'webcface::BasicLoggerBuf']]]
+  ['valuedata_0',['ValueData',['../namespacewebcface_1_1Internal.html#af1d547aa847a04151e23db8aef4a0758',1,'webcface::Internal']]],
+  ['viewdata_1',['ViewData',['../namespacewebcface_1_1Internal.html#ac01338cae4b904694c52c8582a282ddb',1,'webcface::Internal']]]
 ];

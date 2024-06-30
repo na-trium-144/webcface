@@ -1,6 +1,8 @@
 var searchData=
 [
-  ['imagebase_0',['imagebase',['../namespacewebcface_1_1Common.html#ab04304b2017cf40223df2bfb82dd175e',1,'webcface::ImageBase'],['../namespacewebcface_1_1Common.html#ab04304b2017cf40223df2bfb82dd175e',1,'webcface::Common::ImageBase']]],
-  ['imagedata_1',['ImageData',['../namespacewebcface_1_1Internal.html#a8c6d0a075c8c538242b0759f1c4aa4b8',1,'webcface::Internal']]],
-  ['int_5ftype_2',['int_type',['../classwebcface_1_1BasicLoggerBuf.html#a853470018b834a78da72cb5168d974a6',1,'webcface::BasicLoggerBuf']]]
+  ['loggerbuf_0',['LoggerBuf',['../namespacewebcface.html#ac14437b6295dda3ecebabb35281b452b',1,'webcface']]],
+  ['loggerbufw_1',['LoggerBufW',['../namespacewebcface.html#a1adba1cdaaa06aa271cb09936167a2e5',1,'webcface']]],
+  ['loggercallback_2',['loggercallback',['../namespacewebcfaceServerInternal.html#a0f714276a4ae2a223ba9e9ae731a22ba',1,'webcfaceServerInternal::LoggerCallback'],['../dummy__server_8cc.html#a0f714276a4ae2a223ba9e9ae731a22ba',1,'LoggerCallback:&#160;dummy_server.cc']]],
+  ['logline_3',['LogLine',['../namespacewebcface.html#a46b5ef797cadc62be5f7a57346029063',1,'webcface']]],
+  ['loglinew_4',['LogLineW',['../namespacewebcface.html#a1633a07d91ecf38ba8cfc15b2a4ebd18',1,'webcface']]]
 ];

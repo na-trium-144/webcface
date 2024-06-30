@@ -1,11 +1,9 @@
 <map id="Call" name="Call">
-<area shape="rect" id="Node000001" title="関数呼び出し (client(caller)&#45;&gt;server&#45;&gt;client(receiver))" alt="" coords="173,183,220,208"/>
+<area shape="rect" id="Node000001" title="関数呼び出し (client(caller)&#45;&gt;server&#45;&gt;client(receiver))" alt="" coords="227,196,273,221"/>
 <area shape="rect" id="Node000002" href="$structwebcface_1_1Message_1_1MessageBase.html" title=" " alt="" coords="5,93,220,133"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="144,141,186,181,183,184,141,145"/>
-<area shape="rect" id="Node000003" href="$structwebcface_1_1Message_1_1MessageBase.html" title="型からkindを取得するためだけのベースクラス" alt="" coords="31,5,181,31"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="110,44,114,93,109,93,105,45"/>
-<area shape="rect" id="Node000004" href="$structwebcface_1_1Common_1_1FuncCall.html" title="関数を呼び出すのに必要なデータ。" alt="" coords="247,101,325,126"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="265,137,211,185,208,181,261,133"/>
-<area shape="rect" id="Node000005" href="$classwebcface_1_1Encoding_1_1SharedString.html" title="u8stringとstringとwstringをshared_ptrで持ち共有する" alt="" coords="237,5,343,31"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="292,44,289,101,284,100,286,44"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="153,139,235,194,232,198,150,143"/>
+<area shape="rect" id="Node000003" href="$structwebcface_1_1Message_1_1MessageBase.html" title="型からkindを取得するためだけのベースクラス" alt="" coords="37,5,188,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="115,44,115,93,110,93,110,44"/>
+<area shape="rect" id="Node000004" href="$classwebcface_1_1Encoding_1_1SharedString.html" title="u8stringとstringとwstringをshared_ptrで持ち共有する" alt="" coords="244,101,349,126"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="287,139,258,197,253,195,282,137"/>
 </map>

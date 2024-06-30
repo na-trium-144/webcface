@@ -1,5 +1,0 @@
-<map id="RobotModel::RobotLink" name="RobotModel::RobotLink">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,108,179,133"/>
-<area shape="rect" id="Node000002" href="$classwebcface_1_1Encoding_1_1SharedString.html" title="u8stringとstringとwstringをshared_ptrで持ち共有する" alt="" coords="39,5,145,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="95,45,95,108,89,108,89,45"/>
-</map>

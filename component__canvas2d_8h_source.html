@@ -1,0 +1,410 @@
+<!-- HTML header for doxygen 1.9.8-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>WebCFace: /home/runner/work/webcface/webcface/client/include/webcface/component_canvas2d.h Source File</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen_custom.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeDarkModeToggle.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeParagraphLink.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeTabs.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeInteractiveToc.init()
+</script>
+<script type="text/javascript">
+  function insertBadge(){
+    for(const sp of document.getElementsByClassName('since-c')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-00599c?logo=C%2B%2B" alt="c++ ver${ver}" class="inline">`;
+    }
+    for(const sp of document.getElementsByClassName('since-js')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-f7df1e?logo=JavaScript&amp;logoColor=black" alt="js ver${ver}" class="inline">`;
+    }
+    for(const sp of document.getElementsByClassName('since-py')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-3776ab?logo=python&amp;logoColor=white" alt="python ver${ver}" class="inline">`;
+    }
+  }
+</script>
+</head>
+<body onload="insertBadge();">
+<!-- https://tholman.com/github-corners/ -->
+<a href="https://github.com/na-trium-144/webcface" class="github-corner" aria-label="View source on GitHub">
+  <svg width="80" height="80" viewBox="0 0 250 250" style="fill:#64CEAA; color:#fff; position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path>
+  </svg>
+</a>
+<style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;1.11.4</span>
+   </div>
+   <div id="projectbrief">Web-based IPC &amp; Dashboard-like UI</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.9.8 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function() { init_codefold(0); });
+/* @license-end */
+</script>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function(){initNavTree('component__canvas2d_8h_source.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">component_canvas2d.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="component__canvas2d_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &lt;optional&gt;</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &lt;<a class="code" href="def_8h.html">webcface/common/def.h</a>&gt;</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &quot;<a class="code" href="transform_8h.html">transform.h</a>&quot;</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &quot;<a class="code" href="field_8h.html">field.h</a>&quot;</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &quot;<a class="code" href="component__view_8h.html">webcface/component_view.h</a>&quot;</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &quot;<a class="code" href="geometry_8h.html">webcface/geometry.h</a>&quot;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><a class="code hl_define" href="def_8h.html#abe991b8f291782627a31118c688e123a">WEBCFACE_NS_BEGIN</a></div>
+<div class="foldopen" id="foldopen00011" data-start="{" data-end="}">
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno"><a class="line" href="namespacewebcface_1_1Message.html">   11</a></span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceMessage.html">Message</a> {</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="keyword">struct </span><a class="code hl_struct" href="structwebcface_1_1Message_1_1Canvas2DComponent.html">Canvas2DComponent</a>;</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>}</div>
+</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
+<div class="foldopen" id="foldopen00015" data-start="{" data-end="};">
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno"><a class="line" href="namespacewebcface.html#a18133126518e30ea437441c60fa26928">   15</a></span><span class="keyword">enum class</span> <a class="code hl_enumeration" href="namespacewebcface.html#a18133126518e30ea437441c60fa26928">Canvas2DComponentType</a> {</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    <a class="code hl_enumvalue" href="namespacewebcface.html#a18133126518e30ea437441c60fa26928aed7daeb157cd9b31e53896ad3c771a26">geometry</a> = 0,</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>    text = 3,</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>};</div>
+</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#ifdef _WIN32</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="keyword">extern</span> <span class="keyword">template</span> <span class="keyword">class </span>WEBCFACE_DLL_INSTANCE_DECL <a class="code hl_variable" href="component__id_8cc.html#a690eb91139eef2ffe5f0e7f13a19060a">IdBase&lt;Canvas2DComponentType&gt;</a>;</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
+<div class="foldopen" id="foldopen00031" data-start="{" data-end="};">
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="classwebcface_1_1Canvas2DComponent.html">   31</a></span><span class="keyword">class </span><a class="code hl_define" href="def_8h.html#a47af057bda855b54c212e97ffccdca01">WEBCFACE_DLL</a> <a class="code hl_class" href="classwebcface_1_1Canvas2DComponent.html">Canvas2DComponent</a> : <span class="keyword">public</span> <a class="code hl_class" href="classwebcface_1_1IdBase.html">IdBase&lt;Canvas2DComponentType&gt;</a> {</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno"><a class="line" href="classwebcface_1_1Canvas2DComponent.html#acf420a0ba1ce5e817feac0f51c9056dc">   32</a></span>    std::weak_ptr&lt;Internal::ClientData&gt; <a class="code hl_variable" href="classwebcface_1_1Canvas2DComponent.html#acf420a0ba1ce5e817feac0f51c9056dc">data_w</a>;</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="classwebcface_1_1Canvas2DComponent.html#a7fe287aa5f80f8b41fe462137a324504">   33</a></span>    std::shared_ptr&lt;AnonymousFunc&gt; <a class="code hl_variable" href="classwebcface_1_1Canvas2DComponent.html#a7fe287aa5f80f8b41fe462137a324504">on_click_func_tmp</a>;</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="classwebcface_1_1Canvas2DComponent.html#aeebeae276313d63ad1c8b523e9d5ece6">   35</a></span>    <a class="code hl_enumeration" href="namespacewebcface.html#a18133126518e30ea437441c60fa26928">Canvas2DComponentType</a> <a class="code hl_variable" href="classwebcface_1_1Canvas2DComponent.html#aeebeae276313d63ad1c8b523e9d5ece6">type_</a>;</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno"><a class="line" href="classwebcface_1_1Canvas2DComponent.html#a05df68f5f0d213367feacfc47d7ac757">   36</a></span>    <a class="code hl_class" href="classwebcface_1_1Transform.html">Transform</a> <a class="code hl_variable" href="classwebcface_1_1Canvas2DComponent.html#a05df68f5f0d213367feacfc47d7ac757">origin_</a>;</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno"><a class="line" href="classwebcface_1_1Canvas2DComponent.html#a6a3c6f623cefece397f2c40ae313e1db">   37</a></span>    <a class="code hl_enumeration" href="namespacewebcface.html#a5dcc1f15d6a60ca34207565aeb74124a">ViewColor</a> <a class="code hl_variable" href="classwebcface_1_1Canvas2DComponent.html#a6a3c6f623cefece397f2c40ae313e1db">color_</a>, fill_;</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno"><a class="line" href="classwebcface_1_1Canvas2DComponent.html#a2b65e2d5b08af22d6d671f77aba1cc41">   38</a></span>    <span class="keywordtype">double</span> stroke_width_ = 0;</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno"><a class="line" href="classwebcface_1_1Canvas2DComponent.html#ac20e2e86e45228f035f10618e2ef5fe9">   39</a></span>    std::optional&lt;Geometry&gt; <a class="code hl_variable" href="classwebcface_1_1Canvas2DComponent.html#ac20e2e86e45228f035f10618e2ef5fe9">geometry_</a>;</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno"><a class="line" href="classwebcface_1_1Canvas2DComponent.html#a237b2153601b38352bfec5cbd156378f">   40</a></span>    std::optional&lt;FieldBase&gt; <a class="code hl_variable" href="classwebcface_1_1Canvas2DComponent.html#a237b2153601b38352bfec5cbd156378f">on_click_func_</a>;</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno"><a class="line" href="classwebcface_1_1Canvas2DComponent.html#ae1af4940359c29f642b7a8ffbc57e622">   41</a></span>    <a class="code hl_class" href="classwebcface_1_1Encoding_1_1SharedString.html">SharedString</a> <a class="code hl_variable" href="classwebcface_1_1Canvas2DComponent.html#ae1af4940359c29f642b7a8ffbc57e622">text_</a>;</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno"><a class="line" href="classwebcface_1_1Canvas2DComponent.html#adc0fdd68f7b5af936516400e494739cb">   44</a></span>    <a class="code hl_function" href="classwebcface_1_1Canvas2DComponent.html#adc0fdd68f7b5af936516400e494739cb">Canvas2DComponent</a>() = <span class="keywordflow">default</span>;</div>
+<div class="foldopen" id="foldopen00045" data-start="{" data-end="}">
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno"><a class="line" href="classwebcface_1_1Canvas2DComponent.html#a0315de7bfbce1dae55e689d2e7fd1e9e">   45</a></span>    <a class="code hl_function" href="classwebcface_1_1Canvas2DComponent.html#a0315de7bfbce1dae55e689d2e7fd1e9e">Canvas2DComponent</a>(<a class="code hl_enumeration" href="namespacewebcface.html#a18133126518e30ea437441c60fa26928">Canvas2DComponentType</a> type, <span class="keyword">const</span> <a class="code hl_class" href="classwebcface_1_1Transform.html">Transform</a> &amp;origin,</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>                      <a class="code hl_enumeration" href="namespacewebcface.html#a5dcc1f15d6a60ca34207565aeb74124a">ViewColor</a> color, <a class="code hl_enumeration" href="namespacewebcface.html#a5dcc1f15d6a60ca34207565aeb74124a">ViewColor</a> fill, <span class="keywordtype">double</span> stroke_width,</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>                      std::optional&lt;Geometry&gt; &amp;&amp;geometry,</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>                      std::optional&lt;FieldBase&gt; &amp;&amp;on_click_func,</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>                      <span class="keyword">const</span> <a class="code hl_class" href="classwebcface_1_1Encoding_1_1SharedString.html">SharedString</a> &amp;text)</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>        : type_(type), origin_(origin), color_(color), fill_(fill),</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>          stroke_width_(stroke_width), geometry_(std::move(<a class="code hl_enumvalue" href="namespacewebcface.html#a18133126518e30ea437441c60fa26928aed7daeb157cd9b31e53896ad3c771a26">geometry</a>)),</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>          on_click_func_(std::move(on_click_func)), text_(text) {}</div>
+</div>
+<div class="foldopen" id="foldopen00053" data-start="{" data-end="}">
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno"><a class="line" href="classwebcface_1_1Canvas2DComponent.html#a1575bc8d032b690ec49733ca38bd0510">   53</a></span>    <a class="code hl_function" href="classwebcface_1_1Canvas2DComponent.html#a1575bc8d032b690ec49733ca38bd0510">Canvas2DComponent</a>(<span class="keyword">const</span> <a class="code hl_class" href="classwebcface_1_1Canvas2DComponent.html">Canvas2DComponent</a> &amp;vc,</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>                      <span class="keyword">const</span> std::weak_ptr&lt;Internal::ClientData&gt; &amp;data_w,</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>                      std::unordered_map&lt;int, int&gt; *idx_next)</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>        : <a class="code hl_class" href="classwebcface_1_1Canvas2DComponent.html">Canvas2DComponent</a>(vc) {</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>        this-&gt;data_w = data_w;</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>        initIdx(idx_next, type_);</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    }</div>
+</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    <span class="comment">// Canvas2DComponent(Canvas2DComponentType type,</span></div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    <span class="comment">//                   const std::weak_ptr&lt;Internal::ClientData&gt; &amp;data_w)</span></div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    <span class="comment">//     : IdBase&lt;Canvas2DComponentType&gt;(), data_w(data_w),</span></div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    <span class="comment">//       on_click_func_tmp(nullptr) {</span></div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    <span class="comment">//     type_ = type;</span></div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    <span class="comment">// }</span></div>
+<div class="foldopen" id="foldopen00066" data-start="{" data-end="}">
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno"><a class="line" href="classwebcface_1_1Canvas2DComponent.html#a1a2e8067dec81163d12feb112a27c2bf">   66</a></span>    <span class="keyword">explicit</span> <a class="code hl_function" href="classwebcface_1_1Canvas2DComponent.html#a1a2e8067dec81163d12feb112a27c2bf">Canvas2DComponent</a>(<a class="code hl_enumeration" href="namespacewebcface.html#a18133126518e30ea437441c60fa26928">Canvas2DComponentType</a> type)</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>        : <a class="code hl_class" href="classwebcface_1_1IdBase.html">IdBase</a>&lt;<a class="code hl_enumeration" href="namespacewebcface.html#a18133126518e30ea437441c60fa26928">Canvas2DComponentType</a>&gt;(), data_w(),</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>          on_click_func_tmp(nullptr) {</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>        type_ = type;</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    }</div>
+</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    <a class="code hl_class" href="classwebcface_1_1Canvas2DComponent.html">Canvas2DComponent</a> &amp;</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    lockTmp(<span class="keyword">const</span> std::weak_ptr&lt;Internal::ClientData&gt; &amp;data_w,</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>            <span class="keyword">const</span> <a class="code hl_class" href="classwebcface_1_1Encoding_1_1SharedString.html">SharedString</a> &amp;view_name,</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>            std::unordered_map&lt;int, int&gt; *idx_next = <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    <a class="code hl_struct" href="structwebcface_1_1Message_1_1Canvas2DComponent.html">Message::Canvas2DComponent</a> toMessage() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    <a class="code hl_class" href="classwebcface_1_1Canvas2DComponent.html">Canvas2DComponent</a>(<span class="keyword">const</span> <a class="code hl_struct" href="structwebcface_1_1Message_1_1Canvas2DComponent.html">Message::Canvas2DComponent</a> &amp;cc);</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span> </div>
+<div class="foldopen" id="foldopen00087" data-start="{" data-end="}">
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno"><a class="line" href="classwebcface_1_1Canvas2DComponent.html#a5a4b222d1baf0e596a637f04d79f24a0">   87</a></span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classwebcface_1_1Canvas2DComponent.html#a5a4b222d1baf0e596a637f04d79f24a0">operator==</a>(<span class="keyword">const</span> <a class="code hl_class" href="classwebcface_1_1Canvas2DComponent.html">Canvas2DComponent</a> &amp;other)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>        <span class="keywordflow">return</span> id() == other.<a class="code hl_function" href="classwebcface_1_1IdBase.html#a67a39581664812c20ea4a5dd7d692106">id</a>() &amp;&amp; type_ == other.<a class="code hl_variable" href="classwebcface_1_1Canvas2DComponent.html#aeebeae276313d63ad1c8b523e9d5ece6">type_</a> &amp;&amp;</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>               origin_ == other.<a class="code hl_variable" href="classwebcface_1_1Canvas2DComponent.html#a05df68f5f0d213367feacfc47d7ac757">origin_</a> &amp;&amp; color_ == other.<a class="code hl_variable" href="classwebcface_1_1Canvas2DComponent.html#a6a3c6f623cefece397f2c40ae313e1db">color_</a> &amp;&amp;</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>               fill_ == other.<a class="code hl_variable" href="classwebcface_1_1Canvas2DComponent.html#ac7b37626ed2c4a3d06caa351f8233a33">fill_</a> &amp;&amp; stroke_width_ == other.<a class="code hl_variable" href="classwebcface_1_1Canvas2DComponent.html#a2b65e2d5b08af22d6d671f77aba1cc41">stroke_width_</a> &amp;&amp;</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>               geometry_ == other.<a class="code hl_variable" href="classwebcface_1_1Canvas2DComponent.html#ac20e2e86e45228f035f10618e2ef5fe9">geometry_</a> &amp;&amp;</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>               on_click_func_ == other.<a class="code hl_variable" href="classwebcface_1_1Canvas2DComponent.html#a237b2153601b38352bfec5cbd156378f">on_click_func_</a> &amp;&amp; text_ == other.<a class="code hl_variable" href="classwebcface_1_1Canvas2DComponent.html#ae1af4940359c29f642b7a8ffbc57e622">text_</a>;</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>    }</div>
+</div>
+<div class="foldopen" id="foldopen00097" data-start="{" data-end="}">
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno"><a class="line" href="classwebcface_1_1Canvas2DComponent.html#ae62e89eaa88830fbe54c989f9f8405eb">   97</a></span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classwebcface_1_1Canvas2DComponent.html#ae62e89eaa88830fbe54c989f9f8405eb">operator!=</a>(<span class="keyword">const</span> <a class="code hl_class" href="classwebcface_1_1Canvas2DComponent.html">Canvas2DComponent</a> &amp;other)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>        <span class="keywordflow">return</span> !(*<span class="keyword">this</span> == other);</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>    }</div>
+</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span> </div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno"><a class="line" href="classwebcface_1_1Canvas2DComponent.html#a603e6a5037327812d883d1ff7f2a87a5">  105</a></span>    <a class="code hl_enumeration" href="namespacewebcface.html#a18133126518e30ea437441c60fa26928">Canvas2DComponentType</a> <a class="code hl_function" href="classwebcface_1_1Canvas2DComponent.html#a603e6a5037327812d883d1ff7f2a87a5">type</a>()<span class="keyword"> const override </span>{ <span class="keywordflow">return</span> type_; }</div>
+<div class="foldopen" id="foldopen00112" data-start="{" data-end="}">
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno"><a class="line" href="classwebcface_1_1Canvas2DComponent.html#a80d7752894999805c28e0ced3dd84cfc">  112</a></span>    <a class="code hl_class" href="classwebcface_1_1Canvas2DComponent.html">Canvas2DComponent</a> &amp;<a class="code hl_function" href="classwebcface_1_1Canvas2DComponent.html#a80d7752894999805c28e0ced3dd84cfc">origin</a>(<span class="keyword">const</span> <a class="code hl_class" href="classwebcface_1_1Transform.html">Transform</a> &amp;origin) {</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>        origin_ = origin;</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>    }</div>
+</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno"><a class="line" href="classwebcface_1_1Canvas2DComponent.html#ab06166d764882e2648ea38f617c9bc15">  116</a></span>    <a class="code hl_class" href="classwebcface_1_1Transform.html">Transform</a> <a class="code hl_function" href="classwebcface_1_1Canvas2DComponent.html#ab06166d764882e2648ea38f617c9bc15">origin</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> origin_; }</div>
+<div class="foldopen" id="foldopen00124" data-start="{" data-end="}">
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno"><a class="line" href="classwebcface_1_1Canvas2DComponent.html#a7898be75e2681fabb962538a2866d310">  124</a></span>    <a class="code hl_class" href="classwebcface_1_1Canvas2DComponent.html">Canvas2DComponent</a> &amp;<a class="code hl_function" href="classwebcface_1_1Canvas2DComponent.html#a7898be75e2681fabb962538a2866d310">color</a>(<span class="keyword">const</span> <a class="code hl_enumeration" href="namespacewebcface.html#a5dcc1f15d6a60ca34207565aeb74124a">ViewColor</a> &amp;color) {</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>        color_ = color;</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>    }</div>
+</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno"><a class="line" href="classwebcface_1_1Canvas2DComponent.html#a1dfd6ed2bdbea0e2a2fa0fcbe2ecc609">  128</a></span>    <a class="code hl_enumeration" href="namespacewebcface.html#a5dcc1f15d6a60ca34207565aeb74124a">ViewColor</a> <a class="code hl_function" href="classwebcface_1_1Canvas2DComponent.html#a1dfd6ed2bdbea0e2a2fa0fcbe2ecc609">color</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> color_; }</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno"><a class="line" href="classwebcface_1_1Canvas2DComponent.html#a2a55d80b0c8e449442c314136520bcdf">  136</a></span>    <a class="code hl_enumeration" href="namespacewebcface.html#a5dcc1f15d6a60ca34207565aeb74124a">ViewColor</a> <a class="code hl_function" href="classwebcface_1_1Canvas2DComponent.html#a2a55d80b0c8e449442c314136520bcdf">fillColor</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> fill_; }</div>
+<div class="foldopen" id="foldopen00137" data-start="{" data-end="}">
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno"><a class="line" href="classwebcface_1_1Canvas2DComponent.html#a3069b6998135f6ffeacb4eb377e22f29">  137</a></span>    <a class="code hl_class" href="classwebcface_1_1Canvas2DComponent.html">Canvas2DComponent</a> &amp;<a class="code hl_function" href="classwebcface_1_1Canvas2DComponent.html#a3069b6998135f6ffeacb4eb377e22f29">fillColor</a>(<span class="keyword">const</span> <a class="code hl_enumeration" href="namespacewebcface.html#a5dcc1f15d6a60ca34207565aeb74124a">ViewColor</a> &amp;color) {</div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>        fill_ = color;</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>    }</div>
+</div>
+<div class="foldopen" id="foldopen00150" data-start="{" data-end="}">
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno"><a class="line" href="classwebcface_1_1Canvas2DComponent.html#abde137a4e20eda3cf473d78222c76219">  150</a></span>    <a class="code hl_class" href="classwebcface_1_1Canvas2DComponent.html">Canvas2DComponent</a> &amp;<a class="code hl_function" href="classwebcface_1_1Canvas2DComponent.html#abde137a4e20eda3cf473d78222c76219">strokeWidth</a>(<span class="keywordtype">double</span> s) {</div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>        stroke_width_ = s;</div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>    }</div>
+</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno"><a class="line" href="classwebcface_1_1Canvas2DComponent.html#a2e27fad5a4ed97bfaed24224dcd265ca">  154</a></span>    <span class="keywordtype">double</span> <a class="code hl_function" href="classwebcface_1_1Canvas2DComponent.html#a2e27fad5a4ed97bfaed24224dcd265ca">strokeWidth</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> stroke_width_; }</div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno"><a class="line" href="classwebcface_1_1Canvas2DComponent.html#aaaf7c91ae96f8ea20099697b616c2457">  165</a></span>    <a class="code hl_class" href="classwebcface_1_1Canvas2DComponent.html">Canvas2DComponent</a> &amp;<a class="code hl_function" href="classwebcface_1_1Canvas2DComponent.html#aaaf7c91ae96f8ea20099697b616c2457">textSize</a>(<span class="keywordtype">double</span> s) { <span class="keywordflow">return</span> strokeWidth(s); }</div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno"><a class="line" href="classwebcface_1_1Canvas2DComponent.html#a4efe826c1596d336c6c8e23cd8e281e5">  166</a></span>    <span class="keywordtype">double</span> <a class="code hl_function" href="classwebcface_1_1Canvas2DComponent.html#a4efe826c1596d336c6c8e23cd8e281e5">textSize</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> stroke_width_; }</div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno"><a class="line" href="classwebcface_1_1Canvas2DComponent.html#a0627ce9d4496345ea0233aa48e179aa5">  171</a></span>    std::string <a class="code hl_function" href="classwebcface_1_1Canvas2DComponent.html#a0627ce9d4496345ea0233aa48e179aa5">text</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> text_.<a class="code hl_function" href="classwebcface_1_1Encoding_1_1SharedString.html#a53296adc755db10d722302fa14c08f3f">decode</a>(); }</div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno"><a class="line" href="classwebcface_1_1Canvas2DComponent.html#afab8d648f381a6398bd51c7c592027d4">  176</a></span>    std::wstring <a class="code hl_function" href="classwebcface_1_1Canvas2DComponent.html#afab8d648f381a6398bd51c7c592027d4">textW</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> text_.<a class="code hl_function" href="classwebcface_1_1Encoding_1_1SharedString.html#ada77eae6d2ac7b223188c31f5ab8f30e">decodeW</a>(); }</div>
+<div class="foldopen" id="foldopen00184" data-start="{" data-end="}">
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno"><a class="line" href="classwebcface_1_1Canvas2DComponent.html#aaefbe557b8351d7b3d94710f046e5d1a">  184</a></span>    <a class="code hl_class" href="classwebcface_1_1Canvas2DComponent.html">Canvas2DComponent</a> &amp;<a class="code hl_function" href="classwebcface_1_1Canvas2DComponent.html#aaefbe557b8351d7b3d94710f046e5d1a">text</a>(std::string_view text) {</div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>        text_ = <a class="code hl_class" href="classwebcface_1_1Encoding_1_1SharedString.html">SharedString</a>(text);</div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>    }</div>
+</div>
+<div class="foldopen" id="foldopen00192" data-start="{" data-end="}">
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno"><a class="line" href="classwebcface_1_1Canvas2DComponent.html#a95e469f50b22d9872bd22672f942de5e">  192</a></span>    <a class="code hl_class" href="classwebcface_1_1Canvas2DComponent.html">Canvas2DComponent</a> &amp;<a class="code hl_function" href="classwebcface_1_1Canvas2DComponent.html#a95e469f50b22d9872bd22672f942de5e">text</a>(std::wstring_view text) {</div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>        text_ = <a class="code hl_class" href="classwebcface_1_1Encoding_1_1SharedString.html">SharedString</a>(text);</div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>    }</div>
+</div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno"><a class="line" href="classwebcface_1_1Canvas2DComponent.html#a1024785cc008a70ae7c2de6042c73aef">  200</a></span>    <span class="keyword">const</span> std::optional&lt;Geometry&gt; &amp;<a class="code hl_function" href="classwebcface_1_1Canvas2DComponent.html#a1024785cc008a70ae7c2de6042c73aef">geometry</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> geometry_; };</div>
+<div class="foldopen" id="foldopen00205" data-start="{" data-end="}">
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno"><a class="line" href="classwebcface_1_1Canvas2DComponent.html#a3fe3db6863309177c8a952f639cd39a4">  205</a></span>    <a class="code hl_class" href="classwebcface_1_1Canvas2DComponent.html">Canvas2DComponent</a> &amp;<a class="code hl_function" href="classwebcface_1_1Canvas2DComponent.html#a3fe3db6863309177c8a952f639cd39a4">geometry</a>(<span class="keyword">const</span> <a class="code hl_struct" href="structwebcface_1_1Geometry.html">Geometry</a> &amp;g) {</div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>        geometry_.emplace(g);</div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>    };</div>
+</div>
+<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>    std::optional&lt;Func&gt; onClick() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>    <a class="code hl_class" href="classwebcface_1_1Canvas2DComponent.html">Canvas2DComponent</a> &amp;onClick(<span class="keyword">const</span> <a class="code hl_class" href="classwebcface_1_1Func.html">Func</a> &amp;func);</div>
+<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="foldopen" id="foldopen00228" data-start="{" data-end="}">
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno"><a class="line" href="classwebcface_1_1Canvas2DComponent.html#a0cf4be95691bbf85931a723fe2c942b2">  228</a></span>    <a class="code hl_class" href="classwebcface_1_1Canvas2DComponent.html">Canvas2DComponent</a> &amp;<a class="code hl_function" href="classwebcface_1_1Canvas2DComponent.html#a0cf4be95691bbf85931a723fe2c942b2">onClick</a>(T func) {</div>
+<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>        on_click_func_tmp = std::make_shared&lt;AnonymousFunc&gt;(func);</div>
+<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>    }</div>
+</div>
+<div class="foldopen" id="foldopen00239" data-start="{" data-end="}">
+<div class="line"><a id="l00239" name="l00239"></a><span class="lineno"><a class="line" href="classwebcface_1_1Canvas2DComponent.html#abe35a3114027d8ff2a66d81ad843650f">  239</a></span>    <a class="code hl_class" href="classwebcface_1_1Canvas2DComponent.html">Canvas2DComponent</a> &amp;<a class="code hl_function" href="classwebcface_1_1Canvas2DComponent.html#abe35a3114027d8ff2a66d81ad843650f">onClick</a>(<a class="code hl_class" href="classwebcface_1_1AnonymousFunc.html">AnonymousFunc</a> &amp;&amp;func) {</div>
+<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>        on_click_func_tmp = std::make_shared&lt;AnonymousFunc&gt;(std::move(func));</div>
+<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>    }</div>
+</div>
+<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>};</div>
+</div>
+<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span> </div>
+<div class="foldopen" id="foldopen00245" data-start="{" data-end="};">
+<div class="line"><a id="l00245" name="l00245"></a><span class="lineno"><a class="line" href="structwebcface_1_1Canvas2DDataBase.html">  245</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structwebcface_1_1Canvas2DDataBase.html">Canvas2DDataBase</a> {</div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno"><a class="line" href="structwebcface_1_1Canvas2DDataBase.html#a89f6abd564014faeff7cd20c340a9c7d">  246</a></span>    <span class="keywordtype">double</span> width = 0, height = 0;</div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno"><a class="line" href="structwebcface_1_1Canvas2DDataBase.html#a0991981dcfd11a7478f73e56046e682e">  247</a></span>    std::vector&lt;Canvas2DComponent&gt; <a class="code hl_variable" href="structwebcface_1_1Canvas2DDataBase.html#a0991981dcfd11a7478f73e56046e682e">components</a>;</div>
+<div class="line"><a id="l00248" name="l00248"></a><span class="lineno"><a class="line" href="structwebcface_1_1Canvas2DDataBase.html#a9cfe735d9f8e505146541ff6b194d5b6">  248</a></span>    <a class="code hl_function" href="structwebcface_1_1Canvas2DDataBase.html#a9cfe735d9f8e505146541ff6b194d5b6">Canvas2DDataBase</a>() = <span class="keywordflow">default</span>;</div>
+<div class="foldopen" id="foldopen00249" data-start="{" data-end="}">
+<div class="line"><a id="l00249" name="l00249"></a><span class="lineno"><a class="line" href="structwebcface_1_1Canvas2DDataBase.html#a5101214816f77161e2a03d7d2747e81e">  249</a></span>    <a class="code hl_function" href="structwebcface_1_1Canvas2DDataBase.html#a5101214816f77161e2a03d7d2747e81e">Canvas2DDataBase</a>(<span class="keywordtype">double</span> width, <span class="keywordtype">double</span> height)</div>
+<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>        : width(width), height(height), components() {}</div>
+</div>
+<div class="foldopen" id="foldopen00251" data-start="{" data-end="}">
+<div class="line"><a id="l00251" name="l00251"></a><span class="lineno"><a class="line" href="structwebcface_1_1Canvas2DDataBase.html#aedb8ef54670186258f25beb3caa9e4b6">  251</a></span>    <a class="code hl_function" href="structwebcface_1_1Canvas2DDataBase.html#aedb8ef54670186258f25beb3caa9e4b6">Canvas2DDataBase</a>(<span class="keywordtype">double</span> width, <span class="keywordtype">double</span> height,</div>
+<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>                     std::vector&lt;Canvas2DComponent&gt; &amp;&amp;components)</div>
+<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>        : width(width), height(height), components(std::move(components)) {}</div>
+</div>
+<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>};</div>
+</div>
+<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span> </div>
+<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span> </div>
+<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span><a class="code hl_define" href="def_8h.html#ab3f2570d5b8231ddbe0e57fc8ab629eb">WEBCFACE_NS_END</a></div>
+<div class="ttc" id="aclasswebcface_1_1AnonymousFunc_html"><div class="ttname"><a href="classwebcface_1_1AnonymousFunc.html">webcface::AnonymousFunc</a></div><div class="ttdoc">名前を指定せず先に関数を登録するFunc</div><div class="ttdef"><b>Definition</b> func.h:277</div></div>
+<div class="ttc" id="aclasswebcface_1_1Canvas2DComponent_html"><div class="ttname"><a href="classwebcface_1_1Canvas2DComponent.html">webcface::Canvas2DComponent</a></div><div class="ttdoc">Canvas2Dの各要素を表すクラス。</div><div class="ttdef"><b>Definition</b> component_canvas2d.h:31</div></div>
+<div class="ttc" id="aclasswebcface_1_1Canvas2DComponent_html_a0315de7bfbce1dae55e689d2e7fd1e9e"><div class="ttname"><a href="classwebcface_1_1Canvas2DComponent.html#a0315de7bfbce1dae55e689d2e7fd1e9e">webcface::Canvas2DComponent::Canvas2DComponent</a></div><div class="ttdeci">Canvas2DComponent(Canvas2DComponentType type, const Transform &amp;origin, ViewColor color, ViewColor fill, double stroke_width, std::optional&lt; Geometry &gt; &amp;&amp;geometry, std::optional&lt; FieldBase &gt; &amp;&amp;on_click_func, const SharedString &amp;text)</div><div class="ttdef"><b>Definition</b> component_canvas2d.h:45</div></div>
+<div class="ttc" id="aclasswebcface_1_1Canvas2DComponent_html_a05df68f5f0d213367feacfc47d7ac757"><div class="ttname"><a href="classwebcface_1_1Canvas2DComponent.html#a05df68f5f0d213367feacfc47d7ac757">webcface::Canvas2DComponent::origin_</a></div><div class="ttdeci">Transform origin_</div><div class="ttdef"><b>Definition</b> component_canvas2d.h:36</div></div>
+<div class="ttc" id="aclasswebcface_1_1Canvas2DComponent_html_a0627ce9d4496345ea0233aa48e179aa5"><div class="ttname"><a href="classwebcface_1_1Canvas2DComponent.html#a0627ce9d4496345ea0233aa48e179aa5">webcface::Canvas2DComponent::text</a></div><div class="ttdeci">std::string text() const</div><div class="ttdoc">表示する文字列</div><div class="ttdef"><b>Definition</b> component_canvas2d.h:171</div></div>
+<div class="ttc" id="aclasswebcface_1_1Canvas2DComponent_html_a0cf4be95691bbf85931a723fe2c942b2"><div class="ttname"><a href="classwebcface_1_1Canvas2DComponent.html#a0cf4be95691bbf85931a723fe2c942b2">webcface::Canvas2DComponent::onClick</a></div><div class="ttdeci">Canvas2DComponent &amp; onClick(T func)</div><div class="ttdoc">クリック時に実行される関数を設定</div><div class="ttdef"><b>Definition</b> component_canvas2d.h:228</div></div>
+<div class="ttc" id="aclasswebcface_1_1Canvas2DComponent_html_a1024785cc008a70ae7c2de6042c73aef"><div class="ttname"><a href="classwebcface_1_1Canvas2DComponent.html#a1024785cc008a70ae7c2de6042c73aef">webcface::Canvas2DComponent::geometry</a></div><div class="ttdeci">const std::optional&lt; Geometry &gt; &amp; geometry() const</div><div class="ttdoc">geometryを取得</div><div class="ttdef"><b>Definition</b> component_canvas2d.h:200</div></div>
+<div class="ttc" id="aclasswebcface_1_1Canvas2DComponent_html_a1575bc8d032b690ec49733ca38bd0510"><div class="ttname"><a href="classwebcface_1_1Canvas2DComponent.html#a1575bc8d032b690ec49733ca38bd0510">webcface::Canvas2DComponent::Canvas2DComponent</a></div><div class="ttdeci">Canvas2DComponent(const Canvas2DComponent &amp;vc, const std::weak_ptr&lt; Internal::ClientData &gt; &amp;data_w, std::unordered_map&lt; int, int &gt; *idx_next)</div><div class="ttdef"><b>Definition</b> component_canvas2d.h:53</div></div>
+<div class="ttc" id="aclasswebcface_1_1Canvas2DComponent_html_a1a2e8067dec81163d12feb112a27c2bf"><div class="ttname"><a href="classwebcface_1_1Canvas2DComponent.html#a1a2e8067dec81163d12feb112a27c2bf">webcface::Canvas2DComponent::Canvas2DComponent</a></div><div class="ttdeci">Canvas2DComponent(Canvas2DComponentType type)</div><div class="ttdef"><b>Definition</b> component_canvas2d.h:66</div></div>
+<div class="ttc" id="aclasswebcface_1_1Canvas2DComponent_html_a1dfd6ed2bdbea0e2a2fa0fcbe2ecc609"><div class="ttname"><a href="classwebcface_1_1Canvas2DComponent.html#a1dfd6ed2bdbea0e2a2fa0fcbe2ecc609">webcface::Canvas2DComponent::color</a></div><div class="ttdeci">ViewColor color() const</div><div class="ttdef"><b>Definition</b> component_canvas2d.h:128</div></div>
+<div class="ttc" id="aclasswebcface_1_1Canvas2DComponent_html_a237b2153601b38352bfec5cbd156378f"><div class="ttname"><a href="classwebcface_1_1Canvas2DComponent.html#a237b2153601b38352bfec5cbd156378f">webcface::Canvas2DComponent::on_click_func_</a></div><div class="ttdeci">std::optional&lt; FieldBase &gt; on_click_func_</div><div class="ttdef"><b>Definition</b> component_canvas2d.h:40</div></div>
+<div class="ttc" id="aclasswebcface_1_1Canvas2DComponent_html_a2a55d80b0c8e449442c314136520bcdf"><div class="ttname"><a href="classwebcface_1_1Canvas2DComponent.html#a2a55d80b0c8e449442c314136520bcdf">webcface::Canvas2DComponent::fillColor</a></div><div class="ttdeci">ViewColor fillColor() const</div><div class="ttdoc">塗りつぶし色</div><div class="ttdef"><b>Definition</b> component_canvas2d.h:136</div></div>
+<div class="ttc" id="aclasswebcface_1_1Canvas2DComponent_html_a2b65e2d5b08af22d6d671f77aba1cc41"><div class="ttname"><a href="classwebcface_1_1Canvas2DComponent.html#a2b65e2d5b08af22d6d671f77aba1cc41">webcface::Canvas2DComponent::stroke_width_</a></div><div class="ttdeci">double stroke_width_</div><div class="ttdef"><b>Definition</b> component_canvas2d.h:38</div></div>
+<div class="ttc" id="aclasswebcface_1_1Canvas2DComponent_html_a2e27fad5a4ed97bfaed24224dcd265ca"><div class="ttname"><a href="classwebcface_1_1Canvas2DComponent.html#a2e27fad5a4ed97bfaed24224dcd265ca">webcface::Canvas2DComponent::strokeWidth</a></div><div class="ttdeci">double strokeWidth() const</div><div class="ttdef"><b>Definition</b> component_canvas2d.h:154</div></div>
+<div class="ttc" id="aclasswebcface_1_1Canvas2DComponent_html_a3069b6998135f6ffeacb4eb377e22f29"><div class="ttname"><a href="classwebcface_1_1Canvas2DComponent.html#a3069b6998135f6ffeacb4eb377e22f29">webcface::Canvas2DComponent::fillColor</a></div><div class="ttdeci">Canvas2DComponent &amp; fillColor(const ViewColor &amp;color)</div><div class="ttdef"><b>Definition</b> component_canvas2d.h:137</div></div>
+<div class="ttc" id="aclasswebcface_1_1Canvas2DComponent_html_a3fe3db6863309177c8a952f639cd39a4"><div class="ttname"><a href="classwebcface_1_1Canvas2DComponent.html#a3fe3db6863309177c8a952f639cd39a4">webcface::Canvas2DComponent::geometry</a></div><div class="ttdeci">Canvas2DComponent &amp; geometry(const Geometry &amp;g)</div><div class="ttdoc">geometryをセット</div><div class="ttdef"><b>Definition</b> component_canvas2d.h:205</div></div>
+<div class="ttc" id="aclasswebcface_1_1Canvas2DComponent_html_a4efe826c1596d336c6c8e23cd8e281e5"><div class="ttname"><a href="classwebcface_1_1Canvas2DComponent.html#a4efe826c1596d336c6c8e23cd8e281e5">webcface::Canvas2DComponent::textSize</a></div><div class="ttdeci">double textSize() const</div><div class="ttdef"><b>Definition</b> component_canvas2d.h:166</div></div>
+<div class="ttc" id="aclasswebcface_1_1Canvas2DComponent_html_a5a4b222d1baf0e596a637f04d79f24a0"><div class="ttname"><a href="classwebcface_1_1Canvas2DComponent.html#a5a4b222d1baf0e596a637f04d79f24a0">webcface::Canvas2DComponent::operator==</a></div><div class="ttdeci">bool operator==(const Canvas2DComponent &amp;other) const</div><div class="ttdef"><b>Definition</b> component_canvas2d.h:87</div></div>
+<div class="ttc" id="aclasswebcface_1_1Canvas2DComponent_html_a603e6a5037327812d883d1ff7f2a87a5"><div class="ttname"><a href="classwebcface_1_1Canvas2DComponent.html#a603e6a5037327812d883d1ff7f2a87a5">webcface::Canvas2DComponent::type</a></div><div class="ttdeci">Canvas2DComponentType type() const override</div><div class="ttdoc">要素の種類</div><div class="ttdef"><b>Definition</b> component_canvas2d.h:105</div></div>
+<div class="ttc" id="aclasswebcface_1_1Canvas2DComponent_html_a6a3c6f623cefece397f2c40ae313e1db"><div class="ttname"><a href="classwebcface_1_1Canvas2DComponent.html#a6a3c6f623cefece397f2c40ae313e1db">webcface::Canvas2DComponent::color_</a></div><div class="ttdeci">ViewColor color_</div><div class="ttdef"><b>Definition</b> component_canvas2d.h:37</div></div>
+<div class="ttc" id="aclasswebcface_1_1Canvas2DComponent_html_a7898be75e2681fabb962538a2866d310"><div class="ttname"><a href="classwebcface_1_1Canvas2DComponent.html#a7898be75e2681fabb962538a2866d310">webcface::Canvas2DComponent::color</a></div><div class="ttdeci">Canvas2DComponent &amp; color(const ViewColor &amp;color)</div><div class="ttdoc">色</div><div class="ttdef"><b>Definition</b> component_canvas2d.h:124</div></div>
+<div class="ttc" id="aclasswebcface_1_1Canvas2DComponent_html_a7fe287aa5f80f8b41fe462137a324504"><div class="ttname"><a href="classwebcface_1_1Canvas2DComponent.html#a7fe287aa5f80f8b41fe462137a324504">webcface::Canvas2DComponent::on_click_func_tmp</a></div><div class="ttdeci">std::shared_ptr&lt; AnonymousFunc &gt; on_click_func_tmp</div><div class="ttdef"><b>Definition</b> component_canvas2d.h:33</div></div>
+<div class="ttc" id="aclasswebcface_1_1Canvas2DComponent_html_a80d7752894999805c28e0ced3dd84cfc"><div class="ttname"><a href="classwebcface_1_1Canvas2DComponent.html#a80d7752894999805c28e0ced3dd84cfc">webcface::Canvas2DComponent::origin</a></div><div class="ttdeci">Canvas2DComponent &amp; origin(const Transform &amp;origin)</div><div class="ttdoc">要素の移動</div><div class="ttdef"><b>Definition</b> component_canvas2d.h:112</div></div>
+<div class="ttc" id="aclasswebcface_1_1Canvas2DComponent_html_a95e469f50b22d9872bd22672f942de5e"><div class="ttname"><a href="classwebcface_1_1Canvas2DComponent.html#a95e469f50b22d9872bd22672f942de5e">webcface::Canvas2DComponent::text</a></div><div class="ttdeci">Canvas2DComponent &amp; text(std::wstring_view text)</div><div class="ttdoc">表示する文字列を設定 (wstring)</div><div class="ttdef"><b>Definition</b> component_canvas2d.h:192</div></div>
+<div class="ttc" id="aclasswebcface_1_1Canvas2DComponent_html_aaaf7c91ae96f8ea20099697b616c2457"><div class="ttname"><a href="classwebcface_1_1Canvas2DComponent.html#aaaf7c91ae96f8ea20099697b616c2457">webcface::Canvas2DComponent::textSize</a></div><div class="ttdeci">Canvas2DComponent &amp; textSize(double s)</div><div class="ttdoc">文字の大きさ(高さ)</div><div class="ttdef"><b>Definition</b> component_canvas2d.h:165</div></div>
+<div class="ttc" id="aclasswebcface_1_1Canvas2DComponent_html_aaefbe557b8351d7b3d94710f046e5d1a"><div class="ttname"><a href="classwebcface_1_1Canvas2DComponent.html#aaefbe557b8351d7b3d94710f046e5d1a">webcface::Canvas2DComponent::text</a></div><div class="ttdeci">Canvas2DComponent &amp; text(std::string_view text)</div><div class="ttdoc">表示する文字列を設定</div><div class="ttdef"><b>Definition</b> component_canvas2d.h:184</div></div>
+<div class="ttc" id="aclasswebcface_1_1Canvas2DComponent_html_ab06166d764882e2648ea38f617c9bc15"><div class="ttname"><a href="classwebcface_1_1Canvas2DComponent.html#ab06166d764882e2648ea38f617c9bc15">webcface::Canvas2DComponent::origin</a></div><div class="ttdeci">Transform origin() const</div><div class="ttdef"><b>Definition</b> component_canvas2d.h:116</div></div>
+<div class="ttc" id="aclasswebcface_1_1Canvas2DComponent_html_abde137a4e20eda3cf473d78222c76219"><div class="ttname"><a href="classwebcface_1_1Canvas2DComponent.html#abde137a4e20eda3cf473d78222c76219">webcface::Canvas2DComponent::strokeWidth</a></div><div class="ttdeci">Canvas2DComponent &amp; strokeWidth(double s)</div><div class="ttdoc">線の太さ</div><div class="ttdef"><b>Definition</b> component_canvas2d.h:150</div></div>
+<div class="ttc" id="aclasswebcface_1_1Canvas2DComponent_html_abe35a3114027d8ff2a66d81ad843650f"><div class="ttname"><a href="classwebcface_1_1Canvas2DComponent.html#abe35a3114027d8ff2a66d81ad843650f">webcface::Canvas2DComponent::onClick</a></div><div class="ttdeci">Canvas2DComponent &amp; onClick(AnonymousFunc &amp;&amp;func)</div><div class="ttdoc">クリック時に実行される関数を設定</div><div class="ttdef"><b>Definition</b> component_canvas2d.h:239</div></div>
+<div class="ttc" id="aclasswebcface_1_1Canvas2DComponent_html_ac20e2e86e45228f035f10618e2ef5fe9"><div class="ttname"><a href="classwebcface_1_1Canvas2DComponent.html#ac20e2e86e45228f035f10618e2ef5fe9">webcface::Canvas2DComponent::geometry_</a></div><div class="ttdeci">std::optional&lt; Geometry &gt; geometry_</div><div class="ttdef"><b>Definition</b> component_canvas2d.h:39</div></div>
+<div class="ttc" id="aclasswebcface_1_1Canvas2DComponent_html_ac7b37626ed2c4a3d06caa351f8233a33"><div class="ttname"><a href="classwebcface_1_1Canvas2DComponent.html#ac7b37626ed2c4a3d06caa351f8233a33">webcface::Canvas2DComponent::fill_</a></div><div class="ttdeci">ViewColor fill_</div><div class="ttdef"><b>Definition</b> component_canvas2d.h:37</div></div>
+<div class="ttc" id="aclasswebcface_1_1Canvas2DComponent_html_acf420a0ba1ce5e817feac0f51c9056dc"><div class="ttname"><a href="classwebcface_1_1Canvas2DComponent.html#acf420a0ba1ce5e817feac0f51c9056dc">webcface::Canvas2DComponent::data_w</a></div><div class="ttdeci">std::weak_ptr&lt; Internal::ClientData &gt; data_w</div><div class="ttdef"><b>Definition</b> component_canvas2d.h:32</div></div>
+<div class="ttc" id="aclasswebcface_1_1Canvas2DComponent_html_adc0fdd68f7b5af936516400e494739cb"><div class="ttname"><a href="classwebcface_1_1Canvas2DComponent.html#adc0fdd68f7b5af936516400e494739cb">webcface::Canvas2DComponent::Canvas2DComponent</a></div><div class="ttdeci">Canvas2DComponent()=default</div></div>
+<div class="ttc" id="aclasswebcface_1_1Canvas2DComponent_html_ae1af4940359c29f642b7a8ffbc57e622"><div class="ttname"><a href="classwebcface_1_1Canvas2DComponent.html#ae1af4940359c29f642b7a8ffbc57e622">webcface::Canvas2DComponent::text_</a></div><div class="ttdeci">SharedString text_</div><div class="ttdef"><b>Definition</b> component_canvas2d.h:41</div></div>
+<div class="ttc" id="aclasswebcface_1_1Canvas2DComponent_html_ae62e89eaa88830fbe54c989f9f8405eb"><div class="ttname"><a href="classwebcface_1_1Canvas2DComponent.html#ae62e89eaa88830fbe54c989f9f8405eb">webcface::Canvas2DComponent::operator!=</a></div><div class="ttdeci">bool operator!=(const Canvas2DComponent &amp;other) const</div><div class="ttdef"><b>Definition</b> component_canvas2d.h:97</div></div>
+<div class="ttc" id="aclasswebcface_1_1Canvas2DComponent_html_aeebeae276313d63ad1c8b523e9d5ece6"><div class="ttname"><a href="classwebcface_1_1Canvas2DComponent.html#aeebeae276313d63ad1c8b523e9d5ece6">webcface::Canvas2DComponent::type_</a></div><div class="ttdeci">Canvas2DComponentType type_</div><div class="ttdef"><b>Definition</b> component_canvas2d.h:35</div></div>
+<div class="ttc" id="aclasswebcface_1_1Canvas2DComponent_html_afab8d648f381a6398bd51c7c592027d4"><div class="ttname"><a href="classwebcface_1_1Canvas2DComponent.html#afab8d648f381a6398bd51c7c592027d4">webcface::Canvas2DComponent::textW</a></div><div class="ttdeci">std::wstring textW() const</div><div class="ttdoc">表示する文字列 (wstring)</div><div class="ttdef"><b>Definition</b> component_canvas2d.h:176</div></div>
+<div class="ttc" id="aclasswebcface_1_1Encoding_1_1SharedString_html"><div class="ttname"><a href="classwebcface_1_1Encoding_1_1SharedString.html">webcface::SharedString</a></div><div class="ttdoc">u8stringとstringとwstringをshared_ptrで持ち共有する</div><div class="ttdef"><b>Definition</b> encoding.h:113</div></div>
+<div class="ttc" id="aclasswebcface_1_1Encoding_1_1SharedString_html_a53296adc755db10d722302fa14c08f3f"><div class="ttname"><a href="classwebcface_1_1Encoding_1_1SharedString.html#a53296adc755db10d722302fa14c08f3f">webcface::Encoding::SharedString::decode</a></div><div class="ttdeci">const std::string &amp; decode() const</div><div class="ttdef"><b>Definition</b> encoding.cc:163</div></div>
+<div class="ttc" id="aclasswebcface_1_1Encoding_1_1SharedString_html_ada77eae6d2ac7b223188c31f5ab8f30e"><div class="ttname"><a href="classwebcface_1_1Encoding_1_1SharedString.html#ada77eae6d2ac7b223188c31f5ab8f30e">webcface::Encoding::SharedString::decodeW</a></div><div class="ttdeci">const std::wstring &amp; decodeW() const</div><div class="ttdef"><b>Definition</b> encoding.cc:177</div></div>
+<div class="ttc" id="aclasswebcface_1_1Func_html"><div class="ttname"><a href="classwebcface_1_1Func.html">webcface::Func</a></div><div class="ttdoc">関数1つを表すクラス</div><div class="ttdef"><b>Definition</b> func.h:38</div></div>
+<div class="ttc" id="aclasswebcface_1_1IdBase_html"><div class="ttname"><a href="classwebcface_1_1IdBase.html">webcface::IdBase</a></div><div class="ttdef"><b>Definition</b> component_id.h:9</div></div>
+<div class="ttc" id="aclasswebcface_1_1IdBase_html_a67a39581664812c20ea4a5dd7d692106"><div class="ttname"><a href="classwebcface_1_1IdBase.html#a67a39581664812c20ea4a5dd7d692106">webcface::IdBase::id</a></div><div class="ttdeci">std::string id() const</div><div class="ttdoc">そのview(またはcanvas)内で一意のid</div><div class="ttdef"><b>Definition</b> component_id.cc:7</div></div>
+<div class="ttc" id="aclasswebcface_1_1Transform_html"><div class="ttname"><a href="classwebcface_1_1Transform.html">webcface::Transform</a></div><div class="ttdoc">3次元の座標と回転</div><div class="ttdef"><b>Definition</b> transform.h:52</div></div>
+<div class="ttc" id="acomponent__id_8cc_html_a690eb91139eef2ffe5f0e7f13a19060a"><div class="ttname"><a href="component__id_8cc.html#a690eb91139eef2ffe5f0e7f13a19060a">IdBase&lt; Canvas2DComponentType &gt;</a></div><div class="ttdeci">template class WEBCFACE_DLL_INSTANCE_DEF IdBase&lt; Canvas2DComponentType &gt;</div><div class="ttdef"><b>Definition</b> component_id.cc:19</div></div>
+<div class="ttc" id="acomponent__view_8h_html"><div class="ttname"><a href="component__view_8h.html">component_view.h</a></div></div>
+<div class="ttc" id="adef_8h_html"><div class="ttname"><a href="def_8h.html">def.h</a></div></div>
+<div class="ttc" id="adef_8h_html_a47af057bda855b54c212e97ffccdca01"><div class="ttname"><a href="def_8h.html#a47af057bda855b54c212e97ffccdca01">WEBCFACE_DLL</a></div><div class="ttdeci">#define WEBCFACE_DLL</div><div class="ttdef"><b>Definition</b> def.h:55</div></div>
+<div class="ttc" id="adef_8h_html_ab3f2570d5b8231ddbe0e57fc8ab629eb"><div class="ttname"><a href="def_8h.html#ab3f2570d5b8231ddbe0e57fc8ab629eb">WEBCFACE_NS_END</a></div><div class="ttdeci">#define WEBCFACE_NS_END</div><div class="ttdef"><b>Definition</b> def.h:81</div></div>
+<div class="ttc" id="adef_8h_html_abe991b8f291782627a31118c688e123a"><div class="ttname"><a href="def_8h.html#abe991b8f291782627a31118c688e123a">WEBCFACE_NS_BEGIN</a></div><div class="ttdeci">#define WEBCFACE_NS_BEGIN</div><div class="ttdef"><b>Definition</b> def.h:80</div></div>
+<div class="ttc" id="afield_8h_html"><div class="ttname"><a href="field_8h.html">field.h</a></div></div>
+<div class="ttc" id="ageometry_8h_html"><div class="ttname"><a href="geometry_8h.html">geometry.h</a></div></div>
+<div class="ttc" id="anamespaceMessage_html"><div class="ttname"><a href="namespaceMessage.html">Message</a></div><div class="ttdef"><b>Definition</b> message.cc:5</div></div>
+<div class="ttc" id="anamespacewebcface_html_a18133126518e30ea437441c60fa26928"><div class="ttname"><a href="namespacewebcface.html#a18133126518e30ea437441c60fa26928">webcface::Canvas2DComponentType</a></div><div class="ttdeci">Canvas2DComponentType</div><div class="ttdef"><b>Definition</b> component_canvas2d.h:15</div></div>
+<div class="ttc" id="anamespacewebcface_html_a18133126518e30ea437441c60fa26928aed7daeb157cd9b31e53896ad3c771a26"><div class="ttname"><a href="namespacewebcface.html#a18133126518e30ea437441c60fa26928aed7daeb157cd9b31e53896ad3c771a26">webcface::Canvas2DComponentType::geometry</a></div><div class="ttdeci">@ geometry</div></div>
+<div class="ttc" id="anamespacewebcface_html_a5dcc1f15d6a60ca34207565aeb74124a"><div class="ttname"><a href="namespacewebcface.html#a5dcc1f15d6a60ca34207565aeb74124a">webcface::ViewColor</a></div><div class="ttdeci">ViewColor</div><div class="ttdef"><b>Definition</b> component_view.h:36</div></div>
+<div class="ttc" id="astructwebcface_1_1Canvas2DDataBase_html"><div class="ttname"><a href="structwebcface_1_1Canvas2DDataBase.html">webcface::Canvas2DDataBase</a></div><div class="ttdef"><b>Definition</b> component_canvas2d.h:245</div></div>
+<div class="ttc" id="astructwebcface_1_1Canvas2DDataBase_html_a0991981dcfd11a7478f73e56046e682e"><div class="ttname"><a href="structwebcface_1_1Canvas2DDataBase.html#a0991981dcfd11a7478f73e56046e682e">webcface::Canvas2DDataBase::components</a></div><div class="ttdeci">std::vector&lt; Canvas2DComponent &gt; components</div><div class="ttdef"><b>Definition</b> component_canvas2d.h:247</div></div>
+<div class="ttc" id="astructwebcface_1_1Canvas2DDataBase_html_a5101214816f77161e2a03d7d2747e81e"><div class="ttname"><a href="structwebcface_1_1Canvas2DDataBase.html#a5101214816f77161e2a03d7d2747e81e">webcface::Canvas2DDataBase::Canvas2DDataBase</a></div><div class="ttdeci">Canvas2DDataBase(double width, double height)</div><div class="ttdef"><b>Definition</b> component_canvas2d.h:249</div></div>
+<div class="ttc" id="astructwebcface_1_1Canvas2DDataBase_html_a9cfe735d9f8e505146541ff6b194d5b6"><div class="ttname"><a href="structwebcface_1_1Canvas2DDataBase.html#a9cfe735d9f8e505146541ff6b194d5b6">webcface::Canvas2DDataBase::Canvas2DDataBase</a></div><div class="ttdeci">Canvas2DDataBase()=default</div></div>
+<div class="ttc" id="astructwebcface_1_1Canvas2DDataBase_html_aedb8ef54670186258f25beb3caa9e4b6"><div class="ttname"><a href="structwebcface_1_1Canvas2DDataBase.html#aedb8ef54670186258f25beb3caa9e4b6">webcface::Canvas2DDataBase::Canvas2DDataBase</a></div><div class="ttdeci">Canvas2DDataBase(double width, double height, std::vector&lt; Canvas2DComponent &gt; &amp;&amp;components)</div><div class="ttdef"><b>Definition</b> component_canvas2d.h:251</div></div>
+<div class="ttc" id="astructwebcface_1_1Geometry_html"><div class="ttname"><a href="structwebcface_1_1Geometry.html">webcface::Geometry</a></div><div class="ttdef"><b>Definition</b> geometry.h:21</div></div>
+<div class="ttc" id="astructwebcface_1_1Message_1_1Canvas2DComponent_html"><div class="ttname"><a href="structwebcface_1_1Message_1_1Canvas2DComponent.html">webcface::Message::Canvas2DComponent</a></div><div class="ttdef"><b>Definition</b> message.h:406</div></div>
+<div class="ttc" id="atransform_8h_html"><div class="ttname"><a href="transform_8h.html">transform.h</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_db3a54907829b36871118d03417739cd.html">client</a></li><li class="navelem"><a class="el" href="dir_5c23080e296bbe846f4ed2d01d7b595d.html">include</a></li><li class="navelem"><a class="el" href="dir_8bd58ff883f4686dab3daf23d9479d3b.html">webcface</a></li><li class="navelem"><a class="el" href="component__canvas2d_8h.html">component_canvas2d.h</a></li>
+    <li class="footer">Generated on Sun Jun 30 2024 10:34:27 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+  </ul>
+</div>
+</body>
+</html>

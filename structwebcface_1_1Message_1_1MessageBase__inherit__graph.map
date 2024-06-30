@@ -70,7 +70,7 @@
 <area shape="poly" id="edge10_Node000010_Node000011" title=" " alt="" coords="644,293,732,293,732,299,644,299"/>
 <area shape="rect" id="Node000013" href="$structwebcface_1_1Message_1_1Entry.html" title="server&#45;&gt;client 新しいvalueなどの報告" alt="" coords="729,347,823,373"/>
 <area shape="poly" id="edge12_Node000012_Node000013" title=" " alt="" coords="625,357,729,357,729,363,625,363"/>
-<area shape="rect" id="Node000015" href="$structwebcface_1_1Message_1_1FuncInfo.html" title="client(member)&#45;&gt;server&#45;&gt;client func登録" alt="" coords="737,411,815,437"/>
+<area shape="rect" id="Node000015" href="$structwebcface_1_1Message_1_1FuncInfo.html" title=" " alt="" coords="737,411,815,437"/>
 <area shape="poly" id="edge14_Node000014_Node000015" title=" " alt="" coords="644,421,737,421,737,427,644,427"/>
 <area shape="rect" id="Node000017" href="$structwebcface_1_1Message_1_1Image.html" title=" " alt="" coords="745,475,807,501"/>
 <area shape="poly" id="edge16_Node000016_Node000017" title=" " alt="" coords="644,485,744,485,744,491,644,491"/>
