@@ -9,6 +9,7 @@ if(MINGW AND NOT CYGPATH_COMMAND STREQUAL "CYGPATH_COMMAND-NOTFOUND")
     execute_process(
         COMMAND ${CYGPATH_COMMAND} -u "${MAGICKPP_PREFIX}"
         OUTPUT_VARIABLE MAGICKPP_PREFIX_UNIX
+        OUTPUT_STRIP_TRAILING_WHITESPACE
     )
 else()
     set(MAGICKPP_PREFIX_UNIX "${MAGICKPP_PREFIX}")
@@ -29,6 +30,16 @@ fetch_only(imagemagick
     7.1.1-33
     configure
 )
+if(MINGW)
+    execute_process(
+        COMMAND ${CYGPATH_COMMAND} -u "${imagemagick_SOURCE_DIR}"
+        OUTPUT_VARIABLE imagemagick_SOURCE_DIR_UNIX
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+    )
+else()
+    set(imagemagick_SOURCE_DIR_UNIX "${imagemagick_SOURCE_DIR}")
+endif()
+
 message(STATUS "Building Magick++...")
 if(NOT EXISTS ${imagemagick_BINARY_DIR}/Makefile OR ${CMAKE_CURRENT_LIST_FILE} IS_NEWER_THAN ${imagemagick_BINARY_DIR}/Makefile)
     if(MINGW)
@@ -46,7 +57,7 @@ if(NOT EXISTS ${imagemagick_BINARY_DIR}/Makefile OR ${CMAKE_CURRENT_LIST_FILE} I
     file(REMOVE_RECURSE ${MAGICKPP_PREFIX})
     execute_process(
         # mingwでは ./configure はつかえない
-        COMMAND ${SH_COMMAND} "${imagemagick_SOURCE_DIR}/configure"
+        COMMAND ${SH_COMMAND} "${imagemagick_SOURCE_DIR_UNIX}/configure"
             "CC=${ORIGINAL_ENV_CC}" "CXX=${ORIGINAL_ENV_CXX}"
             "CFLAGS=${MAGICKPP_FLAGS}" "CXXFLAGS=${MAGICKPP_FLAGS}"
             "MAKE=${MAKE_COMMAND}"
