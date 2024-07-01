@@ -1,0 +1,9 @@
+<map id="Req&lt; T &gt;" name="Req&lt; T &gt;">
+<area shape="rect" id="Node000001" title="client&#45;&gt;server 以降Recvを送るようリクエスト" alt="" coords="129,225,215,251"/>
+<area shape="rect" id="Node000002" href="$structwebcface_1_1message_1_1MessageBase.html" title=" " alt="" coords="5,108,176,148"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="115,157,165,223,161,226,111,160"/>
+<area shape="rect" id="Node000003" href="$structwebcface_1_1message_1_1MessageBase.html" title="型からkindを取得するためだけのベースクラス" alt="" coords="15,5,166,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="93,45,93,108,88,108,88,45"/>
+<area shape="rect" id="Node000004" href="$classwebcface_1_1encoding_1_1SharedString.html" title="u8stringとstringとwstringをshared_ptrで持ち共有する" alt="" coords="201,115,306,141"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="238,154,183,227,179,223,234,150"/>
+</map>

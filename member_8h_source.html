@@ -158,7 +158,7 @@ $(document).ready(function(){initNavTree('member_8h_source.html',''); initResiza
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><a class="code hl_define" href="def_8h.html#abe991b8f291782627a31118c688e123a">WEBCFACE_NS_BEGIN</a></div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceInternal.html">Internal</a> {</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceinternal.html">internal</a> {</div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="keyword">struct </span>ClientData;</div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>}</div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
@@ -167,8 +167,8 @@ $(document).ready(function(){initNavTree('member_8h_source.html',''); initResiza
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>  <span class="keyword">public</span>:</div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno"><a class="line" href="classwebcface_1_1Member.html#a1a5b3da87c7076e24dee4f7f55604e6c">   26</a></span>    <a class="code hl_function" href="classwebcface_1_1Member.html#a1a5b3da87c7076e24dee4f7f55604e6c">Member</a>() = <span class="keywordflow">default</span>;</div>
 <div class="foldopen" id="foldopen00027" data-start="{" data-end="}">
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="classwebcface_1_1Member.html#a4f477d554a7622cb73dd020d2ba3ecd1">   27</a></span>    <a class="code hl_function" href="classwebcface_1_1Member.html#a4f477d554a7622cb73dd020d2ba3ecd1">Member</a>(<span class="keyword">const</span> std::weak_ptr&lt;Internal::ClientData&gt; &amp;data_w,</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>           <span class="keyword">const</span> <a class="code hl_class" href="classwebcface_1_1Encoding_1_1SharedString.html">SharedString</a> &amp;member)</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="classwebcface_1_1Member.html#adc6184fd2f03f00b7ea8b447b281e65b">   27</a></span>    <a class="code hl_function" href="classwebcface_1_1Member.html#adc6184fd2f03f00b7ea8b447b281e65b">Member</a>(<span class="keyword">const</span> std::weak_ptr&lt;internal::ClientData&gt; &amp;data_w,</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>           <span class="keyword">const</span> <a class="code hl_class" href="classwebcface_1_1encoding_1_1SharedString.html">SharedString</a> &amp;member)</div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>        : <a class="code hl_struct" href="structwebcface_1_1Field.html">Field</a>(data_w, member) {}</div>
 </div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="classwebcface_1_1Member.html#af9c306505ae358dd2fef77173cebc6c8">   30</a></span>    <a class="code hl_function" href="classwebcface_1_1Member.html#af9c306505ae358dd2fef77173cebc6c8">Member</a>(<span class="keyword">const</span> <a class="code hl_struct" href="structwebcface_1_1Field.html">Field</a> &amp;base) : <a class="code hl_struct" href="structwebcface_1_1Field.html">Field</a>(base.data_w, base.member_) {}</div>
@@ -243,17 +243,17 @@ $(document).ready(function(){initNavTree('member_8h_source.html',''); initResiza
 <div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span> </div>
 <div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span><a class="code hl_define" href="def_8h.html#ab3f2570d5b8231ddbe0e57fc8ab629eb">WEBCFACE_NS_END</a></div>
 <div class="ttc" id="aclasswebcface_1_1AnonymousFunc_html"><div class="ttname"><a href="classwebcface_1_1AnonymousFunc.html">webcface::AnonymousFunc</a></div><div class="ttdoc">名前を指定せず先に関数を登録するFunc</div><div class="ttdef"><b>Definition</b> func.h:277</div></div>
-<div class="ttc" id="aclasswebcface_1_1Encoding_1_1SharedString_html"><div class="ttname"><a href="classwebcface_1_1Encoding_1_1SharedString.html">webcface::SharedString</a></div><div class="ttdoc">u8stringとstringとwstringをshared_ptrで持ち共有する</div><div class="ttdef"><b>Definition</b> encoding.h:113</div></div>
 <div class="ttc" id="aclasswebcface_1_1EventTarget_html"><div class="ttname"><a href="classwebcface_1_1EventTarget.html">webcface::EventTarget</a></div><div class="ttdoc">イベントを表し、コールバックの追加や削除ができるクラス。</div><div class="ttdef"><b>Definition</b> event_target.h:15</div></div>
 <div class="ttc" id="aclasswebcface_1_1Log_html"><div class="ttname"><a href="classwebcface_1_1Log.html">webcface::Log</a></div><div class="ttdoc">ログの送受信データを表すクラス</div><div class="ttdef"><b>Definition</b> log.h:69</div></div>
 <div class="ttc" id="aclasswebcface_1_1Member_html"><div class="ttname"><a href="classwebcface_1_1Member.html">webcface::Member</a></div><div class="ttdoc">Memberを指すクラス</div><div class="ttdef"><b>Definition</b> member.h:24</div></div>
 <div class="ttc" id="aclasswebcface_1_1Member_html_a1a5b3da87c7076e24dee4f7f55604e6c"><div class="ttname"><a href="classwebcface_1_1Member.html#a1a5b3da87c7076e24dee4f7f55604e6c">webcface::Member::Member</a></div><div class="ttdeci">Member()=default</div></div>
 <div class="ttc" id="aclasswebcface_1_1Member_html_a1d89c28bd42ba9a52da008bb69367171"><div class="ttname"><a href="classwebcface_1_1Member.html#a1d89c28bd42ba9a52da008bb69367171">webcface::Member::name</a></div><div class="ttdeci">std::string name() const</div><div class="ttdoc">Member名</div><div class="ttdef"><b>Definition</b> member.h:36</div></div>
-<div class="ttc" id="aclasswebcface_1_1Member_html_a4f477d554a7622cb73dd020d2ba3ecd1"><div class="ttname"><a href="classwebcface_1_1Member.html#a4f477d554a7622cb73dd020d2ba3ecd1">webcface::Member::Member</a></div><div class="ttdeci">Member(const std::weak_ptr&lt; Internal::ClientData &gt; &amp;data_w, const SharedString &amp;member)</div><div class="ttdef"><b>Definition</b> member.h:27</div></div>
 <div class="ttc" id="aclasswebcface_1_1Member_html_a4fec4db12208dfeb3d96c81d0afa840a"><div class="ttname"><a href="classwebcface_1_1Member.html#a4fec4db12208dfeb3d96c81d0afa840a">webcface::Member::func</a></div><div class="ttdeci">AnonymousFunc func(const T &amp;func) const</div><div class="ttdoc">AnonymousFuncオブジェクトを作成しfuncをsetする</div><div class="ttdef"><b>Definition</b> member.h:63</div></div>
+<div class="ttc" id="aclasswebcface_1_1Member_html_adc6184fd2f03f00b7ea8b447b281e65b"><div class="ttname"><a href="classwebcface_1_1Member.html#adc6184fd2f03f00b7ea8b447b281e65b">webcface::Member::Member</a></div><div class="ttdeci">Member(const std::weak_ptr&lt; internal::ClientData &gt; &amp;data_w, const SharedString &amp;member)</div><div class="ttdef"><b>Definition</b> member.h:27</div></div>
 <div class="ttc" id="aclasswebcface_1_1Member_html_ae290d7b82d62952c224baa4c60e93860"><div class="ttname"><a href="classwebcface_1_1Member.html#ae290d7b82d62952c224baa4c60e93860">webcface::Member::nameW</a></div><div class="ttdeci">std::wstring nameW() const</div><div class="ttdoc">Member名 (wstring)</div><div class="ttdef"><b>Definition</b> member.h:41</div></div>
 <div class="ttc" id="aclasswebcface_1_1Member_html_aeb78041923488684972eb9632dc1d819"><div class="ttname"><a href="classwebcface_1_1Member.html#aeb78041923488684972eb9632dc1d819">webcface::Member::operator==</a></div><div class="ttdeci">bool operator==(const T &amp;other) const</div><div class="ttdoc">Memberを比較</div><div class="ttdef"><b>Definition</b> member.h:225</div></div>
 <div class="ttc" id="aclasswebcface_1_1Member_html_af9c306505ae358dd2fef77173cebc6c8"><div class="ttname"><a href="classwebcface_1_1Member.html#af9c306505ae358dd2fef77173cebc6c8">webcface::Member::Member</a></div><div class="ttdeci">Member(const Field &amp;base)</div><div class="ttdef"><b>Definition</b> member.h:30</div></div>
+<div class="ttc" id="aclasswebcface_1_1encoding_1_1SharedString_html"><div class="ttname"><a href="classwebcface_1_1encoding_1_1SharedString.html">webcface::SharedString</a></div><div class="ttdoc">u8stringとstringとwstringをshared_ptrで持ち共有する</div><div class="ttdef"><b>Definition</b> encoding.h:113</div></div>
 <div class="ttc" id="adef_8h_html"><div class="ttname"><a href="def_8h.html">def.h</a></div></div>
 <div class="ttc" id="adef_8h_html_a47af057bda855b54c212e97ffccdca01"><div class="ttname"><a href="def_8h.html#a47af057bda855b54c212e97ffccdca01">WEBCFACE_DLL</a></div><div class="ttdeci">#define WEBCFACE_DLL</div><div class="ttdef"><b>Definition</b> def.h:55</div></div>
 <div class="ttc" id="adef_8h_html_ab3f2570d5b8231ddbe0e57fc8ab629eb"><div class="ttname"><a href="def_8h.html#ab3f2570d5b8231ddbe0e57fc8ab629eb">WEBCFACE_NS_END</a></div><div class="ttdeci">#define WEBCFACE_NS_END</div><div class="ttdef"><b>Definition</b> def.h:81</div></div>
@@ -261,7 +261,7 @@ $(document).ready(function(){initNavTree('member_8h_source.html',''); initResiza
 <div class="ttc" id="aevent__target_8h_html"><div class="ttname"><a href="event__target_8h.html">event_target.h</a></div></div>
 <div class="ttc" id="afield_8h_html"><div class="ttname"><a href="field_8h.html">field.h</a></div></div>
 <div class="ttc" id="afunc_8h_html"><div class="ttname"><a href="func_8h.html">func.h</a></div></div>
-<div class="ttc" id="anamespaceInternal_html"><div class="ttname"><a href="namespaceInternal.html">Internal</a></div><div class="ttdef"><b>Definition</b> client_ws.cc:10</div></div>
+<div class="ttc" id="anamespaceinternal_html"><div class="ttname"><a href="namespaceinternal.html">internal</a></div><div class="ttdef"><b>Definition</b> client_ws.cc:10</div></div>
 <div class="ttc" id="astructwebcface_1_1Field_html"><div class="ttname"><a href="structwebcface_1_1Field.html">webcface::Field</a></div><div class="ttdoc">ClientDataの参照とメンバ名とデータ名を持つクラス</div><div class="ttdef"><b>Definition</b> field.h:64</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
@@ -269,7 +269,7 @@ $(document).ready(function(){initNavTree('member_8h_source.html',''); initResiza
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_db3a54907829b36871118d03417739cd.html">client</a></li><li class="navelem"><a class="el" href="dir_5c23080e296bbe846f4ed2d01d7b595d.html">include</a></li><li class="navelem"><a class="el" href="dir_8bd58ff883f4686dab3daf23d9479d3b.html">webcface</a></li><li class="navelem"><a class="el" href="member_8h.html">member.h</a></li>
-    <li class="footer">Generated on Sun Jun 30 2024 10:34:27 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Mon Jul 1 2024 17:11:02 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

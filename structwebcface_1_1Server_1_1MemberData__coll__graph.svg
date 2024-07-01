@@ -58,7 +58,7 @@
 <!-- Node4 -->
 <g id="Node000004" class="node">
 <title>Node4</title>
-<g id="a_Node000004"><a xlink:href="classwebcface_1_1Encoding_1_1SharedString.html" target="_top" xlink:title="u8stringとstringとwstringをshared_ptrで持ち共有する">
+<g id="a_Node000004"><a xlink:href="classwebcface_1_1encoding_1_1SharedString.html" target="_top" xlink:title="u8stringとstringとwstringをshared_ptrで持ち共有する">
 <polygon fill="white" stroke="#666666" points="163.5,-156.5 84.5,-156.5 84.5,-137.5 163.5,-137.5 163.5,-156.5"/>
 <text text-anchor="middle" x="124" y="-144.5" font-family="Helvetica,sans-Serif" font-size="10.00">SharedString</text>
 </a>
@@ -77,7 +77,7 @@
 <!-- Node5 -->
 <g id="Node000005" class="node">
 <title>Node5</title>
-<g id="a_Node000005"><a xlink:href="structwebcface_1_1Message_1_1SyncInit.html" target="_top" xlink:title="client初期化(client&#45;&gt;server&#45;&gt;client)">
+<g id="a_Node000005"><a xlink:href="structwebcface_1_1message_1_1SyncInit.html" target="_top" xlink:title="client初期化(client&#45;&gt;server&#45;&gt;client)">
 <polygon fill="white" stroke="#666666" points="228,-85 172,-85 172,-66 228,-66 228,-85"/>
 <text text-anchor="middle" x="200" y="-73" font-family="Helvetica,sans-Serif" font-size="10.00">SyncInit</text>
 </a>
@@ -106,7 +106,7 @@
 <!-- Node6 -->
 <g id="Node000006" class="node">
 <title>Node6</title>
-<g id="a_Node000006"><a xlink:href="structwebcface_1_1Message_1_1MessageBase.html" target="_top" xlink:title=" ">
+<g id="a_Node000006"><a xlink:href="structwebcface_1_1message_1_1MessageBase.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="342.5,-162 181.5,-162 181.5,-132 342.5,-132 342.5,-162"/>
 <text text-anchor="start" x="189.5" y="-150" font-family="Helvetica,sans-Serif" font-size="10.00">MessageBase&lt; MessageKind</text>
 <text text-anchor="middle" x="262" y="-139" font-family="Helvetica,sans-Serif" font-size="10.00">::sync_init &gt;</text>
@@ -125,7 +125,7 @@
 <!-- Node7 -->
 <g id="Node000007" class="node">
 <title>Node7</title>
-<g id="a_Node000007"><a xlink:href="structwebcface_1_1Message_1_1MessageBase.html" target="_top" xlink:title="型からkindを取得するためだけのベースクラス">
+<g id="a_Node000007"><a xlink:href="structwebcface_1_1message_1_1MessageBase.html" target="_top" xlink:title="型からkindを取得するためだけのベースクラス">
 <polygon fill="white" stroke="#666666" points="318.5,-239 205.5,-239 205.5,-220 318.5,-220 318.5,-239"/>
 <text text-anchor="middle" x="262" y="-227" font-family="Helvetica,sans-Serif" font-size="10.00">MessageBase&lt; k &gt;</text>
 </a>

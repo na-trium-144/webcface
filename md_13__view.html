@@ -245,8 +245,7 @@ $(document).ready(function(){initNavTree('md_13__view.html',''); initResizable()
 ViewComponent</h1>
 <p>Viewに追加する各種要素をViewComponentといいます。</p>
 <div class="tabbed"></div><div class="tabbed"><ul>
-<li><p class="startli"><b class="tab-title">C++</b> <span class="since-c">1.9</span> <code><a class="el" href="namespacewebcface_1_1Components.html">webcface::Components</a></code> 名前空間に定義されています。 </p><div class="fragment"><div class="line"><span class="keyword">using namespace </span><a class="code hl_namespace" href="namespacewebcface_1_1Components.html">webcface::Components</a>;</div>
-<div class="ttc" id="anamespacewebcface_1_1Components_html"><div class="ttname"><a href="namespacewebcface_1_1Components.html">webcface::Components</a></div><div class="ttdef"><b>Definition</b> components.h:191</div></div>
+<li><p class="startli"><b class="tab-title">C++</b> <span class="since-c">1.9</span> <code>webcface::Components</code> 名前空間に定義されています。 </p><div class="fragment"><div class="line"><span class="keyword">using namespace </span>webcface::Components;</div>
 </div><!-- fragment --><p> をすると便利かもしれません </p><dl class="section note"><dt>Note</dt><dd>namespace Components はinlineなので、 <code>webcface::</code> の名前空間でもアクセス可能です</dd></dl>
 <p>ver1.8以前はViewComponentsという名前空間でしたが現在はエイリアスになっておりどちらでもok</p>
 <p class="startli">各要素はそれぞれの関数から <a class="el" href="classwebcface_1_1ViewComponent.html" title="Viewに表示する要素です">webcface::ViewComponent</a> または <a class="el" href="classwebcface_1_1TemporalComponent.html" title="Canvas2D, Canvas3D (, View) に要素をaddするときに使うインタフェース">webcface::TemporalComponent</a> のオブジェクトとして得られます。 <code>button(...).textColor(...)</code> などのようにメソッドチェーンすることで各要素にオプションを設定できます。</p>
@@ -303,11 +302,11 @@ text</h2>
 newLine</h2>
 <p>改行します。</p>
 <div class="tabbed"></div><div class="tabbed"><ul>
-<li><b class="tab-title">C++</b> <code><a class="el" href="namespacewebcface_1_1Components.html#ab72da582724c98c1e879cadbacc78663" title="newLineコンポーネント">webcface::newLine()</a></code> の他、<code>std::endl</code>や<code>"\n"</code>でも改行できます。 <code>\n</code>は単体でなく文字列中にあってもそこで改行されます。 <div class="fragment"><div class="line">v.<a class="code hl_function" href="classwebcface_1_1View.html#aaa234e9c4eb3737375d11e738194b54c">add</a>(<span class="stringliteral">&quot;hello\nhello&quot;</span>);</div>
+<li><b class="tab-title">C++</b> <code><a class="el" href="namespacewebcface_1_1components.html#ab72da582724c98c1e879cadbacc78663" title="newLineコンポーネント">webcface::newLine()</a></code> の他、<code>std::endl</code>や<code>"\n"</code>でも改行できます。 <code>\n</code>は単体でなく文字列中にあってもそこで改行されます。 <div class="fragment"><div class="line">v.<a class="code hl_function" href="classwebcface_1_1View.html#aaa234e9c4eb3737375d11e738194b54c">add</a>(<span class="stringliteral">&quot;hello\nhello&quot;</span>);</div>
 <div class="line">v.<a class="code hl_function" href="classwebcface_1_1View.html#aaa234e9c4eb3737375d11e738194b54c">add</a>(<span class="stringliteral">&quot;hello&quot;</span>).<a class="code hl_function" href="classwebcface_1_1View.html#aaa234e9c4eb3737375d11e738194b54c">add</a>(<span class="stringliteral">&quot;\n&quot;</span>).<a class="code hl_function" href="classwebcface_1_1View.html#aaa234e9c4eb3737375d11e738194b54c">add</a>(<span class="stringliteral">&quot;hello&quot;</span>);</div>
 <div class="line">v &lt;&lt; <span class="stringliteral">&quot;hello\nhello&quot;</span>;</div>
 <div class="line">v &lt;&lt; <span class="stringliteral">&quot;hello&quot;</span> &lt;&lt; std::endl &lt;&lt; <span class="stringliteral">&quot;hello&quot;</span>;</div>
-<div class="line"><span class="keyword">using namespace </span><a class="code hl_namespace" href="namespacewebcface_1_1Components.html">webcface::Components</a>;</div>
+<div class="line"><span class="keyword">using namespace </span>webcface::Components;</div>
 <div class="line">v.<a class="code hl_function" href="classwebcface_1_1View.html#aaa234e9c4eb3737375d11e738194b54c">add</a>(text(<span class="stringliteral">&quot;hello&quot;</span>)).<a class="code hl_function" href="classwebcface_1_1View.html#aaa234e9c4eb3737375d11e738194b54c">add</a>(newLine()).<a class="code hl_function" href="classwebcface_1_1View.html#aaa234e9c4eb3737375d11e738194b54c">add</a>(text(<span class="stringliteral">&quot;hello&quot;</span>));</div>
 <div class="line">v &lt;&lt; text(<span class="stringliteral">&quot;hello&quot;</span>) &lt;&lt; newLine() &lt;&lt; text(<span class="stringliteral">&quot;hello&quot;</span>);</div>
 </div><!-- fragment --></li>
@@ -408,17 +407,17 @@ input</h2>
  入力された値にアクセスするため <a class="el" href="classwebcface_1_1InputRef.html" title="名前を指定しないText">webcface::InputRef</a> オブジェクトを作成し、inputにbindします。 そのInputRefオブジェクトをコピーまたは参照で別の関数などに渡すと、あとから値を取得することができます。 </p><div class="fragment"><div class="line"><span class="keyword">static</span> <a class="code hl_class" href="classwebcface_1_1InputRef.html">webcface::InputRef</a> input_val;</div>
 <div class="line">v &lt;&lt; <a class="code hl_enumvalue" href="namespacewebcface.html#a11040d82967b60182816ddc035d07c28ace50a09343724eb82df11390e2c1de18">webcface::button</a>(<span class="stringliteral">&quot;cout &quot;</span>,</div>
 <div class="line">                      [=] { std::cout &lt;&lt; input_val &lt;&lt; std::endl; })</div>
-<div class="line">  &lt;&lt; <a class="code hl_function" href="namespacewebcface_1_1Components.html#a8fb92fd87e3c94868cef5c8f91033b3b">webcface::textInput</a>(<span class="stringliteral">&quot;表示する文字列&quot;</span>).<a class="code hl_function" href="classwebcface_1_1ViewComponent.html#a5140f06b5682a47f9998b815e75b1b20">bind</a>(input_val)</div>
+<div class="line">  &lt;&lt; <a class="code hl_function" href="namespacewebcface_1_1components.html#a8fb92fd87e3c94868cef5c8f91033b3b">webcface::textInput</a>(<span class="stringliteral">&quot;表示する文字列&quot;</span>).<a class="code hl_function" href="classwebcface_1_1ViewComponent.html#a5140f06b5682a47f9998b815e75b1b20">bind</a>(input_val)</div>
 <div class="line">  &lt;&lt; std::endl;</div>
 <div class="ttc" id="aclasswebcface_1_1InputRef_html"><div class="ttname"><a href="classwebcface_1_1InputRef.html">webcface::InputRef</a></div><div class="ttdoc">名前を指定しないText</div><div class="ttdef"><b>Definition</b> text.h:247</div></div>
 <div class="ttc" id="aclasswebcface_1_1ViewComponent_html_a5140f06b5682a47f9998b815e75b1b20"><div class="ttname"><a href="classwebcface_1_1ViewComponent.html#a5140f06b5682a47f9998b815e75b1b20">webcface::ViewComponent::bind</a></div><div class="ttdeci">ViewComponent &amp; bind(const InputRef &amp;ref)</div><div class="ttdoc">変更した値を格納するInputRefを設定</div><div class="ttdef"><b>Definition</b> component_view.h:241</div></div>
-<div class="ttc" id="anamespacewebcface_1_1Components_html_a8fb92fd87e3c94868cef5c8f91033b3b"><div class="ttname"><a href="namespacewebcface_1_1Components.html#a8fb92fd87e3c94868cef5c8f91033b3b">webcface::Components::textInput</a></div><div class="ttdeci">ViewComponent textInput(std::string_view text=&quot;&quot;)</div><div class="ttdef"><b>Definition</b> components.h:432</div></div>
+<div class="ttc" id="anamespacewebcface_1_1components_html_a8fb92fd87e3c94868cef5c8f91033b3b"><div class="ttname"><a href="namespacewebcface_1_1components.html#a8fb92fd87e3c94868cef5c8f91033b3b">webcface::components::textInput</a></div><div class="ttdeci">ViewComponent textInput(std::string_view text=&quot;&quot;)</div><div class="ttdef"><b>Definition</b> components.h:435</div></div>
 </div><!-- fragment --><dl class="section warning"><dt>Warning</dt><dd>上の例ではinput_valをstatic変数にし寿命が切れないようにしていますが、 次の例のようにviewの生成ごとにInputRefオブジェクトを生成・破棄しても動作はします。 <div class="fragment"><div class="line"><span class="keywordflow">while</span> (<span class="keyword">true</span>){</div>
 <div class="line">    <span class="keyword">auto</span> v = wcli.<a class="code hl_function" href="structwebcface_1_1Field.html#a1a6e1affea60ef37fbb3118637671da0">view</a>(<span class="stringliteral">&quot;a&quot;</span>);</div>
 <div class="line">    <a class="code hl_class" href="classwebcface_1_1InputRef.html">webcface::InputRef</a> input_val;</div>
 <div class="line">    v &lt;&lt; <a class="code hl_enumvalue" href="namespacewebcface.html#a11040d82967b60182816ddc035d07c28ace50a09343724eb82df11390e2c1de18">webcface::button</a>(<span class="stringliteral">&quot;cout &quot;</span>,</div>
 <div class="line">                          [=] { std::cout &lt;&lt; input_val &lt;&lt; std::endl; })</div>
-<div class="line">      &lt;&lt; <a class="code hl_function" href="namespacewebcface_1_1Components.html#a8fb92fd87e3c94868cef5c8f91033b3b">webcface::textInput</a>(<span class="stringliteral">&quot;表示する文字列&quot;</span>).<a class="code hl_function" href="classwebcface_1_1ViewComponent.html#a5140f06b5682a47f9998b815e75b1b20">bind</a>(input_val)</div>
+<div class="line">      &lt;&lt; <a class="code hl_function" href="namespacewebcface_1_1components.html#a8fb92fd87e3c94868cef5c8f91033b3b">webcface::textInput</a>(<span class="stringliteral">&quot;表示する文字列&quot;</span>).<a class="code hl_function" href="classwebcface_1_1ViewComponent.html#a5140f06b5682a47f9998b815e75b1b20">bind</a>(input_val)</div>
 <div class="line">      &lt;&lt; std::endl;</div>
 <div class="line">    <span class="comment">// std::cout &lt;&lt; &quot;input_val = &quot; &lt;&lt; input_val.get(); この場合ここでは使えない</span></div>
 <div class="line">    v.<a class="code hl_function" href="classwebcface_1_1View.html#a9cb08e3833e550609bd9cc49ec7484a6">sync</a>();</div>
@@ -429,7 +428,7 @@ input</h2>
  <span class="since-c">1.11</span> <code>asStringRef()</code>, <code>asString()</code>, <code>as&lt;double&gt;()</code>, <code>asBool()</code> でも型変換ができます。</p>
 <dl class="section note"><dt>Note</dt><dd>内部の実装では入力値を受け取りInputRefに値をセットする関数をonChangeにセットしています。 また、InputRefの値は<a class="el" href="md_11__text.html">Text</a>の1つとしてviewを表示しているクライアントに送信されます。</dd></dl>
 <p>onChange <br  />
- onChange() で値が入力されたときに実行する関数を設定でき、こちらでも値が取得できます。 buttonに渡す関数と同様、関数オブジェクト、Funcオブジェクト、AnonymousFuncオブジェクトが使用できます。 </p><div class="fragment"><div class="line">v &lt;&lt; <a class="code hl_function" href="namespacewebcface_1_1Components.html#a8fb92fd87e3c94868cef5c8f91033b3b">webcface::textInput</a>(<span class="stringliteral">&quot;表示する文字列&quot;</span>).<a class="code hl_function" href="classwebcface_1_1ViewComponent.html#a12d4ec6085140c225ce663aacf76fb74">onChange</a>([](std::string val) {</div>
+ onChange() で値が入力されたときに実行する関数を設定でき、こちらでも値が取得できます。 buttonに渡す関数と同様、関数オブジェクト、Funcオブジェクト、AnonymousFuncオブジェクトが使用できます。 </p><div class="fragment"><div class="line">v &lt;&lt; <a class="code hl_function" href="namespacewebcface_1_1components.html#a8fb92fd87e3c94868cef5c8f91033b3b">webcface::textInput</a>(<span class="stringliteral">&quot;表示する文字列&quot;</span>).<a class="code hl_function" href="classwebcface_1_1ViewComponent.html#a12d4ec6085140c225ce663aacf76fb74">onChange</a>([](std::string val) {</div>
 <div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;input changed: &quot;</span> &lt;&lt; val &lt;&lt; std::endl;</div>
 <div class="line">});</div>
 <div class="ttc" id="aclasswebcface_1_1ViewComponent_html_a12d4ec6085140c225ce663aacf76fb74"><div class="ttname"><a href="classwebcface_1_1ViewComponent.html#a12d4ec6085140c225ce663aacf76fb74">webcface::ViewComponent::onChange</a></div><div class="ttdeci">std::optional&lt; Func &gt; onChange() const</div><div class="ttdoc">inputの値の変化時に実行される関数を取得</div><div class="ttdef"><b>Definition</b> component_view.h:233</div></div>
@@ -454,7 +453,7 @@ input</h2>
 <div class="line">}, 100);</div>
 </div><!-- fragment --> <dl class="section warning"><dt>Warning</dt><dd>viewを繰り返し送信するときInputRefオブジェクトは同じものを使いまわすのでも、 毎回新しいInputRefオブジェクトを生成するのでも、どちらでも動作します。 <div class="fragment"><div class="line"><span class="keyword">import</span> { InputRef, viewComponents } from &quot;webcface&quot;;</div>
 <div class="line">setInterval(() =&gt; {</div>
-<div class="line">    <span class="keyword">const</span> inputVal = <span class="keyword">new</span> <a class="code hl_class" href="classwebcface_1_1InputRef.html">InputRef</a>(); <span class="comment">// 毎回新しいInputRef</span></div>
+<div class="line">    <span class="keyword">const</span> inputVal = <span class="keyword">new</span> InputRef(); <span class="comment">// 毎回新しいInputRef</span></div>
 <div class="line">    wcli.view(<span class="stringliteral">&quot;hoge&quot;</span>).set([</div>
 <div class="line">        viewComponents.button(<span class="stringliteral">&quot;cout&quot;</span>, () =&gt; console.log(inputVal.get())), <span class="comment">// ok</span></div>
 <div class="line">        viewComponents.textInput(<span class="stringliteral">&quot;表示する文字列&quot;</span>, { bind: inputVal }),</div>
@@ -521,7 +520,7 @@ Event</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sun Jun 30 2024 10:34:27 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Mon Jul 1 2024 17:11:02 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

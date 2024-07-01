@@ -251,37 +251,37 @@ Geometry (3次元)</h2>
 <p>3次元の図形を表示するにはGeometryを指定します。 一部の図形は2次元のGeometryと共通のインタフェースになっています。</p>
 <div class="tabbed"></div><div class="tabbed"><ul>
 <li><p class="startli"><b class="tab-title">C++</b> </p><dl class="section since"><dt>Since</dt><dd><span class="since-c">1.9</span></dd></dl>
-<p><code><a class="el" href="namespacewebcface_1_1Components_1_1Geometries.html">webcface::Geometries</a></code> 名前空間に定義されています。 </p><div class="fragment"><div class="line"><span class="keyword">using namespace </span><a class="code hl_namespace" href="namespacewebcface_1_1Components_1_1Geometries.html">webcface::Geometries</a>;</div>
-<div class="ttc" id="anamespacewebcface_1_1Components_1_1Geometries_html"><div class="ttname"><a href="namespacewebcface_1_1Components_1_1Geometries.html">webcface::Geometries</a></div><div class="ttdef"><b>Definition</b> components.h:192</div></div>
+<p><code>webcface::Geometries</code> 名前空間に定義されています。 </p><div class="fragment"><div class="line"><span class="keyword">using namespace </span>webcface::Geometries;</div>
 </div><!-- fragment --><p> をすると便利かもしれません </p><dl class="section note"><dt>Note</dt><dd>namespace Geometries はinlineなので、 <code>webcface::</code> の名前空間でもアクセス可能です</dd></dl>
 <p>各要素はそれぞれの関数から <a class="el" href="classwebcface_1_1Canvas3DComponent.html" title="Canvas3Dに表示する要素">webcface::Canvas3DComponent</a> または <a class="el" href="classwebcface_1_1TemporalComponent.html" title="Canvas2D, Canvas3D (, View) に要素をaddするときに使うインタフェース">webcface::TemporalComponent</a> のオブジェクトとして得られます。 <code>box(...).color(...)</code> などのようにメソッドチェーンすることで各要素にオプションを設定できます。</p>
 <p class="startli">色、表示位置などを設定できます。 使用可能なオプションは <a class="el" href="classwebcface_1_1Canvas3DComponent.html" title="Canvas3Dに表示する要素">webcface::Canvas3DComponent</a> のそれぞれのメソッドの説明を参照してください。</p>
 </li>
 <li><b class="tab-title">JavaScript</b> JavaScriptでは <a href="https://na-trium-144.github.io/webcface-js/variables/geometries.html"><code>geometries</code></a> オブジェクト内にそれぞれの要素を表す関数があります <div class="fragment"><div class="line">import { geometries } from &quot;webcface&quot;;</div>
 </div><!-- fragment --> オプションはそれぞれ関数の引数にオブジェクトで渡すことができます。</li>
-<li><b class="tab-title">Python</b> Pythonでは <a href="https://na-trium-144.github.io/webcface-python/webcface.geometries.html"><code>webcface.geometries</code></a> モジュール内にあり、 <div class="fragment"><div class="line"><span class="keyword">from</span> webcface.geometries <span class="keyword">import</span> *</div>
+<li><b class="tab-title">Python</b> Pythonでは <a href="https://na-trium-144.github.io/webcface-python/webcface.geometries.html"><code>webcface.geometries</code></a> モジュール内にあり、 <div class="fragment"><div class="line"><span class="keyword">from</span> <a class="code hl_namespace" href="namespacewebcface_1_1components_1_1geometries.html">webcface.geometries</a> <span class="keyword">import</span> *</div>
+<div class="ttc" id="anamespacewebcface_1_1components_1_1geometries_html"><div class="ttname"><a href="namespacewebcface_1_1components_1_1geometries.html">webcface::geometries</a></div><div class="ttdef"><b>Definition</b> components.h:192</div></div>
 </div><!-- fragment --> とすることもできます</li>
 </ul>
 </div><div class="tabbed"></div><p>Geometryは以下のものが用意されています。</p>
 <h2><a class="anchor" id="autotoc_md94"></a>
 Line</h2>
-<p>指定した2点間に直線を引きます </p><div class="fragment"><div class="line">line(<a class="code hl_class" href="classwebcface_1_1Point.html">Point</a> begin, <a class="code hl_class" href="classwebcface_1_1Point.html">Point</a> end)</div>
+<p>指定した2点間に直線を引きます </p><div class="fragment"><div class="line">line(Point begin, Point end)</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md95"></a>
 Plane</h2>
-<p>originのxy平面上に、originを中心として幅(x方向の長さ)がwidth, 高さ(y方向の長さ)がheightの長方形を描画します </p><div class="fragment"><div class="line">plane(<a class="code hl_class" href="classwebcface_1_1Transform.html">Transform</a> origin, <span class="keywordtype">double</span> width, <span class="keywordtype">double</span> height)</div>
+<p>originのxy平面上に、originを中心として幅(x方向の長さ)がwidth, 高さ(y方向の長さ)がheightの長方形を描画します </p><div class="fragment"><div class="line">plane(Transform origin, <span class="keywordtype">double</span> width, <span class="keywordtype">double</span> height)</div>
 </div><!-- fragment --><p> webcface内部では2次元の Rect と同じ扱いです</p>
 <h2><a class="anchor" id="autotoc_md96"></a>
 Box</h2>
-<p>指定した2点を頂点とし、各辺がx, y, z軸に平行な直方体を描画します </p><div class="fragment"><div class="line">box(<a class="code hl_class" href="classwebcface_1_1Point.html">Point</a> vertex1, <a class="code hl_class" href="classwebcface_1_1Point.html">Point</a> vertex2)</div>
+<p>指定した2点を頂点とし、各辺がx, y, z軸に平行な直方体を描画します </p><div class="fragment"><div class="line">box(Point vertex1, Point vertex2)</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md97"></a>
 Circle</h2>
-<p>originのxy平面上に、originを中心として半径radiusの円を描画します </p><div class="fragment"><div class="line">circle(<a class="code hl_class" href="classwebcface_1_1Transform.html">Transform</a> origin, <span class="keywordtype">double</span> radius)</div>
+<p>originのxy平面上に、originを中心として半径radiusの円を描画します </p><div class="fragment"><div class="line">circle(Transform origin, <span class="keywordtype">double</span> radius)</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md98"></a>
 Cylinder</h2>
-<p>originのyz平面上にoriginを中心として半径radiusの円を描画し、 それをx軸方向にlength押し出した円柱を描画します </p><div class="fragment"><div class="line">cylinder(<a class="code hl_class" href="classwebcface_1_1Transform.html">Transform</a> origin, <span class="keywordtype">double</span> radius, <span class="keywordtype">double</span> length)</div>
+<p>originのyz平面上にoriginを中心として半径radiusの円を描画し、 それをx軸方向にlength押し出した円柱を描画します </p><div class="fragment"><div class="line">cylinder(Transform origin, <span class="keywordtype">double</span> radius, <span class="keywordtype">double</span> length)</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md99"></a>
 Sphere</h2>
-<p>originを中心とし半径radiusの球を描画します </p><div class="fragment"><div class="line">sphere(<a class="code hl_class" href="classwebcface_1_1Point.html">Point</a> origin, <span class="keywordtype">double</span> radius)</div>
+<p>originを中心とし半径radiusの球を描画します </p><div class="fragment"><div class="line">sphere(Point origin, <span class="keywordtype">double</span> radius)</div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md100"></a>
 受信</h1>
 <p>Viewなどと同様、Member::canvas3D() でCanvas3Dクラスのオブジェクトが得られ、 Canvas3D::tryGet() で値のリクエストをするとともに受信した値を取得できます。</p>
@@ -313,7 +313,7 @@ Event</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sun Jun 30 2024 10:34:27 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Mon Jul 1 2024 17:11:02 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

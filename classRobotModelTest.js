@@ -8,6 +8,6 @@ var classRobotModelTest =
     [ "model", "classRobotModelTest.html#a088cad9aeff416d9e2a578cc5bc9fd6f", null ],
     [ "SetUp", "classRobotModelTest.html#a3a1707f6479611fdc609a3eb8a0cef1b", null ],
     [ "callback_called", "classRobotModelTest.html#a2a18870b2643d315bfe89f1ea8f763e1", null ],
-    [ "data_", "classRobotModelTest.html#a3cd7beb0e9abbb2d080edacb9bc9391c", null ],
+    [ "data_", "classRobotModelTest.html#a0c65a734b53e3b4f01a0d2f39f8ca588", null ],
     [ "self_name", "classRobotModelTest.html#a7f72d47250b0ed5cdb8af4f17c3287fe", null ]
 ];

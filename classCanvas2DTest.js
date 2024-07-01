@@ -11,6 +11,6 @@ var classCanvas2DTest =
     [ "func", "classCanvas2DTest.html#a34ff8c8849dacbcdfb338024442ad59a", null ],
     [ "SetUp", "classCanvas2DTest.html#a3a1707f6479611fdc609a3eb8a0cef1b", null ],
     [ "callback_called", "classCanvas2DTest.html#a2a18870b2643d315bfe89f1ea8f763e1", null ],
-    [ "data_", "classCanvas2DTest.html#a3cd7beb0e9abbb2d080edacb9bc9391c", null ],
+    [ "data_", "classCanvas2DTest.html#a0c65a734b53e3b4f01a0d2f39f8ca588", null ],
     [ "self_name", "classCanvas2DTest.html#a7f72d47250b0ed5cdb8af4f17c3287fe", null ]
 ];

@@ -172,7 +172,7 @@ $(document).ready(function(){initNavTree('md_40__log.html',''); initResizable();
 </div><!-- fragment --><p> これと同様に<code>trace</code>, <code>debug</code>, <code>info</code>, <code>warn</code>, <code>error</code>, <code>critical</code>の6段階のログレベルを使うことができます。</p>
 <p class="startli">上の例のようにspdlogではfmtライブラリを使用しており数値などをフォーマットして出力することができます。 詳細は<a href="https://github.com/gabime/spdlog">spdlog</a>, <a href="https://github.com/fmtlib/fmt">fmt</a>を参照してください</p>
 <p class="startli">Client::loggerSink()でログをwebcfaceに送信するsinkを取得できるので、これを他のloggerにセットして使うこともできます。 または Client.logger() の出力先のsinkを変更することもできます。 (詳細はspdlogのドキュメントを読んでください。)</p>
-<p class="startli"><span class="since-c">2.0</span> Windowsでは<code>SPDLOG_WCHAR_SUPPORT</code>を有効にすることでspdlogのloggerにワイド文字列を渡すことができるようになります。 (WebCFaceのCMakeLists内で自動的に有効になりますが、別でインストールしたspdlogを使用する場合は有効になっていない可能性があります。) なおこの場合spdlog内部で文字列がUTF-8に変換されるため、 <a class="el" href="namespacewebcface_1_1Encoding.html#ae57423f1244b067999069f20f73eb166" title="webcfaceが使用するエンコーディングを取得する">webcface::Encoding::usingUTF8()</a> はtrueにしてください。</p>
+<p class="startli"><span class="since-c">2.0</span> Windowsでは<code>SPDLOG_WCHAR_SUPPORT</code>を有効にすることでspdlogのloggerにワイド文字列を渡すことができるようになります。 (WebCFaceのCMakeLists内で自動的に有効になりますが、別でインストールしたspdlogを使用する場合は有効になっていない可能性があります。) なおこの場合spdlog内部で文字列がUTF-8に変換されるため、 webcface::Encoding::usingUTF8() はtrueにしてください。</p>
 <p class="startli">spdlogではなくostreamを使いたい場合は </p><div class="fragment"><div class="line">wcli.loggerOStream() &lt;&lt; <span class="stringliteral">&quot;hello&quot;</span> &lt;&lt; std::endl;</div>
 </div><!-- fragment --><p> のように出力したり、 </p><div class="fragment"><div class="line">std::cout.rdbuf(wcli.loggerStreamBuf());</div>
 <div class="line">std::cout &lt;&lt; <span class="stringliteral">&quot;hello&quot;</span> &lt;&lt; std::endl;</div>
@@ -239,7 +239,7 @@ Event</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sun Jun 30 2024 10:34:27 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Mon Jul 1 2024 17:11:02 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

@@ -9,6 +9,6 @@ var classCanvas3DTest =
     [ "robot_model", "classCanvas3DTest.html#a0f767a8a1b19c4771fed26b47a2e3a55", null ],
     [ "SetUp", "classCanvas3DTest.html#a3a1707f6479611fdc609a3eb8a0cef1b", null ],
     [ "callback_called", "classCanvas3DTest.html#a2a18870b2643d315bfe89f1ea8f763e1", null ],
-    [ "data_", "classCanvas3DTest.html#a3cd7beb0e9abbb2d080edacb9bc9391c", null ],
+    [ "data_", "classCanvas3DTest.html#a0c65a734b53e3b4f01a0d2f39f8ca588", null ],
     [ "self_name", "classCanvas3DTest.html#a7f72d47250b0ed5cdb8af4f17c3287fe", null ]
 ];

@@ -165,8 +165,8 @@ $(document).ready(function(){initNavTree('custom__logger_8h_source.html',''); in
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>  <span class="keyword">public</span>:</div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno"><a class="line" href="classwebcface_1_1Server_1_1CustomLogger.html#a2a11dedfab6f1b178b925089c4333994">   16</a></span>    <a class="code hl_function" href="classwebcface_1_1Server_1_1CustomLogger.html#a2a11dedfab6f1b178b925089c4333994">CustomLogger</a>(<span class="keyword">const</span> std::shared_ptr&lt;spdlog::logger&gt; &amp;logger) : logger(logger) {}</div>
 <div class="foldopen" id="foldopen00017" data-start="{" data-end="}">
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno"><a class="line" href="classwebcface_1_1Server_1_1CustomLogger.html#a00cd2f28d09aa4c6be5d7ae83e1dd6b2">   17</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classwebcface_1_1Server_1_1CustomLogger.html#a00cd2f28d09aa4c6be5d7ae83e1dd6b2">log</a>(std::string message, crow::LogLevel level)<span class="keyword"> override </span>{</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>        logger-&gt;log(<a class="code hl_function" href="dummy__server_8cc.html#aa7132eb6525527e4747e7c8ab7131d09">convertLevel</a>(level), message);</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno"><a class="line" href="classwebcface_1_1Server_1_1CustomLogger.html#a00cd2f28d09aa4c6be5d7ae83e1dd6b2">   17</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classwebcface_1_1Server_1_1CustomLogger.html#a00cd2f28d09aa4c6be5d7ae83e1dd6b2">log</a>(std::string <a class="code hl_namespace" href="namespacemessage.html">message</a>, crow::LogLevel level)<span class="keyword"> override </span>{</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>        logger-&gt;log(<a class="code hl_function" href="dummy__server_8cc.html#aa7132eb6525527e4747e7c8ab7131d09">convertLevel</a>(level), <a class="code hl_namespace" href="namespacemessage.html">message</a>);</div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    }</div>
 </div>
 <div class="foldopen" id="foldopen00020" data-start="{" data-end="}">
@@ -201,13 +201,14 @@ $(document).ready(function(){initNavTree('custom__logger_8h_source.html',''); in
 <div class="ttc" id="adef_8h_html_abe991b8f291782627a31118c688e123a"><div class="ttname"><a href="def_8h.html#abe991b8f291782627a31118c688e123a">WEBCFACE_NS_BEGIN</a></div><div class="ttdeci">#define WEBCFACE_NS_BEGIN</div><div class="ttdef"><b>Definition</b> def.h:80</div></div>
 <div class="ttc" id="adummy__server_8cc_html_aa7132eb6525527e4747e7c8ab7131d09"><div class="ttname"><a href="dummy__server_8cc.html#aa7132eb6525527e4747e7c8ab7131d09">convertLevel</a></div><div class="ttdeci">static spdlog::level::level_enum convertLevel(int level)</div><div class="ttdef"><b>Definition</b> dummy_server.cc:18</div></div>
 <div class="ttc" id="anamespaceServer_html"><div class="ttname"><a href="namespaceServer.html">Server</a></div><div class="ttdef"><b>Definition</b> dir.cc:16</div></div>
+<div class="ttc" id="anamespacemessage_html"><div class="ttname"><a href="namespacemessage.html">message</a></div><div class="ttdef"><b>Definition</b> message.cc:5</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_9cb285999b179f8aca5679ee400b878d.html">server-store</a></li><li class="navelem"><a class="el" href="dir_f53cacbf47894fb03ba5cf8a6c70dd7c.html">include</a></li><li class="navelem"><a class="el" href="dir_e7501623f8dfbed316d8be1d8d984954.html">webcface</a></li><li class="navelem"><a class="el" href="dir_769fa1d8bedebba544fb426db8e707df.html">server</a></li><li class="navelem"><a class="el" href="custom__logger_8h.html">custom_logger.h</a></li>
-    <li class="footer">Generated on Sun Jun 30 2024 10:34:27 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Mon Jul 1 2024 17:11:02 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

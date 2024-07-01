@@ -1,0 +1,9 @@
+<map id="ViewBuf" name="ViewBuf">
+<area shape="rect" id="Node000001" title="Viewの送信用データを保持する" alt="" coords="62,168,138,193"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,93,85,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="65,129,93,166,89,169,61,132"/>
+<area shape="rect" id="Node000003" href="$classwebcface_1_1internal_1_1DataSetBuffer.html" title=" " alt="" coords="109,93,360,119"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="202,128,123,170,120,165,200,123"/>
+<area shape="rect" id="Node000004" href="$classwebcface_1_1internal_1_1DataSetBuffer.html" title="View,Canvasなどで送信用にaddされたデータを管理する" alt="" coords="125,5,344,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="237,45,237,93,232,93,232,45"/>
+</map>

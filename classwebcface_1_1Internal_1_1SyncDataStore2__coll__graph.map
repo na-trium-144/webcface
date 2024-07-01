@@ -1,5 +1,0 @@
-<map id="SyncDataStore2&lt; T, ReqT &gt;" name="SyncDataStore2&lt; T, ReqT &gt;">
-<area shape="rect" id="Node000001" title="送受信するデータを保持するクラス" alt="" coords="5,93,159,133"/>
-<area shape="rect" id="Node000002" href="$classwebcface_1_1Encoding_1_1SharedString.html" title="u8stringとstringとwstringをshared_ptrで持ち共有する" alt="" coords="29,5,135,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="85,44,85,93,79,93,79,44"/>
-</map>

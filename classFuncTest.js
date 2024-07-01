@@ -8,6 +8,6 @@ var classFuncTest =
     [ "fieldBase", "classFuncTest.html#a351a5de8995b2364b70cae3e6c6ec261", null ],
     [ "func", "classFuncTest.html#a34ff8c8849dacbcdfb338024442ad59a", null ],
     [ "SetUp", "classFuncTest.html#a3a1707f6479611fdc609a3eb8a0cef1b", null ],
-    [ "data_", "classFuncTest.html#a3cd7beb0e9abbb2d080edacb9bc9391c", null ],
+    [ "data_", "classFuncTest.html#a0c65a734b53e3b4f01a0d2f39f8ca588", null ],
     [ "self_name", "classFuncTest.html#a7f72d47250b0ed5cdb8af4f17c3287fe", null ]
 ];

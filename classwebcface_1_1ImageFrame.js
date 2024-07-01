@@ -2,7 +2,7 @@ var classwebcface_1_1ImageFrame =
 [
     [ "ImageFrame", "classwebcface_1_1ImageFrame.html#ab0fa7373193ef83de06d82eba4ba8242", null ],
     [ "ImageFrame", "classwebcface_1_1ImageFrame.html#af79f75aaa65c8c99d2fc89978c92618c", null ],
-    [ "ImageFrame", "classwebcface_1_1ImageFrame.html#a637e0a41cc5f54de2e8315554946f9fe", null ],
+    [ "ImageFrame", "classwebcface_1_1ImageFrame.html#aa22d5ec78bb0f58c3384a31a5d0ff2a0", null ],
     [ "ImageFrame", "classwebcface_1_1ImageFrame.html#a32a0ee55778ae1e6f2034f955edc098a", null ],
     [ "ImageFrame", "classwebcface_1_1ImageFrame.html#a4b499c3e97fe13d3bdbf45df2dc5377d", null ],
     [ "ImageFrame", "classwebcface_1_1ImageFrame.html#a3f47f8fd1300bcaf70285ba224a0254b", null ],
@@ -21,7 +21,7 @@ var classwebcface_1_1ImageFrame =
     [ "height", "classwebcface_1_1ImageFrame.html#a26acb32e9b64581a57297caebb3941db", null ],
     [ "rows", "classwebcface_1_1ImageFrame.html#a41c67733c8d40dea7b2395d8c5081cb9", null ],
     [ "size", "classwebcface_1_1ImageFrame.html#ab3b604bffb89540363c974ef3f427200", null ],
-    [ "toMessage", "classwebcface_1_1ImageFrame.html#a2737ad809ed7e5198b89162091fe885c", null ],
+    [ "toMessage", "classwebcface_1_1ImageFrame.html#aa3b50bf1c6c36d2e6573ffc66d8a8653", null ],
     [ "width", "classwebcface_1_1ImageFrame.html#a9d0cf56a3338ee6b4a79d221b340d36d", null ],
     [ "cmp_mode_", "classwebcface_1_1ImageFrame.html#afa890d51e2d68d6824208fee67b23628", null ],
     [ "color_mode_", "classwebcface_1_1ImageFrame.html#ae3eed0786f0f6cfa610ece7f39dce7d2", null ],

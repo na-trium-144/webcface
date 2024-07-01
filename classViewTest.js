@@ -13,6 +13,6 @@ var classViewTest =
     [ "text", "classViewTest.html#a7bbc25ecceabb2e61d8747d4e70c1468", null ],
     [ "view", "classViewTest.html#ab619b5cbac926633addbfd515b3cd432", null ],
     [ "callback_called", "classViewTest.html#a2a18870b2643d315bfe89f1ea8f763e1", null ],
-    [ "data_", "classViewTest.html#a3cd7beb0e9abbb2d080edacb9bc9391c", null ],
+    [ "data_", "classViewTest.html#a0c65a734b53e3b4f01a0d2f39f8ca588", null ],
     [ "self_name", "classViewTest.html#a7f72d47250b0ed5cdb8af4f17c3287fe", null ]
 ];

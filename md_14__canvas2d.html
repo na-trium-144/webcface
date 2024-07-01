@@ -258,16 +258,16 @@ Point, Transform</h1>
 <p class="startli">例 </p><div class="fragment"><div class="line">canvas = wcli.canvas2d(<span class="stringliteral">&quot;canvas&quot;</span>)</div>
 <div class="line">canvas.init(100, 100)</div>
 <div class="line">canvas.add(</div>
-<div class="line">    webcface.geometries.rect(<a class="code hl_class" href="classwebcface_1_1Point.html">webcface.Point</a>(10, 10), <a class="code hl_class" href="classwebcface_1_1Point.html">webcface.Point</a>(90, 90)),</div>
+<div class="line">    <a class="code hl_function" href="namespacewebcface_1_1components_1_1geometries.html#a70a6a0aadee31b74968201a0eee0bf5f">webcface.geometries.rect</a>(<a class="code hl_class" href="classwebcface_1_1Point.html">webcface.Point</a>(10, 10), <a class="code hl_class" href="classwebcface_1_1Point.html">webcface.Point</a>(90, 90)),</div>
 <div class="line">    color=webcface.ViewColor.BLACK,</div>
 <div class="line">)</div>
 <div class="line">canvas.add(</div>
-<div class="line">    webcface.geometries.circle(<a class="code hl_class" href="classwebcface_1_1Transform.html">webcface.Transform</a>([50, 50], 0), 20),</div>
+<div class="line">    <a class="code hl_function" href="namespacewebcface_1_1components_1_1geometries.html#a8054b6a17f6efeeeff18590a7b38f8e2">webcface.geometries.circle</a>(<a class="code hl_class" href="classwebcface_1_1Transform.html">webcface.Transform</a>([50, 50], 0), 20),</div>
 <div class="line">    color=webcface.ViewColor.RED,</div>
 <div class="line">)</div>
 <div class="line">pos = <a class="code hl_class" href="classwebcface_1_1Transform.html">webcface.Transform</a>(...)</div>
 <div class="line">canvas.add(</div>
-<div class="line">    webcface.geometries.polygon([[0, -5], [-5, 0], [-5, 10], [5, 10], [5, 0]]),</div>
+<div class="line">    <a class="code hl_function" href="namespacewebcface_1_1components_1_1geometries.html#ab71462a4b3c7f94d111654688068b64f">webcface.geometries.polygon</a>([[0, -5], [-5, 0], [-5, 10], [5, 10], [5, 0]]),</div>
 <div class="line">    pos,</div>
 <div class="line">    color=webcface.ViewColor.BLACK,</div>
 <div class="line">    fill=webcface.ViewColor.YELLOW,</div>
@@ -276,6 +276,9 @@ Point, Transform</h1>
 <div class="line"><span class="comment"># ... 省略</span></div>
 <div class="line">canvas.sync() <span class="comment"># ここまでにcanvasに追加したものをクライアントに反映</span></div>
 <div class="line">wcli.sync()<span class="comment">#</span></div>
+<div class="ttc" id="anamespacewebcface_1_1components_1_1geometries_html_a70a6a0aadee31b74968201a0eee0bf5f"><div class="ttname"><a href="namespacewebcface_1_1components_1_1geometries.html#a70a6a0aadee31b74968201a0eee0bf5f">webcface::components::geometries::rect</a></div><div class="ttdeci">TemporalGeometry rect(const Point &amp;origin, double width, double height)</div><div class="ttdef"><b>Definition</b> components.h:278</div></div>
+<div class="ttc" id="anamespacewebcface_1_1components_1_1geometries_html_a8054b6a17f6efeeeff18590a7b38f8e2"><div class="ttname"><a href="namespacewebcface_1_1components_1_1geometries.html#a8054b6a17f6efeeeff18590a7b38f8e2">webcface::components::geometries::circle</a></div><div class="ttdeci">TemporalGeometry circle(const Transform &amp;origin, double radius)</div><div class="ttdef"><b>Definition</b> components.h:333</div></div>
+<div class="ttc" id="anamespacewebcface_1_1components_1_1geometries_html_ab71462a4b3c7f94d111654688068b64f"><div class="ttname"><a href="namespacewebcface_1_1components_1_1geometries.html#ab71462a4b3c7f94d111654688068b64f">webcface::components::geometries::polygon</a></div><div class="ttdeci">TemporalGeometry polygon(const std::vector&lt; Point &gt; &amp;points)</div><div class="ttdef"><b>Definition</b> components.h:233</div></div>
 </div><!-- fragment --><p> <img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_canvas2d.png" alt="tutorial_canvas2d.png" class="inline"/></p>
 <p class="startli">init() で指定するキャンバスのサイズを canvas2d() 時に指定することもできます。(init() は不要になります) </p><div class="fragment"><div class="line">canvas = wcli.canvas2d(<span class="stringliteral">&quot;canvas&quot;</span>, 100, 100)</div>
 </div><!-- fragment --><p> また、with構文を使って <code>with wcli.canvas2d("hoge", width, height) as canvas:</code> などとするとwithを抜けるときに自動でcanvas.sync()がされます。</p>
@@ -288,22 +291,22 @@ Geometry (2次元)</h2>
 <p>2次元の図形を表示するにはGeometryを指定します。</p>
 <div class="tabbed"></div><div class="tabbed"><ul>
 <li><p class="startli"><b class="tab-title">C++</b> </p><dl class="section since"><dt>Since</dt><dd><span class="since-c">1.9</span></dd></dl>
-<p><code><a class="el" href="namespacewebcface_1_1Components_1_1Geometries.html">webcface::Geometries</a></code> 名前空間に定義されています。 </p><div class="fragment"><div class="line"><span class="keyword">using namespace </span><a class="code hl_namespace" href="namespacewebcface_1_1Components_1_1Geometries.html">webcface::Geometries</a>;</div>
-<div class="ttc" id="anamespacewebcface_1_1Components_1_1Geometries_html"><div class="ttname"><a href="namespacewebcface_1_1Components_1_1Geometries.html">webcface::Geometries</a></div><div class="ttdef"><b>Definition</b> components.h:192</div></div>
+<p><code>webcface::Geometries</code> 名前空間に定義されています。 </p><div class="fragment"><div class="line"><span class="keyword">using namespace </span>webcface::Geometries;</div>
 </div><!-- fragment --><p> をすると便利かもしれません </p><dl class="section note"><dt>Note</dt><dd>namespace Geometries はinlineなので、 <code>webcface::</code> の名前空間でもアクセス可能です</dd></dl>
 <p>各要素はそれぞれの関数から <a class="el" href="classwebcface_1_1Canvas2DComponent.html" title="Canvas2Dの各要素を表すクラス。">webcface::Canvas2DComponent</a> または <a class="el" href="classwebcface_1_1TemporalComponent.html" title="Canvas2D, Canvas3D (, View) に要素をaddするときに使うインタフェース">webcface::TemporalComponent</a> のオブジェクトとして得られます。 <code>rect(...).color(...)</code> などのようにメソッドチェーンすることで各要素にオプションを設定できます。</p>
 <p class="startli">色、線の太さ、クリック時に実行する関数などを設定できます。 使用可能なオプションは <a class="el" href="classwebcface_1_1Canvas2DComponent.html" title="Canvas2Dの各要素を表すクラス。">webcface::Canvas2DComponent</a> のそれぞれのメソッドの説明を参照してください。 関数の実行については<a class="el" href="md_30__func.html">Func</a>も参照してください</p>
 </li>
 <li><b class="tab-title">JavaScript</b> JavaScriptでは <a href="https://na-trium-144.github.io/webcface-js/variables/geometries.html"><code>geometries</code></a> オブジェクト内にそれぞれの要素を表す関数があります <div class="fragment"><div class="line">import { geometries } from &quot;webcface&quot;;</div>
 </div><!-- fragment --> オプションはそれぞれ関数の引数にオブジェクトで渡すことができます。</li>
-<li><b class="tab-title">Python</b> Pythonでは <a href="https://na-trium-144.github.io/webcface-python/webcface.geometries.html"><code>webcface.geometries</code></a> モジュール内にあり、 <div class="fragment"><div class="line"><span class="keyword">from</span> webcface.geometries <span class="keyword">import</span> *</div>
+<li><b class="tab-title">Python</b> Pythonでは <a href="https://na-trium-144.github.io/webcface-python/webcface.geometries.html"><code>webcface.geometries</code></a> モジュール内にあり、 <div class="fragment"><div class="line"><span class="keyword">from</span> <a class="code hl_namespace" href="namespacewebcface_1_1components_1_1geometries.html">webcface.geometries</a> <span class="keyword">import</span> *</div>
+<div class="ttc" id="anamespacewebcface_1_1components_1_1geometries_html"><div class="ttname"><a href="namespacewebcface_1_1components_1_1geometries.html">webcface::geometries</a></div><div class="ttdef"><b>Definition</b> components.h:192</div></div>
 </div><!-- fragment --> とすることもできます</li>
 </ul>
 </div><div class="tabbed"></div><details >
 <summary >
 ver1.8以前のC++</summary>
 <p></p>
-<div class="fragment"><div class="line"><span class="keyword">using namespace </span><a class="code hl_namespace" href="namespacewebcface_1_1Components_1_1Geometries.html">webcface::Geometries</a>;</div>
+<div class="fragment"><div class="line"><span class="keyword">using namespace </span>webcface::Geometries;</div>
 <div class="line">canvas.<a class="code hl_function" href="classwebcface_1_1Canvas2D.html#af2d7719b1cf8babfa1d0f720e6fb54ab">add</a>(</div>
 <div class="line">    rect({0, 0}, {100, 100}),</div>
 <div class="line">    <a class="code hl_function" href="namespacewebcface.html#a9cc7119f63c09d929d8218008d2bb386">webcface::identity</a>(),</div>
@@ -323,14 +326,14 @@ ver1.8以前のC++</summary>
 <p>Geometryは以下のものが用意されています。</p>
 <h3><a class="anchor" id="autotoc_md73"></a>
 Line</h3>
-<p>指定した2点間に直線を引きます </p><div class="fragment"><div class="line">line(<a class="code hl_class" href="classwebcface_1_1Point.html">Point</a> begin, <a class="code hl_class" href="classwebcface_1_1Point.html">Point</a> end)</div>
+<p>指定した2点間に直線を引きます </p><div class="fragment"><div class="line">line(Point begin, Point end)</div>
 </div><!-- fragment --><h3><a class="anchor" id="autotoc_md74"></a>
 Rect</h3>
-<p>指定した2点を頂点としx軸,y軸に平行な辺をもつ長方形を描画します </p><div class="fragment"><div class="line">rect(<a class="code hl_class" href="classwebcface_1_1Point.html">Point</a> vertex1, <a class="code hl_class" href="classwebcface_1_1Point.html">Point</a> vertex2)</div>
-</div><!-- fragment --><p> またはoriginを中心として幅(x方向の長さ)がwidth, 高さ(y方向の長さ)がheightの長方形を描画します </p><div class="fragment"><div class="line">rect(<a class="code hl_class" href="classwebcface_1_1Point.html">Point</a> origin, <span class="keywordtype">double</span> width, <span class="keywordtype">double</span> height)</div>
+<p>指定した2点を頂点としx軸,y軸に平行な辺をもつ長方形を描画します </p><div class="fragment"><div class="line">rect(Point vertex1, Point vertex2)</div>
+</div><!-- fragment --><p> またはoriginを中心として幅(x方向の長さ)がwidth, 高さ(y方向の長さ)がheightの長方形を描画します </p><div class="fragment"><div class="line">rect(Point origin, <span class="keywordtype">double</span> width, <span class="keywordtype">double</span> height)</div>
 </div><!-- fragment --><h3><a class="anchor" id="autotoc_md75"></a>
 Circle</h3>
-<p>originを中心として半径radiusの円を描画します </p><div class="fragment"><div class="line">circle(<a class="code hl_class" href="classwebcface_1_1Point.html">Point</a> origin, <span class="keywordtype">double</span> radius)</div>
+<p>originを中心として半径radiusの円を描画します </p><div class="fragment"><div class="line">circle(Point origin, <span class="keywordtype">double</span> radius)</div>
 </div><!-- fragment --><dl class="section warning"><dt>Warning</dt><dd>PythonではCanvas3Dとの兼ね合いで第1引数はTransform (使いにくいのでなんとかならないか?)</dd></dl>
 <h3><a class="anchor" id="autotoc_md76"></a>
 Polygon</h3>
@@ -339,7 +342,7 @@ Polygon</h3>
 文字列の表示</h2>
 <div class="tabbed"></div><div class="tabbed"><ul>
 <li><b class="tab-title">C++</b> <dl class="section since"><dt>Since</dt><dd><span class="since-c">1.9</span></dd></dl>
-<code><a class="el" href="namespacewebcface_1_1Components.html#ac2e424b8867ad76806aa26080f80b93a" title="textコンポーネント">webcface::Components::text()</a></code> をCanvas2Dに追加することができます。 <code>textColor()</code>, <code>textSize()</code> などのオプションが使えます。 <div class="fragment"><div class="line">canvas &lt;&lt; <a class="code hl_enumvalue" href="namespacewebcface.html#a18133126518e30ea437441c60fa26928a1cb251ec0d568de6a929b520c4aed8d1">webcface::text</a>(<span class="stringliteral">&quot;Button&quot;</span>)</div>
+<code>webcface::Components::text()</code> をCanvas2Dに追加することができます。 <code>textColor()</code>, <code>textSize()</code> などのオプションが使えます。 <div class="fragment"><div class="line">canvas &lt;&lt; <a class="code hl_enumvalue" href="namespacewebcface.html#a18133126518e30ea437441c60fa26928a1cb251ec0d568de6a929b520c4aed8d1">webcface::text</a>(<span class="stringliteral">&quot;Button&quot;</span>)</div>
 <div class="line">            .origin({35, 45})</div>
 <div class="line">            .textColor(<a class="code hl_enumvalue" href="namespacewebcface.html#a5dcc1f15d6a60ca34207565aeb74124aafe01d67a002dfa0f3ac084298142eccd">webcface::ViewColor::orange</a>)</div>
 <div class="line">            .textSize(10);</div>
@@ -378,7 +381,7 @@ Event</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sun Jun 30 2024 10:34:27 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Mon Jul 1 2024 17:11:02 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

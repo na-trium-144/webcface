@@ -8,6 +8,6 @@ var classMemberTest =
     [ "member", "classMemberTest.html#ab951713ffa762b9b30c5658effe2b4f7", null ],
     [ "SetUp", "classMemberTest.html#a3a1707f6479611fdc609a3eb8a0cef1b", null ],
     [ "callback_called", "classMemberTest.html#a2a18870b2643d315bfe89f1ea8f763e1", null ],
-    [ "data_", "classMemberTest.html#a3cd7beb0e9abbb2d080edacb9bc9391c", null ],
+    [ "data_", "classMemberTest.html#a0c65a734b53e3b4f01a0d2f39f8ca588", null ],
     [ "self_name", "classMemberTest.html#a7f72d47250b0ed5cdb8af4f17c3287fe", null ]
 ];

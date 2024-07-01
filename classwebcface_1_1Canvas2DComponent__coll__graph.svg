@@ -95,7 +95,7 @@
 <!-- Node6 -->
 <g id="Node000006" class="node">
 <title>Node6</title>
-<g id="a_Node000006"><a xlink:href="classwebcface_1_1Encoding_1_1SharedString.html" target="_top" xlink:title="u8stringとstringとwstringをshared_ptrで持ち共有する">
+<g id="a_Node000006"><a xlink:href="classwebcface_1_1encoding_1_1SharedString.html" target="_top" xlink:title="u8stringとstringとwstringをshared_ptrで持ち共有する">
 <polygon fill="white" stroke="#666666" points="356,-90.5 277,-90.5 277,-71.5 356,-71.5 356,-90.5"/>
 <text text-anchor="middle" x="316.5" y="-78.5" font-family="Helvetica,sans-Serif" font-size="10.00">SharedString</text>
 </a>
