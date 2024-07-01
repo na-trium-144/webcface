@@ -12,6 +12,7 @@
 #include "webcface/message/message.h"
 #include "webcface/internal/client_internal.h"
 #include "webcface/internal/client_ws.h"
+#include "webcface/internal/unlock.h"
 #include <string>
 #include <chrono>
 
@@ -27,11 +28,11 @@ Client::Client(const SharedString &name,
 Internal::ClientData::ClientData(const SharedString &name,
                                  const SharedString &host, int port)
     : std::enable_shared_from_this<ClientData>(), self_member_name(name),
-      host(host), port(port), current_curl_handle(nullptr),
-      current_curl_closed(false), current_curl_path(), current_ws_buf(),
-      message_queue(std::make_shared<Queue<std::string>>()), value_store(name),
-      text_store(name), func_store(name), view_store(name), image_store(name),
-      robot_model_store(name), canvas3d_store(name), canvas2d_store(name),
+      host(host), port(port), current_curl_handle(nullptr), current_curl_path(),
+      current_ws_buf(), message_queue(std::make_shared<Queue<std::string>>()),
+      value_store(name), text_store(name), func_store(name), view_store(name),
+      image_store(name), robot_model_store(name), canvas3d_store(name),
+      canvas2d_store(name),
       log_store(std::make_shared<
                 SyncDataStore1<std::shared_ptr<std::vector<LogLineData<>>>>>(
           name)),
@@ -58,34 +59,20 @@ Internal::ClientData::ClientData(const SharedString &name,
     logger_os_w = std::make_unique<std::wostream>(logger_buf_w.get());
     log_store->setRecv(name, std::make_shared<std::vector<LogLineData<>>>());
 }
-void Internal::ClientData::start() {
-    if (!message_thread) {
-        message_thread = std::make_unique<std::thread>(
-            Internal::messageThreadMain, shared_from_this());
-    }
-    if (recv_thread && !recv_thread_running.load()) {
-        recv_thread->join();
-        recv_thread = nullptr;
-    }
-    if (!recv_thread) {
-        recv_thread_running.store(true);
-        recv_thread = std::make_unique<std::thread>(Internal::recvThreadMain,
-                                                    shared_from_this());
-    }
-}
 
 Client::~Client() {
     close();
     data->join();
 }
-void Client::close() { data->closing.store(true); }
-bool Client::connected() const { return data->connected.load(); }
 void Internal::ClientData::join() {
-    if (message_thread && message_thread->joinable()) {
-        message_thread->join();
+    if (message_thread.joinable()) {
+        message_thread.join();
     }
-    if (recv_thread && recv_thread->joinable()) {
-        recv_thread->join();
+    if (connection_thread.joinable()) {
+        connection_thread.join();
+    }
+    if (recv_thread.joinable()) {
+        recv_thread.join();
     }
 }
 std::vector<Member> Client::members() {
@@ -113,65 +100,173 @@ std::string Client::serverName() const { return data->svr_name; }
 
 void Internal::ClientData::pingStatusReq() {
     if (!ping_status_req) {
-        message_queue->push(Message::packSingle(Message::PingStatusReq{}));
+        message_push(Message::packSingle(Message::PingStatusReq{}));
     }
     ping_status_req = true;
 }
 
-void Internal::recvThreadMain(const std::shared_ptr<ClientData> &data) {
-    while (!data->closing.load() && data->port > 0) {
-        Internal::WebSocket::init(data);
-        while (data->connected.load() && !data->current_curl_closed &&
-               !data->closing.load()) {
-            Internal::WebSocket::recv(data);
-            std::this_thread::sleep_for(std::chrono::microseconds(100));
-            // std::this_thread::yield();
+void Internal::ClientData::start() {
+    std::lock_guard lock(this->connect_state_m);
+    this->do_ws_init = true;
+    this->connect_state_cond.notify_all();
+    if (!message_thread.joinable()) {
+        message_thread =
+            std::thread(Internal::messageThreadMain, shared_from_this());
+    }
+    if (!connection_thread.joinable()) {
+        connection_thread =
+            std::thread(Internal::connectionThreadMain, shared_from_this());
+    }
+    if (!recv_thread.joinable()) {
+        recv_thread = std::thread(Internal::recvThreadMain, shared_from_this());
+    }
+}
+void Client::close() {
+    std::lock_guard lock(data->connect_state_m);
+    data->closing.store(true);
+    data->connect_state_cond.notify_all();
+}
+bool Client::connected() const {
+    std::lock_guard lock(data->connect_state_m);
+    return data->connected;
+}
+void Internal::connectionThreadMain(const std::shared_ptr<ClientData> &data) {
+    if (data->port <= 0) {
+        return;
+    }
+    while (true) {
+        std::unique_lock lock(data->connect_state_m);
+        data->connect_state_cond.wait(lock, [&] {
+            return (data->closing.load() && !data->using_curl) ||
+                   (data->do_ws_init || data->auto_reconnect.load());
+        });
+        if (data->closing.load()) {
+            data->using_curl = true;
+            {
+                ScopedUnlock un(lock);
+                Internal::WebSocket::close(data);
+            }
+            data->connected = data->current_curl_connected;
+            data->using_curl = false;
+            data->connect_state_cond.notify_all();
+            return;
         }
-        Internal::WebSocket::close(data);
-        if (!data->auto_reconnect.load()) {
-            break;
+        if (data->connected || data->using_curl) {
+            data->do_ws_init = false;
+            continue;
         }
+        data->doing_ws_init = true;
+        data->using_curl = true;
+        {
+            ScopedUnlock un(lock);
+            Internal::WebSocket::init(data);
+        }
+        data->connected = data->current_curl_connected;
+        data->do_ws_init = false;
+        data->doing_ws_init = false;
+        data->using_curl = false;
+        data->connect_state_cond.notify_all();
         if (!data->closing.load()) {
+            ScopedUnlock un(lock);
             std::this_thread::sleep_for(std::chrono::milliseconds(10));
         }
     }
-    {
-        std::lock_guard lock(data->connect_state_m);
-        data->recv_thread_running.store(false);
+}
+void Internal::recvThreadMain(const std::shared_ptr<ClientData> &data) {
+    if (data->port <= 0) {
+        return;
+    }
+    auto next_recv = std::chrono::steady_clock::now();
+    while (true) {
+        std::unique_lock lock(data->connect_state_m);
+        int recv_us = data->auto_recv_us.load();
+        auto wait_pred = [&] {
+            return data->closing.load() || data->do_ws_recv;
+        };
+        if (recv_us > 0) {
+            data->connect_state_cond.wait_until(lock, next_recv, wait_pred);
+            next_recv += std::chrono::microseconds(recv_us);
+        } else {
+            data->connect_state_cond.wait(lock, wait_pred);
+        }
+        if (data->closing.load()) {
+            return;
+        }
+        if (!data->connected || data->using_curl) {
+            data->do_ws_recv = false;
+            continue;
+        }
+        data->using_curl = true;
+        data->doing_ws_recv = true;
+        {
+            ScopedUnlock un(lock);
+            Internal::WebSocket::recv(data, [data](const std::string &msg) {
+                std::unique_lock lock(data->connect_state_m);
+                data->using_curl = false;
+                data->connect_state_cond.notify_all();
+                {
+                    ScopedUnlock un(lock);
+                    data->onRecv(msg);
+                }
+                data->connect_state_cond.wait(lock, [&] {
+                    return data->closing.load() || !data->using_curl;
+                });
+                data->using_curl = true;
+            });
+        }
+        data->connected = data->current_curl_connected;
+        data->doing_ws_recv = false;
+        data->do_ws_recv = false;
+        data->using_curl = false;
         data->connect_state_cond.notify_all();
+        // std::this_thread::yield();
     }
 }
 void Internal::messageThreadMain(
     const std::shared_ptr<Internal::ClientData> &data) {
-    while (!data->closing.load()) {
-        auto msg = data->message_queue->pop(std::chrono::milliseconds(10));
-        while (msg && !data->closing.load()) {
-            std::unique_lock lock(data->connect_state_m);
-            data->connect_state_cond.wait_for(
-                lock, std::chrono::milliseconds(10),
-                [&] { return data->connected.load() || data->closing.load(); });
-            if (data->connected.load()) {
+    while (true) {
+        std::unique_lock lock(data->connect_state_m);
+        data->connect_state_cond.wait(lock, [&] {
+            return data->closing.load() ||
+                   (!data->using_curl && data->connected &&
+                    !data->message_queue->empty());
+        });
+        if (data->closing.load()) {
+            return;
+        }
+        auto msg = data->message_queue->pop();
+        if (msg) [[likely]] {
+            data->using_curl = true;
+            {
+                ScopedUnlock un(lock);
                 Internal::WebSocket::send(data, *msg);
-                break;
             }
+            data->using_curl = false;
+            data->connect_state_cond.notify_all();
         }
     }
 }
 
-void Client::start() {
-    if (!connected()) {
-        data->start();
-    }
-}
+void Client::start() { data->start(); }
 void Client::waitConnection() {
-    if (!connected()) {
-        data->start();
-        std::unique_lock lock(data->connect_state_m);
-        data->connect_state_cond.wait(lock, [this] {
-            return connected() || !data->recv_thread_running.load();
-        });
+    data->start();
+    std::unique_lock lock(data->connect_state_m);
+    data->connect_state_cond.wait(lock, [this] { return !data->do_ws_init; });
+}
+void Client::recv() {
+    data->start();
+    std::unique_lock lock(data->connect_state_m);
+    data->do_ws_recv = true;
+    data->connect_state_cond.wait(lock, [this] { return !data->do_ws_recv; });
+}
+void Client::autoRecv(bool enabled, std::chrono::microseconds interval) {
+    if (enabled && interval.count() > 0) {
+        data->auto_recv_us.store(static_cast<int>(interval.count()));
+    } else {
+        data->auto_recv_us.store(0);
     }
 }
+
 void Client::autoReconnect(bool enabled) {
     data->auto_reconnect.store(enabled);
 }
@@ -366,7 +461,7 @@ std::string Internal::ClientData::syncData(bool is_first,
 }
 void Client::sync() {
     start();
-    data->message_queue->push(data->syncData(false));
+    data->message_push(data->syncData(false));
     while (auto func_sync = data->func_sync_queue.pop()) {
         (*func_sync)->sync();
     }
@@ -437,7 +532,7 @@ void Internal::ClientData::onRecv(const std::string &message) {
             break;
         }
         case MessageKind::ping: {
-            this->message_queue->push(
+            this->message_push(
                 webcface::Message::packSingle(webcface::Message::Ping{}));
             break;
         }
@@ -630,7 +725,7 @@ void Internal::ClientData::onRecv(const std::string &message) {
                 auto func_info =
                     data->func_store.getRecv(data->self_member_name, r.field);
                 if (func_info) {
-                    data->message_queue->push(webcface::Message::packSingle(
+                    data->message_push(webcface::Message::packSingle(
                         webcface::Message::CallResponse{
                             {}, r.caller_id, r.caller_member_id, true}));
                     ValAdaptor result;
@@ -656,14 +751,14 @@ void Internal::ClientData::onRecv(const std::string &message) {
                         is_error = true;
                         result = "unknown exception";
                     }
-                    data->message_queue->push(webcface::Message::packSingle(
+                    data->message_push(webcface::Message::packSingle(
                         webcface::Message::CallResult{{},
                                                       r.caller_id,
                                                       r.caller_member_id,
                                                       is_error,
                                                       result}));
                 } else {
-                    data->message_queue->push(webcface::Message::packSingle(
+                    data->message_push(webcface::Message::packSingle(
                         webcface::Message::CallResponse{
                             {}, r.caller_id, r.caller_member_id, false}));
                 }

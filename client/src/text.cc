@@ -17,7 +17,7 @@ void Text::request() const {
     auto data = dataLock();
     auto req = data->text_store.addReq(member_, field_);
     if (req) {
-        data->message_queue->push(Message::packSingle(
+        data->message_push(Message::packSingle(
             Message::Req<Message::Text>{{}, member_, field_, req}));
     }
 }

@@ -36,7 +36,7 @@ void Log::request() const {
     auto data = dataLock();
     auto req = data->log_store->addReq(member_);
     if (req) {
-        data->message_queue->push(
+        data->message_push(
             Message::packSingle(Message::LogReq{{}, member_}));
     }
 }

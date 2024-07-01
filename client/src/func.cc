@@ -102,7 +102,7 @@ AsyncFuncResult Func::runAsync(const std::vector<ValAdaptor> &args_vec) const {
         }).detach();
     } else {
         // リモートの場合cli.sync()を待たずに呼び出しメッセージを送る
-        data->message_queue->push(Message::packSingle(
+        data->message_push(Message::packSingle(
             FuncCall{r.caller_id, 0, data->getMemberIdFromName(member_), field_,
                      args_vec}
                 .toMessage()));

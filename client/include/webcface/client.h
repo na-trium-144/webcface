@@ -102,14 +102,15 @@ class WEBCFACE_DLL Client : public Member {
     bool autoReconnect() const;
 
     /*!
-     * \brief サーバーへの接続を開始する。
+     * \brief サーバーへの接続を別スレッドで開始する。
      * \since ver1.2
      */
     void start();
     /*!
      * \brief サーバーへの接続を開始し、成功するまで待機する。
      * \since ver1.2
-     * ver1.11.1以降: autoReconnect が false
+     * 
+     * * ver1.11.1以降: autoReconnect が false
      * の場合は1回目の接続のみ待機し、失敗しても再接続せずreturnする。
      *
      * \sa start()
@@ -117,11 +118,34 @@ class WEBCFACE_DLL Client : public Member {
     void waitConnection();
 
     /*!
+     * \brief サーバーからデータを受信する
+     * \since ver2.0
+     * 
+     * * データを受信した場合、各種コールバック(onEntry, onChange, Func::run()など)を呼び出し、
+     * それがすべて完了するまでこの関数はブロックされる。
+     * * データをまだ何も受信していない場合即座にreturnする。
+     * * サーバーに接続していない場合start()を呼び出す。
+     * 
+     * \sa autoRecv()
+     */
+    void recv();
+    /*!
+     * \brief 別スレッドでrecv()を自動的に呼び出す間隔を設定する。
+     * \since ver2.0
+     * 
+     * デフォルトでは無効なので、手動でrecv()を呼び出す必要がある
+     * 
+     * \param enabled trueにすると自動でrecv()が呼び出されるようになる
+     * \param interval recvを呼び出す間隔 (1μs以上)
+     * \sa recv()
+     */
+    void autoRecv(bool enabled, std::chrono::microseconds interval = std::chrono::microseconds(100));
+
+    /*!
      * \brief 送信用にセットしたデータをすべて送信キューに入れる。
      *
-     * 実際に送信をするのは別スレッドであり、この関数はブロックしない。
-     *
-     * ver1.2以降: サーバーに接続していない場合、start()を呼び出す。
+     * * 実際に送信をするのは別スレッドであり、この関数はブロックしない。
+     * * ver1.2以降: サーバーに接続していない場合、start()を呼び出す。
      *
      * \sa start()
      */

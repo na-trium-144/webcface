@@ -30,6 +30,7 @@ class Log;
 namespace Internal {
 
 WEBCFACE_DLL void messageThreadMain(const std::shared_ptr<ClientData> &data);
+WEBCFACE_DLL void connectionThreadMain(const std::shared_ptr<ClientData> &data);
 WEBCFACE_DLL void recvThreadMain(const std::shared_ptr<ClientData> &data);
 
 struct ClientData : std::enable_shared_from_this<ClientData> {
@@ -46,35 +47,84 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
         return base.member_ == self_member_name;
     }
 
+    // std::mutex curl_m;
     SharedString host;
     int port;
-    std::mutex ws_m;
+    bool current_curl_connected;
     void *current_curl_handle;
-    bool current_curl_closed;
     std::string current_curl_path;
     std::string current_ws_buf;
 
     /*!
      * \brief message_queueにたまったメッセージを送信するスレッド
-     *
      */
-    std::unique_ptr<std::thread> message_thread;
+    std::thread message_thread;
     /*!
-     * \brief websocket接続と受信処理をするスレッド
-     *
+     * \brief websocket接続をするスレッド
      */
-    std::unique_ptr<std::thread> recv_thread;
+    std::thread connection_thread;
+    /*!
+     * \brief 受信してコールバックなどを処理するスレッド
+     */
+    std::thread recv_thread;
 
     /*!
-     * \brief close()が呼ばれたらtrue
+     * \brief message_thread, connection_thread, recv_thread間の同期
+     *
+     * closing, connected, do_ws_init, do_ws_recv, doing_ws_init, doing_ws_recv
+     * using_curl, message_queue が変化した時notifyする
      *
      */
-    std::atomic<bool> closing = false;
-    std::atomic<bool> connected = false;
-    std::atomic<bool> recv_thread_running = false;
-    std::atomic<bool> auto_reconnect = true;
-    std::mutex connect_state_m;
     std::condition_variable connect_state_cond;
+    std::mutex connect_state_m;
+    /*!
+     * close()が呼ばれたらtrue、すべてのスレッドは停止する
+     */
+    std::atomic<bool> closing = false;
+    /*!
+     * current_curl_connectedがWebSocket::initまたはrecv側の内部で変更されるので、
+     * それを呼び出したスレッドがそれをこっちに反映させる
+     */
+    bool connected = false;
+    /*!
+     * Client側から関数が呼ばれたらtrue、
+     * WebSocket::側のその関数が完了したらfalse
+     *
+     * trueになったときnotify
+     */
+    bool do_ws_init = false, do_ws_recv = false;
+    /*!
+     * WebSocket::側の関数を実行中はtrue、その関数が完了したらfalse
+     *
+     * falseになったときnotify
+     */
+    bool doing_ws_init = false, doing_ws_recv = false;
+    /*!
+     * どこかのスレッドがcurlにアクセス中
+     * (curlへのアクセスを排他制御)
+     *
+     * falseになったときnotify
+     */
+    bool using_curl = false;
+
+    /*!
+     * ただの設定フラグなのでmutexやcondとは無関係
+     */
+    std::atomic<bool> auto_reconnect = true;
+    std::atomic<int> auto_recv_us = 0;
+
+    /*!
+     * \brief 送信したいメッセージを入れるキュー
+     *
+     * 接続できていない場合送信されずキューにたまる
+     *
+     */
+    std::shared_ptr<Queue<std::string>> message_queue;
+    void message_push(std::string &&msg) {
+        std::lock_guard lock(connect_state_m);
+        message_queue->push(std::move(msg));
+        connect_state_cond.notify_all();
+    }
 
     /*!
      * \brief 通信関係のスレッドを開始する
@@ -109,15 +159,6 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
     WEBCFACE_DLL std::string syncData(bool is_first);
     WEBCFACE_DLL std::string syncData(bool is_first, std::stringstream &buffer,
                                       int &len);
-
-    /*!
-     * \brief 送信したいメッセージを入れるキュー
-     *
-     * 接続できていない場合送信されずキューにたまる
-     *
-     */
-    std::shared_ptr<Queue<std::string>> message_queue;
-
     /*!
      * \brief 受信時の処理
      *

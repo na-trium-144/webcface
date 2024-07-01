@@ -130,7 +130,7 @@ void View::request() const {
     auto data = dataLock();
     auto req = data->view_store.addReq(member_, field_);
     if (req) {
-        data->message_queue->push(Message::packSingle(
+        data->message_push(Message::packSingle(
             Message::Req<Message::View>{{}, member_, field_, req}));
     }
 }
