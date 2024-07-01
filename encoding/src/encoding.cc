@@ -8,7 +8,7 @@
 #endif
 
 WEBCFACE_NS_BEGIN
-inline namespace Encoding {
+inline namespace encoding {
 static bool using_utf8 = true;
 
 void usingUTF8(bool flag) { using_utf8 = flag; }
@@ -169,7 +169,7 @@ const std::string &SharedString::decode() const {
         if (!data->s.empty()) {
             return data->s;
         } else {
-            data->s = Encoding::decode(data->u8s);
+            data->s = encoding::decode(data->u8s);
             return data->s;
         }
     }
@@ -183,11 +183,11 @@ const std::wstring &SharedString::decodeW() const {
         if (!data->ws.empty()) {
             return data->ws;
         } else {
-            data->ws = Encoding::decodeW(data->u8s);
+            data->ws = encoding::decodeW(data->u8s);
             return data->ws;
         }
     }
 }
 
-} // namespace Encoding
+} // namespace encoding
 WEBCFACE_NS_END

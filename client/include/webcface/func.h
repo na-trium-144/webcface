@@ -14,7 +14,7 @@ namespace FuncWrapper {
  *
  */
 WEBCFACE_DLL FuncWrapperType
-runCondOnSync(const std::weak_ptr<Internal::ClientData> &data);
+runCondOnSync(const std::weak_ptr<internal::ClientData> &data);
 /*!
  * \brief ScopeGuardをロックするFuncWrapper
  *

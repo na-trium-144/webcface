@@ -12,7 +12,7 @@
 #include "components.h"
 
 WEBCFACE_NS_BEGIN
-namespace Internal {
+namespace internal {
 template <typename Component>
 class DataSetBuffer;
 }
@@ -24,7 +24,7 @@ class DataSetBuffer;
  *
  */
 class WEBCFACE_DLL Canvas3D : protected Field, public EventTarget<Canvas3D> {
-    std::shared_ptr<Internal::DataSetBuffer<Canvas3DComponent>> sb;
+    std::shared_ptr<internal::DataSetBuffer<Canvas3DComponent>> sb;
 
     void onAppend() const override final;
 
@@ -34,7 +34,7 @@ class WEBCFACE_DLL Canvas3D : protected Field, public EventTarget<Canvas3D> {
     Canvas3D(const Field &base, const SharedString &field)
         : Canvas3D(Field{base, field}) {}
 
-    friend Internal::DataSetBuffer<Canvas3DComponent>;
+    friend internal::DataSetBuffer<Canvas3DComponent>;
     using Field::lastName;
     using Field::member;
     using Field::name;

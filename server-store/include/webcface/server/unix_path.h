@@ -5,7 +5,7 @@
 #include <optional>
 
 WEBCFACE_NS_BEGIN
-namespace Message::Path {
+namespace message::Path {
 // Messageではない気がするがほかにいいnamespaceがない
 // (clientでもserverでも使う)
 
@@ -48,5 +48,5 @@ WEBCFACE_DLL void initUnixSocket(const std::filesystem::path &path,
 WEBCFACE_DLL void updateUnixSocketPerms(const std::filesystem::path &path,
                                         const std::shared_ptr<spdlog::logger> &logger);
 
-} // namespace Message::Path
+} // namespace message::Path
 WEBCFACE_NS_END

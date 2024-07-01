@@ -4,10 +4,10 @@
 #include <string>
 
 using namespace webcface;
-using namespace webcface::Internal;
+using namespace webcface::internal;
 
 static SharedString operator""_ss(const char *str, std::size_t len) {
-    return SharedString(Encoding::castToU8(std::string_view(str, len)));
+    return SharedString(encoding::castToU8(std::string_view(str, len)));
 }
 
 class SyncDataStore2Test : public ::testing::Test {

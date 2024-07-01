@@ -9,17 +9,17 @@
 using namespace webcface;
 
 static SharedString operator""_ss(const char *str, std::size_t len) {
-    return SharedString(Encoding::castToU8(std::string_view(str, len)));
+    return SharedString(encoding::castToU8(std::string_view(str, len)));
 }
 
 class LoggerTest : public ::testing::Test {
   protected:
     void SetUp() override {
-        data_ = std::make_shared<Internal::ClientData>(self_name);
+        data_ = std::make_shared<internal::ClientData>(self_name);
         data_->start();
     }
     SharedString self_name = "test"_ss;
-    std::shared_ptr<Internal::ClientData> data_;
+    std::shared_ptr<internal::ClientData> data_;
 };
 
 TEST_F(LoggerTest, logger) {
@@ -33,7 +33,7 @@ TEST_F(LoggerTest, logger) {
     ASSERT_EQ((*ls)->size(), 6);
     for (int i = 0; i <= 5; i++) {
         EXPECT_EQ((**ls)[i].level(), i);
-        EXPECT_EQ((**ls)[i].message(), Encoding::castToU8(std::to_string(i)));
+        EXPECT_EQ((**ls)[i].message(), encoding::castToU8(std::to_string(i)));
     }
 }
 TEST_F(LoggerTest, loggerBuf) {

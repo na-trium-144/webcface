@@ -10,7 +10,7 @@
 #endif
 
 WEBCFACE_NS_BEGIN
-namespace Message::Path {
+namespace message::Path {
 std::filesystem::path unixSocketPath(int port) {
 #ifdef _WIN32
     wchar_t *fpath;
@@ -106,5 +106,5 @@ void updateUnixSocketPerms(const std::filesystem::path &path,
     }
 }
 
-} // namespace Message::Path
+} // namespace message::Path
 WEBCFACE_NS_END

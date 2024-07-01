@@ -6,7 +6,7 @@
 #include <webcface/encoding/encoding.h>
 
 WEBCFACE_NS_BEGIN
-namespace Internal {
+namespace internal {
 template <typename T>
 class WEBCFACE_DLL_TEMPLATE SyncDataStore1 {
     StrMap1<T> data_recv;
@@ -49,5 +49,5 @@ extern template class WEBCFACE_DLL_INSTANCE_DECL
     SyncDataStore1<std::chrono::system_clock::time_point>;
 #endif
 
-} // namespace Internal
+} // namespace internal
 WEBCFACE_NS_END

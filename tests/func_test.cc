@@ -18,30 +18,30 @@ static void wait() {
         std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
 }
 static SharedString operator""_ss(const char *str, std::size_t len) {
-    return SharedString(Encoding::castToU8(std::string_view(str, len)));
+    return SharedString(encoding::castToU8(std::string_view(str, len)));
 }
 
 class FuncTest : public ::testing::Test {
   protected:
     void SetUp() override {
-        data_ = std::make_shared<Internal::ClientData>(self_name);
+        data_ = std::make_shared<internal::ClientData>(self_name);
     }
     SharedString self_name = "test"_ss;
-    std::shared_ptr<Internal::ClientData> data_;
+    std::shared_ptr<internal::ClientData> data_;
     FieldBase fieldBase(const SharedString &member,
                         std::string_view name) const {
-        return FieldBase{member, SharedString(Encoding::castToU8(name))};
+        return FieldBase{member, SharedString(encoding::castToU8(name))};
     }
     FieldBase fieldBase(std::string_view member, std::string_view name) const {
-        return FieldBase{SharedString(Encoding::castToU8(member)),
-                         SharedString(Encoding::castToU8(name))};
+        return FieldBase{SharedString(encoding::castToU8(member)),
+                         SharedString(encoding::castToU8(name))};
     }
     Field field(const SharedString &member, std::string_view name = "") const {
-        return Field{data_, member, SharedString(Encoding::castToU8(name))};
+        return Field{data_, member, SharedString(encoding::castToU8(name))};
     }
     Field field(std::string_view member, std::string_view name = "") const {
-        return Field{data_, SharedString(Encoding::castToU8(member)),
-                     SharedString(Encoding::castToU8(name))};
+        return Field{data_, SharedString(encoding::castToU8(member)),
+                     SharedString(encoding::castToU8(name))};
     }
     template <typename T1, typename T2>
     Func func(const T1 &member, const T2 &name) {
@@ -272,7 +272,7 @@ TEST_F(FuncTest, funcRunRemote) {
     func("a", "b").runAsync(1.23, true, "abc");
     bool call_msg_found = false;
     while (auto msg = data_->message_queue->pop()) {
-        if (*msg == Message::packSingle(FuncCall{
+        if (*msg == message::packSingle(FuncCall{
                         0,
                         0,
                         0,

@@ -5,7 +5,7 @@
 #include <webcface/common/def.h>
 
 WEBCFACE_NS_BEGIN
-namespace Message {
+namespace message {
 struct Canvas3DComponent;
 }
 
@@ -20,7 +20,7 @@ enum class Canvas3DComponentType {
  *
  */
 class WEBCFACE_DLL Canvas3DComponent {
-    std::weak_ptr<Internal::ClientData> data_w;
+    std::weak_ptr<internal::ClientData> data_w;
 
     Canvas3DComponentType type_ = Canvas3DComponentType::geometry;
     Transform origin_;
@@ -39,14 +39,14 @@ class WEBCFACE_DLL Canvas3DComponent {
           geometry_(std::move(geometry)), field_base_(std::move(field_base)),
           angles_(std::move(angles)) {}
     Canvas3DComponent(const Canvas3DComponent &vc,
-                      const std::weak_ptr<Internal::ClientData> &data_w)
+                      const std::weak_ptr<internal::ClientData> &data_w)
         : Canvas3DComponent(vc) {
         this->data_w = data_w;
     }
     // explicit Canvas3DComponent(const Common::Canvas3DComponentBase &vc)
     //     : Common::Canvas3DComponentBase(vc), data_w() {}
     Canvas3DComponent(Canvas3DComponentType type,
-                      const std::weak_ptr<Internal::ClientData> &data_w)
+                      const std::weak_ptr<internal::ClientData> &data_w)
         : data_w(data_w), type_(type) {}
     explicit Canvas3DComponent(Canvas3DComponentType type)
         : data_w(), type_(type) {}
@@ -58,13 +58,13 @@ class WEBCFACE_DLL Canvas3DComponent {
      *
      */
     Canvas3DComponent &
-    lockTmp(const std::weak_ptr<Internal::ClientData> & /*data_w*/,
+    lockTmp(const std::weak_ptr<internal::ClientData> & /*data_w*/,
             const std::u8string & /*field_id*/) {
         return *this;
     }
 
-    Message::Canvas3DComponent toMessage() const;
-    Canvas3DComponent(const Message::Canvas3DComponent &cc);
+    message::Canvas3DComponent toMessage() const;
+    Canvas3DComponent(const message::Canvas3DComponent &cc);
 
     /*!
      * \since ver1.11

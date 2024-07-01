@@ -17,7 +17,7 @@
 #endif
 
 WEBCFACE_NS_BEGIN
-namespace Message {
+namespace message {
 struct ViewComponent;
 }
 
@@ -70,7 +70,7 @@ extern template class WEBCFACE_DLL_INSTANCE_DECL IdBase<ViewComponentType>;
  *
  */
 class WEBCFACE_DLL ViewComponent : public IdBase<ViewComponentType> {
-    std::weak_ptr<Internal::ClientData> data_w;
+    std::weak_ptr<internal::ClientData> data_w;
 
     ViewComponentType type_ = ViewComponentType::text;
     SharedString text_;
@@ -106,7 +106,7 @@ class WEBCFACE_DLL ViewComponent : public IdBase<ViewComponentType> {
           bg_color_(bg_color), min_(min), max_(max), step_(step),
           option_(std::move(option)) {}
     ViewComponent(const ViewComponent &vc,
-                  const std::weak_ptr<Internal::ClientData> &data_w,
+                  const std::weak_ptr<internal::ClientData> &data_w,
                   std::unordered_map<int, int> *idx_next)
         : ViewComponent(vc) {
         this->data_w = data_w;
@@ -121,14 +121,14 @@ class WEBCFACE_DLL ViewComponent : public IdBase<ViewComponentType> {
      * \brief AnonymousFuncとInputRefの名前を確定
      *
      */
-    ViewComponent &lockTmp(const std::weak_ptr<Internal::ClientData> &data_w,
+    ViewComponent &lockTmp(const std::weak_ptr<internal::ClientData> &data_w,
                            const SharedString &view_name,
                            std::unordered_map<int, int> *idx_next = nullptr);
 
     wcfViewComponent cData() const;
     wcfViewComponentW cDataW() const;
-    Message::ViewComponent toMessage() const;
-    ViewComponent(const Message::ViewComponent &vc);
+    message::ViewComponent toMessage() const;
+    ViewComponent(const message::ViewComponent &vc);
 
     /*!
      * \brief 要素の比較

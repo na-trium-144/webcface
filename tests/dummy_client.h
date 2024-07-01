@@ -28,7 +28,7 @@ struct DummyClient {
     // clientにメッセージを送信する
     template <typename T>
     void send(const T &msg) {
-        send(Message::packSingle(msg));
+        send(message::packSingle(msg));
     }
 
     std::atomic<bool> closing = false;

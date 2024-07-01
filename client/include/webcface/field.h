@@ -8,7 +8,7 @@
 
 WEBCFACE_NS_BEGIN
 
-namespace Internal {
+namespace internal {
 struct ClientData;
 }
 
@@ -67,13 +67,13 @@ struct WEBCFACE_DLL Field : public FieldBase {
      *
      * ClientData内に保持するクラスもあるので循環参照を避けるためweak_ptr
      */
-    std::weak_ptr<Internal::ClientData> data_w;
+    std::weak_ptr<internal::ClientData> data_w;
 
     Field() = default;
-    Field(const std::weak_ptr<Internal::ClientData> &data_w,
+    Field(const std::weak_ptr<internal::ClientData> &data_w,
           const SharedString &member)
         : FieldBase(member), data_w(data_w) {}
-    Field(const std::weak_ptr<Internal::ClientData> &data_w,
+    Field(const std::weak_ptr<internal::ClientData> &data_w,
           const SharedString &member, const SharedString &field)
         : FieldBase(member, field), data_w(data_w) {}
     Field(const Field &base, const SharedString &field)
@@ -83,12 +83,12 @@ struct WEBCFACE_DLL Field : public FieldBase {
      * \brief data_wをlockし、失敗したらruntime_errorを投げる
      *
      */
-    std::shared_ptr<Internal::ClientData> dataLock() const;
+    std::shared_ptr<internal::ClientData> dataLock() const;
     /*!
      * \brief data_wをlockし、memberがselfではなければinvalid_argumentを投げる
      *
      */
-    std::shared_ptr<Internal::ClientData> setCheck() const;
+    std::shared_ptr<internal::ClientData> setCheck() const;
 
     bool expired() const;
 
@@ -118,12 +118,12 @@ struct WEBCFACE_DLL Field : public FieldBase {
      * \brief nameのうちピリオドで区切られた最後の部分を取り出す
      * \since ver1.11
      */
-    std::string lastName() const { return Encoding::decode(lastName8()); }
+    std::string lastName() const { return encoding::decode(lastName8()); }
     /*!
      * \brief nameのうちピリオドで区切られた最後の部分を取り出す (wstring)
      * \since ver2.0
      */
-    std::wstring lastNameW() const { return Encoding::decodeW(lastName8()); }
+    std::wstring lastNameW() const { return encoding::decodeW(lastName8()); }
     /*!
      * \brief nameの最後のピリオドの前までを新しい名前とするField
      * \since ver1.11
