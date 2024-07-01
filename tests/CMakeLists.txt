@@ -22,7 +22,6 @@ target_link_libraries(webcface-test PRIVATE
     GTest::gtest_main
     msgpack-cxx
     utf8cpp
-    eventpp::eventpp
     spdlog-linker
     magickpp-linker
     crow-linker

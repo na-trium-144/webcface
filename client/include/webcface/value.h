@@ -1,9 +1,9 @@
 #pragma once
+#include <functional>
 #include <ostream>
 #include <optional>
 #include <chrono>
 #include "field.h"
-#include "event_target.h"
 #include <webcface/common/def.h>
 
 WEBCFACE_NS_BEGIN
@@ -21,9 +21,7 @@ concept Range = requires(R range) {
  * Member::onValueEntry() を使って取得してください
  *
  */
-class WEBCFACE_DLL Value : protected Field, public EventTarget<Value> {
-    void onAppend() const override final;
-
+class WEBCFACE_DLL Value : protected Field {
   public:
     Value() = default;
     Value(const Field &base);
@@ -82,6 +80,20 @@ class WEBCFACE_DLL Value : protected Field, public EventTarget<Value> {
      */
     Value parent() const { return this->Field::parent(); }
 
+  private:
+    /*!
+     * \brief 値が変化したときに呼び出されるコールバックを取得
+     * \since ver2.0
+     */
+    std::function<void(Value)> &onChange();
+
+  public:
+    /*!
+     * \brief 値が変化したときに呼び出されるコールバックを設定
+     * \since ver2.0
+     */
+    Value &onChange(std::function<void(Value)> callback);
+
     /*!
      * \brief 値をセットする
      *
@@ -93,7 +105,7 @@ class WEBCFACE_DLL Value : protected Field, public EventTarget<Value> {
     /*!
      * \brief vector型配列をセットする
      * \since ver2.0 (set(VectorOpt<double>) を置き換え)
-     * 
+     *
      */
     Value &set(std::vector<double> &&v);
     /*!
@@ -107,7 +119,7 @@ class WEBCFACE_DLL Value : protected Field, public EventTarget<Value> {
     // requires std::ranges::range<R> &&
     //          std::convertible_to<std::ranges::range_value_t<R>, T>
         requires Range<R> && std::convertible_to<std::iter_value_t<R>, double>
-    Value &set(const R &range){
+    Value &set(const R &range) {
         std::vector<double> vec;
         vec.reserve(std::size(range));
         for (const auto &v : range) {

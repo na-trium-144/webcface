@@ -6,11 +6,7 @@
 
 WEBCFACE_NS_BEGIN
 
-template class WEBCFACE_DLL_INSTANCE_DEF EventTarget<Text>;
-
-Text::Text(const Field &base) : Field(base), EventTarget<Text>() {
-    std::lock_guard lock(this->dataLock()->event_m);
-    this->setCL(this->dataLock()->text_change_event[this->member_][this->field_]);
+Text::Text(const Field &base) : Field(base) {
 }
 
 void Text::request() const {
@@ -22,24 +18,22 @@ void Text::request() const {
     }
 }
 
-// Text &Text::set(const Text::Dict &v) {
-//     if (v.hasValue()) {
-//         setCheck()->text_store.setSend(*this, v.getRaw());
-//         this->triggerEvent(*this);
-//     } else {
-//         for (const auto &it : v.getChildren()) {
-//             child(it.first).set(it.second);
-//         }
-//     }
-//     return *this;
-// }
 Text &Text::set(const ValAdaptor &v) {
     setCheck()->text_store.setSend(*this, std::make_shared<ValAdaptor>(v));
-    this->triggerEvent(*this);
+    if (this->onChange()) {
+        this->onChange()(*this);
+    }
     return *this;
 }
-
-void Text::onAppend() const { request(); }
+std::function<void(Text)> &Text::onChange() {
+    std::lock_guard lock(this->dataLock()->event_m);
+    return this->dataLock()->text_change_event[this->member_][this->field_];
+}
+Text &Text::onChange(std::function<void(Text)> callback) {
+    this->request();
+    this->onChange() = std::move(callback);
+    return *this;
+}
 
 std::optional<ValAdaptor> Text::tryGetV() const {
     auto v = dataLock()->text_store.getRecv(*this);

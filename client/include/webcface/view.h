@@ -3,7 +3,6 @@
 #include <ostream>
 #include <memory>
 #include <utility>
-#include "event_target.h"
 #include <webcface/common/def.h>
 #include "components.h"
 
@@ -21,11 +20,8 @@ class ViewBuf;
  *
  */
 class WEBCFACE_DLL View : protected Field,
-                          public EventTarget<View>,
                           public std::ostream {
     std::shared_ptr<Internal::ViewBuf> sb;
-
-    void onAppend() const override final;
 
   public:
     View();
@@ -91,6 +87,20 @@ class WEBCFACE_DLL View : protected Field,
      * \since ver1.11
      */
     View parent() const { return this->Field::parent(); }
+
+  private:
+    /*!
+     * \brief 値が変化したときに呼び出されるコールバックを取得
+     * \since ver2.0
+     */
+    std::function<void(View)> &onChange();
+
+  public:
+    /*!
+     * \brief 値が変化したときに呼び出されるコールバックを設定
+     * \since ver2.0
+     */
+    View &onChange(std::function<void(View)> callback);
 
     /*!
      * \brief viewをリクエストする
