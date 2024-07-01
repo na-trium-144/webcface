@@ -23,7 +23,7 @@ using LoggerBufW = BasicLoggerBuf<wchar_t>;
  *
  */
 class WEBCFACE_DLL Client : public Member {
-    std::shared_ptr<Internal::ClientData> data;
+    std::shared_ptr<internal::ClientData> data;
 
   public:
     Client(const Client &) = delete;
@@ -69,7 +69,7 @@ class WEBCFACE_DLL Client : public Member {
     explicit Client(const SharedString &name, const SharedString &host,
                     int port);
     explicit Client(const SharedString &name,
-                    const std::shared_ptr<Internal::ClientData> &data);
+                    const std::shared_ptr<internal::ClientData> &data);
 
     /*!
      * \brief サーバーに接続できているときtrueを返す
@@ -209,7 +209,7 @@ class WEBCFACE_DLL Client : public Member {
      * \brief webcfaceに出力するsink
      *
      * * ver1.0.1で logger_sink から名前変更
-     * * ver2.0から、 Encoding::usingUTF8()
+     * * ver2.0から、 encoding::usingUTF8()
      * がfalseの場合ログに書き込まれたstringはutf-8に変換されてからwebcfaceに送られる
      *
      * \sa logger(), loggerStreamBuf(), loggerOStream()

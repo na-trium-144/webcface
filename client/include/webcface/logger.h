@@ -9,11 +9,11 @@
 #include <webcface/common/def.h>
 
 WEBCFACE_NS_BEGIN
-namespace Internal {
+namespace internal {
 struct ClientData;
 template <typename T>
 class SyncDataStore1;
-} // namespace Internal
+} // namespace internal
 
 template <typename CharT>
 class WEBCFACE_DLL BasicLoggerBuf : public std::basic_streambuf<CharT> {
@@ -27,7 +27,7 @@ class WEBCFACE_DLL BasicLoggerBuf : public std::basic_streambuf<CharT> {
     std::basic_string<CharT> overflow_buf;
 
     std::shared_ptr<
-        Internal::SyncDataStore1<std::shared_ptr<std::vector<LogLineData<>>>>>
+        internal::SyncDataStore1<std::shared_ptr<std::vector<LogLineData<>>>>>
         log_store;
 
     int sync() override;
@@ -35,7 +35,7 @@ class WEBCFACE_DLL BasicLoggerBuf : public std::basic_streambuf<CharT> {
 
   public:
     explicit BasicLoggerBuf(
-        const std::shared_ptr<Internal::SyncDataStore1<
+        const std::shared_ptr<internal::SyncDataStore1<
             std::shared_ptr<std::vector<LogLineData<>>>>> &log_store);
     ~BasicLoggerBuf() = default;
 };
@@ -48,7 +48,7 @@ using LoggerBufW = BasicLoggerBuf<wchar_t>;
 
 class WEBCFACE_DLL LoggerSink : public spdlog::sinks::base_sink<std::mutex> {
     std::shared_ptr<
-        Internal::SyncDataStore1<std::shared_ptr<std::vector<LogLineData<>>>>>
+        internal::SyncDataStore1<std::shared_ptr<std::vector<LogLineData<>>>>>
         log_store;
 
   protected:
@@ -57,7 +57,7 @@ class WEBCFACE_DLL LoggerSink : public spdlog::sinks::base_sink<std::mutex> {
 
   public:
     explicit LoggerSink(
-        const std::shared_ptr<Internal::SyncDataStore1<
+        const std::shared_ptr<internal::SyncDataStore1<
             std::shared_ptr<std::vector<LogLineData<>>>>> &log_store);
     void set_pattern_(const std::string &) override {}
     void set_formatter_(std::unique_ptr<spdlog::formatter>) override {}

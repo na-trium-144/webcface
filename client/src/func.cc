@@ -102,7 +102,7 @@ AsyncFuncResult Func::runAsync(const std::vector<ValAdaptor> &args_vec) const {
         }).detach();
     } else {
         // リモートの場合cli.sync()を待たずに呼び出しメッセージを送る
-        data->message_queue->push(Message::packSingle(
+        data->message_queue->push(message::packSingle(
             FuncCall{r.caller_id, 0, data->getMemberIdFromName(member_), field_,
                      args_vec}
                 .toMessage()));
@@ -159,17 +159,17 @@ Func &Func::setRunCond(const FuncWrapperType &wrapper) {
 }
 
 FuncWrapperType
-FuncWrapper::runCondOnSync(const std::weak_ptr<Internal::ClientData> &data) {
+FuncWrapper::runCondOnSync(const std::weak_ptr<internal::ClientData> &data) {
     return
         [data](const FuncType &callback, const std::vector<ValAdaptor> &args) {
             auto data_s = data.lock();
             if (data_s) {
-                auto sync = std::make_shared<Internal::FuncOnSync>();
+                auto sync = std::make_shared<internal::FuncOnSync>();
                 data_s->func_sync_queue.push(sync);
                 struct ScopeGuard {
-                    std::shared_ptr<Internal::FuncOnSync> sync;
+                    std::shared_ptr<internal::FuncOnSync> sync;
                     explicit ScopeGuard(
-                        const std::shared_ptr<Internal::FuncOnSync> &sync)
+                        const std::shared_ptr<internal::FuncOnSync> &sync)
                         : sync(sync) {
                         sync->wait();
                     }
@@ -188,7 +188,7 @@ FuncWrapper::runCondOnSync(const std::weak_ptr<Internal::ClientData> &data) {
 
 SharedString AnonymousFunc::fieldNameTmp() {
     static int id = 0;
-    return SharedString(Encoding::castToU8("..tmp" + std::to_string(id++)));
+    return SharedString(encoding::castToU8("..tmp" + std::to_string(id++)));
 }
 AnonymousFunc &AnonymousFunc::operator=(AnonymousFunc &&other) noexcept {
     this->func_setter = std::move(other.func_setter);

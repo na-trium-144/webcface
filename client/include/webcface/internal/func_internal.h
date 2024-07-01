@@ -7,7 +7,7 @@
 #include <webcface/common/def.h>
 
 WEBCFACE_NS_BEGIN
-namespace Internal {
+namespace internal {
 
 /*!
  * \brief AsyncFuncResultのリストを保持する。
@@ -109,5 +109,5 @@ class FuncOnSync {
     }
 };
 
-} // namespace Internal
+} // namespace internal
 WEBCFACE_NS_END

@@ -8,7 +8,7 @@
 #include "webcface/geometry.h"
 
 WEBCFACE_NS_BEGIN
-namespace Message {
+namespace message {
 struct Canvas2DComponent;
 }
 
@@ -29,7 +29,7 @@ extern template class WEBCFACE_DLL_INSTANCE_DECL IdBase<Canvas2DComponentType>;
  *
  */
 class WEBCFACE_DLL Canvas2DComponent : public IdBase<Canvas2DComponentType> {
-    std::weak_ptr<Internal::ClientData> data_w;
+    std::weak_ptr<internal::ClientData> data_w;
     std::shared_ptr<AnonymousFunc> on_click_func_tmp;
 
     Canvas2DComponentType type_;
@@ -51,14 +51,14 @@ class WEBCFACE_DLL Canvas2DComponent : public IdBase<Canvas2DComponentType> {
           stroke_width_(stroke_width), geometry_(std::move(geometry)),
           on_click_func_(std::move(on_click_func)), text_(text) {}
     Canvas2DComponent(const Canvas2DComponent &vc,
-                      const std::weak_ptr<Internal::ClientData> &data_w,
+                      const std::weak_ptr<internal::ClientData> &data_w,
                       std::unordered_map<int, int> *idx_next)
         : Canvas2DComponent(vc) {
         this->data_w = data_w;
         initIdx(idx_next, type_);
     }
     // Canvas2DComponent(Canvas2DComponentType type,
-    //                   const std::weak_ptr<Internal::ClientData> &data_w)
+    //                   const std::weak_ptr<internal::ClientData> &data_w)
     //     : IdBase<Canvas2DComponentType>(), data_w(data_w),
     //       on_click_func_tmp(nullptr) {
     //     type_ = type;
@@ -74,12 +74,12 @@ class WEBCFACE_DLL Canvas2DComponent : public IdBase<Canvas2DComponentType> {
      *
      */
     Canvas2DComponent &
-    lockTmp(const std::weak_ptr<Internal::ClientData> &data_w,
+    lockTmp(const std::weak_ptr<internal::ClientData> &data_w,
             const SharedString &view_name,
             std::unordered_map<int, int> *idx_next = nullptr);
 
-    Message::Canvas2DComponent toMessage() const;
-    Canvas2DComponent(const Message::Canvas2DComponent &cc);
+    message::Canvas2DComponent toMessage() const;
+    Canvas2DComponent(const message::Canvas2DComponent &cc);
 
     /*!
      * \since ver1.11

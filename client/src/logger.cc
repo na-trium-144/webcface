@@ -7,7 +7,7 @@ WEBCFACE_NS_BEGIN
 
 template <typename CharT>
 static void
-writeLog(const std::shared_ptr<Internal::SyncDataStore1<
+writeLog(const std::shared_ptr<internal::SyncDataStore1<
              std::shared_ptr<std::vector<LogLineData<>>>>> &log_store,
          std::basic_string_view<CharT> message, int level = 2,
          std::chrono::system_clock::time_point time =
@@ -25,7 +25,7 @@ writeLog(const std::shared_ptr<Internal::SyncDataStore1<
 template <typename CharT>
 BasicLoggerBuf<CharT>::BasicLoggerBuf(
     const std::shared_ptr<
-        Internal::SyncDataStore1<std::shared_ptr<std::vector<LogLineData<>>>>>
+        internal::SyncDataStore1<std::shared_ptr<std::vector<LogLineData<>>>>>
         &log_store)
     : std::basic_streambuf<CharT>(), log_store(log_store) {
     this->setp(buf, buf + sizeof(buf));
@@ -56,7 +56,7 @@ int BasicLoggerBuf<CharT>::sync() {
         if constexpr (std::is_same_v<CharT, char>) {
             std::fputs(message.c_str(), stderr);
         } else if constexpr (std::is_same_v<CharT, wchar_t>) {
-            std::fputs(Encoding::toNarrow(message).c_str(), stderr);
+            std::fputs(encoding::toNarrow(message).c_str(), stderr);
         }
         std::fputc('\n', stderr);
         overflow_buf = overflow_buf.substr(n + 1);
@@ -69,7 +69,7 @@ template class WEBCFACE_DLL_INSTANCE_DEF BasicLoggerBuf<wchar_t>;
 
 LoggerSink::LoggerSink(
     const std::shared_ptr<
-        Internal::SyncDataStore1<std::shared_ptr<std::vector<LogLineData<>>>>>
+        internal::SyncDataStore1<std::shared_ptr<std::vector<LogLineData<>>>>>
         &log_store)
     : spdlog::sinks::base_sink<std::mutex>(), log_store(log_store) {}
 

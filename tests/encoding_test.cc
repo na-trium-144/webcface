@@ -2,7 +2,7 @@
 #include <webcface/encoding/encoding.h>
 
 using namespace webcface;
-using namespace webcface::Encoding;
+using namespace webcface::encoding;
 
 TEST(EncodingTest, usingUTF8) {
     EXPECT_TRUE(usingUTF8());

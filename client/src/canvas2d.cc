@@ -11,10 +11,10 @@ template class WEBCFACE_DLL_INSTANCE_DEF EventTarget<Canvas2D>;
 
 Canvas2D::Canvas2D()
     : Field(), EventTarget<Canvas2D>(),
-      sb(std::make_shared<Internal::Canvas2DDataBuf>()) {}
+      sb(std::make_shared<internal::Canvas2DDataBuf>()) {}
 Canvas2D::Canvas2D(const Field &base)
     : Field(base), EventTarget<Canvas2D>(),
-      sb(std::make_shared<Internal::Canvas2DDataBuf>(base)) {
+      sb(std::make_shared<internal::Canvas2DDataBuf>(base)) {
     std::lock_guard lock(this->dataLock()->event_m);
     this->setCL(
         this->dataLock()->canvas2d_change_event[this->member_][this->field_]);
@@ -37,7 +37,7 @@ Canvas2D &Canvas2D::operator<<(Canvas2DComponent &&cc) {
 }
 
 template <>
-void Internal::DataSetBuffer<Canvas2DComponent>::onSync() {
+void internal::DataSetBuffer<Canvas2DComponent>::onSync() {
     auto c2buf = dynamic_cast<Canvas2DDataBuf *>(this);
     if (!c2buf) {
         throw std::runtime_error("Failed to access Canvas2DDataBuf");
@@ -58,8 +58,8 @@ void Canvas2D::request() const {
     auto data = dataLock();
     auto req = data->canvas2d_store.addReq(member_, field_);
     if (req) {
-        data->message_queue->push(Message::packSingle(
-            Message::Req<Message::Canvas2D>{{}, member_, field_, req}));
+        data->message_queue->push(message::packSingle(
+            message::Req<message::Canvas2D>{{}, member_, field_, req}));
     }
 }
 void Canvas2D::onAppend() const { request(); }

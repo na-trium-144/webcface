@@ -8,7 +8,7 @@
 WEBCFACE_NS_BEGIN
 
 ViewComponent &
-ViewComponent::lockTmp(const std::weak_ptr<Internal::ClientData> &data_w,
+ViewComponent::lockTmp(const std::weak_ptr<internal::ClientData> &data_w,
                        const SharedString &view_name,
                        std::unordered_map<int, int> *idx_next) {
     auto data = data_w.lock();
@@ -16,7 +16,7 @@ ViewComponent::lockTmp(const std::weak_ptr<Internal::ClientData> &data_w,
     if (on_click_func_tmp) {
         Func on_click{Field{data_w, data->self_member_name},
                       SharedString(u8"..v" + view_name.u8String() + u8"/" +
-                                   std::u8string(Encoding::castToU8(id())))};
+                                   std::u8string(encoding::castToU8(id())))};
         on_click_func_tmp->lockTo(on_click);
         onClick(on_click);
     }
@@ -24,7 +24,7 @@ ViewComponent::lockTmp(const std::weak_ptr<Internal::ClientData> &data_w,
         // if (text_ref_tmp->expired()) {
         Text text_ref{Field{data_w, data->self_member_name},
                       SharedString(u8"..ir" + view_name.u8String() + u8"/" +
-                                   std::u8string(Encoding::castToU8(id())))};
+                                   std::u8string(encoding::castToU8(id())))};
         text_ref_tmp->lockTo(text_ref);
         if (init_ && !text_ref.tryGet()) {
             text_ref.set(*init_);
@@ -97,8 +97,8 @@ wcfViewComponentW ViewComponent::cDataW() const {
     return cDataT<wcfViewComponentW, wcfMultiValW, 1>();
 }
 
-Message::ViewComponent ViewComponent::toMessage() const {
-    Message::ViewComponent vc;
+message::ViewComponent ViewComponent::toMessage() const {
+    message::ViewComponent vc;
     vc.type = static_cast<int>(this->type_);
     vc.text = this->text_;
     if (this->on_click_func_) {
@@ -117,7 +117,7 @@ Message::ViewComponent ViewComponent::toMessage() const {
     vc.option_ = this->option_;
     return vc;
 }
-ViewComponent::ViewComponent(const Message::ViewComponent &vc)
+ViewComponent::ViewComponent(const message::ViewComponent &vc)
     : ViewComponent(static_cast<ViewComponentType>(vc.type), vc.text,
                     (vc.on_click_member && vc.on_click_field
                          ? std::make_optional<FieldBase>(*vc.on_click_member,

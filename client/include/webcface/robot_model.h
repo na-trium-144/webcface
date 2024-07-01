@@ -6,10 +6,10 @@
 #include "components.h"
 
 WEBCFACE_NS_BEGIN
-namespace Internal {
+namespace internal {
 template <typename Component>
 class DataSetBuffer;
-} // namespace Internal
+} // namespace internal
 
 /*!
  * \brief RobotModelの送受信データを表すクラス
@@ -23,7 +23,7 @@ class DataSetBuffer;
 class WEBCFACE_DLL RobotModel : protected Field,
                                 public EventTarget<RobotModel>,
                                 public Canvas3DComponent {
-    std::shared_ptr<Internal::DataSetBuffer<RobotLink>> sb;
+    std::shared_ptr<internal::DataSetBuffer<RobotLink>> sb;
 
     void onAppend() const override final;
 
@@ -35,7 +35,7 @@ class WEBCFACE_DLL RobotModel : protected Field,
 
     friend class Canvas3D;
     friend class Canvas3DComponent;
-    friend Internal::DataSetBuffer<RobotLink>;
+    friend internal::DataSetBuffer<RobotLink>;
 
     using Field::lastName;
     using Field::member;

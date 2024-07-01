@@ -18,11 +18,11 @@
 #endif
 
 WEBCFACE_NS_BEGIN
-namespace Message {
+namespace message {
 struct Arg;
 struct Call;
 struct FuncInfo;
-} // namespace Message
+} // namespace message
 
 using FuncType = std::function<ValAdaptor(const std::vector<ValAdaptor> &)>;
 using FuncWrapperType =
@@ -52,8 +52,8 @@ class WEBCFACE_DLL Arg {
     explicit Arg(ValType type) : type_(type) {}
     Arg() = default;
 
-    Message::Arg toMessage() const;
-    Arg(const Message::Arg &a);
+    message::Arg toMessage() const;
+    Arg(const message::Arg &a);
 
     /*!
      * \brief 引数名を設定する。
@@ -184,8 +184,8 @@ struct FuncInfo {
              const FuncType &func_impl, const FuncWrapperType &func_wrapper)
         : return_type(return_type), args(args), func_impl(func_impl),
           func_wrapper(func_wrapper) {}
-    FuncInfo(const Message::FuncInfo &m);
-    Message::FuncInfo toMessage(const SharedString &field) const;
+    FuncInfo(const message::FuncInfo &m);
+    message::FuncInfo toMessage(const SharedString &field) const;
 
     /*!
      * \brief 任意の関数を受け取り、引数と戻り値をキャストして実行する関数を保存
@@ -237,8 +237,8 @@ struct WEBCFACE_DLL FuncCall {
              const std::vector<ValAdaptor> &args)
         : caller_id(caller_id), caller_member_id(caller_member_id),
           target_member_id(target_member_id), field(field), args(args) {}
-    FuncCall(const Message::Call &m);
-    Message::Call toMessage() const;
+    FuncCall(const message::Call &m);
+    message::Call toMessage() const;
 };
 
 WEBCFACE_NS_END
