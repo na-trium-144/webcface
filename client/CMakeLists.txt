@@ -42,6 +42,5 @@ target_link_libraries(webcface-client PRIVATE
 )
 target_link_libraries(webcface-client PUBLIC
     webcface-encoding
-    eventpp::eventpp
     spdlog-linker
 )

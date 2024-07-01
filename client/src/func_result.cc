@@ -7,18 +7,21 @@ FuncNotFound::FuncNotFound(const FieldBase &base)
                          ".func(\"" + base.field_.decode() + "\") is not set") {
 }
 
-eventpp::CallbackList<void(bool)> &AsyncFuncResult::onStarted() const {
+AsyncFuncResult &
+AsyncFuncResult::onStarted(std::function<void(bool)> callback) {
     if (!started_event) {
         throw std::runtime_error("started event is null");
     }
-    return *started_event;
+    *started_event = std::move(callback);
+    return *this;
 }
-eventpp::CallbackList<void(std::shared_future<ValAdaptor>)> &
-AsyncFuncResult::onResult() const {
+AsyncFuncResult &AsyncFuncResult::onResult(
+    std::function<void(std::shared_future<ValAdaptor>)> callback) {
     if (!result_event) {
         throw std::runtime_error("result event is null");
     }
-    return *result_event;
+    *result_event = std::move(callback);
+    return *this;
 }
 
 AsyncFuncResultSetter::AsyncFuncResultSetter(const Field &base)
@@ -28,7 +31,9 @@ AsyncFuncResultSetter::AsyncFuncResultSetter(const Field &base)
       result_event(std::make_shared<decltype(result_event)::element_type>()) {}
 void AsyncFuncResultSetter::setStarted(bool is_started) {
     started.set_value(is_started);
-    started_event->operator()(is_started);
+    if (started_event && *started_event) {
+        started_event->operator()(is_started);
+    }
     if (!is_started) {
         try {
             throw FuncNotFound(*this);
@@ -39,11 +44,15 @@ void AsyncFuncResultSetter::setStarted(bool is_started) {
 }
 void AsyncFuncResultSetter::setResult(const ValAdaptor &result_val) {
     result.set_value(result_val);
-    result_event->operator()(result_f);
+    if (result_event && *result_event) {
+        result_event->operator()(result_f);
+    }
 }
 void AsyncFuncResultSetter::setResultException(const std::exception_ptr &e) {
     result.set_exception(e);
-    result_event->operator()(result_f);
+    if (result_event && *result_event) {
+        result_event->operator()(result_f);
+    }
 }
 
 

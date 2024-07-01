@@ -5,7 +5,6 @@
 #include <memory>
 #include <stdexcept>
 #include <cstdint>
-#include <eventpp/callbacklist.h>
 #include "field.h"
 #include "webcface/encoding/val_adaptor.h"
 #include <webcface/common/def.h>
@@ -35,8 +34,8 @@ struct WEBCFACE_DLL FuncNotFound : public std::runtime_error {
  */
 class WEBCFACE_DLL AsyncFuncResult : Field {
     std::size_t caller_id;
-    std::shared_ptr<eventpp::CallbackList<void(bool)>> started_event;
-    std::shared_ptr<eventpp::CallbackList<void(std::shared_future<ValAdaptor>)>>
+    std::shared_ptr<std::function<void(bool)>> started_event;
+    std::shared_ptr<std::function<void(std::shared_future<ValAdaptor>)>>
         result_event;
 
   public:
@@ -70,16 +69,18 @@ class WEBCFACE_DLL AsyncFuncResult : Field {
     std::shared_future<ValAdaptor> result;
 
     /*!
-     * \brief リモートに呼び出しメッセージが到達したときに発生するイベント
-     * \since ver1.11
+     * \brief
+     * リモートに呼び出しメッセージが到達したときに呼び出すコールバックを設定
+     * \since ver2.0
      */
-    eventpp::CallbackList<void(bool)> &onStarted() const;
+    AsyncFuncResult &onStarted(std::function<void(bool)> callback);
     /*!
-     * \brief 関数の実行が完了した時発生するイベント
-     * \since ver1.11
+     * \brief 関数の実行が完了した時呼び出すコールバックを設定
+     * \since ver2.0
+     * \todo 排他制御をしてない
      */
-    eventpp::CallbackList<void(std::shared_future<ValAdaptor>)> &
-    onResult() const;
+    AsyncFuncResult &
+    onResult(std::function<void(std::shared_future<ValAdaptor>)> callback);
 
     using Field::member;
     using Field::name;
@@ -99,8 +100,8 @@ struct WEBCFACE_DLL AsyncFuncResultSetter : Field {
   public:
     std::shared_future<bool> started_f;
     std::shared_future<ValAdaptor> result_f;
-    std::shared_ptr<eventpp::CallbackList<void(bool)>> started_event;
-    std::shared_ptr<eventpp::CallbackList<void(std::shared_future<ValAdaptor>)>>
+    std::shared_ptr<std::function<void(bool)>> started_event;
+    std::shared_ptr<std::function<void(std::shared_future<ValAdaptor>)>>
         result_event;
     AsyncFuncResultSetter() = default;
     explicit AsyncFuncResultSetter(const Field &base);

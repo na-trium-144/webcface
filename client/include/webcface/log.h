@@ -1,7 +1,6 @@
 #pragma once
 #include <optional>
 #include <vector>
-#include "event_target.h"
 #include "field.h"
 #include <webcface/common/def.h>
 
@@ -66,9 +65,7 @@ using LogLineW = LogLineData<wchar_t>;
  * fieldを継承しているがfield名は使用していない
  *
  */
-class WEBCFACE_DLL Log : protected Field, public EventTarget<Log> {
-    void onAppend() const override final;
-
+class WEBCFACE_DLL Log : protected Field {
   public:
     Log() = default;
     Log(const Field &base);
