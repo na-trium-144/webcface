@@ -169,21 +169,15 @@ struct FuncInfo {
     ValType return_type;
     std::vector<Arg> args;
     FuncType func_impl;
-    FuncWrapperType func_wrapper;
     auto run(const std::vector<ValAdaptor> &args) {
-        if (func_wrapper) {
-            return func_wrapper(func_impl, args);
-        } else {
-            return func_impl(args);
-        }
+        return func_impl(args);
     }
 
     FuncInfo()
-        : return_type(ValType::none_), args(), func_impl(), func_wrapper() {}
+        : return_type(ValType::none_), args(), func_impl() {}
     FuncInfo(ValType return_type, const std::vector<Arg> &args,
-             const FuncType &func_impl, const FuncWrapperType &func_wrapper)
-        : return_type(return_type), args(args), func_impl(func_impl),
-          func_wrapper(func_wrapper) {}
+             const FuncType &func_impl)
+        : return_type(return_type), args(args), func_impl(func_impl) {}
     FuncInfo(const Message::FuncInfo &m);
     Message::FuncInfo toMessage(const SharedString &field) const;
 
@@ -192,8 +186,7 @@ struct FuncInfo {
      *
      */
     template <typename... Args, typename Ret>
-    explicit FuncInfo(std::function<Ret(Args...)> func,
-                      const FuncWrapperType &wrapper)
+    explicit FuncInfo(std::function<Ret(Args...)> func)
         : return_type(valTypeOf<Ret>()), args({Arg{valTypeOf<Args>()}...}),
           func_impl([func](const std::vector<ValAdaptor> &args_vec) {
               std::tuple<std::remove_const_t<std::remove_reference_t<Args>>...>
@@ -211,8 +204,7 @@ struct FuncInfo {
                   Ret ret = std::apply(func, args_tuple);
                   return static_cast<ValAdaptor>(ret);
               }
-          }),
-          func_wrapper(wrapper) {}
+          }){}
 };
 
 using CallerId = std::size_t;

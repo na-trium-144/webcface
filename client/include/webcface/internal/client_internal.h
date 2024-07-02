@@ -250,14 +250,6 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
     StrMap1<std::shared_ptr<eventpp::CallbackList<void(Canvas2D)>>>
         canvas2d_entry_event;
 
-    /*!
-     * \brief sync()のタイミングで実行を同期する関数のcondition_variable
-     *
-     */
-    Queue<std::shared_ptr<FuncOnSync>> func_sync_queue;
-
-    FuncWrapperType default_func_wrapper;
-
     std::shared_ptr<LoggerSink> logger_sink;
     std::shared_ptr<spdlog::logger> logger, logger_internal;
     std::unique_ptr<LoggerBuf> logger_buf;

@@ -88,9 +88,6 @@ EventTarget<Member> Client::onMemberEntry() {
     std::lock_guard lock(data->event_m);
     return EventTarget<Member>{data->member_entry_event};
 }
-void Client::setDefaultRunCond(const FuncWrapperType &wrapper) {
-    data->default_func_wrapper = wrapper;
-}
 std::shared_ptr<LoggerSink> Client::loggerSink() { return data->logger_sink; }
 std::shared_ptr<spdlog::logger> Client::logger() { return data->logger; }
 LoggerBuf *Client::loggerStreamBuf() { return data->logger_buf.get(); }
@@ -461,9 +458,6 @@ std::string Internal::ClientData::syncData(bool is_first,
 void Client::sync() {
     start();
     data->message_push(data->syncData(false));
-    while (auto func_sync = data->func_sync_queue.pop()) {
-        (*func_sync)->sync();
-    }
 }
 
 template <typename M, typename K1, typename K2>

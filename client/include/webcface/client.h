@@ -206,37 +206,6 @@ class WEBCFACE_DLL Client : public Member {
     EventTarget<Member> onMemberEntry();
 
     /*!
-     * \brief
-     * これ以降セットするFuncのデフォルトのFuncWrapperをセットする。(初期状態はnullptr)
-     *
-     * Funcの実行時にFuncWrapperを通すことで条件を満たすまでブロックしたりする。
-     * FuncWrapperがnullptrなら何もせずsetした関数を実行する
-     *
-     */
-    void setDefaultRunCond(const FuncWrapperType &wrapper);
-
-    /*!
-     * \brief デフォルトのFuncWrapperを nullptr にする
-     *
-     */
-    void setDefaultRunCondNone() { setDefaultRunCond(nullptr); }
-    /*!
-     * \brief デフォルトのFuncWrapperを runCondOnSync() にする
-     *
-     */
-    void setDefaultRunCondOnSync() {
-        setDefaultRunCond(FuncWrapper::runCondOnSync(data));
-    }
-    /*!
-     * \brief デフォルトのFuncWrapperを runCondScopeGuard() にする
-     *
-     */
-    template <typename ScopeGuard>
-    void setDefaultRunCondScopeGuard() {
-        setDefaultRunCond(FuncWrapper::runCondScopeGuard<ScopeGuard>());
-    }
-
-    /*!
      * \brief webcfaceに出力するsink
      *
      * * ver1.0.1で logger_sink から名前変更

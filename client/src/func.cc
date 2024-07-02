@@ -41,8 +41,7 @@ Func &Func::set(const std::vector<Arg> &args, ValType return_type,
                        } catch (const std::future_error &) {
                        }
                        return result_f.get();
-                   },
-                   getDefaultFuncWrapper()});
+                   }});
 }
 // Func &Func::replaceImpl(FuncType func) {
 //     auto func_info = setCheck()->func_store.getRecv(*this);
@@ -142,48 +141,6 @@ Func &Func::setArgs(const std::vector<Arg> &args) {
         }
         return *this;
     }
-}
-
-FuncWrapperType Func::getDefaultFuncWrapper() const {
-    return dataLock()->default_func_wrapper;
-}
-
-Func &Func::setRunCond(const FuncWrapperType &wrapper) {
-    auto func_info = setCheck()->func_store.getRecv(*this);
-    if (!func_info) {
-        throw std::invalid_argument("setRunCond failed: Func not set");
-    } else {
-        (*func_info)->func_wrapper = wrapper;
-        return *this;
-    }
-}
-
-FuncWrapperType
-FuncWrapper::runCondOnSync(const std::weak_ptr<Internal::ClientData> &data) {
-    return
-        [data](const FuncType &callback, const std::vector<ValAdaptor> &args) {
-            auto data_s = data.lock();
-            if (data_s) {
-                auto sync = std::make_shared<Internal::FuncOnSync>();
-                data_s->func_sync_queue.push(sync);
-                struct ScopeGuard {
-                    std::shared_ptr<Internal::FuncOnSync> sync;
-                    explicit ScopeGuard(
-                        const std::shared_ptr<Internal::FuncOnSync> &sync)
-                        : sync(sync) {
-                        sync->wait();
-                    }
-                    ~ScopeGuard() { sync->done(); }
-                };
-                {
-                    ScopeGuard scope_guard{sync};
-                    return callback(args);
-                }
-            } else {
-                throw std::runtime_error("cannot access client data");
-            }
-            return ValAdaptor{};
-        };
 }
 
 SharedString AnonymousFunc::fieldNameTmp() {

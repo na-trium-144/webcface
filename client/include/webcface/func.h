@@ -7,30 +7,6 @@
 
 WEBCFACE_NS_BEGIN
 
-namespace FuncWrapper {
-
-/*!
- * \brief Client::sync() まで待機し、実行完了までsync()をブロックするFuncWrapper
- *
- */
-WEBCFACE_DLL FuncWrapperType
-runCondOnSync(const std::weak_ptr<Internal::ClientData> &data);
-/*!
- * \brief ScopeGuardをロックするFuncWrapper
- *
- */
-template <typename ScopeGuard>
-inline FuncWrapperType runCondScopeGuard() {
-    static auto wrapper = [](const FuncType &callback,
-                             const std::vector<ValAdaptor> &args) {
-        ScopeGuard scope_guard;
-        return callback(args);
-    };
-    return wrapper;
-}
-
-} // namespace FuncWrapper
-
 /*!
  * \brief 関数1つを表すクラス
  *
@@ -103,7 +79,6 @@ class WEBCFACE_DLL Func : protected Field {
     Func &setRaw(const FuncInfo &v) {
         return setRaw(std::make_shared<FuncInfo>(v));
     }
-    FuncWrapperType getDefaultFuncWrapper() const;
 
     void runImpl(std::size_t caller_id,
                  const std::vector<ValAdaptor> &args_vec) const;
@@ -116,7 +91,7 @@ class WEBCFACE_DLL Func : protected Field {
     template <typename T>
     Func &set(const T &func) {
         return this->setRaw(
-            FuncInfo{std::function{func}, getDefaultFuncWrapper()});
+            FuncInfo{std::function{func}});
     }
     /*!
      * \brief 関数からFuncInfoを構築しセットする
@@ -224,39 +199,6 @@ class WEBCFACE_DLL Func : protected Field {
      *
      */
     Func &setArgs(const std::vector<Arg> &args);
-
-    /*!
-     * \brief FuncWrapperをセットする。
-     *
-     * Funcの実行時にFuncWrapperを通すことで条件を満たすまでブロックしたりする。
-     * FuncWrapperがnullptrなら何もせずsetした関数を実行する
-     * セットしない場合 Client::setDefaultRunCond() のものが使われる
-     *
-     * 関数のセットの後に呼ばなければならない(セット前に呼ぶと
-     * std::invalid_argument)
-     *
-     */
-    Func &setRunCond(const FuncWrapperType &wrapper);
-    /*!
-     * \brief FuncWrapperを nullptr にする
-     *
-     */
-    Func &setRunCondNone() { return setRunCond(nullptr); }
-    /*!
-     * \brief FuncWrapperを runCondOnSync() にする
-     *
-     */
-    Func &setRunCondOnSync() {
-        return setRunCond(FuncWrapper::runCondOnSync(data_w));
-    }
-    /*!
-     * \brief FuncWrapperを runCondScopeGuard() にする
-     *
-     */
-    template <typename ScopeGuard>
-    Func &setRunCondScopeGuard() {
-        return setRunCond(FuncWrapper::runCondScopeGuard<ScopeGuard>());
-    }
 
     /*!
      * \brief Funcの参照先を比較
