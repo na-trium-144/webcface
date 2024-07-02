@@ -115,10 +115,10 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
      * 接続できていない場合送信されずキューにたまる
      *
      */
-    std::shared_ptr<Queue<std::string>> message_queue;
+    std::queue<std::string> message_queue;
     void message_push(std::string &&msg) {
         std::lock_guard lock(connect_state_m);
-        message_queue->push(std::move(msg));
+        message_queue.push(std::move(msg));
         connect_state_cond.notify_all();
     }
 

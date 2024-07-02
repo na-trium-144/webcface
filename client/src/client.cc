@@ -29,10 +29,9 @@ Internal::ClientData::ClientData(const SharedString &name,
                                  const SharedString &host, int port)
     : std::enable_shared_from_this<ClientData>(), self_member_name(name),
       host(host), port(port), current_curl_handle(nullptr), current_curl_path(),
-      current_ws_buf(), message_queue(std::make_shared<Queue<std::string>>()),
-      value_store(name), text_store(name), func_store(name), view_store(name),
-      image_store(name), robot_model_store(name), canvas3d_store(name),
-      canvas2d_store(name),
+      current_ws_buf(), value_store(name), text_store(name), func_store(name),
+      view_store(name), image_store(name), robot_model_store(name),
+      canvas3d_store(name), canvas2d_store(name),
       log_store(std::make_shared<
                 SyncDataStore1<std::shared_ptr<std::vector<LogLineData<>>>>>(
           name)),
@@ -231,21 +230,20 @@ void Internal::messageThreadMain(
         data->connect_state_cond.wait(lock, [&] {
             return data->closing.load() ||
                    (!data->using_curl && data->connected &&
-                    !data->message_queue->empty());
+                    !data->message_queue.empty());
         });
         if (data->closing.load()) {
             return;
         }
-        auto msg = data->message_queue->pop();
-        if (msg) [[likely]] {
-            data->using_curl = true;
-            {
-                ScopedUnlock un(lock);
-                Internal::WebSocket::send(data, *msg);
-            }
-            data->using_curl = false;
-            data->connect_state_cond.notify_all();
+        auto msg = data->message_queue.front();
+        data->message_queue.pop();
+        data->using_curl = true;
+        {
+            ScopedUnlock un(lock);
+            Internal::WebSocket::send(data, msg);
         }
+        data->using_curl = false;
+        data->connect_state_cond.notify_all();
     }
 }
 

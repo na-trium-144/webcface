@@ -64,8 +64,7 @@ Message::Call FuncCall::toMessage() const {
 }
 
 FuncInfo::FuncInfo(const Message::FuncInfo &m)
-    : return_type(m.return_type), args(), func_impl(nullptr),
-      func_wrapper(nullptr) {
+    : return_type(m.return_type), args(), func_impl(nullptr) {
     args.reserve(m.args->size());
     for (const auto &a : *m.args) {
         args.emplace_back(a);
