@@ -12,6 +12,9 @@
 #include <webcface/c_wcf/def_types.h>
 
 WEBCFACE_NS_BEGIN
+namespace Internal {
+class AsyncFuncState;
+}
 
 class Member;
 
@@ -34,21 +37,14 @@ struct WEBCFACE_DLL FuncNotFound : public std::runtime_error {
  *
  */
 class WEBCFACE_DLL AsyncFuncResult : Field {
-    std::size_t caller_id;
-    std::shared_ptr<eventpp::CallbackList<void(bool)>> started_event;
-    std::shared_ptr<eventpp::CallbackList<void(std::shared_future<ValAdaptor>)>>
-        result_event;
+    std::shared_ptr<Internal::AsyncFuncState> state;
 
   public:
-    friend class Func;
-    AsyncFuncResult() = default;
-    AsyncFuncResult(const Field &base, std::size_t caller_id,
-                    const std::shared_future<bool> &started_f,
-                    const std::shared_future<ValAdaptor> &result_f,
-                    const decltype(started_event) &started_event,
-                    const decltype(result_event) &result_event)
-        : Field(base), caller_id(caller_id), started_event(started_event),
-          result_event(result_event), started(started_f), result(result_f) {}
+    AsyncFuncResult(const Field &base,
+        const std::shared_ptr<Internal::AsyncFuncState> &state,
+                    const std::shared_future<bool> &started,
+                    const std::shared_future<ValAdaptor> &result)
+        : Field(base), state(state), started(started), result(result) {}
 
     /*!
      * \brief リモートに呼び出しメッセージが到達したときに値が入る
@@ -86,28 +82,6 @@ class WEBCFACE_DLL AsyncFuncResult : Field {
 };
 WEBCFACE_DLL std::ostream &operator<<(std::ostream &os,
                                       const AsyncFuncResult &r);
-
-/*!
- * \brief AsyncFuncResultの結果をセットする
- *
- */
-struct WEBCFACE_DLL AsyncFuncResultSetter : Field {
-  private:
-    std::promise<bool> started;
-    std::promise<ValAdaptor> result;
-
-  public:
-    std::shared_future<bool> started_f;
-    std::shared_future<ValAdaptor> result_f;
-    std::shared_ptr<eventpp::CallbackList<void(bool)>> started_event;
-    std::shared_ptr<eventpp::CallbackList<void(std::shared_future<ValAdaptor>)>>
-        result_event;
-    AsyncFuncResultSetter() = default;
-    explicit AsyncFuncResultSetter(const Field &base);
-    void setStarted(bool is_started);
-    void setResult(const ValAdaptor &result_val);
-    void setResultException(const std::exception_ptr &e);
-};
 
 class WEBCFACE_DLL FuncCallHandle {
     struct WEBCFACE_DLL HandleData {

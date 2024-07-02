@@ -75,31 +75,191 @@ class WEBCFACE_DLL Func : protected Field {
     Func parent() const { return this->Field::parent(); }
 
   protected:
-    Func &setRaw(const std::shared_ptr<FuncInfo> &v);
-    Func &setRaw(const FuncInfo &v) {
-        return setRaw(std::make_shared<FuncInfo>(v));
+    /*!
+     * set2()で構築された関数の情報(FuncInfo)をclientにセット
+     *
+     */
+    Func &set3(const std::shared_ptr<FuncInfo> &v);
+
+    template <typename... Args>
+    using ArgsTuple = std::tuple<std::decay_t<Args>...>;
+
+    /*!
+     * 関数の引数をvectorで受け取りtupleに変換する。
+     * \param eval_async
+     * futureがdeferであり関数の結果を取得するのをasyncで実行するべきならtrue,
+     * 結果のfutureが即座に返るので非同期にする意味がないならfalse
+     * \param func_casted
+     * set1()で引数をtuple、戻り値をfutureにした、これからセットする関数
+     *
+     */
+    template <typename Ret, typename... Args>
+    Func &
+    set2(bool eval_async,
+         std::function<std::future<ValAdaptor>(const ArgsTuple<Args...> &)>
+             &&func_casted) {
+        return set3(std::make_shared<FuncInfo>(
+            valTypeOf<Ret>(), std::vector<Arg>{Arg{valTypeOf<Args>()}...},
+            eval_async,
+            [func_casted = std::move(func_casted)](
+                const std::vector<ValAdaptor> &args_vec) {
+                ArgsTuple<Args...> args_tuple;
+                if (args_vec.size() != sizeof...(Args)) {
+                    throw std::invalid_argument(
+                        "requires " + std::to_string(sizeof...(Args)) +
+                        " arguments, got " + std::to_string(args_vec.size()));
+                }
+                argToTuple(args_vec, args_tuple);
+                return func_casted(args_tuple);
+            }));
     }
 
-    void runImpl(std::size_t caller_id,
-                 const std::vector<ValAdaptor> &args_vec) const;
+    /*!
+     * set()に渡された関数が戻り値がshared_futureの関数の場合:
+     * 引数をtuple型で受け取り、関数をそのまま実行し、
+     * shared_futureから戻り値を取得する処理をdefer状態でfutureに格納して返す関数を
+     * set2()に渡す
+     *
+     */
+    template <typename Ret, typename... Args>
+    Func &set1(std::function<std::shared_future<Ret>(Args...)> &&func) {
+        return set2<Ret, Args...>(
+            true,
+            [func = std::move(func)](const ArgsTuple<Args...> &args_tuple) {
+                auto ret = std::apply(func, args_tuple);
+                return std::async(
+                    std::launch::deferred, [ret = std::move(ret)] {
+                        if constexpr (std::is_void_v<Ret>) {
+                            ret.wait();
+                            return ValAdaptor{};
+                        } else {
+                            return static_cast<ValAdaptor>(ret.get());
+                        }
+                    });
+            });
+    }
+    /*!
+     * set()に渡された関数が戻り値がfutureの関数の場合:
+     * 引数をtuple型で受け取り、関数をそのまま実行し、
+     * futureから戻り値を取得する処理をdefer状態でfutureに格納して返す関数を
+     * set2()に渡す
+     *
+     */
+    template <typename Ret, typename... Args>
+    Func &set1(std::function<std::future<Ret>(Args...)> &&func) {
+        return set2<Ret, Args...>(
+            true,
+            [func = std::move(func)](const ArgsTuple<Args...> &args_tuple) {
+                auto ret = std::apply(func, args_tuple);
+                return std::async(
+                    std::launch::deferred, [ret = std::move(ret)] {
+                        if constexpr (std::is_void_v<Ret>) {
+                            ret.wait();
+                            return ValAdaptor{};
+                        } else {
+                            return static_cast<ValAdaptor>(ret.get());
+                        }
+                    });
+            });
+    }
+    /*!
+     * set()に渡された関数が戻り値が値の普通の関数の場合:
+     * 引数をtuple型で受け取り、関数をそのまま実行し、戻り値をfuture<ValAdaptor>型で返す関数を
+     * set2()に渡す
+     *
+     */
+    template <typename Ret, typename... Args>
+    Func &set1(std::function<Ret(Args...)> &&func) {
+        return set2<Ret, Args...>(
+            false,
+            [func = std::move(func)](const ArgsTuple<Args...> &args_tuple) {
+                std::packaged_task<ValAdaptor()> task([&] {
+                    if constexpr (std::is_void_v<Ret>) {
+                        std::apply(func, args_tuple);
+                        return ValAdaptor{};
+                    } else {
+                        Ret ret = std::apply(func, args_tuple);
+                        return static_cast<ValAdaptor>(ret);
+                    }
+                });
+                task();
+                return task.get_future();
+            });
+    }
+    /*!
+     * setAsync()に渡された関数が戻り値が値の普通の関数の場合:
+     * 引数をtuple型で受け取り、関数をdefer状態でfutureに格納して返す関数を
+     * set2()に渡す
+     *
+     */
+    template <typename Ret, typename... Args>
+    Func &setAsync1(std::function<Ret(Args...)> &&func) {
+        return set2<Ret, Args...>(
+            true,
+            [func = std::move(func)](const ArgsTuple<Args...> &args_tuple) {
+                std::async(std::launch::deferred,
+                           [func = std::move(func), args_tuple] {
+                               if constexpr (std::is_void_v<Ret>) {
+                                   std::apply(func, args_tuple);
+                                   return ValAdaptor{};
+                               } else {
+                                   Ret ret = std::apply(func, args_tuple);
+                                   return static_cast<ValAdaptor>(ret);
+                               }
+                           });
+            });
+    }
+
+    void runImpl(std::size_t caller_id, const std::vector<ValAdaptor> &args_vec,
+                 bool caller_async) const;
 
   public:
     /*!
-     * \brief 関数からFuncInfoを構築しセットする
+     * \brief 関数をセットする
      *
+     * * 引数はValAdaptorからキャスト可能な型ならいくつでも、
+     * 戻り値はvoidまたはValAdaptorにキャスト可能な型または
+     * (ver2.0〜: std::futureまたはstd::shared_future)
+     * が使用可能
+     * * (ver2.0〜) set()でセットした場合、他クライアントから呼び出されたとき
+     * Client::recv() (または autoRecv) のスレッドでそのまま実行され、
+     * この関数が完了するまで他のデータの受信はブロックされる。
+     * また、 runAsync() で呼び出したとしても同じスレッドで同期実行される。
+     * * ただし関数がstd::futureまたはstd::shared_futureを返す場合、
+     * そのfutureの評価(future.get())は新しく建てたスレッドで行われる。
+     *
+     * \sa setAsync()
      */
     template <typename T>
-    Func &set(const T &func) {
-        return this->setRaw(
-            FuncInfo{std::function{func}});
+    Func &set(T &&func) {
+        return this->set1(std::function{std::forward<T>(func)});
     }
     /*!
-     * \brief 関数からFuncInfoを構築しセットする
+     * \brief 関数をセットする
+     * \since ver2.0
+     *
+     * * setAsync()でセットした場合、他クライアントから呼び出されたとき新しいスレッドを建てて実行される。
+     * ver1.11以前のset()と同じ。
+     * また、`set([](args...){ return std::async(std::launch::deferred, func,
+     * args...); })` と同じ。
+     * * 排他制御などはセットする関数の側で用意してください。
+     *
+     * \sa set()
+     */
+    template <typename T>
+    Func &setAsync(T &&func) {
+        return this->setAsync1(std::function{std::forward<T>(func)});
+    }
+    /*!
+     * \brief 関数をセットする
+     *
+     * set() と同じ。
      *
      */
     template <typename T>
-    Func &operator=(const T &func) {
-        return this->set(func);
+    Func &operator=(T &&func) {
+        this->set(std::forward<T>(func));
+        return *this;
     }
 
     /*!
@@ -109,7 +269,7 @@ class WEBCFACE_DLL Func : protected Field {
      * cからの呼び出し用
      *
      */
-    Func &set(const std::vector<Arg> &args, ValType return_type,
+    Func &set(const std::vector<Arg> &args, ValType return_type, bool async,
               const std::function<void(FuncCallHandle)> &callback);
 
     /*!
@@ -206,8 +366,8 @@ class WEBCFACE_DLL Func : protected Field {
      *
      */
     template <typename T>
-        requires std::same_as<T, Func>
-    bool operator==(const T &other) const {
+        requires std::same_as<T, Func> bool
+    operator==(const T &other) const {
         return static_cast<Field>(*this) == static_cast<Field>(other);
     }
 };

@@ -1,13 +1,53 @@
 #pragma once
 #include <mutex>
-#include <vector>
-#include <string>
-#include <condition_variable>
+#include <webcface/func_info.h>
 #include <webcface/func_result.h>
 #include <webcface/common/def.h>
 
 WEBCFACE_NS_BEGIN
 namespace Internal {
+
+/*!
+ * \brief AsyncFuncResultのデータを保持するクラス
+ *
+ */
+class AsyncFuncState : std::enable_shared_from_this<AsyncFuncState> {
+    eventpp::CallbackList<void(bool)> started_event;
+    eventpp::CallbackList<void(std::shared_future<ValAdaptor>)> result_event;
+    std::optional<std::promise<bool>> started_p;
+    std::optional<std::promise<ValAdaptor>> result_p;
+    std::size_t caller_id;
+    std::shared_future<bool> started_f;
+    std::shared_future<ValAdaptor> result_f;
+    Field base;
+
+  public:
+    AsyncFuncState(const Field &base,
+                   std::optional<std::promise<bool>> &&started_p,
+                   const std::shared_future<bool> &started_f,
+                   std::optional<std::promise<ValAdaptor>> &&result_p,
+                   const std::shared_future<ValAdaptor> &result_f,
+                   std::size_t caller_id)
+        : started_event(), result_event(), started_p(std::move(started_p)),
+          result_p(std::move(result_p)), caller_id(caller_id),
+          started_f(started_f), result_f(result_f), base(base) {}
+
+    friend class AsyncFuncResult;
+    static std::shared_ptr<AsyncFuncState> notFound(const Field &base);
+    static std::shared_ptr<AsyncFuncState>
+    running(const Field &base, const std::shared_future<ValAdaptor> &result);
+    static std::shared_ptr<AsyncFuncState> remote(const Field &base,
+                                                  std::size_t caller_id);
+
+    AsyncFuncResult getter() {
+        return AsyncFuncResult(base, shared_from_this(), started_f, result_f);
+    }
+    std::size_t callerId() const { return caller_id; }
+
+    void setStarted(bool is_started);
+    void setResult(const ValAdaptor &result_val);
+    void setResultException(const std::exception_ptr &e);
+};
 
 /*!
  * \brief AsyncFuncResultのリストを保持する。
@@ -18,31 +58,27 @@ namespace Internal {
  */
 class FuncResultStore {
     std::mutex mtx;
-    std::unordered_map<std::size_t, AsyncFuncResultSetter> result_setter;
+    std::unordered_map<std::size_t, std::shared_ptr<AsyncFuncState>>
+        result_setter;
     std::size_t next_caller_id = 0;
 
   public:
     /*!
-     * \brief 新しいcaller_idを振って新しいAsyncFuncResultを生成しそれを返す
+     * \brief 新しいcaller_idを振って新しいAsyncFuncStateを生成しそれを返す
      *
      */
-    AsyncFuncResult addResult(const Field &base) {
+    std::shared_ptr<AsyncFuncState> addResult(const Field &base) {
         std::lock_guard lock(mtx);
         std::size_t caller_id = next_caller_id++;
-        result_setter.emplace(caller_id, AsyncFuncResultSetter{base});
-        auto &setter = result_setter.at(caller_id);
-        return AsyncFuncResult{base,
-                               caller_id,
-                               setter.started_f,
-                               setter.result_f,
-                               setter.started_event,
-                               setter.result_event};
+        auto state = AsyncFuncState::remote(base, caller_id);
+        result_setter.emplace(caller_id, state);
+        return state;
     }
     /*!
-     * \brief promiseを取得
+     * \brief AsyncFuncStateを取得
      *
      */
-    AsyncFuncResultSetter &resultSetter(std::size_t caller_id) {
+    std::shared_ptr<AsyncFuncState> getResult(std::size_t caller_id) {
         std::lock_guard lock(mtx);
         auto it = result_setter.find(caller_id);
         if (it != result_setter.end()) {
@@ -52,8 +88,7 @@ class FuncResultStore {
         }
     }
     /*!
-     * \brief resultを設定し終わったpromiseを削除
-     *
+     * \brief resultを設定し終わったstateを削除
      *
      */
     void removeResultSetter(std::size_t caller_id) {
@@ -64,48 +99,6 @@ class FuncResultStore {
         } else {
             throw std::out_of_range("caller id not found");
         }
-    }
-};
-
-/*!
- * \brief clientがsync()されたタイミングで実行中の関数を起こす
- * さらにその関数が完了するまで待機する
- *
- */
-class FuncOnSync {
-    std::mutex call_mtx, return_mtx;
-    std::condition_variable call_cond, return_cond;
-
-  public:
-    /*!
-     * \brief sync()側が関数を起こし完了まで待機
-     *
-     */
-    void sync() {
-        std::unique_lock return_lock(return_mtx);
-        { std::lock_guard call_lock(call_mtx); }
-        call_cond.notify_all();
-        return_cond.wait(return_lock);
-    }
-    /*!
-     * \brief 関数側がsync()まで待機
-     *
-     */
-    void wait() {
-        std::unique_lock call_lock(call_mtx);
-        call_cond.wait(call_lock);
-    }
-    /*!
-     * \brief 関数側が完了を通知
-     *
-     */
-    void done() {
-        {
-            // sync()側が return_cond.wait() に到達するまでブロック
-
-            std::lock_guard return_lock(return_mtx);
-        }
-        return_cond.notify_all();
     }
 };
 

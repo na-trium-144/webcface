@@ -283,7 +283,13 @@ class WEBCFACE_DLL ValAdaptor {
     template <typename T>
         requires(std::convertible_to<double, T> && !std::same_as<T, bool>)
     operator T() const {
-        return as<T>();
+        if constexpr (std::is_floating_point_v<T>) {
+            return static_cast<T>(asDouble());
+        } else if constexpr (sizeof(T) > sizeof(int)) {
+            return static_cast<T>(asLLong());
+        } else {
+            return static_cast<T>(asInt());
+        }
     }
 
     /*!

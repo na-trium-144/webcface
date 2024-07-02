@@ -6,7 +6,7 @@
 #include <webcface/field.h>
 #include <webcface/common/def.h>
 #include <webcface/encoding/val_adaptor.h>
-#include <webcface/func_info.h>
+#include <webcface/internal/func_internal.h>
 #include <webcface/image_frame.h>
 #include "webcface/component_canvas2d.h"
 #include "webcface/component_canvas3d.h"

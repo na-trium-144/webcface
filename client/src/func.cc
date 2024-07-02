@@ -12,7 +12,7 @@ WEBCFACE_NS_BEGIN
 template class WEBCFACE_DLL_INSTANCE_DEF EventTarget<Func>;
 
 Func::Func(const Field &base) : Field(base) {}
-Func &Func::setRaw(const std::shared_ptr<FuncInfo> &v) {
+Func &Func::set3(const std::shared_ptr<FuncInfo> &v) {
     setCheck()->func_store.setSend(*this, v);
     return *this;
 }
@@ -21,93 +21,80 @@ Func &Func::free() {
     return *this;
 }
 
-Func &Func::set(const std::vector<Arg> &args, ValType return_type,
+Func &Func::set(const std::vector<Arg> &args, ValType return_type, bool async,
                 const std::function<void(FuncCallHandle)> &callback) {
-    return setRaw({return_type, args,
-                   [args_size = args.size(),
-                    callback](const std::vector<ValAdaptor> &args_vec) {
-                       if (args_size != args_vec.size()) {
-                           throw std::invalid_argument(
-                               "requires " + std::to_string(args_size) +
-                               " arguments, got " +
-                               std::to_string(args_vec.size()));
-                       }
-                       std::promise<ValAdaptor> result;
-                       std::future<ValAdaptor> result_f = result.get_future();
-                       FuncCallHandle handle{args_vec, std::move(result)};
-                       callback(handle);
-                       try {
-                           handle.respond();
-                       } catch (const std::future_error &) {
-                       }
-                       return result_f.get();
-                   }});
+    return set3(std::make_shared<FuncInfo>(
+        return_type, args, async,
+        [args_size = args.size(),
+         callback](const std::vector<ValAdaptor> &args_vec) {
+            if (args_size != args_vec.size()) {
+                throw std::invalid_argument(
+                    "requires " + std::to_string(args_size) +
+                    " arguments, got " + std::to_string(args_vec.size()));
+            }
+            std::promise<ValAdaptor> result;
+            std::future<ValAdaptor> result_f = result.get_future();
+            FuncCallHandle handle{args_vec, std::move(result)};
+            callback(handle);
+            try {
+                handle.respond();
+            } catch (const std::future_error &) {
+            }
+            return result_f.get();
+        }));
 }
-// Func &Func::replaceImpl(FuncType func) {
-//     auto func_info = setCheck()->func_store.getRecv(*this);
-//     if (func_info == std::nullopt) {
-//         throw std::invalid_argument("replaceImpl failed: Func not set");
-//     }
-//     (*func_info)->func_impl = func;
-//     return *this;
-// }
-// FuncType Func::getImpl() const {
-//     auto func_info = setCheck()->func_store.getRecv(*this);
-//     if (func_info == std::nullopt) {
-//         throw std::invalid_argument("getImpl failed: Func not set");
-//     }
-//     return (*func_info)->func_impl;
-// }
 
-void Func::runImpl(std::size_t caller_id,
-                   const std::vector<ValAdaptor> &args_vec) const {
-    auto data = dataLock();
-    auto func_info = data->func_store.getRecv(*this);
-    if (func_info) {
-        data->func_result_store.resultSetter(caller_id).setStarted(true);
-        try {
-            auto ret = (*func_info)->run(args_vec);
-            data->func_result_store.resultSetter(caller_id).setResult(ret);
-        } catch (...) {
-            data->func_result_store.resultSetter(caller_id).setResultException(
-                std::current_exception());
-        }
+std::future<ValAdaptor> FuncInfo::run(const std::vector<ValAdaptor> &args,
+                                      bool caller_async) {
+    auto ret = func_impl(args);
+    if (eval_async && caller_async) {
+        return std::async(
+            std::launch::async,
+            [](std::future<ValAdaptor> &&ret) { return ret.get(); },
+            std::move(ret));
     } else {
-        data->func_result_store.resultSetter(caller_id).setStarted(false);
+        ret.wait();
+        return ret;
     }
-    data->func_result_store.removeResultSetter(caller_id);
 }
+
 ValAdaptor Func::run(const std::vector<ValAdaptor> &args_vec) const {
     auto data = dataLock();
     if (data->isSelf(*this)) {
-        auto r = data->func_result_store.addResult(*this);
         // selfの場合このスレッドでそのまま関数を実行する
-        runImpl(r.caller_id, args_vec);
-        return r.result.get();
+        auto func_info = data->func_store.getRecv(*this);
+        if (func_info) {
+            return (*func_info)->run(args_vec, false).get();
+        } else {
+            throw FuncNotFound(*this);
+        }
     } else {
         // リモートの場合runAsyncし結果が返るまで待機
-        auto async_res = this->runAsync(args_vec);
-        return async_res.result.get();
+        return this->runAsync(args_vec).result.get();
         // 例外が発生した場合はthrowされる
     }
 }
 AsyncFuncResult Func::runAsync(const std::vector<ValAdaptor> &args_vec) const {
     auto data = dataLock();
-    auto r = data->func_result_store.addResult(*this);
     if (data->isSelf(*this)) {
         // selfの場合、新しいAsyncFuncResultに別スレッドで実行した結果を入れる
-        std::thread([*this, caller_id = r.caller_id, args_vec]() {
-            runImpl(caller_id, args_vec);
-        }).detach();
+        auto func_info = data->func_store.getRecv(*this);
+        if (func_info) {
+            return Internal::AsyncFuncState::running(
+                       *this, (*func_info)->run(args_vec, true).share())
+                ->getter();
+        } else {
+            return Internal::AsyncFuncState::notFound(*this)->getter();
+        }
     } else {
         // リモートの場合cli.sync()を待たずに呼び出しメッセージを送る
-        data->message_push(Message::packSingle(
-            FuncCall{r.caller_id, 0, data->getMemberIdFromName(member_), field_,
-                     args_vec}
-                .toMessage()));
+        auto state = data->func_result_store.addResult(*this);
+        data->message_push(Message::packSingle(Message::Call{
+            state->callerId(), 0, data->getMemberIdFromName(member_), field_,
+            args_vec}));
         // resultはcli.onRecv内でセットされる。
+        return state->getter();
     }
-    return r;
 }
 
 ValType Func::returnType() const {
@@ -168,7 +155,7 @@ void AnonymousFunc::lockTo(Func &target) {
     if (!func_info) [[unlikely]] {
         throw std::runtime_error("AnonymousFunc not set");
     } else {
-        target.setRaw(*func_info);
+        target.set(std::make_shared<FuncInfo>(*func_info));
         this->free();
         func_setter = nullptr;
         base_init = false;

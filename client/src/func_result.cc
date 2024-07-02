@@ -1,4 +1,5 @@
 #include <webcface/func_result.h>
+#include <webcface/internal/func_internal.h>
 
 WEBCFACE_NS_BEGIN
 
@@ -8,42 +9,70 @@ FuncNotFound::FuncNotFound(const FieldBase &base)
 }
 
 eventpp::CallbackList<void(bool)> &AsyncFuncResult::onStarted() const {
-    if (!started_event) {
-        throw std::runtime_error("started event is null");
-    }
-    return *started_event;
+    return state->started_event;
 }
 eventpp::CallbackList<void(std::shared_future<ValAdaptor>)> &
 AsyncFuncResult::onResult() const {
-    if (!result_event) {
-        throw std::runtime_error("result event is null");
-    }
-    return *result_event;
+    return state->result_event;
 }
 
-AsyncFuncResultSetter::AsyncFuncResultSetter(const Field &base)
-    : Field(base), started(), result(), started_f(started.get_future().share()),
-      result_f(result.get_future().share()),
-      started_event(std::make_shared<decltype(started_event)::element_type>()),
-      result_event(std::make_shared<decltype(result_event)::element_type>()) {}
-void AsyncFuncResultSetter::setStarted(bool is_started) {
-    started.set_value(is_started);
-    started_event->operator()(is_started);
-    if (!is_started) {
-        try {
-            throw FuncNotFound(*this);
-        } catch (...) {
-            setResultException(std::current_exception());
+std::shared_ptr<Internal::AsyncFuncState>
+Internal::AsyncFuncState::notFound(const Field &base) {
+    std::promise<bool> started_p;
+    std::promise<ValAdaptor> result_p;
+    started_p.set_value(false);
+    try {
+        throw FuncNotFound(base);
+    } catch (...) {
+        result_p.set_exception(std::current_exception());
+    }
+    return std::make_shared<Internal::AsyncFuncState>(
+        base, std::make_optional(std::move(started_p)),
+        started_p.get_future().share(), std::make_optional(std::move(result_p)),
+        result_p.get_future().share(), 0);
+}
+std::shared_ptr<Internal::AsyncFuncState> Internal::AsyncFuncState::running(
+    const Field &base, const std::shared_future<ValAdaptor> &result) {
+    std::promise<bool> started_p;
+    started_p.set_value(true);
+    return std::make_shared<Internal::AsyncFuncState>(
+        base, std::make_optional(std::move(started_p)),
+        started_p.get_future().share(), std::nullopt, result, 0);
+}
+std::shared_ptr<Internal::AsyncFuncState>
+Internal::AsyncFuncState::remote(const Field &base, std::size_t caller_id) {
+    std::promise<bool> started_p;
+    std::promise<ValAdaptor> result_p;
+    return std::make_shared<Internal::AsyncFuncState>(
+        base, std::make_optional(std::move(started_p)),
+        started_p.get_future().share(), std::make_optional(std::move(result_p)),
+        result_p.get_future().share(), caller_id);
+}
+
+void Internal::AsyncFuncState::setStarted(bool is_started) {
+    if (started_p) {
+        started_p->set_value(is_started);
+        started_event.operator()(is_started);
+        if (!is_started) {
+            try {
+                throw FuncNotFound(base);
+            } catch (...) {
+                setResultException(std::current_exception());
+            }
         }
     }
 }
-void AsyncFuncResultSetter::setResult(const ValAdaptor &result_val) {
-    result.set_value(result_val);
-    result_event->operator()(result_f);
+void Internal::AsyncFuncState::setResult(const ValAdaptor &result_val) {
+    if (result_p) {
+        result_p->set_value(result_val);
+        result_event.operator()(result_f);
+    }
 }
-void AsyncFuncResultSetter::setResultException(const std::exception_ptr &e) {
-    result.set_exception(e);
-    result_event->operator()(result_f);
+void Internal::AsyncFuncState::setResultException(const std::exception_ptr &e) {
+    if (result_p) {
+        result_p->set_exception(e);
+        result_event.operator()(result_f);
+    }
 }
 
 
