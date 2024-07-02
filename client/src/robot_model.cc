@@ -12,12 +12,12 @@ template class WEBCFACE_DLL_INSTANCE_DEF EventTarget<RobotModel>;
 RobotModel::RobotModel()
     : Field(), EventTarget<RobotModel>(),
       Canvas3DComponent(Canvas3DComponentType::robot_model),
-      sb(std::make_shared<Internal::DataSetBuffer<RobotLink>>()) {}
+      sb(std::make_shared<internal::DataSetBuffer<RobotLink>>()) {}
 
 RobotModel::RobotModel(const Field &base)
     : Field(base), EventTarget<RobotModel>(),
       Canvas3DComponent(Canvas3DComponentType::robot_model, this->dataLock()),
-      sb(std::make_shared<Internal::DataSetBuffer<RobotLink>>(base)) {
+      sb(std::make_shared<internal::DataSetBuffer<RobotLink>>(base)) {
     this->Canvas3DComponent::robotModel(*this);
     std::lock_guard lock(this->dataLock()->event_m);
     this->setCL(this->dataLock()->robot_model_change_event[this->member_][this->field_]);
@@ -32,7 +32,7 @@ RobotModel &RobotModel::sync() {
     return *this;
 }
 template <>
-void Internal::DataSetBuffer<RobotLink>::onSync() {
+void internal::DataSetBuffer<RobotLink>::onSync() {
     auto ls = std::make_shared<std::vector<RobotLink>>(std::move(components_));
     target_.setCheck()->robot_model_store.setSend(target_, ls);
     static_cast<RobotModel>(target_).triggerEvent(target_);

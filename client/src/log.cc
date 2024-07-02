@@ -6,14 +6,14 @@
 WEBCFACE_NS_BEGIN
 
 template <typename CharT>
-LogLineData<CharT>::LogLineData(const Message::LogLine &m)
+LogLineData<CharT>::LogLineData(const message::LogLine &m)
     : LogLineData(m.level_,
                   std::chrono::system_clock::time_point(
                       std::chrono::milliseconds(m.time_ms)),
                   m.message_) {}
 template <typename CharT>
-Message::LogLine LogLineData<CharT>::toMessage() const {
-    return Message::LogLine{
+message::LogLine LogLineData<CharT>::toMessage() const {
+    return message::LogLine{
         level_,
         static_cast<std::uint64_t>(
             std::chrono::duration_cast<std::chrono::milliseconds>(

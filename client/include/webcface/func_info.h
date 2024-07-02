@@ -19,7 +19,7 @@
 #endif
 
 WEBCFACE_NS_BEGIN
-namespace Message {
+namespace message {
 struct Arg;
 struct Call;
 struct FuncInfo;
@@ -52,8 +52,8 @@ class WEBCFACE_DLL Arg {
     explicit Arg(ValType type) : type_(type) {}
     Arg() = default;
 
-    Message::Arg toMessage() const;
-    Arg(const Message::Arg &a);
+    message::Arg toMessage() const;
+    Arg(const message::Arg &a);
 
     /*!
      * \brief 引数名を設定する。

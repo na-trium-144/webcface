@@ -155,7 +155,7 @@ void FuncCallHandle::reject(const std::string &message) {
     }
 }
 void FuncCallHandle::reject(const std::wstring &message) {
-    reject(Encoding::toNarrow(message));
+    reject(encoding::toNarrow(message));
 }
 
 WEBCFACE_NS_END

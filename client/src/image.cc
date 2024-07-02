@@ -19,7 +19,7 @@ Image &Image::request(std::optional<int> rows, std::optional<int> cols,
                       ImageCompressMode cmp_mode, int quality,
                       std::optional<ImageColorMode> color_mode,
                       std::optional<double> frame_rate) {
-    Message::ImageReq req{
+    message::ImageReq req{
         rows,
         cols,
         color_mode ? std::make_optional(static_cast<int>(*color_mode))
@@ -36,7 +36,7 @@ Image &Image::request(std::optional<int> rows, std::optional<int> cols,
     return *this;
 }
 
-inline void addImageReq(const std::shared_ptr<Internal::ClientData> &data,
+inline void addImageReq(const std::shared_ptr<internal::ClientData> &data,
                         const SharedString &member_,
                         const SharedString &field_) {
     auto req = data->image_store.addReq(member_, field_);

@@ -7,7 +7,7 @@
 #include <memory>
 
 WEBCFACE_NS_BEGIN
-namespace Internal {
+namespace internal {
 /*!
  * \brief View,Canvasなどで送信用にaddされたデータを管理する
  *
@@ -167,5 +167,5 @@ class Canvas2DDataBuf final : public DataSetBuffer<Canvas2DComponent> {
     }
 };
 
-} // namespace Internal
+} // namespace internal
 WEBCFACE_NS_END

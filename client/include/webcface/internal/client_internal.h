@@ -27,7 +27,7 @@ WEBCFACE_NS_BEGIN
 
 class Log;
 
-namespace Internal {
+namespace internal {
 
 WEBCFACE_DLL void messageThreadMain(const std::shared_ptr<ClientData> &data);
 WEBCFACE_DLL void connectionThreadMain(const std::shared_ptr<ClientData> &data);
@@ -167,7 +167,7 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
     SyncDataStore2<TextData> text_store;
     SyncDataStore2<FuncData> func_store;
     SyncDataStore2<ViewData> view_store;
-    SyncDataStore2<ImageData, Message::ImageReq> image_store;
+    SyncDataStore2<ImageData, message::ImageReq> image_store;
     SyncDataStore2<RobotModelData> robot_model_store;
     SyncDataStore2<Canvas3DData> canvas3d_store;
     SyncDataStore2<Canvas2DData> canvas2d_store;
@@ -268,5 +268,5 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
      */
     WEBCFACE_DLL void pingStatusReq();
 };
-} // namespace Internal
+} // namespace internal
 WEBCFACE_NS_END

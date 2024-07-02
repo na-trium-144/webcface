@@ -6,7 +6,7 @@
 #include <webcface/common/def.h>
 
 WEBCFACE_NS_BEGIN
-namespace Message{
+namespace message {
 struct RobotLink;
 }
 
@@ -23,7 +23,7 @@ struct RobotJoint {
     Transform origin;
     double angle = 0;
 };
-inline namespace RobotJoints {
+inline namespace robot_joints {
 /*!
  * \brief 親リンクをもたず座標を定義する
  *
@@ -153,7 +153,9 @@ inline RobotJoint prismaticJoint(std::wstring_view name,
     return RobotJoint{SharedString(name), SharedString(parent_name),
                       RobotJointType::prismatic, origin, angle};
 }
-} // namespace RobotJoints
+} // namespace robot_joints
+
+namespace RobotJoints = robot_joints; // 〜ver1.11
 
 struct WEBCFACE_DLL RobotLink {
     SharedString name;
@@ -161,8 +163,10 @@ struct WEBCFACE_DLL RobotLink {
     Geometry geometry;
     ViewColor color;
     RobotLink() = default;
-    RobotLink(const Message::RobotLink &m, const std::vector<SharedString> &link_names);
-    Message::RobotLink toMessage(const std::vector<SharedString> &link_names) const;
+    RobotLink(const message::RobotLink &m,
+              const std::vector<SharedString> &link_names);
+    message::RobotLink
+    toMessage(const std::vector<SharedString> &link_names) const;
     /*!
      * \since ver2.0
      */

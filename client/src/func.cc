@@ -223,7 +223,7 @@ Func &Func::setArgs(const std::vector<Arg> &args) {
 
 SharedString AnonymousFunc::fieldNameTmp() {
     static int id = 0;
-    return SharedString(Encoding::castToU8("..tmp" + std::to_string(id++)));
+    return SharedString(encoding::castToU8("..tmp" + std::to_string(id++)));
 }
 AnonymousFunc &AnonymousFunc::operator=(AnonymousFunc &&other) noexcept {
     this->func_setter = std::move(other.func_setter);

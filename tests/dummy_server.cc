@@ -86,7 +86,7 @@ DummyServer::DummyServer(bool use_unix)
                              const std::string &data, bool) {
                   std::lock_guard lock(server_m);
                   dummy_logger->info("ws_message");
-                  auto unpacked = Message::unpack(data, dummy_logger);
+                  auto unpacked = message::unpack(data, dummy_logger);
                   for (const auto &m : unpacked) {
                       dummy_logger->info("kind {}", m.first);
                       recv_data.push_back(m);
@@ -94,8 +94,8 @@ DummyServer::DummyServer(bool use_unix)
               });
 
           if (use_unix) {
-              auto unix_path = Message::Path::unixSocketPath(17530);
-              Message::Path::initUnixSocket(unix_path, dummy_logger);
+              auto unix_path = message::Path::unixSocketPath(17530);
+              message::Path::initUnixSocket(unix_path, dummy_logger);
               server->unix_path(unix_path.string()).run();
           } else {
               server->port(17530).run();

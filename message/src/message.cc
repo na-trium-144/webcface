@@ -2,7 +2,7 @@
 #include <sstream>
 
 WEBCFACE_NS_BEGIN
-namespace Message {
+namespace message {
 template struct WEBCFACE_DLL_INSTANCE_DEF Req<Value>;
 template struct WEBCFACE_DLL_INSTANCE_DEF Req<Text>;
 template struct WEBCFACE_DLL_INSTANCE_DEF Req<View>;
@@ -109,5 +109,5 @@ unpack(const std::string &message,
         return std::vector<std::pair<int, std::any>>{};
     }
 }
-} // namespace Message
+} // namespace message
 WEBCFACE_NS_END

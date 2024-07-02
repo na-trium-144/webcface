@@ -28,7 +28,7 @@ struct DummyServer {
     // clientにメッセージを送信する
     template <typename T>
     void send(const T &msg) {
-        send(Message::packSingle(msg));
+        send(message::packSingle(msg));
     }
 
     bool connected();

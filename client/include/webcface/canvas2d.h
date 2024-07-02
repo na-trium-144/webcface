@@ -6,11 +6,11 @@
 #include "components.h"
 
 WEBCFACE_NS_BEGIN
-namespace Internal {
+namespace internal {
 template <typename Component>
 class DataSetBuffer;
 class Canvas2DDataBuf;
-} // namespace Internal
+} // namespace internal
 
 /*!
  * \brief Canvas2Dの送受信データを表すクラス
@@ -19,7 +19,7 @@ class Canvas2DDataBuf;
  *
  */
 class WEBCFACE_DLL Canvas2D : protected Field, public EventTarget<Canvas2D> {
-    std::shared_ptr<Internal::Canvas2DDataBuf> sb;
+    std::shared_ptr<internal::Canvas2DDataBuf> sb;
 
     void onAppend() const override final;
 
@@ -34,7 +34,7 @@ class WEBCFACE_DLL Canvas2D : protected Field, public EventTarget<Canvas2D> {
         init(width, height);
     }
 
-    friend Internal::DataSetBuffer<Canvas2DComponent>;
+    friend internal::DataSetBuffer<Canvas2DComponent>;
 
     using Field::lastName;
     using Field::member;

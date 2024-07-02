@@ -5,7 +5,7 @@
 #include <webcface/common/def.h>
 
 WEBCFACE_NS_BEGIN
-namespace Internal {
+namespace internal {
 
 /*!
  * \brief AsyncFuncResultのデータを保持するクラス

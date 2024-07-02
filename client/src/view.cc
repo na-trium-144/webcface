@@ -11,12 +11,12 @@ template class WEBCFACE_DLL_INSTANCE_DEF EventTarget<View>;
 
 View::View()
     : Field(), EventTarget<View>(), std::ostream(nullptr),
-      sb(std::make_shared<Internal::ViewBuf>()) {
+      sb(std::make_shared<internal::ViewBuf>()) {
     this->std::ostream::init(sb.get());
 }
 View::View(const Field &base)
     : Field(base), EventTarget<View>(), std::ostream(nullptr),
-      sb(std::make_shared<Internal::ViewBuf>(base)) {
+      sb(std::make_shared<internal::ViewBuf>(base)) {
     this->std::ostream::init(sb.get());
     std::lock_guard lock(this->dataLock()->event_m);
     this->setCL(
@@ -24,11 +24,11 @@ View::View(const Field &base)
 }
 View::~View() { this->rdbuf(nullptr); }
 
-Internal::ViewBuf::ViewBuf()
+internal::ViewBuf::ViewBuf()
     : std::stringbuf(std::ios_base::out), DataSetBuffer<ViewComponent>() {}
-Internal::ViewBuf::ViewBuf(const Field &base)
+internal::ViewBuf::ViewBuf(const Field &base)
     : std::stringbuf(std::ios_base::out), DataSetBuffer<ViewComponent>(base) {}
-Internal::ViewBuf::~ViewBuf() { sync(); }
+internal::ViewBuf::~ViewBuf() { sync(); }
 
 View &View::init() {
     sb->init();
@@ -40,7 +40,7 @@ View &View::sync() {
     return *this;
 }
 template <>
-void Internal::DataSetBuffer<ViewComponent>::onSync() {
+void internal::DataSetBuffer<ViewComponent>::onSync() {
     std::unordered_map<int, int> idx_next;
     for (std::size_t i = 0; i < components_.size(); i++) {
         components_[i].lockTmp(target_.data_w, target_.field_, &idx_next);
@@ -61,7 +61,7 @@ View &View::operator<<(ViewComponent &&vc) {
     sb->addVC(std::move(vc));
     return *this;
 }
-void Internal::ViewBuf::addText(const ViewComponent &vc) {
+void internal::ViewBuf::addText(const ViewComponent &vc) {
     std::string s = vc.text();
     while (true) {
         auto p = s.find('\n');
@@ -83,21 +83,21 @@ void Internal::ViewBuf::addText(const ViewComponent &vc) {
         add(std::move(vc_new));
     }
 }
-void Internal::ViewBuf::addVC(const ViewComponent &vc) {
+void internal::ViewBuf::addVC(const ViewComponent &vc) {
     if (vc.type() == ViewComponentType::text) {
         addText(vc);
     } else {
         add(vc);
     }
 }
-void Internal::ViewBuf::addVC(ViewComponent &&vc) {
+void internal::ViewBuf::addVC(ViewComponent &&vc) {
     if (vc.type() == ViewComponentType::text) {
         addText(vc);
     } else {
         add(std::move(vc));
     }
 }
-int Internal::ViewBuf::sync() {
+int internal::ViewBuf::sync() {
     if (!this->str().empty()) {
         this->addText(ViewComponents::text(this->str()).toV());
         this->str("");

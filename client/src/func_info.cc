@@ -48,11 +48,11 @@ std::ostream &operator<<(std::ostream &os, const Arg &arg) {
     return os;
 }
 
-Arg::Arg(const Message::Arg &a)
+Arg::Arg(const message::Arg &a)
     : name_(a.name_), type_(a.type_), init_(a.init_), min_(a.min_),
       max_(a.max_), option_(a.option_) {}
-Message::Arg Arg::toMessage() const {
-    return Message::Arg(name_, type_, init_, min_, max_, option_);
+message::Arg Arg::toMessage() const {
+    return message::Arg(name_, type_, init_, min_, max_, option_);
 }
 
 FuncInfo::FuncInfo(const Message::FuncInfo &m)
@@ -62,9 +62,9 @@ FuncInfo::FuncInfo(const Message::FuncInfo &m)
         args.emplace_back(a);
     }
 }
-Message::FuncInfo FuncInfo::toMessage(const SharedString &field) const {
-    Message::FuncInfo m{0, field, return_type,
-                        std::make_shared<std::vector<Message::Arg>>()};
+message::FuncInfo FuncInfo::toMessage(const SharedString &field) const {
+    message::FuncInfo m{0, field, return_type,
+                        std::make_shared<std::vector<message::Arg>>()};
     m.args->reserve(args.size());
     for (const auto &a : args) {
         m.args->emplace_back(a.toMessage());

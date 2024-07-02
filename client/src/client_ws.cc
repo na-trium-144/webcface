@@ -7,10 +7,10 @@
 #include <cstdlib>
 
 WEBCFACE_NS_BEGIN
-namespace Internal {
+namespace internal {
 namespace WebSocket {
 
-void init(const std::shared_ptr<Internal::ClientData> &data) {
+void init(const std::shared_ptr<internal::ClientData> &data) {
     if (data->host.empty()) {
         data->host = SharedString(u8"127.0.0.1");
     }
@@ -36,9 +36,9 @@ void init(const std::shared_ptr<Internal::ClientData> &data) {
             if (data->host.decode() != "127.0.0.1") {
                 continue;
             }
-            if (Message::Path::detectWSL1()) {
+            if (message::Path::detectWSL1()) {
                 data->current_curl_path =
-                    Message::Path::unixSocketPathWSLInterop(data->port)
+                    message::Path::unixSocketPathWSLInterop(data->port)
                         .string();
                 curl_easy_setopt(handle, CURLOPT_UNIX_SOCKET_PATH,
                                  data->current_curl_path.c_str());
@@ -46,8 +46,8 @@ void init(const std::shared_ptr<Internal::ClientData> &data) {
                                  ("ws://" + data->host.decode() + "/").c_str());
                 break;
             }
-            if (Message::Path::detectWSL2()) {
-                std::string win_host = Message::Path::wsl2Host();
+            if (message::Path::detectWSL2()) {
+                std::string win_host = message::Path::wsl2Host();
                 if (!win_host.empty()) {
                     data->current_curl_path =
                         win_host + ':' + std::to_string(data->port);
@@ -62,7 +62,7 @@ void init(const std::shared_ptr<Internal::ClientData> &data) {
                 continue;
             }
             data->current_curl_path =
-                Message::Path::unixSocketPath(data->port).string();
+                message::Path::unixSocketPath(data->port).string();
             curl_easy_setopt(handle, CURLOPT_UNIX_SOCKET_PATH,
                              data->current_curl_path.c_str());
             curl_easy_setopt(handle, CURLOPT_URL,
@@ -148,7 +148,7 @@ void recv(const std::shared_ptr<Internal::ClientData> &data,
         }
     } while (ret != CURLE_AGAIN);
 }
-void send(const std::shared_ptr<Internal::ClientData> &data,
+void send(const std::shared_ptr<internal::ClientData> &data,
           const std::string &msg) {
     // std::lock_guard ws_lock(data->curl_m);
     data->logger_internal->trace("sending message {} bytes", msg.size());
@@ -168,5 +168,5 @@ void send(const std::shared_ptr<Internal::ClientData> &data,
 }
 
 } // namespace WebSocket
-} // namespace Internal
+} // namespace internal
 WEBCFACE_NS_END
