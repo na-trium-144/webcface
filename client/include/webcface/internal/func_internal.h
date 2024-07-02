@@ -32,7 +32,6 @@ class AsyncFuncState : std::enable_shared_from_this<AsyncFuncState> {
           result_p(std::move(result_p)), caller_id(caller_id),
           started_f(started_f), result_f(result_f), base(base) {}
 
-    friend class AsyncFuncResult;
     static std::shared_ptr<AsyncFuncState> notFound(const Field &base);
     static std::shared_ptr<AsyncFuncState>
     running(const Field &base, const std::shared_future<ValAdaptor> &result);
@@ -43,6 +42,8 @@ class AsyncFuncState : std::enable_shared_from_this<AsyncFuncState> {
         return AsyncFuncResult(base, shared_from_this(), started_f, result_f);
     }
     std::size_t callerId() const { return caller_id; }
+    auto &startedEvent() { return started_event; }
+    auto &resultEvent() { return result_event; }
 
     void setStarted(bool is_started);
     void setResult(const ValAdaptor &result_val);
@@ -91,7 +92,7 @@ class FuncResultStore {
      * \brief resultを設定し終わったstateを削除
      *
      */
-    void removeResultSetter(std::size_t caller_id) {
+    void removeResult(std::size_t caller_id) {
         std::lock_guard lock(mtx);
         auto it = result_setter.find(caller_id);
         if (it != result_setter.end()) {

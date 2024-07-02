@@ -33,8 +33,6 @@ struct WEBCFACE_DLL FuncNotFound : public std::runtime_error {
  *
  * 結果はshared_futureのget()で得られる。
  *
- * リモートから呼び出しメッセージが送られてきた時非同期で実行して結果を送り返すのにもこれを利用する
- *
  */
 class WEBCFACE_DLL AsyncFuncResult : Field {
     std::shared_ptr<Internal::AsyncFuncState> state;

@@ -712,57 +712,27 @@ void Internal::ClientData::onRecv(const std::string &message) {
         }
         case MessageKind::call: {
             auto r = std::any_cast<webcface::Message::Call>(obj);
-            std::thread([data = shared_from_this(), r] {
-                auto func_info =
-                    data->func_store.getRecv(data->self_member_name, r.field);
-                if (func_info) {
-                    data->message_push(webcface::Message::packSingle(
-                        webcface::Message::CallResponse{
-                            {}, r.caller_id, r.caller_member_id, true}));
-                    ValAdaptor result;
-                    bool is_error = false;
-                    try {
-                        result = (*func_info)->run(r.args);
-                    } catch (const std::exception &e) {
-                        is_error = true;
-                        result = std::string(e.what());
-                    } catch (const std::string &e) {
-                        is_error = true;
-                        result = e;
-                    } catch (const char *e) {
-                        is_error = true;
-                        result = e;
-                    } catch (const std::wstring &e) {
-                        is_error = true;
-                        result = e;
-                    } catch (const wchar_t *e) {
-                        is_error = true;
-                        result = e;
-                    } catch (...) {
-                        is_error = true;
-                        result = "unknown exception";
-                    }
-                    data->message_push(webcface::Message::packSingle(
-                        webcface::Message::CallResult{{},
-                                                      r.caller_id,
-                                                      r.caller_member_id,
-                                                      is_error,
-                                                      result}));
-                } else {
-                    data->message_push(webcface::Message::packSingle(
-                        webcface::Message::CallResponse{
-                            {}, r.caller_id, r.caller_member_id, false}));
-                }
-            }).detach();
+            auto func_info =
+                this->func_store.getRecv(this->self_member_name, r.field);
+            if (func_info) {
+                this->message_push(webcface::Message::packSingle(
+                    webcface::Message::CallResponse{
+                        {}, r.caller_id, r.caller_member_id, true}));
+                (*func_info)->run(std::move(r), shared_from_this());
+            } else {
+                this->message_push(webcface::Message::packSingle(
+                    webcface::Message::CallResponse{
+                        {}, r.caller_id, r.caller_member_id, false}));
+            }
             break;
         }
         case MessageKind::call_response: {
             auto r = std::any_cast<webcface::Message::CallResponse>(obj);
             try {
-                this->func_result_store.resultSetter(r.caller_id)
-                    .setStarted(r.started);
+                this->func_result_store.getResult(r.caller_id)
+                    ->setStarted(r.started);
                 if (!r.started) {
-                    this->func_result_store.removeResultSetter(r.caller_id);
+                    this->func_result_store.removeResult(r.caller_id);
                 }
             } catch (const std::future_error &e) {
                 this->logger_internal->error(
@@ -782,15 +752,15 @@ void Internal::ClientData::onRecv(const std::string &message) {
                     try {
                         throw std::runtime_error(r.result.asStringRef());
                     } catch (...) {
-                        this->func_result_store.resultSetter(r.caller_id)
-                            .setResultException(std::current_exception());
+                        this->func_result_store.getResult(r.caller_id)
+                            ->setResultException(std::current_exception());
                     }
                 } else {
-                    this->func_result_store.resultSetter(r.caller_id)
-                        .setResult(r.result);
+                    this->func_result_store.getResult(r.caller_id)
+                        ->setResult(r.result);
                     // todo: 戻り値の型?
                 }
-                this->func_result_store.removeResultSetter(r.caller_id);
+                this->func_result_store.removeResult(r.caller_id);
             } catch (const std::future_error &e) {
                 this->logger_internal->error(
                     "error receiving call result id={}: {}", r.caller_id,

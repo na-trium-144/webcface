@@ -12,7 +12,7 @@ WEBCFACE_NS_BEGIN
 template class WEBCFACE_DLL_INSTANCE_DEF EventTarget<Func>;
 
 Func::Func(const Field &base) : Field(base) {}
-Func &Func::set3(const std::shared_ptr<FuncInfo> &v) {
+Func &Func::setImpl(const std::shared_ptr<FuncInfo> &v) {
     setCheck()->func_store.setSend(*this, v);
     return *this;
 }
@@ -21,10 +21,10 @@ Func &Func::free() {
     return *this;
 }
 
-Func &Func::set(const std::vector<Arg> &args, ValType return_type, bool async,
+Func &Func::set(const std::vector<Arg> &args, ValType return_type,
                 const std::function<void(FuncCallHandle)> &callback) {
-    return set3(std::make_shared<FuncInfo>(
-        return_type, args, async,
+    return setImpl(std::make_shared<FuncInfo>(
+        return_type, args, true,
         [args_size = args.size(),
          callback](const std::vector<ValAdaptor> &args_vec) {
             if (args_size != args_vec.size()) {
@@ -40,7 +40,7 @@ Func &Func::set(const std::vector<Arg> &args, ValType return_type, bool async,
                 handle.respond();
             } catch (const std::future_error &) {
             }
-            return result_f.get();
+            return result_f;
         }));
 }
 
@@ -48,15 +48,106 @@ std::future<ValAdaptor> FuncInfo::run(const std::vector<ValAdaptor> &args,
                                       bool caller_async) {
     auto ret = func_impl(args);
     if (eval_async && caller_async) {
-        return std::async(
-            std::launch::async,
-            [](std::future<ValAdaptor> &&ret) { return ret.get(); },
-            std::move(ret));
+        std::packaged_task<ValAdaptor(std::future<ValAdaptor> &&)> task(
+            [](std::future<ValAdaptor> &&ret) { return ret.get(); });
+        auto ret_f = task.get_future();
+        std::thread(std::move(task), std::move(ret)).detach();
+        return ret_f;
     } else {
         ret.wait();
         return ret;
     }
 }
+
+template <typename F1, typename F2, typename F3>
+static void tryRun(F1 &&f_run, F2 &&f_ok, F3 &&f_fail) {
+    ValAdaptor error;
+    try {
+        f_ok(f_run());
+        return;
+    } catch (const std::exception &e) {
+        error = e.what();
+    } catch (const std::string &e) {
+        error = e;
+    } catch (const char *e) {
+        error = e;
+    } catch (const std::wstring &e) {
+        error = e;
+    } catch (const wchar_t *e) {
+        error = e;
+    } catch (...) {
+        error = "unknown exception";
+    }
+    f_fail(error);
+}
+void FuncInfo::run(webcface::Message::Call &&call,
+                   const std::shared_ptr<Internal::ClientData> &data) {
+    tryRun(
+        [this, &call] {
+            // まだこのスレッド内
+            return func_impl(call.args);
+        },
+        [this, &call, &data](std::future<ValAdaptor> &&result_f) {
+            if (eval_async) {
+                std::weak_ptr<Internal::ClientData> data_w = data;
+                std::thread(
+                    [data_w, call](std::future<ValAdaptor> result_f) {
+                        // ここで別スレッドになるのでコピーキャプチャ
+                        tryRun(
+                            [&result_f] {
+                                return result_f.get();
+                                // 時間かかってこの間にdata消えるかもしれない
+                            },
+                            [&data_w, &call](const ValAdaptor &result) {
+                                // ok
+                                auto data = data_w.lock();
+                                if (data) {
+                                    data->message_push(
+                                        webcface::Message::packSingle(
+                                            webcface::Message::CallResult{
+                                                {},
+                                                call.caller_id,
+                                                call.caller_member_id,
+                                                false,
+                                                result}));
+                                }
+                            },
+                            [&data_w, &call](const ValAdaptor &error) {
+                                // error
+                                auto data = data_w.lock();
+                                if (data) {
+                                    data->message_push(
+                                        webcface::Message::packSingle(
+                                            webcface::Message::CallResult{
+                                                {},
+                                                call.caller_id,
+                                                call.caller_member_id,
+                                                true,
+                                                error}));
+                                }
+                            });
+                    },
+                    std::move(result_f))
+                    .detach();
+            } else {
+                // ok
+                data->message_push(webcface::Message::packSingle(
+                    webcface::Message::CallResult{{},
+                                                  call.caller_id,
+                                                  call.caller_member_id,
+                                                  false,
+                                                  result_f.get()}));
+            }
+        },
+        [&call, &data](const ValAdaptor &error) {
+            // まだこのスレッド内
+            // error
+            data->message_push(
+                webcface::Message::packSingle(webcface::Message::CallResult{
+                    {}, call.caller_id, call.caller_member_id, true, error}));
+        });
+}
+
 
 ValAdaptor Func::run(const std::vector<ValAdaptor> &args_vec) const {
     auto data = dataLock();
@@ -155,7 +246,7 @@ void AnonymousFunc::lockTo(Func &target) {
     if (!func_info) [[unlikely]] {
         throw std::runtime_error("AnonymousFunc not set");
     } else {
-        target.set(std::make_shared<FuncInfo>(*func_info));
+        target.setImpl(std::make_shared<FuncInfo>(**func_info));
         this->free();
         func_setter = nullptr;
         base_init = false;

@@ -79,7 +79,7 @@ class WEBCFACE_DLL Func : protected Field {
      * set2()で構築された関数の情報(FuncInfo)をclientにセット
      *
      */
-    Func &set3(const std::shared_ptr<FuncInfo> &v);
+    Func &setImpl(const std::shared_ptr<FuncInfo> &v);
 
     template <typename... Args>
     using ArgsTuple = std::tuple<std::decay_t<Args>...>;
@@ -98,7 +98,7 @@ class WEBCFACE_DLL Func : protected Field {
     set2(bool eval_async,
          std::function<std::future<ValAdaptor>(const ArgsTuple<Args...> &)>
              &&func_casted) {
-        return set3(std::make_shared<FuncInfo>(
+        return setImpl(std::make_shared<FuncInfo>(
             valTypeOf<Ret>(), std::vector<Arg>{Arg{valTypeOf<Args>()}...},
             eval_async,
             [func_casted = std::move(func_casted)](
@@ -269,7 +269,7 @@ class WEBCFACE_DLL Func : protected Field {
      * cからの呼び出し用
      *
      */
-    Func &set(const std::vector<Arg> &args, ValType return_type, bool async,
+    Func &set(const std::vector<Arg> &args, ValType return_type,
               const std::function<void(FuncCallHandle)> &callback);
 
     /*!
@@ -320,8 +320,11 @@ class WEBCFACE_DLL Func : protected Field {
     /*!
      * \brief 関数を実行する (非同期)
      *
-     * 非同期で実行する
-     * 戻り値やエラー、例外はAsyncFuncResultから取得する
+     * * 非同期で実行する。
+     * 戻り値やエラー、例外は AsyncFuncResult から取得する
+     * * 関数を実行したスレッドはdetachされるので、戻り値が不要な場合は
+     * AsyncFuncResult を破棄してもよい。
+     * (std::async とは異なる)
      *
      */
     template <typename... Args>

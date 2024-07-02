@@ -9,11 +9,11 @@ FuncNotFound::FuncNotFound(const FieldBase &base)
 }
 
 eventpp::CallbackList<void(bool)> &AsyncFuncResult::onStarted() const {
-    return state->started_event;
+    return state->startedEvent();
 }
 eventpp::CallbackList<void(std::shared_future<ValAdaptor>)> &
 AsyncFuncResult::onResult() const {
-    return state->result_event;
+    return state->resultEvent();
 }
 
 std::shared_ptr<Internal::AsyncFuncState>

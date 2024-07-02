@@ -179,8 +179,9 @@ struct FuncInfo {
     /*!
      * \brief func_implをこのスレッドで実行
      *
-     * eval_async=caller_async=trueならfutureを新しいスレッドで評価し、
+     * * eval_async=caller_async=trueならfutureを新しいスレッドで評価し、
      * そうでなければこのスレッドでwaitする
+     * * 建てたスレッドはdetachする
      *
      */
     std::future<ValAdaptor> run(const std::vector<ValAdaptor> &args,
@@ -189,12 +190,12 @@ struct FuncInfo {
      * \brief
      * func_implをこのスレッドで実行し、完了時にCallResultをdataに送信させる
      *
-     * eval_async=trueなら新しいスレッドで、そうでなければこのスレッドでfutureを評価
+     * * eval_async=trueなら新しいスレッドで、そうでなければこのスレッドでfutureを評価
+     * * 建てたスレッドはdetachする
      *
      */
-    void run(const std::vector<ValAdaptor> &args,
-             webcface::Message::Call &&call,
-             const std::weak_ptr<Internal::ClientData> &data_w);
+    void run(webcface::Message::Call &&call,
+             const std::shared_ptr<Internal::ClientData> &data);
 
     FuncInfo()
         : return_type(ValType::none_), args(), eval_async(false), func_impl() {}
