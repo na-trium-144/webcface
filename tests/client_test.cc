@@ -129,15 +129,15 @@ TEST_F(ClientTest, connectionBySync) {
     EXPECT_TRUE(dummy_s->connected());
     EXPECT_TRUE(wcli_->connected());
 }
-TEST_F(ClientTest, connectionByRecv) {
+TEST_F(ClientTest, noConnectionByRecv) {
     dummy_s = std::make_shared<DummyServer>(false);
     wait();
     EXPECT_FALSE(dummy_s->connected());
     EXPECT_FALSE(wcli_->connected());
     wcli_->recv();
     wait();
-    EXPECT_TRUE(dummy_s->connected());
-    EXPECT_TRUE(wcli_->connected());
+    EXPECT_FALSE(dummy_s->connected());
+    EXPECT_FALSE(wcli_->connected());
 }
 TEST_F(ClientTest, close) {
     dummy_s = std::make_shared<DummyServer>(false);
@@ -187,7 +187,7 @@ TEST_F(ClientTest, sync) {
     dummy_s->recv<Sync>([&](const auto &) {},
                         [&] { ADD_FAILURE() << "Sync recv error"; });
 }
-TEST_F(ClientTest, recv) {
+TEST_F(ClientTest, serverVersion) {
     dummy_s = std::make_shared<DummyServer>(false);
     wait();
     wcli_->waitConnection();
@@ -195,18 +195,6 @@ TEST_F(ClientTest, recv) {
     wait();
     EXPECT_EQ(wcli_->serverName(), "");
     wcli_->recv();
-    EXPECT_EQ(wcli_->serverName(), "a");
-    EXPECT_EQ(wcli_->serverVersion(), "1");
-}
-TEST_F(ClientTest, autoRecv) {
-    dummy_s = std::make_shared<DummyServer>(false);
-    wait();
-    wcli_->autoRecv(true, std::chrono::milliseconds(static_cast<int>(WEBCFACE_TEST_TIMEOUT * 1.5)));
-    wcli_->waitConnection();
-    dummy_s->send(Message::SvrVersion{{}, "a", "1"});
-    wait();
-    EXPECT_EQ(wcli_->serverName(), "");
-    wait();
     EXPECT_EQ(wcli_->serverName(), "a");
     EXPECT_EQ(wcli_->serverVersion(), "1");
 }
@@ -428,6 +416,41 @@ TEST_F(ClientTest, valueReq) {
                   *data_->value_store.getRecv("a"_ss, "b.c"_ss).value())
                   .size(),
               3);
+}
+TEST_F(ClientTest, recvThread) {
+    dummy_s = std::make_shared<DummyServer>(false);
+    auto main_id = std::this_thread::get_id();
+    wait();
+    wcli_->waitConnection();
+    wcli_->member("a").value("b").appendListener([&](const Value &) {
+        EXPECT_EQ(std::this_thread::get_id(), main_id);
+        callback_called++;
+    });
+    wait();
+    dummy_s->send(Message::Res<Message::Value>{
+        1, ""_ss,
+        std::make_shared<std::vector<double>>(std::vector<double>{1, 2, 3})});
+    wait();
+    wcli_->recv();
+    wait();
+    EXPECT_EQ(callback_called, 1);
+}
+TEST_F(ClientTest, autoRecvThread) {
+    dummy_s = std::make_shared<DummyServer>(false);
+    auto main_id = std::this_thread::get_id();
+    wait();
+    wcli_->autoRecv(true);
+    wcli_->waitConnection();
+    wcli_->member("a").value("b").appendListener([&](const Value &) {
+        EXPECT_NE(std::this_thread::get_id(), main_id);
+        callback_called++;
+    });
+    wait();
+    dummy_s->send(Message::Res<Message::Value>{
+        1, ""_ss,
+        std::make_shared<std::vector<double>>(std::vector<double>{1, 2, 3})});
+    wait();
+    EXPECT_EQ(callback_called, 1);
 }
 TEST_F(ClientTest, textSend) {
     dummy_s = std::make_shared<DummyServer>(false);

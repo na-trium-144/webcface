@@ -117,7 +117,7 @@ void Internal::ClientData::start() {
         connection_thread =
             std::thread(Internal::connectionThreadMain, shared_from_this());
     }
-    if (!recv_thread.joinable()) {
+    if (!recv_thread.joinable() && this->auto_recv_us.load() > 0) {
         recv_thread = std::thread(Internal::recvThreadMain, shared_from_this());
     }
 }
@@ -138,7 +138,9 @@ void Internal::connectionThreadMain(const std::shared_ptr<ClientData> &data) {
         std::unique_lock lock(data->connect_state_m);
         data->connect_state_cond.wait(lock, [&] {
             return (data->closing.load() && !data->using_curl) ||
-                   (data->do_ws_init || data->auto_reconnect.load());
+                   data->do_ws_init ||
+                   (!data->connected && !data->using_curl &&
+                    data->auto_reconnect.load());
         });
         if (data->closing.load()) {
             data->using_curl = true;
@@ -155,7 +157,6 @@ void Internal::connectionThreadMain(const std::shared_ptr<ClientData> &data) {
             data->do_ws_init = false;
             continue;
         }
-        data->doing_ws_init = true;
         data->using_curl = true;
         {
             ScopedUnlock un(lock);
@@ -163,7 +164,6 @@ void Internal::connectionThreadMain(const std::shared_ptr<ClientData> &data) {
         }
         data->connected = data->current_curl_connected;
         data->do_ws_init = false;
-        data->doing_ws_init = false;
         data->using_curl = false;
         data->connect_state_cond.notify_all();
         if (!data->closing.load()) {
@@ -172,53 +172,58 @@ void Internal::connectionThreadMain(const std::shared_ptr<ClientData> &data) {
         }
     }
 }
+void Internal::recvMain(const std::shared_ptr<ClientData> &data,
+                        std::unique_lock<std::mutex> &lock) {
+    data->using_curl = true;
+    {
+        ScopedUnlock un(lock);
+        Internal::WebSocket::recv(data, [data](const std::string &msg) {
+            std::unique_lock lock(data->connect_state_m);
+            data->using_curl = false;
+            data->connect_state_cond.notify_all();
+            {
+                ScopedUnlock un(lock);
+                data->onRecv(msg);
+            }
+            data->connect_state_cond.wait(lock, [&] {
+                return data->closing.load() || !data->using_curl;
+            });
+            data->using_curl = true;
+        });
+    }
+    data->connected = data->current_curl_connected;
+    data->using_curl = false;
+    data->connect_state_cond.notify_all();
+}
+void Client::recv() {
+    std::unique_lock lock(data->connect_state_m);
+    if (data->closing.load() || !data->connected || data->using_curl) {
+        return;
+    }
+    Internal::recvMain(data, lock);
+}
 void Internal::recvThreadMain(const std::shared_ptr<ClientData> &data) {
     if (data->port <= 0) {
         return;
     }
     auto next_recv = std::chrono::steady_clock::now();
+    int recv_us = data->auto_recv_us.load();
+    if (recv_us <= 0) {
+        return;
+    }
     while (true) {
         std::unique_lock lock(data->connect_state_m);
-        int recv_us = data->auto_recv_us.load();
-        auto wait_pred = [&] {
-            return data->closing.load() || data->do_ws_recv;
-        };
-        if (recv_us > 0) {
-            data->connect_state_cond.wait_until(lock, next_recv, wait_pred);
-            next_recv += std::chrono::microseconds(recv_us);
-        } else {
-            data->connect_state_cond.wait(lock, wait_pred);
-        }
+        data->connect_state_cond.wait_until(
+            lock, next_recv, [&] { return data->closing.load(); });
+        next_recv += std::chrono::microseconds(recv_us);
+        data->connect_state_cond.wait(lock, [&] {
+            return data->closing.load() ||
+                   (data->connected && !data->using_curl);
+        });
         if (data->closing.load()) {
             return;
         }
-        if (!data->connected || data->using_curl) {
-            data->do_ws_recv = false;
-            continue;
-        }
-        data->using_curl = true;
-        data->doing_ws_recv = true;
-        {
-            ScopedUnlock un(lock);
-            Internal::WebSocket::recv(data, [data](const std::string &msg) {
-                std::unique_lock lock(data->connect_state_m);
-                data->using_curl = false;
-                data->connect_state_cond.notify_all();
-                {
-                    ScopedUnlock un(lock);
-                    data->onRecv(msg);
-                }
-                data->connect_state_cond.wait(lock, [&] {
-                    return data->closing.load() || !data->using_curl;
-                });
-                data->using_curl = true;
-            });
-        }
-        data->connected = data->current_curl_connected;
-        data->doing_ws_recv = false;
-        data->do_ws_recv = false;
-        data->using_curl = false;
-        data->connect_state_cond.notify_all();
+        recvMain(data, lock);
         // std::this_thread::yield();
     }
 }
@@ -252,12 +257,6 @@ void Client::waitConnection() {
     data->start();
     std::unique_lock lock(data->connect_state_m);
     data->connect_state_cond.wait(lock, [this] { return !data->do_ws_init; });
-}
-void Client::recv() {
-    data->start();
-    std::unique_lock lock(data->connect_state_m);
-    data->do_ws_recv = true;
-    data->connect_state_cond.wait(lock, [this] { return !data->do_ws_recv; });
 }
 void Client::autoRecv(bool enabled, std::chrono::microseconds interval) {
     if (enabled && interval.count() > 0) {

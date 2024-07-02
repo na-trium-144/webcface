@@ -32,6 +32,8 @@ namespace Internal {
 WEBCFACE_DLL void messageThreadMain(const std::shared_ptr<ClientData> &data);
 WEBCFACE_DLL void connectionThreadMain(const std::shared_ptr<ClientData> &data);
 WEBCFACE_DLL void recvThreadMain(const std::shared_ptr<ClientData> &data);
+WEBCFACE_DLL void recvMain(const std::shared_ptr<ClientData> &data,
+                           std::unique_lock<std::mutex> &lock);
 
 struct ClientData : std::enable_shared_from_this<ClientData> {
     WEBCFACE_DLL explicit ClientData(const SharedString &name,
@@ -71,7 +73,7 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
     /*!
      * \brief message_thread, connection_thread, recv_thread間の同期
      *
-     * closing, connected, do_ws_init, do_ws_recv, doing_ws_init, doing_ws_recv
+     * closing, connected, do_ws_init, do_ws_recv
      * using_curl, message_queue が変化した時notifyする
      *
      */
@@ -92,13 +94,7 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
      *
      * trueになったときnotify
      */
-    bool do_ws_init = false, do_ws_recv = false;
-    /*!
-     * WebSocket::側の関数を実行中はtrue、その関数が完了したらfalse
-     *
-     * falseになったときnotify
-     */
-    bool doing_ws_init = false, doing_ws_recv = false;
+    bool do_ws_init = false;
     /*!
      * どこかのスレッドがcurlにアクセス中
      * (curlへのアクセスを排他制御)
