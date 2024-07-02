@@ -55,8 +55,8 @@ void Canvas3D::request() const {
     auto data = dataLock();
     auto req = data->canvas3d_store.addReq(member_, field_);
     if (req) {
-        data->message_push(Message::packSingle(
-            Message::Req<Message::Canvas3D>{{}, member_, field_, req}));
+        data->message_push(message::packSingle(
+            message::Req<message::Canvas3D>{{}, member_, field_, req}));
     }
 }
 void Canvas3D::onAppend() const { request(); }

@@ -87,14 +87,14 @@ void init(const std::shared_ptr<internal::ClientData> &data) {
         }
     }
 }
-void close(const std::shared_ptr<Internal::ClientData> &data) {
+void close(const std::shared_ptr<internal::ClientData> &data) {
     if (data->current_curl_handle) {
         curl_easy_cleanup(static_cast<CURL *>(data->current_curl_handle));
         data->current_curl_handle = nullptr;
     }
     data->current_curl_connected = false;
 }
-void recv(const std::shared_ptr<Internal::ClientData> &data,
+void recv(const std::shared_ptr<internal::ClientData> &data,
           const std::function<void(const std::string &)> &cb) {
     CURL *handle = static_cast<CURL *>(data->current_curl_handle);
     CURLcode ret;

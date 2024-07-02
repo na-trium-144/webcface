@@ -55,7 +55,7 @@ message::Arg Arg::toMessage() const {
     return message::Arg(name_, type_, init_, min_, max_, option_);
 }
 
-FuncInfo::FuncInfo(const Message::FuncInfo &m)
+FuncInfo::FuncInfo(const message::FuncInfo &m)
     : return_type(m.return_type), args(), func_impl(nullptr) {
     args.reserve(m.args->size());
     for (const auto &a : *m.args) {

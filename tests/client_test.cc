@@ -206,7 +206,7 @@ TEST_F(ClientTest, ping) {
     wait();
     wcli_->recv();
     wait();
-    dummy_s->recv<Message::Ping>([&](const auto &) {},
+    dummy_s->recv<message::Ping>([&](const auto &) {},
                                  [&] { ADD_FAILURE() << "Ping recv error"; });
 
     wcli_->member("a").onPing().appendListener(callback<Member>());
@@ -218,7 +218,7 @@ TEST_F(ClientTest, ping) {
     wait();
     wcli_->recv();
     wait();
-    dummy_s->recv<Message::PingStatusReq>(
+    dummy_s->recv<message::PingStatusReq>(
         [&](const auto &) {},
         [&] { ADD_FAILURE() << "Ping Status Req recv error"; });
     EXPECT_EQ(callback_called, 1);
@@ -427,7 +427,7 @@ TEST_F(ClientTest, recvThread) {
         callback_called++;
     });
     wait();
-    dummy_s->send(Message::Res<Message::Value>{
+    dummy_s->send(message::Res<message::Value>{
         1, ""_ss,
         std::make_shared<std::vector<double>>(std::vector<double>{1, 2, 3})});
     wait();
@@ -446,7 +446,7 @@ TEST_F(ClientTest, autoRecvThread) {
         callback_called++;
     });
     wait();
-    dummy_s->send(Message::Res<Message::Value>{
+    dummy_s->send(message::Res<message::Value>{
         1, ""_ss,
         std::make_shared<std::vector<double>>(std::vector<double>{1, 2, 3})});
     wait();
@@ -1467,7 +1467,7 @@ TEST_F(ClientTest, funcResponse) {
     wait();
     wcli_->recv();
     wait();
-    dummy_s->recv<Message::CallResponse>(
+    dummy_s->recv<message::CallResponse>(
         [&](const auto &obj) {
             EXPECT_EQ(obj.caller_id, 7);
             EXPECT_EQ(obj.caller_member_id, 100);
@@ -1483,7 +1483,7 @@ TEST_F(ClientTest, funcResponse) {
     wait();
     wcli_->recv();
     wait();
-    dummy_s->recv<Message::CallResponse>(
+    dummy_s->recv<message::CallResponse>(
         [&](const auto &obj) {
             EXPECT_EQ(obj.caller_id, 8);
             EXPECT_EQ(obj.caller_member_id, 100);
@@ -1506,7 +1506,7 @@ TEST_F(ClientTest, funcResponse) {
     wait();
     wcli_->recv();
     wait();
-    dummy_s->recv<Message::CallResponse>(
+    dummy_s->recv<message::CallResponse>(
         [&](const auto &obj) {
             EXPECT_EQ(obj.caller_id, 9);
             EXPECT_EQ(obj.caller_member_id, 100);
@@ -1529,7 +1529,7 @@ TEST_F(ClientTest, funcResponse) {
     wait();
     wcli_->recv();
     wait();
-    dummy_s->recv<Message::CallResponse>(
+    dummy_s->recv<message::CallResponse>(
         [&](const auto &obj) {
             EXPECT_EQ(obj.caller_id, 19);
             EXPECT_EQ(obj.caller_member_id, 100);

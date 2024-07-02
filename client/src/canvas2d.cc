@@ -58,8 +58,8 @@ void Canvas2D::request() const {
     auto data = dataLock();
     auto req = data->canvas2d_store.addReq(member_, field_);
     if (req) {
-        data->message_push(Message::packSingle(
-            Message::Req<Message::Canvas2D>{{}, member_, field_, req}));
+        data->message_push(message::packSingle(
+            message::Req<message::Canvas2D>{{}, member_, field_, req}));
     }
 }
 void Canvas2D::onAppend() const { request(); }

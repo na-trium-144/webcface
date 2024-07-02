@@ -63,7 +63,7 @@ Client::~Client() {
     close();
     data->join();
 }
-void Internal::ClientData::join() {
+void internal::ClientData::join() {
     if (message_thread.joinable()) {
         message_thread.join();
     }
@@ -96,25 +96,25 @@ std::string Client::serverName() const { return data->svr_name; }
 
 void internal::ClientData::pingStatusReq() {
     if (!ping_status_req) {
-        message_push(Message::packSingle(Message::PingStatusReq{}));
+        message_push(message::packSingle(message::PingStatusReq{}));
     }
     ping_status_req = true;
 }
 
-void Internal::ClientData::start() {
+void internal::ClientData::start() {
     std::lock_guard lock(this->connect_state_m);
     this->do_ws_init = true;
     this->connect_state_cond.notify_all();
     if (!message_thread.joinable()) {
         message_thread =
-            std::thread(Internal::messageThreadMain, shared_from_this());
+            std::thread(internal::messageThreadMain, shared_from_this());
     }
     if (!connection_thread.joinable()) {
         connection_thread =
-            std::thread(Internal::connectionThreadMain, shared_from_this());
+            std::thread(internal::connectionThreadMain, shared_from_this());
     }
     if (!recv_thread.joinable() && this->auto_recv_us.load() > 0) {
-        recv_thread = std::thread(Internal::recvThreadMain, shared_from_this());
+        recv_thread = std::thread(internal::recvThreadMain, shared_from_this());
     }
 }
 void Client::close() {
@@ -126,7 +126,7 @@ bool Client::connected() const {
     std::lock_guard lock(data->connect_state_m);
     return data->connected;
 }
-void Internal::connectionThreadMain(const std::shared_ptr<ClientData> &data) {
+void internal::connectionThreadMain(const std::shared_ptr<ClientData> &data) {
     if (data->port <= 0) {
         return;
     }
@@ -142,7 +142,7 @@ void Internal::connectionThreadMain(const std::shared_ptr<ClientData> &data) {
             data->using_curl = true;
             {
                 ScopedUnlock un(lock);
-                Internal::WebSocket::close(data);
+                internal::WebSocket::close(data);
             }
             data->connected = data->current_curl_connected;
             data->using_curl = false;
@@ -156,7 +156,7 @@ void Internal::connectionThreadMain(const std::shared_ptr<ClientData> &data) {
         data->using_curl = true;
         {
             ScopedUnlock un(lock);
-            Internal::WebSocket::init(data);
+            internal::WebSocket::init(data);
         }
         data->connected = data->current_curl_connected;
         data->do_ws_init = false;
@@ -168,12 +168,12 @@ void Internal::connectionThreadMain(const std::shared_ptr<ClientData> &data) {
         }
     }
 }
-void Internal::recvMain(const std::shared_ptr<ClientData> &data,
+void internal::recvMain(const std::shared_ptr<ClientData> &data,
                         std::unique_lock<std::mutex> &lock) {
     data->using_curl = true;
     {
         ScopedUnlock un(lock);
-        Internal::WebSocket::recv(data, [data](const std::string &msg) {
+        internal::WebSocket::recv(data, [data](const std::string &msg) {
             std::unique_lock lock(data->connect_state_m);
             data->using_curl = false;
             data->connect_state_cond.notify_all();
@@ -196,9 +196,9 @@ void Client::recv() {
     if (data->closing.load() || !data->connected || data->using_curl) {
         return;
     }
-    Internal::recvMain(data, lock);
+    internal::recvMain(data, lock);
 }
-void Internal::recvThreadMain(const std::shared_ptr<ClientData> &data) {
+void internal::recvThreadMain(const std::shared_ptr<ClientData> &data) {
     if (data->port <= 0) {
         return;
     }
@@ -223,8 +223,8 @@ void Internal::recvThreadMain(const std::shared_ptr<ClientData> &data) {
         // std::this_thread::yield();
     }
 }
-void Internal::messageThreadMain(
-    const std::shared_ptr<Internal::ClientData> &data) {
+void internal::messageThreadMain(
+    const std::shared_ptr<internal::ClientData> &data) {
     while (true) {
         std::unique_lock lock(data->connect_state_m);
         data->connect_state_cond.wait(lock, [&] {
@@ -240,7 +240,7 @@ void Internal::messageThreadMain(
         data->using_curl = true;
         {
             ScopedUnlock un(lock);
-            Internal::WebSocket::send(data, msg);
+            internal::WebSocket::send(data, msg);
         }
         data->using_curl = false;
         data->connect_state_cond.notify_all();
@@ -524,7 +524,7 @@ void internal::ClientData::onRecv(const std::string &message) {
         }
         case MessageKind::ping: {
             this->message_push(
-                webcface::Message::packSingle(webcface::Message::Ping{}));
+                webcface::message::packSingle(webcface::message::Ping{}));
             break;
         }
         case MessageKind::ping_status: {
@@ -711,17 +711,17 @@ void internal::ClientData::onRecv(const std::string &message) {
             break;
         }
         case MessageKind::call: {
-            auto r = std::any_cast<webcface::Message::Call>(obj);
+            auto r = std::any_cast<webcface::message::Call>(obj);
             auto func_info =
                 this->func_store.getRecv(this->self_member_name, r.field);
             if (func_info) {
-                this->message_push(webcface::Message::packSingle(
-                    webcface::Message::CallResponse{
+                this->message_push(webcface::message::packSingle(
+                    webcface::message::CallResponse{
                         {}, r.caller_id, r.caller_member_id, true}));
                 (*func_info)->run(std::move(r), shared_from_this());
             } else {
-                this->message_push(webcface::Message::packSingle(
-                    webcface::Message::CallResponse{
+                this->message_push(webcface::message::packSingle(
+                    webcface::message::CallResponse{
                         {}, r.caller_id, r.caller_member_id, false}));
             }
             break;

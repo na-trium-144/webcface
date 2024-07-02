@@ -24,7 +24,7 @@ WEBCFACE_DLL void close(const std::shared_ptr<internal::ClientData> &data);
  * \brief messageを1回受信しdata->onRecvを呼ぶ
  *
  */
-WEBCFACE_DLL void recv(const std::shared_ptr<Internal::ClientData> &data,
+WEBCFACE_DLL void recv(const std::shared_ptr<internal::ClientData> &data,
                        const std::function<void(const std::string &)> &cb);
 /*!
  * \brief メッセージを送信する

@@ -37,7 +37,7 @@ void Log::request() const {
     auto req = data->log_store->addReq(member_);
     if (req) {
         data->message_push(
-            Message::packSingle(Message::LogReq{{}, member_}));
+            message::packSingle(message::LogReq{{}, member_}));
     }
 }
 

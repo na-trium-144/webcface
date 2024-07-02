@@ -23,8 +23,8 @@ namespace message {
 struct Arg;
 struct Call;
 struct FuncInfo;
-} // namespace Message
-namespace Internal {
+} // namespace message
+namespace internal {
 class ClientData;
 }
 
@@ -194,8 +194,8 @@ struct FuncInfo {
      * * 建てたスレッドはdetachする
      *
      */
-    void run(webcface::Message::Call &&call,
-             const std::shared_ptr<Internal::ClientData> &data);
+    void run(webcface::message::Call &&call,
+             const std::shared_ptr<internal::ClientData> &data);
 
     FuncInfo()
         : return_type(ValType::none_), args(), eval_async(false), func_impl() {}
@@ -207,8 +207,8 @@ struct FuncInfo {
              const std::function<FuncType> &func_impl)
         : return_type(return_type), args(std::move(args)), eval_async(async),
           func_impl(func_impl) {}
-    FuncInfo(const Message::FuncInfo &m);
-    Message::FuncInfo toMessage(const SharedString &field) const;
+    FuncInfo(const message::FuncInfo &m);
+    message::FuncInfo toMessage(const SharedString &field) const;
 };
 
 WEBCFACE_NS_END

@@ -103,5 +103,5 @@ class FuncResultStore {
     }
 };
 
-} // namespace Internal
+} // namespace internal
 WEBCFACE_NS_END

@@ -12,7 +12,7 @@
 #include <webcface/c_wcf/def_types.h>
 
 WEBCFACE_NS_BEGIN
-namespace Internal {
+namespace internal {
 class AsyncFuncState;
 }
 
@@ -35,11 +35,11 @@ struct WEBCFACE_DLL FuncNotFound : public std::runtime_error {
  *
  */
 class WEBCFACE_DLL AsyncFuncResult : Field {
-    std::shared_ptr<Internal::AsyncFuncState> state;
+    std::shared_ptr<internal::AsyncFuncState> state;
 
   public:
     AsyncFuncResult(const Field &base,
-        const std::shared_ptr<Internal::AsyncFuncState> &state,
+        const std::shared_ptr<internal::AsyncFuncState> &state,
                     const std::shared_future<bool> &started,
                     const std::shared_future<ValAdaptor> &result)
         : Field(base), state(state), started(started), result(result) {}

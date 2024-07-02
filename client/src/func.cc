@@ -80,8 +80,8 @@ static void tryRun(F1 &&f_run, F2 &&f_ok, F3 &&f_fail) {
     }
     f_fail(error);
 }
-void FuncInfo::run(webcface::Message::Call &&call,
-                   const std::shared_ptr<Internal::ClientData> &data) {
+void FuncInfo::run(webcface::message::Call &&call,
+                   const std::shared_ptr<internal::ClientData> &data) {
     tryRun(
         [this, &call] {
             // まだこのスレッド内
@@ -89,7 +89,7 @@ void FuncInfo::run(webcface::Message::Call &&call,
         },
         [this, &call, &data](std::future<ValAdaptor> &&result_f) {
             if (eval_async) {
-                std::weak_ptr<Internal::ClientData> data_w = data;
+                std::weak_ptr<internal::ClientData> data_w = data;
                 std::thread(
                     [data_w, call](std::future<ValAdaptor> result_f) {
                         // ここで別スレッドになるのでコピーキャプチャ
@@ -103,8 +103,8 @@ void FuncInfo::run(webcface::Message::Call &&call,
                                 auto data = data_w.lock();
                                 if (data) {
                                     data->message_push(
-                                        webcface::Message::packSingle(
-                                            webcface::Message::CallResult{
+                                        webcface::message::packSingle(
+                                            webcface::message::CallResult{
                                                 {},
                                                 call.caller_id,
                                                 call.caller_member_id,
@@ -117,8 +117,8 @@ void FuncInfo::run(webcface::Message::Call &&call,
                                 auto data = data_w.lock();
                                 if (data) {
                                     data->message_push(
-                                        webcface::Message::packSingle(
-                                            webcface::Message::CallResult{
+                                        webcface::message::packSingle(
+                                            webcface::message::CallResult{
                                                 {},
                                                 call.caller_id,
                                                 call.caller_member_id,
@@ -131,8 +131,8 @@ void FuncInfo::run(webcface::Message::Call &&call,
                     .detach();
             } else {
                 // ok
-                data->message_push(webcface::Message::packSingle(
-                    webcface::Message::CallResult{{},
+                data->message_push(webcface::message::packSingle(
+                    webcface::message::CallResult{{},
                                                   call.caller_id,
                                                   call.caller_member_id,
                                                   false,
@@ -143,7 +143,7 @@ void FuncInfo::run(webcface::Message::Call &&call,
             // まだこのスレッド内
             // error
             data->message_push(
-                webcface::Message::packSingle(webcface::Message::CallResult{
+                webcface::message::packSingle(webcface::message::CallResult{
                     {}, call.caller_id, call.caller_member_id, true, error}));
         });
 }
@@ -171,16 +171,16 @@ AsyncFuncResult Func::runAsync(const std::vector<ValAdaptor> &args_vec) const {
         // selfの場合、新しいAsyncFuncResultに別スレッドで実行した結果を入れる
         auto func_info = data->func_store.getRecv(*this);
         if (func_info) {
-            return Internal::AsyncFuncState::running(
+            return internal::AsyncFuncState::running(
                        *this, (*func_info)->run(args_vec, true).share())
                 ->getter();
         } else {
-            return Internal::AsyncFuncState::notFound(*this)->getter();
+            return internal::AsyncFuncState::notFound(*this)->getter();
         }
     } else {
         // リモートの場合cli.sync()を待たずに呼び出しメッセージを送る
         auto state = data->func_result_store.addResult(*this);
-        data->message_push(Message::packSingle(Message::Call{
+        data->message_push(message::packSingle(message::Call{
             state->callerId(), 0, data->getMemberIdFromName(member_), field_,
             args_vec}));
         // resultはcli.onRecv内でセットされる。
