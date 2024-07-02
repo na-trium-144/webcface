@@ -55,17 +55,8 @@ message::Arg Arg::toMessage() const {
     return message::Arg(name_, type_, init_, min_, max_, option_);
 }
 
-FuncCall::FuncCall(const message::Call &m)
-    : FuncCall(m.caller_id, m.caller_member_id, m.target_member_id, m.field,
-               std::vector(m.args)) {}
-message::Call FuncCall::toMessage() const {
-    return message::Call{caller_id, caller_member_id, target_member_id, field,
-                         args};
-}
-
 FuncInfo::FuncInfo(const message::FuncInfo &m)
-    : return_type(m.return_type), args(), func_impl(nullptr),
-      func_wrapper(nullptr) {
+    : return_type(m.return_type), args(), func_impl(nullptr) {
     args.reserve(m.args->size());
     for (const auto &a : *m.args) {
         args.emplace_back(a);

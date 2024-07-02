@@ -29,7 +29,7 @@ Image &Image::request(std::optional<int> rows, std::optional<int> cols,
         frame_rate};
     auto req_id = dataLock()->image_store.addReq(member_, field_, req);
     if (req_id) {
-        dataLock()->message_queue->push(message::packSingle(
+        dataLock()->message_push(message::packSingle(
             message::Req<message::Image>{member_, field_, req_id, req}));
         this->clear();
     }
@@ -41,7 +41,7 @@ inline void addImageReq(const std::shared_ptr<internal::ClientData> &data,
                         const SharedString &field_) {
     auto req = data->image_store.addReq(member_, field_);
     if (req) {
-        data->message_queue->push(message::packSingle(
+        data->message_push(message::packSingle(
             message::Req<message::Image>{member_, field_, req, {}}));
     }
 }

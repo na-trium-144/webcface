@@ -129,6 +129,16 @@ TEST_F(ClientTest, connectionBySync) {
     EXPECT_TRUE(dummy_s->connected());
     EXPECT_TRUE(wcli_->connected());
 }
+TEST_F(ClientTest, noConnectionByRecv) {
+    dummy_s = std::make_shared<DummyServer>(false);
+    wait();
+    EXPECT_FALSE(dummy_s->connected());
+    EXPECT_FALSE(wcli_->connected());
+    wcli_->recv();
+    wait();
+    EXPECT_FALSE(dummy_s->connected());
+    EXPECT_FALSE(wcli_->connected());
+}
 TEST_F(ClientTest, close) {
     dummy_s = std::make_shared<DummyServer>(false);
     wait();
@@ -183,6 +193,8 @@ TEST_F(ClientTest, serverVersion) {
     wcli_->waitConnection();
     dummy_s->send(message::SvrVersion{{}, "a", "1"});
     wait();
+    EXPECT_EQ(wcli_->serverName(), "");
+    wcli_->recv();
     EXPECT_EQ(wcli_->serverName(), "a");
     EXPECT_EQ(wcli_->serverVersion(), "1");
 }
@@ -191,6 +203,8 @@ TEST_F(ClientTest, ping) {
     wait();
     wcli_->waitConnection();
     dummy_s->send(message::Ping{});
+    wait();
+    wcli_->recv();
     wait();
     dummy_s->recv<message::Ping>([&](const auto &) {},
                                  [&] { ADD_FAILURE() << "Ping recv error"; });
@@ -201,6 +215,8 @@ TEST_F(ClientTest, ping) {
         {},
         std::make_shared<std::unordered_map<unsigned int, int>>(
             std::unordered_map<unsigned int, int>{{10, 15}})});
+    wait();
+    wcli_->recv();
     wait();
     dummy_s->recv<message::PingStatusReq>(
         [&](const auto &) {},
@@ -214,6 +230,8 @@ TEST_F(ClientTest, entry) {
     wcli_->waitConnection();
     wcli_->onMemberEntry().appendListener(callback<Member>());
     dummy_s->send(message::SyncInit{{}, "a"_ss, 10, "b", "1", "12345"});
+    wait();
+    wcli_->recv();
     wait();
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
@@ -230,6 +248,8 @@ TEST_F(ClientTest, entry) {
     m.onValueEntry().appendListener(callback<Value>());
     dummy_s->send(message::Entry<message::Value>{{}, 10, "b"_ss});
     wait();
+    wcli_->recv();
+    wait();
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
     ASSERT_EQ(m.valueEntries().size(), 1);
@@ -238,6 +258,8 @@ TEST_F(ClientTest, entry) {
 
     m.onTextEntry().appendListener(callback<Text>());
     dummy_s->send(message::Entry<message::Text>{{}, 10, "c"_ss});
+    wait();
+    wcli_->recv();
     wait();
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
@@ -248,6 +270,8 @@ TEST_F(ClientTest, entry) {
     m.onViewEntry().appendListener(callback<View>());
     dummy_s->send(message::Entry<message::View>{{}, 10, "d"_ss});
     wait();
+    wcli_->recv();
+    wait();
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
     ASSERT_EQ(m.viewEntries().size(), 1);
@@ -256,6 +280,8 @@ TEST_F(ClientTest, entry) {
 
     m.onCanvas2DEntry().appendListener(callback<Canvas2D>());
     dummy_s->send(message::Entry<message::Canvas2D>{{}, 10, "d"_ss});
+    wait();
+    wcli_->recv();
     wait();
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
@@ -266,6 +292,8 @@ TEST_F(ClientTest, entry) {
     m.onCanvas3DEntry().appendListener(callback<Canvas3D>());
     dummy_s->send(message::Entry<message::Canvas3D>{{}, 10, "d"_ss});
     wait();
+    wcli_->recv();
+    wait();
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
     ASSERT_EQ(m.canvas3DEntries().size(), 1);
@@ -275,6 +303,8 @@ TEST_F(ClientTest, entry) {
     m.onRobotModelEntry().appendListener(callback<RobotModel>());
     dummy_s->send(message::Entry<message::RobotModel>{{}, 10, "d"_ss});
     wait();
+    wcli_->recv();
+    wait();
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
     ASSERT_EQ(m.robotModelEntries().size(), 1);
@@ -283,6 +313,8 @@ TEST_F(ClientTest, entry) {
 
     m.onImageEntry().appendListener(callback<Image>());
     dummy_s->send(message::Entry<message::Image>{{}, 10, "d"_ss});
+    wait();
+    wcli_->recv();
     wait();
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
@@ -295,6 +327,8 @@ TEST_F(ClientTest, entry) {
         message::FuncInfo{10, "a"_ss, ValType::int_,
                           std::make_shared<std::vector<message::Arg>>(1)});
     wait();
+    wcli_->recv();
+    wait();
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
     EXPECT_EQ(m.funcEntries().size(), 1);
@@ -303,6 +337,8 @@ TEST_F(ClientTest, entry) {
 
     m.onSync().appendListener(callback<Member>());
     dummy_s->send(message::Sync{10, std::chrono::system_clock::now()});
+    wait();
+    wcli_->recv();
     wait();
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
@@ -367,6 +403,8 @@ TEST_F(ClientTest, valueReq) {
         1, "c"_ss,
         std::make_shared<std::vector<double>>(std::vector<double>{1, 2, 3})});
     wait();
+    wcli_->recv();
+    wait();
     EXPECT_EQ(callback_called, 1);
     EXPECT_TRUE(data_->value_store.getRecv("a"_ss, "b"_ss).has_value());
     EXPECT_EQ(static_cast<std::vector<double>>(
@@ -378,6 +416,41 @@ TEST_F(ClientTest, valueReq) {
                   *data_->value_store.getRecv("a"_ss, "b.c"_ss).value())
                   .size(),
               3);
+}
+TEST_F(ClientTest, recvThread) {
+    dummy_s = std::make_shared<DummyServer>(false);
+    auto main_id = std::this_thread::get_id();
+    wait();
+    wcli_->waitConnection();
+    wcli_->member("a").value("b").appendListener([&](const Value &) {
+        EXPECT_EQ(std::this_thread::get_id(), main_id);
+        callback_called++;
+    });
+    wait();
+    dummy_s->send(message::Res<message::Value>{
+        1, ""_ss,
+        std::make_shared<std::vector<double>>(std::vector<double>{1, 2, 3})});
+    wait();
+    wcli_->recv();
+    wait();
+    EXPECT_EQ(callback_called, 1);
+}
+TEST_F(ClientTest, autoRecvThread) {
+    dummy_s = std::make_shared<DummyServer>(false);
+    auto main_id = std::this_thread::get_id();
+    wait();
+    wcli_->autoRecv(true);
+    wcli_->waitConnection();
+    wcli_->member("a").value("b").appendListener([&](const Value &) {
+        EXPECT_NE(std::this_thread::get_id(), main_id);
+        callback_called++;
+    });
+    wait();
+    dummy_s->send(message::Res<message::Value>{
+        1, ""_ss,
+        std::make_shared<std::vector<double>>(std::vector<double>{1, 2, 3})});
+    wait();
+    EXPECT_EQ(callback_called, 1);
 }
 TEST_F(ClientTest, textSend) {
     dummy_s = std::make_shared<DummyServer>(false);
@@ -430,6 +503,8 @@ TEST_F(ClientTest, textReq) {
         1, ""_ss, std::make_shared<ValAdaptor>("z")});
     dummy_s->send(message::Res<message::Text>{
         1, "c"_ss, std::make_shared<ValAdaptor>("z")});
+    wait();
+    wcli_->recv();
     wait();
     EXPECT_EQ(callback_called, 1);
     EXPECT_TRUE(data_->text_store.getRecv("a"_ss, "b"_ss).has_value());
@@ -540,6 +615,8 @@ TEST_F(ClientTest, viewReq) {
     dummy_s->send(message::Res<message::View>{1, ""_ss, v, 3});
     dummy_s->send(message::Res<message::View>{1, "c"_ss, v, 3});
     wait();
+    wcli_->recv();
+    wait();
     EXPECT_EQ(callback_called, 1);
     EXPECT_TRUE(data_->view_store.getRecv("a"_ss, "b"_ss).has_value());
     EXPECT_EQ(data_->view_store.getRecv("a"_ss, "b"_ss).value()->size(), 3);
@@ -569,6 +646,8 @@ TEST_F(ClientTest, viewReq) {
                       .toMessage()},
         });
     dummy_s->send(message::Res<message::View>{1, ""_ss, v2, 3});
+    wait();
+    wcli_->recv();
     wait();
     EXPECT_EQ(callback_called, 2);
     EXPECT_EQ(data_->view_store.getRecv("a"_ss, "b"_ss).value()->size(), 3);
@@ -734,6 +813,8 @@ TEST_F(ClientTest, canvas2DReq) {
     dummy_s->send(message::Res<message::Canvas2D>{1, ""_ss, 200, 200, v, 3});
     dummy_s->send(message::Res<message::Canvas2D>{1, "c"_ss, 200, 200, v, 3});
     wait();
+    wcli_->recv();
+    wait();
     EXPECT_EQ(callback_called, 1);
     EXPECT_TRUE(data_->canvas2d_store.getRecv("a"_ss, "b"_ss).has_value());
     EXPECT_EQ(data_->canvas2d_store.getRecv("a"_ss, "b"_ss).value()->width,
@@ -811,6 +892,8 @@ TEST_F(ClientTest, canvas2DReq) {
                       .toMessage()},
         });
     dummy_s->send(message::Res<message::Canvas2D>{1, ""_ss, 100, 100, v2, 3});
+    wait();
+    wcli_->recv();
     wait();
     EXPECT_EQ(callback_called, 2);
     EXPECT_EQ(data_->canvas2d_store.getRecv("a"_ss, "b"_ss)
@@ -998,6 +1081,8 @@ TEST_F(ClientTest, canvas3DReq) {
     dummy_s->send(message::Res<message::Canvas3D>{1, ""_ss, v, 3});
     dummy_s->send(message::Res<message::Canvas3D>{1, "c"_ss, v, 3});
     wait();
+    wcli_->recv();
+    wait();
     EXPECT_EQ(callback_called, 1);
     EXPECT_TRUE(data_->canvas3d_store.getRecv("a"_ss, "b"_ss).has_value());
     EXPECT_EQ(data_->canvas3d_store.getRecv("a"_ss, "b"_ss).value()->size(), 3);
@@ -1045,6 +1130,8 @@ TEST_F(ClientTest, canvas3DReq) {
                  .toMessage()},
         });
     dummy_s->send(message::Res<message::Canvas3D>{1, ""_ss, v2, 3});
+    wait();
+    wcli_->recv();
     wait();
     EXPECT_EQ(callback_called, 2);
     EXPECT_EQ(data_->canvas3d_store.getRecv("a"_ss, "b"_ss).value()->size(), 3);
@@ -1117,6 +1204,8 @@ TEST_F(ClientTest, robotModelReq) {
             std::vector<message::RobotLink>{
                 RobotLink{"a", Geometry{}, ViewColor::black}.toMessage({})})));
     wait();
+    wcli_->recv();
+    wait();
     EXPECT_EQ(callback_called, 1);
     EXPECT_TRUE(data_->robot_model_store.getRecv("a"_ss, "b"_ss).has_value());
     EXPECT_EQ(data_->robot_model_store.getRecv("a"_ss, "b"_ss).value()->size(),
@@ -1166,6 +1255,8 @@ TEST_F(ClientTest, imageReq) {
                    ImageColorMode::bgr);
     dummy_s->send(message::Res<message::Image>{1, ""_ss, img.toMessage()});
     dummy_s->send(message::Res<message::Image>{1, "c"_ss, img.toMessage()});
+    wait();
+    wcli_->recv();
     wait();
     EXPECT_EQ(callback_called, 1);
     ASSERT_TRUE(data_->image_store.getRecv("a"_ss, "b"_ss).has_value());
@@ -1232,6 +1323,8 @@ TEST_F(ClientTest, logReq) {
                         .toMessage(),
                 })});
     wait();
+    wcli_->recv();
+    wait();
     EXPECT_EQ(callback_called, 1);
     EXPECT_TRUE(data_->log_store->getRecv("a"_ss).has_value());
     EXPECT_EQ(data_->log_store->getRecv("a"_ss).value()->size(), 2);
@@ -1245,6 +1338,8 @@ TEST_F(ClientTest, logReq) {
                     LogLineData<>{2, std::chrono::system_clock::now(), "c"_ss}
                         .toMessage(),
                 })});
+    wait();
+    wcli_->recv();
     wait();
     EXPECT_EQ(callback_called, 2);
     EXPECT_TRUE(data_->log_store->getRecv("a"_ss).has_value());
@@ -1274,6 +1369,8 @@ TEST_F(ClientTest, funcCall) {
     // call
     dummy_s->send(message::SyncInit{{}, "a"_ss, 10, "", "", ""});
     wait();
+    wcli_->recv();
+    wait();
     auto r = wcli_->member("a").func("b").runAsync(1, true, "a");
     wait();
     dummy_s->recv<message::Call>(
@@ -1294,6 +1391,8 @@ TEST_F(ClientTest, funcCall) {
     // started=false
     dummy_s->send(message::CallResponse{{}, 0, 0, false});
     wait();
+    wcli_->recv();
+    wait();
     EXPECT_FALSE(r.started.get());
     EXPECT_THROW(r.result.get(), FuncNotFound);
     dummy_s->recvClear();
@@ -1312,9 +1411,13 @@ TEST_F(ClientTest, funcCall) {
     // started=true
     dummy_s->send(message::CallResponse{{}, 1, 0, true});
     wait();
+    wcli_->recv();
+    wait();
     EXPECT_TRUE(r.started.get());
     // return error
     dummy_s->send(message::CallResult{{}, 1, 0, true, ValAdaptor("a")});
+    wait();
+    wcli_->recv();
     wait();
     EXPECT_THROW(r.result.get(), std::runtime_error);
     try {
@@ -1339,8 +1442,12 @@ TEST_F(ClientTest, funcCall) {
     // started=true
     dummy_s->send(message::CallResponse{{}, 2, 0, true});
     wait();
+    wcli_->recv();
+    wait();
     // return
     dummy_s->send(message::CallResult{{}, 2, 0, false, ValAdaptor("b")});
+    wait();
+    wcli_->recv();
     wait();
     EXPECT_EQ(static_cast<std::string>(r.result.get()), "b");
 }
@@ -1358,6 +1465,8 @@ TEST_F(ClientTest, funcResponse) {
     // not found
     dummy_s->send(FuncCall{7, 100, 0, "n"_ss, {}}.toMessage());
     wait();
+    wcli_->recv();
+    wait();
     dummy_s->recv<message::CallResponse>(
         [&](const auto &obj) {
             EXPECT_EQ(obj.caller_id, 7);
@@ -1371,6 +1480,8 @@ TEST_F(ClientTest, funcResponse) {
     dummy_s->send(
         FuncCall{8, 100, 0, "a"_ss, {ValAdaptor(1), ValAdaptor("zzz")}}
             .toMessage());
+    wait();
+    wcli_->recv();
     wait();
     dummy_s->recv<message::CallResponse>(
         [&](const auto &obj) {
@@ -1393,6 +1504,8 @@ TEST_F(ClientTest, funcResponse) {
     // throw
     dummy_s->send(FuncCall{9, 100, 0, "a"_ss, {ValAdaptor(0)}}.toMessage());
     wait();
+    wcli_->recv();
+    wait();
     dummy_s->recv<message::CallResponse>(
         [&](const auto &obj) {
             EXPECT_EQ(obj.caller_id, 9);
@@ -1413,6 +1526,8 @@ TEST_F(ClientTest, funcResponse) {
 
     // success
     dummy_s->send(FuncCall{19, 100, 0, "a"_ss, {ValAdaptor(123)}}.toMessage());
+    wait();
+    wcli_->recv();
     wait();
     dummy_s->recv<message::CallResponse>(
         [&](const auto &obj) {
