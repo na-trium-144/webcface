@@ -94,11 +94,12 @@ void close(const std::shared_ptr<internal::ClientData> &data) {
     }
     data->current_curl_connected = false;
 }
-void recv(const std::shared_ptr<internal::ClientData> &data,
+bool recv(const std::shared_ptr<internal::ClientData> &data,
           const std::function<void(const std::string &)> &cb) {
     CURL *handle = static_cast<CURL *>(data->current_curl_handle);
     CURLcode ret;
     // data->logger_internal->trace("recv");
+    bool has_recv = false;
     do {
         std::size_t rlen = 0;
         const curl_ws_frame *meta = nullptr;
@@ -110,7 +111,7 @@ void recv(const std::shared_ptr<internal::ClientData> &data,
             if (meta && meta->flags & CURLWS_CLOSE) {
                 data->logger_internal->debug("connection closed");
                 WebSocket::close(data);
-                return;
+                break;
             } else if (meta && static_cast<std::size_t>(meta->offset) >
                                    data->current_ws_buf.size()) {
                 data->current_ws_buf.append(
@@ -129,7 +130,7 @@ void recv(const std::shared_ptr<internal::ClientData> &data,
                 data->logger_internal->debug("connection closed {}",
                                              static_cast<int>(ret));
                 WebSocket::close(data);
-                return;
+                break;
             }
             if (ret == CURLE_OK && meta && meta->bytesleft == 0 &&
                 !data->current_ws_buf.empty()) {
@@ -145,8 +146,10 @@ void recv(const std::shared_ptr<internal::ClientData> &data,
             // data->onRecv(data->current_ws_buf);
             cb(data->current_ws_buf);
             data->current_ws_buf.clear();
+            has_recv = true;
         }
     } while (ret != CURLE_AGAIN);
+    return has_recv;
 }
 void send(const std::shared_ptr<internal::ClientData> &data,
           const std::string &msg) {

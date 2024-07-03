@@ -32,7 +32,7 @@ namespace internal {
 WEBCFACE_DLL void messageThreadMain(const std::shared_ptr<ClientData> &data);
 WEBCFACE_DLL void connectionThreadMain(const std::shared_ptr<ClientData> &data);
 WEBCFACE_DLL void recvThreadMain(const std::shared_ptr<ClientData> &data);
-WEBCFACE_DLL void recvMain(const std::shared_ptr<ClientData> &data,
+WEBCFACE_DLL bool recvMain(const std::shared_ptr<ClientData> &data,
                            std::unique_lock<std::mutex> &lock);
 
 struct ClientData : std::enable_shared_from_this<ClientData> {

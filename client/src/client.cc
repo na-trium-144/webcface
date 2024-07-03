@@ -168,35 +168,64 @@ void internal::connectionThreadMain(const std::shared_ptr<ClientData> &data) {
         }
     }
 }
-void internal::recvMain(const std::shared_ptr<ClientData> &data,
+bool internal::recvMain(const std::shared_ptr<ClientData> &data,
                         std::unique_lock<std::mutex> &lock) {
     data->using_curl = true;
+    bool has_recv;
     {
         ScopedUnlock un(lock);
-        internal::WebSocket::recv(data, [data](const std::string &msg) {
-            std::unique_lock lock(data->connect_state_m);
-            data->using_curl = false;
-            data->connect_state_cond.notify_all();
-            {
-                ScopedUnlock un(lock);
-                data->onRecv(msg);
-            }
-            data->connect_state_cond.wait(lock, [&] {
-                return data->closing.load() || !data->using_curl;
+        has_recv =
+            internal::WebSocket::recv(data, [data](const std::string &msg) {
+                std::unique_lock lock(data->connect_state_m);
+                data->using_curl = false;
+                data->connect_state_cond.notify_all();
+                {
+                    ScopedUnlock un(lock);
+                    data->onRecv(msg);
+                }
+                data->connect_state_cond.wait(lock, [&] {
+                    return data->closing.load() || !data->using_curl;
+                });
+                data->using_curl = true;
             });
-            data->using_curl = true;
-        });
     }
     data->connected = data->current_curl_connected;
     data->using_curl = false;
     data->connect_state_cond.notify_all();
+    return has_recv;
 }
-void Client::recv() {
-    std::unique_lock lock(data->connect_state_m);
-    if (data->closing.load() || !data->connected || data->using_curl) {
-        return;
+void Client::recvImpl(std::optional<std::chrono::microseconds> timeout) {
+    auto start_t = std::chrono::steady_clock::now();
+    auto next_recv_t = start_t;
+    constexpr std::chrono::microseconds interval(100);
+    while (true) {
+        std::unique_lock lock(data->connect_state_m);
+        if (!timeout || next_recv_t < start_t + *timeout) {
+            // 少なくともintervalぶんは待機する
+            data->connect_state_cond.wait_until(
+                lock, next_recv_t, [&] { return data->closing.load(); });
+        }
+        // 遅くともtimeout経過したらreturnする
+        if (timeout) {
+            data->connect_state_cond.wait_until(lock, start_t + *timeout, [&] {
+                return data->closing.load() ||
+                       (data->connected && !data->using_curl);
+            });
+        } else {
+            data->connect_state_cond.wait(lock, [&] {
+                return data->closing.load() ||
+                       (data->connected && !data->using_curl);
+            });
+        }
+        if (data->closing.load() || !data->connected || data->using_curl) {
+            return;
+        }
+        next_recv_t = std::chrono::steady_clock::now() + interval;
+        bool has_recv = internal::recvMain(data, lock);
+        if (has_recv) {
+            return;
+        }
     }
-    internal::recvMain(data, lock);
 }
 void internal::recvThreadMain(const std::shared_ptr<ClientData> &data) {
     if (data->port <= 0) {

@@ -117,6 +117,10 @@ class WEBCFACE_DLL Client : public Member {
      */
     void waitConnection();
 
+  private:
+    void recvImpl(std::optional<std::chrono::microseconds> timeout);
+
+  public:
     /*!
      * \brief サーバーからデータを受信する
      * \since ver2.0
@@ -124,13 +128,41 @@ class WEBCFACE_DLL Client : public Member {
      * * データを受信した場合、各種コールバック(onEntry, onChange,
      * Func::run()など)をこのスレッドで呼び出し、
      * それがすべて完了するまでこの関数はブロックされる。
-     * * データをまだ何も受信していない場合即座にreturnする。
-     * * サーバーに接続していない場合、接続試行中、データ送信中の場合などは、
-     * なにもせずreturnする場合がある。
+     * * データを何も受信しなかった場合、サーバーに接続していない場合、
+     * または接続試行中やデータ送信中など受信ができない場合は、
+     * timeout経過後にreturnする。
+     * timeout=0 または負の値なら即座にreturnする。
+     * * timeoutが100μs以上の場合、データを何も受信できなければ100μsおきに再試行する。
      *
-     * \sa autoRecv()
+     * \sa autoRecv(), recvUntil(), waitRecv()
      */
-    void recv();
+    void
+    recv(std::chrono::microseconds timeout = std::chrono::microseconds(0)) {
+        recvImpl(timeout);
+    }
+    /*!
+     * \brief サーバーからデータを受信する
+     * \since ver2.0
+     *
+     * recv() と同じだが、timeoutを絶対時間で指定
+     *
+     * \sa recv(), waitRecv()
+     */
+    template <typename Clock, typename Duration>
+    void recvUntil(std::chrono::time_point<Clock, Duration> timeout) {
+        recvImpl(std::chrono::duration_cast<std::chrono::microseconds>(
+            timeout - Clock::now()));
+    }
+    /*!
+     * \brief サーバーからデータを受信する
+     * \since ver2.0
+     *
+     * recv()と同じだが、何か受信するまで無制限に待機する
+     *
+     * \sa recv(), recvUntil()
+     */
+    void waitRecv() { recvImpl(std::nullopt); }
+
     /*!
      * \brief 別スレッドでrecv()を自動的に呼び出す間隔を設定する。
      * \since ver2.0
@@ -143,7 +175,7 @@ class WEBCFACE_DLL Client : public Member {
      *
      * \param enabled trueにすると自動でrecv()が呼び出されるようになる
      * \param interval recvを呼び出す間隔 (1μs以上)
-     * \sa recv()
+     * \sa recv(), recvUntil(), waitRecv()
      */
     void autoRecv(bool enabled, std::chrono::microseconds interval =
                                     std::chrono::microseconds(100));
