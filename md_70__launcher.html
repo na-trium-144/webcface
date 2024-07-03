@@ -159,8 +159,7 @@ $(document).ready(function(){initNavTree('md_70__launcher.html',''); initResizab
 <p>WebUI上ではそれぞれの設定ファイルに書かれたそれぞれのコマンドを開始するボタンと停止するボタンが表示されます。</p>
 <p><img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/launcher.png" alt="launcher.png" class="inline"/></p>
 <dl class="section note"><dt>Note</dt><dd><ul>
-<li>Stopボタンを押すと、Linux,MacOSではSIGINT(Ctrl+C)が送られます。 WindowsではTerminateProcessでプロセスツリー全体を停止します。 (外部ライブラリの <a href="https://gitlab.com/eidheim/tiny-process-library/">tiny-process-library</a> を使用しています)</li>
-<li>launcherから <code>cmd /c</code> などを使って別のプロセスを起動した場合、停止ボタンを押してcmdは停止してもその内側で起動したプロセスは停止しない場合があります。その場合はtaskkillなどで停止するコマンドを別途登録しておくとよいかも</li>
+<li>プロセスの起動と停止には外部ライブラリの <a href="https://gitlab.com/eidheim/tiny-process-library/">tiny-process-library</a> を使用しています</li>
 <li>(tools ver1.4.2から、Linux,MacOS) webcface-launcherを停止すると、実行中のコマンドにもシグナルが送られます。 SIGINT(Ctrl+C)で停止しない場合は、複数回Ctrl+Cを押すとSIGTERM、SIGKILLに移行して強制的に停止します。</li>
 <li>(tools ver1.4.3から) Startボタン、Stopボタンの動作はViewを経由せずにFuncで呼び出すこともできます。 (WebUIのFunctionsの画面からも確認できます)<ul>
 <li>Startボタンは member("webcface-launcher").func("コマンド名/start").runAsync()</li>
@@ -204,7 +203,14 @@ $(document).ready(function(){initNavTree('md_70__launcher.html',''); initResizab
 <div class="line">exec = &quot;./main&quot;</div>
 <div class="line">stdout_capture = &quot;never&quot;</div>
 <div class="line">stdout_utf8 = true</div>
-<div class="line">env = { FOO = &quot;foo&quot;, BAR = &quot;bar&quot; }</div>
+<div class="line">stop = 2</div>
+<div class="line"># または、</div>
+<div class="line"># [command.stop]</div>
+<div class="line"># exec = &quot;pkill ...&quot;</div>
+<div class="line"># workdir = &quot;...&quot;</div>
+<div class="line">[command.env]</div>
+<div class="line">FOO = &quot;foo&quot;</div>
+<div class="line">BAR = &quot;bar&quot;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md135"></a>
 init</h2>
 <p>initセクションは省略できます。</p>
@@ -252,6 +258,25 @@ command</h2>
 <li>環境変数を設定します。</li>
 </ul>
 </li>
+<li>stop (tools ver1.4.5 から)<ul>
+<li>Stopボタンを押したときの挙動を設定できます。</li>
+<li><code>stop = true</code> または <code>stop = 2</code> がデフォルトの挙動です。<ul>
+<li>Linux,MacOSではSIGINT(Ctrl+C)が送られます。</li>
+<li>WindowsではTerminateProcessでプロセスツリー全体を停止します。</li>
+</ul>
+</li>
+<li><code>stop = false</code> にするとStopボタンが無効になります。</li>
+<li>(Linux,MacOSのみ) <code>stop = 9</code> などとすると送信するシグナルを変更できます。<ul>
+<li>Windowsでは指定したシグナルの番号にかかわらずTerminateProcessで停止します。</li>
+</ul>
+</li>
+<li><code>stop.exec</code>を設定するとシグナルを送る代わりに指定したコマンドを実行します。<ul>
+<li>Startで実行するコマンドと同様、workdirやenvなどを設定することもできます。</li>
+<li>例えばlauncherから <code>cmd /c</code> などを使って別のプロセスを起動した場合、停止ボタンを押してcmdは停止してもその内側で起動したプロセスは停止しない場合があります。その場合はtaskkillなどで停止するコマンドを別途登録しておくとよいかも</li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 <h1><a class="anchor" id="autotoc_md137"></a>
 WebUIからの設定</h1>
@@ -272,7 +297,7 @@ WebUIからの設定</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon Jul 1 2024 17:11:02 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Wed Jul 3 2024 11:42:51 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>
