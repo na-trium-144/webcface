@@ -128,14 +128,16 @@ class WEBCFACE_DLL Func : protected Field {
             [func = std::move(func)](const ArgsTuple<Args...> &args_tuple) {
                 auto ret = std::apply(func, args_tuple);
                 return std::async(
-                    std::launch::deferred, [ret = std::move(ret)] {
+                    std::launch::deferred,
+                    [](std::shared_future<Ret> ret) {
                         if constexpr (std::is_void_v<Ret>) {
                             ret.wait();
                             return ValAdaptor{};
                         } else {
                             return static_cast<ValAdaptor>(ret.get());
                         }
-                    });
+                    },
+                    std::move(ret));
             });
     }
     /*!
@@ -152,14 +154,16 @@ class WEBCFACE_DLL Func : protected Field {
             [func = std::move(func)](const ArgsTuple<Args...> &args_tuple) {
                 auto ret = std::apply(func, args_tuple);
                 return std::async(
-                    std::launch::deferred, [ret = std::move(ret)] {
+                    std::launch::deferred,
+                    [](std::future<Ret> ret) {
                         if constexpr (std::is_void_v<Ret>) {
                             ret.wait();
                             return ValAdaptor{};
                         } else {
                             return static_cast<ValAdaptor>(ret.get());
                         }
-                    });
+                    },
+                    std::move(ret));
             });
     }
     /*!
@@ -197,16 +201,17 @@ class WEBCFACE_DLL Func : protected Field {
         return set2<Ret, Args...>(
             true,
             [func = std::move(func)](const ArgsTuple<Args...> &args_tuple) {
-                std::async(std::launch::deferred,
-                           [func = std::move(func), args_tuple] {
-                               if constexpr (std::is_void_v<Ret>) {
-                                   std::apply(func, args_tuple);
-                                   return ValAdaptor{};
-                               } else {
-                                   Ret ret = std::apply(func, args_tuple);
-                                   return static_cast<ValAdaptor>(ret);
-                               }
-                           });
+                return std::async(std::launch::deferred,
+                                  [func = std::move(func), args_tuple] {
+                                      if constexpr (std::is_void_v<Ret>) {
+                                          std::apply(func, args_tuple);
+                                          return ValAdaptor{};
+                                      } else {
+                                          Ret ret =
+                                              std::apply(func, args_tuple);
+                                          return static_cast<ValAdaptor>(ret);
+                                      }
+                                  });
             });
     }
 

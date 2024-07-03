@@ -11,7 +11,7 @@ namespace internal {
  * \brief AsyncFuncResultのデータを保持するクラス
  *
  */
-class AsyncFuncState : std::enable_shared_from_this<AsyncFuncState> {
+class WEBCFACE_DLL AsyncFuncState : std::enable_shared_from_this<AsyncFuncState> {
     eventpp::CallbackList<void(bool)> started_event;
     eventpp::CallbackList<void(std::shared_future<ValAdaptor>)> result_event;
     std::optional<std::promise<bool>> started_p;

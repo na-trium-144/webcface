@@ -871,9 +871,8 @@ TEST_F(ServerTest, call) {
     dummy_c2->send(message::SyncInit{{}, "c2"_ss, 0, "", "", ""});
     wait();
     // c2がc1にcallを送る (caller_id=1)
-    dummy_c2->send(
-        FuncCall{1, 0, 1, "a"_ss, {ValAdaptor(0), ValAdaptor(0), ValAdaptor(0)}}
-            .toMessage());
+    dummy_c2->send(message::Call{
+        1, 0, 1, "a"_ss, {ValAdaptor(0), ValAdaptor(0), ValAdaptor(0)}});
     wait();
     dummy_c1->recv<message::Call>(
         [&](const auto &obj) {

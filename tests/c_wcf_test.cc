@@ -341,9 +341,8 @@ TEST_F(CClientTest, funcListen) {
     wcfFuncCallHandle *h;
     EXPECT_EQ(wcfFuncFetchCall(wcli_, "a", &h), WCF_NOT_CALLED);
     EXPECT_EQ(wcfFuncFetchCall(wcli_, "b", &h), WCF_NOT_CALLED);
-    dummy_s->send(FuncCall{
-        0, 1, 1, "a"_ss, {ValAdaptor(42), ValAdaptor(1.5), ValAdaptor("aaa")}}
-                      .toMessage());
+    dummy_s->send(message::Call{
+        0, 1, 1, "a"_ss, {ValAdaptor(42), ValAdaptor(1.5), ValAdaptor("aaa")}});
     wait();
 
     dummy_s->recv<message::CallResponse>(
@@ -417,9 +416,8 @@ TEST_F(CClientTest, funcSet) {
         [&] { ADD_FAILURE() << "FuncInfo recv error"; });
     dummy_s->recvClear();
 
-    dummy_s->send(FuncCall{
-        0, 1, 1, "a"_ss, {ValAdaptor(42), ValAdaptor(1.5), ValAdaptor("aaa")}}
-                      .toMessage());
+    dummy_s->send(message::Call{
+        0, 1, 1, "a"_ss, {ValAdaptor(42), ValAdaptor(1.5), ValAdaptor("aaa")}});
     wait();
 
     dummy_s->recv<message::CallResponse>(
