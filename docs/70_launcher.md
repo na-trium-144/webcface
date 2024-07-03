@@ -17,10 +17,7 @@ WebUI上ではそれぞれの設定ファイルに書かれたそれぞれのコ
 ![launcher.png](https://github.com/na-trium-144/webcface/raw/main/docs/images/launcher.png)
 
 \note
-* Stopボタンを押すと、Linux,MacOSではSIGINT(Ctrl+C)が送られます。
-WindowsではTerminateProcessでプロセスツリー全体を停止します。
-(外部ライブラリの [tiny-process-library](https://gitlab.com/eidheim/tiny-process-library/) を使用しています)
-* launcherから `cmd /c` などを使って別のプロセスを起動した場合、停止ボタンを押してcmdは停止してもその内側で起動したプロセスは停止しない場合があります。その場合はtaskkillなどで停止するコマンドを別途登録しておくとよいかも
+* プロセスの起動と停止には外部ライブラリの [tiny-process-library](https://gitlab.com/eidheim/tiny-process-library/) を使用しています
 * (tools ver1.4.2から、Linux,MacOS) webcface-launcherを停止すると、実行中のコマンドにもシグナルが送られます。
 SIGINT(Ctrl+C)で停止しない場合は、複数回Ctrl+Cを押すとSIGTERM、SIGKILLに移行して強制的に停止します。
 * (tools ver1.4.3から) Startボタン、Stopボタンの動作はViewを経由せずにFuncで呼び出すこともできます。
@@ -68,7 +65,14 @@ workdir = "/path/to/somewhere"
 exec = "./main"
 stdout_capture = "never"
 stdout_utf8 = true
-env = { FOO = "foo", BAR = "bar" }
+stop = 2
+# または、
+# [command.stop]
+# exec = "pkill ..."
+# workdir = "..."
+[command.env]
+FOO = "foo"
+BAR = "bar"
 ```
 
 ### init
@@ -99,6 +103,17 @@ initセクションは省略できます。
     * trueの場合、stdout_captureで取得したデータをUTF-8とみなし、そのままWebCFaceに送ります。
 * env (tools ver1.4 から)
     * 環境変数を設定します。
+* stop (tools ver1.4.5 から)
+    * Stopボタンを押したときの挙動を設定できます。
+    * `stop = true` または `stop = 2` がデフォルトの挙動です。
+        * Linux,MacOSではSIGINT(Ctrl+C)が送られます。
+        * WindowsではTerminateProcessでプロセスツリー全体を停止します。
+    * `stop = false` にするとStopボタンが無効になります。
+    * (Linux,MacOSのみ) `stop = 9` などとすると送信するシグナルを変更できます。
+        * Windowsでは指定したシグナルの番号にかかわらずTerminateProcessで停止します。
+    * `stop.exec`を設定するとシグナルを送る代わりに指定したコマンドを実行します。
+        * Startで実行するコマンドと同様、workdirやenvなどを設定することもできます。
+        * 例えばlauncherから `cmd /c` などを使って別のプロセスを起動した場合、停止ボタンを押してcmdは停止してもその内側で起動したプロセスは停止しない場合があります。その場合はtaskkillなどで停止するコマンドを別途登録しておくとよいかも
 
 ## WebUIからの設定
 WebUI Server Mode ではGUIから設定ファイルを記述することができます。
