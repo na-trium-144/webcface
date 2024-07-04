@@ -131,7 +131,7 @@ class WEBCFACE_DLL Func : protected Field {
                     std::launch::deferred,
                     [](std::shared_future<Ret> ret) {
                         if constexpr (std::is_void_v<Ret>) {
-                            ret.wait();
+                            ret.get();
                             return ValAdaptor{};
                         } else {
                             return static_cast<ValAdaptor>(ret.get());
@@ -157,7 +157,7 @@ class WEBCFACE_DLL Func : protected Field {
                     std::launch::deferred,
                     [](std::future<Ret> ret) {
                         if constexpr (std::is_void_v<Ret>) {
-                            ret.wait();
+                            ret.get();
                             return ValAdaptor{};
                         } else {
                             return static_cast<ValAdaptor>(ret.get());

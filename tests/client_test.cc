@@ -134,7 +134,8 @@ TEST_F(ClientTest, noConnectionByRecv) {
     wait();
     EXPECT_FALSE(dummy_s->connected());
     EXPECT_FALSE(wcli_->connected());
-    wcli_->waitRecv();
+    wcli_->recv();
+    wait();
     EXPECT_FALSE(dummy_s->connected());
     EXPECT_FALSE(wcli_->connected());
 }
@@ -199,6 +200,7 @@ TEST_F(ClientTest, ping) {
     wcli_->waitConnection();
     dummy_s->send(message::Ping{});
     wcli_->waitRecv();
+    wait();
     dummy_s->recv<message::Ping>([&](const auto &) {},
                                  [&] { ADD_FAILURE() << "Ping recv error"; });
 
@@ -209,6 +211,7 @@ TEST_F(ClientTest, ping) {
         std::make_shared<std::unordered_map<unsigned int, int>>(
             std::unordered_map<unsigned int, int>{{10, 15}})});
     wcli_->waitRecv();
+    wait();
     dummy_s->recv<message::PingStatusReq>(
         [&](const auto &) {},
         [&] { ADD_FAILURE() << "Ping Status Req recv error"; });
@@ -1413,7 +1416,7 @@ TEST_F(ClientTest, funcResponse) {
         if (a == 0) {
             throw std::invalid_argument("a==0");
         } else {
-            return std::async(std::launch::deferred, [&] {
+            return std::async(std::launch::deferred, [&, a] {
                 EXPECT_NE(std::this_thread::get_id(), main_id);
                 if (a == 1) {
                     throw std::invalid_argument("a==1");
@@ -1426,6 +1429,7 @@ TEST_F(ClientTest, funcResponse) {
     // not found
     dummy_s->send(message::Call{7, 100, 0, "n"_ss, {}});
     wcli_->waitRecv();
+    wait();
     dummy_s->recv<message::CallResponse>(
         [&](const auto &obj) {
             EXPECT_EQ(obj.caller_id, 7);
@@ -1439,6 +1443,7 @@ TEST_F(ClientTest, funcResponse) {
     dummy_s->send(
         message::Call{8, 100, 0, "a"_ss, {ValAdaptor(1), ValAdaptor("zzz")}});
     wcli_->waitRecv();
+    wait();
     dummy_s->recv<message::CallResponse>(
         [&](const auto &obj) {
             EXPECT_EQ(obj.caller_id, 8);
@@ -1460,6 +1465,7 @@ TEST_F(ClientTest, funcResponse) {
     // throw
     dummy_s->send(message::Call{9, 100, 0, "a"_ss, {ValAdaptor(0)}});
     wcli_->waitRecv();
+    wait();
     dummy_s->recv<message::CallResponse>(
         [&](const auto &obj) {
             EXPECT_EQ(obj.caller_id, 9);
@@ -1481,6 +1487,7 @@ TEST_F(ClientTest, funcResponse) {
     // throw
     dummy_s->send(message::Call{10, 100, 0, "a"_ss, {ValAdaptor(1)}});
     wcli_->waitRecv();
+    wait();
     dummy_s->recv<message::CallResponse>(
         [&](const auto &obj) {
             EXPECT_EQ(obj.caller_id, 10);
@@ -1502,6 +1509,7 @@ TEST_F(ClientTest, funcResponse) {
     // success
     dummy_s->send(message::Call{19, 100, 0, "a"_ss, {ValAdaptor(123)}});
     wcli_->waitRecv();
+    wait();
     dummy_s->recv<message::CallResponse>(
         [&](const auto &obj) {
             EXPECT_EQ(obj.caller_id, 19);

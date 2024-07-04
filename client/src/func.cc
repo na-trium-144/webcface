@@ -168,12 +168,17 @@ ValAdaptor Func::run(const std::vector<ValAdaptor> &args_vec) const {
 AsyncFuncResult Func::runAsync(const std::vector<ValAdaptor> &args_vec) const {
     auto data = dataLock();
     if (data->isSelf(*this)) {
-        // selfの場合、新しいAsyncFuncResultに別スレッドで実行した結果を入れる
+        // selfの場合、新しいAsyncFuncResultに実行した結果を入れる
         auto func_info = data->func_store.getRecv(*this);
         if (func_info) {
-            return internal::AsyncFuncState::running(
-                       *this, (*func_info)->run(args_vec, true).share())
-                ->getter();
+            try{
+                return internal::AsyncFuncState::running(
+                           *this, (*func_info)->run(args_vec, true).share())
+                    ->getter();
+            }catch(...){
+                return internal::AsyncFuncState::error(*this, 
+                    std::current_exception())->getter();
+            }
         } else {
             return internal::AsyncFuncState::notFound(*this)->getter();
         }

@@ -40,6 +40,18 @@ std::shared_ptr<internal::AsyncFuncState> internal::AsyncFuncState::running(
         started_p.get_future().share(), std::nullopt, result, 0);
 }
 std::shared_ptr<internal::AsyncFuncState>
+internal::AsyncFuncState::error(const Field &base,
+                                const std::exception_ptr &e) {
+    std::promise<bool> started_p;
+    std::promise<ValAdaptor> result_p;
+    started_p.set_value(true);
+    result_p.set_exception(e);
+    return std::make_shared<internal::AsyncFuncState>(
+        base, std::make_optional(std::move(started_p)),
+        started_p.get_future().share(), std::make_optional(std::move(result_p)),
+        result_p.get_future().share(), 0);
+}
+std::shared_ptr<internal::AsyncFuncState>
 internal::AsyncFuncState::remote(const Field &base, std::size_t caller_id) {
     std::promise<bool> started_p;
     std::promise<ValAdaptor> result_p;
