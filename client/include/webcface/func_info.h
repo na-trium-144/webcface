@@ -25,7 +25,7 @@ struct Call;
 struct FuncInfo;
 } // namespace message
 namespace internal {
-class ClientData;
+struct ClientData;
 }
 
 /*!
