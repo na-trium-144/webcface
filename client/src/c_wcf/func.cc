@@ -27,12 +27,22 @@ wcfFuncRunT(wcfClient *wcli, const CharT *member, const CharT *field,
     if (!field || arg_size < 0) {
         return WCF_INVALID_ARGUMENT;
     }
-    auto [status, result_p] =
-        resultToCVal<CharT>(wcli_->member(strOrEmpty(member))
-                                .func(field)
-                                .runAsync(argsFromCVal<CharT>(args, arg_size)));
-    *result = result_p;
-    return status;
+    try {
+        *result =
+            resultToCVal<CharT>(wcli_->member(strOrEmpty(member))
+                                    .func(field)
+                                    .run(argsFromCVal<CharT>(args, arg_size)));
+        return WCF_OK;
+    } catch (const FuncNotFound &e) {
+        *result = resultToCVal<CharT>(ValAdaptor(e.what()));
+        return WCF_NOT_FOUND;
+    } catch (const std::exception &e) {
+        *result = resultToCVal<CharT>(ValAdaptor(e.what()));
+        return WCF_EXCEPTION;
+    } catch (...) {
+        *result = resultToCVal<CharT>(ValAdaptor("unknown exception"));
+        return WCF_EXCEPTION;
+    }
 }
 template <typename CharT>
 static wcfStatus
@@ -66,8 +76,20 @@ static wcfStatus wcfFuncGetResultT(wcfAsyncFuncResult *async_res,
                          std::future_status::ready) {
         return WCF_NOT_RETURNED;
     }
-    auto [status, result_p] = resultToCVal<CharT>(*res);
-    *result = result_p;
+    int status;
+    try {
+        *result = resultToCVal<CharT>(res->result.get());
+        status = WCF_OK;
+    } catch (const FuncNotFound &e) {
+        *result = resultToCVal<CharT>(ValAdaptor(e.what()));
+        status = WCF_NOT_FOUND;
+    } catch (const std::exception &e) {
+        *result = resultToCVal<CharT>(ValAdaptor(e.what()));
+        status = WCF_EXCEPTION;
+    } catch (...) {
+        *result = resultToCVal<CharT>(ValAdaptor("unknown exception"));
+        status = WCF_EXCEPTION;
+    }
     func_result_list.erase(
         std::find(func_result_list.begin(), func_result_list.end(), res));
     delete res;

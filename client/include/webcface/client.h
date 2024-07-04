@@ -93,6 +93,7 @@ class WEBCFACE_DLL Client : public Member {
      *
      * デフォルトはtrue
      *
+     * \sa start(), waitConnection()
      */
     void autoReconnect(bool enabled);
     /*!
@@ -104,6 +105,7 @@ class WEBCFACE_DLL Client : public Member {
     /*!
      * \brief サーバーへの接続を別スレッドで開始する。
      * \since ver1.2
+     * \sa waitConnection(), autoReconnect()
      */
     void start();
     /*!
@@ -113,7 +115,7 @@ class WEBCFACE_DLL Client : public Member {
      * * ver1.11.1以降: autoReconnect が false
      * の場合は1回目の接続のみ待機し、失敗しても再接続せずreturnする。
      *
-     * \sa start()
+     * \sa start(), autoReconnect()
      */
     void waitConnection();
 
@@ -167,6 +169,7 @@ class WEBCFACE_DLL Client : public Member {
      * \brief 別スレッドでrecv()を自動的に呼び出す間隔を設定する。
      * \since ver2.0
      *
+     * * wcfStart() や wcfWaitConnection() より前に設定する必要がある。
      * * autoRecvが有効の場合、別スレッドで一定間隔ごとにrecv()が呼び出され、
      * 各種コールバック(onEntry, onChange,
      * Func::run()など)も別のスレッドで呼ばれることになる
