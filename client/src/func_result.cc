@@ -18,75 +18,46 @@ AsyncFuncResult::onResult() const {
 
 std::shared_ptr<internal::AsyncFuncState>
 internal::AsyncFuncState::notFound(const Field &base) {
-    std::promise<bool> started_p;
-    std::promise<ValAdaptor> result_p;
-    started_p.set_value(false);
-    try {
-        throw FuncNotFound(base);
-    } catch (...) {
-        result_p.set_exception(std::current_exception());
-    }
-    return std::make_shared<internal::AsyncFuncState>(
-        base, std::make_optional(std::move(started_p)),
-        started_p.get_future().share(), std::make_optional(std::move(result_p)),
-        result_p.get_future().share(), 0);
+    auto state = std::make_shared<internal::AsyncFuncState>(base);
+    state->setStarted(false);
+    return state;
 }
 std::shared_ptr<internal::AsyncFuncState> internal::AsyncFuncState::running(
     const Field &base, const std::shared_future<ValAdaptor> &result) {
-    std::promise<bool> started_p;
-    started_p.set_value(true);
-    return std::make_shared<internal::AsyncFuncState>(
-        base, std::make_optional(std::move(started_p)),
-        started_p.get_future().share(), std::nullopt, result, 0);
+    return std::make_shared<internal::AsyncFuncState>(base, result);
 }
 std::shared_ptr<internal::AsyncFuncState>
 internal::AsyncFuncState::error(const Field &base,
                                 const std::exception_ptr &e) {
-    std::promise<bool> started_p;
-    std::promise<ValAdaptor> result_p;
-    started_p.set_value(true);
-    result_p.set_exception(e);
-    return std::make_shared<internal::AsyncFuncState>(
-        base, std::make_optional(std::move(started_p)),
-        started_p.get_future().share(), std::make_optional(std::move(result_p)),
-        result_p.get_future().share(), 0);
+    auto state = std::make_shared<internal::AsyncFuncState>(base);
+    state->setStarted(true);
+    state->setResultException(e);
+    return state;
 }
 std::shared_ptr<internal::AsyncFuncState>
 internal::AsyncFuncState::remote(const Field &base, std::size_t caller_id) {
-    std::promise<bool> started_p;
-    std::promise<ValAdaptor> result_p;
-    return std::make_shared<internal::AsyncFuncState>(
-        base, std::make_optional(std::move(started_p)),
-        started_p.get_future().share(), std::make_optional(std::move(result_p)),
-        result_p.get_future().share(), caller_id);
+    return std::make_shared<internal::AsyncFuncState>(base, caller_id);
 }
 
 void internal::AsyncFuncState::setStarted(bool is_started) {
-    if (started_p) {
-        started_p->set_value(is_started);
-        started_event.operator()(is_started);
-        if (!is_started) {
-            try {
-                throw FuncNotFound(base);
-            } catch (...) {
-                setResultException(std::current_exception());
-            }
+    started_p.set_value(is_started);
+    started_event.operator()(is_started);
+    if (!is_started) {
+        try {
+            throw FuncNotFound(base);
+        } catch (...) {
+            setResultException(std::current_exception());
         }
     }
 }
 void internal::AsyncFuncState::setResult(const ValAdaptor &result_val) {
-    if (result_p) {
-        result_p->set_value(result_val);
-        result_event.operator()(result_f);
-    }
+    result_p.set_value(result_val);
+    result_event.operator()(result_f);
 }
 void internal::AsyncFuncState::setResultException(const std::exception_ptr &e) {
-    if (result_p) {
-        result_p->set_exception(e);
-        result_event.operator()(result_f);
-    }
+    result_p.set_exception(e);
+    result_event.operator()(result_f);
 }
-
 
 std::ostream &operator<<(std::ostream &os, const AsyncFuncResult &r) {
     os << "Func(\"" << r.name() << "\"): ";

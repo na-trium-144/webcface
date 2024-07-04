@@ -15,23 +15,34 @@ class WEBCFACE_DLL AsyncFuncState
     : public std::enable_shared_from_this<AsyncFuncState> {
     eventpp::CallbackList<void(bool)> started_event;
     eventpp::CallbackList<void(std::shared_future<ValAdaptor>)> result_event;
-    std::optional<std::promise<bool>> started_p;
-    std::optional<std::promise<ValAdaptor>> result_p;
+    std::promise<bool> started_p;
+    std::promise<ValAdaptor> result_p;
     std::size_t caller_id;
     std::shared_future<bool> started_f;
     std::shared_future<ValAdaptor> result_f;
     Field base;
 
   public:
-    AsyncFuncState(const Field &base,
-                   std::optional<std::promise<bool>> &&started_p,
-                   const std::shared_future<bool> &started_f,
-                   std::optional<std::promise<ValAdaptor>> &&result_p,
-                   const std::shared_future<ValAdaptor> &result_f,
-                   std::size_t caller_id)
-        : started_event(), result_event(), started_p(std::move(started_p)),
-          result_p(std::move(result_p)), caller_id(caller_id),
-          started_f(started_f), result_f(result_f), base(base) {}
+    /*!
+     * startedとresultを空の状態で初期化
+     */
+    explicit AsyncFuncState(const Field &base, std::size_t caller_id = 0)
+        : started_event(), result_event(), started_p(), result_p(),
+          caller_id(caller_id), started_f(started_p.get_future().share()),
+          result_f(result_p.get_future().share()), base(base) {}
+    /*!
+     * startedをtrueで, resultにfutureを渡して初期化
+     *
+     * \todo resultEventは?
+     */
+    explicit AsyncFuncState(const Field &base,
+                            const std::shared_future<ValAdaptor> &result,
+                            std::size_t caller_id = 0)
+        : started_event(), result_event(), started_p(), result_p(),
+          caller_id(caller_id), started_f(started_p.get_future().share()),
+          result_f(result), base(base) {
+        setStarted(true);
+    }
 
     static std::shared_ptr<AsyncFuncState> notFound(const Field &base);
     static std::shared_ptr<AsyncFuncState>
