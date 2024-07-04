@@ -179,28 +179,25 @@ struct CopyCounter {
         this->c = other.c + 1;
         return *this;
     }
+    CopyCounter(CopyCounter &&) = default;
+    CopyCounter &operator=(CopyCounter &&) = default;
+    int operator()() const { return c; }
 };
-// TEST_F(FuncTest, funcSetCopy) {
-//     // 本当はコピー0にしたいが、std::functionの構築時に1ふえてしまう
-//     func(self_name, "a")
-//         .set([&, obj = CopyCounter()] { EXPECT_EQ(obj.c, 1); })
-//         .run();
-//     func(self_name, "a")
-//         .set([&, obj = CopyCounter()] {
-//             EXPECT_EQ(obj.c, 1);
-//             return std::async([&, obj] { EXPECT_EQ(obj.c, 2); });
-//         })
-//         .run();
-//     func(self_name, "a")
-//         .set([&, obj = CopyCounter()] {
-//             EXPECT_EQ(obj.c, 1);
-//             return std::async([&, obj] { EXPECT_EQ(obj.c, 2); }).share();
-//         })
-//         .run();
-//     func(self_name, "a")
-//         .setAsync([obj = CopyCounter()] { EXPECT_EQ(obj.c, 1); })
-//         .run();
-// }
+void hoge() {}
+TEST_F(FuncTest, funcSetCopy) {
+    EXPECT_EQ(func(self_name, "a").set(CopyCounter()).run().asInt(), 0);
+    EXPECT_EQ(func(self_name, "a").setAsync(CopyCounter()).run().asInt(), 0);
+    std::function<int()> copy_counter = CopyCounter();
+    EXPECT_EQ(func(self_name, "a").set(std::move(copy_counter)).run().asInt(),
+              0);
+    copy_counter = CopyCounter();
+    EXPECT_EQ(
+        func(self_name, "a").setAsync(std::move(copy_counter)).run().asInt(),
+        0);
+    // ついでに関数ポインタでもビルドできることを確認
+    func(self_name, "a").set(hoge);
+    func(self_name, "a").setAsync(hoge);
+}
 TEST_F(FuncTest, funcRun) {
     // 引数と戻り値
     int called = 0;

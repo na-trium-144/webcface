@@ -200,18 +200,20 @@ class WEBCFACE_DLL Func : protected Field {
     Func &setAsync1(std::function<Ret(Args...)> func) {
         return set2<Ret, Args...>(
             true,
-            [func = std::move(func)](const ArgsTuple<Args...> &args_tuple) {
-                return std::async(std::launch::deferred,
-                                  [func = std::move(func), args_tuple] {
-                                      if constexpr (std::is_void_v<Ret>) {
-                                          std::apply(func, args_tuple);
-                                          return ValAdaptor{};
-                                      } else {
-                                          Ret ret =
-                                              std::apply(func, args_tuple);
-                                          return static_cast<ValAdaptor>(ret);
-                                      }
-                                  });
+            [func = std::move(func)](ArgsTuple<Args...> args_tuple) mutable {
+                return std::async(
+                    std::launch::deferred,
+                    [](std::function<Ret(Args...)> func,
+                       ArgsTuple<Args...> args_tuple) {
+                        if constexpr (std::is_void_v<Ret>) {
+                            std::apply(func, args_tuple);
+                            return ValAdaptor{};
+                        } else {
+                            Ret ret = std::apply(func, args_tuple);
+                            return static_cast<ValAdaptor>(ret);
+                        }
+                    },
+                    std::move(func), std::move(args_tuple));
             });
     }
 
@@ -236,8 +238,8 @@ class WEBCFACE_DLL Func : protected Field {
      * \sa setAsync()
      */
     template <typename T>
-    Func &set(T func) {
-        return this->set1(std::move(std::function{std::move(func)}));
+    Func &set(T &&func) {
+        return this->set1(std::function{std::forward<T>(func)});
     }
     /*!
      * \brief 非同期に実行される関数をセットする
@@ -252,8 +254,8 @@ class WEBCFACE_DLL Func : protected Field {
      * \sa set()
      */
     template <typename T>
-    Func &setAsync(T func) {
-        return this->setAsync1(std::move(std::function{std::move(func)}));
+    Func &setAsync(T &&func) {
+        return this->setAsync1(std::function{std::forward<T>(func)});
     }
     /*!
      * \brief 関数をセットする
@@ -383,8 +385,8 @@ class WEBCFACE_DLL Func : protected Field {
      *
      */
     template <typename T>
-        requires std::same_as<T, Func> bool
-    operator==(const T &other) const {
+        requires std::same_as<T, Func>
+    bool operator==(const T &other) const {
         return static_cast<Field>(*this) == static_cast<Field>(other);
     }
 };
@@ -407,9 +409,9 @@ class WEBCFACE_DLL AnonymousFunc : public Func {
      *
      */
     template <typename T>
-    AnonymousFunc(const Field &base, const T &func)
+    AnonymousFunc(const Field &base, T &&func)
         : Func(base, fieldNameTmp()), base_init(true) {
-        this->set(func);
+        this->set(std::forward<T>(func));
     }
     /*!
      * コンストラクタでdataが渡されなかった場合は関数を内部で保持し(func_setter)、
@@ -417,8 +419,10 @@ class WEBCFACE_DLL AnonymousFunc : public Func {
      *
      */
     template <typename T>
-    explicit AnonymousFunc(const T &func)
-        : func_setter([func](AnonymousFunc &a) { a.set(func); }) {}
+    explicit AnonymousFunc(T func)
+        : func_setter([func = std::move(func)](AnonymousFunc &a) mutable {
+              a.set(std::move(func));
+          }) {}
 
     AnonymousFunc(const AnonymousFunc &) = delete;
     AnonymousFunc &operator=(const AnonymousFunc &) = delete;

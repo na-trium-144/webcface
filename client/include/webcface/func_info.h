@@ -199,14 +199,10 @@ struct FuncInfo {
 
     FuncInfo()
         : return_type(ValType::none_), args(), eval_async(false), func_impl() {}
-    FuncInfo(ValType return_type, const std::vector<Arg> &args, bool async,
-             const std::function<FuncType> &func_impl)
-        : return_type(return_type), args(args), eval_async(async),
-          func_impl(func_impl) {}
-    FuncInfo(ValType return_type, std::vector<Arg> &&args, bool async,
-             const std::function<FuncType> &func_impl)
+    FuncInfo(ValType return_type, std::vector<Arg> args, bool async,
+             std::function<FuncType> func_impl)
         : return_type(return_type), args(std::move(args)), eval_async(async),
-          func_impl(func_impl) {}
+          func_impl(std::move(func_impl)) {}
     FuncInfo(const message::FuncInfo &m);
     message::FuncInfo toMessage(const SharedString &field) const;
 };
