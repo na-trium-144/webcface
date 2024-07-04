@@ -190,15 +190,6 @@ endif()
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR}/include)
 
-macro(set_target_postfix TARGET)
-    if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-        set_target_properties(${TARGET} PROPERTIES
-            DEBUG_POSTFIX "${WEBCFACE_SOVERSION}d"
-            RELEASE_POSTFIX "${WEBCFACE_SOVERSION}"
-        )
-    endif()
-endmacro()
-
 ###############################################################################
 
 add_subdirectory(server-internal)
@@ -260,8 +251,12 @@ if(WEBCFACE_SHARED AND NOT WIN32)
         target_link_options(webcface PRIVATE -Wl,--exclude-libs,ALL)
     endif()
 endif()
-set_target_postfix(webcface-server-internal)
-set_target_postfix(webcface)
+if(WIN32)
+    set_target_properties(webcface PROPERTIES RUNTIME_OUTPUT_NAME "webcface${WEBCFACE_SOVERSION}")
+    if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+        set_target_properties(webcface PROPERTIES DEBUG_POSTFIX "d")
+    endif()
+endif()
 set_target_properties(webcface PROPERTIES
     INSTALL_RPATH "$ORIGIN/;@loader_path/"
     INSTALL_RPATH_USE_LINK_PATH TRUE
