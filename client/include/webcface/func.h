@@ -97,7 +97,7 @@ class WEBCFACE_DLL Func : protected Field {
     Func &
     set2(bool eval_async,
          std::function<std::future<ValAdaptor>(const ArgsTuple<Args...> &)>
-             &&func_casted) {
+             func_casted) {
         return setImpl(std::make_shared<FuncInfo>(
             valTypeOf<Ret>(), std::vector<Arg>{Arg{valTypeOf<Args>()}...},
             eval_async,
@@ -122,7 +122,7 @@ class WEBCFACE_DLL Func : protected Field {
      *
      */
     template <typename Ret, typename... Args>
-    Func &set1(std::function<std::shared_future<Ret>(Args...)> &&func) {
+    Func &set1(std::function<std::shared_future<Ret>(Args...)> func) {
         return set2<Ret, Args...>(
             true,
             [func = std::move(func)](const ArgsTuple<Args...> &args_tuple) {
@@ -148,7 +148,7 @@ class WEBCFACE_DLL Func : protected Field {
      *
      */
     template <typename Ret, typename... Args>
-    Func &set1(std::function<std::future<Ret>(Args...)> &&func) {
+    Func &set1(std::function<std::future<Ret>(Args...)> func) {
         return set2<Ret, Args...>(
             true,
             [func = std::move(func)](const ArgsTuple<Args...> &args_tuple) {
@@ -173,7 +173,7 @@ class WEBCFACE_DLL Func : protected Field {
      *
      */
     template <typename Ret, typename... Args>
-    Func &set1(std::function<Ret(Args...)> &&func) {
+    Func &set1(std::function<Ret(Args...)> func) {
         return set2<Ret, Args...>(
             false,
             [func = std::move(func)](const ArgsTuple<Args...> &args_tuple) {
@@ -197,7 +197,7 @@ class WEBCFACE_DLL Func : protected Field {
      *
      */
     template <typename Ret, typename... Args>
-    Func &setAsync1(std::function<Ret(Args...)> &&func) {
+    Func &setAsync1(std::function<Ret(Args...)> func) {
         return set2<Ret, Args...>(
             true,
             [func = std::move(func)](const ArgsTuple<Args...> &args_tuple) {
@@ -215,7 +215,7 @@ class WEBCFACE_DLL Func : protected Field {
             });
     }
 
-    void runImpl(std::size_t caller_id, const std::vector<ValAdaptor> &args_vec,
+    void runImpl(std::size_t caller_id, std::vector<ValAdaptor> args_vec,
                  bool caller_async) const;
 
   public:
@@ -236,11 +236,11 @@ class WEBCFACE_DLL Func : protected Field {
      * \sa setAsync()
      */
     template <typename T>
-    Func &set(T &&func) {
-        return this->set1(std::function{std::forward<T>(func)});
+    Func &set(T func) {
+        return this->set1(std::move(std::function{std::move(func)}));
     }
     /*!
-     * \brief 関数をセットする
+     * \brief 非同期に実行される関数をセットする
      * \since ver2.0
      *
      * * setAsync()でセットした場合、他クライアントから呼び出されたとき新しいスレッドを建てて実行される。
@@ -252,8 +252,8 @@ class WEBCFACE_DLL Func : protected Field {
      * \sa set()
      */
     template <typename T>
-    Func &setAsync(T &&func) {
-        return this->setAsync1(std::function{std::forward<T>(func)});
+    Func &setAsync(T func) {
+        return this->setAsync1(std::move(std::function{std::move(func)}));
     }
     /*!
      * \brief 関数をセットする
@@ -262,8 +262,8 @@ class WEBCFACE_DLL Func : protected Field {
      *
      */
     template <typename T>
-    Func &operator=(T &&func) {
-        this->set(std::forward<T>(func));
+    [[deprecated("use set() or setAsync()")]] Func &operator=(T func) {
+        this->set(std::move(func));
         return *this;
     }
 
@@ -275,7 +275,16 @@ class WEBCFACE_DLL Func : protected Field {
      *
      */
     Func &set(const std::vector<Arg> &args, ValType return_type,
-              const std::function<void(FuncCallHandle)> &callback);
+              std::function<void(FuncCallHandle)> callback);
+    /*!
+     * \brief 引数にFuncCallHandleを取り非同期に実行される関数を登録する
+     * \since ver2.0
+     *
+     * cからの呼び出し用
+     *
+     */
+    Func &setAsync(const std::vector<Arg> &args, ValType return_type,
+                   std::function<void(FuncCallHandle)> callback);
 
     /*!
      * \brief 関数を関数リストで非表示にする

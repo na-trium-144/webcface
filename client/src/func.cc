@@ -22,11 +22,11 @@ Func &Func::free() {
 }
 
 Func &Func::set(const std::vector<Arg> &args, ValType return_type,
-                const std::function<void(FuncCallHandle)> &callback) {
+                std::function<void(FuncCallHandle)> callback) {
     return setImpl(std::make_shared<FuncInfo>(
         return_type, args, true,
-        [args_size = args.size(),
-         callback](const std::vector<ValAdaptor> &args_vec) {
+        [args_size = args.size(), callback = std::move(callback)](
+            const std::vector<ValAdaptor> &args_vec) {
             if (args_size != args_vec.size()) {
                 throw std::invalid_argument(
                     "requires " + std::to_string(args_size) +
@@ -41,6 +41,32 @@ Func &Func::set(const std::vector<Arg> &args, ValType return_type,
             } catch (const std::future_error &) {
             }
             return result_f;
+        }));
+}
+Func &Func::setAsync(const std::vector<Arg> &args, ValType return_type,
+                     std::function<void(FuncCallHandle)> callback) {
+    return setImpl(std::make_shared<FuncInfo>(
+        return_type, args, true,
+        [args_size = args.size(), callback = std::move(callback)](
+            std::vector<ValAdaptor> args_vec) mutable {
+            if (args_size != args_vec.size()) {
+                throw std::invalid_argument(
+                    "requires " + std::to_string(args_size) +
+                    " arguments, got " + std::to_string(args_vec.size()));
+            }
+            return std::async(
+                std::launch::async, [callback = std::move(callback),
+                                     args_vec = std::move(args_vec)] {
+                    std::promise<ValAdaptor> result;
+                    std::future<ValAdaptor> result_f = result.get_future();
+                    FuncCallHandle handle{args_vec, std::move(result)};
+                    callback(handle);
+                    try {
+                        handle.respond();
+                    } catch (const std::future_error &) {
+                    }
+                    return result_f.get();
+                });
         }));
 }
 
@@ -171,13 +197,14 @@ AsyncFuncResult Func::runAsync(const std::vector<ValAdaptor> &args_vec) const {
         // selfの場合、新しいAsyncFuncResultに実行した結果を入れる
         auto func_info = data->func_store.getRecv(*this);
         if (func_info) {
-            try{
+            try {
                 return internal::AsyncFuncState::running(
                            *this, (*func_info)->run(args_vec, true).share())
                     ->getter();
-            }catch(...){
-                return internal::AsyncFuncState::error(*this, 
-                    std::current_exception())->getter();
+            } catch (...) {
+                return internal::AsyncFuncState::error(*this,
+                                                       std::current_exception())
+                    ->getter();
             }
         } else {
             return internal::AsyncFuncState::notFound(*this)->getter();

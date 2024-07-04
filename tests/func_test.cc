@@ -171,6 +171,36 @@ TEST_F(FuncTest, funcSet) {
     EXPECT_THROW(func(self_name, "c").setArgs({}), std::invalid_argument);
     EXPECT_THROW(func("a", "b").set([]() {}), std::invalid_argument);
 }
+struct CopyCounter {
+    mutable int c = 0;
+    CopyCounter() = default;
+    CopyCounter(const CopyCounter &other) : c(other.c + 1) {}
+    CopyCounter &operator=(const CopyCounter &other) {
+        this->c = other.c + 1;
+        return *this;
+    }
+};
+// TEST_F(FuncTest, funcSetCopy) {
+//     // 本当はコピー0にしたいが、std::functionの構築時に1ふえてしまう
+//     func(self_name, "a")
+//         .set([&, obj = CopyCounter()] { EXPECT_EQ(obj.c, 1); })
+//         .run();
+//     func(self_name, "a")
+//         .set([&, obj = CopyCounter()] {
+//             EXPECT_EQ(obj.c, 1);
+//             return std::async([&, obj] { EXPECT_EQ(obj.c, 2); });
+//         })
+//         .run();
+//     func(self_name, "a")
+//         .set([&, obj = CopyCounter()] {
+//             EXPECT_EQ(obj.c, 1);
+//             return std::async([&, obj] { EXPECT_EQ(obj.c, 2); }).share();
+//         })
+//         .run();
+//     func(self_name, "a")
+//         .setAsync([obj = CopyCounter()] { EXPECT_EQ(obj.c, 1); })
+//         .run();
+// }
 TEST_F(FuncTest, funcRun) {
     // 引数と戻り値
     int called = 0;
