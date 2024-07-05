@@ -1,5 +1,6 @@
 #pragma once
 #include <functional>
+#include <string>
 
 namespace webcface {
 namespace server_internal {
@@ -15,7 +16,7 @@ using StartCallback = std::function<void()>;
 
 class AppWrapper {
     void *app = nullptr;
-    void *exception_str = nullptr;
+    std::string exception_str;
 
     void setException(const char *what) noexcept;
 
