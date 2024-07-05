@@ -176,7 +176,7 @@ $(document).ready(function(){initNavTree('logger_8h_source.html',''); initResiza
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="classwebcface_1_1BasicLoggerBuf.html#a0cd28acf43a563372edc64ba5a462766">   27</a></span>    std::basic_string&lt;CharT&gt; <a class="code hl_variable" href="classwebcface_1_1BasicLoggerBuf.html#a0cd28acf43a563372edc64ba5a462766">overflow_buf</a>;</div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    std::shared_ptr&lt;</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>        <a class="code hl_class" href="classwebcface_1_1internal_1_1SyncDataStore1.html">internal::SyncDataStore1&lt;std::shared_ptr&lt;std::vector&lt;LogLineData&lt;&gt;</a>&gt;&gt;&gt;&gt;</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>        <a class="code hl_class" href="classwebcface_1_1internal_1_1DataSetBuffer.html">internal::SyncDataStore1&lt;std::shared_ptr&lt;std::vector&lt;LogLineData&lt;&gt;</a>&gt;&gt;&gt;&gt;</div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="classwebcface_1_1BasicLoggerBuf.html#a9ae9de101cd0472b98011d89f6e896e3">   31</a></span>        <a class="code hl_variable" href="classwebcface_1_1BasicLoggerBuf.html#a9ae9de101cd0472b98011d89f6e896e3">log_store</a>;</div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    <span class="keywordtype">int</span> sync() <span class="keyword">override</span>;</div>
@@ -199,7 +199,7 @@ $(document).ready(function(){initNavTree('logger_8h_source.html',''); initResiza
 <div class="foldopen" id="foldopen00049" data-start="{" data-end="};">
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno"><a class="line" href="classwebcface_1_1LoggerSink.html">   49</a></span><span class="keyword">class </span><a class="code hl_define" href="def_8h.html#a47af057bda855b54c212e97ffccdca01">WEBCFACE_DLL</a> <a class="code hl_class" href="classwebcface_1_1LoggerSink.html">LoggerSink</a> : <span class="keyword">public</span> spdlog::sinks::base_sink&lt;std::mutex&gt; {</div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    std::shared_ptr&lt;</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>        <a class="code hl_class" href="classwebcface_1_1internal_1_1SyncDataStore1.html">internal::SyncDataStore1&lt;std::shared_ptr&lt;std::vector&lt;LogLineData&lt;&gt;</a>&gt;&gt;&gt;&gt;</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>        <a class="code hl_class" href="classwebcface_1_1internal_1_1DataSetBuffer.html">internal::SyncDataStore1&lt;std::shared_ptr&lt;std::vector&lt;LogLineData&lt;&gt;</a>&gt;&gt;&gt;&gt;</div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno"><a class="line" href="classwebcface_1_1LoggerSink.html#a9ae9de101cd0472b98011d89f6e896e3">   52</a></span>        <a class="code hl_variable" href="classwebcface_1_1LoggerSink.html#a9ae9de101cd0472b98011d89f6e896e3">log_store</a>;</div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  <span class="keyword">protected</span>:</div>
@@ -229,6 +229,7 @@ $(document).ready(function(){initNavTree('logger_8h_source.html',''); initResiza
 <div class="ttc" id="aclasswebcface_1_1LoggerSink_html_a28c87cb1610a3473eb7e13944c58678b"><div class="ttname"><a href="classwebcface_1_1LoggerSink.html#a28c87cb1610a3473eb7e13944c58678b">webcface::LoggerSink::set_formatter_</a></div><div class="ttdeci">void set_formatter_(std::unique_ptr&lt; spdlog::formatter &gt;) override</div><div class="ttdef"><b>Definition</b> logger.h:63</div></div>
 <div class="ttc" id="aclasswebcface_1_1LoggerSink_html_a6147bda700ff2ba530941e4e33bfbb99"><div class="ttname"><a href="classwebcface_1_1LoggerSink.html#a6147bda700ff2ba530941e4e33bfbb99">webcface::LoggerSink::flush_</a></div><div class="ttdeci">void flush_() override</div><div class="ttdef"><b>Definition</b> logger.h:56</div></div>
 <div class="ttc" id="aclasswebcface_1_1LoggerSink_html_a9ae9de101cd0472b98011d89f6e896e3"><div class="ttname"><a href="classwebcface_1_1LoggerSink.html#a9ae9de101cd0472b98011d89f6e896e3">webcface::LoggerSink::log_store</a></div><div class="ttdeci">std::shared_ptr&lt; internal::SyncDataStore1&lt; std::shared_ptr&lt; std::vector&lt; LogLineData&lt;&gt; &gt; &gt; &gt; &gt; log_store</div><div class="ttdef"><b>Definition</b> logger.h:52</div></div>
+<div class="ttc" id="aclasswebcface_1_1internal_1_1DataSetBuffer_html"><div class="ttname"><a href="classwebcface_1_1internal_1_1DataSetBuffer.html">webcface::internal::DataSetBuffer</a></div><div class="ttdoc">View,Canvasなどで送信用にaddされたデータを管理する</div><div class="ttdef"><b>Definition</b> data_buffer.h:18</div></div>
 <div class="ttc" id="aclasswebcface_1_1internal_1_1SyncDataStore1_html"><div class="ttname"><a href="classwebcface_1_1internal_1_1SyncDataStore1.html">webcface::internal::SyncDataStore1</a></div><div class="ttdef"><b>Definition</b> data_store1.h:11</div></div>
 <div class="ttc" id="adef_8h_html"><div class="ttname"><a href="def_8h.html">def.h</a></div></div>
 <div class="ttc" id="adef_8h_html_a47af057bda855b54c212e97ffccdca01"><div class="ttname"><a href="def_8h.html#a47af057bda855b54c212e97ffccdca01">WEBCFACE_DLL</a></div><div class="ttdeci">#define WEBCFACE_DLL</div><div class="ttdef"><b>Definition</b> def.h:55</div></div>
@@ -242,7 +243,7 @@ $(document).ready(function(){initNavTree('logger_8h_source.html',''); initResiza
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_db3a54907829b36871118d03417739cd.html">client</a></li><li class="navelem"><a class="el" href="dir_5c23080e296bbe846f4ed2d01d7b595d.html">include</a></li><li class="navelem"><a class="el" href="dir_8bd58ff883f4686dab3daf23d9479d3b.html">webcface</a></li><li class="navelem"><a class="el" href="logger_8h.html">logger.h</a></li>
-    <li class="footer">Generated on Wed Jul 3 2024 11:42:50 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Fri Jul 5 2024 09:17:18 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

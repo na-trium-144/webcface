@@ -329,53 +329,59 @@ $(document).ready(function(){initNavTree('encoding_2include_2webcface_2encoding_
 <div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>        <span class="keyword">requires</span>(std::convertible_to&lt;double, T&gt; &amp;&amp; !std::same_as&lt;T, bool&gt;)</div>
 <div class="foldopen" id="foldopen00285" data-start="{" data-end="}">
 <div class="line"><a id="l00285" name="l00285"></a><span class="lineno"><a class="line" href="classwebcface_1_1ValAdaptor.html#ae720108aa50d1e20030013ca199565d1">  285</a></span>    <span class="keyword">operator</span> T() <span class="keyword">const</span> {</div>
-<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>        <span class="keywordflow">return</span> as&lt;T&gt;();</div>
-<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>    }</div>
+<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>        <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (std::is_floating_point_v&lt;T&gt;) {</div>
+<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>            <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>T<span class="keyword">&gt;</span>(asDouble());</div>
+<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span>        } <span class="keywordflow">else</span> <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (<span class="keyword">sizeof</span>(T) &gt; <span class="keyword">sizeof</span>(<span class="keywordtype">int</span>)) {</div>
+<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span>            <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>T<span class="keyword">&gt;</span>(asLLong());</div>
+<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>        } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>            <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>T<span class="keyword">&gt;</span>(asInt());</div>
+<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span>        }</div>
+<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span>    }</div>
 </div>
-<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span> </div>
-<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>    <span class="keywordtype">bool</span> asBool() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00301" name="l00301"></a><span class="lineno"><a class="line" href="classwebcface_1_1ValAdaptor.html#a67b76affb3b5d35fa419ac234144038b">  301</a></span>    <span class="keyword">operator</span> bool()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> asBool(); }</div>
-<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span> </div>
-<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="namespacewebcface.html#a1b8f4f2c7b1ea1149c68523ef2d131e3">operator==</a>(<span class="keyword">const</span> <a class="code hl_class" href="classwebcface_1_1ValAdaptor.html">ValAdaptor</a> &amp;other) <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span> </div>
-<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span>    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span>        <span class="keyword">requires</span>(std::constructible_from&lt;ValAdaptor, T&gt; &amp;&amp;</div>
-<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span>                 !std::same_as&lt;ValAdaptor, T&gt;) <span class="keywordtype">bool</span></div>
-<div class="foldopen" id="foldopen00308" data-start="{" data-end="}">
-<div class="line"><a id="l00308" name="l00308"></a><span class="lineno"><a class="line" href="classwebcface_1_1ValAdaptor.html#a5d1c4e1b2559deca7d0dfdd7cd26c7b8">  308</a></span>    <span class="keyword">operator</span>==(<span class="keyword">const</span> T &amp;other) <span class="keyword">const</span> {</div>
-<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span>        <span class="keywordflow">return</span> *<span class="keyword">this</span> == <a class="code hl_class" href="classwebcface_1_1ValAdaptor.html">ValAdaptor</a>(other);</div>
-<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>    }</div>
+<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span> </div>
+<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>    <span class="keywordtype">bool</span> asBool() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00307" name="l00307"></a><span class="lineno"><a class="line" href="classwebcface_1_1ValAdaptor.html#a67b76affb3b5d35fa419ac234144038b">  307</a></span>    <span class="keyword">operator</span> bool()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> asBool(); }</div>
+<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span> </div>
+<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="namespacewebcface.html#a1b8f4f2c7b1ea1149c68523ef2d131e3">operator==</a>(<span class="keyword">const</span> <a class="code hl_class" href="classwebcface_1_1ValAdaptor.html">ValAdaptor</a> &amp;other) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span> </div>
+<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>        <span class="keyword">requires</span>(std::constructible_from&lt;ValAdaptor, T&gt; &amp;&amp;</div>
+<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span>                 !std::same_as&lt;ValAdaptor, T&gt;) <span class="keywordtype">bool</span></div>
+<div class="foldopen" id="foldopen00314" data-start="{" data-end="}">
+<div class="line"><a id="l00314" name="l00314"></a><span class="lineno"><a class="line" href="classwebcface_1_1ValAdaptor.html#a5d1c4e1b2559deca7d0dfdd7cd26c7b8">  314</a></span>    <span class="keyword">operator</span>==(<span class="keyword">const</span> T &amp;other) <span class="keyword">const</span> {</div>
+<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span>        <span class="keywordflow">return</span> *<span class="keyword">this</span> == <a class="code hl_class" href="classwebcface_1_1ValAdaptor.html">ValAdaptor</a>(other);</div>
+<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span>    }</div>
 </div>
-<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>};</div>
+<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span>};</div>
 </div>
-<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span> </div>
-<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span>    <span class="keyword">requires</span>(std::constructible_from&lt;ValAdaptor, T&gt; &amp;&amp;</div>
-<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span>             !std::same_as&lt;ValAdaptor, T&gt;) <span class="keywordtype">bool</span></div>
-<div class="foldopen" id="foldopen00316" data-start="{" data-end="}">
-<div class="line"><a id="l00316" name="l00316"></a><span class="lineno"><a class="line" href="namespacewebcface.html#add2ce5a4caadd3dd38f09b4e79c636eb">  316</a></span><span class="keyword">operator</span>==(<span class="keyword">const</span> T &amp;other, <span class="keyword">const</span> <a class="code hl_class" href="classwebcface_1_1ValAdaptor.html">ValAdaptor</a> &amp;val) {</div>
-<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span>    <span class="keywordflow">return</span> val == <a class="code hl_class" href="classwebcface_1_1ValAdaptor.html">ValAdaptor</a>(other);</div>
-<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span>}</div>
+<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span> </div>
+<div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span>    <span class="keyword">requires</span>(std::constructible_from&lt;ValAdaptor, T&gt; &amp;&amp;</div>
+<div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span>             !std::same_as&lt;ValAdaptor, T&gt;) <span class="keywordtype">bool</span></div>
+<div class="foldopen" id="foldopen00322" data-start="{" data-end="}">
+<div class="line"><a id="l00322" name="l00322"></a><span class="lineno"><a class="line" href="namespacewebcface.html#add2ce5a4caadd3dd38f09b4e79c636eb">  322</a></span><span class="keyword">operator</span>==(<span class="keyword">const</span> T &amp;other, <span class="keyword">const</span> <a class="code hl_class" href="classwebcface_1_1ValAdaptor.html">ValAdaptor</a> &amp;val) {</div>
+<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span>    <span class="keywordflow">return</span> val == <a class="code hl_class" href="classwebcface_1_1ValAdaptor.html">ValAdaptor</a>(other);</div>
+<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span>}</div>
 </div>
-<div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span> </div>
-<div class="foldopen" id="foldopen00320" data-start="{" data-end="}">
-<div class="line"><a id="l00320" name="l00320"></a><span class="lineno"><a class="line" href="namespacewebcface.html#a7772b6098dac5df4d543a786d2415f46">  320</a></span><span class="keyword">inline</span> std::ostream &amp;<a class="code hl_function" href="func__info_8cc.html#a247771d30c740ef13dbff87e21baf225">operator&lt;&lt;</a>(std::ostream &amp;os, <span class="keyword">const</span> <a class="code hl_class" href="classwebcface_1_1ValAdaptor.html">ValAdaptor</a> &amp;a) {</div>
-<div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span>    <span class="keywordflow">return</span> os &lt;&lt; static_cast&lt;std::string&gt;(a);</div>
-<div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span>}</div>
+<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span> </div>
+<div class="foldopen" id="foldopen00326" data-start="{" data-end="}">
+<div class="line"><a id="l00326" name="l00326"></a><span class="lineno"><a class="line" href="namespacewebcface.html#a7772b6098dac5df4d543a786d2415f46">  326</a></span><span class="keyword">inline</span> std::ostream &amp;<a class="code hl_function" href="func__info_8cc.html#a247771d30c740ef13dbff87e21baf225">operator&lt;&lt;</a>(std::ostream &amp;os, <span class="keyword">const</span> <a class="code hl_class" href="classwebcface_1_1ValAdaptor.html">ValAdaptor</a> &amp;a) {</div>
+<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span>    <span class="keywordflow">return</span> os &lt;&lt; static_cast&lt;std::string&gt;(a);</div>
+<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span>}</div>
 </div>
-<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span> </div>
-<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span><span class="keyword">template</span> &lt;<span class="keywordtype">int</span> n = 0, <span class="keyword">typename</span> T&gt;</div>
-<div class="foldopen" id="foldopen00329" data-start="{" data-end="}">
-<div class="line"><a id="l00329" name="l00329"></a><span class="lineno"><a class="line" href="namespacewebcface.html#a5aeb2e4cecdcd6261d71162f7f918434">  329</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="namespacewebcface.html#a5aeb2e4cecdcd6261d71162f7f918434">argToTuple</a>(<span class="keyword">const</span> std::vector&lt;ValAdaptor&gt; &amp;args, T &amp;tuple) {</div>
-<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span>    <span class="keyword">constexpr</span> <span class="keywordtype">int</span> tuple_size = std::tuple_size&lt;T&gt;::value;</div>
-<div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span>    <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (n &lt; tuple_size) {</div>
-<div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span>        <span class="keyword">using </span>Type = <span class="keyword">typename</span> std::tuple_element&lt;n, T&gt;::type;</div>
-<div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span>        std::get&lt;n&gt;(tuple) = <span class="keyword">static_cast&lt;</span>Type<span class="keyword">&gt;</span>(args[n]);</div>
-<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span>        argToTuple&lt;n + 1&gt;(args, tuple);</div>
-<div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span>    }</div>
-<div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span>}</div>
+<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span> </div>
+<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span><span class="keyword">template</span> &lt;<span class="keywordtype">int</span> n = 0, <span class="keyword">typename</span> T&gt;</div>
+<div class="foldopen" id="foldopen00335" data-start="{" data-end="}">
+<div class="line"><a id="l00335" name="l00335"></a><span class="lineno"><a class="line" href="namespacewebcface.html#a5aeb2e4cecdcd6261d71162f7f918434">  335</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="namespacewebcface.html#a5aeb2e4cecdcd6261d71162f7f918434">argToTuple</a>(<span class="keyword">const</span> std::vector&lt;ValAdaptor&gt; &amp;args, T &amp;tuple) {</div>
+<div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span>    <span class="keyword">constexpr</span> <span class="keywordtype">int</span> tuple_size = std::tuple_size&lt;T&gt;::value;</div>
+<div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span>    <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (n &lt; tuple_size) {</div>
+<div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span>        <span class="keyword">using </span>Type = <span class="keyword">typename</span> std::tuple_element&lt;n, T&gt;::type;</div>
+<div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span>        std::get&lt;n&gt;(tuple) = <span class="keyword">static_cast&lt;</span>Type<span class="keyword">&gt;</span>(args[n]);</div>
+<div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span>        argToTuple&lt;n + 1&gt;(args, tuple);</div>
+<div class="line"><a id="l00341" name="l00341"></a><span class="lineno">  341</span>    }</div>
+<div class="line"><a id="l00342" name="l00342"></a><span class="lineno">  342</span>}</div>
 </div>
-<div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span><a class="code hl_define" href="def_8h.html#ab3f2570d5b8231ddbe0e57fc8ab629eb">WEBCFACE_NS_END</a></div>
+<div class="line"><a id="l00343" name="l00343"></a><span class="lineno">  343</span><a class="code hl_define" href="def_8h.html#ab3f2570d5b8231ddbe0e57fc8ab629eb">WEBCFACE_NS_END</a></div>
 <div class="ttc" id="aclasswebcface_1_1ValAdaptor_html"><div class="ttname"><a href="classwebcface_1_1ValAdaptor.html">webcface::ValAdaptor</a></div><div class="ttdoc">数値、文字列などの値を相互変換するクラス</div><div class="ttdef"><b>Definition</b> val_adaptor.h:84</div></div>
 <div class="ttc" id="aclasswebcface_1_1ValAdaptor_html_a0b65614fbd497669b4803dbecf4981e4"><div class="ttname"><a href="classwebcface_1_1ValAdaptor.html#a0b65614fbd497669b4803dbecf4981e4">webcface::ValAdaptor::operator=</a></div><div class="ttdeci">ValAdaptor &amp; operator=(T v)</div><div class="ttdef"><b>Definition</b> val_adaptor.h:158</div></div>
 <div class="ttc" id="aclasswebcface_1_1ValAdaptor_html_a2013c6c2a968a8954cef0f06289d4166"><div class="ttname"><a href="classwebcface_1_1ValAdaptor.html#a2013c6c2a968a8954cef0f06289d4166">webcface::ValAdaptor::type</a></div><div class="ttdeci">ValType type</div><div class="ttdef"><b>Definition</b> val_adaptor.h:92</div></div>
@@ -401,7 +407,7 @@ $(document).ready(function(){initNavTree('encoding_2include_2webcface_2encoding_
 <div class="ttc" id="aencoding_8h_html"><div class="ttname"><a href="encoding_8h.html">encoding.h</a></div></div>
 <div class="ttc" id="afunc__info_8cc_html_a247771d30c740ef13dbff87e21baf225"><div class="ttname"><a href="func__info_8cc.html#a247771d30c740ef13dbff87e21baf225">operator&lt;&lt;</a></div><div class="ttdeci">std::ostream &amp; operator&lt;&lt;(std::ostream &amp;os, const Arg &amp;arg)</div><div class="ttdef"><b>Definition</b> func_info.cc:27</div></div>
 <div class="ttc" id="anamespacewebcface_html_a1b8f4f2c7b1ea1149c68523ef2d131e3"><div class="ttname"><a href="namespacewebcface.html#a1b8f4f2c7b1ea1149c68523ef2d131e3">webcface::operator==</a></div><div class="ttdeci">bool operator==(const T &amp;other, const InputRef &amp;ref)</div><div class="ttdef"><b>Definition</b> text.h:355</div></div>
-<div class="ttc" id="anamespacewebcface_html_a5aeb2e4cecdcd6261d71162f7f918434"><div class="ttname"><a href="namespacewebcface.html#a5aeb2e4cecdcd6261d71162f7f918434">webcface::argToTuple</a></div><div class="ttdeci">void argToTuple(const std::vector&lt; ValAdaptor &gt; &amp;args, T &amp;tuple)</div><div class="ttdoc">ValAdaptorのリストから任意の型のタプルに変換する</div><div class="ttdef"><b>Definition</b> val_adaptor.h:329</div></div>
+<div class="ttc" id="anamespacewebcface_html_a5aeb2e4cecdcd6261d71162f7f918434"><div class="ttname"><a href="namespacewebcface.html#a5aeb2e4cecdcd6261d71162f7f918434">webcface::argToTuple</a></div><div class="ttdeci">void argToTuple(const std::vector&lt; ValAdaptor &gt; &amp;args, T &amp;tuple)</div><div class="ttdoc">ValAdaptorのリストから任意の型のタプルに変換する</div><div class="ttdef"><b>Definition</b> val_adaptor.h:335</div></div>
 <div class="ttc" id="anamespacewebcface_html_a818466a6a9b6abe8c25c93ac959ec0cb"><div class="ttname"><a href="namespacewebcface.html#a818466a6a9b6abe8c25c93ac959ec0cb">webcface::valTypeStr</a></div><div class="ttdeci">std::string valTypeStr(ValType a)</div><div class="ttdoc">型名を文字列で取得</div><div class="ttdef"><b>Definition</b> val_adaptor.h:49</div></div>
 <div class="ttc" id="anamespacewebcface_html_acd1dd9e2d5f885ad3f73197cfa6b0185"><div class="ttname"><a href="namespacewebcface.html#acd1dd9e2d5f885ad3f73197cfa6b0185">webcface::ValType</a></div><div class="ttdeci">ValType</div><div class="ttdoc">引数や戻り値の型を表すenum</div><div class="ttdef"><b>Definition</b> val_adaptor.h:18</div></div>
 <div class="ttc" id="anamespacewebcface_html_acd1dd9e2d5f885ad3f73197cfa6b0185a1e5a9491a4d910a08d95f675ca7226be"><div class="ttname"><a href="namespacewebcface.html#acd1dd9e2d5f885ad3f73197cfa6b0185a1e5a9491a4d910a08d95f675ca7226be">webcface::ValType::none_</a></div><div class="ttdeci">@ none_</div></div>
@@ -417,7 +423,7 @@ $(document).ready(function(){initNavTree('encoding_2include_2webcface_2encoding_
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_7f2982da9d43e0d7c25a6e4522b21798.html">encoding</a></li><li class="navelem"><a class="el" href="dir_4a757cb338406c147fe5e4abca3346bd.html">include</a></li><li class="navelem"><a class="el" href="dir_02b3c578c4e3d89ec52055310aacb197.html">webcface</a></li><li class="navelem"><a class="el" href="dir_8ab4b5c10979d3e3b82264bff7eef85b.html">encoding</a></li><li class="navelem"><a class="el" href="encoding_2include_2webcface_2encoding_2val__adaptor_8h.html">val_adaptor.h</a></li>
-    <li class="footer">Generated on Wed Jul 3 2024 11:42:50 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Fri Jul 5 2024 09:17:18 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

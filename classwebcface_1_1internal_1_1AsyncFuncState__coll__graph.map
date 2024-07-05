@@ -1,0 +1,11 @@
+<map id="AsyncFuncState" name="AsyncFuncState">
+<area shape="rect" id="Node000001" title="AsyncFuncResultのデータを保持するクラス" alt="" coords="83,285,208,311"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,183,192,223"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="117,234,142,284,137,286,112,236"/>
+<area shape="rect" id="Node000003" href="$structwebcface_1_1Field.html" title="ClientDataの参照とメンバ名とデータ名を持つクラス" alt="" coords="216,190,269,215"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="223,227,159,287,156,283,219,223"/>
+<area shape="rect" id="Node000004" href="$structwebcface_1_1FieldBase.html" title="メンバ名とデータ名を持つクラス" alt="" coords="200,108,285,133"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="245,147,245,190,240,190,240,147"/>
+<area shape="rect" id="Node000005" href="$classwebcface_1_1encoding_1_1SharedString.html" title="u8stringとstringとwstringをshared_ptrで持ち共有する" alt="" coords="190,5,295,31"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="245,45,245,108,240,108,240,45"/>
+</map>

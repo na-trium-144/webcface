@@ -142,14 +142,14 @@ $(document).ready(function(){initNavTree('md_02__member.html',''); initResizable
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md31">members</a></li>
-<li class="level1"><a href="#autotoc_md32">Field系クラスの扱いについて</a></li>
-<li class="level1"><a href="#autotoc_md33">Event</a></li>
-<li class="level1"><a href="#autotoc_md34">クライアントの情報</a></li>
-<li class="level1"><a href="#autotoc_md35">ping</a></li>
+<ul><li class="level1"><a href="#autotoc_md32">members</a></li>
+<li class="level1"><a href="#autotoc_md33">Field系クラスの扱いについて</a></li>
+<li class="level1"><a href="#autotoc_md34">Event</a></li>
+<li class="level1"><a href="#autotoc_md35">クライアントの情報</a></li>
+<li class="level1"><a href="#autotoc_md36">ping</a></li>
 </ul>
 </div>
-<div class="textblock"><p><a class="anchor" id="autotoc_md30"></a></p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md31"></a></p>
 <dl class="section see"><dt>See also</dt><dd><ul>
 <li>C++ <a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">webcface::Member</a> (<code><a class="el" href="member_8h.html">webcface/member.h</a></code>)</li>
 <li>JavaScript <a href="https://na-trium-144.github.io/webcface-js/classes/Member.html">Member</a></li>
@@ -175,7 +175,7 @@ $(document).ready(function(){initNavTree('md_02__member.html',''); initResizable
 <p>このクライアント自身もMemberの1つですが、Client自体がMemberを継承したクラスになっているので、直接Clientのオブジェクト(wcli)に対して操作すればよいです。</p>
 <dl class="section note"><dt>Note</dt><dd><code>member()</code> の引数に自身の名前を入れると、Clientオブジェクトに直接アクセスする場合と同様そのクライアント自身を指します。 <br  />
  <span class="since-c">1.7</span> 引数に空文字列を入れても同様です。</dd></dl>
-<h1><a class="anchor" id="autotoc_md31"></a>
+<h1><a class="anchor" id="autotoc_md32"></a>
 members</h1>
 <p>Client::members() で現在接続されているメンバーのリストが得られます (無名のものと、自分自身を除く)</p>
 <div class="tabbed"></div><div class="tabbed"><ul>
@@ -191,7 +191,7 @@ members</h1>
 <div class="line">    <span class="comment"># ...</span></div>
 </div><!-- fragment --></li>
 </ul>
-</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md32"></a>
+</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md33"></a>
 Field系クラスの扱いについて</h1>
 <p>Memberクラスおよびこれ以降説明する各種データ型のクラス (いずれも <a class="el" href="structwebcface_1_1Field.html" title="ClientDataの参照とメンバ名とデータ名を持つクラス">webcface::Field</a> を継承している) について、</p>
 <ul>
@@ -199,7 +199,7 @@ Field系クラスの扱いについて</h1>
 <li>構築元のClientの寿命が切れた後に操作しようとすると同様にstd::runtime_errorを投げます。</li>
 <li>オブジェクトのコピー、ムーブは可能です。</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md33"></a>
+<h1><a class="anchor" id="autotoc_md34"></a>
 Event</h1>
 <p>Client::onMemberEntry() で新しいメンバーが接続されたときのイベントにコールバックを設定できます</p>
 <p>このクライアントが接続する前から存在したメンバーについては start() 後に一度に送られるので、 コールバックの設定はstart()より前に行うと良いです。</p>
@@ -229,10 +229,10 @@ Event</h1>
  <code>connect(関数)</code> でコールバックを設定できます。</li>
 </ul>
 </div><div class="tabbed"></div><p>これ以降の章でもいくつかイベントが登場しますが、いずれもこれと同様の実装、使い方になっています。</p>
-<h1><a class="anchor" id="autotoc_md34"></a>
+<h1><a class="anchor" id="autotoc_md35"></a>
 クライアントの情報</h1>
 <p>Member::libVersion(), Member::libName(), Member::remoteAddr() でクライアントの情報を取得できます。 (WebUI の Connection Info に表示されているのと同じ情報が取得できます)</p>
-<h1><a class="anchor" id="autotoc_md35"></a>
+<h1><a class="anchor" id="autotoc_md36"></a>
 ping</h1>
 <p>Member::pingStatus() でそのクライアントの通信速度を取得できます。(int型で、単位はms) 通信速度の情報は5秒に1回更新され、更新されたときにonPingイベントが発生します</p>
 <div class="tabbed"></div><div class="tabbed"><ul>
@@ -266,7 +266,7 @@ ping</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Jul 3 2024 11:42:50 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Fri Jul 5 2024 09:17:19 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

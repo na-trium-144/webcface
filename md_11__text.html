@@ -142,16 +142,16 @@ $(document).ready(function(){initNavTree('md_11__text.html',''); initResizable()
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md48">コマンドライン</a></li>
-<li class="level1"><a href="#autotoc_md49">送信</a></li>
-<li class="level1"><a href="#autotoc_md51">受信</a><ul><li class="level2"><a href="#autotoc_md52">時刻</a></li>
-<li class="level2"><a href="#autotoc_md53">Entry</a></li>
-<li class="level2"><a href="#autotoc_md54">Event</a></li>
+<ul><li class="level1"><a href="#autotoc_md49">コマンドライン</a></li>
+<li class="level1"><a href="#autotoc_md50">送信</a></li>
+<li class="level1"><a href="#autotoc_md52">受信</a><ul><li class="level2"><a href="#autotoc_md53">時刻</a></li>
+<li class="level2"><a href="#autotoc_md54">Entry</a></li>
+<li class="level2"><a href="#autotoc_md55">Event</a></li>
 </ul>
 </li>
 </ul>
 </div>
-<div class="textblock"><p><a class="anchor" id="autotoc_md47"></a></p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md48"></a></p>
 <dl class="section since"><dt>Since</dt><dd><span class="since-c"></span> <span class="since-js"></span> <span class="since-py"></span> </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><ul>
 <li>C++ <a class="el" href="classwebcface_1_1Text.html" title="文字列の送受信データを表すクラス">webcface::Text</a> (<code><a class="el" href="text_8h.html">webcface/text.h</a></code>)</li>
@@ -162,12 +162,12 @@ $(document).ready(function(){initNavTree('md_11__text.html',''); initResizable()
 </dd></dl>
 <p>文字列データを送受信します。</p>
 <p>使い方は<a class="el" href="md_10__value.html">Value</a>とほぼ同じです。</p>
-<h1><a class="anchor" id="autotoc_md48"></a>
+<h1><a class="anchor" id="autotoc_md49"></a>
 コマンドライン</h1>
 <div class="fragment"><div class="line">webcface-send -t text</div>
 </div><!-- fragment --><p> を実行し、文字列を入力すると送信されます。(1つ入力するごとに改行してください)</p>
 <p>詳細は <a class="el" href="md_71__send.html">webcface-send</a> のページを参照</p>
-<h1><a class="anchor" id="autotoc_md49"></a>
+<h1><a class="anchor" id="autotoc_md50"></a>
 送信</h1>
 <p>Client::text からTextオブジェクトを作り、 Text::set() でデータを代入し、Client::sync()することで送信されます</p>
 <div class="tabbed"></div><div class="tabbed"><ul>
@@ -188,12 +188,13 @@ null終端の文字列は wcfTextSet, (<span class="since-c">2.0</span> wcfTextS
 </div><div class="tabbed"></div><dl class="section note"><dt>Note</dt><dd><span class="since-c">1.10</span> <span class="since-js">1.6</span> Textの内部データは文字列だけでなく数値やbool値も型を保持して扱えるようになっています。 (<a class="el" href="md_13__view.html">View</a>のInputRefで内部的に使用するため) <br  />
  C++はset,getで文字列と同様に送信、受信できます。 <br  />
  JavaScriptではsetAny, getAny関数を使うと文字列以外のデータを処理できます。</dd></dl>
-<h1><a class="anchor" id="autotoc_md51"></a>
+<h1><a class="anchor" id="autotoc_md52"></a>
 受信</h1>
 <p>Member::text() でTextクラスのオブジェクトが得られ、 Text::tryGet(), Text::tryGetRecurse() で値のリクエストをするとともに受信した値を取得できます。 (Dict はC++のみ)</p>
 <p>例えば<code>foo</code>というクライアントの<code>hoge</code>という名前のデータを取得したい場合は次のようにします。</p>
 <div class="tabbed"></div><div class="tabbed"><ul>
-<li><p class="startli"><b class="tab-title">C++</b> </p><div class="fragment"><div class="line">std::optional&lt;std::string&gt; hoge = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).text(<span class="stringliteral">&quot;hoge&quot;</span>).tryGet();</div>
+<li><p class="startli"><b class="tab-title">C++</b> </p><div class="fragment"><div class="line">std::optional&lt;std::string&gt; <a class="code hl_function" href="func__test_8cc.html#a4d8f3927869eff6b32d7b3e0f8b1561f">hoge</a> = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).text(<span class="stringliteral">&quot;hoge&quot;</span>).tryGet();</div>
+<div class="ttc" id="afunc__test_8cc_html_a4d8f3927869eff6b32d7b3e0f8b1561f"><div class="ttname"><a href="func__test_8cc.html#a4d8f3927869eff6b32d7b3e0f8b1561f">hoge</a></div><div class="ttdeci">void hoge()</div><div class="ttdef"><b>Definition</b> func_test.cc:186</div></div>
 </div><!-- fragment --><p> 初回の呼び出しではまだ受信していないため、 tryGet() はstd::nulloptを返します。 <br  />
  get() はstd::nulloptの代わりにデフォルト値を返します。 <br  />
  また、std::string にキャストすることでも同様に値が得られます。</p>
@@ -226,17 +227,17 @@ null終端の文字列は wcfTextSet, (<span class="since-c">2.0</span> wcfTextS
 </div><div class="tabbed"></div><p><strike>その後Client::sync()したときに実際にリクエストが送信され、</strike> <br  />
  <span class="since-c">1.2</span> <span class="since-js">1.1</span> <span class="since-py"></span> 別スレッドでリクエストが送信され、それ以降は値が得られるようになります。</p>
 <dl class="section note"><dt>Note</dt><dd><span class="since-c">1.7</span> <span class="since-js">1.1</span> <span class="since-py"></span> Text::request()で明示的にリクエストを送信することもできます。</dd></dl>
-<h2><a class="anchor" id="autotoc_md52"></a>
+<h2><a class="anchor" id="autotoc_md53"></a>
 時刻</h2>
 <p><strike>Text::time()</strike> でその値が送信されたとき(そのMemberがsync()したとき)の時刻が得られます。 <br  />
  <span class="since-c">1.7</span> <span class="since-js">1.6</span> <span class="since-py"></span> Member::syncTime() に変更</p>
-<h2><a class="anchor" id="autotoc_md53"></a>
+<h2><a class="anchor" id="autotoc_md54"></a>
 Entry</h2>
 <p><strike>Member::texts() で</strike> そのMemberが送信しているtextのリストが得られます <br  />
  <span class="since-c">1.6</span> <span class="since-py">1.1</span> Member::textEntries() に変更</p>
 <p>また、Member::onTextEntry() で新しくデータが追加されたときのコールバックを設定できます</p>
 <p>いずれも使い方は <a class="el" href="md_10__value.html">Value</a> と同様なのでそちらを参照してください</p>
-<h2><a class="anchor" id="autotoc_md54"></a>
+<h2><a class="anchor" id="autotoc_md55"></a>
 Event</h2>
 <p>受信したデータが変化したときにコールバックを呼び出すことができます。 コールバックを設定することでもその値はリクエストされます。</p>
 <p>また、データが変化したどうかに関わらずそのMemberがsync()したときにコールバックを呼び出したい場合は Member::onSync() が使えます</p>
@@ -253,7 +254,7 @@ Event</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Jul 3 2024 11:42:50 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Fri Jul 5 2024 09:17:19 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

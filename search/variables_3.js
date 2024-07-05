@@ -8,7 +8,7 @@ var searchData=
   ['data_5fsend_5fprev_5',['data_send_prev',['../classwebcface_1_1internal_1_1SyncDataStore2.html#a4cadd00c4608944965ced6a59403785c',1,'webcface::internal::SyncDataStore2']]],
   ['data_5fw_6',['data_w',['../classwebcface_1_1ViewComponent.html#acf663a756c76fb2936c0042257df739c',1,'webcface::ViewComponent::data_w'],['../structwebcface_1_1Field.html#acf663a756c76fb2936c0042257df739c',1,'webcface::Field::data_w'],['../classwebcface_1_1Canvas3DComponent.html#acf663a756c76fb2936c0042257df739c',1,'webcface::Canvas3DComponent::data_w'],['../classwebcface_1_1Canvas2DComponent.html#acf663a756c76fb2936c0042257df739c',1,'webcface::Canvas2DComponent::data_w']]],
   ['datasetbuffer_3c_20canvas2dcomponent_20_3e_7',['DataSetBuffer&lt; Canvas2DComponent &gt;',['../classwebcface_1_1internal_1_1Canvas2DDataBuf.html#ab05ccab212d8152ff81e2f86f893b596',1,'webcface::internal::Canvas2DDataBuf']]],
-  ['default_5ffunc_5fwrapper_8',['default_func_wrapper',['../structwebcface_1_1internal_1_1ClientData.html#a16b1a4633690c8ffc0e408ed79ffac23',1,'webcface::internal::ClientData']]],
+  ['do_5fws_5finit_8',['do_ws_init',['../structwebcface_1_1internal_1_1ClientData.html#aca3bb1f15de8217014145111f65bc1be',1,'webcface::internal::ClientData']]],
   ['dp_9',['dp',['../classImageFrameTest.html#a3294273ec359ecad790a08eead90158c',1,'ImageFrameTest']]],
   ['dummy_5fc1_10',['dummy_c1',['../classServerTest.html#a9a92a775bac15bce2a5fbcf043487f0c',1,'ServerTest']]],
   ['dummy_5fc2_11',['dummy_c2',['../classServerTest.html#ac8294f71eb15bd6f87d3e8ed10411c0b',1,'ServerTest']]],

@@ -142,18 +142,18 @@ $(document).ready(function(){initNavTree('md_15__image.html',''); initResizable(
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md83">コマンドライン</a></li>
-<li class="level1"><a href="#autotoc_md84">送信</a><ul><li class="level2"><a href="#autotoc_md85">OpenCV</a></li>
+<ul><li class="level1"><a href="#autotoc_md84">コマンドライン</a></li>
+<li class="level1"><a href="#autotoc_md85">送信</a><ul><li class="level2"><a href="#autotoc_md86">OpenCV</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md86">受信</a><ul><li class="level2"><a href="#autotoc_md87">時刻</a></li>
-<li class="level2"><a href="#autotoc_md88">Entry</a></li>
-<li class="level2"><a href="#autotoc_md89">Event</a></li>
+<li class="level1"><a href="#autotoc_md87">受信</a><ul><li class="level2"><a href="#autotoc_md88">時刻</a></li>
+<li class="level2"><a href="#autotoc_md89">Entry</a></li>
+<li class="level2"><a href="#autotoc_md90">Event</a></li>
 </ul>
 </li>
 </ul>
 </div>
-<div class="textblock"><p><a class="anchor" id="autotoc_md82"></a></p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md83"></a></p>
 <dl class="section since"><dt>Since</dt><dd><span class="since-c">1.3</span> <span class="since-js">1.2</span> </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><ul>
 <li>C++ <a class="el" href="classwebcface_1_1Image.html" title="(ver1.3から追加) 画像の送受信データを表すクラス">webcface::Image</a> (<code><a class="el" href="image_8h.html">webcface/image.h</a></code>)</li>
@@ -162,12 +162,12 @@ $(document).ready(function(){initNavTree('md_15__image.html',''); initResizable(
 </ul>
 </dd></dl>
 <p>画像データを送受信します。</p>
-<h1><a class="anchor" id="autotoc_md83"></a>
+<h1><a class="anchor" id="autotoc_md84"></a>
 コマンドライン</h1>
 <div class="fragment"><div class="line">webcface-cv-capture 0</div>
 </div><!-- fragment --><p> などとするとOpenCVのVideoCaptureでキャプチャできるWebカメラなどの画像をwebcfaceに送信することができます。</p>
 <p>詳細は <a class="el" href="md_72__cv__capture.html">webcface-cv-capture</a> のページを参照</p>
-<h1><a class="anchor" id="autotoc_md84"></a>
+<h1><a class="anchor" id="autotoc_md85"></a>
 送信</h1>
 <p>Client::image からImageオブジェクトを作り、 Image::set() で画像データを代入し、Client::sync()することで送信されます</p>
 <div class="tabbed"></div><div class="tabbed"><ul>
@@ -193,11 +193,11 @@ $(document).ready(function(){initNavTree('md_15__image.html',''); initResizable(
 <li><p class="startli"><b class="tab-title">JavaScript</b> 画像データを表す型として <a href="https://na-trium-144.github.io/webcface-js/classes/ImageFrame.html">ImageFrame</a> があります。 生の画像データがあればImageFrameのコンストラクタに渡すことができます。 </p><div class="fragment"><div class="line">import { ImageFrame, imageColorMode } from &quot;webcface&quot;;</div>
 <div class="line">const data: ArrayBuffer = /* ... */;</div>
 <div class="line">const frame: ImageFrame = new ImageFrame(640, 480, data, imageColorMode.rgb); // 画像サイズは 横, 縦 で指定</div>
-</div><!-- fragment --><p> imageColorModeとしては <code>gray</code>(8bitグレースケール)、<code>rgb</code>(8bit×3)、<code>bgr</code>(8bit✕3)、<code>rgba</code>(8bit✕4)、<code>bgra</code>(8bit✕4) が扱えます。 </p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000002">Todo:</a></b></dt><dd>C++とJavaScriptでImageFrameのコンストラクタのサイズ指定が違うので、そのうち仕様変更をして統一する必要がある</dd></dl>
+</div><!-- fragment --><p> imageColorModeとしては <code>gray</code>(8bitグレースケール)、<code>rgb</code>(8bit×3)、<code>bgr</code>(8bit✕3)、<code>rgba</code>(8bit✕4)、<code>bgra</code>(8bit✕4) が扱えます。 </p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000003">Todo:</a></b></dt><dd>C++とJavaScriptでImageFrameのコンストラクタのサイズ指定が違うので、そのうち仕様変更をして統一する必要がある</dd></dl>
 <p class="startli">ImageFrameをImageにsetして送信します。 </p><div class="fragment"><div class="line">wcli.image(<span class="stringliteral">&quot;hoge&quot;</span>).set(frame);</div>
 </div><!-- fragment --></li>
 </ul>
-</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md85"></a>
+</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md86"></a>
 OpenCV</h2>
 <div class="tabbed"></div><div class="tabbed"><ul>
 <li><b class="tab-title">C++</b> ImageFrame → cv::Mat <div class="fragment"><div class="line">cv::Mat img_mat(img_frame.rows(), img_frame.cols(), CV_8UC3, img_frame.data().data());</div>
@@ -240,7 +240,7 @@ C++ OpenCVと相互変換できるImageFrame (〜ver1.11まで)</summary>
 <div class="ttc" id="aclasswebcface_1_1Image_html"><div class="ttname"><a href="classwebcface_1_1Image.html">webcface::Image</a></div><div class="ttdoc">(ver1.3から追加) 画像の送受信データを表すクラス</div><div class="ttdef"><b>Definition</b> image.h:16</div></div>
 </div><!-- fragment --> <dl class="section note"><dt>Note</dt><dd>圧縮された画像が入ったImageFrameをcv::Matに変換すると画像をデコードして返します。</dd></dl>
 </details>
-<h1><a class="anchor" id="autotoc_md86"></a>
+<h1><a class="anchor" id="autotoc_md87"></a>
 受信</h1>
 <p>Member::image() でImageクラスのオブジェクトが得られ、 Image::request() で画像のリクエストをした後 Image::tryGet() で受信した画像を取得できます。</p>
 <p>例えば<code>foo</code>というクライアントの<code>hoge</code>という名前のデータを取得したい場合は次のようにします。</p>
@@ -286,17 +286,17 @@ C++ OpenCVと相互変換できるImageFrame (〜ver1.11まで)</summary>
  また、 ImageFrame.toBase64() でbase64にエンコードすることができます。</p>
 </li>
 </ul>
-</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md87"></a>
+</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md88"></a>
 時刻</h2>
 <p><strike>Image::time()</strike> でその値が送信されたとき(そのMemberがsync()したとき)の時刻が得られます。 <br  />
  <span class="since-c">1.7</span> <span class="since-js">1.6</span> <span class="since-py"></span> Member::syncTime() に変更</p>
-<h2><a class="anchor" id="autotoc_md88"></a>
+<h2><a class="anchor" id="autotoc_md89"></a>
 Entry</h2>
 <p><strike>Member::images() で</strike> そのMemberが送信しているimageのリストが得られます <br  />
  <span class="since-c">1.6</span> Member::imageEntries() に変更</p>
 <p>また、Member::onImageEntry() で新しくデータが追加されたときのコールバックを設定できます</p>
 <p>いずれも使い方は <a class="el" href="md_10__value.html">Value</a> と同様なのでそちらを参照してください</p>
-<h2><a class="anchor" id="autotoc_md89"></a>
+<h2><a class="anchor" id="autotoc_md90"></a>
 Event</h2>
 <p>受信したデータが変化したときにコールバックを呼び出すことができます。 コールバックを設定することでもその値はリクエストされます。</p>
 <p>また、データが変化したどうかに関わらずそのMemberがsync()したときにコールバックを呼び出したい場合は Member::onSync() が使えます</p>
@@ -313,7 +313,7 @@ Event</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Jul 3 2024 11:42:50 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Fri Jul 5 2024 09:17:19 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

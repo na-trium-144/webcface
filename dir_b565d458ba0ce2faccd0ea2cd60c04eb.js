@@ -12,7 +12,7 @@ var dir_b565d458ba0ce2faccd0ea2cd60c04eb =
     [ "data_store1.cc", "data__store1_8cc.html", null ],
     [ "data_store2.cc", "data__store2_8cc.html", "data__store2_8cc" ],
     [ "field.cc", "field_8cc.html", "field_8cc" ],
-    [ "func.cc", "client_2src_2func_8cc.html", null ],
+    [ "func.cc", "client_2src_2func_8cc.html", "client_2src_2func_8cc" ],
     [ "func_info.cc", "func__info_8cc.html", "func__info_8cc" ],
     [ "func_listener.cc", "func__listener_8cc.html", null ],
     [ "func_result.cc", "func__result_8cc.html", "func__result_8cc" ],

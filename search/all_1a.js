@@ -4,6 +4,5 @@ var searchData=
   ['que_1',['que',['../classwebcface_1_1Queue.html#a1e43ac89755d96304c2ab27a561bdcea',1,'webcface::Queue']]],
   ['queue_2',['Queue',['../classwebcface_1_1Queue.html',1,'webcface']]],
   ['queue_2eh_3',['queue.h',['../queue_8h.html',1,'']]],
-  ['queue_3c_20std_3a_3ashared_5fptr_3c_20webcface_3a_3ainternal_3a_3afunconsync_20_3e_20_3e_4',['Queue&lt; std::shared_ptr&lt; webcface::internal::FuncOnSync &gt; &gt;',['../classwebcface_1_1Queue.html',1,'webcface']]],
-  ['queue_3c_20std_3a_3astring_20_3e_5',['Queue&lt; std::string &gt;',['../classwebcface_1_1Queue.html',1,'webcface']]]
+  ['queue_3c_20std_3a_3astring_20_3e_4',['Queue&lt; std::string &gt;',['../classwebcface_1_1Queue.html',1,'webcface']]]
 ];

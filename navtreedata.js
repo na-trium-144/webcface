@@ -79,125 +79,125 @@ var NAVTREE =
       ] ]
     ] ],
     [ "Client", "md_01__client.html", [
-      [ "Encoding", "md_01__client.html#autotoc_md24", null ],
-      [ "sync", "md_01__client.html#autotoc_md25", null ],
-      [ "切断する", "md_01__client.html#autotoc_md26", null ],
-      [ "バージョン情報", "md_01__client.html#autotoc_md27", null ],
-      [ "サーバーの情報", "md_01__client.html#autotoc_md28", null ],
-      [ "ログ出力", "md_01__client.html#autotoc_md29", null ]
+      [ "接続", "md_01__client.html#autotoc_md24", null ],
+      [ "Encoding", "md_01__client.html#autotoc_md25", null ],
+      [ "送受信", "md_01__client.html#autotoc_md26", null ],
+      [ "切断する", "md_01__client.html#autotoc_md27", null ],
+      [ "バージョン情報", "md_01__client.html#autotoc_md28", null ],
+      [ "サーバーの情報", "md_01__client.html#autotoc_md29", null ],
+      [ "ログ出力", "md_01__client.html#autotoc_md30", null ]
     ] ],
     [ "Member", "md_02__member.html", [
-      [ "members", "md_02__member.html#autotoc_md31", null ],
-      [ "Field系クラスの扱いについて", "md_02__member.html#autotoc_md32", null ],
-      [ "Event", "md_02__member.html#autotoc_md33", null ],
-      [ "クライアントの情報", "md_02__member.html#autotoc_md34", null ],
-      [ "ping", "md_02__member.html#autotoc_md35", null ]
+      [ "members", "md_02__member.html#autotoc_md32", null ],
+      [ "Field系クラスの扱いについて", "md_02__member.html#autotoc_md33", null ],
+      [ "Event", "md_02__member.html#autotoc_md34", null ],
+      [ "クライアントの情報", "md_02__member.html#autotoc_md35", null ],
+      [ "ping", "md_02__member.html#autotoc_md36", null ]
     ] ],
     [ "Value", "md_10__value.html", [
-      [ "コマンドライン", "md_10__value.html#autotoc_md37", null ],
-      [ "送信", "md_10__value.html#autotoc_md38", [
-        [ "通信データについて", "md_10__value.html#autotoc_md39", null ],
-        [ "グループ化", "md_10__value.html#autotoc_md40", null ],
-        [ "複数の値をまとめて送る", "md_10__value.html#autotoc_md41", null ]
+      [ "コマンドライン", "md_10__value.html#autotoc_md38", null ],
+      [ "送信", "md_10__value.html#autotoc_md39", [
+        [ "通信データについて", "md_10__value.html#autotoc_md40", null ],
+        [ "グループ化", "md_10__value.html#autotoc_md41", null ],
+        [ "複数の値をまとめて送る", "md_10__value.html#autotoc_md42", null ]
       ] ],
-      [ "受信", "md_10__value.html#autotoc_md42", [
-        [ "リクエスト", "md_10__value.html#autotoc_md43", null ],
-        [ "時刻", "md_10__value.html#autotoc_md44", null ],
-        [ "Entry", "md_10__value.html#autotoc_md45", null ],
-        [ "Event", "md_10__value.html#autotoc_md46", null ]
+      [ "受信", "md_10__value.html#autotoc_md43", [
+        [ "リクエスト", "md_10__value.html#autotoc_md44", null ],
+        [ "時刻", "md_10__value.html#autotoc_md45", null ],
+        [ "Entry", "md_10__value.html#autotoc_md46", null ],
+        [ "Event", "md_10__value.html#autotoc_md47", null ]
       ] ]
     ] ],
     [ "Text", "md_11__text.html", [
-      [ "コマンドライン", "md_11__text.html#autotoc_md48", null ],
-      [ "送信", "md_11__text.html#autotoc_md49", null ],
-      [ "受信", "md_11__text.html#autotoc_md51", [
-        [ "時刻", "md_11__text.html#autotoc_md52", null ],
-        [ "Entry", "md_11__text.html#autotoc_md53", null ],
-        [ "Event", "md_11__text.html#autotoc_md54", null ]
+      [ "コマンドライン", "md_11__text.html#autotoc_md49", null ],
+      [ "送信", "md_11__text.html#autotoc_md50", null ],
+      [ "受信", "md_11__text.html#autotoc_md52", [
+        [ "時刻", "md_11__text.html#autotoc_md53", null ],
+        [ "Entry", "md_11__text.html#autotoc_md54", null ],
+        [ "Event", "md_11__text.html#autotoc_md55", null ]
       ] ]
     ] ],
     [ "View", "md_13__view.html", [
-      [ "送信", "md_13__view.html#autotoc_md56", null ],
-      [ "ViewComponent", "md_13__view.html#autotoc_md57", [
-        [ "text", "md_13__view.html#autotoc_md58", null ],
-        [ "newLine", "md_13__view.html#autotoc_md59", null ],
-        [ "button", "md_13__view.html#autotoc_md60", null ],
-        [ "input", "md_13__view.html#autotoc_md61", null ]
+      [ "送信", "md_13__view.html#autotoc_md57", null ],
+      [ "ViewComponent", "md_13__view.html#autotoc_md58", [
+        [ "text", "md_13__view.html#autotoc_md59", null ],
+        [ "newLine", "md_13__view.html#autotoc_md60", null ],
+        [ "button", "md_13__view.html#autotoc_md61", null ],
+        [ "input", "md_13__view.html#autotoc_md62", null ]
       ] ],
-      [ "受信", "md_13__view.html#autotoc_md62", [
-        [ "onClick", "md_13__view.html#autotoc_md63", null ],
-        [ "onChangeとbind", "md_13__view.html#autotoc_md64", null ],
-        [ "id", "md_13__view.html#autotoc_md65", null ],
-        [ "時刻", "md_13__view.html#autotoc_md66", null ],
-        [ "Entry", "md_13__view.html#autotoc_md67", null ],
-        [ "Event", "md_13__view.html#autotoc_md68", null ]
+      [ "受信", "md_13__view.html#autotoc_md63", [
+        [ "onClick", "md_13__view.html#autotoc_md64", null ],
+        [ "onChangeとbind", "md_13__view.html#autotoc_md65", null ],
+        [ "id", "md_13__view.html#autotoc_md66", null ],
+        [ "時刻", "md_13__view.html#autotoc_md67", null ],
+        [ "Entry", "md_13__view.html#autotoc_md68", null ],
+        [ "Event", "md_13__view.html#autotoc_md69", null ]
       ] ]
     ] ],
     [ "Canvas2D", "md_14__canvas2d.html", [
-      [ "Point, Transform", "md_14__canvas2d.html#autotoc_md70", null ],
-      [ "送信", "md_14__canvas2d.html#autotoc_md71", [
-        [ "Geometry (2次元)", "md_14__canvas2d.html#autotoc_md72", [
-          [ "Line", "md_14__canvas2d.html#autotoc_md73", null ],
-          [ "Rect", "md_14__canvas2d.html#autotoc_md74", null ],
-          [ "Circle", "md_14__canvas2d.html#autotoc_md75", null ],
-          [ "Polygon", "md_14__canvas2d.html#autotoc_md76", null ]
+      [ "Point, Transform", "md_14__canvas2d.html#autotoc_md71", null ],
+      [ "送信", "md_14__canvas2d.html#autotoc_md72", [
+        [ "Geometry (2次元)", "md_14__canvas2d.html#autotoc_md73", [
+          [ "Line", "md_14__canvas2d.html#autotoc_md74", null ],
+          [ "Rect", "md_14__canvas2d.html#autotoc_md75", null ],
+          [ "Circle", "md_14__canvas2d.html#autotoc_md76", null ],
+          [ "Polygon", "md_14__canvas2d.html#autotoc_md77", null ]
         ] ],
-        [ "文字列の表示", "md_14__canvas2d.html#autotoc_md77", null ]
+        [ "文字列の表示", "md_14__canvas2d.html#autotoc_md78", null ]
       ] ],
-      [ "受信", "md_14__canvas2d.html#autotoc_md78", [
-        [ "時刻", "md_14__canvas2d.html#autotoc_md79", null ],
-        [ "Entry", "md_14__canvas2d.html#autotoc_md80", null ],
-        [ "Event", "md_14__canvas2d.html#autotoc_md81", null ]
+      [ "受信", "md_14__canvas2d.html#autotoc_md79", [
+        [ "時刻", "md_14__canvas2d.html#autotoc_md80", null ],
+        [ "Entry", "md_14__canvas2d.html#autotoc_md81", null ],
+        [ "Event", "md_14__canvas2d.html#autotoc_md82", null ]
       ] ]
     ] ],
     [ "Image", "md_15__image.html", [
-      [ "コマンドライン", "md_15__image.html#autotoc_md83", null ],
-      [ "送信", "md_15__image.html#autotoc_md84", [
-        [ "OpenCV", "md_15__image.html#autotoc_md85", null ]
+      [ "コマンドライン", "md_15__image.html#autotoc_md84", null ],
+      [ "送信", "md_15__image.html#autotoc_md85", [
+        [ "OpenCV", "md_15__image.html#autotoc_md86", null ]
       ] ],
-      [ "受信", "md_15__image.html#autotoc_md86", [
-        [ "時刻", "md_15__image.html#autotoc_md87", null ],
-        [ "Entry", "md_15__image.html#autotoc_md88", null ],
-        [ "Event", "md_15__image.html#autotoc_md89", null ]
+      [ "受信", "md_15__image.html#autotoc_md87", [
+        [ "時刻", "md_15__image.html#autotoc_md88", null ],
+        [ "Entry", "md_15__image.html#autotoc_md89", null ],
+        [ "Event", "md_15__image.html#autotoc_md90", null ]
       ] ]
     ] ],
     [ "Canvas3D", "md_20__canvas3d.html", [
-      [ "Point, Transform", "md_20__canvas3d.html#autotoc_md91", null ],
-      [ "送信", "md_20__canvas3d.html#autotoc_md92", [
-        [ "Geometry (3次元)", "md_20__canvas3d.html#autotoc_md93", null ],
-        [ "Line", "md_20__canvas3d.html#autotoc_md94", null ],
-        [ "Plane", "md_20__canvas3d.html#autotoc_md95", null ],
-        [ "Box", "md_20__canvas3d.html#autotoc_md96", null ],
-        [ "Circle", "md_20__canvas3d.html#autotoc_md97", null ],
-        [ "Cylinder", "md_20__canvas3d.html#autotoc_md98", null ],
-        [ "Sphere", "md_20__canvas3d.html#autotoc_md99", null ]
+      [ "Point, Transform", "md_20__canvas3d.html#autotoc_md92", null ],
+      [ "送信", "md_20__canvas3d.html#autotoc_md93", [
+        [ "Geometry (3次元)", "md_20__canvas3d.html#autotoc_md94", null ],
+        [ "Line", "md_20__canvas3d.html#autotoc_md95", null ],
+        [ "Plane", "md_20__canvas3d.html#autotoc_md96", null ],
+        [ "Box", "md_20__canvas3d.html#autotoc_md97", null ],
+        [ "Circle", "md_20__canvas3d.html#autotoc_md98", null ],
+        [ "Cylinder", "md_20__canvas3d.html#autotoc_md99", null ],
+        [ "Sphere", "md_20__canvas3d.html#autotoc_md100", null ]
       ] ],
-      [ "受信", "md_20__canvas3d.html#autotoc_md100", [
-        [ "時刻", "md_20__canvas3d.html#autotoc_md101", null ],
-        [ "Entry", "md_20__canvas3d.html#autotoc_md102", null ],
-        [ "Event", "md_20__canvas3d.html#autotoc_md103", null ]
+      [ "受信", "md_20__canvas3d.html#autotoc_md101", [
+        [ "時刻", "md_20__canvas3d.html#autotoc_md102", null ],
+        [ "Entry", "md_20__canvas3d.html#autotoc_md103", null ],
+        [ "Event", "md_20__canvas3d.html#autotoc_md104", null ]
       ] ]
     ] ],
     [ "RobotModel", "md_21__robot__model.html", [
-      [ "送信", "md_21__robot__model.html#autotoc_md105", null ],
-      [ "RobotJoint", "md_21__robot__model.html#autotoc_md106", [
-        [ "fixedAbsolute", "md_21__robot__model.html#autotoc_md107", null ],
-        [ "fixedJoint", "md_21__robot__model.html#autotoc_md108", null ],
-        [ "rotationalJoint", "md_21__robot__model.html#autotoc_md109", null ],
-        [ "prismaticJoint", "md_21__robot__model.html#autotoc_md110", null ]
+      [ "送信", "md_21__robot__model.html#autotoc_md106", null ],
+      [ "RobotJoint", "md_21__robot__model.html#autotoc_md107", [
+        [ "fixedAbsolute", "md_21__robot__model.html#autotoc_md108", null ],
+        [ "fixedJoint", "md_21__robot__model.html#autotoc_md109", null ],
+        [ "rotationalJoint", "md_21__robot__model.html#autotoc_md110", null ],
+        [ "prismaticJoint", "md_21__robot__model.html#autotoc_md111", null ]
       ] ],
-      [ "Canvas3Dに表示する", "md_21__robot__model.html#autotoc_md111", null ],
-      [ "受信", "md_21__robot__model.html#autotoc_md112", [
-        [ "時刻", "md_21__robot__model.html#autotoc_md113", null ],
-        [ "Entry", "md_21__robot__model.html#autotoc_md114", null ],
-        [ "Event", "md_21__robot__model.html#autotoc_md115", null ]
+      [ "Canvas3Dに表示する", "md_21__robot__model.html#autotoc_md112", null ],
+      [ "受信", "md_21__robot__model.html#autotoc_md113", [
+        [ "時刻", "md_21__robot__model.html#autotoc_md114", null ],
+        [ "Entry", "md_21__robot__model.html#autotoc_md115", null ],
+        [ "Event", "md_21__robot__model.html#autotoc_md116", null ]
       ] ]
     ] ],
     [ "Func", "md_30__func.html", [
-      [ "関数の登録", "md_30__func.html#autotoc_md117", [
-        [ "引数と戻り値型", "md_30__func.html#autotoc_md118", null ],
-        [ "関数をWebUIから隠す", "md_30__func.html#autotoc_md119", null ],
-        [ "実行条件", "md_30__func.html#autotoc_md120", null ]
+      [ "関数の登録", "md_30__func.html#autotoc_md118", [
+        [ "引数と戻り値型", "md_30__func.html#autotoc_md119", null ],
+        [ "関数をWebUIから隠す", "md_30__func.html#autotoc_md120", null ]
       ] ],
       [ "FuncListener", "md_30__func.html#autotoc_md121", null ],
       [ "関数の情報の取得", "md_30__func.html#autotoc_md122", [
@@ -338,35 +338,35 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"classMemberTest.html#a3a1707f6479611fdc609a3eb8a0cef1b",
-"classwebcface_1_1Arg.html#a6b5821c2c335362530617c30cd9eaff8",
-"classwebcface_1_1Canvas2D.html#a8638fa3ede151bd40b72366ad27dd466",
-"classwebcface_1_1Canvas3D.html#a58cfcdc93ea5a2bd34130e314e578064",
-"classwebcface_1_1Client.html#a39c0a05fe120db8a07551cfde1216aca",
-"classwebcface_1_1Func.html#a485655bf8c0e1066c3ea1c4f3220940d",
-"classwebcface_1_1FuncListener.html#aa9245ab1c5e15c6ca7c1a22981a55b13",
-"classwebcface_1_1Image.html#aff8cd5d47d515d03eb6d20be5b253b68",
-"classwebcface_1_1Log.html#af72203466d2e2b9b82bcf6fcc96b764f",
-"classwebcface_1_1RobotModel.html",
-"classwebcface_1_1Server_1_1Server.html#a229b454d156fec6ab3e561a195813199",
-"classwebcface_1_1Text.html#a8da26fb4e605fea2f481d0bd8a1e8f9a",
-"classwebcface_1_1Value.html#a09225396c72929b26144848529b88c02",
-"classwebcface_1_1View.html#a2c968d2f3a7caacc91ab61927039deb9",
-"classwebcface_1_1ViewComponent.html#ab9fa0cb3de8ee6996e9806a4787e237b",
-"classwebcface_1_1internal_1_1SyncDataStore1.html#ac78011f32e7f62acb2801e68c5675634",
-"client__test_8cc.html#a39dc4e2fb008f17ac0461e5eba7ffed8",
-"dir_8h.html",
-"globals_type.html",
-"md_90__message.html#autotoc_md164",
-"namespacewebcface.html#ab72e620a597e5f750b2c9b3391e84ded",
-"namespacewebcface_1_1server__internal.html#a5a2989f14df9001171964f8f44851ae8",
-"structwebcface_1_1AsyncFuncResultSetter.html#a6da60a8755f327bb10e80acf868f08c2",
-"structwebcface_1_1FuncInfo.html#a18c62bf1606a5d9bd258024c5b7128d2",
-"structwebcface_1_1components_1_1geometries_1_1Box.html",
-"structwebcface_1_1components_1_1geometries_1_1Polygon.html#a0d3f44541a8b177359992dfb19d9ccaa",
-"structwebcface_1_1internal_1_1ClientData.html#ad0de56fbaff139cea691320a9960bc39",
-"structwebcface_1_1message_1_1ImageReq.html#af6fca312aa96279170519ff0d29e95aa",
-"structwebcface_1_1message_1_1RobotModel.html#ad5a4760db27f8fcd5c4028bb15f80ad9"
+"classImageTest.html#a3a1707f6479611fdc609a3eb8a0cef1b",
+"classwebcface_1_1Arg.html#a21eb97b014d270b80f9423022f86d322",
+"classwebcface_1_1Canvas2D.html#a712fd6f68c578f292096fde93c5501bb",
+"classwebcface_1_1Canvas3D.html#a485655bf8c0e1066c3ea1c4f3220940d",
+"classwebcface_1_1Client.html#a2e0eced713028d20cd2c49c819131d80",
+"classwebcface_1_1Func.html#a2c810e304a62d36f287f198498e5bfa9",
+"classwebcface_1_1FuncListener.html#a931353c281ffd3335b0d53efdfb75f31",
+"classwebcface_1_1Image.html#addd98bc459d3b213109f6adf09fec510",
+"classwebcface_1_1Log.html#ac6ffd336e43abb201663ab9b064a0607",
+"classwebcface_1_1Point.html#ae474d0c70bb5ef2faa4582872384d9c9",
+"classwebcface_1_1RobotModel.html#af59d7547715d27108baf93fbc9930abd",
+"classwebcface_1_1Text.html#a6ae7a23d3e36930f42b466890bd38711",
+"classwebcface_1_1ValAdaptor.html#ae5bde46650cd127fb6cd727dc6764b01",
+"classwebcface_1_1View.html#a09225396c72929b26144848529b88c02",
+"classwebcface_1_1ViewComponent.html#a7de554e55fff75d84e0913a46f4e643c",
+"classwebcface_1_1internal_1_1DataSetBuffer.html#ad55f80ed3cd8b6c4f247763b747016af",
+"client_2src_2c__wcf_2view_8cc.html#aa4da60375e4605b9c85fa1ded4d1c479",
+"def__types_8h.html#a2306c4b946f0df0f3ea9c887a7166097",
+"functions_u.html",
+"md_20__canvas3d.html#autotoc_md98",
+"namespacewebcface.html#a11040d82967b60182816ddc035d07c28a1cb251ec0d568de6a929b520c4aed8d1",
+"namespacewebcface_1_1message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a0cb8db73d08e6f71fe9d47fb44fdc9a5",
+"structwcfViewComponent.html#adb5754658e76c371fe767d20f7ae8e9a",
+"structwebcface_1_1RobotLink.html#a7355c838ff0f872bf40644828ddf27ba",
+"structwebcface_1_1components_1_1geometries_1_1Circle.html#a3abcf0571d81409b4c8043ae979fdab1",
+"structwebcface_1_1encoding_1_1SharedString_1_1Data.html",
+"structwebcface_1_1message_1_1Call.html#ad6b7bfc86c9b4f640679feb6dd1efd3f",
+"structwebcface_1_1message_1_1Req.html#ad5a4760db27f8fcd5c4028bb15f80ad9",
+"structwebcface_1_1message_1_1View.html#a93f7b0e006da417a088ac06725272753"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

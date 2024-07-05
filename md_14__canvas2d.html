@@ -142,24 +142,24 @@ $(document).ready(function(){initNavTree('md_14__canvas2d.html',''); initResizab
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md70">Point, Transform</a></li>
-<li class="level1"><a href="#autotoc_md71">送信</a><ul><li class="level2"><a href="#autotoc_md72">Geometry (2次元)</a><ul><li class="level3"><a href="#autotoc_md73">Line</a></li>
-<li class="level3"><a href="#autotoc_md74">Rect</a></li>
-<li class="level3"><a href="#autotoc_md75">Circle</a></li>
-<li class="level3"><a href="#autotoc_md76">Polygon</a></li>
+<ul><li class="level1"><a href="#autotoc_md71">Point, Transform</a></li>
+<li class="level1"><a href="#autotoc_md72">送信</a><ul><li class="level2"><a href="#autotoc_md73">Geometry (2次元)</a><ul><li class="level3"><a href="#autotoc_md74">Line</a></li>
+<li class="level3"><a href="#autotoc_md75">Rect</a></li>
+<li class="level3"><a href="#autotoc_md76">Circle</a></li>
+<li class="level3"><a href="#autotoc_md77">Polygon</a></li>
 </ul>
 </li>
-<li class="level2"><a href="#autotoc_md77">文字列の表示</a></li>
+<li class="level2"><a href="#autotoc_md78">文字列の表示</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md78">受信</a><ul><li class="level2"><a href="#autotoc_md79">時刻</a></li>
-<li class="level2"><a href="#autotoc_md80">Entry</a></li>
-<li class="level2"><a href="#autotoc_md81">Event</a></li>
+<li class="level1"><a href="#autotoc_md79">受信</a><ul><li class="level2"><a href="#autotoc_md80">時刻</a></li>
+<li class="level2"><a href="#autotoc_md81">Entry</a></li>
+<li class="level2"><a href="#autotoc_md82">Event</a></li>
 </ul>
 </li>
 </ul>
 </div>
-<div class="textblock"><p><a class="anchor" id="autotoc_md69"></a></p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md70"></a></p>
 <dl class="section since"><dt>Since</dt><dd><span class="since-c">1.6</span> <span class="since-js">1.4</span> <span class="since-py">1.1</span> </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><ul>
 <li>C++ <a class="el" href="classwebcface_1_1Canvas2D.html" title="Canvas2Dの送受信データを表すクラス">webcface::Canvas2D</a> (<code><a class="el" href="canvas2d_8h.html">webcface/canvas2d.h</a></code>)</li>
@@ -167,7 +167,7 @@ $(document).ready(function(){initNavTree('md_14__canvas2d.html',''); initResizab
 <li>Python <a href="https://na-trium-144.github.io/webcface-python/webcface.canvas2d.html#webcface.canvas2d.Canvas2D">webcface.Canvas2D</a></li>
 </ul>
 </dd></dl>
-<h1><a class="anchor" id="autotoc_md70"></a>
+<h1><a class="anchor" id="autotoc_md71"></a>
 Point, Transform</h1>
 <p>WebCFaceでは座標を表すクラスとして <a class="el" href="classwebcface_1_1Point.html" title="3次元 or 2次元の座標">webcface::Point</a>, 座標変換(平行移動してから回転)を表すクラスとして <a class="el" href="classwebcface_1_1Transform.html" title="3次元の座標と回転">webcface::Transform</a> があります。</p>
 <p>Pointでは x, y 座標、Transformでは回転角(radianで、 (x, y) = (1, 0) から (0, 1) に回る向きが正)を指定します。</p>
@@ -197,7 +197,7 @@ Point, Transform</h1>
 <p class="startli">引数にPointやTransformをとる関数では、webcface.Point に変換することなく <code>[1, 2]</code>のようなリストのままでも使えるものもあります。</p>
 </li>
 </ul>
-</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md71"></a>
+</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md72"></a>
 送信</h1>
 <p>使い方は<a class="el" href="md_13__view.html">View</a>とだいたい同じになっています。</p>
 <div class="tabbed"></div><div class="tabbed"><ul>
@@ -286,7 +286,7 @@ Point, Transform</h1>
 </li>
 </ul>
 </div><div class="tabbed"></div><dl class="section note"><dt>Note</dt><dd>Viewと同様、Canvas3Dの2回目以降の送信時にはWebCFace内部では前回からの差分のみが送信されます</dd></dl>
-<h2><a class="anchor" id="autotoc_md72"></a>
+<h2><a class="anchor" id="autotoc_md73"></a>
 Geometry (2次元)</h2>
 <p>2次元の図形を表示するにはGeometryを指定します。</p>
 <div class="tabbed"></div><div class="tabbed"><ul>
@@ -324,21 +324,21 @@ ver1.8以前のC++</summary>
 <p>座標系は 右方向がx座標正、下方向がy座標正です。 (したがって回転角は右回りが正になります。)</p>
 <p>描画したものが重なる場合、後にaddした要素が上に描画されます。</p>
 <p>Geometryは以下のものが用意されています。</p>
-<h3><a class="anchor" id="autotoc_md73"></a>
+<h3><a class="anchor" id="autotoc_md74"></a>
 Line</h3>
 <p>指定した2点間に直線を引きます </p><div class="fragment"><div class="line">line(Point begin, Point end)</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md74"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md75"></a>
 Rect</h3>
 <p>指定した2点を頂点としx軸,y軸に平行な辺をもつ長方形を描画します </p><div class="fragment"><div class="line">rect(Point vertex1, Point vertex2)</div>
 </div><!-- fragment --><p> またはoriginを中心として幅(x方向の長さ)がwidth, 高さ(y方向の長さ)がheightの長方形を描画します </p><div class="fragment"><div class="line">rect(Point origin, <span class="keywordtype">double</span> width, <span class="keywordtype">double</span> height)</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md75"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md76"></a>
 Circle</h3>
 <p>originを中心として半径radiusの円を描画します </p><div class="fragment"><div class="line">circle(Point origin, <span class="keywordtype">double</span> radius)</div>
 </div><!-- fragment --><dl class="section warning"><dt>Warning</dt><dd>PythonではCanvas3Dとの兼ね合いで第1引数はTransform (使いにくいのでなんとかならないか?)</dd></dl>
-<h3><a class="anchor" id="autotoc_md76"></a>
+<h3><a class="anchor" id="autotoc_md77"></a>
 Polygon</h3>
 <p>指定した点をつなげた図形を描画します </p><div class="fragment"><div class="line">polygon(std::vector&lt;Point&gt; points)</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md77"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md78"></a>
 文字列の表示</h2>
 <div class="tabbed"></div><div class="tabbed"><ul>
 <li><b class="tab-title">C++</b> <dl class="section since"><dt>Since</dt><dd><span class="since-c">1.9</span></dd></dl>
@@ -350,21 +350,21 @@ Polygon</h3>
 <div class="ttc" id="anamespacewebcface_html_a5dcc1f15d6a60ca34207565aeb74124aafe01d67a002dfa0f3ac084298142eccd"><div class="ttname"><a href="namespacewebcface.html#a5dcc1f15d6a60ca34207565aeb74124aafe01d67a002dfa0f3ac084298142eccd">webcface::ViewColor::orange</a></div><div class="ttdeci">@ orange</div></div>
 </div><!-- fragment --></li>
 </ul>
-</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md78"></a>
+</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md79"></a>
 受信</h1>
 <p>Viewなどと同様、Member::canvas2D() でCanvas2Dクラスのオブジェクトが得られ、 Canvas2D::tryGet() で値のリクエストをするとともに受信した値を取得できます。</p>
 <p>Canvas2Dデータは <a class="el" href="classwebcface_1_1Canvas2DComponent.html" title="Canvas2Dの各要素を表すクラス。">webcface::Canvas2DComponent</a> (JavaScript <a href="https://na-trium-144.github.io/webcface-js/classes/Canvas3DComponent.html">Canvas2DComponent</a>), Python <a href="https://na-trium-144.github.io/webcface-python/webcface.canvas2d.html#webcface.canvas2d.Canvas2DComponent">webcface.Canvas2DComponent</a>) のリストとして得られ、 Canvas2DComponentオブジェクトから各種プロパティを取得できます。</p>
 <p>また、Canvasの幅と高さも取得できます。</p>
-<h2><a class="anchor" id="autotoc_md79"></a>
+<h2><a class="anchor" id="autotoc_md80"></a>
 時刻</h2>
 <p><strike>Canvas2D::time()</strike> でその値が送信されたとき(そのMemberがsync()したとき)の時刻が得られます。 <br  />
  <span class="since-c">1.7</span> <span class="since-js">1.6</span> <span class="since-py"></span> Member::syncTime() に変更</p>
-<h2><a class="anchor" id="autotoc_md80"></a>
+<h2><a class="anchor" id="autotoc_md81"></a>
 Entry</h2>
 <p>Member::canvas2DEntries() でそのMemberが送信しているCanvas2Dのリストが得られます</p>
 <p>また、Member::onCanvas2DEntry() で新しくデータが追加されたときのコールバックを設定できます</p>
 <p>いずれも使い方は <a class="el" href="md_10__value.html">Value</a> と同様なのでそちらを参照してください</p>
-<h2><a class="anchor" id="autotoc_md81"></a>
+<h2><a class="anchor" id="autotoc_md82"></a>
 Event</h2>
 <p>受信したデータが変化したときにコールバックを呼び出すことができます。 コールバックを設定することでもその値はリクエストされます。</p>
 <p>また、データが変化したどうかに関わらずそのMemberがsync()したときにコールバックを呼び出したい場合は Member::onSync() が使えます</p>
@@ -381,7 +381,7 @@ Event</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Jul 3 2024 11:42:50 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Fri Jul 5 2024 09:17:19 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

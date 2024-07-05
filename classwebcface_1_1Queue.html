@@ -153,13 +153,17 @@ $(document).ready(function(){initNavTree('classwebcface_1_1Queue.html',''); init
 <div class="dynheader">
 Inheritance diagram for Queue&lt; T &gt;:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classwebcface_1_1Queue__inherit__graph.svg" width="404" height="183"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classwebcface_1_1Queue__inherit__graph.svg" width="191" height="124"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a28ee7920d4166b13750f0958a72aba96" id="r_a28ee7920d4166b13750f0958a72aba96"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Queue.html#a28ee7920d4166b13750f0958a72aba96">push</a> (const T &amp;f)</td></tr>
 <tr class="separator:a28ee7920d4166b13750f0958a72aba96"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acd7d7d77a6912ba3868ff256688a177b" id="r_acd7d7d77a6912ba3868ff256688a177b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Queue.html#acd7d7d77a6912ba3868ff256688a177b">push</a> (T &amp;&amp;f)</td></tr>
+<tr class="separator:acd7d7d77a6912ba3868ff256688a177b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3f37b042a1e7cd4bd38fc564de81f0da" id="r_a3f37b042a1e7cd4bd38fc564de81f0da"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Queue.html#a3f37b042a1e7cd4bd38fc564de81f0da">empty</a> ()</td></tr>
+<tr class="separator:a3f37b042a1e7cd4bd38fc564de81f0da"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a44a53147d4b3600ec200300ea16e3707" id="r_a44a53147d4b3600ec200300ea16e3707"><td class="memItemLeft" align="right" valign="top">std::optional&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Queue.html#a44a53147d4b3600ec200300ea16e3707">pop</a> ()</td></tr>
 <tr class="separator:a44a53147d4b3600ec200300ea16e3707"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af460c9debb26e8822e3a564affc542c6" id="r_af460c9debb26e8822e3a564affc542c6"><td class="memItemLeft" align="right" valign="top">std::optional&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Queue.html#af460c9debb26e8822e3a564affc542c6">pop</a> (std::chrono::milliseconds d)</td></tr>
@@ -193,6 +197,33 @@ template&lt;typename T &gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">void clear </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a3f37b042a1e7cd4bd38fc564de81f0da" name="a3f37b042a1e7cd4bd38fc564de81f0da"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3f37b042a1e7cd4bd38fc564de81f0da">&#9670;&#160;</a></span>empty()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool empty </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -263,7 +294,7 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <a id="a28ee7920d4166b13750f0958a72aba96" name="a28ee7920d4166b13750f0958a72aba96"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a28ee7920d4166b13750f0958a72aba96">&#9670;&#160;</a></span>push()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a28ee7920d4166b13750f0958a72aba96">&#9670;&#160;</a></span>push() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -277,6 +308,34 @@ template&lt;typename T &gt; </div>
           <td class="memname">void push </td>
           <td>(</td>
           <td class="paramtype">const T &amp;&#160;</td>
+          <td class="paramname"><em>f</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="acd7d7d77a6912ba3868ff256688a177b" name="acd7d7d77a6912ba3868ff256688a177b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acd7d7d77a6912ba3868ff256688a177b">&#9670;&#160;</a></span>push() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void push </td>
+          <td>(</td>
+          <td class="paramtype">T &amp;&amp;&#160;</td>
           <td class="paramname"><em>f</em></td><td>)</td>
           <td></td>
         </tr>
@@ -372,7 +431,7 @@ template&lt;typename T &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="classwebcface_1_1Queue.html">Queue</a></li>
-    <li class="footer">Generated on Wed Jul 3 2024 11:42:51 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Fri Jul 5 2024 09:17:19 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

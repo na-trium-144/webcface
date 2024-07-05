@@ -3,7 +3,7 @@ var namespaceinternal =
     [ "WebSocket", "namespaceinternal_1_1WebSocket.html", [
       [ "close", "namespaceinternal_1_1WebSocket.html#a9edb79f3cfdfb2f0d2cd1b589a930e5f", null ],
       [ "init", "namespaceinternal_1_1WebSocket.html#a9edb9a94135ef05398d4618b01c427e3", null ],
-      [ "recv", "namespaceinternal_1_1WebSocket.html#a13ce8aae6e72f367f81289061af68979", null ],
+      [ "recv", "namespaceinternal_1_1WebSocket.html#a83c4a887dcb944f3d891b396bf4ae2c9", null ],
       [ "send", "namespaceinternal_1_1WebSocket.html#af75ac6f28fd6ff155128c8075a6569bd", null ]
     ] ],
     [ "shouldSend", "namespaceinternal.html#aa75afe668d3595431d5d644f1213cba6", null ],

@@ -150,8 +150,8 @@ Functions</h2></td></tr>
 <tr class="separator:a9edb9a94135ef05398d4618b01c427e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9edb79f3cfdfb2f0d2cd1b589a930e5f" id="r_a9edb79f3cfdfb2f0d2cd1b589a930e5f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceinternal_1_1WebSocket.html#a9edb79f3cfdfb2f0d2cd1b589a930e5f">close</a> (const std::shared_ptr&lt; internal::ClientData &gt; &amp;data)</td></tr>
 <tr class="separator:a9edb79f3cfdfb2f0d2cd1b589a930e5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a13ce8aae6e72f367f81289061af68979" id="r_a13ce8aae6e72f367f81289061af68979"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceinternal_1_1WebSocket.html#a13ce8aae6e72f367f81289061af68979">recv</a> (const std::shared_ptr&lt; internal::ClientData &gt; &amp;data)</td></tr>
-<tr class="separator:a13ce8aae6e72f367f81289061af68979"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a83c4a887dcb944f3d891b396bf4ae2c9" id="r_a83c4a887dcb944f3d891b396bf4ae2c9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceinternal_1_1WebSocket.html#a83c4a887dcb944f3d891b396bf4ae2c9">recv</a> (const std::shared_ptr&lt; internal::ClientData &gt; &amp;data, const std::function&lt; void(const std::string &amp;)&gt; &amp;cb)</td></tr>
+<tr class="separator:a83c4a887dcb944f3d891b396bf4ae2c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af75ac6f28fd6ff155128c8075a6569bd" id="r_af75ac6f28fd6ff155128c8075a6569bd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceinternal_1_1WebSocket.html#af75ac6f28fd6ff155128c8075a6569bd">send</a> (const std::shared_ptr&lt; internal::ClientData &gt; &amp;data, const std::string &amp;msg)</td></tr>
 <tr class="separator:af75ac6f28fd6ff155128c8075a6569bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -192,18 +192,28 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a13ce8aae6e72f367f81289061af68979" name="a13ce8aae6e72f367f81289061af68979"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a13ce8aae6e72f367f81289061af68979">&#9670;&#160;</a></span>recv()</h2>
+<a id="a83c4a887dcb944f3d891b396bf4ae2c9" name="a83c4a887dcb944f3d891b396bf4ae2c9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a83c4a887dcb944f3d891b396bf4ae2c9">&#9670;&#160;</a></span>recv()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void recv </td>
+          <td class="memname">bool recv </td>
           <td>(</td>
           <td class="paramtype">const std::shared_ptr&lt; internal::ClientData &gt; &amp;&#160;</td>
-          <td class="paramname"><em>data</em></td><td>)</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">const std::function&lt; void(const std::string &amp;)&gt; &amp;&#160;</td>
+          <td class="paramname"><em>cb</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -244,7 +254,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceinternal.html">internal</a></li><li class="navelem"><a class="el" href="namespaceinternal_1_1WebSocket.html">WebSocket</a></li>
-    <li class="footer">Generated on Wed Jul 3 2024 11:42:51 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Fri Jul 5 2024 09:17:19 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

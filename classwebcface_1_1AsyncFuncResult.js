@@ -1,7 +1,6 @@
 var classwebcface_1_1AsyncFuncResult =
 [
-    [ "AsyncFuncResult", "classwebcface_1_1AsyncFuncResult.html#af2f158972c8aa4dd1edce8c127ece18e", null ],
-    [ "AsyncFuncResult", "classwebcface_1_1AsyncFuncResult.html#a49f0afff52e1e1f98e95bab6da658aef", null ],
+    [ "AsyncFuncResult", "classwebcface_1_1AsyncFuncResult.html#ad6b694218b2b705fbde6bf200c5f9563", null ],
     [ "canvas2D", "classwebcface_1_1AsyncFuncResult.html#af9bd15e71b656e996127c88145c582ad", null ],
     [ "canvas2D", "classwebcface_1_1AsyncFuncResult.html#afbcbc44742f2180482b05a552f286ddb", null ],
     [ "canvas2DEntries", "classwebcface_1_1AsyncFuncResult.html#a99c1e26ea1fce7fbdbd4f1cb6771141b", null ],
@@ -50,13 +49,10 @@ var classwebcface_1_1AsyncFuncResult =
     [ "view", "classwebcface_1_1AsyncFuncResult.html#a1a6e1affea60ef37fbb3118637671da0", null ],
     [ "view", "classwebcface_1_1AsyncFuncResult.html#aa7adcae6ca1a5acda8eeea39c687b238", null ],
     [ "viewEntries", "classwebcface_1_1AsyncFuncResult.html#a8da26fb4e605fea2f481d0bd8a1e8f9a", null ],
-    [ "Func", "classwebcface_1_1AsyncFuncResult.html#a87c6c86ed0896880400f89c8c88c3927", null ],
-    [ "caller_id", "classwebcface_1_1AsyncFuncResult.html#a1857b0e2073dee1ce8b4c840768c14fc", null ],
     [ "data_w", "classwebcface_1_1AsyncFuncResult.html#acf663a756c76fb2936c0042257df739c", null ],
     [ "field_", "classwebcface_1_1AsyncFuncResult.html#ac6ffd336e43abb201663ab9b064a0607", null ],
     [ "member_", "classwebcface_1_1AsyncFuncResult.html#a3e22aa0aa6e9e9286fd1d3c1ea6c8a32", null ],
     [ "result", "classwebcface_1_1AsyncFuncResult.html#a05a565f888fd60985445985ca89ba408", null ],
-    [ "result_event", "classwebcface_1_1AsyncFuncResult.html#a3f41061b92f32149c2da9a12b7821725", null ],
     [ "started", "classwebcface_1_1AsyncFuncResult.html#a98d52cac5d23020581151ee1f106ec8a", null ],
-    [ "started_event", "classwebcface_1_1AsyncFuncResult.html#a7370e4749759aaca478fd75bf9a7b1c1", null ]
+    [ "state", "classwebcface_1_1AsyncFuncResult.html#a8afc39bb608f4360daf1b18b1a896e91", null ]
 ];

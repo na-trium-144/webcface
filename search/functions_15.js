@@ -12,8 +12,9 @@ var searchData=
   ['_7einputref_9',['~InputRef',['../classwebcface_1_1InputRef.html#a426a9bb66a0d861cf5fa495c2be6892d',1,'webcface::InputRef']]],
   ['_7eloglinedata_10',['~LogLineData',['../classwebcface_1_1LogLineData.html#a8f4ce857313b9a0595f46fc17b127c88',1,'webcface::LogLineData']]],
   ['_7ememberdata_11',['~MemberData',['../structwebcface_1_1Server_1_1MemberData.html#aa0e9e0f882a054ce8cd951bd53b745c7',1,'webcface::Server::MemberData']]],
-  ['_7eserver_12',['~Server',['../classwebcface_1_1Server_1_1Server.html#aa9320a8b35b2d116b716ae4077358c6b',1,'webcface::Server::Server']]],
-  ['_7eserverstorage_13',['~ServerStorage',['../structwebcface_1_1Server_1_1ServerStorage.html#a67510a38f587b0abde7b01f8cd7ee8d4',1,'webcface::Server::ServerStorage']]],
-  ['_7eview_14',['~View',['../classwebcface_1_1View.html#a7616dabeca3d304198ec449094a7792f',1,'webcface::View']]],
-  ['_7eviewbuf_15',['~ViewBuf',['../classwebcface_1_1internal_1_1ViewBuf.html#a4cd684d5b377b6e839b2316677677ec0',1,'webcface::internal::ViewBuf']]]
+  ['_7escopedunlock_12',['~ScopedUnlock',['../structwebcface_1_1ScopedUnlock.html#a339e713f20211a616d865189c6cd6e33',1,'webcface::ScopedUnlock']]],
+  ['_7eserver_13',['~Server',['../classwebcface_1_1Server_1_1Server.html#aa9320a8b35b2d116b716ae4077358c6b',1,'webcface::Server::Server']]],
+  ['_7eserverstorage_14',['~ServerStorage',['../structwebcface_1_1Server_1_1ServerStorage.html#a67510a38f587b0abde7b01f8cd7ee8d4',1,'webcface::Server::ServerStorage']]],
+  ['_7eview_15',['~View',['../classwebcface_1_1View.html#a7616dabeca3d304198ec449094a7792f',1,'webcface::View']]],
+  ['_7eviewbuf_16',['~ViewBuf',['../classwebcface_1_1internal_1_1ViewBuf.html#a4cd684d5b377b6e839b2316677677ec0',1,'webcface::internal::ViewBuf']]]
 ];

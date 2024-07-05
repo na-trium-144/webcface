@@ -28,6 +28,7 @@ var hierarchy =
     [ "Circle", "structwebcface_1_1components_1_1geometries_1_1Circle.html", null ],
     [ "Circle", "structwebcface_1_1components_1_1geometries_1_1Circle.html", null ],
     [ "Circle", "structwebcface_1_1components_1_1geometries_1_1Circle.html", null ],
+    [ "CopyCounter", "structCopyCounter.html", null ],
     [ "Cylinder", "structwebcface_1_1components_1_1geometries_1_1Cylinder.html", null ],
     [ "Cylinder", "structwebcface_1_1components_1_1geometries_1_1Cylinder.html", null ],
     [ "Cylinder", "structwebcface_1_1components_1_1geometries_1_1Cylinder.html", null ],
@@ -42,6 +43,7 @@ var hierarchy =
     [ "DummyClient", "structDummyClient.html", null ],
     [ "DummyServer", "structDummyServer.html", null ],
     [ "enable_shared_from_this", null, [
+      [ "AsyncFuncState", "classwebcface_1_1internal_1_1AsyncFuncState.html", null ],
       [ "ClientData", "structwebcface_1_1internal_1_1ClientData.html", null ]
     ] ],
     [ "EventTarget< ArgType >", "classwebcface_1_1EventTarget.html", null ],
@@ -72,7 +74,6 @@ var hierarchy =
     [ "FieldBase", "structwebcface_1_1FieldBase.html", [
       [ "Field", "structwebcface_1_1Field.html", [
         [ "AsyncFuncResult", "classwebcface_1_1AsyncFuncResult.html", null ],
-        [ "AsyncFuncResultSetter", "structwebcface_1_1AsyncFuncResultSetter.html", null ],
         [ "Canvas2D", "classwebcface_1_1Canvas2D.html", null ],
         [ "Canvas3D", "classwebcface_1_1Canvas3D.html", null ],
         [ "Func", "classwebcface_1_1Func.html", [
@@ -90,10 +91,8 @@ var hierarchy =
         [ "View", "classwebcface_1_1View.html", null ]
       ] ]
     ] ],
-    [ "FuncCall", "structwebcface_1_1FuncCall.html", null ],
     [ "FuncCallHandle", "classwebcface_1_1FuncCallHandle.html", null ],
     [ "FuncInfo", "structwebcface_1_1FuncInfo.html", null ],
-    [ "FuncOnSync", "classwebcface_1_1internal_1_1FuncOnSync.html", null ],
     [ "FuncResultStore", "classwebcface_1_1internal_1_1FuncResultStore.html", null ],
     [ "Geometry", "structwebcface_1_1Geometry.html", [
       [ "TemporalGeometry", "classwebcface_1_1TemporalGeometry.html", null ]
@@ -233,7 +232,6 @@ var hierarchy =
     [ "Polygon", "structwebcface_1_1components_1_1geometries_1_1Polygon.html", null ],
     [ "Polygon", "structwebcface_1_1components_1_1geometries_1_1Polygon.html", null ],
     [ "Queue< T >", "classwebcface_1_1Queue.html", null ],
-    [ "Queue< std::shared_ptr< webcface::internal::FuncOnSync > >", "classwebcface_1_1Queue.html", null ],
     [ "Queue< std::string >", "classwebcface_1_1Queue.html", null ],
     [ "Res< T >", "structwebcface_1_1message_1_1Res.html", null ],
     [ "RobotJoint", "structwebcface_1_1RobotJoint.html", null ],
@@ -242,6 +240,7 @@ var hierarchy =
     [ "runtime_error", null, [
       [ "FuncNotFound", "structwebcface_1_1FuncNotFound.html", null ]
     ] ],
+    [ "ScopedUnlock< Mtx >", "structwebcface_1_1ScopedUnlock.html", null ],
     [ "Server", "classwebcface_1_1Server_1_1Server.html", null ],
     [ "ServerStorage", "structwebcface_1_1Server_1_1ServerStorage.html", null ],
     [ "SharedString", "classwebcface_1_1encoding_1_1SharedString.html", null ],

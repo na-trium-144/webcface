@@ -142,21 +142,21 @@ $(document).ready(function(){initNavTree('md_10__value.html',''); initResizable(
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md37">コマンドライン</a></li>
-<li class="level1"><a href="#autotoc_md38">送信</a><ul><li class="level2"><a href="#autotoc_md39">通信データについて</a></li>
-<li class="level2"><a href="#autotoc_md40">グループ化</a></li>
-<li class="level2"><a href="#autotoc_md41">複数の値をまとめて送る</a></li>
+<ul><li class="level1"><a href="#autotoc_md38">コマンドライン</a></li>
+<li class="level1"><a href="#autotoc_md39">送信</a><ul><li class="level2"><a href="#autotoc_md40">通信データについて</a></li>
+<li class="level2"><a href="#autotoc_md41">グループ化</a></li>
+<li class="level2"><a href="#autotoc_md42">複数の値をまとめて送る</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md42">受信</a><ul><li class="level2"><a href="#autotoc_md43">リクエスト</a></li>
-<li class="level2"><a href="#autotoc_md44">時刻</a></li>
-<li class="level2"><a href="#autotoc_md45">Entry</a></li>
-<li class="level2"><a href="#autotoc_md46">Event</a></li>
+<li class="level1"><a href="#autotoc_md43">受信</a><ul><li class="level2"><a href="#autotoc_md44">リクエスト</a></li>
+<li class="level2"><a href="#autotoc_md45">時刻</a></li>
+<li class="level2"><a href="#autotoc_md46">Entry</a></li>
+<li class="level2"><a href="#autotoc_md47">Event</a></li>
 </ul>
 </li>
 </ul>
 </div>
-<div class="textblock"><p><a class="anchor" id="autotoc_md36"></a></p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md37"></a></p>
 <dl class="section since"><dt>Since</dt><dd><span class="since-c"></span> <span class="since-js"></span> <span class="since-py"></span> </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><ul>
 <li>C++ <a class="el" href="classwebcface_1_1Value.html" title="実数値またはその配列の送受信データを表すクラス">webcface::Value</a> (<code><a class="el" href="value_8h.html">webcface/value.h</a></code>)</li>
@@ -166,12 +166,12 @@ $(document).ready(function(){initNavTree('md_10__value.html',''); initResizable(
 </ul>
 </dd></dl>
 <p>数値データ、または1次元数値配列を送受信する型です。</p>
-<h1><a class="anchor" id="autotoc_md37"></a>
+<h1><a class="anchor" id="autotoc_md38"></a>
 コマンドライン</h1>
 <div class="fragment"><div class="line">webcface-send </div>
 </div><!-- fragment --><p> を実行し、数字を入力すると送信されます。(1つ入力するごとに改行してください)</p>
 <p>オプションでclientやデータの名前を変更できます。 詳細は <a class="el" href="md_71__send.html">webcface-send</a> のページを参照</p>
-<h1><a class="anchor" id="autotoc_md38"></a>
+<h1><a class="anchor" id="autotoc_md39"></a>
 送信</h1>
 <p>Client::value からValueオブジェクトを作り、 Value::set() でデータを代入し、Client::sync()することで送信されます。</p>
 <div class="tabbed"></div><div class="tabbed"><ul>
@@ -202,7 +202,7 @@ $(document).ready(function(){initNavTree('md_10__value.html',''); initResizable(
 </div><div class="tabbed"></div><dl class="section warning"><dt>Warning</dt><dd><span class="since-c">1.10</span> データの名前を半角ピリオドから始めると、Entryが他クライアントに送信されなくなります。 (WebUI上に表示することなくデータを送ることができます) <br  />
  半角ピリオド2つから始まる名前はwebcface内部の処理で利用する場合があるので使用しないでください。 <br  />
  Text、Funcなど他のデータ型についても同様です。</dd></dl>
-<h2><a class="anchor" id="autotoc_md39"></a>
+<h2><a class="anchor" id="autotoc_md40"></a>
 通信データについて</h2>
 <p>クライアントが送信したデータは、サーバーを経由して別のクライアントに送られます。 (Valueに限らず、これ以降説明する他のデータ型のfieldについても同様です。)</p>
 <p><img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/pub-sub.png" alt="pub-sub" class="inline"/></p>
@@ -210,7 +210,7 @@ $(document).ready(function(){initNavTree('md_10__value.html',''); initResizable(
 <p><span class="since-c">1.8</span> <span class="since-js">1.4.1</span> <span class="since-py">1.1.2</span> クライアント→サーバー間では、同じデータを繰り返しsetした場合は2回目以降はデータを送信しないことで通信量を削減しています。</p>
 <p>基本的にクライアント→サーバーの方向にはすべてのデータが送信されるのに対し、サーバー→クライアントの方向には必要なデータのみを送信する設計になっていますが、これは前者はlocalhost(サーバーとクライアントが同じPC)のみで、後者はWi-FiやLANでも通信することを想定したものです。 (通信量は増えますがクライアント→サーバーのデータ送信をWi-FiやLAN経由で行うことも可能です)</p>
 <dl class="section note"><dt>Note</dt><dd>webcfaceのvalueは浮動小数型のみを扱いますが、値が整数だった場合シリアライズ時に自動的に整数型として送受信されるようなので、整数値やbool値を送りたい場合でも通信量を気にする必要はありません。(<a href="https://github.com/msgpack/msgpack-c/issues/1017">msgpack/msgpack-c#1017</a>)</dd></dl>
-<h2><a class="anchor" id="autotoc_md40"></a>
+<h2><a class="anchor" id="autotoc_md41"></a>
 グループ化</h2>
 <p>Valueの名前を半角ピリオドで区切ると、WebUI上ではフォルダアイコンで表示されグループ化されて表示されます。</p>
 <p>Valueに限らず他のデータ型 (<a class="el" href="md_13__view.html">View</a>, <a class="el" href="md_14__canvas2d.html">Canvas2D</a>, <a class="el" href="md_15__image.html">Image</a>, <a class="el" href="md_20__canvas3d.html">Canvas3D</a>, <a class="el" href="md_21__robot__model.html">RobotModel</a>) でも同様です。</p>
@@ -258,9 +258,9 @@ $(document).ready(function(){initNavTree('md_10__value.html',''); initResizable(
 </ul>
 </div><div class="tabbed"></div><p><img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/value_child.png" alt="value_child" class="inline"/></p>
 <p>ROSのTopicではPointやTransformなど目的に応じてさまざまな型が用意されていますが、 WebCFaceではそういう場合はValueを複数用意して送信することを想定しています。</p>
-<h2><a class="anchor" id="autotoc_md41"></a>
+<h2><a class="anchor" id="autotoc_md42"></a>
 複数の値をまとめて送る</h2>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000001">Todo:</a></b></dt><dd>Pythonの辞書型への対応は未実装</dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000002">Todo:</a></b></dt><dd>Pythonの辞書型への対応は未実装</dd></dl>
 <div class="tabbed"></div><div class="tabbed"><ul>
 <li><b class="tab-title">JavaScript</b> オブジェクトを渡すことができます。 <div class="fragment"><div class="line">wcli.value(&quot;a&quot;).set({</div>
 <div class="line">    x: 1,</div>
@@ -311,13 +311,14 @@ $(document).ready(function(){initNavTree('md_10__value.html',''); initResizable(
 <div class="line"><span class="comment">*/</span></div>
 </div><!-- fragment --><p></p>
 </details>
-<h1><a class="anchor" id="autotoc_md42"></a>
+<h1><a class="anchor" id="autotoc_md43"></a>
 受信</h1>
 <p>Member::value() でValueクラスのオブジェクトが得られ、 Value::tryGet(), Value::tryGetVec() などで値のリクエストをするとともに受信した値を取得できます。</p>
 <p>例えば<code>foo</code>というクライアントの<code>hoge</code>という名前のデータを取得したい場合は次のようにします。</p>
 <div class="tabbed"></div><div class="tabbed"><ul>
-<li><p class="startli"><b class="tab-title">C++</b> </p><div class="fragment"><div class="line">std::optional&lt;double&gt; hoge = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).value(<span class="stringliteral">&quot;hoge&quot;</span>).tryGet();</div>
-<div class="line">std::optional&lt;std::vector&lt;double&gt;&gt; hoge = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).value(<span class="stringliteral">&quot;hoge&quot;</span>).tryGetVec();</div>
+<li><p class="startli"><b class="tab-title">C++</b> </p><div class="fragment"><div class="line">std::optional&lt;double&gt; <a class="code hl_function" href="func__test_8cc.html#a4d8f3927869eff6b32d7b3e0f8b1561f">hoge</a> = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).value(<span class="stringliteral">&quot;hoge&quot;</span>).tryGet();</div>
+<div class="line">std::optional&lt;std::vector&lt;double&gt;&gt; <a class="code hl_function" href="func__test_8cc.html#a4d8f3927869eff6b32d7b3e0f8b1561f">hoge</a> = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).value(<span class="stringliteral">&quot;hoge&quot;</span>).tryGetVec();</div>
+<div class="ttc" id="afunc__test_8cc_html_a4d8f3927869eff6b32d7b3e0f8b1561f"><div class="ttname"><a href="func__test_8cc.html#a4d8f3927869eff6b32d7b3e0f8b1561f">hoge</a></div><div class="ttdeci">void hoge()</div><div class="ttdef"><b>Definition</b> func_test.cc:186</div></div>
 </div><!-- fragment --><p> 値を受信していない場合 tryGet(), tryGetVec() はstd::nulloptを返します。 <br  />
  get(), getVec() はstd::nulloptの代わりにデフォルト値を返します。 <br  />
  また、doubleやstd::vector&lt;double&gt; などの型にキャストすることでも同様に値が得られます。</p>
@@ -364,7 +365,7 @@ $(document).ready(function(){initNavTree('md_10__value.html',''); initResizable(
 </div><!-- fragment --> 値を受信していない場合 try_get(), try_get_vec() はNoneを返します。 <br  />
  get(), getVec() はNoneの代わりにデフォルト値を返します。</li>
 </ul>
-</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md43"></a>
+</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md44"></a>
 リクエスト</h2>
 <p>get()などの初回の呼び出しではまだ値を受信していないためnullなどを返しますが、 <br  />
  <strike>Client::sync()したときに実際にリクエストが送信され、</strike> <br  />
@@ -393,11 +394,11 @@ $(document).ready(function(){initNavTree('md_10__value.html',''); initResizable(
 </div><!-- fragment --></li>
 </ul>
 </div><div class="tabbed"></div><dl class="section note"><dt>Note</dt><dd><span class="since-c">1.7</span> <span class="since-js">1.1</span> <span class="since-py"></span> Value::request()で明示的にリクエストを送信することもできます。</dd></dl>
-<h2><a class="anchor" id="autotoc_md44"></a>
+<h2><a class="anchor" id="autotoc_md45"></a>
 時刻</h2>
 <p><strike>Value::time()</strike> でその値が送信されたとき(そのMemberがsync()したとき)の時刻が得られます。 <br  />
  <span class="since-c">1.7</span> <span class="since-js">1.6</span> <span class="since-py"></span> Member::syncTime() に変更 (Textなど他のデータの送信時刻と共通です)</p>
-<h2><a class="anchor" id="autotoc_md45"></a>
+<h2><a class="anchor" id="autotoc_md46"></a>
 Entry</h2>
 <p><strike>Member::values() で</strike> そのMemberが送信しているvalueのリストが得られます <br  />
  <span class="since-c">1.6</span> <span class="since-py">1.1</span> Member::valueEntries() に変更</p>
@@ -430,7 +431,7 @@ Entry</h2>
 <div class="line">wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).on_value_entry.connect(value_entry)</div>
 </div><!-- fragment --></li>
 </ul>
-</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md46"></a>
+</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md47"></a>
 Event</h2>
 <p>受信したデータが変化したときにコールバックを呼び出すことができます。 コールバックを設定することでもその値はリクエストされます。</p>
 <p>また、データが変化したどうかに関わらずそのMemberがsync()したときにコールバックを呼び出したい場合は Member::onSync() が使えます。</p>
@@ -484,7 +485,7 @@ Event</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Jul 3 2024 11:42:50 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Fri Jul 5 2024 09:17:19 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

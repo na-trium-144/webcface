@@ -142,6 +142,7 @@ $(document).ready(function(){initNavTree('classwebcface_1_1Client.html',''); ini
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="#pro-attribs">Protected Attributes</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
 <a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="classwebcface_1_1Client-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">Client Class Reference</div></div>
@@ -198,11 +199,24 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a0a814ebcc536bc201002103aaefbe502"><td class="mdescLeft">&#160;</td><td class="mdescRight">通信が切断されたときに自動で再試行するかどうかを取得する。  <br /></td></tr>
 <tr class="separator:a0a814ebcc536bc201002103aaefbe502"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a60de64d75454385b23995437f1d72669" id="r_a60de64d75454385b23995437f1d72669"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Client.html#a60de64d75454385b23995437f1d72669">start</a> ()</td></tr>
-<tr class="memdesc:a60de64d75454385b23995437f1d72669"><td class="mdescLeft">&#160;</td><td class="mdescRight">サーバーへの接続を開始する。  <br /></td></tr>
+<tr class="memdesc:a60de64d75454385b23995437f1d72669"><td class="mdescLeft">&#160;</td><td class="mdescRight">サーバーへの接続を別スレッドで開始する。  <br /></td></tr>
 <tr class="separator:a60de64d75454385b23995437f1d72669"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a806d469a09f6c432330ae1adfdda52a7" id="r_a806d469a09f6c432330ae1adfdda52a7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Client.html#a806d469a09f6c432330ae1adfdda52a7">waitConnection</a> ()</td></tr>
-<tr class="memdesc:a806d469a09f6c432330ae1adfdda52a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">サーバーへの接続を開始し、成功するまで待機する。  <br /></td></tr>
+<tr class="memdesc:a806d469a09f6c432330ae1adfdda52a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">サーバーへの接続を別スレッドで開始し、成功するまで待機する。  <br /></td></tr>
 <tr class="separator:a806d469a09f6c432330ae1adfdda52a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3a359a0ae2735040a1ae270ee1d6e597" id="r_a3a359a0ae2735040a1ae270ee1d6e597"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Client.html#a3a359a0ae2735040a1ae270ee1d6e597">recv</a> (std::chrono::microseconds timeout=std::chrono::microseconds(0))</td></tr>
+<tr class="memdesc:a3a359a0ae2735040a1ae270ee1d6e597"><td class="mdescLeft">&#160;</td><td class="mdescRight">サーバーからデータを受信する  <br /></td></tr>
+<tr class="separator:a3a359a0ae2735040a1ae270ee1d6e597"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a99fde3f740e1f80d0209d4d5bc8e0535" id="r_a99fde3f740e1f80d0209d4d5bc8e0535"><td class="memTemplParams" colspan="2">template&lt;typename Clock , typename Duration &gt; </td></tr>
+<tr class="memitem:a99fde3f740e1f80d0209d4d5bc8e0535"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Client.html#a99fde3f740e1f80d0209d4d5bc8e0535">recvUntil</a> (std::chrono::time_point&lt; Clock, Duration &gt; timeout)</td></tr>
+<tr class="memdesc:a99fde3f740e1f80d0209d4d5bc8e0535"><td class="mdescLeft">&#160;</td><td class="mdescRight">サーバーからデータを受信する  <br /></td></tr>
+<tr class="separator:a99fde3f740e1f80d0209d4d5bc8e0535"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d2b505770bcb022fd0afa29db4eacd9" id="r_a4d2b505770bcb022fd0afa29db4eacd9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Client.html#a4d2b505770bcb022fd0afa29db4eacd9">waitRecv</a> ()</td></tr>
+<tr class="memdesc:a4d2b505770bcb022fd0afa29db4eacd9"><td class="mdescLeft">&#160;</td><td class="mdescRight">サーバーからデータを受信する  <br /></td></tr>
+<tr class="separator:a4d2b505770bcb022fd0afa29db4eacd9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a80244ad7d757e128ddb3128a82fb3329" id="r_a80244ad7d757e128ddb3128a82fb3329"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Client.html#a80244ad7d757e128ddb3128a82fb3329">autoRecv</a> (bool enabled, std::chrono::microseconds interval=std::chrono::microseconds(100))</td></tr>
+<tr class="memdesc:a80244ad7d757e128ddb3128a82fb3329"><td class="mdescLeft">&#160;</td><td class="mdescRight">別スレッドでrecv()を自動的に呼び出す間隔を設定する。  <br /></td></tr>
+<tr class="separator:a80244ad7d757e128ddb3128a82fb3329"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad55f80ed3cd8b6c4f247763b747016af" id="r_ad55f80ed3cd8b6c4f247763b747016af"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Client.html#ad55f80ed3cd8b6c4f247763b747016af">sync</a> ()</td></tr>
 <tr class="memdesc:ad55f80ed3cd8b6c4f247763b747016af"><td class="mdescLeft">&#160;</td><td class="mdescRight">送信用にセットしたデータをすべて送信キューに入れる。  <br /></td></tr>
 <tr class="separator:ad55f80ed3cd8b6c4f247763b747016af"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -218,19 +232,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a006e7ddf32fda5cd9dff47d094a3b621" id="r_a006e7ddf32fda5cd9dff47d094a3b621"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1EventTarget.html">EventTarget</a>&lt; <a class="el" href="classwebcface_1_1Member.html">Member</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Client.html#a006e7ddf32fda5cd9dff47d094a3b621">onMemberEntry</a> ()</td></tr>
 <tr class="memdesc:a006e7ddf32fda5cd9dff47d094a3b621"><td class="mdescLeft">&#160;</td><td class="mdescRight">Memberが追加された時のイベント  <br /></td></tr>
 <tr class="separator:a006e7ddf32fda5cd9dff47d094a3b621"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a39c0a05fe120db8a07551cfde1216aca" id="r_a39c0a05fe120db8a07551cfde1216aca"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Client.html#a39c0a05fe120db8a07551cfde1216aca">setDefaultRunCond</a> (const <a class="el" href="namespacewebcface.html#a1f914f5d15fb32aa05ca882cff7f2cd4">FuncWrapperType</a> &amp;wrapper)</td></tr>
-<tr class="memdesc:a39c0a05fe120db8a07551cfde1216aca"><td class="mdescLeft">&#160;</td><td class="mdescRight">これ以降セットするFuncのデフォルトのFuncWrapperをセットする。(初期状態はnullptr)  <br /></td></tr>
-<tr class="separator:a39c0a05fe120db8a07551cfde1216aca"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad6b0c1236f16487a1961f5ed4a58eddd" id="r_ad6b0c1236f16487a1961f5ed4a58eddd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Client.html#ad6b0c1236f16487a1961f5ed4a58eddd">setDefaultRunCondNone</a> ()</td></tr>
-<tr class="memdesc:ad6b0c1236f16487a1961f5ed4a58eddd"><td class="mdescLeft">&#160;</td><td class="mdescRight">デフォルトのFuncWrapperを nullptr にする  <br /></td></tr>
-<tr class="separator:ad6b0c1236f16487a1961f5ed4a58eddd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acb0a3287b0c8821443eff73d73558b59" id="r_acb0a3287b0c8821443eff73d73558b59"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Client.html#acb0a3287b0c8821443eff73d73558b59">setDefaultRunCondOnSync</a> ()</td></tr>
-<tr class="memdesc:acb0a3287b0c8821443eff73d73558b59"><td class="mdescLeft">&#160;</td><td class="mdescRight">デフォルトのFuncWrapperを runCondOnSync() にする  <br /></td></tr>
-<tr class="separator:acb0a3287b0c8821443eff73d73558b59"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afe24cb249867a506aaace22d5440c9ab" id="r_afe24cb249867a506aaace22d5440c9ab"><td class="memTemplParams" colspan="2">template&lt;typename ScopeGuard &gt; </td></tr>
-<tr class="memitem:afe24cb249867a506aaace22d5440c9ab"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Client.html#afe24cb249867a506aaace22d5440c9ab">setDefaultRunCondScopeGuard</a> ()</td></tr>
-<tr class="memdesc:afe24cb249867a506aaace22d5440c9ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">デフォルトのFuncWrapperを runCondScopeGuard() にする  <br /></td></tr>
-<tr class="separator:afe24cb249867a506aaace22d5440c9ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1a6b50ffa0e2d23b81e74533ffacc1e7" id="r_a1a6b50ffa0e2d23b81e74533ffacc1e7"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classwebcface_1_1LoggerSink.html">LoggerSink</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Client.html#a1a6b50ffa0e2d23b81e74533ffacc1e7">loggerSink</a> ()</td></tr>
 <tr class="memdesc:a1a6b50ffa0e2d23b81e74533ffacc1e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">webcfaceに出力するsink  <br /></td></tr>
 <tr class="separator:a1a6b50ffa0e2d23b81e74533ffacc1e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -454,6 +455,11 @@ Protected Attributes</h2></td></tr>
 <tr class="memitem:ac6ffd336e43abb201663ab9b064a0607" id="r_ac6ffd336e43abb201663ab9b064a0607"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1encoding_1_1SharedString.html">SharedString</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1FieldBase.html#ac6ffd336e43abb201663ab9b064a0607">field_</a></td></tr>
 <tr class="memdesc:ac6ffd336e43abb201663ab9b064a0607"><td class="mdescLeft">&#160;</td><td class="mdescRight">フィールド名  <br /></td></tr>
 <tr class="separator:ac6ffd336e43abb201663ab9b064a0607"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr class="memitem:a4d328bed01561e8b5bfb4b0207668f49" id="r_a4d328bed01561e8b5bfb4b0207668f49"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Client.html#a4d328bed01561e8b5bfb4b0207668f49">recvImpl</a> (std::optional&lt; std::chrono::microseconds &gt; timeout)</td></tr>
+<tr class="separator:a4d328bed01561e8b5bfb4b0207668f49"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
@@ -754,7 +760,52 @@ Private Attributes</h2></td></tr>
 
 <p>通信が切断されたときに自動で再試行するかどうかを設定する。 </p>
 <dl class="section since"><dt>Since</dt><dd>ver1.11.1</dd></dl>
-<p>デフォルトはtrue </p>
+<p>デフォルトはtrue</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classwebcface_1_1Client.html#a60de64d75454385b23995437f1d72669" title="サーバーへの接続を別スレッドで開始する。">start()</a>, <a class="el" href="classwebcface_1_1Client.html#a806d469a09f6c432330ae1adfdda52a7" title="サーバーへの接続を別スレッドで開始し、成功するまで待機する。">waitConnection()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a80244ad7d757e128ddb3128a82fb3329" name="a80244ad7d757e128ddb3128a82fb3329"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a80244ad7d757e128ddb3128a82fb3329">&#9670;&#160;</a></span>autoRecv()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void autoRecv </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>enabled</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::chrono::microseconds&#160;</td>
+          <td class="paramname"><em>interval</em> = <code>std::chrono::microseconds(100)</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>別スレッドでrecv()を自動的に呼び出す間隔を設定する。 </p>
+<dl class="section since"><dt>Since</dt><dd>ver2.0</dd></dl>
+<ul>
+<li><a class="el" href="c__wcf_2client_8h.html#ad84e50d3482bedb7ccfa278bfc00120c" title="サーバーへの接続を別スレッドで開始する。">wcfStart()</a> や <a class="el" href="c__wcf_2client_8h.html#ae1ecf74ce829348a3f2c41b665572838" title="サーバーへの接続を別スレッドで開始し、成功するまで待機する。">wcfWaitConnection()</a> より前に設定する必要がある。</li>
+<li>autoRecvが有効の場合、別スレッドで一定間隔ごとにrecv()が呼び出され、 各種コールバック(onEntry, onChange, <a class="el" href="classwebcface_1_1Func.html#a2f3ba42b8784ef2a1b3014ef617c1249" title="関数を実行する (同期)">Func::run()</a>など)も別のスレッドで呼ばれることになる (そのためmutexなどを適切に設定すること)</li>
+<li>デフォルトでは無効なので、手動でrecv()を呼び出す必要がある</li>
+</ul>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">enabled</td><td>trueにすると自動でrecv()が呼び出されるようになる </td></tr>
+    <tr><td class="paramname">interval</td><td>recvを呼び出す間隔 (1μs以上) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classwebcface_1_1Client.html#a3a359a0ae2735040a1ae270ee1d6e597" title="サーバーからデータを受信する">recv()</a>, <a class="el" href="classwebcface_1_1Client.html#a99fde3f740e1f80d0209d4d5bc8e0535" title="サーバーからデータを受信する">recvUntil()</a>, <a class="el" href="classwebcface_1_1Client.html#a4d2b505770bcb022fd0afa29db4eacd9" title="サーバーからデータを受信する">waitRecv()</a> </dd></dl>
 
 </div>
 </div>
@@ -2481,6 +2532,100 @@ requires std::same_as&lt;T, <a class="el" href="classwebcface_1_1Member.html">Me
 
 </div>
 </div>
+<a id="a3a359a0ae2735040a1ae270ee1d6e597" name="a3a359a0ae2735040a1ae270ee1d6e597"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3a359a0ae2735040a1ae270ee1d6e597">&#9670;&#160;</a></span>recv()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void recv </td>
+          <td>(</td>
+          <td class="paramtype">std::chrono::microseconds&#160;</td>
+          <td class="paramname"><em>timeout</em> = <code>std::chrono::microseconds(0)</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>サーバーからデータを受信する </p>
+<dl class="section since"><dt>Since</dt><dd>ver2.0</dd></dl>
+<ul>
+<li>データを受信した場合、各種コールバック(onEntry, onChange, <a class="el" href="classwebcface_1_1Func.html#a2f3ba42b8784ef2a1b3014ef617c1249" title="関数を実行する (同期)">Func::run()</a>など)をこのスレッドで呼び出し、 それがすべて完了するまでこの関数はブロックされる。</li>
+<li>データを何も受信しなかった場合、サーバーに接続していない場合、 または接続試行中やデータ送信中など受信ができない場合は、 timeout経過後にreturnする。 timeout=0 または負の値なら即座にreturnする。</li>
+<li>timeoutが100μs以上の場合、データを何も受信できなければ100μsおきに再試行する。</li>
+</ul>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classwebcface_1_1Client.html#a80244ad7d757e128ddb3128a82fb3329" title="別スレッドでrecv()を自動的に呼び出す間隔を設定する。">autoRecv()</a>, <a class="el" href="classwebcface_1_1Client.html#a99fde3f740e1f80d0209d4d5bc8e0535" title="サーバーからデータを受信する">recvUntil()</a>, <a class="el" href="classwebcface_1_1Client.html#a4d2b505770bcb022fd0afa29db4eacd9" title="サーバーからデータを受信する">waitRecv()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a4d328bed01561e8b5bfb4b0207668f49" name="a4d328bed01561e8b5bfb4b0207668f49"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4d328bed01561e8b5bfb4b0207668f49">&#9670;&#160;</a></span>recvImpl()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void recvImpl </td>
+          <td>(</td>
+          <td class="paramtype">std::optional&lt; std::chrono::microseconds &gt;&#160;</td>
+          <td class="paramname"><em>timeout</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a99fde3f740e1f80d0209d4d5bc8e0535" name="a99fde3f740e1f80d0209d4d5bc8e0535"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a99fde3f740e1f80d0209d4d5bc8e0535">&#9670;&#160;</a></span>recvUntil()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Clock , typename Duration &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void recvUntil </td>
+          <td>(</td>
+          <td class="paramtype">std::chrono::time_point&lt; Clock, Duration &gt;&#160;</td>
+          <td class="paramname"><em>timeout</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>サーバーからデータを受信する </p>
+<dl class="section since"><dt>Since</dt><dd>ver2.0</dd></dl>
+<p><a class="el" href="classwebcface_1_1Client.html#a3a359a0ae2735040a1ae270ee1d6e597" title="サーバーからデータを受信する">recv()</a> と同じだが、timeoutを絶対時間で指定</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classwebcface_1_1Client.html#a3a359a0ae2735040a1ae270ee1d6e597" title="サーバーからデータを受信する">recv()</a>, <a class="el" href="classwebcface_1_1Client.html#a4d2b505770bcb022fd0afa29db4eacd9" title="サーバーからデータを受信する">waitRecv()</a> </dd></dl>
+
+</div>
+</div>
 <a id="a786b7cda7f3dbf6635ac2a56f2b94ca4" name="a786b7cda7f3dbf6635ac2a56f2b94ca4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a786b7cda7f3dbf6635ac2a56f2b94ca4">&#9670;&#160;</a></span>remoteAddr()</h2>
 
@@ -2680,110 +2825,6 @@ requires std::same_as&lt;T, <a class="el" href="classwebcface_1_1Member.html">Me
 
 </div>
 </div>
-<a id="a39c0a05fe120db8a07551cfde1216aca" name="a39c0a05fe120db8a07551cfde1216aca"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a39c0a05fe120db8a07551cfde1216aca">&#9670;&#160;</a></span>setDefaultRunCond()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void setDefaultRunCond </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="namespacewebcface.html#a1f914f5d15fb32aa05ca882cff7f2cd4">FuncWrapperType</a> &amp;&#160;</td>
-          <td class="paramname"><em>wrapper</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>これ以降セットするFuncのデフォルトのFuncWrapperをセットする。(初期状態はnullptr) </p>
-<p>Funcの実行時にFuncWrapperを通すことで条件を満たすまでブロックしたりする。 FuncWrapperがnullptrなら何もせずsetした関数を実行する </p>
-
-</div>
-</div>
-<a id="ad6b0c1236f16487a1961f5ed4a58eddd" name="ad6b0c1236f16487a1961f5ed4a58eddd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad6b0c1236f16487a1961f5ed4a58eddd">&#9670;&#160;</a></span>setDefaultRunCondNone()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void setDefaultRunCondNone </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>デフォルトのFuncWrapperを nullptr にする </p>
-
-</div>
-</div>
-<a id="acb0a3287b0c8821443eff73d73558b59" name="acb0a3287b0c8821443eff73d73558b59"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acb0a3287b0c8821443eff73d73558b59">&#9670;&#160;</a></span>setDefaultRunCondOnSync()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void setDefaultRunCondOnSync </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>デフォルトのFuncWrapperを runCondOnSync() にする </p>
-
-</div>
-</div>
-<a id="afe24cb249867a506aaace22d5440c9ab" name="afe24cb249867a506aaace22d5440c9ab"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afe24cb249867a506aaace22d5440c9ab">&#9670;&#160;</a></span>setDefaultRunCondScopeGuard()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename ScopeGuard &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void setDefaultRunCondScopeGuard </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>デフォルトのFuncWrapperを runCondScopeGuard() にする </p>
-
-</div>
-</div>
 <a id="a60de64d75454385b23995437f1d72669" name="a60de64d75454385b23995437f1d72669"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a60de64d75454385b23995437f1d72669">&#9670;&#160;</a></span>start()</h2>
 
@@ -2799,8 +2840,9 @@ template&lt;typename ScopeGuard &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>サーバーへの接続を開始する。 </p>
+<p>サーバーへの接続を別スレッドで開始する。 </p>
 <dl class="section since"><dt>Since</dt><dd>ver1.2 </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classwebcface_1_1Client.html#a806d469a09f6c432330ae1adfdda52a7" title="サーバーへの接続を別スレッドで開始し、成功するまで待機する。">waitConnection()</a>, <a class="el" href="classwebcface_1_1Client.html#acd307ea4b7bbb4a8f54b2b14efa04557" title="通信が切断されたときに自動で再試行するかどうかを設定する。">autoReconnect()</a> </dd></dl>
 
 </div>
 </div>
@@ -2820,9 +2862,11 @@ template&lt;typename ScopeGuard &gt; </div>
 </div><div class="memdoc">
 
 <p>送信用にセットしたデータをすべて送信キューに入れる。 </p>
-<p>実際に送信をするのは別スレッドであり、この関数はブロックしない。</p>
-<p>ver1.2以降: サーバーに接続していない場合、start()を呼び出す。</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classwebcface_1_1Client.html#a60de64d75454385b23995437f1d72669" title="サーバーへの接続を開始する。">start()</a> </dd></dl>
+<ul>
+<li>実際に送信をするのは別スレッドであり、この関数はブロックしない。</li>
+<li>ver1.2以降: サーバーに接続していない場合、start()を呼び出す。</li>
+</ul>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classwebcface_1_1Client.html#a60de64d75454385b23995437f1d72669" title="サーバーへの接続を別スレッドで開始する。">start()</a> </dd></dl>
 
 </div>
 </div>
@@ -3184,9 +3228,42 @@ template&lt;typename ScopeGuard &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>サーバーへの接続を開始し、成功するまで待機する。 </p>
-<dl class="section since"><dt>Since</dt><dd>ver1.2 ver1.11.1以降: autoReconnect が false の場合は1回目の接続のみ待機し、失敗しても再接続せずreturnする。</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classwebcface_1_1Client.html#a60de64d75454385b23995437f1d72669" title="サーバーへの接続を開始する。">start()</a> </dd></dl>
+<p>サーバーへの接続を別スレッドで開始し、成功するまで待機する。 </p>
+<dl class="section since"><dt>Since</dt><dd>ver1.2</dd></dl>
+<ul>
+<li>ver1.11.1以降: autoReconnect が false の場合は1回目の接続のみ待機し、失敗しても再接続せずreturnする。</li>
+</ul>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classwebcface_1_1Client.html#a60de64d75454385b23995437f1d72669" title="サーバーへの接続を別スレッドで開始する。">start()</a>, <a class="el" href="classwebcface_1_1Client.html#acd307ea4b7bbb4a8f54b2b14efa04557" title="通信が切断されたときに自動で再試行するかどうかを設定する。">autoReconnect()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a4d2b505770bcb022fd0afa29db4eacd9" name="a4d2b505770bcb022fd0afa29db4eacd9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4d2b505770bcb022fd0afa29db4eacd9">&#9670;&#160;</a></span>waitRecv()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void waitRecv </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>サーバーからデータを受信する </p>
+<dl class="section since"><dt>Since</dt><dd>ver2.0</dd></dl>
+<p><a class="el" href="classwebcface_1_1Client.html#a3a359a0ae2735040a1ae270ee1d6e597" title="サーバーからデータを受信する">recv()</a>と同じだが、何か受信するまで無制限に待機する</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classwebcface_1_1Client.html#a3a359a0ae2735040a1ae270ee1d6e597" title="サーバーからデータを受信する">recv()</a>, <a class="el" href="classwebcface_1_1Client.html#a99fde3f740e1f80d0209d4d5bc8e0535" title="サーバーからデータを受信する">recvUntil()</a> </dd></dl>
 
 </div>
 </div>
@@ -3297,7 +3374,7 @@ template&lt;typename ScopeGuard &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="classwebcface_1_1Client.html">Client</a></li>
-    <li class="footer">Generated on Wed Jul 3 2024 11:42:51 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Fri Jul 5 2024 09:17:19 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

@@ -22,6 +22,9 @@ var client_2src_2c__wcf_2func_8cc =
     [ "wcfFuncRunT", "client_2src_2c__wcf_2func_8cc.html#a7dcec95b9332bfd39bf377594d22a39d", null ],
     [ "wcfFuncRunW", "client_2src_2c__wcf_2func_8cc.html#a8f3e54495fa9d7ee3faf4eb303833b79", null ],
     [ "wcfFuncSet", "client_2src_2c__wcf_2func_8cc.html#a24d2cc4125df231866e6b1e5ef56866e", null ],
+    [ "wcfFuncSetAsync", "client_2src_2c__wcf_2func_8cc.html#a7ea5202169cf485921c255db21251af4", null ],
+    [ "wcfFuncSetAsyncT", "client_2src_2c__wcf_2func_8cc.html#a35d58d38a4b59c85f5492d1d7527805a", null ],
+    [ "wcfFuncSetAsyncW", "client_2src_2c__wcf_2func_8cc.html#a24eacbcd4a59178e417545a28030173c", null ],
     [ "wcfFuncSetT", "client_2src_2c__wcf_2func_8cc.html#a2852d1ea05337e6f98c0d92d601c3910", null ],
     [ "wcfFuncSetW", "client_2src_2c__wcf_2func_8cc.html#a9f3e989b24c5cac2ca5efe9d9ad3d331", null ],
     [ "wcfFuncWaitResult", "client_2src_2c__wcf_2func_8cc.html#a5f1da69de76906baf2254538bede11ad", null ]

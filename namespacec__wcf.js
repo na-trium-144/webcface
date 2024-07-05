@@ -7,7 +7,7 @@ var namespacec__wcf =
     [ "fromCVal", "namespacec__wcf.html#a769284237b37a24e80f4dafc5a05fd4c", null ],
     [ "getAsyncFuncResult", "namespacec__wcf.html#ae7f36d3bf68361495a17df5c399caa64", null ],
     [ "getWcli", "namespacec__wcf.html#aa85a685a0f454a26de052129b942f7ae", null ],
-    [ "resultToCVal", "namespacec__wcf.html#a35999de011d41b7a392cc794715ddbda", null ],
+    [ "resultToCVal", "namespacec__wcf.html#afb4ad19a52bb8c33dc4f1bb004c27585", null ],
     [ "strOrEmpty", "namespacec__wcf.html#aae6e499ff39d5616c9f110b1bef281fd", null ],
     [ "fetched_handles", "namespacec__wcf.html#ace78d3c61398bd3193ccd4734299a614", null ],
     [ "fetched_handles_w", "namespacec__wcf.html#a5631a41514663ff1df2efc189cb18a23", null ],
