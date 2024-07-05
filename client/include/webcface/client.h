@@ -93,6 +93,7 @@ class WEBCFACE_DLL Client : public Member {
      *
      * デフォルトはtrue
      *
+     * \sa start(), waitConnection()
      */
     void autoReconnect(bool enabled);
     /*!
@@ -102,26 +103,91 @@ class WEBCFACE_DLL Client : public Member {
     bool autoReconnect() const;
 
     /*!
-     * \brief サーバーへの接続を開始する。
+     * \brief サーバーへの接続を別スレッドで開始する。
      * \since ver1.2
+     * \sa waitConnection(), autoReconnect()
      */
     void start();
     /*!
-     * \brief サーバーへの接続を開始し、成功するまで待機する。
+     * \brief サーバーへの接続を別スレッドで開始し、成功するまで待機する。
      * \since ver1.2
-     * ver1.11.1以降: autoReconnect が false
+     *
+     * * ver1.11.1以降: autoReconnect が false
      * の場合は1回目の接続のみ待機し、失敗しても再接続せずreturnする。
      *
-     * \sa start()
+     * \sa start(), autoReconnect()
      */
     void waitConnection();
+
+  private:
+    void recvImpl(std::optional<std::chrono::microseconds> timeout);
+
+  public:
+    /*!
+     * \brief サーバーからデータを受信する
+     * \since ver2.0
+     *
+     * * データを受信した場合、各種コールバック(onEntry, onChange,
+     * Func::run()など)をこのスレッドで呼び出し、
+     * それがすべて完了するまでこの関数はブロックされる。
+     * * データを何も受信しなかった場合、サーバーに接続していない場合、
+     * または接続試行中やデータ送信中など受信ができない場合は、
+     * timeout経過後にreturnする。
+     * timeout=0 または負の値なら即座にreturnする。
+     * * timeoutが100μs以上の場合、データを何も受信できなければ100μsおきに再試行する。
+     *
+     * \sa autoRecv(), recvUntil(), waitRecv()
+     */
+    void
+    recv(std::chrono::microseconds timeout = std::chrono::microseconds(0)) {
+        recvImpl(timeout);
+    }
+    /*!
+     * \brief サーバーからデータを受信する
+     * \since ver2.0
+     *
+     * recv() と同じだが、timeoutを絶対時間で指定
+     *
+     * \sa recv(), waitRecv()
+     */
+    template <typename Clock, typename Duration>
+    void recvUntil(std::chrono::time_point<Clock, Duration> timeout) {
+        recvImpl(std::chrono::duration_cast<std::chrono::microseconds>(
+            timeout - Clock::now()));
+    }
+    /*!
+     * \brief サーバーからデータを受信する
+     * \since ver2.0
+     *
+     * recv()と同じだが、何か受信するまで無制限に待機する
+     *
+     * \sa recv(), recvUntil()
+     */
+    void waitRecv() { recvImpl(std::nullopt); }
+
+    /*!
+     * \brief 別スレッドでrecv()を自動的に呼び出す間隔を設定する。
+     * \since ver2.0
+     *
+     * * wcfStart() や wcfWaitConnection() より前に設定する必要がある。
+     * * autoRecvが有効の場合、別スレッドで一定間隔ごとにrecv()が呼び出され、
+     * 各種コールバック(onEntry, onChange,
+     * Func::run()など)も別のスレッドで呼ばれることになる
+     * (そのためmutexなどを適切に設定すること)
+     * * デフォルトでは無効なので、手動でrecv()を呼び出す必要がある
+     *
+     * \param enabled trueにすると自動でrecv()が呼び出されるようになる
+     * \param interval recvを呼び出す間隔 (1μs以上)
+     * \sa recv(), recvUntil(), waitRecv()
+     */
+    void autoRecv(bool enabled, std::chrono::microseconds interval =
+                                    std::chrono::microseconds(100));
 
     /*!
      * \brief 送信用にセットしたデータをすべて送信キューに入れる。
      *
-     * 実際に送信をするのは別スレッドであり、この関数はブロックしない。
-     *
-     * ver1.2以降: サーバーに接続していない場合、start()を呼び出す。
+     * * 実際に送信をするのは別スレッドであり、この関数はブロックしない。
+     * * ver1.2以降: サーバーに接続していない場合、start()を呼び出す。
      *
      * \sa start()
      */
@@ -173,37 +239,6 @@ class WEBCFACE_DLL Client : public Member {
      * \sa member(), members()
      */
     EventTarget<Member> onMemberEntry();
-
-    /*!
-     * \brief
-     * これ以降セットするFuncのデフォルトのFuncWrapperをセットする。(初期状態はnullptr)
-     *
-     * Funcの実行時にFuncWrapperを通すことで条件を満たすまでブロックしたりする。
-     * FuncWrapperがnullptrなら何もせずsetした関数を実行する
-     *
-     */
-    void setDefaultRunCond(const FuncWrapperType &wrapper);
-
-    /*!
-     * \brief デフォルトのFuncWrapperを nullptr にする
-     *
-     */
-    void setDefaultRunCondNone() { setDefaultRunCond(nullptr); }
-    /*!
-     * \brief デフォルトのFuncWrapperを runCondOnSync() にする
-     *
-     */
-    void setDefaultRunCondOnSync() {
-        setDefaultRunCond(FuncWrapper::runCondOnSync(data));
-    }
-    /*!
-     * \brief デフォルトのFuncWrapperを runCondScopeGuard() にする
-     *
-     */
-    template <typename ScopeGuard>
-    void setDefaultRunCondScopeGuard() {
-        setDefaultRunCond(FuncWrapper::runCondScopeGuard<ScopeGuard>());
-    }
 
     /*!
      * \brief webcfaceに出力するsink

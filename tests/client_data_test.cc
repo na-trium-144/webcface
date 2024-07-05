@@ -153,8 +153,8 @@ TEST(FuncResultStoreTest, addResult) {
     auto data = std::make_shared<ClientData>("test"_ss);
     FuncResultStore &s = data->func_result_store;
     auto r = s.addResult(Field{data, "b"_ss, "c"_ss});
-    EXPECT_EQ(r.name(), "c");
-    EXPECT_EQ(r.member().name(), "b");
+    EXPECT_EQ(r->getter().name(), "c");
+    EXPECT_EQ(r->getter().member().name(), "b");
 }
 
 TEST(ClientDataTest, self) {

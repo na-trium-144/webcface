@@ -19,8 +19,8 @@ void init(const std::shared_ptr<internal::ClientData> &data) {
     // use latter if multiple connections were available
     for (std::size_t attempt = 0; attempt < 3 && !data->closing.load();
          attempt++) {
+        // std::lock_guard ws_lock(data->curl_m);
         CURL *handle = data->current_curl_handle = curl_easy_init();
-        data->current_curl_closed = false;
         data->current_ws_buf.clear();
         if (std::getenv("WEBCFACE_TRACE") != nullptr) {
             curl_easy_setopt(handle, CURLOPT_VERBOSE, 1L);
@@ -75,13 +75,9 @@ void init(const std::shared_ptr<internal::ClientData> &data) {
         auto ret = curl_easy_perform(handle);
         if (ret == CURLE_OK) {
             send(data, data->syncDataFirst());
-            {
-                std::lock_guard lock(data->connect_state_m);
-                data->connected.store(true);
-                data->connect_state_cond.notify_all();
-            }
             data->logger_internal->debug("connected to {}",
                                          data->current_curl_path);
+            data->current_curl_connected = true;
             return;
         } else {
             data->logger_internal->trace("connection failed {}",
@@ -92,31 +88,29 @@ void init(const std::shared_ptr<internal::ClientData> &data) {
     }
 }
 void close(const std::shared_ptr<internal::ClientData> &data) {
-    {
-        std::lock_guard lock(data->connect_state_m);
-        data->connected.store(false);
-        data->connect_state_cond.notify_all();
-    }
     if (data->current_curl_handle) {
         curl_easy_cleanup(static_cast<CURL *>(data->current_curl_handle));
         data->current_curl_handle = nullptr;
     }
+    data->current_curl_connected = false;
 }
-void recv(const std::shared_ptr<internal::ClientData> &data) {
+bool recv(const std::shared_ptr<internal::ClientData> &data,
+          const std::function<void(const std::string &)> &cb) {
     CURL *handle = static_cast<CURL *>(data->current_curl_handle);
     CURLcode ret;
     // data->logger_internal->trace("recv");
+    bool has_recv = false;
     do {
         std::size_t rlen = 0;
         const curl_ws_frame *meta = nullptr;
         char buffer[1024];
         bool recv_ok = false;
         {
-            std::lock_guard ws_lock(data->ws_m);
+            // std::lock_guard ws_lock(data->curl_m);
             ret = curl_ws_recv(handle, buffer, sizeof(buffer), &rlen, &meta);
             if (meta && meta->flags & CURLWS_CLOSE) {
                 data->logger_internal->debug("connection closed");
-                data->current_curl_closed = true;
+                WebSocket::close(data);
                 break;
             } else if (meta && static_cast<std::size_t>(meta->offset) >
                                    data->current_ws_buf.size()) {
@@ -135,7 +129,7 @@ void recv(const std::shared_ptr<internal::ClientData> &data) {
             if (ret != CURLE_AGAIN && ret != CURLE_OK) {
                 data->logger_internal->debug("connection closed {}",
                                              static_cast<int>(ret));
-                data->current_curl_closed = true;
+                WebSocket::close(data);
                 break;
             }
             if (ret == CURLE_OK && meta && meta->bytesleft == 0 &&
@@ -149,14 +143,17 @@ void recv(const std::shared_ptr<internal::ClientData> &data) {
         }
         if (recv_ok) { // ここにはmutexかからない
             // data->recv_queue.push(data->current_ws_buf);
-            data->onRecv(data->current_ws_buf);
+            // data->onRecv(data->current_ws_buf);
+            cb(data->current_ws_buf);
             data->current_ws_buf.clear();
+            has_recv = true;
         }
     } while (ret != CURLE_AGAIN);
+    return has_recv;
 }
 void send(const std::shared_ptr<internal::ClientData> &data,
           const std::string &msg) {
-    std::lock_guard ws_lock(data->ws_m);
+    // std::lock_guard ws_lock(data->curl_m);
     data->logger_internal->trace("sending message {} bytes", msg.size());
     std::size_t sent;
     CURL *handle = static_cast<CURL *>(data->current_curl_handle);

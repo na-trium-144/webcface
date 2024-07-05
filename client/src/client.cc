@@ -12,6 +12,7 @@
 #include "webcface/message/message.h"
 #include "webcface/internal/client_internal.h"
 #include "webcface/internal/client_ws.h"
+#include "webcface/internal/unlock.h"
 #include <string>
 #include <chrono>
 
@@ -27,11 +28,10 @@ Client::Client(const SharedString &name,
 internal::ClientData::ClientData(const SharedString &name,
                                  const SharedString &host, int port)
     : std::enable_shared_from_this<ClientData>(), self_member_name(name),
-      host(host), port(port), current_curl_handle(nullptr),
-      current_curl_closed(false), current_curl_path(), current_ws_buf(),
-      message_queue(std::make_shared<Queue<std::string>>()), value_store(name),
-      text_store(name), func_store(name), view_store(name), image_store(name),
-      robot_model_store(name), canvas3d_store(name), canvas2d_store(name),
+      host(host), port(port), current_curl_handle(nullptr), current_curl_path(),
+      current_ws_buf(), value_store(name), text_store(name), func_store(name),
+      view_store(name), image_store(name), robot_model_store(name),
+      canvas3d_store(name), canvas2d_store(name),
       log_store(std::make_shared<
                 SyncDataStore1<std::shared_ptr<std::vector<LogLineData<>>>>>(
           name)),
@@ -58,34 +58,20 @@ internal::ClientData::ClientData(const SharedString &name,
     logger_os_w = std::make_unique<std::wostream>(logger_buf_w.get());
     log_store->setRecv(name, std::make_shared<std::vector<LogLineData<>>>());
 }
-void internal::ClientData::start() {
-    if (!message_thread) {
-        message_thread = std::make_unique<std::thread>(
-            internal::messageThreadMain, shared_from_this());
-    }
-    if (recv_thread && !recv_thread_running.load()) {
-        recv_thread->join();
-        recv_thread = nullptr;
-    }
-    if (!recv_thread) {
-        recv_thread_running.store(true);
-        recv_thread = std::make_unique<std::thread>(internal::recvThreadMain,
-                                                    shared_from_this());
-    }
-}
 
 Client::~Client() {
     close();
     data->join();
 }
-void Client::close() { data->closing.store(true); }
-bool Client::connected() const { return data->connected.load(); }
 void internal::ClientData::join() {
-    if (message_thread && message_thread->joinable()) {
-        message_thread->join();
+    if (message_thread.joinable()) {
+        message_thread.join();
     }
-    if (recv_thread && recv_thread->joinable()) {
-        recv_thread->join();
+    if (connection_thread.joinable()) {
+        connection_thread.join();
+    }
+    if (recv_thread.joinable()) {
+        recv_thread.join();
     }
 }
 std::vector<Member> Client::members() {
@@ -101,9 +87,6 @@ EventTarget<Member> Client::onMemberEntry() {
     std::lock_guard lock(data->event_m);
     return EventTarget<Member>{data->member_entry_event};
 }
-void Client::setDefaultRunCond(const FuncWrapperType &wrapper) {
-    data->default_func_wrapper = wrapper;
-}
 std::shared_ptr<LoggerSink> Client::loggerSink() { return data->logger_sink; }
 std::shared_ptr<spdlog::logger> Client::logger() { return data->logger; }
 LoggerBuf *Client::loggerStreamBuf() { return data->logger_buf.get(); }
@@ -113,65 +96,200 @@ std::string Client::serverName() const { return data->svr_name; }
 
 void internal::ClientData::pingStatusReq() {
     if (!ping_status_req) {
-        message_queue->push(message::packSingle(message::PingStatusReq{}));
+        message_push(message::packSingle(message::PingStatusReq{}));
     }
     ping_status_req = true;
 }
 
-void internal::recvThreadMain(const std::shared_ptr<ClientData> &data) {
-    while (!data->closing.load() && data->port > 0) {
-        internal::WebSocket::init(data);
-        while (data->connected.load() && !data->current_curl_closed &&
-               !data->closing.load()) {
-            internal::WebSocket::recv(data);
-            std::this_thread::sleep_for(std::chrono::microseconds(100));
-            // std::this_thread::yield();
+void internal::ClientData::start() {
+    std::lock_guard lock(this->connect_state_m);
+    this->do_ws_init = true;
+    this->connect_state_cond.notify_all();
+    if (!message_thread.joinable()) {
+        message_thread =
+            std::thread(internal::messageThreadMain, shared_from_this());
+    }
+    if (!connection_thread.joinable()) {
+        connection_thread =
+            std::thread(internal::connectionThreadMain, shared_from_this());
+    }
+    if (!recv_thread.joinable() && this->auto_recv_us.load() > 0) {
+        recv_thread = std::thread(internal::recvThreadMain, shared_from_this());
+    }
+}
+void Client::close() {
+    std::lock_guard lock(data->connect_state_m);
+    data->closing.store(true);
+    data->connect_state_cond.notify_all();
+}
+bool Client::connected() const {
+    std::lock_guard lock(data->connect_state_m);
+    return data->connected;
+}
+void internal::connectionThreadMain(const std::shared_ptr<ClientData> &data) {
+    if (data->port <= 0) {
+        return;
+    }
+    while (true) {
+        std::unique_lock lock(data->connect_state_m);
+        data->connect_state_cond.wait(lock, [&] {
+            return (data->closing.load() && !data->using_curl) ||
+                   data->do_ws_init ||
+                   (!data->connected && !data->using_curl &&
+                    data->auto_reconnect.load());
+        });
+        if (data->closing.load()) {
+            data->using_curl = true;
+            {
+                ScopedUnlock un(lock);
+                internal::WebSocket::close(data);
+            }
+            data->connected = data->current_curl_connected;
+            data->using_curl = false;
+            data->connect_state_cond.notify_all();
+            return;
         }
-        internal::WebSocket::close(data);
-        if (!data->auto_reconnect.load()) {
-            break;
+        if (data->connected || data->using_curl) {
+            data->do_ws_init = false;
+            continue;
         }
+        data->using_curl = true;
+        {
+            ScopedUnlock un(lock);
+            internal::WebSocket::init(data);
+        }
+        data->connected = data->current_curl_connected;
+        data->do_ws_init = false;
+        data->using_curl = false;
+        data->connect_state_cond.notify_all();
         if (!data->closing.load()) {
+            ScopedUnlock un(lock);
             std::this_thread::sleep_for(std::chrono::milliseconds(10));
         }
     }
+}
+bool internal::recvMain(const std::shared_ptr<ClientData> &data,
+                        std::unique_lock<std::mutex> &lock) {
+    data->using_curl = true;
+    bool has_recv;
     {
-        std::lock_guard lock(data->connect_state_m);
-        data->recv_thread_running.store(false);
-        data->connect_state_cond.notify_all();
+        ScopedUnlock un(lock);
+        has_recv =
+            internal::WebSocket::recv(data, [data](const std::string &msg) {
+                std::unique_lock lock(data->connect_state_m);
+                data->using_curl = false;
+                data->connect_state_cond.notify_all();
+                {
+                    ScopedUnlock un(lock);
+                    data->onRecv(msg);
+                }
+                data->connect_state_cond.wait(lock, [&] {
+                    return data->closing.load() || !data->using_curl;
+                });
+                data->using_curl = true;
+            });
+    }
+    data->connected = data->current_curl_connected;
+    data->using_curl = false;
+    data->connect_state_cond.notify_all();
+    return has_recv;
+}
+void Client::recvImpl(std::optional<std::chrono::microseconds> timeout) {
+    auto start_t = std::chrono::steady_clock::now();
+    auto next_recv_t = start_t;
+    constexpr std::chrono::microseconds interval(100);
+    while (true) {
+        std::unique_lock lock(data->connect_state_m);
+        if (!timeout || next_recv_t < start_t + *timeout) {
+            // 少なくともintervalぶんは待機する
+            data->connect_state_cond.wait_until(
+                lock, next_recv_t, [&] { return data->closing.load(); });
+        }
+        // 遅くともtimeout経過したらreturnする
+        if (timeout) {
+            data->connect_state_cond.wait_until(lock, start_t + *timeout, [&] {
+                return data->closing.load() ||
+                       (data->connected && !data->using_curl);
+            });
+        } else {
+            data->connect_state_cond.wait(lock, [&] {
+                return data->closing.load() ||
+                       (data->connected && !data->using_curl);
+            });
+        }
+        if (data->closing.load() || !data->connected || data->using_curl) {
+            return;
+        }
+        next_recv_t = std::chrono::steady_clock::now() + interval;
+        bool has_recv = internal::recvMain(data, lock);
+        if (has_recv) {
+            return;
+        }
+    }
+}
+void internal::recvThreadMain(const std::shared_ptr<ClientData> &data) {
+    if (data->port <= 0) {
+        return;
+    }
+    auto next_recv = std::chrono::steady_clock::now();
+    int recv_us = data->auto_recv_us.load();
+    if (recv_us <= 0) {
+        return;
+    }
+    while (true) {
+        std::unique_lock lock(data->connect_state_m);
+        data->connect_state_cond.wait_until(
+            lock, next_recv, [&] { return data->closing.load(); });
+        next_recv += std::chrono::microseconds(recv_us);
+        data->connect_state_cond.wait(lock, [&] {
+            return data->closing.load() ||
+                   (data->connected && !data->using_curl);
+        });
+        if (data->closing.load()) {
+            return;
+        }
+        recvMain(data, lock);
+        // std::this_thread::yield();
     }
 }
 void internal::messageThreadMain(
     const std::shared_ptr<internal::ClientData> &data) {
-    while (!data->closing.load()) {
-        auto msg = data->message_queue->pop(std::chrono::milliseconds(10));
-        while (msg && !data->closing.load()) {
-            std::unique_lock lock(data->connect_state_m);
-            data->connect_state_cond.wait_for(
-                lock, std::chrono::milliseconds(10),
-                [&] { return data->connected.load() || data->closing.load(); });
-            if (data->connected.load()) {
-                internal::WebSocket::send(data, *msg);
-                break;
-            }
+    while (true) {
+        std::unique_lock lock(data->connect_state_m);
+        data->connect_state_cond.wait(lock, [&] {
+            return data->closing.load() ||
+                   (!data->using_curl && data->connected &&
+                    !data->message_queue.empty());
+        });
+        if (data->closing.load()) {
+            return;
         }
+        auto msg = data->message_queue.front();
+        data->message_queue.pop();
+        data->using_curl = true;
+        {
+            ScopedUnlock un(lock);
+            internal::WebSocket::send(data, msg);
+        }
+        data->using_curl = false;
+        data->connect_state_cond.notify_all();
     }
 }
 
-void Client::start() {
-    if (!connected()) {
-        data->start();
-    }
-}
+void Client::start() { data->start(); }
 void Client::waitConnection() {
-    if (!connected()) {
-        data->start();
-        std::unique_lock lock(data->connect_state_m);
-        data->connect_state_cond.wait(lock, [this] {
-            return connected() || !data->recv_thread_running.load();
-        });
+    data->start();
+    std::unique_lock lock(data->connect_state_m);
+    data->connect_state_cond.wait(lock, [this] { return !data->do_ws_init; });
+}
+void Client::autoRecv(bool enabled, std::chrono::microseconds interval) {
+    if (enabled && interval.count() > 0) {
+        data->auto_recv_us.store(static_cast<int>(interval.count()));
+    } else {
+        data->auto_recv_us.store(0);
     }
 }
+
 void Client::autoReconnect(bool enabled) {
     data->auto_reconnect.store(enabled);
 }
@@ -366,10 +484,7 @@ std::string internal::ClientData::syncData(bool is_first,
 }
 void Client::sync() {
     start();
-    data->message_queue->push(data->syncData(false));
-    while (auto func_sync = data->func_sync_queue.pop()) {
-        (*func_sync)->sync();
-    }
+    data->message_push(data->syncData(false));
 }
 
 template <typename M, typename K1, typename K2>
@@ -437,7 +552,7 @@ void internal::ClientData::onRecv(const std::string &message) {
             break;
         }
         case MessageKind::ping: {
-            this->message_queue->push(
+            this->message_push(
                 webcface::message::packSingle(webcface::message::Ping{}));
             break;
         }
@@ -626,57 +741,27 @@ void internal::ClientData::onRecv(const std::string &message) {
         }
         case MessageKind::call: {
             auto r = std::any_cast<webcface::message::Call>(obj);
-            std::thread([data = shared_from_this(), r] {
-                auto func_info =
-                    data->func_store.getRecv(data->self_member_name, r.field);
-                if (func_info) {
-                    data->message_queue->push(webcface::message::packSingle(
-                        webcface::message::CallResponse{
-                            {}, r.caller_id, r.caller_member_id, true}));
-                    ValAdaptor result;
-                    bool is_error = false;
-                    try {
-                        result = (*func_info)->run(r.args);
-                    } catch (const std::exception &e) {
-                        is_error = true;
-                        result = std::string(e.what());
-                    } catch (const std::string &e) {
-                        is_error = true;
-                        result = e;
-                    } catch (const char *e) {
-                        is_error = true;
-                        result = e;
-                    } catch (const std::wstring &e) {
-                        is_error = true;
-                        result = e;
-                    } catch (const wchar_t *e) {
-                        is_error = true;
-                        result = e;
-                    } catch (...) {
-                        is_error = true;
-                        result = "unknown exception";
-                    }
-                    data->message_queue->push(webcface::message::packSingle(
-                        webcface::message::CallResult{{},
-                                                      r.caller_id,
-                                                      r.caller_member_id,
-                                                      is_error,
-                                                      result}));
-                } else {
-                    data->message_queue->push(webcface::message::packSingle(
-                        webcface::message::CallResponse{
-                            {}, r.caller_id, r.caller_member_id, false}));
-                }
-            }).detach();
+            auto func_info =
+                this->func_store.getRecv(this->self_member_name, r.field);
+            if (func_info) {
+                this->message_push(webcface::message::packSingle(
+                    webcface::message::CallResponse{
+                        {}, r.caller_id, r.caller_member_id, true}));
+                (*func_info)->run(std::move(r), shared_from_this());
+            } else {
+                this->message_push(webcface::message::packSingle(
+                    webcface::message::CallResponse{
+                        {}, r.caller_id, r.caller_member_id, false}));
+            }
             break;
         }
         case MessageKind::call_response: {
             auto r = std::any_cast<webcface::message::CallResponse>(obj);
             try {
-                this->func_result_store.resultSetter(r.caller_id)
-                    .setStarted(r.started);
+                this->func_result_store.getResult(r.caller_id)
+                    ->setStarted(r.started);
                 if (!r.started) {
-                    this->func_result_store.removeResultSetter(r.caller_id);
+                    this->func_result_store.removeResult(r.caller_id);
                 }
             } catch (const std::future_error &e) {
                 this->logger_internal->error(
@@ -696,15 +781,15 @@ void internal::ClientData::onRecv(const std::string &message) {
                     try {
                         throw std::runtime_error(r.result.asStringRef());
                     } catch (...) {
-                        this->func_result_store.resultSetter(r.caller_id)
-                            .setResultException(std::current_exception());
+                        this->func_result_store.getResult(r.caller_id)
+                            ->setResultException(std::current_exception());
                     }
                 } else {
-                    this->func_result_store.resultSetter(r.caller_id)
-                        .setResult(r.result);
+                    this->func_result_store.getResult(r.caller_id)
+                        ->setResult(r.result);
                     // todo: 戻り値の型?
                 }
-                this->func_result_store.removeResultSetter(r.caller_id);
+                this->func_result_store.removeResult(r.caller_id);
             } catch (const std::future_error &e) {
                 this->logger_internal->error(
                     "error receiving call result id={}: {}", r.caller_id,
