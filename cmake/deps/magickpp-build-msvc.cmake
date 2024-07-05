@@ -82,6 +82,7 @@ message(STATUS "Building ImageMagick...")
 set(MAGICKPP_LIB_DIR "${imagemagick-windows_SOURCE_DIR}/Output/lib")
 if(NOT CMAKE_BUILD_TYPE STREQUAL "Debug" OR WEBCFACE_CONFIG_ALL)
     set(COMMAND ${MSBUILD_COMMAND} ${imagemagick_sln}
+        /t:CORE_Magick++
         /m /p:PlatformToolset=${VS_TOOLCHAIN},Configuration=Release,Platform=${CMAKE_C_COMPILER_ARCHITECTURE_ID}
     )
     message(STATUS "${COMMAND}")
@@ -102,6 +103,7 @@ if(NOT CMAKE_BUILD_TYPE STREQUAL "Debug" OR WEBCFACE_CONFIG_ALL)
 endif()
 if(CMAKE_BUILD_TYPE STREQUAL "Debug" OR WEBCFACE_CONFIG_ALL)
     set(COMMAND ${MSBUILD_COMMAND} ${imagemagick_sln}
+        /t:CORE_Magick++
         /m /p:Configuration=Debug,Platform=${CMAKE_C_COMPILER_ARCHITECTURE_ID}
     )
     message(STATUS "${COMMAND}")
