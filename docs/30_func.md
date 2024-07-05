@@ -18,6 +18,10 @@
 
 Client::func からFuncオブジェクトを作り、 Func::set() で関数を登録し、Client::sync()することで送信されます
 
+\note
+同じ名前のFuncに複数回関数をセットすると上書きされ、後に登録した関数のみが呼び出されます。
+ただし引数や戻り値の型などの情報は更新されず、最初の関数のものと同じになります。
+
 <div class="tabbed">
 
 - <b class="tab-title">C++</b>
@@ -27,7 +31,50 @@ Client::func からFuncオブジェクトを作り、 Func::set() で関数を�
     wcli.func("hoge").set([](){ /* ... */ });
     wcli.func("fuga").set([](int a, const std::string &b){ return 3.1415; });
     ```
-    set() の代わりに代入演算子(Value::operator=)でも同様のことができます
+    ~~set() の代わりに代入演算子(Value::operator=)でも同様のことができます~~
+
+    <span class="since-c">2.0</span>
+    set()で登録した関数はrecv()時に同じスレッドで実行されます。
+    そのため長時間かかる関数を登録するとその間他の処理がブロックされることになります。  
+    関数を非同期(別スレッド)で実行したい場合は Func::setAsync() を使用してください。
+    ver1.11以前ではset()で登録した関数はすべて非同期実行されていたので、こちらが従来のset()と同じ挙動になります。
+    (ただしその場合排他制御が必要なら登録する関数内で適切に行ってください)
+    ```cpp
+    wcli.func("hoge").setAsync([](){
+        std::this_thread::sleep_for(std::chrono::seconds(5));
+        return "hello";
+    });
+    ```
+    <span class="since-c">2.0</span>
+    戻り値にstd::futureまたはstd::shared_futureを返す関数も登録可能です。
+    その場合戻り値のfutureの結果を待機する(get() を呼び出す)のは別スレッドで行われます。
+    ```cpp
+    wcli.func("hoge").set([](){
+        // ここはrecv()のスレッドで同期実行
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+        return std::async(std::launch::async, []{
+            // ここは別スレッドで実行
+            // ちなみにこの場合 std::launch::deferred でもよい
+            std::this_thread::sleep_for(std::chrono::seconds(5));
+            return "hello";
+        });
+    });
+    ```
+
+    \warning
+    <span class="since-c">2.0</span>
+    WebCFaceで他のクライアントの関数をrun()で呼び出して結果を受け取るには受信処理が必要になるので、
+    set()で登録した関数内でrun()を呼ぶとデッドロックしてしまいます。
+    ```cpp
+    wcli.func("hoge").set([&](){
+        return wcli.member("foo").func("piyo").run(); // deadlock
+        return wcli.member("foo").func("piyo").runAsync().result; // ok (std::shared_future型)
+        return std::async([&]{
+            wcli.member("foo").func("piyo").run(); // ok (非同期実行)
+        });
+        // またはそもそもこの関数をsetAsync()で登録すればok
+    });
+    ```
 
 - <b class="tab-title">C</b>
     \since <span class="since-c">1.9</span>
@@ -68,6 +115,22 @@ Client::func からFuncオブジェクトを作り、 Func::set() で関数を�
 
     respondもrejectもせずにreturnした場合は自動的に空の値でrespondします。
 
+    <span class="since-c">2.0</span>
+    wcfFuncSet(), wcfFuncSetW() で登録した関数はwcfRecv()時に同じスレッドで実行されます。
+    そのため長時間かかる関数を登録するとその間他の処理がブロックされることになります。  
+    関数を非同期(別スレッド)で実行したい場合は wcfFuncSetAsync(), wcfFuncSetAsyncW() を使用してください。
+    ver1.11以前ではwcfFuncSet()で登録した関数はすべて非同期実行されていたので、こちらが従来のwcfFuncSet()と同じ挙動になります。
+    (ただしその場合排他制御が必要なら登録する関数内で適切に行ってください)
+    ```cpp
+    wcfFuncSetAsync(wcli, "hoge", args_type, 3, WCF_VAL_INT, callback, &user_data);
+    ```
+    \warning
+    <span class="since-c">2.0</span>
+    WebCFaceで他のクライアントの関数をwcfFuncRun()で呼び出して結果を受け取るには受信処理が必要になるので、
+    wcfFuncSet()で登録した関数内でwcfFuncRun()を呼ぶとデッドロックしてしまいます。
+    その場合はwcfFuncSetAsync()を使用してください。
+
+
 - <b class="tab-title">JavaScript</b>
     引数、戻り値はnumber, bool, string型であればいくつでも自由に指定できます。
     ```ts
@@ -96,9 +159,39 @@ Client::func からFuncオブジェクトを作り、 Func::set() で関数を�
 
 </div>
 
-\note
-同じ名前のFuncに複数回関数をセットすると上書きされ、後に登録した関数のみが呼び出されます。
-ただし引数や戻り値の型などの情報は更新されず、最初の関数のものと同じになります。
+<details><summary>setした関数にWebCFace側で排他制御をかける機能(〜ver1.11まで)</summary>
+
+C++では呼び出された関数は別スレッドで非同期に実行されます。
+これをメインスレッドと同期させたい場合は実行条件を設定することができます。
+```cpp
+wcli.func("fuga").setRunCondOnSync();
+```
+とすると呼び出された関数の実行は wcli.sync() のときに行われます。
+```cpp
+struct ScopeGuard {
+    static std::mutex m;
+    ScopeGuard() { m.lock(); }
+    ~ScopeGuard() { m.unlock(); }
+};
+wcli.func("fuga").setRunCondScopeGuard<ScopeGuard>();
+```
+とすると任意のScopeGuardクラスを使うことができます
+(実行前にScopeGuardのコンストラクタ、実行後にデストラクタが呼ばれます)
+
+また、すべての関数にまとめて条件を設定したい場合は、関数の設定前に
+```cpp
+wcli.setDefaultRunCondOnSync();
+wcli.setDefaultRunCondScopeGuard<ScopeGuard>();
+```
+とするとデフォルトの条件を設定できます。
+
+デフォルトを設定した後個別の関数について条件を設定することもできますし、
+```cpp
+wcli.func("fuga").setRunCondNone();
+```
+で条件を何も課さないようにできます。
+
+</details>
 
 ### 引数と戻り値型
 
@@ -183,43 +276,6 @@ Client::funcEntries()でその関数の存在を確認したりFunc::args()な�
 
 </div>
 </details>
-
-### 実行条件
-
-<div class="tabbed">
-
-- <b class="tab-title">C++</b>
-    C++では呼び出された関数は別スレッドで非同期に実行されます。
-    これをメインスレッドと同期させたい場合は実行条件を設定することができます。
-    ```cpp
-    wcli.func("fuga").setRunCondOnSync();
-    ```
-    とすると呼び出された関数の実行は wcli.sync() のときに行われます。
-    ```cpp
-    struct ScopeGuard {
-        static std::mutex m;
-        ScopeGuard() { m.lock(); }
-        ~ScopeGuard() { m.unlock(); }
-    };
-    wcli.func("fuga").setRunCondScopeGuard<ScopeGuard>();
-    ```
-    とすると任意のScopeGuardクラスを使うことができます
-    (実行前にScopeGuardのコンストラクタ、実行後にデストラクタが呼ばれます)
-
-    また、すべての関数にまとめて条件を設定したい場合は、関数の設定前に
-    ```cpp
-    wcli.setDefaultRunCondOnSync();
-    wcli.setDefaultRunCondScopeGuard<ScopeGuard>();
-    ```
-    とするとデフォルトの条件を設定できます。
-
-    デフォルトを設定した後個別の関数について条件を設定することもできますし、
-    ```cpp
-    wcli.func("fuga").setRunCondNone();
-    ```
-    で条件を何も課さないようにできます。
-
-</div>
 
 ## FuncListener
 
@@ -319,10 +375,11 @@ Func::run() で関数を実行できます。引数を渡すこともでき、�
 
 対象のクライアントと通信できない場合、また指定した関数が存在しない場合は webcface::FuncNotFoundError を投げます。
 
-\note 引数の型が違う場合、関数登録時に指定した型に自動的に変換されてから呼び出されます。
-(ver1.5.3〜1.9.0のserverではすべて文字列型に置き換えられてしまうバグあり、ver1.9.1で修正)  
-変換は受信側のライブラリで行われ、基本的にその言語仕様に従って変換します  
-c++ではstring→boolの変換は文字列が"1"のみtrueだったが <span class="since-c">1.9.1</span> 空文字列でないときtrueに変更
+\note
+* 引数の型が違う場合、関数登録時に指定した型に自動的に変換されてから呼び出されます。
+* (ver1.5.3〜1.9.0のserverではすべて文字列型に置き換えられてしまうバグあり、ver1.9.1で修正)
+* 変換は受信側のライブラリで行われ、基本的にその言語仕様に従って変換します
+* c++ではstring→boolの変換は文字列が"1"のみtrueだったが <span class="since-c">1.9.1</span> 空文字列でないときtrueに変更
 
 <div class="tabbed">
 
@@ -335,7 +392,11 @@ c++ではstring→boolの変換は文字列が"1"のみtrueだったが <span cl
 
     戻り値は webcface::ValAdaptor 型で返ります。
     整数、実数、bool、stringにキャストできます。  
-    <span class="since-c">1.10</span> また、明示的にキャストするなら `asStringRef()`(const参照), `asString()`, `asBool()`, `as<整数or実数型>()` も使えます。
+    <span class="since-c">1.10</span> また、明示的にキャストするなら `asStringRef()`(const参照), `asString()`, `asBool()`, <del>`as<整数or実数型>()`</del> も使えます。  
+    <span class="since-c">2.0</span> `asWStringRef()`, `asWString()`, `asDouble()`, `asInt()`, `asLLong()` も使えます。
+
+    \warning
+    start()を呼んで通信を開始する前にrun()を呼び出してしまうとデッドロックします。
 
 - <b class="tab-title">C</b>
     ```c
@@ -347,12 +408,18 @@ c++ではstring→boolの変換は文字列が"1"のみtrueだったが <span cl
     wcfMultiVal *ans;
     int ret = wcfFuncRun(wcli_, "a", "b", args, 3, &ans);
     // ex.) ret = WCF_OK, ans->as_double = 123.45
+
+    wcfDestroy(ans);
     ```
     関数が存在しない場合`WCF_NOT_FOUND`を返します。
     関数が例外を投げた場合`WCF_EXCEPTION`を返し、ret->as_strにエラーメッセージが入ります。
 
     <span class="since-c">1.7</span>
     結果が格納されているポインタは、不要になったら wcfDestroy(ans); で破棄してください。
+
+    \warning
+    wcfStart()を呼んで通信を開始する前にwcfFuncRun()を呼び出してしまうとデッドロックします。
+
 
 - <b class="tab-title">Python</b>
     ```py
@@ -419,17 +486,18 @@ AsyncFuncResultからは started と result が取得できます。
 
     wcfMultiVal *ans;
     int ret = wcfFuncGetResult(async_res, &ans);
+    // int ret = wcfFuncWaitResult(async_res, &ans);
     // ex.) ret = WCF_OK, ans->as_double = 123.45
 
-    int ret = wcfFuncWaitResult(async_res, &ans);
-    // ex.) ret = WCF_OK, ans->as_double = 123.45
+    wcfDestroy(ans);
     ```
     関数の実行がまだ完了していなければwcfFuncGetResultは`WCF_NOT_RETURNED`を返します。
 
     wcfFuncWaitResult は関数の実行が完了し結果が返ってくるまで待機します。
 
     <span class="since-c">1.7</span>
-    結果が格納されているポインタは、不要になったら wcfDestroy(ans); で破棄してください。
+    結果が格納されているポインタは、不要になったら wcfDestroy(ans); で破棄してください。  
+    (wcfAsyncFuncResultについては結果をansに渡した時点で破棄され使えなくなるためwcfDestroyの呼び出しは不要です。)
 
 - <b class="tab-title">JavaScript</b>
     \note
