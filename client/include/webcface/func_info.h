@@ -1,4 +1,5 @@
 #pragma once
+#include <future>
 #include <vector>
 #include <type_traits>
 #include <functional>
@@ -18,15 +19,14 @@
 #endif
 
 WEBCFACE_NS_BEGIN
-namespace Message {
+namespace message {
 struct Arg;
 struct Call;
 struct FuncInfo;
-} // namespace Message
-
-using FuncType = std::function<ValAdaptor(const std::vector<ValAdaptor> &)>;
-using FuncWrapperType =
-    std::function<ValAdaptor(FuncType, const std::vector<ValAdaptor> &)>;
+} // namespace message
+namespace internal {
+struct ClientData;
+}
 
 /*!
  * \brief 引数の情報を表す。
@@ -52,8 +52,8 @@ class WEBCFACE_DLL Arg {
     explicit Arg(ValType type) : type_(type) {}
     Arg() = default;
 
-    Message::Arg toMessage() const;
-    Arg(const Message::Arg &a);
+    message::Arg toMessage() const;
+    Arg(const message::Arg &a);
 
     /*!
      * \brief 引数名を設定する。
@@ -164,81 +164,47 @@ WEBCFACE_DLL std::ostream &operator<<(std::ostream &os, const Arg &arg);
 /*!
  * \brief 関数1つの情報を表す。関数の実体も持つ
  *
+ * 元の関数が値を返す場合、futureは即座に返るので非同期にする意味がない
+ * → eval_async=false にする
+ *
  */
 struct FuncInfo {
+    using FuncType = std::future<ValAdaptor>(std::vector<ValAdaptor>);
+
     ValType return_type;
     std::vector<Arg> args;
-    FuncType func_impl;
-    FuncWrapperType func_wrapper;
-    auto run(const std::vector<ValAdaptor> &args) {
-        if (func_wrapper) {
-            return func_wrapper(func_impl, args);
-        } else {
-            return func_impl(args);
-        }
-    }
-
-    FuncInfo()
-        : return_type(ValType::none_), args(), func_impl(), func_wrapper() {}
-    FuncInfo(ValType return_type, const std::vector<Arg> &args,
-             const FuncType &func_impl, const FuncWrapperType &func_wrapper)
-        : return_type(return_type), args(args), func_impl(func_impl),
-          func_wrapper(func_wrapper) {}
-    FuncInfo(const Message::FuncInfo &m);
-    Message::FuncInfo toMessage(const SharedString &field) const;
+    bool eval_async;
+    std::function<FuncType> func_impl;
 
     /*!
-     * \brief 任意の関数を受け取り、引数と戻り値をキャストして実行する関数を保存
+     * \brief func_implをこのスレッドで実行
+     *
+     * * eval_async=caller_async=trueならfutureを新しいスレッドで評価し、
+     * そうでなければこのスレッドでwaitする
+     * * 建てたスレッドはdetachする
      *
      */
-    template <typename... Args, typename Ret>
-    explicit FuncInfo(std::function<Ret(Args...)> func,
-                      const FuncWrapperType &wrapper)
-        : return_type(valTypeOf<Ret>()), args({Arg{valTypeOf<Args>()}...}),
-          func_impl([func](const std::vector<ValAdaptor> &args_vec) {
-              std::tuple<std::remove_const_t<std::remove_reference_t<Args>>...>
-                  args_tuple;
-              if (args_vec.size() != sizeof...(Args)) {
-                  throw std::invalid_argument(
-                      "requires " + std::to_string(sizeof...(Args)) +
-                      " arguments, got " + std::to_string(args_vec.size()));
-              }
-              argToTuple(args_vec, args_tuple);
-              if constexpr (std::is_void_v<Ret>) {
-                  std::apply(func, args_tuple);
-                  return ValAdaptor{};
-              } else {
-                  Ret ret = std::apply(func, args_tuple);
-                  return static_cast<ValAdaptor>(ret);
-              }
-          }),
-          func_wrapper(wrapper) {}
-};
+    std::future<ValAdaptor> run(const std::vector<ValAdaptor> &args,
+                                bool caller_async);
+    /*!
+     * \brief
+     * func_implをこのスレッドで実行し、完了時にCallResultをdataに送信させる
+     *
+     * * eval_async=trueなら新しいスレッドで、そうでなければこのスレッドでfutureを評価
+     * * 建てたスレッドはdetachする
+     *
+     */
+    void run(webcface::message::Call &&call,
+             const std::shared_ptr<internal::ClientData> &data);
 
-using CallerId = std::size_t;
-using MemberId = unsigned int;
-
-/*!
- * \brief 関数を呼び出すのに必要なデータ。
- *
- * client_data->client->server->clientと送られる
- *
- */
-struct WEBCFACE_DLL FuncCall {
-    CallerId caller_id = 0;
-    MemberId caller_member_id = 0;
-    MemberId target_member_id = 0;
-    SharedString field;
-    std::vector<ValAdaptor> args;
-
-    FuncCall() = default;
-    FuncCall(CallerId caller_id, MemberId caller_member_id,
-             MemberId target_member_id, const SharedString &field,
-             const std::vector<ValAdaptor> &args)
-        : caller_id(caller_id), caller_member_id(caller_member_id),
-          target_member_id(target_member_id), field(field), args(args) {}
-    FuncCall(const Message::Call &m);
-    Message::Call toMessage() const;
+    FuncInfo()
+        : return_type(ValType::none_), args(), eval_async(false), func_impl() {}
+    FuncInfo(ValType return_type, std::vector<Arg> args, bool async,
+             std::function<FuncType> func_impl)
+        : return_type(return_type), args(std::move(args)), eval_async(async),
+          func_impl(std::move(func_impl)) {}
+    FuncInfo(const message::FuncInfo &m);
+    message::FuncInfo toMessage(const SharedString &field) const;
 };
 
 WEBCFACE_NS_END

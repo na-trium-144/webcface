@@ -8,9 +8,9 @@
 #include <webcface/common/def.h>
 
 WEBCFACE_NS_BEGIN
-namespace Message {
+namespace message {
 struct ImageFrame;
-} // namespace Message
+} // namespace message
 
 enum class ImageColorMode {
     gray = 0,
@@ -118,8 +118,8 @@ class WEBCFACE_DLL ImageFrame {
                const std::shared_ptr<std::vector<unsigned char>> &data,
                ImageColorMode color_mode = ImageColorMode::bgr,
                ImageCompressMode cmp_mode = ImageCompressMode::raw);
-    ImageFrame(const Message::ImageFrame &m);
-    Message::ImageFrame toMessage() const;
+    ImageFrame(const message::ImageFrame &m);
+    message::ImageFrame toMessage() const;
     /*!
      * \brief 生画像データの配列からImageFrameを作成
      *

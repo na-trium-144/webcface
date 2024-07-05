@@ -4,8 +4,8 @@
 
 WEBCFACE_NS_BEGIN
 
-Message::Canvas3DComponent Canvas3DComponent::toMessage() const {
-    Message::Canvas3DComponent cc;
+message::Canvas3DComponent Canvas3DComponent::toMessage() const {
+    message::Canvas3DComponent cc;
     cc.type = static_cast<int>(this->type_);
     cc.origin_pos = this->origin_.pos();
     cc.origin_rot = this->origin_.rot();
@@ -23,7 +23,7 @@ Message::Canvas3DComponent Canvas3DComponent::toMessage() const {
     }
     return cc;
 }
-Canvas3DComponent::Canvas3DComponent(const Message::Canvas3DComponent &cc)
+Canvas3DComponent::Canvas3DComponent(const message::Canvas3DComponent &cc)
     : type_(static_cast<Canvas3DComponentType>(cc.type)),
       origin_(cc.origin_pos, cc.origin_rot),
       color_(static_cast<ViewColor>(cc.color)),

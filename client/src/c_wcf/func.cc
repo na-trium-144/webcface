@@ -27,12 +27,22 @@ wcfFuncRunT(wcfClient *wcli, const CharT *member, const CharT *field,
     if (!field || arg_size < 0) {
         return WCF_INVALID_ARGUMENT;
     }
-    auto [status, result_p] =
-        resultToCVal<CharT>(wcli_->member(strOrEmpty(member))
-                                .func(field)
-                                .runAsync(argsFromCVal<CharT>(args, arg_size)));
-    *result = result_p;
-    return status;
+    try {
+        *result =
+            resultToCVal<CharT>(wcli_->member(strOrEmpty(member))
+                                    .func(field)
+                                    .run(argsFromCVal<CharT>(args, arg_size)));
+        return WCF_OK;
+    } catch (const FuncNotFound &e) {
+        *result = resultToCVal<CharT>(ValAdaptor(e.what()));
+        return WCF_NOT_FOUND;
+    } catch (const std::exception &e) {
+        *result = resultToCVal<CharT>(ValAdaptor(e.what()));
+        return WCF_EXCEPTION;
+    } catch (...) {
+        *result = resultToCVal<CharT>(ValAdaptor("unknown exception"));
+        return WCF_EXCEPTION;
+    }
 }
 template <typename CharT>
 static wcfStatus
@@ -66,8 +76,20 @@ static wcfStatus wcfFuncGetResultT(wcfAsyncFuncResult *async_res,
                          std::future_status::ready) {
         return WCF_NOT_RETURNED;
     }
-    auto [status, result_p] = resultToCVal<CharT>(*res);
-    *result = result_p;
+    int status;
+    try {
+        *result = resultToCVal<CharT>(res->result.get());
+        status = WCF_OK;
+    } catch (const FuncNotFound &e) {
+        *result = resultToCVal<CharT>(ValAdaptor(e.what()));
+        status = WCF_NOT_FOUND;
+    } catch (const std::exception &e) {
+        *result = resultToCVal<CharT>(ValAdaptor(e.what()));
+        status = WCF_EXCEPTION;
+    } catch (...) {
+        *result = resultToCVal<CharT>(ValAdaptor("unknown exception"));
+        status = WCF_EXCEPTION;
+    }
     func_result_list.erase(
         std::find(func_result_list.begin(), func_result_list.end(), res));
     delete res;
@@ -123,8 +145,32 @@ wcfFuncSetT(wcfClient *wcli, const CharT *field, const int *arg_types,
                            [callback, user_data](const FuncCallHandle &handle) {
                                auto whp = createHandle<CharT>(handle);
                                callback(whp, user_data);
-                               wcfFuncRespondT<CharT>(whp, nullptr);
                            });
+    return WCF_OK;
+}
+template <typename CharT>
+static wcfStatus wcfFuncSetAsyncT(wcfClient *wcli, const CharT *field,
+                                  const int *arg_types, int arg_size,
+                                  int return_type,
+                                  typename CharType<CharT>::CCallback callback,
+                                  void *user_data) {
+    auto wcli_ = getWcli(wcli);
+    if (!wcli_) {
+        return WCF_BAD_WCLI;
+    }
+    if (!field || arg_size < 0) {
+        return WCF_INVALID_ARGUMENT;
+    }
+    std::vector<Arg> args(arg_size);
+    for (int i = 0; i < arg_size; i++) {
+        args[i].type(static_cast<ValType>(arg_types[i]));
+    }
+    wcli_->func(field).setAsync(
+        args, static_cast<ValType>(return_type),
+        [callback, user_data](const FuncCallHandle &handle) {
+            auto whp = createHandle<CharT>(handle);
+            callback(whp, user_data);
+        });
     return WCF_OK;
 }
 template <typename CharT>
@@ -209,6 +255,18 @@ wcfStatus wcfFuncSetW(wcfClient *wcli, const wchar_t *field,
                       wcfFuncCallbackW callback, void *user_data) {
     return wcfFuncSetT(wcli, field, arg_types, arg_size, return_type, callback,
                        user_data);
+}
+wcfStatus wcfFuncSetAsync(wcfClient *wcli, const char *field,
+                          const int *arg_types, int arg_size, int return_type,
+                          wcfFuncCallback callback, void *user_data) {
+    return wcfFuncSetAsyncT(wcli, field, arg_types, arg_size, return_type,
+                            callback, user_data);
+}
+wcfStatus wcfFuncSetAsyncW(wcfClient *wcli, const wchar_t *field,
+                           const int *arg_types, int arg_size, int return_type,
+                           wcfFuncCallbackW callback, void *user_data) {
+    return wcfFuncSetAsyncT(wcli, field, arg_types, arg_size, return_type,
+                            callback, user_data);
 }
 wcfStatus wcfFuncListen(wcfClient *wcli, const char *field,
                         const int *arg_types, int arg_size, int return_type) {

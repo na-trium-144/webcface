@@ -19,7 +19,7 @@ DummyClient::DummyClient(bool use_unix)
           if (use_unix) {
               curl_easy_setopt(
                   handle, CURLOPT_UNIX_SOCKET_PATH,
-                  Message::Path::unixSocketPath(27530).string().c_str());
+                  message::Path::unixSocketPath(27530).string().c_str());
           }
           curl_easy_setopt(handle, CURLOPT_URL, "ws://127.0.0.1");
           curl_easy_setopt(handle, CURLOPT_PORT, 27530L);
@@ -67,7 +67,7 @@ DummyClient::DummyClient(bool use_unix)
                       if (ret == CURLE_OK && meta && meta->bytesleft == 0) {
                           dummy_logger->trace("message received len={}",
                                               buf_s.size());
-                          auto unpacked = Message::unpack(buf_s, dummy_logger);
+                          auto unpacked = message::unpack(buf_s, dummy_logger);
                           for (const auto &m : unpacked) {
                               dummy_logger->info("kind {}", m.first);
                               recv_data.push_back(m);

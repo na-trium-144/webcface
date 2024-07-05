@@ -48,32 +48,23 @@ std::ostream &operator<<(std::ostream &os, const Arg &arg) {
     return os;
 }
 
-Arg::Arg(const Message::Arg &a)
+Arg::Arg(const message::Arg &a)
     : name_(a.name_), type_(a.type_), init_(a.init_), min_(a.min_),
       max_(a.max_), option_(a.option_) {}
-Message::Arg Arg::toMessage() const {
-    return Message::Arg(name_, type_, init_, min_, max_, option_);
+message::Arg Arg::toMessage() const {
+    return message::Arg(name_, type_, init_, min_, max_, option_);
 }
 
-FuncCall::FuncCall(const Message::Call &m)
-    : FuncCall(m.caller_id, m.caller_member_id, m.target_member_id, m.field,
-               std::vector(m.args)) {}
-Message::Call FuncCall::toMessage() const {
-    return Message::Call{caller_id, caller_member_id, target_member_id, field,
-                         args};
-}
-
-FuncInfo::FuncInfo(const Message::FuncInfo &m)
-    : return_type(m.return_type), args(), func_impl(nullptr),
-      func_wrapper(nullptr) {
+FuncInfo::FuncInfo(const message::FuncInfo &m)
+    : return_type(m.return_type), args(), func_impl(nullptr) {
     args.reserve(m.args->size());
     for (const auto &a : *m.args) {
         args.emplace_back(a);
     }
 }
-Message::FuncInfo FuncInfo::toMessage(const SharedString &field) const {
-    Message::FuncInfo m{0, field, return_type,
-                        std::make_shared<std::vector<Message::Arg>>()};
+message::FuncInfo FuncInfo::toMessage(const SharedString &field) const {
+    message::FuncInfo m{0, field, return_type,
+                        std::make_shared<std::vector<message::Arg>>()};
     m.args->reserve(args.size());
     for (const auto &a : args) {
         m.args->emplace_back(a.toMessage());

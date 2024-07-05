@@ -7,9 +7,9 @@
 #include <webcface/common/def.h>
 
 WEBCFACE_NS_BEGIN
-/*! 
+/*!
  * \brief 排他制御をしたただのキュー
- * 
+ *
  */
 template <typename T>
 class Queue {
@@ -22,6 +22,15 @@ class Queue {
         std::lock_guard lock(mtx);
         que.push(f);
         cond.notify_all();
+    }
+    void push(T &&f) {
+        std::lock_guard lock(mtx);
+        que.push(std::move(f));
+        cond.notify_all();
+    }
+    bool empty() {
+        std::lock_guard lock(mtx);
+        return que.empty();
     }
     std::optional<T> pop() {
         std::lock_guard lock(mtx);

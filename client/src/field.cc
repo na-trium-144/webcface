@@ -110,14 +110,14 @@ std::vector<Image> Field::imageEntries() const {
 
 bool Field::expired() const { return data_w.expired(); }
 
-std::shared_ptr<Internal::ClientData> Field::dataLock() const {
+std::shared_ptr<internal::ClientData> Field::dataLock() const {
     if (auto data = data_w.lock()) {
         return data;
     }
     throw std::runtime_error("Cannot access client data");
 }
 
-std::shared_ptr<Internal::ClientData> Field::setCheck() const {
+std::shared_ptr<internal::ClientData> Field::setCheck() const {
     auto data = dataLock();
     if (!data->isSelf(*this)) {
         throw std::invalid_argument(

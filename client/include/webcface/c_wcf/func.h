@@ -132,9 +132,13 @@ WEBCFACE_DLL wcfStatus wcfFuncWaitResultW(wcfAsyncFuncResult *async_res,
  * \brief 関数を登録する
  * \since ver1.9
  *
- * 登録した関数は引数でcallhandleを受け取り、
+ * * 登録した関数は引数でcallhandleを受け取り、
  * wcfFuncRespond または wcfFuncReject を使って結果を返す。
- * (何も返さずreturnしても良い)
+ * (何も返さずreturnしても良いが、return後にはそのhandleは使えない)
+ * * (ver2.0〜) wcfFuncSet()でセットした場合、他クライアントから呼び出されたとき
+ * wcfRecv() (または autoRecv) のスレッドでそのまま実行され、
+ * この関数が完了するまで他のデータの受信はブロックされる。
+ * また、 wcfFuncRunAsync() で呼び出したとしても同じスレッドで同期実行される。
  *
  * \param wcli Clientポインタ
  * \param field 関数名
@@ -161,6 +165,30 @@ WEBCFACE_DLL wcfStatus wcfFuncSetW(wcfClient *wcli, const wchar_t *field,
                                    const wcfValType *arg_types, int arg_size,
                                    wcfValType return_type,
                                    wcfFuncCallbackW callback, void *user_data);
+/*!
+ * \brief 非同期に実行される関数を登録する
+ * \since ver2.0
+ *
+ * 登録した関数は他クライアントから呼び出されたとき新しいスレッドを建てて実行される。
+ * ver1.11以前のwcfFuncSet()と同じ。
+ *
+ * \sa wcfFuncSet
+ */
+WEBCFACE_DLL wcfStatus wcfFuncSetAsync(wcfClient *wcli, const char *field,
+                                       const wcfValType *arg_types,
+                                       int arg_size, wcfValType return_type,
+                                       wcfFuncCallback callback,
+                                       void *user_data);
+/*!
+ * \brief 非同期に実行される関数を登録する (wstring)
+ * \since ver2.0
+ * \sa wcfFuncSetW, wcfFuncSetAsync
+ */
+WEBCFACE_DLL wcfStatus wcfFuncSetAsyncW(wcfClient *wcli, const wchar_t *field,
+                                        const wcfValType *arg_types,
+                                        int arg_size, wcfValType return_type,
+                                        wcfFuncCallbackW callback,
+                                        void *user_data);
 
 /*!
  * \brief 関数呼び出しの待受を開始する

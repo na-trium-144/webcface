@@ -49,7 +49,7 @@ void Server::pingThreadMain() {
         });
         store->ping_status = new_ping_status;
         auto msg =
-            Message::packSingle(Message::PingStatus{{}, store->ping_status});
+            message::packSingle(message::PingStatus{{}, store->ping_status});
         store->forEach([&](auto cd) {
             cd->logger->trace("ping");
             cd->sendPing();
@@ -62,7 +62,7 @@ void Server::pingThreadMain() {
 }
 void Server::send(wsConnPtr conn, const std::string &msg) {
     if (!server_stop.load()) {
-        webcfaceServerInternal::AppWrapper::send(conn, msg.data(), msg.size());
+        server_internal::AppWrapper::send(conn, msg.data(), msg.size());
     }
 }
 void Server::join() {
@@ -81,13 +81,13 @@ Server::~Server() {
     }
     server_ping_wait.notify_one();
     for (auto &app : apps) {
-        static_cast<webcfaceServerInternal::AppWrapper *>(app)->stop();
+        static_cast<server_internal::AppWrapper *>(app)->stop();
     }
     ping_thread.join();
     this->join();
     store.reset();
     for (auto &app : apps) {
-        delete static_cast<webcfaceServerInternal::AppWrapper *>(app);
+        delete static_cast<server_internal::AppWrapper *>(app);
     }
 }
 
@@ -119,8 +119,8 @@ Server::Server(int port, const spdlog::sink_ptr &sink,
     logger->debug("static dir = {}", static_dir);
     // logger->debug("temp dir = {}", temp_dir);
 
-    auto unix_path = Message::Path::unixSocketPath(port);
-    auto wsl_path = Message::Path::unixSocketPathWSLInterop(port);
+    auto unix_path = message::Path::unixSocketPath(port);
+    auto wsl_path = message::Path::unixSocketPathWSLInterop(port);
 
     auto open_callback = [this, sink, level](void *conn, const char *ip) {
         std::lock_guard lock(server_mtx);
@@ -139,7 +139,7 @@ Server::Server(int port, const spdlog::sink_ptr &sink,
         }
     };
 
-    auto *app_tcp = new webcfaceServerInternal::AppWrapper(
+    auto *app_tcp = new server_internal::AppWrapper(
         crow_logger_callback, static_dir.c_str(), port, nullptr, open_callback,
         close_callback, message_callback, [logger, port]() {
             for (const auto &addr : getIpAddresses(logger)) {
@@ -148,31 +148,31 @@ Server::Server(int port, const spdlog::sink_ptr &sink,
         });
     apps.push_back(app_tcp);
 
-    Message::Path::initUnixSocket(unix_path, logger);
-    auto *app_unix = new webcfaceServerInternal::AppWrapper(
+    message::Path::initUnixSocket(unix_path, logger);
+    auto *app_unix = new server_internal::AppWrapper(
         crow_logger_callback, static_dir.c_str(), port,
         unix_path.string().c_str(), open_callback, close_callback,
         message_callback, [unix_path, logger]() {
-            Message::Path::updateUnixSocketPerms(unix_path, logger);
+            message::Path::updateUnixSocketPerms(unix_path, logger);
             logger->info("unix domain socket at {}", unix_path.string());
         });
     apps.push_back(app_unix);
 
-    webcfaceServerInternal::AppWrapper *app_wsl = nullptr;
-    if (Message::Path::detectWSL1()) {
-        Message::Path::initUnixSocket(wsl_path, logger);
-        app_wsl = new webcfaceServerInternal::AppWrapper(
+    server_internal::AppWrapper *app_wsl = nullptr;
+    if (message::Path::detectWSL1()) {
+        message::Path::initUnixSocket(wsl_path, logger);
+        app_wsl = new server_internal::AppWrapper(
             crow_logger_callback, static_dir.c_str(), port,
             wsl_path.string().c_str(), open_callback, close_callback,
             message_callback, [wsl_path, logger]() {
-                Message::Path::updateUnixSocketPerms(wsl_path, logger);
+                message::Path::updateUnixSocketPerms(wsl_path, logger);
                 logger->info("win32 socket at {}", wsl_path.string());
             });
         apps.push_back(app_wsl);
     }
 
     for (auto &app_v : apps) {
-        auto app = static_cast<webcfaceServerInternal::AppWrapper *>(app_v);
+        auto app = static_cast<server_internal::AppWrapper *>(app_v);
 
         apps_running.emplace_back([app, logger] {
             app->run();

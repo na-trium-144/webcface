@@ -4,10 +4,10 @@
 #include <string>
 
 using namespace webcface;
-using namespace webcface::Internal;
+using namespace webcface::internal;
 
 static SharedString operator""_ss(const char *str, std::size_t len) {
-    return SharedString(Encoding::castToU8(std::string_view(str, len)));
+    return SharedString(encoding::castToU8(std::string_view(str, len)));
 }
 
 class SyncDataStore2Test : public ::testing::Test {
@@ -153,8 +153,8 @@ TEST(FuncResultStoreTest, addResult) {
     auto data = std::make_shared<ClientData>("test"_ss);
     FuncResultStore &s = data->func_result_store;
     auto r = s.addResult(Field{data, "b"_ss, "c"_ss});
-    EXPECT_EQ(r.name(), "c");
-    EXPECT_EQ(r.member().name(), "b");
+    EXPECT_EQ(r->getter().name(), "c");
+    EXPECT_EQ(r->getter().member().name(), "b");
 }
 
 TEST(ClientDataTest, self) {

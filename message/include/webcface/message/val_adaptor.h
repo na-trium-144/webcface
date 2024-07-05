@@ -32,7 +32,7 @@ MSGPACK_API_VERSION_NAMESPACE(MSGPACK_DEFAULT_API_NS) {
             case msgpack::type::BIN:
             case msgpack::type::STR:
                 v = utf8::replace_invalid(
-                    std::u8string(webcface::Encoding::castToU8(
+                    std::u8string(webcface::encoding::castToU8(
                         o.via.bin.ptr, o.via.bin.size)));
                 break;
             default:
@@ -58,7 +58,7 @@ MSGPACK_API_VERSION_NAMESPACE(MSGPACK_DEFAULT_API_NS) {
                 break;
             case webcface::ValType::string_:
             default:
-                o.pack(webcface::Encoding::castFromU8(v.asU8StringRef()));
+                o.pack(webcface::encoding::castFromU8(v.asU8StringRef()));
                 break;
             }
             return o;

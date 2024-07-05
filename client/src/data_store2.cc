@@ -3,7 +3,7 @@
 #include <type_traits>
 
 WEBCFACE_NS_BEGIN
-namespace Internal {
+namespace internal {
 /*!
  * \brief setSend時にこれを実際に送信すべきかどうか
  *
@@ -259,6 +259,6 @@ template class WEBCFACE_DLL_INSTANCE_DEF SyncDataStore2<ViewData, int>;
 template class WEBCFACE_DLL_INSTANCE_DEF SyncDataStore2<RobotModelData, int>;
 template class WEBCFACE_DLL_INSTANCE_DEF SyncDataStore2<Canvas3DData, int>;
 template class WEBCFACE_DLL_INSTANCE_DEF SyncDataStore2<Canvas2DData, int>;
-template class WEBCFACE_DLL_INSTANCE_DEF SyncDataStore2<ImageData, Message::ImageReq>;
-} // namespace Internal
+template class WEBCFACE_DLL_INSTANCE_DEF SyncDataStore2<ImageData, message::ImageReq>;
+} // namespace internal
 WEBCFACE_NS_END

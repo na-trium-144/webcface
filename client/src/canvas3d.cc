@@ -12,10 +12,10 @@ template class WEBCFACE_DLL_INSTANCE_DEF EventTarget<Canvas3D>;
 
 Canvas3D::Canvas3D()
     : Field(), EventTarget<Canvas3D>(),
-      sb(std::make_shared<Internal::DataSetBuffer<Canvas3DComponent>>()) {}
+      sb(std::make_shared<internal::DataSetBuffer<Canvas3DComponent>>()) {}
 Canvas3D::Canvas3D(const Field &base)
     : Field(base), EventTarget<Canvas3D>(),
-      sb(std::make_shared<Internal::DataSetBuffer<Canvas3DComponent>>(base)) {
+      sb(std::make_shared<internal::DataSetBuffer<Canvas3DComponent>>(base)) {
     std::lock_guard lock(this->dataLock()->event_m);
     this->setCL(
         this->dataLock()->canvas3d_change_event[this->member_][this->field_]);
@@ -38,12 +38,12 @@ Canvas3D &Canvas3D::operator<<(Canvas3DComponent &&cc) {
 }
 
 template <>
-void Internal::DataSetBuffer<Canvas3DComponent>::onSync() {
+void internal::DataSetBuffer<Canvas3DComponent>::onSync() {
     for (std::size_t i = 0; i < components_.size(); i++) {
         components_.at(i).lockTmp(
             target_.data_w,
             target_.field_.u8String() + u8"_" +
-                std::u8string(Encoding::castToU8(std::to_string(i))));
+                std::u8string(encoding::castToU8(std::to_string(i))));
     }
     target_.setCheck()->canvas3d_store.setSend(
         target_, std::make_shared<std::vector<Canvas3DComponent>>(
@@ -55,8 +55,8 @@ void Canvas3D::request() const {
     auto data = dataLock();
     auto req = data->canvas3d_store.addReq(member_, field_);
     if (req) {
-        data->message_queue->push(Message::packSingle(
-            Message::Req<Message::Canvas3D>{{}, member_, field_, req}));
+        data->message_push(message::packSingle(
+            message::Req<message::Canvas3D>{{}, member_, field_, req}));
     }
 }
 void Canvas3D::onAppend() const { request(); }
