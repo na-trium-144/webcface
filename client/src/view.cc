@@ -3,18 +3,17 @@
 #include <webcface/member.h>
 #include "webcface/message/message.h"
 #include "webcface/internal/data_buffer.h"
-#include "webcface/internal/event_target_impl.h"
 
 WEBCFACE_NS_BEGIN
 
 View::View()
     : Field(), std::ostream(nullptr),
-      sb(std::make_shared<Internal::ViewBuf>()) {
+      sb(std::make_shared<internal::ViewBuf>()) {
     this->std::ostream::init(sb.get());
 }
 View::View(const Field &base)
     : Field(base), std::ostream(nullptr),
-      sb(std::make_shared<Internal::ViewBuf>(base)) {
+      sb(std::make_shared<internal::ViewBuf>(base)) {
     this->std::ostream::init(sb.get());
 }
 View::~View() { this->rdbuf(nullptr); }
@@ -43,10 +42,10 @@ void internal::DataSetBuffer<ViewComponent>::onSync() {
     target_.setCheck()->view_store.setSend(
         target_,
         std::make_shared<std::vector<ViewComponent>>(std::move(components_)));
-    if (static_cast<View>(target_).onChange()) {
-        static_cast<View>(target_).onChange()(*this);
+    auto view_target = static_cast<View>(target_);
+    if (view_target.onChange()) {
+        view_target.onChange()(view_target);
     }
-    return *this;
 }
 std::function<void(View)> &View::onChange() {
     std::lock_guard lock(this->dataLock()->event_m);

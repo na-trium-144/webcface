@@ -4,22 +4,15 @@
 #include "webcface/message/message.h"
 #include "webcface/internal/data_buffer.h"
 #include "webcface/encoding/encoding.h"
-#include "webcface/internal/event_target_impl.h"
 
 WEBCFACE_NS_BEGIN
 
-template class WEBCFACE_DLL_INSTANCE_DEF EventTarget<Canvas3D>;
-
 Canvas3D::Canvas3D()
-    : Field(), EventTarget<Canvas3D>(),
+    : Field(),
       sb(std::make_shared<internal::DataSetBuffer<Canvas3DComponent>>()) {}
 Canvas3D::Canvas3D(const Field &base)
-    : Field(base), EventTarget<Canvas3D>(),
-      sb(std::make_shared<internal::DataSetBuffer<Canvas3DComponent>>(base)) {
-    std::lock_guard lock(this->dataLock()->event_m);
-    this->setCL(
-        this->dataLock()->canvas3d_change_event[this->member_][this->field_]);
-}
+    : Field(base),
+      sb(std::make_shared<internal::DataSetBuffer<Canvas3DComponent>>(base)) {}
 Canvas3D &Canvas3D::init() {
     sb->init();
     return *this;
@@ -48,7 +41,20 @@ void internal::DataSetBuffer<Canvas3DComponent>::onSync() {
     target_.setCheck()->canvas3d_store.setSend(
         target_, std::make_shared<std::vector<Canvas3DComponent>>(
                      std::move(components_)));
-    static_cast<Canvas3D>(target_).triggerEvent(target_);
+    auto canvas3d_target = static_cast<Canvas3D>(target_);
+    if (canvas3d_target.onChange()) {
+        canvas3d_target.onChange()(canvas3d_target);
+    }
+}
+
+std::function<void(Canvas3D)> &Canvas3D::onChange() {
+    std::lock_guard lock(this->dataLock()->event_m);
+    return this->dataLock()->canvas3d_change_event[this->member_][this->field_];
+}
+Canvas3D &Canvas3D::onChange(std::function<void(Canvas3D)> callback) {
+    this->request();
+    this->onChange() = std::move(callback);
+    return *this;
 }
 
 void Canvas3D::request() const {
@@ -59,7 +65,6 @@ void Canvas3D::request() const {
             message::Req<message::Canvas3D>{{}, member_, field_, req}));
     }
 }
-void Canvas3D::onAppend() const { request(); }
 std::optional<std::vector<Canvas3DComponent>> Canvas3D::tryGet() const {
     auto vb = dataLock()->canvas3d_store.getRecv(*this);
     request();

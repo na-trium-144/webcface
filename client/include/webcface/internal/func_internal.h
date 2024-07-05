@@ -13,8 +13,8 @@ namespace internal {
  */
 class WEBCFACE_DLL AsyncFuncState
     : public std::enable_shared_from_this<AsyncFuncState> {
-    eventpp::CallbackList<void(bool)> started_event;
-    eventpp::CallbackList<void(std::shared_future<ValAdaptor>)> result_event;
+    std::function<void(bool)> started_event;
+    std::function<void(std::shared_future<ValAdaptor>)> result_event;
     std::promise<bool> started_p;
     std::promise<ValAdaptor> result_p;
     std::size_t caller_id;

@@ -2,7 +2,6 @@
 #include <webcface/common/def.h>
 #include "robot_link.h"
 #include "field.h"
-#include "event_target.h"
 #include "components.h"
 
 WEBCFACE_NS_BEGIN
@@ -21,11 +20,8 @@ class DataSetBuffer;
  *
  */
 class WEBCFACE_DLL RobotModel : protected Field,
-                                public EventTarget<RobotModel>,
                                 public Canvas3DComponent {
     std::shared_ptr<internal::DataSetBuffer<RobotLink>> sb;
-
-    void onAppend() const override final;
 
   public:
     RobotModel();
@@ -90,6 +86,20 @@ class WEBCFACE_DLL RobotModel : protected Field,
      * \since ver1.11
      */
     RobotModel parent() const { return this->Field::parent(); }
+
+  private:
+    /*!
+     * \brief 値が変化したときに呼び出されるコールバックを取得
+     * \since ver2.0
+     */
+    std::function<void(RobotModel)> &onChange();
+
+  public:
+    /*!
+     * \brief 値が変化したときに呼び出されるコールバックを設定
+     * \since ver2.0
+     */
+    RobotModel &onChange(std::function<void(RobotModel)> callback);
 
     /*!
      * \brief モデルを初期化

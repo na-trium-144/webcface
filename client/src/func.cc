@@ -5,11 +5,8 @@
 #include "webcface/message/message.h"
 #include "webcface/internal/client_internal.h"
 #include <webcface/common/def.h>
-#include "webcface/internal/event_target_impl.h"
 
 WEBCFACE_NS_BEGIN
-
-template class WEBCFACE_DLL_INSTANCE_DEF EventTarget<Func>;
 
 Func::Func(const Field &base) : Field(base) {}
 Func &Func::setImpl(const std::shared_ptr<FuncInfo> &v) {

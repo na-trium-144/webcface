@@ -112,61 +112,61 @@ class WEBCFACE_DLL Member : protected Field {
      * コールバックの型は void(Value)
      *
      */
-    EventTarget<Value> onValueEntry() const;
+    Member &onValueEntry(std::function<void(Value)> callback);
     /*!
      * \brief textが追加された時のイベント
      *
      * コールバックの型は void(Text)
      *
      */
-    EventTarget<Text> onTextEntry() const;
+    Member &onTextEntry(std::function<void(Text)> callback);
     /*!
      * \brief robotModelが追加された時のイベント
      *
      * コールバックの型は void(RobotModel)
      *
      */
-    EventTarget<RobotModel> onRobotModelEntry() const;
+    Member &onRobotModelEntry(std::function<void(RobotModel)> callback);
     /*!
      * \brief funcが追加された時のイベント
      *
      * コールバックの型は void(Func)
      *
      */
-    EventTarget<Func> onFuncEntry() const;
+    Member &onFuncEntry(std::function<void(Func)> callback);
     /*!
      * \brief imageが追加されたときのイベント
      *
      * コールバックの型は void(Image)
      *
      */
-    EventTarget<Image> onImageEntry() const;
+    Member &onImageEntry(std::function<void(Image)> callback);
     /*!
      * \brief viewが追加されたときのイベント
      *
      * コールバックの型は void(View)
      *
      */
-    EventTarget<View> onViewEntry() const;
+    Member &onViewEntry(std::function<void(View)> callback);
     /*!
      * \brief canvas3dが追加されたときのイベント
      *
      * コールバックの型は void(Canvas3D)
      *
      */
-    EventTarget<Canvas3D> onCanvas3DEntry() const;
+    Member &onCanvas3DEntry(std::function<void(Canvas3D)> callback);
     /*!
      * \brief canvas2dが追加されたときのイベント
      *
      * コールバックの型は void(Canvas2D)
      *
      */
-    EventTarget<Canvas2D> onCanvas2DEntry() const;
+    Member &onCanvas2DEntry(std::function<void(Canvas2D)> callback);
     /*!
      * \brief Memberがsync()したときのイベント
      * コールバックの型は void(Member)
      */
-    EventTarget<Member> onSync() const;
+    Member &onSync(std::function<void(Member)> callback);
 
     /*!
      * \brief 最後のsync()の時刻を返す
@@ -213,7 +213,7 @@ class WEBCFACE_DLL Member : protected Field {
      * \sa pingStatus()
      *
      */
-    EventTarget<Member> onPing() const;
+    Member &onPing(std::function<void(Member)> callback);
 
     /*!
      * \brief Memberを比較

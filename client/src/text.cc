@@ -2,12 +2,10 @@
 #include <webcface/member.h>
 #include "webcface/internal/client_internal.h"
 #include "webcface/message/message.h"
-#include "webcface/internal/event_target_impl.h"
 
 WEBCFACE_NS_BEGIN
 
-Text::Text(const Field &base) : Field(base) {
-}
+Text::Text(const Field &base) : Field(base) {}
 
 void Text::request() const {
     auto data = dataLock();

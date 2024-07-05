@@ -1,7 +1,6 @@
 #include <webcface/log.h>
 #include "webcface/internal/client_internal.h"
 #include "webcface/message/message.h"
-#include "webcface/internal/event_target_impl.h"
 
 WEBCFACE_NS_BEGIN
 
@@ -25,23 +24,23 @@ message::LogLine LogLineData<CharT>::toMessage() const {
 template class WEBCFACE_DLL_INSTANCE_DEF LogLineData<char8_t>;
 template class WEBCFACE_DLL_INSTANCE_DEF LogLineData<char>;
 template class WEBCFACE_DLL_INSTANCE_DEF LogLineData<wchar_t>;
-template class WEBCFACE_DLL_INSTANCE_DEF EventTarget<Log>;
 
-Log::Log(const Field &base) : Field(base), EventTarget<Log>() {
+Log::Log(const Field &base) : Field(base) {}
+
+Log &Log::onAppend(std::function<void(Log)> callback) {
+    this->request();
     std::lock_guard lock(this->dataLock()->event_m);
-    this->setCL(this->dataLock()->log_append_event[this->member_]);
+    this->dataLock()->log_append_event[this->member_] = std::move(callback);
+    return *this;
 }
 
 void Log::request() const {
     auto data = dataLock();
     auto req = data->log_store->addReq(member_);
     if (req) {
-        data->message_push(
-            message::packSingle(message::LogReq{{}, member_}));
+        data->message_push(message::packSingle(message::LogReq{{}, member_}));
     }
 }
-
-void Log::onAppend() const { request(); }
 
 std::optional<std::vector<LogLine>> Log::tryGet() const {
     request();

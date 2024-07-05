@@ -1,4 +1,5 @@
 #pragma once
+#include <functional>
 #include <optional>
 #include <vector>
 #include "field.h"
@@ -71,6 +72,13 @@ class WEBCFACE_DLL Log : protected Field {
     Log(const Field &base);
 
     using Field::member;
+
+    /*!
+     * \brief ログが追加されたときに呼び出されるコールバックを設定
+     * \since ver2.0
+     */
+    Log &onAppend(std::function<void(Log)> callback);
+
 
     /*!
      * \brief ログをリクエストする

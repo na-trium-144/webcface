@@ -18,10 +18,8 @@ class Canvas2DDataBuf;
  * コンストラクタではなく Member::canvas2D() を使って取得してください
  *
  */
-class WEBCFACE_DLL Canvas2D : protected Field, public EventTarget<Canvas2D> {
+class WEBCFACE_DLL Canvas2D : protected Field {
     std::shared_ptr<internal::Canvas2DDataBuf> sb;
-
-    void onAppend() const override final;
 
   public:
     Canvas2D();
@@ -87,6 +85,20 @@ class WEBCFACE_DLL Canvas2D : protected Field, public EventTarget<Canvas2D> {
      * \since ver1.11
      */
     Canvas2D parent() const { return this->Field::parent(); }
+
+  private:
+    /*!
+     * \brief 値が変化したときに呼び出されるコールバックを取得
+     * \since ver2.0
+     */
+    std::function<void(Canvas2D)> &onChange();
+
+  public:
+    /*!
+     * \brief 値が変化したときに呼び出されるコールバックを設定
+     * \since ver2.0
+     */
+    Canvas2D &onChange(std::function<void(Canvas2D)> callback);
 
     /*!
      * \brief Canvasの内容をリクエストする

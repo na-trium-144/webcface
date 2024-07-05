@@ -8,13 +8,17 @@ FuncNotFound::FuncNotFound(const FieldBase &base)
                          ".func(\"" + base.field_.decode() + "\") is not set") {
 }
 
-eventpp::CallbackList<void(bool)> &AsyncFuncResult::onStarted() const {
-    return state->startedEvent();
+AsyncFuncResult &
+AsyncFuncResult::onStarted(std::function<void(bool)> callback) {
+    state->startedEvent() = std::move(callback);
+    return *this;
 }
-eventpp::CallbackList<void(std::shared_future<ValAdaptor>)> &
-AsyncFuncResult::onResult() const {
-    return state->resultEvent();
+AsyncFuncResult &AsyncFuncResult::onResult(
+    std::function<void(std::shared_future<ValAdaptor>)> callback) {
+    state->resultEvent() = std::move(callback);
+    return *this;
 }
+
 
 std::shared_ptr<internal::AsyncFuncState>
 internal::AsyncFuncState::notFound(const Field &base) {
