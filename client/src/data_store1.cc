@@ -1,7 +1,7 @@
 #include "webcface/internal/data_store1.h"
 
 WEBCFACE_NS_BEGIN
-namespace Internal {
+namespace internal {
 template <typename T>
 SyncDataStore1<T>::SyncDataStore1(const SharedString &name)
     : self_member_name(name) {}
@@ -62,5 +62,5 @@ template class WEBCFACE_DLL_INSTANCE_DEF
 template class WEBCFACE_DLL_INSTANCE_DEF
     SyncDataStore1<std::chrono::system_clock::time_point>;
 
-} // namespace Internal
+} // namespace internal
 WEBCFACE_NS_END

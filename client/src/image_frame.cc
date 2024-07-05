@@ -50,13 +50,13 @@ std::size_t ImageFrame::channels() const {
 //            quality == rhs.quality;
 // }
 
-ImageFrame::ImageFrame(const Message::ImageFrame &m)
+ImageFrame::ImageFrame(const message::ImageFrame &m)
     : size_(sizeWH(m.width_, m.height_)), data_(m.data_),
       color_mode_(static_cast<ImageColorMode>(m.color_mode_)),
       cmp_mode_(static_cast<ImageCompressMode>(m.cmp_mode_)) {}
 
-Message::ImageFrame ImageFrame::toMessage() const {
-    return Message::ImageFrame{width(), height(), data_,
+message::ImageFrame ImageFrame::toMessage() const {
+    return message::ImageFrame{width(), height(), data_,
                                static_cast<int>(color_mode_),
                                static_cast<int>(cmp_mode_)};
 }

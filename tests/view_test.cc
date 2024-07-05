@@ -10,34 +10,34 @@
 using namespace webcface;
 
 static SharedString operator""_ss(const char *str, std::size_t len) {
-    return SharedString(Encoding::castToU8(std::string_view(str, len)));
+    return SharedString(encoding::castToU8(std::string_view(str, len)));
 }
 
 class ViewTest : public ::testing::Test {
   protected:
     void SetUp() override {
-        data_ = std::make_shared<Internal::ClientData>(self_name);
+        data_ = std::make_shared<internal::ClientData>(self_name);
         callback_called = 0;
     }
     SharedString self_name = "test"_ss;
-    std::shared_ptr<Internal::ClientData> data_;
+    std::shared_ptr<internal::ClientData> data_;
     FieldBase fieldBase(const SharedString &member,
                         std::string_view name) const {
-        return FieldBase{member, SharedString(Encoding::castToU8(name))};
+        return FieldBase{member, SharedString(encoding::castToU8(name))};
     }
     FieldBase fieldBase(std::string_view member, std::string_view name) const {
-        return FieldBase{SharedString(Encoding::castToU8(member)),
-                         SharedString(Encoding::castToU8(name))};
+        return FieldBase{SharedString(encoding::castToU8(member)),
+                         SharedString(encoding::castToU8(name))};
     }
     Field field(const SharedString &member, const SharedString &name) const {
         return Field{data_, member, name};
     }
     Field field(const SharedString &member, std::string_view name = "") const {
-        return Field{data_, member, SharedString(Encoding::castToU8(name))};
+        return Field{data_, member, SharedString(encoding::castToU8(name))};
     }
     Field field(std::string_view member, std::string_view name) const {
-        return Field{data_, SharedString(Encoding::castToU8(member)),
-                     SharedString(Encoding::castToU8(name))};
+        return Field{data_, SharedString(encoding::castToU8(member)),
+                     SharedString(encoding::castToU8(name))};
     }
     template <typename T1, typename T2>
     View view(const T1 &member, const T2 &name) {
@@ -86,7 +86,7 @@ TEST_F(ViewTest, viewSet) {
     using namespace webcface::ViewComponents;
     auto v = view(self_name, "b");
     v << "a\n" << 1;
-    v << Components::text("aaa")
+    v << components::text("aaa")
              .textColor(ViewColor::yellow)
              .bgColor(ViewColor::green)
       << newLine();
@@ -225,9 +225,9 @@ TEST_F(ViewTest, viewGet) {
     std::unordered_map<int, int> idx_next;
     auto vd =
         std::make_shared<std::vector<ViewComponent>>(std::vector<ViewComponent>{
-            Components::text("a").toV().lockTmp(data_, "b"_ss, &idx_next),
-            Components::button("a", [] {}).lockTmp(data_, "b"_ss, &idx_next),
-            Components::text("a").toV().lockTmp(data_, "b"_ss, &idx_next),
+            components::text("a").toV().lockTmp(data_, "b"_ss, &idx_next),
+            components::button("a", [] {}).lockTmp(data_, "b"_ss, &idx_next),
+            components::text("a").toV().lockTmp(data_, "b"_ss, &idx_next),
         });
     data_->view_store.setRecv("a"_ss, "b"_ss, vd);
     EXPECT_EQ(view("a", "b").tryGet().value().size(), 3);

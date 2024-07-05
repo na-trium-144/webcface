@@ -5,7 +5,7 @@
 #include <webcface/common/def.h>
 
 WEBCFACE_NS_BEGIN
-namespace Message {
+namespace message {
 struct LogLine;
 }
 template <typename CharT = char8_t>
@@ -34,8 +34,8 @@ class WEBCFACE_DLL_TEMPLATE LogLineData {
         return LogLineData<OtherCharT>(level_, time_, message_);
     }
 
-    LogLineData(const Message::LogLine &m);
-    Message::LogLine toMessage() const;
+    LogLineData(const message::LogLine &m);
+    message::LogLine toMessage() const;
 
     int level() const { return level_; }
     std::chrono::system_clock::time_point time() const { return time_; }

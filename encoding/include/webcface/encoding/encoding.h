@@ -8,7 +8,7 @@
 #include <webcface/common/def.h>
 
 WEBCFACE_NS_BEGIN
-inline namespace Encoding {
+inline namespace encoding {
 /*!
  * \brief webcfaceが使用するエンコーディングを設定する
  * \since ver2.0
@@ -120,9 +120,9 @@ class WEBCFACE_DLL SharedString {
             : u8s(std::move(u8)), s(), ws(), m() {}
         explicit Data(std::u8string_view u8) : u8s(u8), s(), ws(), m() {}
         explicit Data(std::string_view s)
-            : u8s(Encoding::encode(s)), s(s), ws(), m() {}
+            : u8s(encoding::encode(s)), s(s), ws(), m() {}
         explicit Data(std::wstring_view ws)
-            : u8s(Encoding::encodeW(ws)), s(), ws(ws), m() {}
+            : u8s(encoding::encodeW(ws)), s(), ws(ws), m() {}
     };
     std::shared_ptr<Data> data;
 
@@ -169,5 +169,5 @@ using StrMap2 = StrMap1<StrMap1<T>>;
 using StrSet1 = std::unordered_set<SharedString, SharedString::Hash>;
 using StrSet2 = StrMap1<StrSet1>;
 
-} // namespace Encoding
+} // namespace encoding
 WEBCFACE_NS_END

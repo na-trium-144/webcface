@@ -1,11 +1,11 @@
 #include <webcface/robot_link.h>
 #include <webcface/message/message.h>
 WEBCFACE_NS_BEGIN
-Message::RobotLink
+message::RobotLink
 RobotLink::toMessage(const std::vector<SharedString> &link_names) const {
     auto parent_it =
         std::find(link_names.begin(), link_names.end(), joint.parent_name);
-    return Message::RobotLink{
+    return message::RobotLink{
         name,
         joint.name,
         (parent_it == link_names.end()
@@ -19,7 +19,7 @@ RobotLink::toMessage(const std::vector<SharedString> &link_names) const {
         geometry.properties,
         static_cast<int>(color)};
 }
-RobotLink::RobotLink(const Message::RobotLink &m,
+RobotLink::RobotLink(const message::RobotLink &m,
                      const std::vector<SharedString> &link_names)
     : RobotLink(m.name,
                 {m.joint_name,

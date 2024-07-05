@@ -188,8 +188,9 @@ class TemporalGeometry : public TemporalComponent<false, true, true>,
     }
 };
 
-inline namespace Components {
-inline namespace Geometries {
+inline namespace components {
+inline namespace geometries {
+
 struct Line {
     const Geometry &base;
     explicit Line(const Geometry &rg) : base(rg) {
@@ -384,7 +385,9 @@ inline TemporalGeometry sphere(const Point &origin, double radius) {
 }
 
 
-} // namespace Geometries
+} // namespace geometries
+
+namespace Geometries = geometries; // 〜ver1.11
 
 /*!
  * \brief textコンポーネント
@@ -471,7 +474,9 @@ inline ViewComponent checkInput(std::string_view text = "") {
 inline ViewComponent checkInput(std::wstring_view text) {
     return ViewComponent(ViewComponentType::check_input).text(text).init(false);
 }
-} // namespace Components
-namespace ViewComponents = Components;
+} // namespace components
+
+namespace Components = components;     // 〜ver1.11
+namespace ViewComponents = components; // 〜ver1.8
 
 WEBCFACE_NS_END

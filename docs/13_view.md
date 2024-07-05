@@ -456,7 +456,8 @@ viewに入力欄を表示します。
     InputRefの値は`get()`で webcface::ValAdaptor 型として取得できます。
     また std::string, double, bool などの型にキャストすることでも値を得られます。  
     <span class="since-c">1.11</span>
-    `asStringRef()`, `asString()`, `as<double>()`, `asBool()` でも型変換ができます。
+    `asStringRef()`, `asString()`, `asBool()`, <del>`as<double>()`</del> でも型変換ができます。  
+    <span class="since-c">2.0</span> `asWStringRef()`, `asWString()`, `asDouble()`, `asInt()`, `asLLong()` も使えます。
 
     \note
     内部の実装では入力値を受け取りInputRefに値をセットする関数をonChangeにセットしています。

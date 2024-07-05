@@ -50,7 +50,7 @@ void MemberData::imageConvertThreadMain(const SharedString &member,
             member,
             [&](auto cd) {
                 while (!cd->closing.load() && !this->closing.load()) {
-                    Message::ImageFrame img;
+                    message::ImageFrame img;
                     {
                         std::unique_lock lock(cd->image_m[field]);
                         cd->image_cv[field].wait_for(
@@ -95,7 +95,7 @@ void MemberData::imageConvertThreadMain(const SharedString &member,
                         findReqField(this->image_req, member, field);
                     auto &req_id = req_field.first;
                     auto &sub_field = req_field.second;
-                    auto sync = webcface::Message::Sync{cd->member_id,
+                    auto sync = webcface::message::Sync{cd->member_id,
                                                         cd->last_sync_time};
 
                     int rows = static_cast<int>(img.height_);
@@ -212,7 +212,7 @@ void MemberData::imageConvertThreadMain(const SharedString &member,
                         break;
                     }
                     }
-                    Message::ImageFrame img_send{
+                    message::ImageFrame img_send{
                         static_cast<size_t>(cols), static_cast<size_t>(rows),
                         encoded, color_mode, info.cmp_mode};
                     logger->trace("finished converting image of {}, {}",
@@ -220,7 +220,7 @@ void MemberData::imageConvertThreadMain(const SharedString &member,
                     if (!cd->closing.load() && !this->closing.load()) {
                         std::lock_guard lock(store->server->server_mtx);
                         this->pack(sync);
-                        this->pack(Message::Res<webcface::Message::Image>{
+                        this->pack(message::Res<webcface::message::Image>{
                             req_id, sub_field, img_send});
                         logger->trace("send image_res req_id={} + '{}'", req_id,
                                       sub_field.decode());

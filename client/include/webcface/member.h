@@ -10,7 +10,7 @@
 
 WEBCFACE_NS_BEGIN
 
-namespace Internal {
+namespace internal {
 struct ClientData;
 }
 
@@ -24,7 +24,7 @@ struct ClientData;
 class WEBCFACE_DLL Member : protected Field {
   public:
     Member() = default;
-    Member(const std::weak_ptr<Internal::ClientData> &data_w,
+    Member(const std::weak_ptr<internal::ClientData> &data_w,
            const SharedString &member)
         : Field(data_w, member) {}
     Member(const Field &base) : Field(base.data_w, base.member_) {}

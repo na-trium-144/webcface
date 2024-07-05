@@ -132,22 +132,7 @@ std::vector<ValAdaptor> argsFromCVal(const typename CharType<CharT>::CVal *args,
 }
 
 template <typename CharT>
-auto resultToCVal(const AsyncFuncResult &async_res) {
-    ValAdaptor result_val;
-    wcfStatus status;
-    try {
-        result_val = async_res.result.get();
-        status = WCF_OK;
-    } catch (const FuncNotFound &e) {
-        result_val = e.what();
-        status = WCF_NOT_FOUND;
-    } catch (const std::exception &e) {
-        result_val = e.what();
-        status = WCF_EXCEPTION;
-    } catch (...) {
-        result_val = "unknown exception";
-        status = WCF_EXCEPTION;
-    }
+auto resultToCVal(const ValAdaptor &result_val) {
     auto result = new typename CharType<CharT>::CVal();
     CharType<CharT>::funcValList().emplace(result, result_val);
     const ValAdaptor &result_val_ref =
@@ -155,7 +140,7 @@ auto resultToCVal(const AsyncFuncResult &async_res) {
     result->as_int = result_val_ref;
     result->as_double = result_val_ref;
     result->as_str = result_val_ref;
-    return std::make_pair(status, result);
+    return result;
 }
 
 } // namespace c_wcf

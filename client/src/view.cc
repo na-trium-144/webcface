@@ -19,11 +19,11 @@ View::View(const Field &base)
 }
 View::~View() { this->rdbuf(nullptr); }
 
-Internal::ViewBuf::ViewBuf()
+internal::ViewBuf::ViewBuf()
     : std::stringbuf(std::ios_base::out), DataSetBuffer<ViewComponent>() {}
-Internal::ViewBuf::ViewBuf(const Field &base)
+internal::ViewBuf::ViewBuf(const Field &base)
     : std::stringbuf(std::ios_base::out), DataSetBuffer<ViewComponent>(base) {}
-Internal::ViewBuf::~ViewBuf() { sync(); }
+internal::ViewBuf::~ViewBuf() { sync(); }
 
 View &View::init() {
     sb->init();
@@ -35,7 +35,7 @@ View &View::sync() {
     return *this;
 }
 template <>
-void Internal::DataSetBuffer<ViewComponent>::onSync() {
+void internal::DataSetBuffer<ViewComponent>::onSync() {
     std::unordered_map<int, int> idx_next;
     for (std::size_t i = 0; i < components_.size(); i++) {
         components_[i].lockTmp(target_.data_w, target_.field_, &idx_next);
@@ -68,7 +68,7 @@ View &View::operator<<(ViewComponent &&vc) {
     sb->addVC(std::move(vc));
     return *this;
 }
-void Internal::ViewBuf::addText(const ViewComponent &vc) {
+void internal::ViewBuf::addText(const ViewComponent &vc) {
     std::string s = vc.text();
     while (true) {
         auto p = s.find('\n');
@@ -90,21 +90,21 @@ void Internal::ViewBuf::addText(const ViewComponent &vc) {
         add(std::move(vc_new));
     }
 }
-void Internal::ViewBuf::addVC(const ViewComponent &vc) {
+void internal::ViewBuf::addVC(const ViewComponent &vc) {
     if (vc.type() == ViewComponentType::text) {
         addText(vc);
     } else {
         add(vc);
     }
 }
-void Internal::ViewBuf::addVC(ViewComponent &&vc) {
+void internal::ViewBuf::addVC(ViewComponent &&vc) {
     if (vc.type() == ViewComponentType::text) {
         addText(vc);
     } else {
         add(std::move(vc));
     }
 }
-int Internal::ViewBuf::sync() {
+int internal::ViewBuf::sync() {
     if (!this->str().empty()) {
         this->addText(ViewComponents::text(this->str()).toV());
         this->str("");
@@ -135,8 +135,8 @@ void View::request() const {
     auto data = dataLock();
     auto req = data->view_store.addReq(member_, field_);
     if (req) {
-        data->message_queue->push(Message::packSingle(
-            Message::Req<Message::View>{{}, member_, field_, req}));
+        data->message_push(message::packSingle(
+            message::Req<message::View>{{}, member_, field_, req}));
     }
 }
 std::optional<std::vector<ViewComponent>> View::tryGet() const {

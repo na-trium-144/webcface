@@ -1,4 +1,5 @@
 #include <webcface/func_result.h>
+#include <webcface/internal/func_internal.h>
 
 WEBCFACE_NS_BEGIN
 
@@ -7,54 +8,56 @@ FuncNotFound::FuncNotFound(const FieldBase &base)
                          ".func(\"" + base.field_.decode() + "\") is not set") {
 }
 
-AsyncFuncResult &
-AsyncFuncResult::onStarted(std::function<void(bool)> callback) {
-    if (!started_event) {
-        throw std::runtime_error("started event is null");
-    }
-    *started_event = std::move(callback);
-    return *this;
+eventpp::CallbackList<void(bool)> &AsyncFuncResult::onStarted() const {
+    return state->startedEvent();
 }
-AsyncFuncResult &AsyncFuncResult::onResult(
-    std::function<void(std::shared_future<ValAdaptor>)> callback) {
-    if (!result_event) {
-        throw std::runtime_error("result event is null");
-    }
-    *result_event = std::move(callback);
-    return *this;
+eventpp::CallbackList<void(std::shared_future<ValAdaptor>)> &
+AsyncFuncResult::onResult() const {
+    return state->resultEvent();
 }
 
-AsyncFuncResultSetter::AsyncFuncResultSetter(const Field &base)
-    : Field(base), started(), result(), started_f(started.get_future().share()),
-      result_f(result.get_future().share()),
-      started_event(std::make_shared<decltype(started_event)::element_type>()),
-      result_event(std::make_shared<decltype(result_event)::element_type>()) {}
-void AsyncFuncResultSetter::setStarted(bool is_started) {
-    started.set_value(is_started);
-    if (started_event && *started_event) {
-        started_event->operator()(is_started);
-    }
+std::shared_ptr<internal::AsyncFuncState>
+internal::AsyncFuncState::notFound(const Field &base) {
+    auto state = std::make_shared<internal::AsyncFuncState>(base);
+    state->setStarted(false);
+    return state;
+}
+std::shared_ptr<internal::AsyncFuncState> internal::AsyncFuncState::running(
+    const Field &base, const std::shared_future<ValAdaptor> &result) {
+    return std::make_shared<internal::AsyncFuncState>(base, result);
+}
+std::shared_ptr<internal::AsyncFuncState>
+internal::AsyncFuncState::error(const Field &base,
+                                const std::exception_ptr &e) {
+    auto state = std::make_shared<internal::AsyncFuncState>(base);
+    state->setStarted(true);
+    state->setResultException(e);
+    return state;
+}
+std::shared_ptr<internal::AsyncFuncState>
+internal::AsyncFuncState::remote(const Field &base, std::size_t caller_id) {
+    return std::make_shared<internal::AsyncFuncState>(base, caller_id);
+}
+
+void internal::AsyncFuncState::setStarted(bool is_started) {
+    started_p.set_value(is_started);
+    started_event.operator()(is_started);
     if (!is_started) {
         try {
-            throw FuncNotFound(*this);
+            throw FuncNotFound(base);
         } catch (...) {
             setResultException(std::current_exception());
         }
     }
 }
-void AsyncFuncResultSetter::setResult(const ValAdaptor &result_val) {
-    result.set_value(result_val);
-    if (result_event && *result_event) {
-        result_event->operator()(result_f);
-    }
+void internal::AsyncFuncState::setResult(const ValAdaptor &result_val) {
+    result_p.set_value(result_val);
+    result_event.operator()(result_f);
 }
-void AsyncFuncResultSetter::setResultException(const std::exception_ptr &e) {
-    result.set_exception(e);
-    if (result_event && *result_event) {
-        result_event->operator()(result_f);
-    }
+void internal::AsyncFuncState::setResultException(const std::exception_ptr &e) {
+    result_p.set_exception(e);
+    result_event.operator()(result_f);
 }
-
 
 std::ostream &operator<<(std::ostream &os, const AsyncFuncResult &r) {
     os << "Func(\"" << r.name() << "\"): ";
@@ -135,7 +138,7 @@ void FuncCallHandle::reject(const std::string &message) {
     }
 }
 void FuncCallHandle::reject(const std::wstring &message) {
-    reject(Encoding::toNarrow(message));
+    reject(encoding::toNarrow(message));
 }
 
 WEBCFACE_NS_END

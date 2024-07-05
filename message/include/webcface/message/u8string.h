@@ -14,7 +14,7 @@ MSGPACK_API_VERSION_NAMESPACE(MSGPACK_DEFAULT_API_NS) {
         msgpack::object const &operator()(msgpack::object const &o,
                                           webcface::SharedString &v) const {
             v = webcface::SharedString(utf8::replace_invalid(std::u8string(
-                webcface::Encoding::castToU8(o.via.bin.ptr, o.via.bin.size))));
+                webcface::encoding::castToU8(o.via.bin.ptr, o.via.bin.size))));
             return o;
         }
     };
@@ -23,7 +23,7 @@ MSGPACK_API_VERSION_NAMESPACE(MSGPACK_DEFAULT_API_NS) {
         template <typename Stream>
         msgpack::packer<Stream> &operator()(msgpack::packer<Stream> &o,
                                             const webcface::SharedString &v) {
-            o.pack(webcface::Encoding::castFromU8(v.u8String()));
+            o.pack(webcface::encoding::castFromU8(v.u8String()));
             return o;
         }
     };

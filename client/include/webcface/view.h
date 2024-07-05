@@ -7,11 +7,11 @@
 #include "components.h"
 
 WEBCFACE_NS_BEGIN
-namespace Internal {
+namespace internal {
 template <typename Component>
 class DataSetBuffer;
 class ViewBuf;
-} // namespace Internal
+} // namespace internal
 
 /*!
  * \brief Viewの送受信データを表すクラス
@@ -21,7 +21,7 @@ class ViewBuf;
  */
 class WEBCFACE_DLL View : protected Field,
                           public std::ostream {
-    std::shared_ptr<Internal::ViewBuf> sb;
+    std::shared_ptr<internal::ViewBuf> sb;
 
   public:
     View();
@@ -34,7 +34,7 @@ class WEBCFACE_DLL View : protected Field,
     View &operator=(View &&rhs) noexcept;
     ~View() override;
 
-    friend Internal::DataSetBuffer<ViewComponent>;
+    friend internal::DataSetBuffer<ViewComponent>;
 
     using Field::lastName;
     using Field::member;
