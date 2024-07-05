@@ -449,15 +449,14 @@ AsyncFuncResultからは started と result が取得できます。
     ```
     startedとresultはstd::shared_futureです。取得できるまで待機するならget(), ブロックせず完了したか確認したければwait_for()などが使えます。例外はresult.get()が投げます。
 
-    <span class="since-c">1.11</span>
-    `onStarted()`, `onResult()` で値が返ってきたときに実行されるイベントが取得でき、コールバックを設定することができます。
-    ([eventpp::CallbackList 型](https://github.com/wqking/eventpp/blob/master/doc/callbacklist.md)の参照で返ります)  
+    <span class="since-c">2.0</span>
+    `onStarted()`, `onResult()` で値が返ってきたときに実行されるコールバックを設定することができます。
     ```cpp
     AsyncFuncResult res = wcli.member("foo").func("hoge").runAsync(1, "aa");
-    res.onStarted().append([](bool started){
+    res.onStarted([](bool started){
         std::cout << "func hoge() " << started ? "started" : "not started" << std::endl;
     });
-    res.onResult().append([](std::shared_future<webcface::ValAdaptor> result){
+    res.onResult([](const std::shared_future<webcface::ValAdaptor> &result){
         try{
             double ans = result.get();
         }catch(const std::exception &e){
@@ -466,13 +465,10 @@ AsyncFuncResultからは started と result が取得できます。
     });
     ```
     \warning
-    onStartedではコールバックの引数は`bool`,
-    onResultではコールバックの引数は`std::shared_future<webcface::ValAdaptor>`です。
-    関数の呼び出しに失敗した場合や呼び出した関数の結果がエラーだった場合resultのshared_futureは例外を投げるので、
-    上の例のように必ずtry〜catchを使用してください。
+    onStarted ではコールバックの引数は`bool`ですが、
+    onResult ではコールバックの引数は`std::shared_future<webcface::ValAdaptor>`です。
+    関数の呼び出しに失敗した場合や呼び出した関数の結果がエラーだった場合resultのshared_futureは例外を投げるので、上の例のように必ずtry〜catchを使用してください。
     (例外がcatchされなかった場合terminateしてしまいます)
-
-    詳細は webcface::AsyncFuncResult を参照してください。
 
 - <b class="tab-title">C</b>
     ```c
@@ -525,6 +521,27 @@ AsyncFuncResultからは started と result が取得できます。
     詳細は [webcface.AsyncFuncResult](https://na-trium-144.github.io/webcface-python/webcface.func_info.html#webcface.func_info.AsyncFuncResult) を参照
 
 </div>
+
+<details><summary>CallbackListを返す AsyncFuncResult::onStarted(), onResult() (ver1.11)</summary>
+
+<span class="since-c">1.11</span>
+`onStarted()`, `onResult()` で値が返ってきたときに実行されるイベントが取得でき、コールバックを設定することができます。
+([eventpp::CallbackList 型](https://github.com/wqking/eventpp/blob/master/doc/callbacklist.md)の参照で返ります)  
+```cpp
+AsyncFuncResult res = wcli.member("foo").func("hoge").runAsync(1, "aa");
+res.onStarted().append([](bool started){
+    std::cout << "func hoge() " << started ? "started" : "not started" << std::endl;
+});
+res.onResult().append([](std::shared_future<webcface::ValAdaptor> result){
+    try{
+        double ans = result.get();
+    }catch(const std::exception &e){
+        std::cout << e.what() << std::endl;
+    }
+});
+```
+
+</details>
 
 <div class="section_buttons">
 

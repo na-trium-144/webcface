@@ -38,7 +38,7 @@ class WEBCFACE_DLL AsyncFuncResult : Field {
 
   public:
     AsyncFuncResult(const Field &base,
-        const std::shared_ptr<internal::AsyncFuncState> &state,
+                    const std::shared_ptr<internal::AsyncFuncState> &state,
                     const std::shared_future<bool> &started,
                     const std::shared_future<ValAdaptor> &result)
         : Field(base), state(state), started(started), result(result) {}
@@ -66,12 +66,17 @@ class WEBCFACE_DLL AsyncFuncResult : Field {
      * \brief
      * リモートに呼び出しメッセージが到達したときに呼び出すコールバックを設定
      * \since ver2.0
+     *
+     * すでにstartedに値が入っている場合は即座にcallbackが呼ばれる。
+     *
      */
     AsyncFuncResult &onStarted(std::function<void(bool)> callback);
     /*!
      * \brief 関数の実行が完了した時呼び出すコールバックを設定
      * \since ver2.0
-     * \todo 排他制御をしてない
+     *
+     * すでにresultに値または例外が入っている場合は即座にcallbackが呼ばれる。
+     *
      */
     AsyncFuncResult &
     onResult(std::function<void(std::shared_future<ValAdaptor>)> callback);

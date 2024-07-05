@@ -1,6 +1,5 @@
 #include <webcface/func.h>
 #include <thread>
-#include <chrono>
 #include <stdexcept>
 #include "webcface/message/message.h"
 #include "webcface/internal/client_internal.h"
@@ -67,19 +66,27 @@ Func &Func::setAsync(const std::vector<Arg> &args, ValType return_type,
         }));
 }
 
-std::future<ValAdaptor> FuncInfo::run(const std::vector<ValAdaptor> &args,
-                                      bool caller_async) {
-    auto ret = func_impl(args);
+std::shared_future<ValAdaptor>
+FuncInfo::run(const std::vector<ValAdaptor> &args, bool caller_async,
+              const std::shared_ptr<internal::AsyncFuncState> &state) {
+    std::shared_future<ValAdaptor> ret = func_impl(args).share();
+    if (state) {
+        state->setResultFuture(ret);
+    }
     if (eval_async && caller_async) {
-        std::packaged_task<ValAdaptor(std::future<ValAdaptor> &&)> task(
-            [](std::future<ValAdaptor> &&ret) { return ret.get(); });
-        auto ret_f = task.get_future();
-        std::thread(std::move(task), std::move(ret)).detach();
-        return ret_f;
+        std::thread([ret, state]() mutable {
+            ret.wait();
+            if (state) {
+                state->callResultEvent();
+            }
+        }).detach();
     } else {
         ret.wait();
-        return ret;
+        if (state) {
+            state->callResultEvent();
+        }
     }
+    return ret;
 }
 
 template <typename F1, typename F2, typename F3>
@@ -193,19 +200,19 @@ AsyncFuncResult Func::runAsync(const std::vector<ValAdaptor> &args_vec) const {
     if (data->isSelf(*this)) {
         // selfの場合、新しいAsyncFuncResultに実行した結果を入れる
         auto func_info = data->func_store.getRecv(*this);
+        auto state = std::make_shared<internal::AsyncFuncState>(
+            static_cast<Field>(*this));
         if (func_info) {
+            state->setStarted(true);
             try {
-                return internal::AsyncFuncState::running(
-                           *this, (*func_info)->run(args_vec, true).share())
-                    ->getter();
+                (*func_info)->run(args_vec, true, state);
             } catch (...) {
-                return internal::AsyncFuncState::error(*this,
-                                                       std::current_exception())
-                    ->getter();
+                state->setResultException(std::current_exception());
             }
         } else {
-            return internal::AsyncFuncState::notFound(*this)->getter();
+            state->setStarted(false);
         }
+        return state->getter();
     } else {
         // リモートの場合cli.sync()を待たずに呼び出しメッセージを送る
         auto state = data->func_result_store.addResult(*this);

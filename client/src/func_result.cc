@@ -10,42 +10,24 @@ FuncNotFound::FuncNotFound(const FieldBase &base)
 
 AsyncFuncResult &
 AsyncFuncResult::onStarted(std::function<void(bool)> callback) {
-    state->startedEvent() = std::move(callback);
+    state->setStartedEvent(std::move(callback));
     return *this;
 }
 AsyncFuncResult &AsyncFuncResult::onResult(
     std::function<void(std::shared_future<ValAdaptor>)> callback) {
-    state->resultEvent() = std::move(callback);
+    state->setResultEvent(std::move(callback));
     return *this;
 }
 
-
-std::shared_ptr<internal::AsyncFuncState>
-internal::AsyncFuncState::notFound(const Field &base) {
-    auto state = std::make_shared<internal::AsyncFuncState>(base);
-    state->setStarted(false);
-    return state;
-}
-std::shared_ptr<internal::AsyncFuncState> internal::AsyncFuncState::running(
-    const Field &base, const std::shared_future<ValAdaptor> &result) {
-    return std::make_shared<internal::AsyncFuncState>(base, result);
-}
-std::shared_ptr<internal::AsyncFuncState>
-internal::AsyncFuncState::error(const Field &base,
-                                const std::exception_ptr &e) {
-    auto state = std::make_shared<internal::AsyncFuncState>(base);
-    state->setStarted(true);
-    state->setResultException(e);
-    return state;
-}
-std::shared_ptr<internal::AsyncFuncState>
-internal::AsyncFuncState::remote(const Field &base, std::size_t caller_id) {
-    return std::make_shared<internal::AsyncFuncState>(base, caller_id);
+AsyncFuncResult internal::AsyncFuncState::getter() {
+    std::lock_guard lock(m);
+    return AsyncFuncResult(base, shared_from_this(), started_f, result_f);
 }
 
 void internal::AsyncFuncState::setStarted(bool is_started) {
+    std::lock_guard lock(m);
     started_p.set_value(is_started);
-    started_event.operator()(is_started);
+    callStartedEvent();
     if (!is_started) {
         try {
             throw FuncNotFound(base);
@@ -55,12 +37,47 @@ void internal::AsyncFuncState::setStarted(bool is_started) {
     }
 }
 void internal::AsyncFuncState::setResult(const ValAdaptor &result_val) {
+    std::lock_guard lock(m);
     result_p.set_value(result_val);
-    result_event.operator()(result_f);
+    callResultEvent();
 }
 void internal::AsyncFuncState::setResultException(const std::exception_ptr &e) {
+    std::lock_guard lock(m);
     result_p.set_exception(e);
-    result_event.operator()(result_f);
+    callResultEvent();
+}
+void internal::AsyncFuncState::setResultFuture(
+    const std::shared_future<ValAdaptor> &result) {
+    std::lock_guard lock(m);
+    result_f = result;
+}
+void internal::AsyncFuncState::setStartedEvent(
+    std::function<void(bool)> &&callback) {
+    std::lock_guard lock(m);
+    started_event = std::move(callback);
+    callStartedEvent();
+}
+void internal::AsyncFuncState::setResultEvent(
+    std::function<void(std::shared_future<ValAdaptor>)> &&callback) {
+    std::lock_guard lock(m);
+    result_event = std::move(callback);
+    callResultEvent();
+}
+void internal::AsyncFuncState::callStartedEvent() {
+    std::lock_guard lock(m);
+    if (started_f.wait_for(std::chrono::seconds(0)) ==
+            std::future_status::ready &&
+        started_event) {
+        started_event(started_f.get());
+    }
+}
+void internal::AsyncFuncState::callResultEvent() {
+    std::lock_guard lock(m);
+    if (result_f.wait_for(std::chrono::seconds(0)) ==
+            std::future_status::ready &&
+        result_event) {
+        result_event(result_f);
+    }
 }
 
 std::ostream &operator<<(std::ostream &os, const AsyncFuncResult &r) {
