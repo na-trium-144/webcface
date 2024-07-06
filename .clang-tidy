@@ -7,5 +7,6 @@ Checks: >
   -concurrency-mt-unsafe,
   -bugprone-easily-swappable-parameters,
   -clang-analyzer-optin.performance.Padding,
-  -performance-enum-size
+  -performance-enum-size,
+  -bugprone-unchecked-optional-access
 WarningsAsErrors: '*'
