@@ -1,6 +1,7 @@
 #include <webcface/encoding/val_adaptor.h>
 
 WEBCFACE_NS_BEGIN
+inline namespace encoding {
 ValAdaptor::ValAdaptor() : type(ValType::none_) {}
 
 ValAdaptor::ValAdaptor(const SharedString &str)
@@ -175,5 +176,5 @@ bool ValAdaptor::operator==(const ValAdaptor &other) const {
         return this->asU8StringRef() == other.asU8StringRef();
     }
 }
-
+} // namespace encoding
 WEBCFACE_NS_END

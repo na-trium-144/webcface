@@ -22,9 +22,8 @@ Image &Image::request(std::optional<int> rows, std::optional<int> cols,
     message::ImageReq req{
         rows,
         cols,
-        color_mode ? std::make_optional(static_cast<int>(*color_mode))
-                   : std::nullopt,
-        static_cast<int>(cmp_mode),
+        color_mode ? std::make_optional(*color_mode) : std::nullopt,
+        cmp_mode,
         quality,
         frame_rate};
     auto req_id = dataLock()->image_store.addReq(member_, field_, req);

@@ -1224,8 +1224,7 @@ TEST_F(ClientTest, imageReq) {
             EXPECT_EQ(obj.req_id, 1);
             EXPECT_EQ(obj, (message::ImageReq{
                                std::nullopt, std::nullopt, std::nullopt,
-                               static_cast<int>(ImageCompressMode::raw), 0,
-                               std::nullopt}));
+                               ImageCompressMode::raw, 0, std::nullopt}));
         },
         [&] { ADD_FAILURE() << "Image Req recv error"; });
     ImageFrame img(sizeWH(100, 100),

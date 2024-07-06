@@ -678,7 +678,7 @@ TEST_F(ServerTest, image) {
             EXPECT_EQ(obj.data_->size(), 15 * 10 * 3);
             EXPECT_EQ(obj.width_, 15);
             EXPECT_EQ(obj.height_, 10);
-            EXPECT_EQ(obj.color_mode_, static_cast<int>(ImageColorMode::bgr));
+            EXPECT_EQ(obj.color_mode_, ImageColorMode::bgr);
         },
         [&] { ADD_FAILURE() << "Image Res recv failed"; });
     dummy_c2->recvClear();
@@ -695,7 +695,7 @@ TEST_F(ServerTest, image) {
             EXPECT_EQ(obj.data_->size(), 15 * 10 * 3);
             EXPECT_EQ(obj.height_, 10);
             EXPECT_EQ(obj.width_, 15);
-            EXPECT_EQ(obj.color_mode_, static_cast<int>(ImageColorMode::bgr));
+            EXPECT_EQ(obj.color_mode_, ImageColorMode::bgr);
         },
         [&] { ADD_FAILURE() << "Image Res recv failed 1"; });
     dummy_c2->recvClear();
@@ -704,8 +704,7 @@ TEST_F(ServerTest, image) {
     dummy_c2->send(message::Req<message::Image>{
         "c1"_ss, "a"_ss, 1,
         message::ImageReq{
-            5, 8, static_cast<int>(ImageColorMode::gray),
-            static_cast<int>(ImageCompressMode::raw), 0,
+            5, 8, ImageColorMode::gray, ImageCompressMode::raw, 0,
             1000.0 / WEBCFACE_TEST_TIMEOUT /
                 3 // wait()のtimeoutに間に合わないようにする
         }});
@@ -719,7 +718,7 @@ TEST_F(ServerTest, image) {
             EXPECT_EQ(obj.data_->size(), 8 * 5 * 1);
             EXPECT_EQ(obj.height_, 5);
             EXPECT_EQ(obj.width_, 8);
-            EXPECT_EQ(obj.color_mode_, static_cast<int>(ImageColorMode::gray));
+            EXPECT_EQ(obj.color_mode_, ImageColorMode::gray);
         },
         [&] { ADD_FAILURE() << "Image Res recv failed 2"; });
     dummy_c2->recvClear();
@@ -738,7 +737,7 @@ TEST_F(ServerTest, image) {
             EXPECT_EQ(obj.data_->size(), 8 * 5 * 1);
             EXPECT_EQ(obj.height_, 5);
             EXPECT_EQ(obj.width_, 8);
-            EXPECT_EQ(obj.color_mode_, static_cast<int>(ImageColorMode::gray));
+            EXPECT_EQ(obj.color_mode_, ImageColorMode::gray);
         },
         [&] { ADD_FAILURE() << "Image Res recv failed 3"; });
     dummy_c2->recvClear();
@@ -747,8 +746,7 @@ TEST_F(ServerTest, image) {
     dummy_c2->send(message::Req<message::Image>{
         "c1"_ss, "a"_ss, 1,
         message::ImageReq{std::nullopt, std::nullopt, std::nullopt,
-                          static_cast<int>(ImageCompressMode::png), 5,
-                          std::nullopt}});
+                          ImageCompressMode::png, 5, std::nullopt}});
     wait();
     wait();
     wait();
@@ -762,7 +760,7 @@ TEST_F(ServerTest, image) {
             EXPECT_EQ(obj.width_, 15);
             EXPECT_EQ(obj.height_, 10);
             EXPECT_GT(obj.data_->size(), 0);
-            EXPECT_EQ(obj.cmp_mode_, static_cast<int>(ImageCompressMode::png));
+            EXPECT_EQ(obj.cmp_mode_, ImageCompressMode::png);
         },
         [&] { ADD_FAILURE() << "Image Res recv failed 4"; });
     dummy_c2->recvClear();
@@ -782,9 +780,9 @@ TEST_F(ServerTest, image) {
                 SharedString(encoding::castToU8("a" + std::to_string(f_type) +
                                                 std::to_string(t_type))),
                 1,
-                message::ImageReq{std::nullopt, std::nullopt, t_type,
-                                  static_cast<int>(ImageCompressMode::raw), 0,
-                                  std::nullopt}});
+                message::ImageReq{std::nullopt, std::nullopt,
+                                  static_cast<ImageColorMode>(t_type),
+                                  ImageCompressMode::raw, 0, std::nullopt}});
             wait();
             dummy_c2->recv<message::Res<message::Image>>(
                 [&](const auto &obj) {
@@ -792,7 +790,8 @@ TEST_F(ServerTest, image) {
                     EXPECT_EQ(obj.sub_field, ""_ss);
                     EXPECT_EQ(obj.height_, 10);
                     EXPECT_EQ(obj.width_, 15);
-                    EXPECT_EQ(obj.color_mode_, static_cast<int>(t_type));
+                    EXPECT_EQ(obj.color_mode_,
+                              static_cast<ImageColorMode>(t_type));
                 },
                 [&] {
                     ADD_FAILURE() << "Image Res recv failed from=" << f_type

@@ -52,13 +52,11 @@ std::size_t ImageFrame::channels() const {
 
 ImageFrame::ImageFrame(const message::ImageFrame &m)
     : size_(sizeWH(m.width_, m.height_)), data_(m.data_),
-      color_mode_(static_cast<ImageColorMode>(m.color_mode_)),
-      cmp_mode_(static_cast<ImageCompressMode>(m.cmp_mode_)) {}
+      color_mode_(m.color_mode_), cmp_mode_(m.cmp_mode_) {}
 
 message::ImageFrame ImageFrame::toMessage() const {
-    return message::ImageFrame{width(), height(), data_,
-                               static_cast<int>(color_mode_),
-                               static_cast<int>(cmp_mode_)};
+    return message::ImageFrame{width(), height(), data_, color_mode_,
+                               cmp_mode_};
 }
 
 WEBCFACE_NS_END
