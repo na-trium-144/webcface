@@ -1,6 +1,5 @@
 #include <webcface/server.h>
 #include <webcface/common/def.h>
-#include <spdlog/sinks/stdout_color_sinks.h>
 #include <CLI/CLI.hpp>
 
 int main(int argc, char **argv) {
@@ -24,15 +23,14 @@ int main(int argc, char **argv) {
 
     CLI11_PARSE(app, argc, argv);
 
-    auto stderr_sink = std::make_shared<spdlog::sinks::stderr_color_sink_mt>();
+    int level;
     if (verbosity >= 2) {
-        stderr_sink->set_level(spdlog::level::trace);
+        level = 0;
     } else if (verbosity == 1) {
-        stderr_sink->set_level(spdlog::level::debug);
+        level = 1;
     } else {
-        stderr_sink->set_level(spdlog::level::info);
+        level = 2;
     }
 
-    webcface::Server::Server(port, stderr_sink, spdlog::level::trace, keep_log)
-        .join();
+    webcface::Server::Server(port, level, keep_log).join();
 }

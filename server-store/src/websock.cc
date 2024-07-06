@@ -9,6 +9,7 @@
 #include <memory>
 #include <thread>
 #include "webcface/server/internal/server_ws.h"
+#include <spdlog/sinks/stdout_color_sinks.h>
 
 WEBCFACE_NS_BEGIN
 namespace Server {
@@ -91,14 +92,14 @@ Server::~Server() {
     }
 }
 
-Server::Server(int port, const spdlog::sink_ptr &sink,
-               spdlog::level::level_enum level, int keep_log)
+Server::Server(int port, int level, int keep_log)
     : server_stop(false), apps(), apps_running(), server_ping_wait(),
       store(std::make_unique<ServerStorage>(this, keep_log)),
       ping_thread([this] { pingThreadMain(); }) {
 
+    auto sink = std::make_shared<spdlog::sinks::stderr_color_sink_mt>();
     auto logger = std::make_shared<spdlog::logger>("webcface_server", sink);
-    logger->set_level(spdlog::level::trace);
+    logger->set_level(static_cast<spdlog::level::level_enum>(level));
     logger->info("WebCFace Server {}", WEBCFACE_VERSION);
 
     if (std::this_thread::get_id() != MAIN_THREAD_ID) {
@@ -124,7 +125,8 @@ Server::Server(int port, const spdlog::sink_ptr &sink,
 
     auto open_callback = [this, sink, level](void *conn, const char *ip) {
         std::lock_guard lock(server_mtx);
-        store->newClient(conn, ip, sink, level);
+        store->newClient(conn, ip, sink,
+                         static_cast<spdlog::level::level_enum>(level));
     };
     auto close_callback = [this](void *conn, const char * /*reason*/) {
         std::lock_guard lock(server_mtx);

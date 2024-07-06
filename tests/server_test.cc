@@ -34,10 +34,7 @@ class ServerTest : public ::testing::Test {
   protected:
     void SetUp() override {
         std::cout << "SetUp begin" << std::endl;
-        auto stderr_sink =
-            std::make_shared<spdlog::sinks::stderr_color_sink_mt>();
-        server = std::make_unique<Server::Server>(27530, stderr_sink,
-                                                  spdlog::level::trace);
+        server = std::make_unique<Server::Server>(27530, 0);
         wait();
         std::cout << "SetUp end" << std::endl;
     }

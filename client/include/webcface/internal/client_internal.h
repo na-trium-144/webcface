@@ -17,7 +17,6 @@
 #include "queue.h"
 #include <webcface/image_frame.h>
 #include <webcface/func_result.h>
-#include <webcface/logger.h>
 #include "data_store1.h"
 #include "data_store2.h"
 #include "func_internal.h"
@@ -171,8 +170,7 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
     SyncDataStore2<RobotModelData> robot_model_store;
     SyncDataStore2<Canvas3DData> canvas3d_store;
     SyncDataStore2<Canvas2DData> canvas2d_store;
-    std::shared_ptr<SyncDataStore1<std::shared_ptr<std::vector<LogLineData<>>>>>
-        log_store;
+    SyncDataStore1<std::shared_ptr<std::vector<LogLineData<>>>> log_store;
     SyncDataStore1<std::chrono::system_clock::time_point> sync_time_store;
     FuncResultStore func_result_store;
     std::size_t log_sent_lines = 0;
@@ -250,11 +248,10 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
     StrMap1<std::shared_ptr<eventpp::CallbackList<void(Canvas2D)>>>
         canvas2d_entry_event;
 
-    std::shared_ptr<LoggerSink> logger_sink;
-    std::shared_ptr<spdlog::logger> logger, logger_internal;
-    std::unique_ptr<LoggerBuf> logger_buf;
+    std::shared_ptr<spdlog::logger> logger_internal;
+    std::unique_ptr<std::streambuf> logger_buf;
     std::unique_ptr<std::ostream> logger_os;
-    std::unique_ptr<LoggerBufW> logger_buf_w;
+    std::unique_ptr<std::wstreambuf> logger_buf_w;
     std::unique_ptr<std::wostream> logger_os_w;
 
     std::string svr_name, svr_version;

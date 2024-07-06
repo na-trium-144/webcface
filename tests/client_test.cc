@@ -1186,7 +1186,7 @@ TEST_F(ClientTest, logSend) {
              SharedString(std::u8string(100000, u8'a'))},
             {1, std::chrono::system_clock::now(), "b"_ss},
         });
-    data_->log_store->setRecv(self_name, ls);
+    data_->log_store.setRecv(self_name, ls);
     wcli_->sync();
     dummy_s->waitRecv<message::Log>([&](const auto &obj) {
         EXPECT_EQ(obj.log->size(), 2);
@@ -1226,10 +1226,10 @@ TEST_F(ClientTest, logReq) {
                 })});
     wcli_->waitRecv();
     EXPECT_EQ(callback_called, 1);
-    EXPECT_TRUE(data_->log_store->getRecv("a"_ss).has_value());
-    EXPECT_EQ(data_->log_store->getRecv("a"_ss).value()->size(), 2);
-    EXPECT_EQ(data_->log_store->getRecv("a"_ss).value()->at(0).level(), 0);
-    EXPECT_EQ(data_->log_store->getRecv("a"_ss).value()->at(0).message().size(),
+    EXPECT_TRUE(data_->log_store.getRecv("a"_ss).has_value());
+    EXPECT_EQ(data_->log_store.getRecv("a"_ss).value()->size(), 2);
+    EXPECT_EQ(data_->log_store.getRecv("a"_ss).value()->at(0).level(), 0);
+    EXPECT_EQ(data_->log_store.getRecv("a"_ss).value()->at(0).message().size(),
               100000);
 
     dummy_s->send(message::Log{
@@ -1240,8 +1240,8 @@ TEST_F(ClientTest, logReq) {
                 })});
     wcli_->waitRecv();
     EXPECT_EQ(callback_called, 2);
-    EXPECT_TRUE(data_->log_store->getRecv("a"_ss).has_value());
-    EXPECT_EQ(data_->log_store->getRecv("a"_ss).value()->size(), 3);
+    EXPECT_TRUE(data_->log_store.getRecv("a"_ss).has_value());
+    EXPECT_EQ(data_->log_store.getRecv("a"_ss).value()->size(), 3);
 }
 TEST_F(ClientTest, funcInfo) {
     dummy_s = std::make_shared<DummyServer>(false);

@@ -97,7 +97,8 @@ target_include_directories(magickpp-linker INTERFACE $<BUILD_INTERFACE:${Magickp
 target_compile_options(magickpp-linker INTERFACE ${Magickpp_STATIC_CFLAGS_OTHER})
 target_static_link(magickpp-linker
     BUILD_LIBRARY_DIRS ${Magickpp_STATIC_LIBRARY_DIRS}
-    LIBRARIES ${Magickpp_STATIC_LIBRARIES}
+    DEBUG_LIBRARIES ${Magickpp_STATIC_LIBRARIES}
+    RELEASE_LIBRARIES ${Magickpp_STATIC_LIBRARIES}
 )
 target_link_libraries(magickpp-linker INTERFACE libjpeg zlib libpng libwebp)
 target_link_directories(magickpp-linker INTERFACE

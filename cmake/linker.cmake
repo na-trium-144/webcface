@@ -3,7 +3,7 @@ macro(target_static_link LINKER_TARGET)
     cmake_parse_arguments(LINKER
         ""
         ""
-        "BUILD_LIBRARY_DIRS;INSTALL_LIBRARY_DIRS;LIBRARIES"
+        "BUILD_LIBRARY_DIRS;INSTALL_LIBRARY_DIRS;DEBUG_LIBRARIES;RELEASE_LIBRARIES"
         ${ARGN}
     )
     if(NOT "${LINKER_UNPARSED_ARGUMENTS}" STREQUAL "")
@@ -16,11 +16,19 @@ macro(target_static_link LINKER_TARGET)
         target_link_directories(${LINKER_TARGET} INTERFACE $<INSTALL_INTERFACE:${dir}>)
     endforeach()
     if(WEBCFACE_SHARED AND APPLE)
-        foreach(lib IN LISTS LINKER_LIBRARIES)
-            target_link_libraries(${LINKER_TARGET} INTERFACE -Wl,-hidden-l${lib})
+        foreach(lib IN LISTS LINKER_DEBUG_LIBRARIES)
+            target_link_libraries(${LINKER_TARGET} INTERFACE debug -Wl,-hidden-l${lib})
+        endforeach()
+        foreach(lib IN LISTS LINKER_RELEASE_LIBRARIES)
+            target_link_libraries(${LINKER_TARGET} INTERFACE optimized -Wl,-hidden-l${lib})
         endforeach()
     else()
-        target_link_libraries(${LINKER_TARGET} INTERFACE ${LINKER_LIBRARIES})
+        foreach(lib IN LISTS LINKER_DEBUG_LIBRARIES)
+            target_link_libraries(${LINKER_TARGET} INTERFACE debug ${lib})
+        endforeach()
+        foreach(lib IN LISTS LINKER_RELEASE_LIBRARIES)
+            target_link_libraries(${LINKER_TARGET} INTERFACE optimized ${lib})
+        endforeach()
     endif()
 endmacro()
 
