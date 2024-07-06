@@ -29,15 +29,9 @@ static std::unique_ptr<CustomLogger> crow_custom_logger;
 
 AppWrapper::~AppWrapper() noexcept {
     delete static_cast<crow::SimpleApp *>(app);
-    if (exception_str) {
-        delete static_cast<std::string *>(exception_str);
-    }
 }
 void AppWrapper::setException(const char *what) noexcept {
-    try {
-        exception_str = new std::string(what);
-    } catch (...) {
-    }
+    exception_str = what;
 }
 
 void AppWrapper::run() noexcept {
@@ -48,8 +42,8 @@ void AppWrapper::run() noexcept {
     }
 }
 const char *AppWrapper::exception() noexcept {
-    if (exception_str) {
-        return static_cast<std::string *>(exception_str)->c_str();
+    if (!exception_str.empty()) {
+        return exception_str.c_str();
     }
     return nullptr;
 }

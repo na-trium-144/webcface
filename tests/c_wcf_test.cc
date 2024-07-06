@@ -56,8 +56,9 @@ TEST_F(CClientTest, connectionByStart) {
     EXPECT_FALSE(dummy_s->connected());
     EXPECT_FALSE(wcfIsConnected(wcli_));
     EXPECT_EQ(wcfStart(wcli_), WCF_OK);
-    wait();
-    EXPECT_TRUE(dummy_s->connected());
+    while (!dummy_s->connected()) {
+        wait();
+    }
     EXPECT_TRUE(wcfIsConnected(wcli_));
 
     EXPECT_EQ(wcfStart(nullptr), WCF_BAD_WCLI);
@@ -66,8 +67,9 @@ TEST_F(CClientTest, connectionBySync) {
     EXPECT_FALSE(dummy_s->connected());
     EXPECT_FALSE(wcfIsConnected(wcli_));
     EXPECT_EQ(wcfSync(wcli_), WCF_OK);
-    wait();
-    EXPECT_TRUE(dummy_s->connected());
+    while (!dummy_s->connected()) {
+        wait();
+    }
     EXPECT_TRUE(wcfIsConnected(wcli_));
 
     EXPECT_EQ(wcfSync(nullptr), WCF_BAD_WCLI);
@@ -76,7 +78,9 @@ TEST_F(CClientTest, connectionByWait) {
     EXPECT_FALSE(dummy_s->connected());
     EXPECT_FALSE(wcfIsConnected(wcli_));
     EXPECT_EQ(wcfWaitConnection(wcli_), WCF_OK);
-    wait();
+    while (!dummy_s->connected()) {
+        wait();
+    }
     EXPECT_TRUE(dummy_s->connected());
     EXPECT_TRUE(wcfIsConnected(wcli_));
 
@@ -96,29 +100,23 @@ TEST_F(CClientTest, noConnectionByRecv) {
 TEST_F(CClientTest, valueSend) {
     EXPECT_EQ(wcfValueSet(wcli_, "a", 5), WCF_OK);
     EXPECT_EQ(wcfSync(wcli_), WCF_OK);
-    wait();
-    dummy_s->recv<message::Value>(
-        [&](const auto &obj) {
-            EXPECT_EQ(obj.field, "a"_ss);
-            EXPECT_EQ(obj.data->size(), 1);
-            EXPECT_EQ(obj.data->at(0), 5);
-        },
-        [&] { ADD_FAILURE() << "Value recv error"; });
+    dummy_s->waitRecv<message::Value>([&](const auto &obj) {
+        EXPECT_EQ(obj.field, "a"_ss);
+        EXPECT_EQ(obj.data->size(), 1);
+        EXPECT_EQ(obj.data->at(0), 5);
+    });
     dummy_s->recvClear();
 
     double b[3] = {1, 1.5, 2};
     EXPECT_EQ(wcfValueSetVecD(wcli_, "b", b, 3), WCF_OK);
     EXPECT_EQ(wcfSync(wcli_), WCF_OK);
-    wait();
-    dummy_s->recv<message::Value>(
-        [&](const auto &obj) {
-            EXPECT_EQ(obj.field, "b"_ss);
-            EXPECT_EQ(obj.data->size(), 3);
-            EXPECT_EQ(obj.data->at(0), 1);
-            EXPECT_EQ(obj.data->at(1), 1.5);
-            EXPECT_EQ(obj.data->at(2), 2);
-        },
-        [&] { ADD_FAILURE() << "Value recv error"; });
+    dummy_s->waitRecv<message::Value>([&](const auto &obj) {
+        EXPECT_EQ(obj.field, "b"_ss);
+        EXPECT_EQ(obj.data->size(), 3);
+        EXPECT_EQ(obj.data->at(0), 1);
+        EXPECT_EQ(obj.data->at(1), 1.5);
+        EXPECT_EQ(obj.data->at(2), 2);
+    });
     dummy_s->recvClear();
 }
 TEST_F(CClientTest, valueReq) {
@@ -136,14 +134,11 @@ TEST_F(CClientTest, valueReq) {
     EXPECT_EQ(wcfValueGet(wcli_, "a", "b", &value1), WCF_NOT_FOUND);
     EXPECT_EQ(value1, 0);
     EXPECT_EQ(wcfStart(wcli_), WCF_OK);
-    wait();
-    dummy_s->recv<message::Req<message::Value>>(
-        [&](const auto &obj) {
-            EXPECT_EQ(obj.member, "a"_ss);
-            EXPECT_EQ(obj.field, "b"_ss);
-            EXPECT_EQ(obj.req_id, 1);
-        },
-        [&] { ADD_FAILURE() << "Value Req recv error"; });
+    dummy_s->waitRecv<message::Req<message::Value>>([&](const auto &obj) {
+        EXPECT_EQ(obj.member, "a"_ss);
+        EXPECT_EQ(obj.field, "b"_ss);
+        EXPECT_EQ(obj.req_id, 1);
+    });
     dummy_s->send(message::Res<message::Value>{
         1, ""_ss,
         std::make_shared<std::vector<double>>(std::vector<double>{1, 1.5, 2})});
@@ -174,24 +169,18 @@ TEST_F(CClientTest, valueReq) {
 TEST_F(CClientTest, textSend) {
     EXPECT_EQ(wcfTextSet(wcli_, "a", "hello"), WCF_OK);
     EXPECT_EQ(wcfSync(wcli_), WCF_OK);
-    wait();
-    dummy_s->recv<message::Text>(
-        [&](const auto &obj) {
-            EXPECT_EQ(obj.field, "a"_ss);
-            EXPECT_EQ(*obj.data, "hello");
-        },
-        [&] { ADD_FAILURE() << "Text recv error"; });
+    dummy_s->waitRecv<message::Text>([&](const auto &obj) {
+        EXPECT_EQ(obj.field, "a"_ss);
+        EXPECT_EQ(*obj.data, "hello");
+    });
     dummy_s->recvClear();
 
     EXPECT_EQ(wcfTextSetN(wcli_, "b", "hellohello", 5), WCF_OK);
     EXPECT_EQ(wcfSync(wcli_), WCF_OK);
-    wait();
-    dummy_s->recv<message::Text>(
-        [&](const auto &obj) {
-            EXPECT_EQ(obj.field, "b"_ss);
-            EXPECT_EQ(*obj.data, "hello");
-        },
-        [&] { ADD_FAILURE() << "Text recv error"; });
+    dummy_s->waitRecv<message::Text>([&](const auto &obj) {
+        EXPECT_EQ(obj.field, "b"_ss);
+        EXPECT_EQ(*obj.data, "hello");
+    });
     dummy_s->recvClear();
 }
 TEST_F(CClientTest, textReq) {
@@ -202,14 +191,11 @@ TEST_F(CClientTest, textReq) {
     EXPECT_EQ(wcfTextGet(wcli_, "a", "b", text, 5, &size), WCF_NOT_FOUND);
     EXPECT_EQ(text[0], 0);
     EXPECT_EQ(wcfStart(wcli_), WCF_OK);
-    wait();
-    dummy_s->recv<message::Req<message::Text>>(
-        [&](const auto &obj) {
-            EXPECT_EQ(obj.member, "a"_ss);
-            EXPECT_EQ(obj.field, "b"_ss);
-            EXPECT_EQ(obj.req_id, 1);
-        },
-        [&] { ADD_FAILURE() << "Text Req recv error"; });
+    dummy_s->waitRecv<message::Req<message::Text>>([&](const auto &obj) {
+        EXPECT_EQ(obj.member, "a"_ss);
+        EXPECT_EQ(obj.field, "b"_ss);
+        EXPECT_EQ(obj.req_id, 1);
+    });
     dummy_s->send(message::Res<message::Text>{
         1, ""_ss, std::make_shared<ValAdaptor>("hello")});
     dummy_s->send(message::Res<message::Text>{
@@ -284,18 +270,15 @@ TEST_F(CClientTest, funcRun) {
     std::size_t caller_id = 0;
     // 1
     for (int i = 0; i < 2; i++) {
-        wait();
-        dummy_s->recv<message::Call>(
-            [&](const auto &obj) {
-                EXPECT_EQ(obj.caller_id, caller_id);
-                EXPECT_EQ(obj.target_member_id, 0);
-                EXPECT_EQ(obj.field, "b"_ss);
-                EXPECT_EQ(obj.args.size(), 3);
-                EXPECT_EQ(static_cast<int>(obj.args.at(0)), 42);
-                EXPECT_EQ(static_cast<double>(obj.args.at(1)), 1.5);
-                EXPECT_EQ(static_cast<std::string>(obj.args.at(2)), "aaa");
-            },
-            [&]() { ADD_FAILURE() << "Call recv error"; });
+        dummy_s->waitRecv<message::Call>([&](const auto &obj) {
+            EXPECT_EQ(obj.caller_id, caller_id);
+            EXPECT_EQ(obj.target_member_id, 0);
+            EXPECT_EQ(obj.field, "b"_ss);
+            EXPECT_EQ(obj.args.size(), 3);
+            EXPECT_EQ(static_cast<int>(obj.args.at(0)), 42);
+            EXPECT_EQ(static_cast<double>(obj.args.at(1)), 1.5);
+            EXPECT_EQ(static_cast<std::string>(obj.args.at(2)), "aaa");
+        });
         dummy_s->recvClear();
         dummy_s->send(message::CallResponse{{}, caller_id, 1, false});
         caller_id++;
@@ -304,15 +287,12 @@ TEST_F(CClientTest, funcRun) {
 
     // 2
     for (int i = 0; i < 2; i++) {
-        wait();
-        dummy_s->recv<message::Call>(
-            [&](const auto &obj) {
-                EXPECT_EQ(obj.caller_id, caller_id);
-                EXPECT_EQ(obj.target_member_id, 0);
-                EXPECT_EQ(obj.field, "b"_ss);
-                EXPECT_EQ(obj.args.size(), 3);
-            },
-            [&]() { ADD_FAILURE() << "Call recv error"; });
+        dummy_s->waitRecv<message::Call>([&](const auto &obj) {
+            EXPECT_EQ(obj.caller_id, caller_id);
+            EXPECT_EQ(obj.target_member_id, 0);
+            EXPECT_EQ(obj.field, "b"_ss);
+            EXPECT_EQ(obj.args.size(), 3);
+        });
         dummy_s->recvClear();
         dummy_s->send(message::CallResponse{{}, caller_id, 1, true});
         dummy_s->send(
@@ -323,15 +303,12 @@ TEST_F(CClientTest, funcRun) {
 
     // 3
     for (int i = 0; i < 2; i++) {
-        wait();
-        dummy_s->recv<message::Call>(
-            [&](const auto &obj) {
-                EXPECT_EQ(obj.caller_id, caller_id);
-                EXPECT_EQ(obj.target_member_id, 0);
-                EXPECT_EQ(obj.field, "b"_ss);
-                EXPECT_EQ(obj.args.size(), 3);
-            },
-            [&]() { ADD_FAILURE() << "Call recv error"; });
+        dummy_s->waitRecv<message::Call>([&](const auto &obj) {
+            EXPECT_EQ(obj.caller_id, caller_id);
+            EXPECT_EQ(obj.target_member_id, 0);
+            EXPECT_EQ(obj.field, "b"_ss);
+            EXPECT_EQ(obj.args.size(), 3);
+        });
         dummy_s->recvClear();
         dummy_s->send(message::CallResponse{{}, caller_id, 1, true});
         dummy_s->send(
@@ -351,17 +328,14 @@ TEST_F(CClientTest, funcListen) {
     int arg_types[3] = {WCF_VAL_INT, WCF_VAL_DOUBLE, WCF_VAL_STRING};
     wcfFuncListen(wcli_, "a", arg_types, 3, WCF_VAL_INT);
     EXPECT_EQ(wcfSync(wcli_), WCF_OK);
-    wait();
-    dummy_s->recv<message::FuncInfo>(
-        [&](const auto &obj) {
-            EXPECT_EQ(obj.field, "a"_ss);
-            EXPECT_EQ(obj.return_type, ValType::int_);
-            EXPECT_EQ(obj.args->size(), 3);
-            EXPECT_EQ(obj.args->at(0).type_, ValType::int_);
-            EXPECT_EQ(obj.args->at(1).type_, ValType::double_);
-            EXPECT_EQ(obj.args->at(2).type_, ValType::string_);
-        },
-        [&] { ADD_FAILURE() << "FuncInfo recv error"; });
+    dummy_s->waitRecv<message::FuncInfo>([&](const auto &obj) {
+        EXPECT_EQ(obj.field, "a"_ss);
+        EXPECT_EQ(obj.return_type, ValType::int_);
+        EXPECT_EQ(obj.args->size(), 3);
+        EXPECT_EQ(obj.args->at(0).type_, ValType::int_);
+        EXPECT_EQ(obj.args->at(1).type_, ValType::double_);
+        EXPECT_EQ(obj.args->at(2).type_, ValType::string_);
+    });
     dummy_s->recvClear();
 
     wcfFuncCallHandle *h;
@@ -369,15 +343,12 @@ TEST_F(CClientTest, funcListen) {
     EXPECT_EQ(wcfFuncFetchCall(wcli_, "b", &h), WCF_NOT_CALLED);
     dummy_s->send(message::Call{
         0, 1, 1, "a"_ss, {ValAdaptor(42), ValAdaptor(1.5), ValAdaptor("aaa")}});
-    wait();
 
-    dummy_s->recv<message::CallResponse>(
-        [&](const auto &obj) {
-            EXPECT_EQ(obj.caller_id, 0);
-            EXPECT_EQ(obj.caller_member_id, 1);
-            EXPECT_TRUE(obj.started);
-        },
-        [&] { ADD_FAILURE() << "CallResponse recv error"; });
+    dummy_s->waitRecv<message::CallResponse>([&](const auto &obj) {
+        EXPECT_EQ(obj.caller_id, 0);
+        EXPECT_EQ(obj.caller_member_id, 1);
+        EXPECT_TRUE(obj.started);
+    });
     dummy_s->recvClear();
     EXPECT_EQ(wcfFuncFetchCall(wcli_, "a", &h), WCF_OK);
     EXPECT_EQ(h->arg_size, 3);
@@ -391,15 +362,12 @@ TEST_F(CClientTest, funcListen) {
     EXPECT_EQ(wcfFuncRespond(h, &ans), WCF_OK);
     EXPECT_EQ(wcfFuncRespond(h, &ans), WCF_BAD_HANDLE);
     EXPECT_EQ(wcfFuncRespond(nullptr, &ans), WCF_BAD_HANDLE);
-    wait();
-    dummy_s->recv<message::CallResult>(
-        [&](const auto &obj) {
-            EXPECT_EQ(obj.caller_id, 0);
-            EXPECT_EQ(obj.caller_member_id, 1);
-            EXPECT_FALSE(obj.is_error);
-            EXPECT_EQ(static_cast<double>(obj.result), 123.45);
-        },
-        [&] { ADD_FAILURE() << "CallResult recv error"; });
+    dummy_s->waitRecv<message::CallResult>([&](const auto &obj) {
+        EXPECT_EQ(obj.caller_id, 0);
+        EXPECT_EQ(obj.caller_member_id, 1);
+        EXPECT_FALSE(obj.is_error);
+        EXPECT_EQ(static_cast<double>(obj.result), 123.45);
+    });
     dummy_s->recvClear();
 
     EXPECT_EQ(wcfFuncFetchCall(wcli_, "a", &h), WCF_NOT_CALLED);
@@ -432,39 +400,32 @@ TEST_F(CClientTest, funcSet) {
     };
     wcfFuncSet(wcli_, "a", arg_types, 3, WCF_VAL_INT, callbackFunc, &u);
     EXPECT_EQ(wcfSync(wcli_), WCF_OK);
-    wait();
-    dummy_s->recv<message::FuncInfo>(
-        [&](const auto &obj) {
-            EXPECT_EQ(obj.field, "a"_ss);
-            EXPECT_EQ(obj.return_type, ValType::int_);
-            EXPECT_EQ(obj.args->size(), 3);
-            EXPECT_EQ(obj.args->at(0).type_, ValType::int_);
-            EXPECT_EQ(obj.args->at(1).type_, ValType::double_);
-            EXPECT_EQ(obj.args->at(2).type_, ValType::string_);
-        },
-        [&] { ADD_FAILURE() << "FuncInfo recv error"; });
+    dummy_s->waitRecv<message::FuncInfo>([&](const auto &obj) {
+        EXPECT_EQ(obj.field, "a"_ss);
+        EXPECT_EQ(obj.return_type, ValType::int_);
+        EXPECT_EQ(obj.args->size(), 3);
+        EXPECT_EQ(obj.args->at(0).type_, ValType::int_);
+        EXPECT_EQ(obj.args->at(1).type_, ValType::double_);
+        EXPECT_EQ(obj.args->at(2).type_, ValType::string_);
+    });
     dummy_s->recvClear();
 
     dummy_s->send(message::Call{
         0, 1, 1, "a"_ss, {ValAdaptor(42), ValAdaptor(1.5), ValAdaptor("aaa")}});
     wcfWaitRecv(wcli_);
-    wait();
 
-    dummy_s->recv<message::CallResponse>(
-        [&](const auto &obj) {
-            EXPECT_EQ(obj.caller_id, 0);
-            EXPECT_EQ(obj.caller_member_id, 1);
-            EXPECT_TRUE(obj.started);
-        },
-        [&] { ADD_FAILURE() << "CallResponse recv error"; });
-    dummy_s->recv<message::CallResult>(
+    dummy_s->waitRecv<message::CallResponse>([&](const auto &obj) {
+        EXPECT_EQ(obj.caller_id, 0);
+        EXPECT_EQ(obj.caller_member_id, 1);
+        EXPECT_TRUE(obj.started);
+    });
+    dummy_s->waitRecv<message::CallResult>(
         [&](const auto &obj) {
             EXPECT_EQ(obj.caller_id, 0);
             EXPECT_EQ(obj.caller_member_id, 1);
             EXPECT_FALSE(obj.is_error);
             EXPECT_EQ(static_cast<double>(obj.result), 123.45);
-        },
-        [&] { ADD_FAILURE() << "CallResult recv error"; });
+        });
 }
 TEST_F(CClientTest, funcSetAsync) {
     using namespace std::string_literals;
@@ -491,39 +452,32 @@ TEST_F(CClientTest, funcSetAsync) {
     };
     wcfFuncSetAsync(wcli_, "a", arg_types, 3, WCF_VAL_INT, callbackFunc, &u);
     EXPECT_EQ(wcfSync(wcli_), WCF_OK);
-    wait();
-    dummy_s->recv<message::FuncInfo>(
-        [&](const auto &obj) {
-            EXPECT_EQ(obj.field, "a"_ss);
-            EXPECT_EQ(obj.return_type, ValType::int_);
-            EXPECT_EQ(obj.args->size(), 3);
-            EXPECT_EQ(obj.args->at(0).type_, ValType::int_);
-            EXPECT_EQ(obj.args->at(1).type_, ValType::double_);
-            EXPECT_EQ(obj.args->at(2).type_, ValType::string_);
-        },
-        [&] { ADD_FAILURE() << "FuncInfo recv error"; });
+    dummy_s->waitRecv<message::FuncInfo>([&](const auto &obj) {
+        EXPECT_EQ(obj.field, "a"_ss);
+        EXPECT_EQ(obj.return_type, ValType::int_);
+        EXPECT_EQ(obj.args->size(), 3);
+        EXPECT_EQ(obj.args->at(0).type_, ValType::int_);
+        EXPECT_EQ(obj.args->at(1).type_, ValType::double_);
+        EXPECT_EQ(obj.args->at(2).type_, ValType::string_);
+    });
     dummy_s->recvClear();
 
     dummy_s->send(message::Call{
         0, 1, 1, "a"_ss, {ValAdaptor(42), ValAdaptor(1.5), ValAdaptor("aaa")}});
     wcfWaitRecv(wcli_);
-    wait();
 
-    dummy_s->recv<message::CallResponse>(
-        [&](const auto &obj) {
-            EXPECT_EQ(obj.caller_id, 0);
-            EXPECT_EQ(obj.caller_member_id, 1);
-            EXPECT_TRUE(obj.started);
-        },
-        [&] { ADD_FAILURE() << "CallResponse recv error"; });
-    dummy_s->recv<message::CallResult>(
+    dummy_s->waitRecv<message::CallResponse>([&](const auto &obj) {
+        EXPECT_EQ(obj.caller_id, 0);
+        EXPECT_EQ(obj.caller_member_id, 1);
+        EXPECT_TRUE(obj.started);
+    });
+    dummy_s->waitRecv<message::CallResult>(
         [&](const auto &obj) {
             EXPECT_EQ(obj.caller_id, 0);
             EXPECT_EQ(obj.caller_member_id, 1);
             EXPECT_FALSE(obj.is_error);
             EXPECT_EQ(static_cast<double>(obj.result), 123.45);
-        },
-        [&] { ADD_FAILURE() << "CallResult recv error"; });
+        });
 }
 
 TEST_F(CClientTest, viewSend) {
@@ -537,41 +491,38 @@ TEST_F(CClientTest, viewSend) {
 
     EXPECT_EQ(wcfViewSet(wcli_, "b", vc, 4), WCF_OK);
     EXPECT_EQ(wcfSync(wcli_), WCF_OK);
-    wait();
-    dummy_s->recv<message::View>(
-        [&](const auto &obj) {
-            EXPECT_EQ(obj.field, "b"_ss);
-            EXPECT_EQ(obj.length, 6);
-            EXPECT_EQ(obj.data_diff->size(), 6);
-            EXPECT_EQ((*obj.data_diff)["0"].type,
-                      static_cast<int>(ViewComponentType::text));
-            EXPECT_EQ((*obj.data_diff)["0"].text, "abc"_ss);
-            EXPECT_EQ((*obj.data_diff)["1"].type,
-                      static_cast<int>(ViewComponentType::new_line));
-            EXPECT_EQ((*obj.data_diff)["2"].type,
-                      static_cast<int>(ViewComponentType::text));
-            EXPECT_EQ((*obj.data_diff)["2"].text, "123"_ss);
+    dummy_s->waitRecv<message::View>([&](const auto &obj) {
+        EXPECT_EQ(obj.field, "b"_ss);
+        EXPECT_EQ(obj.length, 6);
+        EXPECT_EQ(obj.data_diff->size(), 6);
+        EXPECT_EQ((*obj.data_diff)["0"].type,
+                  static_cast<int>(ViewComponentType::text));
+        EXPECT_EQ((*obj.data_diff)["0"].text, "abc"_ss);
+        EXPECT_EQ((*obj.data_diff)["1"].type,
+                  static_cast<int>(ViewComponentType::new_line));
+        EXPECT_EQ((*obj.data_diff)["2"].type,
+                  static_cast<int>(ViewComponentType::text));
+        EXPECT_EQ((*obj.data_diff)["2"].text, "123"_ss);
 
-            EXPECT_EQ((*obj.data_diff)["3"].type,
-                      static_cast<int>(ViewComponentType::new_line));
+        EXPECT_EQ((*obj.data_diff)["3"].type,
+                  static_cast<int>(ViewComponentType::new_line));
 
-            EXPECT_EQ((*obj.data_diff)["4"].type,
-                      static_cast<int>(ViewComponentType::button));
-            EXPECT_EQ((*obj.data_diff)["4"].text, "a"_ss);
-            EXPECT_EQ((*obj.data_diff)["4"].on_click_member, self_name);
-            EXPECT_EQ((*obj.data_diff)["4"].on_click_field, "c"_ss);
+        EXPECT_EQ((*obj.data_diff)["4"].type,
+                  static_cast<int>(ViewComponentType::button));
+        EXPECT_EQ((*obj.data_diff)["4"].text, "a"_ss);
+        EXPECT_EQ((*obj.data_diff)["4"].on_click_member, self_name);
+        EXPECT_EQ((*obj.data_diff)["4"].on_click_field, "c"_ss);
 
-            EXPECT_EQ((*obj.data_diff)["5"].type,
-                      static_cast<int>(ViewComponentType::button));
-            EXPECT_EQ((*obj.data_diff)["5"].text, "a"_ss);
-            EXPECT_EQ((*obj.data_diff)["5"].on_click_member, "b"_ss);
-            EXPECT_EQ((*obj.data_diff)["5"].on_click_field, "c"_ss);
-            EXPECT_EQ((*obj.data_diff)["5"].text_color,
-                      static_cast<int>(ViewColor::red));
-            EXPECT_EQ((*obj.data_diff)["5"].bg_color,
-                      static_cast<int>(ViewColor::green));
-        },
-        [&] { ADD_FAILURE() << "View recv error"; });
+        EXPECT_EQ((*obj.data_diff)["5"].type,
+                  static_cast<int>(ViewComponentType::button));
+        EXPECT_EQ((*obj.data_diff)["5"].text, "a"_ss);
+        EXPECT_EQ((*obj.data_diff)["5"].on_click_member, "b"_ss);
+        EXPECT_EQ((*obj.data_diff)["5"].on_click_field, "c"_ss);
+        EXPECT_EQ((*obj.data_diff)["5"].text_color,
+                  static_cast<int>(ViewColor::red));
+        EXPECT_EQ((*obj.data_diff)["5"].bg_color,
+                  static_cast<int>(ViewColor::green));
+    });
     dummy_s->recvClear();
 }
 TEST_F(CClientTest, viewReq) {
@@ -581,14 +532,11 @@ TEST_F(CClientTest, viewReq) {
     EXPECT_EQ(wcfViewGet(wcli_, "a", "b", &vc, &size), WCF_NOT_FOUND);
     EXPECT_EQ(size, 0);
     EXPECT_EQ(wcfStart(wcli_), WCF_OK);
-    wait();
-    dummy_s->recv<message::Req<message::View>>(
-        [&](const auto &obj) {
-            EXPECT_EQ(obj.member, "a"_ss);
-            EXPECT_EQ(obj.field, "b"_ss);
-            EXPECT_EQ(obj.req_id, 1);
-        },
-        [&] { ADD_FAILURE() << "View Req recv error"; });
+    dummy_s->waitRecv<message::Req<message::View>>([&](const auto &obj) {
+        EXPECT_EQ(obj.member, "a"_ss);
+        EXPECT_EQ(obj.field, "b"_ss);
+        EXPECT_EQ(obj.req_id, 1);
+    });
 
     auto v = std::make_shared<
         std::unordered_map<std::string, message::ViewComponent>>(
