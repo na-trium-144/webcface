@@ -1,8 +1,8 @@
 var structwebcface_1_1message_1_1ImageReq =
 [
     [ "operator==", "structwebcface_1_1message_1_1ImageReq.html#ac04d87c61f19fc387c81b9c5881e7b23", null ],
-    [ "cmp_mode", "structwebcface_1_1message_1_1ImageReq.html#abe71a71c68b289ea87bb025796f88396", null ],
-    [ "color_mode", "structwebcface_1_1message_1_1ImageReq.html#af6fca312aa96279170519ff0d29e95aa", null ],
+    [ "cmp_mode", "structwebcface_1_1message_1_1ImageReq.html#ad5319cebefca34be94e88ec9ecba8474", null ],
+    [ "color_mode", "structwebcface_1_1message_1_1ImageReq.html#a8162d7cf934001ca32074947dd65e920", null ],
     [ "cols", "structwebcface_1_1message_1_1ImageReq.html#ad7b5765edb597c4da7d2f2fbb5fd2e8f", null ],
     [ "frame_rate", "structwebcface_1_1message_1_1ImageReq.html#abe0db23ce7f19f5dfd27436efea2e30d", null ],
     [ "quality", "structwebcface_1_1message_1_1ImageReq.html#acac7df77df55f2a1bfd8d8d18340b773", null ],

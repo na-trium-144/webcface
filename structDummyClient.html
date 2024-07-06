@@ -158,6 +158,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a972bbdfc8cc2c07ede9803621e3fc17e" id="r_a972bbdfc8cc2c07ede9803621e3fc17e"><td class="memTemplParams" colspan="2">template&lt;typename T , typename F1 , typename F2 &gt; </td></tr>
 <tr class="memitem:a972bbdfc8cc2c07ede9803621e3fc17e"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structDummyClient.html#a972bbdfc8cc2c07ede9803621e3fc17e">recv</a> (const F1 &amp;on_ok, const F2 &amp;on_ng)</td></tr>
 <tr class="separator:a972bbdfc8cc2c07ede9803621e3fc17e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a26337dc02f63956261dd5649db1f5071" id="r_a26337dc02f63956261dd5649db1f5071"><td class="memTemplParams" colspan="2">template&lt;typename T , typename F1 &gt; </td></tr>
+<tr class="memitem:a26337dc02f63956261dd5649db1f5071"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structDummyClient.html#a26337dc02f63956261dd5649db1f5071">waitRecv</a> (const F1 &amp;on_ok)</td></tr>
+<tr class="separator:a26337dc02f63956261dd5649db1f5071"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3aac462abdf7140fda98eb544a58781d" id="r_a3aac462abdf7140fda98eb544a58781d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structDummyClient.html#a3aac462abdf7140fda98eb544a58781d">recvClear</a> ()</td></tr>
 <tr class="separator:a3aac462abdf7140fda98eb544a58781d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1c6342a3f6b538d6ffa800e17ecbc03a" id="r_a1c6342a3f6b538d6ffa800e17ecbc03a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structDummyClient.html#a1c6342a3f6b538d6ffa800e17ecbc03a">send</a> (std::string msg)</td></tr>
@@ -167,6 +170,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ad2eff32412b60a13b7509f14f21ab434" id="r_ad2eff32412b60a13b7509f14f21ab434"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:ad2eff32412b60a13b7509f14f21ab434"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structDummyClient.html#ad2eff32412b60a13b7509f14f21ab434">send</a> (const T &amp;msg)</td></tr>
 <tr class="separator:ad2eff32412b60a13b7509f14f21ab434"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a59fc494d53391b27e2fd75cb750690d9" id="r_a59fc494d53391b27e2fd75cb750690d9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structDummyClient.html#a59fc494d53391b27e2fd75cb750690d9">connected</a> ()</td></tr>
+<tr class="separator:a59fc494d53391b27e2fd75cb750690d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aebae944acd734217e4e48f2820a5cb42" id="r_aebae944acd734217e4e48f2820a5cb42"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structDummyClient.html#aebae944acd734217e4e48f2820a5cb42">DummyClient</a> (bool use_unix=false)</td></tr>
 <tr class="separator:aebae944acd734217e4e48f2820a5cb42"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afb2d75fccff6b3f4c0763af6462dce91" id="r_afb2d75fccff6b3f4c0763af6462dce91"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structDummyClient.html#afb2d75fccff6b3f4c0763af6462dce91">~DummyClient</a> ()</td></tr>
@@ -182,6 +187,10 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a146fa3e5d39d6c6f11ec0476487f04eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af1f937ef7e7a213b0a800db5cbfb669e" id="r_af1f937ef7e7a213b0a800db5cbfb669e"><td class="memItemLeft" align="right" valign="top">std::thread&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structDummyClient.html#af1f937ef7e7a213b0a800db5cbfb669e">t</a></td></tr>
 <tr class="separator:af1f937ef7e7a213b0a800db5cbfb669e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a54dafa8e76098c7f9b672e9fa41462ec" id="r_a54dafa8e76098c7f9b672e9fa41462ec"><td class="memItemLeft" align="right" valign="top">std::mutex&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structDummyClient.html#a54dafa8e76098c7f9b672e9fa41462ec">client_m</a></td></tr>
+<tr class="separator:a54dafa8e76098c7f9b672e9fa41462ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a79610c1109afaffebcf56620d4fc1aa0" id="r_a79610c1109afaffebcf56620d4fc1aa0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structDummyClient.html#a79610c1109afaffebcf56620d4fc1aa0">connected_</a> = false</td></tr>
+<tr class="separator:a79610c1109afaffebcf56620d4fc1aa0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="aebae944acd734217e4e48f2820a5cb42" name="aebae944acd734217e4e48f2820a5cb42"></a>
@@ -228,6 +237,31 @@ Public Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a59fc494d53391b27e2fd75cb750690d9" name="a59fc494d53391b27e2fd75cb750690d9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a59fc494d53391b27e2fd75cb750690d9">&#9670;&#160;</a></span>connected()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool connected </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a972bbdfc8cc2c07ede9803621e3fc17e" name="a972bbdfc8cc2c07ede9803621e3fc17e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a972bbdfc8cc2c07ede9803621e3fc17e">&#9670;&#160;</a></span>recv()</h2>
 
@@ -363,7 +397,49 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
+<a id="a26337dc02f63956261dd5649db1f5071" name="a26337dc02f63956261dd5649db1f5071"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a26337dc02f63956261dd5649db1f5071">&#9670;&#160;</a></span>waitRecv()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename F1 &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void waitRecv </td>
+          <td>(</td>
+          <td class="paramtype">const F1 &amp;&#160;</td>
+          <td class="paramname"><em>on_ok</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <h2 class="groupheader">Member Data Documentation</h2>
+<a id="a54dafa8e76098c7f9b672e9fa41462ec" name="a54dafa8e76098c7f9b672e9fa41462ec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a54dafa8e76098c7f9b672e9fa41462ec">&#9670;&#160;</a></span>client_m</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::mutex client_m</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="ac12c0189fb9871dca59ac653ce95b4cf" name="ac12c0189fb9871dca59ac653ce95b4cf"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac12c0189fb9871dca59ac653ce95b4cf">&#9670;&#160;</a></span>closing</h2>
 
@@ -372,6 +448,20 @@ template&lt;typename T &gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">std::atomic&lt;bool&gt; closing = false</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a79610c1109afaffebcf56620d4fc1aa0" name="a79610c1109afaffebcf56620d4fc1aa0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a79610c1109afaffebcf56620d4fc1aa0">&#9670;&#160;</a></span>connected_</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool connected_ = false</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -430,7 +520,7 @@ template&lt;typename T &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="structDummyClient.html">DummyClient</a></li>
-    <li class="footer">Generated on Sat Jul 6 2024 05:28:08 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Sat Jul 6 2024 15:13:07 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

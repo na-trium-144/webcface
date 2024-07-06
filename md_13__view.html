@@ -425,7 +425,7 @@ input</h2>
 <div class="line">    wcli.<a class="code hl_function" href="classwebcface_1_1View.html#a9cb08e3833e550609bd9cc49ec7484a6">sync</a>();</div>
 <div class="line">}</div>
 </div><!-- fragment --> この場合はv.sync()の時に前周期のinput_valの内容が復元されるという挙動になります。 (したがってv.sync()より前では値が未初期化になります)</dd></dl>
-<p>InputRefの値は<code>get()</code>で <a class="el" href="classwebcface_1_1ValAdaptor.html" title="数値、文字列などの値を相互変換するクラス">webcface::ValAdaptor</a> 型として取得できます。 また std::string, double, bool などの型にキャストすることでも値を得られます。 <br  />
+<p>InputRefの値は<code>get()</code>で <a class="el" href="classwebcface_1_1encoding_1_1ValAdaptor.html" title="数値、文字列などの値を相互変換するクラス">webcface::ValAdaptor</a> 型として取得できます。 また std::string, double, bool などの型にキャストすることでも値を得られます。 <br  />
  <span class="since-c">1.11</span> <code>asStringRef()</code>, <code>asString()</code>, <code>asBool()</code>, <del><code>as&lt;double&gt;()</code></del> でも型変換ができます。 <br  />
  <span class="since-c">2.0</span> <code>asWStringRef()</code>, <code>asWString()</code>, <code>asDouble()</code>, <code>asInt()</code>, <code>asLLong()</code> も使えます。</p>
 <dl class="section note"><dt>Note</dt><dd>内部の実装では入力値を受け取りInputRefに値をセットする関数をonChangeにセットしています。 また、InputRefの値は<a class="el" href="md_11__text.html">Text</a>の1つとしてviewを表示しているクライアントに送信されます。</dd></dl>
@@ -489,7 +489,7 @@ onClick</h2>
 <h2><a class="anchor" id="autotoc_md65"></a>
 onChangeとbind</h2>
 <p><span class="since-c">1.10</span> <span class="since-js">1.6</span></p>
-<p>各種Input要素の現在の値は ViewComponent::bind() で<a class="el" href="md_11__text.html">Text</a>オブジェクトとして取得できます。 したがって<code>bind()</code>の値をInputの初期値として使用すればよいです。 bind().get()で得られる <a class="el" href="classwebcface_1_1ValAdaptor.html" title="数値、文字列などの値を相互変換するクラス">webcface::ValAdaptor</a> の値を整数、実数、bool、stringにキャストすることができます。</p>
+<p>各種Input要素の現在の値は ViewComponent::bind() で<a class="el" href="md_11__text.html">Text</a>オブジェクトとして取得できます。 したがって<code>bind()</code>の値をInputの初期値として使用すればよいです。 bind().get()で得られる <a class="el" href="classwebcface_1_1encoding_1_1ValAdaptor.html" title="数値、文字列などの値を相互変換するクラス">webcface::ValAdaptor</a> の値を整数、実数、bool、stringにキャストすることができます。</p>
 <p>Inputの値を変更する際は、(view送信側がbindを設定したかonChangeを設定したかに関わらず) ViewComponent::onChange() を使います。 引数に変化後の値を渡して<code>onChange().runAsync("変化後の値")</code>などとすることで onChangeに設定された関数を実行すると同時にbindの値も変更されます。</p>
 <h2><a class="anchor" id="autotoc_md66"></a>
 id</h2>
@@ -522,7 +522,7 @@ Event</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sat Jul 6 2024 05:28:08 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Sat Jul 6 2024 15:13:06 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

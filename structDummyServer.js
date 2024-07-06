@@ -8,6 +8,7 @@ var structDummyServer =
     [ "send", "structDummyServer.html#a2db964e8617db9ad3168829089db9309", null ],
     [ "send", "structDummyServer.html#ad2eff32412b60a13b7509f14f21ab434", null ],
     [ "send", "structDummyServer.html#a1c6342a3f6b538d6ffa800e17ecbc03a", null ],
+    [ "waitRecv", "structDummyServer.html#a26337dc02f63956261dd5649db1f5071", null ],
     [ "connPtr", "structDummyServer.html#ab0230b3ec0765d757a3b05abfc82f435", null ],
     [ "dummy_logger", "structDummyServer.html#a1352cd3cd8ae19a26e42995c9a54e0f2", null ],
     [ "recv_data", "structDummyServer.html#a4a3d73daf3753943c15ac5156e64e9e2", null ],

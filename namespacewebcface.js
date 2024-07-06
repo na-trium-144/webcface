@@ -69,7 +69,7 @@ var namespacewebcface =
     [ "TemporalGeometry", "classwebcface_1_1TemporalGeometry.html", "classwebcface_1_1TemporalGeometry" ],
     [ "Text", "classwebcface_1_1Text.html", "classwebcface_1_1Text" ],
     [ "Transform", "classwebcface_1_1Transform.html", "classwebcface_1_1Transform" ],
-    [ "ValAdaptor", "classwebcface_1_1ValAdaptor.html", "classwebcface_1_1ValAdaptor" ],
+    [ "ValAdaptor", "classwebcface_1_1encoding_1_1ValAdaptor.html", "classwebcface_1_1encoding_1_1ValAdaptor" ],
     [ "Value", "classwebcface_1_1Value.html", "classwebcface_1_1Value" ],
     [ "View", "classwebcface_1_1View.html", "classwebcface_1_1View" ],
     [ "ViewComponent", "classwebcface_1_1ViewComponent.html", "classwebcface_1_1ViewComponent" ],
@@ -103,14 +103,14 @@ var namespacewebcface =
       [ "sphere", "namespacewebcface.html#a1b753fd9c2659910ca1a042a05b56be6a34248a9bfcbd589d9b5fccb6a0ac6963", null ],
       [ "polygon", "namespacewebcface.html#a1b753fd9c2659910ca1a042a05b56be6ae4fdf3290654756def4e6816fddce608", null ]
     ] ],
-    [ "ImageColorMode", "namespacewebcface.html#abcfd96b0be942012c2f4641b4741a31e", [
+    [ "ImageColorMode", "namespacewebcface_1_1encoding.html#abcfd96b0be942012c2f4641b4741a31e", [
       [ "gray", "namespacewebcface.html#abcfd96b0be942012c2f4641b4741a31eacda7a650c5856cf2f6738072447d7825", null ],
       [ "bgr", "namespacewebcface.html#abcfd96b0be942012c2f4641b4741a31ea84746ad530563de3445efec60aa7ff59", null ],
       [ "bgra", "namespacewebcface.html#abcfd96b0be942012c2f4641b4741a31ea657c0fdc8e544dcb7153dcf613e04e2d", null ],
       [ "rgb", "namespacewebcface.html#abcfd96b0be942012c2f4641b4741a31eaef70a6546536ccd835479f6cddc0188e", null ],
       [ "rgba", "namespacewebcface.html#abcfd96b0be942012c2f4641b4741a31ea7082a31b8759c9d59795876351ec63aa", null ]
     ] ],
-    [ "ImageCompressMode", "namespacewebcface.html#ab72e620a597e5f750b2c9b3391e84ded", [
+    [ "ImageCompressMode", "namespacewebcface_1_1encoding.html#ab72e620a597e5f750b2c9b3391e84ded", [
       [ "raw", "namespacewebcface.html#ab72e620a597e5f750b2c9b3391e84dedabdd166af3a63f7be696dd17a218a6ffb", null ],
       [ "jpeg", "namespacewebcface.html#ab72e620a597e5f750b2c9b3391e84dedaab4f3ccba74857c5f2ba0d5b7dbf65e1", null ],
       [ "webp", "namespacewebcface.html#ab72e620a597e5f750b2c9b3391e84deda6a294358579240936bf4d66151e6e720", null ],
@@ -122,7 +122,7 @@ var namespacewebcface =
       [ "rotational", "namespacewebcface.html#af888dd203afb5bdf79dc950d618bcad9a33c96f6db744c4c7ae4df25583fefef7", null ],
       [ "prismatic", "namespacewebcface.html#af888dd203afb5bdf79dc950d618bcad9a0d41282a7e78ab3eb95eacac16448b69", null ]
     ] ],
-    [ "ValType", "namespacewebcface.html#acd1dd9e2d5f885ad3f73197cfa6b0185", [
+    [ "ValType", "namespacewebcface_1_1encoding.html#acd1dd9e2d5f885ad3f73197cfa6b0185", [
       [ "none_", "namespacewebcface.html#acd1dd9e2d5f885ad3f73197cfa6b0185a1e5a9491a4d910a08d95f675ca7226be", null ],
       [ "string_", "namespacewebcface.html#acd1dd9e2d5f885ad3f73197cfa6b0185ab83ea326a525123719676faab2944093", null ],
       [ "bool_", "namespacewebcface.html#acd1dd9e2d5f885ad3f73197cfa6b0185a467afb5838aa377d55cce81f84c5512b", null ],
@@ -158,7 +158,7 @@ var namespacewebcface =
       [ "slider_input", "namespacewebcface.html#a11040d82967b60182816ddc035d07c28a21f62314e8bff96c523fbcb2eaf79cd6", null ],
       [ "check_input", "namespacewebcface.html#a11040d82967b60182816ddc035d07c28a89abf6ccb8784d1648947d65ca7cde77", null ]
     ] ],
-    [ "argToTuple", "namespacewebcface.html#a5aeb2e4cecdcd6261d71162f7f918434", null ],
+    [ "argToTuple", "namespacewebcface_1_1encoding.html#a5aeb2e4cecdcd6261d71162f7f918434", null ],
     [ "box", "namespacewebcface_1_1components_1_1geometries.html#ada151384f0a570450346f47818dcbf3d", null ],
     [ "button", "namespacewebcface_1_1components.html#ae2072e4712ad0f7a97c567c6bb678df1", null ],
     [ "button", "namespacewebcface_1_1components.html#a29e899a03e60b643aa4e260da66ea4fe", null ],
@@ -196,11 +196,11 @@ var namespacewebcface =
     [ "operator<<", "namespacewebcface.html#aaffe4f42d82179b10467f6841333ae7a", null ],
     [ "operator<<", "namespacewebcface.html#a855f77f959f713e660e3ff08b6b9b43f", null ],
     [ "operator<<", "namespacewebcface.html#a7528ca9b8be7cf3baf4a1371085a5d87", null ],
-    [ "operator<<", "namespacewebcface.html#a7772b6098dac5df4d543a786d2415f46", null ],
+    [ "operator<<", "namespacewebcface_1_1encoding.html#a7772b6098dac5df4d543a786d2415f46", null ],
     [ "operator<<", "namespacewebcface.html#adee3d68a70be59fb6cfc97480b935199", null ],
-    [ "operator<<", "namespacewebcface.html#acc572ea980d434e6af0ac9f2e80a31cd", null ],
+    [ "operator<<", "namespacewebcface_1_1encoding.html#acc572ea980d434e6af0ac9f2e80a31cd", null ],
     [ "operator==", "namespacewebcface.html#a1b8f4f2c7b1ea1149c68523ef2d131e3", null ],
-    [ "operator==", "namespacewebcface.html#add2ce5a4caadd3dd38f09b4e79c636eb", null ],
+    [ "operator==", "namespacewebcface_1_1encoding.html#add2ce5a4caadd3dd38f09b4e79c636eb", null ],
     [ "plane", "namespacewebcface_1_1components_1_1geometries.html#aa25707cc05d2efb06fc117f36986ecb6", null ],
     [ "polygon", "namespacewebcface_1_1components_1_1geometries.html#ab71462a4b3c7f94d111654688068b64f", null ],
     [ "prismaticJoint", "namespacewebcface_1_1robot__joints.html#a7e35f2447d01fb0155c897218fb9edbc", null ],
@@ -229,8 +229,8 @@ var namespacewebcface =
     [ "tryRun", "namespacewebcface.html#af4e4fc20dc3d1dffe3943ae029b3bae1", null ],
     [ "usingUTF8", "namespacewebcface_1_1encoding.html#ae57423f1244b067999069f20f73eb166", null ],
     [ "usingUTF8", "namespacewebcface_1_1encoding.html#a478748a436d45cac26bdb4c4af55f54b", null ],
-    [ "valTypeOf", "namespacewebcface.html#ae0e0d190aa5fc5710b43f55098ad9ecd", null ],
-    [ "valTypeStr", "namespacewebcface.html#a818466a6a9b6abe8c25c93ac959ec0cb", null ],
+    [ "valTypeOf", "namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd", null ],
+    [ "valTypeStr", "namespacewebcface_1_1encoding.html#a818466a6a9b6abe8c25c93ac959ec0cb", null ],
     [ "field_separator", "namespacewebcface.html#a1f639b25bbe348882c9b20b1b3ed837b", null ],
     [ "using_utf8", "namespacewebcface_1_1encoding.html#af3606c1f9e63f6fdca78d6ec6226a4ee", null ],
     [ "version", "namespacewebcface.html#a342b6f41244b8f7bce0c63b449f20dc1", null ],

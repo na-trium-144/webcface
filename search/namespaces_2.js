@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['message_0',['message',['../namespacemessage.html',1,'']]],
-  ['message_3a_3apath_1',['Path',['../namespacemessage_1_1Path.html',1,'message']]]
+  ['internal_0',['internal',['../namespaceinternal.html',1,'']]],
+  ['internal_3a_3awebsocket_1',['WebSocket',['../namespaceinternal_1_1WebSocket.html',1,'internal']]]
 ];

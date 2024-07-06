@@ -1,6 +1,7 @@
 var namespaces_dup =
 [
     [ "c_wcf", "namespacec__wcf.html", "namespacec__wcf" ],
+    [ "encoding", "namespaceencoding.html", null ],
     [ "internal", "namespaceinternal.html", "namespaceinternal" ],
     [ "message", "namespacemessage.html", "namespacemessage" ],
     [ "Server", "namespaceServer.html", [

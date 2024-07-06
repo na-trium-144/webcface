@@ -12,7 +12,7 @@ var namespacewebcface_1_1Server =
     [ "getStaticDir", "namespacewebcface_1_1Server.html#a190126a8b357424080243a1c04ee9afc", null ],
     [ "getTempDir", "namespacewebcface_1_1Server.html#af75cf09eeecbcfd458c033ac2972eb47", null ],
     [ "initMagick", "namespacewebcface_1_1Server.html#a3e548cd3eb542d0e3329684ead7bcd0a", null ],
-    [ "magickColorMap", "namespacewebcface_1_1Server.html#a16efd3123c1f6f828fcc8955a9c23cc2", null ],
+    [ "magickColorMap", "namespacewebcface_1_1Server.html#a1c11029f7716ca09f4a69d2ef2ead4b5", null ],
     [ "field_separator", "namespacewebcface_1_1Server.html#a1f639b25bbe348882c9b20b1b3ed837b", null ],
     [ "MAIN_THREAD_ID", "namespacewebcface_1_1Server.html#a9339d93099753b6ff5823007dea54706", null ]
 ];

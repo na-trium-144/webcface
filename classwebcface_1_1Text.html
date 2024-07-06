@@ -210,7 +210,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a69502c53bc47d6c3b863bd1111150495" id="r_a69502c53bc47d6c3b863bd1111150495"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Text.html">Text</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Text.html#a69502c53bc47d6c3b863bd1111150495">set</a> (std::wstring_view v)</td></tr>
 <tr class="memdesc:a69502c53bc47d6c3b863bd1111150495"><td class="mdescLeft">&#160;</td><td class="mdescRight">文字列をセットする (wstring)  <br /></td></tr>
 <tr class="separator:a69502c53bc47d6c3b863bd1111150495"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6abe81a900e30486308dce2e1f027401" id="r_a6abe81a900e30486308dce2e1f027401"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Text.html">Text</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Text.html#a6abe81a900e30486308dce2e1f027401">set</a> (const <a class="el" href="classwebcface_1_1ValAdaptor.html">ValAdaptor</a> &amp;v)</td></tr>
+<tr class="memitem:a6abe81a900e30486308dce2e1f027401" id="r_a6abe81a900e30486308dce2e1f027401"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Text.html">Text</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Text.html#a6abe81a900e30486308dce2e1f027401">set</a> (const <a class="el" href="classwebcface_1_1encoding_1_1ValAdaptor.html">ValAdaptor</a> &amp;v)</td></tr>
 <tr class="memdesc:a6abe81a900e30486308dce2e1f027401"><td class="mdescLeft">&#160;</td><td class="mdescRight">文字列以外の型の値もセットする  <br /></td></tr>
 <tr class="separator:a6abe81a900e30486308dce2e1f027401"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac18836160b55d5a2182d7495799df402" id="r_ac18836160b55d5a2182d7495799df402"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Text.html">Text</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Text.html#ac18836160b55d5a2182d7495799df402">operator=</a> (std::string_view v)</td></tr>
@@ -228,7 +228,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ab6d3630a834689a612731e6adeff79c0" id="r_ab6d3630a834689a612731e6adeff79c0"><td class="memItemLeft" align="right" valign="top">std::optional&lt; std::wstring &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Text.html#ab6d3630a834689a612731e6adeff79c0">tryGetW</a> () const</td></tr>
 <tr class="memdesc:ab6d3630a834689a612731e6adeff79c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">文字列を返す (wstring)  <br /></td></tr>
 <tr class="separator:ab6d3630a834689a612731e6adeff79c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae93eb71d70ed556678abf2d52cc5335c" id="r_ae93eb71d70ed556678abf2d52cc5335c"><td class="memItemLeft" align="right" valign="top">std::optional&lt; <a class="el" href="classwebcface_1_1ValAdaptor.html">ValAdaptor</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Text.html#ae93eb71d70ed556678abf2d52cc5335c">tryGetV</a> () const</td></tr>
+<tr class="memitem:ae93eb71d70ed556678abf2d52cc5335c" id="r_ae93eb71d70ed556678abf2d52cc5335c"><td class="memItemLeft" align="right" valign="top">std::optional&lt; <a class="el" href="classwebcface_1_1encoding_1_1ValAdaptor.html">ValAdaptor</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Text.html#ae93eb71d70ed556678abf2d52cc5335c">tryGetV</a> () const</td></tr>
 <tr class="separator:ae93eb71d70ed556678abf2d52cc5335c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6269c0946f8016322b84c015972d83c1" id="r_a6269c0946f8016322b84c015972d83c1"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Text.html#a6269c0946f8016322b84c015972d83c1">get</a> () const</td></tr>
 <tr class="memdesc:a6269c0946f8016322b84c015972d83c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">文字列を返す  <br /></td></tr>
@@ -2380,7 +2380,7 @@ requires std::same_as&lt;T, <a class="el" href="classwebcface_1_1Text.html">Text
         <tr>
           <td class="memname"><a class="el" href="classwebcface_1_1Text.html">Text</a> &amp; set </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classwebcface_1_1ValAdaptor.html">ValAdaptor</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classwebcface_1_1encoding_1_1ValAdaptor.html">ValAdaptor</a> &amp;&#160;</td>
           <td class="paramname"><em>v</em></td><td>)</td>
           <td></td>
         </tr>
@@ -2668,7 +2668,7 @@ requires std::same_as&lt;T, <a class="el" href="classwebcface_1_1Text.html">Text
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::optional&lt; <a class="el" href="classwebcface_1_1ValAdaptor.html">ValAdaptor</a> &gt; tryGetV </td>
+          <td class="memname">std::optional&lt; <a class="el" href="classwebcface_1_1encoding_1_1ValAdaptor.html">ValAdaptor</a> &gt; tryGetV </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -3028,7 +3028,7 @@ requires std::same_as&lt;T, <a class="el" href="classwebcface_1_1Text.html">Text
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="classwebcface_1_1Text.html">Text</a></li>
-    <li class="footer">Generated on Sat Jul 6 2024 05:28:08 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Sat Jul 6 2024 15:13:07 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

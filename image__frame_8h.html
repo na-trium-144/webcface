@@ -142,7 +142,6 @@ $(document).ready(function(){initNavTree('image__frame_8h.html',''); initResizab
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#namespaces">Namespaces</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
-<a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">image_frame.h File Reference</div></div>
 </div><!--header-->
@@ -151,13 +150,13 @@ $(document).ready(function(){initNavTree('image__frame_8h.html',''); initResizab
 <code>#include &lt;vector&gt;</code><br />
 <code>#include &lt;memory&gt;</code><br />
 <code>#include &lt;cstddef&gt;</code><br />
-<code>#include &lt;stdexcept&gt;</code><br />
 <code>#include &lt;concepts&gt;</code><br />
 <code>#include &lt;<a class="el" href="def_8h_source.html">webcface/common/def.h</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="image__mode_8h_source.html">webcface/encoding/image_mode.h</a>&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for image_frame.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="image__frame_8h__incl.svg" width="791" height="139"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="image__frame_8h__incl.svg" width="742" height="227"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
@@ -189,25 +188,6 @@ Typedefs</h2></td></tr>
 <tr class="memitem:ab04304b2017cf40223df2bfb82dd175e" id="r_ab04304b2017cf40223df2bfb82dd175e"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface.html#ab04304b2017cf40223df2bfb82dd175e">ImageBase</a> = <a class="el" href="classwebcface_1_1ImageFrame.html">ImageFrame</a></td></tr>
 <tr class="separator:ab04304b2017cf40223df2bfb82dd175e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
-Enumerations</h2></td></tr>
-<tr class="memitem:abcfd96b0be942012c2f4641b4741a31e" id="r_abcfd96b0be942012c2f4641b4741a31e"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface.html#abcfd96b0be942012c2f4641b4741a31e">ImageColorMode</a> { <br />
-&#160;&#160;<a class="el" href="namespacewebcface.html#abcfd96b0be942012c2f4641b4741a31eacda7a650c5856cf2f6738072447d7825">gray</a> = 0
-, <a class="el" href="namespacewebcface.html#abcfd96b0be942012c2f4641b4741a31ea84746ad530563de3445efec60aa7ff59">bgr</a> = 1
-, <a class="el" href="namespacewebcface.html#abcfd96b0be942012c2f4641b4741a31ea657c0fdc8e544dcb7153dcf613e04e2d">bgra</a> = 2
-, <a class="el" href="namespacewebcface.html#abcfd96b0be942012c2f4641b4741a31eaef70a6546536ccd835479f6cddc0188e">rgb</a> = 3
-, <br />
-&#160;&#160;<a class="el" href="namespacewebcface.html#abcfd96b0be942012c2f4641b4741a31ea7082a31b8759c9d59795876351ec63aa">rgba</a> = 4
-<br />
- }</td></tr>
-<tr class="separator:abcfd96b0be942012c2f4641b4741a31e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab72e620a597e5f750b2c9b3391e84ded" id="r_ab72e620a597e5f750b2c9b3391e84ded"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface.html#ab72e620a597e5f750b2c9b3391e84ded">ImageCompressMode</a> { <a class="el" href="namespacewebcface.html#ab72e620a597e5f750b2c9b3391e84dedabdd166af3a63f7be696dd17a218a6ffb">raw</a> = 0
-, <a class="el" href="namespacewebcface.html#ab72e620a597e5f750b2c9b3391e84dedaab4f3ccba74857c5f2ba0d5b7dbf65e1">jpeg</a> = 1
-, <a class="el" href="namespacewebcface.html#ab72e620a597e5f750b2c9b3391e84deda6a294358579240936bf4d66151e6e720">webp</a> = 2
-, <a class="el" href="namespacewebcface.html#ab72e620a597e5f750b2c9b3391e84dedabff139fa05ac583f685a523ab3d110a0">png</a> = 3
- }</td></tr>
-<tr class="separator:ab72e620a597e5f750b2c9b3391e84ded"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:aad567272661344b3f8d82a09abc85049" id="r_aad567272661344b3f8d82a09abc85049"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Size.html">Size</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface.html#aad567272661344b3f8d82a09abc85049">sizeWH</a> (std::size_t width, std::size_t height)</td></tr>
@@ -233,7 +213,7 @@ requires (std::same_as&lt;T1, std::nullopt_t&gt; || std::same_as&lt;T2, std::nul
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_db3a54907829b36871118d03417739cd.html">client</a></li><li class="navelem"><a class="el" href="dir_5c23080e296bbe846f4ed2d01d7b595d.html">include</a></li><li class="navelem"><a class="el" href="dir_8bd58ff883f4686dab3daf23d9479d3b.html">webcface</a></li><li class="navelem"><a class="el" href="image__frame_8h.html">image_frame.h</a></li>
-    <li class="footer">Generated on Sat Jul 6 2024 05:28:08 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Sat Jul 6 2024 15:13:06 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

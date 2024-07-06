@@ -25,7 +25,8 @@ var annotated_dup =
         [ "Sphere", "structwebcface_1_1components_1_1geometries_1_1Sphere.html", "structwebcface_1_1components_1_1geometries_1_1Sphere" ]
       ] ],
       [ "encoding", "namespacewebcface_1_1encoding.html", [
-        [ "SharedString", "classwebcface_1_1encoding_1_1SharedString.html", "classwebcface_1_1encoding_1_1SharedString" ]
+        [ "SharedString", "classwebcface_1_1encoding_1_1SharedString.html", "classwebcface_1_1encoding_1_1SharedString" ],
+        [ "ValAdaptor", "classwebcface_1_1encoding_1_1ValAdaptor.html", "classwebcface_1_1encoding_1_1ValAdaptor" ]
       ] ],
       [ "geometries", "namespacewebcface_1_1components_1_1geometries.html", [
         [ "Box", "structwebcface_1_1components_1_1geometries_1_1Box.html", "structwebcface_1_1components_1_1geometries_1_1Box" ],
@@ -148,7 +149,7 @@ var annotated_dup =
       [ "TemporalGeometry", "classwebcface_1_1TemporalGeometry.html", "classwebcface_1_1TemporalGeometry" ],
       [ "Text", "classwebcface_1_1Text.html", "classwebcface_1_1Text" ],
       [ "Transform", "classwebcface_1_1Transform.html", "classwebcface_1_1Transform" ],
-      [ "ValAdaptor", "classwebcface_1_1ValAdaptor.html", "classwebcface_1_1ValAdaptor" ],
+      [ "ValAdaptor", "classwebcface_1_1encoding_1_1ValAdaptor.html", "classwebcface_1_1encoding_1_1ValAdaptor" ],
       [ "Value", "classwebcface_1_1Value.html", "classwebcface_1_1Value" ],
       [ "View", "classwebcface_1_1View.html", "classwebcface_1_1View" ],
       [ "ViewComponent", "classwebcface_1_1ViewComponent.html", "classwebcface_1_1ViewComponent" ]

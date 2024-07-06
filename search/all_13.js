@@ -9,5 +9,5 @@ var searchData=
   ['joint_5forigin_5frot_6',['joint_origin_rot',['../structwebcface_1_1message_1_1RobotLink.html#a4295a535f555232b38ed3d8b268eca1c',1,'webcface::message::RobotLink']]],
   ['joint_5fparent_7',['joint_parent',['../structwebcface_1_1message_1_1RobotLink.html#a9c30a42c75ffe4ccc9e9e715ef30eb73',1,'webcface::message::RobotLink']]],
   ['joint_5ftype_8',['joint_type',['../structwebcface_1_1message_1_1RobotLink.html#ad0d6f32f93eff48961c273e59ee25d72',1,'webcface::message::RobotLink']]],
-  ['jpeg_9',['jpeg',['../namespacewebcface.html#ab72e620a597e5f750b2c9b3391e84dedaab4f3ccba74857c5f2ba0d5b7dbf65e1',1,'webcface']]]
+  ['jpeg_9',['jpeg',['../namespacewebcface_1_1encoding.html#ab72e620a597e5f750b2c9b3391e84dedaab4f3ccba74857c5f2ba0d5b7dbf65e1',1,'webcface::encoding']]]
 ];

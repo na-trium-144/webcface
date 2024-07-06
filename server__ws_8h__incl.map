@@ -1,5 +1,7 @@
 <map id="/home/runner/work/webcface/webcface/server&#45;internal/include/webcface/server/internal/server_ws.h" name="/home/runner/work/webcface/webcface/server&#45;internal/include/webcface/server/internal/server_ws.h">
 <area shape="rect" id="Node000001" title=" " alt="" coords="5,5,244,75"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="81,123,168,148"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="127,75,127,109,122,109,122,75"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="33,123,120,148"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="110,76,91,112,87,109,105,74"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="145,123,203,148"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="145,74,164,109,159,112,140,76"/>
 </map>

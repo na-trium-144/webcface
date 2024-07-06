@@ -141,6 +141,7 @@ $(document).ready(function(){initNavTree('namespacewebcface_1_1encoding.html',''
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
+<a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">webcface::encoding Namespace Reference</div></div>
@@ -151,6 +152,9 @@ $(document).ready(function(){initNavTree('namespacewebcface_1_1encoding.html',''
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1encoding_1_1SharedString.html">SharedString</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">u8stringとstringとwstringをshared_ptrで持ち共有する  <a href="classwebcface_1_1encoding_1_1SharedString.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1encoding_1_1ValAdaptor.html">ValAdaptor</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">数値、文字列などの値を相互変換するクラス  <a href="classwebcface_1_1encoding_1_1ValAdaptor.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
@@ -165,6 +169,37 @@ Typedefs</h2></td></tr>
 <tr class="separator:a2cce793d23704d7099f3befdd5203f2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa211fead709a7546b1b6416379df5449" id="r_aa211fead709a7546b1b6416379df5449"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1encoding.html#aa211fead709a7546b1b6416379df5449">StrSet2</a> = <a class="el" href="namespacewebcface_1_1encoding.html#a56d3269e324a6f481ed288a48e48c759">StrMap1</a>&lt; <a class="el" href="namespacewebcface_1_1encoding.html#a2cce793d23704d7099f3befdd5203f2e">StrSet1</a> &gt;</td></tr>
 <tr class="separator:aa211fead709a7546b1b6416379df5449"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
+Enumerations</h2></td></tr>
+<tr class="memitem:abcfd96b0be942012c2f4641b4741a31e" id="r_abcfd96b0be942012c2f4641b4741a31e"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1encoding.html#abcfd96b0be942012c2f4641b4741a31e">ImageColorMode</a> { <br />
+&#160;&#160;<a class="el" href="namespacewebcface_1_1encoding.html#abcfd96b0be942012c2f4641b4741a31eacda7a650c5856cf2f6738072447d7825">gray</a> = 0
+, <a class="el" href="namespacewebcface_1_1encoding.html#abcfd96b0be942012c2f4641b4741a31ea84746ad530563de3445efec60aa7ff59">bgr</a> = 1
+, <a class="el" href="namespacewebcface_1_1encoding.html#abcfd96b0be942012c2f4641b4741a31ea657c0fdc8e544dcb7153dcf613e04e2d">bgra</a> = 2
+, <a class="el" href="namespacewebcface_1_1encoding.html#abcfd96b0be942012c2f4641b4741a31eaef70a6546536ccd835479f6cddc0188e">rgb</a> = 3
+, <br />
+&#160;&#160;<a class="el" href="namespacewebcface_1_1encoding.html#abcfd96b0be942012c2f4641b4741a31ea7082a31b8759c9d59795876351ec63aa">rgba</a> = 4
+<br />
+ }</td></tr>
+<tr class="separator:abcfd96b0be942012c2f4641b4741a31e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab72e620a597e5f750b2c9b3391e84ded" id="r_ab72e620a597e5f750b2c9b3391e84ded"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1encoding.html#ab72e620a597e5f750b2c9b3391e84ded">ImageCompressMode</a> { <a class="el" href="namespacewebcface_1_1encoding.html#ab72e620a597e5f750b2c9b3391e84dedabdd166af3a63f7be696dd17a218a6ffb">raw</a> = 0
+, <a class="el" href="namespacewebcface_1_1encoding.html#ab72e620a597e5f750b2c9b3391e84dedaab4f3ccba74857c5f2ba0d5b7dbf65e1">jpeg</a> = 1
+, <a class="el" href="namespacewebcface_1_1encoding.html#ab72e620a597e5f750b2c9b3391e84deda6a294358579240936bf4d66151e6e720">webp</a> = 2
+, <a class="el" href="namespacewebcface_1_1encoding.html#ab72e620a597e5f750b2c9b3391e84dedabff139fa05ac583f685a523ab3d110a0">png</a> = 3
+ }</td></tr>
+<tr class="separator:ab72e620a597e5f750b2c9b3391e84ded"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acd1dd9e2d5f885ad3f73197cfa6b0185" id="r_acd1dd9e2d5f885ad3f73197cfa6b0185"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1encoding.html#acd1dd9e2d5f885ad3f73197cfa6b0185">ValType</a> { <br />
+&#160;&#160;<a class="el" href="namespacewebcface_1_1encoding.html#acd1dd9e2d5f885ad3f73197cfa6b0185a1e5a9491a4d910a08d95f675ca7226be">none_</a> = 0
+, <a class="el" href="namespacewebcface_1_1encoding.html#acd1dd9e2d5f885ad3f73197cfa6b0185ab83ea326a525123719676faab2944093">string_</a> = 1
+, <a class="el" href="namespacewebcface_1_1encoding.html#acd1dd9e2d5f885ad3f73197cfa6b0185a467afb5838aa377d55cce81f84c5512b">bool_</a> = 2
+, <a class="el" href="namespacewebcface_1_1encoding.html#acd1dd9e2d5f885ad3f73197cfa6b0185ad7488204e92ed01986284bef5650eb53">int_</a> = 3
+, <br />
+&#160;&#160;<a class="el" href="namespacewebcface_1_1encoding.html#acd1dd9e2d5f885ad3f73197cfa6b0185aefe6d5085c67bc38cd3746f2dc8013e1">float_</a> = 4
+, <a class="el" href="namespacewebcface_1_1encoding.html#acd1dd9e2d5f885ad3f73197cfa6b0185a9ff848d203d671e297c98886f9fc0bd9">double_</a> = 4
+<br />
+ }</td></tr>
+<tr class="memdesc:acd1dd9e2d5f885ad3f73197cfa6b0185"><td class="mdescLeft">&#160;</td><td class="mdescRight">引数や戻り値の型を表すenum  <a href="namespacewebcface_1_1encoding.html#acd1dd9e2d5f885ad3f73197cfa6b0185">More...</a><br /></td></tr>
+<tr class="separator:acd1dd9e2d5f885ad3f73197cfa6b0185"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
@@ -200,6 +235,26 @@ Functions</h2></td></tr>
 <tr class="memitem:aec962491891b529b93c97668d385ff29" id="r_aec962491891b529b93c97668d385ff29"><td class="memItemLeft" align="right" valign="top">std::string_view&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1encoding.html#aec962491891b529b93c97668d385ff29">castFromU8</a> (std::u8string_view name)</td></tr>
 <tr class="memdesc:aec962491891b529b93c97668d385ff29"><td class="mdescLeft">&#160;</td><td class="mdescRight">u8stringをstringにキャストする  <br /></td></tr>
 <tr class="separator:aec962491891b529b93c97668d385ff29"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae0e0d190aa5fc5710b43f55098ad9ecd" id="r_ae0e0d190aa5fc5710b43f55098ad9ecd"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:ae0e0d190aa5fc5710b43f55098ad9ecd"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacewebcface_1_1encoding.html#acd1dd9e2d5f885ad3f73197cfa6b0185">ValType</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd">valTypeOf</a> ()</td></tr>
+<tr class="memdesc:ae0e0d190aa5fc5710b43f55098ad9ecd"><td class="mdescLeft">&#160;</td><td class="mdescRight">TのValTypeを得る  <br /></td></tr>
+<tr class="separator:ae0e0d190aa5fc5710b43f55098ad9ecd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a818466a6a9b6abe8c25c93ac959ec0cb" id="r_a818466a6a9b6abe8c25c93ac959ec0cb"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1encoding.html#a818466a6a9b6abe8c25c93ac959ec0cb">valTypeStr</a> (<a class="el" href="namespacewebcface_1_1encoding.html#acd1dd9e2d5f885ad3f73197cfa6b0185">ValType</a> a)</td></tr>
+<tr class="memdesc:a818466a6a9b6abe8c25c93ac959ec0cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">型名を文字列で取得  <br /></td></tr>
+<tr class="separator:a818466a6a9b6abe8c25c93ac959ec0cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acc572ea980d434e6af0ac9f2e80a31cd" id="r_acc572ea980d434e6af0ac9f2e80a31cd"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1encoding.html#acc572ea980d434e6af0ac9f2e80a31cd">operator&lt;&lt;</a> (std::ostream &amp;os, <a class="el" href="namespacewebcface_1_1encoding.html#acd1dd9e2d5f885ad3f73197cfa6b0185">ValType</a> a)</td></tr>
+<tr class="memdesc:acc572ea980d434e6af0ac9f2e80a31cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">型名を出力する。  <br /></td></tr>
+<tr class="separator:acc572ea980d434e6af0ac9f2e80a31cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:add2ce5a4caadd3dd38f09b4e79c636eb" id="r_add2ce5a4caadd3dd38f09b4e79c636eb"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; <br />
+requires (std::constructible_from&lt;<a class="el" href="classwebcface_1_1encoding_1_1ValAdaptor.html">ValAdaptor</a>, T&gt; &amp;&amp; !std::same_as&lt;<a class="el" href="classwebcface_1_1encoding_1_1ValAdaptor.html">ValAdaptor</a>, T&gt;)</td></tr>
+<tr class="memitem:add2ce5a4caadd3dd38f09b4e79c636eb"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1encoding.html#add2ce5a4caadd3dd38f09b4e79c636eb">operator==</a> (const T &amp;other, const <a class="el" href="classwebcface_1_1encoding_1_1ValAdaptor.html">ValAdaptor</a> &amp;val)</td></tr>
+<tr class="separator:add2ce5a4caadd3dd38f09b4e79c636eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7772b6098dac5df4d543a786d2415f46" id="r_a7772b6098dac5df4d543a786d2415f46"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1encoding.html#a7772b6098dac5df4d543a786d2415f46">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="classwebcface_1_1encoding_1_1ValAdaptor.html">ValAdaptor</a> &amp;a)</td></tr>
+<tr class="separator:a7772b6098dac5df4d543a786d2415f46"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5aeb2e4cecdcd6261d71162f7f918434" id="r_a5aeb2e4cecdcd6261d71162f7f918434"><td class="memTemplParams" colspan="2">template&lt;int n = 0, typename T &gt; </td></tr>
+<tr class="memitem:a5aeb2e4cecdcd6261d71162f7f918434"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1encoding.html#a5aeb2e4cecdcd6261d71162f7f918434">argToTuple</a> (const std::vector&lt; <a class="el" href="classwebcface_1_1encoding_1_1ValAdaptor.html">ValAdaptor</a> &gt; &amp;args, T &amp;tuple)</td></tr>
+<tr class="memdesc:a5aeb2e4cecdcd6261d71162f7f918434"><td class="mdescLeft">&#160;</td><td class="mdescRight">ValAdaptorのリストから任意の型のタプルに変換する  <br /></td></tr>
+<tr class="separator:a5aeb2e4cecdcd6261d71162f7f918434"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
@@ -267,7 +322,129 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
+<h2 class="groupheader">Enumeration Type Documentation</h2>
+<a id="abcfd96b0be942012c2f4641b4741a31e" name="abcfd96b0be942012c2f4641b4741a31e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abcfd96b0be942012c2f4641b4741a31e">&#9670;&#160;</a></span>ImageColorMode</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="namespacewebcface_1_1encoding.html#abcfd96b0be942012c2f4641b4741a31e">ImageColorMode</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="abcfd96b0be942012c2f4641b4741a31eacda7a650c5856cf2f6738072447d7825" name="abcfd96b0be942012c2f4641b4741a31eacda7a650c5856cf2f6738072447d7825"></a>gray&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="abcfd96b0be942012c2f4641b4741a31ea84746ad530563de3445efec60aa7ff59" name="abcfd96b0be942012c2f4641b4741a31ea84746ad530563de3445efec60aa7ff59"></a>bgr&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="abcfd96b0be942012c2f4641b4741a31ea657c0fdc8e544dcb7153dcf613e04e2d" name="abcfd96b0be942012c2f4641b4741a31ea657c0fdc8e544dcb7153dcf613e04e2d"></a>bgra&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="abcfd96b0be942012c2f4641b4741a31eaef70a6546536ccd835479f6cddc0188e" name="abcfd96b0be942012c2f4641b4741a31eaef70a6546536ccd835479f6cddc0188e"></a>rgb&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="abcfd96b0be942012c2f4641b4741a31ea7082a31b8759c9d59795876351ec63aa" name="abcfd96b0be942012c2f4641b4741a31ea7082a31b8759c9d59795876351ec63aa"></a>rgba&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+</div>
+</div>
+<a id="ab72e620a597e5f750b2c9b3391e84ded" name="ab72e620a597e5f750b2c9b3391e84ded"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab72e620a597e5f750b2c9b3391e84ded">&#9670;&#160;</a></span>ImageCompressMode</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="namespacewebcface_1_1encoding.html#ab72e620a597e5f750b2c9b3391e84ded">ImageCompressMode</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ab72e620a597e5f750b2c9b3391e84dedabdd166af3a63f7be696dd17a218a6ffb" name="ab72e620a597e5f750b2c9b3391e84dedabdd166af3a63f7be696dd17a218a6ffb"></a>raw&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ab72e620a597e5f750b2c9b3391e84dedaab4f3ccba74857c5f2ba0d5b7dbf65e1" name="ab72e620a597e5f750b2c9b3391e84dedaab4f3ccba74857c5f2ba0d5b7dbf65e1"></a>jpeg&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ab72e620a597e5f750b2c9b3391e84deda6a294358579240936bf4d66151e6e720" name="ab72e620a597e5f750b2c9b3391e84deda6a294358579240936bf4d66151e6e720"></a>webp&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ab72e620a597e5f750b2c9b3391e84dedabff139fa05ac583f685a523ab3d110a0" name="ab72e620a597e5f750b2c9b3391e84dedabff139fa05ac583f685a523ab3d110a0"></a>png&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+</div>
+</div>
+<a id="acd1dd9e2d5f885ad3f73197cfa6b0185" name="acd1dd9e2d5f885ad3f73197cfa6b0185"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acd1dd9e2d5f885ad3f73197cfa6b0185">&#9670;&#160;</a></span>ValType</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="namespacewebcface_1_1encoding.html#acd1dd9e2d5f885ad3f73197cfa6b0185">ValType</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>引数や戻り値の型を表すenum </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="acd1dd9e2d5f885ad3f73197cfa6b0185a1e5a9491a4d910a08d95f675ca7226be" name="acd1dd9e2d5f885ad3f73197cfa6b0185a1e5a9491a4d910a08d95f675ca7226be"></a>none_&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="acd1dd9e2d5f885ad3f73197cfa6b0185ab83ea326a525123719676faab2944093" name="acd1dd9e2d5f885ad3f73197cfa6b0185ab83ea326a525123719676faab2944093"></a>string_&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="acd1dd9e2d5f885ad3f73197cfa6b0185a467afb5838aa377d55cce81f84c5512b" name="acd1dd9e2d5f885ad3f73197cfa6b0185a467afb5838aa377d55cce81f84c5512b"></a>bool_&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="acd1dd9e2d5f885ad3f73197cfa6b0185ad7488204e92ed01986284bef5650eb53" name="acd1dd9e2d5f885ad3f73197cfa6b0185ad7488204e92ed01986284bef5650eb53"></a>int_&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="acd1dd9e2d5f885ad3f73197cfa6b0185aefe6d5085c67bc38cd3746f2dc8013e1" name="acd1dd9e2d5f885ad3f73197cfa6b0185aefe6d5085c67bc38cd3746f2dc8013e1"></a>float_&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="acd1dd9e2d5f885ad3f73197cfa6b0185a9ff848d203d671e297c98886f9fc0bd9" name="acd1dd9e2d5f885ad3f73197cfa6b0185a9ff848d203d671e297c98886f9fc0bd9"></a>double_&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+</div>
+</div>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="a5aeb2e4cecdcd6261d71162f7f918434" name="a5aeb2e4cecdcd6261d71162f7f918434"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5aeb2e4cecdcd6261d71162f7f918434">&#9670;&#160;</a></span>argToTuple()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;int n = 0, typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void argToTuple </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="classwebcface_1_1encoding_1_1ValAdaptor.html">ValAdaptor</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>args</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">T &amp;&#160;</td>
+          <td class="paramname"><em>tuple</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>ValAdaptorのリストから任意の型のタプルに変換する </p>
+
+</div>
+</div>
 <a id="aec962491891b529b93c97668d385ff29" name="aec962491891b529b93c97668d385ff29"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aec962491891b529b93c97668d385ff29">&#9670;&#160;</a></span>castFromU8()</h2>
 
@@ -436,6 +613,111 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
+<a id="a7772b6098dac5df4d543a786d2415f46" name="a7772b6098dac5df4d543a786d2415f46"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7772b6098dac5df4d543a786d2415f46">&#9670;&#160;</a></span>operator&lt;&lt;() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::ostream &amp; operator&lt;&lt; </td>
+          <td>(</td>
+          <td class="paramtype">std::ostream &amp;&#160;</td>
+          <td class="paramname"><em>os</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classwebcface_1_1encoding_1_1ValAdaptor.html">ValAdaptor</a> &amp;&#160;</td>
+          <td class="paramname"><em>a</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="acc572ea980d434e6af0ac9f2e80a31cd" name="acc572ea980d434e6af0ac9f2e80a31cd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acc572ea980d434e6af0ac9f2e80a31cd">&#9670;&#160;</a></span>operator&lt;&lt;() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::ostream &amp; operator&lt;&lt; </td>
+          <td>(</td>
+          <td class="paramtype">std::ostream &amp;&#160;</td>
+          <td class="paramname"><em>os</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacewebcface_1_1encoding.html#acd1dd9e2d5f885ad3f73197cfa6b0185">ValType</a>&#160;</td>
+          <td class="paramname"><em>a</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>型名を出力する。 </p>
+
+</div>
+</div>
+<a id="add2ce5a4caadd3dd38f09b4e79c636eb" name="add2ce5a4caadd3dd38f09b4e79c636eb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#add2ce5a4caadd3dd38f09b4e79c636eb">&#9670;&#160;</a></span>operator==()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; <br />
+requires (std::constructible_from&lt;<a class="el" href="classwebcface_1_1encoding_1_1ValAdaptor.html">ValAdaptor</a>, T&gt; &amp;&amp; !std::same_as&lt;<a class="el" href="classwebcface_1_1encoding_1_1ValAdaptor.html">ValAdaptor</a>, T&gt;)</div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool operator== </td>
+          <td>(</td>
+          <td class="paramtype">const T &amp;&#160;</td>
+          <td class="paramname"><em>other</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classwebcface_1_1encoding_1_1ValAdaptor.html">ValAdaptor</a> &amp;&#160;</td>
+          <td class="paramname"><em>val</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a14b83a27bbb7c55bc9725de209613066" name="a14b83a27bbb7c55bc9725de209613066"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a14b83a27bbb7c55bc9725de209613066">&#9670;&#160;</a></span>toNarrow()</h2>
 
@@ -526,6 +808,56 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
+<a id="ae0e0d190aa5fc5710b43f55098ad9ecd" name="ae0e0d190aa5fc5710b43f55098ad9ecd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae0e0d190aa5fc5710b43f55098ad9ecd">&#9670;&#160;</a></span>valTypeOf()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacewebcface_1_1encoding.html#acd1dd9e2d5f885ad3f73197cfa6b0185">ValType</a> valTypeOf </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>TのValTypeを得る </p>
+
+</div>
+</div>
+<a id="a818466a6a9b6abe8c25c93ac959ec0cb" name="a818466a6a9b6abe8c25c93ac959ec0cb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a818466a6a9b6abe8c25c93ac959ec0cb">&#9670;&#160;</a></span>valTypeStr()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string valTypeStr </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespacewebcface_1_1encoding.html#acd1dd9e2d5f885ad3f73197cfa6b0185">ValType</a>&#160;</td>
+          <td class="paramname"><em>a</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>型名を文字列で取得 </p>
+<dl class="section since"><dt>Since</dt><dd>ver1.9.1 </dd></dl>
+
+</div>
+</div>
 <h2 class="groupheader">Variable Documentation</h2>
 <a id="af3606c1f9e63f6fdca78d6ec6226a4ee" name="af3606c1f9e63f6fdca78d6ec6226a4ee"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af3606c1f9e63f6fdca78d6ec6226a4ee">&#9670;&#160;</a></span>using_utf8</h2>
@@ -555,7 +887,7 @@ template&lt;typename T &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="namespacewebcface_1_1encoding.html">encoding</a></li>
-    <li class="footer">Generated on Sat Jul 6 2024 05:28:08 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Sat Jul 6 2024 15:13:07 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

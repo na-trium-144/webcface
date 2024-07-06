@@ -8,5 +8,5 @@ var classwebcface_1_1server__internal_1_1AppWrapper =
     [ "setException", "classwebcface_1_1server__internal_1_1AppWrapper.html#a5bd346eb2cf11f898c406cd75d39fe4f", null ],
     [ "stop", "classwebcface_1_1server__internal_1_1AppWrapper.html#aba28ee97ffe6d508e26f534ec7e62f8f", null ],
     [ "app", "classwebcface_1_1server__internal_1_1AppWrapper.html#a0004a26049c0ba7176bc34a014cbd4ea", null ],
-    [ "exception_str", "classwebcface_1_1server__internal_1_1AppWrapper.html#a2fb968436dd650e61a9b2c30f8a14866", null ]
+    [ "exception_str", "classwebcface_1_1server__internal_1_1AppWrapper.html#a0802fd580ade5bd328be9c8fc4f0c83f", null ]
 ];

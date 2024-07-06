@@ -288,7 +288,8 @@ var hierarchy =
       [ "SyncDataStore2Test", "classSyncDataStore2Test.html", null ],
       [ "ViewTest", "classViewTest.html", null ]
     ] ],
-    [ "ValAdaptor", "classwebcface_1_1ValAdaptor.html", null ],
+    [ "ValAdaptor", "classwebcface_1_1encoding_1_1ValAdaptor.html", null ],
+    [ "ValAdaptor", "classwebcface_1_1encoding_1_1ValAdaptor.html", null ],
     [ "ViewComponent", "structwebcface_1_1message_1_1ViewComponent.html", null ],
     [ "wcfFuncCallHandle", "structwcfFuncCallHandle.html", null ],
     [ "wcfFuncCallHandleW", "structwcfFuncCallHandleW.html", null ],

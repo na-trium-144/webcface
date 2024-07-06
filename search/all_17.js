@@ -11,7 +11,7 @@ var searchData=
   ['noble_8',['Ubuntu 24.04 Noble',['../index.html#autotoc_md206',1,'']]],
   ['nominmax_9',['NOMINMAX',['../message_8h.html#a9f918755b601cf4bffca775992e6fb90',1,'message.h']]],
   ['none_10',['none',['../namespacewebcface.html#a1b753fd9c2659910ca1a042a05b56be6a334c4a4c42fdb79d7ebc3e73b517e6f8',1,'webcface']]],
-  ['none_5f_11',['none_',['../namespacewebcface.html#acd1dd9e2d5f885ad3f73197cfa6b0185a1e5a9491a4d910a08d95f675ca7226be',1,'webcface']]],
+  ['none_5f_11',['none_',['../namespacewebcface_1_1encoding.html#acd1dd9e2d5f885ad3f73197cfa6b0185a1e5a9491a4d910a08d95f675ca7226be',1,'webcface::encoding']]],
   ['notfound_12',['notFound',['../classwebcface_1_1internal_1_1AsyncFuncState.html#a7ed72c8677d85756d3f9d868520966e3',1,'webcface::internal::AsyncFuncState']]],
   ['number_5finput_13',['number_input',['../namespacewebcface.html#a11040d82967b60182816ddc035d07c28a8070a95e1f8e0d271dfc7a06127d8bad',1,'webcface']]],
   ['numberinput_14',['numberinput',['../namespacewebcface_1_1components.html#aee178db8f9bd40097a54e5c63050e551',1,'webcface::numberInput()'],['../namespacewebcface_1_1components.html#aee178db8f9bd40097a54e5c63050e551',1,'webcface::components::numberInput()'],['../namespacewebcface_1_1components.html#a4a759e9351eb675e0553c9403dc5d254',1,'webcface::numberInput()'],['../namespacewebcface_1_1components.html#a4a759e9351eb675e0553c9403dc5d254',1,'webcface::components::numberInput()']]]

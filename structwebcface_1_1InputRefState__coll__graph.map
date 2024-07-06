@@ -1,18 +1,19 @@
 <map id="InputRefState" name="InputRefState">
-<area shape="rect" id="Node000001" title=" " alt="" coords="214,383,325,408"/>
-<area shape="rect" id="Node000002" href="$classwebcface_1_1Text.html" title="文字列の送受信データを表すクラス" alt="" coords="181,295,230,320"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="224,329,263,381,258,384,220,333"/>
-<area shape="rect" id="Node000003" href="$structwebcface_1_1Field.html" title="ClientDataの参照とメンバ名とデータ名を持つクラス" alt="" coords="43,207,96,232"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="100,237,188,292,185,297,98,242"/>
-<area shape="rect" id="Node000004" href="$structwebcface_1_1FieldBase.html" title="メンバ名とデータ名を持つクラス" alt="" coords="5,108,91,133"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="56,146,69,206,64,207,51,147"/>
-<area shape="rect" id="Node000005" href="$classwebcface_1_1encoding_1_1SharedString.html" title="u8stringとstringとwstringをshared_ptrで持ち共有する" alt="" coords="138,5,243,31"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="165,41,66,110,63,106,162,36"/>
-<area shape="rect" id="Node000008" href="$classwebcface_1_1ValAdaptor.html" title="数値、文字列などの値を相互変換するクラス" alt="" coords="283,157,376,183"/>
-<area shape="poly" id="edge8_Node000008_Node000005" title=" " alt="" coords="226,35,269,65,291,85,310,107,323,132,330,156,325,158,318,134,306,109,287,88,266,69,223,40"/>
-<area shape="rect" id="Node000006" href="$classwebcface_1_1EventTarget.html" title=" " alt="" coords="127,207,283,232"/>
-<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="208,246,208,294,203,294,203,246"/>
-<area shape="rect" id="Node000007" href="$classwebcface_1_1EventTarget.html" title="イベントを表し、コールバックの追加や削除ができるクラス。" alt="" coords="115,108,296,133"/>
-<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="208,147,208,207,203,207,203,147"/>
-<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="325,197,275,383,270,382,320,195"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="233,372,344,397"/>
+<area shape="rect" id="Node000002" href="$classwebcface_1_1Text.html" title="文字列の送受信データを表すクラス" alt="" coords="187,284,236,309"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="233,318,280,370,276,373,229,322"/>
+<area shape="rect" id="Node000003" href="$structwebcface_1_1Field.html" title="ClientDataの参照とメンバ名とデータ名を持つクラス" alt="" coords="49,196,102,221"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="106,226,194,281,191,286,104,231"/>
+<area shape="rect" id="Node000004" href="$structwebcface_1_1FieldBase.html" title="メンバ名とデータ名を持つクラス" alt="" coords="15,108,101,133"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="66,146,76,195,70,196,60,147"/>
+<area shape="rect" id="Node000005" href="$classwebcface_1_1encoding_1_1SharedString.html" title="u8stringとstringとwstringをshared_ptrで持ち共有する" alt="" coords="5,5,111,31"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="61,45,61,108,55,108,55,45"/>
+<area shape="rect" id="Node000006" href="$classwebcface_1_1EventTarget.html" title=" " alt="" coords="133,196,289,221"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="214,235,214,283,209,283,209,235"/>
+<area shape="rect" id="Node000007" href="$classwebcface_1_1EventTarget.html" title="イベントを表し、コールバックの追加や削除ができるクラス。" alt="" coords="125,108,306,133"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="217,147,215,196,209,195,211,147"/>
+<area shape="rect" id="Node000008" href="$classwebcface_1_1encoding_1_1ValAdaptor.html" title="数値、文字列などの値を相互変換するクラス" alt="" coords="309,284,402,309"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="340,322,300,373,296,370,336,319"/>
+<area shape="rect" id="Node000009" href="$classwebcface_1_1encoding_1_1SharedString.html" title="u8stringとstringとwstringをshared_ptrで持ち共有する" alt="" coords="313,196,419,221"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="365,236,359,284,354,283,360,235"/>
 </map>

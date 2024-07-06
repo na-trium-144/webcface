@@ -81,7 +81,7 @@ var searchData=
   ['store_78',['store',['../classwebcface_1_1Server_1_1Server.html#abbdb653f5816184b32e991d675f3f542',1,'webcface::Server::Server::store'],['../structwebcface_1_1Server_1_1MemberData.html#addef74eca96772f4826bbe53a38c2a79',1,'webcface::Server::MemberData::store']]],
   ['store_2ecc_79',['store.cc',['../store_8cc.html',1,'']]],
   ['store_2eh_80',['store.h',['../store_8h.html',1,'']]],
-  ['string_5f_81',['string_',['../namespacewebcface.html#acd1dd9e2d5f885ad3f73197cfa6b0185ab83ea326a525123719676faab2944093',1,'webcface']]],
+  ['string_5f_81',['string_',['../namespacewebcface_1_1encoding.html#acd1dd9e2d5f885ad3f73197cfa6b0185ab83ea326a525123719676faab2944093',1,'webcface::encoding']]],
   ['strmap1_82',['strmap1',['../namespacewebcface_1_1encoding.html#a56d3269e324a6f481ed288a48e48c759',1,'webcface::encoding::StrMap1'],['../namespacewebcface_1_1encoding.html#a56d3269e324a6f481ed288a48e48c759',1,'webcface::StrMap1']]],
   ['strmap2_83',['strmap2',['../namespacewebcface_1_1encoding.html#abd5eab460a31c187724b48a8773dbb40',1,'webcface::encoding::StrMap2'],['../namespacewebcface_1_1encoding.html#abd5eab460a31c187724b48a8773dbb40',1,'webcface::StrMap2']]],
   ['stroke_5fwidth_84',['stroke_width',['../structwebcface_1_1message_1_1Canvas2DComponent.html#add357ff905a1905fd2490de223e1e055',1,'webcface::message::Canvas2DComponent']]],
