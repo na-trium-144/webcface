@@ -621,8 +621,7 @@ TEST_F(ServerTest, image) {
     dummy_c2->send(message::Req<message::Image>{
         "c1"_ss, "a"_ss, 1,
         message::ImageReq{std::nullopt, std::nullopt, std::nullopt,
-                          static_cast<int>(ImageCompressMode::png), 5,
-                          std::nullopt}});
+                          ImageCompressMode::png, 5, std::nullopt}});
     dummy_c2->waitRecv<message::Sync>([&](auto) {});
     dummy_c2->waitRecv<message::Res<message::Image>>([&](const auto &obj) {
         EXPECT_EQ(obj.req_id, 1);
@@ -649,16 +648,17 @@ TEST_F(ServerTest, image) {
                 SharedString(encoding::castToU8("a" + std::to_string(f_type) +
                                                 std::to_string(t_type))),
                 1,
-                message::ImageReq{std::nullopt, std::nullopt, t_type,
-                                  ImageCompressMode::raw, 0,
-                                  std::nullopt}});
+                message::ImageReq{std::nullopt, std::nullopt,
+                                  static_cast<ImageColorMode>(t_type),
+                                  ImageCompressMode::raw, 0, std::nullopt}});
             dummy_c2->waitRecv<message::Res<message::Image>>(
                 [&](const auto &obj) {
                     EXPECT_EQ(obj.req_id, 1);
                     EXPECT_EQ(obj.sub_field, ""_ss);
                     EXPECT_EQ(obj.height_, 10);
                     EXPECT_EQ(obj.width_, 15);
-                    EXPECT_EQ(obj.color_mode_, static_cast<ImageColorMode>(t_type));
+                    EXPECT_EQ(obj.color_mode_,
+                              static_cast<ImageColorMode>(t_type));
                 });
             dummy_c2->recvClear();
         }

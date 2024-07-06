@@ -471,14 +471,13 @@ TEST_F(CClientTest, funcSetAsync) {
         EXPECT_EQ(obj.caller_member_id, 1);
         EXPECT_TRUE(obj.started);
     });
-    dummy_s->recv<message::CallResult>(
+    dummy_s->waitRecv<message::CallResult>(
         [&](const auto &obj) {
             EXPECT_EQ(obj.caller_id, 0);
             EXPECT_EQ(obj.caller_member_id, 1);
             EXPECT_FALSE(obj.is_error);
             EXPECT_EQ(static_cast<double>(obj.result), 123.45);
-        },
-        [&] { ADD_FAILURE() << "CallResult recv error"; });
+        });
 }
 
 TEST_F(CClientTest, viewSend) {
