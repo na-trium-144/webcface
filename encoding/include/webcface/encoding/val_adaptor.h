@@ -10,7 +10,7 @@
 #include <webcface/common/def.h>
 
 WEBCFACE_NS_BEGIN
-
+inline namespace encoding {
 /*!
  * \brief 引数や戻り値の型を表すenum
  *
@@ -340,4 +340,5 @@ void argToTuple(const std::vector<ValAdaptor> &args, T &tuple) {
         argToTuple<n + 1>(args, tuple);
     }
 }
+} // namespace encoding
 WEBCFACE_NS_END

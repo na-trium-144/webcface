@@ -61,10 +61,13 @@ std::string getStaticDir(const std::shared_ptr<spdlog::logger> &logger) {
             if (std::filesystem::exists(dir / "index.html")) {
                 logger->debug("{} found.", (dir / "index.html").string());
                 return dir.string();
+            } else {
+                logger->debug("{} not found.", (dir / "index.html").string());
             }
-        } catch (...) {
+        } catch (const std::filesystem::filesystem_error &e) {
+            logger->warn("filesystem error on {}: {}",
+                         (dir / "index.html").string(), e.what());
         }
-        logger->debug("{} not found.", (dir / "index.html").string());
     }
     logger->warn("Cannot find webui dist directory.");
     logger->debug("Falling back to <executable_dir>/dist");
@@ -73,8 +76,8 @@ std::string getStaticDir(const std::shared_ptr<spdlog::logger> &logger) {
 std::string getTempDir(const std::shared_ptr<spdlog::logger> &logger) {
     try {
         return std::filesystem::temp_directory_path().string();
-    } catch (...) {
-        logger->critical("temp_directory_path error");
+    } catch (const std::filesystem::filesystem_error &e) {
+        logger->error("temp_directory_path error: {}", e.what());
         return "";
     }
 }

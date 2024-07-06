@@ -19,20 +19,21 @@ void initMagick() {
     }
 }
 
-static std::string magickColorMap(int mode) {
+static std::string magickColorMap(ImageColorMode mode) {
     switch (mode) {
-    case 0: // ImageColorMode::gray:
+    case ImageColorMode::gray:
         return "K";
-    case 1: // ImageColorMode::bgr:
+    case ImageColorMode::bgr:
         return "BGR";
-    case 2: // ImageColorMode::bgra:
+    case ImageColorMode::bgra:
         return "BGRA";
-    case 3: // ImageColorMode::rgb:
+    case ImageColorMode::rgb:
         return "RGB";
-    case 4: // ImageColorMode::rgba:
+    case ImageColorMode::rgba:
         return "RGBA";
+    default:
+        return "";
     }
-    return "";
 }
 /*!
  * \brief cdの画像を変換しthisに送信
@@ -73,19 +74,6 @@ void MemberData::imageConvertThreadMain(const SharedString &member,
                         break;
                     }
 
-                    Magick::Image m(img.width_, img.height_,
-                                    magickColorMap(img.color_mode_),
-                                    Magick::CharPixel, img.data_->data());
-#ifdef WEBCFACE_MAGICK_VER7
-                    // ImageMagick6と7で名前が異なる
-                    m.type(Magick::TrueColorAlphaType);
-#else
-                    m.type(Magick::TrueColorMatteType);
-#endif
-                    if (img.color_mode_ == 0 /* gray */) {
-                        // K -> RGB
-                        m.negate(true);
-                    }
 
                     auto last_frame = std::chrono::steady_clock::now();
                     // 変換処理
@@ -97,134 +85,173 @@ void MemberData::imageConvertThreadMain(const SharedString &member,
                     auto &sub_field = req_field.second;
                     auto sync = webcface::message::Sync{cd->member_id,
                                                         cd->last_sync_time};
-
-                    int rows = static_cast<int>(img.height_);
-                    int cols = static_cast<int>(img.width_);
-
-                    if (info.rows || info.cols) {
-                        if (info.rows) {
-                            rows = *info.rows;
-                        } else {
-                            rows = static_cast<int>(
-                                static_cast<double>(*info.cols) *
-                                static_cast<double>(img.height_) /
-                                static_cast<double>(img.width_));
-                        }
-                        if (info.cols) {
-                            cols = *info.cols;
-                        } else {
-                            cols = static_cast<int>(
-                                static_cast<double>(*info.rows) *
-                                static_cast<double>(img.width_) /
-                                static_cast<double>(img.height_));
-                        }
-
-                        if (rows <= 0 || cols <= 0) {
+                    try {
+                        std::string color_map_before =
+                            magickColorMap(img.color_mode_);
+                        if (color_map_before.empty()) {
                             this->logger->error(
-                                "Invalid image conversion request "
-                                "(rows={}, cols={})",
-                                rows, cols);
+                                "Unknown image color mode in original image: "
+                                "{}",
+                                static_cast<int>(img.color_mode_));
                             return;
                         }
-                        m.resize(Magick::Geometry(cols, rows));
-                    }
+                        Magick::Image m(img.width_, img.height_,
+                                        color_map_before, Magick::CharPixel,
+                                        img.data_->data());
+#ifdef WEBCFACE_MAGICK_VER7
+                        // ImageMagick6と7で名前が異なる
+                        m.type(Magick::TrueColorAlphaType);
+#else
+                        m.type(Magick::TrueColorMatteType);
+#endif
+                        if (img.color_mode_ == ImageColorMode::gray) {
+                            // K -> RGB
+                            m.negate(true);
+                        }
 
-                    auto color_mode = info.color_mode.value_or(img.color_mode_);
-                    auto encoded =
-                        std::make_shared<std::vector<unsigned char>>();
-                    switch (info.cmp_mode) {
-                    case 0: { // ImageCompressMode::raw: {
-                        std::size_t channels = 1;
-                        std::string color_map = magickColorMap(color_mode);
-                        switch (color_mode) {
-                        case 0: // ImageColorMode::gray:
-                            m.type(Magick::GrayscaleType);
-                            color_map = "R";
-                            channels = 1;
+                        int rows = static_cast<int>(img.height_);
+                        int cols = static_cast<int>(img.width_);
+
+                        if (info.rows || info.cols) {
+                            if (info.rows) {
+                                rows = *info.rows;
+                            } else {
+                                rows = static_cast<int>(
+                                    static_cast<double>(*info.cols) *
+                                    static_cast<double>(img.height_) /
+                                    static_cast<double>(img.width_));
+                            }
+                            if (info.cols) {
+                                cols = *info.cols;
+                            } else {
+                                cols = static_cast<int>(
+                                    static_cast<double>(*info.rows) *
+                                    static_cast<double>(img.width_) /
+                                    static_cast<double>(img.height_));
+                            }
+
+                            if (rows <= 0 || cols <= 0) {
+                                this->logger->error(
+                                    "Invalid image conversion request "
+                                    "(rows={}, cols={})",
+                                    rows, cols);
+                                return;
+                            }
+                            m.resize(Magick::Geometry(cols, rows));
+                        }
+
+                        auto color_mode =
+                            info.color_mode.value_or(img.color_mode_);
+                        auto encoded =
+                            std::make_shared<std::vector<unsigned char>>();
+                        switch (info.cmp_mode) {
+                        case ImageCompressMode::raw: {
+                            std::size_t channels = 1;
+                            std::string color_map = magickColorMap(color_mode);
+                            switch (color_mode) {
+                            case ImageColorMode::gray:
+                                m.type(Magick::GrayscaleType);
+                                color_map = "R";
+                                channels = 1;
+                                break;
+                            case ImageColorMode::bgr:
+                            case ImageColorMode::rgb:
+                                channels = 3;
+                                break;
+                            case ImageColorMode::bgra:
+                            case ImageColorMode::rgba:
+                                channels = 4;
+                                break;
+                            default:
+                                this->logger->error(
+                                    "Unknown image color mode requested: {}",
+                                    static_cast<int>(color_mode));
+                                return;
+                            }
+                            encoded->resize(
+                                static_cast<std::size_t>(cols * rows) *
+                                channels);
+                            m.write(0, 0, cols, rows, color_map,
+                                    Magick::CharPixel, encoded->data());
                             break;
-                        case 1: // ImageColorMode::bgr:
-                        case 3: // ImageColorMode::rgb:
-                            channels = 3;
+                        }
+                        case ImageCompressMode::jpeg: {
+                            if (info.quality < 0 || info.quality > 100) {
+                                this->logger->error(
+                                    "Invalid image conversion request "
+                                    "(jpeg, quality={})",
+                                    info.quality);
+                                return;
+                            }
+                            m.magick("JPEG");
+                            m.quality(info.quality);
+                            Magick::Blob b;
+                            m.write(&b);
+                            encoded->assign(
+                                static_cast<const unsigned char *>(b.data()),
+                                static_cast<const unsigned char *>(b.data()) +
+                                    b.length());
                             break;
-                        case 2: // ImageColorMode::bgra:
-                        case 4: // ImageColorMode::rgba:
-                            channels = 4;
+                        }
+                        case ImageCompressMode::webp: {
+                            if (info.quality < 1 || info.quality > 100) {
+                                this->logger->error(
+                                    "Invalid image conversion request "
+                                    "(webp, quality={})",
+                                    info.quality);
+                                return;
+                            }
+                            m.magick("WEBP");
+                            m.quality(info.quality);
+                            Magick::Blob b;
+                            m.write(&b);
+                            encoded->assign(
+                                static_cast<const unsigned char *>(b.data()),
+                                static_cast<const unsigned char *>(b.data()) +
+                                    b.length());
                             break;
                         }
-                        encoded->resize(static_cast<std::size_t>(cols * rows) *
-                                        channels);
-                        m.write(0, 0, cols, rows, color_map, Magick::CharPixel,
-                                encoded->data());
-                        break;
-                    }
-                    case 1: { // ImageCompressMode::jpeg: {
-                        if (info.quality < 0 || info.quality > 100) {
+                        case ImageCompressMode::png: {
+                            if (info.quality < 0 || info.quality > 100) {
+                                this->logger->error(
+                                    "Invalid image conversion request "
+                                    "(png, compression={})",
+                                    info.quality);
+                                return;
+                            }
+                            m.magick("PNG");
+                            m.quality(info.quality);
+                            Magick::Blob b;
+                            m.write(&b);
+                            encoded->assign(
+                                static_cast<const unsigned char *>(b.data()),
+                                static_cast<const unsigned char *>(b.data()) +
+                                    b.length());
+                            break;
+                        }
+                        default:
                             this->logger->error(
-                                "Invalid image conversion request "
-                                "(jpeg, quality={})",
-                                info.quality);
+                                "Unknown image compression mode requested: {}",
+                                static_cast<int>(info.cmp_mode));
                             return;
                         }
-                        m.magick("JPEG");
-                        m.quality(info.quality);
-                        Magick::Blob b;
-                        m.write(&b);
-                        encoded->assign(
-                            static_cast<const unsigned char *>(b.data()),
-                            static_cast<const unsigned char *>(b.data()) +
-                                b.length());
-                        break;
-                    }
-                    case 2: { // ImageCompressMode::webp: {
-                        if (info.quality < 1 || info.quality > 100) {
-                            this->logger->error(
-                                "Invalid image conversion request "
-                                "(webp, quality={})",
-                                info.quality);
-                            return;
+                        message::ImageFrame img_send{static_cast<size_t>(cols),
+                                                     static_cast<size_t>(rows),
+                                                     encoded, color_mode,
+                                                     info.cmp_mode};
+                        logger->trace("finished converting image of {}, {}",
+                                      member.decode(), field.decode());
+                        if (!cd->closing.load() && !this->closing.load()) {
+                            std::lock_guard lock(store->server->server_mtx);
+                            this->pack(sync);
+                            this->pack(message::Res<webcface::message::Image>{
+                                req_id, sub_field, img_send});
+                            logger->trace("send image_res req_id={} + '{}'",
+                                          req_id, sub_field.decode());
+                            this->send();
                         }
-                        m.magick("WEBP");
-                        m.quality(info.quality);
-                        Magick::Blob b;
-                        m.write(&b);
-                        encoded->assign(
-                            static_cast<const unsigned char *>(b.data()),
-                            static_cast<const unsigned char *>(b.data()) +
-                                b.length());
-                        break;
-                    }
-                    case 3: { // ImageCompressMode::png: {
-                        if (info.quality < 0 || info.quality > 100) {
-                            this->logger->error(
-                                "Invalid image conversion request "
-                                "(png, compression={})",
-                                info.quality);
-                            return;
-                        }
-                        m.magick("PNG");
-                        m.quality(info.quality);
-                        Magick::Blob b;
-                        m.write(&b);
-                        encoded->assign(
-                            static_cast<const unsigned char *>(b.data()),
-                            static_cast<const unsigned char *>(b.data()) +
-                                b.length());
-                        break;
-                    }
-                    }
-                    message::ImageFrame img_send{
-                        static_cast<size_t>(cols), static_cast<size_t>(rows),
-                        encoded, color_mode, info.cmp_mode};
-                    logger->trace("finished converting image of {}, {}",
-                                  member.decode(), field.decode());
-                    if (!cd->closing.load() && !this->closing.load()) {
-                        std::lock_guard lock(store->server->server_mtx);
-                        this->pack(sync);
-                        this->pack(message::Res<webcface::message::Image>{
-                            req_id, sub_field, img_send});
-                        logger->trace("send image_res req_id={} + '{}'", req_id,
-                                      sub_field.decode());
-                        this->send();
+                    } catch (const std::exception &e) {
+                        logger->error("Failed to convert image: {}", e.what());
                     }
                     if (info.frame_rate && *info.frame_rate > 0) {
                         std::chrono::milliseconds delay{

@@ -22,8 +22,11 @@
 #include <webcface/common/def.h>
 #include "webcface/message/u8string.h"
 #include "webcface/message/val_adaptor.h"
+#include <webcface/encoding/image_mode.h>
 
-MSGPACK_ADD_ENUM(webcface::ValType)
+MSGPACK_ADD_ENUM(webcface::encoding::ValType)
+MSGPACK_ADD_ENUM(webcface::encoding::ImageColorMode)
+MSGPACK_ADD_ENUM(webcface::encoding::ImageCompressMode)
 
 WEBCFACE_NS_BEGIN
 namespace message {
@@ -458,8 +461,8 @@ struct WEBCFACE_DLL Canvas2D : public MessageBase<MessageKind::canvas2d> {
 struct WEBCFACE_DLL ImageFrame {
     std::size_t width_, height_;
     std::shared_ptr<std::vector<unsigned char>> data_;
-    int color_mode_ = 0;
-    int cmp_mode_ = 0;
+    ImageColorMode color_mode_ = ImageColorMode::gray;
+    ImageCompressMode cmp_mode_ = ImageCompressMode::raw;
 };
 struct WEBCFACE_DLL Image : public MessageBase<MessageKind::image>,
                             public ImageFrame {
@@ -582,8 +585,8 @@ extern template struct WEBCFACE_DLL_INSTANCE_DECL Req<RobotModel>;
 #endif
 struct WEBCFACE_DLL ImageReq {
     std::optional<int> rows = std::nullopt, cols = std::nullopt;
-    std::optional<int> color_mode = std::nullopt;
-    int cmp_mode = 0;
+    std::optional<ImageColorMode> color_mode = std::nullopt;
+    ImageCompressMode cmp_mode = ImageCompressMode::raw;
     int quality = 0;
     std::optional<double> frame_rate = std::nullopt;
 
