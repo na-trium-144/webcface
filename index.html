@@ -403,7 +403,12 @@ CMake</h2>
 <li><code>-DWEBCFACE_VERSION_SUFFIX=</code> で 1.2.0 だけになります</li>
 </ul>
 </li>
-<li><code>-DWEBCFACE_DOWNLOAD_WEBUI=OFF</code>を指定するとWebUIをダウンロードしません。</li>
+<li><code>-DWEBCFACE_WARNING=ON</code>でコンパイラのWarningをすべてONにし、さらにほとんどのWarningをErrorにします(デフォルトでON、subdirectoryの場合デフォルトでOFF)</li>
+<li><code>-DWEBCFACE_CLANG_TIDY=/path/to/clang-tidy</code>でコンパイル時にclang-tidyのチェックを実行します(空文字列で無効、デフォルトで無効)<ul>
+<li>チェックの設定は .clang-tidy ファイル参照</li>
+</ul>
+</li>
+<li><code>-DWEBCFACE_DOWNLOAD_WEBUI=ON</code>でCMake時にWebUIをダウンロードします。(デフォルトでON、subdirectoryの場合デフォルトでOFF)</li>
 <li>依存ライブラリ<ul>
 <li><code>-DWEBCFACE_FIND_(ライブラリ)=OFF</code> にするとfind_packageなどで依存ライブラリを確認せず、常にソースからビルドするようになります。</li>
 <li>設定可能なライブラリ名は以下<ul>
@@ -471,7 +476,7 @@ License</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Jul 5 2024 09:17:19 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Sat Jul 6 2024 05:28:08 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>
