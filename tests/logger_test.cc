@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 #include "webcface/internal/client_internal.h"
-#include <webcface/logger.h>
+#include <webcface/internal/logger.h>
 #include <stdexcept>
 #include <thread>
 #include <chrono>
@@ -22,28 +22,14 @@ class LoggerTest : public ::testing::Test {
     std::shared_ptr<internal::ClientData> data_;
 };
 
-TEST_F(LoggerTest, logger) {
-    data_->logger->trace("0");
-    data_->logger->debug("1");
-    data_->logger->info("2");
-    data_->logger->warn("3");
-    data_->logger->error("4");
-    data_->logger->critical("5");
-    auto ls = data_->log_store->getRecv(self_name);
-    ASSERT_EQ((*ls)->size(), 6);
-    for (int i = 0; i <= 5; i++) {
-        EXPECT_EQ((**ls)[i].level(), i);
-        EXPECT_EQ((**ls)[i].message(), encoding::castToU8(std::to_string(i)));
-    }
-}
 TEST_F(LoggerTest, loggerBuf) {
-    LoggerBuf b(data_->log_store);
+    LoggerBuf b(data_.get());
     std::ostream os(&b);
     os << "a\nb" << std::endl;
     auto cerr_buf = std::cerr.rdbuf();
     std::cerr.rdbuf(&b);
     std::cerr << "c" << std::endl;
-    auto ls = data_->log_store->getRecv(self_name);
+    auto ls = data_->log_store.getRecv(self_name);
     ASSERT_EQ((*ls)->size(), 3);
     EXPECT_EQ((**ls)[0].level(), 2);
     EXPECT_EQ((**ls)[0].message(), u8"a");
@@ -54,13 +40,13 @@ TEST_F(LoggerTest, loggerBuf) {
     std::cerr.rdbuf(cerr_buf);
 }
 TEST_F(LoggerTest, loggerBufW) {
-    LoggerBufW b(data_->log_store);
+    LoggerBufW b(data_.get());
     std::wostream os(&b);
     os << L"a\nb" << std::endl;
     auto wcerr_buf = std::wcerr.rdbuf();
     std::wcerr.rdbuf(&b);
     std::wcerr << L"c" << std::endl;
-    auto ls = data_->log_store->getRecv(self_name);
+    auto ls = data_->log_store.getRecv(self_name);
     ASSERT_EQ((*ls)->size(), 3);
     EXPECT_EQ((**ls)[0].level(), 2);
     EXPECT_EQ((**ls)[0].message(), u8"a");

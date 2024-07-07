@@ -67,7 +67,8 @@ else()
     add_library(zlib INTERFACE)
     target_static_link(zlib
         BUILD_LIBRARY_DIRS ${zlib_STATIC_LIBRARY_DIRS}
-        LIBRARIES ${zlib_STATIC_LIBRARIES}
+        DEBUG_LIBRARIES ${zlib_STATIC_LIBRARIES}
+        RELEASE_LIBRARIES ${zlib_STATIC_LIBRARIES}
     )
 
     if(WEBCFACE_INSTALL)

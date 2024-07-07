@@ -13,25 +13,44 @@ if(spdlog_FOUND)
 
     if(WEBCFACE_INSTALL)
         list(APPEND WEBCFACE_EXPORTS spdlog-linker)
-        list(APPEND WEBCFACE_PKGCONFIG_REQUIRES spdlog)
+        if(NOT WEBCFACE_SHARED)
+            list(APPEND WEBCFACE_PKGCONFIG_REQUIRES spdlog)
+        endif()
         set(SPDLOG_INSTALLED 1)
     endif()
 else()
     set(SPDLOG_INSTALL OFF CACHE INTERNAL "" FORCE)
-    if(WIN32)
-        set(SPDLOG_WCHAR_SUPPORT ON CACHE INTERNAL "" FORCE)
-    endif()
     fetch_cmake(spdlog
         https://github.com/gabime/spdlog.git
         v1.12.0
     )
+    include(cmake/linker.cmake)
     add_library(spdlog-linker INTERFACE)
-    target_link_libraries(spdlog-linker INTERFACE spdlog_header_only)
+    target_include_directories(spdlog-linker INTERFACE
+        $<BUILD_INTERFACE:$<TARGET_PROPERTY:spdlog,INTERFACE_INCLUDE_DIRECTORIES>>
+    )
+    target_compile_definitions(spdlog-linker INTERFACE
+        $<BUILD_INTERFACE:$<TARGET_PROPERTY:spdlog,INTERFACE_COMPILE_DEFINITIONS>>
+    )
+    target_static_link(spdlog-linker
+        BUILD_LIBRARY_DIRS $<TARGET_LINKER_FILE_DIR:spdlog>
+        INSTALL_LIBRARY_DIRS $<TARGET_LINKER_FILE_DIR:webcface::spdlog>
+        DEBUG_LIBRARIES spdlogd
+        RELEASE_LIBRARIES spdlog
+    )
+    add_dependencies(spdlog-linker spdlog)
 
     if(WEBCFACE_INSTALL)
-        list(APPEND WEBCFACE_EXPORTS spdlog-linker spdlog_header_only)
+        list(APPEND WEBCFACE_EXPORTS spdlog-linker)
+        if(NOT WEBCFACE_SHARED)
+            list(APPEND WEBCFACE_EXPORTS spdlog)
+            if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+                list(INSERT WEBCFACE_PKGCONFIG_LIBS 0 -lspdlogd)
+            else()
+                list(INSERT WEBCFACE_PKGCONFIG_LIBS 0 -lspdlog)
+            endif()
+        endif()
         set(SPDLOG_INSTALLED 0)
-        install(DIRECTORY ${spdlog_SOURCE_DIR}/include/ DESTINATION include)
         install(FILES
             ${spdlog_SOURCE_DIR}/LICENSE
             DESTINATION share/webcface/3rd_party/spdlog
