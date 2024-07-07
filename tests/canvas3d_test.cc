@@ -64,9 +64,8 @@ TEST_F(Canvas3DTest, eventTarget) {
     callback_called = 0;
 }
 TEST_F(Canvas3DTest, set) {
-    (data_->canvas3d_change_event[self_name]["b"_ss] =
-         std::make_shared<eventpp::CallbackList<void(Canvas3D)>>())
-        ->append(callback());
+    data_->canvas3d_change_event[self_name]["b"_ss] =
+        std::make_shared<std::function<void(Canvas3D)>>(callback());
     using namespace webcface::geometries;
     using namespace webcface::robot_joints;
     robot_model(self_name, "b")

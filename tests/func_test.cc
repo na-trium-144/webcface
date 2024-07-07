@@ -247,7 +247,7 @@ TEST_F(FuncTest, funcRun) {
     });
     ret_a.onResult([&](const std::shared_future<ValAdaptor> &result) {
         called++;
-        EXPECT_EQ(static_cast<double>(ret_a.result.get()), 123.45);
+        EXPECT_EQ(static_cast<double>(result.get()), 123.45);
     });
     EXPECT_EQ(called, 2);
     called = 0;
@@ -324,7 +324,7 @@ TEST_F(FuncTest, funcAsyncRun) {
     });
     ret_a.onResult([&](const std::shared_future<ValAdaptor> &result) {
         called++;
-        EXPECT_EQ(static_cast<double>(ret_a.result.get()), 123.45);
+        EXPECT_EQ(static_cast<double>(result.get()), 123.45);
     });
     EXPECT_EQ(called, 2);
     called = 0;
@@ -413,7 +413,7 @@ TEST_F(FuncTest, funcFutureRun) {
     });
     ret_a.onResult([&](const std::shared_future<ValAdaptor> &result) {
         called++;
-        EXPECT_EQ(static_cast<double>(ret_a.result.get()), 123.45);
+        EXPECT_EQ(static_cast<double>(result.get()), 123.45);
     });
     EXPECT_EQ(called, 2);
     called = 0;
@@ -504,7 +504,7 @@ TEST_F(FuncTest, funcSharedFutureRun) {
     });
     ret_a.onResult([&](const std::shared_future<ValAdaptor> &result) {
         called++;
-        EXPECT_EQ(static_cast<double>(ret_a.result.get()), 123.45);
+        EXPECT_EQ(static_cast<double>(result.get()), 123.45);
     });
     EXPECT_EQ(called, 2);
     called = 0;

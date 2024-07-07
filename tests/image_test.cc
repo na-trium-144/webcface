@@ -105,9 +105,8 @@ TEST_F(ImageTest, eventTarget) {
     callback_called = 0;
 }
 TEST_F(ImageTest, imageSet) {
-    (data_->image_change_event[self_name]["b"_ss] =
-         std::make_shared<eventpp::CallbackList<void(Image)>>())
-        ->append(callback());
+    data_->image_change_event[self_name]["b"_ss] =
+        std::make_shared<std::function<void(Image)>>(callback());
     auto dp = std::make_shared<std::vector<unsigned char>>(100 * 100 * 3);
     image(self_name, "b")
         .set(ImageFrame{sizeHW(100, 100), dp, ImageColorMode::bgr});
