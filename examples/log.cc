@@ -15,8 +15,8 @@ int main() {
     wcli.log().append(webcface::level::info, "this is info");
     wcli.log().append(webcface::level::error, "this is error");
     wcli.log().append(webcface::level::critical, "this is critical");
-    wcli.log().append(webcface::level::error,
-                      std::format("Some error message with arg: {}", 1));
+    // wcli.log().append(webcface::level::error,
+    //                   std::format("Some error message with arg: {}", 1));
 
     // ostreamを使う場合
     wcli.loggerOStream() << "this is ostream" << std::endl;
