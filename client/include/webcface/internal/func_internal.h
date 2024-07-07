@@ -21,6 +21,8 @@ class WEBCFACE_DLL AsyncFuncState
     std::size_t caller_id;
     std::shared_future<bool> started_f;
     std::shared_future<ValAdaptor> result_f;
+    bool started_event_done = false;
+    bool result_event_done = false;
     Field base;
 
   public:

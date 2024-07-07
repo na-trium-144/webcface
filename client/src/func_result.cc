@@ -65,17 +65,21 @@ void internal::AsyncFuncState::setResultEvent(
 }
 void internal::AsyncFuncState::callStartedEvent() {
     std::lock_guard lock(m);
-    if (started_f.wait_for(std::chrono::seconds(0)) ==
+    if (!started_event_done &&
+        started_f.wait_for(std::chrono::seconds(0)) ==
             std::future_status::ready &&
         started_event) {
+        started_event_done = true;
         started_event(started_f.get());
     }
 }
 void internal::AsyncFuncState::callResultEvent() {
     std::lock_guard lock(m);
-    if (result_f.wait_for(std::chrono::seconds(0)) ==
+    if (!result_event_done &&
+        result_f.wait_for(std::chrono::seconds(0)) ==
             std::future_status::ready &&
         result_event) {
+        result_event_done = true;
         result_event(result_f);
     }
 }

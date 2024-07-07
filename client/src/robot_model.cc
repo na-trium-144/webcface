@@ -67,17 +67,7 @@ void RobotModel::request() const {
 }
 
 RobotModel &RobotModel::set(const std::vector<RobotLink> &v) {
-    sb->set(v);
-    auto data = dataLock();
-    std::shared_ptr<std::function<void(RobotModel)>> change_event;
-    {
-        std::lock_guard lock(data->event_m);
-        change_event =
-            data->robot_model_change_event[this->member_][this->field_];
-    }
-    if (change_event && *change_event) {
-        change_event->operator()(*this);
-    }
+    sb->set(v); // set()のなかでchange_eventは呼ばれる
     return *this;
 }
 

@@ -312,6 +312,10 @@ TEST_F(FuncTest, funcAsyncRun) {
     EXPECT_EQ(called, 2);
     called = 0;
     ret_a = func(self_name, "a").runAsync(123, 123.45, "a", true);
+    while (ret_a.result.wait_for(std::chrono::milliseconds(
+               WEBCFACE_TEST_TIMEOUT)) != std::future_status::ready) {
+    }
+    EXPECT_EQ(called, 1);
     EXPECT_TRUE(ret_a.started.get());
     EXPECT_EQ(static_cast<double>(ret_a.result.get()), 123.45);
     EXPECT_EQ(ret_a.member().name(), self_name.decode());
@@ -347,12 +351,12 @@ TEST_F(FuncTest, funcFutureRun) {
         EXPECT_EQ(b, 123.45);
         EXPECT_EQ(c, "a");
         EXPECT_TRUE(d);
-        ++called;
         EXPECT_EQ(std::this_thread::get_id(), main_id);
         return std::async(std::launch::deferred, [&] {
             if (a == 1) {
                 throw std::invalid_argument("a == 1");
             }
+            ++called;
             // runなのでmainスレッド
             EXPECT_EQ(std::this_thread::get_id(), main_id);
             return 123.45;
@@ -375,12 +379,12 @@ TEST_F(FuncTest, funcFutureRun) {
         EXPECT_EQ(b, 123.45);
         EXPECT_EQ(c, "a");
         EXPECT_TRUE(d);
-        ++called;
         EXPECT_EQ(std::this_thread::get_id(), main_id);
         return std::async(std::launch::deferred, [&] {
             if (a == 1) {
                 throw std::invalid_argument("a == 1");
             }
+            ++called;
             // runAsyncなので別スレッド
             EXPECT_NE(std::this_thread::get_id(), main_id);
             return 123.45;
@@ -401,6 +405,9 @@ TEST_F(FuncTest, funcFutureRun) {
     EXPECT_EQ(called, 2);
     called = 0;
     ret_a = func(self_name, "a").runAsync(123, 123.45, "a", true);
+    while (ret_a.result.wait_for(std::chrono::milliseconds(
+               WEBCFACE_TEST_TIMEOUT)) != std::future_status::ready) {
+    }
     EXPECT_TRUE(ret_a.started.get());
     EXPECT_EQ(static_cast<double>(ret_a.result.get()), 123.45);
     EXPECT_EQ(ret_a.member().name(), self_name.decode());
@@ -436,13 +443,13 @@ TEST_F(FuncTest, funcSharedFutureRun) {
         EXPECT_EQ(b, 123.45);
         EXPECT_EQ(c, "a");
         EXPECT_TRUE(d);
-        ++called;
         EXPECT_EQ(std::this_thread::get_id(), main_id);
         return std::async(std::launch::deferred,
                           [&] {
                               if (a == 0) {
                                   throw std::invalid_argument("a == 1");
                               }
+                              ++called;
                               // runなのでmainスレッド
                               EXPECT_EQ(std::this_thread::get_id(), main_id);
                               return 123.45;
@@ -464,13 +471,13 @@ TEST_F(FuncTest, funcSharedFutureRun) {
         EXPECT_EQ(b, 123.45);
         EXPECT_EQ(c, "a");
         EXPECT_TRUE(d);
-        ++called;
         EXPECT_EQ(std::this_thread::get_id(), main_id);
         return std::async(std::launch::deferred,
                           [&] {
                               if (a == 1) {
                                   throw std::invalid_argument("a == 1");
                               }
+                              ++called;
                               // runAsyncなので別スレッド
                               EXPECT_NE(std::this_thread::get_id(), main_id);
                               return 123.45;
@@ -492,6 +499,9 @@ TEST_F(FuncTest, funcSharedFutureRun) {
     EXPECT_EQ(called, 2);
     called = 0;
     ret_a = func(self_name, "a").runAsync(123, 123.45, "a", true);
+    while (ret_a.result.wait_for(std::chrono::milliseconds(
+               WEBCFACE_TEST_TIMEOUT)) != std::future_status::ready) {
+    }
     EXPECT_TRUE(ret_a.started.get());
     EXPECT_EQ(static_cast<double>(ret_a.result.get()), 123.45);
     EXPECT_EQ(ret_a.member().name(), self_name.decode());
