@@ -262,6 +262,10 @@ class WEBCFACE_DLL Func : protected Field {
      *
      * set() と同じ。
      *
+     * \deprecated ver2.0〜
+     * set()とsetAsync()に分かれたので、代入演算子だとわかりづらい
+     * また、 operator=(const Func &) との区別もつきづらい
+     *
      */
     template <typename T>
     [[deprecated("use set() or setAsync()")]] Func &operator=(T func) {

@@ -10,9 +10,9 @@ WEBCFACE_NS_BEGIN
 
 template <typename R>
 concept Range = requires(R range) {
-                    begin(range);
-                    end(range);
-                };
+    begin(range);
+    end(range);
+};
 
 /*!
  * \brief 実数値またはその配列の送受信データを表すクラス
@@ -80,19 +80,32 @@ class WEBCFACE_DLL Value : protected Field {
      */
     Value parent() const { return this->Field::parent(); }
 
-  private:
-    /*!
-     * \brief 値が変化したときに呼び出されるコールバックを取得
-     * \since ver2.0
-     */
-    std::function<void(Value)> &onChange();
-
-  public:
     /*!
      * \brief 値が変化したときに呼び出されるコールバックを設定
      * \since ver2.0
      */
     Value &onChange(std::function<void(Value)> callback);
+    /*!
+     * \brief 値が変化したときに呼び出されるコールバックを設定
+     * \since ver2.0
+     */
+    template <typename F>
+        requires std::invocable<F>
+    Value &onChange(F callback) {
+        return onChange(
+            [callback = std::move(callback)](const auto &) { callback(); });
+    }
+    /*!
+     * \deprecated
+     * ver1.11まではEventTarget::appendListener()でコールバックを追加できたが、
+     * ver2.0からコールバックは1個のみになった。
+     * 互換性のため残しているがonChange()と同じ
+     *
+     */
+    template <typename T>
+    [[deprecated]] void appendListener(T &&callback) {
+        onChange(std::forward<T>(callback));
+    }
 
     /*!
      * \brief 値をセットする
@@ -290,8 +303,8 @@ class WEBCFACE_DLL Value : protected Field {
      *
      */
     template <typename T>
-        requires std::same_as<T, Value> bool
-    operator==(const T &other) const {
+        requires std::same_as<T, Value>
+    bool operator==(const T &other) const {
         return static_cast<Field>(*this) == static_cast<Field>(other);
     }
     bool operator<(const Value &) const = delete;

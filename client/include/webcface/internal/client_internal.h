@@ -211,25 +211,32 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
      *
      * なのでmapになっていないmember_entry_eventもnullの可能性がある
      */
-    std::function<void(Member)> member_entry_event;
+    std::shared_ptr<std::function<void(Member)>> member_entry_event;
 
-    StrMap2<std::function<void(Value)>> value_change_event;
-    StrMap2<std::function<void(Text)>> text_change_event;
-    StrMap2<std::function<void(Image)>> image_change_event;
-    StrMap2<std::function<void(RobotModel)>> robot_model_change_event;
-    StrMap2<std::function<void(View)>> view_change_event;
-    StrMap2<std::function<void(Canvas3D)>> canvas3d_change_event;
-    StrMap2<std::function<void(Canvas2D)>> canvas2d_change_event;
-    StrMap1<std::function<void(Log)>> log_append_event;
-    StrMap1<std::function<void(Member)>> sync_event, ping_event;
-    StrMap1<std::function<void(Value)>> value_entry_event;
-    StrMap1<std::function<void(Text)>> text_entry_event;
-    StrMap1<std::function<void(Func)>> func_entry_event;
-    StrMap1<std::function<void(View)>> view_entry_event;
-    StrMap1<std::function<void(Image)>> image_entry_event;
-    StrMap1<std::function<void(RobotModel)>> robot_model_entry_event;
-    StrMap1<std::function<void(Canvas3D)>> canvas3d_entry_event;
-    StrMap1<std::function<void(Canvas2D)>> canvas2d_entry_event;
+    StrMap2<std::shared_ptr<std::function<void(Value)>>> value_change_event;
+    StrMap2<std::shared_ptr<std::function<void(Text)>>> text_change_event;
+    StrMap2<std::shared_ptr<std::function<void(Image)>>> image_change_event;
+    StrMap2<std::shared_ptr<std::function<void(RobotModel)>>>
+        robot_model_change_event;
+    StrMap2<std::shared_ptr<std::function<void(View)>>> view_change_event;
+    StrMap2<std::shared_ptr<std::function<void(Canvas3D)>>>
+        canvas3d_change_event;
+    StrMap2<std::shared_ptr<std::function<void(Canvas2D)>>>
+        canvas2d_change_event;
+    StrMap1<std::shared_ptr<std::function<void(Log)>>> log_append_event;
+    StrMap1<std::shared_ptr<std::function<void(Member)>>> sync_event,
+        ping_event;
+    StrMap1<std::shared_ptr<std::function<void(Value)>>> value_entry_event;
+    StrMap1<std::shared_ptr<std::function<void(Text)>>> text_entry_event;
+    StrMap1<std::shared_ptr<std::function<void(Func)>>> func_entry_event;
+    StrMap1<std::shared_ptr<std::function<void(View)>>> view_entry_event;
+    StrMap1<std::shared_ptr<std::function<void(Image)>>> image_entry_event;
+    StrMap1<std::shared_ptr<std::function<void(RobotModel)>>>
+        robot_model_entry_event;
+    StrMap1<std::shared_ptr<std::function<void(Canvas3D)>>>
+        canvas3d_entry_event;
+    StrMap1<std::shared_ptr<std::function<void(Canvas2D)>>>
+        canvas2d_entry_event;
 
     std::shared_ptr<spdlog::logger> logger_internal;
     std::unique_ptr<std::streambuf> logger_buf;

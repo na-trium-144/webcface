@@ -77,19 +77,32 @@ class WEBCFACE_DLL Image : protected Field {
      */
     Image parent() const { return this->Field::parent(); }
 
-  private:
-    /*!
-     * \brief 値が変化したときに呼び出されるコールバックを取得
-     * \since ver2.0
-     */
-    std::function<void(Image)> &onChange();
-
-  public:
     /*!
      * \brief 値が変化したときに呼び出されるコールバックを設定
      * \since ver2.0
      */
     Image &onChange(std::function<void(Image)> callback);
+    /*!
+     * \brief 値が変化したときに呼び出されるコールバックを設定
+     * \since ver2.0
+     */
+    template <typename F>
+        requires std::invocable<F>
+    Image &onChange(F callback) {
+        return onChange(
+            [callback = std::move(callback)](const auto &) { callback(); });
+    }
+    /*!
+     * \deprecated
+     * ver1.11まではEventTarget::appendListener()でコールバックを追加できたが、
+     * ver2.0からコールバックは1個のみになった。
+     * 互換性のため残しているがonChange()と同じ
+     *
+     */
+    template <typename T>
+    [[deprecated]] void appendListener(T &&callback) {
+        onChange(std::forward<T>(callback));
+    }
 
     /*!
      * \brief 画像をセットする

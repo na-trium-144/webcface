@@ -37,21 +37,27 @@ Value &Value::set(double v) {
     set(std::vector<double>{v});
     return *this;
 }
+
 Value &Value::set(std::vector<double> &&v) {
-    setCheck()->value_store.setSend(
+    auto data = setCheck();
+    data->value_store.setSend(
         *this, std::make_shared<std::vector<double>>(std::move(v)));
-    if (this->onChange()) {
-        this->onChange()(*this);
+    std::shared_ptr<std::function<void(Value)>> change_event;
+    {
+        std::lock_guard lock(data->event_m);
+        change_event = data->value_change_event[this->member_][this->field_];
+    }
+    if (change_event && *change_event) {
+        change_event->operator()(*this);
     }
     return *this;
 }
-std::function<void(Value)> &Value::onChange() {
-    std::lock_guard lock(this->dataLock()->event_m);
-    return this->dataLock()->value_change_event[this->member_][this->field_];
-}
 Value &Value::onChange(std::function<void(Value)> callback) {
     this->request();
-    this->onChange() = std::move(callback);
+    auto data = dataLock();
+    std::lock_guard lock(data->event_m);
+    data->value_change_event[this->member_][this->field_] =
+        std::make_shared<std::function<void(Value)>>(std::move(callback));
     return *this;
 }
 

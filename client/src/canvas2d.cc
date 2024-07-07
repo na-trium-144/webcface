@@ -41,22 +41,27 @@ void internal::DataSetBuffer<Canvas2DComponent>::onSync() {
         this->components_[i].lockTmp(target_.data_w, target_.field_, &idx_next);
     }
     cb->components = std::move(this->components_);
-    target_.setCheck()->canvas2d_store.setSend(target_, cb);
-    auto canvas2d_target = static_cast<Canvas2D>(target_);
-    if (canvas2d_target.onChange()) {
-        canvas2d_target.onChange()(canvas2d_target);
+    auto data = target_.setCheck();
+    data->canvas2d_store.setSend(target_, cb);
+    std::shared_ptr<std::function<void(Canvas2D)>> change_event;
+    {
+        std::lock_guard lock(data->event_m);
+        change_event =
+            data->canvas2d_change_event[target_.member_][target_.field_];
     }
-}
-
-std::function<void(Canvas2D)> &Canvas2D::onChange() {
-    std::lock_guard lock(this->dataLock()->event_m);
-    return this->dataLock()->canvas2d_change_event[this->member_][this->field_];
+    if (change_event && *change_event) {
+        change_event->operator()(target_);
+    }
 }
 Canvas2D &Canvas2D::onChange(std::function<void(Canvas2D)> callback) {
     this->request();
-    this->onChange() = std::move(callback);
+    auto data = dataLock();
+    std::lock_guard lock(data->event_m);
+    data->canvas2d_change_event[this->member_][this->field_] =
+        std::make_shared<std::function<void(Canvas2D)>>(std::move(callback));
     return *this;
 }
+
 void Canvas2D::request() const {
     auto data = dataLock();
     auto req = data->canvas2d_store.addReq(member_, field_);

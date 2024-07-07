@@ -38,22 +38,26 @@ void internal::DataSetBuffer<Canvas3DComponent>::onSync() {
             target_.field_.u8String() + u8"_" +
                 std::u8string(encoding::castToU8(std::to_string(i))));
     }
-    target_.setCheck()->canvas3d_store.setSend(
+    auto data = target_.setCheck();
+    data->canvas3d_store.setSend(
         target_, std::make_shared<std::vector<Canvas3DComponent>>(
                      std::move(components_)));
-    auto canvas3d_target = static_cast<Canvas3D>(target_);
-    if (canvas3d_target.onChange()) {
-        canvas3d_target.onChange()(canvas3d_target);
+    std::shared_ptr<std::function<void(Canvas3D)>> change_event;
+    {
+        std::lock_guard lock(data->event_m);
+        change_event =
+            data->canvas3d_change_event[target_.member_][target_.field_];
     }
-}
-
-std::function<void(Canvas3D)> &Canvas3D::onChange() {
-    std::lock_guard lock(this->dataLock()->event_m);
-    return this->dataLock()->canvas3d_change_event[this->member_][this->field_];
+    if (change_event && *change_event) {
+        change_event->operator()(target_);
+    }
 }
 Canvas3D &Canvas3D::onChange(std::function<void(Canvas3D)> callback) {
     this->request();
-    this->onChange() = std::move(callback);
+    auto data = dataLock();
+    std::lock_guard lock(data->event_m);
+    data->canvas3d_change_event[this->member_][this->field_] =
+        std::make_shared<std::function<void(Canvas3D)>>(std::move(callback));
     return *this;
 }
 

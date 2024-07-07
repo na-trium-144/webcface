@@ -78,19 +78,32 @@ class WEBCFACE_DLL Text : protected Field {
      */
     Text parent() const { return this->Field::parent(); }
 
-  private:
-    /*!
-     * \brief 値が変化したときに呼び出されるコールバックを取得
-     * \since ver2.0
-     */
-    std::function<void(Text)> &onChange();
-
-  public:
     /*!
      * \brief 値が変化したときに呼び出されるコールバックを設定
      * \since ver2.0
      */
     Text &onChange(std::function<void(Text)> callback);
+    /*!
+     * \brief 値が変化したときに呼び出されるコールバックを設定
+     * \since ver2.0
+     */
+    template <typename F>
+        requires std::invocable<F>
+    Text &onChange(F callback) {
+        return onChange(
+            [callback = std::move(callback)](const auto &) { callback(); });
+    }
+    /*!
+     * \deprecated
+     * ver1.11まではEventTarget::appendListener()でコールバックを追加できたが、
+     * ver2.0からコールバックは1個のみになった。
+     * 互換性のため残しているがonChange()と同じ
+     *
+     */
+    template <typename T>
+    [[deprecated]] void appendListener(T &&callback) {
+        onChange(std::forward<T>(callback));
+    }
 
     /*!
      * \brief 文字列をセットする
@@ -110,14 +123,6 @@ class WEBCFACE_DLL Text : protected Field {
      */
     Text &set(const ValAdaptor &v);
 
-    // /*!
-    //  * \brief Dictの値を再帰的にセットする
-    //  *
-    //  */
-    // Text &operator=(const Dict &v) {
-    //     this->set(v);
-    //     return *this;
-    // }
     /*!
      * \brief 文字列をセットする
      *
@@ -161,11 +166,6 @@ class WEBCFACE_DLL Text : protected Field {
      *
      */
     std::optional<ValAdaptor> tryGetV() const;
-    // /*!
-    //  * \brief 文字列を再帰的に取得しDictで返す
-    //  *
-    //  */
-    // std::optional<Dict> tryGetRecurse() const;
     /*!
      * \brief 文字列を返す
      *
@@ -180,14 +180,8 @@ class WEBCFACE_DLL Text : protected Field {
      */
     std::wstring getW() const { return tryGetW().value_or(L""); }
 
-    // /*!
-    //  * \brief 値を再帰的に取得しDictで返す
-    //  *
-    //  */
-    // Dict getRecurse() const { return tryGetRecurse().value_or(Dict{}); }
     operator std::string() const { return get(); }
     operator std::wstring() const { return getW(); }
-    // operator Dict() const { return getRecurse(); }
 
     /*!
      * \brief syncの時刻を返す

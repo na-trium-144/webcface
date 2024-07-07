@@ -89,10 +89,11 @@ template class WEBCFACE_DLL_INSTANCE_DEF BasicLoggerBuf<wchar_t>;
 
 Log::Log(const Field &base) : Field(base) {}
 
-Log &Log::onAppend(std::function<void(Log)> callback) {
+Log &Log::onChange(std::function<void(Log)> callback) {
     this->request();
     std::lock_guard lock(this->dataLock()->event_m);
-    this->dataLock()->log_append_event[this->member_] = std::move(callback);
+    this->dataLock()->log_append_event[this->member_] =
+        std::make_shared<std::function<void(Log)>>(std::move(callback));
     return *this;
 }
 

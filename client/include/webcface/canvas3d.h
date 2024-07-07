@@ -84,19 +84,32 @@ class WEBCFACE_DLL Canvas3D : protected Field {
      */
     Canvas3D parent() const { return this->Field::parent(); }
 
-  private:
-    /*!
-     * \brief 値が変化したときに呼び出されるコールバックを取得
-     * \since ver2.0
-     */
-    std::function<void(Canvas3D)> &onChange();
-
-  public:
     /*!
      * \brief 値が変化したときに呼び出されるコールバックを設定
      * \since ver2.0
      */
     Canvas3D &onChange(std::function<void(Canvas3D)> callback);
+    /*!
+     * \brief 値が変化したときに呼び出されるコールバックを設定
+     * \since ver2.0
+     */
+    template <typename F>
+        requires std::invocable<F>
+    Canvas3D &onChange(F callback) {
+        return onChange(
+            [callback = std::move(callback)](const auto &) { callback(); });
+    }
+    /*!
+     * \deprecated
+     * ver1.11まではEventTarget::appendListener()でコールバックを追加できたが、
+     * ver2.0からコールバックは1個のみになった。
+     * 互換性のため残しているがonChange()と同じ
+     *
+     */
+    template <typename T>
+    [[deprecated]] void appendListener(T &&callback) {
+        onChange(std::forward<T>(callback));
+    }
 
     /*!
      * \brief canvasの内容をリクエストする

@@ -39,19 +39,24 @@ inline void addImageReq(const std::shared_ptr<internal::ClientData> &data,
 }
 
 Image &Image::set(const ImageFrame &img) {
-    setCheck()->image_store.setSend(*this, img);
-    if (this->onChange()) {
-        this->onChange()(*this);
+    auto data = setCheck();
+    data->image_store.setSend(*this, img);
+    std::shared_ptr<std::function<void(Image)>> change_event;
+    {
+        std::lock_guard lock(data->event_m);
+        change_event = data->image_change_event[this->member_][this->field_];
+    }
+    if (change_event && *change_event) {
+        change_event->operator()(*this);
     }
     return *this;
 }
-std::function<void(Image)> &Image::onChange() {
-    std::lock_guard lock(this->dataLock()->event_m);
-    return this->dataLock()->image_change_event[this->member_][this->field_];
-}
 Image &Image::onChange(std::function<void(Image)> callback) {
     this->request();
-    this->onChange() = std::move(callback);
+    auto data = dataLock();
+    std::lock_guard lock(data->event_m);
+    data->image_change_event[this->member_][this->field_] =
+        std::make_shared<std::function<void(Image)>>(std::move(callback));
     return *this;
 }
 

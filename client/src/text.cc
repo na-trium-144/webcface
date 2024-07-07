@@ -17,19 +17,24 @@ void Text::request() const {
 }
 
 Text &Text::set(const ValAdaptor &v) {
-    setCheck()->text_store.setSend(*this, std::make_shared<ValAdaptor>(v));
-    if (this->onChange()) {
-        this->onChange()(*this);
+    auto data = setCheck();
+    data->text_store.setSend(*this, std::make_shared<ValAdaptor>(v));
+    std::shared_ptr<std::function<void(Text)>> change_event;
+    {
+        std::lock_guard lock(data->event_m);
+        change_event = data->text_change_event[this->member_][this->field_];
+    }
+    if (change_event && *change_event) {
+        change_event->operator()(*this);
     }
     return *this;
 }
-std::function<void(Text)> &Text::onChange() {
-    std::lock_guard lock(this->dataLock()->event_m);
-    return this->dataLock()->text_change_event[this->member_][this->field_];
-}
 Text &Text::onChange(std::function<void(Text)> callback) {
     this->request();
-    this->onChange() = std::move(callback);
+    auto data = dataLock();
+    std::lock_guard lock(data->event_m);
+    data->text_change_event[this->member_][this->field_] =
+        std::make_shared<std::function<void(Text)>>(std::move(callback));
     return *this;
 }
 

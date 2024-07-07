@@ -27,23 +27,27 @@ RobotModel &RobotModel::sync() {
 template <>
 void internal::DataSetBuffer<RobotLink>::onSync() {
     auto ls = std::make_shared<std::vector<RobotLink>>(std::move(components_));
-    target_.setCheck()->robot_model_store.setSend(target_, ls);
-    auto robot_model_target = static_cast<RobotModel>(target_);
-    if (robot_model_target.onChange()) {
-        robot_model_target.onChange()(robot_model_target);
+    auto data = target_.setCheck();
+    data->robot_model_store.setSend(target_, ls);
+    std::shared_ptr<std::function<void(RobotModel)>> change_event;
+    {
+        std::lock_guard lock(data->event_m);
+        change_event =
+            data->robot_model_change_event[target_.member_][target_.field_];
     }
-}
-
-std::function<void(RobotModel)> &RobotModel::onChange() {
-    std::lock_guard lock(this->dataLock()->event_m);
-    return this->dataLock()
-        ->robot_model_change_event[this->member_][this->field_];
+    if (change_event && *change_event) {
+        change_event->operator()(target_);
+    }
 }
 RobotModel &RobotModel::onChange(std::function<void(RobotModel)> callback) {
     this->request();
-    this->onChange() = std::move(callback);
+    auto data = dataLock();
+    std::lock_guard lock(data->event_m);
+    data->robot_model_change_event[this->member_][this->field_] =
+        std::make_shared<std::function<void(RobotModel)>>(std::move(callback));
     return *this;
 }
+
 RobotModel &RobotModel::operator<<(const RobotLink &vc) {
     sb->add(vc);
     return *this;
@@ -64,8 +68,15 @@ void RobotModel::request() const {
 
 RobotModel &RobotModel::set(const std::vector<RobotLink> &v) {
     sb->set(v);
-    if (this->onChange()) {
-        this->onChange()(*this);
+    auto data = dataLock();
+    std::shared_ptr<std::function<void(RobotModel)>> change_event;
+    {
+        std::lock_guard lock(data->event_m);
+        change_event =
+            data->robot_model_change_event[this->member_][this->field_];
+    }
+    if (change_event && *change_event) {
+        change_event->operator()(*this);
     }
     return *this;
 }

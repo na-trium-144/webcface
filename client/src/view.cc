@@ -39,21 +39,25 @@ void internal::DataSetBuffer<ViewComponent>::onSync() {
     for (std::size_t i = 0; i < components_.size(); i++) {
         components_[i].lockTmp(target_.data_w, target_.field_, &idx_next);
     }
-    target_.setCheck()->view_store.setSend(
+    auto data = target_.setCheck();
+    data->view_store.setSend(
         target_,
         std::make_shared<std::vector<ViewComponent>>(std::move(components_)));
-    auto view_target = static_cast<View>(target_);
-    if (view_target.onChange()) {
-        view_target.onChange()(view_target);
+    std::shared_ptr<std::function<void(View)>> change_event;
+    {
+        std::lock_guard lock(data->event_m);
+        change_event = data->view_change_event[target_.member_][target_.field_];
     }
-}
-std::function<void(View)> &View::onChange() {
-    std::lock_guard lock(this->dataLock()->event_m);
-    return this->dataLock()->view_change_event[this->member_][this->field_];
+    if (change_event && *change_event) {
+        change_event->operator()(target_);
+    }
 }
 View &View::onChange(std::function<void(View)> callback) {
     this->request();
-    this->onChange() = std::move(callback);
+    auto data = dataLock();
+    std::lock_guard lock(data->event_m);
+    data->view_change_event[this->member_][this->field_] =
+        std::make_shared<std::function<void(View)>>(std::move(callback));
     return *this;
 }
 
