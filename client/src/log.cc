@@ -7,6 +7,12 @@
 WEBCFACE_NS_BEGIN
 
 template <typename CharT>
+LogLineData<CharT>::LogLineData(int level,
+                                std::chrono::system_clock::time_point time,
+                                const SharedString &message)
+    : level_(level), time_(time), message_(message) {}
+
+template <typename CharT>
 LogLineData<CharT>::LogLineData(const message::LogLine &m)
     : LogLineData(m.level_,
                   std::chrono::system_clock::time_point(
