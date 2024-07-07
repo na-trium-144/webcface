@@ -57,7 +57,8 @@ else()
     target_static_link(libwebp
         BUILD_LIBRARY_DIRS ${libwebp_STATIC_LIBRARY_DIRS}
         # ここでlibwebpmuxなども渡すとなぜかリンクエラーになってしまう
-        LIBRARIES ${libwebp_STATIC_LIBRARIES}
+        DEBUG_LIBRARIES ${libwebp_STATIC_LIBRARIES}
+        RELEASE_LIBRARIES ${libwebp_STATIC_LIBRARIES}
     )
 
     if(WEBCFACE_INSTALL)

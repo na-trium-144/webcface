@@ -1,12 +1,10 @@
 #include <webcface/webcface.h>
-#include "spdlog/sinks/stdout_sinks.h"
 
 int main() {
     webcface::Client wcli{};
     wcli.value("test") = 0;
-    wcli.logger()->info("this is info");
+    wcli.log().append(webcface::level::info, "this is info");
     wcli.onMemberEntry().callbackList().append([](webcface::Member m) {});
 
-    auto sink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
-    webcface::Server::Server s(7530, sink, spdlog::level::info);
+    webcface::Server::Server s(7530, webcface::level::info);
 }

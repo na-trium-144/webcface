@@ -91,21 +91,24 @@ else()
     target_include_directories(libcurl-linker INTERFACE
         $<BUILD_INTERFACE:$<TARGET_PROPERTY:libcurl_static,INTERFACE_INCLUDE_DIRECTORIES>>
     )
-    target_compile_definitions(libcurl-linker INTERFACE CURL_STATICLIB)
-    if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-        # なぜかTARGET_LINKER_FILE_BASE_NAMEすると"libcurl"になってしまう
-        set(libcurl-linkname curl-d)
-    else()
-        set(libcurl-linkname curl)
-    endif()
-    if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-        set(libcurl-linkname "lib${libcurl-linkname}.lib")
-    endif()
-    target_static_link(libcurl-linker
-        BUILD_LIBRARY_DIRS $<TARGET_LINKER_FILE_DIR:libcurl_static>
-        INSTALL_LIBRARY_DIRS $<TARGET_LINKER_FILE_DIR:webcface::libcurl_static>
-        LIBRARIES ${libcurl-linkname}
+    target_compile_definitions(libcurl-linker INTERFACE
+        $<BUILD_INTERFACE:$<TARGET_PROPERTY:libcurl_static,INTERFACE_COMPILE_DEFINITIONS>>
     )
+    if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+        target_static_link(libcurl-linker
+            BUILD_LIBRARY_DIRS $<TARGET_LINKER_FILE_DIR:libcurl_static>
+            INSTALL_LIBRARY_DIRS $<TARGET_LINKER_FILE_DIR:webcface::libcurl_static>
+            DEBUG_LIBRARIES libcurl-d.lib
+            RELEASE_LIBRARIES libcurl.lib
+        )
+    else()
+        target_static_link(libcurl-linker
+            BUILD_LIBRARY_DIRS $<TARGET_LINKER_FILE_DIR:libcurl_static>
+            INSTALL_LIBRARY_DIRS $<TARGET_LINKER_FILE_DIR:webcface::libcurl_static>
+            DEBUG_LIBRARIES curl-d
+            RELEASE_LIBRARIES curl
+        )
+    endif()
     get_target_property(libcurl_link_libraries libcurl_static INTERFACE_LINK_LIBRARIES)
     if(NOT libcurl_link_libraries STREQUAL "libcurl_link_libraries-NOTFOUND")
         if(WEBCFACE_SHARED)

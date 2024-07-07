@@ -224,7 +224,7 @@ TEST_F(DataTest, logGet) {
             {2, system_clock::now(), "b"_ss},
             {3, system_clock::now(), "c"_ss},
         });
-    data_->log_store->setRecv("a"_ss, logs);
+    data_->log_store.setRecv("a"_ss, logs);
     EXPECT_EQ(log("a").tryGet().value().size(), 3);
     EXPECT_EQ(log("a").tryGetW().value().size(), 3);
     ASSERT_EQ(log("a").get().size(), 3);
@@ -237,15 +237,15 @@ TEST_F(DataTest, logGet) {
     EXPECT_EQ(log("b").tryGetW(), std::nullopt);
     EXPECT_EQ(log("b").get().size(), 0);
     EXPECT_EQ(log("b").getW().size(), 0);
-    EXPECT_EQ(data_->log_store->transferReq().at("a"_ss), true);
-    EXPECT_EQ(data_->log_store->transferReq().at("b"_ss), true);
+    EXPECT_EQ(data_->log_store.transferReq().at("a"_ss), true);
+    EXPECT_EQ(data_->log_store.transferReq().at("b"_ss), true);
     ASSERT_TRUE(log(self_name).tryGet().has_value());
     ASSERT_TRUE(log(self_name).tryGetW().has_value());
     EXPECT_EQ(log(self_name).tryGet()->size(), 0);
     EXPECT_EQ(log(self_name).tryGetW()->size(), 0);
-    EXPECT_EQ(data_->log_store->transferReq().count(self_name), 0);
+    EXPECT_EQ(data_->log_store.transferReq().count(self_name), 0);
     log("d").appendListener(callback<Log>());
-    EXPECT_EQ(data_->log_store->transferReq().at("d"_ss), true);
+    EXPECT_EQ(data_->log_store.transferReq().at("d"_ss), true);
 }
 TEST_F(DataTest, logClear) {
     using namespace std::chrono;
@@ -255,7 +255,7 @@ TEST_F(DataTest, logClear) {
             {2, system_clock::now(), "b"_ss},
             {3, system_clock::now(), "c"_ss},
         });
-    data_->log_store->setRecv("a"_ss, logs);
+    data_->log_store.setRecv("a"_ss, logs);
     log("a").clear();
     EXPECT_EQ(log("a").tryGet().value().size(), 0);
     EXPECT_EQ(log("a").tryGetW().value().size(), 0);

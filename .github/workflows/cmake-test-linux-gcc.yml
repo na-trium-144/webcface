@@ -14,17 +14,27 @@ jobs:
   test-linux-gcc:
     strategy:
       matrix:
-        dep: ["apt", "source", "submodule", "static"]
+        dep: ["apt", "submodule"]
+        os: ["ubuntu-20.04", "ubuntu-22.04", "ubuntu-24.04"]
         include:
-        - dep: apt
+        - os: ubuntu-20.04
+          gcc_ver: 10
           shared_flag: on
-        - dep: source
+        - os: ubuntu-22.04
+          gcc_ver: 11
           shared_flag: on
-        - dep: submodule
+        - os: ubuntu-24.04
+          gcc_ver: 13
           shared_flag: on
         - dep: static
+          os: ubuntu-20.04
           shared_flag: off
-    runs-on: ubuntu-20.04
+          gcc_ver: 10
+        - dep: source # dep=submoduleと役割が被っている
+          os: ubuntu-20.04
+          shared_flag: on
+          gcc_ver: 10
+    runs-on: ${{matrix.os}}
     steps:
     - uses: actions/checkout@v4
     - run: git submodule update --init
@@ -33,13 +43,13 @@ jobs:
     - name: Install dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y gcc-10 g++-10
-        if [ ${{matrix.dep}} = apt ]; then sudo apt-get install -y libspdlog-dev libmagick++-dev libopencv-dev; fi
+        sudo apt-get install -y gcc-${{matrix.gcc_ver}} g++-${{matrix.gcc_ver}}
+        if [ ${{matrix.dep}} = apt ]; then sudo apt-get install -y libspdlog-dev libjpeg-dev libpng-dev libwebp-dev libopencv-dev; fi
 
     - name: Configure CMake
       env:
-        CC: gcc-10
-        CXX: g++-10
+        CC: gcc-${{matrix.gcc_ver}}
+        CXX: g++-${{matrix.gcc_ver}}
       run: >
         cmake -B build
         -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
@@ -61,8 +71,8 @@ jobs:
     - name: Test CMake with installed package
       working-directory: ${{github.workspace}}/.github/test
       env:
-        CC: gcc-10
-        CXX: g++-10
+        CC: gcc-${{matrix.gcc_ver}}
+        CXX: g++-${{matrix.gcc_ver}}
       run: |
         cmake -B build -DCMAKE_PREFIX_PATH=${{github.workspace}}/build/install
         cmake --build build
@@ -72,6 +82,6 @@ jobs:
       env:
         PKG_CONFIG_PATH: ${{github.workspace}}/build/install/lib/pkgconfig
       run: |
-        g++-10 -std=c++20 test.cc $(pkg-config --cflags --libs webcface)
-        gcc-10 -std=c99 test.c $(pkg-config --cflags --libs webcface) -lstdc++
+        g++-${{matrix.gcc_ver}} -std=c++20 test.cc $(pkg-config --cflags --libs webcface)
+        gcc-${{matrix.gcc_ver}} -std=c99 test.c $(pkg-config --cflags --libs webcface) -lstdc++
 

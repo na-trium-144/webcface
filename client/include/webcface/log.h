@@ -9,6 +9,19 @@ WEBCFACE_NS_BEGIN
 namespace message {
 struct LogLine;
 }
+
+namespace level {
+enum LogLevelEnum {
+    trace = 0,
+    debug = 1,
+    info = 2,
+    warn = 3,
+    warning = 3,
+    error = 4,
+    critical = 5,
+};
+}
+
 template <typename CharT = char8_t>
 class WEBCFACE_DLL_TEMPLATE LogLineData {
   protected:
@@ -21,12 +34,11 @@ class WEBCFACE_DLL_TEMPLATE LogLineData {
   public:
     LogLineData() = default;
     LogLineData(int level, std::chrono::system_clock::time_point time,
-                const SharedString &message)
-        : level_(level), time_(time), message_(message) {}
+                const SharedString &message);
     LogLineData(const LogLineData &) = default;
     LogLineData &operator=(const LogLineData &) = default;
-    LogLineData(LogLineData &&) = default;
-    LogLineData &operator=(LogLineData &&) = default;
+    LogLineData(LogLineData &&) noexcept = default;
+    LogLineData &operator=(LogLineData &&) noexcept = default;
     ~LogLineData() = default;
 
     template <typename OtherCharT>
@@ -112,16 +124,65 @@ class WEBCFACE_DLL Log : protected Field {
     }
 
     /*!
-     * \brief (ver1.1.5で追加) 受信したログをクリアする
+     * \brief 受信したログをクリアする
+     * \since ver1.1.5
      *
      * リクエスト状態は解除しない
      */
     Log &clear();
 
+  private:
+    Log &append(LogLineData<> &&ll);
+
+  public:
+    /*!
+     * \brief ログを1行追加
+     * \since ver2.0
+     *
+     * sync()時にサーバーに送られる。コンソールへの出力などはされない
+     *
+     */
+    Log &append(int level, std::string_view message) {
+        return append(
+            {level, std::chrono::system_clock::now(), SharedString(message)});
+    }
+    /*!
+     * \brief ログを1行追加
+     * \since ver2.0
+     *
+     * sync()時にサーバーに送られる。コンソールへの出力などはされない
+     *
+     */
+    Log &append(int level, std::chrono::system_clock::time_point time,
+                std::string_view message) {
+        return append({level, time, SharedString(message)});
+    }
+    /*!
+     * \brief ログを1行追加 (wstring)
+     * \since ver2.0
+     *
+     * sync()時にサーバーに送られる。コンソールへの出力などはされない
+     *
+     */
+    Log &append(int level, std::wstring_view message) {
+        return append(
+            {level, std::chrono::system_clock::now(), SharedString(message)});
+    }
+    /*!
+     * \brief ログを1行追加 (wstring)
+     * \since ver2.0
+     *
+     * sync()時にサーバーに送られる。コンソールへの出力などはされない
+     *
+     */
+    Log &append(int level, std::chrono::system_clock::time_point time,
+                std::wstring_view message) {
+        return append({level, time, SharedString(message)});
+    }
+
     /*!
      * \brief Logの参照先を比較
      * \since ver1.11
-     *
      */
     template <typename T>
         requires std::same_as<T, Log>

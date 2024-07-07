@@ -50,7 +50,8 @@ else()
     add_library(libjpeg INTERFACE)
     target_static_link(libjpeg
         BUILD_LIBRARY_DIRS ${libjpeg_STATIC_LIBRARY_DIRS}
-        LIBRARIES ${libjpeg_STATIC_LIBRARIES}
+        DEBUG_LIBRARIES ${libjpeg_STATIC_LIBRARIES}
+        RELEASE_LIBRARIES ${libjpeg_STATIC_LIBRARIES}
     )
 
     if(WEBCFACE_INSTALL)

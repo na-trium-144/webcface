@@ -33,6 +33,10 @@ DummyClient::DummyClient(bool use_unix)
               dummy_logger->error("connection error {}", static_cast<int>(ret));
           } else {
               dummy_logger->debug("connection done");
+              {
+                  std::lock_guard lock(client_m);
+                  connected_ = true;
+              }
               std::string buf_s;
               while (!closing.load()) {
                   while (true) {
@@ -69,6 +73,7 @@ DummyClient::DummyClient(bool use_unix)
                                               buf_s.size());
                           auto unpacked = message::unpack(buf_s, dummy_logger);
                           for (const auto &m : unpacked) {
+                              std::lock_guard lock(client_m);
                               dummy_logger->info("kind {}", m.first);
                               recv_data.push_back(m);
                           }
@@ -83,11 +88,14 @@ DummyClient::DummyClient(bool use_unix)
                                           static_cast<int>(ret));
                       break;
                   }
-                  if (auto msg = msg_queue.pop()) {
-                      dummy_logger->trace("sending message");
-                      std::size_t sent;
-                      curl_ws_send(handle, msg->c_str(), msg->size(), &sent, 0,
-                                   CURLWS_BINARY);
+                  {
+                      std::lock_guard lock(client_m);
+                      if (auto msg = msg_queue.pop()) {
+                          dummy_logger->trace("sending message");
+                          std::size_t sent;
+                          curl_ws_send(handle, msg->c_str(), msg->size(), &sent,
+                                       0, CURLWS_BINARY);
+                      }
                   }
                   std::this_thread::yield();
               }
@@ -95,4 +103,7 @@ DummyClient::DummyClient(bool use_unix)
           curl_easy_cleanup(handle);
       }) {}
 
-void DummyClient::send(std::string msg) { msg_queue.push(msg); }
+void DummyClient::send(std::string msg) {
+  std::lock_guard lock(client_m);
+  msg_queue.push(msg);
+}

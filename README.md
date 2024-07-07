@@ -378,7 +378,10 @@ cmake -Bbuild
 	* `-DWEBCFACE_VERSION_SUFFIX=git` なら `git describe --tags` コマンドを使用して取得した文字列 (1.2.0-x-gxxxxxxx) になります(未指定の場合のデフォルト)
 	* `git`以外の任意の文字列の場合 `-DWEBCFACE_VERSION_SUFFIX=hoge` で 1.2.0-hoge になります
 	* `-DWEBCFACE_VERSION_SUFFIX=` で 1.2.0 だけになります
-* `-DWEBCFACE_DOWNLOAD_WEBUI=OFF`を指定するとWebUIをダウンロードしません。
+* `-DWEBCFACE_WARNING=ON`でコンパイラのWarningをすべてONにし、さらにほとんどのWarningをErrorにします(デフォルトでON、subdirectoryの場合デフォルトでOFF)
+* `-DWEBCFACE_CLANG_TIDY=/path/to/clang-tidy`でコンパイル時にclang-tidyのチェックを実行します(空文字列で無効、デフォルトで無効)
+	* チェックの設定は .clang-tidy ファイル参照
+* `-DWEBCFACE_DOWNLOAD_WEBUI=ON`でCMake時にWebUIをダウンロードします。(デフォルトでON、subdirectoryの場合デフォルトでOFF)
 * 依存ライブラリ
 	* `-DWEBCFACE_FIND_(ライブラリ)=OFF` にするとfind_packageなどで依存ライブラリを確認せず、常にソースからビルドするようになります。
 	* 設定可能なライブラリ名は以下

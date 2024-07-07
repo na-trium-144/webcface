@@ -11,7 +11,6 @@ target_sources(webcface-client PRIVATE
     src/func.cc
     src/func_listener.cc
     src/log.cc
-    src/logger.cc
     src/member.cc
     src/text.cc
     src/robot_link.cc
@@ -39,8 +38,8 @@ target_link_libraries(webcface-client PRIVATE
     webcface-message
     webcface-server-store
     libcurl-linker
+    spdlog-linker
 )
 target_link_libraries(webcface-client PUBLIC
     webcface-encoding
-    spdlog-linker
 )

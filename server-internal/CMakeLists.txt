@@ -3,7 +3,9 @@ if(WEBCFACE_SHARED)
     # Crowとasioをwebcfaceのインタフェースから隔離するためにライブラリを分ける
     # (こうしないとLinuxでどうしてもasioのシンボルがwebcfaceに残ってセグフォする)
     add_library(webcface-server-internal STATIC)
-    set_target_postfix(webcface-server-internal)
+    if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+        set_target_properties(webcface-server-internal PROPERTIES DEBUG_POSTFIX "d")
+    endif()
 else()
     add_library(webcface-server-internal OBJECT)
 endif()
@@ -18,7 +20,8 @@ if(WEBCFACE_SHARED)
     include(../cmake/linker.cmake)
     target_static_link(webcface-server-internal-linker
         BUILD_LIBRARY_DIRS $<TARGET_LINKER_FILE_DIR:webcface-server-internal>
-        LIBRARIES webcface-server-internal
+        DEBUG_LIBRARIES webcface-server-internal
+        RELEASE_LIBRARIES webcface-server-internal
     )
     add_dependencies(webcface-server-internal-linker webcface-server-internal)
 endif()

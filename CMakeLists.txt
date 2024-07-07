@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.12)
+cmake_minimum_required(VERSION 3.15)
 # ubuntu20.04: cmake 3.16.3
 
 set(ORIGINAL_ENV_CC "$ENV{CC}" CACHE STRING "")
@@ -35,7 +35,8 @@ option(WEBCFACE_SHARED "build shared library" ON)
 option(WEBCFACE_PIC "enable PIC for shared library" ${WEBCFACE_SHARED})
 set(WEBCFACE_VERSION_SUFFIX "git" CACHE STRING "version suffix ('git' to get automatically from git describe command)")
 set(WEBCFACE_CLANG_TIDY "" CACHE STRING "clang-tidy path (or empty to disable clang-tidy)")
-option(WEBCFACE_DOWNLOAD_WEBUI "download and install webui" ON)
+option(WEBCFACE_WARNING "enable all warning and treat most of them as error" ${IS_MAIN})
+option(WEBCFACE_DOWNLOAD_WEBUI "download and install webui" ${IS_MAIN})
 option(WEBCFACE_CONFIG_ALL "configure both debug and release build on windows" OFF)
 option(WEBCFACE_FIND_LIBS "if false, disables every find_package and pkg_check_modules" ${WEBCFACE_SHARED})
 option(WEBCFACE_FIND_AMENT "try find_package(ament_cmake)" ON)
@@ -146,7 +147,9 @@ function(add_cxx_compile_options_if FLAG NAME)
 endfunction()
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    add_compile_options(-Wall -Wextra -Wpedantic -Werror)
+    if(WEBCFACE_WARNING)
+        add_compile_options(-Wall -Wextra -Wpedantic -Werror)
+    endif()
     add_compile_options(-Wno-error=ignored-attributes)
     add_compile_options(-Wno-error=attributes)
     add_compile_options(-Wno-error=deprecated-declarations)
@@ -163,7 +166,9 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     add_compile_options(-Wno-error=ignored-qualifiers)
 endif()
 if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
-    add_compile_options(-Wall -Wextra -Wpedantic -Werror)
+    if(WEBCFACE_WARNING)
+        add_compile_options(-Wall -Wextra -Wpedantic -Werror)
+    endif()
     add_compile_options(-Wno-error=ignored-attributes)
     add_compile_options(-Wno-error=deprecated-declarations)
     add_compile_options(
@@ -180,7 +185,10 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "App
 endif()
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-    add_compile_options(/utf-8 /W4 /bigobj)
+    if(WEBCFACE_WARNING)
+        add_compile_options(/W4)
+    endif()
+    add_compile_options(/utf-8 /bigobj)
     add_compile_definitions(
         _CRT_SECURE_NO_WARNINGS
         _SILENCE_STDEXT_ARR_ITERS_DEPRECATION_WARNING
@@ -188,15 +196,6 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
 endif()
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR}/include)
-
-macro(set_target_postfix TARGET)
-    if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-        set_target_properties(${TARGET} PROPERTIES
-            DEBUG_POSTFIX "${WEBCFACE_SOVERSION}d"
-            RELEASE_POSTFIX "${WEBCFACE_SOVERSION}"
-        )
-    endif()
-endmacro()
 
 ###############################################################################
 
@@ -234,15 +233,14 @@ else()
     target_sources(webcface PRIVATE $<TARGET_OBJECTS:webcface-server-internal>)
 endif()
 # private: リンクが必要なもののみ
-target_link_libraries(webcface PRIVATE magickpp-linker libcurl-linker)
+target_link_libraries(webcface PRIVATE magickpp-linker libcurl-linker spdlog-linker)
 if(NOT WEBCFACE_SHARED)
     target_link_directories(webcface PUBLIC
         $<TARGET_PROPERTY:magickpp-linker,INTERFACE_LINK_DIRECTORIES>
         $<TARGET_PROPERTY:libcurl-linker,INTERFACE_LINK_DIRECTORIES>
+        $<TARGET_PROPERTY:spdlog-linker,INTERFACE_LINK_DIRECTORIES>
     )
 endif()
-# public: header only も含む
-target_link_libraries(webcface PUBLIC spdlog-linker)
 if(WIN32)
     target_link_libraries(webcface PRIVATE iphlpapi.lib)
 endif()
@@ -259,8 +257,12 @@ if(WEBCFACE_SHARED AND NOT WIN32)
         target_link_options(webcface PRIVATE -Wl,--exclude-libs,ALL)
     endif()
 endif()
-set_target_postfix(webcface-server-internal)
-set_target_postfix(webcface)
+if(WIN32)
+    set_target_properties(webcface PROPERTIES RUNTIME_OUTPUT_NAME "webcface${WEBCFACE_SOVERSION}")
+    if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+        set_target_properties(webcface PROPERTIES DEBUG_POSTFIX "d")
+    endif()
+endif()
 set_target_properties(webcface PROPERTIES
     INSTALL_RPATH "$ORIGIN/;@loader_path/"
     INSTALL_RPATH_USE_LINK_PATH TRUE
@@ -427,10 +429,6 @@ if(WEBCFACE_INSTALL)
     set(CPACK_DEBIAN_PACKAGE_VERSION ${WEBCFACE_VERSION})
     set(CPACK_DEBIAN_PACKAGE_MAINTAINER "na-trium-144 <${CPACK_PACKAGE_CONTACT}>")
     set(CPACK_DEBIAN_PACKAGE_SHLIBDEPS yes)
-    # dev package for public dependencies
-    if(${spdlog_FOUND})
-        set(CPACK_DEBIAN_PACKAGE_DEPENDS ${CPACK_DEBIAN_PACKAGE_DEPENDS} libspdlog-dev)
-    endif()
     # https://gitlab.kitware.com/cmake/cmake/-/issues/21834
     set(CPACK_DEBIAN_PACKAGE_CONTROL_EXTRA "${CMAKE_CURRENT_LIST_DIR}/cmake/triggers")
     set(CPACK_DEBIAN_PACKAGE_CONTROL_STRICT_PERMISSION TRUE)

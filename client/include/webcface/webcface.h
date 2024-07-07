@@ -5,8 +5,6 @@
 // clang-format on
 #endif
 
-// ヘッダーの上下関係はここに書かれた順
-
 #include <webcface/common/def.h>
 
 #include "encoding/encoding.h"
@@ -25,7 +23,6 @@
 #include "event_target.h"
 
 #include "func_result.h"
-#include "logger.h"
 
 #include "value.h"
 #include "text.h"

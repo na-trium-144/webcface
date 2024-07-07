@@ -1,6 +1,5 @@
 #pragma once
 #include <webcface/common/def.h>
-#include <spdlog/common.h>
 #include <condition_variable>
 #include <mutex>
 #include <memory>
@@ -36,8 +35,7 @@ class WEBCFACE_DLL Server {
     std::thread ping_thread; // storeよりも後ろ
 
   public:
-    Server(int port, const spdlog::sink_ptr &sink,
-           spdlog::level::level_enum level, int keep_log = 1000);
+    Server(int port, int level, int keep_log = 1000);
     ~Server();
     void join();
 

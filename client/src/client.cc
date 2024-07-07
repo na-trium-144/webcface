@@ -13,8 +13,10 @@
 #include "webcface/internal/client_internal.h"
 #include "webcface/internal/client_ws.h"
 #include "webcface/internal/unlock.h"
+#include <webcface/internal/logger.h>
 #include <string>
 #include <chrono>
+#include <spdlog/sinks/stdout_color_sinks.h>
 
 WEBCFACE_NS_BEGIN
 
@@ -31,18 +33,10 @@ internal::ClientData::ClientData(const SharedString &name,
       host(host), port(port), current_curl_handle(nullptr), current_curl_path(),
       current_ws_buf(), value_store(name), text_store(name), func_store(name),
       view_store(name), image_store(name), robot_model_store(name),
-      canvas3d_store(name), canvas2d_store(name),
-      log_store(std::make_shared<
-                SyncDataStore1<std::shared_ptr<std::vector<LogLineData<>>>>>(
-          name)),
-      sync_time_store(name),
-      logger_sink(std::make_shared<LoggerSink>(log_store)) {
+      canvas3d_store(name), canvas2d_store(name), log_store(name),
+      sync_time_store(name) {
     static auto stderr_sink =
         std::make_shared<spdlog::sinks::stderr_color_sink_mt>();
-    std::vector<spdlog::sink_ptr> sinks = {logger_sink, stderr_sink};
-    logger = std::make_shared<spdlog::logger>(name.decode(), sinks.begin(),
-                                              sinks.end());
-    logger->set_level(spdlog::level::trace);
     logger_internal = std::make_shared<spdlog::logger>(
         "webcface_internal(" + name.decode() + ")", stderr_sink);
     if (std::getenv("WEBCFACE_TRACE") != nullptr) {
@@ -52,11 +46,11 @@ internal::ClientData::ClientData(const SharedString &name,
     } else {
         logger_internal->set_level(spdlog::level::off);
     }
-    logger_buf = std::make_unique<LoggerBuf>(log_store);
+    logger_buf = std::make_unique<LoggerBuf>(this);
     logger_os = std::make_unique<std::ostream>(logger_buf.get());
-    logger_buf_w = std::make_unique<LoggerBufW>(log_store);
+    logger_buf_w = std::make_unique<LoggerBufW>(this);
     logger_os_w = std::make_unique<std::wostream>(logger_buf_w.get());
-    log_store->setRecv(name, std::make_shared<std::vector<LogLineData<>>>());
+    log_store.setRecv(name, std::make_shared<std::vector<LogLineData<>>>());
 }
 
 Client::~Client() {
@@ -88,10 +82,10 @@ Client &Client::onMemberEntry(std::function<void(Member)> callback) {
     data->member_entry_event = std::move(callback);
     return *this;
 }
-std::shared_ptr<LoggerSink> Client::loggerSink() { return data->logger_sink; }
-std::shared_ptr<spdlog::logger> Client::logger() { return data->logger; }
-LoggerBuf *Client::loggerStreamBuf() { return data->logger_buf.get(); }
+std::streambuf *Client::loggerStreamBuf() { return data->logger_buf.get(); }
 std::ostream &Client::loggerOStream() { return *data->logger_os.get(); }
+std::wstreambuf *Client::loggerWStreamBuf() { return data->logger_buf_w.get(); }
+std::wostream &Client::loggerWOStream() { return *data->logger_os_w.get(); }
 std::string Client::serverVersion() const { return data->svr_version; }
 std::string Client::serverName() const { return data->svr_name; }
 
@@ -305,7 +299,7 @@ std::string internal::ClientData::syncDataFirst() {
     std::lock_guard robot_model_lock(robot_model_store.mtx);
     std::lock_guard canvas3d_lock(canvas3d_store.mtx);
     std::lock_guard canvas2d_lock(canvas2d_store.mtx);
-    std::lock_guard log_lock(log_store->mtx);
+    std::lock_guard log_lock(log_store.mtx);
 
     std::stringstream buffer;
     int len = 0;
@@ -364,7 +358,7 @@ std::string internal::ClientData::syncDataFirst() {
                               image_store.getReqInfo(v.first, v2.first)});
         }
     }
-    for (const auto &v : log_store->transferReq()) {
+    for (const auto &v : log_store.transferReq()) {
         message::pack(buffer, len, message::LogReq{{}, v.first});
     }
 
@@ -390,7 +384,7 @@ std::string internal::ClientData::syncData(bool is_first,
     std::lock_guard robot_model_lock(robot_model_store.mtx);
     std::lock_guard canvas3d_lock(canvas3d_store.mtx);
     std::lock_guard canvas2d_lock(canvas2d_store.mtx);
-    std::lock_guard log_lock(log_store->mtx);
+    std::lock_guard log_lock(log_store.mtx);
 
     message::pack(buffer, len, message::Sync{});
 
@@ -457,22 +451,19 @@ std::string internal::ClientData::syncData(bool is_first,
                       message::Image{v.first, v.second.toMessage()});
     }
 
-    if (log_store) {
-        auto log_self_opt = log_store->getRecv(self_member_name);
-        if (!log_self_opt) [[unlikely]] {
-            throw std::runtime_error("self log data is null");
-        } else {
-            auto &log_s = *log_self_opt;
-            if ((log_s->size() > 0 && is_first) ||
-                log_s->size() > log_sent_lines) {
-                auto begin = log_s->begin();
-                auto end = log_s->end();
-                if (!is_first) {
-                    begin += static_cast<int>(log_sent_lines);
-                }
-                log_sent_lines = log_s->size();
-                message::pack(buffer, len, message::Log{begin, end});
+    auto log_self_opt = log_store.getRecv(self_member_name);
+    if (!log_self_opt) [[unlikely]] {
+        throw std::runtime_error("self log data is null");
+    } else {
+        auto &log_s = *log_self_opt;
+        if ((log_s->size() > 0 && is_first) || log_s->size() > log_sent_lines) {
+            auto begin = log_s->begin();
+            auto end = log_s->end();
+            if (!is_first) {
+                begin += static_cast<int>(log_sent_lines);
             }
+            log_sent_lines = log_s->size();
+            message::pack(buffer, len, message::Log{begin, end});
         }
     }
     for (const auto &v : func_store.transferSend(is_first)) {
@@ -720,11 +711,11 @@ void internal::ClientData::onRecv(const std::string &message) {
         case MessageKind::log: {
             auto r = std::any_cast<webcface::message::Log>(obj);
             auto member = this->getMemberNameFromId(r.member_id);
-            std::lock_guard lock(this->log_store->mtx);
-            auto log_s = this->log_store->getRecv(member);
+            std::lock_guard lock(this->log_store.mtx);
+            auto log_s = this->log_store.getRecv(member);
             if (!log_s) {
                 log_s = std::make_shared<std::vector<LogLineData<>>>();
-                this->log_store->setRecv(member, *log_s);
+                this->log_store.setRecv(member, *log_s);
             }
             for (auto &lm : *r.log) {
                 (*log_s)->emplace_back(lm);
@@ -905,7 +896,7 @@ void internal::ClientData::onRecv(const std::string &message) {
         case MessageKind::ping_status_req:
         case MessageKind::log_req:
             if (!message_kind_warned[kind]) {
-                logger->warn("Invalid message Kind {}", kind);
+                logger_internal->warn("Invalid message Kind {}", kind);
                 message_kind_warned[kind] = true;
             }
             break;
@@ -913,7 +904,7 @@ void internal::ClientData::onRecv(const std::string &message) {
             break;
         default:
             if (!message_kind_warned[kind]) {
-                logger->warn("Unknown message Kind {}", kind);
+                logger_internal->warn("Unknown message Kind {}", kind);
                 message_kind_warned[kind] = true;
             }
             break;

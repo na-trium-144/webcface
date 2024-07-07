@@ -19,7 +19,7 @@ class ImageFrameTest : public ::testing::Test {
     std::shared_ptr<std::vector<unsigned char>> dp;
 };
 TEST_F(ImageFrameTest, baseDefaultCtor) {
-    ImageBase img;
+    ImageFrame img;
     EXPECT_TRUE(img.empty());
     EXPECT_EQ(img.rows(), 0);
     EXPECT_EQ(img.cols(), 0);
@@ -31,7 +31,7 @@ TEST_F(ImageFrameTest, baseDefaultCtor) {
     EXPECT_EQ(img.data().size(), 0);
 }
 TEST_F(ImageFrameTest, baseRawPtrCtor) {
-    ImageBase img(sizeHW(100, 100), dp->data(), ImageColorMode::bgr);
+    ImageFrame img(sizeHW(100, 100), dp->data(), ImageColorMode::bgr);
     EXPECT_FALSE(img.empty());
     EXPECT_EQ(img.rows(), 100);
     EXPECT_EQ(img.cols(), 100);
@@ -43,8 +43,8 @@ TEST_F(ImageFrameTest, baseRawPtrCtor) {
     EXPECT_EQ(img.compress_mode(), ImageCompressMode::raw);
 }
 TEST_F(ImageFrameTest, baseCopyCtor) {
-    ImageBase img(sizeHW(100, 100), dp, ImageColorMode::bgr);
-    ImageBase img2 = img;
+    ImageFrame img(sizeHW(100, 100), dp, ImageColorMode::bgr);
+    ImageFrame img2 = img;
     EXPECT_FALSE(img2.empty());
     EXPECT_EQ(img2.rows(), 100);
     EXPECT_EQ(img2.cols(), 100);
@@ -121,18 +121,15 @@ TEST_F(ImageTest, imageRequest) {
     image("a", "1").request();
     EXPECT_EQ(data_->image_store.getReqInfo("a"_ss, "1"_ss),
               (message::ImageReq{std::nullopt, std::nullopt, std::nullopt,
-                                 static_cast<int>(ImageCompressMode::raw), 0,
-                                 std::nullopt}));
+                                 ImageCompressMode::raw, 0, std::nullopt}));
     image("a", "1").request(sizeHW(100, 100), ImageColorMode::rgba, 12.3);
-    EXPECT_EQ(
-        data_->image_store.getReqInfo("a"_ss, "1"_ss),
-        (message::ImageReq{100, 100, static_cast<int>(ImageColorMode::rgba),
-                           static_cast<int>(ImageCompressMode::raw), 0, 12.3}));
+    EXPECT_EQ(data_->image_store.getReqInfo("a"_ss, "1"_ss),
+              (message::ImageReq{100, 100, ImageColorMode::rgba,
+                                 ImageCompressMode::raw, 0, 12.3}));
     image("a", "1").request(sizeHW(100, 100), ImageCompressMode::png, 9, 12.3);
-    EXPECT_EQ(
-        data_->image_store.getReqInfo("a"_ss, "1"_ss),
-        (message::ImageReq{100, 100, std::nullopt,
-                           static_cast<int>(ImageCompressMode::png), 9, 12.3}));
+    EXPECT_EQ(data_->image_store.getReqInfo("a"_ss, "1"_ss),
+              (message::ImageReq{100, 100, std::nullopt, ImageCompressMode::png,
+                                 9, 12.3}));
 }
 TEST_F(ImageTest, imageGet) {
     auto dp = std::make_shared<std::vector<unsigned char>>(100 * 100 * 3);
@@ -145,20 +142,17 @@ TEST_F(ImageTest, imageGet) {
     EXPECT_EQ(data_->image_store.transferReq().at("a"_ss).at("b"_ss), 1);
     EXPECT_EQ(data_->image_store.getReqInfo("a"_ss, "b"_ss),
               (message::ImageReq{std::nullopt, std::nullopt, std::nullopt,
-                                 static_cast<int>(ImageCompressMode::raw), 0,
-                                 std::nullopt}));
+                                 ImageCompressMode::raw, 0, std::nullopt}));
     EXPECT_EQ(data_->image_store.transferReq().at("a"_ss).at("c"_ss), 2);
     EXPECT_EQ(data_->image_store.getReqInfo("a"_ss, "c"_ss),
               (message::ImageReq{std::nullopt, std::nullopt, std::nullopt,
-                                 static_cast<int>(ImageCompressMode::raw), 0,
-                                 std::nullopt}));
+                                 ImageCompressMode::raw, 0, std::nullopt}));
     EXPECT_EQ(image(self_name, "b").tryGet(), std::nullopt);
     EXPECT_EQ(data_->image_store.transferReq().count(self_name), 0);
     image("a", "d").appendListener(callback<Image>());
     EXPECT_EQ(data_->image_store.transferReq().at("a"_ss).at("d"_ss), 3);
     EXPECT_EQ(data_->image_store.getReqInfo("a"_ss, "d"_ss),
               (message::ImageReq{std::nullopt, std::nullopt, std::nullopt,
-                                 static_cast<int>(ImageCompressMode::raw), 0,
-                                 std::nullopt}));
+                                 ImageCompressMode::raw, 0, std::nullopt}));
 }
 // todo: hidden, free
