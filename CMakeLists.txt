@@ -239,6 +239,7 @@ if(NOT WEBCFACE_SHARED)
     target_link_directories(webcface PUBLIC
         $<TARGET_PROPERTY:magickpp-linker,INTERFACE_LINK_DIRECTORIES>
         $<TARGET_PROPERTY:libcurl-linker,INTERFACE_LINK_DIRECTORIES>
+        $<TARGET_PROPERTY:spdlog-linker,INTERFACE_LINK_DIRECTORIES>
     )
 endif()
 # public: header only も含む
