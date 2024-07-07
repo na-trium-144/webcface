@@ -5,9 +5,6 @@
 	path = external/msgpack-cxx
 	url = https://github.com/msgpack/msgpack-c.git
 	branch = cpp_master
-[submodule "external/eventpp"]
-	path = external/eventpp
-	url = https://github.com/wqking/eventpp.git
 [submodule "external/spdlog"]
 	path = external/spdlog
 	url = https://github.com/gabime/spdlog.git
