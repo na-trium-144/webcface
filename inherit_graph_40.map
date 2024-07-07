@@ -1,5 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" title=" " alt="" coords="5,5,59,31"/>
-<area shape="rect" id="Node000001" href="$structwebcface_1_1encoding_1_1SharedString_1_1Hash.html" title=" " alt="" coords="107,5,253,31"/>
-<area shape="poly" id="edge35_Node000000_Node000001" title=" " alt="" coords="72,15,106,15,106,21,72,21"/>
+<area shape="rect" id="Node000000" href="$classwebcface_1_1IdBase.html" title=" " alt="" coords="5,5,228,45"/>
+<area shape="rect" id="Node000001" href="$classwebcface_1_1Canvas2DComponent.html" title="Canvas2Dの各要素を表すクラス。" alt="" coords="276,13,439,38"/>
+<area shape="poly" id="edge35_Node000000_Node000001" title=" " alt="" coords="242,23,276,23,276,28,242,28"/>
 </map>

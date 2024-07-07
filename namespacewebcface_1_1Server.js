@@ -1,6 +1,5 @@
 var namespacewebcface_1_1Server =
 [
-    [ "CustomLogger", "classwebcface_1_1Server_1_1CustomLogger.html", "classwebcface_1_1Server_1_1CustomLogger" ],
     [ "MemberData", "structwebcface_1_1Server_1_1MemberData.html", "structwebcface_1_1Server_1_1MemberData" ],
     [ "Server", "classwebcface_1_1Server_1_1Server.html", "classwebcface_1_1Server_1_1Server" ],
     [ "ServerStorage", "structwebcface_1_1Server_1_1ServerStorage.html", "structwebcface_1_1Server_1_1ServerStorage" ],

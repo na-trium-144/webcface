@@ -90,7 +90,6 @@ var annotated_dup =
         [ "ViewComponent", "structwebcface_1_1message_1_1ViewComponent.html", "structwebcface_1_1message_1_1ViewComponent" ]
       ] ],
       [ "Server", "namespacewebcface_1_1Server.html", [
-        [ "CustomLogger", "classwebcface_1_1Server_1_1CustomLogger.html", "classwebcface_1_1Server_1_1CustomLogger" ],
         [ "MemberData", "structwebcface_1_1Server_1_1MemberData.html", "structwebcface_1_1Server_1_1MemberData" ],
         [ "Server", "classwebcface_1_1Server_1_1Server.html", "classwebcface_1_1Server_1_1Server" ],
         [ "ServerStorage", "structwebcface_1_1Server_1_1ServerStorage.html", "structwebcface_1_1Server_1_1ServerStorage" ]
@@ -130,7 +129,6 @@ var annotated_dup =
       [ "InputRefState", "structwebcface_1_1InputRefState.html", "structwebcface_1_1InputRefState" ],
       [ "Line", "structwebcface_1_1components_1_1geometries_1_1Line.html", "structwebcface_1_1components_1_1geometries_1_1Line" ],
       [ "Log", "classwebcface_1_1Log.html", "classwebcface_1_1Log" ],
-      [ "LoggerSink", "classwebcface_1_1LoggerSink.html", "classwebcface_1_1LoggerSink" ],
       [ "LogLineData", "classwebcface_1_1LogLineData.html", "classwebcface_1_1LogLineData" ],
       [ "Member", "classwebcface_1_1Member.html", "classwebcface_1_1Member" ],
       [ "Plane", "structwebcface_1_1components_1_1geometries_1_1Plane.html", "structwebcface_1_1components_1_1geometries_1_1Plane" ],

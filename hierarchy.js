@@ -3,9 +3,6 @@ var hierarchy =
     [ "AppWrapper", "classwebcface_1_1server__internal_1_1AppWrapper.html", null ],
     [ "Arg", "classwebcface_1_1Arg.html", null ],
     [ "Arg", "structwebcface_1_1message_1_1Arg.html", null ],
-    [ "base_sink", null, [
-      [ "LoggerSink", "classwebcface_1_1LoggerSink.html", null ]
-    ] ],
     [ "basic_streambuf", null, [
       [ "BasicLoggerBuf< CharT >", "classwebcface_1_1BasicLoggerBuf.html", null ]
     ] ],
@@ -112,7 +109,6 @@ var hierarchy =
     ] ],
     [ "ILogHandler", null, [
       [ "CustomLogger", "classCustomLogger.html", null ],
-      [ "CustomLogger", "classwebcface_1_1Server_1_1CustomLogger.html", null ],
       [ "CustomLogger", "classwebcface_1_1server__internal_1_1CustomLogger.html", null ]
     ] ],
     [ "ImageFrame", "classwebcface_1_1ImageFrame.html", null ],
@@ -255,6 +251,7 @@ var hierarchy =
     ] ],
     [ "SyncDataStore1< T >", "classwebcface_1_1internal_1_1SyncDataStore1.html", null ],
     [ "SyncDataStore1< std::chrono::system_clock::time_point >", "classwebcface_1_1internal_1_1SyncDataStore1.html", null ],
+    [ "SyncDataStore1< std::shared_ptr< std::vector< webcface::LogLineData<> > > >", "classwebcface_1_1internal_1_1SyncDataStore1.html", null ],
     [ "SyncDataStore1< std::string >", "classwebcface_1_1internal_1_1SyncDataStore1.html", null ],
     [ "SyncDataStore2< T, ReqT >", "classwebcface_1_1internal_1_1SyncDataStore2.html", null ],
     [ "SyncDataStore2< Canvas2DData >", "classwebcface_1_1internal_1_1SyncDataStore2.html", null ],

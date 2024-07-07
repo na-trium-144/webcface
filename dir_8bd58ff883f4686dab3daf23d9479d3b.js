@@ -21,7 +21,7 @@ var dir_8bd58ff883f4686dab3daf23d9479d3b =
     [ "image.h", "image_8h.html", "image_8h" ],
     [ "image_frame.h", "image__frame_8h.html", "image__frame_8h" ],
     [ "log.h", "log_8h.html", "log_8h" ],
-    [ "logger.h", "logger_8h.html", "logger_8h" ],
+    [ "logger.h", "logger_8h.html", null ],
     [ "member.h", "member_8h.html", "member_8h" ],
     [ "robot_link.h", "robot__link_8h.html", "robot__link_8h" ],
     [ "robot_model.h", "robot__model_8h.html", "robot__model_8h" ],

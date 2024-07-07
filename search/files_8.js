@@ -26,7 +26,6 @@ var searchData=
   ['component_5fview_2ecc_23',['component_view.cc',['../component__view_8cc.html',1,'']]],
   ['component_5fview_2eh_24',['component_view.h',['../component__view_8h.html',1,'']]],
   ['components_2eh_25',['components.h',['../components_8h.html',1,'']]],
-  ['custom_5flogger_2eh_26',['custom_logger.h',['../custom__logger_8h.html',1,'']]],
-  ['cv_2drecv_2ecc_27',['cv-recv.cc',['../cv-recv_8cc.html',1,'']]],
-  ['cv_2dsend_2ecc_28',['cv-send.cc',['../cv-send_8cc.html',1,'']]]
+  ['cv_2drecv_2ecc_26',['cv-recv.cc',['../cv-recv_8cc.html',1,'']]],
+  ['cv_2dsend_2ecc_27',['cv-send.cc',['../cv-send_8cc.html',1,'']]]
 ];

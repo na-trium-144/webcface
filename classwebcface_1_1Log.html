@@ -197,8 +197,20 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:aefb22f7329c38540160a020c2890e161"><td class="mdescLeft">&#160;</td><td class="mdescRight">ログを取得する (wstring)  <br /></td></tr>
 <tr class="separator:aefb22f7329c38540160a020c2890e161"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a90e67f24cf6a9fc1eda7ab5a7fbaa1a6" id="r_a90e67f24cf6a9fc1eda7ab5a7fbaa1a6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Log.html">Log</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Log.html#a90e67f24cf6a9fc1eda7ab5a7fbaa1a6">clear</a> ()</td></tr>
-<tr class="memdesc:a90e67f24cf6a9fc1eda7ab5a7fbaa1a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">(ver1.1.5で追加) 受信したログをクリアする  <br /></td></tr>
+<tr class="memdesc:a90e67f24cf6a9fc1eda7ab5a7fbaa1a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">受信したログをクリアする  <br /></td></tr>
 <tr class="separator:a90e67f24cf6a9fc1eda7ab5a7fbaa1a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a123422c45d70b937a68dd723bab2acd0" id="r_a123422c45d70b937a68dd723bab2acd0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Log.html">Log</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Log.html#a123422c45d70b937a68dd723bab2acd0">append</a> (int level, std::string_view message)</td></tr>
+<tr class="memdesc:a123422c45d70b937a68dd723bab2acd0"><td class="mdescLeft">&#160;</td><td class="mdescRight">ログを1行追加  <br /></td></tr>
+<tr class="separator:a123422c45d70b937a68dd723bab2acd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a08ed5ec645591c4c1351fd198c5d5647" id="r_a08ed5ec645591c4c1351fd198c5d5647"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Log.html">Log</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Log.html#a08ed5ec645591c4c1351fd198c5d5647">append</a> (int level, std::chrono::system_clock::time_point time, std::string_view message)</td></tr>
+<tr class="memdesc:a08ed5ec645591c4c1351fd198c5d5647"><td class="mdescLeft">&#160;</td><td class="mdescRight">ログを1行追加  <br /></td></tr>
+<tr class="separator:a08ed5ec645591c4c1351fd198c5d5647"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab2004baea1bb7f7a49da46cf2601dd18" id="r_ab2004baea1bb7f7a49da46cf2601dd18"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Log.html">Log</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Log.html#ab2004baea1bb7f7a49da46cf2601dd18">append</a> (int level, std::wstring_view message)</td></tr>
+<tr class="memdesc:ab2004baea1bb7f7a49da46cf2601dd18"><td class="mdescLeft">&#160;</td><td class="mdescRight">ログを1行追加 (wstring)  <br /></td></tr>
+<tr class="separator:ab2004baea1bb7f7a49da46cf2601dd18"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7106146d49273ce3bda8b54695d66a1d" id="r_a7106146d49273ce3bda8b54695d66a1d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Log.html">Log</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Log.html#a7106146d49273ce3bda8b54695d66a1d">append</a> (int level, std::chrono::system_clock::time_point time, std::wstring_view message)</td></tr>
+<tr class="memdesc:a7106146d49273ce3bda8b54695d66a1d"><td class="mdescLeft">&#160;</td><td class="mdescRight">ログを1行追加 (wstring)  <br /></td></tr>
+<tr class="separator:a7106146d49273ce3bda8b54695d66a1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa407649955bb90315d4d8349e01750d8" id="r_aa407649955bb90315d4d8349e01750d8"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; <br />
 requires std::same_as&lt;T, <a class="el" href="classwebcface_1_1Log.html">Log</a>&gt;</td></tr>
 <tr class="memitem:aa407649955bb90315d4d8349e01750d8"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Log.html#aa407649955bb90315d4d8349e01750d8">operator==</a> (const T &amp;other) const</td></tr>
@@ -378,6 +390,8 @@ Private Member Functions</h2></td></tr>
 <tr class="memitem:a5741907f34189b0f5ee7c5632b27cb8b" id="r_a5741907f34189b0f5ee7c5632b27cb8b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Log.html#a5741907f34189b0f5ee7c5632b27cb8b">onAppend</a> () const override final</td></tr>
 <tr class="memdesc:a5741907f34189b0f5ee7c5632b27cb8b"><td class="mdescLeft">&#160;</td><td class="mdescRight">listenerを追加する際に行わなければならない処理があればoverrideする  <br /></td></tr>
 <tr class="separator:a5741907f34189b0f5ee7c5632b27cb8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abe9968c7449cadf9cb34f12d3b380fb1" id="r_abe9968c7449cadf9cb34f12d3b380fb1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Log.html">Log</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Log.html#abe9968c7449cadf9cb34f12d3b380fb1">append</a> (<a class="el" href="classwebcface_1_1LogLineData.html">LogLineData</a>&lt;&gt; &amp;&amp;ll)</td></tr>
+<tr class="separator:abe9968c7449cadf9cb34f12d3b380fb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>ログの送受信データを表すクラス </p>
@@ -498,6 +512,204 @@ Private Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a08ed5ec645591c4c1351fd198c5d5647" name="a08ed5ec645591c4c1351fd198c5d5647"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a08ed5ec645591c4c1351fd198c5d5647">&#9670;&#160;</a></span>append() <span class="overload">[1/5]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1Log.html">Log</a> &amp; append </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>level</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::chrono::system_clock::time_point&#160;</td>
+          <td class="paramname"><em>time</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>message</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>ログを1行追加 </p>
+<dl class="section since"><dt>Since</dt><dd>ver2.0</dd></dl>
+<p>sync()時にサーバーに送られる。コンソールへの出力などはされない </p>
+
+</div>
+</div>
+<a id="a7106146d49273ce3bda8b54695d66a1d" name="a7106146d49273ce3bda8b54695d66a1d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7106146d49273ce3bda8b54695d66a1d">&#9670;&#160;</a></span>append() <span class="overload">[2/5]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1Log.html">Log</a> &amp; append </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>level</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::chrono::system_clock::time_point&#160;</td>
+          <td class="paramname"><em>time</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::wstring_view&#160;</td>
+          <td class="paramname"><em>message</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>ログを1行追加 (wstring) </p>
+<dl class="section since"><dt>Since</dt><dd>ver2.0</dd></dl>
+<p>sync()時にサーバーに送られる。コンソールへの出力などはされない </p>
+
+</div>
+</div>
+<a id="a123422c45d70b937a68dd723bab2acd0" name="a123422c45d70b937a68dd723bab2acd0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a123422c45d70b937a68dd723bab2acd0">&#9670;&#160;</a></span>append() <span class="overload">[3/5]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1Log.html">Log</a> &amp; append </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>level</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>message</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>ログを1行追加 </p>
+<dl class="section since"><dt>Since</dt><dd>ver2.0</dd></dl>
+<p>sync()時にサーバーに送られる。コンソールへの出力などはされない </p>
+
+</div>
+</div>
+<a id="ab2004baea1bb7f7a49da46cf2601dd18" name="ab2004baea1bb7f7a49da46cf2601dd18"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab2004baea1bb7f7a49da46cf2601dd18">&#9670;&#160;</a></span>append() <span class="overload">[4/5]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1Log.html">Log</a> &amp; append </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>level</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::wstring_view&#160;</td>
+          <td class="paramname"><em>message</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>ログを1行追加 (wstring) </p>
+<dl class="section since"><dt>Since</dt><dd>ver2.0</dd></dl>
+<p>sync()時にサーバーに送られる。コンソールへの出力などはされない </p>
+
+</div>
+</div>
+<a id="abe9968c7449cadf9cb34f12d3b380fb1" name="abe9968c7449cadf9cb34f12d3b380fb1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abe9968c7449cadf9cb34f12d3b380fb1">&#9670;&#160;</a></span>append() <span class="overload">[5/5]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1Log.html">Log</a> &amp; append </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classwebcface_1_1LogLineData.html">LogLineData</a>&lt;&gt; &amp;&amp;&#160;</td>
+          <td class="paramname"><em>ll</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a7f12a03e22df0d00f39027dd3697f48d" name="a7f12a03e22df0d00f39027dd3697f48d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7f12a03e22df0d00f39027dd3697f48d">&#9670;&#160;</a></span>appendListener() <span class="overload">[1/3]</span></h2>
 
@@ -918,7 +1130,8 @@ Private Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>(ver1.1.5で追加) 受信したログをクリアする </p>
+<p>受信したログをクリアする </p>
+<dl class="section since"><dt>Since</dt><dd>ver1.1.5</dd></dl>
 <p>リクエスト状態は解除しない </p>
 
 </div>
@@ -2484,7 +2697,7 @@ requires std::same_as&lt;T, <a class="el" href="classwebcface_1_1Log.html">Log</
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="classwebcface_1_1Log.html">Log</a></li>
-    <li class="footer">Generated on Sat Jul 6 2024 15:13:07 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Sun Jul 7 2024 15:01:18 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

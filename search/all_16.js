@@ -1,8 +1,8 @@
 var searchData=
 [
   ['m_0',['m',['../structwebcface_1_1encoding_1_1SharedString_1_1Data.html#aa73e018b04368e7afaded77ef0ac69db',1,'webcface::encoding::SharedString::Data::m'],['../structwebcface_1_1ScopedUnlock.html#a07994b29f1f81dbbed93ad5eb9f4cb3d',1,'webcface::ScopedUnlock::m']]],
-  ['macos_1',['App Bundle for MacOS',['../index.html#autotoc_md210',1,'']]],
-  ['macos_20linux_2',['Homebrew (MacOS, Linux)',['../index.html#autotoc_md209',1,'']]],
+  ['macos_1',['App Bundle for MacOS',['../index.html#autotoc_md211',1,'']]],
+  ['macos_20linux_2',['Homebrew (MacOS, Linux)',['../index.html#autotoc_md210',1,'']]],
   ['magickcolormap_3',['magickColorMap',['../namespacewebcface_1_1Server.html#a1c11029f7716ca09f4a69d2ef2ead4b5',1,'webcface::Server']]],
   ['main_4',['main',['../examples_2canvas2d_8cc.html#ae66f6b31b5ad750f1fe042a706a4e3d4',1,'main():&#160;canvas2d.cc'],['../benchmark_8cc.html#ae66f6b31b5ad750f1fe042a706a4e3d4',1,'main():&#160;benchmark.cc'],['../c__example_8c.html#a840291bc02cba5474a4cb46a9b9566fe',1,'main(void):&#160;c_example.c'],['../examples_2canvas3d_8cc.html#ae66f6b31b5ad750f1fe042a706a4e3d4',1,'main():&#160;canvas3d.cc'],['../cv-recv_8cc.html#ae66f6b31b5ad750f1fe042a706a4e3d4',1,'main():&#160;cv-recv.cc'],['../cv-send_8cc.html#a217dbf8b442f20279ea00b898af96f52',1,'main(int argc, const char **argv):&#160;cv-send.cc'],['../examples_2func_8cc.html#ae66f6b31b5ad750f1fe042a706a4e3d4',1,'main():&#160;func.cc'],['../image-send_8cc.html#ae66f6b31b5ad750f1fe042a706a4e3d4',1,'main():&#160;image-send.cc'],['../examples_2log_8cc.html#ae66f6b31b5ad750f1fe042a706a4e3d4',1,'main():&#160;log.cc'],['../recv_8cc.html#ae66f6b31b5ad750f1fe042a706a4e3d4',1,'main():&#160;recv.cc'],['../examples_2value_8cc.html#ae66f6b31b5ad750f1fe042a706a4e3d4',1,'main():&#160;value.cc'],['../examples_2view_8cc.html#ae66f6b31b5ad750f1fe042a706a4e3d4',1,'main():&#160;view.cc'],['../server__main_8cc.html#a3c04138a5bfe5d72780bb7e82a18e627',1,'main(int argc, char **argv):&#160;server_main.cc'],['../image-recv_8cc.html#ae66f6b31b5ad750f1fe042a706a4e3d4',1,'main():&#160;image-recv.cc']]],
   ['main_5fthread_5fid_5',['MAIN_THREAD_ID',['../namespacewebcface_1_1Server.html#a9339d93099753b6ff5823007dea54706',1,'webcface::Server']]],
@@ -78,6 +78,6 @@ var searchData=
   ['msg_5fparse_75',['MSG_PARSE',['../message_8cc.html#a04aeb3e9d5d5e8e26d115f8c67d12823',1,'message.cc']]],
   ['msg_5fparse_5fdata_76',['MSG_PARSE_DATA',['../message_8cc.html#a05d4798bb3a2da200dc481d341a092ad',1,'message.cc']]],
   ['msg_5fqueue_77',['msg_queue',['../structDummyClient.html#a146fa3e5d39d6c6f11ec0476487f04eb',1,'DummyClient']]],
-  ['msvc_78',['Windows (MSVC)',['../index.html#autotoc_md211',1,'']]],
+  ['msvc_78',['Windows (MSVC)',['../index.html#autotoc_md212',1,'']]],
   ['mtx_79',['mtx',['../classwebcface_1_1Queue.html#ad5e0dbd36f0d71fce9b00b7f991b2f38',1,'webcface::Queue::mtx'],['../classwebcface_1_1internal_1_1FuncResultStore.html#ad5e0dbd36f0d71fce9b00b7f991b2f38',1,'webcface::internal::FuncResultStore::mtx'],['../classwebcface_1_1internal_1_1SyncDataStore2.html#a8e3a00b8e2de7776167cc2c41c29294c',1,'webcface::internal::SyncDataStore2::mtx'],['../classwebcface_1_1internal_1_1SyncDataStore1.html#a8e3a00b8e2de7776167cc2c41c29294c',1,'webcface::internal::SyncDataStore1::mtx']]]
 ];

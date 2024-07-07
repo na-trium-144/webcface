@@ -1,13 +1,13 @@
 var indexSectionsWithContent =
 {
-  0: "0123456789abcdefghijklmnopqrstuvwxy~そクグコサデバリロ切受引接文時環複設送通関",
+  0: "0123456789abcdefghijklmnopqrstuvwxy~そクグコサデバリロ切受外引接文時環複設送通関",
   1: "abcdefghilmpqrstvw",
   2: "ceimsw",
   3: "0123479bcdefgilmqrstuvw",
   4: "abcdefghijlmnoprstuvw~",
   5: "abcdefghijklmnopqrstuvw",
   6: "acefilmorstvw",
-  7: "cgimrv",
+  7: "cgilmrv",
   8: "bcdefgijlnoprstuvwy",
   9: "acisv",
   10: "cmnw",

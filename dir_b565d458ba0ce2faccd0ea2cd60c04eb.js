@@ -19,7 +19,6 @@ var dir_b565d458ba0ce2faccd0ea2cd60c04eb =
     [ "image.cc", "image_8cc.html", "image_8cc" ],
     [ "image_frame.cc", "image__frame_8cc.html", null ],
     [ "log.cc", "client_2src_2log_8cc.html", "client_2src_2log_8cc" ],
-    [ "logger.cc", "logger_8cc.html", "logger_8cc" ],
     [ "member.cc", "member_8cc.html", "member_8cc" ],
     [ "robot_link.cc", "robot__link_8cc.html", null ],
     [ "robot_model.cc", "robot__model_8cc.html", "robot__model_8cc" ],

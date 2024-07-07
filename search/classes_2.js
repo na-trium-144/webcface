@@ -21,6 +21,6 @@ var searchData=
   ['clientdata_18',['ClientData',['../structwebcface_1_1internal_1_1ClientData.html',1,'webcface::internal']]],
   ['clienttest_19',['ClientTest',['../classClientTest.html',1,'']]],
   ['copycounter_20',['CopyCounter',['../structCopyCounter.html',1,'']]],
-  ['customlogger_21',['customlogger',['../classCustomLogger.html',1,'CustomLogger'],['../classwebcface_1_1Server_1_1CustomLogger.html',1,'CustomLogger'],['../classwebcface_1_1server__internal_1_1CustomLogger.html',1,'CustomLogger']]],
+  ['customlogger_21',['customlogger',['../classCustomLogger.html',1,'CustomLogger'],['../classwebcface_1_1server__internal_1_1CustomLogger.html',1,'CustomLogger']]],
   ['cylinder_22',['cylinder',['../structwebcface_1_1components_1_1geometries_1_1Cylinder.html',1,'Cylinder'],['../structwebcface_1_1components_1_1geometries_1_1Cylinder.html',1,'Cylinder'],['../structwebcface_1_1components_1_1geometries_1_1Cylinder.html',1,'Cylinder']]]
 ];

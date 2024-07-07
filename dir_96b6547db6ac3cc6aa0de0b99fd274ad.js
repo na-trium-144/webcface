@@ -7,6 +7,7 @@ var dir_96b6547db6ac3cc6aa0de0b99fd274ad =
     [ "data_store2.h", "data__store2_8h.html", "data__store2_8h" ],
     [ "event_target_impl.h", "event__target__impl_8h.html", null ],
     [ "func_internal.h", "func__internal_8h.html", "func__internal_8h" ],
+    [ "logger.h", "internal_2logger_8h.html", "internal_2logger_8h" ],
     [ "queue.h", "queue_8h.html", "queue_8h" ],
     [ "unlock.h", "unlock_8h.html", "unlock_8h" ]
 ];

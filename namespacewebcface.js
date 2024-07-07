@@ -4,6 +4,17 @@ var namespacewebcface =
     [ "encoding", "namespacewebcface_1_1encoding.html", "namespacewebcface_1_1encoding" ],
     [ "geometries", "namespacewebcface_1_1components_1_1geometries.html", "namespacewebcface_1_1components_1_1geometries" ],
     [ "internal", "namespacewebcface_1_1internal.html", "namespacewebcface_1_1internal" ],
+    [ "level", "namespacewebcface_1_1level.html", [
+      [ "LogLevelEnum", "namespacewebcface_1_1level.html#ac2fe55c989a2c0b34cf68f392982fd66", [
+        [ "trace", "namespacewebcface_1_1level.html#ac2fe55c989a2c0b34cf68f392982fd66a36a3b17acbfb35380a47b3d88c9b8942", null ],
+        [ "debug", "namespacewebcface_1_1level.html#ac2fe55c989a2c0b34cf68f392982fd66a5be0fd270d9cbf6a0b7445db855089da", null ],
+        [ "info", "namespacewebcface_1_1level.html#ac2fe55c989a2c0b34cf68f392982fd66aa4abb266e72efba828327b605b2ab0f4", null ],
+        [ "warn", "namespacewebcface_1_1level.html#ac2fe55c989a2c0b34cf68f392982fd66a030352c93c772334261abda73e03885f", null ],
+        [ "warning", "namespacewebcface_1_1level.html#ac2fe55c989a2c0b34cf68f392982fd66a8de9aef05fc85e519a0cfce33573f492", null ],
+        [ "error", "namespacewebcface_1_1level.html#ac2fe55c989a2c0b34cf68f392982fd66ad606e435413ea0944dd00d49e901e4ed", null ],
+        [ "critical", "namespacewebcface_1_1level.html#ac2fe55c989a2c0b34cf68f392982fd66a5fe0ea375791d13455a34f3d40dc9c7d", null ]
+      ] ]
+    ] ],
     [ "message", "namespacewebcface_1_1message.html", "namespacewebcface_1_1message" ],
     [ "robot_joints", "namespacewebcface_1_1robot__joints.html", [
       [ "fixedAbsolute", "namespacewebcface_1_1robot__joints.html#a49aea1f6f84c49764c0abea6b81e0956", null ],
@@ -50,7 +61,6 @@ var namespacewebcface =
     [ "InputRefState", "structwebcface_1_1InputRefState.html", "structwebcface_1_1InputRefState" ],
     [ "Line", "structwebcface_1_1components_1_1geometries_1_1Line.html", "structwebcface_1_1components_1_1geometries_1_1Line" ],
     [ "Log", "classwebcface_1_1Log.html", "classwebcface_1_1Log" ],
-    [ "LoggerSink", "classwebcface_1_1LoggerSink.html", "classwebcface_1_1LoggerSink" ],
     [ "LogLineData", "classwebcface_1_1LogLineData.html", "classwebcface_1_1LogLineData" ],
     [ "Member", "classwebcface_1_1Member.html", "classwebcface_1_1Member" ],
     [ "Plane", "structwebcface_1_1components_1_1geometries_1_1Plane.html", "structwebcface_1_1components_1_1geometries_1_1Plane" ],
@@ -75,8 +85,8 @@ var namespacewebcface =
     [ "ViewComponent", "classwebcface_1_1ViewComponent.html", "classwebcface_1_1ViewComponent" ],
     [ "Range", "conceptwebcface_1_1Range.html", null ],
     [ "ImageBase", "namespacewebcface.html#ab04304b2017cf40223df2bfb82dd175e", null ],
-    [ "LoggerBuf", "namespacewebcface.html#ac14437b6295dda3ecebabb35281b452b", null ],
-    [ "LoggerBufW", "namespacewebcface.html#a1adba1cdaaa06aa271cb09936167a2e5", null ],
+    [ "LoggerBuf", "namespacewebcface.html#a5d0220b13276ff62ae5c0c6793aae628", null ],
+    [ "LoggerBufW", "namespacewebcface.html#ad129abf240c40c4cab70ab8fae7973f9", null ],
     [ "LogLine", "namespacewebcface.html#a46b5ef797cadc62be5f7a57346029063", null ],
     [ "LogLineW", "namespacewebcface.html#a1633a07d91ecf38ba8cfc15b2a4ebd18", null ],
     [ "Rect", "namespacewebcface_1_1components_1_1geometries.html#ad5b21590cf3bc82830bee21b3a459bc4", null ],
