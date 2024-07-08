@@ -75,11 +75,25 @@ TEST_F(CClientTest, connectionBySync) {
 TEST_F(CClientTest, connectionByWait) {
     EXPECT_FALSE(dummy_s->connected());
     EXPECT_FALSE(wcfIsConnected(wcli_));
-    EXPECT_EQ(wcfWaitConnection(wcli_), WCF_OK);
+        std::promise<void> p;
+    auto f = p.get_future();
+    std::thread t([&] {
+        EXPECT_EQ(wcfWaitConnection(wcli_, 100), WCF_OK);
+        p.set_value();
+    });
+    while (!dummy_s->connected() || !wcfIsConnected(wcli_)) {
+        wait();
+    }
+    dummy_s->waitRecv<message::SyncInit>([&](auto) {});
+    EXPECT_NE(f.wait_for(std::chrono::milliseconds(0)),
+              std::future_status::ready);
+    dummy_s->send(message::SyncInitEnd{{}, "", "", 0});
+    t.join();
+    f.get();
     EXPECT_TRUE(dummy_s->connected());
     EXPECT_TRUE(wcfIsConnected(wcli_));
 
-    EXPECT_EQ(wcfWaitConnection(nullptr), WCF_BAD_WCLI);
+    EXPECT_EQ(wcfWaitConnection(nullptr, 100), WCF_BAD_WCLI);
 }
 TEST_F(CClientTest, noConnectionByRecv) {
     EXPECT_FALSE(dummy_s->connected());

@@ -43,6 +43,7 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
      *
      */
     SharedString self_member_name;
+    std::optional<unsigned int> self_member_id;
     bool isSelf(const FieldBase &base) const {
         return base.member_ == self_member_name;
     }
@@ -72,7 +73,7 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
      * \brief message_thread, connection_thread, recv_thread間の同期
      *
      * closing, connected, do_ws_init, do_ws_recv
-     * using_curl, message_queue が変化した時notifyする
+     * using_curl, message_queue, sync_init_end が変化した時notifyする
      *
      */
     std::condition_variable connect_state_cond;
@@ -86,6 +87,11 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
      * それを呼び出したスレッドがそれをこっちに反映させる
      */
     bool connected = false;
+    /*!
+     * SyncInitEndを受信したらtrue
+     * 切断時にfalseにもどす
+     */
+    bool sync_init_end = false;
     /*!
      * Client側から関数が呼ばれたらtrue、
      * WebSocket::側のその関数が完了したらfalse
@@ -184,6 +190,9 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
     std::unordered_map<unsigned int, std::string> member_lib_name,
         member_lib_ver, member_addr;
     const SharedString &getMemberNameFromId(unsigned int id) const {
+        if (self_member_id && *self_member_id == id) {
+            return self_member_name;
+        }
         for (const auto &it : member_ids) {
             if (it.second == id) {
                 return it.first;
@@ -193,6 +202,9 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
         return empty;
     }
     unsigned int getMemberIdFromName(const SharedString &name) const {
+        if (name == self_member_name && self_member_id) {
+            return *self_member_id;
+        }
         auto it = member_ids.find(name);
         if (it != member_ids.end()) {
             return it->second;

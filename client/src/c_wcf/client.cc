@@ -50,12 +50,12 @@ wcfStatus wcfStart(wcfClient *wcli) {
     wcli_->start();
     return WCF_OK;
 }
-wcfStatus wcfWaitConnection(wcfClient *wcli) {
+wcfStatus wcfWaitConnection(wcfClient *wcli, int interval) {
     auto wcli_ = getWcli(wcli);
     if (!wcli_) {
         return WCF_BAD_WCLI;
     }
-    wcli_->waitConnection();
+    wcli_->waitConnection(std::chrono::microseconds(interval));
     return WCF_OK;
 }
 wcfStatus wcfAutoReconnect(wcfClient *wcli, int enabled) {

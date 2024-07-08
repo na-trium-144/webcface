@@ -196,29 +196,30 @@ class WEBCFACE_DLL Member : protected Field {
     /*!
      * \brief 通信速度を調べる
      *
-     * 初回の呼び出しで通信速度データをリクエストし、
+     * * 初回の呼び出しで通信速度データをリクエストし、
      * sync()後通信速度が得られるようになる
+     * * ver2.0〜 Client自身に対しても使用可能
+     * (Client::pingStatus() または member("自分の名前").pingStatus())
+     *
      * \return 初回→ std::nullopt, 2回目以降(取得できれば)→ pingの往復時間 (ms)
      * \sa onPing()
-     *
      */
     std::optional<int> pingStatus() const;
     /*!
      * \brief 通信速度が更新された時のイベント
      *
-     * コールバックの型は void(Member)
+     * * コールバックの型は void(Member)
+     * * 通常は約5秒に1回更新される。
+     * * pingStatus() と同様、通信速度データのリクエストも行う。
+     * * ver2.0〜 Client自身に対しても使用可能
      *
-     * 通常は約5秒に1回更新される。
-     * pingStatus() と同様、通信速度データのリクエストも行う。
      * \sa pingStatus()
-     *
      */
     Member &onPing(std::function<void(Member)> callback);
 
     /*!
      * \brief Memberを比較
      * \since ver1.11
-     *
      */
     template <typename T>
         requires std::same_as<T, Member> bool
