@@ -1,5 +1,6 @@
 var NAVTREEINDEX18 =
 {
+"functions_vars_c.html":[26,3,2,2],
 "functions_vars_d.html":[26,3,2,3],
 "functions_vars_e.html":[26,3,2,4],
 "functions_vars_f.html":[26,3,2,5],
@@ -248,6 +249,5 @@ var NAVTREEINDEX18 =
 "md_20__canvas3d.html#autotoc_md92":[14,1],
 "md_20__canvas3d.html#autotoc_md93":[14,1,0],
 "md_20__canvas3d.html#autotoc_md94":[14,1,1],
-"md_20__canvas3d.html#autotoc_md95":[14,1,2],
-"md_20__canvas3d.html#autotoc_md96":[14,1,3]
+"md_20__canvas3d.html#autotoc_md95":[14,1,2]
 };

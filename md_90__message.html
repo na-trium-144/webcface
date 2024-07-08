@@ -143,7 +143,7 @@ $(document).ready(function(){initNavTree('md_90__message.html',''); initResizabl
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
 <ul><li class="level1"><a href="#autotoc_md146">Sync</a><ul><li class="level2"><a href="#autotoc_md147">sync init (kind = 80)</a></li>
-<li class="level2"><a href="#autotoc_md148">svr version (kind = 88)</a></li>
+<li class="level2"><a href="#autotoc_md148">sync init end (kind = 88)</a></li>
 <li class="level2"><a href="#autotoc_md149">ping (kind = 89)</a></li>
 <li class="level2"><a href="#autotoc_md150">ping status (kind = 90)</a></li>
 <li class="level2"><a href="#autotoc_md151">ping status req (kind = 91)</a></li>
@@ -229,13 +229,20 @@ sync init (kind = 80)</h2>
 </li>
 </ul>
 <h2><a class="anchor" id="autotoc_md148"></a>
-svr version (kind = 88)</h2>
+sync init end (kind = 88)</h2>
+<p>(ver1.11まで: svr version)</p>
 <div class="fragment"><div class="line">data = {</div>
 <div class="line">    n: string, // server name</div>
 <div class="line">    v: string, // server version</div>
+<div class="line">    m: number, // member id</div>
 <div class="line">}</div>
 </div><!-- fragment --><ul>
-<li>サーバーからクライアントに1回送られます</li>
+<li><del>サーバーからクライアントに1回送られます</del></li>
+<li><span class="since-c">2.0</span> クライアントからサーバーに sync init が送られたあと、 サーバーはクライアントにすべてのentryを送り、最後に sync init end を送ります<ul>
+<li>クライアントはwaitConnection()でこれが送られてくるまで待機します</li>
+</ul>
+</li>
+<li><span class="since-c">2.0</span> member id 追加 (sync init をしたメンバーのid)</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md149"></a>
 ping (kind = 89)</h2>
@@ -710,7 +717,7 @@ log req (kind = 86)</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon Jul 8 2024 11:12:14 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Mon Jul 8 2024 15:13:52 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

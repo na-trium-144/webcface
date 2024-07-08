@@ -1284,8 +1284,13 @@ requires (!std::convertible_to&lt;<a class="el" href="classwebcface_1_1TemporalC
 </div><div class="memdoc">
 
 <p>通信速度が更新された時のイベント </p>
-<p>コールバックの型は void(Member)</p>
-<p>通常は約5秒に1回更新される。 <a class="el" href="classwebcface_1_1Member.html#a4b2f7dcfbdbf338436db24cb765465ed" title="通信速度を調べる">pingStatus()</a> と同様、通信速度データのリクエストも行う。 </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="classwebcface_1_1Member.html#a4b2f7dcfbdbf338436db24cb765465ed" title="通信速度を調べる">pingStatus()</a> </dd></dl>
+<ul>
+<li>コールバックの型は void(Member)</li>
+<li>通常は約5秒に1回更新される。</li>
+<li><a class="el" href="classwebcface_1_1Member.html#a4b2f7dcfbdbf338436db24cb765465ed" title="通信速度を調べる">pingStatus()</a> と同様、通信速度データのリクエストも行う。</li>
+<li>ver2.0〜 Client自身に対しても使用可能</li>
+</ul>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classwebcface_1_1Member.html#a4b2f7dcfbdbf338436db24cb765465ed" title="通信速度を調べる">pingStatus()</a> </dd></dl>
 
 </div>
 </div>
@@ -1608,7 +1613,11 @@ requires std::same_as&lt;<a class="el" href="classwebcface_1_1TemporalComponent.
 </div><div class="memdoc">
 
 <p>通信速度を調べる </p>
-<p>初回の呼び出しで通信速度データをリクエストし、 sync()後通信速度が得られるようになる </p><dl class="section return"><dt>Returns</dt><dd>初回→ std::nullopt, 2回目以降(取得できれば)→ pingの往復時間 (ms) </dd></dl>
+<ul>
+<li>初回の呼び出しで通信速度データをリクエストし、 sync()後通信速度が得られるようになる</li>
+<li>ver2.0〜 Client自身に対しても使用可能 (<a class="el" href="classwebcface_1_1Member.html#a4b2f7dcfbdbf338436db24cb765465ed" title="通信速度を調べる">Client::pingStatus()</a> または member("自分の名前").<a class="el" href="classwebcface_1_1Member.html#a4b2f7dcfbdbf338436db24cb765465ed" title="通信速度を調べる">pingStatus()</a>)</li>
+</ul>
+<dl class="section return"><dt>Returns</dt><dd>初回→ std::nullopt, 2回目以降(取得できれば)→ pingの往復時間 (ms) </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classwebcface_1_1Member.html#af4b6751a9cd2712d8d6a0209fa6f5f85" title="通信速度が更新された時のイベント">onPing()</a> </dd></dl>
 
 </div>
@@ -2056,7 +2065,7 @@ requires std::same_as&lt;<a class="el" href="classwebcface_1_1TemporalComponent.
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="classwebcface_1_1Member.html">Member</a></li>
-    <li class="footer">Generated on Mon Jul 8 2024 11:12:14 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Mon Jul 8 2024 15:13:53 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

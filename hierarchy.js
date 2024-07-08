@@ -157,14 +157,14 @@ var hierarchy =
     [ "MessageBase< MessageKind::robot_model+MessageKind::res >", "structwebcface_1_1message_1_1MessageBase.html", [
       [ "Res< RobotModel >", "structwebcface_1_1message_1_1Res_3_01RobotModel_01_4.html", null ]
     ] ],
-    [ "MessageBase< MessageKind::svr_version >", "structwebcface_1_1message_1_1MessageBase.html", [
-      [ "SvrVersion", "structwebcface_1_1message_1_1SvrVersion.html", null ]
-    ] ],
     [ "MessageBase< MessageKind::sync >", "structwebcface_1_1message_1_1MessageBase.html", [
       [ "Sync", "structwebcface_1_1message_1_1Sync.html", null ]
     ] ],
     [ "MessageBase< MessageKind::sync_init >", "structwebcface_1_1message_1_1MessageBase.html", [
       [ "SyncInit", "structwebcface_1_1message_1_1SyncInit.html", null ]
+    ] ],
+    [ "MessageBase< MessageKind::sync_init_end >", "structwebcface_1_1message_1_1MessageBase.html", [
+      [ "SyncInitEnd", "structwebcface_1_1message_1_1SyncInitEnd.html", null ]
     ] ],
     [ "MessageBase< MessageKind::text >", "structwebcface_1_1message_1_1MessageBase.html", [
       [ "Text", "structwebcface_1_1message_1_1Text.html", null ]

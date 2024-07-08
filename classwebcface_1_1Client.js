@@ -99,7 +99,7 @@ var classwebcface_1_1Client =
     [ "view", "classwebcface_1_1Client.html#aa7adcae6ca1a5acda8eeea39c687b238", null ],
     [ "viewEntries", "classwebcface_1_1Client.html#a8da26fb4e605fea2f481d0bd8a1e8f9a", null ],
     [ "views", "classwebcface_1_1Client.html#a18661fc989eced84d33d56528fcc0b56", null ],
-    [ "waitConnection", "classwebcface_1_1Client.html#a806d469a09f6c432330ae1adfdda52a7", null ],
+    [ "waitConnection", "classwebcface_1_1Client.html#a0cd011114cf8a2f4bc4895e4d2ee89ba", null ],
     [ "waitRecv", "classwebcface_1_1Client.html#a4d2b505770bcb022fd0afa29db4eacd9", null ],
     [ "data", "classwebcface_1_1Client.html#a14d5408e0c1718897a684c9e4b69d442", null ],
     [ "data_w", "classwebcface_1_1Client.html#acf663a756c76fb2936c0042257df739c", null ],

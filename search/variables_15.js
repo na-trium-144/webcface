@@ -6,7 +6,7 @@ var searchData=
   ['value_5fentry_5fevent_3',['value_entry_event',['../structwebcface_1_1internal_1_1ClientData.html#a3ab46eb8d97ac932f15474e3f2c2d4a9',1,'webcface::internal::ClientData']]],
   ['value_5freq_4',['value_req',['../structwebcface_1_1server_1_1MemberData.html#a4ce7fa8e6a72606e4356c310dcda1d7c',1,'webcface::server::MemberData']]],
   ['value_5fstore_5',['value_store',['../structwebcface_1_1internal_1_1ClientData.html#adfcd5d2cf6cd85f495ad76f69542d1ff',1,'webcface::internal::ClientData']]],
-  ['ver_6',['ver',['../structwebcface_1_1message_1_1SvrVersion.html#a79dba1acba5901e97673898b4d9a9357',1,'webcface::message::SvrVersion']]],
+  ['ver_6',['ver',['../structwebcface_1_1message_1_1SyncInitEnd.html#a79dba1acba5901e97673898b4d9a9357',1,'webcface::message::SyncInitEnd']]],
   ['version_7',['version',['../namespacewebcface.html#a342b6f41244b8f7bce0c63b449f20dc1',1,'webcface']]],
   ['version_5fs_8',['version_s',['../namespacewebcface.html#ac908c368a4d24ffe7c3b3906522e0fc8',1,'webcface']]],
   ['view_9',['view',['../structwebcface_1_1server_1_1MemberData.html#af45fd14ba00279a40ff0ad1b7d941556',1,'webcface::server::MemberData']]],

@@ -2,7 +2,7 @@ var message_8h =
 [
     [ "MessageBase< k >", "structwebcface_1_1message_1_1MessageBase.html", "structwebcface_1_1message_1_1MessageBase" ],
     [ "SyncInit", "structwebcface_1_1message_1_1SyncInit.html", "structwebcface_1_1message_1_1SyncInit" ],
-    [ "SvrVersion", "structwebcface_1_1message_1_1SvrVersion.html", "structwebcface_1_1message_1_1SvrVersion" ],
+    [ "SyncInitEnd", "structwebcface_1_1message_1_1SyncInitEnd.html", "structwebcface_1_1message_1_1SyncInitEnd" ],
     [ "Ping", "structwebcface_1_1message_1_1Ping.html", "structwebcface_1_1message_1_1Ping" ],
     [ "PingStatus", "structwebcface_1_1message_1_1PingStatus.html", "structwebcface_1_1message_1_1PingStatus" ],
     [ "PingStatusReq", "structwebcface_1_1message_1_1PingStatusReq.html", "structwebcface_1_1message_1_1PingStatusReq" ],
@@ -62,7 +62,7 @@ var message_8h =
       [ "log", "message_8h.html#a1432d06fc2e2d1f6da93d1c04dec4484aaac8d4ee23e2d305f0b0a575cda066f3", null ],
       [ "log_req", "message_8h.html#a1432d06fc2e2d1f6da93d1c04dec4484a826514d64c34ca326c2ba1297635e9d5", null ],
       [ "sync", "message_8h.html#a1432d06fc2e2d1f6da93d1c04dec4484aa1bb8c0556b05e13283b2b1d6b30d887", null ],
-      [ "svr_version", "message_8h.html#a1432d06fc2e2d1f6da93d1c04dec4484ad8d5e841235d38b60263ab19fda702fc", null ],
+      [ "sync_init_end", "message_8h.html#a1432d06fc2e2d1f6da93d1c04dec4484a1379e3327a8a978798a0986b0782e2cd", null ],
       [ "ping", "message_8h.html#a1432d06fc2e2d1f6da93d1c04dec4484aad2de303cb1ea37f4a3bd91f5ef4c29f", null ],
       [ "ping_status", "message_8h.html#a1432d06fc2e2d1f6da93d1c04dec4484a0cb8db73d08e6f71fe9d47fb44fdc9a5", null ],
       [ "ping_status_req", "message_8h.html#a1432d06fc2e2d1f6da93d1c04dec4484a0cf9ec07dc822afa5e1ec58e04e513fd", null ]

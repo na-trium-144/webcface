@@ -201,9 +201,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a60de64d75454385b23995437f1d72669" id="r_a60de64d75454385b23995437f1d72669"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1TemporalComponent.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Client.html#a60de64d75454385b23995437f1d72669">start</a> ()</td></tr>
 <tr class="memdesc:a60de64d75454385b23995437f1d72669"><td class="mdescLeft">&#160;</td><td class="mdescRight">サーバーへの接続を別スレッドで開始する。  <br /></td></tr>
 <tr class="separator:a60de64d75454385b23995437f1d72669"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a806d469a09f6c432330ae1adfdda52a7" id="r_a806d469a09f6c432330ae1adfdda52a7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1TemporalComponent.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Client.html#a806d469a09f6c432330ae1adfdda52a7">waitConnection</a> ()</td></tr>
-<tr class="memdesc:a806d469a09f6c432330ae1adfdda52a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">サーバーへの接続を別スレッドで開始し、成功するまで待機する。  <br /></td></tr>
-<tr class="separator:a806d469a09f6c432330ae1adfdda52a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0cd011114cf8a2f4bc4895e4d2ee89ba" id="r_a0cd011114cf8a2f4bc4895e4d2ee89ba"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1TemporalComponent.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Client.html#a0cd011114cf8a2f4bc4895e4d2ee89ba">waitConnection</a> (std::chrono::microseconds <a class="el" href="classwebcface_1_1TemporalComponent.html">interval</a>=std::chrono::microseconds(100))</td></tr>
+<tr class="memdesc:a0cd011114cf8a2f4bc4895e4d2ee89ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">サーバーへの接続を別スレッドで開始し、成功するまで待機する。  <br /></td></tr>
+<tr class="separator:a0cd011114cf8a2f4bc4895e4d2ee89ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3a359a0ae2735040a1ae270ee1d6e597" id="r_a3a359a0ae2735040a1ae270ee1d6e597"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1TemporalComponent.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Client.html#a3a359a0ae2735040a1ae270ee1d6e597">recv</a> (std::chrono::microseconds <a class="el" href="classwebcface_1_1TemporalComponent.html">timeout</a>=std::chrono::microseconds(0))</td></tr>
 <tr class="memdesc:a3a359a0ae2735040a1ae270ee1d6e597"><td class="mdescLeft">&#160;</td><td class="mdescRight">サーバーからデータを受信する  <br /></td></tr>
 <tr class="separator:a3a359a0ae2735040a1ae270ee1d6e597"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -755,7 +755,7 @@ Private Attributes</h2></td></tr>
 <p>通信が切断されたときに自動で再試行するかどうかを設定する。 </p>
 <dl class="section since"><dt>Since</dt><dd>ver1.11.1</dd></dl>
 <p>デフォルトはtrue</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classwebcface_1_1Client.html#a60de64d75454385b23995437f1d72669" title="サーバーへの接続を別スレッドで開始する。">start()</a>, <a class="el" href="classwebcface_1_1Client.html#a806d469a09f6c432330ae1adfdda52a7" title="サーバーへの接続を別スレッドで開始し、成功するまで待機する。">waitConnection()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classwebcface_1_1Client.html#a60de64d75454385b23995437f1d72669" title="サーバーへの接続を別スレッドで開始する。">start()</a>, <a class="el" href="classwebcface_1_1Client.html#a0cd011114cf8a2f4bc4895e4d2ee89ba" title="サーバーへの接続を別スレッドで開始し、成功するまで待機する。">waitConnection()</a> </dd></dl>
 
 </div>
 </div>
@@ -788,7 +788,7 @@ Private Attributes</h2></td></tr>
 <p>別スレッドでrecv()を自動的に呼び出す間隔を設定する。 </p>
 <dl class="section since"><dt>Since</dt><dd>ver2.0</dd></dl>
 <ul>
-<li><a class="el" href="c__wcf_2client_8h.html#ad84e50d3482bedb7ccfa278bfc00120c" title="サーバーへの接続を別スレッドで開始する。">wcfStart()</a> や <a class="el" href="c__wcf_2client_8h.html#ae1ecf74ce829348a3f2c41b665572838" title="サーバーへの接続を別スレッドで開始し、成功するまで待機する。">wcfWaitConnection()</a> より前に設定する必要がある。</li>
+<li><a class="el" href="c__wcf_2client_8h.html#ad84e50d3482bedb7ccfa278bfc00120c" title="サーバーへの接続を別スレッドで開始する。">wcfStart()</a> や <a class="el" href="c__wcf_2client_8h.html#aa7da62a9b282f6dcc1c0d4613799e337" title="サーバーへの接続を別スレッドで開始し、成功するまで待機する。">wcfWaitConnection()</a> より前に設定する必要がある。</li>
 <li>autoRecvが有効の場合、別スレッドで一定間隔ごとにrecv()が呼び出され、 各種コールバック(onEntry, onChange, <a class="el" href="classwebcface_1_1Func.html#a2f3ba42b8784ef2a1b3014ef617c1249" title="関数を実行する (同期)">Func::run()</a>など)も別のスレッドで呼ばれることになる (そのためmutexなどを適切に設定すること)</li>
 <li>デフォルトでは無効なので、手動でrecv()を呼び出す必要がある</li>
 </ul>
@@ -2087,8 +2087,13 @@ requires (!std::convertible_to&lt;<a class="el" href="classwebcface_1_1TemporalC
 </div><div class="memdoc">
 
 <p>通信速度が更新された時のイベント </p>
-<p>コールバックの型は void(Member)</p>
-<p>通常は約5秒に1回更新される。 <a class="el" href="classwebcface_1_1Member.html#a4b2f7dcfbdbf338436db24cb765465ed" title="通信速度を調べる">pingStatus()</a> と同様、通信速度データのリクエストも行う。 </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="classwebcface_1_1Member.html#a4b2f7dcfbdbf338436db24cb765465ed" title="通信速度を調べる">pingStatus()</a> </dd></dl>
+<ul>
+<li>コールバックの型は void(Member)</li>
+<li>通常は約5秒に1回更新される。</li>
+<li><a class="el" href="classwebcface_1_1Member.html#a4b2f7dcfbdbf338436db24cb765465ed" title="通信速度を調べる">pingStatus()</a> と同様、通信速度データのリクエストも行う。</li>
+<li>ver2.0〜 Client自身に対しても使用可能</li>
+</ul>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classwebcface_1_1Member.html#a4b2f7dcfbdbf338436db24cb765465ed" title="通信速度を調べる">pingStatus()</a> </dd></dl>
 
 </div>
 </div>
@@ -2485,7 +2490,11 @@ requires std::same_as&lt;<a class="el" href="classwebcface_1_1TemporalComponent.
 </div><div class="memdoc">
 
 <p>通信速度を調べる </p>
-<p>初回の呼び出しで通信速度データをリクエストし、 <a class="el" href="classwebcface_1_1Client.html#ad55f80ed3cd8b6c4f247763b747016af" title="送信用にセットしたデータをすべて送信キューに入れる。">sync()</a>後通信速度が得られるようになる </p><dl class="section return"><dt>Returns</dt><dd>初回→ std::nullopt, 2回目以降(取得できれば)→ pingの往復時間 (ms) </dd></dl>
+<ul>
+<li>初回の呼び出しで通信速度データをリクエストし、 <a class="el" href="classwebcface_1_1Client.html#ad55f80ed3cd8b6c4f247763b747016af" title="送信用にセットしたデータをすべて送信キューに入れる。">sync()</a>後通信速度が得られるようになる</li>
+<li>ver2.0〜 Client自身に対しても使用可能 (<a class="el" href="classwebcface_1_1Member.html#a4b2f7dcfbdbf338436db24cb765465ed" title="通信速度を調べる">Client::pingStatus()</a> または member("自分の名前").<a class="el" href="classwebcface_1_1Member.html#a4b2f7dcfbdbf338436db24cb765465ed" title="通信速度を調べる">pingStatus()</a>)</li>
+</ul>
+<dl class="section return"><dt>Returns</dt><dd>初回→ std::nullopt, 2回目以降(取得できれば)→ pingの往復時間 (ms) </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classwebcface_1_1Member.html#af4b6751a9cd2712d8d6a0209fa6f5f85" title="通信速度が更新された時のイベント">onPing()</a> </dd></dl>
 
 </div>
@@ -2800,7 +2809,7 @@ template&lt;<a class="el" href="classwebcface_1_1TemporalComponent.html">typenam
 
 <p>サーバーへの接続を別スレッドで開始する。 </p>
 <dl class="section since"><dt>Since</dt><dd>ver1.2 </dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classwebcface_1_1Client.html#a806d469a09f6c432330ae1adfdda52a7" title="サーバーへの接続を別スレッドで開始し、成功するまで待機する。">waitConnection()</a>, <a class="el" href="classwebcface_1_1Client.html#acd307ea4b7bbb4a8f54b2b14efa04557" title="通信が切断されたときに自動で再試行するかどうかを設定する。">autoReconnect()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classwebcface_1_1Client.html#a0cd011114cf8a2f4bc4895e4d2ee89ba" title="サーバーへの接続を別スレッドで開始し、成功するまで待機する。">waitConnection()</a>, <a class="el" href="classwebcface_1_1Client.html#acd307ea4b7bbb4a8f54b2b14efa04557" title="通信が切断されたときに自動で再試行するかどうかを設定する。">autoReconnect()</a> </dd></dl>
 
 </div>
 </div>
@@ -3171,8 +3180,8 @@ template&lt;<a class="el" href="classwebcface_1_1TemporalComponent.html">typenam
 
 </div>
 </div>
-<a id="a806d469a09f6c432330ae1adfdda52a7" name="a806d469a09f6c432330ae1adfdda52a7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a806d469a09f6c432330ae1adfdda52a7">&#9670;&#160;</a></span>waitConnection()</h2>
+<a id="a0cd011114cf8a2f4bc4895e4d2ee89ba" name="a0cd011114cf8a2f4bc4895e4d2ee89ba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0cd011114cf8a2f4bc4895e4d2ee89ba">&#9670;&#160;</a></span>waitConnection()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3180,7 +3189,8 @@ template&lt;<a class="el" href="classwebcface_1_1TemporalComponent.html">typenam
         <tr>
           <td class="memname"><a class="el" href="classwebcface_1_1TemporalComponent.html">void</a> waitConnection </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype">std::chrono::microseconds&#160;</td>
+          <td class="paramname"><em>interval</em> = <code>std::chrono::microseconds(100)</code></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -3190,8 +3200,9 @@ template&lt;<a class="el" href="classwebcface_1_1TemporalComponent.html">typenam
 <dl class="section since"><dt>Since</dt><dd>ver1.2</dd></dl>
 <ul>
 <li>ver1.11.1以降: autoReconnect が false の場合は1回目の接続のみ待機し、失敗しても再接続せずreturnする。</li>
+<li>ver2.0以降: autoRecvが無効の場合、初期化が完了するまで一定間隔 (デフォルト=100μs) ごとに <a class="el" href="classwebcface_1_1Client.html#a3a359a0ae2735040a1ae270ee1d6e597" title="サーバーからデータを受信する">recv()</a> をこのスレッドで呼び出す。</li>
 </ul>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classwebcface_1_1Client.html#a60de64d75454385b23995437f1d72669" title="サーバーへの接続を別スレッドで開始する。">start()</a>, <a class="el" href="classwebcface_1_1Client.html#acd307ea4b7bbb4a8f54b2b14efa04557" title="通信が切断されたときに自動で再試行するかどうかを設定する。">autoReconnect()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classwebcface_1_1Client.html#a60de64d75454385b23995437f1d72669" title="サーバーへの接続を別スレッドで開始する。">start()</a>, <a class="el" href="classwebcface_1_1Client.html#acd307ea4b7bbb4a8f54b2b14efa04557" title="通信が切断されたときに自動で再試行するかどうかを設定する。">autoReconnect()</a>, <a class="el" href="classwebcface_1_1Client.html#a80244ad7d757e128ddb3128a82fb3329" title="別スレッドでrecv()を自動的に呼び出す間隔を設定する。">autoRecv()</a> </dd></dl>
 
 </div>
 </div>
@@ -3332,7 +3343,7 @@ template&lt;<a class="el" href="classwebcface_1_1TemporalComponent.html">typenam
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="classwebcface_1_1Client.html">Client</a></li>
-    <li class="footer">Generated on Mon Jul 8 2024 11:12:14 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Mon Jul 8 2024 15:13:53 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

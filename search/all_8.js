@@ -8,6 +8,6 @@ var searchData=
   ['85_5',['log (kind = 85)',['../md_90__message.html#autotoc_md194',1,'']]],
   ['86_6',['log req (kind = 86)',['../md_90__message.html#autotoc_md195',1,'']]],
   ['87_7',['sync (kind = 87)',['../md_90__message.html#autotoc_md152',1,'']]],
-  ['88_8',['svr version (kind = 88)',['../md_90__message.html#autotoc_md148',1,'']]],
+  ['88_8',['sync init end (kind = 88)',['../md_90__message.html#autotoc_md148',1,'']]],
   ['89_9',['ping (kind = 89)',['../md_90__message.html#autotoc_md149',1,'']]]
 ];

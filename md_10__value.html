@@ -418,11 +418,12 @@ Entry</h2>
 </div><!-- fragment --></li>
 </ul>
 </div><div class="tabbed"></div><p>Member::onValueEntry() で新しくデータが追加されたときのコールバックを設定できます。</p>
-<p>ただし、コールバックを設定する前から存在したデータについてはコールバックは呼び出されません。 すべてのデータに対してコールバックが呼ばれるようにしたい場合は、 Member名がわかっていれば初回の Client::sync() 前に、 そうでなければ Client::onMemberEntry() イベントのコールバックの中で各種イベントを設定すればよいです。</p>
+<p>ただし、コールバックを設定する前から存在したデータについてはコールバックは呼び出されません。 すべてのデータに対してコールバックが呼ばれるようにしたい場合は、 Member名がわかっていれば<del>初回の Client::sync()</del> Client::start() 前に、 そうでなければ Client::onMemberEntry() イベントのコールバックの中で各種イベントを設定すればよいです。</p>
 <p>イベントの詳細な使い方はonMemberEntryと同様です(<a class="el" href="md_02__member.html">Member</a> のページを参照してください)。</p>
 <div class="tabbed"></div><div class="tabbed"><ul>
 <li><p class="startli"><b class="tab-title">C++</b> <span class="since-c">2.0</span> </p><div class="fragment"><div class="line">wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).onValueEntry([](<a class="code hl_class" href="classwebcface_1_1Value.html">webcface::Value</a> v){ <span class="comment">/* ... */</span> });</div>
 </div><!-- fragment --><p class="startli">ver1.11以前では <code>.onValueEntry().appendListener(...)</code></p>
+<p class="startli"><span class="since-c">2.0</span> Client::waitConnection()はこのクライアントが接続する前から存在したデータすべてについてコールバックを呼んでからreturnします。</p>
 </li>
 <li><b class="tab-title">JavaScript</b> <div class="fragment"><div class="line">import { Value } from &quot;webcface&quot;;</div>
 <div class="line">wcli.member(&quot;foo&quot;).onValueEntry.on((v: Value) =&gt; { /* ... */ });</div>
@@ -487,7 +488,7 @@ Event</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon Jul 8 2024 11:12:14 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Mon Jul 8 2024 15:13:52 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

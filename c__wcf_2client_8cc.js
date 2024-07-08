@@ -16,6 +16,6 @@ var c__wcf_2client_8cc =
     [ "wcfValD", "c__wcf_2client_8cc.html#aee7f0f53dcb913e408f3032f7c9f796b", null ],
     [ "wcfValI", "c__wcf_2client_8cc.html#aa371cd469c55d58b0332f2261a120533", null ],
     [ "wcfValS", "c__wcf_2client_8cc.html#aef51e8d5db05da0a19a3c4f58a4c5193", null ],
-    [ "wcfWaitConnection", "c__wcf_2client_8cc.html#ae1ecf74ce829348a3f2c41b665572838", null ],
+    [ "wcfWaitConnection", "c__wcf_2client_8cc.html#aa7da62a9b282f6dcc1c0d4613799e337", null ],
     [ "wcfWaitRecv", "c__wcf_2client_8cc.html#ae22ffc6f00fd812e9d7d1cfee86101c3", null ]
 ];

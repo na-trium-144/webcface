@@ -176,9 +176,9 @@ Functions</h2></td></tr>
 <tr class="memitem:ad84e50d3482bedb7ccfa278bfc00120c" id="r_ad84e50d3482bedb7ccfa278bfc00120c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="def__types_8h.html#a3ac4b9c21f837154212676efa87b0b40">wcfStatus</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__wcf_2client_8cc.html#ad84e50d3482bedb7ccfa278bfc00120c">wcfStart</a> (<a class="el" href="def__types_8h.html#a11e35bfe0822747dfabcce7f5220016a">wcfClient</a> *<a class="el" href="classwebcface_1_1TemporalComponent.html">wcli</a>)</td></tr>
 <tr class="memdesc:ad84e50d3482bedb7ccfa278bfc00120c"><td class="mdescLeft">&#160;</td><td class="mdescRight">サーバーへの接続を別スレッドで開始する。  <br /></td></tr>
 <tr class="separator:ad84e50d3482bedb7ccfa278bfc00120c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae1ecf74ce829348a3f2c41b665572838" id="r_ae1ecf74ce829348a3f2c41b665572838"><td class="memItemLeft" align="right" valign="top"><a class="el" href="def__types_8h.html#a3ac4b9c21f837154212676efa87b0b40">wcfStatus</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__wcf_2client_8cc.html#ae1ecf74ce829348a3f2c41b665572838">wcfWaitConnection</a> (<a class="el" href="def__types_8h.html#a11e35bfe0822747dfabcce7f5220016a">wcfClient</a> *<a class="el" href="classwebcface_1_1TemporalComponent.html">wcli</a>)</td></tr>
-<tr class="memdesc:ae1ecf74ce829348a3f2c41b665572838"><td class="mdescLeft">&#160;</td><td class="mdescRight">サーバーへの接続を別スレッドで開始し、成功するまで待機する。  <br /></td></tr>
-<tr class="separator:ae1ecf74ce829348a3f2c41b665572838"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa7da62a9b282f6dcc1c0d4613799e337" id="r_aa7da62a9b282f6dcc1c0d4613799e337"><td class="memItemLeft" align="right" valign="top"><a class="el" href="def__types_8h.html#a3ac4b9c21f837154212676efa87b0b40">wcfStatus</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__wcf_2client_8cc.html#aa7da62a9b282f6dcc1c0d4613799e337">wcfWaitConnection</a> (<a class="el" href="def__types_8h.html#a11e35bfe0822747dfabcce7f5220016a">wcfClient</a> *<a class="el" href="classwebcface_1_1TemporalComponent.html">wcli</a>, <a class="el" href="classwebcface_1_1TemporalComponent.html">int</a> <a class="el" href="classwebcface_1_1TemporalComponent.html">interval</a>)</td></tr>
+<tr class="memdesc:aa7da62a9b282f6dcc1c0d4613799e337"><td class="mdescLeft">&#160;</td><td class="mdescRight">サーバーへの接続を別スレッドで開始し、成功するまで待機する。  <br /></td></tr>
+<tr class="separator:aa7da62a9b282f6dcc1c0d4613799e337"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acba49f7a260d842ab77f040071e95798" id="r_acba49f7a260d842ab77f040071e95798"><td class="memItemLeft" align="right" valign="top"><a class="el" href="def__types_8h.html#a3ac4b9c21f837154212676efa87b0b40">wcfStatus</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__wcf_2client_8cc.html#acba49f7a260d842ab77f040071e95798">wcfAutoReconnect</a> (<a class="el" href="def__types_8h.html#a11e35bfe0822747dfabcce7f5220016a">wcfClient</a> *<a class="el" href="classwebcface_1_1TemporalComponent.html">wcli</a>, <a class="el" href="classwebcface_1_1TemporalComponent.html">int</a> <a class="el" href="classwebcface_1_1TemporalComponent.html">enabled</a>)</td></tr>
 <tr class="memdesc:acba49f7a260d842ab77f040071e95798"><td class="mdescLeft">&#160;</td><td class="mdescRight">通信が切断されたときに自動で再試行するかどうかを設定する。  <br /></td></tr>
 <tr class="separator:acba49f7a260d842ab77f040071e95798"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -277,7 +277,7 @@ Functions</h2></td></tr>
 <p>別スレッドでwcfRecv()を自動的に呼び出す間隔を設定する。 </p>
 <dl class="section since"><dt>Since</dt><dd>ver2.0</dd></dl>
 <ul>
-<li><a class="el" href="c__wcf_2client_8h.html#ad84e50d3482bedb7ccfa278bfc00120c" title="サーバーへの接続を別スレッドで開始する。">wcfStart()</a> や <a class="el" href="c__wcf_2client_8h.html#ae1ecf74ce829348a3f2c41b665572838" title="サーバーへの接続を別スレッドで開始し、成功するまで待機する。">wcfWaitConnection()</a> より前に設定する必要がある。</li>
+<li><a class="el" href="c__wcf_2client_8h.html#ad84e50d3482bedb7ccfa278bfc00120c" title="サーバーへの接続を別スレッドで開始する。">wcfStart()</a> や <a class="el" href="c__wcf_2client_8h.html#aa7da62a9b282f6dcc1c0d4613799e337" title="サーバーへの接続を別スレッドで開始し、成功するまで待機する。">wcfWaitConnection()</a> より前に設定する必要がある。</li>
 <li>autoRecvが有効の場合、別スレッドで一定間隔ごとにrecv()が呼び出され、 各種コールバック(onEntry, onChange, Funcなど)も別のスレッドで呼ばれることになる (そのためmutexなどを適切に設定すること)</li>
 <li>デフォルトでは無効なので、手動でrecv()を呼び出す必要がある</li>
 </ul>
@@ -584,7 +584,7 @@ Functions</h2></td></tr>
 <p>サーバーへの接続を別スレッドで開始する。 </p>
 <dl class="section since"><dt>Since</dt><dd>ver1.5 </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>wcliが無効ならWCF_BAD_WCLI </dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="c__wcf_2client_8h.html#ae1ecf74ce829348a3f2c41b665572838" title="サーバーへの接続を別スレッドで開始し、成功するまで待機する。">wcfWaitConnection()</a>, <a class="el" href="c__wcf_2client_8h.html#acba49f7a260d842ab77f040071e95798" title="通信が切断されたときに自動で再試行するかどうかを設定する。">wcfAutoReconnect()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="c__wcf_2client_8h.html#aa7da62a9b282f6dcc1c0d4613799e337" title="サーバーへの接続を別スレッドで開始し、成功するまで待機する。">wcfWaitConnection()</a>, <a class="el" href="c__wcf_2client_8h.html#acba49f7a260d842ab77f040071e95798" title="通信が切断されたときに自動で再試行するかどうかを設定する。">wcfAutoReconnect()</a> </dd></dl>
 
 </div>
 </div>
@@ -675,8 +675,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ae1ecf74ce829348a3f2c41b665572838" name="ae1ecf74ce829348a3f2c41b665572838"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae1ecf74ce829348a3f2c41b665572838">&#9670;&#160;</a></span>wcfWaitConnection()</h2>
+<a id="aa7da62a9b282f6dcc1c0d4613799e337" name="aa7da62a9b282f6dcc1c0d4613799e337"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa7da62a9b282f6dcc1c0d4613799e337">&#9670;&#160;</a></span>wcfWaitConnection()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -685,8 +685,18 @@ Functions</h2></td></tr>
           <td class="memname"><a class="el" href="def__types_8h.html#a3ac4b9c21f837154212676efa87b0b40">wcfStatus</a> wcfWaitConnection </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="def__types_8h.html#a11e35bfe0822747dfabcce7f5220016a">wcfClient</a> *&#160;</td>
-          <td class="paramname"><em>wcli</em></td><td>)</td>
+          <td class="paramname"><em>wcli</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype"><a class="el" href="classwebcface_1_1TemporalComponent.html">int</a>&#160;</td>
+          <td class="paramname"><em>interval</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -696,6 +706,13 @@ Functions</h2></td></tr>
 <ul>
 <li>wcfAutoReconnect が無効の場合は1回目の接続のみ待機し、 失敗しても再接続せずreturnする。</li>
 </ul>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">wcli</td><td></td></tr>
+    <tr><td class="paramname">interval</td><td>autoRecvが無効の場合、初期化が完了するまで一定間隔ごとに <a class="el" href="c__wcf_2client_8h.html#a121c710bacfa50f7f0c96763887d7895" title="サーバーからデータを受信する">wcfRecv()</a> をこのスレッドで呼び出す。 </td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section return"><dt>Returns</dt><dd>wcliが無効ならWCF_BAD_WCLI </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="c__wcf_2client_8h.html#ad84e50d3482bedb7ccfa278bfc00120c" title="サーバーへの接続を別スレッドで開始する。">wcfStart()</a>, <a class="el" href="c__wcf_2client_8h.html#acba49f7a260d842ab77f040071e95798" title="通信が切断されたときに自動で再試行するかどうかを設定する。">wcfAutoReconnect()</a> </dd></dl>
 
@@ -733,7 +750,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_db3a54907829b36871118d03417739cd.html">client</a></li><li class="navelem"><a class="el" href="dir_b565d458ba0ce2faccd0ea2cd60c04eb.html">src</a></li><li class="navelem"><a class="el" href="dir_81dc01503b4758498154e925b296735c.html">c_wcf</a></li><li class="navelem"><a class="el" href="c__wcf_2client_8cc.html">client.cc</a></li>
-    <li class="footer">Generated on Mon Jul 8 2024 11:12:14 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Mon Jul 8 2024 15:13:52 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

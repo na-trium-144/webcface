@@ -13,6 +13,6 @@ var c__wcf_2client_8h =
     [ "wcfRecv", "c__wcf_2client_8h.html#a121c710bacfa50f7f0c96763887d7895", null ],
     [ "wcfStart", "c__wcf_2client_8h.html#ad84e50d3482bedb7ccfa278bfc00120c", null ],
     [ "wcfSync", "c__wcf_2client_8h.html#ad675449898eb92ab9461d31fe88b4896", null ],
-    [ "wcfWaitConnection", "c__wcf_2client_8h.html#ae1ecf74ce829348a3f2c41b665572838", null ],
+    [ "wcfWaitConnection", "c__wcf_2client_8h.html#aa7da62a9b282f6dcc1c0d4613799e337", null ],
     [ "wcfWaitRecv", "c__wcf_2client_8h.html#ae22ffc6f00fd812e9d7d1cfee86101c3", null ]
 ];

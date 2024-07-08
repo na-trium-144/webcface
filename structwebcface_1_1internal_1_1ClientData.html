@@ -196,6 +196,8 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a996478ee74e409baf746715e27e4f1ee" id="r_a996478ee74e409baf746715e27e4f1ee"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1encoding_1_1SharedString.html">SharedString</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1internal_1_1ClientData.html#a996478ee74e409baf746715e27e4f1ee">self_member_name</a></td></tr>
 <tr class="memdesc:a996478ee74e409baf746715e27e4f1ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Client自身の名前  <br /></td></tr>
 <tr class="separator:a996478ee74e409baf746715e27e4f1ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a279766b6bcff49095f88404ea18f9ed2" id="r_a279766b6bcff49095f88404ea18f9ed2"><td class="memItemLeft" align="right" valign="top">std::optional&lt; <a class="el" href="classwebcface_1_1TemporalComponent.html">unsigned</a> <a class="el" href="classwebcface_1_1TemporalComponent.html">int</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1internal_1_1ClientData.html#a279766b6bcff49095f88404ea18f9ed2">self_member_id</a></td></tr>
+<tr class="separator:a279766b6bcff49095f88404ea18f9ed2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a799f0bdf95425c9fc511fedb68bbd37b" id="r_a799f0bdf95425c9fc511fedb68bbd37b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1encoding_1_1SharedString.html">SharedString</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1internal_1_1ClientData.html#a799f0bdf95425c9fc511fedb68bbd37b">host</a></td></tr>
 <tr class="separator:a799f0bdf95425c9fc511fedb68bbd37b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a63c89c04d1feae07ca35558055155ffb" id="r_a63c89c04d1feae07ca35558055155ffb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1TemporalComponent.html">int</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1internal_1_1ClientData.html#a63c89c04d1feae07ca35558055155ffb">port</a></td></tr>
@@ -226,6 +228,8 @@ Public Attributes</h2></td></tr>
 <tr class="separator:ac12c0189fb9871dca59ac653ce95b4cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab36823025f12a809217f7771125658c2" id="r_ab36823025f12a809217f7771125658c2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1TemporalComponent.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1internal_1_1ClientData.html#ab36823025f12a809217f7771125658c2">connected</a> = <a class="el" href="classwebcface_1_1TemporalComponent.html">false</a></td></tr>
 <tr class="separator:ab36823025f12a809217f7771125658c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a58c7facb25080a3b127ced037129ef98" id="r_a58c7facb25080a3b127ced037129ef98"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1TemporalComponent.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1internal_1_1ClientData.html#a58c7facb25080a3b127ced037129ef98">sync_init_end</a> = <a class="el" href="classwebcface_1_1TemporalComponent.html">false</a></td></tr>
+<tr class="separator:a58c7facb25080a3b127ced037129ef98"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aca3bb1f15de8217014145111f65bc1be" id="r_aca3bb1f15de8217014145111f65bc1be"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1TemporalComponent.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1internal_1_1ClientData.html#aca3bb1f15de8217014145111f65bc1be">do_ws_init</a> = <a class="el" href="classwebcface_1_1TemporalComponent.html">false</a></td></tr>
 <tr class="separator:aca3bb1f15de8217014145111f65bc1be"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a815008ed8bea2283e3b0d28036b5e973" id="r_a815008ed8bea2283e3b0d28036b5e973"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1TemporalComponent.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1internal_1_1ClientData.html#a815008ed8bea2283e3b0d28036b5e973">using_curl</a> = <a class="el" href="classwebcface_1_1TemporalComponent.html">false</a></td></tr>
@@ -785,7 +789,7 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>message_thread, connection_thread, recv_thread間の同期 </p>
-<p>closing, connected, do_ws_init, do_ws_recv using_curl, message_queue が変化した時notifyする </p>
+<p>closing, connected, do_ws_init, do_ws_recv using_curl, message_queue, sync_init_end が変化した時notifyする </p>
 
 </div>
 </div>
@@ -1397,6 +1401,20 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="a279766b6bcff49095f88404ea18f9ed2" name="a279766b6bcff49095f88404ea18f9ed2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a279766b6bcff49095f88404ea18f9ed2">&#9670;&#160;</a></span>self_member_id</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::optional&lt;<a class="el" href="classwebcface_1_1TemporalComponent.html">unsigned</a> <a class="el" href="classwebcface_1_1TemporalComponent.html">int</a>&gt; self_member_id</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a996478ee74e409baf746715e27e4f1ee" name="a996478ee74e409baf746715e27e4f1ee"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a996478ee74e409baf746715e27e4f1ee">&#9670;&#160;</a></span>self_member_name</h2>
 
@@ -1452,6 +1470,21 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="a58c7facb25080a3b127ced037129ef98" name="a58c7facb25080a3b127ced037129ef98"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a58c7facb25080a3b127ced037129ef98">&#9670;&#160;</a></span>sync_init_end</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1TemporalComponent.html">bool</a> sync_init_end = <a class="el" href="classwebcface_1_1TemporalComponent.html">false</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>SyncInitEndを受信したらtrue 切断時にfalseにもどす </p>
 
 </div>
 </div>
@@ -1621,7 +1654,7 @@ Public Attributes</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="namespacewebcface_1_1internal.html">internal</a></li><li class="navelem"><a class="el" href="structwebcface_1_1internal_1_1ClientData.html">ClientData</a></li>
-    <li class="footer">Generated on Mon Jul 8 2024 11:12:14 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Mon Jul 8 2024 15:13:53 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

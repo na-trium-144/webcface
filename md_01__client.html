@@ -186,7 +186,11 @@ $(document).ready(function(){initNavTree('md_01__client.html',''); initResizable
 <div class="ttc" id="aclasswebcface_1_1Client_html"><div class="ttname"><a href="classwebcface_1_1Client.html">webcface::Client</a></div><div class="ttdoc">サーバーに接続するクライアント。</div><div class="ttdef"><b>Definition</b> client.h:14</div></div>
 <div class="ttc" id="aclient_8h_html"><div class="ttname"><a href="client_8h.html">client.h</a></div></div>
 </div><!-- fragment --><ul>
-<li><code>start()</code> の代わりに <code>waitConnection()</code> を使うと接続が完了するまで待機することができます。</li>
+<li><del><code>start()</code> の代わりに <code>waitConnection()</code> を使うと接続が完了するまで待機することができます。</del></li>
+<li><span class="since-c">2.0</span> <code>start()</code> の代わりに <code>waitConnection(interval)</code> を使うと接続が完了してEntry(=他のクライアントが送信しているデータのリスト)をすべて受信するまで待機することができます。<ul>
+<li>waitConnectionは通信完了までの間interval間隔でrecv()を呼び出します。(デフォルト: 100μs) 詳細は後述の送受信の説明を参照</li>
+</ul>
+</li>
 <li>接続できているかどうかは <code>wcli.connected()</code> で取得できます。</li>
 <li>通信が切断された場合は自動で再接続します。<ul>
 <li><span class="since-c">1.11.1</span> <code>autoReconnect(false)</code>をすると自動で再接続しなくなります。 その場合<code>waitConnection()</code>は1度だけ接続を試行し失敗してもreturnするという挙動になります。</li>
@@ -229,6 +233,10 @@ $(document).ready(function(){initNavTree('md_01__client.html',''); initResizable
 <div class="ttc" id="ac__wcf_2client_8h_html_a91204ffa8e81e5821926147321aaf101"><div class="ttname"><a href="c__wcf_2client_8h.html#a91204ffa8e81e5821926147321aaf101">wcfInit</a></div><div class="ttdeci">wcfClient * wcfInit(const char *name, const char *host, int port)</div><div class="ttdoc">クライアントを初期化する</div><div class="ttdef"><b>Definition</b> client.cc:4</div></div>
 </div><!-- fragment --><ul>
 <li><span class="since-c">2.0</span> ワイド文字列を使用したい場合はそれぞれ <code><a class="el" href="c__wcf_2client_8h.html#a2288879b5fc641beba09ec3800cd5a38" title="クライアントを初期化する (アドレスとポートはデフォルト, wstring)">wcfInitDefaultW()</a></code>, <code><a class="el" href="c__wcf_2client_8h.html#a7087bccb0f309cac0104c179954395a8" title="クライアントを初期化する (wstring)">wcfInitW()</a></code> (詳細はこのページのEncodingの章を参照)</li>
+<li><span class="since-c">2.0</span> <code><a class="el" href="c__wcf_2client_8h.html#ad84e50d3482bedb7ccfa278bfc00120c" title="サーバーへの接続を別スレッドで開始する。">wcfStart()</a></code> の代わりに <code>wcfWaitConnection(interval)</code> を使うと接続が完了してEntry(=他のクライアントが送信しているデータのリスト)をすべて受信するまで待機することができます。<ul>
+<li>wcfWaitConnectionは通信完了までの間interval(μs)間隔でrecv()を呼び出します。 (C++側のデフォルトは100なので、理由がなければ100程度を指定しておけばよいです。 詳細は後述の送受信の説明を参照)</li>
+</ul>
+</li>
 <li>接続できているかどうかは <code>wcfIsConnected(wcli)</code> で取得できます。</li>
 <li>通信が切断された場合は自動で再接続します。</li>
 </ul>
@@ -471,7 +479,7 @@ Encoding</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon Jul 8 2024 11:12:14 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Mon Jul 8 2024 15:13:52 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>
