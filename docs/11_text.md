@@ -73,29 +73,29 @@ JavaScriptではsetAny, getAny関数を使うと文字列以外のデータを�
 
 <!--Valueと同様名前に半角ピリオドを含めると、WebUI上ではフォルダアイコンで表示されグループ化されて表示されます。-->
 
-<!--
-### 複数の値をまとめて送る
-ver1.10で削除
 
-<div class="tabbed">
+<details><summary>(deprecated, ver1.10で削除) C++でwebcface::Text::Dictを使った値のセット</summary>
 
-- <b class="tab-title">C++</b>
-    webcface::Text::Dict オブジェクトを使うと複数の値をまとめて送ることができます。
-    ```cpp
-    struct A {
-        std::string x, y;
-        operator webcface::Text::Dict() const {
-            return {
-                {"x", x},
-                {"y", y},
-                // Value::Dictと同様、入れ子にもできます
-            }
+webcface::Text::Dict オブジェクトを使うと複数の値をまとめて送ることができます。
+```cpp
+struct A {
+    std::string x, y;
+    operator webcface::Text::Dict() const {
+        return {
+            {"x", x},
+            {"y", y},
+            // Value::Dictと同様、入れ子にもできます
         }
-    };
+    }
+};
 
-    A a_instance;
-    wcli.text("a").set(a_instance); // Dictにキャストされる
-    ```
+A a_instance;
+wcli.text("a").set(a_instance); // Dictにキャストされる
+```
+
+</details>
+
+<!--
 - <b class="tab-title">JavaScript</b>
     オブジェクトを渡すことができます。
     ```ts

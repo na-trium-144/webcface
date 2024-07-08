@@ -464,6 +464,10 @@ AsyncFuncResultからは started と result が取得できます。
         }
     });
     ```
+    onStarted, onResult を設定した時点ですでに関数の実行が完了していた場合は、そのときにコールバックが呼ばれます。
+    コールバックはどの状況で設定したとしても必ず1回呼ばれます。
+    (呼ばれたあとにコールバックを再設定したりしても2度目が呼ばれることはありません)
+
     \warning
     onStarted ではコールバックの引数は`bool`ですが、
     onResult ではコールバックの引数は`std::shared_future<webcface::ValAdaptor>`です。
