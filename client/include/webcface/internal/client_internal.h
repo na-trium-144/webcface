@@ -50,10 +50,10 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
     // std::mutex curl_m;
     SharedString host;
     int port;
-    bool current_curl_connected;
-    void *current_curl_handle;
+    bool current_curl_connected = false;
+    void *current_curl_handle = nullptr;
     std::string current_curl_path;
-    std::string current_ws_buf;
+    std::string current_ws_buf = "";
 
     /*!
      * \brief message_queueにたまったメッセージを送信するスレッド

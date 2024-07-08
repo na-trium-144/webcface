@@ -30,11 +30,10 @@ Client::Client(const SharedString &name,
 internal::ClientData::ClientData(const SharedString &name,
                                  const SharedString &host, int port)
     : std::enable_shared_from_this<ClientData>(), self_member_name(name),
-      host(host), port(port), current_curl_handle(nullptr), current_curl_path(),
-      current_ws_buf(), value_store(name), text_store(name), func_store(name),
-      view_store(name), image_store(name), robot_model_store(name),
-      canvas3d_store(name), canvas2d_store(name), log_store(name),
-      sync_time_store(name) {
+      host(host), port(port), current_curl_path(), current_ws_buf(),
+      value_store(name), text_store(name), func_store(name), view_store(name),
+      image_store(name), robot_model_store(name), canvas3d_store(name),
+      canvas2d_store(name), log_store(name), sync_time_store(name) {
     static auto stderr_sink =
         std::make_shared<spdlog::sinks::stderr_color_sink_mt>();
     logger_internal = std::make_shared<spdlog::logger>(
