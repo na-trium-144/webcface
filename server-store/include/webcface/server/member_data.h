@@ -58,20 +58,38 @@ struct WEBCFACE_DLL MemberData {
     StrMap1<std::vector<message::ViewComponent>> view;
     StrMap1<std::vector<message::Canvas3DComponent>> canvas3d;
     StrMap1<message::Canvas2DData> canvas2d;
+
     StrMap1<message::ImageFrame> image;
+    /*!
+     * 画像が変化したことを知らせるcv
+     * リクエストする側のcvに対して、リクエストする側も画像送信側もnotifyする
+     * * image_req_changedを変えるときnotify
+     * * image_changedが変えるとき全メンバーの中でこれをリクエストしてるやつをすべてnotify
+     * * closingのときnotify、全メンバーの中でこれをリクエストしてるやつをすべてnotify
+     * 
+     * \todo 今後いつかマルチスレッド化したときにデッドロックする気がする
+     */
+    std::condition_variable image_cv;
+    std::mutex image_m;
+    /*!
+     * 自分の画像が変化したことをスレッドに知らせる
+     * リクエストされてるメンバーのcvを起こしに行く
+     */
     StrMap1<int> image_changed;
-    // 画像が変化したことを知らせるcv
-    StrMap1<std::mutex> image_m;
-    StrMap1<std::condition_variable> image_cv;
+    /*!
+     * リクエストが変化したことをスレッドに知らせる
+     */
+    StrMap2<int> image_req_changed;
+    /*!
+     * 画像をそれぞれのリクエストに合わせて変換するスレッド
+     * (リクエスト側がもつ)
+     */
+    StrMap2<message::ImageReq> image_req_info;
 
     std::chrono::system_clock::time_point last_sync_time;
     //! リクエストしているmember,nameのペア
     StrMap2<unsigned int> value_req, text_req, view_req, image_req,
         robot_model_req, canvas3d_req, canvas2d_req;
-    // リクエストが変化したことをスレッドに知らせる
-    StrMap2<int> image_req_changed;
-    // 画像をそれぞれのリクエストに合わせて変換するスレッド
-    StrMap2<message::ImageReq> image_req_info;
 
     // image_convert_thread[imageのmember][imageのfield] =
     // imageを変換してthisに送るスレッド
