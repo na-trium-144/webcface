@@ -14,7 +14,7 @@
 #endif
 
 WEBCFACE_NS_BEGIN
-namespace Server {
+namespace server {
 std::vector<std::string>
 getIpAddresses([[maybe_unused]] const std::shared_ptr<spdlog::logger> &logger) {
     std::vector<std::string> ret;
@@ -98,5 +98,5 @@ getIpAddresses([[maybe_unused]] const std::shared_ptr<spdlog::logger> &logger) {
 
     return ret;
 }
-} // namespace Server
+} // namespace server
 WEBCFACE_NS_END

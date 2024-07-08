@@ -6,7 +6,7 @@
 #include <spdlog/logger.h>
 
 WEBCFACE_NS_BEGIN
-namespace Server {
+namespace server {
 WEBCFACE_DLL std::vector<std::string>
 getIpAddresses(const std::shared_ptr<spdlog::logger> &logger);
 }

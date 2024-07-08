@@ -8,7 +8,7 @@
 #include <vector>
 
 WEBCFACE_NS_BEGIN
-namespace Server {
+namespace server {
 struct ServerStorage;
 struct MemberData;
 
@@ -44,5 +44,5 @@ class WEBCFACE_DLL Server {
     Server(Server &&) = delete;
     Server &operator=(Server &&) = delete;
 };
-} // namespace Server
+} // namespace server
 WEBCFACE_NS_END

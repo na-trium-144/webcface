@@ -8,7 +8,7 @@
 #include <webcface/encoding/encoding.h>
 
 WEBCFACE_NS_BEGIN
-namespace Server {
+namespace server {
 struct MemberData;
 using MemberDataPtr = std::shared_ptr<MemberData>;
 
@@ -88,5 +88,5 @@ struct WEBCFACE_DLL ServerStorage {
     void forEachWithName(const std::function<void(MemberDataPtr)> &func);
 };
 
-} // namespace Server
+} // namespace server
 WEBCFACE_NS_END

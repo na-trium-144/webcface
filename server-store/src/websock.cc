@@ -12,7 +12,7 @@
 #include <spdlog/sinks/stdout_color_sinks.h>
 
 WEBCFACE_NS_BEGIN
-namespace Server {
+namespace server {
 
 static const std::thread::id MAIN_THREAD_ID = std::this_thread::get_id();
 
@@ -184,5 +184,5 @@ Server::Server(int port, int level, int keep_log)
         });
     }
 }
-} // namespace Server
+} // namespace server
 WEBCFACE_NS_END

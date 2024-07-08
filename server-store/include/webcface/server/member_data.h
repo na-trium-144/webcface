@@ -14,7 +14,7 @@
 #include <webcface/server/server.h>
 
 WEBCFACE_NS_BEGIN
-namespace Server {
+namespace server {
 
 WEBCFACE_DLL std::pair<unsigned int, SharedString>
 findReqField(StrMap2<unsigned int> &req, const SharedString &member,
@@ -155,5 +155,5 @@ struct WEBCFACE_DLL MemberData {
         message::pack(send_buffer, send_len, data);
     }
 };
-} // namespace Server
+} // namespace server
 WEBCFACE_NS_END

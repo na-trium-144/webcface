@@ -13,7 +13,7 @@
 #endif
 
 WEBCFACE_NS_BEGIN
-namespace Server {
+namespace server {
 
 // https://stackoverflow.com/questions/50889647/best-way-to-get-exe-folder-path
 std::filesystem::path
@@ -81,5 +81,5 @@ std::string getTempDir(const std::shared_ptr<spdlog::logger> &logger) {
         return "";
     }
 }
-} // namespace Server
+} // namespace server
 WEBCFACE_NS_END

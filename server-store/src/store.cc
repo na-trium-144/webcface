@@ -3,7 +3,7 @@
 #include <algorithm>
 
 WEBCFACE_NS_BEGIN
-namespace Server {
+namespace server {
 void ServerStorage::clear() {
     clients.clear();
     clients_by_id.clear();
@@ -98,5 +98,5 @@ void ServerStorage::forEachWithName(
         }
     }
 }
-} // namespace Server
+} // namespace server
 WEBCFACE_NS_END
