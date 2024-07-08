@@ -69,10 +69,9 @@ TEST_F(ClientTest, unixSocketConnection) {
     EXPECT_FALSE(dummy_s->connected());
     EXPECT_FALSE(wcli_->connected());
     wcli_->start();
-    while (!dummy_s->connected()) {
+    while (!dummy_s->connected() || !wcli_->connected()) {
         wait();
     }
-    EXPECT_TRUE(wcli_->connected());
 }
 TEST_F(ClientTest, connectionByStart) {
     dummy_s = std::make_shared<DummyServer>(false);
@@ -80,10 +79,9 @@ TEST_F(ClientTest, connectionByStart) {
     EXPECT_FALSE(dummy_s->connected());
     EXPECT_FALSE(wcli_->connected());
     wcli_->start();
-    while (!dummy_s->connected()) {
+    while (!dummy_s->connected() || !wcli_->connected()) {
         wait();
     }
-    EXPECT_TRUE(wcli_->connected());
 }
 TEST_F(ClientTest, connectionByWait) {
     dummy_s = std::make_shared<DummyServer>(false);
@@ -127,10 +125,9 @@ TEST_F(ClientTest, connectionBySync) {
     EXPECT_FALSE(dummy_s->connected());
     EXPECT_FALSE(wcli_->connected());
     wcli_->sync();
-    while (!dummy_s->connected()) {
+    while (!dummy_s->connected() || !wcli_->connected()) {
         wait();
     }
-    EXPECT_TRUE(wcli_->connected());
 }
 TEST_F(ClientTest, noConnectionByRecv) {
     dummy_s = std::make_shared<DummyServer>(false);
