@@ -226,7 +226,7 @@ Pythonの辞書型への対応は未実装
 
 </div>
 
-<details><summary>(deprecated) C++でwebcface::Value::Dictを使った値のセット</summary>
+<details><summary>(deprecated, ver2.0で削除) C++でwebcface::Value::Dictを使った値のセット</summary>
 
 webcface::Value::Dict オブジェクトを使うと複数の値をまとめて送ることができます。
 これは構造体などのデータを送るときに使えます
@@ -462,9 +462,13 @@ Member名がわかっていれば初回の Client::sync() 前に、
 <div class="tabbed">
 
 - <b class="tab-title">C++</b>
+    <span class="since-c">2.0</span>
     ```cpp
-    wcli.member("foo").onValueEntry().appendListener([](webcface::Value v){ /* ... */ });
+    wcli.member("foo").onValueEntry([](webcface::Value v){ /* ... */ });
     ```
+
+    ver1.11以前では `.onValueEntry().appendListener(...)`
+
 - <b class="tab-title">JavaScript</b>
     ```ts
     import { Value } from "webcface";
@@ -492,14 +496,14 @@ Member名がわかっていれば初回の Client::sync() 前に、
 
 - <b class="tab-title">C++</b>
     ```cpp
-    wcli.member("foo").value("hoge").appendListener([](webcface::Value v){ /* ... */ });
-    wcli.member("foo").onSync().appendListener([](webcface::Member m){ /* ... */ });
+    wcli.member("foo").value("hoge").onChange([](webcface::Value v){ /* ... */ });
+    wcli.member("foo").onSync([](webcface::Member m){ /* ... */ });
     ```
     例えば全Memberの全Valueデータを受信するには
     ```cpp
-    wcli.onMemberEntry().appendListener([](webcface::Member m){
-        m.onValueEntry().appendListener([](webcface::Value v){
-            v.appendListener([](webcface::Value v){
+    wcli.onMemberEntry([](webcface::Member m){
+        m.onValueEntry([](webcface::Value v){
+            v.onChange([](webcface::Value v){
                 // ...
             });
         });
@@ -510,10 +514,13 @@ Member名がわかっていれば初回の Client::sync() 前に、
     <span class="since-c">1.7</span>
     引数を持たない関数もイベントのコールバックに設定可能です。
     ```cpp
-    wcli.member("foo").value("hoge").appendListener([]() {
+    wcli.member("foo").value("hoge").onChange([]() {
         std::cout << "foo.hoge changed" << std::endl;
     });
     ```
+
+    ver1.11以前は `value("hoge").appendListener(...)` です
+
 - <b class="tab-title">JavaScript</b>
     ```ts
     import { Member, Value } from "webcface";

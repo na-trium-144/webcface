@@ -2,7 +2,6 @@
 #include <webcface/common/def.h>
 #include "robot_link.h"
 #include "field.h"
-#include "event_target.h"
 #include "components.h"
 
 WEBCFACE_NS_BEGIN
@@ -21,11 +20,8 @@ class DataSetBuffer;
  *
  */
 class WEBCFACE_DLL RobotModel : protected Field,
-                                public EventTarget<RobotModel>,
                                 public Canvas3DComponent {
     std::shared_ptr<internal::DataSetBuffer<RobotLink>> sb;
-
-    void onAppend() const override final;
 
   public:
     RobotModel();
@@ -90,6 +86,33 @@ class WEBCFACE_DLL RobotModel : protected Field,
      * \since ver1.11
      */
     RobotModel parent() const { return this->Field::parent(); }
+
+    /*!
+     * \brief 値が変化したときに呼び出されるコールバックを設定
+     * \since ver2.0
+     */
+    RobotModel &onChange(std::function<void(RobotModel)> callback);
+    /*!
+     * \brief 値が変化したときに呼び出されるコールバックを設定
+     * \since ver2.0
+     */
+    template <typename F>
+        requires std::invocable<F>
+    RobotModel &onChange(F callback) {
+        return onChange(
+            [callback = std::move(callback)](const auto &) { callback(); });
+    }
+    /*!
+     * \deprecated
+     * ver1.11まではEventTarget::appendListener()でコールバックを追加できたが、
+     * ver2.0からコールバックは1個のみになった。
+     * 互換性のため残しているがonChange()と同じ
+     *
+     */
+    template <typename T>
+    [[deprecated]] void appendListener(T &&callback) {
+        onChange(std::forward<T>(callback));
+    }
 
     /*!
      * \brief モデルを初期化

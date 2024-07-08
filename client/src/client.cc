@@ -30,11 +30,10 @@ Client::Client(const SharedString &name,
 internal::ClientData::ClientData(const SharedString &name,
                                  const SharedString &host, int port)
     : std::enable_shared_from_this<ClientData>(), self_member_name(name),
-      host(host), port(port), current_curl_handle(nullptr), current_curl_path(),
-      current_ws_buf(), value_store(name), text_store(name), func_store(name),
-      view_store(name), image_store(name), robot_model_store(name),
-      canvas3d_store(name), canvas2d_store(name), log_store(name),
-      sync_time_store(name) {
+      host(host), port(port), current_curl_path(), current_ws_buf(),
+      value_store(name), text_store(name), func_store(name), view_store(name),
+      image_store(name), robot_model_store(name), canvas3d_store(name),
+      canvas2d_store(name), log_store(name), sync_time_store(name) {
     static auto stderr_sink =
         std::make_shared<spdlog::sinks::stderr_color_sink_mt>();
     logger_internal = std::make_shared<spdlog::logger>(
@@ -77,9 +76,11 @@ std::vector<Member> Client::members() {
     }
     return ret;
 }
-EventTarget<Member> Client::onMemberEntry() {
+Client &Client::onMemberEntry(std::function<void(Member)> callback) {
     std::lock_guard lock(data->event_m);
-    return EventTarget<Member>{data->member_entry_event};
+    data->member_entry_event =
+        std::make_shared<std::function<void(Member)>>(std::move(callback));
+    return *this;
 }
 std::streambuf *Client::loggerStreamBuf() { return data->logger_buf.get(); }
 std::ostream &Client::loggerOStream() { return *data->logger_os.get(); }
@@ -509,7 +510,7 @@ static void onRecvRes(internal::ClientData *this_, const Msg &r, const T &data,
         std::lock_guard lock(this_->event_m);
         cl = findFromMap2(event, member, field).value_or(nullptr);
     }
-    if (cl) {
+    if (cl && *cl) {
         cl->operator()(Field{this_->shared_from_this(), member, field});
     }
 }
@@ -523,7 +524,7 @@ static void onRecvEntry(internal::ClientData *this_, const Msg &r, S &store,
         std::lock_guard lock(this_->event_m);
         cl = findFromMap1(event, member).value_or(nullptr);
     }
-    if (cl) {
+    if (cl && *cl) {
         cl->operator()(Field{this_->shared_from_this(), member, r.field});
     }
 }
@@ -556,13 +557,13 @@ void internal::ClientData::onRecv(const std::string &message) {
                 members = this->member_entry;
             }
             for (const auto &member_name : members) {
-                std::shared_ptr<eventpp::CallbackList<void(Member)>> cl;
+                std::shared_ptr<std::function<void(Member)>> cl;
                 {
                     std::lock_guard lock(event_m);
                     cl = findFromMap1(this->ping_event, member_name)
                              .value_or(nullptr);
                 }
-                if (cl) {
+                if (cl && *cl) {
                     cl->operator()(Field{shared_from_this(), member_name});
                 }
             }
@@ -626,13 +627,13 @@ void internal::ClientData::onRecv(const std::string &message) {
             for (const auto &d : *r.data_diff) {
                 (*vv_prev)[std::stoi(d.first)] = d.second;
             }
-            std::shared_ptr<eventpp::CallbackList<void(View)>> cl;
+            std::shared_ptr<std::function<void(View)>> cl;
             {
                 std::lock_guard lock(event_m);
                 cl = findFromMap2(this->view_change_event, member, field)
                          .value_or(nullptr);
             }
-            if (cl) {
+            if (cl && *cl) {
                 cl->operator()(Field{shared_from_this(), member, field});
             }
             break;
@@ -657,13 +658,13 @@ void internal::ClientData::onRecv(const std::string &message) {
             for (const auto &d : *r.data_diff) {
                 (*vv_prev)[std::stoi(d.first)] = d.second;
             }
-            std::shared_ptr<eventpp::CallbackList<void(Canvas3D)>> cl;
+            std::shared_ptr<std::function<void(Canvas3D)>> cl;
             {
                 std::lock_guard lock(event_m);
                 cl = findFromMap2(this->canvas3d_change_event, member, field)
                          .value_or(nullptr);
             }
-            if (cl) {
+            if (cl && *cl) {
                 cl->operator()(Field{shared_from_this(), member, field});
             }
             break;
@@ -689,13 +690,13 @@ void internal::ClientData::onRecv(const std::string &message) {
             for (const auto &d : *r.data_diff) {
                 vv_prev->components[std::stoi(d.first)] = d.second;
             }
-            std::shared_ptr<eventpp::CallbackList<void(Canvas2D)>> cl;
+            std::shared_ptr<std::function<void(Canvas2D)>> cl;
             {
                 std::lock_guard lock(event_m);
                 cl = findFromMap2(this->canvas2d_change_event, member, field)
                          .value_or(nullptr);
             }
-            if (cl) {
+            if (cl && *cl) {
                 cl->operator()(Field{shared_from_this(), member, field});
             }
             break;
@@ -719,13 +720,13 @@ void internal::ClientData::onRecv(const std::string &message) {
             for (auto &lm : *r.log) {
                 (*log_s)->emplace_back(lm);
             }
-            std::shared_ptr<eventpp::CallbackList<void(Log)>> cl;
+            std::shared_ptr<std::function<void(Log)>> cl;
             {
                 std::lock_guard lock(event_m);
                 cl = findFromMap1(this->log_append_event, member)
                          .value_or(nullptr);
             }
-            if (cl) {
+            if (cl && *cl) {
                 cl->operator()(Field{shared_from_this(), member});
             }
             break;
@@ -810,9 +811,13 @@ void internal::ClientData::onRecv(const std::string &message) {
             this->member_lib_name[r.member_id] = r.lib_name;
             this->member_lib_ver[r.member_id] = r.lib_ver;
             this->member_addr[r.member_id] = r.addr;
-            if (this->member_entry_event) {
-                this->member_entry_event->operator()(
-                    Field{shared_from_this(), r.member_name});
+            std::shared_ptr<std::function<void(Member)>> cl;
+            {
+                std::lock_guard lock(this->entry_m);
+                cl = this->member_entry_event;
+            }
+            if (cl && *cl) {
+                cl->operator()(Field{shared_from_this(), r.member_name});
             }
             break;
         }
@@ -867,13 +872,13 @@ void internal::ClientData::onRecv(const std::string &message) {
             this->func_store.setEntry(member, r.field);
             this->func_store.setRecv(member, r.field,
                                      std::make_shared<FuncInfo>(r));
-            std::shared_ptr<eventpp::CallbackList<void(Func)>> cl;
+            std::shared_ptr<std::function<void(Func)>> cl;
             {
                 std::lock_guard lock(event_m);
                 cl = findFromMap1(this->func_entry_event, member)
                          .value_or(nullptr);
             }
-            if (cl) {
+            if (cl && *cl) {
                 cl->operator()(Field{shared_from_this(), member, r.field});
             }
             break;
@@ -910,12 +915,12 @@ void internal::ClientData::onRecv(const std::string &message) {
         }
     }
     for (const auto &m : sync_members) {
-        std::shared_ptr<eventpp::CallbackList<void(Member)>> cl;
+        std::shared_ptr<std::function<void(Member)>> cl;
         {
             std::lock_guard lock(event_m);
             cl = findFromMap1(this->sync_event, m).value_or(nullptr);
         }
-        if (cl) {
+        if (cl && *cl) {
             cl->operator()(Field{shared_from_this(), m});
         }
     }

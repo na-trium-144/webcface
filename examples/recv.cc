@@ -9,15 +9,15 @@
 int main() {
     // webcface::logger_internal_level = spdlog::level::trace;
     webcface::Client c("example_recv");
-    c.onMemberEntry().appendListener([](webcface::Member m) {
+    c.onMemberEntry([](webcface::Member m) {
         std::cout << "member entry " << m.name() << std::endl;
-        m.onValueEntry().appendListener([](webcface::Value v) {
+        m.onValueEntry([](webcface::Value v) {
             std::cout << "value entry " << v.name() << std::endl;
         });
-        m.onTextEntry().appendListener([](webcface::Text v) {
+        m.onTextEntry([](webcface::Text v) {
             std::cout << "text entry " << v.name() << std::endl;
         });
-        m.onFuncEntry().appendListener([](webcface::Func f) {
+        m.onFuncEntry([](webcface::Func f) {
             std::cout << "func entry " << f.name() << " arg: ";
             auto args = f.args();
             for (std::size_t i = 0; i < args.size(); i++) {
@@ -28,7 +28,7 @@ int main() {
             }
             std::cout << " ret: " << f.returnType() << std::endl;
         });
-        m.log().appendListener([](webcface::Log l) {
+        m.log().onChange([](webcface::Log l) {
             for (const auto &ll : l.get()) {
                 std::cout << "log [" << ll.level() << "] " << ll.message()
                           << std::endl;
@@ -48,11 +48,10 @@ int main() {
         func_m.func("func1").runAsync();
         // example_mainのfunc2を実行し結果を取得
         auto result = func_m.func("func2").runAsync(9, 7.1, false, "");
-        result.onResult().append(
-            [](std::shared_future<webcface::ValAdaptor> result) {
-                std::cout << "func2(9, 7.1, false, \"\") = "
-                          << result.get().asStringRef() << std::endl;
-            });
+        result.onResult([](std::shared_future<webcface::ValAdaptor> result) {
+            std::cout << "func2(9, 7.1, false, \"\") = "
+                      << result.get().asStringRef() << std::endl;
+        });
 
         func_m.func("func_bool").runAsync(true);
         func_m.func("func_int").runAsync(1);

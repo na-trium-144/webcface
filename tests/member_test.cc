@@ -77,28 +77,28 @@ TEST_F(MemberTest, getEntry) {
     EXPECT_EQ(member("a").viewEntries()[0].name(), "a");
 }
 TEST_F(MemberTest, eventTarget) {
-    member("a").onValueEntry().appendListener(callback<Value>());
+    member("a").onValueEntry(callback<Value>());
     data_->value_entry_event["a"_ss]->operator()(field("a", "a"));
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
-    member("a").onTextEntry().appendListener(callback<Text>());
+    member("a").onTextEntry(callback<Text>());
     data_->text_entry_event["a"_ss]->operator()(field("a", "a"));
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
-    member("a").onFuncEntry().appendListener(callback<Func>());
+    member("a").onFuncEntry(callback<Func>());
     data_->func_entry_event["a"_ss]->operator()(field("a", "a"));
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
-    member("a").onViewEntry().appendListener(callback<View>());
+    member("a").onViewEntry(callback<View>());
     data_->view_entry_event["a"_ss]->operator()(field("a", "a"));
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
-    member("a").onSync().appendListener(callback<Member>());
+    member("a").onSync(callback<Member>());
     data_->sync_event["a"_ss]->operator()(field("a"));
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
 
-    member("a").onPing().appendListener(callback<Member>());
+    member("a").onPing(callback<Member>());
     data_->ping_event["a"_ss]->operator()(field("a"));
     EXPECT_EQ(callback_called, 1);
     EXPECT_TRUE(data_->ping_status_req);

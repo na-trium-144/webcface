@@ -26,6 +26,7 @@ struct FuncInfo;
 } // namespace message
 namespace internal {
 struct ClientData;
+class AsyncFuncState;
 }
 
 /*!
@@ -182,10 +183,13 @@ struct FuncInfo {
      * * eval_async=caller_async=trueならfutureを新しいスレッドで評価し、
      * そうでなければこのスレッドでwaitする
      * * 建てたスレッドはdetachする
-     *
+     * * stateがnullptrでなければstate->setResultFuture()にfutureをセットし、
+     * 実行完了後にstate->callResultEvent()を呼ぶ
+     * * 発生した例外はcatchしない
      */
-    std::future<ValAdaptor> run(const std::vector<ValAdaptor> &args,
-                                bool caller_async);
+    std::shared_future<ValAdaptor> run(const std::vector<ValAdaptor> &args,
+                                bool caller_async,
+                                const std::shared_ptr<internal::AsyncFuncState> &state = nullptr);
     /*!
      * \brief
      * func_implをこのスレッドで実行し、完了時にCallResultをdataに送信させる

@@ -2,7 +2,6 @@
 #include <webcface/internal/logger.h>
 #include "webcface/internal/client_internal.h"
 #include "webcface/message/message.h"
-#include "webcface/internal/event_target_impl.h"
 
 WEBCFACE_NS_BEGIN
 
@@ -32,7 +31,6 @@ message::LogLine LogLineData<CharT>::toMessage() const {
 template class WEBCFACE_DLL_INSTANCE_DEF LogLineData<char8_t>;
 template class WEBCFACE_DLL_INSTANCE_DEF LogLineData<char>;
 template class WEBCFACE_DLL_INSTANCE_DEF LogLineData<wchar_t>;
-template class WEBCFACE_DLL_INSTANCE_DEF EventTarget<Log>;
 
 
 static void writeLog(internal::ClientData *data_p, LogLineData<> &&ll) {
@@ -89,9 +87,14 @@ int BasicLoggerBuf<CharT>::sync() {
 template class WEBCFACE_DLL_INSTANCE_DEF BasicLoggerBuf<char>;
 template class WEBCFACE_DLL_INSTANCE_DEF BasicLoggerBuf<wchar_t>;
 
-Log::Log(const Field &base) : Field(base), EventTarget<Log>() {
+Log::Log(const Field &base) : Field(base) {}
+
+Log &Log::onChange(std::function<void(Log)> callback) {
+    this->request();
     std::lock_guard lock(this->dataLock()->event_m);
-    this->setCL(this->dataLock()->log_append_event[this->member_]);
+    this->dataLock()->log_append_event[this->member_] =
+        std::make_shared<std::function<void(Log)>>(std::move(callback));
+    return *this;
 }
 
 void Log::request() const {
@@ -101,8 +104,6 @@ void Log::request() const {
         data->message_push(message::packSingle(message::LogReq{{}, member_}));
     }
 }
-
-void Log::onAppend() const { request(); }
 
 std::optional<std::vector<LogLine>> Log::tryGet() const {
     request();

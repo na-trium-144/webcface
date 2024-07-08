@@ -78,13 +78,12 @@ TEST_F(DataTest, field) {
     EXPECT_THROW(Log().tryGet(), std::runtime_error);
 }
 TEST_F(DataTest, eventTarget) {
-    auto handle = value("a", "b").appendListener(callback<Value>());
+    value("a", "b").appendListener(callback<Value>());
     data_->value_change_event["a"_ss]["b"_ss]->operator()(field("a", "b"));
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
-    value("a", "b").removeListener(handle);
-    data_->value_change_event["a"_ss]["b"_ss]->operator()(field("a", "b"));
-    EXPECT_EQ(callback_called, 0);
+    value("a", "b").onChange(nullptr);
+    EXPECT_FALSE(*data_->value_change_event["a"_ss]["b"_ss]);
     value("a", "b").appendListener(callbackVoid());
     data_->value_change_event["a"_ss]["b"_ss]->operator()(field("a", "b"));
     EXPECT_EQ(callback_called, 1);
@@ -100,18 +99,16 @@ TEST_F(DataTest, eventTarget) {
     callback_called = 0;
 }
 TEST_F(DataTest, valueSet) {
-    (data_->value_change_event[self_name]["b"_ss] =
-         std::make_shared<eventpp::CallbackList<void(Value)>>())
-        ->append(callback<Value>());
+    data_->value_change_event[self_name]["b"_ss] =
+        std::make_shared<std::function<void(Value)>>(callback<Value>());
     value(self_name, "b").set(123);
     EXPECT_EQ((**data_->value_store.getRecv(self_name, "b"_ss)).at(0), 123);
     EXPECT_EQ(callback_called, 1);
     EXPECT_THROW(value("a", "b").set(123), std::invalid_argument);
 }
 TEST_F(DataTest, valueSetVec) {
-    (data_->value_change_event[self_name]["d"_ss] =
-         std::make_shared<eventpp::CallbackList<void(Value)>>())
-        ->append(callback<Value>());
+    data_->value_change_event[self_name]["d"_ss] =
+        std::make_shared<std::function<void(Value)>>(callback<Value>());
     value(self_name, "d").set({1, 2, 3, 4, 5});
     value(self_name, "d8").set({true, 2, 3, 4, 5.0});
     value(self_name, "d2").set(std::vector<double>{1, 2, 3, 4, 5});
@@ -147,9 +144,8 @@ TEST_F(DataTest, valueSetVec) {
     EXPECT_EQ((**data_->value_store.getRecv(self_name, "d8"_ss)).size(), 5);
 }
 TEST_F(DataTest, textSet) {
-    (data_->text_change_event[self_name]["b"_ss] =
-         std::make_shared<eventpp::CallbackList<void(Text)>>())
-        ->append(callback<Text>());
+    data_->text_change_event[self_name]["b"_ss] =
+        std::make_shared<std::function<void(Text)>>(callback<Text>());
     text(self_name, "b").set("c");
     EXPECT_EQ(static_cast<std::string>(
                   **data_->text_store.getRecv(self_name, "b"_ss)),
@@ -158,9 +154,8 @@ TEST_F(DataTest, textSet) {
     EXPECT_THROW(text("a", "b").set("c"), std::invalid_argument);
 }
 TEST_F(DataTest, textSetW) {
-    (data_->text_change_event[self_name]["b"_ss] =
-         std::make_shared<eventpp::CallbackList<void(Text)>>())
-        ->append(callback<Text>());
+    data_->text_change_event[self_name]["b"_ss] =
+        std::make_shared<std::function<void(Text)>>(callback<Text>());
     text(self_name, "b").set(L"c");
     EXPECT_EQ(static_cast<std::string>(
                   **data_->text_store.getRecv(self_name, "b"_ss)),
@@ -169,9 +164,8 @@ TEST_F(DataTest, textSetW) {
     EXPECT_THROW(text("a", "b").set(L"c"), std::invalid_argument);
 }
 TEST_F(DataTest, textSetV) {
-    (data_->text_change_event[self_name]["b"_ss] =
-         std::make_shared<eventpp::CallbackList<void(Text)>>())
-        ->append(callback<Text>());
+    data_->text_change_event[self_name]["b"_ss] =
+        std::make_shared<std::function<void(Text)>>(callback<Text>());
     text(self_name, "b").set(ValAdaptor(123));
     EXPECT_EQ(static_cast<std::string>(
                   **data_->text_store.getRecv(self_name, "b"_ss)),

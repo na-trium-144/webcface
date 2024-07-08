@@ -195,7 +195,6 @@ serverの起動時のオプションでこの行数は変更できます。(`web
 
 使い方は [Value](./10_value.md) と同様なのでそちらを参照してください
 
-
 <div class="section_buttons">
 
 | Previous |     Next |

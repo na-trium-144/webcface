@@ -3,7 +3,6 @@
 #include <memory>
 #include <vector>
 #include "member.h"
-#include "event_target.h"
 #include <webcface/common/def.h>
 
 WEBCFACE_NS_BEGIN
@@ -228,7 +227,7 @@ class WEBCFACE_DLL Client : public Member {
      *
      * \sa member(), members()
      */
-    EventTarget<Member> onMemberEntry();
+    Client &onMemberEntry(std::function<void(Member)> callback);
 
     /*!
      * \brief webcfaceに出力するstreambuf

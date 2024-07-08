@@ -1,7 +1,7 @@
 #pragma once
+#include <functional>
 #include <optional>
 #include <vector>
-#include "event_target.h"
 #include "field.h"
 #include <webcface/common/def.h>
 
@@ -78,14 +78,39 @@ using LogLineW = LogLineData<wchar_t>;
  * fieldを継承しているがfield名は使用していない
  *
  */
-class WEBCFACE_DLL Log : protected Field, public EventTarget<Log> {
-    void onAppend() const override final;
-
+class WEBCFACE_DLL Log : protected Field {
   public:
     Log() = default;
     Log(const Field &base);
 
     using Field::member;
+
+    /*!
+     * \brief ログが追加されたときに呼び出されるコールバックを設定
+     * \since ver2.0
+     */
+    Log &onChange(std::function<void(Log)> callback);
+    /*!
+     * \brief 値が変化したときに呼び出されるコールバックを設定
+     * \since ver2.0
+     */
+    template <typename F>
+        requires std::invocable<F>
+    Log &onChange(F callback) {
+        return onChange(
+            [callback = std::move(callback)](const auto &) { callback(); });
+    }
+    /*!
+     * \deprecated
+     * ver1.11まではEventTarget::appendListener()でコールバックを追加できたが、
+     * ver2.0からコールバックは1個のみになった。
+     * 互換性のため残しているがonChange()と同じ
+     *
+     */
+    template <typename T>
+    [[deprecated]] void appendListener(T &&callback) {
+        onChange(std::forward<T>(callback));
+    }
 
     /*!
      * \brief ログをリクエストする

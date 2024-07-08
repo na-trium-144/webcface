@@ -1,18 +1,18 @@
 #pragma once
+#include <functional>
 #include <ostream>
 #include <optional>
 #include <chrono>
 #include "field.h"
-#include "event_target.h"
 #include <webcface/common/def.h>
 
 WEBCFACE_NS_BEGIN
 
 template <typename R>
 concept Range = requires(R range) {
-                    begin(range);
-                    end(range);
-                };
+    begin(range);
+    end(range);
+};
 
 /*!
  * \brief 実数値またはその配列の送受信データを表すクラス
@@ -21,9 +21,7 @@ concept Range = requires(R range) {
  * Member::onValueEntry() を使って取得してください
  *
  */
-class WEBCFACE_DLL Value : protected Field, public EventTarget<Value> {
-    void onAppend() const override final;
-
+class WEBCFACE_DLL Value : protected Field {
   public:
     Value() = default;
     Value(const Field &base);
@@ -83,6 +81,33 @@ class WEBCFACE_DLL Value : protected Field, public EventTarget<Value> {
     Value parent() const { return this->Field::parent(); }
 
     /*!
+     * \brief 値が変化したときに呼び出されるコールバックを設定
+     * \since ver2.0
+     */
+    Value &onChange(std::function<void(Value)> callback);
+    /*!
+     * \brief 値が変化したときに呼び出されるコールバックを設定
+     * \since ver2.0
+     */
+    template <typename F>
+        requires std::invocable<F>
+    Value &onChange(F callback) {
+        return onChange(
+            [callback = std::move(callback)](const auto &) { callback(); });
+    }
+    /*!
+     * \deprecated
+     * ver1.11まではEventTarget::appendListener()でコールバックを追加できたが、
+     * ver2.0からコールバックは1個のみになった。
+     * 互換性のため残しているがonChange()と同じ
+     *
+     */
+    template <typename T>
+    [[deprecated]] void appendListener(T &&callback) {
+        onChange(std::forward<T>(callback));
+    }
+
+    /*!
      * \brief 値をセットする
      *
      * ver1.11〜:
@@ -93,7 +118,7 @@ class WEBCFACE_DLL Value : protected Field, public EventTarget<Value> {
     /*!
      * \brief vector型配列をセットする
      * \since ver2.0 (set(VectorOpt<double>) を置き換え)
-     * 
+     *
      */
     Value &set(std::vector<double> &&v);
     /*!
@@ -107,7 +132,7 @@ class WEBCFACE_DLL Value : protected Field, public EventTarget<Value> {
     // requires std::ranges::range<R> &&
     //          std::convertible_to<std::ranges::range_value_t<R>, T>
         requires Range<R> && std::convertible_to<std::iter_value_t<R>, double>
-    Value &set(const R &range){
+    Value &set(const R &range) {
         std::vector<double> vec;
         vec.reserve(std::size(range));
         for (const auto &v : range) {
@@ -278,8 +303,8 @@ class WEBCFACE_DLL Value : protected Field, public EventTarget<Value> {
      *
      */
     template <typename T>
-        requires std::same_as<T, Value> bool
-    operator==(const T &other) const {
+        requires std::same_as<T, Value>
+    bool operator==(const T &other) const {
         return static_cast<Field>(*this) == static_cast<Field>(other);
     }
     bool operator<(const Value &) const = delete;

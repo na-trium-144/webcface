@@ -72,9 +72,8 @@ TEST_F(Canvas2DTest, eventTarget) {
     callback_called = 0;
 }
 TEST_F(Canvas2DTest, set) {
-    (data_->canvas2d_change_event[self_name]["b"_ss] =
-         std::make_shared<eventpp::CallbackList<void(Canvas2D)>>())
-        ->append(callback());
+    data_->canvas2d_change_event[self_name]["b"_ss] =
+        std::make_shared<std::function<void(Canvas2D)>>(callback());
     using namespace webcface::geometries;
 
     auto v = canvas(self_name, "b").init(100, 150);
@@ -97,18 +96,21 @@ TEST_F(Canvas2DTest, set) {
     EXPECT_EQ(canvas2d_data.components[0].geometry()->properties,
               (std::vector<double>{0, 0, 0, 3, 3, 0}));
     ASSERT_NE(canvas2d_data.components[0].onClick(), std::nullopt);
-    EXPECT_EQ(canvas2d_data.components[0].onClick()->member().name(), self_name.decode());
+    EXPECT_EQ(canvas2d_data.components[0].onClick()->member().name(),
+              self_name.decode());
     EXPECT_EQ(canvas2d_data.components[0].onClick()->name(), "f");
 
     EXPECT_EQ(canvas2d_data.components[1].type(),
               Canvas2DComponentType::geometry);
     EXPECT_EQ(canvas2d_data.components[1].color(), ViewColor::yellow);
     ASSERT_NE(canvas2d_data.components[1].geometry(), std::nullopt);
-    EXPECT_EQ(canvas2d_data.components[1].geometry()->type, GeometryType::plane);
+    EXPECT_EQ(canvas2d_data.components[1].geometry()->type,
+              GeometryType::plane);
     EXPECT_EQ(canvas2d_data.components[1].geometry()->properties,
               (std::vector<double>{0, 0, 0, 0, 0, 0, 10, 10}));
     ASSERT_NE(canvas2d_data.components[0].onClick(), std::nullopt);
-    EXPECT_EQ(canvas2d_data.components[0].onClick()->member().name(), self_name.decode());
+    EXPECT_EQ(canvas2d_data.components[0].onClick()->member().name(),
+              self_name.decode());
     EXPECT_NE(canvas2d_data.components[0].onClick()->name(), "");
 
     v.init(1, 1);

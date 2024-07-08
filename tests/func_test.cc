@@ -202,27 +202,54 @@ TEST_F(FuncTest, funcRun) {
     // 引数と戻り値
     int called = 0;
     auto main_id = std::this_thread::get_id();
-    auto ret = func(self_name, "a")
-                   .set([&](int a, double b, std::string c, bool d) {
-                       EXPECT_EQ(a, 123);
-                       EXPECT_EQ(b, 123.45);
-                       EXPECT_EQ(c, "a");
-                       EXPECT_TRUE(d);
-                       ++called;
-                       // setしてるのでrunAsyncしてもmainスレッドで実行される
-                       EXPECT_EQ(std::this_thread::get_id(), main_id);
-                       return 123.45;
-                   })
-                   .run(123, 123.45, "a", true);
+    func(self_name, "a").set([&](int a, double b, std::string c, bool d) {
+        if (a == 0) {
+            throw std::invalid_argument("a == 0");
+        }
+        EXPECT_EQ(a, 123);
+        EXPECT_EQ(b, 123.45);
+        EXPECT_EQ(c, "a");
+        EXPECT_TRUE(d);
+        ++called;
+        // setしてるのでrunAsyncしてもmainスレッドで実行される
+        EXPECT_EQ(std::this_thread::get_id(), main_id);
+        return 123.45;
+    });
+    EXPECT_THROW(func(self_name, "a").run(0, 123.45, "a", true),
+                 std::invalid_argument);
+    auto ret = func(self_name, "a").run(123, 123.45, "a", true);
     EXPECT_EQ(called, 1);
     EXPECT_EQ(static_cast<double>(ret), 123.45);
     called = 0;
-    auto ret_a = func(self_name, "a").runAsync(123, 123.45, "a", true);
+
+    auto ret_a = func(self_name, "a").runAsync(0, 123.45, "a", true);
+    EXPECT_THROW(ret_a.result.get(), std::invalid_argument);
+    ret_a.onStarted([&](bool started) {
+        called++;
+        EXPECT_TRUE(started);
+    });
+    ret_a.onResult([&](const std::shared_future<ValAdaptor> &result) {
+        called++;
+        EXPECT_THROW(result.get(), std::invalid_argument);
+    });
+    EXPECT_EQ(called, 2);
+    called = 0;
+    ret_a = func(self_name, "a").runAsync(123, 123.45, "a", true);
     EXPECT_TRUE(ret_a.started.get());
     EXPECT_EQ(static_cast<double>(ret_a.result.get()), 123.45);
     EXPECT_EQ(ret_a.member().name(), self_name.decode());
     EXPECT_EQ(ret_a.name(), "a");
     EXPECT_EQ(called, 1);
+    called = 0;
+    ret_a.onStarted([&](bool started) {
+        called++;
+        EXPECT_TRUE(started);
+    });
+    ret_a.onResult([&](const std::shared_future<ValAdaptor> &result) {
+        called++;
+        EXPECT_EQ(static_cast<double>(result.get()), 123.45);
+    });
+    EXPECT_EQ(called, 2);
     called = 0;
 
     // 引数の間違い
@@ -239,39 +266,71 @@ TEST_F(FuncTest, funcAsyncRun) {
     // 引数と戻り値
     int called = 0;
     auto main_id = std::this_thread::get_id();
-    auto ret = func(self_name, "a")
-                   .setAsync([&](int a, double b, std::string c, bool d) {
-                       EXPECT_EQ(a, 123);
-                       EXPECT_EQ(b, 123.45);
-                       EXPECT_EQ(c, "a");
-                       EXPECT_TRUE(d);
-                       ++called;
-                       // runなのでmainスレッド
-                       EXPECT_EQ(std::this_thread::get_id(), main_id);
-                       return 123.45;
-                   })
-                   .run(123, 123.45, "a", true);
+    func(self_name, "a").setAsync([&](int a, double b, std::string c, bool d) {
+        if (a == 0) {
+            throw std::invalid_argument("a == 0");
+        }
+        EXPECT_EQ(a, 123);
+        EXPECT_EQ(b, 123.45);
+        EXPECT_EQ(c, "a");
+        EXPECT_TRUE(d);
+        ++called;
+        // runなのでmainスレッド
+        EXPECT_EQ(std::this_thread::get_id(), main_id);
+        return 123.45;
+    });
+    EXPECT_THROW(func(self_name, "a").run(0, 123.45, "a", true),
+                 std::invalid_argument);
+    auto ret = func(self_name, "a").run(123, 123.45, "a", true);
     EXPECT_EQ(called, 1);
     EXPECT_EQ(static_cast<double>(ret), 123.45);
     called = 0;
 
-    auto ret_a = func(self_name, "a")
-                     .setAsync([&](int a, double b, std::string c, bool d) {
-                         EXPECT_EQ(a, 123);
-                         EXPECT_EQ(b, 123.45);
-                         EXPECT_EQ(c, "a");
-                         EXPECT_TRUE(d);
-                         ++called;
-                         // setAsyncかつrunAsyncなので別スレッド
-                         EXPECT_NE(std::this_thread::get_id(), main_id);
-                         return 123.45;
-                     })
-                     .runAsync(123, 123.45, "a", true);
+    func(self_name, "a").setAsync([&](int a, double b, std::string c, bool d) {
+        if (a == 0) {
+            throw std::invalid_argument("a == 0");
+        }
+        EXPECT_EQ(a, 123);
+        EXPECT_EQ(b, 123.45);
+        EXPECT_EQ(c, "a");
+        EXPECT_TRUE(d);
+        ++called;
+        // setAsyncかつrunAsyncなので別スレッド
+        EXPECT_NE(std::this_thread::get_id(), main_id);
+        return 123.45;
+    });
+    auto ret_a = func(self_name, "a").runAsync(0, 123.45, "a", true);
+    EXPECT_THROW(ret_a.result.get(), std::invalid_argument);
+    ret_a.onStarted([&](bool started) {
+        called++;
+        EXPECT_TRUE(started);
+    });
+    ret_a.onResult([&](const std::shared_future<ValAdaptor> &result) {
+        called++;
+        EXPECT_THROW(result.get(), std::invalid_argument);
+    });
+    EXPECT_EQ(called, 2);
+    called = 0;
+    ret_a = func(self_name, "a").runAsync(123, 123.45, "a", true);
+    while (ret_a.result.wait_for(std::chrono::milliseconds(
+               WEBCFACE_TEST_TIMEOUT)) != std::future_status::ready) {
+    }
+    EXPECT_EQ(called, 1);
     EXPECT_TRUE(ret_a.started.get());
     EXPECT_EQ(static_cast<double>(ret_a.result.get()), 123.45);
     EXPECT_EQ(ret_a.member().name(), self_name.decode());
     EXPECT_EQ(ret_a.name(), "a");
     EXPECT_EQ(called, 1);
+    called = 0;
+    ret_a.onStarted([&](bool started) {
+        called++;
+        EXPECT_TRUE(started);
+    });
+    ret_a.onResult([&](const std::shared_future<ValAdaptor> &result) {
+        called++;
+        EXPECT_EQ(static_cast<double>(result.get()), 123.45);
+    });
+    EXPECT_EQ(called, 2);
     called = 0;
 
     // 引数の間違い
@@ -284,45 +343,86 @@ TEST_F(FuncTest, funcFutureRun) {
     // 引数と戻り値
     int called = 0;
     auto main_id = std::this_thread::get_id();
-    auto ret = func(self_name, "a")
-                   .set([&](int a, double b, std::string c, bool d) {
-                       EXPECT_EQ(a, 123);
-                       EXPECT_EQ(b, 123.45);
-                       EXPECT_EQ(c, "a");
-                       EXPECT_TRUE(d);
-                       ++called;
-                       EXPECT_EQ(std::this_thread::get_id(), main_id);
-                       return std::async(std::launch::deferred, [&] {
-                           // runなのでmainスレッド
-                           EXPECT_EQ(std::this_thread::get_id(), main_id);
-                           return 123.45;
-                       });
-                   })
-                   .run(123, 123.45, "a", true);
+    func(self_name, "a").set([&](int a, double b, std::string c, bool d) {
+        if (a == 0) {
+            throw std::invalid_argument("a == 0");
+        }
+        // EXPECT_EQ(a, 123);
+        EXPECT_EQ(b, 123.45);
+        EXPECT_EQ(c, "a");
+        EXPECT_TRUE(d);
+        EXPECT_EQ(std::this_thread::get_id(), main_id);
+        return std::async(std::launch::deferred, [&, a] {
+            if (a == 1) {
+                throw std::invalid_argument("a == 1");
+            }
+            ++called;
+            // runなのでmainスレッド
+            EXPECT_EQ(std::this_thread::get_id(), main_id);
+            return 123.45;
+        });
+    });
+    EXPECT_THROW(func(self_name, "a").run(0, 123.45, "a", true),
+                 std::invalid_argument);
+    EXPECT_THROW(func(self_name, "a").run(1, 123.45, "a", true),
+                 std::invalid_argument);
+    auto ret = func(self_name, "a").run(123, 123.45, "a", true);
     EXPECT_EQ(called, 1);
     EXPECT_EQ(static_cast<double>(ret), 123.45);
     called = 0;
 
-    auto ret_a = func(self_name, "a")
-                     .set([&](int a, double b, std::string c, bool d) {
-                         EXPECT_EQ(a, 123);
-                         EXPECT_EQ(b, 123.45);
-                         EXPECT_EQ(c, "a");
-                         EXPECT_TRUE(d);
-                         ++called;
-                         EXPECT_EQ(std::this_thread::get_id(), main_id);
-                         return std::async(std::launch::deferred, [&] {
-                             // runAsyncなので別スレッド
-                             EXPECT_NE(std::this_thread::get_id(), main_id);
-                             return 123.45;
-                         });
-                     })
-                     .runAsync(123, 123.45, "a", true);
+    func(self_name, "a").set([&](int a, double b, std::string c, bool d) {
+        if (a == 0) {
+            throw std::invalid_argument("a == 0");
+        }
+        // EXPECT_EQ(a, 123);
+        EXPECT_EQ(b, 123.45);
+        EXPECT_EQ(c, "a");
+        EXPECT_TRUE(d);
+        EXPECT_EQ(std::this_thread::get_id(), main_id);
+        return std::async(std::launch::deferred, [&, a] {
+            if (a == 1) {
+                throw std::invalid_argument("a == 1");
+            }
+            ++called;
+            // runAsyncなので別スレッド
+            EXPECT_NE(std::this_thread::get_id(), main_id);
+            return 123.45;
+        });
+    });
+    auto ret_a = func(self_name, "a").runAsync(0, 123.45, "a", true);
+    EXPECT_THROW(ret_a.result.get(), std::invalid_argument);
+    ret_a = func(self_name, "a").runAsync(1, 123.45, "a", true);
+    EXPECT_THROW(ret_a.result.get(), std::invalid_argument);
+    ret_a.onStarted([&](bool started) {
+        called++;
+        EXPECT_TRUE(started);
+    });
+    ret_a.onResult([&](const std::shared_future<ValAdaptor> &result) {
+        called++;
+        EXPECT_THROW(result.get(), std::invalid_argument);
+    });
+    EXPECT_EQ(called, 2);
+    called = 0;
+    ret_a = func(self_name, "a").runAsync(123, 123.45, "a", true);
+    while (ret_a.result.wait_for(std::chrono::milliseconds(
+               WEBCFACE_TEST_TIMEOUT)) != std::future_status::ready) {
+    }
     EXPECT_TRUE(ret_a.started.get());
     EXPECT_EQ(static_cast<double>(ret_a.result.get()), 123.45);
     EXPECT_EQ(ret_a.member().name(), self_name.decode());
     EXPECT_EQ(ret_a.name(), "a");
     EXPECT_EQ(called, 1);
+    called = 0;
+    ret_a.onStarted([&](bool started) {
+        called++;
+        EXPECT_TRUE(started);
+    });
+    ret_a.onResult([&](const std::shared_future<ValAdaptor> &result) {
+        called++;
+        EXPECT_EQ(static_cast<double>(result.get()), 123.45);
+    });
+    EXPECT_EQ(called, 2);
     called = 0;
 
     // 引数の間違い
@@ -335,53 +435,88 @@ TEST_F(FuncTest, funcSharedFutureRun) {
     // 引数と戻り値
     int called = 0;
     auto main_id = std::this_thread::get_id();
-    auto ret =
-        func(self_name, "a")
-            .set([&](int a, double b, std::string c, bool d) {
-                EXPECT_EQ(a, 123);
-                EXPECT_EQ(b, 123.45);
-                EXPECT_EQ(c, "a");
-                EXPECT_TRUE(d);
-                ++called;
-                EXPECT_EQ(std::this_thread::get_id(), main_id);
-                return std::async(std::launch::deferred,
-                                  [&] {
-                                      // runなのでmainスレッド
-                                      EXPECT_EQ(std::this_thread::get_id(),
-                                                main_id);
-                                      return 123.45;
-                                  })
-                    .share();
-            })
-            .run(123, 123.45, "a", true);
+    func(self_name, "a").set([&](int a, double b, std::string c, bool d) {
+        if (a == 0) {
+            throw std::invalid_argument("a == 0");
+        }
+        // EXPECT_EQ(a, 123);
+        EXPECT_EQ(b, 123.45);
+        EXPECT_EQ(c, "a");
+        EXPECT_TRUE(d);
+        EXPECT_EQ(std::this_thread::get_id(), main_id);
+        return std::async(std::launch::deferred,
+                          [&, a] {
+                              if (a == 0) {
+                                  throw std::invalid_argument("a == 1");
+                              }
+                              ++called;
+                              // runなのでmainスレッド
+                              EXPECT_EQ(std::this_thread::get_id(), main_id);
+                              return 123.45;
+                          })
+            .share();
+    });
+    EXPECT_THROW(func(self_name, "a").run(0, 123.45, "a", true),
+                 std::invalid_argument);
+    auto ret = func(self_name, "a").run(123, 123.45, "a", true);
     EXPECT_EQ(called, 1);
     EXPECT_EQ(static_cast<double>(ret), 123.45);
     called = 0;
 
-    auto ret_a =
-        func(self_name, "a")
-            .set([&](int a, double b, std::string c, bool d) {
-                EXPECT_EQ(a, 123);
-                EXPECT_EQ(b, 123.45);
-                EXPECT_EQ(c, "a");
-                EXPECT_TRUE(d);
-                ++called;
-                EXPECT_EQ(std::this_thread::get_id(), main_id);
-                return std::async(std::launch::deferred,
-                                  [&] {
-                                      // runAsyncなので別スレッド
-                                      EXPECT_NE(std::this_thread::get_id(),
-                                                main_id);
-                                      return 123.45;
-                                  })
-                    .share();
-            })
-            .runAsync(123, 123.45, "a", true);
+    func(self_name, "a").set([&](int a, double b, std::string c, bool d) {
+        if (a == 0) {
+            throw std::invalid_argument("a == 0");
+        }
+        // EXPECT_EQ(a, 123);
+        EXPECT_EQ(b, 123.45);
+        EXPECT_EQ(c, "a");
+        EXPECT_TRUE(d);
+        EXPECT_EQ(std::this_thread::get_id(), main_id);
+        return std::async(std::launch::deferred,
+                          [&, a] {
+                              if (a == 1) {
+                                  throw std::invalid_argument("a == 1");
+                              }
+                              ++called;
+                              // runAsyncなので別スレッド
+                              EXPECT_NE(std::this_thread::get_id(), main_id);
+                              return 123.45;
+                          })
+            .share();
+    });
+    auto ret_a = func(self_name, "a").runAsync(0, 123.45, "a", true);
+    EXPECT_THROW(ret_a.result.get(), std::invalid_argument);
+    ret_a = func(self_name, "a").runAsync(1, 123.45, "a", true);
+    EXPECT_THROW(ret_a.result.get(), std::invalid_argument);
+    ret_a.onStarted([&](bool started) {
+        called++;
+        EXPECT_TRUE(started);
+    });
+    ret_a.onResult([&](const std::shared_future<ValAdaptor> &result) {
+        called++;
+        EXPECT_THROW(result.get(), std::invalid_argument);
+    });
+    EXPECT_EQ(called, 2);
+    called = 0;
+    ret_a = func(self_name, "a").runAsync(123, 123.45, "a", true);
+    while (ret_a.result.wait_for(std::chrono::milliseconds(
+               WEBCFACE_TEST_TIMEOUT)) != std::future_status::ready) {
+    }
     EXPECT_TRUE(ret_a.started.get());
     EXPECT_EQ(static_cast<double>(ret_a.result.get()), 123.45);
     EXPECT_EQ(ret_a.member().name(), self_name.decode());
     EXPECT_EQ(ret_a.name(), "a");
     EXPECT_EQ(called, 1);
+    called = 0;
+    ret_a.onStarted([&](bool started) {
+        called++;
+        EXPECT_TRUE(started);
+    });
+    ret_a.onResult([&](const std::shared_future<ValAdaptor> &result) {
+        called++;
+        EXPECT_EQ(static_cast<double>(result.get()), 123.45);
+    });
+    EXPECT_EQ(called, 2);
     called = 0;
 
     // 引数の間違い

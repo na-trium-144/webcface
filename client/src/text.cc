@@ -2,16 +2,10 @@
 #include <webcface/member.h>
 #include "webcface/internal/client_internal.h"
 #include "webcface/message/message.h"
-#include "webcface/internal/event_target_impl.h"
 
 WEBCFACE_NS_BEGIN
 
-template class WEBCFACE_DLL_INSTANCE_DEF EventTarget<Text>;
-
-Text::Text(const Field &base) : Field(base), EventTarget<Text>() {
-    std::lock_guard lock(this->dataLock()->event_m);
-    this->setCL(this->dataLock()->text_change_event[this->member_][this->field_]);
-}
+Text::Text(const Field &base) : Field(base) {}
 
 void Text::request() const {
     auto data = dataLock();
@@ -22,24 +16,27 @@ void Text::request() const {
     }
 }
 
-// Text &Text::set(const Text::Dict &v) {
-//     if (v.hasValue()) {
-//         setCheck()->text_store.setSend(*this, v.getRaw());
-//         this->triggerEvent(*this);
-//     } else {
-//         for (const auto &it : v.getChildren()) {
-//             child(it.first).set(it.second);
-//         }
-//     }
-//     return *this;
-// }
 Text &Text::set(const ValAdaptor &v) {
-    setCheck()->text_store.setSend(*this, std::make_shared<ValAdaptor>(v));
-    this->triggerEvent(*this);
+    auto data = setCheck();
+    data->text_store.setSend(*this, std::make_shared<ValAdaptor>(v));
+    std::shared_ptr<std::function<void(Text)>> change_event;
+    {
+        std::lock_guard lock(data->event_m);
+        change_event = data->text_change_event[this->member_][this->field_];
+    }
+    if (change_event && *change_event) {
+        change_event->operator()(*this);
+    }
     return *this;
 }
-
-void Text::onAppend() const { request(); }
+Text &Text::onChange(std::function<void(Text)> callback) {
+    this->request();
+    auto data = dataLock();
+    std::lock_guard lock(data->event_m);
+    data->text_change_event[this->member_][this->field_] =
+        std::make_shared<std::function<void(Text)>>(std::move(callback));
+    return *this;
+}
 
 std::optional<ValAdaptor> Text::tryGetV() const {
     auto v = dataLock()->text_store.getRecv(*this);

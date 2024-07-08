@@ -3,24 +3,17 @@
 #include "webcface/internal/client_internal.h"
 #include "webcface/message/message.h"
 #include "webcface/internal/data_buffer.h"
-#include "webcface/internal/event_target_impl.h"
-
 WEBCFACE_NS_BEGIN
 
-template class WEBCFACE_DLL_INSTANCE_DEF EventTarget<RobotModel>;
-
 RobotModel::RobotModel()
-    : Field(), EventTarget<RobotModel>(),
-      Canvas3DComponent(Canvas3DComponentType::robot_model),
+    : Field(), Canvas3DComponent(Canvas3DComponentType::robot_model),
       sb(std::make_shared<internal::DataSetBuffer<RobotLink>>()) {}
 
 RobotModel::RobotModel(const Field &base)
-    : Field(base), EventTarget<RobotModel>(),
+    : Field(base),
       Canvas3DComponent(Canvas3DComponentType::robot_model, this->dataLock()),
       sb(std::make_shared<internal::DataSetBuffer<RobotLink>>(base)) {
     this->Canvas3DComponent::robotModel(*this);
-    std::lock_guard lock(this->dataLock()->event_m);
-    this->setCL(this->dataLock()->robot_model_change_event[this->member_][this->field_]);
 }
 
 RobotModel &RobotModel::init() {
@@ -34,9 +27,27 @@ RobotModel &RobotModel::sync() {
 template <>
 void internal::DataSetBuffer<RobotLink>::onSync() {
     auto ls = std::make_shared<std::vector<RobotLink>>(std::move(components_));
-    target_.setCheck()->robot_model_store.setSend(target_, ls);
-    static_cast<RobotModel>(target_).triggerEvent(target_);
+    auto data = target_.setCheck();
+    data->robot_model_store.setSend(target_, ls);
+    std::shared_ptr<std::function<void(RobotModel)>> change_event;
+    {
+        std::lock_guard lock(data->event_m);
+        change_event =
+            data->robot_model_change_event[target_.member_][target_.field_];
+    }
+    if (change_event && *change_event) {
+        change_event->operator()(target_);
+    }
 }
+RobotModel &RobotModel::onChange(std::function<void(RobotModel)> callback) {
+    this->request();
+    auto data = dataLock();
+    std::lock_guard lock(data->event_m);
+    data->robot_model_change_event[this->member_][this->field_] =
+        std::make_shared<std::function<void(RobotModel)>>(std::move(callback));
+    return *this;
+}
+
 RobotModel &RobotModel::operator<<(const RobotLink &vc) {
     sb->add(vc);
     return *this;
@@ -56,11 +67,9 @@ void RobotModel::request() const {
 }
 
 RobotModel &RobotModel::set(const std::vector<RobotLink> &v) {
-    sb->set(v);
+    sb->set(v); // set()のなかでchange_eventは呼ばれる
     return *this;
 }
-
-void RobotModel::onAppend() const { request(); }
 
 std::optional<std::vector<RobotLink>> RobotModel::tryGet() const {
     request();

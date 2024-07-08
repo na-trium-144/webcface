@@ -6,7 +6,6 @@
 #include <utility>
 #include <stdexcept>
 #include <concepts>
-#include "event_target.h"
 #include <webcface/common/def.h>
 #include "robot_model.h"
 #include "components.h"
@@ -23,10 +22,8 @@ class DataSetBuffer;
  * コンストラクタではなく Member::canvas3D() を使って取得してください
  *
  */
-class WEBCFACE_DLL Canvas3D : protected Field, public EventTarget<Canvas3D> {
+class WEBCFACE_DLL Canvas3D : protected Field {
     std::shared_ptr<internal::DataSetBuffer<Canvas3DComponent>> sb;
-
-    void onAppend() const override final;
 
   public:
     Canvas3D();
@@ -86,6 +83,33 @@ class WEBCFACE_DLL Canvas3D : protected Field, public EventTarget<Canvas3D> {
      * \since ver1.11
      */
     Canvas3D parent() const { return this->Field::parent(); }
+
+    /*!
+     * \brief 値が変化したときに呼び出されるコールバックを設定
+     * \since ver2.0
+     */
+    Canvas3D &onChange(std::function<void(Canvas3D)> callback);
+    /*!
+     * \brief 値が変化したときに呼び出されるコールバックを設定
+     * \since ver2.0
+     */
+    template <typename F>
+        requires std::invocable<F>
+    Canvas3D &onChange(F callback) {
+        return onChange(
+            [callback = std::move(callback)](const auto &) { callback(); });
+    }
+    /*!
+     * \deprecated
+     * ver1.11まではEventTarget::appendListener()でコールバックを追加できたが、
+     * ver2.0からコールバックは1個のみになった。
+     * 互換性のため残しているがonChange()と同じ
+     *
+     */
+    template <typename T>
+    [[deprecated]] void appendListener(T &&callback) {
+        onChange(std::forward<T>(callback));
+    }
 
     /*!
      * \brief canvasの内容をリクエストする
