@@ -142,20 +142,20 @@ $(document).ready(function(){initNavTree('md_30__func.html',''); initResizable()
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md118">関数の登録</a><ul><li class="level2"><a href="#autotoc_md119">引数と戻り値型</a></li>
-<li class="level2"><a href="#autotoc_md120">関数をWebUIから隠す</a></li>
+<ul><li class="level1"><a href="#autotoc_md117">関数の登録</a><ul><li class="level2"><a href="#autotoc_md118">引数と戻り値型</a></li>
+<li class="level2"><a href="#autotoc_md119">関数をWebUIから隠す</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md121">FuncListener</a></li>
-<li class="level1"><a href="#autotoc_md122">関数の情報の取得</a><ul><li class="level2"><a href="#autotoc_md123">Entry</a></li>
+<li class="level1"><a href="#autotoc_md120">FuncListener</a></li>
+<li class="level1"><a href="#autotoc_md121">関数の情報の取得</a><ul><li class="level2"><a href="#autotoc_md122">Entry</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md124">関数の実行</a><ul><li class="level2"><a href="#autotoc_md125">runAsync</a></li>
+<li class="level1"><a href="#autotoc_md123">関数の実行</a><ul><li class="level2"><a href="#autotoc_md124">runAsync</a></li>
 </ul>
 </li>
 </ul>
 </div>
-<div class="textblock"><p><a class="anchor" id="autotoc_md117"></a></p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md116"></a></p>
 <dl class="section since"><dt>Since</dt><dd><span class="since-c"></span> <span class="since-js"></span> <span class="since-py"></span> </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><ul>
 <li>C++ <a class="el" href="classwebcface_1_1Func.html" title="関数1つを表すクラス">webcface::Func</a> (<code><a class="el" href="func_8h.html">webcface/func.h</a></code>)</li>
@@ -165,7 +165,7 @@ $(document).ready(function(){initNavTree('md_30__func.html',''); initResizable()
 </ul>
 </dd></dl>
 <p>他Memberから呼び出せる関数の登録、 また他Memberの関数の呼び出しができます。</p>
-<h1><a class="anchor" id="autotoc_md118"></a>
+<h1><a class="anchor" id="autotoc_md117"></a>
 関数の登録</h1>
 <p>Client::func からFuncオブジェクトを作り、 Func::set() で関数を登録し、Client::sync()することで送信されます</p>
 <dl class="section note"><dt>Note</dt><dd>同じ名前のFuncに複数回関数をセットすると上書きされ、後に登録した関数のみが呼び出されます。 ただし引数や戻り値の型などの情報は更新されず、最初の関数のものと同じになります。</dd></dl>
@@ -266,7 +266,7 @@ setした関数にWebCFace側で排他制御をかける機能(〜ver1.11まで)
 </div><!-- fragment --><p> で条件を何も課さないようにできます。</p>
 <p></p>
 </details>
-<h2><a class="anchor" id="autotoc_md119"></a>
+<h2><a class="anchor" id="autotoc_md118"></a>
 引数と戻り値型</h2>
 <div class="tabbed"></div><div class="tabbed"><ul>
 <li><p class="startli"><b class="tab-title">C++</b> Func::setArgs() で引数名などの情報や、引数に設定する条件をセットすることができます。 設定可能な情報の一覧は <a class="el" href="classwebcface_1_1Arg.html" title="引数の情報を表す。">webcface::Arg</a> を参照</p>
@@ -274,9 +274,9 @@ setした関数にWebCFace側で排他制御をかける機能(〜ver1.11まで)
 <div class="line">    <a class="code hl_class" href="classwebcface_1_1Arg.html">webcface::Arg</a>(<span class="stringliteral">&quot;a&quot;</span>).<a class="code hl_function" href="classwebcface_1_1Arg.html#a2e31ddffe3f62572d218e8e028423cfa">init</a>(100),</div>
 <div class="line">    <a class="code hl_class" href="classwebcface_1_1Arg.html">webcface::Arg</a>(<span class="stringliteral">&quot;b&quot;</span>).<a class="code hl_function" href="classwebcface_1_1Arg.html#ae07e02a3a02b4bd39dd61b3b7387a863">option</a>({<span class="stringliteral">&quot;aaa&quot;</span>, <span class="stringliteral">&quot;bbb&quot;</span>, <span class="stringliteral">&quot;ccc&quot;</span>}),</div>
 <div class="line">});</div>
-<div class="ttc" id="aclasswebcface_1_1Arg_html"><div class="ttname"><a href="classwebcface_1_1Arg.html">webcface::Arg</a></div><div class="ttdoc">引数の情報を表す。</div><div class="ttdef"><b>Definition</b> func_info.h:38</div></div>
-<div class="ttc" id="aclasswebcface_1_1Arg_html_a2e31ddffe3f62572d218e8e028423cfa"><div class="ttname"><a href="classwebcface_1_1Arg.html#a2e31ddffe3f62572d218e8e028423cfa">webcface::Arg::init</a></div><div class="ttdeci">std::optional&lt; ValAdaptor &gt; init() const</div><div class="ttdoc">デフォルト値を取得する。</div><div class="ttdef"><b>Definition</b> func_info.h:92</div></div>
-<div class="ttc" id="aclasswebcface_1_1Arg_html_ae07e02a3a02b4bd39dd61b3b7387a863"><div class="ttname"><a href="classwebcface_1_1Arg.html#ae07e02a3a02b4bd39dd61b3b7387a863">webcface::Arg::option</a></div><div class="ttdeci">const std::vector&lt; ValAdaptor &gt; &amp; option() const</div><div class="ttdoc">引数の選択肢を取得する。</div><div class="ttdef"><b>Definition</b> func_info.h:143</div></div>
+<div class="ttc" id="aclasswebcface_1_1Arg_html"><div class="ttname"><a href="classwebcface_1_1Arg.html">webcface::Arg</a></div><div class="ttdoc">引数の情報を表す。</div><div class="ttdef"><b>Definition</b> func_info.h:39</div></div>
+<div class="ttc" id="aclasswebcface_1_1Arg_html_a2e31ddffe3f62572d218e8e028423cfa"><div class="ttname"><a href="classwebcface_1_1Arg.html#a2e31ddffe3f62572d218e8e028423cfa">webcface::Arg::init</a></div><div class="ttdeci">std::optional&lt; ValAdaptor &gt; init() const</div><div class="ttdoc">デフォルト値を取得する。</div><div class="ttdef"><b>Definition</b> func_info.h:93</div></div>
+<div class="ttc" id="aclasswebcface_1_1Arg_html_ae07e02a3a02b4bd39dd61b3b7387a863"><div class="ttname"><a href="classwebcface_1_1Arg.html#ae07e02a3a02b4bd39dd61b3b7387a863">webcface::Arg::option</a></div><div class="ttdeci">const std::vector&lt; ValAdaptor &gt; &amp; option() const</div><div class="ttdoc">引数の選択肢を取得する。</div><div class="ttdef"><b>Definition</b> func_info.h:144</div></div>
 </div><!-- fragment --></li>
 <li><b class="tab-title">JavaScript</b> set関数の引数で指定します。 型情報を取得できないJavaScript, TypeScriptではここで型情報も指定する必要があります。 引数のオプションに関しては <a href="https://na-trium-144.github.io/webcface-js/interfaces/Arg.html">Arg</a> を参照 <div class="fragment"><div class="line">wcli.func(&quot;hoge&quot;).set(hoge, valType.float_, [</div>
 <div class="line">    { name: &quot;a&quot;, type: valType.int_, init: 100 },</div>
@@ -291,7 +291,7 @@ setした関数にWebCFace側で排他制御をかける機能(〜ver1.11まで)
 <div class="line">])</div>
 </div><!-- fragment --></li>
 </ul>
-</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md120"></a>
+</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md119"></a>
 関数をWebUIから隠す</h2>
 <dl class="section since"><dt>Since</dt><dd><span class="since-c">1.10</span></dd></dl>
 <p>関数の名前を半角ピリオドから始めると、Entryが他クライアントに送信されなくなり、 他のMemberやWebUIから関数の存在を隠すことができます。 (Valueなど他のデータ型についても同様です。)</p>
@@ -310,7 +310,7 @@ setした関数にWebCFace側で排他制御をかける機能(〜ver1.11まで)
 </div><!-- fragment --></li>
 </ul>
 </div><div class="tabbed"></div> </details>
-<h1><a class="anchor" id="autotoc_md121"></a>
+<h1><a class="anchor" id="autotoc_md120"></a>
 FuncListener</h1>
 <p>呼び出されたとき実行する関数を登録する代わりに、呼び出されたかどうかを監視し任意のタイミングで値を返すということもできます。 特にCのFFIで関数ポインタが利用できない場合に代わりに使えます。</p>
 <div class="tabbed"></div><div class="tabbed"><ul>
@@ -338,17 +338,17 @@ FuncListener</h1>
 </div><!-- fragment --><p> でエラーメッセージを返すことができます(呼び出し元にはruntime_errorを投げたものとして返ります) (<code>wcfFuncReject(handle, NULL);</code> も可)</p>
 </li>
 </ul>
-</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md122"></a>
+</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md121"></a>
 関数の情報の取得</h1>
 <p>Member::func() でFuncクラスのオブジェクトが得られ、 Func::returnType() や Func::args() で関数の引数や戻り値の情報を取得できます。</p>
 <p>他のデータ型と違ってデータをリクエストする機能はなく、 関数の情報はクライアントが関数を登録してsync()した時点で送られてきます。</p>
-<h2><a class="anchor" id="autotoc_md123"></a>
+<h2><a class="anchor" id="autotoc_md122"></a>
 Entry</h2>
 <p><strike>Member::funcs() で</strike> そのMemberが送信している関数のリストが得られます <br  />
  <span class="since-c">1.6</span> <span class="since-py">1.1</span> Member::funcEntries() に変更</p>
 <p>また、Member::onFuncEntry() で新しく関数が追加されたときのコールバックを設定できます</p>
 <p>いずれも使い方は <a class="el" href="md_10__value.html">Value</a> と同様なのでそちらを参照してください</p>
-<h1><a class="anchor" id="autotoc_md124"></a>
+<h1><a class="anchor" id="autotoc_md123"></a>
 関数の実行</h1>
 <p>Func::run() で関数を実行できます。引数を渡すこともでき、戻り値もそのまま返ってきます。 他クライアントの関数も同様にrun()で実行させることができます。</p>
 <p>実行した関数が例外を投げた場合、また引数の個数が一致しない場合などはrun()が例外を投げます。</p>
@@ -388,7 +388,7 @@ Entry</h2>
 <li><b class="tab-title">Python</b> <div class="fragment"><div class="line">ans = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).func(<span class="stringliteral">&quot;hoge&quot;</span>).run(1, <span class="stringliteral">&quot;aa&quot;</span>)</div>
 </div><!-- fragment --> Funcオブジェクトに()と引数をつけて直接呼び出すことでも同様に実行できます。 (<code>Func::__call__</code>)</li>
 </ul>
-</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md125"></a>
+</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md124"></a>
 runAsync</h2>
 <p>Func::runAsync() は関数の実行を開始し、終了を待たずに続行します。 戻り値として AsyncFuncResult クラスのオブジェクトが返り、後から関数の戻り値や例外を取得できます。</p>
 <p>AsyncFuncResultからは started と result が取得できます。</p><ul>
@@ -399,20 +399,19 @@ runAsync</h2>
 <li><p class="startli"><b class="tab-title">C++</b> </p><div class="fragment"><div class="line">AsyncFuncResult res = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).func(<span class="stringliteral">&quot;hoge&quot;</span>).runAsync(1, <span class="stringliteral">&quot;aa&quot;</span>);</div>
 <div class="line"><span class="keywordtype">double</span> ans = res.result.get();</div>
 </div><!-- fragment --><p> startedとresultはstd::shared_futureです。取得できるまで待機するならget(), ブロックせず完了したか確認したければwait_for()などが使えます。例外はresult.get()が投げます。</p>
-<p class="startli"><span class="since-c">1.11</span> <code>onStarted()</code>, <code>onResult()</code> で値が返ってきたときに実行されるイベントが取得でき、コールバックを設定することができます。 (<a href="https://github.com/wqking/eventpp/blob/master/doc/callbacklist.md">eventpp::CallbackList 型</a>の参照で返ります) <br  />
- </p><div class="fragment"><div class="line">AsyncFuncResult res = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).func(<span class="stringliteral">&quot;hoge&quot;</span>).runAsync(1, <span class="stringliteral">&quot;aa&quot;</span>);</div>
-<div class="line">res.onStarted().append([](<span class="keywordtype">bool</span> started){</div>
+<p class="startli"><span class="since-c">2.0</span> <code>onStarted()</code>, <code>onResult()</code> で値が返ってきたときに実行されるコールバックを設定することができます。 </p><div class="fragment"><div class="line">AsyncFuncResult res = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).func(<span class="stringliteral">&quot;hoge&quot;</span>).runAsync(1, <span class="stringliteral">&quot;aa&quot;</span>);</div>
+<div class="line">res.onStarted([](<span class="keywordtype">bool</span> started){</div>
 <div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;func hoge() &quot;</span> &lt;&lt; started ? <span class="stringliteral">&quot;started&quot;</span> : <span class="stringliteral">&quot;not started&quot;</span> &lt;&lt; std::endl;</div>
 <div class="line">});</div>
-<div class="line">res.onResult().append([](std::shared_future&lt;webcface::ValAdaptor&gt; result){</div>
+<div class="line">res.onResult([](<span class="keyword">const</span> std::shared_future&lt;webcface::ValAdaptor&gt; &amp;result){</div>
 <div class="line">    <span class="keywordflow">try</span>{</div>
 <div class="line">        <span class="keywordtype">double</span> ans = result.get();</div>
 <div class="line">    }<span class="keywordflow">catch</span>(<span class="keyword">const</span> std::exception &amp;e){</div>
 <div class="line">        std::cout &lt;&lt; e.what() &lt;&lt; std::endl;</div>
 <div class="line">    }</div>
 <div class="line">});</div>
-</div><!-- fragment --> <dl class="section warning"><dt>Warning</dt><dd>onStartedではコールバックの引数は<code>bool</code>, onResultではコールバックの引数は<code>std::shared_future&lt;<a class="el" href="classwebcface_1_1encoding_1_1ValAdaptor.html" title="数値、文字列などの値を相互変換するクラス">webcface::ValAdaptor</a>&gt;</code>です。 関数の呼び出しに失敗した場合や呼び出した関数の結果がエラーだった場合resultのshared_futureは例外を投げるので、 上の例のように必ずtry〜catchを使用してください。 (例外がcatchされなかった場合terminateしてしまいます)</dd></dl>
-<p>詳細は <a class="el" href="classwebcface_1_1AsyncFuncResult.html" title="非同期で実行した関数の実行結果を表す。">webcface::AsyncFuncResult</a> を参照してください。</p>
+</div><!-- fragment --><p> onStarted, onResult を設定した時点ですでに関数の実行が完了していた場合は、そのときにコールバックが呼ばれます。 コールバックはどの状況で設定したとしても必ず1回呼ばれます。 (呼ばれたあとにコールバックを再設定したりしても2度目が呼ばれることはありません)</p>
+<dl class="section warning"><dt>Warning</dt><dd>onStarted ではコールバックの引数は<code>bool</code>ですが、 onResult ではコールバックの引数は<code>std::shared_future&lt;<a class="el" href="classwebcface_1_1encoding_1_1ValAdaptor.html" title="数値、文字列などの値を相互変換するクラス">webcface::ValAdaptor</a>&gt;</code>です。 関数の呼び出しに失敗した場合や呼び出した関数の結果がエラーだった場合resultのshared_futureは例外を投げるので、上の例のように必ずtry〜catchを使用してください。 (例外がcatchされなかった場合terminateしてしまいます)</dd></dl>
 </li>
 <li><p class="startli"><b class="tab-title">C</b> </p><div class="fragment"><div class="line"><a class="code hl_struct" href="structwcfMultiVal.html">wcfMultiVal</a> args[3] = {</div>
 <div class="line">    <a class="code hl_function" href="c__wcf_2func_8h.html#aa371cd469c55d58b0332f2261a120533">wcfValI</a>(42),</div>
@@ -449,7 +448,25 @@ runAsync</h2>
 <div class="line">ans = res.result</div>
 </div><!-- fragment --> startedとresultは取得できるまで待機するgetterです。例外の場合はresultの取得時に投げます。 また、取得可能になったかどうかをstarted_readyとresult_readyで取得できます。 詳細は <a href="https://na-trium-144.github.io/webcface-python/webcface.func_info.html#webcface.func_info.AsyncFuncResult">webcface.AsyncFuncResult</a> を参照</li>
 </ul>
-</div><div class="tabbed"></div><div class="section_buttons"></div><div class="section_buttons"><table class="markdownTable">
+</div><div class="tabbed"></div><details >
+<summary >
+CallbackListを返す AsyncFuncResult::onStarted(), onResult() (ver1.11)</summary>
+<p></p>
+<p><span class="since-c">1.11</span> <code>onStarted()</code>, <code>onResult()</code> で値が返ってきたときに実行されるイベントが取得でき、コールバックを設定することができます。 (<a href="https://github.com/wqking/eventpp/blob/master/doc/callbacklist.md">eventpp::CallbackList 型</a>の参照で返ります) <br  />
+ </p><div class="fragment"><div class="line">AsyncFuncResult res = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).func(<span class="stringliteral">&quot;hoge&quot;</span>).runAsync(1, <span class="stringliteral">&quot;aa&quot;</span>);</div>
+<div class="line">res.onStarted().append([](<span class="keywordtype">bool</span> started){</div>
+<div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;func hoge() &quot;</span> &lt;&lt; started ? <span class="stringliteral">&quot;started&quot;</span> : <span class="stringliteral">&quot;not started&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line">});</div>
+<div class="line">res.onResult().append([](std::shared_future&lt;webcface::ValAdaptor&gt; result){</div>
+<div class="line">    <span class="keywordflow">try</span>{</div>
+<div class="line">        <span class="keywordtype">double</span> ans = result.get();</div>
+<div class="line">    }<span class="keywordflow">catch</span>(<span class="keyword">const</span> std::exception &amp;e){</div>
+<div class="line">        std::cout &lt;&lt; e.what() &lt;&lt; std::endl;</div>
+<div class="line">    }</div>
+<div class="line">});</div>
+</div><!-- fragment --><p></p>
+</details>
+<div class="section_buttons"></div><div class="section_buttons"><table class="markdownTable">
 <tr class="markdownTableHead">
 <th class="markdownTableHeadLeft">Previous   </th><th class="markdownTableHeadRight">Next    </th></tr>
 <tr class="markdownTableRowOdd">
@@ -461,7 +478,7 @@ runAsync</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sun Jul 7 2024 15:01:18 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Mon Jul 8 2024 10:16:43 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

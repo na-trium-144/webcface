@@ -43,31 +43,6 @@ var hierarchy =
       [ "AsyncFuncState", "classwebcface_1_1internal_1_1AsyncFuncState.html", null ],
       [ "ClientData", "structwebcface_1_1internal_1_1ClientData.html", null ]
     ] ],
-    [ "EventTarget< ArgType >", "classwebcface_1_1EventTarget.html", null ],
-    [ "EventTarget< Canvas2D >", "classwebcface_1_1EventTarget.html", [
-      [ "Canvas2D", "classwebcface_1_1Canvas2D.html", null ]
-    ] ],
-    [ "EventTarget< Canvas3D >", "classwebcface_1_1EventTarget.html", [
-      [ "Canvas3D", "classwebcface_1_1Canvas3D.html", null ]
-    ] ],
-    [ "EventTarget< Image >", "classwebcface_1_1EventTarget.html", [
-      [ "Image", "classwebcface_1_1Image.html", null ]
-    ] ],
-    [ "EventTarget< Log >", "classwebcface_1_1EventTarget.html", [
-      [ "Log", "classwebcface_1_1Log.html", null ]
-    ] ],
-    [ "EventTarget< RobotModel >", "classwebcface_1_1EventTarget.html", [
-      [ "RobotModel", "classwebcface_1_1RobotModel.html", null ]
-    ] ],
-    [ "EventTarget< Text >", "classwebcface_1_1EventTarget.html", [
-      [ "Text", "classwebcface_1_1Text.html", null ]
-    ] ],
-    [ "EventTarget< Value >", "classwebcface_1_1EventTarget.html", [
-      [ "Value", "classwebcface_1_1Value.html", null ]
-    ] ],
-    [ "EventTarget< View >", "classwebcface_1_1EventTarget.html", [
-      [ "View", "classwebcface_1_1View.html", null ]
-    ] ],
     [ "FieldBase", "structwebcface_1_1FieldBase.html", [
       [ "Field", "structwebcface_1_1Field.html", [
         [ "AsyncFuncResult", "classwebcface_1_1AsyncFuncResult.html", null ],

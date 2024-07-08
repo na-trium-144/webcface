@@ -144,9 +144,9 @@ $(document).ready(function(){initNavTree('md_11__text.html',''); initResizable()
 <div class="toc"><h3>Table of Contents</h3>
 <ul><li class="level1"><a href="#autotoc_md49">コマンドライン</a></li>
 <li class="level1"><a href="#autotoc_md50">送信</a></li>
-<li class="level1"><a href="#autotoc_md52">受信</a><ul><li class="level2"><a href="#autotoc_md53">時刻</a></li>
-<li class="level2"><a href="#autotoc_md54">Entry</a></li>
-<li class="level2"><a href="#autotoc_md55">Event</a></li>
+<li class="level1"><a href="#autotoc_md51">受信</a><ul><li class="level2"><a href="#autotoc_md52">時刻</a></li>
+<li class="level2"><a href="#autotoc_md53">Entry</a></li>
+<li class="level2"><a href="#autotoc_md54">Event</a></li>
 </ul>
 </li>
 </ul>
@@ -188,7 +188,26 @@ null終端の文字列は wcfTextSet, (<span class="since-c">2.0</span> wcfTextS
 </div><div class="tabbed"></div><dl class="section note"><dt>Note</dt><dd><span class="since-c">1.10</span> <span class="since-js">1.6</span> Textの内部データは文字列だけでなく数値やbool値も型を保持して扱えるようになっています。 (<a class="el" href="md_13__view.html">View</a>のInputRefで内部的に使用するため) <br  />
  C++はset,getで文字列と同様に送信、受信できます。 <br  />
  JavaScriptではsetAny, getAny関数を使うと文字列以外のデータを処理できます。</dd></dl>
-<h1><a class="anchor" id="autotoc_md52"></a>
+<details >
+<summary >
+(deprecated, ver1.10で削除) C++でwebcface::Text::Dictを使った値のセット</summary>
+<p></p>
+<p>webcface::Text::Dict オブジェクトを使うと複数の値をまとめて送ることができます。 </p><div class="fragment"><div class="line"><span class="keyword">struct </span>A {</div>
+<div class="line">    std::string x, y;</div>
+<div class="line">    <span class="keyword">operator</span> webcface::Text::Dict()<span class="keyword"> const </span>{</div>
+<div class="line">        <span class="keywordflow">return</span> {</div>
+<div class="line">            {<span class="stringliteral">&quot;x&quot;</span>, x},</div>
+<div class="line">            {<span class="stringliteral">&quot;y&quot;</span>, y},</div>
+<div class="line">            <span class="comment">// Value::Dictと同様、入れ子にもできます</span></div>
+<div class="line">        }</div>
+<div class="line">    }</div>
+<div class="line">};</div>
+<div class="line"> </div>
+<div class="line">A a_instance;</div>
+<div class="line">wcli.text(<span class="stringliteral">&quot;a&quot;</span>).set(a_instance); <span class="comment">// Dictにキャストされる</span></div>
+</div><!-- fragment --><p></p>
+</details>
+<h1><a class="anchor" id="autotoc_md51"></a>
 受信</h1>
 <p>Member::text() でTextクラスのオブジェクトが得られ、 Text::tryGet(), Text::tryGetRecurse() で値のリクエストをするとともに受信した値を取得できます。 (Dict はC++のみ)</p>
 <p>例えば<code>foo</code>というクライアントの<code>hoge</code>という名前のデータを取得したい場合は次のようにします。</p>
@@ -227,17 +246,17 @@ null終端の文字列は wcfTextSet, (<span class="since-c">2.0</span> wcfTextS
 </div><div class="tabbed"></div><p><strike>その後Client::sync()したときに実際にリクエストが送信され、</strike> <br  />
  <span class="since-c">1.2</span> <span class="since-js">1.1</span> <span class="since-py"></span> 別スレッドでリクエストが送信され、それ以降は値が得られるようになります。</p>
 <dl class="section note"><dt>Note</dt><dd><span class="since-c">1.7</span> <span class="since-js">1.1</span> <span class="since-py"></span> Text::request()で明示的にリクエストを送信することもできます。</dd></dl>
-<h2><a class="anchor" id="autotoc_md53"></a>
+<h2><a class="anchor" id="autotoc_md52"></a>
 時刻</h2>
 <p><strike>Text::time()</strike> でその値が送信されたとき(そのMemberがsync()したとき)の時刻が得られます。 <br  />
  <span class="since-c">1.7</span> <span class="since-js">1.6</span> <span class="since-py"></span> Member::syncTime() に変更</p>
-<h2><a class="anchor" id="autotoc_md54"></a>
+<h2><a class="anchor" id="autotoc_md53"></a>
 Entry</h2>
 <p><strike>Member::texts() で</strike> そのMemberが送信しているtextのリストが得られます <br  />
  <span class="since-c">1.6</span> <span class="since-py">1.1</span> Member::textEntries() に変更</p>
 <p>また、Member::onTextEntry() で新しくデータが追加されたときのコールバックを設定できます</p>
 <p>いずれも使い方は <a class="el" href="md_10__value.html">Value</a> と同様なのでそちらを参照してください</p>
-<h2><a class="anchor" id="autotoc_md55"></a>
+<h2><a class="anchor" id="autotoc_md54"></a>
 Event</h2>
 <p>受信したデータが変化したときにコールバックを呼び出すことができます。 コールバックを設定することでもその値はリクエストされます。</p>
 <p>また、データが変化したどうかに関わらずそのMemberがsync()したときにコールバックを呼び出したい場合は Member::onSync() が使えます</p>
@@ -254,7 +273,7 @@ Event</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sun Jul 7 2024 15:01:18 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Mon Jul 8 2024 10:16:43 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

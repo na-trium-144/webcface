@@ -111,7 +111,6 @@ var annotated_dup =
       [ "Circle", "structwebcface_1_1components_1_1geometries_1_1Circle.html", "structwebcface_1_1components_1_1geometries_1_1Circle" ],
       [ "Client", "classwebcface_1_1Client.html", "classwebcface_1_1Client" ],
       [ "Cylinder", "structwebcface_1_1components_1_1geometries_1_1Cylinder.html", "structwebcface_1_1components_1_1geometries_1_1Cylinder" ],
-      [ "EventTarget", "classwebcface_1_1EventTarget.html", "classwebcface_1_1EventTarget" ],
       [ "Field", "structwebcface_1_1Field.html", "structwebcface_1_1Field" ],
       [ "FieldBase", "structwebcface_1_1FieldBase.html", "structwebcface_1_1FieldBase" ],
       [ "Func", "classwebcface_1_1Func.html", "classwebcface_1_1Func" ],

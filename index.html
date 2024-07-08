@@ -153,9 +153,9 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 <p>C++ (C++20以上), C (C99), Python (3.8以上), JavaScript/TypeScript で相互に数値、文字列、画像などのデータを送受信したり、関数(手続き)を呼び出したりすることができます。</p>
 <p>Linux, Windows, MacOS で動作します。 Wi-FiやEtherNet経由で複数のPC間(OS問わず)で通信することも可能です。 WindowsとWSL1/2の間の相互通信も自動的に接続されます。</p>
 <p>さらに同一マシン上やDocker,WSL経由など使用可能な場合はTCPの代わりにUnixドメインソケットを使用するようにし、パフォーマンスが改善しました。</p>
-<h1><a class="anchor" id="autotoc_md198"></a>
+<h1><a class="anchor" id="autotoc_md197"></a>
 Features</h1>
-<h2><a class="anchor" id="autotoc_md199"></a>
+<h2><a class="anchor" id="autotoc_md198"></a>
 Easy to Setup</h2>
 <p>WebCFaceはサーバー側のプログラム <code>webcface-server</code> と、 クライアントライブラリで構成されています。 <br  />
  使い方はサーバーを起動し、クライアントライブラリを利用したプログラムを起動するだけです。 ROSのようなワークスペース管理機能はなく、どんなフレームワークのプロジェクトにも簡単に組み込むことができます。</p>
@@ -164,7 +164,7 @@ Easy to Setup</h2>
  パブリックな依存ライブラリは <a href="https://github.com/gabime/spdlog">spdlog</a> のみです。 WebCFace内部ではその他にもいくつか外部ライブラリを使用していますが、それらはすべてシンボルを非公開にしているのでユーザーが使用するライブラリとは干渉しません。 (WebCFaceをstaticライブラリとしてビルドした場合を除く)</p>
 <p>Python, JavaScript には PyPI / npm に <code>webcface</code> パッケージを用意しているのでそれをインストールするだけで使えます。 通信にWebSocketを使用しているため、Webブラウザ上でもそのまま動作します。</p>
 <p>少し難易度は上がりますが、CのAPIを経由することで他の言語からも使用できると思います。</p>
-<h2><a class="anchor" id="autotoc_md200"></a>
+<h2><a class="anchor" id="autotoc_md199"></a>
 Inter-Process Communication</h2>
 <p>WebCFaceで送受信できるデータ型として</p><ul>
 <li>数値型・数値配列型(Value)</li>
@@ -177,14 +177,14 @@ Inter-Process Communication</h2>
 <p>Image型データは送受信の過程で画像を縮小したりJPEGやPNGに圧縮したりといった操作をサーバー側で行うことができます。 表示目的など、圧縮した画像で十分な場合には簡単に通信量を削減できます。</p>
 <p>WebCFaceの通信データ形式はOSやライブラリの言語によらず共通で、またバージョン間で後方互換性があります。 つまり、異なるバージョンのクライアント同士でも、異なるバージョンのOSでも問題なく通信が可能です。 (C++のver1.1.6以前を除く) <br  />
  ただしそれぞれのクライアントのバージョンよりサーバーの方が新しいバージョンである必要があります。</p>
-<h2><a class="anchor" id="autotoc_md201"></a>
+<h2><a class="anchor" id="autotoc_md200"></a>
 WebUI</h2>
 <p>WebCFaceではプログラム間でデータの送受信ができるAPIだけでなく、 WebブラウザーからWebCFaceで通信されているデータを可視化したり関数を呼び出したりできるUI(WebUI)を提供します。</p>
 <p>さらにボタンや入力欄などの並べ方をWebCFaceを使ったC++などのプログラムの側で定義してそれをWebUIに表示させることができ、 これによりHTMLやCSSの知識がなくても簡易なUIを作成することができます。</p>
 <p>また、同様に2D、3Dの図形もWebCFaceを使ったプログラム側の記述のみでWebUIに描画させることができます。</p>
 <p><img src="https://raw.githubusercontent.com/na-trium-144/webcface/main/docs/images/webcface-webui.png" alt="webcface-webui" class="inline"/></p>
 <p>なお、これらの描画データは View, Canvas2D, Canvas3D として他のデータ型(数値や文字列など)と同様にWebCFace内の通信データとして存在しており、 WebUI以外でもこれらのデータを受信して表示するアプリを作成することは可能です。</p>
-<h1><a class="anchor" id="autotoc_md204"></a>
+<h1><a class="anchor" id="autotoc_md203"></a>
 Links</h1>
 <ul>
 <li><a href="https://github.com/na-trium-144/webcface">webcface</a>: サーバー &amp; C/C++クライアントライブラリ (このリポジトリ)</li>
@@ -196,15 +196,15 @@ Links</h1>
 <li><a href="https://github.com/na-trium-144/webcface-windows-package">webcface-windows-package</a>: Windows用ビルドをリリースする場所</li>
 <li><a href="https://github.com/na-trium-144/plotjuggler-webcface-plugin">plogjuggler-webcface-plugin</a>: PlotJuggler プラグイン</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md205"></a>
+<h1><a class="anchor" id="autotoc_md204"></a>
 Installation</h1>
 <p>以下の手順で webcface, webcface-webui, webcface-tools をインストールできます。 (webcface-toolsの内容と使い方についてはwebcface-toolsのReadmeを参照してください)</p>
-<h2><a class="anchor" id="autotoc_md206"></a>
+<h2><a class="anchor" id="autotoc_md205"></a>
 Ubuntu (x86_64, arm64, armhf)</h2>
 <p><a href="https://github.com/na-trium-144/webcface/releases">WebCFaceのReleases</a> と <a href="https://github.com/na-trium-144/webcface-webui/releases">webuiのReleases</a> 、<a href="https://github.com/na-trium-144/webcface-tools/releases">toolsのReleases</a> からそれぞれ最新のdebパッケージをダウンロードしてインストールできます。</p>
 <p>debパッケージはubuntu20.04,22.04,24.04でビルドしています。 それぞれ依存するパッケージのバージョンが違います。 Debianなど他のディストリビューションで動作するかはわかりません。</p>
 <p>コマンドからダウンロードするなら以下のようにします。</p>
-<h3><a class="anchor" id="autotoc_md207"></a>
+<h3><a class="anchor" id="autotoc_md206"></a>
 Ubuntu 24.04 Noble</h3>
 <details  open="true">
 <summary >
@@ -230,7 +230,7 @@ armhf</summary>
 <div class="line">curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.6.0/webcface-webui_1.6.0-s_armhf.deb</div>
 <div class="line">curl -fLO https://github.com/na-trium-144/webcface-tools/releases/download/v1.4.5/webcface-tools_1.4.5-ubuntu24.04_armhf.deb</div>
 </div><!-- fragment --> </details>
-<h3><a class="anchor" id="autotoc_md208"></a>
+<h3><a class="anchor" id="autotoc_md207"></a>
 Ubuntu 22.04 Jammy</h3>
 <details  open="true">
 <summary >
@@ -256,7 +256,7 @@ armhf</summary>
 <div class="line">curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.6.0/webcface-webui_1.6.0-s_armhf.deb</div>
 <div class="line">curl -fLO https://github.com/na-trium-144/webcface-tools/releases/download/v1.4.5/webcface-tools_1.4.5-ubuntu22.04_armhf.deb</div>
 </div><!-- fragment --> </details>
-<h3><a class="anchor" id="autotoc_md209"></a>
+<h3><a class="anchor" id="autotoc_md208"></a>
 Ubuntu 20.04 Focal</h3>
 <details >
 <summary >
@@ -285,26 +285,26 @@ armhf</summary>
 <p>ダウンロードできたら </p><div class="fragment"><div class="line">sudo apt install ./webcface*.deb</div>
 <div class="line">rm ./webcface*.deb</div>
 </div><!-- fragment --><p> でインストールできます</p>
-<h2><a class="anchor" id="autotoc_md210"></a>
+<h2><a class="anchor" id="autotoc_md209"></a>
 Homebrew (MacOS, Linux)</h2>
 <div class="fragment"><div class="line">brew tap na-trium-144/webcface</div>
 <div class="line">brew install webcface webcface-webui webcface-tools</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md211"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md210"></a>
 App Bundle for MacOS</h2>
 <p><a href="https://github.com/na-trium-144/homebrew-webcface/releases">homebrew-webcfaceのRelease</a> から .app.zip ファイルをダウンロードするか、 </p><div class="fragment"><div class="line">brew tap na-trium-144/webcface</div>
 <div class="line">brew install --cask webcface-webui-server</div>
 </div><!-- fragment --><p> でインストールできます。</p>
 <p>インストールしたappを起動するとWebUIのウィンドウとwebcface-serverが起動します。(詳細はドキュメントの <a href="https://na-trium-144.github.io/webcface/md_00__overview.html">Overview</a> を参照)</p>
-<h2><a class="anchor" id="autotoc_md212"></a>
+<h2><a class="anchor" id="autotoc_md211"></a>
 Windows (MSVC)</h2>
 <p><a href="https://github.com/na-trium-144/webcface-windows-package/releases">webcface-windows-packageのRelease</a>からダウンロードしてください。</p>
 <p>exeファイルは実行するとインストーラーが起動します。 zipファイルは任意の場所に展開して使用してください。</p>
 <p>(ver2.0〜) Windows版WebCFaceのReleaseに含まれるビルド済みのspdlogは <code>SPDLOG_WCHAR_SUPPORT</code> オプションがオンの状態です</p>
 <p>MinGW用バイナリは今のところ配布していません(ソースからビルドしてください)</p>
-<h1><a class="anchor" id="autotoc_md213"></a>
+<h1><a class="anchor" id="autotoc_md212"></a>
 Build from source</h1>
 <p>以下はwebcfaceをソースからビルドする場合の説明です。(webcfaceをインストールした場合は不要です。)</p>
-<h2><a class="anchor" id="autotoc_md214"></a>
+<h2><a class="anchor" id="autotoc_md213"></a>
 Requirements</h2>
 <ul>
 <li>C++20に対応したコンパイラが必要です<ul>
@@ -374,7 +374,7 @@ MSYS2</summary>
 </div><!-- fragment --><p> imagemagickをソースからビルドする際にはninjaではなくmakeが必要になります</p>
 <p></p>
 </details>
-<h2><a class="anchor" id="autotoc_md215"></a>
+<h2><a class="anchor" id="autotoc_md214"></a>
 CMake</h2>
 <div class="fragment"><div class="line">cmake -Bbuild</div>
 </div><!-- fragment --><ul>
@@ -429,23 +429,23 @@ CMake</h2>
 </ul>
 </li>
 </ul>
-<h2><a class="anchor" id="autotoc_md216"></a>
+<h2><a class="anchor" id="autotoc_md215"></a>
 Build</h2>
 <div class="fragment"><div class="line">cmake --build build</div>
 </div><!-- fragment --><p> でビルドします (Windows(MSVC)の場合は <code>--config Release</code> または <code>--config Debug</code> を追加してください。)</p>
 <p>インストールもしたい場合は </p><div class="fragment"><div class="line">sudo cmake --build build -t install</div>
 </div><!-- fragment --><p> でできます (Windows(MSVC)の場合は <code>--config Release</code> または <code>--config Debug</code> を追加してください。)</p>
-<h2><a class="anchor" id="autotoc_md217"></a>
+<h2><a class="anchor" id="autotoc_md216"></a>
 WebUI</h2>
 <p>デフォルトではビルド済みのものがCMake時にダウンロードされますが、 <code>-DWEBCFACE_DOWNLOAD_WEBUI=OFF</code> を指定した場合はダウンロードしません。 その場合は <a href="https://github.com/na-trium-144/webcface-webui/releases">webuiのReleases</a> からビルド済みのtar.gzのアーカイブをダウンロードしてください。</p>
 <p>インストールする場合は (webcfaceのインストール場所)/share/webcface/dist として展開してください。 (install先が/usr/localでない場合はprefixを読み替えてください)</p>
 <p>installせずに実行する場合は webcface-server のバイナリと同じディレクトリか、その1, 2, 3階層上のどこかにdistディレクトリを配置してください。</p>
 <p>Ubuntuの場合は<a href="https://github.com/na-trium-144/webcface-webui/releases">webuiのReleases</a>にあるdebパッケージで、またhomebrewでは <code>webcface-webui</code> パッケージとしてWebUIだけを単体でインストールすることもできます。</p>
 <p>または自分でビルドすることも可能です。(node.jsが必要) <a href="https://github.com/na-trium-144/webcface-webui">webcface-webui</a> のREADMEを参照してください。</p>
-<h2><a class="anchor" id="autotoc_md218"></a>
+<h2><a class="anchor" id="autotoc_md217"></a>
 tools</h2>
 <p>toolsは別途 <a href="https://github.com/na-trium-144/webcface-tools.git">https://github.com/na-trium-144/webcface-tools.git</a> をcloneしてビルド、インストールしてください</p>
-<h1><a class="anchor" id="autotoc_md219"></a>
+<h1><a class="anchor" id="autotoc_md218"></a>
 Documentation</h1>
 <ul>
 <li>まずはここから→ <a href="https://na-trium-144.github.io/webcface/md_00__overview.html">Overview</a></li>
@@ -453,7 +453,7 @@ Documentation</h1>
 <li><a href="https://na-trium-144.github.io/webcface-python/">webcface-python APIリファレンス</a></li>
 <li><a href="https://na-trium-144.github.io/webcface-js/">webcface-js APIリファレンス</a></li>
 </ul>
-<h1><a class="anchor" id="autotoc_md220"></a>
+<h1><a class="anchor" id="autotoc_md219"></a>
 License</h1>
 <p>WebCFaceと関連するプログラムはすべてMITライセンスで公開しています。詳細は <a href="https://github.com/na-trium-144/webcface/blob/main/LICENSE">LICENSE</a> を参照してください。</p>
 <p>WebCFace本体とtoolsが使用しているサードパーティーのライブラリのライセンスはそれぞれ以下を参照してください。</p><ul>
@@ -476,7 +476,7 @@ License</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sun Jul 7 2024 15:01:18 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Mon Jul 8 2024 10:16:43 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

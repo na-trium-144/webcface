@@ -195,7 +195,6 @@ var menudata={children:[
 {text:"a",url:"globals.html#index_a"},
 {text:"b",url:"globals_b.html#index_b"},
 {text:"c",url:"globals_c.html#index_c"},
-{text:"e",url:"globals_e.html#index_e"},
 {text:"h",url:"globals_h.html#index_h"},
 {text:"i",url:"globals_i.html#index_i"},
 {text:"l",url:"globals_l.html#index_l"},

@@ -9,7 +9,7 @@ var searchData=
   ['lib_5fname_6',['lib_name',['../structwebcface_1_1message_1_1SyncInit.html#add091ede649287c2dd955ef4b0e26080',1,'webcface::message::SyncInit']]],
   ['lib_5fver_7',['lib_ver',['../structwebcface_1_1message_1_1SyncInit.html#aa2698cd3561f3700857d2061ae8161a7',1,'webcface::message::SyncInit']]],
   ['log_8',['log',['../structwebcface_1_1Server_1_1MemberData.html#a893b73d77962fb1691186b30068efaf8',1,'webcface::Server::MemberData::log'],['../structwebcface_1_1message_1_1Log.html#a9839eb518f73d8514bc57b917246bac5',1,'webcface::message::Log::log']]],
-  ['log_5fappend_5fevent_9',['log_append_event',['../structwebcface_1_1internal_1_1ClientData.html#a34875ce627ebbf44dca03688ad7070c2',1,'webcface::internal::ClientData']]],
+  ['log_5fappend_5fevent_9',['log_append_event',['../structwebcface_1_1internal_1_1ClientData.html#a18b2fcee82db94a0e048371576167afb',1,'webcface::internal::ClientData']]],
   ['log_5freq_10',['log_req',['../structwebcface_1_1Server_1_1MemberData.html#aa668f9e02c50ec83b99c73b7d8c04907',1,'webcface::Server::MemberData']]],
   ['log_5fsent_5flines_11',['log_sent_lines',['../structwebcface_1_1internal_1_1ClientData.html#aba7df97e7d2aed6c1dfce7eef73001e2',1,'webcface::internal::ClientData']]],
   ['log_5fstore_12',['log_store',['../structwebcface_1_1internal_1_1ClientData.html#a1b59b059009920bd7e2ec4b1031044c0',1,'webcface::internal::ClientData']]],
