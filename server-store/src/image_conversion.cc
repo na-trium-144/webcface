@@ -53,16 +53,16 @@ void MemberData::imageConvertThreadMain(const SharedString &member,
                 while (!cd->closing.load() && !this->closing.load()) {
                     message::ImageFrame img;
                     {
-                        std::unique_lock lock(cd->image_m[field]);
-                        cd->image_cv[field].wait_for(
-                            lock, std::chrono::milliseconds(1));
+                        std::unique_lock lock(this->image_m);
+                        this->image_cv.wait(lock, [&] {
+                            return cd->closing.load() || this->closing.load() ||
+                                   cd->image_changed[field] !=
+                                       last_image_flag ||
+                                   this->image_req_changed[member][field] !=
+                                       last_req_flag;
+                        });
                         if (cd->closing.load() || this->closing.load()) {
                             break;
-                        }
-                        if (cd->image_changed[field] == last_image_flag &&
-                            this->image_req_changed[member][field] ==
-                                last_req_flag) {
-                            continue;
                         }
                         last_image_flag = cd->image_changed[field];
                         last_req_flag = this->image_req_changed[member][field];

@@ -3,24 +3,18 @@
 #include <webcface/member.h>
 #include "webcface/message/message.h"
 #include "webcface/internal/data_buffer.h"
-#include "webcface/internal/event_target_impl.h"
 
 WEBCFACE_NS_BEGIN
 
-template class WEBCFACE_DLL_INSTANCE_DEF EventTarget<View>;
-
 View::View()
-    : Field(), EventTarget<View>(), std::ostream(nullptr),
+    : Field(), std::ostream(nullptr),
       sb(std::make_shared<internal::ViewBuf>()) {
     this->std::ostream::init(sb.get());
 }
 View::View(const Field &base)
-    : Field(base), EventTarget<View>(), std::ostream(nullptr),
+    : Field(base), std::ostream(nullptr),
       sb(std::make_shared<internal::ViewBuf>(base)) {
     this->std::ostream::init(sb.get());
-    std::lock_guard lock(this->dataLock()->event_m);
-    this->setCL(
-        this->dataLock()->view_change_event[this->member_][this->field_]);
 }
 View::~View() { this->rdbuf(nullptr); }
 
@@ -45,10 +39,26 @@ void internal::DataSetBuffer<ViewComponent>::onSync() {
     for (std::size_t i = 0; i < components_.size(); i++) {
         components_[i].lockTmp(target_.data_w, target_.field_, &idx_next);
     }
-    target_.setCheck()->view_store.setSend(
+    auto data = target_.setCheck();
+    data->view_store.setSend(
         target_,
         std::make_shared<std::vector<ViewComponent>>(std::move(components_)));
-    static_cast<View>(target_).triggerEvent(target_);
+    std::shared_ptr<std::function<void(View)>> change_event;
+    {
+        std::lock_guard lock(data->event_m);
+        change_event = data->view_change_event[target_.member_][target_.field_];
+    }
+    if (change_event && *change_event) {
+        change_event->operator()(target_);
+    }
+}
+View &View::onChange(std::function<void(View)> callback) {
+    this->request();
+    auto data = dataLock();
+    std::lock_guard lock(data->event_m);
+    data->view_change_event[this->member_][this->field_] =
+        std::make_shared<std::function<void(View)>>(std::move(callback));
+    return *this;
 }
 
 View &View::operator<<(const ViewComponent &vc) {
@@ -110,7 +120,6 @@ View &View::operator=(const View &rhs) {
         return *this;
     }
     this->Field::operator=(rhs);
-    this->EventTarget<View>::operator=(rhs);
     this->sb = rhs.sb;
     this->rdbuf(sb.get());
     return *this;
@@ -120,7 +129,6 @@ View &View::operator=(View &&rhs) noexcept {
         return *this;
     }
     this->Field::operator=(std::move(static_cast<Field &>(rhs)));
-    this->EventTarget<View>::operator=(rhs);
     this->sb = std::move(rhs.sb);
     this->rdbuf(sb.get());
     return *this;
@@ -134,7 +142,6 @@ void View::request() const {
             message::Req<message::View>{{}, member_, field_, req}));
     }
 }
-void View::onAppend() const { request(); }
 std::optional<std::vector<ViewComponent>> View::tryGet() const {
     request();
     auto vb = dataLock()->view_store.getRecv(*this);

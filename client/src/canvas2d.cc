@@ -3,22 +3,13 @@
 #include <webcface/member.h>
 #include "webcface/message/message.h"
 #include "webcface/internal/data_buffer.h"
-#include "webcface/internal/event_target_impl.h"
 
 WEBCFACE_NS_BEGIN
 
-template class WEBCFACE_DLL_INSTANCE_DEF EventTarget<Canvas2D>;
-
 Canvas2D::Canvas2D()
-    : Field(), EventTarget<Canvas2D>(),
-      sb(std::make_shared<internal::Canvas2DDataBuf>()) {}
+    : Field(), sb(std::make_shared<internal::Canvas2DDataBuf>()) {}
 Canvas2D::Canvas2D(const Field &base)
-    : Field(base), EventTarget<Canvas2D>(),
-      sb(std::make_shared<internal::Canvas2DDataBuf>(base)) {
-    std::lock_guard lock(this->dataLock()->event_m);
-    this->setCL(
-        this->dataLock()->canvas2d_change_event[this->member_][this->field_]);
-}
+    : Field(base), sb(std::make_shared<internal::Canvas2DDataBuf>(base)) {}
 Canvas2D &Canvas2D::init(double width, double height) {
     sb->init(width, height);
     return *this;
@@ -50,8 +41,25 @@ void internal::DataSetBuffer<Canvas2DComponent>::onSync() {
         this->components_[i].lockTmp(target_.data_w, target_.field_, &idx_next);
     }
     cb->components = std::move(this->components_);
-    target_.setCheck()->canvas2d_store.setSend(target_, cb);
-    static_cast<Canvas2D>(target_).triggerEvent(target_);
+    auto data = target_.setCheck();
+    data->canvas2d_store.setSend(target_, cb);
+    std::shared_ptr<std::function<void(Canvas2D)>> change_event;
+    {
+        std::lock_guard lock(data->event_m);
+        change_event =
+            data->canvas2d_change_event[target_.member_][target_.field_];
+    }
+    if (change_event && *change_event) {
+        change_event->operator()(target_);
+    }
+}
+Canvas2D &Canvas2D::onChange(std::function<void(Canvas2D)> callback) {
+    this->request();
+    auto data = dataLock();
+    std::lock_guard lock(data->event_m);
+    data->canvas2d_change_event[this->member_][this->field_] =
+        std::make_shared<std::function<void(Canvas2D)>>(std::move(callback));
+    return *this;
 }
 
 void Canvas2D::request() const {
@@ -62,7 +70,6 @@ void Canvas2D::request() const {
             message::Req<message::Canvas2D>{{}, member_, field_, req}));
     }
 }
-void Canvas2D::onAppend() const { request(); }
 std::optional<std::vector<Canvas2DComponent>> Canvas2D::tryGet() const {
     request();
     auto vb = dataLock()->canvas2d_store.getRecv(*this);

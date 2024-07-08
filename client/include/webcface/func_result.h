@@ -5,7 +5,6 @@
 #include <memory>
 #include <stdexcept>
 #include <cstdint>
-#include <eventpp/callbacklist.h>
 #include "field.h"
 #include "webcface/encoding/val_adaptor.h"
 #include <webcface/common/def.h>
@@ -39,7 +38,7 @@ class WEBCFACE_DLL AsyncFuncResult : Field {
 
   public:
     AsyncFuncResult(const Field &base,
-        const std::shared_ptr<internal::AsyncFuncState> &state,
+                    const std::shared_ptr<internal::AsyncFuncState> &state,
                     const std::shared_future<bool> &started,
                     const std::shared_future<ValAdaptor> &result)
         : Field(base), state(state), started(started), result(result) {}
@@ -64,16 +63,23 @@ class WEBCFACE_DLL AsyncFuncResult : Field {
     std::shared_future<ValAdaptor> result;
 
     /*!
-     * \brief リモートに呼び出しメッセージが到達したときに発生するイベント
-     * \since ver1.11
+     * \brief
+     * リモートに呼び出しメッセージが到達したときに呼び出すコールバックを設定
+     * \since ver2.0
+     *
+     * すでにstartedに値が入っている場合は即座にcallbackが呼ばれる。
+     *
      */
-    eventpp::CallbackList<void(bool)> &onStarted() const;
+    AsyncFuncResult &onStarted(std::function<void(bool)> callback);
     /*!
-     * \brief 関数の実行が完了した時発生するイベント
-     * \since ver1.11
+     * \brief 関数の実行が完了した時呼び出すコールバックを設定
+     * \since ver2.0
+     *
+     * すでにresultに値または例外が入っている場合は即座にcallbackが呼ばれる。
+     *
      */
-    eventpp::CallbackList<void(std::shared_future<ValAdaptor>)> &
-    onResult() const;
+    AsyncFuncResult &
+    onResult(std::function<void(std::shared_future<ValAdaptor>)> callback);
 
     using Field::member;
     using Field::name;

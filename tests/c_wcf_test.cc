@@ -56,10 +56,9 @@ TEST_F(CClientTest, connectionByStart) {
     EXPECT_FALSE(dummy_s->connected());
     EXPECT_FALSE(wcfIsConnected(wcli_));
     EXPECT_EQ(wcfStart(wcli_), WCF_OK);
-    while (!dummy_s->connected()) {
+    while (!dummy_s->connected() || !wcfIsConnected(wcli_)) {
         wait();
     }
-    EXPECT_TRUE(wcfIsConnected(wcli_));
 
     EXPECT_EQ(wcfStart(nullptr), WCF_BAD_WCLI);
 }
@@ -67,10 +66,9 @@ TEST_F(CClientTest, connectionBySync) {
     EXPECT_FALSE(dummy_s->connected());
     EXPECT_FALSE(wcfIsConnected(wcli_));
     EXPECT_EQ(wcfSync(wcli_), WCF_OK);
-    while (!dummy_s->connected()) {
+    while (!dummy_s->connected() || !wcfIsConnected(wcli_)) {
         wait();
     }
-    EXPECT_TRUE(wcfIsConnected(wcli_));
 
     EXPECT_EQ(wcfSync(nullptr), WCF_BAD_WCLI);
 }
@@ -78,9 +76,6 @@ TEST_F(CClientTest, connectionByWait) {
     EXPECT_FALSE(dummy_s->connected());
     EXPECT_FALSE(wcfIsConnected(wcli_));
     EXPECT_EQ(wcfWaitConnection(wcli_), WCF_OK);
-    while (!dummy_s->connected()) {
-        wait();
-    }
     EXPECT_TRUE(dummy_s->connected());
     EXPECT_TRUE(wcfIsConnected(wcli_));
 

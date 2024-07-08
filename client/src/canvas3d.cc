@@ -4,22 +4,15 @@
 #include "webcface/message/message.h"
 #include "webcface/internal/data_buffer.h"
 #include "webcface/encoding/encoding.h"
-#include "webcface/internal/event_target_impl.h"
 
 WEBCFACE_NS_BEGIN
 
-template class WEBCFACE_DLL_INSTANCE_DEF EventTarget<Canvas3D>;
-
 Canvas3D::Canvas3D()
-    : Field(), EventTarget<Canvas3D>(),
+    : Field(),
       sb(std::make_shared<internal::DataSetBuffer<Canvas3DComponent>>()) {}
 Canvas3D::Canvas3D(const Field &base)
-    : Field(base), EventTarget<Canvas3D>(),
-      sb(std::make_shared<internal::DataSetBuffer<Canvas3DComponent>>(base)) {
-    std::lock_guard lock(this->dataLock()->event_m);
-    this->setCL(
-        this->dataLock()->canvas3d_change_event[this->member_][this->field_]);
-}
+    : Field(base),
+      sb(std::make_shared<internal::DataSetBuffer<Canvas3DComponent>>(base)) {}
 Canvas3D &Canvas3D::init() {
     sb->init();
     return *this;
@@ -45,10 +38,27 @@ void internal::DataSetBuffer<Canvas3DComponent>::onSync() {
             target_.field_.u8String() + u8"_" +
                 std::u8string(encoding::castToU8(std::to_string(i))));
     }
-    target_.setCheck()->canvas3d_store.setSend(
+    auto data = target_.setCheck();
+    data->canvas3d_store.setSend(
         target_, std::make_shared<std::vector<Canvas3DComponent>>(
                      std::move(components_)));
-    static_cast<Canvas3D>(target_).triggerEvent(target_);
+    std::shared_ptr<std::function<void(Canvas3D)>> change_event;
+    {
+        std::lock_guard lock(data->event_m);
+        change_event =
+            data->canvas3d_change_event[target_.member_][target_.field_];
+    }
+    if (change_event && *change_event) {
+        change_event->operator()(target_);
+    }
+}
+Canvas3D &Canvas3D::onChange(std::function<void(Canvas3D)> callback) {
+    this->request();
+    auto data = dataLock();
+    std::lock_guard lock(data->event_m);
+    data->canvas3d_change_event[this->member_][this->field_] =
+        std::make_shared<std::function<void(Canvas3D)>>(std::move(callback));
+    return *this;
 }
 
 void Canvas3D::request() const {
@@ -59,7 +69,6 @@ void Canvas3D::request() const {
             message::Req<message::Canvas3D>{{}, member_, field_, req}));
     }
 }
-void Canvas3D::onAppend() const { request(); }
 std::optional<std::vector<Canvas3DComponent>> Canvas3D::tryGet() const {
     auto vb = dataLock()->canvas3d_store.getRecv(*this);
     request();

@@ -4,6 +4,7 @@
 #include <iostream>
 #include <Magick++.h>
 #include <fstream>
+#include <cassert>
 
 int main() {
     Magick::InitializeMagick(nullptr);

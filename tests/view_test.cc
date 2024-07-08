@@ -80,9 +80,8 @@ TEST_F(ViewTest, eventTarget) {
     callback_called = 0;
 }
 TEST_F(ViewTest, viewSet) {
-    (data_->view_change_event[self_name]["b"_ss] =
-         std::make_shared<eventpp::CallbackList<void(View)>>())
-        ->append(callback());
+    data_->view_change_event[self_name]["b"_ss] =
+        std::make_shared<std::function<void(View)>>(callback());
     using namespace webcface::ViewComponents;
     auto v = view(self_name, "b");
     v << "a\n" << 1;

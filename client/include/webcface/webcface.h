@@ -18,10 +18,7 @@
 #include "image_frame.h"
 #include "transform.h"
 #include "robot_link.h"
-
 #include "field.h"
-#include "event_target.h"
-
 #include "func_result.h"
 
 #include "value.h"

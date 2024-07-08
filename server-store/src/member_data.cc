@@ -48,14 +48,22 @@ void MemberData::onClose() {
             }
         });
     }
+    {
+        std::lock_guard lock(this->image_m);
+        this->image_cv.notify_all();
+    }
+    store->forEach([&](auto cd) {
+        std::lock_guard lock_cd(cd->image_m);
+        if (cd->image_req.count(this->name)) {
+            cd->image_cv.notify_all();
+        }
+    });
     for (auto &v : image_convert_thread) {
         for (auto &v2 : v.second) {
-            v2.second->join();
+            if (v2.second->joinable()) {
+                v2.second->join();
+            }
         }
-    }
-    for (auto &v : image_cv) {
-        std::lock_guard lock(image_m[v.first]);
-        v.second.notify_all();
     }
     logger->trace("image_convert_thread stopped");
 }
@@ -568,10 +576,19 @@ void MemberData::onRecv(const std::string &message) {
             }
             // このimageをsubscribeしてるところに送り返す
             {
-                std::lock_guard lock(this->image_m[v.field]);
+                std::vector<std::unique_ptr<std::lock_guard<std::mutex>>> locks;
+                store->forEach([&](auto cd) {
+                    locks.emplace_back(
+                        std::make_unique<std::lock_guard<std::mutex>>(
+                            cd->image_m));
+                });
                 this->image[v.field] = v;
                 this->image_changed[v.field]++;
-                this->image_cv[v.field].notify_all();
+                store->forEach([&](auto cd) {
+                    if (cd->image_req.count(this->name)) {
+                        cd->image_cv.notify_all();
+                    }
+                });
             }
             break;
         }
@@ -856,15 +873,19 @@ void MemberData::onRecv(const std::string &message) {
                           (s.color_mode ? static_cast<int>(*s.color_mode) : -1),
                           static_cast<int>(s.cmp_mode), s.quality,
                           s.frame_rate.value_or(-1));
-            image_req_info[s.member][s.field] = s;
-            image_req[s.member][s.field] = s.req_id;
-            image_req_changed[s.member][s.field]++;
-            if (!image_convert_thread[s.member].count(s.field)) {
-                image_convert_thread[s.member].emplace(
-                    s.field,
-                    std::thread([this, member = s.member, field = s.field] {
-                        this->imageConvertThreadMain(member, field);
-                    }));
+            {
+                std::lock_guard lock(this->image_m);
+                image_req_info[s.member][s.field] = s;
+                image_req[s.member][s.field] = s.req_id;
+                image_req_changed[s.member][s.field]++;
+                this->image_cv.notify_all();
+                if (!image_convert_thread[s.member].count(s.field)) {
+                    this->image_convert_thread[s.member].emplace(
+                        s.field,
+                        std::thread([this, member = s.member, field = s.field] {
+                            this->imageConvertThreadMain(member, field);
+                        }));
+                }
             }
             break;
         }

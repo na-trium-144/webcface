@@ -1,9 +1,9 @@
 #pragma once
+#include <functional>
 #include <optional>
 #include <chrono>
 #include "image_frame.h"
 #include "field.h"
-#include "event_target.h"
 #include <webcface/common/def.h>
 
 WEBCFACE_NS_BEGIN
@@ -13,9 +13,7 @@ WEBCFACE_NS_BEGIN
  *
  * コンストラクタではなく Member::image() を使って取得してください
  */
-class WEBCFACE_DLL Image : protected Field, public EventTarget<Image> {
-    void onAppend() const override final;
-
+class WEBCFACE_DLL Image : protected Field {
     Image &request(std::optional<int> rows, std::optional<int> cols,
                    ImageCompressMode cmp_mode, int quality,
                    std::optional<ImageColorMode> color_mode,
@@ -78,6 +76,33 @@ class WEBCFACE_DLL Image : protected Field, public EventTarget<Image> {
      * \since ver1.11
      */
     Image parent() const { return this->Field::parent(); }
+
+    /*!
+     * \brief 値が変化したときに呼び出されるコールバックを設定
+     * \since ver2.0
+     */
+    Image &onChange(std::function<void(Image)> callback);
+    /*!
+     * \brief 値が変化したときに呼び出されるコールバックを設定
+     * \since ver2.0
+     */
+    template <typename F>
+        requires std::invocable<F>
+    Image &onChange(F callback) {
+        return onChange(
+            [callback = std::move(callback)](const auto &) { callback(); });
+    }
+    /*!
+     * \deprecated
+     * ver1.11まではEventTarget::appendListener()でコールバックを追加できたが、
+     * ver2.0からコールバックは1個のみになった。
+     * 互換性のため残しているがonChange()と同じ
+     *
+     */
+    template <typename T>
+    [[deprecated]] void appendListener(T &&callback) {
+        onChange(std::forward<T>(callback));
+    }
 
     /*!
      * \brief 画像をセットする

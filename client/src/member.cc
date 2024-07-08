@@ -7,52 +7,65 @@
 #include <webcface/log.h>
 #include <webcface/canvas2d.h>
 #include <webcface/canvas3d.h>
-#include <webcface/event_target.h>
 #include "webcface/internal/client_internal.h"
-#include "webcface/internal/event_target_impl.h"
 
 WEBCFACE_NS_BEGIN
 
-template class WEBCFACE_DLL_INSTANCE_DEF EventTarget<Member>;
-
 Log Member::log() const { return Log{*this}; }
 
-EventTarget<Value> Member::onValueEntry() const {
+Member &Member::onValueEntry(std::function<void(Value)> callback) {
     std::lock_guard lock(dataLock()->event_m);
-    return EventTarget<Value>{dataLock()->value_entry_event[member_]};
+    dataLock()->value_entry_event[member_] =
+        std::make_shared<std::function<void(Value)>>(std::move(callback));
+    return *this;
 }
-EventTarget<Text> Member::onTextEntry() const {
+Member &Member::onTextEntry(std::function<void(Text)> callback) {
     std::lock_guard lock(dataLock()->event_m);
-    return EventTarget<Text>{dataLock()->text_entry_event[member_]};
+    dataLock()->text_entry_event[member_] =
+        std::make_shared<std::function<void(Text)>>(std::move(callback));
+    return *this;
 }
-EventTarget<RobotModel> Member::onRobotModelEntry() const {
+Member &Member::onRobotModelEntry(std::function<void(RobotModel)> callback) {
     std::lock_guard lock(dataLock()->event_m);
-    return EventTarget<RobotModel>{
-        dataLock()->robot_model_entry_event[member_]};
+    dataLock()->robot_model_entry_event[member_] =
+        std::make_shared<std::function<void(RobotModel)>>(std::move(callback));
+    return *this;
 }
-EventTarget<Func> Member::onFuncEntry() const {
+Member &Member::onFuncEntry(std::function<void(Func)> callback) {
     std::lock_guard lock(dataLock()->event_m);
-    return EventTarget<Func>{dataLock()->func_entry_event[member_]};
+    dataLock()->func_entry_event[member_] =
+        std::make_shared<std::function<void(Func)>>(std::move(callback));
+    return *this;
 }
-EventTarget<View> Member::onViewEntry() const {
+Member &Member::onViewEntry(std::function<void(View)> callback) {
     std::lock_guard lock(dataLock()->event_m);
-    return EventTarget<View>{dataLock()->view_entry_event[member_]};
+    dataLock()->view_entry_event[member_] =
+        std::make_shared<std::function<void(View)>>(std::move(callback));
+    return *this;
 }
-EventTarget<Canvas3D> Member::onCanvas3DEntry() const {
+Member &Member::onCanvas3DEntry(std::function<void(Canvas3D)> callback) {
     std::lock_guard lock(dataLock()->event_m);
-    return EventTarget<Canvas3D>{dataLock()->canvas3d_entry_event[member_]};
+    dataLock()->canvas3d_entry_event[member_] =
+        std::make_shared<std::function<void(Canvas3D)>>(std::move(callback));
+    return *this;
 }
-EventTarget<Canvas2D> Member::onCanvas2DEntry() const {
+Member &Member::onCanvas2DEntry(std::function<void(Canvas2D)> callback) {
     std::lock_guard lock(dataLock()->event_m);
-    return EventTarget<Canvas2D>{dataLock()->canvas2d_entry_event[member_]};
+    dataLock()->canvas2d_entry_event[member_] =
+        std::make_shared<std::function<void(Canvas2D)>>(std::move(callback));
+    return *this;
 }
-EventTarget<Image> Member::onImageEntry() const {
+Member &Member::onImageEntry(std::function<void(Image)> callback) {
     std::lock_guard lock(dataLock()->event_m);
-    return EventTarget<Image>{dataLock()->image_entry_event[member_]};
+    dataLock()->image_entry_event[member_] =
+        std::make_shared<std::function<void(Image)>>(std::move(callback));
+    return *this;
 }
-EventTarget<Member> Member::onSync() const {
+Member &Member::onSync(std::function<void(Member)> callback) {
     std::lock_guard lock(dataLock()->event_m);
-    return EventTarget<Member>{dataLock()->sync_event[member_]};
+    dataLock()->sync_event[member_] =
+        std::make_shared<std::function<void(Member)>>(std::move(callback));
+    return *this;
 }
 
 std::vector<Value> Member::values() const { return valueEntries(); }
@@ -109,10 +122,11 @@ std::optional<int> Member::pingStatus() const {
         return std::nullopt;
     }
 }
-EventTarget<Member> Member::onPing() const {
-    // ほんとはonAppendに追加したかったけど面倒なのでここでリクエストをtrueにしちゃう
+Member &Member::onPing(std::function<void(Member)> callback) {
     dataLock()->pingStatusReq();
     std::lock_guard lock(dataLock()->event_m);
-    return EventTarget<Member>{dataLock()->ping_event[member_]};
+    dataLock()->ping_event[member_] =
+        std::make_shared<std::function<void(Member)>>(std::move(callback));
+    return *this;
 }
 WEBCFACE_NS_END

@@ -124,7 +124,6 @@ if(ament_cmake_FOUND)
 endif()
 
 include(cmake/deps/msgpack-cxx.cmake)
-include(cmake/deps/eventpp.cmake)
 include(cmake/deps/spdlog.cmake)
 include(cmake/deps/curl.cmake)
 include(cmake/deps/crow.cmake)
@@ -242,8 +241,6 @@ if(NOT WEBCFACE_SHARED)
         $<TARGET_PROPERTY:spdlog-linker,INTERFACE_LINK_DIRECTORIES>
     )
 endif()
-# public: header only も含む
-target_link_libraries(webcface PUBLIC eventpp::eventpp)
 if(WIN32)
     target_link_libraries(webcface PRIVATE iphlpapi.lib)
 endif()

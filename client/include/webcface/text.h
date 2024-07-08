@@ -1,10 +1,10 @@
 #pragma once
+#include <functional>
 #include <ostream>
 #include <optional>
 #include <chrono>
 #include <memory>
 #include "field.h"
-#include "event_target.h"
 #include <webcface/common/def.h>
 #include "webcface/encoding/val_adaptor.h"
 
@@ -16,9 +16,7 @@ WEBCFACE_NS_BEGIN
  * コンストラクタではなく Member::text() を使って取得してください
  *
  */
-class WEBCFACE_DLL Text : protected Field, public EventTarget<Text> {
-    void onAppend() const override final;
-
+class WEBCFACE_DLL Text : protected Field {
   public:
     Text() = default;
     Text(const Field &base);
@@ -80,13 +78,32 @@ class WEBCFACE_DLL Text : protected Field, public EventTarget<Text> {
      */
     Text parent() const { return this->Field::parent(); }
 
-    // 1.10でstd::stringをValAdaptorに変更したら使えなくなった
-    // using Dict = Common::Dict<std::shared_ptr<ValAdaptor>>;
-    // /*!
-    //  * \brief Dictの値を再帰的にセットする
-    //  *
-    //  */
-    // Text &set(const Dict &v);
+    /*!
+     * \brief 値が変化したときに呼び出されるコールバックを設定
+     * \since ver2.0
+     */
+    Text &onChange(std::function<void(Text)> callback);
+    /*!
+     * \brief 値が変化したときに呼び出されるコールバックを設定
+     * \since ver2.0
+     */
+    template <typename F>
+        requires std::invocable<F>
+    Text &onChange(F callback) {
+        return onChange(
+            [callback = std::move(callback)](const auto &) { callback(); });
+    }
+    /*!
+     * \deprecated
+     * ver1.11まではEventTarget::appendListener()でコールバックを追加できたが、
+     * ver2.0からコールバックは1個のみになった。
+     * 互換性のため残しているがonChange()と同じ
+     *
+     */
+    template <typename T>
+    [[deprecated]] void appendListener(T &&callback) {
+        onChange(std::forward<T>(callback));
+    }
 
     /*!
      * \brief 文字列をセットする
@@ -106,14 +123,6 @@ class WEBCFACE_DLL Text : protected Field, public EventTarget<Text> {
      */
     Text &set(const ValAdaptor &v);
 
-    // /*!
-    //  * \brief Dictの値を再帰的にセットする
-    //  *
-    //  */
-    // Text &operator=(const Dict &v) {
-    //     this->set(v);
-    //     return *this;
-    // }
     /*!
      * \brief 文字列をセットする
      *
@@ -157,11 +166,6 @@ class WEBCFACE_DLL Text : protected Field, public EventTarget<Text> {
      *
      */
     std::optional<ValAdaptor> tryGetV() const;
-    // /*!
-    //  * \brief 文字列を再帰的に取得しDictで返す
-    //  *
-    //  */
-    // std::optional<Dict> tryGetRecurse() const;
     /*!
      * \brief 文字列を返す
      *
@@ -176,14 +180,8 @@ class WEBCFACE_DLL Text : protected Field, public EventTarget<Text> {
      */
     std::wstring getW() const { return tryGetW().value_or(L""); }
 
-    // /*!
-    //  * \brief 値を再帰的に取得しDictで返す
-    //  *
-    //  */
-    // Dict getRecurse() const { return tryGetRecurse().value_or(Dict{}); }
     operator std::string() const { return get(); }
     operator std::wstring() const { return getW(); }
-    // operator Dict() const { return getRecurse(); }
 
     /*!
      * \brief syncの時刻を返す
@@ -209,8 +207,8 @@ class WEBCFACE_DLL Text : protected Field, public EventTarget<Text> {
      *
      */
     template <typename T>
-        requires std::same_as<T, Text>
-    bool operator==(const T &other) const {
+        requires std::same_as<T, Text> bool
+    operator==(const T &other) const {
         return static_cast<Field>(*this) == static_cast<Field>(other);
     }
     bool operator<(const Text &) const = delete;
@@ -344,15 +342,15 @@ class WEBCFACE_DLL InputRef {
     bool asBool() const { return get().asBool(); }
 
     template <typename T>
-        requires std::constructible_from<ValAdaptor, T>
-    bool operator==(const T &other) const {
+        requires std::constructible_from<ValAdaptor, T> bool
+    operator==(const T &other) const {
         return get() == other;
     }
 };
 
 template <typename T>
-    requires std::constructible_from<ValAdaptor, T>
-bool operator==(const T &other, const InputRef &ref) {
+    requires std::constructible_from<ValAdaptor, T> bool
+operator==(const T &other, const InputRef &ref) {
     return ref.get() == other;
 }
 inline std::ostream &operator<<(std::ostream &os, const InputRef &ref) {

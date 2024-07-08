@@ -199,21 +199,20 @@ class WEBCFACE_DLL Func : protected Field {
     template <typename Ret, typename... Args>
     Func &setAsync1(std::function<Ret(Args...)> func) {
         return set2<Ret, Args...>(
-            true,
-            [func = std::move(func)](ArgsTuple<Args...> args_tuple) mutable {
+            true, [func = std::make_shared<std::function<Ret(Args...)>>(
+                       std::move(func))](ArgsTuple<Args...> args_tuple) {
                 return std::async(
                     std::launch::deferred,
-                    [](std::function<Ret(Args...)> func,
-                       ArgsTuple<Args...> args_tuple) {
+                    [func](ArgsTuple<Args...> args_tuple) {
                         if constexpr (std::is_void_v<Ret>) {
-                            std::apply(func, args_tuple);
+                            std::apply(*func, args_tuple);
                             return ValAdaptor{};
                         } else {
-                            Ret ret = std::apply(func, args_tuple);
+                            Ret ret = std::apply(*func, args_tuple);
                             return static_cast<ValAdaptor>(ret);
                         }
                     },
-                    std::move(func), std::move(args_tuple));
+                    std::move(args_tuple));
             });
     }
 
@@ -261,6 +260,10 @@ class WEBCFACE_DLL Func : protected Field {
      * \brief 関数をセットする
      *
      * set() と同じ。
+     *
+     * \deprecated ver2.0〜
+     * set()とsetAsync()に分かれたので、代入演算子だとわかりづらい
+     * また、 operator=(const Func &) との区別もつきづらい
      *
      */
     template <typename T>
@@ -385,8 +388,8 @@ class WEBCFACE_DLL Func : protected Field {
      *
      */
     template <typename T>
-        requires std::same_as<T, Func>
-    bool operator==(const T &other) const {
+        requires std::same_as<T, Func> bool
+    operator==(const T &other) const {
         return static_cast<Field>(*this) == static_cast<Field>(other);
     }
 };
