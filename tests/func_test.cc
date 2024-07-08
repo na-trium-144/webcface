@@ -352,7 +352,7 @@ TEST_F(FuncTest, funcFutureRun) {
         EXPECT_EQ(c, "a");
         EXPECT_TRUE(d);
         EXPECT_EQ(std::this_thread::get_id(), main_id);
-        return std::async(std::launch::deferred, [&] {
+        return std::async(std::launch::deferred, [&, a] {
             if (a == 1) {
                 throw std::invalid_argument("a == 1");
             }
@@ -380,7 +380,7 @@ TEST_F(FuncTest, funcFutureRun) {
         EXPECT_EQ(c, "a");
         EXPECT_TRUE(d);
         EXPECT_EQ(std::this_thread::get_id(), main_id);
-        return std::async(std::launch::deferred, [&] {
+        return std::async(std::launch::deferred, [&, a] {
             if (a == 1) {
                 throw std::invalid_argument("a == 1");
             }
@@ -445,7 +445,7 @@ TEST_F(FuncTest, funcSharedFutureRun) {
         EXPECT_TRUE(d);
         EXPECT_EQ(std::this_thread::get_id(), main_id);
         return std::async(std::launch::deferred,
-                          [&] {
+                          [&, a] {
                               if (a == 0) {
                                   throw std::invalid_argument("a == 1");
                               }
@@ -473,7 +473,7 @@ TEST_F(FuncTest, funcSharedFutureRun) {
         EXPECT_TRUE(d);
         EXPECT_EQ(std::this_thread::get_id(), main_id);
         return std::async(std::launch::deferred,
-                          [&] {
+                          [&, a] {
                               if (a == 1) {
                                   throw std::invalid_argument("a == 1");
                               }

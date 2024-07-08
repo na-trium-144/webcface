@@ -43,20 +43,20 @@ Func &Func::setAsync(const std::vector<Arg> &args, ValType return_type,
                      std::function<void(FuncCallHandle)> callback) {
     return setImpl(std::make_shared<FuncInfo>(
         return_type, args, true,
-        [args_size = args.size(), callback = std::move(callback)](
-            std::vector<ValAdaptor> args_vec) mutable {
+        [args_size = args.size(),
+         callback = std::make_shared<std::function<void(FuncCallHandle)>>(
+             std::move(callback))](std::vector<ValAdaptor> args_vec) {
             if (args_size != args_vec.size()) {
                 throw std::invalid_argument(
                     "requires " + std::to_string(args_size) +
                     " arguments, got " + std::to_string(args_vec.size()));
             }
             return std::async(
-                std::launch::async, [callback = std::move(callback),
-                                     args_vec = std::move(args_vec)] {
+                std::launch::async, [callback, args_vec = std::move(args_vec)] {
                     std::promise<ValAdaptor> result;
                     std::future<ValAdaptor> result_f = result.get_future();
                     FuncCallHandle handle{args_vec, std::move(result)};
-                    callback(handle);
+                    callback->operator()(handle);
                     try {
                         handle.respond();
                     } catch (const std::future_error &) {
@@ -74,7 +74,7 @@ FuncInfo::run(const std::vector<ValAdaptor> &args, bool caller_async,
         state->setResultFuture(ret);
     }
     if (eval_async && caller_async) {
-        std::thread([ret, state]() mutable {
+        std::thread([ret, state]() {
             ret.wait();
             if (state) {
                 state->callResultEvent();
