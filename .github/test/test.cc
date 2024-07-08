@@ -4,7 +4,7 @@ int main() {
     webcface::Client wcli{};
     wcli.value("test") = 0;
     wcli.log().append(webcface::level::info, "this is info");
-    wcli.onMemberEntry().callbackList().append([](webcface::Member m) {});
+    wcli.onMemberEntry([](webcface::Member m) {});
 
     webcface::Server::Server s(7530, webcface::level::info);
 }
