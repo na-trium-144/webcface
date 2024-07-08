@@ -101,7 +101,7 @@ var hierarchy =
     [ "Line", "structwebcface_1_1components_1_1geometries_1_1Line.html", null ],
     [ "LogLine", "structwebcface_1_1message_1_1LogLine.html", null ],
     [ "LogLineData< CharT >", "classwebcface_1_1LogLineData.html", null ],
-    [ "MemberData", "structwebcface_1_1Server_1_1MemberData.html", null ],
+    [ "MemberData", "structwebcface_1_1server_1_1MemberData.html", null ],
     [ "MessageBase< k >", "structwebcface_1_1message_1_1MessageBase.html", null ],
     [ "MessageBase< MessageKind::call >", "structwebcface_1_1message_1_1MessageBase.html", [
       [ "Call", "structwebcface_1_1message_1_1Call.html", null ]
@@ -212,8 +212,8 @@ var hierarchy =
       [ "FuncNotFound", "structwebcface_1_1FuncNotFound.html", null ]
     ] ],
     [ "ScopedUnlock< Mtx >", "structwebcface_1_1ScopedUnlock.html", null ],
-    [ "Server", "classwebcface_1_1Server_1_1Server.html", null ],
-    [ "ServerStorage", "structwebcface_1_1Server_1_1ServerStorage.html", null ],
+    [ "Server", "classwebcface_1_1server_1_1Server.html", null ],
+    [ "ServerStorage", "structwebcface_1_1server_1_1ServerStorage.html", null ],
     [ "SharedString", "classwebcface_1_1encoding_1_1SharedString.html", null ],
     [ "SharedString", "classwebcface_1_1encoding_1_1SharedString.html", null ],
     [ "Size", "classwebcface_1_1Size.html", null ],

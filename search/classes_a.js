@@ -1,7 +1,7 @@
 var searchData=
 [
   ['member_0',['Member',['../classwebcface_1_1Member.html',1,'webcface']]],
-  ['memberdata_1',['MemberData',['../structwebcface_1_1Server_1_1MemberData.html',1,'webcface::Server']]],
+  ['memberdata_1',['MemberData',['../structwebcface_1_1server_1_1MemberData.html',1,'webcface::server']]],
   ['membertest_2',['MemberTest',['../classMemberTest.html',1,'']]],
   ['messagebase_3',['MessageBase',['../structwebcface_1_1message_1_1MessageBase.html',1,'webcface::message']]],
   ['messagebase_3c_20messagekind_3a_3acall_20_3e_4',['MessageBase&lt; MessageKind::call &gt;',['../structwebcface_1_1message_1_1MessageBase.html',1,'webcface::message']]],

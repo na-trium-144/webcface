@@ -12,6 +12,6 @@ var searchData=
   ['webcface_3a_3amessage_3a_3amessagekind_9',['MessageKind',['../namespacewebcface_1_1message_1_1MessageKind.html',1,'webcface::message']]],
   ['webcface_3a_3amessage_3a_3apath_10',['Path',['../namespacewebcface_1_1message_1_1Path.html',1,'webcface::message']]],
   ['webcface_3a_3arobot_5fjoints_11',['robot_joints',['../namespacewebcface_1_1robot__joints.html',1,'webcface']]],
-  ['webcface_3a_3aserver_12',['Server',['../namespacewebcface_1_1Server.html',1,'webcface']]],
+  ['webcface_3a_3aserver_12',['server',['../namespacewebcface_1_1server.html',1,'webcface']]],
   ['webcface_3a_3aserver_5finternal_13',['server_internal',['../namespacewebcface_1_1server__internal.html',1,'webcface']]]
 ];

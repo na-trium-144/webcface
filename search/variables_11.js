@@ -2,7 +2,7 @@ var searchData=
 [
   ['recv_5fdata_0',['recv_data',['../structDummyServer.html#a4a3d73daf3753943c15ac5156e64e9e2',1,'DummyServer::recv_data'],['../structDummyClient.html#a4a3d73daf3753943c15ac5156e64e9e2',1,'DummyClient::recv_data']]],
   ['recv_5fthread_1',['recv_thread',['../structwebcface_1_1internal_1_1ClientData.html#a42f6768c3a24209c8150e3f508645d62',1,'webcface::internal::ClientData']]],
-  ['remote_5faddr_2',['remote_addr',['../structwebcface_1_1Server_1_1MemberData.html#aeaede8e9fa35099287d112189aac9e3a',1,'webcface::Server::MemberData']]],
+  ['remote_5faddr_2',['remote_addr',['../structwebcface_1_1server_1_1MemberData.html#aeaede8e9fa35099287d112189aac9e3a',1,'webcface::server::MemberData']]],
   ['req_3',['req',['../classwebcface_1_1internal_1_1SyncDataStore1.html#a7391bd98ebc50d8b1837a5a79a48c7eb',1,'webcface::internal::SyncDataStore1::req'],['../classwebcface_1_1internal_1_1SyncDataStore2.html#a99e4e9d0f74ad99683910c1e8966964f',1,'webcface::internal::SyncDataStore2::req']]],
   ['req_3c_20canvas2d_20_3e_4',['Req&lt; Canvas2D &gt;',['../namespacemessage.html#ae63f1940669447ff7f4a94ef72e3fb92',1,'message']]],
   ['req_3c_20canvas3d_20_3e_5',['Req&lt; Canvas3D &gt;',['../namespacemessage.html#ad3bc7f7a2b6383c7e2de4f42c3cb1f53',1,'message']]],
@@ -22,10 +22,10 @@ var searchData=
   ['result_5fsetter_19',['result_setter',['../classwebcface_1_1internal_1_1FuncResultStore.html#a3fcc20d1f142d6bc53ccbcb76a76ff91',1,'webcface::internal::FuncResultStore']]],
   ['return_5ftype_20',['return_type',['../structwebcface_1_1message_1_1FuncInfo.html#a59831879dda782e0bd774cc70e0e6ca6',1,'webcface::message::FuncInfo::return_type'],['../structwebcface_1_1FuncInfo.html#a59831879dda782e0bd774cc70e0e6ca6',1,'webcface::FuncInfo::return_type']]],
   ['return_5ftype_5f_21',['return_type_',['../classwebcface_1_1FuncListener.html#a02a4a129895f29f53a02d5a209a14a74',1,'webcface::FuncListener']]],
-  ['robot_5fmodel_22',['robot_model',['../structwebcface_1_1Server_1_1MemberData.html#a4aa547b2c1d1b172232e667066e39c59',1,'webcface::Server::MemberData']]],
+  ['robot_5fmodel_22',['robot_model',['../structwebcface_1_1server_1_1MemberData.html#a4aa547b2c1d1b172232e667066e39c59',1,'webcface::server::MemberData']]],
   ['robot_5fmodel_5fchange_5fevent_23',['robot_model_change_event',['../structwebcface_1_1internal_1_1ClientData.html#a509e649ce19f81360327133075aca08d',1,'webcface::internal::ClientData']]],
   ['robot_5fmodel_5fentry_5fevent_24',['robot_model_entry_event',['../structwebcface_1_1internal_1_1ClientData.html#ac1ff9136d0547bd5b3fdde936c1b11a2',1,'webcface::internal::ClientData']]],
-  ['robot_5fmodel_5freq_25',['robot_model_req',['../structwebcface_1_1Server_1_1MemberData.html#a69221c243b357743ca3862275e199828',1,'webcface::Server::MemberData']]],
+  ['robot_5fmodel_5freq_25',['robot_model_req',['../structwebcface_1_1server_1_1MemberData.html#a69221c243b357743ca3862275e199828',1,'webcface::server::MemberData']]],
   ['robot_5fmodel_5fstore_26',['robot_model_store',['../structwebcface_1_1internal_1_1ClientData.html#a4cfd52af02318809060a55f4938acda5',1,'webcface::internal::ClientData']]],
   ['rot_5f_27',['rot_',['../classwebcface_1_1Transform.html#a1d9c840af4d4c13a29822440ea5640a9',1,'webcface::Transform']]],
   ['rows_28',['rows',['../structwebcface_1_1message_1_1ImageReq.html#a7187b583e49c0d80afef70b80e631a4b',1,'webcface::message::ImageReq']]]

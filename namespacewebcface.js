@@ -28,7 +28,7 @@ var namespacewebcface =
       [ "rotationalJoint", "namespacewebcface_1_1robot__joints.html#ac0c9b491ef42c518e3f850aa9ea1cece", null ],
       [ "rotationalJoint", "namespacewebcface_1_1robot__joints.html#aa991ac571d7714516c94c63ce355523a", null ]
     ] ],
-    [ "Server", "namespacewebcface_1_1Server.html", "namespacewebcface_1_1Server" ],
+    [ "server", "namespacewebcface_1_1server.html", "namespacewebcface_1_1server" ],
     [ "server_internal", "namespacewebcface_1_1server__internal.html", "namespacewebcface_1_1server__internal" ],
     [ "AnonymousFunc", "classwebcface_1_1AnonymousFunc.html", "classwebcface_1_1AnonymousFunc" ],
     [ "Arg", "classwebcface_1_1Arg.html", "classwebcface_1_1Arg" ],

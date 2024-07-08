@@ -89,10 +89,10 @@ var annotated_dup =
         [ "View", "structwebcface_1_1message_1_1View.html", "structwebcface_1_1message_1_1View" ],
         [ "ViewComponent", "structwebcface_1_1message_1_1ViewComponent.html", "structwebcface_1_1message_1_1ViewComponent" ]
       ] ],
-      [ "Server", "namespacewebcface_1_1Server.html", [
-        [ "MemberData", "structwebcface_1_1Server_1_1MemberData.html", "structwebcface_1_1Server_1_1MemberData" ],
-        [ "Server", "classwebcface_1_1Server_1_1Server.html", "classwebcface_1_1Server_1_1Server" ],
-        [ "ServerStorage", "structwebcface_1_1Server_1_1ServerStorage.html", "structwebcface_1_1Server_1_1ServerStorage" ]
+      [ "server", "namespacewebcface_1_1server.html", [
+        [ "MemberData", "structwebcface_1_1server_1_1MemberData.html", "structwebcface_1_1server_1_1MemberData" ],
+        [ "Server", "classwebcface_1_1server_1_1Server.html", "classwebcface_1_1server_1_1Server" ],
+        [ "ServerStorage", "structwebcface_1_1server_1_1ServerStorage.html", "structwebcface_1_1server_1_1ServerStorage" ]
       ] ],
       [ "server_internal", "namespacewebcface_1_1server__internal.html", [
         [ "AppWrapper", "classwebcface_1_1server__internal_1_1AppWrapper.html", "classwebcface_1_1server__internal_1_1AppWrapper" ],

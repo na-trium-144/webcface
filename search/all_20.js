@@ -150,7 +150,7 @@ var searchData=
   ['webcface_3a_3amessage_3a_3apath_147',['Path',['../namespacewebcface_1_1message_1_1Path.html',1,'webcface::message']]],
   ['webcface_3a_3arange_148',['Range',['../conceptwebcface_1_1Range.html',1,'webcface']]],
   ['webcface_3a_3arobot_5fjoints_149',['robot_joints',['../namespacewebcface_1_1robot__joints.html',1,'webcface']]],
-  ['webcface_3a_3aserver_150',['Server',['../namespacewebcface_1_1Server.html',1,'webcface']]],
+  ['webcface_3a_3aserver_150',['server',['../namespacewebcface_1_1server.html',1,'webcface']]],
   ['webcface_3a_3aserver_5finternal_151',['server_internal',['../namespacewebcface_1_1server__internal.html',1,'webcface']]],
   ['webcface_5fdefault_5fport_152',['WEBCFACE_DEFAULT_PORT',['../def_8h.html#ac2db178dd291a312ca3f696e69c9af55',1,'def.h']]],
   ['webcface_5fdefault_5fport_5fs_153',['WEBCFACE_DEFAULT_PORT_S',['../def_8h.html#afbc9c6287f9dc55d9ba2f40b887deb87',1,'def.h']]],
@@ -179,6 +179,6 @@ var searchData=
   ['windows_20msvc_176',['Windows (MSVC)',['../index.html#autotoc_md211',1,'']]],
   ['writelog_177',['writeLog',['../client_2src_2log_8cc.html#aa24dcb3c216ddadf85473dc4d3d7583a',1,'log.cc']]],
   ['ws_178',['ws',['../structwebcface_1_1encoding_1_1SharedString_1_1Data.html#afa2c658976df6e8b0c6121ef2b318216',1,'webcface::encoding::SharedString::Data']]],
-  ['wsconnptr_179',['wsconnptr',['../namespacewebcface_1_1Server.html#af92eef764fed4a1512658233c54020bf',1,'webcface::Server::wsConnPtr'],['../namespacewebcface_1_1server__internal.html#af92eef764fed4a1512658233c54020bf',1,'webcface::server_internal::wsConnPtr']]],
+  ['wsconnptr_179',['wsconnptr',['../namespacewebcface_1_1server.html#af92eef764fed4a1512658233c54020bf',1,'webcface::server::wsConnPtr'],['../namespacewebcface_1_1server__internal.html#af92eef764fed4a1512658233c54020bf',1,'webcface::server_internal::wsConnPtr']]],
   ['wsl2host_180',['wsl2host',['../namespacemessage_1_1Path.html#a6f66b6ebca37cbc0fd22190142e37fb3',1,'message::Path::wsl2Host()'],['../namespacewebcface_1_1message_1_1Path.html#a6f66b6ebca37cbc0fd22190142e37fb3',1,'webcface::message::Path::wsl2Host()']]]
 ];

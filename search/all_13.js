@@ -1,7 +1,7 @@
 var searchData=
 [
   ['jammy_0',['Ubuntu 22.04 Jammy',['../index.html#autotoc_md207',1,'']]],
-  ['join_1',['join',['../structwebcface_1_1internal_1_1ClientData.html#a6c7abfff648dad193674fc432ad4840d',1,'webcface::internal::ClientData::join()'],['../classwebcface_1_1Server_1_1Server.html#a6c7abfff648dad193674fc432ad4840d',1,'webcface::Server::Server::join()']]],
+  ['join_1',['join',['../structwebcface_1_1internal_1_1ClientData.html#a6c7abfff648dad193674fc432ad4840d',1,'webcface::internal::ClientData::join()'],['../classwebcface_1_1server_1_1Server.html#a6c7abfff648dad193674fc432ad4840d',1,'webcface::server::Server::join()']]],
   ['joint_2',['joint',['../structwebcface_1_1RobotLink.html#a2c3f77c9acaa0f8c43395295b21a7608',1,'webcface::RobotLink']]],
   ['joint_5fangle_3',['joint_angle',['../structwebcface_1_1message_1_1RobotLink.html#a0d1d3c258be36be01381b2ccf7b3cbe6',1,'webcface::message::RobotLink']]],
   ['joint_5fname_4',['joint_name',['../structwebcface_1_1message_1_1RobotLink.html#a2a07f3de7a8c0501c9ddb51b9575c185',1,'webcface::message::RobotLink']]],

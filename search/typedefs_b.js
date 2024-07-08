@@ -12,5 +12,5 @@ var searchData=
   ['wcfvaltype_9',['wcfValType',['../def__types_8h.html#a591e95597f03b0187640d6e065e0ebf9',1,'def_types.h']]],
   ['wcfviewcomponent_10',['wcfViewComponent',['../def__types_8h.html#a8605c7530fcff7a67cbb1906bb696de4',1,'def_types.h']]],
   ['wcfviewcomponentw_11',['wcfViewComponentW',['../def__types_8h.html#a37d71b5bff6faa035dc11a6398fc0e5c',1,'def_types.h']]],
-  ['wsconnptr_12',['wsconnptr',['../namespacewebcface_1_1server__internal.html#af92eef764fed4a1512658233c54020bf',1,'webcface::server_internal::wsConnPtr'],['../namespacewebcface_1_1Server.html#af92eef764fed4a1512658233c54020bf',1,'webcface::Server::wsConnPtr']]]
+  ['wsconnptr_12',['wsconnptr',['../namespacewebcface_1_1server__internal.html#af92eef764fed4a1512658233c54020bf',1,'webcface::server_internal::wsConnPtr'],['../namespacewebcface_1_1server.html#af92eef764fed4a1512658233c54020bf',1,'webcface::server::wsConnPtr']]]
 ];

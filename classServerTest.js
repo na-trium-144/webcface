@@ -6,5 +6,5 @@ var classServerTest =
     [ "data_", "classServerTest.html#a0c65a734b53e3b4f01a0d2f39f8ca588", null ],
     [ "dummy_c1", "classServerTest.html#a9a92a775bac15bce2a5fbcf043487f0c", null ],
     [ "dummy_c2", "classServerTest.html#ac8294f71eb15bd6f87d3e8ed10411c0b", null ],
-    [ "server", "classServerTest.html#ab5e4b6cf9328d15efef9146952440c7f", null ]
+    [ "server", "classServerTest.html#af1e8ea0c24f27ae1800bca06a13dda2b", null ]
 ];

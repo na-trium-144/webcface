@@ -164,11 +164,6 @@ var NAVTREEINDEX19 =
 "message_8h.html#a9f918755b601cf4bffca775992e6fb90":[27,0,4,0,0,0,0,40],
 "message_8h.html#af4c21164f578c30ba84af08bd406b981":[27,0,4,0,0,0,0,45],
 "message_8h_source.html":[27,0,4,0,0,0,0],
-"namespaceServer.html":[24,0,4],
-"namespaceServer.html#a190126a8b357424080243a1c04ee9afc":[24,0,4,2],
-"namespaceServer.html#a517f0d3943a35342a90516c2216784ae":[24,0,4,0],
-"namespaceServer.html#a5de683dfd44e54076715d47c2bcaa851":[24,0,4,1],
-"namespaceServer.html#af75cf09eeecbcfd458c033ac2972eb47":[24,0,4,3],
 "namespacec__wcf.html":[24,0,0],
 "namespacec__wcf.html#a06ec85c3a4c532a455f4c6534b658875":[24,0,0,16],
 "namespacec__wcf.html#a1ea48368e7fb4a6847fa47a84fdd0fdc":[24,0,0,15],
@@ -249,5 +244,10 @@ var NAVTREEINDEX19 =
 "namespacemessage_1_1Path.html#abe1e8f490bf607708fc35c06484fca6b":[24,0,3,0,5],
 "namespacemessage_1_1Path.html#aedc5de11a53fc1ae4b7708070d743651":[24,0,3,0,4],
 "namespaces.html":[24,0],
+"namespaceserver.html":[24,0,4],
+"namespaceserver.html#a190126a8b357424080243a1c04ee9afc":[24,0,4,2],
+"namespaceserver.html#a517f0d3943a35342a90516c2216784ae":[24,0,4,0],
+"namespaceserver.html#a5de683dfd44e54076715d47c2bcaa851":[24,0,4,1],
+"namespaceserver.html#af75cf09eeecbcfd458c033ac2972eb47":[24,0,4,3],
 "namespacewebcface.html":[24,0,5]
 };
