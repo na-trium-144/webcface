@@ -6,5 +6,5 @@ int main() {
     wcli.log().append(webcface::level::info, "this is info");
     wcli.onMemberEntry().callbackList().append([](webcface::Member m) {});
 
-    webcface::Server::Server s(7530, webcface::level::info);
+    webcface::server::Server s(7530, webcface::level::info);
 }

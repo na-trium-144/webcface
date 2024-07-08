@@ -6,7 +6,7 @@
 #include <algorithm>
 
 WEBCFACE_NS_BEGIN
-namespace Server {
+namespace server {
 
 constexpr char8_t field_separator = u8'.';
 
@@ -911,5 +911,5 @@ void MemberData::onRecv(const std::string &message) {
     store->clientSendAll();
 }
 
-} // namespace Server
+} // namespace server
 WEBCFACE_NS_END

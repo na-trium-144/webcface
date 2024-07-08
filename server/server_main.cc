@@ -32,5 +32,5 @@ int main(int argc, char **argv) {
         level = 2;
     }
 
-    webcface::Server::Server(port, level, keep_log).join();
+    webcface::server::Server(port, level, keep_log).join();
 }

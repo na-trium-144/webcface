@@ -6,7 +6,7 @@
 #include <Magick++.h>
 
 WEBCFACE_NS_BEGIN
-namespace Server {
+namespace server {
 
 // メインのスレッドで呼ばれるべき (server側でチェック)
 void initMagick() {
@@ -275,5 +275,5 @@ void MemberData::imageConvertThreadMain(const SharedString &member,
     }
 }
 
-} // namespace Server
+} // namespace server
 WEBCFACE_NS_END

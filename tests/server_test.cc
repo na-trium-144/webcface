@@ -34,7 +34,7 @@ class ServerTest : public ::testing::Test {
   protected:
     void SetUp() override {
         std::cout << "SetUp begin" << std::endl;
-        server = std::make_unique<Server::Server>(27530, 0);
+        server = std::make_unique<server::Server>(27530, 0);
         wait();
         std::cout << "SetUp end" << std::endl;
     }
@@ -45,7 +45,7 @@ class ServerTest : public ::testing::Test {
         server.reset();
         std::cout << "TearDown end" << std::endl;
     }
-    std::unique_ptr<Server::Server> server;
+    std::unique_ptr<server::Server> server;
     std::shared_ptr<internal::ClientData> data_ =
         std::make_shared<internal::ClientData>("a"_ss);
     std::shared_ptr<DummyClient> dummy_c1, dummy_c2;
