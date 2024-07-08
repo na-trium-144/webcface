@@ -93,7 +93,7 @@ void ServerStorage::forEach(const std::function<void(MemberDataPtr)> &func) {
 void ServerStorage::forEachWithName(
     const std::function<void(MemberDataPtr)> &func) {
     for (const auto &cd : clients_by_id) {
-        if (cd.second->sync_init) {
+        if (cd.second->sync_init && !cd.second->name.empty()) {
             func(cd.second);
         }
     }

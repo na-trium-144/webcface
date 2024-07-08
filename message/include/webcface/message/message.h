@@ -55,7 +55,8 @@ enum MessageKindEnum {
     log = 85,
     log_req = 86,
     sync = 87,
-    svr_version = 88,
+    sync_init_end = 88,
+    // svr_version = 88,
     ping = 89,
     ping_status = 90,
     ping_status_req = 91,
@@ -115,10 +116,13 @@ struct WEBCFACE_DLL SyncInit : public MessageBase<MessageKind::sync_init> {
 /*!
  * \brief serverのバージョン情報(server->client)
  *
- * serverはSyncInit受信後にこれを返す
+ * (ver1.11まで: SvrVersion)
+ *
+ * serverはSyncInitを受信してEntryをすべて送信し終わった後にこれを返す
  *
  */
-struct WEBCFACE_DLL SvrVersion : public MessageBase<MessageKind::svr_version> {
+struct WEBCFACE_DLL SyncInitEnd
+    : public MessageBase<MessageKind::sync_init_end> {
     /*!
      * \brief serverの名前
      *
@@ -131,7 +135,13 @@ struct WEBCFACE_DLL SvrVersion : public MessageBase<MessageKind::svr_version> {
      *
      */
     std::string ver;
-    MSGPACK_DEFINE_MAP(MSGPACK_NVP("n", svr_name), MSGPACK_NVP("v", ver))
+    /*!
+     * \brief クライアントのmember id
+     *
+     */
+    unsigned int member_id;
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("n", svr_name), MSGPACK_NVP("v", ver),
+                       MSGPACK_NVP("m", member_id))
 };
 /*!
  * \brief ping(server->client->server)

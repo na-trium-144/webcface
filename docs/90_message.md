@@ -29,14 +29,23 @@ data = {
 * Mが空でない場合のみ、サーバーがm,aを設定し各クライアントに送信し、クライアントは新しいMemberのidを知ることができます
 	* member idはクライアントごとにサーバーが一意に振る1以上の整数です
 
-### svr version (kind = 88)
+### sync init end (kind = 88)
+
+(ver1.11まで: svr version)
+
 ```js
 data = {
 	n: string, // server name
 	v: string, // server version
+	m: number, // member id
 }
 ```
-* サーバーからクライアントに1回送られます
+* <del>サーバーからクライアントに1回送られます</del>
+* <span class="since-c">2.0</span>
+クライアントからサーバーに sync init が送られたあと、
+サーバーはクライアントにすべてのentryを送り、最後に sync init end を送ります
+	* クライアントはwaitConnection()でこれが送られてくるまで待機します
+* <span class="since-c">2.0</span> member id 追加 (sync init をしたメンバーのid)
 
 ### ping (kind = 89)
 ```js

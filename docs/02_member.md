@@ -92,6 +92,9 @@ Client::onMemberEntry() で新しいメンバーが接続されたときのイ�
     wcli.onMemberEntry([](webcface::Member m){/* ... */});
     ```
 
+    <span class="since-c">2.0</span>
+    Client::waitConnection()はこのクライアントが接続する前から存在したメンバーすべてについてコールバックを呼んでからreturnします。
+
     \note webcfaceが受け取る関数オブジェクトは基本的にコピーではなくムーブされます。
 
 - <b class="tab-title">JavaScript</b>
@@ -163,6 +166,8 @@ Member::libVersion(), Member::libName(), Member::remoteAddr() でクライアン
 ## ping
 
 Member::pingStatus() でそのクライアントの通信速度を取得できます。(int型で、単位はms)
+ここでは通信速度とはサーバーとクライアントの間で1往復データを送受信するのにかかる遅延です。
+
 通信速度の情報は5秒に1回更新され、更新されたときにonPingイベントが発生します
 
 デフォルトの状態ではpingの情報は受信しませんが、pingStatusまたはonPingに1回アクセスすることでpingの情報がリクエストされ、それ以降は値が送られてくるようになります。
@@ -176,6 +181,13 @@ Member::pingStatus() でそのクライアントの通信速度を取得でき�
         std::cout << m.name() << ": " << m.pingStatus() << " ms" << std::endl;
     });
     ```
+    * ver1.11以前では `onPing().appendListener(...)`
+    * <span class="since-c">1.7</span>
+    appendListener, prependListener ではコールバックの引数が不要な場合は引数のない関数も渡すことができます。
+    * <span class="since-c">1.11</span>
+    onMemberEntry() と同様、 callbackList() でCallbackListにアクセスできます。
+    * <span class="since-c">2.0</span>
+    自分自身のping値も取得できるようになりました。(`wcli.pingStatus()`, `wcli.onPing(...)`)
 
 - <b class="tab-title">JavaScript</b>
     ```ts
@@ -192,22 +204,6 @@ Member::pingStatus() でそのクライアントの通信速度を取得でき�
     ```
 
 </div>
-
-<details><summary>C++ 〜ver1.11</summary>
-
-```cpp
-wcli.member("foo").onPing().appendListener([](webcface::Member m){
-    std::cout << m.name() << ": " << m.pingStatus() << " ms" << std::endl;
-});
-```
-
-<span class="since-c">1.7</span>
-appendListener, prependListener ではコールバックの引数が不要な場合は引数のない関数も渡すことができます。
-
-<span class="since-c">1.11</span>
-onMemberEntry() と同様、 callbackList() でCallbackListにアクセスできます。
-
-</details>
 
 <div class="section_buttons">
 

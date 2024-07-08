@@ -71,10 +71,13 @@ WEBCFACE_DLL wcfStatus wcfStart(wcfClient *wcli);
  * * wcfAutoReconnect が無効の場合は1回目の接続のみ待機し、
  * 失敗しても再接続せずreturnする。
  *
+ * \param wcli
+ * \param interval autoRecvが無効の場合、初期化が完了するまで一定間隔ごとに
+ * wcfRecv() をこのスレッドで呼び出す。
  * \return wcliが無効ならWCF_BAD_WCLI
  * \sa wcfStart(), wcfAutoReconnect()
  */
-WEBCFACE_DLL wcfStatus wcfWaitConnection(wcfClient *wcli);
+WEBCFACE_DLL wcfStatus wcfWaitConnection(wcfClient *wcli, int interval);
 /*!
  * \brief 通信が切断されたときに自動で再試行するかどうかを設定する。
  * \since ver1.11.1

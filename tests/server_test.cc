@@ -42,13 +42,14 @@ class ServerTest : public ::testing::Test {
         std::cout << "TearDown begin" << std::endl;
         dummy_c1.reset();
         dummy_c2.reset();
+        dummy_c3.reset();
         server.reset();
         std::cout << "TearDown end" << std::endl;
     }
     std::unique_ptr<server::Server> server;
     std::shared_ptr<internal::ClientData> data_ =
         std::make_shared<internal::ClientData>("a"_ss);
-    std::shared_ptr<DummyClient> dummy_c1, dummy_c2;
+    std::shared_ptr<DummyClient> dummy_c1, dummy_c2, dummy_c3;
     int callback_called;
 };
 
@@ -79,8 +80,11 @@ TEST_F(ServerTest, sync) {
     wait(); // 接続順が変わるとmember idが変わってしまう
     dummy_c2 = std::make_shared<DummyClient>();
     wait();
+    dummy_c3 = std::make_shared<DummyClient>();
+    wait();
     dummy_c1->send(message::SyncInit{{}, ""_ss, 0, "", "", ""});
     dummy_c2->send(message::SyncInit{{}, "c2"_ss, 0, "a", "1", ""});
+    dummy_c2->send(message::Text{{}, "a"_ss, std::make_shared<ValAdaptor>("")});
     dummy_c1->waitRecv<message::SyncInit>([&](const auto &obj) {
         EXPECT_EQ(obj.member_name, "c2"_ss);
         EXPECT_EQ(obj.member_id, 2);
@@ -88,14 +92,40 @@ TEST_F(ServerTest, sync) {
         EXPECT_EQ(obj.lib_ver, "1");
         EXPECT_EQ(obj.addr, "127.0.0.1");
     });
-    dummy_c1->waitRecv<message::SvrVersion>([&](const auto &obj) {
+    dummy_c1->waitRecv<message::SyncInitEnd>([&](const auto &obj) {
         EXPECT_EQ(obj.svr_name, WEBCFACE_SERVER_NAME);
         EXPECT_EQ(obj.ver, WEBCFACE_VERSION);
+        EXPECT_EQ(obj.member_id, 1);
     });
+    dummy_c2->waitRecv<message::SyncInitEnd>([&](const auto &obj) {
+        EXPECT_EQ(obj.svr_name, WEBCFACE_SERVER_NAME);
+        EXPECT_EQ(obj.ver, WEBCFACE_VERSION);
+        EXPECT_EQ(obj.member_id, 2);
+    });
+    dummy_c2->recv<message::SyncInit>([&](auto){
+        ADD_FAILURE() << "should not receive syncinit";
+    }, [&]() {});
+
+    dummy_c3->send(message::SyncInit{{}, "c3"_ss, 0, "a", "1", ""});
+    dummy_c3->waitRecv<message::SyncInit>([&](const auto &) {});
+    dummy_c3->waitRecv<message::SyncInitEnd>([&](const auto &obj) {
+        EXPECT_EQ(obj.svr_name, WEBCFACE_SERVER_NAME);
+        EXPECT_EQ(obj.ver, WEBCFACE_VERSION);
+        EXPECT_EQ(obj.member_id, 3);
+    });
+    dummy_c3->recv<message::Entry<message::Text>>([&](const auto &obj) {
+        EXPECT_EQ(obj.member_id, 2);
+        EXPECT_EQ(obj.field, "a"_ss);
+    }, [&]{
+        ADD_FAILURE() << "should have been received entry";
+    });
+
     ASSERT_TRUE(server->store->clients_by_id.count(1));
     ASSERT_TRUE(server->store->clients_by_id.count(2));
+    ASSERT_TRUE(server->store->clients_by_id.count(3));
     EXPECT_EQ(server->store->clients_by_id.at(1)->name, ""_ss);
     EXPECT_EQ(server->store->clients_by_id.at(2)->name, "c2"_ss);
+    EXPECT_EQ(server->store->clients_by_id.at(3)->name, "c3"_ss);
     dummy_c1->recvClear();
 
     // dummy_c2->send(message::Sync{});

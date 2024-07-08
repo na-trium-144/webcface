@@ -454,7 +454,7 @@ Member::onValueEntry() で新しくデータが追加されたときのコール
 
 ただし、コールバックを設定する前から存在したデータについてはコールバックは呼び出されません。
 すべてのデータに対してコールバックが呼ばれるようにしたい場合は、
-Member名がわかっていれば初回の Client::sync() 前に、
+Member名がわかっていれば<del>初回の Client::sync()</del> Client::start() 前に、
 そうでなければ Client::onMemberEntry() イベントのコールバックの中で各種イベントを設定すればよいです。
 
 イベントの詳細な使い方はonMemberEntryと同様です([Member](./02_member.md) のページを参照してください)。
@@ -468,6 +468,9 @@ Member名がわかっていれば初回の Client::sync() 前に、
     ```
 
     ver1.11以前では `.onValueEntry().appendListener(...)`
+
+    <span class="since-c">2.0</span>
+    Client::waitConnection()はこのクライアントが接続する前から存在したデータすべてについてコールバックを呼んでからreturnします。
 
 - <b class="tab-title">JavaScript</b>
     ```ts

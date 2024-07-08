@@ -88,7 +88,7 @@ unpack(const std::string &message,
                 MSG_PARSE(LogReq)
                 MSG_PARSE(FuncInfo)
                 MSG_PARSE(Sync)
-                MSG_PARSE(SvrVersion)
+                MSG_PARSE(SyncInitEnd)
                 MSG_PARSE(Ping)
                 MSG_PARSE(PingStatus)
                 MSG_PARSE(PingStatusReq)

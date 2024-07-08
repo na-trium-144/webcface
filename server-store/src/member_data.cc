@@ -188,8 +188,6 @@ void MemberData::onRecv(const std::string &message) {
                     }
                 });
             }
-            this->pack(webcface::message::SvrVersion{
-                {}, WEBCFACE_SERVER_NAME, WEBCFACE_VERSION});
             // 逆に新しいMemberに他の全Memberのentryを通知
             store->forEachWithName([&](auto cd) {
                 if (cd->member_id != this->member_id) {
@@ -271,6 +269,9 @@ void MemberData::onRecv(const std::string &message) {
                     }
                 }
             });
+            logger->trace("send sync_init_end");
+            this->pack(webcface::message::SyncInitEnd{
+                {}, WEBCFACE_SERVER_NAME, WEBCFACE_VERSION, this->member_id});
             break;
         }
         case MessageKind::sync: {
@@ -914,7 +915,7 @@ void MemberData::onRecv(const std::string &message) {
         case MessageKind::res + MessageKind::canvas2d:
         case MessageKind::entry + MessageKind::image:
         case MessageKind::res + MessageKind::image:
-        case MessageKind::svr_version:
+        case MessageKind::sync_init_end:
         case MessageKind::ping_status:
             if (!message_kind_warned[kind]) {
                 logger->warn("Invalid message Kind {}", kind);

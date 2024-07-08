@@ -49,7 +49,10 @@ Client オブジェクトを作り、start() を呼ぶことでサーバーへ�
     // または wcli.waitConnection();
     ```
 
-    * `start()` の代わりに `waitConnection()` を使うと接続が完了するまで待機することができます。
+    * <del>`start()` の代わりに `waitConnection()` を使うと接続が完了するまで待機することができます。</del>
+    * <span class="since-c">2.0</span>
+    `start()` の代わりに `waitConnection(interval)` を使うと接続が完了してEntry(=他のクライアントが送信しているデータのリスト)をすべて受信するまで待機することができます。
+        * waitConnectionは通信完了までの間interval間隔でrecv()を呼び出します。(デフォルト: 100μs) 詳細は後述の送受信の説明を参照
     * 接続できているかどうかは `wcli.connected()` で取得できます。
     * 通信が切断された場合は自動で再接続します。
         * <span class="since-c">1.11.1</span>
@@ -94,6 +97,11 @@ Client オブジェクトを作り、start() を呼ぶことでサーバーへ�
     * <span class="since-c">2.0</span>
     ワイド文字列を使用したい場合はそれぞれ `wcfInitDefaultW()`, `wcfInitW()`
     (詳細はこのページのEncodingの章を参照)
+    * <span class="since-c">2.0</span>
+    `wcfStart()` の代わりに `wcfWaitConnection(interval)` を使うと接続が完了してEntry(=他のクライアントが送信しているデータのリスト)をすべて受信するまで待機することができます。
+        * wcfWaitConnectionは通信完了までの間interval(μs)間隔でrecv()を呼び出します。
+        (C++側のデフォルトは100なので、理由がなければ100程度を指定しておけばよいです。
+        詳細は後述の送受信の説明を参照)
     * 接続できているかどうかは `wcfIsConnected(wcli)` で取得できます。
     * 通信が切断された場合は自動で再接続します。
 
