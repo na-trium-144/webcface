@@ -56,6 +56,15 @@ jobs:
     #   if: matrix.dep == 'choco'
     #   run: echo "c:\Program Files\ImageMagick-7.1.1-Q16-HDRI" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
         
+    - name: Restore cached ImageMagick
+      # magickpp-build-msvc ではsharedもstaticも同じようにビルドしてる(installは違うが)
+      id: cache-im-restore
+      uses: actions/cache/restore@v4
+      with:
+        path: |
+          build/_deps/imagemagick-windows-src
+        key: ${{ runner.os }}-${{ hashFiles('cmake/deps/magickpp-build-msvc.cmake') }}
+
     - name: Configure CMake
       run: |
         ${VS_INST_PATH} = & "${env:ProgramFiles(x86)}/Microsoft Visual Studio/Installer/vswhere.exe" -latest -property installationPath
@@ -64,6 +73,15 @@ jobs:
         Enter-VsDevShell -VsInstallPath ${VS_INST_PATH} -SkipAutomaticLocation -DevCmdArguments '-arch=${{matrix.config.arch}} -no_logo'
         cmake -B build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DWEBCFACE_TEST=on -DWEBCFACE_EXAMPLE=on -DWEBCFACE_TEST_TIMEOUT=1000 -DWEBCFACE_SHARED=${{matrix.shared_flag}} -DCMAKE_INSTALL_PREFIX=${{github.workspace}}/build/install
     # ${{ steps.vcpkg.outputs.vcpkg-cmake-config }}
+
+    - name: Save ImageMagick
+      if: matrix.dep == 'source' # 1回の実行で1回のみsaveされるようにする
+      id: cache-im-save
+      uses: actions/cache/save@v4
+      with:
+        path: |
+          build/_deps/imagemagick-windows-src
+        key: ${{ steps.cache-im-restore.outputs.cache-primary-key }}
 
     - name: Build
       run: cmake --build build --config ${{env.BUILD_TYPE}} -t install
