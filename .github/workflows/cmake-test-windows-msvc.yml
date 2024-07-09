@@ -62,8 +62,15 @@ jobs:
       uses: actions/cache/restore@v4
       with:
         path: |
-          build/_deps/imagemagick-windows-src
+          external/imagemagick-windows
         key: ${{ runner.os }}-${{ hashFiles('cmake/deps/magickpp-build-msvc.cmake') }}
+    - name: Update ImageMagick timestamp
+      if: steps.cache-im-restore.outputs.cache-hit == 'true'
+      run: |
+        $file = Get-Item external\imagemagick-windows\IM7.StaticDLL.x64.sln
+        $file.LastWriteTime = (Get-Date)
+        $file.LastAccessTime = (Get-Date)
+        $file.CreationTime = (Get-Date)
 
     - name: Configure CMake
       run: |
@@ -74,13 +81,20 @@ jobs:
         cmake -B build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DWEBCFACE_TEST=on -DWEBCFACE_EXAMPLE=on -DWEBCFACE_TEST_TIMEOUT=1000 -DWEBCFACE_SHARED=${{matrix.shared_flag}} -DCMAKE_INSTALL_PREFIX=${{github.workspace}}/build/install
     # ${{ steps.vcpkg.outputs.vcpkg-cmake-config }}
 
+    # 1回の実行で1回のみsaveされるようにする
+    # restoreとsaveでpathが一致している必要があるらしい
+    - name: Copy ImageMagick directory for cache
+      if: steps.cache-im-restore.outputs.cache-hit != 'true' && matrix.dep == 'source'
+      run: |
+        New-Item -Name "external\imagemagick-windows" -ItemType Directory
+        Copy-Item -Path "build\_deps\imagemagick-windows-src\*" -Destination "external\imagemagick-windows" -Recurse
     - name: Save ImageMagick
-      if: matrix.dep == 'source' # 1回の実行で1回のみsaveされるようにする
+      if: steps.cache-im-restore.outputs.cache-hit != 'true' && matrix.dep == 'source'
       id: cache-im-save
       uses: actions/cache/save@v4
       with:
         path: |
-          build/_deps/imagemagick-windows-src
+          external/imagemagick-windows
         key: ${{ steps.cache-im-restore.outputs.cache-primary-key }}
 
     - name: Build
