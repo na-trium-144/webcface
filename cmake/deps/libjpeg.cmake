@@ -32,12 +32,12 @@ else()
     if(N EQUAL 0)
         set(N 1)
     endif()
+    include(cmake/flags.cmake)
     execute_process(
         COMMAND ${CMAKE_COMMAND} ${libjpeg-turbo_SOURCE_DIR} -B${libjpeg-turbo_BINARY_DIR}
-            -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=${libjpeg_PREFIX}
-            "-DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}"
+            -DCMAKE_INSTALL_PREFIX=${libjpeg_PREFIX}
             -DENABLE_SHARED=OFF -DWITH_TURBOJPEG=OFF
-            -DCMAKE_POSITION_INDEPENDENT_CODE=${WEBCFACE_PIC}
+            ${WEBCFACE_CMAKE_PROPS}
     )
     execute_process(COMMAND ${CMAKE_COMMAND} --build ${libjpeg-turbo_BINARY_DIR} -t install -j${N})
 

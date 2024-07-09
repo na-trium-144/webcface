@@ -32,15 +32,15 @@ else()
     if(N EQUAL 0)
         set(N 1)
     endif()
+    include(cmake/flags.cmake)
     execute_process(
         COMMAND ${CMAKE_COMMAND} ${libwebp_SOURCE_DIR} -B${libwebp_BINARY_DIR}
-            -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=${libwebp_PREFIX}
-            "-DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}"
+            -DCMAKE_INSTALL_PREFIX=${libwebp_PREFIX}
             -DBUILD_SHARED_LIBS=OFF -DWEBP_LINK_STATIC=ON
             -DWEBP_BUILD_ANIM_UTILS=OFF -DWEBP_BUILD_CWEBP=OFF -DWEBP_BUILD_DWEBP=OFF
             -DWEBP_BUILD_GIF2WEBP=OFF -DWEBP_BUILD_IMG2WEBP=OFF -DWEBP_BUILD_VWEBP=OFF
             -DWEBP_BUILD_WEBPINFO=OFF -DWEBP_BUILD_WEBPMUX=OFF -DWEBP_BUILD_EXTRAS=OFF
-            -DCMAKE_POSITION_INDEPENDENT_CODE=${WEBCFACE_PIC}
+            ${WEBCFACE_CMAKE_PROPS}
     )
     execute_process(COMMAND ${CMAKE_COMMAND} --build ${libwebp_BINARY_DIR} -t install -j${N})
 

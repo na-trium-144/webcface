@@ -27,6 +27,7 @@ endif()
 
 option(WEBCFACE_INSTALL "generate install target" ${IS_MAIN})
 option(WEBCFACE_INSTALL_SERVICE "generate install target for systemd service file" OFF)
+option(WEBCFACE_FRAMEWORK "build webcface framework bundle" OFF)
 option(WEBCFACE_EXAMPLE "build example" ${IS_MAIN})
 option(WEBCFACE_TEST "build test" OFF)
 option(WEBCFACE_COVERAGE "enable generating test coverage" OFF)
@@ -269,6 +270,29 @@ set_target_properties(webcface PROPERTIES
     VERSION ${PROJECT_VERSION}
     SOVERSION ${WEBCFACE_SOVERSION}
 )
+if(WEBCFACE_FRAMEWORK)
+    # https://stackoverflow.com/questions/71006897/how-to-preserve-directory-layout-of-public-headers-when-generating-macos-framewo
+    file(GLOB_RECURSE WEBCFACE_HEADERS
+        encoding/include/*.h
+        server-store/include/*.h
+        client/include/*.h
+        ${CMAKE_CURRENT_BINARY_DIR}/include/*.h
+    )
+    list(FILTER WEBCFACE_HEADERS EXCLUDE REGEX "internal")
+    foreach(_file IN LISTS WEBCFACE_HEADERS)
+        get_filename_component(_loc "${_file}" DIRECTORY)
+        string(REGEX REPLACE ".*/include/webcface" "Headers" _loc "${_loc}")
+        set_source_files_properties(${_file} PROPERTIES MACOSX_PACKAGE_LOCATION ${_loc})
+        message("${_file}: ${_loc}")
+    endforeach()
+    target_sources(webcface PRIVATE ${WEBCFACE_HEADERS})
+    configure_file(cmake/Info.plist.in Info.plist)
+    set_target_properties(webcface PROPERTIES
+        FRAMEWORK TRUE
+        FRAMEWORK_VERSION ${WEBCFACE_SOVERSION}
+        MACOSX_FRAMEWORK_INFO_PLIST Info.plist
+    )
+endif()
 if(NOT "${WEBCFACE_CLANG_TIDY}" STREQUAL "")
     set(CLANG_TIDY_CMD "${WEBCFACE_CLANG_TIDY}" "--header-filter=${CMAKE_CURRENT_SOURCE_DIR}/src")
     set_target_properties(webcface-server-internal PROPERTIES CXX_CLANG_TIDY "${CLANG_TIDY_CMD}")
@@ -320,6 +344,7 @@ if(WEBCFACE_INSTALL)
         LIBRARY DESTINATION lib
         ARCHIVE DESTINATION lib
         RUNTIME DESTINATION bin
+        FRAMEWORK DESTINATION Frameworks
     )
     if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
         if(WEBCFACE_SHARED)
@@ -453,6 +478,10 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     message(STATUS " WEBCFACE_CONFIG_ALL = ${WEBCFACE_CONFIG_ALL}")
 endif()
 message(STATUS " WEBCFACE_SHARED = ${WEBCFACE_SHARED} (PIC = ${WEBCFACE_PIC})")
+if(APPLE)
+    message(STATUS " WEBCFACE_FRAMEWORK = ${WEBCFACE_FRAMEWORK}")
+    message(STATUS " CMAKE_OSX_ARCHITECTURES = ${CMAKE_OSX_ARCHITECTURES}")
+endif()
 message(STATUS " WEBCFACE_EXAMPLE = ${WEBCFACE_EXAMPLE}")
 if(WEBCFACE_TEST)
     message(STATUS " WEBCFACE_TEST = ${WEBCFACE_TEST} (TIMEOUT = ${WEBCFACE_TEST_TIMEOUT} ms)")
