@@ -286,11 +286,12 @@ if(WEBCFACE_FRAMEWORK)
         message("${_file}: ${_loc}")
     endforeach()
     target_sources(webcface PRIVATE ${WEBCFACE_HEADERS})
-    configure_file(cmake/Info.plist.in Info.plist)
     set_target_properties(webcface PROPERTIES
         FRAMEWORK TRUE
         FRAMEWORK_VERSION ${WEBCFACE_SOVERSION}
-        MACOSX_FRAMEWORK_INFO_PLIST Info.plist
+        MACOSX_FRAMEWORK_BUNDLE_VERSION "${PROJECT_VERSION}"
+        MACOSX_FRAMEWORK_IDENTIFIER "com.github.na-trium-144.webcface"
+        MACOSX_FRAMEWORK_SHORT_VERSION_STRING "${WEBCFACE_VERSION}"
     )
 endif()
 if(NOT "${WEBCFACE_CLANG_TIDY}" STREQUAL "")
