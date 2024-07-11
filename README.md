@@ -367,6 +367,7 @@ cmake -Bbuild
 	* Windows(MSVC)ではImageMagickをソースからビルドする際デフォルトでは`CMAKE_BUILD_TYPE`に指定したconfigurationのみビルドされますが、DebugとReleaseの両方をビルドしたい場合は `-DWEBCFACE_CONFIG_ALL=ON` を指定してください
 * `-DWEBCFACE_SHARED=OFF`にすると共有ライブラリではなくすべて静的ライブラリになります
 * `-DWEBCFACE_PIC=ON`または`-DCMAKE_POSITION_INDEPENDENT_CODE=ON`にすると-fPICフラグが有効になります (Linux,Macのみ、WEBCFACE_SHAREDがONの場合はデフォルトでON)
+* `-DWEBCFACE_FRAMEWORK=ON`, `"-DCMAKE_OSX_ARCHITECTURES=arm64;x86_64"` などとするとユニバーサルなframework (webcface.framework) をビルド、インストールできます
 * `-DWEBCFACE_EXAMPLE=ON`でexampleをビルドします(デフォルトでON、subdirectoryの場合デフォルトでOFF)
 * `-DWEBCFACE_INSTALL=ON`でinstallターゲットを生成します(デフォルトでON、subdirectoryの場合デフォルトでOFF)
 	* さらに`-DWEBCFACE_INSTALL_SERVICE=ON`で [webcface-server.service](cmake/webcafce-server.service) を lib/systemd/system にインストールします (デフォルトでOFF)

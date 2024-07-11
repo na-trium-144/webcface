@@ -42,6 +42,7 @@ else()
         endif()
         file(REMOVE_RECURSE ${zlib_PREFIX})
         include(cmake/flags.cmake)
+        init_flags()
         execute_process(
             COMMAND ${ENV_COMMAND}
                 "CC=${ORIGINAL_ENV_CC}"

@@ -33,14 +33,41 @@ else()
         set(N 1)
     endif()
     include(cmake/flags.cmake)
-    execute_process(
-        COMMAND ${CMAKE_COMMAND} ${libjpeg-turbo_SOURCE_DIR} -B${libjpeg-turbo_BINARY_DIR}
-            -DCMAKE_INSTALL_PREFIX=${libjpeg_PREFIX}
-            -DENABLE_SHARED=OFF -DWITH_TURBOJPEG=OFF
-            ${WEBCFACE_CMAKE_PROPS}
-    )
-    execute_process(COMMAND ${CMAKE_COMMAND} --build ${libjpeg-turbo_BINARY_DIR} -t install -j${N})
-
+    if(APPLE AND NOT CMAKE_OSX_ARCHITECTURES STREQUAL "")
+        foreach(arch IN LISTS CMAKE_OSX_ARCHITECTURES)
+            # universalビルド非対応
+            init_flags(ARCH ${arch})
+            execute_process(
+                COMMAND ${CMAKE_COMMAND} ${libjpeg-turbo_SOURCE_DIR} -B${libjpeg-turbo_BINARY_DIR}_${arch}
+                    -DCMAKE_INSTALL_PREFIX=${libjpeg_PREFIX}
+                    -DENABLE_SHARED=OFF -DWITH_TURBOJPEG=OFF
+                    ${WEBCFACE_CMAKE_PROPS}
+            )
+            execute_process(COMMAND ${CMAKE_COMMAND} --build ${libjpeg-turbo_BINARY_DIR}_${arch} -t install -j${N})
+            file(MAKE_DIRECTORY ${libjpeg_PREFIX}_${arch})
+            file(COPY ${libjpeg_PREFIX}/include DESTINATION ${libjpeg_PREFIX}_${arch})
+            file(COPY ${libjpeg_PREFIX}/lib DESTINATION ${libjpeg_PREFIX}_${arch})
+            list(APPEND libjpeg_A_DIRS ${libjpeg_PREFIX}_${arch}/lib)
+            file(GLOB libjpeg_A_FILES
+                RELATIVE ${libjpeg_PREFIX}_${arch}/lib
+                ${libjpeg_PREFIX}_${arch}/lib/*.a
+            )
+        endforeach()
+        lipo(
+            DIRECTORIES ${libjpeg_A_DIRS}
+            FILES ${libjpeg_A_FILES}
+            DESTINATION ${libjpeg_PREFIX}/lib
+        )
+    else()
+        init_flags()
+        execute_process(
+            COMMAND ${CMAKE_COMMAND} ${libjpeg-turbo_SOURCE_DIR} -B${libjpeg-turbo_BINARY_DIR}
+                -DCMAKE_INSTALL_PREFIX=${libjpeg_PREFIX}
+                -DENABLE_SHARED=OFF -DWITH_TURBOJPEG=OFF
+                ${WEBCFACE_CMAKE_PROPS}
+        )
+        execute_process(COMMAND ${CMAKE_COMMAND} --build ${libjpeg-turbo_BINARY_DIR} -t install -j${N})
+    endif()
     include(cmake/linker.cmake)
     add_prefix(${libjpeg_PREFIX})
     pkg_check_modules(libjpeg QUIET libjpeg)

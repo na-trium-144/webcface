@@ -51,6 +51,7 @@ if(NOT EXISTS ${imagemagick_BINARY_DIR}/Makefile OR ${CMAKE_CURRENT_LIST_FILE} I
     endif()
     file(REMOVE_RECURSE ${MAGICKPP_PREFIX})
     include(cmake/flags.cmake)
+    init_flags()
     execute_process(
         # mingwでは ./configure はつかえない
         COMMAND ${SH_COMMAND} "${imagemagick_SOURCE_DIR_UNIX}/configure"
