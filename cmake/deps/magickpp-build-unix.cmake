@@ -15,11 +15,6 @@ else()
     set(MAGICKPP_PREFIX_UNIX "${MAGICKPP_PREFIX}")
 endif()
 
-set(MAGICKPP_FLAGS "-O3")
-if(WEBCFACE_PIC)
-    set(MAGICKPP_FLAGS "${MAGICKPP_FLAGS} -fPIC")
-endif()
-
 include(cmake/deps/libjpeg.cmake)
 include(cmake/deps/zlib.cmake)
 include(cmake/deps/libpng.cmake)
@@ -55,11 +50,13 @@ if(NOT EXISTS ${imagemagick_BINARY_DIR}/Makefile OR ${CMAKE_CURRENT_LIST_FILE} I
         )
     endif()
     file(REMOVE_RECURSE ${MAGICKPP_PREFIX})
+    include(cmake/flags.cmake)
+    init_flags()
     execute_process(
         # mingwでは ./configure はつかえない
         COMMAND ${SH_COMMAND} "${imagemagick_SOURCE_DIR_UNIX}/configure"
             "CC=${ORIGINAL_ENV_CC}" "CXX=${ORIGINAL_ENV_CXX}"
-            "CFLAGS=${MAGICKPP_FLAGS}" "CXXFLAGS=${MAGICKPP_FLAGS}"
+            "CFLAGS=${WEBCFACE_FLAGS}" "CXXFLAGS=${WEBCFACE_FLAGS}" "LDFLAGS=${WEBCFACE_LDFLAGS}"
             "MAKE=${MAKE_COMMAND}"
             --prefix=${MAGICKPP_PREFIX_UNIX} --disable-shared --enable-static
             --disable-openmp # <- for multi threading

@@ -32,14 +32,42 @@ else()
     if(N EQUAL 0)
         set(N 1)
     endif()
-    execute_process(
-        COMMAND ${CMAKE_COMMAND} ${libpng_SOURCE_DIR} -B${libpng_BINARY_DIR}
-            -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=${libpng_PREFIX}
-            "-DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}"
-            -DPNG_SHARED=OFF -DPNG_FRAMEWORK=OFF -DPNG_TESTS=OFF -DPNG_TOOLS=OFF
-            -DCMAKE_POSITION_INDEPENDENT_CODE=${WEBCFACE_PIC}
-    )
-    execute_process(COMMAND ${CMAKE_COMMAND} --build ${libpng_BINARY_DIR} -t install -j${N})
+    include(cmake/flags.cmake)
+    if(APPLE AND NOT CMAKE_OSX_ARCHITECTURES STREQUAL "")
+        foreach(arch IN LISTS CMAKE_OSX_ARCHITECTURES)
+            # universalビルド非対応
+            init_flags(ARCH ${arch})
+            execute_process(
+                COMMAND ${CMAKE_COMMAND} ${libpng_SOURCE_DIR} -B${libpng_BINARY_DIR}_${arch}
+                    -DCMAKE_INSTALL_PREFIX=${libpng_PREFIX}
+                    -DPNG_SHARED=OFF -DPNG_FRAMEWORK=OFF -DPNG_TESTS=OFF -DPNG_TOOLS=OFF
+                    ${WEBCFACE_CMAKE_PROPS}
+            )
+            execute_process(COMMAND ${CMAKE_COMMAND} --build ${libpng_BINARY_DIR}_${arch} -t install -j${N})
+            file(MAKE_DIRECTORY ${libpng_PREFIX}_${arch})
+            file(COPY ${libpng_PREFIX}/include DESTINATION ${libpng_PREFIX}_${arch})
+            file(COPY ${libpng_PREFIX}/lib DESTINATION ${libpng_PREFIX}_${arch})
+            list(APPEND libpng_A_DIRS ${libpng_PREFIX}_${arch}/lib)
+            file(GLOB libpng_A_FILES
+                RELATIVE ${libpng_PREFIX}_${arch}/lib
+                ${libpng_PREFIX}_${arch}/lib/*.a
+            )
+        endforeach()
+        lipo(
+            DIRECTORIES ${libpng_A_DIRS}
+            FILES ${libpng_A_FILES}
+            DESTINATION ${libpng_PREFIX}/lib
+        )
+    else()
+        init_flags()
+        execute_process(
+            COMMAND ${CMAKE_COMMAND} ${libpng_SOURCE_DIR} -B${libpng_BINARY_DIR}
+                -DCMAKE_INSTALL_PREFIX=${libpng_PREFIX}
+                -DPNG_SHARED=OFF -DPNG_FRAMEWORK=OFF -DPNG_TESTS=OFF -DPNG_TOOLS=OFF
+                ${WEBCFACE_CMAKE_PROPS}
+        )
+        execute_process(COMMAND ${CMAKE_COMMAND} --build ${libpng_BINARY_DIR} -t install -j${N})
+    endif()
 
     include(cmake/linker.cmake)
     add_prefix(${libpng_PREFIX})

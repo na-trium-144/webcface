@@ -32,18 +32,48 @@ else()
     if(N EQUAL 0)
         set(N 1)
     endif()
-    execute_process(
-        COMMAND ${CMAKE_COMMAND} ${libwebp_SOURCE_DIR} -B${libwebp_BINARY_DIR}
-            -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=${libwebp_PREFIX}
-            "-DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}"
-            -DBUILD_SHARED_LIBS=OFF -DWEBP_LINK_STATIC=ON
-            -DWEBP_BUILD_ANIM_UTILS=OFF -DWEBP_BUILD_CWEBP=OFF -DWEBP_BUILD_DWEBP=OFF
-            -DWEBP_BUILD_GIF2WEBP=OFF -DWEBP_BUILD_IMG2WEBP=OFF -DWEBP_BUILD_VWEBP=OFF
-            -DWEBP_BUILD_WEBPINFO=OFF -DWEBP_BUILD_WEBPMUX=OFF -DWEBP_BUILD_EXTRAS=OFF
-            -DCMAKE_POSITION_INDEPENDENT_CODE=${WEBCFACE_PIC}
-    )
-    execute_process(COMMAND ${CMAKE_COMMAND} --build ${libwebp_BINARY_DIR} -t install -j${N})
-
+    include(cmake/flags.cmake)
+    if(APPLE AND NOT CMAKE_OSX_ARCHITECTURES STREQUAL "")
+        foreach(arch IN LISTS CMAKE_OSX_ARCHITECTURES)
+            # universalビルド非対応
+            init_flags(ARCH ${arch})
+            execute_process(
+                COMMAND ${CMAKE_COMMAND} ${libwebp_SOURCE_DIR} -B${libwebp_BINARY_DIR}_${arch}
+                    -DCMAKE_INSTALL_PREFIX=${libwebp_PREFIX}
+                    -DBUILD_SHARED_LIBS=OFF -DWEBP_LINK_STATIC=ON
+                    -DWEBP_BUILD_ANIM_UTILS=OFF -DWEBP_BUILD_CWEBP=OFF -DWEBP_BUILD_DWEBP=OFF
+                    -DWEBP_BUILD_GIF2WEBP=OFF -DWEBP_BUILD_IMG2WEBP=OFF -DWEBP_BUILD_VWEBP=OFF
+                    -DWEBP_BUILD_WEBPINFO=OFF -DWEBP_BUILD_WEBPMUX=OFF -DWEBP_BUILD_EXTRAS=OFF
+                    ${WEBCFACE_CMAKE_PROPS}
+            )
+            execute_process(COMMAND ${CMAKE_COMMAND} --build ${libwebp_BINARY_DIR}_${arch} -t install -j${N})
+            file(MAKE_DIRECTORY ${libwebp_PREFIX}_${arch})
+            file(COPY ${libwebp_PREFIX}/include DESTINATION ${libwebp_PREFIX}_${arch})
+            file(COPY ${libwebp_PREFIX}/lib DESTINATION ${libwebp_PREFIX}_${arch})
+            list(APPEND libwebp_A_DIRS ${libwebp_PREFIX}_${arch}/lib)
+            file(GLOB libwebp_A_FILES
+                RELATIVE ${libwebp_PREFIX}_${arch}/lib
+                ${libwebp_PREFIX}_${arch}/lib/*.a
+            )
+        endforeach()
+        lipo(
+            DIRECTORIES ${libwebp_A_DIRS}
+            FILES ${libwebp_A_FILES}
+            DESTINATION ${libwebp_PREFIX}/lib
+        )
+    else()
+        init_flags()
+        execute_process(
+            COMMAND ${CMAKE_COMMAND} ${libwebp_SOURCE_DIR} -B${libwebp_BINARY_DIR}
+                -DCMAKE_INSTALL_PREFIX=${libwebp_PREFIX}
+                -DBUILD_SHARED_LIBS=OFF -DWEBP_LINK_STATIC=ON
+                -DWEBP_BUILD_ANIM_UTILS=OFF -DWEBP_BUILD_CWEBP=OFF -DWEBP_BUILD_DWEBP=OFF
+                -DWEBP_BUILD_GIF2WEBP=OFF -DWEBP_BUILD_IMG2WEBP=OFF -DWEBP_BUILD_VWEBP=OFF
+                -DWEBP_BUILD_WEBPINFO=OFF -DWEBP_BUILD_WEBPMUX=OFF -DWEBP_BUILD_EXTRAS=OFF
+                ${WEBCFACE_CMAKE_PROPS}
+        )
+        execute_process(COMMAND ${CMAKE_COMMAND} --build ${libwebp_BINARY_DIR} -t install -j${N})
+    endif()
     include(cmake/linker.cmake)
     add_prefix(${libwebp_PREFIX})
     set(libwebp_packages libsharpyuv libwebpmux libwebpdemux libwebp)

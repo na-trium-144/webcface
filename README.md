@@ -37,13 +37,13 @@ CMake を使っていれば `find_package(webcface)`、
 pkg-config なら`pkg-config --cflags --libs webcface`
 で簡単に利用できます。  
 またライブラリ本体は
-`libwebcface.so.<version>`(Linux),
-`libwebcface.<version>.dylib`(Mac),
-`webcface<version>.dll`(Windows)
-の1つ (と spdlog のライブラリ) のみであり、手動でこのライブラリにリンクして使うこともできます。  
-パブリックな依存ライブラリは [spdlog](https://github.com/gabime/spdlog) のみです。
-WebCFace内部ではその他にもいくつか外部ライブラリを使用していますが、それらはすべてシンボルを非公開にしているのでユーザーが使用するライブラリとは干渉しません。
-(WebCFaceをstaticライブラリとしてビルドした場合を除く)
+* Linux: `libwebcface.so.<version>`
+* Mac: `webcface.framework` (または `libwebcface.<version>.dylib`)
+* Windows: `webcface<version>.dll` (MinGWの場合 `libwebcface<version>.dll`)
+
+の1つのみであり、手動でこのライブラリにリンクして使うこともできます。  
+WebCFace内部では外部ライブラリを多数使用していますが、それらはシンボルをすべて非公開にしているのでユーザーが使用するライブラリとは干渉しません。
+(WebCFaceをstaticライブラリとしてビルドした場合と、brewでインストールした場合を除く)
 
 Python, JavaScript には PyPI / npm に `webcface` パッケージを用意しているのでそれをインストールするだけで使えます。
 通信にWebSocketを使用しているため、Webブラウザ上でもそのまま動作します。
@@ -319,10 +319,12 @@ export CXX=g++-10
 <details><summary>Homebrew (MacOS, Linux)</summary>
 
 ```sh
-brew install cmake
+brew install cmake nasm
 # optional:
 brew install msgpack-cxx spdlog asio cli11 utf8cpp
 ```
+libjpegをソースからビルドする際にnasmがあるとよいです
+
 </details>
 
 <details><summary>Visual Studio</summary>
@@ -367,6 +369,7 @@ cmake -Bbuild
 	* Windows(MSVC)ではImageMagickをソースからビルドする際デフォルトでは`CMAKE_BUILD_TYPE`に指定したconfigurationのみビルドされますが、DebugとReleaseの両方をビルドしたい場合は `-DWEBCFACE_CONFIG_ALL=ON` を指定してください
 * `-DWEBCFACE_SHARED=OFF`にすると共有ライブラリではなくすべて静的ライブラリになります
 * `-DWEBCFACE_PIC=ON`または`-DCMAKE_POSITION_INDEPENDENT_CODE=ON`にすると-fPICフラグが有効になります (Linux,Macのみ、WEBCFACE_SHAREDがONの場合はデフォルトでON)
+* `-DWEBCFACE_FRAMEWORK=ON`, `"-DCMAKE_OSX_ARCHITECTURES=arm64;x86_64"` などとするとユニバーサルなframework (webcface.framework) をビルド、インストールできます
 * `-DWEBCFACE_EXAMPLE=ON`でexampleをビルドします(デフォルトでON、subdirectoryの場合デフォルトでOFF)
 * `-DWEBCFACE_INSTALL=ON`でinstallターゲットを生成します(デフォルトでON、subdirectoryの場合デフォルトでOFF)
 	* さらに`-DWEBCFACE_INSTALL_SERVICE=ON`で [webcface-server.service](cmake/webcafce-server.service) を lib/systemd/system にインストールします (デフォルトでOFF)
