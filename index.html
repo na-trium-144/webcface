@@ -160,8 +160,13 @@ Easy to Setup</h2>
 <p>WebCFaceはサーバー側のプログラム <code>webcface-server</code> と、 クライアントライブラリで構成されています。 <br  />
  使い方はサーバーを起動し、クライアントライブラリを利用したプログラムを起動するだけです。 ROSのようなワークスペース管理機能はなく、どんなフレームワークのプロジェクトにも簡単に組み込むことができます。</p>
 <p>C / C++ の場合、WebCFaceのライブラリは CMake を使っていれば <code>find_package(webcface)</code>、 pkg-config なら<code>pkg-config --cflags --libs webcface</code> で簡単に利用できます。 <br  />
- またライブラリ本体は <code>libwebcface.so.&lt;version&gt;</code>(Linux), <code>libwebcface.&lt;version&gt;.dylib</code>(Mac), <code>webcface&lt;version&gt;.dll</code>(Windows) の1つ (と spdlog のライブラリ) のみであり、手動でこのライブラリにリンクして使うこともできます。 <br  />
- パブリックな依存ライブラリは <a href="https://github.com/gabime/spdlog">spdlog</a> のみです。 WebCFace内部ではその他にもいくつか外部ライブラリを使用していますが、それらはすべてシンボルを非公開にしているのでユーザーが使用するライブラリとは干渉しません。 (WebCFaceをstaticライブラリとしてビルドした場合を除く)</p>
+ またライブラリ本体は</p><ul>
+<li>Linux: <code>libwebcface.so.&lt;version&gt;</code></li>
+<li>Mac: <code><a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd" title="TのValTypeを得る">webcface.framework</a></code> (または <code>libwebcface.&lt;version&gt;.dylib</code>)</li>
+<li>Windows: <code>webcface&lt;version&gt;.dll</code> (MinGWの場合 <code>libwebcface&lt;version&gt;.dll</code>)</li>
+</ul>
+<p>の1つのみであり、手動でこのライブラリにリンクして使うこともできます。 <br  />
+ WebCFace内部では外部ライブラリを多数使用していますが、それらはシンボルをすべて非公開にしているのでユーザーが使用するライブラリとは干渉しません。 (WebCFaceをstaticライブラリとしてビルドした場合と、brewでインストールした場合を除く)</p>
 <p>Python, JavaScript には PyPI / npm に <code>webcface</code> パッケージを用意しているのでそれをインストールするだけで使えます。 通信にWebSocketを使用しているため、Webブラウザ上でもそのまま動作します。</p>
 <p>少し難易度は上がりますが、CのAPIを経由することで他の言語からも使用できると思います。</p>
 <h2><a class="anchor" id="autotoc_md199"></a>
@@ -350,10 +355,12 @@ Ubuntu</summary>
 <summary >
 Homebrew (MacOS, Linux)</summary>
 <p></p>
-<div class="fragment"><div class="line">brew install cmake</div>
+<div class="fragment"><div class="line">brew install cmake nasm</div>
 <div class="line"># optional:</div>
 <div class="line">brew install msgpack-cxx spdlog asio cli11 utf8cpp</div>
-</div><!-- fragment --> </details>
+</div><!-- fragment --><p> libjpegをソースからビルドする際にnasmがあるとよいです</p>
+<p></p>
+</details>
 <details >
 <summary >
 Visual Studio</summary>
@@ -386,6 +393,7 @@ CMake</h2>
 </li>
 <li><code>-DWEBCFACE_SHARED=OFF</code>にすると共有ライブラリではなくすべて静的ライブラリになります</li>
 <li><code>-DWEBCFACE_PIC=ON</code>または<code>-DCMAKE_POSITION_INDEPENDENT_CODE=ON</code>にすると-fPICフラグが有効になります (Linux,Macのみ、WEBCFACE_SHAREDがONの場合はデフォルトでON)</li>
+<li><code>-DWEBCFACE_FRAMEWORK=ON</code>, <code>"-DCMAKE_OSX_ARCHITECTURES=arm64;x86_64"</code> などとするとユニバーサルなframework (<a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd" title="TのValTypeを得る">webcface.framework</a>) をビルド、インストールできます</li>
 <li><code>-DWEBCFACE_EXAMPLE=ON</code>でexampleをビルドします(デフォルトでON、subdirectoryの場合デフォルトでOFF)</li>
 <li><code>-DWEBCFACE_INSTALL=ON</code>でinstallターゲットを生成します(デフォルトでON、subdirectoryの場合デフォルトでOFF)<ul>
 <li>さらに<code>-DWEBCFACE_INSTALL_SERVICE=ON</code>で <a href="cmake/webcafce-server.service">webcface-server.service</a> を lib/systemd/system にインストールします (デフォルトでOFF)</li>
@@ -476,7 +484,7 @@ License</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Jul 9 2024 18:52:09 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Thu Jul 11 2024 16:35:35 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

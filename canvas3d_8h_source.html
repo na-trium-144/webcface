@@ -234,7 +234,7 @@ $(document).ready(function(){initNavTree('canvas3d_8h_source.html',''); initResi
 <div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
 <div class="foldopen" id="foldopen00174" data-start="{" data-end="}">
 <div class="line"><a id="l00174" name="l00174"></a><span class="lineno"><a class="line" href="classwebcface_1_1Canvas3D.html#a6e292b509876f5b8f35af999e0342261">  174</a></span>    <a class="code hl_class" href="classwebcface_1_1Canvas3D.html">Canvas3D</a> &amp;<a class="code hl_function" href="classwebcface_1_1Canvas3D.html#a6e292b509876f5b8f35af999e0342261">add</a>(T &amp;&amp;cc) {</div>
-<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>        *this &lt;&lt; std::forward&lt;T&gt;(cc);</div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>        *<a class="code hl_function" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd">this &lt;&lt; std::forward&lt;T&gt;</a>(cc);</div>
 <div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
 <div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>    }</div>
 </div>
@@ -282,17 +282,17 @@ $(document).ready(function(){initNavTree('canvas3d_8h_source.html',''); initResi
 <div class="foldopen" id="foldopen00248" data-start="{" data-end="}">
 <div class="line"><a id="l00248" name="l00248"></a><span class="lineno"><a class="line" href="classwebcface_1_1Canvas3D.html#af9d3f679c4994ae42c92346e1dba3fb8">  248</a></span>    <a class="code hl_function" href="classwebcface_1_1Canvas3D.html#af9d3f679c4994ae42c92346e1dba3fb8">add</a>(<span class="keyword">const</span> <a class="code hl_class" href="classwebcface_1_1RobotModel.html">RobotModel</a> &amp;model_field, <span class="keyword">const</span> <a class="code hl_class" href="classwebcface_1_1Transform.html">Transform</a> &amp;origin,</div>
 <div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>        std::unordered_map&lt;std::string, double&gt; angles) {</div>
-<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>        std::unordered_map&lt;std::size_t, double&gt; angles_i;</div>
+<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>        std::unordered_map&lt;std::size_t, double&gt; <a class="code hl_function" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd">angles_i</a>;</div>
 <div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>        <span class="keyword">auto</span> model = model_field.<a class="code hl_function" href="classwebcface_1_1RobotModel.html#aea910688df1426b4e1ce5092af8c2245">get</a>();</div>
 <div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>        <span class="keywordflow">for</span> (std::size_t ji = 0; ji &lt; model.size(); ji++) {</div>
-<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>            <span class="keyword">const</span> <span class="keyword">auto</span> &amp;j = model[ji].joint;</div>
+<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>            <span class="keyword">const</span> <span class="keyword">auto</span> &amp;j = model[<a class="code hl_function" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd">ji</a>].joint;</div>
 <div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>            <span class="keywordflow">if</span> (angles.count(j.name.decode())) {</div>
-<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>                angles_i[ji] = angles[j.name.decode()];</div>
+<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>                angles_i[<a class="code hl_function" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd">ji</a>] = angles[j.name.decode()];</div>
 <div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>            }</div>
 <div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>        }</div>
 <div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>        add(<a class="code hl_class" href="classwebcface_1_1Canvas3DComponent.html">Canvas3DComponent</a>{<a class="code hl_enumvalue" href="namespacewebcface.html#ae4f79363f6fbf146d1a71f07a2e42155a62f0410e1f33e82ebb526dac91059087">Canvas3DComponentType::robot_model</a>, origin,</div>
 <div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>                              <a class="code hl_enumvalue" href="namespacewebcface.html#a5dcc1f15d6a60ca34207565aeb74124aa6995c373523132a1006975baf4079aa0">ViewColor::inherit</a>, std::nullopt,</div>
-<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>                              <span class="keyword">static_cast&lt;</span><a class="code hl_struct" href="structwebcface_1_1FieldBase.html">FieldBase</a><span class="keyword">&gt;</span>(model_field),</div>
+<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>                              <span class="keyword">static_cast&lt;</span><a class="code hl_struct" href="structwebcface_1_1FieldBase.html">FieldBase</a><span class="keyword">&gt;</span>(<a class="code hl_function" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd">model_field</a>),</div>
 <div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>                              std::move(angles_i)});</div>
 <div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
 <div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>    }</div>
@@ -304,7 +304,7 @@ $(document).ready(function(){initNavTree('canvas3d_8h_source.html',''); initResi
 <div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>        <span class="keyword">requires</span> std::same_as&lt;T, Canvas3D&gt; <span class="keywordtype">bool</span></div>
 <div class="foldopen" id="foldopen00281" data-start="{" data-end="}">
 <div class="line"><a id="l00281" name="l00281"></a><span class="lineno"><a class="line" href="classwebcface_1_1Canvas3D.html#ab9f4cae75b2973d264ce128f38ffbee6">  281</a></span>    <a class="code hl_function" href="classwebcface_1_1Canvas3D.html#ab9f4cae75b2973d264ce128f38ffbee6">operator==</a>(<span class="keyword">const</span> T &amp;other)<span class="keyword"> const </span>{</div>
-<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>        <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><a class="code hl_struct" href="structwebcface_1_1Field.html">Field</a><span class="keyword">&gt;</span>(*this) == <span class="keyword">static_cast&lt;</span><a class="code hl_struct" href="structwebcface_1_1Field.html">Field</a><span class="keyword">&gt;</span>(other);</div>
+<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>        <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><a class="code hl_struct" href="structwebcface_1_1Field.html">Field</a><span class="keyword">&gt;</span>(*this) == <span class="keyword">static_cast&lt;</span><a class="code hl_struct" href="structwebcface_1_1Field.html">Field</a><span class="keyword">&gt;</span>(<a class="code hl_function" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd">other</a>);</div>
 <div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>    }</div>
 </div>
 <div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>};</div>
@@ -347,6 +347,7 @@ $(document).ready(function(){initNavTree('canvas3d_8h_source.html',''); initResi
 <div class="ttc" id="adef_8h_html_ab3f2570d5b8231ddbe0e57fc8ab629eb"><div class="ttname"><a href="def_8h.html#ab3f2570d5b8231ddbe0e57fc8ab629eb">WEBCFACE_NS_END</a></div><div class="ttdeci">#define WEBCFACE_NS_END</div><div class="ttdef"><b>Definition</b> def.h:81</div></div>
 <div class="ttc" id="adef_8h_html_abe991b8f291782627a31118c688e123a"><div class="ttname"><a href="def_8h.html#abe991b8f291782627a31118c688e123a">WEBCFACE_NS_BEGIN</a></div><div class="ttdeci">#define WEBCFACE_NS_BEGIN</div><div class="ttdef"><b>Definition</b> def.h:80</div></div>
 <div class="ttc" id="anamespaceinternal_html"><div class="ttname"><a href="namespaceinternal.html">internal</a></div><div class="ttdef"><b>Definition</b> client_ws.cc:10</div></div>
+<div class="ttc" id="anamespacewebcface_1_1encoding_html_ae0e0d190aa5fc5710b43f55098ad9ecd"><div class="ttname"><a href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd">webcface::encoding::valTypeOf</a></div><div class="ttdeci">ValType valTypeOf()</div><div class="ttdoc">TのValTypeを得る</div><div class="ttdef"><b>Definition</b> val_adaptor.h:31</div></div>
 <div class="ttc" id="anamespacewebcface_html_a18133126518e30ea437441c60fa26928aed7daeb157cd9b31e53896ad3c771a26"><div class="ttname"><a href="namespacewebcface.html#a18133126518e30ea437441c60fa26928aed7daeb157cd9b31e53896ad3c771a26">webcface::Canvas2DComponentType::geometry</a></div><div class="ttdeci">@ geometry</div></div>
 <div class="ttc" id="anamespacewebcface_html_a247771d30c740ef13dbff87e21baf225"><div class="ttname"><a href="namespacewebcface.html#a247771d30c740ef13dbff87e21baf225">webcface::operator&lt;&lt;</a></div><div class="ttdeci">std::ostream &amp; operator&lt;&lt;(std::ostream &amp;os, const Arg &amp;arg)</div></div>
 <div class="ttc" id="anamespacewebcface_html_a5dcc1f15d6a60ca34207565aeb74124a"><div class="ttname"><a href="namespacewebcface.html#a5dcc1f15d6a60ca34207565aeb74124a">webcface::ViewColor</a></div><div class="ttdeci">ViewColor</div><div class="ttdef"><b>Definition</b> component_view.h:36</div></div>
@@ -366,7 +367,7 @@ $(document).ready(function(){initNavTree('canvas3d_8h_source.html',''); initResi
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_db3a54907829b36871118d03417739cd.html">client</a></li><li class="navelem"><a class="el" href="dir_5c23080e296bbe846f4ed2d01d7b595d.html">include</a></li><li class="navelem"><a class="el" href="dir_8bd58ff883f4686dab3daf23d9479d3b.html">webcface</a></li><li class="navelem"><a class="el" href="canvas3d_8h.html">canvas3d.h</a></li>
-    <li class="footer">Generated on Tue Jul 9 2024 18:52:08 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Thu Jul 11 2024 16:35:35 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

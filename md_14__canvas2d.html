@@ -291,8 +291,8 @@ Geometry (2次元)</h2>
 <p>2次元の図形を表示するにはGeometryを指定します。</p>
 <div class="tabbed"></div><div class="tabbed"><ul>
 <li><p class="startli"><b class="tab-title">C++</b> </p><dl class="section since"><dt>Since</dt><dd><span class="since-c">1.9</span></dd></dl>
-<p><code>webcface::Geometries</code> 名前空間に定義されています。 </p><div class="fragment"><div class="line"><span class="keyword">using namespace </span><a class="code hl_class" href="classwebcface_1_1TemporalComponent.html">webcface::Geometries</a>;</div>
-<div class="ttc" id="aclasswebcface_1_1TemporalComponent_html"><div class="ttname"><a href="classwebcface_1_1TemporalComponent.html">webcface::TemporalComponent</a></div><div class="ttdoc">Canvas2D, Canvas3D (, View) に要素をaddするときに使うインタフェース</div><div class="ttdef"><b>Definition</b> components.h:18</div></div>
+<p><code><a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd" title="TのValTypeを得る">webcface::Geometries</a></code> 名前空間に定義されています。 </p><div class="fragment"><div class="line"><span class="keyword">using namespace </span><a class="code hl_function" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd">webcface::Geometries</a>;</div>
+<div class="ttc" id="anamespacewebcface_1_1encoding_html_ae0e0d190aa5fc5710b43f55098ad9ecd"><div class="ttname"><a href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd">webcface::encoding::valTypeOf</a></div><div class="ttdeci">ValType valTypeOf()</div><div class="ttdoc">TのValTypeを得る</div><div class="ttdef"><b>Definition</b> val_adaptor.h:31</div></div>
 </div><!-- fragment --><p> をすると便利かもしれません </p><dl class="section note"><dt>Note</dt><dd>namespace Geometries はinlineなので、 <code>webcface::</code> の名前空間でもアクセス可能です</dd></dl>
 <p>各要素はそれぞれの関数から <a class="el" href="classwebcface_1_1Canvas2DComponent.html" title="Canvas2Dの各要素を表すクラス。">webcface::Canvas2DComponent</a> または <a class="el" href="classwebcface_1_1TemporalComponent.html" title="Canvas2D, Canvas3D (, View) に要素をaddするときに使うインタフェース">webcface::TemporalComponent</a> のオブジェクトとして得られます。 <code>rect(...).color(...)</code> などのようにメソッドチェーンすることで各要素にオプションを設定できます。</p>
 <p class="startli">色、線の太さ、クリック時に実行する関数などを設定できます。 使用可能なオプションは <a class="el" href="classwebcface_1_1Canvas2DComponent.html" title="Canvas2Dの各要素を表すクラス。">webcface::Canvas2DComponent</a> のそれぞれのメソッドの説明を参照してください。 関数の実行については<a class="el" href="md_30__func.html">Func</a>も参照してください</p>
@@ -307,7 +307,7 @@ Geometry (2次元)</h2>
 <summary >
 ver1.8以前のC++</summary>
 <p></p>
-<div class="fragment"><div class="line"><span class="keyword">using namespace </span><a class="code hl_class" href="classwebcface_1_1TemporalComponent.html">webcface::Geometries</a>;</div>
+<div class="fragment"><div class="line"><span class="keyword">using namespace </span><a class="code hl_function" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd">webcface::Geometries</a>;</div>
 <div class="line">canvas.<a class="code hl_function" href="classwebcface_1_1Canvas2D.html#af2d7719b1cf8babfa1d0f720e6fb54ab">add</a>(</div>
 <div class="line">    rect({0, 0}, {100, 100}),</div>
 <div class="line">    <a class="code hl_function" href="namespacewebcface.html#a9cc7119f63c09d929d8218008d2bb386">webcface::identity</a>(),</div>
@@ -382,7 +382,7 @@ Event</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Jul 9 2024 18:52:08 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Thu Jul 11 2024 16:35:35 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

@@ -241,7 +241,7 @@ $(document).ready(function(){initNavTree('canvas2d_8h_source.html',''); initResi
 <div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
 <div class="foldopen" id="foldopen00178" data-start="{" data-end="}">
 <div class="line"><a id="l00178" name="l00178"></a><span class="lineno"><a class="line" href="classwebcface_1_1Canvas2D.html#af2d7719b1cf8babfa1d0f720e6fb54ab">  178</a></span>    <a class="code hl_class" href="classwebcface_1_1Canvas2D.html">Canvas2D</a> &amp;<a class="code hl_function" href="classwebcface_1_1Canvas2D.html#af2d7719b1cf8babfa1d0f720e6fb54ab">add</a>(T &amp;&amp;cc) {</div>
-<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>        *this &lt;&lt; std::forward&lt;T&gt;(cc);</div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>        *<a class="code hl_function" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd">this &lt;&lt; std::forward&lt;T&gt;</a>(cc);</div>
 <div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
 <div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>    }</div>
 </div>
@@ -307,7 +307,7 @@ $(document).ready(function(){initNavTree('canvas2d_8h_source.html',''); initResi
 <div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>        <span class="keyword">requires</span> std::same_as&lt;T, Canvas2D&gt; <span class="keywordtype">bool</span></div>
 <div class="foldopen" id="foldopen00295" data-start="{" data-end="}">
 <div class="line"><a id="l00295" name="l00295"></a><span class="lineno"><a class="line" href="classwebcface_1_1Canvas2D.html#a5489e7ff774b40ae0c70e6fe3bbf3ef2">  295</a></span>    <a class="code hl_function" href="classwebcface_1_1Canvas2D.html#a5489e7ff774b40ae0c70e6fe3bbf3ef2">operator==</a>(<span class="keyword">const</span> T &amp;other)<span class="keyword"> const </span>{</div>
-<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>        <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><a class="code hl_struct" href="structwebcface_1_1Field.html">Field</a><span class="keyword">&gt;</span>(*this) == <span class="keyword">static_cast&lt;</span><a class="code hl_struct" href="structwebcface_1_1Field.html">Field</a><span class="keyword">&gt;</span>(other);</div>
+<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>        <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><a class="code hl_struct" href="structwebcface_1_1Field.html">Field</a><span class="keyword">&gt;</span>(*this) == <span class="keyword">static_cast&lt;</span><a class="code hl_struct" href="structwebcface_1_1Field.html">Field</a><span class="keyword">&gt;</span>(<a class="code hl_function" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd">other</a>);</div>
 <div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>    }</div>
 </div>
 <div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>};</div>
@@ -353,6 +353,7 @@ $(document).ready(function(){initNavTree('canvas2d_8h_source.html',''); initResi
 <div class="ttc" id="adef_8h_html_abe991b8f291782627a31118c688e123a"><div class="ttname"><a href="def_8h.html#abe991b8f291782627a31118c688e123a">WEBCFACE_NS_BEGIN</a></div><div class="ttdeci">#define WEBCFACE_NS_BEGIN</div><div class="ttdef"><b>Definition</b> def.h:80</div></div>
 <div class="ttc" id="afield_8h_html"><div class="ttname"><a href="field_8h.html">field.h</a></div></div>
 <div class="ttc" id="anamespaceinternal_html"><div class="ttname"><a href="namespaceinternal.html">internal</a></div><div class="ttdef"><b>Definition</b> client_ws.cc:10</div></div>
+<div class="ttc" id="anamespacewebcface_1_1encoding_html_ae0e0d190aa5fc5710b43f55098ad9ecd"><div class="ttname"><a href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd">webcface::encoding::valTypeOf</a></div><div class="ttdeci">ValType valTypeOf()</div><div class="ttdoc">TのValTypeを得る</div><div class="ttdef"><b>Definition</b> val_adaptor.h:31</div></div>
 <div class="ttc" id="anamespacewebcface_html_a18133126518e30ea437441c60fa26928aed7daeb157cd9b31e53896ad3c771a26"><div class="ttname"><a href="namespacewebcface.html#a18133126518e30ea437441c60fa26928aed7daeb157cd9b31e53896ad3c771a26">webcface::Canvas2DComponentType::geometry</a></div><div class="ttdeci">@ geometry</div></div>
 <div class="ttc" id="anamespacewebcface_html_a247771d30c740ef13dbff87e21baf225"><div class="ttname"><a href="namespacewebcface.html#a247771d30c740ef13dbff87e21baf225">webcface::operator&lt;&lt;</a></div><div class="ttdeci">std::ostream &amp; operator&lt;&lt;(std::ostream &amp;os, const Arg &amp;arg)</div></div>
 <div class="ttc" id="anamespacewebcface_html_a5dcc1f15d6a60ca34207565aeb74124a"><div class="ttname"><a href="namespacewebcface.html#a5dcc1f15d6a60ca34207565aeb74124a">webcface::ViewColor</a></div><div class="ttdeci">ViewColor</div><div class="ttdef"><b>Definition</b> component_view.h:36</div></div>
@@ -368,7 +369,7 @@ $(document).ready(function(){initNavTree('canvas2d_8h_source.html',''); initResi
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_db3a54907829b36871118d03417739cd.html">client</a></li><li class="navelem"><a class="el" href="dir_5c23080e296bbe846f4ed2d01d7b595d.html">include</a></li><li class="navelem"><a class="el" href="dir_8bd58ff883f4686dab3daf23d9479d3b.html">webcface</a></li><li class="navelem"><a class="el" href="canvas2d_8h.html">canvas2d.h</a></li>
-    <li class="footer">Generated on Tue Jul 9 2024 18:52:08 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Thu Jul 11 2024 16:35:35 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

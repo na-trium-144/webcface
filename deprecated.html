@@ -151,7 +151,7 @@ $(document).ready(function(){initNavTree('deprecated.html',''); initResizable();
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Canvas2D.html#a944399d973a106aa129a537a554a7760">Canvas2D::add</a>  (const <a class="el" href="structwebcface_1_1Geometry.html">Geometry</a> &amp;geometry, const ViewColor &amp;color, double stroke_width)</dt>
 <dd><a class="anchor" id="_deprecated000006"></a>1.9〜 <a class="el" href="classwebcface_1_1TemporalComponent.html" title="Canvas2D, Canvas3D (, View) に要素をaddするときに使うインタフェース">TemporalComponent</a> に直接プロパティを設定できるようにしたため、 add時の引数での設定は不要 </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Canvas2D.html#ac08489fff9ea455ad213be400b285c35">Canvas2D::appendListener</a>  (T &amp;&amp;callback)</dt>
-<dd><a class="anchor" id="_deprecated000001"></a> ver1.11まではEventTarget::appendListener()でコールバックを追加できたが、 ver2.0からコールバックは1個のみになった。 互換性のため残しているがonChange()と同じ </dd>
+<dd><a class="anchor" id="_deprecated000001"></a> ver1.11まではEventTarget::appendListener()でコールバックを追加できたが、 ver2.0からコールバックは1個のみになった。 <a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd" title="TのValTypeを得る">互換性のため残しているがonChange()</a>と同じ </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Canvas2D.html#a3799c65797b21f35329dc284df16a65d">Canvas2D::time</a>  () const</dt>
 <dd><a class="anchor" id="_deprecated000002"></a>1.7でMember::syncTime()に変更  </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Canvas3D.html#a571784805cf066fd5a79712a1ffbfe84">Canvas3D::add</a>  (const <a class="el" href="structwebcface_1_1Geometry.html">Geometry</a> &amp;geometry, const <a class="el" href="classwebcface_1_1Transform.html" title="3次元の座標と回転">Transform</a> &amp;origin, const ViewColor &amp;color=<a class="el" href="namespacewebcface.html#a5dcc1f15d6a60ca34207565aeb74124aa6995c373523132a1006975baf4079aa0">ViewColor::inherit</a>)</dt>
@@ -161,17 +161,17 @@ $(document).ready(function(){initNavTree('deprecated.html',''); initResizable();
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Canvas3D.html#af9d3f679c4994ae42c92346e1dba3fb8">Canvas3D::add</a>  (const <a class="el" href="classwebcface_1_1RobotModel.html" title="RobotModelの送受信データを表すクラス">RobotModel</a> &amp;model_field, const <a class="el" href="classwebcface_1_1Transform.html" title="3次元の座標と回転">Transform</a> &amp;origin, std::unordered_map&lt; std::string, double &gt; angles)</dt>
 <dd><a class="anchor" id="_deprecated000011"></a>1.9〜 <a class="el" href="classwebcface_1_1RobotModel.html" title="RobotModelの送受信データを表すクラス">RobotModel</a> に直接プロパティを設定できるようにしたため、 add時の引数での設定は不要 </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Canvas3D.html#ac08489fff9ea455ad213be400b285c35">Canvas3D::appendListener</a>  (T &amp;&amp;callback)</dt>
-<dd><a class="anchor" id="_deprecated000007"></a> ver1.11まではEventTarget::appendListener()でコールバックを追加できたが、 ver2.0からコールバックは1個のみになった。 互換性のため残しているがonChange()と同じ </dd>
+<dd><a class="anchor" id="_deprecated000007"></a> ver1.11まではEventTarget::appendListener()でコールバックを追加できたが、 ver2.0からコールバックは1個のみになった。 <a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd" title="TのValTypeを得る">互換性のため残しているがonChange()</a>と同じ </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Canvas3D.html#a3799c65797b21f35329dc284df16a65d">Canvas3D::time</a>  () const</dt>
 <dd><a class="anchor" id="_deprecated000008"></a>1.7でMember::syncTime()に変更  </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Func.html#ab48d613b786f979c8f9250f2f92ac300">Func::hidden</a>  (bool)</dt>
 <dd><a class="anchor" id="_deprecated000013"></a> ver1.10から、名前が半角ピリオドで始まるかどうかで判断されるように仕様変更したため、 hiddenの指定は無効 (この関数は効果がない) </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Func.html#a67c7a39d56bb41b2efdb657fbce7b266">Func::operator=</a>  (T func)</dt>
-<dd><a class="anchor" id="_deprecated000012"></a>ver2.0〜 <a class="el" href="classwebcface_1_1Func.html#ad572da2fd72ce09b9ee961b987e14968" title="関数をセットする">set()</a>とsetAsync()に分かれたので、代入演算子だとわかりづらい また、 operator=(const Func &amp;) との区別もつきづらい </dd>
+<dd><a class="anchor" id="_deprecated000012"></a>ver2.0〜 <a class="el" href="classwebcface_1_1Func.html#ad572da2fd72ce09b9ee961b987e14968" title="関数をセットする">set()</a><a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd" title="TのValTypeを得る">とsetAsync()</a>に分かれたので、代入演算子だとわかりづらい また、 operator=(const Func &amp;) との区別もつきづらい </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1FuncListener.html#aac80d390ce7bdfe7df4b7ca2e34fe5e8">FuncListener::hidden</a>  (bool)</dt>
 <dd><a class="anchor" id="_deprecated000014"></a> ver1.10から、名前が半角ピリオドで始まるかどうかで判断されるように仕様変更したため、 hiddenの指定は無効 (この関数は効果がない) </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Image.html#ac08489fff9ea455ad213be400b285c35">Image::appendListener</a>  (T &amp;&amp;callback)</dt>
-<dd><a class="anchor" id="_deprecated000015"></a> ver1.11まではEventTarget::appendListener()でコールバックを追加できたが、 ver2.0からコールバックは1個のみになった。 互換性のため残しているがonChange()と同じ </dd>
+<dd><a class="anchor" id="_deprecated000015"></a> ver1.11まではEventTarget::appendListener()でコールバックを追加できたが、 ver2.0からコールバックは1個のみになった。 <a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd" title="TのValTypeを得る">互換性のため残しているがonChange()</a>と同じ </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Image.html#a574b14a81fe64d61e65048e51ccbdf04">Image::request</a>  (std::optional&lt; int &gt; rows, std::optional&lt; int &gt; cols=std::nullopt, std::optional&lt; ImageColorMode &gt; color_mode=std::nullopt, std::optional&lt; double &gt; frame_rate=std::nullopt)</dt>
 <dd><a class="anchor" id="_deprecated000016"></a>ver2.0〜 rows, colsの順番がややこしいので <a class="el" href="namespacewebcface.html#af86798df2fbf5f4c32747c0f237d0928" title="高さ × 幅 でサイズを指定">sizeHW()</a> を使ってサイズ指定 </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Image.html#a53059c77c2972d8d85df28aee08e0f6e">Image::request</a>  (std::optional&lt; int &gt; rows, std::optional&lt; int &gt; cols, ImageCompressMode cmp_mode, int quality, std::optional&lt; double &gt; frame_rate=std::nullopt)</dt>
@@ -181,7 +181,7 @@ $(document).ready(function(){initNavTree('deprecated.html',''); initResizable();
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1ImageFrame.html#a32a0ee55778ae1e6f2034f955edc098a">ImageFrame::ImageFrame</a>  (int rows, int cols, const void *data, ImageColorMode color_mode=ImageColorMode::bgr)</dt>
 <dd><a class="anchor" id="_deprecated000019"></a>ver2.0〜 rows, colsの順番がややこしいので <a class="el" href="namespacewebcface.html#af86798df2fbf5f4c32747c0f237d0928" title="高さ × 幅 でサイズを指定">sizeHW()</a> を使ってサイズ指定 </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Log.html#ac08489fff9ea455ad213be400b285c35">Log::appendListener</a>  (T &amp;&amp;callback)</dt>
-<dd><a class="anchor" id="_deprecated000020"></a> ver1.11まではEventTarget::appendListener()でコールバックを追加できたが、 ver2.0からコールバックは1個のみになった。 互換性のため残しているがonChange()と同じ </dd>
+<dd><a class="anchor" id="_deprecated000020"></a> ver1.11まではEventTarget::appendListener()でコールバックを追加できたが、 ver2.0からコールバックは1個のみになった。 <a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd" title="TのValTypeを得る">互換性のため残しているがonChange()</a>と同じ </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Member.html#a7fd842c99612e3ce7332ea288325cd7b">Member::funcs</a>  () const</dt>
 <dd><a class="anchor" id="_deprecated000024"></a>1.6で <a class="el" href="classwebcface_1_1Member.html#a09225396c72929b26144848529b88c02">funcEntries()</a> に変更 </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Member.html#a45ca97bd85fbb26eefa7b5133f3287f4">Member::images</a>  () const</dt>
@@ -195,21 +195,21 @@ $(document).ready(function(){initNavTree('deprecated.html',''); initResizable();
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Member.html#a18661fc989eced84d33d56528fcc0b56">Member::views</a>  () const</dt>
 <dd><a class="anchor" id="_deprecated000025"></a>1.6で <a class="el" href="classwebcface_1_1Member.html#a8da26fb4e605fea2f481d0bd8a1e8f9a">viewEntries()</a> に変更  </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1RobotModel.html#ac08489fff9ea455ad213be400b285c35">RobotModel::appendListener</a>  (T &amp;&amp;callback)</dt>
-<dd><a class="anchor" id="_deprecated000027"></a> ver1.11まではEventTarget::appendListener()でコールバックを追加できたが、 ver2.0からコールバックは1個のみになった。 互換性のため残しているがonChange()と同じ </dd>
+<dd><a class="anchor" id="_deprecated000027"></a> ver1.11まではEventTarget::appendListener()でコールバックを追加できたが、 ver2.0からコールバックは1個のみになった。 <a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd" title="TのValTypeを得る">互換性のため残しているがonChange()</a>と同じ </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1RobotModel.html#a3799c65797b21f35329dc284df16a65d">RobotModel::time</a>  () const</dt>
 <dd><a class="anchor" id="_deprecated000028"></a>1.7でMember::syncTime() に変更  </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Text.html#ac08489fff9ea455ad213be400b285c35">Text::appendListener</a>  (T &amp;&amp;callback)</dt>
-<dd><a class="anchor" id="_deprecated000029"></a> ver1.11まではEventTarget::appendListener()でコールバックを追加できたが、 ver2.0からコールバックは1個のみになった。 互換性のため残しているがonChange()と同じ </dd>
+<dd><a class="anchor" id="_deprecated000029"></a> ver1.11まではEventTarget::appendListener()でコールバックを追加できたが、 ver2.0からコールバックは1個のみになった。 <a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd" title="TのValTypeを得る">互換性のため残しているがonChange()</a>と同じ </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Text.html#a3799c65797b21f35329dc284df16a65d">Text::time</a>  () const</dt>
 <dd><a class="anchor" id="_deprecated000030"></a>1.7でMember::syncTime()に変更  </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1encoding_1_1ValAdaptor.html#ae30a38ec215c7dc29368fedb325e7ec9">ValAdaptor::as</a>  () const</dt>
 <dd><a class="anchor" id="_deprecated000035"></a>ver2.0〜 <a class="el" href="classwebcface_1_1encoding_1_1ValAdaptor.html#ac483232c52e23cedd51e35d4015fe627" title="実数として返す">asDouble()</a>, <a class="el" href="classwebcface_1_1encoding_1_1ValAdaptor.html#aafa1a9ae7a20989284486d6edd7f6c12" title="int型の整数として返す">asInt()</a>, <a class="el" href="classwebcface_1_1encoding_1_1ValAdaptor.html#a728dd54787a857085d71c0579eaf62e1" title="long long型の整数として返す">asLLong()</a> を追加 </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Value.html#ac08489fff9ea455ad213be400b285c35">Value::appendListener</a>  (T &amp;&amp;callback)</dt>
-<dd><a class="anchor" id="_deprecated000031"></a> ver1.11まではEventTarget::appendListener()でコールバックを追加できたが、 ver2.0からコールバックは1個のみになった。 互換性のため残しているがonChange()と同じ </dd>
+<dd><a class="anchor" id="_deprecated000031"></a> ver1.11まではEventTarget::appendListener()でコールバックを追加できたが、 ver2.0からコールバックは1個のみになった。 <a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd" title="TのValTypeを得る">互換性のため残しているがonChange()</a>と同じ </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Value.html#a3799c65797b21f35329dc284df16a65d">Value::time</a>  () const</dt>
 <dd><a class="anchor" id="_deprecated000032"></a>1.7で <a class="el" href="classwebcface_1_1Member.html#aaace8ffd82d2eb79c72f3411d3311b9b" title="最後のsync()の時刻を返す">Member::syncTime()</a> に変更  </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1View.html#ac08489fff9ea455ad213be400b285c35">View::appendListener</a>  (T &amp;&amp;callback)</dt>
-<dd><a class="anchor" id="_deprecated000033"></a> ver1.11まではEventTarget::appendListener()でコールバックを追加できたが、 ver2.0からコールバックは1個のみになった。 互換性のため残しているがonChange()と同じ </dd>
+<dd><a class="anchor" id="_deprecated000033"></a> ver1.11まではEventTarget::appendListener()でコールバックを追加できたが、 ver2.0からコールバックは1個のみになった。 <a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd" title="TのValTypeを得る">互換性のため残しているがonChange()</a>と同じ </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1View.html#a3799c65797b21f35329dc284df16a65d">View::time</a>  () const</dt>
 <dd><a class="anchor" id="_deprecated000034"></a>1.7でMember::syncTime()に変更</dd>
 </dl>
@@ -219,7 +219,7 @@ $(document).ready(function(){initNavTree('deprecated.html',''); initResizable();
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Jul 9 2024 18:52:08 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Thu Jul 11 2024 16:35:35 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>
