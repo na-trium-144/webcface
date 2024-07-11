@@ -60,6 +60,7 @@ jobs:
         cmake --build build
 
     - name: Test building with pkg-config
+      if: matrix.dep != 'framework'
       working-directory: ${{github.workspace}}/.github/test
       env:
         PKG_CONFIG_PATH: ${{github.workspace}}/build/install/lib/pkgconfig
@@ -67,3 +68,9 @@ jobs:
         clang++ -std=c++20 test.cc $(pkg-config --cflags --libs webcface)
         clang -std=c99 test.c $(pkg-config --cflags --libs webcface) -lc++
 
+    - name: Test building using framework
+      if: matrix.dep == 'framework'
+      working-directory: ${{github.workspace}}/.github/test
+      run: |
+        clang++ -std=c++20 test.cc -F${{github.workspace}}/build/install/Frameworks -framework webcface
+        clang -std=c99 test.c -F${{github.workspace}}/build/install/Frameworks -framework webcface

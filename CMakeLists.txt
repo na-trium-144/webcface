@@ -339,7 +339,8 @@ if(WEBCFACE_INSTALL)
     # dependenciesはそれぞれのcmakeファイルでリストに追加されている
     # cmake時は依存ライブラリを先に処理するが、linker flagは逆で依存ライブラリがあと
     list(APPEND WEBCFACE_EXPORTS webcface wcf)
-    list(INSERT WEBCFACE_PKGCONFIG_LIBS 0 -lwebcface)
+    list(INSERT WEBCFACE_PKGCONFIG_CFLAGS 0 "-I\${includedir}")
+    list(INSERT WEBCFACE_PKGCONFIG_LIBS 0 "-L\${libdir}" -lwebcface)
     install(TARGETS ${WEBCFACE_EXPORTS}
         EXPORT webcface-targets
         LIBRARY DESTINATION lib
@@ -358,23 +359,41 @@ if(WEBCFACE_INSTALL)
             OPTIONAL
         )
     endif()
-    install(EXPORT webcface-targets
-        FILE webcface-targets.cmake
-        NAMESPACE webcface::
-        DESTINATION lib/cmake/webcface
-    )
-    set(PACKAGE_INIT "@PACKAGE_INIT@")
-    configure_file(
-        ${CMAKE_CURRENT_SOURCE_DIR}/cmake/webcface-config.cmake.in
-        ${CMAKE_CURRENT_BINARY_DIR}/webcface-config.cmake.in
-        @ONLY
-    )
-    unset(PACKAGE_INIT)
-    configure_package_config_file(
-        ${CMAKE_CURRENT_BINARY_DIR}/webcface-config.cmake.in
-        ${CMAKE_CURRENT_BINARY_DIR}/webcface-config.cmake
-        INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/webcface
-    )
+    if(WEBCFACE_FRAMEWORK)
+        # 一応書いたけど、pkgconfig内でフラグにスペースが含まれる時、
+        # bashで展開しようとするとうまくエスケープされないので使い物にならない気がする...
+        set(WEBCFACE_PKGCONFIG_CFLAGS
+            "-F\${prefix}/Frameworks"
+            "-F/Applications/WebCFace\\ Desktop/Contents/Frameworks"
+        )
+        set(WEBCFACE_PKGCONFIG_LIBS
+            ${WEBCFACE_PKGCONFIG_CFLAGS}
+            -framework webcface
+        )
+        configure_file(
+            ${CMAKE_CURRENT_SOURCE_DIR}/cmake/webcface-config.framework.cmake.in
+            ${CMAKE_CURRENT_BINARY_DIR}/webcface-config.cmake
+            COPYONLY
+        )
+    else()
+        install(EXPORT webcface-targets
+            FILE webcface-targets.cmake
+            NAMESPACE webcface::
+            DESTINATION lib/cmake/webcface
+        )
+        set(PACKAGE_INIT "@PACKAGE_INIT@")
+        configure_file(
+            ${CMAKE_CURRENT_SOURCE_DIR}/cmake/webcface-config.cmake.in
+            ${CMAKE_CURRENT_BINARY_DIR}/webcface-config.cmake.in
+            @ONLY
+        )
+        unset(PACKAGE_INIT)
+        configure_package_config_file(
+            ${CMAKE_CURRENT_BINARY_DIR}/webcface-config.cmake.in
+            ${CMAKE_CURRENT_BINARY_DIR}/webcface-config.cmake
+            INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/webcface
+        )
+    endif()
     write_basic_package_version_file(
         ${CMAKE_CURRENT_BINARY_DIR}/webcface-config-version.cmake
         COMPATIBILITY SameMajorVersion
@@ -386,6 +405,7 @@ if(WEBCFACE_INSTALL)
     )
 
     # pkg-config
+    list(JOIN WEBCFACE_PKGCONFIG_CFLAGS " " WEBCFACE_PKGCONFIG_CFLAGS)
     list(JOIN WEBCFACE_PKGCONFIG_LIBS " " WEBCFACE_PKGCONFIG_LIBS)
     list(JOIN WEBCFACE_PKGCONFIG_REQUIRES " " WEBCFACE_PKGCONFIG_REQUIRES)
     configure_file(
