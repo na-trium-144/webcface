@@ -4,6 +4,10 @@ cmake_minimum_required(VERSION 3.15)
 set(ORIGINAL_ENV_CC "$ENV{CC}" CACHE STRING "")
 set(ORIGINAL_ENV_CXX "$ENV{CXX}" CACHE STRING "")
 
+if(CMAKE_VERSION VERSION_GREATER_EQUAL 3.24)
+    cmake_policy(SET CMP0135 NEW)
+endif()
+
 project(webcface
     LANGUAGES CXX C
     VERSION 1.11.4
@@ -114,7 +118,7 @@ if(WEBCFACE_DOWNLOAD_WEBUI)
         URL https://github.com/na-trium-144/webcface-webui/releases/download/v${WEBUI_VERSION}/webcface-webui_${WEBUI_VERSION}.tar.gz
         SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/dist
     )
-    FetchContent_Populate(webui)
+    FetchContent_MakeAvailable(webui)
 endif()
 
 if(WEBCFACE_FIND_AMENT)
