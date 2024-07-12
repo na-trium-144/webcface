@@ -12,42 +12,36 @@ TEST(EncodingTest, usingUTF8) {
 TEST(EncodingTest, encode) {
     std::string_view s = "Aあ";
     std::wstring_view w = L"Aあ";
-    std::u8string_view u = u8"Aあ";
+    std::string_view u = "Aあ";
     std::string us(u.cbegin(), u.cend());
     usingUTF8(true);
-    EXPECT_EQ(encode(us), u);
-    EXPECT_EQ(encodeW(w), u);
+    EXPECT_EQ(SharedString::encode(us).u8String(), u);
+    EXPECT_EQ(SharedString::encode(w).u8String(), u);
     usingUTF8(false);
 #ifdef _WIN32
     // webcfaceはutf8エンコーディングでビルドしてるのでsはANSIではない
-    EXPECT_NE(encode(s), u);
+    EXPECT_NE(SharedString::encode(s).u8String(), u);
 #else
     // linux, macではutf8として扱われる
-    EXPECT_EQ(encode(s), u);
+    EXPECT_EQ(SharedString::encode(s).u8String(), u);
 #endif
-    EXPECT_EQ(encodeW(w), u);
+    EXPECT_EQ(SharedString::encode(w).u8String(), u);
 }
 TEST(EncodingTest, decode) {
     std::string_view s = "Aあ";
     std::wstring_view w = L"Aあ";
-    std::u8string_view u = u8"Aあ";
+    std::string_view u = "Aあ";
     std::string us(u.cbegin(), u.cend());
     usingUTF8(true);
-    EXPECT_EQ(decode(u), us);
-    EXPECT_EQ(decodeW(u), w);
+    EXPECT_EQ(SharedString::fromU8String(u).decode(), us);
+    EXPECT_EQ(SharedString::fromU8String(u).decodeW(), w);
     usingUTF8(false);
 #ifdef _WIN32
     // webcfaceはutf8エンコーディングでビルドしてるのでsはANSIではない
-    EXPECT_NE(decode(u), s);
+    EXPECT_NE(SharedString::fromU8String(u).decode(), s);
 #else
     // linux, macではutf8として扱われる
-    EXPECT_EQ(decode(u), s);
+    EXPECT_EQ(SharedString::fromU8String(u).decode(), s);
 #endif
-    EXPECT_EQ(decodeW(u), w);
-}
-TEST(EncodingTest, cast) {
-    std::u8string_view u = u8"Aあ";
-    std::string us(u.cbegin(), u.cend());
-    EXPECT_EQ(castToU8(us), u);
-    EXPECT_EQ(castFromU8(u), us);
+    EXPECT_EQ(SharedString::fromU8String(u).decodeW(), w);
 }

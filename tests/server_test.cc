@@ -27,7 +27,7 @@ static void wait() {
         std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
 }
 static SharedString operator""_ss(const char *str, std::size_t len) {
-    return SharedString(encoding::castToU8(std::string_view(str, len)));
+    return SharedString::fromU8String(std::string_view(str, len));
 }
 
 class ServerTest : public ::testing::Test {
@@ -102,9 +102,9 @@ TEST_F(ServerTest, sync) {
         EXPECT_EQ(obj.ver, WEBCFACE_VERSION);
         EXPECT_EQ(obj.member_id, 2);
     });
-    dummy_c2->recv<message::SyncInit>([&](auto){
-        ADD_FAILURE() << "should not receive syncinit";
-    }, [&]() {});
+    dummy_c2->recv<message::SyncInit>(
+        [&](auto) { ADD_FAILURE() << "should not receive syncinit"; },
+        [&]() {});
 
     dummy_c3->send(message::SyncInit{{}, "c3"_ss, 0, "a", "1", ""});
     dummy_c3->waitRecv<message::SyncInit>([&](const auto &) {});
@@ -113,12 +113,12 @@ TEST_F(ServerTest, sync) {
         EXPECT_EQ(obj.ver, WEBCFACE_VERSION);
         EXPECT_EQ(obj.member_id, 3);
     });
-    dummy_c3->recv<message::Entry<message::Text>>([&](const auto &obj) {
-        EXPECT_EQ(obj.member_id, 2);
-        EXPECT_EQ(obj.field, "a"_ss);
-    }, [&]{
-        ADD_FAILURE() << "should have been received entry";
-    });
+    dummy_c3->recv<message::Entry<message::Text>>(
+        [&](const auto &obj) {
+            EXPECT_EQ(obj.member_id, 2);
+            EXPECT_EQ(obj.field, "a"_ss);
+        },
+        [&] { ADD_FAILURE() << "should have been received entry"; });
 
     ASSERT_TRUE(server->store->clients_by_id.count(1));
     ASSERT_TRUE(server->store->clients_by_id.count(2));
@@ -407,12 +407,13 @@ TEST_F(ServerTest, robotModel) {
             std::vector<message::RobotLink>{
                 RobotLink{"a", {}, Geometry{}, ViewColor::black}.toMessage({}),
                 RobotLink{"b", {}, Geometry{}, ViewColor::black}.toMessage(
-                    {SharedString("a")}),
+                    {SharedString::fromU8String("a")}),
                 RobotLink{"c",
                           {"j"_ss, "a"_ss, RobotJointType::fixed, {}, 0},
                           Geometry{},
                           ViewColor::black}
-                    .toMessage({SharedString("a"), SharedString("b")}),
+                    .toMessage({SharedString::fromU8String("a"),
+                                SharedString::fromU8String("b")}),
             })});
     dummy_c2->waitRecv<message::Sync>([&](auto) {});
     dummy_c2->waitRecv<message::Res<message::RobotModel>>([&](const auto &obj) {
@@ -665,15 +666,15 @@ TEST_F(ServerTest, image) {
         for (int t_type = 0; t_type < 5; t_type++) {
             dummy_c1->send(message::Sync{});
             dummy_c1->send(message::Image{
-                SharedString(encoding::castToU8("a" + std::to_string(f_type) +
-                                                std::to_string(t_type))),
+                SharedString::fromU8String("a" + std::to_string(f_type) +
+                                           std::to_string(t_type)),
                 ImageFrame{sizeWH(15, 10), static_cast<ImageColorMode>(f_type)}
                     .toMessage()});
             wait();
             dummy_c2->send(message::Req<message::Image>{
                 "c1"_ss,
-                SharedString(encoding::castToU8("a" + std::to_string(f_type) +
-                                                std::to_string(t_type))),
+                SharedString::fromU8String("a" + std::to_string(f_type) +
+                                           std::to_string(t_type)),
                 1,
                 message::ImageReq{std::nullopt, std::nullopt,
                                   static_cast<ImageColorMode>(t_type),

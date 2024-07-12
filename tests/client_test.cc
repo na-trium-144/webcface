@@ -30,7 +30,7 @@ static void wait() {
         std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
 }
 static SharedString operator""_ss(const char *str, std::size_t len) {
-    return SharedString(encoding::castToU8(std::string_view(str, len)));
+    return SharedString::fromU8String(std::string_view(str, len));
 }
 
 class ClientTest : public ::testing::Test {
@@ -1268,7 +1268,7 @@ TEST_F(ClientTest, logSend) {
     auto ls =
         std::make_shared<std::vector<LogLineData>>(std::vector<LogLineData>{
             {0, std::chrono::system_clock::now(),
-             SharedString(std::u8string(100000, u8'a'))},
+             SharedString::fromU8String(std::string(100000, 'a'))},
             {1, std::chrono::system_clock::now(), "b"_ss},
         });
     data_->log_store.setRecv(self_name, ls);
@@ -1307,7 +1307,7 @@ TEST_F(ClientTest, logReq) {
         10, std::make_shared<std::deque<message::LogLine>>(
                 std::deque<message::LogLine>{
                     LogLineData{0, std::chrono::system_clock::now(),
-                                  SharedString(std::u8string(100000, u8'a'))}
+                                  SharedString::fromU8String(std::string(100000, 'a'))}
                         .toMessage(),
                     LogLineData{1, std::chrono::system_clock::now(), "b"_ss}
                         .toMessage(),
@@ -1316,8 +1316,8 @@ TEST_F(ClientTest, logReq) {
     EXPECT_EQ(callback_called, 1);
     EXPECT_TRUE(data_->log_store.getRecv("a"_ss).has_value());
     EXPECT_EQ(data_->log_store.getRecv("a"_ss).value()->size(), 2);
-    EXPECT_EQ(data_->log_store.getRecv("a"_ss).value()->at(0).level(), 0);
-    EXPECT_EQ(data_->log_store.getRecv("a"_ss).value()->at(0).message().size(),
+    EXPECT_EQ(data_->log_store.getRecv("a"_ss).value()->at(0).level_, 0);
+    EXPECT_EQ(data_->log_store.getRecv("a"_ss).value()->at(0).message_.u8String().size(),
               100000);
 
     dummy_s->send(message::Log{
