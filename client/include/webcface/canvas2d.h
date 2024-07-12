@@ -95,8 +95,8 @@ class WEBCFACE_DLL Canvas2D : protected Field {
      * \brief 値が変化したときに呼び出されるコールバックを設定
      * \since ver2.0
      */
-    template <typename F>
-        requires std::invocable<F>
+    template <typename F, typename std::enable_if_t<std::is_invocable_v<F>,
+                                                    std::nullptr_t> = nullptr>
     Canvas2D &onChange(F callback) {
         return onChange(
             [callback = std::move(callback)](const auto &) { callback(); });
@@ -288,12 +288,16 @@ class WEBCFACE_DLL Canvas2D : protected Field {
     /*!
      * \brief Canvas2Dの参照先を比較
      * \since ver1.11
-     *
      */
-    template <typename T>
-        requires std::same_as<T, Canvas2D> bool
-    operator==(const T &other) const {
+    template <typename T, typename std::enable_if_t<std::is_same_v<T, Canvas2D>,
+                                                    std::nullptr_t> = nullptr>
+    bool operator==(const T &other) const {
         return static_cast<Field>(*this) == static_cast<Field>(other);
+    }
+    template <typename T, typename std::enable_if_t<std::is_same_v<T, Canvas2D>,
+                                                    std::nullptr_t> = nullptr>
+    bool operator!=(const T &other) const {
+        return static_cast<Field>(*this) != static_cast<Field>(other);
     }
 };
 WEBCFACE_NS_END

@@ -213,7 +213,7 @@ TEST_F(DataTest, textGet) {
 TEST_F(DataTest, logGet) {
     using namespace std::chrono;
     auto logs =
-        std::make_shared<std::vector<LogLineData<>>>(std::vector<LogLineData<>>{
+        std::make_shared<std::vector<LogLineData>>(std::vector<LogLineData>{
             {1, system_clock::now(), "a"_ss},
             {2, system_clock::now(), "b"_ss},
             {3, system_clock::now(), "c"_ss},
@@ -244,7 +244,7 @@ TEST_F(DataTest, logGet) {
 TEST_F(DataTest, logClear) {
     using namespace std::chrono;
     auto logs =
-        std::make_shared<std::vector<LogLineData<>>>(std::vector<LogLineData<>>{
+        std::make_shared<std::vector<LogLineData>>(std::vector<LogLineData>{
             {1, system_clock::now(), "a"_ss},
             {2, system_clock::now(), "b"_ss},
             {3, system_clock::now(), "c"_ss},

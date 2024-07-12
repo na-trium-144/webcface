@@ -96,14 +96,6 @@ configure_file(
     @ONLY
 )
 
-set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-include(CheckIncludeFileCXX)
-check_include_file_cxx(concepts CONCEPTS_FOUND)
-if (NOT CONCEPTS_FOUND)
-    message(FATAL_ERROR "<concepts> header file not found")
-endif()
-
 ###############################################################################
 
 include(FetchContent)
@@ -213,7 +205,7 @@ if(WEBCFACE_SHARED)
 else()
     add_library(webcface STATIC)
 endif()
-target_compile_features(webcface PUBLIC cxx_std_20)
+target_compile_features(webcface PUBLIC cxx_std_17)
 target_include_directories(webcface PUBLIC
     $<BUILD_INTERFACE:$<TARGET_PROPERTY:webcface-encoding,INTERFACE_INCLUDE_DIRECTORIES>>
     $<BUILD_INTERFACE:$<TARGET_PROPERTY:webcface-server-store,INTERFACE_INCLUDE_DIRECTORIES>>

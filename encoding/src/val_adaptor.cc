@@ -12,26 +12,18 @@ ValAdaptor &ValAdaptor::operator=(const SharedString &str) {
     return *this;
 }
 
-ValAdaptor::ValAdaptor(std::u8string_view str)
-    : as_str(str), type(ValType::string_) {}
-ValAdaptor &ValAdaptor::operator=(std::u8string_view str) {
-    as_str = SharedString(str);
-    type = ValType::string_;
-    return *this;
-}
-
 ValAdaptor::ValAdaptor(std::string_view str)
-    : as_str(str), type(ValType::string_) {}
+    : as_str(SharedString::encode(str)), type(ValType::string_) {}
 ValAdaptor &ValAdaptor::operator=(std::string_view str) {
-    as_str = SharedString(str);
+    as_str = SharedString::encode(str);
     type = ValType::string_;
     return *this;
 }
 
 ValAdaptor::ValAdaptor(std::wstring_view str)
-    : as_str(str), type(ValType::string_) {}
+    : as_str(SharedString::encode(str)), type(ValType::string_) {}
 ValAdaptor &ValAdaptor::operator=(std::wstring_view str) {
-    as_str = SharedString(str);
+    as_str = SharedString::encode(str);
     type = ValType::string_;
     return *this;
 }
@@ -71,9 +63,11 @@ const std::string &ValAdaptor::asStringRef() const {
     if (as_str.empty() && valType() != ValType::none_ &&
         valType() != ValType::string_) {
         if (as_val.index() == DOUBLEV) {
-            as_str = SharedString(std::to_string(std::get<DOUBLEV>(as_val)));
+            as_str =
+                SharedString::encode(std::to_string(std::get<DOUBLEV>(as_val)));
         } else {
-            as_str = SharedString(std::to_string(std::get<INT64V>(as_val)));
+            as_str =
+                SharedString::encode(std::to_string(std::get<INT64V>(as_val)));
         }
     }
     return as_str.decode();
@@ -83,21 +77,23 @@ const std::wstring &ValAdaptor::asWStringRef() const {
     if (as_str.empty() && valType() != ValType::none_ &&
         valType() != ValType::string_) {
         if (as_val.index() == DOUBLEV) {
-            as_str = SharedString(std::to_wstring(std::get<DOUBLEV>(as_val)));
+            as_str = SharedString::encode(
+                std::to_wstring(std::get<DOUBLEV>(as_val)));
         } else {
-            as_str = SharedString(std::to_wstring(std::get<INT64V>(as_val)));
+            as_str =
+                SharedString::encode(std::to_wstring(std::get<INT64V>(as_val)));
         }
     }
     return as_str.decodeW();
 }
 
-const std::u8string &ValAdaptor::asU8StringRef() const {
+const std::string &ValAdaptor::asU8StringRef() const {
     if (as_str.empty() && valType() != ValType::none_ &&
         valType() != ValType::string_) {
         if (as_val.index() == DOUBLEV) {
-            as_str = SharedString(std::to_string(std::get<DOUBLEV>(as_val)));
+            as_str = SharedString::fromU8String(std::to_string(std::get<DOUBLEV>(as_val)));
         } else {
-            as_str = SharedString(std::to_string(std::get<INT64V>(as_val)));
+            as_str = SharedString::fromU8String(std::to_string(std::get<INT64V>(as_val)));
         }
     }
     return as_str.u8String();
@@ -173,7 +169,7 @@ bool ValAdaptor::operator==(const ValAdaptor &other) const {
     } else if (type == ValType::bool_ || other.type == ValType::bool_) {
         return this->asBool() == other.asBool();
     } else {
-        return this->asU8StringRef() == other.asU8StringRef();
+        return this->as_str == other.as_str;
     }
 }
 } // namespace encoding

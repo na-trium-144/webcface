@@ -701,13 +701,13 @@ TEST_F(ServerTest, log) {
     dummy_c1->send(message::Log{
         0, std::make_shared<std::deque<message::LogLine>>(
                std::deque<message::LogLine>{
-                   LogLineData<>{0, std::chrono::system_clock::now(), "0"_ss}
+                   LogLineData{0, std::chrono::system_clock::now(), "0"_ss}
                        .toMessage(),
-                   LogLineData<>{1, std::chrono::system_clock::now(), "1"_ss}
+                   LogLineData{1, std::chrono::system_clock::now(), "1"_ss}
                        .toMessage(),
-                   LogLineData<>{2, std::chrono::system_clock::now(), "2"_ss}
+                   LogLineData{2, std::chrono::system_clock::now(), "2"_ss}
                        .toMessage(),
-                   LogLineData<>{3, std::chrono::system_clock::now(), "3"_ss}
+                   LogLineData{3, std::chrono::system_clock::now(), "3"_ss}
                        .toMessage(),
                })});
     wait();
@@ -727,15 +727,15 @@ TEST_F(ServerTest, log) {
     dummy_c1->send(message::Log{
         0, std::make_shared<std::deque<message::LogLine>>(
                std::deque<message::LogLine>{
-                   LogLineData<>{4, std::chrono::system_clock::now(), "4"_ss}
+                   LogLineData{4, std::chrono::system_clock::now(), "4"_ss}
                        .toMessage(),
-                   LogLineData<>{5, std::chrono::system_clock::now(), "5"_ss}
+                   LogLineData{5, std::chrono::system_clock::now(), "5"_ss}
                        .toMessage(),
-                   LogLineData<>{6, std::chrono::system_clock::now(), "6"_ss}
+                   LogLineData{6, std::chrono::system_clock::now(), "6"_ss}
                        .toMessage(),
-                   LogLineData<>{7, std::chrono::system_clock::now(), "7"_ss}
+                   LogLineData{7, std::chrono::system_clock::now(), "7"_ss}
                        .toMessage(),
-                   LogLineData<>{8, std::chrono::system_clock::now(), "8"_ss}
+                   LogLineData{8, std::chrono::system_clock::now(), "8"_ss}
                        .toMessage(),
                })});
     dummy_c2->waitRecv<message::Log>([&](const auto &obj) {

@@ -99,15 +99,24 @@ wcfStatus wcfSync(wcfClient *wcli) {
     return WCF_OK;
 }
 wcfMultiVal wcfValI(int value) {
-    wcfMultiVal val = {.as_int = value, .as_double = 0, .as_str = 0};
+    wcfMultiVal val;
+    val.as_int = value;
+    val.as_double = 0;
+    val.as_str = 0;
     return val;
 }
 wcfMultiVal wcfValD(double value) {
-    wcfMultiVal val = {.as_int = 0, .as_double = value, .as_str = 0};
+    wcfMultiVal val;
+    val.as_int = 0;
+    val.as_double = value;
+    val.as_str = 0;
     return val;
 }
 wcfMultiVal wcfValS(const char *value) {
-    wcfMultiVal val = {.as_int = 0, .as_double = 0, .as_str = value};
+    wcfMultiVal val;
+    val.as_int = 0;
+    val.as_double = 0;
+    val.as_str = value;
     return val;
 }
 

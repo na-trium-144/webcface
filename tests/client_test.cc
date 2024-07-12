@@ -1266,7 +1266,7 @@ TEST_F(ClientTest, logSend) {
         wait();
     }
     auto ls =
-        std::make_shared<std::vector<LogLineData<>>>(std::vector<LogLineData<>>{
+        std::make_shared<std::vector<LogLineData>>(std::vector<LogLineData>{
             {0, std::chrono::system_clock::now(),
              SharedString(std::u8string(100000, u8'a'))},
             {1, std::chrono::system_clock::now(), "b"_ss},
@@ -1282,7 +1282,7 @@ TEST_F(ClientTest, logSend) {
     });
 
     dummy_s->recvClear();
-    ls->push_back(LogLineData<>{2, std::chrono::system_clock::now(), "c"_ss});
+    ls->push_back(LogLineData{2, std::chrono::system_clock::now(), "c"_ss});
     wcli_->sync();
     dummy_s->waitRecv<message::Log>([&](const auto &obj) {
         EXPECT_EQ(obj.log->size(), 1);
@@ -1306,10 +1306,10 @@ TEST_F(ClientTest, logReq) {
     dummy_s->send(message::Log{
         10, std::make_shared<std::deque<message::LogLine>>(
                 std::deque<message::LogLine>{
-                    LogLineData<>{0, std::chrono::system_clock::now(),
+                    LogLineData{0, std::chrono::system_clock::now(),
                                   SharedString(std::u8string(100000, u8'a'))}
                         .toMessage(),
-                    LogLineData<>{1, std::chrono::system_clock::now(), "b"_ss}
+                    LogLineData{1, std::chrono::system_clock::now(), "b"_ss}
                         .toMessage(),
                 })});
     wcli_->waitRecv();
@@ -1323,7 +1323,7 @@ TEST_F(ClientTest, logReq) {
     dummy_s->send(message::Log{
         10, std::make_shared<std::deque<message::LogLine>>(
                 std::deque<message::LogLine>{
-                    LogLineData<>{2, std::chrono::system_clock::now(), "c"_ss}
+                    LogLineData{2, std::chrono::system_clock::now(), "c"_ss}
                         .toMessage(),
                 })});
     wcli_->waitRecv();

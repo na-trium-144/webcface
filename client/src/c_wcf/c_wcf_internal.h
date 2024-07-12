@@ -113,7 +113,7 @@ inline AsyncFuncResult *getAsyncFuncResult(wcfAsyncFuncResult *res) {
 template <typename MultiVal>
 ValAdaptor fromCVal(const MultiVal &val) {
     if (val.as_str != nullptr) {
-        return ValAdaptor(SharedString(val.as_str));
+        return ValAdaptor(val.as_str);
     } else if (val.as_double != 0) {
         return ValAdaptor(val.as_double);
     } else {

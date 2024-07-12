@@ -14,7 +14,10 @@ static bool using_utf8 = true;
 void usingUTF8(bool flag) { using_utf8 = flag; }
 bool usingUTF8() { return using_utf8; }
 
-std::u8string encode(std::string_view name) {
+SharedString SharedString::fromU8String(std::string_view u8s) {
+    return SharedString(std::make_shared<Data>(u8s));
+}
+SharedString SharedString::encode(std::string_view name) {
 #ifdef _WIN32
     if (!using_utf8) {
         auto length = MultiByteToWideChar(
@@ -23,33 +26,54 @@ std::u8string encode(std::string_view name) {
         MultiByteToWideChar(CP_ACP, 0, name.data(),
                             static_cast<int>(name.size()), result_utf16.data(),
                             static_cast<int>(result_utf16.length()));
-        return encodeW(result_utf16);
+        return encode(result_utf16, name);
     }
 #endif
     // そのままコピー
-    return std::u8string(name.cbegin(), name.cend());
+    return fromU8String(name);
 }
-
-std::u8string encodeW(std::wstring_view name) {
+SharedString SharedString::encode(std::wstring_view name, std::string_view s) {
 #ifdef _WIN32
     static_assert(sizeof(wchar_t) == 2,
                   "Assuming wchar_t is utf-16 on Windows");
     auto length_utf8 = WideCharToMultiByte(CP_UTF8, 0, name.data(),
                                            static_cast<int>(name.size()),
                                            nullptr, 0, nullptr, nullptr);
-    std::u8string result_utf8(length_utf8, '\0');
-    auto result_ptr =
-        static_cast<char *>(static_cast<void *>(result_utf8.data()));
+    std::string result_utf8(length_utf8, '\0');
     WideCharToMultiByte(CP_UTF8, 0, name.data(), static_cast<int>(name.size()),
-                        result_ptr, static_cast<int>(result_utf8.size()),
-                        nullptr, nullptr);
-    return result_utf8;
+                        result_utf8.data(),
+                        static_cast<int>(result_utf8.size()), nullptr, nullptr);
+    return SharedString(std::make_shared<Data>(result_utf8, s, name));
 #else
     static_assert(sizeof(wchar_t) == 4, "Assuming wchar_t is utf-32 on Unix");
-    std::u8string result_utf8;
+    std::string result_utf8;
     utf8::utf32to8(name.cbegin(), name.cend(), std::back_inserter(result_utf8));
-    return result_utf8;
+    return SharedString(std::make_shared<Data>(result_utf8, s, name));
 #endif
+}
+
+
+const std::string &SharedString::u8String() const {
+    if (!data) {
+        static std::string empty;
+        return empty;
+    } else {
+        return data->u8s;
+    }
+}
+std::string_view SharedString::u8StringView() const {
+    if (!data) {
+        return std::string_view();
+    } else {
+        return data->u8s;
+    }
+}
+bool SharedString::empty() const { return u8String().empty(); }
+bool SharedString::startsWith(std::string_view str) const {
+    return u8StringView().substr(0, str.size()) == str;
+}
+bool SharedString::startsWith(char str) const {
+    return !u8StringView().empty() && u8StringView()[0] == str;
 }
 
 std::string toNarrow(std::wstring_view name) {
@@ -72,24 +96,38 @@ std::string toNarrow(std::wstring_view name) {
 #endif
 }
 
-std::wstring decodeW(std::u8string_view name_ref) {
+const std::wstring &SharedString::decodeW() const {
+    if (!data || data->u8s.empty()) {
+        static std::wstring empty;
+        return empty;
+    } else {
+        std::lock_guard lock(data->m);
+        if (!data->ws.empty()) {
+            return data->ws;
+        } else {
 #ifdef _WIN32
-    auto name_ptr =
-        static_cast<const char *>(static_cast<const void *>(name_ref.data()));
-    auto length = MultiByteToWideChar(
-        CP_UTF8, 0, name_ptr, static_cast<int>(name_ref.size()), nullptr, 0);
-    std::wstring result_utf16(length, '\0');
-    MultiByteToWideChar(CP_UTF8, 0, name_ptr, static_cast<int>(name_ref.size()),
-                        result_utf16.data(),
-                        static_cast<int>(result_utf16.length()));
-    return result_utf16;
+            static_assert(sizeof(wchar_t) == 2,
+                          "Assuming wchar_t is utf-16 on Windows");
+            auto length = MultiByteToWideChar(
+                CP_UTF8, 0, data->u8s.data(),
+                static_cast<int>(data->u8s.size()), nullptr, 0);
+            std::wstring result_utf16(length, '\0');
+            MultiByteToWideChar(
+                CP_UTF8, 0, name_ptr, static_cast<int>(name_ref.size()),
+                result_utf16.data(), static_cast<int>(result_utf16.length()));
+            data->ws = result_utf16;
+            return data->ws;
 #else
-    static_assert(sizeof(wchar_t) == 4, "Assuming wchar_t is utf-32 on Unix");
-    std::wstring result_utf32;
-    utf8::utf8to32(name_ref.cbegin(), name_ref.cend(),
-                   std::back_inserter(result_utf32));
-    return result_utf32;
+            static_assert(sizeof(wchar_t) == 4,
+                          "Assuming wchar_t is utf-32 on Unix");
+            std::wstring result_utf32;
+            utf8::utf8to32(data->u8s.cbegin(), data->u8s.cend(),
+                           std::back_inserter(result_utf32));
+            data->ws = result_utf32;
+            return data->ws;
 #endif
+        }
+    }
 }
 
 std::wstring toWide(std::string_view name_ref) {
@@ -111,55 +149,6 @@ std::wstring toWide(std::string_view name_ref) {
 #endif
 }
 
-std::string decode(std::u8string_view name_ref) {
-#ifdef _WIN32
-    if (!using_utf8) {
-        auto result_utf16 = decodeW(name_ref);
-        auto length_acp =
-            WideCharToMultiByte(CP_ACP, 0, result_utf16.data(),
-                                static_cast<int>(result_utf16.length()),
-                                nullptr, 0, nullptr, nullptr);
-        std::string result_acp(length_acp, '\0');
-        WideCharToMultiByte(
-            CP_ACP, 0, result_utf16.data(),
-            static_cast<int>(result_utf16.length()), result_acp.data(),
-            static_cast<int>(result_acp.size()), nullptr, nullptr);
-        return result_acp;
-    }
-#endif
-    // そのままコピー
-    return std::string(name_ref.cbegin(), name_ref.cend());
-}
-
-std::u8string_view castToU8(std::string_view name) {
-    return std::u8string_view(
-        static_cast<const char8_t *>(static_cast<const void *>(name.data())),
-        name.size());
-}
-std::string_view castFromU8(std::u8string_view name) {
-    return std::string_view(
-        static_cast<const char *>(static_cast<const void *>(name.data())),
-        name.size());
-}
-
-
-const std::u8string &SharedString::u8String() const {
-    if (!data || data->u8s.empty()) {
-        static std::u8string empty;
-        return empty;
-    } else {
-        return data->u8s;
-    }
-}
-std::u8string_view SharedString::u8StringView() const {
-    if (!data || data->u8s.empty()) {
-        return std::u8string_view();
-    } else {
-        return data->u8s;
-    }
-}
-bool SharedString::empty() const { return !data || data->u8s.empty(); }
-
 const std::string &SharedString::decode() const {
     if (!data || data->u8s.empty()) {
         static std::string empty;
@@ -169,22 +158,24 @@ const std::string &SharedString::decode() const {
         if (!data->s.empty()) {
             return data->s;
         } else {
-            data->s = encoding::decode(data->u8s);
-            return data->s;
-        }
-    }
-}
-const std::wstring &SharedString::decodeW() const {
-    if (!data || data->u8s.empty()) {
-        static std::wstring empty;
-        return empty;
-    } else {
-        std::lock_guard lock(data->m);
-        if (!data->ws.empty()) {
-            return data->ws;
-        } else {
-            data->ws = encoding::decodeW(data->u8s);
-            return data->ws;
+#ifdef _WIN32
+            if (!using_utf8) {
+                auto result_utf16 = decodeW();
+                auto length_acp =
+                    WideCharToMultiByte(CP_ACP, 0, result_utf16.data(),
+                                        static_cast<int>(result_utf16.length()),
+                                        nullptr, 0, nullptr, nullptr);
+                std::string result_acp(length_acp, '\0');
+                WideCharToMultiByte(
+                    CP_ACP, 0, result_utf16.data(),
+                    static_cast<int>(result_utf16.length()), result_acp.data(),
+                    static_cast<int>(result_acp.size()), nullptr, nullptr);
+                data->s = result_acp;
+                return data->s;
+            }
+#endif
+            // そのままコピー
+            return data->u8s;
         }
     }
 }

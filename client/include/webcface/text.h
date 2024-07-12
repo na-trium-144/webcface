@@ -87,8 +87,8 @@ class WEBCFACE_DLL Text : protected Field {
      * \brief 値が変化したときに呼び出されるコールバックを設定
      * \since ver2.0
      */
-    template <typename F>
-        requires std::invocable<F>
+    template <typename F, typename std::enable_if_t<std::is_invocable_v<F>,
+                                                    std::nullptr_t> = nullptr>
     Text &onChange(F callback) {
         return onChange(
             [callback = std::move(callback)](const auto &) { callback(); });
@@ -196,7 +196,9 @@ class WEBCFACE_DLL Text : protected Field {
     Text &free();
 
     bool operator==(std::string_view rhs) const { return this->get() == rhs; }
+    bool operator!=(std::string_view rhs) const { return this->get() != rhs; }
     bool operator==(std::wstring_view rhs) const { return this->getW() == rhs; }
+    bool operator!=(std::wstring_view rhs) const { return this->getW() != rhs; }
 
     /*!
      * \brief Textの参照先を比較
@@ -206,10 +208,15 @@ class WEBCFACE_DLL Text : protected Field {
      * 大小の比較も同様に中の値で比較されると非自明な挙動になるのでdeleteしている。
      *
      */
-    template <typename T>
-        requires std::same_as<T, Text> bool
-    operator==(const T &other) const {
+    template <typename T, typename std::enable_if_t<std::is_same_v<T, Text>,
+                                                    std::nullptr_t> = nullptr>
+    bool operator==(const T &other) const {
         return static_cast<Field>(*this) == static_cast<Field>(other);
+    }
+    template <typename T, typename std::enable_if_t<std::is_same_v<T, Text>,
+                                                    std::nullptr_t> = nullptr>
+    bool operator!=(const T &other) const {
+        return static_cast<Field>(*this) != static_cast<Field>(other);
     }
     bool operator<(const Text &) const = delete;
     bool operator<=(const Text &) const = delete;
@@ -285,8 +292,9 @@ class WEBCFACE_DLL InputRef {
      * \brief 値を返す
      *
      */
-    template <typename T>
-        requires std::convertible_to<ValAdaptor, T>
+    template <typename T,
+              typename std::enable_if_t<std::is_convertible_v<ValAdaptor, T>,
+                                        std::nullptr_t> = nullptr>
     operator T() const {
         return static_cast<T>(get());
     }
@@ -323,15 +331,33 @@ class WEBCFACE_DLL InputRef {
      */
     std::wstring asWString() const { return get().asWString(); }
     /*!
+     * \brief 実数として返す
+     * \since ver2.0
+     */
+    double asDouble() const { return get().asDouble(); }
+    /*!
+     * \brief int型の整数として返す
+     * \since ver2.0
+     */
+    int asInt() const { return get().asInt(); }
+    /*!
+     * \brief long long型の整数として返す
+     * \since ver2.0
+     */
+    long long asLLong() const { return get().asLLong(); }
+    /*!
      * \brief 数値として返す
      * \since ver1.11
      *
      * as<T>(), Tはdoubleなどの実数型、intなどの整数型
      *
+     * \deprecated ver2.0〜 asDouble(), asInt(), asLLong() を追加
+     * さらにas<T>にはTになにを指定してもdoubleで返るというバグがある
+     *
      */
     template <typename T>
-        requires(std::convertible_to<double, T> && !std::same_as<T, bool>)
-    double as() const {
+    [[deprecated("use asDouble(), asInt() or asLLong() instead")]] double
+    as() const {
         return get().as<T>();
     }
 
@@ -341,17 +367,31 @@ class WEBCFACE_DLL InputRef {
      */
     bool asBool() const { return get().asBool(); }
 
-    template <typename T>
-        requires std::constructible_from<ValAdaptor, T> bool
-    operator==(const T &other) const {
+    template <typename T,
+              typename std::enable_if_t<std::is_constructible_v<ValAdaptor, T>,
+                                        std::nullptr_t> = nullptr>
+    bool operator==(const T &other) const {
         return get() == other;
+    }
+    template <typename T,
+              typename std::enable_if_t<std::is_constructible_v<ValAdaptor, T>,
+                                        std::nullptr_t> = nullptr>
+    bool operator!=(const T &other) const {
+        return get() != other;
     }
 };
 
-template <typename T>
-    requires std::constructible_from<ValAdaptor, T> bool
-operator==(const T &other, const InputRef &ref) {
+template <typename T,
+          typename std::enable_if_t<std::is_constructible_v<ValAdaptor, T>,
+                                    std::nullptr_t> = nullptr>
+bool operator==(const T &other, const InputRef &ref) {
     return ref.get() == other;
+}
+template <typename T,
+          typename std::enable_if_t<std::is_constructible_v<ValAdaptor, T>,
+                                    std::nullptr_t> = nullptr>
+bool operator!=(const T &other, const InputRef &ref) {
+    return ref.get() != other;
 }
 inline std::ostream &operator<<(std::ostream &os, const InputRef &ref) {
     return os << ref.get();
