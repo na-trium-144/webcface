@@ -19,20 +19,15 @@ jobs:
         include:
         - os: ubuntu-20.04
           gcc_ver: 10
-          shared_flag: on
         - os: ubuntu-22.04
           gcc_ver: 11
-          shared_flag: on
         - os: ubuntu-24.04
           gcc_ver: 13
-          shared_flag: on
         - dep: static
           os: ubuntu-20.04
-          shared_flag: off
           gcc_ver: 10
         - dep: source # dep=submoduleと役割が被っている
           os: ubuntu-20.04
-          shared_flag: on
           gcc_ver: 10
     runs-on: ${{matrix.os}}
     steps:
@@ -44,7 +39,7 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install -y gcc-${{matrix.gcc_ver}} g++-${{matrix.gcc_ver}}
-        if [ ${{matrix.dep}} = apt ]; then sudo apt-get install -y libspdlog-dev libjpeg-dev libpng-dev libwebp-dev libopencv-dev googletest; fi
+        if [ ${{matrix.dep}} = apt ]; then sudo apt-get install -y libspdlog-dev libjpeg-dev libpng-dev libwebp-dev libopencv-dev; fi
 
     - name: Configure CMake
       env:
@@ -56,7 +51,8 @@ jobs:
         -DWEBCFACE_TEST=on
         -DWEBCFACE_EXAMPLE=on
         -DWEBCFACE_TEST_TIMEOUT=200
-        -DWEBCFACE_SHARED=${{matrix.shared_flag}}
+        "-DWEBCFACE_SHARED=$([[ ${{matrix.dep}} = static ]]; echo $?)"
+        "-DWEBCFACE_FIND_OPENCV=$([[ ${{matrix.dep}} != apt ]]; echo $?)"
         -DCMAKE_INSTALL_PREFIX=${{github.workspace}}/build/install
 
     - name: Build

@@ -33,7 +33,7 @@ jobs:
     - name: Install dependencies
       run: |
         sudo apt-get update
-        if [ ${{matrix.dep}} = apt ]; then sudo apt-get install -y libspdlog-dev libjpeg-dev libpng-dev libwebp-dev googletest; fi
+        if [ ${{matrix.dep}} = apt ]; then sudo apt-get install -y libspdlog-dev libjpeg-dev libpng-dev libwebp-dev; fi
     - name: Install clang
       uses: KyleMayes/install-llvm-action@v1
       with:
