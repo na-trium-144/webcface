@@ -22,7 +22,7 @@ include(cmake/deps/libwebp.cmake)
 
 fetch_only(imagemagick
     https://github.com/ImageMagick/ImageMagick.git
-    7.1.1-33
+    841f033f0
     configure
 )
 if(MINGW)
