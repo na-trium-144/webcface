@@ -112,9 +112,10 @@ const std::wstring &SharedString::decodeW() const {
                 CP_UTF8, 0, data->u8s.data(),
                 static_cast<int>(data->u8s.size()), nullptr, 0);
             std::wstring result_utf16(length, '\0');
-            MultiByteToWideChar(
-                CP_UTF8, 0, name_ptr, static_cast<int>(name_ref.size()),
-                result_utf16.data(), static_cast<int>(result_utf16.length()));
+            MultiByteToWideChar(CP_UTF8, 0, data->u8s.data(),
+                                static_cast<int>(data->u8s.size()),
+                                result_utf16.data(),
+                                static_cast<int>(result_utf16.length()));
             data->ws = result_utf16;
             return data->ws;
 #else

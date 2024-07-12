@@ -55,7 +55,7 @@ struct WEBCFACE_DLL FieldBase {
     bool operator==(const FieldBase &rhs) const {
         return this->member_ == rhs.member_ && this->field_ == rhs.field_;
     }
-    bool operator!=(const FieldBase &rhs) const { return !(*this != rhs); }
+    bool operator!=(const FieldBase &rhs) const { return !(*this == rhs); }
 };
 
 /*!
