@@ -28,7 +28,7 @@ jobs:
       run: |
         brew update --preinstall
         brew tap na-trium-144/webcface
-        brew install spdlog msgpack-cxx cli11 utf8cpp na-trium-144/webcface/imagemagick-no-openmp na-trium-144/webcface/curl-ws na-trium-144/webcface/crow-unix-socket || true
+        brew install spdlog msgpack-cxx cli11 utf8cpp googletest na-trium-144/webcface/imagemagick-no-openmp na-trium-144/webcface/curl-ws na-trium-144/webcface/crow-unix-socket || true
     - name: Install Nasm
       if: matrix.dep == 'framework'
       env:
