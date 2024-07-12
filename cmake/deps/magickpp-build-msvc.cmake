@@ -12,9 +12,11 @@ endif()
 # submoduleだとCloneRepositories.cmdがうまくいかない
 fetch_only(imagemagick-windows
     https://github.com/ImageMagick/ImageMagick-Windows.git
-    35dbf227258caec73fbe4a0a10ea10f2c2c1051d
+    6a18e9e
     Configure
 )
+set(IMAGEMAGICK_TAG 841f033f0) # imagemagick-windowsを更新したらimagemagickも更新
+
 # https://learn.microsoft.com/en-us/cpp/overview/compiler-versions?view=msvc-170
 # https://stackoverflow.com/questions/33380128/visual-studio-2015-command-line-retarget-solution
 if(CMAKE_CXX_COMPILER_VERSION STRGREATER "19.30")
@@ -36,7 +38,7 @@ if(NOT EXISTS ${imagemagick-windows_SOURCE_DIR}/${imagemagick_sln} OR ${CMAKE_CU
     if(NOT EXISTS ${imagemagick-windows_SOURCE_DIR}/${imagemagick_configure} OR ${CMAKE_CURRENT_LIST_FILE} IS_NEWER_THAN ${imagemagick-windows_SOURCE_DIR}/${imagemagick_configure})
         message(STATUS "Fetching dependencies...")
         execute_process(
-            COMMAND CloneRepositories.IM7.cmd
+            COMMAND CloneRepositories.IM7.cmd ${IMAGEMAGICK_TAG}
             WORKING_DIRECTORY ${imagemagick-windows_SOURCE_DIR}
         )
         # patch
