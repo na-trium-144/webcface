@@ -279,7 +279,7 @@ void AnonymousFunc::lockTo(Func &target) {
         func_setter(*this);
     }
     auto func_info = dataLock()->func_store.getRecv(*this);
-    if (!func_info) [[unlikely]] {
+    if (!func_info) {
         throw std::runtime_error("AnonymousFunc not set");
     } else {
         target.setImpl(std::make_shared<FuncInfo>(**func_info));

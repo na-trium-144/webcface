@@ -4,7 +4,6 @@
 #include <sstream>
 #include <string>
 #ifdef _WIN32
-#include <bit>
 #include <windows.h>
 #include <shlobj.h>
 #endif
@@ -79,7 +78,7 @@ void initUnixSocket(const std::filesystem::path &path,
                            FORMAT_MESSAGE_FROM_SYSTEM |
                            FORMAT_MESSAGE_IGNORE_INSERTS,
                        nullptr, dw, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-                       std::bit_cast<LPSTR>(&lpMsgBuf), 0, nullptr);
+                       reinterpret_cast<LPSTR>(&lpMsgBuf), 0, nullptr);
         logger->warn("DeleteFile ({}) failed: {}", path.string(), lpMsgBuf);
         LocalFree(lpMsgBuf);
     }
