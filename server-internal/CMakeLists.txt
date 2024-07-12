@@ -14,7 +14,7 @@ target_sources(webcface-server-internal PRIVATE
 )
 target_include_directories(webcface-server-internal PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>)
 target_link_libraries(webcface-server-internal PRIVATE crow-linker)
-target_compile_features(webcface-server-internal PRIVATE cxx_std_17)
+target_compile_features(webcface-server-internal PRIVATE cxx_std_11)
 
 if(WEBCFACE_SHARED)
     add_library(webcface-server-internal-linker INTERFACE)

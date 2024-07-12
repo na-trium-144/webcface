@@ -11,7 +11,7 @@ target_sources(webcface-server-store PRIVATE
 )
 target_include_directories(webcface-server-store PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>)
 target_compile_definitions(webcface-server-store PRIVATE WEBCFACE_BUILDING)
-target_compile_features(webcface-server-store PRIVATE cxx_std_17)
+target_compile_features(webcface-server-store PUBLIC cxx_std_17)
 target_link_libraries(webcface-server-store PRIVATE
     webcface-server-internal
     webcface-encoding
