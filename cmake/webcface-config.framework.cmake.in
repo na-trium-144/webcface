@@ -1,0 +1,25 @@
+# MacOSでFrameworkとしてinstallした時にfind_package(webcface)で使うファイル
+# webcface.frameworkの位置が /Application や ~/Application に移動しても認識させる
+
+set(webcface_paths
+    "${CMAKE_CURRENT_LIST_DIR}/../../../Frameworks"
+    "/Applications/WebCFace Desktop.app/Contents/Frameworks"
+    "$ENV{HOME}/Applications/WebCFace Desktop.app/Contents/Frameworks"
+)
+find_library(webcface_framework
+    NAMES webcface
+    PATHS ${webcface_paths}
+)
+if("${webcface_framework}" STREQUAL "webcface_framework-NOTFOUND")
+    list(JOIN webcface_paths "\n" webcface_paths_s)
+    message(FATAL_ERROR "webcface.framework not found in the following paths:\n${webcface_paths_s}")
+endif()
+message(STATUS ${webcface_framework})
+
+add_library(webcface::webcface INTERFACE IMPORTED)
+target_link_libraries(webcface::webcface INTERFACE ${webcface_framework})
+target_compile_features(webcface::webcface INTERFACE cxx_std_20)
+
+add_library(webcface::wcf INTERFACE IMPORTED)
+target_link_libraries(webcface::wcf INTERFACE ${webcface_framework})
+target_compile_features(webcface::wcf INTERFACE c_std_99)

@@ -92,9 +92,43 @@ jobs:
           name: deb-ubuntu${{matrix.distro}}-${{ matrix.arch }}
           path: ${{github.workspace}}/build/*.deb
 
+  build-macos:
+    runs-on: macos-12
+    name: Build Framework on macos-12
+    steps:
+    - uses: actions/checkout@v4
+    - name: Install Nasm
+      env:
+        HOMEBREW_NO_AUTO_UPDATE: 1
+      run: |
+        brew update --preinstall
+        brew install nasm
+
+    - name: Configure CMake
+      run: >
+        cmake -B build
+        -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+        -DWEBCFACE_TEST=0
+        -DWEBCFACE_EXAMPLE=0
+        -DWEBCFACE_SHARED=1
+        -DCMAKE_INSTALL_PREFIX=${{github.workspace}}/build/install
+        -DWEBCFACE_FRAMEWORK=1
+        -DWEBCFACE_FIND_LIBS=0
+        "-DCMAKE_OSX_ARCHITECTURES=arm64;x86_64"
+
+    - name: Build
+      run: cmake --build build -t install
+
+    - run: zip --symlinks -r webcface_macos.zip ${{github.workspace}}/build/install
+    - uses: actions/upload-artifact@v3
+      with:
+        name: macos-framework
+        path: ${{github.workspace}}/webcface_macos.zip
+
+
   release:
     runs-on: ubuntu-latest
-    needs: [build-multiarch]
+    needs: [build-multiarch, build-macos]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v3
@@ -133,6 +167,10 @@ jobs:
         with:
           name: deb-ubuntu20.04-armv7
           path: ${{github.workspace}}/artifact
+      - uses: actions/download-artifact@v3
+        with:
+          name: macos-framework
+          path: ${{github.workspace}}/artifact
       - name: Release
         uses: docker://antonyurchenko/git-release:v5
         env:
@@ -140,3 +178,4 @@ jobs:
           ALLOW_EMPTY_CHANGELOG: true
         with:
           args: artifact/*
+
