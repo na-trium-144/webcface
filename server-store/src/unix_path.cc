@@ -10,28 +10,27 @@
 
 WEBCFACE_NS_BEGIN
 namespace message::Path {
-std::filesystem::path unixSocketPath(int port) {
+std_fs::path unixSocketPath(int port) {
 #ifdef _WIN32
     wchar_t *fpath;
     SHGetKnownFolderPath(FOLDERID_ProgramData, 0, nullptr, &fpath);
-    return std::filesystem::path(fpath) / "webcface" /
-           (std::to_string(port) + ".sock");
+    return std_fs::path(fpath) / "webcface" / (std::to_string(port) + ".sock");
 #else
     return "/tmp/webcface/" + std::to_string(port) + ".sock";
 #endif
 }
 
-std::filesystem::path unixSocketPathWSLInterop(int port) {
+std_fs::path unixSocketPathWSLInterop(int port) {
     return "/mnt/c/ProgramData/webcface/" + std::to_string(port) + ".sock";
 }
 
 bool detectWSL1() {
-    return std::filesystem::exists("/proc/sys/fs/binfmt_misc/WSLInterop") &&
+    return std_fs::exists("/proc/sys/fs/binfmt_misc/WSLInterop") &&
            !std::getenv("WSL_INTEROP");
     // https://github.com/microsoft/WSL/issues/4555
 }
 bool detectWSL2() {
-    return std::filesystem::exists("/proc/sys/fs/binfmt_misc/WSLInterop") &&
+    return std_fs::exists("/proc/sys/fs/binfmt_misc/WSLInterop") &&
            std::getenv("WSL_INTEROP");
 }
 std::string wsl2Host() {
@@ -48,8 +47,9 @@ std::string wsl2Host() {
         if (dest == "00000000" && gateway.size() == 8) {
             std::string host_addr = "";
             for (int i = 3; i >= 0; i--) {
-                host_addr += std::to_string(
-                    std::stoi(gateway.substr(static_cast<std::size_t>(i) * 2, 2), nullptr, 16));
+                host_addr += std::to_string(std::stoi(
+                    gateway.substr(static_cast<std::size_t>(i) * 2, 2), nullptr,
+                    16));
                 if (i != 0) {
                     host_addr += '.';
                 }
@@ -61,15 +61,15 @@ std::string wsl2Host() {
 #endif
 }
 
-void initUnixSocket(const std::filesystem::path &path,
+void initUnixSocket(const std_fs::path &path,
                     const std::shared_ptr<spdlog::logger> &logger) {
     try {
-        std::filesystem::create_directories(path.parent_path());
-    } catch (const std::filesystem::filesystem_error &e) {
+        std_fs::create_directories(path.parent_path());
+    } catch (const std_fs::filesystem_error &e) {
         logger->warn("{}", e.what());
     }
 #ifdef _WIN32
-    // std::filesystem does not work on socket file somehow on mingw
+    // std_fs does not work on socket file somehow on mingw
     DeleteFileW(path.wstring().c_str());
     auto dw = GetLastError();
     if (dw != 0 && dw != ERROR_FILE_NOT_FOUND) {
@@ -84,23 +84,22 @@ void initUnixSocket(const std::filesystem::path &path,
     }
 #else
     try {
-        std::filesystem::remove(path);
-    } catch (const std::filesystem::filesystem_error &e) {
+        std_fs::remove(path);
+    } catch (const std_fs::filesystem_error &e) {
         logger->warn("{}", e.what());
     }
 #endif
 }
-void updateUnixSocketPerms(const std::filesystem::path &path,
+void updateUnixSocketPerms(const std_fs::path &path,
                            const std::shared_ptr<spdlog::logger> &logger) {
     try {
-        std::filesystem::permissions(path.parent_path(),
-                                     std::filesystem::perms::all);
-    } catch (const std::filesystem::filesystem_error &e) {
+        std_fs::permissions(path.parent_path(), std_fs::perms::all);
+    } catch (const std_fs::filesystem_error &e) {
         logger->warn("{}", e.what());
     }
     try {
-        std::filesystem::permissions(path, std::filesystem::perms::all);
-    } catch (const std::filesystem::filesystem_error &e) {
+        std_fs::permissions(path, std_fs::perms::all);
+    } catch (const std_fs::filesystem_error &e) {
         logger->warn("{}", e.what());
     }
 }

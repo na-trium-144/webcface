@@ -143,6 +143,8 @@ function(add_cxx_compile_options_if FLAG NAME)
     endif()
 endfunction()
 
+include(cmake/filesystem.cmake)
+
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     if(WEBCFACE_WARNING)
         add_compile_options(-Wall -Wextra -Wpedantic -Werror)
@@ -211,6 +213,7 @@ else()
     add_library(webcface STATIC)
 endif()
 target_compile_features(webcface PUBLIC cxx_std_17)
+target_link_libraries(webcface PUBLIC webcface-std-filesystem)
 target_include_directories(webcface PUBLIC
     $<BUILD_INTERFACE:$<TARGET_PROPERTY:webcface-encoding,INTERFACE_INCLUDE_DIRECTORIES>>
     $<BUILD_INTERFACE:$<TARGET_PROPERTY:webcface-server-store,INTERFACE_INCLUDE_DIRECTORIES>>
@@ -230,7 +233,11 @@ else()
     target_sources(webcface PRIVATE $<TARGET_OBJECTS:webcface-server-internal>)
 endif()
 # private: リンクが必要なもののみ
-target_link_libraries(webcface PRIVATE magickpp-linker libcurl-linker spdlog-linker)
+target_link_libraries(webcface PRIVATE
+    magickpp-linker
+    libcurl-linker
+    spdlog-linker
+)
 if(NOT WEBCFACE_SHARED)
     target_link_directories(webcface PUBLIC
         $<TARGET_PROPERTY:magickpp-linker,INTERFACE_LINK_DIRECTORIES>
@@ -334,7 +341,7 @@ if(WEBCFACE_INSTALL)
     # library
     # dependenciesはそれぞれのcmakeファイルでリストに追加されている
     # cmake時は依存ライブラリを先に処理するが、linker flagは逆で依存ライブラリがあと
-    list(APPEND WEBCFACE_EXPORTS webcface wcf)
+    list(APPEND WEBCFACE_EXPORTS webcface wcf webcface-std-filesystem)
     list(INSERT WEBCFACE_PKGCONFIG_CFLAGS 0 "-I\${includedir}")
     list(INSERT WEBCFACE_PKGCONFIG_LIBS 0 "-L\${libdir}" -lwebcface)
     install(TARGETS ${WEBCFACE_EXPORTS}
