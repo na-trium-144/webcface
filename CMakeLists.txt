@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.15)
+cmake_minimum_required(VERSION 3.14)
 # ubuntu20.04: cmake 3.16.3
 
 set(ORIGINAL_ENV_CC "$ENV{CC}" CACHE STRING "")

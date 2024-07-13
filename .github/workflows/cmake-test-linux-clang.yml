@@ -15,8 +15,10 @@ jobs:
     strategy:
       matrix:
         dep: ["apt", "submodule"]
-        clang: [13, 15, 17]
+        clang: [7, 13, 15, 17]
         include:
+        - os: ubuntu-20.04
+          clang: 7
         - os: ubuntu-20.04
           clang: 13
         - os: ubuntu-22.04

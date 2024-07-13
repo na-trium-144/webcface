@@ -15,20 +15,22 @@ jobs:
     strategy:
       matrix:
         dep: ["apt", "submodule"]
-        os: ["ubuntu-20.04", "ubuntu-22.04", "ubuntu-24.04"]
+        gcc-ver: [7, 9, 11, 13]
         include:
         - os: ubuntu-20.04
-          gcc_ver: 10
+          gcc_ver: 7
+        - os: ubuntu-20.04
+          gcc_ver: 9
         - os: ubuntu-22.04
           gcc_ver: 11
         - os: ubuntu-24.04
           gcc_ver: 13
         - dep: static
           os: ubuntu-20.04
-          gcc_ver: 10
+          gcc_ver: 9
         - dep: source # dep=submoduleと役割が被っている
           os: ubuntu-20.04
-          gcc_ver: 10
+          gcc_ver: 9
     runs-on: ${{matrix.os}}
     steps:
     - uses: actions/checkout@v4
