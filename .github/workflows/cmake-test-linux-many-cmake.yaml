@@ -1,0 +1,67 @@
+name: CMake Test (Linux, Many CMake Versions)
+
+on:
+  push:
+    branches: [ "action/many-cmake" ]
+
+env:
+  # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
+  BUILD_TYPE: Debug
+
+jobs:
+  test-linux-gcc:
+    strategy:
+      matrix:
+        cmake_ver: ["3.5", "3.10", "3.11", "3.12", "3.13", "3.14", "3.15", "3.16", "3.17", "3.20", "3.25", "3.28", latest]
+    runs-on: ubuntu-22.04
+    steps:
+    - uses: actions/checkout@v4
+    - run: git submodule update --init
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y libspdlog-dev libjpeg-dev libpng-dev libwebp-dev
+
+    - name: Setup cmake
+      uses: jwlawson/actions-setup-cmake@v2
+      with:
+        cmake-version: ${{ matrix.cmake_ver }}
+    - name: Check cmake version
+      run: cmake --version
+
+    - name: Configure CMake
+      run: >
+        cmake -B build
+        -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+        -DWEBCFACE_TEST=on
+        -DWEBCFACE_EXAMPLE=on
+        -DWEBCFACE_TEST_TIMEOUT=200
+        -DWEBCFACE_SHARED=1
+        -DWEBCFACE_FIND_OPENCV=0
+        -DCMAKE_INSTALL_PREFIX=${{github.workspace}}/build/install
+
+    - name: Build
+      run: cmake --build build -t install
+
+    - name: Test
+      env:
+        WEBCFACE_TRACE: 1
+      working-directory: ${{github.workspace}}/build
+      run: ctest --output-on-failure --timeout 20
+
+    - name: Test CMake with installed package
+      working-directory: ${{github.workspace}}/.github/test
+      run: |
+        cmake -B build -DCMAKE_PREFIX_PATH=${{github.workspace}}/build/install
+        cmake --build build
+
+    - name: Test building with pkg-config
+      working-directory: ${{github.workspace}}/.github/test
+      env:
+        PKG_CONFIG_PATH: ${{github.workspace}}/build/install/lib/pkgconfig
+      run: |
+        pkg-config --cflags --libs webcface
+        g++ -std=c++17 test.cc $(pkg-config --cflags --libs webcface)
+        gcc -std=c99 test.c $(pkg-config --cflags --libs webcface) -lstdc++
+
