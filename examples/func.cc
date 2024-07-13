@@ -1,9 +1,7 @@
 #include <webcface/client.h>
 #include <webcface/func.h>
 #include <chrono>
-#include <cmath>
 #include <iostream>
-#include <numbers>
 #include <thread>
 
 void hello() { std::cout << "hello, world!" << std::endl; }
