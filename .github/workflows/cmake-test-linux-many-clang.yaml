@@ -1,0 +1,55 @@
+name: CMake Test (Linux, Many Clang Versions)
+
+on:
+  push:
+    branches: [ "action/many-clang" ]
+
+env:
+  # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
+  BUILD_TYPE: Debug
+
+jobs:
+  test-linux-clang:
+    strategy:
+      fail-fast: false
+      matrix:
+        clang: [7, 8, 9, 10, 11, 12, 13]
+        include:
+        - os: ubuntu-20.04
+    runs-on: ${{matrix.os}}
+    steps:
+    - uses: actions/checkout@v4
+    - run: git submodule update --init
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y gcc-${{matrix.gcc_ver}} g++-${{matrix.gcc_ver}}
+        sudo apt-get install -y libspdlog-dev libjpeg-dev libpng-dev libwebp-dev
+
+    - name: Install clang
+      uses: KyleMayes/install-llvm-action@v1
+      with:
+        version: "${{matrix.clang}}"
+    - name: Configure CMake
+      env:
+        CC: ${{ env.LLVM_PATH }}/bin/clang
+        CXX: ${{ env.LLVM_PATH }}/bin/clang++
+      run: >
+        cmake -B build
+        -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+        -DWEBCFACE_TEST=on
+        -DWEBCFACE_EXAMPLE=on
+        -DWEBCFACE_TEST_TIMEOUT=200
+        -DWEBCFACE_SHARED=1
+        -DWEBCFACE_FIND_OPENCV=0
+        -DCMAKE_INSTALL_PREFIX=${{github.workspace}}/build/install
+
+    - name: Build
+      run: cmake --build build -t install
+
+    - name: Test
+      env:
+        WEBCFACE_TRACE: 1
+      working-directory: ${{github.workspace}}/build
+      run: ctest --output-on-failure --timeout 20
