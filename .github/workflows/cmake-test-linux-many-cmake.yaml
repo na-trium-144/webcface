@@ -34,6 +34,7 @@ jobs:
     - name: Modify CMakeLists
       run: sed -i "s/cmake_minimum_required.*/cmake_minimum_required(VERSION ${{matrix.cmake_ver}})/" CMakeLists.txt
     - name: Configure CMake
+      # 3.12以前はソース指定が必要
       run: >
         cmake -B build -S .
         -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
@@ -45,7 +46,8 @@ jobs:
         -DCMAKE_INSTALL_PREFIX=${{github.workspace}}/build/install
 
     - name: Build
-      run: cmake --build build -t install
+      # -t は3.15から
+      run: cmake --build build --target install
 
     - name: Test
       env:
