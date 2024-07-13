@@ -41,6 +41,7 @@ else()
                 COMMAND ${CMAKE_COMMAND} ${libpng_SOURCE_DIR} -B${libpng_BINARY_DIR}_${arch}
                     -DCMAKE_INSTALL_PREFIX=${libpng_PREFIX}
                     -DPNG_SHARED=OFF -DPNG_FRAMEWORK=OFF -DPNG_TESTS=OFF -DPNG_TOOLS=OFF
+                    "-DZLIB_ROOT=${zlib_PREFIX}"
                     ${WEBCFACE_CMAKE_PROPS}
             )
             execute_process(COMMAND ${CMAKE_COMMAND} --build ${libpng_BINARY_DIR}_${arch} -t install -j${N})
@@ -64,6 +65,7 @@ else()
             COMMAND ${CMAKE_COMMAND} ${libpng_SOURCE_DIR} -B${libpng_BINARY_DIR}
                 -DCMAKE_INSTALL_PREFIX=${libpng_PREFIX}
                 -DPNG_SHARED=OFF -DPNG_FRAMEWORK=OFF -DPNG_TESTS=OFF -DPNG_TOOLS=OFF
+                "-DZLIB_ROOT=${zlib_PREFIX}"
                 ${WEBCFACE_CMAKE_PROPS}
         )
         execute_process(COMMAND ${CMAKE_COMMAND} --build ${libpng_BINARY_DIR} -t install -j${N})
