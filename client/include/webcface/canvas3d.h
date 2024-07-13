@@ -5,7 +5,6 @@
 #include <memory>
 #include <utility>
 #include <stdexcept>
-#include <concepts>
 #include <webcface/common/def.h>
 #include "robot_model.h"
 #include "components.h"
