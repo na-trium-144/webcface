@@ -63,7 +63,7 @@ class WEBCFACE_DLL SharedString {
         std::string u8s;
         std::string s;
         std::wstring ws;
-        std::mutex m;
+        std::recursive_mutex m;
         Data(std::string_view u8s) : u8s(u8s), s(), ws(), m() {}
         Data(std::string_view u8s, std::string_view s, std::wstring_view ws)
             : u8s(u8s), s(s), ws(ws), m() {}
