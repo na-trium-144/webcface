@@ -3,7 +3,7 @@
 #include <utf8.h>
 #include <cstring>
 
-#ifdef _WIN32
+#if WEBCFACE_SYSTEM_WIN32API
 #include <windows.h>
 #endif
 
@@ -18,7 +18,7 @@ SharedString SharedString::fromU8String(std::string_view u8s) {
     return SharedString(std::make_shared<Data>(u8s));
 }
 SharedString SharedString::encode(std::string_view name) {
-#ifdef _WIN32
+#if WEBCFACE_SYSTEM_WIN32API
     if (!using_utf8) {
         auto length = MultiByteToWideChar(
             CP_ACP, 0, name.data(), static_cast<int>(name.size()), nullptr, 0);
@@ -33,7 +33,7 @@ SharedString SharedString::encode(std::string_view name) {
     return fromU8String(name);
 }
 SharedString SharedString::encode(std::wstring_view name, std::string_view s) {
-#ifdef _WIN32
+#if WEBCFACE_SYSTEM_WIN32API
     static_assert(sizeof(wchar_t) == 2,
                   "Assuming wchar_t is utf-16 on Windows");
     auto length_utf8 = WideCharToMultiByte(CP_UTF8, 0, name.data(),
@@ -77,7 +77,7 @@ bool SharedString::startsWith(char str) const {
 }
 
 std::string toNarrow(std::wstring_view name) {
-#ifdef _WIN32
+#if WEBCFACE_SYSTEM_WIN32API
     static_assert(sizeof(wchar_t) == 2,
                   "Assuming wchar_t is utf-16 on Windows");
     auto length_utf8 = WideCharToMultiByte(
@@ -105,7 +105,7 @@ const std::wstring &SharedString::decodeW() const {
         if (!data->ws.empty()) {
             return data->ws;
         } else {
-#ifdef _WIN32
+#if WEBCFACE_SYSTEM_WIN32API
             static_assert(sizeof(wchar_t) == 2,
                           "Assuming wchar_t is utf-16 on Windows");
             auto length = MultiByteToWideChar(
@@ -132,7 +132,7 @@ const std::wstring &SharedString::decodeW() const {
 }
 
 std::wstring toWide(std::string_view name_ref) {
-#ifdef _WIN32
+#if WEBCFACE_SYSTEM_WIN32API
     auto length =
         MultiByteToWideChar(using_utf8 ? CP_UTF8 : CP_ACP, 0, name_ref.data(),
                             static_cast<int>(name_ref.size()), nullptr, 0);
@@ -159,7 +159,7 @@ const std::string &SharedString::decode() const {
         if (!data->s.empty()) {
             return data->s;
         } else {
-#ifdef _WIN32
+#if WEBCFACE_SYSTEM_WIN32API
             if (!using_utf8) {
                 auto result_utf16 = decodeW();
                 auto length_acp =

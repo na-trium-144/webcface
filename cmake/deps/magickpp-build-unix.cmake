@@ -5,7 +5,7 @@ find_program(ENV_COMMAND env)
 find_program(MAKE_COMMAND make)
 find_program(CHMOD_COMMAND chmod)
 find_program(CYGPATH_COMMAND cygpath)
-if(MINGW AND NOT CYGPATH_COMMAND STREQUAL "CYGPATH_COMMAND-NOTFOUND")
+if(WEBCFACE_SYSTEM_PATH_WINDOWS AND NOT CYGPATH_COMMAND STREQUAL "CYGPATH_COMMAND-NOTFOUND")
     execute_process(
         COMMAND ${CYGPATH_COMMAND} -u "${MAGICKPP_PREFIX}"
         OUTPUT_VARIABLE MAGICKPP_PREFIX_UNIX
@@ -25,7 +25,7 @@ fetch_only(imagemagick
     841f033f0
     configure
 )
-if(MINGW)
+if(WEBCFACE_SYSTEM_PATH_WINDOWS AND NOT CYGPATH_COMMAND STREQUAL "CYGPATH_COMMAND-NOTFOUND")
     execute_process(
         COMMAND ${CYGPATH_COMMAND} -u "${imagemagick_SOURCE_DIR}"
         OUTPUT_VARIABLE imagemagick_SOURCE_DIR_UNIX
@@ -37,12 +37,10 @@ endif()
 
 message(STATUS "Building Magick++...")
 if(NOT EXISTS ${imagemagick_BINARY_DIR}/Makefile OR ${CMAKE_CURRENT_LIST_FILE} IS_NEWER_THAN ${imagemagick_BINARY_DIR}/Makefile)
-    if(MINGW)
-        execute_process(
-            COMMAND ${CHMOD_COMMAND} +x winpath.sh # バグ?
-            WORKING_DIRECTORY ${imagemagick_SOURCE_DIR}
-        )
-    endif()
+    execute_process(
+        COMMAND ${CHMOD_COMMAND} +x winpath.sh # バグ?
+        WORKING_DIRECTORY ${imagemagick_SOURCE_DIR}
+    )
     if(EXISTS ${imagemagick_BINARY_DIR}/Makefile)
         execute_process(
             COMMAND ${MAKE_COMMAND} clean
@@ -102,7 +100,7 @@ target_link_directories(magickpp-linker INTERFACE
     $<BUILD_INTERFACE:${MAGICKPP_PREFIX}/lib>
     $<INSTALL_INTERFACE:lib>
 )
-if(WIN32)
+if(WEBCFACE_SYSTEM_WIN32API)
     target_link_libraries(magickpp-linker INTERFACE urlmon.lib)
 endif()
 if(Magickpp_VERSION MATCHES "^7\.")

@@ -17,7 +17,7 @@ enum class Canvas2DComponentType {
     text = 3,
 };
 
-#ifdef _WIN32
+#if WEBCFACE_SYSTEM_DLLEXPORT
 extern template class WEBCFACE_DLL_INSTANCE_DECL IdBase<Canvas2DComponentType>;
 #endif
 

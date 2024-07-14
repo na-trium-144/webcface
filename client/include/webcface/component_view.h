@@ -61,7 +61,7 @@ enum class ViewColor {
     // rose = 24,
 };
 
-#ifdef _WIN32
+#if WEBCFACE_SYSTEM_DLLEXPORT
 extern template class WEBCFACE_DLL_INSTANCE_DECL IdBase<ViewComponentType>;
 #endif
 
