@@ -1,9 +1,9 @@
 var log_8h =
 [
-    [ "LogLineData< CharT >", "classwebcface_1_1LogLineData.html", "classwebcface_1_1LogLineData" ],
+    [ "LogLineData", "structwebcface_1_1LogLineData.html", "structwebcface_1_1LogLineData" ],
+    [ "LogLine", "classwebcface_1_1LogLine.html", "classwebcface_1_1LogLine" ],
+    [ "LogLineW", "classwebcface_1_1LogLineW.html", "classwebcface_1_1LogLineW" ],
     [ "Log", "classwebcface_1_1Log.html", "classwebcface_1_1Log" ],
-    [ "LogLine", "log_8h.html#a46b5ef797cadc62be5f7a57346029063", null ],
-    [ "LogLineW", "log_8h.html#a1633a07d91ecf38ba8cfc15b2a4ebd18", null ],
     [ "LogLevelEnum", "log_8h.html#ac2fe55c989a2c0b34cf68f392982fd66", [
       [ "trace", "log_8h.html#ac2fe55c989a2c0b34cf68f392982fd66a36a3b17acbfb35380a47b3d88c9b8942", null ],
       [ "debug", "log_8h.html#ac2fe55c989a2c0b34cf68f392982fd66a5be0fd270d9cbf6a0b7445db855089da", null ],

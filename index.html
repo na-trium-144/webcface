@@ -141,7 +141,7 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
   <div class="headertitle"><div class="title">WebCFace </div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="md__2home_2runner_2work_2webcface_2webcface_2README"></a> <a href="https://github.com/na-trium-144/webcface"><img src="https://img.shields.io/badge/C%2B%2B-20-blue?logo=C%2B%2B" alt="C++20" class="inline"/></a> <a href="https://github.com/na-trium-144/webcface/releases"><img src="https://img.shields.io/github/v/release/na-trium-144/webcface" alt="release" class="inline"/></a> <a href="https://github.com/na-trium-144/webcface/actions/workflows/cmake-coverage.yml"><img src="https://raw.githubusercontent.com/na-trium-144/webcface/badge/coverage.svg" alt="coverage" style="pointer-events: none;" class="inline"/></a> <br  />
+<div class="textblock"><p><a class="anchor" id="md__2home_2runner_2work_2webcface_2webcface_2README"></a> <a href="https://github.com/na-trium-144/webcface"><img src="https://img.shields.io/badge/C%2B%2B-17-blue?logo=C%2B%2B" alt="C++17" class="inline"/></a> <a href="https://github.com/na-trium-144/webcface/releases"><img src="https://img.shields.io/github/v/release/na-trium-144/webcface" alt="release" class="inline"/></a> <a href="https://github.com/na-trium-144/webcface/actions/workflows/cmake-coverage.yml"><img src="https://raw.githubusercontent.com/na-trium-144/webcface/badge/coverage.svg" alt="coverage" style="pointer-events: none;" class="inline"/></a> <br  />
  <a href="https://github.com/na-trium-144/webcface-python"><img src="https://img.shields.io/pypi/pyversions/webcface?logo=Python&amp;logoColor=white" alt="PyPI - Python Version" class="inline"/></a> <a href="https://pypi.org/project/webcface/"><img src="https://img.shields.io/pypi/v/webcface" alt="PyPI - Version" class="inline"/></a> <br  />
  <a href="https://github.com/na-trium-144/webcface-js"><img src="https://img.shields.io/badge/JavaScript%2C%20TypeScript-gray?logo=JavaScript&amp;logoColor=white" alt="javascript" class="inline"/></a> <a href="https://www.npmjs.com/package/webcface"><img src="https://img.shields.io/npm/v/webcface" alt="npm" class="inline"/></a></p>
 <p>Web-based IPC &amp; Dashboard-like UI</p>
@@ -150,7 +150,7 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 </blockquote>
 <p>ver1は <a href="https://github.com/na-trium-144/webcface/tree/v1">v1</a> ブランチにあります</p>
 <p>WebSocketとMessagePackを使った、ROSのような分散型の通信ライブラリです。</p>
-<p>C++ (C++20以上), C (C99), Python (3.8以上), JavaScript/TypeScript で相互に数値、文字列、画像などのデータを送受信したり、関数(手続き)を呼び出したりすることができます。</p>
+<p>C++ (C++17以上), C (C99), Python (3.8以上), JavaScript/TypeScript で相互に数値、文字列、画像などのデータを送受信したり、関数(手続き)を呼び出したりすることができます。</p>
 <p>Linux, Windows, MacOS で動作します。 Wi-FiやEtherNet経由で複数のPC間(OS問わず)で通信することも可能です。 WindowsとWSL1/2の間の相互通信も自動的に接続されます。</p>
 <p>さらに同一マシン上やDocker,WSL経由など使用可能な場合はTCPの代わりにUnixドメインソケットを使用するようにし、パフォーマンスが改善しました。</p>
 <h1><a class="anchor" id="autotoc_md197"></a>
@@ -312,14 +312,12 @@ Build from source</h1>
 <h2><a class="anchor" id="autotoc_md213"></a>
 Requirements</h2>
 <ul>
-<li>C++20に対応したコンパイラが必要です<ul>
-<li>GCCはgcc-10以上が必要です。</li>
-<li>Clangはclang-13以上が必要です。</li>
-<li>MacOSではMacOS12(Monterey)以上でビルドできることを確認済みです。</li>
-<li>Visual Studio は2019以上でビルドできるはずです。</li>
-<li>MinGWでもビルドできます。MSYS2のMINGW64環境でテストしていますがUCRT64やCLANG64環境でもビルドできると思います。</li>
+<li>C++17に対応したコンパイラが必要です<ul>
+<li>(ver1.11まではC++20が必要でしたが、ver2からC++17に移行しました)</li>
 </ul>
 </li>
+<li>Linuxはgcc-7以上とclang-7以上、MacはmacOS12(Monterey)以上、Visual Studio は2019以上でビルドできることを確認しています。 それ以前のバージョンでも動くかもしれません。</li>
+<li>WindowsではMinGWでもビルドできます。MSYS2のMINGW64環境でテストしていますがUCRT64やCLANG64環境でもビルドできると思います。</li>
 <li>webcfaceは外部ライブラリとして <a href="https://github.com/msgpack/msgpack-c">msgpack-cxx</a>, <a href="https://github.com/wqking/eventpp">eventpp</a>, <a href="https://github.com/gabime/spdlog">spdlog</a>, <a href="https://github.com/curl/curl">curl</a>, <a href="https://github.com/CrowCpp/Crow">crow</a>, <a href="https://github.com/chriskohlhoff/asio">asio</a>, <a href="https://github.com/CLIUtils/CLI11.git">cli11</a>, <a href="https://github.com/nemtrif/utfcpp">UTF8-CPP</a>, <a href="https://opencv.org/">OpenCV</a>(exampleのみ), <a href="https://github.com/ImageMagick/ImageMagick">Magick++</a>, <a href="https://github.com/google/googletest">GoogleTest</a>(testのみ) を使用します。<ul>
 <li>いずれもシステムにインストールされていてfind_packageなどで使うことができるか確認します。<ul>
 <li>見つからない場合は、CMake時に自動的にFetchContentでソースコードを取得してビルドするので、必ずしもこれらをインストールする必要はありません。</li>
@@ -333,7 +331,6 @@ Requirements</h2>
 <li>libcurlはwebsocket機能を有効にする必要があるため、インストールされているlibcurlでwebsocketが使えない場合使用せずソースからビルドします。</li>
 <li>crowはunix_socketの機能が実装されている必要があるため、インストールされているcrowでunix_socketが使えない場合使用せずソースからビルドします</li>
 <li>Magick++はマルチスレッドで実行するためにOpenMPが無効になっている必要があるため、インストールされているMagick++がOpenMPを使用してビルドされていた場合使用せずソースからビルドします</li>
-<li>googletestはchar8_tの機能を有効にする必要があるためインストールされている場合でもソースからビルドします</li>
 <li>OpenCVはソースからビルドしません。OpenCVを使ったexampleをビルドしたい場合は別途インストールする必要がありますが、example以外では使用しないのでほぼ必要ないと思います。</li>
 </ul>
 </li>
@@ -347,10 +344,8 @@ Ubuntu</summary>
 <div class="line">sudo apt install libspdlog-dev libasio-dev</div>
 <div class="line">sudo apt install libcli11-dev # only on 22.04 or later</div>
 <div class="line">sudo apt install libmsgpack-cxx-dev # only on 24.04 or later</div>
-</div><!-- fragment --><p>ubuntu20.04の場合デフォルトのコンパイラ(gcc-9)ではビルドできないのでgcc-10にする必要があります </p><div class="fragment"><div class="line">sudo apt install gcc-10 g++-10</div>
-<div class="line">export CC=gcc-10</div>
-<div class="line">export CXX=g++-10</div>
-</div><!-- fragment --> </details>
+</div><!-- fragment --><p></p>
+</details>
 <details >
 <summary >
 Homebrew (MacOS, Linux)</summary>
@@ -484,7 +479,7 @@ License</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Jul 12 2024 11:44:06 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Sun Jul 14 2024 06:23:44 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

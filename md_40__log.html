@@ -224,7 +224,7 @@ $(document).ready(function(){initNavTree('md_40__log.html',''); initResizable();
 <div class="line">    <span class="keywordtype">void</span> set_formatter_(std::unique_ptr&lt;spdlog::formatter&gt;)<span class="keyword"> override </span>{}</div>
 <div class="line">};</div>
 <div class="ttc" id="aclasswebcface_1_1Client_html"><div class="ttname"><a href="classwebcface_1_1Client.html">webcface::Client</a></div><div class="ttdoc">サーバーに接続するクライアント。</div><div class="ttdef"><b>Definition</b> client.h:14</div></div>
-<div class="ttc" id="aclasswebcface_1_1Log_html"><div class="ttname"><a href="classwebcface_1_1Log.html">webcface::Log</a></div><div class="ttdoc">ログの送受信データを表すクラス</div><div class="ttdef"><b>Definition</b> log.h:81</div></div>
+<div class="ttc" id="aclasswebcface_1_1Log_html"><div class="ttname"><a href="classwebcface_1_1Log.html">webcface::Log</a></div><div class="ttdoc">ログの送受信データを表すクラス</div><div class="ttdef"><b>Definition</b> log.h:59</div></div>
 <div class="ttc" id="anamespacewebcface_1_1message_1_1MessageKind_html_a1432d06fc2e2d1f6da93d1c04dec4484aaac8d4ee23e2d305f0b0a575cda066f3"><div class="ttname"><a href="namespacewebcface_1_1message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484aaac8d4ee23e2d305f0b0a575cda066f3">webcface::message::MessageKind::log</a></div><div class="ttdeci">@ log</div><div class="ttdef"><b>Definition</b> message.h:55</div></div>
 </div><!-- fragment --></li>
 <li><p class="startli"><b class="tab-title">log4js (JavaScript)</b> log4js: <a href="https://www.npmjs.com/package/log4js">https://www.npmjs.com/package/log4js</a></p>
@@ -261,7 +261,7 @@ spdlogライブラリとの連携(C++ 〜ver1.11)</summary>
 <p>Member::log() でLogクラスのオブジェクトが得られ、 Log::tryGet() でデータのリクエストをするとともにログが得られます。</p>
 <p><span class="since-c">2.0</span> ワイド文字列で取得したい場合は tryGetW() を使います</p>
 <p>ログデータは <br  />
- C++: <a class="el" href="namespacewebcface.html#a46b5ef797cadc62be5f7a57346029063">webcface::LogLine</a>, <a class="el" href="namespacewebcface.html#a1633a07d91ecf38ba8cfc15b2a4ebd18">webcface::LogLineW</a> <br  />
+ C++: <a class="el" href="classwebcface_1_1LogLine.html">webcface::LogLine</a>, <a class="el" href="classwebcface_1_1LogLineW.html">webcface::LogLineW</a> <br  />
  JavaScript: <a href="https://na-trium-144.github.io/webcface-js/interfaces/LogLine.html">LogLine</a> <br  />
  Python: <a href="https://na-trium-144.github.io/webcface-python/webcface.log_handler.html#webcface.log_handler.LogLine">webcface.LogLine</a> <br  />
  のリストとして得られ、 メッセージ、ログレベル、時刻を取得できます。</p>
@@ -284,7 +284,7 @@ Event</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Jul 12 2024 11:44:06 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Sun Jul 14 2024 06:23:44 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

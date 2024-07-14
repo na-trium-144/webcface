@@ -78,18 +78,7 @@ var menudata={children:[
 {text:"u",url:"namespacemembers_vars.html#index_u"},
 {text:"v",url:"namespacemembers_vars.html#index_v"},
 {text:"w",url:"namespacemembers_vars.html#index_w"}]},
-{text:"Typedefs",url:"namespacemembers_type.html",children:[
-{text:"c",url:"namespacemembers_type.html#index_c"},
-{text:"f",url:"namespacemembers_type.html#index_f"},
-{text:"i",url:"namespacemembers_type.html#index_i"},
-{text:"l",url:"namespacemembers_type.html#index_l"},
-{text:"m",url:"namespacemembers_type.html#index_m"},
-{text:"o",url:"namespacemembers_type.html#index_o"},
-{text:"r",url:"namespacemembers_type.html#index_r"},
-{text:"s",url:"namespacemembers_type.html#index_s"},
-{text:"t",url:"namespacemembers_type.html#index_t"},
-{text:"v",url:"namespacemembers_type.html#index_v"},
-{text:"w",url:"namespacemembers_type.html#index_w"}]},
+{text:"Typedefs",url:"namespacemembers_type.html"},
 {text:"Enumerations",url:"namespacemembers_enum.html"},
 {text:"Enumerator",url:"namespacemembers_eval.html",children:[
 {text:"b",url:"namespacemembers_eval.html#index_b"},
@@ -106,7 +95,6 @@ var menudata={children:[
 {text:"u",url:"namespacemembers_eval.html#index_u"},
 {text:"v",url:"namespacemembers_eval.html#index_v"},
 {text:"w",url:"namespacemembers_eval.html#index_w"}]}]}]},
-{text:"Concepts",url:"concepts.html"},
 {text:"Classes",url:"annotated.html",children:[
 {text:"Class List",url:"annotated.html"},
 {text:"Class Index",url:"classes.html"},
@@ -192,7 +180,8 @@ var menudata={children:[
 {text:"File List",url:"files.html"},
 {text:"File Members",url:"globals.html",children:[
 {text:"All",url:"globals.html",children:[
-{text:"a",url:"globals.html#index_a"},
+{text:"_",url:"globals.html#index__5F"},
+{text:"a",url:"globals_a.html#index_a"},
 {text:"b",url:"globals_b.html#index_b"},
 {text:"c",url:"globals_c.html#index_c"},
 {text:"h",url:"globals_h.html#index_h"},
@@ -214,6 +203,7 @@ var menudata={children:[
 {text:"Variables",url:"globals_vars.html"},
 {text:"Typedefs",url:"globals_type.html"},
 {text:"Macros",url:"globals_defs.html",children:[
+{text:"_",url:"globals_defs.html#index__5F"},
 {text:"c",url:"globals_defs.html#index_c"},
 {text:"m",url:"globals_defs.html#index_m"},
 {text:"n",url:"globals_defs.html#index_n"},

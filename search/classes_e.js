@@ -11,7 +11,7 @@ var searchData=
   ['sync_8',['Sync',['../structwebcface_1_1message_1_1Sync.html',1,'webcface::message']]],
   ['syncdatastore1_9',['SyncDataStore1',['../classwebcface_1_1internal_1_1SyncDataStore1.html',1,'webcface::internal']]],
   ['syncdatastore1_3c_20std_3a_3achrono_3a_3asystem_5fclock_3a_3atime_5fpoint_20_3e_10',['SyncDataStore1&lt; std::chrono::system_clock::time_point &gt;',['../classwebcface_1_1internal_1_1SyncDataStore1.html',1,'webcface::internal']]],
-  ['syncdatastore1_3c_20std_3a_3ashared_5fptr_3c_20std_3a_3avector_3c_20webcface_3a_3aloglinedata_3c_3e_20_3e_20_3e_20_3e_11',['SyncDataStore1&lt; std::shared_ptr&lt; std::vector&lt; webcface::LogLineData&lt;&gt; &gt; &gt; &gt;',['../classwebcface_1_1internal_1_1SyncDataStore1.html',1,'webcface::internal']]],
+  ['syncdatastore1_3c_20std_3a_3ashared_5fptr_3c_20std_3a_3avector_3c_20webcface_3a_3aloglinedata_20_3e_20_3e_20_3e_11',['SyncDataStore1&lt; std::shared_ptr&lt; std::vector&lt; webcface::LogLineData &gt; &gt; &gt;',['../classwebcface_1_1internal_1_1SyncDataStore1.html',1,'webcface::internal']]],
   ['syncdatastore1_3c_20std_3a_3astring_20_3e_12',['SyncDataStore1&lt; std::string &gt;',['../classwebcface_1_1internal_1_1SyncDataStore1.html',1,'webcface::internal']]],
   ['syncdatastore1test_13',['SyncDataStore1Test',['../classSyncDataStore1Test.html',1,'']]],
   ['syncdatastore2_14',['SyncDataStore2',['../classwebcface_1_1internal_1_1SyncDataStore2.html',1,'webcface::internal']]],

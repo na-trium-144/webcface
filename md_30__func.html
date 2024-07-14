@@ -223,7 +223,7 @@ $(document).ready(function(){initNavTree('md_30__func.html',''); initResizable()
 <p class="startli">callbackが呼び出されたとき <code>handle-&gt;args</code> に引数が格納されます。 set時に指定した引数の個数と呼び出し時の個数が一致しない場合、callbackが実行される前に呼び出し元に例外が投げられます(呼び出されていないのと同じことになります)</p>
 <p class="startli">値を返すのはreturnではなくhandleを介して行います。 </p><div class="fragment"><div class="line"><a class="code hl_struct" href="structwcfMultiVal.html">wcfMultiVal</a> ans = <a class="code hl_function" href="c__wcf_2func_8h.html#aee7f0f53dcb913e408f3032f7c9f796b">wcfValD</a>(123.45);</div>
 <div class="line"><a class="code hl_function" href="c__wcf_2func_8h.html#a0cde58bb43011b9e54fc80881cd19c30">wcfFuncRespond</a>(handle, &amp;ans);</div>
-<div class="ttc" id="ac__wcf_2func_8h_html_aee7f0f53dcb913e408f3032f7c9f796b"><div class="ttname"><a href="c__wcf_2func_8h.html#aee7f0f53dcb913e408f3032f7c9f796b">wcfValD</a></div><div class="ttdeci">wcfMultiVal wcfValD(double value)</div><div class="ttdoc">double型のwcfMultiValを構築</div><div class="ttdef"><b>Definition</b> client.cc:105</div></div>
+<div class="ttc" id="ac__wcf_2func_8h_html_aee7f0f53dcb913e408f3032f7c9f796b"><div class="ttname"><a href="c__wcf_2func_8h.html#aee7f0f53dcb913e408f3032f7c9f796b">wcfValD</a></div><div class="ttdeci">wcfMultiVal wcfValD(double value)</div><div class="ttdoc">double型のwcfMultiValを構築</div><div class="ttdef"><b>Definition</b> client.cc:108</div></div>
 </div><!-- fragment --><p> で関数のreturnと同様に関数を終了して値を返します (戻り値が不要な場合は <code>wcfFuncRespond(handle, NULL);</code> も可) </p><div class="fragment"><div class="line"><a class="code hl_function" href="c__wcf_2func_8h.html#a31bfc6b700cc627887821b6e7bfb9a81">wcfFuncReject</a>(handle, <span class="stringliteral">&quot;エラーメッセージ&quot;</span>);</div>
 <div class="ttc" id="ac__wcf_2func_8h_html_a31bfc6b700cc627887821b6e7bfb9a81"><div class="ttname"><a href="c__wcf_2func_8h.html#a31bfc6b700cc627887821b6e7bfb9a81">wcfFuncReject</a></div><div class="ttdeci">wcfStatus wcfFuncReject(const wcfFuncCallHandle *handle, const char *message)</div><div class="ttdoc">関数呼び出しに対してエラーメッセージを返す</div><div class="ttdef"><b>Definition</b> func.cc:295</div></div>
 </div><!-- fragment --><p> でエラーメッセージを返すことができます(呼び出し元にはruntime_errorを投げたものとして返ります) (<code>wcfFuncReject(handle, NULL);</code> も可)</p>
@@ -276,7 +276,7 @@ setした関数にWebCFace側で排他制御をかける機能(〜ver1.11まで)
 <div class="line">});</div>
 <div class="ttc" id="aclasswebcface_1_1Arg_html"><div class="ttname"><a href="classwebcface_1_1Arg.html">webcface::Arg</a></div><div class="ttdoc">引数の情報を表す。</div><div class="ttdef"><b>Definition</b> func_info.h:39</div></div>
 <div class="ttc" id="aclasswebcface_1_1Arg_html_a2e31ddffe3f62572d218e8e028423cfa"><div class="ttname"><a href="classwebcface_1_1Arg.html#a2e31ddffe3f62572d218e8e028423cfa">webcface::Arg::init</a></div><div class="ttdeci">std::optional&lt; ValAdaptor &gt; init() const</div><div class="ttdoc">デフォルト値を取得する。</div><div class="ttdef"><b>Definition</b> func_info.h:93</div></div>
-<div class="ttc" id="aclasswebcface_1_1Arg_html_ae07e02a3a02b4bd39dd61b3b7387a863"><div class="ttname"><a href="classwebcface_1_1Arg.html#ae07e02a3a02b4bd39dd61b3b7387a863">webcface::Arg::option</a></div><div class="ttdeci">const std::vector&lt; ValAdaptor &gt; &amp; option() const</div><div class="ttdoc">引数の選択肢を取得する。</div><div class="ttdef"><b>Definition</b> func_info.h:144</div></div>
+<div class="ttc" id="aclasswebcface_1_1Arg_html_ae07e02a3a02b4bd39dd61b3b7387a863"><div class="ttname"><a href="classwebcface_1_1Arg.html#ae07e02a3a02b4bd39dd61b3b7387a863">webcface::Arg::option</a></div><div class="ttdeci">const std::vector&lt; ValAdaptor &gt; &amp; option() const</div><div class="ttdoc">引数の選択肢を取得する。</div><div class="ttdef"><b>Definition</b> func_info.h:143</div></div>
 </div><!-- fragment --></li>
 <li><b class="tab-title">JavaScript</b> set関数の引数で指定します。 型情報を取得できないJavaScript, TypeScriptではここで型情報も指定する必要があります。 引数のオプションに関しては <a href="https://na-trium-144.github.io/webcface-js/interfaces/Arg.html">Arg</a> を参照 <div class="fragment"><div class="line">wcli.func(&quot;hoge&quot;).set(hoge, valType.float_, [</div>
 <div class="line">    { name: &quot;a&quot;, type: valType.int_, init: 100 },</div>
@@ -378,9 +378,9 @@ Entry</h2>
 <div class="line"><span class="comment">// ex.) ret = WCF_OK, ans-&gt;as_double = 123.45</span></div>
 <div class="line"> </div>
 <div class="line"><a class="code hl_function" href="c__wcf_2client_8h.html#a93f58103344d8d304c88e6fa28a92eb6">wcfDestroy</a>(ans);</div>
-<div class="ttc" id="ac__wcf_2client_8h_html_a93f58103344d8d304c88e6fa28a92eb6"><div class="ttname"><a href="c__wcf_2client_8h.html#a93f58103344d8d304c88e6fa28a92eb6">wcfDestroy</a></div><div class="ttdeci">wcfStatus wcfDestroy(const void *ptr)</div><div class="ttdoc">wcfの関数から取得したポインタのデータを破棄</div><div class="ttdef"><b>Definition</b> client.cc:114</div></div>
+<div class="ttc" id="ac__wcf_2client_8h_html_a93f58103344d8d304c88e6fa28a92eb6"><div class="ttname"><a href="c__wcf_2client_8h.html#a93f58103344d8d304c88e6fa28a92eb6">wcfDestroy</a></div><div class="ttdeci">wcfStatus wcfDestroy(const void *ptr)</div><div class="ttdoc">wcfの関数から取得したポインタのデータを破棄</div><div class="ttdef"><b>Definition</b> client.cc:123</div></div>
 <div class="ttc" id="ac__wcf_2func_8h_html_a66bdb804a3f7e0b7ef620180fbab9dfe"><div class="ttname"><a href="c__wcf_2func_8h.html#a66bdb804a3f7e0b7ef620180fbab9dfe">wcfFuncRun</a></div><div class="ttdeci">wcfStatus wcfFuncRun(wcfClient *wcli, const char *member, const char *field, const wcfMultiVal *args, int arg_size, wcfMultiVal **result)</div><div class="ttdoc">関数を呼び出す</div><div class="ttdef"><b>Definition</b> func.cc:217</div></div>
-<div class="ttc" id="ac__wcf_2func_8h_html_aef51e8d5db05da0a19a3c4f58a4c5193"><div class="ttname"><a href="c__wcf_2func_8h.html#aef51e8d5db05da0a19a3c4f58a4c5193">wcfValS</a></div><div class="ttdeci">wcfMultiVal wcfValS(const char *value)</div><div class="ttdoc">文字列型のwcfMultiValを構築</div><div class="ttdef"><b>Definition</b> client.cc:109</div></div>
+<div class="ttc" id="ac__wcf_2func_8h_html_aef51e8d5db05da0a19a3c4f58a4c5193"><div class="ttname"><a href="c__wcf_2func_8h.html#aef51e8d5db05da0a19a3c4f58a4c5193">wcfValS</a></div><div class="ttdeci">wcfMultiVal wcfValS(const char *value)</div><div class="ttdoc">文字列型のwcfMultiValを構築</div><div class="ttdef"><b>Definition</b> client.cc:115</div></div>
 </div><!-- fragment --><p> 関数が存在しない場合<code>WCF_NOT_FOUND</code>を返します。 関数が例外を投げた場合<code>WCF_EXCEPTION</code>を返し、ret-&gt;as_strにエラーメッセージが入ります。</p>
 <p class="startli"><span class="since-c">1.7</span> 結果が格納されているポインタは、不要になったら wcfDestroy(ans); で破棄してください。</p>
 <dl class="section warning"><dt>Warning</dt><dd><a class="el" href="c__wcf_2client_8h.html#ad84e50d3482bedb7ccfa278bfc00120c" title="サーバーへの接続を別スレッドで開始する。">wcfStart()</a>を呼んで通信を開始する前にwcfFuncRun()を呼び出してしまうとデッドロックします。</dd></dl>
@@ -478,7 +478,7 @@ CallbackListを返す AsyncFuncResult::onStarted(), onResult() (ver1.11)</summar
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Jul 12 2024 11:44:06 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Sun Jul 14 2024 06:23:44 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

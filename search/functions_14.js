@@ -85,6 +85,6 @@ var searchData=
   ['wcfwaitconnection_82',['wcfwaitconnection',['../c__wcf_2client_8h.html#aa7da62a9b282f6dcc1c0d4613799e337',1,'wcfWaitConnection(wcfClient *wcli, int interval):&#160;client.cc'],['../c__wcf_2client_8cc.html#aa7da62a9b282f6dcc1c0d4613799e337',1,'wcfWaitConnection(wcfClient *wcli, int interval):&#160;client.cc']]],
   ['wcfwaitrecv_83',['wcfwaitrecv',['../c__wcf_2client_8h.html#ae22ffc6f00fd812e9d7d1cfee86101c3',1,'wcfWaitRecv(wcfClient *wcli):&#160;client.cc'],['../c__wcf_2client_8cc.html#ae22ffc6f00fd812e9d7d1cfee86101c3',1,'wcfWaitRecv(wcfClient *wcli):&#160;client.cc']]],
   ['width_84',['width',['../classwebcface_1_1Size.html#a9d0cf56a3338ee6b4a79d221b340d36d',1,'webcface::Size::width()'],['../structwebcface_1_1components_1_1geometries_1_1Plane.html#a1efc0a0dcb559bb39e916e5d06dea3b7',1,'webcface::components::geometries::Plane::width()'],['../classwebcface_1_1ImageFrame.html#a9d0cf56a3338ee6b4a79d221b340d36d',1,'webcface::ImageFrame::width()']]],
-  ['writelog_85',['writeLog',['../client_2src_2log_8cc.html#aa24dcb3c216ddadf85473dc4d3d7583a',1,'log.cc']]],
+  ['writelog_85',['writeLog',['../client_2src_2log_8cc.html#afb02c6517368634c601dd69d27790664',1,'log.cc']]],
   ['wsl2host_86',['wsl2host',['../namespacewebcface_1_1message_1_1Path.html#a6f66b6ebca37cbc0fd22190142e37fb3',1,'webcface::message::Path::wsl2Host()'],['../namespacemessage_1_1Path.html#a6f66b6ebca37cbc0fd22190142e37fb3',1,'message::Path::wsl2Host()']]]
 ];

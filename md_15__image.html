@@ -179,8 +179,8 @@ $(document).ready(function(){initNavTree('md_15__image.html',''); initResizable(
 <div class="line"> </div>
 <div class="line"><span class="comment">// ver1.11以前: サイズは高さ,幅の順で指定</span></div>
 <div class="line"><span class="comment">// webcface::ImageFrame frame(480, 640, data, webcface::ImageColorMode::rgb);</span></div>
-<div class="ttc" id="aclasswebcface_1_1ImageFrame_html"><div class="ttname"><a href="classwebcface_1_1ImageFrame.html">webcface::ImageFrame</a></div><div class="ttdoc">(ver1.3から追加) 画像データ</div><div class="ttdef"><b>Definition</b> image_frame.h:90</div></div>
-<div class="ttc" id="anamespacewebcface_html_aad567272661344b3f8d82a09abc85049"><div class="ttname"><a href="namespacewebcface.html#aad567272661344b3f8d82a09abc85049">webcface::sizeWH</a></div><div class="ttdeci">Size sizeWH(std::size_t width, std::size_t height)</div><div class="ttdoc">幅 × 高さ でサイズを指定</div><div class="ttdef"><b>Definition</b> image_frame.h:33</div></div>
+<div class="ttc" id="aclasswebcface_1_1ImageFrame_html"><div class="ttname"><a href="classwebcface_1_1ImageFrame.html">webcface::ImageFrame</a></div><div class="ttdoc">(ver1.3から追加) 画像データ</div><div class="ttdef"><b>Definition</b> image_frame.h:85</div></div>
+<div class="ttc" id="anamespacewebcface_html_aad567272661344b3f8d82a09abc85049"><div class="ttname"><a href="namespacewebcface.html#aad567272661344b3f8d82a09abc85049">webcface::sizeWH</a></div><div class="ttdeci">Size sizeWH(std::size_t width, std::size_t height)</div><div class="ttdoc">幅 × 高さ でサイズを指定</div><div class="ttdef"><b>Definition</b> image_frame.h:32</div></div>
 </div><!-- fragment --><p> ImageColorModeとしては <code>gray</code>(8bitグレースケール)、<code>rgb</code>(8bit×3)、<code>bgr</code>(8bit×3)、<code>rgba</code>(8bit×4)、<code>bgra</code>(8bit×4) が扱えます。</p>
 <dl class="section note"><dt>Note</dt><dd>ImageFrameオブジェクト内部では画像データは<code>shared_ptr&lt;vector&lt;unsigned char&gt;&gt;</code>で保持されます。 <br  />
  ImageFrameのコンストラクタでdataの内容がすべてコピーされます。 <br  />
@@ -214,8 +214,8 @@ OpenCV</h2>
 <div class="line">                    mat.cols * mat.channels());</div>
 <div class="line">    }</div>
 <div class="line">}</div>
-<div class="ttc" id="aclasswebcface_1_1ImageFrame_html_a3bb44bffd89ae016c0bf0569b48730b6"><div class="ttname"><a href="classwebcface_1_1ImageFrame.html#a3bb44bffd89ae016c0bf0569b48730b6">webcface::ImageFrame::at</a></div><div class="ttdeci">const unsigned char &amp; at(std::size_t row, std::size_t col, std::size_t ch=0) const</div><div class="ttdoc">画像の要素にアクセス</div><div class="ttdef"><b>Definition</b> image_frame.h:242</div></div>
-<div class="ttc" id="anamespacewebcface_html_af86798df2fbf5f4c32747c0f237d0928"><div class="ttname"><a href="namespacewebcface.html#af86798df2fbf5f4c32747c0f237d0928">webcface::sizeHW</a></div><div class="ttdeci">Size sizeHW(std::size_t height, std::size_t width)</div><div class="ttdoc">高さ × 幅 でサイズを指定</div><div class="ttdef"><b>Definition</b> image_frame.h:40</div></div>
+<div class="ttc" id="aclasswebcface_1_1ImageFrame_html_a3bb44bffd89ae016c0bf0569b48730b6"><div class="ttname"><a href="classwebcface_1_1ImageFrame.html#a3bb44bffd89ae016c0bf0569b48730b6">webcface::ImageFrame::at</a></div><div class="ttdeci">const unsigned char &amp; at(std::size_t row, std::size_t col, std::size_t ch=0) const</div><div class="ttdoc">画像の要素にアクセス</div><div class="ttdef"><b>Definition</b> image_frame.h:237</div></div>
+<div class="ttc" id="anamespacewebcface_html_af86798df2fbf5f4c32747c0f237d0928"><div class="ttname"><a href="namespacewebcface.html#af86798df2fbf5f4c32747c0f237d0928">webcface::sizeHW</a></div><div class="ttdeci">Size sizeHW(std::size_t height, std::size_t width)</div><div class="ttdoc">高さ × 幅 でサイズを指定</div><div class="ttdef"><b>Definition</b> image_frame.h:39</div></div>
 </div><!-- fragment --></li>
 </ul>
 </div><div class="tabbed"></div><details >
@@ -309,7 +309,7 @@ Event</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Jul 12 2024 11:44:06 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Sun Jul 14 2024 06:23:44 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

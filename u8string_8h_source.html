@@ -147,7 +147,7 @@ $(document).ready(function(){initNavTree('u8string_8h_source.html',''); initResi
 </div><!--header-->
 <div class="contents">
 <a href="u8string_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#include &quot;utf8/cpp20.h&quot;</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#include &quot;utf8.h&quot;</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &quot;<a class="code" href="encoding_8h.html">webcface/encoding/encoding.h</a>&quot;</span></div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &lt;msgpack.hpp&gt;</span></div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &lt;string&gt;</span></div>
@@ -161,8 +161,8 @@ $(document).ready(function(){initNavTree('u8string_8h_source.html',''); initResi
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>    <span class="keyword">struct </span>convert&lt;<a class="code hl_namespace" href="namespacewebcface.html">webcface</a>::SharedString&gt; {</div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>        msgpack::object <span class="keyword">const</span> &amp;operator()(msgpack::object <span class="keyword">const</span> &amp;o,</div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>                                          <a class="code hl_class" href="classwebcface_1_1encoding_1_1SharedString.html">webcface::SharedString</a> &amp;v)<span class="keyword"> const </span>{</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>            v = <a class="code hl_class" href="classwebcface_1_1encoding_1_1SharedString.html">webcface::SharedString</a>(utf8::replace_invalid(std::u8string(</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>                <a class="code hl_function" href="namespacewebcface_1_1encoding.html#afff695d48a8809ef04f048e8ccc730aa">webcface::encoding::castToU8</a>(o.via.bin.ptr, o.via.bin.size))));</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>            v = <a class="code hl_function" href="classwebcface_1_1encoding_1_1SharedString.html#abce45bbc14557a38457b458d47a884aa">webcface::SharedString::fromU8String</a>(utf8::replace_invalid(</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>                std::string(o.via.bin.ptr, o.via.bin.size)));</div>
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>            <span class="keywordflow">return</span> o;</div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>        }</div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>    };</div>
@@ -171,28 +171,27 @@ $(document).ready(function(){initNavTree('u8string_8h_source.html',''); initResi
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>        <span class="keyword">template</span> &lt;<span class="keyword">typename</span> Stream&gt;</div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>        msgpack::packer&lt;Stream&gt; &amp;operator()(msgpack::packer&lt;Stream&gt; &amp;o,</div>
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>                                            <span class="keyword">const</span> <a class="code hl_class" href="classwebcface_1_1encoding_1_1SharedString.html">webcface::SharedString</a> &amp;v) {</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>            o.pack(<a class="code hl_function" href="namespacewebcface_1_1encoding.html#aec962491891b529b93c97668d385ff29">webcface::encoding::castFromU8</a>(v.<a class="code hl_function" href="classwebcface_1_1encoding_1_1SharedString.html#a0cbe4cbdaa84128d18971bb16b7af8f9">u8String</a>()));</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>            o.pack(v.<a class="code hl_function" href="classwebcface_1_1encoding_1_1SharedString.html#a0f47241963fefbf3fa5caa44765990c6">u8String</a>());</div>
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>            <span class="keywordflow">return</span> o;</div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>        }</div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    };</div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    } <span class="comment">// namespace adaptor</span></div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>}</div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>} <span class="comment">// namespace msgpack</span></div>
-<div class="ttc" id="aclasswebcface_1_1encoding_1_1SharedString_html"><div class="ttname"><a href="classwebcface_1_1encoding_1_1SharedString.html">webcface::SharedString</a></div><div class="ttdoc">u8stringとstringとwstringをshared_ptrで持ち共有する</div><div class="ttdef"><b>Definition</b> encoding.h:113</div></div>
-<div class="ttc" id="aclasswebcface_1_1encoding_1_1SharedString_html_a0cbe4cbdaa84128d18971bb16b7af8f9"><div class="ttname"><a href="classwebcface_1_1encoding_1_1SharedString.html#a0cbe4cbdaa84128d18971bb16b7af8f9">webcface::encoding::SharedString::u8String</a></div><div class="ttdeci">const std::u8string &amp; u8String() const</div><div class="ttdef"><b>Definition</b> encoding.cc:146</div></div>
+<div class="ttc" id="aclasswebcface_1_1encoding_1_1SharedString_html"><div class="ttname"><a href="classwebcface_1_1encoding_1_1SharedString.html">webcface::SharedString</a></div><div class="ttdoc">u8stringとstringとwstringをshared_ptrで持ち共有する</div><div class="ttdef"><b>Definition</b> encoding.h:61</div></div>
+<div class="ttc" id="aclasswebcface_1_1encoding_1_1SharedString_html_a0f47241963fefbf3fa5caa44765990c6"><div class="ttname"><a href="classwebcface_1_1encoding_1_1SharedString.html#a0f47241963fefbf3fa5caa44765990c6">webcface::encoding::SharedString::u8String</a></div><div class="ttdeci">const std::string &amp; u8String() const</div><div class="ttdef"><b>Definition</b> encoding.cc:56</div></div>
+<div class="ttc" id="aclasswebcface_1_1encoding_1_1SharedString_html_abce45bbc14557a38457b458d47a884aa"><div class="ttname"><a href="classwebcface_1_1encoding_1_1SharedString.html#abce45bbc14557a38457b458d47a884aa">webcface::encoding::SharedString::fromU8String</a></div><div class="ttdeci">static SharedString fromU8String(std::string_view u8s)</div><div class="ttdef"><b>Definition</b> encoding.cc:17</div></div>
 <div class="ttc" id="adef_8h_html"><div class="ttname"><a href="def_8h.html">def.h</a></div></div>
 <div class="ttc" id="aencoding_8h_html"><div class="ttname"><a href="encoding_8h.html">encoding.h</a></div></div>
-<div class="ttc" id="anamespacewebcface_1_1encoding_html_aec962491891b529b93c97668d385ff29"><div class="ttname"><a href="namespacewebcface_1_1encoding.html#aec962491891b529b93c97668d385ff29">webcface::encoding::castFromU8</a></div><div class="ttdeci">std::string_view castFromU8(std::u8string_view name)</div><div class="ttdoc">u8stringをstringにキャストする</div><div class="ttdef"><b>Definition</b> encoding.cc:139</div></div>
-<div class="ttc" id="anamespacewebcface_1_1encoding_html_afff695d48a8809ef04f048e8ccc730aa"><div class="ttname"><a href="namespacewebcface_1_1encoding.html#afff695d48a8809ef04f048e8ccc730aa">webcface::encoding::castToU8</a></div><div class="ttdeci">std::u8string_view castToU8(std::string_view name)</div><div class="ttdoc">stringをu8stringにキャストする</div><div class="ttdef"><b>Definition</b> encoding.cc:134</div></div>
-<div class="ttc" id="anamespacewebcface_1_1message_html_a36879effdf16e6acdd563b41fb630f35"><div class="ttname"><a href="namespacewebcface_1_1message.html#a36879effdf16e6acdd563b41fb630f35">webcface::message::pack</a></div><div class="ttdeci">void pack(std::stringstream &amp;buffer, int &amp;len, const T &amp;obj)</div><div class="ttdoc">メッセージをシリアル化しbufferに追加</div><div class="ttdef"><b>Definition</b> message.h:796</div></div>
-<div class="ttc" id="anamespacewebcface_html"><div class="ttname"><a href="namespacewebcface.html">webcface</a></div><div class="ttdef"><b>Definition</b> canvas2d.h:8</div></div>
+<div class="ttc" id="anamespacewebcface_1_1message_html_a36879effdf16e6acdd563b41fb630f35"><div class="ttname"><a href="namespacewebcface_1_1message.html#a36879effdf16e6acdd563b41fb630f35">webcface::message::pack</a></div><div class="ttdeci">void pack(std::stringstream &amp;buffer, int &amp;len, const T &amp;obj)</div><div class="ttdoc">メッセージをシリアル化しbufferに追加</div><div class="ttdef"><b>Definition</b> message.h:797</div></div>
+<div class="ttc" id="anamespacewebcface_html"><div class="ttname"><a href="namespacewebcface.html">webcface</a></div><div class="ttdef"><b>Definition</b> canvas2d.h:7</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d06cd19e7b0a7bd71ca3f88af4ac0d59.html">message</a></li><li class="navelem"><a class="el" href="dir_a6076a770b2fcf500b134dd4b5eda5a3.html">include</a></li><li class="navelem"><a class="el" href="dir_f6f3eb0f33fd584af7d3535993a573c2.html">webcface</a></li><li class="navelem"><a class="el" href="dir_b22d29bd644537694a773143f981a332.html">message</a></li><li class="navelem"><a class="el" href="u8string_8h.html">u8string.h</a></li>
-    <li class="footer">Generated on Fri Jul 12 2024 11:44:06 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Sun Jul 14 2024 06:23:44 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

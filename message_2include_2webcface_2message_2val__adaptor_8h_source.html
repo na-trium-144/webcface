@@ -179,51 +179,49 @@ $(document).ready(function(){initNavTree('message_2include_2webcface_2message_2v
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>                <span class="keywordflow">break</span>;</div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>            <span class="keywordflow">case</span> msgpack::type::BIN:</div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>            <span class="keywordflow">case</span> msgpack::type::STR:</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>                v = utf8::replace_invalid(</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>                    std::u8string(<a class="code hl_function" href="namespacewebcface_1_1encoding.html#afff695d48a8809ef04f048e8ccc730aa">webcface::encoding::castToU8</a>(</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>                        o.via.bin.ptr, o.via.bin.size)));</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>                <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>            <span class="keywordflow">default</span>:</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>                <span class="keywordflow">throw</span> msgpack::type_error();</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>            }</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>            <span class="keywordflow">return</span> o;</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>        }</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    };</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    <span class="keyword">template</span> &lt;&gt;</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    <span class="keyword">struct </span><a class="code hl_function" href="namespacewebcface_1_1message.html#a36879effdf16e6acdd563b41fb630f35">pack</a>&lt;<a class="code hl_namespace" href="namespacewebcface.html">webcface</a>::ValAdaptor&gt; {</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>        <span class="keyword">template</span> &lt;<span class="keyword">typename</span> Stream&gt;</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>        msgpack::packer&lt;Stream&gt; &amp;operator()(msgpack::packer&lt;Stream&gt; &amp;o,</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>                                            <span class="keyword">const</span> <a class="code hl_class" href="classwebcface_1_1encoding_1_1ValAdaptor.html">webcface::ValAdaptor</a> &amp;v) {</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>            <span class="keywordflow">switch</span> (v.<a class="code hl_function" href="classwebcface_1_1encoding_1_1ValAdaptor.html#abbfeeae645abbaf39aeb6fb0c8b00007">valType</a>()) {</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>            <span class="keywordflow">case</span> webcface::ValType::bool_:</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>                o.pack(<span class="keyword">static_cast&lt;</span><span class="keywordtype">bool</span><span class="keyword">&gt;</span>(v));</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>                <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>            <span class="keywordflow">case</span> webcface::ValType::int_:</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>                o.pack(<span class="keyword">static_cast&lt;</span>std::int64_t<span class="keyword">&gt;</span>(v));</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>                <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>            <span class="keywordflow">case</span> webcface::ValType::float_:</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>                o.pack(<span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(v));</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>                <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>            <span class="keywordflow">case</span> webcface::ValType::string_:</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>            <span class="keywordflow">default</span>:</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>                o.pack(<a class="code hl_function" href="namespacewebcface_1_1encoding.html#aec962491891b529b93c97668d385ff29">webcface::encoding::castFromU8</a>(v.<a class="code hl_function" href="classwebcface_1_1encoding_1_1ValAdaptor.html#a6a112b3451424916900f65ee73749d6f">asU8StringRef</a>()));</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>                <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>            }</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>            <span class="keywordflow">return</span> o;</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>        }</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    };</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    } <span class="comment">// namespace adaptor</span></div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>}</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>} <span class="comment">// namespace msgpack</span></div>
-<div class="ttc" id="aclasswebcface_1_1encoding_1_1ValAdaptor_html"><div class="ttname"><a href="classwebcface_1_1encoding_1_1ValAdaptor.html">webcface::ValAdaptor</a></div><div class="ttdoc">数値、文字列などの値を相互変換するクラス</div><div class="ttdef"><b>Definition</b> val_adaptor.h:84</div></div>
-<div class="ttc" id="aclasswebcface_1_1encoding_1_1ValAdaptor_html_a6a112b3451424916900f65ee73749d6f"><div class="ttname"><a href="classwebcface_1_1encoding_1_1ValAdaptor.html#a6a112b3451424916900f65ee73749d6f">webcface::encoding::ValAdaptor::asU8StringRef</a></div><div class="ttdeci">const std::u8string &amp; asU8StringRef() const</div><div class="ttdef"><b>Definition</b> val_adaptor.cc:94</div></div>
-<div class="ttc" id="aclasswebcface_1_1encoding_1_1ValAdaptor_html_abbfeeae645abbaf39aeb6fb0c8b00007"><div class="ttname"><a href="classwebcface_1_1encoding_1_1ValAdaptor.html#abbfeeae645abbaf39aeb6fb0c8b00007">webcface::encoding::ValAdaptor::valType</a></div><div class="ttdeci">ValType valType() const</div><div class="ttdef"><b>Definition</b> val_adaptor.h:171</div></div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>                v = <a class="code hl_function" href="classwebcface_1_1encoding_1_1SharedString.html#abce45bbc14557a38457b458d47a884aa">webcface::SharedString::fromU8String</a>(utf8::replace_invalid(</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>                    std::string(o.via.bin.ptr, o.via.bin.size)));</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>                <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>            <span class="keywordflow">default</span>:</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>                <span class="keywordflow">throw</span> msgpack::type_error();</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>            }</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>            <span class="keywordflow">return</span> o;</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>        }</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    };</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    <span class="keyword">template</span> &lt;&gt;</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    <span class="keyword">struct </span><a class="code hl_function" href="namespacewebcface_1_1message.html#a36879effdf16e6acdd563b41fb630f35">pack</a>&lt;<a class="code hl_namespace" href="namespacewebcface.html">webcface</a>::ValAdaptor&gt; {</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>        <span class="keyword">template</span> &lt;<span class="keyword">typename</span> Stream&gt;</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>        msgpack::packer&lt;Stream&gt; &amp;operator()(msgpack::packer&lt;Stream&gt; &amp;o,</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>                                            <span class="keyword">const</span> <a class="code hl_class" href="classwebcface_1_1encoding_1_1ValAdaptor.html">webcface::ValAdaptor</a> &amp;v) {</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>            <span class="keywordflow">switch</span> (v.<a class="code hl_function" href="classwebcface_1_1encoding_1_1ValAdaptor.html#abbfeeae645abbaf39aeb6fb0c8b00007">valType</a>()) {</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>            <span class="keywordflow">case</span> webcface::ValType::bool_:</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>                o.pack(<span class="keyword">static_cast&lt;</span><span class="keywordtype">bool</span><span class="keyword">&gt;</span>(v));</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>                <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>            <span class="keywordflow">case</span> webcface::ValType::int_:</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>                o.pack(<span class="keyword">static_cast&lt;</span>std::int64_t<span class="keyword">&gt;</span>(v));</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>                <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>            <span class="keywordflow">case</span> webcface::ValType::float_:</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>                o.pack(<span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(v));</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>                <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>            <span class="keywordflow">case</span> webcface::ValType::string_:</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>            <span class="keywordflow">default</span>:</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>                o.pack(v.<a class="code hl_function" href="classwebcface_1_1encoding_1_1ValAdaptor.html#a916ac9c95f14ecb413db9d3069a26cab">asU8StringRef</a>());</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>                <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>            }</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>            <span class="keywordflow">return</span> o;</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>        }</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    };</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    } <span class="comment">// namespace adaptor</span></div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>}</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>} <span class="comment">// namespace msgpack</span></div>
+<div class="ttc" id="aclasswebcface_1_1encoding_1_1SharedString_html_abce45bbc14557a38457b458d47a884aa"><div class="ttname"><a href="classwebcface_1_1encoding_1_1SharedString.html#abce45bbc14557a38457b458d47a884aa">webcface::encoding::SharedString::fromU8String</a></div><div class="ttdeci">static SharedString fromU8String(std::string_view u8s)</div><div class="ttdef"><b>Definition</b> encoding.cc:17</div></div>
+<div class="ttc" id="aclasswebcface_1_1encoding_1_1ValAdaptor_html"><div class="ttname"><a href="classwebcface_1_1encoding_1_1ValAdaptor.html">webcface::ValAdaptor</a></div><div class="ttdoc">数値、文字列などの値を相互変換するクラス</div><div class="ttdef"><b>Definition</b> val_adaptor.h:83</div></div>
+<div class="ttc" id="aclasswebcface_1_1encoding_1_1ValAdaptor_html_a916ac9c95f14ecb413db9d3069a26cab"><div class="ttname"><a href="classwebcface_1_1encoding_1_1ValAdaptor.html#a916ac9c95f14ecb413db9d3069a26cab">webcface::encoding::ValAdaptor::asU8StringRef</a></div><div class="ttdeci">const std::string &amp; asU8StringRef() const</div><div class="ttdef"><b>Definition</b> val_adaptor.cc:90</div></div>
+<div class="ttc" id="aclasswebcface_1_1encoding_1_1ValAdaptor_html_abbfeeae645abbaf39aeb6fb0c8b00007"><div class="ttname"><a href="classwebcface_1_1encoding_1_1ValAdaptor.html#abbfeeae645abbaf39aeb6fb0c8b00007">webcface::encoding::ValAdaptor::valType</a></div><div class="ttdeci">ValType valType() const</div><div class="ttdef"><b>Definition</b> val_adaptor.h:162</div></div>
 <div class="ttc" id="adef_8h_html"><div class="ttname"><a href="def_8h.html">def.h</a></div></div>
 <div class="ttc" id="aencoding_2include_2webcface_2encoding_2val__adaptor_8h_html"><div class="ttname"><a href="encoding_2include_2webcface_2encoding_2val__adaptor_8h.html">val_adaptor.h</a></div></div>
-<div class="ttc" id="anamespacewebcface_1_1encoding_html_aec962491891b529b93c97668d385ff29"><div class="ttname"><a href="namespacewebcface_1_1encoding.html#aec962491891b529b93c97668d385ff29">webcface::encoding::castFromU8</a></div><div class="ttdeci">std::string_view castFromU8(std::u8string_view name)</div><div class="ttdoc">u8stringをstringにキャストする</div><div class="ttdef"><b>Definition</b> encoding.cc:139</div></div>
-<div class="ttc" id="anamespacewebcface_1_1encoding_html_afff695d48a8809ef04f048e8ccc730aa"><div class="ttname"><a href="namespacewebcface_1_1encoding.html#afff695d48a8809ef04f048e8ccc730aa">webcface::encoding::castToU8</a></div><div class="ttdeci">std::u8string_view castToU8(std::string_view name)</div><div class="ttdoc">stringをu8stringにキャストする</div><div class="ttdef"><b>Definition</b> encoding.cc:134</div></div>
-<div class="ttc" id="anamespacewebcface_1_1message_html_a36879effdf16e6acdd563b41fb630f35"><div class="ttname"><a href="namespacewebcface_1_1message.html#a36879effdf16e6acdd563b41fb630f35">webcface::message::pack</a></div><div class="ttdeci">void pack(std::stringstream &amp;buffer, int &amp;len, const T &amp;obj)</div><div class="ttdoc">メッセージをシリアル化しbufferに追加</div><div class="ttdef"><b>Definition</b> message.h:796</div></div>
-<div class="ttc" id="anamespacewebcface_html"><div class="ttname"><a href="namespacewebcface.html">webcface</a></div><div class="ttdef"><b>Definition</b> canvas2d.h:8</div></div>
+<div class="ttc" id="anamespacewebcface_1_1message_html_a36879effdf16e6acdd563b41fb630f35"><div class="ttname"><a href="namespacewebcface_1_1message.html#a36879effdf16e6acdd563b41fb630f35">webcface::message::pack</a></div><div class="ttdeci">void pack(std::stringstream &amp;buffer, int &amp;len, const T &amp;obj)</div><div class="ttdoc">メッセージをシリアル化しbufferに追加</div><div class="ttdef"><b>Definition</b> message.h:797</div></div>
+<div class="ttc" id="anamespacewebcface_html"><div class="ttname"><a href="namespacewebcface.html">webcface</a></div><div class="ttdef"><b>Definition</b> canvas2d.h:7</div></div>
 <div class="ttc" id="au8string_8h_html"><div class="ttname"><a href="u8string_8h.html">u8string.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
@@ -231,7 +229,7 @@ $(document).ready(function(){initNavTree('message_2include_2webcface_2message_2v
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d06cd19e7b0a7bd71ca3f88af4ac0d59.html">message</a></li><li class="navelem"><a class="el" href="dir_a6076a770b2fcf500b134dd4b5eda5a3.html">include</a></li><li class="navelem"><a class="el" href="dir_f6f3eb0f33fd584af7d3535993a573c2.html">webcface</a></li><li class="navelem"><a class="el" href="dir_b22d29bd644537694a773143f981a332.html">message</a></li><li class="navelem"><a class="el" href="message_2include_2webcface_2message_2val__adaptor_8h.html">val_adaptor.h</a></li>
-    <li class="footer">Generated on Fri Jul 12 2024 11:44:06 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Sun Jul 14 2024 06:23:44 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

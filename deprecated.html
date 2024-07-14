@@ -180,6 +180,8 @@ $(document).ready(function(){initNavTree('deprecated.html',''); initResizable();
 <dd><a class="anchor" id="_deprecated000018"></a>1.7でMember::syncTime()に変更 </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1ImageFrame.html#a32a0ee55778ae1e6f2034f955edc098a">ImageFrame::ImageFrame</a>  (int rows, int cols, const void *data, ImageColorMode color_mode=ImageColorMode::bgr)</dt>
 <dd><a class="anchor" id="_deprecated000019"></a>ver2.0〜 rows, colsの順番がややこしいので <a class="el" href="namespacewebcface.html#af86798df2fbf5f4c32747c0f237d0928" title="高さ × 幅 でサイズを指定">sizeHW()</a> を使ってサイズ指定 </dd>
+<dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1InputRef.html#a6c8717854f176b75328439d1defc7a17">InputRef::as</a>  () const</dt>
+<dd><a class="anchor" id="_deprecated000031"></a>ver2.0〜 <a class="el" href="classwebcface_1_1InputRef.html#ac483232c52e23cedd51e35d4015fe627" title="実数として返す">asDouble()</a>, <a class="el" href="classwebcface_1_1InputRef.html#aafa1a9ae7a20989284486d6edd7f6c12" title="int型の整数として返す">asInt()</a>, <a class="el" href="classwebcface_1_1InputRef.html#a728dd54787a857085d71c0579eaf62e1" title="long long型の整数として返す">asLLong()</a> を追加 さらにas&lt;T&gt;にはTになにを指定してもdoubleで返るというバグがある </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Log.html#ac08489fff9ea455ad213be400b285c35">Log::appendListener</a>  (T &amp;&amp;callback)</dt>
 <dd><a class="anchor" id="_deprecated000020"></a> ver1.11まではEventTarget::appendListener()でコールバックを追加できたが、 ver2.0からコールバックは1個のみになった。 <a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd" title="TのValTypeを得る">互換性のため残しているがonChange()</a>と同じ </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Member.html#a7fd842c99612e3ce7332ea288325cd7b">Member::funcs</a>  () const</dt>
@@ -202,16 +204,16 @@ $(document).ready(function(){initNavTree('deprecated.html',''); initResizable();
 <dd><a class="anchor" id="_deprecated000029"></a> ver1.11まではEventTarget::appendListener()でコールバックを追加できたが、 ver2.0からコールバックは1個のみになった。 <a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd" title="TのValTypeを得る">互換性のため残しているがonChange()</a>と同じ </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Text.html#a3799c65797b21f35329dc284df16a65d">Text::time</a>  () const</dt>
 <dd><a class="anchor" id="_deprecated000030"></a>1.7でMember::syncTime()に変更  </dd>
-<dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1encoding_1_1ValAdaptor.html#ae30a38ec215c7dc29368fedb325e7ec9">ValAdaptor::as</a>  () const</dt>
-<dd><a class="anchor" id="_deprecated000035"></a>ver2.0〜 <a class="el" href="classwebcface_1_1encoding_1_1ValAdaptor.html#ac483232c52e23cedd51e35d4015fe627" title="実数として返す">asDouble()</a>, <a class="el" href="classwebcface_1_1encoding_1_1ValAdaptor.html#aafa1a9ae7a20989284486d6edd7f6c12" title="int型の整数として返す">asInt()</a>, <a class="el" href="classwebcface_1_1encoding_1_1ValAdaptor.html#a728dd54787a857085d71c0579eaf62e1" title="long long型の整数として返す">asLLong()</a> を追加 </dd>
+<dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1encoding_1_1ValAdaptor.html#a6c8717854f176b75328439d1defc7a17">ValAdaptor::as</a>  () const</dt>
+<dd><a class="anchor" id="_deprecated000036"></a>ver2.0〜 <a class="el" href="classwebcface_1_1encoding_1_1ValAdaptor.html#ac483232c52e23cedd51e35d4015fe627" title="実数として返す">asDouble()</a>, <a class="el" href="classwebcface_1_1encoding_1_1ValAdaptor.html#aafa1a9ae7a20989284486d6edd7f6c12" title="int型の整数として返す">asInt()</a>, <a class="el" href="classwebcface_1_1encoding_1_1ValAdaptor.html#a728dd54787a857085d71c0579eaf62e1" title="long long型の整数として返す">asLLong()</a> を追加 さらにas&lt;T&gt;にはTになにを指定してもdoubleで返るというバグがある </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Value.html#ac08489fff9ea455ad213be400b285c35">Value::appendListener</a>  (T &amp;&amp;callback)</dt>
-<dd><a class="anchor" id="_deprecated000031"></a> ver1.11まではEventTarget::appendListener()でコールバックを追加できたが、 ver2.0からコールバックは1個のみになった。 <a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd" title="TのValTypeを得る">互換性のため残しているがonChange()</a>と同じ </dd>
+<dd><a class="anchor" id="_deprecated000032"></a> ver1.11まではEventTarget::appendListener()でコールバックを追加できたが、 ver2.0からコールバックは1個のみになった。 <a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd" title="TのValTypeを得る">互換性のため残しているがonChange()</a>と同じ </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Value.html#a3799c65797b21f35329dc284df16a65d">Value::time</a>  () const</dt>
-<dd><a class="anchor" id="_deprecated000032"></a>1.7で <a class="el" href="classwebcface_1_1Member.html#aaace8ffd82d2eb79c72f3411d3311b9b" title="最後のsync()の時刻を返す">Member::syncTime()</a> に変更  </dd>
+<dd><a class="anchor" id="_deprecated000033"></a>1.7で <a class="el" href="classwebcface_1_1Member.html#aaace8ffd82d2eb79c72f3411d3311b9b" title="最後のsync()の時刻を返す">Member::syncTime()</a> に変更  </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1View.html#ac08489fff9ea455ad213be400b285c35">View::appendListener</a>  (T &amp;&amp;callback)</dt>
-<dd><a class="anchor" id="_deprecated000033"></a> ver1.11まではEventTarget::appendListener()でコールバックを追加できたが、 ver2.0からコールバックは1個のみになった。 <a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd" title="TのValTypeを得る">互換性のため残しているがonChange()</a>と同じ </dd>
+<dd><a class="anchor" id="_deprecated000034"></a> ver1.11まではEventTarget::appendListener()でコールバックを追加できたが、 ver2.0からコールバックは1個のみになった。 <a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd" title="TのValTypeを得る">互換性のため残しているがonChange()</a>と同じ </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1View.html#a3799c65797b21f35329dc284df16a65d">View::time</a>  () const</dt>
-<dd><a class="anchor" id="_deprecated000034"></a>1.7でMember::syncTime()に変更</dd>
+<dd><a class="anchor" id="_deprecated000035"></a>1.7でMember::syncTime()に変更</dd>
 </dl>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
@@ -219,7 +221,7 @@ $(document).ready(function(){initNavTree('deprecated.html',''); initResizable();
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Jul 12 2024 11:44:06 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Sun Jul 14 2024 06:23:44 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

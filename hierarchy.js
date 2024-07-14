@@ -100,7 +100,10 @@ var hierarchy =
     [ "Line", "structwebcface_1_1components_1_1geometries_1_1Line.html", null ],
     [ "Line", "structwebcface_1_1components_1_1geometries_1_1Line.html", null ],
     [ "LogLine", "structwebcface_1_1message_1_1LogLine.html", null ],
-    [ "LogLineData< CharT >", "classwebcface_1_1LogLineData.html", null ],
+    [ "LogLineData", "structwebcface_1_1LogLineData.html", [
+      [ "LogLine", "classwebcface_1_1LogLine.html", null ],
+      [ "LogLineW", "classwebcface_1_1LogLineW.html", null ]
+    ] ],
     [ "MemberData", "structwebcface_1_1server_1_1MemberData.html", null ],
     [ "MessageBase< k >", "structwebcface_1_1message_1_1MessageBase.html", null ],
     [ "MessageBase< MessageKind::call >", "structwebcface_1_1message_1_1MessageBase.html", [
@@ -226,7 +229,7 @@ var hierarchy =
     ] ],
     [ "SyncDataStore1< T >", "classwebcface_1_1internal_1_1SyncDataStore1.html", null ],
     [ "SyncDataStore1< std::chrono::system_clock::time_point >", "classwebcface_1_1internal_1_1SyncDataStore1.html", null ],
-    [ "SyncDataStore1< std::shared_ptr< std::vector< webcface::LogLineData<> > > >", "classwebcface_1_1internal_1_1SyncDataStore1.html", null ],
+    [ "SyncDataStore1< std::shared_ptr< std::vector< webcface::LogLineData > > >", "classwebcface_1_1internal_1_1SyncDataStore1.html", null ],
     [ "SyncDataStore1< std::string >", "classwebcface_1_1internal_1_1SyncDataStore1.html", null ],
     [ "SyncDataStore2< T, ReqT >", "classwebcface_1_1internal_1_1SyncDataStore2.html", null ],
     [ "SyncDataStore2< Canvas2DData >", "classwebcface_1_1internal_1_1SyncDataStore2.html", null ],
