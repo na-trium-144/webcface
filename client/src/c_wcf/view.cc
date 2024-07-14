@@ -1,6 +1,6 @@
 #include "c_wcf_internal.h"
 #include "webcface/encoding/encoding.h"
-#include <webcface/view.h>
+#include "webcface/view.h"
 #include <cstring>
 
 static inline wcfViewComponent wcfViewInit() {

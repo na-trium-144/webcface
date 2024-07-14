@@ -3,8 +3,8 @@
 #include <vector>
 #include <memory>
 #include <cstddef>
-#include <webcface/common/def.h>
-#include <webcface/encoding/image_mode.h>
+#include "webcface/common/def.h"
+#include "webcface/encoding/image_mode.h"
 
 WEBCFACE_NS_BEGIN
 namespace message {

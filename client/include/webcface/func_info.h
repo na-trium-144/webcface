@@ -8,7 +8,7 @@
 #include <ostream>
 #include <cstddef>
 #include "webcface/encoding/val_adaptor.h"
-#include <webcface/common/def.h>
+#include "webcface/common/def.h"
 
 #ifdef min
 // clang-format off

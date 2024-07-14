@@ -3,15 +3,11 @@
 #include <vector>
 #include <optional>
 #include "field.h"
-#include <webcface/common/def.h>
+#include "webcface/common/def.h"
 #include "func.h"
 #include "webcface/log.h"
 
 WEBCFACE_NS_BEGIN
-
-namespace internal {
-struct ClientData;
-}
 
 /*!
  * \brief Memberを指すクラス

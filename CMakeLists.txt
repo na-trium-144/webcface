@@ -190,8 +190,10 @@ endif()
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     if(WEBCFACE_WARNING)
-        add_compile_options(/W4)
+        add_compile_options(/W4 /wd4251 /WX)
+        add_link_options(/W4 /WX)
     endif()
+    add_compile_options(/external:anglebrackets /external:W1)
     add_compile_options(/utf-8 /bigobj)
     add_compile_definitions(
         _CRT_SECURE_NO_WARNINGS

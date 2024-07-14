@@ -1,12 +1,11 @@
 #pragma once
 #include <mutex>
-#include <webcface/func_info.h>
-#include <webcface/func_result.h>
-#include <webcface/common/def.h>
+#include "webcface/func_info.h"
+#include "webcface/func_result.h"
+#include "webcface/common/def.h"
 
 WEBCFACE_NS_BEGIN
 namespace internal {
-
 /*!
  * \brief AsyncFuncResultのデータを保持するクラス
  *

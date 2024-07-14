@@ -6,8 +6,8 @@
 #include <stdexcept>
 #include "field.h"
 #include "webcface/encoding/val_adaptor.h"
-#include <webcface/common/def.h>
-#include <webcface/c_wcf/def_types.h>
+#include "webcface/common/def.h"
+#include "webcface/c_wcf/def_types.h"
 
 WEBCFACE_NS_BEGIN
 namespace internal {
