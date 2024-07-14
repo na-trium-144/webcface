@@ -35,7 +35,7 @@ class WEBCFACE_DLL Server {
     std::thread ping_thread; // storeよりも後ろ
 
   public:
-    Server(int port, int level, int keep_log = 1000);
+    Server(std::uint16_t port, int level, int keep_log = 1000);
     ~Server();
     void join();
 

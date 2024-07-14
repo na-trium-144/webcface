@@ -38,10 +38,10 @@ int main() {
             assert(img_frame.color_mode() == webcface::ImageColorMode::rgb);
             assert(img_frame.rows() == 300);
             assert(img_frame.cols() == 300);
-            Magick::Image img(img_frame.rows(), img_frame.cols(), "RGB",
-                              Magick::CharPixel, img_frame.data().data());
-            // img.display();
-            img.write("webcface-example-image-recv-2.png");
+            Magick::Image m(img_frame.rows(), img_frame.cols(), "RGB",
+                            Magick::CharPixel, img_frame.data().data());
+            // m.display();
+            m.write("webcface-example-image-recv-2.png");
             break;
         }
         std::this_thread::yield();

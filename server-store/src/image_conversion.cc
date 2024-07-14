@@ -235,10 +235,8 @@ void MemberData::imageConvertThreadMain(const SharedString &member,
                                 static_cast<int>(info.cmp_mode));
                             return;
                         }
-                        message::ImageFrame img_send{static_cast<size_t>(cols),
-                                                     static_cast<size_t>(rows),
-                                                     encoded, color_mode,
-                                                     info.cmp_mode};
+                        message::ImageFrame img_send{cols, rows, encoded,
+                                                     color_mode, info.cmp_mode};
                         logger->trace("finished converting image of {}, {}",
                                       member.decode(), field.decode());
                         if (!cd->closing.load() && !this->closing.load()) {

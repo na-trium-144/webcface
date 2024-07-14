@@ -103,10 +103,10 @@ unsigned int SyncDataStore2<T, ReqT>::addReq(const SharedString &member,
 template <typename T, typename ReqT>
 unsigned int SyncDataStore2<T, ReqT>::addReq(const SharedString &member,
                                              const SharedString &field,
-                                             const ReqT &req_info) {
+                                             const ReqT &info) {
     std::lock_guard lock(mtx);
     if (!isSelf(member) && (req[member][field] == 0 ||
-                            this->req_info[member][field] != req_info)) {
+                            this->req_info[member][field] != info)) {
         unsigned int max_req = 0;
         for (const auto &r : req) {
             for (const auto &r2 : r.second) {
@@ -116,7 +116,7 @@ unsigned int SyncDataStore2<T, ReqT>::addReq(const SharedString &member,
             }
         }
         req[member][field] = max_req + 1;
-        this->req_info[member][field] = req_info;
+        this->req_info[member][field] = info;
         return max_req + 1;
     }
     return 0;

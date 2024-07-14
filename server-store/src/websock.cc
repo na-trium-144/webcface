@@ -44,8 +44,9 @@ void Server::pingThreadMain() {
             std::make_shared<std::unordered_map<unsigned int, int>>();
         store->forEach([&](auto cd) {
             if (cd->last_ping_duration) {
-                new_ping_status->emplace(cd->member_id,
-                                         cd->last_ping_duration->count());
+                new_ping_status->emplace(
+                    cd->member_id,
+                    static_cast<int>(cd->last_ping_duration->count()));
             }
         });
         store->ping_status = new_ping_status;
@@ -92,7 +93,7 @@ Server::~Server() {
     }
 }
 
-Server::Server(int port, int level, int keep_log)
+Server::Server(std::uint16_t port, int level, int keep_log)
     : server_stop(false), apps(), apps_running(), server_ping_wait(),
       store(std::make_unique<ServerStorage>(this, keep_log)),
       ping_thread([this] { pingThreadMain(); }) {

@@ -67,9 +67,9 @@ Func &Func::setAsync(const std::vector<Arg> &args, ValType return_type,
 }
 
 std::shared_future<ValAdaptor>
-FuncInfo::run(const std::vector<ValAdaptor> &args, bool caller_async,
+FuncInfo::run(const std::vector<ValAdaptor> &call_args, bool caller_async,
               const std::shared_ptr<internal::AsyncFuncState> &state) {
-    std::shared_future<ValAdaptor> ret = func_impl(args).share();
+    std::shared_future<ValAdaptor> ret = func_impl(call_args).share();
     if (state) {
         state->setResultFuture(ret);
     }

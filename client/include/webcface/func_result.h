@@ -22,8 +22,8 @@ class Member;
  * (ValueやTextで参照先が見つからなかった場合はこれではなく単にnulloptが返る)
  *
  */
-struct WEBCFACE_DLL FuncNotFound : public std::runtime_error {
-    explicit FuncNotFound(const FieldBase &base);
+struct FuncNotFound : public std::runtime_error {
+    WEBCFACE_DLL explicit FuncNotFound(const FieldBase &base);
 };
 
 /*!

@@ -36,10 +36,10 @@ View &View::sync() {
 template <>
 void internal::DataSetBuffer<ViewComponent>::onSync() {
     std::unordered_map<int, int> idx_next;
-    for (std::size_t i = 0; i < components_.size(); i++) {
-        components_[i].lockTmp(target_.data_w, target_.field_, &idx_next);
-    }
     auto data = target_.setCheck();
+    for (std::size_t i = 0; i < components_.size(); i++) {
+        components_[i].lockTmp(data, target_.field_, &idx_next);
+    }
     data->view_store.setSend(
         target_,
         std::make_shared<std::vector<ViewComponent>>(std::move(components_)));

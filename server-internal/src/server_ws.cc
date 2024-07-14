@@ -57,8 +57,8 @@ void AppWrapper::send(wsConnPtr conn, const char *msg,
         std::string(msg, size));
 }
 
-AppWrapper::AppWrapper(const LoggerCallback &callback, const char *static_dir,
-                       int port, const char *unix_path,
+AppWrapper::AppWrapper(const LoggerCallback &callback, const char *static_dir_s,
+                       std::uint16_t port, const char *unix_path,
                        const OpenCallback &on_open,
                        const CloseCallback &on_close,
                        const MessageCallback &on_message,
@@ -67,16 +67,16 @@ AppWrapper::AppWrapper(const LoggerCallback &callback, const char *static_dir,
         crow_custom_logger = std::make_unique<CustomLogger>(callback);
         crow::logger::setHandler(crow_custom_logger.get());
 
-        webcface::server_internal::static_dir = static_dir;
+        webcface::server_internal::static_dir = static_dir_s;
 
-        crow::SimpleApp *app = new crow::SimpleApp();
-        this->app = app;
+        crow::SimpleApp *crow_app = new crow::SimpleApp();
+        this->app = crow_app;
         if (unix_path == nullptr) {
-            app->port(port);
+            crow_app->port(port);
         } else {
-            app->unix_path(unix_path);
+            crow_app->unix_path(unix_path);
         }
-        app->loglevel(crow::LogLevel::Warning);
+        crow_app->loglevel(crow::LogLevel::Warning);
 
         /*
         / にアクセスしたときindex.htmlへリダイレクトさせようとしたが、
@@ -89,7 +89,7 @@ AppWrapper::AppWrapper(const LoggerCallback &callback, const char *static_dir,
         });
         route.websocket<std::remove_reference<decltype(*app)>::type>(app.get())
         */
-        CROW_WEBSOCKET_ROUTE((*app), "/")
+        CROW_WEBSOCKET_ROUTE((*crow_app), "/")
             .onopen([on_open](crow::websocket::connection &conn) {
                 on_open(&conn, conn.get_remote_ip().c_str());
             })
@@ -103,8 +103,8 @@ AppWrapper::AppWrapper(const LoggerCallback &callback, const char *static_dir,
                 on_message(&conn, data.data(), data.size());
             });
 
-        std::thread([app, on_start] {
-            app->wait_for_server_start();
+        std::thread([crow_app, on_start] {
+            crow_app->wait_for_server_start();
             on_start();
         }).detach();
     } catch (const std::exception &e) {

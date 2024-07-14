@@ -2,7 +2,6 @@
 #include <optional>
 #include <vector>
 #include <memory>
-#include <cstddef>
 #include "webcface/common/def.h"
 #include "webcface/encoding/image_mode.h"
 
@@ -12,65 +11,58 @@ struct ImageFrame;
 } // namespace message
 
 class Size {
-    std::size_t w_, h_;
-    Size(std::size_t width, std::size_t height) : w_(width), h_(height) {}
+    int w_, h_;
+    Size(int width, int height) : w_(width), h_(height) {}
 
   public:
     Size() = default;
-    friend Size sizeWH(std::size_t width, std::size_t height);
-    friend Size sizeHW(std::size_t height, std::size_t width);
-    std::size_t width() const { return w_; }
-    std::size_t height() const { return h_; }
-    std::size_t rows() const { return h_; }
-    std::size_t cols() const { return w_; }
+    friend Size sizeWH(int width, int height);
+    friend Size sizeHW(int height, int width);
+    int width() const { return w_; }
+    int height() const { return h_; }
+    int rows() const { return h_; }
+    int cols() const { return w_; }
 };
 
 /*!
  * \brief 幅 × 高さ でサイズを指定
  * \since ver2.0
  */
-inline Size sizeWH(std::size_t width, std::size_t height) {
-    return Size{width, height};
-}
+inline Size sizeWH(int width, int height) { return Size{width, height}; }
 /*!
  * \brief 高さ × 幅 でサイズを指定
  * \since ver2.0
  */
-inline Size sizeHW(std::size_t height, std::size_t width) {
-    return Size{width, height};
-}
+inline Size sizeHW(int height, int width) { return Size{width, height}; }
 
 class SizeOption {
-    std::optional<std::size_t> w_, h_;
-    SizeOption(std::optional<std::size_t> width,
-               std::optional<std::size_t> height)
+    std::optional<int> w_, h_;
+    SizeOption(std::optional<int> width, std::optional<int> height)
         : w_(width), h_(height) {}
 
   public:
     SizeOption() = default;
     SizeOption(const Size &s) : w_(s.width()), h_(s.height()) {}
-    friend SizeOption sizeWH(std::optional<std::size_t> width,
-                             std::optional<std::size_t> height);
-    friend SizeOption sizeHW(std::optional<std::size_t> height,
-                             std::optional<std::size_t> width);
-    std::optional<std::size_t> rows() const { return h_; }
-    std::optional<std::size_t> cols() const { return w_; }
+    friend SizeOption sizeWH(std::optional<int> width,
+                             std::optional<int> height);
+    friend SizeOption sizeHW(std::optional<int> height,
+                             std::optional<int> width);
+    std::optional<int> rows() const { return h_; }
+    std::optional<int> cols() const { return w_; }
 };
 
 /*!
  * \brief 幅 × 高さ でサイズを指定
  * \since ver2.0
  */
-inline SizeOption sizeWH(std::optional<std::size_t> width,
-                         std::optional<std::size_t> height) {
+inline SizeOption sizeWH(std::optional<int> width, std::optional<int> height) {
     return SizeOption{width, height};
 }
 /*!
  * \brief 高さ × 幅 でサイズを指定
  * \since ver2.0
  */
-inline SizeOption sizeHW(std::optional<std::size_t> height,
-                         std::optional<std::size_t> width) {
+inline SizeOption sizeHW(std::optional<int> height, std::optional<int> width) {
     return SizeOption{width, height};
 }
 
@@ -118,9 +110,7 @@ class WEBCFACE_DLL ImageFrame {
     [[deprecated("Ambiguous image size")]] ImageFrame(
         int rows, int cols, const void *data,
         ImageColorMode color_mode = ImageColorMode::bgr)
-        : ImageFrame(sizeHW(static_cast<std::size_t>(rows),
-                            static_cast<std::size_t>(cols)),
-                     data, color_mode) {}
+        : ImageFrame(sizeHW(rows, cols), data, color_mode) {}
     /*!
      * \brief 生画像データの配列からImageFrameを作成
      * \since ver2.0
@@ -164,29 +154,29 @@ class WEBCFACE_DLL ImageFrame {
      * \brief 画像の幅
      * \since ver2.0
      */
-    std::size_t width() const { return size_.width(); }
+    int width() const { return size_.width(); }
     /*!
      * \brief 画像の高さ
      * \since ver2.0
      */
-    std::size_t height() const { return size_.height(); }
+    int height() const { return size_.height(); }
     /*!
      * \brief 画像の高さ
      *
      */
-    std::size_t rows() const { return size_.rows(); }
+    int rows() const { return size_.rows(); }
     /*!
      * \brief 画像の幅
      *
      */
-    std::size_t cols() const { return size_.cols(); }
+    int cols() const { return size_.cols(); }
     /*!
      * \brief 1ピクセル当たりのデータサイズ(byte数)を取得
      *
      * \return 1, 3, or 4
      *
      */
-    std::size_t channels() const;
+    int channels() const;
     /*!
      * \sa colorMode()
      */
@@ -234,8 +224,7 @@ class WEBCFACE_DLL ImageFrame {
      * compress_modeがrawでない場合は正常にアクセスできない。
      *
      */
-    const unsigned char &at(std::size_t row, std::size_t col,
-                            std::size_t ch = 0) const {
+    const unsigned char &at(int row, int col, int ch = 0) const {
         return dataPtr()->at((row * cols() + col) * channels() + ch);
     }
     /*!
@@ -245,7 +234,7 @@ class WEBCFACE_DLL ImageFrame {
      * compress_modeがrawでない場合は正常にアクセスできない。
      *
      */
-    unsigned char &at(std::size_t row, std::size_t col, std::size_t ch = 0) {
+    unsigned char &at(int row, int col, int ch = 0) {
         return dataPtr()->at((row * cols() + col) * channels() + ch);
     }
 };

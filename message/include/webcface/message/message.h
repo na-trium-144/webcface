@@ -469,7 +469,7 @@ struct WEBCFACE_DLL Canvas2D : public MessageBase<MessageKind::canvas2d> {
                        MSGPACK_NVP("l", length))
 };
 struct WEBCFACE_DLL ImageFrame {
-    std::size_t width_, height_;
+    int width_, height_;
     std::shared_ptr<std::vector<unsigned char>> data_;
     ImageColorMode color_mode_ = ImageColorMode::gray;
     ImageCompressMode cmp_mode_ = ImageCompressMode::raw;

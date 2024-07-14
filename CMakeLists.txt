@@ -190,10 +190,10 @@ endif()
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     if(WEBCFACE_WARNING)
-        add_compile_options(/W4 /wd4251 /WX)
-        add_link_options(/W4 /WX)
+        add_compile_options(/W4 /wd4251 /wd4661 /wd4996 /WX)
+        string(REPLACE "/W3" "/W4" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
     endif()
-    add_compile_options(/external:anglebrackets /external:W1)
+    add_compile_options(/external:anglebrackets /external:W0)
     add_compile_options(/utf-8 /bigobj)
     add_compile_definitions(
         _CRT_SECURE_NO_WARNINGS

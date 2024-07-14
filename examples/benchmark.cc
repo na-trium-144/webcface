@@ -23,14 +23,15 @@ int main() {
         for (int i = 0; i < 10; i++) {
             start_t = std::chrono::steady_clock::now();
             recv_t = std::nullopt;
-            wcli1.text("a") = std::string(s, 'a' + i);
+            wcli1.text("a") = std::string(s, static_cast<char>('a' + i));
             wcli1.sync();
             do {
                 std::this_thread::sleep_for(std::chrono::milliseconds(100));
             } while (!recv_t);
-            int latency = std::chrono::duration_cast<std::chrono::microseconds>(
-                              *recv_t - start_t)
-                              .count();
+            int latency = static_cast<int>(
+                std::chrono::duration_cast<std::chrono::microseconds>(*recv_t -
+                                                                      start_t)
+                    .count());
             std::cout << "latency: " << latency << " us" << std::endl;
             latency_total += latency;
         }

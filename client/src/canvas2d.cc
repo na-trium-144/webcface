@@ -37,11 +37,11 @@ void internal::DataSetBuffer<Canvas2DComponent>::onSync() {
 
     auto cb = std::make_shared<Canvas2DDataBase>(c2buf->width_, c2buf->height_);
     std::unordered_map<int, int> idx_next;
+    auto data = target_.setCheck();
     for (std::size_t i = 0; i < this->components_.size(); i++) {
-        this->components_[i].lockTmp(target_.data_w, target_.field_, &idx_next);
+        this->components_[i].lockTmp(data, target_.field_, &idx_next);
     }
     cb->components = std::move(this->components_);
-    auto data = target_.setCheck();
     data->canvas2d_store.setSend(target_, cb);
     std::shared_ptr<std::function<void(Canvas2D)>> change_event;
     {

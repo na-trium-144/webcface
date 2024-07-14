@@ -189,7 +189,7 @@ struct FuncInfo {
      * * 発生した例外はcatchしない
      */
     std::shared_future<ValAdaptor>
-    run(const std::vector<ValAdaptor> &args, bool caller_async,
+    run(const std::vector<ValAdaptor> &call_args, bool caller_async,
         const std::shared_ptr<internal::AsyncFuncState> &state = nullptr);
     /*!
      * \brief

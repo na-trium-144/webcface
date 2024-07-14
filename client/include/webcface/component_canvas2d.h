@@ -68,7 +68,7 @@ class WEBCFACE_DLL Canvas2DComponent : public IdBase<Canvas2DComponentType> {
      *
      */
     Canvas2DComponent &
-    lockTmp(const std::weak_ptr<internal::ClientData> &data_w,
+    lockTmp(const std::shared_ptr<internal::ClientData> &data,
             const SharedString &view_name,
             std::unordered_map<int, int> *idx_next = nullptr);
 

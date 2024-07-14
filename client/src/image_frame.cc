@@ -1,3 +1,5 @@
+#include <cstddef>
+
 #include "webcface/image_frame.h"
 #include "webcface/message/message.h"
 
@@ -11,7 +13,7 @@ ImageFrame::ImageFrame(const Size &size,
                        ImageColorMode color_mode, ImageCompressMode cmp_mode)
     : size_(size), data_(data), color_mode_(color_mode), cmp_mode_(cmp_mode) {
     if (cmp_mode == ImageCompressMode::raw &&
-        rows() * cols() * channels() != data->size()) {
+        rows() * cols() * channels() != static_cast<int>(data->size())) {
         throw std::invalid_argument("data size does not match");
     }
 }
@@ -21,7 +23,7 @@ ImageFrame::ImageFrame(const Size &size, const void *data,
     data_ = std::make_shared<std::vector<unsigned char>>(
         static_cast<const unsigned char *>(data),
         static_cast<const unsigned char *>(data) +
-            rows() * cols() * channels());
+            static_cast<ptrdiff_t>(rows() * cols() * channels()));
 }
 ImageFrame::ImageFrame(const Size &size, ImageColorMode color_mode)
     : size_(size), color_mode_(color_mode), cmp_mode_(ImageCompressMode::raw) {
@@ -29,7 +31,7 @@ ImageFrame::ImageFrame(const Size &size, ImageColorMode color_mode)
                                                          channels());
 }
 
-std::size_t ImageFrame::channels() const {
+int ImageFrame::channels() const {
     switch (color_mode_) {
     case ImageColorMode::gray:
         return 1;

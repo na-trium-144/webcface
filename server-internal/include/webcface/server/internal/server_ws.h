@@ -1,4 +1,5 @@
 #pragma once
+#include <cstdint>
 #include <functional>
 #include <string>
 
@@ -21,9 +22,10 @@ class AppWrapper {
     void setException(const char *what) noexcept;
 
   public:
-    AppWrapper(const LoggerCallback &callback, const char *static_dir, int port,
-               const char *unix_path, const OpenCallback &on_open,
-               const CloseCallback &on_close, const MessageCallback &on_message,
+    AppWrapper(const LoggerCallback &callback, const char *static_dir,
+               std::uint16_t port, const char *unix_path,
+               const OpenCallback &on_open, const CloseCallback &on_close,
+               const MessageCallback &on_message,
                const StartCallback &on_start) noexcept;
     ~AppWrapper() noexcept;
     static void send(wsConnPtr conn, const char *msg,

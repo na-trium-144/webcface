@@ -8,7 +8,8 @@
 WEBCFACE_NS_BEGIN
 
 template <typename CharT>
-class WEBCFACE_DLL BasicLoggerBuf final : public std::basic_streambuf<CharT> {
+class WEBCFACE_DLL_TEMPLATE BasicLoggerBuf final
+    : public std::basic_streambuf<CharT> {
     using traits_type = typename std::basic_streambuf<CharT>::traits_type;
     using char_type = typename std::basic_streambuf<CharT>::char_type;
     using int_type = typename std::basic_streambuf<CharT>::int_type;
