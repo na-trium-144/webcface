@@ -2,7 +2,6 @@
 #include <string>
 #include <vector>
 #include <tuple>
-#include <concepts>
 #include <cstdint>
 #include <ostream>
 #include <variant>
@@ -104,14 +103,6 @@ class WEBCFACE_DLL ValAdaptor {
      * \since ver2.0
      */
     ValAdaptor &operator=(const SharedString &str);
-    /*!
-     * \since ver2.0
-     */
-    explicit ValAdaptor(std::u8string_view str);
-    /*!
-     * \since ver2.0
-     */
-    ValAdaptor &operator=(std::u8string_view str);
 
     explicit ValAdaptor(std::string_view str);
     ValAdaptor &operator=(std::string_view str);
@@ -149,21 +140,21 @@ class WEBCFACE_DLL ValAdaptor {
     explicit ValAdaptor(double value);
     ValAdaptor &operator=(double v);
 
-    template <typename T>
-        requires std::integral<T>
+    template <typename T, typename std::enable_if_t<std::is_integral_v<T>,
+                                                    std::nullptr_t> = nullptr>
     explicit ValAdaptor(T value)
         : ValAdaptor(static_cast<std::int64_t>(value)) {}
-    template <typename T>
-        requires std::integral<T>
+    template <typename T, typename std::enable_if_t<std::is_integral_v<T>,
+                                                    std::nullptr_t> = nullptr>
     ValAdaptor &operator=(T v) {
         return *this = static_cast<std::int64_t>(v);
     }
 
-    template <typename T>
-        requires std::floating_point<T>
+    template <typename T, typename std::enable_if_t<std::is_floating_point_v<T>,
+                                                    std::nullptr_t> = nullptr>
     explicit ValAdaptor(T value) : ValAdaptor(static_cast<double>(value)) {}
-    template <typename T>
-        requires std::floating_point<T>
+    template <typename T, typename std::enable_if_t<std::is_floating_point_v<T>,
+                                                    std::nullptr_t> = nullptr>
     ValAdaptor &operator=(T v) {
         return *this = static_cast<double>(v);
     }
@@ -198,8 +189,7 @@ class WEBCFACE_DLL ValAdaptor {
     /*!
      * \since ver2.0
      */
-    const std::u8string &asU8StringRef() const;
-
+    const std::string &asU8StringRef() const;
     /*!
      * \brief 文字列として返す(コピー)
      * \since ver1.10
@@ -229,25 +219,6 @@ class WEBCFACE_DLL ValAdaptor {
     operator const wchar_t *() const { return asWStringRef().c_str(); }
 
     /*!
-     * \brief string_viewなどへの変換
-     */
-    template <typename T>
-        requires std::convertible_to<std::string, T>
-    operator T() const {
-        return static_cast<T>(asStringRef());
-    }
-    /*!
-     * \brief wstring_viewなどへの変換
-     * \since ver2.0
-     */
-    template <typename T>
-        requires(std::convertible_to<std::wstring, T> &&
-                 !std::convertible_to<std::string, T>)
-    operator T() const {
-        return static_cast<T>(asWStringRef());
-    }
-
-    /*!
      * \brief 実数として返す
      * \since ver2.0
      */
@@ -269,19 +240,21 @@ class WEBCFACE_DLL ValAdaptor {
      * as<T>(), Tはdoubleなどの実数型、intなどの整数型
      *
      * \deprecated ver2.0〜 asDouble(), asInt(), asLLong() を追加
+     * さらにas<T>にはTになにを指定してもdoubleで返るというバグがある
      *
      */
     template <typename T>
-        requires(std::convertible_to<double, T> && !std::same_as<T, bool>)
-    [[deprecated("use asDouble(), asInt() or asLLong() instead")]] double as()
-        const {
+    [[deprecated("use asDouble(), asInt() or asLLong() instead")]] double
+    as() const {
         return static_cast<T>(asDouble());
     }
     /*!
      * \brief 数値型への変換
      */
-    template <typename T>
-        requires(std::convertible_to<double, T> && !std::same_as<T, bool>)
+    template <typename T,
+              typename std::enable_if_t<std::is_convertible_v<double, T> &&
+                                            !std::is_same_v<T, bool>,
+                                        std::nullptr_t> = nullptr>
     operator T() const {
         if constexpr (std::is_floating_point_v<T>) {
             return static_cast<T>(asDouble());
@@ -307,20 +280,37 @@ class WEBCFACE_DLL ValAdaptor {
     operator bool() const { return asBool(); }
 
     bool operator==(const ValAdaptor &other) const;
+    bool operator!=(const ValAdaptor &other) const { return !(*this == other); }
 
-    template <typename T>
-        requires(std::constructible_from<ValAdaptor, T> &&
-                 !std::same_as<ValAdaptor, T>) bool
-    operator==(const T &other) const {
+    template <typename T, typename std::enable_if_t<
+                              std::is_constructible_v<ValAdaptor, T> &&
+                                  !std::is_same_v<ValAdaptor, T>,
+                              std::nullptr_t> = nullptr>
+    bool operator==(const T &other) const {
         return *this == ValAdaptor(other);
+    }
+    template <typename T, typename std::enable_if_t<
+                              std::is_constructible_v<ValAdaptor, T> &&
+                                  !std::is_same_v<ValAdaptor, T>,
+                              std::nullptr_t> = nullptr>
+    bool operator!=(const T &other) const {
+        return *this != ValAdaptor(other);
     }
 };
 
-template <typename T>
-    requires(std::constructible_from<ValAdaptor, T> &&
-             !std::same_as<ValAdaptor, T>) bool
-operator==(const T &other, const ValAdaptor &val) {
+template <typename T,
+          typename std::enable_if_t<std::is_constructible_v<ValAdaptor, T> &&
+                                        !std::is_same_v<ValAdaptor, T>,
+                                    std::nullptr_t> = nullptr>
+bool operator==(const T &other, const ValAdaptor &val) {
     return val == ValAdaptor(other);
+}
+template <typename T,
+          typename std::enable_if_t<std::is_constructible_v<ValAdaptor, T> &&
+                                        !std::is_same_v<ValAdaptor, T>,
+                                    std::nullptr_t> = nullptr>
+bool operator!=(const T &other, const ValAdaptor &val) {
+    return val != ValAdaptor(other);
 }
 
 inline std::ostream &operator<<(std::ostream &os, const ValAdaptor &a) {

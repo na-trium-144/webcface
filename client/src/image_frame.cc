@@ -44,12 +44,6 @@ std::size_t ImageFrame::channels() const {
     }
 }
 
-// bool ImageReq::operator==(const ImageReq &rhs) const {
-//     return rows == rhs.rows && cols == rhs.cols &&
-//            color_mode == rhs.color_mode && cmp_mode == rhs.cmp_mode &&
-//            quality == rhs.quality;
-// }
-
 ImageFrame::ImageFrame(const message::ImageFrame &m)
     : size_(sizeWH(m.width_, m.height_)), data_(m.data_),
       color_mode_(m.color_mode_), cmp_mode_(m.cmp_mode_) {}

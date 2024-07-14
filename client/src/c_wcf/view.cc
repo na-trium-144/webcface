@@ -51,7 +51,7 @@ wcfViewSetT(wcfClient *wcli, const CharT *field,
     for (auto p = components; p < components + size; p++) {
         v.add(ViewComponent{
             static_cast<ViewComponentType>(p->type),
-            SharedString(strOrEmpty(p->text)),
+            SharedString::encode(strOrEmpty(p->text)),
             p->on_click_field
                 ? std::make_optional<FieldBase>(
                       wcli_->member(strOrEmpty(p->on_click_member))

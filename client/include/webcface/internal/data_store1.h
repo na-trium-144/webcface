@@ -44,7 +44,7 @@ class WEBCFACE_DLL_TEMPLATE SyncDataStore1 {
 extern template class WEBCFACE_DLL_INSTANCE_DECL
     SyncDataStore1<std::string>; // test用
 extern template class WEBCFACE_DLL_INSTANCE_DECL
-    SyncDataStore1<std::shared_ptr<std::vector<LogLineData<>>>>;
+    SyncDataStore1<std::shared_ptr<std::vector<LogLineData>>>;
 extern template class WEBCFACE_DLL_INSTANCE_DECL
     SyncDataStore1<std::chrono::system_clock::time_point>;
 #endif

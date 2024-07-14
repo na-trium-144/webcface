@@ -1,6 +1,7 @@
 #include "webcface/server/internal/server_ws.h"
 #include <string>
 #include <functional>
+#include <memory>
 
 namespace webcface {
 namespace server_internal {

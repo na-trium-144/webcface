@@ -178,7 +178,7 @@ class WEBCFACE_DLL ViewComponent : public IdBase<ViewComponentType> {
      *
      */
     ViewComponent &text(std::string_view text) {
-        text_ = SharedString(text);
+        text_ = SharedString::encode(text);
         return *this;
     }
     /*!
@@ -186,7 +186,7 @@ class WEBCFACE_DLL ViewComponent : public IdBase<ViewComponentType> {
      * \since ver2.0
      */
     ViewComponent &text(std::wstring_view text) {
-        text_ = SharedString(text);
+        text_ = SharedString::encode(text);
         return *this;
     }
     /*!
@@ -328,9 +328,8 @@ class WEBCFACE_DLL ViewComponent : public IdBase<ViewComponentType> {
      *
      */
     template <typename T>
-        requires std::constructible_from<ValAdaptor, T>
     ViewComponent &init(const T &init) {
-        init_.emplace(init);
+        init_.emplace(ValAdaptor(init));
         return *this;
     }
     /*!
@@ -396,8 +395,8 @@ class WEBCFACE_DLL ViewComponent : public IdBase<ViewComponentType> {
      *
      */
     std::vector<ValAdaptor> option() const { return option_; }
-    ViewComponent &option(const std::vector<ValAdaptor> &option) {
-        option_ = option;
+    ViewComponent &option(std::vector<ValAdaptor> option) {
+        option_ = std::move(option);
         min_ = max_ = std::nullopt;
         return *this;
     }
@@ -409,10 +408,12 @@ class WEBCFACE_DLL ViewComponent : public IdBase<ViewComponentType> {
      *
      */
     template <typename T>
-        requires std::constructible_from<ValAdaptor, T>
     ViewComponent &option(std::initializer_list<T> option) {
-        return this->option(
-            std::vector<ValAdaptor>(option.begin(), option.end()));
+        std::vector<ValAdaptor> option_v;
+        for (const auto &v : option) {
+            option_v.emplace_back(ValAdaptor(v));
+        }
+        return this->option(std::move(option_v));
     }
 };
 

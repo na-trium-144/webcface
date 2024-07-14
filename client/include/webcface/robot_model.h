@@ -19,8 +19,7 @@ class DataSetBuffer;
  * などを指定してCanvas3Dに追加することができる
  *
  */
-class WEBCFACE_DLL RobotModel : protected Field,
-                                public Canvas3DComponent {
+class WEBCFACE_DLL RobotModel : protected Field, public Canvas3DComponent {
     std::shared_ptr<internal::DataSetBuffer<RobotLink>> sb;
 
   public:
@@ -96,8 +95,8 @@ class WEBCFACE_DLL RobotModel : protected Field,
      * \brief 値が変化したときに呼び出されるコールバックを設定
      * \since ver2.0
      */
-    template <typename F>
-        requires std::invocable<F>
+    template <typename F, typename std::enable_if_t<std::is_invocable_v<F>,
+                                                    std::nullptr_t> = nullptr>
     RobotModel &onChange(F callback) {
         return onChange(
             [callback = std::move(callback)](const auto &) { callback(); });
@@ -191,12 +190,18 @@ class WEBCFACE_DLL RobotModel : protected Field,
     /*!
      * \brief RobotModelの参照先を比較
      * \since ver1.11
-     *
      */
-    template <typename T>
-        requires std::same_as<T, RobotModel>
+    template <typename T,
+              typename std::enable_if_t<std::is_same_v<T, RobotModel>,
+                                        std::nullptr_t> = nullptr>
     bool operator==(const T &other) const {
         return static_cast<Field>(*this) == static_cast<Field>(other);
+    }
+    template <typename T,
+              typename std::enable_if_t<std::is_same_v<T, RobotModel>,
+                                        std::nullptr_t> = nullptr>
+    bool operator!=(const T &other) const {
+        return static_cast<Field>(*this) != static_cast<Field>(other);
     }
 };
 

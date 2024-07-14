@@ -259,7 +259,7 @@ Func &Func::setArgs(const std::vector<Arg> &args) {
 
 SharedString AnonymousFunc::fieldNameTmp() {
     static int id = 0;
-    return SharedString(encoding::castToU8("..tmp" + std::to_string(id++)));
+    return SharedString::fromU8String("..tmp" + std::to_string(id++));
 }
 AnonymousFunc &AnonymousFunc::operator=(AnonymousFunc &&other) noexcept {
     this->func_setter = std::move(other.func_setter);
@@ -279,7 +279,7 @@ void AnonymousFunc::lockTo(Func &target) {
         func_setter(*this);
     }
     auto func_info = dataLock()->func_store.getRecv(*this);
-    if (!func_info) [[unlikely]] {
+    if (!func_info) {
         throw std::runtime_error("AnonymousFunc not set");
     } else {
         target.setImpl(std::make_shared<FuncInfo>(**func_info));

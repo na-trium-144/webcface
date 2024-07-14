@@ -5,20 +5,16 @@
 
 WEBCFACE_NS_BEGIN
 
-template <typename CharT>
-LogLineData<CharT>::LogLineData(int level,
-                                std::chrono::system_clock::time_point time,
-                                const SharedString &message)
+LogLineData::LogLineData(int level, std::chrono::system_clock::time_point time,
+                         const SharedString &message)
     : level_(level), time_(time), message_(message) {}
 
-template <typename CharT>
-LogLineData<CharT>::LogLineData(const message::LogLine &m)
+LogLineData::LogLineData(const message::LogLine &m)
     : LogLineData(m.level_,
                   std::chrono::system_clock::time_point(
                       std::chrono::milliseconds(m.time_ms)),
                   m.message_) {}
-template <typename CharT>
-message::LogLine LogLineData<CharT>::toMessage() const {
+message::LogLine LogLineData::toMessage() const {
     return message::LogLine{
         level_,
         static_cast<std::uint64_t>(
@@ -28,15 +24,10 @@ message::LogLine LogLineData<CharT>::toMessage() const {
         message_};
 }
 
-template class WEBCFACE_DLL_INSTANCE_DEF LogLineData<char8_t>;
-template class WEBCFACE_DLL_INSTANCE_DEF LogLineData<char>;
-template class WEBCFACE_DLL_INSTANCE_DEF LogLineData<wchar_t>;
-
-
-static void writeLog(internal::ClientData *data_p, LogLineData<> &&ll) {
+static void writeLog(internal::ClientData *data_p, LogLineData &&ll) {
     std::lock_guard lock(data_p->log_store.mtx);
     auto v = data_p->log_store.getRecv(data_p->self_member_name);
-    if (!v) [[unlikely]] {
+    if (!v) {
         throw std::runtime_error("self log data is null");
     } else {
         // log_storeにはClientDataのコンストラクタで空vectorを入れてある
@@ -71,8 +62,8 @@ int BasicLoggerBuf<CharT>::sync() {
         if (message.size() > 0 && message.back() == '\r') {
             message.pop_back();
         }
-        writeLog(data_p,
-                 {2, std::chrono::system_clock::now(), SharedString(message)});
+        writeLog(data_p, {2, std::chrono::system_clock::now(),
+                          SharedString::encode(message)});
         if constexpr (std::is_same_v<CharT, char>) {
             std::fputs(message.c_str(), stderr);
         } else if constexpr (std::is_same_v<CharT, wchar_t>) {
@@ -135,12 +126,12 @@ std::optional<std::vector<LogLineW>> Log::tryGetW() const {
 }
 
 Log &Log::clear() {
-    dataLock()->log_store.setRecv(
-        member_, std::make_shared<std::vector<LogLineData<>>>());
+    dataLock()->log_store.setRecv(member_,
+                                  std::make_shared<std::vector<LogLineData>>());
     return *this;
 }
 
-Log &Log::append(LogLineData<> &&ll) {
+Log &Log::append(LogLineData &&ll) {
     writeLog(setCheck().get(), std::move(ll));
     return *this;
 }

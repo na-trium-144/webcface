@@ -35,8 +35,8 @@ void internal::DataSetBuffer<Canvas3DComponent>::onSync() {
     for (std::size_t i = 0; i < components_.size(); i++) {
         components_.at(i).lockTmp(
             target_.data_w,
-            target_.field_.u8String() + u8"_" +
-                std::u8string(encoding::castToU8(std::to_string(i))));
+            SharedString::fromU8String(target_.field_.u8String() + "_" +
+                                       std::to_string(i)));
     }
     auto data = target_.setCheck();
     data->canvas3d_store.setSend(

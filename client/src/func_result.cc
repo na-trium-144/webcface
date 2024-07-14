@@ -117,11 +117,11 @@ std::vector<CVal> &FuncCallHandle::HandleData::initCArgs() {
         std::vector<CVal> c_args;
         c_args.reserve(this->args_.size());
         for (const auto &a : this->args_) {
-            c_args.emplace_back(CVal{
-                .as_int = a,
-                .as_double = a,
-                .as_str = a,
-            });
+            CVal cv;
+            cv.as_int = a;
+            cv.as_double = a;
+            cv.as_str = a;
+            c_args.push_back(cv);
         }
         this->c_args_.emplace<v_index>(std::move(c_args));
     }

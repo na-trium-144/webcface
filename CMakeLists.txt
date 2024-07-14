@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.15)
+cmake_minimum_required(VERSION 3.14)
 # ubuntu20.04: cmake 3.16.3
 
 set(ORIGINAL_ENV_CC "$ENV{CC}" CACHE STRING "")
@@ -101,14 +101,6 @@ configure_file(
     @ONLY
 )
 
-set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-include(CheckIncludeFileCXX)
-check_include_file_cxx(concepts CONCEPTS_FOUND)
-if (NOT CONCEPTS_FOUND)
-    message(FATAL_ERROR "<concepts> header file not found")
-endif()
-
 ###############################################################################
 
 include(FetchContent)
@@ -150,6 +142,8 @@ function(add_cxx_compile_options_if FLAG NAME)
         add_compile_options($<$<COMPILE_LANGUAGE:CXX>:${FLAG}>)
     endif()
 endfunction()
+
+include(cmake/filesystem.cmake)
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     if(WEBCFACE_WARNING)
@@ -218,7 +212,8 @@ if(WEBCFACE_SHARED)
 else()
     add_library(webcface STATIC)
 endif()
-target_compile_features(webcface PUBLIC cxx_std_20)
+target_compile_features(webcface PUBLIC cxx_std_17)
+target_link_libraries(webcface PUBLIC webcface-std-filesystem)
 target_include_directories(webcface PUBLIC
     $<BUILD_INTERFACE:$<TARGET_PROPERTY:webcface-encoding,INTERFACE_INCLUDE_DIRECTORIES>>
     $<BUILD_INTERFACE:$<TARGET_PROPERTY:webcface-server-store,INTERFACE_INCLUDE_DIRECTORIES>>
@@ -238,7 +233,11 @@ else()
     target_sources(webcface PRIVATE $<TARGET_OBJECTS:webcface-server-internal>)
 endif()
 # private: リンクが必要なもののみ
-target_link_libraries(webcface PRIVATE magickpp-linker libcurl-linker spdlog-linker)
+target_link_libraries(webcface PRIVATE
+    magickpp-linker
+    libcurl-linker
+    spdlog-linker
+)
 if(NOT WEBCFACE_SHARED)
     target_link_directories(webcface PUBLIC
         $<TARGET_PROPERTY:magickpp-linker,INTERFACE_LINK_DIRECTORIES>
@@ -342,7 +341,7 @@ if(WEBCFACE_INSTALL)
     # library
     # dependenciesはそれぞれのcmakeファイルでリストに追加されている
     # cmake時は依存ライブラリを先に処理するが、linker flagは逆で依存ライブラリがあと
-    list(APPEND WEBCFACE_EXPORTS webcface wcf)
+    list(APPEND WEBCFACE_EXPORTS webcface wcf webcface-std-filesystem)
     list(INSERT WEBCFACE_PKGCONFIG_CFLAGS 0 "-I\${includedir}")
     list(INSERT WEBCFACE_PKGCONFIG_LIBS 0 "-L\${libdir}" -lwebcface)
     install(TARGETS ${WEBCFACE_EXPORTS}

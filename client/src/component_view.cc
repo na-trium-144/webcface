@@ -15,16 +15,16 @@ ViewComponent::lockTmp(const std::weak_ptr<internal::ClientData> &data_w,
     initIdx(idx_next, type_);
     if (on_click_func_tmp) {
         Func on_click{Field{data_w, data->self_member_name},
-                      SharedString(u8"..v" + view_name.u8String() + u8"/" +
-                                   std::u8string(encoding::castToU8(id())))};
+                      SharedString::fromU8String("..v" + view_name.u8String() +
+                                                 "/" + id())};
         on_click_func_tmp->lockTo(on_click);
         onClick(on_click);
     }
     if (text_ref_tmp) {
         // if (text_ref_tmp->expired()) {
         Text text_ref{Field{data_w, data->self_member_name},
-                      SharedString(u8"..ir" + view_name.u8String() + u8"/" +
-                                   std::u8string(encoding::castToU8(id())))};
+                      SharedString::fromU8String("..ir" + view_name.u8String() +
+                                                 "/" + id())};
         text_ref_tmp->lockTo(text_ref);
         if (init_ && !text_ref.tryGet()) {
             text_ref.set(*init_);
@@ -78,11 +78,11 @@ CComponent ViewComponent::cDataT() const {
     std::vector<CVal> options;
     options.reserve(this->option_.size());
     for (const auto &o : this->option_) {
-        options.push_back(CVal{
-            .as_int = o,
-            .as_double = o,
-            .as_str = o,
-        });
+        CVal val;
+        val.as_int = o;
+        val.as_double = o;
+        val.as_str = o;
+        options.push_back(val);
     }
     this->options_s.emplace<v_index>(std::move(options));
     vcc.option = std::get<v_index>(this->options_s).data();

@@ -38,7 +38,8 @@ class WEBCFACE_DLL Client : public Member {
     explicit Client(const std::string &name,
                     const std::string &host = "127.0.0.1",
                     int port = WEBCFACE_DEFAULT_PORT)
-        : Client(SharedString(name), SharedString(host), port) {}
+        : Client(SharedString::encode(name), SharedString::encode(host), port) {
+    }
     /*!
      * \brief 名前を指定しサーバーに接続する (wstring)
      * \since ver2.0
@@ -53,7 +54,8 @@ class WEBCFACE_DLL Client : public Member {
     explicit Client(const std::wstring &name,
                     const std::wstring &host = L"127.0.0.1",
                     int port = WEBCFACE_DEFAULT_PORT)
-        : Client(SharedString(name), SharedString(host), port) {}
+        : Client(SharedString::encode(name), SharedString::encode(host), port) {
+    }
 
     explicit Client(const SharedString &name, const SharedString &host,
                     int port);
@@ -105,10 +107,11 @@ class WEBCFACE_DLL Client : public Member {
      * の場合は1回目の接続のみ待機し、失敗しても再接続せずreturnする。
      * * ver2.0以降: autoRecvが無効の場合、初期化が完了するまで一定間隔
      * (デフォルト=100μs) ごとに recv() をこのスレッドで呼び出す。
-     * 
+     *
      * \sa start(), autoReconnect(), autoRecv()
      */
-    void waitConnection(std::chrono::microseconds interval = std::chrono::microseconds(100));
+    void waitConnection(
+        std::chrono::microseconds interval = std::chrono::microseconds(100));
 
   private:
     void recvImpl(std::optional<std::chrono::microseconds> timeout);
@@ -202,7 +205,7 @@ class WEBCFACE_DLL Client : public Member {
      * \sa members(), onMemberEntry()
      */
     Member member(std::string_view name) const {
-        return member(SharedString(name));
+        return member(SharedString::encode(name));
     }
     /*!
      * \brief 他のmemberにアクセスする (wstring)
@@ -212,7 +215,7 @@ class WEBCFACE_DLL Client : public Member {
      * \sa members(), onMemberEntry()
      */
     Member member(std::wstring_view name) const {
-        return member(SharedString(name));
+        return member(SharedString::encode(name));
     }
     /*!
      * \brief サーバーに接続されている他のmemberのリストを得る。

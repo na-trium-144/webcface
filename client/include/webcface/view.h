@@ -19,8 +19,7 @@ class ViewBuf;
  * コンストラクタではなく Member::view() を使って取得してください
  *
  */
-class WEBCFACE_DLL View : protected Field,
-                          public std::ostream {
+class WEBCFACE_DLL View : protected Field, private std::ostream {
     std::shared_ptr<internal::ViewBuf> sb;
 
   public:
@@ -97,8 +96,8 @@ class WEBCFACE_DLL View : protected Field,
      * \brief 値が変化したときに呼び出されるコールバックを設定
      * \since ver2.0
      */
-    template <typename F>
-        requires std::invocable<F>
+    template <typename F, typename std::enable_if_t<std::is_invocable_v<F>,
+                                                    std::nullptr_t> = nullptr>
     View &onChange(F callback) {
         return onChange(
             [callback = std::move(callback)](const auto &) { callback(); });
@@ -166,8 +165,8 @@ class WEBCFACE_DLL View : protected Field,
      *
      */
     template <typename T>
-        requires requires(T rhs) { std::ostream(nullptr) << rhs; }
-    View &operator<<(T &&rhs) {
+    auto operator<<(T &&rhs)
+        -> decltype((std::ostream(nullptr) << std::forward<T>(rhs), *this)) {
         static_cast<std::ostream &>(*this) << std::forward<T>(rhs);
         return *this;
     }
@@ -216,8 +215,9 @@ class WEBCFACE_DLL View : protected Field,
      * カスタムコンポーネントとして引数にViewをとる関数を渡すことができる
      *
      */
-    template <typename F>
-        requires std::invocable<F, View &>
+    template <typename F,
+              typename std::enable_if_t<std::is_invocable_v<F, View &>,
+                                        std::nullptr_t> = nullptr>
     View &operator<<(const F &manip) {
         manip(*this);
         return *this;
@@ -251,10 +251,15 @@ class WEBCFACE_DLL View : protected Field,
      * \since ver1.11
      *
      */
-    template <typename T>
-        requires std::same_as<T, View>
+    template <typename T, typename std::enable_if_t<std::is_same_v<T, View>,
+                                                    std::nullptr_t> = nullptr>
     bool operator==(const T &other) const {
         return static_cast<Field>(*this) == static_cast<Field>(other);
+    }
+    template <typename T, typename std::enable_if_t<std::is_same_v<T, View>,
+                                                    std::nullptr_t> = nullptr>
+    bool operator!=(const T &other) const {
+        return static_cast<Field>(*this) != static_cast<Field>(other);
     }
 };
 WEBCFACE_NS_END

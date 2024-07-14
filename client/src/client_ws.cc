@@ -12,7 +12,7 @@ namespace WebSocket {
 
 void init(const std::shared_ptr<internal::ClientData> &data) {
     if (data->host.empty()) {
-        data->host = SharedString(u8"127.0.0.1");
+        data->host = SharedString::fromU8String("127.0.0.1");
     }
 
     // try TCP, unixSocketPathWSLInterop and unixSocketPath

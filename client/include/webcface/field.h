@@ -23,7 +23,7 @@ class RobotModel;
 class Canvas2D;
 class Canvas3D;
 
-constexpr char8_t field_separator = '.';
+constexpr char field_separator = '.';
 
 /*!
  * \brief メンバ名とデータ名を持つクラス
@@ -55,6 +55,7 @@ struct WEBCFACE_DLL FieldBase {
     bool operator==(const FieldBase &rhs) const {
         return this->member_ == rhs.member_ && this->field_ == rhs.field_;
     }
+    bool operator!=(const FieldBase &rhs) const { return !(*this == rhs); }
 };
 
 /*!
@@ -109,7 +110,7 @@ struct WEBCFACE_DLL Field : public FieldBase {
     const std::wstring &nameW() const { return field_.decodeW(); }
 
   protected:
-    std::u8string_view lastName8() const;
+    SharedString lastName8() const;
 
   public:
     Field child(const SharedString &field) const;
@@ -118,12 +119,12 @@ struct WEBCFACE_DLL Field : public FieldBase {
      * \brief nameのうちピリオドで区切られた最後の部分を取り出す
      * \since ver1.11
      */
-    std::string lastName() const { return encoding::decode(lastName8()); }
+    std::string lastName() const { return lastName8().decode(); }
     /*!
      * \brief nameのうちピリオドで区切られた最後の部分を取り出す (wstring)
      * \since ver2.0
      */
-    std::wstring lastNameW() const { return encoding::decodeW(lastName8()); }
+    std::wstring lastNameW() const { return lastName8().decodeW(); }
     /*!
      * \brief nameの最後のピリオドの前までを新しい名前とするField
      * \since ver1.11
@@ -134,14 +135,14 @@ struct WEBCFACE_DLL Field : public FieldBase {
      * \since ver1.11
      */
     Field child(std::string_view field) const {
-        return child(SharedString(field));
+        return child(SharedString::encode(field));
     }
     /*!
      * \brief 「(thisの名前).(追加の名前)」を新しい名前とするField (wstring)
      * \since ver2.0
      */
     Field child(std::wstring_view field) const {
-        return child(SharedString(field));
+        return child(SharedString::encode(field));
     }
     /*!
      * \brief 「(thisの名前).(index)」を新しい名前とするField
@@ -202,5 +203,6 @@ struct WEBCFACE_DLL Field : public FieldBase {
     bool isSelf() const;
 
     bool operator==(const Field &other) const;
+    bool operator!=(const Field &other) const { return !(*this == other); }
 };
 WEBCFACE_NS_END

@@ -22,55 +22,33 @@ enum LogLevelEnum {
 };
 }
 
-template <typename CharT = char8_t>
-class WEBCFACE_DLL_TEMPLATE LogLineData {
-  protected:
+struct WEBCFACE_DLL LogLineData {
     int level_ = 0;
     std::chrono::system_clock::time_point time_;
     SharedString message_;
-    static_assert(std::same_as<CharT, char8_t> || std::same_as<CharT, char> ||
-                  std::same_as<CharT, wchar_t>);
 
-  public:
     LogLineData() = default;
     LogLineData(int level, std::chrono::system_clock::time_point time,
                 const SharedString &message);
-    LogLineData(const LogLineData &) = default;
-    LogLineData &operator=(const LogLineData &) = default;
-    LogLineData(LogLineData &&) noexcept = default;
-    LogLineData &operator=(LogLineData &&) noexcept = default;
-    ~LogLineData() = default;
-
-    template <typename OtherCharT>
-        requires(!std::same_as<CharT, OtherCharT>)
-    operator LogLineData<OtherCharT>() const {
-        return LogLineData<OtherCharT>(level_, time_, message_);
-    }
 
     LogLineData(const message::LogLine &m);
     message::LogLine toMessage() const;
-
-    int level() const { return level_; }
-    std::chrono::system_clock::time_point time() const { return time_; }
-    const std::basic_string<CharT> message() const {
-        if constexpr (std::same_as<CharT, char8_t>) {
-            return message_.u8String();
-        } else if constexpr (std::same_as<CharT, char>) {
-            return message_.decode();
-        } else /* if constexpr (std::same_as<CharT, wchar_t>) */ {
-            return message_.decodeW();
-        }
-    };
 };
 
-#ifdef _WIN32
-extern template class WEBCFACE_DLL_INSTANCE_DECL LogLineData<char8_t>;
-extern template class WEBCFACE_DLL_INSTANCE_DECL LogLineData<char>;
-extern template class WEBCFACE_DLL_INSTANCE_DECL LogLineData<wchar_t>;
-#endif
-
-using LogLine = LogLineData<char>;
-using LogLineW = LogLineData<wchar_t>;
+class WEBCFACE_DLL LogLine : private LogLineData {
+  public:
+    LogLine(const LogLineData &ll) : LogLineData(ll) {}
+    int level() const { return level_; }
+    std::chrono::system_clock::time_point time() const { return time_; }
+    const std::string &message() const { return message_.decode(); };
+};
+class WEBCFACE_DLL LogLineW : private LogLineData {
+  public:
+    LogLineW(const LogLineData &ll) : LogLineData(ll) {}
+    int level() const { return level_; }
+    std::chrono::system_clock::time_point time() const { return time_; }
+    const std::wstring &message() const { return message_.decodeW(); };
+};
 
 /*!
  * \brief ログの送受信データを表すクラス
@@ -94,8 +72,8 @@ class WEBCFACE_DLL Log : protected Field {
      * \brief 値が変化したときに呼び出されるコールバックを設定
      * \since ver2.0
      */
-    template <typename F>
-        requires std::invocable<F>
+    template <typename F, typename std::enable_if_t<std::is_invocable_v<F>,
+                                                  std::nullptr_t> = nullptr>
     Log &onChange(F callback) {
         return onChange(
             [callback = std::move(callback)](const auto &) { callback(); });
@@ -152,7 +130,7 @@ class WEBCFACE_DLL Log : protected Field {
     Log &clear();
 
   private:
-    Log &append(LogLineData<> &&ll);
+    Log &append(LogLineData &&ll);
 
   public:
     /*!
@@ -163,8 +141,8 @@ class WEBCFACE_DLL Log : protected Field {
      *
      */
     Log &append(int level, std::string_view message) {
-        return append(
-            {level, std::chrono::system_clock::now(), SharedString(message)});
+        return append({level, std::chrono::system_clock::now(),
+                       SharedString::encode(message)});
     }
     /*!
      * \brief ログを1行追加
@@ -175,7 +153,7 @@ class WEBCFACE_DLL Log : protected Field {
      */
     Log &append(int level, std::chrono::system_clock::time_point time,
                 std::string_view message) {
-        return append({level, time, SharedString(message)});
+        return append({level, time, SharedString::encode(message)});
     }
     /*!
      * \brief ログを1行追加 (wstring)
@@ -185,8 +163,8 @@ class WEBCFACE_DLL Log : protected Field {
      *
      */
     Log &append(int level, std::wstring_view message) {
-        return append(
-            {level, std::chrono::system_clock::now(), SharedString(message)});
+        return append({level, std::chrono::system_clock::now(),
+                       SharedString::encode(message)});
     }
     /*!
      * \brief ログを1行追加 (wstring)
@@ -197,17 +175,22 @@ class WEBCFACE_DLL Log : protected Field {
      */
     Log &append(int level, std::chrono::system_clock::time_point time,
                 std::wstring_view message) {
-        return append({level, time, SharedString(message)});
+        return append({level, time, SharedString::encode(message)});
     }
 
     /*!
      * \brief Logの参照先を比較
      * \since ver1.11
      */
-    template <typename T>
-        requires std::same_as<T, Log>
+    template <typename T, typename std::enable_if_t<std::is_same_v<T, Log>,
+                                                    std::nullptr_t> = nullptr>
     bool operator==(const T &other) const {
         return static_cast<Field>(*this) == static_cast<Field>(other);
+    }
+    template <typename T, typename std::enable_if_t<std::is_same_v<T, Log>,
+                                                    std::nullptr_t> = nullptr>
+    bool operator!=(const T &other) const {
+        return static_cast<Field>(*this) != static_cast<Field>(other);
     }
 };
 WEBCFACE_NS_END

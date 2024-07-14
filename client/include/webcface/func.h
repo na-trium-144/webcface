@@ -385,12 +385,16 @@ class WEBCFACE_DLL Func : protected Field {
     /*!
      * \brief Funcの参照先を比較
      * \since ver1.11
-     *
      */
-    template <typename T>
-        requires std::same_as<T, Func> bool
-    operator==(const T &other) const {
+    template <typename T, typename std::enable_if_t<std::is_same_v<T, Func>,
+                                                    std::nullptr_t> = nullptr>
+    bool operator==(const T &other) const {
         return static_cast<Field>(*this) == static_cast<Field>(other);
+    }
+    template <typename T, typename std::enable_if_t<std::is_same_v<T, Func>,
+                                                    std::nullptr_t> = nullptr>
+    bool operator!=(const T &other) const {
+        return static_cast<Field>(*this) != static_cast<Field>(other);
     }
 };
 

@@ -8,12 +8,6 @@
 
 WEBCFACE_NS_BEGIN
 
-template <typename R>
-concept Range = requires(R range) {
-    begin(range);
-    end(range);
-};
-
 /*!
  * \brief 実数値またはその配列の送受信データを表すクラス
  *
@@ -89,8 +83,8 @@ class WEBCFACE_DLL Value : protected Field {
      * \brief 値が変化したときに呼び出されるコールバックを設定
      * \since ver2.0
      */
-    template <typename F>
-        requires std::invocable<F>
+    template <typename F, typename std::enable_if_t<std::is_invocable_v<F>,
+                                                    std::nullptr_t> = nullptr>
     Value &onChange(F callback) {
         return onChange(
             [callback = std::move(callback)](const auto &) { callback(); });
@@ -120,18 +114,18 @@ class WEBCFACE_DLL Value : protected Field {
      * \since ver2.0 (set(VectorOpt<double>) を置き換え)
      *
      */
-    Value &set(std::vector<double> &&v);
+    Value &set(std::vector<double> v);
     /*!
      * \brief 配列型の値をセットする
      * \since ver1.7 (VectorOpt(std::vector<T>) を置き換え)
      *
-     * appleclang14でstd::ranges::rangeが使えないのでコンセプトを自前で実装している
+     * R::value_type がdoubleに変換可能な型Rならなんでもok
      *
      */
-    template <typename R>
-    // requires std::ranges::range<R> &&
-    //          std::convertible_to<std::ranges::range_value_t<R>, T>
-        requires Range<R> && std::convertible_to<std::iter_value_t<R>, double>
+    template <typename R,
+              typename std::enable_if_t<
+                  std::is_convertible_v<typename R::value_type, double>,
+                  std::nullptr_t> = nullptr>
     Value &set(const R &range) {
         std::vector<double> vec;
         vec.reserve(std::size(range));
@@ -145,8 +139,9 @@ class WEBCFACE_DLL Value : protected Field {
      * \since ver1.7
      *
      */
-    template <typename V, std::size_t N>
-        requires std::convertible_to<V, double>
+    template <typename V, std::size_t N,
+              typename std::enable_if_t<std::is_convertible_v<V, double>,
+                                        std::nullptr_t> = nullptr>
     Value &set(const V (&range)[N]) {
         std::vector<double> vec;
         vec.reserve(N);
@@ -302,9 +297,14 @@ class WEBCFACE_DLL Value : protected Field {
      * 大小の比較も同様に中の値で比較されると非自明な挙動になるのでdeleteしている。
      *
      */
-    template <typename T>
-        requires std::same_as<T, Value>
+    template <typename T, typename std::enable_if_t<std::is_same_v<T, Value>,
+                                                    std::nullptr_t> = nullptr>
     bool operator==(const T &other) const {
+        return static_cast<Field>(*this) == static_cast<Field>(other);
+    }
+    template <typename T, typename std::enable_if_t<std::is_same_v<T, Value>,
+                                                    std::nullptr_t> = nullptr>
+    bool operator!=(const T &other) const {
         return static_cast<Field>(*this) == static_cast<Field>(other);
     }
     bool operator<(const Value &) const = delete;

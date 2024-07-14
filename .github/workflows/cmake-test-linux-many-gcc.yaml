@@ -1,10 +1,8 @@
-name: CMake Test (Linux GCC)
+name: CMake Test (Linux, Many GCC Versions)
 
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
-    branches: []
+    branches: [ "action/many-gcc" ]
 
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
@@ -13,35 +11,36 @@ env:
 jobs:
   test-linux-gcc:
     strategy:
+      fail-fast: false
       matrix:
-        dep: ["apt", "submodule"]
-        gcc-ver: [7, 9, 11, 13]
+        gcc_ver: [7, 8, 9, 10, 11, 12, 13, 14]
         include:
         - os: ubuntu-20.04
           gcc_ver: 7
         - os: ubuntu-20.04
+          gcc_ver: 8
+        - os: ubuntu-20.04
           gcc_ver: 9
-        - os: ubuntu-22.04
+        - os: ubuntu-20.04
+          gcc_ver: 10
+        - os: ubuntu-24.04
           gcc_ver: 11
         - os: ubuntu-24.04
+          gcc_ver: 12
+        - os: ubuntu-24.04
           gcc_ver: 13
-        - dep: static
-          os: ubuntu-20.04
-          gcc_ver: 9
-        - dep: source # dep=submoduleと役割が被っている
-          os: ubuntu-20.04
-          gcc_ver: 9
+        - os: ubuntu-24.04
+          gcc_ver: 14
     runs-on: ${{matrix.os}}
     steps:
     - uses: actions/checkout@v4
     - run: git submodule update --init
-      if: matrix.dep == 'submodule'
 
     - name: Install dependencies
       run: |
         sudo apt-get update
         sudo apt-get install -y gcc-${{matrix.gcc_ver}} g++-${{matrix.gcc_ver}}
-        if [ ${{matrix.dep}} = apt ]; then sudo apt-get install -y libspdlog-dev libjpeg-dev libpng-dev libwebp-dev libopencv-dev; fi
+        sudo apt-get install -y libspdlog-dev libjpeg-dev libpng-dev libwebp-dev
 
     - name: Configure CMake
       env:
@@ -53,8 +52,8 @@ jobs:
         -DWEBCFACE_TEST=on
         -DWEBCFACE_EXAMPLE=on
         -DWEBCFACE_TEST_TIMEOUT=200
-        "-DWEBCFACE_SHARED=$([[ ${{matrix.dep}} = static ]]; echo $?)"
-        "-DWEBCFACE_FIND_OPENCV=$([[ ${{matrix.dep}} != apt ]]; echo $?)"
+        -DWEBCFACE_SHARED=1
+        -DWEBCFACE_FIND_OPENCV=0
         -DCMAKE_INSTALL_PREFIX=${{github.workspace}}/build/install
 
     - name: Build

@@ -27,7 +27,7 @@ struct FuncInfo;
 namespace internal {
 struct ClientData;
 class AsyncFuncState;
-}
+} // namespace internal
 
 /*!
  * \brief 引数の情報を表す。
@@ -60,8 +60,8 @@ class WEBCFACE_DLL Arg {
      * \brief 引数名を設定する。
      *
      */
-    Arg(std::string_view name) : name_(name) {}
-    Arg(std::wstring_view name) : name_(name) {}
+    Arg(std::string_view name) : name_(SharedString::encode(name)) {}
+    Arg(std::wstring_view name) : name_(SharedString::encode(name)) {}
 
     /*!
      * \brief 引数の名前を取得する。
@@ -96,7 +96,6 @@ class WEBCFACE_DLL Arg {
      *
      */
     template <typename T>
-        requires std::constructible_from<ValAdaptor, T>
     Arg &init(const T &init) {
         init_ = ValAdaptor(init);
         return *this;
@@ -142,8 +141,8 @@ class WEBCFACE_DLL Arg {
      *
      */
     const std::vector<ValAdaptor> &option() const { return option_; }
-    Arg &option(const std::vector<ValAdaptor> &option) {
-        option_ = option;
+    Arg &option(std::vector<ValAdaptor> option) {
+        option_ = std::move(option);
         min_ = max_ = std::nullopt;
         return *this;
     }
@@ -154,10 +153,12 @@ class WEBCFACE_DLL Arg {
      *
      */
     template <typename T>
-        requires std::constructible_from<ValAdaptor, T>
     Arg &option(std::initializer_list<T> option) {
-        return this->option(
-            std::vector<ValAdaptor>(option.begin(), option.end()));
+        std::vector<ValAdaptor> option_v;
+        for (const auto &v : option) {
+            option_v.emplace_back(ValAdaptor(v));
+        }
+        return this->option(std::move(option_v));
     }
 };
 WEBCFACE_DLL std::ostream &operator<<(std::ostream &os, const Arg &arg);
@@ -187,9 +188,9 @@ struct FuncInfo {
      * 実行完了後にstate->callResultEvent()を呼ぶ
      * * 発生した例外はcatchしない
      */
-    std::shared_future<ValAdaptor> run(const std::vector<ValAdaptor> &args,
-                                bool caller_async,
-                                const std::shared_ptr<internal::AsyncFuncState> &state = nullptr);
+    std::shared_future<ValAdaptor>
+    run(const std::vector<ValAdaptor> &args, bool caller_async,
+        const std::shared_ptr<internal::AsyncFuncState> &state = nullptr);
     /*!
      * \brief
      * func_implをこのスレッドで実行し、完了時にCallResultをdataに送信させる

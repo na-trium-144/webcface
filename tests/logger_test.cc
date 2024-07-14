@@ -9,7 +9,7 @@
 using namespace webcface;
 
 static SharedString operator""_ss(const char *str, std::size_t len) {
-    return SharedString(encoding::castToU8(std::string_view(str, len)));
+    return SharedString::fromU8String(std::string_view(str, len));
 }
 
 class LoggerTest : public ::testing::Test {
@@ -31,12 +31,12 @@ TEST_F(LoggerTest, loggerBuf) {
     std::cerr << "c" << std::endl;
     auto ls = data_->log_store.getRecv(self_name);
     ASSERT_EQ((*ls)->size(), 3);
-    EXPECT_EQ((**ls)[0].level(), 2);
-    EXPECT_EQ((**ls)[0].message(), u8"a");
-    EXPECT_EQ((**ls)[1].level(), 2);
-    EXPECT_EQ((**ls)[1].message(), u8"b");
-    EXPECT_EQ((**ls)[2].level(), 2);
-    EXPECT_EQ((**ls)[2].message(), u8"c");
+    EXPECT_EQ((**ls)[0].level_, 2);
+    EXPECT_EQ((**ls)[0].message_.u8String(), "a");
+    EXPECT_EQ((**ls)[1].level_, 2);
+    EXPECT_EQ((**ls)[1].message_.u8String(), "b");
+    EXPECT_EQ((**ls)[2].level_, 2);
+    EXPECT_EQ((**ls)[2].message_.u8String(), "c");
     std::cerr.rdbuf(cerr_buf);
 }
 TEST_F(LoggerTest, loggerBufW) {
@@ -48,11 +48,11 @@ TEST_F(LoggerTest, loggerBufW) {
     std::wcerr << L"c" << std::endl;
     auto ls = data_->log_store.getRecv(self_name);
     ASSERT_EQ((*ls)->size(), 3);
-    EXPECT_EQ((**ls)[0].level(), 2);
-    EXPECT_EQ((**ls)[0].message(), u8"a");
-    EXPECT_EQ((**ls)[1].level(), 2);
-    EXPECT_EQ((**ls)[1].message(), u8"b");
-    EXPECT_EQ((**ls)[2].level(), 2);
-    EXPECT_EQ((**ls)[2].message(), u8"c");
+    EXPECT_EQ((**ls)[0].level_, 2);
+    EXPECT_EQ((**ls)[0].message_.u8String(), "a");
+    EXPECT_EQ((**ls)[1].level_, 2);
+    EXPECT_EQ((**ls)[1].message_.u8String(), "b");
+    EXPECT_EQ((**ls)[2].level_, 2);
+    EXPECT_EQ((**ls)[2].message_.u8String(), "c");
     std::wcerr.rdbuf(wcerr_buf);
 }

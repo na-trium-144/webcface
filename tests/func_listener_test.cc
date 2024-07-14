@@ -17,7 +17,7 @@ static void wait() {
         std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
 }
 static SharedString operator""_ss(const char *str, std::size_t len) {
-    return SharedString(encoding::castToU8(std::string_view(str, len)));
+    return SharedString::fromU8String(std::string_view(str, len));
 }
 
 class FuncListenerTest : public ::testing::Test {
@@ -29,18 +29,18 @@ class FuncListenerTest : public ::testing::Test {
     std::shared_ptr<internal::ClientData> data_;
     FieldBase fieldBase(const SharedString &member,
                         std::string_view name) const {
-        return FieldBase{member, SharedString(encoding::castToU8(name))};
+        return FieldBase{member, SharedString::fromU8String(name)};
     }
     FieldBase fieldBase(std::string_view member, std::string_view name) const {
-        return FieldBase{SharedString(encoding::castToU8(member)),
-                         SharedString(encoding::castToU8(name))};
+        return FieldBase{SharedString::fromU8String(member),
+                         SharedString::fromU8String(name)};
     }
     Field field(const SharedString &member, std::string_view name = "") const {
-        return Field{data_, member, SharedString(encoding::castToU8(name))};
+        return Field{data_, member, SharedString::fromU8String(name)};
     }
     Field field(std::string_view member, std::string_view name = "") const {
-        return Field{data_, SharedString(encoding::castToU8(member)),
-                     SharedString(encoding::castToU8(name))};
+        return Field{data_, SharedString::fromU8String(member),
+                     SharedString::fromU8String(name)};
     }
     template <typename T1, typename T2>
     Func func(const T1 &member, const T2 &name) {

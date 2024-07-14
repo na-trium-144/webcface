@@ -27,7 +27,7 @@ static void wait() {
         std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
 }
 static SharedString operator""_ss(const char *str, std::size_t len) {
-    return SharedString(encoding::castToU8(std::string_view(str, len)));
+    return SharedString::fromU8String(std::string_view(str, len));
 }
 
 class CClientTest : public ::testing::Test {

@@ -1,3 +1,4 @@
+#include <thread>
 #include <webcface/client.h>
 #include <webcface/value.h>
 #include <webcface/text.h>
@@ -49,7 +50,7 @@ internal::ClientData::ClientData(const SharedString &name,
     logger_os = std::make_unique<std::ostream>(logger_buf.get());
     logger_buf_w = std::make_unique<LoggerBufW>(this);
     logger_os_w = std::make_unique<std::wostream>(logger_buf_w.get());
-    log_store.setRecv(name, std::make_shared<std::vector<LogLineData<>>>());
+    log_store.setRecv(name, std::make_shared<std::vector<LogLineData>>());
 }
 
 Client::~Client() {
@@ -497,7 +498,7 @@ std::string internal::ClientData::syncData(bool is_first,
     }
 
     auto log_self_opt = log_store.getRecv(self_member_name);
-    if (!log_self_opt) [[unlikely]] {
+    if (!log_self_opt) {
         throw std::runtime_error("self log data is null");
     } else {
         auto &log_s = *log_self_opt;
@@ -512,7 +513,7 @@ std::string internal::ClientData::syncData(bool is_first,
         }
     }
     for (const auto &v : func_store.transferSend(is_first)) {
-        if (!v.first.u8String().starts_with(field_separator)) {
+        if (!v.first.startsWith(field_separator)) {
             message::pack(buffer, len, v.second->toMessage(v.first));
         }
     }
@@ -526,7 +527,7 @@ void Client::sync() {
 
 template <typename M, typename K1, typename K2>
 static auto findFromMap2(const M &map, const K1 &key1, const K2 &key2)
-    -> std::optional<std::remove_cvref_t<decltype(map.at(key1).at(key2))>> {
+    -> std::optional<std::decay_t<decltype(map.at(key1).at(key2))>> {
     auto s_it = map.find(key1);
     if (s_it != map.end()) {
         auto it = s_it->second.find(key2);
@@ -538,7 +539,7 @@ static auto findFromMap2(const M &map, const K1 &key1, const K2 &key2)
 }
 template <typename M, typename K1>
 static auto findFromMap1(const M &map, const K1 &key1)
-    -> std::optional<std::remove_cvref_t<decltype(map.at(key1))>> {
+    -> std::optional<std::decay_t<decltype(map.at(key1))>> {
     auto it = map.find(key1);
     if (it != map.end()) {
         return it->second;
@@ -550,7 +551,7 @@ static void onRecvRes(internal::ClientData *this_, const Msg &r, const T &data,
                       S &store, const E &event) {
     auto [member, field] = store.getReq(r.req_id, r.sub_field);
     store.setRecv(member, field, data);
-    std::remove_cvref_t<decltype(event.at(member).at(field))> cl;
+    std::decay_t<decltype(event.at(member).at(field))> cl;
     {
         std::lock_guard lock(this_->event_m);
         cl = findFromMap2(event, member, field).value_or(nullptr);
@@ -564,7 +565,7 @@ static void onRecvEntry(internal::ClientData *this_, const Msg &r, S &store,
                         const E &event) {
     auto member = this_->getMemberNameFromId(r.member_id);
     store.setEntry(member, r.field);
-    std::remove_cvref_t<decltype(event.at(member))> cl;
+    std::decay_t<decltype(event.at(member))> cl;
     {
         std::lock_guard lock(this_->event_m);
         cl = findFromMap1(event, member).value_or(nullptr);
@@ -767,7 +768,7 @@ void internal::ClientData::onRecv(const std::string &message) {
             std::lock_guard lock(this->log_store.mtx);
             auto log_s = this->log_store.getRecv(member);
             if (!log_s) {
-                log_s = std::make_shared<std::vector<LogLineData<>>>();
+                log_s = std::make_shared<std::vector<LogLineData>>();
                 this->log_store.setRecv(member, *log_s);
             }
             for (auto &lm : *r.log) {

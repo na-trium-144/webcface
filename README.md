@@ -1,6 +1,6 @@
 # WebCFace
 
-[![C++20](https://img.shields.io/badge/C%2B%2B-20-blue?logo=C%2B%2B)](https://github.com/na-trium-144/webcface)
+[![C++17](https://img.shields.io/badge/C%2B%2B-17-blue?logo=C%2B%2B)](https://github.com/na-trium-144/webcface)
 [![release](https://img.shields.io/github/v/release/na-trium-144/webcface)](https://github.com/na-trium-144/webcface/releases)
 [![coverage](https://raw.githubusercontent.com/na-trium-144/webcface/badge/coverage.svg)](https://github.com/na-trium-144/webcface/actions/workflows/cmake-coverage.yml)  
 [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/webcface?logo=Python&logoColor=white)](https://github.com/na-trium-144/webcface-python)
@@ -15,7 +15,7 @@ ver1は [v1](https://github.com/na-trium-144/webcface/tree/v1) ブランチに�
 
 WebSocketとMessagePackを使った、ROSのような分散型の通信ライブラリです。
 
-C++ (C++20以上), C (C99), Python (3.8以上), JavaScript/TypeScript で相互に数値、文字列、画像などのデータを送受信したり、関数(手続き)を呼び出したりすることができます。
+C++ (C++17以上), C (C99), Python (3.8以上), JavaScript/TypeScript で相互に数値、文字列、画像などのデータを送受信したり、関数(手続き)を呼び出したりすることができます。
 
 Linux, Windows, MacOS で動作します。
 Wi-FiやEtherNet経由で複数のPC間(OS問わず)で通信することも可能です。
@@ -268,12 +268,11 @@ MinGW用バイナリは今のところ配布していません(ソースから�
 以下はwebcfaceをソースからビルドする場合の説明です。(webcfaceをインストールした場合は不要です。)
 
 ### Requirements
-* C++20に対応したコンパイラが必要です
-	* GCCはgcc-10以上が必要です。
-	* Clangはclang-13以上が必要です。
-	* MacOSではMacOS12(Monterey)以上でビルドできることを確認済みです。
-	* Visual Studio は2019以上でビルドできるはずです。
-	* MinGWでもビルドできます。MSYS2のMINGW64環境でテストしていますがUCRT64やCLANG64環境でもビルドできると思います。
+* C++17に対応したコンパイラが必要です
+	* (ver1.11まではC++20が必要でしたが、ver2からC++17に移行しました)
+* Linuxはgcc-7以上とclang-7以上、MacはmacOS12(Monterey)以上、Visual Studio は2019以上でビルドできることを確認しています。
+それ以前のバージョンでも動くかもしれません。
+* WindowsではMinGWでもビルドできます。MSYS2のMINGW64環境でテストしていますがUCRT64やCLANG64環境でもビルドできると思います。
 * webcfaceは外部ライブラリとして
 [msgpack-cxx](https://github.com/msgpack/msgpack-c),
 [eventpp](https://github.com/wqking/eventpp),
@@ -295,7 +294,6 @@ MinGW用バイナリは今のところ配布していません(ソースから�
 	* libcurlはwebsocket機能を有効にする必要があるため、インストールされているlibcurlでwebsocketが使えない場合使用せずソースからビルドします。
 	* crowはunix_socketの機能が実装されている必要があるため、インストールされているcrowでunix_socketが使えない場合使用せずソースからビルドします
 	* Magick++はマルチスレッドで実行するためにOpenMPが無効になっている必要があるため、インストールされているMagick++がOpenMPを使用してビルドされていた場合使用せずソースからビルドします
-	* googletestはchar8_tの機能を有効にする必要があるためインストールされている場合でもソースからビルドします
 	* OpenCVはソースからビルドしません。OpenCVを使ったexampleをビルドしたい場合は別途インストールする必要がありますが、example以外では使用しないのでほぼ必要ないと思います。
 	
 <details><summary>Ubuntu</summary>
@@ -308,12 +306,6 @@ sudo apt install libcli11-dev # only on 22.04 or later
 sudo apt install libmsgpack-cxx-dev # only on 24.04 or later
 ```
 
-ubuntu20.04の場合デフォルトのコンパイラ(gcc-9)ではビルドできないのでgcc-10にする必要があります
-```sh
-sudo apt install gcc-10 g++-10
-export CC=gcc-10
-export CXX=g++-10
-```
 </details>
 
 <details><summary>Homebrew (MacOS, Linux)</summary>

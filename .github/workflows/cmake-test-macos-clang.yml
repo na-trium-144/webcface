@@ -28,7 +28,7 @@ jobs:
       run: |
         brew update --preinstall
         brew tap na-trium-144/webcface
-        brew install spdlog msgpack-cxx cli11 utf8cpp na-trium-144/webcface/imagemagick-no-openmp na-trium-144/webcface/curl-ws na-trium-144/webcface/crow-unix-socket || true
+        brew install spdlog msgpack-cxx cli11 utf8cpp googletest opencv na-trium-144/webcface/imagemagick-no-openmp na-trium-144/webcface/curl-ws na-trium-144/webcface/crow-unix-socket || true
     - name: Install Nasm
       if: matrix.dep == 'framework'
       env:
@@ -45,6 +45,7 @@ jobs:
         -DWEBCFACE_EXAMPLE=on
         -DWEBCFACE_TEST_TIMEOUT=1000
         "-DWEBCFACE_SHARED=$([[ ${{matrix.dep}} = static ]]; echo $?)"
+        "-DWEBCFACE_FIND_OPENCV=$([[ ${{matrix.dep}} != brew ]]; echo $?)"
         -DCMAKE_INSTALL_PREFIX=${{github.workspace}}/build/install
         "-DCMAKE_PREFIX_PATH=$(brew --prefix)/opt/imagemagick-no-openmp;$(brew --prefix)/opt/curl-ws;$(brew --prefix)/opt/crow-unix-socket"
         "-DWEBCFACE_FRAMEWORK=$([[ ${{matrix.dep}} != framework ]]; echo $?)"
@@ -72,12 +73,13 @@ jobs:
       env:
         PKG_CONFIG_PATH: ${{github.workspace}}/build/install/lib/pkgconfig
       run: |
-        clang++ -std=c++20 test.cc $(pkg-config --cflags --libs webcface)
+        pkg-config --cflags --libs webcface
+        clang++ -std=c++17 test.cc $(pkg-config --cflags --libs webcface)
         clang -std=c99 test.c $(pkg-config --cflags --libs webcface) -lc++
 
     - name: Test building using framework
       if: matrix.dep == 'framework'
       working-directory: ${{github.workspace}}/.github/test
       run: |
-        clang++ -std=c++20 test.cc -F${{github.workspace}}/build/install/Frameworks -framework webcface
+        clang++ -std=c++17 test.cc -F${{github.workspace}}/build/install/Frameworks -framework webcface
         clang -std=c99 test.c -F${{github.workspace}}/build/install/Frameworks -framework webcface

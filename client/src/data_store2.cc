@@ -193,13 +193,13 @@ SyncDataStore2<T, ReqT>::getReq(unsigned int req_id,
             if (r2.second == req_id) {
                 if (!sub_field.empty() &&
                     sub_field.u8String()[0] != field_separator) {
-                    return std::make_pair(r.first,
-                                          SharedString(r2.first.u8String() +
+                    return std::make_pair(r.first, SharedString::fromU8String(
+                                                       r2.first.u8String() +
                                                        field_separator +
                                                        sub_field.u8String()));
                 } else {
-                    return std::make_pair(r.first,
-                                          SharedString(r2.first.u8String() +
+                    return std::make_pair(r.first, SharedString::fromU8String(
+                                                       r2.first.u8String() +
                                                        sub_field.u8String()));
                 }
             }
@@ -259,6 +259,7 @@ template class WEBCFACE_DLL_INSTANCE_DEF SyncDataStore2<ViewData, int>;
 template class WEBCFACE_DLL_INSTANCE_DEF SyncDataStore2<RobotModelData, int>;
 template class WEBCFACE_DLL_INSTANCE_DEF SyncDataStore2<Canvas3DData, int>;
 template class WEBCFACE_DLL_INSTANCE_DEF SyncDataStore2<Canvas2DData, int>;
-template class WEBCFACE_DLL_INSTANCE_DEF SyncDataStore2<ImageData, message::ImageReq>;
+template class WEBCFACE_DLL_INSTANCE_DEF
+    SyncDataStore2<ImageData, message::ImageReq>;
 } // namespace internal
 WEBCFACE_NS_END

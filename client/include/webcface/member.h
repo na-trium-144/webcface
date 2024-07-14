@@ -2,7 +2,6 @@
 #include <string>
 #include <vector>
 #include <optional>
-#include <concepts>
 #include "field.h"
 #include <webcface/common/def.h>
 #include "func.h"
@@ -57,9 +56,10 @@ class WEBCFACE_DLL Member : protected Field {
      * \brief AnonymousFuncオブジェクトを作成しfuncをsetする
      *
      */
-    template <typename T>
-        requires(!std::convertible_to<T, std::string_view> &&
-                 !std::convertible_to<T, std::wstring_view>)
+    template <typename T, typename std::enable_if_t<
+                              !std::is_convertible_v<T, std::string_view> &&
+                                  !std::is_convertible_v<T, std::wstring_view>,
+                              std::nullptr_t> = nullptr>
     AnonymousFunc func(const T &func) const {
         return AnonymousFunc{*this, func};
     }
@@ -221,10 +221,15 @@ class WEBCFACE_DLL Member : protected Field {
      * \brief Memberを比較
      * \since ver1.11
      */
-    template <typename T>
-        requires std::same_as<T, Member> bool
-    operator==(const T &other) const {
+    template <typename T, typename std::enable_if_t<std::is_same_v<T, Member>,
+                                                    std::nullptr_t> = nullptr>
+    bool operator==(const T &other) const {
         return static_cast<Field>(*this) == static_cast<Field>(other);
+    }
+    template <typename T, typename std::enable_if_t<std::is_same_v<T, Member>,
+                                                    std::nullptr_t> = nullptr>
+    bool operator!=(const T &other) const {
+        return static_cast<Field>(*this) != static_cast<Field>(other);
     }
 };
 

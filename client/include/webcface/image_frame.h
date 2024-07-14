@@ -3,7 +3,6 @@
 #include <vector>
 #include <memory>
 #include <cstddef>
-#include <concepts>
 #include <webcface/common/def.h>
 #include <webcface/encoding/image_mode.h>
 
@@ -50,10 +49,10 @@ class SizeOption {
   public:
     SizeOption() = default;
     SizeOption(const Size &s) : w_(s.width()), h_(s.height()) {}
-    template <typename T1, typename T2>
-    friend Size sizeWH(T1 width, T2 height);
-    template <typename T1, typename T2>
-    friend Size sizeHW(T1 height, T2 width);
+    friend SizeOption sizeWH(std::optional<std::size_t> width,
+                             std::optional<std::size_t> height);
+    friend SizeOption sizeHW(std::optional<std::size_t> height,
+                             std::optional<std::size_t> width);
     std::optional<std::size_t> rows() const { return h_; }
     std::optional<std::size_t> cols() const { return w_; }
 };
@@ -62,20 +61,16 @@ class SizeOption {
  * \brief 幅 × 高さ でサイズを指定
  * \since ver2.0
  */
-template <typename T1, typename T2>
-    requires(std::same_as<T1, std::nullopt_t> ||
-             std::same_as<T2, std::nullopt_t>)
-inline SizeOption sizeWH(T1 width, T2 height) {
+inline SizeOption sizeWH(std::optional<std::size_t> width,
+                         std::optional<std::size_t> height) {
     return SizeOption{width, height};
 }
 /*!
  * \brief 高さ × 幅 でサイズを指定
  * \since ver2.0
  */
-template <typename T1, typename T2>
-    requires(std::same_as<T1, std::nullopt_t> ||
-             std::same_as<T2, std::nullopt_t>)
-inline SizeOption sizeHW(T1 height, T2 width) {
+inline SizeOption sizeHW(std::optional<std::size_t> height,
+                         std::optional<std::size_t> width) {
     return SizeOption{width, height};
 }
 

@@ -3,8 +3,6 @@
 #include <thread>
 #include <iostream>
 #include <chrono>
-#include <numbers>
-#include <cmath>
 
 int main() {
     webcface::Client wcli("example_view");
