@@ -141,13 +141,13 @@ WEBCFACE_DLL typedef struct wcfFuncCallHandleW {
 /*!
  * \brief funcにsetするコールバックの型
  */
-typedef void (*wcfFuncCallback)(wcfFuncCallHandle *call_handle,
-                                void *user_data);
+typedef void(WEBCFACE_CALL *wcfFuncCallback)(wcfFuncCallHandle *call_handle,
+                                             void *user_data);
 /*!
  * \brief funcにsetするコールバックの型 (wstring)
  */
-typedef void (*wcfFuncCallbackW)(wcfFuncCallHandleW *call_handle,
-                                 void *user_data);
+typedef void(WEBCFACE_CALL *wcfFuncCallbackW)(wcfFuncCallHandleW *call_handle,
+                                              void *user_data);
 
 #define WCF_VIEW_TEXT 0
 #define WCF_VIEW_NEW_LINE 1

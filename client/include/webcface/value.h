@@ -319,6 +319,7 @@ class WEBCFACE_DLL Value : protected Field {
  * 1.8〜 複数の値に対応 & 受信してない時nullと表示するようにした
  *
  */
-WEBCFACE_DLL std::ostream &operator<<(std::ostream &os, const Value &data);
+WEBCFACE_DLL std::ostream &WEBCFACE_CALL operator<<(std::ostream &os,
+                                                    const Value &data);
 
 WEBCFACE_NS_END

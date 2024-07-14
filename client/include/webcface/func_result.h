@@ -86,8 +86,8 @@ class WEBCFACE_DLL AsyncFuncResult : Field {
     using Field::member;
     using Field::name;
 };
-WEBCFACE_DLL std::ostream &operator<<(std::ostream &os,
-                                      const AsyncFuncResult &r);
+WEBCFACE_DLL std::ostream &WEBCFACE_CALL operator<<(std::ostream &os,
+                                                    const AsyncFuncResult &r);
 
 class WEBCFACE_DLL FuncCallHandle {
     struct WEBCFACE_DLL HandleData {
@@ -108,7 +108,7 @@ class WEBCFACE_DLL FuncCallHandle {
     };
     std::shared_ptr<HandleData> handle_data_;
 
-    static std::runtime_error &invalidHandle();
+    static std::runtime_error &WEBCFACE_CALL invalidHandle();
 
   public:
     FuncCallHandle() = default;

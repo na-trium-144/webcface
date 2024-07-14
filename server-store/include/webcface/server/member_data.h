@@ -16,7 +16,7 @@
 WEBCFACE_NS_BEGIN
 namespace server {
 
-WEBCFACE_DLL std::pair<unsigned int, SharedString>
+WEBCFACE_DLL std::pair<unsigned int, SharedString> WEBCFACE_CALL
 findReqField(StrMap2<unsigned int> &req, const SharedString &member,
              const SharedString &field);
 

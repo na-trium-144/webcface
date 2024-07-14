@@ -774,8 +774,8 @@ struct WEBCFACE_DLL Res<Image>
  *
  */
 WEBCFACE_DLL std::vector<std::pair<int, std::any>>
-unpack(const std::string &message,
-       const std::shared_ptr<spdlog::logger> &logger);
+    WEBCFACE_CALL unpack(const std::string &message,
+                         const std::shared_ptr<spdlog::logger> &logger);
 
 /*!
  * \brief メッセージ1つを要素数2の配列としてシリアル化

@@ -16,8 +16,8 @@ class Size {
 
   public:
     Size() = default;
-    friend Size sizeWH(int width, int height);
-    friend Size sizeHW(int height, int width);
+    friend Size WEBCFACE_CALL sizeWH(int width, int height);
+    friend Size WEBCFACE_CALL sizeHW(int height, int width);
     int width() const { return w_; }
     int height() const { return h_; }
     int rows() const { return h_; }
@@ -28,12 +28,16 @@ class Size {
  * \brief 幅 × 高さ でサイズを指定
  * \since ver2.0
  */
-inline Size sizeWH(int width, int height) { return Size{width, height}; }
+inline Size WEBCFACE_CALL sizeWH(int width, int height) {
+    return Size{width, height};
+}
 /*!
  * \brief 高さ × 幅 でサイズを指定
  * \since ver2.0
  */
-inline Size sizeHW(int height, int width) { return Size{width, height}; }
+inline Size WEBCFACE_CALL sizeHW(int height, int width) {
+    return Size{width, height};
+}
 
 class SizeOption {
     std::optional<int> w_, h_;
@@ -43,10 +47,10 @@ class SizeOption {
   public:
     SizeOption() = default;
     SizeOption(const Size &s) : w_(s.width()), h_(s.height()) {}
-    friend SizeOption sizeWH(std::optional<int> width,
-                             std::optional<int> height);
-    friend SizeOption sizeHW(std::optional<int> height,
-                             std::optional<int> width);
+    friend SizeOption WEBCFACE_CALL sizeWH(std::optional<int> width,
+                                           std::optional<int> height);
+    friend SizeOption WEBCFACE_CALL sizeHW(std::optional<int> height,
+                                           std::optional<int> width);
     std::optional<int> rows() const { return h_; }
     std::optional<int> cols() const { return w_; }
 };
@@ -55,14 +59,16 @@ class SizeOption {
  * \brief 幅 × 高さ でサイズを指定
  * \since ver2.0
  */
-inline SizeOption sizeWH(std::optional<int> width, std::optional<int> height) {
+inline SizeOption WEBCFACE_CALL sizeWH(std::optional<int> width,
+                                       std::optional<int> height) {
     return SizeOption{width, height};
 }
 /*!
  * \brief 高さ × 幅 でサイズを指定
  * \since ver2.0
  */
-inline SizeOption sizeHW(std::optional<int> height, std::optional<int> width) {
+inline SizeOption WEBCFACE_CALL sizeHW(std::optional<int> height,
+                                       std::optional<int> width) {
     return SizeOption{width, height};
 }
 

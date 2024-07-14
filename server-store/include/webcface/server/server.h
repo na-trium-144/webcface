@@ -14,7 +14,7 @@ struct MemberData;
 
 using wsConnPtr = void *;
 
-WEBCFACE_DLL void initMagick();
+WEBCFACE_DLL void WEBCFACE_CALL initMagick();
 
 class WEBCFACE_DLL Server {
     std::atomic<bool> server_stop;

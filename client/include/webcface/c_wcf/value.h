@@ -13,15 +13,17 @@ extern "C" {
  * \return wcliが無効ならWCF_BAD_WCLI
  *
  */
-WEBCFACE_DLL wcfStatus wcfValueSet(wcfClient *wcli, const char *field,
-                                   double value);
+WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfValueSet(wcfClient *wcli,
+                                                 const char *field,
+                                                 double value);
 /*!
  * \brief 単一の値を送信する (wstring)
  * \since ver2.0
  * \sa wcfValueSet
  */
-WEBCFACE_DLL wcfStatus wcfValueSetW(wcfClient *wcli, const wchar_t *field,
-                                    double value);
+WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfValueSetW(wcfClient *wcli,
+                                                  const wchar_t *field,
+                                                  double value);
 /*!
  * \brief 複数の値を送信する(doubleの配列)
  * \since ver1.5
@@ -32,15 +34,19 @@ WEBCFACE_DLL wcfStatus wcfValueSetW(wcfClient *wcli, const wchar_t *field,
  * \return wcliが無効ならWCF_BAD_WCLI
  *
  */
-WEBCFACE_DLL wcfStatus wcfValueSetVecD(wcfClient *wcli, const char *field,
-                                       const double *values, int size);
+WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfValueSetVecD(wcfClient *wcli,
+                                                     const char *field,
+                                                     const double *values,
+                                                     int size);
 /*!
  * \brief 複数の値を送信する(doubleの配列, wstring)
  * \since ver2.0
  * \sa wcfValueSetVecD
  */
-WEBCFACE_DLL wcfStatus wcfValueSetVecDW(wcfClient *wcli, const wchar_t *field,
-                                        const double *values, int size);
+WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfValueSetVecDW(wcfClient *wcli,
+                                                      const wchar_t *field,
+                                                      const double *values,
+                                                      int size);
 
 /*!
  * \brief 値を受信する
@@ -57,15 +63,19 @@ WEBCFACE_DLL wcfStatus wcfValueSetVecDW(wcfClient *wcli, const wchar_t *field,
  * 対象のmemberやfieldが存在しない場合 WCF_NOT_FOUND
  *
  */
-WEBCFACE_DLL wcfStatus wcfValueGet(wcfClient *wcli, const char *member,
-                                   const char *field, double *value);
+WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfValueGet(wcfClient *wcli,
+                                                 const char *member,
+                                                 const char *field,
+                                                 double *value);
 /*!
  * \brief 値を受信する (wstring)
  * \since ver2.0
  * \sa wcfValueGet
  */
-WEBCFACE_DLL wcfStatus wcfValueGetW(wcfClient *wcli, const wchar_t *member,
-                                    const wchar_t *field, double *value);
+WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfValueGetW(wcfClient *wcli,
+                                                  const wchar_t *member,
+                                                  const wchar_t *field,
+                                                  double *value);
 /*!
  * \brief 値を受信する
  * \since ver1.5
@@ -86,17 +96,21 @@ WEBCFACE_DLL wcfStatus wcfValueGetW(wcfClient *wcli, const wchar_t *member,
  * 対象のmemberやfieldが存在しない場合 WCF_NOT_FOUND
  *
  */
-WEBCFACE_DLL wcfStatus wcfValueGetVecD(wcfClient *wcli, const char *member,
-                                       const char *field, double *values,
-                                       int size, int *recv_size);
+WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfValueGetVecD(wcfClient *wcli,
+                                                     const char *member,
+                                                     const char *field,
+                                                     double *values, int size,
+                                                     int *recv_size);
 /*!
  * \brief 値を受信する (wstring)
  * \since ver2.0
  * \sa wcfValueGetVecD
  */
-WEBCFACE_DLL wcfStatus wcfValueGetVecDW(wcfClient *wcli, const wchar_t *member,
-                                        const wchar_t *field, double *values,
-                                        int size, int *recv_size);
+WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfValueGetVecDW(wcfClient *wcli,
+                                                      const wchar_t *member,
+                                                      const wchar_t *field,
+                                                      double *values, int size,
+                                                      int *recv_size);
 
 #ifdef __cplusplus
 }

@@ -403,7 +403,7 @@ class WEBCFACE_DLL Func : protected Field {
  *
  */
 class WEBCFACE_DLL AnonymousFunc : public Func {
-    static SharedString fieldNameTmp();
+    static SharedString WEBCFACE_CALL fieldNameTmp();
 
     std::function<void(AnonymousFunc &)> func_setter = nullptr;
     bool base_init = false;

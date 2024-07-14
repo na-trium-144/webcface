@@ -161,7 +161,8 @@ class WEBCFACE_DLL Arg {
         return this->option(std::move(option_v));
     }
 };
-WEBCFACE_DLL std::ostream &operator<<(std::ostream &os, const Arg &arg);
+WEBCFACE_DLL std::ostream &WEBCFACE_CALL operator<<(std::ostream &os,
+                                                    const Arg &arg);
 
 /*!
  * \brief 関数1つの情報を表す。関数の実体も持つ

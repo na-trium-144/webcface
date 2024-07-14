@@ -228,7 +228,8 @@ class WEBCFACE_DLL Text : protected Field {
  * \brief Textをostreamに渡すとTextの中身を表示
  *
  */
-WEBCFACE_DLL std::ostream &operator<<(std::ostream &os, const Text &data);
+WEBCFACE_DLL std::ostream &WEBCFACE_CALL operator<<(std::ostream &os,
+                                                    const Text &data);
 
 struct WEBCFACE_DLL InputRefState {
     Text field;

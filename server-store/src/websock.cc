@@ -112,7 +112,7 @@ Server::Server(std::uint16_t port, int level, int keep_log)
     auto crow_logger = std::make_shared<spdlog::logger>("crow_server", sink);
     crow_logger->set_level(spdlog::level::trace);
     auto crow_logger_callback =
-        [crow_logger](const char *data, unsigned long long size, int level) {
+        [crow_logger](const char *data, std::size_t size, int level) {
             crow_logger->log(convertLevel(level), std::string(data, size));
         };
 
@@ -134,7 +134,7 @@ Server::Server(std::uint16_t port, int level, int keep_log)
         store->removeClient(conn);
     };
     auto message_callback = [this](void *conn, const char *data,
-                                   unsigned long long size) {
+                                   std::size_t size) {
         std::lock_guard lock(server_mtx);
         auto cli = store->getClient(conn);
         if (cli) {

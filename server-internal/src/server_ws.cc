@@ -52,7 +52,7 @@ void AppWrapper::stop() noexcept {
     static_cast<crow::SimpleApp *>(app)->stop();
 }
 void AppWrapper::send(wsConnPtr conn, const char *msg,
-                      unsigned long long size) noexcept {
+                      std::size_t size) noexcept {
     static_cast<crow::websocket::connection *>(conn)->send_binary(
         std::string(msg, size));
 }
