@@ -150,7 +150,7 @@ $(document).ready(function(){initNavTree('unix__path_8h_source.html',''); initRe
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#include &lt;<a class="code" href="def_8h.html">webcface/common/def.h</a>&gt;</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &lt;spdlog/logger.h&gt;</span></div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span> </div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#ifdef WEBCFACE_EXP_FILESYSTEM</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#if WEBCFACE_EXP_FILESYSTEM</span></div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &lt;experimental/filesystem&gt;</span></div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="keyword">namespace </span>std_fs = std::experimental::filesystem;</div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#else</span></div>
@@ -180,9 +180,9 @@ $(document).ready(function(){initNavTree('unix__path_8h_source.html',''); initRe
 </div>
 <div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span><a class="code hl_define" href="def_8h.html#ab3f2570d5b8231ddbe0e57fc8ab629eb">WEBCFACE_NS_END</a></div>
 <div class="ttc" id="adef_8h_html"><div class="ttname"><a href="def_8h.html">def.h</a></div></div>
-<div class="ttc" id="adef_8h_html_a47af057bda855b54c212e97ffccdca01"><div class="ttname"><a href="def_8h.html#a47af057bda855b54c212e97ffccdca01">WEBCFACE_DLL</a></div><div class="ttdeci">#define WEBCFACE_DLL</div><div class="ttdef"><b>Definition</b> def.h:55</div></div>
-<div class="ttc" id="adef_8h_html_ab3f2570d5b8231ddbe0e57fc8ab629eb"><div class="ttname"><a href="def_8h.html#ab3f2570d5b8231ddbe0e57fc8ab629eb">WEBCFACE_NS_END</a></div><div class="ttdeci">#define WEBCFACE_NS_END</div><div class="ttdef"><b>Definition</b> def.h:81</div></div>
-<div class="ttc" id="adef_8h_html_abe991b8f291782627a31118c688e123a"><div class="ttname"><a href="def_8h.html#abe991b8f291782627a31118c688e123a">WEBCFACE_NS_BEGIN</a></div><div class="ttdeci">#define WEBCFACE_NS_BEGIN</div><div class="ttdef"><b>Definition</b> def.h:80</div></div>
+<div class="ttc" id="adef_8h_html_a47af057bda855b54c212e97ffccdca01"><div class="ttname"><a href="def_8h.html#a47af057bda855b54c212e97ffccdca01">WEBCFACE_DLL</a></div><div class="ttdeci">#define WEBCFACE_DLL</div><div class="ttdef"><b>Definition</b> def.h:60</div></div>
+<div class="ttc" id="adef_8h_html_ab3f2570d5b8231ddbe0e57fc8ab629eb"><div class="ttname"><a href="def_8h.html#ab3f2570d5b8231ddbe0e57fc8ab629eb">WEBCFACE_NS_END</a></div><div class="ttdeci">#define WEBCFACE_NS_END</div><div class="ttdef"><b>Definition</b> def.h:86</div></div>
+<div class="ttc" id="adef_8h_html_abe991b8f291782627a31118c688e123a"><div class="ttname"><a href="def_8h.html#abe991b8f291782627a31118c688e123a">WEBCFACE_NS_BEGIN</a></div><div class="ttdeci">#define WEBCFACE_NS_BEGIN</div><div class="ttdef"><b>Definition</b> def.h:85</div></div>
 <div class="ttc" id="anamespacemessage_1_1Path_html"><div class="ttname"><a href="namespacemessage_1_1Path.html">message::Path</a></div><div class="ttdef"><b>Definition</b> unix_path.cc:12</div></div>
 <div class="ttc" id="anamespacemessage_1_1Path_html_a014b3e55940d3fda2e9d2f3c1fde6806"><div class="ttname"><a href="namespacemessage_1_1Path.html#a014b3e55940d3fda2e9d2f3c1fde6806">message::Path::initUnixSocket</a></div><div class="ttdeci">void initUnixSocket(const std_fs::path &amp;path, const std::shared_ptr&lt; spdlog::logger &gt; &amp;logger)</div><div class="ttdef"><b>Definition</b> unix_path.cc:64</div></div>
 <div class="ttc" id="anamespacemessage_1_1Path_html_a128100029ac970e04ef5082c5ceb6b91"><div class="ttname"><a href="namespacemessage_1_1Path.html#a128100029ac970e04ef5082c5ceb6b91">message::Path::unixSocketPath</a></div><div class="ttdeci">std_fs::path unixSocketPath(int port)</div><div class="ttdef"><b>Definition</b> unix_path.cc:13</div></div>
@@ -197,7 +197,7 @@ $(document).ready(function(){initNavTree('unix__path_8h_source.html',''); initRe
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_9cb285999b179f8aca5679ee400b878d.html">server-store</a></li><li class="navelem"><a class="el" href="dir_f53cacbf47894fb03ba5cf8a6c70dd7c.html">include</a></li><li class="navelem"><a class="el" href="dir_e7501623f8dfbed316d8be1d8d984954.html">webcface</a></li><li class="navelem"><a class="el" href="dir_769fa1d8bedebba544fb426db8e707df.html">server</a></li><li class="navelem"><a class="el" href="unix__path_8h.html">unix_path.h</a></li>
-    <li class="footer">Generated on Sun Jul 14 2024 06:23:44 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Sun Jul 14 2024 12:52:37 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

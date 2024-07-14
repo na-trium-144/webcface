@@ -15,7 +15,7 @@ var searchData=
   ['lib_5fver_12',['lib_ver',['../structwebcface_1_1message_1_1SyncInit.html#aa2698cd3561f3700857d2061ae8161a7',1,'webcface::message::SyncInit']]],
   ['libname_13',['libName',['../classwebcface_1_1Member.html#a12c305af32dafb2a49e9e68bc3b6be4c',1,'webcface::Member']]],
   ['libversion_14',['libVersion',['../classwebcface_1_1Member.html#a064ab96bd8007139693d43a4c0efa8e0',1,'webcface::Member']]],
-  ['license_15',['License',['../index.html#autotoc_md219',1,'']]],
+  ['license_15',['License',['../index.html#autotoc_md220',1,'']]],
   ['line_16',['line',['../structwebcface_1_1components_1_1geometries_1_1Line.html#a2f3d6e290fc7b8742e3144f17701f9c4',1,'webcface::components::geometries::Line::Line()'],['../namespacewebcface_1_1components_1_1geometries.html#a589bd246994070f5faffe56a90a3b6f2',1,'webcface::line()'],['../namespacewebcface_1_1components_1_1geometries.html#a589bd246994070f5faffe56a90a3b6f2',1,'webcface::components::line()'],['../namespacewebcface_1_1components_1_1geometries.html#a589bd246994070f5faffe56a90a3b6f2',1,'webcface::components::geometries::line()'],['../namespacewebcface.html#a1b753fd9c2659910ca1a042a05b56be6a6438c669e0d0de98e6929c2cc0fac474',1,'webcface::line'],['../md_14__canvas2d.html#autotoc_md73',1,'Line'],['../md_20__canvas3d.html#autotoc_md94',1,'Line'],['../structwebcface_1_1components_1_1geometries_1_1Line.html',1,'Line'],['../structwebcface_1_1components_1_1geometries_1_1Line.html',1,'Line'],['../structwebcface_1_1components_1_1geometries_1_1Line.html',1,'Line']]],
   ['links_17',['Links',['../index.html#autotoc_md203',1,'']]],
   ['linuxのみ_18',['linuxのみ',['../md_70__launcher.html#autotoc_md132',1,'サービスとして (Linuxのみ)'],['../md_00__overview.html#autotoc_md4',1,'サービスとして (Linuxのみ)']]],

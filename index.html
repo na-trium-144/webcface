@@ -316,8 +316,13 @@ Requirements</h2>
 <li>(ver1.11まではC++20が必要でしたが、ver2からC++17に移行しました)</li>
 </ul>
 </li>
-<li>Linuxはgcc-7以上とclang-7以上、MacはmacOS12(Monterey)以上、Visual Studio は2019以上でビルドできることを確認しています。 それ以前のバージョンでも動くかもしれません。</li>
+<li>Linuxはgcc-7以上とclang-7以上、MacはmacOS12(Monterey)以上、Visual Studio 2019以上でビルドできることを確認しています。 それ以前のバージョンでも動くかもしれません。</li>
 <li>WindowsではMinGWでもビルドできます。MSYS2のMINGW64環境でテストしていますがUCRT64やCLANG64環境でもビルドできると思います。</li>
+<li>Cygwin(64bit)やMSYS2のMSYS環境では現状ビルドできません。(<a href="https://github.com/chriskohlhoff/asio/issues/518">chriskohlhoff/asio#518</a>)</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md214"></a>
+Dependencies</h2>
+<ul>
 <li>webcfaceは外部ライブラリとして <a href="https://github.com/msgpack/msgpack-c">msgpack-cxx</a>, <a href="https://github.com/wqking/eventpp">eventpp</a>, <a href="https://github.com/gabime/spdlog">spdlog</a>, <a href="https://github.com/curl/curl">curl</a>, <a href="https://github.com/CrowCpp/Crow">crow</a>, <a href="https://github.com/chriskohlhoff/asio">asio</a>, <a href="https://github.com/CLIUtils/CLI11.git">cli11</a>, <a href="https://github.com/nemtrif/utfcpp">UTF8-CPP</a>, <a href="https://opencv.org/">OpenCV</a>(exampleのみ), <a href="https://github.com/ImageMagick/ImageMagick">Magick++</a>, <a href="https://github.com/google/googletest">GoogleTest</a>(testのみ) を使用します。<ul>
 <li>いずれもシステムにインストールされていてfind_packageなどで使うことができるか確認します。<ul>
 <li>見つからない場合は、CMake時に自動的にFetchContentでソースコードを取得してビルドするので、必ずしもこれらをインストールする必要はありません。</li>
@@ -376,7 +381,7 @@ MSYS2</summary>
 </div><!-- fragment --><p> imagemagickをソースからビルドする際にはninjaではなくmakeが必要になります</p>
 <p></p>
 </details>
-<h2><a class="anchor" id="autotoc_md214"></a>
+<h2><a class="anchor" id="autotoc_md215"></a>
 CMake</h2>
 <div class="fragment"><div class="line">cmake -Bbuild</div>
 </div><!-- fragment --><ul>
@@ -432,23 +437,23 @@ CMake</h2>
 </ul>
 </li>
 </ul>
-<h2><a class="anchor" id="autotoc_md215"></a>
+<h2><a class="anchor" id="autotoc_md216"></a>
 Build</h2>
 <div class="fragment"><div class="line">cmake --build build</div>
 </div><!-- fragment --><p> でビルドします (Windows(MSVC)の場合は <code>--config Release</code> または <code>--config Debug</code> を追加してください。)</p>
 <p>インストールもしたい場合は </p><div class="fragment"><div class="line">sudo cmake --build build -t install</div>
 </div><!-- fragment --><p> でできます (Windows(MSVC)の場合は <code>--config Release</code> または <code>--config Debug</code> を追加してください。)</p>
-<h2><a class="anchor" id="autotoc_md216"></a>
+<h2><a class="anchor" id="autotoc_md217"></a>
 WebUI</h2>
 <p>デフォルトではビルド済みのものがCMake時にダウンロードされますが、 <code>-DWEBCFACE_DOWNLOAD_WEBUI=OFF</code> を指定した場合はダウンロードしません。 その場合は <a href="https://github.com/na-trium-144/webcface-webui/releases">webuiのReleases</a> からビルド済みのtar.gzのアーカイブをダウンロードしてください。</p>
 <p>インストールする場合は (webcfaceのインストール場所)/share/webcface/dist として展開してください。 (install先が/usr/localでない場合はprefixを読み替えてください)</p>
 <p>installせずに実行する場合は webcface-server のバイナリと同じディレクトリか、その1, 2, 3階層上のどこかにdistディレクトリを配置してください。</p>
 <p>Ubuntuの場合は<a href="https://github.com/na-trium-144/webcface-webui/releases">webuiのReleases</a>にあるdebパッケージで、またhomebrewでは <code>webcface-webui</code> パッケージとしてWebUIだけを単体でインストールすることもできます。</p>
 <p>または自分でビルドすることも可能です。(node.jsが必要) <a href="https://github.com/na-trium-144/webcface-webui">webcface-webui</a> のREADMEを参照してください。</p>
-<h2><a class="anchor" id="autotoc_md217"></a>
+<h2><a class="anchor" id="autotoc_md218"></a>
 tools</h2>
 <p>toolsは別途 <a href="https://github.com/na-trium-144/webcface-tools.git">https://github.com/na-trium-144/webcface-tools.git</a> をcloneしてビルド、インストールしてください</p>
-<h1><a class="anchor" id="autotoc_md218"></a>
+<h1><a class="anchor" id="autotoc_md219"></a>
 Documentation</h1>
 <ul>
 <li>まずはここから→ <a href="https://na-trium-144.github.io/webcface/md_00__overview.html">Overview</a></li>
@@ -456,7 +461,7 @@ Documentation</h1>
 <li><a href="https://na-trium-144.github.io/webcface-python/">webcface-python APIリファレンス</a></li>
 <li><a href="https://na-trium-144.github.io/webcface-js/">webcface-js APIリファレンス</a></li>
 </ul>
-<h1><a class="anchor" id="autotoc_md219"></a>
+<h1><a class="anchor" id="autotoc_md220"></a>
 License</h1>
 <p>WebCFaceと関連するプログラムはすべてMITライセンスで公開しています。詳細は <a href="https://github.com/na-trium-144/webcface/blob/main/LICENSE">LICENSE</a> を参照してください。</p>
 <p>WebCFace本体とtoolsが使用しているサードパーティーのライブラリのライセンスはそれぞれ以下を参照してください。</p><ul>
@@ -479,7 +484,7 @@ License</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sun Jul 14 2024 06:23:44 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Sun Jul 14 2024 12:52:38 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>
