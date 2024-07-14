@@ -76,6 +76,11 @@ if(NOT EXISTS ${imagemagick-windows_SOURCE_DIR}/${imagemagick_sln} OR ${CMAKE_CU
         COMMAND ${COMMAND}
         WORKING_DIRECTORY ${imagemagick-windows_SOURCE_DIR}
     )
+
+    # でっちあげでdllexportを消す
+    file(APPEND ${imagemagick-windows_SOURCE_DIR}/Dependencies/pango/pango/config.h
+        "\n#define _PANGO_EXTERN\n"
+    )
 endif()
 if(NOT EXISTS ${imagemagick-windows_SOURCE_DIR}/${imagemagick_sln})
     message(FATAL_ERROR "Failed to configure ImageMagick")
