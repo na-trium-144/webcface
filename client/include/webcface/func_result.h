@@ -19,11 +19,14 @@ class Member;
 /*!
  * \brief Funcの実行ができなかった場合発生する例外
  *
- * (ValueやTextで参照先が見つからなかった場合はこれではなく単にnulloptが返る)
+ * ValueやTextで参照先が見つからなかった場合はこれではなく単にnulloptが返る
+ *
+ * MSVCではexceptionをexportしないほうがよいらしくC4275警告を出すが、
+ * Macではexportしないとcatchできなくなる
  *
  */
-struct FuncNotFound : public std::runtime_error {
-    WEBCFACE_DLL explicit FuncNotFound(const FieldBase &base);
+struct WEBCFACE_DLL FuncNotFound : public std::runtime_error {
+    explicit FuncNotFound(const FieldBase &base);
 };
 
 /*!
