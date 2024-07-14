@@ -108,61 +108,64 @@ class WEBCFACE_DLL Member : protected Field {
      * コールバックの型は void(Value)
      *
      */
-    Member &onValueEntry(std::function<void(Value)> callback);
+    Member &onValueEntry(std::function<void WEBCFACE_CALL(Value)> callback);
     /*!
      * \brief textが追加された時のイベント
      *
      * コールバックの型は void(Text)
      *
      */
-    Member &onTextEntry(std::function<void(Text)> callback);
+    Member &onTextEntry(std::function<void WEBCFACE_CALL(Text)> callback);
     /*!
      * \brief robotModelが追加された時のイベント
      *
      * コールバックの型は void(RobotModel)
      *
      */
-    Member &onRobotModelEntry(std::function<void(RobotModel)> callback);
+    Member &
+    onRobotModelEntry(std::function<void WEBCFACE_CALL(RobotModel)> callback);
     /*!
      * \brief funcが追加された時のイベント
      *
      * コールバックの型は void(Func)
      *
      */
-    Member &onFuncEntry(std::function<void(Func)> callback);
+    Member &onFuncEntry(std::function<void WEBCFACE_CALL(Func)> callback);
     /*!
      * \brief imageが追加されたときのイベント
      *
      * コールバックの型は void(Image)
      *
      */
-    Member &onImageEntry(std::function<void(Image)> callback);
+    Member &onImageEntry(std::function<void WEBCFACE_CALL(Image)> callback);
     /*!
      * \brief viewが追加されたときのイベント
      *
      * コールバックの型は void(View)
      *
      */
-    Member &onViewEntry(std::function<void(View)> callback);
+    Member &onViewEntry(std::function<void WEBCFACE_CALL(View)> callback);
     /*!
      * \brief canvas3dが追加されたときのイベント
      *
      * コールバックの型は void(Canvas3D)
      *
      */
-    Member &onCanvas3DEntry(std::function<void(Canvas3D)> callback);
+    Member &
+    onCanvas3DEntry(std::function<void WEBCFACE_CALL(Canvas3D)> callback);
     /*!
      * \brief canvas2dが追加されたときのイベント
      *
      * コールバックの型は void(Canvas2D)
      *
      */
-    Member &onCanvas2DEntry(std::function<void(Canvas2D)> callback);
+    Member &
+    onCanvas2DEntry(std::function<void WEBCFACE_CALL(Canvas2D)> callback);
     /*!
      * \brief Memberがsync()したときのイベント
      * コールバックの型は void(Member)
      */
-    Member &onSync(std::function<void(Member)> callback);
+    Member &onSync(std::function<void WEBCFACE_CALL(Member)> callback);
 
     /*!
      * \brief 最後のsync()の時刻を返す
@@ -211,7 +214,7 @@ class WEBCFACE_DLL Member : protected Field {
      *
      * \sa pingStatus()
      */
-    Member &onPing(std::function<void(Member)> callback);
+    Member &onPing(std::function<void WEBCFACE_CALL(Member)> callback);
 
     /*!
      * \brief Memberを比較

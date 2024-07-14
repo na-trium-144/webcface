@@ -90,7 +90,7 @@ class WEBCFACE_DLL RobotModel : protected Field, public Canvas3DComponent {
      * \brief 値が変化したときに呼び出されるコールバックを設定
      * \since ver2.0
      */
-    RobotModel &onChange(std::function<void(RobotModel)> callback);
+    RobotModel &onChange(std::function<void WEBCFACE_CALL(RobotModel)> callback);
     /*!
      * \brief 値が変化したときに呼び出されるコールバックを設定
      * \since ver2.0

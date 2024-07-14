@@ -172,7 +172,8 @@ WEBCFACE_DLL std::ostream &WEBCFACE_CALL operator<<(std::ostream &os,
  *
  */
 struct FuncInfo {
-    using FuncType = std::future<ValAdaptor>(std::vector<ValAdaptor>);
+    using FuncType = std::future<ValAdaptor>
+        WEBCFACE_CALL(std::vector<ValAdaptor>);
 
     ValType return_type;
     std::vector<Arg> args;

@@ -72,7 +72,8 @@ class WEBCFACE_DLL AsyncFuncResult : Field {
      * すでにstartedに値が入っている場合は即座にcallbackが呼ばれる。
      *
      */
-    AsyncFuncResult &onStarted(std::function<void(bool)> callback);
+    AsyncFuncResult &
+    onStarted(std::function<void WEBCFACE_CALL(bool)> callback);
     /*!
      * \brief 関数の実行が完了した時呼び出すコールバックを設定
      * \since ver2.0
@@ -81,7 +82,8 @@ class WEBCFACE_DLL AsyncFuncResult : Field {
      *
      */
     AsyncFuncResult &
-    onResult(std::function<void(std::shared_future<ValAdaptor>)> callback);
+    onResult(std::function<void WEBCFACE_CALL(std::shared_future<ValAdaptor>)>
+                 callback);
 
     using Field::member;
     using Field::name;

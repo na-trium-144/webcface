@@ -91,7 +91,7 @@ class WEBCFACE_DLL View : protected Field, private std::ostream {
      * \brief 値が変化したときに呼び出されるコールバックを設定
      * \since ver2.0
      */
-    View &onChange(std::function<void(View)> callback);
+    View &onChange(std::function<void WEBCFACE_CALL(View)> callback);
     /*!
      * \brief 値が変化したときに呼び出されるコールバックを設定
      * \since ver2.0
