@@ -206,7 +206,7 @@ using Canvas3DData = std::shared_ptr<std::vector<Canvas3DComponent>>;
 using Canvas2DData = std::shared_ptr<Canvas2DDataBase>;
 using ImageData = ImageFrame;
 
-#ifdef _WIN32
+#if WEBCFACE_SYSTEM_DLLEXPORT
 extern template class WEBCFACE_DLL_INSTANCE_DECL
     SyncDataStore2<std::string, int>; // test用
 extern template class WEBCFACE_DLL_INSTANCE_DECL SyncDataStore2<ValueData, int>;

@@ -40,6 +40,7 @@ option(WEBCFACE_SHARED "build shared library" ON)
 option(WEBCFACE_PIC "enable PIC for shared library" ${WEBCFACE_SHARED})
 set(WEBCFACE_VERSION_SUFFIX "git" CACHE STRING "version suffix ('git' to get automatically from git describe command)")
 set(WEBCFACE_CLANG_TIDY "" CACHE STRING "clang-tidy path (or empty to disable clang-tidy)")
+option(WEBCFACE_PERMISSIVE "add -fpermissive" OFF)
 option(WEBCFACE_WARNING "enable all warning and treat most of them as error" ${IS_MAIN})
 option(WEBCFACE_DOWNLOAD_WEBUI "download and install webui" ${IS_MAIN})
 option(WEBCFACE_CONFIG_ALL "configure both debug and release build on windows" OFF)
@@ -89,6 +90,9 @@ if(WEBCFACE_COVERAGE)
         add_link_options(-fprofile-instr-generate -fcoverage-mapping)
     endif()
 endif()
+
+include(cmake/system.cmake)
+include(cmake/filesystem.cmake)
 
 configure_file(
     cmake/def.h.in
@@ -143,11 +147,12 @@ function(add_cxx_compile_options_if FLAG NAME)
     endif()
 endfunction()
 
-include(cmake/filesystem.cmake)
-
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    if(WEBCFACE_WARNING)
+    if(WEBCFACE_WARNING AND NOT WEBCFACE_PERMISSIVE)
         add_compile_options(-Wall -Wextra -Wpedantic -Werror)
+    endif()
+    if(WEBCFACE_PERMISSIVE)
+        add_compile_options(-fpermissive)
     endif()
     add_compile_options(-Wno-error=ignored-attributes)
     add_compile_options(-Wno-error=attributes)
@@ -206,7 +211,7 @@ add_subdirectory(client)
 
 if(WEBCFACE_SHARED)
     add_library(webcface SHARED)
-    if(WIN32)
+    if(WEBCFACE_SYSTEM_VERSION_RC)
         target_sources(webcface PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/version.rc)
     endif()
 else()
@@ -245,10 +250,10 @@ if(NOT WEBCFACE_SHARED)
         $<TARGET_PROPERTY:spdlog-linker,INTERFACE_LINK_DIRECTORIES>
     )
 endif()
-if(WIN32)
+if(WEBCFACE_SYSTEM_WIN32API)
     target_link_libraries(webcface PRIVATE iphlpapi.lib)
 endif()
-if(WEBCFACE_SHARED AND NOT WIN32)
+if(WEBCFACE_SHARED AND WEBCFACE_SYSTEM_VISIBILITY)
     # webcfaceのAPI以外をexportしない。
     # MSVCではデフォルトでdllexportしたもの以外exportされないので問題なし
     set_target_properties(webcface-server-internal PROPERTIES CXX_VISIBILITY_PRESET hidden)
@@ -256,16 +261,16 @@ if(WEBCFACE_SHARED AND NOT WIN32)
     set_target_properties(webcface-message PROPERTIES CXX_VISIBILITY_PRESET hidden)
     set_target_properties(webcface-server-store PROPERTIES CXX_VISIBILITY_PRESET hidden)
     set_target_properties(webcface-client PROPERTIES CXX_VISIBILITY_PRESET hidden)
-    if(NOT APPLE)
+    if(WEBCFACE_SYSTEM_EXCLUDE_LIBS)
         # object libraryのwebcface-messageなどはexcludeされない
         target_link_options(webcface PRIVATE -Wl,--exclude-libs,ALL)
     endif()
 endif()
-if(WIN32)
+if(WEBCFACE_SYSTEM_ADD_VERSION)
     set_target_properties(webcface PROPERTIES RUNTIME_OUTPUT_NAME "webcface${WEBCFACE_SOVERSION}")
-    if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-        set_target_properties(webcface PROPERTIES DEBUG_POSTFIX "d")
-    endif()
+endif()
+if(WEBCFACE_SYSTEM_ADD_DEBUG)
+    set_target_properties(webcface PROPERTIES DEBUG_POSTFIX "d")
 endif()
 set_target_properties(webcface PROPERTIES
     INSTALL_RPATH "$ORIGIN/;@loader_path/"
@@ -351,17 +356,18 @@ if(WEBCFACE_INSTALL)
         RUNTIME DESTINATION bin
         FRAMEWORK DESTINATION Frameworks
     )
-    if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-        if(WEBCFACE_SHARED)
-            get_target_property(WEBCFACE_PDB webcface PDB_NAME)
-        else()
-            get_target_property(WEBCFACE_PDB webcface COMPILE_PDB_NAME)
-        endif()
-        install(FILES ${WEBCFACE_PDB}
-            DESTINATION bin
-            OPTIONAL
-        )
+
+    # pdbがあればインストールする
+    if(WEBCFACE_SHARED)
+        get_target_property(WEBCFACE_PDB webcface PDB_NAME)
+    else()
+        get_target_property(WEBCFACE_PDB webcface COMPILE_PDB_NAME)
     endif()
+    install(FILES ${WEBCFACE_PDB}
+        DESTINATION bin
+        OPTIONAL
+    )
+
     if(WEBCFACE_FRAMEWORK)
         # 一応書いたけど、pkgconfig内でフラグにスペースが含まれる時、
         # bashで展開しようとするとうまくエスケープされないので使い物にならない気がする...

@@ -270,9 +270,12 @@ MinGW用バイナリは今のところ配布していません(ソースから�
 ### Requirements
 * C++17に対応したコンパイラが必要です
 	* (ver1.11まではC++20が必要でしたが、ver2からC++17に移行しました)
-* Linuxはgcc-7以上とclang-7以上、MacはmacOS12(Monterey)以上、Visual Studio は2019以上でビルドできることを確認しています。
+* Linuxはgcc-7以上とclang-7以上、MacはmacOS12(Monterey)以上、Visual Studio 2019以上でビルドできることを確認しています。
 それ以前のバージョンでも動くかもしれません。
 * WindowsではMinGWでもビルドできます。MSYS2のMINGW64環境でテストしていますがUCRT64やCLANG64環境でもビルドできると思います。
+* Cygwin(64bit)やMSYS2のMSYS環境では現状ビルドできません。([chriskohlhoff/asio#518](https://github.com/chriskohlhoff/asio/issues/518))
+
+### Dependencies
 * webcfaceは外部ライブラリとして
 [msgpack-cxx](https://github.com/msgpack/msgpack-c),
 [eventpp](https://github.com/wqking/eventpp),
@@ -349,6 +352,15 @@ pacboy -S msgpack-cxx:p spdlog:p asio:p cli11:p utf8cpp:p imagemagick:p
 imagemagickをソースからビルドする際にはninjaではなくmakeが必要になります
 
 </details>
+
+<!--
+<details><summary>Cygwin</summary>
+
+gcc-core, gcc-g++, cmake, make, pkg-config, (ninja) をインストールしてください
+(ninjaでもいいですが、imagemagickをソースからビルドする際にはninjaではなくmakeが必要になります)
+
+</details>
+-->
 
 ### CMake
 

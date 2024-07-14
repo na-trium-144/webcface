@@ -3,7 +3,7 @@
 #include <fstream>
 #include <sstream>
 #include <string>
-#ifdef _WIN32
+#if WEBCFACE_SYSTEM_WIN32API
 #include <windows.h>
 #include <shlobj.h>
 #endif

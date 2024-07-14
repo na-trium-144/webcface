@@ -2,7 +2,7 @@
 #include <webcface/common/def.h>
 #include <spdlog/logger.h>
 
-#ifdef WEBCFACE_EXP_FILESYSTEM
+#if WEBCFACE_EXP_FILESYSTEM
 #include <experimental/filesystem>
 namespace std_fs = std::experimental::filesystem;
 #else

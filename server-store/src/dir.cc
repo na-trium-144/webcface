@@ -1,7 +1,7 @@
 #include "webcface/server/dir.h"
 #include <array>
 
-#ifdef WEBCFACE_EXP_FILESYSTEM
+#if WEBCFACE_EXP_FILESYSTEM
 #include <experimental/filesystem>
 namespace std_fs = std::experimental::filesystem;
 #else
@@ -9,7 +9,7 @@ namespace std_fs = std::experimental::filesystem;
 namespace std_fs = std::filesystem;
 #endif
 
-#ifdef _WIN32
+#if WEBCFACE_SYSTEM_WIN32API
 #include <windows.h>
 #elif __APPLE__
 #include <mach-o/dyld.h>
@@ -25,7 +25,7 @@ namespace server {
 // https://stackoverflow.com/questions/50889647/best-way-to-get-exe-folder-path
 std_fs::path
 getExeDir([[maybe_unused]] const std::shared_ptr<spdlog::logger> &logger) {
-#ifdef _WIN32
+#if WEBCFACE_SYSTEM_WIN32API
     // Windows specific
     wchar_t szPath[MAX_PATH];
     GetModuleFileNameW(NULL, szPath, MAX_PATH);
