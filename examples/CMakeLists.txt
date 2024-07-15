@@ -12,9 +12,13 @@ list(APPEND EXAMPLE_SRC
     recv.cc
     c_example.c
     benchmark.cc
-    image-send.cc
-    image-recv.cc
 )
+if(WEBCFACE_SERVER)
+    list(APPEND EXAMPLE_SRC
+        image-send.cc
+        image-recv.cc
+    )
+endif()
 if(OpenCV_FOUND)
     list(APPEND EXAMPLE_SRC
         cv-send.cc
@@ -48,12 +52,13 @@ foreach(SRC IN LISTS EXAMPLE_SRC)
     endif()
 endforeach()
 
-foreach(TARGET image-recv image-send)
-    target_link_libraries(webcface-example-${TARGET} PRIVATE
-        magickpp-linker
-    )
-endforeach()
-
+if(WEBCFACE_SERVER)
+    foreach(TARGET image-recv image-send)
+        target_link_libraries(webcface-example-${TARGET} PRIVATE
+            magickpp-linker
+        )
+    endforeach()
+endif()
 if(OpenCV_FOUND)
     foreach(TARGET cv-recv cv-send)
         target_link_libraries(webcface-example-${TARGET} PRIVATE
