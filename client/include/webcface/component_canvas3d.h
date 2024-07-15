@@ -59,7 +59,8 @@ class WEBCFACE_DLL Canvas3DComponent {
      */
     Canvas3DComponent &
     lockTmp(const std::weak_ptr<internal::ClientData> & /*data_w*/,
-            const std::u8string & /*field_id*/) {
+            const SharedString & /*view_name*/,
+            std::unordered_map<int, int> * /*idx_next*/ = nullptr) {
         return *this;
     }
 

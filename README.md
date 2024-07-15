@@ -1,6 +1,6 @@
 # WebCFace
 
-[![C++20](https://img.shields.io/badge/C%2B%2B-20-blue?logo=C%2B%2B)](https://github.com/na-trium-144/webcface)
+[![C++17](https://img.shields.io/badge/C%2B%2B-17-blue?logo=C%2B%2B)](https://github.com/na-trium-144/webcface)
 [![release](https://img.shields.io/github/v/release/na-trium-144/webcface)](https://github.com/na-trium-144/webcface/releases)
 [![coverage](https://raw.githubusercontent.com/na-trium-144/webcface/badge/coverage.svg)](https://github.com/na-trium-144/webcface/actions/workflows/cmake-coverage.yml)  
 [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/webcface?logo=Python&logoColor=white)](https://github.com/na-trium-144/webcface-python)
@@ -15,7 +15,7 @@ ver1は [v1](https://github.com/na-trium-144/webcface/tree/v1) ブランチに�
 
 WebSocketとMessagePackを使った、ROSのような分散型の通信ライブラリです。
 
-C++ (C++20以上), C (C99), Python (3.8以上), JavaScript/TypeScript で相互に数値、文字列、画像などのデータを送受信したり、関数(手続き)を呼び出したりすることができます。
+C++ (C++17以上), C (C99), Python (3.8以上), JavaScript/TypeScript で相互に数値、文字列、画像などのデータを送受信したり、関数(手続き)を呼び出したりすることができます。
 
 Linux, Windows, MacOS で動作します。
 Wi-FiやEtherNet経由で複数のPC間(OS問わず)で通信することも可能です。
@@ -37,13 +37,13 @@ CMake を使っていれば `find_package(webcface)`、
 pkg-config なら`pkg-config --cflags --libs webcface`
 で簡単に利用できます。  
 またライブラリ本体は
-`libwebcface.so.<version>`(Linux),
-`libwebcface.<version>.dylib`(Mac),
-`webcface<version>.dll`(Windows)
-の1つ (と spdlog のライブラリ) のみであり、手動でこのライブラリにリンクして使うこともできます。  
-パブリックな依存ライブラリは [spdlog](https://github.com/gabime/spdlog) のみです。
-WebCFace内部ではその他にもいくつか外部ライブラリを使用していますが、それらはすべてシンボルを非公開にしているのでユーザーが使用するライブラリとは干渉しません。
-(WebCFaceをstaticライブラリとしてビルドした場合を除く)
+* Linux: `libwebcface.so.<version>`
+* Mac: `webcface.framework` (または `libwebcface.<version>.dylib`)
+* Windows: `webcface<version>.dll` (MinGWの場合 `libwebcface<version>.dll`)
+
+の1つのみであり、手動でこのライブラリにリンクして使うこともできます。  
+WebCFace内部では外部ライブラリを多数使用していますが、それらはシンボルをすべて非公開にしているのでユーザーが使用するライブラリとは干渉しません。
+(WebCFaceをstaticライブラリとしてビルドした場合と、brewでインストールした場合を除く)
 
 Python, JavaScript には PyPI / npm に `webcface` パッケージを用意しているのでそれをインストールするだけで使えます。
 通信にWebSocketを使用しているため、Webブラウザ上でもそのまま動作します。
@@ -268,12 +268,14 @@ MinGW用バイナリは今のところ配布していません(ソースから�
 以下はwebcfaceをソースからビルドする場合の説明です。(webcfaceをインストールした場合は不要です。)
 
 ### Requirements
-* C++20に対応したコンパイラが必要です
-	* GCCはgcc-10以上が必要です。
-	* Clangはclang-13以上が必要です。
-	* MacOSではMacOS12(Monterey)以上でビルドできることを確認済みです。
-	* Visual Studio は2019以上でビルドできるはずです。
-	* MinGWでもビルドできます。MSYS2のMINGW64環境でテストしていますがUCRT64やCLANG64環境でもビルドできると思います。
+* C++17に対応したコンパイラが必要です
+	* (ver1.11まではC++20が必要でしたが、ver2からC++17に移行しました)
+* Linuxはgcc-7以上とclang-7以上、MacはmacOS12(Monterey)以上、Visual Studio 2019以上でビルドできることを確認しています。
+それ以前のバージョンでも動くかもしれません。
+* WindowsではMinGWでもビルドできます。MSYS2のMINGW64環境でテストしていますがUCRT64やCLANG64環境でもビルドできると思います。
+* Cygwin(64bit)やMSYS2のMSYS環境では現状ビルドできません。([chriskohlhoff/asio#518](https://github.com/chriskohlhoff/asio/issues/518))
+
+### Dependencies
 * webcfaceは外部ライブラリとして
 [msgpack-cxx](https://github.com/msgpack/msgpack-c),
 [eventpp](https://github.com/wqking/eventpp),
@@ -295,7 +297,6 @@ MinGW用バイナリは今のところ配布していません(ソースから�
 	* libcurlはwebsocket機能を有効にする必要があるため、インストールされているlibcurlでwebsocketが使えない場合使用せずソースからビルドします。
 	* crowはunix_socketの機能が実装されている必要があるため、インストールされているcrowでunix_socketが使えない場合使用せずソースからビルドします
 	* Magick++はマルチスレッドで実行するためにOpenMPが無効になっている必要があるため、インストールされているMagick++がOpenMPを使用してビルドされていた場合使用せずソースからビルドします
-	* googletestはchar8_tの機能を有効にする必要があるためインストールされている場合でもソースからビルドします
 	* OpenCVはソースからビルドしません。OpenCVを使ったexampleをビルドしたい場合は別途インストールする必要がありますが、example以外では使用しないのでほぼ必要ないと思います。
 	
 <details><summary>Ubuntu</summary>
@@ -308,21 +309,17 @@ sudo apt install libcli11-dev # only on 22.04 or later
 sudo apt install libmsgpack-cxx-dev # only on 24.04 or later
 ```
 
-ubuntu20.04の場合デフォルトのコンパイラ(gcc-9)ではビルドできないのでgcc-10にする必要があります
-```sh
-sudo apt install gcc-10 g++-10
-export CC=gcc-10
-export CXX=g++-10
-```
 </details>
 
 <details><summary>Homebrew (MacOS, Linux)</summary>
 
 ```sh
-brew install cmake
+brew install cmake nasm
 # optional:
 brew install msgpack-cxx spdlog asio cli11 utf8cpp
 ```
+libjpegをソースからビルドする際にnasmがあるとよいです
+
 </details>
 
 <details><summary>Visual Studio</summary>
@@ -356,6 +353,15 @@ imagemagickをソースからビルドする際にはninjaではなくmakeが必
 
 </details>
 
+<!--
+<details><summary>Cygwin</summary>
+
+gcc-core, gcc-g++, cmake, make, pkg-config, (ninja) をインストールしてください
+(ninjaでもいいですが、imagemagickをソースからビルドする際にはninjaではなくmakeが必要になります)
+
+</details>
+-->
+
 ### CMake
 
 ```sh
@@ -367,6 +373,7 @@ cmake -Bbuild
 	* Windows(MSVC)ではImageMagickをソースからビルドする際デフォルトでは`CMAKE_BUILD_TYPE`に指定したconfigurationのみビルドされますが、DebugとReleaseの両方をビルドしたい場合は `-DWEBCFACE_CONFIG_ALL=ON` を指定してください
 * `-DWEBCFACE_SHARED=OFF`にすると共有ライブラリではなくすべて静的ライブラリになります
 * `-DWEBCFACE_PIC=ON`または`-DCMAKE_POSITION_INDEPENDENT_CODE=ON`にすると-fPICフラグが有効になります (Linux,Macのみ、WEBCFACE_SHAREDがONの場合はデフォルトでON)
+* `-DWEBCFACE_FRAMEWORK=ON`, `"-DCMAKE_OSX_ARCHITECTURES=arm64;x86_64"` などとするとユニバーサルなframework (webcface.framework) をビルド、インストールできます
 * `-DWEBCFACE_EXAMPLE=ON`でexampleをビルドします(デフォルトでON、subdirectoryの場合デフォルトでOFF)
 * `-DWEBCFACE_INSTALL=ON`でinstallターゲットを生成します(デフォルトでON、subdirectoryの場合デフォルトでOFF)
 	* さらに`-DWEBCFACE_INSTALL_SERVICE=ON`で [webcface-server.service](cmake/webcafce-server.service) を lib/systemd/system にインストールします (デフォルトでOFF)

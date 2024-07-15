@@ -605,6 +605,7 @@ struct WEBCFACE_DLL ImageReq {
                color_mode == rhs.color_mode && cmp_mode == rhs.cmp_mode &&
                quality == rhs.quality;
     }
+    bool operator!=(const ImageReq &rhs) const { return !(*this == rhs); }
 };
 template <>
 struct WEBCFACE_DLL Req<Image>

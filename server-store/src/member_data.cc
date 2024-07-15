@@ -8,7 +8,7 @@
 WEBCFACE_NS_BEGIN
 namespace server {
 
-constexpr char8_t field_separator = u8'.';
+constexpr char field_separator = '.';
 
 void MemberData::onClose() {
     if (con == nullptr) {
@@ -34,8 +34,8 @@ void MemberData::onClose() {
                         pi.first,
                         pm.first,
                         true,
-                        ValAdaptor{u8"member(\"" + this->name.u8String() +
-                                   u8"\") Disconnected"}}));
+                        ValAdaptor{"member(\"" + this->name.u8String() +
+                                   "\") Disconnected"}}));
                     cd->logger->debug("pending call aborted, sending "
                                       "call_result (caller_id {})",
                                       pi.first);
@@ -111,11 +111,12 @@ std::pair<unsigned int, SharedString> findReqField(StrMap2<unsigned int> &req,
     for (const auto &req_it : req[member]) {
         if (req_it.first == field) {
             return std::make_pair(req_it.second, nullptr);
-        } else if (req_it.first.u8String().starts_with(field.u8String() +
-                                                       field_separator)) {
-            return std::make_pair(req_it.second,
-                                  SharedString(req_it.first.u8String().substr(
-                                      field.u8String().size() + 1)));
+        } else if (req_it.first.startsWith(field.u8String() +
+                                           field_separator)) {
+            return std::make_pair(
+                req_it.second,
+                SharedString::fromU8String(req_it.first.u8String().substr(
+                    field.u8String().size() + 1)));
         }
     }
     return std::make_pair<unsigned int, SharedString>(0, nullptr);
@@ -196,7 +197,7 @@ void MemberData::onRecv(const std::string &message) {
                                   cd->member_id);
 
                     for (const auto &f : cd->value) {
-                        if (!f.first.u8String().starts_with(field_separator)) {
+                        if (!f.first.startsWith(field_separator)) {
                             this->pack(webcface::message::Entry<
                                        webcface::message::Value>{
                                 {}, cd->member_id, f.first});
@@ -205,7 +206,7 @@ void MemberData::onRecv(const std::string &message) {
                         }
                     }
                     for (const auto &f : cd->text) {
-                        if (!f.first.u8String().starts_with(field_separator)) {
+                        if (!f.first.startsWith(field_separator)) {
                             this->pack(webcface::message::Entry<
                                        webcface::message::Text>{
                                 {}, cd->member_id, f.first});
@@ -214,7 +215,7 @@ void MemberData::onRecv(const std::string &message) {
                         }
                     }
                     for (const auto &f : cd->robot_model) {
-                        if (!f.first.u8String().starts_with(field_separator)) {
+                        if (!f.first.startsWith(field_separator)) {
                             this->pack(webcface::message::Entry<
                                        webcface::message::RobotModel>{
                                 {}, cd->member_id, f.first});
@@ -224,7 +225,7 @@ void MemberData::onRecv(const std::string &message) {
                         }
                     }
                     for (const auto &f : cd->canvas3d) {
-                        if (!f.first.u8String().starts_with(field_separator)) {
+                        if (!f.first.startsWith(field_separator)) {
                             this->pack(webcface::message::Entry<
                                        webcface::message::Canvas3D>{
                                 {}, cd->member_id, f.first});
@@ -233,7 +234,7 @@ void MemberData::onRecv(const std::string &message) {
                         }
                     }
                     for (const auto &f : cd->canvas2d) {
-                        if (!f.first.u8String().starts_with(field_separator)) {
+                        if (!f.first.startsWith(field_separator)) {
                             this->pack(webcface::message::Entry<
                                        webcface::message::Canvas2D>{
                                 {}, cd->member_id, f.first});
@@ -242,7 +243,7 @@ void MemberData::onRecv(const std::string &message) {
                         }
                     }
                     for (const auto &f : cd->view) {
-                        if (!f.first.u8String().starts_with(field_separator)) {
+                        if (!f.first.startsWith(field_separator)) {
                             this->pack(webcface::message::Entry<
                                        webcface::message::View>{
                                 {}, cd->member_id, f.first});
@@ -251,7 +252,7 @@ void MemberData::onRecv(const std::string &message) {
                         }
                     }
                     for (const auto &f : cd->image) {
-                        if (!f.first.u8String().starts_with(field_separator)) {
+                        if (!f.first.startsWith(field_separator)) {
                             this->pack(webcface::message::Entry<
                                        webcface::message::Image>{
                                 {}, cd->member_id, f.first});
@@ -260,7 +261,7 @@ void MemberData::onRecv(const std::string &message) {
                         }
                     }
                     for (const auto &f : cd->func) {
-                        if (!f.first.u8String().starts_with(field_separator)) {
+                        if (!f.first.startsWith(field_separator)) {
                             this->pack(*f.second);
                             logger->trace("send func_info {} of member {}",
                                           f.second->field.decode(),
@@ -355,7 +356,7 @@ void MemberData::onRecv(const std::string &message) {
                               v.field.decode(), v.data->size());
             }
             if (!this->value.count(v.field) &&
-                !v.field.u8String().starts_with(field_separator)) {
+                !v.field.startsWith(field_separator)) {
                 store->forEach([&](auto cd) {
                     if (cd->name != this->name) {
                         cd->pack(
@@ -387,7 +388,7 @@ void MemberData::onRecv(const std::string &message) {
             logger->debug("text {} = {}", v.field.decode(),
                           static_cast<std::string>(*v.data));
             if (!this->text.count(v.field) &&
-                !v.field.u8String().starts_with(field_separator)) {
+                !v.field.startsWith(field_separator)) {
                 store->forEach([&](auto cd) {
                     if (cd->name != this->name) {
                         cd->pack(
@@ -419,7 +420,7 @@ void MemberData::onRecv(const std::string &message) {
             auto v = std::any_cast<webcface::message::RobotModel>(obj);
             logger->debug("robot model {}", v.field.decode());
             if (!this->robot_model.count(v.field) &&
-                !v.field.u8String().starts_with(field_separator)) {
+                !v.field.startsWith(field_separator)) {
                 store->forEach([&](auto cd) {
                     if (cd->name != this->name) {
                         cd->pack(webcface::message::Entry<
@@ -453,7 +454,7 @@ void MemberData::onRecv(const std::string &message) {
             logger->debug("view {} diff={}, length={}", v.field.decode(),
                           v.data_diff->size(), v.length);
             if (!this->view.count(v.field) &&
-                !v.field.u8String().starts_with(field_separator)) {
+                !v.field.startsWith(field_separator)) {
                 store->forEach([&](auto cd) {
                     if (cd->name != this->name) {
                         cd->pack(
@@ -488,7 +489,7 @@ void MemberData::onRecv(const std::string &message) {
             logger->debug("canvas3d {} diff={}, length={}", v.field.decode(),
                           v.data_diff->size(), v.length);
             if (!this->canvas3d.count(v.field) &&
-                !v.field.u8String().starts_with(field_separator)) {
+                !v.field.startsWith(field_separator)) {
                 store->forEach([&](auto cd) {
                     if (cd->name != this->name) {
                         cd->pack(webcface::message::Entry<
@@ -524,7 +525,7 @@ void MemberData::onRecv(const std::string &message) {
             logger->debug("canvas2d {} diff={}, length={}", v.field.decode(),
                           v.data_diff->size(), v.length);
             if (!this->canvas2d.count(v.field) &&
-                !v.field.u8String().starts_with(field_separator)) {
+                !v.field.startsWith(field_separator)) {
                 store->forEach([&](auto cd) {
                     if (cd->name != this->name) {
                         cd->pack(webcface::message::Entry<
@@ -564,7 +565,7 @@ void MemberData::onRecv(const std::string &message) {
             logger->debug("image {} ({} x {})", v.field.decode(), v.width_,
                           v.height_);
             if (!this->image.count(v.field) &&
-                !v.field.u8String().starts_with(field_separator)) {
+                !v.field.startsWith(field_separator)) {
                 store->forEach([&](auto cd) {
                     if (cd->name != this->name) {
                         cd->pack(
@@ -628,7 +629,7 @@ void MemberData::onRecv(const std::string &message) {
             v.member_id = this->member_id;
             logger->debug("func_info {}", v.field.decode());
             if (!this->func.count(v.field) &&
-                !v.field.u8String().starts_with(field_separator)) {
+                !v.field.startsWith(field_separator)) {
                 store->forEach([&](auto cd) {
                     if (cd->member_id != this->member_id) {
                         cd->pack(v);
@@ -655,13 +656,14 @@ void MemberData::onRecv(const std::string &message) {
                 }
                 for (const auto &it : cd->value) {
                     if (it.first == s.field ||
-                        it.first.u8String().starts_with(s.field.u8String() +
-                                                        field_separator)) {
+                        it.first.startsWith(s.field.u8String() +
+                                            field_separator)) {
                         SharedString sub_field;
                         if (it.first == s.field) {
                         } else {
-                            sub_field = SharedString(it.first.u8String().substr(
-                                s.field.u8String().size() + 1));
+                            sub_field = SharedString::fromU8String(
+                                it.first.u8String().substr(
+                                    s.field.u8String().size() + 1));
                         }
                         this->pack(
                             webcface::message::Res<webcface::message::Value>{
@@ -689,13 +691,14 @@ void MemberData::onRecv(const std::string &message) {
                 }
                 for (const auto &it : cd->text) {
                     if (it.first == s.field ||
-                        it.first.u8String().starts_with(s.field.u8String() +
-                                                        field_separator)) {
+                        it.first.startsWith(s.field.u8String() +
+                                            field_separator)) {
                         SharedString sub_field;
                         if (it.first == s.field) {
                         } else {
-                            sub_field = SharedString(it.first.u8String().substr(
-                                s.field.u8String().size() + 1));
+                            sub_field = SharedString::fromU8String(
+                                it.first.u8String().substr(
+                                    s.field.u8String().size() + 1));
                         }
                         this->pack(
                             webcface::message::Res<webcface::message::Text>{
@@ -723,13 +726,14 @@ void MemberData::onRecv(const std::string &message) {
                 }
                 for (const auto &it : cd->robot_model) {
                     if (it.first == s.field ||
-                        it.first.u8String().starts_with(s.field.u8String() +
-                                                        field_separator)) {
+                        it.first.startsWith(s.field.u8String() +
+                                            field_separator)) {
                         SharedString sub_field;
                         if (it.first == s.field) {
                         } else {
-                            sub_field = SharedString(it.first.u8String().substr(
-                                s.field.u8String().size() + 1));
+                            sub_field = SharedString::fromU8String(
+                                it.first.u8String().substr(
+                                    s.field.u8String().size() + 1));
                         }
                         this->pack(webcface::message::Res<
                                    webcface::message::RobotModel>{
@@ -757,8 +761,8 @@ void MemberData::onRecv(const std::string &message) {
                 }
                 for (const auto &it : cd->view) {
                     if (it.first == s.field ||
-                        it.first.u8String().starts_with(s.field.u8String() +
-                                                        field_separator)) {
+                        it.first.startsWith(s.field.u8String() +
+                                            field_separator)) {
                         auto diff = std::make_shared<std::unordered_map<
                             std::string, webcface::message::ViewComponent>>();
                         for (std::size_t i = 0; i < it.second.size(); i++) {
@@ -767,8 +771,9 @@ void MemberData::onRecv(const std::string &message) {
                         SharedString sub_field;
                         if (it.first == s.field) {
                         } else {
-                            sub_field = SharedString(it.first.u8String().substr(
-                                s.field.u8String().size() + 1));
+                            sub_field = SharedString::fromU8String(
+                                it.first.u8String().substr(
+                                    s.field.u8String().size() + 1));
                         }
                         this->pack(
                             webcface::message::Res<webcface::message::View>{
@@ -795,8 +800,8 @@ void MemberData::onRecv(const std::string &message) {
                 }
                 for (const auto &it : cd->canvas3d) {
                     if (it.first == s.field ||
-                        it.first.u8String().starts_with(s.field.u8String() +
-                                                        field_separator)) {
+                        it.first.startsWith(s.field.u8String() +
+                                            field_separator)) {
                         auto diff = std::make_shared<std::unordered_map<
                             std::string,
                             webcface::message::Canvas3DComponent>>();
@@ -806,8 +811,9 @@ void MemberData::onRecv(const std::string &message) {
                         SharedString sub_field;
                         if (it.first == s.field) {
                         } else {
-                            sub_field = SharedString(it.first.u8String().substr(
-                                s.field.u8String().size() + 1));
+                            sub_field = SharedString::fromU8String(
+                                it.first.u8String().substr(
+                                    s.field.u8String().size() + 1));
                         }
                         this->pack(
                             webcface::message::Res<webcface::message::Canvas3D>{
@@ -834,8 +840,8 @@ void MemberData::onRecv(const std::string &message) {
                 }
                 for (const auto &it : cd->canvas2d) {
                     if (it.first == s.field ||
-                        it.first.u8String().starts_with(s.field.u8String() +
-                                                        field_separator)) {
+                        it.first.startsWith(s.field.u8String() +
+                                            field_separator)) {
                         auto diff = std::make_shared<std::unordered_map<
                             std::string,
                             webcface::message::Canvas2DComponent>>();
@@ -847,8 +853,9 @@ void MemberData::onRecv(const std::string &message) {
                         SharedString sub_field;
                         if (it.first == s.field) {
                         } else {
-                            sub_field = SharedString(it.first.u8String().substr(
-                                s.field.u8String().size() + 1));
+                            sub_field = SharedString::fromU8String(
+                                it.first.u8String().substr(
+                                    s.field.u8String().size() + 1));
                         }
                         this->pack(
                             webcface::message::Res<webcface::message::Canvas2D>{

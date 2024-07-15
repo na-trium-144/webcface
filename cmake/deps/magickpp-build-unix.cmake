@@ -5,7 +5,7 @@ find_program(ENV_COMMAND env)
 find_program(MAKE_COMMAND make)
 find_program(CHMOD_COMMAND chmod)
 find_program(CYGPATH_COMMAND cygpath)
-if(MINGW AND NOT CYGPATH_COMMAND STREQUAL "CYGPATH_COMMAND-NOTFOUND")
+if(WEBCFACE_SYSTEM_PATH_WINDOWS AND NOT CYGPATH_COMMAND STREQUAL "CYGPATH_COMMAND-NOTFOUND")
     execute_process(
         COMMAND ${CYGPATH_COMMAND} -u "${MAGICKPP_PREFIX}"
         OUTPUT_VARIABLE MAGICKPP_PREFIX_UNIX
@@ -15,11 +15,6 @@ else()
     set(MAGICKPP_PREFIX_UNIX "${MAGICKPP_PREFIX}")
 endif()
 
-set(MAGICKPP_FLAGS "-O3")
-if(WEBCFACE_PIC)
-    set(MAGICKPP_FLAGS "${MAGICKPP_FLAGS} -fPIC")
-endif()
-
 include(cmake/deps/libjpeg.cmake)
 include(cmake/deps/zlib.cmake)
 include(cmake/deps/libpng.cmake)
@@ -27,10 +22,10 @@ include(cmake/deps/libwebp.cmake)
 
 fetch_only(imagemagick
     https://github.com/ImageMagick/ImageMagick.git
-    7.1.1-33
+    841f033f0
     configure
 )
-if(MINGW)
+if(WEBCFACE_SYSTEM_PATH_WINDOWS AND NOT CYGPATH_COMMAND STREQUAL "CYGPATH_COMMAND-NOTFOUND")
     execute_process(
         COMMAND ${CYGPATH_COMMAND} -u "${imagemagick_SOURCE_DIR}"
         OUTPUT_VARIABLE imagemagick_SOURCE_DIR_UNIX
@@ -42,12 +37,10 @@ endif()
 
 message(STATUS "Building Magick++...")
 if(NOT EXISTS ${imagemagick_BINARY_DIR}/Makefile OR ${CMAKE_CURRENT_LIST_FILE} IS_NEWER_THAN ${imagemagick_BINARY_DIR}/Makefile)
-    if(MINGW)
-        execute_process(
-            COMMAND ${CHMOD_COMMAND} +x winpath.sh # バグ?
-            WORKING_DIRECTORY ${imagemagick_SOURCE_DIR}
-        )
-    endif()
+    execute_process(
+        COMMAND ${CHMOD_COMMAND} +x winpath.sh # バグ?
+        WORKING_DIRECTORY ${imagemagick_SOURCE_DIR}
+    )
     if(EXISTS ${imagemagick_BINARY_DIR}/Makefile)
         execute_process(
             COMMAND ${MAKE_COMMAND} clean
@@ -55,11 +48,13 @@ if(NOT EXISTS ${imagemagick_BINARY_DIR}/Makefile OR ${CMAKE_CURRENT_LIST_FILE} I
         )
     endif()
     file(REMOVE_RECURSE ${MAGICKPP_PREFIX})
+    include(cmake/flags.cmake)
+    init_flags()
     execute_process(
         # mingwでは ./configure はつかえない
         COMMAND ${SH_COMMAND} "${imagemagick_SOURCE_DIR_UNIX}/configure"
             "CC=${ORIGINAL_ENV_CC}" "CXX=${ORIGINAL_ENV_CXX}"
-            "CFLAGS=${MAGICKPP_FLAGS}" "CXXFLAGS=${MAGICKPP_FLAGS}"
+            "CFLAGS=${WEBCFACE_FLAGS}" "CXXFLAGS=${WEBCFACE_FLAGS}" "LDFLAGS=${WEBCFACE_LDFLAGS}"
             "MAKE=${MAKE_COMMAND}"
             --prefix=${MAGICKPP_PREFIX_UNIX} --disable-shared --enable-static
             --disable-openmp # <- for multi threading
@@ -105,7 +100,7 @@ target_link_directories(magickpp-linker INTERFACE
     $<BUILD_INTERFACE:${MAGICKPP_PREFIX}/lib>
     $<INSTALL_INTERFACE:lib>
 )
-if(WIN32)
+if(WEBCFACE_SYSTEM_WIN32API)
     target_link_libraries(magickpp-linker INTERFACE urlmon.lib)
 endif()
 if(Magickpp_VERSION MATCHES "^7\.")

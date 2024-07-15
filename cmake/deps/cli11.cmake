@@ -3,6 +3,9 @@ option(WEBCFACE_FIND_CLI11 "try find_package(CLI11)" ${WEBCFACE_FIND_LIBS})
 
 # target = CLI11 (header only)
 
+# いずれにしても使わないので
+add_compile_definitions(CLI11_HAS_FILESYSTEM=0)
+
 if(WEBCFACE_FIND_CLI11)
     find_package(CLI11 QUIET)
 endif()

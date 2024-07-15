@@ -10,7 +10,7 @@
 
 using namespace webcface;
 static SharedString operator""_ss(const char *str, std::size_t len) {
-    return SharedString(encoding::castToU8(std::string_view(str, len)));
+    return SharedString::fromU8String(std::string_view(str, len));
 }
 
 class DataTest : public ::testing::Test {
@@ -23,18 +23,18 @@ class DataTest : public ::testing::Test {
     std::shared_ptr<internal::ClientData> data_;
     FieldBase fieldBase(const SharedString &member,
                         std::string_view name) const {
-        return FieldBase{member, SharedString(encoding::castToU8(name))};
+        return FieldBase{member, SharedString::fromU8String(name)};
     }
     FieldBase fieldBase(std::string_view member, std::string_view name) const {
-        return FieldBase{SharedString(encoding::castToU8(member)),
-                         SharedString(encoding::castToU8(name))};
+        return FieldBase{SharedString::fromU8String(member),
+                         SharedString::fromU8String(name)};
     }
     Field field(const SharedString &member, std::string_view name = "") const {
-        return Field{data_, member, SharedString(encoding::castToU8(name))};
+        return Field{data_, member, SharedString::fromU8String(name)};
     }
     Field field(std::string_view member, std::string_view name = "") const {
-        return Field{data_, SharedString(encoding::castToU8(member)),
-                     SharedString(encoding::castToU8(name))};
+        return Field{data_, SharedString::fromU8String(member),
+                     SharedString::fromU8String(name)};
     }
     template <typename T1, typename T2>
     Value value(const T1 &member, const T2 &name) {
@@ -46,7 +46,7 @@ class DataTest : public ::testing::Test {
     }
     Log log(const SharedString &member) { return Log{Field{data_, member}}; }
     Log log(std::string_view member) {
-        return Log{Field{data_, SharedString(encoding::castToU8(member))}};
+        return Log{Field{data_, SharedString::fromU8String(member)}};
     }
     int callback_called;
     template <typename V>
@@ -213,7 +213,7 @@ TEST_F(DataTest, textGet) {
 TEST_F(DataTest, logGet) {
     using namespace std::chrono;
     auto logs =
-        std::make_shared<std::vector<LogLineData<>>>(std::vector<LogLineData<>>{
+        std::make_shared<std::vector<LogLineData>>(std::vector<LogLineData>{
             {1, system_clock::now(), "a"_ss},
             {2, system_clock::now(), "b"_ss},
             {3, system_clock::now(), "c"_ss},
@@ -244,7 +244,7 @@ TEST_F(DataTest, logGet) {
 TEST_F(DataTest, logClear) {
     using namespace std::chrono;
     auto logs =
-        std::make_shared<std::vector<LogLineData<>>>(std::vector<LogLineData<>>{
+        std::make_shared<std::vector<LogLineData>>(std::vector<LogLineData>{
             {1, system_clock::now(), "a"_ss},
             {2, system_clock::now(), "b"_ss},
             {3, system_clock::now(), "c"_ss},

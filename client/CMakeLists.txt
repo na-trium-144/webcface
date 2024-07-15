@@ -34,6 +34,7 @@ target_sources(webcface-client PRIVATE
 )
 target_include_directories(webcface-client PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>)
 target_compile_definitions(webcface-client PRIVATE WEBCFACE_BUILDING)
+target_compile_features(webcface-client PUBLIC cxx_std_17)
 target_link_libraries(webcface-client PRIVATE
     webcface-message
     webcface-server-store

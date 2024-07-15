@@ -14,23 +14,25 @@
 
 WEBCFACE_NS_BEGIN
 Member Field::member() const { return *this; }
-std::u8string_view Field::lastName8() const {
+SharedString Field::lastName8() const {
     auto i = this->field_.u8String().rfind(field_separator);
     if (i != std::string::npos && i != 0 &&
         !(i == 1 && this->field_.u8String()[0] == field_separator)) {
-        return this->field_.u8StringView().substr(i + 1);
+        return SharedString::fromU8String(
+            this->field_.u8StringView().substr(i + 1));
     } else {
-        return this->field_.u8StringView();
+        return this->field_;
     }
 }
 
 Field Field::parent() const {
     int l = static_cast<int>(this->field_.u8String().size()) -
-            static_cast<int>(lastName8().size()) - 1;
+            static_cast<int>(lastName8().u8String().size()) - 1;
     if (l < 0) {
         l = 0;
     }
-    return Field{*this, SharedString(this->field_.u8StringView().substr(0, l))};
+    return Field{*this, SharedString::fromU8String(
+                            this->field_.u8StringView().substr(0, l))};
 }
 Field Field::child(const SharedString &field) const {
     if (this->field_.empty()) {
@@ -38,8 +40,9 @@ Field Field::child(const SharedString &field) const {
     } else if (field.empty()) {
         return *this;
     } else {
-        return Field{*this, SharedString(this->field_.u8String() +
-                                         field_separator + field.u8String())};
+        return Field{*this, SharedString::fromU8String(this->field_.u8String() +
+                                                       field_separator +
+                                                       field.u8String())};
     }
 }
 
@@ -76,8 +79,7 @@ static auto entries(const Field *this_, S &store) {
     std::vector<V> ret;
     for (const auto &f : keys) {
         if (this_->field_.empty() ||
-            f.u8String().starts_with(this_->field_.u8String() +
-                                     field_separator)) {
+            f.startsWith(this_->field_.u8String() + field_separator)) {
             ret.emplace_back(this_->child(f));
         }
     }

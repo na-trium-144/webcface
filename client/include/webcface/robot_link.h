@@ -53,8 +53,8 @@ inline RobotJoint fixedAbsolute(const Point &origin) {
  */
 inline RobotJoint fixedJoint(std::string_view parent_name,
                              const Transform &origin) {
-    return RobotJoint{nullptr, SharedString(parent_name), RobotJointType::fixed,
-                      origin, 0};
+    return RobotJoint{nullptr, SharedString::encode(parent_name),
+                      RobotJointType::fixed, origin, 0};
 }
 /*!
  * \brief 固定された関節 (wstring)
@@ -65,8 +65,8 @@ inline RobotJoint fixedJoint(std::string_view parent_name,
  */
 inline RobotJoint fixedJoint(std::wstring_view parent_name,
                              const Transform &origin) {
-    return RobotJoint{nullptr, SharedString(parent_name), RobotJointType::fixed,
-                      origin, 0};
+    return RobotJoint{nullptr, SharedString::encode(parent_name),
+                      RobotJointType::fixed, origin, 0};
 }
 /*!
  * \brief 固定された関節
@@ -100,7 +100,8 @@ inline RobotJoint fixedJoint(std::wstring_view parent_name,
 inline RobotJoint rotationalJoint(std::string_view name,
                                   std::string_view parent_name,
                                   const Transform &origin, double angle = 0) {
-    return RobotJoint{SharedString(name), SharedString(parent_name),
+    return RobotJoint{SharedString::encode(name),
+                      SharedString::encode(parent_name),
                       RobotJointType::rotational, origin, angle};
 }
 /*!
@@ -117,7 +118,8 @@ inline RobotJoint rotationalJoint(std::string_view name,
 inline RobotJoint rotationalJoint(std::wstring_view name,
                                   std::wstring_view parent_name,
                                   const Transform &origin, double angle = 0) {
-    return RobotJoint{SharedString(name), SharedString(parent_name),
+    return RobotJoint{SharedString::encode(name),
+                      SharedString::encode(parent_name),
                       RobotJointType::rotational, origin, angle};
 }
 /*!
@@ -133,7 +135,8 @@ inline RobotJoint rotationalJoint(std::wstring_view name,
 inline RobotJoint prismaticJoint(std::string_view name,
                                  std::string_view parent_name,
                                  const Transform &origin, double angle = 0) {
-    return RobotJoint{SharedString(name), SharedString(parent_name),
+    return RobotJoint{SharedString::encode(name),
+                      SharedString::encode(parent_name),
                       RobotJointType::prismatic, origin, angle};
 }
 /*!
@@ -150,7 +153,8 @@ inline RobotJoint prismaticJoint(std::string_view name,
 inline RobotJoint prismaticJoint(std::wstring_view name,
                                  std::wstring_view parent_name,
                                  const Transform &origin, double angle = 0) {
-    return RobotJoint{SharedString(name), SharedString(parent_name),
+    return RobotJoint{SharedString::encode(name),
+                      SharedString::encode(parent_name),
                       RobotJointType::prismatic, origin, angle};
 }
 } // namespace robot_joints
@@ -182,7 +186,7 @@ struct WEBCFACE_DLL RobotLink {
      */
     RobotLink(std::string_view name, const RobotJoint &joint,
               const Geometry &geometry, ViewColor color = ViewColor::inherit)
-        : RobotLink(SharedString(name), joint, geometry, color) {}
+        : RobotLink(SharedString::encode(name), joint, geometry, color) {}
     /*!
      * \since ver2.0
      * \param name リンクの名前
@@ -193,7 +197,7 @@ struct WEBCFACE_DLL RobotLink {
      */
     RobotLink(std::wstring_view name, const RobotJoint &joint,
               const Geometry &geometry, ViewColor color = ViewColor::inherit)
-        : RobotLink(SharedString(name), joint, geometry, color) {}
+        : RobotLink(SharedString::encode(name), joint, geometry, color) {}
     /*!
      * ベースのリンクではjointを省略可能
      * (fixedAbsolute({0, 0, 0})になる)

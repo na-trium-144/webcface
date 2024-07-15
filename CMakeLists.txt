@@ -1,8 +1,12 @@
-cmake_minimum_required(VERSION 3.15)
+cmake_minimum_required(VERSION 3.14)
 # ubuntu20.04: cmake 3.16.3
 
 set(ORIGINAL_ENV_CC "$ENV{CC}" CACHE STRING "")
 set(ORIGINAL_ENV_CXX "$ENV{CXX}" CACHE STRING "")
+
+if(CMAKE_VERSION VERSION_GREATER_EQUAL 3.24)
+    cmake_policy(SET CMP0135 NEW)
+endif()
 
 project(webcface
     LANGUAGES CXX C
@@ -27,6 +31,7 @@ endif()
 
 option(WEBCFACE_INSTALL "generate install target" ${IS_MAIN})
 option(WEBCFACE_INSTALL_SERVICE "generate install target for systemd service file" OFF)
+option(WEBCFACE_FRAMEWORK "build webcface framework bundle" OFF)
 option(WEBCFACE_EXAMPLE "build example" ${IS_MAIN})
 option(WEBCFACE_TEST "build test" OFF)
 option(WEBCFACE_COVERAGE "enable generating test coverage" OFF)
@@ -35,6 +40,7 @@ option(WEBCFACE_SHARED "build shared library" ON)
 option(WEBCFACE_PIC "enable PIC for shared library" ${WEBCFACE_SHARED})
 set(WEBCFACE_VERSION_SUFFIX "git" CACHE STRING "version suffix ('git' to get automatically from git describe command)")
 set(WEBCFACE_CLANG_TIDY "" CACHE STRING "clang-tidy path (or empty to disable clang-tidy)")
+option(WEBCFACE_PERMISSIVE "add -fpermissive" OFF)
 option(WEBCFACE_WARNING "enable all warning and treat most of them as error" ${IS_MAIN})
 option(WEBCFACE_DOWNLOAD_WEBUI "download and install webui" ${IS_MAIN})
 option(WEBCFACE_CONFIG_ALL "configure both debug and release build on windows" OFF)
@@ -85,6 +91,9 @@ if(WEBCFACE_COVERAGE)
     endif()
 endif()
 
+include(cmake/system.cmake)
+include(cmake/filesystem.cmake)
+
 configure_file(
     cmake/def.h.in
     ${CMAKE_CURRENT_BINARY_DIR}/include/webcface/common/def.h
@@ -96,14 +105,6 @@ configure_file(
     @ONLY
 )
 
-set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-include(CheckIncludeFileCXX)
-check_include_file_cxx(concepts CONCEPTS_FOUND)
-if (NOT CONCEPTS_FOUND)
-    message(FATAL_ERROR "<concepts> header file not found")
-endif()
-
 ###############################################################################
 
 include(FetchContent)
@@ -113,7 +114,7 @@ if(WEBCFACE_DOWNLOAD_WEBUI)
         URL https://github.com/na-trium-144/webcface-webui/releases/download/v${WEBUI_VERSION}/webcface-webui_${WEBUI_VERSION}.tar.gz
         SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/dist
     )
-    FetchContent_Populate(webui)
+    FetchContent_MakeAvailable(webui)
 endif()
 
 if(WEBCFACE_FIND_AMENT)
@@ -147,8 +148,11 @@ function(add_cxx_compile_options_if FLAG NAME)
 endfunction()
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    if(WEBCFACE_WARNING)
+    if(WEBCFACE_WARNING AND NOT WEBCFACE_PERMISSIVE)
         add_compile_options(-Wall -Wextra -Wpedantic -Werror)
+    endif()
+    if(WEBCFACE_PERMISSIVE)
+        add_compile_options(-fpermissive)
     endif()
     add_compile_options(-Wno-error=ignored-attributes)
     add_compile_options(-Wno-error=attributes)
@@ -207,13 +211,14 @@ add_subdirectory(client)
 
 if(WEBCFACE_SHARED)
     add_library(webcface SHARED)
-    if(WIN32)
+    if(WEBCFACE_SYSTEM_VERSION_RC)
         target_sources(webcface PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/version.rc)
     endif()
 else()
     add_library(webcface STATIC)
 endif()
-target_compile_features(webcface PUBLIC cxx_std_20)
+target_compile_features(webcface PUBLIC cxx_std_17)
+target_link_libraries(webcface PUBLIC webcface-std-filesystem)
 target_include_directories(webcface PUBLIC
     $<BUILD_INTERFACE:$<TARGET_PROPERTY:webcface-encoding,INTERFACE_INCLUDE_DIRECTORIES>>
     $<BUILD_INTERFACE:$<TARGET_PROPERTY:webcface-server-store,INTERFACE_INCLUDE_DIRECTORIES>>
@@ -233,7 +238,11 @@ else()
     target_sources(webcface PRIVATE $<TARGET_OBJECTS:webcface-server-internal>)
 endif()
 # private: リンクが必要なもののみ
-target_link_libraries(webcface PRIVATE magickpp-linker libcurl-linker spdlog-linker)
+target_link_libraries(webcface PRIVATE
+    magickpp-linker
+    libcurl-linker
+    spdlog-linker
+)
 if(NOT WEBCFACE_SHARED)
     target_link_directories(webcface PUBLIC
         $<TARGET_PROPERTY:magickpp-linker,INTERFACE_LINK_DIRECTORIES>
@@ -241,10 +250,10 @@ if(NOT WEBCFACE_SHARED)
         $<TARGET_PROPERTY:spdlog-linker,INTERFACE_LINK_DIRECTORIES>
     )
 endif()
-if(WIN32)
+if(WEBCFACE_SYSTEM_WIN32API)
     target_link_libraries(webcface PRIVATE iphlpapi.lib)
 endif()
-if(WEBCFACE_SHARED AND NOT WIN32)
+if(WEBCFACE_SHARED AND WEBCFACE_SYSTEM_VISIBILITY)
     # webcfaceのAPI以外をexportしない。
     # MSVCではデフォルトでdllexportしたもの以外exportされないので問題なし
     set_target_properties(webcface-server-internal PROPERTIES CXX_VISIBILITY_PRESET hidden)
@@ -252,16 +261,16 @@ if(WEBCFACE_SHARED AND NOT WIN32)
     set_target_properties(webcface-message PROPERTIES CXX_VISIBILITY_PRESET hidden)
     set_target_properties(webcface-server-store PROPERTIES CXX_VISIBILITY_PRESET hidden)
     set_target_properties(webcface-client PROPERTIES CXX_VISIBILITY_PRESET hidden)
-    if(NOT APPLE)
+    if(WEBCFACE_SYSTEM_EXCLUDE_LIBS)
         # object libraryのwebcface-messageなどはexcludeされない
         target_link_options(webcface PRIVATE -Wl,--exclude-libs,ALL)
     endif()
 endif()
-if(WIN32)
+if(WEBCFACE_SYSTEM_ADD_VERSION)
     set_target_properties(webcface PROPERTIES RUNTIME_OUTPUT_NAME "webcface${WEBCFACE_SOVERSION}")
-    if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-        set_target_properties(webcface PROPERTIES DEBUG_POSTFIX "d")
-    endif()
+endif()
+if(WEBCFACE_SYSTEM_ADD_DEBUG)
+    set_target_properties(webcface PROPERTIES DEBUG_POSTFIX "d")
 endif()
 set_target_properties(webcface PROPERTIES
     INSTALL_RPATH "$ORIGIN/;@loader_path/"
@@ -269,6 +278,30 @@ set_target_properties(webcface PROPERTIES
     VERSION ${PROJECT_VERSION}
     SOVERSION ${WEBCFACE_SOVERSION}
 )
+if(WEBCFACE_FRAMEWORK)
+    # https://stackoverflow.com/questions/71006897/how-to-preserve-directory-layout-of-public-headers-when-generating-macos-framewo
+    file(GLOB_RECURSE WEBCFACE_HEADERS
+        encoding/include/*.h
+        server-store/include/*.h
+        client/include/*.h
+        ${CMAKE_CURRENT_BINARY_DIR}/include/*.h
+    )
+    list(FILTER WEBCFACE_HEADERS EXCLUDE REGEX "internal")
+    foreach(_file IN LISTS WEBCFACE_HEADERS)
+        get_filename_component(_loc "${_file}" DIRECTORY)
+        string(REGEX REPLACE ".*/include/webcface" "Headers" _loc "${_loc}")
+        set_source_files_properties(${_file} PROPERTIES MACOSX_PACKAGE_LOCATION ${_loc})
+        message("${_file}: ${_loc}")
+    endforeach()
+    target_sources(webcface PRIVATE ${WEBCFACE_HEADERS})
+    set_target_properties(webcface PROPERTIES
+        FRAMEWORK TRUE
+        FRAMEWORK_VERSION ${WEBCFACE_SOVERSION}
+        MACOSX_FRAMEWORK_BUNDLE_VERSION "${PROJECT_VERSION}"
+        MACOSX_FRAMEWORK_IDENTIFIER "com.github.na-trium-144.webcface"
+        MACOSX_FRAMEWORK_SHORT_VERSION_STRING "${WEBCFACE_VERSION}"
+    )
+endif()
 if(NOT "${WEBCFACE_CLANG_TIDY}" STREQUAL "")
     set(CLANG_TIDY_CMD "${WEBCFACE_CLANG_TIDY}" "--header-filter=${CMAKE_CURRENT_SOURCE_DIR}/src")
     set_target_properties(webcface-server-internal PROPERTIES CXX_CLANG_TIDY "${CLANG_TIDY_CMD}")
@@ -313,42 +346,63 @@ if(WEBCFACE_INSTALL)
     # library
     # dependenciesはそれぞれのcmakeファイルでリストに追加されている
     # cmake時は依存ライブラリを先に処理するが、linker flagは逆で依存ライブラリがあと
-    list(APPEND WEBCFACE_EXPORTS webcface wcf)
-    list(INSERT WEBCFACE_PKGCONFIG_LIBS 0 -lwebcface)
+    list(APPEND WEBCFACE_EXPORTS webcface wcf webcface-std-filesystem)
+    list(INSERT WEBCFACE_PKGCONFIG_CFLAGS 0 "-I\${includedir}")
+    list(INSERT WEBCFACE_PKGCONFIG_LIBS 0 "-L\${libdir}" -lwebcface)
     install(TARGETS ${WEBCFACE_EXPORTS}
         EXPORT webcface-targets
         LIBRARY DESTINATION lib
         ARCHIVE DESTINATION lib
         RUNTIME DESTINATION bin
+        FRAMEWORK DESTINATION Frameworks
     )
-    if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-        if(WEBCFACE_SHARED)
-            get_target_property(WEBCFACE_PDB webcface PDB_NAME)
-        else()
-            get_target_property(WEBCFACE_PDB webcface COMPILE_PDB_NAME)
-        endif()
-        install(FILES ${WEBCFACE_PDB}
-            DESTINATION bin
-            OPTIONAL
+
+    # pdbがあればインストールする
+    if(WEBCFACE_SHARED)
+        get_target_property(WEBCFACE_PDB webcface PDB_NAME)
+    else()
+        get_target_property(WEBCFACE_PDB webcface COMPILE_PDB_NAME)
+    endif()
+    install(FILES ${WEBCFACE_PDB}
+        DESTINATION bin
+        OPTIONAL
+    )
+
+    if(WEBCFACE_FRAMEWORK)
+        # 一応書いたけど、pkgconfig内でフラグにスペースが含まれる時、
+        # bashで展開しようとするとうまくエスケープされないので使い物にならない気がする...
+        set(WEBCFACE_PKGCONFIG_CFLAGS
+            "-F\${prefix}/Frameworks"
+            "-F/Applications/WebCFace\\ Desktop/Contents/Frameworks"
+        )
+        set(WEBCFACE_PKGCONFIG_LIBS
+            ${WEBCFACE_PKGCONFIG_CFLAGS}
+            -framework webcface
+        )
+        configure_file(
+            ${CMAKE_CURRENT_SOURCE_DIR}/cmake/webcface-config.framework.cmake.in
+            ${CMAKE_CURRENT_BINARY_DIR}/webcface-config.cmake
+            COPYONLY
+        )
+    else()
+        install(EXPORT webcface-targets
+            FILE webcface-targets.cmake
+            NAMESPACE webcface::
+            DESTINATION lib/cmake/webcface
+        )
+        set(PACKAGE_INIT "@PACKAGE_INIT@")
+        configure_file(
+            ${CMAKE_CURRENT_SOURCE_DIR}/cmake/webcface-config.cmake.in
+            ${CMAKE_CURRENT_BINARY_DIR}/webcface-config.cmake.in
+            @ONLY
+        )
+        unset(PACKAGE_INIT)
+        configure_package_config_file(
+            ${CMAKE_CURRENT_BINARY_DIR}/webcface-config.cmake.in
+            ${CMAKE_CURRENT_BINARY_DIR}/webcface-config.cmake
+            INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/webcface
         )
     endif()
-    install(EXPORT webcface-targets
-        FILE webcface-targets.cmake
-        NAMESPACE webcface::
-        DESTINATION lib/cmake/webcface
-    )
-    set(PACKAGE_INIT "@PACKAGE_INIT@")
-    configure_file(
-        ${CMAKE_CURRENT_SOURCE_DIR}/cmake/webcface-config.cmake.in
-        ${CMAKE_CURRENT_BINARY_DIR}/webcface-config.cmake.in
-        @ONLY
-    )
-    unset(PACKAGE_INIT)
-    configure_package_config_file(
-        ${CMAKE_CURRENT_BINARY_DIR}/webcface-config.cmake.in
-        ${CMAKE_CURRENT_BINARY_DIR}/webcface-config.cmake
-        INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/webcface
-    )
     write_basic_package_version_file(
         ${CMAKE_CURRENT_BINARY_DIR}/webcface-config-version.cmake
         COMPATIBILITY SameMajorVersion
@@ -360,6 +414,7 @@ if(WEBCFACE_INSTALL)
     )
 
     # pkg-config
+    list(JOIN WEBCFACE_PKGCONFIG_CFLAGS " " WEBCFACE_PKGCONFIG_CFLAGS)
     list(JOIN WEBCFACE_PKGCONFIG_LIBS " " WEBCFACE_PKGCONFIG_LIBS)
     list(JOIN WEBCFACE_PKGCONFIG_REQUIRES " " WEBCFACE_PKGCONFIG_REQUIRES)
     configure_file(
@@ -453,6 +508,10 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     message(STATUS " WEBCFACE_CONFIG_ALL = ${WEBCFACE_CONFIG_ALL}")
 endif()
 message(STATUS " WEBCFACE_SHARED = ${WEBCFACE_SHARED} (PIC = ${WEBCFACE_PIC})")
+if(APPLE)
+    message(STATUS " WEBCFACE_FRAMEWORK = ${WEBCFACE_FRAMEWORK}")
+    message(STATUS " CMAKE_OSX_ARCHITECTURES = ${CMAKE_OSX_ARCHITECTURES}")
+endif()
 message(STATUS " WEBCFACE_EXAMPLE = ${WEBCFACE_EXAMPLE}")
 if(WEBCFACE_TEST)
     message(STATUS " WEBCFACE_TEST = ${WEBCFACE_TEST} (TIMEOUT = ${WEBCFACE_TEST_TIMEOUT} ms)")

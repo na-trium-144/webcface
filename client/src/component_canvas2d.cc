@@ -14,8 +14,8 @@ Canvas2DComponent::lockTmp(const std::weak_ptr<internal::ClientData> &data_w,
     if (on_click_func_tmp != nullptr) {
         auto data = data_w.lock();
         Func on_click{Field{data_w, data->self_member_name},
-                      SharedString(u8"..c2" + view_name.u8String() + u8"/" +
-                                   std::u8string(encoding::castToU8(id())))};
+                      SharedString::fromU8String("..c2" + view_name.u8String() +
+                                                 "/" + id())};
         on_click_func_tmp->lockTo(on_click);
         onClick(on_click);
     }

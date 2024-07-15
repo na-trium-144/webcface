@@ -41,9 +41,12 @@ else()
             )
         endif()
         file(REMOVE_RECURSE ${zlib_PREFIX})
+        include(cmake/flags.cmake)
+        init_flags()
         execute_process(
             COMMAND ${ENV_COMMAND}
-                "CC=${ORIGINAL_ENV_CC}" "CFLAGS=${MAGICKPP_FLAGS}"
+                "CC=${ORIGINAL_ENV_CC}"
+                "CFLAGS=${WEBCFACE_FLAGS}" "LDFLAGS=${WEBCFACE_LDFLAGS}"
                 "MAKE=${MAKE_COMMAND}"
                 ${SH_COMMAND} ${zlib_SOURCE_DIR}/configure
                 --static --prefix=${zlib_PREFIX}

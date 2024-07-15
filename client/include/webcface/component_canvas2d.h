@@ -17,7 +17,7 @@ enum class Canvas2DComponentType {
     text = 3,
 };
 
-#ifdef _WIN32
+#if WEBCFACE_SYSTEM_DLLEXPORT
 extern template class WEBCFACE_DLL_INSTANCE_DECL IdBase<Canvas2DComponentType>;
 #endif
 
@@ -57,12 +57,6 @@ class WEBCFACE_DLL Canvas2DComponent : public IdBase<Canvas2DComponentType> {
         this->data_w = data_w;
         initIdx(idx_next, type_);
     }
-    // Canvas2DComponent(Canvas2DComponentType type,
-    //                   const std::weak_ptr<internal::ClientData> &data_w)
-    //     : IdBase<Canvas2DComponentType>(), data_w(data_w),
-    //       on_click_func_tmp(nullptr) {
-    //     type_ = type;
-    // }
     explicit Canvas2DComponent(Canvas2DComponentType type)
         : IdBase<Canvas2DComponentType>(), data_w(),
           on_click_func_tmp(nullptr) {
@@ -182,7 +176,7 @@ class WEBCFACE_DLL Canvas2DComponent : public IdBase<Canvas2DComponentType> {
      *
      */
     Canvas2DComponent &text(std::string_view text) {
-        text_ = SharedString(text);
+        text_ = SharedString::encode(text);
         return *this;
     }
     /*!
@@ -190,7 +184,7 @@ class WEBCFACE_DLL Canvas2DComponent : public IdBase<Canvas2DComponentType> {
      * \since ver2.0
      */
     Canvas2DComponent &text(std::wstring_view text) {
-        text_ = SharedString(text);
+        text_ = SharedString::encode(text);
         return *this;
     }
     /*!

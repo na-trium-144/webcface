@@ -31,7 +31,7 @@ class WEBCFACE_DLL BasicLoggerBuf final : public std::basic_streambuf<CharT> {
     explicit BasicLoggerBuf(internal::ClientData *data_p);
     ~BasicLoggerBuf() = default;
 };
-#ifdef _WIN32
+#if WEBCFACE_SYSTEM_DLLEXPORT
 extern template class WEBCFACE_DLL_INSTANCE_DECL BasicLoggerBuf<char>;
 extern template class WEBCFACE_DLL_INSTANCE_DECL BasicLoggerBuf<wchar_t>;
 #endif

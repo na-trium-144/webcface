@@ -27,33 +27,30 @@ class TemporalComponent {
     TemporalComponent(VT v_type, C2T c2_type, C3T c3_type)
         : component_v(v_type), component_2d(c2_type), component_3d(c3_type) {}
     explicit TemporalComponent(std::string_view text)
-        requires(V && C2 && !C3)
         : TemporalComponent(ViewComponentType::text,
                             Canvas2DComponentType::text, 0) {
+        static_assert(V && C2 && !C3);
         component_v.text(text);
         component_2d.text(text);
     }
     explicit TemporalComponent(std::wstring_view text)
-        requires(V && C2 && !C3)
         : TemporalComponent(ViewComponentType::text,
                             Canvas2DComponentType::text, 0) {
+        static_assert(V && C2 && !C3);
         component_v.text(text);
         component_2d.text(text);
     }
-    ViewComponent &toV()
-        requires V
-    {
+    ViewComponent &toV() {
+        static_assert(V);
         return component_v;
     }
-    Canvas2DComponent &to2()
-        requires C2
-    {
+    Canvas2DComponent &to2() {
+        static_assert(C2);
         // component_2d->geometry(std::move(static_cast<Geometry &>(*this)));
         return component_2d;
     }
-    Canvas3DComponent &to3()
-        requires C3
-    {
+    Canvas3DComponent &to3() {
+        static_assert(C3);
         // component_3d->geometry(std::move(static_cast<Geometry &>(*this)));
         return component_3d;
     }
@@ -65,9 +62,8 @@ class TemporalComponent {
      *
      */
     template <typename T>
-    TemporalComponent &onClick(T &&func)
-        requires(V || C2)
-    {
+    TemporalComponent &onClick(T &&func) {
+        static_assert(V || C2);
         if constexpr (V) {
             component_v.onClick(std::forward<T>(func));
         }
@@ -80,9 +76,8 @@ class TemporalComponent {
      * \brief 要素の移動 (2Dまたは3D)
      *
      */
-    TemporalComponent &origin(const Transform &origin)
-        requires(C2 || C3)
-    {
+    TemporalComponent &origin(const Transform &origin) {
+        static_assert(C2 || C3);
         if constexpr (C2) {
             component_2d.origin(origin);
         }
@@ -96,9 +91,8 @@ class TemporalComponent {
      *
      * Viewの要素では textColor として設定される
      */
-    TemporalComponent &color(ViewColor c)
-        requires(V || C2 || C3)
-    {
+    TemporalComponent &color(ViewColor c) {
+        static_assert(V || C2 || C3);
         if constexpr (V) {
             component_v.textColor(c);
         }
@@ -115,9 +109,8 @@ class TemporalComponent {
      *
      * Canvas2DのTextでは fillColor が文字色の代わりに使われている
      */
-    TemporalComponent &textColor(ViewColor c)
-        requires(V || C2)
-    {
+    TemporalComponent &textColor(ViewColor c) {
+        static_assert(V || C2);
         if constexpr (V) {
             component_v.textColor(c);
         }
@@ -130,9 +123,8 @@ class TemporalComponent {
      * \brief 背景色 (Viewまたは2D)
      *
      */
-    TemporalComponent &fillColor(ViewColor c)
-        requires(V || C2)
-    {
+    TemporalComponent &fillColor(ViewColor c) {
+        static_assert(V || C2);
         if constexpr (V) {
             component_v.bgColor(c);
         }
@@ -145,9 +137,8 @@ class TemporalComponent {
      * \brief 背景色 (Viewまたは2D)
      *
      */
-    TemporalComponent &bgColor(ViewColor c)
-        requires(V || C2)
-    {
+    TemporalComponent &bgColor(ViewColor c) {
+        static_assert(V || C2);
         return fillColor(c);
     }
     /*!
@@ -155,9 +146,8 @@ class TemporalComponent {
      *
      * 文字の太さではない
      */
-    TemporalComponent &strokeWidth(double s)
-        requires(C2)
-    {
+    TemporalComponent &strokeWidth(double s) {
+        static_assert(C2);
         if constexpr (C2) {
             component_2d.strokeWidth(s);
         }
@@ -167,9 +157,8 @@ class TemporalComponent {
      * \brief 文字の大きさ (2Dのみ)
      *
      */
-    TemporalComponent &textSize(double s)
-        requires(C2)
-    {
+    TemporalComponent &textSize(double s) {
+        static_assert(C2);
         if constexpr (C2) {
             component_2d.textSize(s);
         }

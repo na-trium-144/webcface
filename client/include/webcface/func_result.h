@@ -4,7 +4,6 @@
 #include <future>
 #include <memory>
 #include <stdexcept>
-#include <cstdint>
 #include "field.h"
 #include "webcface/encoding/val_adaptor.h"
 #include <webcface/common/def.h>
@@ -136,7 +135,6 @@ class WEBCFACE_DLL FuncCallHandle {
      *
      */
     template <typename T>
-        requires std::constructible_from<ValAdaptor, T>
     void respond(T value) {
         if (handle_data_) {
             handle_data_->result_.set_value(ValAdaptor(value));

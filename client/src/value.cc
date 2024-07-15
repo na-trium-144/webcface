@@ -38,7 +38,7 @@ Value &Value::set(double v) {
     return *this;
 }
 
-Value &Value::set(std::vector<double> &&v) {
+Value &Value::set(std::vector<double> v) {
     auto data = setCheck();
     data->value_store.setSend(
         *this, std::make_shared<std::vector<double>>(std::move(v)));
