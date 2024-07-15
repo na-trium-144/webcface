@@ -4,12 +4,14 @@
 #define WEBCFACE_DEFAULT_PORT_SI(port) WEBCFACE_STR(port)
 #define WEBCFACE_DEFAULT_PORT_S WEBCFACE_DEFAULT_PORT_SI(WEBCFACE_DEFAULT_PORT)
 #define WEBCFACE_SERVER_NAME "webcface"
+// clang-format off
 #cmakedefine WEBCFACE_VERSION_MAJOR @WEBCFACE_VERSION_MAJOR@
 #cmakedefine WEBCFACE_VERSION_MINOR @WEBCFACE_VERSION_MINOR@
+#cmakedefine WEBCFACE_VERSION_REVISION @WEBCFACE_VERSION_REVISION@
+// clang-format on
 #ifndef WEBCFACE_VERSION_MINOR
 #define WEBCFACE_VERSION_MINOR 0
 #endif
-#cmakedefine WEBCFACE_VERSION_REVISION @WEBCFACE_VERSION_REVISION@
 #ifndef WEBCFACE_VERSION_REVISION
 #define WEBCFACE_VERSION_REVISION 0
 #endif
@@ -69,6 +71,21 @@ WEBCFACE_DLL_INSTANCE_DEF: 明示的実体化の定義 (msvc_export, unix)
 #define WEBCFACE_DLL_INSTANCE_DECL
 #define WEBCFACE_DLL_INSTANCE_DEF
 #endif // WEBCFACE_SHARED
+
+/*
+calling convention
+
+通常の関数またはstaticメンバ関数(dllexportしているもの)につける。
+メンバ関数はthiscallなのでつけない
+std::function<>の中には要る(ただし型推論ができたりできなかったりする)
+関数ポインタには要る (typedef return_type (WEBCFACE_CALL *name)(args...); )
+
+*/
+#if WEBCFACE_SYSTEM_DLLEXPORT
+#define WEBCFACE_CALL __cdecl
+#else
+#define WEBCFACE_CALL
+#endif
 
 #if WEBCFACE_SYSTEM_ADD_DEBUG
 #ifdef _DEBUG

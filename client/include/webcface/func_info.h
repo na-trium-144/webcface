@@ -8,7 +8,7 @@
 #include <ostream>
 #include <cstddef>
 #include "webcface/encoding/val_adaptor.h"
-#include <webcface/common/def.h>
+#include "webcface/common/def.h"
 
 #ifdef min
 // clang-format off
@@ -161,7 +161,8 @@ class WEBCFACE_DLL Arg {
         return this->option(std::move(option_v));
     }
 };
-WEBCFACE_DLL std::ostream &operator<<(std::ostream &os, const Arg &arg);
+WEBCFACE_DLL std::ostream &WEBCFACE_CALL operator<<(std::ostream &os,
+                                                    const Arg &arg);
 
 /*!
  * \brief 関数1つの情報を表す。関数の実体も持つ
@@ -171,7 +172,8 @@ WEBCFACE_DLL std::ostream &operator<<(std::ostream &os, const Arg &arg);
  *
  */
 struct FuncInfo {
-    using FuncType = std::future<ValAdaptor>(std::vector<ValAdaptor>);
+    using FuncType = std::future<ValAdaptor>
+        WEBCFACE_CALL(std::vector<ValAdaptor>);
 
     ValType return_type;
     std::vector<Arg> args;
@@ -189,7 +191,7 @@ struct FuncInfo {
      * * 発生した例外はcatchしない
      */
     std::shared_future<ValAdaptor>
-    run(const std::vector<ValAdaptor> &args, bool caller_async,
+    run(const std::vector<ValAdaptor> &call_args, bool caller_async,
         const std::shared_ptr<internal::AsyncFuncState> &state = nullptr);
     /*!
      * \brief

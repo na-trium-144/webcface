@@ -1,9 +1,9 @@
-#include <webcface/func.h>
+#include "webcface/func.h"
 #include <thread>
 #include <stdexcept>
 #include "webcface/message/message.h"
 #include "webcface/internal/client_internal.h"
-#include <webcface/common/def.h>
+#include "webcface/common/def.h"
 
 WEBCFACE_NS_BEGIN
 
@@ -35,6 +35,7 @@ Func &Func::set(const std::vector<Arg> &args, ValType return_type,
             try {
                 handle.respond();
             } catch (const std::future_error &) {
+                // ignore exception
             }
             return result_f;
         }));
@@ -60,6 +61,7 @@ Func &Func::setAsync(const std::vector<Arg> &args, ValType return_type,
                     try {
                         handle.respond();
                     } catch (const std::future_error &) {
+                        // ignore exception
                     }
                     return result_f.get();
                 });
@@ -67,9 +69,9 @@ Func &Func::setAsync(const std::vector<Arg> &args, ValType return_type,
 }
 
 std::shared_future<ValAdaptor>
-FuncInfo::run(const std::vector<ValAdaptor> &args, bool caller_async,
+FuncInfo::run(const std::vector<ValAdaptor> &call_args, bool caller_async,
               const std::shared_ptr<internal::AsyncFuncState> &state) {
-    std::shared_future<ValAdaptor> ret = func_impl(args).share();
+    std::shared_future<ValAdaptor> ret = func_impl(call_args).share();
     if (state) {
         state->setResultFuture(ret);
     }

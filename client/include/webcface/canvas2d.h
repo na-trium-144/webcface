@@ -1,6 +1,6 @@
 #pragma once
 #include <memory>
-#include <webcface/common/def.h>
+#include "webcface/common/def.h"
 #include "field.h"
 #include "components.h"
 
@@ -89,7 +89,7 @@ class WEBCFACE_DLL Canvas2D : protected Field {
      * \brief 値が変化したときに呼び出されるコールバックを設定
      * \since ver2.0
      */
-    Canvas2D &onChange(std::function<void(Canvas2D)> callback);
+    Canvas2D &onChange(std::function<void WEBCFACE_CALL(Canvas2D)> callback);
     /*!
      * \brief 値が変化したときに呼び出されるコールバックを設定
      * \since ver2.0

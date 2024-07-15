@@ -13,27 +13,28 @@ extern "C" {
  * \return Clientのポインタ
  *
  */
-WEBCFACE_DLL wcfClient *wcfInit(const char *name, const char *host, int port);
+WEBCFACE_DLL wcfClient *WEBCFACE_CALL wcfInit(const char *name,
+                                              const char *host, int port);
 /*!
  * \brief クライアントを初期化する (wstring)
  * \since ver2.0
  * \sa wcfInit
  */
-WEBCFACE_DLL wcfClient *wcfInitW(const wchar_t *name, const wchar_t *host,
-                                 int port);
+WEBCFACE_DLL wcfClient *WEBCFACE_CALL wcfInitW(const wchar_t *name,
+                                               const wchar_t *host, int port);
 /*!
  * \brief クライアントを初期化する (アドレスとポートはデフォルト)
  * \since ver1.5
  * \param name 名前 (ver1.7〜:NULLも可)
  * \return Clientのポインタ
  */
-WEBCFACE_DLL wcfClient *wcfInitDefault(const char *name);
+WEBCFACE_DLL wcfClient *WEBCFACE_CALL wcfInitDefault(const char *name);
 /*!
  * \brief クライアントを初期化する (アドレスとポートはデフォルト, wstring)
  * \since ver2.0
  * \sa wcfInitDefault
  */
-WEBCFACE_DLL wcfClient *wcfInitDefaultW(const wchar_t *name);
+WEBCFACE_DLL wcfClient *WEBCFACE_CALL wcfInitDefaultW(const wchar_t *name);
 
 /*!
  * \brief 有効なClientのポインタであるかを返す
@@ -42,28 +43,28 @@ WEBCFACE_DLL wcfClient *wcfInitDefaultW(const wchar_t *name);
  * wcliが正常にwcfInitされwcfCloseする前のポインタであれば1、そうでなければ0
  *
  */
-WEBCFACE_DLL int wcfIsValid(wcfClient *wcli);
+WEBCFACE_DLL int WEBCFACE_CALL wcfIsValid(wcfClient *wcli);
 /*!
  * \brief Clientが接続されているかどうかを返す
  * \since ver1.5
  * \return wcliが正常にwcfInitされサーバーに接続できていれば1、そうでなければ0
  *
  */
-WEBCFACE_DLL int wcfIsConnected(wcfClient *wcli);
+WEBCFACE_DLL int WEBCFACE_CALL wcfIsConnected(wcfClient *wcli);
 /*!
  * \brief クライアントを閉じる
  * \since ver1.5
  * \return wcliが無効ならWCF_BAD_WCLI
  *
  */
-WEBCFACE_DLL wcfStatus wcfClose(wcfClient *wcli);
+WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfClose(wcfClient *wcli);
 /*!
  * \brief サーバーへの接続を別スレッドで開始する。
  * \since ver1.5
  * \return wcliが無効ならWCF_BAD_WCLI
  * \sa wcfWaitConnection(), wcfAutoReconnect()
  */
-WEBCFACE_DLL wcfStatus wcfStart(wcfClient *wcli);
+WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfStart(wcfClient *wcli);
 /*!
  * \brief サーバーへの接続を別スレッドで開始し、成功するまで待機する。
  * \since ver2.0
@@ -77,7 +78,8 @@ WEBCFACE_DLL wcfStatus wcfStart(wcfClient *wcli);
  * \return wcliが無効ならWCF_BAD_WCLI
  * \sa wcfStart(), wcfAutoReconnect()
  */
-WEBCFACE_DLL wcfStatus wcfWaitConnection(wcfClient *wcli, int interval);
+WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfWaitConnection(wcfClient *wcli,
+                                                       int interval);
 /*!
  * \brief 通信が切断されたときに自動で再試行するかどうかを設定する。
  * \since ver1.11.1
@@ -86,7 +88,8 @@ WEBCFACE_DLL wcfStatus wcfWaitConnection(wcfClient *wcli, int interval);
  * \return wcliが無効ならWCF_BAD_WCLI
  * \sa wcfStart()
  */
-WEBCFACE_DLL wcfStatus wcfAutoReconnect(wcfClient *wcli, int enabled);
+WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfAutoReconnect(wcfClient *wcli,
+                                                      int enabled);
 /*!
  * \brief サーバーからデータを受信する
  * \since ver2.0
@@ -105,7 +108,7 @@ WEBCFACE_DLL wcfStatus wcfAutoReconnect(wcfClient *wcli, int enabled);
  * \return wcliが無効ならWCF_BAD_WCLI
  * \sa wcfWaitRecv(), wcfAutoRecv()
  */
-WEBCFACE_DLL wcfStatus wcfRecv(wcfClient *wcli, int timeout);
+WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfRecv(wcfClient *wcli, int timeout);
 /*!
  * \brief サーバーからデータを受信する
  * \since ver2.0
@@ -115,7 +118,7 @@ WEBCFACE_DLL wcfStatus wcfRecv(wcfClient *wcli, int timeout);
  * \return wcliが無効ならWCF_BAD_WCLI
  * \sa wcfRecv(), wcfAutoRecv()
  */
-WEBCFACE_DLL wcfStatus wcfWaitRecv(wcfClient *wcli);
+WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfWaitRecv(wcfClient *wcli);
 /*!
  * \brief 別スレッドでwcfRecv()を自動的に呼び出す間隔を設定する。
  * \since ver2.0
@@ -133,7 +136,7 @@ WEBCFACE_DLL wcfStatus wcfWaitRecv(wcfClient *wcli);
  * 0または負の値を指定するとautoRecvは無効。
  * \sa recv(), recvUntil(), waitRecv()
  */
-WEBCFACE_DLL wcfStatus wcfAutoRecv(wcfClient *wcli, int interval);
+WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfAutoRecv(wcfClient *wcli, int interval);
 /*!
  * \brief 送信用にセットしたデータをすべて送信キューに入れる。
  * \since ver1.5
@@ -145,7 +148,7 @@ WEBCFACE_DLL wcfStatus wcfAutoRecv(wcfClient *wcli, int interval);
  * \return wcliが無効ならWCF_BAD_WCLI
  *
  */
-WEBCFACE_DLL wcfStatus wcfSync(wcfClient *wcli);
+WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfSync(wcfClient *wcli);
 
 /*!
  * \brief wcfの関数から取得したポインタのデータを破棄
@@ -155,7 +158,7 @@ WEBCFACE_DLL wcfStatus wcfSync(wcfClient *wcli);
  * で取得したものでない場合WCF_BAD_HANDLE
  *
  */
-WEBCFACE_DLL wcfStatus wcfDestroy(const void *ptr);
+WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfDestroy(const void *ptr);
 
 #ifdef __cplusplus
 }

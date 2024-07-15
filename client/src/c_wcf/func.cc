@@ -1,5 +1,5 @@
 #include "c_wcf_internal.h"
-#include <webcface/func.h>
+#include "webcface/func.h"
 
 template <typename CharT>
 static auto createHandle(const FuncCallHandle &h) {

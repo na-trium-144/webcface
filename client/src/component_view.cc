@@ -1,5 +1,4 @@
-#include <webcface/component_view.h>
-#include <webcface/member.h>
+#include "webcface/component_view.h"
 #include "webcface/internal/client_internal.h"
 #include "webcface/field.h"
 #include "webcface/encoding/encoding.h"
@@ -8,10 +7,10 @@
 WEBCFACE_NS_BEGIN
 
 ViewComponent &
-ViewComponent::lockTmp(const std::weak_ptr<internal::ClientData> &data_w,
+ViewComponent::lockTmp(const std::shared_ptr<internal::ClientData> &data,
                        const SharedString &view_name,
                        std::unordered_map<int, int> *idx_next) {
-    auto data = data_w.lock();
+    this->data_w = data;
     initIdx(idx_next, type_);
     if (on_click_func_tmp) {
         Func on_click{Field{data_w, data->self_member_name},
@@ -86,7 +85,7 @@ CComponent ViewComponent::cDataT() const {
     }
     this->options_s.emplace<v_index>(std::move(options));
     vcc.option = std::get<v_index>(this->options_s).data();
-    vcc.option_num = this->option_.size();
+    vcc.option_num = static_cast<int>(this->option_.size());
     return vcc;
 }
 

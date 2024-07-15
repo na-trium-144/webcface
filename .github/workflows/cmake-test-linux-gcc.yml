@@ -55,6 +55,7 @@ jobs:
         -DWEBCFACE_TEST_TIMEOUT=200
         "-DWEBCFACE_SHARED=$([[ ${{matrix.dep}} = static ]]; echo $?)"
         "-DWEBCFACE_FIND_OPENCV=$([[ ${{matrix.dep}} != apt ]]; echo $?)"
+        "-DWEBCFACE_FIND_LIBS=$([[ ${{matrix.dep}} = submodule || ${{matrix.dep}} = static ]]; echo $?)"
         -DCMAKE_INSTALL_PREFIX=${{github.workspace}}/build/install
 
     - name: Build
@@ -65,6 +66,15 @@ jobs:
         WEBCFACE_TRACE: 1
       working-directory: ${{github.workspace}}/build
       run: ctest --output-on-failure --timeout 20
+
+    - name: Check Exported Symbol
+      if: matrix.dep == 'submodule'
+      run: |
+        bash -c "! nm -g --defined-only build/libwebcface.so | grep -v webcface | grep -v wcf | grep -v St | grep -v gnu_cxx"
+        bash -c "! nm -g --defined-only build/libwebcface.so | grep -v webcface | grep -v wcf | grep spdlog"
+        bash -c "! nm -g --defined-only build/libwebcface.so | grep -v webcface | grep -v wcf | grep crow"
+        bash -c "! nm -g --defined-only build/libwebcface.so | grep -v webcface | grep -v wcf | grep asio"
+        bash -c "! nm -g --defined-only build/libwebcface.so | grep -v webcface | grep -v wcf | grep utf8"
 
     - name: Test CMake with installed package
       working-directory: ${{github.workspace}}/.github/test

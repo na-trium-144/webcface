@@ -4,7 +4,7 @@
 #include <optional>
 #include <chrono>
 #include "field.h"
-#include <webcface/common/def.h>
+#include "webcface/common/def.h"
 
 WEBCFACE_NS_BEGIN
 
@@ -78,7 +78,7 @@ class WEBCFACE_DLL Value : protected Field {
      * \brief 値が変化したときに呼び出されるコールバックを設定
      * \since ver2.0
      */
-    Value &onChange(std::function<void(Value)> callback);
+    Value &onChange(std::function<void WEBCFACE_CALL(Value)> callback);
     /*!
      * \brief 値が変化したときに呼び出されるコールバックを設定
      * \since ver2.0
@@ -319,6 +319,7 @@ class WEBCFACE_DLL Value : protected Field {
  * 1.8〜 複数の値に対応 & 受信してない時nullと表示するようにした
  *
  */
-WEBCFACE_DLL std::ostream &operator<<(std::ostream &os, const Value &data);
+WEBCFACE_DLL std::ostream &WEBCFACE_CALL operator<<(std::ostream &os,
+                                                    const Value &data);
 
 WEBCFACE_NS_END

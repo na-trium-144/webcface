@@ -4,7 +4,7 @@
 #include <chrono>
 #include "image_frame.h"
 #include "field.h"
-#include <webcface/common/def.h>
+#include "webcface/common/def.h"
 
 WEBCFACE_NS_BEGIN
 
@@ -81,7 +81,7 @@ class WEBCFACE_DLL Image : protected Field {
      * \brief 値が変化したときに呼び出されるコールバックを設定
      * \since ver2.0
      */
-    Image &onChange(std::function<void(Image)> callback);
+    Image &onChange(std::function<void WEBCFACE_CALL(Image)> callback);
     /*!
      * \brief 値が変化したときに呼び出されるコールバックを設定
      * \since ver2.0

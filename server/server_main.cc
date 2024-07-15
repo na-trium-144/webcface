@@ -6,7 +6,7 @@ int main(int argc, char **argv) {
     CLI::App app{"WebCFace Server " WEBCFACE_VERSION};
     app.allow_windows_style_options();
 
-    int port = WEBCFACE_DEFAULT_PORT;
+    std::uint16_t port = WEBCFACE_DEFAULT_PORT;
     int verbosity = 0;
     int keep_log = 1000;
 

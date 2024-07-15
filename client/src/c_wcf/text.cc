@@ -1,5 +1,5 @@
 #include "c_wcf_internal.h"
-#include <webcface/text.h>
+#include "webcface/text.h"
 #include <cstring>
 
 template <typename CharT>

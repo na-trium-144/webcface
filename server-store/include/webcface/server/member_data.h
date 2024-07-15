@@ -10,13 +10,13 @@
 #include "webcface/message/message.h"
 #include <spdlog/common.h>
 #include <spdlog/logger.h>
-#include <webcface/common/def.h>
-#include <webcface/server/server.h>
+#include "webcface/common/def.h"
+#include "webcface/server/server.h"
 
 WEBCFACE_NS_BEGIN
 namespace server {
 
-WEBCFACE_DLL std::pair<unsigned int, SharedString>
+WEBCFACE_DLL std::pair<unsigned int, SharedString> WEBCFACE_CALL
 findReqField(StrMap2<unsigned int> &req, const SharedString &member,
              const SharedString &field);
 

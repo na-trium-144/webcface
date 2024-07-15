@@ -3,7 +3,7 @@
 #include <optional>
 #include <vector>
 #include "field.h"
-#include <webcface/common/def.h>
+#include "webcface/common/def.h"
 
 WEBCFACE_NS_BEGIN
 namespace message {
@@ -67,7 +67,7 @@ class WEBCFACE_DLL Log : protected Field {
      * \brief ログが追加されたときに呼び出されるコールバックを設定
      * \since ver2.0
      */
-    Log &onChange(std::function<void(Log)> callback);
+    Log &onChange(std::function<void WEBCFACE_CALL(Log)> callback);
     /*!
      * \brief 値が変化したときに呼び出されるコールバックを設定
      * \since ver2.0

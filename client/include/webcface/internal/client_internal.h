@@ -9,17 +9,17 @@
 #include <unordered_map>
 #include <cstdlib>
 #include <spdlog/logger.h>
-#include <webcface/encoding/encoding.h>
-#include <webcface/field.h>
-#include <webcface/func_info.h>
-#include <webcface/log.h>
+#include "webcface/encoding/encoding.h"
+#include "webcface/field.h"
+#include "webcface/func_info.h"
+#include "webcface/log.h"
 #include "queue.h"
-#include <webcface/image_frame.h>
-#include <webcface/func_result.h>
+#include "webcface/image_frame.h"
+#include "webcface/func_result.h"
 #include "data_store1.h"
 #include "data_store2.h"
 #include "func_internal.h"
-#include <webcface/common/def.h>
+#include "webcface/common/def.h"
 
 WEBCFACE_NS_BEGIN
 

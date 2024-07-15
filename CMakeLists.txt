@@ -190,8 +190,10 @@ endif()
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     if(WEBCFACE_WARNING)
-        add_compile_options(/W4)
+        add_compile_options(/W4 /wd4251 /wd4275 /wd4661 /wd4996 /WX)
+        string(REPLACE "/W3" "/W4" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
     endif()
+    add_compile_options(/external:anglebrackets /external:W0)
     add_compile_options(/utf-8 /bigobj)
     add_compile_definitions(
         _CRT_SECURE_NO_WARNINGS
@@ -208,6 +210,14 @@ add_subdirectory(encoding)
 add_subdirectory(message)
 add_subdirectory(server-store)
 add_subdirectory(client)
+
+set(WEBCFACE_TARGETS
+    webcface-server-internal
+    webcface-encoding
+    webcface-message
+    webcface-server-store
+    webcface-client
+)
 
 if(WEBCFACE_SHARED)
     add_library(webcface SHARED)
@@ -256,11 +266,12 @@ endif()
 if(WEBCFACE_SHARED AND WEBCFACE_SYSTEM_VISIBILITY)
     # webcfaceのAPI以外をexportしない。
     # MSVCではデフォルトでdllexportしたもの以外exportされないので問題なし
-    set_target_properties(webcface-server-internal PROPERTIES CXX_VISIBILITY_PRESET hidden)
-    set_target_properties(webcface-encoding PROPERTIES CXX_VISIBILITY_PRESET hidden)
-    set_target_properties(webcface-message PROPERTIES CXX_VISIBILITY_PRESET hidden)
-    set_target_properties(webcface-server-store PROPERTIES CXX_VISIBILITY_PRESET hidden)
-    set_target_properties(webcface-client PROPERTIES CXX_VISIBILITY_PRESET hidden)
+    foreach(target IN LISTS WEBCFACE_TARGETS)
+        set_target_properties(${target} PROPERTIES
+            CXX_VISIBILITY_PRESET hidden
+            VISIBILITY_INLINES_HIDDEN 1
+        )
+    endforeach()
     if(WEBCFACE_SYSTEM_EXCLUDE_LIBS)
         # object libraryのwebcface-messageなどはexcludeされない
         target_link_options(webcface PRIVATE -Wl,--exclude-libs,ALL)
@@ -304,11 +315,9 @@ if(WEBCFACE_FRAMEWORK)
 endif()
 if(NOT "${WEBCFACE_CLANG_TIDY}" STREQUAL "")
     set(CLANG_TIDY_CMD "${WEBCFACE_CLANG_TIDY}" "--header-filter=${CMAKE_CURRENT_SOURCE_DIR}/src")
-    set_target_properties(webcface-server-internal PROPERTIES CXX_CLANG_TIDY "${CLANG_TIDY_CMD}")
-    set_target_properties(webcface-encoding PROPERTIES CXX_CLANG_TIDY "${CLANG_TIDY_CMD}")
-    set_target_properties(webcface-message PROPERTIES CXX_CLANG_TIDY "${CLANG_TIDY_CMD}")
-    set_target_properties(webcface-server-store PROPERTIES CXX_CLANG_TIDY "${CLANG_TIDY_CMD}")
-    set_target_properties(webcface PROPERTIES CXX_CLANG_TIDY "${CLANG_TIDY_CMD}")
+    foreach(target IN LISTS WEBCFACE_TARGETS)
+        set_target_properties(${target} PROPERTIES CXX_CLANG_TIDY "${CLANG_TIDY_CMD}")
+    endforeach()
 endif()
 add_library(webcface::webcface ALIAS webcface)
 

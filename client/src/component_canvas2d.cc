@@ -1,18 +1,16 @@
-#include <webcface/component_canvas2d.h>
-#include <webcface/member.h>
-#include <webcface/robot_model.h>
+#include "webcface/component_canvas2d.h"
 #include "webcface/message/message.h"
 #include "webcface/internal/client_internal.h"
 
 WEBCFACE_NS_BEGIN
 
 Canvas2DComponent &
-Canvas2DComponent::lockTmp(const std::weak_ptr<internal::ClientData> &data_w,
+Canvas2DComponent::lockTmp(const std::shared_ptr<internal::ClientData> &data,
                            const SharedString &view_name,
                            std::unordered_map<int, int> *idx_next) {
+    this->data_w = data;
     initIdx(idx_next, type_);
     if (on_click_func_tmp != nullptr) {
-        auto data = data_w.lock();
         Func on_click{Field{data_w, data->self_member_name},
                       SharedString::fromU8String("..c2" + view_name.u8String() +
                                                  "/" + id())};

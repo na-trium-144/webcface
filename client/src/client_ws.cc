@@ -1,6 +1,6 @@
 #include "webcface/internal/client_ws.h"
 #include "webcface/internal/client_internal.h"
-#include <webcface/client.h>
+#include "webcface/client.h"
 #include "webcface/server/unix_path.h"
 #include <curl/curl.h>
 #include <string>
@@ -58,6 +58,7 @@ void init(const std::shared_ptr<internal::ClientData> &data) {
             }
             continue;
         case 0:
+        default:
             if (data->host.decode() != "127.0.0.1") {
                 continue;
             }
