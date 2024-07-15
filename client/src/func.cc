@@ -35,6 +35,7 @@ Func &Func::set(const std::vector<Arg> &args, ValType return_type,
             try {
                 handle.respond();
             } catch (const std::future_error &) {
+                // ignore exception
             }
             return result_f;
         }));
@@ -60,6 +61,7 @@ Func &Func::setAsync(const std::vector<Arg> &args, ValType return_type,
                     try {
                         handle.respond();
                     } catch (const std::future_error &) {
+                        // ignore exception
                     }
                     return result_f.get();
                 });
