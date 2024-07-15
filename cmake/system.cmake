@@ -9,6 +9,7 @@ set(WEBCFACE_SYSTEM_HIDDEN_L 0) # use --hidden-l
 set(WEBCFACE_SYSTEM_ADD_VERSION 0) # add soversion to filename
 set(WEBCFACE_SYSTEM_ADD_DEBUG 0) # add debug postfix
 set(WEBCFACE_SYSTEM_WIN32API 0) # use win32api, wchar_t=utf16
+set(WEBCFACE_SYSTEM_WIN32SOCKET 0) # use wsock32 and ws2_32
 set(WEBCFACE_SYSTEM_WINNT 0) # _WINNT is defined by default
 set(WEBCFACE_SYSTEM_PATH_WINDOWS 0) # use windows style path
 
@@ -25,6 +26,7 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
     set(WEBCFACE_SYSTEM_VERSION_RC 1)
     set(WEBCFACE_SYSTEM_ADD_VERSION 1)
     set(WEBCFACE_SYSTEM_WIN32API 1)
+    set(WEBCFACE_SYSTEM_WIN32SOCKET 1)
     set(WEBCFACE_SYSTEM_PATH_WINDOWS 1)
     set(WEBCFACE_SYSTEM_WINNT 1)
     if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
@@ -32,9 +34,7 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
     endif()
 
 elseif(CMAKE_SYSTEM_NAME STREQUAL "CYGWIN" OR CMAKE_SYSTEM_NAME STREQUAL "MSYS")
-    message(WARNING "System name \"${CMAKE_SYSTEM_NAME}\" is not supported yet.")
     set(WEBCFACE_SYSTEM_DLLEXPORT 1)
-    set(WEBCFACE_SYSTEM_ADD_VERSION 1)
     set(WEBCFACE_SYSTEM_WIN32API 1)
 
 else()

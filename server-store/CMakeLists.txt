@@ -22,3 +22,6 @@ target_link_libraries(webcface-server-store PRIVATE
     webcface-server-internal
     magickpp-linker
 )
+if(WEBCFACE_SERVER)
+    target_compile_definitions(webcface-server-store PRIVATE WEBCFACE_SERVER)
+endif()

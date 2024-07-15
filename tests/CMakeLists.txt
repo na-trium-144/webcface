@@ -10,13 +10,17 @@ add_executable(webcface-test
     image_test.cc
     member_test.cc
     logger_test.cc
-    client_test.cc
-    dummy_server.cc
-    dummy_client.cc
-    server_test.cc
     encoding_test.cc
-    c_wcf_test.cc
 )
+if(WEBCFACE_SERVER)
+    target_sources(webcface-test PRIVATE
+        client_test.cc
+        dummy_server.cc
+        dummy_client.cc
+        server_test.cc
+        c_wcf_test.cc
+    )
+endif()
 target_link_libraries(webcface-test PRIVATE
     webcface
     GTest::gtest_main
