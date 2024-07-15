@@ -151,7 +151,7 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 <p>ver1は <a href="https://github.com/na-trium-144/webcface/tree/v1">v1</a> ブランチにあります</p>
 <p>WebSocketとMessagePackを使った、ROSのような分散型の通信ライブラリです。</p>
 <p>C++ (C++17以上), C (C99), Python (3.8以上), JavaScript/TypeScript で相互に数値、文字列、画像などのデータを送受信したり、関数(手続き)を呼び出したりすることができます。</p>
-<p>Linux, Windows, MacOS で動作します。 Wi-FiやEtherNet経由で複数のPC間(OS問わず)で通信することも可能です。 WindowsとWSL1/2の間の相互通信も自動的に接続されます。</p>
+<p>Linux, MacOS, Windows(MSVC, MinGW, MSYS2, Cygwin) で動作します。 Wi-FiやEtherNet経由で複数のPC間(OS問わず)で通信することも可能です。 WindowsとWSL1/2の間の相互通信も自動的に接続されます。</p>
 <p>さらに同一マシン上やDocker,WSL経由など使用可能な場合はTCPの代わりにUnixドメインソケットを使用するようにし、パフォーマンスが改善しました。</p>
 <h1><a class="anchor" id="autotoc_md197"></a>
 Features</h1>
@@ -166,7 +166,7 @@ Easy to Setup</h2>
 <li>Windows: <code>webcface&lt;version&gt;.dll</code> (MinGWの場合 <code>libwebcface&lt;version&gt;.dll</code>)</li>
 </ul>
 <p>の1つのみであり、手動でこのライブラリにリンクして使うこともできます。 <br  />
- WebCFace内部では外部ライブラリを多数使用していますが、それらはシンボルをすべて非公開にしているのでユーザーが使用するライブラリとは干渉しません。 (WebCFaceをstaticライブラリとしてビルドした場合と、brewでインストールした場合を除く)</p>
+ WebCFace内部では外部ライブラリを多数使用していますが、それらはシンボルをすべて非公開にしているのでユーザーが使用するライブラリとは干渉しません。 (WebCFaceをソースからビルドした場合と、brewでインストールした場合を除く)</p>
 <p>Python, JavaScript には PyPI / npm に <code>webcface</code> パッケージを用意しているのでそれをインストールするだけで使えます。 通信にWebSocketを使用しているため、Webブラウザ上でもそのまま動作します。</p>
 <p>少し難易度は上がりますが、CのAPIを経由することで他の言語からも使用できると思います。</p>
 <h2><a class="anchor" id="autotoc_md199"></a>
@@ -316,15 +316,19 @@ Requirements</h2>
 <li>(ver1.11まではC++20が必要でしたが、ver2からC++17に移行しました)</li>
 </ul>
 </li>
-<li>Linuxはgcc-7以上とclang-7以上、MacはmacOS12(Monterey)以上、Visual Studio 2019以上でビルドできることを確認しています。 それ以前のバージョンでも動くかもしれません。</li>
-<li>WindowsではMinGWでもビルドできます。MSYS2のMINGW64環境でテストしていますがUCRT64やCLANG64環境でもビルドできると思います。</li>
-<li>Cygwin(64bit)やMSYS2のMSYS環境では現状ビルドできません。(<a href="https://github.com/chriskohlhoff/asio/issues/518">chriskohlhoff/asio#518</a>)</li>
+<li>Linuxはgcc-7以上とclang-7以上、MacはmacOS12(Monterey)以上、Visual Studioは2019以上でビルドできることを確認しています。 それ以前のバージョンでも動くかもしれません。</li>
+<li>MinGWでもビルドできます。MSYS2のMINGW64環境でテストしていますがUCRT64やCLANG64環境でもビルドできると思います。</li>
+<li>Cygwin(64bit)やMSYS2のMSYS環境ではasioが非対応なため、現状ではサーバー機能を除いてクライアントのみビルドすることができます。CMake時に<code>-DWEBCFACE_SERVER=OFF</code>が必要です。 (<a href="https://github.com/chriskohlhoff/asio/issues/518">chriskohlhoff/asio#518</a>)</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md214"></a>
 Dependencies</h2>
 <ul>
-<li>webcfaceは外部ライブラリとして <a href="https://github.com/msgpack/msgpack-c">msgpack-cxx</a>, <a href="https://github.com/wqking/eventpp">eventpp</a>, <a href="https://github.com/gabime/spdlog">spdlog</a>, <a href="https://github.com/curl/curl">curl</a>, <a href="https://github.com/CrowCpp/Crow">crow</a>, <a href="https://github.com/chriskohlhoff/asio">asio</a>, <a href="https://github.com/CLIUtils/CLI11.git">cli11</a>, <a href="https://github.com/nemtrif/utfcpp">UTF8-CPP</a>, <a href="https://opencv.org/">OpenCV</a>(exampleのみ), <a href="https://github.com/ImageMagick/ImageMagick">Magick++</a>, <a href="https://github.com/google/googletest">GoogleTest</a>(testのみ) を使用します。<ul>
+<li>webcfaceは外部ライブラリとして <a href="https://github.com/msgpack/msgpack-c">msgpack-cxx</a>, <a href="https://github.com/wqking/eventpp">eventpp</a>, <a href="https://github.com/gabime/spdlog">spdlog</a>, <a href="https://github.com/curl/curl">curl</a>, <a href="https://github.com/CrowCpp/Crow">crow</a>, <a href="https://github.com/chriskohlhoff/asio">asio</a>, <a href="https://github.com/CLIUtils/CLI11.git">cli11</a>, <a href="https://github.com/nemtrif/utfcpp">UTF8-CPP</a>, <a href="https://opencv.org/">OpenCV</a>(exampleのみ), <a href="https://github.com/ImageMagick/ImageMagick">Magick++</a>, <a href="https://github.com/google/googletest">GoogleTest</a>(testのみ) を使用します。</li>
 <li>いずれもシステムにインストールされていてfind_packageなどで使うことができるか確認します。<ul>
+<li>特にsharedまたはstaticライブラリとしてビルドできるspdlog,libcurl,Magick++は事前にインストールしておいたほうがビルドが高速になります。<ul>
+<li>ただしインストールされたlibcurl,Magick++を使用するには条件があります。(後述)</li>
+</ul>
+</li>
 <li>見つからない場合は、CMake時に自動的にFetchContentでソースコードを取得してビルドするので、必ずしもこれらをインストールする必要はありません。</li>
 </ul>
 </li>
@@ -333,12 +337,17 @@ Dependencies</h2>
 <li>ただしMSVCの場合ImageMagick-Windowsリポジトリは例外として常にFetchContentを使います</li>
 </ul>
 </li>
+<li>システムにインストールされているものを使用した場合、ビルドしたWebCFaceはそのライブラリに依存することになります。 一方FetchContentまたはsubmoduleでソースからビルドし、かつWebCFaceがsharedライブラリとしてビルドされる場合は、外部ライブラリのシンボルがWebCFace内部に隠されます。<ul>
+<li>そのためビルドしたWebCFaceを他の環境に配布する場合などはシステムにインストールしたライブラリを使用しないほうが良いです。<ul>
+<li>CMake時に<code>-DWEBCFACE_FIND_LIBS=OFF</code>とすることですべてソースからビルドさせることができます。</li>
+</ul>
+</li>
+</ul>
+</li>
 <li>libcurlはwebsocket機能を有効にする必要があるため、インストールされているlibcurlでwebsocketが使えない場合使用せずソースからビルドします。</li>
 <li>crowはunix_socketの機能が実装されている必要があるため、インストールされているcrowでunix_socketが使えない場合使用せずソースからビルドします</li>
 <li>Magick++はマルチスレッドで実行するためにOpenMPが無効になっている必要があるため、インストールされているMagick++がOpenMPを使用してビルドされていた場合使用せずソースからビルドします</li>
 <li>OpenCVはソースからビルドしません。OpenCVを使ったexampleをビルドしたい場合は別途インストールする必要がありますが、example以外では使用しないのでほぼ必要ないと思います。</li>
-</ul>
-</li>
 </ul>
 <details >
 <summary >
@@ -372,13 +381,28 @@ Visual Studio</summary>
 </details>
 <details >
 <summary >
-MSYS2</summary>
+MSYS2 MinGW</summary>
 <p></p>
 <div class="fragment"><div class="line">pacman -S pactoys</div>
 <div class="line">pacboy -S git make gcc:p cmake:p ninja:p</div>
 <div class="line"># optional:</div>
-<div class="line">pacboy -S msgpack-cxx:p spdlog:p asio:p cli11:p utf8cpp:p imagemagick:p </div>
-</div><!-- fragment --><p> imagemagickをソースからビルドする際にはninjaではなくmakeが必要になります</p>
+<div class="line">pacboy -S msgpack-cxx:p spdlog:p asio:p cli11:p utf8cpp:p</div>
+</div><!-- fragment --><p> imagemagickをソースからビルドする際にninjaではなくmakeが必要になります</p>
+<p></p>
+</details>
+<details >
+<summary >
+MSYS2 MSYS</summary>
+<p></p>
+<div class="fragment"><div class="line">pacman -S git make gcc cmake ninja</div>
+</div><!-- fragment --><p> imagemagickをソースからビルドする際にninjaではなくmakeが必要になります</p>
+<p></p>
+</details>
+<details >
+<summary >
+Cygwin</summary>
+<p></p>
+<p>gcc-core, gcc-g++, cmake, make, pkg-config, (ninja) をインストールしてください (ninjaでもいいですが、imagemagickをソースからビルドする際にはninjaではなくmakeが必要になります)</p>
 <p></p>
 </details>
 <h2><a class="anchor" id="autotoc_md215"></a>
@@ -394,6 +418,7 @@ CMake</h2>
 <li><code>-DWEBCFACE_SHARED=OFF</code>にすると共有ライブラリではなくすべて静的ライブラリになります</li>
 <li><code>-DWEBCFACE_PIC=ON</code>または<code>-DCMAKE_POSITION_INDEPENDENT_CODE=ON</code>にすると-fPICフラグが有効になります (Linux,Macのみ、WEBCFACE_SHAREDがONの場合はデフォルトでON)</li>
 <li><code>-DWEBCFACE_FRAMEWORK=ON</code>, <code>"-DCMAKE_OSX_ARCHITECTURES=arm64;x86_64"</code> などとするとユニバーサルなframework (<a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd" title="TのValTypeを得る">webcface.framework</a>) をビルド、インストールできます</li>
+<li><code>-DWEBCFACE_SERVER=ON</code>でserverをビルドします(デフォルトでON)</li>
 <li><code>-DWEBCFACE_EXAMPLE=ON</code>でexampleをビルドします(デフォルトでON、subdirectoryの場合デフォルトでOFF)</li>
 <li><code>-DWEBCFACE_INSTALL=ON</code>でinstallターゲットを生成します(デフォルトでON、subdirectoryの場合デフォルトでOFF)<ul>
 <li>さらに<code>-DWEBCFACE_INSTALL_SERVICE=ON</code>で <a href="cmake/webcafce-server.service">webcface-server.service</a> を lib/systemd/system にインストールします (デフォルトでOFF)</li>
@@ -427,11 +452,6 @@ CMake</h2>
 </li>
 <li><code>-DWEBCFACE_FIND_LIBS=OFF</code> とすると上記設定をすべてOFFにします<ul>
 <li>WEBCFACE_SHAREDがOFFの場合デフォルトでOFF</li>
-</ul>
-</li>
-<li>spdlogのオプション<ul>
-<li>Windowsでは<code>SPDLOG_WCHAR_SUPPORT</code>がデフォルトでONになります</li>
-<li>それ以外のオプション(SPDLOG_WCHAR_FILENAMES, SPDLOG_WCHAR_CONSOLE)はWebCFace内では設定しませんがコマンドラインオプションで指定することは可能です</li>
 </ul>
 </li>
 </ul>
@@ -484,7 +504,7 @@ License</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon Jul 15 2024 17:17:24 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Mon Jul 15 2024 19:15:06 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

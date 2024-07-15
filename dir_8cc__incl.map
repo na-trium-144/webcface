@@ -1,15 +1,13 @@
 <map id="/home/runner/work/webcface/webcface/server&#45;store/src/dir.cc" name="/home/runner/work/webcface/webcface/server&#45;store/src/dir.cc">
-<area shape="rect" id="Node000001" title=" " alt="" coords="264,5,496,45"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="215,5,447,45"/>
 <area shape="rect" id="Node000002" href="$dir_8h.html" title=" " alt="" coords="69,93,230,119"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="326,48,197,91,195,86,324,43"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="288,48,190,90,188,85,286,43"/>
 <area shape="rect" id="Node000006" title=" " alt="" coords="255,93,311,119"/>
-<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="358,48,309,87,306,82,355,43"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="321,47,299,83,295,80,317,44"/>
 <area shape="rect" id="Node000007" title=" " alt="" coords="335,93,425,119"/>
-<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="383,46,383,79,377,79,377,46"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="345,44,368,80,363,83,340,47"/>
 <area shape="rect" id="Node000008" title=" " alt="" coords="449,93,524,119"/>
-<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="407,43,461,83,458,87,404,48"/>
-<area shape="rect" id="Node000009" title=" " alt="" coords="548,93,655,119"/>
-<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="434,43,557,86,555,91,432,48"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="369,43,453,85,450,89,367,48"/>
 <area shape="rect" id="Node000003" title=" " alt="" coords="5,167,64,192"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="132,121,66,162,64,157,130,116"/>
 <area shape="rect" id="Node000004" title=" " alt="" coords="89,167,210,192"/>
