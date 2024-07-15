@@ -40,7 +40,7 @@ typedef void wcfAsyncFuncResult;
  * as_strがすべて埋まった状態で返ってくる。
  *
  */
-WEBCFACE_DLL typedef struct wcfMultiVal {
+typedef struct wcfMultiVal {
     /*!
      * \brief int型でのアクセス
      * \sa wcfValI
@@ -74,7 +74,7 @@ WEBCFACE_DLL typedef struct wcfMultiVal {
  * as_strがすべて埋まった状態で返ってくる。
  *
  */
-WEBCFACE_DLL typedef struct wcfMultiValW {
+typedef struct wcfMultiValW {
     /*!
      * \brief int型でのアクセス
      * \sa wcfValWI
@@ -101,7 +101,7 @@ WEBCFACE_DLL typedef struct wcfMultiValW {
  * \brief 受信した関数呼び出しの情報を保持するstruct
  *
  */
-WEBCFACE_DLL typedef struct wcfFuncCallHandle {
+typedef struct wcfFuncCallHandle {
     /*!
      * \brief 呼び出された引数
      *
@@ -121,7 +121,7 @@ WEBCFACE_DLL typedef struct wcfFuncCallHandle {
  * \brief 受信した関数呼び出しの情報を保持するstruct (wstring)
  * \since ver2.0
  */
-WEBCFACE_DLL typedef struct wcfFuncCallHandleW {
+typedef struct wcfFuncCallHandleW {
     /*!
      * \brief 呼び出された引数
      *
@@ -172,7 +172,7 @@ typedef void(WEBCFACE_CALL *wcfFuncCallbackW)(wcfFuncCallHandleW *call_handle,
  * \brief Viewの要素を表すstruct
  *
  */
-WEBCFACE_DLL typedef struct wcfViewComponent {
+typedef struct wcfViewComponent {
     /*!
      * \brief Componentの種類
      *
@@ -235,7 +235,7 @@ WEBCFACE_DLL typedef struct wcfViewComponent {
  * \since ver2.0
  * \sa wcfViewComponent
  */
-WEBCFACE_DLL typedef struct wcfViewComponentW {
+typedef struct wcfViewComponentW {
     int type;
     const wchar_t *text;
     const wchar_t *on_click_member, *on_click_field;
