@@ -30,6 +30,12 @@ macro(fetch_only DEP_NAME URL TAG CHECK_FILENAME)
     else()
         message(STATUS "Fetching ${DEP_NAME} source...")
         list(APPEND WEBCFACE_SUMMARY "${DEP_NAME}: downloaded from ${URL} (tag = ${TAG})")
-        FetchContent_Populate(${DEP_NAME} GIT_REPOSITORY ${URL} GIT_TAG ${TAG})
+        FetchContent_Populate(${DEP_NAME}
+            GIT_REPOSITORY ${URL}
+            GIT_TAG ${TAG}
+            SUBBUILD_DIR ${CMAKE_CURRENT_BINARY_DIR}/_deps/${DEP_NAME}-subbuild
+            SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/_deps/${DEP_NAME}-src
+            BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/_deps/${DEP_NAME}-build
+        )
     endif()
 endmacro()
