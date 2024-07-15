@@ -50,7 +50,7 @@ jobs:
         -DWEBCFACE_TEST=on
         -DWEBCFACE_EXAMPLE=on
         -DWEBCFACE_TEST_TIMEOUT=200
-        "-DWEBCFACE_CLANG_TIDY=$([[ ${{matrix.clang}} -ge 13 ]] && echo ${{env.LLVM_PATH}}/bin/clang-tidy)"
+        "-DWEBCFACE_CLANG_TIDY=$([[ ${{matrix.clang}} = 17 ]] && echo ${{env.LLVM_PATH}}/bin/clang-tidy)"
 
     - name: Build
       run: cmake --build build
