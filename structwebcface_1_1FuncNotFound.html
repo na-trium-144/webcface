@@ -167,7 +167,8 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Funcの実行ができなかった場合発生する例外 </p>
-<p>(ValueやTextで参照先が見つからなかった場合はこれではなく単にnulloptが返る) </p>
+<p>ValueやTextで参照先が見つからなかった場合はこれではなく単にnulloptが返る</p>
+<p>MSVCではexceptionをexportしないほうがよいらしくC4275警告を出すが、 Macではexportしないとcatchできなくなる </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a788e90df0eadf5a65ad25ee77d2d8e4e" name="a788e90df0eadf5a65ad25ee77d2d8e4e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a788e90df0eadf5a65ad25ee77d2d8e4e">&#9670;&#160;</a></span>FuncNotFound()</h2>
@@ -205,7 +206,7 @@ Public Member Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="structwebcface_1_1FuncNotFound.html">FuncNotFound</a></li>
-    <li class="footer">Generated on Sun Jul 14 2024 12:52:38 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Mon Jul 15 2024 17:17:24 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

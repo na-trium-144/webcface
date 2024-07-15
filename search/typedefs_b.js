@@ -2,8 +2,8 @@ var searchData=
 [
   ['wcfasyncfuncresult_0',['wcfAsyncFuncResult',['../def__types_8h.html#adde5cf85e4e5d0d5e980329221d1fac3',1,'def_types.h']]],
   ['wcfclient_1',['wcfClient',['../def__types_8h.html#a11e35bfe0822747dfabcce7f5220016a',1,'def_types.h']]],
-  ['wcffunccallback_2',['wcfFuncCallback',['../def__types_8h.html#a36819ce6e20b1c9c117f59f903955d64',1,'def_types.h']]],
-  ['wcffunccallbackw_3',['wcfFuncCallbackW',['../def__types_8h.html#ab6b3dc74af3172f4eb499efb42fda1b7',1,'def_types.h']]],
+  ['wcffunccallback_2',['wcfFuncCallback',['../def__types_8h.html#ab1ff6df2bdeccc34b093db1ec2f16785',1,'def_types.h']]],
+  ['wcffunccallbackw_3',['wcfFuncCallbackW',['../def__types_8h.html#a5f1be866a637298f87ac53396f4647fa',1,'def_types.h']]],
   ['wcffunccallhandle_4',['wcfFuncCallHandle',['../def__types_8h.html#a6f52e8c4748a8e6f2aaa124c7f76767a',1,'def_types.h']]],
   ['wcffunccallhandlew_5',['wcfFuncCallHandleW',['../def__types_8h.html#ac172866b248b6f386b9c44f0ca56a728',1,'def_types.h']]],
   ['wcfmultival_6',['wcfMultiVal',['../def__types_8h.html#a568ed45b4dde95e33d4c9ea3bbbdfdd9',1,'def_types.h']]],

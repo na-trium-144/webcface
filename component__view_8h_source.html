@@ -150,7 +150,7 @@ $(document).ready(function(){initNavTree('component__view_8h_source.html',''); i
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#include &lt;optional&gt;</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &lt;vector&gt;</span></div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &quot;<a class="code" href="field_8h.html">field.h</a>&quot;</span></div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &lt;<a class="code" href="def_8h.html">webcface/common/def.h</a>&gt;</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &quot;<a class="code" href="def_8h.html">webcface/common/def.h</a>&quot;</span></div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &quot;<a class="code" href="encoding_2include_2webcface_2encoding_2val__adaptor_8h.html">webcface/encoding/val_adaptor.h</a>&quot;</span></div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &quot;<a class="code" href="component__id_8h.html">component_id.h</a>&quot;</span></div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &quot;<a class="code" href="func_8h.html">webcface/func.h</a>&quot;</span></div>
@@ -272,7 +272,7 @@ $(document).ready(function(){initNavTree('component__view_8h_source.html',''); i
 <div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>    }</div>
 </div>
 <div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span> </div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>    <a class="code hl_class" href="classwebcface_1_1ViewComponent.html">ViewComponent</a> &amp;lockTmp(<span class="keyword">const</span> std::weak_ptr&lt;internal::ClientData&gt; &amp;data_w,</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>    <a class="code hl_class" href="classwebcface_1_1ViewComponent.html">ViewComponent</a> &amp;lockTmp(<span class="keyword">const</span> std::shared_ptr&lt;internal::ClientData&gt; &amp;data,</div>
 <div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>                           <span class="keyword">const</span> <a class="code hl_class" href="classwebcface_1_1encoding_1_1SharedString.html">SharedString</a> &amp;view_name,</div>
 <div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>                           std::unordered_map&lt;int, int&gt; *idx_next = <span class="keyword">nullptr</span>);</div>
 <div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span> </div>
@@ -441,8 +441,8 @@ $(document).ready(function(){initNavTree('component__view_8h_source.html',''); i
 <div class="ttc" id="aclasswebcface_1_1Func_html"><div class="ttname"><a href="classwebcface_1_1Func.html">webcface::Func</a></div><div class="ttdoc">関数1つを表すクラス</div><div class="ttdef"><b>Definition</b> func.h:14</div></div>
 <div class="ttc" id="aclasswebcface_1_1IdBase_html"><div class="ttname"><a href="classwebcface_1_1IdBase.html">webcface::IdBase</a></div><div class="ttdef"><b>Definition</b> component_id.h:9</div></div>
 <div class="ttc" id="aclasswebcface_1_1IdBase_html_a67a39581664812c20ea4a5dd7d692106"><div class="ttname"><a href="classwebcface_1_1IdBase.html#a67a39581664812c20ea4a5dd7d692106">webcface::IdBase::id</a></div><div class="ttdeci">std::string id() const</div><div class="ttdoc">そのview(またはcanvas)内で一意のid</div><div class="ttdef"><b>Definition</b> component_id.cc:7</div></div>
-<div class="ttc" id="aclasswebcface_1_1InputRef_html"><div class="ttname"><a href="classwebcface_1_1InputRef.html">webcface::InputRef</a></div><div class="ttdoc">名前を指定しないText</div><div class="ttdef"><b>Definition</b> text.h:252</div></div>
-<div class="ttc" id="aclasswebcface_1_1InputRef_html_a1e0c8b64908b8d7e1570201274a9030b"><div class="ttname"><a href="classwebcface_1_1InputRef.html#a1e0c8b64908b8d7e1570201274a9030b">webcface::InputRef::lockedField</a></div><div class="ttdeci">Text &amp; lockedField() const</div><div class="ttdef"><b>Definition</b> text.h:269</div></div>
+<div class="ttc" id="aclasswebcface_1_1InputRef_html"><div class="ttname"><a href="classwebcface_1_1InputRef.html">webcface::InputRef</a></div><div class="ttdoc">名前を指定しないText</div><div class="ttdef"><b>Definition</b> text.h:253</div></div>
+<div class="ttc" id="aclasswebcface_1_1InputRef_html_a1e0c8b64908b8d7e1570201274a9030b"><div class="ttname"><a href="classwebcface_1_1InputRef.html#a1e0c8b64908b8d7e1570201274a9030b">webcface::InputRef::lockedField</a></div><div class="ttdeci">Text &amp; lockedField() const</div><div class="ttdef"><b>Definition</b> text.h:270</div></div>
 <div class="ttc" id="aclasswebcface_1_1ViewComponent_html"><div class="ttname"><a href="classwebcface_1_1ViewComponent.html">webcface::ViewComponent</a></div><div class="ttdoc">Viewに表示する要素です</div><div class="ttdef"><b>Definition</b> component_view.h:72</div></div>
 <div class="ttc" id="aclasswebcface_1_1ViewComponent_html_a0627ce9d4496345ea0233aa48e179aa5"><div class="ttname"><a href="classwebcface_1_1ViewComponent.html#a0627ce9d4496345ea0233aa48e179aa5">webcface::ViewComponent::text</a></div><div class="ttdeci">std::string text() const</div><div class="ttdoc">表示する文字列を取得</div><div class="ttdef"><b>Definition</b> component_view.h:168</div></div>
 <div class="ttc" id="aclasswebcface_1_1ViewComponent_html_a0786a131d9b2781f041452f6745da1e6"><div class="ttname"><a href="classwebcface_1_1ViewComponent.html#a0786a131d9b2781f041452f6745da1e6">webcface::ViewComponent::textColor</a></div><div class="ttdeci">ViewComponent &amp; textColor(ViewColor c)</div><div class="ttdoc">文字色を設定</div><div class="ttdef"><b>Definition</b> component_view.h:304</div></div>
@@ -497,9 +497,9 @@ $(document).ready(function(){initNavTree('component__view_8h_source.html',''); i
 <div class="ttc" id="acomponent__id_8cc_html_ab8f9fc0ebcf98c459bf1cdc11446913a"><div class="ttname"><a href="component__id_8cc.html#ab8f9fc0ebcf98c459bf1cdc11446913a">IdBase&lt; ViewComponentType &gt;</a></div><div class="ttdeci">template class WEBCFACE_DLL_INSTANCE_DEF IdBase&lt; ViewComponentType &gt;</div><div class="ttdef"><b>Definition</b> component_id.cc:18</div></div>
 <div class="ttc" id="acomponent__id_8h_html"><div class="ttname"><a href="component__id_8h.html">component_id.h</a></div></div>
 <div class="ttc" id="adef_8h_html"><div class="ttname"><a href="def_8h.html">def.h</a></div></div>
-<div class="ttc" id="adef_8h_html_a47af057bda855b54c212e97ffccdca01"><div class="ttname"><a href="def_8h.html#a47af057bda855b54c212e97ffccdca01">WEBCFACE_DLL</a></div><div class="ttdeci">#define WEBCFACE_DLL</div><div class="ttdef"><b>Definition</b> def.h:60</div></div>
-<div class="ttc" id="adef_8h_html_ab3f2570d5b8231ddbe0e57fc8ab629eb"><div class="ttname"><a href="def_8h.html#ab3f2570d5b8231ddbe0e57fc8ab629eb">WEBCFACE_NS_END</a></div><div class="ttdeci">#define WEBCFACE_NS_END</div><div class="ttdef"><b>Definition</b> def.h:86</div></div>
-<div class="ttc" id="adef_8h_html_abe991b8f291782627a31118c688e123a"><div class="ttname"><a href="def_8h.html#abe991b8f291782627a31118c688e123a">WEBCFACE_NS_BEGIN</a></div><div class="ttdeci">#define WEBCFACE_NS_BEGIN</div><div class="ttdef"><b>Definition</b> def.h:85</div></div>
+<div class="ttc" id="adef_8h_html_a47af057bda855b54c212e97ffccdca01"><div class="ttname"><a href="def_8h.html#a47af057bda855b54c212e97ffccdca01">WEBCFACE_DLL</a></div><div class="ttdeci">#define WEBCFACE_DLL</div><div class="ttdef"><b>Definition</b> def.h:62</div></div>
+<div class="ttc" id="adef_8h_html_ab3f2570d5b8231ddbe0e57fc8ab629eb"><div class="ttname"><a href="def_8h.html#ab3f2570d5b8231ddbe0e57fc8ab629eb">WEBCFACE_NS_END</a></div><div class="ttdeci">#define WEBCFACE_NS_END</div><div class="ttdef"><b>Definition</b> def.h:103</div></div>
+<div class="ttc" id="adef_8h_html_abe991b8f291782627a31118c688e123a"><div class="ttname"><a href="def_8h.html#abe991b8f291782627a31118c688e123a">WEBCFACE_NS_BEGIN</a></div><div class="ttdeci">#define WEBCFACE_NS_BEGIN</div><div class="ttdef"><b>Definition</b> def.h:102</div></div>
 <div class="ttc" id="aencoding_2include_2webcface_2encoding_2val__adaptor_8h_html"><div class="ttname"><a href="encoding_2include_2webcface_2encoding_2val__adaptor_8h.html">val_adaptor.h</a></div></div>
 <div class="ttc" id="afield_8h_html"><div class="ttname"><a href="field_8h.html">field.h</a></div></div>
 <div class="ttc" id="afunc_8h_html"><div class="ttname"><a href="func_8h.html">func.h</a></div></div>
@@ -539,7 +539,7 @@ $(document).ready(function(){initNavTree('component__view_8h_source.html',''); i
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_db3a54907829b36871118d03417739cd.html">client</a></li><li class="navelem"><a class="el" href="dir_5c23080e296bbe846f4ed2d01d7b595d.html">include</a></li><li class="navelem"><a class="el" href="dir_8bd58ff883f4686dab3daf23d9479d3b.html">webcface</a></li><li class="navelem"><a class="el" href="component__view_8h.html">component_view.h</a></li>
-    <li class="footer">Generated on Sun Jul 14 2024 12:52:37 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Mon Jul 15 2024 17:17:24 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>
