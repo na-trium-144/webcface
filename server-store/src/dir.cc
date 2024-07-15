@@ -9,14 +9,18 @@ namespace std_fs = std::experimental::filesystem;
 namespace std_fs = std::filesystem;
 #endif
 
-#if WEBCFACE_SYSTEM_WIN32API
+#if WEBCFACE_SYSTEM_PATH_WINDOWS
 #include <windows.h>
 #elif __APPLE__
 #include <mach-o/dyld.h>
 #include <climits>
 #else
 #include <unistd.h>
-#include <linux/limits.h>
+// #include <linux/limits.h>
+// manually define for cygwin
+#ifndef PATH_MAX
+#define PATH_MAX 4096
+#endif
 #endif
 
 WEBCFACE_NS_BEGIN
@@ -25,7 +29,7 @@ namespace server {
 // https://stackoverflow.com/questions/50889647/best-way-to-get-exe-folder-path
 std_fs::path
 getExeDir([[maybe_unused]] const std::shared_ptr<spdlog::logger> &logger) {
-#if WEBCFACE_SYSTEM_WIN32API
+#if WEBCFACE_SYSTEM_PATH_WINDOWS
     // Windows specific
     wchar_t szPath[MAX_PATH];
     GetModuleFileNameW(NULL, szPath, MAX_PATH);

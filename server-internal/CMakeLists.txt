@@ -18,8 +18,8 @@ if(WEBCFACE_SERVER)
     target_compile_features(webcface-server-internal PRIVATE cxx_std_17)
 else()
     # build nothing
-    target_include_directories(webcface-server-internal INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>)
     add_library(webcface-server-internal INTERFACE)
+    target_include_directories(webcface-server-internal INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>)
 endif()
 
 if(WEBCFACE_SHARED AND WEBCFACE_SERVER)

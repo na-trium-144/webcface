@@ -1,6 +1,6 @@
 #include "webcface/server/ip.h"
 
-#ifdef _WIN32
+#if WEBCFACE_SYSTEM_WIN32SOCKET
 #include <winsock2.h>
 #include <iphlpapi.h>
 #include <ws2tcpip.h>
@@ -19,7 +19,7 @@ std::vector<std::string>
 getIpAddresses([[maybe_unused]] const std::shared_ptr<spdlog::logger> &logger) {
     std::vector<std::string> ret;
 
-#ifdef _WIN32
+#if WEBCFACE_SYSTEM_WIN32SOCKET
     PIP_ADAPTER_ADDRESSES pAddresses = NULL;
     ULONG outBufLen = 15000;
     for (int i = 0; i < 3; i++) {
