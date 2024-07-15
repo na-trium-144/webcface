@@ -1,0 +1,86 @@
+name: CMake Test (Windows Cygwin32)
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: []
+
+env:
+  # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
+  BUILD_TYPE: Debug
+  SHELLOPTS: igncr
+
+jobs:
+  test-windows-cygwin:
+    strategy:
+      matrix:
+        dep: ["submodule", "static"]
+        include:
+        - dep: submodule
+          shared_flag: on
+        - dep: static
+          shared_flag: off
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: cygwin/cygwin-install-action@master
+      with:
+        platform: x86
+        packages: >-
+          gcc-core
+          gcc-g++
+          cmake
+          make
+          pkg-config
+
+    - run: git submodule update --init
+      if: matrix.dep == 'submodule'
+
+    - name: Configure CMake
+      env:
+        CC: gcc
+        CXX: g++
+      run: >
+        cmake -B build
+        -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+        -DWEBCFACE_TEST=on
+        -DWEBCFACE_EXAMPLE=on
+        -DWEBCFACE_TEST_TIMEOUT=1000
+        -DWEBCFACE_SHARED=${{matrix.shared_flag}}
+        -DCMAKE_INSTALL_PREFIX=./build/install
+
+    - name: Build
+      run: cmake --build build -t install
+
+    - name: Test
+      env:
+        WEBCFACE_TRACE: 1
+      working-directory: ${{github.workspace}}/build
+      run: ctest --output-on-failure --timeout 100
+
+    - name: Check Exported Symbol
+      if: matrix.dep == 'submodule'
+      shell: pwsh -command ". '{0}'"
+      run: |
+        ${VS_INST_PATH} = & "${env:ProgramFiles(x86)}/Microsoft Visual Studio/Installer/vswhere.exe" -latest -property installationPath
+        Write-Output "  <-> VS Install Path: ${VS_INST_PATH}"
+        Import-Module ${VS_INST_PATH}/Common7/Tools/Microsoft.VisualStudio.DevShell.dll
+        Enter-VsDevShell -VsInstallPath ${VS_INST_PATH} -SkipAutomaticLocation -DevCmdArguments '-arch=${{matrix.config.arch}} -no_logo'
+        C:\msys64\usr\bin\bash.exe -c "export PATH=\"/usr/bin:$PATH\" &&      dumpbin //exports build/*webcface*.dll | grep -A 10000 RVA | grep -B 10000 Summary | grep -v webcface | grep -v wcf"
+        C:\msys64\usr\bin\bash.exe -c "export PATH=\"/usr/bin:$PATH\" && [[ $(dumpbin //exports build/*webcface*.dll | grep -A 10000 RVA | grep -B 10000 Summary | grep -v webcface | grep -v wcf | wc -l) = 4 ]]"
+
+    - name: Test CMake with installed package
+      working-directory: ${{github.workspace}}/.github/test
+      run: |
+        cmake -B build -DCMAKE_PREFIX_PATH=../../build/install
+        cmake --build build --config ${{env.BUILD_TYPE}}
+
+    - name: Test building with pkg-config
+      working-directory: ${{github.workspace}}/.github/test
+      env:
+        PKG_CONFIG_PATH: ${{github.workspace}}\build\install\lib\pkgconfig
+      run: |
+        g++ -std=c++20 test.cc $(pkg-config --cflags --libs webcface)
+        gcc -std=c99 test.c $(pkg-config --cflags --libs webcface) -lstdc++
+
